@@ -1,0 +1,343 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 14.4 边界定向与 Stokes 的证明
+% 纲要位置：几何学计划纲要.md，第 670 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 外法向优先的边界约定
+% * 半空间中的局部公式
+% * 通过单位分解粘合
+% * 带角区域及逐项边界符号
+% * Green、Gauss 公式作为特例
+% 
+% 纲要内容结束
+
+\section{边界定向与 Stokes 的证明}
+\label{g1:sec:1404}
+
+在一元微积分中，导数的积分只留下区间两个端点的函数值，而且右端点取正号、左端点取负号。Stokes 定理把这个关系推广到微分形式：区域内部的外微分积分，等于边界上原形式的积分。这里“边界”必须带有由区域定向确定的方向，否则等式连符号都不能确定。
+
+\ProseParagraphBreak
+
+第九章已经在曲面坐标中证明了所需的 Green 公式，并据此把联络形式的边界积分换成曲率积分，见\cref{g1:lem:green-formula,g1:thm:local-gauss-bonnet}。本节从同一个积分基本定理出发，先处理任意维半空间，再用第十二章的光滑单位分解得到整体公式。所有形式都光滑至边界；非紧流形上的形式要求紧支，支集可以接触实际边界。
+
+\subsection{外法向优先的边界约定}
+\label{g1:subsec:1404:01}
+
+设 \(M^n\) 为有向带边界光滑流形，\(n\ge1\)，包含映射记为 \(j:\partial M\hookrightarrow M\)。\cref{g1:prop:boundary-chart-invariance}说明，\(\partial M\) 本身是 \(n-1\) 维无边界光滑流形；其完整切空间由边界坐标中最后一个分量为零的向量组成。若在边界图中把 \(M\) 写成 \(x^n\ge0\)，则指向外侧的横截向量满足 \(\mathrm{d}x^n(\nu)<0\)。这个描述只用边界两侧的区分，不需要长度或正交关系。
+
+\begin{definition}[边界定向]\label{g1:def:boundary-orientation}
+	设 \(M^n\) 为有向带边界光滑流形，\(n\ge1\)。在 \(p\in\partial M\) 取一个外向横截向量 \(\nu\)，即在边界定义坐标 \(\rho\ge0\) 下满足 \(\mathrm{d}\rho_p(\nu)<0\)。边界取\term[waifaxiangyouxian]{外法向优先}[outward-normal-first]的定向：当 \(n\ge2\) 时，基 \((v_1,\ldots,v_{n-1})\) 在 \(\mathrm{T}_p\partial M\) 中为正向，当且仅当
+	\[
+		(\nu,v_1,\ldots,v_{n-1})
+	\]
+	在 \(\mathrm{T}_pM\) 中为正向。等价地，若 \(\Omega_p\) 是表示 \(M\) 正定向的非零顶次协变向量，则 \((\iota_\nu\Omega_p)|_{\mathrm{T}_p\partial M}\) 表示边界的正定向。后一表述也适用于 \(n=1\)：它给边界点指定一个正负号。
+\end{definition}
+
+名称中的“法向”只指横截方向；若另有黎曼度量，才可以特选外向单位法向。先核对这个约定不依赖选择。两种边界定义坐标 \(\rho,\rho'\) 在边界上都为零，局部可写成
+\[
+	\rho'=\rho\,a,\qquad
+	a(x',\rho)=\int_0^1\partial_\rho\rho'(x',t\rho)\,\mathrm{d}t.
+\]
+边界坐标变换可逆，且把内侧映到内侧，所以 \(a(p)>0\)：其边界处的法向导数不为零，又不能为负。这也可由\cref{g1:prop:boundary-smooth-derivative}的链式法则和一侧非负性直接判断。因此 \(\mathrm{d}\rho'_p=a(p)\mathrm{d}\rho_p\)，外向条件与坐标无关。
+
+\ProseParagraphBreak
+
+若 \(\nu,\nu'\) 都外向，则在一维商空间 \(\mathrm{T}_pM/\mathrm{T}_p\partial M\) 中，它们位于同一条半直线上，故
+\[
+	\nu'=c\nu+w,\qquad c>0,\quad w\in \mathrm{T}_p\partial M.
+\]
+把第一列由 \(\nu\) 换为 \(\nu'\)，行列式只乘以正数 \(c\)，因为 \(w\) 是其余切向列的线性组合。等价地，插入 \(w\) 后限制到边界切空间的顶次形式为零。因此边界定向与外向横截向量及正顶次形式的选择无关，且随点光滑变化。
+
+在标准定向半空间
+\[
+	H^n=\{x^n\ge0\},\qquad
+	\Omega=\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n
+\]
+中，可以取 \(\nu=-\partial_{x^n}\)。于是
+\begin{equation}\label{g1:eq:half-space-boundary-orientation}
+	\left.\iota_{-\partial_{x^n}}\Omega\right|_{\partial H^n}
+	=(-1)^n\,\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^{n-1}.
+\end{equation}
+所以边界坐标 \((x^1,\ldots,x^{n-1})\) 的通常定向，与诱导边界定向相差 \((-1)^n\)。这个符号来自把最后一个坐标向量移到第一位，再乘上外向向量的负号。
+
+\ProseParagraphBreak
+
+当 \(n=1\) 时，标准半直线的边界点 \(0\) 取负号；对按递增参数定向的区间 \([a,b]\)，左端点取负、右端点取正。按照上一节的有向零维积分约定，
+\[
+	\int_{\partial[a,b]}f=f(b)-f(a).
+\]
+零维流形另约定边界为空，不再应用“降低一维”的基向量描述。此时没有需要讨论的负一次形式；若记 \(\Omega^{-1}=0\)，Stokes 等式只表示 \(0=0\)。
+
+\subsection{半空间中的局部公式}
+\label{g1:subsec:1404:02}
+
+高维公式的局部计算只多了一个排列符号。把一般 \(n-1\) 次形式按“缺少哪个坐标微分”分组，并在第 \(i\) 项预先放入 \((-1)^{i-1}\)，可以让外微分后的各项都具有相同正号。以下用帽子表示删去相应因子。
+
+\begin{lemma}[半空间中的 Stokes 公式]\label{g1:lem:half-space-stokes}
+	设 \(n\ge1\)，\(H^n=\{x^n\ge0\}\) 取标准定向，边界取外法向优先定向。若 \(\alpha\) 是 \(H^n\) 上光滑至边界的紧支 \(n-1\) 次形式，则
+	\[
+		\int_{H^n}\mathrm{d}\alpha=\int_{\partial H^n}j^*\alpha.
+	\]
+	在无边界模型 \(\mathbb R^n\) 上，任意紧支光滑 \(n-1\) 次形式都满足 \(\int_{\mathbb R^n}\mathrm{d}\alpha=0\)。紧支集允许与 \(x^n=0\) 相交。
+\end{lemma}
+\begin{proof}
+	唯一写成
+	\[
+		\alpha=\sum_{i=1}^n(-1)^{i-1}a_i(x)\,
+		\mathrm{d}x^1\wedge\cdots\wedge\widehat{\mathrm{d}x^i}\wedge\cdots\wedge\mathrm{d}x^n.
+	\]
+	每个 \(a_i\) 光滑且紧支。由\cref{g1:thm:exterior-derivative}的坐标公式，求外微分时，只有 \(\partial_i a_i\,\mathrm{d}x^i\) 那一项不因重复微分而消失。把 \(\mathrm{d}x^i\) 移到第 \(i\) 位又产生 \((-1)^{i-1}\)，两个符号抵消，故
+	\begin{equation}\label{g1:eq:stokes-local-divergence}
+		\mathrm{d}\alpha=\left(\sum_{i=1}^n\partial_i a_i\right)
+		\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n.
+	\end{equation}
+
+	取 \(R\) 足够大，使全部系数支集位于 \((-R,R)^{n-1}\times[0,R)\)。连续系数及其导数在这个紧盒上可积，累次积分的 Fubini 公式允许先沿任一坐标积分。对 \(i<n\)，沿 \(x^i\) 的积分区间两端，\(a_i\) 都为零，所以
+	\[
+		\int_{H^n}\partial_i a_i\,\mathrm{d}x=0.
+	\]
+	最后一个坐标则从零开始，积分基本定理给出
+	\[
+		\int_{H^n}\partial_n a_n\,\mathrm{d}x
+		=-\int_{\mathbb R^{n-1}}a_n(x',0)\,\mathrm{d}x'.
+	\]
+	因此体积分只留下这一个负的边界值。
+
+	在边界上拉回时，含 \(\mathrm{d}x^n\) 的项全部消失，故
+	\[
+		j^*\alpha=(-1)^{n-1}a_n(x',0)\,
+		\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^{n-1}.
+	\]
+	但边界的定向符号还要乘上\eqref{g1:eq:half-space-boundary-orientation}中的 \((-1)^n\)。于是
+	\[
+		\int_{\partial H^n}j^*\alpha
+		=(-1)^n(-1)^{n-1}\int_{\mathbb R^{n-1}}a_n(x',0)\,\mathrm{d}x'
+		=-\int_{\mathbb R^{n-1}}a_n(x',0)\,\mathrm{d}x',
+	\]
+	恰与体积分相同。\(n=1\) 时，右侧按零维积分解释为 \(-a_1(0)\)，同样成立。
+
+	在 \(\mathbb R^n\) 上，每个坐标都在完整实轴上积分，紧支性使各方向两端的系数为零，故所有偏导积分都为零。
+\end{proof}
+
+这里没有把 \(\alpha\) 越过实际边界 \(x^n=0\) 补成零。那样补零通常不光滑，而且会错误地抹掉边界项。紧支性只保证在足够远的辅助截断边缘处系数为零，真正的边界值 \(a_n(x',0)\) 完整保留。
+
+\subsection{通过单位分解粘合}
+\label{g1:subsec:1404:03}
+
+\begin{theorem}[Stokes 定理]\label{g1:thm:stokes}
+	设 \(M^n\) 为有限维、Hausdorff、第二可数的有向光滑流形，允许有边界，\(n\ge1\)。给 \(\partial M\) 外法向优先定向，记包含映射为 \(j\)。对每个紧支光滑 \(n-1\) 次形式 \(\omega\in\Omega_c^{n-1}(M)\)，有
+	\begin{equation}\label{g1:eq:stokes}
+		\int_M\mathrm{d}\omega=\int_{\partial M}j^*\omega.
+	\end{equation}
+	此式称为\term[stokesdingli]{Stokes 定理}[Stokes theorem]。不要求 \(M\) 紧；若 \(M\) 紧，则任意光滑 \(n-1\) 次形式自动满足支集条件。
+\end{theorem}
+\begin{proof}
+	令 \(K=\operatorname{supp}\omega\)。在 \(M\setminus K\) 的每个点附近，\(\omega\) 恒为零，故 \(\operatorname{supp}\mathrm{d}\omega\subseteq K\)。由于边界是闭集，\(j^*\omega\) 的支集包含于紧集 \(K\cap\partial M\)。因此两边的积分均在上一节已定义的紧支积分范围内。
+
+	用内部坐标图和边界坐标图覆盖 \(M\)，再由\cref{g1:thm:smooth-partition-unity}取从属光滑单位分解 \(\{\rho_i\}\)。局部有限的支集族只会有有限个成员与紧集 \(K\) 相交：给 \(K\) 中每一点选一个只遇到有限个支集的邻域，再从这些邻域取有限子覆盖即可。因此
+	\[
+		\omega=\sum_i\omega_i,\qquad \omega_i=\rho_i\omega
+	\]
+	实际上只有有限个非零项；每个 \(\omega_i\) 的支集是位于对应图域 \(U_i\) 内的紧集。
+
+	将 \(\omega_i\) 写入坐标。其坐标支集紧含于相对开图域，故可越过这个图域的人为边缘补零到整个 \(\mathbb R^n\) 或 \(H^n\)，而保持光滑；补零没有越过 \(H^n\) 的实际边界。由\cref{g1:prop:exterior-pullback}，坐标拉回与外微分交换。对补零形式应用\cref{g1:lem:half-space-stokes}，再用\cref{g1:thm:oriented-change-variables}把积分搬回，便得
+	\[
+		\int_M\mathrm{d}\omega_i=\int_{\partial M}j^*\omega_i.
+	\]
+	这里任一图都可以带有定向符号 \(\varepsilon_i=\pm1\)：若坐标参数化反向，体积分和它诱导的边界积分同时乘以 \(-1\)，所以局部等式仍成立。特别是在一维右端点附近，无须强行要求到标准半直线的坐标正向。
+
+	最后把有限个等式相加。注意局部公式作用于 \(\mathrm{d}(\rho_i\omega)\)，而不是直接作用于 \(\rho_i\mathrm{d}\omega\)；乘积法则产生的项正好消去：
+	\[
+		\begin{aligned}
+			\sum_i\mathrm{d}(\rho_i\omega)
+			&=\sum_i\mathrm{d}\rho_i\wedge\omega+\sum_i\rho_i\,\mathrm{d}\omega\\
+			&=\mathrm{d}\!\left(\sum_i\rho_i\right)\wedge\omega+\mathrm{d}\omega
+			=\mathrm{d}\omega.
+		\end{aligned}
+	\]
+	这些等式可先按局部有限和理解，而乘上 \(\omega\) 后只有前述有限个非零项。边界上的和同样为 \(j^*\omega\)。积分的线性及\cref{g1:thm:integral-well-defined}的坐标、单位分解无关性遂给出\eqref{g1:eq:stokes}。
+\end{proof}
+
+若 \(M\) 无边界，结论是 \(\int_M\mathrm{d}\omega=0\)；若 \(M=[a,b]\)，结论就是积分基本定理。非紧情形的紧支要求控制了“远处的边界”：仅仅知道 \(\mathrm{d}\omega\) 的积分收敛，并不能保证无穷远没有留下额外项，习题中会给出一维例子。
+
+\subsection{带角区域及逐项边界符号}
+\label{g1:subsec:1404:04}
+
+矩形和单形在角点处不具有半空间局部模型。这里先明确所讨论的对象，再把局部公式推广到正交象限；角棱不贡献新的积分项，但邻接的每张面都必须保留。
+
+\begin{definition}[带角流形]\label{g1:def:manifold-with-corners}
+	一个 \(n\) 维\term[daijiaoliuxing]{带角流形}[manifold with corners]是 Hausdorff、第二可数空间，带有到
+	\[
+		Q_k^n=[0,\infty)^k\times\mathbb R^{n-k},
+		\qquad 0\le k\le n
+	\]
+	的相对开集的坐标图；换坐标及其逆都要求局部延拓为欧氏空间中的光滑映射。函数、微分形式和定向也按这种局部延拓定义。在一点附近，只保留在那里取零的受限坐标，其个数称为该点的深度；深度一部分是光滑的余维一边界，深度至少二的部分称为角棱。
+\end{definition}
+
+这个深度与坐标无关。像第十一章半空间的论证一样，局部延拓的导数由内部稠密性唯一确定，互逆变换的导数互逆。在深度 \(k\) 的点，单侧曲线的速度构成锥
+\[
+	C_p=\{v:v^1,\ldots,v^k\ge0\},
+\]
+其最大线性子空间 \(C_p\cap(-C_p)\) 的维数为 \(n-k\)。坐标变换的微分把这个速度锥同构到目标的速度锥，因此保持 \(k\)。深度一部分在小坐标邻域内分成 \(k\) 张局部面 \(x^i=0\) 的内部；换坐标保持深度，并把这些连通的局部面分支一一对应。每张面的定向先在深度一点由外法向优先确定，再连续延伸到它的角棱。
+
+\ProseParagraphBreak
+
+顶次积分沿用上一节的坐标定义。正交象限中边界在 \(n\) 维测度下为零，不影响体积分；对每张余维一面，角棱在该面内的 \(n-1\) 维测度也为零，因为它们在面坐标中是一个或多个坐标取零的集合。因此边界积分按每张局部面分别计算，同一角点邻接的不同面各计一次，而不把整个拓扑边界误认为一张光滑流形。
+
+\ProseParagraphBreak
+
+这些面上的积分与坐标选择相容：在深度一部分应用有向换元公式即可。若某积分的支集接触角棱，可以先去掉面坐标中宽度为 \(\varepsilon\) 的角棱条带，再令 \(\varepsilon\downarrow0\)。在所用紧坐标片内，形式系数与换元 Jacobian 有界，条带体积趋于零，遗漏积分的绝对值也趋于零。于是普通换元公式延续到接触角棱的积分。用有限坐标分解求和时，两种分解可通过权重乘积作共同细化，逐面利用换元和权重总和为 \(1\)，证明边界积分不依赖分解。以下的 \(\int_{\partial M}\omega\) 就表示这种按局部面分支计算的积分；面上的形式均指包含拉回。
+
+\begin{theorem}[带角流形上的 Stokes 公式]\label{g1:thm:stokes-corners}
+	设 \(M^n\) 为有向、Hausdorff、第二可数的光滑带角流形，\(n\ge1\)，\(\omega\) 为光滑至各面的紧支 \(n-1\) 次形式。各余维一面取外法向优先定向，边界积分按局部面分支计算，则
+	\[
+		\int_M\mathrm{d}\omega=\int_{\partial M}\omega.
+	\]
+	余维至少二的角棱不增加独立积分项。
+\end{theorem}
+\begin{proof}
+	先在标准定向的 \(Q_k^n\) 上取紧支形式
+	\[
+		\alpha=\sum_{i=1}^n(-1)^{i-1}a_i\,
+		\mathrm{d}x^1\wedge\cdots\wedge\widehat{\mathrm{d}x^i}\wedge\cdots\wedge\mathrm{d}x^n.
+	\]
+	外微分仍由\eqref{g1:eq:stokes-local-divergence}给出。对不受限坐标 \(i>k\)，偏导积分为零；对 \(i\le k\)，沿 \([0,\infty)\) 使用积分基本定理，得到
+	\[
+		\int_{Q_k^n}\mathrm{d}\alpha
+		=-\sum_{i=1}^k\int_{F_i}a_i|_{x^i=0}\,\mathrm{d}x^{\widehat i},
+		\qquad F_i=Q_k^n\cap\{x^i=0\}.
+	\]
+	这里右侧暂按其余坐标的递增次序使用通常正测度。面 \(F_i\) 的外向向量为 \(-\partial_{x^i}\)，所以相对于这组面坐标，诱导定向的符号为 \((-1)^i\)。拉回 \(\alpha\) 后只留下 \((-1)^{i-1}a_i\,\mathrm{d}x^{\widehat i}\)，两者相乘正好是 \(-a_i\,\mathrm{d}x^{\widehat i}\)。因此上式就是各有向面的积分之和。各坐标面的相交部分测度为零，不会在这个计算之外再留下角点项。
+
+	现在令 \(K=\operatorname{supp}\omega\)。紧集附近只需有限个坐标截断函数。具体地，在每点的带角坐标中取两层相对球，把\cref{g1:lem:smooth-bump-function}中的欧氏截断函数限制到正交象限，得到支集紧含于外层图域、在内层为 \(1\) 的光滑函数。选有限个内层覆盖 \(K\)，记对应函数为 \(b_1,\ldots,b_N\)。其和 \(b\) 在 \(K\) 的开邻域 \(W\) 上为正，令 \(\rho_i=b_i/b\) 于 \(W\)。于是 \(\sum_i\rho_i=1\) 于 \(W\)。
+
+	在 \(W\) 上取 \(\omega_i=\rho_i\omega\)，再在 \(M\setminus W\) 补零。因为 \(K\subset W\)，每个补零位置附近 \(\omega\) 本来就为零，故 \(\omega_i\) 光滑；其支集位于 \(K\cap\operatorname{supp}b_i\)，是相应图域内的紧集。对各 \(\omega_i\) 使用刚证的象限公式，按图的定向符号搬回，并把有限个等式相加。由 \(\sum_i\omega_i=\omega\)，或等价地由 \(\sum_i\mathrm{d}\rho_i=0\) 于 \(W\)，得到所需整体等式。
+\end{proof}
+
+如果一个区域由有限个这样的有向块拼成，并且相邻块沿完整面光滑贴合，就对每块应用公式再相加。公共面的外向横截方向对两块相反，而环境定向相同，所以两次诱导面定向相反，内部面项抵消。这里先按面在各块中出现的次数计入，再作抵消；不能一开始就把同一个几何面只算一次。
+
+\ProseParagraphBreak
+
+对按 \((x^1,\ldots,x^n)\) 定向的矩形 \(R=\prod_{i=1}^n[a_i,b_i]\)，记 \(R_{\widehat i}\) 为删去第 \(i\) 个坐标的矩形，取其剩余坐标递增次序的定向；令 \(\delta_i^+,\delta_i^-\) 分别插入 \(x^i=b_i,a_i\)。上面的向量次序给出：上侧面的外向向量为 \(+\partial_{x^i}\)，符号为 \((-1)^{i-1}\)；下侧面的外向向量为 \(-\partial_{x^i}\)，符号为 \((-1)^i\)。于是
+\begin{equation}\label{g1:eq:rectangle-boundary-signs}
+	\int_{\partial R}\omega
+	=\sum_{i=1}^n(-1)^{i-1}\left(
+		\int_{R_{\widehat i}}(\delta_i^+)^*\omega
+		-\int_{R_{\widehat i}}(\delta_i^-)^*\omega
+	\right).
+\end{equation}
+若把 \(\omega\) 写成前面的 \(\sum_i(-1)^{i-1}a_i\,\mathrm{d}x^{\widehat i}\)，两组排列符号抵消，留下的正是每个系数“上端值减下端值”。这也从逐坐标的积分基本定理直接验证了矩形公式。
+
+\begin{lemma}[有序单形的边界定向]\label{g1:lem:simplex-boundary-orientation}
+	设 \(n\ge1\)。给非退化有序仿射单形 \([v_0,\ldots,v_n]\) 以有序边向量 \((v_1-v_0,\ldots,v_n-v_0)\) 所确定的定向。删去第 \(i\) 个顶点后，面按剩余顶点的原次序定向，则该面的诱导边界定向等于此面定向的 \((-1)^i\) 倍。特别地，对标准单形
+	\[
+		\Delta^n=\left\{t\in\mathbb R^n:t^j\ge0,\ \sum_{j=1}^nt^j\le1\right\}
+		=[0,e_1,\ldots,e_n],
+	\]
+	令 \(\delta_i:\Delta^{n-1}\to\Delta^n\) 为按该顶点次序参数化第 \(i\) 面的仿射映射。对光滑至边界的 \(n-1\) 次形式 \(\alpha\)，有
+	\begin{equation}\label{g1:eq:simplex-stokes}
+		\int_{\Delta^n}\mathrm{d}\alpha
+		=\sum_{i=0}^n(-1)^i\int_{\Delta^{n-1}}\delta_i^*\alpha.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	先对标准单形计算。对 \(i\ge1\)，第 \(i\) 面为 \(t^i=0\)，删去 \(e_i\) 后的有序边向量为
+	\[
+		(e_1,\ldots,\widehat e_i,\ldots,e_n).
+	\]
+	取外向横截向量 \(-e_i\)，则
+	\[
+		\det(-e_i,e_1,\ldots,\widehat e_i,\ldots,e_n)=(-1)^i.
+	\]
+	因此该面的边界定向正好是有序面定向的 \((-1)^i\) 倍。
+
+	第零面为 \(\sum_jt^j=1\)，其有序顶点为 \(e_1,\ldots,e_n\)，故有序切向基为
+	\[
+		(e_2-e_1,\ldots,e_n-e_1).
+	\]
+	这里可取外向横截向量 \(e_1\)，因为沿它移动会增大 \(\sum_jt^j\)。把第一列加到后面各列，可得
+	\[
+		\det(e_1,e_2-e_1,\ldots,e_n-e_1)=1.
+	\]
+	所以第零面的符号为 \(+1=(-1)^0\)。这一步使用横截向量而非必须垂直于面的单位法向，正体现了边界定向的选择无关性。
+
+	一般有序仿射单形由映射 \(t\mapsto v_0+\sum_jt^j(v_j-v_0)\) 从标准单形得到；按题定的定向，它保向，并把各有序面与外向半侧对应，故保持上述符号。标准单形在每一点可用独立的活动面定义函数作为部分坐标，因而是带角流形；对它应用\cref{g1:thm:stokes-corners}即得\eqref{g1:eq:simplex-stokes}。当 \(n=1\) 时，这给出 \([v_1]-[v_0]\)；零维单形则另约定边界为空。
+\end{proof}
+
+\subsection{Green、Gauss 公式作为特例}
+\label{g1:subsec:1404:05}
+
+先看平面。设 \(D\subset\mathbb R^2\) 为紧的有向光滑带边界区域，或可按上一小节分块处理的带角区域，取标准面积定向；\(P,Q\) 在其邻域光滑。令
+\[
+	\alpha=P\,\mathrm{d}x+Q\,\mathrm{d}y,\qquad
+	\mathrm{d}\alpha=(\partial_xQ-\partial_yP)\,\mathrm{d}x\wedge\mathrm{d}y.
+\]
+Stokes 公式立即给出
+\begin{equation}\label{g1:eq:green-from-stokes}
+	\int_{\partial D}P\,\mathrm{d}x+Q\,\mathrm{d}y
+	=\int_D(\partial_xQ-\partial_yP)\,\mathrm{d}x\,\mathrm{d}y.
+\end{equation}
+现在解释边界方向。若 \(\nu\) 为外向单位法向，\(J\) 为平面的正向四分之一转动，则正向单位切向为 \(T=J\nu\)，因为 \((\nu,J\nu)\) 是正向基。行进方向的左侧为 \(JT=-\nu\)，恰好指向区域内部。因此正向边界使区域在左，外圈逆时针，孔洞的边界顺时针，如\cref{g1:fig:boundary-outward-first}。这与第九章的约定一致；\cref{g1:lem:green-formula}还单独证明了该章使用的分片 \(C^2\) 边界、\(C^1\) 一形式版本，并用截角极限处理内角在 \((0,2\pi)\) 内的角点。
+
+\input{Figures/Chapter14-BoundaryOrientation.tex}
+
+再看三维的散度公式。设 \(\Omega\subset\mathbb R^3\) 为紧的光滑或带角区域，取标准体积定向，\(V=P\partial_x+Q\partial_y+R\partial_z\) 在其邻域光滑。将向量场插入体积形式，得到二形式
+\[
+	\beta=\iota_V(\mathrm{d}x\wedge\mathrm{d}y\wedge\mathrm{d}z)
+	=P\,\mathrm{d}y\wedge\mathrm{d}z
+	-Q\,\mathrm{d}x\wedge\mathrm{d}z
+	+R\,\mathrm{d}x\wedge\mathrm{d}y,
+\]
+以及
+\[
+	\mathrm{d}\beta=(\partial_xP+\partial_yQ+\partial_zR)\,
+	\mathrm{d}x\wedge\mathrm{d}y\wedge\mathrm{d}z
+	=(\operatorname{div}V)\,\mathrm{d}x\wedge\mathrm{d}y\wedge\mathrm{d}z.
+\]
+在每张光滑边界面上取外向单位法向 \(\nu\)。由外法向优先定向，其面积形式为 \(\mathrm{d}A=(\iota_\nu\mathrm{d}V)|_{\mathrm{T}\partial\Omega}\)，这里 \(\mathrm{d}V=\mathrm{d}x\wedge\mathrm{d}y\wedge\mathrm{d}z\)。把 \(V\) 分解为切向部分与 \(\langle V,\nu\rangle\nu\)，切向部分与两个面切向量线性相关，插入三次交替形式后为零，所以
+\[
+	\beta|_{\mathrm{T}\partial\Omega}=\langle V,\nu\rangle\,\mathrm{d}A.
+\]
+由\cref{g1:prop:metric-volume-integration}，这就是通常的通量积分。应用 Stokes 公式，得到
+\begin{equation}\label{g1:eq:gauss-divergence-stokes}
+	\int_\Omega\operatorname{div}V\,\mathrm{d}V
+	=\int_{\partial\Omega}\langle V,\nu\rangle\,\mathrm{d}A.
+\end{equation}
+带角时逐面使用各自的外向单位法向，角棱上不必定义唯一法向，因为它们在面积积分中测度为零。
+
+\ProseParagraphBreak
+
+最后看通常称为曲面旋度公式的三维 Stokes 公式。设 \(S\subset\mathbb R^3\) 为紧的定向嵌入曲面，可有光滑边界或上述意义的角点。令 \(N\) 为与曲面定向相容的单位法向，\(V=(P,Q,R)\) 在 \(S\) 的邻域光滑。取一形式
+\[
+	\alpha=P\,\mathrm{d}x+Q\,\mathrm{d}y+R\,\mathrm{d}z.
+\]
+直接展开外微分可得
+\[
+	\begin{aligned}
+		\mathrm{d}\alpha
+		&=(\partial_xQ-\partial_yP)\,\mathrm{d}x\wedge\mathrm{d}y
+		+(\partial_xR-\partial_zP)\,\mathrm{d}x\wedge\mathrm{d}z
+		+(\partial_yR-\partial_zQ)\,\mathrm{d}y\wedge\mathrm{d}z\\
+		&=\iota_{\operatorname{curl}V}(\mathrm{d}x\wedge\mathrm{d}y\wedge\mathrm{d}z),
+	\end{aligned}
+\]
+其中
+\[
+	\operatorname{curl}V
+	=(\partial_yR-\partial_zQ,\ \partial_zP-\partial_xR,\ \partial_xQ-\partial_yP).
+\]
+记 \(i:S\hookrightarrow\mathbb R^3\)。拉回与外微分交换，且同样的法向分解给出
+\[
+	\mathrm{d}(i^*\alpha)=i^*(\mathrm{d}\alpha)
+	=\langle\operatorname{curl}V,N\rangle\,\mathrm{d}A.
+\]
+在曲面边界上，令 \(\nu\in \mathrm{T}S\) 为指向曲面外侧、垂直于边界的单位向量；它是曲面内的外向余法向，与空间法向 \(N\) 不同。正向边界切向 \(T\) 满足 \(\nu\times T=N\)，等价地 \(T=N\times\nu\)。一形式沿边界的值为 \(\alpha(T)=\langle V,T\rangle\)，故在 \(S\) 上使用 Stokes 公式得到
+\begin{equation}\label{g1:eq:curl-surface-stokes}
+	\int_S\langle\operatorname{curl}V,N\rangle\,\mathrm{d}A
+	=\int_{\partial S}\langle V,T\rangle\,\mathrm{d}s.
+\end{equation}
+这三个经典公式使用了不同次数的形式，却都来自同一条\eqref{g1:eq:stokes}。向量、法向和面积元把欧氏内积带入了表达式，而抽象的 Stokes 定理本身只需要光滑结构、定向和支集条件。
+
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

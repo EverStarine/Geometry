@@ -1,0 +1,217 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 4.4 局部有限覆盖与单位分解
+% 纲要位置：几何学计划纲要.md，第 259 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 覆盖的细化与闭集收缩
+% * 连续截断函数的构造
+% * 从局部有限覆盖构造单位分解
+% * 度量、函数和局部对象的整体粘合
+% 
+% 纲要内容结束
+
+\section{局部有限覆盖与单位分解}
+\label{g1:sec:0404}
+
+在一条直线的左侧使用一种公式、右侧使用另一种公式，如果两式在交叠处相同，就可以直接粘合。若它们各有用途，却不完全相同，又怎样平稳地过渡？一个自然想法是给两式分配非负权重，并使权重之和为 \(1\)。对于许多张局部坐标图，同样的想法要求我们同时解决三个问题：每个权重只在允许的区域起作用，各点附近只出现有限项，而且任一点至少有一个权重为正。本节用覆盖的收缩与连续截断函数逐项实现这些要求。
+
+\subsection{覆盖的细化与闭集收缩}
+\label{g1:subsec:0404:01}
+
+\cref{g1:def:locally-finite-refinement}中的局部有限性说，每一点都有一个邻域，只与给定族中的有限多个集合相交。它比“每个点只属于有限多个集合”更强：前者控制了点附近的变化，后者只控制某一点上的计数。在 \(\mathbb R\) 中，令 \(c_n=2^{-n}\)、\(r_n=2^{-n-2}\)，闭区间 \([c_n-r_n,c_n+r_n]\) 两两不交，故每点至多属于一个，但原点的每个邻域都遇到无穷多个。这种聚集会使看似逐点有意义的和失去连续性。
+
+已由\cref{g1:lem:locally-finite-closures}证明，局部有限族取闭包后仍局部有限，且局部有限闭集族的并为闭集。这里闭包结论中的“邻域”尤其有用：一个开集若不交某集合，也不交它的闭包。这使我们可以在同一个邻域内同时控制函数的非零区域与这些区域的边界。
+
+\begin{lemma}[带闭包控制的细化与收缩]\label{g1:lem:cover-shrinking}
+	设 \(X\) 为仿紧 Hausdorff 空间。
+	\begin{enumerate}
+		\item 对任意开覆盖 \(\{U_\alpha\}_{\alpha\in A}\)，存在局部有限开覆盖 \(\{V_j\}_{j\in J}\) 及指标选择 \(\alpha(j)\)，使 \(\overline{V_j}\subseteq U_{\alpha(j)}\)。
+		\item 对任意局部有限开覆盖 \(\{V_j\}_{j\in J}\)，存在同指标闭集族 \(\{F_j\}_{j\in J}\)，满足 \(F_j\subseteq V_j\)、\(\bigcup_jF_j=X\)。这族闭集仍局部有限，允许某些 \(F_j\) 为空。
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	由\cref{g1:thm:paracompact-normal}，\(X\) 正规，因而也正则。对每个 \(x\in X\)，先选包含它的一个 \(U_{\alpha_x}\)，再用正则性选开邻域 \(W_x\)，使
+	\[
+		x\in W_x\subseteq\overline{W_x}\subseteq U_{\alpha_x}.
+	\]
+	仿紧性给出开覆盖 \(\{W_x\}\) 的一个局部有限开细化 \(\{V_j\}\)。对每个 \(j\) 选 \(x(j)\) 使 \(V_j\subseteq W_{x(j)}\)，便有 \(\overline{V_j}\subseteq\overline{W_{x(j)}}\subseteq U_{\alpha_{x(j)}}\)，证明第一项。
+
+	现从第二项给定的局部有限开覆盖 \(\{V_j\}\) 出发，把第一项用于它，得到局部有限开覆盖 \(\{W_k\}_{k\in K}\)，并为每个 \(k\) 选 \(j(k)\)，使 \(\overline{W_k}\subseteq V_{j(k)}\)。按被分配到的原指标合并，令
+	\[
+		F_j=\bigcup_{k:\,j(k)=j}\overline{W_k}.
+	\]
+	闭包族局部有限，故其中任何子族的并都闭；于是每个 \(F_j\) 是闭集，且 \(F_j\subseteq V_j\)。因为 \(W_k\) 覆盖 \(X\)，这些 \(F_j\) 也覆盖 \(X\)。最后，任何只遇到有限多个 \(V_j\) 的邻域，也只会遇到有限多个 \(F_j\)，故闭集族局部有限。
+\end{proof}
+
+第二项称为原覆盖的一个\term[bisousuo]{闭收缩}[closed shrinking]。这里既要 \(F_j\) 留在 \(V_j\) 内，也要所有 \(F_j\) 仍覆盖空间。任意把每个开集缩小并不能保证后一点；证明通过另一个仍覆盖空间的细化，再将闭包按原指标合并，保住了覆盖性。
+
+\subsection{连续截断函数的构造}
+\label{g1:subsec:0404:02}
+
+覆盖缩小以后，希望给闭集 \(F_j\) 上的点权重 \(1\)，并在 \(V_j\) 外将权重关掉。只规定函数在外面为零还不够：它的非零点可能一直逼近不允许进入的边界，因此需要控制非零区域的闭包。
+
+\begin{definition}[支集与截断函数]\label{g1:def:support-cutoff}
+	连续函数 \(f:X\rightarrow\mathbb R\) 的\term[zhiji]{支集}[support]定义为
+	\[
+		\operatorname{supp}f=\overline{\{x\in X:f(x)\ne0\}}.
+	\]
+	给定 \(A\subseteq U\subseteq X\)，若连续函数 \(\rho:X\rightarrow[0,1]\) 满足 \(\rho=1\) 于 \(A\)，且 \(\operatorname{supp}\rho\subseteq U\)，则称它为在 \(A\) 上等于 \(1\)、支集位于 \(U\) 内的\term[jieduanhanshu]{截断函数}[cutoff function]。
+	\symidx{\(\operatorname{supp}f\)：函数的支集}
+\end{definition}
+
+例如 \(f(x)=\max\{1-|x|,0\}\) 的非零点集是 \((-1,1)\)，支集却是 \([-1,1]\)。所以“在 \((-1,1)\) 外等于零”并不能推出“支集包含在 \((-1,1)\) 内”。构造截断函数时，需要在闭集与允许区域的边界之间再留一层空间。
+
+\begin{proposition}[闭集截断与紧支集截断]\label{g1:prop:continuous-cutoff}
+	以下两种情形均可构造上述截断函数。
+	\begin{enumerate}
+		\item \(X\) 正规，\(A\) 为闭集，\(U\) 为包含 \(A\) 的开集。
+		\item \(X\) 局部紧且 Hausdorff，\(K\subseteq U\)，其中 \(K\) 紧、\(U\) 开。此时可以令 \(\rho=1\) 于 \(K\)，并使 \(\operatorname{supp}\rho\) 为包含在 \(U\) 内的紧集。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	第一种情形中，由正规性的闭邻域缩小形式，取开集 \(W\)，使
+	\[
+		A\subseteq W\subseteq\overline W\subseteq U.
+	\]
+	对不交闭集 \(A\) 与 \(X\setminus W\) 应用\cref{g1:lem:urysohn}，得到连续 \(\rho:X\rightarrow[0,1]\)，在 \(A\) 上为 \(1\)，在 \(X\setminus W\) 上为 \(0\)。于是非零点都在 \(W\) 内，支集包含于 \(\overline W\)，进而包含于 \(U\)。
+
+	第二种情形若 \(K=\varnothing\)，取零函数即可。否则两次使用\cref{g1:prop:compact-neighborhood-shrink}，得到开集 \(V,W\)，使
+	\[
+		K\subseteq V\subseteq\overline V\subseteq W\subseteq\overline W\subseteq U,
+	\]
+	且 \(\overline V,\overline W\) 紧。令 \(C=\overline W\)。这是紧 Hausdorff 空间，又因每个开覆盖有有限子覆盖而仿紧，故由\cref{g1:thm:paracompact-normal}正规。在 \(C\) 中对不交闭集 \(K\) 与 \(C\setminus V\) 使用 Urysohn 引理，得到 \(\rho_C\)，分别取值 \(1\) 与 \(0\)。把它在 \(X\setminus V\) 上补成零。两个定义域 \(C\) 与 \(X\setminus V\) 是覆盖 \(X\) 的闭集，函数在交集上相同，故\cref{g1:prop:gluing-lemma}保证得到的 \(\rho\) 连续。其支集包含于紧集 \(\overline V\subseteq U\)，因此本身也紧。
+\end{proof}
+
+这个构造还解决了一种常用的延拓问题：若函数已在紧集的一个开邻域上定义，就可把它截成全空间上的函数，同时保持紧集上的值。
+
+\begin{corollary}[截断后的零延拓]\label{g1:cor:cutoff-extension}
+	设 \(X\) 为拓扑空间，\(U\subseteq X\) 开，\(f:U\rightarrow\mathbb R^r\) 连续。若连续 \(\rho:X\rightarrow[0,1]\) 满足 \(\operatorname{supp}\rho\subseteq U\)，则
+	\[
+		\widetilde f(x)=
+		\begin{cases}
+			\rho(x)f(x),&x\in U,\\
+			0,&x\notin U
+		\end{cases}
+	\]
+	为 \(X\) 上的连续函数。若 \(\rho=1\) 于 \(A\subseteq U\)，则 \(\widetilde f=f\) 于 \(A\)。
+\end{corollary}
+\begin{proof}
+	在开集 \(U\) 上，连续性来自连续函数的乘法。若 \(x\notin U\)，则 \(x\notin\operatorname{supp}\rho\)，所以它有一个与支集不交的开邻域；在此邻域中 \(\widetilde f\) 恒为零。这同时处理了 \(U\) 的边界，并不要求 \(f\) 在接近边界时有界。在 \(A\) 上，等式由 \(\rho=1\) 立即得到。
+\end{proof}
+
+这里延拓的是已在开邻域上给定的函数；任意闭子集上的连续函数能否直接延拓，是另一项需要证明的命题。当前结论的关键是支集控制，它让补零位置附近确实有一块函数恒零的区域。
+
+\subsection{从局部有限覆盖构造单位分解}
+\label{g1:subsec:0404:03}
+
+有了截断函数，最后一步是归一化。有限个非负数只要不全为零，就可以除以它们的和，得到总和为 \(1\) 的权重。局部有限性允许把同一操作逐点用于一个可能无限的函数族，并保证所得函数连续。
+
+\begin{definition}[从属于开覆盖的单位分解]\label{g1:def:partition-of-unity}
+	设 \(\{U_\alpha\}_{\alpha\in A}\) 是拓扑空间 \(X\) 的开覆盖。一族连续函数 \(\{\varphi_\alpha:X\rightarrow[0,1]\}_{\alpha\in A}\) 称为从属于此覆盖的\term[danweifenjie]{单位分解}[partition of unity]，若支集族局部有限，且
+	\[
+		\operatorname{supp}\varphi_\alpha\subseteq U_\alpha,\qquad
+		\sum_{\alpha\in A}\varphi_\alpha(x)=1\quad(x\in X).
+	\]
+	允许某些函数恒为零。局部有限性使每一点附近的和实际上只有有限个可能非零的项。
+\end{definition}
+
+\begin{theorem}[连续单位分解的存在]\label{g1:thm:partition-of-unity}
+	仿紧 Hausdorff 空间的每个开覆盖都有从属于它的连续单位分解。特别地，由\cref{g1:thm:lch-paracompact}，局部紧、第二可数 Hausdorff 空间满足这一结论。
+\end{theorem}
+\begin{proof}
+	记原覆盖为 \(\{U_\alpha\}\)。由\cref{g1:lem:cover-shrinking}，先取局部有限开覆盖 \(\{V_j\}\)，为各 \(j\) 选择 \(\alpha(j)\)，使 \(\overline{V_j}\subseteq U_{\alpha(j)}\)；再取覆盖 \(X\) 的闭收缩 \(F_j\subseteq V_j\)。空间正规，故\cref{g1:prop:continuous-cutoff}给出连续函数 \(\rho_j:X\rightarrow[0,1]\)，满足
+	\[
+		\rho_j=1\text{ 于 }F_j,\qquad \operatorname{supp}\rho_j\subseteq V_j.
+	\]
+	支集族局部有限，因为 \(V_j\) 族局部有限。所以
+	\[
+		s(x)=\sum_j\rho_j(x)
+	\]
+	在每一点附近都是有限个连续函数之和，从而连续。每个点属于某个 \(F_j\)，因此至少一个 \(\rho_j(x)=1\)，得到 \(s(x)\ge1\)。现在令 \(\psi_j=\rho_j/s\)。分母连续且不为零，故各 \(\psi_j\) 连续、非负，且 \(\sum_j\psi_j=1\)；它们与 \(\rho_j\) 有相同的非零点集及支集。
+
+	这些函数目前从属于细化，需要合并回原指标。定义
+	\[
+		\varphi_\alpha=\sum_{j:\,\alpha(j)=\alpha}\psi_j.
+	\]
+	局部有限性保证每个这样的和连续，也保证合并后仍局部有限：一个只遇到有限多个 \(\operatorname{supp}\psi_j\) 的邻域，只能遇到相应有限多个原指标。更具体地，非负性给出
+	\[
+		\{\varphi_\alpha\ne0\}=\bigcup_{j:\,\alpha(j)=\alpha}\{\psi_j\ne0\}.
+	\]
+	局部有限闭集族 \(\{\operatorname{supp}\psi_j\}\) 的子族并为闭集，且包含于 \(U_\alpha\)，故
+	\[
+		\operatorname{supp}\varphi_\alpha
+		\subseteq\bigcup_{j:\,\alpha(j)=\alpha}\operatorname{supp}\psi_j
+		\subseteq U_\alpha.
+	\]
+	最后，各点只有有限个非零项，重排与归组不改变总和，所以 \(\sum_\alpha\varphi_\alpha=1\)。每一项非负且不超过总和 \(1\)，全部要求得证。
+\end{proof}
+
+证明中三项条件各承担一个任务：闭收缩保证归一化前的和处处为正，截断保证函数的支集落在允许区域内，局部有限保证求和与合并后的连续性。即使原覆盖十分冗余，分解也不必让每个指标都有非零函数；留下哪些局部数据由细化和构造决定。
+
+\begin{example}[直线上的帐篷函数]\label{g1:exm:hat-partition}
+	对每个整数 \(k\)，令
+	\[
+		\varphi_k(x)=\max\{1-|x-k|,0\},\qquad U_k=(k-3/2,k+3/2).
+	\]
+	支集为 \([k-1,k+1]\subseteq U_k\)，这族区间局部有限。若 \(x\in[k,k+1]\)，可能非零的函数只有 \(\varphi_k(x)=k+1-x\) 和 \(\varphi_{k+1}(x)=x-k\)，它们的和为 \(1\)；在整数点其余函数也都为零。因此 \(\{\varphi_k\}\) 已经是一组单位分解，无须再归一化。\cref{g1:fig:hat-partition}画出三个相邻权重。它们连续但在峰顶有折角；后续构造光滑对象时，还要把截断函数换成光滑函数。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter04-Partition}
+	\caption[直线上的单位分解]{直线上的单位分解。蓝、红、绿三条帐篷函数分别以 \(0,1,2\) 为中心；阴影区间 \([0,1]\) 内，前两个权重相加为 \(1\)。其余整数处还有同样平移得到的函数。}
+	\label{g1:fig:hat-partition}
+\end{figure}
+
+\begin{example}[逐点有限仍可能破坏连续性]\label{g1:exm:pointfinite-sum}
+	沿用本节开头的 \(c_n=2^{-n}\)、\(r_n=2^{-n-2}\)，令
+	\[
+		f_n(x)=\max\{1-|x-c_n|/r_n,0\}.
+	\]
+	支集是两两不交的闭区间，因此对每个 \(x\)，和 \(f(x)=\sum_nf_n(x)\) 至多有一项非零。然而 \(f(0)=0\)，而 \(f(c_n)=1\) 且 \(c_n\to0\)，所以 \(f\) 在 \(0\) 处不连续。失败的原因并非每一点上的求和项太多，而是无穷多个非零区域聚集到同一点附近。局部有限排除的正是这种情形。
+\end{example}
+
+\subsection{度量、函数和局部对象的整体粘合}
+\label{g1:subsec:0404:04}
+
+把单位分解看成随位置变化的凸组合权重，就能接上第三章的凸性。如果局部数据属于同一个向量空间，加权平均有明确意义；如果它们还满足对凸组合封闭的条件，这个条件也能保留下来。
+
+\begin{proposition}[连续局部函数的加权粘合]\label{g1:prop:weighted-gluing}
+	设 \(\{U_\alpha\}\) 是拓扑空间 \(X\) 的开覆盖，\(\{\varphi_\alpha\}\) 是从属于它的连续单位分解，且 \(f_\alpha:U_\alpha\rightarrow\mathbb R^r\) 连续。则约定每项在 \(U_\alpha\) 外为零后，
+	\[
+		f=\sum_\alpha\varphi_\alpha f_\alpha
+	\]
+	为 \(X\) 上的连续函数。在每个 \(x\)，它属于所有满足 \(\varphi_\alpha(x)>0\) 的 \(f_\alpha(x)\) 的凸包。若局部函数在交叠处相同，则 \(f\) 等于它们通常粘合得到的函数；若所有局部值都落在一个固定凸集 \(C\subseteq\mathbb R^r\) 中，则 \(f(X)\subseteq C\)。
+\end{proposition}
+\begin{proof}
+	由\cref{g1:cor:cutoff-extension}，每项的零延拓连续；这里该推论只使用支集包含，不要求权重在某个集合上等于 \(1\)。这些项的支集包含于 \(\operatorname{supp}\varphi_\alpha\)，因而局部有限，求和后连续。固定 \(x\)，只有有限个正权重，其和为 \(1\)，所以所得值就是所列局部值的一个有限凸组合。若这些值相同，组合仍等于共同值；若它们都属于凸集，\cref{g1:prop:convex-finite-combinations}保证组合仍在该凸集中。
+\end{proof}
+
+需要留意“加权粘合”不一定保留原来每张图上的全部值。两份局部数据不相同时，交叠处得到的是它们的过渡值。若数据在交叠处本来一致，\cref{g1:prop:gluing-lemma}已足够；单位分解更重要的用途，是把未必一致、但允许作凸组合的局部选择合成一个整体选择。
+
+\begin{proposition}[正定双线性型的粘合]\label{g1:prop:positive-form-gluing}
+	设 \(\{U_\alpha\}\)、\(\{\varphi_\alpha\}\) 如上，\(\operatorname{Sym}_r(\mathbb R)\) 表示实对称 \(r\times r\) 矩阵空间。对每个 \(\alpha\)，给定连续矩阵函数 \(G_\alpha:U_\alpha\rightarrow\operatorname{Sym}_r(\mathbb R)\)，且每个 \(G_\alpha(x)\) 正定。则逐矩阵元作零延拓求和得到
+	\[
+		G(x)=\sum_\alpha\varphi_\alpha(x)G_\alpha(x),
+	\]
+	它是连续的正定对称矩阵函数。其所定义的内积在连续换基下按通常的合同变换相容。
+\end{proposition}
+\begin{proof}
+	连续性由上一命题逐矩阵元应用得到，对称性由转置与有限求和交换得到。固定 \(x\) 及非零向量 \(v\in\mathbb R^r\)，有
+	\[
+		v^{\mathsf T}G(x)v=\sum_{\alpha:\,\varphi_\alpha(x)>0}
+		\varphi_\alpha(x)\,v^{\mathsf T}G_\alpha(x)v>0,
+	\]
+	因为至少一个权重为正，而列出的每个二次型值都严格为正。若换基矩阵为可逆矩阵 \(A(x)\)，各局部矩阵变为 \(A^{\mathsf T}G_\alpha A\)，则
+	\[
+		\sum_\alpha\varphi_\alpha A^{\mathsf T}G_\alpha A
+		=A^{\mathsf T}\Bigl(\sum_\alpha\varphi_\alpha G_\alpha\Bigr)A.
+	\]
+	因此先换基再求和与先求和再换基给出同一双线性型。
+\end{proof}
+
+这里的正定双线性型是一个点处向量空间上的内积，后续流形中会把这种数据称为度量。它与\cref{g1:thm:urysohn-metrization}中的“两点之间的距离函数”属于不同层次：前者输入两个同一空间内的向量，后者输入空间中的两个点。由点态内积经过曲线长度构造距离，还要另作定义与证明。当前计算说明，只要局部向量坐标按换基关系相容，正定性就允许加权粘合；在第12章讨论向量丛时，局部基的语言会得到系统定义。
+
+最后，允许求凸组合这一条件不能省去。例如两份取值于圆周的局部函数若分别恒为 \((1,0)\) 与 \((-1,0)\)，在权重各为 \(1/2\) 的位置，它们的平均值为原点，已经离开圆周。类似地，正定型可以求和，但一般方程的解、坐标映射或几何约束未必在加权后保留。每次使用单位分解，都要指出局部对象能够在什么空间中相加，以及需要保留的条件为何对这种相加稳定。

@@ -1,0 +1,1571 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：## 附录 D　G-结构与 Cartan 几何
+% 纲要位置：几何学计划纲要.md，第 971 行。
+% 正文状态：初稿完成，含完整证明、模型计算及习题解答；尚未正式审核。
+
+% 纲要内容开始
+% 
+% > 沿标架丛约化发展结构方程；选定低阶模型给出完整计算，一般等价算法另属专题。
+% 
+% * **结构群约化与内蕴挠率**
+%   * G-结构及适应标架
+%   * 联络选择与内蕴挠率
+%   * 正交、概复及接触模型
+% 
+% * **Cartan 联络与齐性模型**
+%   * Cartan 联络的公理
+%   * 曲率、平坦性及展开映射
+%   * 与主丛 Ehresmann 联络的区别
+% 
+% * **等价问题的初步方法**
+%   * 结构方程中的规范自由
+%   * 曲面标架的归一化例子
+%   * 局部等价与整体单值
+% 
+% ---
+% 
+% 纲要内容结束
+
+\chapter{G-结构与 Cartan 几何}
+\label{g1:app:D}
+\BookChapterNumber{g1:app:D}
+
+\begin{chapterabstract}
+	几何结构可以通过允许哪些标架来记录，而这些标架随位置变化时，又会产生挠率与曲率。这个附录把结构群约化推进到微分层面：先用联络的差说明内蕴挠率为何与联络选择无关，再通过正交、几乎复及接触模型比较不同约化的障碍。随后定义以齐性空间为模型的 Cartan 联络，证明其平坦性与局部模型实现的关系，并解释它和主丛水平联络的区别。最后以曲面曲率梯度固定标架，计算剩余结构函数，说明局部等价的检验及整体单值所记录的信息。
+\end{chapterabstract}
+
+\begin{learninggoals}
+	\begin{itemize}
+		\item 用切丛标架的约化描述几何结构，写出适应标架上的典范形式及其变换规律。
+		\item 计算改变相容联络时挠率的变化，并在商空间中识别不能消去的部分。
+		\item 比较正交、几乎复和接触模型，区分无挠、平坦与具有局部标准形。
+		\item 核对 Cartan 联络的三项公理，计算其曲率，并说明平坦模型的局部构造。
+		\item 通过展开方程比较路径与齐性模型，辨别 Cartan 联络和 Ehresmann 主联络所提供的数据。
+		\item 在曲率梯度非零处归一化曲面标架，用结构方程检验局部等价，并辨认整体周期障碍。
+	\end{itemize}
+\end{learninggoals}
+
+在平面开集上取两条处处独立的一形式
+\[
+	\theta^1=\mathrm{d}x,\qquad \theta^2=e^{x^2}\,\mathrm{d}y.
+\]
+它们构成一个余标架，因而可以用来记录切向量的两个分量。但若希望它们分别是两个新坐标的微分，就遇到了
+\[
+	\mathrm{d}\theta^2=2x\,\theta^1\wedge\theta^2.
+\]
+在 \(x\ne0\) 处，第二条形式不是闭形式，不能写成局部坐标函数的微分。把它乘以 \(e^{-x^2}\) 虽然恢复了 \(\mathrm{d}y\)，却改变了度量 \(g=(\theta^1)^2+(\theta^2)^2\)。如果希望保留这个度量，就只能用正交矩阵改变正交余标架，不能任意伸缩其中一条形式。
+
+\ProseParagraphBreak
+
+这说明“选择方便的标架”有一个先于计算的问题：哪些变化仍然保留所研究的结构？\chapref{g1:ch:12}和\chapref{g1:ch:18}用结构群约化回答了逐点的选择问题。现在还要比较这些标架在邻近点的变化。相容联络提供一种比较方法，但联络往往不唯一；改变联络能够消去哪些挠率分量，又有哪些分量属于几何结构本身，是本附录的第一个问题。
+
+\ProseParagraphBreak
+
+即使可以把挠率全部消去，几何也未必成为欧氏几何。曲面上的无挠度量联络仍可有曲率。若把“允许的转动”和“沿曲面前进的位移”放入同一个李代数值形式，便得到一种同时记录标架及切向运动的描述。Cartan 联络把这种构造推广到一般齐性模型；其平坦性表达局部与模型一致，整体是否能用同一份模型坐标描述，还取决于绕行和延拓。
+
+\ProseParagraphBreak
+
+本附录使用\chapref{g1:ch:12}的标架丛、关联丛与光滑单位分解，\chapref{g1:ch:13}的李括号和 Frobenius 定理，以及\chapref{g1:ch:15}的挠率、曲率与结构方程。主丛、局部截面、联络形式和群值微分方程采用\chapref{g1:ch:18}的右作用约定；齐性空间的光滑结构接续\chapref{g1:ch:17}。曲面模型只需恢复\chapref{g1:ch:09}的正向正交标架及 \(\mathrm{d}\alpha=-K\,\mathrm{d}A\) 约定。各节在实际使用时会说明对象和条件，不要求读者已掌握一般的结构等价理论。
+
+\section{结构群约化与内蕴挠率}
+\label{g1:sec:D01}
+
+第十二章把度量、几乎复结构等逐点数据组织成标架丛的结构群约化，第十八章又说明主联络怎样在不同纤维之间作比较。把两件事放在一起，会遇到一个新的问题：既要求联络保持指定结构，又要求它无挠，这两项能否同时做到？第十五章对任意切丛联络作修正可以消去挠率，但修正后的联络未必还保持原来的几何结构。本节把允许的修正写成一个有限维线性映射，再从其像的商空间中提取不随联络改变的部分。
+
+\subsection{G-结构及适应标架}
+\label{g1:subsec:D01:01}
+
+本节中，\(M\) 是有限维、无边界、Hausdorff、第二可数的光滑流形，\(\dim M=n\geq1\)，\(V=\mathbb R^n\)，\(G\subset\operatorname{GL}(V)\) 是闭李子群，李代数为 \(\mathfrak g\)。沿用\cref{g1:def:frame-bundle}的约定，\(x\) 处的标架是线性同构 \(u:V\to\mathrm{T}_xM\)，右作用为 \(u g=u\circ g\)。指定标准基以后，\(u\) 也就是一个有序切向量基。
+
+\begin{definition}
+	\label{g1:def:g-structure}
+	\(M\) 上的一个 \term[Gjiegou]{\(G\)-结构}[\(G\)-structure]是标架丛中的光滑主 \(G\) 子丛
+	\[
+		\pi:P\subset\operatorname{Fr}(\mathrm{T}M)\longrightarrow M.
+	\]
+	它的局部截面称为\term[shiyingbiaojia]{适应标架}[adapted frame]。具体说，存在开覆盖 \(\{U_i\}\) 及光滑标架 \(s_i:U_i\to P\)，使
+	\[
+		P|_{U_i}=\{s_i(x)g:x\in U_i,\ g\in G\},
+		\qquad s_j=s_i g_{ij},\quad g_{ij}:U_i\cap U_j\to G.
+	\]
+	局部表达 \((x,g)\mapsto s_i(x)g\) 要求是主丛平凡化。
+\end{definition}
+
+这正是\cref{g1:def:frame-structure-reduction}在切丛上的主丛表述。若从局部适应标架及其 \(G\) 值过渡函数出发，上述集合在交叠处一致；用 \(U_i\times G\) 的坐标粘合，就得到所需主子丛。反过来，主子丛的局部截面给出这样的标架。因此，约化包含光滑的局部相容性，不能仅凭每点挑出一些标架便断言约化已经存在。
+
+\ProseParagraphBreak
+
+标架还有一个主丛自身以外的信息：它把固定空间 \(V\) 与底空间的切空间联系起来。这个联系可以记在 \(P\) 上的一形式中。对 \(u\in P_x\)、\(\xi\in\mathrm{T}_uP\)，定义
+\begin{equation}
+	\label{g1:eq:tautological-form}
+	\theta_u(\xi)=u^{-1}\bigl(\mathrm{d}\pi_u\xi\bigr)\in V.
+\end{equation}
+称 \(\theta\in\Omega^1(P;V)\) 为标架约化上的\term[dianfanyixingshi]{典范一形式}[tautological form]。\symidx{\(\theta\)：标架丛及其约化上的典范一形式}它先将总空间切向量投到底空间，再用当前标架读取分量；这个定义没有选择联络。
+
+\begin{proposition}[典范形式与余标架]
+	\label{g1:prop:tautological-form-properties}
+	设 \(P\subset\operatorname{Fr}(\mathrm{T}M)\) 为上述 \(G\)-结构。典范形式 \(\theta\) 光滑，每个 \(\theta_u:\mathrm{T}_uP\to V\) 满射，且
+	\[
+		\ker\theta_u=\ker\mathrm{d}\pi_u,\qquad
+		R_g^*\theta=g^{-1}\theta\quad(g\in G).
+	\]
+	若 \(s=(e_1,\ldots,e_n)\) 是局部适应标架，则 \(s^*\theta\) 是其对偶余标架组成的 \(V\) 值一形式。
+\end{proposition}
+\begin{proof}
+	在局部表达 \(u=s(x)g\) 下，\eqref{g1:eq:tautological-form}成为 \(g^{-1}s(x)^{-1}\mathrm{d}\pi\)，其矩阵系数光滑，所以 \(\theta\) 光滑。\(\pi\) 为淹没且 \(u^{-1}\) 可逆，故 \(\theta_u\) 满射，核恰为垂直空间。又因 \(\pi\circ R_g=\pi\)，有
+	\[
+		\theta_{ug}(\mathrm{d}R_g\xi)
+		=(ug)^{-1}\mathrm{d}\pi_u\xi
+		=g^{-1}\theta_u(\xi).
+	\]
+	最后，\(\pi\circ s=\operatorname{id}\) 给出 \((s^*\theta)_x(X)=s(x)^{-1}X\)。把 \(X=\sum_iX^ie_i\) 代入，结果正是列向量 \((X^1,\ldots,X^n)^{\mathsf T}\)，所以各分量为对偶余标架。
+\end{proof}
+
+在底空间上，\(s^*\theta\) 的 \(n\) 个分量确是余标架；在 \(P\) 上，\(\theta\) 却有垂直核，通常不是总空间的余标架，因为 \(\dim P=n+\dim G\)。它也不是主联络形式：典范形式取值于 \(V\)，并在所有垂直向量上为零；主联络形式取值于 \(\mathfrak g\)，需要读出垂直方向中的群运动。下一节的 Cartan 联络将同时处理这两种信息。
+
+\subsection{联络选择与内蕴挠率}
+\label{g1:subsec:D01:02}
+
+\cref{g1:thm:principal-connection-existence}保证 \(P\) 上存在主联络。固定一个主联络形式 \(\omega\in\Omega^1(P;\mathfrak g)\)，其公理为
+\[
+	\omega(A^\#)=A,\qquad R_g^*\omega=\operatorname{Ad}_{g^{-1}}\omega.
+\]
+这里 \(A^\#_u=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{0}u\exp(tA)\) 是 \(A\in\mathfrak g\) 产生的垂直基本向量。标准表示给出
+\[
+	P\times_G V\longrightarrow\mathrm{T}M,\qquad [u,v]\longmapsto u(v).
+\]
+它与\cref{g1:prop:frame-associated-equivalence}中的映射相同：\([ug,g^{-1}v]\) 的像仍为 \(u(v)\)，在适应标架中则是逐纤维恒等坐标，故为光滑向量丛同构。由\cref{g1:thm:associated-covariant-derivative}，\(\omega\) 因而诱导切丛联络。若 \(a=s^*\omega\)，则其局部公式为 \(\nabla(s f)=s(\mathrm{d}f+a f)\)。这样的联络称为适应该结构的 \(G\)-联络；局部联络矩阵取值于 \(\mathfrak g\)，正是允许的标架变换所要求的限制。
+
+\begin{definition}
+	\label{g1:def:g-structure-torsion-form}
+	\(G\)-结构上的联络 \(\omega\) 的挠率形式定义为
+	\begin{equation}
+		\label{g1:eq:g-structure-torsion-form}
+		T^\omega=\mathrm{d}\theta+\omega\wedge\theta\in\Omega^2(P;V),
+	\end{equation}
+	其中矩阵对向量的作用约定为
+	\[
+		(\omega\wedge\theta)(\xi,\eta)
+		=\omega(\xi)\theta(\eta)-\omega(\eta)\theta(\xi).
+	\]
+\end{definition}
+
+\begin{proposition}[挠率的水平性]
+	\label{g1:prop:g-torsion-horizontal}
+	上述 \(T^\omega\) 是水平且等变的，即只要一个输入为垂直向量，其值便为零，并且 \(R_g^*T^\omega=g^{-1}T^\omega\)。它对应的切丛值二形式正是诱导联络的挠率
+	\[
+		T^\nabla(X,Y)=\nabla_XY-\nabla_YX-[X,Y].
+	\]
+\end{proposition}
+\begin{proof}
+	由典范形式的等变性，沿 \(A^\#\) 的流求导得到 \(\mathcal L_{A^\#}\theta=-A\theta\)。又有 \(\iota_{A^\#}\theta=0\)，所以对每个分量使用 Cartan 公式，得
+	\[
+		\iota_{A^\#}\mathrm{d}\theta=-A\theta,
+		\qquad
+		\iota_{A^\#}(\omega\wedge\theta)=A\theta.
+	\]
+	两项相消，而各点的垂直空间由基本向量填满，故 \(T^\omega\) 水平。对于固定 \(g\)，外微分与拉回交换，且
+	\[
+		(g^{-1}\omega g)\wedge(g^{-1}\theta)
+		=g^{-1}(\omega\wedge\theta),
+	\]
+	所以得出等变性。
+
+	再令 \(\vartheta=s^*\theta\)、\(a=s^*\omega\)。拉回后
+	\[
+		s^*T^\omega=\mathrm{d}\vartheta+a\wedge\vartheta.
+	\]
+	对底空间向量场 \(X,Y\)，其右边等于
+	\[
+		X(\vartheta(Y))-Y(\vartheta(X))-\vartheta([X,Y])
+		+a(X)\vartheta(Y)-a(Y)\vartheta(X).
+	\]
+	利用局部协变导数公式，这就是 \(\vartheta(\nabla_XY-\nabla_YX-[X,Y])\)。它同时复现了\cref{g1:prop:first-structure-equation}中的第一结构方程。
+\end{proof}
+
+水平性使挠率可以完全由底空间方向的标架分量描述。令
+\[
+	W=\Lambda^2V^*\otimes V.
+\]
+每个 \(u\in P\) 唯一确定 \(t^\omega(u)\in W\)，使
+\begin{equation}
+	\label{g1:eq:g-torsion-function}
+	T^\omega_u(\xi,\eta)
+	=t^\omega(u)\bigl(\theta_u\xi,\theta_u\eta\bigr).
+\end{equation}
+确实，\(\theta_u\) 满射；对给定 \(v,w\in V\) 任选提升，两个不同提升之差垂直，故 \(T^\omega\) 的值相同。在局部适应标架下，此定义就是把光滑挠率张量取分量，因而 \(t^\omega\) 光滑。称它为相对于联络 \(\omega\) 的挠率函数。
+
+\ProseParagraphBreak
+
+现在改变联络。由\cref{g1:prop:principal-connection-affine}，两主联络之差 \(\beta=\omega'-\omega\) 是水平的伴随等变一形式。因此唯一存在光滑函数
+\[
+	A:P\longrightarrow C\coloneqq V^*\otimes\mathfrak g,
+	\qquad \beta_u=A(u)\circ\theta_u.
+\]
+这里 \(A(u)\) 把一个底空间方向的标架分量映成允许的无穷小标架变换。把这个变换依次作用在另一个方向上，再作交替化，就得到线性映射
+\begin{equation}
+	\label{g1:eq:intrinsic-torsion-delta}
+	\delta:C\longrightarrow W,\qquad
+	(\delta A)(v,w)=A(v)w-A(w)v.
+\end{equation}
+
+\begin{proposition}[改变联络时的挠率变化]
+	\label{g1:prop:g-torsion-change}
+	对同一 \(G\)-结构上的两主联络，若 \(\omega'-\omega=A\theta\)，则
+	\begin{equation}
+		\label{g1:eq:g-torsion-change}
+		t^{\omega'}=t^\omega+\delta A.
+	\end{equation}
+	在表示
+	\[
+		(g\cdot t)(v,w)=g\,t(g^{-1}v,g^{-1}w),
+		\qquad
+		(g\cdot A)(v)=g A(g^{-1}v)g^{-1}
+	\]
+	下，\(\delta\) 是 \(G\) 等变映射，而 \(t^\omega(ug)=g^{-1}\cdot t^\omega(u)\)、\(A(ug)=g^{-1}\cdot A(u)\)。
+\end{proposition}
+\begin{proof}
+	相减挠率公式得 \(T^{\omega'}-T^\omega=\beta\wedge\theta\)。在 \(\theta\xi=v\)、\(\theta\eta=w\) 的两个输入上，右边为 \(A(v)w-A(w)v\)，得到\eqref{g1:eq:g-torsion-change}。
+
+	等变性可直接核对。例如
+	\[
+		\bigl(\delta(g\cdot A)\bigr)(v,w)
+		=g\bigl(A(g^{-1}v)g^{-1}w-A(g^{-1}w)g^{-1}v\bigr)
+		=(g\cdot\delta A)(v,w).
+	\]
+	\(T^\omega\) 与 \(\theta\) 的等变性给出
+	\[
+		t^\omega(ug)(v,w)=g^{-1}t^\omega(u)(gv,gw),
+	\]
+	即所述公式。对 \(\beta=A\theta\) 使用 \(R_g^*\beta=g^{-1}\beta g\) 同样得到 \(A\) 的变换式。
+\end{proof}
+
+\begin{definition}
+	\label{g1:def:intrinsic-torsion}
+	令
+	\[
+		W_G=\frac{\Lambda^2V^*\otimes V}{\delta(V^*\otimes\mathfrak g)}.
+	\]
+	\(G\)-结构 \(P\) 的\term[neiyunnaolv]{内蕴挠率}[intrinsic torsion]是等变函数
+	\[
+		\tau_P:P\longrightarrow W_G,\qquad
+		\tau_P(u)=[t^\omega(u)],
+	\]
+	也可视为关联丛 \(P\times_G W_G\to M\) 的光滑截面。\symidx{\(\tau_P\)：\(G\)-结构的内蕴挠率}
+\end{definition}
+
+由\cref{g1:prop:g-torsion-change}，更换联络只会增加 \(\delta\) 的像中的项，因此这个商类与联络无关。\(\delta\) 等变又保证其像为不变子空间，商空间具有良定义的 \(G\) 作用；换适应标架时，各局部商类正按这个表示变换。因此内蕴挠率是该约化本身的几何数据。它通常是商空间中的类，若要把它写成 \(W\) 的某个特定补空间中的张量，还需要补空间的选择及相容性，定义本身不作这种额外要求。
+
+\begin{theorem}[无挠适应联络的存在]
+	\label{g1:thm:intrinsic-torsion-zero}
+	设 \(M\) 为有限维、无边界、Hausdorff、第二可数光滑流形，\(G\subset\operatorname{GL}(n,\mathbb R)\) 为闭李子群，\(P\subset\operatorname{Fr}(\mathrm{T}M)\) 为 \(G\)-结构。则 \(\tau_P=0\) 当且仅当 \(P\) 存在无挠 \(G\)-联络。若存在，则所有这样的联络组成仿射空间，其差由 \(P\times_G\ker\delta\) 的光滑截面给出。
+\end{theorem}
+\begin{proof}
+	若存在无挠联络，其挠率函数为零，故内蕴挠率为零。反向，先由\cref{g1:thm:principal-connection-existence}取一个全局主联络 \(\omega\)。若 \(\tau_P=0\)，则 \(t^\omega(u)\in\operatorname{im}\delta\) 对每个 \(u\) 成立。
+
+	取局部适应标架 \(s_i:U_i\to P\)。有限维满射 \(\delta:C\to\operatorname{im}\delta\) 有线性右逆 \(R:\operatorname{im}\delta\to C\)：在 \(C\) 中选取 \(\ker\delta\) 的一个线性补空间，将 \(\delta\) 在该补空间上的限制求逆即可。定义
+	\[
+		A_i(s_i(x))=-R\bigl(t^\omega(s_i(x))\bigr),
+		\qquad
+		A_i(s_i(x)g)=g^{-1}\cdot A_i(s_i(x)).
+	\]
+	平凡化中的 \((x,g)\) 唯一，所以后一式给出光滑、等变的延拓。由 \(\delta\) 等变性，\(\delta A_i=-t^\omega\) 在整个 \(P|_{U_i}\) 成立。于是 \(\beta_i=A_i\theta\) 水平且伴随等变，\(\omega_i=\omega+\beta_i\) 是 \(P|_{U_i}\) 上的主联络，且由\eqref{g1:eq:g-torsion-change}无挠。这里右逆 \(R\) 只用于一个局部平凡化，并没有要求它对 \(G\) 等变。
+
+	取从属于 \(\{U_i\}\) 的局部有限光滑单位分解 \(\{\chi_i\}\)，其支集包含于相应 \(U_i\)。将 \((\chi_i\circ\pi)\beta_i\) 在 \(P|_{U_i}\) 之外补零；支集条件保证补零后仍光滑。定义
+	\[
+		\omega_0=\omega+\sum_i(\chi_i\circ\pi)\beta_i.
+	\]
+	和局部有限，各项水平且伴随等变，故 \(\omega_0\) 是全局主联络。在每一点附近也可写成仿射组合 \(\sum_i(\chi_i\circ\pi)\omega_i\)，权重和为一，因而
+	\[
+		T^{\omega_0}
+		=\sum_i(\chi_i\circ\pi)
+		\bigl(\mathrm{d}\theta+\omega_i\wedge\theta\bigr)=0.
+	\]
+	这一步没有权重的导数项，因为挠率公式中对 \(\theta\) 求外微分，对联络形式只作代数运算。于是得到全局无挠适应联络。
+
+	最后，固定一个无挠联络后，另一个联络由 \(\beta=A\theta\) 给出。它也无挠恰好等价于 \(\delta A=0\)。等变函数 \(A:P\to\ker\delta\) 与关联丛 \(P\times_G\ker\delta\) 的截面一一对应，这证明最后一项。
+\end{proof}
+
+这个结论同时区分了存在性和唯一性：商空间中的类控制能否消去挠率，\(\ker\delta\) 则控制消去以后还有多少联络可选。即使无挠联络存在，它的曲率也未必为零；即使某类几何具有统一的局部标准模型，该模型的内蕴挠率也未必为零。下面的例子将分别说明这些区别。
+
+\subsection{正交、概复及接触模型}
+\label{g1:subsec:D01:03}
+
+先设 \(g\) 是 \(M\) 上的黎曼度量。由\cref{g1:prop:metric-orthogonal-reduction}，正交单位标架组成 \(\operatorname{O}(n)\)-结构。在这样的标架中，度量矩阵为 \(I\)，\cref{g1:eq:metric-connection-matrix}化为 \(a^{\mathsf T}+a=0\)。因此 \(\operatorname{O}(n)\)-联络恰为保持 \(g\) 的度量联络。
+
+\begin{proposition}[正交约化的挠率修正]
+	\label{g1:prop:orthogonal-delta-isomorphism}
+	设 \(V\) 是 \(n\) 维实内积空间。线性映射
+	\[
+		\delta:V^*\otimes\mathfrak{so}(V)\longrightarrow\Lambda^2V^*\otimes V
+	\]
+	是同构。因此黎曼度量的正交标架约化具有恒为零的内蕴挠率，并且有唯一的无挠适应联络。
+\end{proposition}
+\begin{proof}
+	先证单射。设 \(\delta A=0\)，令
+	\[
+		a(v,w,z)=\langle A(v)w,z\rangle.
+	\]
+	\(\delta A=0\) 说明 \(a\) 的前两个位置对称；\(A(v)\in\mathfrak{so}(V)\) 说明后两个位置反对称。依次使用这两种关系，得到
+	\[
+	\begin{aligned}
+		a(v,w,z)&=a(w,v,z)=-a(w,z,v)=-a(z,w,v)\\
+		&=a(z,v,w)=a(v,z,w)=-a(v,w,z).
+	\end{aligned}
+	\]
+	故 \(a=0\)，由内积非退化性得 \(A=0\)。两边的维数均为 \(n^2(n-1)/2\)，所以单射即为同构。于是 \(W_{\operatorname{O}(n)}=0\) 且 \(\ker\delta=0\)，由\cref{g1:thm:intrinsic-torsion-zero}分别得到存在性与唯一性。
+\end{proof}
+
+这也从结构群约化的角度解释了\chapref{g1:ch:19}所用的 Levi--Civita 联络：斜对称矩阵的自由度恰能唯一地修正全部挠率。内蕴挠率在所有黎曼度量上都为零，所以它不负责区分平面、球面等不同曲率的几何；那些差别还须由这个唯一联络的曲率来测量。
+
+\ProseParagraphBreak
+
+标题中的概复结构，即第十二章的几乎复结构。沿用前文用语，设 \(J:\mathrm{T}M\to\mathrm{T}M\) 光滑且 \(J^2=-I\)，\(\dim M=2m\)。\cref{g1:prop:complex-frame-reduction}给出 \(\operatorname{GL}(m,\mathbb C)\) 约化，其实适应标架可以写成 \(e_1,Je_1,\ldots,e_m,Je_m\)。在适应标架中 \(J\) 是常矩阵 \(J_0\)，所以
+\[
+	\nabla J=0\quad\Longleftrightarrow\quad aJ_0=J_0a.
+\]
+右边恰好要求 \(a\) 取值于 \(\mathfrak{gl}(m,\mathbb C)\) 的实表示。因此这里的适应联络就是保持 \(J\) 的联络。
+
+\ProseParagraphBreak
+
+不必先寻找复坐标，就能看见一种不能通过改变适应联络消去的挠率分量。把切丛和 \(J\) 复化，令
+\[
+	\mathrm{T}^{1,0}M=\ker(J-\mathrm iI),\qquad
+	\mathrm{T}^{0,1}M=\ker(J+\mathrm iI).
+\]
+投影 \(\operatorname{pr}^{1,0}=\tfrac12(I-\mathrm iJ)\)、\(\operatorname{pr}^{0,1}=\tfrac12(I+\mathrm iJ)\) 光滑且互补，两个像均为复秩 \(m\) 的子丛。对局部 \(\mathrm{T}^{1,0}M\) 截面 \(Z,W\)，定义
+\begin{equation}
+	\label{g1:eq:almost-complex-bracket-obstruction}
+	\mathcal K_J(Z,W)=\operatorname{pr}^{0,1}[Z,W].
+\end{equation}
+这里括号按复双线性延拓。若在输入中乘以光滑复函数，括号的额外导数项仍在 \(\mathrm{T}^{1,0}M\)，投影后消失；例如 \(\operatorname{pr}^{0,1}[fZ,W]=f\operatorname{pr}^{0,1}[Z,W]\)。所以 \(\mathcal K_J\) 是良定义的光滑张量，测量两个 \((1,0)\) 方向的括号落出该子丛的部分。
+
+\begin{proposition}[几乎复结构的括号障碍]
+	\label{g1:prop:almost-complex-intrinsic-component}
+	设 \(J\) 为光滑几乎复结构，\(\nabla J=0\)。将联络及其挠率复化，则对 \(Z,W\in\Gamma(\mathrm{T}^{1,0}M)\)，有
+	\[
+		\operatorname{pr}^{0,1}T^\nabla(Z,W)=-\mathcal K_J(Z,W).
+	\]
+	因此右边是其 \(\operatorname{GL}(m,\mathbb C)\)-结构的内蕴挠率中不随适应联络改变的一个分量；若 \(\mathcal K_J\neq0\)，则不存在无挠适应联络。
+\end{proposition}
+\begin{proof}
+	因为 \(\nabla J=0\)，由 \(JW=\mathrm iW\) 求协变导数可得 \(J\nabla_ZW=\mathrm i\nabla_ZW\)。所以 \(\nabla_ZW\) 与 \(\nabla_WZ\) 都在 \(\mathrm{T}^{1,0}M\) 中。将挠率恒等式投影到 \(\mathrm{T}^{0,1}M\)，这两项消失，只留下 \(-\operatorname{pr}^{0,1}[Z,W]\)。这也说明改变适应联络所产生的 \(\delta A\) 在这个投影下为零，故该分量确由内蕴商类决定。
+\end{proof}
+
+若 \(J\) 来自一组复坐标，那么 \(\mathrm{T}^{1,0}M\) 局部由相互对易的复坐标向量场张成，其括号仍落在本子丛，故 \(\mathcal K_J=0\)。反过来从括号条件构造复坐标，需要额外的可积性定理；这里没有用这个反向结论，非零的括号障碍已经足以给出具体反例。
+
+\begin{example}[不能消去的几乎复挠率分量]
+	\label{g1:exm:almost-complex-nonzero-intrinsic}
+	在 \(\mathbb R^4\) 的坐标 \((x,y,z,t)\) 中取全局标架
+	\[
+		e_1=\partial_x,\quad e_2=\partial_y,\quad
+		e_3=\partial_z,\quad e_4=\partial_t+x\partial_y.
+	\]
+	规定 \(Je_1=e_2\)、\(Je_2=-e_1\)、\(Je_3=e_4\)、\(Je_4=-e_3\)，得到光滑几乎复结构。唯一非零的基本括号为 \([e_1,e_4]=e_2\) 及其反向。令
+	\[
+		Z=e_1-\mathrm i e_2,\qquad W=e_3-\mathrm i e_4,
+	\]
+	它们属于 \(\mathrm{T}^{1,0}M\)，且
+	\[
+		[Z,W]=-\mathrm i e_2=\frac12(Z-\overline Z),
+		\qquad \mathcal K_J(Z,W)=-\frac12\overline Z\neq0.
+	\]
+	因此此结构没有无挠适应联络。适应联络本身并不难构造：规定 \(\nabla e_i=0\) 就保持了 \(J\)，但其挠率满足 \(T^\nabla(e_1,e_4)=-e_2\)。换用其他适应联络能够改变某些分量，却不能消去上面算出的 \((0,1)\) 投影。
+\end{example}
+
+最后回到\subsecref{g1:subsec:1305:04}的三维接触分布。设 \(D\subset\mathrm{T}M\) 为光滑秩二分布，令 \(V_0=\operatorname{span}\{\varepsilon_1,\varepsilon_2\}\subset\mathbb R^3\)。保留此标准平面的群为
+\[
+	G_D=\left\{\begin{pmatrix}B&b\\0&c\end{pmatrix}:
+	B\in\operatorname{GL}(2,\mathbb R),\ b\in\mathbb R^2,\ c\neq0\right\}.
+\]
+局部取 \(D\) 的两个光滑基截面，再补一个横向向量，得到适应标架。因此
+\[
+	P_D=\{u\in\operatorname{Fr}(\mathrm{T}M):u(V_0)=D_{\pi(u)}\}
+\]
+是光滑 \(G_D\)-结构。其适应联络恰为保持分布的联络，即 \(Y\in\Gamma(D)\) 时，对任意 \(X\) 都有 \(\nabla_XY\in\Gamma(D)\)；这可由局部联络矩阵的左下块为零直接读出。
+
+\ProseParagraphBreak
+
+前文已经定义括号张量
+\[
+	\mathcal B_x(v,w)=[X,Y]_x\pmod{D_x},
+	\qquad v,w\in D_x,\quad X_x=v,\ Y_x=w,
+\]
+其中 \(X,Y\) 为局部 \(D\) 截面。其值与延拓无关，因为 \([fX,Y]=f[X,Y]-Y(f)X\) 中的导数项仍属于 \(D\)。它是 \(\Lambda^2D^*\otimes(\mathrm{T}M/D)\) 的光滑截面，接触条件要求它在每点非零。对保持 \(D\) 的任意联络，挠率公式给出
+\begin{equation}
+	\label{g1:eq:distribution-intrinsic-torsion}
+	T^\nabla(X,Y)\pmod D=-\mathcal B(X,Y),\qquad X,Y\in\Gamma(D),
+\end{equation}
+因为两项协变导数都在 \(D\) 中。从 \(\delta\) 也能看出同一事实：若 \(v,w\in V_0\)，而 \(A\) 取值于保持 \(V_0\) 的李代数，则 \(\delta A(v,w)\in V_0\)，其在 \(V/V_0\) 中的分量为零。因此 \(-\mathcal B\) 是这个约化内蕴挠率的一个固定分量；接触分布的适应联络必定有挠。
+
+\begin{example}[标准接触模型的挠率]
+	\label{g1:exm:contact-intrinsic-torsion}
+	沿用第十三章的
+	\[
+		\alpha=\mathrm{d}z-x\,\mathrm{d}y,\qquad
+		A=\partial_x,\quad B=\partial_y+x\partial_z,
+	\]
+	并记 \(C=\partial_z\)。\((A,B,C)\) 是 \(D=\ker\alpha\) 的适应标架，对偶余标架为 \((\mathrm{d}x,\mathrm{d}y,\alpha)\)。\cref{g1:prop:contact-model-nonintegrable}已经证明 \([A,B]=C\)；故 \(\mathcal B(A,B)=[C]\neq0\)。令这个标架平行，便得到保持 \(D\) 的联络，其局部联络矩阵为零。因此第一结构方程给出挠率的分量列
+	\[
+		\begin{pmatrix}0\\0\\-\mathrm{d}x\wedge\mathrm{d}y\end{pmatrix},
+		\qquad T^\nabla(A,B)=-C,
+	\]
+	与\eqref{g1:eq:distribution-intrinsic-torsion}完全相符。同时
+	\[
+		\mathrm{d}\alpha=-\mathrm{d}x\wedge\mathrm{d}y,
+		\qquad
+		\alpha\wedge\mathrm{d}\alpha
+		=-\mathrm{d}x\wedge\mathrm{d}y\wedge\mathrm{d}z\neq0.
+	\]
+	这个已经写成标准形式的接触模型仍具有非零内蕴挠率。它的平面分布不能误认为坐标水平面 \(\ker\mathrm{d}z\)，后者的括号张量为零。
+\end{example}
+
+还要区分固定分布与固定定义形式。如果只要求 \(\ker\alpha=D\)，就允许将 \(\alpha\) 换成任意处处非零光滑倍数 \(f\alpha\)，上述群中 \(c\) 可以任意非零。若把一个具体的 \(\alpha\) 也作为结构的一部分，并要求 \(u^*\alpha=\varepsilon^3\)，则适应标架间的变换必须满足 \(c=1\)。两者允许的结构群不同，因而允许的联络修正也不同。判断内蕴挠率之前，必须先明确几何结构究竟保留哪些数据。
+
+\section{Cartan 联络与齐性模型}
+\label{g1:sec:D02}
+
+欧氏平面上一副正向正交标架既有位置，也有方向。沿曲线移动这副标架时，需要同时记录位移与转动；只记录转动的普通主联络，没有把两类信息合在一起。Cartan 联络所做的事情，是把标架总空间在每一点的全部速度，与一个模型变换群的李代数逐点对应。模型可以是欧氏平面，也可以是球面或其他齐性空间；曲率衡量这种逐点对应能否在邻域中积分成与模型的实际等价。
+
+\subsection{Cartan 联络的公理}
+\label{g1:subsec:D02:01}
+
+设 \(L\) 是有限维实李群，\(H\subseteq L\) 是闭子群，李代数分别为 \(\mathfrak l,\mathfrak h\)。由\cref{g1:thm:homogeneous-space}，商 \(L/H\) 是光滑流形，\(q:L\to L/H\) 是主右 \(H\) 丛，并在每个点附近有光滑局部截面。这里 \(L\) 描述模型的运动，\(H\) 描述固定模型基点 \(o=eH\) 的运动；二者的作用不同。以下流形均无边界、Hausdorff 且第二可数。
+
+\ProseParagraphBreak
+
+先看模型总空间 \(L\) 自身。它的左 Maurer--Cartan 形式为
+\[
+	(\theta_L)_a=(\mathrm{d}L_{a^{-1}})_a:
+	\mathrm{T}_aL\longrightarrow\mathfrak l.
+\]
+它用左平移把每个速度搬回单位元，是逐点线性同构。若只把 \(L\) 看成主 \(H\) 丛，垂直速度为
+\[
+	X_a^\#=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{t=0}
+	a\exp(tX),\qquad X\in\mathfrak h,
+\]
+所以 \(\theta_L(X^\#)=X\)。\cref{g1:prop:maurer-cartan-product}给出的乘法公式又说明 \(R_h^*\theta_L=\operatorname{Ad}_{h^{-1}}\theta_L\)。把这三项性质保留下来，就能在一个未必齐性的空间上规定相同类型的无穷小模型。
+
+\begin{definition}[Cartan 联络]\label{g1:def:cartan-connection}
+	设 \(L\) 为有限维实李群，\(H\subseteq L\) 为闭子群，\(\pi:P\to M\) 为无边界光滑流形上的光滑主右 \(H\) 丛。一个 \(\mathfrak l\) 值光滑一形式 \(\omega\in\Omega^1(P;\mathfrak l)\)，若满足下列条件，就称为模型为 \(L/H\) 的\term[cartanlianluo]{Cartan 联络}[Cartan connection]：
+	\begin{enumerate}
+		\item 对每个 \(p\in P\)，\(\omega_p:\mathrm{T}_pP\to\mathfrak l\) 是线性同构；
+		\item 对每个 \(h\in H\)，有 \(R_h^*\omega=\operatorname{Ad}_{h^{-1}}\omega\)；
+		\item 对每个 \(X\in\mathfrak h\)，有 \(\omega(X^\#)=X\)，其中 \(X^\#_p=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_0p\exp(tX)\)。
+	\end{enumerate}
+	二元组 \((P,\omega)\) 称为一个模型为 \(L/H\) 的\term[cartanjihe]{Cartan 几何}[Cartan geometry]。两者之间的同构是覆盖底空间微分同胚的主 \(H\) 丛同构，并要求它拉回目标的 Cartan 联络后等于源的 Cartan 联络。
+\end{definition}
+
+第一条公理称为\term[jueduipingxing]{绝对平行}[absolute parallelism]条件：固定 \(\mathfrak l\) 的一组基，便得到 \(P\) 上一组处处线性无关的向量场。这个名称不表示这些向量场交换，也不表示某个已经给定的协变导数使它们平行。第二条说明改变标架后的速度记录如何变化，第三条则把纯粹的标架变化与 \(\mathfrak h\) 中的元素对应。三条公理同时满足时，沿底空间运动的信息也已经包含在 \(\omega\) 中。
+
+\begin{proposition}[Cartan 联络的焊接同构]\label{g1:prop:cartan-soldering}
+	设 \((P\to M,\omega)\) 为模型 \(L/H\) 的光滑 Cartan 几何，\(L\) 为有限维实李群，\(H\) 为闭子群。则
+	\[
+		\dim M=\dim L-\dim H=\dim(L/H),\qquad
+		\omega_p^{-1}(\mathfrak h)=V_pP.
+	\]
+	商表示 \(h\cdot(X+\mathfrak h)=\operatorname{Ad}_hX+\mathfrak h\) 给出自然的向量丛同构
+	\begin{equation}\label{g1:eq:cartan-soldering}
+		\mathrm{T}M\cong P\times_H(\mathfrak l/\mathfrak h).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	绝对平行条件给出 \(\dim P=\dim\mathfrak l\)，主丛局部乘积给出 \(\dim P=\dim M+\dim H\)，从而得到维数等式。由\cref{g1:prop:principal-fundamental-fields}，\(X\mapsto X_p^\#\) 是 \(\mathfrak h\to V_pP\) 的同构；再现条件说明 \(\omega_p\) 在这两个子空间之间正是它的逆。由于 \(\omega_p\) 在整个切空间上也单射，\(\mathfrak h\) 的原像恰为 \(V_pP\)。
+
+	给定 \(v\in\mathrm{T}_xM\) 和 \(p\in P_x\)，选取 \(\widetilde v\in\mathrm{T}_pP\) 满足 \((\mathrm{d}\pi)_p\widetilde v=v\)，定义
+	\[
+		\overline\omega_p(v)=\omega_p(\widetilde v)+\mathfrak h.
+	\]
+	两个提升之差垂直，故其 \(\omega\) 值之差在 \(\mathfrak h\) 中，这一定义与提升无关。前段的原像等式说明 \(\overline\omega_p\) 单射；维数相同，故它是同构。
+
+	因为 \(\operatorname{Ad}_h\mathfrak h=\mathfrak h\)，商表示有定义。等变性给出
+	\[
+		\overline\omega_{ph}(v)
+		=\operatorname{Ad}_{h^{-1}}\overline\omega_p(v).
+	\]
+	关联丛约定为 \([ph,\xi]=[p,h\cdot\xi]\)，见\cref{g1:thm:associated-vector-bundle}，所以
+	\[
+		v\longmapsto[p,\overline\omega_p(v)]
+	\]
+	与 \(p\) 的选择无关。它在局部截面中由光滑可逆矩阵给出，因此是所求光滑向量丛同构。
+\end{proof}
+
+这里的商值一形式把抽象模型方向 \(\mathfrak l/\mathfrak h\) 与真实切向量联系起来，因而称为焊接形式。它没有要求先选一个补空间 \(\mathfrak l=\mathfrak h\oplus\mathfrak m\)；商空间本身已经足够。特别地，Cartan 联络不是任意主 \(H\) 丛上都能附加的数据，底空间维数和切丛的关联表示必须相容。
+
+\ProseParagraphBreak
+
+为了计算，取局部截面 \(s:U\to P\)，记 \(B=s^*\omega\)，并用 \(\Psi(x,h)=s(x)h\) 平凡化。与\cref{g1:thm:principal-connection-local-data}中的推导一样，把 \(\mathrm{d}\Psi(v,\eta)\) 拆成 \((\mathrm{d}R_h)\mathrm{d}s(v)\) 和垂直部分；分别用等变性与再现条件，便得到
+\begin{equation}\label{g1:eq:cartan-local-form}
+	\Psi^*\omega
+	=\operatorname{Ad}_{h^{-1}}B+\theta_H,
+	\qquad
+	B\bmod\mathfrak h:
+	\mathrm{T}_xU\longrightarrow\mathfrak l/\mathfrak h
+	\text{ 为同构}.
+\end{equation}
+这里 \(\theta_H\) 是 \(H\) 的左 Maurer--Cartan 形式，取值经 \(\mathfrak h\subseteq\mathfrak l\) 包含；第一项作用于 \(U\) 方向，第二项作用于 \(H\) 方向。若换成 \(s'=s\,k\)，其中 \(k:U\to H\) 光滑，则
+\[
+	B'=\operatorname{Ad}_{k^{-1}}B+k^*\theta_H.
+\]
+这个变换律与普通主联络相似，但 \(B\) 还含有不能丢掉的 \(\mathfrak l/\mathfrak h\) 分量。
+
+\subsection{曲率、平坦性及展开映射}
+\label{g1:subsec:D02:02}
+
+模型上的 \(\theta_L\) 不只是逐点可逆，它还满足一个微分相容条件。对左不变场 \(X^L,Y^L\)，有 \(\theta_L(X^L)=X\)、\(\theta_L(Y^L)=Y\)，二者为常值，因此
+\[
+	\mathrm{d}\theta_L(X^L,Y^L)
+	=-\theta_L([X^L,Y^L])=-[X,Y].
+\]
+左不变场逐点张成切空间，故
+\begin{equation}\label{g1:eq:cartan-model-mc}
+	\mathrm{d}\theta_L+\tfrac12[\theta_L\wedge\theta_L]=0.
+\end{equation}
+这里沿用\eqref{g1:eq:lie-bracket-wedge}的约定，即
+\[
+	[\omega\wedge\omega](U,V)=2[\omega(U),\omega(V)].
+\]
+因子 \(1/2\) 恰好抵消交替求和产生的重复。
+
+\begin{definition}\label{g1:def:cartan-curvature}
+	设 \((P\to M,\omega)\) 为模型 \(L/H\) 的光滑 Cartan 几何。定义它的\term[cartanqulv]{Cartan 曲率}[Cartan curvature]为
+	\begin{equation}\label{g1:eq:cartan-curvature}
+		\Omega=\mathrm{d}\omega+\tfrac12[\omega\wedge\omega]
+		\in\Omega^2(P;\mathfrak l).
+	\end{equation}
+	若 \(\Omega=0\)，称这个 Cartan 几何平坦。
+\end{definition}
+
+\begin{proposition}[曲率的水平性、等变性与 Bianchi 恒等式]\label{g1:prop:cartan-curvature-identities}
+	设 \((P\to M,\omega)\) 为模型 \(L/H\) 的光滑 Cartan 几何，其中 \(L\) 为有限维实李群、\(H\subseteq L\) 闭。其曲率满足
+	\begin{equation}\label{g1:eq:cartan-curvature-properties}
+		\iota_{X^\#}\Omega=0\quad(X\in\mathfrak h),\qquad
+		R_h^*\Omega=\operatorname{Ad}_{h^{-1}}\Omega\quad(h\in H),
+	\end{equation}
+	以及
+	\begin{equation}\label{g1:eq:cartan-bianchi}
+		\mathrm{d}\Omega+[\omega\wedge\Omega]=0.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	将 \(R_{\exp(tX)}^*\omega=\operatorname{Ad}_{\exp(-tX)}\omega\) 在零点求导，得
+	\[
+		\mathcal L_{X^\#}\omega=-[X,\omega].
+	\]
+	由于 \(\iota_{X^\#}\omega=X\) 是常函数，Cartan 的 Lie 导数公式给出
+	\[
+		\iota_{X^\#}\mathrm{d}\omega=-[X,\omega].
+	\]
+	另一方面，插入括号楔积给出
+	\(\frac12\iota_{X^\#}[\omega\wedge\omega]=[X,\omega]\)，两项抵消，证明水平性。固定 \(h\in H\) 时，\(\operatorname{Ad}_{h^{-1}}\) 是常系数的李代数自同构；它与外微分相交换并保持括号。因此直接拉回\eqref{g1:eq:cartan-curvature}即得等变性。
+
+	Bianchi 恒等式只使用李代数括号的代数性质，不要求 \(\omega\) 是 \(\mathfrak h\) 值。具体地，\cref{g1:thm:principal-bianchi}中已由分量计算得到
+	\[
+		\mathrm{d}[\omega\wedge\omega]
+		=-2[\omega\wedge\mathrm{d}\omega],
+		\qquad
+		[\omega\wedge[\omega\wedge\omega]]=0.
+	\]
+	第二式是对三个输入交替求和后的 Jacobi 恒等式。于是
+	\[
+		\mathrm{d}\Omega=-[\omega\wedge\mathrm{d}\omega],
+		\qquad
+		[\omega\wedge\Omega]=[\omega\wedge\mathrm{d}\omega],
+	\]
+	相加便得结论。
+\end{proof}
+
+“水平”在这里仅表示有一个垂直输入时曲率为零，并未预先指定某个水平补空间。结合焊接同构，可以把 \(\Omega_p\) 写成
+\[
+	\kappa(p)\in
+	\operatorname{Hom}\bigl(\Lambda^2(\mathfrak l/\mathfrak h),\mathfrak l\bigr),
+	\qquad
+	\kappa(p)(\overline X,\overline Y)
+	=\Omega_p(\omega_p^{-1}X,\omega_p^{-1}Y).
+\]
+改变 \(X,Y\) 的代表只会给输入增加垂直向量，所以这个式子有定义。它说明 Cartan 曲率记录的是两个底空间方向之间的相容障碍。
+
+\begin{example}[定向曲面的欧氏 Cartan 几何]\label{g1:exm:cartan-euclidean-surface}
+	设 \(M\) 为定向的二维光滑黎曼流形，\(P\to M\) 为其正向正交标架丛。把标架 \(p=(e_1,e_2)\) 看作等距同构 \(p:\mathbb R^2\to\mathrm{T}_{\pi(p)}M\)，定义焊接形式
+	\[
+		\theta_p(V)=p^{-1}(\mathrm{d}\pi)_pV
+		=\begin{pmatrix}\theta^1_p(V)\\\theta^2_p(V)\end{pmatrix}.
+	\]
+	它在垂直向量上为零，且 \(R_h^*\theta=h^{-1}\theta\)。令 \(A=J_0\alpha\) 为该度量的无挠度量联络在 \(P\) 上的主联络形式，其中
+	\[
+		J_0=\begin{pmatrix}0&-1\\1&0\end{pmatrix},
+		\qquad
+		\alpha\in\Omega^1(P).
+	\]
+	局部截面拉回的 \(\alpha\) 正是\cref{g1:def:surface-connection-form}中满足 \(\nabla e_1=\alpha e_2\)、\(\nabla e_2=-\alpha e_1\) 的形式；其换架公式把这些局部数据粘成上述主联络。
+
+	取 \(L=\operatorname{SE}(2)=\mathbb R^2\rtimes\operatorname{SO}(2)\)，\(H=\operatorname{SO}(2)\)，于是 \(L/H\) 是定向欧氏平面。\(\mathfrak l=\mathfrak{so}(2)\ltimes\mathbb R^2\) 的括号为
+	\[
+		[(B,u),(C,v)]=([B,C],Bv-Cu).
+	\]
+	在 \(P\) 上令
+	\[
+		\omega=(J_0\alpha,\theta).
+	\]
+	若 \(\omega_p(V)=0\)，则 \(\theta_p(V)=0\) 使 \(V\) 垂直，再现条件又使 \(A_p(V)=0\) 只能发生于 \(V=0\)。两边维数均为 \(3\)，故 \(\omega_p\) 是同构。主联络与焊接形式的等变律，恰好分别是 \(\operatorname{Ad}_{h^{-1}}\) 在旋转分量与平移分量上的作用；垂直再现也成立。因此 \(\omega\) 是 Cartan 联络。
+
+	按半直积括号展开曲率，得到
+	\begin{equation}\label{g1:eq:cartan-surface-curvature}
+		\Omega=
+		\left(
+		J_0\,\mathrm{d}\alpha,\ 
+		\mathrm{d}\theta+J_0\alpha\wedge\theta
+		\right).
+	\end{equation}
+	第二分量是切丛联络的挠率形式。此处联络无挠，因而它为零；分量式是
+	\[
+		\mathrm{d}\theta^1=\alpha\wedge\theta^2,\qquad
+		\mathrm{d}\theta^2=-\alpha\wedge\theta^1.
+	\]
+	由\cref{g1:prop:connection-curvature-form}，第一分量满足
+	\[
+		\mathrm{d}\alpha=-(K\circ\pi)\theta^1\wedge\theta^2.
+	\]
+	该式在局部截面上就是 \(\mathrm{d}\alpha=-K\,\mathrm{d}A\)；两边都水平且等变，所以它在整个标架丛上成立。因此这个以欧氏平面为模型的 Cartan 几何平坦，当且仅当 \(K=0\)。单位球面虽然无挠，仍有非零的欧氏 Cartan 曲率。
+\end{example}
+
+为什么要把旋转曲率与挠率放进同一个 \(\Omega\)？局部欧氏坐标不仅要求标架在各方向上的转动相容，也要求记录的位移真正来自坐标。前者对应旋转分量，后者对应平移分量。对一般齐性模型，下面的定理把这两种相容要求统一为 Maurer--Cartan 方程。
+
+\begin{theorem}[平坦 Cartan 几何的局部模型]\label{g1:thm:flat-cartan-local-model}
+	设 \(L\) 为有限维实李群，\(H\subseteq L\) 为闭子群，\((P\to M,\omega)\) 为无边界光滑流形上的 Cartan 几何。其曲率为零，当且仅当每个 \(x_0\in M\) 都有开邻域 \(U\)，以及 \(L/H\) 中的开集 \(V\)，使 \((P|_U,\omega)\) 与 \((q^{-1}(V),\theta_L)\) 作为主 \(H\) 丛及 Cartan 联络同构。
+\end{theorem}
+\begin{proof}
+	先设 \(\Omega=0\)。我们先在总空间的一点附近积分 \(\omega\)，再借助主丛局部截面将所得映射扩展到整条 \(H\) 纤维。第二步是从总空间的局部坐标得到底空间局部等价所必需的。
+
+	对 \(X\in\mathfrak l\)，令 \(E_X\) 为由 \(\omega(E_X)=X\) 定义的光滑向量场。用曲率为零及两边常值得
+	\[
+		0=\Omega(E_X,E_Y)
+		=-\omega([E_X,E_Y])+[X,Y],
+		\qquad [E_X,E_Y]=E_{[X,Y]}.
+	\]
+	在 \(P\times L\) 上考虑分布
+	\[
+		\mathcal D_{(p,a)}
+		=\{(v,w):\omega_p(v)=(\theta_L)_a(w)\}.
+	\]
+	两形式都逐点可逆，故此分布秩恒为 \(\dim L\)。若 \(X_i\) 是 \(\mathfrak l\) 的一组基，则 \((E_{X_i},X_i^L)\) 给出它的光滑标架，且
+	\[
+		[(E_X,X^L),(E_Y,Y^L)]
+		=(E_{[X,Y]},[X,Y]^L).
+	\]
+	标架的括号仍在分布中；再用带函数系数的括号公式，得 \(\mathcal D\) 对合。
+
+	固定 \(p_0\in P_{x_0}\)。\cref{g1:thm:frobenius}适用于无边界流形 \(P\times L\) 上的这个恒秩光滑分布，给出通过 \((p_0,e)\) 的局部嵌入积分片。第一投影在 \(\mathcal D\) 上的微分为同构，因为每个 \(v\) 唯一决定 \(w\)。由\cref{g1:thm:inverse-function}，缩小积分片后，它是某个光滑映射 \(f:W\to L\) 的图像，其中 \(W\) 为 \(p_0\) 的开邻域、\(f(p_0)=e\)。图像的切空间在 \(\mathcal D\) 中，正好说明
+	\[
+		f^*\theta_L=\omega|_W.
+	\]
+	两个一形式逐点可逆，故 \(\mathrm{d}f\) 逐点可逆。
+
+	取经过 \(p_0\) 的局部截面 \(s:U\to P\)，缩小 \(U\) 使 \(s(U)\subset W\)，并记 \(a=f\circ s\)。定义
+	\[
+		\Phi:P|_U\longrightarrow L,\qquad
+		\Phi(s(x)h)=a(x)h,\quad h\in H.
+	\]
+	主丛平凡化给出 \(s(x)h\) 的唯一表示，故 \(\Phi\) 光滑、有定义，并对所有 \(h\in H\) 等变；这里不要求 \(H\) 连通。沿截面有 \(a^*\theta_L=s^*\omega\)。由 Maurer--Cartan 乘法公式及\eqref{g1:eq:cartan-local-form}，在 \(U\times H\) 上
+	\[
+		\Phi^*\theta_L
+		=\operatorname{Ad}_{h^{-1}}a^*\theta_L+\theta_H
+		=\operatorname{Ad}_{h^{-1}}s^*\omega+\theta_H
+		=\omega.
+	\]
+	此式是在主丛平凡化中书写的，因而给出整个 \(P|_U\) 上的等式。
+
+	定义底映射 \(\phi(x)=a(x)H\)。它的微分可由 \(s^*\omega\bmod\mathfrak h\) 计算：左平移 \(a(x)^{-1}\) 将 \(\mathrm{T}_{\phi(x)}(L/H)\) 识别为 \(\mathfrak l/\mathfrak h\)，在此识别下，\(\mathrm{d}\phi_x\) 就是 \(\overline\omega_{s(x)}\)。\cref{g1:prop:cartan-soldering}说明它为同构。再缩小 \(U\)，逆函数定理使 \(\phi:U\to V\) 成为到某个开集 \(V\subseteq L/H\) 的微分同胚。
+
+	对每个 \(x\in U\)，\(\Phi\) 将整条纤维 \(s(x)H\) 双射到 \(a(x)H=q^{-1}(\phi(x))\)。因此它是 \(P|_U\to q^{-1}(V)\) 的双射。目标截面 \(y\mapsto a(\phi^{-1}(y))\) 给出局部平凡化，在两边平凡化中 \(\Phi\) 写成 \((x,h)\mapsto(\phi(x),h)\)，故其逆光滑。这就得到保持 Cartan 联络的主丛同构。
+
+	反之，若每一点附近存在这样的同构，拉回模型上的\eqref{g1:eq:cartan-model-mc}，便得 \(\Omega|_{P|_U}=0\)。这些 \(U\) 覆盖 \(M\)，故 \(\Omega=0\)。
+\end{proof}
+
+证明中的积分片把两个空间里由同一个 \(X\in\mathfrak l\) 指定的运动配对；曲率为零恰好保证这些配对在取括号后仍相容。局部截面随后把积分片产生的映射延伸到整条 \(H\) 纤维，才得到底空间开片上的几何等价。
+
+\ProseParagraphBreak
+
+曲率不为零时，仍然可以沿一条指定路径，把实际空间中的运动记录到模型中。给定有限分片光滑路径 \(\gamma:[0,1]\to M\) 和初始标架 \(p_0\in P_{\gamma(0)}\)，先选取同样正则的提升 \(p(t)\)，满足 \(p(0)=p_0\)。这种提升可在有限个局部平凡化中逐段构造：每段保持选定的群坐标不变，在接点调节后一段的群坐标使两段接合。它不需要给 Cartan 联络另行规定一个“水平核”。
+
+\begin{proposition}[路径的展开]\label{g1:prop:cartan-path-development}
+	设 \((P\to M,\omega)\) 为模型 \(L/H\) 的光滑 Cartan 几何，\(L\) 为有限维实李群，\(H\subseteq L\) 闭。给定有限分片光滑路径 \(\gamma:[0,1]\to M\) 及 \(p_0\in P_{\gamma(0)}\)，选择提升 \(p(t)\) 后，初值问题
+	\begin{equation}\label{g1:eq:cartan-development-ode}
+		\theta_L(g'(t))=\omega(p'(t)),\qquad g(0)=e
+	\end{equation}
+	在整个区间上有唯一有限分片光滑解。路径
+	\[
+		\operatorname{dev}_{p_0}(\gamma)(t)=g(t)H
+	\]
+	与保持 \(p(0)=p_0\) 的提升选择无关，称为 \(\gamma\) 相对于 \(p_0\) 的\term[lujingzhankai]{路径展开}[development]。若把初始标架改成 \(p_0h_0\)，则展开路径变为 \(h_0^{-1}g(t)H\)。
+\end{proposition}
+\begin{proof}
+	记 \(b(t)=\omega(p'(t))\)。方程等价于 \(g'=(\mathrm{d}L_g)_e b(t)\)。令 \(u=g^{-1}\)，对 \(g(t)u(t)=e\) 求导可得
+	\[
+		u'=-(\mathrm{d}R_u)_e b(t).
+	\]
+	\cref{g1:lem:right-invariant-time-ode}说明，光滑李代数值系数在紧时间区间上定义的这类右平移方程有全区间唯一解；其证明用单位元附近的统一短时存在性及右平移延拓，不要求 \(L\) 紧。对每个光滑子区间应用该结论并接合初值，即得此处的解。
+
+	另一个提升可唯一写成 \(\widehat p(t)=p(t)h(t)\)，其中 \(h(t)\in H\) 有限分片光滑。对变化的 \(h(t)\)，等变性和再现条件给出
+	\[
+		\omega(\widehat p')
+		=\operatorname{Ad}_{h^{-1}}\omega(p')+\theta_H(h').
+	\]
+	另一方面，\cref{g1:prop:maurer-cartan-product}给出
+	\[
+		\theta_L((gh)')
+		=\operatorname{Ad}_{h^{-1}}\theta_L(g')+\theta_H(h').
+	\]
+	若两提升初值均为 \(p_0\)，则 \(h(0)=e\)，所以 \(gh\) 满足新方程及单位元初值。唯一性使新解正是 \(gh\)，投影后 \((gh)H=gH\)，从而展开路径不变。
+
+	若初始标架改为 \(p_0h_0\)，可选择提升 \(ph_0\)。新系数为 \(\operatorname{Ad}_{h_0^{-1}}b\)，新解为 \(h_0^{-1}gh_0\)，因为它在零时刻为单位元且满足相应方程。其陪集为 \(h_0^{-1}gH\)，得到最后的变换式。
+\end{proof}
+
+在\cref{g1:thm:flat-cartan-local-model}的平坦邻域中，若局部同构归一化为 \(\Phi(p_0)=e\)，则 \(\Phi(p(t))\) 满足展开方程，故展开就是底空间局部映射 \(\phi(\gamma(t))\)。一般情形下，展开可以依赖整条路径；不能仅由终点 \(x\) 写出一个单值的 \(\operatorname{dev}(x)\)。即使曲率为零，把不同邻域的映射接成全局单值映射也还涉及绕闭路的延拓，\secref{g1:sec:D03}将对此作具体计算。
+
+\ProseParagraphBreak
+
+展开方程总能沿已经给定的有限路径求解，也不意味着 Cartan 几何完备。后一个问题是反向的：给定模型中的运动，实际空间中是否始终存在相应运动。例如开区间 \((0,1)\) 上的 \(\omega=\mathrm{d}x\) 以加法群 \(\mathbb R\) 为模型，曲率为零；但从 \(x=1/2\) 按单位速度前进，只能在到达区间边界之前留在原空间中。局部平坦、全局单值和运动能否无限延拓，是三个不同问题。
+
+\subsection{与主丛 Ehresmann 联络的区别}
+\label{g1:subsec:D02:03}
+
+第18章的主联络以一个与右作用相容的水平补空间为出发点，这也是主丛上的 Ehresmann 联络。\footnote{Ehresmann，埃雷斯曼，Charles Ehresmann（1905--1979），法国数学家，研究纤维丛、联络与微分拓扑。}若用一形式表示，它是 \(\mathfrak h\) 值的 \(\eta\)，满足等变性和垂直再现，并由 \(\ker\eta\) 给出水平分布。Cartan 联络则是更大李代数 \(\mathfrak l\) 值的逐点同构，因此
+\[
+	\ker\omega_p=0,\qquad
+	\omega_p^{-1}(\mathfrak h)=V_pP.
+\]
+把 \(\ker\omega\) 当成水平分布，会使所有非零底空间速度都无从提升。
+
+\ProseParagraphBreak
+
+两类形式在垂直方向上的行为相同，但在底空间方向上承担的任务不同。\cref{g1:tab:cartan-ehresmann}把这一区别列在同一个主 \(H\) 丛上；其中 \(\mathcal H\) 表示水平分布，避免与结构群 \(H\) 混用。
+\begin{table}[htbp]
+	\centering
+	\caption{主联络与 Cartan 联络所记录的数据}
+	\label{g1:tab:cartan-ehresmann}
+	\begin{tabularx}{\linewidth}{@{}lXX@{}}
+		\toprule
+		比较项 & 主丛 Ehresmann 联络 \(\eta\) & 模型 \(L/H\) 的 Cartan 联络 \(\omega\)\\
+		\midrule
+		取值空间 & \(\mathfrak h\) & \(\mathfrak l\)\\
+		逐点作用 & 记录垂直分量，\(\eta|_{VP}\) 可逆 & 记录全部速度，\(\omega_p\) 可逆\\
+		核 & \(\mathcal H_p\)，维数为 \(\dim M\) & 零空间\\
+		底空间方向 & 投影 \(\mathcal H_p\to\mathrm{T}_xM\) 为同构 & 选定 \(p\in P_x\) 后给出 \(\mathrm{T}_xM\cong\mathfrak l/\mathfrak h\)\\
+		维数限制 & 与某个外部模型群无关 & \(\dim M=\dim(L/H)\)\\
+		平坦性的局部含义 & 每个总空间点均有局部水平截面通过 & 与 \(L/H\) 的开片局部等价\\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+若模型李代数存在与 \(H\) 作用相容的补空间，两类联络仍有直接联系。这里必须要求补空间在整个 \(\operatorname{Ad}H\) 下不变；任取一个线性补空间虽能分解向量，却未必能分解出满足主丛等变律的形式。
+
+\begin{proposition}[不变补空间下的分解]\label{g1:prop:reductive-cartan-splitting}
+	设 \(L\) 为有限维实李群，\(H\subseteq L\) 为闭子群，且有 \(\operatorname{Ad}H\) 不变的直和
+	\[
+		\mathfrak l=\mathfrak h\oplus\mathfrak m.
+	\]
+	对任意模型 \(L/H\) 的光滑 Cartan 几何 \((P\to M,\omega)\)，记
+	\[
+		\eta=\operatorname{pr}_{\mathfrak h}\omega,\qquad
+		\vartheta=\operatorname{pr}_{\mathfrak m}\omega.
+	\]
+	则 \(\eta\) 是主 \(H\) 联络，\(\vartheta\) 为水平、等变的 \(\mathfrak m\) 值形式，且诱导 \(\mathrm{T}M\cong P\times_H\mathfrak m\)。此时主联络的水平空间为 \(\omega^{-1}(\mathfrak m)\)。
+\end{proposition}
+\begin{proof}
+	两直和分量都在 \(\operatorname{Ad}H\) 下不变，故两投影与 \(\operatorname{Ad}H\) 交换。\(\omega\) 的等变性因此分别下降为 \(\eta,\vartheta\) 的等变性。对 \(X\in\mathfrak h\)，再现条件给出 \(\eta(X^\#)=X\)、\(\vartheta(X^\#)=0\)。由\cref{g1:thm:principal-connection-equivalence}，前两项性质使 \(\eta\) 成为主联络，而后一等式给出 \(\vartheta\) 的水平性。投影 \(\mathfrak m\to\mathfrak l/\mathfrak h\) 是 \(H\) 等变同构，故焊接同构直接成为 \(\mathrm{T}M\cong P\times_H\mathfrak m\)。最后，\(\eta_p(v)=0\) 等价于 \(\omega_p(v)\in\mathfrak m\)，所以得到所述水平空间。
+\end{proof}
+
+以上讨论的是具有不变补空间的模型（reductive model）。即使不变补空间存在，也可能不唯一；由它投影得到的普通主联络随所选分解而定。如果不存在不变补空间，就不能用一个任意线性投影，从 \(\omega\) 自然得到普通主联络。主 \(H\) 丛本身仍可另选主联络，这是另一项选择。
+
+\ProseParagraphBreak
+
+在这个分解下，Cartan 曲率的两分量写成
+\[
+	\begin{aligned}
+		\Omega_{\mathfrak h}
+		&=\mathrm{d}\eta+\tfrac12[\eta\wedge\eta]
+		+\tfrac12[\vartheta\wedge\vartheta]_{\mathfrak h},\\
+		\Omega_{\mathfrak m}
+		&=\mathrm{d}\vartheta+[\eta\wedge\vartheta]
+		+\tfrac12[\vartheta\wedge\vartheta]_{\mathfrak m}.
+	\end{aligned}
+\]
+这里 \([\mathfrak h,\mathfrak m]\subseteq\mathfrak m\) 来自不变性，因此混合项只出现在第二行。欧氏模型的平移部分满足 \([\mathfrak m,\mathfrak m]=0\)，于是两行分别是普通联络的曲率与挠率；\cref{g1:exm:cartan-euclidean-surface}正是这种情形。一般模型中还要保留 \([\vartheta\wedge\vartheta]\) 的贡献，所以“Cartan 平坦”必须连同所选模型一起理解。
+
+\section{等价问题的初步方法}
+\label{g1:sec:D03}
+
+同一张平面可以用直角标架或旋转标架描述，联络系数随之改变；周长不同的平圆柱却可以具有相同的零曲率，而不具有相同的整体几何。等价问题必须同时回答两件事：哪些差异只是表示方式的选择，哪些数据在改变表示后仍然存在。本节先在结构方程中辨认这些自由，再用曲率不恒定的度量曲面给出一次具体的标架归一化，最后用显式展开映射检验局部结论能否成为整体结论。
+
+\subsection{结构方程中的规范自由}
+\label{g1:subsec:D03:01}
+
+设 \(G\subseteq\operatorname{GL}(n,\mathbb R)\) 是矩阵李群，在一个带 \(G\)-结构的 \(n\) 维流形的开集 \(U\) 上选适应标架 \(e=(e_1,\ldots,e_n)\)。对偶余标架写成列 \(\theta=(\theta^1,\ldots,\theta^n)^{\mathsf T}\)，即 \(V=e\,\theta(V)\)。若选定一个相容联络，沿用 \(\nabla e=eA\)，其中 \(A\) 是取值于 \(\mathfrak g\) 的局部联络矩阵。
+
+\begin{proposition}[换标架与结构方程]\label{g1:prop:equivalence-frame-change}
+	设 \(G\subseteq\operatorname{GL}(n,\mathbb R)\) 为矩阵李群，\(e\) 是某个 \(n\) 维光滑流形的开集 \(U\) 上一个 \(G\)-结构的光滑适应标架，\(\nabla\) 为相容联络，\(\theta,A\) 分别为此标架中的余标架与联络矩阵。将标架改为 \(e'=eg\)，其中 \(g:U\to G\) 光滑，联络本身保持不变。则
+	\begin{equation}\label{g1:eq:equivalence-frame-change}
+		\theta'=g^{-1}\theta,\qquad
+		A'=g^{-1}Ag+g^{-1}\mathrm{d}g.
+	\end{equation}
+	记挠率形式及曲率矩阵为 \(T=\mathrm{d}\theta+A\wedge\theta\)、\(F_A=\mathrm{d}A+A\wedge A\)，则
+	\[
+		T'=g^{-1}T,\qquad F_{A'}=g^{-1}F_Ag.
+	\]
+	这里矩阵值形式的楔积同时使用矩阵乘法，向量值形式的楔积按矩阵作用在列向量上解释。
+\end{proposition}
+\begin{proof}
+	恒等式 \(e\theta(V)=eg\theta'(V)\) 对每个切向量成立，所以 \(\theta'=g^{-1}\theta\)。再对 \(e'=eg\) 使用联络的乘法法则，得到
+	\[
+		\nabla e'=e(Ag+\mathrm{d}g)=e'\bigl(g^{-1}Ag+g^{-1}\mathrm{d}g\bigr),
+	\]
+	即第二式。这也恢复了\cref{g1:thm:principal-connection-local-data}在标架丛上的局部公式：固定的主联络在不同截面上的表达不同。
+
+	由 \(\mathrm{d}(g^{-1})=-g^{-1}(\mathrm{d}g)g^{-1}\)，
+	\[
+		\begin{aligned}
+			\mathrm{d}\theta'&=-g^{-1}\mathrm{d}g\wedge g^{-1}\theta+g^{-1}\mathrm{d}\theta,\\
+			A'\wedge\theta'&=g^{-1}A\wedge\theta+g^{-1}\mathrm{d}g\wedge g^{-1}\theta.
+		\end{aligned}
+	\]
+	相加时含 \(\mathrm{d}g\) 的两项抵消，得到挠率公式。对联络的算子 \(\mathrm{D}=\mathrm{d}+A\)，新分量中的算子为 \(\mathrm{D}'=g^{-1}\mathrm{D}g\)；连续作用两次得到 \((\mathrm{D}')^2=g^{-1}\mathrm{D}^2g\)。由于 \(\mathrm{D}^2\) 在列向量值函数上等于左乘 \(F_A\)，曲率公式随之成立。
+\end{proof}
+
+这里的换标架没有移动底空间的点，也没有改变联络。它与\cref{g1:prop:gauge-connection-formula}中的主动规范变换具有同样的局部公式，但主动规范变换将联络拉回到另一个联络，所选截面可以保持不动。另一方面，两张 \(G\)-结构之间的几何等价还要有底空间的局部微分同胚，并要求其微分把适应标架送到适应标架。这是对底点和切向量的共同要求，不能由任取一族矩阵 \(g(x)\) 代替。
+
+\ProseParagraphBreak
+
+例如，设 \(\Phi:U\to\widehat U\) 是待检验的局部微分同胚，两边的标架分别为 \(e,\widehat e\)。若写
+\[
+	\Phi_*e=\widehat e\,k,\qquad k:U\to G,
+\]
+则余标架必须满足 \(\Phi^*\widehat\theta=k\theta\)。若还要求保持所选联络，则必须同时满足
+\[
+	A=k^{-1}(\Phi^*\widehat A)k+k^{-1}\mathrm{d}k.
+\]
+第二式由对 \(\Phi_*e=\widehat e k\) 求协变导数得到，第一式则直接来自切向量的分量。两个条件中的同一个 \(k\) 必须与 \(\mathrm{d}\Phi\) 相容。只把联络矩阵变成某种相似形式，尚未得到这样的 \(\Phi\)。
+
+\ProseParagraphBreak
+
+另一个不同的选择是固定标架，改变相容联络。若 \(A\) 改为 \(A+B\)，其中 \(B\in\Omega^1(U;\mathfrak g)\)，则
+\[
+	T_{A+B}=T_A+B\wedge\theta.
+\]
+用 \(\theta\) 将切空间识别为 \(V=\mathbb R^n\)，在一点把 \(B\) 看作 \(V^*\otimes\mathfrak g\) 的元素，挠率的变化就是
+\[
+	(\delta B)(v,w)=B(v)w-B(w)v.
+\]
+这正是\subsecref{g1:subsec:D01:02}中讨论的线性映射。给定挠率中落在 \(\operatorname{im}\delta\) 的一项，才可能选 \(B\) 将它消去；商空间中的内蕴挠率不受这一操作影响。如果有多个 \(B\) 能消去同一项，它们之差落在 \(\ker\delta\)。因此，选联络消去挠率与选标架减少结构群是两种操作，各自留下的自由也不同。
+
+\begin{example}[二维正交结构中的消挠率]\label{g1:exm:surface-torsion-absorption}
+	在定向黎曼度量曲面上取正向正交余标架 \(\theta^1,\theta^2\)，记 \(\Theta=\theta^1\wedge\theta^2\)。由于二维二形式只有一个独立分量，存在唯一光滑函数 \(c_1,c_2\) 使
+	\[
+		\mathrm{d}\theta^1=c_1\Theta,\qquad
+		\mathrm{d}\theta^2=c_2\Theta.
+	\]
+	所有度量相容的局部联络矩阵都形如
+	\[
+		A=J_0\alpha,\qquad
+		J_0=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad
+		\alpha=a\theta^1+b\theta^2.
+	\]
+	把它代入挠率公式，逐项得到
+	\[
+		T^1=\mathrm{d}\theta^1-\alpha\wedge\theta^2=(c_1-a)\Theta,
+		\qquad
+		T^2=\mathrm{d}\theta^2+\alpha\wedge\theta^1=(c_2-b)\Theta.
+	\]
+	因此无挠条件唯一确定 \(a=c_1,b=c_2\)。这一维数下的 \(\delta\) 既能消去所有挠率，又没有剩余的联络差；所得正是\cref{g1:prop:surface-connection-properties}的唯一度量相容无挠联络。
+
+	但是正交标架仍可旋转。若
+	\[
+		g=\begin{pmatrix}\cos\varphi&-\sin\varphi\\
+		\sin\varphi&\cos\varphi\end{pmatrix},
+	\]
+	则 \(g^{-1}J_0g=J_0\)、\(g^{-1}\mathrm{d}g=J_0\mathrm{d}\varphi\)，故 \(\alpha'=\alpha+\mathrm{d}\varphi\)。这与\cref{g1:prop:connection-frame-change}的符号一致。消去挠率并未消去旋转自由，也不能任意使 \(\alpha'=0\)：若在一个开集上能如此选择，便有 \(\mathrm{d}\alpha=0\)，由\cref{g1:prop:connection-curvature-form}必有 \(K=0\)。
+\end{example}
+
+更一般的结构可能留下非零内蕴挠率、非唯一相容联络或无法一次固定的结构群。下面只对刚才的曲面模型继续归一化：我们将使用一个由度量决定且非零的切向量来选定旋转角。这个具体构造既说明归一化怎样工作，也明确显示它在哪些点会失效。
+
+\subsection{曲面标架的归一化例子}
+\label{g1:subsec:D03:02}
+
+设 \((U,h)\) 为定向光滑黎曼度量曲面的一块开区域，\(K\) 为 Gauss 曲率，并假设 \(\mathrm{d}K\) 在 \(U\) 上处处非零。这里讨论的是带度量的实二维曲面。梯度由
+\[
+	h(\operatorname{grad}_h K,V)=\mathrm{d}K(V)
+\]
+对全部切向量 \(V\) 定义；度量正定使这一向量唯一，且 \(\mathrm{d}K\ne0\) 保证它不为零。令
+\begin{equation}\label{g1:eq:curvature-gradient-frame}
+	q=|\operatorname{grad}_h K|_h>0,\qquad
+	e_1=\frac{\operatorname{grad}_h K}{q},\qquad e_2=Je_1,
+\end{equation}
+其中 \(J\) 为由 \(h\) 与定向确定的正向直角旋转。于是 \(e_1\) 指向曲率增加最快的方向，\(e_2\) 的方向由定向确定；\(\operatorname{SO}(2)\) 中保持这组标架的元素只有单位元。
+
+\ProseParagraphBreak
+
+记对偶余标架为 \(\theta^i=h(e_i,-)\)。由梯度定义，
+\[
+	\mathrm{d}K=q\theta^1,\qquad \theta^1=\frac{\mathrm{d}K}{q},
+	\qquad h=(\theta^1)^2+(\theta^2)^2.
+\]
+相应联络一形式仍取第九章的约定
+\[
+	\alpha(V)=h(\nabla_Ve_1,e_2),\qquad
+	\nabla e_1=\alpha e_2,\qquad \nabla e_2=-\alpha e_1.
+\]
+因为标架已经由度量选定，\(\alpha\) 在这一步也不再含任意旋转角。
+
+\begin{proposition}[归一化曲面标架的结构式]\label{g1:prop:normalized-surface-structure}
+	设 \((U,h)\) 为定向光滑黎曼度量曲面，\(\mathrm{d}K\) 处处非零，并按式\eqref{g1:eq:curvature-gradient-frame}定义 \(q,e_1,e_2\) 及对偶余标架。写 \(\alpha=a\theta^1+b\theta^2\)，则
+	\begin{equation}\label{g1:eq:normalized-surface-structure}
+		\begin{aligned}
+			\mathrm{d}\theta^1&=\alpha\wedge\theta^2=a\theta^1\wedge\theta^2,\\
+			\mathrm{d}\theta^2&=-\alpha\wedge\theta^1=b\theta^1\wedge\theta^2,\\
+			\mathrm{d}\alpha&=-K\theta^1\wedge\theta^2.
+		\end{aligned}
+	\end{equation}
+	此外，
+	\begin{equation}\label{g1:eq:normalized-surface-coefficients}
+		a=\frac{e_2(q)}q,\qquad
+		K=e_2(a)-e_1(b)-a^2-b^2,\qquad
+		[e_1,e_2]=-ae_1-be_2.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	度量相容和无挠性给出
+	\[
+		\begin{aligned}
+			\mathrm{d}\theta^1(V,W)
+			&=Vh(e_1,W)-Wh(e_1,V)-h(e_1,[V,W])\\
+			&=h(\nabla_Ve_1,W)-h(\nabla_We_1,V)\\
+			&=\alpha(V)\theta^2(W)-\alpha(W)\theta^2(V).
+		\end{aligned}
+	\]
+	第二行消去了 \(h(e_1,\nabla_VW-\nabla_WV-[V,W])=0\)。所以 \(\mathrm{d}\theta^1=\alpha\wedge\theta^2\)；对 \(e_2\) 作同样计算，利用 \(\nabla e_2=-\alpha e_1\)，得到第二式。
+
+	曲率式的符号也可直接核对。对 \(e_1\) 应用 \(R(V,W)=\nabla_V\nabla_W-\nabla_W\nabla_V-\nabla_{[V,W]}\)，沿 \(e_1\) 的乘积项抵消，余下
+	\[
+		R(V,W)e_1=\mathrm{d}\alpha(V,W)e_2.
+	\]
+	\cref{g1:prop:surface-curvature-two-dim}在正交单位基上给出 \(R(e_1,e_2)e_1=-Ke_2\)，故 \(\mathrm{d}\alpha(e_1,e_2)=-K\)，也就得到第三式。
+
+	再对 \(\mathrm{d}K=q\theta^1\) 取外微分。因为 \(\mathrm{d}q=e_1(q)\theta^1+e_2(q)\theta^2\)，有
+	\[
+		0=\mathrm{d}q\wedge\theta^1+q\mathrm{d}\theta^1
+		=\bigl(-e_2(q)+qa\bigr)\theta^1\wedge\theta^2,
+	\]
+	从而 \(a=e_2(q)/q\)。将 \(\alpha=a\theta^1+b\theta^2\) 求导，得到
+	\[
+		\mathrm{d}\alpha
+		=\bigl(-e_2(a)+a^2+e_1(b)+b^2\bigr)\theta^1\wedge\theta^2.
+	\]
+	与曲率式比较便得 \(K\) 的表达。最后，\(\theta^i(e_j)\) 为常数，故 \(\mathrm{d}\theta^i(e_1,e_2)=-\theta^i([e_1,e_2])\)。前两条结构式分别给出括号的两个分量 \(-a,-b\)。
+\end{proof}
+
+这些式子中的 \(K,q,a,b\) 都由带定向的度量确定。若继续求导，也应沿已选定的 \(e_1,e_2\) 求导，而不能将任意坐标偏导数误作不变量。特别地，比较两个曲面的局部几何时，归一化余标架给出了一个明确的充分必要条件。
+
+\begin{proposition}[归一化余标架的局部等价判据]\label{g1:prop:normalized-coframe-equivalence}
+	设 \((U,h)\)、\((\widehat U,\widehat h)\) 为定向光滑黎曼度量曲面，两个曲率函数的微分均处处非零。分别按式\eqref{g1:eq:curvature-gradient-frame}取归一化余标架 \(\theta^1,\theta^2\) 与 \(\widehat\theta^1,\widehat\theta^2\)。对光滑映射 \(\Phi:U\to\widehat U\)，下列条件等价：
+	\begin{equivalences}
+		\item \(\Phi\) 是保持定向的局部等距。
+		\item \(\Phi^*\widehat\theta^1=\theta^1\) 且 \(\Phi^*\widehat\theta^2=\theta^2\)。
+	\end{equivalences}
+	满足这些条件时，\(\widehat K\circ\Phi=K\)、\(\widehat q\circ\Phi=q\)，并有 \(\Phi^*\widehat\alpha=\alpha\)。
+\end{proposition}
+\begin{proof}
+	先设 \(\Phi\) 是保持定向的局部等距。将目标上的度量相容无挠联络沿 \(\Phi\) 搬回，仍满足度量相容和无挠性；\cref{g1:prop:surface-connection-properties}的唯一性说明它就是源上的联络。因此 \(\Phi\) 也保持曲率，二维曲率表达给出 \(\widehat K\circ\Phi=K\)。
+
+	对每个切向量 \(V\)，使用梯度的定义和等距性，
+	\[
+		\widehat h\bigl(\Phi_*\operatorname{grad}_hK,\Phi_*V\bigr)
+		=h(\operatorname{grad}_hK,V)
+		=\mathrm{d}\widehat K(\Phi_*V).
+	\]
+	\(\Phi_*\) 在每点是同构，故 \(\Phi_*\operatorname{grad}_hK=\operatorname{grad}_{\widehat h}\widehat K\)，并保持其长度。于是 \(\Phi_*e_1=\widehat e_1\)；保持定向与度量还保证 \(\Phi_*J=\widehat J\Phi_*\)，所以 \(\Phi_*e_2=\widehat e_2\)。对偶后得到两条余标架等式。联络被保持且归一化标架对应，便有 \(\Phi^*\widehat\alpha=\alpha\)。
+
+	反过来，两条余标架等式使 \(\mathrm{d}\Phi\) 的核为零：若 \(\Phi_*V=0\)，则 \(\theta^1(V)=\theta^2(V)=0\)，故 \(V=0\)。两侧维数同为二，所以逆函数定理使 \(\Phi\) 成为局部微分同胚。又
+	\[
+		\Phi^*\widehat h
+		=\Phi^*\bigl((\widehat\theta^1)^2+(\widehat\theta^2)^2\bigr)
+		=(\theta^1)^2+(\theta^2)^2=h,
+	\]
+	并且 \(\Phi^*(\widehat\theta^1\wedge\widehat\theta^2)=\theta^1\wedge\theta^2\) 保持正向面积形式。因此 \(\Phi\) 是保持定向的局部等距。
+\end{proof}
+
+判据中的等式是在整个邻域上对一形式成立，不是只比较某个点的几个数。它也给出待求映射应满足的一阶方程：若 \(\theta^i=C^i_j\mathrm{d}x^j\)、\(\widehat\theta^i=\widehat C^i_a\mathrm{d}y^a\)，则
+\[
+	\widehat C^i_a(\Phi(x))\,\partial_j\Phi^a(x)=C^i_j(x).
+\]
+找到满足这些式子的局部映射，才得到等价。有限组标量相等只是对这个方程的必要限制；一般求解过程不能从这一个例子推广成不附条件的完整算法。
+
+\begin{example}[一个曲率梯度标架]\label{g1:exm:normalized-warped-surface}
+	在 \(x>0\) 的平面区域上取定向 \(\mathrm{d}x\wedge\mathrm{d}y>0\) 及度量
+	\[
+		h_f=\mathrm{d}x^2+f(x)^2\mathrm{d}y^2,\qquad f(x)>0.
+	\]
+	先用 \(E_1=\partial_x\)、\(E_2=f^{-1}\partial_y\) 及对偶 \(\eta^1=\mathrm{d}x\)、\(\eta^2=f\mathrm{d}y\)。由于
+	\[
+		\mathrm{d}\eta^1=0,\qquad
+		\mathrm{d}\eta^2=\frac{f'}f\eta^1\wedge\eta^2,
+	\]
+	\cref{g1:exm:surface-torsion-absorption}确定联络一形式为 \(\beta=(f'/f)\eta^2=f'\mathrm{d}y\)。再算
+	\[
+		\mathrm{d}\beta=f''\mathrm{d}x\wedge\mathrm{d}y
+		=\frac{f''}f\eta^1\wedge\eta^2,
+	\]
+	与曲率式比较得到 \(K=-f''/f\)。
+
+	现在取 \(f=e^{x^2}\)。因 \(f''=(2+4x^2)f\)，有
+	\[
+		K=-2-4x^2,\qquad\operatorname{grad}_{h_f}K=-8x\partial_x,
+		\qquad q=8x.
+	\]
+	所以归一化标架及余标架为
+	\[
+		e_1=-\partial_x,\qquad e_2=-f^{-1}\partial_y,
+		\qquad \theta^1=-\mathrm{d}x,\quad\theta^2=-f\mathrm{d}y.
+	\]
+	这里两个向量都改变了符号，是旋转 \(\pi\)，仍保持定向。旋转角为常数，故 \(\alpha=\beta=f'\mathrm{d}y=-2x\theta^2\)，从而 \(a=0,b=-2x\)。直接核验，
+	\[
+		\mathrm{d}\theta^1=0,\qquad
+		\mathrm{d}\theta^2=-2x\theta^1\wedge\theta^2,
+		\qquad \mathrm{d}\alpha=(2+4x^2)\theta^1\wedge\theta^2.
+	\]
+	同时 \(e_2(q)=0\)、\(e_1(b)=2\)，故式\eqref{g1:eq:normalized-surface-coefficients}给出的曲率为 \(-2-4x^2\)，与直接计算一致。\(x=0\) 处度量仍然光滑正定，但 \(\mathrm{d}K=0\)，不能再用曲率梯度来选 \(e_1\)。
+\end{example}
+
+\begin{example}[相同的曲率和梯度长度仍不足以确定度量]\label{g1:exm:same-curvature-different-metrics}
+	在同一个 \(x>0\) 区域取
+	\[
+		f_1(x)=e^{x^2},\qquad
+		I(x)=\int_0^x e^{-2t^2}\,\mathrm{d}t,\qquad
+		f_2(x)=e^{x^2}I(x).
+	\]
+	两函数均为正。因为 \(I'=e^{-2x^2}\)、\(I''=-4xI'\)，
+	\[
+		f_2''=f_1''I+2f_1'I'+f_1I''
+		=(2+4x^2)f_2.
+	\]
+	中间两项因 \(f_1'=2xf_1\) 而相消。因此两度量 \(h_i=\mathrm{d}x^2+f_i(x)^2\mathrm{d}y^2\) 具有完全相同的函数 \(K=-2-4x^2\)，而且 \(q=8x\)。归一化标架下却有
+	\[
+		a_1=a_2=0,\qquad b_1=-2x,\qquad
+		b_2=-2x-\frac{I'}I.
+	\]
+	由于 \(I'/I>0\)，两项 \(b\) 不相同。
+
+	还可以直接排除任何局部等距，连反向等距也包括在内。若局部等距写成 \(\Phi(x,y)=(X(x,y),Y(x,y))\)，曲率必须相等。函数 \(-2-4x^2\) 在 \(x>0\) 上严格单调，所以 \(X=x\)。将此代入 \(\Phi^*h_2=h_1\)，比较 \(\mathrm{d}x^2\) 的系数得 \(1+f_2(x)^2Y_x^2=1\)，故 \(Y_x=0\)。缩小到一个开矩形后，可写 \(Y=\psi(y)\)。再比较 \(\mathrm{d}y^2\) 的系数，得到
+	\[
+		|\psi'(y)|=\frac{f_1(x)}{f_2(x)}=\frac1{I(x)}.
+	\]
+	左边只依赖 \(y\)，右边随 \(x\) 严格变化，不可能在一个开矩形上相等。因此没有这样的局部等距。相同的 \(K,q\) 留下了未被测量的横向伸缩，而 \(b\) 或完整余标架能够识别这一区别。
+\end{example}
+
+在 \(\mathrm{d}K=0\) 的点，式\eqref{g1:eq:curvature-gradient-frame}的分母为零；若 \(K\) 在开集上恒定，则整个开集都不能用这种归一化。此时可以另找非零的几何数据，或保留适当的标架自由。是否有这样的数据、剩余群是否还能约化，都须针对所选结构继续分析；不能把“已在某一开集选定标架”当作所有点上完成了等价判定。
+
+\subsection{局部等价与整体单值}
+\label{g1:subsec:D03:03}
+
+上面的标架计算比较邻域中的几何。即使每个邻域都等价于同一个齐性模型，沿闭路接续这些等价时，也可能回到模型中的另一个位置或另一个标架。第十八章对平坦主联络用闭路运输记录单值，\cref{g1:prop:flat-principal-monodromy}的表示取值于结构群。本节的欧氏几何还记录位置，因此使用保向欧氏运动群 \(\operatorname{SE}(2)=\mathbb R^2\rtimes\operatorname{SO}(2)\)，其中一个元素作用为 \(z\mapsto Qz+t\)。
+
+\ProseParagraphBreak
+
+以下只使用将要明确写出的模型。设 \(p:\widetilde M\to M\) 为万有覆盖，\(\Gamma\) 为其左甲板变换群。我们把局部欧氏坐标接续为一个局部等距 \(\operatorname{dev}:\widetilde M\to\mathbb R^2\)，并给出同态 \(\rho:\Gamma\to\operatorname{SE}(2)\)，满足
+\begin{equation}\label{g1:eq:euclidean-developing-equivariance}
+	\operatorname{dev}(\gamma\cdot\widetilde x)
+	=\rho(\gamma)\operatorname{dev}(\widetilde x).
+\end{equation}
+这个式子比较绕路后的位置与标架变化：左边先改变覆盖片，右边在模型中施加欧氏运动。下面逐个给出 \(p,\operatorname{dev},\rho\) 并核验此式，不需要先假定一般平坦 Cartan 几何的整体展开定理。更换模型中的初始欧氏坐标 \(\operatorname{dev}'=a\circ\operatorname{dev}\)，其中 \(a\in\operatorname{SE}(2)\)，会将 \(\rho\) 改为 \(a\rho a^{-1}\)，这是将两边同时复合 \(a\) 的直接结果。
+
+\begin{example}[平圆柱的平移单值]\label{g1:exm:flat-cylinder-developing}
+	给定 \(\ell>0\)，令
+	\[
+		C_\ell=\mathbb R^2/\langle T\rangle,
+		\qquad T(x,y)=(x+\ell,y).
+	\]
+	平移保持欧氏度量，故 \(\mathrm{d}x^2+\mathrm{d}y^2\) 下降为 \(C_\ell\) 上的光滑度量。投影 \(p(x,y)=[x,y]\) 在宽度小于 \(\ell\) 的足够小开矩形上单射，给出均匀覆盖邻域；\(\mathbb R^2\) 单连通，所以它是万有覆盖。甲板变换为 \(T^n(x,y)=(x+n\ell,y)\)，\(n\in\mathbb Z\)。取
+	\[
+		\operatorname{dev}(x,y)=(x,y),\qquad
+		\rho(n)(u,v)=(u+n\ell,v).
+	\]
+	\(\rho(n+m)=\rho(n)\rho(m)\)，且 \(\operatorname{dev}\circ T^n=\rho(n)\circ\operatorname{dev}\)，故式\eqref{g1:eq:euclidean-developing-equivariance}成立。
+
+	各小矩形都等距于平面，因而 \(K=0\)。向量场 \(\partial_x,\partial_y\) 也在平移下不变，下降成整个圆柱上的平行正交标架。因此切丛的闭路平行移动全部为恒等。可是 \(\rho(1)\) 是长度为 \(\ell\) 的平移，并不平凡：线性 holonomy 没有记录这一位置变化。局部一形式 \(\mathrm{d}x\) 同样下降为全局闭一形式 \(\xi\)，沿一周圆柱有 \(\int\xi=\ell\)，故它不是一个全局实值函数的微分。
+\end{example}
+
+\cref{g1:fig:euclidean-cylinder-strip}将一个基本带的两条竖边按相同高度对应；一次绕行在覆盖平面上留下长度为 \(\ell\) 的端点差。圆柱的周期长度可以仅用度量和闭路恢复，因此不能由局部坐标选择消去。
+
+\input{Figures/AppendixD-CylinderStrip}
+
+\begin{proposition}[平圆柱的最短非平凡闭路]\label{g1:prop:cylinder-period-length}
+	在上例的平圆柱 \(C_\ell\) 上，所有不可缩的分段 \(C^1\) 闭路的长度至少为 \(\ell\)，且存在长度恰为 \(\ell\) 的不可缩闭路。因此若 \(C_\ell\) 与 \(C_{\ell'}\) 整体等距，则 \(\ell=\ell'\)。
+\end{proposition}
+\begin{proof}
+	将一条闭路从 \((x_0,y_0)\) 提升到 \(\mathbb R^2\)，终点必为 \((x_0+n\ell,y_0)\)，其中 \(n\in\mathbb Z\)。由\cref{g1:cor:closed-lift-criterion}，万有覆盖上的提升闭合当且仅当原环路可缩；这里 \(\mathbb R^2\) 的基本群平凡，所以不可缩恰等价于 \(n\ne0\)。投影是局部等距，故原曲线与提升曲线长度相同。提升曲线的欧氏长度不小于端点距离，因而
+	\[
+		L(\gamma)\ge |n|\ell\ge\ell.
+	\]
+	水平线段 \(t\mapsto(x_0+t\ell,y_0)\)、\(0\le t\le1\)，投影后是一条闭路，提升的端点差对应 \(n=1\)，所以它不可缩且长度恰为 \(\ell\)。整体等距是微分同胚，保持闭路的可缩性与曲线长度，故必须保持这个最小值。
+\end{proof}
+
+所以所有 \(C_\ell\) 的局部曲率都相同，切向量的平行移动单值也都平凡，仍有连续变化的整体周期数据。环面上的现象相似：若 \(\Lambda\subset\mathbb R^2\) 是满格，则平环面 \(\mathbb R^2/\Lambda\) 的覆盖空间仍为 \(\mathbb R^2\)，可取 \(\operatorname{dev}(z)=z\)、\(\rho(\lambda)(z)=z+\lambda\)。格向量记录两个方向的平移周期，不能从 \(K=0\) 中恢复。
+
+\ProseParagraphBreak
+
+即使完整欧氏单值 \(\rho\) 平凡，也只说明展开映射在各覆盖片上的取值相同。由式\eqref{g1:eq:euclidean-developing-equivariance}，此时可定义
+\[
+	\overline{\operatorname{dev}}(p(\widetilde x))
+	=\operatorname{dev}(\widetilde x).
+\]
+同一纤维的点相差甲板变换，故定义无关；在均匀覆盖邻域上使用一个局部逆即可看出它光滑且为局部等距。这个结论没有保证 \(\overline{\operatorname{dev}}\) 单射，也没有保证它覆盖整个 \(\mathbb R^2\)。
+
+\begin{example}[平凡单值不保证整体等价于平面]\label{g1:exm:trivial-monodromy-incomplete-model}
+	单位开圆盘 \(B\subset\mathbb R^2\) 带欧氏度量时，万有覆盖就是自身，\(\operatorname{dev}:B\hookrightarrow\mathbb R^2\) 为包含映射，\(\rho\) 平凡。它是单值且单射的局部等距，但不满射。圆盘凸，任意两点之间的欧氏线段仍在圆盘内，所以内在距离等于欧氏距离，直径为 \(2\)；整个欧氏平面的直径无界。因此圆盘也不可能通过另一个映射整体等距于平面。
+
+	单射性也可能失败。取 \(N=(0,\infty)\times\mathbb R\)，赋予度量 \(\mathrm{d}r^2+r^2\mathrm{d}t^2\)，并令
+	\[
+		D(r,t)=(r\cos t,r\sin t).
+	\]
+	其两个偏导线性无关，且 \(D^*(\mathrm{d}x^2+\mathrm{d}y^2)=\mathrm{d}r^2+r^2\mathrm{d}t^2\)，所以 \(D\) 是局部等距。\(N\) 是凸开集，故单连通；把它作为底流形时，万有覆盖可取恒等映射，单值仍平凡。然而 \(D(r,t+2\pi)=D(r,t)\)，所以展开映射并不单射，像也只是穿孔平面。
+\end{example}
+
+在这些例子中，局部结构方程、沿闭路的单值，以及展开映射的单射性和像分别控制不同问题。只有逐项确认所需的整体条件，才可以把局部等价提升为与给定模型的整体同构；某个规范下的系数相同或所有局部曲率为零，都不能代替这些检查。
+
+\begin{chaptersummary}
+	一个 \(G\)-结构规定了每点允许的标架，典范形式把标架坐标同真实切向量联系起来。相容联络的差是张量，它通过交替化改变挠率；在相应商空间中留下的类就是内蕴挠率。正交结构的内蕴挠率为零且无挠相容联络唯一，但其曲率可以非零。几乎复和接触模型则显示，适应标架的括号可能产生不能由联络选择消去的分量。
+
+	\ProseParagraphBreak
+
+	Cartan 联络在主 \(H\) 丛的每个切空间上给出到模型李代数 \(\mathfrak l\) 的同构，既再现竖直方向，又记录底空间方向；它的核为零。Ehresmann 主联络则用 \(\mathfrak h\) 值形式的核选择水平空间。只有在给出相容的分解后，才能把 Cartan 形式拆成主联络部分与切向部分。曲率为零时，结构方程可以局部积分成齐性模型，路径展开进一步描述了这种比较怎样沿路延伸。
+
+	\ProseParagraphBreak
+
+	等价问题需要同时处理标架自由和结构函数。在曲面上，非零的曲率梯度能够选出一组规范的正交标架，随后由联络系数及其变化检验度量；曲率函数相同本身仍不足够。这种归一化有明确的适用区域，不能直接跨过梯度为零的点。平圆柱的周期及模型中的开子域则表明，局部模型、整体单值和全局同构是不同层次的结论。
+\end{chaptersummary}
+
+\BookExercises
+
+习题依次讨论约化与挠率、Cartan 模型及曲面等价。计算时应明确保留的结构：固定度量、固定分布和固定接触形式允许的标架变化并不相同；讨论展开时则应同时写出模型、初值和路径的定义域。
+
+\begin{exercise}
+	\label{g1:ex:intrinsic-torsion-global-frame}
+	在 \(\mathbb R^2\) 上取标架 \(e_1=\partial_x\)、\(e_2=e^x\partial_y\)。将这个指定标架视为 \(G=\{I\}\) 的结构群约化。
+	\begin{enumerate}
+		\item 求对偶余标架以及唯一适应联络的挠率。
+		\item 证明不存在任何非空开集上的坐标 \((u,v)\)，使同时有 \(e_1=\partial_u\)、\(e_2=\partial_v\)。
+		\item 将第二个标架向量改为 \(\widetilde e_2=e^{-x}e_2\)，所得标架的内蕴挠率为零。这是否与内蕴挠率不随适应标架改变相矛盾？
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	(1) 对偶余标架为 \(\vartheta^1=\mathrm{d}x\)、\(\vartheta^2=e^{-x}\mathrm{d}y\)。由于 \(\mathfrak g=0\)，唯一适应联络满足 \(\nabla e_1=\nabla e_2=0\)。其挠率分量为
+	\[
+		\mathrm{d}\vartheta^1=0,\qquad
+		\mathrm{d}\vartheta^2=-e^{-x}\mathrm{d}x\wedge\mathrm{d}y
+		=-\vartheta^1\wedge\vartheta^2.
+	\]
+	因此 \(T(e_1,e_2)=-e_2\)。这里 \(C=V^*\otimes\mathfrak g=0\)，\(\operatorname{im}\delta=0\)，所以这一挠率本身就是内蕴挠率，处处非零。
+
+	(2) 直接计算 \([e_1,e_2]=e^x\partial_y=e_2\)，处处不为零。而同一坐标系中的两个坐标向量场必定对易，因此不可能在任何非空开集同时满足题设两式。
+
+	(3) 新标架为 \((\partial_x,\partial_y)\)，对偶形式均闭，其唯一适应联络无挠。但从旧标架到新标架的矩阵为 \(\operatorname{diag}(1,e^{-x})\)，并非恒等群 \(\{I\}\) 值函数，因此不是同一约化内允许的适应标架变换。题目改变了 \(G\)-结构本身，内蕴挠率可以随之改变。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:conformal-coframe-torsion-correction}
+	设 \(U\subset\mathbb R^2\) 为开集，\(f\in C^\infty(U)\)，在 \(U\) 上取度量
+	\[
+		g=e^{2f}(\mathrm{d}x^2+\mathrm{d}y^2)
+	\]
+	及正交单位余标架 \(\vartheta^1=e^f\mathrm{d}x\)、\(\vartheta^2=e^f\mathrm{d}y\)。在其对偶标架中，把度量联络矩阵写为
+	\[
+		a=\begin{pmatrix}0&-\eta\\\eta&0\end{pmatrix}.
+	\]
+	从无挠结构方程求出一形式 \(\eta\)，并在 \(f(x,y)=x^2+y\) 时写出结果。说明无挠为何不要求这两个余标架分量分别闭。
+\end{exercise}
+\begin{solution}
+	写 \(\eta=p\,\mathrm{d}x+q\,\mathrm{d}y\)。外微分为
+	\[
+		\mathrm{d}\vartheta^1=-e^ff_y\,\mathrm{d}x\wedge\mathrm{d}y,
+		\qquad
+		\mathrm{d}\vartheta^2=e^ff_x\,\mathrm{d}x\wedge\mathrm{d}y.
+	\]
+	方程 \(\mathrm{d}\vartheta+a\wedge\vartheta=0\) 的两个分量分别为
+	\[
+		\mathrm{d}\vartheta^1-\eta\wedge\vartheta^2
+		=-e^f(f_y+p)\,\mathrm{d}x\wedge\mathrm{d}y=0,
+	\]
+	\[
+		\mathrm{d}\vartheta^2+\eta\wedge\vartheta^1
+		=e^f(f_x-q)\,\mathrm{d}x\wedge\mathrm{d}y=0.
+	\]
+	故唯一解为 \(p=-f_y\)、\(q=f_x\)，即
+	\[
+		\eta=-f_y\,\mathrm{d}x+f_x\,\mathrm{d}y.
+	\]
+	当 \(f=x^2+y\) 时，\(\eta=-\mathrm{d}x+2x\,\mathrm{d}y\)。此时 \(\mathrm{d}\vartheta^1\) 处处非零，但它恰被 \(-\eta\wedge\vartheta^2\) 抵消。无挠要求 \(\mathrm{d}\vartheta+a\wedge\vartheta=0\)，所以余标架变化与联络作用要合在一起；只有联络矩阵也为零时，无挠才要求各余标架分量闭。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:almost-complex-variable-obstruction}
+	设 \(I\subset\mathbb R\) 是非空开区间，\(f\in C^\infty(I)\)。在 \(I\times\mathbb R^3\) 上取
+	\[
+		e_1=\partial_x,\quad e_2=\partial_y,\quad
+		e_3=\partial_z,\quad e_4=\partial_t+f(x)\partial_y,
+	\]
+	并按 \(Je_1=e_2\)、\(Je_3=e_4\)、\(J^2=-I\) 定义几乎复结构。
+	\begin{enumerate}
+		\item 计算 \(\mathcal K_J(e_1-\mathrm i e_2,e_3-\mathrm i e_4)\)。
+		\item 证明这个结构在整个 \(I\times\mathbb R^3\) 上有无挠适应联络，当且仅当 \(f\) 为常数。
+		\item 当 \(f=c\) 为常数时，给出实坐标，使 \(J\) 在坐标标架中的矩阵为标准常矩阵。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	(1) 唯一可能非零的基本括号为 \([e_1,e_4]=f'(x)e_2\)。令 \(Z=e_1-\mathrm i e_2\)、\(W=e_3-\mathrm i e_4\)，则
+	\[
+		[Z,W]=-\mathrm i f'(x)e_2
+		=\frac{f'(x)}2(Z-\overline Z),
+	\]
+	故 \(\mathcal K_J(Z,W)=-\tfrac12 f'(x)\overline Z\)。
+
+	(2) 若有无挠适应联络，由\cref{g1:prop:almost-complex-intrinsic-component}，上一式处处为零，所以 \(f'=0\) 于 \(I\)。区间连通，故 \(f\) 为常数。反之，若 \(f=c\)，所有基本括号都为零。规定 \(\nabla e_i=0\)，得到保持 \(J\) 的联络，且 \(T(e_i,e_j)=-[e_i,e_j]=0\)。由于挠率是张量，这就说明其在所有输入上为零。
+
+	(3) 取新坐标 \((u,v,w,s)=(x,y-ct,z,t)\)，逆变换为 \((x,y,z,t)=(u,v+cs,w,s)\)。因此
+	\[
+		\partial_u=e_1,\quad \partial_v=e_2,\quad
+		\partial_w=e_3,\quad \partial_s=e_4.
+	\]
+	在此坐标中，\(J\partial_u=\partial_v\)、\(J\partial_w=\partial_s\)，故确为标准常矩阵。这个结论来自本模型的显式换坐标，不需要调用一般的几乎复可积性定理。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:contact-form-scaling-intrinsic}
+	在 \(\mathbb R^3\) 上令 \(\alpha=\mathrm{d}z-x\,\mathrm{d}y\)、\(D=\ker\alpha\)，并令 \(h\) 为处处非零光滑实函数，\(\widetilde\alpha=h\alpha\)。
+	\begin{enumerate}
+		\item 证明两一形式定义同一个 \(G_D\)-结构，并计算 \(\widetilde\alpha\wedge\mathrm{d}\widetilde\alpha\)。
+		\item 对 \(X,Y\in\Gamma(D)\)，证明
+		\[
+			\alpha([X,Y])=-\mathrm{d}\alpha(X,Y),\qquad
+			\widetilde\alpha([X,Y])=h\alpha([X,Y]).
+		\]
+		解释为什么右边的倍数变化没有改变商丛值括号张量 \(\mathcal B\)。
+		\item 设 \((A,B,C)\) 为正文中的标架。求将它改成满足 \(u^*\widetilde\alpha=\varepsilon^3\) 的标架的一种方法，并说明该变换是否保持严格条件 \(u^*\alpha=\varepsilon^3\)。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	(1) \(h\) 处处非零，故 \(\ker\widetilde\alpha=\ker\alpha=D\)。\(P_D\) 只由标架的前两列是否张成 \(D\) 决定，所以约化相同。又
+	\[
+		\mathrm{d}\widetilde\alpha=\mathrm{d}h\wedge\alpha+h\,\mathrm{d}\alpha,
+	\]
+	从而
+	\[
+		\widetilde\alpha\wedge\mathrm{d}\widetilde\alpha
+		=h^2\alpha\wedge\mathrm{d}\alpha
+		=-h^2\mathrm{d}x\wedge\mathrm{d}y\wedge\mathrm{d}z\neq0.
+	\]
+	其中含两次 \(\alpha\) 的项为零。
+
+	(2) 由一形式外微分公式及 \(\alpha(X)=\alpha(Y)=0\)，有 \(\mathrm{d}\alpha(X,Y)=-\alpha([X,Y])\)。第二式直接由 \(\widetilde\alpha=h\alpha\) 得出。这里 \(\mathcal B(X,Y)\) 是 \([X,Y]\) 在 \(\mathrm{T}M/D\) 中的类，从未用 \(\alpha\) 选择数值坐标。\(\alpha\) 诱导同构 \(\mathrm{T}M/D\to\mathbb R\)，\(\widetilde\alpha\) 则把这个同构乘以 \(h\)。变的是同一个商丛元素的标量表示，商丛值张量本身不变。
+
+	(3) 取 \((A,B,C/h)\)。前两列仍属于 \(D\)，且 \(\widetilde\alpha(C/h)=1\)，所以满足新形式的严格条件。相对于原标架，变换矩阵为 \(\operatorname{diag}(1,1,h^{-1})\)，属于 \(G_D\)。但 \(\alpha(C/h)=h^{-1}\)，故它只有在 \(h=1\) 的点才保持原来的严格条件；要在整个区域保持，则必须有 \(h\equiv1\)。这正体现了保留分布与保留一个指定一形式的区别。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:cartan-trivial-bundle}
+	设 \(L\) 为有限维实李群，\(H\subseteq L\) 为闭子群，\(U\) 为无边界光滑流形。给定 \(B\in\Omega^1(U;\mathfrak l)\)，在主右 \(H\) 丛 \(P=U\times H\) 上定义
+	\[
+		\omega_{(x,h)}(v,\eta)
+		=\operatorname{Ad}_{h^{-1}}B_x(v)+(\theta_H)_h(\eta).
+	\]
+	证明：\(\omega\) 为模型 \(L/H\) 的 Cartan 联络，当且仅当每个 \(x\in U\) 处
+	\[
+		B_x\bmod\mathfrak h:\mathrm{T}_xU\longrightarrow\mathfrak l/\mathfrak h
+	\]
+	为同构。并证明，在这一条件下，\(\omega\) 平坦当且仅当
+	\[
+		\mathrm{d}B+\tfrac12[B\wedge B]=0.
+	\]
+	这是否要求 \(B_x:\mathrm{T}_xU\to\mathfrak l\) 本身为同构？
+\end{exercise}
+\begin{solution}
+	固定 \(k\in H\)。右作用为 \((x,h)k=(x,hk)\)，Maurer--Cartan 形式的右平移律给出
+	\[
+		\begin{aligned}
+			(R_k^*\omega)_{(x,h)}(v,\eta)
+			&=\operatorname{Ad}_{(hk)^{-1}}B_x(v)
+			+(\theta_H)_{hk}((\mathrm{d}R_k)_h\eta)\\
+			&=\operatorname{Ad}_{k^{-1}}
+			\bigl(\operatorname{Ad}_{h^{-1}}B_x(v)+(\theta_H)_h(\eta)\bigr).
+		\end{aligned}
+	\]
+	故等变性对任意 \(B\) 成立。基本向量为 \((0,X_h^L)\)，代入即得 \(\omega(0,X_h^L)=X\)，故垂直再现也总成立。
+
+	先假定商映射为同构。若 \(\omega(v,\eta)=0\)，取模 \(\mathfrak h\)，得
+	\[
+		\operatorname{Ad}_{h^{-1}}(B_x(v)+\mathfrak h)=0,
+	\]
+	从而 \(v=0\)。随后 \(\theta_H(\eta)=0\) 给出 \(\eta=0\)。商同构还给出 \(\dim U+\dim H=\dim L\)，所以 \(\omega\) 为同维空间之间的单射，因而是同构。
+
+	反之，若 \(\omega\) 为 Cartan 联络，在 \((x,e)\) 处它是
+	\[
+		(v,X)\longmapsto B_x(v)+X
+	\]
+	这个线性同构。任意 \(Y\in\mathfrak l\) 可唯一如此表示，取商说明 \(B_x\bmod\mathfrak h\) 满射。若 \(B_x(v)\in\mathfrak h\)，则 \((v,-B_x(v))\) 被映到零，同构性使 \(v=0\)，故商映射也单射。
+
+	令 \(s(x)=(x,e)\)，则 \(s^*\omega=B\)，从而
+	\[
+		s^*\Omega=\mathrm{d}B+\tfrac12[B\wedge B].
+	\]
+	若 \(\Omega=0\)，右端当然为零。反过来，若 \(s^*\Omega=0\)，则曲率在截面切方向上的两个输入取值为零；水平性使插入任何垂直分量的项也为零。由于截面方向与垂直方向张成 \(\mathrm{T}_{(x,e)}P\)，曲率在 \(s(U)\) 上为零；右等变性再将零传到 \((x,h)\) 的每一点。
+
+	\(B_x\) 本身不必、通常也不可能满射到 \(\mathfrak l\)：若 \(\dim H>0\)，源维数比目标小 \(\dim H\)。它只需在取商后为同构；缺少的 \(\mathfrak h\) 方向由 \(\theta_H\) 提供。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:cartan-spherical-model}
+	沿用\cref{g1:exm:cartan-euclidean-surface}的定向二维黎曼流形及正向正交标架丛 \(P\)，保留 \(\alpha,\theta^1,\theta^2,J_0\) 的约定。现在取
+	\[
+		L=\operatorname{SO}(3),\qquad
+		H=\{\operatorname{diag}(h,1):h\in\operatorname{SO}(2)\},
+	\]
+	并在同一个 \(P\) 上定义 \(\mathfrak{so}(3)\) 值形式
+	\[
+		\widehat\omega=
+		\begin{pmatrix}
+			0&-\alpha&\theta^1\\
+			\alpha&0&\theta^2\\
+			-\theta^1&-\theta^2&0
+		\end{pmatrix}.
+	\]
+	证明它是模型为单位球面 \(\operatorname{SO}(3)/\operatorname{SO}(2)\) 的 Cartan 联络，直接计算其曲率，并判定它何时平坦。解释为什么单位球面的这个 Cartan 几何平坦，与该球面的欧氏 Cartan 几何不平坦并不矛盾。
+\end{exercise}
+\begin{solution}
+	先将 \(P\) 的结构群通过 \(h\mapsto\operatorname{diag}(h,1)\) 识别为给定的 \(H\)。记 \(A=J_0\alpha\) 和 \(\theta=(\theta^1,\theta^2)^{\mathsf T}\)，则
+	\[
+		\widehat\omega=
+		\begin{pmatrix}A&\theta\\-\theta^{\mathsf T}&0\end{pmatrix}.
+	\]
+	\(\widehat\omega\) 反对称，因而取值于 \(\mathfrak{so}(3)\)。主联络满足 \(R_h^*A=h^{-1}Ah\)，焊接形式满足 \(R_h^*\theta=h^{-1}\theta\)。由于 \(h^{-1}=h^{\mathsf T}\)，整个分块矩阵满足
+	\[
+		R_h^*\widehat\omega
+		=\operatorname{diag}(h,1)^{-1}\widehat\omega
+		\operatorname{diag}(h,1).
+	\]
+	垂直输入时 \(\theta=0\)，而 \(A\) 再现 \(\mathfrak{so}(2)\)，故再现公理成立。若 \(\widehat\omega(V)=0\)，先由 \(\theta(V)=0\) 知 \(V\) 垂直，再由 \(A(V)=0\) 得 \(V=0\)。\(\dim P=\dim\mathfrak{so}(3)=3\)，所以逐点为同构。
+
+	\(\operatorname{SO}(3)\) 在单位球面上传递，固定北极的稳定子恰为上述 \(H\)。由\cref{g1:prop:transitive-action-model}，商模型是单位球面。矩阵李代数中的曲率为
+	\(\widehat\Omega=\mathrm{d}\widehat\omega+\widehat\omega\wedge\widehat\omega\)。逐项相乘得
+	\[
+		\widehat\Omega=
+		\begin{pmatrix}
+			0&-\mathrm{d}\alpha-\theta^1\wedge\theta^2&
+			\mathrm{d}\theta^1-\alpha\wedge\theta^2\\
+			\mathrm{d}\alpha+\theta^1\wedge\theta^2&0&
+			\mathrm{d}\theta^2+\alpha\wedge\theta^1\\
+			-\mathrm{d}\theta^1+\alpha\wedge\theta^2&
+			-\mathrm{d}\theta^2-\alpha\wedge\theta^1&0
+		\end{pmatrix}.
+	\]
+	无挠结构方程使最后一列和最后一行的非对角项为零。又有 \(\mathrm{d}\alpha=-(K\circ\pi)\theta^1\wedge\theta^2\)，所以
+	\[
+		\widehat\Omega=
+		\begin{pmatrix}
+			0&(K\circ\pi-1)\theta^1\wedge\theta^2&0\\
+			(1-K\circ\pi)\theta^1\wedge\theta^2&0&0\\
+			0&0&0
+		\end{pmatrix}.
+	\]
+	焊接形式在底空间方向给出余标架，故 \(\theta^1\wedge\theta^2\) 在这些方向上非零。因此球面模型的 Cartan 曲率为零，当且仅当 \(K\equiv1\)。
+
+	同一底空间和同一主 \(\operatorname{SO}(2)\) 丛可以承载不同模型的 Cartan 联络。欧氏模型中两个平移方向的括号为零，曲率的旋转部分是 \(J_0\,\mathrm{d}\alpha\)；球面模型中对应方向的括号产生附加项 \(J_0\theta^1\wedge\theta^2\)。单位球面与球面模型局部相同，所以后者平坦；它与欧氏平面局部不等距，所以前者不平坦。平坦性所比较的模型已经改变。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:cartan-development-path-dependence}
+	取加法李群 \(L=\mathbb R^2\)、平凡子群 \(H=\{0\}\)，于是主丛总空间就是 \(P=M=\mathbb R^2\)。定义
+	\[
+		\omega=\begin{pmatrix}\mathrm{d}x\\e^x\,\mathrm{d}y\end{pmatrix}.
+	\]
+	证明这给出一个非平坦 Cartan 几何。比较从 \((0,0)\) 到 \((1,1)\) 的两条折线路径：第一条先沿 \(x\) 轴到 \((1,0)\)，再竖直到终点；第二条先沿 \(y\) 轴到 \((0,1)\)，再水平到终点。求各自展开路径的终点，说明在单连通底空间上，曲率不为零时为何仍不能只由路径终点定义展开映射。
+\end{exercise}
+\begin{solution}
+	在坐标基下，\(\omega\) 的矩阵为 \(\operatorname{diag}(1,e^x)\)，行列式始终为正，所以逐点可逆。结构群平凡，等变性和再现条件没有额外要求，故 \(\omega\) 是 Cartan 联络。加法李代数的括号为零，因而
+	\[
+		\Omega=\mathrm{d}\omega
+		=\begin{pmatrix}0\\e^x\,\mathrm{d}x\wedge\mathrm{d}y\end{pmatrix}\ne0.
+	\]
+	模型上的 Maurer--Cartan 形式是恒等余标架。展开 \(g=(u,v)\) 满足
+	\[
+		u'=x',\qquad v'=e^{x(t)}y',\qquad
+		(u(0),v(0))=(0,0).
+	\]
+	故 \(u(1)=1\)，而 \(v(1)=\int_\gamma e^x\,\mathrm{d}y\)。
+
+	沿第一条路径，水平段贡献为零，竖直段 \(x=1\)，所以 \(v(1)=e\)，展开终点是 \((1,e)\)。沿第二条路径，竖直段 \(x=0\)，随后水平段没有贡献，所以展开终点是 \((1,1)\)。两条路径在 \(\mathbb R^2\) 中定端点同伦，却有不同的展开终点；单连通性不能消除曲率造成的路径依赖。
+
+	差值还可以直接由曲率看出。将第一条路径与第二条的反向拼接，得到单位正方形的正向边界；Stokes 公式给出
+	\[
+		e-1
+		=\int_{\partial[0,1]^2}e^x\,\mathrm{d}y
+		=\int_{[0,1]^2}e^x\,\mathrm{d}x\wedge\mathrm{d}y.
+	\]
+	在这个交换模型中，路径展开的差恰好由曲率的面积积分表示。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:cartan-one-dimensional-completeness}
+	取 \(L=\mathbb R\)、\(H=\{0\}\)，并在 \(M=\mathbb R\) 上给定 \(\omega=f(x)\,\mathrm{d}x\)，其中 \(f:\mathbb R\to(0,\infty)\) 光滑。证明这总是平坦 Cartan 联络。令
+	\[
+		F(x)=\int_0^x f(s)\,\mathrm{d}s.
+	\]
+	求从 \(x_0\) 出发的路径展开，刻画 \(F\) 的像，并证明由 \(\omega(E)=1\) 定义的向量场 \(E\) 完备，当且仅当
+	\[
+		\int_0^\infty f(s)\,\mathrm{d}s=\infty,
+		\qquad
+		\int_{-\infty}^0 f(s)\,\mathrm{d}s=\infty.
+	\]
+	分别讨论 \(f=1\) 与 \(f=e^x\)，说明即使底空间是单连通的整条实直线，平坦性也不保证所有模型运动都能无限延拓。
+\end{exercise}
+\begin{solution}
+	\(f>0\) 保证 \(\omega\) 逐点可逆，另外两条 Cartan 公理在平凡结构群下自动成立。加法李代数的括号为零，而一维流形上二形式为零，故 \(\Omega=\mathrm{d}(f\,\mathrm{d}x)=0\)。
+
+	若 \(\gamma(t)=x(t)\) 且 \(x(0)=x_0\)，展开方程为 \(g'=f(x)x'\)、\(g(0)=0\)。由链式法则，
+	\[
+		g(t)=F(x(t))-F(x_0).
+	\]
+	因此此处展开确实只依赖当前终点。又因为 \(F'=f>0\)，\(F\) 严格递增且处处为局部微分同胚。记扩展实数
+	\[
+		a=-\int_{-\infty}^0 f(s)\,\mathrm{d}s,\qquad
+		b=\int_0^\infty f(s)\,\mathrm{d}s.
+	\]
+	单调性及积分定义给出 \(\lim_{x\to-\infty}F(x)=a\)、\(\lim_{x\to+\infty}F(x)=b\)。由介值定理，\(F\) 将 \(\mathbb R\) 双射到 \((a,b)\)；局部光滑逆拼接成光滑全局逆，故它是微分同胚。
+
+	由 \(\omega(E)=1\) 得 \(E=f^{-1}\partial_x\)。其过 \(x_0\) 的积分曲线满足
+	\[
+		F(x(t))=F(x_0)+t,\qquad
+		x(t)=F^{-1}(F(x_0)+t).
+	\]
+	该式恰在
+	\[
+		a-F(x_0)<t<b-F(x_0)
+	\]
+	上有定义。若某个有限端点能在 \(\mathbb R\) 中继续，连续性会使该端点的 \(F\) 值属于 \((a,b)\)，与它等于 \(a\) 或 \(b\) 矛盾，所以这是最大定义区间。于是 \(E\) 的所有积分曲线在整个实时间轴上存在，当且仅当 \(a=-\infty\)、\(b=\infty\)，即题述两个积分均发散。
+
+	当 \(f=1\) 时，\(F(x)=x\)，\(E=\partial_x\) 完备。当 \(f=e^x\) 时，
+	\[
+		F(x)=e^x-1,\qquad
+		F(\mathbb R)=(-1,\infty),\qquad
+		x(t)=\log(e^{x_0}+t).
+	\]
+	这条积分曲线只在 \(t>-e^{x_0}\) 上存在，故 \(E=e^{-x}\partial_x\) 不完备。底空间的拓扑与平坦性均没有改变，但模型中的匀速负向运动在有限时间后离开了 \(F(\mathbb R)\)。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:rotating-plane-frame-gauge}
+	在定向欧氏平面上从标架 \((\partial_x,\partial_y)\) 出发，将标架在点 \((x,y)\) 处旋转角度 \(x\)。求新的余标架 \(\theta^1,\theta^2\) 和联络一形式 \(\alpha\)，并直接核验
+	\[
+		\mathrm{d}\theta^1=\alpha\wedge\theta^2,\qquad
+		\mathrm{d}\theta^2=-\alpha\wedge\theta^1,\qquad
+		\mathrm{d}\alpha=0.
+	\]
+	说明非零的 \(\alpha\) 为何不表示度量发生改变，也不表示曲率非零。
+\end{exercise}
+\begin{solution}
+	旋转后的标架为
+	\[
+		e_1=\cos x\,\partial_x+\sin x\,\partial_y,\qquad
+		e_2=-\sin x\,\partial_x+\cos x\,\partial_y.
+	\]
+	对偶余标架按旋转矩阵的逆变换，得到
+	\[
+		\theta^1=\cos x\,\mathrm{d}x+\sin x\,\mathrm{d}y,\qquad
+		\theta^2=-\sin x\,\mathrm{d}x+\cos x\,\mathrm{d}y.
+	\]
+	原标架的联络一形式为零，换架公式给出 \(\alpha=\mathrm{d}x\)。也可直接计算 \(\nabla_Ve_1=\mathrm{d}x(V)e_2\) 得到相同结果。求外微分，
+	\[
+		\begin{aligned}
+			\mathrm{d}\theta^1&=\cos x\,\mathrm{d}x\wedge\mathrm{d}y
+			=\mathrm{d}x\wedge\theta^2,\\
+			\mathrm{d}\theta^2&=-\sin x\,\mathrm{d}x\wedge\mathrm{d}y
+			=-\mathrm{d}x\wedge\theta^1,
+		\end{aligned}
+	\]
+	而 \(\mathrm{d}\alpha=\mathrm{d}(\mathrm{d}x)=0\)。因此挠率与曲率仍为零。
+
+	将两个余标架平方相加，混合项抵消，得到 \((\theta^1)^2+(\theta^2)^2=\mathrm{d}x^2+\mathrm{d}y^2\)。度量没有改变；非零的 \(\alpha\) 记录所选标架随位置旋转的速率。曲率比较不同方向上的变化能否相容，这里由 \(\mathrm{d}\alpha=0\) 表示，不能仅由 \(\alpha\) 是否为零判断。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:normalized-curvature-hessian}
+	设 \((U,h)\) 为定向光滑黎曼度量曲面，\(\mathrm{d}K\) 处处非零。使用式\eqref{g1:eq:curvature-gradient-frame}的归一化标架，并写 \(\alpha=a\theta^1+b\theta^2\)。对
+	\[
+		\operatorname{Hess}K(V,W)=h(\nabla_V\operatorname{grad}_hK,W),
+	\]
+	证明其在 \(e_1,e_2\) 下的矩阵为
+	\[
+		\begin{pmatrix}e_1(q)&e_2(q)\\e_2(q)&qb\end{pmatrix}.
+	\]
+	再证明曲率水平集沿单位切向量 \(e_2\) 定向时，其有向测地曲率等于 \(b\)。这里采用第九章的约定 \(k_g=h(\nabla_TT,JT)\)。
+\end{exercise}
+\begin{solution}
+	由 \(\operatorname{grad}_hK=qe_1\) 与联络公式，
+	\[
+		\nabla_{e_1}\operatorname{grad}_hK=e_1(q)e_1+qa e_2,
+		\qquad
+		\nabla_{e_2}\operatorname{grad}_hK=e_2(q)e_1+qb e_2.
+	\]
+	分别与 \(e_1,e_2\) 作内积，先得到矩阵
+	\[
+		\begin{pmatrix}e_1(q)&qa\\e_2(q)&qb\end{pmatrix}.
+	\]
+	由式\eqref{g1:eq:normalized-surface-coefficients}中的 \(qa=e_2(q)\)，即得所求对称矩阵。也可以由无挠性直接检查对称性：
+	\[
+		\operatorname{Hess}K(V,W)-\operatorname{Hess}K(W,V)
+		=VW(K)-WV(K)-[V,W](K)=0.
+	\]
+	这里展开 Hessian 时用了 \(\operatorname{Hess}K(V,W)=V(WK)-(\nabla_VW)K\)。
+
+	因为 \(\mathrm{d}K\ne0\)，每个曲率水平集在局部是一条光滑曲线；\(e_2(K)=0\) 且 \(|e_2|_h=1\)，故可按 \(e_2\) 定向并用弧长参数化。其切向量 \(T=e_2\) 满足
+	\[
+		\nabla_TT=\nabla_{e_2}e_2=-b e_1,\qquad JT=Je_2=-e_1.
+	\]
+	于是 \(k_g=h(-be_1,-e_1)=b\)。因此归一化后的系数 \(b\) 同时记录 Hessian 的横向分量和曲率水平线的有向测地弯曲。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:warped-surface-local-symmetries}
+	在半平面 \(x>0\) 上赋予度量 \(h=\mathrm{d}x^2+e^{2x^2}\mathrm{d}y^2\) 及定向 \(\mathrm{d}x\wedge\mathrm{d}y>0\)。证明任意保持定向的局部自等距，在每个足够小的连通邻域内都形如
+	\[
+		\Phi(x,y)=(x,y+c)
+	\]
+	其中 \(c\) 为常数；反之，这些映射确实是等距。再求反转定向的局部自等距。
+\end{exercise}
+\begin{solution}
+	\cref{g1:exm:normalized-warped-surface}已计算 \(K=-2-4x^2\)，在 \(x>0\) 上严格单调。若 \(\Phi=(X,Y)\) 是局部自等距，曲率保持性给出 \(-2-4X^2=-2-4x^2\)。由于源、目标的第一坐标都为正，只能有 \(X=x\)。
+
+	将其代入度量拉回式，得到
+	\[
+		\mathrm{d}x^2+e^{2x^2}(Y_x\mathrm{d}x+Y_y\mathrm{d}y)^2
+		=\mathrm{d}x^2+e^{2x^2}\mathrm{d}y^2.
+	\]
+	比较 \(\mathrm{d}x^2\) 系数，\(Y_x=0\)；比较 \(\mathrm{d}y^2\) 系数，\(Y_y^2=1\)。在一个小连通邻域内，连续且不为零的 \(Y_y\) 符号恒定。Jacobian 行列式恰为 \(Y_y\)，所以保持定向时有 \(Y_y=1\)，从而 \(\mathrm{d}(Y-y)=0\)，得到 \(Y=y+c\)。反转定向时有 \(Y_y=-1\)，同理得到 \(Y=-y+c\)。
+
+	反向代入即可核验：这两类映射都保持 \(x\) 和 \(\mathrm{d}y^2\)，故保持度量，Jacobian 的符号分别为正、负。局部计算因而确定了全部局部自等距，而非只找到其中一族。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:cylinder-local-isometry-covering}
+	给定 \(\ell>0\) 与整数 \(m\ge2\)。对平圆柱
+	\[
+		C_{m\ell}=\mathbb R^2/(m\ell\mathbb Z\times\{0\}),\qquad
+		C_\ell=\mathbb R^2/(\ell\mathbb Z\times\{0\}),
+	\]
+	考察映射 \(F([x,y]_{m\ell})=[x,y]_\ell\)。证明它良定义，是保持定向的局部等距及 \(m\) 叶覆盖，但不是整体等距同构。计算一周源圆柱闭路在目标中的绕行次数，并写出两侧展开单值的对应关系。说明即使两边的切丛平行移动单值都平凡，这个覆盖仍不可能是单射。
+\end{exercise}
+\begin{solution}
+	源中的两个代表元相差 \((km\ell,0)\)，它们在目标中也相差一个允许的平移，所以 \(F\) 良定义。两个商投影的局部逆将 \(F\) 表示为欧氏平面中的恒等映射，故 \(F\) 光滑、保持定向且局部等距。
+
+	对目标中的 \([x,y]_\ell\)，所有原像恰为
+	\[
+		[x+j\ell,y]_{m\ell},\qquad j=0,1,\ldots,m-1.
+	\]
+	它们两两不同，因为 \((j-k)\ell\) 不是非零的 \(m\ell\) 整数倍。取目标中由宽度小于 \(\ell\) 的小矩形给出的坐标域，它在源中的逆像分成这 \(m\) 个互不相交的小矩形，每一片由 \(F\) 同胚地映到原坐标域。因此 \(F\) 是 \(m\) 叶覆盖，且 \(m\ge2\) 说明它不单射。
+
+	源中一周闭路可写为 \(t\mapsto[x_0+tm\ell,y_0]_{m\ell}\)、\(0\le t\le1\)。在目标中它的平面提升仍从 \((x_0,y_0)\) 走到 \((x_0+m\ell,y_0)\)，故绕行次数为 \(m\)。相应地，基本群上的同态为 \(n\mapsto mn\)。若两边都取恒等的平面展开映射，则
+	\[
+		\rho_{m\ell}(n)(u,v)=(u+nm\ell,v)
+		=\rho_\ell(mn)(u,v).
+	\]
+	两侧都有由 \(\partial_x,\partial_y\) 下降的整体平行标架，所以切丛平行移动单值平凡；展开单值却分别记录周期 \(m\ell\) 与 \(\ell\)。它们的最短不可缩闭路长度不同，由\cref{g1:prop:cylinder-period-length}，甚至不存在其他整体等距把这两个圆柱识别。局部等距与有限叶覆盖均不取消这个整体周期差异。
+\end{solution}

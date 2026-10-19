@@ -1,0 +1,385 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 13.1 常微分方程与局部流
+% 纲要位置：几何学计划纲要.md，第 606 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 局部存在唯一性及最大解区间
+% * 初值与参数的光滑依赖
+% * 流的局部群性质
+% * 时间依赖向量场与演化映射
+% 
+% 纲要内容结束
+
+\section{常微分方程与局部流}
+\label{g1:sec:1301}
+
+向量场在每个点指定一个瞬时速度。若让一个点始终按所在位置的速度运动，就得到积分曲线；若同时移动一片邻域中的所有点，就希望得到一族光滑变换。后一种说法比“每个初值各有一条解”要求更多：不同初值的解必须能在共同时间区间上比较，终点要光滑地依赖起点，而且先运动一段时间再继续运动，应与一次运动相应的总时间一致。这些要求将把微分方程的解组织成局部流。
+
+\ProseParagraphBreak
+
+本节主体中的流形均为有限维、Hausdorff、第二可数的无边界光滑流形，向量场均光滑。\cref{g1:def:smooth-tensor-field}已把向量场定义为切丛的光滑截面，因此在局部坐标中，其分量是光滑函数。我们先在欧氏空间重建所需的初值理论，再说明换图与延拓为何相容。边界点的双侧运动还需要向量场切于边界的条件，留到下一节单独处理。
+
+\subsection{局部存在唯一性及最大解区间}
+\label{g1:subsec:1301:01}
+
+\begin{definition}
+	\label{g1:def:integral-curve}
+	设 \(M\) 为无边界光滑流形，\(X\in\mathfrak X(M)\)。若开区间 \(I\subset\mathbb R\) 上的光滑曲线 \(\gamma:I\to M\) 满足
+	\[
+		\gamma'(t)=X_{\gamma(t)}\qquad(t\in I),
+	\]
+	就称 \(\gamma\) 为 \(X\) 的\term[jifenquxian]{积分曲线}[integral curve]。给定 \(t_0\in I\) 和 \(p\in M\) 的条件 \(\gamma(t_0)=p\) 称为初值。常值曲线也包括在定义中。
+\end{definition}
+
+在坐标 \(x=(x^1,\ldots,x^n)\) 中写 \(X=\sum_i a^i\partial_{x^i}\)，积分曲线条件成为
+\[
+	\frac{\mathrm{d}x^i(\gamma(t))}{\mathrm{d}t}=a^i(\gamma(t)).
+\]
+链式法则说明这组方程与所用坐标无关。为同时处理参数与随后出现的时间依赖情形，先考虑右端 \(F(t,z,\lambda)\)，其中 \(z\in\mathbb R^n\) 是未知位置，\(\lambda\in\mathbb R^\ell\) 是固定参数。没有参数时取 \(\ell=0\)。
+
+\begin{theorem}[局部初值问题]
+	\label{g1:thm:ode-local-existence-uniqueness}
+	设 \(\Omega\subset\mathbb R\times\mathbb R^n\times\mathbb R^\ell\) 开，\(F:\Omega\to\mathbb R^n\) 光滑，且 \((t_0,z_0,\lambda_0)\in\Omega\)。则存在 \(a>0\) 和 \(t_0,z_0,\lambda_0\) 的开邻域 \(T,B,\Lambda\)，使对所有 \((\tau,y,\lambda)\in T\times B\times\Lambda\)，初值问题
+	\begin{equation}
+		\label{g1:eq:parameter-ode-initial-value}
+		\frac{\mathrm{d}z}{\mathrm{d}t}=F(t,z,\lambda),\qquad z(\tau)=y
+	\end{equation}
+	在 \(|t-\tau|<a\) 上有解。任意两条同参数、同初值的解，在包含初始时刻的公共区间上相同。每条解对时间光滑。
+\end{theorem}
+\begin{proof}
+	平移符号后仍保留基点记号。由 \(\Omega\) 开，可取 \(\delta,r,\rho>0\)，使紧乘积
+	\[
+		K=[t_0-2\delta,t_0+2\delta]\times\overline B_{2r}(z_0)\times\overline B_\rho(\lambda_0)
+	\]
+	包含在 \(\Omega\) 中。若没有参数，省略最后因子。连续函数在紧集上有界，故存在 \(C,L\geq0\) 使 \(|F|\leq C\)、\(\|\mathrm{D}_zF\|\leq L\) 在 \(K\) 上成立。对固定时间及参数，沿大球中的线段积分导数，得到
+	\[
+		|F(t,z,\lambda)-F(t,w,\lambda)|\leq L|z-w|.
+	\]
+	取 \(T=(t_0-\delta,t_0+\delta)\)、\(B=B_r(z_0)\)，再取稍小的参数球 \(\Lambda\subset B_\rho(\lambda_0)\)。选择 \(0<a<\delta\)，使 \(aC<r\)、\(q=aL<1\)。即使 \(C\) 或 \(L\) 为零，也可以这样选择。
+
+	改用相对时间 \(s=t-\tau\)。在所有取值于 \(\overline B_{2r}(z_0)\) 的连续路径 \(u:[-a,a]\to\mathbb R^n\) 上，定义
+	\[
+		(\mathcal T u)(s)=y+\int_0^s F(\tau+v,u(v),\lambda)\,\mathrm{d}v.
+	\]
+	积分公式把速度累积成位置；它的不动点正是待求解。由 \(|y-z_0|<r\) 与 \(aC<r\)，\(\mathcal Tu\) 仍取值于大闭球。用一致距离 \(\|u-w\|_\infty=\sup_{|s|\leq a}|u(s)-w(s)|\)，有
+	\[
+		\|\mathcal Tu-\mathcal Tw\|_\infty\leq q\|u-w\|_\infty.
+	\]
+	这个估计在正、负时间上都成立，因为反向积分的长度仍不超过 \(a\)。
+
+	\cref{g1:lem:euclidean-contraction}曾在有限维闭球上使用过相邻迭代差的几何级数。此处对象是连续路径，因此补明所需完备性：一致 Cauchy 的路径列在每个时间点都有欧氏极限；一致 Cauchy 条件使逐点极限也是一致极限，而连续函数的一致极限连续，闭球的闭性又保证极限仍在闭球内。于是从常路径 \(u_0(s)=y\) 出发，令 \(u_{m+1}=\mathcal Tu_m\)，有
+	\[
+		\|u_{m+1}-u_m\|_\infty\leq q^m\|u_1-u_0\|_\infty.
+	\]
+	几何级数说明迭代一致收敛到某条连续路径 \(u\)。\(\mathcal T\) 对一致距离连续，所以 \(u=\mathcal Tu\)。微积分基本定理使 \(u\) 为 \(C^1\)，且满足方程与初值。由 \(u'=F(\tau+s,u,\lambda)\) 逐阶求导，又得 \(u\) 光滑。
+
+	若两条路径都是上述积分方程的不动点，压缩估计给出 \(\|u-w\|_\infty\leq q\|u-w\|_\infty\)，因而相同。对任意另一个通过同一初值的解，连续性保证它在足够短的公共区间内也留在所取球中，所以得到局部唯一性。再对两解公共区间中的任意相遇时刻作同样处理，它们相等的时间集合是开集；由连续性又是闭集，且含初始时刻。公共区间连通，故两解在整个公共区间相等。
+\end{proof}
+
+共同时间 \(a\) 是这一结论的重要部分：它适用于附近一整族初值与参数。它来自对 \(F\) 和 \(\mathrm{D}_zF\) 的共同界，而不是先对每个初值选一个时间后再假定这些时间有正的下界。常数 \(C\) 控制路径是否会离开允许的坐标范围，\(L\) 则控制不同路径之间的差距。
+
+\ProseParagraphBreak
+
+将这个定理用于向量场的局部分量，便得到流形上的局部积分曲线。两张图中得到的曲线在重叠时满足同一个坐标方程，所以唯一性使它们一致。仍须分清局部解与最大解：某张图不够大时可以换图继续，但能否一直继续到所有实数时间，是另一个问题。
+
+\begin{theorem}[最大积分曲线]
+	\label{g1:thm:maximal-integral-curve}
+	设 \(M\) 为有限维 Hausdorff、第二可数的无边界光滑流形，\(X\in\mathfrak X(M)\)。对每个 \(p\in M\)，存在唯一开区间
+	\[
+		I_p=(\alpha(p),\beta(p)),\qquad -\infty\leq\alpha(p)<0<\beta(p)\leq\infty,
+	\]
+	及积分曲线 \(\gamma_p:I_p\to M\)，满足 \(\gamma_p(0)=p\)，并使任何具有该初值的积分曲线都是它的限制。称其为通过 \(p\) 的\term[zuidajifenquxian]{最大积分曲线}[maximal integral curve]。若 \(X_p=0\)，则 \(I_p=\mathbb R\)，且 \(\gamma_p\) 为常值曲线。
+\end{theorem}
+\begin{proof}
+	局部初值定理先给出至少一条过 \(p\) 的积分曲线。若两条这样的曲线在某时刻相遇，选相遇点的坐标图，由连续性可将两条曲线都限制到该图中；欧氏唯一性表明它们在该时刻附近相同。因此两曲线相等的时间集合在其公共区间中开。\(M\) 的 Hausdorff 性保证对角集合闭，所以两曲线相等的时间集合也闭。它包含零，公共区间连通，故两曲线在全部公共区间相同。
+
+	取所有过 \(p\)、初始时刻为零的积分曲线定义区间之并，记为 \(I_p\)。它是含零的开区间，因为所有被并区间都含零。对 \(t\in I_p\)，任选一条在 \(t\) 有定义的解，令 \(\gamma_p(t)\) 等于它在该处的值。前段唯一性说明此定义与选择无关；在每个局部区间它就是一条已有解，故整体光滑且满足方程。它包含所有其他同初值解，也就不能再作严格延拓。若还有另一条具有相同最大性质的解，二者互为限制，所以定义域与曲线都相同。
+
+	当 \(X_p=0\) 时，常值曲线 \(\gamma(t)=p\) 在整个 \(\mathbb R\) 上满足方程。最大性质与唯一性给出最后一项。零维流形上的向量场处处为零，也由这一情形覆盖。
+\end{proof}
+
+同样的并集证明适用于固定参数的非自治欧氏方程：给定初始时刻 \(\tau\)，所有解区间的并是包含 \(\tau\) 的最大开区间，图像始终要求留在方程的定义域中。“最大”指不能再延拓，并不表示区间一定无界，也不表示不同初值具有相同区间。
+
+\begin{example}
+	\label{g1:exm:quadratic-maximal-interval}
+	在 \(\mathbb R\) 上取 \(X=x^2\partial_x\)。初值 \(x(0)=p\) 的解为
+	\[
+		x(t)=\frac{p}{1-tp},\qquad
+		I_p=\begin{cases}
+			(-\infty,1/p),&p>0,\\
+			\mathbb R,&p=0,\\
+			(1/p,\infty),&p<0.
+		\end{cases}
+	\]
+	直接求导验证方程，唯一性说明它给出初值解。有限端点处函数绝对值趋于无穷，故不可能以实数值连续延拓。虽然分式在极点另一侧也有意义，那一侧与初始时刻不在同一个定义区间，不能一并作为这条初值解。作为另一种有限时间终止，开区间 \((0,1)\) 上的常向量场 \(\partial_x\) 的解为 \(p+t\)，最大区间是 \((-p,1-p)\)；其坐标没有趋向无穷，却在有限时间离开了底流形。
+\end{example}
+
+\subsection{初值与参数的光滑依赖}
+\label{g1:subsec:1301:02}
+
+在\cref{g1:lem:smooth-ode-flow}中，测地线初值问题已用过自主方程的光滑依赖。这里需要同时处理初始时刻、初值、参数及其高阶导数。不能从“每条轨道对时间光滑”直接推出这些结论；两者分别比较同一条轨道上的位置与不同轨道之间的变化。
+
+\begin{lemma}[积分不等式]
+	\label{g1:lem:gronwall-estimate}
+	设 \(u:[0,T]\to[0,\infty)\) 连续，\(a,b,L\geq0\)，且
+	\[
+		u(t)\leq a+bt+L\int_0^t u(s)\,\mathrm{d}s.
+	\]
+	则当 \(L>0\) 时，
+	\[
+		u(t)\leq a e^{Lt}+\frac bL(e^{Lt}-1);
+	\]
+	当 \(L=0\) 时，\(u(t)\leq a+bt\)。
+\end{lemma}
+\begin{proof}
+	令 \(v(t)=a+bt+L\int_0^t u(s)\,\mathrm{d}s\)，则 \(u\leq v\)、\(v(0)=a\)，而 \(v'=b+Lu\leq b+Lv\)。因此
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}(e^{-Lt}v(t))\leq b e^{-Lt}.
+	\]
+	从零积分到 \(t\)，并乘回 \(e^{Lt}\)，即得 \(L>0\) 时的结论。\(L=0\) 时原假设本身就是所需估计。
+\end{proof}
+
+这一估计常称为\term[gronwallguji]{Gronwall 估计}[Gronwall estimate]。\footnote{格朗沃尔（Thomas Hakon Grönwall，1877—1932），瑞典数学家，研究分析不等式及数学在物理化学中的应用。}它把“误差由原有误差加累计误差控制”变成明确的指数界；例如 \(a=b=0\) 时必有 \(u=0\)。负时间的估计可先置 \(v=-t\)，再对反向时间区间应用同一引理。
+
+\begin{theorem}[初值与参数的光滑依赖]
+	\label{g1:thm:ode-smooth-dependence}
+	在\cref{g1:thm:ode-local-existence-uniqueness}的假设下，可取该定理中的共同邻域与时间，使解
+	\[
+		u(s;\tau,y,\lambda)=z(\tau+s;\tau,y,\lambda)
+	\]
+	在 \((-a,a)\times T\times B\times\Lambda\) 上对全部变量联合光滑。等价地，绝对时间表达 \(z(t;\tau,y,\lambda)\) 在 \(|t-\tau|<a\) 的相应开集上光滑。若一条解已存在于某个紧时间区间，则初始数据充分接近时也能在该区间及其一个开邻域上求解，并对时间、初始时刻、初值和参数联合光滑。
+\end{theorem}
+\begin{proof}
+	先证明自主欧氏方程 \(z'=G(z)\) 的初值依赖，再把时间与参数并入状态。以下 \(G\) 为欧氏开集上的任意光滑映射，局部解记为 \(\psi(s,y)\)。在前一定理使用的较小初值球与共同闭时间区间上，记 \(q=a\sup\|\mathrm{D}G\|<1\)。两个积分方程相减，得到
+	\[
+		\|\psi(\cdot,y+h)-\psi(\cdot,y)\|_\infty
+		\leq |h|+q\|\psi(\cdot,y+h)-\psi(\cdot,y)\|_\infty,
+	\]
+	故其差不超过 \(|h|/(1-q)\)。同一局部范围中速度有界，又给出对时间的共同连续性。因此 \(\psi\) 已经对 \((s,y)\) 联合连续。
+
+	为了找出初值导数，先独立解矩阵积分方程
+	\[
+		A(s,y)=I+\int_0^s \mathrm{D}G(\psi(v,y))A(v,y)\,\mathrm{d}v.
+	\]
+	在连续矩阵函数的一致范数中，右边关于 \(A\) 仍是压缩因子不超过 \(q\) 的仿射映射。连续矩阵函数空间的完备性与连续路径情形相同，故相邻迭代的几何级数给出唯一解，并且
+	\[
+		\|A(\cdot,y)\|_\infty\leq\frac1{1-q}.
+	\]
+	比较 \(y,y'\) 所对应的两个方程，得到
+	\[
+		(1-q)\|A(\cdot,y')-A(\cdot,y)\|_\infty
+		\leq a\|\mathrm{D}G(\psi(\cdot,y'))-\mathrm{D}G(\psi(\cdot,y))\|_\infty\,
+		\|A(\cdot,y)\|_\infty.
+	\]
+	右端随 \(y'\to y\) 趋零，所以 \(A\) 对初值连续；其积分方程又给出对时间的联合连续性。
+
+	现在证明 \(A\) 确实是导数，而不只是一条形式变分方程的解。记 \(\delta_h=\psi(\cdot,y+h)-\psi(\cdot,y)\)。\(\mathrm{D}G\) 在所用紧凸球上一致连续，故存在 \(\omega(\varepsilon)\to0\)，使沿线段积分得到的一阶余项满足
+	\[
+		|G(z+w)-G(z)-\mathrm{D}G(z)w|\leq\omega(|w|)|w|
+	\]
+	对该球中的 \(z,z+w\) 一致成立。已知 \(\|\delta_h\|_\infty\leq C_0|h|\)，其中 \(C_0=(1-q)^{-1}\)。将两解之差的积分方程减去 \(A(s,y)h\) 的方程，便有
+	\[
+		\|\delta_h-A(\cdot,y)h\|_\infty
+		\leq q\|\delta_h-A(\cdot,y)h\|_\infty
+		+a\omega(C_0|h|)C_0|h|.
+	\]
+	移项并除以 \(|h|\)，右端趋零。因此 \(\mathrm{D}_y\psi=A\)，而且这个导数连续。时间导数 \(\partial_s\psi=G(\psi)\) 同样联合连续。把一个联合增量拆成时间增量与初值增量，分别使用一元积分公式与上述导数估计，即得 \(\psi\) 对 \((s,y)\) 联合为 \(C^1\)。
+
+	在继续求高阶导数以前，说明如何把任一已得的局部正则性沿一段已有解传播。设一条解的定义域含紧区间 \([c,d]\)。其像紧，可用有限个初值邻域 \(V_i\) 覆盖，每个 \(V_i\) 都有共同短时间 \((-a_i,a_i)\) 上的局部解映射。取时间步长小于 \(\min_i a_i/2\)，在给定区间内选有限分点。每到一个分点，在包含该解位置的某个 \(V_i\) 中使用对应局部映射到达下一个分点；唯一性保证所得轨道与原解相同。对附近初值，前一步的终点随初值连续，故可缩小初值邻域，使其仍落在下一步所需的 \(V_i\) 中。有限步只需有限次缩小。于是各步终点和每一步内的任意时间位置都由有限次局部解映射复合得到。若局部映射为 \(C^k\)，这些复合也为 \(C^k\)；在分点附近，各公式存在重叠时间区间并由唯一性一致，所以联合给出光滑至 \(k\) 阶的映射。初始时刻在区间内部时，向前、向后分别作同样构造；端点还可先略微延长，再覆盖所需紧区间。
+
+	下面对所有光滑自主欧氏系统同时归纳正则阶数。已证任意这样的系统有 \(C^1\) 初值依赖。假设已知任意光滑系统的解映射为 \(C^k\)，其中 \(k\geq1\)。考虑有限维增广系统
+	\[
+		z'=G(z),\qquad A'=\mathrm{D}G(z)A,
+		\qquad (z(0),A(0))=(y,I).
+	\]
+	它的右端是 \((z,A)\) 的光滑函数，因此归纳假设适用。由唯一性，其解恰为已经构造的 \((\psi(s,y),\mathrm{D}_y\psi(s,y))\)。在原共同时间区间中的任一紧子区间，这条增广解已存在：\(z\) 是原解，\(A\) 是上面矩阵积分方程的解。利用前段的有限步传播，增广解在该区间上对初值为 \(C^k\)；初值映射 \(y\mapsto(y,I)\) 光滑，故 \(\mathrm{D}_y\psi\) 对 \((s,y)\) 为 \(C^k\)。另一方面，归纳假设已使 \(\psi\) 为 \(C^k\)，所以 \(\partial_s\psi=G(\psi)\) 也为 \(C^k\)。全部一阶偏导都为 \(C^k\)，便得到 \(\psi\in C^{k+1}\)。归纳对每个有限阶成立，因而 \(\psi\) 为 \(C^\infty\)。这里每一阶的局部计算都传播到原来同一个解区间，不是将无穷多个逐渐缩短的时间区间取交。
+
+	例如上述归纳的第二阶给出，对初值方向 \(h,k\)，令 \(B=\mathrm{D}_y^2\psi[h,k]\)，则
+	\[
+		B'=\mathrm{D}G(\psi)B+\mathrm{D}^2G(\psi)[Ah,Ak],\qquad B(0)=0.
+	\]
+	最高阶未知量仍线性出现，而新的非齐次项由已经控制的低阶变化构成。增广系统的归纳将这个机制用于所有阶，且每一步真正使用了已经证明的初值依赖。
+
+	最后回到 \(F(t,z,\lambda)\)。在开集 \(\Omega\subset\mathbb R^{1+n+\ell}\) 上定义自主系统
+	\[
+		(a,z,\lambda)'=\bigl(1,F(a,z,\lambda),0\bigr).
+	\]
+	从 \((\tau,y,\lambda)\) 出发，其第一分量是 \(\tau+s\)，最后分量保持 \(\lambda\)，中间分量由唯一性正是 \(u(s;\tau,y,\lambda)\)。自主系统的光滑初值依赖便给出所需全部参数的联合光滑性；再作光滑换元 \(s=t-\tau\)，得到绝对时间表达。沿已有紧时间区间的结论，也由前述有限步传播应用于这个增广系统得到。
+\end{proof}
+
+把已证明的光滑性代入积分方程，现在可以合法地对初值与参数求导。对相对时间解 \(u=u(s;\tau,y,\lambda)\)，记 \(P=\mathrm{D}_yu\)、\(Q=\mathrm{D}_\lambda u\)，则
+\begin{equation}
+	\label{g1:eq:ode-variational-equation}
+	\begin{aligned}
+		P'&=\mathrm{D}_zF(\tau+s,u,\lambda)P,&\qquad P(0)&=I_n,\\
+		Q'&=\mathrm{D}_zF(\tau+s,u,\lambda)Q+\mathrm{D}_\lambda F(\tau+s,u,\lambda),& Q(0)&=0.
+	\end{aligned}
+\end{equation}
+第一行测量初值扰动怎样传播，第二行还加入方程本身改变所产生的源项。它们称为相应的\term[bianfenfangcheng]{变分方程}[variational equation]。若 \(\|\mathrm{D}_zF\|\leq L\)，\cref{g1:lem:gronwall-estimate}给出 \(\|P(s)\|\leq e^{L|s|}\)；若另有 \(\|\mathrm{D}_\lambda F\|\leq C\)，则 \(L>0\) 时 \(\|Q(s)\|\leq C(e^{L|s|}-1)/L\)，\(L=0\) 时为 \(C|s|\)。这些界适用于解仍处于所取共同范围内的时间。
+
+\ProseParagraphBreak
+
+光滑依赖也没有承诺最大存在时间是光滑函数。\cref{g1:exm:quadratic-maximal-interval}中，初值为正时未来端点是 \(1/p\)，初值为零或负时未来端点为 \(+\infty\)。真正适于微分的对象是所有“时间与初值”的允许组合所成的开集及其上的解映射，下面就把它作为流的定义域。
+\subsection{流的局部群性质}
+\label{g1:subsec:1301:03}
+
+将各个初值的最大积分曲线放在一起，定义
+\[
+	\mathcal D_X=\{(t,p)\in\mathbb R\times M:t\in I_p\},\qquad
+	\Phi(t,p)=\gamma_p(t),\qquad \Phi_t(p)=\Phi(t,p).
+\]
+集合 \(\mathcal D_X\) 的每个竖直截面都是包含零的开区间，但这还不能单凭集合形式推出 \(\mathcal D_X\) 在乘积空间中开。一个初值能运动到某个时刻时，附近初值也能运动到相近时刻，正是还需用光滑依赖证明的部分。
+
+\begin{theorem}[最大局部流]
+	\label{g1:thm:maximal-local-flow}
+	设 \(M\) 为有限维 Hausdorff、第二可数的无边界光滑流形，\(X\in\mathfrak X(M)\)。上述集合 \(\mathcal D_X\) 是包含 \(\{0\}\times M\) 的开集，映射 \(\Phi:\mathcal D_X\to M\) 光滑，且
+	\[
+		\Phi_0(p)=p,\qquad \partial_t\Phi_t(p)=X_{\Phi_t(p)}.
+	\]
+	若 \(s\in I_p\)，则
+	\begin{equation}
+		\label{g1:eq:maximal-flow-time-shift}
+		I_{\Phi_s(p)}=I_p-s,
+		\qquad \Phi_t(\Phi_s(p))=\Phi_{t+s}(p)\quad(t+s\in I_p).
+	\end{equation}
+	对于固定 \(t\)，集合 \(D_t=\{p:(t,p)\in\mathcal D_X\}\) 开，且
+	\[
+		\Phi_t:D_t\longrightarrow D_{-t}
+	\]
+	为微分同胚，逆为 \(\Phi_{-t}\)。这个由最大积分曲线组成的映射称为 \(X\) 的\term[zuidajubuliu]{最大局部流}[maximal local flow]，并且它唯一由 \(X\) 决定。
+\end{theorem}
+\begin{proof}
+	先证开性与光滑性。欧氏光滑依赖定理应用于坐标中的向量场分量，给出每点附近的开集 \(V\subset M\)、正数 \(a\) 和光滑局部解映射 \(\psi:(-a,a)\times V\to M\)，其中 \(\psi(0,q)=q\)。坐标唯一性及最大积分曲线定理说明，这个局部映射是 \(\Phi\) 的限制。
+
+	固定 \((t_0,p_0)\in\mathcal D_X\)。在 \(I_{p_0}\) 内取一个紧区间 \([c,d]\)，使零与 \(t_0\) 都属于其内部。轨道段 \(\gamma_{p_0}([c,d])\) 紧，可被有限个上述 \(V_i\) 覆盖，相应共同时间记为 \(a_i>0\)。把 \([0,d]\) 与 \([c,0]\) 分别划成步长小于 \(\min_i a_i/2\) 的有限时间段。在每个分点，选择包含该轨道点的某个 \(V_i\)，并用该处局部映射走到下一分点。由唯一性，固定轨道的这些局部解总与 \(\gamma_{p_0}\) 相同。
+
+	现在让起点 \(p\) 在 \(p_0\) 附近变化。第一步终点是 \(p\) 的光滑函数；因第二步所需的 \(V_i\) 开，可缩小起点邻域，使第一步终点仍落入其中。依次进行，有限步得到一个共同开邻域 \(U\ni p_0\)，使所有这些局部解都能按相同分点复合。时间段内部的位置也有公式 \(\psi_i(t-t_j,p_j(p))\)，其中 \(p_j(p)\) 是前面有限步得到的光滑终点。步长严格小于各自允许时间，故这些表达在相邻分点附近都有时间重叠；重叠时是同初值的积分曲线，唯一性使其一致。于是它们粘成 \((c,d)\times U\) 上的光滑解映射。
+
+	这条拼成的曲线包含初始时刻零，所以它是每个 \(p\in U\) 的最大积分曲线的限制。因此 \((c,d)\times U\subset\mathcal D_X\)，且 \(\Phi\) 在这个开集上光滑。它包含原先任取的 \((t_0,p_0)\)，从而证明整个定义域开、整个解映射光滑。定义域包含零时刻，初值与速度等式则直接来自各条积分曲线。
+
+	再证时间平移关系。固定 \(s\in I_p\)，令 \(q=\Phi_s(p)\)。曲线 \(t\mapsto\gamma_p(s+t)\) 在 \(I_p-s\) 上是过 \(q\) 的积分曲线，故最大性质给出
+	\[
+		I_p-s\subset I_q,\qquad \gamma_q(t)=\gamma_p(s+t)\quad(t\in I_p-s).
+	\]
+	特别地，\(-s\in I_q\) 且 \(\gamma_q(-s)=p\)。因此 \(u\mapsto\gamma_q(u-s)\) 在 \(s+I_q\) 上是过 \(p\)、初始时刻为零的积分曲线，另一方向的最大性质给出 \(s+I_q\subset I_p\)。两次包含说明 \(I_q=I_p-s\)，唯一性同时给出所述复合公式。这里使用了方程自主：平移时间后，速度仍由同一个 \(X\) 决定。
+
+	由于 \(\mathcal D_X\) 开，固定时间切片 \(D_t\) 开。如果 \(p\in D_t\)，时间平移关系给出 \(q=\Phi_t(p)\in D_{-t}\) 与 \(\Phi_{-t}(q)=p\)。反过来从 \(D_{-t}\) 出发也得到 \(\Phi_t\Phi_{-t}=\operatorname{id}\)。两个映射都是光滑 \(\Phi\) 的固定时间限制，所以互为微分同胚。最后，任何满足同一速度方程与初值的局部运动，在每条轨道上都必须限制自 \(\gamma_p\)，故最大局部流唯一。
+\end{proof}
+
+公式\eqref{g1:eq:maximal-flow-time-shift}说明时间加法如何作用于运动，但它并不保证每个 \(\Phi_t\) 都定义在整个 \(M\) 上。对 \(X=x^2\partial_x\)，最大定义域与流为
+\[
+	\mathcal D_X=\{(t,p):1-tp>0\},\qquad
+	\Phi_t(p)=\frac p{1-tp}.
+\]
+例如 \(t>0\) 时，\(D_t=(-\infty,1/t)\)，而像为 \(D_{-t}=(-1/t,\infty)\)。逆映射 \(q\mapsto q/(1+tq)\) 正好在后一个开区间上定义。把分式的所有非极点都列入定义域，会错误地加入不属于初值轨道的另一段时间。
+
+\ProseParagraphBreak
+
+局部群公式还说明流保持产生它的向量场。固定 \((t,p)\in\mathcal D_X\)，对足够小的 \(s\) 有 \(\Phi_t(\Phi_s(p))=\Phi_{t+s}(p)\)。在 \(s=0\) 求导，得到
+\begin{equation}
+	\label{g1:eq:flow-preserves-generator}
+	\mathrm{d}(\Phi_t)_p(X_p)=X_{\Phi_t(p)}.
+\end{equation}
+左边先取起点的速度再用微分送到终点，右边直接取终点的速度，两者一致。这个等式在后面比较两个不同向量场的流时会再次出现。
+
+\begin{example}
+	\label{g1:exm:rotation-local-flow}
+	平面向量场 \(X=-y\partial_x+x\partial_y\) 的流为
+	\[
+		\Phi_t\binom{x}{y}
+		=\begin{pmatrix}\cos t&-\sin t\\\sin t&\cos t\end{pmatrix}\binom{x}{y}.
+	\]
+	求导验证速度方程，\(t=0\) 时为恒等，因此唯一性说明这就是其最大流；公式对全部实数时间有定义。原点是静止轨道，其余轨道为圆。两条轨道若在同一时刻相遇，局部唯一性与逆映射会迫使它们有相同起点。圆周轨道却可以在不同时刻回到同一点，所以轨道参数化未必单射。
+\end{example}
+
+\subsection{时间依赖向量场与演化映射}
+\label{g1:subsec:1301:04}
+
+若速度规律会随绝对时间改变，只知道经过了多久通常不够，还必须知道从哪个时刻开始。设 \(J\subset\mathbb R\) 是开区间。一个光滑时间依赖向量场是光滑映射 \(X:J\times M\to \mathrm{T}M\)，满足 \(X(t,p)\in \mathrm{T}_pM\)，也写作 \(X_t(p)\)。它的初值问题是
+\[
+	\gamma'(t)=X_t(\gamma(t)),\qquad \gamma(s)=p.
+\]
+这里 \(s\) 是起始时刻，\(t\) 是到达时刻。
+
+\ProseParagraphBreak
+
+把时间本身当成新的位置坐标，便能把这个问题转为自主方程。在无边界流形 \(J\times M\) 上定义
+\[
+	\widehat X_{(t,p)}=\partial_t+X_t(p).
+\]
+第一分量速度恒为一，因此从 \((s,p)\) 出发、经历时间 \(h\) 后，第一分量必为 \(s+h\)。剩下的分量正好解原来的时间依赖方程。这一构造保留了绝对时间，而不是把它误当成固定参数。
+
+\begin{proposition}[演化映射]
+	\label{g1:prop:time-dependent-evolution}
+	设 \(M\) 为有限维 Hausdorff、第二可数的无边界光滑流形，\(J\subset\mathbb R\) 为开区间，\(X:J\times M\to \mathrm{T}M\) 为光滑时间依赖向量场。对每个 \((s,p)\in J\times M\)，存在包含 \(s\) 的唯一最大开时间区间 \(I_{s,p}\subset J\) 及初值解。写其在 \(t\) 时刻的值为 \(\Phi_{t,s}(p)\)，则
+	\[
+		\mathcal E_X=\{(t,s,p)\in J\times J\times M:t\in I_{s,p}\}
+	\]
+	为开集，\((t,s,p)\mapsto\Phi_{t,s}(p)\) 光滑，且
+	\begin{equation}
+		\label{g1:eq:evolution-initial-value}
+		\Phi_{s,s}(p)=p,\qquad
+		\partial_t\Phi_{t,s}(p)=X_t(\Phi_{t,s}(p)).
+	\end{equation}
+	若 \(r\in I_{s,p}\)，则
+	\begin{equation}
+		\label{g1:eq:evolution-composition}
+		I_{r,\Phi_{r,s}(p)}=I_{s,p},\qquad
+		\Phi_{t,r}(\Phi_{r,s}(p))=\Phi_{t,s}(p)\quad(t\in I_{s,p}).
+	\end{equation}
+	固定 \(t,s\) 后，\(\Phi_{t,s}\) 在其开定义域上为微分同胚，逆为 \(\Phi_{s,t}\)。此外，在 \(\mathcal E_X\) 上有
+	\begin{equation}
+		\label{g1:eq:evolution-initial-time-derivative}
+		\partial_s\Phi_{t,s}(p)
+		=-\mathrm{d}(\Phi_{t,s})_p(X_s(p)).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	对 \(\widehat X\) 使用\cref{g1:thm:maximal-local-flow}，记其最大流为 \(\widehat\Phi_h\)，定义域为 \(\mathcal D_{\widehat X}\)。第一分量满足 \(a'=1\)、\(a(0)=s\)，所以
+	\[
+		\widehat\Phi_h(s,p)=\bigl(s+h,\Phi_{s+h,s}(p)\bigr).
+	\]
+	反过来，任何时间依赖方程的解 \(t\mapsto\gamma(t)\)，都给出增广系统的解 \(h\mapsto(s+h,\gamma(s+h))\)。因此增广系统的存在、唯一及最大性，恰好给出原方程的存在、唯一及最大区间；它只能在 \(s+h\in J\) 时存在。
+
+	定义域可以写成
+	\[
+		\mathcal E_X=\{(t,s,p):(t-s,(s,p))\in\mathcal D_{\widehat X}\}.
+	\]
+	右边是开集在连续映射 \((t,s,p)\mapsto(t-s,(s,p))\) 下的原像，所以开。\(\Phi_{t,s}(p)\) 是将 \(\widehat\Phi_{t-s}(s,p)\) 投到第二分量得到的光滑映射，故联合光滑；初值和到达时间导数也由增广方程直接得到。
+
+	若先从绝对时间 \(s\) 走到 \(r\)，增广系统经历的时间是 \(r-s\)；再走到 \(t\)，经历的是 \(t-r\)。对 \(\widehat\Phi\) 应用最大时间平移关系，得到同一轨道的最大绝对时间区间不变，并且
+	\[
+		\widehat\Phi_{t-r}\bigl(\widehat\Phi_{r-s}(s,p)\bigr)
+		=\widehat\Phi_{t-s}(s,p).
+	\]
+	取第二分量就得到\eqref{g1:eq:evolution-composition}。令 \(t=s\) 给出从 \(s\) 到 \(r\) 再返回的恒等映射；交换两个时刻得到另一侧的逆。因此 \(\Phi_{t,s}\) 与 \(\Phi_{s,t}\) 在各自开定义域上互逆，且均光滑。
+
+	最后固定允许的 \((t,s,p)\)。开性保证对足够小的 \(h\)，复合公式
+	\[
+		\Phi_{t,s+h}\bigl(\Phi_{s+h,s}(p)\bigr)=\Phi_{t,s}(p)
+	\]
+	有定义。对 \(h\) 在零处求导，链式法则给出
+	\[
+		\partial_s\Phi_{t,s}(p)+\mathrm{d}(\Phi_{t,s})_p(X_s(p))=0,
+	\]
+	即所需初始时刻导数公式。
+\end{proof}
+
+\begin{example}
+	\label{g1:exm:time-dependent-translation}
+	在实直线上取 \(X_t=t\partial_x\)。积分得到
+	\[
+		\Phi_{t,s}(x)=x+\frac{t^2-s^2}{2}.
+	\]
+	它依赖起始与到达两个时刻，并满足 \(\Phi_{t,r}\Phi_{r,s}=\Phi_{t,s}\)。若只保留 \(\Psi_t=\Phi_{t,0}\)，则
+	\[
+		\Psi_t(\Psi_s(x))=x+\frac{t^2+s^2}{2},\qquad
+		\Psi_{t+s}(x)=x+\frac{(t+s)^2}{2},
+	\]
+	一般不同。这不是唯一性失效，而是第二次使用 \(\Psi_t\) 又把绝对时间从零开始计算了。对自主向量场，速度不随绝对时间变化，才有 \(\Phi_{t,s}=\Phi_{t-s}\) 这样的单参数表达。
+\end{example}
+
+至此，局部求解、对初值求导和移动时间起点都具有明确的定义域。下一节将判断何时这些区间能延伸到整个实轴，并利用局部流把非零向量场附近的坐标整理成沿一条坐标轴的平移。
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

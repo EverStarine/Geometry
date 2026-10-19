@@ -1,0 +1,547 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：## 第16章　李群的局部结构与整体积分
+% 纲要位置：几何学计划纲要.md，第 733 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% > 本章目标与证明范围：在有限维实李群范围内建立指数、闭子群和同态积分。李代数到李群的局部与整体结论分开，证明单连通性消除的具体障碍。
+% 
+% 纲要内容结束
+
+\chapter{李群的局部结构与整体积分}
+\label{g1:ch:16}
+\BookChapterNumber{g1:ch:16}
+
+\begin{chapterabstract}
+	李群把光滑变化与群乘法放在同一对象上，单位元切空间则记录这些变化的一阶方向。左平移将切向量延伸为向量场，其括号给出李代数。我们先构造指数映射，证明局部可逆性，并以 BCH 的有限阶展开解释非交换乘法怎样出现在切空间中。随后用 Frobenius 定理把李子代数积分成浸入子群，再证明闭子群必为嵌入子群。最后把李代数同态先积分到单位元附近，再沿路径延拓；连续同伦的网格论证说明单连通性恰好消除了绕行带来的歧义。万有覆盖群和离散中心商进一步说明，相同李代数可以对应不同的整体李群。
+\end{chapterabstract}
+
+\begin{learninggoals}
+	\begin{itemize}
+		\item 从矩阵例子与一般定义认识李群，构造单位元切空间上的李括号，证明伴随作用和同态微分的相容性。
+		\item 证明左不变场完备，建立指数的局部逆、自然性及微分公式，推导 BCH 三阶展开和乘积极限。
+		\item 利用左不变积分分布构造连通浸入子群，证明闭子群定理，并用无理斜率子群辨别叶拓扑与子空间拓扑。
+		\item 从局部同态构造路径延拓，证明单连通源上的整体积分，构造万有覆盖群及离散中心商，并判断同态何时能下降到商群。
+	\end{itemize}
+\end{learninggoals}
+
+旋转既可以连续改变角度，也可以前后复合；可逆线性变换也同时具有光滑参数和群运算。前面我们分别研究了变换群、流形及向量场，现在可以把这些结构放在一起。群乘法使每一点都能与单位元比较，因此看似遍布整个群的微分信息，有希望由一个切空间组织起来。
+
+\ProseParagraphBreak
+
+不过，一个切空间究竟能记住多少整体信息？实数加法群与圆周群的单位切空间都是一维、括号都是零，但沿同一个局部方向运动，前者不会绕回起点，后者会。反过来，环面上的一条无理斜率运动虽由一个实参数描述，其像却可以稠密。本章一边建立局部与整体之间的联系，一边保留周期、闭性和拓扑所造成的差别。
+
+\ProseParagraphBreak
+
+本章的李群均为有限维实光滑李群，流形无边界、Hausdorff、第二可数；复矩阵群在这里也先按实流形处理。读者需要\chapref{g1:ch:11}的逆函数、常秩及嵌入概念，\chapref{g1:ch:13}的常微分方程、李括号与 Frobenius 定理，以及\chapref{g1:ch:05}的路径同伦和万有覆盖。指数微分的计算还会回顾\secref{g1:sec:1401}的一形式外微分。每次调用时将指出实际条件，尤其区分浸入与嵌入、连通与单连通。
+
+\ProseParagraphBreak
+
+本章在正文证明指数、闭子群与同态积分。这里整体同态的存在定理以已给定的李群 \(G,H\) 为对象，并要求源群 \(G\) 单连通；任意抽象有限维李代数能否先找到一个李群来实现，是另一项存在问题，不包含在本章的证明范围内。我们也不预设抽象李群都可以忠实地表示为矩阵群。
+
+\ProseParagraphBreak
+
+延伸阅读可查 Lee 第二版第19章的 Lie Subalgebras and Lie Subgroups（第505--506页），以及第20章的 One-Parameter Subgroups and the Exponential Map（第516--521页）、The Closed Subgroup Theorem（第522--524页）和 The Lie Correspondence（第530--532页）\cite[第505--506、516--524、530--532页]{Lee2012Smooth}。矩阵计算可对照 Hall 第二版 §§2.1--2.4、3.3--3.5；指数微分、BCH、同态及覆盖的阅读位置为 §§5.3--5.9\cite[\S\S2.1--2.4, 3.3--3.5, 5.3--5.9]{Hall2015}。不同文献可能从矩阵群或抽象流形出发，对照时应核清对象范围及左、右不变场的约定。
+
+\input{Part05/Chapter16/Section1601}
+\input{Part05/Chapter16/Section1602}
+\input{Part05/Chapter16/Section1603}
+\input{Part05/Chapter16/Section1604}
+
+\begin{chaptersummary}
+	单位元切空间经左平移成为左不变向量场，场的括号给出 \(\mathfrak g=\mathrm{T}_eG\) 的李代数结构。共轭微分形成伴随表示 \(\operatorname{Ad}\)，再在单位元求微分便得到 \(\operatorname{ad}_XY=[X,Y]\)。群同态的微分保持括号；矩阵群中，这个括号是 \(XY-YX\)。
+
+	\ProseParagraphBreak
+
+	左不变性让局部积分曲线能够重复平移，得到完备的单参数子群。指数满足 \((\mathrm{d}\exp_G)_0=I\)，故提供单位元附近的坐标；连通群由这样的指数邻域生成，但单个指数未必能覆盖整个群。指数的自然性把同态和共轭连接到李代数，BCH 展开则以 \(\tfrac12[X,Y]\) 为局部乘法偏离加法的首个修正项。
+
+	\ProseParagraphBreak
+
+	李子代数确定左不变的对合分布，过单位元的最大叶形成唯一连通浸入子群。这里必须使用叶自身的流形拓扑。若子群在环境群中闭，指数横截方向不能无限靠近单位元，因而得到局部嵌入结构；无理斜率子群展示了缺少闭性时可能出现的稠密浸入。
+
+	\ProseParagraphBreak
+
+	李代数同态先确定局部群同态。沿路径把小增量依次相乘可延拓其值，同伦网格保证端点固定的同伦不改变结果。源群单连通时得到唯一整体同态。一般连通李群的万有覆盖带有唯一相容李群结构，覆盖核离散且位于中心；同一个已实现李代数的连通李群因而可由其单连通群的不同离散中心商得到。把同态下降到商群时，还必须检查相应离散核是否被保持。
+\end{chaptersummary}
+
+\BookExercises
+
+\begin{exercise}\label{g1:ex:affine-group-lie-data}
+	在 \(G=(0,\infty)\times\mathbb R\) 上定义
+	\[
+		(a,b)(c,d)=(ac,b+ad).
+	\]
+	证明这是一个李群。以单位元处的坐标向量 \(H=\partial_a|_{(1,0)}\)、\(E=\partial_b|_{(1,0)}\) 为基，求它们的左不变延拓与括号，并求 \(\operatorname{Ad}_{(a,b)}(xH+yE)\)。直接对所得伴随表示求导，核对 \(\operatorname{ad}_XY=[X,Y]\)。
+\end{exercise}
+\begin{solution}
+	把 \((a,b)\) 对应到矩阵 \(\begin{pmatrix}a&b\\0&1\end{pmatrix}\)，矩阵相乘恰好给出题设运算，且对应单射，因此运算满足结合律。单位元是 \((1,0)\)，逆为 \((a^{-1},-b/a)\)。\(G\) 是 \(\mathbb R^2\) 的开集，乘法由多项式给出，求逆在 \(a>0\) 时光滑，所以它是二维实李群。这也是实直线上变换 \(t\mapsto at+b\) 的复合群。
+
+	固定 \((a,b)\) 后，左平移为 \(L_{(a,b)}(c,d)=(ac,b+ad)\)。它在单位元的微分把 \((x,y)\) 送到 \((ax,ay)\)，故
+	\[
+		H^L=a\partial_a,\qquad E^L=a\partial_b.
+	\]
+	按坐标括号公式，\(H^L\) 对 \(E^L\) 的 \(\partial_b\) 系数 \(a\) 求导得到 \(a\)，而 \(E^L\) 对 \(H^L\) 的 \(\partial_a\) 系数求导为零。因此 \([H^L,E^L]=a\partial_b=E^L\)，即 \([H,E]=E\)。实双线性和反对称性进一步给出
+	\[
+		[xH+yE,x'H+y'E]=(xy'-yx')E.
+	\]
+
+	利用上面的逆元公式，逐项计算共轭得
+	\[
+		(a,b)(c,d)(a,b)^{-1}=(c,ad+(1-c)b).
+	\]
+	在 \((c,d)=(1,0)\) 求导，因此
+	\[
+		\operatorname{Ad}_{(a,b)}(xH+yE)=xH+(ay-bx)E.
+	\]
+	任取经过单位元的曲线 \((a(t),b(t))\)，若 \(a'(0)=x\)、\(b'(0)=y\)，则对 \(Y=x'H+y'E\)，
+	\[
+		\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{t=0}\operatorname{Ad}_{(a(t),b(t))}Y
+		=(xy'-yx')E=[xH+yE,Y].
+	\]
+	这正是 \(\operatorname{ad}_XY=[X,Y]\)，同时显示了缩放方向与平移方向的括号为何非零：改变缩放会改变平移的大小。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:right-invariant-bracket-sign}
+	设 \(G\) 为有限维实李群，\(X,Y\in\mathfrak g=\mathrm{T}_eG\)。定义右不变场 \(X^R_g=\mathrm{d}(R_g)_eX\)，左不变延拓仍记为 \(X^L\)。证明求逆微分同胚 \(\iota(g)=g^{-1}\) 满足 \(\iota_*X^L=-X^R\)，并推出
+	\[
+		[X^R,Y^R]=-[X,Y]^R,\qquad [X^L,Y^R]=0.
+	\]
+	说明为什么用右不变场定义单位元切空间的括号时，需要调整一个负号才能沿用本书的李代数约定。
+\end{exercise}
+\begin{solution}
+	由乘法光滑，\(g\mapsto\mathrm{d}(R_g)_eX\) 光滑；又由 \(R_a\circ R_g=R_{ga}\)，
+	\[
+		\mathrm{d}(R_a)_gX^R_g=\mathrm{d}(R_{ga})_eX=X^R_{ga},
+	\]
+	所以 \(X^R\) 确为右不变场。恒等式 \(\iota\circ L_g=R_{g^{-1}}\circ\iota\) 在 \(e\) 处求导，并用\eqref{g1:eq:lie-group-unit-differentials}的 \(\mathrm{d}\iota_e=-\operatorname{id}\)，得到
+	\[
+		\mathrm{d}\iota_gX^L_g
+		=\mathrm{d}(R_{g^{-1}})_e\mathrm{d}\iota_eX
+		=-\mathrm{d}(R_{g^{-1}})_eX=-X^R_{g^{-1}}.
+	\]
+	这就是 \(\iota_*X^L=-X^R\)。微分同胚保持向量场的括号，故
+	\[
+		-[X,Y]^R
+		=\iota_*([X,Y])^L
+		=\iota_*[X^L,Y^L]
+		=[-X^R,-Y^R]=[X^R,Y^R].
+	\]
+
+	为证明混合括号为零，在单位元取 \(X^L\) 的局部积分曲线 \(\gamma(t)\)。由\eqref{g1:eq:left-invariant-local-flow}，\(X^L\) 的局部流是 \(\Phi_t=R_{\gamma(t)}\)。右不变性意味着 \((R_{\gamma(t)})_*Y^R=Y^R\)，等价地 \(\Phi_t^*Y^R=Y^R\)，在相应的局部定义域内成立。用\cref{g1:prop:flow-pullback-derivative}在 \(t=0\) 求导，得到 \([X^L,Y^R]=0\)。这个论证只需小时间流，不需要先证明左不变场完备。
+
+	最后，第一式在 \(e\) 处给出 \([X^R,Y^R]_e=-[X,Y]\)。因此若希望仍使用由左不变场定义的括号，右不变场版本应写成 \([X,Y]=-[X^R,Y^R]_e\)。负号来自求逆把单位元速度变成相反方向，不能在两种不变性之间直接省去。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:so-three-cross-product}
+	对 \(v=(v_1,v_2,v_3)\in\mathbb R^3\)，令
+	\[
+		\widehat v=
+		\begin{pmatrix}
+			0&-v_3&v_2\\
+			v_3&0&-v_1\\
+			-v_2&v_1&0
+		\end{pmatrix}.
+	\]
+	证明 \(v\mapsto\widehat v\) 是 \(\mathbb R^3\) 到 \(\mathfrak{so}(3)\) 的线性同构，并满足 \([\widehat v,\widehat w]=\widehat{v\times w}\)。对 \(R\in\operatorname{SO}(3)\)，证明 \(\operatorname{Ad}_R\widehat v=\widehat{Rv}\)。若把 \(R\) 换成任意 \(A\in\operatorname{O}(3)\)，求正确的公式。
+\end{exercise}
+\begin{solution}
+	由\cref{g1:prop:matrix-classical-lie-groups}，\(\mathfrak{so}(3)\) 是全体实反对称 \(3\times3\) 矩阵。任意这样的矩阵恰由三个上三角元素决定，且唯一写成题设形式，所以 \(v\mapsto\widehat v\) 是线性同构。直接乘矩阵可见 \(\widehat vu=v\times u\)。对任意 \(u\in\mathbb R^3\)，展开叉积的三个坐标可得
+	\[
+		v\times(w\times u)=w(v\cdot u)-u(v\cdot w).
+	\]
+	交换 \(v,w\) 后相减，便有
+	\begin{align*}
+		[\widehat v,\widehat w]u
+		&=v\times(w\times u)-w\times(v\times u)\\
+		&=w(v\cdot u)-v(w\cdot u)=(v\times w)\times u.
+	\end{align*}
+	因此 \([\widehat v,\widehat w]=\widehat{v\times w}\)。这里左边采用的确实是本书的李代数括号，因为\cref{g1:prop:matrix-lie-bracket}已证明它等于矩阵交换子。
+
+	对正交矩阵 \(A\)，利用叉积的刻画 \((v\times w)\cdot u=\det(v,w,u)\)，可得
+	\[
+		\bigl((Av)\times(Aw)\bigr)\cdot(Au)
+		=\det A\,\det(v,w,u)
+		=\bigl(\det A\,A(v\times w)\bigr)\cdot(Au).
+	\]
+	由于 \(Au\) 遍历所有向量，
+	\[
+		(Av)\times(Aw)=\det A\,A(v\times w).
+	\]
+	令 \(w=A^{-1}u\)，并用 \((\det A)^2=1\)，得到
+	\[
+		(A\widehat v A^{-1})u=A(v\times A^{-1}u)
+		=\det A\,(Av)\times u.
+	\]
+	因而
+	\[
+		\operatorname{Ad}_A\widehat v=\det A\,\widehat{Av}.
+	\]
+	在 \(A=R\in\operatorname{SO}(3)\) 时 \(\det R=1\)，便化为题目要求的 \(\operatorname{Ad}_R\widehat v=\widehat{Rv}\)。行列式为 \(-1\) 的正交变换反转空间定向，正是它带来一般公式中的额外负号。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:circle-power-homomorphism-kernel}
+	设 \(m\) 为非零整数。证明 \(P_m:S^1\to S^1\)、\(P_m(z)=z^m\) 是李群同态，求其单位元微分与核，证明它在每一点都是局部微分同胚，并判断何时为李群同构。再考虑加法李群之间的同态 \(F:\mathbb R\to\mathbb R^2\)、\(F(t)=(t,0)\)：判断 \((0,0)\) 是否为正则值，并直接说明 \(\ker F\) 的光滑结构。这两个例子分别说明了从同态的微分推断整体性质时的什么限制？
+\end{exercise}
+\begin{solution}
+	圆周上的复数乘法交换，故 \((zw)^m=z^mw^m\)，包括负整数 \(m\) 在内。非负整数次幂由复数乘法组成，负整数次幂还要复合光滑求逆，因此 \(P_m\) 光滑，是李群同态。由 \(\mathrm{T}_1S^1=i\mathbb R\)，取经过 \(1\) 的曲线 \(z(t)=\cos t+i\sin t\)，它的初速度为 \(i\)，而 \(P_m(z(t))=\cos(mt)+i\sin(mt)\)，故
+	\[
+		\mathrm{d}(P_m)_1(it)=imt.
+	\]
+	\(m\neq0\) 时这个微分可逆，由\cref{g1:prop:lie-homomorphism-constant-rank}，其他点的微分也可逆；逆函数定理说明 \(P_m\) 在每点都是局部微分同胚。
+
+	令 \(q=|m|\)。每个圆周点可写成 \(\cos\theta+i\sin\theta\)，\(z^m=1\) 等价于 \(m\theta\in2\pi\mathbb Z\)。因此
+	\[
+		\ker P_m=\left\{\cos\frac{2\pi k}{q}+i\sin\frac{2\pi k}{q}:k=0,1,\ldots,q-1\right\}.
+	\]
+	它是 \(q\) 个点组成的离散李群，其切空间为零，符合 \(\ker\mathrm{d}(P_m)_1=0\)。给定 \(w=\cos\theta+i\sin\theta\)，取 \(z=\cos(\theta/m)+i\sin(\theta/m)\) 即有 \(P_m(z)=w\)，所以 \(P_m\) 总是满射。当 \(|m|>1\) 时核不止一个点，它不是单射；当 \(m=1\) 时是恒等映射，当 \(m=-1\) 时是求逆，二者都有光滑逆。因此恰在 \(m=\pm1\) 时是李群同构。
+
+	对第二个同态，\(\mathrm{d}F_t(v)=(v,0)\) 在每点的秩均为 \(1\)，没有满射到二维靶切空间。唯一原像点为 \(t=0\)，所以 \((0,0)\) 不是正则值。不过 \(\ker F=\{0\}\) 显然是零维嵌入子流形，以唯一的点为零维坐标图即可；其切空间为 \(0=\ker\mathrm{d}F_0\)，也符合恒秩核的结论。
+
+	第一个例子表明微分处处可逆仍不能排除离散的多对一现象，局部微分同胚未必是整体同构。第二个例子表明同态的核是嵌入子流形，并不意味着靶单位元是正则值；在微分不满射时，保证核光滑的是恒秩标准形给出的纤维切片。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:affine-exponential}
+	令 \(G=\{\left(\begin{smallmatrix}a&b\\0&1\end{smallmatrix}\right):a>0,\ b\in\mathbb R\}\)，采用参数 \((a,b)\) 给出的光滑结构。求其李代数与指数映射，并证明 \(\exp_G:\mathfrak g\to G\) 是整体微分同胚。
+\end{exercise}
+\begin{solution}
+	矩阵乘法和求逆在半平面 \(a>0\) 上光滑，因此 \(G\) 是二维实李群。单位元为 \((1,0)\)，切向矩阵恰为
+	\[
+		X=\begin{pmatrix}x&y\\0&0\end{pmatrix},\qquad x,y\in\mathbb R.
+	\]
+	两个这样的矩阵有括号 \([X(x,y),X(u,v)]=X(0,xv-uy)\)，从而给出这二维空间的完整李代数结构。对 \(k\geq1\)，\(X^k=\left(\begin{smallmatrix}x^k&x^{k-1}y\\0&0\end{smallmatrix}\right)\)。由矩阵指数级数及包含同态的自然性，
+	\[
+		\exp_GX=\begin{pmatrix}e^x&y\psi(x)\\0&1\end{pmatrix},\qquad
+		\psi(x)=\int_0^1e^{tx}\,\mathrm{d}t
+		=\begin{cases}(e^x-1)/x,&x\ne0,\\1,&x=0.\end{cases}
+	\]
+	积分表达式说明 \(\psi\) 在整个实轴光滑且严格为正，因而分段写法在零点没有奇性。给定 \((a,b)\) 且 \(a>0\)，唯一原像为
+	\[
+		x=\log a,\qquad y=\frac{b}{\psi(\log a)}.
+	\]
+	这也光滑，所以指数是整体微分同胚。这里全局可逆是明确计算的结果，不能从任意李群的单位元附近局部可逆性直接推出。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:non-surjective-exponential}
+	在 \(\operatorname{SL}(2,\mathbb R)\) 中令 \(A=\operatorname{diag}(-2,-1/2)\)。证明 \(A\) 属于单位连通分支，且是两个指数的乘积，但不存在实矩阵 \(X\) 满足 \(e^X=A\)。这说明连通李群的指数不一定满射。
+\end{exercise}
+\begin{solution}
+	令
+	\[
+		J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad D=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+	\]
+	二者迹为零，属于 \(\mathfrak{sl}(2,\mathbb R)\)。直接求指数得 \(e^{\pi J}=-I\)、\(e^{(\log2)D}=\operatorname{diag}(2,1/2)\)，故
+	\[
+		A=e^{\pi J}e^{(\log2)D}.
+	\]
+	曲线 \(t\mapsto e^{t\pi J}e^{t(\log2)D}\)，\(0\leq t\leq1\)，留在 \(\operatorname{SL}(2,\mathbb R)\) 中，并从 \(I\) 走到 \(A\)。所以 \(A\) 属于单位连通分支 \(G^0\)，两个因子的整条单参数子群也都在 \(G^0\) 中。
+
+	若实矩阵 \(X\) 满足 \(e^X=A\)，则 \(X\) 与 \(A\) 交换，因为 \(X\) 与自身的每个幂交换，进而与收敛的指数级数交换。写出 \(XA=AX\) 的两个非对角元，由 \(-2\ne-1/2\) 得 \(X_{12}=X_{21}=0\)。于是 \(X\) 为实对角矩阵，其指数的两个对角元都严格为正，不可能等于 \(A\)。特别地，连通李群 \(G^0\) 的指数不能到达 \(A\)，但有限个指数的乘积仍能到达它。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:commutator-exponential-limit}
+	设 \(G\) 为有限维实李群，\(X,Y\in\mathfrak g\)。对充分小的实数 \(s,t\)，令
+	\[
+		K(s,t)=\exp_G(sX)\exp_G(tY)\exp_G(-sX)\exp_G(-tY).
+	\]
+	证明 \(\log K(s,t)=st[X,Y]+O((|s|+|t|)^3)\)，并由此证明
+	\[
+		K(1/n,1/n)^{n^2}\longrightarrow\exp_G([X,Y]).
+	\]
+	说明改变交换子的次序为何会改变首项的符号。
+\end{exercise}
+\begin{solution}
+	由共轭与指数的相容性，前面三个因子的乘积为
+	\[
+		\exp_G\bigl(t e^{s\operatorname{ad}_X}Y\bigr).
+	\]
+	固定 \(X,Y\)，记 \(\delta=|s|+|t|\)，并令 \(U=t e^{s\operatorname{ad}_X}Y\)、\(V=-tY\)。算子指数展开给出
+	\[
+		U=tY+st[X,Y]+O(\delta^3),\qquad U+V=st[X,Y]+O(\delta^3).
+	\]
+	\([tY,-tY]=0\)，故 \([U,V]=O(\delta^3)\)。将它们代入 BCH 的二阶展开，得到所需对数公式；此处 \(K\) 对充分小的参数确在单位元对数邻域内。
+
+	令 \(Z_n=\log K(1/n,1/n)\)。则 \(Z_n=n^{-2}[X,Y]+O(n^{-3})\)，所以 \(n^2Z_n\to[X,Y]\)。单参数子群规律给出 \(K(1/n,1/n)^{n^2}=\exp_G(n^2Z_n)\)，连续性即得极限。若把 \(X,Y\) 两方向的角色交换，首项变为 \(st[Y,X]=-st[X,Y]\)；这里的符号由写出的乘积顺序决定。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:adjoint-kernel-center}
+	设 \(G\) 为连通有限维实李群，\(Z(G)=\{g\in G:gh=hg\text{ 对所有 }h\in G\}\)。证明 \(\ker\operatorname{Ad}=Z(G)\)。再证明若 \([X,Y]=0\) 对所有 \(Y\in\mathfrak g\) 成立，则 \(\exp_GX\in Z(G)\)，并给出逆命题不成立的例子。
+\end{exercise}
+\begin{solution}
+	若 \(g\in Z(G)\)，共轭 \(C_g\) 是恒等映射，故其单位元微分为恒等，即 \(g\in\ker\operatorname{Ad}\)。反之，若 \(\operatorname{Ad}_g=I\)，指数自然性说明
+	\[
+		g\exp_G(Y)g^{-1}=\exp_G(Y)\qquad(Y\in\mathfrak g).
+	\]
+	因 \(G\) 连通，每个群元素都是有限个指数的乘积，故 \(g\) 与所有群元素交换。这一步正是连通性的用途。
+
+	若 \(\operatorname{ad}_X=0\)，则 \(\operatorname{Ad}_{\exp_GX}=e^{\operatorname{ad}_X}=I\)，于是 \(\exp_GX\) 为中心元素。反向可能因指数的周期而失败。取 \(G=\operatorname{SL}(2,\mathbb R)^0\)，并令
+	\[
+		X=\pi\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad
+		Y=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+	\]
+	\(X,Y\in\operatorname{Lie}(G)=\mathfrak{sl}(2,\mathbb R)\)，其中等号来自单位分支为开子群。\(\exp_GX=-I\) 与所有矩阵交换，但
+	\[
+		[X,Y]=2\pi\begin{pmatrix}0&1\\1&0\end{pmatrix}\ne0.
+	\]
+	因此“某一个指数落入中心”不能替代“整个方向与所有方向的括号为零”。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:closed-subgroups-real-line}
+	证明加法李群 \((\mathbb R,+)\) 的闭子群恰为 \(\{0\}\)、\(\mathbb R\) 以及 \(a\mathbb Z\)、\(a>0\)。求它们的李代数与单位元连通分支，并说明为什么李代数不能区分所有闭子群。
+\end{exercise}
+\begin{solution}
+	设 \(K\subseteq\mathbb R\) 为闭子群。若 \(K\) 没有正元素，由取负封闭可知它也没有负元素，故 \(K=\{0\}\)。以下设正元素集非空，并令
+	\[
+		a=\inf\{x\in K:x>0\}\ge0.
+	\]
+
+	若 \(a>0\)，由下确界的定义可取 \(x_j\in K\)、\(x_j>0\)，使 \(x_j\to a\)。闭性给出 \(a\in K\)。任取 \(x\in K\)，选择整数 \(m\) 使 \(ma\le x<(m+1)a\)，则 \(r=x-ma\in K\) 且 \(0\le r<a\)。若 \(r>0\)，就与 \(a\) 是正元素下确界矛盾，所以 \(r=0\)，即 \(x\in a\mathbb Z\)。反向包含由 \(a\in K\) 和子群性质得到，故 \(K=a\mathbb Z\)。
+
+	若 \(a=0\)，可取 \(0<x_j\in K\) 且 \(x_j\to0\)。对任意 \(y\in\mathbb R\)，选整数 \(m_j\) 使
+	\[
+		|m_jx_j-y|\le x_j.
+	\]
+	于是 \(m_jx_j\in K\) 且趋于 \(y\)，闭性迫使 \(y\in K\)。因此 \(K=\mathbb R\)。反过来，\(\{0\}\) 和 \(\mathbb R\) 显然闭；当 \(a>0\) 时，\(a\mathbb Z\) 的每个点与其余点距离至少为 \(a\)，而不在该集合中的点位于两个相邻整数倍之间，存在避开它的开区间，所以 \(a\mathbb Z\) 也闭。
+
+	加法群的指数为恒等映射，故闭子群定理给出的李代数为
+	\[
+		\mathfrak k=\{X\in\mathbb R:tX\in K\text{ 对所有 }t\in\mathbb R\}.
+	\]
+	对 \(K=\mathbb R\)，它等于 \(\mathbb R\)；对 \(K=\{0\}\) 或 \(K=a\mathbb Z\)，它等于 \(\{0\}\)，因为非零 \(X\) 的全部实数倍充满 \(\mathbb R\)。相应的单位元连通分支分别是 \(\mathbb R\)、\(\{0\}\) 和 \(\{0\}\)。所以所有这些非平凡离散子群都具有同一个零李代数；不同的离散分支不会出现在单位元切空间中。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:triangular-two-dimensional-subgroups}
+	考虑上三角矩阵李群
+	\[
+		N=\left\{
+		n(x,y,z)=
+		\begin{pmatrix}
+			1&x&z\\
+			0&1&y\\
+			0&0&1
+		\end{pmatrix}:x,y,z\in\mathbb R
+		\right\}.
+	\]
+	记其李代数的基为 \(X=E_{12}\)、\(Y=E_{23}\)、\(Z=E_{13}\)。证明每个二维李子代数都恰为
+	\[
+		\mathfrak h_{a,b}=\operatorname{span}\{aX+bY,Z\},
+		\qquad(a,b)\ne(0,0).
+	\]
+	求出相应的连通积分子群，并判断它是否闭。说明为什么 \(\operatorname{span}\{X,Y\}\) 不能成为二维浸入李子群的李代数。
+\end{exercise}
+\begin{solution}
+	矩阵乘法与交换子分别给出
+	\[
+		n(x,y,z)n(x',y',z')
+		=n(x+x',y+y',z+z'+xy'),
+	\]
+	以及
+	\[
+		[X,Y]=Z,\qquad[X,Z]=[Y,Z]=0.
+	\]
+	所以对 \(U=aX+bY+cZ\)、\(V=a'X+b'Y+c'Z\)，有
+	\[
+		[U,V]=(ab'-ba')Z.
+	\]
+
+	设 \(\mathfrak h\) 为二维李子代数。若 \(Z\notin\mathfrak h\)，则投影
+	\[
+		\pi:\mathfrak h\longrightarrow\operatorname{span}\{X,Y\},
+		\qquad aX+bY+cZ\longmapsto aX+bY
+	\]
+	的核为零，所以它在两个二维空间之间是同构。取 \(\mathfrak h\) 的一组基 \(U,V\)，其投影独立，因而 \(ab'-ba'\ne0\)。括号封闭性随即给出 \(Z\in\mathfrak h\)，矛盾。因此 \(Z\in\mathfrak h\)。再选一个不与 \(Z\) 共线的元素 \(aX+bY+cZ\)，减去 \(cZ\) 即得所述形式，其中 \((a,b)\ne(0,0)\)。反过来，任意这样的平面内两个元素的括号都为零，故确为李子代数。
+
+	令
+	\[
+		H_{a,b}=\{n(x,y,z):bx-ay=0\}
+		=\{n(as,bs,z):s,z\in\mathbb R\}.
+	\]
+	乘法公式说明它对乘积封闭。逆矩阵为
+	\[
+		n(x,y,z)^{-1}=n(-x,-y,xy-z),
+	\]
+	所以它也对取逆封闭。约束 \(bx-ay=0\) 是闭的线性条件，故 \(H_{a,b}\) 在 \(N\) 中闭。参数 \((s,z)\mapsto n(as,bs,z)\) 是从 \(\mathbb R^2\) 到这个平面的微分同胚，说明它连通；在单位元求导得到切空间 \(\operatorname{span}\{aX+bY,Z\}\)。由\cref{g1:thm:lie-subalgebra-integration}的唯一性，它就是所求的连通积分子群。这里的参数 \(z\) 是矩阵右上角的实际条目，无须先把它换成指数坐标。
+
+	最后，\([X,Y]=Z\notin\operatorname{span}\{X,Y\}\)，所以这个平面不是李子代数。浸入李子群的单位切空间必须对括号封闭，故不可能由任何二维浸入李子群实现。两个切向方向逐次运动产生的第三方向，正是本例的障碍。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:vector-line-stabilizer-subgroups}
+	设 \(n\ge2\)，\(v\in\mathbb R^n\setminus\{0\}\)。在 \(\operatorname{GL}(n,\mathbb R)\) 中定义
+	\[
+		K_v=\{g:gv=v\},\qquad
+		K_{\mathbb Rv}=\{g:g(\mathbb Rv)=\mathbb Rv\}.
+	\]
+	证明这两个集合都是闭子群，分别求其李代数和维数。这里的闭性相对于 \(\operatorname{GL}(n,\mathbb R)\)，不要求它们在所有 \(n\times n\) 矩阵组成的向量空间中闭。
+\end{exercise}
+\begin{solution}
+	保持一个向量或一条直线的可逆线性映射，其复合与逆仍保持相应对象，所以两集合都是子群。选一组以 \(v\) 为首向量的基。在这组基中，它们分别具有块矩阵形式
+	\[
+		K_v=
+		\left\{
+		\begin{pmatrix}
+			1&a\\
+			0&B
+		\end{pmatrix}:
+		\begin{aligned}
+			&a\in\operatorname{Mat}_{1,n-1}(\mathbb R),\\
+			&B\in\operatorname{GL}(n-1,\mathbb R)
+		\end{aligned}
+		\right\},
+	\]
+	\[
+		K_{\mathbb Rv}=
+		\left\{
+		\begin{pmatrix}
+			c&a\\
+			0&B
+		\end{pmatrix}:
+		\begin{aligned}
+			&c\in\mathbb R\setminus\{0\},\\
+			&a\in\operatorname{Mat}_{1,n-1}(\mathbb R),\\
+			&B\in\operatorname{GL}(n-1,\mathbb R)
+		\end{aligned}
+		\right\}.
+	\]
+	前者由第一列等于 \((1,0,\ldots,0)^{\mathsf T}\) 的闭条件描述；后者由第一列的后 \(n-1\) 项为零的闭条件描述。后一情形中，\(c\ne0\) 与 \(B\) 可逆已由整个矩阵可逆保证。因此两者在 \(\operatorname{GL}(n,\mathbb R)\) 中闭，可以使用\cref{g1:thm:closed-subgroup}。
+
+	若 \(\exp(tA)v=v\) 对所有 \(t\) 成立，在 \(t=0\) 求导得到 \(Av=0\)。反之，若 \(Av=0\)，则 \(A^kv=0\) 对所有 \(k\ge1\) 成立，指数级数给出 \(\exp(tA)v=v\)。于是
+	\[
+		\operatorname{Lie}(K_v)=\{A:Av=0\}
+		=
+		\left\{
+		\begin{pmatrix}
+			0&a\\
+			0&C
+		\end{pmatrix}
+		\right\}.
+	\]
+
+	若 \(\exp(tA)v\in\mathbb Rv\) 对所有 \(t\) 成立，对商空间投影 \(\mathbb R^n\to\mathbb R^n/\mathbb Rv\) 求导可得 \(Av\in\mathbb Rv\)。反之，若 \(Av=\lambda v\)，则指数级数给出 \(\exp(tA)v=e^{t\lambda}v\)，它始终张成原来的直线。故
+	\[
+		\operatorname{Lie}(K_{\mathbb Rv})=\{A:Av\in\mathbb Rv\}
+		=
+		\left\{
+		\begin{pmatrix}
+			\lambda&a\\
+			0&C
+		\end{pmatrix}
+		\right\}.
+	\]
+	这里 \(C\) 是任意 \((n-1)\times(n-1)\) 实矩阵。计数自由条目，得到
+	\[
+		\dim K_v=(n-1)+(n-1)^2=n(n-1),\qquad
+		\dim K_{\mathbb Rv}=n^2-n+1.
+	\]
+	相差的一个维数来自沿指定直线的伸缩：固定向量禁止这一变化，保持直线则允许它。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:connected-subgroup-normal-in-closure}
+	设 \(H\) 为有限维实李群 \(G\) 的连通浸入李子群，\(\mathfrak h=\operatorname{Lie}(H)\)，令 \(K=\overline H\)，并赋予它闭子群定理给出的李群结构，记 \(\mathfrak k=\operatorname{Lie}(K)\)。证明
+	\[
+		\operatorname{Ad}_k\mathfrak h=\mathfrak h\quad(k\in K),
+		\qquad[\mathfrak k,\mathfrak h]\subseteq\mathfrak h,
+	\]
+	且 \(H\) 是 \(K\) 的正规子群。第二个包含式称 \(\mathfrak h\) 为 \(\mathfrak k\) 的理想。用无理斜率环面子群说明，结论并不意味着 \(\mathfrak h=\mathfrak k\)。
+\end{exercise}
+\begin{solution}
+	包含映射 \(H\to G\) 的像落在嵌入子流形 \(K\) 中，由\cref{g1:prop:embedded-initial-property}，它作为到 \(K\) 的映射仍光滑。因而单位元微分给出 \(\mathfrak h\subseteq\mathfrak k\)。对 \(h\in H\)，内部共轭是 \(H\) 的光滑自同构，包含到 \(G\) 后与环境共轭相容，所以
+	\[
+		\operatorname{Ad}_h\mathfrak h=\mathfrak h.
+	\]
+
+	任取 \(k\in K\)。流形在每点有可数邻域基，由闭包的定义可以选 \(h_j\in H\) 使 \(h_j\to k\)，这里的收敛在环境群中理解。对 \(Y\in\mathfrak h\)，伴随作用连续，所以
+	\[
+		\operatorname{Ad}_{h_j}Y\longrightarrow\operatorname{Ad}_kY.
+	\]
+	有限维向量空间的线性子空间是闭集，而左侧每一项均属于 \(\mathfrak h\)，故 \(\operatorname{Ad}_kY\in\mathfrak h\)。再对 \(k^{-1}\) 作同一论证，得到反向包含，证明 \(\operatorname{Ad}_k\mathfrak h=\mathfrak h\)。
+
+	若 \(X\in\mathfrak k\)，则闭子群定理保证 \(\exp_G(tX)\in K\) 对所有实数 \(t\) 成立。因此对 \(Y\in\mathfrak h\)，上一结论给出
+	\[
+		\operatorname{Ad}_{\exp_G(tX)}Y\in\mathfrak h.
+	\]
+	在零点取差商，使用\eqref{g1:eq:ad-bracket}以及 \(\mathfrak h\) 的闭线性性质，得到 \([X,Y]\in\mathfrak h\)。这就是理想条件。
+
+	最后固定 \(k\in K\)。共轭 \(C_k\) 是 \(G\) 的微分同胚，把 \(H\) 的流形结构传到 \(kHk^{-1}\)，便得到一个连通浸入李子群，其李代数为 \(\operatorname{Ad}_k\mathfrak h=\mathfrak h\)。由\cref{g1:thm:lie-subalgebra-integration}，同一李子代数的连通积分子群唯一，所以 \(kHk^{-1}=H\)。这对每个 \(k\in K\) 成立，即 \(H\) 在 \(K\) 中正规；这里使用的是 \(H\) 自身的连通性。
+
+	在\cref{g1:exm:irrational-torus-subgroup}中，\(H=\{[t,\alpha t]:t\in\mathbb R\}\)，\(\alpha\) 无理，且 \(K=T^2\)。于是 \(\mathfrak h=\mathbb R(1,\alpha)\) 真包含于 \(\mathfrak k=\mathbb R^2\)。环面群交换，两者的括号都为零，任何线性子空间都是理想。这同时满足本题所有结论，并显示闭包确实可以增大李代数。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:torus-homomorphism-integer-matrix}
+	记 \(T^m=\mathbb R^m/\mathbb Z^m\)，用商映射的单位元微分把其李代数识别为 \(\mathbb R^m\)，\(T^n\) 同理。设 \(A:\mathbb R^m\to\mathbb R^n\) 为实线性映射。证明 \(A\) 能积分为李群同态 \(T^m\to T^n\)，当且仅当 \(A\) 在标准基下的全部矩阵条目都是整数；存在时写出这个同态。对 \(m=n=1\)，说明非零整数 \(k\) 所给同态的每个纤维有多少点，并说明 \(k=0\) 的情形。
+\end{exercise}
+\begin{solution}
+	设 \(q_m:\mathbb R^m\to T^m\)、\(q_n:\mathbb R^n\to T^n\) 为商同态。若 \(F:T^m\to T^n\) 的单位元微分为 \(A\)，则 \(F\circ q_m\) 与 \(q_n\circ A\) 都是从连通群 \(\mathbb R^m\) 到 \(T^n\) 的同态，且微分相同。由\cref{g1:thm:lie-homomorphism-integration}的唯一性，
+	\[
+		F(q_m(x))=q_n(Ax).
+	\]
+	对每个 \(z\in\mathbb Z^m\)，左边在 \(x=z\) 时为单位元，所以 \(Az\in\mathbb Z^n\)。特别地，对标准基向量逐一使用这个条件，得到 \(A\) 的每一列都是整数向量，即所有矩阵条目为整数。
+
+	反过来，若 \(A\mathbb Z^m\subset\mathbb Z^n\)，定义 \(F([x])=[Ax]\)。改变代表 \(x\) 为 \(x+z\) 时，目标改变 \(Az\in\mathbb Z^n\)，所以映射良定义。它保持加法，并在商覆盖的局部坐标中由线性映射 \(A\) 表示，因而光滑，微分也正是 \(A\)。
+
+	一维时映射为 \([x]\mapsto[kx]\)。若 \(k\ne0\)，其核由 \(kx\in\mathbb Z\) 决定，共有 \(|k|\) 个模 \(\mathbb Z\) 的不同解。映射满射，因为对任意代表 \(y\in\mathbb R\) 可取 \(x=y/k\)；每个纤维是核的一个陪集，故也有 \(|k|\) 个点。\(k=0\) 时则为常值同态，单位元的纤维是整个圆周，其他点的纤维为空，因而不是到 \(T^1\) 的覆盖。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:connected-abelian-lie-group-quotient}
+	设 \(G\) 是 \(n\) 维连通实李群，且其李代数括号恒为零。利用同态积分证明 \(G\) 为交换群，并证明存在加法群 \(\mathbb R^n\) 的离散子群 \(\Gamma\)，使 \(G\cong\mathbb R^n/\Gamma\)。这里已经给定 \(G\)，不要求使用交换李群的分类定理。
+\end{exercise}
+\begin{solution}
+	加法群 \(\mathbb R^n\) 的李代数也是 \(\mathbb R^n\)，括号恒为零。选线性同构 \(L:\mathbb R^n\to\mathfrak g\)，因为两边括号都为零，它是李代数同构。源群 \(\mathbb R^n\) 连通且单连通，所以\cref{g1:thm:lie-homomorphism-integration}将 \(L\) 积分成同态 \(F:\mathbb R^n\to G\)。
+
+	\(\mathrm{d}F_0=L\) 为同构，目标 \(G\) 连通，因此\cref{g1:prop:lie-homomorphism-local-isomorphism}使 \(F\) 成为满射覆盖，核 \(\Gamma\) 离散，并给出 \(G\cong\mathbb R^n/\Gamma\)。加法群 \(\mathbb R^n\) 交换，其任意同态像都交换；由满射性，\(G\) 交换。也可在商的表示中直接读出这一点。\(n=0\) 时，连通零维群只有一个点，同一结论取 \(\Gamma=\{0\}\)。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:discrete-normal-subgroup-central}
+	证明连通李群的任意离散正规子群都位于中心。再在 \(\operatorname{O}(2)\) 中取旋转 \(r=R_{2\pi/3}\)，证明 \(\Gamma=\{I,r,r^2\}\) 是离散正规子群，但不位于中心，由此说明连通条件的作用。
+\end{exercise}
+\begin{solution}
+	设 \(G\) 连通、\(\Gamma\) 离散且正规。固定 \(\gamma\in\Gamma\)。正规性保证连续映射
+	\[
+		G\longrightarrow\Gamma,\qquad g\longmapsto g\gamma g^{-1}
+	\]
+	确实取值于 \(\Gamma\)。连通空间的连续像连通，而离散空间中连通子集至多含一点，所以该映射恒等于它在单位元的值 \(\gamma\)。因此 \(g\gamma=\gamma g\) 对所有 \(g\) 成立，即 \(\Gamma\subset Z(G)\)。
+
+	现在令
+	\[
+		R_\theta=\begin{pmatrix}\cos\theta&-\sin\theta\\
+		\sin\theta&\cos\theta\end{pmatrix},\qquad
+		S=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
+	\]
+	每个二维正交矩阵都是某个 \(R_\theta\) 或 \(R_\theta S\)：第一列为单位向量 \((\cos\theta,\sin\theta)\)，第二列因正交性及单位长度只能是 \(\pm(-\sin\theta,\cos\theta)\)。旋转彼此交换，直接相乘又得 \(SR_\theta S^{-1}=R_{-\theta}\)。所以任意正交矩阵共轭 \(\Gamma\) 时，都将它保持不变，\(\Gamma\) 正规。它有限，故在 Hausdorff 矩阵空间中离散。
+
+	但 \(SrS^{-1}=r^{-1}=r^2\ne r\)，所以 \(r\) 不在中心。共轭映射在 \(\operatorname{O}(2)\) 的旋转分支与反射分支上可以取不同值；源空间不连通，便不能用前段的常值论证把两者连在一起。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:lie-homomorphism-descent}
+	设 \(S\) 为单连通实李群，\(\Gamma\subset Z(S)\) 为离散子群，\(q:S\to S/\Gamma\) 为商同态。给定有限维实李群 \(H\) 及李代数同态 \(\varphi:\operatorname{Lie}(S)\to\mathfrak h\)，令 \(\widetilde F:S\to H\) 为其整体积分。证明存在同态 \(F:S/\Gamma\to H\) 满足 \(F\circ q=\widetilde F\)，当且仅当 \(\Gamma\subset\ker\widetilde F\)，并说明存在时为何光滑且唯一。将结论用于 \(S=(\mathbb R,+)\)、\(\Gamma=2\pi\mathbb Z\)、\(H=(\mathbb R,+)\) 及 \(\varphi(t)=\lambda t\)，判断哪些 \(\lambda\) 可以下降。
+\end{exercise}
+\begin{solution}
+	若已有 \(F\)，则对 \(\gamma\in\Gamma\)，有
+	\[
+		\widetilde F(\gamma)=F(q(\gamma))=F(e_{S/\Gamma})=e_H,
+	\]
+	所以 \(\Gamma\subset\ker\widetilde F\)。
+
+	反过来，若这个包含成立，定义 \(F(s\Gamma)=\widetilde F(s)\)。当 \(s'=s\gamma\) 时，
+	\(\widetilde F(s')=\widetilde F(s)\widetilde F(\gamma)=\widetilde F(s)\)，故定义无关于陪集代表；同态性质由 \(\widetilde F\) 传下。由\cref{g1:prop:discrete-central-quotient}，\(q\) 在每个点附近有光滑局部逆 \(\sigma\)。在相应商邻域上，
+	\[
+		F=\widetilde F\circ\sigma,
+	\]
+	所以 \(F\) 光滑。投影 \(q\) 满射，等式 \(Fq=\widetilde F\) 又唯一决定 \(F\)。
+
+	在最后给定的加法群例子中，\(\widetilde F(t)=\lambda t\)。下降要求 \(\widetilde F(2\pi)=2\pi\lambda=0\)，所以只有 \(\lambda=0\) 可以下降。于是任意光滑同态 \(S^1\cong\mathbb R/(2\pi\mathbb Z)\to(\mathbb R,+)\) 都是零同态。与圆周作为目标时的整数条件相比，这里目标没有可容纳非零一周增量的周期识别。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:local-isomorphism-simply-connected-target}
+	设 \(F:G\to H\) 是连通有限维实李群之间的光滑同态，且 \(\mathrm{d}F_{e_G}\) 为同构。证明：若目标群 \(H\) 单连通，则 \(F\) 为李群同构。再给出目标群不是单连通时结论失败的例子，并核对其单位元微分。
+\end{exercise}
+\begin{solution}
+	令 \(\varphi=(\mathrm{d}F_{e_G})^{-1}:\mathfrak h\to\mathfrak g\)。它是李代数同态，因为李代数同构的逆保持括号。目标群 \(H\) 现在作为源群，具有单连通性，所以\cref{g1:thm:lie-homomorphism-integration}给出 \(K:H\to G\)，满足 \(\mathrm{d}K_{e_H}=\varphi\)。
+
+	链式法则说明 \(K\circ F:G\to G\) 的单位元微分为恒等，而恒等同态的微分也是恒等。源群 \(G\) 连通，同态唯一性给出 \(KF=\operatorname{id}_G\)。同样，\(FK=\operatorname{id}_H\)。因此 \(F\) 有光滑同态逆 \(K\)，为李群同构。这个证明没有预先假定 \(G\) 单连通；它作为最终与 \(H\) 微分同胚的结果才随之成立。
+
+	反例为
+	\[
+		F:(\mathbb R,+)\longrightarrow S^1,\qquad F(t)=e^{it}.
+	\]
+	单位元处的切向量 \(1\in \mathrm{T}_0\mathbb R\) 被送成 \(i\in \mathrm{T}_1S^1\)，按单位角速度识别两边的李代数后，微分就是 \(\mathbb R\) 上的恒等映射。但 \(\ker F=2\pi\mathbb Z\)，故 \(F\) 不单射。它是覆盖同态；非平凡的离散核正是局部同构没有变成整体同构的原因。
+\end{solution}

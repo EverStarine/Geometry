@@ -1,0 +1,446 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：## 第20章*　紧群表示与几何实现
+% 纲要位置：几何学计划纲要.md，第 882 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% > 本章目标与证明范围：不把 Peter–Weyl、最高权和线丛实现压成两个提要。正文选定紧李群的 Peter–Weyl 证明；一般最高权分类和 Borel–Weil 的完整理论仍在后续表示专题中，不作为本章前提。
+% 
+% 纲要内容结束
+
+\OptionalChapter{紧群表示与几何实现}{g1:ch:20}
+\BookChapterNumber{g1:ch:20}
+
+\begin{chapterabstract}
+	圆周上的 Fourier 展开把函数分解为各个整数频率；紧群的矩阵系数把这一方法推广到具有非交换对称的空间。本章从平均内积与 Schur 正交关系出发，以平滑卷积构造紧自伴算子，就地证明所需谱分解，再由其有限维特征空间证明 Peter--Weyl 定理。随后将稳定子表示构造成齐性向量丛，以等变函数描述截面，并证明光滑截面的 Frobenius 互反。最后完整计算 \(\operatorname{SU}(2)\) 的不可约表示及其权，把齐次多项式实现为球面上线丛的截面，比较有限维多项式空间与全部光滑截面的表示分解。
+\end{chapterabstract}
+
+\begin{learninggoals}
+	\begin{itemize}
+		\item 用紧群平均证明有限维复表示可以酉化且完全可约，通过平均交织映射推出矩阵系数与特征标的正交关系。
+		\item 构造平滑逼近单位，证明连续核算子的紧性及紧自伴谱分解，解释非零特征空间怎样产生有限维光滑表示。
+		\item 证明矩阵系数的一致稠密性与正交 Hilbert 分解，区分正交展开、专门选择的一致逼近及光滑逼近。
+		\item 从闭稳定子的表示构造齐性向量丛，核对截面的右等变条件与左群作用，并用 Frobenius 互反计算表示的出现重数。
+		\item 分类 \(\operatorname{SU}(2)\) 的有限维复不可约表示，计算特征标与下降到 \(\operatorname{SO}(3)\) 的条件，将其多项式模型与球面线丛联系起来。
+	\end{itemize}
+\end{learninggoals}
+
+在圆周上，旋转不会把一个纯频率变成另一个频率：若 \(f_m(e^{\mathrm{i}t})=e^{\mathrm{i}mt}\)，则平移角度 \(\theta\) 只把它乘以 \(e^{\mathrm{i}m\theta}\)。因此每个频率张成一个在群作用下不变的一维空间。球面上的旋转却会混合三个坐标函数；需要一起保留它们张成的三维空间，才能描述旋转的作用。由此自然产生一个问题：在一般紧群或紧齐性空间上，能否找到足够多的有限维不变函数空间，使任意函数都由这些部分逼近？
+
+\ProseParagraphBreak
+
+有限维表示给出候选函数。若 \(\pi(g)\) 是表示矩阵，它的每个条目都是群上的光滑函数，而矩阵乘法说明平移会把这些条目线性组合起来。平均内积使表示酉化，平均交织映射则使不同不可约表示的条目相互正交。但正交性本身并不保证没有遗漏函数。为证明完备性，我们先把函数与集中在单位元附近的平滑核卷积，再利用紧自伴算子的非零特征空间产生表示。对有限谱和再卷积一次，就能把原有的平方范数误差控制改进为一致误差。这是从分析走向表示的关键步骤。
+
+\ProseParagraphBreak
+
+表示还可以规定几何对象的转换规律。在齐性空间 \(G/H\) 上，先给定稳定子 \(H\) 在一个向量空间上的作用，就能把这个空间搬到各个底点，组成齐性向量丛。其截面对应群上的等变函数，因此前半章的平移和分解方法可以继续使用。对 \(\operatorname{SU}(2)/T\cong S^2\)，一个整数权决定一条复线丛；齐次多项式又提供其中可明确写出的有限维截面空间。我们将核对这两个整数的符号，而不只比较维数。
+
+\ProseParagraphBreak
+
+本章的群为有限维实李群，有限维表示空间取复数域，Hermitian 内积对第一变量线性。前半章使用\cref{g1:thm:compact-group-integration}的归一化左右不变积分、\cref{g1:thm:smooth-partition-unity}的单位分解及有限维线性代数；Hilbert 完备化与紧自伴谱引理在本章说明。\footnote{希尔伯特（David Hilbert，1862--1943），德国数学家，在不变量理论、几何公理化及积分方程理论中作出重要贡献。}后半章使用第十七、十八章的齐性空间与关联丛，\(\operatorname{SU}(2)\) 的分类调用\cref{g1:lem:sl2-weight-chain}的有限权链及第十九章的极大环面。Peter--Weyl 部分不要求群连通，最后的球面模型则明确固定 \(\operatorname{SU}(2)\)。
+
+\ProseParagraphBreak
+
+延伸阅读可查 Hall 的《Lie Groups, Lie Algebras, and Representations》中题为“The Compact Group Approach to Representation Theory”的一章\cite{Hall2015}。这里证明紧李群的 Peter--Weyl 定理及 \(\operatorname{SU}(2)\) 的具体分类；一般最高权分类和 Borel--Weil 理论还需要根系、复结构及全纯截面的进一步工具，留在后续表示专题中讨论。
+
+\input{Part05/Chapter20/Section2001}
+\input{Part05/Chapter20/Section2002}
+\input{Part05/Chapter20/Section2003}
+\input{Part05/Chapter20/Section2004}
+
+\begin{chaptersummary}
+	归一化不变积分把有限维表示酉化，使每个不变子空间都有不变正交补。Schur 引理再把平均交织映射化为零或标量，从而给出矩阵系数与特征标的正交关系。固定一个维数为 \(d_\pi\) 的不可约表示，其全部矩阵系数张成 \(d_\pi^2\) 维空间，在右正则作用下包含 \(d_\pi\) 个该表示的副本。
+
+	\ProseParagraphBreak
+
+	平滑对称逼近单位产生与右正则作用交换的紧自伴卷积算子。其非零特征空间有限维、由光滑函数组成，并在群作用下不变。紧自伴谱分解先给出 \(L^2\) 逼近，再卷积的估计将它提升为一致逼近，由此证明代表函数在 \(C(G)\) 与 \(L^2(G)\) 中稠密。正交性与稠密性合起来得到 Peter--Weyl 分解及 Parseval 等式；一般正交展开的直接结论是 \(L^2\) 收敛，光滑逼近则使用另行选择的平滑核与有限谱截断。
+
+	\ProseParagraphBreak
+
+	稳定子表示 \(\rho:H\to\operatorname{GL}(W)\) 决定齐性向量丛 \(G\times_H W\)。截面对应满足 \(f(gh)=\rho(h)^{-1}f(g)\) 的函数，群在截面上的作用对应左平移。求值于单位元给出 Frobenius 互反，把截面空间中一个有限维表示的出现问题化为稳定子上的交织映射问题。对球面模型，权 \(m\) 对应 \(E_m=\mathcal O(-m)\)，局部标架与截面分量按互逆方向转换。
+
+	\ProseParagraphBreak
+
+	\(\operatorname{SU}(2)\) 的不可约复表示由非负整数 \(n\) 分类：\(V_n\) 是二元 \(n\) 次齐次多项式空间，权为 \(n,n-2,\ldots,-n\)，维数为 \(n+1\)。中心元素 \(-I\) 作用为 \((-1)^n\)，故恰在 \(n\) 为偶数时下降到 \(\operatorname{SO}(3)\)。\(V_n\) 实现为 \(E_{-n}\) 的多项式截面；而 \(E_m\) 的全部平方可积截面还包含所有满足 \(n\ge|m|\)、\(n\equiv m\pmod2\) 的 \(V_n\)，各出现一次。有限维几何实现与无限维截面分解由此在同一个例子中得到比较。
+\end{chaptersummary}
+
+\BookExercises
+
+以下习题依次练习平均、正交关系、卷积逼近、齐性丛与低秩表示。处理无限展开时注明收敛范数；处理线丛时先写出所用的代表关系和局部分量转换，再判断符号与重数。
+
+\begin{exercise}\label{g1:ex:representation-average-fixed-vectors}
+	设 \(G\) 为紧李群，\(\pi:G\to\operatorname{U}(V)\) 为有限维复光滑酉表示，令
+	\[
+		P=\int_G\pi(g)\,\mathrm{d}\mu_G(g),\qquad
+		V^G=\{v:\pi(g)v=v\;\text{对全部 }g\in G\}.
+	\]
+	证明 \(P\) 是到 \(V^G\) 的正交投影，并推出 \(\dim_{\mathbb C}V^G=\int_G\chi_\pi\,\mathrm{d}\mu_G\)。对圆周表示 \(\pi(z)=\operatorname{diag}(z^{m_1},\ldots,z^{m_N})\)，其中 \(m_j\in\mathbb Z\)，求 \(P\)。
+\end{exercise}
+\begin{solution}
+	对 \(h\in G\)，左不变性给出
+	\[
+		\pi(h)P=\int_G\pi(hg)\,\mathrm{d}\mu_G(g)=P.
+	\]
+	因此 \(\operatorname{im}P\subseteq V^G\)。若 \(v\in V^G\)，被积向量恒为 \(v\)，归一化给出 \(Pv=v\)。所以像恰为 \(V^G\)，且 \(P^2=P\)。又因表示酉且积分取逆不变，
+	\[
+		P^*=\int_G\pi(g)^*\,\mathrm{d}\mu_G(g)
+		=\int_G\pi(g^{-1})\,\mathrm{d}\mu_G(g)=P.
+	\]
+	自伴投影的核与像正交：若 \(Pv=0\)、\(u=Pw\)，则 \(\langle v,u\rangle=\langle Pv,w\rangle=0\)。结合 \(V=\operatorname{im}P\oplus\ker P\)，可知 \(P\) 就是到 \(V^G\) 的正交投影。
+
+	在适应这一直和的基中，\(P\) 在像上为 \(1\)、核上为 \(0\)，故 \(\operatorname{tr}P=\dim V^G\)。取迹与有限维积分交换，得到所需特征标积分公式。圆周情形逐对角分量积分，而 \(\int_{S^1}z^m\,\mathrm{d}\mu=0\) 对 \(m\ne0\) 成立，\(m=0\) 时为 \(1\)，因此
+	\[
+		P=\operatorname{diag}(\varepsilon_1,\ldots,\varepsilon_N),
+		\qquad \varepsilon_j=\begin{cases}1,&m_j=0,\\0,&m_j\ne0.\end{cases}
+	\]
+	平均恰好保留零权坐标。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:intertwiner-character-dimension}
+	设 \(\rho,\sigma\) 为紧李群 \(G\) 的有限维复光滑表示。证明
+	\[
+		\dim_{\mathbb C}\operatorname{Hom}_G(V_\rho,V_\sigma)
+		=\int_G\chi_\sigma(g)\overline{\chi_\rho(g)}\,\mathrm{d}\mu_G(g).
+	\]
+	进而证明非零表示 \(\rho\) 不可约，当且仅当 \(\int_G|\chi_\rho|^2\,\mathrm{d}\mu_G=1\)。对 \(G=S^1\)、\(\rho(z)=\operatorname{diag}(z,z,z^{-1})\)、\(\sigma(z)=\operatorname{diag}(z,z^{-1},z^{-1},z^2)\)，计算交织映射空间及自交织映射空间 \(\operatorname{End}_G(V_\rho)\) 的维数。
+\end{exercise}
+\begin{solution}
+	由完全可约性，把两个表示按所选不可约代表写成
+	\[
+		V_\rho\cong\bigoplus_{\pi\in\widehat G}V_\pi^{\oplus a_\pi},
+		\qquad
+		V_\sigma\cong\bigoplus_{\pi\in\widehat G}V_\pi^{\oplus b_\pi},
+	\]
+	其中每个直和只有有限个非零项。任意线性映射可按这些因子写成矩阵分块；交织条件逐块成立。Schur 引理使不等价因子之间的块为零，相同代表之间的每块是一个任意复标量，所以
+	\[
+		\operatorname{Hom}_G(V_\rho,V_\sigma)
+		\cong\bigoplus_\pi\operatorname{Mat}_{b_\pi\times a_\pi}(\mathbb C),
+		\qquad \dim\operatorname{Hom}_G(V_\rho,V_\sigma)=\sum_\pi a_\pi b_\pi.
+	\]
+	另一方面，\(\chi_\rho=\sum a_\pi\chi_\pi\)、\(\chi_\sigma=\sum b_\pi\chi_\pi\)，由特征标正交性，题中积分也等于 \(\sum a_\pi b_\pi\)。
+
+	取 \(\sigma=\rho\)，得到 \(\int_G|\chi_\rho|^2\,\mathrm{d}\mu_G=\sum a_\pi^2\)。\(\rho\ne0\) 意味着至少一个 \(a_\pi\) 为正整数，因此右侧等于 \(1\) 当且仅当恰有一个重数为 \(1\)、其余为零，也就是 \(\rho\) 不可约。
+
+	在所给圆周例中，\(\rho\) 的权 \(1,-1\) 的重数分别为 \(2,1\)，\(\sigma\) 的权 \(1,-1,2\) 的重数分别为 \(1,2,1\)。所以 \(\dim\operatorname{Hom}_G(V_\rho,V_\sigma)=2\cdot1+1\cdot2=4\)，而 \(\dim\operatorname{End}_G(V_\rho)=2^2+1^2=5\)。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:finite-cyclic-fourier}
+	令 \(C_m=\{1,\zeta,\ldots,\zeta^{m-1}\}\)，其中 \(\zeta=e^{2\pi\mathrm{i}/m}\)、\(m\ge1\)。求 \(C_m\) 的全部复不可约表示，并对任意函数 \(f:C_m\to\mathbb C\) 证明展开公式及平方范数恒等式
+	\[
+		f(\zeta^r)=\sum_{k=0}^{m-1}\widehat f(k)\zeta^{kr},
+		\qquad
+		\frac1m\sum_{r=0}^{m-1}|f(\zeta^r)|^2
+		=\sum_{k=0}^{m-1}|\widehat f(k)|^2,
+	\]
+	其中 \(\widehat f(k)=m^{-1}\sum_{r=0}^{m-1}f(\zeta^r)\zeta^{-kr}\)。说明此处无需使用无限维函数空间的完备性。
+\end{exercise}
+\begin{solution}
+	\(C_m\) 交换。和环面的情形一样，每个表示矩阵都与全体表示矩阵交换，复 Schur 引理使不可约表示中的矩阵全为标量，不可约性再使表示空间一维。一个一维表示由 \(\zeta\) 的像 \(\lambda\) 决定，而 \(\zeta^m=1\) 要求 \(\lambda^m=1\)。因此全部不可约表示为 \(\chi_k(\zeta^r)=\zeta^{kr}\)，\(0\le k<m\)。有限群是零维李群，这些映射自动光滑。
+
+	对 \(k,l\) 取值于上述范围，有限等比数列给出
+	\[
+		\frac1m\sum_{r=0}^{m-1}\chi_k(\zeta^r)\overline{\chi_l(\zeta^r)}
+		=\frac1m\sum_{r=0}^{m-1}(\zeta^{k-l})^r=\delta_{kl}.
+	\]
+	\(k=l\) 时每项为 \(1\)；\(k\ne l\) 时分子 \(1-(\zeta^{k-l})^m\) 为零、分母 \(1-\zeta^{k-l}\) 非零，所以和为零。全部函数组成的复向量空间维数为 \(m\)，这 \(m\) 个正交非零函数因而已是一组标准正交基。有限维正交展开使 \(f=\sum_k\langle f,\chi_k\rangle\chi_k\)，系数正是所列 \(\widehat f(k)\)，取范数即得第二个恒等式。这里的展开为有限和，完备性来自维数计数，没有涉及无限级数的收敛问题。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:su2-regular-row-subspace}
+	将 \(\operatorname{SU}(2)\) 的元素写为
+	\[
+		g=\begin{pmatrix}a(g)&b(g)\\-\overline{b(g)}&\overline{a(g)}\end{pmatrix},
+		\qquad |a(g)|^2+|b(g)|^2=1.
+	\]
+	证明其在 \(\mathbb C^2\) 上的定义表示不可约，并用 Schur 正交关系求四个坐标函数 \(a,b,\overline a,\overline b\) 的范数及两两内积。证明 \(E=\operatorname{span}_{\mathbb C}\{a,b\}\) 在右正则作用下不变，却不在左正则作用下不变；给出一个具体的左平移作为例子。
+\end{exercise}
+\begin{solution}
+	若定义表示有非零真不变子空间，它必为复直线。取 \(\operatorname{diag}(e^{\mathrm{i}t},e^{-\mathrm{i}t})\)，其中 \(t\notin\pi\mathbb Z\)，两个特征值不同，该矩阵的不变复直线只能是两条坐标轴。可是 \(J=\begin{psmallmatrix}0&1\\-1&0\end{psmallmatrix}\in\operatorname{SU}(2)\) 交换两条坐标轴，故没有一条对全群不变。表示因此不可约。
+
+	四个矩阵系数依次是 \(a,b,-\overline b,\overline a\)，维数 \(d=2\)。Schur 正交关系说明它们两两正交，且每个平方范数为 \(1/2\)。去掉一个函数前的负号并改变排列不影响此结论，所以 \(a,b,\overline a,\overline b\) 两两正交，范数都为 \(1/\sqrt2\)，特别地这四个函数线性无关。
+
+	写 \(h=\begin{psmallmatrix}c&d\\-\overline d&\overline c\end{psmallmatrix}\)。右乘直接给出
+	\[
+		R_ha=ca-\overline d\,b,\qquad
+		R_hb=da+\overline c\,b,
+	\]
+	所以 \(E\) 右不变，且在基 \((a,b)\) 中，限制表示的矩阵就是 \(h\)。另一方面，\(J^{-1}=\begin{psmallmatrix}0&-1\\1&0\end{psmallmatrix}\)，计算 \(J^{-1}g\) 的左上角可得 \(L_Ja=\overline b\)。四个函数的线性无关性说明 \(\overline b\notin E\)，所以 \(E\) 不左不变。左右正则作用互相交换，并不意味着一个任意选定的右不变子空间也必须左不变；在完整的四维系数空间中，两种作用才同时保持该空间。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:nonnegative-kernel-negative-spectrum}
+	在 \(S^1\) 上取归一化角度积分，令 \(k(e^{\mathrm{i}t})=1-a\cos t\)，其中 \(0<a\le1\)。证明 \(k\) 非负、积分为 \(1\)、取逆不变，但卷积算子 \(T_k\) 有负特征值。求其全部特征值和非零特征空间，并说明“非负核”与“非负自伴算子”的区别。
+\end{exercise}
+\begin{solution}
+	由 \(-1\le\cos t\le1\) 有 \(k\ge1-a\ge0\)，余弦的平均为零，故积分为 \(1\)，且 \(\cos(-t)=\cos t\) 给出取逆不变性。对 \(e_m(e^{\mathrm{i}t})=e^{\mathrm{i}mt}\)，直接代入左卷积，得
+	\[
+		T_ke_m(e^{\mathrm{i}t})
+		=e^{\mathrm{i}mt}\frac1{2\pi}\int_0^{2\pi}
+		(1-a\cos s)e^{-\mathrm{i}ms}\,\mathrm{d}s.
+	\]
+	所以 \(e_0\) 的特征值为 \(1\)，\(e_1,e_{-1}\) 的特征值为 \(-a/2\)，其余 \(e_m\) 的特征值为 \(0\)。\cref{g1:ex:peter-weyl-circle}说明这些指数函数为完备正交系，因此没有其他特征值；非零特征空间分别是 \(\mathbb C e_0\) 与 \(\operatorname{span}\{e_1,e_{-1}\}\)，算子秩为 \(3\)。
+
+	非负核保证 \(f\ge0\) 时 \(T_kf\ge0\)，这是函数值的次序性质。非负自伴算子则要求 \(\langle T_kf,f\rangle_2\ge0\) 对所有复函数成立。取 \(f=e_1\) 即得 \(\langle T_kf,f\rangle_2=-a/2<0\)，所以后一性质不成立。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:approximate-identity-not-operator-norm}
+	设 \(T_n\) 是本节在 \(S^1\) 上构造的平滑对称逼近单位算子。证明对每个 \(n\)，都有 \(\|I-T_n\|_{L^2\to L^2}\ge1\)。因此 \(T_nf\to f\) 对每个 \(f\in L^2\) 成立，并不意味着 \(T_n\to I\) 按算子范数成立。
+\end{exercise}
+\begin{solution}
+	固定 \(n\)，记 \(T=T_n\)，并取正交单位函数列 \(e_m(t)=e^{\mathrm{i}mt}\)、\(m=1,2,\ldots\)。有限正交投影的勾股等式说明，对每个 \(h\in L^2\)，有 \(\sum_m|\langle e_m,h\rangle_2|^2\le\|h\|_2^2\)，故 \(\langle e_m,h\rangle_2\to0\)。自伴性遂给出 \(\langle Te_m,h\rangle_2=\langle e_m,Th\rangle_2\to0\)。
+
+	紧性使 \((Te_m)\) 的每个子列还有范数收敛子列，而任何这样的极限 \(v\) 均满足 \(\langle v,h\rangle_2=0\) 对所有 \(h\) 成立，所以只能是 \(0\)。若 \(\|Te_m\|_2\) 不趋于零，便存在范数有正下界的子列；取它的收敛子列会与极限为零矛盾。因此 \(\|Te_m\|_2\to0\)。由
+	\[
+		\|(I-T)e_m\|_2\ge1-\|Te_m\|_2
+	\]
+	得到 \(\|I-T\|\ge1\)。这对每个固定 \(n\) 成立，而逼近单位的强收敛已经由正文证明。两者的量词不同：强收敛先固定目标函数；算子范数收敛则要求对整个单位球同时控制误差。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:convolution-fourier-order}
+	设 \(G\) 为有限维实紧李群，\(k,f\in C(G)\)，取本节约定的左卷积及 Fourier 矩阵。证明
+	\[
+		\widehat{k*f}(\pi)=\widehat f(\pi)\widehat k(\pi).
+	\]
+	若 \(k\) 共轭不变，即 \(k(hxh^{-1})=k(x)\)，证明对每个不可约酉表示 \(\pi\)，\(\widehat k(\pi)=c_\pi I\)，求 \(c_\pi\)，并说明 \(T_k\) 在 \(\mathcal H_\pi\) 上的作用。
+\end{exercise}
+\begin{solution}
+	全部被积函数连续，紧性允许交换积分。将 \(x=yz\) 代入 Fourier 矩阵的定义，有
+	\[
+		\begin{aligned}
+		\widehat{k*f}(\pi)
+		&=\int_G\int_Gk(y)f(z)\pi((yz)^{-1})\,
+		\mathrm{d}\mu(z)\,\mathrm{d}\mu(y)\\
+		&=\left(\int_Gf(z)\pi(z^{-1})\,\mathrm{d}\mu(z)\right)
+		\left(\int_Gk(y)\pi(y^{-1})\,\mathrm{d}\mu(y)\right).
+		\end{aligned}
+	\]
+	这正是所求次序；逆元把乘法顺序反转，所以不能按标量 Fourier 变换的习惯随意交换两个矩阵。
+
+	若 \(k\) 共轭不变，用共轭换元得到
+	\[
+		\pi(h)\widehat k(\pi)\pi(h)^{-1}
+		=\int_Gk(y)\pi(hy^{-1}h^{-1})\,\mathrm{d}\mu(y)
+		=\widehat k(\pi).
+	\]
+	Schur 引理使它为标量矩阵。取迹得
+	\[
+		c_\pi=\frac1{d_\pi}\int_Gk(y)\overline{\chi_\pi(y)}\,\mathrm{d}\mu(y).
+	\]
+	直接把 \(\pi(y^{-1}x)=\pi(y^{-1})\pi(x)\) 代入卷积，得到
+	\[
+		T_k\pi_{ij}(x)
+		=\sum_a\widehat k(\pi)_{ia}\pi_{aj}(x)=c_\pi\pi_{ij}(x).
+	\]
+	因此 \(T_k\) 在整个 \(\mathcal H_\pi\) 上都是乘以 \(c_\pi\)。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:character-convolution-projection}
+	设 \(G\) 为有限维实紧李群，\(\pi\) 为不可约酉表示。证明从 \(L^2(G)\) 到 \(\mathcal H_\pi\) 的正交投影为
+	\[
+		Q_\pi f(x)=d_\pi\int_G\chi_\pi(y)f(y^{-1}x)\,\mathrm{d}\mu(y).
+	\]
+	据此求 \(\chi_\pi*\chi_\sigma\)，其中 \(\pi,\sigma\) 是已选定的不可约代表，并说明投影的秩为什么是 \(d_\pi^2\) 而不是 \(d_\pi\)。
+\end{exercise}
+\begin{solution}
+	特征标函数共轭不变。由上一题的公式以及\cref{g1:cor:character-orthogonality}，核 \(k=d_\pi\chi_\pi\) 在 \(\mathcal H_\sigma\) 上的卷积特征值为
+	\[
+		\frac{d_\pi}{d_\sigma}
+		\int_G\chi_\pi(y)\overline{\chi_\sigma(y)}\,\mathrm{d}\mu(y)
+		=\begin{cases}1,&\pi=\sigma,\\0,&\pi\ne\sigma.\end{cases}
+	\]
+	因此该卷积在 \(\mathcal H_\pi\) 上为恒等，在其他系数空间上为零。它是有界算子，Peter--Weyl 的正交 Hilbert 直和将这个结论延拓到全部 \(L^2\)，恰好得到正交投影。把 \(f=\chi_\sigma\) 代入，得到
+	\[
+		\chi_\pi*\chi_\sigma
+		=\begin{cases}\chi_\pi/d_\pi,&\pi=\sigma,\\0,&\pi\ne\sigma.\end{cases}
+	\]
+	像空间由 \(d_\pi^2\) 个独立矩阵条目张成，故秩为 \(d_\pi^2\)。\(d_\pi\) 是原表示空间的维数；正则表示中相应系数空间含有 \(d_\pi\) 个该表示的副本，所以两种维数不同。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:characters-class-hilbert-basis}
+	设 \(G\) 为有限维实紧李群，在 \(L^2(G)\) 上令 \(C_hf(x)=f(h^{-1}xh)\)。把共轭不变子空间定义为
+	\[
+		L^2(G)^{\mathrm{cl}}=\{f:C_hf=f\text{ 对每个 }h\in G\}.
+	\]
+	证明全部不可约特征标 \(\chi_\pi\) 构成这个闭子空间的标准正交基，并写出相应的展开和 Parseval 等式。对一般 \(L^2\) 元素，应如何理解题中的不变性？
+\end{exercise}
+\begin{solution}
+	\(C_h=L_hR_h\) 为酉算子，所以每个 \(\ker(C_h-I)\) 闭，它们的交 \(L^2(G)^{\mathrm{cl}}\) 也闭。左右正则作用保持每个 \(\mathcal H_\pi\)，因而 \(C_h\) 保持它。它还保持各 \(\mathcal H_\pi\) 的正交补，所以相应正交投影与 \(C_h\) 交换。
+
+	每个 \(\mathcal H_\pi\) 中的函数可唯一写为 \(f_A(x)=\operatorname{tr}(A\pi(x))\)。唯一性来自矩阵系数线性无关。计算得
+	\[
+		C_hf_A(x)=\operatorname{tr}\bigl(\pi(h)A\pi(h)^{-1}\pi(x)\bigr).
+	\]
+	因此 \(f_A\) 被所有 \(C_h\) 固定，当且仅当 \(A\) 与所有 \(\pi(h)\) 交换。Schur 引理使 \(A=cI\)，所以 \(\mathcal H_\pi\) 内的固定子空间恰为 \(\mathbb C\chi_\pi\)。投影与共轭作用交换，Peter--Weyl 分解遂给出
+	\[
+		L^2(G)^{\mathrm{cl}}
+		=\mathop{\widehat\bigoplus}_{[\pi]\in\widehat G}\mathbb C\chi_\pi.
+	\]
+	特征标正交关系给出 \(\|\chi_\pi\|_2=1\)，于是对 \(f\in L^2(G)^{\mathrm{cl}}\)，
+	\[
+		f=\sum_{[\pi]}\langle f,\chi_\pi\rangle_2\chi_\pi,
+		\qquad\|f\|_2^2=\sum_{[\pi]}|\langle f,\chi_\pi\rangle_2|^2.
+	\]
+	展开按 \(L^2\) 范数成立。不变性是在 Hilbert 空间中对每个固定 \(h\) 的等式；若用平方可积函数模零的模型，它表示相应等式几乎处处成立，不能擅自为未选定的代表断言每一点都共轭不变。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:peter-weyl-convergence-counterexamples}
+	在 \(S^1\) 上令
+	\[
+		f_N(e^{\mathrm{i}t})=\frac1N\sum_{m=0}^{N-1}e^{\mathrm{i}mt},
+		\qquad h_N(e^{\mathrm{i}t})=\frac{e^{\mathrm{i}Nt}}N.
+	\]
+	证明 \(f_N\to0\) 按 \(L^2\) 范数成立但不一致收敛；证明 \(h_N\to0\) 一致成立但不按 \(C^1\) 收敛。说明即使所有近似函数都是代表函数，仍必须注明所用收敛意义。
+\end{exercise}
+\begin{solution}
+	圆周指数函数标准正交，故 \(\|f_N\|_2^2=N/N^2=1/N\to0\)。另一方面，三角不等式给出 \(|f_N|\le1\)，而 \(f_N(1)=1\)，所以 \(\|f_N\|_\infty=1\)，不可能一致趋于零。
+
+	对第二列，\(\|h_N\|_\infty=1/N\to0\)，但
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}h_N(e^{\mathrm{i}t})
+		=\mathrm{i}e^{\mathrm{i}Nt},
+	\]
+	其一致范数恒为 \(1\)，故导数不能一致趋于零，不是 \(C^1\) 收敛。两列都是有限 Fourier 和，因而都是代表函数；属于同一个函数代数并不会使三种拓扑的收敛条件相同。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:extendible-isotropy-trivial-bundle}
+	设 \(G\) 为实李群，\(H\subseteq G\) 为闭子群，且 \(H\) 的有限维复表示 \(\rho\) 可以延拓为 \(G\) 的表示 \(\pi:G\to\operatorname{GL}(W)\)。构造 \(E_\rho\) 到 \((G/H)\times W\) 的光滑丛同构，并写出这个平凡化中 \(G\) 的作用。将结论应用于 \(\operatorname{SU}(2)\) 的标准二维表示，证明 \(E_1\oplus E_{-1}\) 平凡，并解释这个齐性丛仍没有非零的不变截面。
+\end{exercise}
+\begin{solution}
+	定义
+	\[
+		[g,w]\longmapsto(gH,\pi(g)w).
+	\]
+	由于 \(\pi(gh)w=\pi(g)\rho(h)w\)，它与关联丛的等价关系相容。在一个余类代表 \(g\) 下，逆映射为 \((gH,v)\mapsto[g,\pi(g)^{-1}v]\)；换用 \(gh\) 会使括号内分量乘以 \(\rho(h)^{-1}\)，所以逆也与代表无关。两式在主丛局部截面中光滑，且逐纤维线性互逆。左乘 \(a\) 后，第二坐标从 \(\pi(g)w\) 变成 \(\pi(ag)w=\pi(a)\pi(g)w\)，故平凡化中的群作用为
+	\[
+		a\cdot(x,v)=(ax,\pi(a)v).
+	\]
+	它同时移动底点与纤维，不能把它理解为只在底点上作用。
+
+	标准二维表示限制到对角环面时分解为 \(\chi_1\oplus\chi_{-1}\)，关联构造与直和相容，所以所得丛正是 \(E_1\oplus E_{-1}\)。上述公式给出其全局平凡化。对于不变截面，Frobenius 互反的平凡表示特例将其识别为 \((\mathbb C^2)^T\)。若 \((v_0,v_1)\) 被全部 \(\operatorname{diag}(e^{\mathrm{i}\theta},e^{-\mathrm{i}\theta})\) 固定，则两个分量都必须为零。因此不变截面空间为零。普通平凡化并不要求所选常值标架为群不变标架。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:circle-finite-isotropy-sections}
+	取 \(G=S^1\)、\(H=\mu_q=\{\zeta:\zeta^q=1\}\)，其中 \(q\ge2\)。对整数 \(r\) 令 \(\rho_r(\zeta)=\zeta^r\)，并以 \(x=z^q\) 识别 \(G/H\cong S^1\)。证明关联线丛 \(E_{\rho_r}\) 光滑平凡，写出一个处处非零截面。再求特征标 \(\pi_n(a)=a^n\) 在其光滑截面空间中出现的条件及交织映射空间的维数。
+\end{exercise}
+\begin{solution}
+	函数 \(f_r(z)=z^{-r}\) 满足 \(f_r(z\zeta)=\zeta^{-r}f_r(z)\)，所以
+	\[
+		s_r(z^q)=[z,z^{-r}]
+	\]
+	给出光滑截面，并且处处非零。映射 \((x,c)\mapsto c\,s_r(x)\) 因而是全局平凡化。
+
+	由 Frobenius 互反，所求交织空间同构于 \(\operatorname{Hom}_{\mu_q}(\mathbb C_n,\mathbb C_r)\)。一维空间之间的非零线性映射交织，当且仅当 \(\zeta^n=\zeta^r\) 对全部 \(q\) 次单位根成立，也就是 \(n\equiv r\pmod q\)。条件成立时交织空间维数为一，否则为零。对应的函数可以直接取 \(f_n(z)=z^{-n}\)，因为
+	\[
+		(U_af_n)(z)=f_n(a^{-1}z)=a^n f_n(z).
+	\]
+	在标架 \(s_r\) 中，截面写成 \(s_r(x)b(x)\)，函数模型为 \(z^{-r}b(z^q)\)，左作用变成
+	\[
+		(U_ab)(x)=a^r b(a^{-q}x).
+	\]
+	特别地，\(b(x)=x^k\) 的特征标为 \(a^{r-qk}\)，与模 \(q\) 的条件一致。不同的 \(r\bmod q\) 给出不同的齐性作用，尽管底层光滑线丛都平凡。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:projective-tangent-weight}
+	把 \(\mathbb{CP}^1\) 的实切丛用复坐标中的乘 \(\mathrm{i}\) 看成复线丛。求基点 \([1:0]\) 的 \(\operatorname{SU}(2)\) 稳定子在这条复切线上的特征标，并将整个切丛识别为某个 \(E_m\)。用坐标 \(w=1/z\) 的导数独立核对所得局部转换。
+\end{exercise}
+\begin{solution}
+	在图 \([1:z]\) 中，\(t_\theta=\operatorname{diag}(e^{\mathrm{i}\theta},e^{-\mathrm{i}\theta})\) 将点送到
+	\[
+		[e^{\mathrm{i}\theta}:e^{-\mathrm{i}\theta}z]
+		=[1:e^{-2\mathrm{i}\theta}z].
+	\]
+	因此在 \(z=0\) 处的微分为复数乘法 \(v\mapsto e^{-2\mathrm{i}\theta}v\)，稳定子特征标是 \(\chi_{-2}\)。坐标转换 \(w=1/z\) 的导数 \(-z^{-2}\) 是复线性映射，所以两图中的乘 \(\mathrm{i}\) 相容，确实给出复线丛结构。群作用在射影图中为复分式线性映射，其微分也复线性；由齐性丛的稳定子分类，
+	\[
+		\mathrm{T}\mathbb{CP}^1\cong E_{-2}\cong\mathcal O(2)
+	\]
+	作为光滑复线丛等变同构。
+
+	独立看转换：若向量在 \(z\) 图中的复速度为 \(v_z\)，则在 \(w\) 图中为 \(v_w=-z^{-2}v_z\)，即 \(v_z=-z^2v_w\)。因此坐标切标架满足 \(e_w=-z^2e_z\)。在第二图将标架换为 \(-e_w\)，得到转换 \((-e_w)=z^2e_z=w^{-2}e_z\)，正是 \(E_{-2}\) 的标架转换。常数负号只改变一张图上的标架，不改变丛。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:tautological-projection-sections}
+	沿用\cref{g1:exm:sphere-sections-smooth-polynomial}的投影截面 \(\sigma_v(\ell)=\operatorname{proj}_\ell v\)。用归一化群积分证明
+	\[
+		\langle\sigma_v,\sigma_w\rangle_{L^2}
+		=\tfrac12\langle v,w\rangle_{\mathbb C^2}.
+	\]
+	若 \(e_0,e_1\) 为 \(\mathbb C^2\) 的标准正交基，证明 \(\|\sigma_{e_0}(\ell)\|^2+\|\sigma_{e_1}(\ell)\|^2=1\) 对每条直线成立，并写出从全部平方可积截面到这两个截面张成空间的正交投影。
+\end{exercise}
+\begin{solution}
+	用单位向量 \(u=ge_0\) 表示 \(\ell\)，正交投影矩阵为 \(P_\ell=uu^*\)，故 \(\sigma_v(\ell)=uu^*v\)。\(uu^*\) 不随相位改变，且在射影图中光滑，所以这是光滑截面。函数模型为 \(f_v(g)=u^*v\)，它满足 \(f_v(gt_\theta)=e^{-\mathrm{i}\theta}f_v(g)\)，符合 \(E_1\) 的等变条件。
+
+	令 \(M=\int_G uu^*\,\mathrm{d}\mu_G(g)\)。左不变性给出 \(aMa^{-1}=M\) 对全部 \(a\in\operatorname{SU}(2)\) 成立。与所有对角相位矩阵交换迫使 \(M\) 对角，再与矩阵 \(\begin{psmallmatrix}0&-1\\1&0\end{psmallmatrix}\) 交换迫使两个对角元相同。又因 \(\operatorname{tr}(uu^*)=1\)，有 \(\operatorname{tr}M=1\)，故 \(M=I/2\)。本章内积对第一变量线性，因而
+	\[
+		\int_G(u^*v)\overline{(u^*w)}\,\mathrm{d}\mu_G(g)
+		=w^*Mv=\tfrac12w^*v
+		=\tfrac12\langle v,w\rangle.
+	\]
+	因为 \(\|\sigma_{e_j}(\ell)\|^2=|u^*e_j|^2=|u_j|^2\)，两项之和为 \(1\)。积分公式又说明 \(\sqrt2\sigma_{e_0},\sqrt2\sigma_{e_1}\) 是标准正交基，所以所求正交投影为
+	\[
+		Q\sigma=2\sum_{j=0}^1\langle\sigma,\sigma_{e_j}\rangle_{L^2}\sigma_{e_j}.
+	\]
+	对一般平方可积截面，这两个内积按完备化连续延拓。此处点上的平方和等于 \(1\)，每条截面的积分平方范数却为 \(1/2\)，说明逐点归一化与整体正交归一化是不同要求。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:su2-tensor-decomposition}
+	设 \(a,b\) 为非负整数。利用特征标证明
+	\[
+		V_a\otimes V_b\cong\bigoplus_{j=0}^{\min(a,b)}V_{a+b-2j}.
+	\]
+	据此分解 \(V_2\otimes V_3\)，并求 \((V_a\otimes V_b)^{\operatorname{SU}(2)}\) 的维数。
+\end{exercise}
+\begin{solution}
+	张量积的特征标为两个迹的乘积。设 \(a\ge b\)，并把环面特征标暂写成 Laurent 多项式 \(\chi_n(u)=u^n+u^{n-2}+\cdots+u^{-n}\)。乘积中 \(u^{a+b-2k}\) 的系数是满足 \(i+j=k\)、\(0\le i\le a\)、\(0\le j\le b\) 的整数对数目，等于
+	\[
+		\min(b,k,a+b-k)+1\qquad(0\le k\le a+b).
+	\]
+	另一方面，它在 \(\sum_{j=0}^b\chi_{a+b-2j}(u)\) 中的系数是满足 \(0\le j\le b\)、\(j\le k\le a+b-j\) 的整数 \(j\) 的数目，恰是同一个数。因此两个 Laurent 多项式相同。代入 \(u=e^{\mathrm{i}\theta}\) 得到环面上的特征标恒等式；每个群元素共轭入环面，迹又在共轭下不变，故恒等式在全群成立。
+
+	有限维表示完全可约，不可约特征标正交，所以用各 \(\chi_n\) 作内积即可唯一恢复每个不可约重数。于是特征标恒等式给出所述直和同构。具体有
+	\[
+		V_2\otimes V_3\cong V_5\oplus V_3\oplus V_1,
+	\]
+	两边维数均为 \(12\)。不变向量来自平凡表示 \(V_0\)；它出现当且仅当 \(a+b-2j=0\) 对某个 \(j\le\min(a,b)\) 成立，也即 \(a=b\)。此时恰出现一次，所以所求维数在 \(a=b\) 时为一，否则为零。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:su2-polynomial-kernel}
+	对 \(n\ge0\)，确定 \(\pi_n:\operatorname{SU}(2)\to\operatorname{GL}(V_n)\) 的核，并判断哪些 \(V_n\) 为忠实表示。对偶数 \(n>0\)，判断下降到 \(\operatorname{SO}(3)\) 的表示是否忠实。
+\end{exercise}
+\begin{solution}
+	\(n=0\) 是平凡表示，核为全群。以下设 \(n>0\)。取核中的 \(g\)，由极大环面定理把它共轭为 \(t(\theta)\)。核为正规子群，所以 \(t(\theta)\) 仍在核中。这等价于全部权满足
+	\[
+		e^{\mathrm{i}(n-2j)\theta}=1\qquad(0\le j\le n).
+	\]
+	若 \(n\) 为奇数，权集合包含 \(1\)，故 \(\theta\in2\pi\mathbb Z\)，于是 \(g\) 共轭于单位矩阵，只能为单位矩阵。若 \(n\) 为正偶数，权集合包含 \(2\)，故 \(\theta\in\pi\mathbb Z\)，对应 \(\pm I\)。二者都是中心元，共轭不改变它们；所有权均为偶数又保证这两个元素确在核内。所以
+	\[
+		\ker\pi_n=\begin{cases}
+			\operatorname{SU}(2),&n=0,\\
+			\{I\},&n\text{ 为奇数},\\
+			\{I,-I\},&n>0\text{ 为偶数}.
+		\end{cases}
+	\]
+	忠实者恰为奇数 \(n\) 的表示。正偶数情形下降时恰好除去全部核，所以所得旋转群表示忠实。这里没有只检查李代数的核；环面上的周期条件同时确定了可能残留的离散核。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:polynomial-product-exact-sequence}
+	设 \(a,b\ge1\)。把 \(V_a\otimes V_b\) 识别为两个向量变量 \(z,w\in\mathbb C^2\) 的双齐次多项式，次数分别为 \(a,b\)，群同时作用于两变量。令
+	\[
+		D(z,w)=z_0w_1-z_1w_0,\qquad
+		M(P)(z)=P(z,z).
+	\]
+	证明有 \(\operatorname{SU}(2)\) 等变短正合列
+	\[
+		0\longrightarrow V_{a-1}\otimes V_{b-1}
+		\xrightarrow{\;P\mapsto DP\;}V_a\otimes V_b
+		\xrightarrow{\;M\;}V_{a+b}\longrightarrow0.
+	\]
+	解释为什么它存在等变线性分裂，以及这个结论并不要求 \(M\) 保持多项式的全部乘法结构。
+\end{exercise}
+\begin{solution}
+	矩阵的行列式为一，所以 \(D(g^{-1}z,g^{-1}w)=D(z,w)\)。乘以 \(D\) 因而等变，且使两个次数各增加一。多项式环无零因子，\(D\ne0\)，故第一张非零映射单射。对角代入也与群作用交换，所以 \(M\) 等变。它满射：次数 \(a+b\) 的每个单项式都能把其 \(a+b\) 个一次因子分成大小为 \(a\)、\(b\) 的两组，写成一个 \(a\) 次单项式与一个 \(b\) 次单项式之积，因此在 \(M\) 的像中。
+
+	由于 \(D(z,z)=0\)，第一张映射的像包含于 \(\ker M\)。两者维数相同：前者维数为 \(ab\)，后者维数为
+	\[
+		(a+1)(b+1)-(a+b+1)=ab.
+	\]
+	所以像等于核，证明正合性。平均内积使中间表示酉化，\(\ker M\) 的正交补为群不变子空间，且 \(M\) 在该补空间上的限制是到 \(V_{a+b}\) 的等变线性同构；取逆即得分裂。它所保持的是表示的线性与群作用结构。固定次数的空间本身并非对多项式乘法封闭，因此这里并没有声称一个分次代数的分裂。
+\end{solution}

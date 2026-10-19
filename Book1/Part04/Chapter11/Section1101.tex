@@ -1,0 +1,223 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 11.1 光滑结构与典型构造
+% 纲要位置：几何学计划纲要.md，第 537 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 图册、极大图册及光滑映射
+% * 球面、射影空间、乘积与开子流形
+% * 带边界流形和边界上的光滑性
+% * 光滑结构与底层拓扑的区别
+% 
+% 纲要内容结束
+
+\section{光滑结构与典型构造}
+\label{g1:sec:1101}
+
+在圆周的一小段上，可以用横坐标、纵坐标或适当选择的角度表示点。但横坐标在圆周的最右端不能区分邻近的上下两点，角度也不能在整条圆周上连续地取单值。流形的定义允许使用多张局部坐标图，同时要求重叠处的换坐标足够光滑。这样，在一张图中求出的导数才有可能与另一张图中的计算表达同一个对象。
+
+\subsection{图册、极大图册及光滑映射}
+\label{g1:subsec:1101:01}
+
+先回顾本节真正需要的拓扑条件。空间是 Hausdorff 的，指任意两个不同点有不相交的开邻域；它是第二可数的，指存在可数个开集，使每个开集都能写成其中某些集合的并。前一个条件使极限不会同时落在两个不同点上，后一个条件排除无法由可数个局部坐标控制的过大空间。开子集总取给定拓扑中的开集，不能在选择坐标时另换一套拓扑。
+
+\begin{definition}
+	\label{g1:def:smooth-manifold}
+	设 \(n\geq0\)，\(M\) 为 Hausdorff、第二可数拓扑空间。若 \(U\subset M\) 是开集，\(\varphi:U\to\varphi(U)\subset\mathbb R^n\) 是到欧氏开集的同胚，称 \((U,\varphi)\) 为一张\term[zuobiaotu]{坐标图}[coordinate chart]。图域覆盖 \(M\) 的坐标图族称为\term[tuce]{图册}[atlas]。两张图 \((U,\varphi)\)、\((V,\psi)\) 称为\term[guanghuaxiangrong]{光滑相容的}[smoothly compatible]，若
+	\[
+		\psi\circ\varphi^{-1}:\varphi(U\cap V)\longrightarrow\psi(U\cap V)
+	\]
+	及其逆映射都为 \(C^\infty\) 映射；交集为空时条件自动成立。两两光滑相容的图册称为\term[guanghuatuce]{光滑图册}[smooth atlas]。不能再加入新的相容坐标图的光滑图册称为\term[jidaguanghuatuce]{极大光滑图册}[maximal smooth atlas]，也称 \(M\) 的一个\term[guanghuajiegou]{光滑结构}[smooth structure]。配备这一结构的 \(M\) 称为 \(n\) 维\term[guanghualiuxing]{光滑流形}[smooth manifold]。
+\end{definition}
+
+本节先讨论无边界流形；带边界的定义在\subsecref{g1:subsec:1101:03}给出。约定 \(\mathbb R^0\) 是单点空间，因此零维流形是可数离散空间。坐标图写成 \(\varphi=(x^1,\ldots,x^n)\) 时，\(x^i\) 是定义在 \(U\) 上的实值函数，上标是坐标编号，并非幂。换坐标同时改变所有坐标函数，点 \(p\in M\) 本身不变。
+
+\begin{proposition}
+	\label{g1:prop:atlas-maximal-extension}
+	设 \(\mathcal A\) 是 Hausdorff、第二可数空间 \(M\) 上的一个光滑图册。所有与 \(\mathcal A\) 中每张图相容的坐标图组成唯一包含 \(\mathcal A\) 的极大光滑图册。两个光滑图册决定同一光滑结构，当且仅当它们的并仍是光滑图册。
+\end{proposition}
+
+\begin{proof}
+	记所述图族为 \(\overline{\mathcal A}\)。要证明它是图册，关键是其中新加入的两张图也相容。设 \((V,\psi)\)、\((W,\eta)\in\overline{\mathcal A}\)，在 \(p\in V\cap W\) 处选一张原图 \((U,\varphi)\in\mathcal A\) 覆盖 \(p\)。在 \(U\cap V\cap W\) 上，
+	\[
+		\eta\circ\psi^{-1}=(\eta\circ\varphi^{-1})\circ(\varphi\circ\psi^{-1}).
+	\]
+	右端两个映射都光滑，逆变换也一样。光滑性是局部性质，故两张新图在整个交叠上相容。原图已经覆盖 \(M\)，所以 \(\overline{\mathcal A}\) 是光滑图册。
+
+	与 \(\overline{\mathcal A}\) 相容的图必与 \(\mathcal A\) 相容，因而已经包含在其中，这证明极大性。任一包含 \(\mathcal A\) 的极大图册只能由与 \(\mathcal A\) 相容的图组成，故包含于 \(\overline{\mathcal A}\)，由极大性二者相等。最后，两个图册的并若光滑，其极大扩张同时包含二者，唯一性说明两者决定同一结构；反向结论来自同一极大图册中的图两两相容。
+\end{proof}
+
+因此，给出几张足够覆盖空间的坐标图就能指定光滑结构，不必逐张列出极大图册。限制坐标图到更小开集、把欧氏坐标再作一个光滑可逆变换，都不会改变这个结构。
+
+\ProseParagraphBreak
+
+下面用到的欧氏微分只需要一个基本事实。映射 \(f\) 在 \(a\) 可微，意味着有线性映射 \(\mathrm{D}f(a)\) 使 \(f(a+h)=f(a)+\mathrm{D}f(a)h+o(|h|)\)。把这个式子代入 \(g\) 在 \(f(a)\) 的一阶展开，由 \(f(a+h)-f(a)=O(|h|)\) 得到
+\[
+	\mathrm{D}(g\circ f)(a)=\mathrm{D}g(f(a))\,\mathrm{D}f(a).
+\]
+这就是链式法则。各阶偏导数连续的含义也在欧氏开集上理解。逆函数定理比链式法则强得多，将在\secref{g1:sec:1103}另行证明。
+
+\begin{definition}
+	\label{g1:def:smooth-map}
+	设 \(M,N\) 分别为 \(m,n\) 维光滑流形。连续映射 \(F:M\to N\) 称为\term[guanghuayingshe]{光滑映射}[smooth map]，若对每个 \(p\in M\)，可选 \(p\) 附近的图 \((U,\varphi)\) 和 \(F(p)\) 附近的图 \((V,\psi)\)，其中 \(F(U)\subset V\)，使
+	\[
+		\psi\circ F\circ\varphi^{-1}:\varphi(U)\longrightarrow\psi(V)
+	\]
+	为欧氏空间之间的 \(C^\infty\) 映射。若 \(F\) 双射，且 \(F,F^{-1}\) 都光滑，则称 \(F\) 为\term[weifentongpei]{微分同胚}[diffeomorphism]。
+\end{definition}
+
+要求 \(F(U)\subset V\) 只是为了让坐标表达有意义；连续性允许围绕任意指定的 \(p\) 缩小 \(U\) 来满足它。图中的三条箭头说明计算发生在哪里：
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		U\subset M \arrow[r,"F"] \arrow[d,"\varphi"'] & V\subset N \arrow[d,"\psi"] \\
+		\varphi(U)\subset\mathbb R^m \arrow[r,"\psi\circ F\circ\varphi^{-1}"'] & \psi(V)\subset\mathbb R^n.
+	\end{tikzcd}
+\]
+
+\begin{proposition}
+	\label{g1:prop:smooth-coordinate-independence}
+	光滑映射的定义与所选相容坐标图无关。光滑映射的复合光滑，恒等映射光滑。如果非空的 \(m\) 维与 \(n\) 维光滑流形微分同胚，则 \(m=n\)。
+\end{proposition}
+
+\begin{proof}
+	换成源端坐标 \(\widetilde\varphi\) 与目标坐标 \(\widetilde\psi\) 后，在共同定义的邻域中，新表达为
+	\[
+		\widetilde\psi\circ F\circ\widetilde\varphi^{-1}
+		=(\widetilde\psi\circ\psi^{-1})\circ(\psi\circ F\circ\varphi^{-1})\circ(\varphi\circ\widetilde\varphi^{-1}).
+	\]
+	两侧换坐标与中间表达都光滑，故复合光滑。复合映射的结论由同样的坐标计算得到，恒等映射的坐标表达就是换坐标。
+
+	若 \(F\) 是微分同胚，在对应点附近用坐标写 \(f\) 与 \(g=f^{-1}\)，令 \(A=\mathrm{D}f(a)\)、\(B=\mathrm{D}g(f(a))\)。由链式法则有 \(BA=I_m\)、\(AB=I_n\)，故 \(A\) 同时单射、满射，有限维线性代数给出 \(m=n\)。这里证明的是光滑可逆映射保持维数，并未把它当作一般同胚保持维数的拓扑证明。
+\end{proof}
+
+\subsection{球面、射影空间、乘积与开子流形}
+\label{g1:subsec:1101:02}
+
+给一个集合列出参数式，还没有给出流形。需要先有 Hausdorff、第二可数拓扑，再检查参数的逆是否连续、图域是否开、换坐标是否光滑。下面的构造把这些步骤逐一落实，也说明抽象定义包含了熟悉的几何对象。
+
+\begin{example}[球面的坐标]
+	\label{g1:exm:sphere-smooth-atlas}
+	令 \(S^n=\{x\in\mathbb R^{n+1}:|x|=1\}\)，取欧氏子空间拓扑。对 \(i=1,\ldots,n+1\) 和 \(\varepsilon\in\{1,-1\}\)，令
+	\[
+		U_i^\varepsilon=\{x\in S^n:\varepsilon x_i>0\},\qquad
+		\varphi_i^\varepsilon(x)=(x_1,\ldots,\widehat{x_i},\ldots,x_{n+1}),
+	\]
+	其中帽号表示删掉该项。像为开单位球 \(B^n\)，逆映射在第 \(i\) 位插入 \(\varepsilon\sqrt{1-|u|^2}\)。所以每张图是同胚，图域覆盖球面。换坐标只是在一个点的坐标中插入这一光滑平方根，再删去另一项，故在交叠区域光滑；逆变换同理。球面是欧氏空间的子空间，Hausdorff 性直接继承，可数欧氏开球与球面的交给出可数基。因此这些图使 \(S^n\) 成为 \(n\) 维光滑流形。
+
+	坐标在 \(|u|=1\) 时失效，是这一张图到了边缘，球面本身没有在那里出现边界。换一张不删去零坐标的图即可继续。若 \(n\geq1\)，球面不能由一张欧氏开集坐标图覆盖：球面紧，而 \(\mathbb R^n\) 中非空开集不可能紧。后者若紧便闭，因 \(\mathbb R^n\) 连通只能等于整个 \(\mathbb R^n\)，又与其非紧性矛盾。
+\end{example}
+
+\begin{example}[实射影空间]
+	\label{g1:exm:projective-smooth-atlas}
+	实射影空间 \(\mathbb{RP}^n\) 的点是 \(\mathbb R^{n+1}\) 中过原点的一维线性子空间，写为 \([x_0:\cdots:x_n]\)。非零向量乘以同一非零实数表示同一点。每条直线与球面相交于一对对径点，因而给它球面商 \(S^n/(x\sim-x)\) 的拓扑。商映射 \(q:S^n\to\mathbb{RP}^n\) 是开映射，因为对球面开集 \(O\)，有 \(q^{-1}(q(O))=O\cup(-O)\)。
+
+	令 \(U_i=\{[x]:x_i\neq0\}\)，定义
+	\[
+		\varphi_i([x])=(x_0/x_i,\ldots,\widehat{x_i/x_i},\ldots,x_n/x_i)\in\mathbb R^n.
+	\]
+	这个式子与代表向量无关。\(U_i\) 开，坐标函数连续；逆映射把 \(1\) 插入第 \(i\) 位，再取该向量张成的直线，也连续。若要通过球面商直接检查逆的连续性，只需把这个插入后的向量除以其长度，再应用 \(q\)。换到 \(U_j\) 的坐标，就是把各分量除以第 \(j\) 个齐次分量；交叠条件恰好保证这个分母非零，故换坐标及其逆都光滑。
+
+	还需核对商拓扑的分离性质，不能从球面的 Hausdorff 性直接跳到商空间。定义
+	\[
+		P([x])=\frac{xx^{\mathsf T}}{x^{\mathsf T}x}\in\operatorname{Sym}_{n+1}(\mathbb R),
+	\]
+	右端是到直线 \(\mathbb Rx\) 的正交投影矩阵。它与代表无关，并由球面上的连续映射下降，故连续。两个不同直线对应不同投影矩阵，在矩阵空间取不相交的小球，其原像就分离这两个射影点。因此 \(\mathbb{RP}^n\) 是 Hausdorff 的。有限张图中分别取有理中心、半径的坐标球，其逆像合起来是可数基，第二可数性也成立。于是得到 \(n\) 维光滑结构。球面商同时说明 \(\mathbb{RP}^n\) 紧。
+\end{example}
+
+射影坐标的分母为零只表示需要换图。与球面相同，坐标表达中的无穷远不必是空间的缺失点；在另一张图中，它可以有完全普通的有限坐标。
+
+\begin{proposition}
+	\label{g1:prop:basic-smooth-manifolds}
+	设 \(M,N\) 分别为 \(m,n\) 维无边界光滑流形。任意开集 \(W\subset M\) 由坐标图的限制得到 \(m\) 维光滑结构，包含映射 \(W\hookrightarrow M\) 光滑。乘积拓扑下的 \(M\times N\) 具有由乘积坐标定义的 \(m+n\) 维光滑结构，两坐标投影光滑。映射 \(F:L\to M\times N\) 光滑，当且仅当两个分量映射都光滑。
+\end{proposition}
+
+\begin{proof}
+	Hausdorff 性与第二可数性传给开子空间。将 \(M\) 的图域与 \(W\) 相交，像仍是欧氏开集，换坐标是原换坐标的限制，包含映射的表达是恒等映射。这给出开集的结论，称这样的 \(W\) 为\term[kaiziliuxing]{开子流形}[open submanifold]。
+
+	乘积中的两点若不同，至少一个分量不同，在该分量中选不相交开邻域就能分离两点；两个可数基的所有乘积组成可数基。对 \(M,N\) 的图 \((U,\varphi)\)、\((V,\psi)\)，取 \((U\times V,\varphi\times\psi)\)。它是到 \(\mathbb R^{m+n}\) 开集的同胚，换坐标为两个光滑换坐标的乘积。投影在这些图中是普通线性投影；一个欧氏向量值函数光滑当且仅当其所有分量光滑，从而也得到关于 \(F\) 的断言。
+\end{proof}
+
+例如，\(S^1\times S^1\) 是二维光滑环面，不必先把它画成 \(\mathbb R^3\) 中的曲面。映射 \(t\mapsto((\cos t,\sin t),(\cos\alpha t,\sin\alpha t))\) 对每个实数 \(\alpha\) 都光滑，因为两分量的局部坐标表达光滑。这是先构造空间、再在其上计算的一个直接例子。
+
+\subsection{带边界流形和边界上的光滑性}
+\label{g1:subsec:1101:03}
+
+闭圆盘上的微积分需要包括圆周，但在圆周附近可用的点只占平面邻域的一侧。局部模型因此从开球改为半空间中的相对开集。边界点也需要完整的一阶导数，不能只取沿边界走动时能够看见的方向。
+
+\begin{definition}
+	\label{g1:def:manifold-with-boundary}
+	对 \(n\geq1\)，记
+	\[
+		\mathbb H^n=\{(x^1,\ldots,x^n)\in\mathbb R^n:x^n\geq0\}.
+	\]
+	若 \(A\subset\mathbb H^n\) 相对开，称 \(f:A\to\mathbb R^k\) 光滑，是指每个 \(a\in A\) 附近都有欧氏开邻域 \(O\) 和光滑函数 \(\widetilde f:O\to\mathbb R^k\)，使 \(\widetilde f=f\) 于 \(O\cap A\)。到另一半空间的映射也用这个定义，不要求延拓在半空间外仍取值于目标半空间。
+
+	一个 Hausdorff、第二可数空间，若有到 \(\mathbb H^n\) 相对开集的坐标图覆盖，且各换坐标及其逆按上述延拓意义光滑，则由该图册的极大扩张得到一个 \(n\) 维\term[daibianjieguanghualiuxing]{带边界光滑流形}[smooth manifold with boundary]。在某张图中最后坐标为零的点称为边界点，组成 \(\partial M\)；其余点组成内部 \(\operatorname{Int}M\)。零维流形另约定边界为空。流形之间的光滑映射仍按局部坐标表达定义。
+\end{definition}
+
+这个定义需要两项确认：不同延拓是否给出同一导数，不同坐标图是否把同一点都判为边界点。两者均由局部计算解决。
+
+\begin{proposition}
+	\label{g1:prop:boundary-smooth-derivative}
+	设 \(A\subset\mathbb H^n\) 相对开，\(f:A\to\mathbb R^k\) 按局部延拓意义光滑。任意两个局部光滑延拓在 \(a\in A\) 给出的所有阶偏导数一致，因而 \(\mathrm{D}f(a):\mathbb R^n\to\mathbb R^k\) 有确定含义。半空间相对开集之间的光滑映射满足链式法则。
+\end{proposition}
+
+\begin{proof}
+	两延拓在共同邻域的半空间一侧相等，故在其中的欧氏开集 \(x^n>0\) 上各阶偏导数都相等。每个边界点可由这类内点逼近；偏导数连续，于是在边界也相等。对复合映射，先取内、外两个映射的局部延拓，再缩小源端的欧氏邻域，使内映射的延拓落入外延拓的定义域。复合延拓满足普通链式法则，由导数的唯一性得到所需公式。
+\end{proof}
+
+\begin{proposition}
+	\label{g1:prop:boundary-chart-invariance}
+	带边界光滑流形的边界点判定与坐标图无关。\(\operatorname{Int}M\) 是开集并带有 \(n\) 维无边界光滑结构；\(\partial M\) 是闭集，若非空则具有由边界坐标诱导的 \(n-1\) 维无边界光滑结构。带边界流形之间的微分同胚把边界映到边界。
+\end{proposition}
+
+\begin{proof}
+	设 \(F:A\to B\) 是两个半空间相对开集之间的光滑坐标变换，逆映射记为 \(G\)。假设 \(a\in A\) 满足 \(a^n=0\)，但 \(b=F(a)\) 是 \(B\) 的内点。于是 \(b\) 有一个完全包含于 \(B\) 的欧氏开球。这个球上的 \(G\) 取值于 \(\mathbb H^n\)，故最后分量 \(G^n\geq0\)，且 \(G^n(b)=0\)。可微函数在内点取得极小值时各方向导数为零，所以 \(\mathrm{D}G(b)\) 的最后一行全为零。另一方面，\(F\circ G\) 是恒等映射，由\cref{g1:prop:boundary-smooth-derivative}得 \(\mathrm{D}F(a)\mathrm{D}G(b)=I_n\)，矛盾。对逆变换同样推理，边界与内部均保持。
+
+	内部在任一图中由 \(x^n>0\) 描述，因而开；这些图限制后就是欧氏开集坐标。边界是其补集，故闭。在边界上删去恒为零的最后坐标，图像是 \(\mathbb R^{n-1}\) 的开集，换坐标及其逆由原光滑延拓限制到 \(x^n=0\) 得到，仍光滑。Hausdorff 性与第二可数性传给子空间，因此确实得到无边界光滑流形。一般微分同胚在局部也成为上述 \(F\)，所以同样保持边界。
+\end{proof}
+
+\begin{example}[闭球与边界条件]
+	\label{g1:exm:closed-ball-boundary}
+	闭球 \(\overline B^n\) 的内点已有欧氏坐标。在边界点附近先作正交坐标变换，把该点移到北极 \((0,\ldots,0,1)\)。写 \(u\in\mathbb R^{n-1}\)，取足够小的 \(u\) 与 \(t\geq0\)，令
+	\[
+		\Phi(u,t)=\bigl(u,\sqrt{1-|u|^2}-t\bigr).
+	\]
+	球内靠近北极的点恰由这类参数给出；逆映射为 \(u=(x_1,\ldots,x_{n-1})\)、\(t=\sqrt{1-|u|^2}-x_n\)。在北极的一个小邻域内，球的不等式等价于 \(t\geq0\)，另一侧球面远离此邻域。两式都有欧氏光滑延拓，故这些边界图与内部图的转换光滑。由此 \(\overline B^n\) 是带边界流形，且 \(\partial\overline B^n=S^{n-1}\)，诱导结构正是前面的球面结构。
+
+	光滑映射本身可以不保持边界。映射 \(t\mapsto t+1\) 从 \([0,\infty)\) 到自身光滑，却把边界点送到内点；映射 \(s\mapsto s^2\) 从 \(\mathbb R\) 到 \([0,\infty)\) 光滑，却把内点送到边界。保持边界是微分同胚的结论，不能从“光滑”两字推出。
+\end{example}
+
+在 \(\partial M\) 的坐标中只保留前 \(n-1\) 个分量，但边界处 \(M\) 上函数的微分仍有 \(n\) 个分量。后一事实来自函数在半空间一侧的变化，而不是任选延拓带来的额外自由。\secref{g1:sec:1102}将据此区分 \(\mathrm{T}_pM\)、\(\mathrm{T}_p\partial M\) 和单侧曲线的速度。
+
+\ProseParagraphBreak
+
+一个带边界流形与一个无边界流形的乘积仍有半空间坐标，只需把有边界的那个坐标移到最后。两个带边界流形的自然乘积图却可能以 \(\mathbb H^m\times\mathbb H^n\) 为模型，例如象限的原点同时遇到两条边。这样的图带有角，不能未经说明就当作本节的半空间光滑图；若要讨论带角结构或重新选择平滑方式，需要另给定义。
+
+\subsection{光滑结构与底层拓扑的区别}
+\label{g1:subsec:1101:04}
+
+坐标图首先必须是同胚，但同胚只控制连续性，不控制函数在坐标中的导数。为了看清两层结构的区别，不必立即寻找复杂流形；同一条实直线就足够。
+
+\begin{example}[运输来的直线坐标]
+	\label{g1:exm:transported-smooth-line}
+	在具有通常拓扑的集合 \(\mathbb R\) 上，分别用全局坐标 \(x(t)=t\) 与 \(u(t)=t^3\) 生成两个极大光滑图册，所得流形记为 \(M_x\)、\(M_u\)。\(u\) 是同胚，所以单张图确实定义一个光滑结构。但两张图不相容：\(u\circ x^{-1}(s)=s^3\) 光滑，其逆 \(x\circ u^{-1}(s)=\sqrt[3]{s}\) 在零点不可微。因此这是同一个拓扑空间上的两个不同光滑结构。
+
+	集合的恒等映射 \(I:M_x\to M_u\) 的坐标表达为 \(s^3\)，它光滑；反向恒等映射的表达为 \(\sqrt[3]{s}\)，不光滑。然而映射 \(F:M_u\to M_x\)、\(F(t)=t^3\) 是微分同胚，因为
+	\[
+		x\circ F\circ u^{-1}(s)=s,
+	\]
+	其逆的坐标表达也为恒等映射。故“同一集合上的结构不同”与“两个光滑流形不微分同胚”是不同判断，这个例子只证明前者。
+\end{example}
+
+同一个实值函数是否光滑也取决于源端结构。例如 \(t\mapsto t\) 在 \(M_x\) 上光滑，在 \(M_u\) 上的表达却是 \(u\mapsto\sqrt[3]{u}\)。相反，\(t\mapsto t^3\) 是 \(M_u\) 的坐标函数，当然光滑。写“这个函数光滑”时，通常已固定的图册正是这句话的必要背景。
+
+\ProseParagraphBreak
+
+一般的光滑双射也不必是微分同胚：通常光滑直线上的 \(t\mapsto t^3\) 已给出反例。其障碍在零点的一阶导数为零，而不在连续性或单射性。后面的逆函数定理将说明，导数可逆足以局部修复这个障碍；它仍然不会把局部可逆自动提升为整体单射。
+
+\ProseParagraphBreak
+
+本节通过具体图册构造了光滑空间，并检验了换坐标。对于一个仅仅给定拓扑的局部欧氏空间，定义本身并不提供制造相容光滑图册的方法，也不保证不同选择必然等价。当前讨论所需的是明确说明选了哪种结构，并在这一结构中计算；后文的切空间和微分都建立在这一选择之上。
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

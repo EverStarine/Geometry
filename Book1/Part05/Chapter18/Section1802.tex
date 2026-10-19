@@ -1,0 +1,311 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 18.2 主联络的等价描述
+% 纲要位置：几何学计划纲要.md，第 818 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 水平分布和等变性
+% * 联络形式及再现条件
+% * 局部联络矩阵的粘合
+% * 主联络和关联丛上的协变微分
+% 
+% 纲要内容结束
+
+\section{主联络的等价描述}
+\label{g1:sec:1802}
+
+主丛的一条纤维记录同一点上所有允许的标架或参考状态。沿底空间移动时，我们希望把一个状态连续地带到邻近纤维，但局部平凡化提供的“保持群坐标不变”会随所选截面改变。联络要做的是在总空间中规定哪些速度算作纯粹的底空间运动，再把这个规定写成可以计算、可以换局部截面的形式。本节固定有限维实李群 \(G\) 及光滑主右 \(G\) 丛 \(\pi:P\to M\)；所有流形无边界、Hausdorff 且第二可数。
+
+\subsection{水平分布和等变性}
+\label{g1:subsec:1802:01}
+
+先分清两种速度。在 \(p\in P\) 处，沿纤维运动的速度组成
+\[
+	V_pP\coloneqq\ker(\mathrm{d}\pi)_p.
+\]
+局部平凡化把 \(\pi\) 写成 \(U\times G\to U\) 的投影，故这些核构成秩为 \(\dim G\) 的光滑子丛 \(VP\subset \mathrm{T}P\)，称为\term[chuizhifenbu]{垂直分布}[vertical distribution]。仅知道底空间速度 \(v\in \mathrm{T}_xM\)，还不能确定总空间速度：若 \(w\) 投影到 \(v\)，加上任意垂直向量仍投影到 \(v\)。
+
+\begin{definition}\label{g1:def:principal-horizontal-connection}
+	设 \(\pi:P\to M\) 为光滑主右 \(G\) 丛。一个光滑子丛 \(H\subset \mathrm{T}P\)，若对任意 \(p\in P\)、\(g\in G\) 满足
+	\[
+		\mathrm{T}_pP=H_p\oplus V_pP,\qquad
+		(\mathrm{d}R_g)_pH_p=H_{pg},
+	\]
+	就称为一个\term[zhulianluo]{主联络}[principal connection]，其中 \(R_g(p)=pg\)。\(H\) 称为它的\term[shuipingfenbu]{水平分布}[horizontal distribution]，\(H_p\) 中的向量称为水平向量。
+\end{definition}
+
+直和条件使 \((\mathrm{d}\pi)_p|_{H_p}:H_p\to \mathrm{T}_{\pi(p)}M\) 成为线性同构。因此每个 \(v\in \mathrm{T}_{\pi(p)}M\) 有唯一水平向量 \(v_p^H\) 投影到它；这个向量称为 \(v\) 在 \(p\) 处的水平提升。其对 \(p,v\) 的依赖光滑，因为在局部丛标架中只是在求一个可逆矩阵的逆。等变条件进一步给出
+\[
+	(\mathrm{d}R_g)_p v_p^H=v_{pg}^H.
+\]
+它要求先改变纤维中的参考状态再提升，与先提升再作同一个右平移得到相同结果。任意垂直补空间未必满足这一条件；主联络要求这组选择与群作用相容。
+
+\ProseParagraphBreak
+
+垂直空间本身有一个来自群的自然坐标。对 \(X\in\mathfrak g=\mathrm{T}_eG\)，沿用基本向量场的构造，但本章使用右作用，记
+\begin{equation}\label{g1:eq:principal-fundamental-field}
+	X_p^\#\coloneqq\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{t=0}p\exp(tX).
+\end{equation}
+这个符号中的正号不能直接套用第17章左作用的括号公式。
+
+\begin{proposition}[主作用的垂直方向]\label{g1:prop:principal-fundamental-fields}
+	设 \(\pi:P\to M\) 为光滑主右 \(G\) 丛。映射 \(X\mapsto X_p^\#\) 是 \(\mathfrak g\to V_pP\) 的线性同构，并随 \(p\) 光滑变化。其基本场满足
+	\begin{equation}\label{g1:eq:principal-fundamental-identities}
+		(\mathrm{d}R_g)_pX_p^\#=(\operatorname{Ad}_{g^{-1}}X)_{pg}^\#,
+		\qquad [X^\#,Y^\#]=[X,Y]^\#.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	取局部截面 \(s:U\to P\) 及平凡化 \(\Phi(x,h)=s(x)h\)。在这些坐标中，\(X^\#\) 对应 \((0,X_h^L)\)，其中 \(X_h^L=(\mathrm{d}L_h)_eX\) 是第16章的左不变场。因此它逐点给出所有垂直方向，而且 \(X\mapsto X_h^L\) 是随 \(h\) 光滑变化的同构。左不变场的括号定义了 \(\mathfrak g\) 的括号，故本章右作用的正号基本场保持括号。
+
+	由\cref{g1:prop:exponential-naturality}的共轭公式，
+	\[
+		p\exp(tX)g=pg\exp(t\operatorname{Ad}_{g^{-1}}X).
+	\]
+	在零点求导便得到右平移公式。若要与\cref{g1:prop:fundamental-fields}比较，可把当前右作用改写为左作用 \(g\cdot p=pg^{-1}\)；那个左作用的基本场是 \(-X^\#\)，代入其反同态公式也得到此处的正号。
+\end{proof}
+
+\begin{example}\label{g1:exm:horizontal-additive-bundle}
+	取加法群 \(G=\mathbb R\)、主丛 \(P=\mathbb R_x\times\mathbb R_t\to\mathbb R_x\)，右作用为 \((x,t)a=(x,t+a)\)。垂直方向由 \(\partial_t\) 张成。给定光滑函数 \(a(x)\)，令
+	\[
+		H_{(x,t)}=\operatorname{span}\{\partial_x-a(x)\partial_t\}.
+	\]
+	它与垂直方向互补，且右平移不改变 \(a(x)\)、\(\partial_x\) 和 \(\partial_t\)，所以是主联络。底空间单位速度的水平提升带有纤维分量 \(-a(x)\partial_t\)。水平不是图面上预先指定的“横着走”，而是由联络规定如何同时调整纤维状态。若把系数改为依赖 \(t\) 的一般函数 \(a(x,t)\)，仍有垂直补空间，却通常不再右平移不变。
+\end{example}
+
+\subsection{联络形式及再现条件}
+\label{g1:subsec:1802:02}
+
+有了水平与垂直的分解，任意速度 \(w\in \mathrm{T}_pP\) 都能写成“水平部分加 \(X_p^\#\)”。把这个 \(X\) 记下来，就得到一个 \(\mathfrak g\) 值一形式。这里 \(\Omega^k(P;\mathfrak g)\) 表示取值于固定向量空间 \(\mathfrak g\) 的交替 \(k\) 形式，等价于\cref{g1:def:bundle-valued-form}中平凡丛 \(P\times\mathfrak g\) 值的形式。取一组 \(\mathfrak g\) 的基后可逐分量拉回、求外微分；换一组常数基只作线性组合，故所得运算与基无关。
+
+\begin{definition}\label{g1:def:principal-connection-form}
+	主右 \(G\) 丛 \(P\) 上的\term[zhulianluoxingshi]{主联络形式}[principal connection form]是光滑一形式 \(\omega\in\Omega^1(P;\mathfrak g)\)，满足
+	\begin{equation}\label{g1:eq:principal-connection-axioms}
+		\omega_p(X_p^\#)=X,\qquad
+		R_g^*\omega=\operatorname{Ad}_{g^{-1}}\omega
+	\end{equation}
+	对每个 \(X\in\mathfrak g\)、\(g\in G\) 成立。第一式称为再现条件；第二式的意思是 \(\omega_{pg}((\mathrm{d}R_g)_pw)=\operatorname{Ad}_{g^{-1}}(\omega_p(w))\)。
+\end{definition}
+
+再现条件固定了联络在垂直方向上的值，等变条件说明这些垂直坐标在右移后如何变化。\(\omega\) 不要求右平移不变：基本场自身按 \(\operatorname{Ad}_{g^{-1}}\) 变换，记录它的形式也必须作同样变换。只有在伴随作用平凡的情形，第二式才成为通常的不变性。
+
+\begin{theorem}[主联络的两种描述]\label{g1:thm:principal-connection-equivalence}
+	对任意光滑主右 \(G\) 丛 \(P\to M\)，水平分布意义的主联络与主联络形式一一对应。对应由
+	\[
+		H_p=\ker\omega_p,\qquad
+		w=w^H+\bigl(\omega_p(w)\bigr)_p^\#
+	\]
+	给出，其中 \(w^H\) 是 \(w\) 的水平部分。
+\end{theorem}
+\begin{proof}
+	从 \(H\) 出发，沿光滑直和 \(\mathrm{T}P=H\oplus VP\) 投影到 \(VP\)，再用\cref{g1:prop:principal-fundamental-fields}的垂直同构取逆，得到光滑丛映射 \(\omega:\mathrm{T}P\to\mathfrak g\)。它逐纤维线性，因此是一形式。对 \(X_p^\#\)，垂直投影不作改变，故 \(\omega_p(X_p^\#)=X\)。若 \(w=w^H+X_p^\#\)，右平移把第一项送到水平空间，把第二项送到 \((\operatorname{Ad}_{g^{-1}}X)_{pg}^\#\)。于是右平移后的垂直坐标是 \(\operatorname{Ad}_{g^{-1}}X\)，正是等变条件。
+
+	反向给定 \(\omega\)。再现条件使 \(\omega_p:\mathrm{T}_pP\to\mathfrak g\) 处处满射，故其核为光滑的秩 \(\dim M\) 子丛；这也可在局部矩阵中选可逆子块直接求核的光滑基。任意 \(w\) 都有分解
+	\[
+		w=\bigl(w-(\omega_p(w))_p^\#\bigr)+(\omega_p(w))_p^\#.
+	\]
+	第一项被 \(\omega_p\) 消去，第二项垂直。若一个垂直向量 \(X_p^\#\) 也在核中，再现条件给出 \(X=0\)，所以这个和是直和。等变条件将核送入核，应用 \(R_{g^{-1}}\) 又得到反向包含，故核右平移不变。两种构造都通过同一个唯一的水平—垂直分解恢复原对象，因此互为逆。
+\end{proof}
+
+\cref{g1:exm:horizontal-additive-bundle}的形式就是 \(\omega=\mathrm{d}t+a(x)\,\mathrm{d}x\)。它在 \(\partial_t\) 上取值为 \(1\)，在 \(\partial_x-a(x)\partial_t\) 上取值为零，因而把两种描述直接联系起来。
+
+\ProseParagraphBreak
+
+计算一般主丛的局部公式前，要把群方向上的微分写准确。回顾\cref{g1:prop:lie-exponential-differential}之前构造的形式
+\[
+	\theta_g^L=(\mathrm{d}L_{g^{-1}})_g:\mathrm{T}_gG\longrightarrow\mathfrak g.
+\]
+它称为左\term[maurercartanxingshi]{Maurer--Cartan 形式}[Maurer--Cartan form]。\footnote{Maurer，毛雷尔，Ludwig Maurer（1859--1927），德国数学家，研究连续变换群与早期代数群理论。}上标强调采用左平移识别切空间；矩阵群中可以简写为 \(\theta^L=g^{-1}\mathrm{d}g\)，而一般李群始终用平移微分解释。
+
+\begin{proposition}[群乘法的微分形式]\label{g1:prop:maurer-cartan-product}
+	设 \(G\) 为有限维实李群，\(m(g,h)=gh\)。对 \(v\in \mathrm{T}_gG\)、\(w\in \mathrm{T}_hG\)，有
+	\begin{equation}\label{g1:eq:maurer-cartan-product}
+		\theta^L_{gh}\bigl(\mathrm{d}m_{(g,h)}(v,w)\bigr)
+		=\operatorname{Ad}_{h^{-1}}\theta^L_g(v)+\theta^L_h(w).
+	\end{equation}
+	特别地，\(L_a^*\theta^L=\theta^L\)、\(R_a^*\theta^L=\operatorname{Ad}_{a^{-1}}\theta^L\)。若 \(\rho:G\to\operatorname{GL}(V)\) 是有限维实或复表示，\(\rho_*=(\mathrm{d}\rho)_e\)，则
+	\begin{equation}\label{g1:eq:maurer-cartan-representation}
+		\rho_*\theta^L=\rho^{-1}\mathrm{d}\rho.
+	\end{equation}
+	右侧是 \(\operatorname{End}(V)\) 值一形式，表示先求 \(\rho\) 的微分，再左乘矩阵 \(\rho(g)^{-1}\)。
+\end{proposition}
+\begin{proof}
+	乘法的微分为 \(\mathrm{d}R_h(v)+\mathrm{d}L_g(w)\)。写 \(v=(\mathrm{d}L_g)_eX\)，第一项是曲线 \(g\exp(tX)h=gh\exp(t\operatorname{Ad}_{h^{-1}}X)\) 的零点速度，应用 \(\theta^L_{gh}\) 后得到 \(\operatorname{Ad}_{h^{-1}}X\)。写 \(w=(\mathrm{d}L_h)_eY\)，第二项是 \(gh\exp(tY)\) 的速度，得到 \(Y\)。线性相加便得乘法公式。分别固定第一个或第二个因子，即得左右平移公式。
+
+	同态满足 \(\rho\circ L_g=L_{\rho(g)}\circ\rho\)。由\cref{g1:prop:lie-homomorphism-differential}中这一恒等式的微分，\(\mathrm{d}\rho_g((\mathrm{d}L_g)_eX)=\rho(g)\rho_*(X)\)。左乘 \(\rho(g)^{-1}\)，便得最后一式。
+\end{proof}
+
+沿任何一条主纤维取轨道参数 \(\alpha_p(g)=pg\)，再现条件给出 \(\alpha_p^*\omega=\theta^L\)：因为 \(\mathrm{d}\alpha_p(X_g^L)=X_{pg}^\#\)。因此 \(\omega\) 的纤维方向部分已经完全固定；可以自由选择的，是底空间方向怎样与这些垂直方向混合。
+
+\subsection{局部联络矩阵的粘合}
+\label{g1:subsec:1802:03}
+
+取主丛的局部截面 \(s_i:U_i\to P\)，令 \(\Phi_i(x,g)=s_i(x)g\)。把联络形式限制到截面上，得到 \(\mathfrak g\) 值一形式 \(A_i=s_i^*\omega\)。它只在底空间 \(U_i\) 上，通常比定义在整个 \(P\) 上的 \(\omega\) 更便于计算。若 \(G\) 是矩阵群，\(A_i\) 是矩阵值一形式，因此也称局部联络矩阵；一般 \(G\) 的 \(A_i\) 仍是 \(\mathfrak g\) 值形式，不必先选择一个矩阵实现。
+
+\begin{theorem}[主联络的局部数据]\label{g1:thm:principal-connection-local-data}
+	设 \(P\to M\) 为光滑主右 \(G\) 丛，局部截面满足 \(s_j=s_i g_{ij}\)。任意主联络形式 \(\omega\) 由 \(A_i=s_i^*\omega\) 唯一确定，且
+	\begin{equation}\label{g1:eq:principal-connection-trivialization}
+		(\Phi_i^*\omega)_{(x,g)}(v,\xi)
+		=\operatorname{Ad}_{g^{-1}}\bigl((A_i)_x(v)\bigr)+\theta_g^L(\xi).
+	\end{equation}
+	在交叠域上，这些局部形式满足
+	\begin{equation}\label{g1:eq:principal-connection-change}
+		A_j=\operatorname{Ad}_{g_{ij}^{-1}}A_i+g_{ij}^*\theta^L.
+	\end{equation}
+	反过来，满足此规律的一族 \(A_i\in\Omega^1(U_i;\mathfrak g)\) 通过\eqref{g1:eq:principal-connection-trivialization}唯一地粘成主联络形式。
+\end{theorem}
+\begin{proof}
+	\(\mathrm{d}\Phi_i(v,0)\) 是 \((\mathrm{d}s_i)v\) 经 \(R_g\) 推前的向量，等变条件使其 \(\omega\) 值等于 \(\operatorname{Ad}_{g^{-1}}A_i(v)\)。写 \(\xi=(\mathrm{d}L_g)_eX\)，则 \(\mathrm{d}\Phi_i(0,\xi)=X_{s_i(x)g}^\#\)，再现条件给出 \(X=\theta_g^L(\xi)\)。相加得到局部表示，因此它必然唯一。
+
+	截面 \(s_j\) 在第 \(i\) 个平凡化中的表达为 \(x\mapsto(x,g_{ij}(x))\)。把这个映射代入局部表示，便得到\eqref{g1:eq:principal-connection-change}。
+
+	反向给定 \(A_i\)，先在每个 \(U_i\times G\) 上定义右端的一形式。基本场为 \((0,X_g^L)\)，所以再现条件成立。右乘固定的 \(h\) 后，第一项变为 \(\operatorname{Ad}_{h^{-1}}\operatorname{Ad}_{g^{-1}}A_i\)，第二项由\cref{g1:prop:maurer-cartan-product}也变为 \(\operatorname{Ad}_{h^{-1}}\theta^L\)，因而等变条件成立。
+
+	交叠处的坐标变换是 \(\Psi_{ij}(x,h)=(x,g_{ij}(x)h)\)，满足 \(\Phi_j=\Phi_i\circ\Psi_{ij}\)。记 \(\widetilde\omega_i=\operatorname{Ad}_{g^{-1}}A_i+\theta^L\)，乘法公式给出
+	\begin{align*}
+		\Psi_{ij}^*\widetilde\omega_i
+		&=\operatorname{Ad}_{h^{-1}}\bigl(\operatorname{Ad}_{g_{ij}^{-1}}A_i+g_{ij}^*\theta^L\bigr)+\theta^L\\
+		&=\operatorname{Ad}_{h^{-1}}A_j+\theta^L.
+	\end{align*}
+	这里各项均已拉回到交叠域与 \(G\) 的乘积，省略了底空间投影的记号。结果正是第 \(j\) 张图的形式，所以它们在总空间重叠部分相等，粘合为光滑 \(\omega\)。两条联络条件是局部可验证的，故粘合后仍成立。
+\end{proof}
+
+在矩阵群中，以上两式分别是
+\[
+	\Phi_i^*\omega=g^{-1}A_i g+g^{-1}\mathrm{d}g,
+	\qquad A_j=g_{ij}^{-1}A_i g_{ij}+g_{ij}^{-1}\mathrm{d}g_{ij}.
+\]
+第二式恰是\cref{g1:prop:connection-local-data}中的换标架公式。现在可以看见其中两项的不同来源：共轭来自纤维参考状态的改变，附加微分项来自新截面本身随基点移动。尤其，局部截面 \(s_i\) 的全部切向量水平当且仅当 \(A_i=0\)；任意联络未必存在这样的局部截面，不能把 \(A_i\) 总可消去当成局部平凡化的一部分。
+
+\begin{example}\label{g1:exm:principal-circle-local-change}
+	在平凡主圆周丛 \(U\times\operatorname{U}(1)\) 上，\(\mathfrak u(1)=i\mathbb R\)。选一个实一形式 \(a\)，令 \(A=i a\)，则
+	\[
+		\omega=i a+z^{-1}\mathrm{d}z.
+	\]
+	因为圆周群交换，伴随项没有共轭变化。若换截面 \(s'=s e^{i\varphi(x)}\)，其中 \(\varphi\) 为光滑实函数，则 \(A'=i(a+\mathrm{d}\varphi)\)。这只是同一个 \(\omega\) 的新表达。一个一般的 \(U\to\operatorname{U}(1)\) 映射未必有全局实值角度 \(\varphi\)，但 \(g^{-1}\mathrm{d}g\) 总有定义，所以用群值过渡函数写的公式比角度公式具有更大的适用范围。
+\end{example}
+
+局部形式可以任取，但不能把不同截面下的零形式直接粘在一起。整体存在性仍由单位分解保证；这次加权的对象是总空间上的联络形式。
+
+\begin{theorem}[主联络的存在]\label{g1:thm:principal-connection-existence}
+	设 \(G\) 为有限维实李群，\(M\) 为无边界、Hausdorff、第二可数光滑流形。每个光滑主右 \(G\) 丛 \(P\to M\) 都有光滑主联络，无需假定 \(G\) 或 \(M\) 紧。
+\end{theorem}
+\begin{proof}
+	取局部截面覆盖 \(\{U_i\}\)，在 \(\pi^{-1}(U_i)\) 上令 \(A_i=0\)，用\eqref{g1:eq:principal-connection-trivialization}得到局部主联络 \(\omega_i\)。这些 \(\omega_i\) 不要求在交叠处相同。由\cref{g1:thm:smooth-partition-unity}取从属单位分解 \(\{\chi_i\}\)，支集包含于 \(U_i\)、支集族局部有限、总和为 \(1\)。定义
+	\[
+		\omega=\sum_i(\chi_i\circ\pi)\omega_i,
+	\]
+	每项在 \(\pi^{-1}(U_i)\) 外补零。因为 \(\operatorname{supp}\chi_i\subset U_i\)，补零后在该开集外每点附近恒为零，故光滑；底空间支集族局部有限，拉回后的求和也局部有限。
+
+	每个 \(\chi_i\circ\pi\) 右平移不变，故等变条件可逐项相加。再现条件为
+	\[
+		\omega(X^\#)=\sum_i(\chi_i\circ\pi)X=X.
+	\]
+	因此 \(\omega\) 是主联络形式。这里没有对非紧群作平均；起作用的是底空间的单位分解以及联络公理对权重和为 \(1\) 的加法稳定。
+\end{proof}
+
+\begin{proposition}[主联络的仿射空间]\label{g1:prop:principal-connection-affine}
+	设 \(P\to M\) 为上述光滑主右 \(G\) 丛。任意两个主联络形式之差 \(\beta=\omega_1-\omega_0\) 在垂直方向为零，并满足 \(R_g^*\beta=\operatorname{Ad}_{g^{-1}}\beta\)。这些形式与 \(\Omega^1(M;\operatorname{ad}P)\) 自然一一对应。因此主联络的集合是以 \(\Omega^1(M;\operatorname{ad}P)\) 为方向空间的非空仿射空间。
+\end{proposition}
+\begin{proof}
+	两个再现条件相减给出 \(\beta(X^\#)=0\)，两个等变条件相减给出所述变换式。回顾\cref{g1:def:adjoint-bundle}，伴随丛为 \(\operatorname{ad}P=P\times_{\operatorname{Ad}}\mathfrak g\)，满足 \([pg,Y]=[p,\operatorname{Ad}_gY]\)。对 \(v\in \mathrm{T}_xM\)，选 \(p\in P_x\) 及任意 \(w\in \mathrm{T}_pP\) 使 \(\mathrm{d}\pi(w)=v\)，令
+	\[
+		B_x(v)=[p,\beta_p(w)].
+	\]
+	同一点 \(p\) 处改变提升 \(w\) 只增加垂直向量，不影响值；把 \(p\) 改为 \(pg\)，可取 \(\mathrm{d}R_g(w)\)，此时
+	\[
+		[pg,\beta_{pg}(\mathrm{d}R_gw)]
+		=[pg,\operatorname{Ad}_{g^{-1}}\beta_p(w)]
+		=[p,\beta_p(w)].
+	\]
+	所以 \(B\) 与选择无关。在局部截面中它由 \(s_i^*\beta\) 表示，因而光滑且逐点对 \(v\) 线性。
+
+	反向给定 \(B\in\Omega^1(M;\operatorname{ad}P)\)，对每个 \(p\in P_x\)、\(w\in \mathrm{T}_pP\)，由线性同构 \(Y\mapsto[p,Y]\) 唯一解出 \(\beta_p(w)\)，使 \([p,\beta_p(w)]=B_x(\mathrm{d}\pi(w))\)。局部表达保证光滑，定义直接保证消去垂直方向以及所需等变性。故 \(\omega_0+\beta\) 保留两条联络公理，也是主联络。两种对应互为逆，且任何两个联络之间有唯一的差；存在定理使集合非空，于是得到所称的仿射空间。
+\end{proof}
+
+这与\cref{g1:prop:connection-affine-space}的向量丛结论相呼应：单个联络包含一个规定好的微分部分，两联络之差才是底空间上的丛值一形式。\(\omega\) 本身不能直接下降成 \(\operatorname{ad}P\) 值一形式，因为它在垂直方向上的再现值通常非零。
+
+\subsection{主联络和关联丛上的协变微分}
+\label{g1:subsec:1802:04}
+
+设 \(\rho:G\to\operatorname{GL}(V)\) 为有限维实或复表示，\(E=P\times_\rho V\)。\cref{g1:prop:associated-sections}把 \(E\) 的截面 \(\sigma\) 与等变函数 \(f:P\to V\) 对应：
+\[
+	\sigma(x)=[p,f(p)],\qquad
+	f(pg)=\rho(g)^{-1}f(p).
+\]
+普通微分 \(\mathrm{d}f\) 还会记录沿纤维改变参考状态所造成的分量变化。协变微分只沿水平提升求导，正好排除这部分变化。
+
+\begin{theorem}[关联丛上的诱导联络]\label{g1:thm:associated-covariant-derivative}
+	设 \(P\to M\) 为光滑主右 \(G\) 丛，\(\omega\) 为主联络，\(\rho:G\to\operatorname{GL}(V)\) 为有限维实或复表示。对 \(\sigma\in\Gamma(E)\) 及其对应的等变函数 \(f\)，公式
+	\begin{equation}\label{g1:eq:associated-horizontal-derivative}
+		(\nabla\sigma)_x(v)=[p,(\mathrm{d}f)_p(v_p^H)],
+		\qquad p\in P_x,
+	\end{equation}
+	定义与 \(p\) 的选择无关的丛联络。在局部截面 \(s_i\) 下，令 \(f_i=f\circ s_i\)、\(A_i=s_i^*\omega\)，则
+	\begin{equation}\label{g1:eq:associated-local-derivative}
+		\nabla\sigma=[s_i,\mathrm{d}f_i+\rho_*(A_i)f_i].
+	\end{equation}
+	这里的方括号对每个切向输入求值；实情形得到实联络，复情形得到对截面复线性的复联络。
+\end{theorem}
+\begin{proof}
+	水平提升满足 \(v_{pg}^H=\mathrm{d}R_g(v_p^H)\)，等变函数满足 \(f\circ R_g=\rho(g)^{-1}f\)。对后一式求导，得到
+	\[
+		(\mathrm{d}f)_{pg}(v_{pg}^H)=\rho(g)^{-1}(\mathrm{d}f)_p(v_p^H).
+	\]
+	按关联丛的等价关系，两边与 \(pg,p\) 组合后表示同一纤维向量，证明选择无关。光滑性可在任意局部截面下检验。对底空间函数 \(h\)，截面 \(h\sigma\) 对应 \((h\circ\pi)f\)；在水平向量上使用普通乘积法则，得到 \(\nabla(h\sigma)=\mathrm{d}h\otimes\sigma+h\nabla\sigma\)。方向输入的函数线性及截面输入的实或复线性由微分直接继承，故确为联络。
+
+	为求局部表达，先沿垂直基本场微分等变函数。指数自然性给出
+	\[
+		f(p\exp(tX))=\rho(\exp(tX))^{-1}f(p),
+		\qquad (\mathrm{d}f)_p(X_p^\#)=-\rho_*(X)f(p).
+	\]
+	把 \(w=w^H+(\omega_p(w))_p^\#\) 代入，便得
+	\begin{equation}\label{g1:eq:equivariant-covariant-derivative}
+		(\mathrm{d}f)_p(w^H)=(\mathrm{d}f)_p(w)+\rho_*(\omega_p(w))f(p).
+	\end{equation}
+	因此总空间上的表达为 \(\mathrm{d}f+\rho_*(\omega)f\)，它消去垂直方向。拉回到 \(s_i\) 就得到\eqref{g1:eq:associated-local-derivative}。
+
+	还可直接核对局部粘合。令 \(r_{ij}=\rho(g_{ij})\)。由\cref{g1:prop:lie-homomorphism-differential}的伴随交织公式及\eqref{g1:eq:maurer-cartan-representation}，
+	\[
+		\rho_*(A_j)=r_{ij}^{-1}\rho_*(A_i)r_{ij}+r_{ij}^{-1}\mathrm{d}r_{ij}.
+	\]
+	而 \(f_i=r_{ij}f_j\)，故乘积法则给出
+	\[
+		\mathrm{d}f_i+\rho_*(A_i)f_i
+		=r_{ij}\bigl(\mathrm{d}f_j+\rho_*(A_j)f_j\bigr).
+	\]
+	这正是关联丛值一形式的分量变换，也说明局部公式与第15章的联络定义一致。
+\end{proof}
+
+\begin{corollary}[伴随丛的协变微分]\label{g1:cor:adjoint-connection-local}
+	主联络 \(\omega\) 在伴随向量丛 \(\operatorname{ad}P\) 上诱导联络。若截面 \(\xi\) 的局部分量为 \(\xi_i:U_i\to\mathfrak g\)，则
+	\[
+		\nabla^{\operatorname{ad}}\xi=[s_i,\mathrm{d}\xi_i+[A_i,\xi_i]],
+		\qquad [A_i,\xi_i](v)=[A_i(v),\xi_i].
+	\]
+\end{corollary}
+\begin{proof}
+	在上一定理中取 \(\rho=\operatorname{Ad}\)。\cref{g1:prop:adjoint-differential-bracket}证明了 \(\rho_*(X)=\operatorname{ad}_X\)，且 \(\operatorname{ad}_X(Y)=[X,Y]\)，代入即得公式。
+\end{proof}
+
+从主联络到关联丛联络的方向对所有表示都成立，反方向则取决于表示能看见多少信息。标架丛给出一个确切的双向对应。
+
+\begin{proposition}[标架丛与线性联络]\label{g1:prop:frame-connection-equivalence}
+	设 \(E\to M\) 为秩 \(r\geq1\) 的实光滑向量丛，其标架丛为 \(\operatorname{Fr}(E)\)，结构群为 \(\operatorname{GL}(r,\mathbb R)\)。\(\operatorname{Fr}(E)\) 上的主联络与 \(E\) 上的线性联络自然一一对应，正向对应为标准表示下的诱导联络。正有限秩复向量丛与 \(\operatorname{GL}(r,\mathbb C)\) 主标架丛有同样结论，其中线性联络取复线性。
+\end{proposition}
+\begin{proof}
+	\cref{g1:prop:frame-associated-equivalence}给出 \(\operatorname{Fr}(E)\times_{\operatorname{GL}(r)}\mathbb F^r\cong E\)，映射为 \([u,v]\mapsto u(v)\)，其中 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)。因此主联络通过标准表示诱导 \(E\) 上的联络。
+
+	反向，给定 \(E\) 上的联络 \(\nabla\)，在局部行标架 \(e_i\) 中取其联络矩阵 \(A_i\)。\(e_i\) 同时是 \(\operatorname{Fr}(E)\) 的局部截面，且 \(e_j=e_i g_{ij}\)。\cref{g1:prop:connection-local-data}已证明
+	\[
+		A_j=g_{ij}^{-1}A_i g_{ij}+g_{ij}^{-1}\mathrm{d}g_{ij}.
+	\]
+	复情形逐分量应用同一乘积法则，所得公式不变。\(\mathfrak{gl}(r,\mathbb F)\) 就是所有 \(r\times r\) 的 \(\mathbb F\) 矩阵，所以这些 \(A_i\) 均是合格的李代数值局部数据。由\cref{g1:thm:principal-connection-local-data}，它们唯一地构造出主联络。标准表示的微分是矩阵上的恒等映射，故再诱导回 \(E\) 后，局部矩阵仍为原来的 \(A_i\)，恢复 \(\nabla\)。反过来，从主联络得到 \(A_i\) 后再按局部公式重建，也由唯一性恢复原主联络。
+\end{proof}
+
+\begin{example}\label{g1:exm:adjoint-loses-central-connection}
+	取任意主 \(\operatorname{U}(1)\) 丛。圆周群交换，所以 \(\operatorname{Ad}\) 是平凡表示，\(\operatorname{ad}P\) 自然等于 \(M\times i\mathbb R\)。无论原主联络是什么，诱导在伴随丛上的联络都是普通微分 \(\mathrm{d}\)，因为 \([A_i,\xi_i]=0\)。例如在 \(\mathbb R^2\times\operatorname{U}(1)\) 上，局部形式 \(A_0=0\) 与 \(A_1=i x\,\mathrm{d}y\) 确定不同主联络，却有完全相同的伴随丛联络。因此“主联络诱导伴随丛联络”并不意味着仅凭后者总能恢复前者。
+\end{example}
+
+一般表示中，两个主联络的差 \(B\in\Omega^1(M;\operatorname{ad}P)\) 在关联丛上变成 \(\rho_*(B)\)。若 \(\rho_*\) 单射，这些差仍可被区分；若 \(\rho_*\) 有核，就可能丢失方向。即使 \(\rho_*\) 单射，也不能说关联丛上的每个联络都来自原结构群：其局部矩阵还必须落在 \(\rho_*(\mathfrak g)\) 中。标架丛的标准表示之所以给出全体联络的双向对应，正是因为这个像等于所有矩阵。

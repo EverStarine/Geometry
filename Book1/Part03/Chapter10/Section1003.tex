@@ -1,0 +1,311 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 10.3 局部齐性结构及其单值
+% 纲要位置：几何学计划纲要.md，第 522 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 几何图册与过渡群
+% * 展开映射的构造
+% * 单值表示及等变性
+% * 完备性与模型商的关系
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{局部齐性结构及其单值}
+\label{g1:sec:1003}
+
+把一张平纸卷成圆柱，每一小片仍可摊回平面，但沿圆柱绕一圈以后，展开的位置会相差一个平移。这个差别不来自小片的曲率，而来自不同小片怎样拼接。前一节从模型中的群作用构造曲面，本节反过来从曲面上的局部模型出发，追踪一张图沿道路延续时如何变化。所得展开映射与单值表示将说明：什么时候局部模型确实能够拼成整个模型的商，什么时候只能得到一个不完备的局部结构。
+
+\subsection{几何图册与过渡群}
+\label{g1:subsec:1003:01}
+
+本节的曲面均为非空、连通、无边界的 Hausdorff、第二可数曲面，沿用\cref{g1:def:topological-surface}的分离与可数条件。无边界的要求有实际作用：模型取整个 \(S^2,\mathbb R^2,\mathbb H^2\) 的开集，半圆盘边缘不在这类图册中。曲面局部道路连通，连通性因而保证道路连通；坐标小圆盘又保证局部单连通，能够使用第五章的万有覆盖。
+
+\ProseParagraphBreak
+
+先取连通光滑模型曲面 \(X\)，以及通过光滑微分同胚作用在 \(X\) 上的群 \(G\)。称作用有效，是指只有单位元在整个 \(X\) 上逐点不动。本节还要求一个更强的局部确定性质：
+\begin{equation}
+	\label{g1:eq:model-local-determination}
+	g|_O=h|_O,\quad O\subset X\text{ 非空开}
+	\quad\Longrightarrow\quad g=h.
+\end{equation}
+有效性本身不足以推出这一点。一般光滑微分同胚可以在一个开集上为恒等，在远处才发生变化；此时从局部换图无法唯一恢复群元素。对于连通模型的等距群，\cref{g1:prop:isometry-initial-data}说明等距由一点及该点的导数决定，故满足\eqref{g1:eq:model-local-determination}。通常还要求 \(G\) 在 \(X\) 上传递，表示模型各点没有区别；下述延续构造实际使用的是局部确定性质。
+
+\begin{definition}
+	\label{g1:def:geometry-atlas}
+	设 \(X,G\) 如上。曲面 \(M\) 的一个\term[jihetuce]{几何图册}[geometric atlas]，或 \((G,X)\) 图册，是覆盖 \(M\) 的图
+	\[
+		\varphi_i:U_i\longrightarrow\varphi_i(U_i)\subset X,
+	\]
+	其中各 \(\varphi_i\) 为到开集的同胚，而且在任意交叠 \(U_i\cap U_j\) 的每个连通分支 \(C\) 上，存在 \(g_{ij,C}\in G\)，使
+	\[
+		\varphi_i|_C=g_{ij,C}\circ\varphi_j|_C.
+	\]
+	两个图册若其并仍满足此条件，就称为相容。一个相容图册类称为 \(M\) 的\term[jubuqixingjiegou]{局部齐性结构}[locally homogeneous structure]或 \((G,X)\) 结构。
+\end{definition}
+
+这些图自动给出光滑结构，因为换图映射是光滑微分同胚的限制。交叠处的群元素由\eqref{g1:eq:model-local-determination}唯一确定；在三图的共同小邻域中，
+\[
+	g_{ik}=g_{ij}g_{jk}.
+\]
+这里群乘法是函数复合：\((gh)(x)=g(h(x))\)。只在每个交叠分支上指定元素，是为了允许交叠不连通；没有理由要求几个分支使用同一个元素。
+
+\ProseParagraphBreak
+
+若 \(X\) 带度量 \(g_X\)、\(G\le\operatorname{Isom}(X)\)，各片上的 \(\varphi_i^*g_X\) 在交叠处一致，故定义了 \(M\) 上的光滑度量。这是一个具体的粘合验证：\(g_{ij}\) 保持 \(g_X\)，所以
+\[
+	\varphi_i^*g_X=\varphi_j^*(g_{ij}^*g_X)=\varphi_j^*g_X.
+\]
+由此得到的曲面每点附近都与模型等距。若过渡群包含非等距变换，例如平面的伸缩，图册仍有意义，却不能用这个公式粘合欧氏度量。
+
+常曲率度量是否真的给出这种图册，也需要一个桥梁。这个问题只涉及小邻域，可以直接使用第九章已经建立的测地极坐标。
+
+\begin{proposition}[常曲率的局部模型]
+	\label{g1:prop:constant-curvature-local-model}
+	设 \(M\) 是无边界光滑度量曲面，Gauss 曲率恒为 \(\kappa\in\{1,0,-1\}\)。则每点附近分别局部等距于单位球面、欧氏平面或曲率为 \(-1\) 的双曲平面。这些局部等距给出 \((\operatorname{Isom}(X),X)\) 图册；若 \(M\) 已定向，可将过渡群限制为保向等距群。
+\end{proposition}
+\begin{proof}
+	固定 \(p\in M\)。由\cref{g1:prop:normal-neighborhood,g1:lem:gauss-lemma}，中心之外的测地极坐标具有度量
+	\[
+		\mathrm{d}r^2+a(r,\theta)^2\,\mathrm{d}\theta^2,\qquad a>0.
+	\]
+	局部取与 \((\partial_r,\partial_\theta)\) 一致的定向。令 \(e_1=\partial_r\)、\(e_2=a^{-1}\partial_\theta\)。度量的 Christoffel 公式给出 \(\nabla_{\partial_r}e_1=0\)、\(\nabla_{\partial_\theta}e_1=a_r e_2\)，所以本书约定的联络形式为 \(\omega=a_r\,\mathrm{d}\theta\)。由\cref{g1:prop:connection-curvature-form}，
+	\[
+		a_{rr}\,\mathrm{d}r\wedge\mathrm{d}\theta
+		=\mathrm{d}\omega=-K a\,\mathrm{d}r\wedge\mathrm{d}\theta,
+		\qquad a_{rr}+\kappa a=0.
+	\]
+
+	中心处的初值不能只从极坐标公式形式地代入。取 \(\mathrm{T}_pM\) 中的单位向量 \(e(\theta)=(\cos\theta,\sin\theta)\)。第九章的构造实际给出
+	\[
+		a(r,\theta)=r\,b(r,\theta),\qquad
+		b(r,\theta)=\left|\mathrm{d}(\exp_p)_{re(\theta)}(e'(\theta))\right|.
+	\]
+	指数映射在零附近光滑，且其零点微分为恒等；因而被取范数的向量在零附近不为零，\(b\) 对 \(r,\theta\) 光滑且 \(b(0,\theta)=1\)。所以 \(a\) 从 \(r\ge0\) 一侧光滑延到零，并满足 \(a(0,\theta)=0\)、\(a_r(0,\theta)=1\)。由\cref{g1:lem:smooth-ode-flow}所含的一阶系统唯一性，固定 \(\theta\) 后该标量方程的解只能是
+	\[
+		a(r,\theta)=S_\kappa(r),\qquad
+		S_1(r)=\sin r,\quad S_0(r)=r,\quad S_{-1}(r)=\sinh r.
+	\]
+	这些函数直接满足方程与初值，且不依赖 \(\theta\)。
+
+	对应模型的曲率同为 \(\kappa\)，对它作上述计算得到相同极坐标度量。选模型点 \(o\) 及线性等距 \(A:\mathrm{T}_pM\to \mathrm{T}_oX\)，则
+	\[
+		F=\exp_o\circ A\circ\exp_p^{-1}
+	\]
+	在充分小的正常邻域内光滑。极坐标计算说明它在去掉中心后局部等距；在中心处，两个指数映射的微分均为恒等，故 \(\mathrm{d}F_p=A\) 也等距。这证明局部模型存在，并且没有留下极坐标在中心处的光滑性缺口。
+
+	最后验证过渡图属于整个模型的等距群。在一个连通交叠分支上，过渡映射 \(f\) 是模型开集之间的局部等距。由\cref{g1:prop:model-isometry-data}的初值实现结论，存在全局模型等距 \(h\)，使它在某点的像及导数与 \(f\) 相同。局部等距保持协变导数：把联络经它搬运，仍度量相容且无挠，由\cref{g1:prop:surface-connection-properties}的唯一性就是原联络；因而它保持短测地线。测地线初值唯一性使 \(f,h\) 在该点附近相等。具有相同值及导数的点组成相对闭集，又由同样的短测地线论证为开集；连通性使它等于整个交叠分支。所以过渡映射确是 \(h\) 的限制。若曲面定向，最初选择保向 \(A\)，便只需保向标架与保向 \(h\)。
+\end{proof}
+\subsection{展开映射的构造}
+\label{g1:subsec:1003:02}
+
+固定基点 \(p_0\in M\)，并在其附近选一张初始图 \(\varphi_0\)。两张局部映射若在指定点的某个邻域内相等，称它们在该点有相同的\term[yingsheya]{映射芽}[germ of a map]。这里保留的是附近整张小图，而不只是点的像；点的像相同一般无法确定换图的群元素。我们只延续形如 \(a\circ\varphi_i\)、\(a\in G\) 的局部映射。
+
+\begin{lemma}[图的沿路延续]
+	\label{g1:lem:chart-continuation}
+	设 \(M\) 带上述 \((G,X)\) 结构，\(\alpha:[0,1]\to M\) 连续，并在 \(\alpha(0)\) 给定一个相容的图芽。该图芽可沿 \(\alpha\) 延续，且每个时刻的芽唯一。终点芽只依赖于 \(\alpha\) 的定端点同伦类。
+\end{lemma}
+\begin{proof}
+	先构造延续。用图域覆盖道路像，将其拉回到紧区间；\cref{g1:lem:lebesgue-number}给出有限分割，使每一小段都包含在一张图中。在第一段按给定图芽调整这张图。若前段使用 \(a_i\varphi_i\)，下一段的接点附近满足 \(\varphi_i=g_{ij}\varphi_j\)，就取
+	\[
+		a_j=a_i g_{ij}.
+	\]
+	于是 \(a_i\varphi_i=a_j\varphi_j\) 在接点附近相等，两段确实接续。每个段内使用同一局部公式，就得到了沿整条道路的芽。
+
+	为什么不受分割及中途换图影响？取任意两套延续并作公共细分；在每个足够短的参数区间内，把两套公式都换写在同一张图 \(\varphi\) 下，即 \(a\varphi\) 与 \(b\varphi\)。若它们在一个时刻的芽相同，就在非空开集上相等，\eqref{g1:eq:model-local-determination}强制 \(a=b\)，所以在该小段内始终相同。把这一结论沿有限分割推进，全部芽相同。这也证明在道路中插入反向再返回的小段不会改变延续结果。
+
+	再处理同伦，而不是直接把“同伦”当成延续唯一性的另一种说法。设 \(H:[0,1]^2\to M\) 是定端点同伦；用图域的原像覆盖参数方形，取足够细的有限矩形网格，使每个闭小矩形的像落在一张图中。在一张图内，给定起始芽 \(a\varphi\) 后，沿任何道路到同一点都给出这个同一公式的芽。因此，沿一个小矩形的下边再右边，或沿左边再上边，产生相同的终点芽。
+
+	从方形下边的网格路径开始，每次把某个小矩形的两条边替换为另两条边，逐格扫过一行，再扫过全部行，即可把下边连同右侧边替换为左侧边连同上边。每次替换保留延续芽；内部边若先后反向经过，则按上一段消去。左右侧在 \(H\) 下均为常值道路，因为同伦固定端点，它们不改变芽。因此下边与上边的延续有相同终点芽。这里有限网格的用途正是把任意连续同伦转成有限次、可核验的换路操作。
+\end{proof}
+
+现在把可能有不同延续结果的道路分开保存。由\cref{g1:thm:path-class-universal-cover}，曲面的万有覆盖可写为
+\[
+	\widetilde M=\{[\alpha]:\alpha(0)=p_0\},\qquad
+	p([\alpha])=\alpha(1),
+\]
+其中同伦固定两端。记 \(\varphi_\alpha\) 为 \(\varphi_0\) 沿 \(\alpha\) 延续所得的终点图芽，定义
+\begin{equation}
+	\label{g1:eq:developing-definition}
+	\operatorname{dev}([\alpha])=\varphi_\alpha(\alpha(1)).
+\end{equation}
+前一引理说明它良定义。这一映射称为\term[zhankaiyingshe]{展开映射}[developing map]。\symidx{\(\operatorname{dev}\)：几何结构的展开映射}
+
+\ProseParagraphBreak
+
+它为何是局部微分同胚，也可直接从第五章的道路类拓扑看出。在 \(\alpha(1)\) 取足够小的坐标圆盘 \(U\)，使终点芽由 \(f=a\varphi_i\) 在 \(U\) 上表示。\cref{g1:lem:path-class-basis}给出覆盖片
+\[
+	B([\alpha],U)=\{[\alpha*\beta]:\beta\text{ 在 }U\text{ 内从 }\alpha(1)\text{ 出发}\}.
+\]
+在这一片上，继续沿 \(\beta\) 不改变公式 \(f\)，所以 \(\operatorname{dev}=f\circ p\)。覆盖空间的光滑图由 \(p\) 拉回，\(p\) 在这一片上为微分同胚，\(f\) 也是微分同胚，因而展开映射局部光滑可逆。若过渡群保持 \(g_X\)，同一公式还说明 \(\operatorname{dev}\) 对拉回度量是局部等距。这里的“局部”不可省去：即使源空间单连通，展开映射仍可能重叠，也可能只覆盖模型的一部分。
+
+\subsection{单值表示及等变性}
+\label{g1:subsec:1003:03}
+
+设 \(\gamma\) 是以 \(p_0\) 为基点的环路。其终点仍为 \(p_0\)，但延续后的图芽可能变成另一张图。该芽与初始图相容，故存在唯一 \(a_\gamma\in G\)，使
+\[
+	\varphi_\gamma=a_\gamma\circ\varphi_0
+\]
+在基点附近成立。图芽的同伦不变性说明 \(a_\gamma\) 只依赖 \([\gamma]\)。
+
+\begin{theorem}[展开与单值]
+	\label{g1:thm:developing-map}
+	设 \(M\) 为连通无边界曲面，带有满足\eqref{g1:eq:model-local-determination}的 \((G,X)\) 结构。指定基点及初始图芽后，上述展开映射为局部微分同胚，并给出群同态
+	\[
+		\rho:\pi_1(M,p_0)\longrightarrow G,\qquad \rho([\gamma])=a_\gamma.
+	\]
+	对道路类万有覆盖上的左甲板作用 \(L_g[\alpha]=[\gamma*\alpha]\)、\(g=[\gamma]\)，有
+	\begin{equation}
+		\label{g1:eq:developing-equivariance}
+		\operatorname{dev}\circ L_g=\rho(g)\circ\operatorname{dev}.
+	\end{equation}
+	若初始图芽改为 \(h\circ\varphi_0\)、\(h\in G\)，所得数据变为
+	\[
+		\operatorname{dev}'=h\circ\operatorname{dev},\qquad
+		\rho'(g)=h\rho(g)h^{-1}.
+	\]
+\end{theorem}
+\begin{proof}
+	局部微分同胚性质已在构造后证明。必须注意乘法的方向：本书 \(\gamma*\eta\) 先走 \(\gamma\)，再走 \(\eta\)。从 \(\varphi_0\) 沿 \(\gamma\) 走完以后，初始图芽已变成 \(\rho([\gamma])\varphi_0\)。把一个固定的群元素左乘到整套延续公式上，仍是一套延续；故继续沿 \(\eta\) 会得到
+	\[
+		\rho([\gamma])\rho([\eta])\varphi_0.
+	\]
+	终点芽的唯一性因此给出 \(\rho([\gamma][\eta])=\rho([\gamma])\rho([\eta])\)。常值环路对应单位元，所以 \(\rho\) 确为同态。
+
+	对于任意从 \(p_0\) 出发的道路 \(\alpha\)，完全相同的延续比较给出
+	\[
+		\varphi_{\gamma*\alpha}=\rho([\gamma])\varphi_\alpha.
+	\]
+	在终点评值，即得\eqref{g1:eq:developing-equivariance}。这与\cref{g1:prop:universal-deck-discontinuous}的左作用一致：\(L_g\circ L_k=L_{gk}\)。第五章在覆盖纤维上另有右单值作用，那是“在末端接环路”；这里使用“在前端接环路”的甲板作用，不把两者的乘法混写。
+
+	最后，将初始图改为 \(h\varphi_0\)，所有沿路延续都变为 \(h\varphi_\alpha\)，所以 \(\operatorname{dev}'=h\operatorname{dev}\)。绕 \(g\) 后的芽为 \(h\rho(g)\varphi_0=(h\rho(g)h^{-1})(h\varphi_0)\)，唯一性便给出所述共轭公式。
+\end{proof}
+
+同态 \(\rho\) 称为结构的\term[danzhibiaoshi]{单值表示}[holonomy representation]，其像称为结构的单值群。\symidx{\(\rho\)：几何结构的单值表示}它与展开映射一起记录图册延续，而不是仅用一份群表示代替整个几何结构。即使 \(\rho\) 相同，展开映射的像和重叠方式仍可能不同。
+
+\ProseParagraphBreak
+
+第九章的联络 holonomy 作用在一个切平面上，通过平行移动比较向量；本节的结构 holonomy 则是模型 \(X\) 上的整体变换。两者不能混为同一个旋转角。例如球面本身单连通，标准球面结构的 \(\rho\) 平凡，绕小圆盘的平行移动却可能有非零的曲率转角。反之，下面圆柱的结构单值包含非零平移，但其平坦联络有全局平行标架，联络 holonomy 恒为恒等。
+
+\begin{example}[平坦圆柱的展开]
+	\label{g1:exm:flat-cylinder-development}
+	设 \(L>0\)，在 \(\mathbb R^2\) 上令 \(T(x,y)=(x+L,y)\)，并取平坦圆柱 \(M=\mathbb R^2/\langle T\rangle\)。小圆盘投影的逆给出欧氏几何图册。万有覆盖是 \(\mathbb R^2\)，选与原坐标相符的初始图，便有
+	\[
+		\operatorname{dev}(x,y)=(x,y),\qquad
+		\rho(n)(x,y)=(x+nL,y),\quad n\in\mathbb Z.
+	\]
+	绕一圈的延续改变整个位置图，却不改变常向量场 \(\partial_x,\partial_y\)，所以这里能直接看出两种 holonomy 的区别。
+\end{example}
+
+\begin{example}[不完备锥面的单值]
+	\label{g1:exm:incomplete-holonomy}
+	取 \(a>0\)，在 \(M=(0,\infty)\times(\mathbb R/2\pi\mathbb Z)\) 上赋予
+	\[
+		g=\mathrm{d}r^2+a^2r^2\,\mathrm{d}\theta^2.
+	\]
+	在每个足够窄的角区间内，\((r,\theta)\mapsto(r\cos(a\theta),r\sin(a\theta))\) 为到欧氏平面开集的局部等距；换角度分支只相差一个旋转，所以它给出欧氏结构。在万有覆盖 \((0,\infty)\times\mathbb R\) 上，
+	\[
+		\operatorname{dev}(r,t)=(r\cos(at),r\sin(at)),\qquad
+		\rho(n)=R_{2\pi an}.
+	\]
+	其中 \(R_\beta\) 是平面旋转。展开像是穿孔平面，既不是全部 \(\mathbb R^2\)，展开映射也不单射。沿固定角度取 \(r_j=1/j\)，径向长度估计给出 \(d(r_j,r_k)\le|1/j-1/k|\)，故这是 Cauchy 列，却没有曲面内的极限。
+
+	当 \(a=1\) 时，\(\rho\) 平凡，所以不忠实；当 \(a\) 为无理数时，\(\rho\) 忠实却不离散。后一结论可由抽屉原理直接看出：把 \(0,a,\ldots,Na\) 的小数部分放入 \(N\) 个等长区间，存在 \(1\le n\le N\)，使 \(na\) 到某个整数的距离小于或等于 \(1/N\)。无理性使这些非零小旋转不可能最终固定为同一个群元素，故有非恒等旋转趋于恒等。单值表示作为同态始终存在；离散性与忠实性则需要额外条件。
+\end{example}
+
+\subsection{完备性与模型商的关系}
+\label{g1:subsec:1003:04}
+
+以后取 \(X=S^2,\mathbb R^2\) 或 \(\mathbb H^2\)，分别带单位球面、欧氏或曲率为 \(-1\) 的双曲度量，并令 \(G\le\operatorname{Isom}(X)\)。这些模型连通、单连通且度量完备；双曲情形见\cref{g1:thm:hyperbolic-distance-geodesics}，球面与平面的对应性质也在模型部分说明。我们将证明：若曲面自身没有有限距离的缺口，则展开不再重叠或漏掉模型点。
+
+\ProseParagraphBreak
+
+先明确这里的完备。对连通光滑度量曲面 \(N\)，令
+\[
+	d_N(p,q)=\inf_\alpha L(\alpha),
+\]
+其中 \(\alpha\) 遍历连接两点的分片 \(C^1\) 曲线。连通曲面上任意两点都能用这样的曲线连接：能够从指定点经有限条坐标直线段到达的点构成非空开闭集，故是全曲面。因而该下确界有限。称度量完备，是指每个 \(d_N\)-Cauchy 列都有极限。本节不预先把它与测地线能否无限延伸等同。
+
+\begin{proposition}[长度距离与紧性]
+	\label{g1:prop:compact-metric-complete}
+	连通光滑度量曲面的长度距离确为距离，并诱导原有拓扑。若该曲面紧，则它度量完备。
+\end{proposition}
+\begin{proof}
+	对称性和三角不等式由反转、拼接曲线得到。关键是局部正定性。以一点 \(p\) 为坐标原点，在图内取闭圆盘 \(\overline B_{2r}\)。光滑正定矩阵在这个紧集上有一致上下界：存在 \(0<c\le C\)，使
+	\[
+		c|v|\le\sqrt{g_x(v,v)}\le C|v|.
+	\]
+	若 \(x\in B_r\)，坐标直线段给出 \(d_N(p,x)\le C|x|\)。反向估计时，留在 \(B_{2r}\) 的任意连接曲线长度至少为 \(c|x|\)；离开 \(B_{2r}\) 的曲线仅走到坐标半径 \(2r\) 就已长至少 \(2cr\)，仍不小于 \(c|x|\)。故 \(d_N(p,x)\ge c|x|\)。同理，任何从 \(p\) 到 \(B_r\) 外的曲线长度至少为 \(cr\)。这既说明不同点的距离为正，也说明度量小球与坐标邻域互相包含，拓扑相同。
+
+	若曲面紧，它在该距离下是紧度量空间。每个序列都有收敛子列：若没有聚点，则各点都有只含有限多个序列项的邻域，有限子覆盖会迫使整个序列只有有限多个项，矛盾；取聚点的逐次缩小距离球便得到收敛子列。Cauchy 列一旦有收敛子列，三角不等式使整个序列收敛。因此紧曲面度量完备。
+\end{proof}
+
+\begin{proposition}[覆盖与完备性]
+	\label{g1:prop:complete-pullback-cover}
+	设 \(p:Y\to N\) 是连通光滑度量曲面的覆盖，\(Y\) 取拉回度量 \(p^*g_N\)。则 \(Y\) 度量完备当且仅当 \(N\) 度量完备。
+\end{proposition}
+\begin{proof}
+	覆盖局部等距，故保留分片光滑曲线的长度，且 \(d_N(p(y),p(z))\le d_Y(y,z)\)。先设 \(N\) 完备，\((y_j)\) 为 \(Y\) 中的 Cauchy 列。投影列收敛于某点 \(x\)。取 \(x\) 的均匀覆盖邻域 \(U\)，再选 \(r>0\) 使 \(B_N(x,3r)\subset U\)，这可由前一命题的拓扑相容性保证。
+
+	在尾部有 \(p(y_j)\in B_N(x,r)\)，且 \(d_Y(y_j,y_k)<r\)。固定其中一个 \(y_{j_0}\)。对每个后续 \(j\)，按下确界定义取从 \(y_{j_0}\) 到 \(y_j\) 的曲线，长度小于 \(r\)。其投影始终在 \(B_N(x,2r)\subset U\) 中；曲线连通，故留在 \(p^{-1}(U)\) 的同一张覆盖片上。于是全部尾项属于同一片。该片的逆映射把 \(p(y_j)\to x\) 提为 \(y_j\to y\)，并由距离与拓扑相容性得到距离收敛。这证明 \(Y\) 完备。
+
+	反过来，设 \(Y\) 完备，\((x_j)\) 是 \(N\) 中的 Cauchy 列。选子列 \((x_{j_k})\)，使相邻距离小于 \(2^{-k-2}\)，并以长度小于 \(2^{-k-1}\) 的分片光滑曲线相连。任取 \(x_{j_1}\) 的一个原像，依次使用\cref{g1:thm:path-lifting}提升这些曲线。局部逆光滑，故提升仍分片光滑且长度不变。所得端点 \(y_k\) 满足
+	\[
+		d_Y(y_k,y_\ell)\le\sum_{i=k}^{\ell-1}2^{-i-1}\longrightarrow0
+		\quad(k,\ell\to\infty).
+	\]
+	它们收敛于 \(y\in Y\)，投影子列遂收敛于 \(p(y)\)。原列 Cauchy，故也收敛于 \(p(y)\)。
+\end{proof}
+
+这个命题已经处理了一个容易遗漏的环节：曲面完备以后，它的万有覆盖配拉回度量也完备，不能只因每张覆盖片局部等距就略去这一证明。
+
+\begin{lemma}[完备局部等距]
+	\label{g1:lem:complete-local-isometry}
+	设 \(f:Y\to X\) 是连通无边界光滑度量曲面间的局部等距，且 \(Y\) 度量完备。则 \(f\) 为满射覆盖。
+\end{lemma}
+\begin{proof}
+	先沿道路提升，再由统一的模型小球构造覆盖片。设 \(c:[0,1]\to X\) 为分片 \(C^1\) 道路，\(f(y_0)=c(0)\)。局部逆从 \(y_0\) 给出短时间提升；有同一起点的两条提升在相等处可用同一个局部逆继续，故唯一。把所有连续相接的局部提升合并，得到一个最大时间区间。若它在 \(b\le1\) 以前停止，则对 \(s,t\uparrow b\)，
+	\[
+		d_Y(\widetilde c(s),\widetilde c(t))
+		\le L(\widetilde c|_{[s,t]})=L(c|_{[s,t]})\longrightarrow0.
+	\]
+	这里尾段长度趋零来自原道路分片 \(C^1\)，并不要求它是测地线。完备性给出极限 \(y_b\)，连续性使 \(f(y_b)=c(b)\)；在 \(y_b\) 处使用局部逆就能继续提升，并覆盖 \(b\) 本身。因此提升存在到时间 \(1\)。由于 \(X\) 连通，任一点可经分片光滑道路从 \(f(y_0)\) 到达，提升终点说明 \(f\) 满射。
+
+	固定 \(x\in X\)。由\cref{g1:prop:normal-neighborhood,g1:thm:radial-minimizing}，取一个小正常球 \(B\)；其中每个 \(z\) 都有从 \(x\) 出发的径向测地线 \(c_z\)，而且 \(c_z\) 随 \(z\) 光滑变化。对每个 \(y\in f^{-1}(x)\)，令 \(s_y(z)\) 为 \(c_z\) 从 \(y\) 出发的提升终点。刚才的延拓保证它对所有 \(z\in B\) 定义，且 \(f\circ s_y=\operatorname{id}_B\)。
+
+	还须确认 \(s_y\) 光滑，才能说其像是一张开覆盖片。固定 \(z_0\)，沿已得的紧提升曲线选有限个局部逆，作时间分割，使每段留在相应局部逆的像中。\(c_z\) 对 \(z\) 连续且时间区间紧，故当 \(z\) 足够接近 \(z_0\) 时，这一组有限局部逆仍能逐段使用。每段的提升由光滑局部逆与 \(c_z\) 复合给出，在接点的选片由前段终点确定；所以最终的 \(s_y(z)\) 光滑。对 \(f\circ s_y=\operatorname{id}\) 求导，其导数可逆，故 \(s_y\) 在每点附近为局部逆；从而 \(s_y(B)\) 开，且 \(f:s_y(B)\to B\) 为微分同胚。
+
+	这些像两两不交。若 \(s_y(z)=s_{y'}(z)\)，反向提升同一条径向线，唯一性迫使 \(y=y'\)。它们也穷尽 \(f^{-1}(B)\)：从任意 \(u\in f^{-1}(z)\) 反向提升 \(c_z\)，到达某个 \(y\in f^{-1}(x)\)，再反过来就有 \(u=s_y(z)\)。因此
+	\[
+		f^{-1}(B)=\bigsqcup_{y\in f^{-1}(x)}s_y(B)
+	\]
+	是所需的均匀覆盖分解。
+\end{proof}
+
+\begin{theorem}[完备结构的模型商]
+	\label{g1:thm:complete-model-quotient}
+	设 \(X=S^2,\mathbb R^2\) 或 \(\mathbb H^2\) 带上述完备模型度量，\(G\le\operatorname{Isom}(X)\)。设连通无边界曲面 \(M\) 带有 \((G,X)\) 结构，并取图册诱导的度量。若 \(M\) 度量完备，则其展开映射
+	\[
+		\operatorname{dev}:\widetilde M\longrightarrow X
+	\]
+	为等距微分同胚，单值表示 \(\rho\) 忠实，其像 \(\Gamma=\rho(\pi_1(M,p_0))\) 是自由固有作用的离散等距群，且
+	\[
+		M\cong X/\Gamma
+	\]
+	为保持局部几何结构的等距同构。反过来，完备模型上任意自由固有等距群作用的曲面商，带商度量后完备，并具有相应的模型结构。
+\end{theorem}
+\begin{proof}
+	由\cref{g1:prop:complete-pullback-cover}，\(\widetilde M\) 的拉回度量完备；展开映射是局部等距，故前一引理使它成为到 \(X\) 的满射覆盖。因为 \(X\) 单连通，这个连通覆盖只能有一叶。具体地，若两个原像 \(y_1,y_2\) 映到同一点，取连接它们的道路；其投影为零伦环路，与常值道路定端点同伦。\cref{g1:cor:lifted-path-homotopy}使二者从 \(y_1\) 提升后有相同终点，所以 \(y_2=y_1\)。因此展开映射为微分同胚。它及其逆都保持曲线长度，取下确界后即为全局等距。
+
+	等变性把左甲板作用搬到 \(X\) 上，变成 \(\rho(g)\) 的作用。若 \(\rho(g)=1\)，展开映射单射迫使 \(L_g=1\)，而万有覆盖的左作用自由，故 \(g=1\)。这证明忠实性和 \(\Gamma\) 作用的自由性。甲板作用的轨道正是覆盖纤维，故等变微分同胚下降为 \(M\cong X/\Gamma\)，且图册与度量吻合。
+
+	再核实固有性与离散性，而不把它们自动附在“群商”之后。这里对离散群的固有作用，使用紧集判据：每个紧集 \(K\subset X\) 只有有限个 \(\gamma\in\Gamma\) 满足 \(\gamma K\cap K\ne\varnothing\)。若甲板作用违反这一点，便有不同的甲板变换 \(L_{g_j}\) 及 \(u_j,v_j\) 落在同一紧集内，满足 \(L_{g_j}u_j=v_j\)。取收敛子列，设 \(u_j\to u\)、\(v_j\to v\)。投影相同使 \(p(u)=p(v)\)。在该投影点取连通均匀覆盖邻域；充分靠后的 \(u_j,v_j\) 分别落在包含 \(u,v\) 的两张固定覆盖片中。甲板变换若把第一片送到第二片，便由投影在片上的单射性唯一确定。因此这些 \(L_{g_j}\) 最终相同，与选择矛盾。等距识别遂给出 \(\Gamma\) 的固有性。由\cref{g1:prop:universal-deck-discontinuous}，又可取 \(x\) 的邻域 \(V\)，使 \(\gamma x\notin V\) 对所有非恒等 \(\gamma\) 成立。在等距群的紧开拓扑中，条件 \(h(x)\in V\) 是恒等元的开邻域，它与 \(\Gamma\) 只交于单位元，所以 \(\Gamma\) 离散。
+
+	反向设 \(\Gamma\) 在完备 \(X\) 上自由且满足紧集判据。每点可取闭包紧的坐标邻域；仅有有限个 \(\gamma\) 可能使该邻域与其像相交。自由性使这些非恒等 \(\gamma\) 都不固定中心点，逐个缩小邻域即可排除全部有限个相交，于是得到与所有非恒等平移像不交的小邻域。\cref{g1:prop:action-quotient-cover}因此使 \(X\to X/\Gamma\) 成为覆盖，小片的逆图给出 \((G,X)\) 结构，等距条件使模型度量下降。商空间为 Hausdorff：对不同轨道的两点，在各自紧邻域间只有有限个可能相交的群平移，缩小两邻域排除它们，便得不交的商邻域。投影为开映射，将 \(X\) 的可数基投影即可得到商的可数基。所以商确为所要求的光滑曲面。最后将\cref{g1:prop:complete-pullback-cover}用于这个局部等距覆盖，由 \(X\) 完备得到商完备。
+\end{proof}
+
+在上述商表示中，曲面 \(M\) 紧恰好等价于 \(\Gamma\) 余紧，因为余紧要求商 \(X/\Gamma\) 紧。平坦圆柱是完备但不紧的例子，其平移群也不余紧。特别地，紧的无边界模型曲面自动满足完备性，因而其万有覆盖就是相应模型。例如前一节已经用多边形的小邻域验证了闭双曲曲面的局部结构；紧性加上本定理，才进一步把它识别为 \(\mathbb H^2/\Gamma\)。这一步既不把所有拓扑曲面都预先宣布为常曲率商，也不从单值表示的存在直接推出离散性。缺少完备性时，\cref{g1:exm:incomplete-holonomy}展示的漏点、重叠及非离散单值都可能发生。
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

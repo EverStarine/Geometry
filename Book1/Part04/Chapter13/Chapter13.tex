@@ -1,0 +1,780 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：## 第13章　向量场、流与 Frobenius 可积性
+% 纲要位置：几何学计划纲要.md，第 602 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% > 本章目标与证明范围：由常微分方程和交换流进入分布的可积性，连续证明局部流、流盒与 Frobenius。叶的整体结构和叶空间不是可积性定理的自动结论。
+% 
+% 纲要内容结束
+
+\chapter{向量场、流与 Frobenius 可积性}
+\label{g1:ch:13}
+\BookChapterNumber{g1:ch:13}
+
+\begin{chapterabstract}
+	向量场指定瞬时速度，局部流则把这些速度组织为随时间变化的局部微分同胚。本章从初值问题的存在唯一性出发，完整证明对初值和参数的光滑依赖，建立最大局部流、延拓判据、紧支完备性与流盒定理。李括号记录不同方向的运动是否相容，张量场的李导数则描述沿流搬运后的变化。由交换化标架和交换流，我们连续证明常秩分布的 Frobenius 定理，并构造具有自身流形拓扑的最大连通叶。环面上的线性叶、返回映射、叶 holonomy、非 Hausdorff 叶空间及接触分布，说明局部可积性能够保证什么，以及哪些整体问题仍需另外研究。
+\end{chapterabstract}
+
+\begin{learninggoals}
+	\begin{itemize}
+		\item 从积分方程构造初值解，用误差估计和变分方程证明对初值、时间与参数的联合光滑依赖。
+		\item 明确最大流的定义域，使用逃逸判据判断完备性，并用横截片与逆函数定理构造流盒。
+		\item 计算李括号与张量李导数，说明括号为零与局部流交换之间的等价关系，辨认自然性所需的映射条件。
+		\item 将对合分布的标架交换化，利用共同小时间的流构造适应坐标，完整证明 Frobenius 定理及最大连通叶的存在唯一性。
+		\item 区分叶片、最大叶、返回映射与叶 holonomy，用具体例子判断叶是否嵌入、叶空间是否 Hausdorff，以及分布为什么不可积。
+	\end{itemize}
+\end{learninggoals}
+
+上一章允许我们在各点光滑地指定一个切向量、一组切平面或一个张量。本章追问这些逐点数据怎样组织成运动和子流形。一个向量场给出速度，并不直接给出所有时间的运动；一个光滑平面分布在每点都很整齐，也未必能够拼成处处与之相切的曲面。存在、延拓与相容性是三个不同的问题，需要分别处理。
+
+\ProseParagraphBreak
+
+例如，平面上的 \(\partial_x\) 与 \(x\partial_y\) 各自都能产生所有时间的运动，但先水平移动会改变随后竖直移动的速度，交换次序后终点就不同。另一方面，环面上的常斜率方向在每个小邻域都能变成水平线，其完整轨道却可能是闭圆，也可能在整个环面中稠密。前一个例子解释为什么要引入李括号，后一个例子说明为什么局部流盒和局部积分叶还不能替代整体分析。
+
+\ProseParagraphBreak
+
+本章默认流形有限维、Hausdorff、第二可数，向量场与分布均光滑；主要定理的流形无边界，边界上的双侧流条件在\secref{g1:sec:1302}另行说明。分布均为固定秩子丛，不把维数跳跃的情形并入 Frobenius 定理。所用前置工具是\chapref{g1:ch:11}的切向量、微分、逆函数与隐函数定理，以及\chapref{g1:ch:12}的局部标架、张量拉回、插入和截断函数。常微分方程方面只预期读者熟悉积分和求导；解空间的完备性、误差估计及高阶光滑依赖会在本章实际用到的位置证明。
+
+\ProseParagraphBreak
+
+阅读时要留意两类定义域：流的时间区间随初值变化，叶上的邻近关系也可能不同于环境流形中的邻近关系。我们会在复合流时说明共同时间，在构造最大叶时说明拓扑，而不把这些条件留给符号暗示。Lee 第二版的 Appendix D 中 Existence, Uniqueness, and Smoothness 一节可用于对照初值理论；Chapter 8 的 Lie Brackets 及 Chapter 9 的前六节对应流、流盒和李导数；Chapter 19 的 Distributions and Involutivity、The Frobenius Theorem、Foliations 三节对应可积性，Chapter 22 的 Contact Structures 一节补充接触模型\cite[Appendix D, pp. 663--671; Chapter 8, pp. 185--188; Chapter 9, pp. 206--238; Chapter 19, pp. 491--504; Chapter 22, pp. 581--584]{Lee2012Smooth}。本章使用微分形式的逐点代数，外微分与 Cartan 公式的证明接在\chapref{g1:ch:14}。
+
+\input{Part04/Chapter13/Section1301}
+\input{Part04/Chapter13/Section1302}
+\input{Part04/Chapter13/Section1303}
+\input{Part04/Chapter13/Section1304}
+\input{Part04/Chapter13/Section1305}
+
+\begin{chaptersummary}
+	局部初值问题由积分方程的压缩迭代求解，唯一性使坐标解可以粘合为最大积分曲线。光滑依赖先由统一余项估计证明一阶导数，再用变分系统逐阶提升；最大流的定义域因而是时间与初值空间中的开集。自主流满足局部时间加法律，时间依赖方程则使用记录起始与到达时刻的演化映射 \(\Phi_{t,s}\)。
+
+	\ProseParagraphBreak
+
+	有限时间不能继续的最大轨道，最终会离开每个紧集；紧支向量场因此完备。非零向量场在局部流盒中成为一条坐标轴上的平移，零点则构成直接障碍。截断可以保留指定紧集附近的局部向量场并获得完整的整体流，但流的相同性只在轨道仍处于保留区域时成立。带边界流形上的双侧流还要求向量场切于边界。
+
+	\ProseParagraphBreak
+
+	李括号 \([X,Y]=XY-YX\) 是导子交换子，其为零等价于充分小共同时间内的局部流交换。李导数定义为沿流拉回后的变化率，在向量场上为李括号，在混合张量上与张量积及收缩相容。向量场的相关性保证括号和协变张量李导数的自然性；混合张量拉回还需要微分可逆。插入与李导数的分次恒等式为下一章的外微分运算准备符号。
+
+	\ProseParagraphBreak
+
+	对合性使归一化的分布标架两两交换，交换流随即构造适应坐标，这给出 Frobenius 定理的充分性；括号自然性给出必要性。局部叶片沿有限链粘合为最大连通叶，叶片的可数传播保证叶自身第二可数。叶可能在环境流形中稠密，叶空间可能不满足 Hausdorff 分离，闭合路径的横向运输也可能有非平凡 holonomy。接触模型 \(\ker(\mathrm{d}z-x\,\mathrm{d}y)\) 则因括号离开原分布而不可积。
+\end{chaptersummary}
+
+\BookExercises
+
+\begin{exercise}\label{g1:ex:ode-regularity-counterexamples}
+	在实直线上分别考虑 \(x'=\sqrt{|x|}\) 与 \(x'=|x|\)。
+	\begin{enumerate}
+		\item 对第一个方程，构造无穷多条满足 \(x(0)=0\) 的 \(C^1\) 解，说明仅要求右端连续不足以保证唯一性。
+		\item 对第二个方程，求全部初值解，直接证明唯一性，并判断固定 \(t\ne0\) 时解对初值在零点是否可微。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	1. 对任意 \(a\geq0\)，令
+	\[
+		x_a(t)=\begin{cases}0,&t\leq a,\\(t-a)^2/4,&t>a.\end{cases}
+	\]
+	在拼接点 \(a\) 两侧，函数值与一阶导数都趋于零，所以 \(x_a\) 为 \(C^1\)。当 \(t>a\) 时，\(x_a'(t)=(t-a)/2=\sqrt{|x_a(t)|}\)；其余时间两边都为零。因此它在整个实轴上解方程，且满足初值。不同 \(a\) 给出不同解，常值零解也满足条件。特别地，\(a=0\) 的解与零解在任意零点邻域内不同，所以局部唯一性已经失败。
+
+	2. 对初值 \(x(0)=p\)，直接验证
+	\[
+		\Phi_t(p)=\begin{cases}p e^t,&p\geq0,\\p e^{-t},&p<0\end{cases}
+	\]
+	满足方程，且对全部实数时间有定义。虽然 \(|x|\) 在零处不可微，但它满足 \(\bigl||x|-|y|\bigr|\leq|x-y|\)。若 \(u,v\) 是同初值解，在任一正向公共紧时间段内，由积分方程得
+	\[
+		|u(t)-v(t)|\leq\int_0^t|u(s)-v(s)|\,\mathrm{d}s.
+	\]
+	\cref{g1:lem:gronwall-estimate}取 \(a=b=0\)、\(L=1\)，给出两解相同；负时间改用反向参数即可。故初值解唯一。
+
+	但当 \(t\ne0\) 固定时，\(p\mapsto\Phi_t(p)\) 在零点的右导数为 \(e^t\)，左导数为 \(e^{-t}\)，二者不同，所以不可微。这个例子将两个问题分开：局部 Lipschitz 的误差估计足以给出唯一性，初值的光滑依赖还需要右端相应的光滑性。它们不能由右端连续这一条件同时得到。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:parameter-quadratic-flow}
+	对实参数 \(\lambda\)，考虑 \(x'=\lambda x^2\)、\(x(0)=y\)。求最大解及其关于 \((t,y,\lambda)\) 的定义域，计算 \(P=\partial_y x\)、\(Q=\partial_\lambda x\)，并验证它们的变分方程。特别说明公式在 \(\lambda=0\) 或 \(y=0\) 附近的光滑性，以及 \(y=0\) 时 \(P\) 是否为零。
+\end{exercise}
+\begin{solution}
+	直接代入可得
+	\[
+		x(t;y,\lambda)=\frac{y}{1-\lambda yt}.
+	\]
+	若 \(\lambda y>0\)，最大区间为 \((-\infty,1/(\lambda y))\)；若 \(\lambda y<0\)，为 \((1/(\lambda y),\infty)\)；若 \(\lambda y=0\)，为整个实轴。当 \(\lambda y\ne0\) 时，分母在所述有限端点为零，且 \(y\ne0\)，所以函数绝对值趋于无穷，不能延拓。只取包含初始时刻零的分母非零连通分支，联合定义域因此为开集
+	\[
+		\mathcal D=\{(t,y,\lambda)\in\mathbb R^3:1-\lambda yt>0\}.
+	\]
+	该域上的分式联合光滑，包括 \(\lambda=0\) 和 \(y=0\) 的所有允许点；此处不需要除以 \(\lambda\) 或 \(y\)。
+
+	令 \(d=1-\lambda yt\)，普通求导给出
+	\[
+		P=d^{-2},\qquad Q=t y^2d^{-2}.
+	\]
+	这里 \(d\) 只是分母的缩写，并非微分符号。对时间求导，得到
+	\[
+		P'=2\lambda y d^{-3}=2\lambda xP,
+	\]
+	以及
+	\[
+		Q'=y^2d^{-2}+2\lambda t y^3d^{-3}
+		=x^2+2\lambda xQ.
+	\]
+	同时 \(P(0)=1\)、\(Q(0)=0\)，正好是\eqref{g1:eq:ode-variational-equation}应用于 \(F(x,\lambda)=\lambda x^2\) 的结果。
+
+	当 \(y=0\) 时，轨道为常值零，但 \(P=1\)，并不为零。常值轨道只说明沿这条轨道的时间导数为零；改变初始位置会换到另一条轨道，其一阶变化仍可非零。此时 \(Q=0\)，因为保持初值为零而只改变 \(\lambda\)，仍得到同一条零轨道。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:saddle-flow-open-restriction}
+	在 \(\mathbb R^2\) 上取 \(X=x\partial_x-y\partial_y\)。求其最大流，并证明 \(xy\) 沿轨道不变。再把向量场限制到开子流形 \(U=\{(x,y):x+y>0\}\)，求每个初值的最大区间，解释为何原来对所有时间存在的流限制后可能在有限时间终止。
+\end{exercise}
+\begin{solution}
+	两个标量方程分别为 \(x'=x\)、\(y'=-y\)，所以
+	\[
+		\Phi_t(x,y)=(e^t x,e^{-t}y),\qquad t\in\mathbb R.
+	\]
+	公式满足初值并在全部时间上有意义，唯一性说明它就是最大流。沿轨道的坐标乘积为 \((e^t x)(e^{-t}y)=xy\)，也可由 \((xy)'=x'y+xy'=xy-xy=0\) 验证不变性。
+
+	对初值 \((x,y)\in U\)，限制后的轨道只能保留在 \(U\) 中的那段时间。条件为
+	\[
+		e^t x+e^{-t}y>0\quad\Longleftrightarrow\quad e^{2t}x+y>0.
+	\]
+	右侧作为时间条件给出一个包含零的开区间，故无须再从多个分支中选择。具体地，
+	\[
+		I_{(x,y)}^U=
+		\begin{cases}
+			\mathbb R,&x\geq0,\ y\geq0,\ x+y>0,\\
+			\bigl(\tfrac12\log(-y/x),\infty\bigr),&x>0,\ y<0,\ x+y>0,\\
+			\bigl(-\infty,\tfrac12\log(y/(-x))\bigr),&x<0,\ y>0,\ x+y>0.
+		\end{cases}
+	\]
+	这些情形覆盖 \(U\)，因为其中不可能两个坐标都非正。第二、三种情形的有限端点处，环境轨道趋向直线 \(x+y=0\) 上的非零点，而该点不属于 \(U\)。若存在值仍在 \(U\) 中的延拓，复合包含映射后它也会成为平面方程的延拓；平面解的唯一性迫使端点值等于上述不在 \(U\) 中的点，矛盾。因此所列区间最大。这里终止并非速度变得不光滑，也非环境轨道爆破，而是底空间删去了它将到达的位置。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:affine-time-dependent-evolution}
+	设 \(J\subset\mathbb R\) 是开区间，\(a,b\in C^\infty(J)\)。求方程 \(x'=a(t)x+b(t)\) 从时间 \(s\) 到时间 \(t\) 的演化映射，证明它对所有 \(s,t\in J\) 及全部实初值都有定义，并验证二参数合成公式及初始时刻导数公式。
+\end{exercise}
+\begin{solution}
+	记
+	\[
+		E(t,s)=\exp\left(\int_s^t a(r)\,\mathrm{d}r\right).
+	\]
+	它始终为正，且 \(E(t,r)E(r,s)=E(t,s)\)。所求映射为
+	\[
+		\Phi_{t,s}(x)=E(t,s)x+\int_s^t E(t,r)b(r)\,\mathrm{d}r.
+	\]
+	对 \(t\) 求导，利用 \(\partial_tE(t,s)=a(t)E(t,s)\)，得
+	\[
+		\partial_t\Phi_{t,s}(x)=a(t)\Phi_{t,s}(x)+b(t),
+	\]
+	而 \(\Phi_{s,s}(x)=x\)，所以这确实是初值解。因为 \(J\) 是区间，每两个时刻间的闭线段都包含于 \(J\)，相应光滑函数的积分有限；公式对全部 \(s,t\in J\) 有定义。所有联合光滑性也可从积分换元到固定区间 \([0,1]\) 后的公式看出。
+
+	对任意 \(s,r,t\in J\)，代入复合表达得
+	\[
+		\begin{aligned}
+		\Phi_{t,r}(\Phi_{r,s}(x))
+		&=E(t,r)E(r,s)x+\int_s^r E(t,r)E(r,v)b(v)\,\mathrm{d}v
+		+\int_r^t E(t,v)b(v)\,\mathrm{d}v\\
+		&=E(t,s)x+\int_s^t E(t,v)b(v)\,\mathrm{d}v
+		=\Phi_{t,s}(x).
+		\end{aligned}
+	\]
+	定向积分的可加性保证这组等式不要求三个时刻按大小排列。取 \(t=s\) 便得到 \(\Phi_{s,r}\Phi_{r,s}=\operatorname{id}\)，所以各演化映射的逆为反向演化。
+
+	最后 \(\partial_sE(t,s)=-a(s)E(t,s)\)，而积分项对下限 \(s\) 的导数为 \(-E(t,s)b(s)\)。因此
+	\[
+		\partial_s\Phi_{t,s}(x)
+		=-E(t,s)\bigl(a(s)x+b(s)\bigr).
+	\]
+	又有 \(\partial_x\Phi_{t,s}(x)=E(t,s)\)，故该式恰为
+	\[
+		\partial_s\Phi_{t,s}(x)
+		=-\mathrm{d}(\Phi_{t,s})_x\bigl(X_s(x)\bigr),\qquad
+		X_s(x)=\bigl(a(s)x+b(s)\bigr)\partial_x.
+	\]
+	若把原问题的时间范围固定为 \(J\)，每条解的最大绝对时间区间就是 \(J\)；是否能把系数和方程继续定义到 \(J\) 外，是另一个延拓问题。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:linear-growth-completeness}
+	设 \(X\) 是 \(\mathbb R^n\) 上的光滑向量场，\(n\geq1\)。若存在常数 \(A,B\geq0\)，使
+	\[
+		|X(x)|\leq A+B|x|\qquad(x\in\mathbb R^n),
+	\]
+	证明 \(X\) 完备。证明中须给出轨道在任意有限时间内的明确范数界，并分别处理正向和反向时间。
+\end{exercise}
+\begin{solution}
+	设初值为 \(p\) 的最大积分曲线为 \(\gamma:(a,b)\to\mathbb R^n\)，其中 \(a<0<b\)。对 \(0\leq t<b\)，由积分方程及增长条件得到
+	\[
+		|\gamma(t)|\leq|p|+\int_0^t|X(\gamma(s))|\,\mathrm{d}s
+		\leq|p|+At+B\int_0^t|\gamma(s)|\,\mathrm{d}s.
+	\]
+	在任意包含于 \([0,b)\) 的紧时间区间上应用\cref{g1:lem:gronwall-estimate}，得
+	\[
+		|\gamma(t)|\leq
+		\begin{cases}
+			|p|e^{Bt}+\dfrac AB(e^{Bt}-1),&B>0,\\
+			|p|+At,&B=0.
+		\end{cases}
+	\]
+	因为所取紧时间区间可以包含任意指定的 \(t<b\)，这个估计对全部 \(0\leq t<b\) 成立。
+
+	若 \(b<\infty\)，把右端的 \(t\) 换成 \(b\)，便得到一个与 \(t\) 无关的有限上界 \(R\)。于是 \(\gamma([0,b))\) 留在欧氏闭球 \(\overline B_R(0)\) 内。该球紧，违反\cref{g1:thm:flow-escape-criterion}关于有限最大右端点必须逃离每个紧集的结论。因此 \(b=+\infty\)。
+
+	对负向时间，令 \(\eta(u)=\gamma(-u)\)。它满足 \(\eta'=-X(\eta)\)、\(\eta(0)=p\)，且 \(-X\) 仍满足同一增长界。若 \(a> -\infty\)，则 \(\eta\) 的最大右端点为 \(-a<\infty\)：否则将其延拓反向就会延拓 \(\gamma\)。把前两段用于 \(-X\)，排除这个有限端点，得到 \(a=-\infty\)。正负时间的估计合并为
+	\[
+		|\gamma(t)|\leq
+		\begin{cases}
+			|p|e^{B|t|}+\dfrac AB(e^{B|t|}-1),&B>0,\\
+			|p|+A|t|,&B=0,
+		\end{cases}
+		\qquad t\in\mathbb R.
+	\]
+	每个初值的最大区间因而都是 \(\mathbb R\)，故 \(X\) 完备。这里欧氏空间的闭有界球紧，使范数估计能直接用于逃逸判据；若只在一个真开子集上给出同样的数值界，还须检查轨道是否会接近该开子集缺失的点。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:sum-of-complete-fields}
+	在 \(\mathbb R^2\) 上令
+	\[
+		X=y^2\partial_x,\qquad Y=x^2\partial_y.
+	\]
+	分别求 \(X,Y\) 的整体流，再证明 \(X+Y\) 不完备。对后一个结论，求出初值 \((1,1)\) 的最大积分曲线及最大区间。
+\end{exercise}
+\begin{solution}
+	沿 \(X\) 的积分曲线，\(y'=0\)，所以 \(y(t)=y_0\)；随后 \(x'=y_0^2\) 给出
+	\[
+		\Phi_t^X(x_0,y_0)=(x_0+t y_0^2,y_0).
+	\]
+	同理，沿 \(Y\) 的第一坐标保持不变，故
+	\[
+		\Phi_t^Y(x_0,y_0)=(x_0,y_0+t x_0^2).
+	\]
+	两个公式对全部初值和全部实数时间都有意义，并满足各自的方程与初值。因此它们就是最大流，\(X,Y\) 都完备。
+
+	和向量场的方程则为
+	\[
+		x'=y^2,\qquad y'=x^2.
+	\]
+	曲线
+	\[
+		\gamma(t)=\left(\frac1{1-t},\frac1{1-t}\right),\qquad t\in(-\infty,1),
+	\]
+	直接满足这组方程及初值 \(\gamma(0)=(1,1)\)。由\cref{g1:thm:maximal-integral-curve}的唯一性，它是该初值最大解的限制。其定义域已向左延至负无穷；当 \(t\uparrow1\) 时两个坐标都趋于正无穷，不能以 \(\mathbb R^2\) 中的点为值连续延拓，所以最大右端点正是 \(1\)。故这条曲线的最大区间为 \((-\infty,1)\)，\(X+Y\) 不完备。
+
+	在两个单独方程中，决定速度的另一坐标始终固定；相加以后，两个坐标会同时增大，并进一步增大彼此的速度。这个例子说明完备向量场一般不对加法封闭，不能仅由两个独立运动都能全时间进行就推出它们的速度之和也能如此。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:global-flow-box-periodic-obstruction}
+	在 \(\mathbb R^2\) 上取 \(X=\partial_x+y\partial_y\)。证明
+	\[
+		s=x,\qquad z=ye^{-x}
+	\]
+	给出一组全局坐标，并将 \(X\) 化为 \(\partial_s\)。再对圆环
+	\[
+		\mathcal A=\{(x,y):1<x^2+y^2<4\}
+	\]
+	上的转动场 \(R=-y\partial_x+x\partial_y\)，证明不存在满足 \(R(s)=1\) 的全局光滑实函数 \(s:\mathcal A\to\mathbb R\)。说明这与流盒定理的局部结论为何相容。
+\end{exercise}
+\begin{solution}
+	映射 \(H:\mathbb R^2\to\mathbb R^2\)，\(H(x,y)=(x,ye^{-x})\)，有明确的逆
+	\[
+		H^{-1}(s,z)=(s,e^s z).
+	\]
+	两个映射都光滑，所以它们是全局微分同胚，\((s,z)\) 确为全局坐标。直接计算得
+	\[
+		X(s)=1,\qquad
+		X(z)=\partial_x(ye^{-x})+y\partial_y(ye^{-x})=-ye^{-x}+ye^{-x}=0.
+	\]
+	由微分的坐标表达，\(H_*X=\partial_s\)。原坐标中的方程也可直接积分为
+	\[
+		\Phi_t^X(x,y)=(x+t,e^t y).
+	\]
+	因此 \(H(\Phi_t^X(x,y))=(s+t,z)\)，新坐标中的运动在所有时间上就是平移。
+
+	圆环上的转动场具有流
+	\[
+		\Phi_t^R(x,y)=(x\cos t-y\sin t,x\sin t+y\cos t).
+	\]
+	它保持 \(x^2+y^2\)，因而始终留在圆环中，且 \(\Phi_{2\pi}^R(p)=p\)。若存在题设全局实函数 \(s\)，对任意 \(p\in\mathcal A\) 沿轨道使用链式法则，得
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}s(\Phi_t^R(p))
+		=R(s)(\Phi_t^R(p))=1.
+	\]
+	从零积分到 \(2\pi\)，得到 \(s(p)-s(p)=2\pi\)，矛盾。所以这样的全局实值时间坐标不存在。
+
+	\(R\) 在圆环上处处非零，故\cref{g1:thm:flow-box}仍保证每个点附近有实值局部时间坐标。沿一个足够短的角度分支可以令 \(s\) 等于角度，但绕一整圈以后实角增加 \(2\pi\)，无法成为单值实函数。流盒只承诺局部坐标，不排除轨道离开该坐标域后再次返回同一点。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:positive-time-change-completeness}
+	设 \(M\) 是有限维 Hausdorff、第二可数的无边界光滑流形，\(X\in\mathfrak X(M)\)，\(f:M\to(0,\infty)\) 光滑，令 \(Y=fX\)。
+	\begin{enumerate}
+		\item 对 \(X\) 的最大积分曲线 \(\gamma:I\to M\)，\(\gamma(0)=p\)，用积分给出相应 \(Y\) 轨道的换时公式，并证明两条最大轨道具有相同的像及相同运动方向。
+		\item 取 \(M=\mathbb R\)、\(X=\partial_x\)、\(f(x)=1+x^2\)，求 \(Y\) 的最大积分曲线，说明正光滑倍数可以破坏完备性。
+		\item 若 \(M\) 紧，证明 \(X,Y\) 都完备，并用换时公式解释此时为何不会发生有限时间压缩到无限原时间的现象。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	1. 记 \(I=(a,b)\)，其中 \(a<0<b\)。以 \(t\) 表示 \(X\) 的时间，以 \(s\) 表示 \(Y\) 的时间，定义
+	\[
+		s(t)=\int_0^t\frac{\mathrm{d}u}{f(\gamma(u))}.
+	\]
+	因为 \(f>0\)，有 \(s'(t)=1/f(\gamma(t))>0\)，所以 \(s\) 严格递增。其像为开区间
+	\[
+		J=(A,B),\qquad
+		A=\lim_{t\downarrow a}s(t),\quad B=\lim_{t\uparrow b}s(t),
+	\]
+	其中端点允许为无穷。\(s:I\to J\) 双射，导数处处非零；一维逆函数定理使其逆 \(t=t(s)\) 光滑。令
+	\[
+		\eta(s)=\gamma(t(s)),\qquad s\in J.
+	\]
+	链式法则与逆函数导数给出
+	\[
+		\eta'(s)=X_{\gamma(t(s))}\,t'(s)
+		=f(\eta(s))X_{\eta(s)}=Y_{\eta(s)},\qquad \eta(0)=p.
+	\]
+	因此它是 \(Y\) 的积分曲线，并且因为 \(t:J\to I\) 严格递增且满射，\(\eta(J)=\gamma(I)\)，方向也保持不变。
+
+	还须证明 \(\eta\) 最大，才能比较两条最大轨道。若它可延拓为较大开区间 \(\widehat J\supsetneq J\) 上的解 \(\widehat\eta\)，定义反向换时
+	\[
+		\widehat t(s)=\int_0^s f(\widehat\eta(v))\,\mathrm{d}v.
+	\]
+	该函数仍严格递增且有光滑逆。在 \(J\) 上，它与原来的 \(t(s)\) 有相同导数和零处值，所以相同，进而 \(\widehat t(J)=I\)。由于 \(\widehat J\) 严格扩大，严格递增映射的像 \(\widehat t(\widehat J)\) 也严格包含 \(I\)。用 \(\widehat t\) 的逆重新参数化 \(\widehat\eta\)，链式法则得到 \(X\) 的一条解，并在 \(I\) 上等于 \(\gamma\)，这与 \(\gamma\) 最大矛盾。因此 \(J\) 正是 \(Y\) 的最大时间区间。若 \(X_p=0\)，两条曲线均为常值，公式退化为 \(s=t/f(p)\)，同样成立。
+
+	2. \(X\) 的积分曲线为 \(\gamma(t)=x_0+t\)，对全部实数时间存在。换时公式给出
+	\[
+		s(t)=\int_0^t\frac{\mathrm{d}u}{1+(x_0+u)^2}
+		=\arctan(x_0+t)-\arctan x_0.
+	\]
+	令 \(\theta_0=\arctan x_0\in(-\pi/2,\pi/2)\)，则
+	\[
+		\eta(s)=\tan(s+\theta_0),\qquad
+		J=(-\pi/2-\theta_0,\pi/2-\theta_0).
+	\]
+	在两个有限端点，轨道分别趋于负、正无穷，因此不能延拓。其像仍是整个实轴，与 \(X\) 的轨道像相同；变化的是沿这条轨道走到无穷远所需的时间。尤其初值 \(x_0=0\) 时得到 \(\eta(s)=\tan s\)，而 \(X\) 完备、\(Y=(1+x^2)\partial_x\) 不完备。
+
+	3. 若 \(M\) 紧且无边界，\cref{g1:thm:compact-support-complete}直接说明两个光滑向量场都完备。也可以在先知道 \(X\) 完备后，从换时公式恢复 \(Y\) 的结论。紧性和正性给出常数 \(0<c\leq C<\infty\)，使 \(c\leq f\leq C\)。因此
+	\[
+		\frac1C\leq s'(t)\leq\frac1c.
+	\]
+	对 \(t\geq0\) 积分得到 \(t/C\leq s(t)\leq t/c\)，对 \(t\leq0\) 则得到 \(t/c\leq s(t)\leq t/C\)。所以 \(t\to+\infty\) 时 \(s(t)\to+\infty\)，\(t\to-\infty\) 时 \(s(t)\to-\infty\)，其像为整个实轴，\(Y\) 也完备。这个上下界排除了上一问中速度倍数沿轨道无限增大、把无限原时间压成有限新时间的情况。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1303-rescaling-frame}
+	在 \(\mathbb R^2\) 上令 \(X=\partial_x\)、\(Y=e^x\partial_y\)。求所有满足 \([X,fY]=0\) 的光滑函数 \(f\)，并说明哪些这样的 \(f\) 使 \(X,fY\) 仍处处构成标架。给出一个处处正的选择，使这两个向量场成为坐标向量场，并写出它们的流。
+\end{exercise}
+\begin{solution}
+	首先 \([X,Y]=e^x\partial_y=Y\)。由括号的乘法公式，
+	\[
+		[X,fY]=f[X,Y]+X(f)Y=(f+\partial_xf)Y.
+	\]
+	因为 \(Y\) 处处不为零，所求条件等价于 \(\partial_xf+f=0\)。这又等价于 \(\partial_x(e^xf)=0\)，所以
+	\[
+		f(x,y)=e^{-x}h(y),
+	\]
+	其中 \(h\) 为任意光滑实函数。反向代入即能验证所有这些函数满足要求。它们使 \(X,fY\) 构成标架，当且仅当 \(h(y)\) 处处不为零；此时 \(fY=h(y)\partial_y\)，仍与 \(\partial_x\) 独立。
+
+	取 \(h\equiv1\)，则 \(f=e^{-x}>0\)，且 \(fY=\partial_y\)。两场正是原坐标的坐标场，流分别为
+	\[
+		\Phi_t(x,y)=(x+t,y),\qquad \Psi_s(x,y)=(x,y+s).
+	\]
+	它们在所有时间交换。原来的 \(X,Y\) 虽已构成标架，却并不交换；乘以非恒定函数能够改变括号，所以不能把括号看成对函数双线性的逐点运算。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1303-affine-flows}
+	在 \(\mathbb R\) 上令 \(X=x\partial_x\)、\(Y=\partial_x\)。求李括号、两场的流及 \((\Phi_t^X)^*Y\)。验证
+	\[
+		\Phi_t^X\circ\Phi_s^Y=\Phi_{e^ts}^Y\circ\Phi_t^X,
+	\]
+	并说明它与两个流交换有什么区别。用拉回的导数再次核对李括号的符号。
+\end{exercise}
+\begin{solution}
+	由一维坐标公式，
+	\[
+		[X,Y]=(x\cdot0-1\cdot1)\partial_x=-Y.
+	\]
+	解两个积分曲线方程，分别得到
+	\[
+		\Phi_t^X(x)=e^tx,\qquad \Phi_s^Y(x)=x+s.
+	\]
+	二者都在所有实时间有定义。由于 \(\mathrm{d}\Phi_t^X\) 是乘以 \(e^t\)，而 \(Y\) 的目标分量恒为 \(1\)，故
+	\[
+		(\Phi_t^X)^*Y=e^{-t}Y.
+	\]
+	这说明膨胀后的单位平移向量被带回原切空间时，要缩小 \(e^{-t}\) 倍。
+
+	复合计算给出
+	\[
+		\Phi_t^X(\Phi_s^Y(x))=e^tx+e^ts
+		=\Phi_{e^ts}^Y(\Phi_t^X(x)).
+	\]
+	交换次序时，平移的时间参数同时变成了 \(e^ts\)，因此这不是使用相同参数 \(s,t\) 的交换关系。实际上
+	\[
+		\Phi_s^Y(\Phi_t^X(x))=e^tx+s,
+	\]
+	当 \(s\ne0,t\ne0\) 时与前式不同。最后，
+	\[
+		\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_0(\Phi_t^X)^*Y
+		=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_0e^{-t}Y=-Y,
+	\]
+	与所算括号一致；若误把微分而非逆微分用于向量场拉回，就会得到相反符号。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1303-function-times-lie}
+	设 \(M\) 为无边界光滑流形，\(f\in C^\infty(M)\)、\(X\in\mathfrak X(M)\)、\(\alpha\in\Omega^k(M)\)，其中 \(k\ge1\)。仅用协变张量李导数的求值公式、李括号的乘法公式与楔积，证明
+	\[
+		\mathcal L_{fX}\alpha=f\mathcal L_X\alpha+\mathrm{d}f\wedge\iota_X\alpha.
+	\]
+	这里 \(\mathrm{d}f\) 只是函数的微分。另写出零次形式的相应结论，并用一个一维例子说明，李导数一般不对下标中的向量场满足 \(C^\infty(M)\) 线性。
+\end{exercise}
+\begin{solution}
+	对任意局部向量场 \(Y_1,\ldots,Y_k\)，有
+	\[
+		[fX,Y_a]=f[X,Y_a]-Y_a(f)X.
+	\]
+	将它代入\eqref{g1:eq:lie-covariant-evaluation}，并利用 \(\alpha\) 对函数多线性，得到
+	\[
+		\begin{split}
+			(\mathcal L_{fX}\alpha)(Y_1,\ldots,Y_k)
+			={}&f(\mathcal L_X\alpha)(Y_1,\ldots,Y_k)\\
+			&+\sum_{a=1}^kY_a(f)\,
+			\alpha(Y_1,\ldots,Y_{a-1},X,Y_{a+1},\ldots,Y_k).
+		\end{split}
+	\]
+	最后一项中，把 \(X\) 从第 \(a\) 个位置移到第一位置，需要 \(a-1\) 次交换，因此该和等于
+	\[
+		\sum_{a=1}^k(-1)^{a-1}\mathrm{d}f(Y_a)
+		(\iota_X\alpha)(Y_1,\ldots,\widehat{Y_a},\ldots,Y_k).
+	\]
+	按一次形式与 \(k-1\) 次形式的洗牌公式，这恰为 \((\mathrm{d}f\wedge\iota_X\alpha)(Y_1,\ldots,Y_k)\)。所有输入上取值相同，就证明了张量等式。若 \(\alpha=h\) 为函数，则直接由定义有 \(\mathcal L_{fX}h=fX(h)=f\mathcal L_Xh\)。
+
+	在 \(\mathbb R\) 上取 \(X=\partial_x\)、\(f=x\)、\(\alpha=\mathrm{d}x\)。此时 \(\mathcal L_X\alpha=0\)，但 \(\iota_X\alpha=1\)，故
+	\[
+		\mathcal L_{x\partial_x}(\mathrm{d}x)=\mathrm{d}x
+		\ne x\mathcal L_{\partial_x}(\mathrm{d}x)=0.
+	\]
+	附加项记录了速度缩放函数 \(f\) 在空间中的变化；它不能由在一点只乘上 \(f(p)\) 来替代。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1303-projection-related}
+	设 \(P:\mathbb R^2\to\mathbb R\)、\(P(x,y)=x\)，并用 \(u\) 表示目标坐标。给定 \(X=a(x,y)\partial_x+b(x,y)\partial_y\)，证明存在与 \(X\) 为 \(P\)-相关的目标向量场，当且仅当 \(a(x,y)=a_0(x)\) 只依赖于 \(x\)，并说明目标场是否唯一。若 \(X\) 与 \(Y=c_0(x)\partial_x+d(x,y)\partial_y\) 都满足此条件，求其括号在目标上的相关场。最后对目标一形式 \(\alpha=h(u)\,\mathrm{d}u\) 直接计算 \(\mathcal L_X(P^*\alpha)\)，检验自然性公式，并用 \(X=y\partial_x\) 展示相关条件失效时发生什么。
+\end{exercise}
+\begin{solution}
+	微分满足 \(\mathrm{d}P(\partial_x)=\partial_u\)、\(\mathrm{d}P(\partial_y)=0\)。若目标场为 \(\overline X=A(u)\partial_u\)，相关条件就是
+	\[
+		a(x,y)=A(x)\qquad\text{对所有 }(x,y).
+	\]
+	它等价于 \(a\) 只依赖 \(x\)。若条件成立，可取 \(a_0(x)=a(x,0)\)，这个函数光滑，且目标场必须为 \(\overline X=a_0(u)\partial_u\)。由于 \(P\) 满射，每个目标点的系数都被上述公式确定，所以唯一；竖直系数 \(b\) 则不影响相关条件。
+
+	对另一个满足条件的场 \(Y\)，括号的水平系数是
+	\[
+		X(c_0)-Y(a_0)=a_0c_0'-c_0a_0'.
+	\]
+	所以它与 \((a_0c_0'-c_0a_0')\partial_u=[\overline X,\overline Y]\) 相关，竖直分量无须为零。
+
+	不先假设相关条件，直接有 \(P^*\alpha=h(x)\,\mathrm{d}x\)，而
+	\[
+		\mathcal L_X(\mathrm{d}x)=(\partial_xa)\,\mathrm{d}x+(\partial_ya)\,\mathrm{d}y.
+	\]
+	故
+	\[
+		\mathcal L_X(P^*\alpha)
+		=(a h'+h\,\partial_xa)\,\mathrm{d}x
+		+h\,\partial_ya\,\mathrm{d}y.
+	\]
+	若 \(a=a_0(x)\)，第二项消失，第一项为 \((a_0h'+ha_0')\,\mathrm{d}x\)，恰等于 \(P^*(\mathcal L_{\overline X}\alpha)\)。若取 \(X=y\partial_x\) 与 \(\alpha=\mathrm{d}u\)，则
+	\[
+		\mathcal L_X(P^*\alpha)=\mathcal L_{y\partial_x}(\mathrm{d}x)=\mathrm{d}y.
+	\]
+	任何目标一形式的拉回都只含 \(\mathrm{d}x\) 项，不可能等于 \(\mathrm{d}y\)。此时 \(X\) 在同一投影纤维上的水平速度随 \(y\) 改变，没有可用的相关目标场。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:frobenius-explicit-graph}
+	在 \(\mathbb R^3\) 上取
+	\[
+		X=\partial_x+y\partial_z,\qquad
+		Y=\partial_y+x\partial_z,\qquad
+		D=\operatorname{span}\{X,Y\}.
+	\]
+	计算李括号和两条流，并从横截线 \((0,0,c)\) 出发构造适应坐标。求 \(D\) 的全部最大连通叶。
+\end{exercise}
+\begin{solution}
+	两向量场的 \(x,y\) 分量分别为 \((1,0)\)、\((0,1)\)，故处处线性无关，\(D\) 为光滑秩二分布。括号的前两分量为零，最后分量为
+	\[
+		X(x)-Y(y)=1-1=0,
+	\]
+	所以 \([X,Y]=0\)。积分方程直接给出
+	\[
+		\Phi_X^t(x,y,z)=(x+t,y,z+yt),\qquad
+		\Phi_Y^s(x,y,z)=(x,y+s,z+xs).
+	\]
+	两者先后复合的结果均为 \((x+t,y+s,z+yt+xs+ts)\)，故它们在所有时间交换。
+
+	从横截线出发，得到
+	\[
+		\Psi(t,s,c)=\Phi_Y^s\Phi_X^t(0,0,c)=(t,s,c+ts).
+	\]
+	它是整体微分同胚，逆为
+	\[
+		(x,y,z)\longmapsto(t,s,c)=(x,y,z-xy).
+	\]
+	其时间方向微分分别为 \(X,Y\)，所以这些是适应坐标。固定 \(c\) 得到连通积分曲面
+	\[
+		L_c=\{(x,y,z):z=xy+c\}.
+	\]
+	函数 \(F=z-xy\) 满足 \(XF=YF=0\)。在任何连通积分流形上，\(F\) 的微分都为零，因而为常值；所以经过 \(L_c\) 中一点的连通积分流形只能落在 \(L_c\) 内。而 \(L_c\) 自身已是连通积分流形，故它就是该点的最大叶。不同 \(c\in\mathbb R\) 给出全部叶。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:submersion-fiber-leaves}
+	设 \(F:M^m\to N^n\) 为有限维、Hausdorff、第二可数无边界光滑流形之间的淹没。证明 \(D=\ker\mathrm{d}F\) 对合，且其最大连通叶恰为各纤维 \(F^{-1}(y)\) 的连通分支。具体讨论 \(M=\mathbb R^2\setminus\{(0,0)\}\)、\(F(x,y)=x\) 的全部叶，说明为何不能总把整个纤维称为一条叶。
+\end{exercise}
+\begin{solution}
+	\cref{g1:exm:submersion-integral-levels}已说明 \(D\) 为秩 \(m-n\) 光滑分布，非空纤维为切空间等于 \(D\) 的嵌入子流形。也可以直接检查对合性：若 \(X,Y\) 取值于 \(D\)，对目标上的任意局部光滑函数 \(h\)，有
+	\[
+		X(h\circ F)=Y(h\circ F)=0,
+		\qquad [X,Y](h\circ F)=0.
+	\]
+	在目标坐标函数上应用此式，就得到 \(\mathrm{d}F([X,Y])=0\)，故 \([X,Y]\) 取值于 \(D\)。
+
+	取一条最大连通叶 \(L\)。沿叶有 \(\mathrm{d}(F|_L)=0\)，所以 \(F|_L\) 局部常值，进而由连通性为常值 \(y\)。包含映射连续，故其连通像落在 \(F^{-1}(y)\) 的某个连通分支 \(C\) 中。纤维是流形，局部坐标球连通，故其连通分支开；因此 \(C\) 本身也是连通积分流形。最大性给出 \(C\subseteq L\)，结合原来的包含便得 \(L=C\)，且流形结构由最大叶的唯一性一致。
+
+	在所给平面例子中，\(\mathrm{d}F=\mathrm{d}x\) 处处满射，\(D=\mathbb R\partial_y\)。对 \(c\ne0\)，纤维 \(\{(c,y):y\in\mathbb R\}\) 连通，整条竖直线是一条叶。零纤维则为
+	\[
+		\{(0,y):y>0\}\ \cup\ \{(0,y):y<0\},
+	\]
+	它有两个连通分支，分别是一条叶。这里微分的秩没有发生变化，分成两条叶的原因是纤维不连通。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:submersion-pullback-distribution}
+	设 \(f:M^m\to N^n\) 为有限维、Hausdorff、第二可数无边界光滑流形之间的淹没，\(D\subseteq \mathrm{T}N\) 为秩 \(r\) 对合光滑分布。逐点定义
+	\[
+		E_p=\{v\in \mathrm{T}_pM:\mathrm{d}f_p(v)\in D_{f(p)}\}.
+	\]
+	证明 \(E\) 是秩 \(m-n+r\) 的对合光滑分布。再令 \(f:\mathbb R^2\to\mathbb R^2\)、\(f(x,y)=(x^2,y)\)，目标分布为 \(D=\mathbb R\partial_{y}\)，说明省去淹没条件后，这个逐点定义未必给出常秩分布。
+\end{exercise}
+\begin{solution}
+	在 \(f(p)\) 附近为 \(D\) 取适应坐标 \((u^1,\ldots,u^r,v^1,\ldots,v^{n-r})\)。在其原像中定义
+	\[
+		H=(v^1,\ldots,v^{n-r})\circ f.
+	\]
+	横向坐标投影的微分满射，\(\mathrm{d}f\) 也满射，因此 \(\mathrm{d}H\) 满射。由适应坐标中 \(D=\ker\mathrm{d}v\)，有
+	\[
+		E=\ker\mathrm{d}H.
+	\]
+	所以在这个邻域内，\(E\) 为秩 \(m-(n-r)\) 光滑子丛；这些局部描述都等于题设的同一个逐点子空间，故给出整体光滑分布。
+
+	若 \(X,Y\) 为取值于 \(E\) 的局部光滑向量场，则 \(XH^\alpha=YH^\alpha=0\)，从而
+	\[
+		[X,Y]H^\alpha=X(YH^\alpha)-Y(XH^\alpha)=0.
+	\]
+	故 \([X,Y]\in\ker\mathrm{d}H=E\)。这是局部条件，因此 \(E\) 对合。
+
+	最后的例子中，
+	\[
+		\mathrm{d}f_{(x,y)}(a,b)=(2xa,b).
+	\]
+	其像属于竖直线，当且仅当 \(2xa=0\)。于是 \(x\ne0\) 时 \(E_{(x,y)}=\mathbb R\partial_y\)，\(x=0\) 时 \(E_{(0,y)}=\mathrm{T}_{(0,y)}\mathbb R^2\)。维数从一变为二，因此不是本节意义下的常秩光滑分布。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:maps-tangent-to-leaves}
+	设 \(D\) 为有限维、Hausdorff、第二可数无边界光滑流形 \(M\) 上的常秩对合光滑分布，\(P\) 为任意维数的连通无边界光滑流形，\(h:P\to M\) 光滑。固定 \(p_0\in P\)，令 \(L\) 为通过 \(h(p_0)\) 的最大叶。证明下列条件等价：
+	\[
+		\mathrm{d}h_q(\mathrm{T}_qP)\subseteq D_{h(q)}\quad(q\in P);
+		\qquad
+		h=i_L\circ\widehat h\text{，其中 }\widehat h:P\to L\text{ 光滑}.
+	\]
+	证明光滑因子若存在则唯一。再证明，两点位于同一最大叶，当且仅当它们可以由一条有限分段光滑且每段速度属于 \(D\) 的曲线连接。
+\end{exercise}
+\begin{solution}
+	若光滑因子存在，由链式法则，
+	\[
+		\mathrm{d}h=\mathrm{d}i_L\circ\mathrm{d}\widehat h,
+	\]
+	而 \(\mathrm{d}i_L(\mathrm{T}L)=D\)，故得到所需包含。因 \(i_L\) 是集合包含，因子至多一个。
+
+	反过来假设微分像包含于 \(D\)。对每个 \(q\in P\)，选连通的小参数邻域 \(V\)，使 \(h(V)\) 落在一个叶状坐标盒中，记其坐标为 \((u,v)\)。于是
+	\[
+		\mathrm{d}(v\circ h)=0
+	\]
+	于 \(V\)，故 \(v\circ h\) 常值，\(h(V)\) 落在单张叶片中。这说明 \(P\) 中映入同一个叶的点组成开集。不同叶给出的这些开集两两不交并覆盖 \(P\)，所以由连通性全部像都在通过 \(h(p_0)\) 的 \(L\) 内。在每个 \(V\) 上，把 \(h\) 看成到该开叶片的映射，其坐标为光滑的 \(u\circ h\)，所以所定义的唯一 \(\widehat h:P\to L\) 光滑。这里没有要求 \(\dim P=\operatorname{rank}D\)，也没有要求 \(h\) 为浸入。
+
+	若两点位于同一叶，最大叶构造给出连接它们的有限叶片链。在各片的球或盒坐标中用线段连接相邻交点，再映回 \(M\)，便得到有限分段光滑曲线；每段速度都属于该叶片的切空间 \(D\)。
+
+	反过来，设 \(\gamma:[0,1]\to M\) 是这样的连续分段光滑曲线。对任意参数值，在它附近取一个相对开小区间，使曲线像落在某叶状坐标盒中。在每个光滑段上，横向坐标满足
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}\bigl(v\circ\gamma\bigr)=0,
+	\]
+	故为常值；经过分段点时，两侧常值又由连续性相同。因此在这个小区间内，像落在一张叶片中。曲线所处的最大叶随参数局部不变，而 \([0,1]\) 连通，故整条曲线位于同一叶，两个端点也在同一叶。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1305-leaf-constant-functions}
+	在 \(T^2=\mathbb R^2/\mathbb Z^2\) 上考虑向量场 \(X_\alpha=\partial_x+\alpha\partial_y\) 的叶。证明：若 \(\alpha\) 无理，则每个在各叶上为常数的连续函数 \(H:T^2\to\mathbb R\) 都在整个环面上为常数。若 \(\alpha=p/q\)，其中 \(p\in\mathbb Z\)、\(q\ge1\) 互素，则每个在各叶上为常数的光滑函数 \(H:T^2\to\mathbb R\) 都能唯一写成
+	\[
+		H=h\circ f,\qquad
+		f:T^2\longrightarrow\mathbb R/\mathbb Z,\qquad
+		f([x,y])=[qy-px],
+	\]
+	其中 \(h:\mathbb R/\mathbb Z\to\mathbb R\) 光滑。说明为什么由叶常性得到的集合映射 \(h\) 确实光滑，而不只是良定义。
+\end{exercise}
+\begin{solution}
+	无理情形中，\cref{g1:prop:linear-torus-leaves}说明每条叶都稠密。固定一条叶 \(L\)，设 \(H|_L=c\)。由于 \(H\) 连续，集合 \(H^{-1}(\{c\})\) 闭，又包含 \(L\)，因而包含其闭包 \(T^2\)。所以 \(H\equiv c\)。这里连续性是关键：仅在每条叶上分别规定一个任意常数，并不自动得到连续函数。
+
+	现在设 \(\alpha=p/q\)。将 \((x,y)\) 换成 \((x+m,y+n)\) 时，\(qy-px\) 增加整数 \(qn-pm\)，所以 \(f\) 良定义且光滑。它满射：对任意实代表 \(u\)，点 \([0,u/q]\) 映到 \([u]\)。沿流轨道，
+	\[
+		f([x+t,y+(p/q)t])=[qy-px],
+	\]
+	所以每条叶包含于一个纤维。
+
+	还要证明一个纤维只有一条叶。若两点取实代表后的差为 \((\Delta x,\Delta y)\)，且它们的 \(f\) 值相同，则
+	\[
+		q\Delta y-p\Delta x=k\in\mathbb Z.
+	\]
+	因 \(p,q\) 互素，可以取整数 \(m,n\) 使 \(qn-pm=k\)。于是
+	\[
+		q(\Delta y-n)=p(\Delta x-m).
+	\]
+	令 \(t=\Delta x-m\)，便有 \((\Delta x-m,\Delta y-n)=(t,(p/q)t)\)，即两点在环面上位于同一流轨道。纤维因此恰为叶。
+
+	由叶常性可以规定 \(h(u)=H(z)\)，其中 \(f(z)=u\)。纤维只有一条叶保证它不依赖 \(z\)；满射性保证它有定义且唯一。为证明光滑性，在圆周任一点附近取小开弧 \(U\)，选一个光滑实数角坐标 \(\ell:U\to\mathbb R\)，满足 \([\ell(u)]=u\)。定义局部截面
+	\[
+		\sigma:U\longrightarrow T^2,\qquad
+		\sigma(u)=[0,\ell(u)/q].
+	\]
+	它光滑且 \(f\circ\sigma=\operatorname{id}_U\)，所以 \(h|_U=H\circ\sigma\) 光滑。每个圆周点都有这样的开弧，故 \(h\) 整体光滑。不同局部截面落在同一纤维上，得到的函数一致，无须使所选实数角坐标全局一致。反过来，每个光滑 \(h\) 的复合 \(h\circ f\) 都光滑并在各叶上为常数。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1305-variable-cylinder-holonomy}
+	设 \(a:\mathbb R\to\mathbb R\) 为周期 \(1\) 的光滑函数，在圆柱 \((\mathbb R/\mathbb Z)\times\mathbb R\) 上取
+	\[
+		X=\partial_\theta-a(\theta)r\partial_r.
+	\]
+	求截面 \(\theta=0\) 的首次正返回映射，并证明中间闭叶 \(r=0\) 的 holonomy 群平凡，当且仅当 \(\int_0^1a(\theta)\,\mathrm{d}\theta=0\)。在积分为零时，构造一个整体光滑第一积分，并说明它的各个水平集是什么。
+\end{exercise}
+\begin{solution}
+	把初始角度暂时提升为实数 \(\theta_0\)。流方程为 \(\theta'=1\)、\(r'=-a(\theta)r\)，故
+	\[
+		\theta(t)=\theta_0+t,\qquad
+		r(t)=r_0\exp\left(-\int_0^t a(\theta_0+u)\,\mathrm{d}u\right).
+	\]
+	周期性保证更换 \(\theta_0\) 的整数提升不改变圆柱上的曲线。该公式在所有实时间有定义；它满足初值与速度方程，因此由唯一性就是整体流。
+
+	从 \(\theta=0\) 出发，角度第一次在正时间回到零模 \(1\) 是 \(t=1\)，所以令
+	\[
+		A=\int_0^1a(u)\,\mathrm{d}u,
+	\]
+	便有返回映射 \(P(r)=e^{-A}r\)。中间叶 \(r=0\) 是周期为 \(1\) 的圆周，沿正向一圈产生 \(P\) 在零点的芽。圆周上的任意基点闭路可逐段选取连续实数角度，提升的终点与起点相差整数 \(k\)；将提升与相同端点的直线作线性同伦，便知该闭路与绕 \(k\) 圈同伦。因此由\cref{g1:prop:leaf-holonomy-homotopy}，全部 holonomy 芽恰由
+	\[
+		P^k(r)=e^{-kA}r,\qquad k\in\mathbb Z,
+	\]
+	给出。若 \(A=0\)，这些映射都是恒等映射。若 \(A\ne0\)，则 \(e^{-A}\ne1\)，每个零点邻域都含非零 \(r\)，且 \(e^{-A}r\ne r\)；故连生成元的芽也不是恒等芽。于是中间闭叶的 holonomy 群平凡恰好等价于 \(A=0\)。
+
+	在 \(A=0\) 时，定义
+	\[
+		B(\theta)=\int_0^\theta a(u)\,\mathrm{d}u.
+	\]
+	由周期性，\(B(\theta+1)-B(\theta)=A=0\)，所以 \(B\) 是周期 \(1\) 的光滑函数。于是
+	\[
+		I([\theta],r)=r e^{B(\theta)}
+	\]
+	是圆柱上良定义的整体光滑函数，并且
+	\[
+		X(I)=r e^{B(\theta)}a(\theta)-a(\theta)r e^{B(\theta)}=0.
+	\]
+	故 \(I\) 为第一积分；其 \(\partial_r I=e^{B(\theta)}>0\)，微分处处非零。每个水平集 \(I=c\) 为图
+	\[
+		r=c e^{-B(\theta)},\qquad [\theta]\in\mathbb R/\mathbb Z,
+	\]
+	是一条嵌入圆周。向量场在其中处处非零且角速度为 \(1\)，一圈遍历整个水平集，所以这些水平集恰为各条叶。若 \(A\ne0\)，同一实轴公式满足 \(B(\theta+1)=B(\theta)+A\)，因而 \(r e^{B(\theta)}\) 不能直接下降到圆柱上的函数。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1305-triple-origin}
+	在
+	\[
+		M=\mathbb R^2\setminus\{(-1,0),(1,0)\}
+	\]
+	上考虑水平分布 \(D=\mathbb R\partial_x\)。描述其最大叶，并证明叶空间同胚于具有三个不同原点的实直线。请明确给出这个空间的拓扑，直接检验它与叶空间的商拓扑相同，并证明它满足 \(T_1\) 分离公理，却不是 Hausdorff 空间。
+\end{exercise}
+\begin{solution}
+	当 \(y=c\ne0\) 时，整条水平直线 \(L_c=\{(x,c):x\in\mathbb R\}\) 是一条叶。当 \(y=0\) 时，两个删除点把水平直线分成
+	\[
+		L_-=\{(x,0):x<-1\},\quad
+		L_0=\{(x,0):-1<x<1\},\quad
+		L_+=\{(x,0):x>1\}.
+	\]
+	这三条开区间分别是叶。确实，沿 \(D\) 的任何曲线都满足 \(y'=0\)，所以不能改变高度；在零高度也不能穿越删除点。另一方面，每个所列连通水平区间内的点都能沿水平线段连接，因此这些正是最大连通叶。
+
+	定义集合
+	\[
+		T=(\mathbb R\setminus\{0\})\sqcup\{0_-,0_0,0_+\}.
+	\]
+	对非零点使用不含零的通常开区间作为邻域基；对三个原点分别规定基本邻域
+	\[
+		U_i(\varepsilon)=\{0_i\}\cup
+		\bigl((-\varepsilon,\varepsilon)\setminus\{0\}\bigr),
+		\qquad i\in\{-,0,+\},\quad\varepsilon>0.
+	\]
+	这些集合构成拓扑基：同一个原点的两个基本邻域可取较小半径，不同原点的基本邻域之交是非零点的通常开集，其余交集也按普通开区间处理。这个拓扑使每个 \((\mathbb R\setminus\{0\})\cup\{0_i\}\) 都以自然对应同胚于实直线，而三个零点在整体集合中彼此不同。
+
+	定义 \(Q:M\to T\)：在 \(y\ne0\) 时令 \(Q(x,y)=y\)，在 \(L_i\) 上令 \(Q(x,0)=0_i\)。它满射，且纤维恰为上述各条叶。先证连续性。非零开区间 \(J\) 的逆像是开水平带 \(\mathbb R\times J\)。另一方面，
+	\[
+		Q^{-1}(U_i(\varepsilon))
+		=\{(x,y):0<|y|<\varepsilon\}\cup L_i.
+	\]
+	其中非零高度的点都有留在该集合中的小矩形。若 \((x,0)\in L_i\)，因 \(x\) 位于相应开区间内部，可以选一个小水平区间全部留在该区间，再配上充分小的竖直区间，所得矩形也包含于上式。因此此逆像在 \(M\) 中开，\(Q\) 连续。
+
+	还需证明这正是商拓扑。设 \(A\subset T\)，且 \(Q^{-1}(A)\) 在 \(M\) 中开。若非零点 \(c\in A\)，取 \((0,c)\in Q^{-1}(A)\)，其一个小开矩形仍在该逆像中，竖直投影给出一个包含 \(c\)、不含零且包含于 \(A\) 的开区间。若 \(0_i\in A\)，在 \(L_i\) 中分别选点 \((-2,0)\)、\((0,0)\) 或 \((2,0)\)。逆像的开放性给出该点的一个小矩形；它含所有充分小非零高度上的某些点，故这些非零高度全部属于 \(A\)。连同 \(0_i\)，便得到 \(U_i(\varepsilon)\subset A\)。所以 \(A\) 在规定拓扑中开。结合连续性，已经证明
+	\[
+		A\subset T\text{ 开}\quad\Longleftrightarrow\quad Q^{-1}(A)\subset M\text{ 开}.
+	\]
+
+	记真正的叶空间为 \(M/\mathcal F\)，商映射为 \(\pi\)。由于 \(Q\) 的纤维正是叶，它诱导双射 \(\overline Q:M/\mathcal F\to T\)，且 \(Q=\overline Q\circ\pi\)。两边的开集都由在 \(M\) 中的逆像是否开来判断，刚证的等价便说明 \(\overline Q\) 及其逆连续。因此它是所求同胚。
+
+	最后检验分离性。对于原点 \(0_i\)，其补集中的其他原点各有不含 \(0_i\) 的基本邻域，所有非零点也有不含原点的普通邻域，所以 \(\{0_i\}\) 闭。对于非零点 \(c\)，在每个原点处取半径小于 \(|c|\) 的基本邻域，就能避开 \(c\)；其余非零点可用普通开区间避开 \(c\)，故 \(\{c\}\) 也闭。每个单点均闭，空间因此满足 \(T_1\) 公理。然而任意两个不同原点的邻域都包含所有充分小的非零实数，它们必相交。这两个点没有不交邻域，所以 \(T\) 不是 Hausdorff 空间。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1305-horizontal-lift}
+	在 \(\mathbb R^3\) 上取接触模型
+	\[
+		D=\ker(\mathrm{d}z-x\,\mathrm{d}y).
+	\]
+	给定一个周期为 \(T>0\) 的光滑平面曲线 \(t\mapsto(x(t),y(t))\) 及初始高度 \(z_0\)，证明存在唯一从高度 \(z_0\) 出发、投影为该曲线且始终切于 \(D\) 的提升。证明提升为周期 \(T\) 的闭曲线，当且仅当
+	\[
+		\int_0^T x(t)y'(t)\,\mathrm{d}t=0.
+	\]
+	对 \(x(t)=R\cos t\)、\(y(t)=R\sin t\)、\(0\le t\le2\pi\)、\(R>0\)，直接求出提升及一周后的高度变化，不使用外微分或 Stokes 定理。
+\end{exercise}
+\begin{solution}
+	提升曲线 \(\widetilde\gamma(t)=(x(t),y(t),z(t))\) 始终切于 \(D\)，等价于其速度满足
+	\[
+		z'(t)-x(t)y'(t)=0.
+	\]
+	因此所求曲线必须且可以取为
+	\[
+		z(t)=z_0+\int_0^t x(u)y'(u)\,\mathrm{d}u.
+	\]
+	它光滑，满足初值与切向条件；任何另一个满足条件的高度函数与它之差的导数为零，且初值为零，所以两者相同。
+
+	由于 \(x(t)y'(t)\) 周期为 \(T\)，对任意 \(t\) 有
+	\[
+		z(t+T)-z(t)=\int_t^{t+T}x(u)y'(u)\,\mathrm{d}u
+		=\int_0^T x(u)y'(u)\,\mathrm{d}u.
+	\]
+	所以右端为零时 \(z\) 也周期为 \(T\)，提升确为光滑闭曲线；若提升闭合，则令 \(t=0\) 就得到右端为零。这个条件同时保证周期光滑性，而不只是把两端的位置勉强接在一起。
+
+	对给定圆周，\(y'(t)=R\cos t\)，故
+	\[
+		z'(t)=R^2\cos^2t,\qquad
+		z(t)=z_0+R^2\left(\frac t2+\frac{\sin2t}{4}\right).
+	\]
+	一周后的高度变化为
+	\[
+		z(2\pi)-z(0)=R^2\int_0^{2\pi}\cos^2t\,\mathrm{d}t=\pi R^2.
+	\]
+	这一非零变化与初始高度无关，所以平面投影已经闭合，水平提升仍没有闭合。切向条件把竖直速度与当前位置 \(x\) 及水平速度 \(y'\) 联系起来，绕行一周可以积累净高度位移；这里的数值完全由一元积分计算得到。
+\end{solution}
+

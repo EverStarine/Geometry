@@ -1,0 +1,265 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 19.1 不变积分与双不变度量
+% 纲要位置：几何学计划纲要.md，第 846 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 紧李群体积的归一化
+% * 左右不变性与平均
+% * 伴随不变内积和双不变度量
+% * 紧情形最短测地线及指数满射所需引理
+% 
+% 纲要内容结束
+
+\section{不变积分与双不变度量}
+\label{g1:sec:1901}
+
+在一般连通李群中，一个元素可以写成有限个指数的乘积，却未必是单个指数。紧群上的长度提供了进一步的控制：若能找到从单位元到给定元素的最短曲线，并证明这条曲线来自单参数子群，就能把有限乘积改为一个指数。为此，我们需要一个与左右平移同时相容的度量。本节先把第17章的紧群积分用于伴随表示，再从指数微分公式出发建立所需的最短曲线论证。
+
+\subsection{紧李群体积的归一化}
+\label{g1:subsec:1901:01}
+设 \(G\) 为有限维实紧李群，暂不要求连通，\(\mathfrak g=\mathrm{T}_eG\)。\cref{g1:thm:compact-group-integration}给出了 \(G\) 上唯一的归一化左不变光滑正密度 \(\mu_G\)，而且它同时右不变、取逆不变。这里回顾归一化中的两个要点。先把 \(\mathfrak g\) 上任一正密度 \(\nu_e\) 用左平移延拓，得到
+\[
+	\nu_g(v_1,\ldots,v_n)
+	=\nu_e\bigl(\mathrm{d}(L_{g^{-1}})_gv_1,\ldots,
+	\mathrm{d}(L_{g^{-1}})_gv_n\bigr),\qquad n=\dim G.
+\]
+紧性保证 \(0<\int_G\nu<\infty\)，因而可以令 \(\mu_G=\nu/\int_G\nu\)。单位元处的密度空间是一维，所有左不变正密度只相差一个正常数；除以总量后便与最初选择无关。
+
+\ProseParagraphBreak
+
+所谓体积归一化，归一化的是整个群的总量，而非每个坐标片的欧氏体积。它也不依赖定向：正密度在换坐标时使用 Jacobian 行列式的绝对值。即使 \(G\) 不连通，上式仍沿左平移规定每个分支上的密度。紧李群只有有限个连通分支，因为分支是开集，而所有分支构成一个开覆盖；左平移互换这些分支，所以每个分支的归一化体积相同。
+
+\begin{example}\label{g1:exm:normalized-volume-torus}
+	在 \(T^r=(S^1)^r\) 上，用角坐标 \(z_j=e^{\mathrm{i}t_j}\) 表示积分，则
+	\[
+		\int_{T^r}f\,\mathrm{d}\mu_{T^r}
+		=\frac1{(2\pi)^r}\int_{[0,2\pi]^r}
+		f(e^{\mathrm{i}t_1},\ldots,e^{\mathrm{i}t_r})\,\mathrm{d}t_1\cdots\mathrm{d}t_r.
+	\]
+	任一常系数正定内积给出的体积密度只是角坐标密度的正常数倍，故归一化后都得到这一积分。相反，加法群 \(\mathbb R^r\) 在 \(r>0\) 时的左不变正密度总量无限，不能作此归一化。归一化积分的存在与任意长度单位的选择是不同问题。
+\end{example}
+
+\subsection{左右不变性与平均}
+\label{g1:subsec:1901:02}
+右不变性是平均伴随表示时实际使用的条件。回顾\cref{g1:thm:compact-group-integration}的证明：左右平移交换，使 \(R_a^*\mu_G\) 仍左不变，故为 \(\Delta(a)\mu_G\)，其中 \(\Delta:G\to\mathbb R_{>0}\) 是连续同态。紧像 \(\log\Delta(G)\) 是 \(\mathbb R\) 的紧加法子群；若含非零数，就含其所有整数倍而无界。因此 \(\Delta\equiv1\)。这一步说明为何我们可以在同一个积分中同时使用左换元和右换元。
+
+\begin{proposition}[表示的平均内积]\label{g1:prop:compact-representation-inner-product}
+	设 \(G\) 为有限维实紧李群，\(\rho:G\to\operatorname{GL}(V)\) 为有限维实光滑表示，\(b\) 为 \(V\) 上的正定内积。则
+	\[
+		\langle u,v\rangle
+		=\int_G b(\rho(g)u,\rho(g)v)\,\mathrm{d}\mu_G(g)
+	\]
+	是 \(\rho(G)\) 不变的正定内积。若 \(V\) 为复向量空间、\(\rho\) 为复线性表示，则平均任一正定 Hermitian 内积也得到不变正定 Hermitian 内积。
+\end{proposition}
+\begin{proof}
+	积分按固定基的有限个分量进行，因此双线性、对称性由被积式保留。对非零 \(u\)，每个 \(\rho(g)\) 可逆，所以 \(b(\rho(g)u,\rho(g)u)>0\)。\cref{g1:thm:compact-group-integration}的正性给出 \(\langle u,u\rangle>0\)。对 \(a\in G\)，右换元 \(g\mapsto ga\) 给出
+	\[
+		\langle\rho(a)u,\rho(a)v\rangle
+		=\int_G b(\rho(ga)u,\rho(ga)v)\,\mathrm{d}\mu_G(g)
+		=\langle u,v\rangle.
+	\]
+	复情形逐实部、虚部积分，半双线性、Hermitian 对称性和正性由相同论证得到。
+\end{proof}
+
+特别地，取 \(V=\mathfrak g\)、\(\rho=\operatorname{Ad}\)，就得到对所有 \(a\in G\) 满足
+\[
+	\langle\operatorname{Ad}_aX,\operatorname{Ad}_aY\rangle
+	=\langle X,Y\rangle
+\]
+的\term[bansui-bubian-neiji]{伴随不变内积}[Ad-invariant inner product]。若只在 \(G^0\) 上平均，得到的内积未必被其余分支保持；对整个紧群积分消除了这个问题。
+
+\subsection{伴随不变内积和双不变度量}
+\label{g1:subsec:1901:03}
+左平移能把任意 \(\mathfrak g\) 上的内积延拓成左不变度量，但右平移会在单位元数据上引入共轭。伴随不变性恰好使这两种要求相容。
+
+\begin{proposition}[双不变度量]\label{g1:prop:bi-invariant-metric}
+	设 \(G\) 为有限维实李群，\(\mathfrak g=\mathrm{T}_eG\)，\(\langle\ ,\ \rangle\) 为 \(\mathfrak g\) 上的正定内积。定义
+	\[
+		h_g(v,w)=\left\langle\mathrm{d}(L_{g^{-1}})_gv,
+		\mathrm{d}(L_{g^{-1}})_gw\right\rangle.
+	\]
+	则 \(h\) 是光滑左不变黎曼度量；它同时右不变，当且仅当该内积 \(\operatorname{Ad}(G)\) 不变。每个紧李群因而具有\term[shuangbubian-duliang]{双不变度量}[bi-invariant metric]。若 \(G\) 连通，则伴随不变性又等价于
+	\begin{equation}\label{g1:eq:ad-skew-inner-product}
+		\langle[Z,X],Y\rangle+\langle X,[Z,Y]\rangle=0
+		\qquad(X,Y,Z\in\mathfrak g).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	平移微分光滑且可逆，故上式光滑、正定。\(L_{(ag)^{-1}}\circ L_a=L_{g^{-1}}\) 说明左不变性。另一方面，在 \(g\) 处求微分有
+	\[
+		\mathrm{d}(L_{(ga)^{-1}})_{ga}\circ\mathrm{d}(R_a)_g
+		=\operatorname{Ad}_{a^{-1}}\circ\mathrm{d}(L_{g^{-1}})_g.
+	\]
+	因此右平移保持 \(h\) 恰好等价于所有 \(\operatorname{Ad}_{a^{-1}}\) 保持单位元内积；由于取逆遍历 \(G\)，这就是所述条件。紧群情形应用前一命题。
+
+	若内积伴随不变，对 \(a=\exp_G(tZ)\) 在 \(t=0\) 求导，并用\cref{g1:prop:adjoint-differential-bracket}中已证的 \(\operatorname{ad}_ZX=[Z,X]\)，得到\eqref{g1:eq:ad-skew-inner-product}。反之，该式说明每个 \(\operatorname{ad}_Z\) 是斜伴随算子，于是
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}
+		\langle e^{t\operatorname{ad}_Z}X,e^{t\operatorname{ad}_Z}Y\rangle=0.
+	\]
+	\cref{g1:prop:exponential-naturality}给出 \(\operatorname{Ad}_{\exp_G(tZ)}=e^{t\operatorname{ad}_Z}\)，所以每个指数的伴随作用保持内积。\cref{g1:prop:exponentials-generate-identity-component}说明连通 \(G\) 的每个元素是有限个指数的乘积；正交变换的乘积仍正交，故得到整个 \(G\) 的伴随不变性。
+\end{proof}
+
+\begin{example}\label{g1:exm:unitary-trace-metric}
+	在 \(\mathfrak u(n)=\{X:X^*=-X\}\) 上，取
+	\[
+		\langle X,Y\rangle=-\operatorname{Re}\operatorname{tr}(XY).
+	\]
+	它对称，且 \(\langle X,X\rangle=\operatorname{tr}(X^*X)>0\) 对 \(X\ne0\) 成立。由迹的循环性质，酉共轭保持它，故它给出 \(\operatorname{U}(n)\) 的双不变度量，也可限制到其李子群。并非每个左不变度量都双不变。例如在满足 \([H,E]=E\) 的二维仿射李代数上，\eqref{g1:eq:ad-skew-inner-product}若成立，就有 \(2\langle E,E\rangle=0\)，与正定性矛盾。
+\end{example}
+
+为了把一参数运动与“测地线”联系起来，还须指出这里用哪个联络。第15章已定义度量相容与挠率；在当前情形可以直接构造同时满足二者的联络，无须预先使用一般黎曼流形上的存在定理。
+
+\begin{proposition}[双不变度量的测地线]\label{g1:prop:bi-invariant-geodesics}
+	设 \(G\) 为有限维实李群，配备双不变黎曼度量 \(h\)。则存在唯一保持 \(h\) 的无挠联络 \(\nabla\)，在左不变向量场上满足
+	\begin{equation}\label{g1:eq:bi-invariant-connection}
+		\nabla_{X^L}Y^L=\tfrac12[X,Y]^L.
+	\end{equation}
+	其测地线，即满足 \(\nabla_{\dot\gamma}\dot\gamma=0\) 的曲线，恰为
+	\[
+		\gamma(t)=g\exp_G(tX),\qquad g\in G,\ X\in\mathfrak g,
+	\]
+	或这些曲线的区间限制，参数起点可任意平移。
+\end{proposition}
+\begin{proof}
+	取 \(\mathfrak g\) 的一组基，左平移给出整体标架 \(E_i\)。规定 \(\nabla_{E_i}E_j=\tfrac12[E_i,E_j]\)，再按第一输入的函数线性和第二输入的 Leibniz 法则延拓，便得到光滑联络；这是\cref{g1:prop:connection-local-data}中按标架指定联络系数的构造，此处标架覆盖全群，因而无需另行粘合。左不变场上的挠率为 \(\tfrac12[X,Y]-\tfrac12[Y,X]-[X,Y]=0\)，由\cref{g1:prop:torsion-tensorial}，挠率处处为零。左不变场的内积为常数，而\eqref{g1:eq:ad-skew-inner-product}给出
+	\[
+		h(\nabla_{Z^L}X^L,Y^L)+h(X^L,\nabla_{Z^L}Y^L)=0.
+	\]
+	用 Leibniz 法则展开一般场的分量，就得到度量相容条件。
+
+	唯一性也可直接检查。两个这样的联络之差记为 \(B(U,V)\)；联络法则说明它是双线性张量。无挠性使 \(B(U,V)=B(V,U)\)，度量相容性使 \(b(U,V,W)=h(B(U,V),W)\) 关于后两个输入反对称。因此
+	\[
+		\begin{aligned}
+			b(U,V,W)&=b(V,U,W)=-b(V,W,U)\\
+			&=-b(W,V,U)=b(W,U,V)\\
+			&=b(U,W,V)=-b(U,V,W).
+		\end{aligned}
+	\]
+	故 \(b=0\)，正定性推出 \(B=0\)。这个唯一的无挠度量联络称为 Levi--Civita 联络。\footnote{列维--奇维塔（Tullio Levi-Civita，1873--1941），意大利数学家，发展了绝对微分学与张量分析，对微分几何有重要贡献。}
+
+	沿曲线写 \(\dot\gamma=\sum_i u_iE_i\)，并记左平移回单位元的速度为 \(u(t)=\sum_i u_i(t)E_i(e)\)。\cref{g1:def:along-curve-covariant-derivative}的沿曲线公式及\eqref{g1:eq:bi-invariant-connection}给出
+	\[
+		\nabla_{\dot\gamma}\dot\gamma
+		=\sum_i u_i'E_i+\tfrac12\sum_{i,j}u_iu_j[E_i,E_j]
+		=\sum_i u_i'E_i.
+	\]
+	最后一项因系数对称、括号反对称而抵消。所以测地线条件恰为 \(u'=0\)。设常值为 \(X\)，则曲线满足左不变场 \(X^L\) 的方程，\cref{g1:thm:lie-exponential}的存在唯一性给出 \(g\exp_G(tX)\)，并保证它对所有实参数有定义。
+\end{proof}
+
+\subsection{紧情形最短测地线及指数满射所需引理}
+\label{g1:subsec:1901:04}
+测地线方程给出了每个初速度对应的曲线，却还没有说明它能否到达指定终点，也没有说明它是否最短。我们先证明短指数弧最短，再用紧性选择一条没有角点的最短折线。以下 \(G\) 配备双不变度量，\(|X|=\sqrt{\langle X,X\rangle}\) 表示单位元处的范数，\(|\dot c(t)|=\sqrt{h_{c(t)}(\dot c(t),\dot c(t))}\) 表示曲线的速度。分段 \(C^1\) 曲线 \(c:[a,b]\to G\) 的长度定义为
+\[
+	L(c)=\int_a^b|\dot c(t)|\,\mathrm{d}t,
+\]
+积分在各光滑段计算后相加。
+
+\begin{lemma}[指数坐标中的径向估计]\label{g1:lem:compact-group-radial-estimate}
+	设 \(G\) 为有限维实李群，具有双不变度量。在 \(\mathfrak g\) 中可取 \(r>0\)，使 \(\exp_G\) 在包含闭球 \(\overline B(0,2r)\) 的邻域上为到其像的微分同胚。记其局部逆为 \(\log\)。若 \(|X|<r\)，则从 \(e\) 到 \(\exp_GX\) 的任意分段 \(C^1\) 曲线长度至少为 \(|X|\)，而 \(t\mapsto\exp_G(tX)\)、\(0\le t\le1\)，的长度等于 \(|X|\)。从 \(e\) 到 \(G\setminus\exp_GB(0,r)\) 的任意此类曲线长度至少为 \(r\)。
+\end{lemma}
+\begin{proof}
+	\cref{g1:prop:exponential-local-diffeomorphism}保证指数在零点附近可逆；取足够小的 \(r\) 即满足球的要求。\cref{g1:prop:lie-exponential-differential}说明，\((\mathrm{d}\exp_G)_ZY\) 左平移回单位元后等于
+	\[
+		J_ZY=\int_0^1e^{-s\operatorname{ad}_Z}Y\,\mathrm{d}s.
+	\]
+	伴随不变性使被积算子正交，而 \(e^{s\operatorname{ad}_Z}Z=Z\)，所以
+	\begin{equation}\label{g1:eq:compact-group-radial-pairing}
+		J_ZZ=Z,\qquad \langle J_ZY,Z\rangle=\langle Y,Z\rangle.
+	\end{equation}
+	这就是说，指数的微分保持径向速度，并把垂直于径向的向量仍送到垂直方向；它不声称所有方向的长度都保持。
+
+	若曲线留在该指数坐标域中，写成 \(c(t)=\exp_GZ(t)\)，则速度范数为 \(|J_{Z(t)}Z'(t)|\)。为了允许曲线经过 \(e\)，对 \(\varepsilon>0\) 考虑光滑径向函数 \(r_\varepsilon(t)=\sqrt{|Z(t)|^2+\varepsilon^2}\)。由\eqref{g1:eq:compact-group-radial-pairing}与 Cauchy--Schwarz 不等式，
+	\[
+		|r_\varepsilon'(t)|
+		=\frac{|\langle Z(t),J_{Z(t)}Z'(t)\rangle|}
+		{\sqrt{|Z(t)|^2+\varepsilon^2}}
+		\le |\dot c(t)|.
+	\]
+	在各光滑段积分、相加后令 \(\varepsilon\to0\)，得到
+	\[
+		\bigl||Z(b)|-|Z(a)|\bigr|\le L(c|_{[a,b]}).
+	\]
+	因此，从 \(e\) 出发而留在指数球内的曲线，其长度至少是终点的径向距离。
+
+	还要排除先离开坐标域再绕回来的竞争曲线。若曲线从 \(e\) 首次离开 \(\exp_GB(0,r)\)，其首次到达的边界点形如 \(\exp_GZ\)、\(|Z|=r\)：这是因为闭球在较大的指数坐标域内，指数把闭球的边界准确映到该邻域的边界。前段曲线留在闭指数球内，上述估计给出其长度至少为 \(r\)。故当终点为 \(\exp_GX\)、\(|X|<r\) 时，任何离开指数球的竞争曲线都比 \(|X|\) 长；未离开的曲线则受径向估计控制。径向曲线的左平凡化速度恒为 \(X\)，长度正好 \(|X|\)，于是达到下界。
+\end{proof}
+
+这个局部估计也让我们能够严格使用全群的距离。设 \(G\) 连通，定义
+\[
+	d(p,q)=\inf_c L(c),
+\]
+其中 \(c:[a,b]\to G\) 遍历从 \(p\) 到 \(q\) 的分段 \(C^1\) 曲线。任意两点可由此类曲线连接：从一点可达的点集是开集，其补集也开，因为坐标小球内的直线像给出光滑连接；连通性排除了两个非空开集的分离。因此下确界有限。反向参数化与拼接分别给出对称性及三角不等式，左右平移保持长度，因而也保持 \(d\)。径向估计进一步给出
+\begin{equation}\label{g1:eq:compact-group-local-distance}
+	d(e,\exp_GX)=|X|\quad(|X|<r),\qquad
+	B_d(e,r)=\exp_GB(0,r).
+\end{equation}
+其中第二式的反向包含用到了离开指数球至少花费长度 \(r\)。在更小半径重复同一估计，说明 \(d\) 正定且其开球给出原流形拓扑；左平移将结论搬到每一点。所以 \(d\) 确实是与原拓扑相容的距离。三角不等式还给出
+\[
+	|d(p,q)-d(p',q')|\le d(p,p')+d(q,q'),
+\]
+故 \(d\) 在 \(G\times G\) 上连续。
+
+\begin{theorem}[紧群的最短测地线与指数满射]\label{g1:thm:compact-exp-surjective}
+	设 \(G\) 为有限维实紧连通李群，并配备任一双不变黎曼度量。对任意 \(p,q\in G\)，存在 \(X\in\mathfrak g\)，使
+	\[
+		\gamma(t)=p\exp_G(tX),\qquad 0\le t\le1,
+	\]
+	连接 \(p,q\)，并且 \(L(\gamma)=|X|=d(p,q)\)。特别地，\(\exp_G:\mathfrak g\to G\) 满射。
+\end{theorem}
+\begin{proof}
+	若 \(G\) 为单点，结论取 \(X=0\) 即得。以下设维数正。证明的难点是：一般的极小化曲线列可能没有足够好的导数收敛。我们只选择有限个中间点，把极小化化成紧空间上的连续函数问题，再利用局部指数弧消去所有角点。
+
+	因为 \(d\) 连续而 \(G\times G\) 紧，其最大值 \(D\) 有限。取上一个引理中的 \(r>0\)，再取整数 \(N\ge2\) 满足 \(D/\sqrt N<r\)。固定 \(x_0=p\)、\(x_N=q\)，在紧空间 \(G^{N-1}\) 上定义
+	\[
+		E_N(x_1,\ldots,x_{N-1})
+		=N\sum_{i=0}^{N-1}d(x_i,x_{i+1})^2.
+	\]
+	它连续，故有最小值 \(m\)。系数 \(N\) 对应把每一段安排在长度为 \(1/N\) 的参数区间上；最小化平方距离和，会同时惩罚过长的单段。
+
+	我们先证 \(m\le d(p,q)^2\)。任取长度 \(L>0\) 的连接曲线，沿其累计弧长选取 \(N+1\) 个点，使相邻两点之间的弧长均为 \(L/N\)。累计弧长是从 \(0\) 到 \(L\) 的连续非减函数，因此即使原曲线有静止段，这些点也能按参数顺序选出。相邻两点的距离至多为 \(L/N\)，于是这个点组满足 \(E_N\le L^2\)。取长度趋于 \(d(p,q)\) 的曲线列，便有 \(m\le d(p,q)^2\)；若 \(p=q\)，也可直接取所有点等于 \(p\)。
+
+	选定一个极小点组 \((x_i)\)。每段距离都满足
+	\[
+		d(x_i,x_{i+1})\le\sqrt{m/N}\le D/\sqrt N<r.
+	\]
+	所以\eqref{g1:eq:compact-group-local-distance}允许定义唯一的短向量
+	\[
+		X_i=\log(x_i^{-1}x_{i+1}),\qquad
+		|X_i|=d(x_i,x_{i+1}).
+	\]
+	把短指数弧 \(x_i\exp_G(sX_i)\)、\(0\le s\le1\)，依次拼接，其长度为 \(\sum_i|X_i|\)。Cauchy--Schwarz 不等式及距离的定义给出
+	\[
+		d(p,q)\le\sum_i|X_i|
+		\le\sqrt{N\sum_i|X_i|^2}=\sqrt m\le d(p,q).
+	\]
+	因此所有不等式都取等，折线已达到全局最短长度。但若只停在这一步，仍未说明折线在接点处光滑。
+
+	为消去角点，先计算局部平方距离的一阶变化。在 \(\exp_GB(0,r)\) 上令 \(F(y)=\tfrac12|\log y|^2\)。若 \(y(t)=\exp_GZ(t)\)，其左平凡化速度为 \(v=\mathrm{d}(L_{y^{-1}})_y\dot y=J_ZZ'\)，由\eqref{g1:eq:compact-group-radial-pairing}有
+	\begin{equation}\label{g1:eq:compact-group-distance-variation}
+		\frac{\mathrm{d}}{\mathrm{d}t}F(y(t))
+		=\langle Z,Z'\rangle=\langle Z,v\rangle.
+	\end{equation}
+	固定 \(1\le i\le N-1\)，把中间点改成 \(x_i(t)=x_i\exp_G(tV)\)，其中 \(V\in\mathfrak g\) 任意。其余点不动。由于相邻距离严格小于 \(r\)，小 \(t\) 时相关平方距离仍有光滑的上述表达。对前一段，左平移后为
+	\[
+		x_{i-1}^{-1}x_i(t)=\exp_G(X_{i-1})\exp_G(tV),
+	\]
+	在 \(t=0\) 的左平凡化速度为 \(V\)，所以半平方距离的导数为 \(\langle X_{i-1},V\rangle\)。对后一段先用距离的对称性，再左平移成
+	\[
+		x_{i+1}^{-1}x_i(t)=\exp_G(-X_i)\exp_G(tV).
+	\]
+	其半平方距离导数为 \(-\langle X_i,V\rangle\)。极小点的一阶导数为零，因此
+	\[
+		0=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{t=0}E_N
+		=2N\langle X_{i-1}-X_i,V\rangle
+		\qquad(V\in\mathfrak g).
+	\]
+	内积非退化，故 \(X_{i-1}=X_i\)。所有短向量于是等于同一个 \(Y\)，从而 \(x_i=p\exp_G(iY)\)。此前的折线以每段相同的时间 \(1/N\) 参数化，恰好成为一条光滑曲线 \(p\exp_G(tNY)\)。令 \(X=NY\)，由\cref{g1:prop:bi-invariant-geodesics}它是测地线，而已经证明的长度等式给出 \(|X|=d(p,q)\)。最后取 \(p=e\)、\(q\) 任意，便有 \(q=\exp_GX\)。
+\end{proof}
+
+\begin{remark}\label{g1:rem:compact-exponential-boundaries}
+	紧性在证明中提供有限直径和有限点组极小值，双不变性则提供径向配对及相接速度的统一表达。结论不包括指数单射，也不说每条测地线段都最短：在标准圆周群上，\(t\mapsto e^{\mathrm{i}t\theta}\)、\(0\le t\le1\)，若 \(|\theta|>\pi\)，便可换一条更短的圆弧。若紧群不连通，指数的像只能落在 \(G^0\)，因为 \(t\mapsto\exp_G(tX)\) 把每个指数连到 \(e\)；上述定理应用于紧连通的 \(G^0\)，说明指数的像恰为 \(G^0\)。
+\end{remark}
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,0 +1,779 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：## 第15章　联络、曲率与平行移动
+% 纲要位置：几何学计划纲要.md，第 690 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% > 本章目标与证明范围：从“不同点的向量如何比较”构造联络，再以曲率测量路径依赖。完整证明局部公式、变换律、Bianchi 和平坦局部模型；不把曲率只写成一个矩阵公式。
+% 
+% 纲要内容结束
+
+\chapter{联络、曲率与平行移动}
+\label{g1:ch:15}
+\BookChapterNumber{g1:ch:15}
+
+\begin{chapterabstract}
+	不同点的纤维没有默认的比较方式，联络为这种比较提供一阶规则。我们先从 Leibniz 法则构造局部联络矩阵，证明整体存在、换标架规律与仿射空间结构，再把联络化为沿路径的线性常微分方程。平行移动反过来恢复协变导数，并把度量相容解释成长度保持。曲率由两次协变微分的不交换性产生，其结构方程和小回路展开连接局部计算与实际运输；Bianchi 恒等式表达这些变化之间的相容关系。对切丛，还能用李括号定义挠率，区分平行标架与坐标标架。最后由平坦方程逐方向构造平行标架，用连续同伦的网格论证证明路径无关性，并由基本群表示记录仍可能存在的整体单值。
+\end{chapterabstract}
+
+\begin{learninggoals}
+	\begin{itemize}
+		\item 理解联络两个输入的不同线性要求，证明局部矩阵公式、整体存在及两联络之差的张量性，构造对偶与张量上的诱导联络。
+		\item 完整建立沿路径的平行移动，掌握拼接、反向、参数依赖和恢复联络的公式，并证明度量相容与运输保长等价。
+		\item 证明曲率的张量性、结构方程及换标架共轭规律，用小回路计算解释曲率，并推导 Bianchi 恒等式。
+		\item 构造切丛联络的挠率，推导第一结构方程，区分无挠性、平坦性和度量相容性，判断平行标架何时可由坐标实现。
+		\item 从曲率为零构造局部平行标架，证明平坦运输的同伦不变性与单连通区域上的路径无关性，用单值表示解释整体障碍。
+	\end{itemize}
+\end{learninggoals}
+
+在欧氏空间中，我们习惯把两个不同点的向量平移到一起相减。第八、九章已经提醒我们：曲面的切向量属于不同切平面，必须先说明如何比较，才谈得上“方向没有改变”。第十二章将这种情形推广到一般向量丛，第十四章又建立了不依赖坐标的微分形式运算。现在要把这两条线连接起来：既允许纤维随点变化，又保留微分的乘法法则。
+
+\ProseParagraphBreak
+
+局部标架能暂时把邻近纤维认作同一个向量空间，但这种认法随标架选择而变。联络矩阵补偿标架的变化；沿路径解相应方程，便得到由联络指定的比较。两条路径的比较结果不一致时，局部的小回路由曲率控制，较大的绕行还可能涉及基本群。特别要注意，即使曲率处处为零，也不能先把绕孔的效应删去。圆周上的例子会把这一点算得很清楚。
+
+\ProseParagraphBreak
+
+本章默认底流形有限维、Hausdorff、第二可数，向量丛为有限秩实光滑丛；除明确限于内点的坐标实现及小方环计算外，允许流形有边界。需要的前置工具是\chapref{g1:ch:12}的局部标架、张量构造和单位分解，\secref{g1:sec:1301}的常微分方程存在唯一性与参数依赖，以及\chapref{g1:ch:14}的外微分和局部恰当性。\secref{g1:sec:1505}还会回顾\chapref{g1:ch:05}的路径同伦、基本群与覆盖。调用时均重申具体条件，不要求读者记住前章每个技术细节。
+
+\ProseParagraphBreak
+
+本章的联络构造、局部公式、运输、曲率恒等式与平坦局部模型均在正文证明。延伸阅读可查 Tu 的第一版：Section 6.2 的 Torsion and Curvature，Sections 10--11 的向量丛联络、存在性及联络、曲率、挠率形式，Section 13.1 的 Covariant Differentiation Along a Curve，以及 Sections 14.5--14.7 的 Parallel Translation 及其存在性、度量情形\cite[Sections 6.2, 10--11, 13.1, 14.5--14.7]{Tu2017Connections}。本书继续使用行标架 \(e\)、列分量 \(u\)、\(\nabla(eu)=e(\mathrm{d}u+Au)\) 的约定；对读其他文献时，应先核对矩阵放在哪一侧，再比较符号。
+
+\input{Part04/Chapter15/Section1501}
+\input{Part04/Chapter15/Section1502}
+\input{Part04/Chapter15/Section1503}
+\input{Part04/Chapter15/Section1504}
+\input{Part04/Chapter15/Section1505}
+
+\begin{chaptersummary}
+	联络对方向输入函数线性，对截面输入遵守 Leibniz 法则。行标架中 \(\nabla(eu)=e(\mathrm{d}u+Au)\)，换为 \(e'=eg\) 时有 \(A'=g^{-1}Ag+g^{-1}\mathrm{d}g\)。单位分解把局部联络合成整体联络；两个联络之差是 \(\operatorname{End}E\) 值一形式，故联络集合是非空仿射空间。配对与乘法法则进一步决定对偶、张量、外幂和同态上的诱导联络。
+
+	\ProseParagraphBreak
+
+	沿路径的平行方程为 \(u'+A(\gamma')u=0\)。线性方程在紧参数区间上的延拓、唯一性和参数依赖，使运输成为端点纤维之间的线性同构。先走 \(\gamma\) 后走 \(\eta\) 时，\(P_{\gamma*\eta}=P_\eta P_\gamma\)；反向路径给逆映射。先把邻点截面值运回固定纤维，再取差商，可以恢复联络。度量联络恰是使全部平行移动保持内积的联络。
+
+	\ProseParagraphBreak
+
+	曲率 \(R(X,Y)=\nabla_X\nabla_Y-\nabla_Y\nabla_X-\nabla_{[X,Y]}\) 对所有输入逐点线性，局部矩阵为 \(F=\mathrm{d}A+A\wedge A\)。外协变微分满足 \(\mathrm{D}^2\eta=R\wedge\eta\)，自同态值形式上的 Bianchi 恒等式为 \(\mathrm{D}_{\operatorname{End}}R=0\)。换标架使 \(F'=g^{-1}Fg\)；正向小方环的返回变换为 \(I-\varepsilon^2F_{12}(p)+O(\varepsilon^3)\)，给出曲率作为局部路径依赖的具体含义。
+
+	\ProseParagraphBreak
+
+	切丛的特殊结构使 \(T(X,Y)=\nabla_XY-\nabla_YX-[X,Y]\) 成为有意义的张量。局部余标架 \(\theta\) 与挠率列 \(\Theta\) 满足 \(\Theta=\mathrm{d}\theta+A\wedge\theta\)，再求外协变微分得到 \(\mathrm{D}\Theta=F\wedge\theta\)。无挠性在坐标标架中等价于联络系数两个下指标对称；任意平行标架能在内点附近成为坐标标架，当且仅当挠率为零。无挠、平坦和保持度量是不同条件。
+
+	\ProseParagraphBreak
+
+	曲率为零时，逐坐标方向解线性方程，可以依次消去全部联络系数，得到局部平行标架；平坦性保证已消去的方向不会重新出现。平行标架的过渡矩阵局部常值，使运输延伸到连续路径，并由同伦网格证明其只依赖定端点同伦类。单连通区域上存在由基点纤维基唯一决定的整体平行标架。一般连通底空间上，以闭路运输的逆矩阵定义同态 \(\rho:\pi_1(M,p)\to\operatorname{GL}(r,\mathbb R)\)；整体平行标架存在当且仅当 \(\rho\) 平凡。平凡丛、平坦联络与整体平行标架因此必须分别判断。
+\end{chaptersummary}
+
+\BookExercises
+
+% 第15.1节配套习题与解答；供章末习题区整合。
+
+\begin{exercise}\label{g1:ex:rotating-frame-connection}
+	在 \(\mathbb R^2\) 上的平凡丛 \(E=\mathbb R^2\times\mathbb R^2\) 中，取标准标架 \(e=(e_1,e_2)\) 和逐分量联络 \(\nabla(eu)=e\,\mathrm{d}u\)。令 \(\theta:\mathbb R^2\to\mathbb R\) 光滑，取
+	\[
+		g=\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{pmatrix},\qquad e'=eg.
+	\]
+	求新标架中的联络矩阵，并分别写出 \(\nabla e'_1,\nabla e'_2\)。对截面 \(s=xe_1+ye_2\)，求它在 \(e'\) 中的列分量，使用新联络矩阵计算 \(\nabla s\)，核对它与旧标架中的结果一致。
+\end{exercise}
+\begin{solution}
+	令 \(J=\begin{pmatrix}0&-1\\1&0\end{pmatrix}\)。对 \(g\) 逐项求导，得到 \(\mathrm{d}g=gJ\,\mathrm{d}\theta\)，故
+	\[
+		A'=g^{-1}\mathrm{d}g=J\,\mathrm{d}\theta
+		=\begin{pmatrix}0&-\mathrm{d}\theta\\\mathrm{d}\theta&0\end{pmatrix}.
+	\]
+	\(\nabla e'=e'A'\) 的第一、第二列分别给出
+	\[
+		\nabla e'_1=\mathrm{d}\theta\otimes e'_2,\qquad
+		\nabla e'_2=-\mathrm{d}\theta\otimes e'_1.
+	\]
+	这些符号也符合几何意义：把 \(e'_1\) 的转角增加一点时，它沿 \(e'_2\) 方向变化。
+
+	同一截面的新分量为
+	\[
+		u'=g^{-1}\begin{pmatrix}x\\y\end{pmatrix}
+		=\begin{pmatrix}x\cos\theta+y\sin\theta\\-x\sin\theta+y\cos\theta\end{pmatrix}.
+	\]
+	逐项求导可得
+	\begin{align*}
+		\mathrm{d}u'^1&=\cos\theta\,\mathrm{d}x+\sin\theta\,\mathrm{d}y+u'^2\,\mathrm{d}\theta,\\
+		\mathrm{d}u'^2&=-\sin\theta\,\mathrm{d}x+\cos\theta\,\mathrm{d}y-u'^1\,\mathrm{d}\theta.
+	\end{align*}
+	而 \(A'u'=(-u'^2\,\mathrm{d}\theta,u'^1\,\mathrm{d}\theta)^{\mathsf T}\)，恰好消掉这两行中来自旋转标架的附加项。于是
+	\[
+		\nabla s=e'(\mathrm{d}u'+A'u')
+		=e'g^{-1}\begin{pmatrix}\mathrm{d}x\\\mathrm{d}y\end{pmatrix}
+		=\mathrm{d}x\otimes e_1+\mathrm{d}y\otimes e_2.
+	\]
+	这与原标架中直接对 \((x,y)^{\mathsf T}\) 求导的结果相同。当 \(\mathrm{d}\theta\ne0\) 时，新矩阵虽然非零，联络本身却没有改变。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:projection-induced-connection}
+	设 \(M\) 为有限维、Hausdorff、第二可数光滑流形，允许有边界，\(P:M\to\operatorname{Mat}_{N\times N}(\mathbb R)\) 光滑，满足 \(P^2=P\) 且秩恒为 \(r\)。令 \(E_p=\operatorname{im}P(p)\)、\(F_p=\ker P(p)\)。
+	\begin{enumerate}
+		\item 说明 \(E,F\) 是平凡丛 \(M\times\mathbb R^N\) 的光滑子丛，且 \(E\oplus F=M\times\mathbb R^N\)。证明 \(\nabla^Es=P\,\mathrm{d}s\) 为 \(E\) 上的联络，\(\nabla^Ft=(I-P)\,\mathrm{d}t\) 为 \(F\) 上的联络，这里 \(\mathrm{d}\) 对环境空间分量逐项求导。
+		\item 将两联络的直和看成平凡丛上的联络，证明它与标准联络的差为
+		\[
+			\nabla^\oplus=\mathrm{d}+(2P-I)\,\mathrm{d}P.
+		\]
+		\item 证明 \(P(\mathrm{d}P)P=0\)，并直接用自同态联络公式验证 \((\nabla^\oplus)^{\operatorname{End}}P=0\)。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	1. 固定 \(p\)，从矩阵 \(P(p)\) 的列中选出 \(r\) 个线性无关者。相应的非零子式在一个邻域内仍非零，故这些光滑列向量在那里独立；秩恒为 \(r\)，使它们恰好张成每个 \(E_q\)。这给出 \(E\) 的局部光滑标架。同样，\(I-P\) 的像等于 \(\ker P\)，秩为 \(N-r\)，对它的列作同一选择即得到 \(F\) 的局部标架。任意向量唯一分解为 \(v=Pv+(I-P)v\)，两部分分别属于 \(E,F\)，所以这两个子丛互补。
+
+	对 \(E\) 的截面 \(s\)，\(P\,\mathrm{d}s\) 是取值于 \(E\) 的光滑一形式，并对 \(s\) 实线性。若 \(f\) 为光滑函数，由 \(Ps=s\)，
+	\[
+		P\,\mathrm{d}(fs)=P(\mathrm{d}f\otimes s+f\,\mathrm{d}s)
+		=\mathrm{d}f\otimes s+fP\,\mathrm{d}s.
+	\]
+	因此它是联络。把 \(P\) 换成 \(I-P\) 得到 \(F\) 上的相同结论；此处无须假设投影正交。
+
+	2. 平凡丛的任意截面 \(v\) 对应直和分解 \(Pv+(I-P)v\)，所以直和联络为
+	\begin{align*}
+		\nabla^\oplus v
+		&=P\,\mathrm{d}(Pv)+(I-P)\,\mathrm{d}((I-P)v)\\
+		&=P(\mathrm{d}P)v+P^2\mathrm{d}v-(I-P)(\mathrm{d}P)v+(I-P)^2\mathrm{d}v\\
+		&=\mathrm{d}v+(2P-I)(\mathrm{d}P)v.
+	\end{align*}
+	故其相对于标准联络的差确为自同态值一形式 \(A=(2P-I)\mathrm{d}P\)，也与\cref{g1:prop:connection-affine-space}相符。
+
+	3. 对 \(P^2=P\) 求导得到
+	\[
+		(\mathrm{d}P)P+P\,\mathrm{d}P=\mathrm{d}P.
+	\]
+	等式左右同时乘 \(P\)，便有 \(2P(\mathrm{d}P)P=P(\mathrm{d}P)P\)，所以 \(P(\mathrm{d}P)P=0\)。再计算
+	\[
+		AP=(2P-I)(\mathrm{d}P)P=-(\mathrm{d}P)P,\qquad
+		PA=P(2P-I)\mathrm{d}P=P\,\mathrm{d}P.
+	\]
+	于是
+	\[
+		(\nabla^\oplus)^{\operatorname{End}}P
+		=\mathrm{d}P+AP-PA
+		=\mathrm{d}P-(\mathrm{d}P)P-P\,\mathrm{d}P=0.
+	\]
+	这也表达了直和联络的构造目的：求导与投影 \(P\) 相容，因此可以分别在两个子丛内求导。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:endomorphism-connection-commutant}
+	在 \(\mathbb R\) 上的平凡秩二实丛中，给定联络矩阵
+	\[
+		A=N\,\mathrm{d}x,\qquad N=\begin{pmatrix}0&1\\0&0\end{pmatrix}.
+	\]
+	求所有在标准标架中为常矩阵、且满足 \(\nabla^{\operatorname{End}}B=0\) 的自同态截面。它们之中有哪些是投影，即满足 \(B^2=B\)？再检验矩阵函数
+	\[
+		P(x)=\begin{pmatrix}1&x\\0&0\end{pmatrix}
+	\]
+	是否给出满足 \(\nabla^{\operatorname{End}}P=0\) 的秩一投影，并说明这与前面的常矩阵结论为何不矛盾。
+\end{exercise}
+\begin{solution}
+	若 \(B=\begin{pmatrix}a&b\\c&d\end{pmatrix}\) 为常矩阵，\(\mathrm{d}B=0\)，所以\eqref{g1:eq:endomorphism-connection}给出
+	\[
+		\nabla^{\operatorname{End}}B=[N,B]\,\mathrm{d}x
+		=\begin{pmatrix}c&d-a\\0&-c\end{pmatrix}\mathrm{d}x.
+	\]
+	因此所求条件为 \(c=0\)、\(d=a\)，全体解恰为
+	\[
+		B=aI+bN=\begin{pmatrix}a&b\\0&a\end{pmatrix},\qquad a,b\in\mathbb R.
+	\]
+	因 \(N^2=0\)，有 \(B^2=a^2I+2abN\)。投影条件变成 \(a^2=a\)、\((2a-1)b=0\)。第一式使 \(a=0\) 或 \(a=1\)，两种情形第二式都使 \(b=0\)，故其中只有零投影与恒等投影。
+
+	对题给矩阵函数，直接相乘得 \(P(x)^2=P(x)\)，其第一列非零、第二行全零，故秩恒为 \(1\)。此外
+	\[
+		\mathrm{d}P=N\,\mathrm{d}x,\qquad [N,P]=-N,
+	\]
+	所以 \(\nabla^{\operatorname{End}}P=\mathrm{d}P+[N,P]\,\mathrm{d}x=0\)。这里普通导数与联络修正项恰好抵消。它不是常矩阵，不属于前半题所分类的集合。
+
+	具体地，\(\operatorname{im}P\) 由 \(e_1\) 张成，\(\ker P\) 由 \(-xe_1+e_2\) 张成。两生成截面的协变导数都为零：\(Ne_1=0\)，而后一截面的普通导数为 \(-e_1\,\mathrm{d}x\)，联络项为 \(e_1\,\mathrm{d}x\)。所以两个子丛确实都被联络保持。常矩阵分类不能排除随基点变化的投影，也不能把“矩阵系数恒定”与“协变导数为零”混为一谈。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:determinant-line-connection}
+	设 \(M\) 为有限维、Hausdorff、第二可数光滑流形，允许有边界，\(E\to M\) 为秩 \(r\geq1\) 的实光滑向量丛，给定联络 \(\nabla\)。在局部标架 \(e=(e_1,\ldots,e_r)\) 中记联络矩阵为 \(A\)，并令 \(\delta=e_1\wedge\cdots\wedge e_r\)。
+	\begin{enumerate}
+		\item 证明行列式线丛 \(\det E=\Lambda^rE\) 的诱导联络满足 \(\nabla^{\det E}\delta=(\operatorname{tr}A)\otimes\delta\)。若 \(e'=eg\)，推导
+		\[
+			\operatorname{tr}A'=\operatorname{tr}A+\mathrm{d}\log|\det g|.
+		\]
+		\item 若给定处处非零的截面 \(\nu\in\Gamma(\det E)\)，证明存在 \(E\) 上的联络 \(\widehat\nabla\)，使 \(\widehat\nabla^{\det E}\nu=0\)。要求从任意已给联络 \(\nabla\) 出发，写出一个具体修正公式。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	1. 外幂联络沿各因子求导，故对任意方向 \(X\)，
+	\[
+		\nabla_X^{\det E}\delta
+		=\sum_{j=1}^r\sum_{a=1}^r A^a{}_j(X)\,
+		e_1\wedge\cdots\wedge e_a\wedge\cdots\wedge e_r,
+	\]
+	其中 \(e_a\) 位于原来第 \(j\) 个位置。若 \(a\ne j\)，楔积中出现两个 \(e_a\)，该项为零；只有 \(a=j\) 的项留下，系数为 \(\sum_jA^j{}_j(X)\)。所以 \(\nabla^{\det E}\delta=(\operatorname{tr}A)\otimes\delta\)。
+
+	换标架使 \(\delta'=(\det g)\delta\)。把它视为线丛标架的变化，再用 Leibniz 规则，得到
+	\[
+		\nabla^{\det E}\delta'
+		=\bigl(\mathrm{d}(\det g)+(\det g)\operatorname{tr}A\bigr)\otimes\delta
+		=\left((\det g)^{-1}\mathrm{d}(\det g)+\operatorname{tr}A\right)\otimes\delta'.
+	\]
+	左侧在新标架中也等于 \((\operatorname{tr}A')\otimes\delta'\)，故
+	\[
+		\operatorname{tr}A'=\operatorname{tr}A+(\det g)^{-1}\mathrm{d}(\det g)
+		=\operatorname{tr}A+\mathrm{d}\log|\det g|.
+	\]
+	由于 \(\det g\) 处处非零，它在每个交叠连通分支上的符号固定，\(\log|\det g|\) 光滑，最后的普通函数链式法则因此合法。
+
+	2. 非零截面 \(\nu\) 是行列式线丛的全局标架，所以存在唯一光滑一形式 \(\theta\)，使
+	\[
+		\nabla^{\det E}\nu=\theta\otimes\nu.
+	\]
+	局部写 \(\nu=f\delta\)，其中 \(f\ne0\)，就有 \(\theta=f^{-1}\mathrm{d}f+\operatorname{tr}A\)；这个式子也直接说明 \(\theta\) 光滑。定义
+	\[
+		\widehat\nabla=\nabla-\frac1r\theta\,\operatorname{id}_E.
+	\]
+	被减去的项是整体的自同态值一形式，故\cref{g1:prop:connection-affine-space}保证 \(\widehat\nabla\) 仍是联络。它在 \(e\) 中的矩阵为 \(\widehat A=A-\tfrac1r\theta I_r\)，于是 \(\operatorname{tr}\widehat A=\operatorname{tr}A-\theta\)。对 \(\nu=f\delta\) 计算，得到
+	\[
+		\widehat\nabla^{\det E}\nu
+		=\bigl(\mathrm{d}f+f(\operatorname{tr}A-\theta)\bigr)\otimes\delta=0.
+	\]
+	这给出了所需修正。条件 \(r\geq1\) 使除以 \(r\) 有意义，给定非零 \(\nu\) 则使整体一形式 \(\theta\) 能够定义；并未假设原来的联络已经保持 \(\nu\)。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:transport-variation-of-constants}
+	设 \(E\to M\) 为带联络的实有限秩光滑向量丛，\(\gamma:[a,b]\to M\) 光滑，\(f\) 为一个沿 \(\gamma\) 的光滑截面。给定 \(v\in E_{\gamma(a)}\)，证明非齐次初值问题
+	\[
+		\mathrm{D}_ts(t)=f(t),\qquad s(a)=v
+	\]
+	有唯一光滑解，且
+	\[
+		s(t)=P_{\gamma,t\leftarrow a}v+
+		\int_a^t P_{\gamma,t\leftarrow\tau}f(\tau)\,\mathrm{d}\tau.
+	\]
+	说明积分在哪个向量空间中进行，为什么这个写法不依赖局部标架。
+\end{exercise}
+\begin{solution}
+	先把所有向量运回固定纤维 \(E_{\gamma(a)}\)。若 \(s\) 为解，令 \(q(t)=P_{\gamma,a\leftarrow t}s(t)\)，则\eqref{g1:eq:transported-section-derivative}给出
+	\[
+		q'(t)=P_{\gamma,a\leftarrow t}f(t),\qquad q(a)=v.
+	\]
+	这是固定有限维向量空间中的普通微积分问题，所以唯一可能的解为
+	\[
+		q(t)=v+\int_a^tP_{\gamma,a\leftarrow\tau}f(\tau)\,\mathrm{d}\tau.
+	\]
+	被积向量总属于 \(E_{\gamma(a)}\)，可在任意固定基中逐分量积分。换一个固定基只是施加固定线性变换，而固定线性变换与积分相容，因此结果与该基无关。
+
+	反过来用此式定义 \(q\)，再令 \(s(t)=P_{\gamma,t\leftarrow a}q(t)\)。运输的光滑时刻依赖保证 \(s\) 光滑。由同一求导公式，
+	\[
+		P_{\gamma,a\leftarrow t}\mathrm{D}_ts=q'(t)=P_{\gamma,a\leftarrow t}f(t).
+	\]
+	运输可逆，故 \(\mathrm{D}_ts=f\)，且初值为 \(v\)。将 \(P_{\gamma,t\leftarrow a}\) 乘入 \(q\) 的表达式，再用复合规律
+	\[
+		P_{\gamma,t\leftarrow a}P_{\gamma,a\leftarrow\tau}
+		=P_{\gamma,t\leftarrow\tau},
+	\]
+	便得到题述公式。对每个固定 \(t\)，末式中的积分在固定纤维 \(E_{\gamma(t)}\) 内进行；它是上一个固定纤维积分经线性同构传送后的结果，所以同样不依赖标架。
+
+	若两条解具有相同初值，反向运输后的差满足 \(q'=0\)、\(q(a)=0\)，故差恒为零。这也直接证明了唯一性。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:parallel-invariant-subbundle}
+	设 \(E\to M\) 为带联络 \(\nabla\) 的实有限秩光滑向量丛，\(F\subset E\) 为光滑子丛，\(M\) 允许有边界。证明下列条件等价：
+	\begin{enumerate}
+		\item 对每个局部向量场 \(X\) 及每个取值于 \(F\) 的局部光滑截面 \(S\)，\(\nabla_XS\) 也取值于 \(F\)。
+		\item 对每条分片光滑路径 \(\gamma\)，有 \(P_\gamma(F_{\gamma(a)})=F_{\gamma(b)}\)。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	先假设第一项。取一个适应 \(F\) 的局部标架，使前 \(k=\operatorname{rank}F\) 个基向量张成 \(F\)，并把联络矩阵写成分块形式
+	\[
+		A=\begin{pmatrix}A_{11}&A_{12}\\A_{21}&A_{22}\end{pmatrix}.
+	\]
+	前 \(k\) 个基截面的协变导数取值于 \(F\)，恰表示 \(A_{21}=0\)。沿位于该标架域中的路径，把分量写成 \(u=(u_1,u_2)^{\mathsf T}\)，则平行方程的下半部分为
+	\[
+		u_2'=-A_{22}(\gamma')u_2.
+	\]
+	若初值位于 \(F\)，则 \(u_2(a)=0\)，唯一性使 \(u_2\equiv0\)。分割路径并逐段使用这个结论，得到 \(P_\gamma(F_{\gamma(a)})\subset F_{\gamma(b)}\)。再对反向路径作同样推理，结合 \(P_{\overline\gamma}=P_\gamma^{-1}\)，便得到相反包含，从而是等号。
+
+	再假设第二项。固定 \(p\in M\)，取一个局部截面 \(S\) 使其取值于 \(F\)，并令 \(\gamma(0)=p\)。对足够小的允许时刻 \(t\)，有
+	\[
+		P_{\gamma,0\leftarrow t}S(\gamma(t))\in F_p,\qquad S(p)\in F_p.
+	\]
+	所以两者的差商属于同一个有限维线性子空间 \(F_p\subset E_p\)。这个子空间闭，故由\eqref{g1:eq:connection-recovery-limit}，极限 \((\nabla_{\gamma'(0)}S)_p\) 也在 \(F_p\) 中。内部点可用双侧曲线实现任意方向；边界点先用向内的单侧曲线实现对应方向，再对向外方向使用线性性。因此所有 \(\nabla_XS\) 都取值于 \(F\)，证明第一项。
+
+	当 \(k=0\) 或 \(k=\operatorname{rank}E\) 时，相应的矩阵块为空，上述论证分别表示零子丛和整个丛都被保持，也包括在结论中。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:metric-line-connection-unique}
+	在平凡实线丛 \(E=M\times\mathbb R\) 上，给定光滑正函数 \(h:M\to(0,\infty)\)，以
+	\[
+		g_p(u,v)=h(p)uv
+	\]
+	定义丛度量。证明关于此度量的联络唯一，在标准标架中其联络一形式为 \(\tfrac12\mathrm{d}\log h\)。求出任意路径的平行移动，并证明另一个正函数 \(\widetilde h\) 给出同一度量联络，当且仅当 \(\widetilde h/h\) 在每个连通分支上为常数。
+\end{exercise}
+\begin{solution}
+	在标准标架中，一个实线丛联络由实一形式 \(a\) 给出。此时度量矩阵只有一个条目 \(G=h\)，所以\eqref{g1:eq:metric-connection-matrix}成为
+	\[
+		\mathrm{d}h=2h\,a.
+	\]
+	因 \(h>0\)，唯一可能的形式为
+	\[
+		a=\frac{\mathrm{d}h}{2h}=\frac12\mathrm{d}\log h.
+	\]
+	它光滑，并确实满足度量相容条件，因此存在且唯一。具体地，对截面 \(u\) 和向量场 \(X\)，有 \(\nabla_Xu=Xu+\tfrac12X(\log h)\,u\)。
+
+	沿 \(\gamma:[a,b]\to M\)，标量平行方程给出
+	\[
+		P_\gamma(v)
+		=\exp\left(-\frac12\int_a^b\frac{\mathrm{d}}{\mathrm{d}t}\log h(\gamma(t))\,\mathrm{d}t\right)v
+		=\sqrt{\frac{h(\gamma(a))}{h(\gamma(b))}}\,v.
+	\]
+	对分片光滑路径逐段求积，内部分点的因子相消，仍是同一公式。标准分量可以改变，但长度保持，因为
+	\[
+		h(\gamma(b))\bigl(P_\gamma(v)\bigr)^2=h(\gamma(a))v^2.
+	\]
+	这个例子说明非正交归一标架中的非零联络系数，并不意味着运输改变了给定度量的长度。
+
+	最后，两个度量联络相同当且仅当
+	\[
+		\mathrm{d}\log\widetilde h=\mathrm{d}\log h,
+		\quad\text{即}\quad
+		\mathrm{d}\log(\widetilde h/h)=0.
+	\]
+	由\cref{g1:cor:local-exactness}关于零次形式的结论，导数为零的光滑函数在每个连通分支上为常数；指数函数把这一结论转为 \(\widetilde h/h\) 在每个连通分支上为正常数。反向若这些比值为常数，两个对数的微分相同，故联络相同。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:noncommuting-path-transport}
+	在 \(\mathbb R^2\times\mathbb R^2\) 的标准标架中，取联络矩阵
+	\[
+		A=B\,\mathrm{d}x+C\,\mathrm{d}y,\qquad
+		B=\begin{pmatrix}0&1\\0&0\end{pmatrix},\qquad
+		C=\begin{pmatrix}0&0\\1&0\end{pmatrix}.
+	\]
+	令 \(\gamma\) 从 \((0,0)\) 先到 \((1,0)\) 再到 \((1,1)\)，\(\eta\) 从 \((0,0)\) 先到 \((0,1)\) 再到 \((1,1)\)，每段均为直线。计算 \(P_\gamma\)、\(P_\eta\) 的矩阵，证明两条路径的矩阵值积分 \(\int_\gamma A\)、\(\int_\eta A\) 相同，运输却不同。由此说明一般运输不能仅凭 \(\exp(-\int_\gamma A)\) 给出。
+\end{exercise}
+\begin{solution}
+	沿正向单位水平线段，以 \(x\) 为参数，方程为 \(u'=-Bu\)。因为 \(B^2=0\)，矩阵 \(I-xB\) 的导数为 \(-B\)，且
+	\[
+		-B(I-xB)=-B,
+	\]
+	所以长度为一的水平段运输矩阵为 \(I-B\)。同理，由 \(C^2=0\)，正向单位竖直段的运输矩阵为 \(I-C\)。这里直接检验方程即可，不需要借用一般矩阵指数公式。
+
+	拼接时后走的路径所对应矩阵乘在左边。因此
+	\[
+		P_\gamma=(I-C)(I-B)
+		=\begin{pmatrix}1&-1\\-1&2\end{pmatrix},\qquad
+		P_\eta=(I-B)(I-C)
+		=\begin{pmatrix}2&-1\\-1&1\end{pmatrix}.
+	\]
+	例如它们把第一基向量分别送到 \((1,-1)^{\mathsf T}\)、\((2,-1)^{\mathsf T}\)，故确实是不同运输。差别来自
+	\[
+		CB=\begin{pmatrix}0&0\\0&1\end{pmatrix},\qquad
+		BC=\begin{pmatrix}1&0\\0&0\end{pmatrix}.
+	\]
+
+	另一方面，每条路径都有一个正向单位水平段和一个正向单位竖直段，逐条目积分均得
+	\[
+		\int_\gamma A=B+C=\int_\eta A.
+	\]
+	所以只依赖总积分矩阵的表达式，特别是 \(\exp(-\int A)\)，会给这两条路径相同的结果，与上述解方程所得运输不符。把不同时刻的矩阵直接相加再取指数，会遗漏实际运动中不可交换的先后次序。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:bianchi-nonclosed-matrix}
+	在 \(\mathbb R^3\) 上的平凡秩二实向量丛中，取
+	\[
+		B=\begin{pmatrix}0&1\\0&0\end{pmatrix},\qquad
+		C=\begin{pmatrix}0&0\\1&0\end{pmatrix},\qquad
+		A=xB\,\mathrm{d}y+C\,\mathrm{d}z.
+	\]
+	计算 \(F\)、\(\mathrm{d}F\) 及 \(A\wedge F-F\wedge A\)，直接核对 Bianchi 恒等式。说明为什么不能把 Bianchi 恒等式简写成 \(\mathrm{d}F=0\)。
+\end{exercise}
+\begin{solution}
+	令 \(H=[B,C]=\operatorname{diag}(1,-1)\)。先有 \(\mathrm{d}A=B\,\mathrm{d}x\wedge\mathrm{d}y\)，而 \(A\wedge A\) 中只有交叉项留下，得到
+	\[
+		F=B\,\mathrm{d}x\wedge\mathrm{d}y+xH\,\mathrm{d}y\wedge\mathrm{d}z,
+		\qquad\mathrm{d}F=H\,\mathrm{d}x\wedge\mathrm{d}y\wedge\mathrm{d}z\ne0.
+	\]
+	含 \(xB\,\mathrm{d}y\) 的乘积均因 \(\mathrm{d}y\) 重复而消失，\(C\,\mathrm{d}z\) 与曲率第二项的乘积也为零。因此
+	\begin{align*}
+		A\wedge F-F\wedge A
+		&=CB\,\mathrm{d}z\wedge\mathrm{d}x\wedge\mathrm{d}y-BC\,\mathrm{d}x\wedge\mathrm{d}y\wedge\mathrm{d}z\\
+		&=(CB-BC)\,\mathrm{d}x\wedge\mathrm{d}y\wedge\mathrm{d}z\\
+		&=-H\,\mathrm{d}x\wedge\mathrm{d}y\wedge\mathrm{d}z.
+	\end{align*}
+	它与 \(\mathrm{d}F\) 恰好抵消。曲率取值于随点变化的纤维自同态空间，协变微分中的两个联络项负责比较这些自同态；普通外微分不包含这种比较。在秩一情形矩阵交换子项消失，才可以在局部写成 \(\mathrm{d}F=0\)。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:curvature-connection-difference}
+	设 \(\nabla' =\nabla+B\)，其中 \(B\in\Omega^1(M;\operatorname{End}(E))\)。证明
+	\[
+		R^{\nabla'}=R^\nabla+\mathrm{D}_{\operatorname{End}}B+B\wedge B.
+	\]
+	再在 \(\mathbb R^2\) 上的平凡秩二丛中取两个常矩阵 \(P,Q\)，满足 \([P,Q]\ne0\)。说明矩阵分别为 \(P\,\mathrm{d}x\) 与 \(Q\,\mathrm{d}y\) 的联络都平坦，而它们的非平凡凸组合未必平坦。
+\end{exercise}
+\begin{solution}
+	在同一局部标架中，设两个联络的矩阵分别为 \(A\) 与 \(A+B\)。逐项展开给出
+	\begin{align*}
+		F'&=\mathrm{d}(A+B)+(A+B)\wedge(A+B)\\
+		&=F+\mathrm{d}B+A\wedge B+B\wedge A+B\wedge B.
+	\end{align*}
+	由于 \(B\) 是一次形式，\eqref{g1:eq:endomorphism-exterior-derivative}中的符号为 \(-(-1)^1=+1\)，故中间三项是 \(\mathrm{D}_{\operatorname{End}}B\)。各项都是整体 \(\operatorname{End}(E)\) 值二形式，局部等式因此给出所需整体公式。也可在 \(X,Y\) 上求值得到最后一项 \(B(X)B(Y)-B(Y)B(X)\)。
+
+	两个给定矩阵的系数均常值，且各自只有一个坐标微分，故曲率都为零。参数 \(0<t<1\) 的凸组合为
+	\[
+		A_t=(1-t)P\,\mathrm{d}x+tQ\,\mathrm{d}y.
+	\]
+	于是
+	\[
+		F_t=t(1-t)[P,Q]\,\mathrm{d}x\wedge\mathrm{d}y\ne0.
+	\]
+	例如可取上一题的 \(P=B,Q=C\)。联络构成仿射空间，平坦条件却包含二次项；这正是平坦联络不必构成仿射子空间的原因。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:determinant-connection-curvature}
+	设 \(E\) 为秩 \(r\ge1\) 的实光滑向量丛，底流形有限维、Hausdorff、第二可数，允许边界，给定联络 \(\nabla\)。\cref{g1:ex:determinant-line-connection}已算出行列式线丛 \(\det E=\Lambda^rE\) 的诱导联络一形式为 \(\operatorname{tr}A\)。证明其曲率二形式为 \(\operatorname{tr}F\)，并说明它是全局闭形式。再通过选取一个参考度量联络，证明对实向量丛而言 \(\operatorname{tr}F\) 实际上总是恰当形式；不要求 \(E\) 或 \(\det E\) 平凡。
+\end{exercise}
+\begin{solution}
+	行列式线丛的联络一形式为 \(\operatorname{tr}A\)。标量一形式与自身楔积为零，因而其曲率为 \(\mathrm{d}\operatorname{tr}A\)。另一方面，
+	\[
+		\operatorname{tr}(A\wedge A)=\sum_{i,j}A^i{}_j\wedge A^j{}_i=0,
+	\]
+	因为对角项为零，而 \(i\ne j\) 的项成对反号。所以 \(\operatorname{tr}F=\mathrm{d}\operatorname{tr}A\)，恰是行列式线丛的曲率。
+
+	换标架时 \(F'=g^{-1}Fg\)。在每点对两个切向量求值后，这是通常矩阵的共轭，故 \(\operatorname{tr}F'=\operatorname{tr}F\)，局部形式拼成全局二形式。在每个标架邻域，\(\mathrm{d}\operatorname{tr}F=\mathrm{d}^2\operatorname{tr}A=0\)，因此它全局闭。至此只有局部原形式，不能直接把各片的 \(\operatorname{tr}A\) 拼在一起。
+
+	为得到整体原形式，由\cref{g1:thm:bundle-metric-existence,g1:prop:metric-connection-existence}选择正定丛度量及其度量联络 \(\nabla^0\)。在正交规范标架中，\(A^0\) 为反对称实矩阵一形式，所以 \(\operatorname{tr}A^0=0\)，从而 \(\operatorname{tr}F^0=\mathrm{d}\operatorname{tr}A^0=0\)。这又是标架无关的结论。
+
+	联络之差 \(B=\nabla-\nabla^0\) 为整体自同态值一形式，故 \(\beta=\operatorname{tr}B\) 是全局实一形式。在任意共同标架中，它写成 \(\operatorname{tr}(A-A^0)\)，因此
+	\[
+		\mathrm{d}\beta=\mathrm{d}\operatorname{tr}A-\mathrm{d}\operatorname{tr}A^0
+		=\operatorname{tr}F-\operatorname{tr}F^0=\operatorname{tr}F.
+	\]
+	这给出了实际的整体原形式。我们只要求参考联络存在，并没有要求存在整体正交规范标架；正交标架只用于每片上验证 \(\operatorname{tr}F^0=0\)。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:metric-curvature-skew}
+	设实向量丛 \(E\) 配有正定度量 \(g\) 和度量联络 \(\nabla\)。证明每个 \(R(X,Y)\) 关于 \(g\) 反对称，即
+	\[
+		g(R(X,Y)s,t)+g(s,R(X,Y)t)=0.
+	\]
+	由此说明实线丛的每个度量联络都平坦，并在平凡秩二丛上给出保持标准度量而曲率非零的联络。
+\end{exercise}
+\begin{solution}
+	局部取光滑正交规范标架。\eqref{g1:eq:metric-connection-matrix}在此成为 \(A(X)^{\mathsf T}=-A(X)\)。直接用二形式求值公式，
+	\[
+		F(X,Y)=X(A(Y))-Y(A(X))-A([X,Y])+[A(X),A(Y)].
+	\]
+	前三项仍为反对称矩阵；若 \(P,Q\) 反对称，则
+	\[
+		[P,Q]^{\mathsf T}=Q^{\mathsf T}P^{\mathsf T}-P^{\mathsf T}Q^{\mathsf T}
+		=QP-PQ=-[P,Q].
+	\]
+	因此 \(F(X,Y)\) 反对称，翻译回纤维内积就是所需恒等式。该等式与标架无关，故整体成立。
+
+	一维实内积空间的反对称自同态只有零，故实线丛的度量联络曲率为零。这是局部曲率的结论，不能据此断言每个闭路的运输都为恒等；\secref{g1:sec:1505}中的 Möbius 线丛会显示区别。秩二时取
+	\[
+		J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad A=xJ\,\mathrm{d}y
+	\]
+	作为 \(\mathbb R^2\) 上平凡丛标准标架中的矩阵。由于 \(A\) 反对称，它定义度量联络；但 \(F=J\,\mathrm{d}x\wedge\mathrm{d}y\ne0\)。保持长度并不排除旋转型的曲率。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:heisenberg-parallel-frame-torsion}
+	在 \(\mathbb R^3\) 上取全局标架
+	\[
+		e_1=\partial_x,\qquad e_2=\partial_y+x\partial_z,\qquad e_3=\partial_z,
+	\]
+	并规定 \(\nabla_Xe_i=0\)。求其对偶余标架 \(\theta\)、联络矩阵 \(A\)、挠率二形式列 \(\Theta\) 和曲率矩阵 \(F\)，直接验证第一 Bianchi 恒等式。判断这组标架是否可能在某个非空开集上成为坐标标架，以及是否可能有其他坐标使该联络的全部坐标系数为零。
+\end{exercise}
+\begin{solution}
+	三个向量场在标准坐标标架中的列矩阵为
+	\[
+		\begin{pmatrix}1&0&0\\0&1&0\\0&x&1\end{pmatrix},
+	\]
+	行列式为一，故确实处处构成标架。逐个求值可得其对偶余标架
+	\[
+		\theta^1=\mathrm{d}x,\qquad
+		\theta^2=\mathrm{d}y,\qquad
+		\theta^3=\mathrm{d}z-x\,\mathrm{d}y.
+	\]
+	例如 \(\theta^3(e_2)=x-x=0\)，而 \(\theta^3(e_3)=1\)。规定每个 \(e_i\) 平行，具体就是对 \(Y=\sum_i u^i e_i\) 定义 \(\nabla_XY=\sum_iX(u^i)e_i\)，所以 \(A=0\)，并且
+	\[
+		F=\mathrm{d}A+A\wedge A=0,\qquad
+		\Theta=\mathrm{d}\theta
+		=\begin{pmatrix}0\\0\\-\mathrm{d}x\wedge\mathrm{d}y\end{pmatrix}.
+	\]
+	因此
+	\[
+		T(e_1,e_2)=-e_3,\qquad T(e_1,e_3)=T(e_2,e_3)=0.
+	\]
+	直接从李括号也可核对：\([e_1,e_2]=\partial_z=e_3\)，其余两个括号为零；由于标架平行，挠率就是这些括号的负值。
+
+	在当前标架中，第一 Bianchi 恒等式的左端为
+	\[
+		\mathrm{d}\Theta+A\wedge\Theta=\mathrm{d}\Theta=0,
+	\]
+	因为 \(\mathrm{d}(\mathrm{d}x\wedge\mathrm{d}y)=0\)；右端 \(F\wedge\theta\) 也为零。这个三维例子中，二形式 \(\Theta^3\) 非零而其外微分为零，恒等式约束的并不是挠率本身必须消失。
+
+	坐标向量场必须两两交换，而 \([e_1,e_2]=e_3\) 在每一点都非零，所以给定标架在任何非空开集上都不是坐标标架。也不存在另一组坐标使联络矩阵为零：若有，该坐标标架既平行又两两交换，挠率在该标架上便全为零。挠率的张量性将推出同一开集上 \(T=0\)，与刚算出的 \(T(e_1,e_2)=-e_3\) 矛盾。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:torsion-correction-breaks-metric}
+	在 \(\mathbb R^2\) 上令
+	\[
+		e_1=\partial_x,\qquad e_2=e^x\partial_y,\qquad
+		g=\mathrm{d}x^2+e^{-2x}\mathrm{d}y^2,
+	\]
+	并规定 \(\nabla_Xe_i=0\)。验证 \(\nabla\) 保持 \(g\)，求其挠率 \(T\)。令
+	\[
+		\widehat\nabla_XY=\nabla_XY-\frac12T(X,Y).
+	\]
+	计算四个 \(\widehat\nabla_{e_i}e_j\)，验证 \(\widehat\nabla\) 无挠，并用一个明确的分量说明它不保持 \(g\)。
+\end{exercise}
+\begin{solution}
+	因为 \(g(e_i,e_j)=\delta_{ij}\)，标架 \(e_1,e_2\) 正交归一。在该标架中 \(\nabla\) 的矩阵为零，所以\eqref{g1:eq:metric-connection-matrix}给出 \(\nabla g=0\)。也可以对 \(Y=u^1e_1+u^2e_2\)、\(Z=v^1e_1+v^2e_2\) 直接使用普通乘积法则，得到
+	\[
+		Xg(Y,Z)=X\left(\sum_i u^iv^i\right)
+		=g(\nabla_XY,Z)+g(Y,\nabla_XZ).
+	\]
+
+	由 \([e_1,e_2]=e_2\) 及标架平行性，
+	\[
+		T(e_1,e_2)=-e_2,\qquad T(e_2,e_1)=e_2,\qquad
+		T(e_1,e_1)=T(e_2,e_2)=0.
+	\]
+	代入修正公式便得到
+	\[
+		\widehat\nabla_{e_1}e_1=0,\qquad
+		\widehat\nabla_{e_1}e_2=\frac12e_2,\qquad
+		\widehat\nabla_{e_2}e_1=-\frac12e_2,\qquad
+		\widehat\nabla_{e_2}e_2=0.
+	\]
+	因此
+	\[
+		T^{\widehat\nabla}(e_1,e_2)
+		=\frac12e_2-\left(-\frac12e_2\right)-[e_1,e_2]=0.
+	\]
+	挠率是反对称张量，两个标架向量张成每个切空间，故这已经证明 \(T^{\widehat\nabla}=0\)。
+
+	但度量的协变导数满足
+	\[
+		(\widehat\nabla_{e_1}g)(e_2,e_2)
+		=e_1\bigl(g(e_2,e_2)\bigr)
+		-2g(\widehat\nabla_{e_1}e_2,e_2)
+		=0-2\cdot\frac12=-1.
+	\]
+	所以 \(\widehat\nabla g\ne0\)。原标架中的 \(g(e_2,e_2)\) 恒为一，而修正后的导数让 \(e_2\) 沿 \(e_1\) 方向出现自身的非零分量；这正是度量乘积法则失效的具体位置。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:autoparallel-curves-torsion-invisible}
+	设 \(M\) 为无边界光滑流形，\(\nabla,\widetilde\nabla\) 为两个切丛联络，写 \(\widetilde\nabla_XY=\nabla_XY+B(X)Y\)。本题称满足
+	\[
+		\mathrm{D}_t^\nabla\gamma'(t)=0
+	\]
+	的光滑曲线为 \(\nabla\) 的带参数自平行曲线；比较两条曲线时保留原来的参数，不允许另行重参数化。证明以下条件等价：
+	\begin{enumerate}
+		\item 两个联络具有完全相同的带参数自平行曲线。
+		\item 对每个 \(p\in M\)、\(v\in \mathrm{T}_pM\)，有 \(B_p(v)v=0\)。
+		\item 对任意 \(X,Y\)，有 \(B(X)Y=-B(Y)X\)。
+	\end{enumerate}
+	证明中应说明每个内点初值 \((p,v)\) 都有局部自平行曲线。由此解释，联络与其无挠修正 \(\nabla^0_XY=\nabla_XY-\tfrac12T^\nabla(X,Y)\) 为什么具有相同的带参数自平行曲线。
+\end{exercise}
+\begin{solution}
+	先说明初值存在性。在坐标域中写 \(\nabla_{\partial_i}\partial_j=\sum_k\Gamma^k_{ij}\partial_k\)，令曲线的坐标为 \(x^k(t)\)、速度分量为 \(v^k(t)\)。沿曲线导数公式把自平行方程写成
+	\[
+		\frac{\mathrm{d}x^k}{\mathrm{d}t}=v^k,\qquad
+		\frac{\mathrm{d}v^k}{\mathrm{d}t}
+		=-\sum_{i,j}\Gamma^k_{ij}(x)v^iv^j.
+	\]
+	右端是坐标开集与 \(\mathbb R^n\) 上的光滑函数。\cref{g1:thm:ode-local-existence-uniqueness}因此对任意 \((x(p),v)\) 给出唯一局部解，缩短时间后其位置留在原坐标域。这里没有边界，故任意切向初速度都可以实现为双侧局部曲线。
+
+	两个沿曲线导数的差只取决于速度与当前向量，所以
+	\[
+		\mathrm{D}_t^{\widetilde\nabla}\gamma'
+		=\mathrm{D}_t^\nabla\gamma'+B_{\gamma(t)}(\gamma'(t))\gamma'(t).
+	\]
+	若第一项成立，取任意初值 \((p,v)\) 的一条 \(\nabla\) 自平行曲线；它也是 \(\widetilde\nabla\) 自平行曲线。在初始时刻代入上式，得到 \(B_p(v)v=0\)，即第二项。反过来，若第二项成立，上式中的差对每条光滑曲线都为零，所以一条曲线满足一个自平行方程当且仅当满足另一个，证明第一项。
+
+	第二项蕴含第三项可逐点作极化。对同一纤维中的 \(u,v\)，双线性给出
+	\[
+		0=B(u+v)(u+v)-B(u)u-B(v)v=B(u)v+B(v)u.
+	\]
+	第三项反过来令 \(u=v\)，得到 \(2B(v)v=0\)，在实数域上便是第二项。
+
+	最后，修正项 \(B(X)Y=-\tfrac12T^\nabla(X,Y)\) 对 \(X,Y\) 反对称，故满足第三项。于是 \(\nabla\) 与 \(\nabla^0\) 的带参数自平行曲线相同，尽管两者的挠率可能不同。更一般地，添加任意反对称的 \(\mathrm{T}M\) 值二阶张量都不改变这些曲线，却使挠率增加 \(2B\)。因此仅由这族曲线不能恢复联络的挠率信息。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:metric-connection-determined-by-torsion}
+	设 \(g\) 为实切丛 \(\mathrm{T}M\) 上的光滑正定度量，\(\nabla,\widetilde\nabla\) 都保持 \(g\)，并令
+	\[
+		B(X)Y=\widetilde\nabla_XY-\nabla_XY,\qquad
+		\tau(X,Y,Z)=g\bigl(T^{\widetilde\nabla}(X,Y)-T^\nabla(X,Y),Z\bigr).
+	\]
+	证明
+	\[
+		2g(B(X)Y,Z)
+		=\tau(X,Y,Z)-\tau(Y,Z,X)+\tau(Z,X,Y).
+	\]
+	由此证明两个保持同一度量的联络若具有相同挠率，则必相同。说明为什么这一结论不能去掉“保持同一度量”的假设。
+\end{exercise}
+\begin{solution}
+	记 \(b(X,Y,Z)=g(B(X)Y,Z)\)。两个联络的度量相容公式作差，函数导数项相消，得到
+	\[
+		g(B(X)Y,Z)+g(Y,B(X)Z)=0,
+	\]
+	也就是 \(b(X,Y,Z)=-b(X,Z,Y)\)。因此 \(b\) 的后两个位置反对称；这里没有假定前两个位置具有任何对称性。
+
+	挠率差公式给出
+	\begin{align*}
+		\tau(X,Y,Z)&=g(B(X)Y-B(Y)X,Z)\\
+		&=b(X,Y,Z)-b(Y,X,Z)\\
+		&=b(X,Y,Z)+b(Y,Z,X).
+	\end{align*}
+	循环替换三个输入，还得到
+	\[
+		\begin{aligned}
+			\tau(Y,Z,X)&=b(Y,Z,X)+b(Z,X,Y),\\
+			\tau(Z,X,Y)&=b(Z,X,Y)+b(X,Y,Z).
+		\end{aligned}
+	\]
+	将第一条等式减去第二条、再加第三条，两个中间项相消，结果正是
+	\[
+		\tau(X,Y,Z)-\tau(Y,Z,X)+\tau(Z,X,Y)=2b(X,Y,Z).
+	\]
+	这证明了所求公式。若两个挠率相同，则 \(\tau=0\)，故 \(g(B(X)Y,Z)=0\) 对所有 \(Z\) 成立。内积非退化，于是 \(B(X)Y=0\) 对所有 \(X,Y\) 成立，即 \(\widetilde\nabla=\nabla\)。
+
+	若不要求保持同一度量，联络差可以含有非零对称部分而不改变挠率。例如在 \(\mathbb R\) 的标准坐标中，取
+	\[
+		\nabla_{\partial_x}\partial_x=0,\qquad
+		\widetilde\nabla_{\partial_x}\partial_x=\partial_x.
+	\]
+	二者不同，但一维空间上所有反对称二阶张量均为零，所以两者挠率都为零。关于同一标准度量 \(\mathrm{d}x^2\)，第一个联络相容，第二个却有
+	\[
+		(\widetilde\nabla_{\partial_x}g)(\partial_x,\partial_x)=-2.
+	\]
+	这说明固定度量并要求两个联络都与它相容，正是上述唯一性论证中后两个输入反对称的来源。
+\end{solution}
+
+% 第15.5节配套习题与解答；供章末习题区整合。
+
+\begin{exercise}\label{g1:ex:flat-matrix-local-model}
+	在平凡丛 \(\mathbb R^2\times\mathbb R^2\) 的标准行标架 \(e\) 中，令
+	\[
+		A=
+		\begin{pmatrix}1&2y\\0&-1\end{pmatrix}\mathrm{d}x+
+		\begin{pmatrix}0&1\\0&0\end{pmatrix}\mathrm{d}y,\qquad
+		g(x,y)=
+		\begin{pmatrix}e^x&ye^x\\0&e^{-x}\end{pmatrix}.
+	\]
+	直接计算 \(F=\mathrm{d}A+A\wedge A\)，并验证 \(A=g^{-1}\mathrm{d}g\)。求一个整体平行标架以及从 \(p\) 到 \(q\) 的平行移动矩阵。说明为什么本例不能通过假定 \(A_x,A_y\) 交换来解释平坦性。
+\end{exercise}
+\begin{solution}
+	令 \(H(y)=\begin{psmallmatrix}1&2y\\0&-1\end{psmallmatrix}\)、\(N=\begin{psmallmatrix}0&1\\0&0\end{psmallmatrix}\)。则
+	\[
+		\mathrm{d}A=(\partial_xA_y-\partial_yA_x)\,\mathrm{d}x\wedge\mathrm{d}y
+		=-2N\,\mathrm{d}x\wedge\mathrm{d}y.
+	\]
+	另一方面，\(HN=N\)、\(NH=-N\)，所以
+	\[
+		A\wedge A=[H,N]\,\mathrm{d}x\wedge\mathrm{d}y
+		=2N\,\mathrm{d}x\wedge\mathrm{d}y.
+	\]
+	两项恰好抵消，故 \(F=0\)，而 \([A_x,A_y]=2N\ne0\)。
+
+	为计算 \(g^{-1}\mathrm{d}g\)，写
+	\[
+		g=D(x)U(y),\qquad
+		D(x)=\begin{pmatrix}e^x&0\\0&e^{-x}\end{pmatrix},\qquad
+		U(y)=\begin{pmatrix}1&y\\0&1\end{pmatrix}.
+	\]
+	乘积法则给出
+	\[
+		g^{-1}\mathrm{d}g
+		=U^{-1}\begin{pmatrix}1&0\\0&-1\end{pmatrix}U\,\mathrm{d}x
+		+U^{-1}\begin{pmatrix}0&1\\0&0\end{pmatrix}\mathrm{d}y
+		=H(y)\,\mathrm{d}x+N\,\mathrm{d}y=A.
+	\]
+	因此换标架矩阵应取 \(g^{-1}\)，而不是 \(g\)。事实上，\(\mathrm{d}(g^{-1})=-g^{-1}(\mathrm{d}g)g^{-1}\)，所以标架 \(f=e g^{-1}\) 中的联络矩阵为
+	\[
+		gAg^{-1}+g\,\mathrm{d}(g^{-1})
+		=(\mathrm{d}g)g^{-1}-(\mathrm{d}g)g^{-1}=0.
+	\]
+	它就是整体平行标架。
+
+	也可以直接看平行方程。若 \(u\) 是标准标架分量，则沿路径有
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}\bigl(g(\gamma(t))u(t)\bigr)
+		=\bigl(\mathrm{d}g(\gamma')-gA(\gamma')\bigr)u=0.
+	\]
+	故从 \(p\) 到 \(q\) 的运输矩阵为 \(g(q)^{-1}g(p)\)，仅依赖端点。本例的平坦性来自系数导数项与矩阵交换子项的抵消，不能把非交换项直接略去。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:flat-periodic-line-gauge}
+	设 \(b:\mathbb R\to\mathbb R\) 光滑且 \(2\pi\) 周期。在 \(S^1\times\mathbb R\) 的标准标架 \(e\) 中定义联络 \(A=b(\theta)\,\mathrm{d}\theta\)，其中角度分支按\cref{g1:exm:flat-circle-holonomy}理解。令
+	\[
+		\overline b=\frac1{2\pi}\int_0^{2\pi}b(t)\,\mathrm{d}t.
+	\]
+	计算正向一周的平行移动，并证明存在整体平行标架当且仅当 \(\overline b=0\)。进一步构造正的周期函数 \(g\)，使标架 \(eg\) 中的联络矩阵为 \(\overline b\,\mathrm{d}\theta\)；说明周期换标架为何不能改变这个平均值。
+\end{exercise}
+\begin{solution}
+	把一周路径提升到角度区间 \([0,2\pi]\)，平行方程为 \(u'+bu=0\)，解是
+	\[
+		u(\theta)=\exp\left(-\int_0^\theta b(t)\,\mathrm{d}t\right)u(0).
+	\]
+	所以正向一周的运输乘以 \(e^{-2\pi\overline b}\)。实指数函数只有在指数为零时等于 \(1\)，故由\cref{g1:prop:flat-monodromy}，整体平行标架存在当且仅当 \(\overline b=0\)。也可直接从解式看出：非零初值产生处处非零周期解，当且仅当这个因子为 \(1\)。
+
+	令
+	\[
+		g(\theta)=\exp\left(-\int_0^\theta(b(t)-\overline b)\,\mathrm{d}t\right).
+	\]
+	积分中的函数周期且一周期积分为零，所以其原函数在相差 \(2\pi\) 的两点取值相同；因此 \(g\) 是正的光滑周期函数，定义了圆周上的合法换标架。由秩一变换公式，
+	\[
+		A'=A+g^{-1}\mathrm{d}g
+		=\left(b+\frac{g'}g\right)\mathrm{d}\theta
+		=\overline b\,\mathrm{d}\theta.
+	\]
+	任意其他合法换标架函数 \(h:S^1\to\mathbb R^\times\) 在连通圆周上符号恒定，因此 \(\log|h|\) 是整体光滑函数，且 \(h^{-1}\mathrm{d}h=\mathrm{d}\log|h|\)。沿一周积分为零，故变换前后的联络系数平均值相同。当 \(\overline b\ne0\) 时，局部仍能消去联络系数，但消去全部系数所需的指数函数不能满足周期条件。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:flat-parallel-section-invariants}
+	设 \(E\to M\) 是连通光滑流形上的平坦实向量丛，允许底流形有边界。固定基点 \(p\) 与基 \(b:\mathbb R^r\to E_p\)，单值表示记为 \(\rho\)。证明求值映射给出线性同构
+	\[
+		\{s\in\Gamma(E):\nabla s=0\}
+		\longrightarrow
+		\{v\in\mathbb R^r:\rho(g)v=v\text{ 对所有 }g\in\pi_1(M,p)\},
+		\qquad s\longmapsto b^{-1}s(p).
+	\]
+	再对 \(T^2=S^1\times S^1\) 上由表示
+	\[
+		\rho(m,n)=\operatorname{diag}(1,(-1)^m,e^n),\qquad(m,n)\in\mathbb Z^2,
+	\]
+	构造的平坦丛，求整体平行截面空间的维数，并判断是否有整体平行标架。
+\end{exercise}
+\begin{solution}
+	若 \(\nabla s=0\)，则在每个平行标架域中，\(s\) 的分量导数为零，故其分量在连通小域中恒定。因此沿任意连续路径 \(\gamma\) 都有 \(s(\gamma(1))=P_\gamma s(\gamma(0))\)。对于基点环路，这说明 \(s(p)\) 被 \(P_\gamma\) 固定；于是 \(v=b^{-1}s(p)\) 被 \(C_\gamma=b^{-1}P_\gamma b\) 固定，也就被其逆 \(\rho([\gamma])\) 固定。因为连通流形道路连通，\(s(p)\) 还通过运输决定所有点的取值，所以求值映射单射。
+
+	反过来，设 \(v\) 被所有 \(\rho(g)\) 固定，令 \(v_p=bv\)。对 \(q\in M\)，任选从 \(p\) 到 \(q\) 的路径 \(\gamma\)，定义 \(s(q)=P_\gamma v_p\)。若另选 \(\eta\)，则
+	\[
+		P_\eta^{-1}P_\gamma v_p=P_{\gamma*\bar\eta}v_p=v_p,
+	\]
+	最后一个等式来自 \(v\) 同时被 \(\rho([\gamma*\bar\eta])\) 及其逆固定。因此定义与路径无关。在连通平行标架域中，\(s\) 是该标架的一个常系数线性组合，所以它光滑且平行。构造关于 \(v\) 线性，得到所需同构。
+
+	由\cref{g1:thm:circle-fundamental,g1:prop:product-fundamental}，\(\pi_1(T^2)=\mathbb Z^2\)，两个整数记录两个圆周方向的绕数。题给矩阵满足 \(\rho(m,n)\rho(m',n')=\rho(m+m',n+n')\)，确为表示。若 \(v=(v_1,v_2,v_3)\) 是不动向量，取 \((m,n)=(1,0)\) 得 \(v_2=-v_2\)，所以 \(v_2=0\)；再取 \((0,1)\) 得 \(v_3=e\,v_3\)，所以 \(v_3=0\)。第一分量没有限制，不动空间恰为第一坐标轴。因此整体平行截面空间为一维。表示并不平凡，所以没有整体平行标架；存在一个处处非零平行截面，并不足以构成秩三丛的平行标架。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:curvature-zero-at-one-point}
+	在 \(\mathbb R^2\times\mathbb R\) 的标准标架中取联络 \(A=x^2\,\mathrm{d}y\)。计算曲率。令 \(\gamma_h\) 为正向绕行正方形 \([0,h]^2\) 的分片光滑边界路径，从原点出发，\(h>0\)。求 \(P_{\gamma_h}\)，并据此判断原点附近是否存在平行标架。解释为什么这不与原点处曲率为零矛盾。
+\end{exercise}
+\begin{solution}
+	秩一时 \(A\wedge A=0\)，因此
+	\[
+		F=\mathrm{d}A=2x\,\mathrm{d}x\wedge\mathrm{d}y.
+	\]
+	它在原点乃至整条直线 \(x=0\) 上为零，但在原点的任一开邻域内都不恒为零。
+
+	沿正方形边界，底边与顶边有 \(\mathrm{d}y=0\)，左边有 \(x=0\)，只有右边贡献积分。正向绕行时右边从 \((h,0)\) 到 \((h,h)\)，所以
+	\[
+		\int_{\gamma_h}A=h^2\int_0^h\mathrm{d}y=h^3.
+	\]
+	由秩一平行方程的解式，\(P_{\gamma_h}\) 是乘以 \(e^{-h^3}\)，当 \(h>0\) 时不等于恒等。任一原点邻域都包含充分小的这种正方形；若其中有平行标架，沿这条闭路应保持全部分量，矛盾。
+
+	平坦性要求曲率在一个区域内处处为零，\cref{g1:thm:flat-parallel-frame}使用的正是这个条件。单点的曲率为零只消去该点处闭路运输的最低阶曲率贡献，并不保证附近的曲率也消失；本例的运输差异 \(e^{-h^3}-1=-h^3+O(h^6)\) 仍然存在。
+\end{solution}

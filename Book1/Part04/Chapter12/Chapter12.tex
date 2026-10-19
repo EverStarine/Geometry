@@ -1,0 +1,511 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：## 第12章　向量丛、张量与整体构造
+% 纲要位置：几何学计划纲要.md，第 568 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% > 本章目标与证明范围：由切丛推广到一般向量丛，证明局部表示和整体对象之间的对应。多线性代数围绕几何运算重建，单位分解承担明确的构造任务。
+% 
+% 纲要内容结束
+
+\chapter{向量丛、张量与整体构造}
+\label{g1:ch:12}
+\BookChapterNumber{g1:ch:12}
+
+\begin{chapterabstract}
+	切丛的各个纤维都是向量空间，但在不同坐标图中需要用随点变化的可逆矩阵互相识别。本章由这一结构定义一般向量丛，证明余循环粘合、常秩同态的核与像以及拉回、商丛的构造。随后以泛性质建立张量积，以行列式配对固定外幂和楔积的系数，区分体积形式与密度。在整体构造方面，完整证明光滑单位分解、闭集上的截面延拓、丛度量的存在与短正合丛列的分裂，最后把这些工具用于张量场、自然拉回和几类结构群约化。
+\end{chapterabstract}
+
+\begin{learninggoals}
+	\begin{itemize}
+		\item 从局部标架写出过渡矩阵及余循环条件，说明它们如何决定整体向量丛，并辨认局部平凡与整体平凡的区别。
+		\item 通过泛性质与基展开解释张量、对称幂、外幂和收缩，计算楔积的系数、分次符号与换标架公式。
+		\item 构造支集局部有限的光滑单位分解，明确闭集延拓及其相对版本所需的相容条件。
+		\item 用单位分解构造丛度量，再用正交补分裂短正合丛列，同时辨认这些构造中依赖选择的部分。
+		\item 把局部分量解释为光滑张量场，区分拉回丛与源流形上的张量，并用适配标架描述度量、定向及其他逐点几何结构。
+	\end{itemize}
+\end{learninggoals}
+
+上一章的切空间在每张坐标图中都有一组基，但从一张图走进另一张图时，这组基会改变。变化可以被矩阵记录，却不能简单地把所有局部基宣布为同一组基。Möbius 线丛将展示最小的例子：每个小圆弧上的纤维都是一条普通实直线，绕圆周一周后的符号变化，却阻止了处处非零的整体截面。局部模型相同，并不足以决定整体对象平凡。
+
+\ProseParagraphBreak
+
+另一些对象又确实总能从局部构造出来。例如，在每张局部标架中都能声明基向量正交归一；虽然这些局部内积未必一致，却可以用适当权重相加，得到整体丛度量。为什么同样的操作不能给 Möbius 线丛制造非零截面？关键不只在于权重是否光滑，还在于加权相加能否保持所需条件。正定性可以保持，非零性、非退化性和某些代数恒等式却未必可以。
+
+\ProseParagraphBreak
+
+本章沿用\chapref{g1:ch:11}的光滑流形、切丛和微分定义，默认底流形有限维、Hausdorff 且第二可数；正文讨论的实光滑向量丛均为有限秩，相关构造允许底流形带边界。读者只需熟悉有限维线性代数中的基、对偶、商空间和行列式。张量积的泛性质、对称与交替运算在这里重建，不要求先掌握一套抽象张量演算。单位分解所需的紧穷竭与局部有限细化，也会恢复实际使用的构造。
+
+\ProseParagraphBreak
+
+阅读时可以把每一项构造分为两步：先检查同一纤维上的线性代数，再检查它随底点是否光滑，以及换标架后是否代表同一个对象。Lee 第二版的第10章可用于对照向量丛，第12--13章讨论张量与黎曼度量，第2章的 Partitions of Unity 一节对应光滑权重的构造；第14--15章及第16章的 Densities 一节可补充交替形式、定向与密度的阅读\cite[第40--47、249--271、304--399、427--433页]{Lee2012Smooth}。本章只建立形式的逐点代数及光滑性，外微分与积分留在\chapref{g1:ch:14}。
+
+\input{Part04/Chapter12/Section1201}
+\input{Part04/Chapter12/Section1202}
+\input{Part04/Chapter12/Section1203}
+\input{Part04/Chapter12/Section1204}
+
+\begin{chaptersummary}
+	向量丛把局部乘积通过光滑可逆矩阵粘合；三重交叠上的余循环条件保证识别相容。一个整体标架等价于整体平凡化，局部标架则总存在。丛同态的核与像要成为固定秩光滑子丛，需要相应的常秩条件；拉回改变底空间，商丛则逐纤维消去指定子丛，两者都必须同时构造局部平凡化。
+
+	\ProseParagraphBreak
+
+	张量积将多线性运算改写为线性运算，收缩来自向量与协变向量的求值。外幂的行列式配对确定了楔积的归一化，交换次数为 \(p,q\) 的形式会产生 \((-1)^{pq}\)。分量随标架改变，完整配对得到的数却不变。最高次形式记录符号，密度使用绝对行列式；度量总产生正密度，产生相应的体积形式还需要定向。
+
+	\ProseParagraphBreak
+
+	光滑单位分解由紧穷竭、局部有限的坐标细化、截断函数和归一化构成。局部有限性使各点附近的求和真正成为有限和；支集控制使局部对象能够光滑补零。它们共同给出闭集上的截面延拓和整体丛度量。正交补进一步分裂短正合丛列，但度量与分裂通常依赖选择，相对延拓也须保留明确的邻域相容条件。
+
+	\ProseParagraphBreak
+
+	张量场是在张量丛中的光滑截面，光滑分量与局部标架无关。任意光滑映射都能拉回向量丛，也能利用微分拉回协变张量；把目标向量变为源向量则一般缺少所需的逆。结构群约化用适配标架组织额外几何结构。正交约化总存在，定向、非退化交替形式和几乎复结构的存在却受整体相容性限制，不能仅凭各纤维有相同的线性模型就断定。
+\end{chaptersummary}
+
+\BookExercises
+
+\begin{exercise}\label{g1:ex:mobius-sum-double-pullback}
+	令 \(L\to S^1\) 为关系 \((t+2\pi,v)\sim(t,-v)\) 定义的 Möbius 线丛，令 \(f:S^1\to S^1\)，\(f(e^{\mathrm{i}t})=e^{2\mathrm{i}t}\)。
+	\begin{enumerate}
+		\item 构造 \(L\oplus L\) 的全局标架，并证明它是平凡秩二实向量丛。
+		\item 构造 \(f^*L\) 的处处非零光滑截面，并解释这与 \(L\) 非平凡为何不矛盾。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	1. 记
+	\[
+		R(\theta)=\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{pmatrix}.
+	\]
+	在角度参数 \(t\) 下，用 \(R(t/2)\) 的两列分别作为两个截面的纤维分量，即
+	\[
+		s_1(e^{\mathrm{i}t})=([t,\cos(t/2)],[t,\sin(t/2)]),\qquad
+		s_2(e^{\mathrm{i}t})=([t,-\sin(t/2)],[t,\cos(t/2)]).
+	\]
+	把 \(t\) 换成 \(t+2\pi\) 后，四个分量都变号；同时两条线丛的粘合也都变号，所以这两组有序对不变。它们因此在圆周上良定义，并且在每个提升圆弧上由光滑函数表示。两截面的分量矩阵为 \(R(t/2)\)，行列式恒为一，故逐点线性无关。\cref{g1:prop:global-frame-triviality}给出平凡化
+	\[
+		S^1\times\mathbb R^2\longrightarrow L\oplus L,
+		\qquad(p,(a,b))\longmapsto a s_1(p)+b s_2(p).
+	\]
+	其局部逆通过乘 \(R(-t/2)\) 求出，因而也光滑。这个构造用了两条截面，而不只是秩二丛的一条非零截面。
+
+	2. 对 \(f^*L\)，定义
+	\[
+		s(e^{\mathrm{i}t})=(e^{\mathrm{i}t},[2t,1]).
+	\]
+	右边第二分量位于 \(e^{2\mathrm{i}t}=f(e^{\mathrm{i}t})\) 上，故确实属于拉回纤维。把 \(t\) 换成 \(t+2\pi\) 时，第二分量变为 \([2t+4\pi,1]=[2t,1]\)，因为绕目标圆周两次产生两次变号。于是截面良定义，局部光滑且处处非零，故给出拉回线丛的全局标架。\(L\oplus L\) 改变了纤维秩，\(f^*L\) 改变了沿底空间闭路所经历的粘合；两个结论都没有在原线丛 \(L\) 上构造非零全局截面，因此与其非平凡性相容。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:smooth-idempotent-subbundles}
+	设 \(M\) 为连通的 Hausdorff、第二可数光滑流形，可带边界，\(E\to M\) 为有限秩实光滑向量丛。若同底光滑丛同态 \(P:E\to E\) 满足 \(P^2=P\)，证明 \(\ker P\) 与 \(\operatorname{im}P\) 是光滑子丛，且加法给出自然丛同构
+	\[
+		\ker P\oplus\operatorname{im}P\simeq E.
+	\]
+	再对 \(S^2\times\mathbb R^3\) 上的 \(P_p(v)=v-\langle v,p\rangle p\) 求核、像和相应商丛，并写出这个分解的两个投影。
+\end{exercise}
+\begin{solution}
+	对任一纤维向量 \(v\)，有
+	\[
+		v=(v-Pv)+Pv,\qquad P(v-Pv)=0.
+	\]
+	而若 \(w\in\ker P\cap\operatorname{im}P\)，写成 \(w=Pu\) 后有 \(w=P^2u=Pw=0\)。所以逐纤维有直和分解 \(E_p=\ker P_p\oplus\operatorname{im}P_p\)。在适应该分解的一组线性基下，\(P_p\) 的矩阵是 \(\operatorname{diag}(0,I_k)\)，故 \(\operatorname{tr}P_p=\operatorname{rank}P_p\)。迹不依赖基，因为 \(\operatorname{tr}(AB)=\operatorname{tr}(BA)\)，所以局部矩阵的迹给出一个整体光滑函数。
+
+	这个函数只取整数值，故局部常值：在一点附近把它与该点值的差控制在 \(1/2\) 以内，整数性就迫使两者相同。底空间连通，因而秩在整个 \(M\) 上恒定。由\cref{g1:thm:constant-rank-bundle-morphism}，核与像都是光滑子丛。加法映射逐纤维同构，且逆明确为
+	\[
+		E\longrightarrow\ker P\oplus\operatorname{im}P,\qquad
+		v\longmapsto(v-Pv,Pv).
+	\]
+	这些映射在子丛局部标架中光滑，故确为光滑丛同构。这里投影 \(P\) 本身已经指定了补丛，所以不需要另选内积。
+
+	对题给球面例，\(|p|=1\) 蕴含
+	\[
+		P_p^2=P_p,\qquad
+		\ker P_p=\mathbb Rp,\qquad
+		\operatorname{im}P_p=p^\perp.
+	\]
+	核丛由全局非零截面 \(p\mapsto p\) 张成，故是平凡线丛。像丛就是 \(\mathrm{T}S^2\) 在环境 \(\mathbb R^3\) 中的实现：对球面内曲线求导 \(\langle\gamma,\gamma\rangle=1\)，得到速度垂直于 \(p\)；反之，对 \(0\ne v\perp p\)，曲线
+	\[
+		\gamma(s)=\cos(s|v|)p+\frac{\sin(s|v|)}{|v|}v
+	\]
+	位于球面且满足 \(\gamma(0)=p\)、\(\gamma'(0)=v\)，零速度由常曲线实现。球面的局部图是一个坐标关于另两个坐标的光滑图像，所以其包含映射微分单射；上述速度计算遂识别了整个切空间。于是
+	\[
+		(S^2\times\mathbb R^3)/\ker P\simeq \mathrm{T}S^2,
+		\qquad [v]\longmapsto v-\langle v,p\rangle p.
+	\]
+	所需两个投影分别为 \((I-P)_p(v)=\langle v,p\rangle p\) 与 \(P_p(v)=v-\langle v,p\rangle p\)，并给出 \((S^2\times\mathbb R)\oplus \mathrm{T}S^2\simeq S^2\times\mathbb R^3\)。这里切丛与一条平凡线丛的直和是平凡丛，并未据此断言切丛本身平凡。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:latitude-pullback-bundle}
+	对固定 \(\alpha\in[0,\pi]\)，定义
+	\[
+		f_\alpha:S^1\longrightarrow S^2,\qquad
+		f_\alpha(e^{\mathrm{i}t})=(\sin\alpha\cos t,\sin\alpha\sin t,\cos\alpha).
+	\]
+	将球面切向量识别为环境中垂直于基点的向量。构造拉回丛 \(f_\alpha^*\mathrm{T}S^2\) 的全局标架；用它写出微分给出的同底丛同态 \(\mathrm{T}S^1\to f_\alpha^*\mathrm{T}S^2\)，并分别讨论 \(0<\alpha<\pi\) 与 \(\alpha=0,\pi\) 时的核、像和商丛。
+\end{exercise}
+\begin{solution}
+	令 \(p(t)=f_\alpha(e^{\mathrm{i}t})\)，定义环境向量
+	\[
+		u_1(t)=(-\sin t,\cos t,0),\qquad
+		u_2(t)=(-\cos\alpha\cos t,-\cos\alpha\sin t,\sin\alpha).
+	\]
+	直接计算得到 \(\langle p,u_1\rangle=\langle p,u_2\rangle=0\)、\(|u_1|=|u_2|=1\)、\(\langle u_1,u_2\rangle=0\)。因此两向量在 \(\mathrm{T}_{p(t)}S^2\) 中组成基。它们都是 \(2\pi\) 周期的光滑函数，所以
+	\[
+		e_a(e^{\mathrm{i}t})=(e^{\mathrm{i}t},u_a(t)),\qquad a=1,2,
+	\]
+	是拉回丛的全局光滑标架。这个公式在 \(\alpha=0,\pi\) 时仍成立：虽然 \(p(t)\) 此时为常点，所选基可以在这一固定平面内随 \(t\) 旋转。
+
+	在源圆周上取全局切标架 \(\tau(t)=(-\sin t,\cos t)\)。微分作用由参数曲线求导得到
+	\[
+		\mathrm{d}(f_\alpha)_{e^{\mathrm{i}t}}(a\tau(t))
+		=a\sin\alpha\,u_1(t).
+	\]
+	因此改写成到拉回丛的同底丛同态后，其在标架 \(\tau\) 与 \((e_1,e_2)\) 下的矩阵为列 \((\sin\alpha,0)^{\mathsf T}\)。若 \(0<\alpha<\pi\)，这个映射单射，核为零子丛，像为 \(e_1\) 张成的平凡线丛，而目标除以像的商丛由 \([e_2]\) 给出全局标架，亦为平凡线丛。具体商坐标为 \([a e_1+b e_2]\mapsto b\)。
+
+	若 \(\alpha=0\) 或 \(\pi\)，微分为零，核是整个 \(\mathrm{T}S^1\)，像是零子丛；目标除以像仍为秩二的平凡拉回丛。拉回纤维的维数始终为二，微分的秩却可以为一或零。因而拉回丛不能被定义为微分的像，也不等同于源流形的切丛。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:quotient-complement-shears}
+	在 \(\mathbb R\) 上令 \(E=\mathbb R\times\mathbb R^2\)，\(F_t=\mathbb R(1,0)\)，并把商映射写成 \(q(t,a,b)=(t,b)\)。求出 \(q\) 的全部光滑线性右逆及其像补丛。再考虑丛自同构
+	\[
+		T_c(t,a,b)=(t,a+c(t)b,b),\qquad c\in C^\infty(\mathbb R).
+	\]
+	证明每个 \(T_c\) 在 \(F\) 上为恒等，且在 \(E/F\) 上诱导恒等；是否存在一个补丛在所有这些自同构下都不变？
+\end{exercise}
+\begin{solution}
+	若 \(j:E/F\to E\) 是光滑丛同态且 \(qj=\operatorname{id}\)，其在每条纤维上的线性表达必为
+	\[
+		j_h(t,b)=(t,h(t)b,b).
+	\]
+	第一分量的系数 \(h(t)\) 由 \(j(t,1)\) 得到，所以光滑；反过来，任意光滑 \(h\) 都给出这样的右逆。因此全部右逆由光滑函数 \(h\) 参数化，其像为
+	\[
+		C_h|_t=\mathbb R(h(t),1).
+	\]
+	它由一个处处非零的光滑截面张成，且每个 \((a,b)\) 有唯一分解
+	\[
+		(a,b)=(a-h(t)b,0)+(h(t)b,b),
+	\]
+	所以 \(E=F\oplus C_h\)。反之，任一光滑补丛 \(C\) 上的 \(q|_C\) 逐纤维可逆，由\cref{g1:prop:bundle-morphism-matrices}有光滑逆，故也来自某个 \(h\)。
+
+	矩阵 \(\begin{psmallmatrix}1&c(t)\\0&1\end{psmallmatrix}\) 的逆由把 \(c\) 换成 \(-c\) 得到，因此 \(T_c\) 是光滑丛自同构。若 \(b=0\)，它保持 \((a,0)\) 不变，故固定 \(F\) 的每个向量；第二纤维坐标 \(b\) 不变，故诱导商上的恒等。同时
+	\[
+		T_c\circ j_h=j_{h+c},\qquad T_c(C_h)=C_{h+c}.
+	\]
+	取 \(c\equiv1\) 就有 \(C_{h+1}\ne C_h\)：若两条直线相同，将生成向量的第二分量都归一为一，就会得到 \(h+1=h\)，矛盾。因此不存在在所有这些自同构下不变的补丛。这个例子中每个补丛都能整体光滑选出，但子丛与商映射并没有指定一个对全部保留这些数据的自同构不变的选择。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1202-tensor-rank}
+	设 \(V,W\) 为有限维实向量空间，\(T\in W\otimes V^*\)，其对应的线性映射为 \(L=\Phi(T)\)。证明：把 \(T\) 写成纯张量之和所需的最少项数，等于 \(\operatorname{rank}L\)，约定零张量允许空和。由此判断在 \(V=W=\mathbb R^2\) 中，\(e_1\otimes e^1+e_2\otimes e^2\) 能否写成一个纯张量。再给出一个非零而收缩为零的 \(V\otimes V^*\) 中的元素，解释“迹为零”为什么比“张量为零”弱。
+\end{exercise}
+\begin{solution}
+	若 \(T=\sum_{j=1}^k w_j\otimes\alpha_j\)，则
+	\[
+		L(v)=\sum_{j=1}^k\alpha_j(v)w_j,
+	\]
+	故 \(\operatorname{im}L\subseteq\operatorname{span}\{w_1,\ldots,w_k\}\)，得到 \(\operatorname{rank}L\le k\)。反过来，设 \(\operatorname{rank}L=r>0\)，取像空间的一组基 \(w_1,\ldots,w_r\)。对每个 \(v\)，唯一写 \(L(v)=\sum_{j=1}^r\alpha_j(v)w_j\)。由 \(L\) 线性及系数表示唯一，\(\alpha_j(v+v')=\alpha_j(v)+\alpha_j(v')\)、\(\alpha_j(cv)=c\alpha_j(v)\)，所以 \(\alpha_j\in V^*\)。于是 \(L=\Phi(\sum_jw_j\otimes\alpha_j)\)，由 \(\Phi\) 单射得到 \(T=\sum_jw_j\otimes\alpha_j\)。若 \(r=0\)，则 \(L=0\)，同样由同构知 \(T=0\)。最少项数因此恰为 \(r\)。
+
+	给出的二维张量对应恒等映射，秩为 \(2\)，故不能写成一个纯张量。另一方面，\(S=e_1\otimes e^2\) 将 \(e_2\) 送到 \(e_1\)，所以非零；但其收缩是 \(e^2(e_1)=0\)。收缩只保留一个实数，是从整个张量空间到 \(\mathbb R\) 的线性观测，会消去许多非零元素；这一例中，它消去的是一个非零的非对角分量。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1202-quadratic-symmetric}
+	设 \(V\) 为有限维实向量空间，\(B\in\operatorname{Sym}^2(V^*)\) 按本节约定视为对称双线性形式，令 \(q(v)=B(v,v)\)。证明 \(q\) 唯一决定 \(B\)，并写出恢复公式。反过来，在一组基的坐标中给定任意实齐次二次多项式，证明它来自唯一这样的 \(B\)。对
+	\[
+		q(xe_1+ye_2)=3x^2+4xy+2y^2
+	\]
+	写出 \(B\) 的矩阵及它在 \(\operatorname{Sym}^2(V^*)\) 中的表达，并计算 \(B(e_1+e_2,e_1-e_2)\)。
+\end{exercise}
+\begin{solution}
+	双线性与对称性给出
+	\[
+		q(u+v)=B(u,u)+2B(u,v)+B(v,v),
+	\]
+	所以
+	\[
+		B(u,v)=\frac12\bigl(q(u+v)-q(u)-q(v)\bigr).
+	\]
+	这先证明唯一性。若给定齐次二次多项式
+	\[
+		q(x)=\sum_i a_i(x^i)^2+\sum_{i<j}b_{ij}x^ix^j,
+	\]
+	取矩阵 \(G\) 的对角元为 \(a_i\)，非对角元 \(G_{ij}=G_{ji}=b_{ij}/2\)，则 \(B(u,v)=[u]^{\mathsf T}G[v]\) 是对称双线性形式，并满足 \(B(v,v)=q(v)\)，证明存在。恢复公式只使用向量加法与实数值，因此换基并不改变它定义的对象。
+
+	本题中
+	\[
+		G=\begin{pmatrix}3&2\\2&2\end{pmatrix},\qquad
+		B=3e^1\odot e^1+4e^1\odot e^2+2e^2\odot e^2.
+	\]
+	中间项的系数为 \(4\)，因为 \((e^1\odot e^2)(u,v)=\tfrac12(e^1(u)e^2(v)+e^1(v)e^2(u))\)，对应矩阵的两个非对角元都是 \(1/2\)。所以系数 \(4\) 正好产生两个矩阵元 \(2\)。最后，
+	\[
+		B(e_1+e_2,e_1-e_2)
+		=(1,1)\begin{pmatrix}3&2\\2&2\end{pmatrix}\binom{1}{-1}=1.
+	\]
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1202-wedge-insertion}
+	设 \(V=\mathbb R^4\)，基与对偶基分别为 \(e_i,e^i\)，令
+	\[
+		\omega=e^1\wedge e^2+e^3\wedge e^4.
+	\]
+	计算 \(\omega\wedge\omega\) 以及 \(\iota_v\omega\)，其中 \(v=\sum_iv^ie_i\)。证明 \(v\mapsto\iota_v\omega\) 是 \(V\to V^*\) 的线性同构，且 \(\omega\) 不能写成两个一形式的楔积。最后计算 \(\iota_{e_1}(\omega\wedge\omega)\)，同时用插入的乘法公式核对符号与系数。
+\end{exercise}
+\begin{solution}
+	两个平方项含重复的一形式，均为零。两个交叉项交换的是两个二次块，符号为 \((-1)^4=1\)，故
+	\[
+		\omega\wedge\omega=2e^1\wedge e^2\wedge e^3\wedge e^4.
+	\]
+	按插入固定第一位置的约定，
+	\[
+		\iota_v\omega=v^1e^2-v^2e^1+v^3e^4-v^4e^3.
+	\]
+	若此一形式为零，对偶基的独立性依次给出 \(v^2=v^1=v^4=v^3=0\)，所以该线性映射单射。两个空间都为四维，故为同构；也可直接把任意一形式 \(\sum_i a_ie^i\) 的原像写成 \(a_2e_1-a_1e_2+a_4e_3-a_3e_4\)。
+
+	若 \(\omega=\alpha\wedge\beta\)，那么
+	\[
+		\omega\wedge\omega=\alpha\wedge\beta\wedge\alpha\wedge\beta=0,
+	\]
+	因为移项后出现两个相同的一形式。这与已计算出的非零最高次形式矛盾，所以 \(\omega\) 不是纯楔积。外幂由纯楔积张成，并不意味着每个元素都是纯楔积。
+
+	由最高次形式的表达直接插入，得到
+	\[
+		\iota_{e_1}(\omega\wedge\omega)=2e^2\wedge e^3\wedge e^4.
+	\]
+	另一方面，\(\iota_{e_1}\omega=e^2\)，且 \(\deg\omega=2\)，故乘法公式给出
+	\[
+		\iota_{e_1}(\omega\wedge\omega)
+		=e^2\wedge\omega+\omega\wedge e^2
+		=2e^2\wedge\omega
+		=2e^2\wedge e^3\wedge e^4.
+	\]
+	第二步交换一次与二次形式，符号为 \((-1)^{1\cdot2}=1\)，正好得到系数 \(2\)。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1202-density-orientation}
+	在 \(V=\mathbb R^2\) 的标准基 \(e=(e_1,e_2)\) 中，取内积矩阵及新基
+	\[
+		G=\begin{pmatrix}2&1\\1&2\end{pmatrix},\qquad
+		e'=eA,\qquad A=\begin{pmatrix}1&1\\0&-2\end{pmatrix}.
+	\]
+	证明 \(G\) 正定，计算新基中的内积矩阵，以及 \(\mu_g(e)\)、\(\mu_g(e')\)。取使标准基正向的定向，写出体积形式 \(\omega\) 和体积密度 \(\mu_g\) 在新旧两组对偶基中的表达。若把定向反过来，哪些对象发生改变？
+\end{exercise}
+\begin{solution}
+	对非零 \((x,y)\)，有
+	\[
+		(x,y)G\binom{x}{y}=2x^2+2xy+2y^2=(x+y)^2+x^2+y^2>0,
+	\]
+	故 \(G\) 正定。直接相乘得
+	\[
+		G'=A^{\mathsf T}GA=\begin{pmatrix}2&0\\0&6\end{pmatrix}.
+	\]
+	因此 \(\mu_g(e)=\sqrt{\det G}=\sqrt3\)，而 \(\mu_g(e')=\sqrt{12}=2\sqrt3\)，也等于 \(|\det A|\mu_g(e)\)。
+
+	记 \(\varepsilon=e^1\wedge e^2\)、\(\varepsilon'=e'^1\wedge e'^2\)。由于 \(\det A=-2\)，有 \(\varepsilon'=-\tfrac12\varepsilon\)。标准基虽不必是正交单位基，但正向体积形式在它上的值必须为正且绝对值等于 \(\sqrt3\)，所以
+	\[
+		\omega=\sqrt3\,\varepsilon=-2\sqrt3\,\varepsilon',\qquad
+		\mu_g=\sqrt3\,|\varepsilon|=2\sqrt3\,|\varepsilon'|.
+	\]
+	新基为负向基，故体积形式的系数为负，而体积密度的系数仍正。反转定向会把 \(\omega\) 变为 \(-\omega\)，不改变 \(g\)、\(\mu_g\)、两组固定基或它们的变换矩阵。体积密度因此不能单独判断所选的是哪一个定向。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:exr:1202-polar-rotation}
+	在平面一个 \(r>0\) 的极坐标扇区内，固定一点。令 \(g\) 为欧氏内积，\(J\) 为正向旋转 \(\pi/2\) 的线性映射，即 \(J\partial_x=\partial_y\)、\(J\partial_y=-\partial_x\)。求 \(J\) 在基 \((\partial_r,\partial_\theta)\) 中的矩阵与 \((1,1)\) 型张量表达。由这些表达验证 \(J^2=-I\)、\(\operatorname{tr}J=0\) 和 \(g(Ju,Jv)=g(u,v)\)。再求双线性形式 \(\beta(u,v)=g(Ju,v)\)，说明它为何是二次交替形式，并写成 \(\mathrm{d}r,\mathrm{d}\theta\) 的楔积。
+\end{exercise}
+\begin{solution}
+	直角坐标中的矩阵为 \(J_0=\begin{psmallmatrix}0&-1\\1&0\end{psmallmatrix}\)。极坐标换基矩阵可写成
+	\[
+		A=\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{pmatrix}
+		\begin{pmatrix}1&0\\0&r\end{pmatrix}.
+	\]
+	旋转矩阵与 \(J_0\) 交换，所以
+	\[
+		J'=A^{-1}J_0A=\begin{pmatrix}0&-r\\1/r&0\end{pmatrix}.
+	\]
+	等价地，\(J\partial_r=r^{-1}\partial_\theta\)、\(J\partial_\theta=-r\partial_r\)，故
+	\[
+		J=\frac1r\,\partial_\theta\otimes\mathrm{d}r
+		-r\,\partial_r\otimes\mathrm{d}\theta.
+	\]
+	矩阵平方为 \(-I\)，对角元和为零。极坐标内积矩阵是 \(G'=\operatorname{diag}(1,r^2)\)，相乘得 \((J')^{\mathsf T}G'J'=G'\)，从而验证内积保持不变。也可令 \(u=a\partial_r+b\partial_\theta\)、\(v=c\partial_r+d\partial_\theta\)，直接算出
+	\[
+		g(Ju,Jv)=(-rb)(-rd)+r^2(a/r)(c/r)=r^2bd+ac=g(u,v).
+	\]
+
+	同样，
+	\[
+		\beta(u,v)=g(-rb\partial_r+(a/r)\partial_\theta,\,
+		c\partial_r+d\partial_\theta)=r(ad-bc).
+	\]
+	交换 \(u,v\) 时此值变号，重复输入时为零，因此它是交替二次形式，并且
+	\[
+		\beta=r\,\mathrm{d}r\wedge\mathrm{d}\theta
+		=\mathrm{d}x\wedge\mathrm{d}y.
+	\]
+	这里 \(J\) 的矩阵含有 \(r\) 与 \(1/r\)，却仍表示固定的直角旋转；内积的矩阵同时发生相应变化，配对之后得到的有向面积形式与直角坐标中的对象一致。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:smooth-partition-on-line}
+	令 \(\eta\) 为\cref{g1:lem:smooth-bump-function}中的函数，\(b(t)=\eta(1-t^2)\)。对 \(k\in\mathbb Z\) 定义
+	\[
+		H(x)=\sum_{k\in\mathbb Z}b(x-k),\qquad
+		\psi_k(x)=\frac{b(x-k)}{H(x)}.
+	\]
+	证明这些公式给出从属于开覆盖 \(O_k=(k-\tfrac32,k+\tfrac32)\) 的光滑单位分解，并证明
+	\[
+		H(x+1)=H(x),\qquad
+		\psi_k(x)=\psi_0(x-k).
+	\]
+	求在整数点与半整数点处非零的权重，并证明对每个整数 \(j\ge1\)，有 \(\sum_k\psi_k^{(j)}(x)=0\)。
+\end{exercise}
+\begin{solution}
+	函数 \(b\) 光滑，在 \((-1,1)\) 上为正，在外部为零，故 \(\operatorname{supp}b=[-1,1]\)。因此 \(\operatorname{supp}b(\,\cdot-k)=[k-1,k+1]\subset O_k\)。给定 \(x\)，邻域 \((x-\tfrac14,x+\tfrac14)\) 只能与指标落在有限区间 \([x-\tfrac54,x+\tfrac54]\) 内的这些闭区间相交，故支集族局部有限，\(H\) 光滑。每个实数与某个整数的距离不超过 \(1/2\)，相应项严格为正，所以 \(H>0\)。
+
+	归一化后，\(\psi_k\) 光滑、非负、总和为 \(1\)，且其支集与对应的 \(b(x-k)\) 相同，全部从属条件成立。换指标 \(\ell=k-1\) 得
+	\[
+		H(x+1)=\sum_k b(x+1-k)=\sum_\ell b(x-\ell)=H(x).
+	\]
+	于是 \(H(x-k)=H(x)\)，给出 \(\psi_k(x)=b(x-k)/H(x-k)=\psi_0(x-k)\)。
+
+	在整数 \(m\) 处，只有 \(b(m-m)=b(0)>0\)，相邻项的自变量为 \(\pm1\)，也为零，故 \(\psi_m(m)=1\)，其余项为零。在 \(m+\tfrac12\) 处，只有指标 \(m,m+1\) 的两项非零；由于 \(b\) 为偶函数，两项相等，权重各为 \(1/2\)。最后，在任意计算点的固定邻域内，恒等式 \(\sum_k\psi_k=1\) 都是有限和恒等式，逐项求 \(j\) 阶导数即得所求。若把覆盖误写为 \((k-1,k+1)\)，支集就不包含于对应开集，不能得到本书定义中的从属关系。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:sections-on-closed-discrete-set}
+	设 \(M\) 为有限维、Hausdorff 且第二可数的光滑流形，允许有边界，\(E\to M\) 为有限秩实光滑向量丛，\(D\subseteq M\) 是闭离散子集，即 \(D\) 闭，且每个 \(p\in D\) 有一个只与 \(D\) 交于 \(p\) 的开邻域。任意指定向量 \(v_p\in E_p\)。证明存在整体光滑截面 \(s\)，使 \(s(p)=v_p\) 对所有 \(p\in D\) 成立。进一步证明，可要求 \(s\) 紧支，当且仅当集合 \(\{p\in D:v_p\ne0\}\) 有限。
+\end{exercise}
+\begin{solution}
+	在每个 \(p\in D\) 附近选择局部标架，并把邻域缩小到只含一个 \(D\) 中的点。用 \(v_p\) 在该点的分量作常系数线性组合，得到局部光滑截面 \(s_p\)，满足 \(s_p(p)=v_p\)。因为这个邻域与 \(D\) 只交于 \(p\)，它已延拓该邻域内的全部指定值。故 \(p\mapsto v_p\) 正是\cref{g1:def:smooth-section-closed-set}意义下闭集 \(D\) 上的光滑截面，\cref{g1:thm:section-extension}给出整体延拓。
+
+	若整体截面 \(s\) 紧支，令 \(K=\operatorname{supp}s\)。由于 \(D\) 闭，\(D\cap K\) 紧；它又是离散空间，而紧离散空间只能有限，因为由所有单点组成的开覆盖必须有有限子覆盖。因此非零数据的指标集包含于有限集 \(D\cap K\)，也有限。
+
+	反之，设只有 \(p_1,\ldots,p_N\) 的指定值非零。为每个 \(p_j\) 取前面的局部截面 \(s_j\)，其定义域 \(U_j\) 只与 \(D\) 交于 \(p_j\)。对紧闭集 \(\{p_j\}\subset U_j\) 选紧支光滑截断函数 \(\chi_j\)，在 \(p_j\) 附近为 \(1\)，支集包含于 \(U_j\)。将 \(\chi_j s_j\) 补零到 \(M\)，然后取有限和
+	\[
+		s=\sum_{j=1}^N\chi_j s_j.
+	\]
+	该截面在 \(p_j\) 取值 \(v_{p_j}\)，在 \(D\) 的其余点为零，支集包含于有限个紧集之并，所以紧。没有非零数据时取零截面即可。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:relative-lift-of-section}
+	设 \(M\) 为有限维、Hausdorff 且第二可数的光滑流形，允许有边界，\(q:E\to F\) 是有限秩实光滑向量丛之间覆盖 \(\operatorname{id}_M\) 的逐纤维满射同态。证明每个 \(t\in\Gamma(F)\) 都有整体光滑提升 \(s\in\Gamma(E)\)，即 \(q\circ s=t\)。若 \(A\subseteq M\) 闭，且已在 \(A\) 的开邻域 \(U\) 上给定提升 \(s_U\)，证明可选整体提升与 \(s_U\) 在 \(A\) 附近相同。说明两条整体提升之差属于哪个截面空间。
+\end{exercise}
+\begin{solution}
+	由\cref{g1:thm:constant-rank-bundle-morphism}，\(K=\ker q\) 为光滑子丛，且
+	\[
+		0\longrightarrow K\longrightarrow E\xrightarrow{\ q\ }F\longrightarrow0
+	\]
+	为短正合丛列。\cref{g1:thm:exact-bundle-splitting}给出光滑右逆 \(j:F\to E\)。于是 \(s_0=j\circ t\) 光滑，且 \(q\circ s_0=t\)。
+
+	在 \(U\) 上，\(d=s_U-s_0|_U\) 满足 \(q(d)=0\)，故逐点落在 \(K\) 中，并且是 \(K\) 的光滑截面。最后这一点可在适配 \(K\) 的局部标架中看出：后面的分量恒为零，前面的分量仍光滑。用\cref{g1:thm:section-extension}把 \(d\) 延拓为 \(K\) 的整体截面 \(\widetilde d\)，保持 \(A\) 附近的值，令
+	\[
+		s=s_0+\widetilde d.
+	\]
+	则 \(q(s)=q(s_0)=t\)，且在 \(A\) 附近 \(s=s_U\)。若 \(A\) 紧，还可使改变量 \(\widetilde d\) 紧支。
+
+	若 \(s_1,s_2\) 都提升 \(t\)，则 \(q(s_1-s_2)=0\)，其差属于 \(\Gamma(K)\)；反之，任意给一个提升加上 \(\Gamma(K)\) 中的截面，仍为提升。因此一旦选定一个提升，所有提升恰好由它加上核子丛的任意整体截面得到。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:metric-dependent-splitting}
+	设 \(M\) 为光滑流形，\(a\in C^\infty(M)\)。在平凡丛 \(E=M\times\mathbb R^2\) 上定义
+	\[
+		h_{a,p}\bigl((u,v),(u',v')\bigr)
+		=(u+a(p)v)(u'+a(p)v')+vv'.
+	\]
+	证明 \(h_a\) 是丛度量，求第一坐标子丛 \(L=M\times(\mathbb R\times\{0\})\) 的正交补、到 \(L\) 的正交投影，以及由该正交补给出的投影 \(q:E\to M\times\mathbb R\)、\(q(p,u,v)=(p,v)\) 的右逆。进一步证明，\(q\) 的每个光滑丛右逆都可由某个这样的 \(h_a\) 得到。
+\end{exercise}
+\begin{solution}
+	定义显然给出对称双线性型，其矩阵
+	\[
+		H_a=\begin{pmatrix}1&a\\a&1+a^2\end{pmatrix}
+	\]
+	光滑。对非零 \((u,v)\)，平方和 \((u+av)^2+v^2\) 严格为正，所以 \(h_a\) 为丛度量。
+
+	向量 \((u,v)\) 与 \((1,0)\) 正交，当且仅当 \(u+av=0\)。因此 \(L^\perp\) 有整体标架 \((-a,1)\)。分解
+	\[
+		(u,v)=(u+av,0)+v(-a,1)
+	\]
+	给出正交投影 \(P_a(p,u,v)=(p,u+a(p)v,0)\)。由于 \(q(p,-a(p)t,t)=(p,t)\)，对应的丛右逆为
+	\[
+		j_a(p,t)=(p,-a(p)t,t).
+	\]
+
+	任意逐纤维线性的右逆 \(j\) 都由其在 \(t=1\) 处的值决定；右逆条件使第二坐标必须为 \(1\)，所以 \(j(p,t)=(p,c(p)t,t)\)。丛同态的光滑性等价于 \(c\) 光滑。取 \(a=-c\)，便有 \(j=j_a\)。可见同一条短正合丛列的不同分裂都能在本例中通过改变度量实现；丛列本身并未规定其中哪一个。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:tensor-field-changing-frame}
+	在 \(\mathbb R^2\) 上取 \(X=\partial_x+y\partial_y\)、\(\alpha=\mathrm{d}x+\mathrm{d}y\)，令 \(L=X\otimes\alpha\)，把它视为同态场 \(L(w)=\alpha(w)X\)。换用全局坐标 \(u=x\)、\(v=e^xy\)，求 \(X,\alpha,L\) 的新分量，并在两套坐标中核对 \(\operatorname{tr}L=\alpha(X)\)。
+\end{exercise}
+\begin{solution}
+	坐标变化的逆为 \(x=u\)、\(y=ve^{-u}\)，两个方向都光滑。由 \(X(u)=1\)、\(X(v)=e^xy+ye^x=2v\)，得
+	\[
+		X=\partial_u+2v\partial_v.
+	\]
+	又由 \(\mathrm{d}x=\mathrm{d}u\)、\(\mathrm{d}y=e^{-u}\mathrm{d}v-ve^{-u}\mathrm{d}u\)，得
+	\[
+		\alpha=(1-ve^{-u})\mathrm{d}u+e^{-u}\mathrm{d}v.
+	\]
+	向量与协变向量按不同方向变换，合起来给出同态的矩阵。在旧、新坐标基中分别为
+	\[
+		[L]_{x,y}=\begin{pmatrix}1&1\\y&y\end{pmatrix},\qquad
+		[L]_{u,v}=\begin{pmatrix}1-ve^{-u}&e^{-u}\\2v(1-ve^{-u})&2ve^{-u}\end{pmatrix}.
+	\]
+	所以旧坐标中迹为 \(1+y\)，新坐标中为 \(1+ve^{-u}\)，正是同一函数。直接求值也有 \(\alpha(X)=1+y=(1-ve^{-u})+2ve^{-u}\)。核验迹不变并不是说两个矩阵逐项相同，而是收缩把不同换基因子相消了。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:exponential-polar-pullbacks}
+	设 \(F:\mathbb R^2\to\mathbb R^2\setminus\{0\}\)，\(F(u,v)=(e^u\cos v,e^u\sin v)\)。在目标上取欧氏度量 \(g=\mathrm{d}x\otimes\mathrm{d}x+\mathrm{d}y\otimes\mathrm{d}y\)、一形式 \(\alpha=x\,\mathrm{d}y-y\,\mathrm{d}x\)、二形式 \(\omega=\mathrm{d}x\wedge\mathrm{d}y\)。求三者的拉回，并求 \(F^*g\) 下函数 \(u\) 的梯度。说明即使 \(F\) 不是整体单射，这些构造仍然有意义。
+\end{exercise}
+\begin{solution}
+	有
+	\[
+		F^*(\mathrm{d}x)=e^u\cos v\,\mathrm{d}u-e^u\sin v\,\mathrm{d}v,
+		\qquad
+		F^*(\mathrm{d}y)=e^u\sin v\,\mathrm{d}u+e^u\cos v\,\mathrm{d}v.
+	\]
+	平方的对称交叉项相消，故
+	\[
+		F^*g=e^{2u}(\mathrm{d}u\otimes\mathrm{d}u+\mathrm{d}v\otimes\mathrm{d}v).
+	\]
+	把函数 \(x,y\) 同时与 \(F\) 复合，再代入上式中的一形式，得到 \(F^*\alpha=e^{2u}\mathrm{d}v\)。按楔积展开，则 \(F^*\omega=e^{2u}\mathrm{d}u\wedge\mathrm{d}v\)。该度量的逆矩阵为 \(e^{-2u}I\)，所以 \(\operatorname{grad}_{F^*g}u=e^{-2u}\partial_u\)。
+
+	\(F(u,v+2\pi)=F(u,v)\)，因此 \(F\) 不单射；但 \(\det \mathrm{D}F=e^{2u}>0\)，它在每点附近为局部微分同胚。协变张量的拉回本来就不要求单射，拉回度量的正定性只要求微分单射，故本题没有矛盾。若在目标取 \(h(x,y)=\log\sqrt{x^2+y^2}\)，则 \(h\circ F=u\)，并有
+	\[
+		\mathrm{d}F(\operatorname{grad}_{F^*g}u)
+		=e^{-2u}(x,y)=\operatorname{grad}_g h\big|_{F(u,v)},
+	\]
+	也可直接核对这个局部等距识别下的梯度关系。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:oriented-plane-complex-structure}
+	设 \(E\to M\) 是可定向的秩二实光滑向量丛，固定定向和丛度量 \(g\)。在每张正向正交单位标架 \((e_1,e_2)\) 中规定 \(Je_1=e_2\)、\(Je_2=-e_1\)。证明这定义整体光滑 \(J\)，且 \(J^2=-I\)。若 \(\nu\) 是由定向和 \(g\) 决定的单位体积形式，证明 \(\nu(v,w)=g(Jv,w)\)。最后将度量改为 \(\widetilde g=e^{2f}g\)，其中 \(f\) 光滑，比较两者对应的 \(J\) 与体积形式。
+\end{exercise}
+\begin{solution}
+	两张正向正交单位标架之间的变换矩阵在 \(\operatorname{SO}(2)\) 中。任一这样的矩阵都可写为 \(\begin{psmallmatrix}a&-b\\b&a\end{psmallmatrix}\)，其中 \(a^2+b^2=1\)，它与 \(J_0=\begin{psmallmatrix}0&-1\\1&0\end{psmallmatrix}\) 交换。因此各图中规定的 \(J\) 在交叠处一致，且局部矩阵恒为 \(J_0\)，所以 \(J\) 整体光滑并满足 \(J^2=-I\)。
+
+	对 \(v=ae_1+be_2\)、\(w=ce_1+de_2\)，有 \(g(Jv,w)=ad-bc\)。同一正向单位标架中，\(\nu=e^1\wedge e^2\)，故 \(\nu(v,w)=ad-bc\)，得到所需恒等式。这也说明 \(J\) 由度量与定向唯一确定：对每个 \(v\)，非退化性使满足 \(g(Jv,\cdot)=\nu(v,\cdot)\) 的向量唯一。
+
+	对新度量，\((e^{-f}e_1,e^{-f}e_2)\) 为正向正交单位标架。在它上面规定的四分之一转动仍是原来的 \(J\)，因为两个基向量作了相同的正缩放。对应的对偶标架各乘 \(e^f\)，所以 \(\widetilde\nu=e^{2f}\nu\)。因此正向共形缩放不改变 \(J\)，但改变面积的尺度。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:prescribed-positive-density}
+	设 \(M\) 为 \(n\geq1\) 维 Hausdorff、第二可数光滑流形，可带边界，\(\mu\) 是一个光滑正密度。
+	\begin{enumerate}
+		\item 证明存在黎曼度量 \(g\) 的体积密度恰为 \(\mu\)，不要求 \(M\) 可定向。
+		\item 若两个度量 \(g_0,g_1\) 的体积密度均为 \(\mu\)，构造连接它们且始终保持体积密度 \(\mu\) 的光滑度量族。说明普通凸组合为何未必保持体积密度。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	1. 先由\cref{g1:thm:bundle-metric-existence}给 \(\mathrm{T}M\) 取一个度量 \(h\)，记其正体积密度为 \(\mu_h\)。两个正密度的比 \(\rho=\mu/\mu_h\) 是定义在 \(M\) 上的正光滑函数：在任一局部标架中是两个正光滑系数的比，而二者换标架时都乘以同一绝对行列式，所以比值与标架无关。若令 \(g=\rho^{2/n}h\)，其局部矩阵行列式为 \(\rho^2\det H\)，故 \(\mu_g=\rho\mu_h=\mu\)。构造只使用密度的正性与比值，不需要选择定向。
+
+	2. 先令 \(k_t=(1-t)g_0+tg_1\)、\(0\leq t\leq1\)。它对每个非零向量均取正值，故是一族光滑度量，但体积密度可能变化。再按第一问逐个归一化：
+	\[
+		g_t=\left(\frac{\mu}{\mu_{k_t}}\right)^{2/n}k_t.
+	\]
+	\(\mu_{k_t}\) 的系数是正行列式的平方根，联合光滑依赖于 \((t,p)\)；因此上式给出联合光滑度量族，且每个 \(g_t\) 的体积密度均为 \(\mu\)。端点处比值为一，故确实连接给定 \(g_0,g_1\)。
+
+	普通凸组合不保体积的例子已可取在平凡二维丛中：\(G_0=\operatorname{diag}(2,1/2)\)、\(G_1=\operatorname{diag}(1/2,2)\) 的行列式都为一，但平均矩阵为 \((5/4)I\)，其体积密度系数为 \(5/4\)，不再是一。正定性对平均稳定，固定行列式却不是线性条件，因而需要额外归一化。
+\end{solution}

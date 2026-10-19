@@ -1,0 +1,246 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 9.5 曲率积分的几何后果
+% 纲要位置：几何学计划纲要.md，第 493 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 亏格与曲率符号的限制
+% * 总曲率与向量场零点的联系
+% * 度量变化下的积分不变量
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{曲率积分的几何后果}
+\label{g1:sec:0905}
+
+整体公式把一个可以逐点变化的函数，积分成了只能取离散值的拓扑量。因而它既能排除某些曲率分布，也能解释为什么改变度量时，总有一部分局部变化必须互相补偿。本节先看曲率符号，再把同一个积分理解为向量场绕零点的转动，最后计算保角改变度量时这种补偿怎样发生。
+
+\subsection{亏格与曲率符号的限制}
+\label{g1:subsec:0905:01}
+
+本小节的曲面均紧、连通且无边界。第六章的\cref{g1:prop:surface-euler-formulas}给出：可定向亏格为 \(g\) 的曲面 \(\Sigma_g\) 满足 \(\chi=2-2g\)，不可定向标准曲面 \(N_k\) 满足 \(\chi=2-k\)，其中 \(k\ge1\)。因此\eqref{g1:eq:closed-gauss-bonnet}立即成为
+\begin{equation}
+	\label{g1:eq:total-curvature-genus}
+	\int_{\Sigma_g}K\,\mathrm{d}A=4\pi(1-g),\qquad
+	\int_{N_k}K\,\mathrm{d}A=2\pi(2-k).
+\end{equation}
+这里限制的是整张曲面的总积分。它并没有说一个点的曲率可以由亏格决定，也没有说总积分为零就意味着处处平坦。
+
+\begin{proposition}
+	\label{g1:prop:curvature-sign-topology}
+	紧连通闭度量曲面满足下列限制。
+	\begin{enumerate}
+		\item 若 \(K\ge0\)，则 \(\chi\ge0\)；若还有一点 \(K>0\)，则 \(\chi>0\)。
+		\item 若 \(K\le0\)，则 \(\chi\le0\)；若还有一点 \(K<0\)，则 \(\chi<0\)。
+		\item 若 \(\chi=0\)，且 \(K\) 在全曲面上不变号，则 \(K\equiv0\)。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	积分保持非负性和非正性，故前两项的弱不等式来自 Gauss--Bonnet。若连续函数 \(K\) 在一点为正，则在某个小坐标圆盘上有 \(K\ge c>0\)。度量正定使这个圆盘的面积为正，所以在 \(K\ge0\) 的前提下，全曲率积分严格为正。负号情形同理。最后，若 \(K\) 不变号而又不恒为零，前两项就使积分严格非零，与 \(\chi=0\) 矛盾。
+\end{proof}
+
+结合\cref{g1:thm:surface-classification-unique}，这些限制可写成下表。表中列的是可能的拓扑类型，并不单凭这个必要条件断言某种指定曲率的度量一定存在。
+\begin{center}
+	\begin{tabular}{lll}
+		\toprule
+		曲率条件 & 可定向情形 & 不可定向情形\\
+		\midrule
+		\(K\ge0\)，且某处 \(K>0\) & 球面 \(\Sigma_0\) & 射影平面 \(N_1\)\\
+		\(K\equiv0\) & 环面 \(\Sigma_1\) & Klein 瓶 \(N_2\)\\
+		\(K\le0\)，且某处 \(K<0\) & \(\Sigma_g\)，\(g\ge2\) & \(N_k\)，\(k\ge3\)\\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+若 \(\Sigma_g\) 的曲率为常数 \(c<0\)，则还得到面积必须满足
+\[
+	\operatorname{Area}(\Sigma_g)=\frac{4\pi(g-1)}{-c}.
+\]
+所以固定曲率为 \(-1\) 后，闭可定向曲面的面积只能是 \(4\pi(g-1)\)。这个结论的前提仍是已经给定这样的度量；其构造属于后面的几何内容。
+
+\begin{example}
+	\label{g1:exm:two-torus-curvatures}
+	平坦环面 \(\mathbb R^2/(a\mathbb Z\times b\mathbb Z)\) 的各坐标图通过平移相接，欧氏度量因而可以粘合。局部 Christoffel 系数全为零，故 \(K=0\)，总曲率当然为零。
+
+	另一种熟悉的环面是三维空间中的旋转曲面
+	\[
+		x(u,v)=((R+r\cos v)\cos u,(R+r\cos v)\sin u,r\sin v),\qquad R>r>0.
+	\]
+	两个参数都以 \(2\pi\) 为周期。直接计算第一基本形式与形算子的行列式，得到
+	\[
+		\mathrm{d}A=r(R+r\cos v)\,\mathrm{d}u\,\mathrm{d}v,
+		\qquad K=\frac{\cos v}{r(R+r\cos v)}.
+	\]
+	这个计算也可从\cref{g1:prop:revolution-two-forms}代入生成圆读出。外侧 \(\cos v>0\) 的曲率为正，内侧为负，且
+	\[
+		\int K\,\mathrm{d}A=\int_0^{2\pi}\int_0^{2\pi}\cos v\,\mathrm{d}v\,\mathrm{d}u=0.
+	\]
+	两种度量都符合环面的 Euler 示性数，但后者并不平坦。拓扑相同，也不意味着这两个度量局部等距。
+\end{example}
+
+\subsection{总曲率与向量场零点的联系}
+\label{g1:subsec:0905:02}
+
+一个处处非零的切向量场经单位化后，可以充当移动标架的第一根轴。若这样的轴只能在删掉某些点以后选取，就要问它绕着这些点转了几圈。第五章的圆周绕数正好能记录这个局部现象。
+
+\begin{definition}
+	\label{g1:def:surface-vector-index}
+	设 \(V\) 是光滑切向量场，\(p\) 是其孤立零点。在 \(p\) 附近选一个定向坐标圆盘和正向光滑正交单位标架 \((e_1,e_2)\)，写 \(V=a e_1+b e_2\)。沿包围 \(p\)、内部没有其他零点的小正向坐标圆周 \(C\)，定义 \(V\) 在 \(p\) 的\term[xiangliangchangzhishu]{向量场指数}[index of a vector field]为映射
+	\[
+		C\longrightarrow S^1,\qquad q\longmapsto\frac{(a(q),b(q))}{\sqrt{a(q)^2+b(q)^2}}
+	\]
+	的绕数，记为 \(\operatorname{ind}_p(V)\)。等价地，若沿一周连续选择角度 \(\theta\)，则
+	\[
+		\operatorname{ind}_p(V)=\frac{\theta(\text{终点})-\theta(\text{起点})}{2\pi}.
+	\]
+	角度提升及所得整数的同伦不变性见\cref{g1:lem:circle-angle-lift,g1:thm:circle-fundamental}。\symidx{\(\operatorname{ind}_p(V)\)：切向量场在孤立零点的指数}
+\end{definition}
+
+这个整数与定义中的辅助选择无关。两条足够小的圆周在无零点的穿孔圆盘中可相互变形，单位化向量给出相应的圆周映射同伦。换正向正交标架时，新旧标架之间的旋转定义在整个圆盘上，其限制到边界的绕数为零；向量的角度减去这个旋转角，不改变一周的总增量。若改用另一张小坐标圆盘，可先在二者交中取更小的圆盘作比较。反转局部定向则同时反转边界行进方向和记录向量角度的方向，两个负号抵消。因此在不可定向曲面上，这个局部指数也有意义。
+
+\begin{proposition}
+	\label{g1:prop:nondegenerate-vector-index}
+	在上述标架中置 \(F=(a,b)\)，并以零点为坐标原点。如果 \(A=\mathrm{d}F_0\) 可逆，则
+	\[
+		\operatorname{ind}_p(V)=\operatorname{sgn}\det A.
+	\]
+\end{proposition}
+\begin{proof}
+	由可逆性，存在 \(c>0\) 使 \(|Ax|\ge c|x|\)。Taylor 展开给出 \(F(x)=Ax+r(x)\)，其中 \(|r(x)|/|x|\to0\)。在足够小的圆周上，\(Ax+t r(x)\) 对 \(0\le t\le1\) 始终非零，所以 \(F/|F|\) 与 \(Ax/|Ax|\) 同伦。
+
+	对 \(A\) 的列作 Gram--Schmidt 正交化，可写 \(A=QR\)，其中 \(R\) 上三角且对角元为正，\(Q\) 正交。矩阵 \((1-t)R+tI\) 始终可逆，故只需算 \(Q\) 的绕数。若 \(\det Q=1\)，它是旋转，绕数为 \(1\)；若 \(\det Q=-1\)，它是旋转与反射的复合，绕数为 \(-1\)。这正是 \(\operatorname{sgn}\det A\)。
+\end{proof}
+
+例如平面场 \((x,y)\) 与 \((-x,-y)\) 的指数都为 \(1\)：向外或向内改变的是箭头方向，不改变绕原点一周时箭头也转一周的事实。鞍点场 \((x,-y)\) 的指数是 \(-1\)。这一符号差别比“是不是零点”本身提供了更多信息。
+
+\begin{theorem}[Poincar\'e--Hopf]
+	\label{g1:thm:surface-poincare-hopf}
+	设 \(M\) 为紧光滑闭曲面，\(V\) 为只有孤立零点的光滑切向量场。则零点只有有限个，且
+	\begin{equation}
+		\label{g1:eq:surface-index-sum}
+		\sum_{V(p)=0}\operatorname{ind}_p(V)=\chi(M).
+	\end{equation}
+	允许 \(V\) 没有零点，此时左端为空和 \(0\)。
+\end{theorem}
+
+这是 Poincar\'e--Hopf 定理的二维情形。\footnote{Poincar\'e，庞加莱，Jules Henri Poincar\'e（1854--1912），法国数学家，对拓扑学、微分方程与动力系统作出奠基性贡献。}\footnote{Hopf，霍普夫，Heinz Hopf（1894--1971），德国出生的瑞士数学家，研究拓扑学、向量场及同伦不变量。}我们用刚证明的曲率公式给出证明，不预先调用高维版本。
+\begin{proof}
+	零点集闭且位于紧曲面中。每个零点都能被一个只含该零点的邻域隔开；若零点无限，紧性会给出一个聚点，连续性又使该聚点成为非孤立零点，矛盾。只需逐连通分支证明。
+
+	先设 \(M\) 可定向。删去每个零点附近互不相交的坐标小开圆盘 \(D_p(\varepsilon)\)，所得曲面记为 \(M_\varepsilon\)。在它上面，
+	\[
+		E_1=\frac{V}{|V|},\qquad E_2=JE_1
+	\]
+	是一组全局正交单位标架，其联络形式 \(\Omega\) 满足 \(\mathrm{d}\Omega=-K\,\mathrm{d}A\)。Green 公式在这里也能逐块相加：用\cref{g1:lem:smooth-coordinate-disk-decomposition}分解 \(M_\varepsilon\)，对每块应用\cref{g1:lem:green-formula}，公共边上一形式的积分因方向相反而抵消。因此
+	\[
+		\int_{M_\varepsilon}K\,\mathrm{d}A=-\int_{\partial M_\varepsilon}\Omega.
+	\]
+	在 \(p\) 附近取一组能延到圆盘中心的正向光滑标架，联络形式记为 \(\omega_p\)。沿小圆周写 \(E_1=\cos\theta\,e_1+\sin\theta\,e_2\)。\cref{g1:prop:connection-frame-change}给出 \(\Omega=\omega_p+\mathrm{d}\theta\)。\(\theta\) 可以沿一周提升，不要求在穿孔圆盘上成为单值函数。按小圆盘的正向积分，便有
+	\[
+		\int_{\partial D_p(\varepsilon)}\Omega
+		=\int_{\partial D_p(\varepsilon)}\omega_p+2\pi\operatorname{ind}_p(V).
+	\]
+	洞的边界在 \(M_\varepsilon\) 中取相反方向，故
+	\[
+		\int_{M_\varepsilon}K\,\mathrm{d}A
+		=\sum_p\left(\int_{\partial D_p(\varepsilon)}\omega_p+2\pi\operatorname{ind}_p(V)\right).
+	\]
+	\(\omega_p\) 在整个小圆盘上光滑，其系数有界，圆周长度趋于零，因而前一项趋于零。删掉的圆盘面积也趋于零，而 \(K\) 有界。令 \(\varepsilon\to0\)，得到 \(\int_M K\,\mathrm{d}A=2\pi\sum_p\operatorname{ind}_p(V)\)，再用闭曲面的 Gauss--Bonnet 公式即得结论。如果没有零点，就直接在整个闭曲面上对 \(\Omega\) 积分，得到总曲率为零。
+
+	若 \(M\) 不可定向，取\cref{g1:thm:orientation-cover}中的定向二重覆盖 \(\pi:\widetilde M\to M\)。以局部坐标的提升作为光滑坐标，并赋予拉回度量，\(\pi\) 就是光滑局部等距。场 \(V\) 唯一提升为 \(\widetilde V\)，每个零点提升成两个零点。局部微分同胚只是在同一指数定义中换坐标；即使它反转定向，前面解释的两个负号仍然抵消，所以两个指数都等于原指数。可定向情形给出 \(2\sum_p\operatorname{ind}_p(V)=\chi(\widetilde M)\)，再由\cref{g1:prop:surface-finite-cover-euler}知 \(\chi(\widetilde M)=2\chi(M)\)，除以 \(2\) 即得所求。
+\end{proof}
+
+\begin{example}
+	\label{g1:exm:sphere-vector-indices}
+	单位球面上高度函数 \(h(p)=p_3\) 的梯度是
+	\[
+		V(p)=e_3-p_3p.
+	\]
+	因为对每个切向量 \(w\) 都有 \(\langle V,w\rangle=w_3=\mathrm{d}h(w)\)，这个表达式确实给出曲面梯度。它仅在南、北极为零。北极处沿切方向求导得到 \(-I\)，南极处得到 \(I\)；二者在二维中行列式都为正，所以两个指数均为 \(1\)，总和为球面的 \(\chi=2\)。特别地，球面不可能有处处非零的光滑切向量场。平坦环面上的常向量场则能穿过平移识别而下降为处处非零的场，与 \(\chi=0\) 相符。
+\end{example}
+
+指数并不是给每个零点机械地计数一次。退化零点可以有更大的正指数、负指数或零指数；定理约束的是带指数的总和。它的证明还指出了联系所在：删去零点后标架存在，但标架绕这些洞的转角，恰好补回了整张曲面的曲率积分。
+
+\subsection{度量变化下的积分不变量}
+\label{g1:subsec:0905:03}
+
+固定一张光滑闭曲面 \(M\)，任取两个光滑度量 \(g_0,g_1\)。虽然曲率和面积测度都依赖度量，Gauss--Bonnet 却给出
+\[
+	\int_MK_{g_0}\,\mathrm{d}A_{g_0}=\int_MK_{g_1}\,\mathrm{d}A_{g_1}=2\pi\chi(M).
+\]
+这里不需要先证明两种度量之间有什么特殊几何关系。事实上 \(g_t=(1-t)g_0+tg_1\) 对 \(0\le t\le1\) 始终正定，提供了一个直接的光滑变化；沿整个变化，总积分都固定。有边界时，固定的则是曲率积分、边界测地曲率积分与外角和三者之和。
+
+为看清局部补偿，考虑保角改变度量 \(\widetilde g=e^{2f}g\)，其中 \(f\) 是光滑实函数。第八章在平面保角坐标中算过曲率；下面给出相对于任意曲面度量的公式。仍采用第八章约定 \(\Delta_g=-\operatorname{div}_g\operatorname{grad}_g\)。
+
+\begin{proposition}
+	\label{g1:prop:conformal-gauss-bonnet-change}
+	在定向光滑度量曲面上，若 \(\widetilde g=e^{2f}g\)，则
+	\begin{align}
+		\mathrm{d}\widetilde A&=e^{2f}\mathrm{d}A,\label{g1:eq:conformal-area-change}\\
+		\widetilde K\,\mathrm{d}\widetilde A&=(K+\Delta_g f)\,\mathrm{d}A.\label{g1:eq:conformal-curvature-change}
+	\end{align}
+	对区域的一段光滑边界，令 \(T\) 为原度量的正向单位切向量，\(\nu=JT\) 为内侧单位切向法向，\(\partial_\nu f=\mathrm{d}f(\nu)\)。则
+	\begin{equation}
+		\label{g1:eq:conformal-boundary-change}
+		\widetilde k_g\,\mathrm{d}\widetilde s=(k_g-\partial_\nu f)\,\mathrm{d}s.
+	\end{equation}
+	保角变化保持每个角点的内角及外角。
+\end{proposition}
+\begin{proof}
+	二维度量矩阵乘以 \(e^{2f}\) 后，其行列式乘以 \(e^{4f}\)，开方即得面积公式。为求曲率，先比较协变导数。定义
+	\[
+		\widetilde\nabla_VW=\nabla_VW+V(f)W+W(f)V-g(V,W)\operatorname{grad}_g f.
+	\]
+	右端新增项关于 \(V,W\) 对称，故仍无挠。对 \(\widetilde g(W,Z)=e^{2f}g(W,Z)\) 求导并展开，新增项在两个内积中的贡献为 \(2V(f)e^{2f}g(W,Z)\)，其余交叉项互相抵消，正好给出度量相容性。因此由\cref{g1:prop:surface-connection-properties}的唯一性，这就是新度量的协变导数。
+
+	取原度量的正向正交单位标架 \((e_1,e_2)\)，以 \((\vartheta^1,\vartheta^2)\) 表示其对偶一形式。新标架为 \(\widetilde e_i=e^{-f}e_i\)。把它代入刚得到的公式，可得
+	\[
+		\widetilde\omega(V)=\omega(V)+e_1(f)g(V,e_2)-e_2(f)g(V,e_1).
+	\]
+	记 \(*\vartheta^1=\vartheta^2\)、\(*\vartheta^2=-\vartheta^1\)，线性延拓到一形式，则上述等式就是 \(\widetilde\omega=\omega+*\mathrm{d}f\)。这个星号这里只表示一形式在定向正交标架中的直角旋转；换正向正交标架不改变它的定义。
+
+	还需要算出这个一形式的外微分。置 \(Z=\operatorname{grad}_g f=Z^u\partial_u+Z^v\partial_v\)，在正向坐标中写 \(h=\sqrt{\det(g_{ij})}\)。由定义
+	\[
+		*\mathrm{d}f=h(Z^u\mathrm{d}v-Z^v\mathrm{d}u),\qquad
+		\mathrm{d}(*\mathrm{d}f)=\bigl(\partial_u(hZ^u)+\partial_v(hZ^v)\bigr)\mathrm{d}u\wedge\mathrm{d}v.
+	\]
+	第八章的散度公式表明，右端为 \((\operatorname{div}_g Z)\mathrm{d}A=-(\Delta_g f)\mathrm{d}A\)。因此
+	\[
+		-\widetilde K\,\mathrm{d}\widetilde A
+		=\mathrm{d}\widetilde\omega
+		=\mathrm{d}\omega+\mathrm{d}(*\mathrm{d}f)
+		=-(K+\Delta_g f)\mathrm{d}A,
+	\]
+	即得曲率公式。
+
+	沿边界，新旧标架中切向量的角度 \(\theta\) 相同，且 \(\mathrm{d}\widetilde s=e^f\mathrm{d}s\)。用\cref{g1:prop:tangent-connection-angle}将曲率乘弧长写成 \(\mathrm{d}\theta+\omega\)，得到
+	\[
+		\widetilde k_g\,\mathrm{d}\widetilde s
+		=k_g\,\mathrm{d}s+(*\mathrm{d}f)(T)\,\mathrm{d}s
+		=(k_g-\partial_\nu f)\,\mathrm{d}s.
+	\]
+	最后，度量乘以同一个正数不改变两条射线夹角的余弦，故角点的角也保持不变。
+\end{proof}
+
+曲率面积形式新增的 \(\Delta_g f\) 与边界新增项恰好抵消。具体地，由刚才的局部计算和逐块 Green 公式，
+\[
+	\int_M\Delta_g f\,\mathrm{d}A
+	=-\int_{\partial M}*\mathrm{d}f
+	=\int_{\partial M}\partial_\nu f\,\mathrm{d}s.
+\]
+这里使用的是内侧法向；若换成外侧，最后一项前面要加负号。把此式与\eqref{g1:eq:conformal-boundary-change}相加，总变化为零。闭曲面没有边界，便直接得到 \(\int_M\Delta_g f\,\mathrm{d}A=0\)。不可定向时，这些曲率和内侧法向公式在局部反转定向后仍不变，可以提升到定向二重覆盖再除以 \(2\)，所以总积分的结论照样成立。
+
+\begin{example}
+	\label{g1:exm:conformal-flat-torus}
+	在 \(u,v\) 都以 \(2\pi\) 为周期的平坦环面上，取 \(f(u,v)=\varepsilon\cos u\)，其中 \(\varepsilon>0\)。新度量为 \(e^{2\varepsilon\cos u}(\mathrm{d}u^2+\mathrm{d}v^2)\)。因 \(K=0\)、\(\Delta_g f=-f_{uu}-f_{vv}=\varepsilon\cos u\)，有
+	\[
+		\widetilde K=\varepsilon e^{-2\varepsilon\cos u}\cos u,\qquad
+		\widetilde K\,\mathrm{d}\widetilde A=\varepsilon\cos u\,\mathrm{d}u\,\mathrm{d}v.
+	\]
+	局部曲率已经出现正负变化，总积分却仍为零。这里曲率的补偿可以直接由周期积分看见；一般度量变化中，保证这种补偿的就是整体 Gauss--Bonnet 公式。
+\end{example}
+
+本章由切向投影出发，经联络形式、边界转角和有限分解，得到总曲率的拓扑不变性。向量场指数提供了同一整数的另一种计算方式。这些联系都已在二维中完成，不需要预先知道一般流形的特征类理论；后面的推广应当解释这里已经看清的现象，而不是替代这些具体证明。

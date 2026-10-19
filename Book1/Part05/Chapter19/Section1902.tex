@@ -1,0 +1,128 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 19.2 极大环面的存在
+% 纲要位置：几何学计划纲要.md，第 853 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 一参数子群的闭包
+% * 紧连通交换李群的结构
+% * 极大环面的构造
+% * 每个元素包含在极大环面中的证明
+% 
+% 纲要内容结束
+
+\section{极大环面的存在}
+\label{g1:sec:1902}
+
+圆周群中的运动可以反复绕行，两个圆周的乘积还允许以互不成比例的速度同时转动。后一种运动虽然只有一个实参数，其像的闭包却可能是整个二维环面。因此，在紧群中寻找交换方向时，合适的对象不是单参数子群的像本身，而是它的闭包。闭子群定理赋予这个闭包李群结构；紧连通交换李群的结构定理则将说明，它正是若干圆周的乘积。
+
+\subsection{一参数子群的闭包}
+\label{g1:subsec:1902:01}
+设 \(G\) 为紧李群，\(X\in\mathfrak g\)。记
+\[
+	A_X\coloneqq\overline{\{\exp_G(tX):t\in\mathbb R\}},
+\]
+其中闭包取在 \(G\) 中。参数化的像可能不是嵌入子流形，但闭包一定是闭子群；这里先把所需性质逐项落实。
+
+\begin{lemma}[交换子群的闭包]\label{g1:lem:abelian-subgroup-closure}
+	设 \(G\) 为有限维实李群，\(A\subseteq G\) 为交换子群。则 \(\overline A\) 仍是交换子群。若 \(A\) 连通，则 \(\overline A\) 连通；若 \(G\) 紧，则 \(\overline A\) 是紧李子群。特别地，紧李群中的 \(A_X\) 是紧连通交换李群。
+\end{lemma}
+\begin{proof}
+	李群为局部欧氏且第二可数的空间，点的闭包关系可以用序列检测。取 \(a,b\in\overline A\)，选 \(a_j,b_j\in A\) 分别趋于它们。连续性给出 \(a_jb_j^{-1}\to ab^{-1}\)，所以 \(ab^{-1}\in\overline A\)，这证明闭包为子群。又因 \(a_jb_j=b_ja_j\)，取极限得 \(ab=ba\)。
+
+	连通集的闭包连通：若闭包被两个非空相对开闭集分开，稠密子集 \(A\) 必须与两者都相交，于是也被分开，矛盾。紧群的闭子集紧，而\cref{g1:thm:closed-subgroup}使闭子群成为采用子空间拓扑的嵌入李子群。最后，\(t\mapsto\exp_G(tX)\) 是连通空间 \(\mathbb R\) 的连续像，且单参数乘法规律使像为交换子群，因此适用于上述结论。
+\end{proof}
+
+\cref{g1:exm:irrational-torus-subgroup}中的 \(t\mapsto(e^{\mathrm{i}t},e^{\mathrm{i}\alpha t})\)、\(\alpha\notin\mathbb Q\)，在 \(S^1\times S^1\) 中稠密。这说明 \(\operatorname{Lie}(A_X)\) 可能严格包含 \(\mathbb RX\)：闭包加入了极限方向，不能按最初参数的个数计算闭包的维数。相反，若这条单参数子群有非零周期，它的像已是一个圆周，因而无需再添极限点。\(X=0\) 时闭包只是单位元。
+
+\subsection{紧连通交换李群的结构}
+\label{g1:subsec:1902:02}
+现在从一个抽象的紧连通交换李群 \(A\) 出发。其李代数 \(\mathfrak a\) 的括号为零，故\cref{g1:cor:commuting-exponentials}表明指数映射保持加法：
+\[
+	\exp_A(X+Y)=\exp_A X\,\exp_A Y.
+\]
+指数在零点附近是微分同胚，所以像是包含单位元邻域的子群，因而是开子群。\(A\) 连通，开子群的各陪集又都是开集，故像只能为整个 \(A\)。因此分类问题变成：指数映射的核在向量空间里是什么样的子群？
+
+\begin{lemma}[离散子群的格基]\label{g1:lem:discrete-subgroup-lattice-basis}
+	设 \(V\) 为 \(r\) 维实向量空间，\(\Lambda\subset V\) 为离散加法子群。则存在实线性无关的向量 \(v_1,\ldots,v_k\)，其中 \(0\le k\le r\)，使
+	\[
+		\Lambda=\mathbb Zv_1\oplus\cdots\oplus\mathbb Zv_k.
+	\]
+	商空间 \(V/\Lambda\) 紧当且仅当 \(k=r\)。当 \(k=r\) 时，称 \(\Lambda\) 为 \(V\) 中的\term[manzhige]{满秩格}[full lattice]。
+\end{lemma}
+\begin{proof}
+	在 \(V\) 上选欧氏内积。离散性给出 \(\varepsilon>0\)，使 \(\Lambda\cap B_\varepsilon(0)=\{0\}\)。不同格点之差仍在 \(\Lambda\) 中，所以不同格点的距离至少为 \(\varepsilon\)。这也说明每个有界集只包含有限多个格点，并且 \(\Lambda\) 闭：收敛的格点序列为 Cauchy 序列，最终必须恒定。
+
+	对 \(r\) 归纳。\(\Lambda=\{0\}\) 时取空基。否则选长度最小的非零 \(v_1\in\Lambda\)；最小值存在，因为先取一个非零格点，其长度以内的格点只有有限个。若 \(sv_1\in\Lambda\)，减去 \(\lfloor s\rfloor v_1\) 后得到长度小于 \(\lVert v_1\rVert\) 的格点，故余项为零。这证明
+	\[
+		\Lambda\cap\mathbb Rv_1=\mathbb Zv_1.
+	\]
+	令 \(p:V\to v_1^\perp\) 为正交投影。我们需要先证明 \(p(\Lambda)\) 仍离散；任意离散集合的投影并没有这一性质。若存在非零 \(p(\lambda_j)\to0\)，将 \(\lambda_j\) 减去适当整数倍的 \(v_1\)，可使其沿 \(v_1\) 的分量都位于线段 \([0,v_1]\) 内。这些调整后的格点有界，因而只有有限种；其非零投影便不可能趋于零，矛盾。
+
+	由归纳假设，\(p(\Lambda)\) 有格基 \(w_2,\ldots,w_k\)。各取一个提升 \(v_j\in\Lambda\)，满足 \(p(v_j)=w_j\)。任意 \(\lambda\in\Lambda\) 的投影都是这些 \(w_j\) 的整数线性组合，减去相应 \(v_j\) 后，余项位于 \(\Lambda\cap\mathbb Rv_1=\mathbb Zv_1\)。因此 \(v_1,\ldots,v_k\) 生成 \(\Lambda\)。若它们有实线性关系，先投影便得到 \(w_2,\ldots,w_k\) 的实线性关系，迫使相应系数为零，再由 \(v_1\ne0\) 得剩余系数为零。
+
+	记 \(W=\operatorname{span}_{\mathbb R}\Lambda\)。映射 \(V/\Lambda\to V/W\)、\([v]\mapsto v+W\) 连续且满射。若 \(V/\Lambda\) 紧，则向量空间 \(V/W\) 紧，只能有 \(W=V\)，即 \(k=r\)。反之，\(k=r\) 时每个陪集都有代表元位于紧平行多面体
+	\[
+		\left\{\sum_{j=1}^r t_jv_j:0\le t_j\le1\right\},
+	\]
+	因为可将各坐标减去整数部分。商空间是这个紧集的连续像，所以紧。
+\end{proof}
+
+\begin{theorem}[紧连通交换李群的结构]\label{g1:thm:compact-connected-abelian-group}
+	设 \(A\) 为 \(r\) 维紧连通交换实李群，\(\mathfrak a=\operatorname{Lie}(A)\)。则
+	\[
+		\Lambda_A\coloneqq\ker(\exp_A:\mathfrak a\to A)
+	\]
+	是 \(\mathfrak a\) 中的满秩格，指数诱导李群同构
+	\[
+		\mathfrak a/\Lambda_A\ \cong\ A\ \cong\ (S^1)^r.
+	\]
+	\(r=0\) 时右侧解释为平凡群。
+\end{theorem}
+\begin{proof}
+	前面的论证已给出指数为满的光滑同态。由\cref{g1:prop:exponential-local-diffeomorphism}，零点有一个邻域只包含核的零元，故 \(\Lambda_A\) 离散；它也是闭集 \(\{e\}\) 的原像。\cref{g1:thm:homogeneous-space}应用于加法李群 \(\mathfrak a\) 及其闭子群 \(\Lambda_A\)，赋予商空间光滑结构。指数在陪集上常值，因此下降成光滑双射 \(\overline{\exp}_A:\mathfrak a/\Lambda_A\to A\)。
+
+	这不仅是一个集合双射。商映射与指数映射在零点附近都是局部微分同胚，故 \(\overline{\exp}_A\) 在单位元附近具有光滑局部逆。它又是同态，用群平移即可将局部逆移到每一点。因此它是李群同构，商空间也由 \(A\) 的紧性而紧。\cref{g1:lem:discrete-subgroup-lattice-basis}于是给出满秩格基 \(v_1,\ldots,v_r\)。线性坐标 \(\sum_jt_jv_j\mapsto(t_1,\ldots,t_r)\) 将格化为 \(\mathbb Z^r\)，再用
+	\[
+		(t_1,\ldots,t_r)+\mathbb Z^r\longmapsto
+		(e^{2\pi\mathrm{i}t_1},\ldots,e^{2\pi\mathrm{i}t_r})
+	\]
+	得到到 \((S^1)^r\) 的李群同构。
+\end{proof}
+
+选择格基才得到与标准圆周积的具体同构；指数核本身不依赖这项选择。以后比较具有相同李代数的紧群时，核格的差别将记录部分整体信息。这里的 \(2\pi\) 来自圆周的角度坐标：若用 \(\mathrm{i}\mathbb R\) 表示 \(\operatorname{Lie}(S^1)\)，指数核为 \(2\pi\mathrm{i}\mathbb Z\)，而不是 \(\mathrm{i}\mathbb Z\)。
+
+\subsection{极大环面的构造}
+\label{g1:subsec:1902:03}
+\begin{definition}\label{g1:def:maximal-torus}
+	设 \(G\) 为有限维实李群。\(G\) 中的紧连通交换李子群称为\term[huanmian]{环面}[torus]。若一个环面 \(T\subseteq G\) 不真包含于任何更大的环面，则称 \(T\) 为\term[jidahuanmian]{极大环面}[maximal torus]。平凡群也允许作为零维环面。\symidx{\(T,\mathfrak t\)：极大环面及其李代数}
+\end{definition}
+
+这个定义中的“极大”按包含关系判断。它并不表示存在一个包含全部环面的“最大环面”。例如绕不同轴旋转得到 \(\operatorname{SO}(3)\) 中不同的圆周子群，它们彼此不包含。我们现在也不预先断言所有极大环面的维数相同；那是共轭定理的后果。
+
+\begin{proposition}[环面的极大扩张]\label{g1:prop:maximal-torus-existence}
+	设 \(G\) 为有限维紧实李群。任意环面 \(T_0\subseteq G\) 都包含于一个极大环面。特别地，\(G\) 存在极大环面。
+\end{proposition}
+\begin{proof}
+	考虑全部包含 \(T_0\) 的环面，其维数是 \(0,1,\ldots,\dim G\) 中的整数，且这个集合非空。取其中维数最大的一个 \(T\)。若 \(T\subseteq S\) 而 \(S\) 也是环面，维数最大性给出 \(\dim T=\dim S\)。包含映射在单位元处的微分因维数相同而可逆，故 \(T\) 包含 \(S\) 中单位元的一个开邻域。于是 \(T\) 是连通群 \(S\) 的开子群，只能有 \(T=S\)。这证明 \(T\) 极大。取 \(T_0=\{e\}\) 即得存在性。
+\end{proof}
+
+相同论证说明，环面之间的真包含必使维数严格增加；因此此处的极大扩张只需有限维数论证。\cref{g1:lem:abelian-subgroup-closure,g1:thm:compact-connected-abelian-group}又表明，每条单参数子群的闭包 \(A_X\) 是一个环面，所以任意 \(X\in\mathfrak g\) 都属于某个极大环面的李代数：包含 \(A_X\) 的环面包含整条 \(\exp_G(tX)\)，在 \(t=0\) 求导即可。
+
+\subsection{每个元素包含在极大环面中的证明}
+\label{g1:subsec:1902:04}
+上一步已经处理所有无穷小方向。要把任意群元素也放入环面，关键是它能否写成一个指数。\cref{g1:thm:compact-exp-surjective}对紧连通群给出了肯定答案；连通性在这里真正进入。
+
+\begin{theorem}[元素属于极大环面]\label{g1:thm:element-in-maximal-torus}
+	设 \(G\) 为紧连通实李群。对每个 \(g\in G\)，存在极大环面 \(T\subseteq G\)，使 \(g\in T\)。
+\end{theorem}
+\begin{proof}
+	由紧连通群的指数满射性，取 \(X\in\mathfrak g\) 满足 \(g=\exp_GX\)。单参数子群的闭包 \(A_X\) 是一个环面，并且包含 \(g\)。由\cref{g1:prop:maximal-torus-existence}，它可扩张到极大环面 \(T\)，于是 \(g\in A_X\subseteq T\)。
+\end{proof}
+
+若 \(G\) 不连通，任何环面由于连通且包含单位元，都位于 \(G^0\)，所以别的连通分支中的元素不可能包含在环面中。例如 \(\operatorname{O}(2)\) 中的反射不在任何环面中。对紧连通群，定理则给出
+\[
+	G=\bigcup_{T\text{ 为极大环面}}T.
+\]
+这个等式暂时允许不同环面具有不同位置。下一节将证明，它们全部通过群内共轭相互得到，于是可以用一个固定环面研究所有群元素的共轭类。

@@ -1,0 +1,283 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 15.5 平坦性、单值与局部实现
+% 纲要位置：几何学计划纲要.md，第 722 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 平坦联络的平行标架构造
+% * 单连通区域上的路径无关性
+% * 非单连通情形的单值表示
+% * 局部曲率与整体平坦丛的区别
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{平坦性、单值与局部实现}
+\label{g1:sec:1505}
+
+沿一条给定路径，平行移动总能由常微分方程求出。但如果希望在一个区域内同时比较所有纤维，就要问：改变路径会不会改变比较结果？曲率记录局部绕行造成的差异；当曲率处处为零时，还须判断一条较大的闭路能否在区域内收缩。前者是局部微分条件，后者涉及区域的整体拓扑。
+
+\ProseParagraphBreak
+
+本节的底空间是有限维、Hausdorff、第二可数光滑流形，允许有边界，向量丛为有限秩实光滑丛。沿用行标架 \(e=(e_1,\ldots,e_r)\) 与列分量 \(u\) 的约定：
+\[
+	\nabla(eu)=e(\mathrm{d}u+A u),\qquad
+	A'=g^{-1}Ag+g^{-1}\mathrm{d}g,\qquad
+	F=\mathrm{d}A+A\wedge A.
+\]
+其中 \(e'=eg\)。\cref{g1:def:flat-connection}称曲率恒为零的联络为平坦联络；由\cref{g1:eq:curvature-matrix,g1:prop:curvature-frame-change}，这等价于在任意局部标架中 \(F=0\)。下面把这一矩阵条件转成实际可用的标架与运输。
+
+\subsection{平坦联络的平行标架构造}
+\label{g1:subsec:1505:01}
+
+若能换到一个联络矩阵为零的标架，平行方程便成为 \(\mathrm{d}u/\mathrm{d}t=0\)：向量沿路径移动时，其分量保持不变。这正是我们希望由 \(F=0\) 得到的局部模型。困难在于同时消去所有坐标方向的联络系数；只沿一条路径求解，并没有完成这件事。
+
+\begin{definition}
+	\label{g1:def:parallel-frame}
+	设 \(E\to M\) 带联络 \(\nabla\)，\(U\subset M\) 开。若 \(E|_U\) 的光滑局部标架 \(f=(f_1,\ldots,f_r)\) 满足 \(\nabla f_a=0\) 对每个 \(a\) 成立，则称 \(f\) 为\term[pingxingbiaojia]{平行标架}[parallel frame]。等价地，对任意光滑列函数 \(u\)，有 \(\nabla(fu)=f\,\mathrm{d}u\)。
+\end{definition}
+
+\begin{theorem}[平坦局部模型]
+	\label{g1:thm:flat-parallel-frame}
+	设 \(E\to M\) 是有限秩实光滑向量丛，\(M\) 是有限维、Hausdorff、第二可数光滑流形，允许有边界，\(\nabla\) 是光滑联络。则 \(\nabla\) 平坦当且仅当每点附近存在平行标架。平坦时，给定 \(p\in M\) 及 \(E_p\) 的一个有序基，可以在某个连通邻域 \(U\ni p\) 上选平行标架，使其在 \(p\) 处等于这个基；一旦 \(U\) 固定，这样的平行标架唯一。
+\end{theorem}
+\begin{proof}
+	先从 \(F=0\) 构造标架。秩为零或底空间维数为零时结论直接成立，以下设秩 \(r\geq1\)、维数 \(n\geq1\)。在 \(p\) 附近取坐标及丛标架 \(e\)，使 \(p\) 对应原点，且 \(e(p)\) 等于指定基。缩小后，坐标域可以取为盒
+	\[
+		B=(-\varepsilon,\varepsilon)^n
+		\quad\text{或}\quad
+		B=(-\varepsilon,\varepsilon)^{n-1}\times[0,\varepsilon).
+	\]
+	后一种用于边界点，最后一个坐标是向内的坐标。写 \(A=\sum_{i=1}^n A_i\,\mathrm{d}x^i\)。变换公式说明，把第一个系数变成零，需要解
+	\begin{equation}
+		\label{g1:eq:flat-first-coordinate-ode}
+		\partial_1g(x^1,x')=-A_1(x^1,x')g(x^1,x'),\qquad
+		g(0,x')=I_r,
+	\end{equation}
+	其中 \(x'=(x^2,\ldots,x^n)\) 暂作参数。
+
+	\cref{g1:thm:ode-local-existence-uniqueness,g1:thm:ode-smooth-dependence}给出共同小时间内的解及对 \(x'\) 的光滑依赖，故适当缩小盒后得到光滑矩阵 \(g\)。这里把矩阵的 \(r^2\) 个条目作为普通欧氏未知量即可。为核实 \(g\) 始终可逆，同样解 \(\partial_1k=kA_1\)、\(k(0,x')=I_r\)。乘积法则给出 \(\partial_1(kg)=0\)，所以 \(kg=I_r\)，方阵 \(g\) 因而可逆。边界情形中，光滑系数按定义可延拓到半盒周围的开集；在延拓后的开集应用同一个参数定理，再限制回来，便得到光滑到边界的解。最后剩下一维半区间时，只保留从零开始的非负时间。延拓只用于获得解和参数正则性，不要求延拓后的联络仍然平坦。
+
+	在标架 \(e'=eg\) 中记联络矩阵为 \(B=\sum_iB_i\,\mathrm{d}x^i\)。由\eqref{g1:eq:flat-first-coordinate-ode}，\(B_1=0\)。曲率按共轭变换仍为零，而其 \((1,j)\) 分量为
+	\[
+		0=F'_{1j}
+		=\partial_1B_j-\partial_jB_1+B_1B_j-B_jB_1
+		=\partial_1B_j,\qquad j\geq2.
+	\]
+	固定 \(x'\) 后沿第一坐标积分，便得到 \(B_j(x^1,x')=B_j(0,x')\)。因此余下的联络系数实际上只依赖 \(n-1\) 个变量。
+
+	现在对维数归纳。一维时已经全部消去。若 \(n>1\)，截面 \(x^1=0\) 上的矩阵形式 \(\sum_{j=2}^n B_j(0,x')\,\mathrm{d}x^j\) 仍然平坦，因为它的曲率分量就是原来为零的 \(F'_{ij}\)，其中 \(i,j\geq2\)。归纳假设给出 \(h(x')\in\operatorname{GL}(r,\mathbb R)\)，在原点取 \(I_r\)，并消去这个低一维联络的全部系数。将 \(h\) 沿第一坐标保持不变，标架 \(f=e' h\) 的第一系数仍为零，其他系数也为零。归纳中的每一步只需缩小坐标盒，并且对半盒采用刚才的延拓与限制方法，所以边界处同样成立。所得 \(f(p)=e(p)\)，完成存在性。
+
+	反过来，若每点附近有平行标架，则其中 \(A=0\)，所以 \(F=\mathrm{d}A+A\wedge A=0\)。曲率是整体定义的张量，局部为零便处处为零。
+
+	最后设 \(f,\widehat f\) 是连通 \(U\) 上的两个平行标架，写 \(\widehat f=f c\)。由 \(\nabla\widehat f=f\,\mathrm{d}c=0\)，得到 \(\mathrm{d}c=0\)。在每个坐标小盒内，沿线段积分各个条目的导数，可知 \(c\) 局部常值；半盒边界也由同一结论或连续性得到。连通性于是使 \(c\) 为一个常矩阵。若两标架在 \(p\) 相同，则 \(c(p)=I_r\)，所以处处相同。
+\end{proof}
+
+证明中 \(F_{1j}=0\) 的作用可以具体看见：消去第一方向以后，它保证其余系数不会沿第一方向重新变化。因此逐方向构造可以继续，而不会破坏已经完成的一步。对一般联络，仍能沿第一方向解同一个方程，但剩下的 \(\partial_1B_j\) 可能不为零，归纳便不能如此进行。
+
+\ProseParagraphBreak
+
+还有一个后面反复使用的结论：若两个平行标架在某个开集上都有定义，它们的转移矩阵在交叠的每个连通分支上恒定。这并不要求整个交叠连通，更不保证这些常矩阵都等于单位矩阵。
+
+\subsection{单连通区域上的路径无关性}
+\label{g1:subsec:1505:02}
+
+\cref{g1:thm:parallel-transport}已经给出分片光滑路径上的平行移动。单连通性却使用连续路径和连续同伦，见\cref{g1:def:path-homotopy,g1:def:simply-connected}。两种正则性不能直接混用。平坦情形有一个更直接的办法：在平行标架中只需保持分量，因而路径本身无须可微。
+
+\begin{lemma}[连续路径上的平坦运输]
+	\label{g1:lem:flat-continuous-transport}
+	设 \(E\to M\) 是有限秩实光滑向量丛，底流形有限维、Hausdorff、第二可数，允许有边界，\(\nabla\) 平坦。对每条连续路径 \(\gamma:[0,1]\to M\)，可以定义线性同构 \(P_\gamma:E_{\gamma(0)}\to E_{\gamma(1)}\)，使路径位于一个平行标架域内时，运输保持该标架中的分量。此定义与局部标架及细分无关；在分片光滑路径上等于原来的平行移动，并满足
+	\[
+		P_{\gamma*\eta}=P_\eta\circ P_\gamma,\qquad
+		P_{\bar\gamma}=P_\gamma^{-1},\qquad
+		P_{e_p}=\operatorname{id}_{E_p}.
+	\]
+	这里 \(\gamma*\eta\) 仍表示先走 \(\gamma\)，后走 \(\eta\)。
+\end{lemma}
+\begin{proof}
+	把平行标架 \(f\) 在每点看成同构 \(f(x):\mathbb R^r\to E_x\)。对其定义域 \(U\) 中的两点 \(x,y\)，令
+	\[
+		T^U_{y\leftarrow x}=f(y)f(x)^{-1}.
+	\]
+	若 \(\widehat f=fc\) 是另一个平行标架，而 \(x,y\) 位于交叠的同一个连通分支内，则 \(c(y)=c(x)\)，所以两个标架给出的 \(T\) 相同。特别地，若一段连续路径同时落在两个标架域内，其像是连通集，以上比较便适用。
+
+	平行标架域的原像覆盖紧区间。由\cref{g1:lem:lebesgue-number}，存在有限分点 \(0=t_0<\cdots<t_N=1\)，使每段 \(\gamma([t_{j-1},t_j])\) 都落在某个标架域 \(U_j\)。定义
+	\[
+		P_\gamma
+		=T^{U_N}_{\gamma(t_N)\leftarrow\gamma(t_{N-1})}\circ\cdots\circ
+		T^{U_1}_{\gamma(t_1)\leftarrow\gamma(t_0)}.
+	\]
+	在同一标架域内增加分点，不改变这个复合，因为
+	\(T^U_{z\leftarrow y}T^U_{y\leftarrow x}=T^U_{z\leftarrow x}\)。
+	两种任意细分可以先取共同细分；每个共同小段同时落在两种选择的标架域内，由前段比较得到相同的因子。所以定义不依赖选择。
+
+	分片光滑路径在平行标架中满足的方程是 \(u'=0\)，故上述局部运输就是\cref{g1:thm:parallel-transport}的解；有限段拼接后仍相同。对于连续路径，拼接式由把两组分点接起来得到，反向式由反转因子的顺序并逐个取逆得到，常路径的全部因子都是恒等。因而这些规律与\cref{g1:prop:parallel-transport-laws}相容。
+\end{proof}
+
+\begin{theorem}[平坦运输与路径无关性]
+	\label{g1:thm:flat-path-independence}
+	设 \(E\to M\) 是有限秩实光滑向量丛，\(M\) 有限维、Hausdorff、第二可数，允许有边界，\(\nabla\) 平坦。若两条连续路径 \(\gamma_0,\gamma_1:[0,1]\to M\) 定端点连续同伦，则 \(P_{\gamma_0}=P_{\gamma_1}\)。特别地，若开集 \(U\subset M\) 非空且单连通，则 \(E|_U\) 上的运输只依赖起点与终点；给定 \(p\in U\) 的任意纤维基，存在唯一的整体平行标架在 \(p\) 取该基。
+\end{theorem}
+\begin{proof}
+	取定端点同伦 \(H:[0,1]^2\to M\)，其中横坐标 \(t\) 沿路径行进，纵坐标 \(s\) 改变路径。将平行标架域的原像作为紧方形的开覆盖。\cref{g1:lem:lebesgue-number}给出一个正数，使直径足够小的每个网格闭矩形都落在某个原像中。于是可以选有限网格
+	\[
+		0=t_0<\cdots<t_m=1,\qquad
+		0=s_0<\cdots<s_\ell=1,
+	\]
+	使每个小矩形的整个像都位于一个平行标架域内。这里直接细分同伦的参数方形，不需要把 \(H\) 改成光滑映射。
+
+	令 \(h_{ij}\) 表示第 \(j\) 行上从 \((t_i,s_j)\) 到 \((t_{i+1},s_j)\) 的像路径运输，令 \(v_{ij}\) 表示从 \((t_i,s_j)\) 到 \((t_i,s_{j+1})\) 的像路径运输。每个小矩形内，先向右再向上与先向上再向右，只是在同一平行标架中保持相同分量，因此
+	\begin{equation}
+		\label{g1:eq:flat-homotopy-cell}
+		v_{i+1,j}\circ h_{ij}=h_{i,j+1}\circ v_{ij}.
+	\end{equation}
+	记整行运输为 \(H_j=h_{m-1,j}\circ\cdots\circ h_{0j}\)。从右端开始依次使用\eqref{g1:eq:flat-homotopy-cell}，得到
+	\[
+		v_{mj}\circ H_j=H_{j+1}\circ v_{0j}.
+	\]
+	这一步移动的是相邻的复合因子，并未交换不相邻矩阵的次序。由于同伦固定端点，两侧竖边的像都是常路径，故 \(v_{0j}\) 与 \(v_{mj}\) 都是恒等映射。因此 \(H_j=H_{j+1}\)，逐行得到 \(P_{\gamma_0}=P_{\gamma_1}\)。
+
+	现在设 \(U\) 单连通。按照\cref{g1:def:simply-connected,g1:prop:path-classes}，这包括道路连通性，并保证同起终点的任意两条连续路径定端点同伦。固定基 \(b_1,\ldots,b_r\in E_p\)，对每个 \(q\in U\)，任选 \(p\) 到 \(q\) 的路径 \(\gamma\)，定义 \(f_a(q)=P_\gamma b_a\)。前段结论保证定义与路径无关，各点又都是线性同构作用于一个基，所以 \(f_1(q),\ldots,f_r(q)\) 构成基。
+
+	还须证明这些截面光滑且平行。取 \(q\) 附近连通的平行标架域 \(V\subset U\)，标架记为 \(e\)，先固定一条从 \(p\) 到 \(q\) 的路径。在它后面追加 \(V\) 中从 \(q\) 到 \(y\) 的任意路径，便得到
+	\[
+		(f_1(y),\ldots,f_r(y))
+		=e(y)e(q)^{-1}(f_1(q),\ldots,f_r(q)),\qquad y\in V.
+	\]
+	右边是平行标架乘一个固定可逆矩阵，因此在 \(V\) 上光滑且平行。这样的 \(V\) 覆盖 \(U\)，便得到整体结论。若另一平行标架在 \(p\) 有相同值，沿每条路径其分量也必须保持不变，所以它在所有 \(q\) 处与已构造标架相同。
+\end{proof}
+
+\cref{g1:fig:flat-homotopy-grid}把同伦中的比较画在参数方形上；真正需要的只是每个小格有一个共同的平行标架。
+
+\input{Figures/Chapter15-FlatHomotopyGrid.tex}
+
+单连通性在这个证明中只用于最后把所有同端点路径归入同一个同伦类。平坦性本身已经保证连续同伦不改变运输；即使区域并不单连通，这一部分仍然成立。由此剩下的路径依赖可以精确地交给基本群记录。
+
+\subsection{非单连通情形的单值表示}
+\label{g1:subsec:1505:03}
+
+固定基点以后，每条闭路都给出同一纤维到自身的线性同构。要把它们组织成矩阵表示，必须先核对乘法方向：本书的道路乘积先走左边，函数复合却先作用右边。这与第五章覆盖单值采用右作用的原因相同，见\cref{g1:prop:monodromy-action}。
+
+\begin{proposition}[平坦联络的单值]
+	\label{g1:prop:flat-monodromy}
+	设 \(E\to M\) 是秩 \(r\) 实光滑向量丛，\(M\) 非空、连通、有限维、Hausdorff、第二可数，允许有边界，\(\nabla\) 平坦。固定 \(p\in M\) 和基同构 \(b:\mathbb R^r\to E_p\)。对基于 \(p\) 的连续环路 \(\gamma\)，定义
+	\[
+		C_\gamma=b^{-1}P_\gamma b,\qquad
+		\rho([\gamma])\coloneqq C_\gamma^{-1}.
+	\]
+	则 \(\rho:\pi_1(M,p)\to\operatorname{GL}(r,\mathbb R)\) 是群同态，称为所选基下的\term[danzhibiaoshi]{单值表示}[monodromy representation]。将基改成 \(b'=bB\) 时，表示变成 \(\rho'=B^{-1}\rho B\)。联络存在整体平行标架，当且仅当 \(\rho\) 为平凡表示。
+\end{proposition}
+\begin{proof}
+	\cref{g1:thm:flat-path-independence}使 \(C_\gamma\) 及其逆只依赖环路类。由于先走 \(\gamma\) 再走 \(\eta\)，
+	\[
+		C_{\gamma*\eta}=C_\eta C_\gamma,\qquad
+		\rho([\gamma][\eta])
+		=(C_\eta C_\gamma)^{-1}
+		=C_\gamma^{-1}C_\eta^{-1}
+		=\rho([\gamma])\rho([\eta]).
+	\]
+	常路径给单位矩阵，所以这确是同态。换基后 \(C'_\gamma=B^{-1}C_\gamma B\)，取逆便得到所写共轭公式。
+
+	若有整体平行标架，则所有闭路都保持该标架中的分量，故 \(P_\gamma=\operatorname{id}\)，从而 \(\rho\) 平凡。反之，若 \(\rho\) 平凡，则任意从 \(p\) 到 \(q\) 的两条路径 \(\gamma,\eta\) 满足
+	\[
+		P_\eta^{-1}P_\gamma=P_{\gamma*\bar\eta}=\operatorname{id}_{E_p},
+	\]
+	所以它们的运输相同。连通流形局部道路连通，因而道路连通：一个道路分支在坐标小盒中包含每个点的邻域，故各分支均开，连通性迫使只有一个分支。于是可以用 \(P_\gamma b\) 在每点定义标架，再按上一证明的局部公式验证光滑性与平行性。
+\end{proof}
+
+若直接令向量沿环路移动，则 \(v\cdot[\gamma]=P_\gamma v\) 是 \(E_p\) 上的右作用，因为 \((v\cdot[\gamma])\cdot[\eta]=v\cdot([\gamma][\eta])\)。本节用逆矩阵得到通常意义的左矩阵表示，并没有改变实际的运输方向。选基只会共轭表示，所以“是否平凡”以及不动向量空间的维数不依赖所选基。
+
+\begin{example}
+	\label{g1:exm:flat-circle-holonomy}
+	在 \(S^1\subset\mathbb R^2\) 上，记
+	\[
+		\vartheta=(x\,\mathrm{d}y-y\,\mathrm{d}x)|_{S^1}.
+	\]
+	局部取角度 \(\theta\) 时有 \(\vartheta=\mathrm{d}\theta\)；不同角度分支相差常数 \(2\pi k\)，所以这些局部微分确实给出一个整体一形式。符号 \(\mathrm{d}\theta\) 在这里不表示存在整体实值角度函数。
+
+	在平凡实线丛 \(S^1\times\mathbb R\) 上取整体标架 \(e=1\)，并令
+	\[
+		\nabla(eu)=e(\mathrm{d}u+a\vartheta\,u),\qquad a\in\mathbb R.
+	\]
+	一维底空间上的二形式为零，故此联络平坦。沿正向一周路径 \(\gamma(t)=e^{2\pi i t}\)，平行方程为 \(u'+2\pi a u=0\)，于是
+	\[
+		P_\gamma=e^{-2\pi a},\qquad
+		\rho(1)=e^{2\pi a}.
+	\]
+	这里用\cref{g1:thm:circle-fundamental}将 \(\pi_1(S^1)\) 按绕数识别为 \(\mathbb Z\)，故 \(\rho(k)=e^{2\pi ak}\)。当 \(a\ne0\) 时，没有整体平行标架，尽管底层线丛已经有整体普通标架 \(e\)。在每个角度区间内，\(e\,e^{-a\theta}\) 都是平行标架；绕一周后出现的因子 \(e^{-2\pi a}\) 正是其不能成为整体标架的障碍。
+\end{example}
+
+也可以从一个给定表示反向造出平坦丛。这个构造把单值写进转移矩阵，使局部联络全为零；它还提供了一个核对逆矩阵约定的办法。
+
+\begin{proposition}[由表示构造平坦丛]
+	\label{g1:prop:flat-bundle-representation}
+	设 \(M\) 是非空、连通、有限维、Hausdorff、第二可数光滑流形，允许有边界，固定 \(p\in M\)，令 \(G=\pi_1(M,p)\)。对任一表示 \(\rho:G\to\operatorname{GL}(r,\mathbb R)\)，存在秩 \(r\) 实光滑向量丛及平坦联络，其在一个指定基下的单值表示正好为 \(\rho\)。
+\end{proposition}
+\begin{proof}
+	流形的坐标小盒或半盒可缩，因此局部道路连通且半局部单连通；连通性又给出道路连通性。\cref{g1:thm:path-class-universal-cover}于是提供道路类万有覆盖 \(\widetilde M\to M\)：点 \(q=[\alpha]\) 记录从 \(p\) 出发的路径类，投影为其终点。记 \(q_0\) 为常路径类。按照\cref{g1:prop:universal-deck-discontinuous}，群 \(G\) 的左甲板作用是
+	\[
+		L_g[\alpha]=[\gamma*\alpha],\qquad g=[\gamma],
+	\]
+	并且在每根覆盖纤维上自由、传递。定义
+	\[
+		g\cdot(q,v)=(L_gq,\rho(g)v),\qquad
+		E_\rho=(\widetilde M\times\mathbb R^r)/G.
+	\]
+	这是左作用，因为 \(L_gL_h=L_{gh}\) 且 \(\rho(g)\rho(h)=\rho(gh)\)。商投影 \([q,v]\mapsto p(q)\) 良定义。
+
+	取连通的均匀覆盖坐标邻域 \(U\)，并在其上选一张覆盖片的局部逆 \(\sigma_U:U\to\widetilde M\)。映射
+	\[
+		\Phi_U:U\times\mathbb R^r\longrightarrow E_\rho|_U,\qquad
+		(x,v)\longmapsto[\sigma_U(x),v]
+	\]
+	为双射：任一覆盖点都唯一写成 \(L_g\sigma_U(x)\)，而
+	\[
+		[L_g\sigma_U(x),v]=[\sigma_U(x),\rho(g)^{-1}v].
+	\]
+	它也是同胚。事实上，乘积中的轨道商映射是开映射，因为开集的轨道饱和集是其全部群平移的并；将商映射限制到一张覆盖片与 \(\mathbb R^r\) 的乘积上，便得到开连续双射。
+
+	若另选 \(\sigma_V\)，在交叠附近有唯一 \(g(x)\in G\) 使 \(\sigma_V(x)=L_{g(x)}\sigma_U(x)\)，而 \(g(x)\) 局部常值。为看出这一点，在交叠点附近再选连通的均匀覆盖小邻域，两条局部逆都取值于各自固定的覆盖片；使它们在一点相同的甲板变换，在这整个小邻域上都使它们相同。因此两套纤维坐标由局部常矩阵 \(\rho(g(x))^{-1}\) 过渡，尤其光滑且线性。这些图定义了光滑向量丛。不同底点可由底空间的 Hausdorff 性分离，同一纤维的不同点可在同一丛图内分离；底空间第二可数，可从这些平凡化域中选可数子覆盖，再取各 \(U\times\mathbb R^r\) 的可数基，得到总空间第二可数。
+
+	在每张丛图中令联络矩阵为零。由于转移矩阵局部常值，换标架公式中的 \(\mathrm{d}g\) 为零，故这些局部联络相容并粘成整体联络，其曲率为零。以 \(v\mapsto[q_0,v]\) 识别基点纤维。环路 \(\gamma\) 的覆盖提升从 \(q_0\) 到 \(L_{[\gamma]}q_0\)，沿途保持纤维分量 \(v\)；因此
+	\[
+		P_\gamma[q_0,v]=[L_{[\gamma]}q_0,v]
+		=[q_0,\rho([\gamma])^{-1}v].
+	\]
+	所以实际运输矩阵为 \(\rho([\gamma])^{-1}\)，按本节定义取逆后正好恢复指定表示 \(\rho\)。
+\end{proof}
+
+\subsection{局部曲率与整体平坦丛的区别}
+\label{g1:subsec:1505:04}
+
+一个向量丛连同指定的平坦联络，称为\term[pingtancong]{平坦丛}[flat bundle]。这一说法包含了联络数据：同一个光滑向量丛可以带不同联络，它们的曲率或单值未必相同。平坦丛的局部平行标架有局部常数转移矩阵，反过来，一套局部常数转移矩阵也能如上证明那样，将各片上的零联络粘成平坦联络。
+
+\begin{example}
+	\label{g1:exm:flat-mobius-line}
+	考虑商空间
+	\[
+		L=(\mathbb R\times\mathbb R)/\bigl((t,v)\sim(t+2\pi,-v)\bigr)
+		\longrightarrow S^1,\qquad
+		[t,v]\longmapsto e^{it}.
+	\]
+	在长度小于 \(2\pi\) 的角度区间上选择角度分支，就得到实线丛图；分支相差 \(2\pi k\) 时，纤维坐标相差因子 \((-1)^k\)。因此这是光滑线丛，即 Möbius 实线丛。转移系数为常数 \(\pm1\)，所以局部取 \(\nabla=\mathrm{d}\) 给出整体平坦联络，且 \(v^2\) 给出与之相容的整体纤维度量。
+
+	沿正向圆周一周，从 \([0,v]\) 开始保持 \(v\) 不变，终点是
+	\[
+		[2\pi,v]=[0,-v].
+	\]
+	故 \(P_\gamma=-1\)，并且 \(\rho(1)=-1\)。这里的单值甚至不能由换一个普通整体标架来讨论，因为该线丛根本没有整体标架：若有处处非零连续截面，拉回到 \(\mathbb R\) 后可写成连续函数 \(u(t)\)，满足 \(u(t+2\pi)=-u(t)\)。于是 \(u(0)\) 与 \(u(2\pi)\) 符号相反，中值定理迫使它在中间为零，矛盾。
+\end{example}
+
+\cref{g1:exm:flat-circle-holonomy,g1:exm:flat-mobius-line}区分了两种不同现象。第一例底层线丛平凡，障碍在指定联络的闭路运输；第二例底层线丛本身已经扭转。两例的曲率却都为零，因为它们在每一个足够小的区间内都与普通微分完全相同。曲率是局部量，不能单独区分这些整体情形。
+
+\ProseParagraphBreak
+
+反向的区别也值得保留。平凡丛不意味着所选联络平坦：在\cref{g1:exm:path-dependent-line-transport}中，\(\mathbb R^2\times\mathbb R\) 的联络矩阵是 \(A=x\,\mathrm{d}y\)，其曲率为 \(F=\mathrm{d}x\wedge\mathrm{d}y\ne0\)。同一底层丛也可以选 \(A=0\)。因此“丛平凡”“联络平坦”“存在整体平行标架”是三个不同断言，其中最后一个同时消除了局部曲率与整体单值两个障碍。
+
+\ProseParagraphBreak
+
+本节的“局部实现”是把平坦联络实现成普通微分：在合适标架中，\(\nabla(fu)=f\,\mathrm{d}u\)。若丛恰为切丛，平行标架也未必是某组坐标的坐标向量场；还须考虑上一节的挠率以及标架之间的括号。一般向量丛的纤维向量甚至不属于底流形的切空间，因而不能把平行标架自动解释为底空间坐标。
+
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

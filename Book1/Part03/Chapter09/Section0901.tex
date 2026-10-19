@@ -1,0 +1,240 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 9.1 协变微分和曲面上的移动标架
+% 纲要位置：几何学计划纲要.md，第 465 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 切向投影与度量相容性
+% * 沿曲线的平行移动
+% * 正交标架的联络一形式
+% * 曲率二形式与局部 holonomy
+% 
+% 纲要内容结束
+
+\section{协变微分和曲面上的移动标架}
+\label{g1:sec:0901}
+
+在平面内移动一个箭头，可以要求它在固定直角坐标中的分量不变。曲面上的箭头却必须始终留在当前位置的切平面内；切平面一变，环境空间中的常向量通常就不再合适。第八章的切向投影给出了另一种要求：允许箭头为适应切平面而向法向改变，但不让它在切平面内自行转动。沿路保持这种状态，就是本节要建立的平行移动。
+
+\subsection{切向投影与度量相容性}
+\label{g1:subsec:0901:01}
+
+先说明本章的曲面范围。第六章的拓扑曲面默认 Hausdorff、第二可数。给这样的曲面选定坐标图，要求重叠处的坐标变换光滑且具有光滑逆映射，就得到本章所说的\term[guanghuaqumian]{光滑曲面}[smooth surface]。坐标中的切向量按坐标变换的微分换基；光滑正定矩阵 \((g_{ij})\) 若按第八章\eqref{g1:eq:surface-metric-change}在重叠处变换，就在各切平面上给出同一个内积 \(g\)。这样的 \((M,g)\) 称为\term[limanduliangqumian]{黎曼度量曲面}[Riemannian surface]。这里的英文指带黎曼度量的实二维曲面，不是作为复一维对象的 Riemann surface。
+
+\ProseParagraphBreak
+
+正则曲面在 \(\mathbb R^3\) 中的诱导度量是主要例子。不过，平面上按平移识别得到的环面也有相容的欧氏度量；讨论它的内在几何时，不必先把这张带度量的曲面放进三维空间。有光滑边界时用半平面坐标，要求度量系数光滑延拓到坐标域的邻域。后面还会考虑曲面内具有有限角点的区域，边界各光滑段正则，角点内角在 \((0,2\pi)\) 内，因而不包括尖点。
+
+\ProseParagraphBreak
+
+以下指标 \(i,j,k\) 取 \(1,2\)，重复指标求和。回顾\cref{g1:prop:surface-connection-properties}：给定度量后，唯一同时满足度量相容和无挠性的协变导数为
+\[
+	\nabla_VW=V^i\bigl(\partial_iW^k+\Gamma^k_{ij}W^j\bigr)\partial_k,
+	\qquad
+	\Gamma^k_{ij}=\frac12g^{k\ell}(\partial_i g_{j\ell}+\partial_j g_{i\ell}-\partial_\ell g_{ij}).
+\]
+这里 \((g^{ij})=(g_{ij})^{-1}\)。第八章已经证明这套公式在换坐标后给出同一个运算；对于诱导度量，它就是 \(\nabla_VW=(\mathrm{d}W(V))^\top\)。因此本章下面的坐标计算也适用于只给定度量的曲面。
+
+\begin{definition}
+	\label{g1:def:surface-along-derivative}
+	设 \(\gamma:I\rightarrow M\) 是光滑曲线，\(W(t)\in \mathrm{T}_{\gamma(t)}M\) 是沿曲线的光滑切向量场。在坐标中写 \(\gamma(t)=(u^1(t),u^2(t))\)、\(W(t)=W^k(t)\partial_k|_{\gamma(t)}\)，定义\term[yanquxianxiebiandaoshu]{沿曲线的协变导数}[covariant derivative along a curve]为
+	\begin{equation}
+		\label{g1:eq:along-covariant-derivative}
+		\mathrm{D}_tW\coloneqq\left(\frac{\mathrm{d}W^k}{\mathrm{d}t}+\Gamma^k_{ij}(\gamma(t))\dot u^iW^j\right)\partial_k.
+	\end{equation}
+	若曲面已浸入 \(\mathbb R^3\)，此式就是 \(\mathrm{D}_tW=(\mathrm{d}W/\mathrm{d}t)^\top\)。\symidx{\(\mathrm{D}_tW\)：沿曲线的协变导数}
+\end{definition}
+
+沿曲线的向量场只给每个参数值配置一个向量。即使曲线经过同一点两次，这两次的向量也可以不同，因此不必把 \(W\) 延拓成曲面邻域内的单值向量场。换坐标时，对 \(W\) 的分量应用链式法则，再代入 Christoffel 系数的变换式，二阶坐标导数项相消，故 \(\mathrm{D}_tW\) 仍是同一个切向量。
+
+\begin{proposition}
+	\label{g1:prop:along-derivative-properties}
+	在光滑度量曲面上，沿光滑曲线的协变导数满足乘法法则及
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}g(V,W)=g(\mathrm{D}_tV,W)+g(V,\mathrm{D}_tW).
+	\]
+	对光滑双参数映射 \(F(s,t)\)，有 \(\mathrm{D}_s\partial_tF=\mathrm{D}_t\partial_sF\)。若曲面已定向，以 \(J\) 表示每个切平面内的正向直角旋转，则 \(\mathrm{D}_t(JW)=J(\mathrm{D}_tW)\)。
+\end{proposition}
+
+\begin{proof}
+	乘法法则直接来自\eqref{g1:eq:along-covariant-derivative}。内积求导时，用第八章已证的 \(\partial_i g_{j\ell}=\Gamma^k_{ij}g_{k\ell}+\Gamma^k_{i\ell}g_{jk}\) 将度量系数的导数分到两个向量上，即得第一式。混合导数的第 \(k\) 个分量分别为
+	\[
+		\partial_s\partial_tF^k+\Gamma^k_{ij}(F)\partial_sF^i\partial_tF^j,
+		\qquad
+		\partial_t\partial_sF^k+\Gamma^k_{ij}(F)\partial_tF^i\partial_sF^j.
+	\]
+	偏导可交换，且 \(\Gamma^k_{ij}=\Gamma^k_{ji}\)，所以两式相等；\(F\) 不必是浸入。
+
+	最后局部选正向正交单位标架 \((e_1,e_2)\)。由内积求导，存在标量 \(a(t)\)，使 \(\mathrm{D}_te_1=ae_2\)、\(\mathrm{D}_te_2=-ae_1\)。将 \(W=xe_1+ye_2\)、\(JW=-ye_1+xe_2\) 分别求导，便得 \(\mathrm{D}_t(JW)=J(\mathrm{D}_tW)\)。
+\end{proof}
+
+这里的 \(J\) 仅用度量与定向定义，满足 \(J^2=-\mathrm{id}\)；在取单位法向 \(n\) 的空间曲面上，\(JW=n\times W\)。以后边界的符号都以这个正向直角旋转为准。
+
+\subsection{沿曲线的平行移动}
+\label{g1:subsec:0901:02}
+
+\begin{definition}
+	沿分片光滑曲线 \(\gamma\) 的连续切向量场 \(W\)，若在每个光滑段上满足 \(\mathrm{D}_tW=0\)，就称为沿 \(\gamma\) 的\term[pingxingxiangliangchang]{平行向量场}[parallel vector field]。从给定初向量出发求出终向量的操作称为\term[pingxingyidong]{平行移动}[parallel transport]，记为 \(P_\gamma\)。\symidx{\(P_\gamma\)：沿曲线的平行移动}
+\end{definition}
+
+\begin{theorem}
+	\label{g1:thm:surface-parallel-transport}
+	设 \((M,g)\) 是光滑度量曲面，\(\gamma:[a,b]\rightarrow M\) 分片光滑。给定 \(w\in \mathrm{T}_{\gamma(a)}M\)，存在唯一沿 \(\gamma\) 的平行场，初值为 \(w\)。所得 \(P_\gamma:\mathrm{T}_{\gamma(a)}M\rightarrow \mathrm{T}_{\gamma(b)}M\) 是线性等距同构；在定向曲面上还保持定向。它在保向重参数化下不变，并满足
+	\[
+		P_{\gamma_1*\gamma_2}=P_{\gamma_2}\circ P_{\gamma_1},
+		\qquad P_{\bar\gamma}=P_\gamma^{-1}.
+	\]
+	这里沿用第五章的次序，\(\gamma_1*\gamma_2\) 先走 \(\gamma_1\) 再走 \(\gamma_2\)，\(\bar\gamma\) 表示反向道路。
+\end{theorem}
+
+\begin{proof}
+	在一张坐标图中，平行条件是线性方程
+	\[
+		\dot W^k=-\Gamma^k_{ij}(\gamma(t))\dot u^iW^j.
+	\]
+	每个光滑闭段上的系数连续，故\cref{g1:lem:linear-frame-ode}给出指定初值的唯一解。把曲线的坐标邻域拉回参数区间，利用紧区间的有限细分，使每段落入一张图。在接点把所得几何向量换成下一张图的分量作为初值；坐标无关性与唯一性保证相邻解相容，也保证改变细分不会改变结果。
+
+	方程线性，所以解依初值线性。对两个平行场，由上命题得 \(\frac{\mathrm{d}}{\mathrm{d}t}g(V,W)=0\)，于是长度与夹角保持。反向参数化时 \(\mathrm{D}_\tau W=t'(\tau)\mathrm{D}_tW\)，故平行性不变；唯一性给出反向和拼接公式，也给出可逆性。在定向情形，把一个正向单位标架平行移动，两向量始终正交且单位长；其方向符号连续而不可能经过零，故一直保持正向。
+\end{proof}
+
+\begin{example}
+	\label{g1:exm:parallel-polar-frame}
+	在欧氏平面沿圆 \(\gamma(t)=(r\cos t,r\sin t)\) 运动，取 \(e_r=(\cos t,\sin t)\)、\(e_\theta=(-\sin t,\cos t)\)。若 \(W=a e_r+b e_\theta\)，则
+	\[
+		\mathrm{D}_tW=(a'-b)e_r+(b'+a)e_\theta.
+	\]
+	由 \(W(0)=(1,0)\) 出发的平行场满足 \(a=\cos t\)、\(b=-\sin t\)，所以 \(W(t)=(1,0)\) 在环境平面内确实不变。反而是分量固定的 \(e_r\) 本身不平行：它一直朝向圆外，因而在转动。分量变化并不等于向量发生了内在转动，必须同时计算标架的变化。
+\end{example}
+
+\subsection{正交标架的联络一形式}
+\label{g1:subsec:0901:03}
+
+在一张定向坐标图中，先对 \(\partial_1,\partial_2\) 作 Gram--Schmidt 正交化，得到光滑正向正交标架 \((e_1,e_2)\)。内积为常数意味着 \(\nabla_Ve_1\) 沿 \(e_2\)，而 \(\nabla_Ve_2\) 沿 \(-e_1\)。因此所有方向上的标架转动，只需用一个对 \(V\) 线性的数来记录。
+
+\begin{definition}
+	\label{g1:def:surface-connection-form}
+	对定向光滑度量曲面上的局部正向正交标架，定义\term[lianluoyixingshi]{联络一形式}[connection one-form]为 \(\omega(V)=g(\nabla_Ve_1,e_2)\)。于是
+	\begin{equation}
+		\label{g1:eq:surface-frame-connection}
+		\nabla_Ve_1=\omega(V)e_2,\qquad \nabla_Ve_2=-\omega(V)e_1.
+	\end{equation}
+\end{definition}
+
+这里“一形式”表示在每点给定一个随点光滑变化的线性函数。在坐标中它就是 \(A\,\mathrm{d}u+B\,\mathrm{d}v\)，其中 \(\mathrm{d}u(V)=V^u\)。两一形式的外积定义为 \((\alpha\wedge\beta)(V,W)=\alpha(V)\beta(W)-\alpha(W)\beta(V)\)，因而 \(\mathrm{d}u\wedge\mathrm{d}v\) 记录两个向量的有向坐标面积。令 \(\vartheta^i(V)=g(V,e_i)\)，则
+\[
+	\mathrm{d}A=\vartheta^1\wedge\vartheta^2=\sqrt{\det(g_{ij})}\,\mathrm{d}u\wedge\mathrm{d}v
+\]
+是正向面积形式。计算非负面积时取其对应的面积元；反向坐标使用 Jacobian 行列式的绝对值。\symidx{\(\mathrm{d}A\)：曲面的面积元}
+
+对一形式定义
+\[
+	\mathrm{d}(A\,\mathrm{d}u+B\,\mathrm{d}v)
+	=(\partial_uB-\partial_vA)\,\mathrm{d}u\wedge\mathrm{d}v.
+\]
+对函数 \(f\) 则有 \(\mathrm{d}f=f_u\,\mathrm{d}u+f_v\,\mathrm{d}v\)，混合偏导相等给出 \(\mathrm{d}(\mathrm{d}f)=0\)。这些是本章使用的\term[waiweifen]{外微分}[exterior derivative]。换坐标时应用链式法则，二阶坐标导数项两两相消；更具几何意味的同一公式是
+\[
+	\mathrm{d}\alpha(V,W)=V(\alpha(W))-W(\alpha(V))-\alpha([V,W]).
+\]
+将 \(V,W\) 的坐标分量展开可验证此式，也直接看出其与坐标无关。我们在这里需要的只是函数、一形式和面积形式，不以掌握高维微分形式为前提。
+
+\begin{proposition}
+	\label{g1:prop:connection-frame-change}
+	若另一正向正交标架在邻域内写成
+	\[
+		\widetilde e_1=\cos\varphi\,e_1+\sin\varphi\,e_2,\qquad
+		\widetilde e_2=-\sin\varphi\,e_1+\cos\varphi\,e_2,
+	\]
+	则相应联络形式满足 \(\widetilde\omega=\omega+\mathrm{d}\varphi\)。沿曲线写单位向量 \(W=\cos\theta\,e_1+\sin\theta\,e_2\)，有
+	\begin{equation}
+		\label{g1:eq:parallel-angle}
+		\mathrm{D}_tW=(\theta'+\omega(\dot\gamma))JW.
+	\end{equation}
+	特别地，平行条件为 \(\theta'=-\omega(\dot\gamma)\)。
+\end{proposition}
+
+\begin{proof}
+	将两个标架变换式求协变导数，用\eqref{g1:eq:surface-frame-connection}合并正弦、余弦项，得到 \(\nabla_V\widetilde e_1=(V\varphi+\omega(V))\widetilde e_2\)，即第一式。对 \(W\) 作相同展开，得到第二式。沿参数区间的连续角度由\cref{g1:lem:circle-angle-lift}选取；只要 \(W\) 光滑，局部反三角函数又说明提升角度光滑。
+\end{proof}
+
+联络形式依赖标架；标架多转了 \(\varphi\)，所记录的转动便多出 \(\mathrm{d}\varphi\)。但 \(\mathrm{d}\widetilde\omega=\mathrm{d}\omega\)。在环带上换架角度未必有全域单值的实函数表示，上述关系仍在每个小邻域成立，外微分不依赖标架的结论因而仍然成立。
+
+\subsection{曲率二形式与局部 holonomy}
+\label{g1:subsec:0901:04}
+
+\begin{proposition}
+	\label{g1:prop:connection-curvature-form}
+	在定向光滑度量曲面上，任意局部正向正交标架的联络形式均满足
+	\begin{equation}
+		\label{g1:eq:surface-curvature-form}
+		\mathrm{d}\omega=-K\,\mathrm{d}A.
+	\end{equation}
+	这里 \(K\) 是第八章定义的内在 Gauss 曲率，曲率张量约定为 \(R(V,W)=\nabla_V\nabla_W-\nabla_W\nabla_V-\nabla_{[V,W]}\)。
+\end{proposition}
+
+\begin{proof}
+	对 \(e_1\) 应用曲率定义与\eqref{g1:eq:surface-frame-connection}，两次求导中沿 \(e_1\) 的乘积项抵消，得到
+	\[
+		R(V,W)e_1=\bigl(V\omega(W)-W\omega(V)-\omega([V,W])\bigr)e_2
+		=\mathrm{d}\omega(V,W)e_2.
+	\]
+	另一方面，\cref{g1:prop:surface-curvature-two-dim}给出 \(R(e_1,e_2)e_1=-Ke_2\)。所以 \(\mathrm{d}\omega(e_1,e_2)=-K\)。二维交替双线性形式由在一组基上的这个值决定，而 \(\mathrm{d}A(e_1,e_2)=1\)，故得结论。
+\end{proof}
+
+联络的曲率矩阵是 \(\begin{psmallmatrix}0&-\mathrm{d}\omega\\\mathrm{d}\omega&0\end{psmallmatrix}\)；它记录了先后两个方向求导的差。负号 \(\mathrm{d}\omega=-K\,\mathrm{d}A\) 同时来自本书的曲率次序和 \(\omega=g(\nabla e_1,e_2)\) 的选择。改变其中任何一项约定时，都必须重新核对这个符号。
+
+\begin{lemma}[Green 公式]
+	\label{g1:lem:green-formula}
+	设 \(D\) 是一张正向坐标图内的紧区域，边界由有限条分片 \(C^2\) 正则简单闭曲线组成，彼此不交；角点内角在 \((0,2\pi)\) 内。若一形式 \(\alpha\) 在 \(D\) 的邻域上为 \(C^1\)，则
+	\[
+		\int_{\partial D}\alpha=\int_D\mathrm{d}\alpha.
+	\]
+	边界方向取区域在左的方向，故有孔时，外边界逆时针，孔的边界顺时针。
+\end{lemma}
+
+这一公式称为 Green 公式，也就是二维的 Stokes 公式。\footnote{Green，格林，George Green（1793--1841），英国数学家，研究位势理论，提出 Green 函数及相关积分公式。Stokes，斯托克斯，George Gabriel Stokes（1819--1903），生于爱尔兰的英国数学家、物理学家，研究流体力学与光学。}下面用平面微积分证明本章所需的版本。
+
+\begin{proof}
+	先设边界光滑。在边界附近选坐标 \((u,t)\)，使区域为 \(t\ge0\)、边界为 \(t=0\)，并保持定向；这由边界正则性及逆函数定理得到。例如边界原为 \(v=f(u)\)，取 \(t=v-f(u)\)。若 \(\alpha=P\,\mathrm{d}u+Q\,\mathrm{d}t\) 的支撑紧含于此坐标邻域，则积分基本定理与累次积分给出
+	\[
+		\int_{t\ge0}(\partial_uQ-\partial_tP)\,\mathrm{d}u\,\mathrm{d}t
+		=\int P(u,0)\,\mathrm{d}u.
+	\]
+	第一项沿 \(u\) 积分为零，第二项只留下 \(t=0\) 的值；右边正是把区域放在左侧的边界积分。若支撑在内部，同样在整个平面上积分，两个偏导积分都为零。
+
+	把 \(D\) 用有限个内部邻域和这样的边界邻域覆盖，再用支撑在其中的光滑函数 \(\rho_j\) 分解 \(1\)。这里不需调用曲面上的一般分解定理：在坐标平面内取有限个更小圆盘覆盖紧集，以 \(\exp(-1/(1-|x|^2))\) 在单位圆盘内、在外取零并经平移缩放得到非负光滑函数，最后除以它们在紧集附近处处为正的和即可。对 \(\rho_j\alpha\) 应用局部计算并相加，由 \(\sum\rho_j=1\)、\(\sum\mathrm{d}\rho_j=0\) 得到原式。换坐标的积分公式保证所有局部积分相容。
+
+	有角点时，先在每个角点附近用一条长度为 \(O(\varepsilon)\) 的光滑小弧切去角点，并把新接点圆滑化。两侧边界有非零夹角，可在其切线张成的扇形内完成此构造；所删区域面积为 \(O(\varepsilon^2)\)，所改边界的总长度为 \(O(\varepsilon)\)。\(\alpha\) 及 \(\mathrm{d}\alpha\) 在紧邻域上有界，所以新旧边界积分之差趋于零，面积积分之差也趋于零。对光滑截角区域的公式取极限，便得分片光滑情形；这一论证也适用于多个边界分支。
+\end{proof}
+
+对任意紧曲面区域，面积积分也可以先作有限坐标分解再相加。在曲面坐标中取上述非负光滑截断函数，支撑紧含于坐标邻域后延为零，再除以有限和，得到坐标覆盖的有限单位分解。以局部表达计算 \(\int\rho_j f\,\mathrm{d}A\)；换坐标的 Jacobian 公式及 \(\sum\rho_j=1\) 保证结果与分解无关。面积元在不可定向曲面上仍有意义，因为它使用绝对面积；带方向的二形式积分则需要定向。
+
+\begin{proposition}
+	\label{g1:prop:surface-local-holonomy}
+	设 \(D\) 是上述坐标图内由简单分片光滑闭曲线围成的圆盘区域，\(\gamma=\partial D\) 取正向。沿 \(\gamma\) 的平行移动回到起点后是一个平面旋转，其旋转角 \(\beta\) 满足
+	\begin{equation}
+		\label{g1:eq:surface-holonomy-integral}
+		\beta\equiv\int_D K\,\mathrm{d}A\pmod{2\pi}.
+	\end{equation}
+\end{proposition}
+
+\begin{proof}
+	在整张坐标图上将坐标基正交化，得到单值标架。绕行一周，标架回到原值。平行单位向量相对标架的连续角度由\eqref{g1:eq:parallel-angle}满足 \(\theta(b)-\theta(a)=-\int_{\partial D}\omega\)。再用 Green 公式和\eqref{g1:eq:surface-curvature-form}，得到角度增量 \(\int_DK\,\mathrm{d}A\)。终点向量只记录该数模 \(2\pi\) 的值，这便是所述旋转角。
+\end{proof}
+
+绕闭路返回同一切平面后所得的变换也称为该闭路的 holonomy。\foreignidx{holonomy}它通常不只取决于闭路的同伦类：同一个坐标圆盘内的闭路都可缩，但围起不同曲率积分的闭路可能给出不同旋转。对缩到点 \(p\) 的小圆盘，选取趋于零的角度代表后，有
+\[
+	\frac{\beta}{\operatorname{Area}(D)}
+	=\frac{1}{\operatorname{Area}(D)}\int_DK\,\mathrm{d}A\longrightarrow K(p),
+\]
+因为曲率的连续性控制了平均值与 \(K(p)\) 的差。这给出了曲率的一种直接测量方式。
+
+\begin{example}
+	\label{g1:exm:spherical-latitude-holonomy}
+	半径 \(R\) 的球面用余纬 \(\theta\in(0,\pi)\)、经度 \(\varphi\) 表示，度量为 \(R^2\mathrm{d}\theta^2+R^2\sin^2\theta\,\mathrm{d}\varphi^2\)。取 \(e_1=R^{-1}\partial_\theta\)、\(e_2=(R\sin\theta)^{-1}\partial_\varphi\)，由 Christoffel 公式求得
+	\[
+		\omega=\cos\theta\,\mathrm{d}\varphi,\qquad
+		\mathrm{d}\omega=-\sin\theta\,\mathrm{d}\theta\wedge\mathrm{d}\varphi=-R^{-2}\mathrm{d}A.
+	\]
+	沿余纬 \(\theta_0\) 处的纬线增加经度一周，平行向量相对这个周期标架的角度变化为 \(-2\pi\cos\theta_0\)。而北球冠的曲率积分是 \(2\pi(1-\cos\theta_0)\)，两者相差 \(2\pi\)，表示同一个旋转。这里的经纬标架在北极无定义，不能将它的 \(\omega\) 直接用于整个球冠的 Green 公式；换用在球冠上光滑的坐标标架，角度代表就与球冠积分一致。赤道绕行的旋转为恒等，但北半球的曲率积分为 \(2\pi\)，这也说明模 \(2\pi\) 不能随意删去。
+\end{example}

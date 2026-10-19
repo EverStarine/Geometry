@@ -1,0 +1,296 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 13.4 Frobenius 定理的连续证明
+% 纲要位置：几何学计划纲要.md，第 627 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 分布、局部标架与积分流形
+% * 对合条件的必要性
+% * 交换化标架或逐秩归纳的关键引理
+% * 适应坐标和局部积分叶的构造
+% * 最大连通积分叶及唯一性
+% 
+% 纲要内容结束
+
+\section{Frobenius 定理的连续证明}
+\label{g1:sec:1304}
+
+给定一条非零向量场，可以沿其积分曲线组织局部坐标。如果在每一点指定的是一个 \(r\) 维切平面，能否找到 \(r\) 维子流形，使它在各点的切空间恰好等于所指定的平面？这里的困难不只是分别沿 \(r\) 个方向求积分曲线：先沿一个方向、再沿另一个方向移动，可能产生离开原平面的额外方向。李括号正好测量这种不相容性。
+
+\ProseParagraphBreak
+
+本节始终在有限维、Hausdorff、第二可数且无边界的光滑流形上讨论常秩光滑分布。证明先把对合分布的局部标架换成两两交换的标架，再用交换流构造坐标。局部坐标片的粘合会给出最大连通积分叶；这一步还要说明叶自己的拓扑为什么是 Hausdorff、第二可数的，不能只把它看作环境空间中的一个点集。
+
+\subsection{分布、局部标架与积分流形}
+\label{g1:subsec:1304:01}
+
+\begin{definition}[光滑分布]\label{g1:def:smooth-distribution}
+	设 \(M^n\) 为无边界光滑流形，\(0\le r\le n\)。切丛 \(\mathrm{T}M\) 的秩 \(r\) 光滑向量子丛 \(D\subseteq \mathrm{T}M\) 称为一个秩 \(r\) 的\term[guanghuafenbu]{光滑分布}[smooth distribution]。等价地，在每个 \(p\in M\) 的某邻域 \(U\) 上，存在光滑向量场 \(Z_1,\ldots,Z_r\)，使它们在每一点线性无关，且
+	\[
+		D_q=\operatorname{span}\{Z_1(q),\ldots,Z_r(q)\}\qquad(q\in U).
+	\]
+	这样的向量场组称为 \(D\) 的局部标架。记 \(\Gamma(U,D)\) 为 \(U\) 上所有取值于 \(D\) 的光滑向量场。
+\end{definition}
+
+这个等价描述正是\cref{g1:def:vector-subbundle}对 \(\mathrm{T}M\) 的应用。固定维数还不够，局部标架的光滑性也属于条件。另一方面，“取值于 \(D\) 的光滑向量场”确实是子丛的光滑截面：由\cref{g1:prop:subbundle-adapted-frame}把局部标架补成 \(\mathrm{T}M\) 的标架后，后面的分量恒为零，前面的分量仍光滑。因而任意 \(X\in\Gamma(U,D)\) 都唯一写为
+\[
+	X=\sum_{i=1}^r f^iZ_i
+\]
+且各 \(f^i\) 光滑。
+
+\begin{definition}[积分流形]\label{g1:def:integral-manifold}
+	设 \(D\subseteq \mathrm{T}M\) 为秩 \(r\) 光滑分布。一个 \(r\) 维无边界光滑流形 \(N\)，连同单射浸入 \(\iota:N\to M\)，若满足
+	\[
+		\mathrm{d}\iota_q(\mathrm{T}_qN)=D_{\iota(q)}\qquad(q\in N),
+	\]
+	则称为 \(D\) 的一个\term[jifenliuxing]{积分流形}[integral manifold]。把 \(N\) 与其像识别时，像使用从 \(N\) 搬来的流形拓扑和光滑结构，不预先要求它们等于子空间拓扑及嵌入子流形结构。若每个 \(p\in M\) 都位于某个积分流形的像内，则称 \(D\) 可积。
+\end{definition}
+
+这里单射使一个像点只有一个参数点，浸入则保证局部参数确实给出一块 \(r\) 维曲面。然而，\cref{g1:exm:injective-immersion-not-embedding}已经说明，单射浸入未必是嵌入：可能有环境空间中相近的点，在参数流形中相距很远。因此积分流形的拓扑可以比像的子空间拓扑更细。后面构造最大叶时，会明确选出这个拓扑。
+
+\begin{example}\label{g1:exm:submersion-integral-levels}
+	若 \(F:M^n\to N^{n-r}\) 是光滑淹没，则 \(D=\ker\mathrm{d}F\) 为秩 \(r\) 光滑分布。其子丛性质来自\cref{g1:thm:constant-rank-bundle-morphism}：把 \(\mathrm{d}F\) 看成 \(\mathrm{T}M\to F^*\mathrm{T}N\) 的满射丛同态，其核秩恒为 \(r\)。对每个非空水平集 \(F^{-1}(y)\)，\cref{g1:thm:regular-level-set}给出嵌入子流形结构，且
+	\[
+		\mathrm{T}_pF^{-1}(y)=\ker\mathrm{d}F_p=D_p.
+	\]
+	因此水平集及其连通分支都是积分流形。在这个例子中，积分流形由一些保持不变的函数值刻画；\term[frobeniusdingli]{Frobenius 定理}[Frobenius theorem]\footnote{Frobenius（弗罗贝尼乌斯），Ferdinand Georg Frobenius（1849--1917），德国数学家，研究群的表示与特征标以及微分方程。}将证明，对合条件正好保证局部总能找到这样的横向坐标函数。
+\end{example}
+
+秩零分布的连通积分流形是单点；秩 \(n\) 的分布只能是 \(\mathrm{T}M\)，其局部积分流形是开集。以下证明也包含这两个情形，空的标架或横向坐标按通常的零维约定理解。
+
+\subsection{对合条件的必要性}
+\label{g1:subsec:1304:02}
+
+若两条向量场都沿同一个积分流形运动，它们的无穷小交换也应当沿这个流形。为把这个直观判断写成坐标无关的条件，我们使用\cref{g1:def:lie-bracket}中的括号
+\[
+	[X,Y]f=X(Yf)-Y(Xf).
+\]
+
+\begin{definition}[对合分布]\label{g1:def:involutive-distribution}
+	设 \(D\subseteq \mathrm{T}M\) 为光滑分布。若对任意开集 \(U\subseteq M\) 及任意 \(X,Y\in\Gamma(U,D)\)，都有
+	\[
+		[X,Y]\in\Gamma(U,D),
+	\]
+	则称 \(D\) 为\term[duihefenbu]{对合分布}[involutive distribution]。
+\end{definition}
+
+检查对合性时，只需检查一组局部标架的两两括号。事实上，由\cref{g1:prop:lie-bracket-properties}的乘积法则，
+\[
+	\left[\sum_i f^iZ_i,\sum_j g^jZ_j\right]
+	=\sum_{i,j}f^ig^j[Z_i,Z_j]
+	+\sum_{i,j}f^iZ_i(g^j)Z_j
+	-\sum_{i,j}g^jZ_j(f^i)Z_i.
+\]
+后两项自动取值于 \(D\)，第一项则由标架括号条件控制。对合不要求原标架彼此交换。例如 \(\mathrm{T}\mathbb R^2\) 的标架 \(\partial_x,e^x\partial_y\) 满足 \([\partial_x,e^x\partial_y]=e^x\partial_y\ne0\)，但括号仍在该分布中。秩一分布自动对合，因为 \([fX,gX]=(fXg-gXf)X\)。
+
+\begin{proposition}[可积性的必要条件]\label{g1:prop:involutivity-necessary}
+	设 \(M\) 为无边界光滑流形，\(D\subseteq \mathrm{T}M\) 为常秩光滑分布。若每个点都有通过它的积分流形，则 \(D\) 对合。更具体地，若 \(\iota:N\to M\) 是一个积分流形，\(X,Y\) 为某开集 \(U\) 上取值于 \(D\) 的光滑向量场，则 \([X,Y]\) 在 \(U\cap\iota(N)\) 上也取值于 \(D\)。
+\end{proposition}
+\begin{proof}
+	在 \(\iota^{-1}(U)\) 上，因 \(\mathrm{d}\iota_q:\mathrm{T}_qN\to D_{\iota(q)}\) 为线性同构，可唯一定义向量场 \(\widetilde X,\widetilde Y\)，使
+	\[
+		\mathrm{d}\iota\,\widetilde X=X\circ\iota,\qquad
+		\mathrm{d}\iota\,\widetilde Y=Y\circ\iota.
+	\]
+	它们光滑。具体地，在局部标架中，\(\mathrm{d}\iota\) 给出到拉回分布 \(\iota^*D\) 的光滑可逆矩阵；其逆由伴随矩阵除以非零行列式给出，故光滑，正如\cref{g1:prop:bundle-morphism-matrices}所述。
+
+	相关向量场的括号仍相关，见\cref{g1:prop:lie-derivative-natural}。当前所用的计算很短：对 \(f\in C^\infty(U)\)，有
+	\[
+		\begin{aligned}
+			[\widetilde X,\widetilde Y](f\circ\iota)
+			&=\widetilde X\bigl((Yf)\circ\iota\bigr)-\widetilde Y\bigl((Xf)\circ\iota\bigr)\\
+			&=([X,Y]f)\circ\iota.
+		\end{aligned}
+	\]
+	以导子判断切向量，得到
+	\[
+		[X,Y]_{\iota(q)}
+		=\mathrm{d}\iota_q\bigl([\widetilde X,\widetilde Y]_q\bigr)
+		\in \mathrm{d}\iota_q(\mathrm{T}_qN)=D_{\iota(q)}.
+	\]
+	若每个点都有这样的积分流形，就在每一点得到所需的包含关系，故 \([X,Y]\) 为 \(D\) 的光滑截面。
+\end{proof}
+
+这个证明没有把 \(N\) 当成嵌入子流形，也没有要求环境向量场在整个 \(M\) 上有定义。所需的是浸入微分把 \(\mathrm{T}N\) 同构到沿像的 \(D\)，以及括号对相关向量场的自然性。
+
+\subsection{交换化标架或逐秩归纳的关键引理}
+\label{g1:subsec:1304:03}
+
+对合条件只说 \([Z_i,Z_j]\) 能用原标架线性表示，而交换流需要的是括号等于零。关键在于先选择若干坐标方向，使它们在 \(D\) 上能够独立测量所有分量，再把这些分量归一化。这样新标架的括号既必须留在 \(D\)，又失去了在这些方向上的全部分量，只能为零。
+
+\begin{lemma}[交换化分布标架]\label{g1:lem:commuting-distribution-frame}
+	设 \(D\) 为无边界光滑流形 \(M^n\) 上的秩 \(r\) 对合光滑分布。对每个 \(p\in M\)，存在以 \(p\) 为原点的坐标
+	\[
+		(x^1,\ldots,x^r,y^1,\ldots,y^{n-r})
+	\]
+	及 \(D\) 的光滑局部标架 \(X_1,\ldots,X_r\)，满足
+	\begin{equation}\label{g1:eq:normalized-distribution-frame}
+		X_i=\frac{\partial}{\partial x^i}
+		+\sum_{\alpha=1}^{n-r}a_i^\alpha(x,y)\frac{\partial}{\partial y^\alpha},
+		\qquad [X_i,X_j]=0.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	先取任意局部标架 \(Z_1,\ldots,Z_r\) 和环境坐标 \(z^1,\ldots,z^n\)。在 \(p\) 处，系数矩阵 \((Z_jz^a)_{a,j}\) 的秩为 \(r\)，所以有一个非零的 \(r\) 阶子式。重排坐标后，可令它由前 \(r\) 行给出，记这部分坐标为 \(x\)，其余为 \(y\)。缩小邻域使
+	\[
+		B_{aj}=Z_jx^a\qquad(1\le a,j\le r)
+	\]
+	始终可逆，并定义
+	\[
+		X_i=\sum_{j=1}^r(B^{-1})_{ji}Z_j.
+	\]
+	逆矩阵光滑，新向量场仍为 \(D\) 的标架；并且
+	\[
+		X_ix^a=\sum_jB_{aj}(B^{-1})_{ji}=\delta_i^a.
+	\]
+	这就给出\eqref{g1:eq:normalized-distribution-frame}中的第一式。
+
+	投影到前 \(r\) 个坐标的微分 \(\mathrm{d}x:D_q\to\mathbb R^r\) 在整个邻域中为同构，因为它把 \(X_i(q)\) 送到第 \(i\) 个标准基向量。另一方面，
+	\[
+		[X_i,X_j]x^a=X_i(\delta_j^a)-X_j(\delta_i^a)=0.
+	\]
+	所以括号的全部 \(x\) 分量为零。同时，对合性使它属于 \(D_q\)。一个属于 \(D_q\) 且被 \(\mathrm{d}x\) 送到零的向量只能为零，故 \([X_i,X_j]=0\)。
+\end{proof}
+
+这一步只换了分布的标架，还没有找到使 \(X_i\) 本身成为坐标向量的坐标。后一任务由流完成。若直接展开刚才消失的横向分量，还可把对合条件写为
+\[
+	\partial_{x^i}a_j^\alpha-\partial_{x^j}a_i^\alpha
+	+\sum_{\beta=1}^{n-r}\left(
+		a_i^\beta\partial_{y^\beta}a_j^\alpha
+		-a_j^\beta\partial_{y^\beta}a_i^\alpha
+	\right)=0.
+\]
+这些是系数之间的相容方程；不必另外求解这组偏微分方程，交换的局部流会直接给出积分片。
+
+\subsection{适应坐标和局部积分叶的构造}
+\label{g1:subsec:1304:04}
+
+\begin{theorem}[Frobenius 定理]\label{g1:thm:frobenius}
+	设 \(M^n\) 为有限维、Hausdorff、第二可数且无边界的光滑流形，\(D\subseteq \mathrm{T}M\) 为秩 \(r\) 光滑分布。下列条件等价：
+	\begin{enumerate}
+		\item \(D\) 对合；
+		\item 每个点附近都有坐标 \((u^1,\ldots,u^r,v^1,\ldots,v^{n-r})\)，使
+		\[
+			D=\operatorname{span}\left\{\frac{\partial}{\partial u^1},\ldots,\frac{\partial}{\partial u^r}\right\};
+		\]
+		\item 每个点都位于某个 \(r\) 维积分流形内。
+	\end{enumerate}
+	第二项中的坐标域可取为乘积 \(B\times T\)，其中 \(B\subseteq\mathbb R^r\)、\(T\subseteq\mathbb R^{n-r}\) 为开球或开盒；固定 \(v=c\) 的切片给出局部嵌入积分流形。
+\end{theorem}
+\begin{proof}
+	设 \(D\) 对合。固定 \(p\)，用\cref{g1:lem:commuting-distribution-frame}取得局部坐标 \((x,y)\) 和两两交换的标架 \(X_1,\ldots,X_r\)。令 \(\Phi_i^t\) 为 \(X_i\) 的局部流。\cref{g1:thm:maximal-local-flow,g1:thm:ode-smooth-dependence}保证它们在零时间附近存在，且对时间与初值联合光滑；不需要这些向量场完备。由\cref{g1:thm:commuting-local-flows}，在足够小的共同邻域内，各局部流两两交换。
+
+	取横截片 \(\sigma(y)=(0,y)\)，定义
+	\begin{equation}\label{g1:eq:frobenius-flow-coordinates}
+		\Psi(t,y)=\Phi_r^{t^r}\circ\cdots\circ\Phi_1^{t^1}(\sigma(y)).
+	\end{equation}
+	这时必须使一个参数盒内的全部复合都有定义。因为只有有限条流及交换时所需的有限种复合，零参数时所有中间点都在 \(p\) 附近；各流的定义域开放，故可同时缩小时间盒和横截片，使这些复合及其中间点都留在上述共同邻域。于是 \(\Psi\) 是一个开参数盒上的光滑映射。
+
+	利用交换性，把第 \(i\) 条流移到最外层，便有
+	\[
+		\Psi(t+s e_i,y)=\Phi_i^s(\Psi(t,y))
+	\]
+	对充分小的 \(s\) 成立。在 \(s=0\) 求导得到
+	\begin{equation}\label{g1:eq:frobenius-pushed-coordinate-fields}
+		\mathrm{d}\Psi_{(t,y)}\!\left(\frac{\partial}{\partial t^i}\right)
+		=X_i(\Psi(t,y)).
+	\end{equation}
+	在 \((0,0)\) 处，时间方向的导数为 \(X_i(p)\)，横截方向的导数为原坐标的 \(\partial_{y^\alpha}|_p\)。因此按 \((x,y)\) 排列的导数矩阵为
+	\[
+		\mathrm{D}\Psi(0,0)=
+		\begin{pmatrix}
+			I_r&0\\
+			A&I_{n-r}
+		\end{pmatrix},
+		\qquad A_{\alpha i}=a_i^\alpha(p),
+	\]
+	它可逆。\cref{g1:thm:inverse-function}给出 \(\Psi\) 在原点附近的光滑逆；再把参数域缩小为乘积 \(B\times T\)，其像仍为开集 \(U\)，且 \(\Psi:B\times T\to U\) 为微分同胚。
+
+	取 \((u,v)=\Psi^{-1}\) 为 \(U\) 上的新坐标。\eqref{g1:eq:frobenius-pushed-coordinate-fields}说明原来的 \(X_i\) 正好成为新坐标向量 \(\partial_{u^i}\)，从而得到第二项。秩零时没有流，直接使用原坐标；满秩时横截片是单点，同一个可逆矩阵论证仍成立。
+
+	第二项推出第三项：固定 \(v=c\)，映射 \(u\mapsto\Psi(u,c)\) 是一块嵌入参数片，其微分像正是 \(D\)，故为积分流形。第三项推出第一项已经由\cref{g1:prop:involutivity-necessary}证明。
+\end{proof}
+
+在这样的适应坐标中，把 \(U\) 称为一个\term[yezhuangzuobiaohe]{叶状坐标盒}[foliation box]；对 \(c\in T\)，把
+\[
+	P_c=\Psi(B\times\{c\})
+\]
+称为该盒的一张\term[yepian]{叶片}[plaque]。叶片是连通的局部嵌入积分流形。这里的“叶片”只指一个盒中的局部切片，后面所说的“叶”则是最大连通积分流形，不宜混用。\cref{g1:fig:frobenius-plaques}中，横向坐标 \(v\) 区分不同叶片，沿 \(D\) 的运动只改变 \(u\)。
+
+\input{Figures/Chapter13-FrobeniusPlaques.tex}
+
+\begin{lemma}[局部积分叶片的唯一性]\label{g1:lem:local-integral-plaque}
+	设 \(D\) 为无边界光滑流形上的秩 \(r\) 光滑分布，\(U\) 为上述适应坐标盒，坐标为 \((u,v)\in B\times T\)。若 \(\iota:N\to M\) 是连通积分流形且 \(\iota(N)\subseteq U\)，则 \(v\circ\iota\) 为常值 \(c\)，且
+	\[
+		\iota:N\longrightarrow P_c
+	\]
+	是到 \(P_c\) 某开子集的微分同胚。因此，任何两个通过同一点的积分流形，在分别缩小其参数邻域后，像在该点附近一致。
+\end{lemma}
+\begin{proof}
+	由于 \(\mathrm{d}\iota(\mathrm{T}N)=D\)，而每个横向坐标 \(v^\alpha\) 的微分在 \(D\) 上为零，故
+	\[
+		\mathrm{d}(v^\alpha\circ\iota)=0.
+	\]
+	光滑函数微分为零时局部常值：在源坐标小球内沿线段使用一元微积分，函数值不变。连通空间上的局部常值函数为常值，因为一个取值的原像及其补集都是开集。因此 \(v\circ\iota=c\)。
+
+	前 \(r\) 个坐标的微分在 \(D\) 上为同构，所以
+	\[
+		\mathrm{d}(u\circ\iota)_q
+		=\mathrm{d}u_{\iota(q)}\circ\mathrm{d}\iota_q:\mathrm{T}_qN\to\mathbb R^r
+	\]
+	可逆。逆函数定理表明 \(\iota:N\to P_c\) 是局部微分同胚，因此为开映射。它又单射，故是到其像的同胚，局部光滑逆粘合成整体光滑逆，像在 \(P_c\) 中开。
+
+	最后，对两条通过同一点 \(p\) 的积分流形，先各取连通参数邻域，使像落在同一个适应坐标盒中。两者的横向常值都等于 \(v(p)\)，像都是同一 \(P_{v(p)}\) 中含 \(p\) 的开集。取这两个开集的交，再限制各参数邻域，即得到相同的局部像。
+\end{proof}
+
+若一条积分流形没有整个落在 \(U\) 内，只能把引理用于其原像 \(\iota^{-1}(U)\) 的各个连通分支。不同分支可以落在同一个坐标盒的不同叶片上。局部唯一性因此不表示一个完整的积分叶与 \(U\) 只能相交一张叶片，也不保证完整积分叶是嵌入的。
+
+\subsection{最大连通积分叶及唯一性}
+\label{g1:subsec:1304:05}
+
+沿相交的叶片继续前进，可以把经过一点的所有局部积分片连在一起。首先需要确定哪些点属于同一片最大对象，然后给这个点集一个使各叶片成为开坐标片的拓扑。这个拓扑下，远行后重新靠近原点的部分不必成为原来那一张局部坐标片中的邻近点。
+
+\begin{theorem}[最大连通积分叶]\label{g1:thm:maximal-connected-leaf}
+	设 \(M\) 为有限维、Hausdorff、第二可数且无边界的光滑流形，\(D\subseteq \mathrm{T}M\) 为秩 \(r\) 对合光滑分布。对每个 \(p\in M\)，存在唯一的最大连通积分流形 \(L_p\)，其像包含 \(p\)。更精确地，\(L_p\) 是 \(M\) 的一个子集，带有 Hausdorff、第二可数的 \(r\) 维光滑流形结构，包含映射 \(i_p:L_p\hookrightarrow M\) 为浸入，且任何像包含 \(p\) 的连通积分流形 \(\iota:N\to M\) 都唯一分解为
+	\[
+		N\xrightarrow{\ \widehat\iota\ }L_p\xrightarrow{\ i_p\ }M,
+	\]
+	其中 \(\widehat\iota\) 是开嵌入。不同的 \(L_p\) 要么相同，要么不交，故它们将 \(M\) 分割成最大连通积分流形。这些最大积分流形称为 \(D\) 的\term[ye]{叶}[leaf]。
+\end{theorem}
+\begin{proof}
+	先取至多可数个叶状坐标盒 \(U_1,U_2,\ldots\) 覆盖 \(M\)。第二可数性保证可以这样取：在一个可数拓扑基中，对每个能包含于某个给定坐标盒的基元素选一个这样的盒；每点附近都有这样的基元素，所以选出的至多可数个盒仍覆盖 \(M\)。记第 \(j\) 个盒的坐标为 \((u_j,v_j)\in B_j\times T_j\)，其叶片记为 \(P_{j,c}\)。
+
+	称两点可由叶片相连，如果存在有限叶片链
+	\[
+		P_0,P_1,\ldots,P_k,\qquad
+		P_{\ell-1}\cap P_\ell\ne\varnothing,
+	\]
+	使两点分别位于首尾叶片。每点属于某叶片，反转链给出对称性，拼接链给出传递性，所以这是等价关系。令 \(L_p\) 为 \(p\) 的等价类。若一个叶片与 \(L_p\) 相交，便可加到相应的有限链末尾，故整个叶片都包含于 \(L_p\)。
+
+	先说明相交叶片的拓扑如何衔接。设 \(P,Q\) 为所选坐标盒中的两张叶片，且 \(z\in P\cap Q\)。在 \(P\) 内取 \(P\cap U_Q\) 中含 \(z\) 的一个小连通开邻域，其中 \(U_Q\) 是含 \(Q\) 的坐标盒。这个邻域是积分流形，像落在 \(U_Q\) 中，由\cref{g1:lem:local-integral-plaque}，它位于通过 \(z\) 的唯一叶片 \(Q\) 内。因此 \(P\cap Q\) 在 \(P\) 中开；交换二者，同样在 \(Q\) 中开。两张叶片坐标之间的转换，是环境坐标转换限制到这些开集后取前 \(r\) 个分量，因而光滑，其逆也光滑。
+
+	给 \(L_p\) 如下拓扑：\(W\subseteq L_p\) 开，当且仅当对每张包含于 \(L_p\) 的上述叶片 \(P\)，交集 \(W\cap P\) 在 \(P\) 中开。刚才的交集性质说明每张 \(P\) 在这个拓扑中开，而且它的诱导拓扑恰好是原来的欧氏片拓扑。例如 \(P\) 中任一开集 \(V\) 与其他叶片 \(Q\) 的交，在开集 \(P\cap Q\) 内经光滑坐标转换仍为开集，因此 \(V\) 也是 \(L_p\) 的开集。各叶片坐标遂组成光滑相容图册。包含映射在每个片上就是坐标切片的包含，所以连续、光滑且微分像为 \(D\)。任意两点可在 \(M\) 中用不交开邻域分开，取这些邻域与 \(L_p\) 的交，仍为叶拓扑中的开集，故 \(L_p\) Hausdorff。
+
+	接着验证第二可数性。这不能由“\(L_p\) 是第二可数空间 \(M\) 的子集”推出，因为刚定义的叶拓扑可能比子空间拓扑更细。我们证明这条叶实际只用到可数张叶片。固定一张叶片 \(P\) 以及一个坐标盒 \(U_j\)。集合 \(P\cap U_j\) 是 \(P\) 的开子集，至多有可数个连通分支：在 \(P\) 的欧氏坐标中，每个连通分支都是开集，因为每点的小球连通；不同非空分支各含一个不同的有理坐标点，故只有可数个。秩零时开子集至多为单点，结论同样成立。每个分支 \(C\) 是连通积分流形且位于 \(U_j\) 内，由局部唯一性，\(v_j|_C\) 常值，故 \(C\) 只遇到 \(U_j\) 中的一张叶片。因此对固定的 \(P,U_j\)，与 \(P\) 相交的 \(U_j\) 叶片至多可数。
+
+	坐标盒本来只有可数个，故与固定 \(P\) 相交的全部所选叶片至多可数。现在从一张含 \(p\) 的叶片开始：第一步加入所有与它相交的叶片，第二步加入所有与第一步叶片相交的叶片，依此继续。每一步得到可数集合，可数步之并仍可数，并且恰好包含所有能用有限链从 \(p\) 到达的叶片。它们覆盖 \(L_p\)。每张叶片取一个可数欧氏拓扑基，所有这些基的并给出 \(L_p\) 的可数基，因为叶片是开坐标片。至此，\(L_p\) 确实是通常意义下的 Hausdorff、第二可数光滑流形。
+
+	每张叶片同胚于开球或开盒，所以可以在片内用光滑路径连接两点。沿任一有限叶片链选择相邻交点并连接这些路径，得到叶内的连续分片光滑路径。因此 \(L_p\) 路径连通，尤其连通。
+
+	最后证明最大性与唯一性。设 \(\iota:N\to M\) 为连通积分流形，且像包含 \(p\)。对任意 \(q\in N\)，选一个连通参数邻域，其像落在某个 \(U_j\) 内。局部唯一性说明这个像落在一张叶片中，所以 \(N\) 中映入同一叶片等价类的点构成开集；这些开集两两不交并覆盖 \(N\)。由连通性只有一个非空类，且它是 \(L_p\)。故 \(\iota\) 在集合意义下唯一地分解为 \(\widehat\iota:N\to L_p\)。
+
+	在刚才的每个小参数邻域内，\(\widehat\iota\) 的像位于一张开叶片中，而\cref{g1:lem:local-integral-plaque}使它成为到该叶片开子集的微分同胚。因此 \(\widehat\iota\) 是局部微分同胚，特别地连续且开。它由 \(\iota\) 的单射性而单射，故为开嵌入。这证明 \(L_p\) 包含经过 \(p\) 的每个连通积分流形的像。任何另一个最大连通积分流形必须具有相同的像，两个结构之间的恒等映射又由上述分解在两个方向光滑，所以最大对象连同流形结构都唯一。最后，等价类本来相同或不交，故叶构成 \(M\) 的分割。
+\end{proof}
+
+这个由最大叶组成的分割，连同上述局部乘积坐标，称为 \(M\) 上的一个 \(r\) 维\term[yezhuangjiegou]{光滑叶状结构}[smooth foliation]，常记为 \(\mathcal F\)。各叶在每个坐标盒中分解为若干叶片；叶片之间的切向空间相容，合起来正是原来的分布 \(D\)。
+
+\ProseParagraphBreak
+
+这个证明同时给出了叶状坐标盒的内在用途：它们既提供叶的局部图，又用可数传播控制叶的整体拓扑。对任一固定盒，一条叶可能经过可数多张不同叶片，而不是只有一张；叶中的邻近由单张叶片上的坐标决定，环境中的再次靠近则未必意味着叶内的靠近。
+
+\ProseParagraphBreak
+
+Frobenius 定理由常秩、光滑性与对合条件得到局部适应坐标，并得到具有自身流形结构的最大连通叶。它没有把叶的包含映射提升为嵌入，也没有给出把每条叶压成一点后的商空间的分离性质。后一类整体问题将在下一节通过具体例子讨论。
+
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

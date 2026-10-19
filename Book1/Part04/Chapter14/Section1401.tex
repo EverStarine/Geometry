@@ -1,0 +1,360 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 14.1 外微分与自然运算
+% 纲要位置：几何学计划纲要.md，第 648 行。
+% 正文状态：初稿已撰写，尚未经正式审核。
+
+% 纲要内容开始
+% 
+% * 拉回、楔积及坐标无关性
+% * 外微分的构造与唯一性
+% * 内乘和 Cartan 公式
+% * 外微分与拉回、李导数的相容
+% 
+% 纲要内容结束
+
+\section{外微分与自然运算}
+\label{g1:sec:1401}
+
+第12章把微分形式定义为交替协变张量场，第13章又介绍了沿向量场的李导数。它们回答了两个不同的问题：形式怎样接受切向量作为输入，形式怎样随一个流变化。本节增加一种不需要先选向量场的微分运算。它把 \(k\) 形式变成 \(k+1\) 形式，函数的普通微分是它的零次情形；它与拉回相容，因而可以在不同参数空间之间传递计算。后面讨论闭形式、局部原函数和积分时，反复使用的正是这些性质。
+
+\ProseParagraphBreak
+
+本节的流形均为有限维、Hausdorff 且第二可数的实光滑流形，允许有边界；没有特别说明时，形式和映射均光滑。边界图仍采用 \(\mathbb H^n=\{x_n\geq0\}\)，光滑性指局部可延拓到欧氏开集。涉及流的解释时会另行说明向量场的条件。
+
+\subsection{拉回、楔积及坐标无关性}
+\label{g1:subsec:1401:01}
+
+回忆\cref{g1:def:smooth-tensor-field}，\(M\) 上的 \(k\) 形式是 \(\Lambda^k\mathrm{T}^*M\) 的光滑截面，空间记作 \(\Omega^k(M)\)。约定 \(\Omega^0(M)=C^\infty(M)\)，且在 \(k<0\) 或 \(k>\dim M\) 时取零空间。若 \((x^1,\ldots,x^n)\) 为局部坐标，记
+\[
+	\mathrm{d}x^I=\mathrm{d}x^{i_1}\wedge\cdots\wedge\mathrm{d}x^{i_k},\qquad I=(i_1<\cdots<i_k).
+\]
+任意 \(k\) 形式唯一表示为
+\[
+	\omega=\sum_{i_1<\cdots<i_k}\omega_{i_1\cdots i_k}\,\mathrm{d}x^{i_1}\wedge\cdots\wedge\mathrm{d}x^{i_k}
+	=\sum_I\omega_I\,\mathrm{d}x^I,
+\]
+其中 \(\omega_I=\omega(\partial_{i_1},\ldots,\partial_{i_k})\)。这里仅对递增指标求和，因而没有额外的 \(1/k!\)。若改为对全部有序指标求和，并令系数交替，才需要除以 \(k!\)。零次情形把空楔积理解为 \(1\)，便是一个函数自身。
+
+\ProseParagraphBreak
+
+楔积在每个点由交替形式的代数运算定义。\cref{g1:prop:wedge-algebra}已证明：若 \(\alpha\in\Omega^p(M)\)、\(\beta\in\Omega^q(M)\)，则
+\[
+	\alpha\wedge\beta=(-1)^{pq}\beta\wedge\alpha,
+\]
+并且楔积结合、对函数的乘法为零次楔积。例如 \(\mathrm{d}y\wedge\mathrm{d}x=-\mathrm{d}x\wedge\mathrm{d}y\)，而一个二形式与另一个二形式交换时没有负号。奇数次形式的自楔积为零；偶数次形式则未必如此，例如在 \(\mathbb R^4\) 中，\((\mathrm{d}x^1\wedge\mathrm{d}x^2+\mathrm{d}x^3\wedge\mathrm{d}x^4)^2=2\,\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^4\)。这些符号来自交换输入的次序，与坐标的具体选择无关。
+
+\ProseParagraphBreak
+
+设 \(F:M\to N\) 光滑。由\cref{g1:prop:covariant-tensor-pullback}，形式的拉回定义为
+\[
+	(F^*\omega)_p(v_1,\ldots,v_k)
+	=\omega_{F(p)}\bigl(\mathrm{d}F_p(v_1),\ldots,\mathrm{d}F_p(v_k)\bigr).
+\]
+先把输入的切向量送到目标点，再在那里求值，所得自然是定义域上的形式。这个定义只需要 \(\mathrm{d}F_p\)，不需要它可逆；因此嵌入、投影和有临界点的映射都可以拉回形式。对函数，定义为 \(F^*f=f\circ F\)。
+
+\ProseParagraphBreak
+
+在目标坐标 \((y^1,\ldots,y^m)\) 中写 \(\omega=\sum_I\omega_I\,\mathrm{d}y^I\)，并记 \(F^a=y^a\circ F\)。函数微分的链式法则给出 \(F^*(\mathrm{d}y^a)=\mathrm{d}F^a\)。逐点的楔积与线性拉回相容，于是
+\begin{equation}
+	\label{g1:eq:form-pullback-coordinates}
+	F^*\omega=\sum_{i_1<\cdots<i_k}(\omega_{i_1\cdots i_k}\circ F)\,\mathrm{d}F^{i_1}\wedge\cdots\wedge\mathrm{d}F^{i_k}.
+\end{equation}
+同样由逐点定义可得
+\[
+	F^*(\alpha\wedge\beta)=F^*\alpha\wedge F^*\beta,\qquad
+	(G\circ F)^*=F^*\circ G^*,\qquad (\operatorname{id}_M)^*=\operatorname{id}.
+\]
+第一式也可直接对楔积的洗牌求和公式逐项代入 \(\mathrm{d}F_p(v_i)\) 验证；第二式就是 \(\mathrm{d}(G\circ F)=\mathrm{d}G\circ\mathrm{d}F\)。因而这些公式在边界点同样成立。此处的 \(\mathrm{d}F^a\) 仍只是已经定义的函数微分，尚未用到本节将构造的高次外微分。
+
+\begin{example}
+	令 \(F:\mathbb R^2\to\mathbb R^2\)、\(F(u,v)=(u^2,v)\)，目标坐标记作 \((x,y)\)。则
+	\[
+		F^*(\mathrm{d}x\wedge\mathrm{d}y)=\mathrm{d}(u^2)\wedge\mathrm{d}v=2u\,\mathrm{d}u\wedge\mathrm{d}v.
+	\]
+	它在 \(u=0\) 处为零，恰好反映该点的微分无法提供两个线性无关的目标切向量。拉回仍处处光滑。更一般地，若 \(\operatorname{rank}\mathrm{d}F_p<k\)，任何 \(k\) 形式在 \(p\) 处的拉回都为零，因为它的 \(k\) 个输入像线性相关。特别地，把二形式拉回一条曲线，得到的是零二形式。
+\end{example}
+
+“坐标无关”并不意味着坐标系数不变。比如 \(y=x^2\) 在 \(x>0\) 上给出 \(\mathrm{d}y=2x\,\mathrm{d}x\)，同一个一形式的系数就可能随坐标改变。它意味着：把系数和基同时按链式法则变换后，对同一组切向量求值得到相同的数。下面构造外微分时，也必须检查这一点，不能只在一组坐标里写下公式便结束。
+
+\subsection{外微分的构造与唯一性}
+\label{g1:subsec:1401:02}
+
+函数的微分记录一阶变化，但直接对一个形式的各个系数求导，会同时出现一个导数指标和原来的交替指标。将新指标也作交替处理，就得到一个多一次的形式。楔积负责这一交替化；代价是丢掉部分二阶信息，好处是这个运算不需要度量或联络，而且连续做两次总为零。
+
+\begin{theorem}[外微分]\label{g1:thm:exterior-derivative}
+	设 \(M\) 为有限维、Hausdorff 且第二可数的光滑流形，允许有边界。存在唯一的一族实线性映射
+	\[
+		\mathrm{d}:\Omega^k(M)\longrightarrow\Omega^{k+1}(M),\qquad k\geq0,
+	\]
+	满足以下性质：
+	\begin{enumerate}
+		\item 对 \(f\in C^\infty(M)\)，\(\mathrm{d}f\) 是函数的普通微分，即 \((\mathrm{d}f)_p(v)=v(f)\)。
+		\item 若 \(\alpha\in\Omega^p(M)\)、\(\beta\in\Omega^q(M)\)，则
+		\[
+			\mathrm{d}(\alpha\wedge\beta)=\mathrm{d}\alpha\wedge\beta+(-1)^p\alpha\wedge\mathrm{d}\beta.
+		\]
+		\item 对任意形式 \(\omega\)，有 \(\mathrm{d}(\mathrm{d}\omega)=0\)。
+	\end{enumerate}
+	这个运算称为\term[waiweifen]{外微分}[exterior derivative]。它与限制到开集相容，并且在任意坐标域上有
+	\begin{equation}
+		\label{g1:eq:exterior-coordinate-formula}
+		\mathrm{d}\omega
+		=\sum_I\mathrm{d}\omega_I\wedge\mathrm{d}x^I
+		=\sum_I\sum_{j=1}^n\frac{\partial\omega_I}{\partial x^j}\,\mathrm{d}x^j\wedge\mathrm{d}x^I,
+		\qquad \omega=\sum_I\omega_I\,\mathrm{d}x^I.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先在一个坐标域 \(U\) 中用\eqref{g1:eq:exterior-coordinate-formula}定义算子 \(\mathrm{D}_x\)。边界图中对系数任取局部光滑延拓后求偏导；\cref{g1:prop:boundary-smooth-derivative}说明任意两种延拓的所有阶偏导在半空间上相同，因此定义不依赖延拓。系数仍光滑，且零次公式就是通常的 \(\mathrm{d}f\)。
+
+	分次乘积法则可以在单项式上验证，再由双线性推广。令 \(|I|=p\)，则
+	\[
+		\mathrm{D}_x\bigl((a\,\mathrm{d}x^I)\wedge(b\,\mathrm{d}x^J)\bigr)
+		=(b\,\mathrm{d}a+a\,\mathrm{d}b)\wedge\mathrm{d}x^I\wedge\mathrm{d}x^J.
+	\]
+	另一方面，所要证明的右端是
+	\[
+		b\,\mathrm{d}a\wedge\mathrm{d}x^I\wedge\mathrm{d}x^J
+		+(-1)^p a\,\mathrm{d}x^I\wedge\mathrm{d}b\wedge\mathrm{d}x^J.
+	\]
+	把第二项中的 \(\mathrm{d}b\) 移到 \(p\) 个一形式之前，产生另一个 \((-1)^p\)，两式因此相等。即使指标重复、相应楔积为零，等式仍然成立。
+
+	对单项式再作一次 \(\mathrm{D}_x\)，得到
+	\[
+		\mathrm{D}_x^2(a\,\mathrm{d}x^I)
+		=\sum_{j,\ell}\frac{\partial^2a}{\partial x^\ell\partial x^j}\,\mathrm{d}x^\ell\wedge\mathrm{d}x^j\wedge\mathrm{d}x^I=0.
+	\]
+	当 \(j=\ell\) 时，楔积为零；当 \(j\ne\ell\) 时，交换 \(j,\ell\) 的两项系数相等、楔积互为相反数。混合偏导可交换，在边界处也可由任一光滑延拓验证。因此 \(\mathrm{D}_x^2=0\)。
+
+	下面先在坐标域内证明唯一性。若 \(\delta\) 是该域上一族满足三条性质的算子，则
+	\[
+		\delta(\mathrm{d}x^i)=\delta(\delta x^i)=0.
+	\]
+	反复使用乘积法则可得 \(\delta(\mathrm{d}x^I)=0\)，从而
+	\[
+		\delta\Bigl(\sum_I a_I\,\mathrm{d}x^I\Bigr)=\sum_I\mathrm{d}a_I\wedge\mathrm{d}x^I=\mathrm{D}_x\Bigl(\sum_I a_I\,\mathrm{d}x^I\Bigr).
+	\]
+	这一步只用了函数微分和已经验证的代数性质。
+
+	若 \(x,y\) 两组坐标重叠，\(\mathrm{D}_x,\mathrm{D}_y\) 都在重叠开集上满足上述三条性质，并且在函数上都是同一个普通微分。刚才的局部唯一性于是给出 \(\mathrm{D}_x=\mathrm{D}_y\)。所以各坐标算子可粘合为 \(M\) 上的 \(\mathrm{d}\)，并且显然与限制相容。至此已证明存在性和坐标无关性；这里没有预先使用外微分与任意映射拉回相容的结论。
+
+	最后说明，整体唯一性不需要额外假定候选算子是局部的。设 \(D\) 是整体形式上满足三条性质的另一族算子。若整体形式 \(\eta\) 在 \(p\) 的开邻域 \(U\) 上为零，用\cref{g1:cor:smooth-cutoff-closed}选取 \(\chi\)，使它在 \(p\) 附近等于 \(1\)、支集包含于 \(U\)。于是 \(\chi\eta=0\)，且
+	\[
+		0=D(\chi\eta)=\mathrm{d}\chi\wedge\eta+\chi D\eta.
+	\]
+	在 \(\chi=1\) 的邻域，\(\mathrm{d}\chi=0\)，故 \(D\eta=0\)。因此 \(D\eta\) 在一点处的值仅由 \(\eta\) 在该点附近的值决定。
+
+	对只在开集上定义的形式，在每一点附近先乘上述截断函数再向外补零，便得到一个整体光滑延拓；把 \(D\) 作用于延拓后限制回来。刚证明的局部性保证结果在该点附近不依赖延拓；各点的结果遂粘合为局部算子。它仍满足三条性质，因为在一点附近可选共同的整体代表，作两次 \(D\) 时也可使用第一次结果的同一代表。局部唯一性给出这个算子等于坐标构造的 \(\mathrm{d}\)，因而原来的整体 \(D\) 也等于 \(\mathrm{d}\)。
+\end{proof}
+
+\(\mathrm{d}^2=0\) 并不表示函数的全部二阶导数为零。例如 \(f=x^2\) 有 \(\partial_x^2f=2\)，但
+\[
+	\mathrm{d}(\mathrm{d}f)=\mathrm{d}(2x\,\mathrm{d}x)=2\,\mathrm{d}x\wedge\mathrm{d}x=0.
+\]
+消失的是二阶变化的交替部分。外微分也不是把函数变成梯度向量场：\(\mathrm{d}f\) 是一形式，它的定义不需要度量；将它转成梯度，还要用度量识别切空间与余切空间。
+
+\begin{example}
+	在平面上令 \(\alpha=P\,\mathrm{d}x+Q\,\mathrm{d}y\)。按坐标公式计算，
+	\[
+		\mathrm{d}\alpha
+		=\mathrm{d}P\wedge\mathrm{d}x+\mathrm{d}Q\wedge\mathrm{d}y
+		=(\partial_xQ-\partial_yP)\,\mathrm{d}x\wedge\mathrm{d}y.
+	\]
+	只有交叉偏导留下来，且 \(\partial_yP\) 项的负号来自 \(\mathrm{d}y\wedge\mathrm{d}x=-\mathrm{d}x\wedge\mathrm{d}y\)。例如 \(y\,\mathrm{d}x\) 的外微分为 \(-\mathrm{d}x\wedge\mathrm{d}y\)，而 \(x\,\mathrm{d}x=\mathrm{d}(x^2/2)\) 的外微分为零。
+\end{example}
+
+\begin{definition}[闭形式与恰当形式]\label{g1:def:closed-exact-form}
+	设 \(M\) 为本节约定的光滑流形，\(\omega\in\Omega^k(M)\)。若 \(\mathrm{d}\omega=0\)，称 \(\omega\) 为\term[bixingshi]{闭形式}[closed form]。若存在 \(\eta\in\Omega^{k-1}(M)\) 使 \(\omega=\mathrm{d}\eta\)，称 \(\omega\) 为\term[qiadangxingshi]{恰当形式}[exact form]，并称 \(\eta\) 为 \(\omega\) 的一个\term[yuanxingshi]{原形式}[primitive]。按照 \(\Omega^{-1}(M)=0\) 的约定，零次恰当形式只有零函数。
+\end{definition}
+
+由 \(\mathrm{d}^2=0\)，恰当形式一定闭。零次闭形式恰为局部常值函数：在小的坐标球或半球内，沿线段对函数求导，\(\mathrm{d}f=0\) 使函数值不变；反向显然成立。至于高次闭形式是否有原形式，以及原形式能否从局部拼成整体，尚未由上述代数恒等式回答。还要留意，\(n\) 维流形上的每个 \(n\) 形式都闭，因为 \(\Omega^{n+1}(M)=0\)；这也不自动给出它的原形式。
+
+\subsection{内乘和 Cartan 公式}
+\label{g1:subsec:1401:03}
+
+给形式增加一个交替输入的是外微分；给它预先指定一个输入，则是第12章的\termidx[charu]{插入}运算。若 \(X\) 为光滑向量场，定义 \(\iota_X\omega\) 在每点由 \(X_p\) 插入第一输入得到，即
+\[
+	(\iota_X\omega)(Y_1,\ldots,Y_{k-1})=\omega(X,Y_1,\ldots,Y_{k-1}),\qquad k\geq1,
+\]
+并约定 \(\iota_Xf=0\)。这一运算也称内乘；“第一输入”的约定不能省略，改用最后输入会引入依赖次数的符号。对局部单项式有
+\[
+	\iota_X(a\,\mathrm{d}x^{i_1}\wedge\cdots\wedge\mathrm{d}x^{i_k})
+	=a\sum_{b=1}^k(-1)^{b-1}X^{i_b}\,\mathrm{d}x^{i_1}\wedge\cdots\wedge\widehat{\mathrm{d}x^{i_b}}\wedge\cdots\wedge\mathrm{d}x^{i_k},
+\]
+其中帽号表示删去该因子。这可由行列式沿第一个输入展开得到，也表明插入后的形式仍光滑。
+
+\ProseParagraphBreak
+
+\cref{g1:prop:interior-product-rule}的逐点代数证明给出
+\[
+	\iota_X(\alpha\wedge\beta)=(\iota_X\alpha)\wedge\beta+(-1)^p\alpha\wedge\iota_X\beta,
+	\qquad \alpha\in\Omega^p(M),
+\]
+以及 \(\iota_X^2=0\)。为记住乘积法则的符号，可以把插入看成依次寻找它所作用的一形式因子：若这一因子在第二组中，便要先越过第一组的 \(p\) 个一形式。与外微分不同，插入对函数系数是线性的，\(\iota_X(f\omega)=f\iota_X\omega\)；外微分则多出 \(\mathrm{d}f\wedge\omega\)。
+
+\ProseParagraphBreak
+
+再回忆李导数的约定。在无边界流形上，\cref{g1:def:lie-derivative-tensor}定义
+\[
+	\mathcal L_X\omega=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{t=0}(\Phi_t^X)^*\omega.
+\]
+这里使用正向流的拉回。\cref{g1:prop:lie-derivative-tensor-rules,g1:prop:cartan-insertion-identities}已证明 \(\mathcal L_X\) 为次数零的楔积导子，而且 \(\mathcal L_Xf=Xf\)。对函数微分还可直接计算
+\[
+	\mathcal L_X(\mathrm{d}f)
+	=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{0}\mathrm{d}(f\circ\Phi_t^X)
+	=\mathrm{d}(Xf).
+\]
+第一个等式只用普通函数的链式法则；第二个等式在坐标中交换光滑函数的时间偏导与空间偏导。因此这一计算没有预用高次外微分与拉回相容的结论。
+
+\ProseParagraphBreak
+
+在有边界的流形上，一般向量场未必产生保持流形的双侧流，因而不能直接照搬上面的流定义。此时可以在边界图中把 \(X\) 和形式的系数局部光滑延拓到欧氏开集，在那里求李导数，再限制回来。具体而言，\cref{g1:prop:lie-derivative-tensor-rules}的坐标公式对形式写成
+\begin{equation}
+	\label{g1:eq:boundary-form-lie-derivative}
+	\mathcal L_X\omega
+	=\sum_I X(\omega_I)\,\mathrm{d}x^I
+	+\sum_I\sum_{b=1}^k\omega_I\,\mathrm{d}x^{i_1}\wedge\cdots\wedge\mathrm{d}X^{i_b}\wedge\cdots\wedge\mathrm{d}x^{i_k}.
+\end{equation}
+它只用系数的一阶导数，故由\cref{g1:prop:boundary-smooth-derivative}不依赖延拓。两张边界图得到的结果在内部相同，而内部点在每个边界邻域中稠密，所以结果在边界处也由连续性相同。这就定义了任意光滑 \(X\) 在边界上的 \(\mathcal L_X\)。上述乘积法则及 \(\mathcal L_X\mathrm{d}f=\mathrm{d}(Xf)\) 均由局部延拓继续成立。若 \(X\) 切于边界，\cref{g1:prop:boundary-tangent-flow}给出保持 \(M\) 的双侧局部流，此定义便与流拉回导数一致；对一般 \(X\)，本节只使用刚定义的局部微分运算。
+
+\begin{theorem}[Cartan 公式]\label{g1:thm:cartan-formula}
+	设 \(M\) 为有限维、Hausdorff 且第二可数的光滑流形，允许有边界，\(X\) 为光滑向量场。有边界时，李导数按\eqref{g1:eq:boundary-form-lie-derivative}定义。对每个 \(\omega\in\Omega^k(M)\)，有
+	\[
+		\mathcal L_X\omega=\mathrm{d}(\iota_X\omega)+\iota_X(\mathrm{d}\omega).
+	\]
+\end{theorem}
+\begin{proof}
+	令 \(C_X=\mathrm{d}\iota_X+\iota_X\mathrm{d}\)，先证明它为次数零的楔积导子。若 \(\alpha\) 的次数为 \(p\)，分别展开两项的分次乘积法则，得到
+	\begin{align*}
+		C_X(\alpha\wedge\beta)
+		={}&(C_X\alpha)\wedge\beta+\alpha\wedge C_X\beta\\
+		&+\bigl((-1)^{p-1}+(-1)^p\bigr)(\iota_X\alpha)\wedge\mathrm{d}\beta\\
+		&+\bigl((-1)^p+(-1)^{p+1}\bigr)\mathrm{d}\alpha\wedge\iota_X\beta.
+	\end{align*}
+	最后两行恰好抵消，故所需的导子法则成立；\(p=0\) 时含 \(\iota_X\alpha\) 的项本来就是零。
+
+	对函数 \(f\)，有 \(C_Xf=\iota_X\mathrm{d}f=Xf=\mathcal L_Xf\)。对函数微分，由 \(\mathrm{d}^2=0\)，
+	\[
+		C_X(\mathrm{d}f)=\mathrm{d}(\iota_X\mathrm{d}f)=\mathrm{d}(Xf)=\mathcal L_X(\mathrm{d}f).
+	\]
+	任意形式在坐标域中都是函数系数乘坐标一形式的楔积之和。\(C_X\) 与 \(\mathcal L_X\) 都实线性、都满足次数零的导子法则，又在函数和每个 \(\mathrm{d}x^i\) 上相同，所以在全部形式上相同。边界处所需的性质已由局部延拓证明，因而同一个论证也适用。
+\end{proof}
+
+公式的两项有不同的作用顺序：\(\mathrm{d}\iota_X\omega\) 先指定一个输入，再看剩余系数如何变化；\(\iota_X\mathrm{d}\omega\) 则先对全部输入作交替微分，再代入 \(X\)。两项相加恰好包含了李导数所需的全部变化，包括随流移动的输入方向。比如在 \(\mathbb R^2\) 中取 \(X=x\partial_x\)、\(\omega=\mathrm{d}x\wedge\mathrm{d}y\)，则 \(\iota_X\omega=x\,\mathrm{d}y\)、\(\mathrm{d}\omega=0\)，所以 \(\mathcal L_X\omega=\mathrm{d}x\wedge\mathrm{d}y\)。这与流 \((x,y)\mapsto(e^t x,y)\) 对该二形式的拉回为 \(e^t\omega\) 一致。
+
+\begin{proposition}[一形式的微分]\label{g1:prop:one-form-exterior-evaluation}
+	设 \(M\) 为有限维、Hausdorff 且第二可数的光滑流形，允许有边界，\(\alpha\in\Omega^1(M)\)，\(X,Y\) 为光滑向量场。则
+	\begin{equation}
+		\label{g1:eq:exterior-one-form-evaluation}
+		\mathrm{d}\alpha(X,Y)=X\bigl(\alpha(Y)\bigr)-Y\bigl(\alpha(X)\bigr)-\alpha([X,Y]).
+	\end{equation}
+	有边界时，括号以坐标公式定义，等价于把向量场局部光滑延拓后取括号再限制。
+\end{proposition}
+\begin{proof}
+	Cartan 公式给出
+	\[
+		(\mathcal L_X\alpha)(Y)=Y\bigl(\alpha(X)\bigr)+\mathrm{d}\alpha(X,Y).
+	\]
+	另一方面，\eqref{g1:eq:lie-one-form-evaluation}给出 \((\mathcal L_X\alpha)(Y)=X(\alpha(Y))-\alpha([X,Y])\)。两式相减即得结论。边界处的括号只涉及系数的一阶导数，因此与延拓无关；前面的两式也可由局部延拓后限制得到。
+\end{proof}
+
+括号修正项说明，不能只把外微分理解为“对系数交叉求导”。在坐标基 \(\partial_i,\partial_j\) 中，括号为零，交叉求导公式确实成立；换成不对易的向量场作为输入，便必须补上最后一项。它也使右侧对 \(X,Y\) 的函数倍乘仍为双线性，符合二形式在每一点的性质。
+
+\begin{example}\label{g1:exm:contact-form-exterior-test}
+	第13章的接触例子使用 \(\mathbb R^3\) 上的一形式 \(\alpha=\mathrm{d}z-x\,\mathrm{d}y\)。现在可直接计算
+	\[
+		\mathrm{d}\alpha=-\mathrm{d}x\wedge\mathrm{d}y,\qquad
+		\alpha\wedge\mathrm{d}\alpha=-\mathrm{d}x\wedge\mathrm{d}y\wedge\mathrm{d}z.
+	\]
+	令 \(A=\partial_x\)、\(B=\partial_y+x\partial_z\)。它们张成 \(\ker\alpha\)，且 \(\mathrm{d}\alpha(A,B)=-1=-\alpha([A,B])\)，与\cref{g1:prop:contact-model-nonintegrable}的括号计算相符。
+
+	更一般地，在无边界流形上，若一形式 \(\alpha\) 处处非零，则 \(\alpha:\mathrm{T}M\to M\times\mathbb R\) 是秩为 \(1\) 的丛同态，\cref{g1:thm:constant-rank-bundle-morphism}保证 \(D=\ker\alpha\) 为秩 \(n-1\) 的光滑分布。对取值于 \(D\) 的局部向量场 \(U,V\)，\eqref{g1:eq:exterior-one-form-evaluation}化为
+	\[
+		\mathrm{d}\alpha(U,V)=-\alpha([U,V]).
+	\]
+	当 \(n\geq2\) 时，\(\alpha\wedge\mathrm{d}\alpha=0\) 当且仅当 \(\mathrm{d}\alpha\) 在 \(D\times D\) 上为零。事实上，局部选 \(Z\) 使 \(\alpha(Z)=1\)，则
+	\[
+		(\alpha\wedge\mathrm{d}\alpha)(Z,u,v)=\mathrm{d}\alpha(u,v),\qquad u,v\in D.
+	\]
+	反向把每个向量分解成 \(Z\) 方向与 \(D\) 方向；三个输入全在 \(D\) 中时楔积自动为零，恰有一个在 \(Z\) 方向时由假设为零，至少两个在 \(Z\) 方向时由交替性为零。这证明等价。由此和\cref{g1:thm:frobenius}，\(D\) 局部可积当且仅当 \(\alpha\wedge\mathrm{d}\alpha=0\)。在三维情形，\(\alpha\wedge\mathrm{d}\alpha\) 处处非零则恰好表达第13章定义的接触条件：括号在 \(\mathrm{T}M/D\) 中的交替配对处处非零。若改用同一分布的另一局部定义形式 \(f\alpha\)，其中 \(f\) 处处非零，则
+	\[
+		(f\alpha)\wedge\mathrm{d}(f\alpha)=f^2\alpha\wedge\mathrm{d}\alpha,
+	\]
+	所以零与非零的判断不受这个选择影响。
+\end{example}
+
+\subsection{外微分与拉回、李导数的相容}
+\label{g1:subsec:1401:04}
+
+外微分的构造已经证明换坐标相容；现在可以进一步问，两个不同流形之间的光滑映射是否也与它相容。这个问题比换坐标更强，因为映射可以降维，也可以在某些点秩下降。
+
+\begin{proposition}[拉回与外微分]\label{g1:prop:exterior-pullback}
+	设 \(M,N\) 为有限维、Hausdorff 且第二可数的光滑流形，允许有边界，\(F:M\to N\) 为光滑映射，不要求 \(F\) 的微分具有常秩。对任意 \(\omega\in\Omega^k(N)\)，有
+	\[
+		\mathrm{d}_M(F^*\omega)=F^*(\mathrm{d}_N\omega).
+	\]
+	两侧的下标只用于指出所在流形，通常省去。
+\end{proposition}
+\begin{proof}
+	在目标坐标域中写 \(\omega=\sum_I\omega_I\,\mathrm{d}y^I\)，在它的原像内记 \(F^a=y^a\circ F\)。由\eqref{g1:eq:form-pullback-coordinates}和外微分的乘积法则，
+	\[
+		\mathrm{d}_M(F^*\omega)
+		=\sum_I\mathrm{d}(\omega_I\circ F)\wedge\mathrm{d}F^{i_1}\wedge\cdots\wedge\mathrm{d}F^{i_k}.
+	\]
+	对各个 \(\mathrm{d}F^{i_a}\) 再求外微分的项全部为零，因为 \(\mathrm{d}^2F^{i_a}=0\)。函数微分的链式法则给出
+	\[
+		\mathrm{d}(\omega_I\circ F)=\sum_{b=1}^{\dim N}\bigl((\partial_b\omega_I)\circ F\bigr)\,\mathrm{d}F^b.
+	\]
+	代回便得到
+	\[
+		\mathrm{d}_M(F^*\omega)
+		=\sum_{I,b}\bigl((\partial_b\omega_I)\circ F\bigr)\,\mathrm{d}F^b\wedge\mathrm{d}F^{i_1}\wedge\cdots\wedge\mathrm{d}F^{i_k}
+		=F^*(\mathrm{d}_N\omega).
+	\]
+	这些局部等式覆盖 \(M\)，所以结论整体成立。边界图中的偏导和链式法则已由\cref{g1:prop:boundary-smooth-derivative}保证与延拓无关，故上述证明原样适用；即使 \(F\) 的像完全位于目标边界，也没有使用其像附近的内部点来替代计算。
+\end{proof}
+
+拉回因而把闭形式送到闭形式，把恰当形式送到恰当形式：若 \(\omega=\mathrm{d}\eta\)，则 \(F^*\omega=\mathrm{d}(F^*\eta)\)。这与映射是否单射、满射都无关。反过来却不能由 \(F^*\omega\) 闭或恰当推出 \(\omega\) 具有相应性质，例如常值映射把所有正次形式都拉回为零。对边界包含映射 \(j:\partial M\hookrightarrow M\)，同一命题特别给出 \(\mathrm{d}_{\partial M}(j^*\omega)=j^*(\mathrm{d}_M\omega)\)；这只是形式与微分的相容式，此时还没有用到积分定理。
+
+\begin{proposition}[李导数与外微分]\label{g1:prop:exterior-lie-commute}
+	设 \(M\) 为有限维、Hausdorff 且第二可数的光滑流形，允许有边界，\(X\) 为光滑向量场；有边界时沿用\eqref{g1:eq:boundary-form-lie-derivative}的定义。则
+	\[
+		[\mathcal L_X,\mathrm{d}]=0,
+		\qquad\text{即}\qquad \mathcal L_X\mathrm{d}\omega=\mathrm{d}\mathcal L_X\omega
+	\]
+	对任意形式 \(\omega\) 成立。
+\end{proposition}
+\begin{proof}
+	Cartan 公式与 \(\mathrm{d}^2=0\) 给出
+	\[
+		\mathrm{d}\mathcal L_X
+		=\mathrm{d}(\mathrm{d}\iota_X+\iota_X\mathrm{d})
+		=\mathrm{d}\iota_X\mathrm{d},\qquad
+		\mathcal L_X\mathrm{d}
+		=(\mathrm{d}\iota_X+\iota_X\mathrm{d})\mathrm{d}
+		=\mathrm{d}\iota_X\mathrm{d}.
+	\]
+	两者相同。这里 \(\mathcal L_X\) 的次数为零，故括号是通常的算子交换子，没有附加的次数符号。
+\end{proof}
+
+若有保持 \(M\) 的局部流，也可从 \((\Phi_t^X)^*\mathrm{d}\omega=\mathrm{d}((\Phi_t^X)^*\omega)\) 对时间求导得到同一结论；刚才的代数证明还适用于边界处只有局部延拓定义的李导数。由此，李导数保持闭形式和恰当形式。而对一个正次闭形式，Cartan 公式给出更强的事实：
+\[
+	\mathrm{d}\omega=0\quad\Longrightarrow\quad \mathcal L_X\omega=\mathrm{d}(\iota_X\omega).
+\]
+所以闭形式沿一个流的无穷小变化本身总是恰当的。这里说的是变化量 \(\mathcal L_X\omega\)，并没有断言原来的 \(\omega\) 恰当。
+
+\ProseParagraphBreak
+
+最后把三种运算放回同一映射中。若 \(F:M\to N\) 光滑，\(X\) 与 \(Y\) 满足 \(\mathrm{d}F_p(X_p)=Y_{F(p)}\)，则逐点代入第一输入可得
+\[
+	\iota_XF^*\omega=F^*(\iota_Y\omega).
+\]
+利用外微分与拉回相容，再用 Cartan 公式，便有
+\[
+	\mathcal L_XF^*\omega
+	=(\mathrm{d}\iota_X+\iota_X\mathrm{d})F^*\omega
+	=F^*(\mathrm{d}\iota_Y+\iota_Y\mathrm{d})\omega
+	=F^*\mathcal L_Y\omega.
+\]
+这重新得到第13章对相关向量场证明的李导数自然性，并使边界处的局部版本同样清楚。外微分无需选择向量场，因而它与任意光滑映射拉回相容；插入和李导数各自用到了一个向量场，比较两个流形上的运算时就必须同时满足上述相关条件。
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

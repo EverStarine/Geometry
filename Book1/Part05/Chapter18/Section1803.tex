@@ -1,0 +1,314 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 18.3 水平提升与曲率
+% 纲要位置：几何学计划纲要.md，第 825 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 路径提升及完备性范围
+% * 曲率结构方程
+% * Bianchi 恒等式的主丛形式
+% * 小回路和平行移动的变化
+% 
+% 纲要内容结束
+
+\section{水平提升与曲率}
+\label{g1:sec:1803}
+
+水平空间规定了怎样离开一个纤维而不额外作群方向的运动。沿底空间的一条路径不断采用这个方向，就应当得到两个端点纤维之间的比较。这里有两个需要分别回答的问题：所给路径能否完整提升，以及沿不同路径得到的比较为何会不同。前者由主作用的等变性控制，后者由曲率控制。
+
+\ProseParagraphBreak
+
+本节设 \(\pi:P\to M\) 为有限维实李群 \(G\) 的光滑右主丛，流形均有限维、Hausdorff、第二可数且无边界，\(\omega\in\Omega^1(P;\mathfrak g)\) 为主联络形式，\(H=\ker\omega\)。沿用上一节的约定：\(X^\#_p=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_0p\exp(tX)\)、\(\omega(X^\#)=X\)，且 \(R_g^*\omega=\operatorname{Ad}_{g^{-1}}\omega\)。若 \(s:U\to P\) 为局部截面，则 \(A=s^*\omega\)，并以 \(p=s(x)g\) 表示局部纤维坐标。
+
+\subsection{路径提升及完备性范围}
+\label{g1:subsec:1803:01}
+
+设 \(\gamma:[a,b]\to U\) 光滑，将它的一条提升写成 \(q(t)=s(\gamma(t))g(t)\)。由\eqref{g1:eq:principal-connection-trivialization}，水平条件正好是
+\[
+	0=\omega(q')=\operatorname{Ad}_{g^{-1}}A(\gamma')+\theta^L_g(g'),
+\]
+其中 \(\theta^L_g=(\mathrm{d}L_{g^{-1}})_g\)。把这个等式左平移回 \(\mathrm{T}_gG\)，得到
+\begin{equation}\label{g1:eq:principal-horizontal-ode}
+	g'(t)=-(\mathrm{d}R_{g(t)})_eB(t),\qquad B(t)=A_{\gamma(t)}(\gamma'(t)).
+\end{equation}
+矩阵群中它写成 \(g'=-Bg\)。右边是随时间变化的右不变向量场；“右不变”指对每个固定时间作右平移后不变，并不是说系数 \(B(t)\) 与时间无关。这个特征使我们能够在非紧李群上排除有限时间爆破。
+
+\begin{lemma}[右不变方程的全区间解]\label{g1:lem:right-invariant-time-ode}
+	设 \(G\) 为有限维实李群，\(B:[a,b]\to\mathfrak g\) 光滑，端点处按局部光滑延拓理解。对任意 \(t_0\in[a,b]\) 和 \(g_0\in G\)，方程\eqref{g1:eq:principal-horizontal-ode}在整个 \([a,b]\) 上存在唯一解，满足 \(g(t_0)=g_0\)。解光滑依赖初始时刻、初值及 \(B\) 所含的有限维光滑参数。
+\end{lemma}
+\begin{proof}
+	\cref{g1:thm:ode-local-existence-uniqueness}在单位元的一张坐标图中给出局部解。对每个 \(\tau\in[a,b]\)，该定理还给出初始时刻的一个邻域，以及从单位元出发都可使用的一段共同时间。用有限多个这样的邻域覆盖紧区间 \([a,b]\)，取各共同时间的一个更小正下界 \(\delta\)。于是从任意 \(\tau\in[a,b]\) 和单位元出发，都能至少求解到 \(|t-\tau|<\delta\) 与给定时间区间的交；\(\delta\) 不依赖 \(\tau\)。
+
+	若 \(u(t)\) 是从单位元出发的这条短时间解，则 \(u(t)g_0\) 满足同一方程，因为
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}(u g_0)
+		=-(\mathrm{d}R_{g_0})_u(\mathrm{d}R_u)_eB
+		=-(\mathrm{d}R_{u g_0})_eB.
+	\]
+	因此相同的时间 \(\delta\) 适用于任意 \(g_0\)，即使这些初值不在同一个紧集中。把 \([a,b]\) 分成长度小于 \(\delta/2\) 的有限小段，用前一段的终值作为后一段的初值，便可向前、向后走完整个区间。局部唯一性使重叠部分一致，也证明所得全区间解唯一。
+
+	参数依赖由\cref{g1:thm:ode-smooth-dependence}及上述有限次拼接得到：固定一组参数后，每一步在一个共同局部解邻域内光滑依赖起始数据；缩小参数邻域，有限步的中间值仍落在相应邻域中。有限次复合保持光滑性。初始时刻和初值也包括在该定理的光滑变量内。
+\end{proof}
+
+这里的全区间结论不以 \(G\) 或 \(M\) 紧为条件。真正使步长可以重复使用的，是每次都能把初值右平移回同一个单位元附近。
+
+\begin{theorem}[主丛的水平提升]\label{g1:thm:principal-horizontal-lift}
+	设 \(P\to M\) 为有限维实李群的光滑右主丛，\(M\) 无边界，\(\omega\) 为主联络。对任意连续、有限分片光滑路径 \(\gamma:[a,b]\to M\)、任意 \(t_0\in[a,b]\) 和 \(p_0\in P_{\gamma(t_0)}\)，存在唯一连续、分片光滑提升 \(q:[a,b]\to P\)，满足
+	\[
+		\pi\circ q=\gamma,\qquad q(t_0)=p_0,\qquad \omega(q')=0
+	\]
+	于每个光滑片上成立。称其为具有该初值的\term[shuipingtisheng]{水平提升}[horizontal lift]。若路径及初值光滑依赖有限维参数，并具有共同有限光滑分割，则提升在各片内、端点运输在端点丛图中均光滑依赖这些参数。
+\end{theorem}
+\begin{proof}
+	先将光滑路径的紧像用有限个主丛平凡化域覆盖。时间区间的 Lebesgue 数性质给出有限分割，使每段闭区间的像包含在一个平凡化域内。在每段解\eqref{g1:eq:principal-horizontal-ode}，前一引理保证这一段可以完整走完。接续时将实际终点写入下一张丛图，作为新的初值。
+
+	局部公式是内在条件 \(\omega(q')=0\) 的等价表达，因此换丛图不会改变所求对象。若两条提升具有同一初值，局部方程的唯一性先使它们在初始段相同，再依次使全部相邻段相同。这同时证明细分与丛图的选择无关。分片光滑路径只需把它的有限分段点加入上述分割；拐角处保留连续性，各片分别满足水平条件。
+
+	对参数族，先在一个固定参数处选择有限分割，并让各段紧像留在所选丛图的内部。连续性与时间区间的紧性保证附近参数可以沿用同一批丛图和分割。局部方程的系数、各段末端的坐标变换与初值都光滑依赖参数，前一引理的参数结论及有限次复合遂给出所述光滑依赖。
+\end{proof}
+
+\begin{proposition}[主丛运输的运算规律]\label{g1:prop:principal-transport-laws}
+	在\cref{g1:thm:principal-horizontal-lift}的条件下，以水平提升的终点定义
+	\[
+		T_\gamma:P_{\gamma(a)}\longrightarrow P_{\gamma(b)}.
+	\]
+	它是 \(G\) 等变微分同胚，满足 \(T_\gamma(p g)=T_\gamma(p)g\)。常值路径给出恒等映射，先走 \(\gamma\)、后走 \(\eta\) 时有 \(T_{\gamma*\eta}=T_\eta\circ T_\gamma\)，而 \(T_{\bar\gamma}=T_\gamma^{-1}\)。保持端点、非减的光滑重参数化不改变运输，允许速度为零的停顿。
+\end{proposition}
+\begin{proof}
+	若 \(q\) 水平，则 \(R_g\circ q\) 也水平，因为 \(R_g^*\omega=\operatorname{Ad}_{g^{-1}}\omega\)。其初值是 \(q(a)g\)，唯一性给出等变性。端点映射对初值光滑，由反向路径得到的逆映射也光滑。常值、拼接和反向的提升分别是常值提升、逐段连接的提升与反向提升；检验初值后使用唯一性即得前三条运算规律。最后，若时间换元为 \(t=h(\tau)\)，则 \(\omega((q\circ h)')=h'\omega(q')=0\)，没有除以 \(h'\)，所以停顿也不影响结论。
+\end{proof}
+
+对表示 \(\rho:G\to\operatorname{GL}(V)\)，关联丛中的向量 \([p,v]\) 沿 \(\gamma\) 变成 \([T_\gamma(p),v]\)。这正是\cref{g1:thm:associated-covariant-derivative}所构造联络的平行移动：在丛图中，\(q=s(\gamma)g\) 给出的向量分量为 \(\rho(g)v\)，对\eqref{g1:eq:principal-horizontal-ode}应用 \(\rho\) 后，其导数为 \(-\rho_*(A(\gamma'))\rho(g)v\)，恰好满足\eqref{g1:eq:parallel-transport-ode}。
+
+\ProseParagraphBreak
+
+若 \(\gamma\) 是以 \(x\) 为基点的闭路，选定 \(p\in P_x\) 后唯一写成 \(T_\gamma(p)=p h_\gamma\)。要留意次序：主作用在右边，运输却与这个右作用等变，所以
+\begin{equation}\label{g1:eq:principal-loop-composition}
+	h_{\gamma*\eta}=h_\eta h_\gamma.
+\end{equation}
+在下一节将运输写成基本群表示时，这个次序正是需要取逆的原因。
+
+\begin{example}[一般水平分布的提升可能中断]\label{g1:exm:incomplete-ehresmann-lift}
+	在投影 \(\mathbb R^2\to\mathbb R\)、\((x,y)\mapsto x\) 上，令
+	\[
+		H_{(x,y)}=\operatorname{span}\{\partial_x+y^2\partial_y\}.
+	\]
+	它光滑且与竖直空间 \(\operatorname{span}\{\partial_y\}\) 互补，因而是一般纤维丛意义的水平分布。路径 \(x(t)=t\)、\(0\le t\le2\)，从 \((0,1)\) 出发的水平提升却须满足 \(y'=y^2\)，故 \(y(t)=(1-t)^{-1}\)，在 \(t=1\) 中断。纤维上的平移 \(y\mapsto y+c\) 不保持这个分布，所以它不是加法群主作用的主联络。由此可见，局部互补条件本身不能推出任意给定路径的完整提升；上述定理额外使用了主作用等变性。
+\end{example}
+
+\subsection{曲率结构方程}
+\label{g1:subsec:1803:02}
+
+若先沿一个水平方向、再沿另一个水平方向运动，与交换次序后的结果不同，差别可能含竖直方向。微分形式会把这种竖直偏差记录下来。对两个水平向量场 \(U,V\)，\eqref{g1:eq:exterior-one-form-evaluation}已经给出 \(\mathrm{d}\omega(U,V)=-\omega([U,V])\)。不过 \(\mathrm{d}\omega\) 在任意切向输入上未必只记录水平变化，还须补上一个李括号项。
+
+\ProseParagraphBreak
+
+为明确这个项的系数，选 \(\mathfrak g\) 的任一基 \(E_a\)，对 \(\mathfrak g\) 值形式 \(\alpha=\sum_a\alpha^aE_a\)、\(\beta=\sum_b\beta^bE_b\) 定义
+\begin{equation}\label{g1:eq:lie-bracket-wedge}
+	[\alpha\wedge\beta]\coloneqq\sum_{a,b}\alpha^a\wedge\beta^b[E_a,E_b].
+\end{equation}
+右边只是把双线性李括号作用于系数，因此与所选基无关。特别地，对一形式 \(\omega\)，有 \([\omega\wedge\omega](U,V)=2[\omega(U),\omega(V)]\)。这解释了下一定义中的 \(1/2\)。
+
+\begin{definition}[主联络的曲率]\label{g1:def:principal-curvature}
+	设 \(\omega\) 为光滑右主 \(G\) 丛 \(P\to M\) 上的联络形式。其\term[zhulianluoqulv]{曲率形式}[curvature form]定义为
+	\begin{equation}\label{g1:eq:principal-curvature-structure}
+		\Omega\coloneqq\mathrm{d}\omega+\tfrac12[\omega\wedge\omega]\in\Omega^2(P;\mathfrak g).
+	\end{equation}
+	称该主联络平坦，若 \(\Omega=0\)。若 \(G\) 是矩阵李群，括号是矩阵交换子，上式也写成 \(\Omega=\mathrm{d}\omega+\omega\wedge\omega\)，此处后一个楔积同时使用矩阵乘法。
+\end{definition}
+
+\begin{proposition}[曲率的水平性与局部表达]\label{g1:prop:principal-curvature-properties}
+	设 \(P\to M\) 为有限维实李群的光滑右主丛，\(\omega\) 为主联络，曲率为 \(\Omega\)。则
+	\begin{enumerate}
+		\item \(\Omega\) 是水平的，即任意一个输入为竖直向量时其值为零；并且 \(R_g^*\Omega=\operatorname{Ad}_{g^{-1}}\Omega\)。
+		\item 对水平向量场 \(U,V\)，有 \(\Omega(U,V)=-\omega([U,V])\)。
+		\item 若 \(s_i:U_i\to P\) 为局部截面，\(A_i=s_i^*\omega\)，则
+		\begin{equation}\label{g1:eq:principal-local-curvature}
+			F_i\coloneqq s_i^*\Omega=\mathrm{d}A_i+\tfrac12[A_i\wedge A_i],\qquad
+			F_j=\operatorname{Ad}_{g_{ij}^{-1}}F_i\quad(s_j=s_i g_{ij}).
+		\end{equation}
+		\item 对光滑有限维线性表示 \(\rho:G\to\operatorname{GL}(V)\)，关联丛联络的局部曲率矩阵为 \(\rho_*(F_i)\)。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	对固定 \(X\in\mathfrak g\)，基本场 \(X^\#\) 的流为 \(R_{\exp(tX)}\)。对联络的等变公式求导，得到
+	\[
+		\mathcal L_{X^\#}\omega=-[X,\omega].
+	\]
+	\cref{g1:thm:cartan-formula}逐分量适用，而 \(\iota_{X^\#}\omega=X\) 为常值，故 \(\iota_{X^\#}\mathrm{d}\omega=-[X,\omega]\)。另一方面，\(\tfrac12\iota_{X^\#}[\omega\wedge\omega]=[X,\omega]\)。两项相消，得到 \(\iota_{X^\#}\Omega=0\)。每个竖直向量都是某个 \(X^\#\) 的点值，因此 \(\Omega\) 水平。固定群元素的伴随作用与外微分交换，又保持李括号；对结构方程取 \(R_g^*\) 便得到等变性。
+
+	对水平 \(U,V\)，括号楔项为零，外微分的一形式公式化为 \(\Omega(U,V)=-\omega([U,V])\)。这里给出的是竖直分量的李代数坐标，而不是把总空间中的两个点直接相减。
+
+	拉回与外微分交换，见\cref{g1:prop:exterior-pullback}，并且拉回保持\eqref{g1:eq:lie-bracket-wedge}，故 \(F_i\) 满足所列结构方程。计算 \(s_j=s_i g_{ij}\) 的微分时，一项是 \(\mathrm{d}R_{g_{ij}}\mathrm{d}s_i\)，另一项来自 \(g_{ij}\) 的变化，属于竖直空间。曲率的水平性消去后一项，等变性则将前一项变成 \(\operatorname{Ad}_{g_{ij}^{-1}}F_i\)。这正是曲率变换式中没有 \(\mathrm{d}g_{ij}\) 的原因。
+
+	最后，\cref{g1:thm:associated-covariant-derivative}给出关联联络矩阵 \(\rho_*(A_i)\)。由\cref{g1:thm:curvature-structure-equation}，其曲率矩阵为
+	\[
+		\mathrm{d}(\rho_*A_i)+(\rho_*A_i)\wedge(\rho_*A_i)
+		=\rho_*\bigl(\mathrm{d}A_i+\tfrac12[A_i\wedge A_i]\bigr),
+	\]
+	其中用了\cref{g1:prop:lie-homomorphism-differential}中李群同态的微分保持李括号这一结论。因此它等于 \(\rho_*(F_i)\)。
+\end{proof}
+
+曲率因而也可看作底空间上取值于伴随丛 \(\operatorname{ad}P=P\times_{\operatorname{Ad}}\mathfrak g\) 的二形式：在 \(x\) 处取 \(p\in P_x\)，把底空间的输入水平提升至 \(p\)，再取 \([p,\Omega_p(\cdot,\cdot)]\)。改取 \(pg\) 时，输入由 \(\mathrm{d}R_g\) 搬运，曲率值变为 \(\operatorname{Ad}_{g^{-1}}\Omega_p\)，恰好被关联丛的等价关系抵消。因此这个底空间对象无需选择局部截面；\(F_i\) 是它在所选截面中的表示。
+
+\begin{example}[曲率与水平括号]\label{g1:exm:principal-additive-curvature}
+	在 \(P=\mathbb R^2\times\mathbb R\to\mathbb R^2\) 上，让加法群 \(\mathbb R\) 作用于最后一个坐标 \(z\)，取 \(\omega=\mathrm{d}z+x\,\mathrm{d}y\)。这是主联络：它对 \(\partial_z\) 取值为 \(1\)，且在 \(z\) 平移下不变。水平分布由
+	\[
+		U=\partial_x,\qquad V=\partial_y-x\partial_z
+	\]
+	张成，而 \([U,V]=-\partial_z\)、\(\Omega=\mathrm{d}x\wedge\mathrm{d}y\)。于是 \(\Omega(U,V)=1=-\omega([U,V])\)。沿正向矩形边界提升时，\(z'=-x y'\)，走完后 \(z\) 减少矩形面积。这一竖直位移就是此处的闭路返回，未必是角度或旋转。
+\end{example}
+
+\begin{theorem}[平坦联络的局部水平截面]\label{g1:thm:flat-principal-local-section}
+	设 \(P\to M\) 为有限维实李群的光滑右主丛，流形无边界，\(\omega\) 为主联络。以下条件等价：
+	\begin{enumerate}
+		\item \(\Omega=0\)。
+		\item 水平分布 \(H=\ker\omega\) 对合。
+		\item 每个 \(p\in P\) 都位于某个局部水平截面 \(s:U\to P\) 上，即 \(s(\pi(p))=p\) 且 \(s^*\omega=0\)。
+	\end{enumerate}
+	因此平坦主联络在足够小的截面中具有 \(A=0\) 的局部形式；这样的截面之间的过渡函数局部常值。
+\end{theorem}
+\begin{proof}
+	曲率水平，故要判断它是否为零，只须代入两个水平输入。前一命题给出 \(\Omega(U,V)=-\omega([U,V])\)，所以它处处为零恰好等价于水平场的括号仍水平。这证明前两项等价。
+
+	若 \(H\) 对合，\cref{g1:thm:frobenius}适用于总空间 \(P\) 上秩为 \(\dim M\) 的光滑分布，给出通过 \(p\) 的局部嵌入积分片 \(L\)。投影微分 \(\mathrm{d}\pi:H_p\to \mathrm{T}_{\pi(p)}M\) 是同构，所以\cref{g1:thm:inverse-function}使 \(\pi|_L\) 在 \(p\) 附近成为微分同胚。其局部逆 \(s\) 满足 \(\pi\circ s=\operatorname{id}\)，并且 \(\mathrm{d}s(\mathrm{T}U)\subset H\)，即为所求水平截面。反过来，若每个 \(p\) 都有这样的截面，那么 \(s^*\Omega=\mathrm{d}(s^*\omega)+\tfrac12[s^*\omega\wedge s^*\omega]=0\)。\(\mathrm{d}s\) 在该点张成全部水平空间，曲率的水平性遂说明 \(\Omega_p=0\)。
+
+	若两个水平截面满足 \(s_j=s_i g_{ij}\)，联络变换式给出 \(0=\theta^L(g_{ij})\)，即 \((\mathrm{d}L_{g_{ij}^{-1}})\mathrm{d}g_{ij}=0\)。左平移微分可逆，所以 \(\mathrm{d}g_{ij}=0\)。光滑映射微分为零时，在一个充分小的连通坐标邻域中沿坐标线积分可知其值不变，故 \(g_{ij}\) 局部常值。
+\end{proof}
+
+这个结果是局部陈述。水平截面在绕行之后能否重新拼成同一个截面，还要看闭路运输；下一节将保留这部分整体信息。
+
+\subsection{Bianchi 恒等式的主丛形式}
+\label{g1:subsec:1803:03}
+
+曲率取值于李代数，却不能把它当作一组在底空间上具有固定坐标的普通二形式。更换截面时它按伴随表示变化，微分时也应补上同一表示的联络项。对水平且满足 \(R_g^*\eta=\operatorname{Ad}_{g^{-1}}\eta\) 的 \(\mathfrak g\) 值 \(k\) 形式，定义
+\begin{equation}\label{g1:eq:principal-exterior-covariant-derivative}
+	\mathrm{D}\eta\coloneqq\mathrm{d}\eta+[\omega\wedge\eta].
+\end{equation}
+这仍是水平等变形式。事实上，\(\mathcal L_{X^\#}\eta=-[X,\eta]\)，Cartan 公式与 \(\iota_{X^\#}\eta=0\) 给出 \(\iota_{X^\#}\mathrm{d}\eta=-[X,\eta]\)，而 \(\iota_{X^\#}[\omega\wedge\eta]=[X,\eta]\)，两项抵消。等变性由外微分及李括号与固定伴随变换相容得到。零次形式时插入项本来为零，同一计算也适用。局部截面中的公式为 \(s^*\mathrm{D}\eta=\mathrm{d}(s^*\eta)+[A\wedge s^*\eta]\)，正是伴随李代数丛联络的外协变微分。
+
+\begin{theorem}[主联络的 Bianchi 恒等式]\label{g1:thm:principal-bianchi}
+	有限维实李群的光滑右主丛上，任意主联络 \(\omega\) 的曲率满足
+	\begin{equation}\label{g1:eq:principal-bianchi}
+		\mathrm{D}\Omega=\mathrm{d}\Omega+[\omega\wedge\Omega]=0.
+	\end{equation}
+	在局部截面中，这成为 \(\mathrm{d}F+[A\wedge F]=0\)。矩阵群情形即 \(\mathrm{d}F+A\wedge F-F\wedge A=0\)。
+\end{theorem}
+\begin{proof}
+	这里不能借矩阵乘法结合性证明一般李代数的结论，但李括号的 Jacobi 恒等式提供了恰好需要的抵消。对次数为 \(p,q\) 的形式，由定义逐项交换标量楔积与李括号，得到
+	\[
+		[\alpha\wedge\beta]=-(-1)^{pq}[\beta\wedge\alpha],\qquad
+		\mathrm{d}[\alpha\wedge\beta]=[\mathrm{d}\alpha\wedge\beta]+(-1)^p[\alpha\wedge\mathrm{d}\beta].
+	\]
+	特别地，\(\mathrm{d}[\omega\wedge\omega]=-2[\omega\wedge\mathrm{d}\omega]\)。另外，直接在三个切向输入 \(U,V,W\) 上展开有
+	\begin{align*}
+		[\omega\wedge[\omega\wedge\omega]](U,V,W)
+		={}&2[\omega(U),[\omega(V),\omega(W)]]\\
+		&+2[\omega(V),[\omega(W),\omega(U)]]\\
+		&+2[\omega(W),[\omega(U),\omega(V)]]=0,
+	\end{align*}
+	最后一步就是 \(\mathfrak g\) 的 Jacobi 恒等式。因此结构方程给出
+	\[
+		\mathrm{d}\Omega=-[\omega\wedge\mathrm{d}\omega],\qquad
+		[\omega\wedge\Omega]=[\omega\wedge\mathrm{d}\omega],
+	\]
+	相加即为零。拉回到局部截面得到局部公式。矩阵情形的一次形式与二次形式之间，括号楔积为 \([A\wedge F]=A\wedge F-F\wedge A\)，故与\eqref{g1:eq:bianchi-matrix}完全一致。
+\end{proof}
+
+上述论证没有要求联络来自切丛，也没有使用无挠或度量条件。若 \(G\) 阿贝尔，括号项消失，恒等式退化为 \(\mathrm{d}\Omega=0\)；一般情形删去括号项就改变了所比较的对象。
+
+\subsection{小回路和平行移动的变化}
+\label{g1:subsec:1803:04}
+
+在\cref{g1:prop:principal-curvature-properties}中，曲率记录了水平场括号的竖直部分。现在把它与实际运输联系起来：先计算一族路径变化时终点怎样变化，再说明一个小正向方环为何产生负的曲率面积项。两种计算都保持上一节的右主作用约定。
+
+\begin{theorem}[水平运输的变分]\label{g1:thm:principal-transport-variation}
+	设 \(P\to M\) 为带主联络 \(\omega\) 的光滑右主 \(G\) 丛，\(\Gamma:I\times[a,b]\to M\) 为光滑路径族，\(I\subset\mathbb R\) 为开区间。设 \(c:I\to P\) 光滑，\(\pi(c(s))=\Gamma(s,a)\)。以 \(c(s)\) 为初值，沿 \(t\mapsto\Gamma(s,t)\) 的水平提升记为 \(q(s,t)\)。令
+	\[
+		W(s,t)=\omega_{q(s,t)}(\partial_s q).
+	\]
+	则
+	\begin{equation}\label{g1:eq:principal-variation-intrinsic}
+		W(s,b)=\omega_{c(s)}(c'(s))+\int_a^b\Omega_{q(s,t)}(\partial_tq,\partial_sq)\,\mathrm{d}t.
+	\end{equation}
+	若 \(\Gamma\) 的像在同一个截面 \(\sigma:U\to P\) 的定义域内，取 \(c(s)=\sigma(\Gamma(s,a))\)、\(q(s,t)=\sigma(\Gamma(s,t))u(s,t)\)，则 \(u(s,a)=e\)。记 \(A=\sigma^*\omega\)、\(F=\sigma^*\Omega\)、\(A_s(s,t)=A(\partial_s\Gamma)\)，有
+	\begin{equation}\label{g1:eq:principal-variation-endpoints}
+		\begin{split}
+			\theta^L_{u(s,b)}(\partial_su(s,b))
+			={}&A_s(s,a)-\operatorname{Ad}_{u(s,b)^{-1}}A_s(s,b)\\
+			&+\int_a^b\operatorname{Ad}_{u(s,t)^{-1}}F_{\Gamma(s,t)}(\partial_t\Gamma,\partial_s\Gamma)\,\mathrm{d}t.
+		\end{split}
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	水平提升的参数依赖保证 \(q\) 光滑，因而可以对拉回形式求外微分。沿 \(t\) 方向水平意味着
+	\[
+		q^*\omega=W\,\mathrm{d}s.
+	\]
+	它与自身的括号楔积为零，所以曲率结构方程拉回后给出
+	\[
+		q^*\Omega=\mathrm{d}(W\,\mathrm{d}s)=\partial_tW\,\mathrm{d}t\wedge\mathrm{d}s.
+	\]
+	代入 \((\partial_t,\partial_s)\)，得到 \(\partial_tW=\Omega(q_t,q_s)\)。从 \(a\) 到 \(b\) 积分，并注意 \(q(s,a)=c(s)\)，便得第一式。积分中的值都在同一个有限维向量空间 \(\mathfrak g\) 内，按任一基逐分量积分即可。
+
+	在所给局部截面中，联络平凡化公式给出
+	\[
+		W(s,t)=\operatorname{Ad}_{u(s,t)^{-1}}A_s(s,t)+\theta^L_{u(s,t)}(\partial_su(s,t)).
+	\]
+	曲率水平且等变，故 \(\Omega(q_t,q_s)=\operatorname{Ad}_{u^{-1}}F(\Gamma_t,\Gamma_s)\)。初端 \(u(s,a)=e\) 对 \(s\) 常值，因此 \(W(s,a)=A_s(s,a)\)。将这三项代入第一式，再把终端的 \(A_s\) 项移到右边，得到第二式。
+\end{proof}
+
+\input{Figures/Chapter18-TransportVariation.tex}
+
+\cref{g1:fig:principal-transport-variation}把两种变化放在同一张参数图里：\(t\) 沿着路径前进，\(s\) 改变整条路径。公式中曲率的输入次序是 \((\Gamma_t,\Gamma_s)\)；改成 \((\Gamma_s,\Gamma_t)\) 就应补一个负号。若起点、终点随 \(s\) 移动，\eqref{g1:eq:principal-variation-endpoints}中的两个端点项不能省略。若两端固定，端点项消失，而积分中的 \(\operatorname{Ad}_{u^{-1}}\) 将不同位置的曲率放到提升所选的同一比较方式中；一般非阿贝尔群不能删去这一项。
+
+\ProseParagraphBreak
+
+特别地，对一族基点固定的闭路，从同一个 \(p\in P_x\) 提升，写 \(q(s,b)=p h(s)\)，则
+\[
+	\theta^L_{h(s)}(h'(s))=\int_a^b\Omega(q_t,q_s)\,\mathrm{d}t.
+\]
+平坦时右侧为零，因而 \(h'(s)=0\)。这已经说明光滑定端点同伦不改变平坦运输；下一节将用局部水平截面处理基本群所采用的连续同伦，而不把两种正则性直接混用。
+
+\begin{proposition}[小方环的曲率项]\label{g1:prop:principal-small-loop}
+	设 \(P\to M\) 为带主联络的光滑右主 \(G\) 丛，\(G\) 为有限维实李群。取内点 \(x_0\) 附近的坐标，使 \(x(x_0)=0\)，并取局部截面 \(\sigma\)，令 \(p=\sigma(x_0)\)、\(F=\sigma^*\Omega\)。假设 \(\dim M\ge2\)。令 \(\gamma_\varepsilon\) 从原点沿第一坐标正向、第二坐标正向、第一坐标反向、第二坐标反向绕行边长 \(\varepsilon>0\) 的方环，其余坐标为零。写
+	\[
+		T_{\gamma_\varepsilon}(p)=p h_\varepsilon.
+	\]
+	当 \(\varepsilon\) 充分小时，\(h_\varepsilon\) 位于指数映射的局部可逆邻域，且
+	\begin{equation}\label{g1:eq:principal-small-loop}
+		\log h_\varepsilon=-\varepsilon^2F_{12}(x_0)+O(\varepsilon^3).
+	\end{equation}
+	余项用 \(\mathfrak g\) 上任一固定范数衡量。对矩阵李群，等价地有 \(h_\varepsilon=I-\varepsilon^2F_{12}(x_0)+O(\varepsilon^3)\)。
+\end{proposition}
+\begin{proof}
+	先选一个在基点处一阶变化恰好抵消 \(A=\sigma^*\omega\) 的截面变换。令
+	\[
+		k(x)=\exp\left(-\sum_i x^iA_i(x_0)\right),\qquad \widetilde\sigma=\sigma k.
+	\]
+	由\cref{g1:prop:exponential-local-diffeomorphism}，\((\mathrm{d}\exp)_0=\operatorname{id}\)，且指数映射在零点附近有光滑逆。因为 \(k(x_0)=e\)，联络的局部变换公式给出 \(\widetilde A_i(x_0)=0\)。新旧截面在基点相同，故 \(p,h_\varepsilon\) 不变；曲率的等变变换又保证 \(\widetilde F(x_0)=F(x_0)\)。以下在这个新截面中计算，省去波浪号。
+
+	把四条边都用坐标长度参数化，总时间为 \(4\varepsilon\)。沿全部边，系数 \(B(t)=A(\gamma_\varepsilon'(t))\) 分片光滑且 \(\|B(t)\|\le C\varepsilon\)，因为 \(A(x_0)=0\)。选单位元附近的指数坐标 \(\xi=\log g\)。在这张图中，右不变方程成为
+	\[
+		\xi'=-K(\xi)B(t),\qquad
+		K(\xi)=(\mathrm{d}\log)_{\exp\xi}\circ(\mathrm{d}R_{\exp\xi})_e,
+	\]
+	其中 \(K\) 光滑且 \(K(0)=I\)。在固定小闭球中，\(K\) 有界且 \(K(\xi)=I+O(\|\xi\|)\)。从 \(\xi(0)=0\) 出发，在解尚未离开这个球时，积分估计给出 \(\|\xi(t)\|\le C'\varepsilon t\le4C'\varepsilon^2\)。若 \(\varepsilon\) 足够小，该界严格小于球半径，所以解不可能首次碰到球边界。于是全程 \(\xi=O(\varepsilon^2)\)，特别 \(h_\varepsilon\) 确实在 \(\log\) 的定义域内。
+
+	将这个界代回微分方程，\(K(\xi)-I\) 对积分的贡献至多为 \(O(\varepsilon^2)O(\varepsilon)O(\varepsilon)=O(\varepsilon^4)\)，因此
+	\[
+		\log h_\varepsilon=-\oint_{\gamma_\varepsilon}A+O(\varepsilon^4).
+	\]
+	对 \(\mathfrak g\) 的各分量应用矩形 Stokes 公式\cref{g1:thm:stokes-corners}，再作一阶余项估计，得到
+	\begin{align*}
+		\oint_{\gamma_\varepsilon}A
+		&=\int_0^\varepsilon\int_0^\varepsilon(\partial_1A_2-\partial_2A_1)(s,t,0,\ldots,0)\,\mathrm{d}s\,\mathrm{d}t\\
+		&=\varepsilon^2F_{12}(x_0)+O(\varepsilon^3).
+	\end{align*}
+	最后一步用到了 \(A(x_0)=0\)，所以基点的交换子项消失。两式合并证明一般李群的结论。矩阵情形再用 \(\exp Z=I+Z+O(\|Z\|^2)\) 即得矩阵表达；前面的论证本身没有要求 \(G\) 具有忠实矩阵表示。
+\end{proof}
+
+这与\eqref{g1:eq:small-loop-curvature}的向量丛公式同号：负号来自水平方程 \(g'=-A(\gamma')g\) 及规定的正向绕行。曲率为零意味着所有这些面积首项消失，但单个闭路恰好返回原点不意味着邻近曲率为零；而一般非阿贝尔情形也不能把面积首项直接改写成任意大小曲面的精确指数积分。
+
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

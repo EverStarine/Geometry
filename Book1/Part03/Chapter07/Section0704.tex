@@ -1,0 +1,249 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 7.4 总曲率与空间曲线
+% 纲要位置：几何学计划纲要.md，第 389 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 球面切向曲线和总曲率
+% * Fenchel 不等式的几何证明
+% * 等号条件与平面凸曲线
+% * 结型施加的进一步限制：准确陈述，不将结理论预设为先修
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{总曲率与空间曲线}
+\label{g1:sec:0704}
+
+平面简单闭曲线的切向量一共转过一周，但空间曲线没有一个固定平面供我们比较转角的正负。仍然可以把每个单位切向量的起点移到原点，观察它的终点在单位球面上走了多远。闭合条件将迫使这条球面曲线有足够的长度；当长度恰好达到最小值时，空间曲线反而必须落回一个平面。这个论证只需要单位切向量，不要求处处有 Frenet 法向量，因而也能处理零曲率点。
+
+\subsection{球面切向曲线和总曲率}
+\label{g1:subsec:0704:01}
+
+\begin{definition}[总曲率与切向示性曲线]\label{g1:def:total-curvature}
+	设 \(\gamma:[0,L]\to\mathbb R^3\) 是 \(C^2\) 单位速率曲线，其中 \(L>0\)，允许曲线不闭合。其单位切向量 \(T(s)=\gamma'(s)\) 给出一条 \(C^1\) 球面曲线
+	\[
+		T:[0,L]\longrightarrow S^2,\qquad
+		S^2=\{x\in\mathbb R^3:\|x\|=1\},
+	\]
+	称为\term[qiexiangshixingquxian]{切向示性曲线}[tangent indicatrix]。定义 \(\gamma\) 的\term[zongqulv]{总曲率}[total curvature]为
+	\begin{equation}\label{g1:eq:total-curvature}
+		\operatorname{TC}(\gamma)\coloneqq\int_0^L\kappa(s)\,\mathrm{d}s
+		=\int_0^L\|T'(s)\|\,\mathrm{d}s.
+	\end{equation}
+	\symidx{\(\operatorname{TC}(\gamma)\)：曲线的总曲率}
+	对于任意紧参数区间上的 \(C^2\) 正则曲线，先按\cref{g1:prop:arc-length-param}换成弧长参数，或等价地在原参数 \(t\) 下使用 \(\int\kappa(t)\|\dot\gamma(t)\|\,\mathrm{d}t\)。
+\end{definition}
+
+右端正是切向示性曲线的长度，计入重复经过同一球面弧的次数。它并不是集合 \(T([0,L])\) 的“去重后长度”。原曲线的一段直线使 \(T\) 停在一点，不给总曲率增加长度；原曲线绕同一圆走两遍，则切向示性曲线也走两遍。由于 \(\kappa=\|T'\|\ge0\)，总曲率没有正负抵消。平面有向曲率 \(k\) 与这里的量满足 \(\kappa=|k|\)，因此 \(\int k\,\mathrm{d}s\) 和 \(\operatorname{TC}(\gamma)\) 应当区分。
+
+\begin{example}[尺度与重复参数]\label{g1:exm:total-curvature-circle}
+	半径为 \(R>0\) 的圆走一周时，\(\kappa=1/R\)，长度为 \(2\pi R\)，故总曲率是 \(2\pi\)。更一般地，对任意 \(a>0\)，伸缩后的曲线 \(a\gamma\) 的弧长元变成 \(a\,\mathrm{d}s\)，曲率变成 \(\kappa/a\)，所以总曲率不变。若 \(\gamma_m(t)=(R\cos mt,R\sin mt,0)\)，其中 \(m\) 是非零整数且 \(0\le t\le2\pi\)，则总曲率为 \(2\pi|m|\)。同一个圆形像集并未确定总曲率；走过它的次数仍然是参数曲线的一部分。
+\end{example}
+
+闭曲线还满足一个比 \(T(0)=T(L)\) 更有用的约束：
+\begin{equation}\label{g1:eq:tangent-balance}
+	\int_0^L T(s)\,\mathrm{d}s=\gamma(L)-\gamma(0)=0.
+\end{equation}
+它表示各方向的位移必须抵消。例如，若存在非零向量 \(a\)，使 \(a\cdot T(s)>0\) 对所有 \(s\) 成立，那么整条曲线始终向 \(a\) 方向前进，不可能闭合。稍后还需要边界情形：若 \(a\cdot T(s)\ge0\) 处处成立，则连续性和\eqref{g1:eq:tangent-balance}迫使 \(a\cdot T(s)=0\) 处处成立，此时 \(\gamma\) 落在一个垂直于 \(a\) 的平面内。
+
+\subsection{Fenchel 不等式的几何证明}
+\label{g1:subsec:0704:02}
+
+我们把球面上两点 \(p,q\) 的夹角记为 \(d_S(p,q)=\arccos(p\cdot q)\in[0,\pi]\)。下面证明，在球面上绕行不能比这段角距离更短。这也是下一小节判断等号的工具。
+
+\begin{lemma}[球面弧长与端点夹角]\label{g1:lem:spherical-arc-distance}
+	设 \(c:[a,b]\to S^2\) 是 \(C^1\) 曲线，允许 \(c'\) 为零。则
+	\[
+		d_S(c(a),c(b))\le\int_a^b\|c'(t)\|\,\mathrm{d}t.
+	\]
+	若 \(c(a)=p\)、\(c(b)=-p\)，且右端等于 \(\pi\)，则存在一个与 \(p\) 垂直的单位向量 \(v\)，使
+	\[
+		c(t)=p\cos u(t)+v\sin u(t),\qquad
+		u(t)=\int_a^t\|c'(r)\|\,\mathrm{d}r.
+	\]
+	因而该弧沿一条半大圆单调前进，可以停顿，但不能折返。
+\end{lemma}
+
+\begin{proof}
+	记 \(p=c(a)\)。由于 \(c\cdot c'=0\)，将 \(p\) 分解到 \(c(t)\) 方向及其垂直平面，得到
+	\[
+		|p\cdot c'(t)|\le\sqrt{1-(p\cdot c(t))^2}\,\|c'(t)\|.
+	\]
+	直接对 \(\arccos(p\cdot c)\) 求导会在 \(c=\pm p\) 处遇到分母为零。为保留这些端点，先取 \(0<\varepsilon<1\)，令
+	\[
+		\theta_\varepsilon(t)=\arccos\bigl((1-\varepsilon)p\cdot c(t)\bigr).
+	\]
+	此时分母严格为正，而且
+	\[
+		|\theta_\varepsilon'(t)|
+		\le
+		\frac{(1-\varepsilon)\sqrt{1-(p\cdot c(t))^2}}
+		{\sqrt{1-(1-\varepsilon)^2(p\cdot c(t))^2}}\,
+		\|c'(t)\|
+		\le\|c'(t)\|.
+	\]
+	积分并令 \(\varepsilon\to0\)，便得端点夹角的估计。相同论证适用于曲线的任意子区间。
+
+	现在设端点为 \(p,-p\)，总长恰为 \(\pi\)。令 \(\theta(t)=\arccos(p\cdot c(t))\)。分别从两端使用刚证的估计，得到
+	\[
+		\theta(t)\le u(t),\qquad
+		\pi-\theta(t)\le\pi-u(t),
+	\]
+	所以 \(\theta(t)=u(t)\)。在 \(0<u(t)<\pi\) 的区间上，定义
+	\[
+		v(t)=\frac{c(t)-p\cos u(t)}{\sin u(t)}.
+	\]
+	它是 \(C^1\) 单位向量，且 \(v(t)\perp p\)。微分上式所给的 \(c=p\cos u+v\sin u\)，利用 \(v'\perp p,v\)，可得
+	\[
+		\|c'\|^2=(u')^2+\sin^2u\,\|v'\|^2.
+	\]
+	定义给出 \(u'=\|c'\|\)，故 \(v'=0\)。因为 \(u\) 单调，\(0<u<\pi\) 的原像是一个区间，因而这里的 \(v\) 是同一个常向量。剩余端段上 \(u=0\) 或 \(u=\pi\)，对应 \(c=p\) 或 \(c=-p\)，公式仍然成立。
+\end{proof}
+
+\begin{lemma}[短球面闭曲线的半球约束]\label{g1:lem:short-spherical-loop}
+	设 \(c\) 是一条 \(C^1\) 球面闭曲线，将它按经过顺序分成长度相等的两段，分点为 \(p,q\)。若总长度小于 \(2\pi\)，则
+	\[
+		(p+q)\cdot c(t)>0\qquad\text{对所有 }t.
+	\]
+	若总长度等于 \(2\pi\) 且 \(q\ne-p\)，则上式改为非负不等式，并且在分点 \(p\) 处严格为正。
+\end{lemma}
+
+\begin{proof}
+	累计长度是连续函数，所以可以取到半长分点；长度为零时任取分点即可。任一点 \(x=c(t)\) 位于两段之一。从该段的两端走到 \(x\)，由\cref{g1:lem:spherical-arc-distance}有
+	\[
+		\alpha+\beta\le\frac{\operatorname{length}(c)}2,\qquad
+		\alpha=d_S(p,x),\quad\beta=d_S(q,x).
+	\]
+	而
+	\[
+		(p+q)\cdot x=\cos\alpha+\cos\beta
+		=2\cos\frac{\alpha+\beta}{2}\cos\frac{\alpha-\beta}{2}.
+	\]
+	若总长小于 \(2\pi\)，则 \(\alpha+\beta<\pi\)，两个余弦都严格为正。若总长等于 \(2\pi\)，则两者都非负；在 \(x=p\) 处，该内积为 \(1+p\cdot q>0\)，最后一个严格不等式正用了 \(q\ne-p\)。
+\end{proof}
+
+这个引理把“转得太少”变成了“所有方向都偏向同一侧”。其中 \(p+q\) 指向夹角的中间方向；两段都不足半个大圆时，它们就不能绕到这个方向的背后。
+
+\begin{theorem}[Fenchel 不等式]\label{g1:thm:fenchel}
+	设 \(\gamma:\mathbb R/L\mathbb Z\to\mathbb R^3\) 是 \(C^2\) 正则闭曲线，按弧长参数化，\(L>0\)。则
+	\[
+		\operatorname{TC}(\gamma)=\int_0^L\kappa(s)\,\mathrm{d}s\ge2\pi.
+	\]
+	这里不假设 \(\gamma\) 简单，也不假设 \(\kappa>0\)。
+\end{theorem}
+
+\begin{proof}
+	若总曲率小于 \(2\pi\)，切向示性曲线 \(T\) 的长度也小于 \(2\pi\)。对它应用\cref{g1:lem:short-spherical-loop}，取得两个半长分点 \(p,q\)，使 \((p+q)\cdot T(s)>0\) 处处成立。于是
+	\[
+		(p+q)\cdot\int_0^L T(s)\,\mathrm{d}s>0,
+	\]
+	这与闭合约束\eqref{g1:eq:tangent-balance}矛盾。
+\end{proof}
+
+这一结论通常称为\term[fenchelbudengshi]{Fenchel 不等式}[Fenchel's inequality]，包括等号条件的整体陈述也称为 Fenchel 定理。\footnote{Fenchel，芬切尔，Werner Fenchel（1905--1988），生于德国、后在丹麦工作的数学家，研究凸性理论及非欧几何中的离散群。}原曲线即使在空间里不断改变弯曲平面，也不能把闭合所需的总转向减少到一周以下。文献中的另一种证明从内接多边形的外角和出发，见\cite[Theorem 3.4]{Milnor1950}；这里的球面证明则使零曲率段的作用直接可见。
+
+\subsection{等号条件与平面凸曲线}
+\label{g1:subsec:0704:03}
+
+不等式的证明很短，但等号还要回答三个不同的问题：切向量是否在固定平面内，它沿这个平面的单位圆是否折返，以及原曲线是否可能重叠或自交。以下论证依次排除这些可能。
+
+\begin{theorem}[Fenchel 不等式的等号条件]\label{g1:thm:fenchel-equality}
+	设 \(\gamma:\mathbb R/L\mathbb Z\to\mathbb R^3\) 是 \(C^2\) 单位速率闭曲线，\(L>0\)。则 \(\operatorname{TC}(\gamma)=2\pi\) 当且仅当 \(\gamma\) 简单，其像是某个仿射平面内具有非空内部的紧凸集的边界，并且参数将该边界走一周。允许曲率在点或区间上为零。
+\end{theorem}
+
+\begin{proof}
+	先设总曲率为 \(2\pi\)，记累计曲率
+	\[
+		u(s)=\int_0^s\kappa(r)\,\mathrm{d}r,\qquad 0\le s\le L.
+	\]
+	把 \(u\) 延拓为满足 \(u(s+L)=u(s)+2\pi\) 的函数。任取 \(s<t\le s+L\)，使 \(u(t)-u(s)=\pi\)。这两个时刻把切向示性曲线分成长度均为 \(\pi\) 的两段。令 \(p=T(s)\)、\(q=T(t)\)。如果 \(q\ne-p\)，\cref{g1:lem:short-spherical-loop}给出
+	\[
+		(p+q)\cdot T(r)\ge0\quad\text{处处成立},
+		\qquad (p+q)\cdot T(s)>0.
+	\]
+	连续性使严格正值保持在一个参数小区间上，因此其积分严格为正，仍与\eqref{g1:eq:tangent-balance}矛盾。所以任何这样的一对半长分点都互为对径点。
+
+	取 \(p=T(0)\)，并取 \(s_1,s_2,s_3\)，使 \(u(s_j)=j\pi/2\)。第一半段从 \(p\) 到 \(-p\)，长度为 \(\pi\)，故\cref{g1:lem:spherical-arc-distance}给出一个单位向量 \(v\perp p\)，使
+	\[
+		T(s)=p\cos u(s)+v\sin u(s)\qquad(0\le s\le s_2).
+	\]
+	特别地 \(T(s_1)=v\)。第二半段也必须沿某条半大圆前进，可以写成
+	\[
+		T(s)=-p\cos(u(s)-\pi)+w\sin(u(s)-\pi)\qquad(s_2\le s\le L),
+	\]
+	其中 \(w\perp p\) 是单位向量。由于 \(s_1,s_3\) 又是一对半长分点，\(w=T(s_3)=-T(s_1)=-v\)。因此两段实际合成同一个大圆，而且
+	\begin{equation}\label{g1:eq:fenchel-equality-tangent}
+		T(s)=p\cos u(s)+v\sin u(s)\qquad(0\le s\le L).
+	\end{equation}
+
+	积分表明 \(\gamma(s)-\gamma(0)\) 始终属于平面 \(\operatorname{span}\{p,v\}\)。在以 \(p,v\) 为正向正交基的这个平面里，\(u(s)\) 正是一个连续切角；它单调不减，总增量为 \(2\pi\)。\cref{g1:thm:curvature-convexity}的充分性方向适用于闭正则曲线，并不预设简单性：切角单调增加一周时，所有切线都是同侧支撑线，而且曲线没有重复点。因此 \(\gamma\) 简单，并且沿一个紧凸集的边界走一周。
+
+	反过来，设 \(\gamma\) 简单且是平面紧凸集的边界。选择使凸集位于左侧的方向，由\cref{g1:thm:curvature-convexity}，其有向曲率 \(k\ge0\)；由\cref{g1:thm:turning-tangent}，\(\int_0^L k\,\mathrm{d}s=2\pi\)。于是 \(\operatorname{TC}(\gamma)=\int_0^L|k|\,\mathrm{d}s=2\pi\)。反向行走时 \(k\) 改变符号，总曲率不变。
+\end{proof}
+
+\input{Figures/Chapter07-TotalCurvature.tex}
+
+证明中的 \(u\) 是累计曲率，未必是合法的正则重参数：在直线段上 \(u'=0\)，甚至可能一段时间不变化。我们只把它代入\eqref{g1:eq:fenchel-equality-tangent}，没有除以 \(\kappa\)，也没有要求 \(u\) 可逆。\cref{g1:fig:total-curvature}所画的圆周运动可以在个别方向上停顿；因此等号条件是“平面凸曲线”，不是“圆”，也不是“处处严格正曲率的平面曲线”。
+
+\begin{corollary}[非平面性的严格代价]\label{g1:cor:nonplanar-total-curvature}
+	任何像不包含在一个仿射平面内的 \(C^2\) 正则闭空间曲线，都有 \(\operatorname{TC}(\gamma)>2\pi\)。任何自交的 \(C^2\) 正则闭空间曲线也有同样的严格不等式。
+\end{corollary}
+
+\begin{proof}
+	\cref{g1:thm:fenchel}给出非严格下界，而\cref{g1:thm:fenchel-equality}排除了这两种情形中的等号。
+\end{proof}
+
+\subsection{结型施加的进一步限制：准确陈述，不将结理论预设为先修}
+\label{g1:subsec:0704:04}
+
+非平面性取决于当前摆放方式。一个平面圆被轻微拉出平面后，总曲率已经严格大于 \(2\pi\)，但仍然可以完整地拉回原来的圆，不必让曲线穿过自身。结型问的是后一类变形能否做到，其限制比“目前不在平面内”更强。
+
+\begin{definition}[结与平凡结]\label{g1:def:knot-unknot}
+	本小节的\term[jie]{结}[knot]指 \(\mathbb R^3\) 中 \(C^2\) 正则嵌入圆周的像。两个结 \(K_0,K_1\) 具有相同\term[jiexing]{结型}[knot type]，是指存在 \(\mathbb R^3\) 的环境同痕 \(H_t\)，使 \(H_1(K_0)=K_1\)。这里沿用\cref{g1:def:ambient-isotopy}的定义：\(H_0=\mathrm{id}\)，且 \((x,t)\mapsto(H_t(x),t)\) 是 \(\mathbb R^3\times[0,1]\) 的同胚。与平面圆有相同结型的结称为\term[pingfanjie]{平凡结}[unknot]，否则称为非平凡结。
+\end{definition}
+
+环境同痕移动的是整个周围空间，每一时刻都保持可逆，因而曲线上不同的点不能在变形途中穿过彼此。一般的道路同伦没有这个限制；在 \(\mathbb R^3\) 中任意闭路都可以连续收缩，并不能据此说所有结都平凡。结型只保留嵌入的拓扑性质，不要求变形保持长度或曲率。
+
+\begin{theorem}[Fáry--Milnor 定理]\label{g1:thm:fary-milnor}
+	设 \(\gamma:S^1\to\mathbb R^3\) 是 \(C^2\) 正则嵌入，且它的像是非平凡结。则
+	\[
+		\operatorname{TC}(\gamma)>4\pi.
+	\]
+	等价地，若一个 \(C^2\) 正则嵌入圆周的总曲率不超过 \(4\pi\)，它必为平凡结。
+\end{theorem}
+
+这就是\term[farymilnordingli]{Fáry--Milnor 定理}[Fáry--Milnor theorem]。\footnote{Fáry，法里，匈牙利姓名为 Fáry István（1922--1984），匈牙利出生的数学家，研究几何与代数拓扑，证明了平面图的直线嵌入定理。Milnor，米尔诺，John Willard Milnor（1931年生），美国数学家，在微分拓扑、代数 \(K\) 理论和动力系统中有重要工作。}本章引用这一结论，不展开证明。所用光滑版本可由\cite[Theorem 2.2; Corollary 4.6]{Milnor1950}直接得到：前一处将原文以多边形定义的总曲率与这里的积分相等同，后一处给出严格的 \(4\pi\) 下界。其证明还需要把有限总曲率的结在环境同痕下替换为适当的内接多边形，并研究各投影方向的高度极值数；这些结论在该文的 Sections 3--4 中建立。
+
+\begin{example}[很大的总曲率并不保证打结]\label{g1:exm:unknot-large-curvature}
+	考虑平面极坐标曲线
+	\[
+		\gamma(t)=r(t)(\cos t,\sin t,0),\qquad
+		r(t)=1+\tfrac12\cos4t,\qquad 0\le t\le2\pi.
+	\]
+	因为 \(r\ge1/2\)，每个极角只有一个点，而且 \(\|\dot\gamma(t)\|^2=r'(t)^2+r(t)^2>0\)，所以这是 \(C^\infty\) 正则简单闭曲线。它是平凡结：在柱坐标 \((\rho,\phi,z)\) 中，
+	\[
+		H_a(\rho,\phi,z)=
+		\left(\frac{\rho}{1+(a/2)\cos4\phi},\phi,z\right),
+		\qquad 0\le a\le1,
+	\]
+	给出把它移到单位圆的环境同痕。轴上令 \(H_a(0,0,z)=(0,0,z)\)；分母一致介于 \(1/2\) 与 \(3/2\) 之间，因此映射及逆映射在轴上也连续。
+
+	它的总曲率却大于 \(4\pi\)。把平面视为复平面，有 \(\dot\gamma(t)=e^{it}(r'(t)+ir(t))\)，所以可取切角
+	\[
+		\theta(t)=t+\frac\pi2-\arctan\frac{r'(t)}{r(t)}.
+	\]
+	在 \(t_j=(2j+1)\pi/8\) 处，\(r=1\)、\(r'=-2(-1)^j\)，故
+	\[
+		\theta(t_j)=t_j+\frac\pi2+(-1)^j A,\qquad A=\arctan2.
+	\]
+	把 \(j=0,\ldots,8\) 的相邻切角差取绝对值并求和，八项按奇偶配成四对，每对为 \(4A\)。由于总变差至少等于任何分割上的变差和，
+	\[
+		\operatorname{TC}(\gamma)=\int_{t_0}^{t_0+2\pi}|\theta'(t)|\,\mathrm{d}t
+		\ge16\arctan2>4\pi.
+	\]
+	所以 Fáry--Milnor 定理给出的是非平凡结的必要曲率代价，不能反过来凭一个大总曲率数值断定曲线打结。
+\end{example}
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

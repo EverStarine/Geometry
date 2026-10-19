@@ -1,0 +1,475 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 12.2 几何中的多线性代数
+% 纲要位置：几何学计划纲要.md，第 579 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 张量积的泛性质与收缩
+% * 对偶、对称幂及外幂
+% * 交替性、楔积与分次符号
+% * 行列式线、密度与体积
+% * 不同标架下的分量及不变量
+% 
+% 纲要内容结束
+
+\section{几何中的多线性代数}
+\label{g1:sec:1202}
+
+在一点处，方向属于切空间，测量方向的线性函数属于余切空间。内积却要同时接收两个方向，有向面积也要同时接收两个方向，而且交换这两个方向时会变号。要把这些量沿流形逐点组织起来，先须知道它们在一个向量空间里是什么，以及换基时怎样保持同一个对象。本节暂时固定有限维实向量空间；随点变化及光滑性将在\secref{g1:sec:1204}处理。
+
+\ProseParagraphBreak
+
+所需的线性代数基础是基、对偶、线性映射和行列式。回顾\cref{g1:def:cotangent-space,g1:prop:covector-pullback}：\(V^*=\operatorname{Hom}_{\mathbb R}(V,\mathbb R)\) 中的元素把向量读成实数；线性映射 \(A:V\to W\) 的对偶为 \(A^*\alpha=\alpha\circ A\)，方向从 \(W^*\) 返回 \(V^*\)。下面把一次线性观测推广到多次线性观测，同时保留不依赖基的定义。
+
+\subsection{张量积的泛性质与收缩}
+\label{g1:subsec:1202:01}
+
+设 \(V,W,U\) 为实向量空间。一个映射 \(b:V\times W\to U\) 称为双线性的，是指固定任一输入后，它对另一输入线性。内积就是这样的映射，但它一般不是乘积向量空间 \(V\times W\) 上的线性映射：例如同时将两个输入加倍，输出会乘以 \(4\)。我们希望构造一个新的向量空间，使每个双线性运算都能写成“先作同一个规定的运算，再作一个普通线性映射”。
+
+\begin{theorem}[张量积的泛性质]
+	\label{g1:thm:tensor-product-universal}
+	对有限维实向量空间 \(V,W\)，存在实向量空间 \(V\otimes W\) 及双线性映射
+	\[
+		\tau:V\times W\longrightarrow V\otimes W,\qquad (v,w)\longmapsto v\otimes w,
+	\]
+	使得对任意实向量空间 \(U\) 及双线性映射 \(b:V\times W\to U\)，存在唯一线性映射 \(\widetilde b:V\otimes W\to U\) 满足 \(\widetilde b(v\otimes w)=b(v,w)\)。这样的二元组 \((V\otimes W,\tau)\) 在保持规定映射的唯一线性同构意义下唯一。若 \(e_1,\ldots,e_m\) 和 \(f_1,\ldots,f_n\) 分别为 \(V,W\) 的基，则
+	\[
+		\{e_i\otimes f_j:1\le i\le m,\ 1\le j\le n\}
+	\]
+	为 \(V\otimes W\) 的基，因而 \(\dim(V\otimes W)=mn\)。
+\end{theorem}
+
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		V\times W \arrow[r,"\tau"] \arrow[dr,"b"'] & V\otimes W \arrow[d,dashed,"\exists!\,\widetilde b"] \\
+		& U
+	\end{tikzcd}
+\]
+图中的 \(\tau,b\) 是双线性映射，虚线箭头是线性映射。交换性只说从 \((v,w)\) 出发的两条路径给出同一个值；唯一性则说任何双线性运算都恰好对应一个这样的线性运算。
+
+\begin{proof}
+	先用一组基制造所需空间，再证明结果不依赖这次选择。取一个以符号 \(E_{ij}\) 为基的 \(mn\) 维实向量空间 \(T\)，定义
+	\[
+		\tau\left(\sum_i v^ie_i,\sum_j w^jf_j\right)=\sum_{i,j}v^iw^jE_{ij}.
+	\]
+	每个系数对两组变量分别线性，故 \(\tau\) 双线性。给定 \(b\)，规定 \(\widetilde b(E_{ij})=b(e_i,f_j)\)，唯一地定义一个线性映射。由双线性，
+	\[
+		b(v,w)=\sum_{i,j}v^iw^j b(e_i,f_j)=\widetilde b(\tau(v,w)).
+	\]
+	反之，任何满足这个等式的线性映射都必须在 \(E_{ij}=\tau(e_i,f_j)\) 上取上述值，故唯一。把 \(T\) 记为 \(V\otimes W\)，把 \(\tau(v,w)\) 记为 \(v\otimes w\)，便得到构造及所述基。
+
+	若另一个二元组 \((T',\tau')\) 具有同样的性质，分别取测试映射 \(\tau'\) 和 \(\tau\)，得到唯一线性映射 \(F:T\to T'\)、\(G:T'\to T\)，满足 \(F\tau=\tau'\)、\(G\tau'=\tau\)。于是 \(GF\tau=\tau\)，而恒等映射也具有这个性质；唯一性给出 \(GF=\operatorname{id}_T\)。同理 \(FG=\operatorname{id}_{T'}\)。因此换一组基构造的空间与原空间有一个由规定元素决定的唯一同构。这正是构造不依赖基的含义，而不是说坐标列表本身不改变。零维情形中 \(T=\{0\}\)，双线性映射也只能为零，上述结论仍成立。
+\end{proof}
+
+称 \(V\otimes W\) 为 \(V,W\) 的\term[zhangliangji]{张量积}[tensor product]。元素 \(v\otimes w\) 称为纯张量；一般元素是纯张量的有限和，未必本身就是一个纯张量。双线性意味着
+\[
+	\begin{aligned}
+		(v+v')\otimes w&=v\otimes w+v'\otimes w,\\
+		v\otimes(w+w')&=v\otimes w+v\otimes w',\\
+		(cv)\otimes w&=v\otimes(cw)=c(v\otimes w).
+	\end{aligned}
+\]
+这些关系不允许把一切和都合成一个纯张量。例如在两个二维空间中，\(e_1\otimes f_1+e_2\otimes f_2\) 若等于 \(v\otimes w\)，其系数矩阵将既是单位矩阵，又是列向量 \((v^i)\) 与行向量 \((w^j)\) 的乘积；后者的列都在同一条直线上，不可能等于单位矩阵。
+
+\ProseParagraphBreak
+
+泛性质也规定了张量积上的映射。若 \(A:V\to V'\)、\(B:W\to W'\) 线性，则 \((v,w)\mapsto Av\otimes Bw\) 双线性，因而唯一给出 \(A\otimes B\)，满足 \((A\otimes B)(v\otimes w)=Av\otimes Bw\)。复合和恒等式在纯张量上成立，便在整个空间成立，因为纯张量张成该空间。同样，对三个或更多输入可按基构造多线性映射的通用空间；\((V\otimes W)\otimes U\) 与 \(V\otimes(W\otimes U)\) 都有这一性质，规定 \((v\otimes w)\otimes u\mapsto v\otimes(w\otimes u)\) 的同构使我们能够省略括号。记 \(V^{\otimes k}\) 为 \(k\) 个因子的张量积，并约定 \(V^{\otimes0}=\mathbb R\)。
+
+\begin{proposition}[线性映射的张量表示]
+	\label{g1:prop:tensor-hom-duality}
+	设 \(V,W\) 为有限维实向量空间。映射
+	\[
+		\Phi:W\otimes V^*\longrightarrow\operatorname{Hom}_{\mathbb R}(V,W),\qquad
+		\Phi(w\otimes\alpha)(v)=\alpha(v)w
+	\]
+	是无需选基的线性同构。若 \(e_1,\ldots,e_n\) 为 \(V\) 的任意一组基，\(e^1,\ldots,e^n\) 为对偶基，则
+	\[
+		\Phi^{-1}(L)=\sum_i L(e_i)\otimes e^i.
+	\]
+	此外，求值映射 \(V\to V^{**}\)、\(v\mapsto[\alpha\mapsto\alpha(v)]\) 为自然线性同构。
+\end{proposition}
+\begin{proof}
+	\((w,\alpha)\mapsto[v\mapsto\alpha(v)w]\) 是双线性的，故由泛性质得到 \(\Phi\)。将给定 \(L\) 对应的张量作用于 \(v=\sum_i e^i(v)e_i\)，得到
+	\[
+		\Phi\left(\sum_iL(e_i)\otimes e^i\right)(v)=\sum_i e^i(v)L(e_i)=L(v).
+	\]
+	反过来，对纯张量 \(w\otimes\alpha\)，先经 \(\Phi\) 再用所列逆公式，得到
+	\[
+		\sum_i\alpha(e_i)w\otimes e^i
+		=w\otimes\left(\sum_i\alpha(e_i)e^i\right)=w\otimes\alpha.
+	\]
+	由线性可知两个映射互逆。虽然逆公式用了基，它是一个无基映射的逆，所以换基所得张量相同。最后，非零向量 \(v\) 至少有一个非零坐标，相应的对偶基元素在 \(v\) 上不为零，故求值映射 \(V\to V^{**}\) 单射；两空间同维，因而是同构。它由求值定义，也没有基的选择。
+\end{proof}
+
+一般地，定义
+\[
+	T^r_s(V)=V^{\otimes r}\otimes(V^*)^{\otimes s},\qquad r,s\ge0,
+\]
+称其元素为 \((r,s)\) 型\term[zhangliang]{张量}[tensor]。\symidx{\(T^r_s(V)\)：\((r,s)\) 型张量空间}它自然作用于 \(r\) 个协变向量和 \(s\) 个向量：纯张量 \(v_1\otimes\cdots\otimes v_r\otimes\alpha_1\otimes\cdots\otimes\alpha_s\) 对输入 \((\xi_1,\ldots,\xi_r;w_1,\ldots,w_s)\) 的值是
+\[
+	\prod_{a=1}^r\xi_a(v_a)\prod_{b=1}^s\alpha_b(w_b).
+\]
+这不只是举出一种作用方式，而是给出了张量空间与相应多线性函数空间的同构：选基后，任一多线性函数都由它在各输入基上的值唯一决定，逐项展开便得到张量基的唯一系数表示。这里把向量视为对协变向量的线性函数，使用的正是 \(V\simeq V^{**}\)。因此上标 \(r\) 数的是向量因子，实际输入却是 \(r\) 个协变向量；不要把两者混淆。
+
+\begin{proposition}[收缩与迹]
+	\label{g1:prop:tensor-contraction}
+	设 \(V\) 为有限维实向量空间，\(r,s\ge1\)。指定一个向量因子的位置 \(a\) 和一个对偶因子的位置 \(b\)，在纯张量上将它们求值、删除这两个因子，并保留其余因子的先后次序，得到唯一线性映射
+	\[
+		C^a_b:T^r_s(V)\longrightarrow T^{r-1}_{s-1}(V).
+	\]
+	这一运算不依赖基，称为\term[shousuo]{收缩}[contraction]。特别地，经 \(V\otimes V^*\simeq\operatorname{End}(V)\) 识别，\(C^1_1\) 给出线性映射 \(L\) 的迹：
+	\[
+		\operatorname{tr}L=\sum_i e^i(L(e_i)).
+	\]
+	右端在任意基及其对偶基中均取同一值。
+\end{proposition}
+\begin{proof}
+	具体规定为
+	\[
+		C^a_b(v_1\otimes\cdots\otimes v_r\otimes\alpha_1\otimes\cdots\otimes\alpha_s)
+		=\alpha_b(v_a)\,v_1\otimes\cdots\widehat{v_a}\cdots\otimes v_r
+		\otimes\alpha_1\otimes\cdots\widehat{\alpha_b}\cdots\otimes\alpha_s,
+	\]
+	帽号表示省略。右端对原来的每个输入分别线性，多因子张量积的泛性质便给出唯一线性映射。这个定义只使用内在的求值 \(\alpha_b(v_a)\)，没有使用基。对于 \(r=s=1\)，\cref{g1:prop:tensor-hom-duality}给出 \(L=\Phi(\sum_iL(e_i)\otimes e^i)\)，收缩后正是所列求和。因此矩阵对角元之和是一个无基运算的坐标表达，换基不改变它。
+\end{proof}
+
+收缩为什么只配对一个向量因子和一个对偶因子？因为 \(\alpha(v)\) 已有定义，而两个向量之间并没有预定的实数值。若另选内积，当然可以先用内积把一个向量变成协变向量再收缩，但这时结果包含了所选内积的信息。例如一个双线性形式属于 \(T^0_2(V)\)；仅凭这个张量本身没有规定的“迹”，要用内积的逆张量把它的两个指标配对，才能谈相对于该内积的迹。
+
+\subsection{对偶、对称幂及外幂}
+\label{g1:subsec:1202:02}
+
+有些多线性观测不区分输入的排列，例如内积；另一些观测在交换两个输入时改变符号，例如二维有向面积。与其在每次计算时附加相同条件，不如把这些条件直接加入张量积的构造。这里的商空间只是在说：若所有允许的观测都必须把某种差别读成零，就把这种差别规定为零。
+
+\begin{definition}
+	\label{g1:def:symmetric-exterior-powers}
+	设 \(V\) 为有限维实向量空间，\(k\ge2\)。其 \(k\) 次\term[duichengmi]{对称幂}[symmetric power]为
+	\[
+		\operatorname{Sym}^kV=V^{\otimes k}/R_{\mathrm{sym}},
+	\]
+	其中 \(R_{\mathrm{sym}}\) 由所有纯张量与其任意排列之差张成。纯张量的像记为 \(v_1\odot\cdots\odot v_k\)。其 \(k\) 次\term[waimi]{外幂}[exterior power]为
+	\[
+		\Lambda^kV=V^{\otimes k}/R_{\mathrm{alt}},
+	\]
+	其中 \(R_{\mathrm{alt}}\) 由任意两个位置输入相同的纯张量张成；纯张量的像记为 \(v_1\wedge\cdots\wedge v_k\)。约定 \(\operatorname{Sym}^0V=\Lambda^0V=\mathbb R\)，\(\operatorname{Sym}^1V=\Lambda^1V=V\)。
+\end{definition}
+
+外幂的定义立刻给出重复输入为零。将两个相同位置的输入都换成 \(u+v\) 并展开，两个重复项各自为零，余下两项相加为零。因此交换任意两个位置会变号。这也说明：一个多线性映射在重复输入时为零，当且仅当交换任意两个输入时变号；反向推导使用 \(a=-a\Rightarrow a=0\)，这里实数域的条件是有用的。这样的映射称为\term[jiaotixing]{交替的}[alternating]。
+
+\ProseParagraphBreak
+
+商的定义给出相应的泛性质：对称 \(k\) 线性映射唯一地通过 \(\operatorname{Sym}^kV\) 分解，交替 \(k\) 线性映射唯一地通过 \(\Lambda^kV\) 分解。理由是张量积已经把多线性映射变成线性映射；对称或交替条件恰好说这个线性映射消去相应关系子空间，因而能且只能下降到商。特别地，\((\Lambda^kV)^*\) 就是所有交替 \(k\) 线性实函数的空间。
+
+\begin{proposition}[对称幂与外幂的基]
+	\label{g1:prop:symmetric-exterior-bases}
+	设 \(V\) 为 \(n\) 维实向量空间，基为 \(e_1,\ldots,e_n\)。对 \(k\ge1\)，
+	\[
+		e_1^{\odot a_1}\odot\cdots\odot e_n^{\odot a_n},
+		\qquad a_i\ge0,\quad \sum_i a_i=k
+	\]
+	是 \(\operatorname{Sym}^kV\) 的一组基，而
+	\[
+		e_{i_1}\wedge\cdots\wedge e_{i_k},\qquad i_1<\cdots<i_k
+	\]
+	是 \(\Lambda^kV\) 的一组基。因此，当 \(n\ge1\) 时，
+	\[
+		\dim\operatorname{Sym}^kV=\binom{n+k-1}{k},\qquad
+		\dim\Lambda^kV=\binom nk,
+	\]
+	其中 \(k>n\) 时外幂为零；零次幂均为一维，零维空间的正次幂均为零。
+\end{proposition}
+\begin{proof}
+	展开各输入的基表示，并在对称幂中重新排列因子，得到第一组元素张成。为证独立，把每个 \(e_i\) 对应于形式变量 \(X_i\)，规定
+	\[
+		(v_1,\ldots,v_k)\longmapsto
+		\prod_{\ell=1}^k\left(\sum_i e^i(v_\ell)X_i\right).
+	\]
+	它是取值于 \(k\) 次齐次多项式空间的对称多线性映射，故下降到 \(\operatorname{Sym}^kV\)，并把所列元素送到各不相同的单项式 \(X_1^{a_1}\cdots X_n^{a_n}\)。形式多项式的系数表示唯一，因此这些像线性无关，原元素也线性无关。非负整数解 \(a_1+\cdots+a_n=k\) 的数量是 \(\binom{n+k-1}{n-1}\)：把 \(k\) 个记号排成一行，再用 \(n-1\) 个隔板划分为各组，允许空组，即得到这个计数。
+
+	在外幂中也先展开基表示；重复指标项为零，不重复项可按指标递增排列，代价只是排列的符号，所以第二组元素张成。对每个严格递增指标组 \(I=(i_1,\ldots,i_k)\)，定义
+	\[
+		D_I(v_1,\ldots,v_k)=\det\bigl[e^{i_a}(v_b)\bigr]_{a,b=1}^k.
+	\]
+	行列式对各列线性，重复列时为零，故它下降为 \(\Lambda^kV\) 上的线性函数。在所列的递增基元素 \(e_{j_1}\wedge\cdots\wedge e_{j_k}\) 上，它恰在 \(I=J\) 时取 \(1\)，其余取 \(0\)。逐个应用这些函数，就知所列元素独立，其数量为 \(\binom nk\)。若 \(k>n\)，每个展开项必有重复指标，所以全部为零。
+\end{proof}
+
+现在把外幂与交替形式准确地对应起来。对 \(\alpha_i\in V^*\) 和 \(v_j\in V\)，规定
+\begin{equation}
+	\label{g1:eq:exterior-determinant-pairing}
+	\left\langle\alpha_1\wedge\cdots\wedge\alpha_k,\,
+	v_1\wedge\cdots\wedge v_k\right\rangle
+	=\det[\alpha_i(v_j)].
+\end{equation}
+行列式对两组输入分别多线性并交替，故由两次泛性质，这给出 \(\Lambda^k(V^*)\) 与 \(\Lambda^kV\) 之间的双线性配对。对偶基的递增楔积与向量基的递增楔积在此配对下互为对偶，因而得到自然同构
+\[
+	\Lambda^k(V^*)\simeq(\Lambda^kV)^*
+	\simeq\{\text{\(V\) 上的交替 \(k\) 线性实函数}\}.
+\]
+这里“自然”具体指不需选基，而且与线性映射相容：若 \(A:V\to W\)，令 \(\Lambda^kA(v_1\wedge\cdots\wedge v_k)=Av_1\wedge\cdots\wedge Av_k\)，则配对的两边都给出同一个行列式 \(\det[\alpha_i(Av_j)]\)，所以 \((\Lambda^kA)^*\) 对应于 \(\Lambda^k(A^*)\)。以后简写 \(\Lambda^kV^*=\Lambda^k(V^*)\)，称其中元素为 \(V\) 上的 \(k\) 次形式。
+
+\ProseParagraphBreak
+
+对称幂有相似的对偶识别，但归一化不同。规定
+\[
+	\left\langle\alpha_1\odot\cdots\odot\alpha_k,\,
+	v_1\odot\cdots\odot v_k\right\rangle
+	=\frac1{k!}\sum_{\sigma\in S_k}\prod_{i=1}^k\alpha_i(v_{\sigma(i)}).
+\]
+这里 \(S_k\) 是 \(k\) 个位置的全排列集合。右端对两组输入都对称多线性，因而给出 \(\operatorname{Sym}^k(V^*)\to(\operatorname{Sym}^kV)^*\)。在上一命题的单项式基上，两个多重指标不同时配对为零；都为 \((a_1,\ldots,a_n)\) 时配对为 \(a_1!\cdots a_n!/k!\)，是非零实数。因此该映射也是无基的同构，并把 \(\operatorname{Sym}^k(V^*)\) 识别为对称 \(k\) 线性实函数。它与拉回相容，因为将各 \(v_j\) 换成 \(Av_j\)，等价于将各 \(\alpha_i\) 换成 \(A^*\alpha_i\)。例如
+\[
+	(\alpha\odot\beta)(u,v)=\frac{\alpha(u)\beta(v)+\alpha(v)\beta(u)}2,\qquad
+	(\alpha\wedge\beta)(u,v)=\alpha(u)\beta(v)-\alpha(v)\beta(u).
+\]
+这两个公式中的系数差别应记住；本书的有向面积形式采用第二个公式，没有额外的 \(1/2\)。
+
+\subsection{交替性、楔积与分次符号}
+\label{g1:subsec:1202:03}
+
+将两个外幂中的代表张量直接首尾相接，便得到乘法
+\[
+	\Lambda^pV\times\Lambda^qV\longrightarrow\Lambda^{p+q}V.
+\]
+它确实不依赖代表：若一个因子改变了一个重复输入生成的关系项，相接后的张量仍有重复输入，在目标商空间中为零。于是乘法由纯元素上的
+\[
+	(v_1\wedge\cdots\wedge v_p)\wedge(w_1\wedge\cdots\wedge w_q)
+	=v_1\wedge\cdots\wedge v_p\wedge w_1\wedge\cdots\wedge w_q
+\]
+决定，称为\term[xieji]{楔积}[wedge product]。在 \(V^*\) 上也有同一构造。把它视为交替形式的乘法时，必须说明它对一般输入怎样求值。
+
+\ProseParagraphBreak
+
+先对任意 \(k\) 线性实函数 \(T\) 定义\term[jiaotihua]{交替化}[alternation]
+\[
+	\operatorname{Alt}_kT(v_1,\ldots,v_k)
+	=\frac1{k!}\sum_{\sigma\in S_k}\operatorname{sgn}(\sigma)
+	T(v_{\sigma(1)},\ldots,v_{\sigma(k)}).
+\]
+交换两个输入会将每项对应到一个符号相反的排列，所以结果交替；若 \(T\) 已交替，每一项连同符号都等于 \(T\)，故 \(\operatorname{Alt}_kT=T\)。于是 \(\operatorname{Alt}_k\) 是投影到交替形式空间的线性算子。由行列式展开，\(\alpha_1\wedge\cdots\wedge\alpha_k\) 作为形式等于 \(k!\operatorname{Alt}_k(\alpha_1\otimes\cdots\otimes\alpha_k)\)，不能把这里的阶乘删去。
+
+\begin{proposition}[楔积的代数性质]
+	\label{g1:prop:wedge-algebra}
+	设 \(V\) 为有限维实向量空间，\(\alpha\in\Lambda^pV^*\)、\(\beta\in\Lambda^qV^*\)、\(\gamma\in\Lambda^rV^*\)。在行列式配对\eqref{g1:eq:exterior-determinant-pairing}的约定下，
+	\begin{equation}
+		\label{g1:eq:wedge-shuffle}
+		\begin{split}
+			(\alpha\wedge\beta)(v_1,\ldots,v_{p+q})
+			&=\sum_{\sigma\in\operatorname{Sh}(p,q)}\operatorname{sgn}(\sigma)
+			\alpha(v_{\sigma(1)},\ldots,v_{\sigma(p)})
+			\beta(v_{\sigma(p+1)},\ldots,v_{\sigma(p+q)})\\
+			&=\frac1{p!\,q!}\sum_{\sigma\in S_{p+q}}\operatorname{sgn}(\sigma)
+			\alpha(v_{\sigma(1)},\ldots,v_{\sigma(p)})
+			\beta(v_{\sigma(p+1)},\ldots,v_{\sigma(p+q)}).
+		\end{split}
+	\end{equation}
+	其中 \(\operatorname{Sh}(p,q)\) 由满足 \(\sigma(1)<\cdots<\sigma(p)\)、\(\sigma(p+1)<\cdots<\sigma(p+q)\) 的排列组成。楔积双线性，并满足
+	\[
+		(\alpha\wedge\beta)\wedge\gamma=\alpha\wedge(\beta\wedge\gamma),\qquad
+		\alpha\wedge\beta=(-1)^{pq}\beta\wedge\alpha.
+	\]
+	零次形式是实数，\(1\) 是乘法单位。对任意有限维实向量空间 \(W\) 及线性映射 \(A:V\to W\)，按
+	\[
+		(A^*\eta)(v_1,\ldots,v_k)=\eta(Av_1,\ldots,Av_k)
+	\]
+	定义形式的拉回，则 \(A^*(\eta\wedge\zeta)=A^*\eta\wedge A^*\zeta\)，且复合的拉回按相反顺序复合。
+\end{proposition}
+\begin{proof}
+	先说明公式与已经定义的乘法一致。由于一形式的楔积张成各次外幂，只须取 \(\alpha=\alpha_1\wedge\cdots\wedge\alpha_p\)、\(\beta=\beta_1\wedge\cdots\wedge\beta_q\)。相接所得形式在 \(v_1,\ldots,v_{p+q}\) 上的值，是以 \(\alpha_i,\beta_j\) 为行的 \((p+q)\) 阶行列式。按哪些 \(p\) 列被分配给前 \(p\) 行将行列式展开归组，每组选列对应唯一的 \((p,q)\) 洗牌排列；组内的两个行列式正是 \(\alpha\) 和 \(\beta\) 的值，分组选列的符号就是该排列的符号。这得到第一式。任意全排列又唯一分为一个洗牌排列和两个块内排列。块内排列的符号会分别被 \(\alpha,\beta\) 的交替性抵消，所以一个洗牌项在全排列和中重复 \(p!q!\) 次，得到第二式。
+
+	结合性也能直接从相接代表看出：两种加括号方式都给出同一个首尾相接的张量。用形式公式核对，展开任一边时，都是将所有输入分为内部递增、大小分别为 \(p,q,r\) 的三个有序块；每种分法出现一次，系数都是将原输入排列成三个块的符号。因此公式中的归一化与结合性一致。交换前后两个块时，前块的每一个位置都须越过后块的每一个位置，共 \(pq\) 次交换，故产生 \((-1)^{pq}\)，这就给出所列交换律。零次时没有输入，所有公式退化为实数乘法。
+
+	拉回仍为交替多线性函数。将洗牌公式的每个 \(v_i\) 换成 \(Av_i\)，两边分别就是 \(A^*(\eta\wedge\zeta)\) 和 \(A^*\eta\wedge A^*\zeta\)。若再有线性映射 \(B:W\to Z\)，则两种拉回都把输入送成 \(BAv_i\)，所以 \((B\circ A)^*=A^*\circ B^*\)。
+\end{proof}
+
+这里的交换律称为分次交换律：符号由两个次数的乘积决定。特别地，奇数次形式满足 \(\alpha\wedge\alpha=0\)，因为它等于自身的相反数；偶数次形式没有这一结论。例如在四维空间中，
+\[
+	(e^1\wedge e^2+e^3\wedge e^4)^2
+	=2e^1\wedge e^2\wedge e^3\wedge e^4\ne0.
+\]
+右边的两项相加，是因为交换两个二次块经过 \(2\cdot2\) 次换位，符号为正。由此也可见，“交替”指的是一个形式内部交换向量输入的规律，不能理解为任意两个形式相乘都要变号。
+
+\begin{definition}
+	\label{g1:def:interior-product}
+	设 \(v\in V\)，\(\alpha\in\Lambda^kV^*\)，\(k\ge1\)。定义\term[charu]{插入}[interior product]
+	\[
+		(\iota_v\alpha)(v_1,\ldots,v_{k-1})=\alpha(v,v_1,\ldots,v_{k-1}).
+	\]
+	它属于 \(\Lambda^{k-1}V^*\)，并约定 \(\iota_v c=0\) 对零次形式 \(c\in\mathbb R\) 成立。
+\end{definition}
+
+插入固定了一个输入，所以次数降低 \(1\)。输入固定在最左端是本书的约定；把它放在末端会产生与次数有关的符号，必须相应修改下面的公式。
+
+\begin{proposition}[插入的乘法公式]
+	\label{g1:prop:interior-product-rule}
+	设 \(V\) 为有限维实向量空间，\(v\in V\)，\(\alpha\in\Lambda^pV^*\)、\(\beta\in\Lambda^qV^*\)。则
+	\[
+		\iota_v(\alpha\wedge\beta)
+		=(\iota_v\alpha)\wedge\beta+(-1)^p\alpha\wedge(\iota_v\beta).
+	\]
+	因此 \(\iota_v\) 是外代数上次数为 \(-1\) 的分次导子。另有 \(\iota_v^2=0\)；若 \(A:V\to W\) 线性，则 \(\iota_v(A^*\eta)=A^*(\iota_{Av}\eta)\)。
+\end{proposition}
+\begin{proof}
+	先取一形式 \(\eta_1,\ldots,\eta_k\)。把 \(\eta_1\wedge\cdots\wedge\eta_k\) 在 \((v,v_1,\ldots,v_{k-1})\) 上的行列式沿第一列展开，得到
+	\[
+		\iota_v(\eta_1\wedge\cdots\wedge\eta_k)
+		=\sum_{j=1}^k(-1)^{j-1}\eta_j(v)
+		\,\eta_1\wedge\cdots\widehat{\eta_j}\cdots\wedge\eta_k.
+	\]
+	若前 \(p\) 个因子来自 \(\alpha\)，后 \(q\) 个来自 \(\beta\)，前 \(p\) 项合成 \((\iota_v\alpha)\wedge\beta\)；第 \(p+j\) 项的符号为 \((-1)^{p+j-1}=(-1)^p(-1)^{j-1}\)，后 \(q\) 项因而合成第二项。纯楔积张成所有形式，按双线性便得到一般公式。\(p=0\) 或 \(q=0\) 时公式就是插入对常数乘法的线性性质。两次插入同一向量得到 \(\alpha(v,v,\ldots)=0\)，故 \(\iota_v^2=0\)；最后一式的两边在任意输入上都等于 \(\eta(Av,Av_1,\ldots)\)。
+\end{proof}
+
+\subsection{行列式线、密度与体积}
+\label{g1:subsec:1202:04}
+
+对 \(n\) 维空间，最高次外幂只有一维，却保存着换基的行列式。若把一组有序基写作行向量 \(e=(e_1,\ldots,e_n)\)，换基约定为
+\[
+	e'=eA,\qquad e'_j=\sum_i e_i A^i{}_j,\qquad A\in\operatorname{GL}(n,\mathbb R),
+\]
+那么按多线性展开并消去重复项，有
+\[
+	e'_1\wedge\cdots\wedge e'_n=(\det A)e_1\wedge\cdots\wedge e_n.
+\]
+行列式的符号记录定向，绝对值记录平行多面体的体积缩放。要把这两个作用区分开，就会得到不同的一维空间。
+
+\begin{definition}
+	\label{g1:def:determinant-density-line}
+	设 \(V\) 为 \(n\) 维实向量空间。其\term[hanglieshixian]{行列式线}[determinant line]为 \(\det V=\Lambda^nV\)。最高次形式组成的是另一条线 \(\det(V^*)=\Lambda^n(V^*)\)，经行列式配对自然同构于 \((\det V)^*\)。
+
+	\(V\) 上的一个\term[midu]{密度}[density]是有序基集合上的实值函数 \(\mu\)，满足对每组有序基 \(e\) 和每个可逆实矩阵 \(A\)，
+	\[
+		\mu(eA)=|\det A|\,\mu(e).
+	\]
+	全体密度按逐点加法与数乘构成实向量空间，记为 \(\mathcal D(V)\)，也记为 \(|\Lambda^nV^*|\)。若 \(\mu(e)>0\) 对一组、从而对每组有序基成立，称 \(\mu\) 为正密度。
+\end{definition}
+
+密度线的记号 \(|\Lambda^nV^*|\) 是一种惯用记号，其中的元素仍可取负值，不能把它理解为只有非负元素的集合。固定一组基 \(e\) 后，任意指定实数 \(c\) 都唯一地定义密度：若 \(f=eA\)，令 \(\mu(f)=|\det A|c\)。两个连续换基的行列式绝对值相乘，故这个定义满足规定关系。因此 \(\mu\mapsto\mu(e)\) 是 \(\mathcal D(V)\to\mathbb R\) 的线性同构，密度线确为一维；正密度只构成其中一个正半轴，不是线性子空间。
+
+\ProseParagraphBreak
+
+最高次形式 \(\omega\in\Lambda^nV^*\) 给出密度 \(|\omega|\)，定义为 \(|\omega|(e)=|\omega(e_1,\ldots,e_n)|\)。这是因为 \(\omega(eA)=\det A\,\omega(e)\)。但是 \(\omega\mapsto|\omega|\) 不是线性同构：\(\omega\) 和 \(-\omega\) 给出同一密度，而两个相反形式之和为零。对 \(n\ge1\)，定向可由有序基按正行列式换基划成的两类中选择一类来指定。选定定向以后，令 \(s(e)=1\) 对正向基成立，\(s(e)=-1\) 对负向基成立，则
+\[
+	\omega\longmapsto\bigl[e\longmapsto s(e)\omega(e)\bigr]
+\]
+才是最高次形式线到密度线的线性同构。正密度与所选定向一起唯一确定一个在正向基上取正值的最高次形式；只有正密度，还没有选择这两个可能的定向中的一个。
+
+\ProseParagraphBreak
+
+这些对象的换基行为可以集中写成下表。设 \(e^1,\ldots,e^n\) 为 \(e\) 的对偶基，\(\varepsilon=e^1\wedge\cdots\wedge e^n\)，\(\varepsilon'=e'^1\wedge\cdots\wedge e'^n\)。
+\[
+	\begin{array}{c|c|c}
+		\text{空间} & \text{由基产生的生成元} & \text{换到 }e'=eA\\ \hline
+		\det V & e_1\wedge\cdots\wedge e_n & (\det A)\,e_1\wedge\cdots\wedge e_n\\
+		\det(V^*) & \varepsilon & \varepsilon'=(\det A)^{-1}\varepsilon\\
+		\mathcal D(V) & |\varepsilon| & |\varepsilon'|=|\det A|^{-1}|\varepsilon|
+	\end{array}
+\]
+生成元的变换与同一对象的系数变换互为倒数。例如 \(\mu=m|\varepsilon|=m'|\varepsilon'|\)，便有 \(m'=|\det A|m\)，且 \(m=\mu(e)\)。这一点在把密度逐点粘成丛时会再次使用。
+
+\ProseParagraphBreak
+
+若 \(L:V\to W\) 是同维实向量空间之间的线性同构，则 \((L^*\mu)(e)=\mu(Le)\) 定义了密度的线性拉回，并与复合相容，因为 \(L(eA)=(Le)A\)。这里要求 \(L\) 可逆，才能直接把有序基送成有序基。对不可逆的同维线性映射，可以另用绝对行列式约定得到零密度，但不能据此把密度对光滑映射的拉回与普通微分形式的拉回不加区别地处理；行列式绝对值在变号处有不同的光滑性问题。
+
+\begin{proposition}[内积的体积密度]
+	\label{g1:prop:gram-volume-density}
+	设 \(V\) 为有限维实向量空间，\(g\) 为正定内积。对有序基 \(v=(v_1,\ldots,v_n)\)，公式
+	\[
+		\mu_g(v_1,\ldots,v_n)=\sqrt{\det[g(v_i,v_j)]_{i,j=1}^n}
+	\]
+	定义一个正密度。若另给定向，则存在唯一在每组正向正交单位基上取值 \(1\) 的最高次形式 \(\operatorname{vol}_g\)，并有 \(|\operatorname{vol}_g|=\mu_g\)。对任意 \(n\) 个向量，同一平方根公式在它们线性相关时取零，在线性无关时就是相应平行多面体的体积。
+\end{proposition}
+\begin{proof}
+	先说明根号内为正。逐个从基向量中减去沿先前向量的正交投影，再除以自身的正长度，得到正交单位基 \(u_1,\ldots,u_n\)；每一步的余向量不为零，因为原向量组线性无关。将 \(v\) 写成 \(uB\)，其内积矩阵就是 \(B^{\mathsf T}B\)，行列式为 \((\det B)^2>0\)。换基 \(v'=vA\) 后，矩阵变成 \(A^{\mathsf T}[g(v_i,v_j)]A\)，所以平方根乘以 \(|\det A|\)。这正是密度的变换规则，并证明了正性。
+
+	选一组正向正交单位基 \(u\)，定义 \(\operatorname{vol}_g\) 在它上取值 \(1\)。其他正向正交单位基的变换矩阵 \(Q\) 满足 \(Q^{\mathsf T}Q=I\) 及 \(\det Q>0\)，因而 \(\det Q=1\)；所以定义不依赖所选正向正交单位基。最高次形式由在一组基上的值唯一决定，故唯一。对 \(v=uB\)，有 \(\operatorname{vol}_g(v)=\det B\)，而 \(\mu_g(v)=|\det B|\)，得到绝对值关系。若给定的 \(n\) 个向量线性相关，其坐标矩阵 \(B\) 奇异，Gram 行列式为零；否则 \(|\det B|\) 是正交坐标中平行多面体的体积。这也解释了该公式的几何意义。零维时采用空行列式等于 \(1\) 的约定。
+\end{proof}
+
+例如反射一组正交单位基中的一个向量，最高次体积形式的值由 \(1\) 变为 \(-1\)，体积密度的值仍为 \(1\)。在没有整体定向的几何问题里，长度和体积仍应是可测量的正量；密度保留的正是这一部分信息。
+
+\subsection{不同标架下的分量及不变量}
+\label{g1:subsec:1202:05}
+
+前面的对象都先于基而存在，实际计算却需要系数。本小节把这两件事接起来。固定 \(n\) 维实向量空间的一组基 \(e\)，也称一个标架，并始终用 \(e'=eA\) 表示新基；矩阵的第 \(j\) 列是第 \(j\) 个新基向量在旧基中的分量。若 \(v\) 的两组分量列向量为 \([v]_e,[v]_{e'}\)，则 \(e[v]_e=eA[v]_{e'}\)，所以
+\[
+	[v]_{e'}=A^{-1}[v]_e.
+\]
+对偶基必须满足 \(e'^i(e'_j)=\delta^i_j\)，故 \(e'^i=\sum_a(A^{-1})^i{}_a e^a\)。但同一协变向量的系数是它在各基向量上的值，因而满足
+\[
+	[\alpha]_{e'}=A^{\mathsf T}[\alpha]_e.
+\]
+对偶基的变化和协变向量系数的变化是两件互逆的事。
+
+\begin{proposition}[张量的分量变换]
+	\label{g1:prop:tensor-component-change}
+	设 \(V\) 为 \(n\) 维实向量空间，\(T\in T^r_s(V)\)，有序基满足 \(e'=eA\)。在各自的张量基中写
+	\[
+		T=\sum T^{i_1\cdots i_r}{}_{j_1\cdots j_s}
+		\,e_{i_1}\otimes\cdots\otimes e_{i_r}\otimes e^{j_1}\otimes\cdots\otimes e^{j_s},
+	\]
+	以及对应的带撇表达，则
+	\begin{equation}
+		\label{g1:eq:tensor-change-components}
+		T'^{i_1\cdots i_r}{}_{j_1\cdots j_s}
+		=\sum_{\substack{a_1,\ldots,a_r\\ b_1,\ldots,b_s}}
+		(A^{-1})^{i_1}{}_{a_1}\cdots(A^{-1})^{i_r}{}_{a_r}
+		A^{b_1}{}_{j_1}\cdots A^{b_s}{}_{j_s}
+		T^{a_1\cdots a_r}{}_{b_1\cdots b_s}.
+	\end{equation}
+	收缩的分量由一对上下指标取相同值后求和得到；这与换基相容。尤其所有输入都与张量配对之后得到的实数，与标架无关。
+\end{proposition}
+\begin{proof}
+	以多线性函数的观点看，原系数恰为
+	\[
+		T^{i_1\cdots i_r}{}_{j_1\cdots j_s}
+		=T(e^{i_1},\ldots,e^{i_r};e_{j_1},\ldots,e_{j_s}).
+	\]
+	新系数把这些输入全部换成新基及新对偶基。分别代入 \(e'_j=\sum_b e_bA^b{}_j\) 和 \(e'^i=\sum_a(A^{-1})^i{}_a e^a\)，再逐项使用多线性，即得到\eqref{g1:eq:tensor-change-components}。
+
+	对纯张量收缩时，\(e^j(e_i)=\delta_i^j\)，故分量规则就是指定的上下指标相等后求和。若先换基再收缩，被收缩的一对指标带来的因子满足
+	\[
+		\sum_k(A^{-1})^k{}_a A^b{}_k=\delta^b_a,
+	\]
+	两矩阵相消，其余因子恰是低两阶张量的换基公式。因此先收缩或先换基给出同一张量。所有输入的分量也按相应规则变换，完全配对时每个因子都有逆因子与之抵消；所得数就是原来无基定义的多线性函数值。
+\end{proof}
+
+例如线性映射 \(L:V\to V\) 的矩阵满足 \(L'=A^{-1}LA\)，而双线性形式 \(g\) 的矩阵满足 \(G'=A^{\mathsf T}GA\)。它们的两种变换公式不同，是因为 \(L\) 有一个向量因子和一个对偶因子，\(g\) 有两个对偶因子。对任意 \(v,w\)，
+\[
+	[v]_{e'}^{\mathsf T}G'[w]_{e'}
+	=[v]_e^{\mathsf T}G[w]_e;
+\]
+这是同一个数 \(g(v,w)\)。又如
+\[
+	L=\begin{pmatrix}2&0\\0&3\end{pmatrix},\qquad
+	A=\begin{pmatrix}1&1\\0&1\end{pmatrix}
+	\quad\Longrightarrow\quad
+	L'=\begin{pmatrix}2&-1\\0&3\end{pmatrix}.
+\]
+新矩阵不再对角，但迹仍为 \(5\)，其线性映射也仍是原来那个映射。矩阵形状的改变与几何对象的改变须分开判断。
+
+\begin{example}[极坐标中的度量与面积]
+	\label{g1:exm:tensor-polar-components}
+	在平面原点之外的一个角扇区上，取 \(x=r\cos\theta\)、\(y=r\sin\theta\)，其中 \(r>0\)。\cref{g1:exm:tangent-polar-coordinates}已经给出切基的变换；固定其中一点，写成矩阵就是
+	\[
+		(\partial_r,\partial_\theta)=(\partial_x,\partial_y)A,\qquad
+		A=\begin{pmatrix}\cos\theta&-r\sin\theta\\ \sin\theta&r\cos\theta\end{pmatrix}.
+	\]
+	此处每个向量都在同一个切空间中。欧氏内积在直角坐标基中的矩阵为 \(I\)，所以在极坐标基中为
+	\[
+		A^{\mathsf T}A=\begin{pmatrix}1&0\\0&r^2\end{pmatrix},\qquad
+		g=\mathrm{d}r\otimes\mathrm{d}r+r^2\,\mathrm{d}\theta\otimes\mathrm{d}\theta.
+	\]
+	因此 \(a\partial_r+b\partial_\theta\) 的长度平方为 \(a^2+r^2b^2\)。出现 \(r^2\) 是因为 \(\partial_\theta\) 表示每单位角度的速度，其长度为 \(r\)，并不表示欧氏内积换成了另一种内积。
+
+	对偶变换也可直接求导：
+	\[
+		\mathrm{d}x=\cos\theta\,\mathrm{d}r-r\sin\theta\,\mathrm{d}\theta,\qquad
+		\mathrm{d}y=\sin\theta\,\mathrm{d}r+r\cos\theta\,\mathrm{d}\theta.
+	\]
+	使用楔积的双线性和一次形式交换变号，得到
+	\[
+		\mathrm{d}x\wedge\mathrm{d}y
+		=r\,\mathrm{d}r\wedge\mathrm{d}\theta,\qquad
+		\mu_g=|\mathrm{d}x\wedge\mathrm{d}y|
+		=r\,|\mathrm{d}r\wedge\mathrm{d}\theta|.
+	\]
+	度量的 Gram 行列式为 \(r^2\)，平方根也给出密度系数 \(r\)，与行列式换基结果一致。原点处 \(A\) 不可逆，所以这些公式是在极坐标有效的区域内比较两组标架；不能用退化的极坐标基描述原点处的张量。
+\end{example}
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

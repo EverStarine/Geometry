@@ -1,0 +1,212 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 17.4 非自由作用的局部模型
+% 纲要位置：几何学计划纲要.md，第 798 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 有限群固定点附近的线性化
+% * 有限稳定子与 orbifold 图
+% * 底层商空间和稳定子数据
+% * 切片定理的明确版本与后续范围
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{非自由作用的局部模型}
+\label{g1:sec:1704}
+
+自由性使轨道方向能被完全消去，留下普通流形坐标。若一个点仍被某些群元素固定，横截轨道以后，这些元素还会作用在横截面上；商中保留下来的局部识别正由它们产生。本节先把固定点附近的作用写成线性作用，再证明固有性允许将这种局部描述推广到整条轨道的邻域。有限稳定子给出有限群商图，而正维稳定子也能用同一切片构造处理。
+
+\subsection{有限群固定点附近的线性化}
+\label{g1:subsec:1704:01}
+
+设有限群 \(H\) 光滑作用于 \(M\)，并固定 \(p\)。每个 \(h\in H\) 在 \(p\) 的微分组成线性表示 \(\rho(h)=\mathrm{d}(a_h)_p\)，其中 \(a_h(x)=hx\)。任意坐标 \(c\) 通常不满足 \(c(hx)=\rho(h)c(x)\)。不过，\(\rho(h)^{-1}c(hx)\) 是一份把坐标先移过去、再按线性作用移回来的修正；对所有 \(h\) 平均，就能让每个群元素享有同样地位。
+
+\begin{proposition}[固定点线性化]\label{g1:prop:fixed-point-linearization}
+	设有限维实紧李群 \(H\) 光滑作用于有限维、无边界、Hausdorff、第二可数实光滑流形 \(M\)，且 \(p\) 被 \(H\) 的每个元素固定。令 \(\rho(h)=\mathrm{d}(a_h)_p\)。则存在 \(H\) 不变的开邻域 \(U\ni p\)、\(\mathrm{T}_pM\) 上的 \(H\) 不变内积及关于此内积的零点开球 \(B\)，使某个微分同胚
+	\[
+		F:U\longrightarrow B\subset \mathrm{T}_pM
+	\]
+	满足 \(F(p)=0\)、\(\mathrm{d}F_p=\operatorname{id}_{\mathrm{T}_pM}\) 及 \(F(hx)=\rho(h)F(x)\)。有限群作为零维紧李群包含在此结论中。
+\end{proposition}
+\begin{proof}
+	先取一张以 \(\mathrm{T}_pM\) 为坐标值空间的坐标图 \(c:U_0\to \mathrm{T}_pM\)，使 \(c(p)=0\)、\(\mathrm{d}c_p=I\)；任意坐标图经一个可逆线性变换即可满足后一个条件。我们希望对同一个 \(x\) 的全部 \(hx\) 求坐标，故将定义域缩到
+	\[
+		U_1=\{x\in M:Hx\subset U_0\}.
+	\]
+	它含 \(p\) 且 \(H\) 不变。它也是开集：若 \(Hx\subset U_0\)，作用的连续性给每个 \(h\in H\) 一对邻域 \(V_h\ni h\)、\(W_h\ni x\)，使 \(V_hW_h\subset U_0\)。从 \(\{V_h\}\) 取有限子覆盖，再交相应的 \(W_h\)，所得开邻域 \(W\ni x\) 满足 \(HW\subset U_0\)。有限群时，\(U_1\) 也就是有限个开集 \(h^{-1}U_0\) 的交。
+
+	有限群的平均坐标为
+	\[
+		F(x)=\frac1{|H|}\sum_{h\in H}\rho(h)^{-1}c(hx).
+	\]
+	一般紧李群则使用\cref{g1:thm:compact-group-integration}的归一化左右不变积分，定义
+	\[
+		F(x)=\int_H\rho(h)^{-1}c(hx)\,\mathrm{d}\mu(h).
+	\]
+	积分逐坐标进行。被积函数光滑，\cref{g1:lem:compact-parameter-integral}允许逐阶在积分下求导，故 \(F\) 光滑：所需的一致控制来自紧参数集 \(H\) 及充分小坐标邻域的紧闭包。有限群时它直接是有限个光滑映射之和。对固定 \(k\in H\)，作右平移换元 \(h'=hk\)，得到
+	\[
+		F(kx)=\int_H\rho(k)\rho(h')^{-1}c(h'x)\,\mathrm{d}\mu(h')
+		=\rho(k)F(x).
+	\]
+	而 \(F(p)=0\)，每一项在 \(p\) 的微分均为 \(\rho(h)^{-1}I\rho(h)=I\)，故 \(\mathrm{d}F_p=I\)。
+
+	由\cref{g1:thm:inverse-function}，\(F\) 在 \(p\) 的一个开邻域 \(V\subset U_1\) 上为到开集的微分同胚。不能直接假定 \(V\) 不变，但可再次使用上面的紧性论证，取开不变邻域 \(V_1=\{x:Hx\subset V\}\)。因为 \(V_1\subset V\)，限制 \(F|_{V_1}\) 仍为微分同胚，且其像开、含零并在 \(\rho(H)\) 下不变。
+
+	最后，将任意正定内积按 \(H\) 平均，得到
+	\[
+		\langle u,v\rangle_H=\int_H\langle\rho(h)u,\rho(h)v\rangle_0\,\mathrm{d}\mu(h).
+	\]
+	其正定性与不变性和\cref{g1:thm:compact-group-average}中的论证相同。在开集 \(F(V_1)\) 中取关于此内积的充分小零点球 \(B\)，令 \(U=F^{-1}(B)\)。\(B\) 与 \(U\) 都不变，所需性质随限制保留。
+\end{proof}
+
+这说明固定点附近的作用不只是有一个一阶近似：选好坐标以后，作用本身就等于那个线性表示。若某个 \(h\) 的微分 \(\rho(h)\) 为恒等，它便在这个共同邻域中逐点固定所有点。反过来，\(\rho(h)\ne I\) 时，总有任意靠近 \(p\) 的点被它移动。后面保留稳定子数据时，这一区别会很重要。
+
+\subsection{有限稳定子与 orbifold 图}
+\label{g1:subsec:1704:02}
+
+现在 \(p\) 不必被整个 \(G\) 固定，只被稳定子 \(H=G_p\) 固定。\(H\) 在 \(\mathrm{T}_pM\) 上的微分表示保持轨道切空间 \(\mathrm{T}_p(Gp)\)：群元素把轨道送回自身。若作用固有，\cref{g1:prop:proper-action-orbits}保证 \(H\) 紧，因而平均内积给出一个 \(H\) 不变的正交补 \(N\)，满足
+\[
+	\mathrm{T}_pM=\mathrm{T}_p(Gp)\oplus N.
+\]
+\(N\) 记录离开轨道的方向。我们需要把它变成真正的横截面，并排除很远的群元素将这张小横截面送回自身的情形。
+
+\begin{lemma}[横截面与返回]\label{g1:lem:proper-slice-construction}
+	设有限维实李群 \(G\) 光滑且固有地作用于有限维实光滑流形 \(M\)，二者无边界、Hausdorff、第二可数。固定 \(p\in M\)，令 \(H=G_p\)、\(\mathfrak g=\mathrm{T}_eG\)、\(\mathfrak h=\mathrm{T}_eH\)。取 \(H\) 不变补空间 \(\mathrm{T}_pM=\mathrm{T}_p(Gp)\oplus N\)，并取线性补空间 \(\mathfrak g=\mathfrak h\oplus\mathfrak m\)。存在 \(H\) 不变嵌入子流形 \(S\ni p\)，使 \(S\) 与 \(N\) 中的一个不变零点开球 \(B\) 等变微分同胚，且具有以下性质：
+	\begin{enumerate}
+		\item \(\mathrm{T}_pS=N\)，并存在 \(\mathfrak m\) 中的零点邻域 \(V\)，使 \((X,s)\mapsto\exp_G(X)s\) 是 \(V\times S\) 到 \(M\) 中某个开集的微分同胚。
+		\item 若 \(s,s'\in S\) 且 \(gs=s'\)，则 \(g\in H\)。因此 \(G_s=H_s\) 对所有 \(s\in S\) 成立。
+		\item \(GS\) 在 \(M\) 中开，包含整条轨道 \(Gp\)。包含 \(S\hookrightarrow GS\) 诱导同胚 \(S/H\simeq GS/G\)。
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	由\cref{g1:thm:closed-subgroup}及\cref{g1:prop:proper-action-orbits}，\(H\) 是紧嵌入李子群。将\cref{g1:prop:fixed-point-linearization}应用于 \(H\) 在 \(p\) 附近的作用。在得到的等变坐标中取 \(N\) 的小球，再取其逆像 \(S_0\)。这是一张 \(H\) 不变嵌入横截面，\(\mathrm{T}_pS_0=N\)。
+
+	考虑
+	\[
+		\Psi:\mathfrak m\times S_0\longrightarrow M,\qquad
+		\Psi(X,s)=\exp_G(X)s.
+	\]
+	它在 \((0,p)\) 的微分为 \((X,v)\mapsto X_M(p)+v\)。由\cref{g1:prop:orbit-map-rank}，\(X\mapsto X_M(p)\) 的核是 \(\mathfrak h\)，像是 \(\mathrm{T}_p(Gp)\)，所以限制到 \(\mathfrak m\) 后是到轨道切空间的线性同构。再用直和分解，\(\mathrm{d}\Psi_{(0,p)}\) 可逆。逆函数定理给出局部微分同胚。将其定义域缩成乘积 \(V\times S_1\)，其中 \(V\subset\mathfrak m\) 开且含零，\(S_1\subset S_0\) 仍由一个不变零点小球给出，便有 \(\Psi|_{V\times S_1}\) 单射且微分处处可逆。
+
+	先控制靠近 \(H\) 的群元素。映射
+	\[
+		H\times\mathfrak m\longrightarrow G,\qquad (h,X)\longmapsto h\exp_G X
+	\]
+	在每个 \((h,0)\) 处微分可逆，因为左平移后就是 \(\mathfrak h\oplus\mathfrak m\to\mathfrak g\) 的相加映射。因此 \(H\exp_G(V)\) 包含 \(G\) 中一个开邻域 \(W\supset H\)。若 \(g\in W\)、\(s,s'\in S_1\) 且 \(gs=s'\)，可写 \(g=h\exp_G X\)，其中 \(h\in H\)、\(X\in V\)。由 \(S_1\) 不变，\(h^{-1}s'\in S_1\)，于是
+	\[
+		\Psi(X,s)=h^{-1}s'=\Psi(0,h^{-1}s').
+	\]
+	\(\Psi\) 的单射性迫使 \(X=0\)，因而 \(g=h\in H\)。这里 \(S_1\) 的不变性让同一个局部逆同时适用于所有 \(h\in H\)，无需逐个群元素选择横截面。
+
+	接着控制不属于 \(W\) 的群元素。若任意小的 \(H\) 不变球形横截面仍有这样的返回，就能取 \(s_j,s'_j\in S_1\)，使 \(s_j,s'_j\to p\)，并取 \(g_j\notin W\) 满足 \(g_js_j=s'_j\)。由\cref{g1:prop:proper-action-criteria}的序列判据，\(g_j\) 有收敛子列，设其极限为 \(g\)。作用连续性给出 \(gp=p\)，即 \(g\in H\subset W\)。因为 \(W\) 开，该子列最终位于 \(W\)，矛盾。因此可将 \(S_1\) 缩成同类不变横截面 \(S\)，使一切满足 \(gs=s'\)、\(s,s'\in S\) 的 \(g\) 都属于 \(W\)，再由上一段得到 \(g\in H\)。这就是所需的返回结论，取 \(s'=s\) 便得 \(G_s=H_s\)。
+
+	\(\Psi(V\times S)\) 开且包含 \(S\)，又包含于 \(GS\)，故其所有 \(G\) 平移的并恰为 \(GS\)，从而 \(GS\) 开。每条其中的轨道都与 \(S\) 相交，返回结论又说明两点 \(s,s'\in S\) 在同一 \(G\) 轨道上，当且仅当它们在同一 \(H\) 轨道上。因此得到连续双射 \(S/H\to GS/G\)。为证明逆连续，任取 \(S/H\) 中开集，设其在 \(S\) 中的原像为开集 \(A\)。\(\Psi(V\times A)\) 在 \(M\) 中开，故其所有 \(G\) 平移的并 \(GA\) 开。\(GA\) 恰是对应商集在 \(GS\) 中的原像，因而该商集在 \(GS/G\) 中开。双射于是为同胚。
+\end{proof}
+
+固有性在证明中承担了一个具体任务：如果横截面上的点与其像都逼近 \(p\)，相关群元素不能逃离每个紧集。没有这一步，逆函数定理只能阻止靠近单位元的返回，不能阻止来自群的远处的返回。
+
+\begin{definition}[局部有限群商图]\label{g1:def:orbifold-chart-local}
+	设 \(X\) 为拓扑空间，\(U\subset X\) 开。一个局部的\term[orbifoldtu]{orbifold 图}[orbifold chart]是三元组 \((B,H,\chi)\)：\(B\) 为有限维实内积空间 \(N\) 中的零点开球，有限群 \(H\) 线性地保持 \(B\)，而 \(\chi:B/H\to U\) 是同胚。本节允许表示 \(H\to\operatorname{GL}(N)\) 有非平凡核，也允许其中有反射；表示核非平凡的图称为非有效图，表示忠实的图称为有效图。
+\end{definition}
+
+图中的点 \([v]\) 还带有稳定子 \(H_v=\{h\in H:hv=v\}\)；更换同一轨道的代表只把这个子群变为共轭子群，所以其同构类型不变。这正是普通商坐标之外需要保留的数据。一般 orbifold 图册还要规定不同图之间的相容映射；本章只建立来自给定群作用的局部模型，不展开抽象图册的全部理论。
+
+\begin{corollary}[有限稳定子商的局部模型]\label{g1:cor:finite-stabilizer-local-quotient}
+	设有限维实李群 \(G\) 光滑且固有地作用于有限维无边界实光滑流形 \(M\)，二者 Hausdorff、第二可数，且所有稳定子有限。则每个商点 \([p]\in M/G\) 都有上述 orbifold 图，其群为 \(G_p\)，其线性作用为 \(G_p\) 在横向空间 \(N\simeq \mathrm{T}_pM/\mathrm{T}_p(Gp)\) 上的表示。局部图的维数为 \(\dim M-\dim G\)，并且图中每点的稳定子与原作用在相应点的稳定子同构。
+\end{corollary}
+\begin{proof}
+	对 \(p\) 应用\cref{g1:lem:proper-slice-construction}。\(S\) 等变微分同胚于 \(N\) 中的球 \(B\)，而 \(S/H\simeq GS/G\)，后者在 \(M/G\) 中开，因此给出所需图。有限群 \(H\) 的李代数为零，故轨道维数为 \(\dim G\)，横向维数为 \(\dim M-\dim G\)。最后，切片内 \(G_s=H_s\)；在 \(gs\) 处稳定子为 \(gH_sg^{-1}\)，所以图保存了原稳定子的同构类型。
+\end{proof}
+
+有限稳定子本身不够。例如 \(\mathbb R\) 沿无理斜率作用于 \(T^2\) 时稳定子平凡，轨道却稠密；商甚至不是 Hausdorff 空间。每个有限群的欧氏球商都是 Hausdorff 的，故这样的稠密轨道商不能由上述图描述。固有性与稳定子的有限性分别控制返回现象及残余群的大小，二者不能互相替代。
+
+\subsection{底层商空间和稳定子数据}
+\label{g1:subsec:1704:03}
+
+同一个拓扑空间可以有不同的局部群数据。最简单的例子已经出现在二维：一个锥点在底层拓扑上未必是特殊点，但围绕它的有限旋转仍是商结构的一部分。
+
+\begin{example}[有限旋转商]\label{g1:exm:rotation-orbifold-chart}
+	令 \(m\geq2\)，\(\mathbb Z/m\mathbb Z\) 在 \(\mathbb C\simeq\mathbb R^2\) 上按 \(z\mapsto\exp(2\pi\mathrm{i}/m)z\) 作用。映射 \(z\mapsto z^m\) 在每条轨道上常值，而且两个点具有相同的 \(m\) 次幂，当且仅当它们在同一轨道上。因此它诱导连续双射
+	\[
+		\mathbb C/(\mathbb Z/m\mathbb Z)\longrightarrow\mathbb C,\qquad [z]\longmapsto z^m.
+	\]
+	这是同胚。具体地，若闭集 \(A\subset\mathbb C\) 的像中有收敛序列 \(z_j^m\to w\)，则 \(|z_j|=|z_j^m|^{1/m}\) 有界，存在收敛子列，其极限 \(z\in A\) 满足 \(z^m=w\)。所以幂映射是闭映射，由商拓扑得到上述双射也闭，因而逆连续。
+
+	底空间虽然是一张平面，原点稳定子却是整个 \(\mathbb Z/m\mathbb Z\)，其余点的稳定子平凡。不同的 \(m\)，以及没有群作用的普通平面，具有相同底拓扑而不同稳定子。甚至在坐标 \(w=z^m\) 中，光滑不变函数 \(|z|^2\) 对应 \(|w|^{2/m}\)，后者在原点不光滑。这说明这张拓扑坐标不能直接代替有限群商的光滑数据。
+\end{example}
+
+\begin{example}[反射商]\label{g1:exm:reflection-orbifold-chart}
+	令二阶群按 \((x,y)\mapsto(x,-y)\) 作用于 \(\mathbb R^2\)。映射 \((x,y)\mapsto(x,|y|)\) 将商同胚地识别为上半平面：每条轨道有唯一的上半平面代表，取该代表的映射连续；商映射限制在上半平面上给出逆映射。边界 \(y=0\) 上的稳定子为整个二阶群，内部点的稳定子平凡。因此，即使被作用的流形无边界，允许反射的有限群商也可能有底拓扑的边界。
+
+	本节的 orbifold 图允许这种反射。若采用排除反射的文献约定，就必须另加条件，不能将两种定义下的“无边界”直接等同。\cref{g1:fig:finite-quotient-data}将有限旋转商与反射商并列，图中标注的是稳定子，而非额外删去的点。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter17-FiniteQuotients}
+	\caption[有限群商中的稳定子]{有限旋转将若干点识别成一个点，商仍同胚于圆盘，但中心保留 \(\mathbb Z/m\mathbb Z\)；反射商是半圆盘，直径上的点保留二阶稳定子。左图以 \(m=3\) 示意。}
+	\label{g1:fig:finite-quotient-data}
+\end{figure}
+
+还有一种不同的信息损失：某些群元素在整张图中什么也不移动。若 \(K=\ker(H\to\operatorname{GL}(N))\)，则 \(K\) 正规，且 \(H/K\) 在 \(B\) 上有效作用。两者轨道完全相同，因而 \(B/H=B/(H/K)\) 作为拓扑空间自然一致；但是
+\[
+	(H/K)_v=H_v/K.
+\]
+将 \(H\) 换为 \(H/K\) 称为这张图的有效化，它同时除掉了每一点稳定子中的 \(K\)，并不保存原来的稳定子数据。
+
+\begin{example}[相同轨道与不同稳定子]\label{g1:exm:ineffective-local-quotient}
+	在前面的旋转例子中改用群 \(H=(\mathbb Z/m\mathbb Z)\times(\mathbb Z/k\mathbb Z)\)，其中 \(k\geq2\)，让第二因子恒等作用。商空间及每条轨道均未改变，但原点稳定子变为 \(H\)，非零点稳定子变为 \(\{0\}\times\mathbb Z/k\mathbb Z\)。有效化回到原来的 \(m\) 阶旋转图，恰好删去这些共同的稳定子。这也是本节不自动要求局部群表示忠实的原因。
+\end{example}
+
+\subsection{切片定理的明确版本与后续范围}
+\label{g1:subsec:1704:04}
+
+前面的横截面构造并未用到 \(H\) 有限，只用到稳定子紧及作用固有。有限性只是把 \(S/H\) 限制为有限群商。对一般紧稳定子，我们还可以说明整个轨道邻域怎样由一张横截面组装起来：每个 \(g\) 带来一份 \(gS\)，而 \((g,s)\) 与 \((gh^{-1},hs)\) 表示同一个点。这一识别由一个自由作用产生，因此可以使用已经证明的商流形定理。
+
+\begin{theorem}[固有作用的切片定理]\label{g1:thm:proper-action-slice}
+	设有限维实李群 \(G\) 光滑且固有地作用于有限维无边界实光滑流形 \(M\)，二者 Hausdorff、第二可数。对任意 \(p\in M\)，令 \(H=G_p\)，令 \(N\subset \mathrm{T}_pM\) 为某个 \(H\) 不变的轨道切空间补空间，并在 \(N\) 上取 \(H\) 不变内积。存在零点开球 \(B\subset N\)、\(H\) 等变嵌入 \(j:B\to M\) 以及 \(G\) 不变开邻域 \(U\supset Gp\)，满足 \(j(0)=p\)、\(\mathrm{d}j_0\) 为 \(N\hookrightarrow \mathrm{T}_pM\) 的包含，且
+	\begin{equation}\label{g1:eq:proper-slice-diffeomorphism}
+		G\times_H B\longrightarrow U,\qquad [g,v]\longmapsto g j(v)
+	\end{equation}
+	为 \(G\) 等变微分同胚。这里
+	\[
+		G\times_H B=(G\times B)/H,\qquad
+		h\cdot(g,v)=(gh^{-1},hv),
+	\]
+	\(G\) 在其上按 \(a[g,v]=[ag,v]\) 作用。特别地，\(U/G\simeq B/H\)，并且
+	\[
+		G_{g j(v)}=gH_vg^{-1}.
+	\]
+\end{theorem}
+\begin{proof}
+	用\cref{g1:lem:proper-slice-construction}选取 \(S=j(B)\)，令 \(U=GS\)。若事先在 \(N\) 上选定了另一个不变内积，只需在已有线性化坐标域中取关于该内积的更小零点球；引理的局部逆及返回性质在缩小后仍成立。
+
+	先核实 \(G\times_H B\) 是已建立的商流形。上式确实定义左 \(H\) 作用，因为连续作用两次给出
+	\[
+		h_1\cdot\bigl(h_2\cdot(g,v)\bigr)
+		=(gh_2^{-1}h_1^{-1},h_1h_2v)
+		=(h_1h_2)\cdot(g,v).
+	\]
+	它自由，因为 \(gh^{-1}=g\) 强制 \(h=e\)。它固有，因为 \(H\) 紧：对紧集 \(K\subset(G\times B)^2\)，作用映射的原像是 \(H\times\operatorname{pr}_2K\) 中的闭集，故紧。\cref{g1:thm:free-proper-quotient}于是赋予商一个无边界、Hausdorff、第二可数的光滑流形结构，商映射为淹没。\(G\) 的左乘作用与 \(H\) 作用交换，故下降为商上的光滑作用；其光滑性可用商映射的局部截面，在 \(G\times(G\times_HB)\) 的局部坐标中检验。
+
+	光滑映射 \((g,v)\mapsto gj(v)\) 在 \(H\) 轨道上常值，由\cref{g1:prop:quotient-smooth-universal-property}得到光滑映射 \(\overline\Phi:G\times_HB\to U\)。它满射。若 \(g j(v)=g'j(v')\)，则 \(g'^{-1}g\) 将 \(S\) 中一点送到另一点，引理的返回性质给出 \(h=g'^{-1}g\in H\)，且 \(v'=hv\)。于是 \((g',v')=(gh^{-1},hv)\)，两者属于同一个 \(H\) 轨道，证明单射。
+
+	还须检验逆光滑。在 \((e,v)\) 处，原映射沿 \(\mathfrak m\) 方向和 \(\mathrm{T}_vB\) 方向的微分，正是引理中 \((X,s)\mapsto\exp_G(X)s\) 的可逆微分与 \(\mathrm{d}j_v\) 的组合，因而满射。左平移将这点传到每个 \((g,v)\)。原映射通过商映射分解，故 \(\mathrm{d}\overline\Phi\) 处处满射；而
+	\[
+		\dim(G\times_HB)=\dim G+\dim N-\dim H=\dim M,
+	\]
+	所以它处处可逆。逆函数定理使 \(\overline\Phi\) 为局部微分同胚，双射性再将各处的局部光滑逆拼成全局光滑逆。这就证明\eqref{g1:eq:proper-slice-diffeomorphism}，等变性由公式直接得到。最后，商空间同胚已由引理证明；稳定子公式由 \(G_{j(v)}=H_{j(v)}=H_v\) 及共轭变换得到。
+\end{proof}
+
+这样的 \(S=j(B)\) 称为过 \(p\) 的\term[qiepian]{切片}[slice]。其中 \(N\) 可同构地换成商空间 \(\mathrm{T}_pM/\mathrm{T}_p(Gp)\)，后者的 \(H\) 表示不依赖补空间的选择。不变内积只帮助选择具体代表和小球，并未给 \(M\) 预设一个全局 \(G\) 不变度量。定理也不要求 \(G\) 紧；非紧群的固有性已经足以提供紧稳定子并排除远处返回。
+
+\ProseParagraphBreak
+
+当 \(H=\{e\}\) 时，模型退化为 \(G\times B\)，恢复自由固有作用的局部乘积；当 \(H\) 有限时，商局部为上述有限群商图；当 \(H\) 正维时，\(B/H\) 可以呈现不同维数轨道相邻的现象。例如 \(\operatorname{SO}(2)\) 旋转作用于 \(\mathbb R^2\)，原点的切片就是一个圆盘，商为半开半径区间 \([0,\varepsilon)\)，非零点的轨道是一维圆，原点轨道却是零维。它的底空间恰巧也像反射商的一维截面，但原点稳定子是整条圆周群，不能用有限稳定子图保留同样的数据。
+
+\ProseParagraphBreak
+
+本节已证明的是光滑固有作用在一条轨道附近的切片模型。关于不同稳定子类型如何组成分层、不同切片如何组织为完整 orbifold 图册，以及带边界或其他范畴中的切片版本，还需要相应的定义与证明。后续使用本节结果时，可以直接调用\eqref{g1:eq:proper-slice-diffeomorphism}及其商 \(B/H\)，而不能由此把所有非自由商都当作普通流形。

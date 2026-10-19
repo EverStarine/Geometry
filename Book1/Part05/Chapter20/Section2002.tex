@@ -1,0 +1,401 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 20.2 Peter–Weyl 定理的分析证明
+% 纲要位置：几何学计划纲要.md，第 892 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 紧群上的逼近单位
+% * 平滑卷积核和正则表示
+% * 与群作用交换的紧自伴算子
+% 
+%   就地建立所用紧自伴算子的谱分解引理，再把其非零特征空间用于表示分解；本章不要求先学第三卷全部椭圆谱理论。
+% 
+% * 非零特征空间的有限维不变性
+% * 由逼近单位得到矩阵系数分离
+% * 矩阵系数的稠密性
+% * 正交 Hilbert 直和与不同收敛意义
+% 
+% 纲要内容结束
+
+\section{Peter–Weyl 定理的分析证明}
+\label{g1:sec:2002}
+
+圆周上的三角多项式既来自一维表示，也能逼近连续函数。一般紧群没有统一的角坐标，表示还可能高于一维；我们要证明，所有有限维表示的矩阵系数仍足以逼近任意连续函数。困难在于不能预先假定已经找到足够多的表示。这里反过来从函数空间出发：用平滑卷积构造紧自伴算子，其非零特征空间自动有限维并被群作用保持，由此产生所需表示。
+
+\ProseParagraphBreak
+
+本节 \(G\) 是有限维实紧李群，不要求连通；\(\mu_G\) 是\cref{g1:thm:compact-group-integration}的归一化左右不变密度，以下简写为 \(\mu\)。函数和表示空间均取复数值，内积对第一变量线性。沿用\secref{g1:sec:2001}的记号 \(\mathcal R(G)\)，表示有限维光滑表示的矩阵系数所张成的空间；有限维完全可约性使它也等于不可约酉表示系数的线性张成。
+
+\subsection{紧群上的逼近单位}
+\label{g1:subsec:2002:01}
+先解释证明中要使用的函数空间。沿用\eqref{g1:eq:compact-group-function-inner-product}，在 \(C(G)\) 上取积分内积及其范数
+\[
+	\langle f,h\rangle_2=\int_G f(x)\overline{h(x)}\,\mathrm{d}\mu(x),
+	\qquad \|f\|_2=\sqrt{\langle f,f\rangle_2}.
+\]
+连续非零函数在某个开集上有非零下界，正密度使该开集有正积分，所以 \(\|f\|_2=0\) 仅当 \(f=0\)。本章把这个内积空间的完备化记为 \(L^2(G)\)：元素由 \(C(G)\) 中的 \(\|\cdot\|_2\)-Cauchy 列表示，两列之差趋于零时表示同一个元素，内积取代表列内积的极限。Cauchy--Schwarz 不等式保证这个极限存在且与代表无关。逐项选取误差小于 \(2^{-j}\) 的连续近似，再作对角选择，便使完备化中的每个 Cauchy 列收敛；因此所得空间是 Hilbert 空间，即完备的内积空间。这个模型也与通常按密度测度定义的平方可积函数空间一致，但以下论证只使用完备化构造。\symidx{\(L^2(G)\)：紧群上的平方可积函数空间}
+
+\ProseParagraphBreak
+
+由 \(\mu(G)=1\) 有 \(\|f\|_2\le\|f\|_\infty\)。连续函数在 \(L^2(G)\) 中稠密是上述定义的一部分，而 \(L^2\) 元素一般没有指定的逐点值。以后对它写卷积积分时，先在连续函数上定义，再按范数连续延拓；卷积产生的连续函数则具有真实的逐点值。
+
+\begin{lemma}[平滑逼近单位]\label{g1:lem:compact-group-approximate-identity}
+	设 \(G\) 为有限维实紧李群。存在实值光滑函数列 \(k_n\)，满足
+	\[
+		k_n\ge0,\qquad \int_Gk_n\,\mathrm{d}\mu=1,
+		\qquad k_n(x^{-1})=k_n(x),
+	\]
+	且其支集收缩到单位元：每个 \(e\) 的邻域都包含充分大 \(n\) 时的 \(\operatorname{supp}k_n\)。对任意 \(f\in C(G)\)，
+	\[
+		T_nf(x)=\int_G k_n(y)f(y^{-1}x)\,\mathrm{d}\mu(y)
+	\]
+	一致趋于 \(f\)，并且 \(\|T_nf\|_\infty\le\|f\|_\infty\)、\(\|T_nf\|_2\le\|f\|_2\)。因此 \(T_n\) 延拓为 \(L^2(G)\) 上的压缩算子，且 \(T_nf\to f\) 对每个 \(f\in L^2(G)\) 按 \(L^2\) 范数成立。
+\end{lemma}
+\begin{proof}
+	取一列收缩到 \(e\) 的对称开邻域 \(U_n=U_n^{-1}\)，例如在局部坐标小邻域与其逆像中逐次缩小。由\cref{g1:lem:smooth-bump-function}的坐标截断及零延拓，存在 \(b_n\ge0\)，在 \(e\) 附近等于 \(1\)，且支集包含于 \(U_n\)。令
+	\[
+		k_n(x)=\frac{b_n(x)+b_n(x^{-1})}{2\int_Gb_n\,\mathrm{d}\mu}.
+	\]
+	分母严格为正，取逆不变换元保证积分为 \(1\)，其余要求由定义成立。零维紧群为有限群，这时也可取 \(U_n=\{e\}\)，构造仍适用。
+
+	给定 \(\varepsilon>0\)，紧性与 \((y,x)\mapsto f(y^{-1}x)-f(x)\) 的连续性给出 \(e\) 的邻域 \(U\)，使该差对 \(y\in U\)、\(x\in G\) 一律小于 \(\varepsilon\)。确实，每个 \((e,x)\) 有这样的积邻域，有限个 \(x\) 邻域覆盖 \(G\)，再取对应 \(e\) 邻域之交即可。充分大 \(n\) 时 \(k_n\) 支于 \(U\)，所以
+	\[
+		|T_nf(x)-f(x)|
+		\le\int_G k_n(y)|f(y^{-1}x)-f(x)|\,\mathrm{d}\mu(y)
+		\le\varepsilon.
+	\]
+	同理得到一致范数的压缩估计。将 Cauchy--Schwarz 不等式用于权重为 \(k_n\) 的积分，再对 \(x\) 积分，有
+	\[
+		\|T_nf\|_2^2
+		\le\int_G\int_G k_n(y)|f(y^{-1}x)|^2\,
+		\mathrm{d}\mu(y)\,\mathrm{d}\mu(x)=\|f\|_2^2.
+	\]
+	这里被积函数连续，紧参数下的逐次积分可以交换；左不变换元使内层 \(x\) 积分等于 \(\|f\|_2^2\)。因此 \(T_n\) 唯一延拓到完备化，算子范数不超过 \(1\)。若 \(f\in L^2(G)\)，选 \(h\in C(G)\) 使 \(\|f-h\|_2<\varepsilon\)，便有
+	\[
+		\|T_nf-f\|_2\le2\varepsilon+\|T_nh-h\|_2.
+	\]
+	末项由一致收敛趋于零，随后令 \(\varepsilon\to0\)，得到所述强收敛。
+\end{proof}
+
+这些 \(k_n\) 称为\term[bijindanwei]{逼近单位}[approximate identity]。名称描述的是卷积趋近恒等算子；函数 \(k_n\) 本身并不趋于常数函数 \(1\)，而是把总量 \(1\) 集中到越来越小的单位元邻域。
+
+\subsection{平滑卷积核和正则表示}
+\label{g1:subsec:2002:02}
+要把逼近与表示联系起来，需要卷积既能改善函数的正则性，又能与一侧正则作用交换。以下始终采用左卷积
+\begin{equation}\label{g1:eq:left-convolution-kernel}
+	T_kf(x)=\int_Gk(y)f(y^{-1}x)\,\mathrm{d}\mu(y)
+	=\int_Gk(xz^{-1})f(z)\,\mathrm{d}\mu(z).
+\end{equation}
+第二式由 \(z=y^{-1}x\) 换元得到，使用左右不变性及取逆不变性。它把作用于 \(f\) 的平移改写为作用于核的平移，便于对输出求导。
+
+\begin{proposition}[卷积的平滑性与交换性]\label{g1:prop:smoothing-convolution}
+	设 \(G\) 为有限维实紧李群。对 \(k\in C(G)\)，\eqref{g1:eq:left-convolution-kernel}唯一延拓为有界映射 \(T_k:L^2(G)\to C(G)\)，并满足
+	\begin{equation}\label{g1:eq:convolution-l2-sup-bound}
+		\|T_kf\|_\infty\le\|k\|_2\,\|f\|_2.
+	\end{equation}
+	若 \(k\) 光滑，则输出光滑；在任一闭包紧含于坐标域的坐标片上，每个多重指标 \(\alpha\) 都有常数 \(C_{k,\alpha}\)，使 \(\|\partial^\alpha T_kf\|_\infty\le C_{k,\alpha}\|f\|_2\)。此外，右正则表示 \(R_gf(x)=f(xg)\) 在 \(L^2(G)\) 上酉且强连续，并满足
+	\[
+		T_kR_g=R_gT_k\qquad(g\in G).
+	\]
+\end{proposition}
+\begin{proof}
+	对连续 \(f\)，在第二个积分中用 Cauchy--Schwarz 不等式。函数 \(z\mapsto k(xz^{-1})\) 的 \(L^2\) 范数等于 \(\|k\|_2\)，由此得到\eqref{g1:eq:convolution-l2-sup-bound}。随 \(x\) 变化，该核在一致范数、因而也在 \(L^2\) 范数中连续，所以输出连续。若连续函数列在 \(L^2\) 中趋于 \(f\)，其卷积由此估计一致 Cauchy；\(C(G)\) 对一致范数完备，故得到唯一的连续输出及同一估计。
+
+	若 \(k\) 光滑，在 \(x\) 的坐标小片上，核 \(k(xz^{-1})\) 的每阶坐标导数随 \((x,z)\) 连续，在闭坐标片乘紧群上有界。微积分基本定理使核的差商在 \(z\) 上一致趋于相应导数，因而也在 \(L^2\) 中趋于该导数。与固定 \(f\in L^2\) 配对是连续线性运算，所以可以反复对核求导，得到
+	\[
+		\partial_x^\alpha T_kf(x)
+		=\int_G\partial_x^\alpha\bigl(k(xz^{-1})\bigr)f(z)\,\mathrm{d}\mu(z).
+	\]
+	对一般 \(f\)，右侧仍按连续延拓理解。Cauchy--Schwarz 不等式及核导数的紧集界给出所需估计，也给出每阶导数的连续性。
+
+	\cref{g1:prop:regular-representations}已在 \(C(G)\) 上验证 \(R_gR_h=R_{gh}\) 及积分内积不变，所以 \(R_g\) 唯一酉延拓到 \(L^2\)。对连续 \(f\)，紧性给出 \(\|R_gf-f\|_\infty\to0\)（\(g\to e\)）；对一般 \(f\) 用连续近似和酉性，得到 \(\|R_gf-f\|_2\to0\)。群律把单位元处的结论移到任意 \(g\)，这正是强连续性。最后直接计算
+	\[
+		T_kR_gf(x)=\int_Gk(y)f(y^{-1}xg)\,\mathrm{d}\mu(y)
+		=R_gT_kf(x).
+	\]
+	连续函数的稠密性将等式延拓到 \(L^2\)。
+\end{proof}
+
+\cref{g1:lem:compact-group-approximate-identity}与\cref{g1:prop:smoothing-convolution}合起来说明 \(C^\infty(G)\) 在 \(C(G)\) 中一致稠密，也在 \(L^2(G)\) 中稠密：对连续 \(f\)，\(T_nf\) 已是所需的光滑近似。因此后面的 Hilbert 空间论证不需要另行假设某个尚未建立的光滑稠密性定理。须注意，\(T_k\) 与右正则作用交换；一般核并不使它与左正则作用交换。
+
+\subsection{与群作用交换的紧自伴算子}
+\label{g1:subsec:2002:03}
+一个有界线性算子称为\term[jinsuanzi]{紧算子}[compact operator]，是指任意有界序列的像都有收敛子列。有限秩算子具有这个性质，因为有界像留在有限维空间内。与有限维矩阵相比，紧算子仍可能有无限多个非零特征值，但这些特征值只能趋向零。我们先把平滑卷积放入这个范围，再证明准确需要的谱结论。
+
+\begin{lemma}[连续核的紧性]\label{g1:lem:continuous-kernel-compact}
+	设 \(G\) 为有限维实紧李群，\(K\in C(G\times G)\)。积分算子
+	\[
+		Af(x)=\int_GK(x,z)f(z)\,\mathrm{d}\mu(z)
+	\]
+	延拓为 \(L^2(G)\) 上的紧算子。若 \(K(x,z)=\overline{K(z,x)}\)，则它自伴，即 \(\langle Af,h\rangle_2=\langle f,Ah\rangle_2\)。特别地，每个逼近单位算子 \(T_n\) 都紧、自伴，并与所有 \(R_g\) 交换。
+\end{lemma}
+\begin{proof}
+	Cauchy--Schwarz 不等式给出 \(\|Af\|_2\le\|K\|_\infty\|f\|_2\)，所以算子可唯一延拓。固定 \(\varepsilon>0\)。核的紧集一致连续性给出有限个开集 \(U_j\) 和点 \(x_j\)，使它们覆盖 \(G\)，且
+	\[
+		|K(x,z)-K(x_j,z)|<\varepsilon
+		\qquad(x\in U_j,\ z\in G).
+	\]
+	这里的控制对全部 \(z\) 一致；可逐点取积邻域后利用第二个因子的紧性，再用第一个因子的紧性取得有限覆盖。取从属单位分解 \(\phi_j\)，令
+	\[
+		K_\varepsilon(x,z)=\sum_j\phi_j(x)K(x_j,z).
+	\]
+	\cref{g1:thm:smooth-partition-unity}保证可以选光滑的非负 \(\phi_j\)，且和为 \(1\)。因此 \(\|K-K_\varepsilon\|_\infty\le\varepsilon\)。对应算子
+	\[
+		A_\varepsilon f=\sum_j\phi_j
+		\int_GK(x_j,z)f(z)\,\mathrm{d}\mu(z)
+	\]
+	的像包含于 \(\operatorname{span}\{\phi_j\}\)，是有限秩算子，且 \(\|A-A_\varepsilon\|\le\varepsilon\)。这给出了连续核的有限秩逼近，并未使用矩阵系数已经稠密的结论。
+
+	为说明算子范数极限仍紧，取有界序列 \(f_\ell\)、\(\|f_\ell\|_2\le M\)，并取 \(\varepsilon_j\to0\)。依次选子列使每个 \(A_{\varepsilon_j}f_\ell\) 收敛，再取对角子列。对该子列中的两项，
+	\[
+		\|Af_\ell-Af_m\|_2
+		\le2M\varepsilon_j+
+		\|A_{\varepsilon_j}f_\ell-A_{\varepsilon_j}f_m\|_2.
+	\]
+	先取大 \(j\)，再取大 \(\ell,m\)，可见其像 Cauchy；Hilbert 空间完备性给出收敛。因此 \(A\) 紧。
+
+	若核满足所述对称性，对连续 \(f,h\) 交换紧空间上的两次积分，就有
+	\[
+		\langle Af,h\rangle_2
+		=\int_G\int_GK(x,z)f(z)\overline{h(x)}\,
+		\mathrm{d}\mu(z)\,\mathrm{d}\mu(x)
+		=\langle f,Ah\rangle_2.
+	\]
+	由有界性及稠密性，这对一般 \(L^2\) 元素也成立。\(T_n\) 的核为 \(k_n(xz^{-1})\)；它实值、取逆不变，故满足对称性。交换性已经在前一命题证明。
+\end{proof}
+
+以下引理只使用 Hilbert 空间中的正交与紧性。它也解释为何必须保留零特征空间：紧算子的核可以无限维，只有非零特征空间必定有限维。
+
+\begin{lemma}[紧自伴谱分解]\label{g1:lem:compact-selfadjoint-spectral}
+	设 \(H\) 为复 Hilbert 空间，\(A:H\to H\) 为紧自伴算子。它的非零特征值均为实数，每个对应特征空间 \(E_\lambda\) 有限维，不同特征空间正交。非零特征值至多可数；若有无限多个，把它们依绝对值非增次序列出为 \(\lambda_1,\lambda_2,\ldots\)，则 \(\lambda_j\to0\)。令 \(P_j\) 为到 \(E_{\lambda_j}\) 的正交投影，则
+	\[
+		H=\ker A\mathbin{\widehat\oplus}
+		\mathop{\widehat\bigoplus}_{j}E_{\lambda_j},
+		\qquad Af=\sum_j\lambda_jP_jf.
+	\]
+	直和与级数按 Hilbert 范数理解，而且 \(\sum_{j\le N}\lambda_jP_j\to A\) 按算子范数成立。若非零特征值只有有限多个，取有限和。
+\end{lemma}
+\begin{proof}
+	证明先寻找绝对值最大的特征值，然后在它的正交补中重复。关键是让极值序列真正收敛；这一点由紧性承担。
+
+	先证明任意有界自伴算子都有
+	\[
+		\|A\|=\sup_{\|u\|=1}|\langle Au,u\rangle|.
+	\]
+	记右端为 \(M\)，则 \(M\le\|A\|\)。反向，对单位向量 \(u,v\)，把 \(v\) 乘一个单位复数，使 \(\langle Au,v\rangle\) 为非负实数。记 \(q(w)=\langle Aw,w\rangle\)，自伴性使它为实数，而极化给出
+	\[
+		|\langle Au,v\rangle|
+		=\tfrac14\bigl(q(u+v)-q(u-v)\bigr)
+		\le\tfrac M4(\|u+v\|^2+\|u-v\|^2)=M.
+	\]
+	取 \(v=Au/\|Au\|\)（\(Au\ne0\) 时），得到 \(\|Au\|\le M\)，故等式成立。
+
+	现在假设 \(A\ne0\)。存在 \(\lambda\in\{\|A\|,-\|A\|\}\) 及单位向量列 \(u_n\)，使 \(\langle Au_n,u_n\rangle\to\lambda\)。于是
+	\[
+		\|(A-\lambda I)u_n\|^2
+		=\|Au_n\|^2-2\lambda\langle Au_n,u_n\rangle+\lambda^2
+		\le2\lambda^2-2\lambda\langle Au_n,u_n\rangle\longrightarrow0.
+	\]
+	紧性使 \(Au_n\) 有收敛子列；\(\lambda\ne0\) 及上式使相应 \(u_n\) 也收敛到单位向量 \(u\)，且 \(Au=\lambda u\)。因此每个非零紧自伴算子都具有绝对值等于算子范数的特征值。
+
+	若 \(Au=\lambda u\)、\(u\ne0\)，则 \(\lambda\|u\|^2=\langle Au,u\rangle\) 为实数，所以 \(\lambda\) 实。若另有 \(Av=\eta v\)，自伴性给出 \((\lambda-\eta)\langle u,v\rangle=0\)，所以不同特征空间正交。非零特征空间不能无限维，否则逐次作有限维正交投影就能在其中构造一列正交单位向量 \(u_n\)；其像 \(\lambda u_n\) 两两相距 \(\sqrt2|\lambda|\)，违背紧性。同理，对每个 \(\delta>0\)，绝对值至少为 \(\delta\) 的特征值对应空间之和必为有限维；否则取一列来自这些空间的正交单位特征向量，其像也没有 Cauchy 子列。
+
+	取刚找到的极值特征值 \(\lambda_1\)，移去整个有限维空间 \(E_{\lambda_1}\)。其正交补闭且被 \(A\) 保持，因为对 \(v\perp E_{\lambda_1}\)、\(u\in E_{\lambda_1}\)，有 \(\langle Av,u\rangle=\langle v,Au\rangle=0\)。限制算子仍紧、自伴。若限制非零，便在其中选 \(\lambda_2\)，继续此过程。它或者有限步后留下零算子，或者产生无限个特征空间。后一情形中 \(|\lambda_j|\) 非增；前段的 \(\delta\) 论证说明 \(\lambda_j\to0\)。在前 \(N\) 个空间的正交补上，算子范数恰为下一步的 \(|\lambda_{N+1}|\)。故
+	\begin{equation}\label{g1:eq:compact-spectrum-tail}
+		\left\|A-\sum_{j=1}^N\lambda_jP_j\right\|
+		=|\lambda_{N+1}|\longrightarrow0.
+	\end{equation}
+	这还说明没有遗漏非零特征值，因为遗漏的非零特征向量会留在每一个这样的正交补中，与剩余算子范数趋于零矛盾。
+
+	最后，对任意 \(f\in H\)，有限维正交投影的勾股等式给出 \(\sum_{j\le N}\|P_jf\|^2\le\|f\|^2\)。因此正交级数 \(\sum_jP_jf\) Cauchy，由完备性收敛到某个 \(v\)。余项 \(w=f-v\) 与全部 \(E_{\lambda_j}\) 正交，\eqref{g1:eq:compact-spectrum-tail}遂给出 \(Aw=0\)。反过来，若 \(Aw=0\)，则 \(\lambda_j\langle w,u\rangle=\langle w,Au\rangle=\langle Aw,u\rangle=0\)，所以 \(w\) 与全部非零特征空间正交。这证明所述正交分解及唯一性。算子级数的范数收敛已经由尾项估计给出。
+\end{proof}
+
+逼近单位中 \(k_n\ge0\) 表示对函数值作非负加权平均；它并不意味着自伴算子 \(T_n\) 的每个特征值非负。刚才的谱引理允许正、负特征值，后面的论证只需排除零值，不需要附加算子正性。
+
+\subsection{非零特征空间的有限维不变性}
+\label{g1:subsec:2002:04}
+谱引理提供有限维空间，但要得到李群表示，还须核对群作用保持该空间，以及作用随群参数光滑。这两项不能仅从“有限维”三个字自动推出。
+
+\begin{proposition}[卷积特征空间上的表示]\label{g1:prop:convolution-eigenspace-representation}
+	设 \(G\) 为有限维实紧李群，\(k\in C^\infty(G)\) 满足 \(k(x^{-1})=\overline{k(x)}\)。若 \(\lambda\ne0\) 是 \(T_k\) 在 \(L^2(G)\) 上的特征值，则
+	\[
+		E_\lambda=\{f\in L^2(G):T_kf=\lambda f\}
+	\]
+	为有限维右正则不变空间，每个元素都有唯一的光滑函数代表。限制作用 \(R|_{E_\lambda}\) 是光滑酉表示；\(E_\lambda\) 中的每个函数属于 \(\mathcal R(G)\)，并能写成不可约酉表示的矩阵系数的有限线性组合。
+\end{proposition}
+\begin{proof}
+	连续核引理使 \(T_k\) 紧、自伴，谱引理给出 \(E_\lambda\) 有限维。若 \(f\in E_\lambda\)，则 \(f=\lambda^{-1}T_kf\) 在 \(L^2\) 中成立，右侧由\cref{g1:prop:smoothing-convolution}为光滑函数。连续函数到 \(L^2\) 的嵌入是单射，故这个光滑代表唯一。
+
+	因 \(T_kR_g=R_gT_k\)，有 \(T_k(R_gf)=\lambda R_gf\)，所以空间被 \(R_g\) 保持；\(R_{g^{-1}}\) 给出逆作用。积分内积被 \(R_g\) 保持，故限制表示酉。\cref{g1:prop:finite-regular-subspace-coefficients}适用于这个有限维的 \(R\) 不变光滑函数空间：该命题用有限组点评价给空间取坐标，从而证明 \(g\mapsto R_g|_{E_\lambda}\) 光滑，并且
+	\[
+		f(g)=(R_gf)(e)=\operatorname{ev}_e(R_gf).
+	\]
+	评价泛函 \(\operatorname{ev}_e\) 在有限维 \(E_\lambda\) 上是普通线性泛函，所以这正是一个矩阵系数。最后，\cref{g1:prop:compact-unitarization-complete-reducibility}把该有限维酉表示正交分解为有限个不可约子表示；将向量 \(f\) 和评价泛函限制到各分量，便得到所述有限线性组合。
+\end{proof}
+
+在无限维 \(L^2\) 上，点评价一般不是连续线性泛函，因此不能一开始就把整个正则表示的“系数”写成 \(f(g)\)。先平滑，再进入有限维特征空间，正好消除了这个障碍。零特征空间没有 \(f=\lambda^{-1}T_kf\) 的表达式，也就不能由同一论证获得光滑性或有限维性。
+
+\subsection{由逼近单位得到矩阵系数分离}
+\label{g1:subsec:2002:05}
+一个固定卷积算子的零空间可能很大，所产生的有限维表示也可能漏掉群中的某些运动。让核收缩到单位元，卷积就趋近恒等；这样不同点最终不能被所有产生的表示同时忽略。要把这个直觉落实到点评价，须先把谱引理中的 \(L^2\) 逼近改进为一致逼近。
+
+\begin{lemma}[再卷积后的有限谱逼近]\label{g1:lem:smoothed-spectral-approximation}
+	设 \(G\) 为有限维实紧李群，\(T=T_n\) 为一个固定的逼近单位算子。将其非零特征值列为 \(\lambda_j\)，正交投影记为 \(P_j\)。对任意 \(f\in L^2(G)\)，有限和
+	\[
+		h_N=\sum_{j=1}^N\lambda_j^2P_jf
+	\]
+	属于 \(\mathcal R(G)\)，并一致收敛于 \(T^2f\)。若特征值只有有限多个，取全部项即得等式。事实上，对固定的任意阶数，\(h_N\to T^2f\) 的各阶导数也一致收敛。
+\end{lemma}
+\begin{proof}
+	由\cref{g1:lem:compact-selfadjoint-spectral}，
+	\[
+		S_Nf=\sum_{j=1}^N\lambda_jP_jf\longrightarrow Tf
+	\]
+	按 \(L^2\) 范数成立。再作用一次 \(T\)，由\eqref{g1:eq:convolution-l2-sup-bound}得到
+	\begin{equation}\label{g1:eq:smoothed-spectral-sup-error}
+		\|TS_Nf-T^2f\|_\infty
+		\le\|k_n\|_2\,\|S_Nf-Tf\|_2\longrightarrow0.
+	\end{equation}
+	每个 \(P_jf\in E_{\lambda_j}\)，故 \(TS_Nf=h_N\)；前一命题又保证每项为代表函数。因此这是一列有限矩阵系数和的一致逼近。对各阶导数，使用\cref{g1:prop:smoothing-convolution}中的相应估计代替一致范数估计即可。此处 \(n\) 固定，允许估计常数依赖该核。
+\end{proof}
+
+\begin{corollary}[矩阵系数分离点]\label{g1:cor:matrix-coefficients-separate-points}
+	设 \(G\) 为有限维实紧李群。若 \(p,q\in G\)、\(p\ne q\)，则存在有限维不可约光滑酉表示 \(\pi\)，使 \(\pi(p)\ne\pi(q)\)。
+\end{corollary}
+\begin{proof}
+	取在 \(p\) 附近等于 \(1\)、支集不含 \(q\) 的光滑截断函数 \(f\)，则 \(f(p)=1\)、\(f(q)=0\)。逼近单位的压缩估计给出
+	\[
+		\|T_n^2f-f\|_\infty
+		\le\|T_n(T_nf-f)\|_\infty+\|T_nf-f\|_\infty
+		\le2\|T_nf-f\|_\infty\longrightarrow0.
+	\]
+	先选 \(n\) 使这个误差小于 \(1/8\)，再用前一引理选 \(h\in\mathcal R(G)\)，使 \(\|h-T_n^2f\|_\infty<1/8\)。于是 \(|h(p)-h(q)|>1/2\)。将 \(h\) 写成不可约系数的有限线性组合，其中至少一项在 \(p,q\) 的值不同；相应表示矩阵也不同。
+\end{proof}
+
+该推论给出了紧群的有限维表示足以检测群元素的结论。它尚未指定一张同时区分所有元素的有限维矩阵表示；这里的量词是对每一对不同点可以选择一个表示。
+
+\subsection{矩阵系数的稠密性}
+\label{g1:subsec:2002:06}
+点分离的证明其实提供了一个更强的逼近过程：先选择核使卷积靠近目标函数，再选择有限谱截断使再卷积靠近有限矩阵系数和。这个过程直接给出 Peter--Weyl 定理的一致稠密性。\footnote{彼得（Fritz Peter，1899--1949），德国数学家，与 Weyl 共同证明了紧群矩阵系数的完备性定理。}
+
+\begin{theorem}[Peter--Weyl 一致稠密性]\label{g1:thm:peter-weyl-density}
+	设 \(G\) 为有限维实紧李群。对任意 \(f\in C(G)\) 和任意 \(\varepsilon>0\)，存在有限个不可约光滑酉表示 \(\pi_1,\ldots,\pi_s\) 及其矩阵系数的线性组合 \(h\)，使
+	\[
+		\|f-h\|_\infty<\varepsilon.
+	\]
+	等价地，\(\mathcal R(G)\) 在 \(C(G)\) 中对一致范数稠密。它也在 \(L^2(G)\) 中稠密。
+\end{theorem}
+\begin{proof}
+	由逼近单位引理，选 \(n\) 使 \(2\|T_nf-f\|_\infty<\varepsilon/2\)，于是 \(\|T_n^2f-f\|_\infty<\varepsilon/2\)。固定这个 \(n\)，\cref{g1:lem:smoothed-spectral-approximation}给出 \(h\in\mathcal R(G)\)，使 \(\|h-T_n^2f\|_\infty<\varepsilon/2\)。三角不等式给出结论。\(\mathcal R(G)\) 中每个函数均为有限维表示的系数有限和，再用完全可约性就能使出现的表示不可约。
+
+	对 \(f\in L^2(G)\)，先取 \(u\in C(G)\) 使 \(\|f-u\|_2<\varepsilon/2\)，再取 \(h\in\mathcal R(G)\) 使 \(\|u-h\|_\infty<\varepsilon/2\)。因为 \(\|u-h\|_2\le\|u-h\|_\infty\)，得到 \(\|f-h\|_2<\varepsilon\)，证明 \(L^2\) 稠密性。
+\end{proof}
+
+两次选择的次序不可颠倒：\(\|k_n\|_2\) 随核支集收缩可能变大，\eqref{g1:eq:smoothed-spectral-sup-error}中的常数没有统一上界。先固定足够集中的核，再把该核的谱截断误差压小，才能确保最终的一致误差。我们并未从单纯的 \(L^2\) 收敛推断逐点收敛，而是用再卷积的有界映射 \(L^2\to C\) 完成这一步。
+
+\subsection{正交 Hilbert 直和与不同收敛意义}
+\label{g1:subsec:2002:07}
+现在可以把上一节的正交性与本节的稠密性合在一起。正交性告诉我们不同不可约表示的系数互不干扰；稠密性则排除了整个函数空间中仍有一块与所有系数正交的部分。
+
+\begin{theorem}[Peter--Weyl 正交分解]\label{g1:thm:peter-weyl-hilbert}
+	设 \(G\) 为有限维实紧李群，\(\widehat G\) 表示其有限维不可约光滑酉表示的等价类，每类选一个代表 \(\pi:G\to\operatorname{U}(V_\pi)\) 及标准正交基。记 \(d_\pi=\dim_{\mathbb C}V_\pi\)、\(\pi_{ij}(g)=\langle\pi(g)e_j,e_i\rangle\)，并令
+	\[
+		\mathcal H_\pi=\operatorname{span}_{\mathbb C}
+		\{\pi_{ij}:1\le i,j\le d_\pi\}.
+	\]
+	则 \(\widehat G\) 至多可数，\(\dim \mathcal H_\pi=d_\pi^2\)，并且
+	\begin{equation}\label{g1:eq:peter-weyl-hilbert-sum}
+		L^2(G)=\mathop{\widehat\bigoplus}_{[\pi]\in\widehat G}\mathcal H_\pi.
+	\end{equation}
+	函数族 \(\{\sqrt{d_\pi}\,\pi_{ij}\}_{\pi,i,j}\) 是 \(L^2(G)\) 的标准正交基。对 \(f\in L^2(G)\)，令 \(a_{\pi,ij}=\langle f,\pi_{ij}\rangle_2\)，则
+	\[
+		f=\sum_{[\pi]\in\widehat G}d_\pi
+		\sum_{i,j=1}^{d_\pi}a_{\pi,ij}\pi_{ij}
+	\]
+	按 \(L^2\) 范数收敛，并满足 Parseval 等式：\footnote{Parseval（帕塞瓦尔），Marc-Antoine Parseval des Chênes（1755--1836），法国数学家，研究无穷级数与偏微分方程；以其名字命名的恒等式现用于 Fourier 分析。}
+	\begin{equation}\label{g1:eq:peter-weyl-parseval}
+		\|f\|_2^2=\sum_{[\pi]\in\widehat G}d_\pi
+		\sum_{i,j=1}^{d_\pi}|a_{\pi,ij}|^2.
+	\end{equation}
+	在右正则表示中，每个 \(\pi\) 出现的重数为 \(d_\pi\)。
+\end{theorem}
+\begin{proof}
+	\cref{g1:thm:schur-orthogonality}给出不同代表的系数正交，同一表示内部有
+	\[
+		\langle\pi_{ij},\pi_{k\ell}\rangle_2
+		=\frac{\delta_{ik}\delta_{j\ell}}{d_\pi}.
+	\]
+	故各 \(\mathcal H_\pi\) 的维数为 \(d_\pi^2\)，缩放后的系数构成标准正交族。\cref{g1:thm:peter-weyl-density}说明它们的线性张成在 \(L^2\) 中稠密，因此这是完备的标准正交族。
+
+	先说明可数性，避免把后面的级数理解为未经规定的不可数求和。紧流形 \(G\) 正则、第二可数，\cref{g1:thm:urysohn-metrization}给出与拓扑相容的距离 \(\delta\)。对每个正整数 \(n\)，取有限个直径小于 \(1/n\) 的开集覆盖 \(G\)，并取从属光滑单位分解 \(\phi_{n,j}\)。所有有限和 \(\sum_jq_j\phi_{n,j}\)，其中 \(q_j\in\mathbb Q+\mathrm{i}\mathbb Q\)，随 \(n\) 变化构成可数集合。它在 \(C(G)\) 中一致稠密：给定连续 \(f\)，用紧性取得一致连续性，再在各开集选一点 \(x_{n,j}\)，取 \(q_j\) 接近 \(f(x_{n,j})\)；单位分解的非负性和总和 \(1\) 便把误差控制为各开集内的振幅加有理近似误差。于是 \(L^2(G)\) 也可分，即有可数稠密子集。
+
+	可分 Hilbert 空间的标准正交族至多可数：在可数稠密集内为每个单位向量选一个距离小于 \(1/3\) 的点，不同正交单位向量相距 \(\sqrt2\)，所以不能选到同一个点。这个单射证明系数族可数，也就证明 \(\widehat G\) 至多可数。
+
+	将规范化系数枚举为 \(u_1,u_2,\ldots\)。有限正交投影给出
+	\[
+		\left\|f-\sum_{j=1}^N\langle f,u_j\rangle_2u_j\right\|_2^2
+		=\|f\|_2^2-\sum_{j=1}^N|\langle f,u_j\rangle_2|^2.
+	\]
+	右侧非负，故系数平方和有界，正交级数按范数收敛。其余项与所有 \(u_j\) 正交；由线性张成稠密，它也与自身正交，因而为零。于是得到展开和 Parseval 等式。正交级数尾项的范数平方就是尾部系数平方和，故任何重排以及按有限表示组逐步穷尽的截断，都给出同一个 \(L^2\) 极限。\eqref{g1:eq:peter-weyl-hilbert-sum}中的帽号表示允许这种平方可和的无限正交和；不带帽的代数直和只允许有限和。
+
+	最后固定 \(\pi\) 及行指标 \(i\)。矩阵乘法给出
+	\[
+		R_g\pi_{ij}(x)=\pi_{ij}(xg)
+		=\sum_k\pi_{ik}(x)\pi_{kj}(g).
+	\]
+	因此映射 \(e_j\mapsto\sqrt{d_\pi}\,\pi_{ij}\) 把 \(V_\pi\) 酉等变地送到固定第 \(i\) 行的系数空间。不同的 \(i\) 对应正交子空间，合起来恰为 \(\mathcal H_\pi\)。所以 \(\mathcal H_\pi\) 是 \(d_\pi\) 个 \(\pi\) 的正交和；不同等价类的系数空间互相正交且已穷尽 \(L^2\)，给出所述重数。
+\end{proof}
+
+若希望把标量系数整理成矩阵，可以定义
+\[
+	\widehat f(\pi)=\int_G f(g)\pi(g^{-1})\,\mathrm{d}\mu(g).
+\]
+\symidx{\(\widehat f(\pi)\)：紧群函数的 Fourier 矩阵}对 \(L^2\) 元素，这只是有限个连续内积泛函组成的矩阵，其第 \((j,i)\) 项为 \(a_{\pi,ij}\)。于是展开和范数公式写成
+\[
+	f=\sum_{[\pi]}d_\pi\operatorname{tr}\bigl(\widehat f(\pi)\pi(\,\cdot\,)\bigr),
+	\qquad \|f\|_2^2=\sum_{[\pi]}d_\pi\|\widehat f(\pi)\|_{\mathrm{HS}}^2.
+\]
+这里 Hilbert--Schmidt 范数的平方就是矩阵所有条目的绝对值平方和。转置的指标顺序来自 \(\pi(g^{-1})=\pi(g)^*\)，不能把它无说明地换成 \(\pi(g)\)。
+
+\begin{example}[圆周上的展开]\label{g1:ex:peter-weyl-circle}
+	对 \(S^1\)，不可约酉表示为 \(\pi_m(e^{\mathrm{i}t})=e^{\mathrm{i}mt}\)、\(m\in\mathbb Z\)。交换群的不可约复表示是一维的：每个表示矩阵都与整个表示交换，Schur 引理使它为标量，不可约性再使维数为 \(1\)。一维光滑同态拉回到 \(\mathbb R\) 后是 \(e^{\mathrm{i}at}\)，周期 \(2\pi\) 要求 \(a\in\mathbb Z\)；这里用了单参数子群的唯一性。于是上一定理成为
+	\[
+		f=\sum_{m\in\mathbb Z}\widehat f(m)e^{\mathrm{i}mt},
+		\qquad \|f\|_2^2=\sum_{m\in\mathbb Z}|\widehat f(m)|^2,
+	\]
+	其中 \(\widehat f(m)=(2\pi)^{-1}\int_0^{2\pi}f(e^{\mathrm{i}t})e^{-\mathrm{i}mt}\,\mathrm{d}t\)。第一个等式在本定理中指 \(L^2\) 收敛；它并未给一般 \(L^2\) 函数指定逐点值。
+\end{example}
+
+对光滑函数，前面的有核逼近还能保持任意有限阶导数。取 \(\mathfrak g\) 的一组基，对应左不变场 \(X_1^L,\ldots,X_d^L\)，并令
+\[
+	p_m(f)=\max_{0\le r\le m}\ \max_{i_1,\ldots,i_r}
+	\|X_{i_1}^L\cdots X_{i_r}^Lf\|_\infty.
+\]
+\(r=0\) 项为 \(\|f\|_\infty\)；若 \(G\) 零维，则统一取 \(p_m(f)=\|f\|_\infty\)。这些半范数定义 \(C^\infty\) 收敛：每个固定阶数的导数都一致收敛。左不变场给出整体标架，坐标导数与这些场之间通过光滑系数互相表示；在有限个较小坐标片的闭包上系数有界，故这与通常坐标中的定义一致。
+
+\begin{proposition}[光滑函数的系数逼近]\label{g1:prop:peter-weyl-smooth-density}
+	设 \(G\) 为有限维实紧李群。对任意 \(f\in C^\infty(G)\)，存在 \(h_m\in\mathcal R(G)\)，使对每个固定 \(r\)，均有 \(p_r(h_m-f)\to0\)。
+\end{proposition}
+\begin{proof}
+	左不变场的流为 \(x\mapsto x\exp_G(tX)\)。对光滑 \(f\)，在左卷积公式中沿这个流求导，紧参数积分引理允许把求导移入积分，得到 \(X^LT_nf=T_nX^Lf\)。对任意有限次复合重复此等式，逼近单位的一致收敛给出 \(p_r(T_nf-f)\to0\)。而每个导数分量上 \(T_n\) 都为一致范数压缩，故 \(p_r(T_n^2f-f)\to0\) 也成立。
+
+	给定 \(m\)，先选 \(n\) 使 \(p_m(T_n^2f-f)<1/(2m)\)。固定此核后，\cref{g1:lem:smoothed-spectral-approximation}的各阶导数估计允许选有限谱和 \(h_m\in\mathcal R(G)\)，使 \(p_m(h_m-T_n^2f)<1/(2m)\)。于是 \(p_m(h_m-f)<1/m\)。对每个固定 \(r\)，当 \(m\ge r\) 时 \(p_r\le p_m\)，所以得到所需收敛。
+\end{proof}
+
+上述三种结论承担不同任务。正交展开直接由积分系数确定，其基本保证是 \(L^2\) 收敛；一致或光滑逼近则使用先选择平滑核、再选择谱截断的过程。\cref{g1:tab:peter-weyl-convergence}列出了本节已经证明的精确范围。
+\begin{table}[htbp]
+	\centering
+	\caption{Peter--Weyl 逼近的三种收敛意义}
+	\label{g1:tab:peter-weyl-convergence}
+	\begin{tabularx}{\textwidth}{@{}lXX@{}}
+		\toprule
+		目标函数 & 近似的选择 & 本节得到的收敛\\
+		\midrule
+		\(f\in L^2(G)\) & 正交系数展开，有限项逐步穷尽 & \(L^2\) 范数收敛及 Parseval 等式\\
+		\(f\in C(G)\) & 先固定逼近单位核，再截断其非零谱并再卷积 & 函数值一致收敛\\
+		\(f\in C^\infty(G)\) & 对逐渐增大的导数阶数作上述两次选择 & 每个固定阶数的导数一致收敛\\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+一致稠密性本身不能推出任意顺序的正交部分和一致收敛，光滑逼近命题也没有对任意谱排列给出导数估计。涉及这种更具体的求和方式时，仍须证明相应的核界或系数衰减，不能仅凭“Peter--Weyl”这个名称在不同收敛意义之间转换。

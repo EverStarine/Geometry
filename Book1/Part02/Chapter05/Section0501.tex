@@ -1,0 +1,263 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 5.1 道路、基点与同伦运算
+% 纲要位置：几何学计划纲要.md，第 278 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 定端点同伦和道路复合
+% * 基本群的函子性与基点变化
+% * 形变收缩与基本群计算
+% 
+% 纲要内容结束
+
+\section{道路、基点与同伦运算}
+\label{g1:sec:0501}
+
+在平面中绕原点走一圈，若允许穿过原点，就可以把这一圈缩成一个点；在去掉原点的平面里，同样的收缩却不可能完成。我们需要记录的不是道路的精确形状或速度，而是它在指定空间中能怎样连续变形。先固定起点与终点，再把可以这样变形的道路归为一类，拼接道路便产生了基本群的运算。
+
+\subsection{定端点同伦和道路复合}
+\label{g1:subsec:0501:01}
+
+沿用\cref{g1:def:connected-path-connected}，道路是连续映射 \(\alpha:I\rightarrow X\)，其中 \(I=[0,1]\)。参数 \(t\) 记录行进时间，\(\alpha(0),\alpha(1)\) 是起终点。同一条几何曲线可以有不同走法，甚至可以往返或中途停顿；这些信息在判断能否变形时需要通过定义处理。
+
+\begin{definition}[定端点同伦]\label{g1:def:path-homotopy}
+	设道路 \(\alpha,\beta:I\rightarrow X\) 都从 \(x\) 到 \(y\)。若存在连续映射 \(H:I\times I\rightarrow X\)，使
+	\[
+		H(t,0)=\alpha(t),\quad H(t,1)=\beta(t),\quad
+		H(0,u)=x,\quad H(1,u)=y,
+	\]
+	则称它们\term[duandingdiantonglun]{定端点同伦}[homotopic relative to endpoints]，记为 \(\alpha\simeq\beta\;(\operatorname{rel}\partial I)\)。这里第二个参数 \(u\) 表示变形时间。若一条道路的起点与终点相同，则称它为以该点为基点的\term[huanlu]{环路}[loop]。
+\end{definition}
+
+下面用 \(\simeq\;(\operatorname{rel}\partial I)\) 时始终固定两端，不能让端点在变形中绕着空间移动。恒定同伦 \(H(t,u)=\alpha(t)\) 给出自反性，\(u\mapsto1-u\) 给出对称性；两个同伦各占变形时间的一半，再由\cref{g1:prop:gluing-lemma}粘合，给出传递性。因此定端点同伦是等价关系，其等价类记为 \([\alpha]\)。
+
+\begin{definition}[拼接与反路]\label{g1:def:path-concatenation}
+	设 \(\alpha\) 从 \(x\) 到 \(y\)，\(\beta\) 从 \(y\) 到 \(z\)。定义它们的\term[daolufuhe]{道路复合}[path concatenation]为
+	\[
+		(\alpha*\beta)(t)=
+		\begin{cases}
+			\alpha(2t),&0\le t\le1/2,\\
+			\beta(2t-1),&1/2\le t\le1.
+		\end{cases}
+	\]
+	本章始终约定 \(\alpha*\beta\) 先走 \(\alpha\)，后走 \(\beta\)。反向道路记为 \(\bar\alpha(t)=\alpha(1-t)\)，点 \(x\) 处的常值道路记为 \(e_x\)。
+\end{definition}
+
+复合在接点处连续，因为两段都取值 \(y\)；有限闭覆盖粘合引理保证整个道路连续。这里的星号是道路的先后拼接，连续映射的函数复合 \(g\circ f\) 则仍表示先 \(f\) 后 \(g\)。把两种约定分清，后面的群作用才不会发生方向颠倒。
+
+\begin{proposition}[道路类的运算]\label{g1:prop:path-classes}
+	在任意拓扑空间 \(X\) 中，道路复合在定端点同伦类上良定义，并满足结合律；常值道路类是单位，反路类是逆。具体地，若 \(\alpha,\beta\) 都从 \(x\) 到 \(y\)，则
+	\[
+		\alpha\simeq\beta\;(\operatorname{rel}\partial I)
+		\quad\Longleftrightarrow\quad
+		\alpha*\bar\beta\simeq e_x\;(\operatorname{rel}\partial I).
+	\]
+\end{proposition}
+\begin{proof}
+	若 \(H\) 把 \(\alpha\) 变到 \(\alpha'\)，\(K\) 把 \(\beta\) 变到 \(\beta'\)，则在 \(t\le1/2\) 使用 \(H(2t,u)\)，在 \(t\ge1/2\) 使用 \(K(2t-1,u)\)。两式在接缝恒取共同端点，因此粘成从 \(\alpha*\beta\) 到 \(\alpha'*\beta'\) 的定端点同伦。
+
+	先说明改变速度为何不影响道路类。若 \(\rho:I\rightarrow I\) 连续且 \(\rho(0)=0,\rho(1)=1\)，则
+	\[
+		H(t,u)=\alpha\bigl((1-u)t+u\rho(t)\bigr)
+	\]
+	把 \(\alpha\) 定端点同伦到 \(\alpha\circ\rho\)。对三条依次相接的道路，先令 \(P\) 在三个等长时间段依次走完它们。道路 \((\alpha*\beta)*\gamma\) 与 \(\alpha*(\beta*\gamma)\) 都是 \(P\) 的分段线性重参数化：它们依次分配的时间分别是 \((1/4,1/4,1/2)\) 与 \((1/2,1/4,1/4)\)。上述同伦使两者的类都等于 \([P]\)，得到结合律。类似地，\(\alpha*e_y\) 与 \(e_x*\alpha\) 分别由 \(\rho(t)=\min\{2t,1\}\) 与 \(\rho(t)=\max\{2t-1,0\}\) 得到，所以常值类为单位。
+
+	最后，沿道路出去再原路返回可以逐渐缩短。公式
+	\[
+		H(t,u)=\alpha\bigl((1-u)\min\{2t,2-2t\}\bigr)
+	\]
+	在 \(u=0\) 给出 \(\alpha*\bar\alpha\)，在 \(u=1\) 给出 \(e_x\)，两端始终为 \(x\)。应用于 \(\bar\alpha\) 又得到另一侧逆关系。于是所有上述恒等式在道路类上成立。若 \([\alpha]=[\beta]\)，显然 \([\alpha*\bar\beta]=[e_x]\)；反之，在此等式右边拼上 \([\beta]\)，用结合律和逆关系消去 \([\bar\beta*\beta]\)，就得到 \([\alpha]=[\beta]\)。
+\end{proof}
+
+这些运算允许起终点各不相同，只有可接续的道路才能相乘。若只保留从某个固定点出发并回到该点的道路，所有乘积都有定义，就得到一个群。
+
+\begin{definition}[基本群]\label{g1:def:fundamental-group}
+	设 \(X\) 为拓扑空间，\(x_0\in X\)。以 \(x_0\) 为基点的环路的定端点同伦类，在乘法
+	\[
+		[\alpha][\beta]=[\alpha*\beta]
+	\]
+	下组成的群称为\term[jibenqun]{基本群}[fundamental group]，记为 \(\pi_1(X,x_0)\)。单位为 \([e_{x_0}]\)，逆元为 \([\bar\alpha]\)。与常值环路定端点同伦的环路称为\term[linglun]{零伦}[null-homotopic]，即它在基本群中代表单位元；后文说“定基点零伦”时特别强调收缩中固定基点。
+\end{definition}
+
+\begin{definition}[单连通空间]\label{g1:def:simply-connected}
+	非空拓扑空间 \(X\) 若道路连通，且在每个点 \(x\) 都有 \(\pi_1(X,x)=\{1\}\)，称为\term[danliantong]{单连通}[simply connected]。因此单连通不仅要求没有不能收缩的环路，也要求任意两点可以用道路连接。
+\end{definition}
+
+由\cref{g1:prop:path-classes}，单连通等价于：空间非空、道路连通，而且同一起终点之间的任意两条道路定端点同伦。下一个小节还会说明，道路连通时只需在一个基点核验基本群平凡。所谓“没有洞”只能作为某些图形的提示，不能代替这个定义。
+
+\subsection{基本群的函子性与基点变化}
+\label{g1:subsec:0501:02}
+
+连续映射把一条道路送到另一条道路，也把一整个连续变形送到另一个连续变形。因此基本群能够记录空间之间的映射，而不只是分别给每个空间贴上一个群的名称。
+
+\begin{proposition}[诱导同态]\label{g1:prop:homotopy-functor}
+	设 \(f:X\rightarrow Y\) 连续，\(x_0\in X\)。公式
+	\[
+		f_*:\pi_1(X,x_0)\longrightarrow\pi_1(Y,f(x_0)),\qquad
+		f_*[\alpha]=[f\circ\alpha]
+	\]
+	给出群同态。对可复合的连续映射 \(f,g\)，有 \((g\circ f)_*=g_*\circ f_*\)，且 \((\operatorname{id}_X)_*=\operatorname{id}\)。若 \(f,g:X\rightarrow Y\) 有同伦 \(H\)，且 \(H(x_0,u)\) 恒定，则 \(f_*=g_*\)。
+\end{proposition}
+\begin{proof}
+	若两条道路由 \(K\) 定端点同伦，则 \(f\circ K\) 是像道路之间的定端点同伦，所以公式良定义。等式 \(f\circ(\alpha*\beta)=(f\circ\alpha)*(f\circ\beta)\) 说明它保乘法。复合与恒等映射的结论直接逐个道路类计算即可。最后，\((t,u)\mapsto H(\alpha(t),u)\) 给出 \(f\circ\alpha\) 与 \(g\circ\alpha\) 的同伦；由于基点在整个变形中固定，这个同伦固定两端，得到所需等式。
+\end{proof}
+
+这些与映射复合相容的性质称为基本群的\term[hanzixing]{函子性}[functoriality]。特别是同胚诱导群同构。但两个空间的基本群同构并不自动给出空间同胚，后面的形变收缩会提供许多这样的例子。
+
+\begin{proposition}[沿道路改变基点]\label{g1:prop:basepoint-change}
+	设 \(c\) 为拓扑空间 \(X\) 中从 \(x_0\) 到 \(x_1\) 的道路。则
+	\[
+		c_\#:\pi_1(X,x_0)\longrightarrow\pi_1(X,x_1),\qquad
+		c_\#[\gamma]=[\bar c*\gamma*c]
+	\]
+	为同构，其逆是 \(\bar c_\#\)。它只依赖 \(c\) 的定端点同伦类，一般会依赖这条道路的选择。
+\end{proposition}
+\begin{proof}
+	公式先从新基点 \(x_1\) 沿反路回到 \(x_0\)，走完 \(\gamma\)，再沿 \(c\) 返回，所以确实是新基点处的环路。道路类运算说明它良定义。计算两个像的乘积时，中间的 \(c*\bar c\) 可以缩成常值道路，得到
+	\[
+		[\bar c*\gamma*c][\bar c*\eta*c]=[\bar c*\gamma*\eta*c].
+	\]
+	因此它是同态。先沿 \(c\) 改基点再沿 \(\bar c\) 改回来，出现的往返道路都可消去，所以这两个同态互逆。
+
+	若 \(d\) 是另一条从 \(x_0\) 到 \(x_1\) 的道路，令 \(k=[\bar d*c]\in\pi_1(X,x_1)\)。直接消去相邻的往返段得到
+	\[
+		c_\#[\gamma]=k^{-1}\,d_\#[\gamma]\,k.
+	\]
+	故两种基点变化相差一个共轭同构；这并不保证它们作为具体同态相等。
+\end{proof}
+
+这也解释了为何覆盖分类中“选定一个纤维点”与“不选纤维点”给出不同的分类数据：前者会确定一个具体子群，后者通常只确定它的共轭类。
+
+\begin{proposition}[基点移动的同伦公式]\label{g1:prop:moving-basepoint}
+	设 \(H:X\times I\rightarrow Y\) 是连续映射 \(f,g:X\rightarrow Y\) 之间的同伦，即 \(H(x,0)=f(x)\)、\(H(x,1)=g(x)\)。固定 \(x_0\in X\)，令 \(c(u)=H(x_0,u)\)。则
+	\[
+		g_*=c_\#\circ f_*:\pi_1(X,x_0)\longrightarrow\pi_1(Y,g(x_0)).
+	\]
+\end{proposition}
+\begin{proof}
+	对以 \(x_0\) 为基点的环路 \(\alpha\)，考虑方形映射 \(K(t,u)=H(\alpha(t),u)\)。沿方形边界从 \((0,0)\) 依次走下、右、上、左四边，其像为
+	\[
+		(f\circ\alpha)*c*\overline{(g\circ\alpha)}*\bar c.
+	\]
+	这个边界环路在方形中可以固定 \((0,0)\) 收缩：若边界参数化为 \(b(t)\)，取 \((1-v)b(t)\) 即可。与 \(K\) 复合后，像环路也可收缩。由道路类的逆与消去律，
+	\[
+		[f\circ\alpha]\,[c]=[c]\,[g\circ\alpha],
+	\]
+	此式在可接续道路类的意义下成立。左边再拼 \([\bar c]\)，便得到 \([g\circ\alpha]=[\bar c*(f\circ\alpha)*c]\)。
+\end{proof}
+
+若忽略 \(c\)，就会把不同基点处的群同态误写成相等。尤其是一般同伦不一定固定基点；使用同伦不变性前，应先看基点是否真的留在原处。
+
+\subsection{形变收缩与基本群计算}
+\label{g1:subsec:0501:03}
+
+许多空间虽不与较简单的空间同胚，却能连续地缩到后者上，而且整个过程中保留后者不动。这使基本群计算可以先去掉不影响环路的多余方向。圆环的径向厚度就是一个例子；圆周自身绕行的次数却不能用这种方式消去。
+
+\begin{definition}[形变收缩]\label{g1:def:deformation-retract}
+	设 \(A\subseteq X\)，\(i:A\hookrightarrow X\) 为包含映射。连续映射 \(r:X\rightarrow A\) 若满足 \(r|_A=\operatorname{id}_A\)，称为\term[suohui]{缩回}[retraction]。若还存在连续 \(H:X\times I\rightarrow X\)，满足
+	\[
+		H(x,0)=x,\qquad H(x,1)=i(r(x)),\qquad H(a,u)=a\quad(a\in A),
+	\]
+	则称 \(A\) 是 \(X\) 的\term[xingbiansuosuo]{形变收缩核}[deformation retract]。本书此处要求同伦逐点固定 \(A\)，也称强形变收缩。
+\end{definition}
+
+\begin{proposition}[形变收缩保持基本群]\label{g1:prop:deformation-retract}
+	若 \(A\subseteq X\) 是上述意义的形变收缩核，\(a_0\in A\)，则 \(i_*:\pi_1(A,a_0)\rightarrow\pi_1(X,a_0)\) 与 \(r_*\) 互为逆同构。
+\end{proposition}
+\begin{proof}
+	因为 \(r\circ i=\operatorname{id}_A\)，函子性给出 \(r_*i_*=\operatorname{id}\)。因为 \(i\circ r\) 与 \(\operatorname{id}_X\) 的同伦固定 \(a_0\)，\cref{g1:prop:homotopy-functor}又给出 \(i_*r_*=\operatorname{id}\)。这两条等式同时给出单射与满射。
+\end{proof}
+
+凸集 \(C\subseteq\mathbb R^n\) 中选一点 \(a\)，公式 \(H(x,u)=(1-u)x+ua\) 把它形变收缩到 \(a\)，所以非空凸集单连通。对穿孔空间 \(\mathbb R^n\setminus\{0\}\)，则可取
+\[
+	r(x)=\frac{x}{\lVert x\rVert},\qquad
+	H(x,u)=\left(1-u+\frac{u}{\lVert x\rVert}\right)x.
+\]
+系数始终正，故过程不经过被去掉的原点；当 \(\lVert x\rVert=1\) 时所有点不动。因此它形变收缩到 \(S^{n-1}\)。尤其穿孔平面的计算化成了圆周的计算。
+
+\begin{lemma}[紧空间上的一致细分尺度]\label{g1:lem:lebesgue-number}
+	设 \((K,d)\) 为紧度量空间，\(\mathcal U\) 是它的开覆盖。则存在 \(\delta>0\)，使 \(K\) 中每个直径小于 \(\delta\) 的非空子集都包含在某个 \(U\in\mathcal U\) 中。
+\end{lemma}
+
+这样的 \(\delta\) 称为覆盖的\term[lebesgueshu]{Lebesgue 数}[Lebesgue number]。\footnote{Henri Léon Lebesgue（亨利·莱昂·勒贝格，1875--1941），法国数学家，建立了测度与积分理论的重要基础。}它把“每个点附近可以处理”变成“细分得足够小时，每一小块都可以处理”，是后面把同伦方形切成有限网格的依据。
+
+\begin{proof}
+	空空间任取 \(\delta>0\)。否则，对每个 \(x\in K\) 选 \(r_x>0\) 与覆盖成员 \(U_x\)，使 \(B(x,2r_x)\subseteq U_x\)。由紧性，有限个 \(B(x_j,r_{x_j})\) 覆盖 \(K\)。取 \(\delta=\min_jr_{x_j}>0\)。若非空集合 \(A\) 的直径小于 \(\delta\)，选 \(a\in A\) 和满足 \(a\in B(x_j,r_{x_j})\) 的 \(j\)。对每个 \(b\in A\)，
+	\[
+		d(b,x_j)\le d(b,a)+d(a,x_j)<\delta+r_{x_j}\le2r_{x_j},
+	\]
+	故 \(A\subseteq B(x_j,2r_{x_j})\subseteq U_{x_j}\)。
+\end{proof}
+
+下面直接从连续角度计算圆周的基本群。局部角度可以选择，但走完一圈后不一定回到原角度；这个整周差正是要记录的整数。写
+\[
+	E:\mathbb R\longrightarrow S^1,\qquad E(s)=e^{2\pi is}.
+\]
+对每个 \(z\in S^1\)，其开半圆 \(A_z=\{w:\operatorname{Re}(w/z)>0\}\) 有连续角度
+\[
+	\theta_z(w)=\frac{1}{2\pi}\arctan\frac{\operatorname{Im}(w/z)}{\operatorname{Re}(w/z)}
+	\in(-1/4,1/4),\qquad E(\theta_z(w))=w/z.
+\]
+这是\secref{g1:sec:0405}中给圆周作局部坐标时已经使用的显式公式。
+
+\begin{lemma}[沿圆周道路连续选择角度]\label{g1:lem:circle-angle-lift}
+	设 \(\alpha:I\rightarrow S^1\) 连续，\(a\in\mathbb R\) 满足 \(E(a)=\alpha(0)\)。则存在唯一连续 \(\widetilde\alpha:I\rightarrow\mathbb R\)，满足 \(\widetilde\alpha(0)=a\)、\(E\circ\widetilde\alpha=\alpha\)。
+\end{lemma}
+\begin{proof}
+	开集 \(\alpha^{-1}(A_z)\) 覆盖紧区间。由\cref{g1:lem:lebesgue-number}，可把 \(I\) 分成有限个闭小区间，使每一段的像落在某个 \(A_z\) 中。在第一段上，选 \(b\) 使 \(E(b)=z\)，用 \(b+\theta_z(\alpha(t))\) 表示角度，再加上唯一适当整数使它在起点等于 \(a\)。在下一段重复这个操作，把起点值接到前一段的终点值。有限闭集粘合保证所得函数连续，并满足公式。
+
+	若另有 \(\widetilde\alpha'\) 满足要求，则它们的差连续且处处为整数，因为 \(E(s)=E(t)\) 当且仅当 \(s-t\in\mathbb Z\)。连续整数值函数在连通区间上恒定：每个整数的原像都开且闭，若有两个取值便会分离区间。起点之差为零，故处处为零。
+\end{proof}
+
+\begin{theorem}[圆周的基本群]\label{g1:thm:circle-fundamental}
+	对以 \(1\) 为基点的圆周环路 \(\alpha\)，令 \(\widetilde\alpha(0)=0\) 为上引理的连续角度，定义
+	\[
+		w(\alpha)=\widetilde\alpha(1)\in\mathbb Z.
+	\]
+	这个整数只依赖环路的定端点同伦类，并给出同构
+	\[
+		w:\pi_1(S^1,1)\longrightarrow\mathbb Z.
+	\]
+	它称为环路的\term[raoshu]{绕数}[winding number]；\(\alpha_n(t)=e^{2\pi int}\) 对应整数 \(n\)。
+\end{theorem}
+\begin{proof}
+	因为 \(\alpha(1)=1\)，角度终值必为整数。先证明同伦不改变这个整数。若两条基点为 \(1\) 的环路 \(\alpha,\beta\) 满足 \(|\beta(t)-\alpha(t)|<1\) 对所有 \(t\) 成立，则 \(\beta(t)/\alpha(t)\) 落在 \(1\) 的开半圆内，可以写
+	\[
+		d(t)=\theta_1(\beta(t)/\alpha(t)),\qquad d(0)=d(1)=0.
+	\]
+	故 \(\widetilde\alpha+d\) 是 \(\beta\) 从零开始的角度，由唯一性等于 \(\widetilde\beta\)，两者终值相同。若 \(H(t,u)\) 为定端点同伦，将 \(S^1\) 用半径 \(1/3\) 的圆周开球覆盖，把它们拉回到紧方形，再取一个 Lebesgue 数 \(\delta>0\)。方形内距离小于 \(\delta\) 的两点落在同一个原像中，故其像的距离小于 \(2/3\)。于是把 \(u\) 区间细分成长度小于 \(\delta\) 的小段，相邻两条环路在所有 \(t\) 处的距离便都小于 \(1\)。逐段应用刚才的论证，得到两端绕数相同。
+
+	拼接 \(\alpha*\beta\) 时，前半段角度走完 \(\widetilde\alpha\)，后半段应走 \(\widetilde\beta+w(\alpha)\)，才能在接点连续。因此 \(w(\alpha*\beta)=w(\alpha)+w(\beta)\)，所以 \(w\) 是群同态。每个 \(n\in\mathbb Z\) 由 \(\alpha_n\) 实现，故它满射。
+
+	若 \(w(\alpha)=0\)，则 \(\widetilde\alpha\) 的两端都为零，公式
+	\[
+		H(t,u)=E\bigl((1-u)\widetilde\alpha(t)\bigr)
+	\]
+	把 \(\alpha\) 定端点收缩为常值道路。故同态的核只有单位，得到单射。更具体地，任一绕数为 \(n\) 的环路可由角度的线性插值
+	\[
+		E\bigl((1-u)\widetilde\alpha(t)+unt\bigr)
+	\]
+	定端点变到标准环路 \(\alpha_n\)，这直接说明整数已经记录了全部环路类。
+\end{proof}
+
+绕数不是某段参数上的角度，而是沿整个环路连续记录后的总增量。因此不存在连续函数 \(L:S^1\rightarrow\mathbb R\) 满足 \(E\circ L=\operatorname{id}_{S^1}\)：若存在，把它复合到标准一周环路，所得角度的起终值必相同；但角度唯一性又要求终值比起值大 \(1\)。连续选择局部角度没有问题，整体单值选择却受到绕行的阻碍。
+
+\begin{proposition}[积空间的基本群]\label{g1:prop:product-fundamental}
+	设 \(X,Y\) 为拓扑空间，\(x_0\in X,y_0\in Y\)。坐标投影诱导同构
+	\[
+		\pi_1(X\times Y,(x_0,y_0))
+		\longrightarrow\pi_1(X,x_0)\times\pi_1(Y,y_0),\qquad
+		[(\alpha,\beta)]\longmapsto([\alpha],[\beta]).
+	\]
+\end{proposition}
+\begin{proof}
+	由\cref{g1:prop:product-universal}，到积的道路连续当且仅当两条坐标道路连续；到积的同伦也恰好等于两份同时给出的坐标同伦。因此两条积道路同伦当且仅当各坐标分别同伦，所写映射良定义且单射。任意两条坐标环路可以同时参数化为 \(t\mapsto(\alpha(t),\beta(t))\)，所以满射。道路拼接逐坐标进行，故它保群运算。
+\end{proof}
+
+于是由圆周绕数与\cref{g1:thm:torus-square}的环面模型，
+\[
+	\pi_1(\mathbb R^2\setminus\{0\},(1,0))\cong\mathbb Z,\qquad
+	\pi_1(T^2,(1,1))\cong\mathbb Z^2.
+\]
+前一个同构使用径向形变收缩；后一个把两个圆周方向的绕数分别记录下来。这些计算还没有说明一般空间怎样由几块拼合后的基本群求得，下一节将处理这种需要增加生成元与关系的情形。

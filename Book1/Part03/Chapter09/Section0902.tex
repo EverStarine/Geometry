@@ -1,0 +1,299 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 9.2 测地线与变分
+% 纲要位置：几何学计划纲要.md，第 472 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 测地线方程的存在唯一性
+% * 弧长、能量与端点条件
+% * 测地曲率及第一变分
+% * 测地坐标和径向局部极小性
+% 
+% 纲要内容结束
+
+\section{测地线与变分}
+\label{g1:sec:0902}
+
+在平面上，匀速直线同时具有两种特征：速度沿运动保持不变，较短的直线段又是两端之间的最短路。曲面上不宜直接要求空间中的速度不变，因为这个向量可能立即离开切平面。上一节的平行移动给出了替代条件：让速度沿曲线平行。它定义的是一个微分方程；这一方程与长度极小之间的关系还需要证明，而且最短性首先只在短程成立。
+
+\ProseParagraphBreak
+
+以下的曲面 \(M\) 带光滑正定度量，既可以是正则曲面的诱导度量，也可以是上一节所说的二维光滑度量曲面。局部计算取坐标 \((u^1,u^2)\)，记 \(g_{ij}=\langle\partial_i,\partial_j\rangle\)。讨论初值与邻域时，所取点均为曲面的内点；边界会在变分的端点条件中单独出现。
+
+\subsection{测地线方程的存在唯一性}
+\label{g1:subsec:0902:01}
+
+\begin{definition}
+	\label{g1:def:geodesic}
+	光滑度量曲面 \(M\) 上的光滑曲线 \(\gamma:I\to M\)，若满足
+	\[
+		\mathrm{D}_t\dot\gamma=0,
+	\]
+	就称为\term[cedixian]{测地线}[geodesic]。这里 \(\mathrm{D}_t\) 是\cref{g1:def:surface-along-derivative}定义的沿曲线协变导数，参数 \(t\) 称为仿射参数。常值曲线也包括在内。
+\end{definition}
+
+由\cref{g1:prop:along-derivative-properties}的度量相容性，测地线满足
+\[
+	\frac{\mathrm{d}}{\mathrm{d}t}|\dot\gamma|^2=2\langle \mathrm{D}_t\dot\gamma,\dot\gamma\rangle=0.
+\]
+所以每条非常值测地线都以恒定的正速度行进，改用弧长后仍是测地线。若 \(\gamma\) 是非常值测地线，重参数曲线 \(\eta(s)=\gamma(\phi(s))\) 满足
+\[
+	\mathrm{D}_s\dot\eta=\phi''(s)\dot\gamma(\phi(s)),
+\]
+因而保持测地线方程的正则重参数化恰为 \(\phi(s)=as+b\)、\(a\ne0\)。同一条轨迹以忽快忽慢的速度走过，便可能不再满足上述带参数的定义。
+
+\ProseParagraphBreak
+
+把沿曲线求导的坐标式代入定义，测地线方程成为
+\begin{equation}
+	\label{g1:eq:geodesic-equation}
+	\ddot u^k+\Gamma^k_{ij}(u)\dot u^i\dot u^j=0,\qquad k=1,2.
+\end{equation}
+这里对 \(i,j\) 求和。\(\Gamma^k_{ij}\) 由\eqref{g1:eq:christoffel-metric}计算，故这一方程只依赖于度量。在嵌入曲面上，它也表示空间加速度全部沿法向；一般并不表示空间加速度为零。
+
+\begin{lemma}[初值的光滑依赖]
+	\label{g1:lem:smooth-ode-flow}
+	设 \(F:\Omega\to\mathbb R^m\) 是开集 \(\Omega\subset\mathbb R^m\) 上的光滑映射，\(z_0\in\Omega\)。则存在 \(a>0\) 及 \(z_0\) 的邻域 \(B\)，使
+	\[
+		\partial_t\Phi(t,z)=F(\Phi(t,z)),\qquad \Phi(0,z)=z
+	\]
+	对 \((t,z)\in(-a,a)\times B\) 有唯一局部解，且 \(\Phi\) 对时间与初值联合光滑。若一条解已经存在于紧时间区间，则该区间上的解也对其附近的初值光滑依赖。
+\end{lemma}
+\begin{proof}
+	\cref{g1:lem:surface-field-integral-curve}用积分迭代证明了二维向量场的局部存在唯一性。该证明只使用欧氏范数与导数界，在 \(\mathbb R^m\) 中同样成立。具体地，取 \(\overline B(z_0,2r)\subset\Omega\)，在此球上以 \(M,L\) 分别控制 \(|F|,\|\mathrm{D}F\|\)。令初值 \(z\in B(z_0,r)\)，并取 \(aM<r\)、\(q=aL<1\)，则
+	\[
+		(\mathcal T_zx)(t)=z+\int_0^tF(x(s))\,\mathrm{d}s
+	\]
+	把取值于大闭球的连续路径映入自身，且一致距离至多缩小为 \(q\) 倍。相邻迭代的差构成收敛几何级数，极限就是唯一解。比较两个初值得到
+	\[
+		\|\Phi(\cdot,z+h)-\Phi(\cdot,z)\|_\infty\le\frac{|h|}{1-q}.
+	\]
+	这也先证明了初值依赖的连续性。
+
+	为证明可微，令矩阵 \(A(t,z)\) 解积分方程
+	\[
+		A(t,z)=I+\int_0^t \mathrm{D}F(\Phi(s,z))A(s,z)\,\mathrm{d}s.
+	\]
+	同一个缩短估计给出其唯一连续解，并由比较积分方程得到它对 \(z\) 连续。记 \(\delta_h=\Phi(\cdot,z+h)-\Phi(\cdot,z)\)。\(\mathrm{D}F\) 在较小闭球上一致连续，Taylor 余项与上面的 Lipschitz 估计遂给出
+	\[
+		\|\delta_h-A(\cdot,z)h\|_\infty
+		\le q\|\delta_h-A(\cdot,z)h\|_\infty+o(|h|).
+	\]
+	把第一项移到左边，就有 \(\mathrm{D}_z\Phi=A\)。高阶导数可以用相同办法逐阶得到：对初值求 \(k\) 阶导后，未知的最高阶导数 \(B_k\) 总满足
+	\[
+		B_k(t)=B_k(0)+\int_0^t\bigl(\mathrm{D}F(\Phi(s))B_k(s)+C_k(s)\bigr)\,\mathrm{d}s,
+	\]
+	其中 \(C_k\) 只由 \(F\) 的至多 \(k\) 阶导数和已经求得的低阶导数组成，\(k\ge2\) 时 \(B_k(0)=0\)。归纳时，对前一阶方程取差商，Taylor 余项趋零，再用 \(1-q>0\) 的同一估计，便证明该方程的解确为下一阶导数而且连续。时间导数则由 \(\partial_t\Phi=F(\Phi)\) 得到，混合导数也随之连续，故 \(\Phi\) 联合光滑。
+
+	最后，已有解在紧时间区间上的像是紧集，可沿它选取有限个上述局部时间步。逐步缩小初值邻域，使各步的终点仍落在下一步的允许邻域；有限次光滑映射的复合给出整个区间上的光滑依赖，唯一性保证相邻步骤相接。
+\end{proof}
+
+\begin{proposition}[测地线初值问题]
+	\label{g1:prop:geodesic-initial-values}
+	设 \(M\) 是光滑度量曲面，\(p\) 为内点，\(v\in \mathrm{T}_pM\)。则存在以 \(0\) 为内点的区间及其上的唯一局部测地线 \(\gamma_v\)，使 \(\gamma_v(0)=p\)、\(\dot\gamma_v(0)=v\)。在共同存在的紧时间区间上，解对起点与初速度光滑依赖。若 \(v\ne0\)，其速度恒为 \(|v|\)；若 \(v=0\)，则为常值曲线。
+\end{proposition}
+\begin{proof}
+	置 \(w^k=\dot u^k\)，将\eqref{g1:eq:geodesic-equation}改写成四维一阶系统
+	\[
+		\dot u^k=w^k,\qquad \dot w^k=-\Gamma^k_{ij}(u)w^iw^j.
+	\]
+	右端光滑，前一引理给出全部初值结论。换坐标后所得曲线仍满足几何定义 \(\mathrm{D}_t\dot\gamma=0\)，所以局部唯一性使各坐标中的解相符。速度性质已由度量相容性证明；零初速度时，常值曲线是一个解，唯一性排除了其他解。
+\end{proof}
+
+初值问题给定的是“一点及一个速度”，并不保证任意两点间有唯一测地线，也不保证解能够走任意长时间。例如去掉原点的欧氏平面中，指向原点的直线在有限时间撞上被删去的点；而球面的南北两极之间有许多不同的半大圆。
+
+\begin{example}[球面的测地线]
+	\label{g1:exm:sphere-geodesics}
+	半径 \(R\) 的球面取外向单位法向 \(n=\gamma/R\)。若 \(\gamma\) 是速度 \(c>0\) 的测地线，则空间加速度平行于 \(\gamma\)。两次求导 \(\langle\gamma,\gamma\rangle=R^2\)，有 \(\langle\ddot\gamma,\gamma\rangle=-c^2\)，所以
+	\[
+		\ddot\gamma=-\frac{c^2}{R^2}\gamma,\qquad
+		\gamma(t)=p\cos\frac{ct}{R}+\frac{R}{c}v\sin\frac{ct}{R},
+	\]
+	其中 \(|p|=R\)、\(\langle p,v\rangle=0\)、\(|v|=c\)。这个公式也可直接核验初值与方程，唯一性说明它给出全部非常值测地线。因此球面的测地线轨迹是大圆；绕一整圈仍满足方程，却显然不是起终点之间的最短路。
+\end{example}
+
+\subsection{弧长、能量与端点条件}
+\label{g1:subsec:0902:02}
+
+比较曲线时，长度天然不在乎走得快慢，微分方程却记录参数。引入能量可以把参数也纳入比较，使随后的求导不出现速度范数的分母。对于固定区间 \([a,b]\)、\(a<b\) 上的分片 \(C^1\) 曲线，定义
+\[
+	L(\gamma)=\int_a^b|\dot\gamma(t)|\,\mathrm{d}t,\qquad
+	E(\gamma)=\frac12\int_a^b|\dot\gamma(t)|^2\,\mathrm{d}t.
+\]
+这里的 \(E\) 称为曲线的\term[nengliang]{能量}[energy]。\symidx{\(E(\gamma)\)：曲线能量}长度是各坐标段中的度量长度；对于嵌入曲面，\cref{g1:prop:arc-length-param}的长度公式说明它与空间曲线的折线定义一致。
+
+\begin{proposition}[长度与能量]
+	\label{g1:prop:length-energy}
+	对光滑度量曲面上定义于同一固定区间 \([a,b]\) 的分片 \(C^1\) 曲线，有
+	\[
+		L(\gamma)^2\le2(b-a)E(\gamma).
+	\]
+	等号成立当且仅当速度范数几乎处处为常数；对 \(C^1\) 曲线，这等价于处处等速。若一条曲线在给定端点的全部竞争曲线中长度最小且等速，则它在同一区间上也使能量最小。
+\end{proposition}
+\begin{proof}
+	对函数 \(|\dot\gamma|\) 与常函数 \(1\) 使用 Cauchy--Schwarz 不等式，便得到所述估计。等号条件是两个函数几乎处处成比例。若 \(\gamma_0\) 等速且最短，对任意同端点的竞争曲线 \(\eta\)，则
+	\[
+		E(\eta)\ge\frac{L(\eta)^2}{2(b-a)}\ge\frac{L(\gamma_0)^2}{2(b-a)}=E(\gamma_0).
+	\]
+\end{proof}
+
+对正则曲线，也可把其轨迹改为等速行进而不改长度。具体地，令 \(\ell(t)=\int_a^t|\dot\gamma(\tau)|\,\mathrm{d}\tau\)，它严格递增，按\cref{g1:prop:arc-length-param}中正速度积分取逆的构造，再把 \([0,L]\) 线性缩放到 \([a,b]\)，便得到速度 \(L/(b-a)\) 的参数。该构造只使用正的速度函数，对这里的度量速度同样成立。因此在正则曲线的比较中，能量最小同时要求轨迹最短和参数等速；长度最小则不强制后一条件。
+
+\ProseParagraphBreak
+
+为了精确表达“小幅移动一条曲线”，取光滑映射
+\[
+	F:(-\varepsilon,\varepsilon)\times[a,b]\to M,\qquad F(0,t)=\gamma(t).
+\]
+称 \(F\) 为 \(\gamma\) 的一个\term[bianfen]{变分}[variation]，称 \(V(t)=\partial_sF(0,t)\) 为变分向量场。固定端点是要求 \(F(s,a)=p\)、\(F(s,b)=q\)，它给出 \(V(a)=V(b)=0\)。若只要求端点分别落在给定的光滑曲线 \(C_0,C_1\) 上，则 \(V(a)\in \mathrm{T}_pC_0\)、\(V(b)\in \mathrm{T}_qC_1\)，这些向量通常不为零。若端点可以在曲面内任意移动，相应的端点向量更没有限制。这三种条件不能混用，下一小节中的边界项会记录它们的差别。
+
+\subsection{测地曲率及第一变分}
+\label{g1:subsec:0902:03}
+
+空间曲率把曲线所有弯曲都算在内。对于曲面内部的最短路，真正应受约束的是曲线在切平面内向侧方偏转的程度。以下先取一个曲面定向，记 \(J\) 为切平面内的正向直角旋转；嵌入曲面中，\(JW=n\times W\)。
+
+\begin{definition}
+	\label{g1:def:geodesic-curvature}
+	设 \(\gamma\) 是定向光滑度量曲面上的 \(C^2\) 正则曲线，\(s\) 为沿行进方向的弧长，\(T=\mathrm{d}\gamma/\mathrm{d}s\)。定义有向\term[cediqulv]{测地曲率}[geodesic curvature]为
+	\[
+		k_g=\langle \mathrm{D}_sT,JT\rangle.
+	\]
+	由于 \(|T|=1\)，度量相容性给出 \(\mathrm{D}_sT\perp T\)，故 \(\mathrm{D}_sT=k_gJT\)。\symidx{\(k_g\)：有向测地曲率}
+\end{definition}
+
+于是正则曲线的弧长参数化为测地线，当且仅当 \(k_g=0\)。反转曲面定向会使 \(k_g\) 变号；保持曲面定向而反转曲线行进方向也使 \(k_g\) 变号。若 \(\gamma\) 是嵌入曲面上的单位速曲线，\cref{g1:prop:gauss-weingarten}还给出空间加速度的分解
+\begin{equation}
+	\label{g1:eq:geodesic-normal-curvature}
+	\gamma''=k_gJT+\mathrm{II}(T,T)n,
+	\qquad \kappa^2=k_g^2+\mathrm{II}(T,T)^2.
+\end{equation}
+测地线只消去这里的切向项，通常仍有法曲率。例如球面大圆的测地曲率为零，空间曲率却是 \(1/R\)。
+
+\begin{proposition}[第一变分]
+	\label{g1:prop:first-variation}
+	设 \(F(s,t)\) 是光滑度量曲面上定义于 \((-\varepsilon,\varepsilon)\times[a,b]\) 的光滑变分，\(\gamma(t)=F(0,t)\)、\(V(t)=\partial_sF(0,t)\)。则
+	\begin{equation}
+		\label{g1:eq:energy-first-variation}
+		\left.\frac{\mathrm{d}}{\mathrm{d}s}E(F(s,\cdot))\right|_{s=0}
+		=\bigl[\langle V,\dot\gamma\rangle\bigr]_a^b-\int_a^b\langle V,\mathrm{D}_t\dot\gamma\rangle\,\mathrm{d}t.
+	\end{equation}
+	若 \(\gamma\) 正则，令 \(T=\dot\gamma/|\dot\gamma|\)，则
+	\begin{equation}
+		\label{g1:eq:length-first-variation}
+		\left.\frac{\mathrm{d}}{\mathrm{d}s}L(F(s,\cdot))\right|_{s=0}
+		=\bigl[\langle V,T\rangle\bigr]_a^b-\int_a^b\langle V,\mathrm{D}_tT\rangle\,\mathrm{d}t.
+	\end{equation}
+	在定向曲面上，把最后一项改用弧长 \(\ell\) 积分，即为 \(-\int_\gamma k_g\langle V,JT\rangle\,\mathrm{d}\ell\)。
+\end{proposition}
+\begin{proof}
+	记 \(W=\partial_tF\)。由\cref{g1:prop:along-derivative-properties}，度量相容性及混合协变导数相等分别给出
+	\[
+		\partial_s\frac12\langle W,W\rangle=\langle \mathrm{D}_sW,W\rangle,
+		\qquad \mathrm{D}_s\partial_tF=\mathrm{D}_t\partial_sF.
+	\]
+	后一个等式的坐标理由是 \(\partial_s\partial_tu^k=\partial_t\partial_su^k\) 及 \(\Gamma^k_{ij}=\Gamma^k_{ji}\)，并不要求曲率为零。对紧区间积分可在积分号内求导，故能量导数是 \(\int_a^b\langle \mathrm{D}_tV,\dot\gamma\rangle\,\mathrm{d}t\)。再由内积的求导公式作分部积分，得到\eqref{g1:eq:energy-first-variation}。
+
+	若 \(\gamma\) 正则，其速度在紧区间上有正的下界，缩小变分参数区间后附近曲线也正则。因此可对速度范数直接求导，得到长度导数
+	\[
+		\int_a^b\left\langle \mathrm{D}_tV,\frac{\dot\gamma}{|\dot\gamma|}\right\rangle\,\mathrm{d}t.
+	\]
+	再次分部积分即得\eqref{g1:eq:length-first-variation}。最后 \(\mathrm{D}_tT=|\dot\gamma|\mathrm{D}_\ell T\)，而 \(\mathrm{d}\ell=|\dot\gamma|\mathrm{d}t\)，代入测地曲率定义便得弧长形式。
+\end{proof}
+
+所谓驻定，是指对所有允许变分的一阶导数均为零，不是指附近所有曲线都更长。固定端点时，\eqref{g1:eq:energy-first-variation}立即说明测地线使能量驻定。反过来，如果能量对所有固定端点变分驻定，则 \(\mathrm{D}_t\dot\gamma=0\)：若某个内点处该向量非零，取其附近一段落在同一坐标图中的小区间，并选非负光滑函数 \(\chi\)，支撑在此小区间内且在该点为正。令 \(V=\chi \mathrm{D}_t\dot\gamma\)，在坐标中用 \(u_s(t)=u(t)+sV^i(t)\) 实现这个变分，并在区间外保持原曲线，则能量导数为
+\[
+	-\int_a^b\chi|\mathrm{D}_t\dot\gamma|^2\,\mathrm{d}t<0,
+\]
+产生矛盾。所需的 \(\chi\) 可由区间内部的函数 \(\exp(-1/(\delta^2-(t-t_0)^2))\) 在区间外补零得到。对长度公式作相同论证，正则曲线的固定端点长度驻定等价于 \(\mathrm{D}_tT=0\)，即轨迹按弧长走时为测地线；它本身未必等速。
+
+\ProseParagraphBreak
+
+若端点分别可在 \(C_0,C_1\) 上移动，先用支撑在内部的变分仍得到测地线条件，再保留边界项：驻定还要求终点速度分别垂直于 \(\mathrm{T}_pC_0,\mathrm{T}_qC_1\)。任意端点切向量都可实现：先在相应端点曲线上取具有该速度的短曲线，再在端点附近的坐标图中用光滑截断函数把这一移动延伸到变分，远处保持不动。因而上述垂直条件也是必要的；反过来，测地线条件和垂直条件使全部项消失，所以它们充分。如果一个端点可在曲面内任意移动，长度的边界项便不可能对所有向量都为零，因为 \(T\) 是非零切向量。这说明最短路问题必须先说清楚端点允许怎样动。
+
+\subsection{测地坐标和径向局部极小性}
+\label{g1:subsec:0902:04}
+
+第一变分只给出了极小的必要条件；要证明短测地线确实最短，还需要一种能同时比较许多竞争曲线的坐标。直觉是从同一点向各个方向发出测地线，用初速度标记它们的终点。这一标记是否会重合，必须先在局部解决。
+
+\begin{definition}
+	\label{g1:def:surface-exponential}
+	设 \(p\) 是光滑度量曲面的内点。对使初值测地线 \(\gamma_v\) 存在至时间 \(1\) 的 \(v\in \mathrm{T}_pM\)，定义\term[zhishuyingshe]{指数映射}[exponential map]
+	\[
+		\exp_p(v)=\gamma_v(1).
+	\]
+	这个名称表示由初速度生成测地线的映射，并不是坐标逐项取通常的指数函数。\symidx{\(\exp_p\)：曲面的指数映射}
+\end{definition}
+
+\begin{proposition}[正常邻域]
+	\label{g1:prop:normal-neighborhood}
+	设 \(M\) 为光滑度量曲面，\(p\) 为内点。则 \(\exp_p\) 在 \(\mathrm{T}_pM\) 中零向量的某个开邻域上光滑，并满足 \(\mathrm{d}(\exp_p)_0=\operatorname{id}_{\mathrm{T}_pM}\)。存在 \(\rho>0\)，使它在 \(B_{2\rho}(0)\subset \mathrm{T}_pM\) 上为到开邻域的光滑微分同胚，其中球由 \(p\) 处的内积定义。
+\end{proposition}
+\begin{proof}
+	零初速度给出常值测地线，在任意紧时间区间上都存在。由\cref{g1:lem:smooth-ode-flow}的有限时间结论，附近初速度的解也存在于包含 \([0,1]\) 的时间区间，并且光滑依赖初值，故 \(\exp_p\) 在零附近定义且光滑。
+
+	初值唯一性给出缩放关系 \(\gamma_{tv}(s)=\gamma_v(ts)\)，只要两边有定义。因此对于固定 \(v\) 及足够小的 \(t\)，有 \(\exp_p(tv)=\gamma_v(t)\)，求 \(t=0\) 处的导数便得 \(\mathrm{d}(\exp_p)_0(v)=v\)。在 \(p\) 附近取一张坐标图后，\cref{g1:lem:surface-local-inverse}适用于这个二维光滑映射，给出零附近的光滑逆。最后在允许的邻域中选取足够小的 \(B_{2\rho}(0)\)。
+\end{proof}
+
+把 \(\mathrm{T}_pM\) 的一组正交单位基写作 \(e_1,e_2\)，用
+\[
+	(x^1,x^2)\longmapsto\exp_p(x^1e_1+x^2e_2)
+\]
+得到的坐标称为\term[cedizuobiao]{测地坐标}[geodesic normal coordinates]，其像称为\term[zhengchanglinyu]{正常邻域}[normal neighborhood]。这些坐标的优点是在中心点恢复欧氏度量的一阶形态。确实，\(\mathrm{d}(\exp_p)_0=\operatorname{id}\) 给出 \(g_{ij}(p)=\delta_{ij}\)；直线坐标 \(x(t)=tv\) 对应测地线，代入方程得 \(\Gamma^k_{ij}(p)v^iv^j=0\)。对所有 \(v\) 成立，加上 \(\Gamma^k_{ij}=\Gamma^k_{ji}\)，推出 \(\Gamma^k_{ij}(p)=0\)。度量相容的坐标式又给出 \(\partial_k g_{ij}(p)=0\)。这些消失只发生在中心点，不能据此认定整个邻域平坦。
+
+\begin{lemma}[Gauss 引理]
+	\label{g1:lem:gauss-lemma}
+	设 \(p\) 是光滑度量曲面的内点，\(\exp_p\) 在零点的星形开邻域 \(B\subset \mathrm{T}_pM\) 上光滑且其中所有径向测地线均定义至时间 \(1\)。则对 \(v\in B\) 及 \(w\in \mathrm{T}_pM\)，有
+	\[
+		\left\langle\mathrm{d}(\exp_p)_v(v),\mathrm{d}(\exp_p)_v(w)\right\rangle_{\exp_p(v)}
+		=\langle v,w\rangle_p.
+	\]
+	特别地，指数映射保持径向长度，并把与径向垂直的向量映为与径向测地线垂直的向量。
+\end{lemma}
+\begin{proof}
+	\(v=0\) 时两端均为零。其余情况取小 \(s\)，令 \(F(t,s)=\exp_p(t(v+sw))\)、\(0\le t\le1\)。星形条件保证这些线段留在定义域内。记 \(A=\partial_tF\)、\(B_1=\partial_sF\)。每条 \(t\) 曲线为测地线，故 \(\mathrm{D}_tA=0\)，且速度平方为 \(|v+sw|_p^2\)。利用混合协变导数相等，得到
+	\[
+		\partial_t\langle A,B_1\rangle
+		=\langle A,\mathrm{D}_sA\rangle
+		=\frac12\partial_s|A|^2
+		=\langle v+sw,w\rangle_p.
+	\]
+	在 \(t=0\) 处，\(F(0,s)=p\)，所以 \(B_1(0,s)=0\)。积分到 \(t=1\) 并取 \(s=0\)，左边正是所求的内积。令 \(w=v\) 给出径向长度保持，令 \(w\perp v\) 给出径向正交性。
+\end{proof}
+
+这一结论称为\term[gaussyinli]{Gauss 引理}[Gauss lemma]。它没有说指数映射保持所有长度。事实上，取 \(e(\theta)=e_1\cos\theta+e_2\sin\theta\)，在 \(r>0\) 处使用极坐标
+\[
+	(r,\theta)\longmapsto\exp_p(re(\theta)),
+\]
+Gauss 引理只保证径向速度长度为 \(1\)、径向与角向正交。度量因而具有形式
+\begin{equation}
+	\label{g1:eq:geodesic-polar-metric}
+	I=\mathrm{d}r^2+a(r,\theta)^2\,\mathrm{d}\theta^2,\qquad a(r,\theta)>0.
+\end{equation}
+其中 \(a(r,\theta)=|\mathrm{d}(\exp_p)_{re(\theta)}(r e'(\theta))|\)。光滑性给出 \(a/r\to1\)，但一般 \(a\ne r\)。例如球面中心为 \(p\) 时，\cref{g1:exm:sphere-geodesics}给出 \(a=R\sin(r/R)\)，在 \(0<r<\pi R\) 内有定义，到了对跖点则所有径向方向相遇。极坐标在 \(r=0\) 的角度没有定义，光滑的测地直角坐标却没有这个缺陷。
+
+\input{Figures/Chapter09-NormalNeighborhood.tex}
+
+\begin{theorem}[径向测地线的最短性]
+	\label{g1:thm:radial-minimizing}
+	设 \(M\) 是光滑度量曲面，\(p\) 为内点，并取 \(\rho>0\)，使 \(\exp_p\) 在 \(B_{2\rho}(0)\) 上为微分同胚。令 \(V=\exp_p(B_\rho(0))\)。对 \(q=\exp_p(v)\in V\)，曲线 \(t\mapsto\exp_p(tv)\)、\(0\le t\le1\)，在 \(M\) 内所有连接 \(p,q\) 的分片 \(C^1\) 曲线中长度最小，长度为 \(|v|\)。当 \(q\ne p\) 时，达到该长度的正则分片光滑曲线具有同一径向轨迹，并沿同一方向行进；以恒速参数化后，最短曲线唯一。
+\end{theorem}
+\begin{proof}
+	记 \(r(x)=|\exp_p^{-1}(x)|\)。先比较留在较大正常邻域中的曲线。Gauss 引理把非中心点处任意速度 \(W\) 正交分解为径向部分与角向部分，因而
+	\[
+		|W|^2=\bigl(\mathrm{d}r(W)\bigr)^2+|W_{\mathrm{ang}}|^2
+		\ge\bigl(\mathrm{d}r(W)\bigr)^2.
+	\]
+	这也可以直接从\eqref{g1:eq:geodesic-polar-metric}读出。设竞争曲线 \(\eta:[a,b]\to V\) 从 \(p\) 到 \(q\ne p\)。为避开中心处的极坐标问题，对任意 \(0<\varepsilon<r(q)\)，取最后一个满足 \(r(\eta(t_\varepsilon))=\varepsilon\) 的时刻。连续性及终点条件保证它存在，且随后 \(r>\varepsilon\)。在这一段上逐段积分，得到
+	\[
+		L(\eta)\ge\int_{t_\varepsilon}^b|(r\circ\eta)'(t)|\,\mathrm{d}t
+		\ge r(q)-\varepsilon.
+	\]
+	令 \(\varepsilon\downarrow0\)，便有 \(L(\eta)\ge r(q)\)。径向曲线的速度恒为 \(|v|\)，所以恰好达到这个界。
+
+	现在允许竞争曲线离开 \(V\)。由于 \(\exp_p\) 在更大的球 \(B_{2\rho}\) 上是微分同胚，\(\overline V=\exp_p(\overline B_\rho)\) 为紧集，其边界就是 \(\exp_p(\partial B_\rho)\)。任何从 \(p\) 出发又离开 \(V\) 的连续曲线，必有一个首先到达该边界的时刻；此前的弧段仍处于正常坐标内。刚才的估计对这一弧段给出长度至少为 \(\rho\)，而 \(r(q)<\rho\)。因此离开 \(V\) 的曲线不可能达到径向曲线的长度。
+
+	最后说明等号。先注意，位于 \(V\) 的任意弧段的长度至少为两端的径向坐标差的绝对值：不经过 \(p\) 时直接积分 \(|(r\circ\eta)'|\)；经过 \(p\) 时，取第一次及最后一次到达 \(p\) 的时刻，分别把两端弧段按上述从中心出发的估计处理，便得到更强的下界 \(r(\eta(a))+r(\eta(b))\)。因此，若总长度恰为 \(r(q)\)，在曲线不经过 \(p\) 的任意一小段上，径向增量的积分不能严格小于长度：否则把这段的严格差值与前后两段的径向估计相加，会使总长度严格大于 \(r(q)\)。于是该段必须同时满足 \(W_{\mathrm{ang}}=0\) 及 \((r\circ\eta)'\ge0\)。正则性使离开 \(p\) 后的径向速度为正，角方向保持常数；它也不可能返回 \(p\)，否则已经走过的正长度不能被后续消去。因此轨迹为从 \(p\) 沿同一方向到 \(q\) 的径向段。其恒速参数由端点、参数区间和长度唯一确定。
+\end{proof}
+
+最短性是以初始点为中心、在足够小范围内成立的结论。正常邻域中的任意两点未必能直接用这一中心点的径向线连接；要讨论它们之间的唯一最短线，须重新以其中一点作上述构造，并核对另一点落在允许范围内。球面大圆可以继续延伸，超过半圈后却不再最短。至此，“速度平行”的微分条件与“短段最短”的长度条件才在其各自的适用范围内接合。

@@ -1,0 +1,336 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 18.4 规范群与平坦模问题
+% 纲要位置：几何学计划纲要.md，第 832 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 规范变换及局部公式
+% * 规范轨道和稳定子
+% * 平坦丛的单值构造
+% * 表示空间模共轭与平坦结构的对应范围
+% * 圆周、环面和 Hopf 丛的对照
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{规范群与平坦模问题}
+\label{g1:sec:1804}
+
+局部联络形式会随着截面变化，但联络还可以被一个真正作用在总空间上的自同构改变。怎样判断两份局部公式只是同一几何对象的不同表示，还是经由自同构成为等价的联络？平坦情形中，曲率已经全部消失，这个问题又留下什么可比较的数据？本节先分清这些操作，再用闭路运输组织平坦结构的整体分类。
+
+\subsection{规范变换及局部公式}
+\label{g1:subsec:1804:01}
+
+固定右主 \(G\) 丛 \(\pi:P\to M\)。这里 \(G\) 为有限维实李群，\(P,M\) 为有限维、无边界、Hausdorff、第二可数光滑流形。底点表示实际位置，纤维则容纳同一位置的不同标架或内部选择。保持底点、同时与右群作用相容的自同构，是本节要研究的变换。
+
+\begin{definition}\label{g1:def:gauge-group}
+	\(P\) 的一个\term[guifanbianhuan]{规范变换}[gauge transformation]是光滑微分同胚 \(\Phi:P\to P\)，满足 \(\pi\circ\Phi=\pi\) 和 \(\Phi(pg)=\Phi(p)g\)。所有规范变换按函数复合组成\term[guifanqun]{规范群}[gauge group]，记为 \(\mathcal G(P)\)。\symidx{\(\mathcal G(P)\)：主丛的规范群}
+\end{definition}
+
+\begin{proposition}[规范变换的表示]\label{g1:prop:gauge-equivariant-functions}
+	设 \(P\to M\) 为光滑右主 \(G\) 丛，\(G\) 为有限维实李群。规范变换与光滑映射 \(u:P\to G\) 一一对应，其对应式及条件为
+	\begin{equation}\label{g1:eq:gauge-equivariant-function}
+		\Phi_u(p)=p\,u(p),\qquad u(pg)=g^{-1}u(p)g.
+	\end{equation}
+	若局部截面满足 \(s_j=s_i g_{ij}\)，记 \(u_i=u\circ s_i\)，则
+	\[
+		u_j=g_{ij}^{-1}u_i g_{ij},\qquad
+		\Phi_u(s_i(x)g)=s_i(x)u_i(x)g.
+	\]
+	在这些函数下，复合对应逐点乘法：\(\Phi_u\circ\Phi_v=\Phi_{uv}\)。
+\end{proposition}
+\begin{proof}
+	每根纤维上的右作用自由且传递，所以 \(\Phi(p)\) 唯一写成 \(p u(p)\)。在局部乘积坐标 \(p=s_i(x)g\) 中，\(\Phi(s_i(x))=s_i(x)u_i(x)\) 给出光滑 \(u_i\)，等变性进一步给出 \(u(s_i(x)g)=g^{-1}u_i(x)g\)。故 \(u\) 光滑且满足所写条件。反之，满足该条件的光滑 \(u\) 给出覆盖恒等的等变光滑映射，其局部表达 \((x,g)\mapsto(x,u_i(x)g)\) 有光滑逆 \((x,g)\mapsto(x,u_i(x)^{-1}g)\)，因而为规范变换。
+
+	令 \(p=s_i(x)\)、\(g=g_{ij}(x)\)，立即得到交叠公式。最后，
+	\[
+		\Phi_u(\Phi_v(p))=p\,v(p)\,u(pv(p))
+		=p\,v(p)\bigl(v(p)^{-1}u(p)v(p)\bigr)=p\,u(p)v(p),
+	\]
+	证明复合规律。注意中间必须使用 \(u\) 的等变性，不能把 \(u(pv(p))\) 直接写成 \(u(p)\)。
+\end{proof}
+
+对共轭左作用 \(g\cdot a=gag^{-1}\)，\cref{g1:prop:associated-fiber-bundle}给出群纤维丛 \(\operatorname{Ad}(P)=P\times_GG\)。式\eqref{g1:eq:gauge-equivariant-function}说明规范群也可识别为这个丛的光滑截面群。大写 \(\operatorname{Ad}(P)\) 的纤维是群，小写 \(\operatorname{ad}(P)=P\times_G\mathfrak g\) 的纤维是李代数；联络之差取值于后者，不要把两个对象混为一谈。
+
+\begin{proposition}[联络的规范变换]\label{g1:prop:gauge-connection-formula}
+	设 \(P\to M\) 为光滑右主 \(G\) 丛，\(\omega\) 为主联络，\(\Phi_u\in\mathcal G(P)\)。则 \(\Phi_u^*\omega\) 仍为主联络，并有
+	\begin{equation}\label{g1:eq:gauge-global-connection}
+		\Phi_u^*\omega=\operatorname{Ad}_{u^{-1}}\omega+u^*\theta^L,
+	\end{equation}
+	其中 \(\theta^L\) 是 \(G\) 的左 Maurer--Cartan 形式。取固定局部截面 \(s_i\)，令 \(A_i=s_i^*\omega\)，则变换后的局部形式和曲率满足
+	\begin{equation}\label{g1:eq:gauge-local-connection}
+		A_i^u=\operatorname{Ad}_{u_i^{-1}}A_i+u_i^*\theta^L,
+		\qquad F_i^u=\operatorname{Ad}_{u_i^{-1}}F_i.
+	\end{equation}
+	矩阵群时，第一式为 \(A_i^u=u_i^{-1}A_i u_i+u_i^{-1}\mathrm{d}u_i\)。
+\end{proposition}
+\begin{proof}
+	\(\Phi_u\) 与右作用交换，并把每个基本场 \(X^\#\) 推到同一个基本场，所以拉回保持联络形式的等变性和再现条件。由\cref{g1:thm:principal-connection-equivalence}，拉回确实是主联络。
+
+	对过 \(p\) 的曲线 \(p(t)\)，微分曲线 \(p(t)u(p(t))\)。由乘积法则，其速度分成把 \(p'(0)\) 右移的部分，以及由 \(u(p(t))\) 的变化产生的竖直部分。联络在前者上取值 \(\operatorname{Ad}_{u(p)^{-1}}\omega_p(p'(0))\)，在后者上取值 \(\theta^L_{u(p)}((\mathrm{d}u)_p p'(0))\)。这正是\eqref{g1:eq:gauge-global-connection}；它也就是式\eqref{g1:eq:principal-connection-trivialization}中允许截面和群参数同时变化的计算。再沿 \(s_i\) 拉回，得到局部联络公式。
+
+	曲率的定义与拉回交换，故新曲率为 \(\Phi_u^*\Omega\)。原曲率水平，刚才速度分解中的竖直部分对曲率求值没有贡献。保留下来的右移部分由等变性给出 \(\Phi_u^*\Omega=\operatorname{Ad}_{u^{-1}}\Omega\)，再沿截面拉回即得曲率公式。
+\end{proof}
+
+现在可以比较三种容易混淆的操作。被动地把截面 \(s_i\) 换成 \(s_i k_i\)，联络 \(\omega\) 不变，局部表达却按同一个公式变化；主动地施行 \(\Phi_u\)，则保持所选 \(s_i\) 不变，把联络改为 \(\Phi_u^*\omega\)。两者公式相同，是因为 \(\Phi_u\circ s_i=s_i u_i\)，但各片任取的换截面函数 \(k_i\) 不必满足 \(u_j=g_{ij}^{-1}u_i g_{ij}\)，所以并不自动拼成一个整体规范变换。
+
+\ProseParagraphBreak
+
+底空间坐标变化又是第三件事。若 \(x=x(y)\)，同一个一形式 \(A=\sum_iA_i\,\mathrm{d}x^i\) 在新坐标下写成 \(A'_a=\sum_iA_i\,\partial x^i/\partial y^a\)，只使用协变指标的 Jacobian 变换。若真正将底点按微分同胚 \(f:M\to M\) 移动，首先得到的是拉回丛 \(f^*P\) 及其拉回联络；还须给定 \(P\) 与 \(f^*P\) 的丛同构才能在同一个总空间上比较。这不属于本节覆盖 \(\operatorname{id}_M\) 的规范群。
+
+\subsection{规范轨道和稳定子}
+\label{g1:subsec:1804:02}
+
+以 \(\mathcal A(P)\) 记 \(P\) 上全部光滑主联络。它由\cref{g1:prop:principal-connection-affine}成为以 \(\Omega^1(M;\operatorname{ad}(P))\) 为平移空间的仿射空间。令 \(\omega\cdot\Phi=\Phi^*\omega\)，这给出右规范作用，因为
+\[
+	(\omega\cdot\Phi)\cdot\Psi=\Psi^*\Phi^*\omega
+	=(\Phi\circ\Psi)^*\omega=\omega\cdot(\Phi\circ\Psi).
+\]
+同一轨道中的联络称为规范等价。我们此时只定义等价类集合 \(\mathcal A(P)/\mathcal G(P)\)，尚未给这个无穷维商建立流形结构。
+
+\ProseParagraphBreak
+
+给定基点 \(x_0\) 和纤维点 \(p_0\in P_{x_0}\)，把沿分段光滑路径 \(\gamma\) 的水平运输记为 \(T_\gamma\)。\cref{g1:thm:principal-horizontal-lift,g1:prop:principal-transport-laws}保证它在整个紧参数区间存在，且与右作用交换。对基于 \(x_0\) 的环路，有唯一 \(h_\gamma\in G\) 满足 \(T_\gamma(p_0)=p_0h_\gamma\)。所有这样的 \(h_\gamma\) 构成 \(G\) 的子群，记为 \(\operatorname{Hol}_{p_0}(\omega)\)，称为该点的\term[zhulianluoholonomyqun]{主联络 holonomy 群}[holonomy group of a principal connection]。它未必闭，这里不预设其具有某种嵌入李群结构。
+
+\begin{theorem}[规范稳定子与闭路运输]\label{g1:thm:gauge-stabilizer-centralizer}
+	设 \(G\) 为有限维实李群，\(P\to M\) 为光滑右主 \(G\) 丛，\(M\) 非空、连通、有限维、无边界、Hausdorff、第二可数，\(\omega\) 为光滑主联络。固定 \(p_0\in P_{x_0}\)。则取值映射 \(\Phi_u\mapsto u(p_0)\) 给出群同构
+	\[
+		\operatorname{Stab}_{\mathcal G(P)}(\omega)
+		\cong Z_G(\operatorname{Hol}_{p_0}(\omega)),
+	\]
+	右侧为与全部闭路运输元素交换的群元素所成的中心化子。特别地，固定 \(p_0\) 的规范子群在 \(\mathcal A(P)\) 上自由作用。
+\end{theorem}
+\begin{proof}
+	先核对 holonomy 确为子群。若先走 \(\gamma\) 再走 \(\eta\)，等变性给出
+	\[
+		T_{\gamma*\eta}(p_0)=T_\eta(p_0h_\gamma)
+		=p_0h_\eta h_\gamma,
+		\qquad h_{\gamma*\eta}=h_\eta h_\gamma.
+	\]
+	常路径给出 \(e\)，反向路径给出逆元；虽然所写乘法次序反转，全部取值仍对群乘法封闭。
+
+	若 \(\Phi^*\omega=\omega\)，则 \(\Phi\) 保持水平分布，因此由提升唯一性与所有 \(T_\gamma\) 交换。记 \(\Phi(p_0)=p_0a\)。对闭路，一方面 \(\Phi(T_\gamma p_0)=p_0a h_\gamma\)，另一方面 \(T_\gamma(\Phi p_0)=p_0h_\gamma a\)，故 \(a\) 与全部 \(h_\gamma\) 交换。对从 \(x_0\) 到 \(x\) 的任意分段光滑路径 \(\gamma\)，等变性又迫使
+	\begin{equation}\label{g1:eq:gauge-stabilizer-transport}
+		\Phi(T_\gamma(p_0)g)=T_\gamma(p_0)a g.
+	\end{equation}
+	连通光滑流形可用有限段坐标线连接任意两点，所以此式确定 \(\Phi\) 在整个 \(P\) 上的取值，证明取值映射单射。
+
+	反过来，给定中心化子中的 \(a\)，用\eqref{g1:eq:gauge-stabilizer-transport}定义 \(\Phi\)。若另一路径 \(\beta\) 到达同一点，写 \(T_\beta(p_0)=T_\gamma(p_0)k\)。沿 \(\beta*\bar\gamma\) 运输可知 \(k\in\operatorname{Hol}_{p_0}(\omega)\)。同一点的两种纤维表示于是满足 \(g=kg'\)，而
+	\[
+		T_\beta(p_0)a g'=T_\gamma(p_0)ka g'
+		=T_\gamma(p_0)a k g'=T_\gamma(p_0)a g.
+	\]
+	所以定义与路径无关。
+
+	为核对光滑性，在任一点附近取坐标球，先沿一条固定路径到球心，再沿坐标径向线到各点。水平提升对参数光滑依赖，故 \(s(x)=T_{\gamma_x}(p_0)\) 是该球上的光滑截面。在此平凡化中 \(\Phi(s(x)g)=s(x)a g\)，所以 \(\Phi\) 光滑；把 \(a\) 换成 \(a^{-1}\) 给出光滑逆。定义也表明它与沿任意路径的水平运输交换，故保持水平分布，因而保持联络。最后，复合在 \(p_0\) 的取值是 \(ab\)，所以取值映射保持群运算。若 \(\Phi\) 还固定 \(p_0\)，则 \(a=e\)，上式给出 \(\Phi=\operatorname{id}\)，得到自由性结论。
+\end{proof}
+
+稳定子的出现是具体的对称现象。例如 \(G\) 的中心总包含在上述中心化子中；对阿贝尔群，只要底空间连通，保持联络的规范变换就由一个常群元素确定。使用带基点的规范群可以消去这些稳定子，但仅凭作用自由仍不能断言商是流形：还需要选择函数空间、拓扑和适当的局部分析。
+
+\subsection{平坦丛的单值构造}
+\label{g1:subsec:1804:03}
+
+主联络 \(\omega\) 平坦，指 \(\Omega=0\)。\cref{g1:thm:flat-principal-local-section}已把这个条件转成局部存在水平截面 \(s\)，即 \(s^*\omega=0\)。如果两个这样的截面满足 \(s'=s k\)，局部变换公式给出 \(0=k^*\theta^L\)。\(\theta^L_g:\mathrm{T}_gG\to\mathfrak g\) 可逆，故 \(\mathrm{d}k=0\)，\(k\) 在每个交叠连通分支上为常数。这个局部常数性质使第十五章的平坦运输论证可以不依赖向量空间结构而继续成立。
+
+\begin{proposition}[平坦主丛的同伦运输]\label{g1:prop:flat-principal-homotopy}
+	设有限维实李群 \(G\) 的光滑右主丛 \(P\to M\) 带平坦主联络，\(M\) 为无边界、Hausdorff、第二可数光滑流形。水平运输唯一延拓到连续路径，且只依赖定端点连续同伦类。若 \(M\) 非空且单连通，则给定 \(p_0\in P_{x_0}\)，存在唯一整体水平截面 \(s\)，满足 \(s(x_0)=p_0\)；从而带联络的丛同构于具有乘积水平分布的 \(M\times G\)。
+\end{proposition}
+\begin{proof}
+	在水平截面域 \(U\) 内定义
+	\[
+		T^U_{y\leftarrow x}(s(x)g)=s(y)g.
+	\]
+	若改用 \(s'=s k\)，而 \(x,y\) 在交叠的同一连通分支内，则 \(k(x)=k(y)\)，所以这个映射不变。连续路径的像可以细分成有限段，每段落在一个这样的截面域内；将局部运输依路径次序复合。增加分点不改变结果，因为 \(T^U_{z\leftarrow y}T^U_{y\leftarrow x}=T^U_{z\leftarrow x}\)。两种选择取共同细分后逐段比较，便得到定义无关性。对于分段光滑路径，水平截面坐标中的群分量恒定，故这里的运输与前节水平提升一致。
+
+	对一个定端点连续同伦，将参数方形细分，使每个闭小格的像落在一个水平截面域内。这样的有限网格由紧性和\cref{g1:lem:lebesgue-number}得到。每个小格上，先横后竖和先竖后横都保持同一个群分量，因此边运输满足 \(v_{i+1,j}\circ h_{ij}=h_{i,j+1}\circ v_{ij}\)。将一行的这些等式按次序复合，得到 \(v_{mj}\circ H_j=H_{j+1}\circ v_{0j}\)。固定端点使左右两边的竖边运输都是恒等，故相邻行运输相同，最后得到同伦两端的运输相同。这就是\cref{g1:thm:flat-path-independence}证明中网格消去的同一个论证，未交换非交换群中的因子次序，也不需要先把连续同伦光滑化。
+
+	若 \(M\) 单连通，从 \(x_0\) 到 \(x\) 的任意两条路径定端点同伦，故可定义 \(s(x)=T_\gamma(p_0)\)。在任一连通水平截面域 \(U\) 内，固定到其中一点的路径，再在 \(U\) 内追加路径，便知 \(s\) 等于一个局部水平截面右乘固定群元素。因此 \(s\) 光滑且水平。运输唯一性还保证通过 \(p_0\) 的水平截面唯一。映射 \((x,g)\mapsto s(x)g\) 是主丛微分同胚，并把保持 \(g\) 不变的乘积水平分布送到原水平分布。
+\end{proof}
+
+\begin{proposition}[主丛的单值表示]\label{g1:prop:flat-principal-monodromy}
+	设 \(P\to M\) 为有限维实李群 \(G\) 的平坦光滑右主丛，\(M\) 非空、连通、无边界、Hausdorff、第二可数。固定 \(x_0\in M\)、\(p_0\in P_{x_0}\)，并令 \(T_\gamma(p_0)=p_0h_\gamma\)。则
+	\begin{equation}\label{g1:eq:principal-monodromy-convention}
+		\rho:\pi_1(M,x_0)\longrightarrow G,\qquad
+		\rho([\gamma])=h_\gamma^{-1}
+	\end{equation}
+	是群同态。将 \(p_0\) 换成 \(p_0a\) 时，\(\rho\) 换成 \(a^{-1}\rho a\)。存在整体水平截面，当且仅当 \(\rho\) 平凡。
+\end{proposition}
+\begin{proof}
+	前一命题使 \(h_\gamma\) 只依赖环路类。由于 \(h_{\gamma*\eta}=h_\eta h_\gamma\)，取逆得到 \(\rho([\gamma][\eta])=\rho([\gamma])\rho([\eta])\)。换基点后，\(T_\gamma(p_0a)=p_0h_\gamma a=(p_0a)(a^{-1}h_\gamma a)\)，故有共轭公式。
+
+	整体水平截面使全部闭路运输恒等，所以 \(\rho\) 平凡。反之，若所有闭路运输恒等，则两条从 \(x_0\) 到 \(x\) 的路径 \(\gamma,\beta\) 满足 \(T_\beta^{-1}T_\gamma=T_{\gamma*\bar\beta}=\operatorname{id}\)。于是可沿路径定义 \(s(x)=T_\gamma(p_0)\)，并用前一命题中的局部公式证明它光滑且水平。
+\end{proof}
+
+这里取逆的原因与\cref{g1:prop:flat-monodromy}完全相同：道路乘积先走左边，运输复合却先作用右边。若 \(\tau:G\to\operatorname{GL}(V)\) 是表示，则关联向量丛的实际闭路运输为 \(\tau(h_\gamma)\)，按第十五章约定得到的左单值表示恰是 \(\tau\circ\rho\)。
+
+\begin{theorem}[由单值构造平坦主丛]\label{g1:thm:principal-monodromy-construction}
+	设 \(M\) 为非空、连通、有限维、无边界、Hausdorff、第二可数光滑流形，\(G\) 为有限维实李群，\(\Gamma=\pi_1(M,x_0)\)。给定群同态 \(\rho:\Gamma\to G\)，令 \(\widetilde M\to M\) 为道路类万有覆盖，并取前置环路的左甲板作用 \(L_\gamma\)。则
+	\begin{equation}\label{g1:eq:flat-principal-representation-quotient}
+		P_\rho=(\widetilde M\times G)/\Gamma,
+		\qquad \gamma\cdot(q,g)=(L_\gamma q,\rho(\gamma)g)
+	\end{equation}
+	带有自然光滑右主 \(G\) 丛结构。局部保持第二因子恒定给出平坦主联络 \(\omega_\rho\)；相对于 \(p_0=[\widetilde x_0,e]\)，其单值恰为 \(\rho\)。
+\end{theorem}
+\begin{proof}
+	流形的坐标球可缩，故\cref{g1:thm:path-class-universal-cover}适用。\cref{g1:prop:universal-deck-discontinuous}给出覆盖纤维上自由传递的左甲板作用，满足 \(L_\gamma L_\delta=L_{\gamma\delta}\)。\(\rho\) 是同态，因此题中公式确为左作用。它与第二因子上的右 \(G\) 作用交换，所以 \([q,g]a=[q,ga]\) 良定义。
+
+	取连通的均匀覆盖坐标球 \(U\)，选一张覆盖片的局部逆 \(\sigma_U:U\to\widetilde M\)。映射
+	\[
+		U\times G\longrightarrow P_\rho|_U,
+		\qquad (x,g)\longmapsto[\sigma_U(x),g]
+	\]
+	是双射：覆盖纤维的任意点唯一写成 \(L_\gamma\sigma_U(x)\)，而 \([L_\gamma\sigma_U(x),g]=[\sigma_U(x),\rho(\gamma)^{-1}g]\)。它也是同胚，因为轨道商映射开，限制在一张覆盖片乘 \(G\) 后仍是开连续双射。
+
+	若 \(\sigma_V=L_{c(x)}\sigma_U\)，则 \(c(x)\in\Gamma\) 局部常值：在一个更小的连通均匀覆盖邻域中，两局部逆各自落在固定覆盖片内，使它们在一点相等的甲板变换便在整片上使它们相等。因而截面 \(s_U=[\sigma_U,e]\)、\(s_V=[\sigma_V,e]\) 满足 \(s_V=s_U\rho(c(x))^{-1}\)。过渡函数局部常值，尤其光滑。由这些乘积图得到光滑主丛；不同底点的分离由 \(M\) 的 Hausdorff 性给出，同一纤维的不同点在同一乘积图内分开。底空间有可数平凡化子覆盖，各乘积图均有可数基，故总空间第二可数。
+
+	在每个局部截面中取 \(A_U=0\)。由于过渡函数局部常值，\cref{g1:thm:principal-connection-local-data}的粘合公式成立，故得到主联络，其曲率为零。沿环路 \(\gamma\) 的覆盖提升，从 \(\widetilde x_0\) 到 \(L_{[\gamma]}\widetilde x_0\)，保持 \(g=e\) 给出水平提升。因此
+	\[
+		T_\gamma(p_0)=[L_{[\gamma]}\widetilde x_0,e]
+		=[\widetilde x_0,\rho([\gamma])^{-1}]
+		=p_0\rho([\gamma])^{-1},
+	\]
+	按照\eqref{g1:eq:principal-monodromy-convention}取逆，恢复给定的 \(\rho\)。
+\end{proof}
+
+\subsection{表示空间模共轭与平坦结构的对应范围}
+\label{g1:subsec:1804:04}
+
+上述构造表明每个表示都能实现。为了得到分类，还必须证明任意平坦主丛都由自己的单值重建，并准确说明什么时候将两个对象视为相同。这里始终固定底流形及其恒等映射；允许底流形微分同胚的分类是另一问题。
+
+\begin{theorem}[平坦主丛的分类]\label{g1:thm:flat-principal-classification}
+	设 \(M\) 为非空、连通、有限维、无边界、Hausdorff、第二可数光滑流形，\(G\) 为有限维实李群，固定 \(x_0\in M\)。光滑右主 \(G\) 丛连同指定平坦主联络，在覆盖 \(\operatorname{id}_M\) 且保持联络的主丛同构下的等价类，与
+	\[
+		\operatorname{Hom}(\pi_1(M,x_0),G)/G
+	\]
+	一一对应，其中 \(G\) 按同时共轭作用。若还指定 \(p_0\in P_{x_0}\)，并要求同构保持该点，则对应未经共轭的表示集合 \(\operatorname{Hom}(\pi_1(M,x_0),G)\)。
+\end{theorem}
+\begin{proof}
+	取带点平坦主丛 \((P,\omega,p_0)\)，令 \(\rho\) 为其单值。对 \(q=[\alpha]\in\widetilde M\)，定义
+	\[
+		\widehat F(q,g)=T_\alpha(p_0)g.
+	\]
+	同伦不变性保证它与 \(\alpha\) 的代表无关。若 \(\gamma\in\Gamma\)，则
+	\[
+		T_{\gamma*\alpha}(p_0)=T_\alpha(p_0)\rho(\gamma)^{-1},
+		\qquad \widehat F(L_\gamma q,\rho(\gamma)g)=\widehat F(q,g).
+	\]
+	所以它下降为 \(F:P_\rho\to P\)。
+
+	在一个足够小的连通水平截面域 \(U\) 内，先固定到其中一点的路径，再在 \(U\) 中追加路径，所得 \(T_\alpha(p_0)\) 给出一张水平截面。上述 \(F\) 在对应的局部乘积图中就是 \((x,g)\mapsto s(x)g\)。因此它在每根纤维上双射，有光滑局部逆，整体为主丛微分同胚；它还把乘积的水平曲线送到水平曲线，所以保持联络，并将 \([\widetilde x_0,e]\) 送到 \(p_0\)。这证明重建性。
+
+	若两个带点平坦主丛同构，等变性及水平提升唯一性使它们的 \(h_\gamma\) 完全相同，故表示相同；反过来，相同表示使两者都等价于同一个 \(P_\rho\)，故带点等价类由表示分类。
+
+	忘掉纤维点以后，可以把 \(p_0\) 换成任意 \(p_0a\)，表示正好变成 \(a^{-1}\rho a\)。每个这样的共轭都能由换点实现，且不改变底层带联络的主丛，故得到未指定纤维点的分类。也可直接核对：若 \(\rho'=a^{-1}\rho a\)，则 \([q,g]\mapsto[q,a^{-1}g]\) 给出 \(P_\rho\to P_{\rho'}\) 的保持联络的主丛同构。
+\end{proof}
+
+若一开始已固定底层光滑主丛 \(P\)，令 \(\mathcal A_{\mathrm{flat}}(P)\) 表示它的平坦联络集合，则正确的对应是
+\begin{equation}\label{g1:eq:fixed-bundle-flat-moduli}
+	\begin{split}
+		&\mathcal A_{\mathrm{flat}}(P)/\mathcal G(P)\\
+		&\quad\cong\{[\rho]\in\operatorname{Hom}(\pi_1(M,x_0),G)/G:
+		P_\rho\cong P\text{ 作为光滑主丛}\}.
+	\end{split}
+\end{equation}
+因为选取一个 \(P_\rho\to P\) 的光滑主丛同构可搬运联络，而换一个这样的同构恰好相差规范变换。右侧可能为空，也可能只占全部表示类的一部分。定理分类的是带联络对象，不是把全部表示类不加条件地塞进任意固定主丛。
+
+\ProseParagraphBreak
+
+“表示空间模共轭”在这里首先是一个集合商。即使给表示集合赋予逐点收敛拓扑，共轭商也未必为 Hausdorff 空间。例如取 \(M=S^1\)、\(G=\operatorname{GL}(2,\mathbb R)\)，表示由生成元的像决定。矩阵
+\[
+	U_t=\begin{pmatrix}1&t\\0&1\end{pmatrix}\qquad(t>0)
+\]
+都与 \(U_1\) 共轭，因为 \(U_t=\operatorname{diag}(t,1)U_1\operatorname{diag}(t,1)^{-1}\)，但 \(U_t\to I\)，而 \(I\) 不与 \(U_1\) 共轭。因此 \(U_1\) 的共轭轨道不是闭集，商中的对应单点也不闭。若希望得到光滑模空间，必须进一步讨论对象范围、稳定子与商拓扑，不能仅靠这份集合分类。
+
+\subsection{圆周、环面和 Hopf 丛的对照}
+\label{g1:subsec:1804:05}
+
+先看圆周。\cref{g1:thm:circle-fundamental}给出 \(\pi_1(S^1)=\mathbb Z\)，所以一般 \(G\) 的平坦主丛由一个群元素的共轭类描述。一个元素描述的不是曲率，而是绕一周以后仍可能留下的整体运输。
+
+\begin{example}[圆周上的相位]\label{g1:exm:circle-principal-flat-moduli}
+	取 \(G=\operatorname{U}(1)\)，其李代数是 \(\mathrm{i}\mathbb R\)。在平凡主丛 \(S^1\times\operatorname{U}(1)\) 的标准截面中，取
+	\[
+		A_a=\mathrm{i}a\,\vartheta,\qquad a\in\mathbb R,
+		\qquad \vartheta=(x\,\mathrm{d}y-y\,\mathrm{d}x)|_{S^1}.
+	\]
+	局部角度 \(\theta\) 中 \(\vartheta=\mathrm{d}\theta\)，但 \(\theta\) 不是圆周上的整体实值函数。一维底空间上曲率恒为零。沿正向一周，水平方程给出 \(h=\exp(-2\pi\mathrm{i}a)\)，所以 \(\rho(1)=\exp(2\pi\mathrm{i}a)\)。规范变换 \(u(e^{\mathrm{i}\theta})=e^{\mathrm{i}m\theta}\)、\(m\in\mathbb Z\)，使 \(A_a\) 变成 \(A_{a+m}\)。
+
+	这些公式给出全部规范类。事实上，任意局部形式在整体标准截面中写成 \(A=\mathrm{i}f(\theta)\,\mathrm{d}\theta\)，其中 \(f\) 光滑且 \(2\pi\) 周期。令 \(a=(2\pi)^{-1}\int_0^{2\pi}f(t)\,\mathrm{d}t\)，则 \(\chi(\theta)=\int_0^\theta(a-f(t))\,\mathrm{d}t\) 周期，故 \(u=e^{\mathrm{i}\chi}\) 是整体规范变换，并将 \(A\) 变为 \(A_a\)。一般 \(u:S^1\to\operatorname{U}(1)\) 在实线提升为 \(e^{\mathrm{i}\chi(\theta)}\)，满足 \(\chi(\theta+2\pi)-\chi(\theta)=2\pi m\)；这是第五章圆周覆盖提升和整数绕数的结论，提升局部光滑。故 \(\int_{S^1}u^{-1}\mathrm{d}u=2\pi\mathrm{i}m\)，说明 \(A_a,A_b\) 规范等价当且仅当 \(b-a\in\mathbb Z\)。
+
+	所以模集合为 \(\mathbb R/\mathbb Z\simeq\operatorname{U}(1)\)。每个表示都由上述平凡丛上的联络实现，分类定理于是还说明，圆周上每个平坦主 \(\operatorname{U}(1)\) 丛的底层光滑丛都平凡。然而只有 \(a\in\mathbb Z\) 的类具有整体水平截面。
+\end{example}
+
+\begin{example}[环面上的两个相位]\label{g1:exm:torus-principal-flat-moduli}
+	由\cref{g1:prop:product-fundamental}，\(\pi_1(T^2)\cong\mathbb Z^2\)。一般 \(G\) 的表示由一对交换元素 \((a,b)\) 决定，等价关系为同时共轭。交换条件来自环面的基本群关系，不能省略成任意两个群元素。
+
+	对 \(\operatorname{U}(1)\)，在 \(T^2\times\operatorname{U}(1)\) 上取
+	\[
+		A=\mathrm{i}(a\,\mathrm{d}\theta+b\,\mathrm{d}\varphi),\qquad a,b\in\mathbb R,
+	\]
+	其中两角度微分分别是两个圆周因子的整体角度一形式。曲率为零，两个生成元的单值为 \((e^{2\pi\mathrm{i}a},e^{2\pi\mathrm{i}b})\)。每一对相位都能这样得到，所以分类定理表明全部平坦主 \(\operatorname{U}(1)\) 丛均在这份平凡底层丛上实现；其规范类为 \((\mathbb R/\mathbb Z)^2\)。具体的 \(u=e^{\mathrm{i}(m\theta+n\varphi)}\) 给出整数平移 \((a,b)\mapsto(a+m,b+n)\)，而不同相位不能规范等价，因为阿贝尔群中的共轭没有作用。规范稳定子在每一类上均为常数 \(\operatorname{U}(1)\)。
+\end{example}
+
+前两例中，局部平坦性与非平凡整体运输可以并存。下面的圆周主丛则连平坦联络也不存在；我们用一个直接积分证明这一点，不把障碍留给后卷的示性类理论。
+
+\begin{example}[Hopf 丛与曲率通量]\label{g1:exm:hopf-principal-curvature}
+	令 \(\operatorname{U}(1)\) 在 \(S^3\subset\mathbb C^2\) 上右作用为 \((z_0,z_1)\lambda=(z_0\lambda,z_1\lambda)\)。作用自由且固有，商为 \(\mathbb{CP}^1\)，得到\term[hopfcong]{Hopf 丛}[Hopf bundle]
+	\[
+		\operatorname{U}(1)\longrightarrow S^3\longrightarrow\mathbb{CP}^1.
+	\]
+	这里 \(\mathbb{CP}^1\) 微分同胚于 \(S^2\)：在图 \([1:w]\)、\(w=x+\mathrm{i}y\) 中，映射为
+	\[
+		[1:w]\longmapsto\frac{(2x,2y,1-|w|^2)}{1+|w|^2}.
+	\]
+	其像是去掉南极的单位球面，逆由 \(w=(X+\mathrm{i}Y)/(1+Z)\) 给出；在另一图 \([v:1]\) 中代入 \(w=1/v\)，便在南极光滑延拓，且给出相应光滑局部逆。这也说明可用两张射影图描述球面。下面取复坐标 \((x,y)\) 给出的定向。
+
+	总空间上的 \(\mathrm{i}\mathbb R\) 值一形式
+	\[
+		\omega=\overline z_0\,\mathrm{d}z_0+\overline z_1\,\mathrm{d}z_1
+	\]
+	是主联络。它在 \(S^3\) 上纯虚，因为实部为 \(\tfrac12\mathrm{d}(|z_0|^2+|z_1|^2)=0\)；它在基本向量 \((z_0\mathrm{i}t,z_1\mathrm{i}t)\) 上取值 \(\mathrm{i}t\)，且在右乘固定 \(\lambda\in\operatorname{U}(1)\) 下不变。再现条件与等变性因而都成立。
+
+	在 \(U_0=\{z_0\ne0\}\)、\(U_1=\{z_1\ne0\}\) 上分别取截面
+	\[
+		s_0(w)=\frac{(1,w)}{\sqrt{1+|w|^2}},\qquad
+		s_1(v)=\frac{(v,1)}{\sqrt{1+|v|^2}}.
+	\]
+	交叠处 \(v=1/w\)，直接相乘得到 \(s_1(1/w)=s_0(w)g_{01}(w)\)，其中
+	\begin{equation}\label{g1:eq:hopf-transition}
+		g_{01}(w)=\frac{|w|}{w}.
+	\end{equation}
+	因此局部截面不是任意两份独立坐标：在重叠环带上，它们相差一个沿圆周绕行的群元素。
+
+	记 \(r=1+|w|^2\)。将 \(s_0\) 代入 \(\omega\)，微分归一化因子后得到
+	\[
+		A_0=\frac{\overline w\,\mathrm{d}w-w\,\mathrm{d}\overline w}{2r}
+		=\frac{\mathrm{i}(x\,\mathrm{d}y-y\,\mathrm{d}x)}{1+x^2+y^2}.
+	\]
+	因为群阿贝尔，曲率在底空间上为整体二形式 \(F\)，其此图表达为
+	\begin{equation}\label{g1:eq:hopf-curvature-flux}
+		\begin{gathered}
+			F|_{U_0}=\mathrm{d}A_0
+			=\frac{\mathrm{d}\overline w\wedge\mathrm{d}w}{(1+|w|^2)^2}
+			=\frac{2\mathrm{i}\,\mathrm{d}x\wedge\mathrm{d}y}{(1+x^2+y^2)^2},\\
+			\frac1{2\pi\mathrm{i}}\int_{\mathbb{CP}^1}F=1.
+		\end{gathered}
+	\end{equation}
+	最后一个积分可在此图中用极坐标计算：去掉的单点对光滑二形式积分没有贡献，而 \(\int_0^\infty 2R(1+R^2)^{-2}\,\mathrm{d}R=1\)，角变量积分为 \(2\pi\)。曲率在另一图光滑，亦保证这一非紧图积分就是整个紧曲面的积分。
+
+	若该主丛有整体截面 \(s\)，则整体一形式 \(A=s^*\omega\) 满足 \(F=\mathrm{d}A\)。由闭曲面上的 Stokes 定理，\(\int F=0\)，与\eqref{g1:eq:hopf-curvature-flux}矛盾，所以丛不平凡。更强地，任何另一主联络与 \(\omega\) 的差都为 \(\pi^*\beta\)，其中 \(\beta\) 是底空间上的 \(\mathrm{i}\mathbb R\) 值一形式；这是\cref{g1:prop:principal-connection-affine}在阿贝尔群、平凡伴随表示下的结论。其曲率为 \(F+\mathrm{d}\beta\)，积分仍为 \(2\pi\mathrm{i}\)，所以不可能恒为零。Hopf 丛没有平坦主联络。
+\end{example}
+
+\begin{center}
+	\small
+	\begin{tabular}{p{.19\textwidth}p{.32\textwidth}p{.37\textwidth}}
+		\toprule
+		底层主丛 & 平坦联络与规范类 & 整体信息 \\
+		\midrule
+		\(S^1\times\operatorname{U}(1)\) & 相位 \(e^{2\pi\mathrm{i}a}\) & 曲率为零仍可有非平凡闭路运输。 \\
+		\(T^2\times\operatorname{U}(1)\) & 两个相位 & 两个基本圆周各自记录单值。 \\
+		Hopf 丛 \(S^3\to S^2\) & 不存在平坦联络 & 曲率积分非零，且不随联络改变。 \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+表中的区别同时涉及联络和底层丛。圆周与环面的例子表明，平凡丛不要求所选平坦联络有整体水平截面；Hopf 例子则说明，有些底层丛连平坦联络都不容许。另一方面，\(S^2\) 单连通，\cref{g1:prop:sphere-simply-connected}与分类定理也说明：其上所有平坦主丛都必须平凡。这与刚才的直接曲率积分相互核对，但不能用“局部可以令联络为零”来跳过整体障碍。

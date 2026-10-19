@@ -1,0 +1,332 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 1.3 欧氏等距变换的结构定理
+% 纲要位置：几何学计划纲要.md，第 134 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 由距离保持恢复仿射性
+% 
+%   先用中点及极化恢复线性结构，再分离正交部分和平移部分。
+% 
+% * 正交算子的实标准分块
+% * 不动点、螺旋运动与平移分量
+% * 反射生成与低维分类
+% 
+% 纲要内容结束
+
+\section{欧氏等距变换的结构定理}
+\label{g1:sec:0103}
+
+一张刚性平面图形可以平移、旋转，也可以翻转后与原图形重合。这些动作都保持两点间的距离，但只从“距离保持”出发，是否还可能有形状更复杂的变换？这个问题不能先假定变换由矩阵给出，否则已经把需要证明的线性结构放进了假设。本节先从距离恢复中点，再恢复仿射结构，最后说明正交部分怎样控制旋转与反射，平移部分又有哪些能够通过改变原点消去。
+
+\subsection{由距离保持恢复仿射性}
+\label{g1:subsec:0103:01}
+
+在一个有限维实仿射空间的平移向量空间上给定正定内积，就得到了\term[oushikongjian]{欧氏空间}[Euclidean space]。其距离定义为 \(d(p,q)=\lVert q-p\rVert\)。选取原点和标准正交方向基后，可以将它写成 \(\mathbb R^n\)，内积成为通常的点积；更换原点不会改变点差。以下先在这种坐标中论证，再把结果解释为不依赖原点的几何结构。
+
+\begin{definition}
+	\label{g1:def:isometry}
+	设 \(E\) 是有限维欧氏空间。双射 \(f\colon E\rightarrow E\) 若对所有 \(p,q\in E\) 满足
+	\[
+		d(f(p),f(q))=d(p,q),
+	\]
+	就称为 \(E\) 的\term[dengjubianhuan]{等距变换}[isometry]。若暂不要求双射，只要求上述等式，称 \(f\) 为距离保持映射。
+\end{definition}
+
+距离保持首先给出连续性：两像点之间的距离恰好等于原距离。更关键的是，它还给出了中点。对任意 \(a,b,z\in\mathbb R^n\)，展开内积可得
+\[
+	\lVert z-a\rVert^2+\lVert z-b\rVert^2
+	=2\left\lVert z-\frac{a+b}{2}\right\rVert^2
+	+\frac12\lVert a-b\rVert^2.
+\]
+因此，同时满足
+\[
+	\lVert z-a\rVert=\lVert z-b\rVert=\frac12\lVert a-b\rVert
+\]
+的点只有 \((a+b)/2\)。这里既要求两段等长，也要求其长度恰好是端点距离的一半；当 \(a\ne b\) 时，仅有“到两端等距”会得到整个中垂超平面，不能确定中点。
+
+\ProseParagraphBreak
+
+实有限维内积空间上的线性算子 \(Q\)，若满足 \(\langle Qu,Qv\rangle=\langle u,v\rangle\) 对所有向量成立，称为\term[zhengjiaosuanzi]{正交算子}[orthogonal operator]。由伴随的定义，这等价于 \(Q^*Q=I\)。这样的算子单射，因定义域和值域同维而可逆，故 \(Q^*=Q^{-1}\)。在标准正交基下，其矩阵满足 \(Q^{\mathsf T}Q=I\)。复合与求逆都保持这一性质，所有这样的 \(n\) 阶矩阵组成\term[zhengjiaoqun]{正交群}[orthogonal group]，记为 \(O(n)\)。
+\symidx{\(O(n)\)：实正交群}
+
+\begin{theorem}[等距变换的仿射形式]
+	\label{g1:thm:isometry-affine}
+	设 \(n\geq 1\)，且 \(f\colon\mathbb R^n\rightarrow\mathbb R^n\) 满足 \(\lVert f(x)-f(y)\rVert=\lVert x-y\rVert\) 对所有 \(x,y\) 成立。那么存在唯一的向量 \(t\in\mathbb R^n\) 和唯一的正交线性算子 \(Q\)，使
+	\[
+		f(x)=Qx+t.
+	\]
+	特别地，\(f\) 自动为双射。反之，每个这种形式的映射都是等距变换。
+\end{theorem}
+
+\begin{proof}
+	先证明中点保持，再利用连续性把整数、有理数的运算推广到实数。若 \(m=(x+y)/2\)，则距离保持说明 \(f(m)\) 到 \(f(x),f(y)\) 的距离均为 \(\lVert f(x)-f(y)\rVert/2\)。由刚才证明的中点唯一性，
+	\[
+		f\left(\frac{x+y}{2}\right)=\frac{f(x)+f(y)}2.
+	\]
+	这一步只涉及已知像点，不需要预先知道 \(f\) 满射。
+
+	令 \(t=f(0)\)，\(g(x)=f(x)-t\)，则 \(g(0)=0\)，且 \(g\) 同样保持中点与距离。取端点为 \(0,2x\)，得到 \(g(2x)=2g(x)\)，从而
+	\[
+		g(x+y)=2g\left(\frac{x+y}{2}\right)=g(x)+g(y).
+	\]
+	由加法性可得 \(g(-x)=-g(x)\)、\(g(mx)=mg(x)\) 对整数 \(m\) 成立；若 \(r=m/k\) 为有理数且 \(k>0\)，则 \(kg(rx)=g(krx)=mg(x)\)，所以 \(g(rx)=rg(x)\)。对于任意实数 \(a\)，取有理数列 \(r_j\rightarrow a\)。距离保持给出
+	\[
+		\lVert g(r_jx)-g(ax)\rVert=|r_j-a|\lVert x\rVert\longrightarrow 0,
+	\]
+	因而 \(g(ax)=ag(x)\)。这就证明了 \(g\) 为实线性算子，记为 \(Q\)。
+
+	还需确认这一线性算子保持的是整个内积，而非仅某些长度。将\cref{g1:prop:polarization}中的平方范数展开用于 \(x-y\)，得到
+	\[
+		\langle Qx,Qy\rangle
+		=\frac12\bigl(\lVert Qx\rVert^2+\lVert Qy\rVert^2
+		-\lVert Q(x-y)\rVert^2\bigr)
+		=\langle x,y\rangle.
+	\]
+	所以 \(Q\) 正交。特别地，\(Qx=0\) 蕴含 \(x=0\)，有限维同维线性映射的秩与核维数公式便说明 \(Q\) 可逆；于是 \(f\) 的逆为 \(y\mapsto Q^{-1}(y-t)\)。唯一性来自 \(t=f(0)\) 和 \(Qx=f(x)-f(0)\)。反向验证只需计算 \(\lVert Qx+t-(Qy+t)\rVert=\lVert Q(x-y)\rVert=\lVert x-y\rVert\)。
+\end{proof}
+
+按照\cref{g1:def:affine-map}，上一定理正是说：欧氏空间中只用距离提出的保持条件，已经强制映射具有仿射形式。有限维和定义域、值域同维在由单射推出满射时起作用。例如 \(x\mapsto(x,0)\) 从 \(\mathbb R^n\) 到 \(\mathbb R^{n+1}\) 保持距离，却不能覆盖整个值域。
+
+\subsection{正交算子的实标准分块}
+\label{g1:subsec:0103:02}
+
+平移部分暂时放在一边。正交算子满足 \(Q^*Q=I\)，其中 \(Q^*\) 是内积伴随；在标准正交基下，这就是矩阵转置满足 \(Q^{\mathsf T}Q=I\)。它通常并不自伴：平面上一个转角既不是 \(0\) 也不是 \(\pi\)（模 \(2\pi\)）的旋转，就没有非零实特征向量。因此不能直接把\cref{g1:thm:spectral}应用于 \(Q\)。我们将对它的自伴部分应用该定理，余下的部分恰好给出旋转平面。
+
+\begin{theorem}[正交算子的实分块]
+	\label{g1:thm:orthogonal-blocks}
+	设 \(V\) 是 \(n\) 维实内积空间，\(Q\colon V\rightarrow V\) 为正交算子。存在一组标准正交基，使其矩阵成为
+	\[
+		\operatorname{diag}\bigl(I_p,-I_q,R_{\theta_1},\ldots,R_{\theta_k}\bigr),
+		\qquad p+q+2k=n,
+	\]
+	其中
+	\begin{equation}
+		\label{g1:eq:rotation-block}
+		R_\theta=
+		\begin{pmatrix}\cos\theta&-\sin\theta\\
+			\sin\theta&\cos\theta\end{pmatrix},
+		\qquad 0<\theta<\pi.
+	\end{equation}
+	整数 \(p,q\) 和角度的无序多重集 \(\{\theta_1,\ldots,\theta_k\}\) 由 \(Q\) 唯一确定；各个旋转平面的选择未必唯一。特别地，\(\det Q=(-1)^q\)。
+\end{theorem}
+
+\begin{proof}
+	取自伴算子
+	\[
+		S=\frac{Q+Q^*}{2}.
+	\]
+	由\cref{g1:thm:spectral}，有限维实内积空间中的自伴算子有正交特征分解，故 \(V\) 是 \(S\) 的各特征空间 \(E_\lambda\) 的正交直和。因为 \(Q^*=Q^{-1}\)，所以 \(QS=SQ\)，每个 \(E_\lambda\) 均被 \(Q\) 保持。若 \(v\in E_\lambda\)，则
+	\[
+		\lambda\lVert v\rVert^2=\langle Sv,v\rangle
+		=\langle Qv,v\rangle,
+	\]
+	由内积不等式得 \(|\lambda|\leq 1\)。对于端点，
+	\[
+		\lVert Qv-v\rVert^2=2(1-\lambda)\lVert v\rVert^2,
+		\qquad
+		\lVert Qv+v\rVert^2=2(1+\lambda)\lVert v\rVert^2,
+	\]
+	故 \(Q|_{E_1}=I\)，\(Q|_{E_{-1}}=-I\)。
+
+	现在设 \(-1<\lambda<1\)，并记 \(s=\sqrt{1-\lambda^2}>0\)。在 \(E_\lambda\) 上有 \(Q+Q^*=2\lambda I\)；左乘 \(Q\) 得 \(Q^2-2\lambda Q+I=0\)。因此，去掉 \(Q\) 的标量部分并重新归一化，得到
+	\[
+		J=\frac{Q-\lambda I}{s},\qquad J^2=-I,
+		\qquad J^*=-J,
+		\qquad J^*J=I.
+	\]
+	这个构造的作用是把一般角度旋转还原成直角旋转：\(J^2=-I\) 表明连续做两次得到反向，而 \(J^*=-J\) 给出 \(\langle e,Je\rangle=0\)。选取任意单位向量 \(e\in E_\lambda\)，则 \(e,Je\) 是正交单位向量，其张成的平面 \(P\) 被 \(J\) 保持，并且
+	\[
+		Qe=\lambda e+sJe,\qquad Q(Je)=-se+\lambda Je.
+	\]
+	取唯一的 \(\theta\in(0,\pi)\) 使 \(\cos\theta=\lambda\)、\(\sin\theta=s\)，便得到\eqref{g1:eq:rotation-block}。
+
+	还须说明能够继续拆分，而不是找到一个平面后就停止。若 \(w\in E_\lambda\cap P^\perp\) 且 \(z\in P\)，则 \(\langle Jw,z\rangle=-\langle w,Jz\rangle=0\)，所以 \(E_\lambda\cap P^\perp\) 也被 \(J\) 保持。对其重复选取单位向量及其 \(J\) 像，每次降维二，直至空间耗尽。若余下一维，任取非零向量仍会产生与它正交的非零 \(J\) 像，矛盾。因此 \(\dim E_\lambda\) 必为偶数，产生 \(\dim E_\lambda/2\) 个相同角度的旋转块。
+
+	最后，\(p=\dim E_1\)、\(q=\dim E_{-1}\)，其余角度及重数由 \(S\) 的特征值和特征空间维数确定，故与基的选择无关。每个旋转块行列式为 \(1\)，其余一维块为 \(1\) 或 \(-1\)，于是得到行列式公式。
+\end{proof}
+
+这里把 \(\theta=0\) 归入两个 \(+1\) 块，把 \(\theta=\pi\) 归入两个 \(-1\) 块，因而标准形的记法不会把端点重复计算。一个平面的基向量顺序反过来时，\(R_\theta\) 会变为 \(R_{-\theta}\)；定理允许任意正交基，所以可以统一取 \(0<\theta<\pi\)。若平面已有固定定向，并且只准使用与之相容的基，旋转角的正负就仍须保留。
+
+\begin{definition}
+	\label{g1:def:direct-isometry}
+	对于有限维欧氏空间的等距变换 \(f(x)=Qx+t\)，若 \(\det Q=1\)，称其\term[baoxiangdengjubianhuan]{保向}[orientation-preserving]；若 \(\det Q=-1\)，称其\term[fanxiangdengjubianhuan]{反向}[orientation-reversing]。
+\end{definition}
+
+这一称呼可以直接用有序基理解：在两组有序基之间，换基矩阵行列式为正时将它们视为同一定向，为负时视为相反定向。正交算子的行列式只能是 \(\pm1\)，分别保持或交换这两类基；平移不改变差向量，因而不影响定向。
+
+\subsection{不动点、螺旋运动与平移分量}
+\label{g1:subsec:0103:03}
+
+写出 \(f(x)=Qx+t\) 后，一个容易产生的误解是：“只要把原点移到适当位置，就能消去 \(t\)。”纯平移已经否定了这个猜想。若新原点的旧坐标是 \(c\)，则新坐标为 \(y=x-c\)，且
+\begin{equation}
+	\label{g1:eq:isometry-origin-change}
+	f(c+y)-c=Qy+t-(I-Q)c.
+\end{equation}
+能消去哪些平移分量，取决于 \(I-Q\) 的像；特别是 \(Q\) 固定的方向，不能由 \((I-Q)c\) 产生。下面把这一障碍与可消去的部分分开。
+
+\begin{theorem}[等距变换的平移分解]
+	\label{g1:thm:isometry-normal}
+	设 \(f(x)=Qx+t\) 是 \(\mathbb R^n\) 的等距变换，令
+	\[
+		F=\ker(I-Q),\qquad t=a+b,\qquad a\in F,\quad b\in F^\perp
+	\]
+	为 \(t\) 的正交分解。存在唯一的 \(c\in F^\perp\) 满足 \((I-Q)c=b\)，且对所有 \(u\in F\)、\(v\in F^\perp\)，
+	\begin{equation}
+		\label{g1:eq:isometry-normal}
+		f(c+u+v)=c+u+a+Qv.
+	\end{equation}
+	变换 \(f\) 有不动点当且仅当 \(a=0\)；这时不动点集恰为 \(c+F\)。对所有 \(x\in\mathbb R^n\)，有
+	\[
+		\lVert f(x)-x\rVert\geq\lVert a\rVert,
+	\]
+	且等号恰在仿射子空间 \(c+F\) 上成立。该子空间被 \(f\) 保持，\(f\) 在其上就是沿 \(a\) 的平移。
+\end{theorem}
+
+\begin{proof}
+	由\cref{g1:prop:projection}，有限维内积空间中的向量有相对于 \(F\) 的唯一正交分解。若 \(v\in F^\perp\)、\(u\in F\)，则
+	\[
+		\langle Qv,u\rangle=\langle v,Q^*u\rangle
+		=\langle v,u\rangle=0,
+	\]
+	其中 \(Q^*u=Q^{-1}u=u\)，故 \(F^\perp\) 被 \(Q\) 和 \(I-Q\) 保持。在 \(F^\perp\) 上，\((I-Q)v=0\) 蕴含 \(v\in F\cap F^\perp=\{0\}\)，所以这个子空间上的线性算子 \(I-Q\) 单射，也就可逆。于是存在唯一 \(c\in F^\perp\) 使 \((I-Q)c=b\)。将 \(t=a+b\) 代入\eqref{g1:eq:isometry-origin-change}，再用 \(Qu=u\)，得到\eqref{g1:eq:isometry-normal}。
+
+	若 \(x=c+u+v\)，位移分成两个正交部分：
+	\[
+		f(x)-x=a+(Q-I)v,
+		\qquad
+		\lVert f(x)-x\rVert^2=\lVert a\rVert^2+\lVert(Q-I)v\rVert^2.
+	\]
+	由于 \(I-Q\) 在 \(F^\perp\) 上可逆，第二项为零当且仅当 \(v=0\)。这既给出最小位移及其取得位置，也说明存在零位移点当且仅当 \(a=0\)，此时所有零位移点为 \(c+F\)。在 \(v=0\) 时，\eqref{g1:eq:isometry-normal}还直接给出 \(f(c+u)=c+u+a\)。
+\end{proof}
+
+向量 \(a\) 是无法通过平移原点消去的部分：由\eqref{g1:eq:isometry-origin-change}，原点改变只给 \(t\) 添加 \(F^\perp\) 中的向量，所以它在 \(F\) 上的投影不变。虽然 \(c\) 的坐标依赖起初的原点，\(c+F\) 却可以直接从 \(f\) 识别为“位移最小的点的集合”。这说明分解中的几何对象比最初写下的 \(t\) 更有意义。
+
+\begin{example}[滑移反射及其最小位移]
+	\label{g1:exm:glide-reflection}
+	考虑平面变换 \(f(x,y)=(x+h,-y)\)，其中 \(h\ne0\)。它先关于 \(x\) 轴反射，再沿该轴平移 \((h,0)\)，称为\term[huayifanshe]{滑移反射}[glide reflection]。这两步可以交换次序，因为反射不改变轴方向的向量。对点 \((x,y)\)，位移为 \((h,-2y)\)，长度为 \(\sqrt{h^2+4y^2}\)，所以它没有不动点；轴上的位移最小，最小值为 \(|h|\)。\cref{g1:fig:glide-displacement}把沿轴的平移和垂直于轴的翻转分别画出。若 \(h=0\)，变换退化为普通轴反射，本文不再将其列入非平凡滑移反射。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter01-GlideReflection.tex}
+	\caption[滑移反射的两部分]{滑移反射的两部分。先由 \(p\) 反射到 \(r(p)\)，再沿轴平移到 \(f(p)\)；虚线表示垂直于轴的位移分量，蓝色斜箭头表示总位移。轴上每一点只发生长度为 \(|h|\) 的平移。}
+	\label{g1:fig:glide-displacement}
+\end{figure}
+
+在三维空间中，若 \(Q\) 固定一条直线，并在其垂直平面上旋转角 \(\theta\)，正规形为
+\[
+	(x,y,z)\longmapsto
+	\bigl(x\cos\theta-y\sin\theta,
+	x\sin\theta+y\cos\theta,z+h\bigr).
+\]
+当 \(\theta\not\equiv0\pmod{2\pi}\) 且 \(h\ne0\) 时，称为\term[luoxuanyundong]{螺旋运动}[screw motion]。每次作用绕同一轴转动相同角度，同时沿轴前进相同距离；旋转与轴向平移可交换。距轴为 \(r\) 的点在垂直平面内移动的弦长平方为 \(2r^2(1-\cos\theta)\)，所以它的位移长度为
+\[
+	\sqrt{h^2+4r^2\sin^2(\theta/2)}.
+\]
+最小位移为 \(|h|\)，恰在轴上取得。\(h=0\) 时是绕轴旋转；\(\theta\equiv0\) 时是纯平移或恒等变换，此时不能由变换本身选出唯一的轴。
+
+\begin{example}[从坐标公式找螺旋轴]
+	\label{g1:exm:screw-axis}
+	设
+	\[
+		f(x,y,z)=(-y+2,x+1,z+3).
+	\]
+	其正交部分在 \(xy\) 平面旋转 \(\pi/2\)，固定方向为 \(F=\mathbb R(0,0,1)\)。平移向量分为 \(t=(0,0,3)+(2,1,0)\)，故 \(a=(0,0,3)\)。为找出能够消去横向平移的新原点，求解 \((I-Q)c=(2,1,0)\) 且 \(c\in F^\perp\)，即
+	\[
+		c_x+c_y=2,\qquad -c_x+c_y=1,\qquad c_z=0.
+	\]
+	得到 \(c=(1/2,3/2,0)\)。在 \((u,v,w)=(x-1/2,y-3/2,z)\) 坐标中，变换成为 \((u,v,w)\mapsto(-v,u,w+3)\)。因此螺旋轴是 \(\{(1/2,3/2,z):z\in\mathbb R\}\)，每次沿轴前进 \(3\)，没有不动点。连续作用四次时旋转恢复原状，故 \(f^4(x,y,z)=(x,y,z+12)\)。
+\end{example}
+
+\subsection{反射生成与低维分类}
+\label{g1:subsec:0103:04}
+
+旋转和平移看起来与镜面反射差别很大，但它们都可以由有限次反射合成。先考虑过原点的超平面。若 \(u\ne0\)，关于 \(u^\perp\) 的\term[chaopingmianfanshe]{超平面反射}[hyperplane reflection]为
+\[
+	r_u(x)=x-2\frac{\langle x,u\rangle}{\langle u,u\rangle}u.
+\]
+向量沿 \(u^\perp\) 的分量保持不变，沿 \(u\) 的分量反号，因此 \(r_u\) 正交，\(r_u^2=I\)，\(\det r_u=-1\)。一般仿射超平面 \(c+u^\perp\) 的反射则是 \(x\mapsto c+r_u(x-c)\)。
+
+\begin{theorem}[反射生成]
+	\label{g1:thm:reflection-generation}
+	\(n\) 维实内积空间的每个正交算子都是至多 \(n\) 个过原点的超平面反射的复合；恒等算子允许用零个反射表示。进一步，\(n\) 维欧氏空间的每个等距变换都是至多 \(n+1\) 个仿射超平面反射的复合。
+\end{theorem}
+
+\begin{proof}
+	先对维数证明线性结论。零维情形只有恒等算子。设 \(n>0\)，取单位向量 \(e\)。若 \(Qe=e\)，则 \(e^\perp\) 被 \(Q\) 保持；对这一 \(n-1\) 维空间使用归纳假设，将 \(Q|_{e^\perp}\) 写成至多 \(n-1\) 个反射。每个反射的法向量都在 \(e^\perp\)，用同一法向量在整个空间定义反射，便在 \(e\) 方向上保持恒等，且其复合正是 \(Q\)。
+
+	若 \(Qe\ne e\)，我们先用一次反射把 \(Qe\) 送回 \(e\)，之后就能沿用上一步的降维。令 \(u=Qe-e\)，则
+	\[
+		\lVert u\rVert^2=2(1-\langle Qe,e\rangle),
+		\qquad
+		\langle Qe,u\rangle=1-\langle Qe,e\rangle,
+	\]
+	所以 \(r_u(Qe)=Qe-u=e\)。算子 \(r_uQ\) 固定 \(e\)，按上一段是至多 \(n-1\) 个反射的复合。由 \(Q=r_u(r_uQ)\)，总数至多为 \(n\)。
+
+	对于仿射结论，先用\cref{g1:thm:isometry-normal}把变换写成 \(c+y\mapsto c+Qy+a\)，其中 \(a\in F=\ker(I-Q)\)。若 \(a=0\)，只须将线性结论中的反射超平面全部平移到经过 \(c\)，使用至多 \(n\) 个反射。若 \(a\ne0\)，令 \(e=a/\lVert a\rVert\)，在中心为 \(c\) 的坐标里，关于超平面
+	\[
+		H_s=\{y:\langle y,e\rangle=s\}
+	\]
+	的反射记为 \(\rho_s\)，其公式为 \(\rho_s(y)=y+2(s-\langle y,e\rangle)e\)。直接代入得 \(\rho_{\lVert a\rVert/2}\rho_0(y)=y+a\)，因此沿 \(a\) 的平移由两个平行超平面反射组成。另一方面，只须在 \(F^\perp\) 上分解 \(Q\)，再将反射扩充为在 \(F\) 上恒等，故需要至多 \(n-\dim F\) 个反射。因 \(a\ne0\) 保证 \(\dim F\geq1\)，总数不超过 \(n-\dim F+2\leq n+1\)。
+\end{proof}
+
+下面的低维分类来自两个已经证明的约束：正交块的维数相加必须等于空间维数，而不能消去的平移只能位于 \(+1\) 特征空间。按这两个约束检查，可以避免凭图形印象漏掉反向变换。以下“取坐标”均指更换原点和标准正交基；同一类中的角度与位移仍可能给出不同变换，其参数关系将在\secref{g1:sec:0104}中进一步讨论。
+
+\ProseParagraphBreak
+
+在一维，\(Q\) 只有 \(+1\) 与 \(-1\)。保向变换为 \(x\mapsto x+t\)，其中 \(t=0\) 是恒等，\(t\ne0\) 是非零平移。反向变换为 \(x\mapsto-x+t\)，有唯一不动点 \(t/2\)，即关于该点的反射。
+
+\ProseParagraphBreak
+
+在二维，保向正交算子或者为 \(I\)，或者是非恒等旋转。如果 \(Q=I\)，便得到恒等或非零平移；否则 \(F=0\)，所有平移都可消去，得到绕唯一中心的旋转，角度可以包含 \(\pi\)。反向正交算子只能有一个 \(+1\) 块与一个 \(-1\) 块，所以 \(F\) 是一条直线。不可消去的平移为零时得到关于一条直线的反射，非零时得到沿该直线的滑移反射。这五种互不重叠的情形列于\cref{g1:tab:plane-isometries}。
+
+\begin{table}[htbp]
+	\centering
+	\caption{平面等距变换的类型}
+	\label{g1:tab:plane-isometries}
+	\begin{tabularx}{\linewidth}{@{}l l X@{}}
+		\toprule
+		类型 & 正规形及参数 & 不动点集 \\
+		\midrule
+		恒等 & \((x,y)\mapsto(x,y)\) & 整个平面 \\
+		非零平移 & \((x,y)\mapsto(x+h,y),\ h>0\) & 空集 \\
+		旋转 & \(v\mapsto R_\theta v,\ 0<\theta\leq\pi\) & 唯一中心 \\
+		直线反射 & \((x,y)\mapsto(x,-y)\) & 反射轴 \\
+		滑移反射 & \((x,y)\mapsto(x+h,-y),\ h>0\) & 空集 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+二维表格允许翻转坐标轴方向，所以把非零平移长度取为正，把旋转角归入 \((0,\pi]\)。若坚持使用事先固定的平面定向，则旋转角应记作模 \(2\pi\) 的带方向角，不能仅凭该表消去正负。
+
+\ProseParagraphBreak
+
+在三维，保向而不恒等的正交算子必有形式 \(\operatorname{diag}(R_\theta,1)\)，其中允许 \(\theta=\pi\)。确实，若有旋转块，余下的一维块必须为 \(+1\)；若全部为 \(\pm1\) 块，行列式为正迫使 \(-1\) 块的数目为零或二，后二者也就是转角 \(\pi\) 的情形。因此保向等距变换只有恒等、非零平移、绕轴旋转和非平凡螺旋运动。后两种在 \(0<\theta\leq\pi\) 时有唯一的轴，即最小位移点集；\(h=0\) 与 \(h\ne0\) 将它们分开。
+
+\ProseParagraphBreak
+
+三维反向正交算子则可写成 \(\operatorname{diag}(R_\theta,-1)\)，其中 \(0\leq\theta\leq\pi\)。当 \(\theta=0\) 时，\(F\) 是二维平面，得到平面反射，或者平面反射后沿该平面的非零平移；后一种也称滑移反射。当 \(0<\theta\leq\pi\) 时，\(F=0\)，变换有唯一不动点，全部平移都能消去。此时它由绕一条轴的旋转和关于过中心、垂直于该轴的平面反射组成，称为\term[xuanzhuanfanshe]{旋转反射}[rotatory reflection]。这两步在坐标中分别作用于 \((x,y)\) 与 \(z\)，故可交换次序。当 \(\theta=\pi\) 时，正规形成为 \(-I\)，即\term[zhongxinduichen]{中心对称}[central inversion]；此时中心唯一，却没有唯一的旋转轴，任意过中心的直线都可用于上述分解。
+
+\begin{table}[htbp]
+	\centering
+	\caption{三维等距变换的类型}
+	\label{g1:tab:space-isometries}
+	\begin{tabularx}{\linewidth}{@{}l l X@{}}
+		\toprule
+		类型 & 正规形及参数 & 不动点集 \\
+		\midrule
+		恒等 & \(v\mapsto v\) & 整个空间 \\
+		非零平移 & \((x,y,z)\mapsto(x,y,z+h),\ h\ne0\) & 空集 \\
+		绕轴旋转 & \((v,z)\mapsto(R_\theta v,z)\) & 旋转轴 \\
+		螺旋运动 & \((v,z)\mapsto(R_\theta v,z+h),\ h\ne0\) & 空集 \\
+		平面反射 & \((x,y,z)\mapsto(x,y,-z)\) & 反射平面 \\
+		滑移反射 & \((x,y,z)\mapsto(x+h,y,-z),\ h>0\) & 空集 \\
+		旋转反射 & \((v,z)\mapsto(R_\theta v,-z),\ 0<\theta<\pi\) & 唯一中心 \\
+		中心对称 & \(v\mapsto-v\) & 唯一中心 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\cref{g1:tab:space-isometries}中的绕轴旋转与螺旋运动取 \(0<\theta\leq\pi\)，这两行的 \(v\) 是二维向量；恒等与中心对称两行的 \(v\) 是三维向量。表中将旋转反射的端点 \(0\) 和 \(\pi\) 分别归入平面反射与中心对称，将螺旋运动的 \(h=0\) 归入绕轴旋转，从而各行表示互不重叠的类型。纯平移的最小位移点集是整个空间，滑移反射的是反射平面，螺旋运动的是螺旋轴；这些集合比仅仅问“有没有不动点”提供了更细的几何信息。

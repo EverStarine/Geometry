@@ -1,0 +1,227 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 14.5 积分、次数与周期
+% 纲要位置：几何学计划纲要.md，第 678 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 对光滑奇异单形积分
+% * 边界、外微分与链映射
+% * 次数积分公式的前瞻陈述
+% 
+%   对同维闭连通定向光滑流形之间的光滑映射 $f:M\to N$，对任意光滑顶次形式 $\eta$ 准确陈述 $\int_M f^*\eta=\deg(f)\int_N\eta$。本节只说明公式的几何含义，不把次数的整数性和一般定义作为已经证明的结果；正则值、同调与积分三种定义的完整比较在 II.16.1 完成。此前 Stokes 与积分构造不依赖本公式。
+% 
+% * 由周期提出 de Rham 比较问题
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{积分、次数与周期}
+\label{g1:sec:1405}
+
+Stokes 定理可以用一句相容关系概括：先对形式求外微分再积分，等于先取积分区域的边界再积分。要把这句话带到拓扑中，需要一种能相加、取边界并允许退化的“积分区域”。光滑奇异单形承担这个作用。它不要求自己的像嵌入流形，因而能记录重复覆盖和相反方向，而不只记录一个点集。
+
+\ProseParagraphBreak
+
+本节的流形仍有限维、Hausdorff、第二可数；光滑形式不要求紧支，因为单形本身紧。我们只建立所需的链、上链与积分映射，并证明其相容性。把这些构造与一般奇异上同调比较，还需要第二卷的代数拓扑工具。次数积分公式依纲要先准确陈述，其一般定义与证明不参与本章此前的论证。
+
+\subsection{对光滑奇异单形积分}
+\label{g1:subsec:1405:01}
+
+对 \(k\geq1\)，取标准单形
+\[
+	\Delta^k=\left\{(t^1,\ldots,t^k)\in\mathbb R^k:t^i\geq0,\ \sum_i t^i\leq1\right\},
+\]
+其有序顶点为 \(v_0=0,v_1=e_1,\ldots,v_k=e_k\)，定向为 \(\mathrm{d}t^1\wedge\cdots\wedge\mathrm{d}t^k\)。\(\Delta^0\) 是一个正向点。单形有边和角，但\cref{g1:thm:stokes-corners}已经涵盖这种积分区域。
+
+\begin{definition}
+	\label{g1:def:smooth-singular-simplex}
+	流形 \(M\) 中的一个\term[guanghuaqiyidanxing]{光滑奇异单形}[smooth singular simplex]是映射 \(\sigma:\Delta^k\to M\)，其局部坐标分量在单形的每一点附近可光滑延拓到 \(\mathbb R^k\) 的开集。若 \(M\) 带边界，延拓只要求坐标分量光滑，不要求延拓后的所有点仍落在目标半空间。对 \(\omega\in\Omega^k(M)\)，定义
+	\[
+		\int_\sigma\omega=\int_{\Delta^k}\sigma^*\omega.
+	\]
+	当 \(k=0\) 时，右端为函数在 \(\sigma(\Delta^0)\) 的值。
+\end{definition}
+
+局部延拓使边和顶点处的导数有意义，其值由单形内部的导数连续延伸而唯一确定。拉回因此不依赖延拓选择。\(\sigma^*\omega\) 是紧单形上的光滑顶次形式，可以用上一节的带角积分；有限坐标覆盖保证其系数有界，所以积分有限。
+
+\ProseParagraphBreak
+
+“奇异”允许 \(\sigma\) 不单射，也允许微分降秩。如果 \(\operatorname{rank}\mathrm{d}\sigma<k\) 处处成立，则任意 \(k\) 个像向量都线性相关，交替性使 \(\sigma^*\omega=0\)，所以积分为零。另一方面，相同的像点集可以有不同积分：圆周绕行两次与绕行一次的参数化具有相同像，但前者对角形式的积分是后者的两倍。
+
+\begin{example}[同一条圆周的不同参数化]
+	\label{g1:exm:circle-simplex-integral}
+	在 \(\mathbb R^2\setminus\{0\}\) 上取角形式
+	\[
+		\alpha=\frac{-y\,\mathrm{d}x+x\,\mathrm{d}y}{x^2+y^2},
+	\]
+	并对整数 \(m\) 取光滑一单形 \(\sigma_m(t)=(\cos 2\pi mt,\sin 2\pi mt)\)，\(0\leq t\leq1\)。直接拉回得 \(\sigma_m^*\alpha=2\pi m\,\mathrm{d}t\)，故 \(\int_{\sigma_m}\alpha=2\pi m\)。负整数表示反向绕行，零表示常值单形。这个计算只用参数化和一元积分，还没有调用一般映射次数。
+\end{example}
+
+\subsection{边界、外微分与链映射}
+\label{g1:subsec:1405:02}
+
+令 \(\delta_i:\Delta^{k-1}\to\Delta^k\) 为仿射面映射，其有序顶点依次送到 \(v_0,\ldots,\widehat v_i,\ldots,v_k\)。其中帽号表示省略。\cref{g1:lem:simplex-boundary-orientation}已证明，第 \(i\) 个面的边界定向相对于这一顶点顺序有系数 \((-1)^i\)。因此自然定义
+\[
+	\partial\sigma=\sum_{i=0}^k(-1)^i\sigma\circ\delta_i.
+\]
+右端是映射的形式和，而不是若干子集的并。对一单形，它是终点减起点；对二单形，它是 \([v_1,v_2]-[v_0,v_2]+[v_0,v_1]\)，也就是三角形的有向边界。
+
+\begin{definition}
+	\label{g1:def:smooth-singular-chains}
+	记 \(C_k^\infty(M;\mathbb R)\) 为以全部光滑奇异 \(k\) 单形为基的自由实向量空间，其元素是有限形式和 \(c=\sum_j a_j\sigma_j\)，称为光滑奇异 \(k\) 链。将 \(\partial\) 线性延拓到链，并令 \(\partial:C_0^\infty\to0\)。令
+	\[
+		\int_c\omega=\sum_j a_j\int_{\sigma_j}\omega.
+	\]
+	实系数允许线性组合，但每条链只能有有限个非零系数。
+\end{definition}
+
+\begin{lemma}[边界的抵消]
+	\label{g1:lem:smooth-chain-boundary-square}
+	上述边界算子满足 \(\partial^2=0\)。
+\end{lemma}
+\begin{proof}
+	对单个 \(k\) 单形，当 \(k\geq2\) 时，每个省略两个原顶点 \(v_i,v_j\)、\(i<j\) 的面出现两次。先省略 \(v_i\) 后，原来的 \(v_j\) 在剩余序列中编号为 \(j-1\)，所以这次的系数为 \((-1)^i(-1)^{j-1}\)。先省略 \(v_j\) 再省略 \(v_i\)，系数为 \((-1)^j(-1)^i\)。两个复合仿射映射在全部顶点相同，因而是同一映射；两个系数相反，恰好抵消。\(k=1\) 时边界已是零链，而零链的边界按定义为零。线性性给出一般链的结论。
+\end{proof}
+
+由此可以定义圈与边界：\(Z_k^\infty=\ker\partial\) 中的链称为圈，\(B_k^\infty=\operatorname{im}\partial\) 中的链称为边界，且 \(B_k^\infty\subset Z_k^\infty\)。商空间 \(H_k^\infty(M;\mathbb R)=Z_k^\infty/B_k^\infty\) 记录圈在允许加上边界后的等价类。这里给出的只是光滑奇异链模型；与所有连续奇异单形构成的模型是否相同，要由光滑逼近另行证明。
+
+\begin{theorem}[积分与边界相容]
+	\label{g1:thm:integration-chain-map}
+	设 \(M\) 为光滑流形，\(k\geq1\)，\(c\in C_k^\infty(M;\mathbb R)\)，\(\omega\in\Omega^{k-1}(M)\)。则
+	\begin{equation}\label{g1:eq:chain-stokes}
+		\int_c\mathrm{d}\omega=\int_{\partial c}\omega.
+	\end{equation}
+	令 \(C^k_\infty(M;\mathbb R)=\operatorname{Hom}_{\mathbb R}(C_k^\infty(M;\mathbb R),\mathbb R)\)，上链微分定义为 \((\delta u)(c)=u(\partial c)\)。积分映射
+	\[
+		\mathcal I:\Omega^k(M)\longrightarrow C^k_\infty(M;\mathbb R),\qquad
+		(\mathcal I\eta)(c)=\int_c\eta
+	\]
+	满足 \(\delta\mathcal I=\mathcal I\mathrm{d}\)。
+\end{theorem}
+\begin{proof}
+	由线性性，只需对一个单形 \(\sigma\) 证明。外微分与拉回相容，故
+	\[
+		\int_\sigma\mathrm{d}\omega
+		=\int_{\Delta^k}\mathrm{d}(\sigma^*\omega)
+		=\int_{\partial\Delta^k}\sigma^*\omega
+		=\sum_{i=0}^k(-1)^i\int_{\Delta^{k-1}}(\sigma\circ\delta_i)^*\omega.
+	\]
+	中间等式使用\cref{g1:thm:stokes-corners}，末式使用各面的诱导定向。\(\sigma\) 的像无需嵌入：Stokes 是在参数单形上应用的。\(k=1\) 时，边界零维积分给出终点值减起点值，与同一公式一致。对链求和即得\eqref{g1:eq:chain-stokes}。
+
+	再对每个 \((k+1)\) 链 \(c\) 计算：
+	\[
+		(\delta\mathcal I\eta)(c)
+		=(\mathcal I\eta)(\partial c)
+		=\int_{\partial c}\eta
+		=\int_c\mathrm{d}\eta
+		=(\mathcal I\mathrm{d}\eta)(c).
+	\]
+	这就证明了上链映射的恒等式。\(\delta^2=0\) 则来自 \(\partial^2=0\)，故两边确实都是复形。
+\end{proof}
+
+这个关系可以画成交换图：
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		\Omega^k(M) \arrow[r,"\mathrm{d}"] \arrow[d,"\mathcal I"'] & \Omega^{k+1}(M) \arrow[d,"\mathcal I"] \\
+		C^k_\infty(M;\mathbb R) \arrow[r,"\delta"'] & C^{k+1}_\infty(M;\mathbb R).
+	\end{tikzcd}
+\]
+上边在形式上求导，下边在输入链上取边界；竖边通过积分将它们联系起来。通常把这种次数保持且与微分交换的映射称为链映射，在此处更确切地说是上链复形之间的映射。
+
+\subsection{次数积分公式的前瞻陈述}
+\label{g1:subsec:1405:03}
+
+圆周绕行的例子提示：若一个映射反复覆盖目标，积分可能把这些覆盖按方向加起来。一般光滑映射的纤维却可能很复杂，甚至含无限多个点，不能对任意目标点直接“数原像”来定义次数。下面先记录后续理论的准确结论。
+
+\begin{theorem}[次数积分公式]
+	\label{g1:thm:degree-integral-preview}
+	设 \(M,N\) 为同维、闭、连通、定向光滑流形，\(f:M\to N\) 光滑。存在一个由 \(f\) 及两流形所选定向决定的整数 \(\deg(f)\)，使对每个 \(\eta\in\Omega^{\dim N}(N)\)，都有
+	\begin{equation}\label{g1:eq:degree-integral-preview}
+		\int_M f^*\eta=\deg(f)\int_N\eta.
+	\end{equation}
+\end{theorem}
+
+此处“闭”指紧且无边界，所以两边积分自动有限。这个定理在本节是前瞻陈述：次数的一般定义、整数性及公式的证明安排在第二卷第16.1节“度的不同定义”，届时将比较正则值处的局部符号、同调定义与积分定义。不能把一个顶次形式的积分比直接宣布为已经定义好的整数，也不能在目标积分为零时用比值取代\eqref{g1:eq:degree-integral-preview}。此前积分构造、Stokes 定理与\cref{g1:thm:integration-chain-map}都未使用这个结论。
+
+\ProseParagraphBreak
+
+几何上，保定向的覆盖贡献正号，反向的覆盖贡献负号，次数记录其代数总数。我们可以在明确模型中验证积分倍数，而不借此证明一般定理。把圆周写为 \(\mathbb R/2\pi\mathbb Z\)，取 \(f_m([\theta])=[m\theta]\)，其中 \(m\in\mathbb Z\)。任何一形式都可写成 \(a(\theta)\,\mathrm{d}\theta\)，系数 \(a\) 为 \(2\pi\) 周期光滑函数。若 \(m>0\)，则
+\[
+	\int_{S^1}f_m^*(a\,\mathrm{d}\theta)
+	=\int_0^{2\pi}m a(m\theta)\,\mathrm{d}\theta
+	=\int_0^{2\pi m}a(u)\,\mathrm{d}u
+	=m\int_0^{2\pi}a(u)\,\mathrm{d}u.
+\]
+负整数时，同样的有向一元换元给出负号及 \(|m|\) 次覆盖；\(m=0\) 时映射常值，拉回一形式为零。这个完整的直接计算说明，在该模型中积分倍数确实为 \(m\)。一般次数理论将把它识别为 \(\deg(f_m)\)。
+
+\ProseParagraphBreak
+
+对于保定向或反定向微分同胚，\cref{g1:thm:oriented-change-variables}也已经分别得到倍数 \(1\) 或 \(-1\)。这些模型解释公式，却没有处理任意映射的临界点或证明某个整数对所有顶次形式都适用。进一步阅读可定位到\cite[Chapter 17, Degree Theory, pp. 457--459]{Lee2012Smooth}。
+
+\subsection{由周期提出 de Rham 比较问题}
+\label{g1:subsec:1405:04}
+
+对闭 \(k\) 形式 \(\omega\) 和光滑奇异 \(k\) 圈 \(z\)，数 \(\int_z\omega\) 称为 \(\omega\) 在该圈上的\term[zhouqi]{周期}[period]。它测量的是沿一个闭合的有向链累积的值，不必来自某个单一嵌入子流形。角形式的 \(2\pi\) 就是一个周期；它阻止该形式具有全局单值原函数。
+
+\begin{proposition}[周期的两种不变性]
+	\label{g1:prop:period-pairing}
+	若 \(\mathrm{d}\omega=0\)、\(\partial z=0\)，则 \(\int_z\omega\) 在把 \(\omega\) 改为 \(\omega+\mathrm{d}\beta\)，或把 \(z\) 改为 \(z+\partial b\) 后均不变。特别地，恰当形式在所有圈上的周期为零；闭形式在所有边界上的积分为零。
+\end{proposition}
+\begin{proof}
+	由\eqref{g1:eq:chain-stokes}，
+	\[
+		\int_z\mathrm{d}\beta=\int_{\partial z}\beta=0,
+		\qquad
+		\int_{\partial b}\omega=\int_b\mathrm{d}\omega=0.
+	\]
+	对第一条式子，\(k=0\) 时约定负次形式为零，不存在非零恰当零形式；第二条仍适用。这就覆盖所有次数。
+\end{proof}
+
+高维的穿孔空间也有相同障碍。在 \(\mathbb R^n\setminus\{0\}\)、\(n\geq2\) 上，记 \(r^2=\sum_i(x^i)^2\)，定义
+\begin{equation}\label{g1:eq:radial-period-form}
+	\eta=\frac1{r^n}\sum_{i=1}^n(-1)^{i-1}x^i\,
+	\mathrm{d}x^1\wedge\cdots\wedge\widehat{\mathrm{d}x^i}\wedge\cdots\wedge\mathrm{d}x^n.
+\end{equation}
+分母只在被删除的原点为零，所以它在所述流形上光滑。外微分的坐标公式给出
+\[
+	\mathrm{d}\eta
+	=\left(\sum_i\partial_i(x^i r^{-n})\right)\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n
+	=\left(nr^{-n}-nr^{-n-2}\sum_i(x^i)^2\right)\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n=0.
+\]
+在单位球面 \(S^{n-1}\) 上，径向向量就是外向单位法向。按外法向优先的定向，\(\eta\) 的限制正是球面的正体积形式，所以其积分严格为正。若 \(\eta=\mathrm{d}\beta\)，拉回到球面再用 Stokes 定理，由 \(\partial S^{n-1}=\varnothing\) 得到该积分为零，矛盾。因此 \(\eta\) 闭而不恰当。对 \(n=3\)，这给出
+\[
+	\eta=\frac{x\,\mathrm{d}y\wedge\mathrm{d}z-y\,\mathrm{d}x\wedge\mathrm{d}z+z\,\mathrm{d}x\wedge\mathrm{d}y}{(x^2+y^2+z^2)^{3/2}},
+	\qquad \int_{S^2}\eta=4\pi.
+\]
+其中球面积可由球坐标直接算出：\(\int_0^{2\pi}\int_0^\pi\sin\theta\,\mathrm{d}\theta\,\mathrm{d}\varphi=4\pi\)，坐标缺失的两极和切开的经线不影响面积积分。这里不能用穿孔空间中的 Stokes 定理将球面当成单位球的边界，因为原点不在该空间中。原点虽然只有一个，却使那个填充球不再是允许的积分区域。
+
+\ProseParagraphBreak
+
+为组织这些障碍，定义
+\begin{equation}\label{g1:eq:de-rham-cohomology-definition}
+	H_{\mathrm{dR}}^k(M)=
+	\frac{\ker(\mathrm{d}:\Omega^k(M)\to\Omega^{k+1}(M))}
+	{\operatorname{im}(\mathrm{d}:\Omega^{k-1}(M)\to\Omega^k(M))},
+\end{equation}
+称为 \(M\) 的\term[derhamshangtongdiao]{de Rham 上同调}[de Rham cohomology]。\footnote{de Rham（德拉姆），Georges de Rham（1903--1990），瑞士数学家，研究微分拓扑与代数拓扑，建立了微分形式与拓扑上同调之间的基本比较。}其中 \(\Omega^{-1}(M)=0\)；分母确实包含于分子，因为 \(\mathrm{d}^2=0\)。恰当差不会改变周期，所以可以在这个商空间上继续讨论周期。\cref{g1:prop:period-pairing}给出双线性配对
+\[
+	H_{\mathrm{dR}}^k(M)\times H_k^\infty(M;\mathbb R)\longrightarrow\mathbb R,
+	\qquad ([\omega],[z])\longmapsto\int_z\omega.
+\]
+类似地，令 \(H^k_\infty(M;\mathbb R)=\ker(\delta:C^k_\infty\to C^{k+1}_\infty)/\operatorname{im}(\delta:C^{k-1}_\infty\to C^k_\infty)\)，称为光滑奇异上同调；负次上链取零。\cref{g1:thm:integration-chain-map}使 \(\mathcal I\) 下降为从 \(H_{\mathrm{dR}}^k(M)\) 到这个商空间的线性映射：闭形式给闭上链，恰当形式给上链边界，因此商上的映射良定义。
+
+\ProseParagraphBreak
+
+现在才出现比较问题：若一个闭形式在所有圈上的周期都为零，它是否恰当？拓扑上允许的每个实上同调类，是否都来自某个闭微分形式？本章已经证明构造这条比较映射所需的 Stokes 相容性，但其单射性、满射性，以及光滑奇异链与连续奇异链的比较，尚需另外证明。第二卷第7.3节“积分与 de Rham 定理”将通过相对光滑逼近、局部 Poincaré 引理与整体比较完成这些步骤。进一步阅读的位置为\cite[Chapter 18, Smooth Singular Homology, pp. 473--479; The de Rham Theorem, pp. 480--486]{Lee2012Smooth}。
+
+\ProseParagraphBreak
+
+已有的同伦公式说明了另一项可立即得到的事实。若 \(F_0,F_1:M\to N\) 光滑同伦，对闭形式 \(\omega\) 有
+\[
+	F_1^*\omega-F_0^*\omega=\mathrm{d}(K_H\omega).
+\]
+所以两映射诱导同一个 de Rham 上同调拉回。这里使用的是\cref{g1:thm:homotopy-formula}的显式原函数，而不是尚未证明的拓扑比较定理。局部收缩能制造原函数，整体绕行可能留下周期，积分则将这两种现象放在同一个公式中。
+
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

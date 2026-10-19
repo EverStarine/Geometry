@@ -1,0 +1,533 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 1.2 度量、配对与二次型
+% 纲要位置：几何学计划纲要.md，第 127 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 内积、对偶与正交投影
+% * 自伴谱分解与正交标准形
+% * 对称双线性型的合同分类与惯性
+% * Gram 行列式、体积与退化的检测
+% 
+% 纲要内容结束
+
+\section{度量、配对与二次型}
+\label{g1:sec:0102}
+
+仿射结构能说明三个点是否共线、两条直线是否平行，却不能决定一条线段有多长。把平面沿一个方向拉伸，上一节讨论的仿射关系仍然成立，圆却会变成椭圆。要分辨这样的变化，就需要在方向向量空间上再指定一种结构，用来测量长度和夹角。内积承担这一任务；更一般的对称双线性型则让我们比较正负方向、识别退化，并描述二次方程。
+
+\ProseParagraphBreak
+
+本节始终在实有限维向量空间上讨论。线性映射可以用矩阵表示，但同一个矩阵也可能表示双线性型；二者换基时的公式不同。先弄清对象，再讨论它的标准形，是后面几何分类中避免混淆的关键。
+
+\subsection{内积、对偶与正交投影}
+\label{g1:subsec:0102:01}
+
+设 \(V\) 是实向量空间。我们希望长度的平方是一个二次表达式，并且非零向量的长度严格为正。为此，先规定两个向量之间的配对。
+
+\begin{definition}[内积与欧氏结构]
+	\label{g1:def:inner-product}
+	实向量空间 \(V\) 上的\term[neiji]{内积}[inner product]是映射
+	\[
+		\langle\,\cdot\,,\,\cdot\,\rangle\colon V\times V\longrightarrow\mathbb R,
+	\]
+	满足对两个变量分别线性、\(\langle u,v\rangle=\langle v,u\rangle\)，并且对每个非零 \(v\in V\) 有 \(\langle v,v\rangle>0\)。最后一个条件称为\term[zhengdingxing]{正定性}[positive definiteness]。记
+	\[
+		\lVert v\rVert\coloneqq\sqrt{\langle v,v\rangle},
+	\]
+	称为内积给出的\term[fanshu]{范数}[norm]。带有内积的实有限维向量空间称为\term[oushixiangliangkongjian]{欧氏向量空间}[Euclidean vector space]。若仿射空间 \(A\) 的方向空间 \(V\) 带有内积，则称 \(A\) 带有\term[oushijiegou]{欧氏结构}[Euclidean structure]，两点的距离定义为
+	\[
+		d(p,q)\coloneqq\lVert q-p\rVert.
+	\]
+	\symidx{\(\langle u,v\rangle\)：内积}
+	\symidx{\(\lVert v\rVert\)：内积范数}
+\end{definition}
+
+这里的正定性有两项直接作用。它保证长度为零的向量只有零向量，也保证长度满足三角不等式。后一项可以从一个简单的非负平方看出。若 \(v\ne0\)，则
+\[
+	0\leq\left\lVert u-\frac{\langle u,v\rangle}{\lVert v\rVert^2}v\right\rVert^2
+	=\lVert u\rVert^2-\frac{\langle u,v\rangle^2}{\lVert v\rVert^2}.
+\]
+所以 \(\lvert\langle u,v\rangle\rvert\leq\lVert u\rVert\cdot\lVert v\rVert\)，\(v=0\) 时也成立。代入
+\[
+	\lVert u+v\rVert^2=\lVert u\rVert^2+2\langle u,v\rangle+\lVert v\rVert^2
+	\leq(\lVert u\rVert+\lVert v\rVert)^2
+\]
+便得到三角不等式。结合上一节的点差相加公式，\(d\) 确实满足距离的三角不等式。对于两个非零向量，上述配对不等式还保证
+\[
+	\cos\theta=\frac{\langle u,v\rangle}{\lVert u\rVert\cdot\lVert v\rVert}
+\]
+确定唯一的 \(\theta\in[0,\pi]\)，这就是它们的\term[jiajiao]{夹角}[angle]。
+
+\begin{proposition}[内积的恢复]
+	\label{g1:prop:polarization}
+	在实内积空间 \(V\) 上，长度确定内积，具体有
+	\begin{equation}
+		\label{g1:eq:inner-polarization}
+		\langle u,v\rangle
+		=\frac{\lVert u+v\rVert^2-\lVert u\rVert^2-\lVert v\rVert^2}{2}
+		=\frac{\lVert u+v\rVert^2-\lVert u-v\rVert^2}{4}.
+	\end{equation}
+\end{proposition}
+
+\begin{proof}
+	由双线性和对称性展开 \(\langle u+v,u+v\rangle\) 与 \(\langle u-v,u-v\rangle\)，交叉项分别是 \(2\langle u,v\rangle\) 与 \(-2\langle u,v\rangle\)。整理即得两式。
+\end{proof}
+
+公式\eqref{g1:eq:inner-polarization}称为内积的\term[jihuahengdengshi]{极化恒等式}[polarization identity]。它说明保持所有长度的线性映射也保持所有内积。这里的“线性”暂时不可省去，因为展开时要知道映射怎样处理 \(u+v\)；下一节将解释，保持所有点间距离的映射为什么会恢复出仿射结构。
+
+\ProseParagraphBreak
+
+内积还使向量和线性函数联系起来。记 \(V^*\) 为 \(V\) 的\term[duioukongjian]{对偶空间}[dual space]，即所有线性映射 \(\alpha\colon V\rightarrow\mathbb R\) 组成的向量空间。\(\alpha(v)\) 是不需要内积就能定义的\term[duioupeidui]{对偶配对}[duality pairing]。给定内积以后，每个向量 \(v\) 又产生一个线性函数
+\[
+	v^\flat\colon w\longmapsto\langle v,w\rangle.
+\]
+映射 \(\flat\colon V\rightarrow V^*\) 是线性的；若 \(v^\flat=0\)，取 \(w=v\) 得 \(v=0\)，故它单射。给定 \(V\) 的一组基，逐个取坐标的线性函数构成 \(V^*\) 的一组基：任意线性函数由它在原基上的值唯一确定。因此 \(\dim V^*=\dim V\)，上述单射也是满射。于是每个 \(\alpha\in V^*\) 恰有一个向量 \(\alpha^\sharp\) 满足
+\[
+	\alpha(w)=\langle\alpha^\sharp,w\rangle\qquad(w\in V).
+\]
+\symidx{\(V^*\)：对偶空间}
+\symidx{\(v^\flat,\alpha^\sharp\)：由内积给出的向量与对偶向量的对应}
+对偶空间本身不依赖内积，但这项对应依赖内积，不能把它当作一个无需选择的相等关系。
+
+\begin{example}[同一个线性函数对应不同的向量]
+	\label{g1:exm:metric-dual}
+	在 \(\mathbb R^2\) 上取
+	\[
+		\langle x,y\rangle=x_1y_1+4x_2y_2,\qquad
+		\alpha(x)=x_1+2x_2.
+	\]
+	由 \(\alpha(x)=\langle(1,1/2),x\rangle\) 得 \(\alpha^\sharp=(1,1/2)\)。若改用通常的点积，则同一个 \(\alpha\) 对应 \((1,2)\)。更一般地，若基 \(b_1,\ldots,b_n\) 下的内积矩阵为 \(G=(\langle b_i,b_j\rangle)\)，向量 \(v\) 的坐标列为 \(c\)，则 \(v^\flat\) 的系数列是 \(Gc\)，因为 \(\langle v,w\rangle=c^{\mathsf T}Gx\)。把向量坐标与线性函数的系数直接等同，只有在 \(G=I\) 时才正确。
+\end{example}
+
+在内积为零时，称两个向量\term[zhengjiao]{正交}[orthogonal]，记 \(u\perp v\)。一组基 \(e_1,\ldots,e_n\) 若满足 \(\langle e_i,e_j\rangle=\delta_{ij}\)，便称为\term[biaozhunzhengjiaoji]{标准正交基}[orthonormal basis]。标准正交基把长度公式化成平方和；它的存在应当从内积公理推出，而不应预先藏在“欧氏”这个名称中。
+
+\begin{proposition}[保持逐步张成空间的正交化]
+	\label{g1:prop:orthonormalization}
+	设 \(v_1,\ldots,v_k\) 是实有限维内积空间 \(V\) 中的线性无关向量。则存在标准正交向量组 \(e_1,\ldots,e_k\)，使得对每个 \(1\leq j\leq k\)，都有
+	\[
+		\operatorname{span}(e_1,\ldots,e_j)
+		=\operatorname{span}(v_1,\ldots,v_j).
+	\]
+	特别地，\(V\) 有标准正交基，任意子空间的标准正交基都能扩充为 \(V\) 的标准正交基。
+\end{proposition}
+
+\begin{proof}
+	构造的想法是从 \(v_j\) 中减去已经处理的方向，只保留新增加的方向。令
+	\[
+		w_1=v_1,\qquad e_1=\frac{w_1}{\lVert w_1\rVert}.
+	\]
+	若已经构造了前 \(j-1\) 个向量，定义
+	\begin{equation}
+		\label{g1:eq:orthogonalization}
+		w_j=v_j-\sum_{i=1}^{j-1}\langle v_j,e_i\rangle e_i,
+		\qquad e_j=\frac{w_j}{\lVert w_j\rVert}.
+	\end{equation}
+	对每个 \(\ell<j\)，标准正交性给出
+	\[
+		\langle w_j,e_\ell\rangle
+		=\langle v_j,e_\ell\rangle
+		-\sum_{i<j}\langle v_j,e_i\rangle\delta_{i\ell}=0.
+	\]
+	若 \(w_j=0\)，则 \(v_j\) 属于前 \(j-1\) 个 \(e_i\) 的张成空间，也就是前 \(j-1\) 个 \(v_i\) 的张成空间，与线性无关矛盾。因此除以 \(\lVert w_j\rVert\) 合法。式\eqref{g1:eq:orthogonalization}又说明 \(e_j\) 可由前 \(j\) 个 \(v_i\) 表出，而 \(v_j\) 可由前 \(j\) 个 \(e_i\) 表出，所以逐步张成空间相同。归纳完成构造。
+
+	取 \(k=\dim V\) 便得到标准正交基。若从某个子空间的标准正交基出发，先把它扩充为 \(V\) 的一组普通基，再作上述构造，原有标准正交向量不变，因此得到所需扩充。
+\end{proof}
+
+这一递推构造称为\term[GramSchmidtzhengjiaohua]{Gram--Schmidt 正交化}[Gram--Schmidt orthogonalization]。\footnote{Gram（约尔根·佩德森·格拉姆，Jørgen Pedersen Gram，1850--1916），丹麦数学家，研究正交化、概率与数值方法；Schmidt（埃尔哈德·施密特，Erhard Schmidt，1876--1959），德国数学家，研究积分方程与无穷维内积空间。}输入是一组线性无关向量，输出是一组保留逐步张成空间的标准正交向量。它也说明正定性为何不可缺少：若允许非零向量的平方长度为零，构造就可能在归一化时停止。
+
+\ProseParagraphBreak
+
+现在考虑一个几何问题：给定向量 \(x\)，如何在子空间 \(W\) 中找到离它最近的向量？正交化提示我们，应当减去 \(x\) 在 \(W\) 的各个标准正交方向上的分量。记
+\[
+	W^\perp\coloneqq\{\,z\in V:\langle z,w\rangle=0\text{ 对所有 }w\in W\,\},
+\]
+称为 \(W\) 的\term[zhengjiaobu]{正交补}[orthogonal complement]。
+\symidx{\(W^\perp\)：正交补}
+
+\begin{proposition}[正交投影与最小距离]
+	\label{g1:prop:projection}
+	设 \(V\) 是实有限维内积空间，\(W\subseteq V\) 是线性子空间。每个 \(x\in V\) 都唯一地写成
+	\[
+		x=p+r,\qquad p\in W,\quad r\in W^\perp.
+	\]
+	映射 \(P_Wx=p\) 是线性的，满足 \(P_W^2=P_W\)、\(\operatorname{im}P_W=W\)、\(\ker P_W=W^\perp\)。而且对每个 \(w\in W\)，
+	\begin{equation}
+		\label{g1:eq:projection-distance}
+		\lVert x-w\rVert^2
+		=\lVert x-P_Wx\rVert^2+\lVert P_Wx-w\rVert^2.
+	\end{equation}
+	因此 \(P_Wx\) 是 \(W\) 中离 \(x\) 最近的唯一向量。
+\end{proposition}
+
+\begin{proof}
+	取 \(W\) 的标准正交基 \(e_1,\ldots,e_k\)，令
+	\[
+		p=\sum_{i=1}^k\langle x,e_i\rangle e_i,\qquad r=x-p.
+	\]
+	逐项计算得 \(\langle r,e_j\rangle=0\)，从而 \(r\in W^\perp\)。若另有 \(x=p'+r'\)，其中 \(p'\in W\)、\(r'\in W^\perp\)，则 \(p-p'=r'-r\) 同时属于 \(W\) 和 \(W^\perp\)。这个向量与自己正交，正定性迫使它等于零。这证明唯一性，也说明构造结果不依赖所取标准正交基。
+
+	上面的有限求和公式给出线性性。对 \(w\in W\) 有 \(P_Ww=w\)，对 \(r\in W^\perp\) 有 \(P_Wr=0\)，故幂等性、像与核的断言都成立。最后，\(x-w=(x-p)+(p-w)\) 是正交的两项之和，平方范数中的交叉项为零，得到式\eqref{g1:eq:projection-distance}。第二项非负，且恰在 \(w=p\) 时为零，故最小值在 \(p\) 处唯一取得。
+\end{proof}
+
+\(P_W\) 称为到 \(W\) 的\term[zhengjiaotouying]{正交投影}[orthogonal projection]。由分解可见
+\[
+	V=W\oplus W^\perp,\qquad \dim W^\perp=\dim V-\dim W,
+	\qquad (W^\perp)^\perp=W.
+\]
+最后一式可由包含 \(W\subseteq(W^\perp)^\perp\) 和相同维数得到。\cref{g1:fig:orthogonal-projection}把距离恒等式画成一个直角三角形：换一个候选点 \(w\)，新增的平方距离正是沿子空间移动所付出的 \(\lVert P_Wx-w\rVert^2\)。
+\symidx{\(P_W\)：到子空间 \(W\) 的正交投影}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/OrthogonalProjection.tex}
+	\caption[正交投影与最小距离]{正交投影与最小距离。图中以一维子空间示意，\(x-P_Wx\) 垂直于整个 \(W\)，因而也垂直于从 \(P_Wx\) 到任意 \(w\in W\) 的位移。}
+	\label{g1:fig:orthogonal-projection}
+\end{figure}
+
+若 \(F=a+W\) 是欧氏仿射空间中的非空仿射子空间，最近点则是
+\[
+	\pi_F(x)=a+P_W(x-a).
+\]
+这是把原点临时移到 \(a\) 后应用\cref{g1:prop:projection}。若改用 \(a'=a+w_0\)，其中 \(w_0\in W\)，由 \(P_Ww_0=w_0\) 可得同一结果，故该公式不依赖基点选择。它刻画的最近点满足 \(x-\pi_F(x)\perp W\)，而非一定与位置向量 \(\pi_F(x)\) 正交。
+
+\begin{example}[到一个仿射平面的距离]
+	\label{g1:exm:plane-projection}
+	在带通常点积的 \(\mathbb R^3\) 中，令 \(F=\{\,(x_1,x_2,x_3):x_1+x_2+x_3=1\,\}\)。其方向空间是 \(W=\{\,v:v_1+v_2+v_3=0\,\}\)，法向量 \(n=(1,1,1)\) 与 \(W\) 正交。因此原点的最近点必须形如 \(cn\)，再由 \(cn\in F\) 得 \(3c=1\)。最近点是 \((1/3,1/3,1/3)\)，距离为 \(1/\sqrt3\)。更一般地，若 \(n\ne0\)，到超平面 \(\langle n,y\rangle=b\) 的最近点为
+	\[
+		x-\frac{\langle n,x\rangle-b}{\lVert n\rVert^2}n,
+	\]
+	因为这个点在超平面上，而它与 \(x\) 的差沿着法向方向。
+\end{example}
+
+\subsection{自伴谱分解与正交标准形}
+\label{g1:subsec:0102:02}
+
+在标准正交坐标下，内积本身是平方和；若另有一个二次表达式，通常还会含有交叉项。例如 \(2x^2+2xy+2y^2\) 的等值线沿原来的坐标轴并不对称。是否可以只旋转或反射坐标轴，就把这些交叉项消去？答案来自自伴算子的特征方向。
+
+\ProseParagraphBreak
+
+给定实有限维内积空间上的线性算子 \(T\)，固定 \(v\) 后，\(u\mapsto\langle Tu,v\rangle\) 是线性函数。由本节已经证明的向量与对偶向量的对应，存在唯一向量 \(T^*v\)，使
+\[
+	\langle Tu,v\rangle=\langle u,T^*v\rangle\qquad(u,v\in V).
+\]
+唯一性同时说明 \(v\mapsto T^*v\) 线性。称 \(T^*\) 为 \(T\) 的\term[banshuisuanzi]{伴随算子}[adjoint operator]。在标准正交基下，它的矩阵是 \(T\) 的矩阵的转置；从定义连续使用两次配对等式还得到 \((AB)^*=B^*A^*\)、\((T^*)^*=T\)。例如 \(\langle ABu,v\rangle=\langle Bu,A^*v\rangle=\langle u,B^*A^*v\rangle\)，这说明乘积伴随为何颠倒次序。
+\symidx{\(T^*\)：内积伴随算子}
+
+\begin{definition}[自伴算子]
+	\label{g1:def:self-adjoint}
+	实内积空间 \(V\) 上的线性算子 \(T\colon V\rightarrow V\) 称为\term[zibansuanzi]{自伴算子}[self-adjoint operator]，若
+	\[
+		\langle Tu,v\rangle=\langle u,Tv\rangle\qquad(u,v\in V).
+	\]
+	若存在非零向量 \(v\) 与实数 \(\lambda\) 满足 \(Tv=\lambda v\)，则称 \(\lambda\) 为 \(T\) 的\term[tezhengzhi]{特征值}[eigenvalue]，\(v\) 为相应\term[tezhengxiangliang]{特征向量}[eigenvector]，并记\term[tezhengzikongjian]{特征子空间}[eigenspace]为
+	\[
+		E_\lambda(T)\coloneqq\ker(T-\lambda I).
+	\]
+	\symidx{\(E_\lambda(T)\)：特征子空间}
+\end{definition}
+
+若内积矩阵为 \(G\)，算子矩阵为 \(A\)，自伴条件写成 \(A^{\mathsf T}G=GA\)。只有在标准正交基下，即 \(G=I\) 时，它才简化为 \(A^{\mathsf T}=A\)。因此“矩阵对称”是自伴性在特定类型坐标中的表达。
+
+\begin{theorem}[实自伴谱定理]
+	\label{g1:thm:spectral}
+	设 \(V\) 是 \(n\) 维实内积空间，\(T\colon V\rightarrow V\) 是自伴线性算子。则 \(V\) 有由 \(T\) 的特征向量组成的标准正交基。在这样的基下，\(T\) 的矩阵为
+	\[
+		\operatorname{diag}(\lambda_1,\ldots,\lambda_n),\qquad\lambda_i\in\mathbb R.
+	\]
+	不同特征值的特征子空间互相正交，\(V\) 是这些特征子空间的正交直和。特征值连同各自重数所组成的多重集由 \(T\) 唯一确定。
+\end{theorem}
+
+\begin{proof}
+	关键是先找到一个实特征方向，再证明它的正交补仍由 \(T\) 保持，这样就能降低维数。若 \(n=0\)，结论由空基成立。设 \(n\geq1\)。由\cref{g1:prop:orthonormalization}，可以先取任意标准正交坐标。在这些坐标下，单位球面 \(\{\,x:\lVert x\rVert=1\,\}\) 是 \(\mathbb R^n\) 中的闭有界集合，因而紧；连续实函数在非空紧集上取得最大值。这里使用的是有限维实分析中的紧性与极值定理，有限维和正定性共同保证这个球面是通常的紧球面。
+
+	函数 \(f(x)=\langle Tx,x\rangle\) 连续，所以在某个单位向量 \(u\) 处取得球面最大值，记为 \(\lambda=\langle Tu,u\rangle\)。对任意 \(v\perp u\)，曲线
+	\[
+		\gamma(t)=\frac{u+tv}{\sqrt{1+t^2\lVert v\rVert^2}}
+	\]
+	始终在单位球面上，并经过 \(u\)。因此 \(f(\gamma(t))\) 在 \(t=0\) 有极大值，其导数为零。利用自伴性直接展开：
+	\[
+		f(\gamma(t))
+		=\frac{\lambda+2t\langle Tu,v\rangle+t^2\langle Tv,v\rangle}
+		{1+t^2\lVert v\rVert^2}.
+	\]
+	在 \(t=0\) 求导得 \(2\langle Tu,v\rangle=0\)。所以 \(Tu\) 与所有 \(v\in u^\perp\) 正交。由正交分解，\(Tu\in\mathbb Ru\)；再与 \(u\) 配对得到 \(Tu=\lambda u\)。
+
+	若 \(v\in u^\perp\)，则
+	\[
+		\langle Tv,u\rangle=\langle v,Tu\rangle
+		=\lambda\langle v,u\rangle=0.
+	\]
+	故 \(u^\perp\) 在 \(T\) 下不变，限制 \(T|_{u^\perp}\) 仍满足自伴条件。对维数 \(n-1\) 应用归纳假设，得到 \(u^\perp\) 的标准正交特征基，与 \(u\) 合起来就是所求的基。
+
+	若 \(Tu=\lambda u\)、\(Tv=\mu v\) 且 \(\lambda\ne\mu\)，则
+	\[
+		\lambda\langle u,v\rangle
+		=\langle Tu,v\rangle
+		=\langle u,Tv\rangle
+		=\mu\langle u,v\rangle,
+	\]
+	所以 \(u\perp v\)。已有特征基又说明这些特征子空间张成整个 \(V\)。
+
+	最后说明唯一性的含义。若换基矩阵为可逆矩阵 \(C\)，同一算子的两个矩阵为 \(A\) 与 \(C^{-1}AC\)，于是
+	\[
+		\det(tI-C^{-1}AC)=\det\bigl(C^{-1}(tI-A)C\bigr)=\det(tI-A).
+	\]
+	在所得特征基下，这个多项式等于 \(\prod_{i=1}^n(t-\lambda_i)\)。实一次因子的根和重数唯一，因而特征值的多重集不依赖所选特征基。
+\end{proof}
+
+这个结果称为实有限维的\term[pudingli]{谱定理}[spectral theorem]。“谱”在这里就是全部特征值。定理不声称特征基唯一：每个重特征值的特征子空间内，可以重新选择任意标准正交基；即使特征值互异，单位特征向量仍可改变符号。真正不依赖这些选择的是特征子空间及其正交投影，算子可以写成
+\[
+	T=\sum_{\lambda}\lambda P_{E_\lambda(T)}.
+\]
+若 \(x=\sum_i x_i e_i\)，则
+\[
+	\langle Tx,x\rangle=\sum_i\lambda_i x_i^2.
+\]
+因此 \(\langle Tx,x\rangle>0\) 对所有 \(x\ne0\) 成立，当且仅当全部 \(\lambda_i>0\)；非负性则对应全部 \(\lambda_i\geq0\)。
+
+\begin{corollary}[实对称矩阵的正交对角化]
+	\label{g1:cor:orthogonal-diagonalization}
+	对每个实对称 \(n\times n\) 矩阵 \(A\)，存在满足 \(Q^{\mathsf T}Q=I\) 的实矩阵 \(Q\)，使
+	\[
+		Q^{\mathsf T}AQ=\operatorname{diag}(\lambda_1,\ldots,\lambda_n).
+	\]
+	两个同阶实对称矩阵能由这样的正交换基相互转化，当且仅当它们的特征值多重集相同。
+\end{corollary}
+
+\begin{proof}
+	把 \(A\) 看作通常点积空间 \(\mathbb R^n\) 上的算子，它因 \(A^{\mathsf T}=A\) 而自伴。把\cref{g1:thm:spectral}所得标准正交特征基作为 \(Q\) 的各列，便有 \(Q^{\mathsf T}Q=I\) 及所示公式。正交换基也是相似变换，因此保持特征值多重集。反过来，若两个矩阵具有相同特征值多重集，调整特征基顺序，使两者的对角矩阵相同，复合这两个正交换基便得到所求变换。
+\end{proof}
+
+\begin{example}[椭圆的轴从哪里来]
+	\label{g1:exm:ellipse-spectral}
+	对称矩阵
+	\[
+		A=\begin{pmatrix}2&1\\1&2\end{pmatrix}
+	\]
+	分别在单位向量 \(e_+=(1,1)/\sqrt2\)、\(e_-=(1,-1)/\sqrt2\) 上取特征值 \(3\)、\(1\)。若 \((x,y)=u e_++v e_-\)，则
+	\[
+		2x^2+2xy+2y^2=3u^2+v^2.
+	\]
+	所以等值线 \(2x^2+2xy+2y^2=1\) 的两条主轴沿 \(e_+\)、\(e_-\)，对应半轴长分别为 \(1/\sqrt3\)、\(1\)。较大的特征值对应较短的半轴，因为沿该方向走同样的距离，二次表达式增长得更快。这里换成 \((u,v)\) 没有改变长度，只改变了标准正交坐标的方向。
+\end{example}
+
+\subsection{对称双线性型的合同分类与惯性}
+\label{g1:subsec:0102:03}
+
+正定性适合测量距离，但许多二次方程具有正负号，例如 \(x^2-y^2=1\)。这时仍有对称双线性配对，却不能把其对角值的平方根当作长度。我们因此把对称性与正定性分开。
+
+\begin{definition}[对称双线性型与二次型]
+	\label{g1:def:symmetric-form}
+	设 \(V\) 是实向量空间。映射 \(B\colon V\times V\rightarrow\mathbb R\) 若对每个变量分别线性，并满足 \(B(u,v)=B(v,u)\)，称为\term[duichengshuangxianxingxing]{对称双线性型}[symmetric bilinear form]。其对应的\term[ercixing]{二次型}[quadratic form]是
+	\[
+		q(v)\coloneqq B(v,v).
+	\]
+	其\term[genji]{根基}[radical]定义为
+	\[
+		\operatorname{rad}B\coloneqq\{\,v\in V:B(v,w)=0\text{ 对所有 }w\in V\,\}.
+	\]
+	若 \(\operatorname{rad}B=\{0\}\)，称 \(B\) \term[feituihua]{非退化}[nondegenerate]；否则称其退化。
+	\symidx{\(\operatorname{rad}B\)：双线性型的根基}
+\end{definition}
+
+实数域上，\(q\) 确定 \(B\)，因为
+\[
+	B(u,v)=\frac{q(u+v)-q(u)-q(v)}2.
+\]
+这里与式\eqref{g1:eq:inner-polarization}有相同的展开过程，完全不需要正定性。若取基 \(b_1,\ldots,b_n\)，令 \(A_{ij}=B(b_i,b_j)\)，则 \(A\) 对称，且坐标列为 \(x,y\) 的两个向量满足
+\[
+	B(u,v)=x^{\mathsf T}Ay,\qquad q(u)=x^{\mathsf T}Ax.
+\]
+这也说明二次多项式中的交叉项系数是相应非对角矩阵元的两倍。
+
+\ProseParagraphBreak
+
+若新基的各向量在旧基下组成列矩阵 \(C\)，则同一向量的旧坐标与新坐标满足 \(x=Cx'\)。因此同一个双线性型在新基下的矩阵是
+\[
+	A'=C^{\mathsf T}AC.
+\]
+这称为\term[hetong]{合同}[congruence]变换。相比之下，同一个线性算子的矩阵变为 \(C^{-1}AC\)，称为\term[xiangsi]{相似}[similarity]变换。\cref{g1:tab:similarity-congruence}列出区别。只在 \(C\) 正交、即 \(C^{-1}=C^{\mathsf T}\) 时，两种公式才重合。
+
+\begin{table}[htbp]
+	\centering
+	\caption{相似变换与合同变换}
+	\label{g1:tab:similarity-congruence}
+	\begin{tabularx}{\linewidth}{@{}lXX@{}}
+		\toprule
+		& 线性算子 & 对称双线性型 \\
+		\midrule
+		作用对象 & 一个输入向量与一个输出向量 & 两个输入向量与一个实数值 \\
+		换基公式 & \(C^{-1}AC\) & \(C^{\mathsf T}AC\) \\
+		一般换基所保留 & 特征多项式、特征值 & 正负方向的最大维数、根基维数 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+为了运用刚证得的谱定理，可以在 \(V\) 上临时选择一个辅助内积。由向量与对偶空间的对应，对每个 \(u\) 恰有一个 \(Tu\) 使
+\[
+	B(u,v)=\langle Tu,v\rangle\qquad(v\in V).
+\]
+配对的线性性和表示的唯一性说明 \(T\) 是线性算子，\(B\) 的对称性说明 \(T\) 自伴。谱定理于是把 \(B\) 化成实对角形。辅助内积只是获得某组基的工具；接下来的唯一性证明会把最终分类量刻画成 \(B\) 自己的性质。
+
+\begin{theorem}[实对称双线性型的惯性定理]
+	\label{g1:thm:inertia}
+	设 \(V\) 是 \(n\) 维实向量空间，\(B\) 是 \(V\) 上的对称双线性型。则存在一组基，使 \(B\) 的矩阵为
+	\[
+		\operatorname{diag}(I_p,-I_q,0_r),\qquad p+q+r=n.
+	\]
+	三元组 \((p,q,r)\) 唯一。其中 \(p\) 是使 \(B|_{U\times U}\) 正定的子空间 \(U\) 的最大维数，\(q\) 是使 \(-B|_{U\times U}\) 正定的子空间 \(U\) 的最大维数，\(r=\dim\operatorname{rad}B\)。两个同维实对称双线性型合同，当且仅当这三个整数相同。
+\end{theorem}
+
+\begin{proof}
+	先证明标准形存在。任取辅助内积，将 \(B\) 写成 \(\langle Tu,v\rangle\)。由\cref{g1:thm:spectral}，存在标准正交特征基 \(e_1,\ldots,e_n\)，其中
+	\[
+		B(e_i,e_j)=\lambda_i\delta_{ij}.
+	\]
+	对每个非零 \(\lambda_i\)，把 \(e_i\) 改为 \(e_i/\sqrt{\lvert\lambda_i\rvert}\)，对应的对角元就变成 \(1\) 或 \(-1\)；零特征值对应的向量保持不变。把正、负、零三组重新排序便得到所示标准形。这次缩放通常不是正交换基，所以它可以改变特征值的绝对大小。
+
+	再证明计数与基无关。设所得三组向量张成的空间分别为 \(V_+\)、\(V_-\)、\(V_0\)。显然 \(B\) 在 \(V_+\) 上正定，故正定子空间的最大维数至少为 \(p\)。若 \(U\) 是任意正定子空间，则
+	\[
+		U\cap(V_-\oplus V_0)=\{0\},
+	\]
+	因为右边空间中的每个向量都满足 \(B(v,v)\leq0\)，而 \(U\) 中每个非零向量满足 \(B(v,v)>0\)。将 \(U\) 沿 \(V_-\oplus V_0\) 投影到 \(V_+\)，上述交集条件说明该线性映射单射，故 \(\dim U\leq\dim V_+=p\)。因此 \(p\) 恰等于所有正定子空间的最大维数。对 \(-B\) 应用同一论证得负定方向的最大维数为 \(q\)。
+
+	在标准形坐标中，\(B(v,w)=0\) 对所有 \(w\) 成立，当且仅当 \(v\) 的前 \(p+q\) 个坐标都为零。因此 \(\operatorname{rad}B=V_0\)，其维数是 \(r\)。这些描述只涉及 \(B\)，没有涉及所选基或辅助内积，故三元组唯一。合同变换是同一配对的换基，必保持这三个数；反过来，三元组相同的两个型都能化为同一个标准矩阵，复合相应换基就得到二者的合同关系。
+\end{proof}
+
+三元组 \((p,q,r)\) 称为 \(B\) 的\term[guanxing]{惯性}[inertia]；\(p\)、\(q\) 分别称\term[zhengguanxingzhishu]{正惯性指数}[positive index of inertia]与\term[fuguanxingzhishu]{负惯性指数}[negative index of inertia]。\(p+q\) 是 \(B\) 的秩，\(r\) 是零化度。
+
+\begin{example}[零值方向不等于退化方向]
+	\label{g1:exm:isotropic-radical}
+	在 \(\mathbb R^3\) 上考虑
+	\[
+		q(x,y,z)=x^2+4xy+y^2=(x+2y)^2-3y^2.
+	\]
+	取新坐标 \(u=x+2y\)、\(v=\sqrt3\,y\)、\(w=z\)，得到 \(q=u^2-v^2\)，惯性为 \((1,1,1)\)，根基为 \(z\) 轴。另一方面，在 \((u,v,w)\) 坐标中，向量 \((1,1,0)\) 满足 \(q=0\)，却不在根基中，因为它与 \((1,0,0)\) 的配对为 \(1\)。非零而满足 \(q(v)=0\) 的向量称为\term[mixiangxiangliang]{迷向向量}[isotropic vector]。迷向性只检查向量与自己的配对，根基则要求它与所有向量的配对都为零。这一差别也说明，不定二次型不能直接给出距离。
+\end{example}
+
+\begin{example}[相同惯性仍可有不同轴长]
+	\label{g1:exm:congruence-vs-orthogonal}
+	矩阵 \(I_2\) 与 \(\operatorname{diag}(1,4)\) 都有惯性 \((2,0,0)\)，并且
+	\[
+		\begin{pmatrix}1&0\\0&1/2\end{pmatrix}^{\!\mathsf T}
+		\begin{pmatrix}1&0\\0&4\end{pmatrix}
+		\begin{pmatrix}1&0\\0&1/2\end{pmatrix}=I_2.
+	\]
+	它们因而合同，却不能由正交换基相互转化，因为特征值多重集分别为 \(\{1,1\}\) 和 \(\{1,4\}\)。几何上，一个坐标方向的缩放可以把椭圆变成圆，保持长度的坐标变换却不能做到。允许的变换越多，分类留下的信息就可能越少。
+\end{example}
+
+\subsection{Gram 行列式、体积与退化的检测}
+\label{g1:subsec:0102:04}
+
+测量一条边只需要它的长度；测量一个由多条边张成的平行四边形或平行多面体，还需要知道这些边之间是否接近平行。把所有两两内积放进一个矩阵，正好同时保存长度与夹角的信息。
+
+\begin{definition}[Gram 矩阵]
+	\label{g1:def:gram-matrix}
+	设 \(v_1,\ldots,v_k\) 是实内积空间中的向量，它们的\term[Gramjuzhen]{Gram 矩阵}[Gram matrix]为
+	\[
+		\Gamma(v_1,\ldots,v_k)\coloneqq
+		\bigl(\langle v_i,v_j\rangle\bigr)_{1\leq i,j\leq k}.
+	\]
+	其行列式称为\term[Gramhanglieshi]{Gram 行列式}[Gram determinant]。
+	\symidx{\(\Gamma(v_1,\ldots,v_k)\)：Gram 矩阵}
+\end{definition}
+
+对任意列向量 \(c=(c_1,\ldots,c_k)^{\mathsf T}\)，双线性给出
+\begin{equation}
+	\label{g1:eq:gram-quadratic}
+	c^{\mathsf T}\Gamma c
+	=\left\lVert\sum_{i=1}^k c_i v_i\right\rVert^2.
+\end{equation}
+因此 \(\Gamma\) 总是\term[banzhengding]{半正定的}[positive semidefinite]，即对应二次型处处非负；只有当这些向量线性无关时，它才正定。这个等式已经预示：Gram 行列式为零应当对应边向量的线性相关，而它的正平方根应当测量所张成的体积。
+
+\ProseParagraphBreak
+
+先明确体积的含义。对线性无关的 \(v_1,\ldots,v_k\)，记 \(W=\operatorname{span}(v_1,\ldots,v_k)\)。取 \(W\) 的标准正交基，把这些向量写成一个 \(k\times k\) 坐标矩阵 \(C\) 的各列。它们张成的平行多面体为
+\[
+	\mathcal P(v_1,\ldots,v_k)
+	=\left\{\,\sum_{i=1}^k t_iv_i:0\leq t_i\leq1\,\right\},
+\]
+其 \(k\) 维欧氏体积定义为 \(\lvert\det C\rvert\)。这个定义采用了单位正交立方体体积为 \(1\) 的归一化：有向体积对各边线性、交换两边变号，且在所选的标准正交基上的值为 \(1\)，按各列的坐标展开就得到行列式公式。取绝对值后不再记录定向。
+
+\ProseParagraphBreak
+
+若换一个标准正交基，坐标矩阵变为 \(Q^{\mathsf T}C\)，其中 \(Q^{\mathsf T}Q=I\)。取行列式可得 \((\det Q)^2=1\)，所以绝对行列式不变。体积因此不依赖所选标准正交坐标。若 \(v_1,\ldots,v_k\) 线性相关，我们把它们的 \(k\) 维体积定义为零：此时多面体实际上落在低于 \(k\) 维的空间内。这个约定不否认它可能仍有非零的较低维体积。\(k=0\) 时零维平行多面体 \(\{0\}\) 的体积约定为 \(1\)。
+
+\begin{proposition}[Gram 行列式与体积]
+	\label{g1:prop:gram-volume}
+	设 \(V\) 是 \(n\) 维实内积空间，\(v_1,\ldots,v_k\in V\)。则
+	\[
+		\operatorname{Vol}_k\bigl(\mathcal P(v_1,\ldots,v_k)\bigr)^2
+		=\det\Gamma(v_1,\ldots,v_k).
+	\]
+	Gram 矩阵的秩等于 \(\operatorname{span}(v_1,\ldots,v_k)\) 的维数。特别地，当 \(k\geq1\) 时，Gram 行列式为正当且仅当各向量线性无关，为零当且仅当各向量线性相关；若 \(k>n\)，它必为零。
+\end{proposition}
+
+\begin{proof}
+	令 \(L\colon\mathbb R^k\rightarrow V\) 为 \(L(c)=\sum_i c_iv_i\)。若 \(L(c)=0\)，则 \(\Gamma c\) 的第 \(j\) 个分量 \(\langle v_j,L(c)\rangle\) 为零，故 \(\ker L\subseteq\ker\Gamma\)。反之，若 \(\Gamma c=0\)，式\eqref{g1:eq:gram-quadratic}给出 \(\lVert L(c)\rVert^2=0\)，由正定性知 \(L(c)=0\)。因此两者的核相同。对同一个定义域应用秩与零化度公式，得到
+	\[
+		\operatorname{rank}\Gamma=\operatorname{rank}L
+		=\dim\operatorname{span}(v_1,\ldots,v_k).
+	\]
+	若各向量线性相关，\(\Gamma\) 不可逆，行列式和所定义的 \(k\) 维体积都为零。
+
+	若各向量线性无关，在它们张成的 \(k\) 维空间中取标准正交基，记坐标矩阵为 \(C\)。逐项计算有 \(\Gamma=C^{\mathsf T}C\)，所以
+	\[
+		\det\Gamma=\det(C^{\mathsf T})\det C=(\det C)^2
+		=\operatorname{Vol}_k(\mathcal P)^2>0.
+	\]
+	线性无关时行列式为正，与线性相关时的零值一起给出了退化判据。\(k=0\) 时空矩阵的行列式约定为 \(1\)，与体积约定相容。
+\end{proof}
+
+体积公式还可以从“底乘高”理解。对线性无关的边向量作式\eqref{g1:eq:orthogonalization}的正交化。记
+\[
+	h_j=\lVert w_j\rVert
+	=d\bigl(v_j,\operatorname{span}(v_1,\ldots,v_{j-1})\bigr),
+\]
+其中第一步的张成空间是 \(\{0\}\)。由\cref{g1:prop:projection}，\(w_j\) 正是减去正交投影后的剩余向量。在所得标准正交基中，第 \(j\) 列只在前 \(j\) 行有非零坐标，对角元为 \(h_j\)。因此坐标矩阵上三角，得到
+\[
+	\operatorname{Vol}_k(\mathcal P)=h_1h_2\cdots h_k.
+\]
+每增加一条边，体积乘上它离已有边所张成空间的高度。任一高度为零都意味着并未增加一个新维度。
+
+\begin{example}[三维空间中的面积与体积]
+	\label{g1:exm:gram-volume}
+	在通常的 \(\mathbb R^3\) 中取
+	\[
+		v_1=(1,1,0),\qquad v_2=(1,0,1),\qquad v_3=(0,1,1).
+	\]
+	前两条边的 Gram 矩阵为
+	\[
+		\begin{pmatrix}2&1\\1&2\end{pmatrix},
+	\]
+	故平行四边形面积为 \(\sqrt3\)。同一数也可由底乘高得到：底长是 \(\sqrt2\)，而
+	\[
+		\left\lVert v_2-\frac{\langle v_2,v_1\rangle}{\lVert v_1\rVert^2}v_1\right\rVert^2
+		=2-\frac12=\frac32.
+	\]
+	三条边的 Gram 矩阵为
+	\[
+		\begin{pmatrix}2&1&1\\1&2&1\\1&1&2\end{pmatrix},
+	\]
+	其行列式为 \(4\)，所以平行六面体体积为 \(2\)。各边长都是 \(\sqrt2\)，但体积不是 \((\sqrt2)^3\)，因为三条边并不两两正交。
+\end{example}
+
+\begin{example}[长度不消失而面积退化]
+	\label{g1:exm:gram-degeneration}
+	在 \(\mathbb R^2\) 中令 \(v_1=(1,0)\)、\(v_2(t)=(1,t)\)。它们的长度在 \(t\rightarrow0\) 时都趋于 \(1\)，但
+	\[
+		\Gamma(t)=\begin{pmatrix}1&1\\1&1+t^2\end{pmatrix},
+		\qquad \det\Gamma(t)=t^2,
+	\]
+	所以面积为 \(\lvert t\rvert\)，趋于零。退化发生在两个方向逐渐重合，而不是某条边变短。对任意两个非零向量，Gram 公式也写成
+	\[
+		\operatorname{Area}^2
+		=\lVert v_1\rVert^2\lVert v_2\rVert^2-\langle v_1,v_2\rangle^2
+		=\lVert v_1\rVert^2\lVert v_2\rVert^2\sin^2\theta,
+	\]
+	这正是熟悉的“边长乘边长再乘夹角正弦”。
+\end{example}
+
+最后要保留正定性这个条件。若把 Gram 矩阵中的内积换成任意对称双线性型，行列式为零便未必表示线性相关。例如 \(B((x,y),(x',y'))=xx'-yy'\) 非退化，而非零向量 \(v=(1,1)\) 所组成的一元向量组线性无关，其配对矩阵却是 \((0)\)。\cref{g1:prop:gram-volume}证明中从平方长度为零推出向量为零的一步，此时已经失效。

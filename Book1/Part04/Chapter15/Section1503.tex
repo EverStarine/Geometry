@@ -1,0 +1,272 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 15.3 曲率与结构方程
+% 纲要位置：几何学计划纲要.md，第 708 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 二阶协变微分及张量性
+% * 外协变微分与曲率矩阵
+% * 换标架的曲率共轭规律
+% * Bianchi 恒等式的结构证明
+% 
+% 纲要内容结束
+
+\section{曲率与结构方程}
+\label{g1:sec:1503}
+
+联络使我们能够沿路径比较纤维中的向量，但两条同起点、同终点的路径未必给出同一种比较。在第九章的曲面例子中，绕小圈后的转角由曲率控制。一般向量丛中的返回变换可以伸缩、剪切，也可以旋转，因而需要一个取值于纤维自同态的对象来记录这种变化。本节把它从二阶协变微分中构造出来，再说明它怎样出现在小回路的运输中。
+
+\ProseParagraphBreak
+
+以下 \(E\to M\) 是有限秩实光滑向量丛，\(M\) 有限维、Hausdorff、第二可数，允许边界，\(\nabla\) 是光滑联络。沿用行标架 \(e\)、列分量 \(u\) 和 \(\nabla s=e(\mathrm{d}u+Au)\) 的约定。外微分及分次乘积法则使用\cref{g1:thm:exterior-derivative}；向量场括号的顺序仍为 \([X,Y]=XY-YX\)。边界处使用局部光滑延拓定义括号；\eqref{g1:eq:lie-bracket-product}中的乘法法则由同一坐标计算继续成立。
+
+\subsection{二阶协变微分及张量性}
+\label{g1:subsec:1503:01}
+
+单独的 \(\nabla_X\nabla_Ys\) 会依赖 \(Y\) 及 \(s\) 在邻近点的变化。交换 \(X,Y\) 可以消去一部分二阶项，但若方向场自身不交换，还须减去它们的李括号所贡献的一阶变化。这正是第八章曲面曲率定义中出现第三项的原因，现在同一构造适用于任意向量丛。
+
+\begin{definition}[丛联络的曲率]\label{g1:def:bundle-curvature}
+	设 \(E\to M\) 为实光滑向量丛，\(\nabla\) 为其联络，允许 \(M\) 带边界。定义
+	\[
+		R^\nabla(X,Y)s=\nabla_X\nabla_Ys-\nabla_Y\nabla_Xs-\nabla_{[X,Y]}s,
+		\qquad X,Y\in\mathfrak X(M),\quad s\in\Gamma(E).
+	\]
+	称 \(R^\nabla\) 为该联络的曲率；不致混淆时记作 \(R\)。
+\end{definition}
+
+\begin{proposition}[曲率的张量性]\label{g1:prop:bundle-curvature-tensorial}
+	上述 \(R(X,Y)s\) 对 \(X,Y,s\) 均为 \(C^\infty(M)\) 线性，并对前两个变量反对称。因此它唯一确定一个光滑截面
+	\[
+		R\in\Omega^2(M;\operatorname{End}E)
+		=\Gamma(\Lambda^2\mathrm{T}^*M\otimes\operatorname{End}E).
+	\]
+	在点 \(p\)，\(R_p(v,w)\) 是 \(E_p\) 上的线性自同态，只依赖 \(v,w\in \mathrm{T}_pM\) 和被作用的纤维向量。
+\end{proposition}
+\begin{proof}
+	实多线性和反对称性由定义得到。对光滑函数 \(f\)，先回忆\eqref{g1:eq:lie-bracket-product}的 \([fX,Y]=f[X,Y]-Y(f)X\)。该等式在边界处仍由局部延拓成立。于是
+	\begin{align*}
+		R(fX,Y)s
+		&=f\nabla_X\nabla_Ys-\nabla_Y(f\nabla_Xs)-\nabla_{f[X,Y]-Y(f)X}s\\
+		&=fR(X,Y)s.
+	\end{align*}
+	两个含 \(Y(f)\nabla_Xs\) 的项相消；第二变量的函数线性再由反对称性得到。
+
+	对截面 \(fs\)，展开
+	\[
+		\nabla_X\nabla_Y(fs)
+		=X(Yf)s+(Yf)\nabla_Xs+(Xf)\nabla_Ys+f\nabla_X\nabla_Ys.
+	\]
+	交换 \(X,Y\) 后，一阶交叉项抵消。再减去 \(\nabla_{[X,Y]}(fs)\)，额外剩余项为 \((X(Yf)-Y(Xf)-[X,Y]f)s=0\)，故 \(R(X,Y)(fs)=fR(X,Y)s\)。在局部坐标标架和丛标架中展开三个输入，函数线性把所有分量移到外面，点处结果便只依赖这些分量在该点的值。各基向量上的结果光滑，故得到所述光滑丛值二形式。
+\end{proof}
+
+这里的“二形式”只计算两个切向输入；它的输出不是实数，而是一个还可以作用于纤维向量的线性映射。若 \(E=\mathrm{T}M\)，这就是\cref{g1:def:surface-curvature-tensor}所用曲率的高维版本；若 \(E\) 是一条线丛，则每个纤维自同态只是一个实数倍。
+
+\begin{definition}\label{g1:def:flat-connection}
+	若光滑向量丛联络的曲率处处为零，即 \(R^\nabla=0\)，称该联络为\term[pingtanlianluo]{平坦联络}[flat connection]。这个条件针对给定联络；说一个丛具有平坦联络，还须指定或证明这样的联络存在。
+\end{definition}
+
+平坦的定义目前只表达一个局部微分条件。它是否足以得到平行标架，以及是否使所有同端点路径的运输相同，需要\secref{g1:sec:1505}的构造来回答。
+
+\subsection{外协变微分与曲率矩阵}
+\label{g1:subsec:1503:02}
+
+普通外微分作用于实值形式，联络作用于丛截面。要把它们组织成同一个运算，回顾\cref{g1:def:bundle-valued-form}的记号
+\[
+	\Omega^k(M;E)=\Gamma(\Lambda^k\mathrm{T}^*M\otimes E).
+\]
+其元素在一点接受 \(k\) 个切向量，交替多线性地输出一个纤维向量。在标架 \(e\) 中写为 \(\eta=\sum_a\eta^a\otimes e_a\)，其中 \(\eta^a\) 是普通 \(k\) 形式；简记成 \(e\eta_e\)，\(\eta_e=(\eta^a)\) 为列。换标架 \(e'=eg\) 时，列分量变为 \(\eta_{e'}=g^{-1}\eta_e\)。
+
+\ProseParagraphBreak
+
+矩阵值形式相乘时，同时作矩阵乘法和形式楔积。若 \(B\) 是矩阵值 \(p\) 形式、\(C\) 是矩阵值 \(q\) 形式，规定
+\[
+	(B\wedge C)^a{}_b=\sum_c B^a{}_c\wedge C^c{}_b.
+\]
+它结合，但一般不满足普通标量形式的分次交换律。特别地，\(A\wedge A\) 未必为零，因为不同矩阵系数未必交换。矩阵乘列形式也按同样规则定义。
+
+\begin{proposition}[外协变微分]\label{g1:prop:exterior-covariant-derivative}
+	设 \(\nabla\) 为实光滑向量丛 \(E\to M\) 上的联络。存在唯一的实线性局部算子
+	\[
+		\mathrm{d}_\nabla:\Omega^k(M;E)\longrightarrow\Omega^{k+1}(M;E)
+	\]
+	在零次截面上等于 \(\nabla\)，并满足对标量 \(p\) 形式 \(\alpha\) 与丛值形式 \(\eta\)，
+	\[
+		\mathrm{d}_\nabla(\alpha\wedge\eta)
+		=\mathrm{d}\alpha\wedge\eta+(-1)^p\alpha\wedge\mathrm{d}_\nabla\eta.
+	\]
+	在联络矩阵为 \(A\) 的标架中，它由
+	\begin{equation}\label{g1:eq:exterior-covariant-local}
+		\mathrm{d}_\nabla(e\eta_e)=e(\mathrm{d}\eta_e+A\wedge\eta_e)
+	\end{equation}
+	给出，称为\term[waixiebianweifen]{外协变微分}[exterior covariant derivative]。
+\end{proposition}
+\begin{proof}
+	先按局部公式定义。令 \(e'=eg\)，则\eqref{g1:eq:connection-frame-change}给出 \(A'=g^{-1}Ag+g^{-1}\mathrm{d}g\)，而微分 \(g^{-1}g=I\) 得
+	\[
+		\mathrm{d}(g^{-1})=-g^{-1}(\mathrm{d}g)g^{-1}.
+	\]
+	于是
+	\begin{align*}
+		\mathrm{d}(g^{-1}\eta_e)+A'\wedge(g^{-1}\eta_e)
+		&=-g^{-1}(\mathrm{d}g)g^{-1}\wedge\eta_e+g^{-1}\mathrm{d}\eta_e\\
+		&\quad+g^{-1}A\wedge\eta_e+g^{-1}(\mathrm{d}g)g^{-1}\wedge\eta_e\\
+		&=g^{-1}(\mathrm{d}\eta_e+A\wedge\eta_e).
+	\end{align*}
+	结果按丛值形式的分量变换，因而粘成整体算子。它在零次时就是联络，分次乘积法则则由普通外微分的规则及 \(A\wedge\alpha=(-1)^p\alpha\wedge A\) 得到；这里 \(\alpha\) 是标量，允许这样换序。
+
+	反过来，任意局部丛值形式都是 \(\sum_a\eta^a\otimes e_a\)。对每项使用规定的乘积法则，结果只能为 \(\mathrm{d}\eta^a\otimes e_a+(-1)^k\eta^a\wedge\nabla e_a\)，移过一次形式后正是\eqref{g1:eq:exterior-covariant-local}，所以唯一。
+\end{proof}
+
+后文有时将 \(\mathrm{d}_\nabla\) 简记为 \(\mathrm{D}\)，将自同态丛诱导联络的外协变微分简记为 \(\mathrm{D}_{\operatorname{End}}\)。普通外微分平方为零，外协变微分却不一定如此。差别正好是曲率。
+
+\begin{theorem}[曲率的结构方程]\label{g1:thm:curvature-structure-equation}
+	设 \(\nabla\) 为实光滑向量丛 \(E\to M\) 上的联络，\(A\) 是某局部标架中的联络矩阵。曲率 \(R\) 在该标架中的矩阵值二形式为
+	\begin{equation}\label{g1:eq:curvature-matrix}
+		F=\mathrm{d}A+A\wedge A.
+	\end{equation}
+	对每个 \(\eta\in\Omega^k(M;E)\)，有 \(\mathrm{d}_\nabla^2\eta=R\wedge\eta\)，局部分量即 \(F\wedge\eta_e\)。
+\end{theorem}
+\begin{proof}
+	由局部公式及 \(\mathrm{d}^2=0\)，逐项计算
+	\begin{align*}
+		(\mathrm{d}+A\wedge)^2\eta_e
+		&=\mathrm{d}A\wedge\eta_e-A\wedge\mathrm{d}\eta_e
+		+A\wedge\mathrm{d}\eta_e+A\wedge A\wedge\eta_e\\
+		&=(\mathrm{d}A+A\wedge A)\wedge\eta_e.
+	\end{align*}
+	还须确认这确实是先前定义的曲率。对零次截面 \(s=e u\)，把两次协变导数展开并扣除括号项，导数作用于 \(u\) 的项抵消，余下
+	\[
+		e^{-1}R(X,Y)s
+		=\bigl(X(A(Y))-Y(A(X))-A([X,Y])
+		+A(X)A(Y)-A(Y)A(X)\bigr)u.
+	\]
+	由\eqref{g1:eq:exterior-one-form-evaluation}，前三项是 \(\mathrm{d}A(X,Y)\)，后两项是 \((A\wedge A)(X,Y)\)，故所列 \(F\) 表示 \(R\)。一般次数的结论随第一段计算得到。
+\end{proof}
+
+在坐标 \(x^i\) 中写 \(A=\sum_i A_i\,\mathrm{d}x^i\)，则
+\[
+	F=\sum_{i<j}F_{ij}\,\mathrm{d}x^i\wedge\mathrm{d}x^j,
+	\qquad F_{ij}=\partial_iA_j-\partial_jA_i+[A_i,A_j].
+\]
+这里对 \(i<j\) 求和，没有额外的 \(1/2\)。最后一项是矩阵交换子，它记录纤维方向的两次线性变化不交换，不能用标量一形式自楔为零的规则删掉。
+
+\begin{example}[常系数也可能有曲率]\label{g1:exm:constant-noncommuting-connection}
+	在 \(\mathbb R^2\times\mathbb R^2\) 的标准标架中取
+	\[
+		A=B\,\mathrm{d}x+C\,\mathrm{d}y,\qquad
+		B=\begin{pmatrix}0&1\\0&0\end{pmatrix},\quad
+		C=\begin{pmatrix}0&0\\1&0\end{pmatrix}.
+	\]
+	虽然 \(\mathrm{d}A=0\)，但
+	\[
+		F=[B,C]\,\mathrm{d}x\wedge\mathrm{d}y
+		=\begin{pmatrix}1&0\\0&-1\end{pmatrix}\mathrm{d}x\wedge\mathrm{d}y\ne0.
+	\]
+	因此系数恒定、底空间单连通，都不能替代曲率为零。沿一条路径的方程只涉及一个时间变量；同时要求两个方向上的运输相容，才会发现这里的交换子。
+\end{example}
+
+在线丛的局部标架中，\(A\) 是标量一形式，\(A\wedge A=0\)，所以 \(F=\mathrm{d}A\)。在第九章的正向正交曲面标架中，\eqref{g1:eq:surface-frame-connection}给出
+\[
+	A=\begin{pmatrix}0&-\omega\\\omega&0\end{pmatrix},\qquad
+	F=\begin{pmatrix}0&-\mathrm{d}\omega\\\mathrm{d}\omega&0\end{pmatrix}.
+\]
+该例中 \(A\wedge A=0\)，并由\eqref{g1:eq:surface-curvature-form}得到 \(\mathrm{d}\omega=-K\,\mathrm{d}A\)。这里最后的 \(\mathrm{d}A\) 沿用曲面面积形式的记号，与前面“对矩阵 \(A\) 求外微分”的 \(\mathrm{d}A\) 对象不同；在一般丛公式中，\(A\) 始终表示联络矩阵。
+
+\subsection{换标架的曲率共轭规律}
+\label{g1:subsec:1503:03}
+
+联络矩阵的变换律含有 \(\mathrm{d}g\)，说明它不按张量变换。曲率已经证明是张量，因而应当只发生纤维基变换，不再出现新的导数项。
+
+\begin{proposition}[曲率的换标架公式]\label{g1:prop:curvature-frame-change}
+	若同一实向量丛联络在标架 \(e\) 与 \(e'=eg\) 中的曲率矩阵分别为 \(F,F'\)，则
+	\[
+		F'=g^{-1}Fg.
+	\]
+	因此曲率是否为零与标架无关；对固定的切向输入，所得自同态的迹、行列式等共轭不变量也与标架无关。
+\end{proposition}
+\begin{proof}
+	对任意列向量 \(u'\)，同一截面为 \(s=e'u'=e(gu')\)。曲率的纤维线性给出 \(R(X,Y)s=eF(X,Y)g u'\)，另一方面它等于 \(e'F'(X,Y)u'=egF'(X,Y)u'\)。因此 \(Fg=gF'\)，得到结论。这个证明也说明变换律中没有导数项的原因：\(R\) 对截面是逐点线性的。
+\end{proof}
+
+\begin{proposition}[小方环的运输]\label{g1:prop:small-loop-curvature}
+	设 \(p\) 是光滑流形 \(M\) 的内点，\(\dim M\geq2\)，\(E\to M\) 带光滑联络。取以 \(p\) 为原点的坐标及丛标架，令 \(\gamma_\varepsilon\) 依次沿坐标方形的 \(+x^1,+x^2,-x^1,-x^2\) 四边行进，每边坐标长度为 \(\varepsilon>0\)，其余坐标为零。则在 \(E_p\) 的该标架中，
+	\begin{equation}\label{g1:eq:small-loop-curvature}
+		P_{\gamma_\varepsilon}
+		=I-\varepsilon^2F_{12}(p)+O(\varepsilon^3).
+	\end{equation}
+	余项指选定矩阵范数下存在与充分小 \(\varepsilon\) 无关的常数 \(C\)，使其范数不超过 \(C\varepsilon^3\)。
+\end{proposition}
+\begin{proof}
+	先用换标架消去一点处的联络系数。令 \(g(x)=I-\sum_i x^iA_i(p)\)，缩小邻域可使 \(g\) 可逆。由变换律，\(g(p)=I\) 且 \(A'_i(p)=A_i(p)+\partial_i g(p)=0\)。新旧标架在基点相同，故返回映射的基点矩阵不变，曲率矩阵在基点也不变。以下在这组新标架中计算并省去撇号。
+
+	四边上 \(A_i=O(\varepsilon)\)。把一条边用坐标长度参数化，平行运输的矩阵满足 \(U'=-B(t)U\)、\(U(0)=I\)，其中时间长度为 \(\varepsilon\)、\(\|B\|\leq C\varepsilon\)。积分方程及\cref{g1:lem:gronwall-estimate}给出 \(\|U\|\leq e^{C\varepsilon^2}\) 和 \(U-I=O(\varepsilon^2)\)，于是再次代回积分方程得
+	\[
+		U=I-\int_{\text{该边}}A+O(\varepsilon^4).
+	\]
+	把四段按实际行进顺序相乘，两个积分项的乘积也是 \(O(\varepsilon^4)\)，所以
+	\[
+		P_{\gamma_\varepsilon}=I-\oint_{\gamma_\varepsilon}A+O(\varepsilon^4).
+	\]
+	对每个矩阵条目用\cref{g1:thm:stokes-corners}的矩形情形，按\eqref{g1:eq:rectangle-boundary-signs}取正向边界，再对系数作 Taylor 展开，有
+	\[
+		\oint_{\gamma_\varepsilon}A
+		=\int_0^\varepsilon\int_0^\varepsilon
+		(\partial_1A_2-\partial_2A_1)(s,t,0,\ldots,0)\,\mathrm{d}s\,\mathrm{d}t
+		=\varepsilon^2F_{12}(p)+O(\varepsilon^3).
+	\]
+	最后一步使用光滑性和 \(A(p)=0\)，此时基点的交换子项为零。结合两式得到结论。矩形缩在内点坐标域内，故没有额外的边界条件。
+\end{proof}
+
+\input{Figures/Chapter15-CurvatureLoop.tex}
+
+\cref{g1:fig:curvature-loop}中的两条折线路径有相同端点，但沿第一条出发、沿第二条反向返回，会形成这个方环。\eqref{g1:eq:small-loop-curvature}说明它们的差首先在面积阶出现，系数就是曲率。负号来自平行方程 \(u'=-A(\dot\gamma)u\) 和所选绕行方向；换成反向回路便反号。一般矩阵系数不交换，不能把小回路的一阶面积近似误写成任意大回路上的 \(P_\gamma=\exp(-\int F)\)。
+
+\subsection{Bianchi 恒等式的结构证明}
+\label{g1:subsec:1503:04}
+
+曲率是联络的二阶变化，它自身并不是任意的矩阵值二形式：结构方程强制它满足一个协变微分恒等式。为了准确写出这个式子，先将\cref{g1:prop:induced-connections}给出的 \(\operatorname{End}E\) 联络延拓到自同态值形式。对矩阵值 \(k\) 形式 \(B\)，其外协变微分为
+\begin{equation}\label{g1:eq:endomorphism-exterior-derivative}
+	\mathrm{d}_{\nabla^{\operatorname{End}}}B
+	=\mathrm{d}B+A\wedge B-(-1)^k B\wedge A.
+\end{equation}
+这里把整体自同态值形式与其局部矩阵暂用同一字母。对 \(B=\beta C\)，其中 \(\beta\) 为标量 \(k\) 形式、\(C\) 为自同态矩阵函数，先用 \(\nabla^{\operatorname{End}}C=\mathrm{d}C+AC-CA\)，再用外协变微分的分次乘积法则，就得到该式；一般 \(B\) 是这类项之和。因而它来自已定义的诱导联络，而不是任意补入的修正项。
+
+下面的\term[bianchihengdengshi]{Bianchi 恒等式}[Bianchi identity]\footnote{Bianchi（比安基），Luigi Bianchi（1856--1928），意大利数学家，研究曲面、黎曼几何及连续变换群。}表达曲率的这种相容性。
+
+\begin{theorem}[Bianchi 恒等式]\label{g1:thm:bianchi-identity}
+	对实光滑向量丛 \(E\to M\) 上的任意光滑联络 \(\nabla\)，其曲率满足
+	\[
+		\mathrm{d}_{\nabla^{\operatorname{End}}}R=0.
+	\]
+	局部矩阵形式为
+	\begin{equation}\label{g1:eq:bianchi-matrix}
+		\mathrm{d}F+A\wedge F-F\wedge A=0.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	代入结构方程 \(F=\mathrm{d}A+A\wedge A\)。由于 \(A\) 是一次形式，
+	\[
+		\mathrm{d}F=\mathrm{d}A\wedge A-A\wedge\mathrm{d}A.
+	\]
+	另外
+	\[
+		A\wedge F-F\wedge A
+		=A\wedge\mathrm{d}A+A\wedge A\wedge A
+		-\mathrm{d}A\wedge A-A\wedge A\wedge A.
+	\]
+	两式相加，各项成对抵消。上述局部表达是整体 \(\operatorname{End}E\) 联络的外协变微分，所以每张图中为零就意味着整体为零。整个论证只用外微分平方为零、分次乘积法则及矩阵乘法结合性，不要求度量或无挠条件。
+\end{proof}
+
+这个恒等式通常称为第二 Bianchi 恒等式；切丛上另有涉及挠率的第一 Bianchi 恒等式，将在下一节得到。
+
+\ProseParagraphBreak
+
+在坐标向量场上，它的可计算形式是
+\[
+	\partial_iF_{jk}+\partial_jF_{ki}+\partial_kF_{ij}
+	+[A_i,F_{jk}]+[A_j,F_{ki}]+[A_k,F_{ij}]=0.
+\]
+因此一般不能删掉交换子而断言 \(\mathrm{d}F=0\)。在线丛上矩阵系数交换，式子才退化为普通的 \(\mathrm{d}F=0\)。在二维底流形上，恒等式因三形式为零而自动成立；它既不迫使二维曲率为零，也不说明联络可以取成零矩阵。
+
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

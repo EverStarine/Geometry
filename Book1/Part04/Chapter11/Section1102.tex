@@ -1,0 +1,353 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 11.2 切空间和微分
+% 纲要位置：几何学计划纲要.md，第 544 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 曲线速度与导子定义
+% * 坐标导数和定义的等价
+% * 微分、链式法则与切丛图册
+% * 余切空间和拉回
+% 
+% 纲要内容结束
+
+\section{切空间和微分}
+\label{g1:sec:1102}
+
+在欧氏空间里，曲线经过一点时的速度是一个向量。换成流形以后，两个附近的点一般不能相减，因而“位置差除以时间差”没有直接意义。但沿曲线观察一个光滑函数，它仍是一个普通的实变量函数，可以求导。把所有这些观测的变化率同时记下来，就能定义一个不依赖外部空间的速度。这个想法既连接曲线与函数，也会说明微分为什么把切向量向前送、把线性函数向后拉。
+
+\ProseParagraphBreak
+
+本节取光滑 \(n\) 维流形 \(M\)，必要时允许边界；光滑性与边界图沿用\cref{g1:def:smooth-manifold,g1:def:manifold-with-boundary}。边界模型始终是 \(\mathbb H^n=\{x^n\ge0\}\)，光滑函数在半空间上的定义是局部延到 \(\mathbb R^n\) 后光滑。边界处的切空间仍将是 \(n\) 维向量空间；能在流形内实际走出的速度，则需要按时间是双侧还是单侧另行辨认。
+
+\subsection{曲线速度与导子定义}
+\label{g1:subsec:1102:01}
+
+先看内点 \(p\in M\)。取两条光滑曲线 \(\gamma,\eta:(-\varepsilon,\varepsilon)\to M\)，满足 \(\gamma(0)=\eta(0)=p\)。在坐标图 \(x=(x^1,\ldots,x^n)\) 中，可以比较
+\[
+	(x\circ\gamma)'(0),\qquad (x\circ\eta)'(0)\in\mathbb R^n.
+\]
+若二者相等，称两条曲线在 \(p\) 有相同的速度。这个条件不依赖图的选择：换到 \(y\) 坐标，欧氏链式法则给出
+\[
+	(y\circ\gamma)'(0)
+	=\mathrm{D}(y\circ x^{-1})_{x(p)}(x\circ\gamma)'(0),
+\]
+对 \(\eta\) 也有同式；逆坐标变换给出反向结论。速度等价只比较一阶信息，不要求两条曲线在附近重合。如何对这些等价类相加，暂时不凭图形猜测，稍后会由一个线性空间统一回答。
+
+\ProseParagraphBreak
+
+固定 \(p\)。在 \(p\) 的某个开邻域上定义的两个光滑实函数，如果在更小的 \(p\) 邻域内相等，就把它们视为同一个\term[hanshuya]{函数芽}[germ of a function]，记作 \([f]_p\)。全体这些芽组成实代数 \(C^\infty_p(M)\)：加法与乘法在两个定义域的交上进行，换代表不改变结果。求值 \(f(p)\) 也只依赖芽。采用芽，是为了只保留当前点附近的信息；一个速度不应因远处怎样延长函数而改变。
+
+\begin{definition}
+	\label{g1:def:tangent-derivation}
+	设 \(M\) 为光滑流形，可带边界，\(p\in M\)。一个实线性映射
+	\[
+		v:C^\infty_p(M)\longrightarrow\mathbb R
+	\]
+	若对所有函数芽满足
+	\[
+		v(fg)=f(p)v(g)+g(p)v(f),
+	\]
+	就称为 \(p\) 处的\term[daozi]{导子}[derivation]，或一个\term[qiexiangliang]{切向量}[tangent vector]。这里简写 \(v(f)=v([f]_p)\)。所有这样的导子按逐项相加与数乘组成实向量空间，称为 \(p\) 处的\term[qiekongjian]{切空间}[tangent space]，记为 \(\mathrm{T}_pM\)。\symidx{\(\mathrm{T}_pM\)：点处的切空间}
+\end{definition}
+
+乘法法则并不是随意添加的代数条件：它正是沿曲线求导时的乘法法则。若 \(\gamma(0)=p\)，则
+\[
+	v_\gamma(f)=\left.\frac{\mathrm{d}}{\mathrm{d}t}f(\gamma(t))\right|_{t=0}
+\]
+确为导子。代表函数在 \(p\) 附近相等时，复合在 \(t=0\) 附近相等，所以它作用于函数芽是良定义的；线性和乘法法则来自一元微积分。相同坐标速度给出相同导子，因为 \(f\circ\gamma=(f\circ x^{-1})\circ(x\circ\gamma)\)，可以使用链式法则。
+
+\ProseParagraphBreak
+
+导子自动消去常数。将乘法法则用于 \(1\cdot1\)，得到 \(v(1)=2v(1)\)，所以 \(v(1)=0\)，再由实线性得 \(v(c)=0\)。它也消去两个在 \(p\) 为零的函数芽的乘积。这提示导子只能看到一阶变化；下一个小节将证明，事实上不存在比通常方向导数更神秘的导子。
+
+\subsection{坐标导数和定义的等价}
+\label{g1:subsec:1102:02}
+
+设 \(x:U\to x(U)\) 是 \(p\) 附近的坐标图，记 \(a=x(p)\)。对于函数芽 \(f\)，定义
+\[
+	\left.\frac{\partial}{\partial x^i}\right|_p(f)
+	=\frac{\partial(f\circ x^{-1})}{\partial x^i}(a).
+\]
+若 \(p\) 在边界，右边使用光滑延拓的偏导数。这一值与延拓无关，见\cref{g1:prop:boundary-smooth-derivative}：两个延拓在半空间内侧相等，其各阶偏导在内侧相等，再由连续性取极限到边界。偏导数的线性与乘法法则说明上述算子确为切向量，称为坐标导数。
+
+\begin{proposition}[切空间的坐标基]
+	\label{g1:prop:derivation-coordinate-basis}
+	设 \(M\) 为光滑 \(n\) 维流形，可带边界，\(x\) 为 \(p\) 附近的坐标图。则
+	\[
+		\left.\frac{\partial}{\partial x^1}\right|_p,\ldots,
+		\left.\frac{\partial}{\partial x^n}\right|_p
+	\]
+	是 \(\mathrm{T}_pM\) 的一组基。具体地，每个 \(v\in \mathrm{T}_pM\) 唯一写为
+	\begin{equation}
+		\label{g1:eq:tangent-coordinate-basis}
+		v=\sum_{i=1}^n v(x^i)\left.\frac{\partial}{\partial x^i}\right|_p.
+	\end{equation}
+	因此内点和边界点的切空间均为 \(n\) 维。
+\end{proposition}
+\begin{proof}
+	核心是将一个函数的一阶部分从余项中分离出来，而不要求导子具有任何预先假定的连续性。设 \(F=f\circ x^{-1}\)；边界情形先在 \(a\) 附近选光滑延拓。缩小到欧氏小球后，沿连接 \(a,z\) 的线段使用微积分基本定理，得到
+	\[
+		F(z)-F(a)=\sum_{i=1}^n(z^i-a^i)H_i(z),\qquad
+		H_i(z)=\int_0^1\partial_iF(a+t(z-a))\,\mathrm{d}t.
+	\]
+	在较小邻域内，积分中的函数及任意阶导数连续，参数 \(t\) 处于紧区间，所以可以逐阶在积分号内求导；故 \(H_i\) 光滑，且 \(H_i(a)=\partial_iF(a)\)。边界时把此恒等式限制回半空间即可，因而它给出函数芽的等式
+	\[
+		f-f(p)=\sum_i(x^i-a^i)(H_i\circ x).
+	\]
+	导子作用于右端时，乘法法则中的 \(x^i(p)-a^i\) 为零，于是
+	\[
+		v(f)=\sum_i v(x^i)\,H_i(a)
+		=\sum_i v(x^i)\frac{\partial(f\circ x^{-1})}{\partial x^i}(a).
+	\]
+	这证明了张成性。又有 \(\left.\frac{\partial}{\partial x^i}\right|_p(x^j)=\delta_i^j\)，对任何线性关系逐个作用于 \(x^j\)，便得到全部系数为零，所以这些向量线性无关，表示也唯一。
+\end{proof}
+
+公式中的 \(v(x^i)\) 是同一个切向量在 \(x\) 坐标下的分量；坐标函数本身只是附近的函数，不要求延长到整个流形。若换用坐标 \(y\)，则对每个 \(y^a\) 使用上述公式，得到
+\begin{equation}
+	\label{g1:eq:tangent-coordinate-change}
+	v_y^a=\sum_i\frac{\partial y^a}{\partial x^i}(p)v_x^i,
+	\qquad
+	\left.\frac{\partial}{\partial x^i}\right|_p
+	=\sum_a\frac{\partial y^a}{\partial x^i}(p)
+	\left.\frac{\partial}{\partial y^a}\right|_p.
+\end{equation}
+这里 \(\partial y^a/\partial x^i\) 是 \(y\circ x^{-1}\) 的偏导。变换矩阵可逆，是因为正反坐标变换的导数由链式法则互逆；边界处同样成立。
+
+\begin{theorem}[曲线速度与导子]
+	\label{g1:thm:tangent-curve-derivation}
+	设 \(p\) 是光滑流形 \(M\) 的内点。把经过 \(p\) 的双侧光滑曲线按速度等价，所得等价类集合与 \(\mathrm{T}_pM\) 一一对应，对应把 \(\gamma\) 送到 \(v_\gamma\)。在任意坐标图中，
+	\[
+		v_\gamma=\sum_i(x^i\circ\gamma)'(0)
+		\left.\frac{\partial}{\partial x^i}\right|_p.
+	\]
+\end{theorem}
+\begin{proof}
+	曲线给出导子及其坐标公式，已由链式法则说明。若两个导子相等，把它们作用于各坐标函数便得到相同坐标速度；反过来，相同坐标速度由坐标基公式给出相同导子，所以对应良定义且单射。任取 \(v=\sum_i v^i\partial_{x^i}|_p\)。因为 \(p\) 是内点，\(a=x(p)\) 的一个完整欧氏小球在图像内，故足够小的双侧时间上
+	\[
+		\gamma(t)=x^{-1}(a+t(v^1,\ldots,v^n))
+	\]
+	有定义，其坐标速度为指定的 \((v^1,\ldots,v^n)\)，所以 \(v_\gamma=v\)，这证明满射。
+\end{proof}
+
+现在可以把速度等价类相加：先把它们看成导子相加，再由定理选一条代表曲线。坐标里，这只是把速度列向量相加，但不需要把流形中的两个点相加。切向量也不是一条完整曲线；许多形状不同、加速度不同的曲线可代表同一个切向量。
+
+\begin{example}[极坐标中的同一速度]
+	\label{g1:exm:tangent-polar-coordinates}
+	在平面原点之外的一个角扇区中，\(x=r\cos\theta\)、\(y=r\sin\theta\)。链式法则给出
+	\[
+		\partial_r=\cos\theta\,\partial_x+\sin\theta\,\partial_y,\qquad
+		\partial_\theta=-r\sin\theta\,\partial_x+r\cos\theta\,\partial_y.
+	\]
+	所以同一向量 \(v=A\partial_r+B\partial_\theta\) 的直角坐标分量为
+	\[
+		(v^x,v^y)=(A\cos\theta-rB\sin\theta,\ A\sin\theta+rB\cos\theta).
+	\]
+	例如在 \((x,y)=(2,0)\) 处，\(\partial_\theta=2\partial_y\)。符号 \(\partial_\theta\) 指每单位角度变化的速度，而不是已经归一化的单位向量。这里没有改变切向量，只改变了用来记录它的坐标基。
+\end{example}
+
+\begin{proposition}[边界处的曲线速度]
+	\label{g1:prop:boundary-velocities}
+	设 \(M\) 为光滑 \(n\) 维带边界流形，\(n\ge1\)，\(p\in\partial M\)，边界坐标为 \(x\)，其中 \(x^n(p)=0\)。
+	\begin{enumerate}
+		\item 经过 \(p\) 的双侧光滑曲线 \(\gamma:(-\varepsilon,\varepsilon)\to M\) 所能给出的速度，恰为 \(v^n=0\) 的子空间。它自然识别为 \(\mathrm{T}_p(\partial M)\)。
+		\item 从 \(p\) 出发的单侧光滑曲线 \(\gamma:[0,\varepsilon)\to M\) 所能给出的右速度，恰为 \(v^n\ge0\) 的闭半空间，称为\term[neixiangqiezhui]{内向切锥}[inward tangent cone]，记为 \(\mathrm{T}_p^+M\)。
+	\end{enumerate}
+	这两个集合都与边界图的选择无关；完整切空间 \(\mathrm{T}_pM\) 则允许任意 \(v^n\in\mathbb R\)。
+\end{proposition}
+\begin{proof}
+	双侧曲线的函数 \(h(t)=x^n(\gamma(t))\) 非负且 \(h(0)=0\)，所以 \(0\) 为内点极小，\(h'(0)=0\)。反过来，任意 \(v^n=0\) 的坐标向量都由短曲线 \(x^{-1}(a+tv)\) 表示，它始终留在边界。单侧时，\(h(t)/t\ge0\) 对 \(t>0\) 成立，取右极限得到 \(h'_+(0)\ge0\)；任意 \(v^n\ge0\) 又由同一线性公式在 \(t\ge0\) 时实现。这就准确给出了两类速度。
+
+	\cref{g1:prop:boundary-chart-invariance}已经说明 \(\partial M\) 自身为 \(n-1\) 维光滑流形。其导子 \(w\in \mathrm{T}_p(\partial M)\) 可作用于限制函数 \(f|_{\partial M}\)，从而给出 \(\mathrm{T}_pM\) 中的导子 \(f\mapsto w(f|_{\partial M})\)。在边界坐标中，这个线性映射把边界坐标基送到 \(\partial_{x^1},\ldots,\partial_{x^{n-1}}\)，所以单射，像恰为 \(v^n=0\)。两个集合都由实际曲线的速度定义，而曲线及其导子与坐标无关，故子空间和内向锥的描述也与坐标选择无关。
+\end{proof}
+
+\input{Figures/Chapter11-BoundaryVelocities.tex}
+
+例如半直线 \([0,\infty)\) 在 \(0\) 处的切空间是 \(\mathbb R\)，坐标导子 \(\partial_x|_0\) 及 \(-\partial_x|_0\) 都合法；双侧曲线在 \(0\) 处的速度却只能为零，单侧速度则只能非负。因此若把“曲线速度”不加时间方向说明地当成边界切空间的定义，就会分别得到维数太小的空间或不对取负封闭的锥。导子定义保留了做线性代数所需的完整空间，曲线再标记其中哪些方向能够向前实际走出。
+
+\subsection{微分、链式法则与切丛图册}
+\label{g1:subsec:1102:03}
+
+现在设 \(F:M\to N\) 是光滑映射，\(p\in M\)。若在 \(N\) 上观察函数 \(f\)，沿 \(F\) 的像曲线观察它，就是在 \(M\) 上观察 \(f\circ F\)。所以一个输入速度 \(v\) 应送到算子 \(f\mapsto v(f\circ F)\)。这个公式只用了复合，不需要先选择坐标。
+
+\begin{definition}
+	\label{g1:def:manifold-differential}
+	设 \(F:M\to N\) 为光滑映射，流形可带边界。它在 \(p\) 处的\term[weifen]{微分}[differential]或切映射为
+	\[
+		\mathrm{d}F_p:\mathrm{T}_pM\longrightarrow \mathrm{T}_{F(p)}N,\qquad
+		(\mathrm{d}F_pv)(f)=v(f\circ F).
+	\]
+\end{definition}
+
+若两个函数在 \(F(p)\) 附近相等，其复合在 \(p\) 附近相等，故此公式对芽良定义。复合保留加法与乘法，而 \(f\circ F\) 在 \(p\) 的值为 \(f(F(p))\)，所以 \(\mathrm{d}F_pv\) 确实满足目标点的导子乘法法则。它对 \(v\) 线性。若 \(v=v_\gamma\) 是曲线速度，则
+\[
+	\mathrm{d}F_pv_\gamma=v_{F\circ\gamma},
+\]
+因为对任意函数 \(f\)，两边均为 \(\left.\frac{\mathrm{d}}{\mathrm{d}t}f(F(\gamma(t)))\right|_0\)。边界处的单侧曲线也有相同结论。
+
+\begin{proposition}[坐标微分与链式法则]
+	\label{g1:prop:differential-chain-rule}
+	设 \(F:M^n\to N^m\)、\(G:N\to P\) 为光滑映射，可涉及带边界流形。取 \(p\) 与 \(F(p)\) 附近的坐标 \(x,y\)，记 \(F^a=y^a\circ F\circ x^{-1}\)。则
+	\begin{equation}
+		\label{g1:eq:manifold-differential-matrix}
+		\mathrm{d}F_p\left(\sum_i v^i\partial_{x^i}|_p\right)
+		=\sum_a\left(\sum_i\frac{\partial F^a}{\partial x^i}(x(p))v^i\right)
+		\partial_{y^a}|_{F(p)}.
+	\end{equation}
+	并且
+	\[
+		\mathrm{d}(G\circ F)_p=\mathrm{d}G_{F(p)}\circ\mathrm{d}F_p,
+		\qquad \mathrm{d}(\operatorname{id}_M)_p=\operatorname{id}_{\mathrm{T}_pM}.
+	\]
+	微分同胚的微分为线性同构，其逆为相应逆映射的微分。
+\end{proposition}
+\begin{proof}
+	目标切向量的第 \(a\) 个分量是它作用于坐标函数 \(y^a\) 的结果，即 \(v(y^a\circ F)\)。用\eqref{g1:eq:tangent-coordinate-basis}展开，便得坐标公式。边界处的偏导数由光滑延拓定义且唯一，欧氏链式法则延到边界的版本已在\cref{g1:prop:boundary-smooth-derivative}证明，所以同式仍成立。
+
+	链式法则还可直接在导子层面核对。对 \(G(F(p))\) 附近的任意函数芽 \(f\)，有
+	\[
+		\bigl(\mathrm{d}(G\circ F)_p v\bigr)(f)
+		=v(f\circ G\circ F)
+		=\bigl(\mathrm{d}G_{F(p)}(\mathrm{d}F_pv)\bigr)(f).
+	\]
+	恒等映射的公式立即由定义得到。若 \(F\) 为微分同胚，把 \(F^{-1}\circ F\) 与 \(F\circ F^{-1}\) 的微分分别展开，便得到两个方向的互逆关系。
+\end{proof}
+
+这说明微分的矩阵就是多元微积分中的 Jacobian 矩阵，但线性映射本身不依赖坐标。它的秩记为 \(\operatorname{rank}\mathrm{d}F_p\)，换坐标只在矩阵两侧乘可逆矩阵，故秩不变。映射本身双射并不足以使微分可逆，例如 \(F:\mathbb R\to\mathbb R\)、\(F(t)=t^3\) 在零点的微分为零；它的逆虽连续，却在零点不可微。
+
+\ProseParagraphBreak
+
+各点的切空间都已经定义，现在才把它们组织为一个空间。令
+\[
+	\mathrm{T}M=\bigsqcup_{p\in M}\mathrm{T}_pM,\qquad \pi:\mathrm{T}M\longrightarrow M,\quad \pi(v_p)=p.
+\]
+不交并符号强调不同基点的向量属于不同的纤维，即使它们的坐标分量恰好相同，也不是同一个元素。对坐标图 \(x:U\to x(U)\)，定义双射
+\[
+	\Phi_x:\pi^{-1}(U)\longrightarrow x(U)\times\mathbb R^n,\qquad
+	\Phi_x(v_p)=(x(p),v(x^1),\ldots,v(x^n)).
+\]
+前 \(n\) 个数记录向量位于哪里，后 \(n\) 个数记录它在该点坐标基下的分量。
+
+\begin{theorem}[切丛的光滑图册]
+	\label{g1:thm:tangent-bundle-atlas}
+	设 \(M\) 为 Hausdorff、第二可数的光滑 \(n\) 维流形，可带边界。上述图 \(\Phi_x\) 唯一确定 \(\mathrm{T}M\) 上的拓扑与光滑结构，使其成为 Hausdorff、第二可数的 \(2n\) 维光滑流形，称为 \(M\) 的\term[qiecong]{切丛}[tangent bundle]。投影 \(\pi\) 光滑。若 \(M\) 带边界，则
+	\[
+		\partial(\mathrm{T}M)=\pi^{-1}(\partial M).
+	\]
+\end{theorem}
+\begin{proof}
+	首先计算过渡映射。设 \(h=y\circ x^{-1}\)，将切向量分量看作列向量，由\eqref{g1:eq:tangent-coordinate-change}可得
+	\begin{equation}
+		\label{g1:eq:tangent-bundle-transition}
+		\Phi_y\circ\Phi_x^{-1}(z,v)=(h(z),\mathrm{D}h(z)v).
+	\end{equation}
+	它在交叠像上光滑，逆映射为 \((w,\eta)\mapsto(h^{-1}(w),\mathrm{D}(h^{-1})(w)\eta)\)，因而是微分同胚。边界情形中，这些公式由 \(h\) 的局部光滑延拓给出；延拓的偏导唯一，正反导数仍互逆。模型 \(x(U)\times\mathbb R^n\subset\mathbb H^n\times\mathbb R^n\) 在把非负坐标 \(z^n\) 重排到最后一位后，就是 \(\mathbb H^{2n}\) 的相对开集。
+
+	定义集合 \(A\subset \mathrm{T}M\) 为开，当且仅当每个 \(\Phi_x(A\cap\pi^{-1}(U))\) 在相应模型中开。过渡映射为同胚，保证一张图中的开集在另一张图内仍为开；因此每个 \(\pi^{-1}(U)\) 开，每个 \(\Phi_x\) 是同胚。这验证了这些图确实组成拓扑图册，而非只是一组双射。按相同公式，\(\pi\) 在局部为 \((z,v)\mapsto z\)，故连续且光滑。
+
+	下面补足流形定义中的两个整体条件。若 \(v_p,w_q\) 的基点不同，利用 \(M\) 的 Hausdorff 性取不交基点邻域，其在 \(\pi\) 下的逆像分离两向量。若 \(p=q\) 但向量不同，在同一张 \(\Phi_x\) 图中，它们对应不同欧氏点，可取不交开邻域；这些图内开集也是 \(\mathrm{T}M\) 的开集。所以 \(\mathrm{T}M\) 为 Hausdorff。
+
+	由 \(M\) 第二可数，可以从任意坐标覆盖中选出可数子覆盖：对每个包含在某图域内的可数基元素，选一张包含它的图；每个点附近都有这样的基元素，所选图遂覆盖 \(M\)。记这些图为 \(U_1,U_2,\ldots\)。每个 \(x_j(U_j)\times\mathbb R^n\) 都有可数基，例如取有理中心、半径的欧氏球再与模型相交；把这些基通过 \(\Phi_{x_j}^{-1}\) 拉回，再对 \(j\) 取并，得到 \(\mathrm{T}M\) 的可数基。故 \(\mathrm{T}M\) 第二可数。
+
+	各图的维数为 \(2n\)，光滑过渡已经验证。边界图中的非负坐标是基点坐标 \(z^n\)，与纤维分量 \(v^n\) 无关，因此边界恰为基点落在 \(\partial M\) 上的全部向量。最后，任何使所列图为坐标图的拓扑都必须以其图内开集为基，故拓扑唯一；光滑结构由同一相容图册唯一确定。
+\end{proof}
+
+\(\partial(\mathrm{T}M)\) 与 \(\mathrm{T}(\partial M)\) 不相同。前者包含边界点处全部 \(n\) 维切向量，维数为 \(2n-1\)；后者只包含沿边界的向量，在边界坐标中还满足 \(v^n=0\)，维数为 \(2n-2\)。例如半直线的切丛是 \([0,\infty)\times\mathbb R\)，其边界是一整条纤维；边界点本身作为零维流形，切空间却只有零向量。
+
+\ProseParagraphBreak
+
+切丛还把逐点微分组成一个光滑映射。对光滑 \(F:M\to N\)，定义
+\[
+	\mathrm{T}F:\mathrm{T}M\longrightarrow \mathrm{T}N,\qquad \mathrm{T}F(v_p)=\mathrm{d}F_p(v_p).
+\]
+由\eqref{g1:eq:manifold-differential-matrix}，它在切丛坐标中的表达为
+\[
+	(z,v)\longmapsto(\widehat F(z),\mathrm{D}\widehat F(z)v),
+	\qquad \widehat F=y\circ F\circ x^{-1},
+\]
+所以确实光滑。并有 \(\pi_N\circ \mathrm{T}F=F\circ\pi_M\)、\(\mathrm{T}(G\circ F)=\mathrm{T}G\circ \mathrm{T}F\)。零向量也给出光滑映射 \(0_M:M\to \mathrm{T}M\)，其局部公式为 \(z\mapsto(z,0)\)，称为零截面。这里“丛”所记录的基本事实，是在每张图上 \(\mathrm{T}M\) 看起来像“基点邻域乘一个向量空间”，而换图时向量分量按随基点变化的可逆线性映射变换。
+
+\subsection{余切空间和拉回}
+\label{g1:subsec:1102:04}
+
+切向量记录变化的方向和速度；要从一个速度读出一个数，还需要线性函数。例如一个光滑实函数 \(f\) 在点 \(p\) 的变化率，就是 \(v\mapsto v(f)\)。这类线性观测应放在切空间的对偶中。
+
+\begin{definition}
+	\label{g1:def:cotangent-space}
+	设 \(M\) 为光滑流形，可带边界，\(p\in M\)。实对偶空间
+	\[
+		\mathrm{T}_p^*M=\operatorname{Hom}_{\mathbb R}(\mathrm{T}_pM,\mathbb R)
+	\]
+	称为 \(p\) 处的\term[yuqiekongjian]{余切空间}[cotangent space]，其中的元素称为\term[xiebianxiangliang]{协变向量}[covector]。对 \(p\) 附近的光滑实函数 \(f\)，定义 \(\mathrm{d}f_p(v)=v(f)\)。\symidx{\(\mathrm{T}_p^*M\)：点处的余切空间}
+\end{definition}
+
+这里的 \(\mathrm{d}f_p\) 与把 \(f:M\to\mathbb R\) 看作映射时的微分相符：利用 \(\partial_t|_{f(p)}\) 将 \(\mathrm{T}_{f(p)}\mathbb R\) 识别为 \(\mathbb R\)，前一小节的微分就给出这个实值线性函数。对坐标函数有
+\[
+	\mathrm{d}x^i_p\left(\partial_{x^j}|_p\right)=\delta^i_j,
+\]
+所以 \(\mathrm{d}x^1_p,\ldots,\mathrm{d}x^n_p\) 恰为坐标切基的对偶基。每个协变向量唯一写为
+\[
+	\alpha=\sum_i\alpha_i\,\mathrm{d}x^i_p,\qquad
+	\alpha_i=\alpha(\partial_{x^i}|_p),
+	\qquad
+	\mathrm{d}f_p=\sum_i\partial_i(f\circ x^{-1})(x(p))\,\mathrm{d}x^i_p.
+\]
+因而每个协变向量都是某个局部函数的微分：取 \(f=\sum_i\alpha_i x^i\) 即可。这里的系数 \(\alpha_i\) 是指定点处的实数，不是把任意随点变化的一形式都断言为某个函数的微分。
+
+\ProseParagraphBreak
+
+切空间与余切空间同维，但在没有额外结构时，并没有指定它们之间的自然识别。梯度需要先有内积，才能由 \(\langle\operatorname{grad}f,v\rangle=\mathrm{d}f(v)\) 求出一个向量；微分 \(\mathrm{d}f\) 本身无需度量。例如平面上的 \(\mathrm{d}x\) 固定不变，用欧氏度量时它对应 \(\partial_x\)，用 \(2\,\mathrm{d}x^2+\mathrm{d}y^2\) 时则对应 \(\frac12\partial_x\)。
+
+\begin{proposition}[余切拉回]
+	\label{g1:prop:covector-pullback}
+	设 \(F:M\to N\) 为光滑映射，流形可带边界。其微分的对偶映射为
+	\[
+		(\mathrm{d}F_p)^*:\mathrm{T}_{F(p)}^*N\longrightarrow \mathrm{T}_p^*M,\qquad
+		(\mathrm{d}F_p)^*\alpha=\alpha\circ\mathrm{d}F_p,
+	\]
+	称为协变向量的\term[lahui]{拉回}[pullback]。它满足
+	\[
+		(\mathrm{d}F_p)^*(\mathrm{d}f_{F(p)})=\mathrm{d}(f\circ F)_p,
+	\]
+	且对 \(G:N\to P\)，有
+	\[
+		\bigl(\mathrm{d}(G\circ F)_p\bigr)^*
+		=(\mathrm{d}F_p)^*\circ(\mathrm{d}G_{F(p)})^*.
+	\]
+	若 \(\mathrm{d}F_p\) 的矩阵为 \(J\)，则对偶基下的拉回矩阵为 \(J^{\mathsf T}\)。
+\end{proposition}
+\begin{proof}
+	线性映射与线性函数的复合仍为线性函数，故拉回良定义。对任意 \(v\in \mathrm{T}_pM\)，
+	\[
+		\bigl((\mathrm{d}F_p)^*\mathrm{d}f_{F(p)}\bigr)(v)
+		=(\mathrm{d}F_pv)(f)=v(f\circ F)
+		=\mathrm{d}(f\circ F)_p(v),
+	\]
+	得到第一式。复合公式由微分的链式法则及函数复合的结合性得到：先将 \(v\) 经 \(\mathrm{d}F_p\)、\(\mathrm{d}G_{F(p)}\) 向前送，再由目标协变向量读数，等价于先后反向拉回这两个线性观测。最后，列向量 \(v\) 的像为 \(Jv\)，协变向量列系数 \(\alpha\) 对它的读数为 \(\alpha^{\mathsf T}Jv=(J^{\mathsf T}\alpha)^{\mathsf T}v\)，所以矩阵是转置。
+\end{proof}
+
+拉回总能定义，不要求 \(F\) 可逆。反之，要把源点的一个协变向量向前搬到目标点，通常没有唯一办法：若 \(\mathrm{d}F_p\) 压缩了方向或漏掉了目标方向，便可能不相容或有多种延长。因此“向量向前、协变向量向后”来自定义中的复合次序，而不是单纯的记号偏好。
+
+\ProseParagraphBreak
+
+也可将余切空间合成 \(\mathrm{T}^*M=\bigsqcup_p\mathrm{T}_p^*M\)，称为余切丛。将 \(\alpha_p=\sum_i a_i\,\mathrm{d}x^i_p\) 记录为 \((x(p),a)\)。若 \(y=h(x)\)，则 \(\mathrm{d}y=\mathrm{D}h\,\mathrm{d}x\) 表示各坐标微分的线性关系，因此同一个协变向量的系数满足 \(a_x=\mathrm{D}h^{\mathsf T}a_y\)，过渡映射为
+\[
+	(z,a)\longmapsto\bigl(h(z),\mathrm{D}h(z)^{-{\mathsf T}}a\bigr).
+\]
+它光滑可逆：矩阵求逆可由余子式除以非零行列式表示。按\cref{g1:thm:tangent-bundle-atlas}的同一构造赋予拓扑，图内过渡为同胚；基点不同时用基空间分离，同基点时用一张图分离；可数坐标覆盖和局部可数基给出第二可数性。于是 \(\mathrm{T}^*M\) 也为 \(2n\) 维光滑流形，带边界时其边界同样是基点落在 \(\partial M\) 的全部余切向量。这是对偶换基的直接构造，并不需要先有一般向量丛理论。
+
+\ProseParagraphBreak
+
+如果给 \(M\) 的每一点选定协变向量 \(\alpha_p\)，且在坐标表达 \(\alpha=\sum_i a_i(x)\,\mathrm{d}x^i\) 中各系数光滑，就称它为光滑一形式。上述换基公式说明这与坐标无关。对于 \(N\) 上的一形式 \(\alpha\)，逐点定义
+\[
+	(F^*\alpha)_p=(\mathrm{d}F_p)^*\alpha_{F(p)}.
+\]
+在坐标中它是
+\[
+	F^*\left(\sum_a b_a(y)\,\mathrm{d}y^a\right)
+	=\sum_i\left(\sum_a b_a(\widehat F(x))
+	\frac{\partial\widehat F^a}{\partial x^i}(x)\right)\mathrm{d}x^i,
+\]
+所以仍光滑，并满足 \((G\circ F)^*=F^*\circ G^*\)、\(F^*(\mathrm{d}f)=\mathrm{d}(f\circ F)\)。这里仅使用一形式的线性含义；外积和外微分将另行定义。
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

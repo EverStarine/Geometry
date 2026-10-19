@@ -1,0 +1,43 @@
+% !TeX root = ../Book1.tex
+% 支集与峰值的示意图；曲线形状不表示截断函数的精确公式。
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[font=\small]
+		\begin{scope}[x=0.95cm,y=1.25cm]
+			\node[align=center] at (2.3,1.65) {局部有限};
+			\fill[orange!15] (1.92,-0.08) rectangle (2.68,1.12);
+			\draw[orange!75!black,dashed] (1.92,-0.08)--(1.92,1.12);
+			\draw[orange!75!black,dashed] (2.68,-0.08)--(2.68,1.12);
+			\draw[->,GeometryGray] (-0.1,0)--(4.85,0);
+			\foreach \c/\lab in {0.7/-1,2.3/0,3.9/1}{
+				\draw[GeometryBlue,thick] ({\c-0.65},0) .. controls ({\c-0.40},0) and ({\c-0.28},1) .. (\c,1) .. controls ({\c+0.28},1) and ({\c+0.40},0) .. ({\c+0.65},0);
+				\draw[GeometryBlue,very thick] ({\c-0.65},-0.09)--({\c+0.65},-0.09);
+				\node[below] at (\c,-0.1) {\(\lab\)};
+			}
+			\node at (0.0,0.52) {\(\cdots\)};
+			\node at (4.65,0.52) {\(\cdots\)};
+			\node[orange!75!black] at (2.3,1.25) {\(N\)};
+			\node[align=center,text width=4.8cm] at (2.3,-0.96) {固定邻域 \(N\) 只遇有限个支集；\\更远的支集不会返回这里。};
+		\end{scope}
+		\begin{scope}[xshift=5.7cm,x=6.2cm,y=1.25cm]
+			\node[align=center] at (0.35,1.65) {逐点有限，局部并非有限};
+			\draw[->,GeometryGray] (-0.025,0)--(0.75,0);
+			\draw[GeometryGray,densely dashed] (0,1)--(0.65,1);
+			\node[left] at (0,1) {\(1\)};
+			\foreach \n in {1,...,6}{
+				\pgfmathsetmacro{\c}{pow(2,-\n)}
+				\pgfmathsetmacro{\r}{\c/4}
+				\draw[GeometryBlue,thick] ({\c-\r},0) .. controls ({\c-0.65*\r},0) and ({\c-0.45*\r},1) .. (\c,1) .. controls ({\c+0.45*\r},1) and ({\c+0.65*\r},0) .. ({\c+\r},0);
+				\fill[GeometryBlue] (\c,1) circle[radius=1.2pt];
+			}
+			\fill (0,0) circle[radius=1.5pt];
+			\node[below] at (0,0) {\(0\)};
+			\node[below] at (0.25,0) {\(\tfrac14\)};
+			\node[below] at (0.5,0) {\(\tfrac12\)};
+			\node[orange!75!black,align=center] at (0.24,1.25) {\(c_n\longrightarrow0\)};
+			\node[align=center,text width=4.9cm] at (0.35,-0.96) {各支集两两不交，却聚集到 \(0\)；\\峰值为 \(1\)，原点处的和为 \(0\)。};
+		\end{scope}
+	\end{tikzpicture}
+	\caption{左侧支集沿整数方向排列；右侧支集为以 \(c_n=2^{-n}\) 为中心、半径 \(2^{-n-2}\) 的区间。右侧每点至多属于一个支集，却无法在原点附近把求和固定为有限和。图中曲线仅示意支集与峰值。}
+	\label{g1:fig:locally-finite-bumps}
+\end{figure}

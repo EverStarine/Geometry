@@ -1,0 +1,173 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 2.4 射影对偶与极性
+% 纲要位置：几何学计划纲要.md，第 178 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 超平面参数空间与双重对偶
+% * 非退化配对产生的极点、极超平面
+% * 切空间、切超平面与对偶二次曲面
+% * 退化配对中极性的失效
+% 
+% 纲要内容结束
+
+\section{射影对偶与极性}
+\label{g1:sec:0204}
+
+平面上一点写成齐次坐标 \([x_0:x_1:x_2]\)，一条直线也由一组非全零系数 \([a_0:a_1:a_2]\) 决定，其方程是 \(a_0x_0+a_1x_1+a_2x_2=0\)。点的坐标与直线的系数虽然形式相似，却属于不同的向量空间。先保留这个区别，再利用二次型建立二者的对应，就能说明为什么一条共线定理会产生另一条共点定理，也能把二次曲面的切超平面组织成新的二次曲面。
+
+\subsection{超平面参数空间与双重对偶}
+\label{g1:subsec:0204:01}
+
+设 \(V\) 是 \(K=\mathbb R\) 或 \(\mathbb C\) 上的 \(n+1\) 维向量空间，\(n\ge1\)。回顾对偶空间 \(V^*\) 的元素是线性函数 \(\alpha:V\rightarrow K\)。每个非零 \(\alpha\) 给出射影超平面 \(H_\alpha=\mathbb P(\ker\alpha)\)。两个非零函数给出同一超平面，当且仅当相差非零倍数：若核相同，取 \(v\) 使 \(\alpha(v)=1\)，分解 \(x=\alpha(x)v+(x-\alpha(x)v)\)，即得 \(\beta(x)=\beta(v)\alpha(x)\)。反之，乘非零常数不改变核。每个余维一子空间都是某个非零函数的核，因为可以取它的一组基，补上一个向量，并令线性函数在前者上为零、在补上的向量上为 \(1\)。
+
+\begin{definition}[射影对偶空间]\label{g1:def:projective-dual}
+	对于 \(K=\mathbb R\) 或 \(\mathbb C\) 上有限维向量空间 \(V\)，称 \(\mathbb P(V^*)\) 为 \(\mathbb P(V)\) 的\term[sheyingduioukongjian]{射影对偶空间}[dual projective space]。其中一点 \([\alpha]\) 参数化原空间的超平面 \(H_\alpha\)。点 \([v]\) 与超平面 \([\alpha]\) 的关联条件是 \(\alpha(v)=0\)。
+\end{definition}
+
+这个条件对 \(v,\alpha\) 的非零倍数都不变。在选定的基及其对偶基中，它是 \(\sum_i a_ix_i=0\)；但把点坐标列直接当成超平面系数列，需要额外选择，不能仅凭两列有同样长度就认作自然对应。真正不需要选基的是到双重对偶的求值映射
+\[
+	\iota:V\longrightarrow V^{**},\qquad
+	\iota(v)(\alpha)=\alpha(v).
+\]
+若 \(v\ne0\)，把 \(v\) 扩充成基便可构造 \(\alpha(v)=1\) 的函数，所以 \(\iota\) 单射。取一组基可知 \(\dim V^*=\dim V\)，再用一次得到 \(\dim V^{**}=\dim V\)，故 \(\iota\) 是同构。因此双重射影对偶自然回到原空间。
+
+\begin{proposition}[零化子与关联反转]\label{g1:prop:annihilator-duality}
+	设 \(V\) 是 \(K=\mathbb R\) 或 \(\mathbb C\) 上的有限维向量空间，\(U,W\subseteq V\) 为子空间。定义 \(U\) 的\term[linghuazi]{零化子}[annihilator]
+	\[
+		U^\circ\coloneqq\{\,\alpha\in V^*: \alpha(u)=0\text{ 对一切 }u\in U\,\}.
+	\]
+	经由求值同构把 \(V^{**}\) 认作 \(V\)，有
+	\[
+		\begin{gathered}
+			\dim U^\circ=\dim V-\dim U,\qquad (U^\circ)^\circ=U,\\
+			(U+W)^\circ=U^\circ\cap W^\circ,\qquad
+			(U\cap W)^\circ=U^\circ+W^\circ.
+		\end{gathered}
+	\]
+	因此取零化子反转包含关系，也将射影子空间的张成与相交互换。
+\end{proposition}
+\begin{proof}
+	把 \(U\) 的基 \(u_1,\ldots,u_k\) 补成 \(V\) 的基 \(u_1,\ldots,u_m\)。其对偶基中最后 \(m-k\) 个函数构成 \(U^\circ\) 的基，得到维数公式。每个 \(u\in U\) 被 \(U^\circ\) 中的所有函数零化，故 \(U\subseteq(U^\circ)^\circ\)；两边维数均为 \(k\)，于是相等。
+
+	一个函数在 \(U+W\) 上为零，当且仅当它同时在 \(U,W\) 上为零，得到第一条运算公式。再在 \(V^*\) 中对 \(U^\circ,W^\circ\) 使用这条公式，得 \((U^\circ+W^\circ)^\circ=U\cap W\)；取第二次零化子便得到另一条。最后，\(U\subseteq W\) 直接推出 \(W^\circ\subseteq U^\circ\)。
+\end{proof}
+\symidx{\(U^\circ\)：子空间的零化子}
+
+若 \(\dim\mathbb P(V)=n\)，则一个 \(k\) 维射影子空间对应一个 \(n-k-1\) 维对偶子空间。采用 \(\mathbb P(0)=\varnothing\)、维数 \(-1\) 的约定时，整个空间与空集也互相对应。在射影平面中，点与直线互换；两点的连线与两条对偶直线的交点互换。三个点共线，等价于它们的代表向量张成空间维数至多为 \(2\)，也等价于三个对偶直线具有公共点。这些结论来自零化子公式，不需要图形的位置猜测。
+
+\subsection{非退化配对产生的极点、极超平面}
+\label{g1:subsec:0204:02}
+
+射影对偶把原空间与另一个空间联系起来。若还想在原空间内部给每一点指定一个超平面，就需要一个从 \(V\) 到 \(V^*\) 的同构。对称双线性型恰好提供这样的映射，而且它的对称性将变成几何上的互反关系。
+
+\begin{definition}[二次型的极性]\label{g1:def:quadric-polarity}
+	设 \(V\) 是 \(K=\mathbb R\) 或 \(\mathbb C\) 上维数至少为 \(2\) 的向量空间， \(B\) 是非退化对称双线性型。记
+	\[
+		b:V\longrightarrow V^*,\quad b(v)=B(v,-),\qquad
+		U^{\perp_B}=\{\,w\in V:B(u,w)=0\text{ 对一切 }u\in U\,\}.
+	\]
+	点 \(p=[v]\) 的\term[jichaopingmian]{极超平面}[polar hyperplane]是 \(p^{\perp_B}=\mathbb P((Kv)^{\perp_B})\)；超平面 \(H_\alpha\) 的\term[jidian]{极点}[pole]是 \([b^{-1}\alpha]\)。这一反转关联的对应称为由 \(B\) 给出的\term[jixing]{极性}[polarity]。在射影平面中，极超平面通常称为\term[jixian]{极线}[polar line]。
+\end{definition}
+
+非退化的含义仍是 \(B(v,w)=0\) 对所有 \(w\) 成立时必有 \(v=0\)，与\cref{g1:def:symmetric-form}的实情形相同。它保证 \(b\) 单射；有限维且两端同维又保证 \(b\) 满射，所以上述逆映射确实存在。把 \(B\) 乘以非零常数不改变极性。这里只使用双线性型；在复数域上不作复共轭，不能把它换成带复共轭的内积而仍沿用相同公式。
+
+\begin{proposition}[极性的互反性]\label{g1:prop:polarity}
+	设 \(V\) 是 \(K=\mathbb R\) 或 \(\mathbb C\) 上 \(n+1\) 维向量空间，\(n\ge1\)， \(B\) 为非退化对称双线性型。对每个子空间 \(U\subseteq V\)，有
+	\[
+		\dim U^{\perp_B}=n+1-\dim U,\qquad
+		(U^{\perp_B})^{\perp_B}=U.
+	\]
+	对点 \(p=[v]\)、\(q=[w]\)，有
+	\[
+		p\in q^{\perp_B}\quad\Longleftrightarrow\quad q\in p^{\perp_B}.
+	\]
+	点 \(p\) 落在自己的极超平面上，当且仅当 \(B(v,v)=0\)。
+\end{proposition}
+\begin{proof}
+	对称性给出 \(U^{\perp_B}=b^{-1}(U^\circ)\)，故维数公式由\cref{g1:prop:annihilator-duality}得到。又有 \(U\subseteq(U^{\perp_B})^{\perp_B}\)，因为 \(B(u,w)=B(w,u)\)；两边维数相同，故相等。点的互反性正是 \(B(w,v)=0\) 与 \(B(v,w)=0\) 的等价，最后令 \(w=v\) 即得自关联条件。
+\end{proof}
+
+因此二次曲面 \(Q=\{\,[v]:B(v,v)=0\,\}\) 可以从极性中恢复为所有自关联点。反过来，给定二次方程及其对称配对便得到极性。这里仍应记住前两节对方程与点集的区别：例如正定实型的射影零点集为空，但它给出的极性存在，并且绝不由“空集”这一个集合唯一决定。
+
+\begin{example}[圆的极线]\label{g1:exm:circle-polar}
+	在 \(\mathbb P^2(\mathbb R)\) 中考虑 \(X^2+Y^2-Z^2=0\)。点 \([a:b:c]\) 的极线是 \(aX+bY-cZ=0\)。在仿射图 \(Z=1\) 中，点 \((2,0)\) 的极线是 \(x=1/2\)，圆心 \([0:0:1]\) 的极线则是无穷远直线 \(Z=0\)。无穷远点 \([1:0:0]\) 的极线为直径所在的直线 \(X=0\)。这些计算说明极线不要求通过原来的点；只有圆上的点才有这一性质。
+\end{example}
+
+\subsection{切空间、切超平面与对偶二次曲面}
+\label{g1:subsec:0204:03}
+
+为什么极线与圆锥曲线的切线有关？沿着一条过曲面上点的直线代入二次方程，常数项已经为零，一次项描述离开曲面的第一阶变化；令一次项为零，恰好得到极超平面的方程。下面把这个观察写成不依赖图像的局部计算。
+
+\begin{proposition}[二次曲面的线性化]\label{g1:prop:quadric-tangent}
+	设 \(K=\mathbb R\) 或 \(\mathbb C\)，\(\dim V=n+1\)、\(n\ge2\)， \(B\) 为对称双线性型，\(Q\subseteq\mathbb P(V)\) 由 \(q(x)=B(x,x)=0\) 定义。设 \(p=[v]\in Q\)，且 \(B(v,-)\ne0\)。则 \(Q\) 在 \(p\) 处的一阶方程给出唯一的射影超平面
+	\[
+		\mathrm{T}_pQ=\mathbb P\{\,w\in V:B(v,w)=0\,\}.
+	\]
+	选取 \(\alpha\in V^*\) 满足 \(\alpha(v)=1\)，在仿射图 \(\alpha=1\) 内，切向量组成的空间是
+	\[
+		\{\,u\in\ker\alpha:B(v,u)=0\,\},
+	\]
+	其 \(K\)-维数为 \(n-1\)，并通过商映射同构于 \(\ker B(v,-)/Kv\)。
+\end{proposition}
+\begin{proof}
+	仿射图中以 \(v\) 为基点，每一点写成 \(v+u\)，其中 \(u\in\ker\alpha\)。代入得
+	\[
+		q(v+u)=2B(v,u)+q(u),
+	\]
+	因为 \(q(v)=0\)。因此一阶线性部分为 \(u\mapsto2B(v,u)\)。它在 \(\ker\alpha\) 上非零：否则 \(B(v,-)\) 是 \(\alpha\) 的倍数，把 \(v\) 代入得倍数为 \(B(v,v)=0\)，与假设矛盾。所以其核在 \(n\) 维方向空间 \(\ker\alpha\) 中有余维一。
+
+	一阶仿射平面由 \(v+u\)、\(\alpha(u)=B(v,u)=0\) 组成。其射影张成空间为 \(\mathbb P(\ker B(v,-))\)：对任何 \(w\in\ker B(v,-)\)，分解 \(w=\alpha(w)v+(w-\alpha(w)v)\)，后项同时属于两个核。同一分解也说明商映射将切向量空间一一对应到 \(\ker B(v,-)/Kv\)。换另一个仿射图时仍得到同一个齐次超平面；把 \(v\) 换成非零倍数也不改变其核。
+\end{proof}
+
+这里将方程的一阶部分非零的点称为该二次方程的\term[guanghuadian]{光滑点}[smooth point]，将 \(\mathrm{T}_pQ\) 称为\term[qiechaopingmian]{切超平面}[tangent hyperplane]。上述仿射图中的方向空间是\term[qiekongjian]{切空间}[tangent space]的当前坐标描述；当 \(n=2\) 时，切超平面就是\term[qiexian]{切线}[tangent line]。我们在这里用多项式的一阶项定义这些对象，不需要预先调用隐函数定理。若一条过 \(p\) 的直线由 \(v,w\) 张成，则
+\[
+	q(v+tw)=2tB(v,w)+t^2q(w).
+\]
+它的方向落在切超平面中，恰好表示一次项消失；若二次项也消失，整条直线就在 \(Q\) 上。因此在含有直纹的二次曲面上，“切”不排除整条直线包含在曲面内。
+
+\begin{theorem}[非退化二次曲面的对偶]\label{g1:thm:dual-quadric}
+	设 \(K=\mathbb R\) 或 \(\mathbb C\)，\(n\ge2\)， \(A\) 为可逆的 \((n+1)\times(n+1)\) 对称矩阵， \(Q=\{\,[x]\in\mathbb P^n(K):x^{\mathsf T}Ax=0\,\}\)。以超平面系数 \([a]\) 为对偶坐标，所有 \(Q\) 的切超平面组成\term[duiouerciqumian]{对偶二次曲面}[dual quadric]
+	\[
+		Q^*=\{\,[a]\in\mathbb P((K^{n+1})^*):a^{\mathsf T}A^{-1}a=0\,\}.
+	\]
+	映射 \([x]\mapsto[Ax]\) 在 \(Q\) 与 \(Q^*\) 间给出双射；对 \(Q^*\) 再作同样的对偶构造，返回 \(Q\)。
+\end{theorem}
+\begin{proof}
+	对 \([x]\in Q\)，可逆性保证 \(Ax\ne0\)，所以\cref{g1:prop:quadric-tangent}适用，其切超平面系数为 \(a=Ax\)。由对称性，
+	\[
+		a^{\mathsf T}A^{-1}a=x^{\mathsf T}Ax=0.
+	\]
+	反过来，若 \(a^{\mathsf T}A^{-1}a=0\)，令 \(x=A^{-1}a\)，则 \(x\ne0\)，且 \(x^{\mathsf T}Ax=0\)；在这个点的切超平面恰为 \([a]\)。两个映射互为逆，且将 \(A\) 换为 \(A^{-1}\) 再作一次便返回原方程。若实零点集为空，上述两个集合同时为空，这个集合等式和矩阵公式仍然成立。
+\end{proof}
+
+\begin{example}[切线的参数方程]\label{g1:exm:dual-conic}
+	对圆锥曲线 \(XZ-Y^2=0\)，可取
+	\[
+		A=\begin{pmatrix}0&0&1/2\\0&-1&0\\1/2&0&0\end{pmatrix}.
+	\]
+	在点 \([s^2:st:t^2]\) 处的切线为 \(t^2X-2stY+s^2Z=0\)。所以切线系数 \([a:b:c]=[t^2:-2st:s^2]\) 满足 \(b^2-4ac=0\)。这也是由 \(a^{\mathsf T}A^{-1}a=0\) 得到的方程。一族切线之所以能成为对偶平面中的曲线，是因为每条线由一个系数点表示；两边的“点”分别参数化不同种类的几何对象。
+\end{example}
+
+\subsection{退化配对中极性的失效}
+\label{g1:subsec:0204:04}
+
+退化时不应只在非退化公式中删掉一个逆矩阵符号。若 \(R=\operatorname{rad}B\ne0\)，映射 \(b:v\mapsto B(v,-)\) 的核为 \(R\)，像为 \(R^\circ\)：像包含于 \(R^\circ\) 是对称性的结果，两者维数都等于 \(\dim V-\dim R\)。因此 \([v]\in\mathbb P(R)\) 对应零函数，根本没有极超平面；在其余点，\([v]\mapsto[B(v,-)]\) 仍有定义，但 \(v\) 与 \(v+r\) 给出相同函数，通常不再单射。得到的每个超平面还都包含 \(\mathbb P(R)\)，故也不能遍历全部超平面。
+
+\begin{proposition}[退化型的双重正交补]\label{g1:prop:degenerate-polarity}
+	设 \(V\) 是 \(K=\mathbb R\) 或 \(\mathbb C\) 上的有限维向量空间， \(B\) 为对称双线性型，\(R=\operatorname{rad}B\)。则对每个子空间 \(U\subseteq V\)，
+	\[
+		(U^{\perp_B})^{\perp_B}=U+R.
+	\]
+	在商空间 \(V/R\) 上，公式 \(\overline B(v+R,w+R)=B(v,w)\) 定义非退化对称双线性型。
+\end{proposition}
+\begin{proof}
+	改变代表向量只会增加根基中的向量，所有新增配对项为零，所以 \(\overline B\) 良定义。若 \(\overline B(v+R,w+R)=0\) 对所有 \(w\) 成立，则 \(v\in R\)，证明非退化性。记商映射为 \(\pi:V\rightarrow V/R\)。由定义， \(U^{\perp_B}=\pi^{-1}((\pi U)^{\perp_{\overline B}})\)。在商空间使用\cref{g1:prop:polarity}的双重正交补结论，再取逆像，得到 \((U^{\perp_B})^{\perp_B}=\pi^{-1}(\pi U)=U+R\)。商空间维数为 \(0\) 或 \(1\) 时，所用向量空间公式仍由同一维数证明成立。
+\end{proof}
+
+\begin{example}[锥顶与重合的切平面]\label{g1:exm:singular-polarity}
+	在 \(\mathbb P^3(\mathbb R)\) 中，令 \(q(X,Y,Z,W)=X^2+Y^2-Z^2\)。根基为 \(\mathbb R(0,0,0,1)\)，锥顶 \([0:0:0:1]\) 处一次项全为零，没有由一阶方程确定的切平面。对每个 \(w\in\mathbb R\)，点 \([1:0:1:w]\) 在二次曲面上，其切平面都为 \(X-Z=0\)。这些点沿一条母线变化，切平面却不变，展示了对偶映射丢失的自由度。
+\end{example}
+
+更极端地，在射影平面中，方程 \(X^2=0\) 的实点集和复点集都是直线 \(X=0\)，但作为这个二次方程，它在每个点的一阶部分都为零。若把它先改成一次方程 \(X=0\)，当然得到一条光滑直线；这已经更换了定义方程所保留的信息。所以本节对退化对象的线性化始终针对给定的二次方程，不能仅从裸点集判断其一阶结构。

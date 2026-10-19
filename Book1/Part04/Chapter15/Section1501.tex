@@ -1,0 +1,339 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 15.1 丛联络及其空间
+% 纲要位置：几何学计划纲要.md，第 694 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * Leibniz 规则与局部联络矩阵
+% * 联络的整体存在
+% * 两联络之差与仿射空间结构
+% * 对偶、张量及外幂上的诱导联络
+% 
+% 纲要内容结束
+
+\section{丛联络及其空间}
+\label{g1:sec:1501}
+
+一个截面 \(s\) 在不同点取值于不同纤维，所以表达式 \(s(q)-s(p)\) 通常没有意义。局部标架能把这些值写成同一个 \(\mathbb R^r\) 中的列向量，于是可以对分量求导；然而标架自己也可能随基点变化，只对分量求导会依赖这次选择。曲面上的协变导数曾用“先在环境空间求导，再投影回切空间”处理这一问题。一般向量丛未指定环境空间，我们需要直接规定一种微分运算，使它在换标架后仍表示同一个几何对象。
+
+\ProseParagraphBreak
+
+本节讨论有限秩实光滑向量丛 \(E\to M\)，其中 \(M\) 有限维、Hausdorff、第二可数，允许有边界。局部平凡化和截面沿用第12章的定义：标架写成行 \(e=(e_1,\ldots,e_r)\)，截面写成 \(s=e u\)，其中 \(u\) 是列分量。边界处的光滑函数与截面均按局部延拓定义；联络作用于完整的切空间，不要求求导方向切于边界。
+
+\subsection{Leibniz 规则与局部联络矩阵}
+\label{g1:subsec:1501:01}
+
+对函数倍乘的截面 \(fs\) 求导时，一部分变化来自 \(f\)，另一部分来自 \(s\)。前一部分应当仍由普通方向导数 \(Xf\) 描述。这个要求给出联络的乘积法则。方向 \(X\) 则只指定在哪个切向量上求导，不应再对 \(X\) 的系数求导；因此两个输入承担不同的线性条件。
+
+\begin{definition}[丛联络]\label{g1:def:bundle-connection}
+	设 \(M\) 为有限维、Hausdorff、第二可数光滑流形，允许有边界，\(E\to M\) 为有限秩实光滑向量丛。一个实双线性映射
+	\[
+		\nabla:\mathfrak X(M)\times\Gamma(E)\longrightarrow\Gamma(E),\qquad (X,s)\longmapsto\nabla_Xs,
+	\]
+	若对每个 \(f\in C^\infty(M)\) 满足
+	\[
+		\nabla_{fX}s=f\nabla_Xs,\qquad
+		\nabla_X(fs)=X(f)s+f\nabla_Xs,
+	\]
+	就称为 \(E\) 上的\term[conglianluo]{丛联络}[vector bundle connection]，简称联络。\(\nabla_Xs\) 称为 \(s\) 沿 \(X\) 的协变导数。这里的丛联络都是线性联络，即遵守所写的实线性条件。
+\end{definition}
+
+第一个公式是对方向输入的 \(C^\infty(M)\) 线性，第二个公式是对截面输入的 Leibniz 规则，不能交换二者的职责。例如在平凡实线丛 \(M\times\mathbb R\) 的标准标架 \(e\) 中，\(\nabla_X(fe)=X(f)e\) 就满足定义。若把第二个输入也要求成 \(C^\infty(M)\) 线性，便会删掉函数本身的变化，无法包含这个最基本的例子。
+
+\begin{proposition}[联络的局部性]\label{g1:prop:connection-locality}
+	设 \(M\) 为有限维、Hausdorff、第二可数光滑流形，允许有边界，\(E\to M\) 为有限秩实光滑向量丛，\(\nabla\) 为其联络。则有以下结论。
+	\begin{enumerate}
+		\item \(\nabla_Xs\) 在开集 \(U\) 上的限制，只依赖 \(X,s\) 在 \(U\) 上的限制。因此 \(\nabla\) 唯一地作用于任意开集上的局部向量场和局部截面，并满足相同的线性与乘积规则。
+		\item 对 \(p\in M\)，\((\nabla_Xs)(p)\) 对方向场只依赖 \(X_p\)。给定任意 \(v\in \mathrm{T}_pM\) 及 \(p\) 附近的局部截面 \(s\)，可以良定义
+		\[
+			\nabla_v s\coloneqq(\nabla_Xs)(p),\qquad X_p=v.
+		\]
+		它属于 \(E_p\)，且对 \(v\) 实线性。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	先设整体截面 \(s\) 在 \(p\) 的开邻域 \(U\) 中为零。由\cref{g1:cor:smooth-cutoff-closed}，可取在 \(p\) 附近等于 \(1\)、支集紧且包含于 \(U\) 的光滑函数 \(\chi\)。因为 \(\chi s=0\)，Leibniz 规则给出
+	\[
+		0=\nabla_X(\chi s)=X(\chi)s+\chi\nabla_Xs.
+	\]
+	在 \(\chi=1\) 的邻域中，\(X(\chi)=0\)，所以 \(\nabla_Xs=0\)。若整体向量场 \(X\) 在 \(U\) 上为零，则 \(\chi X=0\)，由方向输入的函数线性得到 \(0=\nabla_{\chi X}s=\chi\nabla_Xs\)，结论相同。作差便知局部相同的输入给出局部相同的输出。
+
+	现设 \(X,s\) 只在 \(U\) 上定义。对每个 \(p\in U\) 选上述 \(\chi\)，将 \(\chi X,\chi s\) 在 \(U\) 外补零。所得整体场和截面光滑：在 \(U\) 内按乘法光滑，在 \(U\) 外每点附近因支集包含于 \(U\) 而恒为零。用整体联络求导后，在 \(\chi=1\) 的邻域内作为局部定义。不同截断或延拓在较小邻域中相同，刚证明的局部性保证结果也相同，故各点的结果粘合为 \(U\) 上的光滑截面。对局部函数同样用截断延拓，便能从整体规则得到局部规则。唯一性来自每点附近都可以这样替换成整体输入。
+
+	最后，在 \(p\) 附近取坐标 \(x^1,\ldots,x^n\)，写 \(X=\sum_iX^i\partial_i\)。已建立的局部规则给出
+	\[
+		(\nabla_Xs)(p)=\sum_iX^i(p)(\nabla_{\partial_i}s)(p).
+	\]
+	因此 \(X_p=0\) 时输出为零，两个方向场在 \(p\) 相同时也给出相同值。任意 \(v=\sum_iv^i\partial_i|_p\) 可以由局部常分量场 \(\sum_iv^i\partial_i\) 实现，再乘紧支截断延成整体场，故所有切向量都能作为输入。边界图的坐标向量仍构成完整的 \(n\) 维切空间基，这一构造没有使用保持 \(M\) 的流，也没有限制 \(v\) 的法向分量。线性直接由公式得到。
+\end{proof}
+
+点处求值的两个输入仍不对称。\(\nabla_v s\) 可以只记方向向量 \(v\)，却通常不能只记纤维向量 \(s(p)\)。例如在 \(\mathbb R\) 上的平凡线丛中，标准联络使截面 \(s(x)=xe\) 满足 \(s(0)=0\)、\(\nabla_{\partial_x|_0}s=e\)，而零截面有相同的点值，导数却为零。因此联络并没有给每个 \(v\) 一个可直接作用于 \(E_p\) 的线性自同态；它还需要知道截面在附近如何变化。
+
+\begin{definition}\label{g1:def:bundle-valued-form}
+	设 \(M\) 为有限维、Hausdorff、第二可数光滑流形，允许有边界，\(E\to M\) 为有限秩实光滑向量丛。记
+	\[
+		\Omega^k(M;E)\coloneqq\Gamma(\Lambda^k\mathrm{T}^*M\otimes E),\qquad k\geq0,
+	\]
+	其元素称为 \(E\) 值微分形式，也称\term[congzhiweifenxingshi]{丛值微分形式}[bundle-valued differential form]，\(\Omega^0(M;E)=\Gamma(E)\)。\symidx{\(\Omega^k(M;E)\)：丛值微分形式空间}对 \(k=1\)，它在每个点是从 \(\mathrm{T}_pM\) 到 \(E_p\) 的线性映射，随基点光滑变化。
+\end{definition}
+
+这里的丛已由\cref{g1:prop:tensor-bundle-constructions}构造，\(\mathrm{T}_p^*M\otimes E_p\simeq\operatorname{Hom}(\mathrm{T}_pM,E_p)\) 的识别来自\cref{g1:prop:tensor-hom-duality}及因子交换。固定截面 \(s\)，上一命题说明 \(v\mapsto\nabla_v s\) 给出一个 \(E\) 值一形式：在坐标中，它写成 \(\sum_i\mathrm{d}x^i\otimes\nabla_{\partial_i}s\)，所以光滑。记此一形式为 \(\nabla s\)，联络也就可以写成
+\[
+	\nabla:\Gamma(E)\longrightarrow\Omega^1(M;E),\qquad
+	\nabla(fs)=\mathrm{d}f\otimes s+f\nabla s.
+\]
+反过来，一个满足此式的实线性映射通过 \(\nabla_Xs=(\nabla s)(X)\) 恢复定义中的两条规则。因此两种写法等价：前者突出求导方向，后者把各方向的结果放在同一个一形式中。
+
+\ProseParagraphBreak
+
+在局部标架 \(e=(e_1,\ldots,e_r)\) 中，各 \(\nabla e_b\) 是 \(E\) 值一形式，因而唯一写成 \(\nabla e_b=\sum_a A^a{}_b\otimes e_a\)。把一形式 \(A^a{}_b\) 排成矩阵 \(A\)，称为该标架中的\term[lianluojuzhen]{联络矩阵}[connection matrix]。为使行标架计算简洁，约定对一形式列 \(\eta\) 写 \(e\eta=\sum_a\eta^a\otimes e_a\)；于是 \(\nabla e=eA\) 表示刚才的逐列等式。它并没有改变 \(E\) 值形式中两个张量因子的类型。
+
+\begin{proposition}[联络的局部表示]\label{g1:prop:connection-local-data}
+	设 \(M\) 为有限维、Hausdorff、第二可数光滑流形，允许有边界，\(E\to M\) 为秩 \(r\) 的实光滑向量丛。联络 \(\nabla\) 在局部标架 \(e\) 中由一个 \(r\times r\) 的光滑一形式矩阵 \(A\) 唯一决定，具体为
+	\begin{equation}
+		\label{g1:eq:connection-local-form}
+		\nabla e=eA,\qquad
+		\nabla(eu)=e(\mathrm{d}u+A u),\qquad
+		\nabla_X(eu)=e\bigl(X(u)+A(X)u\bigr).
+	\end{equation}
+	这里 \(\mathrm{d}u\) 与 \(X(u)\) 均逐分量计算。若换标架为 \(e'=eg\)，其中 \(g:U\to\operatorname{GL}(r,\mathbb R)\) 光滑，则新矩阵满足
+	\begin{equation}
+		\label{g1:eq:connection-frame-change}
+		A'=g^{-1}Ag+g^{-1}\mathrm{d}g.
+	\end{equation}
+	反过来，若一个标架覆盖上的光滑一形式矩阵在交叠处满足此规律，则\eqref{g1:eq:connection-local-form}唯一地定义一个整体联络。
+\end{proposition}
+\begin{proof}
+	把 \(s=\sum_bu^b e_b\) 代入 Leibniz 规则，得到
+	\[
+		\nabla s=\sum_b\mathrm{d}u^b\otimes e_b+\sum_{a,b}u^bA^a{}_b\otimes e_a
+		=e(\mathrm{d}u+A u).
+	\]
+	对 \(X\) 求值便得到方向公式。反向，在一张有标架的开集上，任意光滑矩阵一形式 \(A\) 由此定义光滑输出；\(X(fu)=X(f)u+fX(u)\) 和 \(A(fX)=fA(X)\) 直接保证联络的两条规则。
+
+	换标架时，逐列使用乘积法则可得
+	\[
+		\nabla e'=\nabla(eg)=e(Ag+\mathrm{d}g)=e'g^{-1}(Ag+\mathrm{d}g).
+	\]
+	由于 \(\nabla e'=e'A'\)，这就是\eqref{g1:eq:connection-frame-change}。同一截面的分量满足 \(u=gu'\)，于是该规律还给出
+	\[
+		e'(\mathrm{d}u'+A'u')
+		=e\bigl(g\,\mathrm{d}u'+\mathrm{d}g\,u'+Ag u'\bigr)
+		=e\bigl(\mathrm{d}(gu')+A(gu')\bigr).
+	\]
+	因此满足变换规律的局部矩阵对同一截面给出相同的一形式，能够逐点粘合。光滑性和联络规则都是局部性质，故粘合结果是整体联络；各张图中的公式又完全确定它，所以唯一。边界图中的微分按局部光滑延拓计算，\cref{g1:prop:boundary-smooth-derivative}保证链式法则及所得导数不依赖延拓，上述论证同样成立。
+\end{proof}
+
+若原来采用第12章的记号 \(e_j=e_i g_{ij}\)，这里的公式就是 \(A_j=g_{ij}^{-1}A_i g_{ij}+g_{ij}^{-1}\mathrm{d}g_{ij}\)。注意它含有 \(g\) 的导数。联络矩阵不是一个单纯按共轭变换的张量，\(A=0\) 也不是换标架后保持不变的断言。
+
+\begin{example}
+	在平凡实线丛中，令标准标架 \(e\) 下的联络为 \(\nabla(fe)=\mathrm{d}f\otimes e\)，于是 \(A=0\)。取另一标架 \(e'=e e^h\)，其中 \(h\) 是任意光滑实函数，则 \(g=e^h\)，从而
+	\[
+		A'=e^{-h}\mathrm{d}(e^h)=\mathrm{d}h.
+	\]
+	同一截面 \(fe\) 在新标架中的分量为 \(u'=e^{-h}f\)。因此
+	\[
+		e'\bigl(\mathrm{d}(e^{-h}f)+(\mathrm{d}h)e^{-h}f\bigr)=e\,\mathrm{d}f.
+	\]
+	对分量求导时出现的额外项，恰被联络矩阵抵消。新标架中的矩阵非零，并不表示我们更换了联络。
+\end{example}
+
+\subsection{联络的整体存在}
+\label{g1:subsec:1501:02}
+
+在一张平凡化中，把联络矩阵取为零就得到联络。困难在于不同平凡化的“零矩阵”一般不满足变换公式，所以不能直接宣称它们粘成整体对象。单位分解提供另一种做法：先把各个局部联络的输出乘以权重，再相加。Leibniz 规则中需要保留的普通导数项，正好由权重之和等于 \(1\) 来保证。
+
+\begin{theorem}[联络的存在]\label{g1:thm:connection-existence}
+	设 \(M\) 为有限维、Hausdorff、第二可数光滑流形，允许有边界，\(E\to M\) 为有限秩实光滑向量丛。则 \(E\) 上存在光滑联络。
+\end{theorem}
+\begin{proof}
+	取局部标架覆盖 \(\{U_i,e_i\}\)，在每个 \(U_i\) 上令
+	\[
+		\nabla^{(i)}(e_i u)=e_i\,\mathrm{d}u.
+	\]
+	这是局部联络。由\cref{g1:thm:smooth-partition-unity}，存在从属于 \(\{U_i\}\) 的光滑单位分解 \(\{\rho_i\}\)，满足支集族局部有限、\(\operatorname{supp}\rho_i\subseteq U_i\) 及 \(\sum_i\rho_i=1\)。对整体截面 \(s\)，定义
+	\[
+		\nabla s=\sum_i\rho_i\nabla^{(i)}(s|_{U_i}),
+	\]
+	其中每项在 \(U_i\) 外补零。这样的补零光滑：任何 \(U_i\) 外的点都有一个避开闭集 \(\operatorname{supp}\rho_i\) 的邻域，在此邻域该项恒为零。每点附近只有有限个非零项，所以和是光滑的 \(E\) 值一形式，且对 \(s\) 实线性。
+
+	对 \(f\in C^\infty(M)\)，在每个点的有限求和邻域内，有
+	\begin{align*}
+		\nabla(fs)
+		&=\sum_i\rho_i\bigl(\mathrm{d}f\otimes s+f\nabla^{(i)}s\bigr)\\
+		&=\left(\sum_i\rho_i\right)\mathrm{d}f\otimes s+f\sum_i\rho_i\nabla^{(i)}s
+		=\mathrm{d}f\otimes s+f\nabla s.
+	\end{align*}
+	于是按一形式对方向求值，就得到所需联络。证明使用的局部标架与单位分解在带边界流形上也存在，故包含边界情形。秩零时所有截面和输出均为零，结论也成立。
+\end{proof}
+
+支集包含于 \(U_i\) 与局部有限性各自有明确作用：前者使局部输出能够光滑补零，后者使求和、求导都成为邻域内的有限运算。权重在此乘在联络的输出上，验证乘积法则时不对 \(\rho_i\) 求导。构造依赖所选局部标架与单位分解，存在定理没有给出一个由向量丛本身唯一指定的联络。
+
+\begin{example}
+	Möbius 实线丛的局部过渡函数可以取为 \(1\) 或 \(-1\)，在每个交叠连通分支上为常数，见\cref{g1:exm:mobius-line-bundle}。因此 \(\mathrm{d}g_{ij}=0\)，在这些局部标架中同时取 \(A_i=0\) 就满足联络变换公式，直接给出整体联络。这个丛没有全局处处非零截面，却仍有联络。由此可见，给出一种相容的求导规则，并不等于给出一个全局标架。
+\end{example}
+
+\subsection{两联络之差与仿射空间结构}
+\label{g1:subsec:1501:03}
+
+单个联络对截面求导时包含函数的一阶变化。若对同一个截面使用两个联络，再把结果相减，普通微分项就会消掉。留下的运算只观察该截面在一点的值，因而成为真正的张量。这也解释了为什么联络的矩阵变换带一个附加项，而两个矩阵的差没有。
+
+\begin{proposition}[联络的仿射空间]\label{g1:prop:connection-affine-space}
+	设 \(M\) 为有限维、Hausdorff、第二可数光滑流形，允许有边界，\(E\to M\) 为有限秩实光滑向量丛。两个联络 \(\nabla^0,\nabla^1\) 唯一确定
+	\[
+		B\in\Omega^1(M;\operatorname{End}E)
+	\]
+	使
+	\[
+		\nabla^1_Xs-\nabla^0_Xs=B(X)s
+	\]
+	对所有 \(X,s\) 成立。反过来，给定联络 \(\nabla\) 和任意这样的 \(B\)，公式 \((\nabla+B)_Xs=\nabla_Xs+B(X)s\) 定义一个联络。因此全部联络的集合 \(\operatorname{Conn}(E)\) 是以 \(\Omega^1(M;\operatorname{End}E)\) 为方向空间的非空仿射空间。\symidx{\(\operatorname{Conn}(E)\)：联络的仿射空间}
+\end{proposition}
+\begin{proof}
+	令 \(D(X,s)=\nabla^1_Xs-\nabla^0_Xs\)。方向输入的函数线性由两个联络的相同性质得到；对截面输入，Leibniz 项相消，故
+	\[
+		D(fX,s)=fD(X,s),\qquad D(X,fs)=fD(X,s).
+	\]
+	先前的局部性保证 \(D\) 可作用于局部输入。在 \(p\) 附近取坐标及标架，写 \(X=\sum_iX^i\partial_i\)、\(s=\sum_a u^a e_a\)，便有
+	\[
+		D(X,s)(p)=\sum_{i,a}X^i(p)u^a(p)D(\partial_i,e_a)(p).
+	\]
+	右端只依赖 \(X_p\) 与 \(s(p)\)，并且对二者实双线性。任何 \(v\in \mathrm{T}_pM\)、\(w\in E_p\) 都能由局部常分量场及截面实现，再用紧支截断延成整体输入。因此定义 \(B_p(v)w=D(X,s)(p)\) 与选择无关，也唯一。
+
+	各 \(D(\partial_i,e_a)\) 光滑，所以上式同时给出 \(B\) 的光滑局部系数，得到 \(B\in\Gamma(\mathrm{T}^*M\otimes\operatorname{End}E)\)。在一组标架中若两个联络矩阵为 \(A^0,A^1\)，则 \(B\) 的矩阵一形式就是 \(A^1-A^0\)。由\eqref{g1:eq:connection-frame-change}，换标架后
+	\[
+		B'=g^{-1}Bg,
+	\]
+	因为两个 \(g^{-1}\mathrm{d}g\) 项消掉了。这正是自同态值一形式所应有的变换规律。
+
+	反向，\(B(X)s\) 对两个输入都为函数线性，因此将它加到联络上，方向线性不变，对截面的乘积法则仍只有原来的 \(X(f)s\) 项。故 \(\nabla+B\) 是联络。存在定理保证联络集合非空；上面的差与加法互相对应，满足
+	\[
+		(\nabla+B)+C=\nabla+(B+C),\qquad \nabla+0=\nabla,
+	\]
+	而任意两个联络之间有且只有一个 \(B\) 把前者移到后者。这就是仿射空间的加法公理，不要求方向空间有限维。
+\end{proof}
+
+选择一个参考联络 \(\nabla^0\) 后，任何联络都唯一写成 \(\nabla^0+B\)，从而可用向量空间 \(\Omega^1(M;\operatorname{End}E)\) 参数化。但参考联络是一个选择；更换它会平移全部参数。尤其不能把矩阵 \(A=0\) 当成与标架无关的“零联络”。在正维流形上的正秩丛中，零算子一般连 Leibniz 规则都不满足：它会把 \(\nabla_X(fs)\) 置为零，却遗漏可能非零的 \(X(f)s\)。
+
+\ProseParagraphBreak
+
+仿射组合则没有这一问题。如果 \(\nabla^0,\ldots,\nabla^m\) 是联络，光滑函数 \(f_0,\ldots,f_m\) 满足 \(\sum_j f_j=1\)，那么 \(\sum_j f_j\nabla^j\) 仍是联络，证明与存在定理中的乘积法则计算相同；此处不要求 \(f_j\) 非负。特别地，\((1-t)\nabla^0+t\nabla^1\) 对每个实数 \(t\) 都是联络。若 \(\dim M=0\) 或 \(\operatorname{rank}E=0\)，方向空间为零，联络只有一个，这与仿射描述也相容。
+
+\subsection{对偶、张量及外幂上的诱导联络}
+\label{g1:subsec:1501:04}
+
+给 \(E\) 选择求导规则之后，它的对偶与张量构造不应再独立任选一套规则。例如 \(\lambda\in\Gamma(E^*)\) 与 \(s\in\Gamma(E)\) 配对得到普通函数 \(\lambda(s)\)；若对它求导，结果应与先分别求导再配对一致。这个要求决定了对偶联络的负号。张量积和外幂则应沿每个因子分别求导，再把结果相加。
+
+\begin{proposition}[诱导联络]\label{g1:prop:induced-connections}
+	设 \(M\) 为有限维、Hausdorff、第二可数光滑流形，允许有边界，\(E,F\to M\) 为有限秩实光滑向量丛，分别给定联络 \(\nabla^E,\nabla^F\)。存在以下唯一的诱导联络。
+	\begin{enumerate}
+		\item 对偶丛 \(E^*\) 上的联络满足
+		\[
+			X\bigl(\lambda(s)\bigr)=(\nabla^{E^*}_X\lambda)(s)+\lambda(\nabla^E_Xs),
+			\qquad \lambda\in\Gamma(E^*),\ s\in\Gamma(E).
+		\]
+		\item 张量积丛 \(E\otimes F\) 上的联络满足
+		\[
+			\nabla^{E\otimes F}_X(s\otimes t)
+			=(\nabla^E_Xs)\otimes t+s\otimes\nabla^F_Xt.
+		\]
+		重复此构造得到任意有限个张量因子上的联络；它与因子的排列及对偶求值产生的收缩相容。
+		\item 对每个整数 \(k\geq1\)，外幂 \(\Lambda^kE\) 上的联络满足
+		\[
+			\nabla^{\Lambda^kE}_X(s_1\wedge\cdots\wedge s_k)
+			=\sum_{j=1}^k s_1\wedge\cdots\wedge\nabla^E_Xs_j\wedge\cdots\wedge s_k.
+		\]
+		零次外幂是平凡实线丛，其诱导联络为 \(\nabla_Xf=Xf\)。对称幂上有把 \(\wedge\) 换成 \(\odot\) 的同类公式。
+		\item 同态丛 \(\operatorname{Hom}(E,F)\) 上的联络满足
+		\[
+			(\nabla^{\operatorname{Hom}}_X\mathcal B)(s)
+			=\nabla^F_X(\mathcal B s)-\mathcal B(\nabla^E_Xs),
+			\qquad \mathcal B\in\Gamma(\operatorname{Hom}(E,F)).
+		\]
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	先构造对偶联络。给定 \(X,\lambda\)，令
+	\[
+		Q(s)=X\bigl(\lambda(s)\bigr)-\lambda(\nabla^E_Xs).
+	\]
+	若把 \(s\) 换成 \(fs\)，第一项中的 \(X(f)\lambda(s)\) 与第二项中的相同项相消，故 \(Q(fs)=fQ(s)\)。所以 \(Q\) 在一点处只依赖 \(s\) 在该点的值：可以先用紧支截断把局部截面延拓，再展开为局部标架的函数组合，得到 \(Q(s)(p)=\sum_a u^a(p)Q(e_a)(p)\)。这与\cref{g1:prop:connection-locality}中的局部化论证相同，所需的函数线性刚刚已经验证。于是 \(Q\) 唯一确定一个对偶截面，规定为 \(\nabla^{E^*}_X\lambda\)。
+
+	它的光滑性和具体符号也可直接看出。令 \(\lambda=\sum_a\ell_a e^a\)，其中 \((e^a)\) 为 \((e_a)\) 的对偶标架，\(\ell\) 为列分量。若 \(\nabla^E\) 的矩阵为 \(A\)，对 \(s=e u\) 展开上式得到
+	\[
+		Q(s)=X(\ell^{\mathsf T}u)-\ell^{\mathsf T}\bigl(X(u)+A(X)u\bigr)
+		=\bigl(X(\ell)-A(X)^{\mathsf T}\ell\bigr)^{\mathsf T}u.
+	\]
+	所以对偶联络的列分量为 \(\mathrm{d}\ell-A^{\mathsf T}\ell\)，对偶标架中的联络矩阵为 \(-A^{\mathsf T}\)。它对方向输入函数线性；把 \(\lambda\) 换成 \(f\lambda\)，公式给出 \(\nabla^{E^*}_X(f\lambda)=X(f)\lambda+f\nabla^{E^*}_X\lambda\)。故它确实为联络。求值恒等式不依赖标架，所以各图中的构造相容，且该恒等式决定了它在每个纤维向量上的值，保证唯一。
+
+	再构造张量积联络。在局部标架 \((e_a)\)、\((h_b)\) 中，\(e_a\otimes h_b\) 构成 \(E\otimes F\) 的标架，见\cref{g1:thm:tensor-product-universal,g1:prop:tensor-bundle-constructions}。先规定
+	\[
+		\nabla_X(e_a\otimes h_b)
+		=(\nabla^E_Xe_a)\otimes h_b+e_a\otimes\nabla^F_Xh_b,
+	\]
+	再对一般截面 \(w=\sum_{a,b}w^{ab}e_a\otimes h_b\) 按 \(X(w^{ab})\) 和 Leibniz 规则定义。基展开唯一，所以得到一个良定义的局部联络。把 \(s=\sum_a s^a e_a\)、\(t=\sum_b t^b h_b\) 代入，普通乘积法则 \(X(s^at^b)=X(s^a)t^b+s^aX(t^b)\) 正好给出命题所述纯张量公式。特别地，在 \((fs)\otimes t=s\otimes(ft)\) 的两种写法中，额外的 \(X(f)s\otimes t\) 项相同，不会产生不同结果。
+
+	任取另一组标架，它的每个张量基元素仍是两个局部截面的纯张量，故刚构造的联络也满足该组基上的同一规定。再用对系数的 Leibniz 规则，得到两组构造在任意截面上相同，因而能够整体粘合。纯张量基上的规定也证明唯一性。多个张量因子时，重复同一构造得到“对每个位置求导后相加”的公式。改变括号或排列因子，只会重新排列这组求和项，所以与这些自然识别相容。
+
+	收缩的相容性来自对偶公式。对纯张量中一对因子 \(\lambda,s\) 作收缩时，它们被替换成函数 \(\lambda(s)\)。对这一函数求导产生的两个项，正好是先对 \(\lambda\) 或 \(s\) 求导再收缩的结果；其余因子上的求导项保持不变。纯张量局部张成全部张量，故一般收缩也与诱导联络相容。
+
+	接下来说明外幂公式确实尊重外幂的关系，而不仅是在可分解元素上写出一个表达。对 \(E^{\otimes k}\)，记 \(P_\sigma\) 为按置换 \(\sigma\) 重新排列因子的光滑丛映射，定义交替化算子
+	\[
+		\operatorname{Alt}=\frac1{k!}\sum_{\sigma\in S_k}\operatorname{sgn}(\sigma)P_\sigma.
+	\]
+	\(\operatorname{Alt}^2=\operatorname{Alt}\)：在两次求和中，每个合成置换恰出现 \(k!\) 次，符号相乘等于合成的符号。若纯张量有两个相同因子，按交换这两个位置把求和项配对，便知其交替化为零。因此 \(\operatorname{Alt}\) 消去\cref{g1:def:symmetric-exterior-powers}中定义外幂的关系子空间，诱导出 \(\Lambda^kE\to\operatorname{im}(\operatorname{Alt})\)。
+
+	设 \(q:E^{\otimes k}\to\Lambda^kE\) 为自然商映射。交换输入改变楔积符号，所以 \(qP_\sigma=\operatorname{sgn}(\sigma)q\)，进而 \(q\operatorname{Alt}=q\)。因此刚才的诱导映射与 \(q\) 限制在 \(\operatorname{im}(\operatorname{Alt})\) 上的映射互逆：一个方向由 \(q\operatorname{Alt}=q\) 给出，另一方向由 \(\operatorname{Alt}^2=\operatorname{Alt}\) 给出。这些映射在张量标架中都是固定的有限线性组合，故为光滑识别。
+
+	张量积联络与每个 \(P_\sigma\) 相容，因而与 \(\operatorname{Alt}\) 相容。若 \(w=\operatorname{Alt}w\)，则 \(\nabla_Xw=\operatorname{Alt}(\nabla_Xw)\)，所以它保持交替化像中的截面。通过上述识别，将此联络传到 \(\Lambda^kE\)，就得到外幂联络。对 \(q(s_1\otimes\cdots\otimes s_k)\) 使用张量求导公式，恰得到所述楔积公式。递增指标楔积构成局部标架，见\cref{g1:prop:symmetric-exterior-bases}，故该公式也保证唯一性。\(k>\operatorname{rank}E\) 时外幂为零丛，结论仍成立。\(k=0\) 按普通函数求导，\(k=1\) 则恢复原联络。去掉交替化中的符号得到对称化平均；它消去排列之差，且与张量联络相容，同一论证便给出对称幂上的联络。
+
+	最后，\cref{g1:prop:tensor-hom-duality}给出 \(\operatorname{Hom}(E,F)\simeq F\otimes E^*\)，故已有一个张量诱导联络。对纯张量 \(\mathcal B=t\otimes\lambda\)，其作用为 \(\mathcal B s=\lambda(s)t\)，于是
+	\begin{align*}
+		\nabla^F_X(\mathcal B s)-\mathcal B(\nabla^E_Xs)
+		&=X(\lambda(s))t+\lambda(s)\nabla^F_Xt-\lambda(\nabla^E_Xs)t\\
+		&=(\nabla^{E^*}_X\lambda)(s)t+\lambda(s)\nabla^F_Xt\\
+		&=\bigl(\nabla_X^{F\otimes E^*}(t\otimes\lambda)\bigr)(s).
+	\end{align*}
+	一般同态截面在每张图中是有限个这样的纯张量之和，所以上式对它也成立。求值于每个纤维向量能确定一个线性映射，故公式保证唯一性。以上所有构造只用了光滑系数、函数微分与有限次代数运算，边界处按局部延拓仍满足同样的公式。
+\end{proof}
+
+外幂联络在求导时保持外幂次数，因此
+\[
+	\nabla_X(\alpha\wedge\beta)=(\nabla_X\alpha)\wedge\beta+\alpha\wedge\nabla_X\beta
+\]
+没有外微分乘积法则中的 \((-1)^{\deg\alpha}\)。两种运算的类型不同：这里 \(\alpha,\beta\) 可以是 \(\Lambda^pE,\Lambda^qE\) 的截面，\(\nabla_X\) 在每个纤维的外代数上保持次数；第14章的 \(\mathrm{d}\) 作用于底流形的微分形式并使次数增加 \(1\)。即使取 \(E=\mathrm{T}^*M\)，也应保留这种区别。
+
+\ProseParagraphBreak
+
+诱导联络还给出了以后常用的求值公式。例如对光滑双线性形式场 \(h\in\Gamma(E^*\otimes E^*)\)，求导与收缩相容意味着
+\begin{equation}
+	\label{g1:eq:connection-bilinear-form}
+	(\nabla_Xh)(s,t)=X\bigl(h(s,t)\bigr)-h(\nabla_Xs,t)-h(s,\nabla_Xt).
+\end{equation}
+这是先把 \(h,s,t\) 全部看作张量因子、对它们分别求导，再把 \(h\) 的导数移到等式一侧得到的。它同时记录了系数的变化与输入截面的变化，不能只保留第一项。
+
+\ProseParagraphBreak
+
+把同态联络写成矩阵，更能看清这种修正。在 \(E,F\) 的标架 \(e,h\) 中，设原联络矩阵分别为 \(A,C\)，同态截面 \(\mathcal B\) 由矩阵函数 \(B\) 表示，即 \(\mathcal B(eu)=hBu\)。对上面同态公式的右侧计算，有
+\begin{align*}
+	\nabla^F_X(\mathcal B(eu))&=h\bigl(X(B)u+B X(u)+C(X)Bu\bigr),\\
+	\mathcal B(\nabla^E_X(eu))&=hB\bigl(X(u)+A(X)u\bigr).
+\end{align*}
+相减后含 \(X(u)\) 的项消去，说明结果确实只对输入向量的点值线性。同态值一形式 \(\nabla^{\operatorname{Hom}}\mathcal B\) 的矩阵因此为 \(\mathrm{d}B+CB-BA\)。当 \(F=E\)、两边使用同一个联络时，这成为
+\begin{equation}
+	\label{g1:eq:endomorphism-connection}
+	(\nabla^{\operatorname{End}}\mathcal B)_e
+	=\mathrm{d}B+[A,B],\qquad [A,B]=AB-BA.
+\end{equation}
+下标 \(e\) 表示取该自同态值一形式在标架 \(e\) 中的矩阵；\(B\) 是零次矩阵函数，故这里是通常的矩阵交换子，没有分次符号。
+
+\ProseParagraphBreak
+
+例如恒等自同态的矩阵为 \(I\)，所以 \(\nabla^{\operatorname{End}}\operatorname{id}_E=0\)。对两条自同态截面的复合，矩阵乘积法则给出
+\[
+	\mathrm{d}(BC)+A(BC)-(BC)A
+	=(\mathrm{d}B+AB-BA)C+B(\mathrm{d}C+AC-CA).
+\]
+因此 \(\nabla_X^{\operatorname{End}}(\mathcal B\mathcal C)=(\nabla_X^{\operatorname{End}}\mathcal B)\mathcal C+\mathcal B\nabla_X^{\operatorname{End}}\mathcal C\)。对偶、张量和自同态上的这些规则使一个原始联络能够同时处理向量、线性观测与几何张量，而无需为每一种对象重新选择求导方式。
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

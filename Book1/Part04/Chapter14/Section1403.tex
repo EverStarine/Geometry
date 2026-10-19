@@ -1,0 +1,213 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 14.3 定向、密度与积分
+% 纲要位置：几何学计划纲要.md，第 662 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 定向线和相容图册
+% * 密度及不可定向流形的积分
+% * 紧支顶次形式的积分
+% * 坐标选择和单位分解无关性
+% * 定向映射的换元公式
+% 
+% 纲要内容结束
+
+\section{定向、密度与积分}
+\label{g1:sec:1403}
+
+一个局部公式 \(a(x)\,\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n\) 很像多元积分中的被积表达式，但换坐标时它带的是行列式，而通常的体积换元带绝对行列式。两者之间的符号差，正是定向要处理的问题。密度保留体积缩放而不保留方向，因此在不可定向流形上也能积分。本节先分清这两种对象，再用单位分解把局部积分拼成整体积分。
+
+\ProseParagraphBreak
+
+本节流形均有限维、Hausdorff、第二可数，可以带边界。积分先对光滑紧支对象定义；非紧流形上的非紧支积分还要另查收敛性。分析方面使用一元微积分基本定理、绝对可积函数的 Fubini 定理，以及下面的欧氏换元定理：若 \(F:U\to V\) 是欧氏开集之间的 \(C^1\) 微分同胚，\(h\) 在 \(V\) 上 Lebesgue 可积，则 \((h\circ F)|\det \mathrm{D}F|\) 在 \(U\) 上可积，且
+\begin{equation}\label{g1:eq:euclidean-integration-input}
+	\int_U h(F(x))|\det \mathrm{D}F_x|\,\mathrm{d}\lambda(x)=\int_V h(y)\,\mathrm{d}\lambda(y).
+\end{equation}
+这里 \(\lambda\) 是欧氏体积测度，\(\mathrm{d}\lambda\) 没有定向符号。这些是所调用的多元分析基础，分析背景的阅读位置为\cite[Appendix C, Multiple Integrals, pp. 649--655]{Lee2012Smooth}。在半空间图中，对内部应用这些结果；边界超平面是零测集，因而不影响顶维积分。紧支光滑系数有界，其支集位于有限个有界坐标片内，保证下文所用积分绝对收敛。
+
+\subsection{定向线和相容图册}
+\label{g1:subsec:1403:01}
+
+回顾\cref{g1:def:determinant-density-line}：当 \(n\geq1\) 时，有序基之间按换基行列式为正划分为两个定向类。在流形上逐点任选一个类还不够，选择必须在局部保持一致。沿小邻域连续移动一个正向标架时，不能突然把它改称反向。
+
+\begin{definition}
+	\label{g1:def:manifold-orientation}
+	设 \(M\) 为 \(n\geq1\) 维光滑流形。若在每个 \(\mathrm{T}_pM\) 上选定一个定向，并且每点附近存在在各点都为正向的光滑标架，则称这个选择为 \(M\) 的\term[liuxingdingxiang]{定向}[orientation]。允许这样的选择时称 \(M\) 可定向，连同一个选择时称为定向流形。零维流形的定向约定为在每个点选一个符号 \(\varepsilon_p\in\{1,-1\}\)；它用于给有向端点的积分赋号。
+\end{definition}
+
+在坐标图 \(x\) 上，令 \(\varepsilon_x(p)\) 表示坐标标架 \((\partial_{x^1},\ldots,\partial_{x^n})\) 是否正向：正向时为 \(1\)，反向时为 \(-1\)。局部一致性等价于 \(\varepsilon_x\) 局部常值。我们通常把图域取为连通的，于是它是一个常数。在两图重叠处，链式法则给出
+\begin{equation}\label{g1:eq:orientation-chart-sign}
+	\varepsilon_y=\varepsilon_x\operatorname{sgn}\det\frac{\partial x}{\partial y}.
+\end{equation}
+在无边界情形，必要时反射一个坐标，便可使每张图都正向；于是定向等价于过渡映射的 Jacobian 行列式均为正的相容图册。对于边界模型 \(x^n\geq0\)，保留带符号的表达更方便。尤其在一维区间右端点，只能用向内增大的半直线坐标，不能既要求它正向又要求其取值非负；\(\varepsilon_x\) 会准确记录这个符号。
+
+\ProseParagraphBreak
+
+还可以把符号的变化组织成一个丛。在每张图上取一个实线生成元 \(o_x\)，在交叠处规定
+\[
+	o_y=\operatorname{sgn}\det\frac{\partial x}{\partial y}\,o_x.
+\]
+行列式乘法保证三重交叠的余循环条件，所以\cref{g1:thm:bundle-cocycle-gluing}的粘合构造给出一条实光滑线丛，称为\term[dingxiangxian]{定向线丛}[orientation line bundle]，记为 \(\mathfrak o_M\)。它只记录行列式的符号，与使用整个行列式的行列式线丛不同。定向等价于在此线丛中连续选择 \(\pm o_x\) 的一个：表达为 \(\varepsilon_xo_x\)，\eqref{g1:eq:orientation-chart-sign}恰好保证它在换图后不变。零维时取平凡实线丛，在各点选择其正或负单位元。
+
+\begin{proposition}[定向与顶次形式]
+	\label{g1:prop:orientation-nonvanishing-form}
+	设 \(M\) 为上述光滑 \(n\) 维流形。\(M\) 可定向当且仅当存在处处非零的光滑 \(n\) 形式。给定定向后，可以选择在每个正向有序基上取正值的顶次形式；零维时这表示函数在每点的符号与所选定向一致。
+\end{proposition}
+\begin{proof}
+	对 \(n\geq1\)，若 \(\nu\) 处处非零，就把满足 \(\nu_p(e_1,\ldots,e_n)>0\) 的基规定为正向。局部坐标中 \(\nu=a(x)\,\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n\)，系数连续且不为零，其符号局部不变，所以确实给出定向。
+
+	反向，\cref{g1:thm:bundle-metric-existence}在 \(\mathrm{T}M\) 上给出光滑正定度量。每张图内把正向标架作光滑正交归一化，正向正交标架之间的矩阵属于 \(\operatorname{SO}(n)\)，行列式为一。因此各正向正交标架的顶次对偶楔积在交叠处相同，粘成所需 \(\nu\)。这也是\cref{g1:prop:orientation-volume-reductions}用于切丛的具体情形。零维时取函数 \(\nu(p)=\varepsilon_p\)；零维流形离散，故它光滑且处处非零。
+\end{proof}
+
+例如开 Möbius 带可写成 \(\mathbb R\times(-1,1)\) 在 \((t,u)\sim(t+1,-u)\) 下的商。若它有非零顶次形式，拉回到条带必为 \(a(t,u)\,\mathrm{d}t\wedge\mathrm{d}u\)，且不变性要求
+\[
+	a(t+1,-u)=-a(t,u).
+\]
+在中线上，\(a(t+1,0)=-a(t,0)\)，连续性迫使它在一圈中经过零，矛盾。这里每个小矩形都能定向，阻碍来自绕过整个带后的符号变化。
+
+\subsection{密度及不可定向流形的积分}
+\label{g1:subsec:1403:02}
+
+\cref{g1:def:determinant-density-line}把密度定义为有序基上的实值函数，换基时乘 \(|\det A|\)。逐点使用这一构造得到密度线丛 \(\mathcal D(M)=|\Lambda^n\mathrm{T}^*M|\)。在坐标图中，光滑密度写为
+\[
+	\mu=m_x(x)\,|\mathrm{d}x^1\cdots\mathrm{d}x^n|,
+\]
+换成 \(y\) 坐标后，系数满足
+\begin{equation}\label{g1:eq:density-coordinate-change}
+	m_y(y)=m_x(x(y))\left|\det\frac{\partial x}{\partial y}\right|.
+\end{equation}
+系数可以为负，密度线仍是实线性空间；正密度才要求 \(m_x>0\)。若一条光滑密度的支集紧且包含于图域 \(U\)，定义它在该图中的积分为
+\[
+	I_x(\mu)=\int_{x(U)}m_x(x)\,\mathrm{d}\lambda(x).
+\]
+由\eqref{g1:eq:density-coordinate-change}和欧氏换元公式，这个数在另一张包含支集的图中不变。这里恰好需要绝对行列式，所以不必指定两图是否同向。
+
+\ProseParagraphBreak
+
+若支集不能放在一张图里，选从属于坐标覆盖的非负光滑单位分解 \(\{\rho_i\}\)，并取 \(\operatorname{supp}\rho_i\subset U_i\)。设 \(\mu\) 紧支，则 \(\rho_i\mu\) 的支集是 \(U_i\) 中的紧集。局部有限性还使只有有限个 \(\rho_i\mu\) 不为零：用有限个局部有限邻域覆盖 \(\operatorname{supp}\mu\)，它们总共只遇到有限个支集。于是可以提出整体积分的定义
+\begin{equation}\label{g1:eq:density-integral-definition}
+	\int_M\mu=\sum_i I_{x_i}(\rho_i\mu).
+\end{equation}
+这项和式与单位分解无关的证明，将与顶次形式一起在\subsecref{g1:subsec:1403:04}给出；目前求和的各项和有限性都已经有定义。
+
+\begin{example}[Möbius 带上的面积]
+	\label{g1:exm:mobius-density-integral}
+	在闭条带 \(\mathbb R\times[-1,1]\) 的上述商上，\(|\mathrm{d}t\,\mathrm{d}u|\) 被变换 \((t,u)\mapsto(t+1,-u)\) 保持，因此下降为正光滑密度。用 \(0\leq t\leq1\)、\(-1\leq u\leq1\) 作基本区域，其积分为 \(2\)。计算时可以把基本区域划成落在商坐标图中的小矩形；公共边以及识别的两条竖边都是二维零测集，不会被重复计入面积。带边界的这个 Möbius 带仍不可定向，因为前面的中线论证不变，却有良定义的面积。
+\end{example}
+
+密度解决了测量体积的问题，却不自行产生一个与外微分相容的带符号边界公式。后面的 Stokes 定理仍对定向流形上的微分形式陈述，不能因密度总能积分就删去定向条件。
+
+\subsection{紧支顶次形式的积分}
+\label{g1:subsec:1403:03}
+
+现在给 \(M\) 选定定向。若 \(\omega\in\Omega_c^n(M)\) 的支集在一个连通图域 \(U\) 中，并写成
+\[
+	\omega=a_x(x)\,\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n,
+\]
+定义
+\begin{equation}\label{g1:eq:oriented-chart-integral}
+	I_x^{\mathrm{or}}(\omega)=\varepsilon_x\int_{x(U)}a_x(x)\,\mathrm{d}\lambda(x).
+\end{equation}
+在正向图中 \(\varepsilon_x=1\)，得到熟悉的公式；反向图中要额外乘 \(-1\)。这不是对被积系数取绝对值，形式的积分可以为负，也可以因正负部分抵消而为零。
+
+\ProseParagraphBreak
+
+对一般紧支顶次形式，以从属于坐标覆盖的单位分解规定
+\begin{equation}\label{g1:eq:top-form-integral-definition}
+	\int_M\omega=\sum_i I_{x_i}^{\mathrm{or}}(\rho_i\omega).
+\end{equation}
+和式仍只有有限个非零项。零维流形上的紧集只有有限个点，此时 \(0\) 形式就是函数，定义专门写为
+\[
+	\int_M f=\sum_{p\in M}\varepsilon_p f(p),
+\]
+其中紧支性保证求和有限。特别地，一个正向点的积分为函数值，负向点的积分为其相反数。这将使区间的两个边界端点分别贡献 \(f(b)\) 与 \(-f(a)\)。
+
+\ProseParagraphBreak
+
+定向也给出顶次形式到密度的线性对应。令 \(S_o\omega\) 在 \(x\) 图中的密度系数为 \(\varepsilon_xa_x\)。因为
+\[
+	a_y=a_x\det\frac{\partial x}{\partial y},\qquad
+	\varepsilon_y=\varepsilon_x\operatorname{sgn}\det\frac{\partial x}{\partial y},
+\]
+乘积 \(\varepsilon_ya_y\) 恰按绝对行列式变换，所以这些局部系数粘成密度。这与非线性的 \(|\omega|\) 不同：\(S_o\omega\) 保留相对于给定定向的正负号，\(|\omega|\) 只保留绝对大小。由局部定义，\(\int_M\omega=\int_M S_o\omega\)。反转定向时 \(S_o\) 变号，故形式积分也变号，密度积分本身则不变。
+
+\subsection{坐标选择和单位分解无关性}
+\label{g1:subsec:1403:04}
+
+\begin{theorem}[流形积分的良定义性]
+	\label{g1:thm:integral-well-defined}
+	设 \(M\) 为有限维、Hausdorff、第二可数光滑流形，允许边界。\eqref{g1:eq:density-integral-definition}对每个紧支光滑密度定义一个与坐标覆盖和从属单位分解无关的实数。若另给定向，则\eqref{g1:eq:top-form-integral-definition}对每个紧支光滑顶次形式也有同样性质。两种积分均线性；非负且不恒为零的光滑密度积分严格为正。
+\end{theorem}
+\begin{proof}
+	密度在一张图中的积分已经由欧氏换元证明与图无关。形式也如此：在两个图的交中，其系数相差有符号行列式，图的定向符号满足\eqref{g1:eq:orientation-chart-sign}。两者相乘得到绝对行列式，故
+	\[
+		\varepsilon_y\int a_y\,\mathrm{d}\lambda(y)
+		=\varepsilon_x\int a_x(x(y))\left|\det\frac{\partial x}{\partial y}\right|\mathrm{d}\lambda(y)
+		=\varepsilon_x\int a_x\,\mathrm{d}\lambda(x).
+	\]
+	若交集不连通，对各连通分支使用相同公式，或直接把局部常值符号保留在被积函数中。边界图的换元在内部进行，边界零测不改变结果。
+
+	现取两套从属于坐标覆盖的单位分解 \(\{\rho_i\}\)、\(\{\sigma_j\}\)，图分别记为 \(x_i,y_j\)。令 \(u\) 表示待积的密度或顶次形式。只有有限个支集与 \(\operatorname{supp}u\) 相交，因此下面实为有限次拆分：
+	\[
+		\sum_i I_{x_i}(\rho_i u)
+		=\sum_{i,j}I_{x_i}(\rho_i\sigma_j u)
+		=\sum_{i,j}I_{y_j}(\rho_i\sigma_j u)
+		=\sum_j I_{y_j}(\sigma_j u).
+	\]
+	形式情形中的 \(I\) 理解为 \(I^{\mathrm{or}}\)。中间每个对象的支集紧且包含在 \(U_i\cap V_j\) 中，所以第一步的单图换元确实适用。最外两次等式分别使用 \(\sum_j\sigma_j=1\)、\(\sum_i\rho_i=1\)，并利用欧氏积分的线性。由此同时排除了覆盖、坐标与单位分解的选择依赖。
+
+	线性可以在同一套覆盖和单位分解中逐项验证。若 \(\mu\geq0\) 且某点处严格为正，连续性给出某张图内的一块区域，其系数有正下界。该点处至少一个 \(\rho_i>0\)，缩小区域后 \(\rho_i\mu\) 的系数仍有正下界，因此这一项积分正，其余项非负。边界点附近可取正体积的半球内部，零维时则是一项正数。这证明严格正性。
+\end{proof}
+
+证明中的共同细化 \(\rho_i\sigma_j\) 是关键：不必在两套坐标之间直接比较整个和式，只需把它们拆成同时落在两张图中的小块。局部有限性让这一分解在紧支集上化为有限运算，避免了任何未经说明的无穷级数换序。
+
+\begin{proposition}[度量的体积积分]
+	\label{g1:prop:metric-volume-integration}
+	设 \(g\) 为 \(M^n\) 上的光滑正定度量。其正体积密度在坐标中为
+	\[
+		\mu_g=\sqrt{\det(g_{ij})}\,|\mathrm{d}x^1\cdots\mathrm{d}x^n|.
+	\]
+	若 \(M\) 定向，则相应的正体积形式为
+	\[
+		\operatorname{vol}_g=\varepsilon_x\sqrt{\det(g_{ij})}\,\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n,
+	\]
+	并且对每个紧支光滑函数 \(f\)，有 \(\int_M f\operatorname{vol}_g=\int_M f\mu_g\)。
+\end{proposition}
+\begin{proof}
+	\cref{g1:prop:gram-volume-density}在每个切空间给出 \(\mu_g(e)=\sqrt{\det[g(e_i,e_j)]}\)，取坐标标架就得到密度公式；正定性使行列式正，其正平方根随点光滑。把坐标标架的定向符号乘入顶次形式，便使其在正向标架上取正值，且换图时相容。最后 \(S_o(f\operatorname{vol}_g)\) 的局部系数为 \(f\sqrt{\det(g_{ij})}\)，正是 \(f\mu_g\)，所以积分相同。
+\end{proof}
+
+例如平面的极坐标在 \(r>0\) 的角度分支上给出 \(g=\mathrm{d}r^2+r^2\mathrm{d}\theta^2\)，所以体积密度为 \(r|\mathrm{d}r\,\mathrm{d}\theta|\)。\(r=0\) 不是这张坐标图的一点，不能把极坐标表达在原点的退化误认为欧氏度量退化。对半径为 \(R\) 的圆盘积分得到 \(\int_0^{2\pi}\int_0^R r\,\mathrm{d}r\,\mathrm{d}\theta=\pi R^2\)；被忽略的中心及切开的射线面积为零。
+
+\subsection{定向映射的换元公式}
+\label{g1:subsec:1403:05}
+
+对任意光滑映射都能拉回微分形式，但积分的简单换元公式首先适用于微分同胚。非单射映射可能重复覆盖区域，微分降秩也可能压缩维数；这些情况不能仅凭拉回有定义就沿用同一个积分等式。
+
+\begin{theorem}[定向换元]
+	\label{g1:thm:oriented-change-variables}
+	设 \(F:M^n\to N^n\) 为光滑流形之间的微分同胚，允许边界。
+	\begin{enumerate}
+		\item 对 \(N\) 上的紧支光滑密度 \(\mu\)，其微分同胚拉回满足 \(\int_M F^*\mu=\int_N\mu\)。
+		\item 若两流形定向，定义 \(s_F(p)=1\) 当 \(\mathrm{d}F_p\) 保定向，反向时为 \(-1\)。则 \(s_F\) 局部常值，且对任意 \(\omega\in\Omega_c^n(N)\)，
+		\[
+			\int_M F^*\omega=\int_N(s_F\circ F^{-1})\omega.
+		\]
+		特别地，整体保定向时积分不变，整体反定向时积分变号。若 \(M\) 连通，符号只有上述两种整体可能。
+	\end{enumerate}
+	零维时，用源点和像点的定向符号之比定义 \(s_F\)，同一公式成立。
+\end{theorem}
+\begin{proof}
+	微分同胚将紧集的原像变为紧集，所以两种拉回仍紧支。对目标支集选有限个所需坐标片及从属单位分解，再拉回到源；它们的拉回仍构成从属单位分解。故只需证明单图的结果。
+
+	在源图 \(x\) 和目标图 \(y\) 中，记 \(G=y\circ F\circ x^{-1}\)。若 \(\mu=m(y)|\mathrm{d}y^1\cdots\mathrm{d}y^n|\)，则其拉回系数为 \(m(G(x))|\det \mathrm{D}G_x|\)，欧氏换元直接给出第一项。若 \(\omega=a(y)\,\mathrm{d}y^1\wedge\cdots\wedge\mathrm{d}y^n\)，则拉回系数为 \(a(G(x))\det \mathrm{D}G_x\)。源、目标图的定向符号分别为 \(\varepsilon_x,\varepsilon_y\)，有
+	\[
+		s_F=\varepsilon_x\varepsilon_y\operatorname{sgn}\det \mathrm{D}G,
+	\]
+	所以 \(\varepsilon_x\det \mathrm{D}G=s_F\varepsilon_y|\det \mathrm{D}G|\)。代入单图积分，再用欧氏换元，便得到第二项；逐片相加完成证明。符号的局部常值性来自非零行列式的连续性，在连通流形上因此恒定。零维公式就是把有限项求和按双射重新编号。
+\end{proof}
+
+以反射 \(F(x^1,x^2)=(-x^1,x^2)\) 为例，在标准定向的平面上，\(F^*(a\,\mathrm{d}x^1\wedge\mathrm{d}x^2)=-a(-x^1,x^2)\,\mathrm{d}x^1\wedge\mathrm{d}x^2\)，故紧支形式的积分变号；密度的拉回则没有这个负号。又如圆周映射 \(e^{\mathrm{i}\theta}\mapsto e^{2\mathrm{i}\theta}\) 不是微分同胚，它把角形式拉回为两倍，积分也变成两倍。后者涉及重复覆盖次数，将在\secref{g1:sec:1405}进一步说明，不能当作当前换元定理的一个无条件推论。
+
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

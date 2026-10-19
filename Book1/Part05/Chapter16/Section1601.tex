@@ -1,0 +1,320 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 16.1 李群与李代数
+% 纲要位置：几何学计划纲要.md，第 737 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 矩阵群的光滑结构
+% * 左不变向量场和单位元切空间
+% * 伴随作用、伴随表示与括号
+% * 李群同态的微分
+% 
+% 纲要内容结束
+
+\section{李群与李代数}
+\label{g1:sec:1601}
+
+旋转、平移和可逆线性变换既能复合，又能随参数光滑变化。群结构记录复合的规则，流形结构允许我们对这些变化求导。两者相容之后，单位元附近的变化便能通过平移传播到整个群；原本分散在各点的切向量，可以统一放回单位元的切空间研究。不过，一个向量空间本身还没有记录变换复合的次序。我们将看到，左不变向量场的李括号恰好给这个切空间补上一种运算，使它保留局部复合的部分信息。
+
+\ProseParagraphBreak
+
+本节中的李群均为有限维实李群，底流形 Hausdorff、第二可数且无边界，不要求连通。即使元素写成复矩阵，其流形维数也先按实数计算。矩阵群提供可计算的模型，后面的定义和证明则适用于一般李群，不要求预先把群嵌入某个矩阵空间。
+
+\subsection{矩阵群的光滑结构}
+\label{g1:subsec:1601:01}
+
+\begin{definition}[李群]\label{g1:def:lie-group}
+	一个群 \(G\) 若同时是有限维、Hausdorff、第二可数的无边界实光滑流形，并且乘法与求逆映射
+	\[
+		m:G\times G\longrightarrow G,\qquad m(g,h)=gh,
+		\qquad
+		\iota:G\longrightarrow G,\qquad \iota(g)=g^{-1}
+	\]
+	均光滑，就称为\term[liqun]{李群}[Lie group]。群的单位元记为 \(e\)。两个李群之间的光滑群同态称为\term[liquntongtai]{李群同态}[Lie group homomorphism]；若它还是微分同胚，就称为李群同构。
+\end{definition}
+
+例如 \((\mathbb R^n,+)\) 是李群，单位元为 \(0\)。有限个李群的直积取乘积流形结构后仍是李群，因为乘法和求逆逐分量进行。可数离散群取零维流形结构也是李群：所有点都是坐标邻域，所有映射都光滑，可数性则保证第二可数。这里允许零维和不连通的例子，是因为群的离散信息并不会自动消失，只是稍后的切空间无法记录全部这类信息。
+
+\ProseParagraphBreak
+
+对 \(g\in G\)，记左平移和右平移为
+\[
+	L_g(h)=gh,\qquad R_g(h)=hg.
+\]
+它们都是微分同胚，逆分别为 \(L_{g^{-1}},R_{g^{-1}}\)：光滑性来自固定乘法的一个变量，逆的公式来自群律。特别地，各点切空间都与 \(\mathrm{T}_eG\) 线性同构。乘法在单位元处的微分还有一个直接的表达式：由 \(m(g,e)=g\)、\(m(e,h)=h\) 及微分的线性，
+\begin{equation}\label{g1:eq:lie-group-unit-differentials}
+	\mathrm{d}m_{(e,e)}(X,Y)=X+Y,\qquad \mathrm{d}\iota_e(X)=-X.
+\end{equation}
+第二式是对恒等式 \(m(g,\iota(g))=e\) 求导的结果，所用链式法则已在流形微分的定义中建立。
+
+\begin{proposition}[经典矩阵群]\label{g1:prop:matrix-classical-lie-groups}
+	设 \(n\geq1\)。下表中的矩阵集合具有其所在实矩阵空间的自然开子流形或嵌入子流形结构，配上矩阵乘法都是实李群。这里 \(A^*=\overline A^{\mathsf T}\)，复矩阵空间按实向量空间理解；表中的切空间均在单位矩阵 \(I\) 处。
+	\[
+		\begin{array}{c|c|c}
+			G&\dim_{\mathbb R}G&\mathrm{T}_IG\\ \hline
+			\operatorname{GL}(n,\mathbb R)&n^2&\operatorname{Mat}_{n\times n}(\mathbb R)\\
+			\operatorname{GL}(n,\mathbb C)&2n^2&\operatorname{Mat}_{n\times n}(\mathbb C)\\
+			\operatorname{SL}(n,\mathbb R)&n^2-1&\{X:\operatorname{tr}X=0\}\\
+			\operatorname{SL}(n,\mathbb C)&2n^2-2&\{X:\operatorname{tr}X=0\}\\
+			\operatorname{O}(n),\ \operatorname{SO}(n)&n(n-1)/2&\{X:X^{\mathsf T}+X=0\}\\
+			\operatorname{U}(n)&n^2&\{X:X^*+X=0\}\\
+			\operatorname{SU}(n)&n^2-1&\{X:X^*+X=0,\ \operatorname{tr}X=0\}.
+		\end{array}
+	\]
+	其中 \(\operatorname{GL}\) 由可逆矩阵组成，\(\operatorname{SL}\) 再要求行列式为 \(1\)；\(\operatorname{O}(n)=\{A\in\operatorname{GL}(n,\mathbb R):A^{\mathsf T}A=I\}\)，\(\operatorname{SO}(n)=\operatorname{O}(n)\cap\operatorname{SL}(n,\mathbb R)\)；\(\operatorname{U}(n)=\{A\in\operatorname{GL}(n,\mathbb C):A^*A=I\}\)，\(\operatorname{SU}(n)=\operatorname{U}(n)\cap\operatorname{SL}(n,\mathbb C)\)。表中每行的矩阵域与该行的群一致。
+\end{proposition}
+\begin{proof}
+	行列式是矩阵分量的多项式，故非零行列式的集合 \(\operatorname{GL}(n,\mathbb R)\)、\(\operatorname{GL}(n,\mathbb C)\) 是开集，实维数分别为 \(n^2,2n^2\)。矩阵乘法的分量是多项式，求逆的公式为 \(A^{-1}=\operatorname{adj}(A)/\det A\)，因此两种运算都光滑。复矩阵情形也如此，因为复数的加法、乘法、共轭以及非零复数的求逆都是实光滑映射。
+
+	先计算行列式的微分。按列的多线性展开 \(\det(I+tB)\)，常数项为 \(1\)，一次项只能从一列取 \(tB\)、其余列取单位矩阵的列，故一次项为 \(t\sum_jB_{jj}=t\operatorname{tr}B\)。于是对可逆 \(A\)，
+	\begin{equation}\label{g1:eq:determinant-differential}
+		\mathrm{d}(\det)_A(H)=\det A\,\operatorname{tr}(A^{-1}H).
+	\end{equation}
+	在实矩阵的 \(\det A=1\) 处，取 \(H=(c/n)A\) 就使微分等于任意 \(c\in\mathbb R\)；在复矩阵情形，取 \(H=(z/n)A\) 则得到任意 \(z\in\mathbb C\)。因此 \(1\) 分别是到 \(\mathbb R\) 和到 \(\mathbb C\simeq\mathbb R^2\) 的行列式映射的正则值。由\cref{g1:thm:regular-level-set}，两种 \(\operatorname{SL}\) 都是嵌入子流形，其余维分别为 \(1,2\)，单位元切空间均由 \(\operatorname{tr}X=0\) 给出。
+
+	对正交群，令 \(\operatorname{Sym}_n(\mathbb R)\) 为实对称矩阵空间，其维数为 \(n(n+1)/2\)，考虑
+	\[
+		Q:\operatorname{GL}(n,\mathbb R)\longrightarrow\operatorname{Sym}_n(\mathbb R),\qquad Q(A)=A^{\mathsf T}A.
+	\]
+	这里把靶空间取成对称矩阵空间很重要：若仍取全体矩阵，微分便不可能满射。在 \(Q(A)=I\) 处，
+	\[
+		\mathrm{d}Q_A(H)=A^{\mathsf T}H+H^{\mathsf T}A.
+	\]
+	给定对称矩阵 \(S\)，取 \(H=AS/2\)，就有 \(\mathrm{d}Q_A(H)=S\)。故 \(I\) 是正则值，\(\operatorname{O}(n)\) 是维数 \(n^2-n(n+1)/2=n(n-1)/2\) 的嵌入子流形，其单位元切空间为反对称矩阵。正交矩阵满足 \((\det A)^2=1\)，所以 \(\operatorname{SO}(n)\) 正是 \(\operatorname{O}(n)\) 中 \(\det A>0\) 的开子集，具有相同的局部维数和单位元切空间。
+
+	复矩阵情形令 \(\operatorname{Herm}_n(\mathbb C)=\{S:S^*=S\}\)。它的对角项有 \(n\) 个实自由度，上三角有 \(n(n-1)/2\) 个复自由度，实维数为 \(n^2\)。映射 \(Q(A)=A^*A\) 的微分为 \(A^*H+H^*A\)。在 \(A^*A=I\) 处，对任意 Hermite 矩阵 \(S\)，\(H=AS/2\) 仍给出 \(\mathrm{d}Q_A(H)=S\)。故 \(\operatorname{U}(n)\) 是实维数 \(2n^2-n^2=n^2\) 的嵌入子流形，\(\mathrm{T}_I\operatorname{U}(n)\) 由 \(X^*+X=0\) 给出。
+
+	最后讨论 \(\operatorname{SU}(n)\)。圆周 \(S^1=\{z\in\mathbb C:|z|^2=1\}\) 是一维嵌入子流形，因为 \(z\mapsto|z|^2\) 在圆周上微分非零，其切空间为 \(\mathrm{T}_zS^1=iz\mathbb R\)。酉矩阵的行列式属于 \(S^1\)，由\cref{g1:prop:embedded-initial-property}，行列式限制给出光滑映射 \(\det:\operatorname{U}(n)\to S^1\)。上述 \(Q\) 的微分还说明
+	\[
+		\mathrm{T}_A\operatorname{U}(n)=\{AB:B^*+B=0\}.
+	\]
+	由\eqref{g1:eq:determinant-differential}，\(\mathrm{d}(\det)_A(AB)=\det A\,\operatorname{tr}B\)。取 \(B=(it/n)I\)，可得到 \(i\det A\,t\)，遍历 \(\mathrm{T}_{\det A}S^1\)。于是 \(1\) 是这次行列式映射的正则值，\(\operatorname{SU}(n)\) 的实余维为 \(1\)，单位元切空间再加上 \(\operatorname{tr}X=0\) 这一条件。反 Hermite 矩阵的迹本来就是纯虚数，因此这里的迹零只有一个实条件，与 \(\operatorname{SL}(n,\mathbb C)\) 中的两个实条件并不矛盾。
+
+	各集合由定义直接对乘法和求逆封闭。它们在上述构造中都具有嵌入子流形结构；环境矩阵群的乘法和求逆限制后仍光滑地取值于相应集合，理由再次是\cref{g1:prop:embedded-initial-property}。这些子流形的拓扑是子空间拓扑，因此 Hausdorff、第二可数，无边界性由正则值定理或开子流形构造保证。这样验证了李群定义中的全部要求，并未使用一般的闭子群定理。
+\end{proof}
+
+以上计算也提醒我们：用矩阵方程定义一个群以后，还必须检查方程是否给出流形。正交群的证明能够成立，是因为对称矩阵这一靶空间使微分满射；仅仅列出方程或注意到集合闭，并不足以完成当前阶段所需的光滑性证明。稍后的一般闭子群定理会给出另一条道路。
+
+\subsection{左不变向量场和单位元切空间}
+\label{g1:subsec:1601:02}
+
+现在设 \(G\) 是任意有限维实李群，记 \(\mathfrak g=\mathrm{T}_eG\)。一个方向 \(X\in\mathfrak g\) 可以被左平移送到每个点：在 \(g\) 处取 \(\mathrm{d}(L_g)_eX\)。这个构造使“各点都朝同一个群方向前进”成为一个精确的向量场。它一般不是某个坐标系中的常向量场；保持不变的是左平移给出的比较方式。
+
+\begin{proposition}[左不变场]\label{g1:prop:left-invariant-fields}
+	设 \(G\) 为有限维实李群。称 \(Z\in\mathfrak X(G)\) 为\term[zuobubianxiangliangchang]{左不变向量场}[left-invariant vector field]，如果对任意 \(g,h\in G\)，
+	\[
+		Z_{gh}=\mathrm{d}(L_g)_hZ_h.
+	\]
+	取单位元处的值给出左不变向量场空间到 \(\mathfrak g=\mathrm{T}_eG\) 的实线性同构，其逆为
+	\begin{equation}\label{g1:eq:left-invariant-extension}
+		X\longmapsto X^L,\qquad X^L_g=\mathrm{d}(L_g)_eX.
+	\end{equation}
+	两个左不变场的李括号仍左不变。\(\mathfrak g\) 的任意一组基经上述延拓，得到 \(\mathrm{T}G\) 的一个整体光滑标架。
+\end{proposition}
+\begin{proof}
+	乘法 \(m(g,h)=gh\) 光滑，对第二个变量在 \(h=e\) 处求微分，得到随 \(g\) 光滑变化的线性映射 \(\mathrm{d}(L_g)_e\)。因而 \(X^L\) 确为光滑向量场。由 \(L_{gh}=L_g\circ L_h\) 及链式法则，
+	\[
+		X^L_{gh}=\mathrm{d}(L_g)_h\,\mathrm{d}(L_h)_eX=\mathrm{d}(L_g)_hX^L_h,
+	\]
+	所以它左不变。反过来，若 \(Z\) 左不变，在定义中令 \(h=e\)，立即得到 \(Z_g=\mathrm{d}(L_g)_eZ_e\)，故 \(Z\) 完全由 \(Z_e\) 确定。两种操作互逆且都线性。
+
+	左不变等价于 \((L_g)_*Z=Z\)。由\cref{g1:prop:lie-derivative-natural}中微分同胚保持李括号的结论，若 \(Z,W\) 左不变，则
+	\[
+		(L_g)_*[Z,W]=[(L_g)_*Z,(L_g)_*W]=[Z,W].
+	\]
+	故其括号也左不变。若 \(X_1,\ldots,X_d\) 为 \(\mathfrak g\) 的基，\(\mathrm{d}(L_g)_e\) 是线性同构，故 \(X_1^L(g),\ldots,X_d^L(g)\) 在每点构成基，给出整体标架。具体的切丛平凡化为 \((g,X)\mapsto\mathrm{d}(L_g)_eX\)，其逆在 \(\mathrm{T}_gG\) 上为 \(v\mapsto(g,\mathrm{d}(L_{g^{-1}})_gv)\)；乘法、求逆及其微分的光滑性说明正逆映射都光滑。
+\end{proof}
+
+\begin{definition}[李代数]\label{g1:def:lie-algebra-group}
+	实向量空间 \(V\) 上一个实双线性运算 \([\ ,\ ]:V\times V\to V\)，若满足反对称性 \([X,Y]=-[Y,X]\) 及 Jacobi 恒等式
+	\[
+		[X,[Y,Z]]+[Y,[Z,X]]+[Z,[X,Y]]=0,
+	\]
+	就使 \(V\) 成为一个\term[lidaishu]{李代数}[Lie algebra]。对有限维实李群 \(G\)，在 \(\mathfrak g=\mathrm{T}_eG\) 上定义
+	\[
+		[X,Y]\coloneqq[X^L,Y^L]_e.
+	\]
+	所得李代数称为 \(G\) 的李代数，记为 \(\operatorname{Lie}(G)=\mathfrak g\)。\symidx{\(\mathfrak g=\mathrm{T}_eG\)：李群的李代数}由\cref{g1:prop:left-invariant-fields}，其左不变延拓满足 \(([X,Y])^L=[X^L,Y^L]\)；实双线性、反对称性和 Jacobi 恒等式随即由\cref{g1:prop:lie-bracket-properties}的向量场版本传下来。
+\end{definition}
+
+一般向量场的李括号在一点的值还依赖附近的变化，不能只由该点的两个切向量计算。这里能够定义 \([X,Y]\in \mathrm{T}_eG\)，并非删掉了这种依赖，而是由左不变性为每个单位元切向量选定了唯一的整体延拓。因此群乘法参与了括号的定义；只给同一个流形选一个点，通常没有这样的运算。
+
+\ProseParagraphBreak
+
+以后还会用到两个代数概念。李代数之间保持括号的线性映射称为\term[lidaishutongtai]{李代数同态}[Lie algebra homomorphism]；线性子空间 \(\mathfrak h\subset\mathfrak g\) 若满足 \([\mathfrak h,\mathfrak h]\subset\mathfrak h\)，称为\term[lizidaishu]{李子代数}[Lie subalgebra]。若更强地满足 \([\mathfrak g,\mathfrak h]\subset\mathfrak h\)，则称 \(\mathfrak h\) 为理想。前者保证子空间内部可以作括号，后者还控制它与整个李代数的相互作用。
+
+\begin{proposition}[矩阵括号]\label{g1:prop:matrix-lie-bracket}
+	对\cref{g1:prop:matrix-classical-lie-groups}中的矩阵李群，将单位元切空间视为矩阵空间的线性子空间，则李代数的括号为
+	\[
+		[X,Y]=XY-YX.
+	\]
+\end{proposition}
+\begin{proof}
+	先在 \(\operatorname{GL}(n,\mathbb R)\) 或 \(\operatorname{GL}(n,\mathbb C)\) 中计算。左平移 \(L_A(B)=AB\) 的微分为 \(H\mapsto AH\)，故 \(X^L_A=AX\)、\(Y^L_A=AY\)。把它们看成开矩阵空间上的向量值函数，\(\mathrm{d}Y^L_A(H)=HY\)、\(\mathrm{d}X^L_A(H)=HX\)。依\eqref{g1:eq:lie-bracket-coordinates}的符号约定，
+	\[
+		[X^L,Y^L]_A
+		=\mathrm{d}Y^L_A(AX)-\mathrm{d}X^L_A(AY)
+		=A(XY-YX).
+	\]
+	在 \(A=I\) 处即得所需公式。复矩阵情况下以上乘法仍是实线性微分，计算不变。
+
+	其余矩阵群 \(H\) 的左平移仍由矩阵乘法给出。若 \(X\in \mathrm{T}_IH\)，\(A\mapsto AX\) 在 \(H\) 上取值于 \(\mathrm{T}H\)，且通过嵌入 \(H\hookrightarrow\operatorname{GL}\) 与环境的同名左不变场相关。再次用\cref{g1:prop:lie-derivative-natural}，它们的括号也与环境括号相关，所以单位元处的公式仍为 \(XY-YX\)。这也从几何上证明了表中各切空间对矩阵交换子封闭。
+\end{proof}
+
+这些李代数通常记作 \(\mathfrak{gl}(n,\mathbb R)\)、\(\mathfrak{sl}(n,\mathbb R)\)、\(\mathfrak{so}(n)\)、\(\mathfrak u(n)\)、\(\mathfrak{su}(n)\) 等；\(\operatorname{O}(n)\) 和 \(\operatorname{SO}(n)\) 具有同一个 \(\mathfrak{so}(n)\)。\(\mathfrak{gl}(n,\mathbb C)\)、\(\mathfrak{sl}(n,\mathbb C)\) 此处仍可视为实李代数，只是它们还额外具有与括号相容的复向量空间结构。
+
+\ProseParagraphBreak
+
+李代数会丢失一些整体信息。例如 \((\mathbb R,+)\) 和 \(S^1=\operatorname{U}(1)\) 的李代数都是一维实向量空间，其括号因反对称性而恒为零；但两群不可能同构，因为圆周紧而实直线不紧。任意离散李群的李代数甚至都是零空间。因此本章后面既要研究局部积分，也要另行考虑覆盖、单连通性和离散子群。
+
+\subsection{伴随作用、伴随表示与括号}
+\label{g1:subsec:1601:03}
+
+固定 \(g\in G\)，共轭 \(C_g(h)=ghg^{-1}\) 把单位元固定，因而其微分成为 \(\mathfrak g\) 的一个线性变换。它描述的不是把切向量从单位元搬到 \(g\)，而是在单位元处比较被共轭改变的无穷小方向。前者由左平移负责，后者才是这里的伴随表示。
+
+\begin{proposition}[伴随表示]\label{g1:prop:adjoint-representation}
+	设 \(G\) 为有限维实李群，\(\mathfrak g=\mathrm{T}_eG\)。定义
+	\[
+		\operatorname{Ad}_g\coloneqq\mathrm{d}(C_g)_e:\mathfrak g\longrightarrow\mathfrak g.
+	\]
+	则 \(\operatorname{Ad}:G\to\operatorname{GL}(\mathfrak g)\) 是光滑群同态，且每个 \(\operatorname{Ad}_g\) 保持李括号。它称为 \(G\) 的\term[bansuibiaoshi]{伴随表示}[adjoint representation]。这里一般称一个到有限维向量空间可逆线性变换群的光滑群同态为该李群的表示。
+\end{proposition}
+\begin{proof}
+	共轭 \(C_g\) 是微分同胚，逆为 \(C_{g^{-1}}\)，因此 \(\operatorname{Ad}_g\) 可逆。由 \(C_{gh}=C_g\circ C_h\) 及它们都固定 \(e\)，链式法则给出
+	\[
+		\operatorname{Ad}_{gh}=\operatorname{Ad}_g\operatorname{Ad}_h,\qquad
+		\operatorname{Ad}_e=\operatorname{id}_{\mathfrak g}.
+	\]
+	映射 \((g,h)\mapsto ghg^{-1}\) 光滑，对第二个变量在 \(h=e\) 处求微分，得到的矩阵分量随 \(g\) 光滑。这说明 \(\operatorname{Ad}\) 是到 \(\operatorname{End}(\mathfrak g)\) 的光滑映射，而其值落在开子集 \(\operatorname{GL}(\mathfrak g)\)，所以也是到后者的光滑映射。
+
+	恒等式 \(C_g\circ L_h=L_{C_g(h)}\circ C_g\) 在单位元处求导，给出
+	\[
+		(C_g)_*X^L=(\operatorname{Ad}_gX)^L.
+	\]
+	微分同胚保持向量场的李括号，故
+	\[
+		(C_g)_*[X^L,Y^L]
+		=[(\operatorname{Ad}_gX)^L,(\operatorname{Ad}_gY)^L].
+	\]
+	两边在 \(e\) 处求值，即得 \(\operatorname{Ad}_g[X,Y]=[\operatorname{Ad}_gX,\operatorname{Ad}_gY]\)。
+\end{proof}
+
+再对 \(\operatorname{Ad}\) 在单位元处求微分。利用 \(\mathrm{T}_I\operatorname{GL}(\mathfrak g)=\operatorname{End}(\mathfrak g)\)，记
+\[
+	\operatorname{ad}\coloneqq\mathrm{d}(\operatorname{Ad})_e:
+	\mathfrak g\longrightarrow\operatorname{End}(\mathfrak g),\qquad
+	X\longmapsto\operatorname{ad}_X.
+\]
+\symidx{\(\operatorname{Ad}_g,\operatorname{ad}_X\)：伴随表示及其微分}大写 \(\operatorname{Ad}\) 的输入是群元素，小写 \(\operatorname{ad}\) 的输入是单位元切向量。下面的公式把这次求导与此前定义的李括号联系起来。
+
+\begin{proposition}[伴随微分]\label{g1:prop:adjoint-differential-bracket}
+	设 \(G\) 为有限维实李群，\(\mathfrak g=\mathrm{T}_eG\)。则对任意 \(X,Y\in\mathfrak g\)，
+	\begin{equation}\label{g1:eq:ad-bracket}
+		\operatorname{ad}_XY=[X,Y].
+	\end{equation}
+	此外 \(\operatorname{ad}_X\) 是括号的导子，而且
+	\[
+		[\operatorname{ad}_X,\operatorname{ad}_Y]=\operatorname{ad}_{[X,Y]},
+	\]
+	左边是线性自同态的交换子。
+\end{proposition}
+\begin{proof}
+	由\cref{g1:thm:maximal-integral-curve}，左不变场 \(X^L\) 在单位元有局部积分曲线 \(\gamma(t)\)，满足 \(\gamma(0)=e\)、\(\gamma'(0)=X\)。只需在 \(0\) 附近取它，不需要知道它是否能延拓到所有时间。对固定的 \(g\)，左不变性给出
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}\bigl(g\gamma(t)\bigr)
+		=\mathrm{d}(L_g)_{\gamma(t)}X^L_{\gamma(t)}
+		=X^L_{g\gamma(t)}.
+	\]
+	它在 \(t=0\) 经过 \(g\)，所以由积分曲线唯一性，\(X^L\) 的局部流为
+	\begin{equation}\label{g1:eq:left-invariant-local-flow}
+		\Phi_t(g)=g\gamma(t)=R_{\gamma(t)}(g)
+	\end{equation}
+	在两边定义的局部时间范围内成立。因而流的逆局部映射是 \(R_{\gamma(t)^{-1}}\)。注意，左不变场的流在这里以右乘写出；这是 \(g\) 固定而单位元曲线被左平移的结果。
+
+	按照\cref{g1:prop:flow-pullback-derivative}的向量场拉回定义，在单位元有
+	\begin{align*}
+		(\Phi_t^*Y^L)_e
+		&=\mathrm{d}(R_{\gamma(t)^{-1}})_{\gamma(t)}Y^L_{\gamma(t)}\\
+		&=\mathrm{d}(R_{\gamma(t)^{-1}})_{\gamma(t)}\,\mathrm{d}(L_{\gamma(t)})_eY\\
+		&=\mathrm{d}(C_{\gamma(t)})_eY
+		=\operatorname{Ad}_{\gamma(t)}Y.
+	\end{align*}
+	对 \(t\) 在 \(0\) 处求导。左边由流拉回的导数公式等于 \([X^L,Y^L]_e=[X,Y]\)，右边由 \(\gamma'(0)=X\) 等于 \(\operatorname{ad}_XY\)。这证明\eqref{g1:eq:ad-bracket}，也固定了它与第13章括号约定的符号。
+
+	最后，Jacobi 恒等式改写为
+	\[
+		[X,[Y,Z]]=[[X,Y],Z]+[Y,[X,Z]],
+	\]
+	恰好说明 \(\operatorname{ad}_X[Y,Z]=[\operatorname{ad}_XY,Z]+[Y,\operatorname{ad}_XZ]\)，即导子性质。将第二项移到左边，又得到 \((\operatorname{ad}_X\operatorname{ad}_Y-\operatorname{ad}_Y\operatorname{ad}_X)Z=\operatorname{ad}_{[X,Y]}Z\)。对所有 \(Z\) 成立便是所需的自同态恒等式。
+\end{proof}
+
+对矩阵群，共轭的微分直接给出 \(\operatorname{Ad}_AY=AYA^{-1}\)。若 \(A(t)\) 是经过 \(I\)、速度为 \(X\) 的群内曲线，对 \(A(t)A(t)^{-1}=I\) 求导可得 \((A^{-1})'(0)=-X\)，从而 \(\frac{\mathrm{d}}{\mathrm{d}t}|_0 A(t)YA(t)^{-1}=XY-YX\)。这与抽象证明一致，但抽象证明并未借助矩阵表示或尚未构造的指数映射。
+
+\subsection{李群同态的微分}
+\label{g1:subsec:1601:04}
+
+群同态保持乘法，因而应当保持由乘法定义的无穷小运算。不过不能直接把两个切向量代入同态，再对群同态公式“作两次微分”而省去对象的说明。左不变场提供了合适的中间步骤：同态的微分先把它们变成相关向量场，再利用第13章已经证明的括号自然性。
+
+\begin{proposition}[同态的微分]\label{g1:prop:lie-homomorphism-differential}
+	设 \(F:G\to H\) 是有限维实李群之间的李群同态，\(\mathfrak g=\mathrm{T}_{e_G}G\)、\(\mathfrak h=\mathrm{T}_{e_H}H\)。则
+	\[
+		\varphi\coloneqq\mathrm{d}F_{e_G}:\mathfrak g\longrightarrow\mathfrak h
+	\]
+	是李代数同态。具体地，对任意 \(g\in G\)、\(X,Y\in\mathfrak g\)，
+	\begin{align*}
+		\mathrm{d}F_g(X^L_g)&=(\varphi X)^L_{F(g)},\\
+		\varphi[X,Y]&=[\varphi X,\varphi Y],\\
+		\varphi\circ\operatorname{Ad}_g&=\operatorname{Ad}_{F(g)}\circ\varphi.
+	\end{align*}
+	同态复合的单位元微分为单位元微分的复合，恒等同态的微分为恒等映射。特别地，\(\operatorname{im}\varphi\) 是 \(\mathfrak h\) 的李子代数，\(\ker\varphi\) 是 \(\mathfrak g\) 的理想。
+\end{proposition}
+\begin{proof}
+	群同态满足 \(F(e_G)=e_H\) 及 \(F\circ L_g=L_{F(g)}\circ F\)。后一式在 \(e_G\) 处求导，得到
+	\[
+		\mathrm{d}F_g\,\mathrm{d}(L_g)_{e_G}X
+		=\mathrm{d}(L_{F(g)})_{e_H}\,\mathrm{d}F_{e_G}X,
+	\]
+	即第一式。因此 \(X^L\) 与 \((\varphi X)^L\) 是 \(F\)-相关场，\(Y^L\) 与 \((\varphi Y)^L\) 也如此。\cref{g1:prop:lie-derivative-natural}说明它们的括号仍相关。这一结论无需 \(F\) 可逆或满射：对 \(H\) 上任意局部光滑函数 \(f\)，只要把两次求导展开，就有
+	\[
+		[X^L,Y^L](f\circ F)
+		=\bigl([(\varphi X)^L,(\varphi Y)^L]f\bigr)\circ F.
+	\]
+	在 \(e_G\) 处求值，恰得 \(\varphi[X,Y]=[\varphi X,\varphi Y]\)。同态还满足 \(F\circ C_g=C_{F(g)}\circ F\)，在单位元求导便给出伴随表示的交织公式。
+
+	复合与恒等映射的断言是链式法则。若 \(U=\varphi X\)、\(V=\varphi Y\)，则 \([U,V]=\varphi[X,Y]\) 仍在像中；若 \(Y\in\ker\varphi\)，则对任意 \(X\in\mathfrak g\)，\(\varphi[X,Y]=[\varphi X,0]=0\)。这分别证明像是李子代数、核是理想。
+\end{proof}
+
+\begin{proposition}[同态的秩与核]\label{g1:prop:lie-homomorphism-constant-rank}
+	设 \(F:G\to H\) 是有限维实李群之间的李群同态，令 \(r=\operatorname{rank}\mathrm{d}F_{e_G}\)。则 \(F\) 在所有点的秩都等于 \(r\)。核
+	\[
+		K=\ker F=F^{-1}(e_H)
+	\]
+	是 \(G\) 的闭嵌入子流形，维数为 \(\dim G-r\)。它以限制的群运算成为李群，且
+	\[
+		\mathrm{T}_{e_G}K=\ker\mathrm{d}F_{e_G};
+	\]
+	这里用包含映射的微分将左边视为 \(\mathrm{T}_{e_G}G\) 的子空间。
+\end{proposition}
+\begin{proof}
+	前一命题的第一式可以写成
+	\[
+		\mathrm{d}F_g
+		=\mathrm{d}(L_{F(g)})_{e_H}\circ\mathrm{d}F_{e_G}\circ\mathrm{d}(L_{g^{-1}})_g.
+	\]
+	两端的平移微分都是同构，故各点的秩都等于 \(r\)。固定 \(k\in K\)，由\cref{g1:cor:manifold-constant-rank}，在 \(k\) 和 \(e_H\) 附近可取分别以这两点为原点的坐标，使 \(F\) 写成
+	\[
+		(u^1,\ldots,u^m)\longmapsto(u^1,\ldots,u^r,0,\ldots,0),\qquad m=\dim G.
+	\]
+	必要时缩小源坐标邻域，使其像包含于选定的靶坐标邻域。于是核在这个源邻域中恰由 \(u^1=\cdots=u^r=0\) 给出，而 \((u^{r+1},\ldots,u^m)\) 是核的局部坐标。坐标转换由环境转换限制到这些切片得到，光滑且互逆。这些局部描述与子空间拓扑一致，给出 \(K\) 的嵌入子流形结构；它从 \(G\) 继承 Hausdorff 性和第二可数性。其切空间在每个 \(k\in K\) 都是 \(\ker\mathrm{d}F_k\)，因为坐标中两者均由前 \(r\) 个分量为零的向量组成。
+
+	单点 \(\{e_H\}\) 在 Hausdorff 空间 \(H\) 中闭，\(F\) 连续，故 \(K\) 闭。群同态的核是子群，因此 \(G\) 的乘法和求逆限制后取值于 \(K\)。这些限制作为到 \(G\) 的映射光滑，由\cref{g1:prop:embedded-initial-property}，作为到 \(K\) 的映射也光滑。由此 \(K\) 满足李群的全部条件，单位元切空间的公式已在局部坐标计算中得到。
+\end{proof}
+
+这一次用的是恒秩定理，而不一定能直接用正则值定理：如果 \(\mathrm{d}F_{e_G}\) 不满射，\(e_H\) 就不是通常意义的正则值。恒秩标准形仍能把这一纤维写成坐标切片，足以证明它是嵌入子流形。另一方面，局部恒秩并不控制来自远处源点的像会怎样累积，所以我们尚未由此断言 \(F(G)\) 在 \(H\) 中闭或嵌入。这正是后面区分浸入子群与闭子群的原因。
+
+\ProseParagraphBreak
+
+例如实矩阵群的行列式同态 \(\det:\operatorname{GL}(n,\mathbb R)\to\mathbb R^\times\) 在单位元的微分是迹，核是 \(\operatorname{SL}(n,\mathbb R)\)，与此前的直接计算一致。若一般同态的单位元微分单射，它在各点都是浸入；但它仍可能把不同群元素送到同一点。下一节的指数映射将进一步把单位元切向量与群内曲线联系起来，之后才能系统讨论一个李代数同态能够恢复多少群同态的信息。
+
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,0 +1,205 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 15.4 切丛联络与挠率
+% 纲要位置：几何学计划纲要.md，第 715 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 挠率的坐标无关定义
+% * 无挠性和坐标标架
+% * 第一结构方程
+% * 切丛与一般向量丛的区别
+% 
+% 纲要内容结束
+
+\section{切丛联络与挠率}
+\label{g1:sec:1504}
+
+一般向量丛的联络接受一个切向量方向和一个丛截面，输出同一丛的截面。对切丛，方向场和被微分的截面恰好都是向量场，因而可以交换二者，还可以把结果与李括号比较。这种额外的比较产生挠率。曲率考察同一向量连续经过两次协变微分后的差别；挠率则从一次协变微分出发，比较方向与被微分向量的交换。
+
+\ProseParagraphBreak
+
+本节 \(\nabla\) 是 \(\mathrm{T}M\) 上的光滑联络，\(M\) 有限维、Hausdorff、第二可数，允许边界。涉及坐标向量场的局部可实现性时，将明确限制在内点。度量不是挠率定义所需的数据，以下也不默认联络保持任何度量。
+
+\subsection{挠率的坐标无关定义}
+\label{g1:subsec:1504:01}
+
+在欧氏空间的通常导数下，\(\partial_XY-\partial_YX=[X,Y]\)。因此，直接把 \(\nabla_XY-\nabla_YX\) 当成偏离欧氏情形的量并不合适：即使使用通常导数，只要所选方向场不交换，它也可能不为零。应当先减去由方向场本身造成的李括号。
+
+\begin{definition}[挠率]\label{g1:def:torsion}
+	切丛联络 \(\nabla\) 的\term[naolv]{挠率}[torsion]定义为
+	\begin{equation}\label{g1:eq:torsion-definition}
+		T^\nabla(X,Y)=\nabla_XY-\nabla_YX-[X,Y].
+	\end{equation}
+	若 \(T^\nabla=0\)，称 \(\nabla\) 为\term[wunaolianluo]{无挠联络}[torsion-free connection]。下文不致混淆时简记为 \(T\)。
+\end{definition}
+
+第七章也用“挠率”表示空间曲线的标量 \(\tau\)，它描述 Frenet 标架的转动。这里的 \(T\) 是切丛联络的二输入张量，二者的定义和所需数据不同，不能因中文名称相同便代入同一个公式。
+
+\begin{proposition}[挠率的张量性]\label{g1:prop:torsion-tensorial}
+	挠率是一个光滑的切丛值二形式，即 \(T\in\Omega^2(M;\mathrm{T}M)\)。在任意局部标架 \((e_i)\) 中，若
+	\[
+		\nabla_{e_i}e_j=\sum_k\Gamma^k_{ij}e_k,\qquad
+		[e_i,e_j]=\sum_k c^k_{ij}e_k,
+	\]
+	则
+	\begin{equation}\label{g1:eq:torsion-frame-components}
+		T(e_i,e_j)=\sum_k\bigl(\Gamma^k_{ij}-\Gamma^k_{ji}-c^k_{ij}\bigr)e_k.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	由定义，\(T\) 实双线性且反对称。用\eqref{g1:eq:lie-bracket-product}中的 \([fX,Y]=f[X,Y]-Y(f)X\)，得到
+	\begin{align*}
+		T(fX,Y)
+		&=f\nabla_XY-\nabla_Y(fX)-[fX,Y]\\
+		&=f\nabla_XY-Y(f)X-f\nabla_YX-f[X,Y]+Y(f)X\\
+		&=fT(X,Y).
+	\end{align*}
+	反对称性随后给出第二个输入的函数线性。因此在局部标架中展开 \(X,Y\)，结果只依赖它们在求值点的分量；各分量又光滑，故为光滑张量。把两个输入取成 \(e_i,e_j\)，直接代入定义便得分量公式。边界处同样的局部延拓计算成立。
+\end{proof}
+
+在\secref{g1:sec:0803}中，曲面的诱导联络已经满足 \(\nabla_XY-\nabla_YX=[X,Y]\)，见\cref{g1:prop:surface-connection-properties}。现在可以把该性质简洁地表述为“曲面的诱导联络无挠”。这不是所有切丛联络自动具有的性质。
+
+\subsection{无挠性和坐标标架}
+\label{g1:subsec:1504:02}
+
+坐标标架满足 \([\partial_i,\partial_j]=0\)，所以\eqref{g1:eq:torsion-frame-components}化为
+\[
+	T(\partial_i,\partial_j)=\sum_k(\Gamma^k_{ij}-\Gamma^k_{ji})\partial_k.
+\]
+于是无挠性等价于每个坐标图中 \(\Gamma^k_{ij}=\Gamma^k_{ji}\)。这里两个下指标分别表示微分方向和被微分向量；只有在坐标标架中，才能不加修正地使用这条对称性判据。一般标架中的正确判据是 \(\Gamma^k_{ij}-\Gamma^k_{ji}=c^k_{ij}\)。
+
+\begin{proposition}[无挠联络的存在与差]\label{g1:prop:torsion-free-affine-space}
+	每个有限维、Hausdorff、第二可数的光滑流形都有无挠切丛联络，允许边界。若 \(\nabla' =\nabla+B\)，其中 \(B\in\Omega^1(M;\operatorname{End}(\mathrm{T}M))\)，则
+	\begin{equation}\label{g1:eq:torsion-difference}
+		T^{\nabla'}(X,Y)=T^\nabla(X,Y)+B(X)Y-B(Y)X.
+	\end{equation}
+	无挠联络组成一个仿射空间，其平移向量空间为 \(\Gamma(\operatorname{Sym}^2\mathrm{T}^*M\otimes \mathrm{T}M)\)。
+\end{proposition}
+\begin{proof}
+	将 \(\nabla'\) 代入挠率定义，李括号项相消，就得到差公式。由\cref{g1:thm:connection-existence}，先任选一个切丛联络 \(\nabla\)。其挠率已经证明为张量，所以
+	\[
+		\nabla^0_XY=\nabla_XY-\tfrac12T^\nabla(X,Y)
+	\]
+	仍满足联络的两条函数乘法规则。利用 \(T^\nabla(Y,X)=-T^\nabla(X,Y)\)，差公式给出 \(T^{\nabla^0}=T^\nabla-\tfrac12T^\nabla-\tfrac12T^\nabla=0\)。若 \(\nabla\) 已无挠，则 \(\nabla+B\) 无挠当且仅当 \(B(X)Y=B(Y)X\)，这正是 \(\mathrm{T}M\) 值二阶协变张量的对称性。联络之差的唯一性和仿射性质已由\cref{g1:prop:connection-affine-space}给出，限制到该对称子空间即得结论。
+\end{proof}
+
+这个构造只解决无挠性。即使原联络保持某个度量，减去一半挠率后也未必继续保持它；章末习题将给出直接计算。我们应当把无挠性、度量相容性和平坦性分别检查。
+
+\begin{example}\label{g1:exm:torsion-free-curved}
+	在 \(\mathbb R^2\) 的坐标标架 \((\partial_x,\partial_y)\) 中规定
+	\[
+		\nabla_{\partial_y}\partial_y=x\partial_x,
+		\qquad\nabla_{\partial_x}\partial_x
+		=\nabla_{\partial_x}\partial_y
+		=\nabla_{\partial_y}\partial_x=0.
+	\]
+	各 \(\Gamma^k_{ij}\) 对 \(i,j\) 对称，所以 \(T=0\)。然而
+	\[
+		A=\begin{pmatrix}0&x\,\mathrm{d}y\\0&0\end{pmatrix},\qquad
+		F=\mathrm{d}A+A\wedge A=\begin{pmatrix}0&\mathrm{d}x\wedge\mathrm{d}y\\0&0\end{pmatrix}.
+	\]
+	特别地，\(R(\partial_x,\partial_y)\partial_y=\partial_x\ne0\)。无挠并不保证平坦。
+\end{example}
+
+\begin{example}\label{g1:exm:flat-with-torsion}
+	仍在 \(\mathbb R^2\)，取处处线性无关的向量场 \(e_1=\partial_x\)、\(e_2=e^x\partial_y\)，规定 \(\nabla_Xe_i=0\) 对所有 \(X\) 成立。对 \(Y=y^1e_1+y^2e_2\)，这具体表示 \(\nabla_XY=X(y^1)e_1+X(y^2)e_2\)，因而确实定义联络。该标架中 \(A=0\)，故 \(F=0\)。但
+	\[
+		[e_1,e_2]=e_2,\qquad T(e_1,e_2)=-e_2\ne0.
+	\]
+	若取 \(g=\mathrm{d}x^2+e^{-2x}\mathrm{d}y^2\)，则 \(e_1,e_2\) 为正交规范标架，平行运输保持其分量，因而保持 \(g\)。这同时给出平坦、保持度量而有挠率的联络。
+\end{example}
+
+后一个例子还能说明“把联络矩阵变成零”和“找到使所有坐标向量场平行的坐标”不同。它已有整体平行标架，但该标架的李括号不为零，不能成为坐标标架。
+
+\subsection{第一结构方程}
+\label{g1:subsec:1504:03}
+
+设 \(e=(e_1,\ldots,e_n)\) 是切丛局部行标架，\(\theta=(\theta^1,\ldots,\theta^n)^{\mathsf T}\) 是对偶余标架的列，满足 \(\theta^i(e_j)=\delta^i_j\)。这样每个向量场都可写成 \(X=e\theta(X)\)。令 \(\nabla e=eA\)，并将挠率写成 \(T(X,Y)=e\Theta(X,Y)\)，其中 \(\Theta\) 是二形式列。
+
+\begin{proposition}[第一结构方程]\label{g1:prop:first-structure-equation}
+	上述记号下，挠率的分量满足
+	\begin{equation}\label{g1:eq:first-structure-equation}
+		\Theta=\mathrm{d}\theta+A\wedge\theta.
+	\end{equation}
+	若 \(e'=eg\)，则 \(\theta'=g^{-1}\theta\)、\(\Theta'=g^{-1}\Theta\)。因而右侧虽由局部形式组成，却表示同一个整体切丛值二形式。
+\end{proposition}
+\begin{proof}
+	联络的局部表达给出
+	\[
+		\nabla_XY=e\bigl(X(\theta(Y))+A(X)\theta(Y)\bigr).
+	\]
+	交换 \(X,Y\) 并减去 \([X,Y]=e\theta([X,Y])\)，分量成为
+	\[
+		X(\theta(Y))-Y(\theta(X))-\theta([X,Y])
+		+A(X)\theta(Y)-A(Y)\theta(X).
+	\]
+	由\eqref{g1:eq:exterior-one-form-evaluation}，前三项正是 \(\mathrm{d}\theta(X,Y)\)；后两项正是 \((A\wedge\theta)(X,Y)\)。这证明第一结构方程。
+
+	由 \(X=e\theta(X)=eg\theta'(X)\) 得 \(\theta'=g^{-1}\theta\)，由 \(T=e\Theta=eg\Theta'\) 得 \(\Theta'=g^{-1}\Theta\)。也可以使用\eqref{g1:eq:connection-frame-change}直接验算：\(\mathrm{d}(g^{-1})\wedge\theta\) 与联络变换中的 \(g^{-1}\mathrm{d}g\wedge g^{-1}\theta\) 恰好抵消，留下 \(g^{-1}(\mathrm{d}\theta+A\wedge\theta)\)。
+\end{proof}
+
+现在有两条结构方程：第一条 \(\Theta=\mathrm{d}\theta+A\wedge\theta\) 描述挠率，第二条 \(F=\mathrm{d}A+A\wedge A\) 描述曲率。第一条需要切丛自带的余标架；第二条对任意向量丛成立。在坐标标架中 \(\theta^i=\mathrm{d}x^i\)，所以 \(\mathrm{d}\theta=0\)，无挠性变成 \(A\wedge\theta=0\)。一般标架下不能漏掉 \(\mathrm{d}\theta\)。
+
+\begin{example}\label{g1:exm:polar-torsion-cancellation}
+	在极坐标局部区域 \(r>0\) 中，欧氏平面的正交规范标架为 \(e_1=\partial_r\)、\(e_2=r^{-1}\partial_\varphi\)，其对偶列为 \(\theta=(\mathrm{d}r,r\,\mathrm{d}\varphi)^{\mathsf T}\)。把二者写成笛卡儿分量，\(e_1=(\cos\varphi,\sin\varphi)\)、\(e_2=(-\sin\varphi,\cos\varphi)\)。直接微分得到通常欧氏联络的矩阵
+	\[
+		A=\begin{pmatrix}0&-\mathrm{d}\varphi\\\mathrm{d}\varphi&0\end{pmatrix}.
+	\]
+	于是
+	\[
+		\mathrm{d}\theta=\begin{pmatrix}0\\\mathrm{d}r\wedge\mathrm{d}\varphi\end{pmatrix},\qquad
+		A\wedge\theta=\begin{pmatrix}0\\-\mathrm{d}r\wedge\mathrm{d}\varphi\end{pmatrix}.
+	\]
+	两项抵消，\(\Theta=0\)。虽然 \([e_1,e_2]=-r^{-1}e_2\ne0\)，联络仍无挠；标架的不交换性已被 \(\nabla_{e_1}e_2-\nabla_{e_2}e_1\) 准确补偿。这里 \(\mathrm{d}A=0\)、\(A\wedge A=0\)，故曲率也为零。
+\end{example}
+
+\begin{proposition}[第一 Bianchi 恒等式]\label{g1:prop:first-bianchi-identity}
+	对切丛联络，挠率和曲率满足
+	\begin{equation}\label{g1:eq:first-bianchi-identity}
+		\mathrm{d}\Theta+A\wedge\Theta=F\wedge\theta.
+	\end{equation}
+	特别地，若联络无挠，则
+	\begin{equation}\label{g1:eq:torsion-free-cyclic-curvature}
+		R(X,Y)Z+R(Y,Z)X+R(Z,X)Y=0.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	恒等映射 \(\operatorname{Id}_{\mathrm{T}M}\) 可看成一个切丛值一形式，它在 \(X\) 上取值 \(X\)，在标架 \(e\) 中的分量正是 \(\theta\)。第一结构方程说明 \(\mathrm{D}\operatorname{Id}_{\mathrm{T}M}=T\)。对它再作一次外协变微分，\cref{g1:thm:curvature-structure-equation}中的 \(\mathrm{D}^2\eta=F\wedge\eta\) 给出 \(\mathrm{D}T=R\wedge\operatorname{Id}_{\mathrm{T}M}\)，其分量就是\eqref{g1:eq:first-bianchi-identity}。
+
+	若 \(T=0\)，左侧为零。右侧在 \(X,Y,Z\) 上的值为
+	\[
+		R(X,Y)Z-R(X,Z)Y+R(Y,Z)X.
+	\]
+	这是二形式与一形式楔积的三个保序项；用 \(R(X,Z)=-R(Z,X)\)，便得到循环恒等式。
+\end{proof}
+
+这里的“第一”恒等式把挠率与曲率联系起来；上一节证明的 \(\mathrm{D}_{\operatorname{End}}R=0\) 通常称为第二 Bianchi 恒等式，它对任意向量丛联络成立，并不要求无挠。对有挠率的切丛联络，不能直接套用\eqref{g1:eq:torsion-free-cyclic-curvature}，必须保留\eqref{g1:eq:first-bianchi-identity}的左侧。
+
+\subsection{切丛与一般向量丛的区别}
+\label{g1:subsec:1504:04}
+
+挠率构造中的特殊数据，是 \(\mathrm{T}M\) 的纤维正好就是底空间的切向量空间。因此存在无需选择的 \(\mathrm{T}M\) 值一形式 \(X\mapsto X\)，也能对两个切丛截面取李括号。一般向量丛 \(E\) 的纤维可能是余切空间、张量空间，或者与切向量没有自然关系的向量空间；既没有默认的映射 \(\mathrm{T}M\to E\)，也没有默认的截面李括号。仅给 \(E\) 一个联络，便没有相应的规范挠率。
+
+\ProseParagraphBreak
+
+如果另行给出 \(E\) 值一形式 \(\eta\)，当然可以构造 \(\mathrm{D}\eta\)。但这是依赖 \(\eta\) 的额外对象，不能只由联络决定。切丛的情形恰好有一个天然选择 \(\eta=\operatorname{Id}_{\mathrm{T}M}\)，才使 \(\mathrm{D}\eta\) 成为联络自身的挠率。
+
+\begin{proposition}[平行标架的坐标实现]\label{g1:prop:parallel-coordinate-frame}
+	设 \(U\) 是流形内部的开集，\(e_1,\ldots,e_n\) 是 \(\mathrm{T}U\) 的平行标架，即 \(\nabla_Xe_i=0\) 对所有向量场 \(X\) 成立。则下列条件等价：联络在 \(U\) 上无挠；\([e_i,e_j]=0\) 对所有 \(i,j\) 成立；每点附近都有坐标 \((y^1,\ldots,y^n)\) 使 \(e_i=\partial/\partial y^i\)。
+\end{proposition}
+\begin{proof}
+	平行性使 \(T(e_i,e_j)=-[e_i,e_j]\)，而挠率是张量，因此前两个条件等价。坐标向量场两两交换，所以第三个条件蕴含第二个。
+
+	现设括号全部为零，取对偶余标架 \(\theta^i\)。由于 \(\theta^i(e_j)=\delta^i_j\) 是常数，外微分的一形式公式给出
+	\[
+		\mathrm{d}\theta^i(e_j,e_k)=-\theta^i([e_j,e_k])=0.
+	\]
+	这些向量场张成切空间，故 \(\mathrm{d}\theta^i=0\)。由\cref{g1:cor:local-exactness}，在每个内点的足够小共同邻域上存在光滑函数 \(y^i\)，使 \(\theta^i=\mathrm{d}y^i\)。提醒这里调用的是正次闭形式的局部恰当性，无须这些一形式在整个 \(U\) 上恰当。映射 \(y=(y^1,\ldots,y^n)\) 的微分由余标架组成，处处可逆。\cref{g1:thm:inverse-function}于是给出局部坐标，且 \(\mathrm{d}y^i(e_j)=\delta^i_j\) 强制 \(e_j=\partial/\partial y^j\)。
+\end{proof}
+
+下一节将证明，曲率为零恰好允许在足够小的邻域中构造平行标架。与此命题结合，便得到流形内部的结论：平坦且无挠的切丛联络局部可以用联络系数全为零的坐标表示。曲率消失负责产生平行标架，挠率消失负责使这个标架来自坐标。\cref{g1:exm:flat-with-torsion}说明第二步确有独立条件。
+
+\ProseParagraphBreak
+
+边界处须保留区别。闭余标架仍有局部原函数，它们也给出到欧氏空间的局部光滑嵌入，但像的边界未必是一个坐标超平面，不能因此断言它们构成标准半空间型边界坐标。例如，欧氏平面中闭圆盘的通常联络平坦且无挠；若新坐标也使联络系数为零，则逆坐标映射的所有二阶导数都为零，因而它必须局部为仿射映射，而仿射变换不能把圆弧变成直线。因而上面的坐标实现命题特意陈述在内点，边界邻域的平行标架则不受这个限制。

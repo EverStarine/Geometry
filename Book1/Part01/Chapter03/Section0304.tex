@@ -1,0 +1,156 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 3.4 凸方法在后续几何中的位置
+% 纲要位置：几何学计划纲要.md，第 226 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% 把支撑函数、对偶锥和格多面体分别接到第三卷距离比较、第四卷矩映射以及第五卷环面簇；这里不调用后续分类定理。
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{凸方法在后续几何中的位置}
+\label{g1:sec:0304}
+
+一个凸集可以由它包含的点来描述，也可以由线性函数在它上面的取值界来描述。\cref{g1:prop:support-function-representation}把这两种描述联系起来：只要 \(C\subseteq\mathbb R^n\) 非空、闭且凸，全部不等式 \(\langle u,x\rangle\le h_C(u)\) 就恰好刻画 \(C\)。这一事实不仅能回答“点是否属于集合”，还可以测量点离集合多远。以下仍使用标准欧氏内积与范数，先把这个测量写成一个精确等式。
+
+\begin{proposition}[距离的支撑函数表示]\label{g1:prop:distance-support-formula}
+	设 \(C\subseteq\mathbb R^n\) 是非空闭凸集，\(h_C(u)=\sup_{y\in C}\langle u,y\rangle\)。对每个 \(x\in\mathbb R^n\)，有
+	\begin{equation}\label{g1:eq:distance-support-formula}
+		d(x,C)=\max_{\lVert u\rVert\le1}\bigl(\langle u,x\rangle-h_C(u)\bigr).
+	\end{equation}
+	当 \(h_C(u)=+\infty\) 时，括号中的值约定为 \(-\infty\)。若 \(x\notin C\)，令 \(p=P_Cx\) 为最近点，则 \(u=(x-p)/\lVert x-p\rVert\) 取得最大值；若 \(x\in C\)，可取 \(u=0\)。
+\end{proposition}
+\begin{proof}
+	对任意 \(y\in C\) 及 \(\lVert u\rVert\le1\)，Cauchy--Schwarz 不等式给出
+	\[
+		\langle u,x\rangle-h_C(u)\le\langle u,x-y\rangle\le\lVert x-y\rVert.
+	\]
+	对 \(y\) 取下确界，便知右边的每个候选值都不超过 \(d(x,C)\)。若 \(x\in C\)，取 \(u=0\) 得到 \(0\)，所以等号成立。
+
+	若 \(x\notin C\)，\cref{g1:thm:convex-projection}保证最近点 \(p\) 存在且唯一，并且对所有 \(y\in C\) 有 \(\langle x-p,y-p\rangle\le0\)。令 \(u=(x-p)/\lVert x-p\rVert\)，这条不等式说明 \(h_C(u)=\langle u,p\rangle\)：右侧是所有取值的上界，且在 \(p\in C\) 处达到。因此
+	\[
+		\langle u,x\rangle-h_C(u)=\langle u,x-p\rangle=\lVert x-p\rVert=d(x,C).
+	\]
+	这样还直接找到了最大值的取得方向，不需要先假定支撑函数在整个单位球上有限或连续。
+\end{proof}
+
+对满足 \(h_C(u)<+\infty\) 的单位向量 \(u\)，超平面 \(\langle u,y\rangle=h_C(u)\) 给出沿该方向的界，\(\langle u,x\rangle-h_C(u)\) 是点 \(x\) 到这个超平面的有向距离。一般情况下上确界未必在 \(C\) 中达到，因此这个超平面未必接触集合；但上面由最近点选出的方向确实给出在 \(p\) 处接触的支撑超平面。对集合外的点，这个方向测得的距离恰好就是到集合的距离。特别地，\(d(\,\cdot\,,C)\) 是凸函数：把每个有限值方向对应的仿射函数在 \((1-t)x+ty\) 处的值展开，再取上确界，就得到
+\[
+	d((1-t)x+ty,C)\le(1-t)d(x,C)+t\,d(y,C)\qquad(0\le t\le1).
+\]
+这里取上确界的方向集合与 \(x,y\) 无关，因此每个方向上的仿射等式都受同一个右侧控制。
+
+\begin{example}[球和半空间的距离]\label{g1:exm:support-distance-models}
+	对闭球 \(C=\{y:\lVert y-c\rVert\le r\}\)，其中 \(r\ge0\)，有 \(h_C(u)=\langle u,c\rangle+r\lVert u\rVert\)。将它代入\eqref{g1:eq:distance-support-formula}，先沿 \(x-c\) 的方向取 \(u\)，再在 \(0\le\lVert u\rVert\le1\) 中优化，得到
+	\[
+		d(x,C)=\max\{0,\lVert x-c\rVert-r\}.
+	\]
+	若 \(x=c\)，直接取 \(u=0\) 即可。对半空间 \(H=\{y:\langle a,y\rangle\le b\}\)，\(a\ne0\)，沿单位法向 \(a/\lVert a\rVert\) 的超出量则给出
+	\[
+		d(x,H)=\frac{\max\{0,\langle a,x\rangle-b\}}{\lVert a\rVert}.
+	\]
+	第二式也可直接验证：当 \(x\notin H\) 时，从 \(x\) 减去 \((\langle a,x\rangle-b)a/\lVert a\rVert^2\)，就到达边界上的最近点。
+\end{example}
+
+这些计算说明，距离虽然由对所有点求下确界定义，却可以由比较函数从另一侧控制。比如在 \(x_0\notin C\) 处选取上面得到的单位向量 \(u_0\)，仿射函数
+\[
+	\ell(x)=\langle u_0,x\rangle-h_C(u_0)
+\]
+满足 \(\ell(x)\le d(x,C)\)，并在 \(x_0\) 处相等。这是一种从下方接触距离函数的比较。第三卷第7章第3、4节将处理曲空间中的距离与割迹，那里的“支撑函数”还指在一点接触目标函数的局部比较函数，不应直接等同于本章定义在方向空间上的 \(h_C\)。比较时究竟从上方还是下方接触、在哪个邻域光滑，以及曲率对二阶导数的限制，都需要另行说明；这里的欧氏公式提供的是一个可以完全算清的模型。
+
+\ProseParagraphBreak
+
+再看同时满足一组齐次不等式的方向。设 \(V\) 是有限维实向量空间。包含 \(0\) 且对非负线性组合封闭的集合 \(C\subseteq V\) 称为\term[tuzhui]{凸锥}[convex cone]；它的\term[duiouzhui]{对偶锥}[dual cone]定义在对偶空间中：
+\[
+	C^\vee=\{\,\varphi\in V^*:\varphi(v)\ge0\ \text{对所有 }v\in C\,\}.
+\]
+本节采用非负号约定。选定内积后可以用向量表示线性函数，但 \(v\) 与 \(\varphi\) 原本属于不同空间：一个是允许的方向，另一个是检测该方向的线性量。由定义，\(C^\vee\) 总是闭凸锥。它不是把极体定义中的常数 \(1\) 原样保留的另一种记号；对锥而言，\(\varphi(tv)\le1\) 对所有 \(t\ge0\) 成立，当且仅当 \(\varphi(v)\le0\)，所以前节的极集满足 \(C^\circ=-C^\vee\)。
+
+\begin{proposition}[闭凸锥的双对偶]\label{g1:prop:dual-cone-bipolar}
+	设 \(V\) 是有限维实向量空间，\(C\subseteq V\) 是闭凸锥。在自然识别 \(V^{**}=V\) 下，有 \(C^{\vee\vee}=C\)。若
+	\[
+		C=\left\{\,\sum_{j=1}^m t_jv_j:t_j\ge0\,\right\},
+	\]
+	则无论是否预先知道此锥闭，都有
+	\[
+		C^\vee=\{\,\varphi:\varphi(v_j)\ge0,\ j=1,\ldots,m\,\}.
+	\]
+\end{proposition}
+\begin{proof}
+	第一式的包含 \(C\subseteq C^{\vee\vee}\) 直接来自定义。若 \(x\notin C\)，由\cref{g1:thm:point-closed-separation}，存在非零线性函数 \(u\)，使 \(u(x)>\sup_{y\in C}u(y)\)，并且右侧有限。因为 \(0\in C\)，该上确界不小于 \(0\)；又因 \(ty\in C\) 对所有 \(t\ge0\) 成立，若某个 \(u(y)>0\)，上确界就会是 \(+\infty\)。故 \(u(y)\le0\) 对所有 \(y\in C\) 成立，且上确界等于 \(0\)。于是 \(-u\in C^\vee\)，而 \((-u)(x)<0\)，排除了 \(x\in C^{\vee\vee}\) 的可能。
+
+	对第二式，\(\varphi\in C^\vee\) 显然在每个生成向量上非负；反之，若这些有限个值都非负，则 \(\varphi(\sum_jt_jv_j)=\sum_jt_j\varphi(v_j)\ge0\)。这正是从全部方向的检验缩减为有限次检验的理由。
+\end{proof}
+
+这个定义也解释了为何对偶锥出现在矩映射中。下面的计算只用复数、偏导数和群作用。取整数向量 \(\alpha_1,\ldots,\alpha_N\in\mathbb Z^d\)，记 \(T^d=(\mathbb R/2\pi\mathbb Z)^d\)。在 \(\mathbb C^N\) 上定义作用
+\[
+	t\cdot(z_1,\ldots,z_N)=
+	\bigl(e^{-i\langle\alpha_1,t\rangle}z_1,\ldots,e^{-i\langle\alpha_N,t\rangle}z_N\bigr).
+\]
+整数条件保证把 \(t\) 的任一坐标加上 \(2\pi\) 不改变作用。定义
+\begin{equation}\label{g1:eq:linear-moment-map}
+	\mu(z)=\frac12\sum_{j=1}^N|z_j|^2\alpha_j.
+\end{equation}
+这是此作用的一个\term[juyingshe]{矩映射}[moment map]。要理解名称背后的要求，可把 \(z_j=x_j+iy_j\) 写成实坐标。在两个实切向量 \((a,b)\)、\((c,e)\) 上定义交替配对
+\[
+	\omega_0((a,b),(c,e))=\sum_j(a_je_j-b_jc_j).
+\]
+它就是第四卷要使用的标准辛形式 \(\sum_j\mathrm{d}x_j\wedge \mathrm{d}y_j\)，当前只需把它看成明确给定的双线性型。对方向 \(\xi\in\mathbb R^d\)，令 \(\beta_j=\langle\alpha_j,\xi\rangle\)。沿一参数作用 \(s\xi\) 求导，得到速度向量
+\[
+	X_\xi(z)=\bigl((\beta_jy_j,-\beta_jx_j)\bigr)_{j=1}^N.
+\]
+而函数 \(H_\xi(z)=\langle\mu(z),\xi\rangle=\frac12\sum_j\beta_j(x_j^2+y_j^2)\) 在方向 \(Y=(c,e)\) 上的导数满足
+\[
+	\mathrm{d}H_\xi(Y)=\sum_j\beta_j(x_jc_j+y_je_j)=\omega_0(X_\xi,Y).
+\]
+此外，\(\mu\) 在上述作用下不变，因为每个 \(|z_j|\) 不变。这两个条件是环面作用的矩映射条件在本例中的具体形式。负号放在作用的指数中，是为了与本书 \(\iota_X\omega=\mathrm{d}H\) 的约定相容；若保持 \(\omega_0\) 不变而把作用改成正向旋转，相应的 \(\mu\) 就要变号。一般定义与这些线性例子可参看\cite[Section 5.6]{Cannas2006Symplectic}。
+
+\begin{example}[从权重得到锥与多胞形]\label{g1:exm:moment-cone-polytope}
+	对\eqref{g1:eq:linear-moment-map}，非负系数 \(|z_j|^2/2\) 可以独立取遍所有非负实数，故
+	\[
+		\mu(\mathbb C^N)=\operatorname{cone}(\alpha_1,\ldots,\alpha_N).
+	\]
+	对任意 \(u\in\mathbb R^d\)，函数 \(\langle u,\mu(z)\rangle\) 处处非负，当且仅当 \(\langle u,\alpha_j\rangle\ge0\) 对每个 \(j\) 成立：必要性只需令其余坐标为零。因此对偶锥恰好记录了哪些线性组合的矩映射分量不会取负值。
+
+	若限制在球面 \(S=\{z:\sum_j|z_j|^2=2\}\) 上，系数之和变为 \(1\)，从而
+	\[
+		\mu(S)=\operatorname{conv}\{\alpha_1,\ldots,\alpha_N\}.
+	\]
+	反向包含也有显式验证：给定 \(t_j\ge0\)、\(\sum_jt_j=1\)，取 \(z_j=\sqrt{2t_j}\) 即可。这里是在计算同一个映射限制到球面后的像，并未把这个奇数维球面当作辛流形。\cref{g1:thm:caratheodory}还说明，像中的每一点都可由至多 \(d+1\) 个非零坐标实现；它并不要求原来的每个原像都只有这么多个非零坐标。
+\end{example}
+
+第四卷第10章第1节将把这套定义推广到流形上的群作用，第12章第2、3节再讨论紧连通情形的凸性和从多面体构造几何对象的问题。线性模型中像的凸性直接来自可独立调节的非负系数；一般流形并没有这样一套全局坐标，因此需要新的整体论证。
+
+\ProseParagraphBreak
+
+把实向量空间中的整数点也保留下来，会出现另一类信息。称 \(\mathbb R^d\) 中由一组实基 \(e_1,\ldots,e_d\) 的整数线性组合构成的集合为\term[ge]{格}[lattice]，记为 \(M\)。以格点为顶点的多胞形称为\term[geduobaoxing]{格多胞形}[lattice polytope]，也称格多面体。选择格基后可写 \(M=\mathbb Z^d\)。保持格的线性坐标变换必须是整数矩阵，且逆矩阵仍为整数矩阵；由行列式乘法可知这等价于行列式为 \(1\) 或 \(-1\)。因此一般实可逆线性变换不再是允许的坐标变换。
+
+对 \(m=(m_1,\ldots,m_d)\in M\)，在 \((\mathbb C^*)^d\) 上定义
+\[
+	\chi^m(z)=z_1^{m_1}\cdots z_d^{m_d}.
+\]
+所有坐标非零，所以负指数也有意义。这些函数满足 \(\chi^{m+m'}=\chi^m\chi^{m'}\)，把格的加法转成函数的乘法。若 \(P\) 是格多胞形，有限集合 \(A=P\cap M=\{m_0,\ldots,m_r\}\) 就给出映射
+\begin{equation}\label{g1:eq:lattice-monomial-map}
+	\Phi_A:(\mathbb C^*)^d\longrightarrow\mathbb P^r(\mathbb C),\qquad
+	z\longmapsto[\chi^{m_0}(z):\cdots:\chi^{m_r}(z)].
+\end{equation}
+格点集有限，是因为有界集合中每个整数坐标只有有限种可能；各单项式均非零，故这确实定义了射影点。把全部格点平移同一个 \(a\in M\)，所有坐标都乘上共同的非零因子 \(\chi^a(z)\)，映射不变。若 \(m_i+m_j=m_k+m_l\)，像上便有齐次方程 \(Z_iZ_j=Z_kZ_l\)。这说明多面体中的整数关系如何转成几何方程。
+
+\begin{example}[正方形给出的射影二次曲面]\label{g1:exm:lattice-square-segre}
+	取 \(P=[0,1]^2\subseteq\mathbb R^2\)，按 \((0,0),(1,0),(0,1),(1,1)\) 排列格点，则
+	\[
+		\Phi_A(z,w)=[1:z:w:zw],\qquad Z_0Z_3=Z_1Z_2.
+	\]
+	不但像包含在这个二次曲面中，它的闭包还等于整个曲面。为证明这一点，把第二章的乘积坐标写成
+	\[
+		([s_0:s_1],[t_0:t_1])\longmapsto
+		[s_0t_0:s_1t_0:s_0t_1:s_1t_1].
+	\]
+	由\cref{g1:prop:segre-rank-one}，其像恰为上述方程的非零齐次解：坐标排成的 \(2\times2\) 矩阵行列式为零，故可分解为两个非零向量的乘积。两个因子的全部坐标均非零时，分别除以 \(s_0,t_0\) 就得到 \(\Phi_A(z,w)\)。任意一对因子都可以用坐标全非零的因子逼近，因而曲面上的每一点都是这个像的极限；另一方面，齐次多项式的零点集是闭集，极限仍满足方程。这里的闭包结论已经用通常的复射影拓扑证明，不需要预先掌握代数簇理论。
+\end{example}
+
+同样，区间 \([0,2]\) 的三个格点给出 \(z\mapsto[1:z:z^2]\)，补齐端点后得到 \(Z_0Z_2=Z_1^2\)，正是第二章的二次射影参数曲线。区间 \([0,1]\) 与 \([0,2]\) 作为实凸集可以伸缩对应，内部格点数却不同，于是给出的射影坐标数和嵌入次数也不同。这就是第五卷第28章需要同时记录凸性与整数结构的原因：第1节由对偶格与锥构造仿射模型，第3节再把格点与线丛的截面联系起来。当前的单项式计算给出了可以直接观察的起点。
+

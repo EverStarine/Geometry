@@ -1,0 +1,307 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 20.1 有限维酉表示
+% 纲要位置：几何学计划纲要.md，第 886 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 平均内积和完全可约性
+% * Schur 引理及矩阵系数正交
+% * 正则表示的几何意义
+% 
+% 纲要内容结束
+
+\section{有限维酉表示}
+\label{g1:sec:2001}
+
+圆周上的函数 \(z\mapsto z^m\)、\(m\in\mathbb Z\)，既是群同态，也是在 Fourier 展开中出现的基本函数。一般紧群通常不能用一维同态描述：例如三维旋转会混合向量的不同坐标，必须同时保留若干个矩阵分量。本节先研究这些有限维矩阵作用，证明它们的分量在群上积分时满足正交关系。随后把群的平移作用放到函数空间中，说明有限维表示怎样成为分析一般函数的材料。
+
+\ProseParagraphBreak
+
+本节中的 \(G\) 是有限维实紧李群，不要求连通；表示空间均为有限维复向量空间。归一化积分 \(\mu_G\) 取自\cref{g1:thm:compact-group-integration}，满足左右平移及取逆不变性。所有 Hermitian 内积对第一变量线性、对第二变量共轭线性，因此 \(\langle av,bw\rangle=a\overline b\langle v,w\rangle\)。固定这一约定后，矩阵分量和正交公式的指标才不会在取共轭时互换。
+
+\subsection{平均内积和完全可约性}
+\label{g1:subsec:2001:01}
+\begin{definition}\label{g1:def:finite-dimensional-representation}
+	设 \(G\) 为实李群，\(V\) 为有限维复向量空间。光滑群同态
+	\[
+		\pi:G\longrightarrow\operatorname{GL}(V)
+	\]
+	称为 \(G\) 在 \(V\) 上的\term[youxianweibiaoshi]{有限维表示}[finite-dimensional representation]，其中 \(\operatorname{GL}(V)\) 取实李群结构，\(\pi(g)\) 对 \(V\) 复线性。若 \(V\) 已赋予正定 Hermitian 内积，且每个 \(\pi(g)\) 保持它，则称 \(\pi\) 为\term[youbiaoshi]{酉表示}[unitary representation]。
+\end{definition}
+
+光滑性是这里的定义条件。以后从一个函数空间的有限维子空间构造表示时，也须验证参数 \(g\) 对应的矩阵随 \(g\) 光滑，不能仅凭每个 \(g\) 都给出线性变换就略去这一要求。群同态条件意味着 \(\pi(e)=I\)、\(\pi(g^{-1})=\pi(g)^{-1}\)，所以所有群元素都作用为可逆线性映射。
+
+\begin{definition}\label{g1:def:irreducible-intertwiner}
+	设 \(\pi:G\to\operatorname{GL}(V)\) 为有限维复表示。若复线性子空间 \(W\subseteq V\) 满足 \(\pi(g)W\subseteq W\) 对每个 \(g\in G\) 成立，则称 \(W\) 为不变子空间。若 \(V\ne0\)，且仅有 \(0,V\) 两个不变子空间，则称 \(\pi\)\term[bukeyuebiaoshi]{不可约}[irreducible]。若 \(V\) 可分解为有限个不可约不变子空间的直和，则称 \(\pi\)\term[wanquankeyue]{完全可约}[completely reducible]；零空间对应空直和。
+
+	给定另一个表示 \(\sigma:G\to\operatorname{GL}(W)\)，满足 \(A\pi(g)=\sigma(g)A\) 对全部 \(g\) 成立的复线性映射 \(A:V\to W\) 称为\term[jiaozhiyingshe]{交织映射}[intertwining map]，其空间记为 \(\operatorname{Hom}_G(V,W)\)。若存在可逆交织映射，称两表示等价。
+\end{definition}
+
+不变子空间条件实际给出 \(\pi(g)W=W\)，因为也可以使用 \(g^{-1}\)。在 \(W\) 上限制矩阵作用，就得到一个表示；在商空间 \(V/W\) 上也有诱导表示。仅有这些构造还不能把 \(V\) 拆成两部分，因为商空间未必能作为另一个不变子空间放回 \(V\)。紧性将通过平均内积解决这个问题。
+
+\begin{proposition}[酉化与完全可约性]\label{g1:prop:compact-unitarization-complete-reducibility}
+	设 \(G\) 为有限维实紧李群，\(\pi:G\to\operatorname{GL}(V)\) 为有限维复光滑表示。则 \(V\) 上存在 \(\pi(G)\) 不变的正定 Hermitian 内积。相对于任一这样的内积，每个不变子空间的正交补仍不变，且 \(V\) 可以写成不可约不变子空间的正交直和。
+\end{proposition}
+\begin{proof}
+	任取正定 Hermitian 内积 \(h_0\)。\cref{g1:prop:compact-representation-inner-product}适用于整个紧群 \(G\) 的复线性表示，给出
+	\[
+		h(v,w)=\int_G h_0(\pi(g)v,\pi(g)w)\,\mathrm{d}\mu_G(g).
+	\]
+	回顾它在此处的用途：\(v\ne0\) 时各 \(\pi(g)v\ne0\)，所以平均后仍正定；右换元 \(g\mapsto ga\) 给出 \(h(\pi(a)v,\pi(a)w)=h(v,w)\)。由此，换用 \(h\) 的标准正交基以后，所有表示矩阵都为酉矩阵。
+
+	若 \(W\) 不变、\(v\in W^\perp\)、\(w\in W\)，则
+	\[
+		h(\pi(g)v,w)=h(v,\pi(g)^{-1}w)=0,
+	\]
+	因为 \(\pi(g)^{-1}w\in W\)。所以 \(W^\perp\) 也不变，\(V=W\oplus W^\perp\) 是不变正交直和。最后对 \(\dim_{\mathbb C}V\) 归纳：零空间无需分解，非零不可约空间已经符合要求，否则取一个非零真不变子空间 \(W\)，分别分解两个维数更小的空间 \(W,W^\perp\)，再合并即可。
+\end{proof}
+
+这里保证分解存在，不保证各个具体不可约子空间唯一。例如在二维平凡表示中，每条直线都不变，任选一组标准正交基就有一种分解。稍后，特征标正交性将说明每一种不可约等价类出现的次数却与分解选择无关。
+
+\begin{example}\label{g1:exm:noncompact-nonsemisimple-representation}
+	加法群 \(\mathbb R\) 在 \(\mathbb C^2\) 上的表示
+	\[
+		\pi(t)=\begin{pmatrix}1&t\\0&1\end{pmatrix}
+	\]
+	不是完全可约的。直线 \(\mathbb Ce_1\) 不变；若它有一维不变补空间，可将该补空间的生成元写成 \((a,1)\)。不变性要求 \((a+t,1)\) 是 \((a,1)\) 的倍数，比较第二个分量使倍数为 \(1\)，再比较第一个分量便要求 \(t=0\)，与任意 \(t\) 矛盾。因此它也不可能有不变正定 Hermitian 内积，否则正交补会给出刚才不存在的不变补空间。紧性在酉化中的作用不能删除。
+\end{example}
+
+\subsection{Schur 引理及矩阵系数正交}
+\label{g1:subsec:2001:02}
+
+完全可约性把有限维表示拆成不可约部分。要比较这些部分，还需要知道它们之间有哪些保持群作用的线性映射。下面的\term[Schuryinli]{Schur 引理}[Schur's lemma]\footnote{Schur（舒尔），Issai Schur（1875--1941），生于俄国、主要在德国工作的数学家，研究群表示与特征标。}说明，不可约性把这样的映射限制得很强；复数域则使不可约表示的自交织映射全部退化为标量。
+
+\begin{lemma}[复 Schur 引理]\label{g1:lem:complex-schur}
+	设 \(G\) 为实李群，\(\pi:G\to\operatorname{GL}(V)\)、\(\sigma:G\to\operatorname{GL}(W)\) 为非零有限维复不可约光滑表示。则任何非零交织映射 \(A:V\to W\) 都是同构；若两表示不等价，则 \(\operatorname{Hom}_G(V,W)=0\)。此外，\(\operatorname{End}_G(V)=\mathbb C I_V\)。
+\end{lemma}
+\begin{proof}
+	交织条件给出 \(\pi(g)\ker A\subseteq\ker A\)、\(\sigma(g)\operatorname{im}A\subseteq\operatorname{im}A\)，所以核与像是不变子空间。若 \(A\ne0\)，不可约性迫使 \(\ker A=0\)、\(\operatorname{im}A=W\)，故 \(A\) 是同构。不存在同构时，所有交织映射便只能为零。
+
+	再设 \(A\in\operatorname{End}_G(V)\)。复数域上特征多项式有根，故 \(A\) 有特征值 \(\lambda\)。\(A-\lambda I\) 仍是交织映射，却有非零核，所以由刚证的结论，它不可能是非零映射。因此 \(A=\lambda I\)。
+\end{proof}
+
+此引理不要求 \(G\) 紧。紧性要在接下来的平均中使用。复数域的条件则不能省略：圆周在 \(\mathbb R^2\) 上的旋转表示没有不变实直线，因而实不可约，但旋转 \(\pi/2\) 的矩阵与所有旋转交换，并非实标量矩阵。转到复数域以后，这个二维表示会分成两个一维表示，与刚才的结论相容。
+
+\ProseParagraphBreak
+
+对任意线性映射 \(A:W\to V\)，通常 \(\pi(g)A\ne A\sigma(g)\)。将它在群作用下的所有变换平均，恰好能得到一个交织映射。这里平均的不是向量的长度，而是映射本身，所得零或非零的结果将产生矩阵系数的正交关系。
+
+\begin{proposition}[平均交织映射]\label{g1:prop:averaged-intertwiner}
+	设 \(G\) 为有限维实紧李群，\(\pi\) 与 \(\sigma\) 为有限维复酉表示，空间分别为 \(V,W\)。对 \(A\in\operatorname{Hom}_{\mathbb C}(W,V)\)，定义
+	\[
+		\mathcal P_{\pi,\sigma}(A)
+		\coloneqq\int_G\pi(g)A\sigma(g)^{-1}\,\mathrm{d}\mu_G(g).
+	\]
+	则 \(\mathcal P_{\pi,\sigma}(A)\) 从 \(\sigma\) 交织到 \(\pi\)，且 \(\mathcal P_{\pi,\sigma}\) 是到交织映射空间的线性投影。若 \(\pi,\sigma\) 不可约且不等价，则该投影为零；若 \(\sigma=\pi\)，且 \(\pi\) 不可约、\(d_\pi=\dim_{\mathbb C}V\)，则
+	\begin{equation}\label{g1:eq:averaged-endomorphism-trace}
+		\mathcal P_{\pi,\pi}(A)=\frac{\operatorname{tr}A}{d_\pi}I_V.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	积分在有限维映射空间中逐矩阵分量进行。对 \(h\in G\)，左换元 \(g\mapsto hg\) 给出
+	\[
+		\begin{aligned}
+			\pi(h)\mathcal P_{\pi,\sigma}(A)\sigma(h)^{-1}
+			&=\int_G\pi(hg)A\sigma(hg)^{-1}\,\mathrm{d}\mu_G(g)\\
+			&=\mathcal P_{\pi,\sigma}(A).
+		\end{aligned}
+	\]
+	这正是交织条件。若 \(A\) 原本已经交织，则 \(\pi(g)A\sigma(g)^{-1}=A\) 对每个 \(g\) 成立，归一化积分使 \(\mathcal P_{\pi,\sigma}(A)=A\)。因而它在其像上是恒等，确实为投影。
+
+	不可约不等价情形的结论由\cref{g1:lem:complex-schur}得到。\(\sigma=\pi\) 时，该引理给出 \(\mathcal P_{\pi,\pi}(A)=cI_V\)。取迹并利用相似变换不改变迹，便有
+	\[
+		c\,d_\pi=\int_G\operatorname{tr}(\pi(g)A\pi(g)^{-1})\,\mathrm{d}\mu_G(g)
+		=\operatorname{tr}A,
+	\]
+	从而得到\eqref{g1:eq:averaged-endomorphism-trace}。
+\end{proof}
+
+对表示 \(\pi\)、向量 \(v\in V\) 及复线性泛函 \(\ell\in V^*\)，函数 \(g\mapsto\ell(\pi(g)v)\) 称为\term[juzhenxishu]{矩阵系数}[matrix coefficient]。在酉表示的标准正交基 \(e_1,\ldots,e_{d_\pi}\) 中，我们固定
+\begin{equation}\label{g1:eq:matrix-coefficient-convention}
+	\pi_{ij}(g)\coloneqq\langle\pi(g)e_j,e_i\rangle,
+	\qquad
+	\pi(g)e_j=\sum_i\pi_{ij}(g)e_i.
+\end{equation}
+因此 \(i\) 是行指标，\(j\) 是列指标。一般矩阵系数正是这些函数的线性组合，而且都光滑。
+
+\begin{theorem}[Schur 正交关系]\label{g1:thm:schur-orthogonality}
+	设 \(G\) 为有限维实紧李群。从每个有限维复不可约表示的等价类中选一个酉代表，并在其空间上固定标准正交基。对两个所选代表 \(\pi,\sigma\)，有
+	\begin{equation}\label{g1:eq:schur-matrix-orthogonality}
+		\int_G\pi_{ij}(g)\overline{\sigma_{kl}(g)}\,\mathrm{d}\mu_G(g)
+		=\begin{cases}
+			\dfrac{\delta_{ik}\delta_{jl}}{d_\pi},&\pi=\sigma,\\[4pt]
+			0,&\pi\not\cong\sigma.
+		\end{cases}
+	\end{equation}
+	其中 \(d_\pi=\dim_{\mathbb C}V_\pi\)，\(\delta_{ab}\) 在 \(a=b\) 时为 \(1\)，否则为 \(0\)。
+\end{theorem}
+\begin{proof}
+	令 \(e_j\) 为 \(V_\pi\) 的基，\(f_l\) 为 \(V_\sigma\) 的基。取秩一映射 \(A:V_\sigma\to V_\pi\)，将 \(f_l\) 送到 \(e_j\)，将其余基向量送到零。平均映射的第 \((i,k)\) 个矩阵分量为
+	\[
+		\bigl(\mathcal P_{\pi,\sigma}(A)\bigr)_{ik}
+		=\int_G\pi_{ij}(g)\bigl(\sigma(g)^{-1}\bigr)_{lk}\,\mathrm{d}\mu_G(g)
+		=\int_G\pi_{ij}(g)\overline{\sigma_{kl}(g)}\,\mathrm{d}\mu_G(g),
+	\]
+	最后一步用了酉性 \(\sigma(g)^{-1}=\sigma(g)^*\)。若 \(\pi\not\cong\sigma\)，\cref{g1:prop:averaged-intertwiner}使平均映射为零，得到第二种情形。若 \(\pi=\sigma\)，两组基就是同一组，此时 \(\operatorname{tr}A=\delta_{jl}\)。\eqref{g1:eq:averaged-endomorphism-trace}使平均映射等于 \(\delta_{jl}I/d_\pi\)，其第 \((i,k)\) 个分量为 \(\delta_{jl}\delta_{ik}/d_\pi\)，得到第一种情形。
+\end{proof}
+
+“从每个等价类只取一个代表”消除了公式中的选择歧义。两个等价表示若分别使用任意基，它们的矩阵系数应先通过交织同构作基变换，不能仅凭等价就直接令不同表示空间上的基指标相等。酉不可约表示之间的同构总可取为酉同构：若 \(A\) 交织，则 \(A^*A\) 是正定自交织算子，Schur 引理使它等于 \(cI\)、\(c>0\)，所以 \(A/\sqrt c\) 酉。
+
+\begin{definition}\label{g1:def:representation-character}
+	有限维复表示 \(\pi\) 的\term[biaoshitezhengbiao]{表示特征标}[character of a representation]为
+	\[
+		\chi_\pi(g)\coloneqq\operatorname{tr}\pi(g).
+	\]
+	它是与基选择无关的光滑复值函数，并在每个共轭类上常值。
+\end{definition}
+
+当 \(\dim V=1\) 时，\(\chi_\pi=\pi\)，它就是\chapref{g1:ch:19}中的一维特征标；一般维数的迹却不是到 \(S^1\) 的群同态。共轭不变性来自 \(\pi(hgh^{-1})=\pi(h)\pi(g)\pi(h)^{-1}\) 及迹的循环性质。取酉模型时，还能读出 \(\chi_\pi(e)=d_\pi\)、\(\chi_\pi(g^{-1})=\overline{\chi_\pi(g)}\)。
+
+\begin{corollary}[特征标正交与重数]\label{g1:cor:character-orthogonality}
+	设 \(G\) 为有限维实紧李群，\(\pi,\sigma\) 为所选的有限维复不可约酉表示代表。则
+	\[
+		\int_G\chi_\pi(g)\overline{\chi_\sigma(g)}\,\mathrm{d}\mu_G(g)
+		=\begin{cases}1,&\pi=\sigma,\\0,&\pi\not\cong\sigma.\end{cases}
+	\]
+	对任意有限维复光滑表示 \(\rho\)，其完全可约分解中 \(\pi\) 出现的次数为
+	\begin{equation}\label{g1:eq:character-multiplicity-integral}
+		m_\pi(\rho)=\int_G\chi_\rho(g)\overline{\chi_\pi(g)}\,\mathrm{d}\mu_G(g).
+	\end{equation}
+	因此各重数与分解选择无关；两个有限维复表示等价，当且仅当它们的特征标相同。
+\end{corollary}
+\begin{proof}
+	将 \(\chi_\pi=\sum_i\pi_{ii}\)、\(\chi_\sigma=\sum_k\sigma_{kk}\) 代入积分。Schur 正交关系在不等价时使每项为零；在同一代表时，只有 \(i=k\) 的 \(d_\pi\) 项各贡献 \(1/d_\pi\)，总和为 \(1\)。
+
+	由完全可约性，\(\rho\) 是有限个不可约表示的直和。直和矩阵的迹相加，故 \(\chi_\rho=\sum_\sigma m_\sigma\chi_\sigma\)，这里只含有限个非零重数。与 \(\chi_\pi\) 作上述积分便抽出 \(m_\pi\)，证明\eqref{g1:eq:character-multiplicity-integral}及选择无关性。等价表示的矩阵彼此相似，所以特征标相同；反之，特征标相同给出所有重数相同，将各不可约直和因子逐个对应，即得表示同构。
+\end{proof}
+
+\begin{example}\label{g1:exm:torus-irreducible-representations}
+	若 \(G=T\) 为环面，则每个有限维复不可约表示都是一维的。确实，\(T\) 交换，所以每个 \(\pi(t)\) 都与全部 \(\pi(T)\) 交换；Schur 引理使它们都是标量。若表示空间维数大于一，任一复直线便不变，违背不可约性。因此环面的不可约表示正是\cref{g1:prop:torus-character-lattice}给出的格上特征标。对 \(S^1\)，它们为 \(\chi_m(z)=z^m\)、\(m\in\mathbb Z\)，正交关系化为
+	\[
+		\frac1{2\pi}\int_0^{2\pi}e^{\mathrm{i}(m-n)t}\,\mathrm{d}t=\delta_{mn}.
+	\]
+	一般紧群中，单个不可约表示维数可以大于一；相应的正交对象就从一个指数函数扩展为 \(d_\pi^2\) 个矩阵分量。
+\end{example}
+
+\subsection{正则表示的几何意义}
+\label{g1:subsec:2001:03}
+
+每个表示给出群上的一些函数。反过来，群本身的平移也会移动函数，由此得到一个同时容纳许多有限维表示的空间。先在 \(C(G)\)、即 \(G\) 上连续复值函数的空间中工作，定义
+\begin{equation}\label{g1:eq:regular-actions-convention}
+	(L_gf)(x)\coloneqq f(g^{-1}x),\qquad
+	(R_gf)(x)\coloneqq f(xg).
+\end{equation}
+它们分别称为\term[zuozhengzebiaoshi]{左正则表示}[left regular representation]和\term[youzhengzebiaoshi]{右正则表示}[right regular representation]。\symidx{\(L_g,R_g\)：函数上的左右正则作用}左式中的逆元保证两个算子按群乘法的同一顺序复合；右式已有参数写在 \(x\) 的右边，故不再取逆。这些是无限维函数空间上的线性表示，前面定义中的有限维光滑性条件尚不直接适用于整个空间。
+
+\begin{proposition}[左右正则作用]\label{g1:prop:regular-representations}
+	设 \(G\) 为有限维实紧李群。\eqref{g1:eq:regular-actions-convention}定义 \(C(G)\) 上两组可逆复线性算子，满足
+	\[
+		L_gL_h=L_{gh},\qquad R_gR_h=R_{gh},\qquad L_gR_h=R_hL_g.
+	\]
+	它们保持上确界范数以及积分内积
+	\begin{equation}\label{g1:eq:compact-group-function-inner-product}
+		\langle f,u\rangle_2
+		\coloneqq\int_G f(x)\overline{u(x)}\,\mathrm{d}\mu_G(x).
+	\end{equation}
+	它们也保持子空间 \(C^\infty(G)\)。
+\end{proposition}
+\begin{proof}
+	逐点代入可得
+	\[
+		\begin{aligned}
+			(L_gL_hf)(x)&=f(h^{-1}g^{-1}x)=f((gh)^{-1}x),\\
+			(R_gR_hf)(x)&=f((xg)h)=f(x(gh)),\\
+			(L_gR_hf)(x)&=f(g^{-1}xh)=(R_hL_gf)(x).
+		\end{aligned}
+	\]
+	单位元作用是恒等，\(g^{-1}\) 给出逆算子。左、右平移都是 \(G\) 上的双射，所以保持上确界范数；它们又是光滑映射，故复合保持光滑性。
+
+	积分内积的线性及 Hermitian 对称性来自积分。若连续函数 \(f\ne0\)，则 \(|f|^2\) 是非零非负连续函数，\cref{g1:thm:compact-group-integration}给出 \(\langle f,f\rangle_2>0\)，因此它确为内积。该定理的左、右换元公式分别给出
+	\[
+		\langle L_gf,L_gu\rangle_2=\langle f,u\rangle_2,
+		\qquad
+		\langle R_gf,R_gu\rangle_2=\langle f,u\rangle_2.
+	\]
+\end{proof}
+
+\(C(G)\) 对此积分范数未必完备；下一节将对它作 Hilbert 完备化，得到 \(L^2(G)\)。目前的矩阵系数已经是光滑函数，所有点值、平移和积分都可以直接计算。
+
+\begin{definition}\label{g1:def:representative-functions}
+	记 \(\widehat G\) 为 \(G\) 的有限维复不可约表示的等价类集合，并为每一类选定一个酉代表 \(\pi\)。\symidx{\(\widehat G\)：紧群的不可约酉表示等价类集合}记
+	\[
+		\mathcal H_\pi\coloneqq\operatorname{span}_{\mathbb C}\{\pi_{ij}:1\le i,j\le d_\pi\}
+	\]
+	为该表示的矩阵系数空间。所有有限维复光滑表示的矩阵系数的有限线性组合，组成\term[daibiaohanshu]{代表函数}[representative function]空间，记为 \(\mathcal R(G)\)。\symidx{\(\mathcal H_\pi\)：不可约表示的矩阵系数空间}\symidx{\(\mathcal R(G)\)：紧群的代表函数代数}
+\end{definition}
+
+\begin{proposition}[矩阵系数空间的两侧作用]\label{g1:prop:matrix-coefficient-biregular-model}
+	设 \(G\) 为有限维实紧李群，\(\pi\in\widehat G\)。则 \(\mathcal H_\pi\) 的复维数为 \(d_\pi^2\)，且 \(\{\sqrt{d_\pi}\,\pi_{ij}\}\) 是积分内积下的标准正交基。不同 \(\pi\) 的空间彼此正交，且
+	\[
+		\mathcal R(G)=\bigoplus_{\pi\in\widehat G}^{\mathrm{alg}}\mathcal H_\pi,
+	\]
+	其中上标 \(\mathrm{alg}\) 表示每个元素只涉及有限个分量。每个 \(\mathcal H_\pi\) 同时在左右正则作用下不变。若 \(\pi^\vee(g)\ell=\ell\circ\pi(g^{-1})\) 为 \(V_\pi^*\) 上的对偶表示，则
+	\begin{equation}\label{g1:eq:coefficient-tensor-model}
+		V_\pi^*\otimes V_\pi\longrightarrow\mathcal H_\pi,
+		\qquad\ell\otimes v\longmapsto\bigl[x\mapsto\ell(\pi(x)v)\bigr]
+	\end{equation}
+	是线性同构，将 \(\pi^\vee(g)\otimes\pi(h)\) 对应到 \(L_gR_h\)。
+\end{proposition}
+\begin{proof}
+	Schur 正交关系说明同一代表的 \(d_\pi^2\) 个系数彼此正交且范数均为 \(1/\sqrt{d_\pi}\)，故线性无关；同时也说明不同代表的系数空间正交。任意有限维表示完全可约，把它按不变直和写成分块对角矩阵，其矩阵系数便是有限个不可约矩阵系数的线性组合。再作任意基变换也只改变这些线性组合。因此代表函数空间恰是所列代数直和。
+
+	由群同态性质，有
+	\begin{equation}\label{g1:eq:left-right-matrix-coefficients}
+		\begin{aligned}
+			L_g\pi_{ij}&=\sum_k\pi_{ik}(g^{-1})\pi_{kj},\\
+			R_h\pi_{ij}&=\sum_k\pi_{kj}(h)\pi_{ik}.
+		\end{aligned}
+	\end{equation}
+	所以 \(\mathcal H_\pi\) 在两种作用下不变。\eqref{g1:eq:coefficient-tensor-model}把对偶基与原基的张量送到全部矩阵系数；两边都有维数 \(d_\pi^2\)，且这些系数线性无关，故为同构。最后，直接计算
+	\[
+		\begin{aligned}
+			(L_gR_h[\ell(\pi(\cdot)v)])(x)
+			&=\ell(\pi(g^{-1}xh)v)\\
+			&=(\pi^\vee(g)\ell)(\pi(x)\pi(h)v),
+		\end{aligned}
+	\]
+	证明其与两侧作用相容。
+\end{proof}
+
+特别地，固定行指标 \(i\) 后，\(\operatorname{span}\{\pi_{i1},\ldots,\pi_{id_\pi}\}\) 在右正则作用下是一个与 \(\pi\) 等价的副本；\(\mathcal H_\pi\) 因而包含 \(d_\pi\) 个这样的副本。这里的重复次数来自另一个未被右平移改变的指标。这比“每个不可约表示出现一次”更准确，也解释了为什么非交换群的 Fourier 系数应当是矩阵。
+
+\begin{proposition}[代表函数的代数性质]\label{g1:prop:representative-function-algebra}
+	设 \(G\) 为有限维实紧李群。\(\mathcal R(G)\subseteq C^\infty(G)\) 包含常数函数，对逐点乘法及复共轭封闭，并在左右平移下不变。
+\end{proposition}
+\begin{proof}
+	平凡一维表示给出常数 \(1\)，其标量倍给出所有常数。若 \(f(g)=\ell(\pi(g)v)\)、\(u(g)=m(\sigma(g)w)\)，则张量积表示 \((\pi\otimes\sigma)(g)=\pi(g)\otimes\sigma(g)\) 有矩阵系数
+	\[
+		(fu)(g)=(\ell\otimes m)((\pi\otimes\sigma)(g)(v\otimes w)).
+	\]
+	张量积矩阵的各分量是原来分量的乘积，故它仍是光滑有限维表示。对复共轭向量空间 \(\overline V\)，共轭矩阵 \(\overline{\pi(g)}\) 同样给出光滑表示，其矩阵系数就是原系数的复共轭。因此有限线性组合也对乘法和共轭封闭。平移不变性由\eqref{g1:eq:left-right-matrix-coefficients}及代数直和分解得到。
+\end{proof}
+
+还需要反向的结论：如果在函数空间中找到一个有限维平移不变子空间，其中的函数是否自动成为某个表示的矩阵系数？这个问题正好连接下一节的算子特征空间与本节的代数结果。
+
+\begin{proposition}[有限维正则子空间的矩阵系数]\label{g1:prop:finite-regular-subspace-coefficients}
+	设 \(G\) 为有限维实紧李群，\(E\subseteq C^\infty(G)\) 为有限维复线性子空间，并满足 \(R_gE\subseteq E\) 对每个 \(g\in G\) 成立。则 \(\rho(g)=R_g|_E\) 是 \(E\) 上的有限维复光滑酉表示，内积取积分内积的限制。对每个 \(f\in E\)，有
+	\begin{equation}\label{g1:eq:evaluation-recovers-coefficient}
+		f(g)=\operatorname{ev}_e(\rho(g)f),\qquad
+		\operatorname{ev}_e(u)=u(e).
+	\end{equation}
+	因此 \(E\subseteq\mathcal R(G)\)。
+\end{proposition}
+\begin{proof}
+	\(E=0\) 时结论成立。设 \(\dim_{\mathbb C}E=d>0\)。\cref{g1:prop:regular-representations}已经给出群乘法规律与积分内积不变性。又因 \(R_{g^{-1}}E\subseteq E\)，有 \(R_gE=E\)，所以限制算子可逆。剩下的关键是验证 \(g\mapsto\rho(g)\) 光滑。
+
+	所有点评价 \(\operatorname{ev}_x|_E\)、\(x\in G\)，张成 \(E^*\)。若其线性张成不为整个对偶空间，有限维线性代数便给出非零 \(f\in E\)，被全部这些泛函消去，也就是 \(f(x)=0\) 对全部 \(x\) 成立，矛盾。因此可以从中选出 \(d\) 个组成 \(E^*\) 的基，设对应点为 \(x_1,\ldots,x_d\)。求值映射
+	\[
+		J:E\longrightarrow\mathbb C^d,
+		\qquad J(f)=(f(x_1),\ldots,f(x_d))
+	\]
+	为线性同构。固定 \(f\in E\)，\(J(\rho(g)f)=(f(x_1g),\ldots,f(x_dg))\) 的每个分量都随 \(g\) 光滑，因为 \(f\) 及群乘法光滑。将 \(f\) 依次取为 \(E\) 的基，再乘固定的线性映射 \(J^{-1}\)，就得到 \(\rho(g)\) 的全部矩阵分量光滑。故它确为本节定义意义下的表示。
+
+	最后，\(\operatorname{ev}_e(\rho(g)f)=(R_gf)(e)=f(g)\)。右端由这个有限维表示、向量 \(f\) 及线性泛函 \(\operatorname{ev}_e|_E\) 给出，正是矩阵系数的定义，因此 \(f\in\mathcal R(G)\)。
+\end{proof}
+
+至此，我们已经知道矩阵系数相互正交，也知道有限维平移不变的光滑函数空间会产生矩阵系数。还没有证明这些函数足以逼近任意连续函数。下一节将构造与右平移交换的紧算子：它们的非零特征空间有限维，经过平滑性核验后可用上面的命题，再由逼近单位使这些有限维空间合起来逼近整个函数空间。

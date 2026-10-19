@@ -1,0 +1,309 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 17.3 不变结构与齐性模型
+% 纲要位置：几何学计划纲要.md，第 787 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 紧李群上的归一化不变积分
+% 
+%   以左不变密度及紧性构造积分，并用模函数的紧像证明右不变性；随即用于平均。本卷第19章进一步发展双不变度量，不反向承担此处引理。
+% 
+% * 紧群平均及不变度量
+% * 稳定子表示与不变张量
+% * 球面和射影空间的齐性表达
+% * Grassmann 流形的切空间与维数
+% 
+% 纲要内容结束
+
+\section{不变结构与齐性模型}
+\label{g1:sec:1703}
+
+球面的旋转既移动点，也保持各点的长度和夹角。一般群作用只规定怎样移动点，并不自动保持我们任意选取的度量。若群紧，可以把一个度量的所有变换平均起来；若作用传递，还可以只在一个点选取数据，再用群作用搬到全空间。这两种办法都需要解决选择无关性：平均要有不偏向某个群元素的积分，而沿群搬运要消除稳定子的影响。
+
+\subsection{紧李群上的归一化不变积分}
+\label{g1:subsec:1703:01}
+
+有限群的平均是 \(|K|^{-1}\sum_{k\in K}\)。对圆周群，相应公式应为 \((2\pi)^{-1}\int_0^{2\pi}f(e^{it})\,\mathrm{d}t\)。两者都保持平移：重新选择群中的起点不改变平均值。一般紧李群没有一组整体坐标供我们直接积分，不过\cref{g1:prop:left-invariant-fields}已经说明，左平移能把单位元处的线性数据光滑地搬到全群；这次搬运的对象是一条正密度。
+
+\begin{theorem}[紧群上的不变积分]\label{g1:thm:compact-group-integration}
+	设 \(K\) 是有限维实紧李群，不要求连通。则 \(K\) 上存在唯一左不变的光滑正密度 \(\mu_K\)，满足 \(\int_K\mu_K=1\)。它还满足
+	\[
+		L_a^*\mu_K=\mu_K,\qquad R_a^*\mu_K=\mu_K,\qquad
+		\iota^*\mu_K=\mu_K\quad(a\in K),
+	\]
+	其中 \(\iota(k)=k^{-1}\)。因此对任意连续实值函数 \(f\)，
+	\begin{equation}\label{g1:eq:compact-group-integral-invariance}
+		\begin{aligned}
+			\int_K f(ak)\,\mathrm{d}\mu_K(k)
+			&=\int_K f(ka)\,\mathrm{d}\mu_K(k)\\
+			&=\int_K f(k^{-1})\,\mathrm{d}\mu_K(k)
+			=\int_K f(k)\,\mathrm{d}\mu_K(k).
+		\end{aligned}
+	\end{equation}
+	该积分线性、保持非负性，且 \(f\geq0\)、\(f\not\equiv0\) 时积分严格为正。
+\end{theorem}
+\begin{proof}
+	先在 \(\mathfrak k=\mathrm{T}_eK\) 上任取一个正密度 \(\nu_e\)。它可以由任一正定内积的体积密度给出，见\cref{g1:prop:gram-volume-density}。对 \(v_1,\ldots,v_d\in \mathrm{T}_kK\) 定义
+	\[
+		\nu_k(v_1,\ldots,v_d)
+		=\nu_e\bigl(\mathrm{d}(L_{k^{-1}})_kv_1,\ldots,
+		\mathrm{d}(L_{k^{-1}})_kv_d\bigr),\qquad d=\dim K.
+	\]
+	左平移的微分及其逆随 \(k\) 光滑，所以 \(\nu\) 是光滑正密度。由 \(L_{(ak)^{-1}}\circ L_a=L_{k^{-1}}\)，有 \(L_a^*\nu=\nu\)。任意左不变密度都由单位元处的值唯一决定，而单位元处的密度空间是一维，故任意另一条左不变正密度都是 \(\nu\) 的正数倍。
+
+	紧性使 \(\nu\) 本身具有紧支集。\cref{g1:thm:integral-well-defined}保证 \(c=\int_K\nu\) 有限且严格为正，故 \(\mu_K=\nu/c\) 是唯一满足归一化条件的左不变正密度。现在证明右不变性；它不能由“左、右类似”直接得到，因为我们已经固定了同一条密度。左、右平移交换，故 \(R_a^*\mu_K\) 也是左不变正密度。因而存在唯一正数 \(\Delta(a)\) 使
+	\[
+		R_a^*\mu_K=\Delta(a)\mu_K.
+	\]
+	在单位元的一组固定基上求值可知 \(\Delta\) 光滑。右平移复合及密度拉回的复合律给出 \(\Delta(ab)=\Delta(a)\Delta(b)\)。这是本处采用的\term[mohanshu]{模函数}[modular function]约定：记录右拉回对左不变密度的倍率。
+
+	连续同态 \(\log\Delta:K\to(\mathbb R,+)\) 的像是紧加法子群。若其中有非零实数 \(r\)，它就含有所有整数倍 \(nr\)，与有界性矛盾。因此像只有零，\(\Delta\equiv1\)，得到右不变性。这一步同样适用于不连通的 \(K\)，没有把 \(K\) 换成单位元分支。
+
+	由 \(\iota\circ L_a=R_{a^{-1}}\circ\iota\)，\(\iota^*\mu_K\) 是左不变正密度。\cref{g1:thm:oriented-change-variables}的密度换元公式表明 \(\int_K\iota^*\mu_K=\int_K\mu_K=1\)，故归一化的唯一性给出 \(\iota^*\mu_K=\mu_K\)。对三类微分同胚应用同一换元公式，就得到光滑 \(f\) 的\eqref{g1:eq:compact-group-integral-invariance}。
+
+	连续 \(f\) 的积分也可直接用有限坐标覆盖和单位分解定义：逐片对连续紧支系数作欧氏积分。第14章证明中的坐标换元、共同细化与有限求和仍适用，所以积分和换元公式不变。非负性逐片成立；若 \(f(k_0)>0\)，连续性使它在一个坐标小邻域中有正下界，正密度便使这一块贡献正积分。零维时坐标积分就是点上的求和，论证也成立。
+\end{proof}
+
+以后写 \(\int_K f(k)\,\mathrm{d}\mu_K(k)\)，就是 \(\int_K f\mu_K\)，称为\term[guiyihuabubianjifen]{归一化不变积分}[normalized invariant integral]。这只规定积分的写法，不把密度误当成微分形式；整个构造不需要选定向。
+
+\begin{example}\label{g1:exm:compact-integral-circle-finite}
+	零维紧李群离散且紧，所以是有限群。左平移使各点的密度权重相同，归一化以后每点权重为 \(1/|K|\)，恰好恢复有限平均。对 \(S^1\)，角坐标中的密度 \((2\pi)^{-1}|\mathrm{d}t|\) 在换角度分支时相容，且被旋转保持；它的总积分为一，故就是上述 \(\mu_{S^1}\)。例如 \(m\in\mathbb Z\) 时
+	\[
+		\int_{S^1} z^m\,\mathrm{d}\mu_{S^1}(z)
+		=\frac1{2\pi}\int_0^{2\pi}e^{imt}\,\mathrm{d}t
+		=\begin{cases}1,&m=0,\\0,&m\ne0.\end{cases}
+	\]
+	复值积分按实部、虚部分别积分理解。紧性在一般定理中首先保证有限总量；在加法群 \(\mathbb R\) 上，左不变正密度必为 \(c|\mathrm{d}x|\)，其中 \(c>0\)，总积分无限，无法作同样的归一化。
+\end{example}
+
+\subsection{紧群平均及不变度量}
+\label{g1:subsec:1703:02}
+
+把光滑对象逐个平均，还须证明所得对象仍光滑。平均所用的群变量范围固定且紧，这正好提供了把参数微分移入积分所需的统一控制。以下引理是\subsecref{g1:subsec:1402:01}中紧区间参数积分论证的流形版本。
+
+\begin{lemma}[紧参数积分]\label{g1:lem:compact-parameter-integral}
+	设 \(K\) 是紧无边界光滑流形，\(\mu\) 为光滑密度，\(U\subset\mathbb R^m\) 开，\(F:K\times U\to\mathbb R\) 光滑。则
+	\[
+		I(x)=\int_K F(k,x)\,\mathrm{d}\mu(k)
+	\]
+	在 \(U\) 上光滑，且对每个多重指标 \(\alpha\)，有
+	\[
+		\partial_x^\alpha I(x)
+		=\int_K\partial_x^\alpha F(k,x)\,\mathrm{d}\mu(k).
+	\]
+\end{lemma}
+\begin{proof}
+	给 \(K\) 取有限坐标覆盖和从属光滑单位分解。每一项都是对固定紧支集上的欧氏坐标变量积分，密度系数与单位分解均不依赖 \(x\)。固定 \(x_0\in U\)，取闭包紧且包含于 \(U\) 的小坐标盒 \(B\)。对第 \(j\) 个参数，微积分基本定理给出
+	\[
+		\frac{F(k,x+he_j)-F(k,x)}{h}
+		=\int_0^1\partial_jF(k,x+the_j)\,\mathrm{d}t.
+	\]
+	当 \(x,x+he_j\in B\) 且 \(h\to0\) 时，右侧在紧参数集 \(K\times B\) 上局部一致趋于 \(\partial_jF(k,x)\)，因为该导数连续且在紧集上一致连续。各坐标片的密度系数绝对值可积，所以积分差的绝对值受“一致差上界乘有限积分”控制，差商可以移入积分。相同的一致控制还给出所得一阶导数的连续性。对任意 \(\partial_x^\alpha F\) 重复此论证，得到所有阶导数及其连续性。
+\end{proof}
+
+\begin{theorem}[平均度量]\label{g1:thm:compact-group-average}
+	设紧李群 \(K\) 光滑地左作用于无边界光滑流形 \(M\)，记 \(a_k(p)=k\cdot p\)。给定 \(M\) 上任意光滑黎曼度量 \(g\)，公式
+	\begin{equation}\label{g1:eq:averaged-metric}
+		\overline g_p(v,w)
+		=\int_K g_{k\cdot p}\bigl(\mathrm{d}(a_k)_pv,
+		\mathrm{d}(a_k)_pw\bigr)\,\mathrm{d}\mu_K(k)
+	\end{equation}
+	定义一个 \(K\) 不变的光滑黎曼度量，即 \(a_h^*\overline g=\overline g\) 对每个 \(h\in K\) 成立。因此这样的作用总有不变黎曼度量，且不要求 \(M\) 紧。
+\end{theorem}
+\begin{proof}
+	固定 \(p\) 时，各项都已拉回到 \(\mathrm{T}_pM\) 上的双线性型，故可以逐分量积分，而不是把不同切空间中的向量直接相加。双线性和对称性由积分的线性得到。若 \(v\ne0\)，微分同胚 \(a_k\) 的微分可逆，故 \(g_{k\cdot p}(\mathrm{d}a_kv,\mathrm{d}a_kv)>0\)。被积函数连续且处处正，\cref{g1:thm:compact-group-integration}给出 \(\overline g_p(v,v)>0\)。
+
+	在 \(M\) 的一张坐标图内，把 \(v,w\) 依次取为坐标向量场。作用映射的微分随 \((k,p)\) 光滑，所得标量被积函数在 \(K\times U\) 上联合光滑。\cref{g1:lem:compact-parameter-integral}说明 \(\overline g\) 的每个局部分量光滑。最后，由 \(a_k\circ a_h=a_{kh}\) 得
+	\[
+		a_h^*\overline g
+		=\int_K a_h^*a_k^*g\,\mathrm{d}\mu_K(k)
+		=\int_K a_{kh}^*g\,\mathrm{d}\mu_K(k)
+		=\overline g,
+	\]
+	最后一步用右不变积分。任意初始 \(g\) 的存在由\cref{g1:thm:bundle-metric-existence}用于 \(\mathrm{T}M\) 保证。
+\end{proof}
+
+同样可以平均协变张量、函数和微分形式，因为它们拉回后都属于固定纤维中的向量空间。对一般张量，平均未必保留非线性约束：例如一个非零向量场的平均可能为零，一个非退化二形式的平均也可能退化。度量的正定性能够保留，原因是正定双线性型构成凸集，而非“平均”自动保留所有几何性质。
+
+\begin{example}\label{g1:exm:rotation-average-metric}
+	在 \(\mathbb R^2\) 上取常系数度量 \(g=a\,\mathrm{d}x^2+2b\,\mathrm{d}x\,\mathrm{d}y+c\,\mathrm{d}y^2\)，其中 \(a>0\)、\(ac-b^2>0\)。记其矩阵为 \(Q\)，平面旋转群的平均矩阵为
+	\[
+		\frac1{2\pi}\int_0^{2\pi}R_t^{\mathsf T}QR_t\,\mathrm{d}t
+		=\frac{a+c}{2}I.
+	\]
+	这是因为 \(\cos^2t\)、\(\sin^2t\) 的平均均为 \(1/2\)，\(\sin t\cos t\) 的平均为零。平均消除了原来的优先方向，但保留了正定性。这里的底空间 \(\mathbb R^2\) 非紧，并不妨碍对紧的旋转参数积分。
+\end{example}
+
+\subsection{稳定子表示与不变张量}
+\label{g1:subsec:1703:03}
+
+在齐性空间 \(G/H\) 上，任何点都可写成 \(gH\)。若在基点 \(o=eH\) 选定一个内积，似乎只要用 \(g\) 把它搬到 \(gH\) 即可；但是同一点也等于 \(ghH\)。这两次搬运相差 \(h\) 在 \(\mathrm{T}_o(G/H)\) 上的作用，因此内积必须被整个稳定子保持。\cref{g1:prop:homogeneous-tangent-isotropy}已把这一作用写成
+\[
+	\mathrm{T}_o(G/H)\simeq\mathfrak g/\mathfrak h,\qquad
+	\rho(h)(X+\mathfrak h)=\operatorname{Ad}_hX+\mathfrak h.
+\]
+此处 \(H\) 是闭李子群，可以不连通；只检查 \(\mathfrak h\) 的无穷小作用未必控制它的其余分支。
+
+\begin{proposition}[不变张量的基点数据]\label{g1:prop:invariant-tensor-isotropy}
+	设 \(G\) 为有限维实李群，\(H\subset G\) 为闭子群，\(o=eH\)，并给 \(G/H\) 取\cref{g1:thm:homogeneous-space}的光滑结构。对任意非负整数 \(r,s\)，取基点值给出如下两个实向量空间的线性同构：\(G/H\) 上的光滑 \(G\) 不变 \((r,s)\) 型张量场，以及 \(T^r_s(\mathrm{T}_o(G/H))\) 中被稳定子表示 \(\rho(H)\) 固定的张量。
+
+	特别地，\(G\) 不变黎曼度量恰好对应 \(\mathfrak g/\mathfrak h\) 上的 \(\operatorname{Ad}(H)\) 不变正定内积。
+\end{proposition}
+\begin{proof}
+	记 \(\ell_g(xH)=gxH\)。若 \(A:V\to W\) 是线性同构，张量的搬运在向量因子上用 \(A\)，在对偶因子上用 \((A^{-1})^*\)；记这个同构为 \(A_\#\)。它保持张量积、收缩和复合。对协变二阶张量，公式具体为 \((A_\#b)(v,w)=b(A^{-1}v,A^{-1}w)\)。
+
+	若 \(T\) 是不变张量场，则 \(T_{gH}=(\mathrm{d}\ell_g)_\#T_o\)，所以它由 \(T_o\) 唯一决定。令 \(g=h\in H\)，因 \(hH=o\)，便知 \(T_o\) 被 \(\rho(h)=\mathrm{d}(\ell_h)_o\) 固定。反过来，给定这样的固定张量 \(t\)，规定
+	\[
+		T_{gH}=(\mathrm{d}(\ell_g)_o)_\#t.
+	\]
+	若改用代表 \(gh\)，则 \(\ell_{gh}=\ell_g\circ\ell_h\)，所得值为 \((\mathrm{d}\ell_g)_\#\rho(h)_\#t=(\mathrm{d}\ell_g)_\#t\)，因此良定义。
+
+	还需证明它光滑。商投影 \(q:G\to G/H\) 在每点附近有光滑局部截面 \(s:U\to G\)，这是\cref{g1:thm:homogeneous-space}的局部乘积坐标所给出的结论。在 \(U\) 上，刚才的定义写成 \(T_x=(\mathrm{d}(\ell_{s(x)})_o)_\#t\)。作用映射及其微分光滑，逆微分也光滑，所以这些局部分量光滑。群乘法直接给出 \((\mathrm{d}\ell_a)_\#T_x=T_{ax}\)，即不变性。两种构造互逆，且线性。最后，同构搬运保持对称性和正定性，故正定内积恰好给出不变黎曼度量。
+\end{proof}
+
+\begin{corollary}[紧稳定子的度量]\label{g1:cor:compact-isotropy-metric}
+	设 \(G\) 为有限维实李群，\(H\subset G\) 为紧子群，则 \(G/H\) 存在光滑 \(G\) 不变黎曼度量。这里不要求 \(G\) 紧。
+\end{corollary}
+\begin{proof}
+	紧子群在 Hausdorff 的 \(G\) 中闭，故商流形和稳定子表示都有定义。在 \(\mathfrak g/\mathfrak h\) 上任取正定内积 \(b\)，令
+	\[
+		\overline b(u,v)
+		=\int_H b\bigl(\rho(h)u,\rho(h)v\bigr)\,\mathrm{d}\mu_H(h).
+	\]
+	与\cref{g1:thm:compact-group-average}相同，线性、正性和右不变积分保证它为 \(H\) 不变正定内积。前一命题把它唯一延拓到 \(G/H\)。
+\end{proof}
+
+紧性在这里是一个充分条件。比如 \(G=\mathbb R^n\) 平移作用于自身，稳定子只有单位元，任何常系数正定内积都给出不变度量，尽管 \(G\) 非紧。相反，\(\mathbb R_{>0}\) 以伸缩作用于 \(\mathbb R\) 时不可能有不变黎曼度量：原点被固定，若其内积值为 \(b>0\)，伸缩 \(x\mapsto2x\) 的不变性便要求 \(4b=b\)。这说明在固定点处，稳定子的线性作用已经可能阻止不变度量的存在。
+
+\subsection{球面和射影空间的齐性表达}
+\label{g1:subsec:1703:04}
+
+以下例子把商空间写法变成切空间和度量的具体计算。\cref{g1:prop:matrix-classical-lie-groups}已经构造了正交群、特殊正交群和酉群的李群结构。它们还是紧群：矩阵方程定义闭集，而每一列长度为一使所有分量有界。稳定子的块对角写法则来自“保持指定向量”或“保持指定子空间”这两个不同条件。
+
+\begin{proposition}[球面模型]\label{g1:prop:sphere-homogeneous-model}
+	对 \(n\geq1\)，映射
+	\[
+		\operatorname{SO}(n+1)/\operatorname{SO}(n)\longrightarrow S^n,
+		\qquad AH\longmapsto Ae_0,
+	\]
+	是与 \(\operatorname{SO}(n+1)\) 作用相容的微分同胚。此处 \(\operatorname{SO}(n)\) 嵌入为 \(\operatorname{diag}(1,B)\)。在基点 \(e_0\)，商切空间通过
+	\[
+		\begin{pmatrix}0&-v^{\mathsf T}\\v&B\end{pmatrix}
+		+\mathfrak{so}(n)\longmapsto v\in\mathbb R^n
+	\]
+	识别为 \(\mathrm{T}_{e_0}S^n=e_0^\perp\)，稳定子作用为 \(v\mapsto Bv\)。其标准内积延拓得到单位球面的诱导度量。
+\end{proposition}
+\begin{proof}
+	任意单位向量 \(p\) 都能补成正交单位基。因 \(n\geq1\)，必要时反转另一列，可把该基的行列式调为 \(1\) 而保持第一列为 \(p\)，故作用传递。固定 \(e_0\) 的正交矩阵必保持 \(e_0^\perp\)，因此恰为 \(\operatorname{diag}(1,B)\)、\(B\in\operatorname{SO}(n)\)。矩阵作用在球面坐标中光滑，由\cref{g1:prop:transitive-action-model}得到所述微分同胚。
+
+	轨道映射 \(A\mapsto Ae_0\) 的单位元微分是 \(X\mapsto Xe_0\)。反对称矩阵按上述块式写出后，微分取出 \(v\)，核正是右下角的 \(\mathfrak{so}(n)\)。稳定子在 \(e_0^\perp\) 上的作用是其右下角矩阵，因而保持标准内积。所有 \(A\in\operatorname{SO}(n+1)\) 都保持环境欧氏内积，所以球面诱导度量正是由基点内积延拓得到的那个不变度量。
+\end{proof}
+
+当 \(n=1\) 时，\(\operatorname{SO}(1)=\{1\}\)，上式就是 \(S^1\simeq\operatorname{SO}(2)\)。当 \(n=0\) 时，\(S^0\) 有两个点，\(\operatorname{SO}(1)\) 不能传递作用，不能原样套用该式；改用 \(\operatorname{O}(1)\) 便有 \(S^0\simeq\operatorname{O}(1)/\{1\}\)。
+
+\ProseParagraphBreak
+
+实射影空间的光滑图已在\cref{g1:exm:projective-smooth-atlas}中建立。复射影空间 \(\mathbb{CP}^n\) 同样由 \(\mathbb C^{n+1}\) 中的一维复子空间组成；这里把它视为实流形。给它单位球面按复相位 \(z\sim\lambda z\)、\(|\lambda|=1\) 取商的拓扑，在 \(z_i\ne0\) 处取坐标 \((z_j/z_i)_{j\ne i}\in\mathbb C^n\)。坐标逆把 \(1\) 插入第 \(i\) 位，再归一化到球面并取商，因而连续。换图公式仍是各分量除以一个非零分量，是实光滑映射；\(\mathbb C^n\simeq\mathbb R^{2n}\) 给出实维数 \(2n\)。映射 \([z]\mapsto zz^*/(z^*z)\) 是到 Hermitian 矩阵空间的连续单射，不同投影可用不交开球分离，故商 Hausdorff；有限张坐标图保证第二可数。于是这些图确实给出一个紧光滑流形。
+
+\begin{proposition}[射影空间模型]\label{g1:prop:projective-homogeneous-models}
+	对 \(n\geq0\)，有等变微分同胚
+	\begin{align*}
+		\mathbb{RP}^n&\simeq\operatorname{O}(n+1)/(\operatorname{O}(1)\times\operatorname{O}(n)),\\
+		\mathbb{CP}^n&\simeq\operatorname{U}(n+1)/(\operatorname{U}(1)\times\operatorname{U}(n)).
+	\end{align*}
+	分母按相应的块对角矩阵嵌入，\(\operatorname{O}(0)\)、\(\operatorname{U}(0)\) 均理解为平凡群。统一记 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)。在一条直线 \(L\) 处，有自然识别
+	\[
+		\mathrm{T}_L\mathbb{FP}^n\simeq\operatorname{Hom}_{\mathbb F}(L,\mathbb F^{n+1}/L)
+		\simeq\operatorname{Hom}_{\mathbb F}(L,L^\perp),
+	\]
+	第二个识别使用标准内积。对 \(L=\mathbb Fe_0\)，将 \(A\) 识别为 \(v=Ae_0\)，稳定子 \(\operatorname{diag}(\lambda,B)\) 作用为 \(v\mapsto Bv\lambda^{-1}\)。实内积 \(\operatorname{Re}(v^*w)\) 因而给出射影空间上的不变黎曼度量。
+\end{proposition}
+\begin{proof}
+	正交或酉变换可以把任意单位向量送到另一单位向量，所以在直线上传递。固定 \(\mathbb Fe_0\) 的变换也保持其正交补，恰为所列块对角矩阵。矩阵作用在射影图中由线性分量相除写出，分母在选定图域非零，故光滑。由\cref{g1:prop:transitive-action-model}，两种集合上的轨道对应都提升为所述微分同胚。
+
+	先在 \(L\) 的某个补空间 \(Q\) 中描述邻近直线。凡投影到 \(L\) 非零的直线都唯一写成 \(\{w+A(w):w\in L\}\)，其中 \(A\in\operatorname{Hom}_{\mathbb F}(L,Q)\)。这正是以 \(L\) 为坐标原点的射影图。因此过 \(L\) 的曲线 \(A(t)\)、\(A(0)=0\) 的切向量为 \(A'(0)\)。把 \(A'(0)w\) 取模 \(L\)，便消除了补空间选择，得到第一个自然识别；取 \(Q=L^\perp\) 得第二个识别。
+
+	稳定子将图中向量 \(w+A(w)\) 送到 \(\lambda w+B A(w)\)，改以 \(w'=\lambda w\) 作参数，新的线性映射为 \(B A\lambda^{-1}\)。于是基点切向量变为 \(Bv\lambda^{-1}\)。因为 \(B\) 正交或酉且 \(|\lambda|=1\)，它保持 \(\operatorname{Re}(v^*w)\)。\cref{g1:prop:invariant-tensor-isotropy}给出不变度量。
+\end{proof}
+
+这个度量还能直接算到坐标中。取射影图 \([1:z]\)，\(z\in\mathbb F^n\)，以 \(u,v\in\mathbb F^n\) 表示坐标切向量，令 \(r=1+z^*z\)。曲线 \([1:z+tu]\) 的代表向量为 \(w(t)=(1,z+tu)\)，速度为 \((0,u)\)。先把速度投影到 \(w(0)^\perp\)，再除以 \(|w(0)|\)，便得到定义在单位线向量上的切映射。故
+\begin{equation}\label{g1:eq:projective-invariant-metric}
+	g_z(u,v)=\operatorname{Re}\frac{r\,u^*v-(u^*z)(z^*v)}{r^2}.
+\end{equation}
+分母中的两次归一化分别来自正交投影和线向量的长度。由 Cauchy--Schwarz 不等式，分子在 \(u=v\ne0\) 时至少为 \(|u|^2>0\)，所以公式也直接显示正定性。实情形的 \(S^n\to\mathbb{RP}^n\) 是局部等距映射：单位代表 \(p\) 处的速度 \(u\perp p\) 对应 \(A(p)=u\)，内积没有改变。复情形还要去掉相位方向 \(ip\)，因此不能把奇维球面上的所有切向量直接当作射影切向量。
+
+\subsection{Grassmann 流形的切空间与维数}
+\label{g1:subsec:1703:05}
+
+\cref{g1:def:grassmannian}已经把 \(\operatorname{Gr}(k,V)\) 定义为 \(V\) 中所有 \(k\) 维线性子空间的集合，\subsecref{g1:subsec:0206:02}还用矩阵的非零子式给出了局部参数。现在要说明这些参数怎样组成光滑流形，以及一个子空间的“无穷小移动”是什么。我们继续允许 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，并把 \(k=0\) 的情形补入约定：它只有零子空间这一个点。
+
+\begin{theorem}[Grassmann 流形]\label{g1:thm:grassmann-homogeneous-model}
+	设 \(V=\mathbb F^n\)，\(0\leq k\leq n\)，赋予标准实内积或 Hermitian 内积。则 \(\operatorname{Gr}(k,V)\) 有自然的紧光滑流形结构，并有等变微分同胚
+	\begin{align*}
+		\operatorname{Gr}(k,\mathbb R^n)&\simeq\operatorname{O}(n)/(\operatorname{O}(k)\times\operatorname{O}(n-k)),\\
+		\operatorname{Gr}(k,\mathbb C^n)&\simeq\operatorname{U}(n)/(\operatorname{U}(k)\times\operatorname{U}(n-k)).
+	\end{align*}
+	它们的实维数分别为 \(k(n-k)\)、\(2k(n-k)\)。在任意 \(W\in\operatorname{Gr}(k,V)\) 处，有自然同构
+	\begin{equation}\label{g1:eq:grassmann-tangent}
+		\mathrm{T}_W\operatorname{Gr}(k,V)
+		\simeq\operatorname{Hom}_{\mathbb F}(W,V/W).
+	\end{equation}
+	复情形右边的复向量空间在此先作为实向量空间理解；其复维数为 \(k(n-k)\)。
+\end{theorem}
+\begin{proof}
+	记 \(E=\mathbb F^k\oplus0\)、\(Q=0\oplus\mathbb F^{n-k}\)。给任意 \(k\) 维子空间选正交单位基并补成 \(V\) 的正交单位基，可见正交群或酉群在所有这样的子空间上传递。保持 \(E\) 的等距线性映射也保持 \(Q=E^\perp\)，稳定子恰好为块对角群 \(H\)。它是闭子群，所以\cref{g1:thm:homogeneous-space}先在 \(G/H\) 上给出光滑结构。集合双射 \(gH\mapsto gE\) 将这个结构赋予 Grassmann 空间；\(G\) 紧，故它也紧。
+
+	为了辨认这套结构，考虑所有投影到 \(E\) 为同构的子空间。它们恰好是线性映射 \(A:E\to Q\) 的图：
+	\begin{equation}\label{g1:eq:grassmann-graph-chart}
+		W_A=\{x+Ax:x\in E\}.
+	\end{equation}
+	存在性是先用到 \(E\) 的投影把 \(W\) 参数化，唯一性来自每个 \(x\) 只有一个相应图向量。若 \(g\in G\) 的前 \(k\) 列按 \(E\oplus Q\) 写成 \(\binom{a}{c}\)，则此投影可逆恰好等价于 \(a\) 可逆，此时 \(A=ca^{-1}\)。该条件在 \(G\) 中开，且对右乘 \(H\) 不变；商投影是开映射，所以这些子空间组成 \(G/H\) 的开集。用商的光滑局部截面代入 \(ca^{-1}\)，可知图坐标光滑。
+
+	反向，对块矩阵 \(\left(\begin{smallmatrix}I&0\\A&I\end{smallmatrix}\right)\) 的列依次作正交归一化，得到 \(g(A)\in G\)，其前 \(k\) 列仍张成 \(W_A\)。这个矩阵处处可逆，故每一步减去前面投影后的向量不为零；各步只用光滑加减、内积与正数平方根，因此 \(g(A)\) 光滑依赖 \(A\)。于是 \(A\mapsto g(A)H\) 光滑，确为上述坐标的逆。更换 \(E\oplus Q\) 的坐标后，若同一个向量的分量按固定可逆块矩阵 \(\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)\) 变换，则
+	\begin{equation}\label{g1:eq:grassmann-chart-transition}
+		A'=(c+dA)(a+bA)^{-1}.
+	\end{equation}
+	交叠条件恰是 \(a+bA\) 可逆，因此转换光滑；复情形还由复有理函数给出。各坐标 \(k\) 平面对应的这类图覆盖全空间，因为任意秩为 \(k\) 的基矩阵总有一个非零 \(k\) 阶子式。这也恢复了第2章的矩阵参数，说明上述结构与那些图坐标相容。图空间 \(\operatorname{Hom}_{\mathbb F}(E,Q)\) 给出所述维数。
+
+	最后在任意 \(W\) 处选补空间并取以 \(W\) 为原点的图坐标。若 \(W(t)\) 是过 \(W\) 的光滑曲线，对 \(w\in W\) 取光滑向量曲线 \(w(t)\in W(t)\)、\(w(0)=w\)，规定其切向量对应的映射为
+	\[
+		w\longmapsto w'(0)+W\in V/W.
+	\]
+	这与向量曲线的选择无关：两种选择之差 \(v(t)\in W(t)\) 满足 \(v(0)=0\)，用 \(W(t)\) 的一组光滑基写为 \(\sum_i b_i(t)e_i(t)\)，有 \(b_i(0)=0\)，故 \(v'(0)=\sum_i b_i'(0)e_i(0)\in W\)。若图坐标为 \(A(t)\)、\(A(0)=0\)，可取 \(w(t)=w+A(t)w\)，所得映射就是 \(w\mapsto A'(0)w+W\)。因此它线性、仅依赖切向量，而且给出同构；模 \(W\) 的描述同时表明不依赖补空间。\(k=0\) 或 \(k=n\) 时只有一个子空间，图空间及切空间均为零，结论仍成立。
+\end{proof}
+
+\input{Figures/Chapter17-GrassmannGraph}
+
+\cref{g1:fig:grassmann-graph}表示图坐标的几何意义。我们固定横向的 \(E\)，让子空间 \(W_A\) 倾斜；坐标 \(A\) 记录每个 \(x\in E\) 需要补上的竖向分量。图中只有一个横向和一个竖向维度，但同一构造适用于任意 \(k,n\)。切向量记录的是斜率映射的变化率，而非对子空间内的每个向量任意指定一个独立移动。
+
+\begin{proposition}[Grassmann 流形的度量]\label{g1:prop:grassmann-invariant-metric}
+	在\cref{g1:thm:grassmann-homogeneous-model}的实、复 Grassmann 流形上，用正交投影将 \(V/W\) 识别为 \(W^\perp\)。则
+	\begin{equation}\label{g1:eq:grassmann-hilbert-schmidt}
+		g_W(S,T)=\operatorname{Re}\operatorname{tr}(S^*T),
+		\qquad S,T\in\operatorname{Hom}_{\mathbb F}(W,W^\perp),
+	\end{equation}
+	定义光滑不变黎曼度量。稳定子 \(\operatorname{diag}(C,D)\) 的切表示为 \(T\mapsto DTC^{-1}\)。在正交分解 \(V=E\oplus Q\) 的图坐标 \(A:E\to Q\) 中，对坐标切向量 \(U_1,U_2:E\to Q\)，该度量为
+	\begin{equation}\label{g1:eq:grassmann-chart-metric}
+		g_A(U_1,U_2)=\operatorname{Re}\operatorname{tr}
+		\bigl((I+A^*A)^{-1}U_1^*(I+AA^*)^{-1}U_2\bigr).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	稳定子将 \(x+Tx\) 送到 \(Cx+DTx\)，用 \(x'=Cx\) 改写，图映射变为 \(DTC^{-1}\)，在 \(T=0\) 处也就是所述切表示。由于 \(C,D\) 正交或酉，
+	\[
+		\operatorname{tr}\bigl((DSC^{-1})^*(DTC^{-1})\bigr)
+		=\operatorname{tr}(CS^*TC^{-1})=\operatorname{tr}(S^*T).
+	\]
+	在正交单位基中，\(\operatorname{tr}(T^*T)\) 是 \(T\) 的所有矩阵分量的模平方之和，故为正定实内积。这是线性映射空间上的平方和内积。\cref{g1:prop:invariant-tensor-isotropy}把它延拓为光滑不变度量；等距变换把正交补送到正交补，所以延拓后的每点公式仍为\eqref{g1:eq:grassmann-hilbert-schmidt}。
+
+	为计算图坐标表达，设 \(S_0=I+A^*A\)、\(T_0=I+AA^*\)。图映射 \(x\mapsto(x,Ax)\) 将 \(W_A\) 的内积拉回为 \(x^*S_0y\)。坐标曲线 \(A+tU\) 中，图向量 \((x,(A+tU)x)\) 的速度为 \((0,Ux)\)。而
+	\[
+		W_A^\perp=\{(-A^*b,b):b\in Q\}.
+	\]
+	若 \((0,Ux)\) 的正交投影为 \((-A^*b,b)\)，与任意 \((-A^*c,c)\) 作内积便得 \(c^*T_0b=c^*Ux\)，故 \(b=T_0^{-1}Ux\)。因此两个坐标速度 \(U_1,U_2\) 在输出空间的内积矩阵为 \(U_1^*T_0^{-1}U_2\)。输入空间的度量矩阵是 \(S_0\)，要取正交单位输入基的平方和，就需取 \(\operatorname{tr}(S_0^{-1}U_1^*T_0^{-1}U_2)\)；这可以把一组满足 \(B^*S_0B=I\) 的输入基代入后，用 \(BB^*=S_0^{-1}\) 直接核对。取实部即得\eqref{g1:eq:grassmann-chart-metric}。两个正定矩阵始终可逆，公式中的各项光滑，亦可直接看出整个图上的光滑性。
+\end{proof}
+
+当 \(k=1\) 时，Grassmann 流形就是射影空间，\eqref{g1:eq:grassmann-chart-metric}化为\eqref{g1:eq:projective-invariant-metric}：恒等式 \((I+zz^*)^{-1}=I-zz^*/(1+z^*z)\) 可直接相乘验证。更一般地，\(\operatorname{Gr}(2,\mathbb R^4)\) 的一张图由一个 \(2\times2\) 实矩阵的四个分量参数化，实维数为四；\(\operatorname{Gr}(2,\mathbb C^4)\) 使用四个复参数，实维数为八。这里的四维或八维指的是“子空间组成的参数空间”的维数，不能与每个被参数化子空间本身的维数二混为一谈。
+
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

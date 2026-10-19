@@ -1,0 +1,301 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 12.4 张量场与几何结构
+% 纲要位置：几何学计划纲要.md，第 594 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 度量、微分形式和场的光滑性
+% * 自然丛运算与拉回
+% * 结构群约化的模型及其存在问题
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{张量场与几何结构}
+\label{g1:sec:1204}
+
+前面已经分别建立了两种构造：过渡函数把一族向量空间粘成向量丛，单位分解把相容的局部要求组织成整体截面。现在把它们用于几何。度量给每个切空间一个内积，微分形式给每个切空间一个交替的多线性函数；它们都不是一串独立指定的矩阵，而是按换标架规律相容、并且随基点光滑变化的对象。哪些变化规律来自代数运算，哪些几何条件可以通过粘合保持，是本节要分开的两个问题。
+
+\subsection{度量、微分形式和场的光滑性}
+\label{g1:subsec:1204:01}
+
+先说明怎样把\secref{g1:sec:1202}的逐点运算变成一个光滑空间。设 \(E,F\) 是同一光滑流形 \(M\) 上的有限秩实光滑向量丛。直和已经构造；对偶、张量积和外幂也可以在每个纤维中进行，但要确认它们的换标架仍满足余循环条件。
+
+\begin{proposition}[由纤维运算构造向量丛]
+	\label{g1:prop:tensor-bundle-constructions}
+	设 \(M\) 为 Hausdorff、第二可数光滑流形，可带边界，\(E,F\to M\) 为有限秩实光滑向量丛。纤维分别为 \(E_p^*\)、\(E_p\otimes F_p\)、\(\operatorname{Hom}(E_p,F_p)\)、\(\operatorname{Sym}^kE_p\)、\(\Lambda^kE_p\) 的不交并，都有与局部标架相容的自然光滑向量丛结构。逐点的求值、收缩、对称化、楔积以及线性映射的复合，均给出相应光滑丛映射。
+\end{proposition}
+
+\begin{proof}
+	取共同细化的平凡化覆盖，设 \(E,F\) 的向量分量过渡分别为 \(v_i=g_{ij}v_j\)、\(w_i=h_{ij}w_j\)。对偶、张量积和同态的分量过渡依次为
+	\[
+		\alpha_i=g_{ij}^{-\mathsf T}\alpha_j,\qquad
+		z_i=(g_{ij}\otimes h_{ij})z_j,\qquad
+		A_i=h_{ij}A_jg_{ij}^{-1}.
+	\]
+	对称幂和外幂使用由 \(g_{ij}\) 诱导的 \(\operatorname{Sym}^kg_{ij}\)、\(\Lambda^kg_{ij}\)。这些矩阵元由原矩阵元的多项式与可逆矩阵的逆组成，故光滑。每一种代数构造保持恒等映射与复合，因此新的过渡函数也满足余循环条件。例如 \((g_{ij}\otimes h_{ij})(g_{jk}\otimes h_{jk})=g_{ik}\otimes h_{ik}\)。\cref{g1:thm:bundle-cocycle-gluing}便给出相应向量丛。
+
+	如果改变原平凡化，新、旧标架之间的同构也诱导上述各空间之间的同构，所以纤维上的恒等识别给出同一个光滑结构。在这些图中，求值与收缩是坐标分量的有限次乘法和求和，对称化是有限次线性组合，楔积是带符号的有限次乘法和求和，复合是矩阵乘法，故都光滑。它们的定义不依赖基，因而在重叠图中相容，确实成为整体丛映射。
+\end{proof}
+
+\begin{definition}
+	\label{g1:def:smooth-tensor-field}
+	设 \(M\) 为光滑流形，可带边界，\(r,s\geq0\)。记
+	\[
+		T^r_sM=(\mathrm{T}M)^{\otimes r}\otimes(\mathrm{T}^*M)^{\otimes s}.
+	\]
+	它的光滑截面称为 \((r,s)\) 型\term[zhangliangchang]{张量场}[tensor field]。零次张量积约定为平凡实线丛，因此 \((0,0)\) 型张量场就是光滑实函数。\(\mathrm{T}M\) 的光滑截面称为\term[xiangliangchang]{向量场}[vector field]，其空间记为 \(\mathfrak X(M)\)；\(\Lambda^k\mathrm{T}^*M\) 的光滑截面称为光滑 \(k\) 次\term[weifenxingshi]{微分形式}[differential form]，其空间记为 \(\Omega^k(M)\)。\symidx{\(T^r_sM\)：张量丛}\symidx{\(\Omega^k(M)\)：光滑微分形式空间}
+\end{definition}
+
+设局部切标架为 \(e_1,\ldots,e_n\)，对偶标架为 \(\varepsilon^1,\ldots,\varepsilon^n\)。一个张量场写成
+\[
+	T=\sum T^{i_1\cdots i_r}_{j_1\cdots j_s}\,
+	e_{i_1}\otimes\cdots\otimes e_{i_r}\otimes
+	\varepsilon^{j_1}\otimes\cdots\otimes\varepsilon^{j_s}.
+\]
+它光滑当且仅当所有分量函数光滑，这是向量丛截面的局部判据。\cref{g1:prop:tensor-component-change}说明换标架后分量乘上相应过渡矩阵及其逆，因而光滑性不依赖选择。这些分量不是各自独立的几何不变量，只有连同换标架规律理解，才能恢复同一个 \(T\)。
+
+\ProseParagraphBreak
+
+张量场还可以通过它如何作用于其他场来识别。一个 \((r,s)\) 型张量在每一点输入 \(r\) 个协变向量和 \(s\) 个切向量；逐点求值得到光滑函数。这里的多线性不仅是对实数线性，而且是对光滑函数线性。例如对一个协变二阶张量，\(T(fX,Y)=fT(X,Y)\)，不应额外出现 \(f\) 的导数。
+
+\begin{proposition}[张量场的多线性判据]
+	\label{g1:prop:tensor-field-multilinearity}
+	在 Hausdorff、第二可数光滑流形 \(M\)（可带边界）上，光滑 \((r,s)\) 型张量场与 \(C^\infty(M)\) 多线性映射
+	\[
+		\underbrace{\Omega^1(M)\times\cdots\times\Omega^1(M)}_{r\text{ 个}}
+		\times\underbrace{\mathfrak X(M)\times\cdots\times\mathfrak X(M)}_{s\text{ 个}}
+		\longrightarrow C^\infty(M)
+	\]
+	一一对应，对应为逐点求值。当 \(r=s=0\) 时，右端只表示指定一个光滑函数。
+\end{proposition}
+
+\begin{proof}
+	张量场给出的映射具有所述多线性，坐标公式还说明输出光滑。反向设给定多线性映射 \(A\)，首先证明它在点 \(p\) 的值只看各输入场在 \(p\) 的取值。
+
+	固定其他输入，若某个输入场 \(Z\) 在 \(p\) 的邻域内恒为零，取一个在 \(p\) 附近为一、支集包含于该邻域的光滑截断函数 \(\chi\)，其存在由\cref{g1:cor:smooth-cutoff-closed}保证。于是 \(\chi Z=0\)，由多线性，\(\chi A(\ldots,Z,\ldots)=0\)，故输出在 \(p\) 为零。因此局部相同的输入可互相替换。
+
+	在 \(p\) 附近取一个局部标架，将它乘以支集包含于图域且在更小邻域为一的截断函数，再在图域外延零，就得到在较小邻域等于该标架的整体场；对偶标架同样处理。任一输入场 \(Z\) 在该邻域可展开为 \(\sum z^i e_i\)。再用一个支集包含于此邻域的截断函数把系数延成整体光滑函数，由刚才的局部性与 \(C^\infty(M)\) 多线性，在点 \(p\) 得
+	\[
+		A(\ldots,Z,\ldots)(p)=\sum_i z^i(p)A(\ldots,e_i,\ldots)(p),
+	\]
+	其中右端的 \(e_i\) 表示已经延拓的场。对每个输入重复，便证明输出只依赖于各输入在 \(p\) 的值，并给出一个有限维多线性函数，即张量 \(T_p\)。这里允许把任意点处向量作为输入，是因为局部常系数标架组合也能用同样方法延拓。
+
+	在固定的较小图域内，\(T\) 的每个分量都是 \(A\) 作用于若干固定整体标架场后得到的光滑函数，故 \(T\) 光滑。它的逐点求值正是 \(A\)，且各点全部输入值都可由整体场实现，所以 \(T\) 唯一。
+\end{proof}
+
+这个判据也帮助排除看起来像张量的表达。在坐标区间上，令 \(B(f\partial_x,g\partial_x)=f g'\)。它对实数双线性，却有 \(B(X,hY)=hB(X,Y)+X(h)g\)，一般不对光滑函数线性，所以不是二阶张量。额外出现的导数表明它还在观察输入场在附近如何变化，而不只观察一个点的值。
+
+\begin{definition}
+	\label{g1:def:riemannian-metric-tensor}
+	光滑流形 \(M\) 上的\term[limanduliang]{黎曼度量}[Riemannian metric]是一个光滑截面 \(g\in\Gamma(\operatorname{Sym}^2\mathrm{T}^*M)\)，使每个 \(g_p\) 都是 \(\mathrm{T}_pM\) 上的正定内积。这里将对称张量与对称多线性形式作\secref{g1:sec:1202}中的自然识别。
+\end{definition}
+
+\cref{g1:thm:bundle-metric-existence}应用于 \(\mathrm{T}M\)，保证每个本书意义下的光滑流形都有黎曼度量。度量输入同一点的两个向量，不是直接输入两个流形点；由它构造曲线长度与距离，还需另作定义。在标架中记 \(G=(g(e_i,e_j))\)，换标架 \(e'=eA\) 时
+\[
+	G'=A^{\mathsf T}GA.
+\]
+因此一个正定矩阵函数只有按这个规律在交叠处相容，才表示整体度量。
+
+\begin{proposition}[度量的对偶识别]
+	\label{g1:prop:metric-duality-smooth}
+	设 \(g\) 为光滑流形 \(M\)（可带边界）上的黎曼度量。映射
+	\[
+		g^\flat:\mathrm{T}M\longrightarrow \mathrm{T}^*M,\qquad
+		v\longmapsto g(v,\cdot)
+	\]
+	是光滑丛同构，记其逆为 \(g^\sharp\)。对任意 \(f\in C^\infty(M)\)，向量场 \(\operatorname{grad}_g f=g^\sharp(\mathrm{d}f)\) 是唯一满足 \(g(\operatorname{grad}_g f,X)=\mathrm{d}f(X)\) 的光滑向量场。
+\end{proposition}
+
+\begin{proof}
+	在局部标架中，\(g^\flat\) 的矩阵就是 \(G\)。正定性使 \(G\) 可逆，逆矩阵各项由余子式除以非零行列式表示，所以 \(G^{-1}\) 光滑。这给出光滑的逐纤维逆，且求值定义保证各图中的构造相容。令 \(\operatorname{grad}_g f=g^\sharp(\mathrm{d}f)\) 就得到等式；非退化性保证唯一。坐标表达为 \(\operatorname{grad}_g f=\sum_{i,j}g^{ij}\partial_jf\,\partial_i\)，其中 \((g^{ij})=(g_{ij})^{-1}\)。
+\end{proof}
+
+对微分形式，若 \(x^1,\ldots,x^n\) 是坐标，则每个 \(k\) 次形式唯一写成
+\[
+	\alpha=\sum_{i_1<\cdots<i_k}a_{i_1\cdots i_k},
+	\mathrm{d}x^{i_1}\wedge\cdots\wedge\mathrm{d}x^{i_k},
+\]
+光滑性等价于这些系数光滑。\(k>n\) 时只有零形式，\(\Omega^0(M)=C^\infty(M)\)。逐点楔积定义 \(\Omega^p(M)\times\Omega^q(M)\to\Omega^{p+q}(M)\)，逐点插入向量场定义 \(\iota_X\alpha\in\Omega^{k-1}(M)\)。它们光滑，并满足\cref{g1:prop:wedge-algebra,g1:prop:interior-product-rule}的分次公式，因为每一点上都满足同样的代数恒等式。外微分将由\chapref{g1:ch:14}另行构造；当前的一形式 \(\mathrm{d}f\) 已有第十一章的定义。
+
+\begin{example}[极坐标中的度量与面积]
+	\label{g1:exm:polar-tensors-density}
+	在 \(r>0\) 的一个角扇区中，\(x=r\cos\theta\)、\(y=r\sin\theta\)。欧氏度量和标准二形式的坐标表达分别为
+	\[
+		g=\mathrm{d}r\otimes\mathrm{d}r+r^2\mathrm{d}\theta\otimes\mathrm{d}\theta,
+		\mathrm{d}x\wedge\mathrm{d}y=r\,\mathrm{d}r\wedge\mathrm{d}\theta.
+	\]
+	第一式由 \(\mathrm{d}x=\cos\theta\,\mathrm{d}r-r\sin\theta\,\mathrm{d}\theta\)、\(\mathrm{d}y=\sin\theta\,\mathrm{d}r+r\cos\theta\,\mathrm{d}\theta\) 展开后交叉项抵消得到；第二式由楔积的反交换关系得到。\(g\) 的矩阵为 \(\operatorname{diag}(1,r^2)\)，所以体积密度为 \(r|\mathrm{d}r\wedge\mathrm{d}\theta|\)。若把角度坐标反向，二形式的相应系数改变符号，密度使用绝对行列式，因而仍为正。不同坐标中的系数虽不同，度量、二形式与密度各自仍是同一个整体对象。
+\end{example}
+
+\subsection{自然丛运算与拉回}
+\label{g1:subsec:1204:02}
+
+“在 \(N\) 上有一个对象，把它拉回到 \(M\)”有两种不同含义。只改变基空间，得到的是拉回丛 \(F^*E\) 上的数据；如果还要让它作用于 \(M\) 自己的切向量，就需要使用 \(\mathrm{d}F\)。把这两步写开，可以避免把 \(F^*\mathrm{T}N\) 误认为 \(\mathrm{T}M\)。
+
+\begin{proposition}[丛运算与基空间拉回]
+	\label{g1:prop:bundle-operations-pullback}
+	设 \(F:M\to N\) 为光滑映射，两流形可带边界，\(E,H\to N\) 为有限秩实光滑向量丛。存在自然光滑丛同构
+	\[
+		F^*(E\otimes H)\cong F^*E\otimes F^*H,\qquad
+		F^*(E^*)\cong(F^*E)^*,\qquad
+		F^*(\Lambda^kE)\cong\Lambda^k(F^*E),
+	\]
+	对直和、对称幂和同态丛也有相同性质。每个光滑截面 \(s\) 都给出拉回截面 \((F^*s)(p)=(p,s(F(p)))\)，且这些同构与各代数运算相容。
+\end{proposition}
+
+\begin{proof}
+	在 \(p\) 处，拉回丛的纤维就是带基点标记的 \(E_{F(p)}\)。因此第一项同构把 \((p,e\otimes h)\) 送到 \((p,e)\otimes(p,h)\)，其余各项由同一个纤维的对偶、外幂等恒等识别给出。它们与线性换标架相容。在一张 \(E,H\) 的平凡化图拉回后的图中，上述映射在纤维分量上都是固定线性同构，所以光滑，逆也光滑。截面的局部系数从 \(s^a(y)\) 变为 \(s^a(F(x))\)，故光滑；逐点定义保证它与所列运算相容。
+\end{proof}
+
+例如，\(N\) 上的向量场 \(Y\) 总能给出 \(F^*\mathrm{T}N\) 的截面 \(p\mapsto(p,Y_{F(p)})\)，但这还是位于目标切空间的向量。为把 \(M\) 的向量送到那里，可以用覆盖恒等基映射的丛同态
+\[
+	\widehat{\mathrm{d}F}:\mathrm{T}M\longrightarrow F^*\mathrm{T}N,
+	\qquad v_p\longmapsto(p,\mathrm{d}F_pv_p).
+\]
+\cref{g1:prop:differential-chain-rule}及第十一章的切丛坐标表明它光滑。其对象关系是
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		\mathrm{T}M \arrow[r,"\widehat{\mathrm{d}F}"] \arrow[d] & F^*\mathrm{T}N \arrow[r] \arrow[d] & \mathrm{T}N \arrow[d] \\
+		M \arrow[r,"\operatorname{id}_M"'] & M \arrow[r,"F"'] & N.
+	\end{tikzcd}
+\]
+右上箭头忘记拉回纤维的基点标记，三条竖箭头均为丛投影。
+
+\begin{proposition}[协变张量的拉回]
+	\label{g1:prop:covariant-tensor-pullback}
+	设 \(F:M\to N\) 光滑，两流形可带边界，\(T\) 是 \(N\) 上的光滑协变 \(k\) 阶张量。公式
+	\[
+		(F^*T)_p(v_1,\ldots,v_k)
+		=T_{F(p)}(\mathrm{d}F_pv_1,\ldots,\mathrm{d}F_pv_k)
+	\]
+	定义 \(M\) 上的光滑协变 \(k\) 阶张量。拉回保持张量积、对称性、交替性及楔积，并满足 \((G\circ F)^*=F^*\circ G^*\)。当 \(T=g\) 为黎曼度量时，\(F^*g\) 半正定；它正定当且仅当 \(F\) 为浸入。
+\end{proposition}
+
+\begin{proof}
+	先把 \(T\) 拉到 \(F^*((\mathrm{T}^*N)^{\otimes k})\)，再在每个输入中复合 \(\widehat{\mathrm{d}F}\)，便得到所给逐点公式。局部展开时，其系数由 \(T\) 的系数与 \(F\) 复合，再乘上 \(F\) 的一阶偏导数并有限求和，因此光滑。交换或交替输入不改变这种复合，故对称性和交替性保留。张量积与楔积的相容性由各自的多线性公式逐项得到；复合公式来自微分的链式法则。
+
+	度量情形中，\((F^*g)_p(v,v)=g_{F(p)}(\mathrm{d}F_pv,\mathrm{d}F_pv)\geq0\)，且等于零当且仅当 \(\mathrm{d}F_pv=0\)。所以它在每点正定，恰好等价于每点微分单射。
+\end{proof}
+
+例如抛物线参数 \(F(t)=(t,t^2)\) 将欧氏度量拉回为 \((1+4t^2)\,\mathrm{d}t\otimes\mathrm{d}t\)，处处正定。投影 \(P(x,y)=x\) 却把直线度量拉回为 \(\mathrm{d}x\otimes\mathrm{d}x\)，在 \(\partial_y\) 方向为零。这两个计算分别体现浸入保留全部输入方向、淹没可以忘掉方向。
+
+\ProseParagraphBreak
+
+对向量场不能直接照抄同一公式。若要从 \(N\) 上的 \(Y\) 得到 \(M\) 上的 \(X\)，至少要解 \(\mathrm{d}F_pX_p=Y_{F(p)}\)。对投影 \(P:\mathbb R^2\to\mathbb R\) 与 \(Y=\partial_t\)，\(X=\partial_x+b(x,y)\partial_y\) 都是解，没有指定唯一选择；对包含 \(I(t)=(t,0)\) 与目标向量场 \(\partial_y\)，则没有解。相比之下，协变张量只需让目标观测复合已有的 \(\mathrm{d}F\)，所以总能拉回。
+
+\begin{proposition}[可逆微分下的混合张量]
+	\label{g1:prop:mixed-tensor-pullback}
+	设 \(F:M\to N\) 为光滑映射，两流形可带边界，并假设每个 \(\mathrm{d}F_p\) 都是线性同构。则 \(N\) 上任意光滑 \((r,s)\) 型张量场都可按
+	\[
+		(F^*T)_p=
+		\bigl((\mathrm{d}F_p)^{-1}\bigr)^{\otimes r}
+		\otimes\bigl((\mathrm{d}F_p)^*\bigr)^{\otimes s}
+		\bigl(T_{F(p)}\bigr)
+	\]
+	拉回为 \(M\) 上的同型张量场。该操作与张量积和收缩相容；两个满足条件的映射复合时，拉回仍满足反向复合公式。特别地，微分同胚满足这些条件。
+\end{proposition}
+
+\begin{proof}
+	\(\mathrm{d}F\) 的局部矩阵光滑且可逆，故逆矩阵光滑，公式因而定义光滑张量场。收缩中一次切向量与一次协变向量的配对变成 \((\alpha\circ\mathrm{d}F)((\mathrm{d}F)^{-1}v)=\alpha(v)\)，所以收缩不变。张量积相容性由定义直接得到，复合公式则使用链式法则以及复合线性同构的逆按反向顺序复合。
+\end{proof}
+
+密度还需要单独辨析。密度丛本身作为向量丛，可以沿任意 \(F\) 拉回；但若要把目标的顶维密度变成源上的同维密度，公式中会出现 \(|\det \mathrm{D}F|\)。在局部微分同胚下，行列式处处非零，绝对值仍光滑，所以这一步没有问题。对一般光滑映射则可能失去光滑性：\(F(t)=t^2\) 会把 \(|\mathrm{d}y|\) 按该逐点规则变成 \(2|t|\,|\mathrm{d}t|\)，它在零点不光滑。\cref{g1:prop:covariant-tensor-pullback}适用于交替形式，不能因此不加条件地套到密度上。
+
+\subsection{结构群约化的模型及其存在问题}
+\label{g1:subsec:1204:03}
+
+一个任意标架允许全部可逆线性换基。如果选定内积，就可以只使用正交单位标架，其间换基矩阵只能是正交矩阵。这个观察把“额外几何结构”与“允许怎样换标架”联系起来。这里先用局部标架给出定义；一般主丛的语言将在\chapref{g1:ch:18}系统展开。
+
+\begin{definition}
+	\label{g1:def:frame-structure-reduction}
+	设 \(E\to M\) 为秩 \(r\geq1\) 的实光滑向量丛，\(H\subset\operatorname{GL}(r,\mathbb R)\) 为矩阵子群。一份 \(H\)-\term[jiegouqunyuehua]{结构群约化}[reduction of structure group]由覆盖上的局部光滑标架 \(e_i\) 给出，要求所有过渡矩阵 \(e_j=e_i g_{ij}\) 都取值于 \(H\)。在同一基点处把 \(e_i(p)\) 右乘全部 \(H\) 元素得到的标架子集，因过渡条件而与 \(i\) 无关；记为 \(P_{H,p}\)。定义同一约化的局部标架，允许在各自图中再右乘光滑的 \(H\) 值函数，并允许细化覆盖。
+\end{definition}
+
+局部标架之间的矩阵约定与\cref{g1:def:frame-bundle}一致：标架是同构 \(\mathbb R^r\to E_p\)，右作用为复合同构。在 \(P_{H,p}\) 上，\(H\) 的右作用仍自由且传递。几何结构不是从图册中删除一些记号，而是指定了哪些标架属于这一个子集。
+
+\begin{proposition}[度量与正交标架]
+	\label{g1:prop:metric-orthogonal-reduction}
+	对 Hausdorff、第二可数光滑流形 \(M\)（可带边界）上的实光滑向量丛 \(E\)，给定丛度量等价于给定 \(\operatorname{O}(r)\) 结构群约化。这样的约化总存在。
+\end{proposition}
+
+\begin{proof}
+	若给定度量，在任一局部标架 \(e_1,\ldots,e_r\) 上逐步定义
+	\[
+		u_k=e_k-\sum_{j<k}g(e_k,v_j)v_j,
+		\qquad v_k=\frac{u_k}{\sqrt{g(u_k,u_k)}}.
+	\]
+	先前的 \(v_j\) 张成 \(e_1,\ldots,e_{k-1}\) 的空间，原标架线性无关，所以 \(u_k\neq0\)。分母因正定性处处为正，各步光滑，最终得到局部正交单位标架。两个这样的标架之间的矩阵 \(A\) 满足 \(A^{\mathsf T}A=I\)，所以属于 \(\operatorname{O}(r)\)。这些标架的 \(\operatorname{O}(r)\) 轨道就是全部正交单位标架。
+
+	反向给定这样的约化，在每个所选标架中规定度量矩阵为 \(I\)。因为过渡矩阵正交，不同图中的规定一致，得到整体光滑正定度量。两种构造互逆。最后由\cref{g1:thm:bundle-metric-existence}，度量总存在，故约化也总存在。
+\end{proof}
+
+\begin{proposition}[定向与体积形式的标架]
+	\label{g1:prop:orientation-volume-reductions}
+	设 \(E\to M\) 为秩 \(r\geq1\) 的实光滑向量丛。连续选择每个纤维的定向，且在局部标架中选择一致，等价于 \(\operatorname{GL}^+(r,\mathbb R)\) 约化，其中上标 \(+\) 表示行列式为正。一个处处非零的光滑截面 \(\nu\in\Gamma(\det E^*)\) 等价于 \(\operatorname{SL}(r,\mathbb R)\) 约化。若底流形 Hausdorff、第二可数，可带边界，则这种 \(\nu\) 存在当且仅当 \(E\) 可定向。
+\end{proposition}
+
+\begin{proof}
+	给定定向，局部取正向标架；两正向标架之间行列式为正。反向由正行列式的过渡保证各图的定向一致，所以第一项等价成立。
+
+	给定非零 \(\nu\)，在一个局部标架上设 \(a=\nu(e_1,\ldots,e_r)\)，它是处处非零光滑函数。把 \(e_1\) 换成 \(e_1/a\)，其余不动，即得满足 \(\nu(e_1,\ldots,e_r)=1\) 的标架。这些标架之间的行列式为一，给出 \(\operatorname{SL}\) 约化。反向在约化标架中规定 \(\nu(e_1,\ldots,e_r)=1\)，过渡矩阵行列式为一使规定相容，故得到非零光滑顶次形式，且两种构造互逆。
+
+	非零顶次形式将使其取值为正的标架定义为正向，因而给出定向。若已有定向，先由\cref{g1:thm:bundle-metric-existence}取度量，再取正向正交单位标架；把它们的顶次对偶楔积定义为 \(\nu\)。两这样的标架之间矩阵既正交又有正行列式，故行列式为一，顶次形式在交叠处相同。这就构造出所需 \(\nu\)。
+\end{proof}
+
+度量总给出正密度，而不必给出带符号的非零顶次形式。差别在于，密度的转换使用绝对行列式，反向标架不造成符号冲突。因而“有处处正的体积密度”不能用于证明可定向。
+
+\begin{proposition}[非退化交替形式的标架]
+	\label{g1:prop:symplectic-frame-reduction}
+	设 \(E\to M\) 为秩 \(2m\) 的实光滑向量丛，\(m\geq1\)。给定光滑、逐纤维非退化的交替双线性形式 \(\omega\)，等价于过渡矩阵取值于
+	\[
+		\operatorname{Sp}(2m,\mathbb R)
+		=\{A\in\operatorname{GL}(2m,\mathbb R):A^{\mathsf T}J_0A=J_0\},
+		\qquad J_0=\begin{pmatrix}0&I_m\\-I_m&0\end{pmatrix}
+	\]
+	的结构群约化。这样的 \(\omega\) 总给出非零顶次形式 \(\omega^m/m!\)，因此使 \(E\) 可定向。
+\end{proposition}
+
+\begin{proof}
+	需要证明适配标架可以光滑选择，而不只是在每个点分别选出一个基。在一点附近先取一个非零局部截面 \(u_1\)。非退化性保证在该点某个标架向量 \(w\) 满足 \(\omega(u_1,w)\neq0\)，缩小邻域后这个函数仍非零，令 \(v_1=w/\omega(u_1,w)\)，就有 \(\omega(u_1,v_1)=1\)。
+
+	对任意局部向量 \(z\)，令
+	\[
+		z'=z+\omega(v_1,z)u_1-\omega(u_1,z)v_1.
+	\]
+	直接代入得 \(\omega(u_1,z')=\omega(v_1,z')=0\)。因此这个光滑投影的像为两者的共同交替正交空间 \(W\)，核为 \(\operatorname{span}\{u_1,v_1\}\)，秩恒为 \(2m-2\)。由\cref{g1:thm:constant-rank-bundle-morphism}，\(W\) 是光滑子丛。\(\omega|_W\) 非退化：若 \(z\in W\) 与 \(W\) 中所有向量配对为零，它又与 \(u_1,v_1\) 配对为零，因直和分解而与整个纤维配对为零，所以 \(z=0\)。在 \(W\) 上重复，得到光滑标架 \(u_1,\ldots,u_m,v_1,\ldots,v_m\)，其中 \(\omega(u_i,v_j)=\delta_{ij}\)，同类向量间配对为零。
+
+	在这些标架中 \(\omega\) 的矩阵为 \(J_0\)，故过渡矩阵满足所列条件。反向，在这样的约化标架中规定矩阵为 \(J_0\)，便粘合成光滑非退化交替形式。最后在对偶标架中写 \(\omega=\sum_i u^i\wedge v^i\)。各个二次项两两交换，各自平方为零，故
+	\[
+		\frac{\omega^m}{m!}=u^1\wedge v^1\wedge\cdots\wedge u^m\wedge v^m\neq0.
+	\]
+	由\cref{g1:prop:orientation-volume-reductions}得到定向。
+\end{proof}
+
+另一个常见的逐点结构，是实向量丛上的光滑丛自同态 \(J\)，满足 \(J^2=-I\)。规定 \((a+ib)v=av+bJv\)，就把每个实纤维变成复向量空间。在切丛上，这样的 \(J\) 称为\term[jihufujiegou]{几乎复结构}[almost complex structure]；此处只要求代数恒等式与光滑性，尚没有要求特殊坐标的存在。
+
+\begin{proposition}[复线性标架]
+	\label{g1:prop:complex-frame-reduction}
+	设 \(E\to M\) 为有限秩实光滑向量丛，底流形 Hausdorff、第二可数，可带边界。若有光滑 \(J:E\to E\) 满足 \(J^2=-I\)，则秩为偶数 \(2m\)，且存在局部光滑复标架；相应实标架的过渡属于 \(\operatorname{GL}(m,\mathbb C)\) 在 \(\operatorname{GL}(2m,\mathbb R)\) 中的标准实表示。反向，这样的约化定义唯一的 \(J\)。该结构总使 \(E\) 可定向。
+\end{proposition}
+
+\begin{proof}
+	每个纤维通过上述复数乘法成为有限维复向量空间，实维数因此为偶数。为光滑地选基，先取任意丛度量 \(g\)，定义
+	\[
+		h(v,w)=g(v,w)+g(Jv,Jw).
+	\]
+	这是光滑正定度量，且 \(h(Jv,Jw)=h(v,w)\)。一个局部非零截面 \(u_1\) 与 \(Ju_1\) 实线性无关：若 \(Ju_1=a u_1\)，再作用 \(J\) 就得 \(-u_1=a^2u_1\)，矛盾。它们张成一个 \(J\) 不变的秩二子丛，其 \(h\) 正交补也是 \(J\) 不变的，因为 \(h(Jv,w)=-h(v,Jw)\)。由\cref{g1:prop:orthogonal-complement-bundle}正交补光滑，在其上重复选择，得到 \(u_1,Ju_1,\ldots,u_m,Ju_m\) 的局部光滑实标架，等价于复标架 \(u_1,\ldots,u_m\)。
+
+	两个复标架之间是可逆复矩阵，视为实矩阵时与标准复乘法相交换。反向若过渡矩阵都复线性，在每张标架中规定 \(J\) 为乘以 \(i\)，交叠处便相容，给出所需 \(J\)。两项构造互逆。
+
+	若复矩阵为 \(A+iB\)，按实部、虚部分组的实矩阵为 \(\begin{psmallmatrix}A&-B\\B&A\end{psmallmatrix}\)。在复数上改变基，把实部与虚部组合为 \(v+iw\)、\(v-iw\)，该矩阵变成对角块 \(A+iB\)、\(A-iB\)，所以它的实行列式为 \(|\det_{\mathbb C}(A+iB)|^2>0\)。所有复标架因而给出一致实定向。
+\end{proof}
+
+这里的存在性已经出现了整体限制。令 \(L\to S^1\) 为\cref{g1:exm:mobius-line-bundle}的 Möbius 实线丛，并取 \(E=L\oplus\underline{\mathbb R}\)。沿圆周绕一周，\(E\) 的标架过渡可表示为 \(\operatorname{diag}(-1,1)\)，所以其行列式线丛 \(\det E\) 与 \(L\) 相同。若 \(E\) 可定向，取度量并选正向单位体积向量，就会得到 \(\det E\) 的处处非零截面；但 \(L\) 没有这样的截面。因此 \(E\) 不可定向。它虽然秩为二，仍不能有上面两类结构中的任何一种。这说明偶数秩只是纤维上的必要条件，不能代替过渡函数的整体相容。
+
+\ProseParagraphBreak
+
+单位分解不能消除这些障碍。在二维向量空间上，\(\omega\) 与 \(-\omega\) 都可非退化，但等权平均为零；\(J\) 与 \(-J\) 都满足平方为 \(-I\)，平均后却不再满足。相反，正定双线性型的非负加权和，只要权重和为一，就仍正定。这正是丛度量总能粘合、而其他结构不能照搬同一证明的原因。即使某种逐点结构已存在，它是否满足进一步的微分条件，仍须另行研究。
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

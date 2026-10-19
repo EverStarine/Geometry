@@ -1,0 +1,203 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 9.3 局部 Gauss–Bonnet 公式
+% 纲要位置：几何学计划纲要.md，第 479 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 切向转角与联络积分
+% * 分片光滑边界及外角
+% * 圆盘区域上的公式与定向符号
+% * 测地三角形的角亏
+% 
+% 纲要内容结束
+
+\section{局部 Gauss–Bonnet 公式}
+\label{g1:sec:0903}
+
+平面上的正向简单闭曲线，其切向量净转过一周。曲面上的切向量却分属不同的切平面，必须先说明用什么方向作参照。联络给出比较方向的方法，测地曲率记录相对于平行移动的转向；把它沿边界积分，通常不再得到 \(2\pi\)。本节将说明，恰好缺少的量是区域内部的 Gauss 曲率积分。边界若有角点，还须计入转弯时发生的方向跳跃。
+
+\subsection{切向转角与联络积分}
+\label{g1:subsec:0903:01}
+
+设曲面已经定向，\(J\) 表示切平面内正向旋转 \(\pi/2\)。取正向正交单位标架 \((e_1,e_2)\)，所以 \(Je_1=e_2\)、\(Je_2=-e_1\)。回忆\eqref{g1:eq:surface-frame-connection}中的约定：联络一形式 \(\omega\) 满足
+\[
+	\nabla_Ve_1=\omega(V)e_2,\qquad \nabla_Ve_2=-\omega(V)e_1.
+\]
+沿一段按弧长参数化的 \(C^2\) 正则曲线 \(\gamma\)，单位切向量 \(T=\gamma'\) 可写成
+\[
+	T(s)=\cos\theta(s)e_1+\sin\theta(s)e_2.
+\]
+这里标架在 \(\gamma(s)\) 处取值。\cref{g1:lem:circle-angle-lift}允许在参数区间上连续选择角度；因切向量是 \(C^1\) 的，局部光滑辐角使这个提升也是 \(C^1\) 的。角度不是曲面本身提供的绝对方向，而是切向量相对于所选标架的方向。
+
+\begin{proposition}[切向转角公式]
+	\label{g1:prop:tangent-connection-angle}
+	设 \(\gamma\) 是有向光滑曲面上的 \(C^2\) 弧长参数正则曲线，\((e_1,e_2)\) 是其邻域中的光滑正向正交单位标架，\(\omega=\langle\nabla e_1,e_2\rangle\)。若 \(T=\cos\theta\,e_1+\sin\theta\,e_2\)，则
+	\begin{equation}
+		\label{g1:eq:tangent-connection-angle}
+		k_g=\theta'+\omega(T),\qquad
+		\int_\gamma k_g\,\mathrm{d}s=\theta(b)-\theta(a)+\int_\gamma\omega.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	按\cref{g1:prop:along-derivative-properties}的乘法法则沿曲线求协变导数，得到
+	\begin{align*}
+		\mathrm{D}_sT
+		&=-\theta'\sin\theta\,e_1+\theta'\cos\theta\,e_2
+		+\cos\theta\,\omega(T)e_2-\sin\theta\,\omega(T)e_1\\
+		&=\bigl(\theta'+\omega(T)\bigr)JT.
+	\end{align*}
+	\cref{g1:def:geodesic-curvature}规定 \(k_g=\langle \mathrm{D}_sT,JT\rangle\)，故得第一式。对 \(s\) 积分，并用一形式的线积分定义 \(\int_\gamma\omega=\int_a^b\omega(T)\,\mathrm{d}s\)，便得第二式。
+\end{proof}
+
+这个等式把两种转动分开：\(\theta'\) 是切向量相对于标架的转动，\(\omega(T)\) 是标架自身相对于平行移动的转动。若沿曲线选择平行标架，第二项为零；若选择曲面上一组便于计算的坐标标架，第二项一般不能省略。尤其在曲线闭合时，沿它平行移动所得的标架未必首尾一致，因此不能同时把它当作周期标架，又任意令 \(\omega(T)=0\)。
+
+\ProseParagraphBreak
+
+换一组正向正交标架不会改变 \(k_g\)。例如局部令 \(\widetilde e_1=\cos\varphi\,e_1+\sin\varphi\,e_2\)、\(\widetilde e_2=J\widetilde e_1\)，则新角度是 \(\widetilde\theta=\theta-\varphi\)，新联络形式是 \(\widetilde\omega=\omega+\mathrm{d}\varphi\)。因而 \(\widetilde\theta'+\widetilde\omega(T)=\theta'+\omega(T)\)。计算中的角度和联络积分各自依赖参照，二者之和才是曲线的测地曲率积分。
+
+\subsection{分片光滑边界及外角}
+\label{g1:subsec:0903:02}
+
+三角形的边可以是光滑的，但顶点处没有唯一切向量。若只把三条直线边的曲率积分相加，结果是零，整周转角便丢失了。因此要把沿边的连续转向和顶点处的瞬时转向一起记录。
+
+\begin{definition}
+	\label{g1:def:boundary-exterior-angle}
+	设紧曲面区域 \(D\) 的边界由有限条 \(C^2\) 正则弧首尾相接而成，各弧在端点有非零单侧切向量，弧的内部互不相交。按区域位于左侧的方向走过边界，在角点 \(p_j\) 记到达和离开的单位切向量为 \(T_j^-\)、\(T_j^+\)。若区域在该点占据的切向扇形角为 \(\beta_j\in(0,2\pi)\)，称 \(\beta_j\) 为\term[neijiao]{内角}[interior angle]，并称
+	\[
+		\alpha_j\coloneqq\pi-\beta_j\in(-\pi,\pi)
+	\]
+	为该点的有向\term[waijiao]{外角}[exterior angle]。它是从 \(T_j^-\) 转到 \(T_j^+\) 的有向短转角；向左转取正，向右转取负。允许 \(\beta_j=\pi\)，此时只是人为分段点，外角为零。
+\end{definition}
+
+内角是由指向来路的 \(-T_j^-\) 与指向去路的 \(T_j^+\) 围成、朝向区域内部的角，不是两个前进切向量之间较小的夹角。\cref{g1:fig:boundary-exterior-angles}同时画出凸角与凹角：凹角的内角大于 \(\pi\)，外角便是负数。这里排除了内角为 \(0\) 或 \(2\pi\) 的尖点；在这种退化情形，两个前进切向量可能反向，不能直接使用唯一短转角。
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter09-ExteriorAngles}
+	\caption[边界外角的符号]{区域位于行进方向左侧。实线箭头表示先到达顶点、再沿下一边离开；虚线是到达方向的延长线。左图的内角小于 \(\pi\)，外角为正；右图的内角大于 \(\pi\)，外角为负。浅色扇形只示意顶点附近的内部方向。}
+	\label{g1:fig:boundary-exterior-angles}
+\end{figure}
+
+将边界各段的切向角连续提升，并在每个角点接上转角 \(\alpha_j\)，便得到包含角点跳跃的总转角。这个总量应是多少，不能只从曲线闭合推出：闭合只使它成为 \(2\pi\) 的整数倍。下面说明，单图圆盘的正向简单边界使这个整数恰好为 \(1\)。
+
+\begin{lemma}[分片边界的转角]
+	\label{g1:lem:piecewise-turning}
+	设有向光滑曲面上的紧区域 \(D\) 同胚于闭圆盘，并且包含在一张正向坐标图中。假设 \(\partial D\) 是正向分片 \(C^2\) 正则简单闭曲线，各角点内角均属于 \((0,2\pi)\)。将该图的坐标向量按顺序正交单位化，得到正向标架 \((e_1,e_2)\)。若 \(\Delta\theta_i\) 是第 \(i\) 条边的切向量相对于该标架的角增量，\(\alpha_j\) 为各外角，则
+	\begin{equation}
+		\label{g1:eq:piecewise-total-turning}
+		\sum_i\Delta\theta_i+\sum_j\alpha_j=2\pi.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	先在坐标平面中证明带角点的转角定理。\cref{g1:thm:turning-tangent}已经证明 \(C^1\) 正则简单闭平面曲线的正向总转角为 \(2\pi\)；现在只需把角点的贡献补回来。在某个角点，两个前进单位切向量不反向，取它们的角平分方向为横轴，则两个向量在该横轴上的分量都为正。于是足够短的两侧曲线合在一起可以写成连续图像 \(y=f(x)\)，其左右单侧导数存在，且 \(f\) 在两侧为 \(C^2\)。取互不相交的小邻域处理全部角点，并使这些邻域避开其余曲线。
+
+	在一个这样的邻域中，把 \(f\) 在角点附近换成光滑近似，并用光滑截断函数使它在邻域边缘与原函数完全相同。这个操作可以具体实施为：先在稍大的区间上延拓 \(f\)，用非负光滑积分核作卷积，再在角点附近取卷积结果、远离角点取原函数，在两者之间以截断函数相接。卷积在小尺度下一致趋于连续函数 \(f\)，所以改动后的图像仍留在所选邻域。它始终是关于 \(x\) 的图像，故不产生自交，也不会使前进切向量为零。所得闭曲线为 \(C^2\) 正则简单曲线，并沿用原曲线的正向。
+
+	图像段的切向角可取为 \(\arctan f'(x)\)，值始终在 \((-\pi/2,\pi/2)\) 内；因此，无论中间怎样光滑化，这一小段的总转角恰为其终端与初端的切向角之差。让修改区间缩向原角点，两端角度趋向单侧切向角，差趋向该角点的有向短转角。未修改各段的角增量则趋向原边的角增量。将光滑曲线的转角定理取极限，得到坐标平面中“沿边角增量加外角等于 \(2\pi\)”。内角为 \(\pi\) 的分段点不改变这一论证。
+
+	还需比较坐标平面的角和曲面度量测得的角。记坐标为 \((u,v)\)，度量系数为 \(E,F,G\)，\(D_g=EG-F^2>0\)。正交单位化给出
+	\[
+		\partial_u=\sqrt E\,e_1,\qquad
+		\partial_v=\frac{F}{\sqrt E}\,e_1+\sqrt{\frac{D_g}{E}}\,e_2.
+	\]
+	因此，坐标速度 \(w=(\dot u,\dot v)^{\mathsf T}\) 在正交标架中的分量是
+	\[
+		Pw,\qquad
+		P=\begin{pmatrix}\sqrt E&F/\sqrt E\\0&\sqrt{D_g/E}\end{pmatrix}.
+	\]
+	对 \(0\leq t\leq1\)，矩阵 \(P_t=(1-t)I+tP\) 都是对角元为正的上三角矩阵，故可逆且保向。沿每条边将 \(P_tw\) 归一化，在每个角点将左右极限用有向短圆弧接起来，就得到方向圆周上的连续闭路。这个闭路随 \(t\) 连续变化：非反向的两个端点经过可逆线性变换后仍不反向，故短圆弧不会突然跳到另一边。可给每个角点插入一段固定长度的辅助参数区间，使这里的闭路具有同一个参数圆周。
+
+	\cref{g1:thm:circle-fundamental}的绕数同伦不变性说明，这个方向闭路在 \(t=0\) 与 \(t=1\) 时有相同总角增量。\(t=0\) 是刚证明的平面分片边界，总增量为 \(2\pi\)；\(t=1\) 正是曲面切向量相对于 \((e_1,e_2)\) 的方向及度量外角。这就得到\eqref{g1:eq:piecewise-total-turning}。
+\end{proof}
+
+平面角和曲面角一般不相等；上面保持的是绕一周的整数，而不是每个顶点的数值。这也解释了为何不能直接把坐标图画出的三角形内角，当成曲面上的内角代入公式。
+
+\subsection{圆盘区域上的公式与定向符号}
+\label{g1:subsec:0903:03}
+
+现在已有两个可以相接的等式：切向转角公式把边界的测地曲率写成角增量与联络积分之和，曲率二形式则把联络的外微分写成 \(-K\,\mathrm{d}A\)。正号、负号都由这两个约定决定，不另作猜测。
+
+\begin{theorem}[局部 Gauss–Bonnet 公式]
+	\label{g1:thm:local-gauss-bonnet}
+	设 \(M\) 是带光滑正定度量的有向光滑曲面，\(D\subset M\) 是包含在一张正向坐标图中的紧闭圆盘区域。假设其边界是有限条 \(C^2\) 正则弧组成的简单闭曲线，所有内角 \(\beta_j\) 均在 \((0,2\pi)\) 内。边界按 \(D\) 位于左侧定向，\(k_g=\langle \mathrm{D}_sT,JT\rangle\)，\(\alpha_j=\pi-\beta_j\)，则
+	\begin{equation}
+		\label{g1:eq:local-gauss-bonnet}
+		\int_D K\,\mathrm{d}A
+		+\int_{\partial D}k_g\,\mathrm{d}s
+		+\sum_j\alpha_j=2\pi.
+	\end{equation}
+	边界积分表示各光滑边上积分之和；没有角点时，最后一项为空和。
+\end{theorem}
+\begin{proof}
+	在给定坐标图上将坐标向量正交单位化，得到覆盖整个 \(D\) 及其邻域的正向标架，记其联络形式为 \(\omega\)。对每条边使用\eqref{g1:eq:tangent-connection-angle}，加上所有外角，再用\cref{g1:lem:piecewise-turning}，得到
+	\[
+		\int_{\partial D}k_g\,\mathrm{d}s+\sum_j\alpha_j
+		=2\pi+\int_{\partial D}\omega.
+	\]
+	由\cref{g1:lem:green-formula}，当前分片 \(C^2\) 边界及正向参数满足二维积分公式的条件，故
+	\[
+		\int_{\partial D}\omega=\int_D\mathrm{d}\omega
+		=-\int_D K\,\mathrm{d}A,
+	\]
+	最后一步是\cref{g1:prop:connection-curvature-form}的曲率形式公式。代回即得结论。
+\end{proof}
+
+这就是带边界和角点的\term[jubugaussbonnetgongshi]{局部 Gauss–Bonnet 公式}[local Gauss--Bonnet formula]。曲面可以嵌入三维欧氏空间，也可以只给定二维度量；证明仅用了度量的协变导数及其曲率。区域是拓扑圆盘，并不自动意味着它被当前某张坐标图覆盖。本定理明确保留单图假设；\secref{g1:sec:0904}将通过分解与粘合去掉它，并处理有孔的区域。
+
+\ProseParagraphBreak
+
+公式中的 \(\mathrm{d}A\) 在正向坐标下就是正的面积测度。若保持曲面定向，却把边界反向走，\(k_g\) 和有向转角都变号；以 \(-\partial D\) 表示这个反向边界，正确的式子是
+\[
+	-\int_D K\,\mathrm{d}A+\int_{-\partial D}k_g\,\mathrm{d}s+\sum_j(-\alpha_j)=-2\pi.
+\]
+这里仍按正面积测量 \(D\)，所以面积积分前也须带负号。若将曲面定向与边界方向一起反转，则 \(J\) 与 \(T\) 同时变号，\(\mathrm{D}_sT\) 保持不变，故 \(\langle \mathrm{D}_sT,JT\rangle\) 不变；区域内角与 \(K\) 也不变，原公式便仍成立。正向边界上的 \(JT\) 是指向区域内部的单位余法向，因而此时 \(k_g\) 也可理解为边界加速度的向内分量。
+
+\begin{example}[平面圆盘与多边形]
+	\label{g1:exm:planar-gauss-bonnet}
+	在平面圆盘上，\(K=0\)，半径 \(r\) 的正向圆周满足 \(k_g=1/r\)、长度为 \(2\pi r\)，因此边界积分为 \(2\pi\)。对有 \(m\) 个顶点的平面简单多边形，各边是直线，\(k_g=0\)，所以公式给出
+	\[
+		\sum_{j=1}^m(\pi-\beta_j)=2\pi,
+		\qquad \sum_{j=1}^m\beta_j=(m-2)\pi.
+	\]
+	这不要求多边形凸；凹顶点必须采用大于 \(\pi\) 的内部角，外角相应取负。
+\end{example}
+
+\subsection{测地三角形的角亏}
+\label{g1:subsec:0903:04}
+
+平面三角形的边没有沿平面的弯曲，因此全部转向都集中在顶点。在曲面上，测地线正好承担同样的角色：其单位切向量平行，故 \(\mathrm{D}_sT=0\)，从而 \(k_g=0\)。把三条测地线弧组成的简单边界代入局部公式，就能直接读出三角形的角和。
+
+\begin{corollary}[测地三角形的角和]
+	\label{g1:cor:geodesic-triangle-defect}
+	设有向光滑曲面上一块单图闭圆盘区域 \(D\) 的边界由三条正则测地线弧组成，弧的内部互不相交，三个内角 \(\beta_1,\beta_2,\beta_3\) 均属于 \((0,2\pi)\)。则
+	\begin{equation}
+		\label{g1:eq:geodesic-triangle-defect}
+		\beta_1+\beta_2+\beta_3-\pi=\int_D K\,\mathrm{d}A.
+	\end{equation}
+	特别地，若 \(K\equiv c\) 在 \(D\) 上为常数，则角和为 \(\pi+c\operatorname{Area}(D)\)。
+\end{corollary}
+\begin{proof}
+	沿每条测地线取弧长参数后，测地线方程给出 \(\mathrm{D}_sT=0\)，所以三条边的测地曲率积分全为零。由\eqref{g1:eq:local-gauss-bonnet}，
+	\[
+		\int_D K\,\mathrm{d}A+3\pi-(\beta_1+\beta_2+\beta_3)=2\pi.
+	\]
+	移项即得结论。常曲率情形把常数提出面积积分即可。
+\end{proof}
+
+称 \(\delta=\pi-(\beta_1+\beta_2+\beta_3)\) 为三角形的\term[jiaokui]{角亏}[angular defect]；因此本约定下 \(\delta=-\int_DK\,\mathrm{d}A\)。正曲率给出角盈，负曲率给出正的角亏；若曲率变号，则由整个区域的积分决定，不能只看某个顶点的曲率。
+
+\begin{example}[球面上的三个直角]
+	\label{g1:exm:spherical-octant}
+	在半径 \(R\) 的球面上，取三个点 \(A=(R,0,0)\)、\(B=(0,R,0)\)、\(C=(0,0,R)\)，用坐标平面中的四分之一大圆弧连接，围成第一卦限中的球面三角形。\cref{g1:exm:sphere-geodesics}已经给出大圆的测地性：用弧长参数化后，其空间加速度是 \(-\gamma/R^2\)，沿球面法向，故切向投影为零。每个顶点处两条边的切向量互相垂直，内角都是 \(\pi/2\)。
+
+	这块闭三角形包含在开半球 \(x+y+z>0\) 中；沿法向 \((1,1,1)\) 的正交投影把该半球表示为球面的一个图像，故满足单图条件。\cref{g1:prop:surface-curvature-formulas}给出球面 \(K=1/R^2\)，于是
+	\[
+		\frac{\operatorname{Area}(D)}{R^2}
+		=\frac{3\pi}{2}-\pi=\frac\pi2,
+		\qquad \operatorname{Area}(D)=\frac{\pi R^2}{2}.
+	\]
+	这一结果也等于球面面积 \(4\pi R^2\) 的八分之一。三条边各自在曲面内都没有弯曲，三个直角仍能闭合，差别由区域内部的正曲率承担。
+\end{example}
+
+同样的代入还适用于 \(m\) 条测地线围成的单图圆盘：\(\sum_j\beta_j=(m-2)\pi+\int_DK\,\mathrm{d}A\)。但角和公式本身不保证给定三点之间能找到唯一的测地边，也不保证任意三条测地线围出圆盘。存在性、边的选择以及区域的拓扑条件仍须分别核对。

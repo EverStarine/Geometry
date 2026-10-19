@@ -1,0 +1,165 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 1.4 群作用如何组织几何分类
+% 纲要位置：几何学计划纲要.md，第 144 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 轨道、稳定子群与等价关系
+% * 共轭、坐标选择和分类参数
+% * 欧氏、仿射与相似分类的比较
+% * 矩阵族退化时不变量的变化
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{群作用如何组织几何分类}
+\label{g1:sec:0104}
+
+一个椭圆经刚性移动仍有原来的长短轴，经统一缩放会改变轴长，经一般仿射变换却可以成为圆。因此，分类之前必须先回答：哪些改变算作同一个对象？前面已经出现了仿射变换、正交变换和等距变换，现在把这些具体变换组织起来，就能说明何谓分类参数，以及参数为什么随允许的变换而改变。
+
+\subsection{轨道、稳定子群与等价关系}
+\label{g1:subsec:0104:01}
+
+把可逆变换按复合相乘时，复合满足结合律，有恒等变换，每个变换也有逆变换。抽象地，一个集合及其乘法若满足结合律、存在单位元并且每个元素都有逆元，就称为\term[qun]{群}[group]。一个含单位元且对乘法、取逆封闭的子集称为\term[ziqun]{子群}[subgroup]。下面保留这些运算性质，而把变换实际作用的对象另记为 \(X\)。
+
+\begin{definition}[群作用]\label{g1:def:group-action}
+	设 \(G\) 为群，单位元为 \(e\)，\(X\) 为集合。 \(G\) 在 \(X\) 上的\term[qunzuoyong]{群作用}[group action]是运算 \((g,x)\mapsto g\cdot x\)，满足 \(e\cdot x=x\) 与 \((gh)\cdot x=g\cdot(h\cdot x)\)。定义
+	\[
+		G\cdot x\coloneqq\{g\cdot x:g\in G\},\qquad
+		G_x\coloneqq\{g\in G:g\cdot x=x\},
+	\]
+	分别称为 \(x\) 的\term[guidao]{轨道}[orbit]与\term[wendingziqun]{稳定子群}[stabilizer subgroup]。
+	\symidx{\(G\cdot x\)：点 \(x\) 的轨道}
+	\symidx{\(G_x\)：点 \(x\) 的稳定子群}
+\end{definition}
+
+群在这里首先可以理解为一组可逆变换：乘法是复合，单位元是不改变对象的变换，逆元撤销原变换。稳定子群中的变换允许移动周围空间，但必须把指定对象留在原处；例如，一个球心固定的球仍容许许多旋转。
+
+\begin{proposition}[轨道与稳定子群]\label{g1:prop:orbit-stabilizer}
+	对任意群 \(G\) 在集合 \(X\) 上的作用，关系 \(x\sim y\Longleftrightarrow y\in G\cdot x\) 是等价关系，\(G_x\) 是 \(G\) 的子群。记 \(gG_x=\{gh:h\in G_x\}\)，称为子群 \(G_x\) 的\term[zuopeiji]{左陪集}[left coset]。左陪集集合 \(G/G_x=\{gG_x:g\in G\}\) 与轨道 \(G\cdot x\) 之间有双射
+	\[
+		gG_x\longmapsto g\cdot x.
+	\]
+	若 \(y=h\cdot x\)，则 \(G_y=hG_xh^{-1}\)。
+\end{proposition}
+\begin{proof}
+	单位元给出自反性，逆元给出对称性，乘法给出传递性。若 \(g,h\) 都固定 \(x\)，则 \(gh\) 固定 \(x\)，而 \(g^{-1}\) 也固定 \(x\)，故 \(G_x\) 为子群。两个左陪集 \(gG_x,hG_x\) 相等，当且仅当 \(h^{-1}g\in G_x\)，这又等价于 \(g\cdot x=h\cdot x\)。所以所给映射既良定义又单射；满射由轨道定义得到。最后，\(k\) 固定 \(h\cdot x\) 当且仅当 \(h^{-1}kh\) 固定 \(x\)，这就是稳定子群的共轭公式。
+\end{proof}
+
+此处 \(G/G_x\) 只是陪集集合，不要求 \(G_x\) 在所有共轭下保持不变，即不要求它满足正规子群条件，也不因此给轨道附加群结构。若 \(G\) 有限，每个陪集的元素数等于 \(|G_x|\)，因而 \(|G\cdot x|=|G|/|G_x|\)。几何变换群通常无限，上面的集合双射仍然成立。
+
+\begin{example}[点与有序标架]\label{g1:exm:frame-orbits}
+	在 \(\mathbb R^n\) 中，所有可逆仿射映射组成\term[fangshequn]{仿射群}[affine group]，记为 \(\operatorname{Aff}(n,\mathbb R)\)。用 \((P,b)\) 表示 \(x\mapsto Px+b\)，其中 \(P\in\operatorname{GL}(n,\mathbb R)\)，则
+	\[
+		(P,b)(S,c)=(PS,Pc+b),\qquad
+		(P,b)^{-1}=(P^{-1},-P^{-1}b).
+	\]
+	这些公式同时验证了复合与求逆仍在其中。这里 \(\operatorname{GL}(n,\mathbb R)\) 表示所有可逆 \(n\) 阶实矩阵组成的\term[yibanxianxingqun]{一般线性群}[general linear group]。仿射群在点集上的作用只有一个轨道，因为平移可以连接任意两点；原点的稳定子群为 \(\{(P,0)\}\)。它在有序仿射标架上的作用也只有一个轨道，但一个标架的稳定子群只含单位元：由\cref{g1:prop:frame-map}，标架的像唯一确定仿射映射。
+\end{example}
+
+分类需要\term[bubianliang]{不变量}[invariant]，即在同一轨道上取相同值的量。如果某个不变量还满足“取值相同就处于同一轨道”，便称它为\term[wanquanbubianliang]{完全不变量}[complete invariant]。秩是二次型合同变换的不变量，但实数域上仅知道秩不够： \(x_1^2+x_2^2\) 与 \(x_1^2-x_2^2\) 都有秩 \(2\)，惯性却不同。\cref{g1:thm:inertia}中的三个惯性数合在一起才给出完整分类。
+
+\subsection{共轭、坐标选择和分类参数}
+\label{g1:subsec:0104:02}
+
+几何变换本身也可以作为待分类对象。若用可逆仿射映射 \(h(x)=Px+c\) 把旧坐标送到新坐标，计算新坐标中的作用时便先用 \(h^{-1}\) 还原旧坐标，再作用 \(f\)，最后用 \(h\) 返回新坐标。则 \(f(x)=Qx+b\) 变成 \(hfh^{-1}\)。直接代入逆映射得
+\begin{equation}\label{g1:eq:affine-conjugation}
+	hfh^{-1}(y)=PQP^{-1}y+Pb+(I-PQP^{-1})c.
+\end{equation}
+这称为\term[gonge]{共轭}[conjugation]。取 \(P\) 为正交矩阵，便得到等距坐标改变下的公式。共轭允许换观察位置和方向，但保留迭代关系，因为 \((hfh^{-1})^k=hf^kh^{-1}\)。
+
+\begin{proposition}[等距变换的共轭参数]\label{g1:prop:isometry-conjugacy}
+	设 \(f_1,f_2\) 是同一 \(n\) 维实欧氏空间的等距变换。分别选取原点，将它们按\cref{g1:thm:isometry-normal}写成 \(f_i(x)=Q_ix+t_i\)，其中 \(t_i\in F_i\coloneqq\ker(I-Q_i)\)。则二者在欧氏等距变换群中共轭，当且仅当 \(Q_1,Q_2\) 正交共轭且 \(\lVert t_1\rVert=\lVert t_2\rVert\)。因此，正交标准分块中的 \(+1,-1\) 重数、\(0<\theta<\pi\) 的旋转角多重集，连同非负数 \(\lVert t_i\rVert\)，构成完全不变量。
+\end{proposition}
+\begin{proof}
+	分别选择原点，等价于先把两个映射分别作一次平移共轭；如果变换后的映射可以相互共轭，前后复合这些平移及其逆就得到原映射间的共轭，反之亦然。因此可以比较各自的正规形。
+
+	若 \(h(x)=Px+c\) 为共轭它们的等距变换，则 \(P\) 正交，且由\eqref{g1:eq:affine-conjugation}有 \(Q_2=PQ_1P^{-1}\)。所以 \(P(F_1)=F_2\)， \(Pt_1\in F_2\)。另一方面，\((I-Q_2)c\) 属于 \(F_2^\perp\)：对 \(v\in F_2\)， \(\langle(I-Q_2)c,v\rangle=\langle c,(I-Q_2^*)v\rangle=0\)。比较平移部分的 \(F_2\) 分量便得 \(t_2=Pt_1\)，从而长度相同。
+
+	反过来，设正交映射 \(P_0\) 满足 \(P_0Q_1P_0^{-1}=Q_2\)。向量 \(P_0t_1\) 与 \(t_2\) 都在 \(F_2\) 且等长。若它们为零，取 \(U=I\)；否则把各自除以公共长度，再分别扩充为 \(F_2\) 的标准正交基，把前一组基映到后一组，得到 \(F_2\) 上的正交映射 \(U\)。令它在 \(F_2^\perp\) 上为恒等。由于 \(Q_2\) 在 \(F_2\) 上为恒等且保持其正交补， \(UQ_2=Q_2U\)。于是 \(P=UP_0\) 仍共轭两个正交部分，并满足 \(Pt_1=t_2\)。取 \(h(x)=Px\) 即得 \(hf_1h^{-1}=f_2\)。正交部分的参数由\cref{g1:thm:orthogonal-blocks}确定。
+\end{proof}
+
+这里允许所有等距坐标改变，含改变定向的变换。例如在一个二维旋转平面中翻转一个基向量，会把 \(R_\theta\) 变为 \(R_{-\theta}\)，所以参数可选在 \((0,\pi)\)。若只允许保定向的共轭，可能还需要额外的方向信息，不能把本命题的参数表原封不动用于那个问题。
+
+\ProseParagraphBreak
+
+还要区分共轭与双线性型的坐标变换。同一个线性算子的输入与输出都换基，若旧坐标 \(x=Sx'\)，矩阵变成 \(S^{-1}AS\)；同一个二次型 \(x^{\mathsf T}Ax\) 改用新坐标则变成 \(x'^{\mathsf T}S^{\mathsf T}ASx'\)。前者是矩阵相似，后者是合同。矩阵相似是线性算子的换基；下一小节的几何相似变换则指统一缩放再作等距变换，名称相近而所讨论的对象不同。正交矩阵满足 \(S^{-1}=S^{\mathsf T}\)，才使两种公式在这个特殊条件下重合。写下所作用的对象，往往比记住孤立的变换公式更可靠。
+
+\subsection{欧氏、仿射与相似分类的比较}
+\label{g1:subsec:0104:03}
+
+把正交条件加到\cref{g1:exm:frame-orbits}的仿射变换中，就得到\term[oushiqun]{欧氏群}[Euclidean group] \(E(n)\)。它的元素为 \(x\mapsto Qx+b\)，由\cref{g1:thm:isometry-affine}也恰好是全部保持距离的自映射。进一步允许统一比例缩放，得到\term[xiangsiqun]{相似群}[similarity group] \(\operatorname{Sim}(n)\)，元素为 \(x\mapsto rQx+b\)，其中 \(r>0\)、\(Q\) 正交。这些映射把所有距离乘以同一个 \(r\)；反过来，具有这一距离性质的映射除去比例和平移后为等距映射。
+
+\begin{table}[htbp]
+	\centering\small
+	\caption{三种变换所保留的信息}\label{g1:tab:transformation-groups}
+	\begin{tabularx}{\linewidth}{@{}l l X@{}}
+		\toprule
+		变换 & 坐标形式 & 必定保留的几何量或关系 \\
+		\midrule
+		欧氏等距变换 & \(Qx+b\) & 距离、角度、仿射组合与平行关系 \\
+		相似变换 & \(rQx+b\) & 角度、非零长度之比、仿射组合与平行关系 \\
+		可逆仿射变换 & \(Px+b\) & 仿射组合、子空间维数、相交与平行关系 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+表中的包含关系为 \(E(n)\subseteq\operatorname{Sim}(n)\subseteq\operatorname{Aff}(n,\mathbb R)\)。允许的群越大，同一轨道可能包含越多对象，因而分类中能保留的信息越少。角度的保持可由内积公式核对：相似变换把内积与两个长度的乘积同时乘以 \(r^2\)，所以它们的比值不变。
+
+\begin{example}[非退化椭球的三种分类]\label{g1:exm:ellipsoid-classification}
+	在 \(\mathbb R^n\)、\(n\ge1\) 中，设 \(A\) 为实对称正定矩阵，考虑点集
+	\[
+		\mathcal E(A,c)=\{x:(x-c)^{\mathsf T}A(x-c)=1\}.
+	\]
+	\cref{g1:thm:spectral}将它化为 \(\sum_i\lambda_i y_i^2=1\)，其中 \(\lambda_i>0\)，半轴长为 \(a_i=\lambda_i^{-1/2}\)。在欧氏等距变换下，计入重数的无序半轴长多重集 \(\{a_1,\ldots,a_n\}\) 是完全不变量；在相似变换下，只剩它们的比例，即有序排列后归一化为最短半轴为 \(1\) 的长度组；在可逆仿射变换下，所有这样的椭球属于同一类。
+\end{example}
+\begin{proof}
+	先说明点集确实确定中心和型，避免只比较方程的外观。正定性及谱分解说明该点集非空而有界。若 \(c,d\) 都是它的对称中心，两次中心对称的复合就是平移 \(2(d-c)\)。点集若在非零平移下不变，任取一点并反复平移便得到无界序列，与有界性矛盾。因此中心唯一。中心移到零后，每个单位向量 \(u\) 上的正射线与椭球相交于 \(u/\sqrt{u^{\mathsf T}Au}\)。所以点集确定 \(u^{\mathsf T}Au\)，由齐次性确定所有二次型值，再由极化公式确定对称矩阵 \(A\)。
+
+	等距映射必须把唯一中心映到唯一中心，故中心化后两个矩阵通过正交合同联系，由谱定理的唯一性，特征值及半轴长的多重集一致。反过来，若半轴长组相同，匹配相应的标准正交特征基，再恢复中心的平移，就给出所求等距映射。相似变换则先把全部半轴长乘以公共正数 \(r\)，再作这种匹配，故判据恰为比例一致。最后，在正交特征坐标中置 \(z_i=\sqrt{\lambda_i}y_i\)，即可通过可逆线性变换把任意椭球送到单位球面。
+\end{proof}
+
+例如 \(x^2/4+y^2=1\) 与 \(x^2/16+y^2/4=1\) 相似而不等距，因为半轴由 \((2,1)\) 变为 \((4,2)\)。它们又都与圆仿射等价，但都不与圆相似，因为长短轴之比为 \(2\)。这也说明“能化成同一个标准方程”必须连同所用的坐标变换类别一起陈述。
+
+\subsection{矩阵族退化时不变量的变化}
+\label{g1:subsec:0104:04}
+
+分类一个固定对象之后，还可以问：数据连续变化时，分类参数怎样变化？矩阵每个元素都很接近，并不保证它们处于同一个轨道。以下把矩阵族的连续性理解为各矩阵元的连续性；所用估计都在有限维空间内。
+
+\begin{proposition}[秩与惯性的局部变化]\label{g1:prop:rank-inertia-continuity}
+	设 \(A_0\) 为实矩阵。充分接近 \(A_0\) 的同型实矩阵 \(A\) 均满足 \(\operatorname{rank}A\ge\operatorname{rank}A_0\)。若矩阵皆为实对称 \(n\) 阶矩阵，记正、负惯性指数为 \(p(A),q(A)\)，则在 \(A_0\) 的某个邻域内
+	\[
+		p(A)\ge p(A_0),\qquad q(A)\ge q(A_0).
+	\]
+	所以在秩固定的连续实对称矩阵族中，惯性局部不变；特别地，非退化型的惯性局部不变。
+\end{proposition}
+\begin{proof}
+	若 \(r=\operatorname{rank}A_0>0\)，取一个非零 \(r\) 阶子式。其行列式是矩阵元的多项式，故在充分小的邻域内仍非零，这证明秩的结论；\(r=0\) 时结论直接成立。
+
+	由\cref{g1:thm:inertia}，有维数 \(p(A_0)\) 的子空间 \(U_+\)，使 \(u^{\mathsf T}A_0u\) 在 \(U_+\setminus\{0\}\) 上为正。若 \(p(A_0)>0\)，它在 \(U_+\) 的单位球面上的最小值 \(m_+\) 为正，因为该球面紧且型连续。对 \(D=A-A_0\)，用矩阵元的欧氏范数 \(\lVert D\rVert_{\mathrm F}=(\sum_{ij}d_{ij}^2)^{1/2}\) 有
+	\[
+		|u^{\mathsf T}Du|
+		\le\left(\sum_{ij}d_{ij}^2\right)^{1/2}
+		\left(\sum_{ij}u_i^2u_j^2\right)^{1/2}
+		=\lVert D\rVert_{\mathrm F}\,\lVert u\rVert^2.
+	\]
+	所以当 \(\lVert D\rVert_{\mathrm F}<m_+/2\) 时，\(A\) 在同一个 \(U_+\) 上仍正定，从而 \(p(A)\ge p(A_0)\)；\(p(A_0)=0\) 时无需估计。对负定子空间应用于 \(-A\) 的相同论证，得到负指数不等式。若同时有 \(\operatorname{rank}A=\operatorname{rank}A_0\)，利用 \(p(A)+q(A)=\operatorname{rank}A\)，两项不等式只能同时取等号。
+\end{proof}
+
+该命题的方向很重要。序列收敛时，极限处的秩可以降低，不能比邻近矩阵的秩更高。这通常称为秩的下半连续性；此处的具体不等式比术语更便于使用。在一个参数区间上，秩固定就使惯性处处局部不变，因而在整个区间上不变：否则，取一个惯性值的原像以及其他所有惯性值原像的并；局部常值性说明二者都是开集，它们将该区间分成互不相交的两个非空开集，违背区间的连通性。
+
+\begin{example}[越过退化型]\label{g1:exm:degenerating-form}
+	实对称矩阵族 \(A_t=\operatorname{diag}(1,t)\) 对应 \(x^2+ty^2\)。当 \(t>0\) 时惯性为 \((2,0,0)\)，当 \(t=0\) 时为 \((1,0,1)\)，当 \(t<0\) 时为 \((1,1,0)\)。每个正参数都可用 \(z=\sqrt t\,y\) 化为 \(x^2+z^2\)，但这个变换在 \(t=0\) 时不可逆。因此，同一个非退化合同类的极限可以落入另一个轨道；分类所用的坐标不能保证跨过退化参数仍有效。
+\end{example}
+
+\begin{example}[特征值不变而相似类型改变]\label{g1:exm:shear-degeneration}
+	考虑线性变换族
+	\[
+		N_t=\begin{pmatrix}1&t\\0&1\end{pmatrix}.
+	\]
+	当 \(t\ne0\) 时，取 \(P_t=\operatorname{diag}(t,1)\)，便有 \(N_t=P_tN_1P_t^{-1}\)，所以这些变换都相似。但 \(N_0=I\) 不与 \(N_1\) 相似：\(\operatorname{rank}(N_t-I)\) 在 \(t\ne0\) 时为 \(1\)，在 \(t=0\) 时为 \(0\)，而共轭保持该秩。全部特征值始终为 \(1\)，所以特征值多重集对一般线性算子并不是完全不变量。几何上，非零剪切只逐点固定一条直线，极限恒等变换却逐点固定整个平面。
+\end{example}
+
+谱定理中的自伴条件于是有了另一个可见作用：它排除了上述剪切型的现象，使特征值多重集足以完成正交分类。对于变化的几何对象，应分别观察连续数值参数、离散分类数据和达到退化点时失效的构造；不能仅凭某一个熟悉的不变量没有变化，就判断对象的类型没有变化。

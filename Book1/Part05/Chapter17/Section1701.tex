@@ -1,0 +1,238 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 17.1 作用和轨道的微分几何
+% 纲要位置：几何学计划纲要.md，第 772 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 无穷小作用与基本向量场
+% * 稳定子、轨道切空间与秩
+% * 齐性空间的光滑结构
+% * 等变映射及其微分
+% 
+% 纲要内容结束
+
+\section{作用和轨道的微分几何}
+\label{g1:sec:1701}
+
+在\secref{g1:sec:0104}中，群作用把集合分解为轨道，轨道又与稳定子群的陪集空间对应。现在群和被作用的空间都是流形，我们要把这份集合论描述变成微分几何：群中的一个切向量怎样推动点运动，轨道有多少个独立方向，陪集空间又怎样取得光滑坐标？这里必须保留一个区别：轨道可以有自己的流形拓扑，而这个拓扑未必就是环境流形给它的子空间拓扑。
+
+\subsection{无穷小作用与基本向量场}
+\label{g1:subsec:1701:01}
+
+设 \(G\) 为李群，\(M\) 为光滑流形。\term[guanghuaqunzuoyong]{光滑群作用}[smooth group action]是光滑映射 \(a:G\times M\to M\)，满足 \(e\cdot p=p\) 和 \(g\cdot(h\cdot p)=(gh)\cdot p\)。本章默认左作用，记 \(a_g(p)=g\cdot p\)；\(a_g\) 是微分同胚，逆为 \(a_{g^{-1}}\)。右作用也可用同样方法处理，但变换次序与某些括号符号需要随之调整。
+
+\ProseParagraphBreak
+
+记 \(\mathfrak g=\mathrm{T}_eG\)。沿群中的单参数子群 \(\exp(tX)\) 运动，会使每个点 \(p\) 描出一条曲线。把其初速度收集起来，便得到 \(M\) 上的向量场。
+
+\begin{definition}\label{g1:def:fundamental-vector-field}
+	对 \(X\in\mathfrak g\)，定义对应的\term[jibenxiangliangchang]{基本向量场}[fundamental vector field]为
+	\begin{equation}\label{g1:eq:fundamental-field-convention}
+		X_M(p)=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{t=0}\exp(tX)\cdot p.
+	\end{equation}
+	映射 \(X\mapsto X_M\) 称为该作用的\term[wuqiongxiaozuoyong]{无穷小作用}[infinitesimal action]，本章始终采用式中的正号约定。\symidx{\(X_M\)：正号约定下的基本向量场}
+\end{definition}
+
+\begin{proposition}[基本场的流与括号]\label{g1:prop:fundamental-fields}
+	设有限维实李群 \(G\) 光滑左作用于无边界光滑流形 \(M\)。基本场 \(X_M\) 光滑且完备，其流为 \(\Phi_t(p)=\exp(tX)\cdot p\)。映射 \(X\mapsto X_M\) 线性，并满足
+	\begin{equation}\label{g1:eq:fundamental-field-pushforward-bracket}
+		(a_g)_*X_M=(\operatorname{Ad}_gX)_M,
+		\qquad [X_M,Y_M]=-[X,Y]_M.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	对固定 \(p\)，定义轨道映射 \(\alpha_p:G\to M\)，\(\alpha_p(g)=g\cdot p\)。由于 \((\mathrm{d}\exp)_0=I\)，有 \(X_M(p)=(\mathrm{d}\alpha_p)_eX\)。微分对向量线性，并随 \(p\) 光滑变化，所以基本场光滑，且对 \(X\) 线性。
+
+	单参数子群的乘法给出 \(\Phi_{t+s}=\Phi_s\circ\Phi_t\)。在 \(s=0\) 求导得 \(\partial_t\Phi_t(p)=X_M(\Phi_t(p))\)，初值为 \(p\)。此式对一切实数 \(t\) 都有定义，故它是全局流。
+
+	由\cref{g1:prop:exponential-naturality}，
+	\[
+		g\exp(tX)\cdot p=\exp(t\operatorname{Ad}_gX)\cdot(g\cdot p).
+	\]
+	在 \(t=0\) 求导便得推前公式。为核对括号，回忆\cref{g1:prop:flow-pullback-derivative}：\([X_M,Y_M]=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_0\Phi_t^*Y_M\)，其中场的拉回用逆向流的微分。因此
+	\[
+		\Phi_t^*Y_M=(a_{\exp(-tX)})_*Y_M
+		=(\operatorname{Ad}_{\exp(-tX)}Y)_M.
+	\]
+	再用 \(\operatorname{Ad}_{\exp(tX)}=e^{t\operatorname{ad}_X}\)，在零点求导得到 \(-[X,Y]_M\)。
+\end{proof}
+
+负号并非作用出了问题，而是本书同时采用左作用和\eqref{g1:eq:fundamental-field-convention}的正号所致。若改用 \(X\mapsto-X_M\)，就得到保持括号的映射。尤其要与前章的左不变场区分：\(G\) 左乘自身时，基本场在 \(g\) 处是曲线 \(\exp(tX)g\) 的速度，因而是右不变场；前章的左不变场则沿 \(g\exp(tX)\) 运动。
+
+\begin{example}\label{g1:exm:linear-action-fundamental}
+	\(\operatorname{GL}(n,\mathbb R)\) 自然作用于 \(\mathbb R^n\) 时，\(X_M(v)=Xv\)。按向量场的坐标括号，
+	\[
+		[X_M,Y_M](v)=YXv-XYv=-(XY-YX)v,
+	\]
+	直接验证了负号。对平面旋转，取 \(J=\begin{pmatrix}0&-1\\1&0\end{pmatrix}\)，得到 \(J_M=-y\partial_x+x\partial_y\)。原点处这个场为零，其余点沿以原点为圆心的圆周运动。场在某点为零，意味着这一个单参数运动固定该点，并不意味着整个群都固定该点。
+\end{example}
+
+\subsection{稳定子、轨道切空间与秩}
+\label{g1:subsec:1701:02}
+
+固定 \(p\in M\)，记 \(G_p=\{g:g\cdot p=p\}\)、\(G\cdot p=\{g\cdot p:g\in G\}\)。这仍是\cref{g1:prop:orbit-stabilizer}中的稳定子群与轨道。回顾第10章的自由性：作用称为自由作用，若每个 \(G_p=\{e\}\)；称为\term[youxiaozuoyong]{有效作用}[effective action]，若 \(\bigcap_{p\in M}G_p=\{e\}\)。前者逐点排除非平凡稳定子，后者只排除处处不起作用的元素，二者不能混同。
+
+\begin{proposition}[轨道映射的秩]\label{g1:prop:orbit-map-rank}
+	设有限维实李群 \(G\) 光滑左作用于无边界光滑流形 \(M\)，\(p\in M\)。稳定子 \(H=G_p\) 是闭的嵌入李子群，其李代数为
+	\begin{equation}\label{g1:eq:stabilizer-lie-algebra}
+		\mathfrak h=\ker(\mathrm{d}\alpha_p)_e
+		=\{X\in\mathfrak g:X_M(p)=0\}.
+	\end{equation}
+	轨道映射 \(\alpha_p\) 的秩恒等于 \(\dim G-\dim H\)，其在单位元处的微分像为 \(\{X_M(p):X\in\mathfrak g\}\)。此外，\(G_{g\cdot p}=gG_pg^{-1}\)。
+\end{proposition}
+\begin{proof}
+	\(H=\alpha_p^{-1}(\{p\})\)，单点集在 Hausdorff 流形中闭，所以 \(H\) 闭。\cref{g1:thm:closed-subgroup}赋予它嵌入李子群结构，并且说明 \(X\in\mathfrak h\) 当且仅当 \(\exp(tX)\in H\) 对所有 \(t\) 成立。这一条件显然推出 \(X_M(p)=0\)。反之，若 \(X_M(p)=0\)，常值曲线 \(p\) 和曲线 \(\exp(tX)\cdot p\) 都是过 \(p\) 的积分曲线。由\secref{g1:sec:1301}的积分曲线唯一性，它们在整个共同定义域 \(\mathbb R\) 上相等，故 \(\exp(tX)\in H\)。这证明核的描述。
+
+	恒等式 \(\alpha_p\circ L_g=a_g\circ\alpha_p\) 在单位元的微分给出
+	\[
+		(\mathrm{d}\alpha_p)_g\circ(\mathrm{d}L_g)_e
+		=(\mathrm{d}a_g)_p\circ(\mathrm{d}\alpha_p)_e.
+	\]
+	两端的平移微分均可逆，故秩处处相同，等于 \(\dim\mathfrak g-\dim\mathfrak h\)。最后，\(k\) 固定 \(g\cdot p\) 当且仅当 \(g^{-1}kg\) 固定 \(p\)，这给出稳定子共轭公式。
+\end{proof}
+
+这个命题已经找出轨道的候选切空间，但尚未把轨道证明为子流形。常秩定理只描述轨道映射在一个群元素附近的像，不能排除群中很远的元素又把同一轨道送回当前邻域。下面先给轨道一个确定的流形结构，再讨论它与环境拓扑的关系。
+
+\subsection{齐性空间的光滑结构}
+\label{g1:subsec:1701:03}
+
+设 \(H\subseteq G\) 为闭子群。记 \(G/H\) 为左陪集 \(gH\) 的集合，赋予商映射 \(q(g)=gH\) 所决定的商拓扑。这里把同一个右 \(H\) 轨道压成一点；如果 \(H\) 不正规，不能把 \(G/H\) 当作商群。
+
+\begin{theorem}[闭子群的齐性空间]\label{g1:thm:homogeneous-space}
+	设 \(G\) 为有限维实李群，\(H\subseteq G\) 为闭子群。\(G/H\) 具有唯一的无边界、Hausdorff、第二可数光滑流形结构，使 \(q:G\to G/H\) 为光滑淹没。这个结构具有原来的商拓扑，维数为 \(\dim G-\dim H\)，左作用 \(G\times G/H\to G/H\) 光滑。\(q\) 在每点附近有光滑局部截面；对任意流形 \(N\) 和集合映射 \(f:G/H\to N\)，
+	\[
+		f\text{ 光滑}\quad\Longleftrightarrow\quad f\circ q\text{ 光滑}.
+	\]
+\end{theorem}
+\begin{proof}
+	先处理拓扑。若 \(A\subseteq G\) 开，则 \(q^{-1}(q(A))=AH=\bigcup_{h\in H}Ah\) 开，所以 \(q\) 是开映射。不同陪集 \(xH,yH\) 满足 \(x^{-1}y\notin H\)。由 \(H\) 闭及乘法连续，可取 \(x,y\) 的开邻域 \(A,B\)，使 \(A^{-1}B\cap H=\varnothing\)。于是 \(q(A)\) 与 \(q(B)\) 不交，证明商空间 Hausdorff。\(G\) 的一个可数开基经开映射 \(q\) 取像，就是 \(G/H\) 的可数开基。
+
+	记 \(\mathfrak h=\mathrm{T}_eH\)，取线性补空间 \(\mathfrak g=\mathfrak m\oplus\mathfrak h\)。考虑
+	\[
+		F:\mathfrak m\times H\longrightarrow G,
+		\qquad F(X,h)=\exp X\,h.
+	\]
+	它在 \((0,e)\) 的微分是 \((X,Y)\mapsto X+Y\)，为同构。逆函数定理给出 \(0,e\) 的邻域 \(W_0\subseteq\mathfrak m\)、\(V\subseteq H\)，使 \(F\) 在 \(W_0\times V\) 上是到开集的微分同胚。取更小的 \(W\subseteq W_0\)，使 \((\mathrm{d}F)_{(X,e)}\) 对 \(X\in W\) 都可逆，并且
+	\[
+		X,Y\in W,\quad \exp(-Y)\exp X\in H
+		\quad\Longrightarrow\quad \exp(-Y)\exp X\in V.
+	\]
+	这一缩小可行，因为 \(H\) 取子空间拓扑，存在 \(G\) 中单位元邻域 \(D\) 满足 \(H\cap D\subseteq V\)，而 \(\exp(-Y)\exp X\) 在 \(X,Y\to0\) 时趋向 \(e\)。
+
+	我们断言 \(F:W\times H\to (\exp W)H\) 是微分同胚。若 \(\exp X\,h=\exp Y\,k\)，则 \(u=\exp(-Y)\exp X=kh^{-1}\in V\)，从而 \(F(X,e)=F(Y,u)\)。局部单射性给出 \(X=Y\)、\(u=e\)，继而 \(h=k\)。故 \(F\) 单射。它在 \((X,e)\) 的微分可逆，利用第二因子和目标上的右平移，便知在 \((X,h)\) 处也可逆。因此它处处为局部微分同胚，像 \((\exp W)H\) 开；结合单射性，得到断言。
+
+	现在 \(X\mapsto q(\exp X)\) 是 \(W\) 到开集 \(q((\exp W)H)\) 的同胚：在上述乘积坐标中，\(q\) 正是忘掉 \(H\) 因子的投影，故其逆坐标连续。把这张图用左平移移到任意 \(gH\) 附近，得到局部参数 \(X\mapsto q(g\exp X)\)。在两张图的交叠处，坐标转换由
+	\[
+		X\longmapsto k^{-1}g\exp X
+		\longmapsto F_k^{-1}(k^{-1}g\exp X)
+		\longmapsto\text{第一分量}
+	\]
+	给出，其中 \(F_k\) 是第二张图所用的横截乘积。各箭头均光滑，因而得到光滑图册。它的维数为 \(\dim\mathfrak m\)，且 \(q\) 在乘积坐标下为投影，所以是淹没。
+
+	局部截面为 \(q(g\exp X)\mapsto g\exp X\)，记为 \(\sigma\)。若 \(f\circ q\) 光滑，则 \(f=(f\circ q)\circ\sigma\) 在每个这样的邻域光滑；反向由复合直接得到。左作用在局部写成 \((g,x)\mapsto q(g\sigma(x))\)，故光滑。
+
+	最后，若另一光滑结构也使 \(q\) 为淹没，则由\cref{g1:thm:immersion-submersion-normal-form}，\(q\) 对该结构同样有光滑局部截面，并且是开映射。其拓扑因此仍为商拓扑。用两种结构各自的局部截面，恒等映射在两个方向都可写成一个局部截面与另一结构下的 \(q\) 的复合，故双向光滑，证明唯一性。
+\end{proof}
+
+定理中的最后一个性质说明：若先在 \(G\) 上定义光滑映射 \(F\)，并且证明它在每个陪集上常值，那么下降后的映射不必重新逐张坐标检查。下面的交换图同时表示 \(F=f\circ q\) 与 \(f\) 的唯一性：
+\[
+	\begin{tikzcd}
+		G \arrow[r,"F"] \arrow[d,"q"'] & N \\
+		G/H \arrow[ur,dashed,"f"'] &
+	\end{tikzcd}
+\]
+局部截面正是把 \(F\) 的光滑性传递给 \(f\) 的工具。这里的存在条件是“在陪集上常值”，不是对任意 \(F\) 都能作此下降。
+
+\begin{proposition}[轨道的浸入结构]\label{g1:prop:orbit-immersion}
+	设有限维实李群 \(G\) 光滑左作用于无边界光滑流形 \(M\)，\(p\in M\)。映射
+	\[
+		\overline\alpha_p:G/G_p\longrightarrow M,
+		\qquad gG_p\longmapsto g\cdot p
+	\]
+	是单射浸入，像为 \(G\cdot p\)。把其定义域的光滑结构传给轨道后，
+	\begin{equation}\label{g1:eq:orbit-tangent-space}
+		\mathrm{T}_p(G\cdot p)=\{X_M(p):X\in\mathfrak g\}
+		\cong\mathfrak g/\mathfrak g_p.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	集合上的单射性和像的描述正是轨道与陪集的对应。\(\alpha_p=\overline\alpha_p\circ q\)，所以前一定理的下降性质使 \(\overline\alpha_p\) 光滑。\((\mathrm{d}q)_e\) 满射，其核为 \(\mathfrak g_p\)；\cref{g1:prop:orbit-map-rank}给出 \((\mathrm{d}\alpha_p)_e\) 的同一个核。因此诱导的 \((\mathrm{d}\overline\alpha_p)_{eG_p}\) 单射。左平移和作用微分把此结论传到每点，证明浸入，并得到切空间公式。
+\end{proof}
+
+这时不能删去“浸入”二字。例如 \(\mathbb R\) 按 \(t\cdot(x,y)=(x+t,y+\lambda t)\) 作用于 \(\mathbb R^2/\mathbb Z^2\)，其中 \(\lambda\) 无理。稳定子为零，但轨道是\secref{g1:sec:1603}讨论过的稠密无理斜率线，其自身拓扑是一条实直线的拓扑，不能从稠密像的子空间拓扑来理解。下一节的固有性将排除这种返回现象。
+
+\ProseParagraphBreak
+
+称作用\term[chuandizuoyong]{传递作用}[transitive action]，若 \(M\ne\varnothing\) 且只有一个轨道；带有传递光滑 \(G\) 作用的流形称为 \(G\) 的\term[qixingkongjian]{齐性空间}[homogeneous space]。此时 \(G/G_p\) 与 \(M\) 集合上一一对应，但还须证明这个对应是微分同胚。一般的双射浸入没有这样的自动结论。
+
+\begin{proposition}[传递作用的模型]\label{g1:prop:transitive-action-model}
+	设有限维实李群 \(G\) 在非空无边界光滑流形 \(M\) 上传递光滑作用，\(p\in M\)。则 \(\overline\alpha_p:G/G_p\to M\) 为微分同胚。
+\end{proposition}
+\begin{proof}
+	先说明满射的常秩映射 \(F:P\to M^n\) 必有秩 \(n\)，其中 \(P,M\) 为本章约定的流形。若秩 \(r<n\)，常秩定理给出定义域和像空间的局部坐标，使每个局部像包含在一个 \(r\) 维坐标平面中。用第二可数性及局部紧性，可取可数个紧坐标小球 \(K_j\) 覆盖 \(P\)，每个 \(K_j\) 都落在一张这样的定义域图内。于是 \(F(K_j)\) 在 \(M\) 中紧且闭，并因包含在低维坐标平面中而内部为空。
+
+	非空流形不能被这些闭且内部为空的集合覆盖。这里可在 \(M\) 的一张坐标图内直接证明：取一个有内部的紧欧氏球，在其内部选择避开 \(F(K_1)\) 的更小闭球；再在后者内部选择避开 \(F(K_2)\) 的闭球，依次进行，并令半径趋于零。每一步可行，因为这些闭集内部为空。嵌套紧球有公共点，该点避开所有 \(F(K_j)\)，与覆盖矛盾。因此 \(F\) 的秩必须为 \(n\)。
+
+	传递性使 \(\alpha_p:G\to M\) 满射，前面已证明其常秩，故它是淹没。于是 \(\dim(G/G_p)=\dim M\)。\(\overline\alpha_p\) 是同维流形之间的双射浸入，微分处处可逆，逆函数定理使其逆在每点附近光滑，从而它是微分同胚。
+\end{proof}
+
+为了以后计算不变度量，还需要知道稳定子怎样作用在一个切空间上。若 \(h\in G_p\)，则 \(a_h(p)=p\)，故 \((\mathrm{d}a_h)_p\) 是 \(\mathrm{T}_pM\) 的线性自同构。这给出\term[wendingzibiaoshi]{稳定子表示}[isotropy representation]
+\[
+	\rho_p:G_p\longrightarrow\operatorname{GL}(\mathrm{T}_pM),\qquad
+	\rho_p(h)=(\mathrm{d}a_h)_p.
+\]
+链式法则保证 \(\rho_p(hk)=\rho_p(h)\rho_p(k)\)。它也保持轨道切空间，因此在法商空间 \(\mathrm{T}_pM/\mathrm{T}_p(G\cdot p)\) 上诱导线性作用。
+
+\begin{proposition}[齐性空间的切表示]\label{g1:prop:homogeneous-tangent-isotropy}
+	设 \(G\) 为有限维实李群，\(H\subseteq G\) 为闭子群，\(o=eH\in G/H\)，\(\mathfrak h=\mathrm{T}_eH\)。商映射的微分诱导同构 \(\mathrm{T}_o(G/H)\cong\mathfrak g/\mathfrak h\)。在此同构下，\(h\in H\) 的稳定子表示为
+	\[
+		\rho_o(h)(X+\mathfrak h)=\operatorname{Ad}_hX+\mathfrak h.
+	\]
+\end{proposition}
+\begin{proof}
+	\(q\) 是淹没，且局部乘积表明 \(\ker(\mathrm{d}q)_e=\mathfrak h\)，所以先得切空间同构。共轭保持 \(H\)，故 \(\operatorname{Ad}_h\) 保持 \(\mathfrak h\)，所写商空间算子有定义。再由
+	\[
+		h\exp(tX)H=\exp(t\operatorname{Ad}_hX)H
+	\]
+	在 \(t=0\) 求导，即得表示公式。
+\end{proof}
+
+\subsection{等变映射及其微分}
+\label{g1:subsec:1701:04}
+
+两个带有群作用的空间之间，普通光滑映射可以任意改变轨道。若希望映射保留对称性，就需要它与作用相容。设 \(G\) 作用于 \(M\)、\(K\) 作用于 \(N\)，\(\varphi:G\to K\) 为光滑同态。光滑映射 \(F:M\to N\) 称为关于 \(\varphi\) 的\term[dengbianyingshe]{等变映射}[equivariant map]，若
+\[
+	F(g\cdot p)=\varphi(g)\cdot F(p).
+\]
+若 \(G=K\)、\(\varphi=\operatorname{id}\)，就简称 \(G\) 等变。等变映射由一点的取值控制整条轨道，因此稳定子也会对这个取值施加限制。
+
+\begin{proposition}[等变映射的微分]\label{g1:prop:equivariant-map-differential}
+	对上述等变映射，\(\varphi(G_p)\subseteq K_{F(p)}\)，且
+	\begin{equation}\label{g1:eq:equivariant-infinitesimal}
+		(\mathrm{d}F)_pX_M(p)=((\mathrm{d}\varphi)_eX)_N(F(p)).
+	\end{equation}
+	若 \(h\in G_p\)，则其切表示满足
+	\[
+		(\mathrm{d}F)_p\circ\rho_p(h)
+		=\rho_{F(p)}(\varphi(h))\circ(\mathrm{d}F)_p.
+	\]
+\end{proposition}
+\begin{proof}
+	若 \(h\cdot p=p\)，等变式给出 \(\varphi(h)\cdot F(p)=F(p)\)，故有稳定子包含。把 \(g=\exp(tX)\) 代入，并用指数自然性 \(\varphi(\exp(tX))=\exp(t(\mathrm{d}\varphi)_eX)\)，对 \(t\) 求导得\eqref{g1:eq:equivariant-infinitesimal}。最后对 \(F\circ a_h=a_{\varphi(h)}\circ F\) 在 \(p\) 求微分，得到切表示的相容式。
+\end{proof}
+
+\begin{proposition}[齐性空间之间的等变映射]\label{g1:prop:equivariant-homogeneous-maps}
+	设 \(H,K\subseteq G\) 为闭子群。\(G\) 等变光滑映射 \(G/H\to G/K\) 与满足 \(a^{-1}Ha\subseteq K\) 的陪集 \(aK\) 一一对应，映射为
+	\[
+		F_a(gH)=gaK.
+	\]
+	特别地，若 \(H\subseteq K\)，则 \(F_e:gH\mapsto gK\) 为光滑淹没，在基点的微分是自然满射 \(\mathfrak g/\mathfrak h\to\mathfrak g/\mathfrak k\)。
+\end{proposition}
+\begin{proof}
+	若 \(F\) 等变且 \(F(eH)=aK\)，则 \(F(gH)=gaK\)，所以取值已被确定。\(H\) 固定 \(eH\)，故必须固定 \(aK\)，即 \(a^{-1}Ha\subseteq K\)。反之，在此包含条件下，\(g'=gh\) 给出 \(g'aK=ga(a^{-1}ha)K=gaK\)，所以公式与代表元无关。\(g\mapsto gaK\) 光滑，在 \(H\) 陪集上常值，由\cref{g1:thm:homogeneous-space}下降为光滑映射；等变性从公式直接得到。两个这样的映射相同，当且仅当它们在 \(eH\) 处的取值 \(aK\) 相同。
+
+	若 \(H\subseteq K\)，关系 \(q_K=F_e\circ q_H\) 在单位元求微分，得所写商向量空间满射。左作用将满射性传到各点，故 \(F_e\) 是淹没。
+\end{proof}
+
+上述微分有清楚的几何含义：从 \(G/H\) 再压到 \(G/K\)，就是把原来仍能看见的 \(\mathfrak k/\mathfrak h\) 方向也视为等价。它的核给出被新等价关系消去的方向；保留下来的方向才是目标空间的切向量。下一节将把这种局部投影结构推广到不必传递的群作用。

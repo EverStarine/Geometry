@@ -1,0 +1,290 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 10.2 离散群与曲面商
+% 纲要位置：几何学计划纲要.md，第 515 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 椭圆、抛物和双曲变换
+% * 自由固有作用及基本区域
+% * 基本多边形的边配对与粘合
+% * 闭曲面、尖点与漏斗的模型
+% 
+% 纲要内容结束
+
+\section{离散群与曲面商}
+\label{g1:sec:1002}
+
+双曲平面中每一点的局部几何都相同，但把不同的点按等距变换识别以后，可以得到有闭测地线的圆柱、面积有限的尖点端，乃至任意亏格不小于二的闭曲面。这里有两个不同的构造问题：给定一个等距变换群，商是否仍是光滑曲面；给定一张多边形和边配对，接缝及顶点附近的度量是否光滑。前一个问题由作用的自由性和固有性控制，后一个问题必须逐条检查边的等距配对和顶点周围的总角。
+
+\subsection{椭圆、抛物和双曲变换}
+\label{g1:subsec:1002:01}
+
+在上半平面 \(\mathbb H=\{z=x+iy:y>0\}\) 上，度量为 \(g_{\mathbb H}=|\mathrm{d}z|^2/y^2\)。\cref{g1:thm:hyperbolic-isometry-group}已经说明，其保向等距变换恰为
+\[
+	z\longmapsto\frac{az+b}{cz+d},\qquad
+	A=\begin{pmatrix}a&b\\c&d\end{pmatrix}\in\operatorname{SL}(2,\mathbb R),
+\]
+其中 \(A\) 与 \(-A\) 给出同一个变换，因此群为 \(\operatorname{PSL}(2,\mathbb R)\)。这些变换也作用于理想边界 \(\mathbb R\cup\{\infty\}\)；那里不是双曲平面的一部分，边界不动点与平面内不动点必须区别。
+
+\begin{theorem}[保向等距变换的分类]\label{g1:thm:psl-element-classification}
+	设 \(h\in\operatorname{PSL}(2,\mathbb R)\) 不是恒等变换，取代表矩阵 \(A\in\operatorname{SL}(2,\mathbb R)\)，记 \(\tau=(\operatorname{tr}A)^2\)。则有且仅有下列一种情形。
+	\begin{enumerate}
+		\item \(\tau<4\)：\(h\) 在 \(\mathbb H\) 中有唯一不动点，在理想边界没有不动点；移到圆盘模型并把该点移到原点后，\(h\) 为非恒等旋转 \(w\mapsto e^{i\theta}w\)。称 \(h\) 为\term[tuoyuanbianhuan]{椭圆变换}[elliptic isometry]。
+		\item \(\tau=4\)：\(h\) 在 \(\mathbb H\) 中没有不动点，在理想边界有唯一不动点；经保向等距共轭后，\(h\) 为 \(z\mapsto z+1\) 或 \(z\mapsto z-1\)。称 \(h\) 为\term[paowubianhuan]{抛物变换}[parabolic isometry]。
+		\item \(\tau>4\)：\(h\) 在 \(\mathbb H\) 中没有不动点，在理想边界有两个不同不动点；经保向等距共轭后，\(h\) 为 \(z\mapsto e^\ell z\)，其中 \(\ell>0\) 且
+		\[
+			|\operatorname{tr}A|=2\cosh(\ell/2).
+		\]
+		称 \(h\) 为\term[shuangqubianhuan]{双曲变换}[hyperbolic isometry]。
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	更换代表 \(A\mapsto-A\) 不改变 \(\tau\)，共轭也不改变它。有限不动点满足
+	\[
+		cz^2+(d-a)z-b=0,
+	\]
+	其判别式为 \((a+d)^2-4(ad-bc)=\tau-4\)。若 \(c=0\)，还要把无穷远点计入；统一地说，理想边界不动点就是实矩阵 \(A\) 的实特征直线，所以判别式同样区分零个、一个和两个实不动点。
+
+	若 \(\tau<4\)，两个非实根互为共轭，恰有一个在 \(\mathbb H\) 中。设它为 \(p=x+iy\)，变换 \(z\mapsto(z-x)/y\) 将其送到 \(i\)。一个实 Möbius 变换固定 \(i\) 当且仅当其代表可写成
+	\[
+		R_\theta=\begin{pmatrix}
+			\cos(\theta/2)&\sin(\theta/2)\\
+			-\sin(\theta/2)&\cos(\theta/2)
+		\end{pmatrix}.
+	\]
+	用圆盘坐标 \(w=(z-i)/(z+i)\) 代入，所得变换为 \(w\mapsto e^{i\theta}w\)。非恒等性排除 \(\theta\equiv0\pmod{2\pi}\)，也给出平面内不动点的唯一性。
+
+	若 \(\tau=4\)，非恒等性说明 \(A\ne\pm I\)，故只有一条实特征直线。将它送到 \(\infty\)，变换便写成 \(z\mapsto a^2z+ab\)，其中代表矩阵的对角元为 \(a,a^{-1}\)。迹平方等于四迫使 \(a=\pm1\)，于是它是非零平移 \(z\mapsto z+t\)。再用正缩放共轭，将 \(|t|\) 变成 \(1\)。正、负两个方向都保留在陈述中，因为保向共轭不能随意把这两个标准型混为同一个。
+
+	若 \(\tau>4\)，将两个理想不动点送到 \(0,\infty\)，得到 \(z\mapsto\lambda z\)，其中 \(\lambda>0\) 且 \(\lambda\ne1\)。若 \(\lambda<1\)，再用 \(z\mapsto-1/z\) 交换两端，便可令 \(\lambda=e^\ell>1\)。代表矩阵可取 \(\operatorname{diag}(e^{\ell/2},e^{-\ell/2})\)，给出迹的公式。三个标准型的全部不动点均已列出，证明分类。
+\end{proof}
+
+迹平方判别的是三种类型，不是所有共轭参数。例如圆盘中旋转 \(\theta\) 与旋转 \(-\theta\) 具有相同的迹平方，但保向共轭还保留旋转方向。下一步要构造商时，更重要的是一个变换把点移动了多远。
+
+\begin{definition}[平移长度]\label{g1:def:hyperbolic-translation-length}
+	等距变换 \(h\) 的\term[pingyichangdu]{平移长度}[translation length]定义为
+	\[
+		L(h)=\inf_{p\in\mathbb H}d_{\mathbb H}(p,hp).
+	\]
+\end{definition}
+
+对椭圆变换，\(L(h)=0\)，且在唯一内点不动点处达到。对抛物变换 \(z\mapsto z+t\)，\cref{g1:thm:hyperbolic-distance-geodesics}中的距离公式给出
+\[
+	\cosh d_{\mathbb H}(z,z+t)=1+\frac{t^2}{2y^2},
+\]
+所以 \(L(h)=0\)，但没有任何平面内点达到这个下确界。对双曲标准型，距离公式则给出
+\begin{equation}\label{g1:eq:hyperbolic-displacement}
+	\cosh d_{\mathbb H}(z,e^\ell z)
+	=\cosh\ell+2\sinh^2(\ell/2)\frac{x^2}{y^2}.
+\end{equation}
+因此 \(L(h)=\ell\)，恰在虚轴上达到。一般双曲变换的两个理想不动点之间的测地线称为它的\term[zhou]{轴}[axis]；沿轴的作用就是长度为 \(\ell\) 的平移。下确界是否达到，已经把抛物与双曲两种无内点不动点的行为区别开来。
+
+\subsection{自由固有作用及基本区域}
+\label{g1:subsec:1002:02}
+
+为了使商附近仍是一张普通小圆盘，需要排除两种障碍：一个群元素固定该点，或者无限多个不同群元素在附近反复堆积。前者由自由性排除，后者由下面的紧集条件控制。
+
+\begin{definition}[离散子群与固有作用]\label{g1:def:discrete-proper-isometric-action}
+	给 \(\operatorname{PSL}(2,\mathbb R)\) 赋予矩阵群模去 \(\{\pm I\}\) 的拓扑。子群 \(\Gamma\) 若有一个单位元邻域只包含其单位元，称为\term[lisanziqun]{离散子群}[discrete subgroup]。群在 \(\mathbb H\) 上的作用称为\term[ziyouzuoyong]{自由作用}[free action]，若 \(\gamma p=p\) 蕴含 \(\gamma=1\)；称为\term[guyouzuoyong]{固有作用}[proper action]，若对每个紧集 \(K\subset\mathbb H\)，集合
+	\[
+		\{\gamma\in\Gamma:\gamma K\cap K\ne\varnothing\}
+	\]
+	有限。
+\end{definition}
+
+这里把 \(\Gamma\) 当作离散群，使用的是适合离散作用的紧集定义。第五章\cref{g1:def:properly-discontinuous-covering}中的“适当不连续”还要求每点都有与所有非平凡平移不交的小邻域，因而已经包含自由性。本节的固有性允许有限稳定子；要恢复第五章的条件，需要同时假设自由。
+
+\begin{proposition}[离散性与固有性]\label{g1:prop:discrete-hyperbolic-action}
+	子群 \(\Gamma\subset\operatorname{PSL}(2,\mathbb R)\) 离散，当且仅当其在 \(\mathbb H\) 上的作用固有。离散子群中的椭圆元素都有有限阶；其作用自由，当且仅当它没有非单位有限阶元素。
+\end{proposition}
+\begin{proof}
+	先说明离散子群与任意紧的群元素集合只有有限交。若紧集内有无限个不同元素 \(\gamma_n\)，由矩阵空间的紧性可取收敛子列；于是不同的 \(\gamma_n^{-1}\gamma_m\) 可以任意接近单位元，与单位元孤立矛盾。这里并未假定子群先验闭；同一个论证也说明其在矩阵群中的任何收敛序列最终恒定，所以它确实闭。
+
+	给 \(p=x+iy\) 选连续依赖于 \(p\) 的等距变换
+	\[
+		u_p(z)=yz+x,\qquad
+		u_p=\left[\begin{pmatrix}\sqrt y&x/\sqrt y\\0&1/\sqrt y\end{pmatrix}\right],
+	\]
+	它将 \(i\) 送到 \(p\)。若 \(h p=q\)，则 \(u_q^{-1}hu_p\) 固定 \(i\)，故属于前面写出的旋转群 \(\{R_\theta\}\)，这是一个紧群。若 \(p,q\in K\)，那么 \(h\) 位于紧集
+	\[
+		\{u_qR_\theta u_p^{-1}:p,q\in K,\ 0\le\theta\le2\pi\}
+	\]
+	之中。离散子群与该紧集只有有限交，故作用固有。反过来，若有不同的 \(\gamma_n\) 趋于单位元，则 \(\gamma_ni\to i\)；包含这些点和 \(i\) 的一个小紧邻域 \(K\) 将满足 \(\gamma_nK\cap K\ne\varnothing\)，与固有性矛盾。
+
+	椭圆元素的所有幂都位于一个共轭旋转群中，后者紧，所以离散性迫使其幂只有有限多个，即该元素为有限阶。分类定理表明，非恒等抛物或双曲变换都有无限阶。因此没有非单位有限阶元素等价于没有椭圆元素，又等价于没有平面内不动点，即作用自由。
+\end{proof}
+
+例如绕同一点旋转 \(2\pi/m\) 生成的有限群离散且作用固有，却不自由；这个点在商中有锥角 \(2\pi/m\)。绕同一点旋转一个与 \(2\pi\) 之比为无理数的角所生成的群则不离散，因为它有无限多个幂落在同一个紧旋转群中。离散性不会自动排除所有不动点。
+
+\begin{theorem}[自由固有等距作用的商]\label{g1:thm:hyperbolic-quotient}
+	设 \(\Gamma\subset\operatorname{PSL}(2,\mathbb R)\) 自由且固有地作用于 \(\mathbb H\)。则轨道商 \(M=\mathbb H/\Gamma\) 是 Hausdorff、第二可数的可定向光滑曲面，且有唯一度量使投影 \(q:\mathbb H\to M\) 为局部等距。该度量曲率恒为 \(-1\)，长度距离完备；\(q\) 是万有覆盖，甲板群恰为 \(\Gamma\)。
+\end{theorem}
+\begin{proof}
+	固定 \(p\in\mathbb H\)，取包含它的紧邻域 \(K\)。只有有限个 \(\gamma\) 满足 \(\gamma K\cap K\ne\varnothing\)。自由性给出 \(\gamma p\ne p\)；对有限个这样的非单位元素，同时缩小 \(p\) 的邻域 \(U\)，即可使 \(\gamma U\cap U=\varnothing\)。其余元素由 \(U\subset K\) 已经排除。因此第五章的强适当不连续条件成立。\cref{g1:prop:action-quotient-cover}的证明给出 \(q\) 为开映射，以及
+	\[
+		q^{-1}(q(U))=\bigsqcup_{\gamma\in\Gamma}\gamma U,
+	\]
+	每张片都同胚映到 \(q(U)\)。上半平面凸且可缩，特别是单连通；该命题还说明这是万有覆盖，甲板群正是 \(\Gamma\)。
+
+	仍须核验商的分离性。若 \(p,r\) 不在同一轨道，取它们的紧邻域之并 \(K\)。可能把第一个邻域送到第二个的群元素只有有限个；又因 \(\gamma p\ne r\)，可以同时缩小成 \(U\ni p,V\ni r\)，使所有 \(\gamma U\) 都不交 \(V\)。于是 \(q(U),q(V)\) 是不交开邻域，故商 Hausdorff。\(\mathbb H\) 的可数开基经开映射 \(q\) 取像，仍是商的可数开基，得到第二可数性。
+
+	用 \(q|_U\) 的逆把 \(q(U)\) 当作上半平面小片。两个这样的图在每个足够小的交叠部分上相差唯一一个 \(\gamma\in\Gamma\)，因而转换是光滑保向等距。各片的度量便相容地下降，唯一性也由局部等距要求决定；局部曲率保持为 \(-1\)。
+
+	最后证明完备性，而不由“局部等距”直接推出。距离公式说明 \(d_{\mathbb H}(i,x+iy)\le R\) 等价于
+	\[
+		x^2+(y-\cosh R)^2\le\sinh^2R.
+	\]
+	这个 Euclid 闭圆盘的最低高度为 \(e^{-R}>0\)，所以双曲闭球紧。固有性于是保证轨道与每个闭有界球只有有限交，故
+	\begin{equation}\label{g1:eq:hyperbolic-quotient-distance}
+		d_M(qx,qy)=\min_{\gamma\in\Gamma}d_{\mathbb H}(x,\gamma y).
+	\end{equation}
+	具体地，右端的最小值存在；不同轨道之间它为正，三角不等式由等距不变性得到。投影任意连接 \(x\) 与 \(\gamma y\) 的测地段，说明商长度距离不超过它。反过来，商中的每条分片光滑连接曲线从 \(x\) 提升后终于某个 \(\gamma y\)，提升保持长度，故其长度至少为右端。这样就证明了等式。
+
+	对 \(M\) 中任一 Cauchy 序列，取子列 \(p_n\)，使 \(d_M(p_n,p_{n+1})<2^{-n}\)。从任意提升 \(x_1\) 开始，逐次用\eqref{g1:eq:hyperbolic-quotient-distance}选择提升 \(x_{n+1}\)，满足 \(d_{\mathbb H}(x_n,x_{n+1})<2^{-n}\)。这些提升构成 Cauchy 序列，在完备的 \(\mathbb H\) 中收敛；其投影给出 \(p_n\) 的极限。原序列因 Cauchy 性也收敛，故商完备。
+\end{proof}
+
+上述证明把拓扑和度量的责任分开了：局部不交邻域给出覆盖，固有性还保证不同轨道能被分离，而等距性才使局部度量在商上相容。
+
+\begin{definition}[Dirichlet 区域]\label{g1:def:dirichlet-domain}
+	设 \(\Gamma\subset\operatorname{PSL}(2,\mathbb R)\) 的作用自由且固有，固定 \(p\in\mathbb H\)。集合
+	\[
+		D_p=\{x\in\mathbb H:d_{\mathbb H}(x,p)\le d_{\mathbb H}(x,\gamma p)\ \text{对所有 }\gamma\in\Gamma\}
+	\]
+	称为以 \(p\) 为中心的\term[Dirichletquyu]{Dirichlet 区域}[Dirichlet domain]。它把“离哪一个轨道点最近”转化成一组半平面条件。\footnote{Johann Peter Gustav Lejeune Dirichlet（狄利克雷，1805--1859），德国数学家，对数论、Fourier 级数与势理论作出重要贡献。}
+\end{definition}
+
+\begin{proposition}[Dirichlet 区域的铺盖]\label{g1:prop:dirichlet-domain}
+	在上述条件下，\(D_p\) 是有非空内部的闭测地凸集，所有 \(\gamma D_p\) 覆盖 \(\mathbb H\)，不同平移的内部不交；这些平移局部有限。\(D_p\) 在每个有界部分由有限条测地边界限制。若 \(\mathbb H/\Gamma\) 紧，则 \(D_p\) 是紧的有限边测地多边形。
+\end{proposition}
+\begin{proof}
+	两个不同点 \(p,q\) 的等距轨迹是一条测地线，\(d(x,p)\le d(x,q)\) 选出包含 \(p\) 的闭半平面。在双曲面模型中可以直接看出这一点：距离公式把等距条件写成 Lorentz 内积的线性等式 \(\langle X,P-Q\rangle_L=0\)，而 \(P-Q\) 为空间样向量；该平面截双曲面得到测地线。每一侧测地凸，因为长为 \(L>0\) 的测地段在双曲面上的表达是
+	\[
+		X(t)=\frac{\sinh((1-t)L)}{\sinh L}X(0)
+		+\frac{\sinh(tL)}{\sinh L}X(1),\qquad 0\le t\le1,
+	\]
+	两系数均非负，保持同侧的线性不等式。因此 \(D_p\) 是闭测地凸集。固有性和自由性给出 \(\inf_{\gamma\ne1}d(p,\gamma p)>0\)，取该下界一半以内的小球，就包含在 \(D_p\) 的内部。
+
+	对任意 \(x\)，轨道 \(\Gamma p\) 中有一个距 \(x\) 最近的点，存在性与商距离的最小值相同。若最近点为 \(\gamma p\)，则 \(\gamma^{-1}x\in D_p\)，所以各平移覆盖。若 \(x\) 同时位于 \(\gamma D_p\) 和 \(\eta D_p\) 的内部，且 \(\gamma\ne\eta\)，第一个内部条件给出 \(d(x,\gamma p)<d(x,\eta p)\)，第二个给出反向严格不等式，矛盾。严格性来自等距轨迹是一条边界测地线，不能包含内点。
+
+	若 \(x\in\overline B(p,R)\cap\gamma D_p\)，最近点条件说明 \(d(x,\gamma p)\le d(x,p)\le R\)，于是 \(d(p,\gamma p)\le2R\)。这样的 \(\gamma\) 只有有限个，得到平移的局部有限性。同样，在 \(B(p,R)\) 内能限制 \(D_p\) 的半平面只可能来自 \(d(p,\gamma p)\le2R\) 的元素，因为更远的轨道点在此球中总比 \(p\) 远。因此每个有界部分只需有限条边界。
+
+	若商紧，递增开集 \(q(B(p,R))\) 覆盖它，紧性给出某个 \(R\) 已经覆盖全商。每个 \(x\in D_p\) 都与 \(B(p,R)\) 中某点等价，故它距某个轨道点小于 \(R\)，最近点条件进一步给出 \(d(x,p)<R\)。于是 \(D_p\) 闭且有界，从而紧；它全部位于一个稍大的球内，所需边界只有有限条，得到有限测地多边形。
+\end{proof}
+
+满足覆盖且内部不重叠的这样的闭区域称为群作用的\term[jibenquyu]{基本区域}[fundamental domain]。边界上可以有多个代表，必须按群元素识别，不能要求每条轨道与闭区域恰交一次。非紧商的 Dirichlet 区域也未必只有有限条边，上命题只保证有界范围内的有限性。
+
+\subsection{基本多边形的边配对与粘合}
+\label{g1:subsec:1002:03}
+
+反过来，可以先画一张双曲多边形，再沿成对的边接合。第六章\cref{g1:thm:surface-polygon}及\cref{g1:prop:orientable-standard-word}解释了边字如何记录拓扑粘合；现在还要使这些粘合保留度量。边内点的邻域由两张半圆盘组成，顶点的邻域则由若干个角扇组成，两处需要不同的检查。
+
+\begin{proposition}[双曲多边形的光滑粘合]\label{g1:prop:hyperbolic-polygon-gluing}
+	设 \(P\subset\mathbb H\) 是紧凸测地多边形，将不同的边两两配对，每对等长，并用保向双曲等距变换按相反的边界行进方向识别。对每个顶点等价类，将其各角的一条小圆弧按边配对接起；假设所得空间是一条圆周，且该类内的角度总和为 \(2\pi\)。则商 \(P/{\sim}\) 是紧、可定向、无边界的光滑曲面，\(P\) 的双曲度量在其上光滑粘合，曲率恒为 \(-1\)。
+\end{proposition}
+\begin{proof}
+	等长测地边的端点可以按要求配对：先用\cref{g1:prop:model-isometry-data}将一条边的起点及单位切向量送到另一条边的终点及反向单位切向量；测地线的初值唯一性使整条等长边随之对应。保向性保证原来的内侧被送到另一条边的外侧，因此两侧窄半盘在识别后确实拼成一个双曲小圆盘，度量在接缝处光滑。
+
+	这里的商也是 Hausdorff。等价关系在 \(P\times P\) 中由对角线、有限个闭边配对映射的图以及有限个顶点等价对组成，故为闭集。若 \(C\subset P\) 闭，它的饱和集是此闭关系与 \(C\times P\) 的交在第二因子的投影，因紧性而闭。两个不同等价类是 \(P\) 中不交的有限集，取不交开邻域 \(U,V\) 包含它们；从 \(U\) 中去掉所有与 \(P\setminus U\) 等价的点，得到包含原等价类的饱和开集，\(V\) 同理。两者下降为商中不交开邻域。商紧性来自 \(P\) 的紧性。
+
+	在一个顶点类处，将各原顶点附近截成同样小半径的角扇。边等距保留距相应顶点的距离，故各扇可以用同一个径向变量 \(r\) 粘合。双曲面极坐标
+	\[
+		(r,\theta)\longmapsto(\cosh r,\sinh r\cos\theta,\sinh r\sin\theta)
+	\]
+	直接给出度量 \(\mathrm{d}r^2+\sinh^2r\,\mathrm{d}\theta^2\)。把各扇按圆弧连接的次序排好，角变量逐段累计；小圆弧接成一条圆周意味着绕行只形成一个扇环，总角 \(2\pi\) 则使这个扇环恰好拼成普通双曲小圆盘。末缝处 \(\theta=0\) 与 \(2\pi\) 的极坐标映射以及所有导数相容，中心也由上述双曲面坐标给出通常的光滑结构。因此顶点没有锥形奇点。
+
+	面内、边内和顶点处的这些局部图在交叠处相差双曲等距变换，形成相容的光滑图册和度量。各边都已配对，故没有边界；配对反转边界行进方向而保持环境定向，所以局部定向也相容。紧性允许从局部图取有限覆盖，每张图有可数基，故商第二可数。这就得到所述光滑度量曲面。
+\end{proof}
+
+顶点附近的小圆弧拼成的圆周常称为该顶点的\term[lianjie]{链接}[link]。链接控制局部邻域是不是一张盘，总角则控制这张盘上的度量是否光滑。若链接仍是一条圆周但总角为 \(\Theta\ne2\pi\)，小半径圆周的长度就是 \(\Theta\sinh r\)，除以半径后趋于 \(\Theta\)，不能是光滑曲面中应有的 \(2\pi\)。因此检查边长相等还不够。
+
+\ProseParagraphBreak
+
+这一命题构造的是有限多边形的度量商。若另把边配对变换放进 \(\operatorname{PSL}(2,\mathbb R)\) 并取它们生成的群，还需要证明其离散性及原多边形的平移是否铺盖整个平面；这些整体结论不是一句“角和为 \(2\pi\)”就能直接替代的。下一节将用展开映射说明完备模型结构的整体实现。
+
+\begin{theorem}[闭双曲曲面的多边形构造]\label{g1:thm:closed-hyperbolic-polygon}
+	每个整数 \(g\ge2\) 都有一张与 \(\Sigma_{g,0}\) 同胚的紧光滑曲面，带曲率恒为 \(-1\) 的度量。它可以由一个内角均为 \(\pi/(2g)\) 的正则 \(4g\) 边形按边字
+	\[
+		a_1b_1a_1^{-1}b_1^{-1}\cdots a_gb_ga_g^{-1}b_g^{-1}
+	\]
+	作等距配对得到，面积为 \(4\pi(g-1)\)。
+\end{theorem}
+\begin{proof}
+	\cref{g1:prop:regular-hyperbolic-polygons}保证：给定 \(n\ge3\) 及 \(0<\alpha<(n-2)\pi/n\)，存在内角为 \(\alpha\) 的正则双曲 \(n\) 边形。对 \(n=4g\)、\(\alpha=\pi/(2g)\)，所需严格不等式恰由 \(g\ge2\) 保证。所有边等长，故按上命题可实施指定的等距配对。
+
+	还要检查顶点，不能只因共有 \(4g\) 个角就默认它们拼在同一点。依次记顶点为 \(v_0,\ldots,v_{4g-1}\)，第 \(j\) 条边从 \(v_j\) 指向 \(v_{j+1}\)，下标模 \(4g\)。在第 \(k\) 个四边块中，\(a\) 配对给出
+	\[
+		v_{4k}\sim v_{4k+3},\qquad v_{4k+1}\sim v_{4k+2},
+	\]
+	\(b\) 配对给出 \(v_{4k+1}\sim v_{4k+4}\) 及 \(v_{4k+2}\sim v_{4k+3}\)。这些关系把该块的五个连续端点连在一起，因而所有顶点属于一个等价类。
+
+	再从一个角的小圆弧穿过配对边进入下一个角，所得链接的后继顺序为
+	\[
+		4k+1\longmapsto4k+2\longmapsto4k+3\longmapsto4k
+		\longmapsto4(k-1)+1
+	\]
+	（所有下标模 \(4g\)）。它先走过一个四边块的四个角，再进入前一个四边块，最终恰走过全部 \(4g\) 个角一次才返回，故链接是单一圆周。总角为 \(4g\cdot\pi/(2g)=2\pi\)，上命题给出光滑双曲度量。
+
+	这个边字的拓扑类型由\cref{g1:prop:orientable-standard-word}中标准字与手柄连通和的对应给出，正是 \(\Sigma_{g,0}\)。最后，\cref{g1:prop:geodesic-polygon-area}给出
+	\[
+		\operatorname{Area}(P)=(4g-2)\pi-4g\frac{\pi}{2g}=4\pi(g-1).
+	\]
+	边及顶点的识别不改变面积，故商也有这个面积。
+\end{proof}
+
+对 \(g=1\)，所需四边形的四个角都为 \(\pi/2\)，角和达到 Euclid 的极限值，双曲面积公式将给出零面积，所以这种非退化双曲四边形不存在。这与第九章 Gauss--Bonnet 排除闭环面上的负常曲率度量相符。
+
+\subsection{闭曲面、尖点与漏斗的模型}
+\label{g1:subsec:1002:04}
+
+刚才得到的闭曲面紧，长度距离因而完备：局部双曲图中的度量在小闭片上与 Euclid 度量双边可比，长度距离给出原拓扑；任一 Cauchy 序列都有由紧性提供的收敛子列，进而整个序列收敛。它们的面积有限，但非紧曲面也可能有有限面积的端部。两种最简单的非紧端部来自抛物和双曲循环群。
+
+\begin{example}[尖点]\label{g1:exm:hyperbolic-cusp}
+	令 \(T(z)=z+1\)。群 \(\langle T\rangle\) 离散且自由，整个商 \(\mathbb H/\langle T\rangle\) 是完备双曲圆柱。固定 \(Y>0\)，取其中由 \(y\ge Y\) 给出的端部
+	\[
+		C_Y=\{y\ge Y\}/\langle T\rangle.
+	\]
+	这是\term[jiandian]{尖点}[cusp]的标准模型。其一条基本条带为 \(0\le x\le1,y\ge Y\)，两条竖边配对。令 \(r=\log(y/Y)\)，则
+	\begin{equation}\label{g1:eq:hyperbolic-cusp-metric}
+		g=\mathrm{d}r^2+Y^{-2}e^{-2r}\,\mathrm{d}x^2,
+		\qquad r\ge0,\quad x\in\mathbb R/\mathbb Z.
+	\end{equation}
+	截圈 \(r=R\) 的长度为 \(Y^{-1}e^{-R}\)，向尖端越来越短；但是任何向 \(r\to\infty\) 行进的曲线长度至少为其 \(r\) 的总变化，所以尖端处在无限距离处。另一方面，
+	\[
+		\operatorname{Area}(C_Y)=\int_0^1\int_Y^\infty\frac{\mathrm{d}y\,\mathrm{d}x}{y^2}=\frac1Y.
+	\]
+	因此无限距离与有限面积可以同时出现。这里 \(C_Y\) 是带截口的端部；整个完备平移商还包含 \(0<y<Y\) 的另一端，其面积无限。不能把有限面积端部和整个圆柱的面积混为一谈。
+\end{example}
+
+\begin{proposition}[双曲圆柱的 Fermi 坐标]\label{g1:prop:hyperbolic-cylinder-fermi}
+	设 \(\ell>0\)，令 \(H(z)=e^\ell z\)。完备双曲圆柱 \(\mathbb H/\langle H\rangle\) 有全局坐标
+	\[
+		r\in\mathbb R,\qquad t\in\mathbb R/\ell\mathbb Z,
+		\qquad g=\mathrm{d}r^2+\cosh^2r\,\mathrm{d}t^2.
+	\]
+	\(r=0\) 是长度 \(\ell\) 的闭测地线，\(|r|\) 是距它的距离；\(r\ge0\) 与 \(r\le0\) 分别给出一个\term[loudou]{漏斗}[funnel]，各漏斗的面积无限。
+\end{proposition}
+\begin{proof}
+	在 \(\mathbb H\) 中直接置
+	\[
+		x=e^t\tanh r,\qquad y=e^t\operatorname{sech}r.
+	\]
+	其逆为 \(t=\log\sqrt{x^2+y^2}\)、\(r=\operatorname{arsinh}(x/y)\)，所以这是全局坐标。求微分后交叉项抵消，得到
+	\[
+		\mathrm{d}x^2+\mathrm{d}y^2
+		=e^{2t}\bigl(\mathrm{d}t^2+\operatorname{sech}^2r\,\mathrm{d}r^2\bigr).
+	\]
+	除以 \(y^2=e^{2t}\operatorname{sech}^2r\) 即得所述度量。缩放 \(z\mapsto e^\ell z\) 恰对应 \(t\mapsto t+\ell\)，故坐标下降到圆柱。群的离散性与自由性由缩放标准型直接得到，完备性由\cref{g1:thm:hyperbolic-quotient}保证。
+
+	\(r=0\) 是虚轴的像，因而为闭测地线，其长度就是 \(t\) 的周期 \(\ell\)。任一从 \(r\) 到零的曲线长度至少为 \(|r|\)，固定 \(t\) 的径向段达到它，因此 \(|r|\) 是到轴的距离。在 \(r\ge0\) 一侧，截圈长度为 \(\ell\cosh r\)，面积元为 \(\cosh r\,\mathrm{d}r\,\mathrm{d}t\)，所以
+	\[
+		\operatorname{Area}(0\le r\le R)=\ell\sinh R\longrightarrow\infty.
+	\]
+	另一侧由 \(r\mapsto-r\) 对称得到相同结论。
+\end{proof}
+
+上述以测地线为基线、以法向距离 \(r\) 为横坐标的坐标称为\term[Fermizuobiao]{Fermi 坐标}[Fermi coordinates]。\footnote{Enrico Fermi（费米，1901--1954），意大利出生的美国物理学家，研究量子理论、统计力学与核物理。}尖点截圈的长度指数衰减，漏斗截圈的长度按 \(\cosh r\) 增长，这是两种端部面积行为不同的直接原因。\cref{g1:fig:cusp-funnel-domains}把两个循环群的基本区域画在同一个上半平面模型中。
+
+\input{Figures/Chapter10-CuspFunnel.tex}
+
+闭曲面、尖点端和漏斗都具有相同的局部曲率 \(-1\)，它们的紧性、面积和闭路长度却不同。模型与粘合给出了这些具体度量；若只知道一张抽象曲面处处局部等距于双曲平面，还不能省略展开及单值的论证就把它写成一个全局商。下一节将把这一环节独立证明。

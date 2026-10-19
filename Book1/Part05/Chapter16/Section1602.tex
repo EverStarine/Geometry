@@ -1,0 +1,269 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 16.2 指数映射与局部乘法
+% 纲要位置：几何学计划纲要.md，第 744 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 单参数子群及完备性
+% * 指数映射的微分和局部逆
+% * 共轭与指数的相容
+% * 局部乘法和 BCH 公式的所需有限阶形式
+% 
+% 纲要内容结束
+
+\section{指数映射与局部乘法}
+\label{g1:sec:1602}
+
+一个单位元处的切向量描述瞬时运动。左平移把同一个瞬时方向放到每一点，形成左不变向量场；沿它运动，就有望把切向量变成群元素。这条路线给出指数映射。它还回答另一个问题：把两个很小的运动相乘，结果与将两个切向量直接相加有多大差别？李括号将成为最先出现的修正项。
+
+\ProseParagraphBreak
+
+本节的李群均为有限维实李群，流形无边界、Hausdorff、第二可数。记单位元为 \(e\)，李代数为 \(\mathfrak g=\mathrm{T}_eG\)，\(X\in\mathfrak g\) 对应的左不变向量场记为 \(X^L_g=(\mathrm{d}L_g)_eX\)。这一对应及其括号相容性已在\secref{g1:sec:1601}建立。以下所有群乘积都有顺序，不能先把它们当作向量加法。
+
+\subsection{单参数子群及完备性}
+\label{g1:subsec:1602:01}
+
+\begin{definition}\label{g1:def:one-parameter-subgroup}
+	设 \(G\) 为有限维实李群。光滑同态 \(c:(\mathbb R,+)\to G\) 称为\term[dancanshuziqun]{单参数子群}[one-parameter subgroup]，即
+	\[
+		c(s+t)=c(s)c(t),\qquad c(0)=e.
+	\]
+	这里名称指带参数的同态，不要求 \(c\) 单射，也不预设其像是嵌入子流形。
+\end{definition}
+
+若 \(X=c'(0)\)，对 \(c(t+h)=c(t)c(h)\) 在 \(h=0\) 求导，便得 \(c'(t)=(\mathrm{d}L_{c(t)})_eX\)。所以单参数子群必是从单位元出发的左不变场积分曲线。反过来，局部初值定理只给出一小段积分曲线；要获得整个 \(\mathbb R\) 上的同态，还须证明它不会在有限时间终止。
+
+\begin{theorem}[指数映射]\label{g1:thm:lie-exponential}
+	设 \(G\) 为有限维实李群。对每个 \(X\in\mathfrak g\)，左不变场 \(X^L\) 完备，且存在唯一单参数子群 \(c_X\) 满足 \(c_X'(0)=X\)。定义
+	\[
+		\exp_G:\mathfrak g\longrightarrow G,\qquad \exp_GX=c_X(1).
+	\]
+	则 \(\exp_G\) 光滑，并且
+	\begin{equation}\label{g1:eq:one-parameter-exponential}
+		c_X(t)=\exp_G(tX),\qquad
+		\exp_G((s+t)X)=\exp_G(sX)\exp_G(tX).
+	\end{equation}
+	\(X^L\) 的整体流为 \(\Phi_t(g)=g\exp_G(tX)\)。
+\end{theorem}
+\begin{proof}
+	由\cref{g1:thm:maximal-integral-curve}先取过 \(e\) 的局部积分曲线 \(c\)，将其限制在 \((-2a,2a)\)，其中 \(a>0\)。左不变性说明，对于固定 \(s\)，\(t\mapsto c(s)c(t)\) 与 \(t\mapsto c(s+t)\) 都是 \(X^L\) 的积分曲线，并在 \(t=0\) 取相同值。因此只要相关参数留在这段局部区间中，唯一性给出局部乘法规律 \(c(s)c(t)=c(s+t)\)。
+
+	现在把同一小段反复左平移。对每个整数 \(n\)，在区间 \((na-a,na+a)\) 上令
+	\[
+		\widehat c(t)=c(a)^n c(t-na).
+	\]
+	相邻区间交叠时，令 \(u=t-(n+1)a\in(-a,0)\)，则 \(c(a)c(u)=c(a+u)\)，所以两式相同。每段是光滑积分曲线，因而粘成整个实轴上的光滑积分曲线，且在零点取 \(e\)。任意 \(g\in G\) 出发的曲线 \(g\widehat c(t)\) 也在整个实轴有定义，所以 \(X^L\) 完备。对全局曲线再次使用初值唯一性，得到 \(\widehat c(s+t)=\widehat c(s)\widehat c(t)\)。前段对任意单参数子群的求导说明，另一个具有相同初速度的单参数子群必须是同一初值解，故唯一。记它为 \(c_X\)。
+
+	曲线 \(s\mapsto c_X(ts)\) 满足场 \((tX)^L\) 的方程，并在零点取单位元，包括 \(t=0\) 和负 \(t\) 的情形。因此唯一性给出 \(c_{tX}(s)=c_X(ts)\)，令 \(s=1\) 便得 \(\exp_G(tX)=c_X(t)\)。对 \(X\) 的光滑性调用\cref{g1:thm:ode-smooth-dependence}：场 \((g,X)\mapsto(\mathrm{d}L_g)_eX\) 联合光滑，任意固定 \(X_0\) 的轨道已在紧时间区间 \([0,1]\) 上存在，所以附近 \(X\) 的解在共同区间上光滑依赖参数。于 \(t=1\) 求值，得到 \(\exp_G\) 在每个 \(X_0\) 附近光滑。最后，从 \(g\) 出发的积分曲线已经写成 \(g c_X(t)\)，即所列流公式。
+\end{proof}
+
+这个映射称为李群的\term[zhishuyingshe]{指数映射}[exponential map]。\symidx{\(\exp_G\)：李群的指数映射}它的定义依赖群结构和左不变场，与第九章由度量和测地线定义的指数映射具有不同的输入数据。两者都把切向量送到某条指定曲线的终点，但不能未经说明互换。
+
+\begin{example}\label{g1:exm:matrix-exponential-series}
+	在 \(\operatorname{GL}(n,\mathbb R)\) 中，\(X^L_A=AX\)，因此积分曲线满足 \(C'=CX\)、\(C(0)=I\)。矩阵级数
+	\[
+		e^{tX}=\sum_{k=0}^{\infty}\frac{t^kX^k}{k!}
+	\]
+	在每个有界时间区间绝对一致收敛，其逐项导数级数也如此，因为可分别用标量指数级数控制矩阵范数。故它可逐项求导，满足所需方程及初值。\(e^{tX}e^{-tX}=I\) 由乘积求导及零点值验证，所以该曲线始终可逆；唯一性给出 \(\exp_{\operatorname{GL}(n,\mathbb R)}X=e^X\)。复矩阵按实变量处理时完全相同。对抽象李群，\(X\) 未必是矩阵，定义仍是前面的积分曲线，不能预先写一个不存在的矩阵幂级数。
+\end{example}
+
+在加法群 \(\mathbb R^n\) 中，指数就是 \(X\mapsto X\)；在正实数乘法群中，\(X^L_x=xX\)，指数就是通常的 \(X\mapsto e^X\)。在圆周群中，把 \(\mathrm{T}_1S^1\) 写成 \(i\mathbb R\)，便有 \(\exp_{S^1}(it)=e^{it}\)。这三个例子分别显示指数可能是恒等映射、一般微分同胚，也可能因周期而失去单射性。
+
+\subsection{指数映射的微分和局部逆}
+\label{g1:subsec:1602:02}
+
+\begin{proposition}[指数坐标]\label{g1:prop:exponential-local-diffeomorphism}
+	设 \(G\) 为有限维实李群。用向量空间的平移识别 \(\mathrm{T}_0\mathfrak g=\mathfrak g\)，则
+	\[
+		(\mathrm{d}\exp_G)_0=\operatorname{id}_{\mathfrak g}.
+	\]
+	因而零点有一个开邻域 \(V\subset\mathfrak g\)，单位元有一个开邻域 \(U\subset G\)，使 \(\exp_G:V\to U\) 为微分同胚。其局部逆记为 \(\log:U\to V\)，称由此得到的坐标为指数坐标。
+\end{proposition}
+\begin{proof}
+	对 \(Y\in\mathfrak g\)，曲线 \(t\mapsto tY\) 在零点速度为 \(Y\)，而
+	\[
+		(\mathrm{d}\exp_G)_0Y
+		=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{t=0}\exp_G(tY)
+		=c_Y'(0)=Y.
+	\]
+	于是微分可逆。\cref{g1:thm:inverse-function}适用于这两个同维无边界流形间的光滑映射，给出所需邻域及光滑局部逆。必要时可继续缩小 \(V\)，使其关于原点对称且为星形。
+\end{proof}
+
+结论只保证单位元附近的可逆性。圆周的指数已有 \(2\pi\) 周期；一般连通群的指数甚至未必满射。不过，单位元的小邻域已足以生成整个单位连通分支。
+
+\begin{proposition}[由指数生成单位分支]\label{g1:prop:exponentials-generate-identity-component}
+	设 \(G\) 为有限维实李群，\(G^0\) 为包含单位元的连通分支。则 \(G^0\) 是开正规子群，并且由任意足够小的对称指数邻域 \(U=\exp_G(V)\) 生成。特别地，连通李群的每个元素都是有限个指数的乘积。
+\end{proposition}
+\begin{proof}
+	流形局部道路连通，故道路分支均开，且连通分支就是道路分支。若 \(g,h\) 都能用路径从 \(e\) 到达，路径的逐点乘积和逐点逆给出到 \(gh\)、\(g^{-1}\) 的路径，所以 \(G^0\) 为子群。共轭把单位元保持不变，又把路径变成路径，故 \(G^0\) 正规且开。
+
+	取包含于 \(G^0\) 的对称指数邻域 \(U\)。令 \(K=\bigcup_{m\ge1}U^m\)。由于 \(e\in U=U^{-1}\)，这确是由 \(U\) 生成的子群。它开，因为每个有限乘积集是开集的平移之并；它在 \(G^0\) 中的每个陪集也开，因此补集开。于是 \(K\) 在连通空间 \(G^0\) 中既开又闭且非空，只能等于 \(G^0\)。
+\end{proof}
+
+为了计算局部乘法的高阶项，还需要知道非零点处的指数微分。这里应先把输出切向量移回单位元，才能与输入 \(Y\in\mathfrak g\) 比较。定义一个 \(\mathfrak g\) 值一形式
+\[
+	\theta_g=(\mathrm{d}L_{g^{-1}})_g:\mathrm{T}_gG\longrightarrow\mathfrak g.
+\]
+它满足 \(\theta(X^L)=X\)。在矩阵群中，\(\theta_g(v)=g^{-1}v\)；一般李群没有矩阵乘法，也仍由左平移微分定义这个对象。
+
+\begin{proposition}[指数微分的积分公式]\label{g1:prop:lie-exponential-differential}
+	设 \(G\) 为有限维实李群，\(X,Y\in\mathfrak g\)。记 \(\operatorname{ad}_X(Y)=[X,Y]\)，则
+	\begin{equation}\label{g1:eq:lie-dexp-integral}
+		\theta_{\exp_GX}\bigl((\mathrm{d}\exp_G)_XY\bigr)
+		=J_XY,\qquad
+		J_X=\int_0^1 e^{-s\operatorname{ad}_X}\,\mathrm{d}s.
+	\end{equation}
+	右侧的指数是有限维向量空间 \(\mathfrak g\) 上线性算子的指数，因而有收敛展开
+	\begin{equation}\label{g1:eq:lie-dexp-series}
+		J_X=\sum_{k=0}^{\infty}\frac{(-1)^k}{(k+1)!}\operatorname{ad}_X^k
+		=I-\tfrac12\operatorname{ad}_X+\tfrac16\operatorname{ad}_X^2+O(\|X\|^3).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	先计算 \(\theta\) 的外微分。将\eqref{g1:eq:exterior-one-form-evaluation}逐分量应用于 \(\mathfrak g\) 值形式，对左不变场有
+	\[
+		\mathrm{d}\theta(X^L,Y^L)=-\theta([X^L,Y^L])=-[X,Y].
+	\]
+	两边都是对切向输入逐点双线性的二形式，而左不变场的点值张成每个切空间，故一般输入 \(V,W\) 满足 \(\mathrm{d}\theta(V,W)=-[\theta(V),\theta(W)]\)。
+
+	取二参数映射 \(a(s,t)=\exp_G(s(X+tY))\)，并记
+	\[
+		v(s,t)=\theta(\partial_sa),\qquad u(s,t)=\theta(\partial_ta).
+	\]
+	对 \(a^*\theta=v\,\mathrm{d}s+u\,\mathrm{d}t\) 作外微分。外微分与拉回交换，见\cref{g1:prop:exterior-pullback}，所以刚才的恒等式给出
+	\[
+		\partial_su-\partial_tv=-[v,u].
+	\]
+	固定 \(t\) 时，\(s\mapsto a(s,t)\) 是初速度 \(X+tY\) 的单参数子群，因此 \(v=X+tY\)。在 \(t=0\) 处得到有限维线性方程
+	\[
+		\partial_su(s,0)=Y-\operatorname{ad}_Xu(s,0),\qquad u(0,0)=0.
+	\]
+	其解为 \(u(s,0)=\int_0^s e^{-(s-r)\operatorname{ad}_X}Y\,\mathrm{d}r\)：直接求导检查方程与初值，再用唯一性即可确认。令 \(s=1\)，左端是所需的左平移后微分，换元得到\eqref{g1:eq:lie-dexp-integral}。算子指数级数在 \(s\in[0,1]\) 上绝对一致收敛，可以逐项积分；双线性括号在有限维空间中有界，故 \(\|\operatorname{ad}_X\|\le C\|X\|\)，也就得到余项估计。
+\end{proof}
+
+公式中分母 \((k+1)!\) 使级数对每个 \(X\) 收敛，但 \(J_X\) 未必处处可逆。指数的局部可逆性在零点附近来自 \(J_0=I\)；离开这个邻域以后，不能仅凭级数存在就保证没有奇点。
+
+\subsection{共轭与指数的相容}
+\label{g1:subsec:1602:03}
+
+\begin{proposition}[指数的自然性]\label{g1:prop:exponential-naturality}
+	设 \(F:G\to H\) 为有限维实李群的光滑同态，\(\varphi=(\mathrm{d}F)_{e_G}\)。则对每个 \(X\in\mathfrak g\)，有
+	\begin{equation}\label{g1:eq:exponential-homomorphism}
+		F(\exp_GX)=\exp_H(\varphi X).
+	\end{equation}
+	特别地，若 \(g\in G\)，则
+	\begin{equation}\label{g1:eq:exponential-conjugation}
+		g\exp_G(X)g^{-1}=\exp_G(\operatorname{Ad}_gX),\qquad
+		\operatorname{Ad}_{\exp_GX}=e^{\operatorname{ad}_X}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	复合曲线 \(t\mapsto F(\exp_G(tX))\) 是 \(H\) 中的单参数子群，零点速度为 \(\varphi X\)。单参数子群的唯一性因此使它等于 \(t\mapsto\exp_H(t\varphi X)\)，令 \(t=1\) 得第一式。取同态 \(F=C_g\)、\(C_g(h)=ghg^{-1}\)，其单位元微分是 \(\operatorname{Ad}_g\)，便得共轭公式。
+
+	再取 \(F=\operatorname{Ad}:G\to\operatorname{GL}(\mathfrak g)\)。\cref{g1:prop:adjoint-representation}及\eqref{g1:eq:ad-bracket}说明它是光滑同态，单位元微分为 \(X\mapsto\operatorname{ad}_X\)。刚证明的自然性给出 \(\operatorname{Ad}_{\exp_GX}=\exp_{\operatorname{GL}(\mathfrak g)}(\operatorname{ad}_X)\)，而\cref{g1:exm:matrix-exponential-series}把右端识别为算子指数。
+\end{proof}
+
+两个公式分别联系群上的共轭、单位切空间上的线性作用及李代数的括号。在矩阵群中，它们成为 \(g e^Xg^{-1}=e^{gXg^{-1}}\) 和 \(e^XYe^{-X}=e^{\operatorname{ad}_X}Y\)。后一式的前几项是 \(Y+[X,Y]+\tfrac12[X,[X,Y]]+\cdots\)，因此括号描述共轭造成的最初变化。
+
+\begin{corollary}[交换方向的指数]\label{g1:cor:commuting-exponentials}
+	设 \(G\) 为有限维实李群，\(X,Y\in\mathfrak g\)，且 \([X,Y]=0\)。则对任意实数 \(s,t\)，\(\exp_G(sX)\) 与 \(\exp_G(tY)\) 交换，并且 \(\exp_G(X+Y)=\exp_G(X)\exp_G(Y)\)。
+\end{corollary}
+\begin{proof}
+	由于 \(\operatorname{ad}_XY=0\)，有 \(e^{s\operatorname{ad}_X}Y=Y\)。将其代入共轭公式，得到两条单参数子群的所有元素交换。令 \(c(t)=\exp_G(tX)\exp_G(tY)\)。因这些元素交换，\(c(s+t)=c(s)c(t)\)，故 \(c\) 是单参数子群。群乘法在 \((e,e)\) 处的微分为 \((X,Y)\mapsto X+Y\)：分别固定一个因子时都是恒等映射，微分又线性。因而 \(c'(0)=X+Y\)，唯一性使 \(c(t)=\exp_G(t(X+Y))\)，令 \(t=1\) 即得结论。
+\end{proof}
+
+\begin{corollary}[连通源上的唯一性]\label{g1:cor:lie-homomorphism-uniqueness}
+	设 \(G,H\) 为有限维实李群，且 \(G\) 连通。若两个光滑同态 \(F_1,F_2:G\to H\) 在单位元处具有相同微分，则 \(F_1=F_2\)。
+\end{corollary}
+\begin{proof}
+	自然性说明两同态在全部指数上相同。由\cref{g1:prop:exponentials-generate-identity-component}，\(G\) 的每个元素都是有限个指数的乘积；同态保持乘积，所以在每个群元素上都相同。
+\end{proof}
+
+这个结论提供唯一性，没有提供存在性。给定一个李代数同态能否成为群同态的微分，还可能受到环路的限制；\secref{g1:sec:1604}将具体构造延拓并解释单连通性的作用。若源群不连通，单位元微分甚至不记录其他连通分支上的离散选择，例如离散群的单位切空间总是零。
+
+\subsection{局部乘法和 BCH 公式的所需有限阶形式}
+\label{g1:subsec:1602:04}
+
+缩小指数坐标域，使 \(X,Y\) 充分小时 \(\exp_GX\exp_GY\) 仍在 \(\log\) 的定义域，记
+\[
+	\mu(X,Y)=\log(\exp_GX\exp_GY).
+\]
+这个局部运算把原来的群乘法写回向量空间。若 \(X,Y\) 交换，上一推论说明它就是 \(X+Y\)；不交换时，括号给出修正。下面证明\term[BCHgongshi]{Baker--Campbell--Hausdorff 公式}[Baker--Campbell--Hausdorff formula]的三阶形式，简称 BCH 公式。\footnote{Baker（贝克），Henry Frederick Baker（1866--1956），英国数学家，研究几何与分析；Campbell（坎贝尔），John Edward Campbell（1862--1924），生于爱尔兰、在英国任教的数学家，研究连续变换群与微分几何。Hausdorff 的人物介绍见\chapref{g1:ch:04}。}
+
+\begin{proposition}[BCH 的三阶展开]\label{g1:prop:bch-finite-order}
+	设 \(G\) 为有限维实李群，在 \(\mathfrak g\) 上任选一个范数。对充分小的 \(X,Y\)，有
+	\begin{equation}\label{g1:eq:bch-third-order}
+		\begin{aligned}
+			\log(\exp_GX\exp_GY)
+			={}&X+Y+\tfrac12[X,Y]\\
+			&+\tfrac1{12}[X,[X,Y]]+\tfrac1{12}[Y,[Y,X]]
+			+O((\|X\|+\|Y\|)^4).
+		\end{aligned}
+	\end{equation}
+	余项是在某个共同邻域内、相对于所选范数的统一估计。本命题只陈述有限阶 Taylor 展开。
+\end{proposition}
+\begin{proof}
+	我们把第二个因子逐渐乘进去，比较这条运动的左平移后速度。对 \(0\le t\le1\)，令
+	\[
+		Z(t)=\log(\exp_GX\exp_G(tY)).
+	\]
+	只要 \(X,Y\) 在足够小的共同邻域中，整条路径都在 \(\log\) 的定义域。其左平移后的速度是 \(Y\)：乘上固定的左因子 \(\exp_GX\) 不改变 \(\theta\) 对速度的值，而 \(\exp_G(tY)\) 的该值本来就是 \(Y\)。由\eqref{g1:eq:lie-dexp-integral}，得到
+	\[
+		J_{Z(t)}Z'(t)=Y,\qquad Z(0)=X.
+	\]
+	因为 \(J_0=I\)，小邻域内 \(J_Z\) 可逆。将\eqref{g1:eq:lie-dexp-series}乘以待定的二次多项式，逐次比较可得
+	\[
+		J_Z^{-1}=I+\tfrac12\operatorname{ad}_Z+\tfrac1{12}\operatorname{ad}_Z^2+O(\|Z\|^3).
+	\]
+	确切地说，右侧多项式与 \(J_Z\) 的乘积是 \(I+O(\|Z\|^3)\)；再乘以在小邻域上一致有界的 \(J_Z^{-1}\)，便证明所列余项。因此
+	\begin{equation}\label{g1:eq:bch-evolution}
+		Z'=Y+\tfrac12[Z,Y]+\tfrac1{12}[Z,[Z,Y]]+O(\delta^4),
+		\qquad \delta=\|X\|+\|Y\|.
+	\end{equation}
+	这里 \(Z(t)=O(\delta)\) 对 \(0\le t\le1\) 一致成立：映射 \((t,X,Y)\mapsto Z(t)\) 光滑，在 \((X,Y)=(0,0)\) 为零，沿连接零点的线段积分其一阶微分，并利用紧时间区间上的共同界即可。故逆算子余项作用于 \(Y\) 后确为 \(O(\delta^4)\)。
+
+	先从上式积分，得到 \(Z=X+tY+O(\delta^2)\)。再代入一次，利用 \([Y,Y]=0\)，得到
+	\[
+		Z=X+tY+\tfrac t2[X,Y]+O(\delta^3).
+	\]
+	将这个精度代入一次括号项，将 \(X+tY+O(\delta^2)\) 代入二重括号项，便有
+	\begin{align*}
+		Z'
+		&=Y+\tfrac12[X,Y]+\tfrac t4[[X,Y],Y]\\
+		&\quad+\tfrac1{12}[X+tY,[X,Y]]+O(\delta^4)\\
+		&=Y+\tfrac12[X,Y]+\tfrac1{12}[X,[X,Y]]
+		-\tfrac t6[Y,[X,Y]]+O(\delta^4).
+	\end{align*}
+	所有余项在同一紧时间区间上一致，积分保持其阶数。从 \(t=0\) 积分到 \(1\)，并使用 \(-[Y,[X,Y]]=[Y,[Y,X]]\)，即得\eqref{g1:eq:bch-third-order}。
+\end{proof}
+
+三阶公式的推导不要求把 \(G\) 嵌入矩阵群，也没有用一个未证明收敛的无穷括号级数替代群乘法。对后面闭子群定理的局部论证，二阶及其余项控制已经够用；保留三阶则能看清两个方向在高一阶怎样再次相互影响。
+
+\begin{corollary}[乘积极限]\label{g1:cor:lie-product-limit}
+	设 \(G\) 为有限维实李群，\(X,Y\in\mathfrak g\)、\(t\in\mathbb R\)。则
+	\[
+		\left(\exp_G\left(\frac{tX}{n}\right)
+		\exp_G\left(\frac{tY}{n}\right)\right)^n
+		\longrightarrow\exp_G(t(X+Y))\qquad(n\to\infty).
+	\]
+\end{corollary}
+\begin{proof}
+	当 \(n\) 充分大时，小乘积在对数邻域中。令其对数为 \(Z_n\)，BCH 的二阶精度给出
+	\[
+		Z_n=\frac t n(X+Y)+O(n^{-2}),\qquad nZ_n\longrightarrow t(X+Y).
+	\]
+	每个小乘积恰等于 \(\exp_GZ_n\)，而单参数子群的乘法规律给出 \((\exp_GZ_n)^n=\exp_G(nZ_n)\)。最后使用指数的连续性即可。这里取幂的是同一个群元素，无须交换两个不同方向的指数。
+\end{proof}
+
+\begin{example}\label{g1:exm:heisenberg-bch}
+	三阶上三角幺幂矩阵是对角条目均为 \(1\) 的上三角矩阵；三个上三角条目给出 \(\mathbb R^3\) 坐标，乘法和求逆为多项式，因此它们构成李群。在其李代数中取 \(X=aE_{12}+bE_{23}+cE_{13}\)，其中 \(E_{ij}\) 表示只有第 \((i,j)\) 项为 \(1\) 的矩阵。因 \(X^2=abE_{13}\)、\(X^3=0\)，有
+	\[
+		\exp X=I+aE_{12}+bE_{23}+\left(c+\tfrac12ab\right)E_{13}.
+	\]
+	对 \(Y=a'E_{12}+b'E_{23}+c'E_{13}\)，有 \([X,Y]=(ab'-a'b)E_{13}\)，且所有二重括号都为零。直接将上面的两个指数矩阵相乘，再用同一公式读回 \((a+a',b+b',c+c'+\tfrac12(ab'-a'b))\)，得到精确等式
+	\[
+		\log(\exp X\exp Y)=X+Y+\tfrac12[X,Y].
+	\]
+	精确性来自本例的实际矩阵计算；一般李群不能只因有限阶展开里暂时没有写出高阶项，就把余项删去。
+\end{example}

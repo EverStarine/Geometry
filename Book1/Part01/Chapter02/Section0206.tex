@@ -1,0 +1,219 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 2.6 由模型进入一般射影几何
+% 纲要位置：几何学计划纲要.md，第 192 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * Segre 与 Veronese 映射的几何动机
+% * Grassmann 空间和 Plücker 坐标的初步模型
+% * 关联簇与射影不变量的后续问题
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{由模型进入一般射影几何}
+\label{g1:sec:0206}
+
+圆锥曲线的参数化已经展示过一种变化：把一个点的坐标写成参数的二次式，便把一条射影线放进了另一个射影空间。还可以反过来问：一对射影点、一条直线或一个超平面，能否也用一个射影点来记录？这不是简单地给对象换个名字。合适的坐标会把“来自同一个对象”的相容条件写成方程，从而让整族几何对象本身成为可以研究的几何集合。本节始终取 \(K=\mathbb R\) 或 \(\mathbb C\)，只用多项式、矩阵秩与坐标图完成这些构造。
+
+\subsection{Segre 与 Veronese 映射的几何动机}
+\label{g1:subsec:0206:01}
+
+先考虑两个独立的射影点 \([x_0:\cdots:x_m]\) 和 \([y_0:\cdots:y_n]\)。直接把坐标并排写成 \([x_0:\cdots:x_m:y_0:\cdots:y_n]\) 并不合法：改变第一组的代表而保持第二组不变，通常会改变所得射影点。若改用所有乘积 \(x_i y_j\)，两组代表分别乘以 \(\lambda\) 和 \(\mu\) 时，全部新坐标都乘以同一个 \(\lambda\mu\)。这正是齐次坐标允许的变化。
+
+\begin{definition}[Segre 映射]\label{g1:def:segre-map}
+	设 \(K=\mathbb R\) 或 \(\mathbb C\)，\(m,n\ge0\)。映射
+	\[
+		\sigma_{m,n}:\mathbb P^m(K)\times\mathbb P^n(K)
+		\longrightarrow\mathbb P^{(m+1)(n+1)-1}(K),\qquad
+		([x],[y])\longmapsto[x_i y_j]_{0\le i\le m,\,0\le j\le n}
+	\]
+	称为\term[Segreyingshe]{Segre 映射}[Segre map]，目标坐标先按 \(i\)、再按 \(j\) 排列。\footnote{Corrado Segre（科拉多·塞格雷，1863--1924），意大利数学家，研究高维射影几何、代数曲面和直纹几何。}
+\end{definition}
+
+\begin{proposition}[乘积坐标与秩一矩阵]\label{g1:prop:segre-rank-one}
+	设 \(K=\mathbb R\) 或 \(\mathbb C\)，\(m,n\ge0\)。Segre 映射良定义且为单射。把目标点的坐标排成 \((m+1)\times(n+1)\) 矩阵 \(Z=(z_{ij})\)，则其像恰由方程
+	\[
+		z_{ij}z_{k\ell}-z_{i\ell}z_{kj}=0
+		\qquad(0\le i,k\le m,\ 0\le j,\ell\le n)
+	\]
+	给出，也就是所有非零秩一矩阵的射影类。在 \(z_{ab}\ne0\) 的部分，原来两个点可由第 \(b\) 列和第 \(a\) 行恢复。
+\end{proposition}
+\begin{proof}
+	选取非零坐标 \(x_a,y_b\)，则 \(x_a y_b\ne0\)，所以输出坐标不全为零；代表的缩放只产生共同倍数，因而映射良定义。其矩阵是列向量与行向量的乘积 \(Z=xy^{\mathsf T}\)，每个二阶子式均为零。
+
+	反过来，设 \(Z\ne0\) 且全部二阶子式为零，选定 \(z_{ab}\ne0\)。含第 \(a,i\) 行和第 \(b,j\) 列的子式给出
+	\[
+		z_{ij}=\frac{z_{ib}z_{aj}}{z_{ab}}.
+	\]
+	因此取 \(x_i=z_{ib}\)、\(y_j=z_{aj}/z_{ab}\)，便有 \(Z=xy^{\mathsf T}\)。这里 \(x_a\ne0\)、\(y_b=1\)，两向量均非零，证明了像的描述。对这样的分解，第 \(b\) 列与 \(x\) 成比例，第 \(a\) 行与 \(y^{\mathsf T}\) 成比例，故它们的射影类唯一，映射为单射。更具体地，在这张坐标图上，逆映射使用的仿射坐标为
+	\[
+		\frac{x_i}{x_a}=\frac{z_{ib}}{z_{ab}},\qquad
+		\frac{y_j}{y_b}=\frac{z_{aj}}{z_{ab}}.
+	\]
+	分母在所选图上不为零，故这些公式也说明不同图中的恢复结果相容。
+\end{proof}
+
+\begin{example}[乘积中的两个方向]\label{g1:exm:segre-fibers}
+	取 \(m=n=1\)，则
+	\[
+		([s:t],[u:v])\longmapsto[su:sv:tu:tv]
+	\]
+	将 \(\mathbb P^1(K)\times\mathbb P^1(K)\) 一一对应到 \(z_{00}z_{11}-z_{01}z_{10}=0\) 的二次曲面。固定 \([s:t]\) 而改变 \([u:v]\)，像是由 \((s,0,t,0)\)、\((0,s,0,t)\) 张成的射影直线；这两个向量线性无关。固定第二个因子同样得到一条直线。同一族中两条不同直线不相交，因为单射性不允许第一因子或第二因子同时取两个不同值；两族各取一条则恰交于相应有序对的像。\cref{g1:prop:quadric-two-rulings}中的两族直纹，在这里变成了乘积的两个独立方向。
+\end{example}
+
+还有另一种坐标构造。若希望把一个点的所有二次表达式同时作为坐标，就应取 \(x_i x_j\) 而不是取两组互不相关的变量。由此得到二次 Veronese 映射。\footnote{Giuseppe Veronese（朱塞佩·韦罗内塞，1854--1917），意大利数学家，研究高维射影几何与几何基础。}
+
+\begin{definition}[二次 Veronese 映射]\label{g1:def:veronese-map}
+	设 \(K=\mathbb R\) 或 \(\mathbb C\)，\(n\ge1\)，\(N=\binom{n+2}{2}-1\)。映射
+	\[
+		\nu_2:\mathbb P^n(K)\longrightarrow\mathbb P^N(K),\qquad
+		[x_0:\cdots:x_n]\longmapsto[x_i x_j]_{0\le i\le j\le n}
+	\]
+	称为\term[Veroneseyingshe]{二次 Veronese 映射}[quadratic Veronese map]。目标坐标按指标 \((i,j)\) 排列，将 \(z_{ij}\) 对称地补成矩阵 \(Z=(z_{ij})\)。
+\end{definition}
+
+\begin{proposition}[二次单项式坐标]\label{g1:prop:veronese-image}
+	设 \(K=\mathbb R\) 或 \(\mathbb C\)，\(n\ge1\)。二次 Veronese 映射良定义且为单射，其像恰为非零对称秩一矩阵的射影类，亦即对称矩阵 \(Z\) 的所有二阶子式同时为零的射影点集。在 \(z_{aa}\ne0\) 的部分，逆映射由 \(x_i/x_a=z_{ia}/z_{aa}\) 给出。
+\end{proposition}
+\begin{proof}
+	非零向量至少有一个非零坐标 \(x_a\)，故 \(x_a^2\ne0\)；缩放 \(x\) 使全部二次单项式乘以相同的平方倍数。这证明良定义，且像矩阵 \(xx^{\mathsf T}\) 为对称秩一矩阵。
+
+	设对称矩阵 \(Z\ne0\) 的所有二阶子式均为零。必有某个对角元 \(z_{aa}\ne0\)：否则对任意 \(i,j\)，主子式 \(z_{ii}z_{jj}-z_{ij}^2=0\) 会强迫 \(z_{ij}=0\)，与 \(Z\ne0\) 矛盾。令 \(x_i=z_{ia}/z_{aa}\)，于是 \(x_a=1\)，而子式关系给出
+	\[
+		\frac{z_{ij}}{z_{aa}}
+		=\frac{z_{ia}}{z_{aa}}\frac{z_{ja}}{z_{aa}}=x_i x_j.
+	\]
+	所以 \([Z]=[xx^{\mathsf T}]\)，并且上述比值唯一恢复 \([x]\)。这同时证明了像的描述、单射性及逆坐标公式。
+\end{proof}
+
+在实数情形，上一证明没有要求 \(z_{aa}\) 有实平方根。因为讨论的是矩阵的射影类，可以先把整个矩阵除以 \(z_{aa}\)；这也解释了为什么负半定的秩一矩阵仍表示像中的点。当 \(n=1\) 时，\(\nu_2([s:t])=[s^2:st:t^2]\)，正是前一节的圆锥曲线参数化。当 \(n=2\) 时，得到 \(\mathbb P^5(K)\) 中的 Veronese 曲面。
+
+\ProseParagraphBreak
+
+这两种映射还有一个直接用途：使原来的高次方程成为新空间的线性方程。例如任意二次齐次式 \(q(x)=\sum_{i\le j}c_{ij}x_i x_j\) 都满足
+\[
+	q(x)=0\quad\Longleftrightarrow\quad
+	\sum_{i\le j}c_{ij}z_{ij}=0\quad\text{在 }[z]=\nu_2([x])\text{ 上成立}.
+\]
+右边是一个超平面与 Veronese 像的相交条件。同样，双线性关系 \(\sum a_{ij}x_i y_j=0\) 经 Segre 映射成为超平面截面。维数增加的代价，是目标空间中出现了必须始终保留的子式关系；不能把其像误当作整个目标空间。这些模型的代数几何推广可参看\cite[Chapter I, Section 2, Exercises 2.12--2.15]{Hartshorne1977}，其中使用的代数闭域背景在本节的实数模型中由上述坐标论证直接处理。
+
+\subsection{Grassmann 空间和 Plücker 坐标的初步模型}
+\label{g1:subsec:0206:02}
+
+射影空间以一维向量子空间为点。若把“维数一”换成“维数 \(k\)”，同样得到一个值得研究的对象集合。困难在于：一个子空间有许多组基，把基向量的坐标直接抄下来会记录过多的选择。行列式恰能把换基的影响压缩成一个共同倍数。
+
+\begin{definition}[Grassmann 空间]\label{g1:def:grassmannian}
+	设 \(K=\mathbb R\) 或 \(\mathbb C\)，\(V\) 为 \(n\) 维 \(K\)-向量空间，\(1\le k\le n\)。所有 \(k\) 维向量子空间组成的集合
+	\[
+		\operatorname{Gr}(k,V)=\{\,W\subseteq V:W\text{ 为向量子空间且 }\dim_K W=k\,\}
+	\]
+	称为\term[Grassmannkongjian]{Grassmann 空间}[Grassmannian]，当 \(V=K^n\) 时也记为 \(\operatorname{Gr}(k,n;K)\)。\footnote{Hermann Günter Grassmann（赫尔曼·格拉斯曼，1809--1877），德国数学家，发展了向量运算和外代数，并以坐标研究不同维数的子空间。}
+	\symidx{\(\operatorname{Gr}(k,V)\)：Grassmann 空间}
+\end{definition}
+
+这里的 \(k,n\) 都是向量空间维数；\(W\) 对应 \(\mathbb P(V)\) 中的 \((k-1)\) 维射影子空间。特别地，\(\operatorname{Gr}(1,V)=\mathbb P(V)\)，而 \(\operatorname{Gr}(2,4;K)\) 参数化射影三维空间中的所有直线。先把后一情形具体写出。选取二维子空间的有序基 \(u,v\)，将它们写成矩阵的两行，并定义六个子式
+\[
+	p_{ij}=u_i v_j-u_j v_i\qquad(1\le i<j\le4).
+\]
+它们称为该直线的\term[Pluckerzuobiao]{Plücker 坐标}[Plücker coordinates]。\footnote{Julius Plücker（尤利乌斯·普吕克，1801--1868），德国数学家和物理学家，研究解析几何、直线几何及光谱。}矩阵的秩为 \(2\)，故至少一个二阶子式非零。若将有序基替换为 \((u',v')^{\mathsf T}=S(u,v)^{\mathsf T}\)，其中 \(S\in\operatorname{GL}_2(K)\)，每个子式都乘以 \(\det S\)，所以射影点 \([p_{12}:p_{13}:p_{14}:p_{23}:p_{24}:p_{34}]\) 与基的选择无关。
+
+\begin{theorem}[射影三维空间中直线的坐标]\label{g1:thm:plucker-gr24}
+	设 \(K=\mathbb R\) 或 \(\mathbb C\)。Plücker 坐标给出 \(\operatorname{Gr}(2,4;K)\) 到 \(\mathbb P^5(K)\) 的单射，其像恰为二次曲面
+	\begin{equation}\label{g1:eq:plucker-gr24}
+		p_{12}p_{34}-p_{13}p_{24}+p_{14}p_{23}=0.
+	\end{equation}
+	在 \(p_{12}\ne0\) 的部分，每个子空间有唯一的行基矩阵
+	\[
+		\begin{pmatrix}
+			1&0&a&b\\
+			0&1&c&d
+		\end{pmatrix},
+	\]
+	其中 \(a,b,c,d\in K\) 可任意取值，相应射影坐标为 \([1:c:d:-a:-b:ad-bc]\)。
+\end{theorem}
+\begin{proof}
+	先说明关系式从何而来。将 \(p_{ij}=u_i v_j-u_j v_i\) 代入左边，展开得
+	\[
+		\begin{aligned}
+			&(u_1v_2-u_2v_1)(u_3v_4-u_4v_3)\\
+			&\quad-(u_1v_3-u_3v_1)(u_2v_4-u_4v_2)\\
+			&\quad+(u_1v_4-u_4v_1)(u_2v_3-u_3v_2)=0;
+		\end{aligned}
+	\]
+	每个含两个 \(u\) 坐标和两个 \(v\) 坐标的单项式出现两次且符号相反。这证明必要性。
+
+	若 \(p_{12}\ne0\)，基矩阵的前两列组成可逆矩阵 \(C\)。将整矩阵左乘 \(C^{-1}\)，得到所述行基矩阵，而且前两坐标为 \((1,0)\)、\((0,1)\) 的两行在该子空间中唯一。逐项计算子式即得 \((1,c,d,-a,-b,ad-bc)\)。反过来，对满足关系式且 \(p_{12}\ne0\) 的射影点，将全部坐标除以 \(p_{12}\)，记归一化后的坐标为 \(\widetilde p_{ij}\)。取
+	\[
+		a=-\widetilde p_{23},\quad b=-\widetilde p_{24},\quad
+		c=\widetilde p_{13},\quad d=\widetilde p_{14}.
+	\]
+	对应行基矩阵的前五个子式就是指定坐标；第六个由
+	\[
+		ad-bc=\widetilde p_{13}\widetilde p_{24}
+		-\widetilde p_{14}\widetilde p_{23}=\widetilde p_{34}
+	\]
+	保证一致。这给出了存在性，也说明相同坐标只能恢复同一个子空间。
+
+	任意非零六元组都有某个 \(p_{ij}\ne0\)。交换坐标轴可使这对指标成为 \(1,2\)。这里交换时同时使用 \(p_{ji}=-p_{ij}\)；关系式的左边在交换任意相邻两个指标时只改变符号，故它的零条件保持不变。于是上述构造适用于每一张图，并在图的重叠处由恢复出的子空间的唯一性相容，证明全局结论。
+\end{proof}
+
+\begin{example}[由六个数恢复一条直线]\label{g1:exm:plucker-reconstruction}
+	在 \(K=\mathbb R\) 或 \(\mathbb C\) 上，六元组 \([1:2:3:4:5:-2]\) 满足 \(-2-10+12=0\)。按\cref{g1:thm:plucker-gr24}，其二维子空间有行基
+	\[
+		u=(1,0,-4,-5),\qquad v=(0,1,2,3),
+	\]
+	故对应直线为 \([s:t:-4s+2t:-5s+3t]\)，其中 \([s:t]\in\mathbb P^1(K)\)。若把最后一个坐标改成 \(0\)，关系式左边变成 \(2\)，所得射影点便不代表任何直线。所以六个齐次坐标之间的二次关系是实质约束。
+\end{example}
+
+一般的 \(\operatorname{Gr}(k,n;K)\) 也有同样可操作的坐标。将一组基写成秩为 \(k\) 的 \(k\times n\) 矩阵 \(M\)，选择一个非零的 \(k\) 阶子式。若它来自前 \(k\) 列，左乘这 \(k\) 列组成的矩阵的逆，即得唯一形式
+\[
+	M=[I_k\mid Z],\qquad Z\in\operatorname{Mat}_{k\times(n-k)}(K).
+\]
+唯一性的理由是：若 \(S[I_k\mid Z]=[I_k\mid Z']\)，比较前 \(k\) 列便有 \(S=I_k\)，继而 \(Z=Z'\)。任意 \(Z\) 都给出秩为 \(k\) 的矩阵。因此这一部分的子空间由 \(k(n-k)\) 个自由参数描述。其他非零子式给出其他图；在重叠处，变换是先选出新的可逆子矩阵 \(C\)，再作 \(C^{-1}M\)。逆矩阵的余子式公式说明，新参数是旧参数的有理函数，分母就是被假设非零的 \(\det C\)。
+
+\ProseParagraphBreak
+
+所有 \(k\) 阶子式在换基时仍同乘 \(\det S\)，故又给出一个射影点，落在 \(\mathbb P^{\binom nk-1}(K)\) 中。这些坐标确实能恢复子空间：在选定子式归一化为 \(1\) 后， \([I_k\mid Z]\) 中的每个 \(Z_{ij}\) 都是用相应外部列替换第 \(i\) 个单位列所得子式，至多差一个由列排序产生的符号。因此所得到的射影映射为单射。一般维数时子式之间还有一组二次关系；本节已经完整求出的\eqref{g1:eq:plucker-gr24}是其中最小的非平凡模型。这里的参数数目是坐标图中的自由参数数目，尚不需要借助一般代数簇的维数理论。
+
+\subsection{关联簇与射影不变量的后续问题}
+\label{g1:subsec:0206:03}
+
+对偶空间把一个超平面视为一个点；若同时保留原空间中的点，就能把“点属于超平面”本身作为一个几何对象。设 \(V=K^{n+1}\)、\(n\ge1\)。对偶空间 \(V^*\) 是 \(V\) 上的线性函数全体，非零函数 \(\alpha\) 的核给出超平面 \(\mathbb P(\ker\alpha)\)。定义
+\[
+	\mathcal I_n=
+	\{\,([x],[\alpha])\in\mathbb P(V)\times\mathbb P(V^*):\alpha(x)=0\,\},
+\]
+称为点与超平面的\term[guanliancu]{关联簇}[incidence variety]。这里先将“簇”理解为这组方程给出的几何集合，关于代数簇的结构与一般性质将在第五卷中系统建立。在对偶基下，若 \(\alpha\) 的坐标为 \((a_0,\ldots,a_n)\)，其方程就是
+\[
+	\sum_{i=0}^n a_i x_i=0.
+\]
+分别缩放 \(a\) 和 \(x\) 不改变零条件，所以定义与代表选择无关。
+
+\begin{proposition}[关联集合的两个投影]\label{g1:prop:incidence-fibers}
+	设 \(K=\mathbb R\) 或 \(\mathbb C\)，\(V=K^{n+1}\)、\(n\ge1\)。从 \(\mathcal I_n\) 到 \(\mathbb P(V)\)、\(\mathbb P(V^*)\) 的坐标投影都为满射。固定 \([x]\) 后，其上方的集合是 \(\mathbb P(\{\alpha:\alpha(x)=0\})\)，固定 \([\alpha]\) 后，其上方的集合是 \(\mathbb P(\ker\alpha)\)；二者都同构于 \(\mathbb P^{n-1}(K)\)。经 Segre 映射，\(\mathcal I_n\) 恰成为 Segre 像与超平面 \(\sum_i z_{ii}=0\) 的交集。
+\end{proposition}
+\begin{proof}
+	固定非零向量 \(x\)，线性映射 \(V^*\rightarrow K\)、\(\alpha\mapsto\alpha(x)\) 是满射：将 \(x\) 扩为一组基，令线性函数在 \(x\) 上取值 \(1\)、在其余基向量上取值 \(0\) 即可。其核因而为 \(n\) 维，非零核向量的射影类就是所有经过 \([x]\) 的超平面。固定非零 \(\alpha\) 时，\(\alpha:V\rightarrow K\) 也满射，所以 \(\ker\alpha\) 同样为 \(n\) 维。由于 \(n\ge1\)，这些核都含非零向量，故两个投影都满射。最后，Segre 坐标取 \(z_{ij}=x_i a_j\) 时，关联方程恰为 \(\sum_i z_{ii}=0\)。\cref{g1:prop:segre-rank-one}给出的单射性和逆映射保证此描述没有额外或遗漏的点。
+\end{proof}
+
+分别记这两个投影为 \(\pi_1([x],[\alpha])=[x]\)、\(\pi_2([x],[\alpha])=[\alpha]\)。
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter02-Incidence.tex}
+	\caption[点与超平面的关联]{点与超平面的关联。左边一个点的上方记录所有经过它的超平面；右边一个超平面的上方记录其全部点。}
+	\label{g1:fig:incidence-projections}
+\end{figure}
+
+\cref{g1:fig:incidence-projections}把同一个条件的两种读法并排呈现。当 \(n=2\) 时，固定点得到过该点的直线束，固定直线得到这条直线上的点列；当 \(n=1\) 时，两边的纤维都是一个点，因为射影直线上的超平面本身就是点。这里映射的\term[xianwei]{纤维}[fiber]指一个指定点的逆像。
+
+\ProseParagraphBreak
+
+这些方程也解释了关联为什么是射影不变量。若 \(g\in\operatorname{GL}(V)\)，同时变换
+\[
+	[x]\longmapsto[gx],\qquad [\alpha]\longmapsto[\alpha\circ g^{-1}],
+\]
+则 \((\alpha\circ g^{-1})(gx)=\alpha(x)\)。因此点属于超平面的条件在改变射影坐标后保持不变。值得继续追问的并不是怎样给上述模型再列一些名称，而是怎样从方程识别这样的不变关系：哪些条件描述的是一个子空间而非某组基，哪些参数变化只改变描述而不改变对象，哪些局部坐标能覆盖整个对象族。本节的秩一分解、子式恢复和关联方程已经分别给出了可直接计算的答案。后续研究更一般的曲线、曲面和参数空间时，这三个问题仍然存在。

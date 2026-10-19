@@ -1,0 +1,235 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 4.1 拓扑与映射的基本构造
+% 纲要位置：几何学计划纲要.md，第 238 行。
+% 正文状态：初稿完成；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 度量拓扑、拓扑基及连续性
+% * 子空间、积空间与映射的泛性质
+% * 商拓扑、粘合及商映射的检验
+% * 同胚不变量与商空间的反例
+% 
+% 纲要内容结束
+
+\section{拓扑与映射的基本构造}
+\label{g1:sec:0401}
+
+在平面中判断一条曲线是否连续，可以测量点的距离；把曲线的两个端点识别后，距离公式却未必还合用。我们仍希望知道哪些点足够接近、原来的连续映射何时能通过识别后的空间。开集提供了一套能同时处理这两种情形的语言。本节始终把构造空间与检验映射放在一起：子空间和积空间适合检验映入的映射，商空间适合检验从它映出的映射。
+
+\subsection{度量拓扑、拓扑基及连续性}
+\label{g1:subsec:0401:01}
+
+欧氏开球有两个与具体半径无关的性质：开集的任意并仍开，有限个开集的交仍开。第二个条件只能要求有限交，例如实直线上的开区间 \((-1/m,1/m)\) 的交是单点集 \(\{0\}\)。我们把这两项性质保留下来，允许点附近的形状由问题决定。
+
+\begin{definition}[拓扑空间]\label{g1:def:topology}
+	设 \(X\) 为集合。若其子集族 \(\mathcal T\) 含 \(\varnothing,X\)，对任意并和有限交封闭，则称 \(\mathcal T\) 为 \(X\) 上的一个\term[tuopu]{拓扑}[topology]，称 \((X,\mathcal T)\) 为\term[tuopukongjian]{拓扑空间}[topological space]。\(\mathcal T\) 中的集合称为\term[kaiji]{开集}[open set]，开集的补集称为\term[biji]{闭集}[closed set]。若 \(N\subseteq X\) 包含一个含 \(x\) 的开集，则称 \(N\) 为 \(x\) 的\term[linyu]{邻域}[neighborhood]。
+\end{definition}
+
+邻域本身不必开；“开邻域”才同时要求开性。由补集运算，任意闭集的交和有限闭集的并仍闭。\(\varnothing\) 与 \(X\) 既开又闭，因此“开”与“闭”并非互相排斥的两种分类。一个集合也可以既不开又不闭，例如通常实直线中的 \([0,1)\)。
+
+对 \(A\subseteq X\)，所有包含于 \(A\) 的开集之并称为它的\term[neibu]{内部}[interior]，记为 \(\operatorname{Int}_X A\)；所有包含 \(A\) 的闭集之交称为它的\term[bibao]{闭包}[closure]，记为 \(\overline A^{\,X}\)，环境明确时省去上标。它们分别是包含于 \(A\) 的最大开集和包含 \(A\) 的最小闭集。集合 \(\overline A\setminus\operatorname{Int}_X A\) 称为 \(A\) 的\term[bianjie]{边界}[boundary]，记为 \(\partial_X A\)。这里的边界由所在空间决定；同一子集放入较小的环境，边界可能改变。
+
+\begin{proposition}[闭包的邻域判据]\label{g1:prop:closure-neighborhood}
+	设 \(A\) 为拓扑空间 \(X\) 的子集。点 \(x\) 属于 \(\overline A\)，当且仅当 \(x\) 的每个开邻域都与 \(A\) 相交。此外，
+	\[
+		X\setminus\overline A=\operatorname{Int}_X(X\setminus A).
+	\]
+\end{proposition}
+\begin{proof}
+	若 \(x\notin\overline A\)，则开集 \(X\setminus\overline A\) 是一个不交 \(A\) 的邻域。反之，若存在含 \(x\) 的开集 \(U\) 与 \(A\) 不交，则闭集 \(X\setminus U\) 包含 \(A\)，所以 \(\overline A\subseteq X\setminus U\)，特别是 \(x\notin\overline A\)。这个判据同时说明，\(x\notin\overline A\) 等价于它属于 \(X\setminus A\) 中的某个开集，给出所写等式。
+\end{proof}
+
+若 \(\overline A=X\)，称 \(A\) 在 \(X\) 中\term[choumi]{稠密}[dense]。由刚才的判据，这等价于 \(A\) 与每个非空开集相交；有理数在通常实直线中稠密，就是这一条件的熟悉例子。
+
+度量是产生拓扑的一种重要方式，但不是拓扑定义的一部分。
+
+\begin{definition}[度量及其拓扑]\label{g1:def:metric-topology}
+	集合 \(X\) 上的函数 \(d:X\times X\to[0,\infty)\) 称为\term[duliang]{度量}[metric]，如果对所有 \(x,y,z\in X\)，有
+	\[
+		d(x,y)=0\Longleftrightarrow x=y,\qquad d(x,y)=d(y,x),\qquad d(x,z)\le d(x,y)+d(y,z).
+	\]
+	记 \(B_d(x,r)=\{y:d(x,y)<r\}\)，其中 \(r>0\)。规定 \(U\subseteq X\) 开，当且仅当每个 \(x\in U\) 都有 \(r>0\) 使 \(B_d(x,r)\subseteq U\)；所得拓扑称为 \(d\) 的\term[duliangtuopu]{度量拓扑}[metric topology]。
+\end{definition}
+
+这确实给出拓扑：并集中的点已经落在某一个成员中，可沿用该成员提供的球；有限交中的点可取有限个正半径的最小值。每个球本身也开，因为若 \(y\in B_d(x,r)\)，则三角不等式给出
+\[
+	B_d\bigl(y,r-d(x,y)\bigr)\subseteq B_d(x,r).
+\]
+前三章使用的欧氏距离就是这个定义的例子。另一个例子是离散度量：不同点的距离都取 \(1\)。此时每个单点都是半径 \(1/2\) 的球，所有子集都开；这一拓扑称为\term[lisantuopu]{离散拓扑}[discrete topology]。在另一端，只有 \(\varnothing,X\) 开的拓扑称为\term[pingfantuopu]{平凡拓扑}[indiscrete topology]。当 \(X\) 至少有两个点时，平凡拓扑不能来自度量，因为度量总能用足够小的球区分不同点。
+
+\begin{definition}[拓扑基]\label{g1:def:topological-basis}
+	拓扑空间 \(X\) 的开集族 \(\mathcal B\) 称为一个\term[tuopuji]{拓扑基}[topological basis]，如果对任意开集 \(U\) 和 \(x\in U\)，存在 \(B\in\mathcal B\) 使 \(x\in B\subseteq U\)。等价地，每个开集都是若干基元素的并。
+\end{definition}
+
+基把“检查所有开集”缩减为“检查一批足够小的开集”。度量空间的全体开球构成基；实直线中有理端点的开区间也构成基，因为每个开区间内部的点都能夹在两个合适的有理数之间。
+
+\begin{proposition}[从集合族产生拓扑]\label{g1:prop:basis-test}
+	设 \(\mathcal B\) 为集合 \(X\) 的子集族。它是某个拓扑的基，当且仅当它覆盖 \(X\)，并且对任意 \(B_1,B_2\in\mathcal B\) 及 \(x\in B_1\cap B_2\)，存在 \(B_3\in\mathcal B\) 使 \(x\in B_3\subseteq B_1\cap B_2\)。此时全体基元素的并组成唯一的相应拓扑。
+\end{proposition}
+\begin{proof}
+	若已经是拓扑基，覆盖性质来自开集 \(X\)，交集条件来自开集 \(B_1\cap B_2\)。反过来，把所有基元素的并组成的集合族记为 \(\mathcal T\)。空并是 \(\varnothing\)，覆盖条件给出 \(X\in\mathcal T\)，任意并显然仍在 \(\mathcal T\) 中。若 \(x\in U\cap V\)，其中 \(U,V\in\mathcal T\)，可先找含 \(x\) 的基元素 \(B_1\subseteq U\)、\(B_2\subseteq V\)，再由假设找到 \(B_3\subseteq U\cap V\)。因此 \(U\cap V\) 也是基元素的并。有限交由归纳得到，故 \(\mathcal T\) 为拓扑，且 \(\mathcal B\) 是它的基。任何以 \(\mathcal B\) 为基的拓扑都必须由这些并组成，所以唯一。
+\end{proof}
+
+\begin{definition}[连续映射]\label{g1:def:continuous-map}
+	拓扑空间之间的映射 \(f:X\to Y\) 称为\term[lianxuyingshe]{连续映射}[continuous map]，如果每个开集 \(V\subseteq Y\) 的原像 \(f^{-1}(V)\) 都在 \(X\) 中开。
+\end{definition}
+
+这个定义也可只在目标的一组基上检验，因为原像保持任意并。它等价于闭集的原像闭；还等价于逐点条件：对每个 \(x\in X\) 及 \(f(x)\) 的开邻域 \(V\)，存在 \(x\) 的开邻域 \(U\)，使 \(f(U)\subseteq V\)。确实，连续时可取 \(U=f^{-1}(V)\)；反之，各点提供的 \(U\) 把 \(f^{-1}(V)\) 表成开集的并。在度量空间中把 \(V\) 取为 \(\varepsilon\)-球，并在 \(U\) 中取一个 \(\delta\)-球，就恢复了分析学中的 \(\varepsilon\)--\(\delta\) 条件。
+
+在一般拓扑空间中，称序列 \((x_m)\)\term[shoulian]{收敛}[converge]于 \(x\)，记为 \(x_m\to x\)，如果 \(x\) 的每个开邻域都包含该序列从某一项起的全部项。连续映射保持这种收敛：若 \(x_m\to x\)，则对 \(f(x)\) 的每个开邻域 \(V\)，连续性使 \(f^{-1}(V)\) 成为 \(x\) 的开邻域，因而最终 \(x_m\in f^{-1}(V)\)，即最终 \(f(x_m)\in V\)。所以 \(f(x_m)\to f(x)\)。
+
+恒等映射连续，两个连续映射的复合连续，因为 \((g\circ f)^{-1}(V)=f^{-1}(g^{-1}(V))\)。但一般连续映射不把开集映成开集：常值映射 \(\mathbb R\to\mathbb R\) 已是反例。把每个开集的像都送成开集的映射称为\term[kaiyingshe]{开映射}[open map]；类似定义\term[biyingshe]{闭映射}[closed map]。连续性检验的是原像，开映射、闭映射检验的是像，三个条件不能混用。
+
+\begin{definition}[同胚]\label{g1:def:homeomorphism}
+	双射 \(f:X\to Y\) 若与逆映射 \(f^{-1}:Y\to X\) 都连续，则称为\term[tongpei]{同胚}[homeomorphism]。存在同胚的两个空间称为同胚的，记为 \(X\cong Y\)。
+\end{definition}
+
+对连续双射，逆映射连续等价于原映射开，也等价于原映射闭。这不是额外定理：逆映射对于集合的原像正是原映射对于该集合的像。因而证明一个显式双射是同胚时，既可以写出逆映射并检查连续性，也可以证明开性或闭性。
+
+\subsection{子空间、积空间与映射的泛性质}
+\label{g1:subsec:0401:02}
+
+圆周 \(S^1=\{(x,y)\in\mathbb R^2:x^2+y^2=1\}\) 上的开集通常不是平面开集：一小段圆弧在平面内没有面积，却应当是圆周上的开集。若把对象放在一个已有空间中，就应把环境的开集限制到这个对象上。
+
+设 \(A\subseteq X\)。集合族 \(\{A\cap U:U\subseteq X\text{ 开}\}\) 在 \(A\) 上组成拓扑，称为\term[zikongjiantuopu]{子空间拓扑}[subspace topology]。公理直接来自交集与并、交运算的相容性。这个定义还说明：子空间 \(A\) 中的闭集恰为 \(A\cap F\)，其中 \(F\) 在 \(X\) 中闭。例如 \([0,1)\) 在子空间 \([0,1]\) 中开，因为它等于 \([0,1]\cap(-1,1)\)；它并不在 \(\mathbb R\) 中开。
+
+\begin{proposition}[子空间的映入判据]\label{g1:prop:subspace-universal}
+	设 \(A\subseteq X\) 带子空间拓扑，\(i:A\hookrightarrow X\) 为包含映射。对任意拓扑空间 \(Z\) 及集合映射 \(f:Z\to A\)，\(f\) 连续当且仅当 \(i\circ f\) 连续。
+\end{proposition}
+\begin{proof}
+	包含映射连续，因为 \(i^{-1}(U)=A\cap U\)。所以 \(f\) 连续时复合连续。反过来，若 \(i\circ f\) 连续，则对 \(A\) 中开集 \(A\cap U\)，有 \(f^{-1}(A\cap U)=(i\circ f)^{-1}(U)\)，故原像开。
+\end{proof}
+
+这一性质把子空间拓扑与映射的目标联系起来：给定连续映射 \(g:Z\to X\)，若它的像包含于 \(A\)，就存在唯一的连续映射 \(f:Z\to A\) 使下图交换。
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		& A \arrow[d,hook,"i"] \\
+		Z \arrow[ur,dashed,"f"] \arrow[r,"g"'] & X
+	\end{tikzcd}
+\]
+这里“唯一”来自集合映射的取值已经被 \(g\) 决定；拓扑保证这个唯一的映射连续。这类用存在唯一映射来刻画构造的性质称为\term[fanxingzhi]{泛性质}[universal property]。
+
+积空间处理的是把几个量同时记录下来。对拓扑空间 \(X,Y\)，全体开矩形 \(U\times V\) 满足\cref{g1:prop:basis-test}，由它们生成的拓扑称为 \(X\times Y\) 的\term[jituopu]{积拓扑}[product topology]。有限个空间的积同样以 \(\prod_{i=1}^mU_i\) 为基。对任意指标集 \(I\)，积 \(\prod_{i\in I}X_i\) 的基本开集则规定为
+\begin{equation}\label{g1:eq:product-basic-open}
+	\bigcap_{i\in F}\pi_i^{-1}(U_i),\qquad F\subseteq I\text{ 有限},\quad U_i\subseteq X_i\text{ 开},
+\end{equation}
+其中 \(\pi_i\) 是第 \(i\) 个坐标投影。也就是说，一次只限制有限个坐标，其余坐标任取。交两个这样的集合仍只限制有限个坐标，所以确实给出一组基。
+
+\begin{proposition}[积空间的映入判据]\label{g1:prop:product-universal}
+	设 \((X_i)_{i\in I}\) 为拓扑空间族，积空间取上述积拓扑。映射 \(f:Z\to\prod_iX_i\) 连续，当且仅当每个坐标映射 \(f_i=\pi_i\circ f\) 连续。因此给定连续映射族 \(f_i:Z\to X_i\)，存在唯一的连续映射 \(f\) 满足 \(\pi_i\circ f=f_i\)。
+\end{proposition}
+\begin{proof}
+	投影 \(\pi_i\) 连续，因为 \(\pi_i^{-1}(U_i)\) 是基本开集。故 \(f\) 连续时各坐标连续。反过来，对\eqref{g1:eq:product-basic-open}中的基本开集，其原像为有限交 \(\bigcap_{i\in F}f_i^{-1}(U_i)\)，所以开。存在唯一的集合映射由 \(f(z)=(f_i(z))_i\) 给出，刚才的判据保证连续。
+\end{proof}
+
+有限积的图示为
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		& Z \arrow[dl,"f_1"'] \arrow[d,dashed,"f"] \arrow[dr,"f_2"] & \\
+		X_1 & X_1\times X_2 \arrow[l,"\pi_1"] \arrow[r,"\pi_2"'] & X_2 .
+	\end{tikzcd}
+\]
+如果在无限积中允许每个坐标都受一个开集限制，所得的是通常更细的盒拓扑，逐坐标连续就不再够用。例如 \(t\mapsto(t,t,\ldots)\) 从 \(\mathbb R\) 到 \(\mathbb R^{\mathbb N}\) 的所有坐标都连续，而集合 \(\prod_{n\ge1}(-1/n,1/n)\) 的原像是不开的 \(\{0\}\)。这个集合在盒拓扑中开，在积拓扑中并不开：任何含零序列的基本开集只限制有限个坐标，不能保证其余坐标满足所写不等式。
+
+有限个度量空间 \((X_i,d_i)\) 的积拓扑由度量
+\[
+	D(x,y)=\max_{1\le i\le m}d_i(x_i,y_i)
+\]
+产生。三角不等式逐坐标成立，再取最大值即可；\(D\)-球是相同半径的开球之积，而每个含 \(x\) 的基本开矩形都包含某个这样的球。因此有限积既能用坐标也能用距离来理解。对子集连续映射的限制仍连续，则由包含映射连续和复合连续立即得到。
+
+\subsection{商拓扑、粘合及商映射的检验}
+\label{g1:subsec:0401:03}
+
+现在把问题倒过来。若 \(q:X\to Y\) 已经规定哪些点要合并，如何给 \(Y\) 选拓扑？目标是使“合并后的一块区域开”能够在原来的空间中检查。由于这块区域可能包含多个代表，必须同时检查它的全部原像，而不能只挑一份代表。
+
+\begin{definition}[商拓扑与商映射]\label{g1:def:quotient-map}
+	设 \(q:X\to Y\) 为从拓扑空间到集合的满射。规定
+	\[
+		U\subseteq Y\text{ 开}\quad\Longleftrightarrow\quad q^{-1}(U)\subseteq X\text{ 开},
+	\]
+	得到的拓扑称为由 \(q\) 给出的\term[shangtuopu]{商拓扑}[quotient topology]。若 \(Y\) 已有拓扑，且满射 \(q\) 满足这个等价关系，则称 \(q\) 为\term[shangyingshe]{商映射}[quotient map]。当 \(Y=X/{\sim}\) 是等价类的集合且 \(q(x)=[x]\) 时，所得空间称为\term[shangkongjian]{商空间}[quotient space]。
+\end{definition}
+
+原像保持任意并和有限交，故上述定义确实满足拓扑公理。商映射必连续；进一步说，商拓扑是使 \(q\) 连续的最细拓扑，因为任何这样的拓扑中的开集都必须有开原像。若 \(A\subseteq X\) 是一些完整等价类的并，即 \(q^{-1}(q(A))=A\)，称它为\term[baoheji]{饱和集}[saturated set]。商空间的开集与原空间的饱和开集一一对应。
+
+\begin{proposition}[映射从商空间下降]\label{g1:prop:quotient-descent}
+	设 \(q:X\to Y\) 为商映射，\(Z\) 为拓扑空间。集合映射 \(h:Y\to Z\) 连续，当且仅当 \(h\circ q\) 连续。特别地，若连续映射 \(f:X\to Z\) 在 \(q\) 的每个纤维上取常值，则存在唯一连续映射 \(\bar f:Y\to Z\)，使 \(f=\bar f\circ q\)。
+\end{proposition}
+\begin{proof}
+	一个方向来自复合连续。另一个方向中，对 \(Z\) 的开集 \(V\)，等式
+	\[
+		q^{-1}\bigl(h^{-1}(V)\bigr)=(h\circ q)^{-1}(V)
+	\]
+	说明左侧开，再由商映射的判据得到 \(h^{-1}(V)\) 开。若 \(f\) 在纤维上常值，就可定义 \(\bar f(y)=f(x)\)，其中任选 \(q(x)=y\)；纤维上的常值性使选择无关，满射性保证定义处处成立且唯一，连续性由刚证的判据得到。
+\end{proof}
+
+下降的图示为
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		X \arrow[r,"f"] \arrow[d,two heads,"q"'] & Z \\
+		Y \arrow[ur,dashed,"\bar f"'] &
+	\end{tikzcd}
+\]
+它把构造分成两个实质条件：纤维常值保证映射良定义，商拓扑保证连续。只写一个代表元公式而不检验第一项，就还没有得到商空间上的映射。
+
+\begin{proposition}[商映射的实用判据]\label{g1:prop:quotient-tests}
+	连续满射 \(q:X\to Y\) 若为开映射或闭映射，则为商映射。若 \(q\) 是商映射，\(U\subseteq Y\) 开，则限制 \(q:q^{-1}(U)\to U\) 仍为商映射。
+\end{proposition}
+\begin{proof}
+	只需补证“原像开蕴含目标开”。若 \(q\) 开且 \(q^{-1}(V)\) 开，满射性给出 \(V=q(q^{-1}(V))\) 开。若 \(q\) 闭，则 \(q^{-1}(Y\setminus V)\) 闭，其像 \(Y\setminus V\) 闭，所以 \(V\) 开。
+
+	对限制的结论，\(q^{-1}(U)\) 在 \(X\) 中开。若 \(V\subseteq U\) 的原像在 \(q^{-1}(U)\) 中开，它也在 \(X\) 中开，故 \(V\) 在 \(Y\) 中开，因而在 \(U\) 中开；相反方向由限制连续得到。
+\end{proof}
+
+开映射和闭映射只是充分条件。实际工作中也可以直接找一组饱和开集来描述商拓扑。尤其要注意，连续满射只能保证“目标开蕴含原像开”，还缺反方向。例如把带离散拓扑的 \(\mathbb R\) 恒等映到带通常拓扑的 \(\mathbb R\)，是连续满射，却不是商映射。
+
+粘合是商构造的一个常见来源。给定空间 \(X,Y\)，先取它们的\term[bujiaobing]{不交并}[disjoint union] \(X\sqcup Y\)：点保留来自哪一份的标签，一个集合开当且仅当它与每一份的交开。给定 \(A\subseteq X\) 及连续映射 \(a:A\to Y\)，再取由关系 \(x\sim a(x)\)（\(x\in A\)）生成的等价关系，得到粘合空间 \(X\cup_aY\)。这里“生成”包括传递性所迫使的所有识别；若 \(a\) 非单射，\(A\) 中不同的点也可能合并。根据下降判据，给定连续映射 \(f_X:X\to Z\)、\(f_Y:Y\to Z\)，它们恰在
+\[
+	f_X|_A=f_Y\circ a
+\]
+时粘成唯一连续映射 \(X\cup_aY\to Z\)。这条等式就是接口处必须满足的相容条件。
+
+另一个方向是：一个空间已经由若干子空间覆盖，能否从各片上的连续性推出整体连续性？需要对覆盖加条件。
+
+\begin{proposition}[粘合引理]\label{g1:prop:gluing-lemma}
+	设 \(X=\bigcup_{\alpha\in I}A_\alpha\)，且每个 \(A_\alpha\) 带子空间拓扑。假设或者所有 \(A_\alpha\) 都在 \(X\) 中开，或者 \(I\) 有限且所有 \(A_\alpha\) 都在 \(X\) 中闭。若连续映射 \(f_\alpha:A_\alpha\to Y\) 在交集上两两相同，则它们定义唯一连续映射 \(f:X\to Y\)。
+\end{proposition}
+\begin{proof}
+	交集上的相等性使 \(f(x)=f_\alpha(x)\) 与所选覆盖成员无关，覆盖性保证处处有定义，也给出唯一性。开覆盖情形，对开集 \(V\subseteq Y\)，每个 \(f_\alpha^{-1}(V)\) 在 \(A_\alpha\) 中开，因 \(A_\alpha\) 在 \(X\) 中开，它也在 \(X\) 中开；这些集合的并是 \(f^{-1}(V)\)，所以开。有限闭覆盖情形改用闭集 \(F\subseteq Y\)：\(f_\alpha^{-1}(F)\) 在 \(A_\alpha\) 中闭，因 \(A_\alpha\) 在 \(X\) 中闭，它也在 \(X\) 中闭；有限并 \(f^{-1}(F)\) 仍闭，故 \(f\) 连续。
+\end{proof}
+
+例如 \(|x|\) 由两个闭半轴上的公式 \(-x\)、\(x\) 粘成，它们在交点 \(0\) 处一致。有限闭覆盖的“有限”不能删去，因为闭集的任意并不一定闭；习题给出各片均有非空区间的具体反例。后面局部有限覆盖所起的作用之一，正是恢复这种闭集并的控制。
+
+\subsection{同胚不变量与商空间的反例}
+\label{g1:subsec:0401:04}
+
+同胚只保留由开集表达的结构。距离、角度、面积不在其中，例如 \(x\mapsto2x\) 是 \(\mathbb R^n\) 的同胚，却改变长度。与此相对，能否把两个不同的点放进不相交的开邻域，是只涉及开集的问题。
+
+\begin{definition}[Hausdorff 空间]\label{g1:def:hausdorff}
+	拓扑空间 \(X\) 称为\term[Hausdorffkongjian]{Hausdorff 空间}[Hausdorff space]，如果任意不同的点 \(x,y\in X\) 都有不相交的开邻域 \(U\ni x\)、\(V\ni y\)。\footnote{Felix Hausdorff（费利克斯·豪斯多夫，1868--1942），德国数学家，对一般拓扑、集合论及维数理论作出重要贡献。}
+\end{definition}
+
+度量空间都是 Hausdorff 的：若 \(d(x,y)=r>0\)，两个半径 \(r/3\) 的球若相交，三角不等式就给出 \(r<2r/3\)，矛盾。子空间继承 Hausdorff 性，因为可把两个不交的环境开邻域与子空间相交；任意积也继承这一性质，因为两个不同的点必在某一坐标不同，拉回该坐标中分离它们的两个开集即可。
+
+若 \(h:X\to Y\) 为同胚且 \(X\) 为 Hausdorff 空间，则 \(Y\) 中不同两点的原像能被不交开集分离，而这两个开集在 \(h\) 下的像仍开，因此 \(Y\) 也为 Hausdorff 空间。像这样在同胚下保持的性质称为\term[tongpeibubianliang]{同胚不变量}[topological invariant]。后面引入的紧性与连通性也将给出不变量；它们有用，是因为一旦发现不变量不同，就能排除所有可能的同胚，而不必逐一尝试公式。
+
+\begin{example}[连续双射不一定是同胚]\label{g1:exm:half-open-circle}
+	给 \([0,1)\) 通常的子空间拓扑，给 \(S^1\subseteq\mathbb C\cong\mathbb R^2\) 子空间拓扑。映射
+	\[
+		f:[0,1)\longrightarrow S^1,\qquad f(t)=e^{2\pi it}
+	\]
+	连续且为双射，但不是同胚。事实上，\([0,1/4)\) 在 \([0,1)\) 中开，而它的像包含 \(1\)，却不含任何角度为负且足够接近 \(0\) 的圆周点。每个 \(1\) 的圆周开邻域都包含这样的点，所以该像不开。因而 \(f^{-1}\) 不连续。
+\end{example}
+
+这个例子的两个空间都来自欧氏空间，问题仍会发生。连续双射允许把原来相距很远的端部压到相邻位置，逆映射因此可能把一个很小的邻域撕开。\cref{g1:thm:compact-bijection}将给出一个常用补救：若源空间紧、目标空间 Hausdorff，连续双射就必为同胚。
+
+\begin{example}[合并点可以破坏分离性]\label{g1:exm:two-point-quotient}
+	在通常实直线中保留原点为一个等价类，把所有非零点合并为另一个等价类。商集合记为 \(\{a,b\}\)，其中 \(a=[0]\)。单点集 \(\{b\}\) 的原像是开集 \(\mathbb R\setminus\{0\}\)，而 \(\{a\}\) 的原像 \(\{0\}\) 不开，所以商拓扑恰为
+	\[
+		\{\varnothing,\{b\},\{a,b\}\}.
+	\]
+	含 \(a\) 的唯一开邻域是整个空间，因此 \(a,b\) 不能被不交开邻域分离。源空间为 Hausdorff 空间，商空间却不是。
+\end{example}
+
+所以“把某些点看成同一点”只确定了商构造的输入，并不自动保证结果是通常想象中的几何空间。后面处理环面与实射影空间时，我们会分别核验等价类、连续性与分离性；双原点和有理平移的商则显示这些核验分别可能在哪里失败。

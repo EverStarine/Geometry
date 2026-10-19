@@ -1,0 +1,189 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 4.5 商模型的完整核验
+% 纲要位置：几何学计划纲要.md，第 266 行。
+% 正文状态：初稿完成；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 环面的积模型与边识别模型
+% * 实射影空间的商拓扑和仿射图
+% * 双原点与稠密轨道商的非分离现象
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{商模型的完整核验}
+\label{g1:sec:0405}
+
+把正方形的对边接起来，或者把球面上的对径点合并，图形会提示一个新的空间。要把提示变成证明，必须说明：哪些点被识别，诱导映射是否良定义且双射，两个模型的拓扑是否相同。紧性与 Hausdorff 性常能完成最后一步，但它们也需要实际检验。本节先完成两个常用的几何模型，再考察两种看似温和却会破坏分离性的识别。
+
+\subsection{环面的积模型与边识别模型}
+\label{g1:subsec:0405:01}
+
+记 \(S^1=\{z\in\mathbb C:|z|=1\}\)，带来自 \(\mathbb C\cong\mathbb R^2\) 的子空间拓扑。它的两个独立角参数组成\term[huanmian]{环面}[torus]
+\[
+	T^2=S^1\times S^1.
+\]
+这里先用积空间定义环面，因而不依赖在三维空间里画出的具体形状。角参数取在闭区间 \([0,1]\) 时，\(0\) 与 \(1\) 表示同一个圆周点，所以两个参数的端点都需要识别。
+
+\begin{theorem}[环面的方形商模型]\label{g1:thm:torus-square}
+	设 \(Q=[0,1]^2\)，令 \(\sim\) 为由
+	\[
+		(0,t)\sim(1,t),\qquad (s,0)\sim(s,1)\qquad(0\le s,t\le1)
+	\]
+	生成的等价关系。则映射
+	\[
+		F:Q\longrightarrow T^2,\qquad F(s,t)=(e^{2\pi is},e^{2\pi it})
+	\]
+	诱导同胚 \(\bar F:Q/{\sim}\to T^2\)。
+\end{theorem}
+\begin{proof}
+	先确定 \(F\) 的纤维，而不只检查题中写出的两种识别。对于 \(s,s'\in[0,1]\)，有 \(e^{2\pi is}=e^{2\pi is'}\) 当且仅当 \(s-s'\in\mathbb Z\)，也就是 \(s=s'\) 或 \(\{s,s'\}=\{0,1\}\)。第二坐标同理。所以两个点的像相等，恰好意味着可以依次改变第一坐标的端点、第二坐标的端点而从一个点到另一个点。这正是所给关系生成的等价关系。特别地，内部点的等价类是单点，边上非角点的等价类含两个点，四个角点属于同一个等价类。
+
+	两个坐标函数连续，故由积空间的映入判据，\(F\) 连续。每个圆周点都有角参数，因而 \(F\) 满射。商下降命题于是给出连续映射 \(\bar F\)，上面对纤维的计算说明它是双射。
+
+	最后核验逆映射连续。闭区间紧，故由\cref{g1:prop:finite-product-compact}，\(Q\) 紧；由\cref{g1:prop:compact-image}，其商空间也是紧的。圆周是度量空间的子空间，故为 Hausdorff 空间，两个圆周的积仍为 Hausdorff 空间。因此\cref{g1:thm:compact-bijection}适用，连续双射 \(\bar F\) 为同胚。
+\end{proof}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter04-TorusSquare}
+	\caption[环面的对边识别]{环面的对边识别。同字母、同参数方向的边彼此对应，四个角合并为一个点。阴影给出该点一个小邻域在正方形中的四块原像；识别以后它们接成一块。}
+	\label{g1:fig:torus-square}
+\end{figure}
+
+对边识别的方向必须写清。例如竖边上的 \((0,t)\) 与 \((1,t)\) 使用相同的 \(t\)，所以两侧箭头都向上；若改成 \((0,t)\sim(1,1-t)\)，就已经更改等价关系，不能沿用上面的 \(F\)。图中的箭头只是记录这个参数对应，并不代替纤维计算。
+
+边或角在正方形里看起来特殊，但识别后没有成为局部的缺口。这个事实可以直接在积模型中看出。对任意 \(c\in S^1\)，取开半圆
+\[
+	A_c=\{z\in S^1:\operatorname{Re}(z/c)>0\}.
+\]
+映射 \(u\mapsto ce^{2\pi iu}\) 把 \((-1/4,1/4)\) 同胚地映到 \(A_c\)。其连续逆映射为
+\[
+	z\longmapsto\frac1{2\pi}\arctan\frac{\operatorname{Im}(z/c)}{\operatorname{Re}(z/c)};
+\]
+正实部保证这里选定的反正切分支唯一。于是 \((c,d)\in T^2\) 的开邻域 \(A_c\times A_d\) 同胚于一个开矩形。通过 \(\bar F\) 拉回，处于一条边中间的点附近通常需要两块半矩形拼合，角点附近需要四块角区域拼合，而得到的局部空间都是一个开矩形。这也解释了为什么不能只在正方形中取某一个代表的单侧邻域来决定商拓扑。
+
+\subsection{实射影空间的商拓扑和仿射图}
+\label{g1:subsec:0405:02}
+
+\cref{g1:def:projective-space}把实射影空间定义为 \(\mathbb R^{n+1}\) 中过原点的一维线性子空间的集合，并用非零向量的比例类 \([v]\) 表示点。\cref{g1:prop:projective-charts}进一步给出了 \(v_i\ne0\) 时的归一化坐标。现在要给这个集合补上拓扑，并证明已有坐标确实是同胚坐标，而不只是集合之间的双射。
+
+对 \(n\ge0\)，令 \(E=\mathbb R^{n+1}\setminus\{0\}\)，给 \(E\) 欧氏子空间拓扑。记
+\[
+	p:E\longrightarrow\mathbb RP^n=\mathbb P^n(\mathbb R),\qquad p(v)=[v],
+\]
+并给 \(\mathbb RP^n\) 由 \(p\) 决定的商拓扑；这里 \(v\sim w\) 的含义是 \(w=\lambda v\)，其中 \(\lambda\in\mathbb R\setminus\{0\}\)。每条这样的直线与单位球面 \(S^n\) 恰交于两个对径点，所以也应能从球面构造同一个空间。
+
+\begin{theorem}[实射影空间的两个商模型]\label{g1:thm:real-projective-quotient}
+	设 \(n\ge0\)。把 \(S^n\) 上的 \(u,-u\) 识别，所得商空间 \(S^n/\{\pm1\}\) 与上述 \(\mathbb RP^n\) 自然同胚。空间 \(\mathbb RP^n\) 紧且 Hausdorff，并且在单位代表上由
+	\begin{equation}\label{g1:eq:projective-quotient-metric}
+		\delta([u],[v])=\min\{\lVert u-v\rVert,\lVert u+v\rVert\},\qquad u,v\in S^n,
+	\end{equation}
+	给出一个产生其商拓扑的度量。
+\end{theorem}
+\begin{proof}
+	先构造互逆连续映射，不预先假设任何商模型的分离性。记球面上的商映射为 \(q:S^n\to S^n/\{\pm1\}\)，包含映射为 \(i:S^n\hookrightarrow E\)。\(p\circ i\) 在对径类上常值，故下降为连续映射
+	\[
+		a:S^n/\{\pm1\}\longrightarrow\mathbb RP^n,\qquad a(\{u,-u\})=[u].
+	\]
+	反向利用连续的归一化映射 \(r:E\to S^n\)、\(r(v)=v/\lVert v\rVert\)。当 \(v\) 乘以非零实数时，\(r(v)\) 只可能保持不变或变成对径点，故 \(q\circ r\) 在 \(p\) 的纤维上常值，也下降为连续映射 \(b:\mathbb RP^n\to S^n/\{\pm1\}\)。因为 \(p(r(v))=p(v)\)、\(r(u)=u\)，两个复合都恒等，因而 \(a,b\) 为互逆同胚。
+
+	再在球面商上检查度量。式\eqref{g1:eq:projective-quotient-metric}在任一代表变号时都不变，故良定义；它对称、非负，且为零恰好意味着两个对径类相同。为证三角不等式，取符号 \(\varepsilon,\eta\in\{1,-1\}\) 使
+	\[
+		\delta([u],[v])=\lVert u-\varepsilon v\rVert,\qquad
+		\delta([v],[w])=\lVert v-\eta w\rVert.
+	\]
+	于是
+	\[
+		\begin{aligned}
+			\delta([u],[w])&\le\lVert u-\varepsilon\eta w\rVert\\
+			&\le\lVert u-\varepsilon v\rVert+\lVert\varepsilon v-\varepsilon\eta w\rVert\\
+			&=\delta([u],[v])+\delta([v],[w]).
+		\end{aligned}
+	\]
+	所以 \(\delta\) 为度量。
+
+	最后比较拓扑。任一 \(\delta\)-球的原像满足
+	\[
+		q^{-1}\bigl(B_\delta([u],\rho)\bigr)
+		=B_{S^n}(u,\rho)\cup B_{S^n}(-u,\rho),
+	\]
+	故在球面中开，说明度量开集都是商拓扑开集。反过来，若 \(U\) 在商拓扑中开且 \([u]\in U\)，则 \(q^{-1}(U)\) 开并含 \(u\)，所以某个球面球 \(B_{S^n}(u,\rho)\) 包含于这个原像。任意满足 \(\delta([u],[v])<\rho\) 的类，都有一个单位代表位于该球内，所以 \(B_\delta([u],\rho)\subseteq U\)。这证明 \(U\) 在度量拓扑中开。两种拓扑相同，因而商空间为 Hausdorff 空间。球面是紧立方体 \([-1,1]^{n+1}\) 中的闭集，故由\cref{g1:prop:compact-closed-subset}紧；它的连续商像由\cref{g1:prop:compact-image}仍紧，完成证明。
+\end{proof}
+
+这里紧性来自球面，而不是来自非紧空间 \(E\)；Hausdorff 性来自显式度量，而不是来自“商掉一个对称”的直觉。两种论证承担不同任务。这个度量也有直接含义：比较两条无向直线时，允许把一个单位代表变号，再取两种距离中较小的一个。
+
+\begin{proposition}[实射影空间的仿射图]\label{g1:prop:real-projective-topological-charts}
+	设 \(n\ge1\)，\(0\le i\le n\)。集合 \(U_i=\{[X_0:\cdots:X_n]:X_i\ne0\}\) 在 \(\mathbb RP^n\) 中开，且映射
+	\[
+		\varphi_i:U_i\longrightarrow\mathbb R^n,\qquad
+		[X_0:\cdots:X_n]\longmapsto
+		\left(\frac{X_0}{X_i},\ldots,\widehat{\frac{X_i}{X_i}},\ldots,\frac{X_n}{X_i}\right)
+	\]
+	为同胚；帽号表示略去该项。这 \(n+1\) 张图覆盖 \(\mathbb RP^n\)，在重叠部分的换图映射由相应坐标相除给出。
+\end{proposition}
+\begin{proof}
+	原像 \(p^{-1}(U_i)=\{X\in E:X_i\ne0\}\) 开，所以 \(U_i\) 在商拓扑中开。第二章已经说明 \(\varphi_i\) 是双射：每个类唯一地归一化为 \(X_i=1\)，其余 \(n\) 个坐标任意。
+
+	为核验连续性，令 \(E_i=p^{-1}(U_i)\)。由\cref{g1:prop:quotient-tests}，限制 \(p_i:E_i\to U_i\) 仍为商映射。复合 \(\varphi_i\circ p_i\) 是分母不为零的坐标商，故连续，商下降判据于是给出 \(\varphi_i\) 连续。反过来，将 \((x_0,\ldots,\widehat{x_i},\ldots,x_n)\) 在第 \(i\) 位插入 \(1\)，得到连续映射 \(s_i:\mathbb R^n\to E_i\)，并有 \(\varphi_i^{-1}=p_i\circ s_i\)。故逆映射也连续。
+
+	每个非零向量至少有一个非零坐标，所以这些图覆盖全空间。在第 \(i\) 张图中把 \(x_i=1\) 补回，重叠条件为 \(x_j\ne0\)；转到第 \(j\) 张图，就是把所有坐标除以 \(x_j\)，再略去第 \(j\) 位。因此新坐标中第 \(i\) 位为 \(1/x_j\)，其他保留位为 \(x_k/x_j\)。分母非零同时保证换图公式连续。
+\end{proof}
+
+例如在 \(\mathbb RP^2\) 的 \(U_0\) 中写点为 \([1:x:y]\)，转入 \(U_1\) 要求 \(x\ne0\)，新坐标为 \((1/x,y/x)\)。直线 \(x=0\) 上的点没有失去意义，它们只是落在 \(U_1\) 之外。这个例子把第二章的代数换图公式与当前的拓扑构造接上了：坐标图是开子空间上的同胚，换图则发生在真正的开重叠区域中。
+
+\subsection{双原点与稠密轨道商的非分离现象}
+\label{g1:subsec:0405:03}
+
+前两个模型的识别都留下了足够多的开集来区分点。下面把两份直线几乎全部粘在一起，只保留两个不同的原点。问题不在于点数太多，而在于两个未被识别的点附近，已经没有足够独立的邻域。
+
+\begin{example}[双原点直线]\label{g1:exm:double-origin}
+	取不交并 \(\mathbb R_a\sqcup\mathbb R_b\)，把 \(x_a\) 与 \(x_b\) 在所有 \(x\ne0\) 处识别，保留 \(0_a,0_b\) 不同。所得商空间 \(D\) 称为\term[shuangyuandianzhixian]{双原点直线}[line with two origins]。它的每个点都有同胚于开区间的开邻域，每个单点闭，但它不是 Hausdorff 空间。
+\end{example}
+\begin{proof}
+	记商映射为 \(q\)。先证明 \(q\) 开，这样才能准确判断两份直线的像。若 \(O=O_a\sqcup O_b\) 在不交并中开，则它的饱和集在第 \(a\) 份直线中对应
+	\[
+		O_a\cup(O_b\setminus\{0\}),
+	\]
+	在第 \(b\) 份中对应 \(O_b\cup(O_a\setminus\{0\})\)，两者都是通常开集。因此 \(q^{-1}(q(O))\) 开，由商拓扑定义，\(q(O)\) 开。
+
+	包含每一份直线再取商，得到连续单射 \(j_a:\mathbb R\to D\)、\(j_b:\mathbb R\to D\)。它们都是到其像的开映射，故给出
+	\[
+		\mathbb R\cong D\setminus\{0_b\},\qquad \mathbb R\cong D\setminus\{0_a\},
+	\]
+	而这两个像在 \(D\) 中开。因此每个点确实有通常直线的局部模型。任一单点的原像或者是一份直线的一个原点，或者是两份直线中同坐标的两个点；这些原像在不交并中闭。商映射对闭集的判据便说明每个单点在 \(D\) 中闭。
+
+	但若 \(U\ni0_a\)、\(V\ni0_b\) 都开，则 \(q^{-1}(U)\) 在第 \(a\) 份中包含某个 \((-\varepsilon,\varepsilon)\)，\(q^{-1}(V)\) 在第 \(b\) 份中包含某个 \((-\eta,\eta)\)。取 \(0<|x|<\min\{\varepsilon,\eta\}\)，其公共等价类同时属于 \(U,V\)。所以这两个点没有不交开邻域，\(D\) 非 Hausdorff。
+\end{proof}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter04-DoubleOrigin}
+	\caption[双原点直线的两个邻域]{双原点直线的两个邻域。上下两份中坐标相同的非零点被识别，两个原点仍不同；各自围住原点的区间都包含共同的非零点，故像中的邻域必相交。}
+	\label{g1:fig:double-origin}
+\end{figure}
+
+从序列也能看到同一障碍。由每一份直线到 \(D\) 的连续映射，非零点序列 \(1/m\) 在 \(D\) 中同时收敛到 \(0_a\) 与 \(0_b\)。局部坐标各自没有问题，却不能排除全局出现两个极限。这说明后来定义流形时，Hausdorff 条件不能从“每一点附近像欧氏空间”中省略。
+
+这两个原点对连续的 Hausdorff 值观测也无法区分。若 \(f:D\to Y\) 连续且 \(Y\) 为 Hausdorff 空间，而 \(f(0_a)\ne f(0_b)\)，则取这两个像的不交开邻域，其原像会把 \(0_a,0_b\) 分离，矛盾。因此 \(f(0_a)=f(0_b)\)。具体地，令 \(r:D\to\mathbb R\) 忘去原点的标签，它由两份恒等坐标映射下降得到，故连续。每个这样的 \(f\) 都唯一写成 \(f=g\circ r\)，其中 \(g=f\circ j_a\) 连续。商空间仍然保存两个点，连续映入 Hausdorff 空间的映射却看不出这个差别。
+
+另一种失败来自稠密的等价类。不同等价类在集合意义下完全分离，却散布在彼此的每个小区间里。
+
+\begin{example}[有理平移的轨道商]\label{g1:exm:rational-orbit-quotient}
+	在通常实直线上定义 \(x\sim y\) 当且仅当 \(x-y\in\mathbb Q\)，记商空间为 \(\mathbb R/\mathbb Q\)。它至少有两个点，但拓扑只有空集与全空间，所以不是 Hausdorff 空间，且每个单点都不闭。
+\end{example}
+\begin{proof}
+	等价类是 \(x+\mathbb Q\)。有理数的稠密性说明每个类都与每个非空开区间相交。商集合至少有两个元素，因为 \(0\) 与 \(\sqrt2\) 之差不是有理数。
+
+	设 \(W\) 为商空间的非空开集，则 \(U=q^{-1}(W)\) 是非空的饱和开集。取开区间 \((a-\varepsilon,a+\varepsilon)\subseteq U\)。对任意 \(x\in\mathbb R\)，有理数的稠密性给出 \(r\in\mathbb Q\)，使 \(x+r\) 落在这个区间中。由于 \(U\) 饱和，而 \(x\sim x+r\)，得到 \(x\in U\)。因此 \(U=\mathbb R\)，满射性给出 \(W=\mathbb R/\mathbb Q\)。这证明拓扑平凡。这个空间有不止一个点，所以任何单点都不等于全空间，也非空，因而既不开也不闭。
+\end{proof}
+
+这个商映射甚至是开映射：对 \(\mathbb R\) 中的开集 \(O\)，
+\[
+	q^{-1}(q(O))=\bigcup_{r\in\mathbb Q}(O+r)
+\]
+是开集，故 \(q(O)\) 开。于是“源空间很好，商映射连续、满且开”仍然不够保证目标的分离性。在 \(\mathbb R/\mathbb Q\) 中，每个点的闭包都是整个空间；任何到 Hausdorff 空间的连续映射都为常值，因为若有两个不同的像，不交开邻域的原像将给出两个非空不交开集，而这里根本不存在这样的开集。
+
+两种反例的差别值得保留。双原点直线的每个单点闭，普通点还有熟悉的局部坐标，失败集中在两个原点不能被开集分开；有理平移商连单点闭性也失去了，每个非空开集都扩张成全空间。研究一个新的商空间时，先计算饱和开集，往往就能看出这种差别。关于积、商与粘合的系统介绍，可参阅\cite[Chapter 3, Product Spaces, p.~60; Quotient Spaces, p.~65; Adjunction Spaces, p.~73]{Lee2011Topological}。

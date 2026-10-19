@@ -1,0 +1,1232 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：## 附录 B　离散与凸几何
+% 纲要位置：几何学计划纲要.md，第 935 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% > 从正文凸方法进入格与离散结构；给出可核验定理和模型，不扩为组合优化全书。
+% 
+% * **格点与多面体**
+%   * 格、基本平行多面体及体积
+%   * 二维 Pick 公式及三角剖分证明
+%   * Ehrhart 多项式的代表性陈述与例子
+% 
+% * **Voronoi 与 Delaunay**
+%   * 距离平方与分区
+%   * 空球条件和对偶分解
+%   * 退化位置及一般位置的区别
+% 
+% * **支撑函数与离散逼近**
+%   * 凸体的多面体逼近
+%   * Hausdorff 距离与支撑函数
+%   * 数值表示的证书
+% 
+% ---
+% 
+% 纲要内容结束
+
+\chapter{离散与凸几何}
+\label{g1:app:B}
+\BookChapterNumber{g1:app:B}
+
+\begin{chapterabstract}
+	凸集的形状可以由顶点、半空间或支撑函数描述；加入整数格与有限采样点之后，还要辨别计数、分解和逼近各自保留了哪些信息。本附录从格的基本区域出发，用格三角剖分证明二维 Pick 公式，计算若干 Ehrhart 多项式；再由距离平方的线性差与抛物面提升建立 Voronoi 分区和 Delaunay 分解，说明共球位置为何产生非单纯形单元。最后用有限方向上的支撑值构造内外多面体，并把 Hausdorff 误差转成可检查的函数界与有限证书。
+\end{chapterabstract}
+
+\begin{learninggoals}
+	\begin{itemize}
+		\item 从格基计算基本区域的体积，辨别保持格的坐标变换与一般实线性变换。
+		\item 用三角剖分证明凸格多边形的 Pick 公式，计算膨胀后多边形、箱体与单形的格点数。
+		\item 把最近站点的距离比较写成线性不等式，并用空球条件识别相应的 Delaunay 单元。
+		\item 区分一般位置的单纯形剖分与共球退化的多胞形分解，说明额外选择对角线改变了什么。
+		\item 用支撑函数计算紧凸集的 Hausdorff 距离，为有限采样构造带误差界的内外逼近。
+		\item 检验一个有限数值表示所附的包含关系与误差证书，分清近似结果与已获证明的结论。
+	\end{itemize}
+\end{learninggoals}
+
+边长为 \(m\) 的正方形面积是 \(m^2\)，但当 \(m\) 为非负整数时，其中连同边界共有 \((m+1)^2\) 个整数点。两者的差为 \(2m+1\)：面积刻画了计数的主要增长，边界与顶点还留下了较低阶的信息。若把正方形剪成三角形，公共边上的格点就会被重复计入；要从局部计数恢复整体，必须把这种重复明确扣除。Pick 公式与本附录的 Ehrhart 计数正是从这一问题展开。
+
+\ProseParagraphBreak
+
+有限数据还可能承担另外两种任务。给定若干站点，可以按“离谁最近”划分整个空间；给定一个凸体，可以只保留有限个支撑方向，尝试用多面体近似它。前一个问题要求公共边界与退化单元的定义准确，后一个问题要求未采样方向上的误差仍受控制。画出一个看似合理的分区，或计算出一批精确小数，都不能独自回答这些问题。
+
+\ProseParagraphBreak
+
+本附录使用\chapref{g1:ch:03}的有限维凸性。\cref{g1:thm:polytope-hv}把有界半空间交与有限点凸包联系起来，\cref{g1:prop:support-function-representation}用全部方向的支撑值恢复闭凸集，\cref{g1:prop:distance-support-formula}则由最近点给出距离的支撑表示。下文会在使用时恢复所需条件；另需的线性代数、整数最大公因数、有限求和与欧氏体积均在具体计算中说明。格点计数的补充阅读可查\cite[Sections 2.2--2.3, 2.6, 3.1--3.5]{BeckRobins2015}；这里完整证明所选模型，不以算例代替所有格多胞形的一般理论。
+
+\section{格点与多面体}
+\label{g1:sec:B01}
+
+把一个三角形放大两倍，面积变成原来的四倍，里面的整数点数却未必恰好乘以四：边界也会经过新的整数点。要把面积和点数联系起来，先要说明哪些点算作整数点，以及一份基本体积有多大。本节从格的基本平行多面体出发，在平面中把多边形分成面积最小的格三角形，再用同一计数解释整数倍放大时出现的多项式。
+
+\subsection{格、基本平行多面体及体积}
+\label{g1:subsec:B01:01}
+
+\secref{g1:sec:0304}已经把格引入为一组实基的整数线性组合。这里保持这个定义，并把计数时所需的换基与体积性质展开。设 \(E\) 是 \(d\) 维实内积空间，\(b_1,\ldots,b_d\) 是其一组实基，则
+\[
+	\Lambda=\mathbb Zb_1+\cdots+\mathbb Zb_d
+	=\left\{\sum_{i=1}^d m_i b_i:m_i\in\mathbb Z\right\}
+\]
+是 \(E\) 中的一个格，\(b_1,\ldots,b_d\) 称为它的\term[geji]{格基}[lattice basis]。每个格点在这组基下有唯一的整数坐标。以下只讨论张成整个环境空间的格；若格只张成一个子空间，就把该子空间作为环境，并采用它的诱导内积。
+
+\begin{proposition}[格基变换]
+	\label{g1:prop:lattice-basis-change}
+	设 \(b=(b_1,\ldots,b_d)\) 是格 \(\Lambda\subset E\) 的一组格基。另一组实基 \(b'=bU\) 是同一格的格基，当且仅当 \(U\) 是整数矩阵且 \(\det U=\pm1\)。此外，\(E\) 的每个有界子集只包含有限个格点。
+\end{proposition}
+\begin{proof}
+	若 \(b'\) 也是 \(\Lambda\) 的格基，则每个 \(b'_j\) 在 \(b\) 下有整数坐标，故 \(U\) 的元素为整数。同样，\(b=b'V\) 对某个整数矩阵 \(V\) 成立，于是 \(UV=I\)，\(V=U^{-1}\)。两个行列式都是整数且乘积为 \(1\)，所以 \(\det U=\pm1\)。反之，若 \(U\) 为整数矩阵且行列式为 \(\pm1\)，伴随矩阵公式说明 \(U^{-1}\) 也是整数矩阵。因此 \(U\mathbb Z^d=\mathbb Z^d\)，两组基生成同一格。
+
+	记线性同构 \(B:\mathbb R^d\rightarrow E\) 为 \(B(t)=\sum_i t_i b_i\)。若 \(K\subset E\) 有界，则 \(B^{-1}(K)\) 有界，因而其各坐标都落在某个有界实区间中。每个区间只含有限个整数，故 \(B^{-1}(K)\cap\mathbb Z^d\)，也就是 \(K\cap\Lambda\)，是有限集。
+\end{proof}
+
+行列式为 \(\pm1\) 的整数矩阵称为\term[yaomojuzhen]{幺模矩阵}[unimodular matrix]，它们构成 \(\operatorname{GL}(d,\mathbb Z)\)。例如 \((1,0),(1,1)\) 是 \(\mathbb Z^2\) 的一组格基，而 \((2,0),(0,1)\) 只生成第一坐标为偶数的子格。两组向量都是实基，但后一组漏掉了 \((1,0)\)，所以“线性无关且属于格”仍不足以保证它们是格基。
+
+\begin{definition}[基本平行多面体与余体积]
+	\label{g1:def:lattice-covolume}
+	设 \(b_1,\ldots,b_d\) 是 \(E\) 中格 \(\Lambda\) 的一组格基。相应的半开\term[jibenpingxingduomianti]{基本平行多面体}[fundamental parallelepiped]为
+	\[
+		F_b=\left\{\sum_{i=1}^d t_i b_i:0\le t_i<1\right\}.
+	\]
+	它的 \(d\) 维欧氏体积称为格的\term[yutiji]{余体积}[covolume]，记为 \(\operatorname{covol}(\Lambda)\)。对可测集合 \(P\subset E\)，记
+	\[
+		\operatorname{Vol}_{\Lambda}(P)
+		=\frac{\operatorname{Vol}_d(P)}{\operatorname{covol}(\Lambda)},
+	\]
+	称为相对于格的体积；于是一个基本平行多面体的这种体积为 \(1\)。
+\end{definition}
+
+\symidx{\(\operatorname{covol}(\Lambda)\)：格的余体积}
+\symidx{\(\operatorname{Vol}_{\Lambda}(P)\)：相对于格的体积}
+这一定义中的余体积不应依赖所选格基，否则面积与格点数的比较也会随记法变化。半开条件则承担另一个任务：每个点只归入一份基本区域，不在相邻两份区域的边界上重复计数。
+
+\begin{proposition}[平铺与余体积公式]
+	\label{g1:prop:lattice-fundamental-domain}
+	对 \(d\) 维实内积空间中的格 \(\Lambda\) 和任一格基 \(b\)，各集合 \(F_b+\lambda\)，\(\lambda\in\Lambda\)，两两不交且并成 \(E\)。每个加法商类 \(x+\Lambda\) 在 \(F_b\) 中恰有一个代表。余体积满足
+	\[
+		\operatorname{covol}(\Lambda)
+		=\sqrt{\det\bigl(\langle b_i,b_j\rangle\bigr)_{i,j=1}^d},
+	\]
+	并且与格基无关。若 \(b_i\) 在一组标准正交基下组成列矩阵 \(B\)，则余体积也等于 \(|\det B|\)。
+\end{proposition}
+\begin{proof}
+	对任意 \(x\in E\)，唯一写成 \(x=\sum_i s_i b_i\)，再把每个实数分成整数与小数部分：
+	\[
+		s_i=\lfloor s_i\rfloor+t_i,\qquad 0\le t_i<1.
+	\]
+	于是 \(x=\lambda+f\)，其中 \(\lambda=\sum_i\lfloor s_i\rfloor b_i\in\Lambda\)，\(f=\sum_i t_i b_i\in F_b\)。若还有 \(x=\lambda'+f'\)，则 \(f-f'\in\Lambda\)，但其各坐标都在 \((-1,1)\) 中且为整数，故只能全为零。因此 \(f=f'\)、\(\lambda=\lambda'\)，既证明了不交平铺，也证明了商类代表的唯一性。
+
+	半开平行多面体与其闭包只相差有限个低维面，不改变 \(d\) 维体积。\cref{g1:prop:gram-volume}给出闭包体积的平方为 Gram 行列式，所以得到所列公式；在标准正交坐标下，Gram 矩阵为 \(B^{\mathsf T}B\)，其行列式为 \((\det B)^2\)。若换格基为 \(B'=BU\)，\cref{g1:prop:lattice-basis-change}给出 \(|\det U|=1\)，从而 \(|\det B'|=|\det B|\)，证明余体积与换基无关。
+\end{proof}
+
+选择格基后，\(B^{-1}\) 把 \(\Lambda\) 变为 \(\mathbb Z^d\)，也把相对于格的体积变为通常坐标体积。它一般不保持长度和角度，却同时保持我们即将比较的格点数与相对体积。例如 \(\Lambda=\mathbb Z(2,0)+\mathbb Z(1,1)\) 的余体积为 \(2\)；同样欧氏面积的区域，相对于这个格所占的基本面积份数是相对于 \(\mathbb Z^2\) 的一半。
+
+\ProseParagraphBreak
+
+本节沿用第3章的格多胞形概念，即有限个格点的凸包，也称格多面体。由\cref{g1:thm:polytope-hv}，它是有界多面体，全部顶点都是格点。以下的格多边形特指平面中内部非空的凸格多胞形；顶点按边界次序排列，边界上一条边中间的格点不另外称为多边形的顶点。后面构造三角剖分时，这些点才会成为剖分的顶点。
+
+\subsection{二维 Pick 公式及三角剖分证明}
+\label{g1:subsec:B01:02}
+
+先在标准格 \(\mathbb Z^2\) 中工作。对格多边形 \(P\)，记内部格点数为 \(I(P)\)，边界格点数为 \(B(P)\)。面积与这两个整数的联系来自一个二维特征：没有其他格点的格三角形，其面积被迫为 \(1/2\)。证明这个事实之后，才可以用这样的三角形拼回多边形。
+
+\begin{lemma}[不含额外格点的三角形]
+	\label{g1:lem:empty-lattice-triangle}
+	设 \(a,b,c\in\mathbb Z^2\) 不共线，\(T=\operatorname{conv}\{a,b,c\}\)。以下条件等价：
+	\begin{enumerate}
+		\item \(T\cap\mathbb Z^2=\{a,b,c\}\)，即边上及内部都没有其他格点；
+		\item \(b-a,c-a\) 是 \(\mathbb Z^2\) 的一组格基；
+		\item \(\operatorname{Area}(T)=1/2\)。
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	平移后可设 \(a=0\)，记 \(u=b-a\)、\(v=c-a\)，令 \(A\) 为以 \(u,v\) 为列的整数矩阵。其行列式为非零整数，而三角形面积为 \(|\det A|/2\)。因此第二项与第三项由\cref{g1:prop:lattice-basis-change}等价。
+
+	若 \(|\det A|=1\)，则 \(A^{-1}\) 是整数矩阵。任取 \(x\in T\cap\mathbb Z^2\)，其坐标 \(A^{-1}x=(s,t)\) 是整数，又满足 \(s,t\ge0\)、\(s+t\le1\)，只能是 \((0,0),(1,0),(0,1)\)。故 \(T\) 没有其他格点。
+
+	反过来，若 \(|\det A|>1\)，则 \(A^{-1}\) 不可能是整数矩阵，否则其行列式 \(1/\det A\) 应为整数。于是某个标准基向量 \(e\) 的坐标 \(A^{-1}e\) 不是整数向量。逐坐标取小数部分，得到 \(s,t\in[0,1)\)，不同时为零，并且
+	\[
+		w=su+tv=e-A\lfloor A^{-1}e\rfloor\in\mathbb Z^2.
+	\]
+	若 \(s+t\le1\)，则 \(w\in T\)，并且 \(w\) 不是三个顶点中的任何一个。若 \(s+t>1\)，改取
+	\[
+		w'=u+v-w=(1-s)u+(1-t)v.
+	\]
+	此时两个系数都严格为正，和为 \(2-s-t<1\)，所以 \(w'\) 是 \(T\) 的一个内部格点。两种情形都与第一项矛盾，故第一项也迫使 \(|\det A|=1\)。
+\end{proof}
+
+第二项解释了面积 \(1/2\) 的来源：这样的三角形正好是一个基本平行四边形的一半。条件中“边上也没有其他格点”不能删去，例如顶点为 \((0,0),(m,0),(0,1)\) 的三角形没有内部格点，面积却可以随正整数 \(m\) 任意增大。
+
+\begin{lemma}[包含全部格点的三角剖分]
+	\label{g1:lem:lattice-polygon-triangulation}
+	每个内部非空的凸格多边形 \(P\subset\mathbb R^2\) 都有一个有限直线三角剖分，其顶点集恰好是 \(P\cap\mathbb Z^2\)，每个三角形的面积为 \(1/2\)。若剖分的顶点、边、三角形数为 \(V,E,F\)，则 \(V-E+F=1\)。
+\end{lemma}
+\begin{proof}
+	设 \(P\) 的顶点按边界次序为 \(p_1,\ldots,p_r\)，其中 \(r\ge3\)。由凸性，从 \(p_1\) 向 \(p_3,\ldots,p_{r-1}\) 作对角线，得到三角形
+	\[
+		\operatorname{conv}\{p_1,p_i,p_{i+1}\},\qquad 2\le i\le r-1.
+	\]
+	这些三角形覆盖 \(P\)，内部分离，且相交时只沿公共边或顶点相交：从 \(p_1\) 指向多边形中一点的射线，离开 \(P\) 时落在某条边 \([p_i,p_{i+1}]\) 上，给出覆盖；相邻顶点方向之间的扇形内部互不重叠，给出交集性质。因此这是一个直线三角剖分，初始计数为 \(V=r\)、\(E=2r-3\)、\(F=r-2\)，交替和等于 \(1\)。
+
+	由\cref{g1:prop:lattice-basis-change}，\(P\cap\mathbb Z^2\) 有限。依次插入尚未成为剖分顶点的格点 \(q\)。若 \(q\) 位于某个三角形内部，就把它与该三角形的三个顶点相连，把一面分成三面；此时 \((V,E,F)\) 的增量为 \((1,3,2)\)。若 \(q\) 位于边界上一条边的内部，就把该边分成两段，并将 \(q\) 与相邻三角形的对顶点相连，增量为 \((1,2,1)\)。若 \(q\) 位于内部边的内部，就同时对这条边两侧的三角形作这个操作，增量为 \((1,3,2)\)。每次新线段都留在原三角形内，两侧对共有边的划分一致，所以仍是一个直线三角剖分。
+
+	这些操作都保持 \(V-E+F\)。有限次后，全部格点都已成为剖分顶点；若还有一个小三角形在边上或内部含有非顶点格点，该点就应是剖分的另一顶点，违反单形相交只能沿公共面的要求。因此各小三角形都满足\cref{g1:lem:empty-lattice-triangle}，面积为 \(1/2\)，而交替和仍为 \(1\)。
+\end{proof}
+
+这里直接追踪了构造过程中的计数，也与\cref{g1:prop:euler-triangulation-independent}对闭圆盘给出的 Euler 数 \(1\) 一致。直接构造保留了直线边和格点顶点；一般拓扑三角剖分的存在性本身并不保证这两个额外条件。下面的\term[Pickgongshi]{Pick 公式}[Pick's theorem]由这些小三角形的面积和边界计数得到。
+
+把这些三角形的面积与剖分中的顶点、边、面计数相比较，得到\term[Pickgongshi]{Pick 公式}[Pick's theorem]。\footnote{Pick（皮克，Georg Alexander Pick，1859--1942），奥地利数学家，研究函数论与几何，以格多边形的面积公式著称。}
+
+\begin{theorem}[Pick 公式]
+	\label{g1:thm:pick-formula}
+	设 \(P\subset\mathbb R^2\) 是内部非空的凸格多边形，\(I(P)\) 与 \(B(P)\) 分别是它的内部、边界格点数，则
+	\begin{equation}
+		\label{g1:eq:pick-formula}
+		\operatorname{Area}(P)=I(P)+\frac{B(P)}2-1.
+	\end{equation}
+	更一般地，若顶点属于平面格 \(\Lambda\)，则同一公式成立，只须将左侧改为 \(\operatorname{Area}(P)/\operatorname{covol}(\Lambda)\)，右侧按 \(\Lambda\) 计算格点。
+\end{theorem}
+\begin{proof}
+	先用\cref{g1:lem:lattice-polygon-triangulation}取得包含全部格点的剖分，简记 \(I=I(P)\)、\(B=B(P)\)。其顶点数为 \(V=I+B\)。边界上的格点按一圈排列，相邻两点间恰有一条剖分边，所以边界边数也是 \(B\)。记内部边数为 \(E_{\mathrm{int}}\)，则
+	\[
+		E=E_{\mathrm{int}}+B,\qquad
+		3F=2E_{\mathrm{int}}+B=2E-B.
+	\]
+	第二式逐三角形数边：内部边属于两面，边界边只属于一面。再用 \(V-E+F=1\)，消去 \(V,E\)，得到
+	\[
+		F=2I+B-2.
+	\]
+	每个小三角形面积为 \(1/2\)，有限面积相加给出 \(\operatorname{Area}(P)=F/2\)，即所需公式。对任意平面格，选择格基并施以相应的逆线性坐标变换；格点与内外部关系不变，面积则除以 \(\operatorname{covol}(\Lambda)\)，归结到已经证明的标准格情形。
+\end{proof}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixB-Lattice}
+	\caption[基本区域与格三角剖分]{左图为 \(\Lambda=\mathbb Z(2,0)+\mathbb Z(1,1)\) 的基本平行四边形，虚线边及空心顶点不属于半开区域，余体积为 \(2\)。右图在标准格中，把顶点为 \((0,0),(3,0),(0,2)\) 的三角形分成六个面积 \(1/2\) 的小三角形；内部有一个格点，边界有六个格点，所以面积为 \(1+6/2-1=3\)。}
+	\label{g1:fig:lattice-fundamental-pick}
+\end{figure}
+
+公式把面积恢复为整数与半整数的组合，也说明格多边形的面积必为半整数。\cref{g1:fig:lattice-fundamental-pick}右侧三角形是一个具体核验。上述证明以凸性取得第一份扇形三角剖分；对非凸简单格多边形，要先另证存在保留原顶点的直线三角剖分，才能继续作同样的格点插入。这里的定理范围保持为凸格多边形，不借一般曲面的拓扑剖分省略这一几何步骤。
+
+\subsection{Ehrhart 多项式的代表性陈述与例子}
+\label{g1:subsec:B01:03}
+
+面积随整数倍放大按二次律增长，边界上的格点则按一次律增长。Pick 公式因而预示：凸格多边形的全部格点数应由一个二次多项式给出。先把边界计数中需要的整除条件说清楚。
+
+\begin{lemma}[格线段上的点数]
+	\label{g1:lem:lattice-segment-count}
+	设 \(a,b\in\mathbb Z^2\) 不同，\(b-a=(u,v)\)，记 \(g=\gcd(|u|,|v|)>0\)，其中 \(\gcd(k,0)=k\)。则闭线段 \([a,b]\) 上的格点恰为
+	\[
+		a+\frac{k}{g}(b-a),\qquad k=0,1,\ldots,g.
+	\]
+	因此它有 \(g+1\) 个格点；若凸格多边形各边向量为 \((u_i,v_i)\)，则
+	\[
+		B(P)=\sum_i\gcd(|u_i|,|v_i|),\qquad
+		B(nP)=nB(P)\quad(n\ge1).
+	\]
+\end{lemma}
+\begin{proof}
+	写 \((u,v)=g(u',v')\)，则 \(u',v'\) 互素。若 \(a+t(b-a)\) 为格点，\(0\le t\le1\)，则 \(tgu'\) 与 \(tgv'\) 都为整数。取整数 \(r,s\) 使 \(ru'+sv'=1\)，可得 \(tg=r(tgu')+s(tgv')\in\mathbb Z\)。所以 \(t=k/g\)，且 \(0\le k\le g\)。反过来，这些参数确实给出格点。
+
+	把各边的点数 \(g_i+1\) 相加时，每个多边形顶点重复计数一次，而顶点数等于边数，所以 \(B(P)=\sum_i g_i\)。放大 \(n\) 倍把每个边向量乘以 \(n\)，其两个坐标的最大公因数也乘以 \(n\)，因而得到最后一式。
+\end{proof}
+
+对非空格多胞形 \(P\subset\mathbb R^d\)，定义其整数倍放大的计数函数
+\[
+	L_P(n)=\#(nP\cap\mathbb Z^d),\qquad n\in\mathbb Z_{\ge0},
+\]
+其中 \(nP=\{nx:x\in P\}\)，特别地 \(0P=\{0\}\)，所以 \(L_P(0)=1\)。当这些值由一个多项式给出时，称该多项式为 \(P\) 的\term[Ehrhartduoxiangshi]{Ehrhart 多项式}[Ehrhart polynomial]。\footnote{Ehrhart（埃尔哈特，Eugène Ehrhart，1906--2000），法国数学家，研究多面体中的整数点计数，建立了格多胞形膨胀计数的多项式理论。}下面分别证明二维凸格多边形、整数箱体和任意维格单形的多项式公式。
+
+\symidx{\(L_P(n)\)：整数倍多胞形的格点计数}
+\begin{proposition}[二维 Ehrhart 公式]
+	\label{g1:prop:polygon-ehrhart}
+	设 \(P\subset\mathbb R^2\) 是内部非空的凸格多边形，面积为 \(A\)，边界格点数为 \(B\)。则对每个整数 \(n\ge0\)，
+	\begin{equation}
+		\label{g1:eq:polygon-ehrhart}
+		L_P(n)=An^2+\frac B2n+1.
+	\end{equation}
+	对 \(n\ge1\)，内部格点数为
+	\[
+		\#\bigl(\operatorname{int}(nP)\cap\mathbb Z^2\bigr)
+		=An^2-\frac B2n+1=L_P(-n),
+	\]
+	其中 \(L_P(-n)\) 表示把负数代入已得到的多项式。
+\end{proposition}
+\begin{proof}
+	当 \(n\ge1\) 时，\(nP\) 仍为凸格多边形，面积是 \(An^2\)，边界格点数由\cref{g1:lem:lattice-segment-count}等于 \(nB\)。将这些数代入 Pick 公式，先得内部点数 \(An^2-nB/2+1\)，再加上边界点数即得 \(L_P(n)=An^2+nB/2+1\)。在 \(n=0\) 时，该多项式的值为 \(1\)，与单点 \(0P\) 一致。最后直接代入 \(-n\)，得到所写的内部点数公式。
+\end{proof}
+
+对\cref{g1:fig:lattice-fundamental-pick}右图的三角形，\(A=3\)、\(B=6\)，所以 \(L_P(n)=3n^2+3n+1\)，在 \(n=1,2\) 时分别给出 \(7,19\) 个格点。最高次系数记录面积，一次系数记录边界的格长度信息，常数项反映零倍收缩后的一个点。负参数只在已经确定的多项式中求值；不能把 \(L_P(-n)\) 在这里理解为反射后区域 \((-n)P\) 的全部格点数。
+
+\begin{proposition}[整数箱体与标准单形]
+	\label{g1:prop:box-simplex-ehrhart}
+	设 \(a_1,\ldots,a_d\) 为正整数，\(Q=\prod_{i=1}^d[0,a_i]\)。再令
+	\[
+		\Delta_d=\operatorname{conv}\{0,e_1,\ldots,e_d\}
+		=\left\{x\in\mathbb R^d:x_i\ge0,\ \sum_{i=1}^d x_i\le1\right\}.
+	\]
+	则对每个整数 \(n\ge0\)，
+	\[
+		L_Q(n)=\prod_{i=1}^d(a_i n+1),\qquad
+		L_{\Delta_d}(n)=\binom{n+d}{d}
+		=\frac{(n+1)\cdots(n+d)}{d!}.
+	\]
+\end{proposition}
+\begin{proof}
+	箱体中第 \(i\) 个坐标可以独立选取 \(0,1,\ldots,a_i n\)，所以由乘法原理得到第一式。对标准单形，格点就是非负整数解 \(m_1+\cdots+m_d\le n\)。引入余数坐标 \(m_0=n-\sum_{i=1}^d m_i\)，得到 \(d+1\) 个非负整数之和为 \(n\) 的表示。把 \(n\) 个相同记号排成一行，再放置 \(d\) 个隔板，允许隔板相邻或位于两端；相邻隔板之间的记号数依次给出 \(m_0,\ldots,m_d\)，反之也唯一决定这种排列。因此共有 \(\binom{n+d}{d}\) 种，得到第二式及其多项式表达。
+\end{proof}
+
+一般格单形不一定能经幺模变换化为标准单形。仍然可以计数，但须先把所有倍数 \(nS\) 放进同一个高一维空间：把顶点 \(v_i\) 提升为 \((v_i,1)\)，则高度为 \(n\) 的截面恰好是 \(nS\)。对提升后的基方向取整数与小数部分，可以把无限锥中的格点分成有限种余数类型。
+
+\begin{proposition}[格单形的半开锥计数]
+	\label{g1:prop:lattice-simplex-ehrhart}
+	设 \(v_0,\ldots,v_d\in\mathbb Z^d\) 仿射无关，\(S=\operatorname{conv}\{v_0,\ldots,v_d\}\)，记 \(w_i=(v_i,1)\in\mathbb Z^{d+1}\)。定义有界半开区域
+	\[
+		\Pi=\left\{\sum_{i=0}^d t_iw_i:0\le t_i<1\right\},
+	\]
+	并令 \(h_j\) 为 \(\Pi\cap\mathbb Z^{d+1}\) 中末坐标等于 \(j\) 的点数。则 \(0\le j\le d\)、\(h_0=1\)，且作为形式幂级数有
+	\[
+		\sum_{n\ge0}L_S(n)z^n
+		=\frac{h_0+h_1z+\cdots+h_dz^d}{(1-z)^{d+1}}.
+	\]
+	特别地，对每个整数 \(n\ge0\)，
+	\[
+		L_S(n)=\sum_{j=0}^d h_j\binom{n+d-j}{d},
+	\]
+	右侧是一个次数为 \(d\) 的多项式。此处二项式按多项式 \(\binom{t}{d}=t(t-1)\cdots(t-d+1)/d!\) 解释。
+\end{proposition}
+\begin{proof}
+	仿射无关性意味着 \(w_0,\ldots,w_d\) 线性无关：若 \(\sum_i c_iw_i=0\)，最后一坐标给出 \(\sum_i c_i=0\)，其余坐标再给出 \(\sum_i c_iv_i=0\)，故所有 \(c_i=0\)。因此锥
+	\[
+		C=\left\{\sum_{i=0}^d s_iw_i:s_i\ge0\right\}
+	\]
+	中每个点都有唯一的非负系数表示。在高度 \(n>0\) 时，\(\sum_i s_i=n\)，其前 \(d\) 个坐标为 \(n\sum_i(s_i/n)v_i\)，正好遍历 \(nS\)。高度 \(0\) 时只剩原点，也与 \(0S\) 一致。
+
+	对锥中任一格点 \(x=\sum_i s_iw_i\)，令 \(k_i=\lfloor s_i\rfloor\)、\(t_i=s_i-k_i\)，则
+	\[
+		x=p+\sum_{i=0}^d k_iw_i,
+		\qquad p=\sum_{i=0}^d t_iw_i\in\Pi\cap\mathbb Z^{d+1}.
+	\]
+	由于 \(w_i\) 是整数向量，\(p\) 确为格点；由系数表示及整数小数分解的唯一性，这种分解也唯一。反之，任一 \(p\in\Pi\cap\mathbb Z^{d+1}\) 加上非负整数倍 \(w_i\)，都给出锥中格点。
+
+	区域 \(\Pi\) 有界，因而它的格点数有限。\(p\) 的高度是 \(\sum_i t_i\)，为 \([0,d+1)\) 中的整数，故只可能是 \(0,1,\ldots,d\)；高度为零迫使全部 \(t_i=0\)，所以 \(h_0=1\)。每加一个 \(w_i\)，高度增加 \(1\)，于是上述唯一分解给出形式生成函数
+	\[
+		\sum_{x\in C\cap\mathbb Z^{d+1}}z^{x_{d+1}}
+		=\left(\sum_{j=0}^d h_jz^j\right)
+		\prod_{i=0}^d\left(\sum_{k_i\ge0}z^{k_i}\right).
+	\]
+	各次系数只涉及有限项，因此该等式不需要解析收敛；代入几何级数的形式恒等式便得所述分式。高度为 \(n\) 的项，对每个高度为 \(j\) 的余数点，计数 \(k_0+\cdots+k_d=n-j\) 的非负整数解。由上一命题的隔板计数，在 \(n\ge j\) 时有 \(\binom{n-j+d}{d}\) 个；在 \(n<j\le d\) 时没有解，而多项式中的上参数 \(n+d-j\) 落在 \(0,\ldots,d-1\)，其值也为零。因此多项式公式对全部 \(n\ge0\) 成立。最高次系数为 \((h_0+\cdots+h_d)/d!>0\)，所以次数恰为 \(d\)。
+\end{proof}
+
+标准单形的提升向量构成 \(\mathbb Z^{d+1}\) 的格基，所以其 \(\Pi\) 中只有格点 \(0\)，上述公式退化为 \(\binom{n+d}{d}\)。对其他格单形，有限个余数点保存了标准单形中没有的整数结构。一般格多胞形可以涉及多个单形及其公共面，不能把闭单形的计数简单相加；本节已经证明的公式分别适用于上述三类对象，并未用这些例子替代任意维格多胞形的统一定理。
+
+\section{Voronoi 与 Delaunay}
+\label{g1:sec:B02}
+
+在平面上给定几个服务点，每个位置应当归属于离它最近的哪一个点？若两个服务点同样近，分界线在哪里？反过来，哪些服务点应当连起来，才能记录这些区域怎样相邻？这两个问题分别产生 Voronoi 分区和 Delaunay 分解。\footnote{Voronoi（沃罗诺伊，\OriginalName{Георгій Феодосійович Вороний}，1868--1908），乌克兰数学家，研究数论与二次型。Delaunay（德劳内，\OriginalName{Борис Николаевич Делоне}，1890--1980），俄罗斯数学家，研究数的几何与离散几何；其姓氏也常转写为 Delone。}距离本来含有平方根，但比较两个距离的平方时，关于位置的二次项恰好消去；再把服务点提升到一个抛物面上，空圆或空球条件也会成为支撑超平面的条件。本节使用\cref{g1:thm:polytope-hv,g1:thm:polytope-faces}中已经证明的有限半空间表示与面结构，不要求预先掌握计算几何算法。
+
+\subsection{距离平方与分区}
+\label{g1:subsec:B02:01}
+
+设 \(S\subset\mathbb R^d\) 为非空有限互异点集，\(d\ge1\)，使用标准欧氏内积和距离。把 \(S\) 中的点称为站点。固定站点 \(p\)，位置 \(x\) 离 \(p\) 不比离另一站点 \(q\) 远，等价于
+\begin{equation}\label{g1:eq:voronoi-halfspace}
+	\lVert x-p\rVert^2\le\lVert x-q\rVert^2
+	\quad\Longleftrightarrow\quad
+	2\langle x,q-p\rangle\le\lVert q\rVert^2-\lVert p\rVert^2.
+\end{equation}
+当 \(p\ne q\) 时，右侧是一个闭半空间，其边界是线段 \(pq\) 的垂直平分超平面。共同的 \(\lVert x\rVert^2\) 消去了，所以分界是平的。
+
+\begin{definition}[最近站点与 Voronoi 胞]\label{g1:def:voronoi-cell}
+	对非空有限互异点集 \(S\subset\mathbb R^d\)，定义位置 \(x\) 的最近站点集为
+	\[
+		N(x)=\{p\in S:\lVert x-p\rVert=\min_{q\in S}\lVert x-q\rVert\}.
+	\]
+	站点 \(p\in S\) 的\term[voronoibao]{Voronoi 胞}[Voronoi cell]为
+	\[
+		V_p=\{x\in\mathbb R^d:p\in N(x)\}
+		=\bigcap_{q\in S\setminus\{p\}}
+		\{x:2\langle x,q-p\rangle\le\lVert q\rVert^2-\lVert p\rVert^2\}.
+	\]
+	这些胞连同它们的非空面组成\term[voronoitu]{Voronoi 图}[Voronoi diagram]。这里的“图”包括各维多面体，并非只有一张边与顶点组成的图。
+\end{definition}
+
+\begin{proposition}[Voronoi 胞的覆盖与交界]\label{g1:prop:voronoi-cover}
+	设 \(S\subset\mathbb R^d\) 为非空有限互异点集。每个 \(V_p\) 都是含 \(p\) 为内点的闭凸多面体，而且
+	\[
+		\bigcup_{p\in S}V_p=\mathbb R^d,
+		\qquad
+		\operatorname{int}V_p
+		=\{x:\lVert x-p\rVert<\lVert x-q\rVert\text{ 对全部 }q\ne p\}.
+	\]
+	不同胞的内部不相交；它们可以共享边界。对非空 \(T\subseteq S\)，若 \(V_T=\bigcap_{p\in T}V_p\ne\varnothing\)，则 \(V_T\) 是每个 \(V_p\)、\(p\in T\)，的面。所有非空 Voronoi 面都可写成这种交集。
+\end{proposition}
+\begin{proof}
+	半空间公式给出闭性、凸性和有限半空间表示，正是\cref{g1:def:polyhedron-polytope}中的多面体。在 \(x=p\) 处，对每个 \(q\ne p\) 都有严格不等式；由有限性，它们在 \(p\) 的一个小球内同时严格成立。若 \(S=\{p\}\)，则 \(V_p=\mathbb R^d\)，结论也成立。每个位置到有限站点集的最短距离都能取到，故这些胞覆盖全空间。
+
+	全部距离比较严格时，仍由有限性得到包含于 \(V_p\) 的邻域。若某个比较取等号，则 \(x\) 位于一个真正的限制超平面上；向被该不等式排除的一侧作任意小移动就会离开 \(V_p\)，所以 \(x\) 不是内点。这证明内部公式，也证明不同内部不交。
+
+	固定 \(p_0\in T\)。在 \(V_{p_0}\) 内，属于 \(V_T\) 恰好要求与 \(T\) 中各站点的比较都取等号。每条这样的等式给出支撑面，交集仍满足\cref{g1:def:polytope-face}中的线段性质；同一定义和论证也适用于无界多面体。
+
+	最后说明这些交集没有遗漏别的面。设 \(F\) 为 \(V_{p_0}\) 的非空面，取 \(x\in\operatorname{ri}F\)，令 \(G\) 为 \(V_{p_0}\) 中满足 \(x\) 处全部活动等式的集合。每条活动等式都在整个 \(F\) 上成立：否则由 \(x\) 的相对内部性，沿 \(F\) 内一条线段向相反方向稍作延长，就会违反该不等式。因此 \(F\subseteq G\)。对 \(y\in G\)，点 \(z=x+\varepsilon(x-y)\) 保持全部活动等式；其他有限条不等式有严格余量，所以足够小的 \(\varepsilon>0\) 使 \(z\in V_{p_0}\)。把 \(x\) 写成 \(y,z\) 的严格凸组合，面的线段性质给出 \(y\in F\)。于是 \(F=G=V_{N(x)}\)。这也是\cref{g1:thm:polytope-faces}中活动等式论证在此处的具体使用。
+\end{proof}
+
+闭胞覆盖并不表示每个位置只属于一个闭胞。在两站点等距且最近的位置，两胞都包含该点；在多个站点同时最近的位置，共享的胞更多。只有删去这些边界、只看各胞的内部时，归属才唯一。Voronoi 胞也不必有界：有限站点不能从所有方向围住每一个站点。
+
+\begin{example}[三个站点的完整分区]\label{g1:exm:three-site-voronoi}
+	取 \(a=(0,0)\)、\(b=(2,0)\)、\(c=(0,2)\)。逐对消去距离平方中的二次项，得到
+	\[
+		\begin{aligned}
+			V_a&=\{(x,y):x\le1,\ y\le1\},\\
+			V_b&=\{(x,y):x\ge1,\ y\le x\},\\
+			V_c&=\{(x,y):y\ge1,\ x\le y\}.
+		\end{aligned}
+	\]
+	两两交界分别为 \(x=1,y\le1\)、\(y=1,x\le1\) 和 \(x=y\ge1\)，三者在 \((1,1)\) 相遇。这个公共点到三站点都距离 \(\sqrt2\)。三条完整垂直平分线并不是 Voronoi 图的全部边界：每条线上只有仍然不比第三站点远的部分被保留。
+\end{example}
+
+\subsection{空球条件和对偶分解}
+\label{g1:subsec:B02:02}
+
+若位置 \(c\) 同时以若干站点为最近站点，则以 \(c\) 为中心、最短距离为半径的开球不含任何站点，而全部最近站点都在球面上。这给出从 Voronoi 面寻找站点组合的办法。不过，把每一组拥有共同最近位置的站点随意连成单纯形，尚不能保证这些图形按公共面拼接。为证明真正的分解性质，需要把整个构造放在同一个凸包上。
+
+\begin{definition}[抛物面提升与下部面]\label{g1:def:delaunay-lift}
+	设 \(S\subset\mathbb R^d\) 为非空有限互异点集。令
+	\[
+		\widehat p=(p,\lVert p\rVert^2),\qquad
+		Q=\operatorname{conv}\{\widehat p:p\in S\}\subset\mathbb R^{d+1},
+		\qquad \pi(y,z)=y.
+	\]
+	对 \(c\in\mathbb R^d\)，令
+	\[
+		b(c)=\min_{p\in S}(\lVert p\rVert^2-2\langle c,p\rangle),
+		\qquad
+		F(c)=\{(y,z)\in Q:z-2\langle c,y\rangle=b(c)\}.
+	\]
+	称这样的非空暴露面为 \(Q\) 的下部面，其投影
+	\[
+		D(c)=\pi F(c)=\operatorname{conv}N(c)
+	\]
+	称为一个\term[delaunaydanyuan]{Delaunay 单元}[Delaunay cell]。不同中心可能给出同一个单元，收集单元时只保留不同的集合。
+\end{definition}
+
+这里的下部面由法向量 \((2c,-1)\) 暴露，最后一坐标严格为负；竖直支撑超平面的最后一法向坐标为零，不在这个定义中。等式 \(D(c)=\operatorname{conv}N(c)\) 来自
+\[
+	\lVert p\rVert^2-2\langle c,p\rangle
+	=\lVert p-c\rVert^2-\lVert c\rVert^2.
+\]
+线性函数在有限凸包上的最小值由生成点决定，达到最小值的点组成对应的面，因而正好选出了最近站点。
+
+\begin{proposition}[空球与支撑超平面]\label{g1:prop:empty-sphere-lift}
+	设 \(S\subset\mathbb R^d\) 为非空有限互异点集，\(c\in\mathbb R^d\)、\(r\ge0\)。开球 \(\{x:\lVert x-c\rVert<r\}\) 不含 \(S\) 中的点且球面包含至少一个站点，当且仅当
+	\[
+		z=2\langle c,y\rangle+r^2-\lVert c\rVert^2
+	\]
+	从下方支撑提升凸包 \(Q\)。接触面恰由球面上的全部站点的提升生成，其投影为一个 Delaunay 单元。这个单元的顶点恰是球面上的站点，且单元中不含其他站点。
+\end{proposition}
+\begin{proof}
+	对任意 \(p\in S\)，有
+	\[
+		\lVert p\rVert^2-\bigl(2\langle c,p\rangle+r^2-\lVert c\rVert^2\bigr)
+		=\lVert p-c\rVert^2-r^2.
+	\]
+	右侧全部非负且至少一次为零，恰好等价于所给平面在每个生成点下方并与凸包接触。这些非负差在凸组合上仍非负；一个凸组合的差为零，当且仅当其中正系数项的差都为零。因此接触面正由球面站点生成。
+
+	设这些站点组成 \(T\)。对 \(x=\sum_{p\in T}\lambda_pp\)、\(\lambda_p\ge0\)、\(\sum_p\lambda_p=1\)，有
+	\[
+		r^2-\lVert x-c\rVert^2
+		=\sum_{p\in T}\lambda_p\lVert p-x\rVert^2.
+	\]
+	如果组合实际使用至少两个不同点，右侧严格为正，故 \(x\) 在开球内，不可能是站点。特别地，\(T\) 中任何点都不能由其余点非平凡地凸组合得到，所以它们全是顶点；\(\operatorname{conv}T\) 中的站点也只能是 \(T\)。半径为零时 \(T\) 只有一个点，结论仍成立。
+\end{proof}
+
+空球在这里允许球面上有额外站点。“开球中没有站点”与“球面上恰有 \(d+1\) 个站点”是两件事；后一条件决定所得单元是否一定是单纯形。
+
+\begin{theorem}[Delaunay 多胞形剖分]\label{g1:thm:delaunay-subdivision}
+	设 \(S\subset\mathbb R^d\) 为有限互异点集，\(d\ge1\)，且 \(\operatorname{aff}S=\mathbb R^d\)。全部不同的 Delaunay 单元组成有限个多胞形，具有以下性质：
+	\begin{enumerate}
+		\item 它们的并为 \(K=\operatorname{conv}S\)。
+		\item 每个单元的非空面仍是一个单元；两个单元的交为空集或它们的公共面。
+		\item 每个按包含关系极大的单元都为 \(d\) 维；全部顶点恰为 \(S\)。
+	\end{enumerate}
+	这称为 \(S\) 的\term[delaunaypoufen]{Delaunay 多胞形剖分}[Delaunay subdivision]。
+\end{theorem}
+\begin{proof}
+	提升把问题变成同一个凸包的下表面：只要投影不把不同高度的面叠在一起，面的拼接就能保留下来。由\cref{g1:thm:polytope-hv,g1:thm:polytope-faces}，\(Q\) 有有限半空间表示、有限多个面。每个下部面位于一个图形超平面 \(z=2\langle c,y\rangle+b(c)\) 中，故 \(\pi\) 在该面上是仿射双射；投影不会降低其维数。
+
+	先证明覆盖。由 \(\pi Q=K\)，对任意 \(y\in K\)，竖直纤维中存在最低点 \((y,h(y))\in Q\)，因为 \(Q\) 紧。满维假设使 \(\dim Q\) 只能是 \(d\) 或 \(d+1\)。若 \(\dim Q=d\)，则 \(\pi:\operatorname{aff}Q\to\mathbb R^d\) 是仿射同构，因此 \(\operatorname{aff}Q\) 是某个 \(z=a\cdot y+b\) 的图形。取 \(c=a/2\) 就有 \(F(c)=Q\)、\(D(c)=K\)，覆盖已经成立。
+
+	若 \(\dim Q=d+1\)，给 \(Q\) 取一个没有冗余不等式的有限半空间表示。每条限制的等号集在 \(Q\) 中都是 \(d\) 维棱面：删去该限制后可找到违反它而满足其余限制的点，将此点与 \(Q\) 的内点连线，首次碰到该等号超平面的位置仍严格满足其余限制，故在该超平面内有一个相对邻域属于 \(Q\)。在最低点 \((y,h(y))\) 处，必有一条活动限制的外法向量最后一坐标为负。否则把该点稍微向下移动，最后一法向坐标非负的活动限制仍成立，而非活动的有限条限制由严格余量也仍成立，违背最低性。将这条负坐标归一化为 \(-1\)，得到一个下部棱面。因此每个 \(y\in K\) 都在一个 \(d\) 维下部面的投影内。
+
+	再证明面相容。若 \((y,z)\in F(c)\)，整个 \(Q\) 都在它所在的图形超平面上方，所以 \(z=h(y)\)。于是若两个下部面的投影具有公共点，它们在该点上方的提升必为同一个最低点，从而
+	\[
+		\pi F(c)\cap\pi F(c')=\pi\bigl(F(c)\cap F(c')\bigr).
+	\]
+	两个面的交仍是各自的面，仿射双射保持面，故此交为空集或投影单元的公共面。
+
+	还须证明下部面的面仍可由最后一坐标为负的法向量暴露。设 \(E\) 是 \(F(c)\) 的非空面，由\cref{g1:thm:polytope-faces}选一个线性函数 \(v\) 在 \(F(c)\) 上恰好以 \(E\) 为最大值集。原法向量为 \(u=(2c,-1)\)。在 \(Q\) 的有限顶点上，\(u\) 对 \(F(c)\) 外的顶点有严格差距；故对充分小的 \(\varepsilon>0\)，\(u+\varepsilon v\) 的最大值仍只在 \(F(c)\) 的顶点中取得，并在其中恰选出 \(E\)。其最后一坐标仍负，归一化后说明 \(E\) 是下部面。这里 \(v\) 从面的仿射包络延拓到环境空间即可，常数项不影响最大值集。因而每个单元的面也属于这份名单。
+
+	前面的覆盖实际上由 \(d\) 维单元完成。任取一个单元的相对内点，它属于某个 \(d\) 维单元；两者的交是前者的面，并包含其相对内点，所以包含前者全体。这说明极大单元都是 \(d\) 维。最后，对任意 \(p\in S\) 取中心 \(c=p\)，有 \(N(c)=\{p\}\)，故每个站点都给出一个零维单元；\cref{g1:prop:empty-sphere-lift}又说明全部单元的顶点都在 \(S\) 中。
+\end{proof}
+
+定理特意包括全部提升点共面的情形。例如所有站点共球时，提升凸包可能只有 \(d\) 维，整个 \(K\) 本身就是一个 Delaunay 单元。若只把下部面理解成一个满 \((d+1)\) 维凸包的部分棱面，就会遗漏这种最重要的退化情形。
+
+\begin{theorem}[Voronoi 与 Delaunay 的反序对应]\label{g1:thm:voronoi-delaunay-duality}
+	设 \(S\subset\mathbb R^d\) 为有限互异点集，\(\operatorname{aff}S=\mathbb R^d\)。对 Delaunay 单元 \(\sigma\)，记它的顶点集为 \(T_\sigma=S\cap\sigma\)，并定义
+	\[
+		V(\sigma)=\bigcap_{p\in T_\sigma}V_p.
+	\]
+	这个对应是全部非空 Delaunay 单元与全部非空 Voronoi 面之间的双射，而且
+	\[
+		\sigma\subseteq\tau\quad\Longleftrightarrow\quad
+		V(\tau)\subseteq V(\sigma),
+		\qquad \dim\sigma+\dim V(\sigma)=d.
+	\]
+	若 \(c\in\operatorname{ri}V(\sigma)\)，则 \(N(c)=T_\sigma\)。
+\end{theorem}
+\begin{proof}
+	先写清 \(V(\sigma)\) 的方程。取 \(p_0\in T_\sigma\)，它由
+	\[
+		\begin{aligned}
+			2\langle c,p-p_0\rangle&=\lVert p\rVert^2-\lVert p_0\rVert^2
+			&& (p\in T_\sigma),\\
+			2\langle c,q-p_0\rangle&\le\lVert q\rVert^2-\lVert p_0\rVert^2
+			&& (q\in S\setminus T_\sigma)
+		\end{aligned}
+	\]
+	给出。因为 \(\sigma=D(c_0)\) 对某个 \(c_0\) 成立，\cref{g1:prop:empty-sphere-lift}保证 \(N(c_0)=T_\sigma\)，所以第二组不等式在 \(c_0\) 处全严格。若 \(\dim\sigma=k\)，第一组方程的法向量张成 \(k\) 维空间，解集是 \(d-k\) 维仿射空间；有限个严格余量使 \(V(\sigma)\) 包含 \(c_0\) 在此空间中的一个邻域。故其仿射包络正是该方程解集，维数为 \(d-k\)。第二组中任一等号都只能出现在相对边界：若在相对内点取等号，沿仿射包络稍作反向移动便会违反它，因为它并非在整个包络上恒等。这同时说明相对内点的最近站点恰为 \(T_\sigma\)。
+
+	任取一个非空 Voronoi 面 \(W=V_T\)，选 \(c\in\operatorname{ri}W\)，令 \(U=N(c)\)。显然 \(T\subseteq U\)，所以 \(V_U\subseteq W\)。反过来，对 \(q\in U\) 及固定 \(p_0\in T\)，距离平方差在 \(W\) 上非负、在相对内点 \(c\) 为零；它是仿射函数，故必须在整个 \(W\) 上为零，否则沿 \(W\) 的相对邻域就会取得负值。因此 \(W\subseteq V_U\)，从而 \(W=V_U=V(D(c))\)。这证明满射，也说明如何从一个 Voronoi 面恢复单元。前一段证明相对内点恢复的是完整顶点集，故该恢复唯一。
+
+	若 \(\sigma\subseteq\tau\)，则 \(T_\sigma\subseteq T_\tau\)，对更多站点要求同时最近，只会使交集缩小，得到 \(V(\tau)\subseteq V(\sigma)\)。若后一个包含成立，取 \(c\in\operatorname{ri}V(\tau)\)，则 \(T_\sigma\subseteq N(c)=T_\tau\)，取凸包得到 \(\sigma\subseteq\tau\)。
+\end{proof}
+
+例如\cref{g1:exm:three-site-voronoi}中的三角形对应一个 Voronoi 顶点，三条三角形边分别对应三条无界射线，三个站点分别对应二维胞。维数和等于二，但并不要求对应的两个图形有相同大小或都有限长。
+
+\ProseParagraphBreak
+
+边界的准确含义也可由不等式读出。若 \(p_0\in T_\sigma\)，从 \(c\in V(\sigma)\) 出发，整条射线 \(c+tv\)、\(t\ge0\)，仍在该面内，当且仅当
+\begin{equation}\label{g1:eq:voronoi-recession}
+	\langle v,q-p_0\rangle\le0\quad(q\in S),
+	\qquad
+	\langle v,p-p_0\rangle=0\quad(p\in T_\sigma).
+\end{equation}
+这就是说线性函数 \(\langle v,-\rangle\) 在整个 \(K\) 上于 \(\sigma\) 取最大值。如果 \(v\ne0\)，满维性保证其最大值面是 \(K\) 的真支撑面。因此 \(V(\sigma)\) 无界，当且仅当 \(\sigma\) 包含于 \(K\) 的一个真支撑面。此处“无界必有射线”也可以直接检查：取 \(c_j\in V(\sigma)\)、\(\lVert c_j-c\rVert\to\infty\)，对单位方向 \((c_j-c)/\lVert c_j-c\rVert\) 取收敛子列，在各线性限制中除以长度再取极限，就得到满足\eqref{g1:eq:voronoi-recession}的单位向量。反方向按该式作射线即可。Voronoi 图覆盖整个 \(\mathbb R^d\)，Delaunay 剖分只覆盖 \(K\)；凸包边界通过无界 Voronoi 面参与上述对偶，无须另添一个假定的“无穷远站点”。
+
+\subsection{退化位置及一般位置的区别}
+\label{g1:subsec:B02:03}
+
+多胞形剖分并不一定是单纯形剖分。若一个空球的球面上恰好有 \(d+1\) 个仿射无关站点，它们生成一个 \(d\) 维单纯形；若还有更多站点同时在球面上，就必须先保留完整接触面，再决定是否另作细分。
+
+\begin{proposition}[一般位置下的单纯形剖分]\label{g1:prop:delaunay-general-position}
+	设有限互异点集 \(S\subset\mathbb R^d\) 满足 \(\operatorname{aff}S=\mathbb R^d\)。假定任意 \(d+1\) 个站点仿射无关，且没有 \(d+2\) 个站点同在一个欧氏球面上，则 Delaunay 剖分的每个极大单元都是 \(d\) 维单纯形，其全部面组成一个唯一确定的几何单纯形剖分。二维时，这两个条件就是没有三点共线、没有四点共圆。
+\end{proposition}
+\begin{proof}
+	由\cref{g1:thm:delaunay-subdivision}，极大单元为 \(d\) 维，故至少有 \(d+1\) 个顶点。它的全部顶点同在一个空球的球面上；无 \(d+2\) 点共球的条件使顶点数至多为 \(d+1\)。于是恰有 \(d+1\) 个，且由维数可知它们仿射无关。所有其他单元都是这些单纯形的面，公共面性质已经由剖分定理证明。唯一性来自下部面的定义：给定 \(S\) 就确定 \(Q\)，并确定全部下部面，此时没有需要另外选择的非单纯形单元。
+\end{proof}
+
+这些条件是本节采用的一组明确的一般位置条件，并非每个具体结论所需的最弱假设。即使某几个站点共球，只要那个球内部还有其他站点，它也不会形成下部接触面；是否产生 Delaunay 退化，仍要核对空球条件。
+
+\begin{example}[共圆四点与对角线的改变]\label{g1:exm:delaunay-square-perturbation}
+	取
+	\[
+		A=(0,0),\quad B=(1,0),\quad C=(1,1),\quad D_\varepsilon=(0,1+\varepsilon),
+		\qquad |\varepsilon|<\tfrac12.
+	\]
+	当 \(\varepsilon=0\) 时，四点同在中心 \((1/2,1/2)\)、半径 \(1/\sqrt2\) 的空圆上，四个 Voronoi 胞共享这个顶点。唯一的二维 Delaunay 单元是整个正方形，其棱只有四条边，任何一条对角线都不是该多胞形剖分的棱。可以另选任一对角线把它细分成两个三角形；两种细分都满足“外接开圆无站点”，因为第四点仍在圆周上。这说明允许共圆时，空圆条件本身没有选出唯一的三角剖分。
+
+	现在把 \(D_0\) 沿竖直方向稍作移动。圆 \(ABC\) 的方程是 \(x^2+y^2-x-y=0\)，将 \(D_\varepsilon\) 代入左边，得到
+	\[
+		\varepsilon(1+\varepsilon).
+	\]
+	若 \(\varepsilon>0\)，该值为正，所以 \(D_\varepsilon\) 在圆外；圆 \(ACD_\varepsilon\) 的方程为 \(x^2+y^2-(1-\varepsilon)x-(1+\varepsilon)y=0\)，站点 \(B\) 的代入值为 \(\varepsilon>0\)。因此两个三角形 \(ABC\)、\(ACD_\varepsilon\) 都有严格空圆，Delaunay 对角线为 \(AC\)。
+
+	若 \(\varepsilon<0\)，则 \(D_\varepsilon\) 落入圆 \(ABC\) 内，原来的三角形不再是 Delaunay 单元。圆 \(ABD_\varepsilon\) 的方程为 \(x^2+y^2-x-(1+\varepsilon)y=0\)，站点 \(C\) 的代入值为 \(-\varepsilon>0\)。圆 \(BCD_\varepsilon\) 的方程为
+	\[
+		x^2+y^2-(1-\varepsilon-\varepsilon^2)x-y-\varepsilon(1+\varepsilon)=0,
+	\]
+	站点 \(A\) 的代入值为 \(-\varepsilon(1+\varepsilon)>0\)。所以这次的两个三角形为 \(ABD_\varepsilon\)、\(BCD_\varepsilon\)，对角线改为 \(BD_\varepsilon\)。每一种情形中，这两个三角形都已覆盖四边形，由剖分的公共面性质便没有另一条可同时穿过内部的对角线。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixB-Voronoi}
+	\caption[共圆退化及扰动后的分解]{共圆退化及扰动后的分解。黑线为 Delaunay 单元边界，蓝线为 Voronoi 边界。左图四胞共用一个顶点，正方形保持为一个单元；右图取 \(\varepsilon=2/5\)，出现对角线 \(AC\)，对应两个 Voronoi 顶点之间的一条短边。}
+	\label{g1:fig:voronoi-degeneracy}
+\end{figure}
+
+共圆例子还指出一种容易混淆的“对偶”。若只记录哪些子族 \(\{V_p:p\in T\}\) 具有非空公共交，就得到一个抽象单纯复形，即该族集合的神经。在正方形例子中，四个闭胞具有公共交，因而神经包含由四个抽象顶点组成的三维单纯形；将这些顶点放回平面的原站点，并不能得到一个几何三维单纯形。甚至一对相对顶点的 Voronoi 胞也在中心相交，但这对顶点的连线只是正方形的对角线，并非 Delaunay 多胞形剖分的面。\cref{g1:thm:voronoi-delaunay-duality}恢复单元时使用的是一个 Voronoi 面的相对内点处的\emph{全部}最近站点，不是任取一个具有公共交的站点子集。
+
+\ProseParagraphBreak
+
+严格退化与计算误差也要分开。给定仿射无关的 \(p_0,\ldots,p_d\)，外接球心由线性方程
+\[
+	2\langle c,p_i-p_0\rangle=\lVert p_i\rVert^2-\lVert p_0\rVert^2,
+	\qquad 1\le i\le d,
+\]
+唯一确定，令 \(r^2=\lVert p_0-c\rVert^2\)。另一站点 \(q\) 在球外、球面上或球内，分别由
+\[
+	\delta(q)=\lVert q-c\rVert^2-r^2
+\]
+的正、零、负判定。等价地，可以考察以 \((p_i,\lVert p_i\rVert^2,1)\) 及 \((q,\lVert q\rVert^2,1)\) 为行的 \((d+2)\) 阶行列式；零值表示提升点共面，其符号还要结合前 \(d+1\) 点的定向来解释。有限个严格非零的判定在足够小扰动下保持符号，而\cref{g1:exm:delaunay-square-perturbation}中的零值两侧产生不同剖分。浮点计算得到接近零的数，不能据此宣布原数据严格共球：有理输入可用精确算术核对，近似输入则需有误差范围才能确认符号；不能确认时应保留几何关系未定这一事实。
+
+\ProseParagraphBreak
+
+若 \(S\) 没有张成整个环境空间，应先转到 \(L=\operatorname{aff}S\) 中讨论相应维数的 Delaunay 剖分。设 \(W\) 为 \(L\) 的方向空间，任意位置唯一写成 \(x=y+v\)、\(y\in L\)、\(v\in W^\perp\)，则对每个 \(p\in S\)，
+\[
+	\lVert x-p\rVert^2=\lVert y-p\rVert^2+\lVert v\rVert^2.
+\]
+共同增加的第二项不改变最近站点，所以环境空间中的 Voronoi 胞只是 \(L\) 内的胞沿 \(W^\perp\) 方向延伸。低维站点集与共球退化是两种不同情形：前者改变有效环境维数，后者可以在满维凸包中保留非单纯形单元。
+
+\section{支撑函数与离散逼近}
+\label{g1:sec:B03}
+
+给出有限个边界点，可以把凸集从内部围起来；给出有限个方向上的支撑半空间，可以把它从外部围起来。两种近似分别遗漏了未采样的点和未采样的方向。本节要估计这些遗漏究竟造成多大误差，并说明怎样把一次计算的结果变成可核验的不等式。所需工具是\cref{g1:thm:convex-projection}的最近点、\cref{g1:prop:support-function-representation}的支撑表示以及\cref{g1:thm:polytope-hv}的有界多面体两种表示。
+
+\subsection{凸体的多面体逼近}
+\label{g1:subsec:B03:01}
+
+以下环境为 \(\mathbb R^n\)、\(n\ge1\)，使用标准内积，记闭单位球为 \(\mathbb B\)、单位球面为 \(S^{n-1}\)。本节把具有非空内部的紧凸集称为\term[tuti]{凸体}[convex body]；下面的逼近结论还适用于单点、线段等非空紧凸集。对集合 \(A\) 及 \(r\ge0\)，记
+\[
+	A+r\mathbb B=\{a+rb:a\in A,\ b\in\mathbb B\}.
+\]
+若 \(A\) 非空且紧，这正是距离 \(A\) 不超过 \(r\) 的点集：最近点存在，所以距离上界可以写成上述分解。我们先用这样的包含关系表达误差。
+
+\ProseParagraphBreak
+
+给定 \(\delta>0\)，单位球面上的有限集合 \(U=\{u_1,\ldots,u_m\}\) 称为球面的一个\term[deltawang]{\(\delta\)-网}[\(\delta\)-net]，如果每个 \(v\in S^{n-1}\) 都满足某个 \(\lVert v-u_i\rVert\le\delta\)。这里用的是环境欧氏距离，而不是球面上的弧长。这样的有限集合总能选到：以球面上全部点为中心的半径 \(\delta\) 开球覆盖球面，由紧性取有限子覆盖即可。
+
+\begin{lemma}[有界集合的方向误差]\label{g1:lem:support-lipschitz-bound}
+	设 \(K\subseteq\mathbb R^n\) 非空且紧，并有 \(K\subseteq R\mathbb B\)、\(R\ge0\)。则对任意 \(u,v\in\mathbb R^n\)，有
+	\begin{equation}\label{g1:eq:support-lipschitz-bound}
+		|h_K(u)-h_K(v)|\le R\lVert u-v\rVert.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	对每个 \(x\in K\)，有
+	\[
+		\langle u,x\rangle
+		=\langle v,x\rangle+\langle u-v,x\rangle
+		\le h_K(v)+R\lVert u-v\rVert.
+	\]
+	对 \(x\) 取最大值得到一个方向的不等式；交换 \(u,v\) 得到另一个方向。紧性保证两个支撑值均为有限实数，所以可以相减。
+\end{proof}
+
+同一个方向网给出两种近似。在方向 \(u_i\) 上取一个达到最大值的点 \(p_i\in K\)，用这些点作凸包；同时保留不等式 \(\langle u_i,x\rangle\le h_K(u_i)\)，取它们的交。前者肯定在 \(K\) 内，后者肯定包含 \(K\)。误差估计还要利用方向网没有留下太大的空隙。
+
+\begin{theorem}[内外多面体逼近]\label{g1:thm:inner-outer-polytope-approximation}
+	设 \(K\subseteq\mathbb R^n\) 为非空紧凸集，且 \(K\subseteq R\mathbb B\)、\(R>0\)。取 \(0<\delta<1\) 及 \(S^{n-1}\) 的有限 \(\delta\)-网 \(U=\{u_1,\ldots,u_m\}\)。为每个 \(i\) 选择 \(p_i\in K\) 满足 \(\langle u_i,p_i\rangle=h_K(u_i)\)，并令
+	\[
+		Q=\operatorname{conv}\{p_1,\ldots,p_m\},\qquad
+		P=\bigcap_{i=1}^m\{x:\langle u_i,x\rangle\le h_K(u_i)\},
+		\qquad c_\delta=1-\frac{\delta^2}{2}.
+	\]
+	则 \(Q,P\) 均为非空多胞形，并且
+	\begin{equation}\label{g1:eq:inner-outer-polytope-error}
+		Q\subseteq K\subseteq P,\qquad
+		K\subseteq Q+2R\delta\mathbb B,\qquad
+		P\subseteq K+R\delta(1+c_\delta^{-1})\mathbb B.
+	\end{equation}
+	此外 \(P\subseteq(R/c_\delta)\mathbb B\)。特别地，任意给定的 \(\varepsilon>0\) 都允许选取有限的内外多胞形，使式中两项误差不超过 \(\varepsilon\)。
+\end{theorem}
+\begin{proof}
+	紧性保证各 \(p_i\) 存在。由凸性和支撑函数定义，\(Q\subseteq K\subseteq P\)。\(Q\) 是有限点集的凸包，因而紧。先估计内侧误差。任取单位向量 \(v\)，选择 \(\lVert v-u_i\rVert\le\delta\) 的一个方向，由前一引理得到
+	\begin{align*}
+		h_K(v)-h_Q(v)
+		&\le h_K(v)-\langle v,p_i\rangle\\
+		&=h_K(v)-h_K(u_i)+\langle u_i-v,p_i\rangle
+		\le2R\delta.
+	\end{align*}
+	若 \(x\in K\setminus Q\)，取其到 \(Q\) 的最近点 \(q\)，令 \(v=(x-q)/\lVert x-q\rVert\)。\cref{g1:prop:distance-support-formula}的证明说明，此方向满足
+	\[
+		d(x,Q)=\langle v,x\rangle-h_Q(v)
+		\le h_K(v)-h_Q(v)\le2R\delta.
+	\]
+	对 \(x\in Q\) 距离为零，故全部 \(K\) 都包含于 \(Q+2R\delta\mathbb B\)。
+
+	外侧先须排除无界性。任取 \(x\in P\)、\(x\ne0\)，对单位向量 \(x/\lVert x\rVert\) 选取邻近的 \(u_i\)。因为二者单位长，
+	\[
+		\left\langle u_i,\frac{x}{\lVert x\rVert}\right\rangle
+		=1-\frac12\left\lVert u_i-\frac{x}{\lVert x\rVert}\right\rVert^2
+		\ge c_\delta>0.
+	\]
+	由 \(x\in P\) 得 \(c_\delta\lVert x\rVert\le h_K(u_i)\le R\)。零点也满足所得范数界，因此 \(P\) 有界。它是非空闭半空间交，故为紧多面体；\cref{g1:thm:polytope-hv}说明它也具有有限点的凸包表示。
+
+	现取 \(x\in P\setminus K\)，令 \(p\) 为其到 \(K\) 的最近点，\(v=(x-p)/\lVert x-p\rVert\)。再次选择 \(\lVert v-u_i\rVert\le\delta\)，有
+	\begin{align*}
+		d(x,K)
+		&=\langle v,x\rangle-h_K(v)\\
+		&=\langle u_i,x\rangle-h_K(u_i)
+		+\langle v-u_i,x\rangle+h_K(u_i)-h_K(v)\\
+		&\le\delta\lVert x\rVert+R\delta
+		\le R\delta(1+c_\delta^{-1}).
+	\end{align*}
+	第一项非正是外侧半空间约束的作用。\(x\in K\) 的情形距离为零，由此得到外侧包含。最后 \(0<\delta<1\) 时 \(c_\delta>1/2\)，两项误差分别小于或等于 \(2R\delta\)、\(3R\delta\)。选取 \(0<\delta<\min\{1,\varepsilon/(3R)\}\) 即可。
+\end{proof}
+
+定理不要求支撑点唯一。一个方向若支撑在整条边或整个面上，从其中任取一个点仍满足证明所用的等式；不应把任意选择误作几何上的唯一性。方向过稀时，内多胞形还可能降维。若另知 \(a+r\mathbb B\subseteq K\)、\(r>0\)，则证明中的支撑差值给出
+\[
+	h_Q(v)\ge\langle v,a\rangle+r-2R\delta\qquad(\lVert v\rVert=1).
+\]
+当 \(2R\delta<r\) 时，由\cref{g1:prop:support-function-representation}可得 \(a+(r-2R\delta)\mathbb B\subseteq Q\)，所以这时内近似也是凸体。这里的 \(R\) 只需要是包含 \(K\) 的一个已知球半径；把坐标原点移到靠近 \(K\) 的位置，往往能减小这一误差常数。
+
+\input{Figures/AppendixB-SupportApproximation}
+
+\subsection{Hausdorff 距离与支撑函数}
+\label{g1:subsec:B03:02}
+
+上面的两项包含分别控制了“\(K\) 的点离近似多胞形多远”与“近似多胞形的点离 \(K\) 多远”。如果只保留其中一项，任意一个集合的很小子集都可能给出零误差。集合之间的距离因此需要同时检查两个方向。
+
+\begin{definition}[Hausdorff 距离]\label{g1:def:hausdorff-distance}
+	对非空紧集 \(K,L\subseteq\mathbb R^n\)，定义它们的\term[hausdorffjuli]{Hausdorff 距离}[Hausdorff distance]为
+	\begin{equation}\label{g1:eq:hausdorff-distance}
+		d_H(K,L)=\max\left\{\max_{x\in K}d(x,L),\ \max_{y\in L}d(y,K)\right\}.
+	\end{equation}
+	这里 \(d(x,L)=\min_{y\in L}\lVert x-y\rVert\)。
+	\symidx{\(d_H(K,L)\)：非空紧集的 Hausdorff 距离}
+\end{definition}
+
+定义中的最小值由紧性取得。对任意 \(x,x'\)，三角不等式给出 \(|d(x,L)-d(x',L)|\le\lVert x-x'\rVert\)，所以距离函数连续，外层的两个最大值也能取得。由最近点存在，对每个 \(\varepsilon\ge0\) 有
+\begin{equation}\label{g1:eq:hausdorff-inclusions}
+	d_H(K,L)\le\varepsilon
+	\quad\Longleftrightarrow\quad
+	K\subseteq L+\varepsilon\mathbb B\ \text{且}\ L\subseteq K+\varepsilon\mathbb B.
+\end{equation}
+这也核验了距离公理：对称性和非负性直接成立；零距离使两个紧集互相包含；若再有非空紧集 \(M\)，沿两次包含相加得到
+\[
+	d_H(K,M)\le d_H(K,L)+d_H(L,M).
+\]
+这里用到 \(a\mathbb B+b\mathbb B=(a+b)\mathbb B\)、\(a,b\ge0\)：一个方向来自三角不等式，反方向在 \(a+b>0\) 时把同一个单位球中向量分别乘 \(a,b\)，零值情形单独成立。
+
+\begin{theorem}[Hausdorff 距离的支撑表示]\label{g1:thm:hausdorff-support-isometry}
+	设 \(K,L\subseteq\mathbb R^n\) 为非空紧凸集。则
+	\begin{equation}\label{g1:eq:hausdorff-support-isometry}
+		d_H(K,L)=\max_{u\in S^{n-1}}|h_K(u)-h_L(u)|.
+	\end{equation}
+	因此，把一个非空紧凸集对应到它在单位球面上的支撑函数，保持距离；右侧使用连续函数的一致范数。
+\end{theorem}
+\begin{proof}
+	先把距离中的外扩集合写成支撑值。\(L+\varepsilon\mathbb B\) 为紧凸集：它是两个紧集之积在连续加法映射下的像，凸性则逐项取凸组合验证。对任意 \(u\)，两个分量可以独立选择，所以
+	\[
+		h_{L+\varepsilon\mathbb B}(u)
+		=\max_{y\in L,\,b\in\mathbb B}\langle u,y+\varepsilon b\rangle
+		=h_L(u)+\varepsilon\lVert u\rVert.
+	\]
+	由\cref{g1:prop:support-function-representation}，\(K\subseteq L+\varepsilon\mathbb B\) 当且仅当 \(h_K(u)\le h_L(u)+\varepsilon\lVert u\rVert\) 对全部 \(u\) 成立。支撑函数的正齐次性说明，只检查单位方向就足够，零方向的条件自动成立。交换 \(K,L\)，再用式\eqref{g1:eq:hausdorff-inclusions}，便得到
+	\[
+		d_H(K,L)\le\varepsilon
+		\quad\Longleftrightarrow\quad
+		|h_K(u)-h_L(u)|\le\varepsilon\quad(\lVert u\rVert=1).
+	\]
+	由\cref{g1:lem:support-lipschitz-bound}，两个支撑函数均连续，故右侧差值在单位球面上有最大值。取这个最大值为 \(\varepsilon\)，以及反过来取 \(\varepsilon=d_H(K,L)\)，即得等式。
+\end{proof}
+
+\cref{g1:thm:inner-outer-polytope-approximation}现在可统一写成
+\[
+	d_H(K,Q)\le2R\delta,\qquad
+	d_H(K,P)\le R\delta(1+c_\delta^{-1}).
+\]
+这些估计对任意紧凸集有效；特定形状往往给出更好的误差。图中的圆盘便可以精确计算。
+
+\begin{example}[圆盘的正多边形逼近]\label{g1:exm:regular-polygon-support-error}
+	在 \(\mathbb R^2\) 中令 \(K=\mathbb B\)，取 \(m\ge3\) 个单位方向
+	\[
+		u_j=\bigl(\cos(2\pi j/m),\sin(2\pi j/m)\bigr),\qquad 0\le j<m,
+	\]
+	并令 \(Q_m=\operatorname{conv}\{u_j\}\)、\(P_m=\{x:\langle u_j,x\rangle\le1\ \text{对全部 }j\}\)。对任意单位方向 \(v\)，它与最近 \(u_j\) 的夹角 \(\theta\) 介于 \(0\) 和 \(\pi/m\) 之间，因而
+	\[
+		h_{Q_m}(v)=\cos\theta,\qquad
+		d_H(Q_m,\mathbb B)=1-\cos(\pi/m).
+	\]
+	最大误差在相邻两个采样方向的角平分线方向取得。对外近似，射线上的点 \(tv\)、\(t\ge0\)，属于 \(P_m\) 当且仅当
+	\[
+		t\max_j\langle u_j,v\rangle\le1.
+	\]
+	上式中的最大值为 \(\cos\theta\ge\cos(\pi/m)>0\)，所以 \(P_m\) 中最大的范数为 \(1/\cos(\pi/m)\)，也在角平分线方向取得。点到单位圆盘的距离为 \(\max\{0,\lVert x\rVert-1\}\)，故
+	\[
+		d_H(P_m,\mathbb B)=\frac1{\cos(\pi/m)}-1.
+	\]
+	例如 \(m=4\) 时，内近似为菱形，误差为 \(1-1/\sqrt2\)；外近似为正方形，误差为 \(\sqrt2-1\)。两者取样方向相同，误差仍然不同。这些公式直接来自圆盘的形状，不能把其中更快的收敛速度无条件推广给所有紧凸集。
+\end{example}
+
+凸性在式\eqref{g1:eq:hausdorff-support-isometry}中不可删除。单位圆周 \(S^1\) 与闭单位圆盘 \(\mathbb B\subset\mathbb R^2\) 的支撑函数相同，但 \(d_H(S^1,\mathbb B)=1\)：圆盘中心到圆周的距离为 \(1\)，其他圆盘点的距离为 \(1-\lVert x\rVert\)。支撑函数只恢复闭凸包，这与\cref{g1:prop:support-function-basic}一致；它不会记录集合内部的空洞。
+
+\subsection{数值表示的证书}
+\label{g1:subsec:B03:03}
+
+计算给出一张顶点表、一组半空间或若干近似支撑值后，需要说明哪些有限数据能证明所声称的包含关系及误差。本节把能够通过明确等式、不等式核验某项结论的有限数据称为该结论的\term[zhengshu]{证书}[certificate]。证书可以由程序寻找，但核验所需的推理应能从数据本身读出。例如，声称两份多面体描述相同，需要两个方向的包含证书，不能只验证列出的点都满足列出的不等式。
+
+\begin{proposition}[有限包含与支撑界的证书]\label{g1:prop:finite-polytope-certificates}
+	设 \(v_1,\ldots,v_N\in\mathbb R^n\)、\(N\ge1\)，\(Q=\operatorname{conv}\{v_1,\ldots,v_N\}\)，并设 \(A\) 为实 \(s\times n\) 矩阵、\(b\in\mathbb R^s\)、\(P=\{x:Ax\le b\}\)。下列有限数据具有所述作用。
+	\begin{enumerate}
+		\item \(Q\subseteq P\) 当且仅当对所有 \(j\) 有 \(Av_j\le b\)。
+		\item 若 \(P\) 非空有界，并已列出其全部顶点 \(w_1,\ldots,w_M\)，则对每个 \(k\) 给出
+		\[
+			w_k=\sum_j\theta_{kj}v_j,\qquad
+			\theta_{kj}\ge0,\qquad \sum_j\theta_{kj}=1,
+		\]
+		便可证明 \(P\subseteq Q\)。
+		\item 对 \(c\in\mathbb R^n\)，若 \(\lambda\in\mathbb R^s\) 满足 \(\lambda\ge0\)、\(A^{\mathsf T}\lambda=c\)，则 \(\langle c,x\rangle\le\langle\lambda,b\rangle\) 对所有 \(x\in P\) 成立。若再给出 \(p\in P\)，就得到
+		\[
+			\langle c,p\rangle\le h_P(c)\le\langle\lambda,b\rangle.
+		\]
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	第一项的必要性来自 \(v_j\in Q\)；充分性来自每条线性不等式在凸组合下保持。第二项由\cref{g1:thm:polytope-hv}知 \(P\) 是其全部顶点的凸包；给出的每个凸组合使 \(w_k\in Q\)，再用 \(Q\) 的凸性便得到全部 \(P\subseteq Q\)。第三项对每个 \(x\in P\) 按非负系数相加：
+	\[
+		\langle c,x\rangle=\langle A^{\mathsf T}\lambda,x\rangle
+		=\langle\lambda,Ax\rangle\le\langle\lambda,b\rangle.
+	\]
+	取上确界得到上界；可行点 \(p\) 的函数值是上确界的下界。
+\end{proof}
+
+“全部顶点”也有有限核验办法。先给一个满足 \(Ax\le b\) 的点证明非空，再证明有界，例如分别为 \(\pm x_k\le R_k\) 给出第三项中的非负乘子。于是 \(P\subseteq\prod_k[-R_k,R_k]\)。接着枚举全部 \(n\) 条线性无关约束的组合，解相应等式组并保留满足全部不等式的解，便得到全部顶点。其原因与第三章一致：若某点的活动法向量不张成 \(\mathbb R^n\)，就能沿一个同时垂直的非零方向作两侧小扰动，有限条非活动约束仍保持，故该点不是顶点；若活动法向量张成全空间，其中 \(n\) 条就唯一固定该点。这个办法允许冗余约束和低维多面体，重复出现的顶点只需合并；顶点数很多时枚举可能昂贵，但所得证书的含义没有改变。
+
+\ProseParagraphBreak
+
+例如，对三角形
+\[
+	P=\{(x,y):x\ge0,\ y\ge0,\ x+y\le1\},\qquad c=(3/5,4/5),
+\]
+按 \(-x\le0,-y\le0,x+y\le1\) 排列约束。取 \(p=(0,1)\) 和 \(\lambda=(1/5,0,4/5)\)，可以直接验算 \(A^{\mathsf T}\lambda=c\) 及
+\[
+	\langle c,p\rangle=4/5=\langle\lambda,b\rangle.
+\]
+上下界相等，故这份有限数据证明了 \(h_P(c)=4/5\)，无需把某个优化程序报告的“最优”二字当作证明。
+
+\ProseParagraphBreak
+
+要把有限个支撑值的误差扩展到全部方向，还需要方向覆盖的证据。除了平面中的等角网，一般维数可以使用整数网格。取整数 \(M>\sqrt n\)，令
+\begin{equation}\label{g1:eq:integer-direction-net}
+	U_M=\left\{\frac{q}{\lVert q\rVert}:q\in\mathbb Z^n,\ 0<\max_k|q_k|\le M\right\}.
+\end{equation}
+这是有限集合，并且是半径 \(\delta_M=\sqrt n/M\) 的方向网。事实上，对任意单位向量 \(u\)，把 \(Mu\) 的各坐标舍入到最近整数，得到上述范围内的 \(q\)，并有 \(z=q/M\) 满足 \(\lVert z-u\rVert\le\sqrt n/(2M)<1\)，所以 \(q\ne0\)。再由反三角不等式，
+\[
+	\left\lVert\frac{q}{\lVert q\rVert}-u\right\rVert
+	\le\left\lVert\frac z{\lVert z\rVert}-z\right\rVert+\lVert z-u\rVert
+	=|1-\lVert z\rVert|+\lVert z-u\rVert
+	\le\frac{\sqrt n}{M}.
+\]
+因此网格的有限生成规则本身就提供了覆盖半径的证明。
+
+\begin{proposition}[支撑区间给出的距离证书]\label{g1:prop:finite-support-distance-certificate}
+	设 \(K,L\subseteq\mathbb R^n\) 为非空紧凸集，\(K\subseteq R_K\mathbb B\)、\(L\subseteq R_L\mathbb B\)，其中 \(R_K,R_L\ge0\)。取单位球面的一个非空有限 \(\delta\)-网 \(\{u_i\}_{i=1}^m\)，并对每个 \(i\) 给出已经证明的区间
+	\[
+		a_i\le h_K(u_i)\le b_i,\qquad
+		c_i\le h_L(u_i)\le d_i.
+	\]
+	令
+	\[
+		D_-=\max\bigl(\{0\}\cup\{a_i-d_i,c_i-b_i:1\le i\le m\}\bigr),
+	\]
+	\[
+		D_+=\max_{1\le i\le m}\max\{b_i-c_i,d_i-a_i\}.
+	\]
+	则有可核验的双侧误差界
+	\begin{equation}\label{g1:eq:finite-support-distance-certificate}
+		D_-\le d_H(K,L)\le D_++(R_K+R_L)\delta.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	在每个采样方向上，\(h_K(u_i)-h_L(u_i)\ge a_i-d_i\)，而反向差值不小于 \(c_i-b_i\)。\cref{g1:thm:hausdorff-support-isometry}因此给出下界。另一方面，两份区间使
+	\[
+		|h_K(u_i)-h_L(u_i)|\le\max\{b_i-c_i,d_i-a_i\}\le D_+.
+	\]
+	任取单位 \(v\)，选择 \(\lVert v-u_i\rVert\le\delta\)，并对两个支撑函数使用\cref{g1:lem:support-lipschitz-bound}，得到
+	\[
+		|h_K(v)-h_L(v)|
+		\le D_++R_K\delta+R_L\delta.
+	\]
+	取全部单位方向的最大值，再用支撑表示即得上界。
+\end{proof}
+
+特别地，支撑值精确已知时，有限最大误差 \(E=\max_i|h_K(u_i)-h_L(u_i)|\) 满足
+\[
+	E\le d_H(K,L)\le E+(R_K+R_L)\delta.
+\]
+末项控制未采样方向，不能因为已测误差为零就删去。例如单位圆盘与正方形 \([-1,1]^2\) 在四个坐标轴方向的支撑值全为 \(1\)，Hausdorff 距离却为 \(\sqrt2-1\)。对一般 \(K\)，支撑值的下界可由已经证明属于 \(K\) 的点提供，上界则须由有效的半空间包含或其他已证估计提供；对半空间表示的多胞形，前一命题的可行点与非负乘子恰好给出这两种数据。
+
+\ProseParagraphBreak
+
+浮点误差也必须落在明确的界内。例如，已知 \(P=\{x:Ax\le b\}\subseteq R\mathbb B\) 非空，给出已确认非负的乘子 \(\lambda\ge0\)，但等式 \(A^{\mathsf T}\lambda=c\) 只近似成立。若已证明残差满足 \(\lVert c-A^{\mathsf T}\lambda\rVert\le\rho\)，则仍有
+\begin{equation}\label{g1:eq:dual-residual-support-bound}
+	h_P(c)\le\langle\lambda,b\rangle+R\rho.
+\end{equation}
+确实，对每个 \(x\in P\)，把 \(c\) 分成 \(A^{\mathsf T}\lambda\) 和残差，配对后分别使用 \(Ax\le b\) 与 Cauchy--Schwarz 不等式即可。若内积本身也由区间运算给出，就取其已证明的上端点；\(\rho\) 同样须是范数的上界。乘子的非负性必须确实成立，不能把一个小负数按显示精度忽略。下界也需要可行性：若只有一个近似点 \(z\)，但已证明存在 \(p\in P\) 使 \(\lVert z-p\rVert\le\eta\)，才能推出 \(h_P(c)\ge\langle c,z\rangle-\lVert c\rVert\eta\)。
+
+\begin{example}[小约束残差未必意味着小距离]\label{g1:exm:small-residual-large-distance}
+	给定 \(a>0\)，令
+	\[
+		T_a=\{(x,y):x\ge0,\ ax+y\le a,\ ax-y\le a\}
+		=\operatorname{conv}\{(0,a),(0,-a),(1,0)\}.
+	\]
+	最后两条不等式除以 \(\sqrt{1+a^2}\) 后，法向量均为单位向量。点 \(z=(2,0)\) 对第一条约束可行，对其余每条归一化约束的超出量都只有 \(a/\sqrt{1+a^2}\)。然而 \(T_a\) 内所有点的横坐标不超过 \(1\)，且 \((1,0)\in T_a\)，故 \(d(z,T_a)=1\)。当 \(a\to0\) 时，两条支撑边越来越接近平行，约束残差趋于零，几何距离仍为 \(1\)。因此“每条约束的误差小于容差”本身不能代替点到集合的距离证书，即使各法向量已经归一化。
+\end{example}
+
+这些证书分别控制数据的三种误差：有限点与半空间的包含关系、有限方向以外的遗漏，以及数值运算的误差。只要半径界、方向覆盖和支撑区间各有依据，式\eqref{g1:eq:finite-support-distance-certificate}就把它们合成一个对整个凸集有效的距离界。
+
+\begin{chaptersummary}
+	格给欧氏空间增加了整数结构。换格基的行列式只能为 \(\pm1\)，因此基本区域的体积与格基选择无关。二维中，把凸格多边形分成不含额外格点的三角形，既能按面积相加，也能按内部点与边界点计数；两种计算相合便得到 Pick 公式。膨胀后的面积按平方增长，边界格点按一次增长，由此得到二维 Ehrhart 多项式。
+
+	\ProseParagraphBreak
+
+	距离平方的共同二次项相消，使最近站点的比较成为半空间不等式。抛物面提升又把空球条件化为支撑超平面条件，连接 Voronoi 面与 Delaunay 单元。共球点可以共同构成一个非单纯形单元；再作三角剖分需要额外选择，不能把该选择当成距离数据已经唯一决定的结果。
+
+	\ProseParagraphBreak
+
+	对于非空紧凸集，支撑函数不仅记录包含关系，也精确记录 Hausdorff 距离。有限方向网配合统一半径界，可以控制没有采样的方向，从而为内外多面体逼近给出误差。数值表示是否可信，取决于是否附有可以核算的约束、权重和误差界，而不取决于图像是否平滑或输出了多少位小数。
+\end{chaptersummary}
+
+\BookExercises
+以下习题分别训练格基与计数、空球判定、退化分析和凸体误差估计。计算题中的每个数值都须连同适用条件解释，证书题则须同时给出所声称上下界的依据。
+
+\begin{exercise}
+	\label{g1:ex:lattice-basis-cell}
+	在标准欧氏平面中，令 \(b_1=(2,0)\)、\(b_2=(1,1)\)，\(\Lambda=\mathbb Zb_1+\mathbb Zb_2\)。
+	\begin{enumerate}
+		\item 给出整数点 \((x,y)\) 属于 \(\Lambda\) 的充要条件，并计算 \(\operatorname{covol}(\Lambda)\)。
+		\item 判断 \(c_1=(3,1)\)、\(c_2=(4,2)\) 是否构成同一格的格基。
+		\item 把 \(q=(11/2,9/4)\) 唯一写为 \(q=\lambda+f\)，其中 \(\lambda\in\Lambda\)、\(f\in F_b\)。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	(1) 格点具有形式 \(m(2,0)+n(1,1)=(2m+n,n)\)，所以整数点 \((x,y)\) 属于 \(\Lambda\) 当且仅当 \(x-y\) 是偶数；满足此条件时，取 \(n=y\)、\(m=(x-y)/2\) 即可。基矩阵行列式为 \(2\)，所以余体积为 \(2\)。
+
+	(2) \(c_1=b_1+b_2\)、\(c_2=b_1+2b_2\)，变换矩阵为
+	\[
+		U=\begin{pmatrix}1&1\\1&2\end{pmatrix},\qquad \det U=1.
+	\]
+	它是幺模矩阵，因此两向量是同一格的格基。也可由 \(b_1=2c_1-c_2\)、\(b_2=c_2-c_1\) 直接看出反向整数生成。
+
+	(3) \(q\) 的 \(b\)-坐标为 \((13/8,9/4)\)，整数部分为 \((1,2)\)，小数部分为 \((5/8,1/4)\)。因此
+	\[
+		\lambda=b_1+2b_2=(4,2),\qquad
+		f=\frac58b_1+\frac14b_2=\left(\frac32,\frac14\right).
+	\]
+	两个小数坐标都在 \([0,1)\) 中，故 \(f\in F_b\)。若还有另一分解，两余数点的差既有整数格坐标，又在各坐标的 \((-1,1)\) 内，只能为零，所以分解唯一。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:pick-quadrilateral}
+	令 \(P\) 为依次以 \((0,0),(4,0),(3,2),(0,3)\) 为顶点的凸四边形。计算面积、边界格点数和内部格点数，并求 \(L_P(n)\)。再分别求 \(2P\) 的内部格点数与全部格点数。
+\end{exercise}
+\begin{solution}
+	沿从 \((0,0)\) 到 \((3,2)\) 的对角线分成两个三角形，面积分别为
+	\[
+		\frac12\left|\det\begin{pmatrix}4&3\\0&2\end{pmatrix}\right|=4,
+		\qquad
+		\frac12\left|\det\begin{pmatrix}3&0\\2&3\end{pmatrix}\right|=\frac92.
+	\]
+	所以 \(A=17/2\)。四条边向量的坐标最大公因数依次为 \(4,1,1,3\)，于是 \(B=9\)。Pick 公式给出 \(I=17/2-9/2+1=5\)。可用实际内部点 \((1,1),(2,1),(3,1),(1,2),(2,2)\) 再核对这个数。
+
+	因此
+	\[
+		L_P(n)=\frac{17}{2}n^2+\frac92n+1.
+	\]
+	当 \(n=2\) 时，面积为 \(34\)，边界格点数为 \(18\)，内部格点数为 \(34-9+1=26\)，全部格点数为 \(26+18=44\)。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:rational-count-parity}
+	取有理顶点矩形 \(Q=[0,1/2]\times[0,1]\)。计算 \(\#(nQ\cap\mathbb Z^2)\)，分别写出 \(n\) 为偶数与奇数时的多项式表达，并证明不存在一个多项式在所有非负整数 \(n\) 上给出该计数。
+\end{exercise}
+\begin{solution}
+	第一坐标可以是 \(0,\ldots,\lfloor n/2\rfloor\)，第二坐标可以是 \(0,\ldots,n\)，所以计数为
+	\[
+		\left(\left\lfloor\frac n2\right\rfloor+1\right)(n+1)
+		=\begin{cases}
+			\dfrac12n^2+\dfrac32n+1,&n\text{ 为偶数},\\[3pt]
+			\dfrac12n^2+n+\dfrac12,&n\text{ 为奇数}.
+		\end{cases}
+	\]
+	若一个多项式 \(f\) 给出全部计数，那么它与第一行的多项式在无穷多个非负偶数上相等。非零多项式只有有限个根，所以 \(f\) 必恒等于第一行。但两行多项式之差为 \((n+1)/2\)，在正奇数上不为零，矛盾。这个例子显示，把整顶点放宽为有理顶点后，点数可能随倍数的奇偶而改变公式。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:simplex-cone-remainders}
+	对格三角形 \(S=\operatorname{conv}\{(0,0),(2,0),(0,1)\}\)，写出\cref{g1:prop:lattice-simplex-ehrhart}的半开区域 \(\Pi\) 中全部格点，求 \(h_0,h_1,h_2\)，并据此求 \(L_S(n)\)。再按水平整数坐标逐行计数，独立核验结果。
+\end{exercise}
+\begin{solution}
+	提升向量为 \(w_0=(0,0,1)\)、\(w_1=(2,0,1)\)、\(w_2=(0,1,1)\)，故 \(\Pi\) 中的点具有形式
+	\[
+		(2t_1,t_2,t_0+t_1+t_2),\qquad 0\le t_0,t_1,t_2<1.
+	\]
+	若它是整数点，第二坐标迫使 \(t_2=0\)，第一坐标迫使 \(t_1=0\) 或 \(1/2\)。当 \(t_1=0\) 时，末坐标为整数迫使 \(t_0=0\)；当 \(t_1=1/2\) 时，末坐标为整数迫使 \(t_0=1/2\)。因此仅有格点 \((0,0,0)\)、\((1,0,1)\)，从而 \(h_0=1,h_1=1,h_2=0\)，得到
+	\[
+		L_S(n)=\binom{n+2}{2}+\binom{n+1}{2}=(n+1)^2.
+	\]
+	另一方面，\(nS=\{(x,y):x,y\ge0,\ x+2y\le2n\}\)。固定整数 \(y=k\in\{0,\ldots,n\}\)，可取 \(2(n-k)+1\) 个整数横坐标。因此总数为
+	\[
+		\sum_{k=0}^n\bigl(2(n-k)+1\bigr)
+		=2\frac{n(n+1)}2+(n+1)=(n+1)^2,
+	\]
+	与半开锥计数相符。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:empty-lattice-tetrahedron}
+	对整数 \(m\ge2\)，令
+	\[
+		T_m=\operatorname{conv}\{(0,0,0),(1,0,0),(0,1,0),(1,1,m)\}.
+	\]
+	证明 \(T_m\) 除四个顶点外没有其他格点，并计算其体积。说明这一族如何阻止把二维“不含额外格点的三角形面积固定”直接推广到三维。
+\end{exercise}
+\begin{solution}
+	任一点均可写为
+	\[
+		(x,y,z)=\alpha(1,0,0)+\beta(0,1,0)+\gamma(1,1,m),
+		\qquad \alpha,\beta,\gamma\ge0,\quad\alpha+\beta+\gamma\le1.
+	\]
+	所以 \(z=m\gamma\in[0,m]\)。若它是格点且 \(0<z<m\)，则 \(0<\gamma<1\)，又有 \(x=\alpha+\gamma>0\)、\(y=\beta+\gamma>0\)。两个正整数都至少为 \(1\)，于是
+	\[
+		\alpha+\beta+\gamma=x+y-\gamma\ge2-\gamma>1,
+	\]
+	与凸组合条件矛盾。若 \(z=0\)，则 \(\gamma=0\)，非负整数 \(x,y\) 满足 \(x+y\le1\)，只得到底面的三个顶点。若 \(z=m\)，则 \(\gamma=1\)，迫使 \(\alpha=\beta=0\)，只得到第四个顶点。
+
+	在高度 \(z\in[0,m]\) 处，截面是底面标准三角形缩放 \(1-z/m\) 倍后再平移所得，面积为 \(\tfrac12(1-z/m)^2\)。沿高度积分得
+	\[
+		\operatorname{Vol}_3(T_m)
+		=\frac12\int_0^m\left(1-\frac zm\right)^2\mathrm dz
+		=\frac m6.
+	\]
+	因此这些没有额外格点的四面体，其体积仍可任意增大。二维引理证明中，把平行四边形中的格点 \(w\) 换成 \(u+v-w\) 就能落入三角形；更多系数时，反射后的系数和未必小于 \(1\)，该步骤不再适用。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:voronoi-interior-site}
+	在通常欧氏平面中取站点集 \(S=\{O,E,N,W,H\}\)，其中
+	\[
+		O=(0,0),\quad E=(2,0),\quad N=(0,2),\quad W=(-2,0),\quad H=(0,-2).
+	\]
+	求全部 Voronoi 胞和二维 Delaunay 单元。四个外侧站点同在一个圆上，这是否使 Delaunay 剖分出现一个四边形单元？说明理由。
+\end{exercise}
+\begin{solution}
+	与四个外侧站点比较距离，得到
+	\[
+		V_O=\{(x,y):|x|\le1,\ |y|\le1\}.
+	\]
+	对 \(E\)，与 \(O\) 比较给出 \(x\ge1\)，与 \(N,H\) 比较给出 \(x\ge y\)、\(x\ge-y\)；与 \(W\) 比较仅要求 \(x\ge0\)，已被前面的条件包含。因此全部外侧胞为
+	\[
+		\begin{aligned}
+			V_E&=\{(x,y):x\ge1,\ x\ge|y|\},&
+			V_W&=\{(x,y):-x\ge1,\ -x\ge|y|\},\\
+			V_N&=\{(x,y):y\ge1,\ y\ge|x|\},&
+			V_H&=\{(x,y):-y\ge1,\ -y\ge|x|\}.
+		\end{aligned}
+	\]
+	它们和中央正方形覆盖平面，中央胞有界，四个外侧胞无界。
+
+	Voronoi 顶点为 \((1,1),(-1,1),(-1,-1),(1,-1)\)。以 \((1,1)\) 为中心、半径 \(\sqrt2\) 的圆通过 \(O,E,N\)，而到 \(W,H\) 的距离平方都为 \(10>2\)。其他三个中心由旋转得到。因此二维 Delaunay 单元恰为
+	\[
+		\operatorname{conv}\{O,E,N\},\quad
+		\operatorname{conv}\{O,N,W\},\quad
+		\operatorname{conv}\{O,W,H\},\quad
+		\operatorname{conv}\{O,H,E\}.
+	\]
+	这四个三角形已经覆盖 \(\operatorname{conv}S=\{(x,y):|x|+|y|\le2\}\)，并按公共边拼接，故没有遗漏其他二维单元。外侧四点所在的圆中心为 \(O\)、半径为 \(2\)，其开圆内部包含站点 \(O\)，所以不是空圆。共圆只有同时满足空圆条件时，才会产生这里所说的非单纯形接触单元。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:largest-empty-disk-constrained}
+	设有限互异点集 \(S\subset\mathbb R^2\) 张成平面，记 \(K=\operatorname{conv}S\)，并把空圆的中心限制在 \(K\) 中。证明最大的空开圆半径
+	\[
+		R=\max_{x\in K}\min_{p\in S}\lVert x-p\rVert
+	\]
+	可在某个多胞形 \(K\cap V_p\) 的顶点处取得。对 \(S=\{A=(0,0),B=(4,0),C=(1,1)\}\)，求 \(R\) 及一个取到最大值的中心，并说明只检查位于 \(K\) 内的 Voronoi 顶点为什么会失败。
+\end{exercise}
+\begin{solution}
+	函数 \(\rho(x)=\min_{p\in S}\lVert x-p\rVert\) 是有限个连续函数的最小值，因而连续；\(K\) 紧，所以最大值存在。在 \(P_p=K\cap V_p\) 上，有 \(\rho(x)^2=\lVert x-p\rVert^2\)。\(P_p\) 是有界多面体，由\cref{g1:thm:polytope-hv}等于其有限顶点的凸包。若 \(x=\sum_i\lambda_i v_i\) 为顶点凸组合，则
+	\[
+		\lVert x-p\rVert^2
+		\le\sum_i\lambda_i\lVert v_i-p\rVert^2
+		\le\max_i\lVert v_i-p\rVert^2.
+	\]
+	第一个不等式可由展开平方直接得到，其差为 \(\sum_i\lambda_i\lVert v_i-x\rVert^2\ge0\)。故在每个 \(P_p\) 上都能到顶点取最大值；这有限个多胞形覆盖 \(K\)，结论成立。
+
+	在给定三角形中，三个 Voronoi 胞为
+	\[
+		\begin{aligned}
+			V_A&=\{(x,y):x\le2,\ x+y\le1\},\\
+			V_B&=\{(x,y):x\ge2,\ 3x-y\ge7\},\\
+			V_C&=\{(x,y):x+y\ge1,\ 3x-y\le7\}.
+		\end{aligned}
+	\]
+	三胞唯一的公共点是 \((2,-1)\)，在 \(K\) 外。限制到 \(K\) 后，三个多胞形除原站点外的顶点为
+	\[
+		(1,0),\quad (1/2,1/2),\quad (7/3,0),\quad (5/2,1/2).
+	\]
+	其中前两点由直线 \(x+y=1\) 与边 \(AB,AC\) 相交得到，后两点由 \(3x-y=7\) 与边 \(AB,BC\) 相交得到。它们的最近站点距离依次为
+	\[
+		1,\qquad \frac1{\sqrt2},\qquad \frac53,\qquad \sqrt{\frac52}.
+	\]
+	三个原站点的最近距离为零。比较这些候选值得到 \(R=5/3\)，在中心 \((7/3,0)\) 取得。该圆通过 \(B,C\)，而到 \(A\) 的距离为 \(7/3>5/3\)。最大值中心是 Voronoi 边与凸包边界的交点，平面 Voronoi 图的唯一顶点却在约束区域外，因此只查后者会漏掉答案。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:incircle-determinant}
+	设平面中的 \(A=(a_1,a_2)\)、\(B=(b_1,b_2)\)、\(C=(c_1,c_2)\) 不共线，且
+	\[
+		\Delta=\det\begin{pmatrix}a_1&a_2&1\\b_1&b_2&1\\c_1&c_2&1\end{pmatrix}>0.
+	\]
+	记其外接圆心为 \(o\)、半径为 \(r\)。对 \(P=(p_1,p_2)\)，证明
+	\[
+		\det\begin{pmatrix}
+			a_1&a_2&\lVert A\rVert^2&1\\
+			b_1&b_2&\lVert B\rVert^2&1\\
+			c_1&c_2&\lVert C\rVert^2&1\\
+			p_1&p_2&\lVert P\rVert^2&1
+		\end{pmatrix}
+		=-\Delta\bigl(\lVert P-o\rVert^2-r^2\bigr).
+	\]
+	据此判定 \(P\) 在圆内、圆上、圆外时行列式的符号。再取 \(A=(0,0),B=(1,0),C=(0,1)\)、\(P=(1,1+10^{-m})\)，其中 \(m\) 为正整数，精确求此行列式，并解释为什么不能把数值很小的结果直接视为共圆。
+\end{exercise}
+\begin{solution}
+	记 \(o=(o_1,o_2)\)。把行列式的第三列减去第一列的 \(2o_1\) 倍、第二列的 \(2o_2\) 倍，再加上第四列的 \(\lVert o\rVert^2-r^2\) 倍，行列式不变。新第三列的各项为对应点 \(X\) 的 \(\lVert X-o\rVert^2-r^2\)。前三项为零，最后一项为 \(\delta=\lVert P-o\rVert^2-r^2\)。沿该列展开，唯一非零项的代数余子式符号为 \((-1)^{4+3}=-1\)，得到 \(-\Delta\delta\)。因 \(\Delta>0\)，圆内、圆上、圆外分别给出正、零、负值。若交换 \(A,B\) 的顺序，\(\Delta\) 和大行列式同时变号，判定时必须保留这个定向约定。
+
+	具体三角形满足 \(\Delta=1\)、\(o=(1/2,1/2)\)、\(r^2=1/2\)。置 \(t=10^{-m}>0\)，有
+	\[
+		\delta=(1-1/2)^2+(1+t-1/2)^2-1/2=t+t^2,
+	\]
+	所以行列式精确等于 \(-10^{-m}-10^{-2m}<0\)。无论 \(m\) 多大，\(P\) 都严格在圆外。固定数值阈值会把足够大的 \(m\) 误判成共圆；若输入本身只是近似值，还必须计入输入误差，才能判断真实符号是否已被确定。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:voronoi-similarity}
+	设 \(S\subset\mathbb R^d\) 为非空有限互异点集，\(f(x)=aUx+b\)，其中 \(a>0\)、\(U^{\mathsf T}U=I\)。证明 \(f\) 把 \(S\) 的 Voronoi 胞和 Delaunay 单元分别映为 \(f(S)\) 的对应胞与单元。这个结论能否把相似变换扩大为任意可逆仿射变换？用正方形顶点集及剪切 \(g(x,y)=(x+y/2,y)\) 说明。
+\end{exercise}
+\begin{solution}
+	正交性给出 \(\lVert f(x)-f(p)\rVert=a\lVert x-p\rVert\)。由于所有距离乘以同一正数，最短距离的大小顺序和等号都保持，故
+	\[
+		N_{f(S)}(f(x))=f(N_S(x)),\qquad
+		V^{f(S)}_{f(p)}=f(V^S_p).
+	\]
+	上标在此标明所用站点集。仿射映射保持凸组合，所以
+	\[
+		\operatorname{conv}N_{f(S)}(f(x))
+		=f\bigl(\operatorname{conv}N_S(x)\bigr).
+	\]
+	又因 \(f\) 双射，右边随 \(x\) 遍历得到全部对应单元，证明所需结论。
+
+	取正方形顶点 \(A=(0,0),B=(1,0),C=(1,1),D=(0,1)\)。原 Delaunay 剖分只有一个二维单元，即正方形。剪切后四点成为
+	\[
+		A'=(0,0),\quad B'=(1,0),\quad C'=(3/2,1),\quad D'=(1/2,1).
+	\]
+	圆 \(A'B'D'\) 的方程为 \(x^2+y^2-x-3y/4=0\)，\(C'\) 代入左边为 \(1>0\)，所以三角形 \(A'B'D'\) 有严格空圆。平行四边形关于中心的对称把它映为三角形 \(B'C'D'\)，并保持距离，所以后者也有严格空圆。两个三角形沿 \(B'D'\) 拼成整个平行四边形，构成其 Delaunay 剖分。原来的一个四边形单元因剪切变成两个三角形，故任意仿射变换并不保持这种欧氏构造。剪切保持直线和凸组合，却一般改变距离比较，这是结论失效的原因。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:hausdorff-affine-stability}
+	设 \(K,L\subseteq\mathbb R^n\) 为非空紧凸集，\(f(x)=Tx+a\) 为到 \(\mathbb R^m\) 的仿射映射。令 \(\lVert T\rVert_{\mathrm{op}}=\max_{\lVert v\rVert=1}\lVert Tv\rVert\)。证明
+	\[
+		h_{f(K)}(u)=\langle u,a\rangle+h_K(T^{\mathsf T}u),\qquad
+		d_H(f(K),f(L))\le\lVert T\rVert_{\mathrm{op}}d_H(K,L).
+	\]
+	当 \(m=n\) 且 \(T\) 可逆时，再证明
+	\[
+		\frac{d_H(K,L)}{\lVert T^{-1}\rVert_{\mathrm{op}}}
+		\le d_H(f(K),f(L)).
+	\]
+	说明当 \(T\) 不单射时，一般不存在只依赖 \(T\) 的正常数作为这种下界的系数。
+\end{exercise}
+\begin{solution}
+	对 \(x\in K\) 展开 \(\langle u,Tx+a\rangle=\langle T^{\mathsf T}u,x\rangle+\langle u,a\rangle\)，取最大值便得支撑函数等式。令 \(\varepsilon=d_H(K,L)\)。对每个 \(x\in K\)，取 \(y\in L\) 满足 \(\lVert x-y\rVert\le\varepsilon\)，则
+	\[
+		\lVert f(x)-f(y)\rVert=\lVert T(x-y)\rVert
+		\le\lVert T\rVert_{\mathrm{op}}\varepsilon.
+	\]
+	反向从 \(L\) 的点到 \(K\) 同理，因此两个方向的最大距离都受同一个界控制，得到所求上界。这里允许 \(T=0\)，此时两个像均为同一个单点。
+
+	若 \(T\) 可逆，把刚证得的不等式应用于 \(f^{-1}(z)=T^{-1}(z-a)\) 及 \(f(K),f(L)\)，得到
+	\[
+		d_H(K,L)\le\lVert T^{-1}\rVert_{\mathrm{op}}d_H(f(K),f(L)),
+	\]
+	移项即得下界。若 \(T\) 不单射，取非零 \(v\in\ker T\)，令 \(K=\{0\}\)、\(L=\{v\}\)。它们的原距离为 \(\lVert v\rVert>0\)，两个像却均为 \(\{a\}\)，像的距离为零。因此不存在对所有非空紧凸集都成立的正比例下界。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:perturbed-vertex-hulls}
+	给定两组点 \(v_1,\ldots,v_N\) 与 \(w_1,\ldots,w_N\) 在 \(\mathbb R^n\) 中，\(N\ge1\)。设 \(\varepsilon\ge0\)，且 \(\lVert v_j-w_j\rVert\le\varepsilon\) 对所有 \(j\) 成立。证明两个凸包的 Hausdorff 距离不超过 \(\varepsilon\)，并证明常数 \(1\) 不能普遍减小。若两组点的数目不相同，但每个第一组点到某个第二组点的距离不超过 \(\varepsilon\)，反向也成立，结论是否仍然成立？最后说明两个凸包的距离为零，并不保证给定编号下的对应点相同。
+\end{exercise}
+\begin{solution}
+	记两个凸包为 \(K,L\)。对任意 \(x=\sum_j\lambda_jv_j\in K\)，其中 \(\lambda_j\ge0\)、\(\sum_j\lambda_j=1\)，取 \(y=\sum_j\lambda_jw_j\in L\)。三角不等式给出
+	\[
+		\lVert x-y\rVert
+		\le\sum_j\lambda_j\lVert v_j-w_j\rVert\le\varepsilon.
+	\]
+	所以 \(K\subseteq L+\varepsilon\mathbb B\)，反向包含完全相同，由式\eqref{g1:eq:hausdorff-inclusions}得到结论。取各只有一个点的两组数据 \(v_1=0\)、\(w_1=\varepsilon e_1\)，其中 \(\varepsilon>0\)，两凸包的距离恰为 \(\varepsilon\)，因此不能减小常数。
+
+	数目不相同的情形也成立。对第一组的每个点 \(v_j\)，选一个距它不超过 \(\varepsilon\) 的第二组点 \(w_{k(j)}\)。使用同一凸组合系数，\(\sum_j\lambda_jw_{k(j)}\) 仍在第二组的凸包中，即使其中有重复点也没有影响。于是得到一个方向的包含；反向重新选择邻近点，再得到另一个方向。
+
+	Hausdorff 距离比较的是集合，没有记录输入名单的编号。比如 \(v_1=-1,v_2=1\) 与 \(w_1=1,w_2=-1\) 在 \(\mathbb R\) 中给出相同线段 \([-1,1]\)，凸包距离为零，两个指定编号的点差却都为 \(2\)。点数据的对应误差是一个方便的充分证书，不是集合距离的必要刻画。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:planar-polytope-distance-certificate}
+	在 \(\mathbb R^2\) 中取
+	\[
+		P=\{(x,y):x\ge0,\ y\ge0,\ 2x+y\le2,\ x+2y\le2\},
+		\qquad T=\operatorname{conv}\{(0,0),(1,0),(0,1)\}.
+	\]
+	列出并核验 \(P\) 的全部顶点，证明 \(T\subseteq P\)。对单位方向 \(u=(1,1)/\sqrt2\)，给出计算 \(h_P(u)\) 的可行点和非负乘子证书。进而求 \(d_H(P,T)\)，并给出与所得数值相等的上下界证据。
+\end{exercise}
+\begin{solution}
+	零点满足全部约束，且由非负性有 \(0\le x\le1\)、\(0\le y\le1\)，故 \(P\) 非空有界。枚举两条独立活动边界的交点并核验余下约束，得到
+	\[
+		(0,0),\quad (1,0),\quad (2/3,2/3),\quad (0,1).
+	\]
+	另两组候选交点 \((0,2)\)、\((2,0)\) 分别违反另一条斜边约束；四个法向方向没有平行对，因而这六种组合已包括全部候选。活动法向量判据与\cref{g1:thm:polytope-hv}说明上面四点恰为全部顶点，且其凸包就是 \(P\)。\(T\) 的三个生成点都满足 \(P\) 的不等式，故 \(T\subseteq P\)。
+
+	按 \(-x\le0,-y\le0,2x+y\le2,x+2y\le2\) 排列矩阵 \(A\) 和右端 \(b\)。取
+	\[
+		p=(2/3,2/3),\qquad
+		\lambda=\left(0,0,\frac1{3\sqrt2},\frac1{3\sqrt2}\right).
+	\]
+	它们满足 \(p\in P\)、\(\lambda\ge0\)、\(A^{\mathsf T}\lambda=u\)，且
+	\[
+		\langle u,p\rangle=\frac4{3\sqrt2}=\langle\lambda,b\rangle.
+	\]
+	因此 \(h_P(u)=4/(3\sqrt2)\)。而 \(h_T(u)=1/\sqrt2\)，支撑差值给出下界 \(d_H(P,T)\ge1/(3\sqrt2)\)。
+
+	为得到上界，三个属于 \(T\) 的顶点无需移动；唯一额外顶点 \(p\) 距点 \(q=(1/2,1/2)\in T\) 为
+	\[
+		\lVert p-q\rVert=\sqrt{(1/6)^2+(1/6)^2}=\frac1{3\sqrt2}.
+	\]
+	令 \(\varepsilon=1/(3\sqrt2)\)，全部四个顶点都在凸集 \(T+\varepsilon\mathbb B\) 中，所以它们的凸包 \(P\) 也在其中。结合 \(T\subseteq P\)，有 \(d_H(P,T)\le\varepsilon\)。两界相等，故所求距离恰为 \(1/(3\sqrt2)\)。这份核验同时给出了全部顶点、支撑值上下界及全局距离上界的有限数据。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:inexact-outer-support-data}
+	设 \(K\subseteq R\mathbb B\subseteq\mathbb R^n\) 为非空紧凸集，\(R>0\)。取 \(0<\delta<1\) 的有限单位方向网 \(\{u_i\}_{i=1}^m\)，并设给定数值满足
+	\[
+		h_K(u_i)\le s_i\le h_K(u_i)+\tau\qquad(1\le i\le m),\qquad \tau\ge0.
+	\]
+	令 \(P_\tau=\{x:\langle u_i,x\rangle\le s_i\ \text{对全部 }i\}\)、\(c_\delta=1-\delta^2/2\)。证明
+	\[
+		K\subseteq P_\tau\subseteq\frac{R+\tau}{c_\delta}\mathbb B,
+		\qquad
+		d_H(K,P_\tau)\le
+		\tau+\delta\left(R+\frac{R+\tau}{c_\delta}\right).
+	\]
+	若只知道 \(|s_i-h_K(u_i)|\le\tau\)，直接使用 \(s_i\) 能否保证外包含？说明如何修正右端以恢复外包含，并给出修正后的误差界。
+\end{exercise}
+\begin{solution}
+	有效的支撑上界给出 \(K\subseteq P_\tau\)，所以 \(P_\tau\) 非空。对 \(x\in P_\tau\)、\(x\ne0\)，取距 \(x/\lVert x\rVert\) 不超过 \(\delta\) 的 \(u_i\)，则
+	\[
+		c_\delta\lVert x\rVert\le\langle u_i,x\rangle
+		\le s_i\le h_K(u_i)+\tau\le R+\tau.
+	\]
+	因此 \(P_\tau\) 有界，也是闭凸集。令 \(M=(R+\tau)/c_\delta\)。对其外于 \(K\) 的一点 \(x\)，取到 \(K\) 的最近点所给的单位方向 \(v\)，再取邻近的 \(u_i\)，有
+	\begin{align*}
+		d(x,K)
+		&=\langle v,x\rangle-h_K(v)\\
+		&\le\langle u_i,x\rangle-h_K(u_i)
+		+\delta\lVert x\rVert+R\delta\\
+		&\le\tau+\delta(M+R).
+	\end{align*}
+	\(x\in K\) 时距离为零，故全部 \(P_\tau\) 到 \(K\) 的距离受此界控制；反向由 \(K\subseteq P_\tau\) 为零，得到所求Hausdorff界。
+
+	只有双侧数值误差时，某个 \(s_i\) 可能小于真实支撑值，因而切掉 \(K\) 的一部分。例如单位圆盘在方向 \((1,0)\) 的支撑值为 \(1\)，使用 \(s_i=1-\tau\)、\(0<\tau<1\)，就排除了圆盘点 \((1,0)\)。应改用 \(\widetilde s_i=s_i+\tau\)。此时
+	\[
+		h_K(u_i)\le\widetilde s_i\le h_K(u_i)+2\tau,
+	\]
+	所以对修正后的半空间交 \(\widetilde P\)，前面的结论给出
+	\[
+		K\subseteq\widetilde P,\qquad
+		d_H(K,\widetilde P)\le2\tau+
+		\delta\left(R+\frac{R+2\tau}{c_\delta}\right).
+	\]
+	这个修正使用的是误差的已证上界；仅凭最后几位小数看起来稳定，不能据此断言这些不等式。
+\end{solution}
+

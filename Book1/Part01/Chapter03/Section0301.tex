@@ -1,0 +1,321 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 3.1 凸集、支撑与分离
+% 纲要位置：几何学计划纲要.md，第 204 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 凸包、相对内部和仿射包络
+% * 最近点投影及支撑超平面
+% * 严格分离与弱分离的不同假设
+% * 闭凸集的支撑函数表示
+% 
+% 纲要内容结束
+
+\section{凸集、支撑与分离}
+\label{g1:sec:0301}
+
+在平面上围住一组点，可以用曲线描出边界，也可以逐个指定包含这些点的半平面。前一种描述关注边界在哪里，后一种描述关注各个方向上能走多远。对于凸集，两种描述能够互相恢复。证明这一点的关键是：若一个点在闭凸集之外，能否找到一个半空间，把整个集合留在一侧而把该点排除在外？本节从最近点出发构造这样的半空间。除特别说明外，环境为带标准内积的 \(\mathbb R^n\)，\(n\geq1\)，范数记为 \(\lVert\cdot\rVert\)。
+
+\subsection{凸包、相对内部和仿射包络}
+\label{g1:subsec:0301:01}
+
+\cref{g1:prop:affine-combination}说明，系数和为 \(1\) 的仿射组合不依赖原点。若进一步要求系数非负，就不会沿着两点的连线越过端点。这一限制把仿射几何中的“张成”变成了凸几何中的“围住”。
+
+\begin{definition}[凸集与凸包]\label{g1:def:convex-hull}
+	集合 \(C\subseteq\mathbb R^n\) 称为\term[tuji]{凸集}[convex set]，如果对任意 \(x,y\in C\) 和 \(t\in[0,1]\)，都有 \((1-t)x+ty\in C\)。有限个点的仿射组合 \(\sum_{i=1}^m\lambda_i x_i\) 若满足 \(\lambda_i\geq0\)、\(\sum_i\lambda_i=1\)，称为\term[tuzuhe]{凸组合}[convex combination]。对任意 \(S\subseteq\mathbb R^n\)，其\term[tubao]{凸包}[convex hull] \(\operatorname{conv}S\) 是所有包含 \(S\) 的凸集之交。
+	\symidx{\(\operatorname{conv}S\)：凸包}
+\end{definition}
+
+按定义，空集和单点集都是凸集；\(\operatorname{conv}\varnothing=\varnothing\)。任意一族凸集的交仍为凸集，因为交集中任意两点之间的线段属于这族集合的每一个成员。这里不要求集合闭：开球和闭球都凸，开球并不包含自己的边界。
+
+\begin{proposition}[凸包的有限组合表示]\label{g1:prop:convex-finite-combinations}
+	设 \(S\subseteq\mathbb R^n\) 非空，则
+	\[
+		\operatorname{conv}S=\left\{\,\sum_{i=1}^m\lambda_i x_i:m\geq1,\ x_i\in S,\ \lambda_i\geq0,\ \sum_{i=1}^m\lambda_i=1\,\right\}.
+	\]
+	此外，凸集的闭包仍为凸集，仿射映射把凸集映为凸集。
+\end{proposition}
+\begin{proof}
+	先用点数归纳说明凸集包含其点的一切有限凸组合。一个点的情形成立。若 \(\lambda_m=1\)，组合等于 \(x_m\)；否则把前 \(m-1\) 项除以 \(1-\lambda_m>0\)，先得到归纳假设所允许的一个点，再与 \(x_m\) 作两点凸组合。因而上式右边包含于每个包含 \(S\) 的凸集中。
+
+	反过来，右边包含 \(S\)，而两个有限凸组合再按权重 \(1-t,t\) 组合，只需把原来两组系数分别乘以 \(1-t,t\)，仍得到非负且总和为 \(1\) 的有限组系数。因此右边本身凸，由凸包的定义得到相等。
+
+	若 \(x,y\in\overline C\)，取 \(x_j,y_j\in C\) 分别趋于 \(x,y\)。对固定 \(t\in[0,1]\)，点 \((1-t)x_j+ty_j\in C\) 趋于 \((1-t)x+ty\)，故极限在 \(\overline C\) 中。最后，\cref{g1:prop:affine-preservation}给出 \(f((1-t)x+ty)=(1-t)f(x)+tf(y)\)，因而 \(f(C)\) 凸。
+\end{proof}
+
+“有限”不是对集合 \(S\) 的限制，而是对每一个具体表示的限制；所需点数暂时可以依赖于所表示的点。另一个需要区分的概念是仿射包络。\secref{g1:sec:0101}末尾已说明，对非空 \(S\) 及 \(a\in S\)，
+\[
+	\operatorname{aff}S=a+\operatorname{span}\{x-a:x\in S\}.
+\]
+它允许系数为负的一切有限仿射组合，因而 \(\operatorname{conv}S\subseteq\operatorname{aff}S\)，且两者有相同的仿射包络。记 \(\dim C=\dim\operatorname{aff}C\)，此记号在这里用于非空凸集。
+
+\begin{definition}[相对内部与相对边界]\label{g1:def:relative-interior}
+	设非空集合 \(C\subseteq\mathbb R^n\) 的仿射包络为 \(F=a+L\)。它的\term[xiangduineibu]{相对内部}[relative interior]是它在 \(F\) 中的内部，记为
+	\[
+		\operatorname{ri}C=\{\,x\in C:\text{存在 }r>0\text{ 使 }\{x+v:v\in L,\ \lVert v\rVert<r\}\subseteq C\,\}.
+	\]
+	它的\term[xiangduibianjie]{相对边界}[relative boundary]为 \(\operatorname{rbd}C=\overline C\setminus\operatorname{ri}C\)。这里仿射子空间 \(F\) 在有限维欧氏空间中闭，故相对闭包与环境空间中的闭包相同。对空集约定 \(\operatorname{ri}\varnothing=\operatorname{rbd}\varnothing=\varnothing\)。
+	\symidx{\(\operatorname{ri}C,\operatorname{rbd}C\)：相对内部与相对边界}
+\end{definition}
+
+\begin{example}[一条线段的两种内部]\label{g1:exm:relative-segment}
+	令 \(C=\{(t,0):0\leq t\leq1\}\subseteq\mathbb R^2\)。平面中的任何小圆盘都不能放进 \(C\)，故 \(\operatorname{int}C=\varnothing\)，整个 \(C\) 都是环境空间中的边界。它的仿射包络却只是 \(x\) 轴，于是 \(\operatorname{ri}C=\{(t,0):0<t<1\}\)，相对边界只有两个端点。若 \(C=\{p\}\)，仿射包络是零维空间 \(\{p\}\)，相对内部等于 \(C\)，相对边界为空。所谓“内部”必须说明在哪个空间中计算。
+\end{example}
+
+\begin{proposition}[相对内部的存在与闭包]\label{g1:prop:relative-interior}
+	设 \(C\subseteq\mathbb R^n\) 为非空凸集，\(F=\operatorname{aff}C\)。则 \(\operatorname{ri}C\ne\varnothing\)。若 \(a\in\operatorname{ri}C\)、\(b\in\overline C\) 和 \(0\leq t<1\)，则 \((1-t)a+tb\in\operatorname{ri}C\)。并且
+	\[
+		\overline{\operatorname{ri}C}=\overline C,\qquad
+		\operatorname{ri}(\overline C)=\operatorname{ri}C.
+	\]
+\end{proposition}
+\begin{proof}
+	令 \(d=\dim F\)。当 \(d=0\) 时，\(C\) 为单点，全部结论成立。若 \(d\geq1\)，从 \(C\) 中逐次选择点，直至得到张成 \(F\) 的仿射无关组 \(p_0,\ldots,p_d\)：只要已有点的仿射包络不是 \(F\)，就还可从 \(C\) 选到包络之外的点，每次使维数增加一。由\cref{g1:prop:affine-coordinates}，相对于这组点的重心坐标 \(\lambda_i\) 是 \(F\) 上的连续仿射函数。重心 \(a=(p_0+\cdots+p_d)/(d+1)\) 的各坐标均为正，因此在 \(F\) 中的某个小球上各 \(\lambda_i\) 仍为正。这个小球包含于这些点的凸包，再包含于 \(C\)，故 \(a\in\operatorname{ri}C\)。
+
+	现任取 \(a\in\operatorname{ri}C\)，选 \(r>0\) 使相对球 \(B_F(a,r)\subseteq C\)。固定 \(t<1\)，取 \(b_j\in C\) 趋于 \(b\)。由凸性，
+	\[
+		B_F((1-t)a+tb_j,(1-t)r)\subseteq C.
+	\]
+	当 \(j\) 充分大时，球心与 \((1-t)a+tb\) 的距离小于 \((1-t)r/2\)，故以后一一点为中心、半径为 \((1-t)r/2\) 的相对球仍包含于 \(C\)。这证明线段上除 \(b\) 外的各点都在相对内部。令 \(t\) 趋于 \(1\)，可知每个 \(b\in\overline C\) 都属于 \(\overline{\operatorname{ri}C}\)；反向包含来自 \(\operatorname{ri}C\subseteq C\)。
+
+	由于 \(F\) 闭且 \(C\subseteq\overline C\subseteq F\)，\(\overline C\) 的仿射包络仍为 \(F\)，并有 \(\operatorname{ri}C\subseteq\operatorname{ri}(\overline C)\)。若 \(x\in\operatorname{ri}(\overline C)\)，固定一个 \(a\in\operatorname{ri}C\)。\(x=a\) 时无须再证；否则可取充分小的 \(\varepsilon>0\)，使 \(b=x+\varepsilon(x-a)\in\overline C\)。此时
+	\[
+		x=\frac{\varepsilon}{1+\varepsilon}a+\frac{1}{1+\varepsilon}b,
+	\]
+	右边是刚刚讨论过的线段内部点，故 \(x\in\operatorname{ri}C\)，得到最后一个等式。
+\end{proof}
+
+特别地，具有非空普通内部的凸集满足 \(\operatorname{int}(\overline C)=\operatorname{int}C\)。这句话并不是说闭包完全不增加点；闭包可以补上边界，但不会在原来缺失的地方突然造出一块新的内部。
+
+\subsection{最近点投影及支撑超平面}
+\label{g1:subsec:0301:02}
+
+\cref{g1:prop:projection}给出子空间中的唯一最近点：把 \(x\) 分成沿子空间的分量和正交分量。对于一般凸集，最近点处不一定有一条可以向两边自由移动的直线，所以“与所有允许方向正交”需要改成“沿任何允许方向移动都不会缩短距离”。这会把等式条件变成一个内积不等式。
+
+\begin{theorem}[闭凸集的最近点投影]\label{g1:thm:convex-projection}
+	设 \(C\subseteq\mathbb R^n\) 为非空闭凸集。每个 \(x\in\mathbb R^n\) 都有唯一最近点 \(P_Cx\in C\)，满足
+	\[
+		\lVert x-P_Cx\rVert=d(x,C)\coloneqq\inf_{y\in C}\lVert x-y\rVert.
+	\]
+	而且，对 \(p\in C\)，有等价刻画
+	\begin{equation}\label{g1:eq:convex-projection-variation}
+		p=P_Cx\quad\Longleftrightarrow\quad
+		\langle x-p,y-p\rangle\leq0\quad\text{对所有 }y\in C.
+	\end{equation}
+	因此对所有 \(y\in C\)，
+	\begin{equation}\label{g1:eq:convex-projection-distance}
+		\lVert x-y\rVert^2\geq\lVert x-P_Cx\rVert^2+\lVert y-P_Cx\rVert^2.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先证明最小值能取到。取 \(c_0\in C\)，则 \(d(x,C)\leq\lVert x-c_0\rVert<\infty\)。按下确界定义可取 \(y_j\in C\)，使 \(\lVert x-y_j\rVert\to d(x,C)\)。这些距离有界，所以 \((y_j)\) 有界。有限维实分析中的有界序列子列定理保证它有收敛子列；因 \(C\) 闭，其极限 \(p\) 仍在 \(C\)，范数连续性给出 \(\lVert x-p\rVert=d(x,C)\)。这里没有要求整个 \(C\) 有界，只需要控制这一列候选点。
+
+	若 \(p\) 是最近点，任取 \(y\in C\)。由凸性，\(p+t(y-p)\in C\) 对 \(0\leq t\leq1\) 成立，于是
+	\[
+		0\leq\lVert x-p-t(y-p)\rVert^2-\lVert x-p\rVert^2
+		=-2t\langle x-p,y-p\rangle+t^2\lVert y-p\rVert^2.
+	\]
+	对 \(t>0\) 除以 \(t\)，再令 \(t\to0^+\)，得到所需内积不等式。反过来，若 \(p\in C\) 满足该不等式，则
+	\[
+		\lVert x-y\rVert^2
+		=\lVert x-p\rVert^2+\lVert y-p\rVert^2-2\langle x-p,y-p\rangle
+		\geq\lVert x-p\rVert^2+\lVert y-p\rVert^2.
+	\]
+	它首先说明 \(p\) 是最近点；若 \(y\) 也是最近点，左右最短距离相等，便迫使 \(\lVert y-p\rVert=0\)。这同时证明唯一性和最后一个不等式。
+\end{proof}
+
+映射 \(P_C\) 称为到 \(C\) 的\term[zuijindiantouying]{最近点投影}[nearest-point projection]。如果 \(C=W\) 是子空间，将 \(y=p+w\) 和 \(y=p-w\) 同时代入式\eqref{g1:eq:convex-projection-variation}，就得到 \(\langle x-p,w\rangle=0\)，恢复了第一章的正交投影。对于一般凸集，只能沿集合内部的方向移动，因此只能得到不等式。
+\symidx{\(P_Cx\)：闭凸集的最近点投影}
+
+\begin{example}[球上的投影及两项条件的作用]\label{g1:exm:ball-projection}
+	对 \(C=\{y:\lVert y\rVert\leq r\}\)，其中 \(r>0\)，有
+	\[
+		P_Cx=\begin{cases}x,&\lVert x\rVert\leq r,\\[2pt]
+		r x/\lVert x\rVert,&\lVert x\rVert>r.
+		\end{cases}
+	\]
+	第二种情形中，令 \(p=rx/\lVert x\rVert\)，则 \(x-p\) 是 \(p\) 的正倍数，而对每个 \(y\in C\)，\(\langle p,y-p\rangle\leq r\lVert y\rVert-r^2\leq0\)，所以可用投影刻画验证该式。这个投影通常不是线性的。若把闭球改成开球，外点的距离下确界仍为 \(\lVert x\rVert-r\)，却没有最近点，说明闭性用于保证存在。若取闭集 \(C=\{-1,1\}\subseteq\mathbb R\)，则 \(0\) 有两个最近点，说明缺少凸性会破坏唯一性。
+\end{example}
+
+最近点还给出一个方向：从集合指向外点的向量 \(x-P_Cx\)。投影不等式说，整个集合都位于过 \(P_Cx\)、垂直于这个向量的超平面的一侧，如\cref{g1:fig:convex-separation}所示。
+
+\begin{theorem}[点与闭凸集的分离]\label{g1:thm:point-closed-separation}
+	设 \(C\subseteq\mathbb R^n\) 为非空闭凸集，\(x\notin C\)。令 \(p=P_Cx\)、\(u=(x-p)/\lVert x-p\rVert\)，则 \(\lVert u\rVert=1\)，且
+	\begin{equation}\label{g1:eq:point-closed-separation}
+		\langle u,y\rangle\leq\langle u,p\rangle
+		<\langle u,x\rangle=\langle u,p\rangle+d(x,C)
+		\quad(y\in C).
+	\end{equation}
+	特别地，存在 \(\alpha\in\mathbb R\) 和 \(\varepsilon>0\)，使 \(\langle u,y\rangle\leq\alpha-\varepsilon\) 对所有 \(y\in C\) 成立，而 \(\langle u,x\rangle\geq\alpha+\varepsilon\)。
+\end{theorem}
+\begin{proof}
+	由 \(x\notin C\) 和最近点存在可知 \(x\ne p\)，故 \(d(x,C)=\lVert x-p\rVert>0\)。将式\eqref{g1:eq:convex-projection-variation}除以此正数，就得到 \(\langle u,y-p\rangle\leq0\)。同时 \(\langle u,x-p\rangle=\lVert x-p\rVert\)，得所示不等式。取 \(\alpha=(\langle u,p\rangle+\langle u,x\rangle)/2\)、\(\varepsilon=d(x,C)/2\) 即得最后一项。
+\end{proof}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter03-Separation}
+	\caption[最近点、支撑超平面与分离超平面]{最近点、支撑超平面与分离超平面。实线过最近点 \(p\)，虚线位于 \(p\) 与外点 \(x\) 之间；\(C\) 中所有方向 \(y-p\) 与 \(x-p\) 的内积都非正。}
+	\label{g1:fig:convex-separation}
+\end{figure}
+
+\begin{definition}[支撑超平面]\label{g1:def:supporting-hyperplane}
+	设 \(C\subseteq\mathbb R^n\) 非空，\(p\in\overline C\)。若 \(u\ne0\)，且 \(\langle u,y\rangle\leq\langle u,p\rangle\) 对每个 \(y\in C\) 成立，则称
+	\[
+		H=\{y:\langle u,y\rangle=\langle u,p\rangle\}
+	\]
+	为 \(C\) 在 \(p\) 处的\term[zhichengchaopingmian]{支撑超平面}[supporting hyperplane]，向量 \(u\) 指向所选的外侧。
+\end{definition}
+
+定义允许整个 \(C\) 都在超平面上，因而也适用于低维集合。过最近点的超平面已经给出了某些支撑超平面，但一般边界点未必事先被表示成某个外点的投影。可以让外点趋近指定边界点，利用单位法向量的紧性留下一个极限方向。
+
+\begin{theorem}[边界点的支撑超平面]\label{g1:thm:supporting-hyperplane}
+	设 \(C\subseteq\mathbb R^n\) 为非空闭凸集。对每个 \(p\in\partial C\)，都存在 \(u\in\mathbb R^n\)、\(\lVert u\rVert=1\)，使
+	\[
+		\langle u,y-p\rangle\leq0\qquad(y\in C).
+	\]
+	若在 \(F=\operatorname{aff}C=a+L\) 中讨论，\(\dim F\geq1\)，则每个 \(p\in\operatorname{rbd}C\) 都有法向量 \(u\in L\setminus\{0\}\) 的相对支撑超平面；这个超平面不会包含整个 \(C\)。
+\end{theorem}
+\begin{proof}
+	由 \(p\in\partial C\)，可选 \(x_j\notin C\) 且 \(x_j\to p\)。令 \(p_j=P_Cx_j\)。因为 \(p\in C\)，有
+	\[
+		\lVert p_j-p\rVert\leq\lVert p_j-x_j\rVert+\lVert x_j-p\rVert
+		=d(x_j,C)+\lVert x_j-p\rVert\leq2\lVert x_j-p\rVert\to0.
+	\]
+	取单位向量 \(u_j=(x_j-p_j)/\lVert x_j-p_j\rVert\)。单位球面紧，故可取子列使 \(u_j\to u\)，其中 \(\lVert u\rVert=1\)。对任意固定 \(y\in C\)，投影刻画给出 \(\langle u_j,y-p_j\rangle\leq0\)，沿该子列取极限得 \(\langle u,y-p\rangle\leq0\)。同一个收敛子列对所有这些不等式都适用，因为选取它只用到了 \((u_j)\)，不依赖于 \(y\)。
+
+	对相对边界，在 \(F\) 内选择趋于 \(p\) 的外点，并以 \(L\) 的标准正交坐标重复上述证明，所得单位法向量属于 \(L\)。若相应超平面包含整个 \(C\)，则 \(\langle u,y-p\rangle=0\) 对所有 \(y\in C\) 成立。由于 \(p\in C\) 且这些差向量张成 \(L\)，便有 \(u\perp L\)，与 \(0\ne u\in L\) 矛盾。
+\end{proof}
+
+普通边界与相对边界在这里给出不同信息。例如，线段的内点在平面中也有支撑直线，但这条直线只能包含整条线段；在其一维仿射包络内，它并不是边界点，也就不需要有支撑超平面。零维非空凸集没有相对边界，故相对版本在零维时没有待讨论的点。
+
+\subsection{严格分离与弱分离的不同假设}
+\label{g1:subsec:0301:03}
+
+分离两个集合时，“在两侧”可能只要求不越过同一个超平面，也可能要求两边各自留下间隙。先明确这些量词，才能判断闭性、开性或紧性分别解决什么问题。下列用语中的法向量总是非零向量，否则常数函数会给出毫无几何内容的等式。
+
+\begin{definition}[分离的三种条件]\label{g1:def:convex-separation}
+	设 \(A,B\subseteq\mathbb R^n\) 非空。
+	\begin{enumerate}
+		\item 若存在 \(u\ne0\)、\(\alpha\in\mathbb R\)，使 \(\langle u,a\rangle\leq\alpha\leq\langle u,b\rangle\) 对所有 \(a\in A,b\in B\) 成立，称 \(A,B\) 被该超平面\term[ruofenli]{弱分离}[weakly separated]。
+		\item 若上述两个不等号对每个 \(a,b\) 都严格成立，称为\term[yangefenli]{严格分离}[strict separation]。
+		\item 若存在 \(u\ne0\)、\(\alpha\in\mathbb R\)、\(\varepsilon>0\)，使 \(\langle u,a\rangle\leq\alpha-\varepsilon\) 且 \(\langle u,b\rangle\geq\alpha+\varepsilon\) 对所有 \(a,b\) 成立，称为\term[qiangfenli]{强分离}[strong separation]。
+	\end{enumerate}
+\end{definition}
+
+强分离等价于存在 \(u\ne0\) 使 \(\sup_{a\in A}\langle u,a\rangle<\inf_{b\in B}\langle u,b\rangle\)：两个端值之间取中点和半间距即可。严格分离只要求逐点严格，两个端值仍可能相同。文献对“严格分离”和“强分离”的命名并不完全统一，本书按上面的量词区分；比较定理时应比较不等式本身。分离与支撑的基本观点可参阅 \cite[第2章，第2.5节]{BoydVandenberghe2004}。
+
+\begin{theorem}[一个集合开时的弱分离]\label{g1:thm:convex-weak-separation}
+	设 \(A,B\subseteq\mathbb R^n\) 为非空凸集，且至少一个为开集。则 \(A\cap B=\varnothing\) 当且仅当它们可以弱分离。若 \(A\) 开，分离不等式在 \(A\) 一侧必严格；若 \(B\) 开，在 \(B\) 一侧必严格。
+\end{theorem}
+\begin{proof}
+	先设 \(A\cap B=\varnothing\)，考虑差集
+	\[
+		D=B-A=\{b-a:a\in A,\ b\in B\}.
+	\]
+	分别对两个分量取凸组合可知 \(D\) 凸。若 \(B\) 开，\(D=\bigcup_{a\in A}(B-a)\) 是开集；若 \(A\) 开，改用 \(D=\bigcup_{b\in B}(b-A)\) 得到同一结论。\(D\) 非空，且 \(0\notin D\)。由\cref{g1:prop:relative-interior}在满维开凸集上的结论，\(\operatorname{int}\overline D=D\)。因此 \(0\) 要么在闭凸集 \(\overline D\) 之外，要么在它的边界。
+
+	若 \(0\notin\overline D\)，应用\cref{g1:thm:point-closed-separation}并把法向量反向，得到某个 \(u\ne0\)，使 \(\langle u,d\rangle>0\) 对所有 \(d\in D\) 成立。若 \(0\in\partial\overline D\)，则对 \(\overline D\) 在 \(0\) 处应用\cref{g1:thm:supporting-hyperplane}，也把法向量反向，得到 \(\langle u,d\rangle\geq0\)。两种情形都有
+	\[
+		\langle u,a\rangle\leq\langle u,b\rangle\qquad(a\in A,\ b\in B).
+	\]
+	固定 \(b_0\in B\) 可知左边的上确界有限，固定 \(a_0\in A\) 可知右边的下确界有限。故可取实数 \(\alpha\) 介于这两个端值之间，得到弱分离。
+
+	现设已有弱分离，且 \(A\) 开。若某个 \(a\in A\) 满足 \(\langle u,a\rangle=\alpha\)，则充分小的 \(t>0\) 使 \(a+tu\in A\)，但 \(\langle u,a+tu\rangle=\alpha+t\lVert u\rVert^2>\alpha\)，矛盾。因此 \(A\) 一侧全部严格。若 \(B\) 开，使用 \(b-tu\) 得到 \(B\) 一侧全部严格。至少一侧严格，便不可能有同一点同时属于 \(A,B\)，这也证明了反向命题。
+\end{proof}
+
+这里的开性不仅用于构造证明，还保证弱分离能反推出不相交。若去掉开性，\(A=B=\{0\}\) 就可以被任何过原点的超平面弱分离，却没有不相交。
+
+\begin{theorem}[紧凸集与闭凸集的强分离]\label{g1:thm:compact-closed-separation}
+	设 \(A,B\subseteq\mathbb R^n\) 为非空凸集，\(A\) 紧、\(B\) 闭，且 \(A\cap B=\varnothing\)。则它们能够强分离；更具体地，存在单位向量 \(u\)，使
+	\[
+		\inf_{b\in B}\langle u,b\rangle-\sup_{a\in A}\langle u,a\rangle
+		=d(A,B)>0,
+	\]
+	其中 \(d(A,B)=\inf\{\lVert b-a\rVert:a\in A,b\in B\}\)。
+\end{theorem}
+\begin{proof}
+	仍令 \(D=B-A\)，它非空且凸。先说明此时 \(D\) 闭。若 \(d_j=b_j-a_j\to d\)，紧性允许取子列使 \(a_j\to a\in A\)。于是 \(b_j=d_j+a_j\to d+a\)，由 \(B\) 闭可知 \(d+a\in B\)，所以 \(d\in D\)。又因 \(A,B\) 不交，\(0\notin D\)。
+
+	取 \(q=P_D0\)，则 \(q\ne0\)。把投影刻画中的外点取为 \(0\)，得到 \(\langle -q,d-q\rangle\leq0\)，即
+	\[
+		\langle q,d\rangle\geq\lVert q\rVert^2\qquad(d\in D).
+	\]
+	令 \(u=q/\lVert q\rVert\)，便有 \(\langle u,b\rangle-\langle u,a\rangle\geq\lVert q\rVert\) 对所有 \(a,b\) 成立。因为 \(q\in D\)，可写成 \(q=b_0-a_0\)，此处取得等号。固定 \(b_0\) 说明 \(a_0\) 取得 \(\langle u,a\rangle\) 的上确界，固定 \(a_0\) 说明 \(b_0\) 取得 \(\langle u,b\rangle\) 的下确界。两者之差就是 \(\lVert q\rVert=d(0,D)=d(A,B)>0\)，在两个端值中间取超平面即得强分离。
+\end{proof}
+
+\begin{example}[闭而不紧时没有统一间距]\label{g1:exm:zero-distance-separation}
+	在 \(\mathbb R^2\) 中令
+	\[
+		A=\{(x,y):y\leq0\},\qquad
+		B=\{(x,y):x>0,\ y\geq1/x\}.
+	\]
+	两者闭、凸且不交。\(B\) 的闭性可直接检查：若 \((x_j,y_j)\in B\) 收敛到有限点 \((x,y)\)，则 \(x\geq0\)；若 \(x=0\)，\(y_j\geq1/x_j\to\infty\)，与收敛矛盾。因此 \(x>0\)，取极限得到 \(y\geq1/x\)。它的凸性来自 \(f(x)=1/x\) 在 \(x>0\) 上满足 \(f''(x)=2/x^3>0\)，从而 \(f((1-t)x_1+tx_2)\leq(1-t)f(x_1)+tf(x_2)\)。这项一元分析结论也可由导数单调及割线斜率比较得到。
+
+	点 \((j,0)\in A\) 与 \((j,1/j)\in B\) 的距离趋于零，故 \(d(A,B)=0\)。它们由 \(y=0\) 弱分离，但连逐点严格分离也不可能：若 \(u=(u_1,u_2)\ne0\) 使 \(\sup_A\langle u,a\rangle\) 有限，则 \(A\) 在水平方向无界迫使 \(u_1=0\)，向下无界又迫使 \(u_2\geq0\)，故 \(u_2>0\)。此时 \(\sup_A\langle u,a\rangle=0=\inf_B\langle u,b\rangle\)，而 \(A\) 上确实取到零值；严格分离要求超平面常数同时大于 \(0\) 且不大于 \(0\)，无法成立。
+\end{example}
+
+距离为零本身只排除强分离，不必排除逐点严格分离。例如 \(\{y<0\}\) 与 \(\{y>0\}\) 被 \(y=0\) 严格分离，距离却仍为零。相反，若有强分离不等式，则由内积不等式得到 \(\lVert b-a\rVert\geq2\varepsilon/\lVert u\rVert\)，从而距离严格为正。这些例子解释了为什么不能把“每个点都没有碰到超平面”误读成“整个集合离超平面有统一正距离”。
+
+\subsection{闭凸集的支撑函数表示}
+\label{g1:subsec:0301:04}
+
+一个超平面可以排除一个外点；把所有方向的信息放在一起，就能恢复整个闭凸集。对给定方向 \(u\)，只需记录 \(\langle u,x\rangle\) 在集合上最大的可能值，未必要记录取得它的是哪个点。无界集合在某些方向上可能没有有限上界，因此定义中要允许 \(+\infty\)。
+
+\begin{definition}[支撑函数]\label{g1:def:support-function}
+	设 \(C\subseteq\mathbb R^n\) 非空。它的\term[zhichenghanshu]{支撑函数}[support function]为
+	\[
+		h_C:\mathbb R^n\longrightarrow\mathbb R\cup\{+\infty\},\qquad
+		h_C(u)\coloneqq\sup_{x\in C}\langle x,u\rangle.
+	\]
+	这里 \(h_C(0)=0\)；由于 \(C\) 非空，上确界不会是 \(-\infty\)。
+	\symidx{\(h_C(u)\)：支撑函数}
+\end{definition}
+
+\begin{proposition}[闭凸集的支撑函数表示]\label{g1:prop:support-function-representation}
+	设 \(C\subseteq\mathbb R^n\) 为非空闭凸集，则
+	\begin{equation}\label{g1:eq:support-halfspaces}
+		C=\bigcap_{u\in\mathbb R^n}\{x:\langle x,u\rangle\leq h_C(u)\}.
+	\end{equation}
+	其中 \(h_C(u)=+\infty\) 时对应的集合理解为整个 \(\mathbb R^n\)，故真正起作用的是具有有限支撑值的方向。对于非空闭凸集 \(C,D\)，有
+	\[
+		C\subseteq D\quad\Longleftrightarrow\quad h_C(u)\leq h_D(u)\text{ 对所有 }u\in\mathbb R^n.
+	\]
+\end{proposition}
+\begin{proof}
+	由上确界定义，\(C\) 中每个点都满足式\eqref{g1:eq:support-halfspaces}右边全部不等式。若 \(x\notin C\)，用\cref{g1:thm:point-closed-separation}取 \(p=P_Cx\) 及单位向量 \(u=(x-p)/\lVert x-p\rVert\)。因为 \(p\in C\)，该定理给出的 \(\langle y,u\rangle\leq\langle p,u\rangle\) 说明
+	\[
+		h_C(u)=\langle p,u\rangle<\langle x,u\rangle.
+	\]
+	所以这个方向的半空间已经排除了 \(x\)，证明反向包含。
+
+	若 \(C\subseteq D\)，对同一线性函数在较小集合上取上确界，直接得到 \(h_C\leq h_D\)。反过来，若各方向上支撑函数有序，则每个 \(x\in C\) 都满足 \(\langle x,u\rangle\leq h_C(u)\leq h_D(u)\)。对 \(D\) 使用刚证得的表示式可知 \(x\in D\)。
+\end{proof}
+
+\begin{proposition}[支撑函数保留的信息]\label{g1:prop:support-function-basic}
+	设 \(S\subseteq\mathbb R^n\) 非空，记 \(K=\overline{\operatorname{conv}S}\)。则 \(h_S=h_K\)。对任意 \(u,v\in\mathbb R^n\)、\(t>0\)，有
+	\[
+		h_S(tu)=t h_S(u),\qquad h_S(u+v)\leq h_S(u)+h_S(v).
+	\]
+	若 \(S\) 紧，则 \(h_S\) 处处有限且每个方向的上确界都能取到。
+\end{proposition}
+\begin{proof}
+	令 \(M=h_S(u)\)。若 \(M<\infty\)，则 \(\langle x,u\rangle\leq M\) 对 \(S\) 中的点成立；按非负权重相加，这个不等式对凸组合仍成立；再由连续性，它对凸组合的极限也成立。故 \(h_K(u)\leq h_S(u)\)，反向不等式由 \(S\subseteq K\) 得到。若 \(h_S(u)=+\infty\)，同一包含直接使 \(h_K(u)=+\infty\)。
+
+	对正数 \(t\)，乘以 \(t\) 保持上界与上确界，得齐次等式。对每个 \(x\in S\)，有 \(\langle x,u+v\rangle\leq h_S(u)+h_S(v)\)，取上确界得次可加性；右边为 \(+\infty\) 时不等式同样有意义。最后，紧集有界，且线性函数连续，所以它在非空紧集上取得有限最大值。
+\end{proof}
+
+因而支撑函数不区分一个集合与其闭凸包。例如，圆周和闭圆盘具有同一个支撑函数；开圆盘与闭圆盘也一样。式\eqref{g1:eq:support-halfspaces}中的闭性与凸性各有作用，删掉它们就不能据支撑函数恢复原来的集合。
+
+\begin{example}[球、线段与半空间的支撑函数]\label{g1:exm:support-functions}
+	对闭球 \(C=\{x:\lVert x-a\rVert\leq r\}\)，其中 \(r\geq0\)，内积不等式及沿 \(u\) 方向取点给出
+	\[
+		h_C(u)=\langle a,u\rangle+r\lVert u\rVert.
+	\]
+	当 \(u\ne0\) 时，上确界在 \(a+ru/\lVert u\rVert\) 取得；\(u=0\) 时每点都取得零值。对线段 \(C=[a,b]\)，线性函数在线段上的值是端点值的凸组合，故 \(h_C(u)=\max\{\langle a,u\rangle,\langle b,u\rangle\}\)。这也说明有些方向上的最大值会在整条线段上取得。
+
+	对半空间 \(H=\{x:x_1\leq c\}\subseteq\mathbb R^n\)，若 \(u=t e_1\)、\(t\geq0\)，则 \(h_H(u)=tc\)；其余方向上 \(h_H(u)=+\infty\)。事实上，若 \(u\) 有非零的其余坐标，沿对应的无约束方向就可使配对任意大；若 \(u_1<0\)，令 \(x_1\to-\infty\) 也可做到。式\eqref{g1:eq:support-halfspaces}虽列出所有方向，此例只有 \(e_1\) 的正倍方向提供同一个实质约束。
+\end{example}
+
+支撑函数保存的这些方向信息还能够测量距离：\cref{g1:prop:distance-support-formula}将利用本节的投影与分离，把点到闭凸集的距离写成各方向支撑差值的最大值。

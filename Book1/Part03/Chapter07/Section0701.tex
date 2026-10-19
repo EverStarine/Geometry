@@ -1,0 +1,227 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 7.1 参数、弧长与标架
+% 纲要位置：几何学计划纲要.md，第 369 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 正则参数化与重参数化
+% * 弧长参数及方向选择
+% * 曲率、挠率与 Frenet 方程
+% * 零曲率点及替代法标架
+% 
+% 纲要内容结束
+
+\section{参数、弧长与标架}
+\label{g1:sec:0701}
+
+同一条圆周可以匀速走过，也可以时快时慢地走过；速度和加速度会随走法改变，圆周的大小却没有改变。要从导数中提取形状信息，首先应消除这种速度选择。弧长参数使每单位参数恰好走过单位长度，随后切向量的变化才直接衡量曲线弯曲得多快。空间曲线还可能离开原来的弯曲平面，因此需要同时记录法方向怎样转动。
+
+\subsection{正则参数化与重参数化}
+\label{g1:subsec:0701:01}
+
+本章主要讨论 \(\mathbb R^2\) 与 \(\mathbb R^3\) 中的曲线，使用标准欧氏内积；三维叉积按右手定向规定，即 \(\langle u\times v,w\rangle=\det(u,v,w)\)。当参数是一般的 \(t\) 时用上点表示求导；以弧长 \(s\) 为参数后，用撇号表示对 \(s\) 求导。这样做是为了在同一个公式中看清“每单位时间的变化”和“每单位长度的变化”。
+
+\begin{definition}[正则曲线与重参数化]\label{g1:def:regular-curve}
+	设 \(I\subset\mathbb R\) 是区间，\(r\ge1\)。一个 \(C^r\) 映射 \(\alpha:I\to\mathbb R^n\) 称为 \(C^r\) 参数曲线；若 \(\dot\alpha(t)\ne0\) 对每个 \(t\in I\) 成立，就称其为\term[zhengzequxian]{正则曲线}[regular curve]。端点处的正则性按单侧导数理解，所说 \(C^r\) 均允许在端点附近作 \(C^r\) 延拓。若 \(h:J\to I\) 是导数处处非零的 \(C^r\) 双射，则 \(\beta=\alpha\circ h\) 称为 \(\alpha\) 的\term[chongcanshuhua]{重参数化}[reparametrization]；\(h'>0\) 时保方向，\(h'<0\) 时反方向。
+\end{definition}
+
+连续且不为零的 \(h'\) 在区间上符号恒定，所以这两种情况已经穷尽。逆函数连续可微，导数为 \(1/(h'\circ h^{-1})\)；对这个等式逐次求导便得到 \(C^r\) 正则性，因而定义中的 \(h\) 确实是微分同胚。链式法则给出 \(\dot\beta(u)=\dot\alpha(h(u))h'(u)\)，说明重参数化保持正则性。
+
+\ProseParagraphBreak
+
+正则性是参数映射的性质，不能只看轨迹集合。例如 \(t\mapsto(t^3,0)\) 的像是直线，导数却在 \(0\) 为零；它与 \(s\mapsto(s,0)\) 有相同轨迹，但 \(t\mapsto t^3\) 在 \(0\) 不满足这里的重参数化条件。另一方面，正则曲线可以自交：\(\alpha(t)=(\sin t,\sin2t)\) 的导数 \((\cos t,2\cos2t)\) 从不同时为零，而 \(\alpha(0)=\alpha(\pi)\)。速度不消失只保证局部能顺畅经过，不能保证不同时间不会经过同一点。
+
+\begin{definition}[闭曲线与简单性]\label{g1:def:regular-closed-curve}
+	设 \(P>0\)。一个 \(P\) 周期的 \(C^r\) 正则映射 \(\alpha:\mathbb R\to\mathbb R^n\) 称为 \(C^r\) 正则闭曲线，也视为定义在 \(\mathbb R/P\mathbb Z\) 上的映射。若 \(\alpha(t)=\alpha(u)\) 当且仅当 \(t-u\in P\mathbb Z\)，则称它为\term[jiandanbiquxian]{简单闭曲线}[simple closed curve]。不满足这个单射条件的闭曲线仍可能正则，甚至可能把一个简单轨迹重复走过多次。
+\end{definition}
+
+第六章中的 Jordan 曲线只要求圆周的连续嵌入；这里的简单正则闭曲线额外具有导数。若只给出 \([0,P]\) 上的公式，要求它成为 \(C^r\) 闭曲线，就必须检查端点处直到 \(r\) 阶的导数相合。仅有 \(\alpha(0)=\alpha(P)\) 还可能留下一个角点。
+
+\subsection{弧长参数及方向选择}
+\label{g1:subsec:0701:02}
+
+曲线的长度可以先用内接折线定义，而不预设积分公式。对连续曲线 \(\alpha:[a,b]\to\mathbb R^n\)，令
+\[
+	\ell(\alpha)=\sup_{a=t_0<\cdots<t_m=b}\sum_{i=1}^m\lVert\alpha(t_i)-\alpha(t_{i-1})\rVert.
+\]
+这个上确界可以为无穷；它把每次沿曲线走过的部分都计入，重复走圆周两次就会得到两倍周长。
+
+\begin{proposition}[长度公式与弧长参数]\label{g1:prop:arc-length-param}
+	设 \(\alpha:I\to\mathbb R^n\) 是 \(C^1\) 曲线。对每个紧子区间 \([a,b]\subset I\)，有
+	\[
+		\ell(\alpha|_{[a,b]})=\int_a^b\lVert\dot\alpha(t)\rVert\,\mathrm dt.
+	\]
+	若进一步 \(\alpha\) 为 \(C^r\) 正则曲线，\(r\ge1\)，固定 \(t_0\in I\)，定义
+	\[
+		s(t)=\int_{t_0}^t v(u)\,\mathrm du,\qquad v(t)=\lVert\dot\alpha(t)\rVert.
+	\]
+	则 \(s:I\to s(I)\) 是保方向的 \(C^r\) 微分同胚，\(\gamma(s)=\alpha(t(s))\) 满足 \(\lVert\gamma'(s)\rVert=1\)。它称为\term[huchangcanshu]{弧长参数}[arc-length parameter]下的曲线。两个描述同一条参数曲线的单位速率参数之间，只相差 \(s\mapsto s+c\) 或 \(s\mapsto -s+c\)。
+\end{proposition}
+\begin{proof}
+	对任意分割，微积分基本定理及积分的三角不等式给出
+	\[
+		\sum_i\lVert\alpha(t_i)-\alpha(t_{i-1})\rVert
+		=\sum_i\left\lVert\int_{t_{i-1}}^{t_i}\dot\alpha(t)\,\mathrm dt\right\rVert
+		\le\int_a^b\lVert\dot\alpha(t)\rVert\,\mathrm dt.
+	\]
+	为了得到反向不等式，利用 \(\dot\alpha\) 在紧区间上的一致连续性。给定 \(\varepsilon>0\)，分割足够细时，在每个小区间内都有 \(\lVert\dot\alpha(t)-\dot\alpha(t_{i-1})\rVert<\varepsilon\)，于是
+	\[
+		\lVert\alpha(t_i)-\alpha(t_{i-1})\rVert
+		\ge\lVert\dot\alpha(t_{i-1})\rVert(t_i-t_{i-1})-\varepsilon(t_i-t_{i-1}).
+	\]
+	求和并使分割网格趋于零，右侧的 Riemann 和趋于积分，再令 \(\varepsilon\to0\)，即得长度公式。
+
+	正则时 \(v>0\)，所以 \(s'=v>0\)，\(s\) 严格递增。局部逆函数拼成整个像区间上的逆，且 \(\mathrm dt/\mathrm ds=1/v(t(s))\)。速度 \(v\) 属于 \(C^{r-1}\)，故 \(s\) 及其逆为 \(C^r\)，链式法则给出 \(\gamma'=\dot\alpha/v\)，其范数为 \(1\)。若另一单位速率表示是 \(\gamma(h(u))\)，则 \(1=\lVert\gamma'(h(u))h'(u)\rVert=|h'(u)|\)，连续性说明 \(h'\) 恒为 \(1\) 或恒为 \(-1\)，积分就得到结论。
+\end{proof}
+
+这个参数不要求我们能用初等函数写出 \(t(s)\)。例如椭圆 \((a\cos t,b\sin t)\) 的弧长积分一般不容易显式反解，但正速度已经保证反函数存在，足以支撑以下几何推导。实际计算可以保留原来的参数，把每次弧长求导换成
+\[
+	\frac{\mathrm d}{\mathrm ds}=\frac1v\frac{\mathrm d}{\mathrm dt}.
+\]
+若曲线以 \(P\) 为周期，令 \(L=\int_0^P v(t)\,\mathrm dt\)，则 \(s(t+P)=s(t)+L\)，所以重参数化后成为 \(L\) 周期的单位速率闭曲线。这里改变的是行走速度，方向及走过的次数均保留。
+
+\begin{example}[圆周与重复行走]\label{g1:exm:circle-speed}
+	对半径 \(R>0\) 的圆 \(\alpha(t)=R(\cos t,\sin t)\)，有 \(v=R\)，以 \(\alpha(0)\) 为起点时 \(s=Rt\)，单位速率公式为 \(\gamma(s)=R(\cos(s/R),\sin(s/R))\)。一次周长是 \(2\pi R\)。若原参数在 \([0,4\pi]\) 上运行，总长度为 \(4\pi R\)；弧长化不会把两周自动变成一周。因此“形状相同”“参数等价”和“走过相同次数”是需要分别说明的事情。
+\end{example}
+
+\subsection{曲率、挠率与 Frenet 方程}
+\label{g1:subsec:0701:03}
+
+以下先用弧长。单位切向量 \(T=\gamma'\) 满足 \(\langle T,T\rangle=1\)，求导得到 \(\langle T',T\rangle=0\)：转向只能发生在法方向。单位长度内方向改变的大小，自然由 \(\lVert T'\rVert\) 衡量。
+
+\begin{definition}[曲率与 Frenet 标架]\label{g1:def:frenet-frame}
+	设 \(\gamma:I\to\mathbb R^3\) 为 \(C^2\) 单位速率曲线，定义其\term[qulv]{曲率}[curvature]为 \(\kappa(s)=\lVert T'(s)\rVert\)。在 \(\kappa>0\) 的部分，定义主法向量 \(N=T'/\kappa\) 与副法向量 \(B=T\times N\)。右手正交标架 \((T,N,B)\) 称为\term[Frenetbiaojia]{Frenet 标架}[Frenet frame]。\footnote{Frenet（弗雷内，Jean Frédéric Frenet，1816--1900）是法国数学家，以空间曲线的活动标架与相应微分公式著称。}若 \(\gamma\) 为 \(C^3\)，则 \(N,B\) 为 \(C^1\)，定义\term[naolv]{挠率}[torsion]为 \(\tau=-\langle B',N\rangle\)。
+	\symidx{\(\kappa\)：空间曲线的非负曲率}
+	\symidx{\(\tau\)：空间曲线的挠率}
+\end{definition}
+
+由 \(T,N\) 张成并经过曲线点的平面称为\term[mijiepingmian]{密切平面}[osculating plane]。Taylor 展开
+\[
+	\gamma(s+h)=\gamma(s)+hT(s)+\tfrac12h^2\kappa(s)N(s)+o(h^2)
+\]
+说明，在二阶近似中曲线沿着这张平面弯曲。副法向量 \(B\) 是这张平面的单位法向量，所以挠率衡量的是密切平面沿曲线的转动，正负号则依赖空间定向。
+
+\begin{proposition}[Frenet 方程]\label{g1:prop:frenet-equations}
+	设 \(\gamma:I\to\mathbb R^3\) 是 \(C^3\) 单位速率曲线，且在整个区间上 \(\kappa>0\)。则
+	\begin{equation}\label{g1:eq:frenet-equations}
+		T'=\kappa N,\qquad N'=-\kappa T+\tau B,\qquad B'=-\tau N.
+	\end{equation}
+	这些等式也称为 Frenet--Serret 方程（Frenet--Serret equations）。\footnote{Serret（塞雷，Joseph-Alfred Serret，1819--1885）是法国数学家，研究微分几何与分析；他独立给出了空间曲线的相应标架公式。}
+\end{proposition}
+\begin{proof}
+	第一式就是 \(N\) 的定义。由 \(\langle B,B\rangle=1\) 得 \(B'\perp B\)；再对 \(\langle B,T\rangle=0\) 求导，有 \(\langle B',T\rangle=-\langle B,T'\rangle=-\kappa\langle B,N\rangle=0\)。因此 \(B'\) 只可能沿 \(N\)，其系数按定义是 \(-\tau\)。同样，\(N'\perp N\)，而
+	\[
+		\langle N',T\rangle=-\langle N,T'\rangle=-\kappa,\qquad
+		\langle N',B\rangle=-\langle N,B'\rangle=\tau.
+	\]
+	把 \(N'\) 在正交基 \((T,N,B)\) 中展开就得到第二式。
+\end{proof}
+
+\begin{definition}[平面的有向曲率]\label{g1:def:signed-plane-curvature}
+	在定向平面 \(\mathbb R^2\) 中，令 \(J(x,y)=(-y,x)\)，即逆时针旋转 \(\pi/2\)。对 \(C^2\) 单位速率平面曲线，\((T,JT)\) 始终为正向正交标架；唯一的函数 \(k\) 使
+	\[
+		T'=k\,JT,\qquad k=\det(T,T')
+	\]
+	成立，称为\term[youxiangqulv]{有向曲率}[signed curvature]。曲线作为空间曲线时的非负曲率为 \(\kappa=|k|\)。左转时 \(k>0\)，右转时 \(k<0\)，该定义也允许 \(k=0\)。
+	\symidx{\(k\)：定向平面曲线的有向曲率}
+\end{definition}
+
+在切向量落入一个小圆弧的区间内，可选连续角度 \(\theta\) 使 \(T=(\cos\theta,\sin\theta)\)。这时 \(T'=\theta'JT\)，所以 \(k=\theta'\)。角度换成 \(\theta+2m\pi\) 不改变导数；全局怎样选角度、闭合后角度能增加多少，将在\secref{g1:sec:0703}通过圆周覆盖来说明。
+
+\begin{proposition}[一般参数下的计算公式]\label{g1:prop:curvature-torsion-formulas}
+	设 \(\alpha:I\to\mathbb R^3\) 是 \(C^2\) 正则曲线，速度为 \(v=\lVert\dot\alpha\rVert\)。其非负曲率为
+	\[
+		\kappa=\frac{\lVert\dot\alpha\times\ddot\alpha\rVert}{v^3}.
+	\]
+	若 \(\alpha\) 为 \(C^3\) 且 \(\dot\alpha\times\ddot\alpha\ne0\)，则
+	\[
+		\tau=\frac{\det(\dot\alpha,\ddot\alpha,\dddot\alpha)}
+		{\lVert\dot\alpha\times\ddot\alpha\rVert^2}.
+	\]
+	对 \(C^2\) 正则平面曲线，按参数递增的方向，其有向曲率为
+	\[
+		k=\frac{\det(\dot\alpha,\ddot\alpha)}{v^3}.
+	\]
+\end{proposition}
+\begin{proof}
+	写 \(T=\dot\alpha/v\)，则
+	\[
+		T'=\frac{\ddot\alpha}{v^2}-\frac{\dot v\,\dot\alpha}{v^3},\qquad
+		\dot v=\frac{\langle\dot\alpha,\ddot\alpha\rangle}{v}.
+	\]
+	展开范数平方并使用 \(\lVert u\times w\rVert^2=\lVert u\rVert^2\lVert w\rVert^2-\langle u,w\rangle^2\)，就得曲率公式，这一计算在 \(\kappa=0\) 时也有效。平面的行列式计算同样消去平行于 \(\dot\alpha\) 的第二项，得到 \(k\) 的公式。
+
+	在 \(\kappa>0\) 时，\(\dot\alpha=vT\)、\(\ddot\alpha=\dot vT+v^2\kappa N\)。对第二式按 \(t\) 求导，利用 Frenet 方程，\(\dddot\alpha\) 的 \(B\) 分量是 \(v^3\kappa\tau\)。因此
+	\[
+		\det(\dot\alpha,\ddot\alpha,\dddot\alpha)=v^6\kappa^2\tau,\qquad
+		\lVert\dot\alpha\times\ddot\alpha\rVert^2=v^6\kappa^2,
+	\]
+	相除就得到挠率公式。分母不为零正是所需条件。
+\end{proof}
+
+\begin{example}[圆柱螺线]\label{g1:exm:circular-helix-invariants}
+	设 \(a>0\)、\(b\in\mathbb R\)，考虑 \(\alpha(t)=(a\cos t,a\sin t,bt)\)。记 \(c=\sqrt{a^2+b^2}\)，则 \(v=c\)，并且
+	\[
+		\dot\alpha\times\ddot\alpha=(ab\sin t,-ab\cos t,a^2),\qquad
+		\det(\dot\alpha,\ddot\alpha,\dddot\alpha)=a^2b.
+	\]
+	所以 \(\kappa=a/c^2\)、\(\tau=b/c^2\)。当 \(b=0\) 时是平面圆，挠率为零；当 \(b\ne0\) 时每转一周高度增加 \(2\pi b\)。曲率、挠率虽然都是常数，曲线却不闭合。下一节会反过来从给定的两个常数恢复这个模型。
+\end{example}
+
+反转行走方向和反转空间定向有不同影响。对 \(\widetilde\gamma(s)=\gamma(-s)\)，有 \(\widetilde T=-T\)、\(\widetilde N=N\)、\(\widetilde B=-B\)（右侧在 \(-s\) 处取值），由定义可得 \(\widetilde\kappa=\kappa\)、\(\widetilde\tau=\tau\)。平面的有向曲率却变成 \(\widetilde k=-k\)。若作空间等距变换 \(x\mapsto Qx+a\)，正交矩阵 \(Q\) 保持叉积的模，行列式则乘以 \(\det Q\)，故 \(\kappa\) 不变、\(\tau\) 乘以 \(\det Q\)；平面有向曲率也乘以平面变换的行列式。刚性变换具有上述形式，见\cref{g1:thm:isometry-affine}。
+
+\subsection{零曲率点及替代法标架}
+\label{g1:subsec:0701:04}
+
+Frenet 标架在 \(\kappa=0\) 时不能用 \(N=T'/\kappa\) 定义。这并不意味着曲线不光滑，甚至不一定意味着法方向没有其他连续选择。例如 \(\alpha(t)=(t,t^3,0)\) 处处正则，而
+\[
+	k(t)=\frac{6t}{(1+9t^4)^{3/2}}.
+\]
+取 \(v=\sqrt{1+9t^4}\)，在 \(t\ne0\) 时，\(N=\operatorname{sgn}(t)(-3t^2,1,0)/v\)、\(B=\operatorname{sgn}(t)(0,0,1)\)，左右极限相反。强行给 \(N(0)\) 一个值，无法消除这个跳跃。相反，平面法向 \(JT=(-3t^2,1,0)/v\) 在拐点处完全连续；让曲率带符号，就能避免将法向跟随弯曲侧翻转。
+
+\ProseParagraphBreak
+
+\cref{g1:fig:inflection-frame}对比了这两种法向选择：蓝色左法向连续变化，Frenet 主法向在左侧取相反方向。
+
+\input{Figures/Chapter07-InflectionFrame}
+
+在三维中没有固定的平面旋转 \(J\) 可以选出唯一法向，但可以先在一个点选取一对正交法向，再规定它们沿曲线怎样继续。要求法向量的导数只沿切向，意味着法向量只作维持垂直所必需的转动，不额外在法平面内旋转。为构造这样的场，我们会使用\cref{g1:lem:linear-frame-ode}的连续系数线性常微分方程存在唯一性；该引理及其级数证明放在下一节开头，且不依赖这里的标架构造。
+
+\begin{theorem}[平行法标架]\label{g1:thm:parallel-normal-frame}
+	设 \(\gamma:I\to\mathbb R^3\) 为 \(C^2\) 单位速率曲线，固定 \(s_0\in I\) 和一组右手正交基 \((T(s_0),E_1^0,E_2^0)\)。存在唯一的 \(C^1\) 正交标架 \((T,E_1,E_2)\)，取给定初值并满足 \(E_i'\) 始终平行于 \(T\)。称它为\term[pingxingfabiaojia]{平行法标架}[parallel normal frame]。若 \(k_i=\langle T',E_i\rangle\)，则
+	\begin{equation}\label{g1:eq:parallel-frame}
+		T'=k_1E_1+k_2E_2,\qquad E_1'=-k_1T,\qquad E_2'=-k_2T,\qquad
+		\kappa=\sqrt{k_1^2+k_2^2}.
+	\end{equation}
+	另一组同向平行法标架与这一组之间相差一个与 \(s\) 无关的法平面旋转。
+\end{theorem}
+\begin{proof}
+	如果 \(E\perp T\) 且 \(E'\) 平行于 \(T\)，求导 \(\langle E,T\rangle=0\) 可得必须满足的方程
+	\[
+		E'=-\langle T',E\rangle T.
+	\]
+	它是未知向量 \(E\) 的线性方程，矩阵为 \(-T(T')^{\mathsf T}\)，系数连续。由上述线性方程引理，分别取初值 \(E_1^0,E_2^0\)，得到整个 \(I\) 上的唯一 \(C^1\) 解。还要确认解确实留在法平面中。直接计算
+	\[
+		\frac{\mathrm d}{\mathrm ds}\langle E_i,T\rangle
+		=-\langle T',E_i\rangle\langle T,T\rangle+\langle E_i,T'\rangle=0.
+	\]
+	初值为零，所以始终垂直。继而 \((\langle E_i,E_j\rangle)'=0\)，因为 \(E_i',E_j'\) 都沿 \(T\)。因此长度与相互正交保持，标架的行列式连续且只能取 \(\pm1\)，初始右手性也保持。展开 \(T'\perp T\) 便得到全部方程及 \(\kappa\) 的表达式。
+
+	若 \((\widetilde E_1,\widetilde E_2)\) 是另一组同向平行法标架，计算 \((\langle\widetilde E_i,E_j\rangle)'=0\)，两项都因法向与切向垂直而消失。所以变换矩阵常值，并且正交、行列式为 \(1\)，即一个固定的二维旋转。反过来，固定旋转后的标架仍满足同样的平行条件。
+\end{proof}
+
+平行法标架在 \(\kappa=0\) 时仍然有定义，此时 \(k_1=k_2=0\)，两个法向量的导数同时为零。在刚才的平面拐点例中，取 \(E_1=JT\)、\(E_2=(0,0,1)\)，便有 \(k_1=k\)、\(k_2=0\)。这说明穿过零曲率点所需的连续数据是两个带符号的分量，而不是要求单位主法向必须指向弯曲的一侧。
+
+\ProseParagraphBreak
+
+在 \(\kappa>0\) 的区间，若写
+\[
+	N=\cos\theta\,E_1+\sin\theta\,E_2,\qquad
+	B=-\sin\theta\,E_1+\cos\theta\,E_2,
+\]
+则 \(k_1=\kappa\cos\theta\)、\(k_2=\kappa\sin\theta\)。对第一式求导并代入\eqref{g1:eq:parallel-frame}，得到 \(N'=-\kappa T+\theta'B\)；与 Frenet 方程比较可知 \(\tau=\theta'\)。挠率因而是主法向相对于平行法标架的转角速度。在零曲率点，\((k_1,k_2)=(0,0)\) 没有确定的辐角，这正是不能一般地继续定义 Frenet 挠率的原因。
+
+\ProseParagraphBreak
+
+这里的存在唯一性是在一个参数区间上给定初值而言。若曲线闭合，沿一周继续平行法标架后，两个法向量未必回到起始值，可能相差一个固定旋转。局部微分方程与一周后的相合条件要分别检查；这也是下一节讨论重建与闭合时将再次遇到的问题。

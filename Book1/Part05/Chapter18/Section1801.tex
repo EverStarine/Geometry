@@ -1,0 +1,263 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 18.1 主丛和关联构造
+% 纲要位置：几何学计划纲要.md，第 811 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 主作用、局部截面与过渡函数
+% * 由余循环重建主丛
+% * 伴随向量丛和标架丛
+% * 结构群约化及截面判据
+% 
+% 纲要内容结束
+
+\section{主丛和关联构造}
+\label{g1:sec:1801}
+
+在向量丛的同一条纤维中，两组标架之间有唯一的可逆换基矩阵，但没有一组标架天然应当充当单位元。主丛保留的正是这种“任意两点可以唯一比较，却未指定起点”的结构。\cref{g1:def:frame-bundle}已经给出了一个实例：标架 \(u:\mathbb R^r\to E_x\) 可以右乘矩阵，\(u\cdot A=u\circ A\)。下面把矩阵群换成一般李群，先确定局部选择如何相容，再由这些选择构造向量丛及额外几何结构。本节的流形均为有限维、无边界、Hausdorff、第二可数的光滑流形，李群也采用\chapref{g1:ch:16}的约定。
+
+\subsection{主作用、局部截面与过渡函数}
+\label{g1:subsec:1801:01}
+
+\begin{definition}[主丛]\label{g1:def:principal-bundle}
+	设 \(G\) 为有限维实李群，\(P,M\) 为无边界、Hausdorff、第二可数的光滑流形。一个光滑\term[zhucong]{主丛}[principal bundle]由光滑满射 \(\pi:P\to M\) 和光滑右作用 \(P\times G\to P\)、\((p,g)\mapsto pg\) 组成，满足 \(\pi(pg)=\pi(p)\)，且每个 \(x\in M\) 都有开邻域 \(U\) 及微分同胚
+	\[
+		\Phi_U:U\times G\longrightarrow\pi^{-1}(U),
+		\qquad \pi(\Phi_U(x,a))=x,\qquad
+		\Phi_U(x,ag)=\Phi_U(x,a)g.
+	\]
+	称 \(G\) 为结构群，\(P\) 为总空间，\(M\) 为底空间。覆盖恒等映射的主丛同构是保持右作用的微分同胚；覆盖一般光滑映射的主丛映射也要求保持右作用与投影。
+\end{definition}
+
+局部模型说明每条纤维 \(P_x\) 是一条自由的 \(G\) 轨道：给定 \(p,q\in P_x\)，存在唯一 \(g\in G\) 使 \(q=pg\)。因此，在一个纤维中选定 \(p\) 后，\(g\mapsto pg\) 才把它识别为群 \(G\)；没有这个选择时，不能在 \(P_x\) 中直接把两个点相乘。局部平凡化提供光滑截面 \(s_U(x)=\Phi_U(x,e)\)，并满足 \(\Phi_U(x,g)=s_U(x)g\)。反过来，任意光滑局部截面都给出这样的平凡化：在已有平凡化中写 \(s_U(x)=\Phi_U^0(x,h(x))\)，则相应映射为 \((x,g)\mapsto\Phi_U^0(x,h(x)g)\)，其逆由左乘 \(h(x)^{-1}\) 给出。
+
+\begin{proposition}[主丛与自由固有作用]\label{g1:prop:principal-free-proper}
+	设 \(G\) 为有限维实李群，所有流形均无边界、Hausdorff、第二可数。主 \(G\) 丛 \(\pi:P\to M\) 的右作用自由且固有，纤维恰为轨道，并且 \(M\) 与轨道商 \(P/G\) 自然微分同胚。反之，\(G\) 在 \(P\) 上的任意光滑自由固有右作用都使商投影 \(P\to P/G\) 成为主 \(G\) 丛。
+\end{proposition}
+\begin{proof}
+	自由性与纤维等于轨道已由局部模型得到。为证明固有性，设 \(p_j\to p\)、\(p_jg_j\to q\)。投影连续给出 \(\pi(p)=\pi(q)=x\)。选取 \(x\) 附近的主丛平凡化，把充分大的 \(j\) 对应的两点写成 \((x_j,a_j)\)、\((x_j,b_j)\)，则 \(a_j\to a\)、\(b_j\to b\)，并且 \(b_j=a_jg_j\)。故 \(g_j=a_j^{-1}b_j\to a^{-1}b\)。\cref{g1:prop:proper-action-criteria}的序列判据适用于右作用，只须把它改写为左作用 \(g*p=pg^{-1}\)；群元素取逆不会改变子列收敛条件。因此作用固有。
+
+	\cref{g1:thm:free-proper-quotient}赋予 \(P/G\) 光滑结构。诱导的集合双射 \(P/G\to M\) 在任一局部乘积中都是 \([s_U(x)g]\mapsto x\)，它及其逆均光滑，因而为微分同胚。
+
+	反过来，对左作用 \(g*p=pg^{-1}\) 应用\cref{g1:lem:free-proper-local-product}，得到横截面 \(S\) 与 \(G\times S\to SG\)、\((g,s)\mapsto sg^{-1}\) 的微分同胚。交换两个因子并取逆，便得到右作用所需的 \(S\times G\to SG\)、\((s,g)\mapsto sg\)。商定理又把 \(S\) 微分同胚地识别为底空间的开集，所以这正是主丛平凡化。
+\end{proof}
+
+\begin{example}[齐性空间上的主丛]\label{g1:exm:homogeneous-principal-bundle}
+	设 \(H\) 为有限维实李群 \(G\) 的闭子群。\cref{g1:thm:homogeneous-space}不仅给出 \(G/H\) 的光滑结构，还给出局部乘积 \((\exp W)\times H\to(\exp W)H\) 及其左平移。因此 \(G\to G/H\) 是主 \(H\) 丛，右作用为群内的右乘。这里结构群是 \(H\)，不是 \(G\)；底空间也不必是一个群。
+\end{example}
+
+现在取一族局部截面 \(s_i:U_i\to P\)。交叠处，每条纤维内的自由传递性给出唯一函数 \(g_{ij}:U_i\cap U_j\to G\)，使
+\begin{equation}\label{g1:eq:principal-transition}
+	s_j(x)=s_i(x)g_{ij}(x),\qquad
+	g_{ii}=e,\qquad g_{ij}g_{jk}=g_{ik}.
+\end{equation}
+在 \(s_i\) 给出的平凡化中，\(g_{ij}\) 就是 \(s_j\) 的群坐标，所以光滑。三重交叠上，\(s_k=s_jg_{jk}=s_i g_{ij}g_{jk}\)，再由自由性得到余循环等式；特别地 \(g_{ji}=g_{ij}^{-1}\)。同一点 \(p\in P_x\) 若写成 \(s_i(x)a_i=s_j(x)a_j\)，则
+\begin{equation}\label{g1:eq:principal-coordinate-transition}
+	a_i=g_{ij}(x)a_j.
+\end{equation}
+截面从 \(i\) 换到 \(j\) 时右乘 \(g_{ij}\)，同一点的群坐标从 \(j\) 换到 \(i\) 时却左乘它。右作用约定并不意味着所有坐标转换都在右侧相乘。
+
+\ProseParagraphBreak
+
+如果换用 \(s_i'=s_i h_i\)，其中 \(h_i:U_i\to G\) 光滑，则
+\begin{equation}\label{g1:eq:principal-transition-change}
+	g_{ij}'=h_i^{-1}g_{ij}h_j.
+\end{equation}
+这是在同一个主丛上改选局部截面，底点 \(x\) 没有改变。以后比较局部联络表达时，这一对象与方向的区分仍然重要。
+
+\subsection{由余循环重建主丛}
+\label{g1:subsec:1801:02}
+
+反过来，能否只给出 \(g_{ij}\)，就得到一个总空间？\cref{g1:thm:bundle-cocycle-gluing}已经对向量丛证明过这种粘合。这里用群中的左乘代替矩阵作用；需要保留的不只是局部公式，还包括不同纤维能够分离、总空间具有可数坐标基这些整体条件。
+
+\begin{theorem}[主丛的余循环构造]\label{g1:thm:principal-cocycle-gluing}
+	设 \(M\) 为有限维、无边界、Hausdorff、第二可数光滑流形，\(G\) 为有限维实李群，\(\{U_i\}_{i\in I}\) 为 \(M\) 的开覆盖。设光滑映射 \(g_{ij}:U_i\cap U_j\to G\) 满足 \(g_{ii}=e\)、\(g_{ij}g_{jk}=g_{ik}\)。则存在主 \(G\) 丛 \(\pi:P\to M\) 及局部截面 \(s_i\)，满足 \(s_j=s_i g_{ij}\)。它在保持这些局部截面的主丛同构意义下唯一。
+\end{theorem}
+\begin{proof}
+	取不交并 \(\mathcal P=\coprod_i(U_i\times G)\)，规定
+	\[
+		(i,x,a)\sim(j,y,b)
+		\quad\Longleftrightarrow\quad
+		x=y\quad\text{且}\quad a=g_{ij}(x)b.
+	\]
+	自反性来自 \(g_{ii}=e\)，对称性来自 \(g_{ji}=g_{ij}^{-1}\)，传递性来自 \(g_{ij}g_{jk}=g_{ik}\)。令 \(P=\mathcal P/\!\sim\)，赋予商拓扑，定义 \(\pi([i,x,a])=x\)。关系没有改变 \(x\)，故 \(\pi\) 良定义且连续。
+
+	商映射 \(Q:\mathcal P\to P\) 为开映射。若 \(O\subset\mathcal P\) 开，其饱和集在第 \(j\) 个副本中的部分为
+	\[
+		\bigcup_i\{(x,b):x\in U_i\cap U_j,\ (i,x,g_{ij}(x)b)\in O\}.
+	\]
+	每项是光滑同胚 \((x,b)\mapsto(x,g_{ij}(x)b)\) 下的开原像，所以饱和集开。于是
+	\[
+		\Phi_i:U_i\times G\longrightarrow\pi^{-1}(U_i),\qquad
+		\Phi_i(x,a)=[i,x,a]
+	\]
+	是连续开双射，因而为同胚。双射性来自每个相应等价类可以唯一换算到第 \(i\) 个副本。它们的转换为
+	\[
+		\Phi_i^{-1}\Phi_j(x,b)=(x,g_{ij}(x)b),
+	\]
+	光滑且具有光滑逆。把 \(U_i\) 和 \(G\) 再限制到坐标域，便得到维数 \(\dim M+\dim G\) 的相容图册。
+
+	若两点投影不同，用 \(M\) 中不交开邻域的逆像分离；若投影相同，把它们放进同一个开集 \(\pi^{-1}(U_i)\)，利用 \(U_i\times G\) 的 Hausdorff 性分离。故 \(P\) 为 Hausdorff 空间。第二可数性也要单独说明：从 \(M\) 的一个可数基中，对每个包含于某个 \(U_i\) 的基元素选择这样的 \(U_i\)，所选 \(U_i\) 构成可数子覆盖。各 \(U_i\times G\) 都有可数基，其像的可数并就给出 \(P\) 的可数基。因而任意开覆盖参与粘合也不会破坏总空间的第二可数性。
+
+	定义 \([i,x,a]g=[i,x,ag]\)。若 \(a=g_{ij}b\)，则 \(ag=g_{ij}(bg)\)，故右作用良定义；在每个 \(\Phi_i\) 中就是群的右乘，因而光滑。\(\pi\) 局部为乘积投影，\(\Phi_i\) 为等变平凡化，故得到主丛。取 \(s_i(x)=[i,x,e]\)，则
+	\[
+		s_j(x)=[j,x,e]=[i,x,g_{ij}(x)]=s_i(x)g_{ij}(x).
+	\]
+	最后，若另一个主丛有同样关系的截面 \(t_i\)，公式 \([i,x,a]\mapsto t_i(x)a\) 良定义，在各局部乘积中是恒等坐标映射，故为主丛同构。保持指定截面与右作用的任何同构都必须使用这一公式，因此唯一。
+\end{proof}
+
+余循环本身仍依赖截面。如果两组余循环满足\eqref{g1:eq:principal-transition-change}，把旧余循环构造出的点 \([i,x,a]\) 送到新余循环构造中的 \([i,x,h_i(x)^{-1}a]\)，便得到主丛同构：由 \(a=g_{ij}b\) 可算出 \(h_i^{-1}a=g_{ij}'h_j^{-1}b\)，所以公式与代表无关，且局部光滑可逆。覆盖不同时，先取两组开集的交集作为共同细化即可比较。这里保持局部截面的唯一性，与更换截面后允许的主丛同构，是两种不同的陈述。
+
+\begin{example}[有全局截面的主丛]\label{g1:exm:principal-global-section}
+	主 \(G\) 丛 \(P\to M\) 与 \(M\times G\) 同构，当且仅当它有一个光滑全局截面 \(s\)。一方面，乘积中的 \(x\mapsto(x,e)\) 是截面；另一方面，\((x,g)\mapsto s(x)g\) 在每条纤维上双射，其在任何局部平凡化中的表达为 \((x,g)\mapsto(x,h(x)g)\)，故它与逆都光滑。局部截面在定义中总存在，全局截面的存在则是额外结论。向量丛即使非平凡也有零截面，主丛纤维没有相应的零点，因此不能用零截面的直觉推断这个条件。
+\end{example}
+
+\subsection{伴随向量丛和标架丛}
+\label{g1:subsec:1801:03}
+
+主丛的一点可以理解为一种局部参照。若一个空间 \(F\) 上也规定了 \(G\) 怎样改变参照，就应能把 \(F\) 随着主丛一起粘到各个底点上。关键是：主丛中的参照乘上 \(g\) 后，\(F\) 中的分量必须按 \(g^{-1}\) 改变，才能表示同一个对象。
+
+\begin{proposition}[关联丛]\label{g1:prop:associated-fiber-bundle}
+	设 \(\pi:P\to M\) 为有限维实李群 \(G\) 的光滑主丛，\(F\) 为具有光滑左 \(G\) 作用的有限维光滑流形；所有流形均无边界、Hausdorff、第二可数。规定
+	\[
+		(p,y)\cdot g=(pg,g^{-1}\cdot y),\qquad
+		P\times_G F\coloneqq(P\times F)/G.
+	\]
+	该商具有自然的光滑流形结构，投影 \([p,y]\mapsto\pi(p)\) 局部平凡，纤维为 \(F\)。若主丛截面满足 \(s_j=s_i g_{ij}\)，则局部表示 \((x,y_i)\mapsto[s_i(x),y_i]\) 的转换为 \(y_i=g_{ij}(x)\cdot y_j\)。称此丛为 \(P\) 的\term[guanliancong]{关联丛}[associated bundle]。
+\end{proposition}
+\begin{proof}
+	先核对所写公式确为右作用：连续作用 \(g\) 再作用 \(h\)，第二因子变为 \(h^{-1}\cdot(g^{-1}\cdot y)=(gh)^{-1}\cdot y\)。它自由，因为第一因子的作用自由。它也固有：若 \((p_j,y_j)\to(p,y)\)，且 \((p_jg_j,g_j^{-1}\cdot y_j)\) 收敛，则主丛作用的固有性给出 \(g_j\) 的收敛子列，正好满足\cref{g1:prop:proper-action-criteria}的判据。于是\cref{g1:thm:free-proper-quotient}使商为无边界、Hausdorff、第二可数光滑流形，商映射为淹没。
+
+	在一个主丛平凡化中，每个 \(p\) 唯一写成 \(s_i(x)a\)。定义
+	\[
+		[p,y]\longmapsto(x,a\cdot y),\qquad
+		(x,z)\longmapsto[s_i(x),z].
+	\]
+	若 \((p,y)\) 换成 \((pg,g^{-1}\cdot y)\)，则第一式的群坐标由 \(a\) 变成 \(ag\)，输出仍为 \((x,a\cdot y)\)，所以良定义。两式互逆；第二式显然光滑，第一式与商映射的复合光滑，故由\cref{g1:prop:quotient-smooth-universal-property}也光滑。它们给出所需局部平凡化。最后
+	\[
+		[s_j(x),y_j]=[s_i(x)g_{ij}(x),y_j]
+		=[s_i(x),g_{ij}(x)\cdot y_j],
+	\]
+	得到转换公式。
+\end{proof}
+
+\begin{theorem}[关联向量丛]\label{g1:thm:associated-vector-bundle}
+	设 \(P\to M\) 为有限维实李群 \(G\) 的光滑主丛，\(M,P\) 无边界、Hausdorff、第二可数，\(V\) 为有限维实或复向量空间，\(\rho:G\to\operatorname{GL}(V)\) 为光滑线性表示。则
+	\[
+		E=P\times_\rho V\coloneqq(P\times V)/G,
+		\qquad(p,v)\cdot g=(pg,\rho(g)^{-1}v)
+	\]
+	具有自然的秩 \(\dim_{\mathbb K}V\) 的光滑 \(\mathbb K\) 向量丛结构，其中 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。局部坐标 \([s_i(x),v_i]\) 满足
+	\begin{equation}\label{g1:eq:associated-vector-transition}
+		v_i=\rho(g_{ij})v_j.
+	\end{equation}
+	对固定 \(p\in P_x\)，映射 \(v\mapsto[p,v]\) 是 \(V\to E_x\) 的线性同构。
+\end{theorem}
+\begin{proof}
+	应用\cref{g1:prop:associated-fiber-bundle}，所得局部转换为 \((x,v_j)\mapsto(x,\rho(g_{ij}(x))v_j)\)。因为 \(\rho\) 是同态，这些可逆线性转换满足同样的余循环等式。由此，局部乘积中的加法、数乘在交叠处相容，给出各纤维与参照无关的向量空间结构，局部平凡化线性且光滑。复情形只把所有纤维运算和转换理解为复线性的，底空间及总空间的光滑结构仍按实流形理解。固定 \(p\) 后，每个类都可唯一写成 \([p,v]\)，故得到所述同构。
+\end{proof}
+
+这类构造也常称“伴随向量丛”。为避免与伴随表示 \(\operatorname{Ad}\) 混淆，下面通常用“关联向量丛”表示一般 \(\rho\) 的情形，把 \(\operatorname{Ad}\) 给出的特例明确记为 \(\operatorname{ad}(P)\)。表示不必忠实；关联构造可能丢掉主丛的一部分信息，不能从某一个关联向量丛自动恢复原主丛。
+
+\begin{proposition}[截面与等变函数]\label{g1:prop:associated-sections}
+	设 \(P\to M\) 为有限维实李群 \(G\) 的光滑主丛，\(\rho:G\to\operatorname{GL}(V)\) 为有限维实或复光滑表示，所有流形无边界、Hausdorff、第二可数。关联向量丛 \(E=P\times_\rho V\) 的光滑截面，与满足
+	\begin{equation}\label{g1:eq:associated-equivariant-function}
+		f(pg)=\rho(g^{-1})f(p)
+	\end{equation}
+	的光滑函数 \(f:P\to V\) 一一对应，对应式为 \(\sigma(x)=[p,f(p)]\)、\(p\in P_x\)。相对于主丛截面 \(s_i\)，其局部分量为 \(f_i=f\circ s_i\)，并满足 \(f_i=\rho(g_{ij})f_j\)。
+\end{proposition}
+\begin{proof}
+	给定 \(\sigma\)，固定 \(p\in P_x\) 后，上一结果给出的线性同构使 \(\sigma(x)=[p,f(p)]\) 唯一确定 \(f(p)\)。换用 \(pg\) 时，\([pg,f(pg)]=[p,\rho(g)f(pg)]\)，故等于原截面值当且仅当\eqref{g1:eq:associated-equivariant-function}成立。在 \(p=s_i(x)a\) 的局部坐标中，\(f(p)=\rho(a^{-1})f_i(x)\)，因此截面光滑蕴含 \(f\) 光滑。
+
+	反过来，等变关系使 \([p,f(p)]\) 与 \(p\in P_x\) 的选择无关，所以给出一个截面。它在 \(s_i\) 中的分量是光滑函数 \(f_i\)，因而光滑。两种构造互逆；而 \(s_j=s_i g_{ij}\) 给出 \(f_j=\rho(g_{ij}^{-1})f_i\)，等价于所写分量转换。
+\end{proof}
+
+\begin{proposition}[标架丛与向量丛]\label{g1:prop:frame-associated-equivalence}
+	设 \(M\) 为有限维、无边界、Hausdorff、第二可数光滑流形，\(E\to M\) 为秩 \(r\geq1\) 的实光滑向量丛。\(\operatorname{Fr}(E)\to M\) 是主 \(\operatorname{GL}(r,\mathbb R)\) 丛，且标准表示给出自然向量丛同构
+	\[
+		\operatorname{Fr}(E)\times_{\operatorname{GL}(r,\mathbb R)}\mathbb R^r
+		\longrightarrow E,\qquad [u,v]\longmapsto u(v).
+	\]
+	反之，若 \(P\to M\) 是主 \(\operatorname{GL}(r,\mathbb R)\) 丛，令 \(E=P\times_{\operatorname{GL}(r,\mathbb R)}\mathbb R^r\)，则
+	\[
+		P\longrightarrow\operatorname{Fr}(E),\qquad
+		p\longmapsto u_p,\qquad u_p(v)=[p,v]
+	\]
+	是自然的主丛同构。复向量丛与 \(\operatorname{GL}(r,\mathbb C)\) 满足相同结论。
+\end{proposition}
+\begin{proof}
+	\cref{g1:def:frame-bundle}已给出 \(\operatorname{Fr}(E)\) 的局部坐标 \(u=e_i(x)A\)，右作用在其中是 \((x,A)B=(x,AB)\)，所以满足主丛定义。第一式在等价代表下不变，因为 \((uA)(A^{-1}v)=u(v)\)。在参考标架 \(e_i\) 下，它把 \([e_i(x),v]\) 送到 \(e_i(x)v\)，局部就是恒等向量坐标，故光滑可逆并且逐纤维线性。
+
+	对于第二式，\(u_p\) 是线性同构，且
+	\[
+		u_{pA}(v)=[pA,v]=[p,Av]=(u_p\circ A)(v),
+	\]
+	所以映射保持右作用。固定 \(p\in P_x\)，任何标架 \(u:\mathbb R^r\to E_x\) 都唯一写成 \(u_p\circ A\)，从而此映射在每条纤维上双射。在局部截面 \(s_i\) 给出的主丛坐标及标架 \(u_{s_i}\) 给出的标架丛坐标中，它为 \((x,A)\mapsto(x,A)\)，故为微分同胚。复情形逐步使用复线性同构，证明相同。
+\end{proof}
+
+\begin{definition}[伴随丛]\label{g1:def:adjoint-bundle}
+	设 \(P\to M\) 为有限维实李群 \(G\) 的光滑主丛，\(\mathfrak g\) 为 \(G\) 的李代数。由伴随表示构造的实向量丛
+	\[
+		\operatorname{ad}(P)\coloneqq P\times_{\operatorname{Ad}}\mathfrak g
+	\]
+	称为\term[banshuicong]{伴随丛}[adjoint bundle]。其等价关系为 \((p,X)\sim(pg,\operatorname{Ad}_{g^{-1}}X)\)，局部分量满足 \(X_i=\operatorname{Ad}_{g_{ij}}X_j\)。
+\end{definition}
+
+每条纤维还带有李括号：用同一个 \(p\in P_x\) 表示两个元素，定义 \(\bigl[[p,X],[p,Y]\bigr]=[p,[X,Y]]\)，这里左侧外层括号表示纤维中的李括号。由于 \(\operatorname{Ad}_g[X,Y]=[\operatorname{Ad}_gX,\operatorname{Ad}_gY]\)，改变 \(p\) 后所得类不变；在局部坐标中就是 \(\mathfrak g\) 的固定双线性括号，故随底点光滑。若 \(G\) 交换，则所有 \(\operatorname{Ad}_g\) 都是恒等映射，于是 \([p,X]\mapsto(\pi(p),X)\) 给出典范同构 \(\operatorname{ad}(P)\cong M\times\mathfrak g\)，即使 \(P\) 本身可能并不平凡。后文的曲率会取值于这个伴随丛；这里纤维的线性结构来自 \(\mathfrak g\)，不能与原来的主丛纤维混同。
+
+\subsection{结构群约化及截面判据}
+\label{g1:subsec:1801:04}
+
+给向量丛指定内积后，正交单位标架之间只需正交矩阵换算。\cref{g1:def:frame-structure-reduction}已把这称为结构群约化。对于一般主 \(G\) 丛，问题变为：能否在每条 \(G\) 纤维中，光滑地选出一条固定闭子群 \(H\subseteq G\) 的轨道？选择单个点会使主丛平凡，而选择一条 \(H\) 轨道只要求减少允许的参照。
+
+\begin{definition}[主丛的结构群约化]\label{g1:def:principal-reduction}
+	设 \(P\to M\) 为有限维实李群 \(G\) 的光滑主丛，\(H\subseteq G\) 为闭子群，所有流形无边界、Hausdorff、第二可数。一个 \(H\) 结构群约化是 \(P\) 的光滑嵌入子流形 \(Q\)，它在右 \(H\) 作用下不变，且限制投影 \(Q\to M\) 与该作用组成主 \(H\) 丛。
+\end{definition}
+
+这里要求 \(H\) 闭，是为了使用\cref{g1:thm:homogeneous-space}中 \(G/H\) 的 Hausdorff 光滑结构及局部截面。我们将 \(P/H\) 定义为主丛总空间对右 \(H\) 作用的轨道商；它的一个点是一条 \(H\) 轨道，并非整条 \(G\) 纤维。仍有投影 \(r:P/H\to M\)、\(pH\mapsto\pi(p)\)。
+
+\begin{theorem}[约化的截面判据]\label{g1:thm:reduction-section-criterion}
+	设 \(P\to M\) 为有限维实李群 \(G\) 的光滑主丛，\(H\subseteq G\) 为闭子群，所有流形无边界、Hausdorff、第二可数。则 \(r:P/H\to M\) 是纤维为 \(G/H\) 的光滑局部平凡丛，并有自然同构
+	\[
+		P\times_G(G/H)\longrightarrow P/H,\qquad
+		[p,gH]\longmapsto pgH.
+	\]
+	主丛 \(P\) 的 \(H\) 约化与 \(r\) 的光滑截面一一对应，具体为
+	\[
+		Q\longmapsto\sigma_Q(x)=Q_x\in P/H,
+		\qquad
+		\sigma\longmapsto Q_\sigma=\{p\in P:pH=\sigma(\pi(p))\}.
+	\]
+	若 \(Q\) 为约化，则由 \(H\) 在 \(G\) 上的左乘构造的丛 \(Q\times_HG\) 具有自然主 \(G\) 丛结构，并有主丛同构
+	\begin{equation}\label{g1:eq:extension-structure-group}
+		Q\times_HG\longrightarrow P,\qquad[q,g]\longmapsto qg.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先构造 \(P/H\)。右 \(H\) 作用自由。若 \(p_j\to p\)、\(p_jh_j\to q\)，主 \(G\) 作用的固有性给出 \(h_j\) 在 \(G\) 中的收敛子列；因为 \(H\) 闭，极限仍在 \(H\)，故 \(H\) 作用固有。商定理给出 \(P/H\) 的光滑结构。在主丛局部坐标中，商映射为
+	\[
+		U_i\times G\longrightarrow U_i\times(G/H),\qquad
+		(x,g)\longmapsto(x,gH).
+	\]
+	\cref{g1:thm:homogeneous-space}保证 \(G\to G/H\) 有光滑局部截面，故上述商坐标和其逆光滑。交叠时 \(g_jH\) 变成 \(g_{ij}(x)g_jH\)，于是 \(r\) 局部平凡。公式 \([p,gH]\mapsto pgH\) 不随代表变化，因为 \((pa)(a^{-1}g)H=pgH\)；它在刚才的局部坐标中为恒等映射，所以给出所述自然同构。
+
+	若已有 \(H\) 约化 \(Q\)，每个 \(Q_x\) 是唯一的一条 \(H\) 轨道，故 \(\sigma_Q\) 良定义。在 \(Q\) 的局部截面 \(t:U\to Q\) 中，\(\sigma_Q(x)=t(x)H\)，是光滑映射，且 \(r\sigma_Q=\operatorname{id}_M\)。
+
+	反过来，给定光滑截面 \(\sigma\)，在 \(P\) 的局部截面 \(s_i\) 下，把它写成 \(\sigma(x)=(x,k(x)H)\)。这里首先确定的是一个光滑映射 \(U_i\to G/H\)，不能预先假定已有全局的 \(G\) 值函数 \(k\)。在任一点附近，使用 \(G\to G/H\) 的光滑局部截面，并适当缩小 \(U_i\)，才得到光滑提升 \(k:U_i\to G\)。于是
+	\[
+		Q_\sigma|_{U_i}=\{s_i(x)k(x)h:x\in U_i,\ h\in H\}.
+	\]
+	在 \(P|_{U_i}\cong U_i\times G\) 中，光滑坐标改变 \((x,g)\mapsto(x,k(x)^{-1}g)\) 把它送到 \(U_i\times H\)。闭子群 \(H\) 是嵌入李子群，故这些局部表达证明 \(Q_\sigma\) 是嵌入子流形，且 \((x,h)\mapsto s_i(x)k(x)h\) 给出主 \(H\) 丛的局部平凡化。它继承 \(P\) 的 Hausdorff 性与第二可数性。两种构造逐纤维互逆，故得到一一对应。
+
+	最后，\(Q\times_HG\) 的关系为 \((q,g)\sim(qh,h^{-1}g)\)。右 \(G\) 作用定义为 \([q,g]a=[q,ga]\)，与等价关系相容；取 \(Q\) 的局部截面 \(t\)，则 \((x,g)\mapsto[t(x),g]\) 给出主 \(G\) 丛平凡化。\eqref{g1:eq:extension-structure-group}与代表无关，因为 \((qh)(h^{-1}g)=qg\)，并保持右 \(G\) 作用。在上述平凡化及 \(t\) 作为 \(P\) 的局部截面所给出的平凡化中，它为恒等坐标映射，故为主丛同构。
+\end{proof}
+
+由此还能直接读出过渡函数判据：\(P\) 有一个 \(H\) 约化，当且仅当经过细化覆盖，可以选取局部截面使全部 \(g_{ij}\) 取值于 \(H\)。若已有 \(Q\)，取它的局部截面即可；反过来，\(Q|_{U_i}=s_i(U_i)H\) 因 \(H\) 值过渡而相容，并由局部 \(U_i\times H\) 成为约化。这恢复了\chapref{g1:ch:12}以标架定义的结构群约化。
+
+\begin{example}[度量选择的是一类标架]\label{g1:exm:metric-as-principal-reduction}
+	设 \(E\to M\) 为秩 \(r\geq1\) 的实光滑向量丛。取 \(G=\operatorname{GL}(r,\mathbb R)\)、\(H=\operatorname{O}(r)\)。给定丛度量 \(h\)，全部正交单位标架组成 \(Q\subset\operatorname{Fr}(E)\)。\cref{g1:prop:metric-orthogonal-reduction}的光滑 Gram--Schmidt 构造给出局部正交单位标架，所以它是主 \(H\) 约化。对应的截面 \(M\to\operatorname{Fr}(E)/\operatorname{O}(r)\) 在每点选择的是“所有对 \(h_x\) 正交的标架”这一类，而不是某一组标架。
+
+	同一事实可直接逐纤维核验：一个标架 \(u:\mathbb R^r\to E_x\) 确定内积 \(h_u(v,w)=\langle u^{-1}v,u^{-1}w\rangle\)，把 \(u\) 右乘正交矩阵不会改变它；反之，给出相同内积的两个标架恰相差一个正交矩阵。于是该商纤维就是 \(E_x\) 上所有正定内积的空间。度量总存在，并不意味着可以在整个底空间上选出一组光滑正交标架；后者还要求这个主 \(\operatorname{O}(r)\) 丛本身平凡。
+\end{example}
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

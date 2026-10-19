@@ -1,0 +1,218 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 19.3 共轭性与中心化子
+% 纲要位置：几何学计划纲要.md，第 860 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 环面作用及无穷小分解
+% * 正则元素和中心化子
+% * 极大环面的共轭定理
+% * 两个共轭问题的区别及等价推论
+% 
+% 纲要内容结束
+
+\section{共轭性与中心化子}
+\label{g1:sec:1903}
+
+极大环面已经存在，但目前它可能随群元素改变。为了比较两个环面，先研究一个固定环面在李代数上的伴随作用。交换性使这些线性变换可以同时分解，紧性使它们成为旋转；由此选出一个向量，使与它交换的方向尽量少。将任意伴随轨道与这个向量作内积，再利用紧性取极值，就能把整条轨道带到固定环面的李代数中。
+
+\ProseParagraphBreak
+
+以下 \(G\) 为紧连通实李群，\(T\subseteq G\) 为一个极大环面，\(\mathfrak t=\operatorname{Lie}(T)\)。由\cref{g1:prop:bi-invariant-metric}，\(\mathfrak g\) 上有正定的 \(\operatorname{Ad}(G)\) 不变内积 \(\langle\cdot,\cdot\rangle\)。本节每次取正交补或内积极值，都使用这同一个内积。
+
+\subsection{环面作用及无穷小分解}
+\label{g1:subsec:1903:01}
+对 \(H\in\mathfrak t\)，算子 \(\operatorname{ad}_H:X\mapsto[H,X]\) 是斜伴随的。事实上，\(\operatorname{Ad}_{\exp(sH)}\) 保持内积，对
+\[
+	\langle\operatorname{Ad}_{\exp(sH)}X,
+	\operatorname{Ad}_{\exp(sH)}Y\rangle=\langle X,Y\rangle
+\]
+在 \(s=0\) 求导，得到
+\begin{equation}\label{g1:eq:invariant-inner-product-bracket}
+	\langle[H,X],Y\rangle+\langle X,[H,Y]\rangle=0.
+\end{equation}
+由于 \(\mathfrak t\) 交换，Jacobi 恒等式还给出 \([\operatorname{ad}_H,\operatorname{ad}_K]=\operatorname{ad}_{[H,K]}=0\)。因此我们面对的是一族彼此交换的斜伴随算子。
+
+\begin{lemma}[交换斜 Hermitian 算子的同时分解]\label{g1:lem:commuting-skew-hermitian}
+	设 \(V\) 为有限维复 Hermitian 空间，\(A_1,\ldots,A_r\) 为彼此交换的斜 Hermitian 线性算子，即 \(A_j^*=-A_j\)。则 \(V\) 有一组共同特征向量组成的标准正交基；各 \(A_j\) 的特征值均为纯虚数。
+\end{lemma}
+\begin{proof}
+	先看一个算子 \(A\)。复数域上的特征多项式有根，故有单位特征向量 \(v\)。若 \(Av=\lambda v\)，斜 Hermitian 性给出 \(\lambda=-\overline\lambda\)，所以 \(\lambda\) 纯虚。\(v^\perp\) 在 \(A\) 下不变，因为对 \(w\perp v\)，有 \(\langle Aw,v\rangle=\langle w,-Av\rangle=0\)。在 \(v^\perp\) 上归纳，得到标准正交特征基。
+
+	现在先分解 \(A_1\) 的各特征空间。由 \(A_jA_1=A_1A_j\)，每个 \(A_j\) 保持这些空间，其限制仍斜 Hermitian。在每个空间内再按 \(A_2\) 分解，继续至 \(A_r\)。每一步只细分已有的正交分解，所以最后得到共同特征向量的标准正交基。
+\end{proof}
+
+为使用此引理，把 \(\mathfrak g\) 复化为 \(\mathfrak g_{\mathbb C}=\mathfrak g\otimes_{\mathbb R}\mathbb C\)。原实内积复双线性延拓为 \(B_{\mathbb C}\)，再定义 Hermitian 内积 \((Z,W)=B_{\mathbb C}(Z,\overline W)\)，其中共轭固定实空间 \(\mathfrak g\)，本式对第一变量线性。\(\operatorname{ad}_H\) 复线性延拓后是斜 Hermitian 算子。取 \(\mathfrak t\) 的一组基同时对角化，每个共同特征空间上的特征值随 \(H\) 实线性变化，可以唯一写成 \(\mathrm{i}\alpha(H)\)，其中 \(\alpha\in\mathfrak t^*\) 为实线性泛函。
+
+\begin{proposition}[环面伴随作用的权分解]\label{g1:prop:torus-weight-decomposition}
+	设 \(G\) 为紧连通实李群，\(T\subseteq G\) 为环面，\(\mathfrak t=\operatorname{Lie}(T)\)。存在有限集 \(R\subseteq\mathfrak t^*\setminus\{0\}\)，使
+	\begin{equation}\label{g1:eq:torus-adjoint-weight-decomposition}
+		\mathfrak g_{\mathbb C}=\mathfrak g_0\oplus
+		\bigoplus_{\alpha\in R}\mathfrak g_\alpha,
+		\qquad
+		\mathfrak g_\alpha=\{Z:[H,Z]=\mathrm{i}\alpha(H)Z
+		\;\text{对所有 }H\in\mathfrak t\}.
+	\end{equation}
+	这些空间相对于复化后所得的 Hermitian 内积彼此正交，且 \(\overline{\mathfrak g_\alpha}=\mathfrak g_{-\alpha}\)。零权空间为
+	\[
+		\mathfrak g_0=\{X\in\mathfrak g:[X,H]=0
+		\;\text{对所有 }H\in\mathfrak t\}_{\mathbb C}.
+	\]
+	若 \(\Lambda_T=\ker(\exp_G|_{\mathfrak t})\)，则对 \(\alpha\in R\) 有 \(\alpha(\Lambda_T)\subseteq2\pi\mathbb Z\)，并且
+	\begin{equation}\label{g1:eq:torus-weight-character}
+		\operatorname{Ad}_{\exp_GH}Z=e^{\mathrm{i}\alpha(H)}Z
+		\qquad(Z\in\mathfrak g_\alpha).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	前面的同时分解给出有限个实线性泛函。合并相同泛函的共同特征空间，并将非零者组成 \(R\)，就得到直和分解。若两个泛函不同，可取某个 \(H\) 使其取值不同；斜 Hermitian 算子 \(\operatorname{ad}_H\) 的不同特征空间正交，所以整个分解正交。零权条件就是与 \(\mathfrak t\) 的所有元素交换；将 \(Z=X+\mathrm{i}Y\) 分成实虚部可知它是所列实空间的复化。
+
+	由于 \(H\) 为实向量，对 \([H,Z]=\mathrm{i}\alpha(H)Z\) 取共轭得到 \([H,\overline Z]=-\mathrm{i}\alpha(H)\overline Z\)，所以共轭交换 \(\mathfrak g_\alpha\) 与 \(\mathfrak g_{-\alpha}\)。由\cref{g1:prop:exponential-naturality}，\(\operatorname{Ad}_{\exp_GH}=e^{\operatorname{ad}_H}\)。将算子指数作用在特征空间上，便得\eqref{g1:eq:torus-weight-character}。若 \(H\in\Lambda_T\)，左侧为恒等作用；\(\mathfrak g_\alpha\ne0\) 迫使 \(e^{\mathrm{i}\alpha(H)}=1\)，即 \(\alpha(H)\in2\pi\mathbb Z\)。
+\end{proof}
+
+我们把 \(\alpha\) 称为这一作用的\term[wuqiongxiaoquan]{无穷小权}[infinitesimal weight]。其群上版本是\term[tezhengbiao]{特征标}[character]，即光滑群同态 \(\chi_\alpha:T\to S^1\)，这里由 \(\chi_\alpha(\exp H)=e^{\mathrm{i}\alpha(H)}\) 给出。\cref{g1:thm:compact-connected-abelian-group}保证每个 \(t\in T\) 都有这样的指数表示，而刚证明的整性保证换一个相差格向量的 \(H\) 不改变取值。复化将实旋转写成标量乘法；共轭配对说明这些复特征空间仍来自实几何。
+
+\subsection{正则元素和中心化子}
+\label{g1:subsec:1903:02}
+对一个群子集 \(A\subseteq G\)，与它的每个元素都交换的群元素组成\term[zhongxinhua]{中心化子}[centralizer]
+\[
+	Z_G(A)\coloneqq\{g\in G:ga=ag\;\text{对所有 }a\in A\}.
+\]
+它是闭子群，因为每个交换条件都是连续映射的闭水平集。由\cref{g1:thm:closed-subgroup}，其李代数可以用全部留在中心化子中的单参数子群检测；指数自然性给出
+\[
+	\operatorname{Lie}(Z_G(A))
+	=\{X\in\mathfrak g:\operatorname{Ad}_aX=X\;\text{对所有 }a\in A\}.
+\]
+这里两个方向都可直接核对：若 \(\exp(sX)\) 与 \(a\) 交换，微分得 \(\operatorname{Ad}_aX=X\)；反之此等式通过指数自然性恢复全部 \(s\) 的交换关系。对于李代数子集 \(E\subseteq\mathfrak g\)，相应记号为
+\[
+	\mathfrak z_{\mathfrak g}(E)\coloneqq\{X:[X,Y]=0\;\text{对所有 }Y\in E\}.
+\]
+
+\begin{proposition}[极大环面的无穷小中心化子]\label{g1:prop:maximal-torus-lie-centralizer}
+	设 \(G\) 为紧连通实李群，\(T\subseteq G\) 为极大环面，\(\mathfrak t=\operatorname{Lie}(T)\)。则
+	\[
+		\operatorname{Lie}(Z_G(T))=\mathfrak z_{\mathfrak g}(\mathfrak t)=\mathfrak t.
+	\]
+	特别地，\(\mathfrak t\) 是 \(\mathfrak g\) 的极大交换李子代数，且权分解的零权空间为 \(\mathfrak g_0=\mathfrak t_{\mathbb C}\)。
+\end{proposition}
+\begin{proof}
+	因为 \(T=\exp_G(\mathfrak t)\)，与全部 \(\operatorname{Ad}_t\)、\(t\in T\)，相容的不动条件等价于 \([H,X]=0\) 对所有 \(H\in\mathfrak t\) 成立：一个方向对 \(t=\exp(sH)\) 求导，另一个方向用 \(\operatorname{Ad}_{\exp H}=e^{\operatorname{ad}_H}\)。这证明前两个空间相等。
+
+	若 \(X\in\mathfrak z_{\mathfrak g}(\mathfrak t)\)，则 \(\mathfrak a=\mathfrak t+\mathbb RX\) 是交换李子代数。由\cref{g1:cor:commuting-exponentials}，\(\exp_G(\mathfrak a)\) 是连通交换子群。它的闭包由\cref{g1:lem:abelian-subgroup-closure}是紧连通交换李群，因而是包含 \(T\) 的环面。\(T\) 的极大性迫使这个闭包等于 \(T\)。于是 \(\exp_G(sX)\in T\) 对全部 \(s\) 成立，在零点求导得 \(X\in\mathfrak t\)。反向包含来自 \(\mathfrak t\) 本身交换。任何包含 \(\mathfrak t\) 的交换李子代数都在其中心化子中，所以只能等于 \(\mathfrak t\)。零权空间的结论随即由\eqref{g1:eq:torus-adjoint-weight-decomposition}得到。
+\end{proof}
+
+对 \(H\in\mathfrak t\)，权分解现在给出更精确的式子
+\begin{equation}\label{g1:eq:regular-element-centralizer}
+	\mathfrak z_{\mathfrak g}(H)_{\mathbb C}
+	=\mathfrak t_{\mathbb C}\oplus
+	\bigoplus_{\substack{\alpha\in R\\\alpha(H)=0}}\mathfrak g_\alpha.
+\end{equation}
+所以，想使与 \(H\) 交换的方向尽量少，只需让 \(H\) 避开有限多个超平面 \(\ker\alpha\)。
+
+\begin{definition}\label{g1:def:regular-toral-element}
+	设 \(T\) 为紧连通李群 \(G\) 的极大环面。满足 \(\mathfrak z_{\mathfrak g}(H)=\mathfrak t\) 的 \(H\in\mathfrak t\) 称为\term[zhengzeyuansu]{正则元素}[regular element]。它们组成的集合记为 \(\mathfrak t_{\mathrm{reg}}\)。
+\end{definition}
+
+\begin{lemma}[正则元素的存在]\label{g1:lem:regular-toral-elements}
+	设 \(G\) 为紧连通实李群，\(T\) 为其极大环面。则
+	\[
+		\mathfrak t_{\mathrm{reg}}=
+		\mathfrak t\setminus\bigcup_{\alpha\in R}\ker\alpha
+	\]
+	是 \(\mathfrak t\) 中非空的稠密开集。若 \(R=\varnothing\)，则 \(\mathfrak t_{\mathrm{reg}}=\mathfrak t\)。
+\end{lemma}
+\begin{proof}
+	所列等式来自\eqref{g1:eq:regular-element-centralizer}。每个 \(\alpha\ne0\) 的核都是闭的真超平面，其补集开且稠密：在任意开球中沿一个 \(\alpha\) 不为零的方向稍作移动，就能离开超平面。有限多个稠密开集的交仍稠密，可依次在给定非空开集中选一个更小的非空开球避开下一个超平面。这个交也是开集，故有结论。空根集时没有需要避开的超平面。
+\end{proof}
+
+这里的正则性首先属于李代数。对群元素 \(\exp H\)，中心化子的李代数却由 \(\operatorname{Ad}_{\exp H}\) 的不动向量给出，条件是 \(\alpha(H)\in2\pi\mathbb Z\)，而非 \(\alpha(H)=0\)。例如在 \(\operatorname{SU}(2)\) 中，\(H=\operatorname{diag}(\mathrm{i}\pi,-\mathrm{i}\pi)\) 的李代数中心化子是对角子代数，但 \(\exp H=-I\) 与全群交换。这一差别将在处理群元素的共轭时再次出现。
+
+\subsection{极大环面的共轭定理}
+\label{g1:subsec:1903:03}
+固定一个正则 \(H\in\mathfrak t\)。若某个向量 \(Z\) 与 \(H\) 交换，正则性就迫使 \(Z\in\mathfrak t\)。因此，把任意 \(X\in\mathfrak g\) 共轭入 \(\mathfrak t\)，可以转化为寻找一个共轭代表，使它与 \(H\) 交换。内积函数在极值点的一阶条件恰好给出这个括号方程。
+
+\begin{proposition}[伴随轨道与固定环面相交]\label{g1:prop:adjoint-orbit-meets-torus}
+	设 \(G\) 为紧连通实李群，\(T\subseteq G\) 为一个极大环面。对任意 \(X\in\mathfrak g\)，存在 \(g\in G\) 使 \(\operatorname{Ad}_gX\in\mathfrak t\)。
+\end{proposition}
+\begin{proof}
+	选定 \(\operatorname{Ad}(G)\) 不变正定内积，以及\cref{g1:lem:regular-toral-elements}给出的 \(H\in\mathfrak t_{\mathrm{reg}}\)。连续函数
+	\[
+		f:G\to\mathbb R,\qquad f(g)=\langle\operatorname{Ad}_gX,H\rangle
+	\]
+	在紧空间 \(G\) 上达到最大值。设最大点为 \(g_0\)，记 \(Z=\operatorname{Ad}_{g_0}X\)。对任意 \(Y\in\mathfrak g\)，曲线 \(s\mapsto\exp(sY)g_0\) 经过最大点，故
+	\[
+		0=\left.\frac{\mathrm{d}}{\mathrm{d}s}\right|_{s=0}
+		f(\exp(sY)g_0)
+		=\langle[Y,Z],H\rangle
+		=\langle Y,[Z,H]\rangle.
+	\]
+	最后一等式由\eqref{g1:eq:invariant-inner-product-bracket}及括号反对称性得到。它对所有 \(Y\) 成立，特别取 \(Y=[Z,H]\)，正定性给出 \([Z,H]=0\)。正则性说明 \(Z\in\mathfrak z_{\mathfrak g}(H)=\mathfrak t\)，所以 \(g=g_0\) 满足要求。
+\end{proof}
+
+\begin{theorem}[极大环面的共轭定理]\label{g1:thm:maximal-tori-conjugate}
+	设 \(G\) 为紧连通实李群。任意两个极大环面 \(T,S\subseteq G\) 共轭，即存在 \(g\in G\)，使 \(gSg^{-1}=T\)。因此所有极大环面的维数相等。
+\end{theorem}
+\begin{proof}
+	记 \(\mathfrak t=\operatorname{Lie}(T)\)、\(\mathfrak s=\operatorname{Lie}(S)\)。在 \(\mathfrak s\) 中选择正则元素 \(X\)，使 \(\mathfrak z_{\mathfrak g}(X)=\mathfrak s\)。由\cref{g1:prop:adjoint-orbit-meets-torus}，有 \(g\in G\) 使 \(\operatorname{Ad}_gX\in\mathfrak t\)。由于 \(\mathfrak t\) 交换，得到
+	\[
+		\mathfrak t\subseteq\mathfrak z_{\mathfrak g}(\operatorname{Ad}_gX)
+		=\operatorname{Ad}_g\mathfrak z_{\mathfrak g}(X)
+		=\operatorname{Ad}_g\mathfrak s.
+	\]
+	中间的等式来自共轭保持括号。右端是交换李子代数，而\cref{g1:prop:maximal-torus-lie-centralizer}说明 \(\mathfrak t\) 已经是极大交换李子代数，所以这个包含只能是等号。
+
+	两个环面都是连通李子群，且 \(gSg^{-1}\) 与 \(T\) 的李代数相同；\cref{g1:thm:lie-subalgebra-integration}中的连通积分子群唯一性给出 \(gSg^{-1}=T\)。也可直接用环面指数的满射性以及指数与共轭相容，写成 \(gSg^{-1}=\exp_G(\operatorname{Ad}_g\mathfrak s)=\exp_G\mathfrak t=T\)。共轭是微分同胚，故维数相同。
+\end{proof}
+
+\begin{definition}\label{g1:def:compact-group-rank}
+	紧连通李群 \(G\) 的任一极大环面的维数称为 \(G\) 的\term[jinqunzhizhishu]{秩}[rank]，记为 \(\operatorname{rank}G\)。
+\end{definition}
+
+秩的选择无关性现在来自共轭定理。由\cref{g1:prop:adjoint-orbit-meets-torus}及\eqref{g1:eq:regular-element-centralizer}，对任意 \(X\in\mathfrak g\) 都有 \(\dim\mathfrak z_{\mathfrak g}(X)\ge\operatorname{rank}G\)，而正则元素恰使这个维数取最小值。因此可以对一般 \(X\in\mathfrak g\) 用最小中心化子维数定义正则性，与刚才在 \(\mathfrak t\) 中的定义一致。
+
+\begin{proposition}[极大环面的中心化子]\label{g1:prop:maximal-torus-centralizer}
+	设 \(G\) 为紧连通实李群，\(T\subseteq G\) 为极大环面。则 \(Z_G(T)=T\)。
+\end{proposition}
+\begin{proof}
+	\(T\subseteq Z_G(T)\) 来自交换性。反过来，取 \(a\in Z_G(T)\)。由\cref{g1:thm:element-in-maximal-torus}，取包含 \(a\) 的极大环面 \(S\)。令 \(K=Z_G(a)\)，并取其单位连通分支 \(K^0\)。它是紧连通李群：\(K\) 是 \(G\) 的闭子群，而连通分支也闭。
+
+	由于 \(a\) 与 \(T\) 中所有元素交换，\(T\subseteq K\)；由于 \(a\in S\) 且 \(S\) 交换，\(S\subseteq K\)。两环面连通且包含单位元，所以其实都包含于 \(K^0\)。它们在 \(K^0\) 中仍极大，因为任何更大的环面也会是 \(G\) 中更大的环面。将\cref{g1:thm:maximal-tori-conjugate}应用于紧连通群 \(K^0\)，得到 \(k\in K^0\) 使 \(kSk^{-1}=T\)。但 \(k\in Z_G(a)\)，故 \(a=kak^{-1}\in kSk^{-1}=T\)。
+\end{proof}
+
+这个证明解释了为何不能只从 \(\operatorname{Lie}(Z_G(T))=\mathfrak t\) 直接宣布群相等：同一个李代数允许额外的离散分支。我们利用已经证明的共轭定理，在 \(Z_G(a)^0\) 中排除了这些可能。对单个元素的中心化子，额外分支仍可能真实存在。
+
+\subsection{两个共轭问题的区别及等价推论}
+\label{g1:subsec:1903:04}
+共轭定理讨论整个子群能否相互移到一起。另一个问题是：已经放在同一个环面里的两个元素，什么时候仍在全群中共轭？环面交换，所以只用环面自身共轭不会改变任何元素，必须考虑那些把环面整体保持住、但不一定逐点固定它的变换。
+
+\begin{definition}\label{g1:def:torus-normalizer}
+	设 \(T\) 为李群 \(G\) 的环面。其\term[zhengguihuazi]{正规化子}[normalizer]定义为
+	\[
+		N_G(T)\coloneqq\{g\in G:gTg^{-1}=T\}.
+	\]
+	它通过共轭作用于 \(T\)，通过伴随作用于 \(\mathfrak t\)。中心化子 \(Z_G(T)\) 是这个共轭作用的核。\symidx{\(N_G(T),Z_G(T)\)：环面的正规化子与中心化子}
+\end{definition}
+
+\begin{proposition}[环面内共轭的判据]\label{g1:prop:torus-conjugacy-normalizer}
+	设 \(G\) 为紧连通实李群，\(T\subseteq G\) 为极大环面。
+	\begin{enumerate}
+		\item 对 \(a,b\in T\)，它们在 \(G\) 中共轭，当且仅当存在 \(n\in N_G(T)\) 使 \(nan^{-1}=b\)。
+		\item 对 \(X,Y\in\mathfrak t\)，它们在 \(\operatorname{Ad}(G)\) 下属于同一轨道，当且仅当存在 \(n\in N_G(T)\) 使 \(\operatorname{Ad}_nX=Y\)。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	1. 若 \(b=gag^{-1}\)，则 \(T\) 与 \(gTg^{-1}\) 都包含于 \(Z_G(b)\)：前者与 \(b\in T\) 交换，后者与 \(b\in gTg^{-1}\) 交换。这两个环面连通，故都在 \(K=Z_G(b)^0\) 中；它们仍是 \(K\) 的极大环面。\(K\) 紧且连通，所以共轭定理给出 \(k\in K\)，使 \(k(gTg^{-1})k^{-1}=T\)。令 \(n=kg\)，便有 \(n\in N_G(T)\)，并且
+	\[
+		nan^{-1}=kbk^{-1}=b.
+	\]
+	反向因 \(N_G(T)\subseteq G\) 直接成立。
+
+	2. 若 \(Y=\operatorname{Ad}_gX\)，令
+	\[
+		K=\{h\in G:\operatorname{Ad}_hY=Y\}^0.
+	\]
+	括号中的集合是光滑作用的闭稳定子群，所以 \(K\) 是紧连通李群。由于 \(Y\in\mathfrak t\)，\(T\) 的伴随作用固定 \(Y\)；由于 \(X\in\mathfrak t\)，\(gTg^{-1}\) 的伴随作用也固定 \(Y\)。两环面均连通，所以都包含于 \(K\)，且仍极大。再选 \(k\in K\)，使 \(k(gTg^{-1})k^{-1}=T\)，并令 \(n=kg\)。则 \(n\in N_G(T)\) 且 \(\operatorname{Ad}_nX=\operatorname{Ad}_kY=Y\)。反向同样直接成立。
+\end{proof}
+
+因此，每个群元素都能先通过共轭放进固定环面 \(T\)，放进去以后剩余的共轭关系由 \(N_G(T)\) 决定；每个李代数向量也有对应的陈述。两种分类仍不相同，因为群元素还要经过指数核格的识别。例如在圆周群中，\(0\) 与 \(2\pi\mathrm{i}\) 是不同的李代数共轭类，却指数到同一个群元素。下一节将把正规化子中逐点固定 \(T\) 的部分除去，得到真正起作用的有限群。

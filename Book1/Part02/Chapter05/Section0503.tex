@@ -1,0 +1,247 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 5.3 覆盖映射的提升理论
+% 纲要位置：几何学计划纲要.md，第 291 行。
+% 正文状态：初稿完成，未正式审核。
+
+% 纲要内容开始
+% 
+% * 覆盖的局部乘积结构
+% * 道路提升及唯一性
+% * 同伦提升与提升判据
+% * 甲板变换及其对纤维的作用
+% 
+% 纲要内容结束
+
+\section{覆盖映射的提升理论}
+\label{g1:sec:0503}
+
+沿圆周连续选择一个实数角度时，可以从任意初始角度出发，并一直跟随道路；但绕圆一周以后，角度增加了 \(2\pi\)，没有回到原值。覆盖映射把这个现象推广到一般空间：底空间上的一个小邻域在上方分成若干互不相交的副本，局部选择一个副本以后，连续移动就决定了下一步该去哪里。真正需要证明的是这种局部选择能否沿整条道路延续、能否随参数连续变化，以及沿不同道路得到的选择何时一致。
+
+\subsection{覆盖的局部乘积结构}
+\label{g1:subsec:0503:01}
+
+设想把若干张相同地图叠在一起，每张都投影到同一个区域。这里地图只是局部模型；走到区域外以后，各张地图可以重新连接，所以全空间未必是不交的若干份底空间。
+
+\begin{definition}[覆盖映射]\label{g1:def:covering-map}
+	设 \(E,X\) 为拓扑空间。连续满射 \(p:E\to X\) 称为\term[fugaiyingshe]{覆盖映射}[covering map]，如果每个 \(x\in X\) 都有开邻域 \(U\)，使
+	\[
+		p^{-1}(U)=\bigsqcup_{\lambda\in\Lambda}V_\lambda,
+		\qquad p|_{V_\lambda}:V_\lambda\longrightarrow U
+	\]
+	为同胚，且各 \(V_\lambda\) 都在 \(E\) 中开。这样的 \(U\) 称为\term[junyunfugailinyu]{均匀覆盖邻域}[evenly covered neighborhood]，各 \(V_\lambda\) 称为该邻域上方的\term[fugaipian]{覆盖片}[sheet]。空间 \(X\) 称为底空间，\(E\) 称为覆盖空间；集合 \(p^{-1}(x)\) 称为点 \(x\) 上的纤维，与\secref{g1:sec:0206}中“一个指定点的逆像”的用法相同。
+\end{definition}
+
+给指标集 \(\Lambda\) 离散拓扑，映射 \(V_\lambda\ni e\mapsto(p(e),\lambda)\) 将 \(p^{-1}(U)\) 同胚地识别为 \(U\times\Lambda\)，并把 \(p\) 化为第一投影。这就是覆盖的局部乘积结构。反过来，这种与投影相容的局部乘积表示也给出定义中的分解。覆盖片是相对于所选 \(U\) 而言的，不能未经证明就把某一片延伸为整个 \(E\) 的一个分支。若连续映射在每个源点附近都限制为到目标某个开集的同胚，称它为\term[jubutongpei]{局部同胚}[local homeomorphism]；这里邻域选在源空间中，定义本身不要求满射。
+
+\begin{proposition}[覆盖的局部性质]\label{g1:prop:covering-local-properties}
+	覆盖映射 \(p:E\to X\) 是局部同胚、开映射和商映射，每个纤维带子空间拓扑时都是离散空间。若 \(X\) 局部道路连通，则 \(E\) 也局部道路连通。
+\end{proposition}
+\begin{proof}
+	每个 \(e\in E\) 都落在某张覆盖片上，而这张片到相应开邻域的限制是同胚，故 \(p\) 为局部同胚。若 \(O\subseteq E\) 开，将 \(O\) 与所有覆盖片相交，每一交集的像都在相应 \(U\) 中开，从而在 \(X\) 中开；这些像的并就是 \(p(O)\)，所以 \(p\) 开。连续开满射是商映射：若 \(p^{-1}(A)\) 开，则 \(A=p(p^{-1}(A))\) 开；另一方向由连续性得到。
+
+	在 \(x\) 上方，每张覆盖片恰与 \(p^{-1}(x)\) 相交于一点，所以纤维的每个单点都相对开。最后，若 \(X\) 局部道路连通，给定 \(e\) 的开邻域 \(O\)，先在一张含 \(e\) 的覆盖片 \(V\) 中看 \(O\cap V\)，再在其像内取含 \(p(e)\) 的道路连通开邻域。该邻域经 \((p|_V)^{-1}\) 的像是包含在 \(O\) 内的道路连通开邻域，证明了 \(E\) 的局部道路连通性。
+\end{proof}
+
+若纤维有 \(n\) 个点，常称覆盖在该点为 \(n\) 叶。均匀覆盖邻域内各点的纤维与同一个 \(\Lambda\) 一一对应，所以纤维基数局部不变。特别地，底空间连通时该基数在整个底空间上相同：与一个给定纤维等势的点组成开闭子集。允许无限叶，也允许覆盖空间不连通。
+
+\begin{example}[圆周的两个覆盖]\label{g1:exm:circle-coverings}
+	映射
+	\[
+		q:\mathbb R\longrightarrow S^1,\qquad q(t)=e^{2\pi it}
+	\]
+	是覆盖。确实，取 \(a\in\mathbb R\) 和 \(0<\varepsilon<1/4\)，令 \(U=q((a-\varepsilon,a+\varepsilon))\)。这是圆周开弧，并且
+	\[
+		q^{-1}(U)=\bigsqcup_{k\in\mathbb Z}(a-\varepsilon+k,a+\varepsilon+k).
+	\]
+	每个限制都是同胚：在旋转后的开弧 \(e^{-2\pi ia}U\) 上实部为正，故角度可由连续函数 \(\arctan(\operatorname{Im}z/\operatorname{Re}z)\) 恢复，再加上 \(a+k\)。每个纤维是一份整数集。
+
+	对整数 \(n\ge1\)，映射
+	\[
+		p_n:S^1\longrightarrow S^1,\qquad p_n(z)=z^n
+	\]
+	也是覆盖。上面开弧 \(U\) 的原像由 \(n\) 条不交开弧组成，它们分别由
+	\[
+		z=e^{2\pi i(t+j)/n},\qquad
+		a-\varepsilon<t<a+\varepsilon,\quad j=0,\ldots,n-1
+	\]
+	参数化；\(p_n\) 将每条开弧同胚地映到 \(U\)。所以它是 \(n\) 叶覆盖。
+\end{example}
+
+局部同胚满射还不足以保证覆盖。例如 \((0,2)\to S^1\)、\(t\mapsto e^{2\pi it}\) 处处局部同胚且满射，但 \(1\) 上只有一个原像 \(1\)，而其附近的非 \(1\) 点有两个原像，不可能有均匀覆盖邻域。另一方面，\(\mathbb C\to\mathbb C\)、\(z\mapsto z^n\) 在 \(n\ge2\) 时也不是覆盖：原点的每个邻域中都有两个不同的非零点具有相同 \(n\) 次方，故原点附近连局部单射都不成立。覆盖要求的正是这种分支现象不出现。
+
+\subsection{道路提升及唯一性}
+\label{g1:subsec:0503:02}
+
+给定连续映射 \(f:Y\to X\)，寻找连续映射 \(\widetilde f:Y\to E\) 满足 \(p\circ\widetilde f=f\)，称为将 \(f\)\term[tisheng]{提升}[lift]到覆盖空间。它所要求的交换关系是
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		& E\arrow[d,"p"]\\
+		Y\arrow[ur,dashed,"\widetilde f"]\arrow[r,"f"']&X.
+	\end{tikzcd}
+\]
+提升如果存在，通常还需指定一个点的取值。先证明这个取值会带来多强的唯一性。
+
+\begin{lemma}[连通空间上的提升唯一性]\label{g1:lem:lift-uniqueness}
+	设 \(p:E\to X\) 为覆盖，\(Y\) 连通，且连续映射 \(f_1,f_2:Y\to E\) 满足 \(p\circ f_1=p\circ f_2\)。若它们在某一点相等，则处处相等。
+\end{lemma}
+\begin{proof}
+	令 \(A=\{y:f_1(y)=f_2(y)\}\)。对任一点 \(y\)，选 \(p(f_1(y))\) 的均匀覆盖邻域 \(U\)，并令 \(V_1,V_2\) 为分别包含 \(f_1(y),f_2(y)\) 的覆盖片。在开邻域 \(f_1^{-1}(V_1)\cap f_2^{-1}(V_2)\) 内，若 \(V_1=V_2\)，两映射由该片上 \(p\) 的单射性必相等；若 \(V_1\ne V_2\)，它们则因覆盖片不交而处处不等。因此 \(A\) 及其补集都开。由于 \(Y\) 连通且 \(A\ne\varnothing\)，有 \(A=Y\)。
+\end{proof}
+
+这里没有假设 \(E\) 为 Hausdorff 空间。相等集的闭性来自覆盖片的分离结构，而不是一般的“连续映射相等集为闭集”结论；后者通常需要目标的 Hausdorff 条件。
+
+\begin{theorem}[道路提升]\label{g1:thm:path-lifting}
+	设 \(p:E\to X\) 为覆盖，\(\alpha:[0,1]\to X\) 为道路，且 \(e_0\in E\) 满足 \(p(e_0)=\alpha(0)\)。则存在唯一道路 \(\widetilde\alpha:[0,1]\to E\)，满足
+	\[
+		p\circ\widetilde\alpha=\alpha,\qquad \widetilde\alpha(0)=e_0.
+	\]
+\end{theorem}
+\begin{proof}
+	唯一性由\cref{g1:lem:lift-uniqueness}及区间的连通性得到。构造时，要把道路分成有限段，使每段都落在一个均匀覆盖邻域内，然后由已确定的接点选择下一张片。
+
+	把 \(X\) 的均匀覆盖邻域拉回到 \([0,1]\)，得到该紧度量空间的开覆盖。\cref{g1:lem:lebesgue-number}给出 \(\delta>0\)，使直径小于 \(\delta\) 的子集包含在一个覆盖成员内。取分割 \(0=t_0<t_1<\cdots<t_m=1\)，每段长度小于 \(\delta\)。于是可选均匀覆盖邻域 \(U_j\)，使 \(\alpha([t_{j-1},t_j])\subseteq U_j\)。
+
+	在第一段，取包含 \(e_0\) 的覆盖片 \(V_1\)，定义 \(\widetilde\alpha=(p|_{V_1})^{-1}\circ\alpha\)。若前 \(j-1\) 段已定义，就取 \(U_j\) 上方包含已知端点 \(\widetilde\alpha(t_{j-1})\) 的那一片 \(V_j\)，并在第 \(j\) 段定义 \(\widetilde\alpha=(p|_{V_j})^{-1}\circ\alpha\)。两个相邻公式在接点上相同，故由有限闭集粘合\cref{g1:prop:gluing-lemma}得到连续道路。每段都满足投影等式，第一段又给出指定初值，所以所构造的道路即为所求。
+\end{proof}
+
+连续性禁止道路在同一均匀覆盖邻域的不同片之间突然跳跃；有限分割则保证每一次局部选择都能传递到下一段。对反向道路与拼接道路，唯一性立即给出相容性：提升 \(\bar\alpha\) 时若从 \(\widetilde\alpha(1)\) 出发，就得到反向道路 \(\overline{\widetilde\alpha}\)；提升 \(\alpha*\beta\) 时，先提升 \(\alpha\)，再从其终点提升 \(\beta\)，所得拼接就是整条提升。
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter05-PathLift}
+	\caption[圆周环路的非闭提升]{在覆盖 \(q(t)=e^{2\pi it}\) 下，圆周上从 \(1\) 正向绕行一周的环路，从上方 \(0\) 出发提升为线段 \(t\mapsto t\)，终点为 \(1\)。上下同写数字 \(1\) 的点属于不同空间；上方的 \(0,1\) 则属于同一纤维。虚线仅表示这两个端点的投影。}
+	\label{g1:fig:path-lift}
+\end{figure}
+
+环路的提升不一定闭合，这不是提升定理的缺陷，反而是覆盖保存的整体信息。例如对 \(q\)，从 \(a\) 出发提升 \(t\mapsto e^{2\pi i(a+kt)}\)，得到 \(t\mapsto a+kt\)；整数 \(k\) 直接记录提升终点相对于起点的位移。下面将证明，终点只依赖底空间道路的定端点同伦类。
+
+\subsection{同伦提升与提升判据}
+\label{g1:subsec:0503:03}
+
+逐条提升一族道路还不够：若参数稍变而提升突然换片，就不能得到连续同伦。关键在于，一条固定道路只需要有限个局部公式；把参数限制在足够小的邻域内，这些公式可以一起使用。下述版本允许参数空间完全一般，不要求它连通、局部道路连通或紧。
+
+\begin{theorem}[覆盖的同伦提升]\label{g1:thm:homotopy-lifting}
+	设 \(p:E\to X\) 为覆盖，\(Y\) 为任意拓扑空间，\(H:Y\times[0,1]\to X\) 连续。若连续映射 \(h_0:Y\to E\) 满足 \(p(h_0(y))=H(y,0)\)，则存在唯一连续映射 \(\widetilde H:Y\times[0,1]\to E\)，满足
+	\[
+		p\circ\widetilde H=H,\qquad \widetilde H(y,0)=h_0(y).
+	\]
+\end{theorem}
+\begin{proof}
+	对每个 \(y\)，由道路提升定理，提升 \(t\mapsto H(y,t)\)，并指定起点 \(h_0(y)\)。逐点定义的这些提升给出唯一可能的函数 \(\widetilde H\)。问题只剩联合连续性，而不只是每条竖直道路的连续性。
+
+	固定 \(y_0\in Y\)。如道路提升证明那样，选有限分割 \(0=t_0<\cdots<t_m=1\)，使每段 \(H(\{y_0\}\times[t_{j-1},t_j])\) 落在均匀覆盖邻域 \(U_j\) 中。对每个 \(j\)，存在 \(y_0\) 的开邻域 \(N_j\)，满足
+	\[
+		H(N_j\times[t_{j-1},t_j])\subseteq U_j.
+	\]
+	为说明这一点，对每个 \(t\in[t_{j-1},t_j]\)，用 \(H^{-1}(U_j)\) 的开放性选一个含 \((y_0,t)\) 的乘积开邻域，再由参数闭区间的紧性选有限个覆盖它；取这些邻域在 \(Y\) 方向的有限交即可。再取所有 \(N_j\) 的交，得到可同时处理全部时间段的开邻域 \(N\)。
+
+	令 \(V_1\) 为 \(U_1\) 上方包含 \(h_0(y_0)\) 的片。由 \(h_0\) 连续，缩小 \(N\) 后有 \(h_0(N)\subseteq V_1\)，所以在 \(N\times[t_0,t_1]\) 上可用连续公式 \((p|_{V_1})^{-1}\circ H\)。这个公式在 \(t_1\) 处给出连续的端点函数。令 \(V_2\) 为 \(U_2\) 上方包含该函数在 \(y_0\) 处取值的片，再次缩小 \(N\)，使全部这些端点都在 \(V_2\) 内，然后在下一段用 \((p|_{V_2})^{-1}\circ H\)。照此继续有限次；此前的公式限制到更小的 \(N\) 上仍有效。
+
+	最终在某个含 \(y_0\) 的开邻域 \(N\) 上，得到有限段连续公式，它们在每个接点对全部 \(y\in N\) 都一致。有限闭集粘合引理说明它们合成 \(N\times[0,1]\) 上的连续映射。对每个固定 \(y\)，该映射都是具有指定初值的道路提升，所以由唯一性，它恰等于先前逐点定义的 \(\widetilde H\)。这样的 \(N\) 覆盖 \(Y\)，故 \(\widetilde H\) 联合连续。任意另一个满足条件的提升在每条竖直道路上相等，因而全局相等。
+\end{proof}
+
+\begin{corollary}[定端点同伦的提升]\label{g1:cor:lifted-path-homotopy}
+	设 \(p:E\to X\) 为覆盖，\(\alpha,\beta\) 是从 \(x_0\) 到 \(x_1\) 的定端点同伦道路。若两者的提升都从同一点 \(e_0\in p^{-1}(x_0)\) 出发，则它们终点相同，并且在 \(E\) 中定端点同伦。
+\end{corollary}
+\begin{proof}
+	设 \(H(s,t)\) 为该同伦，其中 \(s\) 是同伦参数、\(t\) 是道路参数，故 \(H(s,0)=x_0\)、\(H(s,1)=x_1\)。用初始提升 \(s\mapsto e_0\) 提升 \(H\)。每条道路 \(\widetilde H(s,-)\) 从 \(e_0\) 出发，而终点函数 \(s\mapsto\widetilde H(s,1)\) 连续且取值于离散纤维 \(p^{-1}(x_1)\)。区间连通，连续像也连通，离散空间的连通子集至多含一点，因此该终点函数恒定。于是提升同伦的两端都固定，且由道路提升唯一性，其边界道路正是指定的两条提升。
+\end{proof}
+
+\begin{proposition}[覆盖诱导的基本群单射]\label{g1:prop:covering-pi1-injective}
+	设 \(p:E\to X\) 为覆盖，\(e_0\in E\)，\(x_0=p(e_0)\)。则
+	\[
+		p_*:\pi_1(E,e_0)\longrightarrow\pi_1(X,x_0)
+	\]
+	为单射。
+\end{proposition}
+\begin{proof}
+	由\cref{g1:prop:homotopy-functor}，\(p_*\) 是群同态，只需证明其核平凡。设 \(E\) 中基于 \(e_0\) 的环路 \(\gamma\) 满足 \(p\circ\gamma\) 定端点同伦于 \(x_0\) 处的常值道路。将这一同伦从起点 \(e_0\) 提升。由\cref{g1:cor:lifted-path-homotopy}，所得同伦固定两端；第一条边界提升是 \(\gamma\)，另一条边界提升是 \(e_0\) 处的常值道路，因为后者已是常值底道路的一个提升。因此 \([\gamma]=1\)，单射性成立。
+\end{proof}
+
+\begin{corollary}[环路提升的闭合判据]\label{g1:cor:closed-lift-criterion}
+	设 \(p:(E,e_0)\to(X,x_0)\) 为带指定点的覆盖。基于 \(x_0\) 的环路 \(\alpha\) 从 \(e_0\) 出发的提升闭合，当且仅当
+	\[
+		[\alpha]\in p_*\pi_1(E,e_0).
+	\]
+\end{corollary}
+\begin{proof}
+	若提升 \(\widetilde\alpha\) 闭合，则它代表 \(\pi_1(E,e_0)\) 的元素，且 \(p_*[\widetilde\alpha]=[\alpha]\)。反过来，若 \([\alpha]=p_*[\gamma]\)，其中 \(\gamma\) 是 \(E\) 中基于 \(e_0\) 的环路，则 \(\alpha\) 与 \(p\circ\gamma\) 定端点同伦。从 \(e_0\) 出发的两条提升由\cref{g1:cor:lifted-path-homotopy}有相同终点，而后一提升就是环路 \(\gamma\)，所以前一提升也闭合。
+\end{proof}
+
+对于圆周的 \(n\) 叶覆盖 \(p_n\)，基本群在绕数同构 \(\pi_1(S^1,1)\cong\mathbb Z\) 下由 \(k\mapsto nk\) 给出：生成环路 \(t\mapsto e^{2\pi it}\) 与 \(p_n\) 复合后绕行 \(n\) 周。因此，一个圆周环路从 \(1\) 出发的提升闭合，恰好当它的绕数被 \(n\) 整除。这里使用的绕数同构见\cref{g1:thm:circle-fundamental}。
+
+\ProseParagraphBreak
+
+现在考虑整个映射 \(f:Y\to X\) 的提升。可以从 \(y_0\) 沿道路走到每个 \(y\)，提升其像，并用提升终点定义 \(\widetilde f(y)\)。可能出现的障碍是：沿两条不同道路抵达同一点时，得到的终点不同。把一条道路与另一条的反路拼起来，这一障碍便变成环路提升能否闭合的问题。
+
+\begin{theorem}[映射的提升判据]\label{g1:thm:lifting-criterion}
+	设 \(p:(E,e_0)\to(X,x_0)\) 为覆盖，\(Y\) 为道路连通且局部道路连通的空间，\(y_0\in Y\)，连续映射 \(f:Y\to X\) 满足 \(f(y_0)=x_0\)。存在连续提升 \(\widetilde f:Y\to E\) 满足 \(\widetilde f(y_0)=e_0\)，当且仅当
+	\[
+		f_*\pi_1(Y,y_0)\subseteq p_*\pi_1(E,e_0).
+	\]
+	若提升存在，则它唯一。
+\end{theorem}
+\begin{proof}
+	必要性来自函子性：若 \(f=p\circ\widetilde f\)，则 \(f_*=p_*\circ\widetilde f_*\)，故左边的像包含于右边。唯一性来自\cref{g1:lem:lift-uniqueness}，因为道路连通蕴含连通。
+
+	设子群包含关系成立。对每个 \(y\)，取道路 \(\alpha_y\) 从 \(y_0\) 到 \(y\)，把 \(f\circ\alpha_y\) 从 \(e_0\) 提升，并以其终点定义 \(\widetilde f(y)\)。下面分别检查选择无关性与连续性。
+
+	若 \(\beta_y\) 是另一选择，则 \(\alpha_y*\bar\beta_y\) 为基于 \(y_0\) 的环路。假设保证其像的同伦类属于 \(p_*\pi_1(E,e_0)\)，故由\cref{g1:cor:closed-lift-criterion}，它从 \(e_0\) 出发的提升闭合。该提升先走 \(f\circ\alpha_y\) 的提升，再提升 \(f\circ\bar\beta_y\)，最终回到 \(e_0\)。反转第二段，就得到从 \(e_0\) 出发的 \(f\circ\beta_y\) 的提升，且终点正是第一段的终点。道路提升唯一性于是说明两种选择给出相同的 \(\widetilde f(y)\)。取常值道路还说明 \(\widetilde f(y_0)=e_0\)，而构造直接给出 \(p\circ\widetilde f=f\)。
+
+	固定 \(y\)，取 \(f(y)\) 的均匀覆盖邻域 \(U\)。由 \(Y\) 局部道路连通，可在开集 \(f^{-1}(U)\) 内取含 \(y\) 的道路连通开邻域 \(V\)。令 \(W\) 为 \(U\) 上方含 \(\widetilde f(y)\) 的片。对任意 \(z\in V\)，选完全位于 \(V\) 的道路 \(\delta\) 从 \(y\) 到 \(z\)，并用 \(\alpha_y*\delta\) 作为定义 \(\widetilde f(z)\) 的道路。其后一段的像位于 \(U\)，故从 \(\widetilde f(y)\) 出发的提升为 \((p|_W)^{-1}\circ f\circ\delta\)。因此
+	\[
+		\widetilde f|_V=(p|_W)^{-1}\circ f|_V,
+	\]
+	右端连续。这对每个 \(y\) 都成立，所以 \(\widetilde f\) 连续。
+\end{proof}
+
+道路连通性用于从一个基点到达所有点，局部道路连通性则用于最后的连续性证明：它让附近各点的比较道路始终留在一个均匀覆盖邻域的原像内。两者在证明中承担不同任务。特别地，若 \(Y\) 道路连通、局部道路连通且单连通，子群条件自动成立，任何这样的 \(f\) 在指定初值以后都能唯一提升。
+
+\subsection{甲板变换及其对纤维的作用}
+\label{g1:subsec:0503:04}
+
+在覆盖 \(q:\mathbb R\to S^1\) 中，整数平移改变了实数角度，却不改变底空间的点。一般覆盖也可能有这样的对称性：它在上方交换点，而投影后完全看不出变化。
+
+\begin{definition}[甲板变换]\label{g1:def:deck-transformation}
+	设 \(p:E\to X\) 为覆盖。满足 \(p\circ h=p\) 的同胚 \(h:E\to E\) 称为 \(p\) 的\term[jiabanbianhuan]{甲板变换}[deck transformation]，也称覆盖变换。所有甲板变换在函数通常复合
+	\[
+		(hk)(e)=h(k(e))
+	\]
+	下组成群，记为 \(\operatorname{Deck}(p)\)。
+\end{definition}
+
+确实，恒等映射满足投影等式，两个这样的同胚复合仍满足等式；从 \(p\circ h=p\) 右复合 \(h^{-1}\)，又得 \(p\circ h^{-1}=p\)，所以逆映射也在其中。每个甲板变换保持每个纤维，因而在纤维上给出置换。
+
+\begin{proposition}[甲板变换由一点确定]\label{g1:prop:deck-determined}
+	设 \(p:E\to X\) 为覆盖，且 \(E\) 非空连通。若两个甲板变换在某一点相等，则它们相同。特别地，非恒等甲板变换没有不动点；对任意 \(e_0\in E\)，映射
+	\[
+		\operatorname{Deck}(p)\longrightarrow p^{-1}(p(e_0)),
+		\qquad h\longmapsto h(e_0)
+	\]
+	为单射。
+\end{proposition}
+\begin{proof}
+	任意两个甲板变换都是映射 \(p:E\to X\) 的提升，因此可直接使用\cref{g1:lem:lift-uniqueness}。取其中一个为恒等映射，就得到不动点结论；再固定 \(e_0\)，就得到所写映射的单射性。
+\end{proof}
+
+群在集合上的作用称为自由的，是指只有单位元能固定一个点。因此在连通覆盖空间上，甲板变换群的作用自由；但自由不等于传递，不能据此断言同一纤维中的任意两点都能由某个甲板变换互换。后一性质将在下一节与正规子群联系起来。若底空间局部道路连通，则\cref{g1:prop:covering-local-properties}与\cref{g1:thm:locally-path-components}还说明：覆盖空间的连通分支就是道路分支；这里的唯一性命题本身则只需连通。
+
+\begin{example}[圆周覆盖的甲板变换群]\label{g1:exm:circle-deck-groups}
+	对于 \(q:\mathbb R\to S^1\)，整数平移 \(T_k(t)=t+k\) 都是甲板变换。反过来，若 \(h\) 是甲板变换，则 \(q(h(t))=q(t)\) 意味着 \(h(t)-t\in\mathbb Z\)。函数 \(t\mapsto h(t)-t\) 连续，\(\mathbb R\) 连通而 \(\mathbb Z\) 离散，故它恒为某个整数 \(k\)。所以全部甲板变换恰为 \(T_k\)，且
+	\[
+		T_k\circ T_\ell=T_{k+\ell},\qquad \operatorname{Deck}(q)\cong\mathbb Z.
+	\]
+
+	对于 \(p_n:S^1\to S^1\)，令 \(\zeta=e^{2\pi i/n}\)。旋转 \(R_j(z)=\zeta^jz\) 是甲板变换。反过来，投影等式给出 \((h(z)/z)^n=1\)，所以连续函数 \(h(z)/z\) 取值于有限离散集 \(\{1,\zeta,\ldots,\zeta^{n-1}\}\)。圆周道路连通，故该函数恒定；于是 \(h=R_j\)，且
+	\[
+		\operatorname{Deck}(p_n)\cong\mathbb Z/n\mathbb Z.
+	\]
+	这两个例子的甲板变换都在每个纤维上传递，但这一事实来自上述具体计算。
+\end{example}
+
+还有一种纤维置换来自在底空间走环路并取提升终点。它与甲板变换的来源不同，却彼此相容：若 \(\widetilde\alpha_e\) 是从 \(e\) 出发的道路提升，那么 \(h\circ\widetilde\alpha_e\) 是从 \(h(e)\) 出发的同一道路的提升，因而
+\[
+	h\bigl(\widetilde\alpha_e(1)\bigr)
+	=\widetilde\alpha_{h(e)}(1).
+\]
+这一等式只用了提升唯一性。到\secref{g1:sec:0505}中，我们会将取提升终点的操作组织成基本群在纤维上的右作用，并用它重建覆盖。

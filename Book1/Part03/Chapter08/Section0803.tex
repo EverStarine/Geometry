@@ -1,0 +1,386 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 8.3 结构方程与内在曲率
+% 纲要位置：几何学计划纲要.md，第 416 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * Gauss–Weingarten 方程
+% * 协变导数与 Christoffel 系数
+% * Gauss 方程与绝妙定理
+% * Codazzi 方程及混合偏导相容性
+% 
+% 纲要内容结束
+
+\section{结构方程与内在曲率}
+\label{g1:sec:0803}
+
+第一基本形式记录切平面中的长度，第二基本形式记录曲面向法向弯曲的程度。它们看起来各管一件事，但不能任意指定：如果它们来自同一个位置函数 \(X(u,v)\)，先对 \(u\) 求导再对 \(v\) 求导，必须与相反的顺序得到相同结果。这一简单要求将同时给出 Gauss 方程和 Codazzi 方程。计算中还会出现一个意外的结论：主曲率的乘积虽由法向弯曲定义，却只需要第一基本形式就能求出。
+
+\ProseParagraphBreak
+
+本节取光滑浸入 \(X\colon U\rightarrow\mathbb R^3\)，其中 \(U\subseteq\mathbb R^2\) 开，记 \(u^1=u\)、\(u^2=v\)、\(X_i=\partial_iX\)。沿用 \(g_{ij}=\langle X_i,X_j\rangle\)、\(D=\det(g_{ij})>0\) 与选定的单位法向 \(n\)，并记 \(h_{ij}=\langle X_{ij},n\rangle\)。向量场及其导数都按参数点定义；若像有自交，不把不同参数点上的切向量混为一谈。指标 \(i,j,k,\ell,m\) 均取 \(1,2\)；在同一项中重复出现的一上一下指标表示对这两个值求和。这个简写只省去求和号，不改变矩阵的乘法顺序。
+
+\subsection{Gauss–Weingarten 方程}
+\label{g1:subsec:0803:01}
+
+前一节已经把 \(X_{ij}\) 的法向分量写成 \(h_{ij}n\)。剩下的切向分量也需要记录，因为坐标向量 \(X_1,X_2\) 一般随位置改变，既不保持长度，也不保持夹角。令 \((g^{ij})\) 为 \((g_{ij})\) 的逆矩阵，并写 \(h_i{}^k=g^{k\ell}h_{i\ell}\)。
+
+\begin{proposition}[Gauss–Weingarten 方程]
+	\label{g1:prop:gauss-weingarten}
+	设 \(X\colon U\subseteq\mathbb R^2\rightarrow\mathbb R^3\) 是光滑浸入，\(n\) 为光滑单位法向。存在唯一的光滑函数 \(\Gamma^k_{ij}\)，使
+	\begin{equation}
+		\label{g1:eq:gauss-weingarten}
+		\partial_iX_j=\Gamma^k_{ij}X_k+h_{ij}n,\qquad
+		\partial_i n=-h_i{}^kX_k.
+	\end{equation}
+	其中 \(\Gamma^k_{ij}=\Gamma^k_{ji}\)，并且
+	\begin{equation}
+		\label{g1:eq:christoffel-metric}
+		\Gamma^k_{ij}
+		=\frac12g^{k\ell}\bigl(\partial_i g_{j\ell}+\partial_j g_{i\ell}-\partial_\ell g_{ij}\bigr).
+	\end{equation}
+	因此 \(X_{ij}\) 的切向分解系数完全由第一基本形式决定。
+\end{proposition}
+
+\begin{proof}
+	浸入条件保证 \(X_1,X_2,n\) 线性无关，所以向量 \(X_{ij}\) 有唯一的上述分解。混合偏导相等给出 \(\Gamma^k_{ij}=\Gamma^k_{ji}\)。对 \(g_{j\ell}=\langle X_j,X_\ell\rangle\) 求导，得到
+	\[
+		\partial_i g_{j\ell}=\langle X_{ij},X_\ell\rangle+\langle X_j,X_{i\ell}\rangle.
+	\]
+	把交换 \(i,j,\ell\) 所得的三个式子按前两个相加、第三个相减，交叉项抵消，故
+	\[
+		2\langle X_{ij},X_\ell\rangle
+		=\partial_i g_{j\ell}+\partial_j g_{i\ell}-\partial_\ell g_{ij}
+		=2\Gamma^k_{ij}g_{k\ell}.
+	\]
+	乘逆矩阵便得\eqref{g1:eq:christoffel-metric}。
+
+	由 \(\langle n,n\rangle=1\) 可知 \(\partial_i n\) 是切向量；对 \(\langle n,X_j\rangle=0\) 求导，又有
+	\[
+		\langle\partial_i n,X_j\rangle=-\langle n,X_{ij}\rangle=-h_{ij}.
+	\]
+	若 \(\partial_i n=a^kX_k\)，则 \(a^kg_{kj}=-h_{ij}\)，即 \(a^k=-g^{k\ell}h_{i\ell}\)。
+\end{proof}
+
+\eqref{g1:eq:gauss-weingarten}中的第一式称为 Gauss 公式，第二式称为 Weingarten 公式；两式合称\term[gaussweingartenfangcheng]{Gauss–Weingarten 方程}[Gauss--Weingarten equations]。第二式正是形算子 \(S=-\mathrm{d}n\) 的坐标表达；负号与\cref{g1:def:shape-operator}的约定一致。\footnote{Weingarten，中文常译魏因加滕；Julius Weingarten（1836--1910），德国数学家，研究曲面等距变形与曲率线。}
+
+\ProseParagraphBreak
+
+这里的标架 \((X_1,X_2,n)\) 通常不是正交单位标架。因此 \(\Gamma^k_{ij}\) 无须像\eqref{g1:eq:frenet-matrix}中的系数矩阵那样斜对称。其作用是补偿坐标基自身的变化；这个变化有些来自曲面的弯曲，有些仅来自选了弯曲的坐标线。
+
+\subsection{协变导数与 Christoffel 系数}
+\label{g1:subsec:0803:02}
+
+设 \(V=V^iX_i\) 是沿曲面的光滑切向量场。把它当作取值于 \(\mathbb R^3\) 的函数求导，\(\partial_iV\) 未必仍在切平面内。例如球面上的切向量沿曲线变化时，普通导数可能含有径向分量。如果我们只记录曲面自身的切向变化，就应把普通导数投影回当前切平面。
+
+\begin{definition}
+	\label{g1:def:surface-covariant-derivative}
+	对光滑浸入 \(X\colon U\rightarrow\mathbb R^3\) 上的光滑切向量场 \(V\)，定义它沿坐标方向的\term[xiebiandaoshu]{协变导数}[covariant derivative]为
+	\[
+		\nabla_iV\coloneqq(\partial_iV)^\top
+		=\bigl(\partial_iV^k+\Gamma^k_{ij}V^j\bigr)X_k,
+	\]
+	其中 \({}^\top\) 表示向切平面的正交投影。若 \(W=W^iX_i\)，则定义 \(\nabla_WV=W^i\nabla_iV\)。函数的方向导数记为 \(W(f)=W^i\partial_i f\)。\symidx{\(\nabla_WV\)：切向量场的协变导数}
+\end{definition}
+
+上式中的 \(\Gamma^k_{ij}\) 称为\term[christoffelxishu]{Christoffel 系数}[Christoffel symbols]，也称 Christoffel 符号。\footnote{Christoffel，中文常译克里斯托费尔；Elwin Bruno Christoffel（1829--1900），德国数学家，研究二次微分形式、张量演算与共形映射。}在这里“协变”所强调的是：重参数化后，计算仍给出同一个切向量，而非要求各个数 \(\Gamma^k_{ij}\) 保持不变。定义中的正交投影及方向导数都是几何操作，已经说明其不依赖坐标；公式中新增的 \(\Gamma^k_{ij}V^j\) 恰好补上了基向量求导的部分。\symidx{\(\Gamma^k_{ij}\)：Christoffel 系数}
+
+\begin{example}[平面也可以有非零的 Christoffel 系数]
+	\label{g1:exm:polar-christoffel}
+	在平面的极坐标参数 \(X(r,\theta)=(r\cos\theta,r\sin\theta,0)\) 中，取 \(r>0\) 及一个适当的角度区间，有 \(g_{rr}=1\)、\(g_{r\theta}=0\)、\(g_{\theta\theta}=r^2\)。代入\eqref{g1:eq:christoffel-metric}得到仅有的非零系数
+	\[
+		\Gamma^r_{\theta\theta}=-r,\qquad
+		\Gamma^\theta_{r\theta}=\Gamma^\theta_{\theta r}=\frac1r.
+	\]
+	例如 \(\partial_\theta X_\theta=-rX_r\) 只是平面内的径向加速度，并不意味着平面发生了法向弯曲。在直角坐标下，同一平面的全部 Christoffel 系数都为零。
+\end{example}
+
+这种现象说明 \(\Gamma^k_{ij}\) 不是一个张量的分量：如果张量在某组基下全部分量为零，换基后仍应全部为零。更直接地，设新坐标为 \(y^a\)，旧坐标为 \(u^i=u^i(y)\)，对 \(\widetilde X(y)=X(u(y))\) 求两次导数，并比较切向分量，得到
+\[
+	\widetilde\Gamma^c_{ab}
+	=\frac{\partial y^c}{\partial u^k}
+	\left(
+		\Gamma^k_{ij}\frac{\partial u^i}{\partial y^a}\frac{\partial u^j}{\partial y^b}
+		+\frac{\partial^2u^k}{\partial y^a\partial y^b}
+	\right).
+\]
+最后的二阶导数项不是逐点线性换基产生的项。协变导数整体仍然与坐标无关，因为向量分量 \(V^i\) 的导数也发生变化，恰好抵消这项。
+
+\ProseParagraphBreak
+
+为了比较先沿两个方向求导的结果，需要注意：任意两个向量场的方向导数未必可交换。定义它们的\term[xiangliangchangkuohao]{向量场括号}[Lie bracket]为
+\[
+	[W,V]=\bigl(W^i\partial_iV^k-V^i\partial_iW^k\bigr)X_k.
+\]
+对每个光滑函数 \(f\)，直接展开可得 \([W,V](f)=W(V(f))-V(W(f))\)，其中二阶偏导项成对抵消。这也给出了括号与坐标无关的含义。这一运算也称为 Lie 括号。\footnote{Lie，中文译李；Marius Sophus Lie（1842--1899），挪威数学家，创立连续变换群理论，并研究其与微分方程的联系。}特别地，坐标向量场满足 \([X_1,X_2]=0\)；这并不是说作为 \(\mathbb R^3\) 值函数的 \(X_1,X_2\) 是常向量。
+
+\begin{proposition}[切向求导的基本性质]
+	\label{g1:prop:surface-connection-properties}
+	在光滑浸入曲面上，协变导数对向量场可加，且对任意光滑函数 \(f\) 及切向量场 \(V,W,Z\)，有
+	\begin{align*}
+		\nabla_{fW}V&=f\nabla_WV,&
+		\nabla_W(fV)&=W(f)V+f\nabla_WV,\\
+		W\langle V,Z\rangle&=\langle\nabla_WV,Z\rangle+\langle V,\nabla_WZ\rangle,&
+		\nabla_WV-\nabla_VW&=[W,V].
+	\end{align*}
+	后两条分别称为\term[duliangxiangrong]{度量相容}[metric compatibility]和\term[wunao]{无挠性}[torsion-freeness]。更一般地，在开集 \(U\subseteq\mathbb R^2\) 上给定任意光滑正定矩阵场 \(g=(g_{ij})\)，由\eqref{g1:eq:christoffel-metric}及协变导数的坐标公式定义的运算也满足这两条性质，而且它是满足这些性质与前两条求导规则的唯一运算。
+\end{proposition}
+
+\begin{proof}
+	前两条由普通求导的线性及乘法法则得到。对于诱导度量，普通内积求导后出现的法向分量与 \(V,Z\) 垂直，所以投影不改变结果，得到度量相容。再展开 \(\nabla_WV-\nabla_VW\)，由于 \(\Gamma^k_{ij}=\Gamma^k_{ji}\)，所有含 \(\Gamma\) 的项相消，余项就是括号。
+
+	对于任意给定的正定 \(g\)，公式\eqref{g1:eq:christoffel-metric}仍给出 \(\Gamma^k_{ij}=\Gamma^k_{ji}\)，所以无挠性的证明不变。另有
+	\[
+		\Gamma^k_{ij}g_{k\ell}+\Gamma^k_{i\ell}g_{jk}
+		=\partial_i g_{j\ell},
+	\]
+	因为将右式中的两个 \(\Gamma\) 换成定义后，其余偏导项互相抵消。这正是对坐标向量场的度量相容，乘以向量场分量并用乘法法则即得一般情形。
+
+	最后，设另一运算满足相同规则，写其坐标系数为 \(C^k_{ij}\)。无挠性给出 \(C^k_{ij}=C^k_{ji}\)，度量相容给出 \(\partial_i g_{j\ell}=C^k_{ij}g_{k\ell}+C^k_{i\ell}g_{jk}\)。如\cref{g1:prop:gauss-weingarten}的证明那样将三个式子相加减，就强制得到 \(C^k_{ij}=\Gamma^k_{ij}\)。
+\end{proof}
+
+这一运算也称为度量的\term[lianluo]{联络}[connection]。在只给定 \(g\) 而尚未构造曲面时，我们把坐标基写作 \(\partial_1,\partial_2\)，完全可以照同一公式求导。重参数化后，度量相容、无挠性和两条求导规则都保持；上面的唯一性说明，各套坐标得到的是同一个运算。因此，“把普通导数投影回去”是诱导度量的直观构造，“由 \(g\) 的系数求出 \(\Gamma\)”则使这个构造不再依赖于周围的三维空间。
+
+\subsection{Gauss 方程与绝妙定理}
+\label{g1:subsec:0803:03}
+
+普通二阶偏导可交换，协变二阶导数却是在每次求导后都投影一次，两次中间使用的切平面不同，结果可能不同。若方向本身也是变化的向量场，还必须扣除它们的括号造成的差别。这个扣除不是附加修饰；缺少它，结果会依赖方向场在邻点如何延拓。
+
+\begin{definition}
+	\label{g1:def:surface-curvature-tensor}
+	对光滑曲面度量的协变导数，定义
+	\[
+		R(V,W)Z\coloneqq\nabla_V\nabla_WZ-\nabla_W\nabla_VZ-\nabla_{[V,W]}Z.
+	\]
+	这个运算称为\term[qulvzhangliang]{曲率张量}[curvature tensor]。本书固定上述符号顺序。\symidx{\(R(V,W)Z\)：曲率张量}
+\end{definition}
+
+\begin{proposition}
+	\label{g1:prop:curvature-tensorial}
+	曲率运算 \(R(V,W)Z\) 对三个向量场均为逐点线性：任意光滑函数 \(f\) 均满足
+	\begin{align*}
+		R(fV,W)Z&=fR(V,W)Z,\\
+		R(V,fW)Z&=fR(V,W)Z,\\
+		R(V,W)(fZ)&=fR(V,W)Z.
+	\end{align*}
+	因此在点 \(p\) 的值只依赖 \(V(p),W(p),Z(p)\)，不依赖这些向量在邻域中的延拓。
+\end{proposition}
+
+\begin{proof}
+	先由括号的坐标式得到 \([fV,W]=f[V,W]-W(f)V\)。代入定义，第二项求导产生的 \(-W(f)\nabla_VZ\) 正好与括号项中的 \(W(f)\nabla_VZ\) 抵消，证明第一式。由 \(R(W,V)=-R(V,W)\) 得第二式。
+
+	对第三式，把两次乘法法则代入定义。含 \(\nabla_VZ,\nabla_WZ\) 的一阶导数项成对抵消，剩余的额外项只有
+	\[
+		\bigl(V(W(f))-W(V(f))-[V,W](f)\bigr)Z=0.
+	\]
+	故第三式成立。将三个向量场各自在坐标基中展开，所得值是各自分量在 \(p\) 的乘积乘以 \(R(X_i,X_j)X_k\) 在 \(p\) 的值，所以确实只需要三个输入向量的点值。
+\end{proof}
+
+这就是这里“张量”的具体含义：每一点都有一个由三个切向量决定一个切向量的多线性映射。读者不必先掌握张量丛的一般理论，也能使用上面的延拓无关性。
+
+\ProseParagraphBreak
+
+由于 \([X_1,X_2]=0\)，计算坐标分量只须展开两次求导：
+\begin{equation}
+	\label{g1:eq:surface-curvature-components}
+	\begin{aligned}
+		R(X_1,X_2)X_j&=R^k{}_{j12}X_k,\\
+		R^k{}_{j12}
+		&=\partial_1\Gamma^k_{2j}-\partial_2\Gamma^k_{1j}
+		+\Gamma^k_{1m}\Gamma^m_{2j}-\Gamma^k_{2m}\Gamma^m_{1j}.
+	\end{aligned}
+\end{equation}
+例如 \(\nabla_1(\Gamma^m_{2j}X_m)\) 同时对系数及基向量求导，才得到偏导项和两个系数的乘积。遗漏后一部分，就会把坐标基变化误当作曲率。
+
+\begin{theorem}[Gauss 方程]
+	\label{g1:thm:gauss-equation}
+	设 \(X\colon U\subseteq\mathbb R^2\rightarrow\mathbb R^3\) 是光滑浸入，取光滑单位法向 \(n\)，形算子为 \(S=-\mathrm{d}n\)，第二基本形式为 \(h(V,W)=\langle SV,W\rangle\)。诱导度量的曲率满足
+	\begin{equation}
+		\label{g1:eq:gauss-equation}
+		R(V,W)Z=h(W,Z)SV-h(V,Z)SW.
+	\end{equation}
+	特别地，
+	\[
+		R^k{}_{j12}=h_{2j}h_1{}^k-h_{1j}h_2{}^k,\qquad
+		\langle R(X_1,X_2)X_2,X_1\rangle=h_{11}h_{22}-h_{12}^2.
+	\]
+\end{theorem}
+
+\begin{proof}
+	记 \(\mathrm{D}_V\) 为对 \(\mathbb R^3\) 值函数逐分量作方向导数。由定义及\cref{g1:prop:gauss-weingarten}，任意切向量场满足
+	\[
+		\mathrm{D}_VZ=\nabla_VZ+h(V,Z)n,\qquad \mathrm{D}_Vn=-SV.
+	\]
+	欧氏空间中的逐分量求导满足
+	\[
+		\mathrm{D}_V\mathrm{D}_WZ-\mathrm{D}_W\mathrm{D}_VZ-\mathrm{D}_{[V,W]}Z=0,
+	\]
+	因为对每个分量这正是括号的定义。将前两个分解式代入，并只取切向分量：
+	\[
+		0=\nabla_V\nabla_WZ-h(W,Z)SV
+		-\nabla_W\nabla_VZ+h(V,Z)SW-\nabla_{[V,W]}Z.
+	\]
+	移项便得 Gauss 方程。最后取 \(V=X_1,W=Z=X_2\)，再与 \(X_1\) 作内积，使用 \(h(X_i,X_j)=h_{ij}\)，即可得到坐标结论。
+\end{proof}
+
+上面的等式称为\term[gaussfangcheng]{Gauss 方程}[Gauss equation]。左边只由度量求导得到，右边却是法向弯曲的数据。由\cref{g1:prop:surface-curvature-formulas}，\(K=\det(h_{ij})/\det(g_{ij})\)，因此立即得到
+\begin{equation}
+	\label{g1:eq:intrinsic-gauss-curvature}
+	K=\frac{\langle R(X_1,X_2)X_2,X_1\rangle}{D}
+	=\frac{g_{1k}R^k{}_{212}}{D}.
+\end{equation}
+其右端只使用 \(g_{ij}\)、它们的逆矩阵和一二阶偏导数。
+
+\begin{theorem}[Gauss 绝妙定理]
+	\label{g1:thm:theorema-egregium}
+	光滑曲面的 Gauss 曲率由第一基本形式决定。若两个光滑正则曲面片局部等距，则对应点的 Gauss 曲率相等；此结论不要求局部等距来自三维欧氏空间的刚性变换，也不要求保持所选法向。
+\end{theorem}
+
+\begin{proof}
+	设局部等距在参数域中由微分同胚 \(\phi\) 表示。用 \(\phi\) 重参数化第二个曲面片后，它与第一个曲面片的 \(g_{ij}\) 完全相同，因而\eqref{g1:eq:christoffel-metric}给出相同的 \(\Gamma^k_{ij}\)，\eqref{g1:eq:surface-curvature-components}给出相同的 \(R^k{}_{j12}\)。再由\eqref{g1:eq:intrinsic-gauss-curvature}，两者的 \(K\) 相同。反转法向虽使 \(h,S\) 变号，却不改变 \(\det S\)，所以结论也不依赖该选择。
+\end{proof}
+
+这一定理称为\term[juemiaodingli]{绝妙定理}[theorema egregium]。它不声称主曲率分别由度量决定；平面与圆柱可以局部等距，但其主曲率并不相同。它说明的是两主曲率的乘积受到内在度量的限制。另一方面，标准球面有 \(K=1/R^2\)，平面有 \(K=0\)，所以球面上任何开片都不能通过保持长度的局部等距完全铺到平面上。
+
+\ProseParagraphBreak
+
+下一节将从给定的度量与对称形式出发，尚无曲面可供求导。为此要明确：二维度量的曲率也只有一个独立的数，因而一个标量 Gauss 方程足以表达全部曲率条件。
+
+\begin{proposition}[二维曲率只有一个独立分量]
+	\label{g1:prop:surface-curvature-two-dim}
+	设 \(g\) 是开集 \(U\subseteq\mathbb R^2\) 上的光滑正定度量，以\eqref{g1:eq:christoffel-metric}定义协变导数及曲率。令
+	\[
+		K_g\coloneqq\frac{g(R(\partial_1,\partial_2)\partial_2,\partial_1)}
+		{\det(g_{ij})}.
+	\]
+	则 \(K_g\) 不依赖坐标，且任意切向量 \(V,W,Z\) 都满足
+	\begin{equation}
+		\label{g1:eq:two-dimensional-curvature}
+		R(V,W)Z=K_g\bigl(g(W,Z)V-g(V,Z)W\bigr).
+	\end{equation}
+	若另给一个光滑对称形式 \(h\)，令 \(S=g^{-1}h\)，则标量等式 \(K_g=\det S\) 等价于完整的 Gauss 方程\eqref{g1:eq:gauss-equation}。
+\end{proposition}
+
+\begin{proof}
+	固定一点，令 \(C(V,W,Z,T)=g(R(V,W)Z,T)\)。定义给出 \(C\) 在前两个变量中反对称。度量相容又给出
+	\[
+		g(R(V,W)Z,T)+g(Z,R(V,W)T)=0.
+	\]
+	要验证这式，只须对 \(g(Z,T)\) 应用恒等式 \(VW-WV-[V,W]=0\)，每次用度量相容展开；含一次协变导数的交叉内积抵消，剩余的正是这两项。因此 \(C\) 在最后两个变量中也反对称。
+
+	取该点的任意正交单位基 \(e_1,e_2\)。二维空间的交替双线性形式只有一个独立分量：若 \(V=ae_1+be_2\)、\(W=ce_1+de_2\)，则前两个位置按双线性与反对称性展开后只剩系数 \(ad-bc\)。对最后两个位置作同样展开，整个 \(C\) 就由
+	\[
+		k=C(e_1,e_2,e_2,e_1)
+	\]
+	决定。具体地，
+	\[
+		C(V,W,Z,T)=k\bigl(g(W,Z)g(V,T)-g(V,Z)g(W,T)\bigr).
+	\]
+	取 \(V=\partial_1,W=Z=\partial_2,T=\partial_1\)，括号内是 \(g_{11}g_{22}-g_{12}^2\)，故 \(k=K_g\)，同时得到\eqref{g1:eq:two-dimensional-curvature}。右式也表明，在任意另一组基上用同一比值求出的仍是 \(k\)，所以与坐标无关。
+
+	最后，\(S=g^{-1}h\) 关于 \(g\) 自伴。在一点选取它的正交单位特征基，设特征值为 \(a,b\)。此时直接在基向量上计算可得
+	\[
+		h(W,Z)SV-h(V,Z)SW
+		=ab\bigl(g(W,Z)V-g(V,Z)W\bigr).
+	\]
+	两边对 \(V,W,Z\) 多线性，因此对任意向量成立。又 \(ab=\det S\)，与已证公式比较便得到等价性。
+\end{proof}
+
+这里的 \(K_g\) 可以在尚未证明度量能够浸入 \(\mathbb R^3\) 时定义。若确有这样的浸入，Gauss 方程才把它与外在定义的 \(K=\det S\) 认作同一个函数。这一区别会在给定数据的实现问题中起作用。
+
+\begin{example}[共形坐标中的内在曲率]
+	\label{g1:exm:conformal-curvature}
+	设在参数域上给定度量
+	\[
+		g=e^{2\phi(u,v)}(\mathrm du^2+\mathrm dv^2),
+	\]
+	其中 \(\phi\) 光滑。两坐标方向垂直，且长度按同一倍数缩放。由\eqref{g1:eq:christoffel-metric}，
+	\[
+		\begin{array}{lll}
+			\Gamma^1_{11}=\phi_u,&\Gamma^1_{12}=\Gamma^1_{21}=\phi_v,&\Gamma^1_{22}=-\phi_u,\\
+			\Gamma^2_{11}=-\phi_v,&\Gamma^2_{12}=\Gamma^2_{21}=\phi_u,&\Gamma^2_{22}=\phi_v.
+		\end{array}
+	\]
+	计算 \(R^1{}_{212}\) 时，两个乘积和恰好抵消：
+	\[
+		R^1{}_{212}
+		=-\phi_{uu}-\phi_{vv}
+		+\bigl(-\phi_u^2+\phi_v^2\bigr)
+		-\bigl(\phi_v^2-\phi_u^2\bigr)
+		=-\phi_{uu}-\phi_{vv}.
+	\]
+	由于 \(g_{12}=0\)、\(g_{11}=e^{2\phi}\)、\(D=e^{4\phi}\)，得到
+	\begin{equation}
+		\label{g1:eq:conformal-gauss-curvature}
+		K_g=-e^{-2\phi}(\phi_{uu}+\phi_{vv}).
+	\end{equation}
+	例如 \(\phi=\log2-\log(1+u^2+v^2)\) 时，\(\phi_{uu}+\phi_{vv}=-4/(1+u^2+v^2)^2\)，故 \(K_g=1\)。求出这个数不需要先构造法向或主曲率。
+\end{example}
+
+\subsection{Codazzi 方程及混合偏导相容性}
+\label{g1:subsec:0803:04}
+
+Gauss 方程比较的是二阶求导的切向部分。法向部分也必须相等，而其中包含的是 \(h_{ij}\) 的一阶变化。直接比较 \(\partial_1h_{2j}\) 与 \(\partial_2h_{1j}\) 还不够，因为 \(h\) 的两个输入基向量也随位置改变，需要把这两种变化扣除。
+
+\begin{definition}
+	\label{g1:def:covariant-h-derivative}
+	给定光滑度量 \(g\)、它的协变导数 \(\nabla\) 及光滑对称双线性形式 \(h\)，定义
+	\[
+		(\nabla_Vh)(W,Z)
+		\coloneqq V\bigl(h(W,Z)\bigr)-h(\nabla_VW,Z)-h(W,\nabla_VZ).
+	\]
+	其坐标分量记为
+	\[
+		\nabla_i h_{jk}\coloneqq\partial_i h_{jk}
+		-\Gamma^m_{ij}h_{mk}-\Gamma^m_{ik}h_{jm}.
+	\]
+\end{definition}
+
+这个定义中的两个减项各照顾 \(h\) 的一个输入。利用协变导数的乘法法则可以检查：将 \(W\) 或 \(Z\) 换成 \(fW\) 或 \(fZ\)，求导产生的 \(V(f)\) 项被相应减项抵消；对 \(V\) 则直接逐点线性。因此 \(\nabla h\) 的值同样不依赖输入向量场的延拓。
+
+\begin{theorem}[Codazzi 方程]
+	\label{g1:thm:codazzi-equation}
+	设 \(X\colon U\subseteq\mathbb R^2\rightarrow\mathbb R^3\) 是光滑浸入，\(h\) 是由光滑单位法向确定的第二基本形式，\(\nabla\) 为诱导度量的协变导数，则
+	\[
+		(\nabla_Vh)(W,Z)=(\nabla_Wh)(V,Z)
+	\]
+	对任意光滑切向量场成立。坐标表达为两个方程
+	\begin{equation}
+		\label{g1:eq:codazzi-components}
+		\nabla_1h_{2j}-\nabla_2h_{1j}
+		=\partial_1h_{2j}-\partial_2h_{1j}
+		+\Gamma^m_{2j}h_{1m}-\Gamma^m_{1j}h_{2m}=0,
+		\qquad j=1,2.
+	\end{equation}
+	若定义 \((\nabla_VS)W=\nabla_V(SW)-S(\nabla_VW)\)，则同一条件也可写成 \((\nabla_VS)W=(\nabla_WS)V\)。
+\end{theorem}
+
+\begin{proof}
+	对 Gauss–Weingarten 方程求一次偏导。由于 \(\partial_i n\) 与 \(n\) 垂直，
+	\[
+		\langle\partial_1\partial_2X_j,n\rangle
+		=\Gamma^m_{2j}h_{1m}+\partial_1h_{2j},\qquad
+		\langle\partial_2\partial_1X_j,n\rangle
+		=\Gamma^m_{1j}h_{2m}+\partial_2h_{1j}.
+	\]
+	混合偏导相等立即给出\eqref{g1:eq:codazzi-components}。它与协变导数的表达相同，是因为展开 \(\nabla_1h_{2j}-\nabla_2h_{1j}\) 后，项 \(-\Gamma^m_{12}h_{mj}\) 与 \(+\Gamma^m_{21}h_{mj}\) 相消。其余恰为上式。前面已经证明 \(\nabla h\) 对三个输入逐点线性，所以在坐标基上验证便给出一般向量场的结论。
+
+	最后，度量相容以及 \(h(W,Z)=g(SW,Z)\) 给出
+	\[
+		(\nabla_Vh)(W,Z)
+		=g\bigl(\nabla_V(SW)-S(\nabla_VW),Z\bigr).
+	\]
+	因度量非退化，对所有 \(Z\) 的内积相等当且仅当对应向量相等，这就得到形算子形式。
+\end{proof}
+
+这些关系称为\term[codazzifangcheng]{Codazzi 方程}[Codazzi equations]。\footnote{Codazzi，中文常译科达齐；Delfino Codazzi（1824--1873），意大利数学家，研究曲面基本形式的相容关系与曲线坐标。}它们控制第二基本形式沿不同方向的变化，Gauss 方程则控制第二基本形式与度量曲率的对应。把两种分量放回同一次计算，可直接看见它们的共同来源：
+\begin{equation}
+	\label{g1:eq:mixed-surface-derivatives}
+	\begin{aligned}
+		0&=\partial_1\partial_2X_j-\partial_2\partial_1X_j\\
+		&=\bigl(R^k{}_{j12}-h_{2j}h_1{}^k+h_{1j}h_2{}^k\bigr)X_k
+		+\bigl(\nabla_1h_{2j}-\nabla_2h_{1j}\bigr)n.
+	\end{aligned}
+\end{equation}
+这里切向与法向线性无关，所以两类系数必须分别消失。对于已经存在的曲面，这给出了必要条件；下一节将反过来证明，在足够小的参数邻域内，这些条件也足以从 \(g\) 与 \(h\) 恢复曲面。

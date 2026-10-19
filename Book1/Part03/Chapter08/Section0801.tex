@@ -1,0 +1,213 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 8.1 正则曲面和度量数据
+% 纲要位置：几何学计划纲要.md，第 402 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 浸入参数、图像模型和切平面
+% * 第一基本形式的坐标变换
+% * 长度、面积和局部等距
+% * 梯度、散度与曲面上的微分算子
+% 
+% 纲要内容结束
+
+\section{正则曲面和度量数据}
+\label{g1:sec:0801}
+
+把一张纸弯成圆柱的一部分，纸上两条相交曲线的夹角和沿纸测量的长度可以保持不变，纸在空间中的法方向却已经改变。要把这两种现象分开，首先应弄清参数怎样记录曲面，以及哪些计算只需两个切向量的内积。本章均在光滑即 \(C^\infty\) 的范围内讨论；这使后面交换偏导与求解标架系统时无需反复改变正则性条件，并不表示每一条单独的公式都需要无限次可微。
+
+\subsection{浸入参数、图像模型和切平面}
+\label{g1:subsec:0801:01}
+
+曲线的正则性要求速度不为零，曲面的对应要求是两个参数方向不能塌缩成一条直线。以下记 \(u^1=u,u^2=v\)，\(\partial_i=\partial/\partial u^i\)，\(X_i=\partial_iX\)。
+
+\begin{definition}[正则参数曲面]\label{g1:def:surface-immersion}
+	设 \(U\subseteq\mathbb R^2\) 开。光滑映射 \(X:U\rightarrow\mathbb R^3\) 若处处满足 \(\operatorname{rank}\mathrm{d}X=2\)，称为一个\term[zhengzecanshuqumian]{正则参数曲面}[regular parametrized surface]，也称参数域到 \(\mathbb R^3\) 的\term[jinru]{浸入}[immersion]。等价地，\(X_1,X_2\) 线性无关，或 \(X_1\times X_2\ne0\)。在参数点 \(q\in U\) 处的\term[qiepingmian]{切平面}[tangent plane]作为向量空间定义为
+	\[
+		\mathrm{T}_qX\coloneqq \mathrm{d}X_q(\mathbb R^2)=\operatorname{span}\{X_1(q),X_2(q)\}.
+	\]
+	经过曲面点的仿射切平面是 \(X(q)+\mathrm{T}_qX\)。若两个参数点具有同一空间像，记号 \(\mathrm{T}_qX\) 仍记录所选参数点，而不擅自把两个分支的切平面等同。
+\end{definition}
+
+最直接的模型是图像 \(X(u,v)=(u,v,f(u,v))\)：前两个分量已经保证两个偏导线性无关。反过来，每个浸入在足够小的参数邻域内都能换成这样的模型。为免把“选适当坐标”隐藏为一句话，先说明这里需要的逆映射事实。
+
+\begin{lemma}[局部逆映射的一个版本]\label{g1:lem:surface-local-inverse}
+	设 \(f:V\rightarrow\mathbb R^m\) 光滑，\(V\subseteq\mathbb R^m\) 开，且 \(\mathrm{D}f(a)\) 可逆。则 \(a\) 有开邻域 \(V_0\)，使 \(f|_{V_0}\) 是到某个开集的光滑双射，逆映射也光滑。
+\end{lemma}
+
+\begin{proof}
+	平移并左乘 \(\mathrm{D}f(a)^{-1}\)，可设 \(a=0,f(0)=0,\mathrm{D}f(0)=I\)。取闭球 \(\overline B_r\subset V\)，使其中 \(\|\mathrm{D}f-I\|\le q<1\)。沿线段积分导数得到
+	\[
+		\|f(x)-f(z)-(x-z)\|\le q\|x-z\|,\qquad
+		\|f(x)-f(z)\|\ge(1-q)\|x-z\|.
+	\]
+	对 \(\|y\|<(1-q)r\)，映射 \(\Phi_y(x)=y+x-f(x)\) 将闭球映入自身，且距离至多缩短为原来的 \(q\) 倍。从球内任一点迭代，相邻两项的距离至多为 \(q^j\) 倍初始距离，故迭代列为 Cauchy 列；闭球完备，极限 \(x\) 满足 \(f(x)=y\)。同一缩短估计证明解唯一。令 \(V_0=B_r\cap f^{-1}(B_{(1-q)r})\)，便得所需双射；上面的第二个不等式使逆映射连续且局部 Lipschitz。
+
+	写 \(x=f^{-1}(y)\) 及 \(x+h=f^{-1}(y+k)\)。由 \(k=\mathrm{D}f(x)h+o(\|h\|)\) 和 \(\|h\|\le(1-q)^{-1}\|k\|\)，有
+	\[
+		h=\mathrm{D}f(x)^{-1}k+o(\|k\|).
+	\]
+	因此逆映射可微，导数为 \(\mathrm{D}f(f^{-1}(y))^{-1}\)，且连续。对这个表达式反复求导，依次得到全部高阶连续导数。恢复最初的平移和可逆线性变换即得结论。
+\end{proof}
+
+\begin{proposition}[浸入的局部图像]\label{g1:prop:surface-local-graph}
+	设 \(X:U\rightarrow\mathbb R^3\) 为光滑浸入，\(q\in U\)。选择空间中适当的两个坐标后，\(q\) 有邻域 \(U_0\)，使 \(X(U_0)\) 是这两个坐标上的光滑函数图像；\(X|_{U_0}\) 是到其像的同胚。其切平面恰为所有通过 \(q\) 的光滑参数曲线在空间中的速度所组成的集合。特别地，可先用刚性运动把该点移到原点、切平面移成水平面，再得到满足 \(f(0)=0,\mathrm{d}f(0)=0\) 的图像。
+\end{proposition}
+
+\begin{proof}
+	矩阵 \(\mathrm{d}X_q\) 的秩为二，故某个二阶子式不为零。设对应前两个空间坐标，令 \(\pi(x,y,z)=(x,y)\)。由前一引理，\(\pi\circ X\) 在较小邻域内有光滑逆 \(\psi\)。于是
+	\[
+		X\circ\psi(x,y)=(x,y,f(x,y)).
+	\]
+	图像的逆坐标是连续的投影 \(\pi\)，所以原参数映射在该邻域内也是同胚。参数曲线 \(c(t)\) 满足 \(c(0)=q\) 时，\((X\circ c)'(0)=\mathrm{d}X_q(c'(0))\) 属于上述张成空间；反之，每个 \(\mathrm{d}X_q(w)\) 都由短直线 \(c(t)=q+tw\) 实现。若先将切平面移为水平面，投影 \(\pi\) 限制在该切平面上就是线性同构，所以上述逆映射论证仍适用；图像的水平切平面又使两个一阶偏导都为零。
+\end{proof}
+
+若子集 \(S\subseteq\mathbb R^3\) 在每一点附近都恰好是一个这样的图像，称为\term[zhengzequmian]{正则曲面}[regular surface]，此时也称嵌入曲面。它的图像参数之间的过渡映射光滑，因为可写为一张图像的投影与另一张参数映射的复合。浸入只保证每个参数分支局部如此，不保证整个像是嵌入曲面。例如
+\[
+	X(u,v)=(\sin u,\sin2u,v),\qquad (u,v)\in\mathbb R^2
+\]
+处处为浸入：\((\cos u,2\cos2u)\) 不会同时为零。但 \(u=0\) 与 \(u=\pi\) 的分支在同一竖直线上相交，两个切平面不同。本章的局部计算始终在选定分支上进行。
+
+\subsection{第一基本形式的坐标变换}
+\label{g1:subsec:0801:02}
+
+参数方向 \(a=(a^1,a^2)\) 本身的欧氏长度通常不是曲面上相应速度的长度。实际速度是 \(a^1X_1+a^2X_2\)，其平方范数把所需数据集中为一个二次型。
+
+\begin{definition}[第一基本形式]\label{g1:def:first-fundamental-form}
+	设 \(X:U\rightarrow\mathbb R^3\) 为光滑浸入。定义
+	\[
+		g_{ij}=\langle X_i,X_j\rangle,\qquad
+		E=g_{11},\quad F=g_{12}=g_{21},\quad G=g_{22},\quad D=EG-F^2.
+	\]
+	参数方向上的内积 \(g(a,b)=\sum_{i,j=1}^2g_{ij}a^ib^j\) 称为曲面的\term[diyijibenxingshi]{第一基本形式}[first fundamental form]，记
+	\[
+		I=E\,\mathrm{d}u^2+2F\,\mathrm{d}u\,\mathrm{d}v+G\,\mathrm{d}v^2.
+	\]
+	这里 \(\mathrm{d}u^2\) 表示 \(\mathrm{d}u\otimes \mathrm{d}u\) 在同一向量上求值所得的平方，混合项同理；它不是对参数函数取二阶导数。第一基本形式在每点正定，故 \(E>0,D>0\)。
+	\symidx{\(g_{ij}\)：第一基本形式的系数}
+	\symidx{\(I\)：第一基本形式}
+\end{definition}
+
+\begin{proposition}[度量的换元公式]\label{g1:prop:surface-metric-change}
+	设 \(X:U\rightarrow\mathbb R^3\) 为光滑浸入，\(\phi:\widetilde U\rightarrow U\) 为光滑微分同胚，即光滑且有光滑逆的双射。置 \(\widetilde X=X\circ\phi\)，以 \(J=(\partial u^i/\partial\widetilde u^a)\) 记换元导数矩阵。则
+	\begin{equation}\label{g1:eq:surface-metric-change}
+		\widetilde g=J^{\mathsf T}(g\circ\phi)J,\qquad
+		\det\widetilde g=(\det J)^2(D\circ\phi).
+	\end{equation}
+	特别地，\(g\) 的正定性以及相应切向量之间的长度和夹角不依赖坐标。
+\end{proposition}
+
+\begin{proof}
+	链式法则给出 \(\widetilde X_a=\sum_iX_i\,\partial_a\phi^i\)。两边取内积即为第一式，再取行列式即为第二式。若同一参数方向在两坐标中的分量满足 \(a=J\widetilde a\)，则 \(\widetilde a^{\mathsf T}\widetilde g\widetilde b=a^{\mathsf T}gb\)，这也直接说明所有内积计算保持一致。
+\end{proof}
+
+因此，度量不是某张矩阵本身，而是按这一规律相互转换的一族内积。即使暂时没有空间中的曲面，参数域上的任意光滑正定对称矩阵场也定义一个\term[limanduliang]{黎曼度量}[Riemannian metric]；本章重建问题正是询问这样的 \(g\) 与另一个对称数据 \(h\) 能否同时来自浸入。此名称所指的内在度量与环境空间中的欧氏距离应区分。\footnote{Riemann，黎曼，德文全名 Georg Friedrich Bernhard Riemann（1826--1866），德国数学家，在复分析、几何及分析学中作出基础性贡献。}
+
+\begin{example}[坐标网格可以不正交]\label{g1:exm:oblique-plane-metric}
+	平面参数 \(X(u,v)=(u+v,v,0)\) 给出 \(E=1,F=1,G=2\)，所以 \(I=\mathrm{d}u^2+2\,\mathrm{d}u\,\mathrm{d}v+2\,\mathrm{d}v^2\)。两个参数轴在空间中的夹角余弦为 \(1/\sqrt2\)，而不是零。另一方面，参数 \(X(r,\theta)=(r\cos\theta,r\sin\theta,0)\) 在 \(r>0\) 时给出 \(I=\mathrm{d}r^2+r^2\mathrm{d}\theta^2\)。系数变化可能仅来自坐标；这两张矩阵都描述平面的欧氏度量。
+\end{example}
+
+\subsection{长度、面积和局部等距}
+\label{g1:subsec:0801:03}
+
+度量的用途先从测量开始。若 \(c:[a,b]\rightarrow U\) 分段 \(C^1\)，空间曲线的速度为 \(\mathrm{d}X(c')\)，由\cref{g1:prop:arc-length-param}中的长度积分公式，
+\begin{equation}\label{g1:eq:surface-length}
+	L_g(c)=\int_a^b\sqrt{\sum_{i,j}g_{ij}(c(t))\dot c^i(t)\dot c^j(t)}\,\mathrm{d}t.
+\end{equation}
+两非零方向 \(a,b\) 的夹角余弦为 \(g(a,b)/\sqrt{g(a,a)g(b,b)}\)。这里距离沿曲面测量；将两点在空间中直线相连所得到的弦长一般不等于沿面的最短路程。
+
+\begin{definition}[面积密度]\label{g1:def:surface-area-density}
+	对光滑浸入 \(X:U\rightarrow\mathbb R^3\)，其\term[mianjimidu]{面积密度}[area density]及参数区域 \(A\subset U\) 的面积定义为
+	\[
+		\mathrm{d}A_g=\sqrt D\,\mathrm{d}u\,\mathrm{d}v,\qquad
+		\operatorname{Area}_X(A)=\int_A\sqrt D\,\mathrm{d}u\,\mathrm{d}v,
+	\]
+	其中 \(A\) 可取紧包含于 \(U\) 的分片光滑有界区域。若不同参数部分覆盖同一空间部分，此积分计入覆盖次数。
+\end{definition}
+
+这个因子的几何来源是微分 \(\mathrm{d}X\) 把参数单位小正方形送成由 \(X_1,X_2\) 张成的平行四边形，而
+\[
+	\|X_1\times X_2\|^2=\|X_1\|^2\|X_2\|^2-\langle X_1,X_2\rangle^2=D.
+\]
+面积定义使用微分给出的局部伸缩；并不声称随意选取的空间多面体逼近，其面积都自动收敛到这个值。由\eqref{g1:eq:surface-metric-change}，\(\sqrt{\det\widetilde g}=\sqrt{D\circ\phi}\,|\det J|\)，结合多元积分换元公式便知面积不依赖参数。换元公式在这里的具体用途是：可微双射的导数行列式绝对值恰补偿参数区域面积的改变。
+
+\begin{definition}[局部等距]\label{g1:def:surface-local-isometry}
+	设 \(U,V\subseteq\mathbb R^2\) 带光滑正定度量 \(g,\widetilde g\)。光滑映射 \(\phi:U\rightarrow V\) 若在每点附近为微分同胚，且
+	\[
+		g_q(a,b)=\widetilde g_{\phi(q)}(\mathrm{d}\phi_q(a),\mathrm{d}\phi_q(b))
+	\]
+	对所有 \(q,a,b\) 成立，称为\term[jubudengju]{局部等距}[local isometry]。对嵌入曲面的映射，在局部参数中采用同一定义。若映射在整体上是微分同胚并满足此式，则称为两度量曲面的等距。
+\end{definition}
+
+\begin{proposition}[长度刻画局部等距]\label{g1:prop:local-isometry-length}
+	设 \(\phi:(U,g)\rightarrow(V,\widetilde g)\) 为光滑局部微分同胚。则 \(\phi\) 是局部等距，当且仅当每条分段 \(C^1\) 参数曲线 \(c\) 都满足 \(L_{\widetilde g}(\phi\circ c)=L_g(c)\)。局部等距还保持夹角及在单射邻域内计算的面积。
+\end{proposition}
+
+\begin{proof}
+	保持内积直接给出速度模相同，积分即得长度相同；夹角公式和度量行列式的换元式给出另两项。反过来，固定 \(q\) 与方向 \(a\)，取短线段 \(c(t)=q+ta\)，\(0\le t\le\varepsilon\)。将长度相等除以 \(\varepsilon\)，令 \(\varepsilon\to0^+\)，连续性给出 \(g_q(a,a)=\widetilde g_{\phi(q)}(\mathrm{d}\phi_q(a),\mathrm{d}\phi_q(a))\)。利用
+	\[
+		2g(a,b)=g(a+b,a+b)-g(a,a)-g(b,b)
+	\]
+	恢复全部内积，故得局部等距。
+\end{proof}
+
+这个定义比较的是切向量及沿面测量，不要求 \(\phi\) 是环境空间某个刚性运动的限制。\subsecref{g1:subsec:0805:02}会用圆柱把这一区别算出来。局部等距也不保证整体单射，因而不能将局部保持长度直接理解为全局最短距离和拓扑都不改变。
+
+\subsection{梯度、散度与曲面上的微分算子}
+\label{g1:subsec:0801:04}
+
+已知一个温度函数 \(f\)，沿方向 \(a\) 的变化率 \(\mathrm{d}f(a)=\sum_i(\partial_i f)a^i\) 不需要度量；但问“沿哪个单位方向增长最快”，就必须知道什么叫单位长度。反过来，描述切向流的局部流出量时，还必须使用正确的面积密度。这两点分别导出梯度与散度。
+
+\begin{definition}[梯度]\label{g1:def:surface-gradient}
+	在带光滑正定度量 \(g\) 的平面开集 \(U\) 上，光滑函数 \(f\) 的\term[tidu]{梯度}[gradient]是唯一满足 \(g(\operatorname{grad}_g f,a)=\mathrm{d}f(a)\) 的向量场。若 \(g^{-1}=(g^{ij})\)，则
+	\begin{equation}\label{g1:eq:surface-gradient}
+		\operatorname{grad}_g f=\sum_{i,j}g^{ij}(\partial_j f)\partial_i.
+	\end{equation}
+	在浸入曲面上，右端的 \(\partial_i\) 经 \(\mathrm{d}X\) 对应到 \(X_i\)。
+\end{definition}
+
+求解线性方程 \(g_{ij}(\operatorname{grad}f)^j=\partial_i f\) 就得到公式。它说明直接把两个偏导数当作梯度分量，只有在度量矩阵为单位阵的坐标中才正确。若梯度非零，Cauchy--Schwarz 不等式给出 \(\mathrm{d}f(a)\le\|\operatorname{grad}f\|_g\)（\(\|a\|_g=1\)），等号在梯度方向达到；若 \(f\) 是环境函数 \(\widehat f\) 的限制，曲面梯度恰为欧氏梯度 \(\nabla\widehat f\) 的切向正交投影，因为两者与任何切向量的内积都等于该方向导数。
+
+\begin{definition}[散度与 Laplace 算子]\label{g1:def:surface-divergence-laplacian}
+	设 \(g\) 为 \(U\subseteq\mathbb R^2\) 上的光滑正定度量，\(W=\sum_iW^i\partial_i\) 为光滑向量场。定义其\term[sandu]{散度}[divergence]为
+	\begin{equation}\label{g1:eq:surface-divergence}
+		\operatorname{div}_gW=\frac1{\sqrt D}\sum_i\partial_i(\sqrt D\,W^i).
+	\end{equation}
+	函数上的\term[LaplaceBeltramisuanzi]{Laplace--Beltrami 算子}[Laplace--Beltrami operator]采用本书的非负号约定：
+	\begin{equation}\label{g1:eq:surface-laplacian}
+		\Delta_g f=-\operatorname{div}_g\operatorname{grad}_g f
+		=-\frac1{\sqrt D}\sum_{i,j}\partial_i\bigl(\sqrt D\,g^{ij}\partial_jf\bigr).
+	\end{equation}
+	\symidx{\(\Delta_g\)：非负号约定的 Laplace--Beltrami 算子}
+\end{definition}
+
+上述名称分别纪念 Laplace 和 Beltrami。\footnote{Laplace，拉普拉斯，法文全名 Pierre-Simon Laplace（1749--1827），法国数学家和天文学家，研究概率、势函数与天体力学。Beltrami，贝尔特拉米，意大利文名 Eugenio Beltrami（1835--1900），意大利数学家，研究微分几何、非欧几何模型及微分算子。}为看清散度为何需要 \(\sqrt D\)，取紧支于 \(U\) 内的光滑函数 \(\eta\)，记作 \(\eta\in C_c^\infty(U)\)。通常的分部积分没有边界项，因此
+\begin{equation}\label{g1:eq:surface-divergence-weak}
+	\int_U\eta\,\operatorname{div}_gW\,\mathrm{d}A_g
+	=-\int_U \mathrm{d}\eta(W)\,\mathrm{d}A_g.
+\end{equation}
+右边只涉及方向导数和已证明与坐标无关的面积，因而不依赖坐标。这一等式还唯一确定连续函数 \(\operatorname{div}_gW\)：若两个候选的差在一点为正，则在一个小圆盘上仍为正，在该圆盘取非负且不恒零的光滑函数作 \(\eta\)，便与积分为零矛盾。这样的函数可以显式取为圆盘内的 \(\exp(-1/(r^2-\|x-a\|^2))\)，在圆盘外取零；负值情形同理。于是散度公式确实定义了一个内在的标量，而不是坐标的偶然组合。
+
+\begin{proposition}[非负号约定与局部等距]\label{g1:prop:surface-laplacian-energy}
+	设 \(g\) 为平面开集 \(U\) 上的光滑正定度量，\(f,\eta\in C_c^\infty(U)\)。则
+	\[
+		\int_U\eta\Delta_g f\,\mathrm{d}A_g
+		=\int_U g(\operatorname{grad}_g\eta,\operatorname{grad}_gf)\,\mathrm{d}A_g,
+		\qquad
+		\int_Uf\Delta_g f\,\mathrm{d}A_g\ge0.
+	\]
+	若 \(\phi:(U,g)\rightarrow(V,\widetilde g)\) 为光滑局部等距，则每个光滑函数 \(f\) 满足 \(\Delta_g(f\circ\phi)=(\Delta_{\widetilde g}f)\circ\phi\)。
+\end{proposition}
+
+\begin{proof}
+	第一式在\eqref{g1:eq:surface-divergence-weak}中令 \(W=\operatorname{grad}f\) 并使用梯度的定义；令 \(\eta=f\) 得到第二式。对局部等距，定义直接给出 \(\mathrm{d}\phi(\operatorname{grad}_g(f\circ\phi))=(\operatorname{grad}_{\widetilde g}f)\circ\phi\)。在 \(\phi\) 单射的小邻域中，用面积换元和\eqref{g1:eq:surface-divergence-weak}可知相对应向量场的散度也对应。将两项结合即得算子等式；等式是逐点的，所以这些邻域足够覆盖整个定义域。
+\end{proof}
+
+“非负”说的是积分二次型，不是说 \(\Delta_g f\) 对每个 \(f\) 都逐点非负。在平面的极坐标中，\(g=\operatorname{diag}(1,r^2)\)、\(\sqrt D=r\)，故
+\[
+	\operatorname{grad}f=f_r\partial_r+\frac{f_\theta}{r^2}\partial_\theta,\quad
+	\operatorname{div}W=\frac1r\partial_r(rW^r)+\partial_\theta W^\theta,\quad
+	\Delta f=-f_{rr}-\frac1rf_r-\frac1{r^2}f_{\theta\theta}.
+\]
+例如 \(f=r^2\) 时 \(\Delta f=-4\)。这些式子只在 \(r>0\) 的极坐标区域使用；原点处公式的分母反映坐标失效，不能据此断言平面的几何有奇点。

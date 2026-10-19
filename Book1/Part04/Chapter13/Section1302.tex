@@ -1,0 +1,185 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 13.2 完备性和流盒
+% 纲要位置：几何学计划纲要.md，第 613 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 延拓判据与逃逸现象
+% * 紧支向量场的完备性
+% * 流盒定理的证明
+% * 由截断构造具有指定局部行为的整体流
+% 
+% 纲要内容结束
+
+\section{完备性和流盒}
+\label{g1:sec:1302}
+
+局部存在定理给每个初始点一小段运动，却没有承诺可以一直走下去。即使向量场处处光滑，速度也可能越来越大，使轨道在有限时间内逃向无穷远；反过来，只要轨道不断返回一个固定紧集，局部解就能重新启动。本节先把这种延拓机制说清，再用流建立适配坐标，最后用上一章的截断函数把指定的局部运动装进一个整体流中。除边界说明外，流形均无边界，并具有有限维、Hausdorff 和第二可数性质。
+
+\subsection{延拓判据与逃逸现象}
+\label{g1:subsec:1302:01}
+
+设 \(X\) 为光滑向量场，过 \(p\) 的最大积分曲线记为 \(\gamma_p:(a_p,b_p)\to M\)，其中 \(0\in(a_p,b_p)\)。\cref{g1:thm:maximal-integral-curve}中的“最大”是按定义区间包含关系说的：任何具有同一初值的解都是它的限制。若 \(b_p<\infty\)，端点不属于定义域；需要判断的是能否在接近这个时刻时找到另一个可用的初始点。
+
+\begin{lemma}[紧集上的统一存在时间]
+	\label{g1:lem:uniform-flow-time-compact}
+	设 \(X\) 是无边界光滑流形 \(M\) 上的光滑向量场，\(K\subset M\) 紧。存在 \(\varepsilon>0\) 和包含 \(K\) 的开集 \(V\)，使最大流 \(\Phi\) 在 \((-\varepsilon,\varepsilon)\times V\) 上有定义。
+\end{lemma}
+\begin{proof}
+	由\cref{g1:thm:maximal-local-flow}，流的定义域是包含 \(\{0\}\times M\) 的开集。每个 \(q\in K\) 因而有乘积邻域 \((-\varepsilon_q,\varepsilon_q)\times V_q\) 留在这个定义域内。用有限个 \(V_{q_1},\ldots,V_{q_N}\) 覆盖 \(K\)，取 \(\varepsilon=\min_j\varepsilon_{q_j}>0\) 及 \(V=\bigcup_jV_{q_j}\)，即得结论。空紧集时任取一个正数即可。
+\end{proof}
+
+\begin{theorem}[有限端点的逃逸判据]
+	\label{g1:thm:flow-escape-criterion}
+	设 \(X\) 是无边界光滑流形 \(M\) 上的光滑向量场，\(\gamma:(a,b)\to M\) 是最大积分曲线。如果 \(b<\infty\)，则对每个紧集 \(K\subset M\)，存在 \(t_K<b\)，使 \(\gamma(t)\notin K\) 对所有 \(t_K<t<b\) 成立。有限左端点具有相应结论。因此，若有 \(t_j\uparrow b<\infty\) 使 \(\gamma(t_j)\) 都落在一个固定紧集内，则原解一定能够越过 \(b\) 延拓。
+\end{theorem}
+\begin{proof}
+	若结论失败，就有趋向 \(b\) 的时刻 \(t_j\)，使 \(\gamma(t_j)\in K\)。取上一引理给出的统一存在时间 \(\varepsilon\)，并取 \(j\) 使 \(b-t_j<\varepsilon\)。从 \(\gamma(t_j)\) 出发的曲线
+	\[
+		t\longmapsto\Phi_{t-t_j}(\gamma(t_j)),\qquad |t-t_j|<\varepsilon,
+	\]
+	与原曲线在 \(t_j\) 取同一值。局部唯一性及沿公共区间逐点延续，说明两者在交叠区间上相同，所以可以粘合。新曲线的定义域包含 \((a,t_j+\varepsilon)\)，而 \(t_j+\varepsilon>b\)，与最大性矛盾。把时间反向，等价于把 \(X\) 换为 \(-X\)，便得左端点结论。
+\end{proof}
+
+这个判据不要求先证明 \(\gamma(t)\) 在端点处有极限。紧性在这里提供的是统一的重新启动时间；只要足够晚的某个初值仍在紧集里，已经足以越过旧端点。也不能把“离开一个坐标域”误认为“最大解结束”：坐标域可能很小，曲线离开后仍能在另一张图中继续。
+
+\begin{example}[有限时间逃逸]
+	\label{g1:exm:finite-time-flow-escape}
+	在 \(\mathbb R\) 上取 \(X=x^2\partial_x\)。对初值 \(x(0)=x_0\neq0\)，分离变量得到
+	\[
+		x(t)=\frac{x_0}{1-tx_0}.
+	\]
+	若 \(x_0>0\)，最大区间为 \((-\infty,1/x_0)\)，并且 \(t\uparrow1/x_0\) 时 \(x(t)\to+\infty\)。若 \(x_0<0\)，最大区间为 \((1/x_0,+\infty)\)，有限逃逸发生在反向时间；\(x_0=0\) 则给出整体常值解。向量场处处光滑，失效的是轨道在有限时间内留在任何固定紧集中的可能性。
+
+	另取开流形 \(M=(0,1)\) 和 \(X=\partial_x\)，解为 \(x(t)=x_0+t\)，最大区间是 \((-x_0,1-x_0)\)。坐标数值始终有界，但在 \((0,1)\) 中，每个紧集都与两个缺失端点保持正距离。因此这仍是逃离流形内所有紧集的情形，不是逃逸判据的反例。
+\end{example}
+
+\subsection{紧支向量场的完备性}
+\label{g1:subsec:1302:02}
+
+\begin{definition}
+	\label{g1:def:complete-vector-field}
+	无边界光滑流形上的光滑向量场 \(X\) 称为\term[wanbeixiangliangchang]{完备向量场}[complete vector field]，如果它的每条最大积分曲线都定义在整个 \(\mathbb R\) 上。此时最大流称为\term[zhengtiliu]{整体流}[global flow]，是光滑映射 \(\Phi:\mathbb R\times M\to M\)。
+\end{definition}
+
+由\cref{g1:thm:maximal-local-flow}，整体流满足 \(\Phi_0=\operatorname{id}\)、\(\Phi_{s+t}=\Phi_s\circ\Phi_t\)，且 \(\Phi_t^{-1}=\Phi_{-t}\)。因此每个固定时间给出整个流形的微分同胚。完备性是向量场的性质，此处并没有给 \(M\) 选定距离，更没有假设度量完备。
+
+\begin{theorem}[紧支向量场的完备性]
+	\label{g1:thm:compact-support-complete}
+	设 \(M\) 为无边界光滑流形，\(X\) 是光滑向量场。如果
+	\[
+		\operatorname{supp}X=\overline{\{p:X_p\neq0\}}
+	\]
+	为紧集，则 \(X\) 完备。特别地，紧无边界光滑流形上的每个光滑向量场都完备。
+\end{theorem}
+\begin{proof}
+	记 \(K=\operatorname{supp}X\)。若一条积分曲线在某个时刻经过零点 \(q\)，常曲线 \(t\mapsto q\) 是具有同一初值的整体解，由唯一性，原最大解就是这条常曲线。因此非恒定积分曲线不经过任何零点，尤其始终留在 \(K\) 中。
+
+	若某条非恒定最大解有有限右端点，它在接近端点时仍留在紧集 \(K\)，违反\cref{g1:thm:flow-escape-criterion}。左端点同理。常值解本来就定义在整个实轴上，所以全部解都整体存在。若 \(M\) 紧，\(\operatorname{supp}X\) 是 \(M\) 的闭子集，因而紧，得到最后一项。
+\end{proof}
+
+紧支是充分条件，并非必要条件。例如 \(\partial_x\) 在 \(\mathbb R\) 上的流为 \(x\mapsto x+t\)，\(x\partial_x\) 的流为 \(x\mapsto e^t x\)，两者都完备而不紧支。第二个例子的速度还无界；真正要排除的是有限时间内无法延拓，而不是任意大的速度。
+
+\begin{proposition}[边界上的切向条件]
+	\label{g1:prop:boundary-tangent-flow}
+	设 \(M\) 为带边界光滑流形，\(X\) 为光滑向量场，并满足 \(X_p\in \mathrm{T}_p\partial M\) 对每个 \(p\in\partial M\) 成立。则 \(X\) 有保持边界和内点集合的双侧局部流；若 \(X\) 紧支，则该流整体存在。反之，若一个双侧局部流的每个时间映射为流形的局部微分同胚，它的生成向量场必切于边界。
+\end{proposition}
+\begin{proof}
+	在边界图中记点为 \((y,r)\)，其中 \(r\geq0\)，写 \(X=(a(y,r),b(y,r))\)。光滑性允许将分量局部延拓到欧氏开集；切向条件为 \(b(y,0)=0\)。由微积分基本定理，缩小为乘积邻域后有
+	\[
+		b(y,r)=r\,c(y,r),\qquad c(y,r)=\int_0^1\partial_r b(y,\theta r)\,\mathrm{d}\theta,
+	\]
+	其中 \(c\) 光滑。欧氏延拓方程的解在此邻域内满足
+	\[
+		r(t)=r(0)\exp\!\left(\int_0^t c(y(s),r(s))\,\mathrm{d}s\right).
+	\]
+	这可以由线性标量方程 \(r'=c(y(t),r(t))r\) 的唯一性验证。因此 \(r(0)=0\) 时一直在边界，\(r(0)>0\) 时保持为正，正负小时间都不会越出半空间。欧氏局部流遂限制为所需局部流，并且不同延拓的限制由唯一性相同。紧集上的有限覆盖和逃逸判据的证明完全适用，所以紧支时整体存在。
+
+	反向，流形的局部微分同胚保持边界；故对边界点 \(p\)，曲线 \(t\mapsto\Phi_t(p)\) 位于 \(\partial M\)，其在零时刻的速度属于 \(\mathrm{T}_p\partial M\)。这正是生成向量场的值。
+\end{proof}
+
+例如闭区间 \([0,1]\) 上的 \(\partial_x\) 虽然光滑且紧支，却不切于边界，也不可能产生双侧整体流。这说明上一完备性定理中的无边界条件不能直接删掉。后面的流盒和 Frobenius 定理仍在无边界流形上陈述；边界适配坐标需要另外核对切向或横截条件。
+
+\subsection{流盒定理的证明}
+\label{g1:subsec:1302:03}
+
+在 \(X_p\neq0\) 的点附近，积分曲线能否作为一族坐标线？只沿一条曲线计时还不够：我们还要用 \(n-1\) 个参数区分邻近曲线。办法是在 \(p\) 处放一张与 \(X_p\) 横截的小截面，再从截面上每一点出发沿流运动。时间与截面参数合起来，正好给出 \(n\) 个候选坐标。下面给出\term[liuhe]{流盒定理}[flow-box theorem]。
+
+\begin{theorem}[流盒定理]
+	\label{g1:thm:flow-box}
+	设 \(M\) 为 \(n\geq1\) 维无边界光滑流形，\(X\) 是光滑向量场，\(X_p\neq0\)。则存在包含 \(p\) 的坐标邻域 \(U\)，其坐标为 \((s,z^2,\ldots,z^n)\)，取值于乘积开集 \((-\varepsilon,\varepsilon)\times B\)，使
+	\[
+		X=\frac{\partial}{\partial s}\quad\text{于 }U.
+	\]
+	在这些坐标中，局部流为 \((s,z)\mapsto(s+t,z)\)，只要相应线段留在这个乘积内。
+\end{theorem}
+\begin{proof}
+	先选 \(p\) 附近的坐标并作一个可逆线性变换，使 \(p\) 对应原点，\(X_p\) 在该点为第一坐标方向。令 \(\sigma(z)\) 为局部超平面 \(x^1=0\) 的参数化，\(\sigma(0)=p\)。由流的定义域开放性，在足够小的乘积邻域上可定义
+	\[
+		F(s,z)=\Phi_s(\sigma(z)).
+	\]
+	\cref{g1:thm:maximal-local-flow}保证 \(F\) 光滑。对时间求导得到 \(\partial_sF(0,0)=X_p\)，对 \(z\) 求导则得到 \(\mathrm{d}\sigma_0\) 的 \(n-1\) 个切向量。这些向量与 \(X_p\) 合起来组成 \(\mathrm{T}_pM\) 的基，因此 \(\mathrm{d}F_{(0,0)}\) 可逆。
+
+	由\cref{g1:thm:inverse-function}，\(F\) 在 \((0,0)\) 的某邻域上是微分同胚；在该邻域内再取一个小乘积 \((-\varepsilon,\varepsilon)\times B\)，其像 \(U\) 仍为开集。将 \(F^{-1}\) 作为新坐标。因为 \(s\mapsto F(s,z)\) 本来就是积分曲线，处处有
+	\[
+		\mathrm{d}F_{(s,z)}(\partial_s)=X_{F(s,z)}.
+	\]
+	所以新坐标中的向量场恰为 \(\partial_s\)，不是仅在原点处相等。固定 \(z\) 的直线满足新坐标下的微分方程，唯一性给出所述平移公式。\(n=1\) 时截面只有一个点，同一论证仍成立。
+\end{proof}
+
+\input{Figures/Chapter13-FlowBox.tex}
+
+流盒坐标把时间保留下来，因此比只把轨道画成直线更强：若只改变轨道的形状而不校正速度，得到的可能只是 \(a(s,z)\partial_s\)。另一方面，这个定理完全是局部的。一条整体轨道可以离开流盒再回来，在同一个流盒中留下几段彼此分开的轨迹，不能把整条最大轨道都认作一根局部坐标线。
+
+\begin{example}[径向场的流盒]
+	\label{g1:exm:radial-flow-box}
+	在半平面 \(x>0\) 上取 \(X=x\partial_x+y\partial_y\)，其流为 \(\Phi_t(x,y)=(e^t x,e^t y)\)。选截面 \(\sigma(z)=(1,z)\)，得到
+	\[
+		F(s,z)=(e^s,e^s z),\qquad s=\log x,\qquad z=\frac yx.
+	\]
+	直接计算 \(X(s)=1\)、\(X(z)=0\)，所以 \(X=\partial_s\)。量 \(z\) 标记不同射线，量 \(s\) 沿每条射线计时。若将同一个场看作整个平面上的场，原点处 \(X=0\)，那里不可能有这种流盒：微分同胚的微分把零向量仍送成零，不能送成非零的坐标向量。
+\end{example}
+
+\subsection{由截断构造具有指定局部行为的整体流}
+\label{g1:subsec:1302:04}
+
+局部向量场不一定完备，但许多几何构造只需它在一小块区域内保持原来的行为。上一章的截断函数正好用于限制支集；本节的完备性定理则把这个支集条件转成全时间存在。应当同时记住：在一块区域内保留了向量场，只能保证轨道留在该区域期间的运动不变。
+
+\begin{proposition}[局部向量场的完备延拓]
+	\label{g1:prop:complete-local-extension}
+	设 \(M\) 为无边界光滑流形，\(U\subset M\) 开，\(K\subset U\) 紧，\(X\) 是 \(U\) 上的光滑向量场。存在 \(M\) 上的紧支完备光滑向量场 \(Y\)，在 \(K\) 的某开邻域 \(W\subset U\) 与 \(X\) 相同，且 \(\operatorname{supp}Y\subset U\)。\(Y\) 的整体流在 \(M\setminus\operatorname{supp}Y\) 上恒为恒等。对初值位于 \(W\) 的 \(X\) 积分曲线，其包含初始时刻且留在 \(W\) 的区间内，\(Y\) 的积分曲线与它相同。
+\end{proposition}
+\begin{proof}
+	由\cref{g1:cor:smooth-cutoff-closed}，选 \(\chi:M\to[0,1]\)，在 \(K\) 的某开邻域 \(W\) 为一，并且 \(\operatorname{supp}\chi\) 紧、包含于 \(U\)。定义
+	\[
+		Y_p=
+		\begin{cases}
+			\chi(p)X_p,&p\in U,\\
+			0_p,&p\notin U.
+		\end{cases}
+	\]
+	\cref{g1:thm:section-extension}的零延拓论证说明 \(Y\) 光滑：\(U\) 外每一点都有避开 \(\operatorname{supp}\chi\) 的邻域，在那里整个表达恒为零。它的支集包含于紧集 \(\operatorname{supp}\chi\)，故由\cref{g1:thm:compact-support-complete}完备。
+
+	支集外的点是零点，故由唯一性得到恒定轨道。在 \(W\) 中，\(X=Y\)，所以任何始终留在 \(W\) 内的 \(X\) 解也满足 \(Y\) 的方程；同一初值的唯一性使两条解在所述区间相同。
+\end{proof}
+
+这一结论还能同时控制邻近初值。若一条 \(X\) 轨道的紧时间段 \(\{\Phi_t(p):|t|\leq T\}\) 包含于 \(W\)，则存在 \(p\) 的邻域 \(V\)，使所有 \(q\in V\) 的 \(X\) 轨道在 \([-T,T]\) 上有定义且留在 \(W\)。理由是 \([-T,T]\times\{p\}\) 为流定义域中映到 \(W\) 的紧集，利用流的连续性与有限个乘积邻域，就可找出共同的 \(V\)。因此两个流在整个 \([-T,T]\times V\) 上相同，而非仅沿最初选定的那一条曲线相同。
+
+\ProseParagraphBreak
+
+例如对上一例的径向场，给定一个不含原点的小闭圆盘及包含它的开集，可将该场截断成整个平面上的紧支场。新流在小圆盘附近仍具有同样的径向运动，在远处则固定各点。反过来，对 \(x^2\partial_x\) 作紧支截断后得到整体流，原来的有限时间发散不会保留：轨道进入截断改变向量场的区域时，微分方程已经不同。
+
+\begin{proposition}[共同紧支的时间依赖场]
+	\label{g1:prop:compact-time-dependent-evolution}
+	设 \(M\) 为无边界光滑流形，\(J\subset\mathbb R\) 为开区间，\(X_t\) 关于 \((t,p)\) 光滑。如果存在固定紧集 \(K\subset M\)，使 \(\operatorname{supp}X_t\subset K\) 对每个 \(t\in J\) 成立，则演化映射 \(\Phi_{t,s}\) 对任意 \(s,t\in J\) 及所有初值都有定义，并为整体微分同胚，逆为 \(\Phi_{s,t}\)。
+\end{proposition}
+\begin{proof}
+	固定一个初始时刻 \(s\)。若初值在 \(K\) 外，该点对每个 \(X_t\) 都是零点，故其唯一解恒定。由同样的唯一性，初值在 \(K\) 中的解不能到达 \(K\) 外的任何一点；否则从那一时刻向前后比较常值解，会使初值也在 \(K\) 外。
+
+	若解在 \(J\) 内有有限最大端点 \(b\)，选一个包含 \(s,b\) 的紧时间区间 \([c,d]\subset J\)。对增维场 \(\partial_t+X_t\)，该轨道在接近端点时留在紧集 \([c,d]\times K\) 中；\cref{g1:thm:flow-escape-criterion}排除了这样的端点。左端点同理，所以原解在整个 \(J\) 上存在。光滑性、复合律与逆映射公式由\cref{g1:prop:time-dependent-evolution}得到。
+\end{proof}
+
+共同紧支的假设控制的是整段时间内的轨道活动范围，不能只从“每个固定时刻的向量场分别紧支”就省去对支集如何随时间变化的检查。
+
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

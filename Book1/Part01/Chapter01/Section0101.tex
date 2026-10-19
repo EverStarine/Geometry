@@ -1,0 +1,182 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 1.1 仿射空间的内在构造
+% 纲要位置：几何学计划纲要.md，第 121 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 平移作用、点差与仿射组合
+% * 仿射标架、坐标变换与重心坐标
+% * 子空间的相交、平行与维数公式
+% 
+% 纲要内容结束
+
+\section{仿射空间的内在构造}
+\label{g1:sec:0101}
+
+在一张地图上改变坐标原点，不会改变两个地点之间的位移，却会同时改变两个地点的坐标。因此，“地点”与“位移”应当是两类对象。向量空间天然带有零向量，仿射空间则把原点的选择从几何结构中分离出来。这样做以后，中点、直线和平行关系仍可定义，而两个点直接相加通常没有意义。
+
+\subsection{平移作用、点差与仿射组合}
+\label{g1:subsec:0101:01}
+
+\begin{definition}[仿射空间]\label{g1:def:affine-space}
+	设 \(V\) 是有限维实向量空间。一个以 \(V\) 为方向空间的\term[fangshekongjian]{仿射空间}[affine space]是非空集合 \(A\)，连同运算 \(A\times V\rightarrow A\)，记为 \((p,v)\mapsto p+v\)，使得
+	\[
+		p+0=p,\qquad (p+u)+v=p+(u+v),
+	\]
+	且对每对 \(p,q\in A\)，恰有一个 \(v\in V\) 满足 \(p+v=q\)。称这个向量为\term[diancha]{点差}[difference vector]，记为 \(q-p\)；定义 \(\dim A=\dim V\)。
+\end{definition}
+
+映射 \(\tau_v:p\mapsto p+v\) 称为\term[pingyi]{平移}[translation]。上述条件说，每一个点都能通过唯一的平移向量移到另一个点。特别地，\(q=p+(q-p)\)，而点差满足
+\[
+	(r-q)+(q-p)=r-p,\qquad p-q=-(q-p).
+\]
+例如，第一个等式由 \(p+((q-p)+(r-q))=q+(r-q)=r\) 及位移的唯一性得到。这里的加法发生在方向空间中，不能把它误读成三个点的普通加减。
+
+\begin{example}[方程的解集]\label{g1:exm:affine-solutions}
+	设 \(L:V\rightarrow W\) 为实线性映射，方程 \(Lx=b\) 有一个解 \(p\)。其解集恰为 \(p+\ker L\)：若 \(x\) 也是解，则 \(L(x-p)=0\)；若 \(u\in\ker L\)，则 \(L(p+u)=b\)。它是以 \(\ker L\) 为方向空间的仿射空间。若 \(b\ne0\)，这个解集不含零向量，不能当作 \(V\) 的向量子空间。例如 \(x+y+z=1\) 是仿射平面，两个解之和一般已不是解。
+\end{example}
+
+选定 \(o\in A\) 后，\(p\mapsto p-o\) 将 \(A\) 与 \(V\) 一一对应。若改选 \(o'=o+a\)，则同一点的向量表示变为 \(p-o'=(p-o)-a\)。这说明可以借助原点计算，但要检查计算结果是否依赖它。特别值得保留的运算是系数和为 \(1\) 的加权平均。
+
+\begin{proposition}[仿射组合]\label{g1:prop:affine-combination}
+	设 \(A\) 是实仿射空间，\(p_0,\ldots,p_m\in A\)， \(\lambda_0,\ldots,\lambda_m\in\mathbb R\) 且 \(\sum_i\lambda_i=1\)。则
+	\[
+		o+\sum_{i=0}^m\lambda_i(p_i-o)
+	\]
+	与 \(o\in A\) 的选择无关，称为这些点的\term[fangshezuhe]{仿射组合}[affine combination]，简记为 \(\sum_i\lambda_i p_i\)。
+\end{proposition}
+\begin{proof}
+	以 \(o'=o+a\) 代替 \(o\)，新表达式为
+	\[
+		o+a+\sum_i\lambda_i\bigl((p_i-o)-a\bigr)
+		=o+\sum_i\lambda_i(p_i-o)+(1-\sum_i\lambda_i)a.
+	\]
+	最后一项为零，因而得到同一点。
+\end{proof}
+
+系数和条件正是消去原点影响的条件。特别地，当 \(p\ne q\) 时，\((1-t)p+tq=p+t(q-p)\) 描述穿过 \(p,q\) 的直线；当 \(0\le t\le1\) 时描述线段，当 \(t=1/2\) 时给出中点。若 \(p=q\)，这些组合都退化为同一点。若系数和为零，则 \(\sum_i\lambda_i(p_i-o)\) 也与原点无关，但它给出的是向量而不是点。这一差别解释了为什么 \(q-p\) 合法，而 \(p+q\) 不能作为不依赖原点的点运算。
+
+\begin{definition}[仿射映射]\label{g1:def:affine-map}
+	设 \(A,B\) 分别以实向量空间 \(V,W\) 为方向空间。映射 \(f:A\rightarrow B\) 称为\term[fangsheyingshe]{仿射映射}[affine map]，如果存在实线性映射 \(L:V\rightarrow W\)，使
+	\[
+		f(p+v)=f(p)+Lv\qquad(p\in A,\ v\in V).
+	\]
+	称 \(L\) 为 \(f\) 的\term[xianxingbufen]{线性部分}[linear part]。
+\end{definition}
+
+线性部分唯一，因为 \(Lv=f(p+v)-f(p)\)。选定原点后，仿射映射就是 \(x\mapsto Lx+b\)。如果 \(L\) 可逆，逆映射是 \(y\mapsto L^{-1}(y-b)\)，此时称 \(f\) 为\term[fangshetonggou]{仿射同构}[affine isomorphism]；反过来，仿射映射若是双射，其线性部分也是双射。
+
+\begin{proposition}\label{g1:prop:affine-preservation}
+	实仿射空间间的映射 \(f:A\rightarrow B\) 是仿射映射，当且仅当它保持一切有限仿射组合。
+\end{proposition}
+\begin{proof}
+	若 \(f\) 的线性部分为 \(L\)，在组合的计算中以 \(o\) 与 \(f(o)\) 为原点，便有
+	\[
+		f\left(o+\sum_i\lambda_i(p_i-o)\right)
+		=f(o)+\sum_i\lambda_i\bigl(f(p_i)-f(o)\bigr).
+	\]
+	这正是保持仿射组合的等式。
+
+	反过来，固定 \(o\)，定义 \(L(v)=f(o+v)-f(o)\)。从组合 \((1-t)o+t(o+v)\) 得到 \(L(tv)=tL(v)\)，其中 \(t\) 为任意实数。再对三点 \(o+u,o+v,o\) 使用系数 \(1,1,-1\)，得到 \(L(u+v)=L(u)+L(v)\)。故 \(L\) 线性，且 \(f(p+v)=f(o)+L(p-o+v)=f(p)+Lv\)。
+\end{proof}
+
+\subsection{仿射标架、坐标变换与重心坐标}
+\label{g1:subsec:0101:02}
+
+要给一个点写出数值坐标，需要选原点与方向基；要用若干几何点描述它，则可以把这些选择一起装进一个有序点组。
+
+\begin{definition}[标架与仿射无关]\label{g1:def:affine-frame}
+	在 \(n\) 维实仿射空间 \(A\) 中，若 \(p_1-p_0,\ldots,p_m-p_0\) 线性无关，就称 \(p_0,\ldots,p_m\) \term[fangshewuguan]{仿射无关}[affinely independent]。当 \(m=n\) 时，有序点组 \((p_0,\ldots,p_n)\) 称为\term[fangshebiaojia]{仿射标架}[affine frame]。
+\end{definition}
+
+仿射无关不依赖于把哪个点放在首位。事实上，它等价于：若 \(\sum_i c_i=0\) 且 \(\sum_i c_i(p_i-o)=0\)，则所有 \(c_i\) 为零。取 \(o=p_0\) 就得到原定义；这个对称表述不再区别各点。
+
+\begin{proposition}[坐标及其变换]\label{g1:prop:affine-coordinates}
+	设 \(A\) 为 \(n\) 维实仿射空间。给定仿射标架 \((p_0,\ldots,p_n)\)，每个 \(p\in A\) 唯一写成
+	\[
+		p=p_0+\sum_{i=1}^n x_i(p_i-p_0)
+		=\sum_{i=0}^n\lambda_i p_i,\qquad
+		\lambda_0=1-\sum_{i=1}^n x_i,\quad\lambda_i=x_i\ (i\ge1).
+	\]
+	称 \((x_1,\ldots,x_n)\) 为\term[fangshezuobiao]{仿射坐标}[affine coordinates]，\((\lambda_0,\ldots,\lambda_n)\) 为相对于此标架的\term[zhongxinzuobiao]{重心坐标}[barycentric coordinates]。若新原点相对于旧标架的坐标为 \(a\)，新方向基在旧方向基中的列矩阵为 \(S\)，则新旧坐标满足
+	\[
+		x=a+Sx',\qquad x'=S^{-1}(x-a).
+	\]
+\end{proposition}
+\begin{proof}
+	基展开给出 \(p-p_0\) 的唯一系数 \(x_i\)，而系数和为 \(1\) 唯一确定 \(\lambda_0\)。设旧方向基的组合记为 \(Ex=\sum_i x_i(p_i-p_0)\)，则新原点为 \(p_0+Ea\)，新方向基对应线性映射 \(ES\)。于是 \(p=p_0+Ex=p_0+Ea+ESx'\)。由于 \(E\) 单射，得到 \(x=a+Sx'\)；新方向基仍是基，所以 \(S\) 可逆。
+\end{proof}
+
+\begin{example}[三角形中的位置]\label{g1:exm:barycentric-triangle}
+	取 \(p_0=(0,0),p_1=(3,0),p_2=(0,2)\)。点 \(p=(1,1)\) 的重心坐标为 \((1/6,1/3,1/2)\)，因为后两个系数分别由 \(3\lambda_1=1\)、 \(2\lambda_2=1\) 决定，再由系数和求出第一个。三个系数全非负表示点处在闭三角形内，全为正表示点处在内部；在全非负的条件下，某个系数为零表示点处在对应的边上。例如 \(q=(2,1)\) 的坐标为 \((-1/6,2/3,1/2)\)，它越过了与 \(p_0\) 相对的边。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter01-Barycentric}
+	\caption[重心坐标与三角形]{重心坐标与三角形。直线 \(p_1p_2\) 上 \(\lambda_0=0\)，点 \(p\) 与顶点 \(p_0\) 在同侧，点 \(q\) 在另一侧。}
+	\label{g1:fig:barycentric}
+\end{figure}
+
+图中的符号判断可以直接计算，而无须凭图形猜测：此例 \(\lambda_0=1-x/3-y/2\)，所以直线两侧的符号由一次函数决定。一般情形下，系数全非负的仿射组合构成这组仿射无关点张成的\term[dan-chun-xing]{单纯形}[simplex]。这种位置关系在任何仿射坐标中都成立，因为仿射同构及其逆映射都保持这些组合，而不要求保持长度或角度。
+
+\begin{proposition}[由标架确定映射]\label{g1:prop:frame-map}
+	设 \((p_0,\ldots,p_n)\) 为实仿射空间 \(A\) 的标架，\(B\) 为另一个实仿射空间。任给 \(q_0,\ldots,q_n\in B\)，存在唯一仿射映射 \(f:A\rightarrow B\) 满足 \(f(p_i)=q_i\)。若 \(B\) 也为 \(n\) 维，则 \(f\) 是同构当且仅当这些 \(q_i\) 构成标架。
+\end{proposition}
+\begin{proof}
+	定义线性映射 \(L\) 将基向量 \(p_i-p_0\) 送到 \(q_i-q_0\)，再置 \(f(p)=q_0+L(p-p_0)\)。它是满足指定条件的仿射映射。任何满足条件的映射都必须有这一线性部分及同一 \(f(p_0)\)，故唯一。两空间同维时，\(L\) 可逆恰好要求其基向量的像构成基。
+\end{proof}
+
+\subsection{子空间的相交、平行与维数公式}
+\label{g1:subsec:0101:03}
+
+在向量空间中，子空间一定交于零向量；在仿射空间中，两条直线可能平行，也可能既不相交又不平行。为了区别这些情形，除了方向空间，还要记录两个空间之间的位移。
+
+\begin{definition}[仿射子空间]\label{g1:def:affine-subspace}
+	设 \(A\) 为以 \(V\) 为方向空间的实仿射空间。集合 \(F=p+U\)，其中 \(p\in A\)、\(U\subseteq V\) 为向量子空间，称为\term[fangshezikongjian]{仿射子空间}[affine subspace]，其方向空间为 \(U\)，维数为 \(\dim U\)。本章称两个仿射子空间\term[pingxing]{平行}[parallel]，是指它们的方向空间之一包含于另一个；对同维子空间，这等价于两个方向空间相等。允许重合的空间互相平行。
+\end{definition}
+
+不同文献对异维空间的“平行”用语不完全一致，后文的判断将直接写出方向空间的包含或相等。对于 \(F=p+U\)，选其中任何 \(r\) 为基点仍有 \(F=r+U\)，因为 \(r-p\in U\)。同时 \(F-F=U\)，所以方向空间由点集本身唯一决定。
+
+\begin{proposition}[相交与仿射包络]\label{g1:prop:affine-intersection}
+	在有限维实仿射空间 \(A\) 中，设 \(F=p+U\)、\(G=q+W\) 为非空仿射子空间。则
+	\[
+		F\cap G\ne\varnothing\quad\Longleftrightarrow\quad q-p\in U+W.
+	\]
+	若 \(r\in F\cap G\)，则 \(F\cap G=r+(U\cap W)\)。包含 \(F\cup G\) 的最小仿射子空间，称为其\term[fangshebaoluo]{仿射包络}[affine hull]，为
+	\begin{equation}\label{g1:eq:affine-join}
+		\operatorname{aff}(F\cup G)=p+\bigl(U+W+\mathbb R(q-p)\bigr).
+	\end{equation}
+	特别地，令 \(d=\dim(U\cap W)\)，则
+	\[
+		\dim\operatorname{aff}(F\cup G)
+		=\begin{cases}
+			\dim F+\dim G-d,&F\cap G\ne\varnothing,\\
+			\dim F+\dim G-d+1,&F\cap G=\varnothing.
+		\end{cases}
+	\]
+	在第一种情形中，\(d=\dim(F\cap G)\)。
+\end{proposition}
+\begin{proof}
+	交点的方程为 \(p+u=q+w\)，也就是 \(q-p=u-w\)。这可解当且仅当 \(q-p\in U+W\)。若有交点 \(r\)，则写成 \(F=r+U\)、\(G=r+W\)，一个点属于二者等价于它与 \(r\) 的差同时属于 \(U,W\)，给出交集公式。
+
+	式\eqref{g1:eq:affine-join}右边包含 \(F,G\)。任何包含二者的仿射子空间都含 \(p\)，其方向空间必须包含 \(U,W\) 及 \(q-p\)，因而也包含右边的方向空间。这证明了最小性。
+
+	最后回顾线性空间的维数计算。先取 \(U\cap W\) 的一组基，分别扩充成 \(U,W\) 的基；把交集基只写一次，再合并两个扩充部分，就得到 \(U+W\) 的基。张成性来自两个扩充基；若合并后有线性关系，则 \(U\) 的扩充部分之和落在 \(W\)，因而落在交集，这迫使该部分系数为零，再依次得到其余系数为零。所以 \(\dim(U+W)=\dim U+\dim W-d\)。交点存在时 \(q-p\) 已在这个和中；交点不存在时再加入它恰增加一维。
+\end{proof}
+
+\begin{example}[平行线与异面直线]\label{g1:exm:skew-lines}
+	在 \(\mathbb R^3\) 中，令
+	\[
+		F=\{(s,0,0):s\in\mathbb R\},\qquad
+		G=\{(0,t,1):t\in\mathbb R\}.
+	\]
+	它们的方向分别为 \(\mathbb Re_1,\mathbb Re_2\)，基点之差为 \(e_3\)，不在 \(\mathbb Re_1+\mathbb Re_2\) 中，故不相交；方向也不平行。两条这样的直线称为\term[yimianzhixian]{异面直线}[skew lines]。其仿射包络维数为 \(1+1-0+1=3\)。若改成 \(G'=\{(t,0,1):t\in\mathbb R\}\)，方向交集为一维，包络维数变为 \(2\)，这才是两条不同的平行线。
+\end{example}
+
+对任意非空点集 \(S\subseteq A\)，选定 \(p_0\in S\) 后，同一最小性论证给出
+\[
+	\operatorname{aff}(S)=p_0+\operatorname{span}\{p-p_0:p\in S\}.
+\]
+这里的 \(\operatorname{span}\) 只取有限线性组合。展开右边后可见，它也恰好是 \(S\) 中有限多个点的一切仿射组合。因此有限点组 \(p_0,\ldots,p_m\) 的仿射包络维数就是列向量 \(p_1-p_0,\ldots,p_m-p_0\) 的秩，是否仿射无关可以转化为一次矩阵秩计算。

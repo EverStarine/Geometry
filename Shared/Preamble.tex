@@ -1,0 +1,813 @@
+% 《几何学》五卷共用的基础排版与语义宏。
+% 各卷主文件须先定义 \BookTitle、\BookVolumeName 和 \BookDraftDate。
+\newcommand{\BookAuthor}{R. EverStarine}
+% 稿件状态由各卷元数据指定；尚未开写的卷沿用框架状态。
+\providecommand{\BookStatus}{框架预览·正文未撰写}
+
+\usepackage[a4paper,inner=28mm,outer=24mm,top=27mm,bottom=28mm,
+  headheight=16pt,headsep=8mm,footskip=12mm]{geometry}
+
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{aliascnt}
+\usepackage{unicode-math}
+% 数学字母使用默认数学字体内的对应字形；禁止 mathrm 等默认继承正文族。
+% 运算符（sin、log、operatorname 等）随 mathrm 使用数学正体。
+\unimathsetup{mathrm=sym,mathit=sym,mathbf=sym,mathsf=sym,mathtt=sym}
+\setmainfont{texgyrepagella-regular.otf}[
+  BoldFont=texgyrepagella-bold.otf,
+  ItalicFont=texgyrepagella-italic.otf,
+  BoldItalicFont=texgyrepagella-bolditalic.otf
+]
+\setsansfont{texgyreheros-regular.otf}[
+  BoldFont=texgyreheros-bold.otf,
+  ItalicFont=texgyreheros-italic.otf,
+  BoldItalicFont=texgyreheros-bolditalic.otf
+]
+\setmonofont{lmmonolt10-regular.otf}[
+  BoldFont=lmmonolt10-bold.otf,
+  ItalicFont=lmmonolt10-oblique.otf,
+  BoldItalicFont=lmmonolt10-boldoblique.otf
+]
+% 人物注释中的古希腊文、斯拉夫文字、日文异体字与希伯来文原名使用有相应字形的字体。
+\newfontfamily\GeometryOriginalNameFont{Times New Roman}
+\NewDocumentCommand{\OriginalName}{m}{{\GeometryOriginalNameFont #1}}
+\newCJKfontfamily\GeometryOriginalHanFont{SimSun}
+\NewDocumentCommand{\OriginalHanName}{m}{{\GeometryOriginalHanFont #1}}
+\newfontfamily\GeometryHebrewFont{Times New Roman}[Script=Hebrew]
+\TeXXeTstate=1
+\NewDocumentCommand{\OriginalHebrewName}{m}{{\GeometryHebrewFont\beginR#1\endR}}
+% 行内、行间及标题内公式均使用 unicode-math 默认 Latin Modern Math。
+% 公式之外的正文西文仍由 setmainfont 使用 Pagella；黑板粗体单独采用 AMS。
+\let\mathbb\relax
+\DeclareMathAlphabet{\mathbb}{U}{msb}{m}{n}
+% unicode-math 的 Latin Modern Math 将 \varnothing 映为瘦长椭圆；空集单独
+% 采用传统 AMS MSBM 的圆形斜杠字形，不改变其余数学符号的字体。
+\DeclareSymbolFont{GeometryAMSb}{U}{msb}{m}{n}
+\DeclareMathSymbol{\GeometryRoundEmptySet}{\mathord}{GeometryAMSb}{"3F}
+\AtBeginDocument{%
+  \let\varnothing\GeometryRoundEmptySet
+  \let\emptyset\GeometryRoundEmptySet
+}
+
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+% 双面排版补齐奇数页时，空白页不残留上一章的页眉或页码。
+\usepackage{emptypage}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz-cd}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=numeric-comp,
+  sorting=nyt,
+  giveninits=true,
+  maxbibnames=99,
+  doi=true,
+  url=true,
+  isbn=true
+]{biblatex}
+\addbibresource{../Shared/References.bib}
+% 骨架没有引文时保留书目入口；写入真实条目后由完整构建自动排入书目。
+\newif\ifGeometryHasBibliography
+\AtDataInput{\global\GeometryHasBibliographytrue}
+\NewDocumentCommand{\PrintBookBibliography}{}{%
+  \ifGeometryHasBibliography
+    \printbibliography[heading=bibintoc,title={参考文献}]%
+  \else
+    \chapter*{参考文献}%
+    \addcontentsline{toc}{chapter}{参考文献}%
+    \noindent 待撰写\par
+  \fi
+}
+% 访问日期保留在书目库供内部核验，成品参考文献不显示 visited on。
+\renewbibmacro*{url+urldate}{\usebibmacro{url}}
+% biblatex 在书目内重绑定格式宏；在其作用域中将强调统一为正体，
+% 同时避免书名中的中文及标点仍继承旧的斜体样式。
+\AtBeginBibliography{\let\emph\textup\let\textit\textup}
+% 中文条目的责任者连接符：不可套用西文的 “and”，按 GB/T 7714—2015 的著录
+% 惯例改用逗号分隔。中文条目在 Shared/References.bib 中以 langid = {chinese}
+% 标注（含译本，因其著录信息为中文形式），西文条目保持 “and” 不变。
+% 按条目切换须在每条书目项处理时判定；\DeclareDelimFormat 的可选参数不是
+% 语言选择器（实测无效），故用 \AtEveryBibitem 配合 \iffieldequalstr。
+\AtEveryBibitem{%
+  \iffieldequalstr{langid}{chinese}%
+    {\DeclareDelimFormat{finalnamedelim}{\addcomma\space}%
+     \DeclareDelimFormat{multinamedelim}{\addcomma\space}}%
+    {\DeclareDelimFormat{finalnamedelim}{\addspace\bibstring{and}\space}%
+     \DeclareDelimFormat{multinamedelim}{\addcomma\space}}%
+}
+\usepackage{etoolbox}
+\usepackage{xparse}
+\usepackage[noautomatic]{imakeidx}
+
+\definecolor{GeometryBlue}{HTML}{244A64}
+\definecolor{GeometryBlueLight}{HTML}{EEF4F7}
+\definecolor{GeometryGray}{HTML}{4F5962}
+\definecolor{GeometryGrayLight}{HTML}{F4F5F6}
+
+\ctexset{
+  part = {
+    % 编题页分两行：第一行“第X编”，与封面“第一卷”同款（大号无衬线灰色）；
+    % 第二行编名，与封面“几何学”同款（大号无衬线蓝色粗体），字号保持原样。
+    % 第一行与行距由 number／aftername 给出，format 只负责编名的字体，
+    % 以免字号被重置或被重复输出。
+    format = {\centering\fontsize{30}{38}\selectfont\sffamily\bfseries\color{GeometryBlue}},
+    name = {,},
+    number = {\centering\normalfont\normalsize{\fontsize{24}{30}\selectfont\sffamily\color{GeometryGray}第\chinese{part}编}},
+    aftername = {\par\vspace{0.7cm}},
+    beforeskip = 0pt,
+    afterskip = 2.5\baselineskip,
+    pagestyle = plain
+  },
+  chapter = {
+    format = \raggedright\Huge\bfseries\color{GeometryBlue},
+    name = {第,章},
+    number = \chinese{chapter},
+    aftername = \quad,
+    beforeskip = 0pt,
+    afterskip = 30pt,
+    pagestyle = plain
+  },
+  section = {
+    format = \Large\bfseries\color{GeometryBlue},
+    beforeskip = 2.4ex plus .6ex minus .2ex,
+    afterskip = 1.1ex plus .2ex
+  },
+  subsection = {
+    format = \large\bfseries\color{GeometryGray},
+    beforeskip = 2ex plus .4ex minus .2ex,
+    afterskip = .8ex plus .2ex
+  }
+}
+
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\linespread{1.18}
+% 仅用于两个连续的普通正文段落；列表、公式、定理、标题等结构边界不用。
+% 段间额外留白统一由这一长度控制，避免改动全局 \parskip 后扰乱各类环境。
+\newlength{\GeometryProseParagraphGap}
+\AtBeginDocument{%
+  \setlength{\GeometryProseParagraphGap}{0.40\baselineskip}%
+}
+\NewDocumentCommand{\ProseParagraphBreak}{}{%
+  \par\addvspace{\GeometryProseParagraphGap}%
+}
+% 与代数学保持一致：小节编号并进入目录，便于按具体主题定位。
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+
+% 固定列表内部段距，避免 flushbottom 将默认的弹性 \parsep 拉大到超过正文段距。
+\setlist[itemize]{leftmargin=2.2em,itemsep=.35ex,parsep=0pt,topsep=.6ex}
+\setlist[enumerate]{leftmargin=2.5em,itemsep=.35ex,parsep=0pt,topsep=.6ex,
+  font=\normalfont\upshape}
+\setlist[enumerate,1]{label=\arabic*.,ref=\arabic*}
+\setlist[enumerate,2]{label=\arabic*),ref=\arabic*}
+\setlist[enumerate,3]{label=\alph*),ref=\alph*}
+\setlist[description]{leftmargin=2.5em,labelindent=0pt,itemsep=.35ex,parsep=0pt,topsep=.6ex}
+
+% “下列命题等价”专用列表；普通罗列仍使用 enumerate。
+\newlist{equivalences}{enumerate}{2}
+\setlist[equivalences,1]{leftmargin=2.8em,itemsep=.35ex,parsep=0pt,topsep=.6ex,
+  label=\Roman*.,ref=\Roman*,font=\normalfont\upshape}
+\setlist[equivalences,2]{leftmargin=2.8em,itemsep=.35ex,parsep=0pt,topsep=.6ex,
+  label=\roman*),ref=\roman*,font=\normalfont\upshape}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\small\color{GeometryGray}\thepage\quad\leftmark}
+% 奇数页采用页前最后有效的节标记，避免页中开始新节时提前更换页眉。
+% 新节或习题的标记从后续页生效；章首页使用 plain，不显示上一章的标记。
+\fancyhead[RO]{\small\color{GeometryGray}\TopMark{2e-right}\quad\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+% 保留数学标题的原始大小写，避免 book 类的 \MakeUppercase
+% 与 unicode-math 命令在页眉标记中发生冲突。
+% 偶数页页眉显示“章序＋章标题”（如“第一章 代数对象、映射与基本构造”）；
+% 章序与章标题之间以 \quad 分隔，间距与奇数页节眉“节号＋节标题”之间一致；
+% 附录章的章序由 \CTEXthechapter 按本卷附录字母（如 A）给出。
+\renewcommand{\chaptermark}[1]{\markboth{\CTEXthechapter\quad #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\quad #1}}
+% 章末习题不编号，但进入习题页后应覆盖上一节留下的奇数页页眉；
+% 同时写入目录项。PDF 书签由 hyperref 对 \section*{习题} 自动生成，
+% 不再另行 \pdfbookmark，避免“习题”下再嵌套一个“习题”。
+\newcommand{\BookExercises}{%
+  \section*{习题}%
+  \markright{习题}%
+  \addcontentsline{toc}{section}{习题}%
+}
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[C]{\small\color{GeometryGray}\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+\usepackage[unicode,colorlinks=true,linkcolor=GeometryBlue,
+  citecolor=GeometryBlue,urlcolor=GeometryBlue,pdfborder={0 0 0}]{hyperref}
+\usepackage{bookmark}
+% PDF 书签沿用目录条目中的编号：正文章为“第几章”，附录章为“附录 A”，
+% 节与小节分别保留 x.x、x.x.x；无编号的导读、习题和卷末单元仍不加号。
+\bookmarksetup{numbered}
+
+% unicode-math 会调整原始 Unicode 希腊字母的类别码。若把这些字母直接写进
+% \texorpdfstring 的书签分支，辅助文件回读时类别码不同，LaTeX 会在每一轮都
+% 误报标签发生变化。书签分支统一写成下列可展开宏，既保留希腊字母显示，
+% 又使写入和回读的标签文本稳定。
+\newcommand{\GeometryPdfAlpha}{α}
+\newcommand{\GeometryPdfGamma}{Γ}
+\newcommand{\GeometryPdfLambda}{λ}
+\newcommand{\GeometryPdfMu}{μ}
+\newcommand{\GeometryPdfPi}{π}
+\newcommand{\GeometryPdfSigma}{σ}
+\newcommand{\GeometryPdfTheta}{θ}
+\newcommand{\GeometryPdfXi}{ξ}
+\newcommand{\GeometryPdfZeta}{ζ}
+\newcommand{\GeometryPdfCapitalLambda}{Λ}
+\newcommand{\GeometryPdfOmega}{Ω}
+\newcommand{\GeometryPdfCapitalSigma}{Σ}
+\newcommand{\GeometryPdfDelta}{δ}
+\newcommand{\GeometryPdfEpsilon}{ε}
+\newcommand{\GeometryPdfIota}{ι}
+\newcommand{\GeometryPdfSmallOmega}{ω}
+\newcommand{\GeometryPdfEll}{ℓ}
+
+\usepackage[nameinlink,noabbrev]{cleveref}
+\newcommand{\crefpairconjunction}{和}
+\newcommand{\crefmiddleconjunction}{、}
+\newcommand{\creflastconjunction}{和}
+
+% CTeX 2.5.10 的标题前缀宏带一个参数，而 TeX Live 2025 中 cleveref
+% 仍按普通前缀宏展开它们，会把节号写成含 \endcsname 的损坏元数据。
+% 改为恒等包装后，CTeX 传入的标题编号保持不变，\ref 与 \cref 均可正常工作。
+\makeatletter
+\def\p@part#1{#1}
+\def\p@chapter#1{#1}
+\def\p@section#1{#1}
+\def\p@subsection#1{#1}
+\def\p@subsubsection#1{#1}
+\def\p@paragraph#1{#1}
+\def\p@subparagraph#1{#1}
+\makeatother
+% 非数学西文字母统一正体；不改变括号类别、标点或数学字体。
+\input{../Shared/TextLetterFont}
+
+% 定理类环境（定理、定义、命题、引理、推论、断言、猜想、开放问题、注记、
+% 习题）的正文：中文用楷体，西文保持正体，数学字体不受影响。
+% 注意 \normalfont 只重置西文字族，中文字族仍随默认（宋体），故须显式 \kaishu；
+% 不能退回 \itshape——那会把西文一并变斜。
+\newtheoremstyle{geometryplain}
+  {1.2ex}{1.2ex}{\normalfont\upshape\kaishu}{}
+  {\color{GeometryBlue}\bfseries}{.}{0.6em}{}
+\newtheoremstyle{geometrydefinition}
+  {1.2ex}{1.2ex}{\normalfont\kaishu}{}
+  {\color{GeometryBlue}\bfseries}{.}{0.6em}{}
+\newtheoremstyle{geometryremark}
+  {1.0ex}{1.0ex}{\normalfont\kaishu}{}
+  {\color{GeometryGray}\bfseries}{.}{0.6em}{}
+
+\theoremstyle{geometryplain}
+\newtheorem{theorem}{定理}[section]
+% 正文默认按“章.节.流水号”编号；未分节的附录省略中间的 0。
+\renewcommand{\thetheorem}{%
+  \ifnum\value{section}=0
+    \thechapter.\arabic{theorem}%
+  \else
+    \thesection.\arabic{theorem}%
+  \fi
+}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{引理}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{命题}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{推论}
+\aliascntresetthe{corollary}
+\newaliascnt{claim}{theorem}
+\newtheorem{claim}[claim]{断言}
+\aliascntresetthe{claim}
+\newaliascnt{conjecture}{theorem}
+\newtheorem{conjecture}[conjecture]{猜想}
+\aliascntresetthe{conjecture}
+\newaliascnt{openproblem}{theorem}
+\newtheorem{openproblem}[openproblem]{开放问题}
+\aliascntresetthe{openproblem}
+
+\theoremstyle{geometrydefinition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{定义}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{例}
+\aliascntresetthe{example}
+% 习题按章单独编号，不占用定理类环境的流水号。
+\newtheorem{exercise}{习题}[chapter]
+
+\theoremstyle{geometryremark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{注记}
+\aliascntresetthe{remark}
+\renewcommand{\proofname}{证明}
+% 仅在证明紧接定理类陈述时收紧间距，并按陈述结尾是否为行间公式调整。
+% 证明标题（证明／解／证明概要）的中文用楷体，
+% 西文保持正体；正文不施加楷体，仍为默认宋体。不能退回 \itshape。
+\newif\ifGeometryDirectProof
+\newif\ifGeometryCoupledProof
+\newif\ifGeometryStatementEndsInDisplay
+\newskip\GeometryProofTrailingSkip
+% 行间公式结束后，TeX 留下空的水平列表；在定理环境结束前辨认这一状态。
+% 证明跟在公式之后时不再减去定理尾距，否则公式下方会比上方更紧。
+\newcommand{\GeometryRecordStatementTail}{%
+  \ifhmode
+    \ifnum\lastnodetype=-1\relax
+      \global\GeometryStatementEndsInDisplaytrue
+    \else
+      \global\GeometryStatementEndsInDisplayfalse
+    \fi
+  \else
+    \global\GeometryStatementEndsInDisplayfalse
+  \fi
+}
+\AddToHook{para/begin}{\global\GeometryDirectProoffalse\global\GeometryStatementEndsInDisplayfalse}
+\AddToHook{env/theorem/end}{\GeometryRecordStatementTail}
+\AddToHook{env/lemma/end}{\GeometryRecordStatementTail}
+\AddToHook{env/proposition/end}{\GeometryRecordStatementTail}
+\AddToHook{env/corollary/end}{\GeometryRecordStatementTail}
+\AddToHook{env/claim/end}{\GeometryRecordStatementTail}
+\AddToHook{env/exercise/end}{\GeometryRecordStatementTail}
+\AddToHook{env/theorem/after}{\global\GeometryDirectProoftrue}
+\AddToHook{env/lemma/after}{\global\GeometryDirectProoftrue}
+\AddToHook{env/proposition/after}{\global\GeometryDirectProoftrue}
+\AddToHook{env/corollary/after}{\global\GeometryDirectProoftrue}
+\AddToHook{env/claim/after}{\global\GeometryDirectProoftrue}
+\AddToHook{env/exercise/after}{\global\GeometryDirectProoftrue}
+\AddToHook{env/figure/before}{\global\GeometryDirectProoffalse}
+\AddToHook{env/table/before}{\global\GeometryDirectProoffalse}
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \GeometryCoupledProoffalse
+  \ifGeometryDirectProof
+    \GeometryCoupledProoftrue
+    \GeometryProofTrailingSkip=\topsep
+    \advance\GeometryProofTrailingSkip by \partopsep
+    \ifGeometryStatementEndsInDisplay\else
+      \kern-5\p@% 只在陈述以普通文字结尾时抵消部分尾距。
+    \fi
+    \topsep2\p@\partopsep\z@\relax
+  \fi
+  \global\GeometryDirectProoffalse
+  \global\GeometryStatementEndsInDisplayfalse
+  \trivlist
+  \item[\hskip\labelsep\upshape\kaishu #1\@addpunct{.}]\ignorespaces
+}{%
+  \popQED
+  \ifGeometryCoupledProof\@topsepadd\GeometryProofTrailingSkip\fi
+  \endtrivlist\@endpefalse
+}
+\makeatother
+\newenvironment{solution}
+  {\begin{proof}[解]}
+  {\end{proof}}
+\newenvironment{proofsketch}
+  {\begin{proof}[证明概要]}
+  {\end{proof}}
+
+% 正文选读内容的星号属于编号而不属于标题；第二参数统一接收标签。
+\newcommand{\GeometryOptionalMark}{\texorpdfstring{\textsuperscript{*}}{*}}
+% 选做习题沿用同一编号星号。可选参数仍只表示习题自身的简短题名，
+% 不得再写“选读”或“选做”；星号由本环境自动附在题号右侧。
+\NewDocumentEnvironment{optionalexercise}{o}{%
+  \begingroup
+  \let\GeometrySavedTheExercise\theexercise
+  \renewcommand{\theexercise}{\GeometrySavedTheExercise\GeometryOptionalMark}%
+  \IfNoValueTF{#1}{\begin{exercise}}{\begin{exercise}[#1]}%
+}{%
+  \end{exercise}%
+  \endgroup
+}
+% 可选参数只供目录与 PDF 书签使用；正文题名可借此按语义手动换行，
+% 又不把换行命令写入目录或书签。
+\NewDocumentCommand{\OptionalChapter}{O{}mm}{%
+  \begingroup
+  \let\GeometrySavedTheChapter\thechapter
+  \renewcommand{\thechapter}{\GeometrySavedTheChapter\GeometryOptionalMark}%
+  \ctexset{chapter={name={第,章\GeometryOptionalMark},
+    number=\chinese{chapter},aftername=\quad}}%
+  \ifstrempty{#1}{\chapter{#2}}{\chapter[#1]{#2}}\label{#3}%
+  \endgroup
+}
+\NewDocumentCommand{\OptionalSection}{mm}{%
+  \begingroup
+  \let\GeometrySavedTheSection\thesection
+  \renewcommand{\thesection}{\GeometrySavedTheSection\GeometryOptionalMark}%
+  \ctexset{section={number=\thesection}}%
+  \section{#1}\label{#2}%
+  \endgroup
+}
+\NewDocumentCommand{\OptionalSubsection}{mm}{%
+  \begingroup
+  \let\GeometrySavedTheSubsection\thesubsection
+  \renewcommand{\thesubsection}{\GeometrySavedTheSubsection\GeometryOptionalMark}%
+  \ctexset{subsection={number=\thesubsection}}%
+  \subsection{#1}\label{#2}%
+  \endgroup
+}
+
+% 编题页必须从奇数页开始，题页仅在页脚显示页码，其后保留一张空白页。
+\makeatletter
+\NewDocumentCommand{\BookPart}{mm}{%
+  \cleardoublepage
+  \begingroup
+  \def\GeometryPartLabel{#2}%
+  % \part 会在返回前翻页，故须在 \@endpart 开始处记录题页标签。
+  \pretocmd{\@endpart}{\label{\GeometryPartLabel}}{}%
+    {\PackageError{geometry}{无法为编题页写入标签}{请检查当前文档类的 \string\@endpart 定义。}}%
+  \part{#1}%
+  \endgroup
+  \thispagestyle{empty}%
+  \null
+  \clearpage
+}
+% 各编的“本编导读”是无编号章，在总目录和 PDF 书签中与所属编的各章并列。
+% addcontentsline 同时建立目录项和书签，不再另加同名 pdfbookmark。
+\NewDocumentCommand{\BookPartGuide}{O{本编导读}}{%
+  \chapter*{#1}%
+  \addcontentsline{toc}{chapter}{#1}%
+}
+
+% “附录”单独排无编号编题页，使用与正文编名相同的字号、字体和颜色。
+% 题页从奇数页开始，其后保留一张空白页，再进入第一个附录章。
+% startatroot 使根级书签与书后顶层节点分离；phantomsection 须先于
+% addcontentsline，目录中的“附录”行才能获得独立锚点而非沿用前一节的
+% section*.N。根级“附录”书签连同其子章由 addcontentsline 的 part 行自动
+% 建立，不得再手写 \pdfbookmark（实测会产生重复的“附录”节点）。
+\NewDocumentCommand{\BookAppendixPart}{m}{%
+  \cleardoublepage
+  \begingroup
+  \def\GeometryPartLabel{#1}%
+  % 在 part* 的题页尚未翻走时建立唯一的目录与书签目标。
+  \pretocmd{\@endpart}{%
+    \bookmarksetup{startatroot}%
+    \phantomsection
+    \addcontentsline{toc}{part}{附录}%
+    \label{\GeometryPartLabel}%
+  }{}{\PackageError{geometry}{无法为附录编题页写入目录与标签}{请检查当前文档类的 \string\@endpart 定义。}}%
+  \part*{附录}%
+  \endgroup
+  \thispagestyle{empty}%
+  \null
+  \clearpage
+}
+\makeatother
+
+% 列表项的括号与编号整体承担链接，避免只让中间的编号可点击。
+\NewDocumentCommand{\itemref}{m}{\hyperref[#1]{(\ref*{#1})}}
+
+% 章、节、小节的引用：整个“第 X 章／第 X 节／第 X 小节”都是跳转链接。
+% 链接必须走 hyperref 的标签解析机制（目标名 chapter.N／section.N.M）；
+% 早先用 \hyperlink{裸标签名} 指向不存在的目标，链接全部失效。
+%
+% 章号用汉字（“第五章”）且必须取“被引用那一章”的编号；\thechapter 是当前
+% 计数器，在编导读、前言或跨章引用时会给出错误章号（表现为“第零章”）。
+% hyperref 下 \ref 受保护、\getrefnumber 在 \edef 中又失真，故改由 zref 记录：
+% 各章在 \chapter 之后调用 \BookChapterNumber，把汉字号存为 zref 属性；
+% \zref@extract 可展开，能在 \edef 中安全取出。
+\usepackage[user,hyperref]{zref}
+\makeatletter
+\zref@newprop{geometrychapternum}{}
+% 在 \chapter 之后调用，参数即该章标签；把本章汉字号存为 zref 属性
+\NewDocumentCommand{\BookChapterNumber}{m}{%
+  \zref@setcurrent{geometrychapternum}{\chinese{chapter}}%
+  \zref@labelbyprops{zch@#1}{geometrychapternum}%
+}
+% 取出某章标签对应的汉字号（\zref@extract 可展开，能在 \edef 中安全使用）
+\NewDocumentCommand{\GeometryChineseChapterOf}{m}{%
+  \zref@extract{zch@#1}{geometrychapternum}}
+\makeatother
+% \ref* 的分组会遮住编号末端的西文字符类别；编号前的间距可由 xeCJK
+% 自动产生，编号后的同类间距须在完整链接内部显式补回。
+\NewDocumentCommand{\secref}{m}{%
+  \hyperref[#1]{第\ref*{#1}\CJKecglue 节}}
+\NewDocumentCommand{\subsecref}{m}{%
+  \hyperref[#1]{第\ref*{#1}\CJKecglue 小节}}
+\NewDocumentCommand{\chapref}{m}{%
+  \begingroup
+  \xeCJKsetup{CJKecglue={}}%
+  \edef\GeometryChapterDisp{第\GeometryChineseChapterOf{#1}章}%
+  \hyperref[#1]{\GeometryChapterDisp}%
+  \endgroup}
+
+% 算法采用带编号的步骤，并明确标出输入与输出。
+\floatname{algorithm}{算法}
+\renewcommand{\listalgorithmname}{算法目录}
+\algrenewcommand\algorithmicrequire{\textbf{输入：}}
+\algrenewcommand\algorithmicensure{\textbf{输出：}}
+\numberwithin{algorithm}{chapter}
+% 完整中文编号进入题注、各自目录和引用；附录自动使用字母章号。
+% 内部 \nobreakspace 与 cleveref 默认的定理引用一致；引用整串置于同一链接，
+% 链接后的中文间距由下方 \cref 包装补齐。
+\renewcommand{\thealgorithm}{算法\nobreakspace\thechapter-\arabic{algorithm}}
+\renewcommand{\thefigure}{图\nobreakspace\thechapter-\arabic{figure}}
+\renewcommand{\thetable}{表\nobreakspace\thechapter-\arabic{table}}
+\renewcommand{\figurename}{}
+\renewcommand{\tablename}{}
+\makeatletter
+\renewcommand{\fnum@figure}{\thefigure}
+\renewcommand{\fnum@table}{\thetable}
+\renewcommand{\fnum@algorithm}{\thealgorithm}
+\makeatother
+\NewDocumentEnvironment{algorithmsteps}{mm}
+  {\begin{algorithmic}[1]\Require #1\Ensure #2}
+  {\end{algorithmic}}
+
+\newtcolorbox{learninggoals}{
+  enhanced,breakable,colback=GeometryBlueLight,colframe=GeometryBlue,
+  boxrule=.45pt,arc=1mm,left=1.2mm,right=1.2mm,top=1mm,bottom=1mm,
+  title=本章目标,fonttitle=\bfseries
+}
+\newtcolorbox{partguide}{
+  enhanced,breakable,colback=GeometryGrayLight,colframe=GeometryGray,
+  boxrule=.35pt,arc=1mm,left=1.2mm,right=1.2mm,top=1mm,bottom=1mm,
+  title=本编导读,fonttitle=\bfseries
+}
+\newtcolorbox{chaptersummary}{
+  enhanced,breakable,colback=GeometryBlueLight,colframe=GeometryBlue,
+  boxrule=.45pt,arc=1mm,left=1.2mm,right=1.2mm,top=1mm,bottom=1mm,
+  title=本章小结,fonttitle=\bfseries,
+  % 与阅读提示框一致：仅本框内容为多段散文，须恢复首行缩进。
+  before upper={\parindent=2em\parskip=0pt}
+}
+% 仅用于尚待高阶数学复核的核心断言；成稿前必须处理或移除。
+\newtcolorbox{coreverification}{
+  enhanced,breakable,colback=yellow!10,colframe=orange!85!black,
+  boxrule=.55pt,arc=1mm,left=1.2mm,right=1.2mm,top=1mm,bottom=1mm,
+  title=待数学复核,fonttitle=\bfseries
+}
+% 兼容旧稿的占位命令：只输出普通文字，不另加方框。
+\NewDocumentCommand{\GeometryPlaceholder}{m}{待撰写}
+\NewDocumentEnvironment{chapterabstract}{}
+  {\small\list{}{\rightmargin\leftmargin
+    \listparindent=2\ccwd\itemindent=\listparindent}%
+    \item\relax\color{GeometryGray}}
+  {\endlist}
+% 引诗与短引文统一居中，中文使用定理类环境的楷体；章摘要已在上方独立定义，
+% 不继承这里的字形与对齐方式。
+\RenewDocumentEnvironment{quote}{}
+  {\list{}{\rightmargin\leftmargin}\item\relax\centering\kaishu}
+  {\endlist}
+% 引诗环境保留为语义清楚的兼容入口，版式与 quote 完全一致。
+\NewDocumentEnvironment{poemquote}{}
+  {\begin{quote}}
+  {\end{quote}}
+% 引诗末尾的作者或出处在引诗区域内右对齐。
+\NewDocumentCommand{\quoteattribution}{m}{%
+  \par\smallskip
+  {\raggedleft #1\par}%
+}
+
+\makeindex[name=chinese,title=中文索引,columns=2,intoc,options=-q]
+\makeindex[name=foreign,title=外文索引,columns=2,intoc,options=-q]
+\makeindex[name=symbols,title=符号索引,columns=2,intoc,options=-q]
+% 索引采用稍小字号与自然栏底，字母组间仅留少量空白；末页平衡不得越过正文高度。
+\indexsetup{othercode={\small\raggedcolumns\maxbalancingoverflow=0pt
+  \renewcommand{\indexspace}{\par\addvspace{0.2\baselineskip}}}}
+
+% 有条目时读入 makeindex 生成的真实索引；尚无条目时仍保留书后结构与目录入口。
+% 一键脚本会在 .idx 为空时删除旧 .ind，故这里不会误排上一次构建的陈旧索引。
+\NewDocumentCommand{\PrintBookIndex}{m m}{%
+  \IfFileExists{#1.ind}{%
+    % 双栏输出可能丢失页眉标记；在索引范围内直接绑定标题并完成分页。
+    \cleardoublepage
+    \begingroup
+      \fancyhead[LE]{\small\color{GeometryGray}\thepage\quad #2}%
+      \fancyhead[RO]{\small\color{GeometryGray}#2\quad\thepage}%
+      \printindex[#1]%
+      \clearpage
+    \endgroup
+  }{%
+    \chapter*{#2}%
+    \addcontentsline{toc}{chapter}{#2}%
+    \noindent 待撰写\par
+  }%
+}
+
+% 所有术语在每卷首次正式定义或引入时都显示完整原文，并登记中外文索引。
+% 星号形式与缺失原文均视为错误，防止旧的隐藏原文规则被重新带回源码。
+% 定理类正文处于楷体；Fandol 楷体没有粗体字形，直接 \textbf 会退回普通楷体。
+% 术语主称因此局部恢复正文的宋体字族，再使用与普通正文一致的粗体。
+\NewDocumentCommand{\term}{s O{} m o}{%
+  \IfBooleanT{#1}{%
+    \PackageError{geometry}{\string\term* 已取消}{请改用 \string\term，并保留末尾的原文注解。}%
+  }%
+  {\songti\textbf{\textup{#3}}}%
+  \IfNoValueTF{#4}{%
+    \PackageError{geometry}{术语缺少原文注解}{每个术语首次正式定义或引入时都必须写成 \string\term[排序键]{中文主称}[原文]。}%
+  }{%
+    \textnormal{(\textup{#4})}%
+  }%
+  \ifstrempty{#2}{\index[chinese]{#3}}{\index[chinese]{#2@#3}}%
+  \IfNoValueF{#4}{\index[foreign]{#4}}%
+}
+\NewDocumentCommand{\termidx}{O{}m}{%
+  \ifstrempty{#1}{\index[chinese]{#2}}{\index[chinese]{#1@#2}}%
+}
+% 别称与主称一样用 \termidx 登记实际页码，不生成“见某某”的转引条目。
+\NewDocumentCommand{\foreignidx}{O{}m}{%
+  \ifstrempty{#1}{\index[foreign]{#2}}{\index[foreign]{#1@#2}}%
+}
+\newcounter{geometrySymbolIndexOrder}
+\NewDocumentCommand{\symidx}{m}{%
+  \stepcounter{geometrySymbolIndexOrder}%
+  \edef\GeometrySymbolSortKey{%
+    \number\numexpr10000+\value{geometrySymbolIndexOrder}\relax}%
+  \index[symbols]{\GeometrySymbolSortKey@#1}%
+}
+
+% 一般强调与术语粗体分离。
+\NewDocumentCommand{\keypoint}{m}{\CJKunderdot{#1}}
+\NewDocumentCommand{\foreignkeypoint}{m}{\underline{\textup{#1}}}
+
+
+\crefname{chapter}{章}{章}
+\crefname{part}{编}{编}
+\crefname{section}{节}{节}
+\crefname{subsection}{小节}{小节}
+\crefname{theorem}{定理}{定理}
+\crefname{lemma}{引理}{引理}
+\crefname{proposition}{命题}{命题}
+\crefname{corollary}{推论}{推论}
+\crefname{claim}{断言}{断言}
+\crefname{conjecture}{猜想}{猜想}
+\crefname{openproblem}{开放问题}{开放问题}
+\crefname{definition}{定义}{定义}
+\crefname{example}{例}{例}
+\crefname{remark}{注记}{注记}
+\crefname{exercise}{习题}{习题}
+\crefname{equation}{式}{式}
+\crefname{figure}{}{}
+\crefname{table}{}{}
+\crefname{algorithm}{}{}
+\crefformat{figure}{#2#1#3}
+\Crefformat{figure}{#2#1#3}
+\crefformat{table}{#2#1#3}
+\Crefformat{table}{#2#1#3}
+\crefformat{algorithm}{#2#1#3}
+\Crefformat{algorithm}{#2#1#3}
+
+% cleveref 会在自己的分组中排出“定义 3.1.5”一类完整链接，类别名与编号之间
+% 使用 \nobreakspace。分组结束后，xeCJK 无法再从末端识别出西文数字，
+% 因而不会在紧随其后的汉字前插入 \CJKecglue。这里只在下一个源码记号确为
+% CJK 正文字时补回同一种间距；空格、控制序列以及中英文标点均不处理，
+% 从而不在“定义3.1.5，”或“定义3.1.5.”前制造额外空白。
+\NewCommandCopy{\GeometryOriginalCref}{\cref}
+\NewCommandCopy{\GeometryOriginalCrefCapital}{\Cref}
+\ExplSyntaxOn
+\cs_new_protected:Npn \geometry_cref_maybe_cjk_glue:
+  { \peek_after:Nw \geometry_cref_maybe_cjk_glue_aux: }
+\cs_new_protected:Npn \geometry_cref_maybe_cjk_glue_aux:
+  {
+    \token_if_space:NF \l_peek_token
+      {
+        \token_if_cs:NF \l_peek_token
+          {
+            \xeCJK_if_same_class:NNT \l_peek_token 中
+              { \CJKecglue }
+          }
+      }
+  }
+\RenewDocumentCommand{\cref}{s m}
+  {
+    \IfBooleanTF{#1}
+      { \GeometryOriginalCref*{#2} }
+      { \GeometryOriginalCref{#2} }
+    \geometry_cref_maybe_cjk_glue:
+  }
+\RenewDocumentCommand{\Cref}{s m}
+  {
+    \IfBooleanTF{#1}
+      { \GeometryOriginalCrefCapital*{#2} }
+      { \GeometryOriginalCrefCapital{#2} }
+    \geometry_cref_maybe_cjk_glue:
+  }
+% 附录标签沿用字母编号；名称与编号整体进入同一链接，并与 \cref
+% 采用相同的链接后中西文间距规则。
+\NewDocumentCommand{\appref}{m}
+  {
+    \hyperref[#1]{附录\CJKecglue\ref*{#1}}
+    \geometry_cref_maybe_cjk_glue:
+  }
+\ExplSyntaxOff
+
+\newcommand{\MakeBookTitle}[1][封面]{%
+  % 书名页在 PDF 侧栏中作为顶级入口；卷级文件可传入更具辨识性的书签名。
+  \bookmarksetup{startatroot}%
+  \pdfbookmark[0]{#1}{GeometryCover}%
+  \begin{titlepage}
+    \centering
+    \vspace*{2.2cm}
+    {\fontsize{36}{46}\selectfont\sffamily 几何学\par}
+    \vspace{0.7cm}
+    {\Large\sffamily\color{GeometryGray}\BookVolumeName\par}
+    \vspace{1.0cm}
+    {\fontsize{24}{32}\selectfont\bfseries\color{GeometryBlue}\BookTitle\par}
+    \vfill
+    {\large \BookAuthor\ 编写\par}
+    \vspace{0.5cm}
+    {\normalsize\BookDraftDate\par}
+    \vspace{0.7cm}
+    {\large\sffamily\bfseries\color{GeometryGray}\BookStatus\par}
+    \vspace*{1.8cm}
+  \end{titlepage}
+}
+
+% 目录也应有独立的顶级 PDF 书签。使用公共命令避免五卷分别遗漏。
+\newcommand{\MakeBookContents}{%
+  \cleardoublepage
+  \bookmarksetup{startatroot}%
+  \pdfbookmark[0]{目录}{GeometryContents}%
+  \tableofcontents
+}
+
+% 图、表、算法目录不进入总目录，也不建立 PDF 书签；各自页面使用原有章级标题。
+% 只另起一页而不补单双页。
+\makeatletter
+\newcommand{\GeometryListStart}{%
+  \clearpage
+}
+% 各列表命令自带 \chapter*，局部消除其中的再次换页，保留原有标题与列表排版。
+\newcommand{\GeometryListOnCurrentPage}[1]{%
+  \begingroup
+    \let\clearpage\relax
+    \let\cleardoublepage\relax
+    #1%
+  \endgroup
+}
+\newcommand{\MakeBookListOfFigures}{%
+  \GeometryListStart
+  \GeometryListOnCurrentPage{\listoffigures}%
+}
+\newcommand{\MakeBookListOfTables}{%
+  \begingroup
+    \renewcommand{\listtablename}{表目录}%
+    \GeometryListStart
+    \GeometryListOnCurrentPage{\listoftables}%
+  \endgroup
+}
+\newcommand{\MakeBookListOfAlgorithms}{%
+  \begingroup
+    \GeometryListStart
+    % float.sty 在 listof 内重设编号栏；在标题回调中再加宽它。
+    \let\GeometryOriginalFloatListHead\float@listhead
+    \renewcommand{\float@listhead}[1]{%
+      \renewcommand*\l@algorithm{\@dottedtocline{1}{1.5em}{5em}}%
+      \GeometryOriginalFloatListHead{##1}%
+    }%
+    \GeometryListOnCurrentPage{\listofalgorithms}%
+  \endgroup
+}
+\makeatother
+
+% 无编号章（序言、目录、编导读、后记、参考文献、索引等）同样写入页眉标记，
+% 使后续偶数页页眉显示该单元标题。置于 hyperref 之后，保证保留 hyperref 的章锚点。
+\makeatletter
+\let\Geometry@orig@schapter\@schapter
+\def\@schapter#1{%
+  \markboth{#1}{#1}%
+  \Geometry@orig@schapter{#1}%
+}
+% 目录按层级着色：编为黑色、小节为深灰；章与节保持默认链接蓝。
+\pretocmd{\l@part}{\hypersetup{linkcolor=black}}{}{%
+  \PackageWarning{geometry}{无法为目录编条目着色}}
+\pretocmd{\l@chapter}{\hypersetup{linkcolor=GeometryBlue}}{}{%
+  \PackageWarning{geometry}{无法为目录章条目着色}}
+\pretocmd{\l@section}{\hypersetup{linkcolor=GeometryBlue}}{}{%
+  \PackageWarning{geometry}{无法为目录节条目着色}}
+\pretocmd{\l@subsection}{\hypersetup{linkcolor=GeometryGray}}{}{%
+  \PackageWarning{geometry}{无法为目录小节条目着色}}
+% 编的目录条目与 PDF 书签须用纯文本“第X编”。ctex 的 \CTEX@part@tocline
+% 取 \CTEXthepart，而该宏带上编题页的颜色与字体设置，会把格式代码写进目录，
+% 并使书签出现 “=GeometryGray第一编” 之类乱码。此覆盖须置于 \ctexset 之后，
+% 否则会被 ctex 重新定义；\CTEXifname 是 ctex 的内部开关，此处沿用。
+\def\CTEX@part@tocline#1#2{%
+  \CTEXifname
+    {第\chinese{part}编\hspace{1em}}%
+    {}%
+  #2}
+\makeatother

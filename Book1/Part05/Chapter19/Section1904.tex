@@ -1,0 +1,346 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 19.4 Weyl 群与根空间
+% 纲要位置：几何学计划纲要.md，第 867 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 正规化子模中心化子
+% * 伴随表示的权分解
+% * 根平面、反射及 Weyl 室
+% * 整数格、根格和整体群的区别
+% 
+% 纲要内容结束
+
+\section{Weyl 群与根空间}
+\label{g1:sec:1904}
+
+把元素共轭入一个固定极大环面以后，仍可能有若干环面内的代表。例如，对角酉矩阵可以重新排列对角元；环面本身的共轭作用却是平凡的，不能记录这种排列。本节先把这些剩余对称组成有限群，再研究它为何与一组实超平面的反射有关。始终设 \(G\) 为紧连通实李群，\(T\) 为极大环面，\(\mathfrak t=\operatorname{Lie}(T)\)，并在 \(\mathfrak g\) 上固定一个伴随不变正定内积 \(B\)。
+
+\subsection{正规化子模中心化子}
+\label{g1:subsec:1904:01}
+\begin{definition}\label{g1:def:weyl-group}
+	设 \(G\) 为紧连通实李群，\(T\) 为其极大环面。其\term[weylqun]{Weyl 群}[Weyl group]是下列商群。\footnote{外尔（Hermann Weyl，1885--1955），德国数学家，在李群表示论与微分几何方面作出重要贡献。}
+	\[
+		W=W(G,T)\coloneqq N_G(T)/Z_G(T)=N_G(T)/T.
+	\]
+	最后一个等号来自\cref{g1:prop:maximal-torus-centralizer}。它通过共轭作用于 \(T\)，通过伴随作用于 \(\mathfrak t\)。\symidx{\(W(G,T)\)：极大环面的 Weyl 群}
+\end{definition}
+
+模掉中心化子的理由是它恰好逐点固定环面。若 \(n\) 与 \(nt\) 代表同一个商类，\(t\in T\) 的共轭作用在 \(T\) 上为恒等，故得到的作用不依赖代表。\(T=\exp\mathfrak t\) 又说明：一个元素逐点固定 \(\mathfrak t\)，当且仅当逐点固定 \(T\)。因此这两个作用都忠实。
+
+\begin{proposition}[Weyl 群的有限性]\label{g1:prop:weyl-group-finite}
+	设 \(G\) 为紧连通实李群，\(T\) 为极大环面。则 \(W(G,T)\) 是有限群，在 \(\mathfrak t\) 上忠实地作用为正交变换，并保持整数格 \(\Lambda_T=\ker(\exp_G|_{\mathfrak t})\)。
+\end{proposition}
+\begin{proof}
+	正规化子是闭集：若 \(n_j\to n\) 且 \(n_jTn_j^{-1}=T\)，对每个 \(t\in T\) 取极限得到 \(ntn^{-1}\in T\)；再对 \(n_j^{-1}\) 使用同一论证，便得反向包含。故它是紧李子群。
+
+	若 \(X\in\operatorname{Lie}(N_G(T))\)，则 \(\operatorname{Ad}_{\exp(sX)}\) 保持 \(\mathfrak t\)，微分得 \([X,H]\in\mathfrak t\) 对所有 \(H\in\mathfrak t\) 成立。另一方面，对于 \(K\in\mathfrak t\)，内积不变性给出
+	\[
+		B([X,H],K)=B(X,[H,K])=0.
+	\]
+	所以 \([X,H]\) 同时属于 \(\mathfrak t\) 及其正交补，只能为零。由\cref{g1:prop:maximal-torus-lie-centralizer}，\(X\in\mathfrak t\)。反向包含来自 \(T\subseteq N_G(T)\)，故商 \(N_G(T)/T\) 的维数为零。它既紧又离散，因而有限。
+
+	忠实性已由作用的核说明；正交性来自 \(B\) 的伴随不变性。若 \(H\in\Lambda_T\)，则指数自然性给出
+	\[
+		\exp_G(\operatorname{Ad}_nH)=n\exp_G(H)n^{-1}=e.
+	\]
+	故 \(\operatorname{Ad}_n\) 保持 \(\Lambda_T\)，对 \(n^{-1}\) 再用一次得到集合相等。
+\end{proof}
+
+\cref{g1:prop:torus-conjugacy-normalizer}现在可以简洁地表述为：\(G\) 的共轭类由 \(T/W\) 参数化，\(\mathfrak g\) 的伴随轨道由 \(\mathfrak t/W\) 参数化。这里先指集合的一一对应；每个轨道与环面相交，而交点恰是同一 \(W\) 轨道。两种参数空间仍有指数核格的差别，不能把 \(T/W\) 与 \(\mathfrak t/W\) 混同。
+
+\subsection{伴随表示的权分解}
+\label{g1:subsec:1904:02}
+\cref{g1:prop:torus-weight-decomposition,g1:prop:maximal-torus-lie-centralizer}已经把互相交换的斜对称算子同时分解为
+\begin{equation}\label{g1:eq:root-space-decomposition}
+	\mathfrak g_{\mathbb C}=\mathfrak t_{\mathbb C}\oplus
+	\bigoplus_{\alpha\in R}\mathfrak g_\alpha,
+	\qquad
+	[H,Z]=\mathrm{i}\alpha(H)Z\quad(Z\in\mathfrak g_\alpha).
+\end{equation}
+这里 \(R\subseteq\mathfrak t^*\setminus\{0\}\) 有限。伴随表示的这些非零无穷小权称为\term[gen]{根}[root]，\(\mathfrak g_\alpha\) 称为\term[genkongjian]{根空间}[root space]。我们使用实值的根，因而特征值中显式写出 \(\mathrm{i}\)。取共轭将 \(\mathfrak g_\alpha\) 变成 \(\mathfrak g_{-\alpha}\)；根从一开始就成正负对出现。\symidx{\(R,\mathfrak g_\alpha\)：根集与复根空间}
+
+对于 \(Z\in\mathfrak g_\alpha\)、\(U\in\mathfrak g_\beta\)，Jacobi 恒等式给出
+\[
+	[H,[Z,U]]=[[H,Z],U]+[Z,[H,U]]
+	=\mathrm{i}(\alpha+\beta)(H)[Z,U].
+\]
+因此 \([\mathfrak g_\alpha,\mathfrak g_\beta]\subseteq\mathfrak g_{\alpha+\beta}\)，其中约定 \(\mathfrak g_0=\mathfrak t_{\mathbb C}\)，不存在的权空间为零。权分解与李括号相容，正是根比一般表示的权更受约束的原因。下一步要证明每个非零根空间实际上只有一维；一般环面表示的权空间没有这个性质。
+
+\ProseParagraphBreak
+以下线性代数引理只涉及三个算子，所需内容在此证明。它把升降特征值的过程化为有限条链。
+
+\begin{lemma}[升降算子的有限链]\label{g1:lem:sl2-weight-chain}
+	设有限维复 Hermitian 空间 \(V\) 上的算子 \(E,F,L\) 满足
+	\[
+		[L,E]=2E,\qquad [L,F]=-2F,\qquad [E,F]=L,
+		\qquad E^*=F,\quad L^*=L.
+	\]
+	则 \(V\) 是若干相互正交的不变子空间的直和。每个非零子空间有基
+	\(v,Fv,\ldots,F^nv\)，其中 \(n\) 是非负整数，且
+	\[
+		Ev=0,\quad Lv=nv,\quad
+		L(F^kv)=(n-2k)F^kv,\quad
+		E(F^kv)=k(n-k+1)F^{k-1}v.
+	\]
+	特别地，\(L\) 的全部特征值都是整数。
+\end{lemma}
+\begin{proof}
+	自伴算子 \(L\) 有正交特征分解。取最大特征值 \(\lambda\) 的非零特征向量 \(v\)。关系 \([L,E]=2E\) 表明 \(Ev\) 若非零就具有特征值 \(\lambda+2\)，所以 \(Ev=0\)。由交换关系归纳得到
+	\[
+		L(F^kv)=(\lambda-2k)F^kv,\qquad
+		E(F^kv)=k(\lambda-k+1)F^{k-1}v.
+	\]
+	非零的 \(F^kv\) 具有互不相同的特征值，故有限维性保证存在最大整数 \(n\ge0\) 使 \(F^nv\ne0\)，而 \(F^{n+1}v=0\)。在第二式中取 \(k=n+1\)，得到
+	\(0=(n+1)(\lambda-n)F^nv\)，故 \(\lambda=n\)。这些向量张成的空间在三个算子下都不变；由于 \(E^*=F\)、\(L^*=L\)，其正交补也不变。例如 \(u\) 在正交补内、\(w\) 在链空间内时，\(\langle Eu,w\rangle=\langle u,Fw\rangle=0\)。在正交补中重复，维数每次严格下降，最终得到所述分解。
+\end{proof}
+
+\begin{theorem}[根空间与根的整性]\label{g1:thm:compact-root-spaces}
+	设 \(G\) 为紧连通实李群，\(T\) 为极大环面，\(R\) 为\eqref{g1:eq:root-space-decomposition}中的根集。则每个 \(\mathfrak g_\alpha\) 的复维数为一。以 \(B\) 识别 \(\mathfrak t\) 与其对偶，并以 \((\alpha,\beta)\) 记诱导的对偶内积，则
+	\[
+		\frac{2(\beta,\alpha)}{(\alpha,\alpha)}\in\mathbb Z
+		\qquad(\alpha,\beta\in R).
+	\]
+	若两根 \(\alpha,\beta\) 共线，则 \(\beta=\alpha\) 或 \(\beta=-\alpha\)。
+\end{theorem}
+\begin{proof}
+	把 \(B\) 复双线性延拓为 \(B_{\mathbb C}\)，令 Hermitian 内积为 \(\langle Z,U\rangle=B_{\mathbb C}(Z,\overline U)\)。固定根 \(\alpha\)，取范数一的 \(Z\in\mathfrak g_\alpha\)，并记 \(A_\alpha\in\mathfrak t\) 为满足 \(B(A_\alpha,H)=\alpha(H)\) 的向量，\(a^2=(\alpha,\alpha)=B(A_\alpha,A_\alpha)>0\)。由括号的权相加性质，\([Z,\overline Z]\in\mathfrak t_{\mathbb C}\)；对 \(H\in\mathfrak t\)，计算
+	\[
+		B_{\mathbb C}([Z,\overline Z],H)
+		=B_{\mathbb C}(Z,[\overline Z,H])
+		=\mathrm{i}\alpha(H).
+	\]
+	所以 \([Z,\overline Z]=\mathrm{i}A_\alpha\)。令
+	\begin{equation}\label{g1:eq:root-sl2-triple}
+		e=\frac{\sqrt2}{a}Z,\qquad
+		f=-\frac{\sqrt2}{a}\overline Z,\qquad
+		h=-\frac{2\mathrm{i}}{a^2}A_\alpha.
+	\end{equation}
+	直接代入得 \([e,f]=h\)、\([h,e]=2e\)、\([h,f]=-2f\)。又有 \(\overline e=-f\)、\(\overline h=-h\)。内积不变性说明 \((\operatorname{ad}_u)^*=-\operatorname{ad}_{\overline u}\)，故 \(E=\operatorname{ad}_e\)、\(F=\operatorname{ad}_f\)、\(L=\operatorname{ad}_h\) 满足前一引理。在 \(\mathfrak g_\beta\) 上，\(L\) 的特征值是
+	\[
+		\frac{2\beta(A_\alpha)}{a^2}
+		=\frac{2(\beta,\alpha)}{(\alpha,\alpha)},
+	\]
+	所以它是整数。
+
+	为控制 \(\mathfrak g_\alpha\) 的维数，只看不变子空间
+	\[
+		V_\alpha=\mathfrak t_{\mathbb C}\oplus
+		\bigoplus_{\substack{k\in\mathbb Z\setminus\{0\}\\k\alpha\in R}}
+		\mathfrak g_{k\alpha}.
+	\]
+	它的 \(L\) 特征值都是偶数，零特征空间恰为 \(\mathfrak t_{\mathbb C}\)。升算子在这个零特征空间上满足 \(E(H)=-\mathrm{i}\alpha(H)e\)，所以其秩恰为一。引理中的每条非平凡偶数链都经过权零与权二，且从权零到权二的映射非零；因此这种链只能有一条。另一方面，\(\operatorname{span}_{\mathbb C}\{e,h,f\}\) 已是一条最高权为二的链，其正交补不变。于是余下的链全为平凡链。由此得到 \(\dim_{\mathbb C}\mathfrak g_\alpha=1\)，并且 \(k\alpha\notin R\) 对所有整数 \(|k|\ge2\) 成立。
+
+	最后若 \(\beta=c\alpha\)、\(c>0\)，上面的整性分别用于 \((\beta,\alpha)\) 与 \((\alpha,\beta)\)，得到 \(2c\) 和 \(2/c\) 都是正整数；它们的乘积为四，故 \(c\in\{1/2,1,2\}\)。\(c=2\) 已被排除，\(c=1/2\) 则对根 \(\beta\) 使用同一结论排除。负倍数的情形先将 \(\beta\) 换为 \(-\beta\)，所以只剩 \(\pm\alpha\)。
+\end{proof}
+
+根与群元素的正则性也可以在这里直接相接。称 \(g\in G\) \term[qunyuansuzhengzexing]{正则}[regular]，若 \(\dim Z_G(g)=\operatorname{rank}G\)。对 \(t\in T\)，权分解给出
+\[
+	\operatorname{Lie}(Z_G(t))_{\mathbb C}
+	=\mathfrak t_{\mathbb C}\oplus
+	\bigoplus_{\substack{\alpha\in R\\\chi_\alpha(t)=1}}\mathfrak g_\alpha,
+	\qquad \chi_\alpha(\exp H)=e^{\mathrm{i}\alpha(H)}.
+\]
+因此正则性等价于每个 \(\chi_\alpha(t)\ne1\)。这只控制中心化子的维数，即其单位分支；中心化子仍可能有其他分支。与李代数条件 \(\alpha(H)\ne0\) 相比，群元素 \(\exp H\) 要避开的是全部 \(\alpha(H)\in2\pi\mathbb Z\)。
+
+\subsection{根平面、反射及 Weyl 室}
+\label{g1:subsec:1904:03}
+复根空间为一维，但原来的李代数是实空间。每一对 \(\{\alpha,-\alpha\}\) 恢复一个实二维平面
+\[
+	P_\alpha=(\mathfrak g_\alpha\oplus\mathfrak g_{-\alpha})\cap\mathfrak g,
+	\qquad P_\alpha=P_{-\alpha},
+\]
+称为相应的\term[genpingmian]{根平面}[root plane]。取上一证明中范数一的 \(Z\in\mathfrak g_\alpha\)，则
+\[
+	u=\frac{Z+\overline Z}{\sqrt2},\qquad
+	v=\frac{\mathrm{i}(Z-\overline Z)}{\sqrt2}
+\]
+构成 \(P_\alpha\) 的实正交单位基。这里 \(B_{\mathbb C}(Z,Z)=0\)：对取值 \(\alpha(H)\ne0\) 的 \(H\) 应用内积不变性，得到 \(2\mathrm{i}\alpha(H)B_{\mathbb C}(Z,Z)=0\)，再与 \(B_{\mathbb C}(Z,\overline Z)=1\) 合用便可核对正交与单位长度。括号为
+\[
+	[H,u]=\alpha(H)v,\qquad [H,v]=-\alpha(H)u.
+\]
+所以 \(\operatorname{Ad}_{\exp H}\) 在这个平面上旋转角度 \(\alpha(H)\)。选取每一对根中的一个组成集合 \(R_+\)，就有实正交分解
+\[
+	\mathfrak g=\mathfrak t\oplus\bigoplus_{\alpha\in R_+}P_\alpha,
+	\qquad \dim_{\mathbb R}G=\operatorname{rank}G+2|R_+|.
+\]
+根平面在 \(\mathfrak g\) 内，而方程 \(\alpha(H)=0\) 的超平面在 \(\mathfrak t\) 内；它们是两个不同空间里的对象。前者表示被旋转的方向，后者表示旋转的无穷小速度为零的参数。
+
+\ProseParagraphBreak
+令
+\begin{equation}\label{g1:eq:coroot-reflection}
+	\alpha^\vee\coloneqq\frac{2A_\alpha}{(\alpha,\alpha)},
+	\qquad
+	s_\alpha(H)\coloneqq H-\alpha(H)\alpha^\vee.
+\end{equation}
+向量 \(\alpha^\vee\) 称为\term[yugen]{余根}[coroot]。\symidx{\(\alpha^\vee,s_\alpha\)：余根与根反射}由于 \(\alpha(\alpha^\vee)=2\)，\(s_\alpha\) 固定 \(\ker\alpha\)，并把它的正交方向 \(\alpha^\vee\) 变号，所以它就是关于 \(\ker\alpha\) 的正交反射。定义一个线性反射尚不足以证明它来自群的共轭作用；下面给出实现它的具体群元素。
+
+\begin{proposition}[根反射的群内实现]\label{g1:prop:root-reflection-realized}
+	设 \(G\) 为紧连通实李群，\(T\) 为极大环面。每个根 \(\alpha\) 的反射 \(s_\alpha\) 都属于 \(W(G,T)\) 在 \(\mathfrak t\) 上的作用。整个 \(W(G,T)\) 保持根集；其对根的作用为 \((w\alpha)(H)=\alpha(w^{-1}H)\)。特别地，
+	\[
+		s_\alpha\beta
+		=\beta-\frac{2(\beta,\alpha)}{(\alpha,\alpha)}\alpha
+		\in R\qquad(\alpha,\beta\in R).
+	\]
+\end{proposition}
+\begin{proof}
+	沿用\eqref{g1:eq:root-sl2-triple}中的 \(e,f,h\)，令
+	\[
+		x=e-f,\qquad y=\mathrm{i}(e+f),\qquad k=\mathrm{i}h=\alpha^\vee.
+	\]
+	它们在复共轭下不变，故属于实李代数，且括号满足
+	\[
+		[x,y]=2k,\qquad [y,k]=2x,\qquad[k,x]=2y.
+	\]
+	因此 \(\operatorname{ad}_x\) 在 \(\operatorname{span}_{\mathbb R}\{y,k\}\) 上的矩阵为
+	\(\begin{psmallmatrix}0&-2\\2&0\end{psmallmatrix}\)。由\cref{g1:prop:exponential-naturality}，
+	\[
+		n_\alpha=\exp_G(\tfrac\pi2x)
+		\quad\Longrightarrow\quad
+		\operatorname{Ad}_{n_\alpha}k=-k.
+	\]
+	若 \(H\in\ker\alpha\)，则它与 \(e,f\) 都交换，因而与 \(x\) 交换，得到 \(\operatorname{Ad}_{n_\alpha}H=H\)。将一般 \(H\in\mathfrak t\) 写成
+	\[
+		H=\left(H-\frac{\alpha(H)}2k\right)+\frac{\alpha(H)}2k,
+	\]
+	括号内属于 \(\ker\alpha\)，从而 \(\operatorname{Ad}_{n_\alpha}H=H-\alpha(H)k=s_\alpha(H)\)。该作用保持 \(\mathfrak t\)，故指数自然性和 \(T=\exp\mathfrak t\) 给出 \(n_\alpha Tn_\alpha^{-1}=T\)。所以它确实代表一个 Weyl 群元素。
+
+	对任意 \(n\in N_G(T)\)，令 \(w=\operatorname{Ad}_n|_{\mathfrak t}\)。若 \(Z\in\mathfrak g_\beta\)，则
+	\[
+		[H,\operatorname{Ad}_nZ]
+		=\operatorname{Ad}_n[w^{-1}H,Z]
+		=\mathrm{i}\beta(w^{-1}H)\operatorname{Ad}_nZ.
+	\]
+	因 \(\operatorname{Ad}_nZ\ne0\)，\(w\beta\) 仍是根。取 \(w=s_\alpha=w^{-1}\)，代入\eqref{g1:eq:coroot-reflection}，便得最后的公式。
+\end{proof}
+
+至此，根集已具有有限性、成对性、整性和反射不变性，且一条直线上只有一对根。在 \(\operatorname{span}_{\mathbb R}R\) 中，这些性质正组成一个约化的晶体根系。本章使用这些已经证明的性质，不需要枚举所有可能的根系。根也未必张成全部 \(\mathfrak t^*\)：其公共零空间恰为 \(\mathfrak g\) 的中心。事实上，\(H\in\mathfrak t\) 与每个根空间交换当且仅当全部 \(\alpha(H)=0\)，而零权空间本来就与 \(H\) 交换；反过来，中心元素先与 \(\mathfrak t\) 交换，故属于 \(\mathfrak t\)。
+
+\begin{definition}\label{g1:def:weyl-chamber}
+	设 \(T\) 为紧连通李群的极大环面，\(R\) 为其根集。开集
+	\[
+		\mathfrak t_{\mathrm{reg}}
+		=\mathfrak t\setminus\bigcup_{\alpha\in R}\ker\alpha
+	\]
+	的各连通分支称为\term[weylshi]{Weyl 室}[Weyl chamber]。室的闭包中余维一的边界部分称为它的墙。
+\end{definition}
+
+选定 \(H_0\in\mathfrak t_{\mathrm{reg}}\)，令 \(R_+=\{\alpha:\alpha(H_0)>0\}\)。包含 \(H_0\) 的室就是
+\[
+	C=\{H:\alpha(H)>0\;\text{对全部 }\alpha\in R_+\}.
+\]
+一方面，一个连通分支内每个根的符号不能变化；另一方面，右侧是有限个开半空间的交，凸且连通，所以恰为这个分支。室是开凸多面锥；若存在中心方向，它沿这些方向不受限制。若 \(G\) 本身是环面，根集为空，唯一的室就是整个 \(\mathfrak t\)。
+
+\begin{proposition}[相邻室与反射]\label{g1:prop:chamber-reflection-transitivity}
+	设 \(G\) 为紧连通实李群，\(T\) 为极大环面。\(W(G,T)\) 置换 Weyl 室。由所有根反射生成的子群在这些室上作用传递；隔着同一墙相邻的两个室由关于该墙的反射交换。
+\end{proposition}
+\begin{proof}
+	Weyl 群保持根集，所以保持根超平面的并，进而置换其补集的连通分支。设两个室沿 \(\ker\alpha\) 的一片墙相邻。在这片墙上取不属于其他不同根超平面的点 \(q\)，再取充分小的球，使球中只经过这一个根超平面。反射 \(s_\alpha\) 固定 \(q\)，交换球内的两个半球，又保持整个超平面排列；因此它把这两个半球所在的室相互交换。
+
+	任取两个室 \(C,D\)，选 \(p\in C\)，再在 \(D\) 中选 \(q\)，使线段 \([p,q]\) 不经过两个不同根超平面的交。这样的 \(q\) 存在：对每个余维至少为二的交空间 \(L\)，所有可能使线段碰到 \(L\) 的端点都落在包含 \(p\) 与 \(L\) 的一个真仿射子空间内；有限个真仿射子空间不能覆盖开集 \(D\)。这条线段只在有限个互不相同的时刻逐个穿过根超平面，依次经过一列相邻室。每一次相邻转移由刚证明的一个根反射实现，将这些反射复合，就把 \(C\) 送到 \(D\)。根集为空时只有一个室，结论同样成立。
+\end{proof}
+
+\input{Figures/Chapter19-RootPlanes}
+
+\cref{g1:fig:root-arrangements}画出秩二根系的两个模型。图中箭头把根借内积画成向量，虚线才是它们的核；位于根方向的箭头与同根对应的反射墙互相垂直。一般群的根反射与室之间的关系由上面的命题保证；下一节还会从矩阵直接算出经典群的整个 Weyl 群。
+
+\subsection{整数格、根格和整体群的区别}
+\label{g1:subsec:1904:04}
+根来自伴随表示的微分，主要描述李代数。要恢复环面中的周期，还必须保留指数核
+\(\Lambda_T\subseteq\mathfrak t\)。为了把这些不同层次的数据放在一起，先把环面的全部特征标写成线性泛函。
+
+\begin{proposition}[环面的特征标格]\label{g1:prop:torus-character-lattice}
+	设 \(T=\mathfrak t/\Lambda_T\) 为有限维紧连通交换李群。光滑群同态 \(\chi:T\to S^1\) 与集合
+	\[
+		X^*(T)\coloneqq\{\lambda\in\mathfrak t^*:
+		\lambda(\Lambda_T)\subseteq2\pi\mathbb Z\}
+	\]
+	中的泛函一一对应，对应公式为 \(\chi_\lambda(\exp H)=e^{\mathrm{i}\lambda(H)}\)。该集合在加法下是 \(\mathfrak t^*\) 中的满秩格。\symidx{\(\Lambda_T,X^*(T)\)：环面的指数核格与特征标格}
+\end{proposition}
+\begin{proof}
+	同态 \(\chi\) 的单位元微分是实线性映射 \(\mathfrak t\to\mathrm{i}\mathbb R\)，可唯一写成 \(H\mapsto\mathrm{i}\lambda(H)\)。指数自然性给出所述公式。对于 \(H\in\Lambda_T\)，必须有 \(e^{\mathrm{i}\lambda(H)}=1\)，这就是整性条件。反过来，满足该条件时，公式在 \(H\) 换成 \(H+L\)、\(L\in\Lambda_T\) 后不变，所以能下降到商环面，且是光滑群同态。指数的满射性保证对应的唯一性。
+
+	取 \(\Lambda_T\) 的格基 \(L_1,\ldots,L_r\)，令 \(\lambda_j(L_k)=2\pi\delta_{jk}\)。上述条件恰好要求 \(\lambda\) 是 \(\lambda_1,\ldots,\lambda_r\) 的整数线性组合，故它们组成 \(X^*(T)\) 的格基。
+\end{proof}
+
+这里的特征标是一维酉表示；对于一般有限维表示，常把表示矩阵的迹也称为特征标，一维情形两者恰好一致。上一节已经得到每个根都满足整性，故有\term[genge]{根格}[root lattice]
+\[
+	Q\coloneqq\sum_{\alpha\in R}\mathbb Z\alpha
+	\subseteq X^*(T).
+\]
+\(Q\) 位于对偶空间，而 \(\Lambda_T\) 位于原空间，不能直接比较包含关系。两者通过取值配对联系：\(\lambda(L)/(2\pi)\in\mathbb Z\)。根格在 \(\operatorname{span}_{\mathbb R}R\) 中是满秩格，因为它是满秩格 \(X^*(T)\) 的离散子群，并张成这个子空间；若有连续中心方向，根格的秩可能小于 \(\dim T\)。
+
+\ProseParagraphBreak
+余根属于原空间，因而可以与周期格直接比较；正确的系数是 \(2\pi\)。
+
+\begin{proposition}[余根给出的周期]\label{g1:prop:coroot-period}
+	设 \(G\) 为紧连通实李群，\(T\) 为极大环面，根与余根采用\eqref{g1:eq:root-space-decomposition}及\eqref{g1:eq:coroot-reflection}的归一化。则
+	\[
+		\exp_G(2\pi\alpha^\vee)=e\qquad(\alpha\in R).
+	\]
+	因此若 \(Q^\vee=\sum_{\alpha\in R}\mathbb Z\alpha^\vee\)，则 \(2\pi Q^\vee\subseteq\Lambda_T\)。
+\end{proposition}
+\begin{proof}
+	在\cref{g1:prop:root-reflection-realized}的证明中，实向量 \(x,y,k=\alpha^\vee\) 满足与下列矩阵相同的括号关系：
+	\[
+		x_0=\begin{pmatrix}0&1\\-1&0\end{pmatrix},\qquad
+		y_0=\begin{pmatrix}0&\mathrm{i}\\\mathrm{i}&0\end{pmatrix},\qquad
+		k_0=\begin{pmatrix}\mathrm{i}&0\\0&-\mathrm{i}\end{pmatrix}.
+	\]
+	它们是 \(\mathfrak{su}(2)\) 的实基，所以 \(x_0\mapsto x\)、\(y_0\mapsto y\)、\(k_0\mapsto k\) 定义了李代数同态 \(\varphi:\mathfrak{su}(2)\to\mathfrak g\)。这里需要一个整体同态来保持完整的周期，而不仅是局部指数公式。
+
+	每个 \(\operatorname{SU}(2)\) 矩阵唯一写成
+	\[
+		\begin{pmatrix}z&w\\-\overline w&\overline z\end{pmatrix},
+		\qquad |z|^2+|w|^2=1.
+	\]
+	这由两行酉正交及行列式等于一直接得到；取出 \(z,w\) 给出光滑逆映射，所以 \(\operatorname{SU}(2)\) 微分同胚于 \(S^3\)。由\cref{g1:prop:sphere-simply-connected}，它连通且单连通。\cref{g1:thm:lie-homomorphism-integration}遂把 \(\varphi\) 积分为 \(\Phi:\operatorname{SU}(2)\to G\)。再用指数自然性和对角矩阵指数，得到
+	\[
+		\exp_G(2\pi\alpha^\vee)
+		=\Phi\bigl(\exp_{\operatorname{SU}(2)}(2\pi k_0)\bigr)
+		=\Phi(I)=e.
+	\]
+	余根都在交换子代数 \(\mathfrak t\) 内，其整数线性组合的指数等于相应指数的乘积，故得到所列格包含。
+\end{proof}
+
+若根张成 \(\mathfrak t^*\)，还可定义\term[quange]{权格}[weight lattice]及\term[yuquange]{余权格}[coweight lattice]
+\[
+	P=\{\lambda\in\mathfrak t^*:\lambda(\alpha^\vee)\in\mathbb Z
+	\;\text{对所有 }\alpha\in R\},\qquad
+	P^\vee=\{H\in\mathfrak t:\alpha(H)\in\mathbb Z
+	\;\text{对所有 }\alpha\in R\}.
+\]
+根张成假设保证这两者都是满秩格。的确，\(Q\) 已是满秩格，而 \(P^\vee\) 是它的整数对偶格；\(Q^\vee\subseteq\Lambda_T/(2\pi)\) 是离散且张成 \(\mathfrak t\) 的子群，故也是满秩格，\(P\) 是其整数对偶格。已有结论合成
+\begin{equation}\label{g1:eq:root-lattice-inclusions}
+	Q\subseteq X^*(T)\subseteq P,
+	\qquad
+	Q^\vee\subseteq\frac1{2\pi}\Lambda_T\subseteq P^\vee.
+\end{equation}
+\symidx{\(Q,P,Q^\vee,P^\vee\)：根格、权格、余根格与余权格}前一组右侧的包含是把 \(\lambda(\Lambda_T)\subseteq2\pi\mathbb Z\) 用于 \(2\pi\alpha^\vee\)；后一组右侧的包含则是把根的整性用于任意周期。若有中心方向，\(Q\)、\(Q^\vee\) 只张成相应的非中心子空间，不能把这些定义不加条件地称为整个空间的满秩格。
+
+\ProseParagraphBreak
+根还直接检测群中心，但需要在环面上取指数以后的值。
+
+\begin{proposition}[由根检测中心]\label{g1:prop:center-from-roots}
+	设 \(G\) 为紧连通实李群，\(T\) 为极大环面。则
+	\[
+		Z(G)=\{t\in T:\chi_\alpha(t)=1\;\text{对所有 }\alpha\in R\}.
+	\]
+	若根张成 \(\mathfrak t^*\)，则还有自然群同构
+	\[
+		Z(G)\cong (2\pi P^\vee)/\Lambda_T.
+	\]
+\end{proposition}
+\begin{proof}
+	中心元素与 \(T\) 交换，故由 \(Z_G(T)=T\) 必在 \(T\) 中。对于 \(t\in T\)，其伴随作用在 \(\mathfrak t_{\mathbb C}\) 上恒等，在 \(\mathfrak g_\alpha\) 上乘以 \(\chi_\alpha(t)\)；所以所列根条件等价于 \(\operatorname{Ad}_t\) 在整个 \(\mathfrak g\) 上恒等。指数自然性于是说明 \(t\) 与所有指数交换，而连通群由指数生成，故 \(t\in Z(G)\)。这也证明反向包含。
+
+	写 \(t=\exp H\)，根条件为 \(\alpha(H)\in2\pi\mathbb Z\)，即 \(H\in2\pi P^\vee\)。指数在此子群上的核仍为 \(\Lambda_T\)，所以得到最后的商群描述。
+\end{proof}
+
+例如，将 \(G\) 除以有限中心子群 \(C\)，不会改变李代数、根空间和根的配对，却会把周期格变成
+\[
+	\Lambda_{T/C}=\{H\in\mathfrak t:\exp_GH\in C\}\supseteq\Lambda_T.
+\]
+这里 \(C\subseteq T\) 已由中心判据保证。一个原来的特征标能下降到 \(T/C\)，当且仅当它在 \(C\) 上恒为一，故商群的特征标格反而缩小。下一节的 \(\operatorname{SU}(2)\) 与 \(\operatorname{SO}(3)\) 将把这一现象写成 \(2\pi\mathbb Z\) 与 \(\pi\mathbb Z\) 的具体区别。根记录括号和无穷小共轭，周期格记录哪些一参数运动已经闭合；分清这两类数据，才能讨论整体群的中心和覆盖。
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

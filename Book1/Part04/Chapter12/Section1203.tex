@@ -1,0 +1,366 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 12.3 光滑单位分解与延拓
+% 纲要位置：几何学计划纲要.md，第 587 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 光滑截断函数和局部有限细化
+% * 单位分解的完整构造
+% * 截面延拓与相对版本
+% * 丛度量、正交补和短正合丛列的分裂
+% 
+% 纲要内容结束
+
+\section{光滑单位分解与延拓}
+\label{g1:sec:1203}
+
+在每张局部标架中，把纤维坐标的通常内积搬回来，就得到一个局部丛度量。可是两张标架之间的过渡矩阵通常不是正交矩阵，两个局部内积因而未必相同，不能直接粘合。截面延拓也有相似的困难：局部公式可以很好地描述一块区域，却可能在接近定义域边界时发散。我们需要一族光滑权重，让每个局部对象只在自己的定义域内起作用，并使这些权重在各点的总和为 \(1\)。
+
+\ProseParagraphBreak
+
+本节中的流形均为有限维、Hausdorff 且第二可数的光滑流形，允许有边界；向量丛均为有限秩实光滑向量丛。边界处的光滑性沿用\cref{g1:def:manifold-with-boundary}的局部延拓定义。构造首先在欧氏空间及半空间中完成，再借助局部有限的坐标覆盖搬到流形上；局部有限性保证以下无穷和在每一点附近其实都是有限和。
+
+\subsection{光滑截断函数和局部有限细化}
+\label{g1:subsec:1203:01}
+
+一个函数在开集 \(U\) 外等于零，并不表示它的支集包含于 \(U\)。按照\cref{g1:def:support-cutoff}，支集还包括非零点的所有极限点：
+\[
+	\operatorname{supp}f=\overline{\{p:f(p)\ne0\}}.
+\]
+例如 \(f(t)=\max\{1-|t|,0\}\) 在 \((-1,1)\) 外为零，支集却是 \([-1,1]\)。我们要把支集也留在允许的开集内部，并把折角换成任意阶可微的过渡。
+
+\begin{lemma}[光滑截断函数]\label{g1:lem:smooth-bump-function}
+	函数
+	\[
+		\eta(t)=
+		\begin{cases}
+			e^{-1/t},&t>0,\\
+			0,&t\le0
+		\end{cases}
+	\]
+	在 \(\mathbb R\) 上光滑，且 \(\eta^{(k)}(0)=0\) 对每个非负整数 \(k\) 成立。由它可构造光滑函数 \(\vartheta:\mathbb R\to[0,1]\)，满足 \(\vartheta=0\) 于 \((-\infty,0]\)、\(\vartheta=1\) 于 \([1,\infty)\)。因此，若 \(0<r<s<R\)，在欧氏空间或半空间 \(H^m=\{x^m\ge0\}\) 内，存在光滑函数，等于 \(1\) 于半径 \(r\) 的闭球或相对闭半球，支集包含于半径 \(s\) 的相对闭球，因而紧含于半径 \(R\) 的相对开球。
+\end{lemma}
+\begin{proof}
+	首先要检查拼接点 \(0\)，仅知道正半轴上的公式光滑是不够的。对 \(t>0\) 反复求导得到
+	\[
+		\eta^{(k)}(t)=e^{-1/t}P_k(1/t),
+	\]
+	其中 \(P_k\) 是多项式。确实 \(P_0=1\)，写 \(u=1/t\)，下一次求导给出 \(P_{k+1}(u)=u^2(P_k(u)-P_k'(u))\)。对任意非负整数 \(N\)，有 \(u^N e^{-u}\to0\)（\(u\to+\infty\)）：例如从指数级数取第 \(N+1\) 项，便有 \(u^N e^{-u}\le (N+1)!/u\)。
+
+	把每个 \(e^{-1/t}P_k(1/t)\) 在 \(t\le0\) 补成零，所得函数在 \(0\) 连续。而它在 \(0\) 的右侧差商又是 \(e^{-1/t}P_k(1/t)/t\)，仍趋于零；左侧差商恒为零。因此这个延拓的导数在 \(0\) 为零，在两侧则是下一阶公式。逐阶归纳即得 \(\eta\in C^\infty(\mathbb R)\)，且所有阶导数在 \(0\) 消失。
+
+	令
+	\[
+		\vartheta(t)=\frac{\eta(t)}{\eta(t)+\eta(1-t)}.
+	\]
+	分母处处为正：若第一项为零，则 \(t\le0\)，此时 \(1-t>0\)。其余性质由非负性及 \(\eta\) 的零点集直接得到。对中心 \(a\) 定义
+	\[
+		b_{a,r,s}(x)=
+		\vartheta\!\left(\frac{s^2-|x-a|^2}{s^2-r^2}\right).
+	\]
+	它在 \(|x-a|\le r\) 时为 \(1\)，在 \(|x-a|\ge s\) 时为零，支集包含于闭球 \(\overline B_s(a)\)。限制到 \(H^m\) 后仍是光滑函数，因为原来的公式就是其欧氏光滑延拓；支集按半空间的相对拓扑计算，包含于 \(\overline B_s(a)\cap H^m\)。
+\end{proof}
+
+若坐标图中半径 \(R\) 的相对闭球仍留在坐标域内，就可把上述函数搬到流形，并在坐标域外补零。补零为何光滑？支集已留在半径 \(s<R\) 的紧集内，每个坐标域外的点都有一个与该支集不交的邻域，所得函数在这个邻域恒为零。边界坐标图使用相对球，论证完全相同。零维流形的每个单点都是开集，其示性函数就是所需的光滑截断函数。
+
+\ProseParagraphBreak
+
+许多局部函数相加时，另一个要求是控制它们在同一邻域内出现的数目。回忆\cref{g1:def:locally-finite-refinement}：集合族 \(\{C_i\}\) 局部有限，是指每一点都有一个开邻域，只与有限个 \(C_i\) 相交；逐点有限则只要求每一点属于有限个 \(C_i\)。后一个条件不能控制邻近点发生的变化。
+
+\begin{example}\label{g1:exm:pointwise-finite-smooth-sum}
+	在 \(\mathbb R\) 中令 \(c_n=2^{-n}\)、\(r_n=2^{-n-2}\)，并用前述构造选光滑函数 \(b_n\)，使 \(0\le b_n\le1\)、\(b_n(c_n)=1\)，且
+	\[
+		\operatorname{supp}b_n\subseteq[c_n-r_n,c_n+r_n].
+	\]
+	这些闭区间两两不交，所以每一点最多落在一个支集中，\(\sum_n b_n(x)\) 在每一点都只有至多一个非零项。然而这个和在 \(0\) 等于零，在每个 \(c_n\) 处等于 \(1\)，因而在 \(0\) 不连续。问题正是任何原点邻域都会遇到无穷多个支集。\cref{g1:fig:locally-finite-bumps}把这种聚集与沿直线向远处移动的支集作了对照。
+\end{example}
+
+\input{Figures/Chapter12-LocallyFiniteBumps.tex}
+
+下面的细化既给出覆盖，又为每个截断函数预留一圈支集边缘。记号 \(V\Subset U\) 表示 \(\overline V\) 紧且 \(\overline V\subseteq U\)，闭包一律在 \(M\) 中计算。
+
+\begin{lemma}[相对紧坐标细化]\label{g1:lem:precompact-coordinate-refinement}
+	设 \(M\) 为有限维、Hausdorff 且第二可数的光滑流形，允许有边界，\(\{O_\alpha\}_{\alpha\in I}\) 为任意开覆盖。存在至多可数族坐标邻域对 \(V_i\Subset U_i\) 及指标选择 \(\alpha(i)\)，使
+	\[
+		M=\bigcup_iV_i,\qquad
+		\overline{U_i}\text{ 紧},\qquad
+		\overline{U_i}\subseteq O_{\alpha(i)},
+	\]
+	且 \(\{U_i\}\) 局部有限。每对 \(V_i,U_i\) 可在同一坐标图中选为同心的相对开球；存在光滑函数 \(b_i:M\to[0,1]\)，满足 \(b_i=1\) 于 \(\overline{V_i}\)、\(\operatorname{supp}b_i\Subset U_i\)。
+\end{lemma}
+\begin{proof}
+	\cref{g1:thm:compact-exhaustion,g1:thm:lch-paracompact}分别给出了紧穷竭与壳层细化。这里恢复构造，并在每一层加入所需的两层坐标球。这样从第十一章开始阅读的读者也能看到第二可数性与局部紧性各用在何处。
+
+	先构造紧集列 \(K_n\subseteq\operatorname{int}K_{n+1}\)，使其并为 \(M\)。流形的坐标球或半球可以缩小为紧闭球或紧闭半球，所以每一点的每个邻域都包含一个相对紧开邻域。从一个可数拓扑基中仅保留相对紧的成员，仍得到基：在上述较小邻域中再选基元素，其闭包就是紧闭包的闭子集。把非空成员列为 \(B_1,B_2,\ldots\)，有限时允许重复。令 \(K_1=\overline B_1\)。若 \(K_n\) 已选，由紧性用有限个 \(B_j\) 覆盖 \(K_n\cup\overline B_{n+1}\)，令 \(K_{n+1}\) 为这些 \(B_j\) 的闭包之并。于是
+	\[
+		K_n\cup\overline B_{n+1}\subseteq\operatorname{int}K_{n+1},
+		\qquad
+		M=\bigcup_{n\ge1}K_n=\bigcup_{n\ge1}\operatorname{int}K_n.
+	\]
+	各 \(K_n\) 紧且在 Hausdorff 空间中闭；后一事实可由外点与紧集各点的分离邻域、再取有限子覆盖得到。空流形无需作任何选择。
+
+	约定 \(K_{-1}=K_0=\varnothing\)，定义需要覆盖的紧壳层和允许选择邻域的较大开区域
+	\[
+		S_n=K_n\setminus\operatorname{int}K_{n-1},
+		\qquad
+		G_n=\operatorname{int}K_{n+1}\setminus K_{n-2}.
+	\]
+	有 \(S_n\subseteq G_n\)：外侧由内部包含关系保证，内侧则因为 \(K_{n-2}\subseteq\operatorname{int}K_{n-1}\)。每一点首次进入某个 \(K_n\) 时属于 \(S_n\)，所以各壳层覆盖 \(M\)。
+
+	对每个 \(p\in S_n\)，选择含它的 \(O_{\alpha(p)}\)，在开邻域 \(G_n\cap O_{\alpha(p)}\) 中取一张坐标图。选以 \(p\) 的坐标为中心的三层相对球，使内层 \(V_p\) 的闭包在中层 \(U_p\) 内，中层的闭包又紧含于该坐标图；特别地，\(\overline{U_p}\subseteq G_n\cap O_{\alpha(p)}\)。由壳层的紧性，保留有限个内层球 \(V_{n,1},\ldots,V_{n,k_n}\) 覆盖 \(S_n\)，并同时保留其外层球 \(U_{n,j}\)。所有层合起来至多可数，内层球覆盖 \(M\)。
+
+	还须检查局部有限性；仅仅每层有限并不够。给定 \(p\)，取 \(m\) 使 \(p\in\operatorname{int}K_m\)。当 \(n\ge m+2\) 时，这一层的全部 \(\overline{U_{n,j}}\) 位于 \(G_n\subseteq M\setminus K_{n-2}\)，而 \(K_m\subseteq K_{n-2}\)，故它们与 \(\operatorname{int}K_m\) 不交。这个固定邻域只能遇到前 \(m+1\) 层的有限个外层球，局部有限性得证。最后，在每对内外球之间选一个中间半径，由\cref{g1:lem:smooth-bump-function}构造 \(b_i\)，再补零到 \(M\)。它的支集位于中间闭球内，因而紧含于 \(U_i\)。
+\end{proof}
+
+\subsection{单位分解的完整构造}
+\label{g1:subsec:1203:02}
+
+现在已有非负函数 \(b_i\)，每一点至少落在一个 \(b_i=1\) 的区域内，各点附近又只出现有限项。只需除以这些函数的总和，就能得到总和为 \(1\) 的权重。这里不能省略支集控制：局部对象只在 \(O_\alpha\) 上定义时，权重的非零点及其极限点都应留在 \(O_\alpha\) 内。
+
+\begin{definition}[光滑单位分解]\label{g1:def:smooth-partition-unity}
+	设 \(\{O_\alpha\}_{\alpha\in I}\) 是光滑流形 \(M\) 的开覆盖。一族光滑函数 \(\varphi_\alpha:M\to[0,1]\) 若满足
+	\[
+		\operatorname{supp}\varphi_\alpha\subseteq O_\alpha,\qquad
+		\{\operatorname{supp}\varphi_\alpha\}_{\alpha\in I}\text{ 局部有限},\qquad
+		\sum_{\alpha\in I}\varphi_\alpha(p)=1,
+	\]
+	则称为从属于这个覆盖的\term[guanghuadanweifenjie]{光滑单位分解}[smooth partition of unity]。允许某些 \(\varphi_\alpha\) 恒为零。这是\cref{g1:def:partition-of-unity}中连续单位分解的光滑版本。
+\end{definition}
+
+\begin{theorem}[光滑单位分解的存在]\label{g1:thm:smooth-partition-unity}
+	有限维、Hausdorff 且第二可数的光滑流形 \(M\)，包括带边界流形，其每个开覆盖都有从属于该覆盖的光滑单位分解。构造可以先得到一个从属于可数细化、每项紧支且支集族局部有限的光滑单位分解，再按原覆盖指标归组；归组后的各项不一定紧支。若 \(M\) 紧，可以只使用有限个非零项。
+\end{theorem}
+\begin{proof}
+	给定覆盖 \(\{O_\alpha\}\)，用\cref{g1:lem:precompact-coordinate-refinement}选取 \(V_i,U_i,b_i\)。由于 \(\operatorname{supp}b_i\subseteq U_i\)，支集族局部有限。因此
+	\[
+		b=\sum_i b_i
+	\]
+	在每一点的某个邻域内都是有限个光滑函数之和，从而光滑。内层 \(V_i\) 覆盖 \(M\)，故每个点处至少有一个 \(b_i=1\)，得到 \(b\ge1\)。定义
+	\[
+		\psi_i=\frac{b_i}{b}.
+	\]
+	这些函数光滑、非负、总和为 \(1\)，且 \(\psi_i\) 与 \(b_i\) 有相同的非零点集，所以
+	\[
+		\operatorname{supp}\psi_i=\operatorname{supp}b_i\Subset U_i\subseteq O_{\alpha(i)}.
+	\]
+	这给出了细化上的单位分解。
+
+	若需要与原覆盖同指标，令
+	\[
+		\varphi_\alpha=\sum_{\alpha(i)=\alpha}\psi_i.
+	\]
+	每个和局部只有有限项，因此光滑。说明支集包含关系时，要防止无限并增加边界点。局部有限闭集族的任意子族之并仍闭：在并集外的一个点附近，只遇到有限个闭集，去掉这有限个闭集后仍留下一个开邻域。将这点用于 \(\{\operatorname{supp}\psi_i\}\)，得到
+	\[
+		\operatorname{supp}\varphi_\alpha
+		\subseteq\bigcup_{\alpha(i)=\alpha}\operatorname{supp}\psi_i
+		\subseteq O_\alpha.
+	\]
+	前一个包含成立，是因为右侧是包含所有非零点的闭集。一个只与有限个 \(\operatorname{supp}\psi_i\) 相交的邻域，也只可能遇到相应有限个 \(\operatorname{supp}\varphi_\alpha\)，所以归组后支集族仍局部有限。各点处重排的只是有限和，故 \(\sum_\alpha\varphi_\alpha=1\)。非负性又保证各项不超过 \(1\)。若某个原指标没有分配到成员，就取零函数。
+
+	当 \(M\) 紧时，先从覆盖 \(M\) 的内层球 \(V_i\) 中选有限子覆盖，只保留相应的 \(b_i\)，再作同样的归一化即可。一般情形下，按原指标归组会把无穷多个紧支集并起来，这个并虽然闭，却未必紧。
+\end{proof}
+
+局部有限还保证可以逐项求任意阶导数，因为在计算点的一个固定邻域内，本来就只有有限个函数。这里既不需要估计导数级数，也不涉及交换无限求和与极限；\cref{g1:exm:pointwise-finite-smooth-sum}说明仅有逐点有限时，连连续性都可能失败。
+
+\begin{corollary}[闭集的光滑截断]\label{g1:cor:smooth-cutoff-closed}
+	设 \(M\) 为有限维、Hausdorff 且第二可数的光滑流形，允许有边界，\(A\subseteq M\) 闭，\(U\subseteq M\) 开且 \(A\subseteq U\)。存在光滑函数 \(\chi:M\to[0,1]\)，使
+	\[
+		\chi=1\text{ 于 }A\text{ 的某个开邻域},\qquad
+		\operatorname{supp}\chi\subseteq U.
+	\]
+	若 \(A\) 紧，还可要求 \(\operatorname{supp}\chi\) 紧。
+\end{corollary}
+\begin{proof}
+	对开覆盖 \(\{U,M\setminus A\}\) 取单位分解 \(\chi+\rho=1\)，其中 \(\operatorname{supp}\chi\subseteq U\)、\(\operatorname{supp}\rho\subseteq M\setminus A\)。开集 \(M\setminus\operatorname{supp}\rho\) 包含 \(A\)，在这里 \(\rho=0\)，所以 \(\chi=1\)。
+
+	若 \(A\) 紧，在 \(U\) 中给每个 \(p\in A\) 选相对紧坐标邻域，再取有限个覆盖 \(A\)。它们的并 \(W\) 满足 \(A\subseteq W\) 且 \(\overline W\) 紧、\(\overline W\subseteq U\)。把前面的构造用于 \(A\subseteq W\)，所得支集闭且包含于紧集 \(\overline W\)，因而紧。若 \(A=\varnothing\)，直接取 \(\chi=0\)。
+\end{proof}
+
+“支集包含于 \(U\)”与“支集紧”是两件事。即使 \(U\) 非紧，只要 \(A\) 紧，仍可选紧支截断；反过来，若闭集 \(A\) 非紧，任何在 \(A\) 上等于 \(1\) 的函数都不可能紧支，因为其支集包含 \(A\)。例如 \(A=\mathbb Z\subset U=\mathbb R\)，截断函数存在，却不能紧支。
+
+\subsection{截面延拓与相对版本}
+\label{g1:subsec:1203:03}
+
+回忆\cref{g1:def:bundle-section}，丛 \(E\to M\) 的截面 \(s\) 在每一点 \(p\) 取值于对应纤维 \(E_p\)，光滑性可在局部标架中逐分量判断。截面的支集同样定义为
+\[
+	\operatorname{supp}s=\overline{\{p:s(p)\ne0_p\}}.
+\]
+对开集 \(U\) 上的光滑截面 \(s\)，若光滑函数 \(\chi\) 满足 \(\operatorname{supp}\chi\subseteq U\)，就可以令 \(\chi s\) 在 \(U\) 外等于零。它在 \(U\) 内逐分量光滑，在 \(U\) 外的每个点附近恒为零，因此是整体光滑截面。这里不要求 \(s\) 在接近 \(U\) 的边界时有界。
+
+\begin{definition}[闭子集上的光滑截面]\label{g1:def:smooth-section-closed-set}
+	设 \(E\to M\) 为光滑向量丛，\(A\subseteq M\) 为闭集。一个赋值 \(a(p)\in E_p\)（\(p\in A\)）称为 \(A\) 上的光滑截面，如果每个 \(p\in A\) 都有 \(M\) 中的开邻域 \(O_p\) 和光滑截面 \(s_p\in\Gamma(E|_{O_p})\)，满足
+	\[
+		s_p(q)=a(q)\qquad(q\in A\cap O_p).
+	\]
+\end{definition}
+
+这个定义允许 \(A\) 不是子流形，只要求所给纤维值在各点附近可以光滑延拓。不同 \(s_p\) 在 \(A\) 外可以不同；当前数据没有指定法向导数或更高阶导数。
+
+\begin{theorem}[截面延拓]\label{g1:thm:section-extension}
+	设 \(M\) 为有限维、Hausdorff 且第二可数的光滑流形，允许有边界，\(E\to M\) 为有限秩实光滑向量丛，\(A\subseteq M\) 闭，\(U\supseteq A\) 开。
+	\begin{enumerate}
+		\item 若 \(s\in\Gamma(E|_U)\)，则存在整体光滑截面 \(\widetilde s\)，在 \(A\) 的某开邻域与 \(s\) 相同，且 \(\operatorname{supp}\widetilde s\subseteq U\)。
+		\item 若 \(a\) 为\cref{g1:def:smooth-section-closed-set}意义下 \(A\) 上的光滑截面，则存在整体光滑截面 \(\widetilde a\)，满足 \(\widetilde a|_A=a\) 且 \(\operatorname{supp}\widetilde a\subseteq U\)。
+	\end{enumerate}
+	若 \(A\) 紧，两项都可要求所得截面紧支。
+\end{theorem}
+\begin{proof}
+	第一项中，由\cref{g1:cor:smooth-cutoff-closed}选取在 \(A\) 附近等于 \(1\)、支集包含于 \(U\) 的 \(\chi\)。令
+	\[
+		\widetilde s(p)=
+		\begin{cases}
+			\chi(p)s(p),&p\in U,\\
+			0_p,&p\notin U.
+		\end{cases}
+	\]
+	前面的零延拓论证说明其光滑，支集包含于 \(\operatorname{supp}\chi\)，并且在 \(\chi=1\) 的那个邻域与 \(s\) 相同。紧性结论也由 \(\chi\) 的紧支性得到。
+
+	第二项先粘合各个局部延拓，再控制支集。为每个 \(p\in A\) 取定义中的 \(O_p,s_p\)，并加入开集 \(O_*=M\setminus A\) 及其零截面 \(s_*=0\)，得到 \(M\) 的开覆盖。取从属单位分解 \(\{\varphi_p\}\cup\{\varphi_*\}\)。每个乘积 \(\varphi_p s_p\) 都可在 \(O_p\) 外光滑补零，支集仍包含于 \(\operatorname{supp}\varphi_p\)。因此
+	\[
+		t=\sum_{p\in A}\varphi_p s_p+\varphi_*s_*
+	\]
+	是整体光滑截面：每一点附近只需求有限项相加。若 \(q\in A\)，则 \(\varphi_*(q)=0\)，而每个在 \(q\) 处权重非零的 \(s_p\) 都满足 \(s_p(q)=a(q)\)，从而
+	\[
+		t(q)=\left(\sum_{p\in A}\varphi_p(q)\right)a(q)=a(q).
+	\]
+	最后再用第一项中的截断函数，取 \(\widetilde a=\chi t\)，即可控制支集并保持 \(A\) 上的值；\(A\) 紧时选紧支的 \(\chi\)。
+\end{proof}
+
+第一项保留的是一个邻域上的整条截面，第二项保留的是闭集上指定的值；不能从第二项自动推断它同时保留各个局部延拓的全部导数。闭性也有实际作用。取平凡线丛 \(\mathbb R\times\mathbb R\)，在非闭集 \(A=(0,1)\) 上给定 \(a(x)=1/x\)。它甚至已在开集 \(A\) 上光滑，却不可能延拓为 \(\mathbb R\) 上的连续截面，因为 \(x\downarrow0\) 时发散。
+
+\ProseParagraphBreak
+
+有时已经有一个整体截面 \(s_0\)，只希望在某闭集附近把它换成指定截面，并在另一闭集附近保持原样。两块区域相遇时需要相容；仅在相遇点取值相同，未必足以要求双方都在邻域内保持不变。
+
+\begin{proposition}[相对截面延拓]\label{g1:prop:relative-section-extension}
+	设 \(M,E\) 满足\cref{g1:thm:section-extension}的条件，\(A,B\subseteq M\) 为闭集，\(s_0\in\Gamma(E)\)。
+	\begin{enumerate}
+		\item 设 \(U\supseteq A\) 开，\(s\in\Gamma(E|_U)\)。若有开集 \(W\supseteq A\cap B\)，使 \(s=s_0\) 于 \(U\cap W\)，则存在 \(\widetilde s\in\Gamma(E)\)，在 \(A\) 的某开邻域等于 \(s\)，在 \(B\) 的某开邻域等于 \(s_0\)，且 \(\operatorname{supp}(\widetilde s-s_0)\subseteq U\)。
+		\item 设 \(a\) 是闭集 \(A\) 上的光滑截面。若有开集 \(W\supseteq B\)，使 \(a=s_0|_A\) 于 \(A\cap W\)，则存在整体延拓 \(\widetilde a|_A=a\)，并且 \(\widetilde a=s_0\) 于 \(B\) 的某开邻域。
+	\end{enumerate}
+	若 \(A\) 紧，还可在两项中要求对 \(s_0\) 的改变量紧支。
+\end{proposition}
+\begin{proof}
+	第一项中，闭集 \(B\setminus W\) 与 \(A\) 不交，所以
+	\[
+		O=U\setminus(B\setminus W)
+	\]
+	是包含 \(A\) 的开集。选在 \(A\) 附近为 \(1\)、支集包含于 \(O\) 的截断函数 \(\chi\)，把 \(\chi(s-s_0)\) 从 \(U\) 补零，令
+	\[
+		\widetilde s=s_0+\chi(s-s_0).
+	\]
+	在 \(A\) 附近有 \(\chi=1\)，故 \(\widetilde s=s\)。在 \(W\) 上改变量为零，因为 \(U\cap W\) 内两截面相等，\(U\) 外则已补零。在 \(M\setminus\operatorname{supp}\chi\) 上改变量也为零。这两个开集的并包含 \(B\)：属于 \(B\cap W\) 的点在前者中，属于 \(B\setminus W\) 的点不在支集内，因而在后者中。支集控制由构造得到。
+
+	第二项中，先用\cref{g1:thm:section-extension}取 \(a\) 的一个整体延拓 \(t\)。闭集 \(C=A\setminus W\) 与 \(B\) 不交，故可选在 \(C\) 附近为 \(1\)、支集包含于 \(M\setminus B\) 的光滑截断函数 \(\chi\)。令
+	\[
+		\widetilde a=s_0+\chi(t-s_0).
+	\]
+	在 \(A\setminus W\) 上 \(\chi=1\)，在 \(A\cap W\) 上则有 \(t=a=s_0\)，所以两部分都给出 \(\widetilde a=a\)。开集 \(M\setminus\operatorname{supp}\chi\) 包含 \(B\)，其上 \(\widetilde a=s_0\)。若 \(A\) 紧，第一项中的 \(A\) 与第二项中的 \(C\) 都紧，可选紧支的 \(\chi\)，于是改变量紧支。
+\end{proof}
+
+例如在平凡线丛上取 \(A=[0,1]\)、\(B=\{0\}\)、\(a(x)=x\)、\(s_0=0\)。虽然 \(a\) 与 \(s_0\) 在 \(A\cap B\) 上相等，却不能找一个同时延拓 \(a\) 并在 \(0\) 附近恒为零的截面。因此相对版本中的邻域相容条件不能只改成相交点上的相等。当 \(A,B\) 不交时，第一项的相容条件自动满足，可取 \(W=\varnothing\)。
+
+\subsection{丛度量、正交补和短正合丛列的分裂}
+\label{g1:subsec:1203:04}
+
+截面的局部公式相加前，必须先确认它们在同一点属于同一个向量空间。丛的局部标架本身不提供这种相加规则：不同标架中的同一列数字，通常表示不同的向量。单位分解粘合的是已解释为纤维对象的局部截面、双线性型或丛同态，再通过标架检验其光滑性。
+
+\begin{definition}[丛度量]\label{g1:def:bundle-metric}
+	设 \(E\to M\) 为有限秩实光滑向量丛。给每个纤维 \(E_p\) 指定正定对称双线性型 \(h_p\)，若在任一光滑局部标架 \(e_1,\ldots,e_r\) 中，所有函数 \(h(e_a,e_b)\) 都光滑，则称 \(h\) 为 \(E\) 上的\term[congduliang]{丛度量}[bundle metric]。
+\end{definition}
+
+只需在一组覆盖 \(M\) 的局部标架中检查光滑性。事实上，按照\cref{g1:def:bundle-section}的行标架约定 \(e_j=e_i g_{ij}\)，度量矩阵满足
+\[
+	H_j=g_{ij}^{\mathsf T}H_i g_{ij}.
+\]
+右侧是光滑矩阵的乘积，因而光滑。这里说的是各纤维内的内积；在尚未另作定义之前，它不是底空间 \(M\) 上两点间的距离。
+
+\begin{theorem}[丛度量的存在]\label{g1:thm:bundle-metric-existence}
+	设 \(M\) 为有限维、Hausdorff 且第二可数的光滑流形，允许有边界，\(E\to M\) 为有限秩实光滑向量丛，则 \(E\) 存在光滑丛度量。
+\end{theorem}
+\begin{proof}
+	取局部标架覆盖 \(\{O_\alpha\}\)。在每个 \(O_\alpha\) 上，把该标架声明为正交归一，得到局部度量
+	\[
+		h_\alpha\!\left(\sum_a v^a e_{\alpha,a},\sum_a w^a e_{\alpha,a}\right)
+		=\sum_a v^a w^a.
+	\]
+	它在别的标架中仍有光滑矩阵，因为过渡矩阵光滑。取从属于 \(\{O_\alpha\}\) 的光滑单位分解，定义
+	\[
+		h=\sum_\alpha\varphi_\alpha h_\alpha,
+	\]
+	每个加权局部双线性型在定义域外补零。其支集控制保证补零光滑；局部有限性保证每一矩阵分量在各点附近都是有限个光滑函数之和。
+
+	所得 \(h_p\) 对称且双线性。若 \(v\in E_p\) 非零，则每个有定义的 \(h_{\alpha,p}(v,v)>0\)，而权重非负且至少一个为正，故
+	\[
+		h_p(v,v)=\sum_\alpha\varphi_\alpha(p)h_{\alpha,p}(v,v)>0.
+	\]
+	这给出正定性，完成构造。
+\end{proof}
+
+正定性能够保留，是因为正定对称双线性型构成凸集。给定两个丛度量 \(h_0,h_1\)，对 \(0\le t\le1\)，\((1-t)h_0+th_1\) 仍是丛度量。存在性并未选出一个唯一度量，局部标架与单位分解的选择通常都会改变结果。
+
+\begin{proposition}[正交补子丛]\label{g1:prop:orthogonal-complement-bundle}
+	设 \(E\to M\) 为有限秩实光滑向量丛，\(h\) 为光滑丛度量，\(F\subseteq E\) 为秩 \(k\) 的光滑子丛。则逐纤维的正交补
+	\[
+		F^\perp_p=\{v\in E_p:h_p(v,w)=0\text{ 对所有 }w\in F_p\}
+	\]
+	构成光滑子丛，并有光滑直和分解 \(E=F\oplus F^\perp\)。到 \(F\) 的正交投影是光滑丛同态，\(h\) 在两个子丛上的限制仍为光滑丛度量。
+\end{proposition}
+\begin{proof}
+	每个纤维中的线性代数已给出向量空间直和；要补足的是正交补和投影如何随底点光滑变化。由\cref{g1:prop:subbundle-adapted-frame}，在一点附近取环境丛标架 \(e_1,\ldots,e_r\)，使前 \(k\) 项张成 \(F\)。令
+	\[
+		A_{ab}=h(e_a,e_b)\quad(1\le a,b\le k).
+	\]
+	矩阵 \(A\) 光滑且正定，故可逆，\(A^{-1}=\operatorname{adj}(A)/\det A\) 也是光滑矩阵。对纤维向量 \(v\) 定义
+	\[
+		P(v)=\sum_{a,b=1}^k e_a(A^{-1})_{ab}\,h(e_b,v).
+	\]
+	对每个 \(c\le k\)，有
+	\[
+		h(e_c,P(v))=\sum_{a,b=1}^k A_{ca}(A^{-1})_{ab}h(e_b,v)
+		=h(e_c,v).
+	\]
+	所以 \(v-P(v)\) 与 \(F\) 正交；若 \(v\in F\)，则公式又给出 \(P(v)=v\)。这正是纤维上的唯一正交投影，因而不同局部标架得到的公式自动相同，可以粘合为整体光滑丛同态。
+
+	对 \(j=k+1,\ldots,r\) 令 \(f_j=e_j-P(e_j)\)。它们光滑且落在 \(F^\perp\) 中；若其线性组合为零，在商空间 \(E_p/F_p\) 中取像，得到 \(e_{k+1},\ldots,e_r\) 的对应线性组合为零，从而全部系数为零。它们共有 \(r-k\) 个，正好构成 \(F^\perp\) 的局部标架，证明了子丛的光滑性。映射 \(F\oplus F^\perp\to E\) 的逆为 \(v\mapsto(Pv,v-Pv)\)，两者都光滑。度量限制的矩阵光滑，正定性逐纤维保持；\(k=0\) 或 \(k=r\) 时按零子丛解释同样成立。
+\end{proof}
+
+有了正交补，就能把逐纤维的短正合列拆成整体直和。回忆\cref{g1:def:short-exact-bundle-sequence}，短正合要求第一张箭头在每个纤维单射、第二张箭头满射，且前者的像等于后者的核；这些条件本身还没有指定一个与核互补的子丛。
+
+\begin{theorem}[短正合丛列的光滑分裂]\label{g1:thm:exact-bundle-splitting}
+	设 \(M\) 为有限维、Hausdorff 且第二可数的光滑流形，允许有边界，且
+	\[
+		0\longrightarrow E'\xrightarrow{\ i\ }E\xrightarrow{\ q\ }E''\longrightarrow0
+	\]
+	是 \(M\) 上有限秩实光滑向量丛的短正合列。则存在光滑丛同态 \(j:E''\to E\)，使 \(qj=\operatorname{id}_{E''}\)，并由
+	\[
+		E'\oplus E''\longrightarrow E,\qquad (u,w)\longmapsto i(u)+j(w)
+	\]
+	得到光滑丛同构。这样的分裂一般不唯一。
+\end{theorem}
+\begin{proof}
+	由\cref{g1:thm:constant-rank-bundle-morphism}，\(F=i(E')=\ker q\) 是光滑子丛；这里 \(i,q\) 的纤维秩由逐纤维单射、满射保证恒定。为 \(E\) 选丛度量，令 \(C=F^\perp\)。限制 \(q|_C:C\to E''\) 逐纤维为线性同构：其核是 \(C_p\cap F_p=0\)，任意 \(q_p(v)\) 又等于分解 \(v=v_F+v_C\) 后的 \(q_p(v_C)\)，故它满射。
+
+	\cref{g1:prop:bundle-morphism-matrices}说明，逐纤维可逆的光滑丛同态具有光滑逆；其理由是在局部标架中取可逆光滑矩阵的逆，仍由伴随矩阵除以不为零的行列式给出。于是取 \(j=(q|_C)^{-1}\)，再包含到 \(E\) 中，就有 \(qj=\operatorname{id}\)。对任意 \(v\in E\)，
+	\[
+		v=(v-jqv)+jqv,\qquad v-jqv\in F,
+	\]
+	所以所述直和同构的逆为
+	\[
+		v\longmapsto\bigl(i^{-1}(v-jqv),qv\bigr).
+	\]
+	这里 \(i:E'\to F\) 也是光滑丛同构，因此该逆光滑。
+
+	最后说明选择的自由度。若 \(j_0,j_1\) 都是分裂，则 \(q(j_1-j_0)=0\)，故其差唯一写成 \(i\circ a\)，其中 \(a:E''\to E'\) 为光滑丛同态；反过来，任意这样的 \(a\) 都使 \(j_0+i\circ a\) 成为分裂。例如平凡丛列 \(\mathbb R\to\mathbb R^2\to\mathbb R\) 中，第一箭头包含为第一坐标、第二箭头投影到第二坐标，则每个光滑函数 \(a\) 都给出分裂 \(t\mapsto(a(p)t,t)\)。因此短正合列本身通常没有指定一个分裂。
+\end{proof}
+
+这些构造也说明单位分解可以保持什么。若 \(L:E\to F\) 是固定的丛同态，局部截面都满足同一个线性条件 \(L(s_\alpha)=t\)，则
+\[
+	L\!\left(\sum_\alpha\varphi_\alpha s_\alpha\right)
+	=\sum_\alpha\varphi_\alpha L(s_\alpha)
+	=\left(\sum_\alpha\varphi_\alpha\right)t=t.
+\]
+正定性也由非负权重保持。但两个处处非零的局部截面可以相互抵消，例如平凡线丛中的 \(1\) 与 \(-1\) 以相同权重平均就得到零。逐向量平均两组正交归一标架，甚至未必得到一组标架，更不能自动保持正交归一；非退化交替形式与几乎复结构的代数条件也不能直接由平均保持，\secref{g1:sec:1204}将给出具体例子；含导数的条件还须另作检验。因此“局部存在”能否推出“整体存在”，仍须检验所需条件是否被这个加权构造保留。
+
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

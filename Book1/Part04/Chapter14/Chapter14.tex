@@ -1,0 +1,769 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：## 第14章　微分形式、积分与 Stokes 定理
+% 纲要位置：几何学计划纲要.md，第 644 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% > 本章目标与证明范围：把外微分、同伦算子、定向和积分组织为完整的流形微积分。闭形式的局部原函数与整体周期障碍贯穿全章，为第二卷上同调比较准备链级输入。
+% 
+% 纲要内容结束
+
+\chapter{微分形式、积分与 Stokes 定理}
+\label{g1:ch:14}
+\BookChapterNumber{g1:ch:14}
+
+\begin{chapterabstract}
+	外微分把函数的微分推广到所有次数的微分形式，其平方为零，使闭形式与原形式的问题自然出现。本章从坐标构造及唯一性出发，证明外微分的自然性与 Cartan 公式，再以显式区间积分建立同伦公式和 Poincaré 引理。定向与密度解决两种不同的积分需求；单位分解把局部积分粘成整体，并保证坐标与分解的选择不影响结果。外法向优先的约定确定边界符号，半空间中的微积分基本定理随后给出流形及带角区域的 Stokes 定理。最后对光滑奇异单形积分，证明积分与边界相容，用周期解释局部原形式的整体障碍，并提出后卷将证明的次数公式与 de Rham 比较问题。
+\end{chapterabstract}
+
+\begin{learninggoals}
+	\begin{itemize}
+		\item 构造外微分，证明其坐标无关性、唯一性、平方为零以及与拉回的相容性，并用 Cartan 公式联系插入和李导数。
+		\item 写出同伦算子，逐项核对区间积分的符号，证明星形区域与流形局部的 Poincaré 引理，区分零次与正次情形。
+		\item 区分定向线、顶次形式和密度，构造紧支积分并证明其与坐标及单位分解无关，正确使用定向换元公式。
+		\item 从外法向优先约定推导边界方向，完整证明 Stokes 定理及带角版本，说明 Green、Gauss 公式中的方向和边界项。
+		\item 对光滑奇异链积分，证明积分与链边界相容，利用周期判断恰当性的障碍，明确次数公式与 de Rham 定理尚需的后续理论。
+	\end{itemize}
+\end{learninggoals}
+
+在一元微积分中，求导和积分由端点差联系起来。在平面上，沿闭曲线的环流又能写成区域内部某种导数的积分。这些公式的被积对象维数不同，边界方向也各有说法，却都在比较“区域内部的变化”与“沿边界的累积”。微分形式提供适合拉回和定向的被积对象，外微分提供共同的导数，Stokes 定理则把这种联系写成一个维数无关的等式。
+
+\ProseParagraphBreak
+
+另一个问题同样贯穿本章：知道一个对象在每个小邻域都有原函数，为什么还可能找不到整体原函数？穿孔平面的角形式最能显出差别。沿短弧可以连续选择角度，绕一圈后角度却增加 \(2\pi\)。局部微分计算没有出错，真正未被它消除的是整体绕行。我们会先用同伦公式制造局部原形式，再用非零周期证明某些局部原形式无法拼合。
+
+\ProseParagraphBreak
+
+本章默认流形有限维、Hausdorff、第二可数，除明确要求无边界之处外允许边界；光滑性沿用\chapref{g1:ch:11}的局部延拓定义。需要回忆的前置内容是\chapref{g1:ch:12}的交替张量、楔积、插入、拉回、密度和光滑单位分解，以及\secref{g1:sec:1303}的李导数。每次调用这些工具时会指出具体结论和约定。积分部分调用欧氏多元换元、Fubini 定理与一元微积分基本定理，其假设在\secref{g1:sec:1403}列明；这里不要求读者已经学习过一般流形积分。
+
+\ProseParagraphBreak
+
+本章主线中的构造和证明在正文完成。最后一节的次数积分公式依纲要先作准确陈述，一般次数的定义、整数性和公式的证明留在第二卷第16.1节；de Rham 比较的完整证明留在第二卷第7.3节。它们不作为前面论证的依据。延伸阅读可按 Lee 第二版的主题查找：Chapter 14 的 Exterior Derivatives，Chapter 15 的 Orientations of Manifolds，Chapter 16 的 Integration of Differential Forms、Stokes's Theorem、Manifolds with Corners 与 Densities，以及 Chapter 17 的 Homotopy Invariance\cite[Chapter 14, pp. 362--372; Chapter 15, pp. 380--387; Chapter 16, pp. 402--433; Chapter 17, pp. 443--447]{Lee2012Smooth}。
+
+\input{Part04/Chapter14/Section1401}
+\input{Part04/Chapter14/Section1402}
+\input{Part04/Chapter14/Section1403}
+\input{Part04/Chapter14/Section1404}
+\input{Part04/Chapter14/Section1405}
+
+\begin{chaptersummary}
+	外微分由局部公式 \(\mathrm{d}(\sum_I a_I\,\mathrm{d}x^I)=\sum_I\mathrm{d}a_I\wedge\mathrm{d}x^I\) 构造。函数微分、分次乘积法则和平方为零唯一确定它，局部唯一性保证换坐标相容。外微分与任意光滑映射拉回交换；插入和李导数的自然性还须比较相关向量场。Cartan 公式 \(\mathcal L_X=\mathrm{d}\iota_X+\iota_X\mathrm{d}\) 将这三种运算联系起来。
+
+	\ProseParagraphBreak
+
+	在区间乘积上把 \(\mathrm{d}t\) 放在最前，积分其系数得到同伦算子，满足 \(\mathrm{d}K+K\mathrm{d}=i_1^*-i_0^*\)。径向收缩因此给出星形区域正次闭形式的显式原形式，也给出流形上的局部恰当性。零次闭形式只是局部常值，并非都恰当。角形式的非零周期说明，局部结论不能直接提升为整体原形式的存在性。
+
+	\ProseParagraphBreak
+
+	顶次形式按行列式换元，密度按绝对行列式换元。指定定向后可以对前者积分，不可定向流形仍可对后者积分。紧支性与局部有限的单位分解使积分构造只涉及有限个局部项；共同细化和欧氏换元证明其独立于所有选择。反转定向改变形式积分的符号，却不改变密度积分。
+
+	\ProseParagraphBreak
+
+	边界采用外法向优先的定向。半空间 \(x^n\geq0\) 的外向方向是 \(-\partial_n\)，相应的边界符号由这一约定实际算出。局部的一元积分、单位分解以及各面符号给出 \(\int_M\mathrm{d}\omega=\int_{\partial M}\omega\)，并延伸到带角区域。低维角层不另加顶维边界项；单形第 \(i\) 个面的有序顶点方向与边界方向相差 \((-1)^i\)。
+
+	\ProseParagraphBreak
+
+	对光滑奇异单形拉回再积分，不要求单形的像嵌入。Stokes 定理给出 \(\delta\mathcal I=\mathcal I\mathrm{d}\)，所以积分诱导形式上同调与光滑奇异上同调之间的比较映射。闭形式的周期只依赖形式模恰当形式的类及圈模边界的类；非零周期构成整体恰当性的障碍。比较映射是否为同构，以及一般映射怎样获得整数次数，仍是后续要证明的问题。
+\end{chaptersummary}
+
+\BookExercises
+
+\begin{exercise}\label{g1:ex:exterior-pullback-graph}
+	令 \(F:\mathbb R^2\to\mathbb R^3\)、\(F(u,v)=(u,v,uv)\)，并在 \(\mathbb R^3\) 上取一形式
+	\[
+		\omega=z\,\mathrm{d}x+x\,\mathrm{d}y+y\,\mathrm{d}z.
+	\]
+	分别计算 \(\mathrm{d}\omega\)、\(F^*\omega\)、\(\mathrm{d}(F^*\omega)\) 和 \(F^*(\mathrm{d}\omega)\)，直接核对外微分与拉回相容。说明计算 \(F^*\omega\) 时为何不能只把 \((x,y,z)\) 换成 \((u,v,uv)\)，却保留 \(\mathrm{d}x,\mathrm{d}y,\mathrm{d}z\) 不变。
+\end{exercise}
+\begin{solution}
+	先对目标上的形式求外微分，得到
+	\[
+		\mathrm{d}\omega=\mathrm{d}z\wedge\mathrm{d}x+\mathrm{d}x\wedge\mathrm{d}y+\mathrm{d}y\wedge\mathrm{d}z.
+	\]
+	在定义域上，\(F^*\mathrm{d}x=\mathrm{d}u\)、\(F^*\mathrm{d}y=\mathrm{d}v\)、\(F^*\mathrm{d}z=\mathrm{d}(uv)=v\,\mathrm{d}u+u\,\mathrm{d}v\)，所以
+	\[
+		F^*\omega=uv\,\mathrm{d}u+u\,\mathrm{d}v+v(v\,\mathrm{d}u+u\,\mathrm{d}v)
+		=(uv+v^2)\,\mathrm{d}u+(u+uv)\,\mathrm{d}v.
+	\]
+	按平面一形式的公式，
+	\[
+		\mathrm{d}(F^*\omega)
+		=\bigl(\partial_u(u+uv)-\partial_v(uv+v^2)\bigr)\,\mathrm{d}u\wedge\mathrm{d}v
+		=(1-u-v)\,\mathrm{d}u\wedge\mathrm{d}v.
+	\]
+	另一方面，逐项拉回 \(\mathrm{d}\omega\) 得
+	\begin{align*}
+		F^*(\mathrm{d}\omega)
+		={}&(v\,\mathrm{d}u+u\,\mathrm{d}v)\wedge\mathrm{d}u
+		+\mathrm{d}u\wedge\mathrm{d}v
+		+\mathrm{d}v\wedge(v\,\mathrm{d}u+u\,\mathrm{d}v)\\
+		={}&(-u+1-v)\,\mathrm{d}u\wedge\mathrm{d}v,
+	\end{align*}
+	与前式相同。
+
+	拉回后的形式应当接受 \(\mathbb R^2\) 上的切向量作为输入。\(\mathrm{d}x,\mathrm{d}y,\mathrm{d}z\) 原来属于目标空间的余切空间，必须通过 \(\mathrm{d}F\) 一并拉回，才能在定义域的切向量上求值。只替换系数会遗漏这些输入的变化；本题中尤其会漏掉 \(\mathrm{d}(uv)\) 同时包含 \(\mathrm{d}u\) 与 \(\mathrm{d}v\) 的事实。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:exterior-polar-coframe}
+	在 \(U=(0,\infty)\times(-\pi,\pi)\) 上取极坐标映射 \(F(r,\theta)=(r\cos\theta,r\sin\theta)\)。令目标上的 \(\alpha=-y\,\mathrm{d}x+x\,\mathrm{d}y\)，并在 \(U\) 上令
+	\[
+		\eta^1=\mathrm{d}r,\qquad \eta^2=r\,\mathrm{d}\theta,\qquad
+		E_1=\partial_r,\qquad E_2=r^{-1}\partial_\theta.
+	\]
+	计算 \(F^*\alpha\) 与 \(\mathrm{d}(F^*\alpha)\)，并用 \(F^*(\mathrm{d}\alpha)\) 核对。再计算 \(\mathrm{d}\eta^1\)、\(\mathrm{d}\eta^2\) 和 \([E_1,E_2]\)，用\eqref{g1:eq:exterior-one-form-evaluation}核对 \(\mathrm{d}\eta^2(E_1,E_2)\)。解释为何不能把 \(\eta^1,\eta^2\) 都当成坐标微分，直接令它们的外微分为零。
+\end{exercise}
+\begin{solution}
+	普通链式法则给出
+	\[
+		F^*\mathrm{d}x=\cos\theta\,\mathrm{d}r-r\sin\theta\,\mathrm{d}\theta,\qquad
+		F^*\mathrm{d}y=\sin\theta\,\mathrm{d}r+r\cos\theta\,\mathrm{d}\theta.
+	\]
+	代入可得 \(F^*\alpha=r^2\,\mathrm{d}\theta\)，故
+	\[
+		\mathrm{d}(F^*\alpha)=2r\,\mathrm{d}r\wedge\mathrm{d}\theta.
+	\]
+	在目标上，\(\mathrm{d}\alpha=-\mathrm{d}y\wedge\mathrm{d}x+\mathrm{d}x\wedge\mathrm{d}y=2\,\mathrm{d}x\wedge\mathrm{d}y\)。将前面的两个拉回一形式作楔积，得到 \(F^*(\mathrm{d}x\wedge\mathrm{d}y)=r\,\mathrm{d}r\wedge\mathrm{d}\theta\)，因此结果一致。
+
+	对所给余标架，
+	\[
+		\mathrm{d}\eta^1=0,\qquad
+		\mathrm{d}\eta^2=\mathrm{d}r\wedge\mathrm{d}\theta
+		=\frac1r\eta^1\wedge\eta^2.
+	\]
+	向量场的括号为
+	\[
+		[E_1,E_2]=[\partial_r,r^{-1}\partial_\theta]
+		=-r^{-2}\partial_\theta=-\frac1r E_2.
+	\]
+	由于 \(\eta^2(E_1)=0\)、\(\eta^2(E_2)=1\)，这两个求值函数均为常数，故一形式的微分公式给出
+	\[
+		\mathrm{d}\eta^2(E_1,E_2)
+		=E_1(1)-E_2(0)-\eta^2\left(-\frac1rE_2\right)=\frac1r,
+	\]
+	正好与上面的二形式求值相符。
+
+	\(\eta^1,\eta^2\) 的确在每点构成余切空间的一组基，但余标架不一定由一组坐标函数的微分组成。这里若 \(\eta^2\) 在某开邻域等于 \(\mathrm{d}q\)，就应有 \(\mathrm{d}\eta^2=\mathrm{d}^2q=0\)，与计算矛盾。坐标公式中 \(\mathrm{d}(\mathrm{d}x^i)=0\) 来自这些一形式是函数微分，不能推广为任意局部标架都“无需微分”。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:homogeneous-closed-form-primitive}
+	在 \(\mathbb R^n\) 上令 \(E=\sum_{j=1}^n x^j\partial_{x^j}\)，并设 \(\omega\) 是次数 \(k\geq1\) 的微分形式，其坐标系数都是次数 \(m\geq0\) 的齐次多项式。证明
+	\[
+		\mathcal L_E\omega=(m+k)\omega.
+	\]
+	若再假设 \(\mathrm{d}\omega=0\)，证明 \((m+k)^{-1}\iota_E\omega\) 是一个原形式。用这个公式给出 \(\mathrm{d}x\wedge\mathrm{d}y\) 在 \(\mathbb R^2\) 上的一个原形式，并对 \(\beta=x\,\mathrm{d}y\) 检查闭性条件为何不可省略。
+\end{exercise}
+\begin{solution}
+	\(E\) 的流为 \(\Phi_t(x)=e^t x\)，对一切实数 \(t\) 有定义。若 \(a\) 为次数 \(m\) 的齐次多项式，则 \(a(e^t x)=e^{mt}a(x)\)，而 \(\Phi_t^*\mathrm{d}x^j=e^t\mathrm{d}x^j\)。一个 \(k\) 次楔积因而再贡献 \(e^{kt}\)，所以逐项得到
+	\[
+		\Phi_t^*\omega=e^{(m+k)t}\omega.
+	\]
+	在 \(t=0\) 求导，即得 \(\mathcal L_E\omega=(m+k)\omega\)。这里 \(k\) 的贡献来自一形式基的拉回；仅对系数使用齐次关系会漏掉它。
+
+	若 \(\mathrm{d}\omega=0\)，Cartan 公式给出
+	\[
+		(m+k)\omega=\mathrm{d}(\iota_E\omega)+\iota_E(\mathrm{d}\omega)
+		=\mathrm{d}(\iota_E\omega).
+	\]
+	由于 \(m\geq0\)、\(k\geq1\)，分母 \(m+k\) 非零，故 \(\eta=(m+k)^{-1}\iota_E\omega\) 满足 \(\mathrm{d}\eta=\omega\)。
+
+	对于 \(\omega=\mathrm{d}x\wedge\mathrm{d}y\)，有 \(m=0\)、\(k=2\)，且 \(\iota_E\omega=x\,\mathrm{d}y-y\,\mathrm{d}x\)。因此可取
+	\[
+		\eta=\frac12(x\,\mathrm{d}y-y\,\mathrm{d}x),\qquad
+		\mathrm{d}\eta=\mathrm{d}x\wedge\mathrm{d}y.
+	\]
+	对 \(\beta=x\,\mathrm{d}y\)，虽然 \(m=k=1\)，却有 \(\mathrm{d}\beta=\mathrm{d}x\wedge\mathrm{d}y\ne0\)。若忽略闭性，得到的候选函数是 \(\tfrac12\iota_E\beta=xy/2\)，其微分为
+	\[
+		\mathrm{d}(xy/2)=\frac12(y\,\mathrm{d}x+x\,\mathrm{d}y)\ne\beta.
+	\]
+	差异正是 Cartan 公式中被错误删去的 \(\iota_E\mathrm{d}\beta\) 项。事实上非闭形式根本不可能恰当，因为 \(\mathrm{d}^2=0\)。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:lie-function-multiple-area}
+	设 \(M\) 为无边界光滑流形，\(X\) 为光滑向量场，\(f\in C^\infty(M)\)。证明对任意形式 \(\omega\)，
+	\[
+		\mathcal L_{fX}\omega=f\mathcal L_X\omega+\mathrm{d}f\wedge\iota_X\omega.
+	\]
+	再在 \(\mathbb R^2\) 上令 \(X=-y\partial_x+x\partial_y\)、\(\mu=\mathrm{d}x\wedge\mathrm{d}y\)，证明 \(fX\) 的局部流保持 \(\mu\) 当且仅当 \(Xf=0\)，并把这个条件解释为 \(f\) 在每个以原点为中心的圆周上为常数。分别判断 \(f=x\) 与 \(f=x^2+y^2\)。
+\end{exercise}
+\begin{solution}
+	由于 \(\iota_{fX}\omega=f\iota_X\omega\)，Cartan 公式与乘积法则给出
+	\begin{align*}
+		\mathcal L_{fX}\omega
+		&=\mathrm{d}(f\iota_X\omega)+f\iota_X\mathrm{d}\omega\\
+		&=\mathrm{d}f\wedge\iota_X\omega+f\bigl(\mathrm{d}\iota_X\omega+\iota_X\mathrm{d}\omega\bigr)\\
+		&=\mathrm{d}f\wedge\iota_X\omega+f\mathcal L_X\omega.
+	\end{align*}
+	零次形式的插入为零，这个公式也包含 \(\mathcal L_{fX}g=fXg\)。正次形式则一般多出第一项，所以李导数对向量场的函数倍乘通常不是线性的。
+
+	对平面的转动场，
+	\[
+		\iota_X\mu=-x\,\mathrm{d}x-y\,\mathrm{d}y
+		=-\mathrm{d}\bigl((x^2+y^2)/2\bigr).
+	\]
+	又因 \(\mathrm{d}\mu=0\)，Cartan 公式给出 \(\mathcal L_X\mu=0\)。于是
+	\begin{align*}
+		\mathcal L_{fX}\mu
+		&=(\partial_xf\,\mathrm{d}x+\partial_yf\,\mathrm{d}y)\wedge(-x\,\mathrm{d}x-y\,\mathrm{d}y)\\
+		&=(-y\partial_xf+x\partial_yf)\,\mathrm{d}x\wedge\mathrm{d}y
+		=(Xf)\mu.
+	\end{align*}
+	\cref{g1:prop:lie-derivative-tensor-rules}已证明，一个张量被局部流保持当且仅当其李导数为零。因此所求条件恰为 \(Xf=0\)，不需要预先假设 \(fX\) 完备。
+
+	固定 \(r>0\)，沿圆周 \(c(\theta)=(r\cos\theta,r\sin\theta)\) 有 \(c'(\theta)=X_{c(\theta)}\)，故
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}\theta}f(c(\theta))=(Xf)(c(\theta)).
+	\]
+	所以 \(Xf=0\) 当且仅当 \(f\) 在每个这样的圆周上为常数；原点处 \(X=0\)，条件自动成立。若 \(f=x\)，则 \(Xf=-y\)，并非处处为零，局部流不保持 \(\mu\)。若 \(f=x^2+y^2\)，则 \(Xf=-2xy+2xy=0\)，局部流保持 \(\mu\)。后一个向量场的转动速度随半径变化，但同一圆周上速度的倍乘因子保持不变。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:path-homotopy-integral}
+	设 \(\alpha\) 是光滑流形 \(M\) 上的一形式，\(H:[0,1]^2\to M\) 光滑，记 \(\gamma_s(t)=H(s,t)\)。写
+	\[
+		H^*\alpha=A(s,t)\,\mathrm{d}s+B(s,t)\,\mathrm{d}t,\qquad
+		I(s)=\int_{\gamma_s}\alpha=\int_0^1B(s,t)\,\mathrm{d}t.
+	\]
+	不用 Stokes 定理，证明
+	\[
+		I'(s)=A(s,1)-A(s,0)+\int_0^1(\mathrm{d}\alpha)_{H(s,t)}
+		\bigl(\partial_sH(s,t),\partial_tH(s,t)\bigr)\,\mathrm{d}t.
+	\]
+	由此证明：若 \(\alpha\) 闭，且同伦固定路径的两个端点，或者每条 \(\gamma_s\) 都是闭路，则 \(I(s)\) 与 \(s\) 无关。最后取 \(\mathbb R^2\) 上的 \(\alpha=y\,\mathrm{d}x\) 和 \(H(s,t)=(t,st(1-t))\)，计算 \(I(s)\)，说明闭性条件不能去掉。
+\end{exercise}
+\begin{solution}
+	参数正方形上的光滑性采用局部光滑延拓的约定，所以系数及其偏导在边界处也有确定意义。外微分的坐标公式给出
+	\[
+		\mathrm{d}(H^*\alpha)
+		=\mathrm{d}A\wedge\mathrm{d}s+\mathrm{d}B\wedge\mathrm{d}t
+		=(\partial_sB-\partial_tA)\,\mathrm{d}s\wedge\mathrm{d}t.
+	\]
+	这里的负号来自 \(\mathrm{d}t\wedge\mathrm{d}s=-\mathrm{d}s\wedge\mathrm{d}t\)。另一方面，外微分与拉回相容，将 \(\mathrm{d}(H^*\alpha)=H^*(\mathrm{d}\alpha)\) 在 \((\partial_s,\partial_t)\) 上求值，得到
+	\[
+		\partial_sB-\partial_tA
+		=(\mathrm{d}\alpha)_{H(s,t)}
+		\bigl(\partial_sH(s,t),\partial_tH(s,t)\bigr).
+	\]
+	光滑系数在紧参数区间上允许对积分求导，因此
+	\[
+		I'(s)=\int_0^1\partial_sB(s,t)\,\mathrm{d}t
+		=\int_0^1\partial_tA(s,t)\,\mathrm{d}t
+		+\int_0^1(\mathrm{d}\alpha)_{H(s,t)}
+		\bigl(\partial_sH(s,t),\partial_tH(s,t)\bigr)\,\mathrm{d}t.
+	\]
+	对第一项使用一元微积分基本定理，便得到所求等式。它在 \(0<s<1\) 上成立，并由系数连续性延至端点的一侧导数。
+
+	若 \(\mathrm{d}\alpha=0\)，只剩端点差。固定端点时，\(H(s,0)\) 与 \(H(s,1)\) 各自不随 \(s\) 变化，故 \(\partial_sH(s,0)=\partial_sH(s,1)=0\)，从而 \(A(s,0)=A(s,1)=0\)。若每条路径都是闭路，则 \(H(s,0)=H(s,1)\)；对 \(s\) 求导还得到 \(\partial_sH(s,0)=\partial_sH(s,1)\)。又因为
+	\[
+		A(s,t)=\alpha_{H(s,t)}\bigl(\partial_sH(s,t)\bigr),
+	\]
+	这时同样有 \(A(s,0)=A(s,1)\)，即使闭路的共同起终点随 \(s\) 移动也不影响结论。两种情形均给出 \(I'(s)=0\)，所以 \(I\) 在整个参数区间上为常数。
+
+	对所给反例，所有路径都从 \((0,0)\) 到 \((1,0)\)，端点固定。但
+	\[
+		\mathrm{d}\alpha=\mathrm{d}y\wedge\mathrm{d}x\ne0,\qquad
+		H^*\alpha=st(1-t)\,\mathrm{d}t,
+	\]
+	所以
+	\[
+		I(s)=s\int_0^1t(1-t)\,\mathrm{d}t=\frac{s}{6},
+	\]
+	确实随 \(s\) 改变。此时 \(A=0\)，而
+	\[
+		(\mathrm{d}\alpha)(\partial_sH,\partial_tH)
+		=(\mathrm{d}y\wedge\mathrm{d}x)\bigl((0,t(1-t)),(1,s(1-2t))\bigr)=t(1-t).
+	\]
+	变化量正是公式中的外微分积分项；端点固定本身不足以保证积分不变。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:compactly-supported-primitive-line}
+	设 \(f\in C^\infty_c(\mathbb R)\)。证明一形式 \(f(x)\,\mathrm{d}x\) 总是恰当的，但它存在紧支撑光滑原函数的充要条件是
+	\[
+		\int_{-\infty}^{+\infty}f(x)\,\mathrm{d}x=0.
+	\]
+	解释这为什么不与 Poincaré 引理矛盾。
+\end{exercise}
+\begin{solution}
+	取 \(A<B\) 使 \(\operatorname{supp}f\subset[A,B]\)，定义
+	\[
+		F(x)=\int_{-\infty}^x f(s)\,\mathrm{d}s.
+	\]
+	这里的积分实际上只涉及一个有界区间。微积分基本定理给出 \(F'=f\)，再逐次求导可知 \(F\) 光滑，所以 \(\mathrm{d}F=f(x)\,\mathrm{d}x\)。当 \(x<A\) 时 \(F(x)=0\)；当 \(x>B\) 时，\(F(x)\) 等于总积分。因此总积分为零时，\(\operatorname{supp}F\subset[A,B]\)，它就是一个紧支撑原函数。
+
+	反过来，若 \(G\) 是紧支撑原函数，则 \((G-F)'=0\)，所以 \(G-F\) 在连通的实线上为常数。在足够靠左的区间上，\(G\) 与 \(F\) 都为零，故此常数为零。在足够靠右的区间上，\(G=0\)，于是 \(F\) 的常值，即 \(f\) 的总积分，也必须为零。
+
+	例如，取一个非负且不恒为零的光滑紧支撑函数 \(f\)，其总积分为正，便得到没有紧支撑原函数的恰当一形式。Poincaré 引理保证某个光滑原形式存在，并没有保证可以同时控制它的支撑；本题增加的支撑条件确实带来了新的障碍。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:angle-branches-gluing}
+	在穿孔平面 \(P=\mathbb R^2\setminus\{0\}\) 上，令
+	\[
+		U_-=P\setminus\{(x,0):x<0\},\qquad
+		U_+=P\setminus\{(x,0):x>0\}.
+	\]
+	在 \(U_-\) 上选取极角 \(\theta_-\in(-\pi,\pi)\)，在 \(U_+\) 上选取极角 \(\theta_+\in(0,2\pi)\)。证明二者均为\cref{g1:exm:angular-period}中角形式 \(\vartheta\) 的光滑原函数。求出 \(\theta_+-\theta_-\) 在交集的每个连通分支上的值，并证明不存在常数 \(c_-,c_+\) 使 \(\theta_-+c_-\) 与 \(\theta_++c_+\) 在整个交集上相等。
+\end{exercise}
+\begin{solution}
+	映射 \((r,\theta)\mapsto(r\cos\theta,r\sin\theta)\) 在 \(r>0\) 时的导数行列式为 \(r\ne0\)。分别把 \(\theta\) 限制到题给的两个区间，映射各自双射到 \(U_-\)、\(U_+\)；逆函数定理说明其局部逆光滑，而局部逆由唯一性彼此相容。因此 \(r\) 与两个极角函数都是相应区域上的光滑函数。由
+	\[
+		\mathrm{d}x=\cos\theta\,\mathrm{d}r-r\sin\theta\,\mathrm{d}\theta,\qquad
+		\mathrm{d}y=\sin\theta\,\mathrm{d}r+r\cos\theta\,\mathrm{d}\theta
+	\]
+	可得
+	\[
+		\frac{-y\,\mathrm{d}x+x\,\mathrm{d}y}{x^2+y^2}=\mathrm{d}\theta,
+	\]
+	所以两个函数确实都是局部原函数。
+
+	交集 \(U_-\cap U_+=\{y\ne0\}\) 有上半平面与下半平面两个连通分支。在上半平面，两个角都位于 \((0,\pi)\)，因此 \(\theta_+=\theta_-\)；在下半平面，\(\theta_-\in(-\pi,0)\)、\(\theta_+\in(\pi,2\pi)\)，因此 \(\theta_+=\theta_-+2\pi\)。若添加常数后可以拼接，上半平面要求 \(c_-=c_+\)，下半平面却要求 \(c_-=c_++2\pi\)，二者矛盾。
+
+	这里每个局部区域本身都连通，所以其中任意两个原函数只相差一个常数。因而失败之处已经覆盖了对这两个局部原函数的一切可能修正；问题来自交集的两个分支提出了互不相容的常数条件。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:punctured-plane-closed-forms}
+	设 \(\eta\) 是 \(P=\mathbb R^2\setminus\{0\}\) 上的光滑闭一形式，令 \(\gamma(t)=(\cos t,\sin t)\)、\(0\le t\le2\pi\)。证明存在光滑函数 \(f:P\to\mathbb R\) 和唯一实数 \(c\)，使
+	\[
+		\eta=c\,\vartheta+\mathrm{d}f,\qquad
+		c=\frac1{2\pi}\int_\gamma\eta.
+	\]
+	其中 \(\vartheta=(-y\,\mathrm{d}x+x\,\mathrm{d}y)/(x^2+y^2)\)，而 \(f\) 在相差常数的意义下唯一。可以使用径向投影 \(\rho(x)=x/\lVert x\rVert\) 及同伦
+	\[
+		H(t,x)=\left(1-t+\frac{t}{\lVert x\rVert}\right)x.
+	\]
+\end{exercise}
+\begin{solution}
+	记 \(j:S^1\to P\) 为包含映射，并令 \(\sigma=j^*\vartheta\)。因为 \(x\ne0\) 且 \(0\le t\le1\)，同伦公式中的系数 \(1-t+t/\lVert x\rVert\) 始终严格为正。因此 \(H(t,x)\ne0\)，这确实是 \(P\) 内的光滑同伦，端点为 \(H_0=\operatorname{id}_P\)、\(H_1=j\circ\rho\)。
+
+	由 \(\mathrm{d}\eta=0\) 和\cref{g1:thm:homotopy-formula}，
+	\[
+		\rho^*j^*\eta-\eta=\mathrm{d}(K_H\eta).
+	\]
+	另一方面，\cref{g1:prop:circle-exactness-period}给出
+	\[
+		j^*\eta=c\,\sigma+\mathrm{d}h,\qquad
+		c=\frac1{2\pi}\int_\gamma\eta
+	\]
+	以及某个 \(h\in C^\infty(S^1)\)。为计算 \(\rho^*\sigma\)，写 \(r=\sqrt{x^2+y^2}\)、\(u=x/r\)、\(v=y/r\)。由于圆周上的 \(\sigma\) 为 \(u\,\mathrm{d}v-v\,\mathrm{d}u\)，有
+	\[
+		\rho^*\sigma
+		=\frac{x}{r}\left(\frac{\mathrm{d}y}{r}-\frac{y\,\mathrm{d}r}{r^2}\right)
+		-\frac{y}{r}\left(\frac{\mathrm{d}x}{r}-\frac{x\,\mathrm{d}r}{r^2}\right)
+		=\vartheta.
+	\]
+	结合以上各式并使用外微分与拉回相容，得到
+	\[
+		\eta=c\,\vartheta+\mathrm{d}\bigl(h\circ\rho-K_H\eta\bigr).
+	\]
+	所以取 \(f=h\circ\rho-K_H\eta\) 即可，且它光滑。
+
+	若另有 \(\eta=c'\vartheta+\mathrm{d}f'\)，沿 \(\gamma\) 作一元路径积分。\cref{g1:lem:exact-path-period}说明恰当项的积分为零，而 \(\int_\gamma\vartheta=2\pi\)，故 \(c'=c\)。随后 \(\mathrm{d}(f'-f)=0\)，所以 \(f'-f\) 局部常值。穿孔平面连通：任意两点可以先沿径向线段移动到单位圆，再用圆弧连接。因此该差在整个 \(P\) 上是一个常数。特别地，这也证明 \(\eta\) 恰当当且仅当它沿单位圆的周期为零。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:density-critical-map}
+	考虑 \(F:\mathbb R\to\mathbb R\)、\(F(x)=x^2\)，目标坐标记作 \(y\)。尝试按绝对 Jacobian 规则把目标密度 \(\mu=|\mathrm{d}y|\) 变成源上的密度，并与微分形式 \(F^*(\mathrm{d}y)\) 比较光滑性。再把 \(F\) 限制为 \([-1,1]\to[0,1]\)，两个区间均取坐标增大的定向，分别计算候选密度与拉回一形式在源上的积分，并与目标积分比较。说明这些现象与“任意光滑映射都可拉回密度线丛”是否矛盾，以及本节换元定理为何要求微分同胚。
+\end{exercise}
+\begin{solution}
+	绝对 Jacobian 给出的候选表达为
+	\[
+		\nu=|F'(x)|\,|\mathrm{d}x|=2|x|\,|\mathrm{d}x|.
+	\]
+	它的系数连续，但在 \(0\) 处的左导数为 \(-2\)、右导数为 \(2\)，所以不是光滑密度。相反，普通微分形式的拉回为
+	\[
+		F^*(\mathrm{d}y)=\mathrm{d}(x^2)=2x\,\mathrm{d}x,
+	\]
+	其系数处处光滑。关键区别在于绝对值；形式保留行列式的符号。
+
+	虽然 \(\nu\) 不属于本节定义的光滑密度空间，其连续系数仍可按通常的一元积分计算。于是
+	\[
+		\int_{-1}^1 2|x|\,\mathrm{d}x=2,
+		\qquad \int_{[0,1]}|\mathrm{d}y|=1,
+	\]
+	而形式积分为
+	\[
+		\int_{[-1,1]}F^*(\mathrm{d}y)=\int_{-1}^1 2x\,\mathrm{d}x=0,
+		\qquad \int_{[0,1]}\mathrm{d}y=1.
+	\]
+	每个 \(y\in(0,1)\) 有两个原像。密度计算把两支都作正贡献，故得到两倍；形式计算中正、负半轴分别贡献 \(1\) 与 \(-1\)，恰好抵消。这些值都是直接的一元积分结果，不需要覆盖次数的积分公式。
+
+	沿任意 \(F\) 拉回密度线丛，得到的是一个位于源上的线丛 \(F^*\mathcal D(\mathbb R)\)，其在 \(x\) 处的纤维是目标点 \(x^2\) 处的密度线。目标密度确实给出该拉回丛的光滑截面；这一步不含绝对 Jacobian。若还要借助 \(\mathrm{d}F\) 把它变成源自身的密度丛 \(\mathcal D(\mathbb R)\) 中的截面，才会出现 \(|F'(x)|\)，并在本题中失去光滑性。因此两件事并不矛盾。
+
+	微分同胚使 Jacobian 处处非零，其绝对值因而光滑，又避免同一目标区域被多次计入。一般光滑映射不能同时自动保证这两点。本题 \(F\) 既在 \(0\) 处降秩，又不是单射，所以\cref{g1:thm:oriented-change-variables}的条件不成立。局部微分同胚足以保证密度的局部拉回光滑，但若没有整体单射性，仍不能直接断言源、目标积分相等。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:conformal-density-sphere-area}
+	设 \(M\) 为 \(n\geq1\) 维光滑流形，\(g\) 为光滑正定度量，\(u\in C^\infty(M)\)。令 \(\widetilde g=e^{2u}g\)，证明其体积密度满足 \(\mu_{\widetilde g}=e^{nu}\mu_g\)；若另给定向，相应的正体积形式有怎样的变化？再为半径 \(R>0\) 的欧氏球面 \(S_R^2\subset\mathbb R^3\) 写出球坐标中的面积密度，具体积分求出总面积，并核对它与单位球面积之间的缩放关系。
+\end{exercise}
+\begin{solution}
+	在任一坐标图中，\(\widetilde g\) 的矩阵为 \(e^{2u}(g_{ij})\)，所以
+	\[
+		\det(\widetilde g_{ij})=e^{2nu}\det(g_{ij}),\qquad
+		\sqrt{\det(\widetilde g_{ij})}=e^{nu}\sqrt{\det(g_{ij})}.
+	\]
+	由\cref{g1:prop:metric-volume-integration}的坐标公式，\(\mu_{\widetilde g}=e^{nu}\mu_g\)。因为指定的定向未改变，正体积形式中的坐标定向符号也未改变，故同样有
+	\[
+		\operatorname{vol}_{\widetilde g}=e^{nu}\operatorname{vol}_g.
+	\]
+	长度乘以 \(e^u\)，而 \(n\) 维体积同时包含 \(n\) 个方向的缩放，因此指数为 \(nu\)，并非仅为 \(u\) 或 \(2u\)。
+
+	对球面使用参数
+	\[
+		q(\theta,\varphi)
+		=(R\sin\theta\cos\varphi,R\sin\theta\sin\varphi,R\cos\theta),
+		\qquad 0<\theta<\pi,\quad 0<\varphi<2\pi.
+	\]
+	两个坐标切向量的内积为
+	\[
+		\langle q_\theta,q_\theta\rangle=R^2,\qquad
+		\langle q_\theta,q_\varphi\rangle=0,\qquad
+		\langle q_\varphi,q_\varphi\rangle=R^2\sin^2\theta.
+	\]
+	所以诱导度量及面积密度的拉回为
+	\[
+		q^*g_R=R^2\,\mathrm{d}\theta^2+R^2\sin^2\theta\,\mathrm{d}\varphi^2,
+		\qquad q^*\mu_{g_R}=R^2\sin\theta\,|\mathrm{d}\theta\,\mathrm{d}\varphi|.
+	\]
+	这里 \(\sin\theta>0\)，取平方根时没有额外的符号。
+
+	这张参数图遗漏两极和一条子午线。两极在局部图中是有限点；被遗漏的子午线包含于一个大圆，大圆在每点附近可用光滑坐标表示为一条坐标轴。由紧性选有限张这样的图，再用欧氏积分中直线的零测性，可知这些集合在二维坐标中均为零测集。用有限单位分解计算球面积分时，删去它们不改变任何一项，余下部分可以在上述参数图中换元并合并积分。于是
+	\[
+		\int_{S_R^2}\mu_{g_R}
+		=\int_0^{2\pi}\int_0^\pi R^2\sin\theta\,\mathrm{d}\theta\,\mathrm{d}\varphi
+		=R^2(2)(2\pi)=4\pi R^2.
+	\]
+	参数表达在两极的退化是球坐标失效，不能解释为球面度量在那里退化。
+
+	最后，缩放映射 \(s_R:S_1^2\to S_R^2\)、\(s_R(p)=Rp\) 是微分同胚，其微分把每个切向量乘以 \(R\)，所以 \(s_R^*g_R=R^2g_1\)。在前面的共形公式中取 \(n=2\)、\(u=\log R\)，便有 \(s_R^*\mu_{g_R}=R^2\mu_{g_1}\)。密度换元因此给出总面积乘以 \(R^2\)，与直接积分一致。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:unit-integral-supported-form}
+	设 \(M\) 为有限维、Hausdorff、第二可数的定向光滑 \(n\) 维流形，允许有边界，\(U\subseteq M\) 为非空开集。证明存在 \(\omega\in\Omega_c^n(M)\)，使
+	\[
+		\operatorname{supp}\omega\subseteq U,\qquad \int_M\omega=1.
+	\]
+	要求同时处理 \(n=0\)。若不假设 \(M\) 可定向，证明仍存在支集包含于 \(U\)、积分等于 \(1\) 的非负光滑紧支密度。
+\end{exercise}
+\begin{solution}
+	先设 \(n\geq1\)。取 \(p\in U\)，由\cref{g1:cor:smooth-cutoff-closed}对紧集 \(\{p\}\subset U\) 的结论，存在 \(\chi\in C^\infty(M)\)，满足
+	\[
+		0\leq\chi\leq1,\qquad \chi=1\text{ 于 }p\text{ 的某邻域},\qquad
+		\operatorname{supp}\chi\text{ 紧且包含于 }U.
+	\]
+	由\cref{g1:thm:bundle-metric-existence}给切丛选一个光滑正定度量 \(g\)。给定定向后，\cref{g1:prop:metric-volume-integration}给出正体积形式 \(\operatorname{vol}_g\)。令
+	\[
+		\omega_0=\chi\operatorname{vol}_g,\qquad c=\int_M\omega_0=\int_M\chi\mu_g.
+	\]
+	\(\omega_0\) 光滑紧支，支集包含于 \(\operatorname{supp}\chi\)。密度 \(\chi\mu_g\) 非负且在 \(p\) 附近为正，故由\cref{g1:thm:integral-well-defined}的严格正性，\(0<c<\infty\)。即使 \(p\) 位于边界，它的开邻域也含有半空间内部的一块正体积区域，所以严格正性仍成立。于是 \(\omega=c^{-1}\omega_0\) 具有所需支集且积分为 \(1\)。
+
+	当 \(n=0\) 时，\(M\) 为离散流形。选 \(p\in U\)，令 \(\varepsilon_p\in\{1,-1\}\) 是该点的定向符号，定义函数
+	\[
+		\omega(q)=\begin{cases}\varepsilon_p,&q=p,\\0,&q\ne p.\end{cases}
+	\]
+	离散流形上的函数都是光滑的，单点支集紧且包含于 \(U\)。按零维积分的定义，\(\int_M\omega=\varepsilon_p\omega(p)=\varepsilon_p^2=1\)。若把负向点的函数值误取成 \(1\)，积分就会是 \(-1\)，因此这一符号不能省略。
+
+	不定向的情形只需保留密度构造：当 \(n\geq1\) 时，取上面的 \(g,\chi\)，再令
+	\[
+		\mu=\frac{\chi\mu_g}{\int_M\chi\mu_g}.
+	\]
+	分母有限且严格为正，所得密度非负、光滑、紧支并满足要求。零维时在 \(p\) 处取密度值 \(1\)，其余点取 \(0\)，积分同样为 \(1\)，且不需要定向符号。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:mobius-double-cover-integral}
+	令
+	\[
+		B=(\mathbb R\times[-1,1])/\bigl((t,u)\sim(t+1,-u)\bigr),\qquad
+		C=(\mathbb R/2\mathbb Z)\times[-1,1].
+	\]
+	自然映射 \(p:C\to B\)、\(p([t]_2,u)=[t,u]\) 是一个二重覆盖，其非平凡覆盖变换为 \(\tau([t]_2,u)=([t+1]_2,-u)\)。设 \(a\) 是条带上的光滑实值函数，满足 \(a(t+1,-u)=a(t,u)\)，令 \(\mu\) 为 \(a(t,u)|\mathrm{d}t\,\mathrm{d}u|\) 在 \(B\) 上下降的密度。通过基本区域中的具体积分证明
+	\[
+		\int_C p^*\mu=2\int_B\mu,
+	\]
+	这里的密度拉回按覆盖的局部微分同胚定义。给 \(C\) 选取 \(\mathrm{d}t\wedge\mathrm{d}u\) 指定的定向，说明与 \(p^*\mu\) 对应的二形式 \(\omega=a(t,u)\,\mathrm{d}t\wedge\mathrm{d}u\) 在 \(a\) 不恒为零时不能下降到 \(B\)。这是否意味着 \(B\) 上不存在非零二形式？请给出明确例子说明。
+\end{exercise}
+\begin{solution}
+	把给定恒等式应用两次，可得 \(a(t+2,u)=a(t,u)\)，所以该系数在圆柱上有定义。覆盖在每个小矩形上由相同的 \((t,u)\) 坐标给出局部微分同胚，拉回密度正是 \(a(t,u)|\mathrm{d}t\,\mathrm{d}u|\)。两个商空间都紧，故这些光滑密度均紧支，积分有限。
+
+	分别取 \([0,1]\times[-1,1]\) 与 \([0,2]\times[-1,1]\) 作 \(B,C\) 的基本区域。可以把它们拆成商坐标图中的小矩形；识别的竖边和其余公共边均为二维零测集，所以积分分别为
+	\[
+		\int_B\mu=\int_0^1\int_{-1}^1a(t,u)\,\mathrm{d}u\,\mathrm{d}t,
+		\qquad
+		\int_Cp^*\mu=\int_0^2\int_{-1}^1a(t,u)\,\mathrm{d}u\,\mathrm{d}t.
+	\]
+	把后式分成 \(0\leq t\leq1\) 与 \(1\leq t\leq2\)。在第二块中先令 \(t=s+1\)，再令 \(u=-v\)，便得
+	\begin{align*}
+		\int_1^2\int_{-1}^1a(t,u)\,\mathrm{d}u\,\mathrm{d}t
+		&=\int_0^1\int_{-1}^1a(s+1,-v)\,\mathrm{d}v\,\mathrm{d}s\\
+		&=\int_0^1\int_{-1}^1a(s,v)\,\mathrm{d}v\,\mathrm{d}s
+		=\int_B\mu.
+	\end{align*}
+	故得到所求的两倍关系。这对可正可负的 \(a\) 均成立，证明只用了基本区域中的一元换元；特别地 \(a=1\) 时，带的面积为 \(2\)，圆柱面积为 \(4\)。
+
+	虽然 \(\tau^*(p^*\mu)=p^*\mu\)，对应的顶次形式却满足
+	\[
+		\tau^*\omega=a(t+1,-u)\,\mathrm{d}(t+1)\wedge\mathrm{d}(-u)
+		=-a(t,u)\,\mathrm{d}t\wedge\mathrm{d}u=-\omega.
+	\]
+	若有 \(B\) 上的二形式 \(\eta\) 使 \(p^*\eta=\omega\)，由 \(p\circ\tau=p\) 应有 \(\tau^*\omega=\omega\)。两式合起来迫使 \(\omega=0\)，与 \(a\) 不恒为零矛盾。这里不能把圆柱上依靠定向建立的“密度对应顶次形式”不加修改地传到不可定向的带上：\(\tau\) 反转圆柱定向，恰好改变对应形式的符号。
+
+	这不排除 \(B\) 上存在非零但有零点的二形式。例如圆柱上的
+	\[
+		\beta=\sin(\pi t)\,\mathrm{d}t\wedge\mathrm{d}u
+	\]
+	有周期 \(2\)，并且
+	\[
+		\tau^*\beta=\sin(\pi(t+1))\,\mathrm{d}t\wedge(-\mathrm{d}u)=\beta.
+	\]
+	因此它能够下降。具体地，在 \(B\) 的每个小图上任选一支局部逆 \(s\) 并定义 \(s^*\beta\)；另一支为 \(\tau\circ s\)，其拉回仍为 \(s^*\beta\)，故这些局部二形式粘合为整体光滑二形式。它在 \(t\) 非整数的点非零，在 \(t\) 为整数的点为零。不可定向性排除的是处处非零的顶次形式，而不是所有非零顶次形式。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:stokes-noncompact-end}
+	给半直线 \(M=[0,\infty)\) 取定向 \(\mathrm{d}t\)。设 \(f\) 在 \(M\) 上光滑到边界，且 \(\int_0^\infty|f'(t)|\,\mathrm{d}t<\infty\)。证明 \(f_\infty=\lim_{t\to\infty}f(t)\) 存在，并计算 \(\int_M\mathrm{d}f\) 与 \(\int_{\partial M}f\)。判断两者相等的充要条件，再用 \(f(t)=1-e^{-t}\) 说明：把 Stokes 定理的紧支假设改成“左端的积分绝对收敛”，并不能保持结论。
+\end{exercise}
+\begin{solution}
+	由一元微积分基本定理，对每个 \(R>0\)，有
+	\[
+		f(R)=f(0)+\int_0^R f'(t)\,\mathrm{d}t.
+	\]
+	右边的积分因绝对可积而在 \(R\to\infty\) 时收敛，所以
+	\[
+		f_\infty=f(0)+\int_0^\infty f'(t)\,\mathrm{d}t,\qquad
+		\int_M\mathrm{d}f=f_\infty-f(0).
+	\]
+	半直线只有边界点 \(0\)，其外向向量为 \(-\partial_t\)，故由外法向优先约定，\(0\) 带负定向。因此 \(\int_{\partial M}f=-f(0)\)，两个积分相等当且仅当 \(f_\infty=0\)。紧支函数在充分大的 \(t\) 上为零，自然满足这个条件。
+
+	对 \(f(t)=1-e^{-t}\)，有 \(f(0)=0\)、\(f_\infty=1\) 以及 \(f'(t)=e^{-t}\)，于是
+	\[
+		\int_M\mathrm{d}f=1,\qquad \int_{\partial M}f=0.
+	\]
+	差值来自 \(f\) 在趋向无穷远时留下的极限值。若先在紧区间 \([0,R]\) 使用 Stokes 定理，等式始终是 \(\int_0^R f'=f(R)-f(0)\)；令 \(R\to\infty\) 时，不能直接丢去右端的 \(f(R)\)。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:stokes-annulus-orientation}
+	设 \(0<r<R\)，给环域
+	\[
+		A=\{(x,y)\in\mathbb R^2:r^2\leq x^2+y^2\leq R^2\}
+	\]
+	取平面标准定向，并令 \(\alpha=(x^2+y^2)(x\,\mathrm{d}y-y\,\mathrm{d}x)\)。分别沿两条边界计算 \(\int_{\partial A}\alpha\)，再直接计算 \(\int_A\mathrm{d}\alpha\)，核对 Stokes 公式。说明内圆的积分为什么取负号。
+\end{exercise}
+\begin{solution}
+	沿半径为 \(a\) 的逆时针参数曲线 \((x,y)=(a\cos\theta,a\sin\theta)\)，有 \(x\,\mathrm{d}y-y\,\mathrm{d}x=a^2\,\mathrm{d}\theta\)，故 \(\alpha=a^4\,\mathrm{d}\theta\)。外圆的外向量指向半径增大方向，边界正向为逆时针，贡献 \(2\pi R^4\)。在内圆上，环域的外向量指向圆心，外法向优先约定给出顺时针方向，因此贡献 \(-2\pi r^4\)。于是
+	\[
+		\int_{\partial A}\alpha=2\pi(R^4-r^4).
+	\]
+
+	另一方面，令 \(h=x^2+y^2\)，利用外微分乘积法则得到
+	\begin{align*}
+		\mathrm{d}\alpha
+		&=(2x\,\mathrm{d}x+2y\,\mathrm{d}y)\wedge(x\,\mathrm{d}y-y\,\mathrm{d}x)
+		+h\,\mathrm{d}(x\,\mathrm{d}y-y\,\mathrm{d}x)\\
+		&=2h\,\mathrm{d}x\wedge\mathrm{d}y+2h\,\mathrm{d}x\wedge\mathrm{d}y
+		=4(x^2+y^2)\,\mathrm{d}x\wedge\mathrm{d}y.
+	\end{align*}
+	使用极坐标换元，面积因子为 \(s\)，所以
+	\[
+		\int_A\mathrm{d}\alpha
+		=\int_0^{2\pi}\int_r^R4s^3\,\mathrm{d}s\,\mathrm{d}\theta
+		=2\pi(R^4-r^4).
+	\]
+	两边相等。内圆的负号由环域的外侧在圆孔中这一事实决定；若把两条圆周都取逆时针，它们便不再同时具有环域诱导的边界定向。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:stokes-simplex-volume}
+	给标准单形 \(\Delta^n=\{t\in\mathbb R^n:t^i\geq0,\ \sum_i t^i\leq1\}\) 取标准定向，记其欧氏体积为 \(V_n\)，并约定 \(V_0=1\)。对 \(n\geq1\)，令
+	\[
+		\alpha=\sum_{i=1}^n(-1)^{i-1}t^i\,\mathrm{d}t^1\wedge\cdots\wedge\widehat{\mathrm{d}t^i}\wedge\cdots\wedge\mathrm{d}t^n.
+	\]
+	利用 Stokes 公式及\cref{g1:lem:simplex-boundary-orientation}证明 \(nV_n=V_{n-1}\)，从而求出 \(V_n\)。特别说明：在斜面 \(\sum_i t^i=1\) 上使用有序顶点参数时，积分为何恰好是 \(V_{n-1}\)，而不是再乘一个斜面的欧氏面积因子。
+\end{exercise}
+\begin{solution}
+	逐项求外微分可得 \(\mathrm{d}\alpha=n\,\mathrm{d}t^1\wedge\cdots\wedge\mathrm{d}t^n\)。在坐标面 \(t^i=0\) 上，第 \(i\) 项的系数为零，其余各项包含拉回后为零的 \(\mathrm{d}t^i\)，所以 \(\alpha\) 在这些面上的拉回全部为零。
+
+	剩下的是与顶点 \(0\) 相对的面，其有序顶点为 \(e_1,\ldots,e_n\)，在诱导边界中取正号。令 \(s=(s^1,\ldots,s^{n-1})\in\Delta^{n-1}\)，该面的有序仿射参数为
+	\[
+		\delta_0(s)=\left(1-\sum_{j=1}^{n-1}s^j,s^1,\ldots,s^{n-1}\right).
+	\]
+	记 \(t=\delta_0(s)\)。形式 \(\alpha\) 是向量 \(t=\sum_i t^i\partial_{t^i}\) 与标准体积形式的缩并，因此
+	\[
+		(\delta_0^*\alpha)(\partial_{s^1},\ldots,\partial_{s^{n-1}})
+		=\det(t,e_2-e_1,\ldots,e_n-e_1).
+	\]
+	因为 \(t=e_1+\sum_{j=1}^{n-1}s^j(e_{j+1}-e_1)\)，从行列式第一列减去其余列的相应线性组合，便得到 \(\det(e_1,e_2-e_1,\ldots,e_n-e_1)=1\)。所以
+	\[
+		\delta_0^*\alpha=\mathrm{d}s^1\wedge\cdots\wedge\mathrm{d}s^{n-1},\qquad
+		\int_{\Delta^n}\mathrm{d}\alpha
+		=\int_{\Delta^{n-1}}\delta_0^*\alpha=V_{n-1}.
+	\]
+	当 \(n=1\) 时，同一计算表示在正向端点 \(1\) 上评价零形式 \(\alpha=t^1\)，结果为 \(1=V_0\)。于是对所有 \(n\geq1\)，都有 \(nV_n=V_{n-1}\)，归纳得到 \(V_n=1/n!\)。
+
+	这里积分的对象是 \(\alpha\) 这个微分形式，其拉回已经同时处理系数和切向量的变化。它在斜面上的取值并不是单位欧氏面积形式；再次乘一个斜面面积因子，会把参数变化重复计算。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:stokes-positive-volume-obstruction}
+	设 \(M\) 是非空、紧致、定向且无边界的 \(n\geq1\) 维光滑流形，\(\mu\) 是处处为正的光滑 \(n\) 形式。证明不存在 \((n-1)\) 形式 \(\beta\) 使 \(\mu=\mathrm{d}\beta\)。据此说明标准球面 \(S^2\) 的正面积形式不是恰当形式。再说明为什么这一结论与欧氏空间中的恒等式 \(\mathrm{d}(x^1\,\mathrm{d}x^2\wedge\cdots\wedge\mathrm{d}x^n)=\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n\) 不矛盾。
+\end{exercise}
+\begin{solution}
+	先说明 \(\int_M\mu>0\)。在任一点 \(p\) 附近选正向坐标，则 \(\mu=a(x)\,\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n\)，其中 \(a(p)>0\)。连续性给出一个相对紧的小坐标球，使 \(a\) 在其闭包上有正下界。取非负、非零且支集位于这个球中的光滑函数 \(\chi\)，并令 \(0\leq\chi\leq1\)。于是 \(\int_M\chi\mu>0\)。而 \((1-\chi)\mu\) 非负，其积分非负，故 \(\int_M\mu>0\)；这里也可直接调用\cref{g1:thm:integral-well-defined}的正性结论。
+
+	若 \(\mu=\mathrm{d}\beta\)，由于 \(M\) 紧，\(\beta\) 自动紧支，Stokes 定理给出
+	\[
+		\int_M\mu=\int_M\mathrm{d}\beta
+		=\int_{\partial M}\beta=0,
+	\]
+	与正性矛盾。标准球面满足这些假设，所以它的正面积形式不是恰当形式。
+
+	欧氏空间 \(\mathbb R^n\) 非紧，上述原形式也不紧支，因此不能对整个 \(\mathbb R^n\) 直接使用这一紧支版本的 Stokes 定理。若限制到一个紧长方体，区域便有边界，其正体积恰好由边界积分给出。紧致与无边界在本题的矛盾中各有作用。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:triangle-chain-stokes}
+	在标准二单形
+	\[
+		\Delta^2=\{(x,y):x\ge0,\ y\ge0,\ x+y\le1\}
+	\]
+	上取定向 \(\mathrm{d}x\wedge\mathrm{d}y\) 和一形式 \(\omega=x\,\mathrm{d}y\)。不直接调用 Stokes 定理，分别计算 \(\int_{\Delta^2}\mathrm{d}\omega\) 和三个有向边界积分，验证两者相等。再写出三条有向边的端点符号，说明边界的边界为何抵消。
+\end{exercise}
+\begin{solution}
+	因为 \(\mathrm{d}\omega=\mathrm{d}x\wedge\mathrm{d}y\)，直接用二重积分得
+	\[
+		\int_{\Delta^2}\mathrm{d}\omega
+		=\int_0^1\int_0^{1-x}1\,\mathrm{d}y\,\mathrm{d}x
+		=\int_0^1(1-x)\,\mathrm{d}x=\frac12.
+	\]
+	记 \(v_0=(0,0)\)、\(v_1=(1,0)\)、\(v_2=(0,1)\)。依照\cref{g1:lem:simplex-boundary-orientation}，有向边界为
+	\[
+		[v_1,v_2]-[v_0,v_2]+[v_0,v_1].
+	\]
+	分别用参数 \(0\le t\le1\) 写出三个按顶点次序定向的面映射：
+	\[
+		\delta_0(t)=(1-t,t),\qquad
+		\delta_1(t)=(0,t),\qquad
+		\delta_2(t)=(t,0).
+	\]
+	于是
+	\[
+		\delta_0^*\omega=(1-t)\,\mathrm{d}t,\qquad
+		\delta_1^*\omega=0,\qquad
+		\delta_2^*\omega=0.
+	\]
+	将各面的系数 \(+1,-1,+1\) 保留下来，得到
+	\[
+		\int_{\partial\Delta^2}\omega
+		=\int_0^1(1-t)\,\mathrm{d}t-\int_0^1 0\,\mathrm{d}t+\int_0^1 0\,\mathrm{d}t
+		=\frac12.
+	\]
+	第二条边虽然在本例中积分为零，它的负号仍不可删去：负号把 \(v_0\to v_2\) 改成实际边界上的 \(v_2\to v_0\)，三条边才形成逆时针绕行。
+
+	对一条有向边，边界总是终点减起点。因此三条边再取边界，给出
+	\[
+		([v_2]-[v_1])-([v_2]-[v_0])+([v_1]-[v_0])=0.
+	\]
+	每个顶点各以正、负号出现一次。这既核实了本例的端点符号，也解释了 \(\partial^2=0\) 在二维单形上的具体抵消。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:two-puncture-independent-periods}
+	在 \(P=\mathbb R^2\setminus\{(-1,0),(1,0)\}\) 上定义
+	\[
+		\alpha_-=\frac{-y\,\mathrm{d}x+(x+1)\,\mathrm{d}y}{(x+1)^2+y^2},\qquad
+		\alpha_+=\frac{-y\,\mathrm{d}x+(x-1)\,\mathrm{d}y}{(x-1)^2+y^2}.
+	\]
+	证明对任意 \(a,b\in\mathbb R\)，形式 \(a\alpha_-+b\alpha_+\) 闭；它恰当当且仅当 \(a=b=0\)。证明时分别沿两个缺失点周围的小圆积分，并说明在哪一步可以使用圆盘上的 Stokes 定理。
+\end{exercise}
+\begin{solution}
+	每个 \(\alpha_\pm\) 都是\cref{g1:exm:angular-period}中角形式平移后的表达式。外微分与平移拉回相容，故 \(\mathrm{d}\alpha_-=\mathrm{d}\alpha_+=0\)；线性性说明任意所述线性组合都闭。
+
+	固定 \(0<\varepsilon<1\)，取正向小圆
+	\[
+		\gamma_-(t)=(-1+\varepsilon\cos t,\varepsilon\sin t),\qquad
+		\gamma_+(t)=(1+\varepsilon\cos t,\varepsilon\sin t),\qquad 0\le t\le2\pi.
+	\]
+	分别将这两条参数曲线代入各自中心的角形式，可得
+	\[
+		\gamma_-^*\alpha_-=\mathrm{d}t,\qquad
+		\gamma_+^*\alpha_+=\mathrm{d}t,
+	\]
+	所以对应积分均为 \(2\pi\)。
+
+	以 \((-1,0)\) 为圆心、\(\varepsilon\) 为半径的闭圆盘 \(D_-\) 不含 \((1,0)\)。虽然 \(D_-\) 并不包含于 \(P\)，但 \(\alpha_+\) 的同一公式在 \(D_-\) 的一个邻域上光滑且闭。因此可以在圆盘上对这个延伸后的一形式使用\cref{g1:thm:stokes}，得到
+	\[
+		\int_{\gamma_-}\alpha_+=\int_{D_-}\mathrm{d}\alpha_+=0.
+	\]
+	同理，以 \((1,0)\) 为中心的小圆盘上可以使用光滑的 \(\alpha_-\)，从而 \(\int_{\gamma_+}\alpha_-=0\)。不能对 \(\alpha_-\) 在 \(D_-\) 上直接使用 Stokes，因为该形式恰在圆盘中心没有定义；另一个中心处的情形相同。
+
+	若 \(a\alpha_-+b\alpha_+=\mathrm{d}f\)，\cref{g1:lem:exact-path-period}说明它沿两条闭曲线的积分都为零。于是
+	\[
+		0=\int_{\gamma_-}(a\alpha_-+b\alpha_+)=2\pi a,\qquad
+		0=\int_{\gamma_+}(a\alpha_-+b\alpha_+)=2\pi b,
+	\]
+	故 \(a=b=0\)。反向若两个系数都为零，该形式就是 \(\mathrm{d}0\)，当然恰当。两个小圆分别检测两个系数，说明这两个闭形式代表的 de Rham 上同调类线性无关；此处没有断言它们已张成全部上同调。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:cylinder-first-de-rham}
+	令 \(C=S^1\times\mathbb R\)，\(\pi:C\to S^1\) 为第一因子投影，\(j:S^1\to C\) 为 \(j(u)=(u,0)\)。令 \(\sigma\) 是标准正向单位圆上的角形式，满足对 \(q(t)=(\cos t,\sin t)\) 有 \(q^*\sigma=\mathrm{d}t\)。只用本章已经证明的同伦公式和圆周周期判据，证明
+	\[
+		H_{\mathrm{dR}}^1(C)\cong\mathbb R,
+	\]
+	并证明 \([\pi^*\sigma]\) 是一个基。明确写出一个由周期给出的线性同构，不使用 de Rham 比较定理。
+\end{exercise}
+\begin{solution}
+	定义圆柱收缩到中间圆周的光滑同伦
+	\[
+		H:[0,1]\times C\longrightarrow C,\qquad H(t,(u,s))=(u,(1-t)s).
+	\]
+	它满足 \(H_0=\operatorname{id}_C\)、\(H_1=j\circ\pi\)。对任意闭一形式 \(\eta\)，\cref{g1:thm:homotopy-formula}给出
+	\[
+		\pi^*j^*\eta-\eta=\mathrm{d}(K_H\eta).
+	\]
+	圆周上的一形式 \(j^*\eta\) 根据\cref{g1:prop:circle-exactness-period}可唯一写成
+	\[
+		j^*\eta=c\,\sigma+\mathrm{d}h,\qquad
+		c=\frac1{2\pi}\int_{S^1}j^*\eta,
+	\]
+	其中 \(h\) 在相差常数的意义下唯一。拉回并整理，得到
+	\[
+		\eta=c\,\pi^*\sigma+\mathrm{d}\bigl(h\circ\pi-K_H\eta\bigr).
+	\]
+	因此每个闭一形式都与 \(c\,\pi^*\sigma\) 相差一个恰当形式，证明了这个类的张成性。
+
+	具体定义
+	\[
+		\Phi:H_{\mathrm{dR}}^1(C)\longrightarrow\mathbb R,\qquad
+		\Phi([\eta])=\frac1{2\pi}\int_{S^1}j^*\eta.
+	\]
+	若把 \(\eta\) 换成 \(\eta+\mathrm{d}f\)，积分增加的是 \(\int_{S^1}\mathrm{d}(f\circ j)=0\)，所以 \(\Phi\) 与代表元无关；积分的线性性说明它线性。上面的分解表明 \(\Phi([\eta])=0\) 时 \(\eta\) 恰当，故 \(\Phi\) 单射。又因为 \(j^*\pi^*\sigma=\sigma\) 且 \(\int_{S^1}\sigma=2\pi\)，有 \(\Phi([\pi^*\sigma])=1\)，故 \(\Phi\) 满射，逆映射就是 \(c\mapsto c[\pi^*\sigma]\)。
+
+	这同时说明 \([\pi^*\sigma]\ne0\)，所以它确实构成一个基。整个计算只使用闭形式模恰当形式的定义、显式同伦算子及圆周的一元周期积分；无需先知道圆柱的奇异上同调。
+\end{solution}
+
+\begin{exercise}\label{g1:ex:no-smooth-ball-retraction}
+	设 \(n\ge2\)，\(\overline B^n=\{x\in\mathbb R^n:\lVert x\rVert\le1\}\)。证明不存在光滑映射
+	\[
+		r:\overline B^n\longrightarrow S^{n-1}
+	\]
+	使 \(r(x)=x\) 对所有 \(x\in S^{n-1}=\partial\overline B^n\) 成立。这里光滑性包括边界处的局部光滑延拓。证明应使用球面的一个正体积形式及 Stokes 定理。
+\end{exercise}
+\begin{solution}
+	给闭球以标准定向 \(\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n\)，给球面以外法向优先的边界定向。记 \(i:S^{n-1}\hookrightarrow\overline B^n\) 为包含映射。在球面上定义
+	\[
+		\sigma=\left.\left(\sum_{a=1}^n(-1)^{a-1}x^a\,
+		\mathrm{d}x^1\wedge\cdots\wedge\widehat{\mathrm{d}x^a}\wedge\cdots\wedge\mathrm{d}x^n\right)\right|_{S^{n-1}}.
+	\]
+	这里的限制指把环境形式拉回球面。若 \(v_1,\ldots,v_{n-1}\) 是球面上一组正向切向基，则外向单位法向为 \(x\)，从而
+	\[
+		\sigma_x(v_1,\ldots,v_{n-1})
+		=(\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n)_x(x,v_1,\ldots,v_{n-1})>0.
+	\]
+	所以 \(\sigma\) 是光滑正体积形式；球面紧且非空，积分的正性给出 \(\int_{S^{n-1}}\sigma>0\)。同时 \(\mathrm{d}\sigma=0\)，因为这是 \((n-1)\) 维流形上的 \(n\) 形式，必为零。
+
+	假设存在题述映射 \(r\)。则 \(r\circ i=\operatorname{id}_{S^{n-1}}\)，所以
+	\[
+		i^*(r^*\sigma)=\sigma,\qquad
+		\mathrm{d}(r^*\sigma)=r^*(\mathrm{d}\sigma)=0.
+	\]
+	形式 \(r^*\sigma\) 在整个闭球上光滑；闭球紧，满足\cref{g1:thm:stokes}的支集条件。于是
+	\[
+		0<\int_{S^{n-1}}\sigma
+		=\int_{\partial\overline B^n}i^*(r^*\sigma)
+		=\int_{\overline B^n}\mathrm{d}(r^*\sigma)=0,
+	\]
+	矛盾。因此这样的光滑映射不存在。
+
+	这里 \(\mathrm{d}\sigma=0\) 是球面上按自身维数计算的结论。上面括号中的环境 \((n-1)\) 形式在 \(\mathbb R^n\) 上的外微分其实为 \(n\,\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n\)，并不为零；把它限制到球面后才变为零。这一区别保证证明没有把球面上的闭性误用成整个球内的闭性。
+\end{solution}
+

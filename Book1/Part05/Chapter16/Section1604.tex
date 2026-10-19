@@ -1,0 +1,344 @@
+% !TeX root = ../../Book1.tex
+% 纲要标题：### 16.4 同态积分及覆盖群
+% 纲要位置：几何学计划纲要.md，第 758 行。
+% 正文状态：初稿；尚未正式审核。
+
+% 纲要内容开始
+% 
+% * 局部同态的积分构造
+% * 沿路径延拓和同伦无关性
+% * 单连通源群上的整体同态
+% * 连通李群的万有覆盖群
+% * 离散中心商与同李代数的不同李群
+% 
+% ---
+% 
+% 纲要内容结束
+
+\section{同态积分及覆盖群}
+\label{g1:sec:1604}
+
+李群同态在单位元的微分必为李代数同态，见\cref{g1:prop:lie-homomorphism-differential}。反过来，一个保持括号的线性映射，能否来自某个群同态？局部问题由微分方程的相容性解决；整体问题还要检查，沿不同路径把这个局部映射继续下去，是否会得到相同结果。圆周上“角度乘以 \(\lambda\)”的例子已经提示：局部允许任意实数 \(\lambda\)，绕完一周后的闭合要求却可能排除其中大部分。
+
+\ProseParagraphBreak
+
+本节始终讨论有限维实李群，底流形无边界、Hausdorff 且第二可数。记 \(e_G,e_H\) 为单位元，\(\mathfrak g=\mathrm{T}_{e_G}G\)、\(\mathfrak h=\mathrm{T}_{e_H}H\) 为相应李代数。需要的积分工具是\cref{g1:thm:frobenius,g1:lem:local-integral-plaque}：对合分布局部有叶片，且位于同一叶状坐标盒内的连通积分流形只能处于一张叶片中。整体延拓则使用第五章的连续路径与定端点同伦，拼接 \(\alpha*\beta\) 仍然表示先走 \(\alpha\)，后走 \(\beta\)。
+
+\subsection{局部同态的积分构造}
+\label{g1:subsec:1604:01}
+
+\begin{definition}
+	\label{g1:def:local-lie-homomorphism}
+	设 \(G,H\) 为有限维实李群，\(U\subset G\) 是单位元的开邻域。光滑映射 \(f:U\to H\) 若满足 \(f(e_G)=e_H\)，并且
+	\[
+		f(xy)=f(x)f(y)\qquad\text{只要 }x,y,xy\in U,
+	\]
+	则称为从 \(G\) 到 \(H\) 的\term[jubuliquntongtai]{局部李群同态}[local Lie group homomorphism]。两个这样的映射局部相同，是指它们在某个共同的单位元邻域上相同。
+\end{definition}
+
+要从线性映射 \(\varphi:\mathfrak g\to\mathfrak h\) 找到 \(f\)，可以先问它的图像应有什么切空间。若 \(f\) 是同态，固定 \(g\) 后对 \(f(gx)=f(g)f(x)\) 在 \(x=e_G\) 求导，便得到
+\[
+	\mathrm{d}f_g\circ\mathrm{d}(L_g)_{e_G}
+	=\mathrm{d}(L_{f(g)})_{e_H}\circ\varphi.
+\]
+因此，图像在 \((g,f(g))\) 处的切向量应当把同一个 \(X\in\mathfrak g\) 送成一对左平移向量。这个要求直接给出待积分的分布。
+
+\begin{theorem}[局部同态积分]
+	\label{g1:thm:local-lie-homomorphism}
+	设 \(G,H\) 为有限维实李群，\(\varphi:\mathfrak g\to\mathfrak h\) 为李代数同态。则存在单位元的连通对称开邻域 \(U\subset G\)，以及局部李群同态 \(f:U\to H\)，满足 \(\mathrm{d}f_{e_G}=\varphi\)。这样的局部同态在单位元附近唯一。
+\end{theorem}
+\begin{proof}
+	在 \(G\times H\) 上定义秩 \(\dim G\) 的光滑分布
+	\begin{equation}
+		\label{g1:eq:homomorphism-graph-distribution}
+		D_{(g,h)}
+		=\left\{\left(\mathrm{d}(L_g)_{e_G}X,\,
+		\mathrm{d}(L_h)_{e_H}\varphi X\right):X\in\mathfrak g\right\}.
+	\end{equation}
+	取 \(\mathfrak g\) 的基 \(X_1,\ldots,X_m\)。对应向量场
+	\(Z_i=(X_i^L,(\varphi X_i)^L)\)
+	处处线性无关，并张成 \(D\)，因为其第一分量已经线性无关。由\cref{g1:prop:left-invariant-fields,g1:def:lie-algebra-group}以及 \(\varphi\) 保括号，
+	\[
+		[Z_i,Z_j]
+		=\left([X_i,X_j]^L,[\varphi X_i,\varphi X_j]^L\right)
+		=\left([X_i,X_j]^L,(\varphi[X_i,X_j])^L\right)
+	\]
+	仍取值于 \(D\)。一般局部截面是这些 \(Z_i\) 的光滑函数线性组合；括号乘法法则将其括号展开为上述括号与 \(Z_i\) 的函数线性组合，所以 \(D\) 对合。
+
+	由 Frobenius 定理，\((e_G,e_H)\) 附近有叶状坐标盒 \(\Omega\)，并有经过该点的中央叶片 \(P\)。投影 \(\pi_G:G\times H\to G\) 的微分在 \(D\) 上为同构。因此由\cref{g1:thm:inverse-function}，缩小中央叶片后，\(\pi_G|_P\) 是到单位元某开邻域 \(U_0\) 的微分同胚。可以同时缩小叶状坐标盒，使它的整个中央叶片就是这一小片。于是
+	\[
+		P=\{(g,f(g)):g\in U_0\}
+	\]
+	定义光滑映射 \(f:U_0\to H\)，且 \(f(e_G)=e_H\)。图像切空间等于 \(D\)，给出
+	\begin{equation}
+		\label{g1:eq:local-homomorphism-differential}
+		\mathrm{d}f_g\circ\mathrm{d}(L_g)_{e_G}
+		=\mathrm{d}(L_{f(g)})_{e_H}\circ\varphi.
+	\end{equation}
+	特别地，在单位元得到 \(\mathrm{d}f_{e_G}=\varphi\)。
+
+	还须证明图像尊重乘法。分布 \(D\) 在 \(G\times H\) 的每个左平移下不变。由乘法及 \(f\) 的连续性，可以选连通对称单位元邻域 \(U\subset U_0\)，使 \(U^2\subset U_0\)，并使
+	\[
+		(ab,f(a)f(b))\in\Omega\qquad(a,b\in U).
+	\]
+	这里是对全部 \(a,b\in U\) 的共同缩小：映射 \((a,b)\mapsto(ab,f(a)f(b))\) 在 \((e_G,e_G)\) 取值于开集 \(\Omega\)，故其原像包含一个乘积邻域，再在两个因子的交中取小的连通对称邻域即可。
+
+	固定 \(a\in U\)。映射 \(b\mapsto(ab,f(a)f(b))\)、\(b\in U\)，是中央叶片一部分的左平移，因而是连通积分流形，且全部位于 \(\Omega\) 内。它在 \(b=e_G\) 时经过 \((a,f(a))\in P\)。由\cref{g1:lem:local-integral-plaque}，它只能位于同一张中央叶片 \(P\)。投影到第一分量，便得到
+	\[
+		f(ab)=f(a)f(b)\qquad(a,b\in U).
+	\]
+	左边在 \(U_0\) 中有定义；将 \(f\) 限制到 \(U\) 后，尤其得到定义中要求的、当 \(a,b,ab\in U\) 时的局部乘法律。
+
+	最后设 \(\widehat f\) 是另一个微分为 \(\varphi\) 的局部同态。对固定 \(g\) 及充分接近单位元的 \(x\)，对 \(\widehat f(gx)=\widehat f(g)\widehat f(x)\) 求导，得到与\eqref{g1:eq:local-homomorphism-differential}相同的等式。因此 \(\widehat f\) 的图像也是 \(D\) 的积分流形。取足够小的连通定义域，使图像落在 \(\Omega\) 中；它经过 \((e_G,e_H)\)，故也位于中央叶片 \(P\)。中央叶片已经是 \(f\) 的图像，所以两映射在这个共同邻域内相同。
+\end{proof}
+
+保持括号的条件在这里承担了明确的相容性责任：它使图分布对合，因而存在所需局部图像。局部唯一性则意味着，后面沿路径延拓时不会在每个小邻域重新引入任意选择。此处得到的仍是局部同态；要把定义域扩展到整个群，必须进一步比较路径。
+
+\subsection{沿路径延拓和同伦无关性}
+\label{g1:subsec:1604:02}
+
+设 \(f:U\to H\) 是上面得到的局部同态，\(U=U^{-1}\) 为单位元邻域。从点 \(g\) 走到附近的点 \(g'\)，其左增量是 \(g^{-1}g'\)。只要增量足够小，就可以用 \(f(g^{-1}g')\) 记录目标群中的相应变化。沿整条路径把这些小变化相乘，便是局部同态继续到远处的候选值。
+
+\begin{lemma}[局部同态的路径延拓]
+	\label{g1:lem:local-hom-path-extension}
+	设 \(G,H\) 为有限维实李群，\(U=U^{-1}\subset G\) 是单位元开邻域，\(f:U\to H\) 为局部同态。对任意连续路径 \(\gamma:[0,1]\to G\)，可以选有限分割 \(0=t_0<\cdots<t_N=1\)，使
+	\[
+		\gamma(s)^{-1}\gamma(t)\in U
+		\quad\text{对同一小区间内的所有 }s,t\text{ 成立}.
+	\]
+	定义
+	\begin{equation}
+		\label{g1:eq:local-hom-path-product}
+		J_f(\gamma)
+		=f(\gamma(t_0)^{-1}\gamma(t_1))\cdots
+		f(\gamma(t_{N-1})^{-1}\gamma(t_N)).
+	\end{equation}
+	则此值与这样的分割无关，并在连续定端点同伦下不变。它还满足
+	\[
+		J_f(\gamma*\eta)=J_f(\gamma)J_f(\eta),\qquad
+		J_f(\bar\gamma)=J_f(\gamma)^{-1},\qquad
+		J_f(a\gamma)=J_f(\gamma),
+	\]
+	其中 \((a\gamma)(t)=a\,\gamma(t)\) 表示固定群元素 \(a\) 对路径的左平移。常路径的值为 \(e_H\)。若两个局部同态在单位元附近相同，则它们给出相同的路径值。
+\end{lemma}
+\begin{proof}
+	先取对称单位元邻域 \(W\)，使 \(W^{-1}W\subset U\)。各左平移 \(aW\) 覆盖 \(G\)，同一个 \(aW\) 内任意两点的相对增量属于 \(W^{-1}W\)。将这个覆盖沿 \(\gamma\) 拉回紧区间，由\cref{g1:lem:lebesgue-number}选择有限细分，使每个小区间的像都位于某个 \(aW\) 中，便得到所需分割。
+
+	在一个已有小区间中增加分点 \(s\)，原增量分解为
+	\[
+		\gamma(t_{i-1})^{-1}\gamma(t_i)
+		=\bigl(\gamma(t_{i-1})^{-1}\gamma(s)\bigr)
+		\bigl(\gamma(s)^{-1}\gamma(t_i)\bigr).
+	\]
+	两个因子及其乘积都在 \(U\) 中，所以局部乘法律使原来的一个 \(f\) 因子等于细分后的两个因子。反复加入分点不改变总乘积。任意两种分割有共同细分，而且细分仍满足整段增量条件，故定义无关。拼接对应接上两组分割，反向对应逆序并逐项取逆；这里 \(f(x^{-1})=f(x)^{-1}\) 来自 \(xx^{-1}=e_G\)。左平移不改变增量，因为 \((a\gamma(s))^{-1}(a\gamma(t))=\gamma(s)^{-1}\gamma(t)\)。这些事实给出所有运算规律。
+
+	现在取连续定端点同伦 \(K:[0,1]^2\to G\)。仍用左平移 \(aW\) 的原像覆盖紧方形，取足够细的有限矩形网格，使每格的像落在某个 \(aW\) 中。若一格四个顶点的像依次为左下 \(a\)、右下 \(b\)、左上 \(c\)、右上 \(d\)，其边路径的 \(J_f\) 值分别是
+	\[
+		h=f(a^{-1}b),\quad v'=f(b^{-1}d),\quad
+		v=f(a^{-1}c),\quad h'=f(c^{-1}d).
+	\]
+	因为 \(a^{-1}b,b^{-1}d,a^{-1}d\) 都在 \(U\)，以及另一条边路的三个增量也都在 \(U\)，局部乘法律给出
+	\begin{equation}
+		\label{g1:eq:local-hom-homotopy-cell}
+		hv'=f(a^{-1}d)=vh'.
+	\end{equation}
+	这个等式允许按原来的顺序把经过一格下边、右边的乘积换成左边、上边的乘积。
+
+	具体地，记网格第 \(j\) 行的水平边值为 \(h_{0j},\ldots,h_{m-1,j}\)，竖边值为 \(v_{0j},\ldots,v_{mj}\)，整行乘积为 \(r_j=h_{0j}\cdots h_{m-1,j}\)。逐格应用\eqref{g1:eq:local-hom-homotopy-cell}得到
+	\[
+		r_jv_{mj}=v_{0j}r_{j+1}.
+	\]
+	同伦固定端点，所以左右外边的值 \(v_{0j},v_{mj}\) 都为 \(e_H\)，故 \(r_j=r_{j+1}\)。逐行比较便得到两端路径具有相同的 \(J_f\) 值。整个论证没有交换不相邻因子，也没有要求 \(K\) 光滑。
+
+	若 \(f,\widehat f\) 在更小的单位元邻域 \(U'\) 上相同，用 \(U'\) 再作一次上述细分，每个因子都相同。由已经证明的细分独立性，得到 \(J_f=J_{\widehat f}\)。
+\end{proof}
+
+这个证明与\cref{g1:thm:flat-path-independence}使用同一种有限网格方法。此处的 \(J_f\) 是按行程顺序相乘的群元素，故拼接公式也是按这个顺序书写；上一章的 \(P_\gamma\) 是作用于向量的线性映射，其函数复合按另一种书写次序进行。记住所比较的对象，便能核对每个公式中的顺序。
+
+\subsection{单连通源群上的整体同态}
+\label{g1:subsec:1604:03}
+
+\begin{theorem}[李群同态的积分]
+	\label{g1:thm:lie-homomorphism-integration}
+	设 \(G,H\) 为有限维实李群，\(G\) 连通且单连通。每个李代数同态 \(\varphi:\mathfrak g\to\mathfrak h\) 都唯一地来自一个光滑群同态 \(F:G\to H\)，即 \(\mathrm{d}F_{e_G}=\varphi\)。唯一性只需要源群连通：两个从同一连通李群出发的光滑群同态，若在单位元有相同微分，则处处相同。
+\end{theorem}
+\begin{proof}
+	由\cref{g1:thm:local-lie-homomorphism}取得局部同态 \(f:U\to H\)。对 \(g\in G\)，取从 \(e_G\) 到 \(g\) 的连续路径 \(\gamma\)，定义 \(F(g)=J_f(\gamma)\)。单连通性包括道路连通性，所以路径存在；同端点的路径定端点同伦，\cref{g1:lem:local-hom-path-extension}因而保证定义与路径无关。常路径给出 \(F(e_G)=e_H\)。
+
+	先证明 \(F\) 光滑。取足够小的单位元坐标球 \(V\subset U\)，使 \(V^{-1}V\subset U\)，并使坐标把 \(e_G\) 送到原点。对 \(x\in V\)，用坐标中的径向线段给出路径 \(\kappa_x:[0,1]\to V\)，从 \(e_G\) 走到 \(x\)。这一整段满足增量条件，所以 \(J_f(\kappa_x)=f(x)\)。固定 \(g\) 及一条从 \(e_G\) 到 \(g\) 的路径，在其后接上 \(g\kappa_x\)，便有
+	\[
+		F(gx)=F(g)f(x),\qquad x\in V.
+	\]
+	右边对 \(x\) 光滑，故 \(F\) 在每个 \(gV\) 上光滑。在 \(g=e_G\) 时得到 \(F|_V=f|_V\)，所以 \(\mathrm{d}F_{e_G}=\varphi\)。
+
+	对 \(g,h\in G\)，取路径 \(\alpha:e_G\to g\)、\(\beta:e_G\to h\)。路径 \(\alpha*(g\beta)\) 从 \(e_G\) 到 \(gh\)，由路径值的拼接与左平移规律，
+	\[
+		F(gh)=J_f(\alpha*(g\beta))
+		=J_f(\alpha)J_f(g\beta)=F(g)F(h).
+	\]
+	因此 \(F\) 为群同态。
+
+	唯一性由\cref{g1:cor:lie-homomorphism-uniqueness}得到。具体地，单位元微分相同使两同态在所有指数上一致，而连通群的每个元素都是有限个指数的乘积，故两同态处处相同。这部分只需要源群连通，不需要再次使用单连通性。
+\end{proof}
+
+\begin{corollary}[闭路的积分障碍]
+	\label{g1:cor:lie-integration-loop-criterion}
+	设 \(G\) 连通，\(\varphi:\mathfrak g\to\mathfrak h\) 为有限维实李群之间的李代数同态，\(f\) 为其局部积分。则 \(\varphi\) 能积分成 \(G\to H\) 的整体同态，当且仅当
+	\[
+		J_f(\gamma)=e_H
+		\qquad\text{对每条基于 }e_G\text{ 的连续环路 }\gamma\text{ 成立}.
+	\]
+	映射 \([\gamma]\mapsto J_f(\gamma)\) 本身是 \(\pi_1(G,e_G)\to H\) 的群同态，并只依赖 \(\varphi\)。
+\end{corollary}
+\begin{proof}
+	同伦不变性、拼接式及局部积分的唯一性，分别保证环路类上的良定义、群同态性和对局部积分选择的无关性。若已有整体同态 \(F\)，对任意细分使用局部相同及同态性质，路径乘积逐项消去后等于
+	\(F(\gamma(0))^{-1}F(\gamma(1))\)，所以环路值为单位元。
+
+	反之，若全部环路值平凡，而 \(\gamma,\eta\) 都从 \(e_G\) 到 \(g\)，则
+	\[
+		e_H=J_f(\gamma*\bar\eta)=J_f(\gamma)J_f(\eta)^{-1},
+	\]
+	故两条路径给出相同值。上一证明中 \(F(g)=J_f(\gamma)\) 的构造及其光滑性、乘法性质便仍然适用。
+\end{proof}
+
+\begin{example}
+	\label{g1:exm:circle-lie-integration-obstruction}
+	将 \(S^1=\{e^{it}:t\in\mathbb R\}\) 的李代数按单位角速度识别为 \(\mathbb R\)。因为括号为零，每个线性映射 \(X\mapsto\lambda X\)、\(\lambda\in\mathbb R\)，都是李代数同态。其局部积分是在一个小角度区间内定义的
+	\[
+		f(e^{it})=e^{i\lambda t}.
+	\]
+	沿正向一周环路细分，小角度增量之和为 \(2\pi\)，所以路径乘积为 \(e^{2\pi i\lambda}\)。由\cref{g1:thm:circle-fundamental}，任意环路由其整数绕数确定；绕数 \(k\) 的路径值为 \(e^{2\pi i\lambda k}\)。因此整体积分存在当且仅当 \(\lambda\in\mathbb Z\)，此时就是 \(F(z)=z^\lambda\)。
+
+	若把源群改成加法群 \(\mathbb R\)，则 \(t\mapsto e^{i\lambda t}\) 对每个实数 \(\lambda\) 都是整体同态。两种源群有同一个一维李代数；差别是圆周把相差 \(2\pi\) 的角度识别了，目标值也必须尊重这个识别。
+\end{example}
+
+\subsection{连通李群的万有覆盖群}
+\label{g1:subsec:1604:04}
+
+对于不是单连通的 \(G\)，可以先把路径的同伦历史保留下来。第五章的道路类万有覆盖已经这样做了；现在还须证明它能够承载群乘法，并且所得结构确实是通常意义下的李群。
+
+\begin{theorem}[万有覆盖群]
+	\label{g1:thm:universal-cover-lie-group}
+	设 \(G\) 为连通有限维实李群。以 \(e_G\) 为基点的道路类万有覆盖
+	\(p:(\widetilde G,\widetilde e)\to(G,e_G)\)
+	具有以 \(\widetilde e\) 为单位元的唯一光滑李群结构，使 \(p\) 为光滑覆盖同态，并在每点为局部微分同胚。其核 \(\ker p\) 为离散中心子群，而且自然同构于 \(\pi_1(G,e_G)\)。特别地，连通李群的基本群为交换群。这个带群结构的覆盖称为\term[wanyoufugaiqun]{万有覆盖群}[universal covering group]。
+\end{theorem}
+\begin{proof}
+	连通李群道路连通，而坐标小球可缩，所以第五章\cref{g1:thm:path-class-universal-cover}适用。其点为从 \(e_G\) 出发的连续路径的定端点同伦类，投影取终点，总空间已经知道连通且单连通。对路径 \(\alpha,\beta\) 定义逐点乘积 \((\alpha\cdot\beta)(t)=\alpha(t)\beta(t)\)，并令 \(\alpha^\iota(t)=\alpha(t)^{-1}\)。置
+	\begin{equation}
+		\label{g1:eq:universal-cover-group-product}
+		[\alpha][\beta]=[\alpha\cdot\beta],\qquad
+		[\alpha]^{-1}=[\alpha^\iota],\qquad
+		\widetilde e=[e_{e_G}].
+	\end{equation}
+	若改变路径代表，逐点相乘或取逆相应的同伦，就得到新路径之间的定端点同伦，所以运算良定义。结合律、单位律和逆元律由逐点的群公理得到，终点映射 \(p\) 也立即保持乘法。此处 \(\alpha^\iota\) 是逐点取群逆，不是把路径参数反向；它仍从单位元出发。
+
+	为了比较第五章的路径拼接，记 \(a=\alpha(1)\)。有
+	\begin{equation}
+		\label{g1:eq:pointwise-product-concatenation}
+		[\alpha\cdot\beta]=[\alpha*(a\beta)].
+	\end{equation}
+	事实上，映射 \(Q(s,t)=\alpha(s)\beta(t)\) 将方形对角线送成逐点乘积路径，将先沿底边、再沿右边的折线路径送成 \(\alpha*(a\beta)\)。这两条方形内路径的端点都是 \((0,0),(1,1)\)；按坐标作线性插值给出定端点同伦，再复合 \(Q\) 即得所需同伦。\cref{g1:fig:cover-path-product}显示了这两种行进方式。
+
+	接着核对局部光滑结构。取单位元的一个坐标小球 \(U\)，使其坐标像为以零为中心的凸球。记 \(\kappa_x(t)\) 为坐标径向线段从 \(e_G\) 到 \(x\) 的路径。对 \(q=[\alpha]\)、\(a=p(q)\)，
+	\[
+		x\longmapsto q_x=[\alpha*(a\kappa_x)],\qquad x\in U,
+	\]
+	正是 \(aU\) 上经过 \(q\) 的一张覆盖片的局部逆，因为在可缩邻域 \(aU\) 内，追加路径的终点决定其路径类。它与\cref{g1:lem:path-class-basis}的拓扑一致。把 \(G\) 的坐标通过 \(p\) 提升到每张片，就得到相容的局部欧氏坐标；交叠处的转换由底空间坐标转换给出。
+
+	乘法在这些坐标中光滑，可以直接核算。设 \(r=[\beta]\)、\(b=p(r)\)，并使用 \(q_x,r_y\) 的上述表示。两条拼接路径逐点相乘后，前半段是 \(\alpha\cdot\beta\)，后半段为
+	\[
+		a\kappa_x(t)b\kappa_y(t)
+		=ab\bigl(b^{-1}\kappa_x(t)b\kappa_y(t)\bigr).
+	\]
+	固定一个足够小的可缩单位元坐标球 \(W\)。缩小 \(x,y\) 的范围，可以使括号中的整条路径都留在 \(W\) 中：关于 \((x,y,t)\) 的表达连续，在 \(x=y=e_G\) 时对全部 \(t\in[0,1]\) 都为单位元，紧区间给出共同的缩小范围。其终点为 \(w=b^{-1}xby\)。在 \(W\) 中，这条路径与径向路径 \(\kappa_w\) 定端点同伦，故
+	\[
+		q_xr_y=[(\alpha\cdot\beta)*(ab\kappa_w)],\qquad w=b^{-1}xby.
+	\]
+	因此乘法的局部坐标表达就是 \(w=b^{-1}xby\)，为光滑映射。类似地，对 \(q_x\) 的代表逐点取逆，其末段为
+	\[
+		(a\kappa_x(t))^{-1}
+		=a^{-1}\bigl(a\kappa_x(t)^{-1}a^{-1}\bigr).
+	\]
+	缩小后括号内路径留在一个可缩小邻域中，取逆的局部坐标表达为 \(x\mapsto ax^{-1}a^{-1}\)，也光滑。这也先行证明了运算关于覆盖拓扑的连续性。
+
+	还要核对 Hausdorff 性和第二可数性。不同投影点可由底空间的不交开集分离；投影相同的不同覆盖点，则位于某均匀覆盖邻域上方的不交片内，所以 \(\widetilde G\) Hausdorff。第二可数性不能仅由底空间第二可数推出。取一个对称开单位元邻域 \(V\subset\widetilde G\)，包含在一张覆盖坐标片内；它本身第二可数。由于运算已经连续，\(\bigcup_{n\geq1}V^n\) 是开子群，其各陪集也开；\(\widetilde G\) 连通，所以这个开子群等于整个 \(\widetilde G\)。每个乘法映射
+	\[
+		V^{\times n}\longrightarrow V^n,\qquad
+		(v_1,\ldots,v_n)\longmapsto v_1\cdots v_n
+	\]
+	都是开满射：乘积空间中的开矩形映成若干群开集的乘积，而该乘积是开集，因为可固定前面因子再左平移最后一个开集，随后取并。因此 \(V^{\times n}\) 的可数基的像给出 \(V^n\) 的可数基。各 \(V^n\) 在 \(\widetilde G\) 中开，且可数个这样的集合覆盖 \(\widetilde G\)，所有这些基的并便是总空间的可数基。至此，提升的坐标使 \(\widetilde G\) 成为有限维实李群，\(p\) 是局部微分同胚。
+
+	其核是覆盖的单位元纤维，因而离散。固定 \(k\in\ker p\)，连续映射 \(q\mapsto qkq^{-1}\) 的像仍在 \(\ker p\) 中。连通空间到离散空间的连续映射为常值，在 \(q=\widetilde e\) 处取值为 \(k\)，故 \(k\) 与每个 \(q\) 交换。因此核位于中心。核的点恰是基于 \(e_G\) 的环路类；对两条环路，\eqref{g1:eq:pointwise-product-concatenation}中的 \(a=e_G\)，所以核乘法正是第五章基本群的拼接乘法。于是 \(\ker p\cong\pi_1(G,e_G)\)，而中心的子群交换，得到最后结论。
+
+	最后说明唯一性。使 \(p\) 成为局部微分同胚的光滑结构由各覆盖片唯一确定。若还有另一套使 \(p\) 为同态的连续群乘法，那么两种乘法都是映射 \((q,r)\mapsto p(q)p(r)\) 到覆盖空间的提升，并在 \((\widetilde e,\widetilde e)\) 取相同值。空间 \(\widetilde G\times\widetilde G\) 连通，故\cref{g1:lem:lift-uniqueness}使两种乘法相同；单位元和逆元也随之确定。
+\end{proof}
+
+\input{Figures/Chapter16-CoverPathProduct.tex}
+
+在这个群结构下，基本群的左甲板作用也有直接解释。若 \(k=[\gamma]\in\ker p\)，则对任意 \(q=[\alpha]\)，\eqref{g1:eq:pointwise-product-concatenation}给出
+\[
+	kq=[\gamma*\alpha].
+\]
+这恰是第五章前置环路的左作用。因此“左甲板变换”与“由核元素作左乘”在这里一致；核的中心性又说明它同时等于右乘。
+
+\subsection{离散中心商与同李代数的不同李群}
+\label{g1:subsec:1604:05}
+
+万有覆盖同态把离散中心核中的元素识别为单位元，却不改变任何点附近的微分结构。反向地，从一个李群出发作同样的识别，也应得到具有相同李代数的李群。此处的离散性让商空间可以由不相交的小邻域直接构造。
+
+\begin{proposition}[离散中心商]
+	\label{g1:prop:discrete-central-quotient}
+	设 \(G\) 是连通有限维实李群，\(\Gamma\subset Z(G)\) 为离散子群，其中离散指其子空间拓扑离散。则 \(\Gamma\) 闭，商群 \(G/\Gamma\) 具有唯一的光滑李群结构，使自然投影 \(q:G\to G/\Gamma\) 为光滑覆盖同态及局部微分同胚。特别地，\(\mathrm{d}q_{e_G}\) 是李代数同构。
+\end{proposition}
+\begin{proof}
+	先证明闭性。由离散性取单位元开邻域 \(O\)，使 \(O\cap\Gamma=\{e_G\}\)，再取单位元邻域 \(V\)，使 \(V^{-1}V\subset O\)。每个左平移 \(xV\) 至多含一个 \(\Gamma\) 中的点，因为若 \(\gamma_1=xv_1,\gamma_2=xv_2\)，则 \(\gamma_1^{-1}\gamma_2=v_1^{-1}v_2\in O\cap\Gamma\)。若 \(x\in\overline\Gamma\)，开邻域 \(xV\) 必含一个 \(\gamma\in\Gamma\)，并且只含这一个。于是 \(x\) 属于单点 \(\{\gamma\}\) 的闭包；Hausdorff 性使单点闭，所以 \(x=\gamma\in\Gamma\)。故 \(\Gamma\) 闭。
+
+	\(\Gamma\) 位于中心，因而正规，商集上有群乘法。给它商拓扑。投影 \(q\) 开，因为 \(q^{-1}(q(A))=\bigcup_{\gamma\in\Gamma}A\gamma\) 对每个开集 \(A\subset G\) 都开。继续缩小 \(V\)，使它成为坐标邻域且 \(V^{-1}V\cap\Gamma=\{e_G\}\)。则各 \(V\gamma\) 两两不交，且
+	\[
+		q^{-1}(q(V))=\coprod_{\gamma\in\Gamma}V\gamma.
+	\]
+	投影在每片上为开连续双射，故为同胚；左平移后，所有 \(q(gV)\) 都有同样的局部形式。因此 \(q\) 是覆盖。
+
+	商空间也是 Hausdorff。若 \(x\Gamma\ne y\Gamma\)，则 \(x^{-1}y\notin\Gamma\)。由 \(\Gamma\) 闭及 \((u,v)\mapsto u^{-1}v\) 连续，可取 \(x,y\) 的开邻域 \(A,B\)，使 \(A^{-1}B\cap\Gamma=\varnothing\)。于是开集 \(q(A),q(B)\) 不交。又因为 \(q\) 开且满，\(G\) 的一个可数基的像给出商空间的可数基。
+
+	把每个 \(q(gV)\) 的坐标从 \(gV\) 传递过去。两套局部逆在交叠点附近相差一个固定的右平移 \(R_\gamma\)：在足够小的连通均匀覆盖邻域上，选定的两张片不能突然改变所对应的 \(\gamma\)。右平移光滑，所以这些坐标相容，并使 \(q\) 局部微分同胚。商乘法的光滑性可在两个因子附近分别选择这样的光滑局部逆，再作 \(G\) 的乘法并投影；商取逆同理。它们与陪集定义一致，因而得到李群结构。任何使 \(q\) 为局部微分同胚的结构都必须使用同样的局部坐标，故唯一。最后，\(q\) 为光滑同态，微分保括号；局部微分同胚又使其微分可逆，因此得到李代数同构。
+\end{proof}
+
+还需要一个把“微分同构”转换成“覆盖同态”的结论。仅有局部逆函数定理尚未说明映射满射，也未说明所有原像能被同一个小邻域同时控制。
+
+\begin{proposition}[微分同构与覆盖同态]
+	\label{g1:prop:lie-homomorphism-local-isomorphism}
+	设 \(F:G\to H\) 为连通有限维实李群之间的光滑同态。若 \(\mathrm{d}F_{e_G}\) 为同构，则 \(F\) 满射且为光滑覆盖映射，\(\ker F\) 是离散中心子群，并诱导李群同构 \(G/\ker F\cong H\)。
+\end{proposition}
+\begin{proof}
+	逆函数定理给出单位元开邻域 \(U\subset G\)、\(V\subset H\)，使 \(F|_U:U\to V\) 为微分同胚。像 \(F(G)\) 是含 \(V\) 的子群，所以为开子群：对每个像点，左平移 \(V\) 仍留在像中。其余陪集也开，因此像的补集开。由 \(H\) 连通，得到 \(F(G)=H\)。
+
+	记 \(K=\ker F\)。单位元在 \(K\) 中孤立，平移后每个核元素也孤立，所以 \(K\) 离散。它正规；对固定 \(k\in K\)，映射 \(g\mapsto gkg^{-1}\) 连续且取值于离散 \(K\)，源群连通使其恒等于 \(k\)，故 \(K\subset Z(G)\)。
+
+	现在精确写出覆盖片。任意 \(x\in F^{-1}(V)\) 都有唯一 \(u\in U\) 满足 \(F(u)=F(x)\)，于是 \(x=ku\)，其中 \(k=xu^{-1}\in K\)。各 \(kU\) 两两不交：若 \(ku=k'u'\)，则 \(F(u)=F(u')\)，由 \(F|_U\) 单射先得 \(u=u'\)，再得 \(k=k'\)。因此
+	\[
+		F^{-1}(V)=\coprod_{k\in K}kU,
+	\]
+	且每片经 \(F\) 微分同胚于 \(V\)。对任意 \(h\in H\)，选 \(g\in G\) 满足 \(F(g)=h\)，左平移这个分解便覆盖 \(hV\)。故 \(F\) 为覆盖。最后，\(F\) 的纤维正是 \(K\) 陪集，因此诱导群双射 \(G/K\to H\)；它在刚构造的小片坐标中是微分同胚，故整体为李群同构。
+\end{proof}
+
+\begin{corollary}[同李代数的连通李群]
+	\label{g1:cor:connected-groups-same-lie-algebra}
+	设 \(G,H\) 是连通有限维实李群，且 \(\mathfrak g\cong\mathfrak h\)。则存在一个单连通李群 \(S\) 及其离散中心子群 \(\Gamma_G,\Gamma_H\)，使
+	\[
+		G\cong S/\Gamma_G,\qquad H\cong S/\Gamma_H.
+	\]
+	这里可取 \(S\) 为 \(G\) 的万有覆盖群；它同时也是 \(H\) 的一个万有覆盖群。
+\end{corollary}
+\begin{proof}
+	取 \(p:S\to G\) 为\cref{g1:thm:universal-cover-lie-group}构造的万有覆盖同态，并固定李代数同构 \(\varphi:\mathfrak g\to\mathfrak h\)。复合 \(\varphi\circ\mathrm{d}p_e:\operatorname{Lie}(S)\to\mathfrak h\) 是李代数同构。因为 \(S\) 单连通，\cref{g1:thm:lie-homomorphism-integration}将它积分为同态 \(F:S\to H\)。由上一命题，\(F\) 是满射覆盖，核 \(\Gamma_H\) 离散且中心。令 \(\Gamma_G=\ker p\)，分别应用上一命题得到两个商同构。\(S\) 单连通，所以 \(F\) 又是 \(H\) 的万有覆盖。
+\end{proof}
+
+例如加法群 \(\mathbb R\) 和圆周群 \(S^1\) 都有一维交换李代数，其共同单连通覆盖群是 \(\mathbb R\)：前者对应核 \(\{0\}\)，后者通过 \(t\mapsto e^{it}\) 对应核 \(2\pi\mathbb Z\)。它们一个非紧、一个紧，因此并不同构。另一方面，\(\mathbb R/(a\mathbb Z)\) 在 \(a>0\) 改变时都同构于圆周；不同的离散子群未必给出不同的群同构类型。
+
+\ProseParagraphBreak
+
+这些结果从已经给定的李群及其李代数出发：括号确定局部同态，单连通源群允许唯一的整体积分，离散中心核则记录可以怎样作整体识别。局部微分数据与整体群的关系由此分成了可分别检查的两部分。
+
+% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
