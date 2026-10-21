@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 3.4 有限复形的认证计算
-% 纲要位置：几何学计划纲要.md，第 1092 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 纲要位置：几何学计划纲要.md，第 1142 行。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,218 @@
 \section{有限复形的认证计算}
 \label{g2:sec:0304}
 
-待撰写
+已知每个胞腔边界中的整数系数以后，同调计算便可以交给矩阵运算。但工作环必须保留为 \(\mathbb Z\)：把关系 \(6z=0\) 除以 \(6\)，就会把一个可能非零的六阶元素消去。本节给出既能手算也能由程序执行的整数算法，并说明怎样用换基矩阵核验计算结果。关键不是只求两张矩阵的秩，而是把边界群放进圈群的一组整数基中，再取商。
 
 \subsection{链群基与整数边界矩阵}
 \label{g2:subsec:0304:01}
-待撰写
+
+设 \(X\) 是有限 CW 复形，\(c_n\) 是其 \(n\) 维胞腔数。固定各维胞腔的次序和定向，\cref{g2:def:cellular-chain-complex}给出的胞腔链群便成为带基的自由阿贝尔群
+\[
+	C_n^{\mathrm{cell}}(X)\cong\mathbb Z^{c_n}.
+\]
+将一个胞腔的边界系数按列排列，得到 \(c_{n-1}\times c_n\) 的整数矩阵 \(A_n\)。若链 \(x\) 的坐标写为列向量，则 \(\mathrm{d}_nx\) 的坐标是 \(A_nx\)。由边界平方为零，必须有
+\[
+	A_nA_{n+1}=0.
+\]
+这既是求商群的前提，也是输入数据的第一项核对。如果这个积非零，就需要回查定向、附着映射或抄录的系数；继续求核与像不能修复原来的错误。
+
+\begin{definition}[幺模矩阵]\label{g2:def:unimodular-matrix}
+	方阵 \(P\in M_r(\mathbb Z)\) 若满足 \(\det P=\pm1\)，称为\term[yaomo juzhen]{幺模矩阵}[unimodular matrix]。等价地，\(P\) 的逆矩阵仍有整数系数。
+\end{definition}
+
+等价性的一个方向由伴随矩阵公式 \(P^{-1}=(\det P)^{-1}\operatorname{adj}P\) 得到；另一方向由 \(\det P\det P^{-1}=1\) 及两因子为整数得到。交换两个基元、把一个基元乘以 \(-1\)、把一个基元加上另一个基元的整数倍，都由幺模矩阵实现。把某个基元乘以 \(2\) 则不是换基：所得元素只生成原自由群的一个真子群。
+
+\ProseParagraphBreak
+
+若第 \(n\) 次的新基用旧基表示的列组成 \(P_n\)，则旧坐标与新坐标满足 \(x=P_nx'\)，因而新边界矩阵为
+\begin{equation}\label{g2:eq:boundary-matrix-change}
+	A_n'=P_{n-1}^{-1}A_nP_n.
+\end{equation}
+同一群 \(C_n\) 同时是 \(\mathrm{d}_n\) 的源和 \(\mathrm{d}_{n+1}\) 的靶，故它的换基会同时改变这两张矩阵。对 \(A_n\) 作列变换以后，必须对 \(A_{n+1}\) 作相应的逆行变换；否则两张矩阵中的坐标已不属于同一组基，不能直接用来计算 \(\ker\mathrm{d}_n/\operatorname{im}\mathrm{d}_{n+1}\)。
 
 \subsection{Smith 标准形及核像计算}
 \label{g2:subsec:0304:02}
-待撰写
+
+整数换基不能任意除以非零主元，但可以做带余除法。因此，高斯消元中的“把主元变成 \(1\)”需要改为“使一个正主元整除其后的所有系数”。这个整除关系正好保留了有限阶同调类。
+
+\begin{theorem}[Smith 标准形]\label{g2:thm:smith-normal-form}
+	设 \(A\) 是 \(p\times q\) 整数矩阵。存在幺模矩阵 \(U\in M_p(\mathbb Z)\)、\(V\in M_q(\mathbb Z)\)，使
+	\[
+		UAV=S=\operatorname{diag}(s_1,\ldots,s_r,0),\qquad
+		0<s_1\mid s_2\mid\cdots\mid s_r.
+	\]
+	这里的对角形允许长方形矩阵，未列出的元素均为零，\(r=\operatorname{rank}_{\mathbb Q}A\)。整数 \(s_i\) 由 \(A\) 唯一确定，称为其\term[bubian yinzi]{不变因子}[invariant factors]；矩阵 \(S\) 称为 \(A\) 的\term[Smith biaozhunxing]{Smith 标准形}[Smith normal form]。\footnote{Henry John Stephen Smith（1826--1883），爱尔兰数学家，研究数论和初等因子。}矩阵 \(U,V,S\) 可以由有限次整数初等行、列变换求出。
+\end{theorem}
+\begin{proof}
+	先证明存在性，并把构造写成可执行的过程。零矩阵无须处理。若 \(A\ne0\)，把一个非零元素移到左上角，再变号使主元 \(a=A_{11}>0\)。对第一列中的元素 \(b\) 作带余除法 \(b=ka+r\)，\(0\le r<a\)，用相应行减去第一行的 \(k\) 倍。如果 \(r\ne0\)，交换该行与第一行，得到严格较小的正主元，重新开始。若余数均为零，则可以把主元以下的第一列清零。以相同方法对第一行作列变换；一旦出现非零余数，交换至主元位置并重新开始。
+
+	每次需要重新开始时，正主元严格变小，所以这种下降只能发生有限次。两次下降之间只须处理有限个行、列元素，故最终得到
+	\[
+		\begin{pmatrix}a&0\\0&B\end{pmatrix},\qquad a>0.
+	\]
+	此时还不能立即结束：必须检查 \(a\) 是否整除 \(B\) 中的每个元素。若某个 \(B_{ij}=b\) 不被 \(a\) 整除，把它所在的行加到第一行；第一列的主元仍是 \(a\)，第一行相应位置变为 \(b\)。再对该列减去第一列的整数倍，出现非零余数 \(0<r<a\)，交换两列后主元再次严格变小。因此，有限次下降以后可以同时做到第一行、列清零以及 \(a\) 整除整个余下矩阵。
+
+	只在 \(B\) 内重复上述过程。由于 \(B\) 的各项原来均为 \(a\) 的倍数，任何整数行、列变换所得的项仍为 \(a\) 的倍数，所以第二个正主元必被第一个整除。按矩阵较小维数归纳，得到要求的对角形。每一步都是交换、变号或整数倍相加，因而累计的左右乘矩阵 \(U,V\) 均幺模。该过程终止，但这里不据此声称其计算量或中间整数长度具有某个最优界。
+
+	再证明唯一性。令 \(\Delta_0(A)=1\)，对 \(1\le k\le\min\{p,q\}\)，令 \(\Delta_k(A)\) 为全部 \(k\) 阶子式的非负最大公因数；若这些子式全为零，则取 \(\Delta_k(A)=0\)。一次整数初等行变换后，每个新子式都由旧子式的整数线性组合得到：对变换涉及的行展开行列式即可，出现重复行的项为零。因此旧子式的公因数整除全部新子式；应用逆变换得到反向整除。列变换同理。对于一般的整数左、右乘矩阵，也可逐行、逐列作多线性展开，得到同样的整数线性组合；若乘矩阵幺模，再用其整数逆矩阵就得到反向整除。因此 \(\Delta_k(UAV)=\Delta_k(A)\)。
+
+	对于所得对角形，\(k\le r\) 时每个非零 \(k\) 阶子式是 \(k\) 个不同 \(s_i\) 的乘积。由 \(s_i\mid s_{i+1}\)，这些乘积均被 \(s_1\cdots s_k\) 整除，而这个乘积本身就是一个子式。因此
+	\[
+		\Delta_k(A)=s_1\cdots s_k\quad(1\le k\le r),
+		\qquad s_k=\frac{\Delta_k(A)}{\Delta_{k-1}(A)}.
+	\]
+	当 \(k>r\) 时全部子式为零。这确定了 \(r\) 及每个 \(s_i\)，也表明 \(r\) 就是在 \(\mathbb Q\) 上的矩阵秩。
+\end{proof}
+
+从标准形可以直接读出整数核与像的一组基。对于同态 \(A:\mathbb Z^q\to\mathbb Z^p\)，由 \(Ax=0\iff S(V^{-1}x)=0\) 可知，\(V\) 的后 \(q-r\) 列构成 \(\ker A\) 的自由基。而 \(\operatorname{im}A\) 的一组基为
+\[
+	U^{-1}s_1e_1,\ldots,U^{-1}s_re_r,
+\]
+其中 \(e_i\) 是 \(\mathbb Z^p\) 的标准基。于是
+\[
+	\mathbb Z^p/\operatorname{im}A
+	\cong\mathbb Z^{p-r}\oplus\bigoplus_{i=1}^r\mathbb Z/s_i\mathbb Z.
+\]
+当 \(s_i=1\) 时，相应的商群为零，应从最终结果中略去。注意像的基一般不能扩充为靶群的一组整数基，例如 \(2\mathbb Z\subset\mathbb Z\)；这种不能扩充的现象正是商群出现挠的原因。
+
+\begin{proposition}[在圈群中计算边界]\label{g2:prop:integer-homology-matrices}
+	设
+	\[
+		\mathbb Z^b\xrightarrow{B}\mathbb Z^c\xrightarrow{A}\mathbb Z^a,
+		\qquad AB=0,
+	\]
+	且 \(UAV=\operatorname{diag}(s_1,\ldots,s_r,0)\) 为 Smith 标准形。则 \(V^{-1}B\) 的前 \(r\) 行为零。将其余 \(c-r\) 行组成的矩阵记为 \(K\)，并设
+	\[
+		PKQ=\operatorname{diag}(t_1,\ldots,t_\ell,0),
+		\qquad 0<t_1\mid\cdots\mid t_\ell,
+	\]
+	其中 \(P,Q\) 幺模。则
+	\begin{equation}\label{g2:eq:integer-homology-result}
+		\ker A/\operatorname{im}B
+		\cong\mathbb Z^{c-r-\ell}\oplus
+		\bigoplus_{i=1}^\ell\mathbb Z/t_i\mathbb Z.
+	\end{equation}
+	若 \(J:\mathbb Z^{c-r}\to\mathbb Z^c\) 把坐标填入最后 \(c-r\) 个位置，则这些商群生成元可由圈 \(VJP^{-1}e_i\) 表示。
+\end{proposition}
+\begin{proof}
+	由 \(AB=0\) 得
+	\[
+		S(V^{-1}B)=UAB=0.
+	\]
+	前 \(r\) 个非零对角元是非零整数；整数群中没有被非零整数消去的非零元素，所以 \(V^{-1}B\) 的前 \(r\) 行均为零。映射 \(y\mapsto VJy\) 是从 \(\mathbb Z^{c-r}\) 到 \(\ker A\) 的同构，并把 \(\operatorname{im}K\) 送到 \(\operatorname{im}B\)。于是所求群等于 \(\mathbb Z^{c-r}/\operatorname{im}K\)。再用 \(P\) 变换坐标，像变成由 \(t_ie_i\)（\(1\le i\le\ell\)）生成的子群，逐坐标取商就得到\eqref{g2:eq:integer-homology-result}及所述代表圈。
+\end{proof}
+
+\begin{algorithm}[tbp]
+	\caption{整数同调}
+	\label{g2:alg:integer-homology}
+	\begin{algorithmsteps}{有限整数矩阵列 \(A_n:\mathbb Z^{c_n}\to\mathbb Z^{c_{n-1}}\)。}{各次同调的自由秩、挠不变因子及代表圈；用于核验的幺模换基矩阵。}
+		\State 检查各矩阵尺寸相容，且 \(A_nA_{n+1}=0\)；不满足时停止并回查输入。
+		\State 对所求次数 \(n\)，计算 \(UA_nV=S\)，保存 \(U,V\)，记非零对角元数为 \(r\)。
+		\State 计算 \(V^{-1}A_{n+1}\)，检查前 \(r\) 行为零，取余下行组成 \(K\)。
+		\State 计算 \(PKQ=T\)，保存 \(P,Q\)，记非零对角元数为 \(\ell\)。
+		\State 输出自由秩 \(c_n-r-\ell\)、\(T\) 中大于 \(1\) 的对角元，以及相应的圈 \(VJP^{-1}e_i\)。
+		\State 用整数运算复核两组矩阵等式、换基矩阵的行列式为 \(\pm1\)、对角元为正且依次整除。
+	\end{algorithmsteps}
+\end{algorithm}
+
+\cref{g2:alg:integer-homology}中的矩阵等式及幺模性构成可独立核验的证书；它们不要求复现程序寻找换基的全部过程。零矩阵以及零行、零列的情形也包含在内：相应的秩为零，空直和为零群。若只想求某一次同调，可以独立使用原来的相邻矩阵 \(A_n,A_{n+1}\)；若把多次变换原地写回整条链复形，则须按\eqref{g2:eq:boundary-matrix-change}同步更新相邻矩阵。
+
+\begin{example}[两组有限阶关系]\label{g2:exm:integer-matrix-certificate}
+	取两个顶点 \(v_0,v_1\)，两条从 \(v_0\) 指向 \(v_1\) 的边 \(a,b\)，以及一条以 \(v_0\) 为基点的环边 \(c\)。沿环路 \((ba^{-1})^2\) 和 \((ba^{-1})^2c^6\) 分别附着一个二维胞腔。这里的字从左向右行走，故 \(ba^{-1}\) 确实从 \(v_0\) 出发又返回 \(v_0\)。按基 \((a,b,c)\) 写出的边界矩阵为
+	\[
+		A_1=\begin{pmatrix}-1&-1&0\\1&1&0\end{pmatrix},
+		\qquad
+		A_2=\begin{pmatrix}-2&-2\\2&2\\0&6\end{pmatrix}.
+	\]
+	直接相乘得到 \(A_1A_2=0\)。取
+	\[
+		U=\begin{pmatrix}-1&0\\1&1\end{pmatrix},
+		\qquad
+		V=\begin{pmatrix}1&-1&0\\0&1&0\\0&0&1\end{pmatrix}.
+	\]
+	其行列式分别为 \(-1,1\)，且
+	\[
+		UA_1V=\begin{pmatrix}1&0&0\\0&0&0\end{pmatrix},
+		\qquad
+		V^{-1}A_2=\begin{pmatrix}0&0\\2&2\\0&6\end{pmatrix}.
+	\]
+	因此圈群的基是 \(u=b-a\)、\(v=c\)，两条二维边界在这组基中的矩阵为
+	\[
+		K=\begin{pmatrix}2&2\\0&6\end{pmatrix}.
+	\]
+	把第二列减去第一列，即取
+	\[
+		Q=\begin{pmatrix}1&-1\\0&1\end{pmatrix},\qquad
+		KQ=\begin{pmatrix}2&0\\0&6\end{pmatrix},
+	\]
+	得到 \(H_1(X)\cong\mathbb Z/2\mathbb Z\oplus\mathbb Z/6\mathbb Z\)，其生成元分别是 \([u],[v]\)。零次同调由两个顶点的差关系给出 \(H_0(X)\cong\mathbb Z\)。矩阵 \(A_2\) 的两列线性无关，故 \(H_2(X)=0\)，更高次也为零。只在有理数上消元，会看到一次同调的自由秩为零，却无法恢复这两组有限阶关系。
+\end{example}
 
 \subsection{Euler 示性数和矩阵秩的交错和}
 \label{g2:subsec:0304:03}
-待撰写
+
+完整的整数同调保留了每个有限阶关系，但有时我们先需要一个快速的总量核对。例如，增添一对相邻维数的胞腔可能改变边界矩阵的大小，却不改变交错计数。把各次矩阵的秩写出来，就能说明这种抵消从何而来。
+
+\begin{definition}[Euler 示性数]\label{g2:def:euler-characteristic}
+	设 \(X\) 是有限 CW 复形，\(c_n\) 是其 \(n\) 维胞腔数。称
+	\[
+		\chi(X)\coloneqq\sum_{n\ge0}(-1)^nc_n
+	\]
+	为这个胞腔分解的\term[Euler shixingshu]{Euler 示性数}[Euler characteristic]。\footnote{Leonhard Euler（1707--1783），瑞士数学家，在分析、几何和数论等领域作出广泛贡献。}由下一定理，它实际上只依赖于 \(X\) 的同伦型。\symidx{\(\chi(X)\)：Euler 示性数}
+\end{definition}
+
+\begin{theorem}[Euler 示性数的同调公式]\label{g2:thm:euler-homology}
+	设 \(X\) 是有限 CW 复形，\(A_n\) 是其整数胞腔边界矩阵，令 \(r_n=\operatorname{rank}_{\mathbb Q}A_n\)，并令 \(b_n\) 为 \(H_n(X;\mathbb Z)\) 的自由秩。则
+	\[
+		b_n=c_n-r_n-r_{n+1},\qquad
+		\chi(X)=\sum_{n\ge0}(-1)^nb_n.
+	\]
+	特别地，两个同伦等价的有限 CW 复形具有相同的 Euler 示性数。
+\end{theorem}
+\begin{proof}
+	由\cref{g2:prop:integer-homology-matrices}，\(\ker A_n\) 的秩是 \(c_n-r_n\)。在它的整数基中表示的 \(A_{n+1}\) 具有秩 \(r_{n+1}\)，因为换基和删去零行均不改变有理矩阵秩。因此商群的自由秩为 \(c_n-r_n-r_{n+1}\)。\cref{g2:thm:cellular-singular-comparison}把这个商群与 \(H_n(X;\mathbb Z)\) 识别起来，得到第一式。
+
+	设 \(X\) 的维数为 \(N\)，在两端取 \(r_0=r_{N+1}=0\)。对第一式作交错求和，两个秩和逐项相消：
+	\[
+		\sum_{n=0}^N(-1)^nb_n
+		=\sum_{n=0}^N(-1)^nc_n
+		-\sum_{n=0}^N(-1)^nr_n
+		-\sum_{n=0}^N(-1)^nr_{n+1}
+		=\sum_{n=0}^N(-1)^nc_n.
+	\]
+	同伦等价诱导奇异同调群同构，故各次自由秩相等，第二个结论随之成立。
+\end{proof}
+
+这一公式也见\cite[第2.2节，Cellular Homology]{Hatcher2002}。有限性保证交错和只有有限项；对于具有无限多个胞腔的空间，不能直接把发散的胞腔计数作抵消。挠群的自由秩为零，因此 Euler 示性数本身不能检查挠信息是否计算正确。例如\cref{g2:exm:integer-matrix-certificate}中 \(\chi(X)=2-3+2=1\)，与 \(b_0=1\)、其余 \(b_n=0\) 相符；把一次同调误写成零仍会通过这一项核对。
 
 \subsection{不同 CW 分解之间的结果核对}
 \label{g2:subsec:0304:04}
-待撰写
+
+同一个空间可以有大小差别很大的边界矩阵。应当相等的是由这些矩阵算出的同调群，而不是矩阵本身、胞腔数或某个选定代表圈。\cref{g2:thm:cellular-singular-comparison}提供了比较依据：每种胞腔分解的同调都自然同构于空间本身的奇异同调。对两个分解之间的恒等映射作胞腔逼近，还可以把这项比较落实为胞腔链映射。
+
+\begin{example}[圆周的两个分解]\label{g2:exm:circle-cell-decompositions}
+	圆周可以只有一个顶点 \(v\) 和一个边胞腔 \(e\)，此时 \(\mathrm{d}_1e=v-v=0\)，链复形是 \(\mathbb Z\xrightarrow{0}\mathbb Z\)。也可以在圆周上顺次取三个顶点 \(v_0,v_1,v_2\)，沿正向取三条边 \(e_{01},e_{12},e_{20}\)。后一分解的边界矩阵为
+	\[
+		A_1=\begin{pmatrix}-1&0&1\\1&-1&0\\0&1&-1\end{pmatrix}.
+	\]
+	解 \(A_1(x,y,z)^{\mathsf T}=0\)，得到 \(x=y=z\)，故一次圈群由 \(e_{01}+e_{12}+e_{20}\) 生成。零次边界群由 \(v_1-v_0,v_2-v_1\) 生成，恰为坐标和为零的子群，所以 \(H_0\cong\mathbb Z\)。两种分解都给出 \(H_1\cong\mathbb Z\)，其余正次数同调为零。相应 Euler 示性数分别为 \(1-1=0\) 和 \(3-3=0\)。
+
+	还可以直接看出两套计算为何相容。从粗分解到细分解定义链映射 \(F(v)=v_0\)、\(F(e)=e_{01}+e_{12}+e_{20}\)。反向定义 \(G(v_i)=v\)，并取 \(G(e_{01})=G(e_{12})=0\)、\(G(e_{20})=e\)。边界公式直接给出二者均为链映射，且 \(GF=\operatorname{id}\)。令次数上升一的同态为
+	\[
+		h(v_0)=0,\qquad h(v_1)=e_{01},\qquad
+		h(v_2)=e_{01}+e_{12},\qquad h|_{C_1}=0.
+	\]
+	在三个顶点上，\(\mathrm{d}h=\operatorname{id}-FG\)；在前两条边上，\(h\mathrm{d}\) 分别等于该边，在 \(e_{20}\) 上则等于 \(-e_{01}-e_{12}\)，也正是 \((\operatorname{id}-FG)(e_{20})\)。因此 \(\operatorname{id}-FG=\mathrm{d}h+h\mathrm{d}\)。按\cref{g2:prop:chain-homotopy-homology}，两套链复形诱导互逆的同调同构；这里细分增加的自由生成元在链同伦中被消去。
+\end{example}
+
+在实际核对中，首先检查两边的各次自由秩及非平凡挠不变因子，再检查 Euler 示性数；后者是较弱但很便宜的整体核对。若还要比较某个指定的同调类或映射，就必须保留链映射或代表圈的坐标，只比较抽象群的名称不够。例如两个计算都得到 \(\mathbb Z/6\mathbb Z\)，仍须说明某个指定圈对应生成元、其两倍还是零。
+
+\ProseParagraphBreak
+
+这里非平凡挠因子按整除次序排列后确实由群本身决定。具体地，对有限挠群 \(F=\bigoplus_i\mathbb Z/t_i\mathbb Z\) 和素数 \(p\)，记 \(F[p^k]=\{x:p^kx=0\}\)，则
+\[
+	|F[p^k]|=p^{\sum_i\min\{k,\nu_p(t_i)\}},
+\]
+其中 \(\nu_p(t_i)\) 是 \(t_i\) 中 \(p\) 的指数。相邻两个指数和的差给出满足 \(\nu_p(t_i)\ge k\) 的因子数，因而恢复各个 \(p\) 的指数列；按整除次序从右端对齐这些列，就恢复全部 \(t_i>1\)。自由秩则是除去有限阶元素后的自由阿贝尔群秩。这样，两种胞腔分解算出的整数同调同构，既意味着自由秩一致，也意味着有限阶关系一致。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

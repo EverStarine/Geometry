@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 1.3 CW 复形的构造
-% 纲要位置：几何学计划纲要.md，第 1016 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 纲要位置：几何学计划纲要.md，第 1066 行。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,302 @@
 \section{CW 复形的构造}
 \label{g2:sec:0103}
 
-待撰写
+圆周可以由一个点附着一条两端回到该点的线段得到；球面可以由一个点附着一个边界全部压到该点的圆盘得到。这两种构造都把空间分成若干开球，却不要求闭球在粘合后仍然嵌入。允许边界自我重合，正是胞腔构造比单纯复形灵活的地方。另一方面，胞腔无限多个时，连续性不能只靠有限粘合判别。本节把逐维附着与空间的拓扑一起规定，并证明紧参数只会涉及有限个胞腔。
 
 \subsection{胞腔附着、骨架与弱拓扑}
 \label{g2:subsec:0103:01}
-待撰写
+记 \(D^n=\{u\in\mathbb R^n:\|u\|\leq1\}\)，\(S^{n-1}=\partial D^n\)；约定 \(D^0\) 是单点，\(S^{-1}=\varnothing\)。先看一次附着。给定空间 \(B\) 和一族连续映射 \(\alpha_\lambda:S^{n-1}_\lambda\to B\)，取不交并的商
+\[
+	B\cup_{\{\alpha_\lambda\}}\coprod_\lambda D^n_\lambda
+	=\left(B\amalg\coprod_\lambda D^n_\lambda\right)\big/\bigl(u\sim\alpha_\lambda(u),\ u\in\partial D^n_\lambda\bigr).
+\]
+这里的等价关系由所写关系生成：两个边界点在 \(B\) 中有相同像时也会被识别，圆盘内部则不作额外识别。映射 \(\alpha_\lambda\) 称为\term[fu zhuo ying she]{附着映射}[attaching map]。商空间上的连续映射由以下泛性质确定。
+
+\begin{proposition}[胞腔附着的泛性质]
+	\label{g2:prop:cell-attachment-pushout}
+	设 \(B,Y\) 是拓扑空间，\(n\geq0\) 为整数，\(D^n_\lambda\) 是一族闭 \(n\) 维球，\(\alpha_\lambda:\partial D^n_\lambda\to B\) 是连续映射。令
+	\[
+		Z=\left(B\amalg\coprod_\lambda D^n_\lambda\right)\big/\sim,
+		\qquad u\sim\alpha_\lambda(u)\quad(u\in\partial D^n_\lambda),
+	\]
+	其中等价关系由所写的边界识别生成，\(Z\) 取商拓扑；当 \(n=0\) 时边界为空。给定连续映射 \(f:B\to Y\) 和 \(f_\lambda:D^n_\lambda\to Y\)，当且仅当
+	\[
+		f_\lambda|_{\partial D^n_\lambda}=f\circ\alpha_\lambda\qquad\text{对每个 }\lambda
+	\]
+	时，它们诱导唯一的连续映射 \(F:Z\to Y\)。此外，\(B\to Z\) 是闭嵌入，各 \(\operatorname{int}D^n_\lambda\) 同胚于 \(Z\) 中相应的新开胞腔。
+\end{proposition}
+
+\begin{proof}
+	不交并上的分片映射连续；它能下降到商，当且仅当在每个被识别的边界点处取值相同。这给出相容条件、存在性和唯一性，商拓扑则给出下降映射的连续性。
+
+	基底 \(B\) 的点不会彼此额外识别。若 \(C\subset B\) 闭，则它在不交并中的原像为 \(C\) 以及各个 \(\alpha_\lambda^{-1}(C)\subset\partial D^n_\lambda\)，这些都是闭集。因此 \(C\) 在 \(Z\) 中闭，\(B\to Z\) 是闭嵌入。每个圆盘内部不参与识别，并且其中开集在不交并中是开饱和集，所以商映射在该内部上的限制为同胚。
+\end{proof}
+
+\begin{definition}[CW 复形]
+	\label{g2:def:cw-complex}
+	从离散空间 \(X^0\) 出发，对每个整数 \(n\geq1\)，通过连续映射 \(\alpha_\lambda:S^{n-1}_\lambda\to X^{n-1}\) 附着一族 \(n\) 维闭球，得到
+	\[
+		X^n=X^{n-1}\cup_{\{\alpha_\lambda\}}\coprod_{\lambda\in\Lambda_n}D^n_\lambda.
+	\]
+	在集合 \(X=\bigcup_{n\geq0}X^n\) 上规定：\(C\subset X\) 闭，当且仅当每个 \(C\cap X^n\) 在 \(X^n\) 中闭。带有这组附着数据和拓扑的空间称为\term[CW fu xing]{CW 复形}[CW complex]；\(X^n\) 称为它的 \(n\) 维\term[gu jia]{骨架}[skeleton]。圆盘内部的像 \(e^n_\lambda\) 称为 \(n\) 维\term[bao qiang]{胞腔}[cell]，复合映射
+	\[
+		\phi_\lambda:D^n_\lambda\longrightarrow X^n\longrightarrow X
+	\]
+	称为该胞腔的\term[te zheng ying she]{特征映射}[characteristic map]。上述由骨架判别闭集的拓扑称为\term[ruo tuo pu]{弱拓扑}[weak topology]。若只有有限个胞腔，则称复形有限；若存在 \(N\) 使 \(X=X^N\)，则称其有限维。
+\end{definition}
+
+有限维并不要求每一维只有有限个胞腔。例如无限多条边可以共用一个顶点，所得空间仍是一维复形。定义中的拓扑也属于构造数据：仅指定集合分解，不能确定无限胞腔并的拓扑。
+
+\begin{proposition}[特征映射与弱拓扑]
+	\label{g2:prop:cw-weak-topology}
+	设 \(X\) 是 CW 复形，\(\{\phi_\lambda:D^{n_\lambda}_\lambda\to X\}_\lambda\) 是它的全部特征映射。则 \(X\) 是 Hausdorff 空间，各骨架 \(X^n\) 是闭子空间，并且：
+	\begin{enumerate}
+		\item 集合 \(C\subset X\) 闭，当且仅当每个 \(\phi_\lambda^{-1}(C)\) 在 \(D^{n_\lambda}_\lambda\) 中闭；等价地，全部特征映射组成的满射 \(\coprod_\lambda D^{n_\lambda}_\lambda\to X\) 是商映射。
+		\item 对任意拓扑空间 \(Y\)，映射 \(f:X\to Y\) 连续，当且仅当每个 \(f\circ\phi_\lambda\) 连续。
+		\item 每个胞腔的闭包为 \(\overline{e^n_\lambda}=\phi_\lambda(D^n_\lambda)\)，因而是紧集；特征映射不必在闭球上单射。
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	由附着的闭嵌入性质，\(X^{n-1}\) 中的闭集在 \(X^n\) 中仍然闭。反复应用这一点，再用 \(X\) 的弱拓扑，可知每个 \(X^n\to X\) 是闭嵌入。若所有 \(\phi_\lambda^{-1}(C)\) 闭，则先在离散集 \(X^0\) 上判断闭性，再按附着商的闭集判据逐维得到 \(C\cap X^n\) 闭，最后得到 \(C\) 闭。反向由特征映射的连续性立即成立。商映射的连续性判据又给出第2项。
+
+	为核对分离性，可以直接构造把任意两点分开的连续实值函数。在 \(X^0\) 上，任意两点都可由取值于 \([0,1]\) 的函数分开。假定这一性质在 \(X^{n-1}\) 上成立。如果两点都在旧骨架，取一个分开它们的函数 \(a\)，并在每个新圆盘上把边界函数作径向延拓：对 \(r>0\)、\(u\in S^{n-1}\)，令函数值为 \(r\,a(\alpha_\lambda(u))\)，中心值为零。中心处的连续性由函数有界保证。如果至少一点在新胞腔内部，就在该圆盘内部取一个支集避开边界和另一点的连续函数，其余圆盘及旧骨架上取零。这些函数均可按泛性质下降。于是每个有限骨架上的两点都能分开。对 \(X\) 中的两点，先在包含它们的某个骨架上选取分离函数，再逐维作同样的径向延拓；由第2项，得到 \(X\) 上的连续分离函数。因此 \(X\) 是 Hausdorff 空间。
+
+	最后，\(\phi_\lambda(D^n_\lambda)\) 是 Hausdorff 空间中的紧像，故为闭集；它包含 \(e^n_\lambda\)。另一方面，圆盘内部在圆盘中稠密，连续性表明整个像都在 \(e^n_\lambda\) 的闭包中。这证明第3项。
+\end{proof}
+
+这也解释了“逐胞腔定义映射”的确切含义。需要在闭球上给出连续映射，并使边界值等于已经在旧骨架上定义的映射；只在互不相交的开胞腔上任意给值，不足以保证连续。
 
 \subsection{闭有限性和紧子集的控制}
 \label{g2:subsec:0103:02}
-待撰写
+紧子集的控制不是局部有限性的改写。即使一个顶点被无限多个胞腔的闭包包含，CW 弱拓扑仍然足以控制从紧空间来的映射。先把能够保留全部附着数据的子空间说清楚。
+
+\begin{definition}[子复形]
+	\label{g2:def:cw-subcomplex}
+	设 \(X\) 是 CW 复形，\(\phi_\lambda:D^n_\lambda\to X\) 为各胞腔 \(e^n_\lambda\) 的特征映射。若 \(A\subset X\) 是若干开胞腔的并，且每个包含在 \(A\) 中的胞腔 \(e^n_\lambda\) 都满足 \(\phi_\lambda(D^n_\lambda)\subset A\)，则称 \(A\) 为 \(X\) 的\term[zi fu xing]{子复形}[subcomplex]。在 \(A\) 上沿用这些胞腔及其附着映射，记 \(A^n=A\cap X^n\)。
+\end{definition}
+
+\begin{proposition}[子复形的拓扑]
+	\label{g2:prop:subcomplex-closed}
+	设 \(A\) 是 CW 复形 \(X\) 的子复形。则 \(A\) 自身是 CW 复形，其弱拓扑等于从 \(X\) 诱导的子空间拓扑，且 \(A\) 在 \(X\) 中闭。反过来，如果闭子集 \(A\subset X\) 是若干开胞腔的并，那么 \(A\) 是子复形。
+\end{proposition}
+
+\begin{proof}
+	逐维构造 \(A\)，同时证明每一步的拓扑都是子空间拓扑。\(A^0\subset X^0\) 是离散闭子空间。假定已经构造 \(A^{n-1}\)，且它闭嵌入 \(X^{n-1}\)。属于 \(A\) 的 \(n\) 胞腔，其附着映射的像落在 \(A^{n-1}\) 中；由于已经知道 \(A^{n-1}\) 的拓扑是诱导拓扑，该映射作为到 \(A^{n-1}\) 的映射仍连续，因而可用它们构造附着空间 \(A^n\)。特征映射给出连续单射 \(A^n\to X^n\)。
+
+	若 \(C\subset A^n\) 在这个附着拓扑中闭，则 \(C\cap A^{n-1}\) 在 \(A^{n-1}\) 中闭，由归纳假设也在 \(X^{n-1}\) 中闭。对属于 \(A\) 的 \(n\) 胞腔，\(\phi_\lambda^{-1}(C)\) 由附着拓扑的闭集判据而闭；对不属于 \(A\) 的 \(n\) 胞腔，该原像只可能位于边界，且等于附着映射下 \(C\cap A^{n-1}\) 的原像，故仍闭。于是 \(C\) 在 \(X^n\) 中闭，证明 \(A^n\to X^n\) 是闭嵌入。这就同时完成了下一维附着所需的连续性与拓扑归纳。
+
+	在 \(A=\bigcup_n A^n\) 上取所得 CW 弱拓扑。其到 \(X\) 的包含连续，因为在每个特征圆盘上连续。若 \(C\) 在此弱拓扑中闭，则对每个 \(n\)，集合 \(C\cap X^n=C\cap A^n\) 在 \(A^n\) 中闭，因而在 \(X^n\) 中闭；\(X\) 的弱拓扑给出 \(C\) 在 \(X\) 中闭。因此 \(A\to X\) 是闭嵌入，所构造拓扑恰为子空间拓扑。
+
+	反过来，闭集 \(A\) 包含其中每个胞腔的闭包，而该闭包正是特征映射的像，所以满足子复形定义。
+\end{proof}
+
+\begin{theorem}[紧子集与有限子复形]
+	\label{g2:thm:finite-subcomplex}
+	设 \(X\) 是 CW 复形，\(K\subset X\) 是紧子集。则存在只含有限个胞腔的子复形 \(L\subset X\)，使 \(K\subset L\)。特别地，每个胞腔的闭包只与有限个开胞腔相交；这一性质称为\term[bi you xian xing]{闭有限性}[closure-finiteness]。
+\end{theorem}
+
+\begin{proof}
+	先证明紧集只能遇到有限个开胞腔。若不然，从 \(K\) 遇到的两两不同的胞腔中各取一点，得到 \(x_1,x_2,\ldots\)，记 \(S=\{x_j:j\geq1\}\)。关键是证明 \(S\) 的每个子集 \(T\) 都在 \(X\) 中闭；这一步只用逐骨架拓扑，尚未使用闭有限性。
+
+	在离散骨架 \(X^0\) 上，\(T\cap X^0\) 闭。假定 \(T\cap X^{n-1}\) 闭。对任一 \(n\) 胞腔的特征映射 \(\phi:D^n\to X\)，原像 \(\phi^{-1}(T)\) 在边界上的部分等于附着映射下 \(T\cap X^{n-1}\) 的原像，因此在边界中闭，也在 \(D^n\) 中闭。在圆盘内部，原像至多再有一个点，因为 \(T\) 在这个开胞腔中至多有一点，而 \(\phi\) 在内部单射。故 \(\phi^{-1}(T)\) 闭。逐维归纳和弱拓扑给出 \(T\) 在 \(X\) 中闭。
+
+	所以 \(S\) 在 \(K\) 中闭，因而紧；又因 \(S\) 的每个子集都闭，\(S\) 具有离散拓扑。无限离散空间的单点开覆盖没有有限子覆盖，与紧性矛盾。这证明 \(K\) 只遇到有限个开胞腔。
+
+	接着按胞腔维数证明，每个胞腔都包含在某个有限子复形中。零维情形是单点。若结论对低于 \(n\) 维的胞腔成立，则一个 \(n\) 胞腔的附着映射具有紧像；由刚才已经证明的结论，这个像只遇到有限个低维胞腔。分别把这些低维胞腔放进有限子复形中，取这些子复形的有限并，再加上原来的 \(n\) 胞腔，就得到所需有限子复形。最后对 \(K\) 遇到的有限个胞腔作同样的有限并，得到 \(L\)。胞腔闭包是紧集，故也适用本结论，闭有限性随之成立。
+\end{proof}
+
+“CW”中的两个字母分别对应闭有限性与弱拓扑，但闭有限性并不要求每一点有一个只遇到有限个胞腔的邻域。把无限多个圆周在各自选定顶点处作单点并，赋予附着所得的 CW 拓扑，每条边的闭包只涉及自身和公共顶点；公共顶点的任一邻域却都遇到每条边。这是闭有限而非局部有限的例子。
+
+\ProseParagraphBreak
+
+对任意紧空间 \(P\) 和连续映射 \(f:P\to X\)，像 \(f(P)\) 紧，因此映射的像落在一个有限子复形中。这里既允许球面映射，也允许整个同伦的紧参数域 \(P\times I\)。但这不表示能预先选定一个有限子复形容纳所有这样的映射；有限子复形要随具体映射而选取。紧集控制及上述逐维论证可对照\cite[附录“Topology of Cell Complexes”]{Hatcher2002}。
 
 \subsection{相对 CW 复形和逐骨架构造}
 \label{g2:subsec:0103:03}
-待撰写
+在研究空间对 \((X,A)\) 时，\(A\) 不应随着每一次附着重新构造。相对 CW 结构把 \(A\) 整体保留为起点，新增胞腔仍按维数附着。这一安排将上一节的单个圆盘同伦延拓推广到无限多个胞腔。
+
+\begin{definition}[相对 CW 复形]
+	\label{g2:def:relative-cw-complex}
+	设 \(A\) 是拓扑空间。从 \(X_{-1}=A\) 出发，对每个整数 \(n\geq0\)，沿连续映射 \(\partial D^n_\lambda\to X_{n-1}\) 附着一族 \(n\) 胞腔，得到 \(X_n\)。在 \(X=\bigcup_{n\geq-1}X_n\) 上取逐骨架弱拓扑，即 \(C\subset X\) 闭当且仅当每个 \(C\cap X_n\) 在 \(X_n\) 中闭。称 \((X,A)\) 及这组附着数据为\term[xiang dui CW fu xing]{相对 CW 复形}[relative CW complex]，\(X_n\) 为其相对 \(n\) 骨架。相对特征映射记为 \(\phi_\lambda:D^{n_\lambda}_\lambda\to X\)。不要求起点 \(A\) 本身具有 CW 结构。
+\end{definition}
+
+定义中 \(X_0\) 是 \(A\) 与一族新点的不交并。一般相对骨架与绝对骨架不同：当 \(A\) 含有高维胞腔时，那些胞腔从相对构造的起点就已经全部存在。
+
+这里 \(A\) 与各 \(X_n\) 都以原拓扑闭嵌入最终空间 \(X\)。事实上，每一次附着都是闭嵌入；若 \(C\) 在某个 \(X_n\) 中闭，则它在所有后续骨架中仍闭，在较早骨架中的交也闭，所以由最终弱拓扑可知 \(C\) 在 \(X\) 中闭。这个论证不要求 \(A\) 为 Hausdorff 空间，也不要求 \(A\) 有胞腔分解。
+
+\begin{proposition}[子复形给出的相对结构]
+	\label{g2:prop:cw-pair-relative}
+	设 \(A\) 是 CW 复形 \(X\) 的子复形。令 \(X_{-1}=A\)、\(X_n=A\cup X^n\)；对 \(X\) 中不属于 \(A\) 的胞腔，沿用其原有附着映射。则这些数据给出 \((X,A)\) 的相对 CW 结构，其中每个 \(X_n\) 都具有从 \(X\) 诱导的拓扑，最终弱拓扑也是 \(X\) 的原拓扑。
+\end{proposition}
+
+\begin{proof}
+	集合 \(A\cup X^n\) 是子复形，故按\cref{g2:prop:subcomplex-closed}具有从 \(X\) 诱导的 CW 拓扑。一个不在 \(A\) 中的 \(n\) 胞腔，其边界落在 \(X^{n-1}\subset A\cup X^{n-1}\)，故附着映射作为到旧空间的映射连续；\(n=0\) 时边界为空，旧空间为 \(A\)。
+
+	所得附着商到 \(A\cup X^n\) 的自然双射为同胚：在旧空间 \(A\cup X^{n-1}\) 上及新增 \(n\) 胞腔的特征映射下检验连续性，等价于在 \(A\cup X^n\) 的全部特征映射下检验连续性，适用\cref{g2:prop:cw-weak-topology}。这里旧空间已经包含所有属于 \(A\) 的高维胞腔，以及不属于 \(A\) 的低维胞腔，两类都要保留。最后，在 \(A\) 上以及所有不属于 \(A\) 的胞腔上检验闭性，正好等价于在 \(X\) 的全部特征映射下检验闭性，所以相对构造的最终弱拓扑也是 \(X\) 的原拓扑。
+\end{proof}
+
+逐胞腔构造同伦之前，还须判断 \(X\times I\) 上的连续性。若把无限闭集覆盖当成有限闭集覆盖来粘合，通常会出错。所需依据来自区间作为局部紧 Hausdorff 空间的性质。
+
+\begin{lemma}[区间乘积的逐胞腔判别]
+	\label{g2:lem:weak-product}
+	设 \((X,A)\) 是相对 CW 复形，\(I=[0,1]\)，\(\phi_\lambda:D^{n_\lambda}_\lambda\to X\) 为全部相对特征映射，\(Y\) 为任意拓扑空间。映射 \(H:X\times I\to Y\) 对通常乘积拓扑连续，当且仅当
+	\[
+		H|_{A\times I}\quad\text{及全部}\quad H\circ(\phi_\lambda\times\operatorname{id}_I)
+	\]
+	都连续。等价地，\(F\subset X\times I\) 闭，当且仅当 \(F\cap(A\times I)\) 及全部 \((\phi_\lambda\times\operatorname{id}_I)^{-1}(F)\) 都闭。绝对 CW 复形对应 \(A=\varnothing\) 的情形。
+\end{lemma}
+
+\begin{proof}
+	相对弱拓扑与每一步的商拓扑表明
+	\[
+		q:A\amalg\coprod_\lambda D^{n_\lambda}_\lambda\longrightarrow X
+	\]
+	是商映射。\cref{g2:lem:quotient-interval}证明，任意商映射与 \(\operatorname{id}_I\) 的乘积仍是商映射；这里使用的是区间的局部紧性。把 \(q\times\operatorname{id}_I\) 的定义域按不交并分开，商映射判据恰好给出所列条件。
+\end{proof}
+
+该引理针对通常乘积拓扑，因此可直接用于映射同伦。它并未声称任意两个无限 CW 复形的乘积拓扑都等于逐积胞腔所得的弱拓扑；一般乘积要另外核对。
+
+\begin{theorem}[相对 CW 对的同伦延拓]
+	\label{g2:thm:relative-CW-HEP}
+	设 \((X,A)\) 是相对 CW 复形，\(Y\) 是拓扑空间，\(f:X\to Y\) 与 \(h:A\times I\to Y\) 连续，并满足 \(h(a,0)=f(a)\) 对所有 \(a\in A\) 成立，其中 \(I=[0,1]\)。则存在连续映射 \(H:X\times I\to Y\)，使
+	\[
+		H(x,0)=f(x),\qquad H(a,t)=h(a,t).
+	\]
+	因此 \(A\hookrightarrow X\) 是闭嵌入并具有同伦延拓性质，即为闭余纤维化。特别地，任何 CW 子复形的包含映射都是闭余纤维化。
+\end{theorem}
+
+\begin{proof}
+	先令 \(H_{-1}=h\)。假定已经在相对骨架 \(X_{n-1}\) 上构造了连续同伦 \(H_{n-1}\)，且它在时刻零等于 \(f|_{X_{n-1}}\)。对一个新增 \(n\) 胞腔，记特征映射为 \(\phi:D^n\to X_n\)，附着映射为 \(\alpha:\partial D^n\to X_{n-1}\)。在
+	\[
+		(D^n\times\{0\})\cup(\partial D^n\times I)
+	\]
+	上，分别给定 \((u,0)\mapsto f(\phi(u))\) 和 \((u,t)\mapsto H_{n-1}(\alpha(u),t)\)。两者在公共部分相等，因而形成连续映射。圆盘对 \((D^n,\partial D^n)\) 的同伦延拓性质，即\cref{g2:prop:disk-hep}，把它延拓为 \(D^n\times I\to Y\)；\(n=0\) 时在新点上取常值同伦即可。
+
+	对本维的全部胞腔作此延拓。它们在边界上与 \(H_{n-1}\) 一致，因此由附着商与区间的乘积商性质，下降为 \(H_n:X_n\times I\to Y\)。各 \(H_n\) 在交集上一致，于是共同定义 \(H:X\times I\to Y\)。它在 \(A\times I\) 上及每个特征圆盘乘 \(I\) 上连续，故由\cref{g2:lem:weak-product}在整个乘积上连续。初值和相对限制在构造时已经保持。相对 CW 构造中的起点 \(A\) 闭嵌入 \(X\)，故所得余纤维化为闭余纤维化。最后由\cref{g2:prop:cw-pair-relative}，子复形的包含属于这一情形。
+\end{proof}
+
+这一定理说明，逐骨架构造的困难分成两项：单个新圆盘能否延拓，以及所有圆盘上的延拓能否组成连续映射。前者由圆盘对的几何提供，后者由弱拓扑和区间乘积引理保证；两项都不需要新增胞腔的个数有限。
 
 \subsection{球面、射影空间与 Grassmann 型模型}
 \label{g2:subsec:0103:04}
-待撰写
+下面把附着数据写成可直接代入的公式。球面和射影空间给出最少胞腔的模型；有限维 Grassmann\footnote{Hermann Günther Grassmann（1809—1877），德国数学家，在线性代数与外代数的发展中作出基础性贡献。}空间则展示如何把坐标消元得到的开胞腔，补成边界连续的闭球参数。
+
+\begin{example}[球面的两个胞腔]
+	\label{g2:exm:sphere-cw}
+	对整数 \(n\geq1\)，将 \(\partial D^n\) 全部附着到一个点，得到 \(D^n/\partial D^n\)。它与 \(S^n\subset\mathbb R^{n+1}\) 同胚：若 \(u\in D^n\)、\(r=\|u\|>0\)，取
+	\[
+		\phi(u)=\left(\frac{\sin(\pi r)}{r}u,\cos(\pi r)\right),\qquad
+		\phi(0)=(0,\ldots,0,1).
+	\]
+	该映射连续，将边界映到南极，并将圆盘内部同胚地映到其余球面。商空间紧，目标 Hausdorff，所得连续双射为同胚。因此此结构只有一个零胞腔和一个 \(n\) 胞腔。\(S^0\) 则由两个零胞腔组成。
+\end{example}
+
+\begin{example}[实射影空间与复射影空间]
+	\label{g2:exm:projective-cw}
+	设 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(d=\dim_{\mathbb R}\mathbb F\in\{1,2\}\)，\(N\geq0\) 为整数。记 \(\mathbb FP^N\) 为 \(\mathbb F^{N+1}\) 中一维线性子空间的集合，赋予非零向量按非零数乘识别所得的商拓扑。利用标准坐标嵌入 \(\mathbb FP^{m-1}\subset\mathbb FP^m\)，对 \(1\leq m\leq N\) 定义
+	\[
+		\phi_m:D^{dm}\subset\mathbb F^m\longrightarrow\mathbb FP^m,
+		\qquad
+		\phi_m(z)=\bigl[z_1:\cdots:z_m:\sqrt{1-\|z\|^2}\bigr].
+	\]
+	圆盘内部最后坐标为正实数，其仿射坐标为 \(z/\sqrt{1-\|z\|^2}\)，这给出到 \(\mathbb F^m\) 的同胚；逆映射为 \(w\mapsto w/\sqrt{1+\|w\|^2}\)。边界上的映射为
+	\[
+		S^{dm-1}\longrightarrow\mathbb FP^{m-1},\qquad z\longmapsto[z].
+	\]
+	每条不在 \(\mathbb FP^{m-1}\) 中的直线都有唯一的单位代表，其最后坐标为正实数，因此 \(\mathbb FP^m\) 正是把这一个 \(dm\) 胞腔附着到 \(\mathbb FP^{m-1}\) 得到的空间。
+
+	这里还须将商拓扑与上述附着拓扑比较。投影 \(v\mapsto[v]\) 在单位球面上的限制是连续满射，故按商拓扑定义的 \(\mathbb FP^m\) 是紧空间。一条由非零向量 \(v\) 张成的直线对应正交投影矩阵 \(vv^*/\|v\|^2\)，其中 \(v^*\) 表示共轭转置；此公式在非零数乘下不变，所以诱导从 \(\mathbb FP^m\) 到秩一正交投影矩阵空间的连续双射。目标为有限维矩阵空间的 Hausdorff 子空间，故该连续双射是同胚，特别地证明了 \(\mathbb FP^m\) 为 Hausdorff 空间。于是上述附着空间到 \(\mathbb FP^m\) 的连续双射也是从紧空间到 Hausdorff 空间的同胚。
+
+	由此得到 \(\mathbb RP^N\) 每维 \(0,1,\ldots,N\) 各有一个胞腔，\(\mathbb CP^N\) 则每个偶数实维数 \(0,2,\ldots,2N\) 各有一个胞腔。实情形的边界映射是二重覆盖：在某一齐次坐标非零的邻域中，可将单位代表的该坐标分别选为正或负，得到两个连续的局部逆。复情形的两个单位代表相差一个模为一的复数，因此边界纤维为单位复数圆周。
+\end{example}
+
+球面和射影空间的这些构造可对照\cite[第0章]{Hatcher2002}。为处理更一般的 Grassmann 模型，先记录一个有限维线性代数工具。它的作用是在整个闭参数域上选取正交标架，避免只在开胞腔里作坐标消元。
+
+\begin{lemma}[闭球乘积上的连续正交标架]
+	\label{g2:lem:projection-frame-disk}
+	设 \(B\) 是有限个以原点为中心的闭实球的乘积，\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(M,r\) 为满足 \(0\leq r\leq M\) 的整数，在 \(\mathbb F^M\) 上取内积 \(\langle v,w\rangle=\sum_{a=1}^M v_a\overline{w_a}\)。若 \(P:B\to\operatorname{End}_{\mathbb F}(\mathbb F^M)\) 是连续映射，每个 \(P(b)\) 都是秩为 \(r\) 的正交投影，则存在连续向量函数 \(b_1,\ldots,b_r:B\to\mathbb F^M\)，在每个参数点组成 \(\operatorname{im}P(b)\) 的正交单位基。\(r=0\) 时取空标架。
+\end{lemma}
+
+\begin{proof}
+	利用 \(B\) 关于中心的星形性质，考察 \(P(tb)\)，其中 \(0\leq t\leq1\)。参数空间 \(B\times I\) 紧，故存在正整数 \(L\)，使对所有 \(b\in B\) 及 \(1\leq\ell\leq L\) 都有
+	\[
+		\left\|P\left(\frac{\ell}{L}b\right)-P\left(\frac{\ell-1}{L}b\right)\right\|<\frac12.
+	\]
+	从固定空间 \(\operatorname{im}P(0)\) 的一个正交单位基出发，逐次把已经得到的基投影到下一个空间，再依次减去对前面向量的正交投影并归一化。这个过程始终可行：若 \(u\) 属于上一个投影的像，则其在下一个投影下的像与 \(u\) 的距离小于 \(\|u\|/2\)，所以投影限制是单射，原基投影后仍线性无关。各次归一化的分母均非零，因而得到的标架连续依赖于 \(b\)。有限次后即为 \(P(b)\) 的所需标架。
+\end{proof}
+
+\begin{theorem}[有限 Grassmann 空间的胞腔]
+	\label{g2:thm:grassmann-schubert-cw}
+	设 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，\(d=\dim_{\mathbb R}\mathbb F\)，整数 \(1\leq k\leq N\)。在 \(\mathbb F^N\) 上取内积 \(\langle v,w\rangle=\sum_{a=1}^N v_a\overline{w_a}\)，标准正交基记为 \(e_1,\ldots,e_N\)。令 \(G_k(\mathbb F^N)\) 为 \(\mathbb F^N\) 的 \(k\) 维线性子空间组成的 Grassmann 空间，以正交投影矩阵 \(W\mapsto P_W\) 诱导拓扑。固定完全旗
+	\[
+		0=E_0\subset E_1\subset\cdots\subset E_N=\mathbb F^N,
+		\qquad E_j=\operatorname{span}_{\mathbb F}(e_1,\ldots,e_j).
+	\]
+	对严格递增的指标 \(I=(i_1<\cdots<i_k)\subset\{1,\ldots,N\}\)，令
+	\[
+		C_I=\left\{W\in G_k(\mathbb F^N):\dim_{\mathbb F}(W\cap E_m)=\#\{j:i_j\leq m\},\ 0\leq m\leq N\right\}.
+	\]
+	则 \(G_k(\mathbb F^N)\) 具有以 \(C_I\) 为开胞腔的有限 CW 结构，称为相对于该旗的\term[Schubert bao qiang fen jie]{Schubert 胞腔分解}[Schubert cell decomposition]，并有
+	\[
+		C_I\cong\mathbb F^{\sum_{j=1}^k(i_j-j)},\qquad
+		\dim_{\mathbb R}C_I=d\sum_{j=1}^k(i_j-j),
+	\]
+	以及闭包关系
+	\[
+		\overline{C_I}=\Omega_I
+		=\{W:\dim_{\mathbb F}(W\cap E_{i_j})\geq j,\ 1\leq j\leq k\}
+		=\coprod_{J\leq I}C_J,
+	\]
+	其中 \(J\leq I\) 表示各个指标逐项满足 \(j_a\leq i_a\)。
+\end{theorem}
+
+Schubert\footnote{Hermann Schubert（1848—1911），德国数学家，以枚举几何及其相交计算著称。}胞腔的坐标源自行消元，闭球参数则需要额外构造；下面分别完成这两步。
+
+\begin{proof}
+	首先核对空间与开胞腔。正交投影矩阵由方程 \(P=P^*\)、\(P^2=P\)、\(\operatorname{tr}P=k\) 刻画，且算子范数不超过一，所以 \(G_k(\mathbb F^N)\) 是有限维矩阵空间中的紧 Hausdorff 空间。对任意 \(W\)，维数 \(\dim(W\cap E_m)\) 从零到 \(k\)，每次至多增加一，因此恰有唯一的跳跃指标 \(I\)，所有 \(C_I\) 两两不交且覆盖整个空间。
+
+	对 \(W\in C_I\)，由右向左作行消元，可得唯一一组基向量
+	\[
+		u_j=e_{i_j}+\sum_{\substack{a<i_j\\a\notin\{i_1,\ldots,i_{j-1}\}}}c_{ja}e_a,
+		\qquad 1\leq j\leq k.
+	\]
+	它的枢轴列为单位矩阵，第 \(j\) 行在第 \(i_j\) 列之后为零。反过来，任意这些系数都给出属于 \(C_I\) 的子空间：非零线性组合的最大非零枢轴决定它最早落在哪个 \(E_m\) 中，所以不会产生额外的维数跳跃。第 \(j\) 行有 \(i_j-j\) 个自由系数，得到所述维数。若以这些列向量组成矩阵 \(U\)，则
+	\[
+		P_W=U(U^*U)^{-1}U^*,
+	\]
+	故从系数到投影连续。反向也有可直接核验的公式：令 \(E_I:\mathbb F^k\to\mathbb F^N\) 的各列依次为 \(e_{i_1},\ldots,e_{i_k}\)，则枢轴坐标投影 \(E_I^*|_W:W\to\mathbb F^k\) 可逆，其逆矩阵为
+	\[
+		U=P_WE_I(E_I^*P_WE_I)^{-1}.
+	\]
+	这是因为右端的各列属于 \(W\)，且左乘 \(E_I^*\) 后为单位矩阵。此式随 \(P_W\) 连续，故各自由系数的提取也连续。这就证明了开胞腔的同胚，而不只是集合之间的参数对应。
+
+	接着构造特征映射。对固定 \(I\)，取参数域
+	\[
+		B_I=\prod_{j=1}^k D_j,\qquad
+		D_j=\{z\in\mathbb F^{i_j-j}:\|z\|\leq1\}.
+	\]
+	依次构造正交单位向量 \(v_j\in E_{i_j}\)。假定 \(v_1,\ldots,v_{j-1}\) 已在前 \(j-1\) 个闭球的全部参数上连续定义。它们属于 \(E_{i_j-1}\)，因而
+	\[
+		V_j=E_{i_j-1}\cap\operatorname{span}(v_1,\ldots,v_{j-1})^\perp
+	\]
+	的维数恒为 \(i_j-j\)，其正交投影随旧参数连续。由\cref{g2:lem:projection-frame-disk}，可在整个旧参数域上选连续正交单位基，并把相应的线性等距嵌入记为 \(B_j:\mathbb F^{i_j-j}\to V_j\)。定义
+	\[
+		v_j=B_jz_j+\sqrt{1-\|z_j\|^2}\,e_{i_j},\qquad
+		\Phi_I(z_1,\ldots,z_k)=\operatorname{span}_{\mathbb F}(v_1,\ldots,v_k).
+	\]
+	两项正交，所以 \(v_j\) 是单位向量，且与所有旧向量正交。由此 \(\Phi_I\) 在整个闭参数域连续，连边界上也没有分母趋于零的问题。
+
+	若每个正维因子的参数都在内部，则各 \(v_j\) 在枢轴 \(i_j\) 处的坐标为正实数，因此像属于 \(C_I\)。反过来，\(W\in C_I\) 有唯一的正交单位基 \(v_1,\ldots,v_k\)，使 \(v_j\in W\cap E_{i_j}\)，且其第 \(i_j\) 坐标为正实数：逐次取 \(W\cap E_{i_j}\) 对前面子空间的一维正交补，再固定符号或复相位即可。它可由上面的消元基逐次正交化连续得到。已知前面参数后，\(B_j\) 已知，\(z_j=B_j^*v_j\) 唯一确定，且 \(\|z_j\|<1\)。因此 \(\Phi_I\) 在参数域内部到 \(C_I\) 为同胚。
+
+	若参数在边界，则至少一个正维因子满足 \(\|z_j\|=1\)，从而 \(v_j\in E_{i_j-1}\)。于是像空间与 \(E_{i_j-1}\) 的交至少有 \(j\) 维，而对所有 \(a\)，它与 \(E_{i_a}\) 的交至少有 \(a\) 维。因此像的跳跃指标 \(J\) 满足 \(J\leq I\) 且 \(J\ne I\)，其胞腔维数严格小于 \(C_I\)。这已给出附着所需的低维边界条件。
+
+	再核对完整闭包关系。集合 \(\Omega_I\) 是闭的：若一列 \(W_\nu\) 的正交投影收敛于 \(P_W\)，且 \(\dim(W_\nu\cap E_{i_j})\geq j\)，则在每个交空间中选取 \(j\) 个正交单位向量。有限维单位球的紧性给出一个收敛子列，其极限仍是 \(W\cap E_{i_j}\) 中的 \(j\) 个正交单位向量。因 Grassmann 空间可度量，这证明各维数条件闭。由跳跃指标的定义，\(\Omega_I=\coprod_{J\leq I}C_J\)。
+
+	事实上 \(\Phi_I\) 的像就是 \(\Omega_I\)。包含于该集合已由 \(v_a\in E_{i_a}\) 得到。对于任意 \(W\in\Omega_I\)，可在嵌套空间 \(W\cap E_{i_1}\subset\cdots\subset W\cap E_{i_k}=W\) 中依次选取正交单位向量 \(v_j\in E_{i_j}\)，并把其第 \(i_j\) 坐标的符号或相位调整为非负实数；坐标为零时不必调整。将它在 \(E_{i_j-1}\) 中的分量按已选 \(V_j\) 的基展开为 \(B_jz_j\)，余下分量正是 \(\sqrt{1-\|z_j\|^2}\,e_{i_j}\)，故递归得到一组闭球参数。因此 \(\Phi_I(B_I)=\Omega_I\)。参数域内部稠密，又由连续性可知像的每一点都能由 \(C_I\) 中的点逼近，所以 \(\overline{C_I}=\Omega_I\)。
+
+	最后核对 CW 拓扑。有限个闭球的乘积 \(B_I\) 是一个闭球，边界正是至少一个正维因子落在边界的参数。可以直接沿径向构造同胚：在乘积向量空间上比较 Euclid 范数与 \(\max_j\|z_j\|\)，按每条从原点出发的射线把两个单位球的边界对应起来；零维情形均为单点。因此上述 \(\Phi_I\) 可视为通常闭球的特征映射。指标 \(I\) 只有有限多个，全部参数域的不交并到 \(G_k(\mathbb F^N)\) 是紧空间到 Hausdorff 空间的连续满射，故为商映射。每个按维数组成的骨架同样是有限个闭球的紧像，其拓扑也由这些特征映射判定。边界已证明落在低维胞腔，故每一骨架正是从前一骨架按这些边界映射附着而得，并且最后的拓扑就是逐胞腔弱拓扑。于是构成有限 CW 复形。
+\end{proof}
+
+实情形的胞腔可以出现在奇数维；复情形的实维数全部为偶数。例如 \(G_2(\mathbb C^4)\) 的指标为 \((1,2),(1,3),(1,4),(2,3),(2,4),(3,4)\)，相应实维数为 \(0,2,4,4,6,8\)。\(C_{(2,3)}\) 的闭包包含 \(C_{(1,2)}\) 与 \(C_{(1,3)}\)，却不包含同维的 \(C_{(1,4)}\)，因为 \(4\nleq3\)。这表明附着关系由逐项指标条件控制，单靠维数大小不能判断闭包包含关系。\(k=1\) 时，上述模型恢复射影空间的胞腔；\(k=0\) 时 Grassmann 空间是单点，单独取一个零胞腔即可。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 2.4 局部同调和初步应用
-% 纲要位置：几何学计划纲要.md，第 1058 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 纲要位置：几何学计划纲要.md，第 1108 行。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,222 @@
 \section{局部同调和初步应用}
 \label{g2:sec:0204}
 
-待撰写
+前面建立的链算子现在可以用于辨认空间。先把球面分成两个可缩开集，连接同态便把球面的同调降到赤道的同调；再考察删去一点前后的差别，同一个计算会给出流形的局部维数。这里始终使用整数系数，普通同调在负次数为零，约化同调采用增广链复形的约定。
+
+\ProseParagraphBreak
+
+局部计算的关键是把无关的远处切掉。为此必须核对切除的闭包条件，而不能仅凭“只研究这一点附近”就删除空间的一部分。最后讨论悬挂时，则再次保留两个开集的交，说明一个同调类如何通过连接同态升高一次维数。
 
 \subsection{球面、球及穿孔欧氏空间}
 \label{g2:subsec:0204:01}
-待撰写
+\begin{theorem}[球面的整数同调]\label{g2:thm:sphere-homology}
+	设 \(n\ge0\) 为整数，\(S^n=\{z\in\mathbb R^{n+1}:\|z\|=1\}\)。对每个整数 \(k\)，其约化奇异同调为
+	\[
+		\widetilde H_k(S^n;\mathbb Z)\cong
+		\begin{cases}\mathbb Z,&k=n,\\0,&k\ne n.\end{cases}
+	\]
+	因此，\(n\ge1\) 时普通同调仅在次数 \(0,n\) 各有一个 \(\mathbb Z\)；\(S^0\) 的普通零次同调为 \(\mathbb Z^2\)，其他次数为零。
+\end{theorem}
+\begin{proof}
+	当 \(n=0\) 时，空间由两个点组成。\cref{g2:prop:homology-point-components}给出 \(H_0(S^0)=\mathbb Z^2\)，增广映射为 \((a,b)\mapsto a+b\)，其核由 \((1,-1)\) 生成，故约化零次同调为 \(\mathbb Z\)。高次链复形按两个点分解，每个点的高次同调为零。
+
+	设 \(n\ge1\)，把球面写在 \(\mathbb R^n\times\mathbb R\) 中，北极与南极分别为 \(N=(0,1)\)、\(S=(0,-1)\)。取开覆盖
+	\[
+		U=S^n\setminus\{S\},\qquad V=S^n\setminus\{N\}.
+	\]
+	\(U\) 可缩到 \(N\)：同伦
+	\[
+		F(z,t)=\frac{(1-t)z+tN}{\|(1-t)z+tN\|}
+	\]
+	的分母若为零，必有 \(z=S\)，这已被排除；其像也不会经过 \(S\)。把 \(N\) 换成 \(S\)，同样得到 \(V\) 的收缩。另一方面，同胚
+	\[
+		S^{n-1}\times(-1,1)\longrightarrow U\cap V,\qquad
+		(u,s)\longmapsto\bigl(\sqrt{1-s^2}\,u,s\bigr)
+	\]
+	将赤道识别为 \(s=0\)，并由 \((u,s)\mapsto(u,(1-t)s)\) 给出到赤道的形变收缩。
+
+	约化 Mayer–Vietoris 序列（\cref{g2:thm:mayer-vietoris}）中，来自 \(U,V\) 的项均为零，故连接同态给出
+	\[
+		\widetilde H_k(S^n)\cong\widetilde H_{k-1}(S^{n-1})
+		\qquad(k\ge1).
+	\]
+	这里 \(n=1\) 时交集有两个道路分支，使用约化零次同调正好保留这两个分支之间的差。\(S^n\) 在 \(n\ge1\) 时道路连通，因为两个道路连通开集 \(U,V\) 的交非空，所以 \(\widetilde H_0(S^n)=0\)。结合 \(S^0\) 的计算，按 \(n\) 归纳即得全部非负次数；非空空间的约化负次数同调为零。
+\end{proof}
+
+这个证明同时说明了生成元的来源：圆周的一个生成元经连接同态成为交集中两点之差；更高维球面的生成元依次映到赤道的生成元。选择符号相当于选择这条递归中的正负，当前的群计算尚不要求给一般球面映射定义映射度。
+
+\begin{proposition}[闭球、穿孔空间与相对球]\label{g2:prop:ball-puncture-homology}
+	设 \(n\ge1\)，\(D^n=\{x\in\mathbb R^n:\|x\|\le1\}\)，\(\partial D^n=S^{n-1}\)。所有同调均取整数系数。闭球 \(D^n\) 与 \(\mathbb R^n\) 的普通同调在次数零为 \(\mathbb Z\)，其他次数为零；且
+	\[
+		\widetilde H_k(\mathbb R^n\setminus\{0\})
+		\cong
+		\begin{cases}\mathbb Z,&k=n-1,\\0,&k\ne n-1.\end{cases}
+	\]
+	对每个 \(k\ge0\)，有
+	\[
+		H_k(D^n,S^{n-1})\cong
+		H_k(\mathbb R^n,\mathbb R^n\setminus\{0\})
+		\cong
+		\begin{cases}\mathbb Z,&k=n,\\0,&k\ne n.\end{cases}
+	\]
+	当 \(n=0\) 时，单点空间与空子空间组成的对只有 \(H_0(D^0,\varnothing)=\mathbb Z\) 非零。
+\end{proposition}
+\begin{proof}
+	闭球与整个线性空间均由 \((x,t)\mapsto(1-t)x\) 收缩到原点，故同伦不变性和单点计算给出前两项。穿孔空间通过
+	\[
+		R(x,t)=\left(1-t+\frac{t}{\|x\|}\right)x
+	\]
+	强形变收缩到单位球面；系数始终为正，故同伦始终避开原点。于是可应用\cref{g2:thm:sphere-homology}。
+
+	空间对 \((D^n,S^{n-1})\) 的约化长正合列中，闭球的约化同调全部为零，因此
+	\[
+		H_k(D^n,S^{n-1})\xrightarrow[\cong]{\delta}
+		\widetilde H_{k-1}(S^{n-1})\qquad(k\ge1).
+	\]
+	零次相对同调也为零，因为非空子空间 \(S^{n-1}\) 到道路连通的 \(D^n\) 在 \(H_0\) 上给出满射。对 \((\mathbb R^n,\mathbb R^n\setminus\{0\})\) 使用同一论证，结合穿孔空间的计算即可。当 \(n=0\) 时相对链复形就是单点空间的普通链复形。
+\end{proof}
+
+\begin{corollary}[闭球不能回缩到边界]\label{g2:cor:no-ball-boundary-retraction}
+	对每个整数 \(n\ge1\)，不存在连续映射 \(r:D^n\to S^{n-1}\) 使 \(r|_{S^{n-1}}=\operatorname{id}_{S^{n-1}}\)。
+\end{corollary}
+\begin{proof}
+	若存在，记边界包含为 \(i:S^{n-1}\hookrightarrow D^n\)，则 \(ri=\operatorname{id}\)。在约化 \(n-1\) 次同调上，这将使 \(\mathbb Z\) 上的恒等同态分解经过零群 \(\widetilde H_{n-1}(D^n)\)，矛盾。约化同调保证 \(n=1\) 也包含在同一个论证中。
+\end{proof}
 
 \subsection{流形点的局部同调}
 \label{g2:subsec:0204:02}
-待撰写
+\begin{definition}[一点处的局部同调]\label{g2:def:local-homology}
+	设 \(X\) 为拓扑空间，\(x\in X\)。空间对 \((X,X\setminus\{x\})\) 的整数奇异同调
+	\[
+		H_k(X,X\setminus\{x\};\mathbb Z)
+	\]
+	称为 \(X\) 在 \(x\) 处的 \(k\) 次\term[ju bu tong diao]{局部同调}[local homology]。它由删去该点后哪些链不能再填充来刻画局部结构。
+\end{definition}
+
+相对链不是仅由经过 \(x\) 的单形组成的一个子群，而是除去全部避开 \(x\) 的链后得到的商。这个区别很重要：一个相对圈的边界可以非零，只须其边界完全避开 \(x\)。
+
+\begin{proposition}[局部同调的邻域不变性]\label{g2:prop:local-homology-neighborhood}
+	设 \(X\) 为拓扑空间，\(x\in X\) 且 \(\{x\}\) 在 \(X\) 中闭。对任意包含 \(x\) 的开集 \(U\subset X\)，包含映射诱导同构
+	\[
+		H_k(U,U\setminus\{x\};\mathbb Z)
+		\longrightarrow H_k(X,X\setminus\{x\};\mathbb Z)
+		\qquad(k\ge0).
+	\]
+	此外，同胚 \(h:X\to Y\) 总诱导空间对之间的同构
+	\[
+		h_*:H_k(X,X\setminus\{x\})\xrightarrow{\cong}
+		H_k(Y,Y\setminus\{h(x)\}).
+	\]
+\end{proposition}
+\begin{proof}
+	在切除定理中取 \(A=X\setminus\{x\}\)、\(Z=X\setminus U\)。因为 \(U\) 开，\(Z\) 闭；因为 \(\{x\}\) 闭，\(A\) 开。因此
+	\[
+		\overline Z=Z\subset A=\operatorname{int}_X A.
+	\]
+	切除后的空间对恰为 \((U,U\setminus\{x\})\)，由\cref{g2:thm:singular-excision}得到第一个结论。第二个结论来自 \(h\) 与 \(h^{-1}\) 互逆的空间对映射及同调的函子性。
+\end{proof}
+
+\begin{theorem}[流形点的局部同调]\label{g2:thm:manifold-local-homology}
+	设 \(M\) 是 Hausdorff、第二可数的拓扑空间，\(x\in M\)，\(n\ge0\)。如果 \(x\) 有开邻域同胚于 \(\mathbb R^n\) 的开集，则
+	\[
+		H_k(M,M\setminus\{x\};\mathbb Z)
+		\cong
+		\begin{cases}\mathbb Z,&k=n,\\0,&k\ne n\end{cases}
+		\qquad(k\ge0).
+	\]
+	若 \(n\ge1\)，\(x\) 有开邻域同胚于半空间
+	\(\mathbb H^n=\{(y_1,\ldots,y_n):y_n\ge0\}\) 的相对开集，且坐标将 \(x\) 送到边界超平面，则所有 \(H_k(M,M\setminus\{x\};\mathbb Z)\) 都为零。
+\end{theorem}
+\begin{proof}
+	Hausdorff 性保证 \(\{x\}\) 闭。第一种情形下，缩小坐标邻域并平移坐标，可使它对应以原点为中心的开球。开球到 \(\mathbb R^n\) 的径向同胚可以取
+	\[
+		y\longmapsto\frac{y}{r-\|y\|}\qquad(\|y\|<r),
+	\]
+	其逆为 \(z\mapsto rz/(1+\|z\|)\)，且保留原点。邻域不变性将问题化为 \((\mathbb R^n,\mathbb R^n\setminus\{0\})\)，由\cref{g2:prop:ball-puncture-homology}得到结论，包括 \(n=0\) 的孤立点情形。
+
+	第二种情形下，先沿边界超平面平移，使 \(x\) 对应原点，再取一个半开球坐标邻域。上述径向公式将它同胚地送到 \(\mathbb H^n\)，故局部同调由 \((\mathbb H^n,\mathbb H^n\setminus\{0\})\) 给出。半空间可缩；穿孔半空间用径向同伦收缩到闭半球
+	\[
+		\{y\in S^{n-1}:y_n\ge0\}.
+	\]
+	闭半球也可缩到 \(e_n\)：将线性同伦 \((1-t)y+te_n\) 归一化即可，其分母始终非零。\(n=1\) 时闭半球只是一个点。因此半空间及其穿孔部分均非空可缩，包含在零次同调上为同构，在其他次数上两端都为零。对的长正合列遂给出全部相对同调为零。
+\end{proof}
+
+在无边界 \(n\) 维拓扑流形上，每个点都满足第一种局部模型。带边界流形的内部点与边界点则分别由上述两种计算区分；边界型点不可能同时具有无边界的 Euclid 邻域。局部同调能指出这些类型的差别，但单靠某个局部同调群的值，还不足以断言一个一般空间就是流形。
+
+\begin{example}[分叉点的局部同调]\label{g2:exm:branch-local-homology}
+	设 \(r\ge1\)，将 \(r\) 条半开区间 \([0,1)\) 的零端点识别为一点 \(o\)，所得空间记为 \(Y_r\)，取商拓扑。沿各条区间同时缩小参数可将 \(Y_r\) 收缩到 \(o\)。而 \(Y_r\setminus\{o\}\) 是 \(r\) 个可缩道路分支的不交并，所以长正合列给出
+	\[
+		H_1(Y_r,Y_r\setminus\{o\})
+		\cong\ker\bigl(\mathbb Z^r\xrightarrow{(a_1,\ldots,a_r)\mapsto\sum a_i}\mathbb Z\bigr)
+		\cong\mathbb Z^{r-1},
+	\]
+	其他次数的局部同调均为零。特别地，三叉点给出秩二的局部一维同调，与任意维数流形的内部点或边界点都不同。
+\end{example}
 
 \subsection{维数不变性的同调证明}
 \label{g2:subsec:0204:03}
-待撰写
+不同维数的 Euclid 空间可以有很相近的整体性质：它们都可缩，普通同调完全相同。若先删去一点再比较，维数就出现在唯一的非零相对同调次数中。
+
+\begin{theorem}[维数不变性]\label{g2:thm:homological-invariance-dimension}
+	设 \(m,n\ge0\)，\(U\subset\mathbb R^m\)、\(V\subset\mathbb R^n\) 为非空开集。如果存在同胚 \(h:U\to V\)，则 \(m=n\)。
+\end{theorem}
+\begin{proof}
+	取 \(x\in U\)，记 \(y=h(x)\)。同胚给出每个次数上的同构
+	\[
+		H_k(U,U\setminus\{x\})
+		\cong H_k(V,V\setminus\{y\}).
+	\]
+	由\cref{g2:thm:manifold-local-homology}，左边仅在 \(k=m\) 时非零且为 \(\mathbb Z\)，右边仅在 \(k=n\) 时非零且为 \(\mathbb Z\)。若 \(m\ne n\)，取 \(k=m\) 就会得到非零群与零群同构的矛盾。
+\end{proof}
+
+若一个点同时有 \(m\) 维和 \(n\) 维 Euclid 坐标邻域，限制两张坐标到它们的交，就得到非空开集之间的同胚。因此定理也证明了流形局部维数的唯一性。维数在各坐标邻域内恒定，故在连通流形上恒定。这里并未从“坐标图带有一个整数”直接把维数当作拓扑不变量，而是用局部相对同调证明这个整数不能因换坐标而改变。这一经典论证可与 Hatcher 的相关应用对照\cite[第2.1节]{Hatcher2002}。
 
 \subsection{约化同调与悬挂}
 \label{g2:subsec:0204:04}
-待撰写
+\begin{definition}[悬挂]\label{g2:def:unreduced-suspension}
+	设 \(X\) 为非空拓扑空间。将 \(X\times[-1,1]\) 中的 \(X\times\{-1\}\) 全部识别为一个点 \(s_-\)，将 \(X\times\{1\}\) 全部识别为另一个点 \(s_+\)，其他点不作识别，并取商拓扑。所得空间
+	\[
+		SX=(X\times[-1,1])/
+		\bigl(X\times\{-1\}\sim s_-,\ X\times\{1\}\sim s_+\bigr)
+	\]
+	称为 \(X\) 的\term[xuan gua]{悬挂}[suspension]。两个悬挂点 \(s_-,s_+\) 彼此不同。连续映射 \(f:X\to Y\) 诱导 \(Sf:SX\to SY\)，公式为 \([x,t]\mapsto[f(x),t]\)。
+\end{definition}
+
+本定义不指定 \(X\) 的基点，也不额外压掉一条纵向线段。因此这里讨论的是未约化的悬挂。它由两个锥沿共同的底空间粘成，正是第一章双映射柱 \(\{s_-\}\leftarrow X\to\{s_+\}\) 的模型。
+
+\begin{theorem}[悬挂同构]\label{g2:thm:suspension-homology}
+	设 \(X\) 为非空拓扑空间，\(SX\) 取上述商拓扑，所有同调取整数系数。则 \(SX\) 道路连通，并且对每个 \(k\ge1\) 存在自然同构
+	\[
+		\delta_X:\widetilde H_k(SX)\xrightarrow{\cong}
+		\widetilde H_{k-1}(X).
+	\]
+	对于非空空间之间的连续映射 \(f:X\to Y\)，自然性指
+	\(\delta_Y\circ(Sf)_*=f_*\circ\delta_X\)。
+\end{theorem}
+\begin{proof}
+	每个 \([x,t]\) 都可沿自己的纵向区间走到 \(s_+\)，而任取 \(x_0\in X\) 的纵向区间连接两个悬挂点，故 \(SX\) 道路连通。令
+	\[
+		U=SX\setminus\{s_-\},\qquad V=SX\setminus\{s_+\}.
+	\]
+	它们是开集，因为在商映射下的原像分别为 \(X\times(-1,1]\)、\(X\times[-1,1)\)。\(U\) 的同伦 \([x,t]\mapsto[x,(1-a)t+a]\)（\(a\in[0,1]\)）将它收缩到 \(s_+\)；\(V\) 用 \([x,t]\mapsto[x,(1-a)t-a]\) 收缩到 \(s_-\)。这些同伦在被识别的端点处相容；商映射与区间的乘积仍为商映射，故它们连续。
+
+	交集 \(U\cap V\) 同胚于 \(X\times(-1,1)\)，通过投影到 \(X\) 与赤道包含得到同伦等价。约化 Mayer–Vietoris 序列因 \(U,V\) 的约化同调为零而给出
+	\[
+		\widetilde H_k(SX)\xrightarrow[\cong]{\delta}
+		\widetilde H_{k-1}(U\cap V)
+		\cong\widetilde H_{k-1}(X).
+	\]
+	把这两个同构的复合定义为 \(\delta_X\)。映射 \(Sf\) 保持上下两开集，在交集上就是 \(f\times\operatorname{id}_{(-1,1)}\)。连接同态的自然性及交集投影与 \(f\) 的交换关系，便给出所需等式。
+\end{proof}
+
+在链层面，可将悬挂中的圈细分后拆成上、下两部分 \(a+b\)。两部分各自的边界可能非零，但 \(\partial a=-\partial b\) 落在交集中，\(\delta_X\) 就记录这个共同边界在赤道上的类。这解释了次数为什么降低一：一个 \(k\) 维填充块的边界是 \(k-1\) 维链。约化同调同时去掉了整个悬挂只有一个道路分支所贡献的常数项。
+
+\ProseParagraphBreak
+
+例如，若 \(X\) 是 \(r\ge1\) 个点组成的离散空间，则 \(\widetilde H_0(X)\cong\mathbb Z^{r-1}\)，所以 \(H_1(SX)\cong\mathbb Z^{r-1}\)，高次同调为零。几何上，\(SX\) 正是两个顶点之间的 \(r\) 条边；这与第一章图的计算相符合。又因为
+\[
+	SS^n\longrightarrow S^{n+1},\qquad
+	[u,t]\longmapsto\bigl(\sqrt{1-t^2}\,u,t\bigr)
+\]
+是从紧空间到 Hausdorff 空间的连续双射，故为同胚；悬挂同构于是恢复前面球面同调的递归关系。相关的 Mayer–Vietoris 计算可参阅\cite[第2.2节]{Hatcher2002}。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

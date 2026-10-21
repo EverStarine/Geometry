@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 1.2 粘合的同伦性质
-% 纲要位置：几何学计划纲要.md，第 1009 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 纲要位置：几何学计划纲要.md，第 1059 行。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,398 @@
 \section{粘合的同伦性质}
 \label{g2:sec:0102}
 
-待撰写
+向已有空间粘上一个圆盘，需要指定圆盘边界到该空间的连续映射，再按这个映射识别边界上的点。若将这个指定映射换成与它同伦的映射，所得空间的同伦型是否改变？另一个看似相近的问题是：把某一块空间换成同伦等价的空间，再作相同的粘合，是否得到同伦等价的结果？这两种操作都涉及商拓扑，但商拓扑本身只记录严格相等的点。要使粘合适应同伦，还需要控制边界上的变形如何延到整块空间。本节用映射柱保留这段变形，再以同伦延拓性质给出可以压掉映射柱的条件。
 
 \subsection{映射柱、映射锥与相对空间}
 \label{g2:subsec:0102:01}
-待撰写
+为了区分一个空间和其中被指定的部分，先固定相对语言。
+
+\begin{definition}[空间对及其映射]\label{g2:def:space-pair}
+	设 \(X\) 为拓扑空间，\(A\subseteq X\) 为子空间，称 \((X,A)\) 为\term[kongjiandui]{空间对}[pair of spaces]。对于另一个空间对 \((Y,B)\)，满足 \(f(A)\subseteq B\) 的连续映射 \(f:X\to Y\) 称为空间对映射。取 \(I=[0,1]\)。两个空间对映射 \(f_0,f_1:(X,A)\to(Y,B)\) 之间的同伦，是满足
+	\[
+		F(x,0)=f_0(x),\quad F(x,1)=f_1(x),\quad F(A\times I)\subseteq B
+	\]
+	的连续映射 \(F:X\times I\to Y\)。
+\end{definition}
+
+空间对映射的同伦要求每个时刻都把 \(A\) 送入 \(B\)，而\cref{g2:def:homotopy-relative}中的相对 \(A\) 同伦要求 \(A\) 上逐点不动。这两种要求在后面的延拓问题中分别出现。
+
+\begin{definition}[空间的推出]\label{g2:def:pushout-space}
+	设 \(A,X,Y\) 为拓扑空间，\(i:A\to X\)、\(f:A\to Y\) 为连续映射。在不交并 \(X\sqcup Y\) 上取由 \(i(a)\sim f(a)\)（\(a\in A\)）生成的等价关系，赋予商空间
+	\[
+		P=X\cup_A Y\coloneqq(X\sqcup Y)/\!\sim
+	\]
+	商拓扑，称它为该图式的\term[tuichu]{推出}[pushout]。记两条自然映射为 \(j_X:X\to P\)、\(j_Y:Y\to P\)。当 \(i\) 是子空间包含映射时，也把 \(P\) 记作 \(Y\cup_fX\)，表示把 \(X\) 的子空间 \(A\) 按 \(f\) 粘到 \(Y\) 上；这种附着记号将 \(f\) 的靶空间放在左边。
+\end{definition}
+
+这个构造的作用由下图准确表达：左边的方块交换；对于右边满足 \(ui=vf\) 的任意连续映射 \(u:X\to Z\)、\(v:Y\to Z\)，存在唯一的连续映射 \(w:P\to Z\)，使 \(wj_X=u\)、\(wj_Y=v\)。
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		A \arrow[r,"f"] \arrow[d,"i"'] & Y \arrow[d,"j_Y"] \\
+		X \arrow[r,"j_X"'] & P
+	\end{tikzcd}
+	\qquad
+	\begin{tikzcd}[column sep=large,row sep=large]
+		X \arrow[r,"j_X"] \arrow[dr,"u"'] & P \arrow[d,dashed,"w"] & Y \arrow[l,"j_Y"'] \arrow[dl,"v"] \\
+		& Z &
+	\end{tikzcd}
+\]
+事实上，\(u\) 与 \(v\) 定义了不交并上的连续映射；条件 \(ui=vf\) 保证它在每个等价类上取同一个值，商拓扑恰好保证下降后的 \(w\) 连续。唯一性来自 \(j_X(X)\cup j_Y(Y)=P\)。因此，泛性质中的相容条件是点的严格相等。
+
+\begin{definition}[映射柱与映射锥]\label{g2:def:mapping-cylinder-cone}
+	设 \(f:X\to Y\) 为拓扑空间之间的连续映射，\(I=[0,1]\)。赋予
+	\[
+		M_f\coloneqq\bigl((X\times I)\sqcup Y\bigr)/\bigl((x,1)\sim f(x)\bigr)
+	\]
+	商拓扑，称它为 \(f\) 的\term[yingshezhu]{映射柱}[mapping cylinder]。记 \(j(x)=[x,0]\)、\(k(y)=[y]\)，并定义 \(p:M_f\to Y\) 为
+	\[
+		p([x,s])=f(x),\qquad p(k(y))=y.
+	\]
+	当 \(X\ne\varnothing\) 时，将柱 \(X\times I\) 的整个底面 \(X\times\{0\}\) 压成一个点，得到锥 \(CX\coloneqq(X\times I)/(X\times\{0\})\)。将 \(M_f\) 中的 \(j(X)\) 压成一个点所得的空间
+	\[
+		C_f\coloneqq M_f/j(X)=Y\cup_f CX
+	\]
+	称为 \(f\) 的\term[yingshezhui]{映射锥}[mapping cone]。此处锥的顶点对应参数 \(s=0\)，锥底 \(X\times\{1\}\) 通过 \(f\) 粘到 \(Y\)。当 \(X=\varnothing\) 时，约定 \(C_f=Y\)，此时也有 \(M_f=Y\)。\symidx{\(M_f\)：映射柱，源端参数为 \(0\)}\symidx{\(C_f\)：映射锥}
+\end{definition}
+
+映射柱将原来的映射分成 \(X\xrightarrow{j}M_f\xrightarrow{p}Y\)，且 \(pj=f\)。即使 \(f\) 把许多点送到同一点，\(j\) 仍将它们保留为不同的点；只有在另一端 \(s=1\) 才按 \(f\) 识别。源空间非空时，映射锥则进一步抹去源端，把源空间接到一个新的顶点上。
+
+\begin{lemma}[商映射与区间]\label{g2:lem:quotient-interval}
+	设 \(q:E\to Q\) 为拓扑空间之间的满商映射，\(I=[0,1]\)。则 \(q\times\operatorname{id}_I:E\times I\to Q\times I\) 仍为商映射。因此，只要连续映射 \(F:E\times I\to Z\) 对每个 \(t\in I\) 都在 \(q\) 的纤维上取同一值，它就下降为连续映射 \(Q\times I\to Z\)。
+\end{lemma}
+\begin{proof}
+	说明区间的紧性如何保证参数下降。对任意拓扑空间 \(Z\)，在连续映射集 \(C(I,Z)\) 上取紧开拓扑，其子基为
+	\[
+		[K,U]=\{\gamma\in C(I,Z):\gamma(K)\subseteq U\},
+	\]
+	其中 \(K\subseteq I\) 紧，\(U\subseteq Z\) 开。若 \(F:E\times I\to Z\) 连续，则伴随映射 \(\widehat F(e)(t)=F(e,t)\) 连续：当 \(F(\{e_0\}\times K)\subseteq U\) 时，积拓扑中的开矩形加上 \(K\) 的有限子覆盖，给出 \(e_0\) 的邻域 \(V\)，使 \(F(V\times K)\subseteq U\)。
+
+	反过来，求值映射 \(C(I,Z)\times I\to Z\) 连续。若 \(\gamma(t_0)\in U\)，可在 \(\gamma^{-1}(U)\) 中取 \(t_0\) 的一个紧邻域 \(K\)；则 \([K,U]\times\operatorname{int}_I K\) 被送入 \(U\)。所以连续映射 \(E\to C(I,Z)\) 的伴随映射也连续。这里使用的是区间的局部紧 Hausdorff 性。
+
+	现在若 \(F\) 在 \(q\) 的纤维上与参数一致地取同一值，则 \(\widehat F\) 下降为连续映射 \(Q\to C(I,Z)\)，因为 \(q\) 是商映射。与求值映射复合即得所需的 \(Q\times I\to Z\)。最后，为检验 \(q\times\operatorname{id}_I\) 的商性质，给定其原像为开的子集 \(V\subseteq Q\times I\)，取两点空间 \(\{0,1\}\) 的拓扑 \(\{\varnothing,\{1\},\{0,1\}\}\)。\(V\) 的特征函数在拉回后连续，刚证的下降结论说明它本身连续，故 \(V\) 开。
+\end{proof}
+
+\begin{proposition}[映射柱保留靶空间的同伦型]\label{g2:prop:mapping-cylinder-retract}
+	设 \(f:X\to Y\) 为连续映射，\(I=[0,1]\)，\(M_f\)、\(j:X\to M_f\)、\(k:Y\to M_f\)、\(p:M_f\to Y\) 如\cref{g2:def:mapping-cylinder-cone}所定义。则 \(j\) 和 \(k\) 都是到其像的拓扑嵌入，\(j(X)\) 在 \(M_f\) 中闭；\(pk=\operatorname{id}_Y\)，并且同伦 \(K:M_f\times I\to M_f\)
+	\[
+		K([x,s],t)=[x,s+t(1-s)],\qquad K(k(y),t)=k(y)
+	\]
+	给出 \(M_f\) 到 \(k(Y)\) 的强形变收缩。因此 \(p\) 与 \(k\) 是互为同伦逆的映射。
+\end{proposition}
+\begin{proof}
+	映射 \(p\) 连续，因为它在 \(X\times I\) 上等于 \(f\) 与投影的复合，在 \(Y\) 上等于恒等映射，且在识别处相容。于是 \(pk=\operatorname{id}_Y\) 也说明 \(k\) 是嵌入。对 \(X\) 的开集 \(U\)，\(U\times[0,1/2)\) 是商映射的饱和开集，其像与 \(j(X)\) 的交为 \(j(U)\)，故 \(j\) 是嵌入。\(j(X)\) 的原像是闭集 \(X\times\{0\}\)，所以它闭。
+
+	公式 \(K\) 在柱的参数 \(s=1\) 处恒等于 \(k(f(x))\)，与 \(Y\) 上的公式相容。由\cref{g2:lem:quotient-interval}，它是商空间上的连续同伦。它在 \(t=0\) 时为恒等映射，在 \(t=1\) 时为 \(kp\)，并在每一时刻固定 \(k(Y)\)，这正是强形变收缩所需的条件。
+\end{proof}
+
+当 \(X=S^{n-1}\)、\(n\ge1\) 时，锥 \(CS^{n-1}\) 通过 \([x,s]\mapsto sx\) 同胚于单位闭球 \(D^n\)。因此 \(C_f\) 就是向 \(Y\) 附着一个 \(n\) 维胞腔的空间。对包含映射 \(i:A\hookrightarrow X\)，则得到 \(C_i=X\cup_A CA\)：它不是立即把 \(A\) 压成一点，而是先为 \(A\) 加一顶锥。在什么时候可以再把整顶锥压掉而不改变同伦型，将由本节末尾的定理回答。
 
 \subsection{同伦延拓性质}
 \label{g2:subsec:0102:02}
-待撰写
+映射柱中的参数可以自由滑动，但在粘合空间中，我们常常只指定边界上的滑动，并要求内部跟随它连续地移动。设初始映射已经在 \(X\) 上给定，而新的同伦只在 \(A\subseteq X\) 上给定；延拓时必须同时保留这两部分数据。仅知道边界上的两个映射同伦，并不自动给出整个空间上的同伦。
+
+\begin{definition}[同伦延拓性质]\label{g2:def:HEP}
+	设 \(i:A\to X\) 为拓扑空间之间的连续映射，\(I=[0,1]\)。若对任意拓扑空间 \(Z\)、任意连续映射 \(f_0:X\to Z\) 及任意连续同伦 \(h:A\times I\to Z\)，只要
+	\[
+		h(a,0)=f_0(i(a))\qquad(a\in A),
+	\]
+	就存在连续映射 \(\widetilde h:X\times I\to Z\)，满足
+	\[
+		\widetilde h(x,0)=f_0(x),\qquad
+		\widetilde h(i(a),t)=h(a,t)
+		\quad(x\in X,\ a\in A,\ t\in I),
+	\]
+	则称 \(i\) 具有\term[tonglun yantuo xingzhi]{同伦延拓性质}[homotopy extension property]，简称 HEP。对于子空间包含映射 \(A\hookrightarrow X\)，也说空间对 \((X,A)\) 具有这一性质。
+\end{definition}
+
+这里要求解决所有靶空间中的延拓问题，且延拓的初值必须是原来的 \(f_0\)。延拓一般不唯一。下面的判据把所有靶空间和所有初值压缩成一个几何模型：圆柱的底面携带初值，侧面 \(A\times I\) 携带已知同伦。
+
+\begin{proposition}[延拓性质的回缩判据]\label{g2:prop:HEP-retraction}
+	设 \(X\) 为拓扑空间，\(A\subseteq X\) 为闭子空间，\(I=[0,1]\)，并给
+	\[
+		W=(X\times\{0\})\cup(A\times I)\subseteq X\times I
+	\]
+	子空间拓扑。则 \((X,A)\) 具有同伦延拓性质，当且仅当存在连续回缩 \(r:X\times I\to W\)，即 \(r|_W=\operatorname{id}_W\)。
+\end{proposition}
+\begin{proof}
+	若具有 HEP，取靶空间为 \(W\)，初值 \(x\mapsto(x,0)\)，并在 \(A\) 上指定同伦 \((a,t)\mapsto(a,t)\)。其延拓就是所需的回缩。
+
+	反过来，设给定回缩 \(r\)，并给定\cref{g2:def:HEP}中的 \(Z,f_0,h\)。在 \(W\) 上定义
+	\[
+		F(x,0)=f_0(x),\qquad F(a,t)=h(a,t).
+	\]
+	初值条件保证两条公式在 \(A\times\{0\}\) 上相同。底面与侧面都是 \(W\) 的闭子集，所以闭集粘合引理说明 \(F\) 连续。所求的延拓为 \(\widetilde h=F\circ r\)。这对应下图中的虚线：
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			W \arrow[r,"F"] \arrow[d,hook] & Z \\
+			X\times I \arrow[ur,dashed,"F\circ r"'] &
+		\end{tikzcd}
+	\]
+\end{proof}
+
+\begin{proposition}[闭球边界的延拓模型]\label{g2:prop:disk-hep}
+	设 \(n\ge1\)，\(I=[0,1]\)，\(D^n=\{x\in\mathbb R^n:\lVert x\rVert\le1\}\)，\(S^{n-1}=\partial D^n\)，并令
+	\[
+		W_n=(D^n\times\{0\})\cup(S^{n-1}\times I).
+	\]
+	定义
+	\[
+		\lambda(x,t)=\frac{2}{\max\{2-t,2\lVert x\rVert\}},\qquad
+		r_n(x,t)=\bigl(\lambda(x,t)x,\,2-\lambda(x,t)(2-t)\bigr).
+	\]
+	则 \(r_n:D^n\times I\to W_n\) 是连续回缩，且
+	\[
+		R_n((x,t),u)=(1-u)(x,t)+u\,r_n(x,t)
+	\]
+	是固定 \(W_n\) 的强形变收缩。因此空间对 \((D^n,S^{n-1})\) 具有 HEP。维数 \(n=0\) 时约定 \(D^0=\{*\}\)、\(S^{-1}=\varnothing\)，用 \(r_0(*,t)=(*,0)\) 得到同一结论。
+\end{proposition}
+\begin{proof}
+	从圆柱上方的点 \((0,2)\) 向 \((x,t)\) 发出射线，再沿射线走到侧面或底面，便得到这个公式。射线到达底面所需的倍数为 \(2/(2-t)\)，到达侧面所需的倍数为 \(1/\lVert x\rVert\)；二者先到者对应的倍数正是 \(\lambda\)，而最大值形式也覆盖 \(x=0\)。
+
+	分母始终至少为 \(1\)，故公式连续。又有 \(\lambda\ge1\)、\(\lambda\lVert x\rVert\le1\) 及
+	\[
+		0\le 2-\lambda(2-t)\le t\le1.
+	\]
+	若最大值取在 \(2-t\)，则像的第二坐标为零；若取在 \(2\lVert x\rVert\)，则像的第一坐标位于单位球面。因此像在 \(W_n\) 中。在底面 \(t=0\) 或侧面 \(\lVert x\rVert=1\) 上，\(\lambda=1\)，所以 \(r_n\) 固定 \(W_n\)。闭球圆柱 \(D^n\times I\) 是凸集，线性插值 \(R_n\) 始终留在其中，并逐点固定 \(W_n\)。最后应用\cref{g2:prop:HEP-retraction}。\(n=0\) 的圆柱就是一个区间，可直接检验。
+\end{proof}
+
+这个公式以后可以逐胞腔使用：球的底面保留已经给定的初始映射，球面的侧面接收低维骨架上已经完成的同伦，回缩把二者送进球内的每个点。相容性已经固定在 \(W_n\) 上，所以新延拓不会改变旧骨架。
+
+\begin{example}[闭子空间仍可能不能延拓]\label{g2:exm:closed-pair-not-HEP}
+	设 \(I=[0,1]\)、\(X=I\)，\(A=\{0\}\cup\{1/n:n\ge1\}\)，均取通常拓扑及子空间拓扑。则 \(A\) 在 \(X\) 中闭，但 \((X,A)\) 不具有 HEP。
+
+	若存在\cref{g2:prop:HEP-retraction}中的回缩 \(r:I^2\to W\)，则水平线段
+	\[
+		L_n=[1/(n+1),1/n]\times\{1\}
+	\]
+	的像连接 \((1/(n+1),1)\) 与 \((1/n,1)\)。这个像必须碰到底面：否则其第一坐标给出区间到 \(A\) 的连续映射，像是含有两个不同点的连通子集；但 \(A\) 的连通子集只能是单点，因为任意两个不同实数之间都有不在 \(A\) 中的数，可以将它们分开。因此可取 \(z_n\in L_n\)，使 \(r(z_n)\) 的第二坐标为零。另一方面，\(z_n\to(0,1)\)，而 \(r(0,1)=(0,1)\)，与 \(r\) 连续矛盾。
+\end{example}
 
 \subsection{余纤维化与良好空间对}
 \label{g2:subsec:0102:03}
-待撰写
+闭球边界的性质来自一个稳定的局部机制：靠近指定子空间的点能够被连续推入它，而且这次推动在该子空间上始终不动。用一个函数记录“有多靠近”，就能将这种机制写成可检验的数据。
+
+\begin{definition}[余纤维化]\label{g2:def:cofibration}
+	若连续映射 \(i:A\to X\) 具有\cref{g2:def:HEP}中的同伦延拓性质，则称它为\term[yuxianweihua]{余纤维化}[cofibration]。当 \(i\) 是闭子空间的包含映射时，称它为闭余纤维化。
+\end{definition}
+
+\begin{definition}[NDR 空间对]\label{g2:def:NDR-pair}
+	设 \(X\) 为拓扑空间，\(A\subseteq X\) 为子空间，\(I=[0,1]\)。若存在连续函数 \(u:X\to I\) 和连续同伦 \(H:X\times I\to X\)，满足
+	\[
+		A=u^{-1}(0),\qquad H(x,0)=x,\qquad H(a,t)=a
+		\quad(x\in X,\ a\in A,\ t\in I),
+	\]
+	并且对每个满足 \(u(x)<1\) 的 \(x\in X\) 都有 \(H(x,1)\in A\)，则称 \((X,A)\) 为\term[linyu xingbian shousuo dui]{邻域形变收缩对}[neighborhood deformation retract pair]，简称 NDR 空间对。\(u,H\) 称为它的一组 NDR 数据。
+\end{definition}
+
+\(u^{-1}([0,1))\) 是 \(A\) 的开邻域，\(H\) 在最后时刻把这个邻域送入 \(A\)；\(u^{-1}(0)=A\) 还自动给出 \(A\) 的闭性。定义要求同伦 \(H\) 在整个 \(X\) 上连续，并固定 \(A\)。这组数据同时控制靠近 \(A\) 的点与邻域外的点，适合粘合和带参数构造。
+
+\begin{theorem}[闭空间对的余纤维化判据]\label{g2:thm:NDR-cofibration}
+	设 \(X\) 为拓扑空间，\(A\subseteq X\) 为闭子空间，\(I=[0,1]\)。下列条件等价：
+	\begin{equivalences}
+		\item \((X,A)\) 是 NDR 空间对。
+		\item \(W=(X\times\{0\})\cup(A\times I)\) 是 \(X\times I\) 的回缩。
+		\item 包含映射 \(A\hookrightarrow X\) 是余纤维化。
+	\end{equivalences}
+\end{theorem}
+\begin{proof}
+	先从 NDR 数据 \(u,H\) 构造回缩。对 \(u(x)>0\)，令
+	\[
+		r(x,t)=
+		\begin{cases}
+			\bigl(H(x,t/u(x)),0\bigr),&0\le t\le u(x),\\
+			\bigl(H(x,1),t-u(x)\bigr),&u(x)\le t\le1.
+		\end{cases}
+	\]
+	对 \(a\in A\) 则令 \(r(a,t)=(a,t)\)。两段在 \(t=u(x)\) 处相同。第二段若有正的第二坐标，则 \(u(x)<1\)，所以 \(H(x,1)\in A\)；若 \(u(x)=1\)，该段只有 \(t=1\)，像仍在底面。因此 \(r\) 的像在 \(W\) 中。
+
+	在 \(u(x)>0\) 的区域，分段粘合直接给出连续性。在 \((a,t_0)\)、\(a\in A\)、\(t_0>0\) 附近，由 \(u(a)=0\) 可使 \(u(x)<t\)，于是只用第二条公式，它连续并趋向 \((a,t_0)\)。在 \((a,0)\) 附近，两段的第一坐标都具有 \(H(x,s)\)、\(s\in I\) 的形式。因为 \(H(a,s)=a\) 且 \(I\) 紧，对 \(a\) 的任意邻域 \(V\)，有限个积邻域给出 \(a\) 的邻域 \(U\)，使 \(H(U\times I)\subseteq V\)。第二坐标介于 \(0\) 与 \(t\) 之间，故此处也连续。公式固定底面及 \(A\times I\)，所以得到回缩。
+
+	反过来，设给定回缩 \(r:X\times I\to W\)，写 \(r=(r_1,r_2)\)。定义
+	\[
+		u(x)=\max_{t\in I}\{t-r_2(x,t)\},\qquad H(x,t)=r_1(x,t).
+	\]
+	最大值存在；它随 \(x\) 连续，因为被取最大值的函数联合连续，而参数区间紧：在给定 \(x_0\) 处，以有限个积邻域控制整个 \(I\) 上的函数值变化，就同时控制两个最大值之差。\(t=0\) 时差为零，且差不超过 \(1\)，故 \(u:X\to I\)。若 \(a\in A\)，回缩条件给出 \(r(a,t)=(a,t)\)，从而 \(u(a)=0\)、\(H(a,t)=a\)。
+
+	若 \(u(x)=0\)，则对每个 \(t>0\) 有 \(r_2(x,t)\ge t>0\)，所以 \(r_1(x,t)\in A\)。当 \(t\to0\) 时，\(r_1(x,t)\to r_1(x,0)=x\)，由 \(A\) 闭得 \(x\in A\)。因此 \(u^{-1}(0)=A\)。若 \(u(x)<1\)，则 \(1-r_2(x,1)<1\)，即 \(r_2(x,1)>0\)，从而 \(H(x,1)\in A\)。这就给出 NDR 数据。最后，第二项与第三项的等价性正是\cref{g2:prop:HEP-retraction}。
+\end{proof}
+
+这一判据及映射柱的余纤维化分解可参阅 \cite[第6章，第1--4节]{May1999}。这里的“良好空间对”由明确的闭性和 NDR 数据落实；实际应用时可以给出数据，也可以直接构造柱面回缩。
+
+\begin{proposition}[映射柱给出余纤维化分解]\label{g2:prop:mapping-cylinder-cofibration}
+	设 \(f:X\to Y\) 为拓扑空间之间的连续映射，\(I=[0,1]\)，\(M_f=((X\times I)\sqcup Y)/((x,1)\sim f(x))\) 为它的映射柱。令源端包含映射为 \(j(x)=[x,0]\)，投影为 \(p([x,s])=f(x)\)、\(p(y)=y\)。则 \(j:X\to M_f\) 是闭余纤维化，\(p:M_f\to Y\) 是同伦等价，且 \(f=pj\)。
+\end{proposition}
+\begin{proof}
+	\cref{g2:prop:mapping-cylinder-retract}已经证明 \(j\) 是闭嵌入，\(p\) 是同伦等价。为证明 \(j\) 是余纤维化，令 \(\phi(s)=\max\{0,2s-1\}\)，在 \(M_f\) 上定义
+	\[
+		u([x,s])=\min\{1,2s\},\quad u(y)=1,
+	\]
+	\[
+		H([x,s],t)=[x,(1-t)s+t\phi(s)],\qquad H(y,t)=y.
+	\]
+	在 \(s=1\) 处有 \(u=1\)、\(\phi(1)=1\)，所以这些公式与粘到 \(Y\) 上的识别相容，并由\cref{g2:lem:quotient-interval}连续下降。\(u^{-1}(0)=j(X)\)，\(H\) 固定 \(j(X)\)；而当 \(u([x,s])<1\) 时有 \(s<1/2\)，最后时刻 \(H([x,s],1)=[x,0]\)。因此这是 \((M_f,j(X))\) 的 NDR 数据，应用\cref{g2:thm:NDR-cofibration}即可。
+\end{proof}
+
+\begin{proposition}[推出保持闭余纤维化]\label{g2:prop:cofibration-pushout-stable}
+	设 \(A\) 是拓扑空间 \(X\) 的闭子空间，包含映射 \(i:A\hookrightarrow X\) 是余纤维化，\(f:A\to Y\) 连续。令 \(P=X\cup_A Y\)，并记自然映射为 \(j_X:X\to P\)、\(j_Y:Y\to P\)。则 \(j_Y\) 是闭嵌入，且为余纤维化。
+\end{proposition}
+\begin{proof}
+	因为 \(i\) 是包含映射，商关系不会识别 \(Y\) 中两个不同的点，所以 \(j_Y\) 单射。若 \(C\subseteq Y\) 闭，则 \(j_Y(C)\) 在 \(X\sqcup Y\) 中的原像为 \(f^{-1}(C)\sqcup C\)。前一部分在 \(A\) 中闭，又因 \(A\) 在 \(X\) 中闭而在 \(X\) 中闭。因此 \(j_Y(C)\) 在 \(P\) 中闭，说明 \(j_Y\) 是闭嵌入。
+
+	设 \(Z\) 为任意靶空间，给定初值 \(b_0:P\to Z\) 及其在 \(Y\) 上的同伦 \(h:Y\times I\to Z\)。将 \(h(f(a),t)\) 看作 \(A\) 上的同伦，初值为 \(b_0j_X|_A\)。对 \(A\hookrightarrow X\) 使用 HEP，得到延拓 \(K:X\times I\to Z\)。在识别处有
+	\[
+		K(a,t)=h(f(a),t).
+	\]
+	因此 \(K\) 与 \(h\) 在不交并上定义的同伦通过商下降到 \(P\times I\)；连续性由\cref{g2:lem:quotient-interval}保证。它延拓了指定的 \(h\)，并保留初值 \(b_0\)，故 \(j_Y\) 具有 HEP。
+\end{proof}
 
 \subsection{直接商与同伦余极限的区别}
 \label{g2:subsec:0102:04}
-待撰写
+普通推出要求两条映射在 \(A\) 上相等。同伦论中更自然的数据，是它们在 \(A\) 上由一段指定同伦连接。保留这段同伦所需的区间，而不是立即压掉它，就得到双映射柱。
+
+\begin{definition}[双映射柱与同伦推出]\label{g2:def:homotopy-pushout}
+	设 \(i:A\to X\)、\(f:A\to Y\) 为连续映射，\(I=[0,1]\)。其\term[shuang yingshezhu]{双映射柱}[double mapping cylinder]为商空间
+	\[
+		D(i,f)\coloneqq
+		\bigl(X\sqcup(A\times I)\sqcup Y\bigr)/
+		\bigl((a,0)\sim i(a),\ (a,1)\sim f(a)\bigr).
+	\]
+	这个空间称为图式 \(X\xleftarrow{i}A\xrightarrow{f}Y\) 的一个\term[tonglun tuichu]{同伦推出}[homotopy pushout]模型。它是该图式的\term[tonglun yujixian]{同伦余极限}[homotopy colimit]的具体情形：粘合时用一段路径代替两端的严格识别。把每条 \(\{a\}\times I\) 压成一点，得到自然比较映射
+	\[
+		q:D(i,f)\longrightarrow X\cup_A Y.
+	\]
+\end{definition}
+
+双映射柱的映射性质仍来自商拓扑，不过相容数据多了一项。对任意空间 \(Z\)，给出连续映射 \(D(i,f)\to Z\)，等价于给出连续映射 \(u:X\to Z\)、\(v:Y\to Z\)，以及一段满足
+\[
+	F(a,0)=u(i(a)),\qquad F(a,1)=v(f(a))
+\]
+的连续同伦 \(F:A\times I\to Z\)。三者在原不交并上的公式于识别处相同，因而唯一确定下降映射。下图中的两条复合不必相等，它们由所指定的 \(F\) 连接：
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		A \arrow[r,"f"] \arrow[d,"i"'] & Y \arrow[d,"v"] \\
+		X \arrow[r,"u"'] & Z
+	\end{tikzcd}
+	\qquad ui\simeq vf\ \text{由 }F\text{ 给出}.
+\]
+此处的唯一性是对固定的三项连续数据而言。只记住两个同伦类而丢掉连接它们的同伦，一般不能恢复同一个映射。
+
+\begin{theorem}[余纤维化粘合的同伦性质]\label{g2:thm:cofibration-pushout}
+	设 \(A\) 是拓扑空间 \(X\) 的闭子空间，包含映射 \(i:A\hookrightarrow X\) 是余纤维化，\(f:A\to Y\) 是连续映射。则双映射柱到普通推出的自然比较映射
+	\[
+		q:D(i,f)\longrightarrow P=X\cup_A Y
+	\]
+	是同伦等价，并可选取同伦逆 \(s:P\to D(i,f)\)，使 \(s\) 在 \(Y\) 上为自然包含映射，且两段逆同伦都在 \(Y\) 上保持不动。
+
+	另有对称的版本：若 \(i:A\to X\) 仅为连续映射，而 \(f:A\hookrightarrow Y\) 是闭子空间包含并具有同伦延拓性质，则同一比较映射仍为同伦等价；这时可选取在 \(X\) 上为自然包含映射的同伦逆，并使两段逆同伦都在 \(X\) 上保持不动。
+\end{theorem}
+\begin{proof}
+	记 \(D=D(i,f)\)，其自然映射为 \(\ell_X:X\to D\)、\(\ell_Y:Y\to D\)。要构造 \(s\)，需把 \(X\) 中的边界 \(A\) 从柱的一端移到另一端，直到能与 \(Y\) 直接粘合。以 \(\ell_X\) 为初值，在 \(A\) 上指定同伦 \(h(a,t)=[a,t]\)。由 HEP，将它延拓为
+	\[
+		H:X\times I\to D,\qquad
+		H(x,0)=\ell_X(x),\quad H(a,t)=[a,t].
+	\]
+	于是 \(H(a,1)=\ell_Y(f(a))\)，故 \(x\mapsto H(x,1)\) 与 \(\ell_Y\) 可通过普通推出的泛性质粘成连续映射 \(s:P\to D\)。
+
+	先检验 \(qs\simeq\operatorname{id}_P\)。在 \(X\) 上用 \(qH(x,t)\)，在 \(Y\) 上用常值同伦 \(j_Y(y)\)。对 \(a\in A\)，有
+	\[
+		qH(a,t)=q([a,t])=j_Y(f(a)),
+	\]
+	所以它们在整个参数区间内相容，并连续下降为 \(P\) 上的同伦。它从恒等映射开始，在 \(t=1\) 时等于 \(qs\)。
+
+	再检验 \(sq\simeq\operatorname{id}_D\)。在 \(X\)、\(Y\) 及柱上分别定义
+	\[
+		L(\ell_X(x),t)=H(x,t),\qquad
+		L(\ell_Y(y),t)=\ell_Y(y),
+	\]
+	\[
+		L([a,u],t)=[a,u+(1-u)t].
+	\]
+	在柱的 \(u=0\) 端，最后一式等于 \([a,t]=H(a,t)\)；在 \(u=1\) 端，始终等于 \(\ell_Y(f(a))\)。所以这些公式相容，并由\cref{g2:lem:quotient-interval}定义连续同伦。\(t=0\) 时它是恒等映射；\(t=1\) 时它在柱上等于 \(\ell_Y(f(a))=sq([a,u])\)，在 \(X,Y\) 上也等于 \(sq\)。两段同伦始终固定 \(Y\)。交换两端并反转柱参数，即得对称结论。
+\end{proof}
+
+\begin{corollary}[映射锥与相对商]\label{g2:cor:mapping-cone-relative-quotient}
+	设 \(A\ne\varnothing\) 是拓扑空间 \(X\) 的闭子空间，包含映射 \(i:A\hookrightarrow X\) 是余纤维化。则将 \(C_i=X\cup_A CA\) 中的整个锥 \(CA\) 压成一点所得到的自然映射
+	\[
+		C_i\longrightarrow X/A
+	\]
+	是同伦等价。
+\end{corollary}
+\begin{proof}
+	将\cref{g2:thm:cofibration-pushout}中的 \(Y\) 取为单点。双映射柱是向 \(X\) 附上以 \(A\times\{1\}\) 为顶点的锥；反转锥参数后与 \(C_i\) 同胚。普通推出是 \(X/A\)，比较映射恰好压掉整顶锥。
+\end{proof}
+
+\begin{proposition}[同伦附着映射给出相同的同伦型]\label{g2:prop:homotopic-attaching-maps}
+	设 \(A\) 是拓扑空间 \(X\) 的闭子空间，包含映射 \(i:A\hookrightarrow X\) 是余纤维化，\(I=[0,1]\)。若连续映射 \(f_0,f_1:A\to Y\) 通过 \(F:A\times I\to Y\) 同伦，则普通推出 \(Y\cup_{f_0}X\) 与 \(Y\cup_{f_1}X\) 同伦等价。可以选取在 \(Y\) 上为恒等映射的同伦等价及其同伦逆，并使逆同伦相对 \(Y\) 不动。
+\end{proposition}
+\begin{proof}
+	先在双映射柱 \(D_0=D(i,f_0)\)、\(D_1=D(i,f_1)\) 之间构造映射。令 \(T:D_0\to D_1\) 在 \(X,Y\) 上为恒等，在柱上为
+	\[
+		T([a,u]_0)=
+		\begin{cases}
+			[a,2u]_1,&0\le u\le1/2,\\
+			F(a,2-2u),&1/2\le u\le1.
+		\end{cases}
+	\]
+	它先沿 \(D_1\) 的柱走到 \(f_1(a)\)，再反向沿 \(F\) 走到 \(f_0(a)\)。因此在源柱的两个端点及分段交界处都相容，给出连续映射。反向映射 \(U:D_1\to D_0\) 也在 \(X,Y\) 上为恒等，在柱上为
+	\[
+		U([a,u]_1)=
+		\begin{cases}
+			[a,2u]_0,&0\le u\le1/2,\\
+			F(a,2u-1),&1/2\le u\le1.
+		\end{cases}
+	\]
+	这次先走 \(D_0\) 的柱，再正向沿 \(F\) 走到 \(f_1(a)\)。
+
+	复合 \(UT\) 在每条柱线上的路径，是原柱线后接 \(F(a,-)\) 再接其逆路径；这三段分别占原参数区间的 \(1/4,1/4,1/2\)。先把前两处分点连续移到 \(1/2,3/4\)，使往返的两段具有相同的时间长度。具体地，对 \(r\in I\) 取
+	\[
+		a_r=\frac{1+r}{4},\qquad b_r=\frac{2+r}{4},
+	\]
+	并令 \(\rho_r:I\to I\) 为将 \(0,a_r,b_r,1\) 依次送到 \(0,1/4,1/2,1\) 的分段线性递增映射。由于各相邻分点的间距始终为正，\((u,r)\mapsto\rho_r(u)\) 连续。用 \(UT([a,\rho_r(u)]_0)\) 替代原柱上的公式，便得到固定两端的重参数化同伦。
+
+	调整后，原柱线占前一半时间，后一半时间由等速的 \(F*\overline F\) 占据。将这一往返段的归一化参数记作 \(v\in I\)，用
+	\[
+		B(a,v,t)=
+		\begin{cases}
+			F(a,2(1-t)v),&0\le v\le1/2,\\
+			F(a,2(1-t)(1-v)),&1/2\le v\le1
+		\end{cases}
+	\]
+	将 \(F*\overline F\) 连续收缩为常值路径 \(f_0(a)\)。在完整柱参数上，前半段仍取 \([a,2u]_0\)，后半段取 \(B(a,2u-1,t)\)；两式在 \(u=1/2\) 处都等于 \(f_0(a)\)。消去往返段后，柱上的映射成为 \([a,\min\{2u,1\}]_0\)。最后用
+	\[
+		[a,u]_0\longmapsto
+		\left[a,\min\left\{\frac{2u}{1+r},1\right\}\right]_0,
+		\qquad r\in I,
+	\]
+	逐渐消去末尾的常值停留，得到 \(UT\simeq\operatorname{id}_{D_0}\)。以上公式始终固定柱的两个端点，在 \(X,Y\) 上取恒等映射，故由商拓扑与\cref{g2:lem:quotient-interval}给出连续同伦。对 \(TU\)，把同一构造中的 \(F(a,t)\) 换为 \(F(a,1-t)\)，即可得到 \(TU\simeq\operatorname{id}_{D_1}\)，同样固定 \(X,Y\)。
+
+	令 \(P_\nu=Y\cup_{f_\nu}X\)（\(\nu=0,1\)）。由\cref{g2:thm:cofibration-pushout}，比较映射 \(q_\nu:D_\nu\to P_\nu\) 有同伦逆 \(s_\nu\)，且这些映射与逆同伦均固定 \(Y\)。定义
+	\[
+		\Phi=q_1Ts_0:P_0\to P_1,\qquad
+		\Psi=q_0Us_1:P_1\to P_0.
+	\]
+	则
+	\[
+		\Psi\Phi=q_0U(s_1q_1)Ts_0
+		\simeq q_0UTs_0
+		\simeq q_0s_0
+		\simeq\operatorname{id}_{P_0},
+	\]
+	而交换下标得到 \(\Phi\Psi\simeq\operatorname{id}_{P_1}\)。每一步同伦都固定 \(Y\)，故所求的相对结论也成立。
+\end{proof}
+
+\begin{example}[直接商丢失了一条圆周]\label{g2:exm:pushout-not-homotopy-invariant}
+	设 \(S^0=\{-1,1\}\)，取图式 \(\{*\}\leftarrow S^0\to\{*\}\)，两条映射都为常值映射。其普通推出只有一个点；双映射柱却包含两条区间，两区间的左端点相互识别、右端点相互识别，所以同胚于 \(S^1\)。因此比较映射 \(S^1\to\{*\}\) 不是同伦等价：前者的基本群为 \(\mathbb Z\)，后者的基本群平凡。
+
+	这也直接展示普通推出不保持逐对象的同伦等价。比较下列两个图式，其中 \(\iota:S^0\to[-1,1]\) 为端点包含，\(c:[-1,1]\to\{*\}\) 为压缩到一点的映射，其他未标映射均为唯一可能的映射：
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			\{*\} \arrow[d,"\operatorname{id}"'] & S^0 \arrow[l] \arrow[r,hook,"\iota"] \arrow[d,"\operatorname{id}"] & {[-1,1]} \arrow[d,"c"] \\
+			\{*\} & S^0 \arrow[l] \arrow[r] & \{*\}
+		\end{tikzcd}
+	\]
+	三条竖箭头都是同伦等价，但普通推出分别为 \([-1,1]/\{-1,1\}\cong S^1\) 与单点。上行端点包含具有 HEP，所以其双映射柱与 \(S^1\) 同伦等价；下行双映射柱本身就是 \(S^1\)。普通商在下行把连接两端的两条路径同时压掉，正是丢失同伦信息的地方。
+\end{example}
+
+映射柱、同伦延拓及附着同伦不变性的几何论证，可参阅 \cite[第0章，The Homotopy Extension Property]{Hatcher2002}。本节所需的结论集中在一点：边界包含具有 HEP 时，指定在边界上的移动能够延到内部，带区间的粘合才可以与直接粘合互相比较。下一节将用闭球边界的显式回缩，把这一点推广到相对胞腔构造。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

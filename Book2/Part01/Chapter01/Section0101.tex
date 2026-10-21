@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 1.1 同伦与基本群的工作语言
-% 纲要位置：几何学计划纲要.md，第 1002 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 纲要位置：几何学计划纲要.md，第 1052 行。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,444 @@
 \section{同伦与基本群的工作语言}
 \label{g2:sec:0101}
 
-待撰写
+把一个圆沿圆周走一遍，与在圆内走一条闭合折线，看起来都只是回到出发点。区别在于：在圆盘中，闭合道路可以连续缩到一点；若只能沿圆周移动，绕行的次数便无法消去。基本群记录这种在指定空间中变形的障碍。计算时，一方面把空间拆成容易处理的部分，另一方面把道路提升到较简单的覆盖空间；这两种方法分别导向 van Kampen 定理和覆盖分类。
+
+\ProseParagraphBreak
+
+本节从连续映射和群论开始建立所需结论。拓扑空间不默认道路连通，覆盖也允许无限叶数；出现局部道路连通或半局部单连通条件时，将在相应结果中写明。道路拼接始终按实际行进次序书写：\(\alpha*\beta\) 先走 \(\alpha\)，后走 \(\beta\)；函数复合 \(g\circ f\) 则仍先作 \(f\)，后作 \(g\)。这一区别决定了纤维上的单值是右作用，而覆盖变换使用左作用。
 
 \subsection{映射同伦、基点变化和形变收缩}
 \label{g2:subsec:0101:01}
-待撰写
+若两张地图把一个空间放进另一个空间，逐点移动像的位置并不自动给出连续变形：空间变量与变形时间必须一起连续。以后粘合空间时，还常常要求某一部分全程保持不动，因此先把相对条件纳入定义。
+
+\begin{definition}[映射同伦与相对同伦]\label{g2:def:homotopy-relative}
+	设 \(X,Y\) 为拓扑空间，\(A\subset X\)，\(f,g:X\rightarrow Y\) 为连续映射，记 \(I=[0,1]\)。若存在连续映射
+	\[
+		H:X\times I\longrightarrow Y,\qquad H(x,0)=f(x),\quad H(x,1)=g(x),
+	\]
+	则称 \(f,g\)\term[tonglun]{同伦}[homotopic]，记 \(f\simeq g\)。如果还满足 \(H(a,s)=f(a)=g(a)\) 对一切 \(a\in A,s\in I\) 成立，则称它们\term[xiangduitonglun]{相对于 \(A\) 同伦}[homotopic relative to \(A\)]，记 \(f\simeq g\;(\operatorname{rel}A)\)。带基点映射 \(f,g:(X,x_0)\rightarrow(Y,y_0)\) 的\term[dingjidiantonglun]{定基点同伦}[based homotopy]，指相对于 \(\{x_0\}\) 的同伦。
+\end{definition}
+
+同伦是映射集合上的等价关系：恒定变形给出自反性，倒转时间给出对称性，把两个变形各放在时间的一半便给出传递性。后一构造在接缝处连续，因为两式在闭集 \(X\times[0,1/2]\) 和 \(X\times[1/2,1]\) 上的取值相同。下文所用的有限闭集粘合均依据这一事实：有限个闭子集覆盖定义域时，在各闭子集上连续且在交集上一致的映射能够粘成连续映射。
+
+\begin{definition}[道路与基本群]\label{g2:def:fundamental-group}
+	设 \(X\) 为拓扑空间，\(x,y,z\in X\)，\(I=[0,1]\)。从 \(x\) 到 \(y\) 的\term[daolu]{道路}[path]是满足 \(\alpha(0)=x,\alpha(1)=y\) 的连续映射 \(\alpha:I\rightarrow X\)。道路的定端点同伦是相对于 \(\partial I=\{0,1\}\) 的同伦。同一起终点的道路类记为 \([\alpha]\)。若 \(\alpha\) 从 \(x\) 到 \(y\)，\(\beta\) 从 \(y\) 到 \(z\)，定义
+	\[
+		(\alpha*\beta)(t)=
+		\begin{cases}
+			\alpha(2t),&0\leq t\leq1/2,\\
+			\beta(2t-1),&1/2\leq t\leq1,
+		\end{cases}
+		\qquad \bar\alpha(t)=\alpha(1-t).
+	\]
+	点 \(x\) 处的常值道路记为 \(e_x\)。起终点均为 \(x\) 的道路称为\term[huanlu]{环路}[loop]。所有这类环路的定端点同伦类，在乘法 \([\alpha][\beta]=[\alpha*\beta]\) 下组成的群称为 \(X\) 在 \(x\) 处的\term[jibenqun]{基本群}[fundamental group]，记为 \(\pi_1(X,x)\)。\symidx{\(\pi_1(X,x)\)：基本群}环路与 \(e_x\) 定端点同伦时，称它\term[linglun]{零伦}[null-homotopic]。
+\end{definition}
+
+这里需要验证道路类确实组成群。两个定端点同伦按道路参数各占一半，便给出拼接的良定义性。若 \(\rho:I\rightarrow I\) 连续且固定两端，则
+\[
+	(t,s)\longmapsto\alpha\bigl((1-s)t+s\rho(t)\bigr)
+\]
+说明 \(\alpha\circ\rho\) 与 \(\alpha\) 定端点同伦。三条道路的两种括号仅把行进时间分配成 \((1/4,1/4,1/2)\) 或 \((1/2,1/4,1/4)\)，都是同一条三段道路的这种重参数化，因此得到结合律。停顿的时间可以同样消去，故 \([e_x]\) 是单位。最后，公式
+\[
+	H(t,s)=\alpha\bigl((1-s)\min\{2t,2-2t\}\bigr)
+\]
+把 \(\alpha*\bar\alpha\) 收缩到 \(e_x\)，并全程固定两端；用于 \(\bar\alpha\) 又给出另一侧逆。因此 \([\bar\alpha]=[\alpha]^{-1}\)。同一计算还说明：从 \(x\) 到 \(y\) 的道路 \(\alpha,\beta\) 定端点同伦，当且仅当 \(\alpha*\bar\beta\) 零伦。
+
+\ProseParagraphBreak
+
+道路可以先后复合，但起终点必须相接。这些道路类合起来构成\term[jibenqunpai]{基本群胚}[fundamental groupoid]：对象是空间的点，从 \(x\) 到 \(y\) 的态射是相应道路类，每个态射都有逆。基本群正是只保留某个对象及其自态射所得的群。群胚的说法能够同时处理不同基点；本节主要使用下面明确的基点变换公式。
+
+\begin{proposition}[诱导同态与基点变化]\label{g2:prop:basepoint-change}
+	设 \(X,Y\) 为拓扑空间，\(f:X\rightarrow Y\) 连续，\(x\in X\)。则
+	\[
+		f_*:\pi_1(X,x)\longrightarrow\pi_1(Y,f(x)),\qquad [\alpha]\longmapsto[f\circ\alpha]
+	\]
+	是群同态，保持恒等映射与函数复合。若 \(y\in X\)，且 \(\gamma\) 是 \(X\) 中从 \(x\) 到 \(y\) 的道路，则
+	\[
+		c_\gamma:\pi_1(X,x)\longrightarrow\pi_1(X,y),\qquad
+		c_\gamma[\alpha]=[\bar\gamma*\alpha*\gamma]
+	\]
+	是同构，其逆为 \(c_{\bar\gamma}\)；对 \(z\in X\) 及从 \(y\) 到 \(z\) 的道路 \(\delta\)，有 \(c_{\gamma*\delta}=c_\delta\circ c_\gamma\)。若 \(g:X\rightarrow Y\) 连续，\(H:X\times[0,1]\rightarrow Y\) 是从 \(f\) 到 \(g\) 的同伦，并令 \(\lambda(s)=H(x,s)\)，则
+	\[
+		g_*=c_\lambda\circ f_*:\pi_1(X,x)\longrightarrow\pi_1(Y,g(x)).
+	\]
+	特别地，定基点同伦的映射诱导相同的同态。
+\end{proposition}
+\begin{proof}
+	把 \(f\) 复合在道路或同伦的后面，便得到相应道路或同伦；它与拼接的两段公式相容，所以 \(f_*\) 良定义且保持乘法。复合及恒等式逐点成立。对于 \(c_\gamma\)，两次使用相邻的 \(\gamma*\bar\gamma\simeq e_x\) 可得
+	\[
+		[\bar\gamma*\alpha*\gamma]\,[\bar\gamma*\beta*\gamma]
+		=[\bar\gamma*(\alpha*\beta)*\gamma].
+	\]
+	其逆与复合公式由同样的消去得到。
+
+	最后，把 \(H\) 限制到 \(\alpha(t)\) 上，得到方形 \((t,s)\mapsto H(\alpha(t),s)\)。其下边是 \(f\circ\alpha\)，上边是 \(g\circ\alpha\)，左右两边均为 \(\lambda\)。沿方形两条边界路线从左下角到右上角，得到 \((f\circ\alpha)*\lambda\) 与 \(\lambda*(g\circ\alpha)\)；方形内的直线变形把这两条路线定端点同伦。因此
+	\[
+		[g\circ\alpha]=[\bar\lambda*(f\circ\alpha)*\lambda]=c_\lambda f_*[\alpha],
+	\]
+	这也说明为什么普通同伦不能不加说明地给出 \(f_*=g_*\)：两者的目标基点可能不同。
+\end{proof}
+
+若换用另一条从 \(x\) 到 \(y\) 的道路 \(\gamma'\)，则 \(c_{\gamma'}c_\gamma^{-1}\) 是 \(\pi_1(X,y)\) 的一个内自同构。因而道路连通空间在不同基点的基本群互相同构，但通常没有与道路选择无关的指定同构。若该群为交换群，内自同构均为恒等，这一歧义才消失。
+
+\begin{definition}[同伦等价与形变收缩]\label{g2:def:homotopy-equivalence-retract}
+	设 \(X,Y\) 为拓扑空间，记 \(I=[0,1]\)。若有连续映射 \(f:X\rightarrow Y\)、\(h:Y\rightarrow X\)，满足 \(hf\simeq\operatorname{id}_X\) 和 \(fh\simeq\operatorname{id}_Y\)，则称 \(f\) 为\term[tonglundengjia]{同伦等价}[homotopy equivalence]，称 \(X,Y\) 具有相同同伦型。非空空间与一点同伦等价时，称它\term[kesuo]{可缩}[contractible]。
+
+	设 \(A\subset X\) 带子空间拓扑，\(i:A\hookrightarrow X\) 为包含。满足 \(r\circ i=\operatorname{id}_A\) 的连续映射 \(r:X\rightarrow A\) 称为\term[suohui]{缩回}[retraction]。若还存在同伦
+	\[
+		H:X\times I\longrightarrow X,\qquad H(x,0)=x,\quad H(x,1)=ir(x),\quad H(a,s)=a
+	\]
+	对所有 \(x\in X,a\in A,s\in I\) 成立，则称 \(A\) 为 \(X\) 的\term[xingbiansuosuo]{形变收缩核}[deformation retract]，称 \(H\) 为到 \(A\) 的\term[xingbianshousuo]{形变收缩}[deformation retraction]。本书使用的形变收缩固定 \(A\) 的每一点，文献也称之为强形变收缩。
+\end{definition}
+
+\begin{proposition}[基本群的同伦不变性]\label{g2:prop:pi-one-homotopy-invariance}
+	设 \(f:X\rightarrow Y\) 是拓扑空间间的同伦等价，\(x\in X\)。则 \(f_*:\pi_1(X,x)\rightarrow\pi_1(Y,f(x))\) 是同构。特别地，若 \(A\subset X\) 是形变收缩核，\(a\in A\)，则包含和缩回诱导互逆同构 \(\pi_1(A,a)\cong\pi_1(X,a)\)。可缩空间的所有基本群均平凡。
+\end{proposition}
+\begin{proof}
+	取同伦逆 \(h\)。由\cref{g2:prop:basepoint-change}，\(h_*f_*=(hf)_*\) 与恒等同态只差一个基点变化同构，故为同构，因而 \(f_*\) 单射。同一论证用于 \(h\)，说明以 \(f(x)\) 为基点时 \(h_*\) 也是单射。给定 \(b\in\pi_1(Y,f(x))\)，因 \(h_*f_*\) 满射，可取 \(a\) 使 \(h_*f_*(a)=h_*(b)\)；\(h_*\) 的单射性便给出 \(f_*(a)=b\)。形变收缩中的同伦固定 \(a\)，所以两复合直接诱导恒等同态。一点空间的基本群平凡，最后一项随之成立。
+\end{proof}
+
+\begin{example}[径向收缩]\label{g2:exm:radial-retraction}
+	设 \(n\geq1\)，\(\mathbb R^n\) 配标准范数，\(S^{n-1}=\{x:\lVert x\rVert=1\}\)。\(\mathbb R^n\setminus\{0\}\) 到 \(S^{n-1}\) 的形变收缩为
+	\[
+		H(x,s)=\left(1-s+\frac{s}{\lVert x\rVert}\right)x.
+	\]
+	系数始终为正，所以变形不经过原点；在单位球面上它恒等。同样，若 \(0<r<1<R\)，开圆环 \(\{z\in\mathbb C:r<|z|<R\}\) 形变收缩到单位圆。它与填满的圆盘不同：圆盘可沿 \((z,s)\mapsto(1-s)z\) 缩到中心，而这一变形会经过穿孔平面所删去的点。
+\end{example}
+
+\begin{definition}[单连通空间]\label{g2:def:simply-connected}
+	设 \(X\) 为非空拓扑空间。若 \(X\) 道路连通，且在某个 \(x\in X\) 处有 \(\pi_1(X,x)=\{1\}\)，则称 \(X\)\term[danliantong]{单连通}[simply connected]。
+\end{definition}
+
+由基点变化，单连通定义中的平凡性在任一基点处都成立。这一条件等价于任意两条同起终点的道路定端点同伦。可缩蕴含单连通，但反向结论并不属于基本群能决定的内容；后面的高维同伦与同调将记录基本群看不到的障碍。
 
 \subsection{van Kampen 及图的群展示}
 \label{g2:subsec:0101:02}
-待撰写
+要把空间分解变成群的计算，必须分别知道局部产生哪些环路、交叠部分给出哪些关系。先计算最基本的局部环路：圆上的绕行。这里直接用实数角度证明，不预先调用覆盖分类。
+
+\begin{proposition}[圆的基本群]\label{g2:prop:circle-fundamental-group}
+	设 \(S^1=\{z\in\mathbb C:|z|=1\}\)，以 \(1\) 为基点，记 \(I=[0,1]\)。对每条基点环路 \(\alpha:I\rightarrow S^1\)，存在唯一连续函数 \(\theta:I\rightarrow\mathbb R\)，满足 \(\theta(0)=0\) 和 \(\alpha(t)=\exp(2\pi\mathrm{i}\theta(t))\)。其终值 \(\theta(1)\) 为整数，且
+	\[
+		\pi_1(S^1,1)\longrightarrow\mathbb Z,\qquad[\alpha]\longmapsto\theta(1)
+	\]
+	是同构，正向环路 \(t\mapsto\exp(2\pi\mathrm{i}t)\) 对应 \(1\)。整数 \(\theta(1)\) 称为环路的\term[raoshu]{绕数}[winding number]。
+\end{proposition}
+\begin{proof}
+	每个圆点都有一段真开圆弧，其上存在连续实角。用这些圆弧的逆像覆盖紧区间，再把区间细分成有限小段，使每段的像落在一条圆弧内。在第一段选择起值为零的角度，随后各段加上唯一整数，使接点处角度相同，便得到 \(\theta\)。两种选择的差为连续整数值函数，故在连通区间上恒定；起值相同使差恒为零。由于 \(\alpha(1)=1\)，终值是整数。
+
+	为证明同伦不变性，设 \(H:I\times I\rightarrow S^1\) 是基点环路同伦。若两个时间 \(s,s'\) 足够接近，则由紧方形上的一致连续性，\(H(t,s')/H(t,s)\) 对全部 \(t\) 都避开 \(-1\)。它有取值于 \((-1/2,1/2)\) 的连续实角 \(\eta(t)\)，且两端均为零。于是两条环路的实角提升相差 \(\eta\)，终值相同。把变形时间作有限细分，即得整个同伦中绕数不变。
+
+	若两个实角提升 \(\theta_0,\theta_1\) 具有同一终值 \(k\)，则
+	\[
+		(t,s)\longmapsto\exp\bigl(2\pi\mathrm{i}((1-s)\theta_0(t)+s\theta_1(t))\bigr)
+	\]
+	是固定基点的同伦。因此绕数也完全决定道路类。拼接时，第二段的实角从第一段终值接着增加，故绕数相加；环路 \(t\mapsto\exp(2\pi\mathrm{i}kt)\) 实现每个整数 \(k\)。
+\end{proof}
+
+两个群 \(G_1,G_2\) 的\term[ziyouji]{自由积}[free product] \(G_1*G_2\)，可以用交替的非单位字母组成的有限约化字构造；相邻同属一个群的字母相乘，乘积为单位时删去。它的泛性质是：给出到群 \(K\) 的同态 \(G_1\rightarrow K,G_2\rightarrow K\)，恰好给出唯一同态 \(G_1*G_2\rightarrow K\)。相交部分的环路在两个群中各出现一次，下一定理说明应当把这两份识别。
+
+\begin{theorem}[van Kampen 定理]\label{g2:thm:van-kampen}
+	设拓扑空间 \(X=U\cup V\)，其中 \(U,V\) 是道路连通开集，\(W=U\cap V\) 非空且道路连通，固定 \(x_0\in W\)。记包含诱导的同态为
+	\[
+		i_U:\pi_1(W,x_0)\longrightarrow\pi_1(U,x_0),\qquad
+		i_V:\pi_1(W,x_0)\longrightarrow\pi_1(V,x_0).
+	\]
+	则包含给出的满同态
+	\[
+		\Phi:\pi_1(U,x_0)*\pi_1(V,x_0)\longrightarrow\pi_1(X,x_0)
+	\]
+	的核为所有 \(i_U(w)i_V(w)^{-1}\) 所生成的正规子群 \(N\)，其中 \(w\in\pi_1(W,x_0)\)。因而
+	\[
+		\pi_1(X,x_0)\cong
+		\frac{\pi_1(U,x_0)*\pi_1(V,x_0)}{\langle\!\langle i_U(w)i_V(w)^{-1}:w\in\pi_1(W,x_0)\rangle\!\rangle}.
+	\]
+	等价地，这个群是两同态 \(i_U,i_V\) 的推出。
+\end{theorem}
+
+van Kampen 定理用交集中的环路给出两组生成元之间的全部关系。\footnote{Egbertus Rudolf van Kampen（1908--1942），荷兰数学家，研究拓扑与拓扑群。}定理及图的计算可参看 \cite[第1.2、1.A节]{Hatcher2002}。后面的证明把生成性与关系的完备性分开：细分环路得到生成元，细分环路之间的同伦则确定全部关系。推出的含义由下图表示；对任意群 \(K\)，若同态 \(\varphi_U:\pi_1(U,x_0)\rightarrow K\)、\(\varphi_V:\pi_1(V,x_0)\rightarrow K\) 在 \(\pi_1(W,x_0)\) 上一致，就存在唯一经过 \(\pi_1(X,x_0)\) 的同态 \(\varphi\)。
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		\pi_1(W,x_0) \arrow[r,"i_U"] \arrow[d,"i_V"'] & \pi_1(U,x_0) \arrow[d] \arrow[ddr,bend left=20,"\varphi_U"] & \\
+		\pi_1(V,x_0) \arrow[r] \arrow[drr,bend right=20,"\varphi_V"'] & \pi_1(X,x_0) \arrow[dr,dashed,"\exists!\,\varphi"] & \\
+		& & K
+	\end{tikzcd}
+\]
+\begin{proof}
+	先证明 \(\Phi\) 满射。对基点环路 \(\alpha\)，把参数区间细分，使各小段的像落在 \(U\) 或 \(V\) 内。这样的细分存在：\(\alpha^{-1}(U),\alpha^{-1}(V)\) 是紧区间的开覆盖，可以取比其 Lebesgue 数更小的网格。合并相邻的同色段以后，每个换色接点 \(x_j\) 都在 \(W\)。在 \(W\) 中选从 \(x_0\) 到 \(x_j\) 的道路 \(h_j\)，并在首尾取常值道路。若第 \(j\) 段为 \(\alpha_j\)，则
+	\[
+		\ell_j=h_{j-1}*\alpha_j*\bar h_j
+	\]
+	是完全位于 \(U\) 或 \(V\) 的基点环路。相邻的 \(\bar h_j*h_j\) 可消去，所以 \([\alpha]=[\ell_1]\cdots[\ell_m]\)，得到满射。
+
+	所有规定的关系显然在 \(X\) 中成立。记商群为 \(Q=(\pi_1(U,x_0)*\pi_1(V,x_0))/N\)，还需证明两个在 \(X\) 中同伦的分解在 \(Q\) 中相等。设它们分别由有限个 \(U\) 或 \(V\) 中的环路拼成，\(F:I^2\rightarrow X\) 是拼接环路之间固定基点的同伦。将方形细分成有限矩形网格，使每个闭小矩形都映入 \(U\) 或 \(V\)，并让下、上边的网格包含原环路分段的接点。存在这种网格仍由 \(F^{-1}(U),F^{-1}(V)\) 的 Lebesgue 数保证；先取细网格，再加入有限条所需分界线即可。
+
+	给每个小矩形指定一个容纳其像的开集，称作它的颜色。对每个顶点 \(v\)，考察所有邻接矩形的颜色；在方形上、下边还把原环路段的颜色列入。若只有颜色 \(U\)，就在 \(U\) 中选道路 \(h_v:x_0\rightarrow F(v)\)；只有 \(V\) 时在 \(V\) 中选；两色都有时，\(F(v)\in W\)，就在 \(W\) 中选。位于左右边及原环路接点上的顶点满足 \(F(v)=x_0\)，一律取 \(h_v=e_{x_0}\)。道路连通条件正是在这里保证这些选择存在。
+
+	对从 \(v\) 到 \(w\) 的有向网格边 \(e\)，用
+	\[
+		L(e)=[h_v*(F|_e)*\bar h_w]\in Q
+	\]
+	记录它。这里将边线性参数化为区间；可以使用任何邻接矩形的颜色来理解括号中的环路。若边的两侧颜色不同，则边像及两端所选道路都在 \(W\) 中，定义 \(N\) 的关系恰好保证两种理解在 \(Q\) 中相同。反向边给出 \(L(\bar e)=L(e)^{-1}\)。
+
+	每个小矩形的有向边界在其指定开集中零伦，因为 \(F\) 本身给出了填充。其四边附带的 \(h_v\) 依次消去，故这四个 \(L(e)\) 的乘积为单位。现在从方形下边的左到右路线开始，逐个跨过小矩形，把路线推到上边；每次用一个小矩形的另两边替换原两边，都因刚才的边界关系而不改变 \(Q\) 中的乘积。路线中可能出现的相邻反向边也相消。左右外边的像恒为基点，所贡献的元素为单位，因此下边与上边给出相同元素。
+
+	沿下边的每一原始环路段，所有 \(h_v\) 都位于该段的指定开集，且段首尾的 \(h_v\) 为常值。于是这一段各网格边的乘积正是原环路在对应因子群中的类；上边亦然。因此两个原分解在 \(Q\) 中相同，\(Q\rightarrow\pi_1(X,x_0)\) 单射。商群构造同时给出所述推出泛性质。
+\end{proof}
+
+交集的道路连通不能省去。例如，用两条真开圆弧覆盖 \(S^1\)，每条圆弧的基本群都平凡，但交集有两个道路分支。若仍套用上式便会错得 \(\pi_1(S^1)=1\)。此时需要保留多个基点的群胚版本，或者改用满足本定理条件的分解。
+
+\begin{definition}[图与生成树]\label{g2:def:graph-tree}
+	由离散顶点集与若干闭区间的互不相交并，在每个区间两端指定顶点并粘合，得到的空间称为\term[tu]{图}[graph]；区间内部称为开边，允许自环及重边。采用弱拓扑：子集闭当且仅当其在顶点集的原像闭，且在每条闭区间的原像闭。只有有限个顶点和边时称为有限图。由若干顶点及完整闭边组成的子空间称为子图。连通且没有有限简单回路的子图称为\term[shu]{树}[tree]；这里简单回路允许单条自环，除起终点外不重复顶点。包含连通图全部顶点的树称为\term[shengchengshu]{生成树}[spanning tree]。
+\end{definition}
+
+图的两个顶点能否由有限边道路连接，给出了顶点集的等价关系。把每一等价类连同以其中顶点为端点的所有开边放在一起，在每条闭边上的原像不是整个区间就是空集，因此这一部分及其补集在弱拓扑中都开。连通图于是只有一个这样的分支，任意两顶点之间都有有限边道路。一棵有限树中，删去道路的往返部分后，两顶点间的不重复边道路唯一：若有两条，就能从首次分离至再次相遇处找出回路。不断删去不含指定根顶点的末端边，说明有限树可缩。也可给每条边长度 \(1\)，把每一点沿到根的唯一弧移动其距离的 \(s\) 倍，得到固定根的连续收缩。
+
+\begin{theorem}[有限图的自由群展示]\label{g2:thm:graph-free-group}
+	设 \(\Gamma\) 是非空有限连通图，顶点数为 \(v\)，边数为 \(e\)，选根顶点 \(x_0\) 和生成树 \(T\)。给每条不属于 \(T\) 的边 \(a\) 选定方向，记 \(p_u,p_w\) 分别为树中从 \(x_0\) 到 \(a\) 的起点 \(u\)、终点 \(w\) 的唯一不重复边道路。则
+	\[
+		\pi_1(\Gamma,x_0)
+		=\left\langle [p_u*a*\bar p_w]\ (a\notin T)\ \middle|\ \varnothing\right\rangle
+		\cong F_{e-v+1},
+	\]
+	其中 \(F_r\) 为 \(r\) 个生成元的自由群，\(F_0=\{1\}\)。此外，\(\Gamma/T\) 是 \(e-v+1\) 个圆的一点并，商映射 \(\Gamma\rightarrow\Gamma/T\) 是同伦等价。
+\end{theorem}
+\begin{proof}
+	从一个顶点开始，只要还有未加入的顶点，就沿一条连接现有顶点与新顶点的边扩张。有限连通性使这一过程到达全部顶点，且不会形成回路，所以得到生成树；每加一顶点恰加一边，树有 \(v-1\) 条边。
+
+	记 \(q:\Gamma\rightarrow\Gamma/T\)。树被压成一点后，每条其余边的两端都成为该点，所以商是 \(r=e-v+1\) 个圆的一点并 \(R_r\)。定义 \(s:R_r\rightarrow\Gamma\)，使第 \(a\) 个圆依次沿 \(p_u,a,\bar p_w\) 行进，各占三分之一时间；公共点映到 \(x_0\)。各段在端点一致，故映射连续。\(qs\) 在每个圆上先停顿、再绕行、再停顿，因而重参数化便给出 \(qs\simeq\operatorname{id}_{R_r}\)。
+
+	还要说明压缩树没有改变 \(\Gamma\) 的同伦型。取上述沿唯一弧到 \(x_0\) 的收缩 \(h_t:T\rightarrow T\)，并将树内道路参数化为 \(p_v(\tau)=h_{1-\tau}(v)\)。对非树边 \(a:[0,1]\rightarrow\Gamma\)，在时刻 \(t\) 把它改走成三段：从 \(h_t(u)\) 沿树回到 \(u\)，沿 \(a\) 到 \(w\)，再沿树到 \(h_t(w)\)。具体定义
+	\[
+		H(a(x),t)=
+		\begin{cases}
+			h_{t-3x}(u),&0\leq x\leq t/3,\\
+			a\bigl((x-t/3)/(1-2t/3)\bigr),&t/3\leq x\leq1-t/3,\\
+			h_{3x-3+t}(w),&1-t/3\leq x\leq1.
+		\end{cases}
+	\]
+	中段分母至少为 \(1/3\)，三式在各自的闭区域上连续且在接缝处相同；这也涵盖 \(t=0\) 时两条树内尾段消失的情形。在树上定义 \(H(v,t)=h_t(v)\)，与所有边端点的公式一致。有限图是有限个闭边与顶点的并，故这些公式粘成连续同伦；它在 \(t=0\) 为恒等，在 \(t=1\) 为 \(sq\)，并始终固定 \(x_0\)。
+
+	最后计算 \(R_r\)。当 \(r=0\) 时它是一点；当 \(r=1\) 时由\cref{g2:prop:circle-fundamental-group}得到 \(\mathbb Z\)。对于较多圆，取第一个圆连同其他圆在公共点附近的小开弧为 \(U\)，取其他圆连同第一个圆的小开弧为 \(V\)。\(U\) 收缩到第一个圆，\(V\) 收缩到其余圆的一点并，交集为可缩的有限星状邻域。\cref{g2:thm:van-kampen}给出 \(\pi_1(R_r)\cong\mathbb Z*\pi_1(R_{r-1})\)，归纳得到自由群。\(q\) 把题中每条环路送到对应圆的正向生成元，因此也得到了所写的具体展示。
+\end{proof}
+
+\begin{example}[三个顶点间的两种计数]\label{g2:exm:graph-computation}
+	三角形图有 \(v=e=3\)，删去任意一边便得到生成树，故基本群为 \(F_1=\mathbb Z\)。若在其中两顶点间再加一条边，则 \(e=4,v=3\)，基本群为 \(F_2\)，两条非树边分别给出自由生成元。另一方面，立方体的棱图有 \(e=12,v=8\)，所以基本群为 \(F_5\)；这里仅取棱，不填入六个方形面。填面会加入关系，不能只按图的边数继续计算。
+\end{example}
+
+\begin{lemma}[图中紧子集的有限控制]\label{g2:lem:graph-compact-control}
+	设 \(\Gamma\) 为采用\cref{g2:def:graph-tree}中弱拓扑的图，\(K\subset\Gamma\) 是紧子集。则 \(K\) 包含在某个有限子图中。特别地，环路与两个环路之间的同伦，其像均包含在有限子图中。
+\end{lemma}
+\begin{proof}
+	若 \(K\) 与无限多条开边相交，从其中可数条不同开边各选一点 \(x_j\in K\)。集合 \(D=\{x_j\}\) 的任意子集，在每条闭边的原像至多为一个内点，在顶点集的原像为空，因而依弱拓扑均为闭集。这说明 \(D\) 是 \(\Gamma\) 的闭离散子集。于是它也是紧空间 \(K\) 的闭子集，故紧；但无限离散空间的单点开覆盖没有有限子覆盖，矛盾。若 \(K\) 含无限多顶点，取可数多个顶点也会得到相同矛盾，因为它们的任意子集在每条闭边的原像至多为两端点。因此 \(K\) 只遇到有限条开边和有限个顶点，把这些边的端点一并加入便得到所需有限子图。\(I\) 和 \(I^2\) 紧，连续像紧，最后一项随之成立。
+\end{proof}
+
+\begin{proposition}[一般连通图的自由基]\label{g2:prop:general-graph-free-group}
+	设 \(\Gamma\) 是非空连通图，采用由离散顶点集和各闭边粘合所得的弱拓扑，不要求有限或局部有限。则 \(\Gamma\) 有生成树 \(T\)。固定顶点 \(x_0\)，给每条非树边 \(a:u\rightarrow w\) 选定方向，并记 \(p_v\) 为 \(T\) 中从 \(x_0\) 到顶点 \(v\) 的唯一不重复边道路，则 \(\pi_1(\Gamma,x_0)\) 是以所有 \([p_u*a*\bar p_w]\) 为自由基的自由群。
+\end{proposition}
+\begin{proof}
+	在包含全部顶点的无回路子图中，按包含关系应用 Zorn 引理。全序链的并仍无回路，因为每个回路只有有限条边，若它在并中出现，就已在链的某一项中出现。因此存在极大无回路子图 \(T\)。若它不连通，在 \(\Gamma\) 中取一条连接两个分支的有限边道路，其中有一条边的两端分属不同分支。把这条边加入 \(T\) 不产生回路，与极大性矛盾，故 \(T\) 是生成树。
+
+	给定有限子图 \(K\)，把根 \(x_0\) 及从根到 \(K\) 各顶点的有限条树内道路一并加入，得到有限连通子图 \(K'\)。这些树内道路连同根组成 \(T'\)，且 \(K'\cap T=T'\)：若 \(K\) 中一条边属于 \(T\)，两端至根道路的并已包含这条唯一的树内连接边。因此 \(T'\) 是 \(K'\) 的生成树，有限图定理给出的自由基恰是 \(K'\) 中的非树边所对应的那部分指定环路。
+
+	由\cref{g2:lem:graph-compact-control}，每条基点环路的像都落在某个有限子图中，将它扩成上述 \(K'\)，便知指定环路生成全部基本群。若这些生成元之间存在一个非空约化字关系，取其所代表环路的一次零伦；该同伦的紧像也在有限子图中，再加入字中各条边及其树内道路，仍可扩成上述 \(K'\)。这就在有限图 \(K'\) 的自由基之间产生非空约化字关系，与\cref{g2:thm:graph-free-group}矛盾。故没有额外关系。自由群元素仍由有限字表示，并不允许无限乘积。
+\end{proof}
 
 \subsection{覆盖的提升与分类}
 \label{g2:subsec:0101:03}
-待撰写
+在圆上，一条道路可以不断积累角度；若把角度记在实线上，绕行就成为实线上普通的移动。覆盖把这一构造推广到其他空间：局部看来，每一层都与底空间相同，只有沿较长道路继续移动以后，才可能落到另一层。
+
+\begin{definition}[覆盖与提升]\label{g2:def:covering-space}
+	设 \(E,X\) 为拓扑空间。若连续满射 \(p:E\rightarrow X\) 满足：每个 \(x\in X\) 都有开邻域 \(U\)，使
+	\[
+		p^{-1}(U)=\coprod_{\lambda\in\Lambda}U_\lambda,
+	\]
+	其中 \(U_\lambda\) 是两两不交的开集，且每个 \(p|_{U_\lambda}:U_\lambda\rightarrow U\) 都是同胚，则称 \(p\) 为\term[fugai]{覆盖}[covering map]，称 \(U\) 为均匀覆盖邻域，\(U_\lambda\) 为其上的叶。点 \(x\) 上的\term[xianwei]{纤维}[fiber]是 \(p^{-1}(x)\)；叶数指纤维基数，允许无限。\symidx{\(p^{-1}(x)\)：覆盖纤维}给定拓扑空间 \(Y\) 及连续映射 \(f:Y\rightarrow X\)，满足 \(p\widetilde f=f\) 的连续映射 \(\widetilde f:Y\rightarrow E\) 称为 \(f\) 的\term[tisheng]{提升}[lift]。
+
+	对同一底空间上的两个覆盖 \(p_i:E_i\rightarrow X\)（\(i=1,2\)），满足 \(p_2\circ r=p_1\) 的同胚 \(r:E_1\rightarrow E_2\) 称为\term[fugaitonggou]{覆盖同构}[isomorphism of coverings]。若指定 \(x_0\in X\) 及 \(e_i\in p_i^{-1}(x_0)\)，保持基点还要求 \(r(e_1)=e_2\)。
+\end{definition}
+
+\begin{theorem}[道路提升与同伦提升]\label{g2:thm:covering-lifts}
+	设 \(p:E\rightarrow X\) 为覆盖，\(I=[0,1]\)。每条道路 \(\alpha:I\rightarrow X\) 以及每个 \(e_0\in p^{-1}(\alpha(0))\)，唯一确定从 \(e_0\) 出发的提升道路 \(\widetilde\alpha\)。更一般地，对任意拓扑空间 \(Y\)、连续同伦 \(H:Y\times I\rightarrow X\) 和连续初始提升 \(\widetilde f_0:Y\rightarrow E\)，其中 \(p\widetilde f_0(y)=H(y,0)\)，存在唯一连续提升
+	\[
+		\widetilde H:Y\times I\longrightarrow E,\qquad
+		p\widetilde H=H,\quad \widetilde H(y,0)=\widetilde f_0(y).
+	\]
+	尤其，定端点同伦的道路在指定同一起始提升点后，其提升终点相同，且提升道路也定端点同伦。
+\end{theorem}
+\begin{proof}
+	对一条道路，用均匀覆盖邻域的逆像覆盖 \(I\)，取有限细分，使每段像位于一个这样的邻域。从 \(e_0\) 所在叶开始，逐段用 \(p\) 在相应叶上的逆映射提升；每段终点指定下一段的叶，闭区间粘合保证连续。若两条提升在某时刻相同，在一个均匀覆盖邻域中就只能同时走同一叶；若不相同，便位于不同叶，在附近仍不同。因此相等的时间集合及其补集都开，由 \(I\) 连通和起点相同，得到唯一性。
+
+	对一般 \(Y\)，先对每个 \(y\) 沿竖直道路 \(t\mapsto H(y,t)\) 作上述提升，得到唯一候选 \(\widetilde H\)。关键是证明它随 \(y\) 连续。固定 \(y_0\)，选 \(0=t_0<\cdots<t_m=1\) 和均匀覆盖邻域 \(U_j\)，使 \(H(\{y_0\}\times[t_{j-1},t_j])\subset U_j\)。因为这是一条紧线段，对每个 \(j\) 可取 \(y_0\) 的开邻域 \(W_j\)，使 \(H(W_j\times[t_{j-1},t_j])\subset U_j\)。具体地，先在紧线段上取有限个乘积开邻域，再交其 \(Y\) 方向的邻域即可。
+
+	取这些 \(W_j\) 的交，并缩小它，使 \(\widetilde f_0\) 落在 \(U_1\) 上指定的一叶中，于是第一条带上的提升等于该叶的逆映射与 \(H\) 的复合，因而连续。在 \(t_1\) 处再缩小邻域，使已得终值落在 \(U_2\) 上指定的一叶中，便可连续延长到第二条带。有限次重复后，得到某个 \(W\times I\) 上的连续提升；在接缝处由初值一致而粘合。它与逐点定义的候选由道路唯一性相同。由于 \(y_0\) 任意，\(\widetilde H\) 连续；唯一性仍逐条竖直道路成立。
+
+	道路同伦的两端提升都是纤维中的连续道路。纤维在子空间拓扑下离散，区间连通，所以这两条端点道路恒定，得到最后的结论。
+\end{proof}
+
+提升一般映射时，需要在定义域的小邻域内连接点；构造万有覆盖时，还要控制底空间的小环路。两种条件分别如下。
+
+\begin{definition}[局部道路连通与半局部单连通]\label{g2:def:local-covering-conditions}
+	设 \(X\) 为拓扑空间。如果每一点都有由道路连通开集构成的邻域基，则称 \(X\)\term[jubudaoluliantong]{局部道路连通}[locally path-connected]。如果每个 \(x\in X\) 都有开邻域 \(U\)，使包含诱导的 \(\pi_1(U,x)\rightarrow\pi_1(X,x)\) 为零同态，则称 \(X\)\term[banjubudanliantong]{半局部单连通}[semilocally simply connected]。若空间还局部道路连通，可把此处的 \(U\) 选成道路连通开邻域；这时零同态条件对 \(U\) 中任意基点都成立。
+\end{definition}
+
+\begin{proposition}[覆盖中的基本群与提升判据]\label{g2:prop:covering-lift-criterion}
+	设 \(p:E\rightarrow X\) 为覆盖，\(e_0\in E\)，\(x_0=p(e_0)\)。则 \(p_*:\pi_1(E,e_0)\rightarrow\pi_1(X,x_0)\) 单射，其像由那些从 \(e_0\) 提升后仍闭合的基点环路类组成。
+
+	进一步，设 \(Y\) 道路连通且局部道路连通，\(y_0\in Y\)，\(f:(Y,y_0)\rightarrow(X,x_0)\) 连续。存在保持所给基点的提升 \(\widetilde f:(Y,y_0)\rightarrow(E,e_0)\)，当且仅当
+	\[
+		f_*\pi_1(Y,y_0)\subset p_*\pi_1(E,e_0).
+	\]
+	若存在，提升唯一。更一般地，对任意连通拓扑空间 \(Z\) 及连续映射 \(g:Z\rightarrow X\)，若其两个提升 \(\widetilde g_1,\widetilde g_2:Z\rightarrow E\) 在一点相同，就处处相同。
+\end{proposition}
+\begin{proof}
+	若 \(E\) 中的基点环路投影后零伦，提升该零伦便把它变到常值环路，故 \(p_*\) 单射。闭合提升的投影显然属于像；反之，若一条底环路与某个闭合提升的投影定端点同伦，同伦提升保证它的提升也闭合，故像的描述准确。
+
+	若 \(\widetilde f\) 存在，\(f_*=p_*\widetilde f_*\) 立即给出必要性。反过来，对每个 \(y\in Y\)，选从 \(y_0\) 到 \(y\) 的道路 \(\eta\)，定义 \(\widetilde f(y)\) 为 \(f\eta\) 从 \(e_0\) 提升后的终点。若换成 \(\eta'\)，则 \(f(\eta*\bar\eta')\) 的类属于 \(p_*\pi_1(E,e_0)\)，所以其提升闭合。逆向走提升道路的唯一性说明 \(f\eta,f\eta'\) 的提升终点相同，定义因而与选择无关。
+
+	为证明连续性，在 \(f(y)\) 附近取均匀覆盖邻域 \(U\)。局部道路连通性使 \(y\) 有道路连通开邻域 \(W\subset f^{-1}(U)\)。从 \(y_0\) 先到 \(y\)，再在 \(W\) 内去到任意 \(z\)，说明 \(\widetilde f|_W=(p|_{\widetilde U})^{-1}f|_W\)，其中 \(\widetilde U\) 为包含 \(\widetilde f(y)\) 的叶，因此连续。
+
+	最后，对同一映射的两个提升，在每个均匀覆盖邻域内，它们若落在同一叶便相等，若在不同叶便不同。所以相等点集及其补集均开。在连通定义域中，只要相等点集非空，它就等于全空间。
+\end{proof}
+
+提升判据的图形如下。虚线存在的障碍是环路能否闭合提升，而非逐点能否选到某个原像；局部道路连通性则保证由道路终点构造出来的选择连续。
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		& (E,e_0) \arrow[d,"p"] \\
+		(Y,y_0) \arrow[r,"f"'] \arrow[ur,dashed,"\widetilde f"] & (X,x_0)
+	\end{tikzcd}
+\]
+
+要构造一个让所有环路都能展开的覆盖，需要保证足够小的底环路在整个空间中已经零伦。这比小邻域本身单连通弱。
+
+\begin{theorem}[道路类万有覆盖]\label{g2:thm:universal-cover}
+	设 \(X\) 非空、道路连通、局部道路连通且半局部单连通，固定 \(x_0\in X\)。令
+	\[
+		\widetilde X=\{[\alpha]:\alpha\text{ 是从 }x_0\text{ 出发的道路}\},\qquad
+		p([\alpha])=\alpha(1),
+	\]
+	其中仅把同终点且定端点同伦的道路识别。对道路连通开集 \(U\subset X\)，要求对每个 \(u\in U\)，包含诱导的 \(\pi_1(U,u)\rightarrow\pi_1(X,u)\) 为零；若 \(\alpha(1)\in U\)，取
+	\[
+		B(\alpha,U)=\{[\alpha*\eta]:\eta\text{ 位于 }U,\ \eta(0)=\alpha(1)\}.
+	\]
+	这些集合构成 \(\widetilde X\) 的一个拓扑基，使 \(p:\widetilde X\rightarrow X\) 成为单连通覆盖，称为 \(X\) 的\term[wanyoufugai]{万有覆盖}[universal cover]。其基点取 \(\widetilde x_0=[e_{x_0}]\)。对任意带基点连通覆盖 \(q:(E,e_0)\rightarrow(X,x_0)\)，存在唯一保持基点的覆盖映射 \(\widetilde X\rightarrow E\) 与到底空间的投影相容。
+\end{theorem}
+\begin{proof}
+	先说明小开集足够多。给定 \(x\) 的任意开邻域 \(O\)，先取半局部单连通条件中的邻域，再由局部道路连通性在它与 \(O\) 的交内取道路连通开邻域 \(U\)。其基本群到 \(X\) 的同态因子化经过零同态，故也为零；换基点只作共轭，不改变这一性质。因此定理中的 \(U\) 构成 \(X\) 的开基。
+
+	固定这样的 \(U\)。\(p:B(\alpha,U)\rightarrow U\) 满射，因为 \(U\) 道路连通；它也单射，因为 \(U\) 中同起终点的两条道路，其差环路在 \(X\) 中零伦。若 \([\beta]\in B(\alpha,U)\)，则附加或消去一条 \(U\) 内的道路可得 \(B(\beta,U)=B(\alpha,U)\)。若 \([\beta]\) 同时属于两个基本集合，在 \(\beta(1)\) 处取包含于两开集交的小开集 \(W\)，就有 \(B(\beta,W)\) 包含在二者交内，故这些集合确为拓扑基。该基还说明 \(p|_{B(\alpha,U)}\) 与其逆均连续；固定 \(U\) 时各个 \(B(\alpha,U)\) 要么相同要么不交，且铺满 \(p^{-1}(U)\)。因此 \(p\) 是覆盖。\(X\) 道路连通也保证 \(p\) 满射。
+
+	对从 \(x_0\) 出发的道路 \(\alpha\)，令 \(\alpha_t(s)=\alpha(ts)\)。则 \(t\mapsto[\alpha_t]\) 是 \(\alpha\) 从 \(\widetilde x_0\) 出发的提升：在任意小时间段内，\(\alpha\) 的尾段位于一个上述 \(U\)，因此道路类始终落在同一基本集合，连续性由该集合与 \(U\) 的同胚给出。这条提升连接 \(\widetilde x_0\) 与 \([\alpha]\)，故 \(\widetilde X\) 道路连通。
+
+	若 \(\alpha\) 为 \(x_0\) 处环路，上述提升终点是 \([\alpha]\)；它闭合当且仅当 \([\alpha]=[e_{x_0}]\)。由\cref{g2:prop:covering-lift-criterion}，\(p_*\) 单射，且像只含单位，因此 \(\widetilde X\) 单连通。
+
+	对覆盖 \(q:E\rightarrow X\)，底空间局部道路连通使 \(E\) 也局部道路连通；连通且局部道路连通的空间道路连通，因为其道路分支是开集。提升判据把 \(p\) 唯一提升为保持基点的 \(r:\widetilde X\rightarrow E\)。它满射：对任意 \(e\in E\)，从 \(e_0\) 到 \(e\) 选道路，再把其投影提升到 \(\widetilde X\)，由提升唯一性可知终点经 \(r\) 映到 \(e\)。在 \(X\) 中取同时被 \(p,q\) 均匀覆盖的道路连通小邻域；\(r\) 把 \(p\) 的每一叶同胚映到 \(q\) 的一叶，因此 \(r\) 本身也是覆盖。
+\end{proof}
+
+半局部单连通性是存在单连通覆盖的必要条件：若有这样的覆盖，在任意均匀覆盖邻域 \(U\) 中的基点环路都可在一叶内闭合提升，而在单连通覆盖中零伦；投影后，它就在 \(X\) 中零伦。例如，平面中以 \((1/n,0)\) 为圆心、\(1/n\) 为半径的圆的并，在共同点 \(0\) 的任意邻域内都含完整的小圆。把其他圆压到 \(0\)、保留这一小圆，得到到该圆的连续缩回：在 \(0\) 处它不增大到 \(0\) 的距离，在保留圆的其他点附近则为恒等。因此小圆环路在整个空间中不零伦。这一空间不是半局部单连通，不能用上述构造得到单连通覆盖。
+
+\begin{theorem}[连通覆盖的子群分类]\label{g2:thm:covering-classification}
+	设 \(X\) 非空、道路连通、局部道路连通且半局部单连通，\(x_0\in X\)，\(G=\pi_1(X,x_0)\)。带基点连通覆盖 \(p:(E,e_0)\rightarrow(X,x_0)\) 的保持基点同构类，与 \(G\) 的子群一一对应，所对应的子群为
+	\[
+		H=p_*\pi_1(E,e_0)\subset G.
+	\]
+	任意子群 \(H\leq G\) 可由以下道路类空间实现。令 \(\widetilde X\) 为以 \(x_0\) 为起点的定端点同伦道路类所构成的万有覆盖；对从 \(x_0\) 出发的道路，规定
+	\[
+		\alpha\sim_H\beta
+		\quad\Longleftrightarrow\quad
+		\alpha(1)=\beta(1),\qquad[\alpha*\bar\beta]\in H.
+	\]
+	在 \(X_H=\widetilde X/{\sim_H}\) 上采用商拓扑，\(p_H([\alpha]_H)=\alpha(1)\) 是连通覆盖，其指定基点为 \([e_{x_0}]_H\)。不指定覆盖基点时，同构类对应于 \(G\) 的子群的共轭类。进一步，对两个带基点连通覆盖 \(p_i:(E_i,e_i)\rightarrow(X,x_0)\)，令 \(H_i=(p_i)_*\pi_1(E_i,e_i)\)（\(i=1,2\)），则存在连续映射 \(r:E_1\rightarrow E_2\) 满足 \(r(e_1)=e_2\) 及 \(p_2r=p_1\)，当且仅当 \(H_1\subset H_2\)；该映射若存在则唯一且为覆盖。
+\end{theorem}
+\begin{proof}
+	\(\sim_H\) 的自反、对称、传递分别来自 \(H\) 含单位、对取逆封闭和对乘法封闭；传递时使用 \([\alpha*\bar\beta][\beta*\bar\gamma]=[\alpha*\bar\gamma]\)。它也不依赖道路代表。对万有覆盖上的一个基本集合 \(B(\alpha,U)\)，投影到 \(X_H\) 后仍与 \(U\) 一一对应。两个在同一 \(U\) 上的此类集合若有一点被识别，先在该底点重选两条代表道路 \(\alpha,\beta\)，便可在每个同一底点处同时被识别，因为
+	\[
+		[(\alpha*\eta)*\overline{\beta*\eta}]=[\alpha*\bar\beta]
+	\]
+	对共同尾段 \(\eta\) 成立。它们因而整叶相同或不交。商映射是开映射：基本开集的饱和集是同类基本开集的并。于是其像是开叶，且每一叶上的投影为同胚，证明 \(p_H\) 是覆盖。\(X_H\) 是道路连通空间 \(\widetilde X\) 的连续像，所以道路连通。
+
+	基点环路 \(\alpha\) 的提升终点为 \([\alpha]_H\)，它闭合恰好等价于 \([\alpha]\in H\)。由提升判据中像的刻画，\((p_H)_*\pi_1(X_H,[e_{x_0}]_H)=H\)，因此每个子群都实现。
+
+	对已有两个覆盖，\(E_1\) 道路连通且局部道路连通；把 \(p_1\) 看成待提升映射，\cref{g2:prop:covering-lift-criterion}恰给出条件 \(H_1\subset H_2\)。提升唯一，并由同时均匀覆盖的小邻域看出它是局部的逐叶同胚；其满射性与万有覆盖证明末段相同，所以是覆盖。若两子群相等，就有两个方向的保持基点提升，它们的复合与恒等映射在基点一致，提升唯一性使复合为恒等。因此两个覆盖保持基点同构；反向结论从投影相容性立即成立。
+
+	最后，在同一纤维中把基点从 \(e_0\) 换到 \(e_1\)，选提升空间中的道路 \(\widetilde\gamma:e_0\rightarrow e_1\)，记投影环路的类为 \(g=[p\widetilde\gamma]\)。基点变化公式给出新子群 \(g^{-1}Hg\)。反之，任意 \(g\in G\) 都有从 \(e_0\) 出发的提升，取其终点便实现这个共轭子群。结合带基点分类，得到不指定基点的分类。
+\end{proof}
+
+上述存在性构造需要半局部单连通性；提升判据和两个已有覆盖之间的唯一性则不需要它。区分这两种用途，才能在不具备万有覆盖的空间中继续正确使用道路提升。关于这些构造可参看 \cite[第1.3节]{Hatcher2002}；这里道路类商空间的等价关系也将在下一小节解释为基本群的作用。
 
 \subsection{基本群作用和单值}
 \label{g2:subsec:0101:04}
-待撰写
+覆盖分类把一个空间换成子群，单值则把同一信息放在纤维点怎样被环路置换上。它还说明，覆盖变换与沿环路移动纤维点是两种不同操作；左右次序只有在写出提升公式后才清楚。
+
+\begin{definition}[覆盖的单值作用与覆盖变换]\label{g2:def:monodromy-deck}
+	设 \(p:E\rightarrow X\) 为覆盖，\(x_0\in X\)，\(G=\pi_1(X,x_0)\)，\(F=p^{-1}(x_0)\)。对 \(e\in F\) 与 \(g=[\alpha]\in G\)，令 \(e\cdot g\) 为环路 \(\alpha\) 从 \(e\) 出发的唯一提升的终点，称此为纤维上的\term[danzhizuoyong]{单值作用}[monodromy action]。与投影相容的自同胚 \(D:E\rightarrow E\)，即满足 \(pD=p\) 的自同胚，称为\term[fugaibianhuan]{覆盖变换}[deck transformation]；这些变换在通常函数复合下组成的群记为 \(\operatorname{Deck}(E/X)\)。\symidx{\(\operatorname{Deck}(E/X)\)：覆盖变换群}
+\end{definition}
+
+\begin{proposition}[右单值与左覆盖变换]\label{g2:prop:monodromy-deck}
+	设 \(X\) 道路连通且局部道路连通，\(p:E\rightarrow X\) 为连通覆盖，固定 \(x_0\in X\) 和 \(e_0\in p^{-1}(x_0)\)，并记 \(G=\pi_1(X,x_0)\)、\(H=p_*\pi_1(E,e_0)\)、\(F=p^{-1}(x_0)\)。对 \(e\in F\) 与 \(g=[\alpha]\in G\)，令 \(e\cdot g\) 为 \(\alpha\) 从 \(e\) 出发的提升的终点。则这是传递右作用，对任意 \(e\in F\)、\(g,k\in G\) 有
+	\[
+		(e\cdot g)\cdot k=e\cdot(gk),\qquad e\cdot1=e.
+	\]
+	\(e_0\) 的稳定子为 \(H\)，并有右 \(G\) 集合同构
+	\[
+		H\backslash G\longrightarrow p^{-1}(x_0),\qquad Hg\longmapsto e_0\cdot g,
+	\]
+	其中 \(H\backslash G=\{Hg:g\in G\}\)，右作用为 \((Hg)\cdot k=Hgk\)。因此覆盖叶数等于指数 \([G:H]\)。覆盖变换与单值交换，且
+	\[
+		\operatorname{Deck}(E/X)\cong N_G(H)/H,
+		\qquad N_G(H)=\{a\in G:aHa^{-1}=H\}.
+	\]
+	若再假设 \(X\) 半局部单连通，并使用道路类模型 \(E=X_H\)，其中 \([\gamma]_H\) 表示从 \(x_0\) 出发的道路按同终点且 \([\gamma*\bar\eta]\in H\) 的关系识别所得的类，则上述同构具体为
+	\[
+		aH\longmapsto D_a,\qquad D_a([\gamma]_H)=[a*\gamma]_H
+		\quad(a\in N_G(H)),
+	\]
+	式中 \(a\) 任选一条代表环路。特别地，在万有覆盖 \(\widetilde X\) 上有左作用
+	\[
+		D_a([\gamma])=[a*\gamma],\qquad D_a\circ D_b=D_{ab},
+	\]
+	且 \(\operatorname{Deck}(\widetilde X/X)\cong G\)。
+\end{proposition}
+\begin{proof}
+	同伦提升保证 \(e\cdot[\alpha]\) 不依赖代表；拼接提升先提升 \(\alpha\)，再从所得终点提升下一条环路，因此恰为右作用。常值道路提升仍恒定。空间 \(E\) 连通且局部道路连通，因而道路连通；任意两纤维点之间的道路投影为底环路，故作用传递。提升判据中对闭合提升的刻画，说明 \(e_0\) 的稳定子正是 \(H\)。于是 \(e_0\cdot g=e_0\cdot k\) 当且仅当 \(gk^{-1}\in H\)，也就是 \(Hg=Hk\)，给出所述双射及右作用相容性。
+
+	若 \(D\) 是覆盖变换，则 \(D\widetilde\alpha\) 正是 \(\alpha\) 从 \(D(e)\) 出发的提升，所以
+	\[
+		D(e\cdot g)=D(e)\cdot g.
+	\]
+	而且 \(D\) 只要固定一个点，就由提升唯一性成为恒等。任意覆盖变换因此由 \(D(e_0)\) 决定。写 \(D(e_0)=e_0\cdot a\)，这一点的稳定子为 \(a^{-1}Ha\)；\(D\) 可逆且与单值交换，故两点的稳定子相同，得到 \(a\in N_G(H)\)。反之，对 \(a\in N_G(H)\)，\(e_0\) 与 \(e_0\cdot a\) 对应同一子群，已有覆盖间的提升判据给出唯一覆盖变换 \(D_a\)，把前一点送到后一点。这一论证不需要半局部单连通性。
+
+	在纤维的陪集模型上，\(D_a(Hg)=Hag\)。因此
+	\[
+		D_aD_b(Hg)=Habg=D_{ab}(Hg),
+	\]
+	再由一个纤维点决定覆盖变换，得到 \(D_a\circ D_b=D_{ab}\)；核为使 \(Ha=H\) 的元素，即 \(H\)。由前段的满射性，得到 \(N_G(H)/H\) 的群同构。
+
+	在道路类模型中，若 \(\gamma\sim_H\eta\)，则
+	\[
+		[(a*\gamma)*\overline{a*\eta}]
+		=a[\gamma*\bar\eta]a^{-1}\in H,
+	\]
+	所以前置环路公式良定义。它把基本开叶送到基本开叶，逆为 \(D_{a^{-1}}\)，故为覆盖变换，且把基点送到 \([a]_H\)，与刚才的 \(D_a\) 相同。取 \(H=\{1\}\) 就得到万有覆盖上的左作用。对任意 \(H\)，等价关系 \(\sim_H\) 也恰是此左作用中 \(H\) 的轨道关系，因此 \(X_H=H\backslash\widetilde X\)。
+\end{proof}
+
+若把右单值写成置换 \(R_g(e)=e\cdot g\)，通常函数复合满足 \(R_{gk}=R_k\circ R_g\)；它与左覆盖变换的 \(D_{gk}=D_g\circ D_k\) 不同。即使在万有覆盖的同一纤维上，前者是 \(h\mapsto hg\)，后者是 \(h\mapsto gh\)。这解释了为什么不能把“沿环路移动终点”直接当作同一个左群表示。
+
+\begin{corollary}[正规覆盖]\label{g2:cor:regular-covering}
+	设 \(X\) 道路连通且局部道路连通，\(p:E\rightarrow X\) 为连通覆盖，\(x_0\in X\)，\(e_0\in p^{-1}(x_0)\)，\(H=p_*\pi_1(E,e_0)\leq G=\pi_1(X,x_0)\)。覆盖变换群在每个纤维上传递，当且仅当 \(H\trianglelefteq G\)。满足此条件的覆盖称为\term[zhengguifugai]{正规覆盖}[regular covering]；此时 \(\operatorname{Deck}(E/X)\cong G/H\)。
+\end{corollary}
+\begin{proof}
+	在 \(H\backslash G\) 中，覆盖变换把 \(H\) 送到 \(Ha\)，其中恰好允许 \(a\in N_G(H)\)。这能够到达全部陪集，当且仅当 \(N_G(H)=G\)，即 \(H\) 正规。若在一个纤维上传递，沿连接两个底点的道路提升便把该纤维与另一纤维双射，并与覆盖变换交换，故在每个纤维上传递。群同构由\cref{g2:prop:monodromy-deck}给出。
+\end{proof}
+
+\begin{example}[圆的覆盖与循环单值]\label{g2:exm:circle-coverings}
+	实指数映射 \(p:\mathbb R\rightarrow S^1\)，\(p(t)=\exp(2\pi\mathrm{i}t)\)，是万有覆盖：小圆弧的原像是互不相交的开区间，且 \(\mathbb R\) 可缩。正向生成环路从整数 \(j\) 提升为 \(t\mapsto j+t\)，把纤维点 \(j\) 送到 \(j+1\)。覆盖变换为 \(t\mapsto t+k\)，\(k\in\mathbb Z\)。
+
+	对整数 \(n\geq1\)，覆盖 \(p_n:S^1\rightarrow S^1\)，\(p_n(z)=z^n\)，有纤维 \(\{\zeta^j:0\leq j<n\}\)，其中 \(\zeta=\exp(2\pi\mathrm{i}/n)\)。正向基环路从 \(\zeta^j\) 提升为 \(\zeta^j\exp(2\pi\mathrm{i}t/n)\)，单值因而是 \(j\mapsto j+1\pmod n\)。对应子群为 \(n\mathbb Z\)，覆盖变换为 \(z\mapsto\zeta^kz\)，其群为 \(\mathbb Z/n\mathbb Z\)。\(\mathbb Z\) 的子群只有 \(n\mathbb Z\)（\(n\geq1\)）与零子群，所以这些有限覆盖和实线覆盖已列出圆的全部连通覆盖，且全部正规。
+\end{example}
+
+\begin{example}[三叶覆盖可以没有非恒等覆盖变换]\label{g2:exm:nonregular-three-cover}
+	设 \(R_2=S^1\vee S^1\)，两个定向圆分别标记为 \(a,b\)。取三个顶点 \(1,2,3\)，从每个顶点 \(j\) 画一条标记为 \(a\) 的有向边，终点按置换 \((12)\) 给出；再画一条标记为 \(b\) 的有向边，终点按置换 \((123)\) 给出。把每条标记边同向映到 \(R_2\) 的相应圆，得到三叶覆盖：每个顶点处每一标记恰有一个入边端和一个出边端，所以小星状邻域逐叶同胚映到底图的小星状邻域。\(b\) 边已连接三个顶点，故覆盖连通。
+
+	单值由 \((12)\)、\((123)\) 生成，在三个点上传递。覆盖变换在纤维上的置换必须同时与这两者交换；与三循环交换的置换只能是该三循环的幂，其中只有恒等置换又与 \((12)\) 交换。因此覆盖变换群平凡。特别地，传递单值并不蕴含覆盖变换传递。这一覆盖对应 \(F(a,b)\) 中一个指数为 \(3\) 的非正规子群；覆盖图有 \(6\) 条边、\(3\) 个顶点，所以该子群由覆盖诱导单射识别为自由群 \(F_4\)。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

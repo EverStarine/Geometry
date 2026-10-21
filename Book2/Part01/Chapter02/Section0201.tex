@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 2.1 链复形及其代数
-% 纲要位置：几何学计划纲要.md，第 1036 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 纲要位置：几何学计划纲要.md，第 1086 行。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,438 @@
 \section{链复形及其代数}
 \label{g2:sec:0201}
 
-待撰写
+沿一个三角形的三条边依次走一周，起点与终点相消，得到一条闭合的边链。若三角形内部也在所研究的对象中，这条边链还是一个二维面片的边界；若只有三条边，则没有这样的面片。同调所要区别的正是这两种情形：先找出边界为零的链，再把本来就是更高一维边界的链视为零。整数系数记录各个片段的重数和方向，而“边界的边界为零”保证第二步确实能在第一步所得的群中进行。
+
+把具体的线段、三角形或更高维单形暂时抽去，剩下的是一列阿贝尔群和连接相邻次数的同态。本节建立这部分代数。后面出现的空间对、切除和开集分解，会给出不同的链复形短正合列；这些短正合列产生长正合列的方式完全相同。特别是，连接同态将通过“提升一个圈，再取它的边界”构造，符号和选择无关性都在这里确定。
 
 \subsection{链、圈、边界和增广}
 \label{g2:subsec:0201:01}
-待撰写
+先看边界相消的最小二维模型。取三个形式顶点 \(v_0,v_1,v_2\)，三条有向边 \(e_{01},e_{12},e_{02}\)，以及一个有向面 \(t\)。在这些符号生成的自由阿贝尔群上规定
+\[
+	\mathrm{d}_1e_{ij}=v_j-v_i,\qquad
+	\mathrm{d}_2t=e_{12}-e_{02}+e_{01}.
+\]
+于是
+\[
+	\mathrm{d}_1\mathrm{d}_2t
+	=(v_2-v_1)-(v_2-v_0)+(v_1-v_0)=0.
+\]
+每个顶点出现两次，系数互为相反数。这里自由阿贝尔群中的元素是有限整数线性组合；例如 \(2e_{01}-e_{12}\) 允许一条边出现两次，也允许沿反方向计数。没有对边链使用求导，符号 \(\mathrm{d}\) 只表示降低次数的边界运算。
+
+\begin{definition}[链复形与同调]\label{g2:def:chain-complex}
+	设对每个 \(n\in\mathbb Z\) 给定阿贝尔群 \(C_n\) 和群同态 \(\mathrm{d}_n:C_n\to C_{n-1}\)。如果对所有 \(n\) 都有
+	\[
+		\mathrm{d}_{n-1}\mathrm{d}_n=0,
+	\]
+	则称 \(C=(C_n,\mathrm{d}_n)_{n\in\mathbb Z}\) 为一个\term[lianfuxing]{链复形}[chain complex]，称 \(\mathrm{d}_n\) 为微分或边界同态。群 \(C_n\) 的元素称为 \(n\) 次\term[lian]{链}[chain]。定义
+	\[
+		Z_n(C)\coloneqq\ker\mathrm{d}_n,\qquad
+		B_n(C)\coloneqq\operatorname{im}\mathrm{d}_{n+1}.
+	\]
+	其中的元素分别称为 \(n\) 次\term[quan]{圈}[cycle]和 \(n\) 次\term[bianjie]{边界}[boundary]。由 \(\mathrm{d}_n\mathrm{d}_{n+1}=0\) 有 \(B_n(C)\subseteq Z_n(C)\)，故可以定义第 \(n\) 个\term[tongdiaoqun]{同调群}[homology group]
+	\[
+		H_n(C)\coloneqq Z_n(C)/B_n(C).
+	\]
+	圈 \(z\) 的同调类记为 \([z]\)。两个 \(n\) 次圈 \(z,z'\) 满足 \(z-z'\in B_n(C)\) 时，称它们同调。若每个 \(H_n(C)\) 都为零，称 \(C\) 为\term[wutongdiao fuxing]{无同调复形}[acyclic complex]。若 \(n<0\) 时 \(C_n=0\)，则称 \(C\) 为非负链复形。
+\end{definition}
+
+同调不是把所有链直接除以边界：只有圈才代表同调类。条件 \(\mathrm{d}^2=0\) 保证任意边界都是圈，却不保证任意圈都是边界；后一个条件恰好是 \(H_n(C)=0\)。在下文中，次数由元素或公式确定时，将 \(\mathrm{d}_n\) 简写为 \(\mathrm{d}\)；不同复形同时出现时，则用 \(\mathrm{d}_C,\mathrm{d}_D\) 区分。
+
+\begin{example}[三条边与一个填充面]\label{g2:exm:triangle-chain-complex}
+	设 \(C_0=\mathbb Zv_0\oplus\mathbb Zv_1\oplus\mathbb Zv_2\)，\(C_1=\mathbb Ze_{01}\oplus\mathbb Ze_{12}\oplus\mathbb Ze_{02}\)，其余次数为零，并规定 \(\mathrm{d}_1e_{ij}=v_j-v_i\)。对于
+	\[
+		z=ae_{01}+be_{12}+ce_{02},
+	\]
+	有
+	\[
+		\mathrm{d}_1z=(-a-c)v_0+(a-b)v_1+(b+c)v_2.
+	\]
+	因此 \(z\) 是圈，当且仅当 \(a=b=-c\)，即
+	\[
+		Z_1(C)=\mathbb Z(e_{01}+e_{12}-e_{02}).
+	\]
+	由于 \(C_2=0\)，这里没有非零的一维边界，故 \(H_1(C)\cong\mathbb Z\)。又因为 \(B_0(C)\) 由 \(v_1-v_0,v_2-v_0\) 生成，三个顶点在同调中变成同一个生成元，故 \(H_0(C)\cong\mathbb Z\)。
+
+	现在加入 \(C_2=\mathbb Zt\)，规定 \(\mathrm{d}_2t=e_{01}+e_{12}-e_{02}\)，并保留其他群和微分。这仍是链复形，因为前面的计算给出 \(\mathrm{d}_1\mathrm{d}_2=0\)。此时 \(\mathrm{d}_2\) 单射，且其像恰为 \(Z_1(C)\)，所以 \(H_2(C)=H_1(C)=0\)，而 \(H_0(C)\cong\mathbb Z\) 不变。加入面以后，原来的闭合边链仍存在，但它已经成为边界。
+\end{example}
+
+零次同调在连通的基本例子中仍含有一个 \(\mathbb Z\)。为了把这一份“总系数”与其他信息分开，可以在零次群后面再接一个同态。在上例中，将每个顶点送到 \(1\)，则每条边的边界 \(v_j-v_i\) 都被送到零。
+
+\begin{definition}[增广复形]\label{g2:def:augmented-chain-complex}
+	设 \(C=(C_n,\mathrm{d}_n)\) 为阿贝尔群的非负链复形。如果同态 \(\varepsilon:C_0\to\mathbb Z\) 满足 \(\varepsilon\mathrm{d}_1=0\)，则称 \(\varepsilon\) 为 \(C\) 的一个\term[zengguang]{增广}[augmentation]。由此得到链复形 \(\widetilde C\)，其非负次群与 \(C\) 相同，并且
+	\[
+		\widetilde C_{-1}=\mathbb Z,\qquad
+		\widetilde{\mathrm{d}}_0=\varepsilon,\qquad
+		\widetilde C_n=0\quad(n<-1).
+	\]
+	其同调记为 \(\widetilde H_n(C,\varepsilon)\coloneqq H_n(\widetilde C)\)，称为相对于这个增广的约化同调。增广已明确时，简记为 \(\widetilde H_n(C)\)。
+\end{definition}
+
+增广条件正是新增的两个相邻微分满足复合为零的条件。直接由核与像可得
+\[
+	\widetilde H_n(C)=H_n(C)\quad(n>0),\qquad
+	\widetilde H_0(C)=\ker\varepsilon/\operatorname{im}\mathrm{d}_1,
+	\qquad
+	\widetilde H_{-1}(C)=\mathbb Z/\operatorname{im}\varepsilon.
+\]
+在小于 \(-1\) 的次数，同调为零。因为 \(\varepsilon\) 消去零次边界，它诱导同态 \(\bar\varepsilon:H_0(C)\to\mathbb Z\)，而 \(\widetilde H_0(C)\) 就是这个同态的核。若存在 \(u\in C_0\) 满足 \(\varepsilon(u)=1\)，则
+\[
+	H_0(C)\longrightarrow\widetilde H_0(C)\oplus\mathbb Z,\qquad
+	[z]\longmapsto\bigl([z-\varepsilon(z)u],\,\varepsilon(z)\bigr)
+\]
+为同构，逆映射为 \(([w],m)\mapsto[w+mu]\)。这里非负性保证所有零次链都是圈；若更换 \(z\) 的代表元，差只是一条零次边界，故公式良定义。这个分解用到了 \(u\) 的选择，而核 \(\ker\bar\varepsilon\) 无须选择就已确定。若 \(\varepsilon\) 不满射，则不能删去 \(-1\) 次的余核；例如 \(C=0\) 配零增广时，\(\widetilde H_{-1}(C)=\mathbb Z\)。
 
 \subsection{链映射、链同伦与映射锥}
 \label{g2:subsec:0201:02}
-待撰写
+给定两个链复形，要比较它们的同调，所用同态必须保留“取边界”这项运算。进一步说，两个比较映射即使在链上不同，只要它们的差可以由高一维的链填补，就应当在同调上给出相同的结果。后一种填补由链同伦表达。
+
+\begin{definition}[链映射]\label{g2:def:chain-map}
+	设 \(C=(C_n,\mathrm{d}_{C,n})\)、\(D=(D_n,\mathrm{d}_{D,n})\) 为 \(\mathbb Z\) 分次阿贝尔群链复形。一族同态 \(f_n:C_n\to D_n\) 若对每个 \(n\in\mathbb Z\) 都满足
+	\[
+		\mathrm{d}_{D,n}f_n=f_{n-1}\mathrm{d}_{C,n},
+	\]
+	则称 \(f=(f_n)\) 为从 \(C\) 到 \(D\) 的\term[lianyingshe]{链映射}[chain map]，记为 \(f:C\to D\)。
+\end{definition}
+
+对于圈 \(z\in C_n\)，有 \(\mathrm{d}_Df_n(z)=f_{n-1}(\mathrm{d}_Cz)=0\)；对于边界 \(\mathrm{d}_Cw\)，有 \(f_n(\mathrm{d}_Cw)=\mathrm{d}_Df_{n+1}(w)\)。因此链映射分别把圈送到圈、边界送到边界，诱导良定义的同态
+\[
+	H_n(f)=f_*:H_n(C)\longrightarrow H_n(D),\qquad [z]\longmapsto[f_n(z)].
+\]
+若 \(g:D\to E\) 也是链映射，则在每个圈上都有 \((g\circ f)_*[z]=g_*f_*[z]\)，故 \((g\circ f)_*=g_*\circ f_*\)；恒等链映射诱导恒等同态。这些等式将使空间映射的复合能够传到同调群上。
+
+\begin{definition}[链同伦与链同伦等价]\label{g2:def:chain-homotopy}
+	设 \(f,g:C\to D\) 为 \(\mathbb Z\) 分次阿贝尔群链复形之间的链映射。如果存在一族同态 \(H_n:C_n\to D_{n+1}\)，满足
+	\[
+		g_n-f_n=\mathrm{d}_{D,n+1}H_n+H_{n-1}\mathrm{d}_{C,n}
+		\qquad(n\in\mathbb Z),
+	\]
+	则称 \(H=(H_n)\) 为从 \(f\) 到 \(g\) 的\term[liantonglun]{链同伦}[chain homotopy]，记为 \(f\simeq_{\mathrm{ch}}g\)。若链映射 \(f:C\to D\) 有链映射 \(r:D\to C\)，使
+	\[
+		rf\simeq_{\mathrm{ch}}\operatorname{id}_C,\qquad
+		fr\simeq_{\mathrm{ch}}\operatorname{id}_D,
+	\]
+	则称 \(f\) 为\term[liantonglun dengjia]{链同伦等价}[chain homotopy equivalence]。若 \(\operatorname{id}_C\) 与零链映射链同伦，称链复形 \(C\) 可缩。
+\end{definition}
+
+链同伦使次数上升一，这与连接两个 \(n\) 维对象需要一个 \(n+1\) 维变形的几何图像相符。在公式中，\(\mathrm{d}H\) 取这个填补的边界，\(H\mathrm{d}\) 则补偿原链本身的边界。用零算子、\(-H\) 和两个同伦算子的和，分别得到链同伦的自反性、对称性和传递性。若 \(a:C'\to C\)、\(b:D\to D'\) 是链映射，则
+\[
+	b(g-f)a
+	=\mathrm{d}_{D'}(bHa)+(bHa)\mathrm{d}_{C'},
+\]
+所以链同伦还与前后复合相容。
+
+\begin{proposition}[链同伦诱导相同的同调同态]\label{g2:prop:chain-homotopy-homology}
+	设 \(C,D\) 为 \(\mathbb Z\) 分次阿贝尔群链复形，\(f,g:C\to D\) 为链映射，并设同态 \(H_n:C_n\to D_{n+1}\) 满足 \(g-f=\mathrm{d}_DH+H\mathrm{d}_C\)。则对每个 \(n\in\mathbb Z\)，都有 \(H_n(f)=H_n(g)\)。因此，任意链同伦等价在每个次数都诱导同调群同构；任意可缩链复形的所有同调群都为零。
+\end{proposition}
+\begin{proof}
+	若 \(z\in Z_n(C)\)，则
+	\[
+		g_n(z)-f_n(z)=\mathrm{d}_{D,n+1}H_n(z),
+	\]
+	因为 \(H_{n-1}\mathrm{d}_{C,n}(z)=0\)。右边是边界，故 \([g_n(z)]=[f_n(z)]\)。若 \(r\) 是 \(f\) 的链同伦逆，复合相容性给出 \(r_*f_*=\operatorname{id}\) 和 \(f_*r_*=\operatorname{id}\)，所以 \(f_*\) 为同构。若 \(C\) 可缩，则 \(H_n(C)\) 上的恒等同态等于零同态，故该群为零。
+\end{proof}
+
+\begin{definition}[准同构]\label{g2:def:quasi-isomorphism}
+	设 \(f:C\to D\) 为 \(\mathbb Z\) 分次阿贝尔群链复形之间的链映射。如果对每个 \(n\in\mathbb Z\)，诱导同态 \(H_n(f):H_n(C)\to H_n(D)\) 都是同构，则称 \(f\) 为\term[zhuntonggou]{准同构}[quasi-isomorphism]。
+\end{definition}
+
+链同伦等价一定是准同构，但对于一般阿贝尔群链复形，逆命题不成立。例如取只有三项非零的复形
+\[
+	C_2=\mathbb Z\xrightarrow{\ \times2\ }C_1=\mathbb Z
+	\xrightarrow{\ \bmod2\ }C_0=\mathbb Z/2\mathbb Z.
+\]
+相邻映射的复合为零，乘 \(2\) 单射，模 \(2\) 满射，且中间的核与像都是 \(2\mathbb Z\)，所以该复形无同调。然而它不可缩：若有 \(\operatorname{id}_C=\mathrm{d}H+H\mathrm{d}\)，在零次就必须有
+\(\operatorname{id}_{\mathbb Z/2\mathbb Z}=(\bmod2)\circ H_0\)，而任何同态 \(H_0:\mathbb Z/2\mathbb Z\to\mathbb Z\) 都为零。这也说明准同构 \(C\to0\) 未必有链同伦逆。
+
+第一章的映射锥在空间中加入一顶锥，使一个映射的像可以向顶点收缩。在链层面，类似的想法是把 \(C_{n-1}\) 放进一个新的 \(n\) 次群中，使圈 \(x\in C_{n-1}\) 的像 \(f(x)\) 成为新链的边界。为了在 \(x\) 不闭合时仍满足边界平方为零，需要同时加入一个负号。
+
+\begin{definition}[移位与链复形的映射锥]\label{g2:def:algebraic-mapping-cone}
+	设 \(f:C\to D\) 为 \(\mathbb Z\) 分次阿贝尔群链复形之间的链映射。定义移位复形 \(C[1]\) 为
+	\[
+		C[1]_n=C_{n-1},\qquad
+		\mathrm{d}_{C[1],n}=-\mathrm{d}_{C,n-1}.
+	\]
+	定义 \(f\) 的\term[lianfuxing yingshezhui]{映射锥}[mapping cone]为复形 \(\operatorname{Cone}(f)\)，其群与微分为
+	\[
+		\operatorname{Cone}(f)_n=D_n\oplus C_{n-1},\qquad
+		\mathrm{d}(y,x)=\bigl(\mathrm{d}_Dy+f_{n-1}(x),-\mathrm{d}_Cx\bigr).
+	\]
+	这里“映射锥”指链复形的代数构造，其元素是链的有序对。
+\end{definition}
+
+移位的微分平方为 \((-\mathrm{d}_C)(-\mathrm{d}_C)=0\)。对于映射锥，在 \((y,x)\in D_n\oplus C_{n-1}\) 上计算得
+\[
+	\mathrm{d}^2(y,x)
+	=\bigl(\mathrm{d}_D^2y+\mathrm{d}_Df(x)-f(\mathrm{d}_Cx),
+		\,\mathrm{d}_C^2x\bigr)=(0,0).
+\]
+第一分量中交叉项相消，恰好使用了 \(f\) 是链映射。因此上述定义确实给出链复形。特别是，若 \(\mathrm{d}_Cx=0\)，则 \(\mathrm{d}(0,x)=(f(x),0)\)，实现了前面希望达到的填补。
+
+\begin{example}[整数倍映射的锥]\label{g2:exm:cone-integer-multiple}
+	设 \(C=D=\mathbb Z\) 都集中在零次，微分为零，并令链映射 \(f:C\to D\) 在零次等于乘整数 \(m\)。则 \(\operatorname{Cone}(f)\) 只有一次和零次非零，具体为
+	\[
+		0\longrightarrow\mathbb Z\xrightarrow{\ \times m\ }\mathbb Z\longrightarrow0.
+	\]
+	因此
+	\[
+		H_1(\operatorname{Cone}(f))=\ker(\times m),\qquad
+		H_0(\operatorname{Cone}(f))=\mathbb Z/m\mathbb Z.
+	\]
+	当 \(m=0\) 时这两个群均为 \(\mathbb Z\)；当 \(m\ne0\) 时一次同调为零，而零次同调记录乘 \(m\) 映射未能覆盖的剩余类。特别地，\(m=\pm1\) 时映射锥无同调。
+\end{example}
+
+对于任意链复形 \(C\)，恒等链映射的锥还有显式的收缩。定义
+\[
+	K_n:\operatorname{Cone}(\operatorname{id}_C)_n
+	\longrightarrow\operatorname{Cone}(\operatorname{id}_C)_{n+1},
+	\qquad K_n(y,x)=(0,y).
+\]
+利用锥微分可得
+\[
+	\mathrm{d}K(y,x)+K\mathrm{d}(y,x)
+	=(y,-\mathrm{d}_Cy)+(0,\mathrm{d}_Cy+x)=(y,x).
+\]
+所以 \(K\) 是从零映射到恒等映射的链同伦。一般映射锥如何衡量 \(f\) 在同调上距同构还差多少，将在长正合列构造完成后给出。
 
 \subsection{短正合复形和连接同态}
 \label{g2:subsec:0201:03}
-待撰写
+从一个链复形中除去一个子复形，可以把“落在指定部分中的边界”变成零。这样产生的新圈未必能提升为原复形中的圈；它的一次提升可能仍有边界，只是该边界落在被除去的子复形中。连接同态记录的正是这个边界类。先用正合列把包含、商和提升统一表述。
+
+\begin{definition}[正合列与链复形的短正合列]\label{g2:def:short-exact-complex}
+	设 \(U\xrightarrow{u}V\xrightarrow{v}W\) 为阿贝尔群同态。如果 \(\operatorname{im}u=\ker v\)，则称这列同态在 \(V\) 处正合；较长的同态列若在每个有前后映射的位置都正合，则称为正合列。
+
+	设 \(A,B,C\) 为 \(\mathbb Z\) 分次阿贝尔群链复形，\(i:A\to B\)、\(p:B\to C\) 为链映射。如果对每个 \(n\in\mathbb Z\)，都有阿贝尔群短正合列
+	\[
+		0\longrightarrow A_n\xrightarrow{i_n}B_n\xrightarrow{p_n}C_n\longrightarrow0,
+	\]
+	即 \(i_n\) 单射、\(p_n\) 满射且 \(\operatorname{im}i_n=\ker p_n\)，则称
+	\[
+		0\longrightarrow A\xrightarrow{i}B\xrightarrow{p}C\longrightarrow0
+	\]
+	为\term[lianfuxing duanzhenghelie]{链复形的短正合列}[short exact sequence of chain complexes]。
+\end{definition}
+
+这里的正合性逐个次数成立；并不要求 \(p_n\) 有同态右逆，也不要求 \(B\) 分解为 \(A\) 与 \(C\) 的直和。我们在构造中只需逐个元素选择原像。
+
+\begin{definition}[子复形与商复形]\label{g2:def:subcomplex-quotient}
+	设 \(B=(B_n,\mathrm{d}_{B,n})\) 为 \(\mathbb Z\) 分次阿贝尔群链复形，\(A_n\subseteq B_n\) 为子群。如果 \(\mathrm{d}_{B,n}(A_n)\subseteq A_{n-1}\) 对每个 \(n\) 成立，则配有限制微分的 \(A=(A_n)\) 称为 \(B\) 的子复形。商复形 \(B/A\) 定义为
+	\[
+		(B/A)_n=B_n/A_n,\qquad
+		\mathrm{d}_{B/A}(b+A_n)=\mathrm{d}_Bb+A_{n-1}.
+	\]
+\end{definition}
+
+更换代表元 \(b\) 只会使 \(\mathrm{d}_Bb\) 改变一个 \(A_{n-1}\) 中的元素，所以上述微分良定义；其平方为零来自 \(\mathrm{d}_B^2=0\)。包含映射与商映射都是链映射，给出短正合列 \(0\to A\to B\to B/A\to0\)。反过来，对于任意链复形短正合列，映射 \(b+i_n(A_n)\mapsto p_n(b)\) 在每个次数都是同构，并与微分交换，因而给出 \(B/i(A)\cong C\)。
+
+在短正合列中，微分与 \(i,p\) 的相容性可以画成下图。构造连接同态时，从右上角的圈 \(c\) 向左提升到 \(b\)，向下取 \(\mathrm{d}_Bb\)，再从中下方回到左下角的 \(a\)。
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		A_n \arrow[r,"i_n"] \arrow[d,"\mathrm{d}_A"']
+		& B_n \arrow[r,"p_n"] \arrow[d,"\mathrm{d}_B"']
+		& C_n \arrow[d,"\mathrm{d}_C"] \\
+		A_{n-1} \arrow[r,"i_{n-1}"']
+		& B_{n-1} \arrow[r,"p_{n-1}"']
+		& C_{n-1}
+	\end{tikzcd}
+\]
+原像 \(b\) 一般不唯一，而得到的 \(a\) 也会随之改变。因此构造的目标应是 \([a]\)，不是一个固定的链 \(a\)。
+
+\begin{proposition}[连接同态的构造]\label{g2:prop:connecting-map}
+	设 \(0\to A\xrightarrow{i}B\xrightarrow{p}C\to0\) 为 \(\mathbb Z\) 分次阿贝尔群链复形的短正合列，\(n\in\mathbb Z\)。给定圈 \(c\in C_n\)，选取 \(b\in B_n\) 满足 \(p_n(b)=c\)，再取满足
+	\[
+		i_{n-1}(a)=\mathrm{d}_{B,n}b
+	\]
+	的 \(a\in A_{n-1}\)。这样的 \(a\) 存在且唯一，并且是圈。公式
+	\[
+		\delta_n:H_n(C)\longrightarrow H_{n-1}(A),\qquad
+		\delta_n[c]=[a]
+	\]
+	与 \(c\) 的圈代表及 \(b\) 的提升选择无关，定义一个群同态，称为该短正合列的\term[lianjie tongtai]{连接同态}[connecting homomorphism]。
+\end{proposition}
+\begin{proof}
+	因为 \(p_n\) 满射，所需的 \(b\) 存在。由链映射关系和 \(c\) 是圈，有
+	\[
+		p_{n-1}(\mathrm{d}_Bb)=\mathrm{d}_Cp_n(b)=\mathrm{d}_Cc=0.
+	\]
+	短正合性说明 \(\mathrm{d}_Bb\in\operatorname{im}i_{n-1}\)，而 \(i_{n-1}\) 单射，故 \(a\) 存在且唯一。再由
+	\[
+		i_{n-2}(\mathrm{d}_Aa)
+		=\mathrm{d}_Bi_{n-1}(a)=\mathrm{d}_B^2b=0
+	\]
+	及 \(i_{n-2}\) 单射，得到 \(\mathrm{d}_Aa=0\)。
+
+	先固定 \(c\)，将提升改为 \(b'\)。因为 \(p_n(b'-b)=0\)，存在 \(u\in A_n\) 使 \(b'-b=i_n(u)\)。若相应的圈为 \(a'\)，则
+	\[
+		i_{n-1}(a'-a)=\mathrm{d}_B(b'-b)
+		=\mathrm{d}_Bi_n(u)=i_{n-1}(\mathrm{d}_Au).
+	\]
+	单射性给出 \(a'-a=\mathrm{d}_Au\)，所以 \([a']=[a]\)。
+
+	再更换同调类的圈代表。若 \(c'=c+\mathrm{d}_Cv\)，其中 \(v\in C_{n+1}\)，取 \(w\in B_{n+1}\) 满足 \(p_{n+1}(w)=v\)。这时 \(b+\mathrm{d}_Bw\) 是 \(c'\) 的一个提升，而且
+	\[
+		\mathrm{d}_B(b+\mathrm{d}_Bw)=\mathrm{d}_Bb.
+	\]
+	所以这个提升给出同一个 \(a\)；任何其他提升也给出同一个同调类，已经由上一段证明。选取 \(w\) 的方式不影响此结论，因为不论选择哪个 \(w\)，上述边界仍是 \(\mathrm{d}_Bb\)。
+
+	最后，若 \(c_1,c_2\) 分别用 \(b_1,b_2\) 提升，并得到 \(a_1,a_2\)，则 \(b_1+b_2\) 提升 \(c_1+c_2\)，其边界是 \(i(a_1+a_2)\)。因此
+	\[
+		\delta_n([c_1]+[c_2])=[a_1+a_2]
+		=\delta_n[c_1]+\delta_n[c_2].
+	\]
+\end{proof}
+
+\begin{example}[连接同态可以非零]\label{g2:exm:connecting-identity}
+	设 \(B\) 只有 \(B_1=B_0=\mathbb Z\) 非零，微分 \(\mathrm{d}_{B,1}\) 为恒等映射；设 \(A\subseteq B\) 只有 \(A_0=\mathbb Z\) 非零，并令 \(C=B/A\)。于是 \(C\) 只有 \(C_1=\mathbb Z\) 非零，而
+	\[
+		H_n(B)=0\quad\text{对所有 }n,\qquad
+		H_0(A)=\mathbb Z,\qquad H_1(C)=\mathbb Z.
+	\]
+	将 \(C_1\) 中的 \(1\) 提升为 \(B_1\) 中的 \(1\)，它的边界是 \(A_0\) 中的 \(1\)，所以 \(\delta_1:\mathbb Z\to\mathbb Z\) 是恒等同态。可见逐次取同调不能把链复形短正合列变成同一次数上的短正合列；失去的信息转移到了相邻次数之间。
+\end{example}
 
 \subsection{长正合列的正合性与自然性}
 \label{g2:subsec:0201:04}
-待撰写
+连接同态不仅补上一条箭头，还恰好填补原来各同调同态的核与像之间的差距。其证明反复使用同一种办法：当提升的链不满足目标条件时，减去一条边界或来自子复形的链，把它修正成圈。
+
+\begin{theorem}[同调长正合列]\label{g2:thm:homology-LES}
+	设 \(0\to A\xrightarrow{i}B\xrightarrow{p}C\to0\) 为 \(\mathbb Z\) 分次阿贝尔群链复形的短正合列。对每个 \(n\in\mathbb Z\)，令 \(i_*,p_*\) 为所诱导的同调同态，并按下述约定定义 \(\delta_n\)：若 \(c\in C_n\) 是圈，\(p_n(b)=c\)、\(i_{n-1}(a)=\mathrm{d}_Bb\)，则 \(\delta_n[c]=[a]\)。这些同态组成正合列
+	\[
+		\cdots\longrightarrow H_n(A)\xrightarrow{i_*}H_n(B)
+		\xrightarrow{p_*}H_n(C)\xrightarrow{\delta_n}H_{n-1}(A)
+		\longrightarrow\cdots.
+	\]
+	因此在每个次数都有
+	\[
+		\ker p_*=\operatorname{im}i_*,
+		\qquad\ker\delta_n=\operatorname{im}p_*,
+		\qquad\ker i_*|_{H_{n-1}(A)}=\operatorname{im}\delta_n.
+	\]
+\end{theorem}
+\begin{proof}
+	映射的良定义由链映射的性质及\cref{g2:prop:connecting-map}保证。只需逐一检验三种位置上的核与像。
+
+	在 \(H_n(B)\) 处，\(pi=0\) 给出 \(p_*i_*=0\)，故 \(\operatorname{im}i_*\subseteq\ker p_*\)。反过来，设圈 \(b\in B_n\) 满足 \(p_*[b]=0\)。于是 \(p_n(b)=\mathrm{d}_Cc'\)，其中 \(c'\in C_{n+1}\)。选取 \(b'\in B_{n+1}\) 提升 \(c'\)，就有
+	\[
+		p_n(b-\mathrm{d}_Bb')
+		=p_n(b)-\mathrm{d}_Cp_{n+1}(b')=0.
+	\]
+	故存在 \(a\in A_n\)，满足 \(i_n(a)=b-\mathrm{d}_Bb'\)。此时
+	\[
+		i_{n-1}(\mathrm{d}_Aa)
+		=\mathrm{d}_B(b-\mathrm{d}_Bb')=0,
+	\]
+	所以 \(a\) 是圈，并且 \(i_*[a]=[b]\)。这证明了反向包含。
+
+	在 \(H_n(C)\) 处，若 \(b\in B_n\) 是圈，用 \(b\) 提升 \(p_n(b)\) 时其边界为零，因而 \(\delta_np_*[b]=0\)。反过来，设 \(c\in C_n\) 为圈，且 \(\delta_n[c]=0\)。取 \(p_n(b)=c\) 及 \(\mathrm{d}_Bb=i_{n-1}(a)\)。条件 \([a]=0\) 表明存在 \(u\in A_n\) 使 \(a=\mathrm{d}_Au\)。于是
+	\[
+		\mathrm{d}_B(b-i_n(u))
+		=i_{n-1}(a)-i_{n-1}(\mathrm{d}_Au)=0,
+		\qquad
+		p_n(b-i_n(u))=c.
+	\]
+	修正后的提升是圈，故 \([c]=p_*[b-i_n(u)]\)，得到 \(\ker\delta_n\subseteq\operatorname{im}p_*\)。
+
+	在 \(H_{n-1}(A)\) 处，若 \(\delta_n[c]=[a]\) 来自提升 \(b\)，则
+	\[
+		i_*\delta_n[c]=[i_{n-1}(a)]=[\mathrm{d}_Bb]=0.
+	\]
+	反过来，若圈 \(a\in A_{n-1}\) 满足 \(i_*[a]=0\)，则存在 \(b\in B_n\) 使 \(i_{n-1}(a)=\mathrm{d}_Bb\)。令 \(c=p_n(b)\)，有
+	\[
+		\mathrm{d}_Cc=p_{n-1}(\mathrm{d}_Bb)=p_{n-1}i_{n-1}(a)=0.
+	\]
+	所以 \(c\) 是圈，而连接同态的定义正给出 \(\delta_n[c]=[a]\)。
+\end{proof}
+
+若三个复形都是非负的，负次数的群为零，长正合列在右端终止于 \(H_0(B)\to H_0(C)\to0\)。对于增广后的复形则应保留实际存在的 \(-1\) 次项，不能只因原来的链从零次开始就删掉它。
+
+长正合列常用于比较不同空间或不同分解。此时还需要知道：先作比较再取连接同态，与先取连接同态再作比较，给出的结果相同。这就是自然性在这里的具体含义。
+
+\begin{proposition}[连接同态与长正合列的自然性]\label{g2:prop:connecting-natural}
+	设 \(A,B,C,A',B',C'\) 为 \(\mathbb Z\) 分次阿贝尔群链复形，并有链映射的交换图
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			0 \arrow[r] & A \arrow[r,"i"] \arrow[d,"\alpha"']
+			& B \arrow[r,"p"] \arrow[d,"\beta"']
+			& C \arrow[r] \arrow[d,"\gamma"'] & 0 \\
+			0 \arrow[r] & A' \arrow[r,"i'"']
+			& B' \arrow[r,"p'"'] & C' \arrow[r] & 0,
+		\end{tikzcd}
+	\]
+	两行均为链复形短正合列。令 \(\delta_n,\delta'_n\) 为各行按“提升后取边界”的正号约定得到的连接同态。则对每个 \(n\in\mathbb Z\)，有
+	\[
+		\beta_*i_*=i'_*\alpha_*,
+		\qquad
+		\gamma_*p_*=p'_*\beta_*,
+		\qquad
+		\alpha_*\delta_n=\delta'_n\gamma_*.
+	\]
+	因此相应的两条同调长正合列在全部位置组成交换图。
+\end{proposition}
+\begin{proof}
+	对于圈 \(a\in A_n\)，交换关系 \(\beta i=i'\alpha\) 给出
+	\[
+		\beta_*i_*[a]=[\beta_n i_n(a)]
+		=[i'_n\alpha_n(a)]=i'_*\alpha_*[a].
+	\]
+	对于圈 \(b\in B_n\)，关系 \(\gamma p=p'\beta\) 同样给出
+	\[
+		\gamma_*p_*[b]=[\gamma_n p_n(b)]
+		=[p'_n\beta_n(b)]=p'_*\beta_*[b].
+	\]
+	这证明前两类方块交换。
+
+	检验连接同态时，取圈 \(c\in C_n\)，并选取 \(b\in B_n\)、\(a\in A_{n-1}\)，使
+	\[
+		p_n(b)=c,\qquad i_{n-1}(a)=\mathrm{d}_Bb.
+	\]
+	由于 \(p'_n\beta_n(b)=\gamma_n(c)\)，链 \(\beta_n(b)\) 是 \(\gamma_n(c)\) 的一个提升。再由 \(\beta\) 是链映射及左方块交换，
+	\[
+		\mathrm{d}_{B'}\beta_n(b)
+		=\beta_{n-1}(\mathrm{d}_Bb)
+		=\beta_{n-1}i_{n-1}(a)
+		=i'_{n-1}\alpha_{n-1}(a).
+	\]
+	所以用这个提升计算可得
+	\[
+		\delta'_n\gamma_*[c]=[\alpha_{n-1}(a)]
+		=\alpha_*[a]=\alpha_*\delta_n[c].
+	\]
+	连接同态与提升选择无关，故这次选择即可确定所需的等式。
+\end{proof}
+
+最后把这套构造用于映射锥。它同时包含 \(D\) 和 \(C\) 上升一维后的部分，因而把比较映射 \(f\) 转化成一个复形；长正合列说明这个复形保留了什么信息。
+
+\begin{corollary}[映射锥的长正合列]\label{g2:cor:cone-LES}
+	设 \(f:C\to D\) 为 \(\mathbb Z\) 分次阿贝尔群链复形之间的链映射，并采用
+	\[
+		\operatorname{Cone}(f)_n=D_n\oplus C_{n-1},\qquad
+		\mathrm{d}(y,x)=(\mathrm{d}_Dy+f(x),-\mathrm{d}_Cx)
+	\]
+	的约定。令 \(j:D\to\operatorname{Cone}(f)\) 为 \(j(y)=(y,0)\)，令 \(q:\operatorname{Cone}(f)\to C[1]\) 为 \(q(y,x)=x\)，其中 \(C[1]_n=C_{n-1}\)、\(\mathrm{d}_{C[1]}=-\mathrm{d}_C\)。将 \(H_n(C[1])\) 通过 \([x]\mapsto[x]\) 识别为 \(H_{n-1}(C)\)，则有正合列
+	\[
+		\begin{aligned}
+			\cdots&\longrightarrow H_n(C)\xrightarrow{f_*}H_n(D)
+			\xrightarrow{j_*}H_n(\operatorname{Cone}(f))\\
+			&\xrightarrow{q_*}H_{n-1}(C)\xrightarrow{f_*}H_{n-1}(D)
+			\longrightarrow\cdots.
+		\end{aligned}
+	\]
+	特别地，\(f\) 为准同构，当且仅当 \(\operatorname{Cone}(f)\) 无同调。
+\end{corollary}
+\begin{proof}
+	映射 \(j,q\) 与各自的微分交换，且在每个次数中 \(j\) 单射、\(q\) 满射、\(\ker q=\operatorname{im}j\)。故它们构成链复形短正合列
+	\[
+		0\longrightarrow D\xrightarrow{j}\operatorname{Cone}(f)
+		\xrightarrow{q}C[1]\longrightarrow0.
+	\]
+	移位微分的负号不改变圈群和边界群，所以上述同调识别良定义。若 \(x\in C_{n-1}\) 是圈，它作为 \(C[1]_n\) 中的圈可提升为 \((0,x)\)，而
+	\[
+		\mathrm{d}(0,x)=(f(x),0)=j(f(x)).
+	\]
+	因此连接同态 \(H_n(C[1])\to H_{n-1}(D)\) 正好是 \(f_*\)，没有额外的负号。\cref{g2:thm:homology-LES}便给出所写的长正合列。
+
+	若每个 \(f_*\) 都是同构，则在每个次数，\(f_*\) 的满射性使 \(j_*=0\)，从而 \(q_*\) 单射；相邻次数 \(f_*\) 的单射性又使 \(\operatorname{im}q_*=0\)。所以 \(H_n(\operatorname{Cone}(f))=0\)。反过来，若映射锥在所有次数都无同调，则 \(H_n(\operatorname{Cone}(f))=0\) 给出 \(f_*:H_n(C)\to H_n(D)\) 满射，而 \(H_{n+1}(\operatorname{Cone}(f))=0\) 给出它单射，故 \(f\) 是准同构。
+\end{proof}
+
+连接同态的计算因而可以落实到代表链上，而自然性保证这种计算与空间映射诱导的比较相容。下一节将把这些代数结论用于由连续单形生成的复形。链复形和长正合列的其他表述可参阅 \cite[第12章]{May1999}，几何同调中的构造可参阅 \cite[第2.1节]{Hatcher2002}。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

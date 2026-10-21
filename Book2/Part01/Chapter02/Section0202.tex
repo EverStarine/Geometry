@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 2.2 奇异链与同伦不变性
-% 纲要位置：几何学计划纲要.md，第 1043 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 纲要位置：几何学计划纲要.md，第 1093 行。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,534 @@
 \section{奇异链与同伦不变性}
 \label{g2:sec:0202}
 
-待撰写
+把空间分成三角形再计算边界，是理解同调的一种直接方式；但一般空间未必已经给定三角剖分，连续映射也未必把某个三角形送到另一个三角形。奇异链采用另一种做法：把所有从标准单形到空间的连续映射都作为生成元。这样，连续映射只需与这些参数映射复合，就能作用于链。链群虽然很大，边界公式却仍由单形的有限个面决定。
+
+本节始终使用整数系数。先从单形各面的次序确定符号，再把同伦所扫过的棱柱拆成单形，以说明同伦为什么在同调上消失。指定子空间以后，同样的链模型还能记录“边界允许落在该子空间中”的链；空间对的连接同态，正是把这条尚未消失的边界取出来。相关链构造可参阅 \cite[第2章，§2.1]{Hatcher2002}。
 
 \subsection{奇异单形和边界符号}
 \label{g2:subsec:0202:01}
-待撰写
+单形的面需要保留参数次序，而不能只记其像。取
+\[
+	\Delta^n=\left\{(t_0,\ldots,t_n)\in\mathbb R^{n+1}:
+	t_i\ge0,\ \sum_{i=0}^nt_i=1\right\},
+\]
+并按次序记其顶点为 \(v_0,\ldots,v_n\)。当 \(n\ge1\) 时，仿射面映射
+\[
+	\delta_i^n:\Delta^{n-1}\longrightarrow\Delta^n,\qquad
+	\delta_i^n(t_0,\ldots,t_{n-1})
+	=(t_0,\ldots,t_{i-1},0,t_i,\ldots,t_{n-1})
+\]
+将标准单形送到略去第 \(i\) 个顶点的面。上标表示靶单形的维数。
+
+\begin{definition}[奇异链与奇异同调]\label{g2:def:singular-chain}
+	设 \(X\) 为拓扑空间，\(n\ge0\) 为整数，取标准单形
+	\[
+		\Delta^n=\{(t_0,\ldots,t_n)\in\mathbb R^{n+1}:
+		t_i\ge0,\ \textstyle\sum_{i=0}^nt_i=1\},
+	\]
+	其顶点按标准基的顺序编号。从 \(\Delta^n\) 到 \(X\) 的连续映射 \(\sigma:\Delta^n\to X\) 称为一个\term[qiyidanxing]{奇异单形}[singular simplex]。以所有这样的映射为基的自由阿贝尔群记作
+	\[
+		C_n(X)=\bigoplus_{\sigma:\Delta^n\to X\ \text{连续}}\mathbb Z\,\sigma.
+	\]
+	它的元素是有限形式和 \(c=\sum_\sigma a_\sigma\sigma\)，其中 \(a_\sigma\in\mathbb Z\)，称为整数系数的\term[qiyilian]{奇异链}[singular chain]。规定 \(C_n(X)=0\)（\(n<0\)），并定义
+	\[
+		\partial_n\sigma=\sum_{i=0}^n(-1)^i\sigma\circ\delta_i^n
+		\quad(n\ge1),\qquad \partial_0=0,
+	\]
+	其中 \(\delta_i^n:\Delta^{n-1}\to\Delta^n\) 是在第 \(i\) 个坐标插入 \(0\) 的保序仿射面映射，坐标从 \(0\) 起编号。将边界按加法延拓后，它满足 \(\partial_{n-1}\partial_n=0\)，所得链复形记作 \(C_\bullet(X)\)。其同调
+	\[
+		H_n(X;\mathbb Z)=H_n(X)
+		=\frac{\ker(\partial_n:C_n(X)\to C_{n-1}(X))}
+		{\operatorname{im}(\partial_{n+1}:C_{n+1}(X)\to C_n(X))}
+	\]
+	称为 \(X\) 的整数系数\term[qiyitongdiao]{奇异同调}[singular homology]；当 \(n<0\) 时规定 \(H_n(X)=0\)。\symidx{\(C_n(X)\)：整数系数奇异链群}\symidx{\(H_n(X)\)：整数系数奇异同调群}
+\end{definition}
+
+这里没有要求 \(\sigma\) 单射，也不要求它的像具有 \(n\) 维。常值映射同样是生成元；像相同而参数映射不同的两个单形，也仍是不同的生成元。特别地，改变顶点次序得到的奇异单形，并不在链群的定义中直接等同于原单形的正号或负号。所有抵消都必须落实为同一参数映射的系数相加。
+
+定义中所用的 \(\partial^2=0\) 来自每个余维二的面恰好出现两次。若 \(0\le i<j\le n\)，则
+\[
+	\delta_j^n\circ\delta_i^{n-1}
+	=\delta_i^n\circ\delta_{j-1}^{n-1};
+\]
+两边都按原有次序嵌入略去 \(v_i,v_j\) 的面。因此，当 \(n\ge2\) 时，
+\[
+	\partial_{n-1}\partial_n\sigma
+	=\sum_{0\le i<j\le n}
+	\left((-1)^{j+i}+(-1)^{i+j-1}\right)
+	\sigma\circ\delta_j^n\circ\delta_i^{n-1}
+	=0.
+\]
+当 \(n=1\) 时，结论由 \(\partial_0=0\) 得到。这既核验了符号，也证明了定义中的商确有意义。
+
+例如，把一个奇异一维单形看成道路 \(\gamma:[0,1]\to X\)，其中参数 \(t=t_1\)，便有
+\[
+	\partial\gamma=\gamma(1)-\gamma(0).
+\]
+这里的点代表相应的零维奇异单形。对于一个三角形参数映射 \(\sigma\)，有
+\[
+	\partial\sigma
+	=\sigma|[v_1,v_2]-\sigma|[v_0,v_2]+\sigma|[v_0,v_1],
+\]
+其中每个限制都通过保序仿射映射重新参数化为定义在 \(\Delta^1\) 上的映射。再次取边界时，三个顶点的系数分别抵消。
+
+\begin{proposition}[连续映射诱导的链映射]\label{g2:prop:singular-functoriality}
+	设 \(f:X\to Y\) 为拓扑空间之间的连续映射，\(C_\bullet(X)\)、\(C_\bullet(Y)\) 为整数系数奇异链复形。对每个生成元定义 \(f_\#(\sigma)=f\circ\sigma\)，并按加法延拓，则
+	\[
+		\partial f_\#=f_\#\partial.
+	\]
+	因此 \(f_\#\) 诱导同态 \(f_*:H_n(X)\to H_n(Y)\)，满足 \(f_*[c]=[f_\#c]\)。对于连续映射 \(g:Y\to Z\)，有
+	\[
+		(g\circ f)_\#=g_\#f_\#,\qquad
+		(g\circ f)_*=g_*f_*,\qquad
+		(\operatorname{id}_X)_*=\operatorname{id}_{H_n(X)}.
+	\]
+\end{proposition}
+\begin{proof}
+	对 \(n\ge1\) 的生成元，复合映射的结合律给出
+	\[
+		\partial(f\circ\sigma)
+		=\sum_{i=0}^n(-1)^if\circ\sigma\circ\delta_i^n
+		=f_\#(\partial\sigma).
+	\]
+	零次等式由 \(\partial_0=0\) 得到。于是 \(f_\#\) 把圈送到圈，并把形如 \(\partial b\) 的边界送到 \(\partial(f_\#b)\)，故在同调商群上良定义。其余等式先在生成元上由复合映射的结合律和恒等映射性质得到，再下降到同调。
+\end{proof}
+
+\begin{proposition}[点和道路分支的同调]\label{g2:prop:homology-point-components}
+	设 \(X\) 为任意拓扑空间，\(\mathcal P(X)\) 为其道路分支的集合，\(H_n\) 表示整数系数奇异同调。则对所有 \(n\ge0\)，各分支的包含映射给出自然同构
+	\[
+		H_n(X)\cong\bigoplus_{Q\in\mathcal P(X)}H_n(Q).
+	\]
+	若 \(*\) 是单点空间，则 \(H_0(*)\cong\mathbb Z\)、\(H_n(*)=0\)（\(n>0\)）。此外，
+	\[
+		H_0(X)\cong\mathbb Z[\mathcal P(X)]
+		=\bigoplus_{Q\in\mathcal P(X)}\mathbb Z[Q],
+	\]
+	其中零维圈 \(\sum_i a_i x_i\) 被送到 \(\sum_i a_i[Q(x_i)]\)，\(Q(x_i)\) 是含 \(x_i\) 的道路分支。空集的全部普通同调群均为零。
+\end{proposition}
+\begin{proof}
+	标准单形道路连通，所以每个奇异单形的像完全落在一个道路分支中。由子空间拓扑，它也给出到该分支的连续映射。因而
+	\[
+		C_n(X)=\bigoplus_{Q\in\mathcal P(X)}C_n(Q),
+	\]
+	且边界算子保持各直和项。链只有有限项，所以一个链为圈当且仅当各分支中的分量都是圈，一个链为边界当且仅当各分量都是边界。这证明了同调的直和分解，不需要各道路分支为开集。
+
+	单点空间在每个非负次数恰有一个奇异单形 \(s_n\)，所以 \(C_n(*)=\mathbb Zs_n\)，并且
+	\[
+		\partial s_n=
+		\begin{cases}
+			s_{n-1},&n>0\ \text{为偶数},\\
+			0,&n\ \text{为奇数}.
+		\end{cases}
+	\]
+	相邻的非零边界是恒等同态，故正次数的同调全部为零；由于 \(\partial_0=\partial_1=0\)，零次同调是 \(\mathbb Z\)。
+
+	最后，对每个零维生成元 \(x\) 定义 \(\Phi(x)=[Q(x)]\)。道路的两端在同一道路分支中，故 \(\Phi\partial_1=0\)。映射 \(\Phi:C_0(X)\to\mathbb Z[\mathcal P(X)]\) 满射。若 \(c=\sum_i a_ix_i\) 属于其核，则在每个实际出现的分支中，系数之和为零。在这样的分支中选一点 \(x_Q\)，并为每个 \(x_i\in Q\) 选一条从 \(x_Q\) 到 \(x_i\) 的道路 \(\gamma_i\)。该分支中的链满足
+	\[
+		\sum_{x_i\in Q}a_ix_i
+		=\sum_{x_i\in Q}a_i(x_i-x_Q)
+		=\partial\left(\sum_{x_i\in Q}a_i\gamma_i\right).
+	\]
+	求和只涉及有限个点和有限个分支，故 \(c\in\operatorname{im}\partial_1\)。由此得到所述 \(H_0\) 同构。空集没有非负维奇异单形，所以各链群均为零。
+\end{proof}
+
+这个计算辨别的是道路分支，而不只是连通分支；两点之差成为边界的原因，是存在连接它们的道路。它也说明了奇异链的大小与同调的大小可以相差很大：即使单点空间在每个非负次数都有非零链群，其正次数同调仍全部消失。
 
 \subsection{棱柱算子的显式公式}
 \label{g2:subsec:0202:02}
-待撰写
+若 \(f,g:X\to Y\) 由同伦 \(H:X\times I\to Y\) 连接，一条奇异单形 \(\sigma:\Delta^n\to X\) 在同伦中扫过的对象是 \(\Delta^n\times I\)。它的上下底面分别给出 \(f\circ\sigma\) 和 \(g\circ\sigma\)，侧面则来自 \(\sigma\) 的边界。将这个几何关系写成链等式，需要给棱柱中的每块单形确定次序和系数。
+
+对 Euclid 空间中的点 \(q_0,\ldots,q_m\)，以下用 \([q_0,\ldots,q_m]\) 表示仿射映射
+\[
+	\Delta^m\longrightarrow\mathbb R^N,\qquad
+	(t_0,\ldots,t_m)\longmapsto\sum_{j=0}^m t_jq_j.
+\]
+当这些点位于某个凸集时，映射的像也位于该凸集。这一记号保留有序参数，不预先附加顶点置换关系。
+
+\begin{theorem}[奇异同调的同伦不变性]\label{g2:thm:singular-homotopy-invariance}
+	设 \(X,Y\) 为拓扑空间，\(I=[0,1]\)，连续映射 \(H:X\times I\to Y\) 满足 \(H(x,0)=f(x)\)、\(H(x,1)=g(x)\)。在整数系数奇异链上，对 \(\sigma:\Delta^n\to X\)、\(n\ge0\)，以 \(v_0,\ldots,v_n\) 表示 \(\Delta^n\) 的有序标准顶点，记
+	\[
+		v_j^\varepsilon=(v_j,\varepsilon)\in\Delta^n\times I
+		\quad(0\le j\le n,\ \varepsilon=0,1),\qquad
+		F_\sigma=H\circ(\sigma\times\operatorname{id}_I).
+	\]
+	定义\term[lengzhu suanzi]{棱柱算子}[prism operator]
+	\[
+		P_n(\sigma)=\sum_{i=0}^n(-1)^i
+		F_\sigma\circ
+		[v_0^0,\ldots,v_i^0,v_i^1,\ldots,v_n^1],
+	\]
+	其中方括号表示由所列有序顶点确定的仿射单形。按加法延拓为 \(P_n:C_n(X)\to C_{n+1}(Y)\)，并规定 \(P_{-1}=0\)，则
+	\begin{equation}\label{g2:eq:prism-identity}
+		\partial_{n+1}P_n+P_{n-1}\partial_n=g_\#-f_\#
+		\qquad(n\ge0).
+	\end{equation}
+	因此 \(f_*=g_*:H_n(X)\to H_n(Y)\) 对所有次数成立。
+\end{theorem}
+\begin{proof}
+	先说明公式中的单形如何填满棱柱，再核对每类面的符号。对点 \(((t_0,\ldots,t_n),s)\in\Delta^n\times I\)，取满足
+	\[
+		\sum_{j=i+1}^nt_j\le s\le\sum_{j=i}^nt_j
+	\]
+	的指标 \(i\)。这样的指标总存在。在第 \(i\) 块单形中，顶点 \(v_j^0\)（\(j<i\)）的系数为 \(t_j\)，顶点 \(v_j^1\)（\(j>i\)）的系数也为 \(t_j\)，而两个同指标顶点的系数分别为
+	\[
+		\sum_{j=i}^nt_j-s,\qquad
+		s-\sum_{j=i+1}^nt_j.
+	\]
+	这些数非负，总和为 \(1\)，并给出原点的坐标。因此这 \(n+1\) 块单形覆盖棱柱；两个不等式取等号的位置正是相邻块共享的面。
+
+	核对边界时，简记 \(u_j=v_j^0\)、\(w_j=v_j^1\)，并在各式中省略共同的后复合 \(F_\sigma\)。对第 \(i\) 块
+	\[
+		T_i=[u_0,\ldots,u_i,w_i,\ldots,w_n],
+	\]
+	略去 \(u_j\)（\(j\le i\)）的边界系数是 \((-1)^{i+j}\)，略去 \(w_j\)（\(j\ge i\)）的系数是 \((-1)^{i+j+1}\)，因为 \(w_j\) 在 \(T_i\) 中的位置为 \(j+1\)。
+
+	先看 \(j=i\) 的两类面。略去 \(u_i\) 得到
+	\[
+		[u_0,\ldots,u_{i-1},w_i,\ldots,w_n],
+	\]
+	系数为 \(+1\)；当 \(i\ge1\) 时，它恰好等于从 \(T_{i-1}\) 中略去 \(w_{i-1}\) 的面，后者系数为 \(-1\)。这些内部分界面逐对抵消。剩下的两项是从 \(T_0\) 略去 \(u_0\) 得到的上底面 \([w_0,\ldots,w_n]\)，以及从 \(T_n\) 略去 \(w_n\) 得到的下底面 \(-[u_0,\ldots,u_n]\)。复合 \(F_\sigma\) 后，它们分别是 \(g_\#\sigma\) 和 \(-f_\#\sigma\)。
+
+	余下的项来自侧面。若 \(j<i\)，从 \(T_i\) 略去 \(u_j\) 后，所得有序单形属于第 \(j\) 个底面上的棱柱；略去该底面顶点后，转折指标由 \(i\) 变成 \(i-1\)。它在 \(P_{n-1}\partial_n\sigma\) 中的系数为
+	\[
+		(-1)^j(-1)^{i-1}=-(-1)^{i+j},
+	\]
+	恰与它在 \(\partial_{n+1}P_n\sigma\) 中的系数相反。若 \(j>i\)，从 \(T_i\) 略去 \(w_j\) 后，底面棱柱的转折指标仍为 \(i\)，故它在 \(P_{n-1}\partial_n\sigma\) 中的系数为
+	\[
+		(-1)^j(-1)^i=-(-1)^{i+j+1}.
+	\]
+	这两类已经包括全部侧面。因此，内部面抵消、侧面与 \(P\partial\) 抵消以后，只留下上底面减下底面，得到 \eqref{g2:eq:prism-identity}。当 \(n=0\) 时，\(P_0(x)\) 就是道路 \(t\mapsto H(x,t)\)，其边界直接等于 \(g(x)-f(x)\)，同一公式仍成立。
+
+	若 \(c\) 是奇异 \(n\) 圈，则
+	\[
+		g_\#c-f_\#c=\partial P_nc,
+	\]
+	所以二者代表同一个同调类。这证明了同伦不变性。
+\end{proof}
+
+在 \(n=1\) 时，棱柱是一个正方形，公式把它沿连接 \(v_0^0\) 与 \(v_1^1\) 的对角线分成两个三角形：
+\[
+	P_1(\sigma)=F_\sigma\circ[v_0^0,v_0^1,v_1^1]
+	-F_\sigma\circ[v_0^0,v_1^0,v_1^1].
+\]
+共同对角线在边界中出现两次，系数相反；左右两边则是两个端点的同伦道路。这是 \(\partial P+P\partial=g_\#-f_\#\) 在最低非平凡维数中的具体形状。
+
+\begin{corollary}[同伦等价与可缩空间]\label{g2:cor:contractible-homology}
+	设 \(f:X\to Y\) 为拓扑空间之间的同伦等价，\(H_n\) 为整数系数奇异同调。则 \(f_*:H_n(X)\to H_n(Y)\) 对每个 \(n\ge0\) 都是同构。特别地，若非空空间 \(X\) 可缩，即 \(\operatorname{id}_X\) 同伦于一个常值映射，则
+	\[
+		H_n(X)\cong
+		\begin{cases}
+			\mathbb Z,&n=0,\\
+			0,&n>0.
+		\end{cases}
+	\]
+\end{corollary}
+\begin{proof}
+	取 \(f\) 的同伦逆 \(u:Y\to X\)。函子性及同伦不变性给出 \(u_*f_*=\operatorname{id}\)、\(f_*u_*=\operatorname{id}\)。非空可缩空间到单点空间的映射，与所选收缩点的包含映射互为同伦逆，再应用 \cref{g2:prop:homology-point-components} 即得所述计算。
+\end{proof}
+
+棱柱公式还保留了映射的所在范围：\(P_n\sigma\) 的每一项都落在 \(H(\sigma(\Delta^n)\times I)\) 中。这一点使同一个构造能够用于空间对，而不必另选一种同伦算子。
 
 \subsection{相对链复形和约化同调}
 \label{g2:subsec:0202:03}
-待撰写
+设一条链的边界没有在整个空间中消失，却完全落在指定子空间 \(A\) 内。如果只研究 \(X\) 相对于 \(A\) 的变化，应允许这样的链成为圈。实现这一点的代数操作，是将 \(A\) 中的全部链置为零。由于边界仍留在 \(A\) 中，这个操作与边界算子相容。
+
+\begin{definition}[相对奇异同调]\label{g2:def:relative-singular-homology}
+	设 \(X\) 为拓扑空间，\(A\subseteq X\) 赋予子空间拓扑，\(C_\bullet(X)\)、\(C_\bullet(A)\) 为整数系数奇异链复形。通过包含映射将 \(C_n(A)\) 视为 \(C_n(X)\) 的子群，定义
+	\[
+		C_n(X,A)=C_n(X)/C_n(A),\qquad
+		\partial(c+C_n(A))=\partial c+C_{n-1}(A).
+	\]
+	由于 \(\partial C_n(A)\subseteq C_{n-1}(A)\)，此边界良定义并满足 \(\partial^2=0\)。商链复形 \(C_\bullet(X,A)\) 的同调
+	\[
+		H_n(X,A;\mathbb Z)=H_n(X,A)
+		=H_n(C_\bullet(X,A))
+	\]
+	称为空间对 \((X,A)\) 的整数系数\term[xiangdui qiyi tongdiao]{相对奇异同调}[relative singular homology]。负次数的相对链群及相对同调均为零。\symidx{\(C_n(X,A)\)：相对奇异链群}\symidx{\(H_n(X,A)\)：相对奇异同调群}
+\end{definition}
+
+上述包含在链上确实是单射：两个到 \(A\) 的连续映射，与包含映射复合后相等，当且仅当它们本身相等；而一个到 \(X\) 的奇异单形只要像在 \(A\) 中，就由子空间拓扑给出到 \(A\) 的连续映射。因此 \(C_n(A)\) 恰由那些像完全落在 \(A\) 中的生成元张成。
+
+记 \(\overline c=c+C_n(A)\)。它是相对圈，当且仅当
+\[
+	\partial c\in C_{n-1}(A).
+\]
+两个这样的链 \(c,c'\) 给出同一个相对同调类，当且仅当存在 \(b\in C_{n+1}(X)\)、\(a\in C_n(A)\)，使
+\[
+	c-c'=\partial b+a.
+\]
+特别地，相对同调中的零类允许由“一个边界加一条 \(A\) 中的链”表示。这是商复形的圈和边界条件展开后的原式。
+
+若只看阿贝尔群，\(C_n(X,A)\) 可以用像不完全落在 \(A\) 中的奇异单形作为一组基；但这些生成元的某些面可能落在 \(A\) 中，所以它们在 \(C_n(X)\) 中张成的子群未必组成子复形。相对边界是在商群中计算的。两个极端情形为
+\[
+	C_\bullet(X,\varnothing)=C_\bullet(X),\qquad
+	C_\bullet(X,X)=0.
+\]
+
+\begin{proposition}[相对同调的函子性与同伦不变性]\label{g2:prop:relative-homotopy-invariance}
+	设 \((X,A)\)、\((Y,B)\) 为空间对，\(f:(X,A)\to(Y,B)\) 为连续空间对映射，即 \(f:X\to Y\) 连续且 \(f(A)\subseteq B\)。则
+	\[
+		f_\#(\overline c)=\overline{f_\#c}
+	\]
+	给出整数系数相对链复形之间的链映射，并诱导 \(f_*:H_n(X,A)\to H_n(Y,B)\)。这些映射保持恒等映射和复合映射。若空间对映射 \(f,g\) 之间存在连续同伦 \(H:X\times I\to Y\)，满足
+	\[
+		H(x,0)=f(x),\quad H(x,1)=g(x),\quad H(A\times I)\subseteq B,
+	\]
+	则 \(f_*=g_*\)。
+\end{proposition}
+\begin{proof}
+	条件 \(f(A)\subseteq B\) 保证 \(f_\#C_n(A)\subseteq C_n(B)\)，所以映射在商上良定义。它与边界交换，以及保持复合与恒等映射，都由绝对链上的相应等式下降得到。
+
+	对于所给同伦，\cref{g2:thm:singular-homotopy-invariance} 的棱柱算子满足
+	\[
+		P_n(C_n(A))\subseteq C_{n+1}(B),
+	\]
+	因为这些棱柱的像包含在 \(H(A\times I)\) 中。故 \(P_n\) 下降为相对链算子，且等式 \(\partial P+P\partial=g_\#-f_\#\) 在商上仍成立。将其用于相对圈，就得到两个诱导同态相等。
+\end{proof}
+
+另一个常用调整发生在零次。一个非空道路连通空间总有 \(H_0\cong\mathbb Z\)，即使它可缩也不例外。若希望可缩空间在每个次数的同调都为零，可以把“零维链的总系数”也当作一次边界计算。
+
+\begin{definition}[约化奇异同调]\label{g2:def:reduced-homology}
+	设 \(X\) 为任意拓扑空间。对整数系数奇异链复形定义增广
+	\[
+		\varepsilon_X:C_0(X)\longrightarrow\mathbb Z,\qquad
+		\varepsilon_X\left(\sum_i a_ix_i\right)=\sum_i a_i.
+	\]
+	定义增广链复形 \(\widetilde C_\bullet(X)\) 为
+	\[
+		\widetilde C_n(X)=
+		\begin{cases}
+			C_n(X),&n\ge0,\\
+			\mathbb Z,&n=-1,\\
+			0,&n<-1,
+		\end{cases}
+		\qquad
+		\widetilde\partial_n=
+		\begin{cases}
+			\partial_n,&n\ge1,\\
+			\varepsilon_X,&n=0,\\
+			0,&n<0.
+		\end{cases}
+	\]
+	道路两端的总系数之差为零，所以 \(\varepsilon_X\partial_1=0\)。其同调 \(\widetilde H_n(X)=H_n(\widetilde C_\bullet(X))\) 称为整数系数\term[yuehua tongdiao]{约化同调}[reduced homology]。对于连续映射 \(f:X\to Y\)，增广链映射在非负次数取 \(f_\#\)，在 \(-1\) 次取 \(\operatorname{id}_{\mathbb Z}\)。\symidx{\(\widetilde H_n(X)\)：整数系数约化同调}
+\end{definition}
+
+这里明确保留了空集：\(\varepsilon_\varnothing:0\to\mathbb Z\) 仍是一个同态，只是不满射。这个约定可以使含空集的公式继续写在增广链层面，但必须记住它在 \(-1\) 次留下的同调。
+
+\begin{proposition}[约化同调与普通同调的关系]\label{g2:prop:reduced-homology-degrees}
+	设 \(X\) 为拓扑空间，所有同调均取整数系数。对于 \(n>0\)，有自然同构 \(\widetilde H_n(X)=H_n(X)\)。在零次及负次数，有自然正合列
+	\[
+		0\longrightarrow\widetilde H_0(X)
+		\longrightarrow H_0(X)
+		\xrightarrow{\bar\varepsilon_X}\mathbb Z
+		\longrightarrow\widetilde H_{-1}(X)
+		\longrightarrow0,
+	\]
+	且 \(\widetilde H_n(X)=0\)（\(n<-1\)）。若 \(X\ne\varnothing\)，则 \(\widetilde H_{-1}(X)=0\)；选定一点 \(x_0\in X\) 后，有分解
+	\[
+		H_0(X)\cong\widetilde H_0(X)\oplus\mathbb Z,
+	\]
+	其中第二项由 \([x_0]\) 生成。若 \(X=\varnothing\)，则只有 \(\widetilde H_{-1}(\varnothing)=\mathbb Z\) 非零。约化同调具有同伦不变性，因而非空可缩空间的全部约化同调均为零。
+\end{proposition}
+\begin{proof}
+	正次数的圈和边界与普通链复形完全相同。在零次，
+	\[
+		\widetilde H_0(X)=\ker\varepsilon_X/\operatorname{im}\partial_1,
+		\qquad
+		H_0(X)=C_0(X)/\operatorname{im}\partial_1.
+	\]
+	由于 \(\varepsilon_X\partial_1=0\)，增广下降为 \(\bar\varepsilon_X:H_0(X)\to\mathbb Z\)，其核正是 \(\widetilde H_0(X)\)。在 \(-1\) 次，全部 \(\mathbb Z\) 都是圈，而边界是 \(\operatorname{im}\varepsilon_X\)，因此 \(\widetilde H_{-1}(X)\) 是该增广的余核。这证明了正合列。
+
+	当 \(X\ne\varnothing\) 时，\(\varepsilon_X(x_0)=1\)，所以增广满射；同态 \(m\mapsto m[x_0]\) 给出其一个截面。具体分解是
+	\[
+		[c]\longmapsto
+		\bigl([c]-\bar\varepsilon_X([c])[x_0],\,
+		\bar\varepsilon_X([c])\bigr).
+	\]
+	这个分裂使用了 \(x_0\) 的选择，不能不加说明地把第二个直和项当作无选择的自然分裂。空集的结论则直接由其增广复形只有 \(-1\) 次的 \(\mathbb Z\) 非零得到。
+
+	连续映射满足 \(\varepsilon_Yf_\#=\varepsilon_X\)，所以定义中的增广链映射确与边界交换。对两个同伦的映射，沿用棱柱算子，并取 \(P_{-1}=0\)。在零次，\(\partial P_0+P_{-1}\varepsilon_X=g_\#-f_\#\) 仍成立；在 \(-1\) 次，两条链映射都是 \(\operatorname{id}_{\mathbb Z}\)，差为零，其余次数与原证明相同。故它们在约化同调上诱导同一映射。单点空间的增广还使零次同调消失，结合 \cref{g2:cor:contractible-homology} 的同伦逆构造，即得非空可缩空间的结论。
+\end{proof}
+
+结合道路分支的计算，非空空间的 \(\widetilde H_0(X)\) 就是 \(\mathbb Z[\mathcal P(X)]\) 中总系数为零的部分。选定含 \(x_0\) 的分支 \(Q_0\) 后，各差 \([Q]-[Q_0]\)（\(Q\ne Q_0\)）构成它的一组基。若恰有 \(r\ge1\) 个道路分支，就得到 \(\widetilde H_0(X)\cong\mathbb Z^{r-1}\)。
 
 \subsection{对及三元组的长正合列}
 \label{g2:subsec:0202:04}
-待撰写
+相对圈的边界落在 \(A\) 中，所以它本身给出 \(A\) 中的一个低一维圈。连接同态把这条边界作为输出。要保证输出与代表链的选择无关，并知道这些同态形成正合列，可以把前一节的短正合复形定理直接用于奇异链；在这个模型中，抽象的“提升后取边界”有具体的几何含义。
+
+\begin{theorem}[空间对的长正合列]\label{g2:thm:pair-LES}
+	设 \(X\) 为拓扑空间，\(A\subseteq X\) 为任意子空间，所有奇异链和同调均取整数系数。包含映射 \(i:A\hookrightarrow X\) 与商链映射 \(j:C_\bullet(X)\to C_\bullet(X,A)\) 给出自然长正合列
+	\[
+		\cdots\longrightarrow H_n(A)\xrightarrow{i_*}H_n(X)
+		\xrightarrow{j_*}H_n(X,A)
+		\xrightarrow{\delta_n}H_{n-1}(A)\longrightarrow\cdots,
+	\]
+	其低次末端为
+	\[
+		H_1(X,A)\xrightarrow{\delta_1}H_0(A)
+		\xrightarrow{i_*}H_0(X)\xrightarrow{j_*}H_0(X,A)
+		\longrightarrow0.
+	\]
+	若 \(c\in C_n(X)\) 满足 \(\partial c\in C_{n-1}(A)\)，则连接同态为
+	\[
+		\delta_n[\overline c]=[\partial c]\in H_{n-1}(A).
+	\]
+	对于任意连续空间对映射 \(f:(X,A)\to(Y,B)\)，它诱导两条长正合列之间的交换图，特别是
+	\[
+		(f|_A)_*\delta_n=\delta_n f_*.
+	\]
+	这里 \(f|_A\) 视为从 \(A\) 到 \(B\) 的映射；两侧的连接同态分别属于所对应的空间对。
+\end{theorem}
+\begin{proof}
+	包含映射在奇异链上单射，商映射满射，且其核正是 \(C_n(A)\)。它们均与边界交换，故得到短正合复形
+	\begin{equation}\label{g2:eq:pair-short-exact}
+		0\longrightarrow C_\bullet(A)
+		\xrightarrow{i_\#}C_\bullet(X)
+		\xrightarrow{j}C_\bullet(X,A)\longrightarrow0.
+	\end{equation}
+	\cref{g2:thm:homology-LES} 适用于这个逐次短正合列，给出所述长正合列。它的连接构造先将商复形中的圈 \(\overline c\) 提升为 \(c\)，再取 \(\partial c\)。由于 \(j(\partial c)=\partial\overline c=0\)，这个边界在 \(C_{n-1}(A)\) 中；其在该子群中的原像就是它本身，所以连接公式没有额外负号。
+
+	也可直接核验公式中的选择无关性。若换成同一相对同调类的代表 \(c'=c+\partial b+a\)，其中 \(a\in C_n(A)\)，则
+	\[
+		\partial c'=\partial c+\partial a,
+	\]
+	二者在 \(A\) 中只差一个边界。又因 \(\partial^2c=0\)，输出确是 \(A\) 中的同调类。
+
+	给定空间对映射 \(f\)，它把 \eqref{g2:eq:pair-short-exact} 映到 \((Y,B)\) 的对应短正合复形。前一节的自然性结论因此适用。对连接项，具体等式是
+	\[
+		\delta_n[f_\#c]=[\partial f_\#c]
+		=[f_\#\partial c]=(f|_A)_*[\partial c].
+	\]
+	它对应下面的交换方块，其余方块由包含或商映射的定义交换：
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			H_n(X,A) \arrow[r,"\delta_n"] \arrow[d,"f_*"']
+				& H_{n-1}(A) \arrow[d,"(f|_A)_*"] \\
+			H_n(Y,B) \arrow[r,"\delta_n"']
+				& H_{n-1}(B).
+		\end{tikzcd}
+	\]
+\end{proof}
+
+例如，在相对项处的正合性有一个直接的解释。若相对圈 \(c\) 的边界在 \(A\) 中又是边界，即 \(\partial c=\partial a\)、\(a\in C_n(A)\)，则 \(c-a\) 是 \(X\) 中的绝对圈，并且与 \(c\) 给出相同的相对类。因此 \(\ker\delta_n=\operatorname{im}j_*\)。这说明连接同态恰好检测一个相对类能否改用绝对圈表示。
+
+\begin{corollary}[零次相对同调]\label{g2:cor:relative-zero-homology}
+	设 \(A\subseteq X\) 为拓扑空间的任意子空间，使用整数系数奇异同调。则 \(H_0(X,A)\) 是以那些不与 \(A\) 相交的道路分支为基的自由阿贝尔群。特别地，若 \(A\) 与 \(X\) 的每个道路分支都相交，则 \(H_0(X,A)=0\)。
+\end{corollary}
+\begin{proof}
+	空间对长正合列的末端说明 \(H_0(X,A)\) 是 \(H_0(A)\to H_0(X)\) 的余核。根据 \cref{g2:prop:homology-point-components}，一个 \(A\) 中的点被送到它在 \(X\) 中所属的道路分支。因此像恰是与 \(A\) 相交的分支所张成的自由直和项，取商后留下所述其余基元。
+\end{proof}
+
+\begin{proposition}[约化形式的空间对长正合列]\label{g2:prop:reduced-pair-LES}
+	设 \(A\subseteq X\) 为拓扑空间的非空子空间，\(\widetilde H_n\) 为增广次数 \(-1\) 取 \(\mathbb Z\) 的整数系数约化同调，\(H_n(X,A)\) 为普通相对奇异同调。则有自然长正合列
+	\[
+		\cdots\longrightarrow\widetilde H_n(A)
+		\longrightarrow\widetilde H_n(X)
+		\longrightarrow H_n(X,A)
+		\xrightarrow{\widetilde\delta_n}\widetilde H_{n-1}(A)
+		\longrightarrow\cdots,
+	\]
+	末端为
+	\[
+		H_1(X,A)\xrightarrow{\widetilde\delta_1}\widetilde H_0(A)
+		\longrightarrow\widetilde H_0(X)
+		\longrightarrow H_0(X,A)\longrightarrow0.
+	\]
+	连接同态仍由 \(\widetilde\delta_n[\overline c]=[\partial c]\) 给出；在 \(n=1\) 时，\(\partial c\) 作为总系数为零的零维圈表示 \(\widetilde H_0(A)\) 中的类。
+\end{proposition}
+\begin{proof}
+	把 \eqref{g2:eq:pair-short-exact} 中前两个复形都增广，并让包含映射在 \(-1\) 次为 \(\operatorname{id}_{\mathbb Z}\)，就得到短正合复形
+	\[
+		0\longrightarrow\widetilde C_\bullet(A)
+		\longrightarrow\widetilde C_\bullet(X)
+		\longrightarrow C_\bullet(X,A)\longrightarrow0.
+	\]
+	非负次数正合性与原来相同；在 \(-1\) 次，它是
+	\[
+		0\longrightarrow\mathbb Z
+		\xrightarrow{\operatorname{id}}\mathbb Z
+		\longrightarrow0\longrightarrow0.
+	\]
+	因此两个增广复形之商恰是普通相对链复形，而不是一个额外带有 \(-1\) 次 \(\mathbb Z\) 的复形。这解释了长正合列中相对项仍写作 \(H_n(X,A)\) 的原因。
+
+	应用 \cref{g2:thm:homology-LES} 得到结论及自然性。连接同态仍提升到 \(C_n(X)\) 后取边界；在 \(n=1\) 时，\(\varepsilon_A(\partial c)=0\)，所以输出确实落在约化零次同调中。非空性保证 \(\widetilde H_{-1}(A)=\widetilde H_{-1}(X)=0\)，于是末端具有陈述中的形式。
+\end{proof}
+
+上面这个增广短正合复形在 \(A=\varnothing\) 时仍然存在，但其长正合列不能在 \(H_0(X,\varnothing)\) 后直接截断：下一项是 \(\widetilde H_{-1}(\varnothing)=\mathbb Z\)。非空条件的作用就在这里。通常所谓非空空间对的“约化相对同调”，仍由同一个普通相对链复形计算，不必再定义一套不同的相对群。
+
+\begin{corollary}[选定一点后的相对同调]\label{g2:cor:reduced-relative-point}
+	设 \(X\) 为拓扑空间，\(x_0\in X\)，使用整数系数奇异同调。由链商映射诱导的映射给出自然同构
+	\[
+		\widetilde H_n(X)\xrightarrow{\ \cong\ }H_n(X,\{x_0\})
+		\qquad(n\ge0).
+	\]
+	这里的自然性针对保持所选点的连续映射。
+\end{corollary}
+\begin{proof}
+	单点空间的全部约化同调均为零。在 \cref{g2:prop:reduced-pair-LES} 中取 \(A=\{x_0\}\)，所述映射的左右两项都为零，故它是同构。自然性来自该长正合列对空间对映射的自然性。
+\end{proof}
+
+若指定两个嵌套的子空间，就能在已经忽略较小子空间的条件下，再忽略较大子空间。商群的第三同构定理在链复形中的应用，产生下一条序列。
+
+\begin{theorem}[空间三元组的长正合列]\label{g2:thm:triple-LES}
+	设 \(X\) 为拓扑空间，\(B\subseteq A\subseteq X\) 均赋予子空间拓扑，所有链和同调均取整数系数。自然映射给出长正合列
+	\[
+		\cdots\longrightarrow H_n(A,B)\longrightarrow H_n(X,B)
+		\longrightarrow H_n(X,A)
+		\xrightarrow{\delta_n}H_{n-1}(A,B)\longrightarrow\cdots,
+	\]
+	并终止于 \(H_0(X,A)\to0\)。若 \(c\in C_n(X)\) 满足 \(\partial c\in C_{n-1}(A)\)，则
+	\[
+		\delta_n[c+C_n(A)]
+		=[\partial c+C_{n-1}(B)].
+	\]
+	这个序列对满足 \(f(A)\subseteq A'\)、\(f(B)\subseteq B'\) 的连续映射 \(f:X\to X'\) 自然，其中 \(B'\subseteq A'\subseteq X'\) 为另一空间三元组。
+\end{theorem}
+\begin{proof}
+	在每个次数，自然映射组成短正合列
+	\[
+		0\longrightarrow C_n(A)/C_n(B)
+		\longrightarrow C_n(X)/C_n(B)
+		\longrightarrow C_n(X)/C_n(A)\longrightarrow0.
+	\]
+	第一条映射单射，因为一个 \(A\) 中的链在中间商中为零，当且仅当它已在 \(C_n(B)\) 中。最后一条映射满射，其核由 \(C_n(A)\) 中的链模去 \(C_n(B)\) 构成，正好是第一条映射的像。边界保持所有这些子群，故这是短正合复形
+	\[
+		0\longrightarrow C_\bullet(A,B)
+		\longrightarrow C_\bullet(X,B)
+		\longrightarrow C_\bullet(X,A)\longrightarrow0.
+	\]
+	应用 \cref{g2:thm:homology-LES} 得到长正合列。具体地，相对圈 \(c+C_n(A)\) 先提升为 \(c+C_n(B)\)，其边界是 \(\partial c+C_{n-1}(B)\)，位于 \(C_{n-1}(A,B)\) 中，这就给出陈述的公式。若换代表 \(c'=c+\partial b+a\)、\(a\in C_n(A)\)，输出只改变 \(C_\bullet(A,B)\) 中的边界 \(\partial a+C_{n-1}(B)\)，所以公式与代表无关。
+
+	满足陈述中条件的 \(f\) 保持三条子链复形，并与边界及商映射交换，从而诱导这两条短正合复形之间的链映射。一般连接同态的自然性给出整条序列的自然性；也可在连接项上直接用 \(\partial f_\#c=f_\#\partial c\) 核验。
+\end{proof}
+
+取 \(B=\varnothing\)，三元组序列恢复空间对序列；取一点 \(B=\{x_0\}\subseteq A\)，再用 \cref{g2:cor:reduced-relative-point} 识别前两个相对项，就得到空间对序列的约化形式。
+
+\begin{example}[区间的相对基本类]\label{g2:exm:interval-relative-class}
+	设 \(I=[0,1]\)、\(A=\{0,1\}\)，使用整数系数奇异同调。则
+	\[
+		H_n(I,A)\cong
+		\begin{cases}
+			\mathbb Z,&n=1,\\
+			0,&n\ne1.
+		\end{cases}
+	\]
+	奇异一维单形 \(\sigma:\Delta^1\to I\)、\(\sigma(t_0,t_1)=t_1\)，给出 \(H_1(I,A)\) 的一个生成元，连接同态将它送到 \([1]-[0]\)。
+\end{example}
+\begin{proof}
+	区间可缩，而 \(A\) 是两个点的不交并。由 \cref{g2:prop:homology-point-components,g2:cor:contractible-homology}，两者的正次数绝对同调都为零，\(H_0(A)\cong\mathbb Z^2\)、\(H_0(I)\cong\mathbb Z\)。空间对序列因此在低次化为
+	\[
+		0\longrightarrow H_1(I,A)\xrightarrow{\delta_1}
+		\mathbb Z^2\xrightarrow{(a,b)\mapsto a+b}\mathbb Z
+		\longrightarrow H_0(I,A)\longrightarrow0.
+	\]
+	求和同态满射，其核由 \((-1,1)\) 生成，故 \(\delta_1\) 将 \(H_1(I,A)\) 同构到该核。链 \(\sigma\) 满足 \(\partial\sigma=1-0\)，所以它正好给出这个生成元。更高次数的消失也由同一长正合列得到，负次数按定义为零。
+\end{proof}
+
+反射 \(r:I\to I\)、\(r(t)=1-t\) 保持端点集合，连接同态的自然性给出
+\[
+	\delta_1 r_*[\overline\sigma]=[0]-[1]
+	=-\delta_1[\overline\sigma].
+\]
+因为 \(\delta_1\) 单射，所以 \(r_*\) 在 \(H_1(I,A)\cong\mathbb Z\) 上为乘以 \(-1\)。虽然 \(r\) 与恒等映射作为 \(I\to I\) 的映射可由 \(H(t,s)=(1-s)t+s(1-t)\) 连接，它们却不能通过始终保持端点集合的空间对映射同伦，否则相对同调上的诱导映射必须相同。相对同伦不变性中要求 \(H(A\times I)\subseteq A\)，正是为了保留这一信息。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 3.1 骨架滤过给出的链复形
-% 纲要位置：几何学计划纲要.md，第 1071 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 纲要位置：几何学计划纲要.md，第 1121 行。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,209 @@
 \section{骨架滤过给出的链复形}
 \label{g2:sec:0301}
 
-待撰写
+奇异链复形允许所有连续单形，因而适用于任意空间；但即使空间只有一个点，链群也在每个非负次数都有生成元。第一章给出的胞腔分解则只记录空间实际怎样由圆盘拼成。我们希望每个定向的 \(n\) 胞腔只贡献一个 \(n\) 维生成元，同时保留奇异同调中的全部信息。
+
+\ProseParagraphBreak
+
+困难在于胞腔的边界不必嵌入旧骨架，甚至可能多次经过同一个低维胞腔。因此不能把它简单当成若干几何面的集合。本节先用相对同调把每个圆盘的内部单独取出，再由连接同态恢复其附着边界。全节使用整数系数，约定 \(X^{-1}=\varnothing\)，普通同调在负次数为零。
 
 \subsection{骨架对的相对同调}
 \label{g2:subsec:0301:01}
-待撰写
+相对同调 \(H_q(X^n,X^{n-1})\) 把旧骨架中的链视为零。每个新圆盘的边界因而消失，留下的应当是一个球面的顶维类。下面的切除论证说明，这个直观在胞腔数无限、附着映射不单射时仍然成立。
+
+\begin{theorem}[骨架对的相对同调]\label{g2:thm:skeletal-relative-homology}
+	设 \(X\) 为 CW 复形，\(E_n\) 为其 \(n\) 胞腔的指标集，\(\phi_\alpha:(D^n_\alpha,S^{n-1}_\alpha)\to(X^n,X^{n-1})\) 为特征映射。对所有整数 \(q\ge0\)，这些映射诱导同构
+	\[
+		\bigoplus_{\alpha\in E_n}H_q(D^n_\alpha,S^{n-1}_\alpha)
+		\xrightarrow{\ \cong\ }H_q(X^n,X^{n-1}).
+	\]
+	当 \(n=0\) 时，将圆盘边界理解为空集。因此右边在 \(q\ne n\) 时为零，在 \(q=n\) 时是以定向 \(n\) 胞腔为基的自由阿贝尔群。同一结论适用于通过附着一族 \(n\) 胞腔得到的空间对 \((Y,A)\)。
+\end{theorem}
+\begin{proof}
+	先处理 \(n\ge1\)。在附着空间 \(Y\) 中，取旧空间 \(A\) 连同各圆盘半径大于 \(1/2\) 的外环所形成的集合 \(U\)。在每个特征圆盘上的原像是 \(\{u:\|u\|>1/2\}\)，在 \(A\) 上的原像是全部 \(A\)，故商拓扑保证 \(U\) 是包含 \(A\) 的开集。外环中的 \(u=r\theta\) 沿
+	\[
+		r\theta\longmapsto\bigl((1-t)r+t\bigr)\theta
+	\]
+	推向圆盘边界，并在 \(A\) 上保持不动。这给出 \(U\) 到 \(A\) 的强形变收缩。各圆盘上的公式在边界一致；限制到开集的商映射仍是商映射，而与区间相乘仍为商映射（\cref{g2:lem:quotient-interval}），所以此同伦确实连续。
+
+	由于 \(H_q(U,A)=0\)，三元组序列（\cref{g2:thm:triple-LES}）给出 \(H_q(Y,A)\cong H_q(Y,U)\)。附着构造中 \(A\) 闭，且 \(A\subset U=\operatorname{int}_Y U\)，所以切除定理的闭包条件成立。切去 \(A\) 后，各胞腔内部成为互不相交的开球，得到
+	\[
+		H_q(Y,U)\cong
+		H_q\left(\coprod_{\alpha\in E_n}\mathring D^n_\alpha,
+		\coprod_{\alpha\in E_n}\{u:1/2<\|u\|<1\}\right)
+		\cong\bigoplus_{\alpha\in E_n}H_q(\mathring D^n,\{1/2<\|u\|<1\}).
+	\]
+	最后一个同构在链上已经成立：每个奇异单形的参数域连通，像落在一个不交分支中；每条链又只含有限个单形。因此这里是直和，不是允许无限支撑的直积。
+
+	为核对同构恰由特征映射诱导，在每个圆盘中也取外环 \(V=\{u:1/2<\|u\|\le1\}\)。边界是 \(V\) 的强形变收缩核，所以 \(H_q(D^n,S^{n-1})\to H_q(D^n,V)\) 为同构；切除边界又将后者识别为 \(H_q(\mathring D^n,V\setminus S^{n-1})\)。这些映射与 \(\phi_\alpha\) 及前述切除图交换，于是其直和正是陈述中的映射。由\cref{g2:prop:ball-puncture-homology}，每个圆盘对只在次数 \(n\) 贡献一个 \(\mathbb Z\)。
+
+	当 \(n=0\) 时，\(Y\) 是 \(A\) 与新增离散点的不交并，相对链只留下这些点的链复形。单点同调计算直接给出所述结论。取 \(Y=X^n\)、\(A=X^{n-1}\)，即得骨架对的情形。
+\end{proof}
+
+这里给胞腔选定向，代数上就是在 \(H_n(D^n,S^{n-1})\cong\mathbb Z\) 中选一个生成元。记它为 \([D^n,S^{n-1}]\)，并把其特征映射下的像记作 \(e^n_\alpha\)。这不会把一个可能自我识别的闭胞腔当成嵌入圆盘；生成元来自参数圆盘的相对同调。
+
+\begin{proposition}[骨架的维数与稳定性]\label{g2:prop:skeletal-homology-stability}
+	设 \(X\) 为 CW 复形，\(m,q\ge0\)。则 \(H_q(X^m)=0\) 当 \(q>m\)；包含映射 \(X^m\hookrightarrow X\) 在 \(q<m\) 时诱导同构，在 \(q=m\) 时诱导满射。不要求 \(X\) 有限维或局部有限。
+\end{proposition}
+\begin{proof}
+	在 \((X^r,X^{r-1})\) 的长正合列中考察
+	\[
+		H_{q+1}(X^r,X^{r-1})\longrightarrow H_q(X^{r-1})
+		\longrightarrow H_q(X^r)\longrightarrow H_q(X^r,X^{r-1}).
+	\]
+	两端只可能分别在 \(r=q+1\)、\(r=q\) 时非零。因此加入 \(r\) 胞腔只可能增加 \(r\) 次同调、消去 \(r-1\) 次同调，其他次数的包含映射均为同构。从离散的 \(X^0\) 开始归纳，便得维数消失性；固定 \(q\)，从 \(X^q\) 到 \(X^{q+1}\) 的映射满射，此后各步均为同构。
+
+	还须说明无限个骨架的并不会出现额外的类或关系。任一奇异链仅含有限个单形，其支撑是紧集，因而由\cref{g2:thm:finite-subcomplex}落在有限子复形中，特别地落在某个有限维骨架中。于是 \(X\) 中的每个 \(q\) 圈可用刚才的有限步结论移到 \(X^q\)；如果 \(X^m\) 中的一个圈在 \(X\) 中成为边界，那么实现这个关系的有限链也落在某个骨架 \(X^r\) 中。当 \(q<m\) 时，\(H_q(X^m)\to H_q(X^r)\) 已是同构，故原圈在 \(X^m\) 中就是边界。这分别给出满射与单射。
+\end{proof}
 
 \subsection{连接映射与胞腔微分}
 \label{g2:subsec:0301:02}
-待撰写
+现在每个维数都有所需的自由群，但各维群之间还没有边界映射。一个 \(n\) 胞腔的边界首先给出 \(X^{n-1}\) 中的绝对同调类；再忽略更低的 \(X^{n-2}\)，才得到 \((n-1)\) 胞腔的线性组合。这两步不能颠倒，也不能把其中的相对化步骤省去。
+
+\begin{definition}[胞腔链复形]\label{g2:def:cellular-chain-complex}
+	设 \(X\) 为 CW 复形。定义其整数\term[bao qiang lian qun]{胞腔链群}[cellular chain group]为
+	\[
+		C_n^{\mathrm{cell}}(X)=H_n(X^n,X^{n-1})\quad(n\ge0),\qquad
+		C_n^{\mathrm{cell}}(X)=0\quad(n<0).
+	\]
+	记空间对的连接同态为 \(\delta_n:H_n(X^n,X^{n-1})\to H_{n-1}(X^{n-1})\)，相对化同态为 \(j_r:H_r(X^r)\to H_r(X^r,X^{r-1})\)。定义\term[bao qiang wei fen]{胞腔微分}[cellular differential]
+	\begin{equation}\label{g2:eq:cellular-differential}
+		\mathrm{d}_n=j_{n-1}\delta_n:C_n^{\mathrm{cell}}(X)\longrightarrow C_{n-1}^{\mathrm{cell}}(X)\quad(n\ge1),\qquad \mathrm{d}_0=0.
+	\end{equation}
+	下文证明这些同态组成链复形，称为\term[bao qiang lian fu xing]{胞腔链复形}[cellular chain complex]，其同调记为 \(H_n^{\mathrm{cell}}(X)\)。
+\end{definition}
+
+\symidx{\(C_n^{\mathrm{cell}}(X)\)：胞腔链群}
+\symidx{\(H_n^{\mathrm{cell}}(X)\)：胞腔同调群}
+这一定义中的 \(C_n^{\mathrm{cell}}\) 本身已经是一个相对同调群；在它们之间再取核与像，才得到胞腔同调。相比之下，奇异链群 \(C_n(X)\) 是由全部连续单形生成的自由群。两种“链”处在不同构造层次，不能直接把一个胞腔符号当成某个唯一的奇异单形。
+
+\ProseParagraphBreak
+
+若 \(c\) 是代表某个胞腔链的奇异相对圈，则 \(\partial c\) 落在 \(X^{n-1}\) 中。\cref{g2:thm:pair-LES}约定连接同态为 \([c]\mapsto[\partial c]\)，没有另加负号；再模去 \(X^{n-2}\) 中的链，就得到 \(\mathrm{d}_n[c]\)。三元组 \((X^n,X^{n-1},X^{n-2})\) 的连接同态正是这个复合。
+
+\begin{example}[有向边的边界]\label{g2:exm:cellular-edge-boundary}
+	设一条一胞腔由特征路径 \(\phi:[0,1]\to X^1\) 给出，起点与终点分别为顶点 \(v_-\)、\(v_+\)，以参数从 \(0\) 到 \(1\) 为正方向。由\cref{g2:exm:interval-relative-class}，连接同态给出
+	\[
+		\mathrm{d}_1 e=[v_+]-[v_-].
+	\]
+	若两端附着到同一个顶点，结果为零，而不是两倍这个顶点。取两个顶点 \(v,w\)，用三条均从 \(v\) 指向 \(w\) 的边 \(a,b,c\) 相连，则
+	\[
+		\mathrm{d}_1(xa+yb+zc)=(x+y+z)(w-v).
+	\]
+	所以一维圈群由 \(b-a,c-a\) 自由生成。图没有二维胞腔，这些圈不会成为胞腔边界；它的胞腔同调为 \(H_1^{\mathrm{cell}}\cong\mathbb Z^2\)、\(H_0^{\mathrm{cell}}\cong\mathbb Z\)。下一小节后的比较定理将说明，这也就是奇异同调。
+\end{example}
 
 \subsection{胞腔微分平方为零}
 \label{g2:subsec:0301:03}
-待撰写
+\begin{proposition}[胞腔微分的复合]\label{g2:prop:cellular-d-square}
+	对任意 CW 复形 \(X\) 及整数 \(n\)，胞腔微分满足 \(\mathrm{d}_{n-1}\mathrm{d}_n=0\)。若 \(f:X\to Y\) 是胞腔映射，则空间对映射 \((X^n,X^{n-1})\to(Y^n,Y^{n-1})\) 诱导的同态 \(f_n^{\mathrm{cell}}\) 组成链映射。
+\end{proposition}
+\begin{proof}
+	对于 \(n\ge2\)，由定义有
+	\[
+		\mathrm{d}_{n-1}\mathrm{d}_n
+		=j_{n-2}\delta_{n-1}j_{n-1}\delta_n.
+	\]
+	空间对 \((X^{n-1},X^{n-2})\) 的长正合列中，\(j_{n-1}\) 与 \(\delta_{n-1}\) 是相邻的两条映射，故 \(\delta_{n-1}j_{n-1}=0\)。在代表链上，这也表示绝对圈已经没有边界。\(n\le1\) 时结论由 \(\mathrm{d}_0=0\) 及负次数链群为零得到。
+
+	胞腔映射保持每层骨架；空间对长正合列的自然性给出
+	\[
+		(f|_{X^{n-1}})_*\delta_n^X=\delta_n^Y f_n^{\mathrm{cell}},\qquad
+		f_{n-1}^{\mathrm{cell}}j_{n-1}^X=j_{n-1}^Y(f|_{X^{n-1}})_*.
+	\]
+	复合两式，便得 \(\mathrm{d}_n^Yf_n^{\mathrm{cell}}=f_{n-1}^{\mathrm{cell}}\mathrm{d}_n^X\)，这就是链映射条件。
+\end{proof}
+
+\(\mathrm{d}^2=0\) 因而不是对附着图逐个猜测所得的巧合，而是长正合列的结构保证。实际计算出整数边界矩阵后，矩阵乘积为零仍值得核对：理论保证正确输入满足它，计算中漏掉一次经过或弄反一个方向，却会破坏这个条件。
+
+\ProseParagraphBreak
+
+反转一个胞腔的定向只把相应生成元乘以 \(-1\)。如果在第 \(n\) 维用对角矩阵 \(P_n\) 记录这些符号变化，边界矩阵按 \(A_n\mapsto P_{n-1}^{-1}A_nP_n\) 改变，故新旧链复形同构。胞腔的定向是写矩阵的选择，同调群并不依赖这一选择。
 
 \subsection{与奇异同调的自然比较}
 \label{g2:subsec:0301:04}
-待撰写
+关键问题现在变成：胞腔圈对应哪些奇异圈，胞腔边界对应哪些奇异边界？先看 \(n\) 骨架上的绝对同调，再只加入下一层胞腔，就足以回答这两个问题。
+
+\begin{theorem}[胞腔同调与奇异同调]\label{g2:thm:cellular-singular-comparison}
+	设 \(X\) 为任意 CW 复形，使用整数系数。对每个 \(n\ge0\)，存在同构
+	\[
+		\Theta_{X,n}:H_n^{\mathrm{cell}}(X)\xrightarrow{\ \cong\ }H_n(X),
+	\]
+	并且对胞腔映射自然：若 \(f:X\to Y\) 为胞腔映射，则
+	\[
+		\Theta_{Y,n}H_n(f^{\mathrm{cell}})=f_*\Theta_{X,n}.
+	\]
+	若给任意连续映射取胞腔逼近，这个公式也确定其在胞腔同调上的同态，且与逼近的选择无关。
+\end{theorem}
+\begin{proof}
+	当 \(n\ge1\) 时，\(H_n(X^{n-1})=H_{n-1}(X^{n-2})=0\)，这里 \(n=1\) 的第二项为 \(H_0(\varnothing)=0\)。两个空间对的长正合列于是说明
+	\[
+		j_n:H_n(X^n)\hookrightarrow C_n^{\mathrm{cell}}(X),\qquad
+		j_{n-1}:H_{n-1}(X^{n-1})\hookrightarrow C_{n-1}^{\mathrm{cell}}(X)
+	\]
+	都是单射。因 \(\mathrm{d}_n=j_{n-1}\delta_n\)，第二条单射保证 \(\ker\mathrm{d}_n=\ker\delta_n\)；第一条正合列再给出
+	\begin{equation}\label{g2:eq:cellular-cycles-skeleton}
+		j_n:H_n(X^n)\xrightarrow{\ \cong\ }\ker\mathrm{d}_n.
+	\end{equation}
+	这表明胞腔圈恰是 \(n\) 骨架上的奇异同调类。并不是每个胞腔链都能提升为绝对圈：能否提升，正由 \(\delta_n\) 检测。
+
+	接着考察加入 \((n+1)\) 胞腔后发生的变化。相对项 \(H_n(X^{n+1},X^n)\) 为零，所以空间对序列给出
+	\[
+		C_{n+1}^{\mathrm{cell}}(X)\xrightarrow{\delta_{n+1}}H_n(X^n)
+		\longrightarrow H_n(X^{n+1})\longrightarrow0.
+	\]
+	由\cref{g2:prop:skeletal-homology-stability}，\(H_n(X^{n+1})\to H_n(X)\) 是同构。因此
+	\[
+		H_n(X)\cong H_n(X^n)/\operatorname{im}\delta_{n+1}.
+	\]
+	在 \(j_n\) 下，分母的像恰为 \(\operatorname{im}(j_n\delta_{n+1})=\operatorname{im}\mathrm{d}_{n+1}\)，分子由 \eqref{g2:eq:cellular-cycles-skeleton} 恰对应 \(\ker\mathrm{d}_n\)。取商即得所需同构。\(n=0\) 时，\(j_0:H_0(X^0)\to H_0(X^0,\varnothing)\) 就是恒等识别，\(\ker\mathrm{d}_0=C_0^{\mathrm{cell}}(X)\)；同一段关于 \((X^1,X^0)\) 的正合列和稳定性证明仍然适用。
+
+	为看清同构的选择无关性，给定胞腔圈 \(z\)，先取由单射 \(j_n\) 唯一确定的类 \(\xi\in H_n(X^n)\)，满足 \(j_n\xi=z\)，再将 \(\xi\) 映入 \(H_n(X)\)。若 \(z\) 改变一个胞腔边界，\(\xi\) 恰改变一个 \(\operatorname{im}\delta_{n+1}\) 中的类，它在 \(X\) 中为零。这就是 \(\Theta_{X,n}\) 的具体构造。
+
+	对胞腔映射，包含、相对化与连接映射全部自然，故刚才的核、像和取商识别与 \(f\) 交换。可将结果画成
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			H_n^{\mathrm{cell}}(X) \arrow[r,"\Theta_{X,n}","\cong"'] \arrow[d,"H_n(f^{\mathrm{cell}})"']
+				& H_n(X) \arrow[d,"f_*"] \\
+			H_n^{\mathrm{cell}}(Y) \arrow[r,"\Theta_{Y,n}","\cong"']
+				& H_n(Y).
+		\end{tikzcd}
+	\]
+	最后，由\cref{g2:thm:cellular-approximation}，任意连续映射 \(f\) 都有同伦的胞腔代表 \(f'\)。奇异同调的同伦不变性给出 \(f'_*=f_*\)，所以对应的胞腔同态必为 \(\Theta_{Y,n}^{-1}f_*\Theta_{X,n}\)，与 \(f'\) 的选择无关。其恒等与复合性质也由这个公式得到。
+\end{proof}
+
+这个比较是同调群上的自然比较。它没有声称每个胞腔天然指定一条唯一的奇异链，也没有声称同伦映射在胞腔链群上总是给出相同矩阵；稳定的是取同调后的映射。不同 CW 分解也通过同一个奇异同调得到同构，这为本章最后的计算核对提供依据。上述构造可与\cite[第2.2节，Cellular Homology]{Hatcher2002}对照。
+
+\begin{theorem}[CW 对的胞腔同调]\label{g2:thm:relative-cellular-comparison}
+	设 \(X\) 为 CW 复形，\(A\subset X\) 为子复形。包含诱导胞腔子链复形 \(C_\bullet^{\mathrm{cell}}(A)\subset C_\bullet^{\mathrm{cell}}(X)\)。令
+	\[
+		C_\bullet^{\mathrm{cell}}(X,A)=C_\bullet^{\mathrm{cell}}(X)/C_\bullet^{\mathrm{cell}}(A).
+	\]
+	其第 \(n\) 群以 \(X\) 中不属于 \(A\) 的定向 \(n\) 胞腔为基，边界由原边界删除属于 \(A\) 的项得到，并有对胞腔空间对映射自然的同构
+	\[
+		H_n(C_\bullet^{\mathrm{cell}}(X,A))\cong H_n(X,A;\mathbb Z)\qquad(n\ge0).
+	\]
+\end{theorem}
+\begin{proof}
+	包含映射在各相对骨架同调上把一个胞腔生成元映到同名生成元，因此逐次单射；它与胞腔微分交换，故确实给出子链复形。商群的基与边界公式随之成立。
+
+	为把这个商复形与奇异相对同调比较，令 \(F_{-1}=A\)、\(F_r=A\cup X^r\)。\cref{g2:prop:cw-pair-relative}说明 \(F_r\) 由 \(F_{r-1}\) 附着那些不在 \(A\) 中的 \(r\) 胞腔得到，拓扑也与 \(X\) 中的子空间拓扑一致。骨架相对同调定理的附着版本给出
+	\[
+		H_q(F_r,F_{r-1})=0\quad(q\ne r),\qquad
+		H_r(F_r,F_{r-1})\cong C_r^{\mathrm{cell}}(X,A).
+	\]
+	由三元组 \((F_r,F_{r-1},A)\) 的正合列，从 \(H_q(F_{-1},A)=0\) 开始归纳，得到 \(H_q(F_r,A)=0\) 当 \(q>r\)；固定 \(q\)，包含诱导的群在 \(r\ge q+1\) 后稳定。与绝对情形相同，奇异相对圈及实现其边界关系的链都有紧支撑，所以稳定值正是 \(H_q(X,A)\)。
+
+	用三元组序列替换上一证明中的空间对序列，便有单射
+	\[
+		H_n(F_n,A)\hookrightarrow H_n(F_n,F_{n-1})=C_n^{\mathrm{cell}}(X,A),
+	\]
+	其像为相对胞腔圈群；下一层的连接映射给出该单射下的全部相对胞腔边界，并且
+	\[
+		H_n(X,A)\cong H_n(F_n,A)/\operatorname{im}\bigl(H_{n+1}(F_{n+1},F_n)\to H_n(F_n,A)\bigr).
+	\]
+	这里的微分与商复形的微分相同，因为两者均由代表链取边界，再忽略 \(A\) 及低一层骨架得到。取商于是给出陈述的同构；自然性仍来自三元组序列的自然性。整个论证在 \(n=0\) 也适用，因为 \(H_0(F_{-1},A)=0\)。
+\end{proof}
+
+例如，若 \(Y=X\cup_\alpha D^m\)，其中 \(X\) 为 CW 复形且 \(\alpha:S^{m-1}\to X^{m-1}\)，那么相对胞腔链只有次数 \(m\) 的一个 \(\mathbb Z\)，故 \(H_m(Y,X)=\mathbb Z\)，其余次数为零。这个相对群只记录新增胞腔；它的边界究竟消去旧空间的哪个类，仍须回到连接同态及附着映射去计算。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

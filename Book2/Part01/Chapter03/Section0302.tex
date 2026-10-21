@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 3.2 附着映射和边界系数
-% 纲要位置：几何学计划纲要.md，第 1078 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 纲要位置：几何学计划纲要.md，第 1128 行。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,236 @@
 \section{附着映射和边界系数}
 \label{g2:sec:0302}
 
-待撰写
+上一节把每个定向胞腔变成链群的一名基元，尚须回答：一个 \(n\) 胞腔的边界，在某个 \(n-1\) 胞腔上究竟出现多少次？这里的“多少次”必须带符号；两个覆盖片可能相加，也可能抵消。先研究球面映射对唯一的顶维同调生成元做了什么，再将附着映射压到一颗目标球面，就能逐项读出边界矩阵。
 
 \subsection{球面映射度的同调定义}
 \label{g2:subsec:0302:01}
-待撰写
+
+由\cref{g2:thm:sphere-homology}，\(n\ge1\) 时 \(H_n(S^n;\mathbb Z)\cong\mathbb Z\)。选择一个生成元 \([S^n]\) 相当于在同调意义下给球面选定向，另一个选择是 \(-[S^n]\)。任何这个群的自同态都只能是乘一个整数，这正是连续映射可以留下的顶维信息。
+
+\begin{definition}[球面映射度]\label{g2:def:sphere-degree}
+	设 \(n\ge1\)，\(f:S^n\rightarrow S^n\) 连续。唯一满足
+	\[
+		f_*[S^n]=(\deg f)[S^n]
+	\]
+	的整数称为 \(f\) 的\term[yingshe du]{映射度}[degree]。自映射的源和目标使用同一个生成元，故同时更换生成元的符号不改变 \(\deg f\)。若源、目标是两颗分别定向的 \(n\) 维球面，则以各自的正生成元定义映射度；只反转其中一端的定向会改变映射度的符号。\symidx{\(\deg f\)：定向球面之间的映射度}
+\end{definition}
+
+当 \(n=0\) 时，可以在 \(\widetilde H_0(S^0)=\mathbb Z([+]-[-])\) 上作同样定义。恒等映射、交换两点的映射与常值映射的度分别为 \(1,-1,0\)。普通 \(H_0(S^0)\) 的秩是二，不能直接把它的任意自同态称为“乘一个整数”；这里使用约化同调是实质性的区别。
+
+\begin{proposition}[映射度的基本性质]\label{g2:prop:degree-basic}
+	设 \(n\ge1\)，\(f,g:S^n\rightarrow S^n\) 连续。恒等映射的度为 \(1\)，同伦的映射具有相同的度，并且
+	\[
+		\deg(g\circ f)=(\deg g)(\deg f).
+	\]
+	若 \(f\) 不是满射，则 \(\deg f=0\)；若 \(f\) 是同伦等价，则 \(\deg f\in\{1,-1\}\)。这些结论对用约化零次同调定义的 \(S^0\) 映射度也成立。
+\end{proposition}
+\begin{proof}
+	恒等映射与复合公式直接来自同调的函子性。例如
+	\[
+		(g\circ f)_*[S^n]=g_*\bigl((\deg f)[S^n]\bigr)
+		=(\deg f)(\deg g)[S^n].
+	\]
+	同伦不变性来自\cref{g2:thm:singular-homotopy-invariance}。若 \(y\notin f(S^n)\)，则 \(f\) 分解经过 \(S^n\setminus\{y\}\)，后者同胚于 \(\mathbb R^n\)，因而可缩，其 \(n\) 次同调为零。故 \(f_*=0\)。若 \(h\) 是 \(f\) 的同伦逆，则 \((\deg h)(\deg f)=\deg(hf)=1\)，两个整数只能同为 \(1\) 或同为 \(-1\)。\(S^0\) 的结论可直接检查三类映射，也可使用相同的约化同调论证。
+\end{proof}
+
+特别地，非零映射度强迫满射，而零伦映射的度为零。这两条判断的反向含义不能混为一谈：一个映射可以覆盖整个球面，却让不同部分的同调贡献互相抵消。下面的局部公式将把这种抵消写成真正的整数加法。
 
 \subsection{局部度、复合与悬挂}
 \label{g2:subsec:0302:02}
-待撰写
+
+先解决最基本的正负号。将球面上下两个半球交换，赤道上的点保持不动；由于同调类的共同边界在两个半球中以相反符号出现，这个交换应当反转顶维生成元。
+
+\begin{proposition}[反射与对径映射]\label{g2:prop:reflection-antipodal-degree}
+	设 \(n\ge0\)。球面 \(S^n\subset\mathbb R^{n+1}\) 关于任一过原点超平面的反射，映射度为 \(-1\)。对径映射 \(A_n(x)=-x\) 的映射度为
+	\[
+		\deg A_n=(-1)^{n+1}.
+	\]
+	\(n=0\) 时度取约化零次同调的定义。
+\end{proposition}
+\begin{proof}
+	\(n=0\) 时反射交换两个点，将 \([+]-[-]\) 送到其负元。设 \(n\ge1\)，先取反射 \(r(x_1,\ldots,x_n,t)=(x_1,\ldots,x_n,-t)\)。沿用\cref{g2:thm:sphere-homology}的开覆盖 \(U=S^n\setminus\{S\}\)、\(V=S^n\setminus\{N\}\)，连接同构为
+	\[
+		\delta:\widetilde H_n(S^n)\xrightarrow{\cong}
+		\widetilde H_{n-1}(U\cap V)\cong\widetilde H_{n-1}(S^{n-1}).
+	\]
+	把代表圈细分后写为 \(z=a+b\)，其中 \(a\) 位于 \(U\)、\(b\) 位于 \(V\)。按\cref{g2:eq:mayer-vietoris-connecting}的约定，\(\delta[z]=[\partial a]\)。反射交换 \(U,V\)，所以 \(r_\#z\) 的 \(U\) 部分是 \(r_\#b\)，从而
+	\[
+		\delta r_*[z]=[\partial r_\#b]
+		=-r_*[\partial a].
+	\]
+	赤道投影 \(U\cap V\rightarrow S^{n-1}\) 与 \(r\) 复合后不变，因此 \(r\) 在交集的同调上诱导恒等。这就给出 \(\delta r_*=-\delta\)，而 \(\delta\) 是同构，故 \(\deg r=-1\)。任一过原点超平面的反射都是 \(h r h^{-1}\)，其中 \(h\) 为正交线性映射限制在球面上的同胚；复合公式使 \(\deg h\) 与 \(\deg h^{-1}\) 抵消，仍得到 \(-1\)。最后，\(A_n\) 是分别改变 \(n+1\) 个坐标符号的反射之复合，所以其度为 \((-1)^{n+1}\)。
+\end{proof}
+
+要把整体的度拆成各原像点的贡献，先把球面的生成元限制到一点附近。对 \(x\in S^n\)、\(n\ge1\)，由于 \(S^n\setminus\{x\}\) 非空可缩，约化对的长正合列给出同构
+\[
+	H_n(S^n)\xrightarrow{\cong}H_n(S^n,S^n\setminus\{x\}).
+\]
+记 \([S^n]_x\) 为 \([S^n]\) 的像。\cref{g2:prop:local-homology-neighborhood}又将它识别为任意开邻域对 \((U,U\setminus\{x\})\) 的生成元。这样定义的局部正号来自同一个整体选择，各点之间不必另外任意指定符号。
+
+\begin{definition}[局部度]\label{g2:def:local-degree}
+	设 \(n\ge1\)，\(f:S^n\rightarrow S^n\) 连续，\(f(x)=y\)，且 \(x\) 是 \(f^{-1}(y)\) 的孤立点。取开邻域 \(U\ni x\)，使 \(U\cap f^{-1}(y)=\{x\}\)。空间对映射
+	\[
+		f:(U,U\setminus\{x\})\longrightarrow(S^n,S^n\setminus\{y\})
+	\]
+	在 \(n\) 次同调上将局部正生成元送到 \(\deg_x(f)\,[S^n]_y\)；整数 \(\deg_x(f)\) 称为 \(f\) 在 \(x\) 处的\term[ju bu du]{局部度}[local degree]。缩小 \(U\) 所诱导的局部同调同构与 \(f_*\) 交换，所以该整数与邻域选择无关。\symidx{\(\deg_x(f)\)：映射在孤立原像点处的局部度}
+\end{definition}
+
+局部度的定义只要求连续性和孤立原像，并未要求可微或局部可逆。若 \(f\) 将 \(x\) 的某个邻域同胚地映到 \(y\) 的邻域，局部同调同态是同构，故局部度只能为 \(\pm1\)；这时称局部正生成元被保持或反转，分别就是符号 \(+1\) 与 \(-1\) 的含义。
+
+\begin{theorem}[局部度求和]\label{g2:thm:local-degree-sum}
+	设 \(n\ge1\)，\(f:S^n\rightarrow S^n\) 连续。如果某点 \(y\) 的原像是有限集 \(F=\{x_1,\ldots,x_r\}\)，则
+	\begin{equation}\label{g2:eq:local-degree-sum}
+		\deg f=\sum_{i=1}^r\deg_{x_i}(f).
+	\end{equation}
+	允许 \(F\) 为空，此时右端为空和 \(0\)。特别地，同胚在每一点的局部度都等于其整体映射度。
+\end{theorem}
+\begin{proof}
+	空原像的情形已经包含在\cref{g2:prop:degree-basic}中。设 \(r>0\)，取两两不交的开邻域 \(U_i\ni x_i\)。记 \(U=\bigcup_iU_i\)。在空间对 \((S^n,S^n\setminus F)\) 中切去闭集 \(S^n\setminus U\)；它包含于开集 \(S^n\setminus F\)，满足\cref{g2:thm:singular-excision}的闭包条件。由切除及不交并的链群分解，得到
+	\[
+		H_n(S^n,S^n\setminus F)
+		\cong\bigoplus_{i=1}^r H_n(U_i,U_i\setminus\{x_i\}).
+	\]
+	限制到单个点 \(x_i\) 对应于投影到第 \(i\) 项：其余 \(U_j\) 在该相对群中已被全部除去。于是整体生成元 \([S^n]\) 在这个直和中的像正是各局部正生成元组成的向量 \((1,\ldots,1)\)，而不是任意选出的 \(r\) 个符号。
+
+	由空间对映射的自然性，以下方块交换，其中上方箭头包含上述切除同构的逆，右方箭头是各 \(f|_{U_i}\) 所诱导同态之和：
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			H_n(S^n) \arrow[r] \arrow[d,"f_*"'] & \displaystyle\bigoplus_i H_n(U_i,U_i\setminus\{x_i\}) \arrow[d,"\sum_i(f|_{U_i})_*"] \\
+			H_n(S^n) \arrow[r,"\cong"'] & H_n(S^n,S^n\setminus\{y\}).
+		\end{tikzcd}
+	\]
+	沿右边走，\((1,\ldots,1)\) 变成 \(\sum_i\deg_{x_i}(f)\)；沿左边走，生成元变成 \(\deg f\) 倍。因此交换性给出公式。同胚的每个目标点只有一个原像，遂得到最后一项。
+\end{proof}
+
+在连续映射中，直接按原像点的个数计数一般会错。局部同胚也可能反转符号；若原像虽孤立但映射并不局部可逆，单点的局部度甚至可以是任意整数。公式中每一项都要由相应的局部同调同态决定。
+
+\begin{proposition}[局部复合与悬挂]\label{g2:prop:degree-composition-suspension}
+	设 \(f,g:S^n\rightarrow S^n\) 连续，\(n\ge1\)，\(f(x)=y\)、\(g(y)=z\)。若 \(x\) 是 \(f^{-1}(y)\) 的孤立点，\(y\) 是 \(g^{-1}(z)\) 的孤立点，则 \(x\) 是 \((g\circ f)^{-1}(z)\) 的孤立点，且
+	\[
+		\deg_x(g\circ f)=\deg_x(f)\deg_y(g).
+	\]
+	此外，对任意 \(n\ge0\) 的球面映射 \(f:S^n\rightarrow S^n\)，其悬挂 \(Sf:S^{n+1}\rightarrow S^{n+1}\) 满足 \(\deg(Sf)=\deg f\)；\(n=0\) 的右端取约化同调定义。
+\end{proposition}
+\begin{proof}
+	先取开邻域 \(V\ni y\)，使 \(g^{-1}(z)\cap V=\{y\}\)，再缩小 \(U\ni x\)，使 \(f(U)\subset V\) 且 \(f^{-1}(y)\cap U=\{x\}\)。于是 \((gf)^{-1}(z)\cap U=\{x\}\)，并有空间对映射的复合
+	\[
+		(U,U\setminus\{x\})\xrightarrow{f}
+		(V,V\setminus\{y\})\xrightarrow{g}
+		(S^n,S^n\setminus\{z\}).
+	\]
+	局部同调的函子性使两个整数相乘，得到第一式。
+
+	对于悬挂，\cref{g2:thm:suspension-homology}提供自然同构
+	\[
+		\delta:\widetilde H_{n+1}(SS^n)\xrightarrow{\cong}\widetilde H_n(S^n),
+		\qquad \delta(Sf)_*=f_*\delta.
+	\]
+	通过该节给出的同胚 \(SS^n\cong S^{n+1}\) 识别源、目标，取两个球面上经 \(\delta\) 对应的生成元。交换等式说明两端的自同态乘同一个整数，因此悬挂保持映射度。两个生成元同时反号不改变结论。
+\end{proof}
+
+\begin{example}[任意整数的实现]\label{g2:exm:all-integer-degrees}
+	把 \(S^1\) 看成复平面内的单位圆。对任意整数 \(k\)，映射 \(p_k(z)=z^k\) 的度为 \(k\)。当 \(k=0\) 时它为常值。设 \(k>0\)，任意 \(y\in S^1\) 有 \(k\) 个原像；在各原像附近的角坐标中，映射是 \(t\mapsto kt\)，因此局部度为 \(+1\)。具体地，旋转可把源点与目标点移到 \(1\)，旋转同伦于恒等，局部度为 \(1\)；而正伸缩 \(t\mapsto kt\) 与恒等之间的同伦 \(t\mapsto((1-s)k+s)t\) 始终把非零点送到非零点，在足够小的坐标区间内给出空间对同伦。因此局部同调同态不变，局部度求和给出 \(k\)。若 \(k<0\)，则 \(p_k\) 是 \(p_{|k|}\) 与反射 \(z\mapsto\bar z\) 的复合，故其度为 \(-|k|\)。对 \(p_k\) 作 \(n-1\) 次悬挂，就在每个 \(n\ge1\) 的维数得到度为 \(k\) 的 \(S^n\) 自映射。
+\end{example}
 
 \subsection{边界系数的度公式}
 \label{g2:subsec:0302:03}
-待撰写
+
+固定一个 CW 复形 \(X\)，并给各胞腔选定向。记 \(e^n_\alpha\) 同时表示开胞腔及其在 \(C_n^{\mathrm{cell}}(X)=H_n(X^n,X^{n-1})\) 中的正基元，实际含义由所在位置区分。对一个 \(n-1\) 胞腔 \(e^{n-1}_\beta\)，把 \(X^{n-1}\) 中该开胞腔以外的全部点压成一点，得到商映射
+\[
+	q_\beta:X^{n-1}\longrightarrow
+	X^{n-1}/(X^{n-1}\setminus e^{n-1}_\beta)
+	\cong D^{n-1}_\beta/\partial D^{n-1}_\beta\cong S^{n-1}_\beta.
+\]
+这个商只保留所问胞腔的内部，故应当对应于从链群中提取它的系数。即使 \(X\) 有无限多个胞腔，商映射也连续：它在各特征圆盘上分别是通常的圆盘商映射或常值映射，CW 弱拓扑保证这些限制给出连续映射。
+
+\ProseParagraphBreak
+
+给商球面定向以前，还须核对圆盘的相对生成元确实映成球面的生成元。设 \(k\ge1\)，\(q:D^k\to D^k/S^{k-1}=Q\)，\(*\) 为压缩边界所得的点，取圆盘中心 \(x\)，记 \(\bar x=q(x)\)。径向形变收缩说明 \(S^{k-1}\hookrightarrow D^k\setminus\{x\}\) 是同伦等价；比较约化对的长正合列，得到下面左侧竖箭头为同构。\(Q\) 同胚于 \(S^k\)，且 \(Q\setminus\{\bar x\}\) 可缩，所以右侧竖箭头也为同构。
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		H_k(D^k,S^{k-1}) \arrow[r,"q_*"] \arrow[d,"\cong"'] & H_k(Q,*) \arrow[d,"\cong"] \\
+		H_k(D^k,D^k\setminus\{x\}) \arrow[r,"q_*"'] & H_k(Q,Q\setminus\{\bar x\}).
+	\end{tikzcd}
+\]
+下侧箭头同样是同构：在 \(x\) 的一个小开邻域上，\(q\) 是同胚，再用\cref{g2:prop:local-homology-neighborhood}即可。方块由空间对映射诱导而交换，因此上侧 \(q_*\) 是同构。这也覆盖 \(k=1\)，其左侧比较使用的是边界两点的约化零次同调。由此，将相对圆盘的正生成元的商像选为 \(H_k(Q,*)\) 的正生成元，再经 \(H_k(Q)\cong H_k(Q,*)\) 给商球面定向。上面的 \(S^{n-1}_\beta\) 就采用由 \(e^{n-1}_\beta\) 这样确定的定向。
+
+\begin{theorem}[胞腔边界的度公式]\label{g2:thm:cellular-boundary-degree}
+	设 \(X\) 为 CW 复形，各胞腔已经选定向，\(n\ge2\)。对 \(n\) 胞腔的特征映射 \(\Phi_\alpha:D^n_\alpha\rightarrow X^n\)，记附着映射为 \(a_\alpha=\Phi_\alpha|_{\partial D^n_\alpha}\)，并给 \(\partial D^n_\alpha\) 取由连接同态传来的边界定向。则胞腔微分为
+	\begin{equation}\label{g2:eq:cellular-degree-formula}
+		\mathrm{d}_n(e^n_\alpha)=\sum_\beta
+		\deg(q_\beta\circ a_\alpha)\,e^{n-1}_\beta.
+	\end{equation}
+	和式只有有限个非零项。对 \(n=1\)，将定向区间的起点、终点像分别记为 \(v_-,v_+\)，则 \(\mathrm{d}_1(e^1_\alpha)=v_+-v_-\)；若两端映到同一顶点，结果为零。
+\end{theorem}
+\begin{proof}
+	取与 \(e^n_\alpha\) 对应的相对球生成元 \(u_\alpha\in H_n(D^n_\alpha,\partial D^n_\alpha)\)，其连接像是边界球面的正生成元 \([\partial D^n_\alpha]\)。\cref{g2:thm:skeletal-relative-homology}将 \((\Phi_\alpha)_*u_\alpha\) 识别为 \(e^n_\alpha\)。连接同态的自然性以及\cref{g2:def:cellular-chain-complex}中的 \(\mathrm{d}_n=j\delta\) 给出
+	\[
+		\mathrm{d}_n(e^n_\alpha)
+		=j\,(a_\alpha)_*[\partial D^n_\alpha]
+		\in H_{n-1}(X^{n-1},X^{n-2}).
+	\]
+	这里 \(j\) 把绝对同调类送到相对同调类，故目前的公式已经说明边界完全由附着映射决定。
+
+	映射 \(q_\beta\) 把 \(X^{n-2}\) 送到基点 \(*\)，因而诱导
+	\[
+		(q_\beta)_*:H_{n-1}(X^{n-1},X^{n-2})
+		\longrightarrow H_{n-1}(S^{n-1}_\beta,*)\cong\mathbb Z.
+	\]
+	它把 \(e^{n-1}_\beta\) 送到 \(1\)，把其他胞腔基元送到 \(0\)：前者来自该特征圆盘上的边界压缩及我们选定的目标定向，后者来自常值映射。因此它正是第 \(\beta\) 个坐标投影。在上式两边作用这个投影，所得整数就是 \(q_\beta a_\alpha\) 在球面顶维同调上乘的整数，即其度。由于 \(n-1\ge1\)，这里 \(H_{n-1}(S^{n-1}_\beta)\rightarrow H_{n-1}(S^{n-1}_\beta,*)\) 是同构，不会引入额外的零次分支项。
+
+	附着球面的像是紧集；由\cref{g2:thm:finite-subcomplex}，它包含在有限子复形内。不在该子复形中的 \(e^{n-1}_\beta\) 对应常值复合 \(q_\beta a_\alpha\)，故其系数为零。最后，\(n=1\) 时相对区间生成元可由正向道路代表，连接同态直接给出终点减起点；这正是所述公式，无须将任意顶点集误当作一个零维球面。
+\end{proof}
+
+度公式中的符号来自两项选择：源胞腔的定向规定附着球面的边界定向，目标胞腔的定向规定压缩球面的正生成元。反转源胞腔会改变这列边界系数的全部符号，反转目标胞腔则改变对应行的全部符号。链群基随之改变，同调群不变；计算中应保存这些基选择，不能在某个矩阵中单独改一个看起来不顺眼的负号。
+
+\begin{proposition}[附着字的指数和]\label{g2:prop:word-boundary-degrees}
+	设 \(X\) 有一个零胞腔、有限个定向一胞腔 \(a_1,\ldots,a_r\)，且某个二胞腔 \(e\) 的附着映射沿有限字 \(w\) 依次遍历这些圆周，字母 \(a_i^{-1}\) 表示反向遍历。若 \(\nu_i(w)\) 为 \(a_i\) 的出现次数减去 \(a_i^{-1}\) 的出现次数，则
+	\[
+		\mathrm{d}_2(e)=\sum_{i=1}^r\nu_i(w)a_i.
+	\]
+	只要一般附着映射与上述逐段遍历的映射同伦，同一公式仍成立。
+\end{proposition}
+\begin{proof}
+	压掉除 \(a_i\) 以外的圆周，在剩余开边内部选一点 \(y\)。复合 \(q_i a\) 的原像每出现一个 \(a_i\) 或 \(a_i^{-1}\) 就有一点，其他字母的线段全部落在基点，不贡献原像。正向遍历的局部角坐标是正伸缩，局部度为 \(+1\)；反向遍历再复合一次反射，局部度为 \(-1\)。由局部度求和，复合的度就是 \(\nu_i(w)\)，再代入胞腔边界公式即可。同伦的附着映射经 \(q_i\) 复合后仍同伦，故各映射度不变。
+\end{proof}
+
+例如，一个二胞腔沿 \(aba^{-1}b^{-1}\) 附着时，两项指数和都是零，所以它的胞腔边界为零；沿 \(a^2b^2\) 附着时则得到 \(2a+2b\)。两幅粘合图都可能把同一条边用两次，区别在于两次所带的方向。这正是只数边数不能替代边界矩阵的原因。
 
 \subsection{射影空间附着映射的核验}
 \label{g2:subsec:0302:04}
-待撰写
+
+\cref{g2:exm:projective-cw}给出了实射影空间每维一个胞腔的模型：在 \(\mathbb RP^n\) 中新添一个 \(n\) 胞腔，其附着映射是
+\[
+	\pi:S^{n-1}\longrightarrow\mathbb RP^{n-1},\qquad x\longmapsto[x].
+\]
+这确实是二重覆盖，但边界系数不能据此立刻写成 \(2\)：度公式要求先把低骨架 \(\mathbb RP^{n-2}\) 压掉，并比较两个覆盖片的符号。对径映射的奇偶性正是在这一步进入。
+
+\begin{proposition}[实射影空间的胞腔微分]\label{g2:prop:rp-cellular-boundary}
+	对 \(\mathbb RP^N\) 的标准 CW 结构，可以逐维选择胞腔正生成元 \(e^0,\ldots,e^N\)，使每个 \(1\le n\le N\) 满足
+	\begin{equation}\label{g2:eq:rp-cellular-boundary}
+		\mathrm{d}_n(e^n)=\bigl(1+(-1)^n\bigr)e^{n-1}
+		=\begin{cases}2e^{n-1},&n\text{ 为偶数},\\0,&n\text{ 为奇数}.\end{cases}
+	\end{equation}
+	有限维数 \(N\) 的取值不影响已经选定的低维胞腔和微分。
+\end{proposition}
+\begin{proof}
+	\(n=1\) 时两个端点都附着到唯一的零胞腔，故 \(\mathrm{d}_1=0\)。现在设 \(n\ge2\)，记
+	\[
+		F_n:S^{n-1}\xrightarrow{\pi}\mathbb RP^{n-1}
+		\xrightarrow{q}\mathbb RP^{n-1}/\mathbb RP^{n-2}\cong S^{n-1}.
+	\]
+	源球面中的赤道 \(x_n=0\) 映入 \(\mathbb RP^{n-2}\)，两个开半球 \(x_n>0\) 与 \(x_n<0\) 则分别同胚地映到目标球面除基点以外的部分。因为每条不在低维射影子空间中的直线恰有两个单位代表，这两个半球上的映射没有其他原像片。
+
+	从已选定的 \(e^{n-1}\) 出发，在北半球取一点 \(x\)。因为 \(F_n\) 在 \(x\) 附近是局部同胚，其局部度为 \(\pm1\)；选择 \(e^n\) 的定向，使这个局部度为 \(+1\)。反转 \(e^n\) 的定向即反转其边界定向，所以总能做到。此时 \(F_n^{-1}(F_n(x))=\{x,-x\}\)。对径映射 \(A_{n-1}\) 满足 \(F_nA_{n-1}=F_n\)，局部复合公式给出
+	\[
+		\deg_{-x}(F_n)
+		=\deg_{-x}(F_nA_{n-1})
+		=\deg_x(F_n)\deg_{-x}(A_{n-1})
+		=(-1)^n.
+	\]
+	最后一步使用：对径映射是同胚，其局部度等于整体度，而\cref{g2:prop:reflection-antipodal-degree}在维数 \(n-1\) 给出的符号是 \((-1)^n\)。因此局部度求和给出 \(\deg F_n=1+(-1)^n\)，胞腔边界的度公式便得到结论。按维数递增作定向选择，不会改变此前已经选定的低维生成元，故所有等式可以同时成立。
+\end{proof}
+
+\(\mathbb RP^2\) 的附着圆周有两片同向贡献，所以 \(\mathrm{d}_2=2\)；\(\mathbb RP^3\) 新添胞腔的边界球面上两片贡献反向，所以 \(\mathrm{d}_3=0\)。“覆盖了两次”在相邻维数给出了完全不同的整数边界。下一节将把这些整数代回链复形，直接看见 \(\mathbb Z/2\) 挠项从何而来。映射度、局部度和胞腔边界公式的相关论述可参阅\cite[第2.2节，Degree 与 Cellular Homology]{Hatcher2002}。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

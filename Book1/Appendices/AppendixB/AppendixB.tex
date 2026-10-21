@@ -1,16 +1,18 @@
 % !TeX root = ../../Book1.tex
 % 纲要标题：## 附录 B　离散与凸几何
 % 纲要位置：几何学计划纲要.md，第 935 行。
-% 正文状态：初稿；尚未正式审核。
+% 正文状态：四节均形成含证明、例子与习题解答的初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % > 从正文凸方法进入格与离散结构；给出可核验定理和模型，不扩为组合优化全书。
 % 
+% > 补充写作范围与外部输入：新增晶体群与格堆积主题组，完整处理所选二维格最优性并计算高维代表格；一般晶体群结构和一般堆积最优性准确外引。
+% 
 % * **格点与多面体**
 %   * 格、基本平行多面体及体积
 %   * 二维 Pick 公式及三角剖分证明
-%   * Ehrhart 多项式的代表性陈述与例子
+%   * Ehrhart 多项式与格点计数
 % 
 % * **Voronoi 与 Delaunay**
 %   * 距离平方与分区
@@ -20,7 +22,15 @@
 % * **支撑函数与离散逼近**
 %   * 凸体的多面体逼近
 %   * Hausdorff 距离与支撑函数
-%   * 数值表示的证书
+%   * 多面体包含与支撑误差的有限证书
+% 
+% * **晶体群与格堆积**
+%   * Euclid 空间的晶体群与平移格
+%   * 点群、基本区域与二维晶体限制
+%   * 最短向量、余体积与格堆积密度
+%   * 二维格堆积的最优性
+%   * 高维格的密度算例与一般定理边界
+% 
 % 
 % ---
 % 
@@ -31,7 +41,7 @@
 \BookChapterNumber{g1:app:B}
 
 \begin{chapterabstract}
-	凸集的形状可以由顶点、半空间或支撑函数描述；加入整数格与有限采样点之后，还要辨别计数、分解和逼近各自保留了哪些信息。本附录从格的基本区域出发，用格三角剖分证明二维 Pick 公式，计算若干 Ehrhart 多项式；再由距离平方的线性差与抛物面提升建立 Voronoi 分区和 Delaunay 分解，说明共球位置为何产生非单纯形单元。最后用有限方向上的支撑值构造内外多面体，并把 Hausdorff 误差转成可检查的函数界与有限证书。
+	凸集的形状可以由顶点、半空间或支撑函数描述；加入整数格与有限采样点之后，还要辨别计数、分解和逼近各自保留了哪些信息。本附录从格的基本区域出发，用格三角剖分证明二维 Pick 公式，计算若干 Ehrhart 多项式；再由距离平方的线性差与抛物面提升建立 Voronoi 分区和 Delaunay 分解，说明共球位置为何产生非单纯形单元。有限方向上的支撑值用于构造内外多面体，并把 Hausdorff 误差转成可检查的函数界与有限证书。晶体群部分分离平移格与点群，构造基本区域并证明二维晶体限制；随后由最短向量和余体积推导密度公式，完整证明二维格堆积的最优性，计算 \(D_n\)、\(E_8\) 等高维格，并明确一般堆积上界的外部来源。
 \end{chapterabstract}
 
 \begin{learninggoals}
@@ -42,10 +52,14 @@
 		\item 区分一般位置的单纯形剖分与共球退化的多胞形分解，说明额外选择对角线改变了什么。
 		\item 用支撑函数计算紧凸集的 Hausdorff 距离，为有限采样构造带误差界的内外逼近。
 		\item 检验一个有限数值表示所附的包含关系与误差证书，分清近似结果与已获证明的结论。
+		\item 区分等距群的离散性与作用的余紧性，计算具体晶体群的平移格，并辨明 Bieberbach 定理所提供的一般结构结论。
+		\item 由点群的整数矩阵表示证明二维晶体限制，比较平移基本胞与整个晶体群的基本区域。
+		\item 从周期胞积分与边界估计推出密度公式，用约化格基证明二维最优密度及等号情形。
+		\item 计算 \(D_n\)、\(E_8\) 的余体积、最短向量与密度，区分模型计算、所有格的上界和一般堆积上界。
 	\end{itemize}
 \end{learninggoals}
 
-边长为 \(m\) 的正方形面积是 \(m^2\)，但当 \(m\) 为非负整数时，其中连同边界共有 \((m+1)^2\) 个整数点。两者的差为 \(2m+1\)：面积刻画了计数的主要增长，边界与顶点还留下了较低阶的信息。若把正方形剪成三角形，公共边上的格点就会被重复计入；要从局部计数恢复整体，必须把这种重复明确扣除。Pick 公式与本附录的 Ehrhart 计数正是从这一问题展开。
+边长为 \(m\) 的正方形面积是 \(m^2\)，但当 \(m\) 为非负整数时，其中连同边界共有 \((m+1)^2\) 个整数点。两者的差为 \(2m+1\)：面积给出了点数增长的主要部分，边界与顶点则影响较低阶的项。若把正方形剪成三角形，公共边上的格点就会被重复计入；要从局部计数恢复整体，必须把这种重复明确扣除。Pick 公式与本附录的 Ehrhart 计数正是从这一问题展开。
 
 \ProseParagraphBreak
 
@@ -53,12 +67,16 @@
 
 \ProseParagraphBreak
 
-本附录使用\chapref{g1:ch:03}的有限维凸性。\cref{g1:thm:polytope-hv}把有界半空间交与有限点凸包联系起来，\cref{g1:prop:support-function-representation}用全部方向的支撑值恢复闭凸集，\cref{g1:prop:distance-support-formula}则由最近点给出距离的支撑表示。下文会在使用时恢复所需条件；另需的线性代数、整数最大公因数、有限求和与欧氏体积均在具体计算中说明。格点计数的补充阅读可查\cite[Sections 2.2--2.3, 2.6, 3.1--3.5]{BeckRobins2015}；这里完整证明所选模型，不以算例代替所有格多胞形的一般理论。
+本附录使用\chapref{g1:ch:03}的有限维凸性。\cref{g1:thm:polytope-hv}把有界半空间交与有限点凸包联系起来，\cref{g1:prop:support-function-representation}用全部方向的支撑值恢复闭凸集，\cref{g1:prop:distance-support-formula}则由最近点给出距离的支撑表示。下文在调用这些结果时会重述所需条件；另需的线性代数、整数最大公因数、有限求和与Euclid 体积均在具体计算中说明。格点计数的补充阅读可查\cite[第2.2--2.3、2.6、3.1--3.5节]{BeckRobins2015}；这里完整证明所选模型，不以算例代替所有格多胞形的一般理论。
+
+\ProseParagraphBreak
+
+晶体群与堆积部分还使用第1章的等距映射与群作用，以及基本的体积积分。一般晶体群的平移格满秩性调用 Bieberbach 第一定理，三维、八维和二十四维任意等球堆积的最优上界准确外引；点群限制、基本区域、密度公式、二维格最优性及所选高维格的计算在本附录中证明。平面晶体群的完整分类、Leech 格的构造与一般高维最优性证明不在这里展开。
 
 \section{格点与多面体}
 \label{g1:sec:B01}
 
-把一个三角形放大两倍，面积变成原来的四倍，里面的整数点数却未必恰好乘以四：边界也会经过新的整数点。要把面积和点数联系起来，先要说明哪些点算作整数点，以及一份基本体积有多大。本节从格的基本平行多面体出发，在平面中把多边形分成面积最小的格三角形，再用同一计数解释整数倍放大时出现的多项式。
+把一个三角形放大两倍，面积变成原来的四倍，里面的整数点数却未必恰好乘以四：边界也会经过新的整数点。要把面积和点数联系起来，先要说明哪些点算作整数点，以及一个基本区域的体积有多大。本节从格的基本平行多面体出发，在平面中把多边形分成面积最小的格三角形，再用同一计数解释整数倍放大时出现的多项式。
 
 \subsection{格、基本平行多面体及体积}
 \label{g1:subsec:B01:01}
@@ -72,7 +90,7 @@
 
 \begin{proposition}[格基变换]
 	\label{g1:prop:lattice-basis-change}
-	设 \(b=(b_1,\ldots,b_d)\) 是格 \(\Lambda\subset E\) 的一组格基。另一组实基 \(b'=bU\) 是同一格的格基，当且仅当 \(U\) 是整数矩阵且 \(\det U=\pm1\)。此外，\(E\) 的每个有界子集只包含有限个格点。
+	设 \(E\) 为 \(d\) 维实内积空间，\(b=(b_1,\ldots,b_d)\) 为 \(E\) 的一组实基，\(\Lambda=\sum_{i=1}^d\mathbb Z b_i\)。设 \(b'=bU\) 为 \(E\) 的另一组实基，其中 \(U\in\operatorname{GL}(d,\mathbb R)\)。则 \(b'\) 是同一格的格基，当且仅当 \(U\) 是整数矩阵且 \(\det U=\pm1\)。此外，\(E\) 的每个有界子集只包含有限个格点。
 \end{proposition}
 \begin{proof}
 	若 \(b'\) 也是 \(\Lambda\) 的格基，则每个 \(b'_j\) 在 \(b\) 下有整数坐标，故 \(U\) 的元素为整数。同样，\(b=b'V\) 对某个整数矩阵 \(V\) 成立，于是 \(UV=I\)，\(V=U^{-1}\)。两个行列式都是整数且乘积为 \(1\)，所以 \(\det U=\pm1\)。反之，若 \(U\) 为整数矩阵且行列式为 \(\pm1\)，伴随矩阵公式说明 \(U^{-1}\) 也是整数矩阵。因此 \(U\mathbb Z^d=\mathbb Z^d\)，两组基生成同一格。
@@ -84,11 +102,11 @@
 
 \begin{definition}[基本平行多面体与余体积]
 	\label{g1:def:lattice-covolume}
-	设 \(b_1,\ldots,b_d\) 是 \(E\) 中格 \(\Lambda\) 的一组格基。相应的半开\term[jibenpingxingduomianti]{基本平行多面体}[fundamental parallelepiped]为
+	设 \(E\) 为 \(d\) 维实内积空间，\(b_1,\ldots,b_d\) 为 \(E\) 的一组实基，\(\Lambda=\sum_{i=1}^d\mathbb Z b_i\)，并以该内积确定 \(d\) 维体积 \(\operatorname{Vol}_d\)。相应的半开\term[jibenpingxingduomianti]{基本平行多面体}[fundamental parallelepiped]为
 	\[
 		F_b=\left\{\sum_{i=1}^d t_i b_i:0\le t_i<1\right\}.
 	\]
-	它的 \(d\) 维欧氏体积称为格的\term[yutiji]{余体积}[covolume]，记为 \(\operatorname{covol}(\Lambda)\)。对可测集合 \(P\subset E\)，记
+	它的 \(d\) 维Euclid 体积称为格的\term[yutiji]{余体积}[covolume]，记为 \(\operatorname{covol}(\Lambda)\)。对可测集合 \(P\subset E\)，记
 	\[
 		\operatorname{Vol}_{\Lambda}(P)
 		=\frac{\operatorname{Vol}_d(P)}{\operatorname{covol}(\Lambda)},
@@ -102,7 +120,7 @@
 
 \begin{proposition}[平铺与余体积公式]
 	\label{g1:prop:lattice-fundamental-domain}
-	对 \(d\) 维实内积空间中的格 \(\Lambda\) 和任一格基 \(b\)，各集合 \(F_b+\lambda\)，\(\lambda\in\Lambda\)，两两不交且并成 \(E\)。每个加法商类 \(x+\Lambda\) 在 \(F_b\) 中恰有一个代表。余体积满足
+	设 \(E\) 为 \(d\) 维实内积空间，\(b=(b_1,\ldots,b_d)\) 为其一组实基，\(\Lambda=\sum_i\mathbb Z b_i\)，\(F_b=\{\sum_i t_i b_i:0\le t_i<1\}\)。则各集合 \(F_b+\lambda\)，\(\lambda\in\Lambda\)，两两不交且并成 \(E\)。每个加法商类 \(x+\Lambda\) 在 \(F_b\) 中恰有一个代表。余体积满足
 	\[
 		\operatorname{covol}(\Lambda)
 		=\sqrt{\det\bigl(\langle b_i,b_j\rangle\bigr)_{i,j=1}^d},
@@ -110,7 +128,7 @@
 	并且与格基无关。若 \(b_i\) 在一组标准正交基下组成列矩阵 \(B\)，则余体积也等于 \(|\det B|\)。
 \end{proposition}
 \begin{proof}
-	对任意 \(x\in E\)，唯一写成 \(x=\sum_i s_i b_i\)，再把每个实数分成整数与小数部分：
+	任意 \(x\in E\) 都能唯一写成 \(x=\sum_i s_i b_i\)，再把每个实数分成整数与小数部分：
 	\[
 		s_i=\lfloor s_i\rfloor+t_i,\qquad 0\le t_i<1.
 	\]
@@ -119,7 +137,7 @@
 	半开平行多面体与其闭包只相差有限个低维面，不改变 \(d\) 维体积。\cref{g1:prop:gram-volume}给出闭包体积的平方为 Gram 行列式，所以得到所列公式；在标准正交坐标下，Gram 矩阵为 \(B^{\mathsf T}B\)，其行列式为 \((\det B)^2\)。若换格基为 \(B'=BU\)，\cref{g1:prop:lattice-basis-change}给出 \(|\det U|=1\)，从而 \(|\det B'|=|\det B|\)，证明余体积与换基无关。
 \end{proof}
 
-选择格基后，\(B^{-1}\) 把 \(\Lambda\) 变为 \(\mathbb Z^d\)，也把相对于格的体积变为通常坐标体积。它一般不保持长度和角度，却同时保持我们即将比较的格点数与相对体积。例如 \(\Lambda=\mathbb Z(2,0)+\mathbb Z(1,1)\) 的余体积为 \(2\)；同样欧氏面积的区域，相对于这个格所占的基本面积份数是相对于 \(\mathbb Z^2\) 的一半。
+选择格基后，\(B^{-1}\) 把 \(\Lambda\) 变为 \(\mathbb Z^d\)，也把相对于格的体积变为通常坐标体积。它一般不保持长度和角度，却同时保持我们即将比较的格点数与相对体积。例如 \(\Lambda=\mathbb Z(2,0)+\mathbb Z(1,1)\) 的余体积为 \(2\)；同样Euclid 面积的区域，相对于这个格所占的基本面积份数是相对于 \(\mathbb Z^2\) 的一半。
 
 \ProseParagraphBreak
 
@@ -140,7 +158,7 @@
 	\end{enumerate}
 \end{lemma}
 \begin{proof}
-	平移后可设 \(a=0\)，记 \(u=b-a\)、\(v=c-a\)，令 \(A\) 为以 \(u,v\) 为列的整数矩阵。其行列式为非零整数，而三角形面积为 \(|\det A|/2\)。因此第二项与第三项由\cref{g1:prop:lattice-basis-change}等价。
+	平移后可设 \(a=0\)，记 \(u=b-a\)、\(v=c-a\)，令 \(A\) 为以 \(u,v\) 为列的整数矩阵。其行列式为非零整数，而三角形面积为 \(|\det A|/2\)。因此，由\cref{g1:prop:lattice-basis-change}可知第二项与第三项等价。
 
 	若 \(|\det A|=1\)，则 \(A^{-1}\) 是整数矩阵。任取 \(x\in T\cap\mathbb Z^2\)，其坐标 \(A^{-1}x=(s,t)\) 是整数，又满足 \(s,t\ge0\)、\(s+t\le1\)，只能是 \((0,0),(1,0),(0,1)\)。故 \(T\) 没有其他格点。
 
@@ -166,16 +184,16 @@
 	\[
 		\operatorname{conv}\{p_1,p_i,p_{i+1}\},\qquad 2\le i\le r-1.
 	\]
-	这些三角形覆盖 \(P\)，内部分离，且相交时只沿公共边或顶点相交：从 \(p_1\) 指向多边形中一点的射线，离开 \(P\) 时落在某条边 \([p_i,p_{i+1}]\) 上，给出覆盖；相邻顶点方向之间的扇形内部互不重叠，给出交集性质。因此这是一个直线三角剖分，初始计数为 \(V=r\)、\(E=2r-3\)、\(F=r-2\)，交替和等于 \(1\)。
+	这些三角形覆盖 \(P\)，内部两两不交，且交集只能是公共边或公共顶点：从 \(p_1\) 指向多边形中一点的射线，离开 \(P\) 时落在某条边 \([p_i,p_{i+1}]\) 上，给出覆盖；相邻顶点方向之间的扇形内部互不重叠，给出交集性质。因此这是一个直线三角剖分，初始计数为 \(V=r\)、\(E=2r-3\)、\(F=r-2\)，交替和等于 \(1\)。
 
 	由\cref{g1:prop:lattice-basis-change}，\(P\cap\mathbb Z^2\) 有限。依次插入尚未成为剖分顶点的格点 \(q\)。若 \(q\) 位于某个三角形内部，就把它与该三角形的三个顶点相连，把一面分成三面；此时 \((V,E,F)\) 的增量为 \((1,3,2)\)。若 \(q\) 位于边界上一条边的内部，就把该边分成两段，并将 \(q\) 与相邻三角形的对顶点相连，增量为 \((1,2,1)\)。若 \(q\) 位于内部边的内部，就同时对这条边两侧的三角形作这个操作，增量为 \((1,3,2)\)。每次新线段都留在原三角形内，两侧对共有边的划分一致，所以仍是一个直线三角剖分。
 
 	这些操作都保持 \(V-E+F\)。有限次后，全部格点都已成为剖分顶点；若还有一个小三角形在边上或内部含有非顶点格点，该点就应是剖分的另一顶点，违反单形相交只能沿公共面的要求。因此各小三角形都满足\cref{g1:lem:empty-lattice-triangle}，面积为 \(1/2\)，而交替和仍为 \(1\)。
 \end{proof}
 
-这里直接追踪了构造过程中的计数，也与\cref{g1:prop:euler-triangulation-independent}对闭圆盘给出的 Euler 数 \(1\) 一致。直接构造保留了直线边和格点顶点；一般拓扑三角剖分的存在性本身并不保证这两个额外条件。下面的\term[Pickgongshi]{Pick 公式}[Pick's theorem]由这些小三角形的面积和边界计数得到。
+这里直接追踪了构造过程中的计数，也与\cref{g1:prop:euler-triangulation-independent}对闭圆盘给出的 Euler 示性数 \(1\) 一致。直接构造保留了直线边和格点顶点；一般拓扑三角剖分的存在性本身并不保证这两个额外条件。下面把这些小三角形的面积与剖分中的顶点、边、面计数相比较。
 
-把这些三角形的面积与剖分中的顶点、边、面计数相比较，得到\term[Pickgongshi]{Pick 公式}[Pick's theorem]。\footnote{Pick（皮克，Georg Alexander Pick，1859--1942），奥地利数学家，研究函数论与几何，以格多边形的面积公式著称。}
+由此得到\term[Pickgongshi]{Pick 公式}[Pick's theorem]。\footnote{Pick（Georg Alexander Pick，1859--1942），奥地利数学家，研究函数论与几何，以格多边形的面积公式著称。}
 
 \begin{theorem}[Pick 公式]
 	\label{g1:thm:pick-formula}
@@ -208,7 +226,7 @@
 
 公式把面积恢复为整数与半整数的组合，也说明格多边形的面积必为半整数。\cref{g1:fig:lattice-fundamental-pick}右侧三角形是一个具体核验。上述证明以凸性取得第一份扇形三角剖分；对非凸简单格多边形，要先另证存在保留原顶点的直线三角剖分，才能继续作同样的格点插入。这里的定理范围保持为凸格多边形，不借一般曲面的拓扑剖分省略这一几何步骤。
 
-\subsection{Ehrhart 多项式的代表性陈述与例子}
+\subsection{Ehrhart 多项式与格点计数}
 \label{g1:subsec:B01:03}
 
 面积随整数倍放大按二次律增长，边界上的格点则按一次律增长。Pick 公式因而预示：凸格多边形的全部格点数应由一个二次多项式给出。先把边界计数中需要的整除条件说清楚。
@@ -219,7 +237,7 @@
 	\[
 		a+\frac{k}{g}(b-a),\qquad k=0,1,\ldots,g.
 	\]
-	因此它有 \(g+1\) 个格点；若凸格多边形各边向量为 \((u_i,v_i)\)，则
+	因此它有 \(g+1\) 个格点。再设 \(P\subset\mathbb R^2\) 为内部非空、顶点均在 \(\mathbb Z^2\) 中的凸多边形，\(B(P)=\#(\partial P\cap\mathbb Z^2)\)，各边向量为 \((u_i,v_i)\)，\(nP=\{nx:x\in P\}\)。则对每个正整数 \(n\)，
 	\[
 		B(P)=\sum_i\gcd(|u_i|,|v_i|),\qquad
 		B(nP)=nB(P)\quad(n\ge1).
@@ -235,12 +253,12 @@
 \[
 	L_P(n)=\#(nP\cap\mathbb Z^d),\qquad n\in\mathbb Z_{\ge0},
 \]
-其中 \(nP=\{nx:x\in P\}\)，特别地 \(0P=\{0\}\)，所以 \(L_P(0)=1\)。当这些值由一个多项式给出时，称该多项式为 \(P\) 的\term[Ehrhartduoxiangshi]{Ehrhart 多项式}[Ehrhart polynomial]。\footnote{Ehrhart（埃尔哈特，Eugène Ehrhart，1906--2000），法国数学家，研究多面体中的整数点计数，建立了格多胞形膨胀计数的多项式理论。}下面分别证明二维凸格多边形、整数箱体和任意维格单形的多项式公式。
+其中 \(nP=\{nx:x\in P\}\)，特别地 \(0P=\{0\}\)，所以 \(L_P(0)=1\)。当这些值由一个多项式给出时，称该多项式为 \(P\) 的\term[Ehrhartduoxiangshi]{Ehrhart 多项式}[Ehrhart polynomial]。\footnote{Ehrhart（Eugène Ehrhart，1906--2000），法国数学家，研究多面体中的整数点计数，建立了格多胞形膨胀计数的多项式理论。}下面分别证明二维凸格多边形、整数箱体和任意维格单形的多项式公式。
 
 \symidx{\(L_P(n)\)：整数倍多胞形的格点计数}
 \begin{proposition}[二维 Ehrhart 公式]
 	\label{g1:prop:polygon-ehrhart}
-	设 \(P\subset\mathbb R^2\) 是内部非空的凸格多边形，面积为 \(A\)，边界格点数为 \(B\)。则对每个整数 \(n\ge0\)，
+	设 \(P\subset\mathbb R^2\) 是内部非空的凸格多边形，面积为 \(A\)，边界格点数为 \(B\)。对整数 \(n\ge0\)，令 \(nP=\{nx:x\in P\}\)、\(L_P(n)=\#(nP\cap\mathbb Z^2)\)，其中 \(0P=\{0\}\)。则
 	\begin{equation}
 		\label{g1:eq:polygon-ehrhart}
 		L_P(n)=An^2+\frac B2n+1.
@@ -260,7 +278,7 @@
 
 \begin{proposition}[整数箱体与标准单形]
 	\label{g1:prop:box-simplex-ehrhart}
-	设 \(a_1,\ldots,a_d\) 为正整数，\(Q=\prod_{i=1}^d[0,a_i]\)。再令
+	设 \(a_1,\ldots,a_d\) 为正整数，\(Q=\prod_{i=1}^d[0,a_i]\)，\(e_1,\ldots,e_d\) 为 \(\mathbb R^d\) 的标准基。对格多胞形 \(P\subset\mathbb R^d\) 及整数 \(n\ge0\)，记 \(nP=\{nx:x\in P\}\)、\(L_P(n)=\#(nP\cap\mathbb Z^d)\)，其中 \(0P=\{0\}\)。再令
 	\[
 		\Delta_d=\operatorname{conv}\{0,e_1,\ldots,e_d\}
 		=\left\{x\in\mathbb R^d:x_i\ge0,\ \sum_{i=1}^d x_i\le1\right\}.
@@ -280,11 +298,11 @@
 
 \begin{proposition}[格单形的半开锥计数]
 	\label{g1:prop:lattice-simplex-ehrhart}
-	设 \(v_0,\ldots,v_d\in\mathbb Z^d\) 仿射无关，\(S=\operatorname{conv}\{v_0,\ldots,v_d\}\)，记 \(w_i=(v_i,1)\in\mathbb Z^{d+1}\)。定义有界半开区域
+	设 \(v_0,\ldots,v_d\in\mathbb Z^d\) 仿射无关，\(S=\operatorname{conv}\{v_0,\ldots,v_d\}\)，记 \(w_i=(v_i,1)\in\mathbb Z^{d+1}\)。对整数 \(n\ge0\)，令 \(nS=\{nx:x\in S\}\)、\(L_S(n)=\#(nS\cap\mathbb Z^d)\)，其中 \(0S=\{0\}\)。定义有界半开区域
 	\[
 		\Pi=\left\{\sum_{i=0}^d t_iw_i:0\le t_i<1\right\},
 	\]
-	并令 \(h_j\) 为 \(\Pi\cap\mathbb Z^{d+1}\) 中末坐标等于 \(j\) 的点数。则 \(0\le j\le d\)、\(h_0=1\)，且作为形式幂级数有
+	并令 \(h_j\) 为 \(\Pi\cap\mathbb Z^{d+1}\) 中末坐标等于 \(j\) 的点数。则 \(h_j=0\) 对所有 \(j\notin\{0,\ldots,d\}\) 成立，且 \(h_0=1\)，且作为形式幂级数有
 	\[
 		\sum_{n\ge0}L_S(n)z^n
 		=\frac{h_0+h_1z+\cdots+h_dz^d}{(1-z)^{d+1}}.
@@ -315,7 +333,7 @@
 		=\left(\sum_{j=0}^d h_jz^j\right)
 		\prod_{i=0}^d\left(\sum_{k_i\ge0}z^{k_i}\right).
 	\]
-	各次系数只涉及有限项，因此该等式不需要解析收敛；代入几何级数的形式恒等式便得所述分式。高度为 \(n\) 的项，对每个高度为 \(j\) 的余数点，计数 \(k_0+\cdots+k_d=n-j\) 的非负整数解。由上一命题的隔板计数，在 \(n\ge j\) 时有 \(\binom{n-j+d}{d}\) 个；在 \(n<j\le d\) 时没有解，而多项式中的上参数 \(n+d-j\) 落在 \(0,\ldots,d-1\)，其值也为零。因此多项式公式对全部 \(n\ge0\) 成立。最高次系数为 \((h_0+\cdots+h_d)/d!>0\)，所以次数恰为 \(d\)。
+	各次系数只涉及有限项，因此该等式不需要解析收敛；代入几何级数的形式恒等式便得所述分式。为求高度为 \(n\) 的项，需对每个高度为 \(j\) 的余数点，计算方程 \(k_0+\cdots+k_d=n-j\) 的非负整数解的个数。由上一命题的隔板计数，在 \(n\ge j\) 时有 \(\binom{n-j+d}{d}\) 个；在 \(n<j\le d\) 时没有解，而多项式中的上参数 \(n+d-j\) 落在 \(0,\ldots,d-1\)，其值也为零。因此多项式公式对全部 \(n\ge0\) 成立。最高次系数为 \((h_0+\cdots+h_d)/d!>0\)，所以次数恰为 \(d\)。
 \end{proof}
 
 标准单形的提升向量构成 \(\mathbb Z^{d+1}\) 的格基，所以其 \(\Pi\) 中只有格点 \(0\)，上述公式退化为 \(\binom{n+d}{d}\)。对其他格单形，有限个余数点保存了标准单形中没有的整数结构。一般格多胞形可以涉及多个单形及其公共面，不能把闭单形的计数简单相加；本节已经证明的公式分别适用于上述三类对象，并未用这些例子替代任意维格多胞形的统一定理。
@@ -323,12 +341,16 @@
 \section{Voronoi 与 Delaunay}
 \label{g1:sec:B02}
 
-在平面上给定几个服务点，每个位置应当归属于离它最近的哪一个点？若两个服务点同样近，分界线在哪里？反过来，哪些服务点应当连起来，才能记录这些区域怎样相邻？这两个问题分别产生 Voronoi 分区和 Delaunay 分解。\footnote{Voronoi（沃罗诺伊，\OriginalName{Георгій Феодосійович Вороний}，1868--1908），乌克兰数学家，研究数论与二次型。Delaunay（德劳内，\OriginalName{Борис Николаевич Делоне}，1890--1980），俄罗斯数学家，研究数的几何与离散几何；其姓氏也常转写为 Delone。}距离本来含有平方根，但比较两个距离的平方时，关于位置的二次项恰好消去；再把服务点提升到一个抛物面上，空圆或空球条件也会成为支撑超平面的条件。本节使用\cref{g1:thm:polytope-hv,g1:thm:polytope-faces}中已经证明的有限半空间表示与面结构，不要求预先掌握计算几何算法。
+在平面上给定一个非空有限点集，把其中的点称为站点。例如，可以把几所医院的位置看作站点，在这个模型中只按直线距离判断一个位置离哪所医院最近。对每个站点，把到它的距离不大于到其他站点距离的所有位置收集起来，就得到该站点的区域。这些区域覆盖平面，组成 Voronoi 分区；若一个位置有多个同样近的最近站点，它就属于相应区域的公共边界。反过来，在每个位置找出全部最近站点，并取这些站点的凸包，便得到相应的 Delaunay 单元；这些单元记录了上述区域的交会关系。\footnote{Voronoi（\OriginalName{Георгій Феодосійович Вороний}，1868--1908），乌克兰数学家，研究数论与二次型。Delaunay（\OriginalName{Борис Николаевич Делоне}，1890--1980），俄罗斯数学家，研究数的几何与离散几何；其姓氏也常转写为 Delone。}
+
+\ProseParagraphBreak
+
+分析这两种构造的关键，是把距离条件转成线性条件。比较两个距离的平方时，关于位置的共同二次项恰好消去，从而可以把每个区域写成有限个半空间的交；把站点提升到一个抛物面上，又能把空圆或空球条件转成支撑超平面的条件。本节将逐步说明这两种转换，所用的有限半空间表示与面结构已在\cref{g1:thm:polytope-hv,g1:thm:polytope-faces}中证明，不要求预先掌握计算几何算法。
 
 \subsection{距离平方与分区}
 \label{g1:subsec:B02:01}
 
-设 \(S\subset\mathbb R^d\) 为非空有限互异点集，\(d\ge1\)，使用标准欧氏内积和距离。把 \(S\) 中的点称为站点。固定站点 \(p\)，位置 \(x\) 离 \(p\) 不比离另一站点 \(q\) 远，等价于
+设 \(S\subset\mathbb R^d\) 为非空有限互异点集，\(d\ge1\)，使用标准Euclid 内积和距离。把 \(S\) 中的点称为站点。固定站点 \(p\)，位置 \(x\) 离 \(p\) 不比离另一站点 \(q\) 远，等价于
 \begin{equation}\label{g1:eq:voronoi-halfspace}
 	\lVert x-p\rVert^2\le\lVert x-q\rVert^2
 	\quad\Longleftrightarrow\quad
@@ -351,19 +373,19 @@
 \end{definition}
 
 \begin{proposition}[Voronoi 胞的覆盖与交界]\label{g1:prop:voronoi-cover}
-	设 \(S\subset\mathbb R^d\) 为非空有限互异点集。每个 \(V_p\) 都是含 \(p\) 为内点的闭凸多面体，而且
+	设 \(S\subset\mathbb R^d\) 为非空有限互异点集。对 \(p\in S\)，定义 \(V_p=\{x\in\mathbb R^d:\lVert x-p\rVert\le\lVert x-q\rVert\text{ 对所有 }q\in S\}\)。则每个 \(V_p\) 都是含 \(p\) 为内点的闭凸多面体，而且
 	\[
 		\bigcup_{p\in S}V_p=\mathbb R^d,
 		\qquad
 		\operatorname{int}V_p
 		=\{x:\lVert x-p\rVert<\lVert x-q\rVert\text{ 对全部 }q\ne p\}.
 	\]
-	不同胞的内部不相交；它们可以共享边界。对非空 \(T\subseteq S\)，若 \(V_T=\bigcap_{p\in T}V_p\ne\varnothing\)，则 \(V_T\) 是每个 \(V_p\)、\(p\in T\)，的面。所有非空 Voronoi 面都可写成这种交集。
+	不同胞的内部不相交；它们可以共享边界。对非空 \(T\subseteq S\)，若 \(V_T=\bigcap_{p\in T}V_p\ne\varnothing\)，则对每个 \(p\in T\)，\(V_T\) 都是 \(V_p\) 的面。所有非空 Voronoi 面都可写成这种交集。
 \end{proposition}
 \begin{proof}
-	半空间公式给出闭性、凸性和有限半空间表示，正是\cref{g1:def:polyhedron-polytope}中的多面体。在 \(x=p\) 处，对每个 \(q\ne p\) 都有严格不等式；由有限性，它们在 \(p\) 的一个小球内同时严格成立。若 \(S=\{p\}\)，则 \(V_p=\mathbb R^d\)，结论也成立。每个位置到有限站点集的最短距离都能取到，故这些胞覆盖全空间。
+	由半空间公式可知，每个胞都是闭凸集，且有有限半空间表示，因而是\cref{g1:def:polyhedron-polytope}中的多面体。在 \(x=p\) 处，对每个 \(q\ne p\) 都有严格不等式；由有限性，它们在 \(p\) 的一个小球内同时严格成立。若 \(S=\{p\}\)，则 \(V_p=\mathbb R^d\)，结论也成立。每个位置到有限站点集的最短距离都能取到，故这些胞覆盖全空间。
 
-	全部距离比较严格时，仍由有限性得到包含于 \(V_p\) 的邻域。若某个比较取等号，则 \(x\) 位于一个真正的限制超平面上；向被该不等式排除的一侧作任意小移动就会离开 \(V_p\)，所以 \(x\) 不是内点。这证明内部公式，也证明不同内部不交。
+	全部距离比较严格时，仍由有限性得到包含于 \(V_p\) 的邻域。若某个比较取等号，则 \(x\) 位于一个真正的限制超平面上；向被该不等式排除的一侧作任意小移动就会离开 \(V_p\)，所以 \(x\) 不是内点。这就证明了内部的表达式，也说明不同胞的内部不相交。
 
 	固定 \(p_0\in T\)。在 \(V_{p_0}\) 内，属于 \(V_T\) 恰好要求与 \(T\) 中各站点的比较都取等号。每条这样的等式给出支撑面，交集仍满足\cref{g1:def:polytope-face}中的线段性质；同一定义和论证也适用于无界多面体。
 
@@ -381,7 +403,7 @@
 			V_c&=\{(x,y):y\ge1,\ x\le y\}.
 		\end{aligned}
 	\]
-	两两交界分别为 \(x=1,y\le1\)、\(y=1,x\le1\) 和 \(x=y\ge1\)，三者在 \((1,1)\) 相遇。这个公共点到三站点都距离 \(\sqrt2\)。三条完整垂直平分线并不是 Voronoi 图的全部边界：每条线上只有仍然不比第三站点远的部分被保留。
+	两两交界分别为 \(x=1,y\le1\)、\(y=1,x\le1\) 和 \(x=y\ge1\)，三者在 \((1,1)\) 相遇。这个公共点到三个站点的距离均为 \(\sqrt2\)。三条完整垂直平分线并不是 Voronoi 图的全部边界：每条线上只有仍然不比第三站点远的部分被保留。
 \end{example}
 
 \subsection{空球条件和对偶分解}
@@ -396,7 +418,7 @@
 		Q=\operatorname{conv}\{\widehat p:p\in S\}\subset\mathbb R^{d+1},
 		\qquad \pi(y,z)=y.
 	\]
-	对 \(c\in\mathbb R^d\)，令
+	对 \(c\in\mathbb R^d\)，记最近站点集为 \(N(c)=\{p\in S:\lVert c-p\rVert=\min_{q\in S}\lVert c-q\rVert\}\)，并令
 	\[
 		b(c)=\min_{p\in S}(\lVert p\rVert^2-2\langle c,p\rangle),
 		\qquad
@@ -417,11 +439,11 @@
 线性函数在有限凸包上的最小值由生成点决定，达到最小值的点组成对应的面，因而正好选出了最近站点。
 
 \begin{proposition}[空球与支撑超平面]\label{g1:prop:empty-sphere-lift}
-	设 \(S\subset\mathbb R^d\) 为非空有限互异点集，\(c\in\mathbb R^d\)、\(r\ge0\)。开球 \(\{x:\lVert x-c\rVert<r\}\) 不含 \(S\) 中的点且球面包含至少一个站点，当且仅当
+	设 \(S\subset\mathbb R^d\) 为非空有限互异点集，\(c\in\mathbb R^d\)、\(r\ge0\)，并记提升凸包 \(Q=\operatorname{conv}\{(p,\lVert p\rVert^2):p\in S\}\subset\mathbb R^{d+1}\)。开球 \(\{x:\lVert x-c\rVert<r\}\) 不含 \(S\) 中的点且球面包含至少一个站点，当且仅当
 	\[
 		z=2\langle c,y\rangle+r^2-\lVert c\rVert^2
 	\]
-	从下方支撑提升凸包 \(Q\)。接触面恰由球面上的全部站点的提升生成，其投影为一个 Delaunay 单元。这个单元的顶点恰是球面上的站点，且单元中不含其他站点。
+	从下方支撑 \(Q\)，即 \(Q\) 位于该超平面上方且与之相交。接触面恰由球面上的全部站点的提升生成，其投影为一个 Delaunay 单元。这个单元的顶点恰是球面上的站点，且单元中不含其他站点。
 \end{proposition}
 \begin{proof}
 	对任意 \(p\in S\)，有
@@ -465,13 +487,13 @@
 
 	还须证明下部面的面仍可由最后一坐标为负的法向量暴露。设 \(E\) 是 \(F(c)\) 的非空面，由\cref{g1:thm:polytope-faces}选一个线性函数 \(v\) 在 \(F(c)\) 上恰好以 \(E\) 为最大值集。原法向量为 \(u=(2c,-1)\)。在 \(Q\) 的有限顶点上，\(u\) 对 \(F(c)\) 外的顶点有严格差距；故对充分小的 \(\varepsilon>0\)，\(u+\varepsilon v\) 的最大值仍只在 \(F(c)\) 的顶点中取得，并在其中恰选出 \(E\)。其最后一坐标仍负，归一化后说明 \(E\) 是下部面。这里 \(v\) 从面的仿射包络延拓到环境空间即可，常数项不影响最大值集。因而每个单元的面也属于这份名单。
 
-	前面的覆盖实际上由 \(d\) 维单元完成。任取一个单元的相对内点，它属于某个 \(d\) 维单元；两者的交是前者的面，并包含其相对内点，所以包含前者全体。这说明极大单元都是 \(d\) 维。最后，对任意 \(p\in S\) 取中心 \(c=p\)，有 \(N(c)=\{p\}\)，故每个站点都给出一个零维单元；\cref{g1:prop:empty-sphere-lift}又说明全部单元的顶点都在 \(S\) 中。
+	前面的证明实际上已经说明，\(d\) 维单元就能覆盖整个凸包。任取一个单元的相对内点，它属于某个 \(d\) 维单元；两者的交是前者的面，并包含其相对内点，所以包含前者全体。这说明极大单元都是 \(d\) 维。最后，对任意 \(p\in S\) 取中心 \(c=p\)，有 \(N(c)=\{p\}\)，故每个站点都给出一个零维单元；\cref{g1:prop:empty-sphere-lift}又说明全部单元的顶点都在 \(S\) 中。
 \end{proof}
 
 定理特意包括全部提升点共面的情形。例如所有站点共球时，提升凸包可能只有 \(d\) 维，整个 \(K\) 本身就是一个 Delaunay 单元。若只把下部面理解成一个满 \((d+1)\) 维凸包的部分棱面，就会遗漏这种最重要的退化情形。
 
 \begin{theorem}[Voronoi 与 Delaunay 的反序对应]\label{g1:thm:voronoi-delaunay-duality}
-	设 \(S\subset\mathbb R^d\) 为有限互异点集，\(\operatorname{aff}S=\mathbb R^d\)。对 Delaunay 单元 \(\sigma\)，记它的顶点集为 \(T_\sigma=S\cap\sigma\)，并定义
+	设 \(S\subset\mathbb R^d\) 为有限互异点集，\(\operatorname{aff}S=\mathbb R^d\)。记 \(N(c)=\{p\in S:\lVert c-p\rVert=\min_{q\in S}\lVert c-q\rVert\}\)，\(V_p=\{c\in\mathbb R^d:p\in N(c)\}\)。对 Delaunay 单元 \(\sigma\)，记它的顶点集为 \(T_\sigma=S\cap\sigma\)，并定义
 	\[
 		V(\sigma)=\bigcap_{p\in T_\sigma}V_p.
 	\]
@@ -500,7 +522,7 @@
 	若 \(\sigma\subseteq\tau\)，则 \(T_\sigma\subseteq T_\tau\)，对更多站点要求同时最近，只会使交集缩小，得到 \(V(\tau)\subseteq V(\sigma)\)。若后一个包含成立，取 \(c\in\operatorname{ri}V(\tau)\)，则 \(T_\sigma\subseteq N(c)=T_\tau\)，取凸包得到 \(\sigma\subseteq\tau\)。
 \end{proof}
 
-例如\cref{g1:exm:three-site-voronoi}中的三角形对应一个 Voronoi 顶点，三条三角形边分别对应三条无界射线，三个站点分别对应二维胞。维数和等于二，但并不要求对应的两个图形有相同大小或都有限长。
+例如\cref{g1:exm:three-site-voronoi}中的三角形对应一个 Voronoi 顶点，三角形的三条边分别对应三条无界射线，三个站点分别对应二维胞。维数和等于二，但并不要求对应的两个图形有相同大小或都有限长。
 
 \ProseParagraphBreak
 
@@ -510,7 +532,7 @@
 	\qquad
 	\langle v,p-p_0\rangle=0\quad(p\in T_\sigma).
 \end{equation}
-这就是说线性函数 \(\langle v,-\rangle\) 在整个 \(K\) 上于 \(\sigma\) 取最大值。如果 \(v\ne0\)，满维性保证其最大值面是 \(K\) 的真支撑面。因此 \(V(\sigma)\) 无界，当且仅当 \(\sigma\) 包含于 \(K\) 的一个真支撑面。此处“无界必有射线”也可以直接检查：取 \(c_j\in V(\sigma)\)、\(\lVert c_j-c\rVert\to\infty\)，对单位方向 \((c_j-c)/\lVert c_j-c\rVert\) 取收敛子列，在各线性限制中除以长度再取极限，就得到满足\eqref{g1:eq:voronoi-recession}的单位向量。反方向按该式作射线即可。Voronoi 图覆盖整个 \(\mathbb R^d\)，Delaunay 剖分只覆盖 \(K\)；凸包边界通过无界 Voronoi 面参与上述对偶，无须另添一个假定的“无穷远站点”。
+这就是说，线性函数 \(\langle v,-\rangle\) 在 \(K\) 上的最大值在 \(\sigma\) 的每一点取得。如果 \(v\ne0\)，满维性保证其最大值面是 \(K\) 的真支撑面。因此 \(V(\sigma)\) 无界，当且仅当 \(\sigma\) 包含于 \(K\) 的一个真支撑面。此处“无界必有射线”也可以直接检查：取 \(c_j\in V(\sigma)\)、\(\lVert c_j-c\rVert\to\infty\)，对单位方向 \((c_j-c)/\lVert c_j-c\rVert\) 取收敛子列，在各线性限制中除以长度再取极限，就得到满足\eqref{g1:eq:voronoi-recession}的单位向量。反方向按该式作射线即可。Voronoi 图覆盖整个 \(\mathbb R^d\)，Delaunay 剖分只覆盖 \(K\)；凸包边界通过无界 Voronoi 面参与上述对偶，无须另添一个假定的“无穷远站点”。
 
 \subsection{退化位置及一般位置的区别}
 \label{g1:subsec:B02:03}
@@ -518,7 +540,7 @@
 多胞形剖分并不一定是单纯形剖分。若一个空球的球面上恰好有 \(d+1\) 个仿射无关站点，它们生成一个 \(d\) 维单纯形；若还有更多站点同时在球面上，就必须先保留完整接触面，再决定是否另作细分。
 
 \begin{proposition}[一般位置下的单纯形剖分]\label{g1:prop:delaunay-general-position}
-	设有限互异点集 \(S\subset\mathbb R^d\) 满足 \(\operatorname{aff}S=\mathbb R^d\)。假定任意 \(d+1\) 个站点仿射无关，且没有 \(d+2\) 个站点同在一个欧氏球面上，则 Delaunay 剖分的每个极大单元都是 \(d\) 维单纯形，其全部面组成一个唯一确定的几何单纯形剖分。二维时，这两个条件就是没有三点共线、没有四点共圆。
+	设有限互异点集 \(S\subset\mathbb R^d\) 满足 \(\operatorname{aff}S=\mathbb R^d\)。假定任意 \(d+1\) 个站点仿射无关，且没有 \(d+2\) 个站点同在一个Euclid 球面上，则 Delaunay 剖分的每个极大单元都是 \(d\) 维单纯形，其全部面组成一个唯一确定的几何单纯形剖分。二维时，这两个条件就是没有三点共线、没有四点共圆。
 \end{proposition}
 \begin{proof}
 	由\cref{g1:thm:delaunay-subdivision}，极大单元为 \(d\) 维，故至少有 \(d+1\) 个顶点。它的全部顶点同在一个空球的球面上；无 \(d+2\) 点共球的条件使顶点数至多为 \(d+1\)。于是恰有 \(d+1\) 个，且由维数可知它们仿射无关。所有其他单元都是这些单纯形的面，公共面性质已经由剖分定理证明。唯一性来自下部面的定义：给定 \(S\) 就确定 \(Q\)，并确定全部下部面，此时没有需要另外选择的非单纯形单元。
@@ -567,7 +589,7 @@
 \[
 	\delta(q)=\lVert q-c\rVert^2-r^2
 \]
-的正、零、负判定。等价地，可以考察以 \((p_i,\lVert p_i\rVert^2,1)\) 及 \((q,\lVert q\rVert^2,1)\) 为行的 \((d+2)\) 阶行列式；零值表示提升点共面，其符号还要结合前 \(d+1\) 点的定向来解释。有限个严格非零的判定在足够小扰动下保持符号，而\cref{g1:exm:delaunay-square-perturbation}中的零值两侧产生不同剖分。浮点计算得到接近零的数，不能据此宣布原数据严格共球：有理输入可用精确算术核对，近似输入则需有误差范围才能确认符号；不能确认时应保留几何关系未定这一事实。
+的正、零、负判定。等价地，可以考察以 \((p_i,\lVert p_i\rVert^2,1)\) 及 \((q,\lVert q\rVert^2,1)\) 为行的 \((d+2)\) 阶行列式；零值表示提升点共面，其符号还要结合前 \(d+1\) 点的定向来解释。有限个严格非零的判定在足够小扰动下保持符号，而\cref{g1:exm:delaunay-square-perturbation}中，判定值由零变为正或负时，会得到不同的剖分。浮点计算得到接近零的数，不能据此宣布原数据严格共球：有理输入可用精确算术核对，近似输入则需有误差范围才能确认符号；不能确认时应保留几何关系未定这一事实。
 
 \ProseParagraphBreak
 
@@ -593,7 +615,7 @@
 
 \ProseParagraphBreak
 
-给定 \(\delta>0\)，单位球面上的有限集合 \(U=\{u_1,\ldots,u_m\}\) 称为球面的一个\term[deltawang]{\(\delta\)-网}[\(\delta\)-net]，如果每个 \(v\in S^{n-1}\) 都满足某个 \(\lVert v-u_i\rVert\le\delta\)。这里用的是环境欧氏距离，而不是球面上的弧长。这样的有限集合总能选到：以球面上全部点为中心的半径 \(\delta\) 开球覆盖球面，由紧性取有限子覆盖即可。
+给定 \(\delta>0\) 和单位球面上的有限集合 \(U=\{u_1,\ldots,u_m\}\)。如果对每个 \(v\in S^{n-1}\)，都能找到一个 \(u_i\)，使 \(\lVert v-u_i\rVert\le\delta\)，就称 \(U\) 为球面的一个\term[deltawang]{\(\delta\)-网}[\(\delta\)-net]。这里用的是环境Euclid 距离，而不是球面上的弧长。这样的有限集合总能选到：以球面上全部点为中心的半径 \(\delta\) 开球覆盖球面，由紧性取有限子覆盖即可。
 
 \begin{lemma}[有界集合的方向误差]\label{g1:lem:support-lipschitz-bound}
 	设 \(K\subseteq\mathbb R^n\) 非空且紧，并有 \(K\subseteq R\mathbb B\)、\(R\ge0\)。则对任意 \(u,v\in\mathbb R^n\)，有
@@ -614,7 +636,7 @@
 同一个方向网给出两种近似。在方向 \(u_i\) 上取一个达到最大值的点 \(p_i\in K\)，用这些点作凸包；同时保留不等式 \(\langle u_i,x\rangle\le h_K(u_i)\)，取它们的交。前者肯定在 \(K\) 内，后者肯定包含 \(K\)。误差估计还要利用方向网没有留下太大的空隙。
 
 \begin{theorem}[内外多面体逼近]\label{g1:thm:inner-outer-polytope-approximation}
-	设 \(K\subseteq\mathbb R^n\) 为非空紧凸集，且 \(K\subseteq R\mathbb B\)、\(R>0\)。取 \(0<\delta<1\) 及 \(S^{n-1}\) 的有限 \(\delta\)-网 \(U=\{u_1,\ldots,u_m\}\)。为每个 \(i\) 选择 \(p_i\in K\) 满足 \(\langle u_i,p_i\rangle=h_K(u_i)\)，并令
+	设 \(n\ge1\) 为整数，\(\mathbb B\) 为 \(\mathbb R^n\) 的闭单位球，\(K\subseteq\mathbb R^n\) 为非空紧凸集，记 \(h_K(u)=\max_{x\in K}\langle u,x\rangle\)，且 \(K\subseteq R\mathbb B\)、\(R>0\)。取 \(0<\delta<1\) 及 \(S^{n-1}\) 的非空有限 \(\delta\)-网 \(U=\{u_1,\ldots,u_m\}\)，即每个单位向量 \(v\) 都满足 \(\min_i\lVert v-u_i\rVert\le\delta\)。为每个 \(i\) 选择 \(p_i\in K\) 满足 \(\langle u_i,p_i\rangle=h_K(u_i)\)，并令
 	\[
 		Q=\operatorname{conv}\{p_1,\ldots,p_m\},\qquad
 		P=\bigcap_{i=1}^m\{x:\langle u_i,x\rangle\le h_K(u_i)\},
@@ -643,7 +665,7 @@
 	\]
 	对 \(x\in Q\) 距离为零，故全部 \(K\) 都包含于 \(Q+2R\delta\mathbb B\)。
 
-	外侧先须排除无界性。任取 \(x\in P\)、\(x\ne0\)，对单位向量 \(x/\lVert x\rVert\) 选取邻近的 \(u_i\)。因为二者单位长，
+	外侧先须排除无界性。任取 \(x\in P\)、\(x\ne0\)，对单位向量 \(x/\lVert x\rVert\) 选取邻近的 \(u_i\)。因为二者都是单位向量，
 	\[
 		\left\langle u_i,\frac{x}{\lVert x\rVert}\right\rangle
 		=1-\frac12\left\lVert u_i-\frac{x}{\lVert x\rVert}\right\rVert^2
@@ -691,18 +713,18 @@
 	\quad\Longleftrightarrow\quad
 	K\subseteq L+\varepsilon\mathbb B\ \text{且}\ L\subseteq K+\varepsilon\mathbb B.
 \end{equation}
-这也核验了距离公理：对称性和非负性直接成立；零距离使两个紧集互相包含；若再有非空紧集 \(M\)，沿两次包含相加得到
+这也核验了距离公理：对称性和非负性直接成立；零距离使两个紧集互相包含；若再有非空紧集 \(M\)，将两次包含关系合起来，得到
 \[
 	d_H(K,M)\le d_H(K,L)+d_H(L,M).
 \]
 这里用到 \(a\mathbb B+b\mathbb B=(a+b)\mathbb B\)、\(a,b\ge0\)：一个方向来自三角不等式，反方向在 \(a+b>0\) 时把同一个单位球中向量分别乘 \(a,b\)，零值情形单独成立。
 
 \begin{theorem}[Hausdorff 距离的支撑表示]\label{g1:thm:hausdorff-support-isometry}
-	设 \(K,L\subseteq\mathbb R^n\) 为非空紧凸集。则
+	设 \(n\ge1\) 为整数，\(K,L\subseteq\mathbb R^n\) 为非空紧凸集，记它们的支撑函数为 \(h_K(u)=\max_{x\in K}\langle u,x\rangle\)、\(h_L(u)=\max_{y\in L}\langle u,y\rangle\)。则
 	\begin{equation}\label{g1:eq:hausdorff-support-isometry}
 		d_H(K,L)=\max_{u\in S^{n-1}}|h_K(u)-h_L(u)|.
 	\end{equation}
-	因此，把一个非空紧凸集对应到它在单位球面上的支撑函数，保持距离；右侧使用连续函数的一致范数。
+	因此，将每个非空紧凸集映到它在单位球面上的支撑函数，所得到的映射保持距离；右侧使用连续函数的一致范数。
 \end{theorem}
 \begin{proof}
 	先把距离中的外扩集合写成支撑值。\(L+\varepsilon\mathbb B\) 为紧凸集：它是两个紧集之积在连续加法映射下的像，凸性则逐项取凸组合验证。对任意 \(u\)，两个分量可以独立选择，所以
@@ -750,7 +772,7 @@
 
 凸性在式\eqref{g1:eq:hausdorff-support-isometry}中不可删除。单位圆周 \(S^1\) 与闭单位圆盘 \(\mathbb B\subset\mathbb R^2\) 的支撑函数相同，但 \(d_H(S^1,\mathbb B)=1\)：圆盘中心到圆周的距离为 \(1\)，其他圆盘点的距离为 \(1-\lVert x\rVert\)。支撑函数只恢复闭凸包，这与\cref{g1:prop:support-function-basic}一致；它不会记录集合内部的空洞。
 
-\subsection{数值表示的证书}
+\subsection{多面体包含与支撑误差的有限证书}
 \label{g1:subsec:B03:03}
 
 计算给出一张顶点表、一组半空间或若干近似支撑值后，需要说明哪些有限数据能证明所声称的包含关系及误差。本节把能够通过明确等式、不等式核验某项结论的有限数据称为该结论的\term[zhengshu]{证书}[certificate]。证书可以由程序寻找，但核验所需的推理应能从数据本身读出。例如，声称两份多面体描述相同，需要两个方向的包含证书，不能只验证列出的点都满足列出的不等式。
@@ -780,7 +802,7 @@
 	取上确界得到上界；可行点 \(p\) 的函数值是上确界的下界。
 \end{proof}
 
-“全部顶点”也有有限核验办法。先给一个满足 \(Ax\le b\) 的点证明非空，再证明有界，例如分别为 \(\pm x_k\le R_k\) 给出第三项中的非负乘子。于是 \(P\subseteq\prod_k[-R_k,R_k]\)。接着枚举全部 \(n\) 条线性无关约束的组合，解相应等式组并保留满足全部不等式的解，便得到全部顶点。其原因与第三章一致：若某点的活动法向量不张成 \(\mathbb R^n\)，就能沿一个同时垂直的非零方向作两侧小扰动，有限条非活动约束仍保持，故该点不是顶点；若活动法向量张成全空间，其中 \(n\) 条就唯一固定该点。这个办法允许冗余约束和低维多面体，重复出现的顶点只需合并；顶点数很多时枚举可能昂贵，但所得证书的含义没有改变。
+“全部顶点”也有有限核验办法。先给一个满足 \(Ax\le b\) 的点证明非空，再证明有界，例如分别为 \(\pm x_k\le R_k\) 给出第三项中的非负乘子。于是 \(P\subseteq\prod_k[-R_k,R_k]\)。接着枚举全部 \(n\) 条线性无关约束的组合，解相应等式组并保留满足全部不等式的解，便得到全部顶点。其原因与第三章一致：若某点的活动法向量不张成 \(\mathbb R^n\)，就能沿一个同时垂直的非零方向作两侧小扰动，有限条非活动约束仍保持，故该点不是顶点；若活动法向量张成全空间，其中 \(n\) 条就唯一固定该点。这个办法允许冗余约束和低维多面体，重复出现的顶点只需合并；顶点数很多时，枚举的计算量可能很大，但所得证书的含义没有改变。
 
 \ProseParagraphBreak
 
@@ -865,8 +887,715 @@
 
 这些证书分别控制数据的三种误差：有限点与半空间的包含关系、有限方向以外的遗漏，以及数值运算的误差。只要半径界、方向覆盖和支撑区间各有依据，式\eqref{g1:eq:finite-support-distance-certificate}就把它们合成一个对整个凸集有效的距离界。
 
+% B.4 增补开始
+% 写作范围：完整证明二维格堆积最优性，计算选定高维格；一般 Bieberbach 结构定理、空间群分类及一般堆积最优性精确外引。
+\section{晶体群与格堆积}
+\label{g1:sec:B04}
+
+在格点处放置大小相同的球，平移一个格向量便使整个排列回到原样。不过，周期排列的对称还可能包含旋转、反射，或反射与平移的复合。哪些条件保证一个离散的对称群中确实存在足够多的平移？这个问题把\subsecref{g1:subsec:B01:01}的格与第1章的 Euclid 运动联系起来。先弄清群中的平移构成什么结构，才能进一步用一个周期区域的体积衡量球的排列密度。
+
+\subsection{Euclid 空间的晶体群与平移格}
+\label{g1:subsec:B04:01}
+
+正方形格点集 \(\mathbb Z^2\) 在整数平移下保持不变，也在绕原点的直角旋转下保持不变。前一种运动移动所有点的方式相同，后一种运动则改变方向。为了在一般情形中分出这两部分，回顾\cref{g1:thm:isometry-affine}：\(\mathbb R^n\) 的每个等距映射唯一写成
+\[
+	g(x)=Qx+a,\qquad Q\in O(n),\quad a\in\mathbb R^n.
+\]
+这里 \(a=g(0)\)，而 \(Q\) 描述位移向量如何变换。记 \(g=(Q,a)\)。按先作用右边映射的复合约定，直接代入便得
+\begin{equation}\label{g1:eq:crystallographic-group-law}
+	(Q,a)(R,b)=(QR,Qb+a),\qquad
+	(Q,a)^{-1}=(Q^{-1},-Q^{-1}a).
+\end{equation}
+Euclid 等距群 \(E(n)\) 的拓扑也由这两个参数给出：\((Q_j,a_j)\to(Q,a)\) 表示矩阵各元素与向量各坐标分别收敛。我们要排除任意小的非平凡运动，又希望一块有限大小的区域经过群作用能够覆盖整个空间。
+
+\begin{definition}[晶体群]
+	\label{g1:def:crystallographic-group}
+	设 \(n\ge1\)，\(\Gamma\) 为 \(E(n)\) 的子群。若单位元 \((I,0)\) 在 \(\Gamma\) 中是孤立点，则称 \(\Gamma\) 为离散子群。若存在紧集 \(K\subset\mathbb R^n\)，使
+	\[
+		\Gamma K=\bigcup_{\gamma\in\Gamma}\gamma K=\mathbb R^n,
+	\]
+	则称此作用为\term[yujin]{余紧}[cocompact]的。离散且作用余紧的 \(\Gamma\) 称为 \(\mathbb R^n\) 的\term[jingtiqun]{晶体群}[crystallographic group]。
+\end{definition}
+
+余紧也可以用轨道空间表述：\(\mathbb R^n/\Gamma\) 在商拓扑下是紧空间。为核对两种说法，记商映射为 \(q\)。若有上述紧集 \(K\)，则 \(q(K)\) 就是整个商空间，因而紧。反之，\(q\) 是开映射，因为对每个开集 \(U\)，
+\[
+	q^{-1}(q(U))=\bigcup_{\gamma\in\Gamma}\gamma U
+\]
+仍是开集。各个单位开球的商像覆盖轨道空间；若商空间紧，可取有限个这样的商像覆盖它。对应的有限个闭单位球之并是紧集，而且每条轨道都与它相交，这就给出所需的 \(K\)。这里并不要求 \(K\) 的不同群像互不相交。
+
+\ProseParagraphBreak
+
+离散性限制的是运动的参数，而画图时看到的是点集的运动。下面的命题把二者联系起来，也说明定义中为何允许一个点被有限多个群元素固定。
+
+\begin{proposition}[离散等距群的紧集相交性质]
+	\label{g1:prop:euclidean-discrete-proper}
+	设 \(n\ge1\)，\(\Gamma\le E(n)\) 为离散子群。对每个紧集 \(K\subset\mathbb R^n\)，集合
+	\[
+		\{\gamma\in\Gamma:\gamma K\cap K\ne\varnothing\}
+	\]
+	是有限集。特别地，每点 \(x\) 的稳定子 \(\Gamma_x=\{\gamma\in\Gamma:\gamma x=x\}\) 有限。
+\end{proposition}
+\begin{proof}
+	先说明 \(E(n)\) 中的紧集只含有限个 \(\Gamma\) 的元素。若一个紧集含有无穷多个不同元素，可取其中一个收敛子列 \(g_j\to g\)。由群运算的连续性，\(g_j^{-1}g_{j+1}\to(I,0)\)。这些元素属于 \(\Gamma\) 且均不等于单位元，与单位元孤立矛盾。这个论证不要求极限 \(g\) 事先属于 \(\Gamma\)。
+
+	现取 \(R>0\) 使 \(K\subseteq\overline B_R(0)\)。若 \(g=(Q,a)\) 满足 \(gK\cap K\ne\varnothing\)，则存在 \(x,y\in K\) 使 \(Qx+a=y\)，从而
+	\[
+		\lVert a\rVert=\lVert y-Qx\rVert\le\lVert y\rVert+\lVert x\rVert\le2R.
+	\]
+	因此所有这样的 \(g\) 都在 \(O(n)\times\overline B_{2R}(0)\) 内。正交矩阵集在矩阵空间中闭且有界，因而紧；上述乘积也紧。应用第一段的结论即可。最后取 \(K=\{x\}\)，便得到稳定子有限。
+\end{proof}
+
+命题中的紧集相交性质正是\cref{g1:def:discrete-proper-isometric-action}对离散群所用的固有作用条件。它不要求作用自由。例如，整数平移与绕原点半转生成的平面等距群仍是晶体群，但半转固定原点。后面将算出一个没有非平凡稳定子的例子；这两类情形都在晶体群的定义内。
+
+\begin{example}[格的平移群]
+	\label{g1:exm:lattice-translation-group}
+	设 \(b_1,\ldots,b_n\) 为 \(\mathbb R^n\) 的实基，\(\Lambda=\sum_i\mathbb Zb_i\)，并记 \(\tau_v(x)=x+v\)。则
+	\[
+		T_\Lambda=\{\tau_v:v\in\Lambda\}
+	\]
+	是晶体群。事实上，\cref{g1:prop:lattice-basis-change}说明有界集只含有限个格点，故可以在零点附近取一个不含非零格点的球；这使 \(T_\Lambda\) 的单位元孤立。由\cref{g1:prop:lattice-fundamental-domain}，半开基本平行多面体 \(F_b\) 的格平移铺满空间，所以其紧闭包也满足
+	\[
+		\bigcup_{v\in\Lambda}(v+\overline{F_b})=\mathbb R^n.
+	\]
+	这里用于余紧性的集合是 \(\overline{F_b}\)；半开区域 \(F_b\) 本身一般不紧。
+
+	若只取 \(k<n\) 个实线性无关向量作整数生成元，相应平移群仍离散，却不余紧。令 \(W\) 为这些向量张成的子空间，\(p:\mathbb R^n\to W^\perp\) 为正交投影。沿这些向量平移不改变 \(p(x)\)，所以对任何紧集 \(K\)，都有 \(p(T_\Lambda K)=p(K)\)，后者有界，不能等于正维空间 \(W^\perp\)。
+\end{example}
+
+对于一般晶体群，平移不必作为生成元预先给定。我们从群内所有运动中挑出线性部分为恒等的那些，考察它们的位移向量。
+
+\begin{definition}[平移子群]
+	\label{g1:def:translation-subgroup}
+	设 \(n\ge1\)，\(\Gamma\le E(n)\)。其线性部分映射为
+	\[
+		\ell:\Gamma\longrightarrow O(n),\qquad (Q,a)\longmapsto Q.
+	\]
+	它的核称为 \(\Gamma\) 的\term[pingyiziqun]{平移子群}[translation subgroup]，记为 \(T_\Gamma\)；相应的平移向量组成加法子群
+	\[
+		\Lambda_\Gamma=\{v\in\mathbb R^n:\tau_v\in\Gamma\},\qquad
+		T_\Gamma=\{\tau_v:v\in\Lambda_\Gamma\}.
+	\]
+\end{definition}
+
+\begin{proposition}[平移向量与共轭]
+	\label{g1:prop:crystallographic-translation-kernel}
+	设 \(n\ge1\)，\(\Gamma\le E(n)\) 为离散子群。则 \(T_\Gamma\) 是正规子群，\(\Lambda_\Gamma\) 是 \(\mathbb R^n\) 的离散加法子群，且对每个 \((Q,a)\in\Gamma\)，都有 \(Q\Lambda_\Gamma=\Lambda_\Gamma\)。存在 \(0\le k\le n\) 个实线性无关向量 \(b_1,\ldots,b_k\)，使
+	\[
+		\Lambda_\Gamma=\mathbb Zb_1+\cdots+\mathbb Zb_k.
+	\]
+	当 \(k=0\) 时，此式表示 \(\Lambda_\Gamma=\{0\}\)。
+\end{proposition}
+\begin{proof}
+	由式\eqref{g1:eq:crystallographic-group-law}，\(\ell\) 是同态，因此其核正规。平移的复合是向量相加，逆是向量取负，所以 \(\Lambda_\Gamma\) 是加法子群。若存在非零 \(v_j\in\Lambda_\Gamma\) 趋于零，则非单位平移 \((I,v_j)\) 趋于单位元，违背离散性。故 \(\Lambda_\Gamma\) 离散。
+
+	共轭公式还说明了正规性的几何意义。对 \(g(x)=Qx+a\)，代入其逆映射可得
+	\begin{equation}\label{g1:eq:conjugate-translation}
+		g\tau_vg^{-1}(x)=x+Qv,\qquad g\tau_vg^{-1}=\tau_{Qv}.
+	\end{equation}
+	因此 \(Q\Lambda_\Gamma\subseteq\Lambda_\Gamma\)；对 \(g^{-1}\) 使用同一公式给出反向包含。最后，\cref{g1:lem:discrete-subgroup-lattice-basis}说明有限维实向量空间的每个离散加法子群都由一组实线性无关向量作整数生成。将其中的向量空间取为 \(\mathbb R^n\)，加法子群取为刚已验证离散的 \(\Lambda_\Gamma\)，便得到所述表达。该引理的证明只用最短非零向量与正交投影归纳，不需要 Lie 群理论。
+\end{proof}
+
+到这里，我们只用了离散性，得到的秩 \(k\) 可能小于 \(n\)。加入余紧性后，群中纯平移的位移向量将张成整个空间，这是一般晶体群结构中的实质结论。
+
+\begin{theorem}[Bieberbach 第一定理]
+	\label{g1:thm:bieberbach-translation-lattice}
+	设 \(n\ge1\)，\(\Gamma\le E(n)\) 为离散且在 \(\mathbb R^n\) 上作用余紧的子群。则其平移向量群 \(\Lambda_\Gamma\) 是 \(\mathbb R^n\) 的满秩格，且平移子群 \(T_\Gamma\) 在 \(\Gamma\) 中的指数有限。因此
+	\[
+		\Gamma/T_\Gamma\cong\ell(\Gamma)
+	\]
+	是有限群。
+\end{theorem}
+
+本节采用\cite[第2节，定义1、命题1及其后说明，第68--69页]{Burde2021Crystallographic}的陈述，把一般定理作为外部输入；该综述在此列出结论，没有展开证明。下面说明一旦有了满秩平移格，为什么有限指数会随之成立。取 \(\Lambda_\Gamma\) 的格基 \(b_1,\ldots,b_n\)。对每个 \(Q\in\ell(\Gamma)\)，共轭公式说明 \(Qb_i\) 仍在格中，而正交性给出 \(\lVert Qb_i\rVert=\lVert b_i\rVert\)。有界集只含有限格点，故每个 \(Qb_i\) 都只有有限种选择；一组基的像唯一决定线性映射，因此 \(\ell(\Gamma)\) 有限。线性部分映射的核恰为 \(T_\Gamma\)，同态基本定理便给出上述商群同构与有限指数。一般情形下满秩性的证明仍由 Bieberbach 定理承担，不能把这段推导倒过来当作它的证明。
+
+\ProseParagraphBreak
+
+也不能仅由 \(\ell(\Gamma)\subseteq O(n)\) 和 \(O(n)\) 紧就断言线性像有限：连续映射的像未必保留离散性。\cref{g1:ex:irrational-screw-periodicity}给出一个离散等距群，它的线性像无限，平移子群却平凡；该群恰好不余紧。对于晶体群，我们把上述满秩的 \(\Lambda_\Gamma\) 称为其\term[pingyige]{平移格}[translation lattice]。
+
+\ProseParagraphBreak
+
+有限商群记录了线性部分，但一个线性部分在 \(\Gamma\) 中的代表还可能带有无法消去的平移。下面用滑移反射算出这个区别。
+
+\begin{example}[滑移反射生成的晶体群]
+	\label{g1:exm:glide-crystallographic}
+	在 \(\mathbb R^2\) 上取
+	\[
+		s(x,y)=\left(x+\frac12,-y\right),\qquad t(x,y)=(x,y+1),
+		\qquad \Gamma=\langle s,t\rangle.
+	\]
+	映射 \(s\) 先关于横轴反射，再沿横轴平移 \(1/2\)。直接计算得
+	\[
+		s^2(x,y)=(x+1,y),\qquad sts^{-1}=t^{-1}.
+	\]
+	关系式使每个 \(s\) 的幂都能移到 \(t\) 的幂右边，所以群内每个元素都具有形式 \(t^ns^m\)，其中 \(m,n\in\mathbb Z\)。其作用为
+	\begin{equation}\label{g1:eq:glide-group-normal-form}
+		t^ns^m(x,y)=\left(x+\frac m2,(-1)^m y+n\right).
+	\end{equation}
+	该形式唯一：在原点的像为 \((m/2,n)\)，已确定两个整数。非单位元素在原点的位移长度至少为 \(1/2\)，因此 \(\Gamma\) 离散。又因 \(s^2\) 与 \(t\) 生成整数格平移，\([0,1]^2\) 的群像覆盖整个平面，故 \(\Gamma\) 余紧。
+
+	式\eqref{g1:eq:glide-group-normal-form}的线性部分为恒等，当且仅当 \(m\) 为偶数。因此
+	\[
+		\Lambda_\Gamma=\mathbb Z^2,\qquad
+		T_\Gamma=\langle s^2,t\rangle,\qquad
+		[\Gamma:T_\Gamma]=2.
+	\]
+	线性像由恒等与反射 \(S(x,y)=(x,-y)\) 组成，但纯反射 \(S\) 本身不属于 \(\Gamma\)：线性部分为 \(S\) 时，\(m\) 必为奇数，而横向位移 \(m/2\) 不可能为零。更强地，每个这样的元素的平方都是非零平移 \((x,y)\mapsto(x+m,y)\)。若 \(\Gamma\) 能以 \(T_\Gamma\) 为正规因子分裂为它与 \(\ell(\Gamma)\) 的半直积，就应有一个子群 \(H\le\Gamma\)，使 \(\ell\) 把 \(H\) 同构到 \(\ell(\Gamma)\)。本例的线性像是二阶群，这将要求 \(H\) 中有一个二阶元素映到 \(S\)，与刚才的平方计算矛盾。所以一般晶体群并不总有这样的半直积分裂。
+
+	这些公式也区分了平移格与点的轨道。此处 \(\Gamma\cdot0=(\tfrac12\mathbb Z)\times\mathbb Z\)，严格大于 \(\Lambda_\Gamma=\mathbb Z^2\)；到达 \((1/2,0)\) 的群元素是滑移反射，而非该向量的纯平移。若一个元素固定某点，式\eqref{g1:eq:glide-group-normal-form}的第一坐标先迫使 \(m=0\)，第二坐标再迫使 \(n=0\)，故这个群的作用还是自由的。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixB-Glide}
+	\caption[滑移反射与整周期平移]{取 \(p=(0,1/3)\)。每次作用 \(s\) 都把横坐标增加 \(1/2\)，同时反转纵坐标；作用两次得到 \(s^2p=p+(1,0)\)。虚线是反射轴，实线箭头表示同一个点的两次运动；弧形箭头表示复合后的纯平移。}
+	\label{g1:fig:glide-translation}
+\end{figure}
+
+\cref{g1:fig:glide-translation}中的两次运动展示了纯平移如何从非平移运动的复合中产生。一般晶体群的平移格收集的也是所有这类纯平移，而非任取一点后得到的全部轨道点。满秩性保证它在整个空间中给出周期；有限指数则说明，除去这些平移后，只剩有限种线性部分。
+
+\subsection{点群、基本区域与二维晶体限制}
+\label{g1:subsec:B04:02}
+
+平移格给出了周期，但同一周期图案还可能在改变方向后保持不变。把晶体群的每个运动只取线性部分，便得到一个有限正交群。它既保持长度，又保持平移格；这两个条件合在一起，比单独的正交性或整数性都强。
+
+\begin{definition}[点群]
+	\label{g1:def:crystallographic-point-group}
+	设 \(n\ge1\)，\(\Gamma\le E(n)\) 为晶体群。其线性部分的像
+	\[
+		P_\Gamma=\ell(\Gamma)\le O(n)
+	\]
+	称为 \(\Gamma\) 的\term[dianqun]{点群}[point group]。由\cref{g1:thm:bieberbach-translation-lattice}，它是有限群，且 \(P_\Gamma\cong\Gamma/T_\Gamma\)。
+\end{definition}
+
+\symidx{\(P_\Gamma\)：晶体群的点群}
+
+点群中的元素是作用于位移向量的线性变换。这个名称不表示 \(\Gamma\) 的所有运动共同固定某一点，也不表示每个 \(Q\in P_\Gamma\) 都能不带平移地出现在 \(\Gamma\) 中。\cref{g1:exm:glide-crystallographic}的滑移反射已经说明后一种情况可以失败。
+
+\begin{proposition}[点群的整数矩阵表示]
+	\label{g1:prop:point-group-integral-metric}
+	设 \(\Gamma\le E(n)\) 为晶体群，\(B=(b_1,\ldots,b_n)\) 为其平移格 \(\Lambda_\Gamma\) 的格基矩阵，\(G=B^{\mathsf T}B\)。对每个 \(Q\in P_\Gamma\)，矩阵
+	\[
+		M_Q=B^{-1}QB
+	\]
+	属于 \(\operatorname{GL}(n,\mathbb Z)\)，并满足 \(M_Q^{\mathsf T}GM_Q=G\)。映射 \(Q\mapsto M_Q\) 是单射群同态。
+\end{proposition}
+\begin{proof}
+	由\cref{g1:prop:crystallographic-translation-kernel}，\(Q\Lambda_\Gamma=\Lambda_\Gamma\)，所以 \(Qb_1,\ldots,Qb_n\) 是同一格的另一组格基。\cref{g1:prop:lattice-basis-change}于是给出 \(M_Q\in\operatorname{GL}(n,\mathbb Z)\)。又因 \(Q^{\mathsf T}Q=I\)，
+	\[
+		M_Q^{\mathsf T}GM_Q=(BM_Q)^{\mathsf T}(BM_Q)
+		=(QB)^{\mathsf T}QB=G.
+	\]
+	矩阵共轭保持乘法，且 \(M_Q\) 唯一确定 \(Q=BM_QB^{-1}\)，故映射为单射同态。
+\end{proof}
+
+这里必须保留 Gram 矩阵 \(G\)：格基一般不正交，因而整数矩阵 \(M_Q\) 不必满足 \(M_Q^{\mathsf T}M_Q=I\)。反过来，一个幺模整数矩阵虽然保持格，也未必保持 \(G\)，所以一般的格自同构不一定来自 Euclid 运动。
+
+\ProseParagraphBreak
+
+有了有限点群，一个自然问题是：格的基本平行多面体还能缩小多少，才成为整个晶体群的基本区域？为容纳反射造成的公共边界，下面使用闭基本区域：它是一个闭集 \(D\)，各 \(\gamma D\) 覆盖空间，而不同群元素所给区域的内部两两不交。边界可以重复；这与\cref{g1:prop:lattice-fundamental-domain}中每条平移轨道恰有一个代表的半开区域不同。
+
+\begin{proposition}[晶体群的 Dirichlet 区域]
+	\label{g1:prop:crystallographic-dirichlet-cell}
+	设 \(n\ge1\)，\(\Gamma\le E(n)\) 为晶体群。存在稳定子平凡的点 \(x_0\in\mathbb R^n\)。对任意这样的点，集合
+	\begin{equation}\label{g1:eq:crystallographic-dirichlet-cell}
+		D=\{x\in\mathbb R^n:\lVert x-x_0\rVert\le\lVert x-\gamma x_0\rVert
+		\text{ 对所有 }\gamma\in\Gamma\}
+	\end{equation}
+	是内部非空的紧凸多胞形，并且是 \(\Gamma\) 的闭基本区域。
+\end{proposition}
+\begin{proof}
+	先选择 \(x_0\)。取任意有内点的闭球 \(K\)。若某个 \(\gamma\) 固定 \(K\) 中的一点，则 \(\gamma K\cap K\ne\varnothing\)；由\cref{g1:prop:euclidean-discrete-proper}，这样的 \(\gamma\) 只有有限个。非单位等距映射的固定点集由 \((Q-I)x=-a\) 给出，是空集或真仿射子空间，因而闭且无内点。有限个这样的集合不能覆盖 \(\operatorname{int}K\)：从一个开球出发，逐次在其中选更小的开球避开每个闭的真仿射子空间即可。取剩余开球内一点为 \(x_0\)，其稳定子便平凡。
+
+	记轨道为 \(S=\Gamma\cdot x_0\)。每个有界球只包含有限个 \(S\) 中的点，因为将该球与 \(x_0\) 一起放入一个紧集后，\cref{g1:prop:euclidean-discrete-proper}控制了所有可能的群元素。于是存在 \(\varepsilon>0\)，使各 \(p\in S\setminus\{x_0\}\) 均满足 \(\lVert p-x_0\rVert\ge\varepsilon\)。三角不等式说明 \(B_{\varepsilon/2}(x_0)\subseteq D\)，所以 \(D\) 有内点。
+
+	将式\eqref{g1:eq:crystallographic-dirichlet-cell}中的距离平方展开，令 \(y=x-x_0\)、\(v=\gamma x_0-x_0\)，便得
+	\[
+		2\langle y,v\rangle\le\lVert v\rVert^2.
+	\]
+	故 \(D\) 是闭半空间的交。要证明这里只需有限个半空间，先用平移格取得一个有界的粗范围。取 \(\Lambda_\Gamma\) 的格基 \(b_1,\ldots,b_n\)；轨道中含 \(x_0\pm b_i\)，所以 \(D-x_0\) 包含在
+	\[
+		P_0=\{y:|\langle y,b_i\rangle|\le\lVert b_i\rVert^2/2, 1\le i\le n\}
+	\]
+	内。映射 \(y\mapsto(\langle y,b_i\rangle)_i\) 是线性同构，因此 \(P_0\) 有界。取 \(A>0\) 使 \(P_0\subseteq\overline B_A(0)\)。若 \(\lVert v\rVert>2A\)，则对每个 \(y\in P_0\)，
+	\[
+		2\langle y,v\rangle\le2A\lVert v\rVert<\lVert v\rVert^2,
+	\]
+	所以相应约束自动成立。只须保留定义 \(P_0\) 的约束及满足 \(\lVert v\rVert\le2A\) 的那些轨道点；后者只有有限个。这样 \(D\) 就是一个有界的有限闭半空间交，由\cref{g1:thm:polytope-hv}，它是紧凸多胞形。
+
+	最后核对覆盖与内部不交。对任意 \(x\)，在 \(S\) 中存在距它最近的点：以 \(\lVert x-x_0\rVert\) 为搜索半径，只有有限个候选且至少有 \(x_0\)。若最近点为 \(\gamma x_0\)，把全部距离比较同时作用 \(\gamma^{-1}\)，便得到 \(\gamma^{-1}x\in D\)，从而各 \(\gamma D\) 覆盖空间。若 \(x\in\operatorname{int}D\)，它对每个 \(p\ne x_0\) 的距离比较都严格成立，否则 \(x\) 会落在某个非平凡支撑超平面上，不可能是内点。因此 \(x_0\) 是唯一最近轨道点。对各 \(\gamma\operatorname{int}D\) 同理；又因稳定子平凡，不同 \(\gamma\) 给出不同 \(\gamma x_0\)，这些内部必两两不交。
+\end{proof}
+
+此构造使用了与\subsecref{g1:subsec:B02:01}相同的距离平方相消，但站点现在是无穷轨道。证明中的有界范围 \(P_0\) 与轨道的局部有限性，正是把无穷比较化成有限约束所需的补充。
+
+\begin{corollary}[基本区域的体积]
+	\label{g1:cor:crystallographic-cell-volume}
+	设 \(n\ge1\)，\(\Gamma\le E(n)\) 为晶体群，取稳定子平凡的点 \(x_0\)，令 \(D\) 为以 \(x_0\) 为中心的 Dirichlet 区域，并记 \(m=|P_\Gamma|\)。则
+	\[
+		\operatorname{Vol}_n(D)=\frac{\operatorname{covol}(\Lambda_\Gamma)}{m}.
+	\]
+\end{corollary}
+\begin{proof}
+	选取 \(T_\Gamma\) 的陪集代表 \(g_1,\ldots,g_m\)，使每个群元素唯一写成 \(\tau_vg_i\)，其中 \(v\in\Lambda_\Gamma\)。令 \(U=\bigcup_i g_iD\)。这些多胞形的内部不交，边界体积为零，所以 \(\operatorname{Vol}_n(U)=m\operatorname{Vol}_n(D)\)。各 \(v+U\) 覆盖空间，除边界外每点只覆盖一次。
+
+	取平移格的半开基本平行多面体 \(F\)。用 \(\mathbf1_U\) 表示 \(U\) 的示性函数，便有
+	\[
+		\operatorname{Vol}_n(F)
+		=\int_F\sum_{v\in\Lambda_\Gamma}\mathbf1_U(x+v)\,\mathrm{d}x
+		=\sum_{v\in\Lambda_\Gamma}\int_{F+v}\mathbf1_U(y)\,\mathrm{d}y
+		=\operatorname{Vol}_n(U).
+	\]
+	第一步的覆盖重数在边界外为 \(1\)；因 \(F\) 与 \(U\) 有界，实际有贡献的平移只有有限个。最后一步使用各 \(F+v\) 两两不交铺满空间。代入 \(\operatorname{Vol}_n(F)=\operatorname{covol}(\Lambda_\Gamma)\) 即得结论。
+\end{proof}
+
+在\cref{g1:exm:glide-crystallographic}中，矩形 \([0,1/2]\times[0,1]\) 是一个闭基本区域：式\eqref{g1:eq:glide-group-normal-form}使它的像分别占据宽 \(1/2\)、高 \(1\) 的矩形网格，内部不交并覆盖平面。它的面积为 \(1/2\)，而平移格 \(\mathbb Z^2\) 的基本面积为 \(1\)。这两种基本面积相差点群的阶 \(2\)。
+
+\ProseParagraphBreak
+
+现在在平面内考察一个点群元素。旋转角 \(\theta\) 的实矩阵迹是 \(2\cos\theta\)，而同一变换在格基下又是整数矩阵，迹因而只能取整数。这一简单的约束已经排除了大部分旋转阶数。
+
+\begin{theorem}[二维晶体限制]
+	\label{g1:thm:planar-crystallographic-restriction}
+	设 \(\Gamma\le E(2)\) 为平面晶体群，\(P=P_\Gamma\)。则 \(P\) 中保持定向的元素的阶只能为 \(1,2,3,4,6\)。整个点群是阶为 \(m\) 的循环群 \(C_m\)，或阶为 \(2m\) 的二面体群 \(D_m\)，其中 \(m\in\{1,2,3,4,6\}\)。这里 \(C_1\) 为平凡群，\(D_1\) 为一个反射生成的二阶群。
+\end{theorem}
+\begin{proof}
+	若 \(Q\in P\cap SO(2)\) 的旋转角为 \(\theta\)，由\cref{g1:prop:point-group-integral-metric}，\(Q\) 与某个整数矩阵相似，故
+	\[
+		2\cos\theta=\operatorname{tr}Q\in\mathbb Z\cap[-2,2]=\{-2,-1,0,1,2\}.
+	\]
+	相应的角度模 \(2\pi\) 分别为 \(\pi\)、\(\pm2\pi/3\)、\(\pm\pi/2\)、\(\pm\pi/3\)、\(0\)，所以阶数恰在所列集合中。
+
+	再看整个群的结构。有限旋转群 \(P^+=P\cap SO(2)\) 若非平凡，取其中最小正旋转角 \(\alpha\)。任何其他旋转角除以 \(\alpha\) 后的余角仍对应群中元素，最小性迫使余角为零；同样，\(2\pi\) 除以 \(\alpha\) 的余角也只能为零。因此 \(P^+=\langle R_\alpha\rangle=C_m\)，其中 \(\alpha=2\pi/m\)。前段限制了生成元的阶 \(m\)。平凡情形取 \(m=1\)。
+
+	若 \(P=P^+\)，结论已得。否则取 \(S\in P\) 使 \(\det S=-1\)。二维中这样的正交矩阵是关于一条直线的反射，满足 \(S^2=I\)，并把旋转角变号，即 \(SR_\alpha S^{-1}=R_\alpha^{-1}\)。任意逆定向元素与 \(S\) 相乘后都保持定向，故 \(P=P^+\sqcup SP^+\)，具有二面体群的关系与 \(2m\) 个元素。
+\end{proof}
+
+这些类型都可以实现。正方格由直角旋转及坐标轴反射保持，给出 \(m=1,2,4\) 的模型；由 \((1,0),(1/2,\sqrt3/2)\) 生成的三角格在 \(60\) 度旋转与横轴反射下保持不变，给出 \(m=3,6\) 的模型。对所选有限群 \(P\)，取全部 \(x\mapsto Qx+v\)、\(Q\in P\)、\(v\in\Lambda\)，即得相应晶体群：线性部分有限使离散性归结为格的离散性，而格平移保证余紧。这里构造的是可分裂的代表模型，并未穷尽各点群对应的全部平面晶体群。
+
+\ProseParagraphBreak
+
+五次旋转被排除所用的是平移格，并不是单独的平面几何。正五边形的有限对称群仍有五次旋转；不过有限群作用下，紧集的群像仍紧，不能覆盖平面，所以它不是平面晶体群。
+
+\subsection{最短向量、余体积与格堆积密度}
+\label{g1:subsec:B04:03}
+
+把等半径的球放在每个格点上，半径能增大到哪里，取决于最近两个格点的距离；球占空间的比例，则还取决于每个格点平均对应多大体积。前者是长度数据，后者由余体积给出。将这两种量一起使用，才得到适合比较不同格的堆积密度。
+
+\begin{definition}[最短向量与格球堆积]
+	\label{g1:def:lattice-sphere-packing}
+	设 \(n\ge1\)，\(\Lambda\subset\mathbb R^n\) 为满秩格。记
+	\[
+		\lambda_1(\Lambda)=\min_{v\in\Lambda\setminus\{0\}}\lVert v\rVert,
+	\]
+	称为格的\term[zuiduanxiangliangchangdu]{最短向量长度}[shortest vector length]。达到此长度的非零格向量称为最短向量。给定 \(r>0\)，若各闭球 \(\overline B_r(v)\)、\(v\in\Lambda\) 的内部两两不交，则称它们组成一个\term[geqiuduiji]{格球堆积}[lattice sphere packing]。
+\end{definition}
+
+\symidx{\(\lambda_1(\Lambda)\)：格的最短向量长度}
+
+上述最小值确实存在且为正：先选一个非零格向量 \(b\)，闭球 \(\overline B_{\lVert b\rVert}(0)\) 中只有有限格点，在这些非零点的长度中取最小值即可；球外的格点不可能更短。这里用的是\cref{g1:prop:lattice-basis-change}的有界集有限性。
+
+\begin{proposition}[格球的非重叠条件]
+	\label{g1:prop:lattice-packing-radius}
+	设 \(\Lambda\subset\mathbb R^n\) 为满秩格，\(r>0\)。以 \(\Lambda\) 为中心集的半径 \(r\) 闭球组成堆积，当且仅当 \(2r\le\lambda_1(\Lambda)\)。半径取到最大值 \(r=\lambda_1(\Lambda)/2\) 时，与原点球相切的球恰好以各最短向量为中心。
+\end{proposition}
+\begin{proof}
+	任意两个不同格点的差是非零格向量，所以中心距离至少为 \(\lambda_1(\Lambda)\)。若 \(2r\le\lambda_1(\Lambda)\)，三角不等式阻止一个点同时位于两个球的内部。反之，若 \(2r>\lambda_1(\Lambda)\)，取最短向量 \(v\)，则中点 \(v/2\) 同时在原点球与 \(v\) 点球的内部，不能构成堆积。最后，两等半径且内部不交的球相切，当且仅当中心距等于 \(2r\)，于是得到相切球的描述。
+\end{proof}
+
+记单位闭球的 \(n\) 维体积为 \(\kappa_n\)，故半径 \(r\) 球的体积为 \(\kappa_n r^n\)。后面用到的数值可以从 \(\kappa_1=2\)、\(\kappa_2=\pi\) 递推求出。对 \(n\ge3\)，先固定最后两个坐标，并在该坐标平面取极坐标；其余坐标形成半径 \(\sqrt{1-\rho^2}\) 的 \((n-2)\) 维球。因此
+\begin{equation}\label{g1:eq:unit-ball-volume-recurrence}
+	\kappa_n=2\pi\kappa_{n-2}\int_0^1\rho(1-\rho^2)^{(n-2)/2}\,\mathrm{d}\rho
+	=\frac{2\pi}{n}\kappa_{n-2}.
+\end{equation}
+例如 \(\kappa_3=4\pi/3\)、\(\kappa_8=\pi^4/24\)，并且一般的偶数维公式为 \(\kappa_{2k}=\pi^k/k!\)。
+
+\ProseParagraphBreak
+
+球可能跨过基本区域的边界，因此“一个格点对应一个球”还不足以直接证明密度公式。我们先给出以大区域内实际占据体积计算的定义，再用平移周期处理边界。
+
+\begin{definition}[堆积的密度]
+	\label{g1:def:sphere-packing-upper-density}
+	设 \(n\ge1\)，\(r>0\)，\(C\subset\mathbb R^n\) 满足不同中心的距离至少为 \(2r\)，并令 \(\mathcal P=\bigcup_{c\in C}\overline B_r(c)\)。对立方体 \(Q_R=[-R,R]^n\)，定义此等球堆积的\term[shangmidu]{上密度}[upper density]为
+	\[
+		\overline\delta(\mathcal P)
+		=\limsup_{R\to\infty}\frac{\operatorname{Vol}_n(\mathcal P\cap Q_R)}{(2R)^n}.
+	\]
+	若上式中的比值存在极限，则称该极限为堆积的密度。半径取 \(\lambda_1(\Lambda)/2\) 的格球堆积的密度记为 \(\delta(\Lambda)\)。
+\end{definition}
+
+\symidx{\(\delta(\Lambda)\)：格球堆积密度}
+\symidx{\(\overline\delta(\mathcal P)\)：等球堆积的上密度}
+
+中心距离的正下界保证每个有界集只遇到有限个球，所以这里的并集与体积均有明确意义。球允许相切，但公共边界体积为零，不会在占据体积中造成重复贡献。
+
+\begin{theorem}[格堆积密度公式]
+	\label{g1:thm:lattice-packing-density}
+	设 \(n\ge1\)，\(\Lambda\subset\mathbb R^n\) 为满秩格，\(0<r\le\lambda_1(\Lambda)/2\)。以 \(\Lambda\) 为中心集的半径 \(r\) 球堆积的密度存在，并等于 \(\kappa_n r^n/\operatorname{covol}(\Lambda)\)。特别地，
+	\begin{equation}\label{g1:eq:lattice-packing-density}
+		\delta(\Lambda)=\frac{\kappa_n}{2^n}\,
+		\frac{\lambda_1(\Lambda)^n}{\operatorname{covol}(\Lambda)}.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	取一个半开基本平行多面体 \(F\)，记 \(d=\operatorname{Vol}_n(F)=\operatorname{covol}(\Lambda)\)。首先计算一个周期区域内的占据体积 \(M\)。由球内部不交及平移不变性，
+	\begin{align*}
+		M&=\sum_{v\in\Lambda}\operatorname{Vol}_n\bigl(F\cap\overline B_r(v)\bigr)\\
+		&=\sum_{v\in\Lambda}\operatorname{Vol}_n\bigl((F-v)\cap\overline B_r(0)\bigr)
+		=\kappa_n r^n.
+	\end{align*}
+	最后一步使用 \(F-v\) 两两不交铺满空间；只有有限项非零。每个 \(F+v\) 内的占据体积同样为 \(M\)。
+
+	现在令窗口 \(Q_R\) 增大。取 \(L\) 大于 \(F\) 的直径。凡是既遇到 \(Q_R\) 又没有完全包含在其中的平移胞 \(F+v\)，都在厚度受 \(L\) 控制的边界层内，即在 \(Q_{R+L}\setminus\operatorname{int}Q_{R-L}\) 内，边界是否纳入不影响体积。当 \(R>L\) 时，这个层的体积至多为
+	\[
+		(2R+2L)^n-(2R-2L)^n,
+	\]
+	除以 \((2R)^n\) 后趋于零。完全在窗口内的胞各贡献体积 \(d\) 与占据体积 \(M\)。因为 \(0\le M/d\le1\)，剩余部分的实际占据体积与按比例 \(M/d\) 计算的体积之差，绝对值不超过边界层的总体积。除以 \((2R)^n\) 后，该误差趋于零，故窗口内的占据比例趋于 \(M/d\)。取最大允许半径便得所列公式。
+\end{proof}
+
+同一个证明也适用于大球窗口：边界胞落在半径为 \(R\pm L\) 的球壳内，其体积占整个窗口的比例趋于零。因此格堆积的密度在这两种窗口下相同。这里依赖固定的平移周期；一般非周期堆积的两个上密度不能由此直接认定相等。
+
+\begin{corollary}[有限基元的周期堆积]
+	\label{g1:cor:periodic-packing-density}
+	设 \(\Lambda\subset\mathbb R^n\) 为满秩格，\(a_1,\ldots,a_N\) 在商空间 \(\mathbb R^n/\Lambda\) 中两两不同。若以 \(C=\bigcup_{j=1}^N(a_j+\Lambda)\) 为中心集的半径 \(r>0\) 球内部两两不交，则该堆积在大立方体和大球窗口下的密度均存在，并且等于
+	\[
+		\frac{N\kappa_n r^n}{\operatorname{covol}(\Lambda)}.
+	\]
+\end{corollary}
+\begin{proof}
+	对一个平移基本胞，把球按 \(N\) 个陪集分别求和。前一证明中 \(F-v\) 改成 \(F-a_j-v\) 后仍铺满空间，所以每个陪集恰贡献 \(\kappa_n r^n\)。不同球只有体积为零的边界交叠，故总贡献为 \(N\kappa_n r^n\)；边界层估计不变。
+\end{proof}
+
+这也解释了为什么不能在格密度公式中直接用整个晶体群的较小基本区域代替平移基本胞：分母缩小后，分子也要按同一区域内的实际占据体积调整。式\eqref{g1:eq:lattice-packing-density}采用的是每个平移周期胞一个格点的计数。
+
+\ProseParagraphBreak
+
+式\eqref{g1:eq:lattice-packing-density}在相似变换下不变。若 \(a>0\)、\(Q\in O(n)\)，则 \(aQ\Lambda\) 的最短长度乘 \(a\)，余体积乘 \(a^n\)，分子分母中的尺度恰好抵消。一般体积保持线性变换却可能改变密度。例如 \(\mathbb Z^2\) 的最短长度与余体积都为 \(1\)，密度为 \(\pi/4\)；以 \(\operatorname{diag}(2,1/2)\) 变换后，余体积仍为 \(1\)，最短长度变为 \(1/2\)，密度降为 \(\pi/16\)。保持面积不能代替保持球的形状。
+
+\subsection{二维格堆积的最优性}
+\label{g1:subsec:B04:04}
+
+在平面中，式\eqref{g1:eq:lattice-packing-density}把格堆积密度写成
+\[
+	\delta(\Lambda)=\frac{\pi a^2}{4A},\qquad
+	a=\lambda_1(\Lambda),\quad A=\operatorname{covol}(\Lambda).
+\]
+因此问题变成：当不同格点的最小距离为 \(a\) 时，一个基本平行四边形的面积最少能有多大？取一个最短非零格向量 \(u\)，再找另一个格向量 \(v\)，似乎只需估计它们张成的面积。但这里有两个条件必须先保证：\(u,v\) 要生成整个格，而不只是一个子格；\(v\) 沿 \(u\) 的方向也不应留下可由整数平移消去的过长分量。
+
+\ProseParagraphBreak
+
+对二维实内积空间中满格的一组格基 \((u,v)\)，若
+\[
+	\lVert u\rVert\le\lVert v\rVert,\qquad
+	|\langle u,v\rangle|\le\frac12\lVert u\rVert^2,
+\]
+就称它为本节所用的\term[yuehuageji]{约化格基}[reduced lattice basis]。第二个不等式说，\(v\) 在 \(u\) 所在直线上的投影长度不超过 \(\lVert u\rVert/2\)。下面从最短向量出发构造这样的基。
+
+\begin{lemma}[以最短向量起始的约化格基]
+	\label{g1:lem:planar-reduced-lattice-basis}
+	设 \(E\) 为二维实内积空间，\(\Lambda\subset E\) 为满格，\(u\in\Lambda\setminus\{0\}\) 为最短非零格向量，记 \(a=\lVert u\rVert\)。则存在 \(v\in\Lambda\)，使 \((u,v)\) 为 \(\Lambda\) 的格基，并且可以选取标准正交基 \((e_1,e_2)\)，使
+	\[
+		u=ae_1,\qquad v=tu+he_2,
+		\qquad |t|\le\frac12,\quad h>0,\quad\lVert v\rVert\ge a.
+	\]
+	特别地，\((u,v)\) 是约化格基。
+\end{lemma}
+\begin{proof}
+	先把 \(u\) 延成格基，再沿 \(u\) 减去整数倍来缩短投影。取 \(\Lambda\) 的任一格基 \((b_1,b_2)\)，写
+	\[
+		u=mb_1+nb_2,\qquad m,n\in\mathbb Z.
+	\]
+	因 \(u\ne0\)，两个整数不同时为零。若它们的正最大公因数 \(d\) 大于 \(1\)，则
+	\[
+		\frac ud=\frac md b_1+\frac nd b_2\in\Lambda\setminus\{0\},\qquad
+		\left\lVert\frac ud\right\rVert=\frac ad<a,
+	\]
+	与最短性矛盾。因此 \(\gcd(m,n)=1\)。这也证明 \(u\) 不能是另一格向量的绝对值大于 \(1\) 的整数倍；这样的非零格向量称为\term[benyuangexiangliang]{本原格向量}[primitive lattice vector]。
+
+	由整数的 Bézout 等式，互素条件给出 \(r,s\in\mathbb Z\)，使 \(rm+sn=1\)。令
+	\[
+		w=-sb_1+rb_2.
+	\]
+	从 \((b_1,b_2)\) 到 \((u,w)\) 的变换矩阵是
+	\[
+		\begin{pmatrix}m&-s\\n&r\end{pmatrix},\qquad mr+ns=1.
+	\]
+	它是整数幺模矩阵，所以\cref{g1:prop:lattice-basis-change}说明 \((u,w)\) 是同一格的格基。这一步解释了为什么最短向量不仅属于格，而且能够成为格基中的一个向量。
+
+	令 \(\alpha=\langle w,u\rangle/a^2\)，取整数 \(k=\lfloor\alpha+1/2\rfloor\)，并置 \(v=w-ku\)。于是
+	\[
+		t=\frac{\langle v,u\rangle}{a^2}=\alpha-k\in\left[-\frac12,\frac12\right).
+	\]
+	用 \(w-ku\) 替换 \(w\) 的换基矩阵仍为整数幺模矩阵，故 \((u,v)\) 仍生成整个格。又因 \(u,v\) 实线性无关，\(v-tu\ne0\) 且垂直于 \(u\)。取
+	\[
+		e_1=\frac ua,\qquad h=\lVert v-tu\rVert,\qquad
+		e_2=\frac{v-tu}{h},
+	\]
+	便得到所需表达，其中 \(h>0\)。最后，\(v\) 是非零格向量，\(u\) 的最短性给出 \(\lVert v\rVert\ge a\)。
+\end{proof}
+
+\begin{theorem}[二维格圆堆积的最优密度]
+	\label{g1:thm:planar-lattice-packing-optimum}
+	设 \(E\) 为二维实内积空间，\(\Lambda\subset E\) 为满格，\(a=\lambda_1(\Lambda)\) 为其最短非零向量的长度。则
+	\[
+		\operatorname{covol}(\Lambda)\ge\frac{\sqrt3}{2}a^2,\qquad
+		\delta(\Lambda)\le\frac{\pi}{2\sqrt3}.
+	\]
+	面积等号与密度等号等价；它们成立，当且仅当存在从标准 Euclid 平面到 \(E\) 的线性等距同构 \(Q\)，使
+	\[
+		\Lambda=aQ\Lambda_{\triangle},\qquad
+		\Lambda_{\triangle}
+		=\mathbb Z(1,0)+\mathbb Z\left(\frac12,\frac{\sqrt3}{2}\right).
+	\]
+	这里 \(\delta(\Lambda)\) 指以 \(\Lambda\) 为圆心集合、半径取允许的最大值 \(a/2\) 时的格堆积密度。
+\end{theorem}
+\begin{proof}
+	取\cref{g1:lem:planar-reduced-lattice-basis}给出的格基，写成 \(u=ae_1\)、\(v=tae_1+he_2\)。\(v\) 的长度不小于 \(a\)，而 \(|t|\le1/2\)，所以
+	\[
+		h^2=\lVert v\rVert^2-t^2a^2
+		\ge a^2-t^2a^2
+		\ge\frac34a^2.
+	\]
+	由 \(h>0\)，得到 \(h\ge\sqrt3a/2\)。\cref{g1:prop:lattice-fundamental-domain}的余体积公式用于格基 \((u,v)\)，给出
+	\[
+		\operatorname{covol}(\Lambda)=|\det(u,v)|=ah
+		\ge\frac{\sqrt3}{2}a^2.
+	\]
+	再把这一面积下界代入式\eqref{g1:eq:lattice-packing-density}的二维情形 \(\delta(\Lambda)=\pi a^2/(4\operatorname{covol}(\Lambda))\)，就得到密度上界。
+
+	面积达到下界，当且仅当上面的两个不等式同时取等号，即
+	\[
+		\lVert v\rVert=a,\qquad |t|=\frac12,
+		\qquad h=\frac{\sqrt3}{2}a.
+	\]
+	此时 \(u,v\) 的夹角是 \(\pi/3\) 或 \(2\pi/3\)。若 \(t=-1/2\)，用 \(v+u\) 替换 \(v\)，仍得到同一格的格基，而沿 \(e_1\) 的系数变成 \(a/2\)。因此可以取
+	\[
+		u=ae_1,\qquad v=a\left(\frac12e_1+\frac{\sqrt3}{2}e_2\right),
+	\]
+	这恰好给出定理中的 \(aQ\Lambda_{\triangle}\)。
+
+	反过来，在 \(a\Lambda_{\triangle}\) 中，整数系数为 \(m,n\) 的向量满足
+	\[
+		\left\lVert a\left(m+\frac n2,\frac{\sqrt3}{2}n\right)\right\rVert^2
+		=a^2(m^2+mn+n^2).
+	\]
+	当 \((m,n)\ne(0,0)\) 时，括号内既是正数又是整数，因而至少为 \(1\)；取 \((m,n)=(1,0)\) 又达到 \(1\)。故最短长度确为 \(a\)，余体积为 \(\sqrt3a^2/2\)，密度为 \(\pi/(2\sqrt3)\)。线性等距同构保持长度和面积，所以 \(aQ\Lambda_{\triangle}\) 同样达到两个等号。
+\end{proof}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixB-TriangularPacking}
+	\caption[三角格的相切圆与基本胞]{最短距离归一化为 \(1\) 的三角格。中央半径为 \(1/2\) 的圆与六个邻圆相切；阴影平行四边形由格基 \(u=(1,0)\)、\(v=(1/2,\sqrt3/2)\) 张成，面积为 \(\sqrt3/2\)。虚线标出高度 \(h=\sqrt3/2\)。}
+	\label{g1:fig:triangular-lattice-packing}
+\end{figure}
+
+\cref{g1:fig:triangular-lattice-packing}中的格称为\term[sanjiaoge]{三角格}[triangular lattice]；连接距离为最短长度的圆心，得到由正三角形组成的网格。证明中的面积估计说明，若保持最短距离不变，就不能把基本胞的高度压到 \(\sqrt3a/2\) 以下，因为那会产生比 \(u\) 更短的格向量。这里的最优性限于圆心构成满格的等圆堆积；任意等圆堆积的圆心未必有格基，上述论证没有给出这一更大范围的最优性证明。
+
+\subsection{高维格的密度算例与一般定理边界}
+\label{g1:subsec:B04:05}
+
+式\eqref{g1:eq:lattice-packing-density}把密度计算分成两个问题：最短非零向量有多长，一个基本区域有多大。增大前者容许使用较大的球，减小后者则使单位体积内的中心更多；两种变化往往彼此牵制。以下从整数格出发，先用一个奇偶条件删去过近的点，再在八维加入一个半整数陪集，具体观察这两项如何配合。记 \(e_1,\ldots,e_n\) 为 \(\mathbb R^n\) 的标准正交基。
+
+\begin{example}[标准整数格]
+	\label{g1:eg:zn-packing-density}
+	设 \(n\ge1\)。标准整数格 \(\mathbb Z^n\) 的格基是 \(e_1,\ldots,e_n\)，所以余体积为 \(1\)。非零整数向量的平方长度是正整数，最小值为 \(1\)，且恰由 \(\pm e_i\)、\(1\le i\le n\) 取到。因此
+	\[
+		\lambda_1(\mathbb Z^n)=1,\qquad
+		\delta(\mathbb Z^n)=\frac{\kappa_n}{2^n}.
+	\]
+	这里半径 \(1/2\) 的球与坐标轴方向的 \(2n\) 个相邻球相切。即使在高维，中心距离的计算也仍由这些最短向量控制。
+\end{example}
+
+整数格中长度为 \(1\) 的向量只有 \(\pm e_i\)。它们的坐标和都是奇数，所以若只保留坐标和为偶数的整数点，就能去掉这些最短向量，同时保持对加法与取负的封闭性。由此得到 \term[Dn-ge]{\(D_n\) 格}[\(D_n\) lattice]。
+
+\begin{proposition}[\(D_n\) 格的最短向量与密度]
+	\label{g1:prop:dn-packing-density}
+	设 \(n\ge3\)，并令
+	\[
+		D_n=\left\{z=(z_1,\ldots,z_n)\in\mathbb Z^n:
+		\sum_{i=1}^n z_i\in2\mathbb Z\right\}.
+	\]
+	则 \(D_n\) 是 \(\mathbb R^n\) 中余体积为 \(2\) 的格，最短向量恰为
+	\[
+		\pm e_i\pm e_j\qquad(1\le i<j\le n),
+	\]
+	其中两个符号可以独立选择。因此最短向量共有 \(2n(n-1)\) 个，且
+	\[
+		\lambda_1(D_n)=\sqrt2,\qquad
+		\delta(D_n)=\frac{\kappa_n}{2^{n/2+1}}.
+	\]
+\end{proposition}
+\begin{proof}
+	奇偶条件把整数点分成两个陪集，但还需计算相应基本区域的体积。为此取
+	\[
+		b_i=e_i-e_n\quad(1\le i\le n-1),\qquad b_n=2e_n.
+	\]
+	每个 \(b_i\) 的坐标和都是偶数，故其整数线性组合属于 \(D_n\)。反过来，对 \(z\in D_n\)，有
+	\begin{equation}
+		\label{g1:eq:dn-explicit-basis}
+		z=\sum_{i=1}^{n-1}z_i b_i+
+		\frac{\sum_{i=1}^n z_i}{2}\,b_n.
+	\end{equation}
+	最后一个系数由奇偶条件保证是整数。以这些向量为列的矩阵为
+	\[
+		B_n=
+		\begin{pmatrix}
+			I_{n-1}&0\\
+			-1\ \cdots\ -1&2
+		\end{pmatrix},\qquad \det B_n=2.
+	\]
+	所以它们既实线性无关，又整数生成全部 \(D_n\)，确为一组格基。由基本平行多面体的行列式公式，\(\operatorname{covol}(D_n)=2\)。
+
+	对非零 \(z\in D_n\)，\(\lVert z\rVert^2\) 是正整数。若它等于 \(1\)，则 \(z=\pm e_i\)，与坐标和为偶数矛盾。因此平方长度至少为 \(2\)。等号要求恰有两个非零坐标，且各为 \(1\) 或 \(-1\)；这些向量的坐标和确为偶数，全部属于 \(D_n\)。任选两个坐标再独立选择符号，共得到 \(4\binom n2=2n(n-1)\) 个向量。
+
+	允许的最大球半径是最短距离的一半，即 \(\sqrt2/2\)。代入式\eqref{g1:eq:lattice-packing-density}，得到
+	\[
+		\delta(D_n)
+		=\frac{\kappa_n(1/\sqrt2)^n}{2}
+		=\frac{\kappa_n}{2^{n/2+1}}.
+	\]
+\end{proof}
+
+这个删点操作把中心的数密度减半，却把球半径扩大为原来的 \(\sqrt2\) 倍。因此球体积扩大 \(2^{n/2}\) 倍，总密度变为原来的 \(2^{n/2-1}\) 倍；当 \(n\ge3\) 时，这个比值大于 \(1\)。密度增加的原因是这两个效应的比较，而不是格点变少本身。
+
+\ProseParagraphBreak
+
+八维还有一次不同的改进。令 \(h=(1/2,\ldots,1/2)\in\mathbb R^8\)，把 \(D_8\) 平移到每个坐标都为半整数的位置，再把两者合在一起。加入的新点能否保住最短距离，以及这个并集是否仍是格，都需要检查。
+
+\begin{proposition}[\(E_8\) 格的构造与密度]
+	\label{g1:prop:e8-packing-density}
+	在标准Euclid 空间 \(\mathbb R^8\) 中，令
+	\begin{equation}
+		\label{g1:eq:e8-two-cosets}
+		h=\left(\frac12,\ldots,\frac12\right),\qquad
+		E_8=D_8\cup(D_8+h).
+	\end{equation}
+	则 \(E_8\) 是余体积为 \(1\) 的格，最短向量长度为 \(\sqrt2\)。其最短向量由两类组成：
+	\begin{enumerate}
+		\item \(\pm e_i\pm e_j\)、\(1\le i<j\le8\)，共 \(112\) 个；
+		\item 各坐标均为 \(\pm1/2\)、且负号个数为偶数的向量，共 \(128\) 个。
+	\end{enumerate}
+	特别地，最短向量共有 \(240\) 个，而格球堆积密度为
+	\[
+		\delta(E_8)=\frac{\kappa_8}{16}=\frac{\pi^4}{384}.
+	\]
+\end{proposition}
+\begin{proof}
+	先检查格的结构。因为 \(2h=(1,\ldots,1)\in D_8\)，两点都来自 \(D_8+h\) 时，其和又落回 \(D_8\)；一整一半两类点相加仍在半整数类中。取负也保持这两类，所以这个并集是加法子群，且
+	\[
+		E_8=D_8+\mathbb Zh.
+	\]
+	以下给出格基，并直接计算余体积。
+
+	取式\eqref{g1:eq:dn-explicit-basis}中 \(D_8\) 的基，即 \(b_i=e_i-e_8\)、\(1\le i\le7\)，以及 \(b_8=2e_8\)。半整数向量满足
+	\[
+		h=\frac12(b_1+\cdots+b_7)+2b_8,
+		\qquad
+		b_7=2h-(b_1+\cdots+b_6)-4b_8.
+	\]
+	第二个等式表明
+	\[
+		c_1=b_1,\ldots,c_6=b_6,\quad c_7=h,\quad c_8=b_8
+	\]
+	整数生成了全部 \(D_8\) 和 \(h\)，因而生成 \(E_8\)。另一方面，行列式对第七列的线性性给出
+	\begin{align*}
+		\det[c_1,\ldots,c_8]
+		&=\det[b_1,\ldots,b_6,h,b_8]\\
+		&=\frac12\det[b_1,\ldots,b_6,b_7,b_8]
+		=1.
+	\end{align*}
+	展开中其余项都有重复的列，故为零。这八个向量因此实线性无关，确为格基，并且 \(\operatorname{covol}(E_8)=1\)。
+
+	接着逐类计算长度。整数类 \(D_8\) 的非零向量平方长度至少为 \(2\)，等号向量由\cref{g1:prop:dn-packing-density}给出，共 \(4\binom82=112\) 个。半整数类的每个坐标的绝对值至少为 \(1/2\)，所以其中每个向量 \(x\) 都满足
+	\[
+		\lVert x\rVert^2\ge8\left(\frac12\right)^2=2.
+	\]
+	等号成立当且仅当每个坐标都是 \(1/2\) 或 \(-1/2\)。把它写为 \(x=h+d\)，则相应的 \(d_i\) 分别是 \(0\) 或 \(-1\)；条件 \(d\in D_8\) 恰好要求负号个数为偶数。全部 \(2^8\) 种符号选择中，翻转第一坐标的符号给出偶数负号类与奇数负号类之间的双射，故满足要求的有 \(2^7=128\) 个。
+
+	于是 \(\lambda_1(E_8)=\sqrt2\)，最大球半径为 \(1/\sqrt2\)，且
+	\[
+		\delta(E_8)=\kappa_8(1/\sqrt2)^8=\frac{\kappa_8}{16}.
+	\]
+	由式\eqref{g1:eq:unit-ball-volume-recurrence}的单位球体积递推，\(\kappa_m=(2\pi/m)\kappa_{m-2}\)，从 \(\kappa_2=\pi\) 依次得到 \(\kappa_4=\pi^2/2\)、\(\kappa_6=\pi^3/6\)、\(\kappa_8=\pi^4/24\)，故 \(\delta(E_8)=\pi^4/384\)。
+\end{proof}
+
+式\eqref{g1:eq:e8-two-cosets}给出的格称为 \term[E8-ge]{\(E_8\) 格}[\(E_8\) lattice]。它保留了 \(D_8\) 的最短距离，却把余体积从 \(2\) 降为 \(1\)，所以密度恰好加倍。\cref{g1:tab:high-dimensional-lattice-density}把三个算例的计算结果放在一起；在八维，\(D_8\) 与 \(E_8\) 的密度分别为标准整数格的 \(8\) 倍与 \(16\) 倍。
+
+\begin{table}[htbp]
+	\centering
+	\caption{三个格的最短距离、余体积与球堆积密度}
+	\label{g1:tab:high-dimensional-lattice-density}
+	\begin{tabular}{cccc}
+		\toprule
+		格 \(\Lambda\)&\(\lambda_1(\Lambda)\)&\(\operatorname{covol}(\Lambda)\)&\(\delta(\Lambda)\)\\
+		\midrule
+		\(\mathbb Z^n\)（\(n\ge1\)）&\(1\)&\(1\)&\(\kappa_n/2^n\)\\
+		\(D_n\)（\(n\ge3\)）&\(\sqrt2\)&\(2\)&\(\kappa_n/2^{n/2+1}\)\\
+		\(E_8\)&\(\sqrt2\)&\(1\)&\(\pi^4/384\)\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+这些计算给出了具体堆积的密度。要证明某个格最优，还须对同一维数的任意格给出相同的密度上界；若允许中心集合不成格，则上界必须覆盖所有球堆积。最短向量的逐类枚举完成了候选构造的核验，后两种上界仍是另外的数学任务。
+
+\ProseParagraphBreak
+
+为了在同一个密度定义下陈述一般上界，先说明一个周期化方法。它允许我们从一个大窗口内的有限配置出发，留出足够间隔后重复这批球，得到密度相近的周期堆积。
+
+\begin{lemma}[周期上界与一般堆积]
+	\label{g1:lem:periodic-to-general-packing-bound}
+	固定 \(n\ge1\)、\(r>0\) 与 \(0\le D\le1\)。若 \(\mathbb R^n\) 中每个中心集为满格有限个平移之并的半径 \(r\) 球堆积，其密度都不超过 \(D\)，则任意半径 \(r\) 球堆积在\cref{g1:def:sphere-packing-upper-density}意义下的上密度都不超过 \(D\)。
+\end{lemma}
+\begin{proof}
+	给定任意这样的球堆积 \(\mathcal P\)，保留中心位于 \(Q_{R+r}\) 的全部球，设共有 \(N\) 个。它们包括所有与 \(Q_R\) 相交的球；中心间有正距离下界，所以 \(N\) 有限。令 \(L=2R+4r\)，把这些中心按格 \(L\mathbb Z^n\) 周期重复。同一副本内的球原本不重叠；不同副本的中心在至少一个坐标方向的距离不小于
+	\[
+		L-2(R+r)=2r,
+	\]
+	因而也不会在内部重叠。所有保留中心属于不同的模 \(L\mathbb Z^n\) 类，所以新周期堆积的密度为 \(N\kappa_n r^n/L^n\)。由假设它至多为 \(D\)，于是
+	\[
+		\frac{\operatorname{Vol}_n(\mathcal P\cap Q_R)}{(2R)^n}
+		\le\frac{N\kappa_n r^n}{(2R)^n}
+		\le D\left(1+\frac{2r}{R}\right)^n.
+	\]
+	当 \(N=0\) 时不等式也成立。令 \(R\to\infty\) 即得结论。
+\end{proof}
+
+\cref{g1:cor:periodic-packing-density}已经证明周期堆积在大球与大立方体窗口下具有同一密度。因此，即使文献用大球窗口表述上界，只要该结论覆盖全部周期堆积，就可通过前一引理用于本书的大立方体上密度。这个推导没有断言任意非周期堆积在两种窗口下的上密度逐个相同。
+
+\begin{theorem}[三维、八维与二十四维的等球堆积上界]
+	\label{g1:thm:sphere-packing-external-optima}
+	设 \(n\in\{3,8,24\}\)，\(r>0\)，\(C\subset\mathbb R^n\) 的不同点间距离至少为 \(2r\)，并令 \(\mathcal P=\bigcup_{c\in C}\overline B_r(c)\)。则
+	\[
+		\overline\delta(\mathcal P)\le
+		\begin{cases}
+			\pi/(3\sqrt2),&n=3,\\[2pt]
+			\pi^4/384,&n=8,\\[2pt]
+			\pi^{12}/12!,&n=24.
+		\end{cases}
+	\]
+	三个上界都可以达到；相应构造分别可取适当缩放的 \(D_3\) 格、\(E_8\) 格与 Leech 格。
+\end{theorem}
+
+这里的三个一般上界均为外部定理。三维结论是 Kepler 猜想的解答，见\cite[定理1.1，第1067页]{Hales2005Kepler}；该文第1.3--1.4节说明证明的逻辑组成与各技术部分的位置，并注明文中给出的是缩略证明。它约束任意等球堆积，远强于对某一个三维格计算最短向量和余体积。
+
+\ProseParagraphBreak
+
+八维上界见\cite[定理1，第992页；第2节、第5节]{Viazovska2017SpherePacking8}。该文第2节将所需上界归结为满足指定条件的辅助函数，第5节完成该函数的构造验证。二十四维结论见\cite[定理1.1，第1017--1018页；第4节及附录A]{CohnKumarMillerRadchenkoViazovska2017SpherePacking24}；其证明同样使用 Fourier 分析与特殊函数的不等式。这里不重建这些深层证明，而用\cref{g1:lem:periodic-to-general-packing-bound}明确它们如何给出本书定义下的上界。整体缩放保持占据体积比，故论文采用的单位球归一化适用于任意固定 \(r>0\)。
+
+\ProseParagraphBreak
+
+其中两个达到上界的构造可以直接与本节计算核对。由\cref{g1:prop:dn-packing-density}及 \(\kappa_3=4\pi/3\)，
+\[
+	\delta(D_3)=\frac{4\pi/3}{2^{5/2}}=\frac{\pi}{3\sqrt2},
+\]
+而\cref{g1:prop:e8-packing-density}已给出 \(\delta(E_8)=\pi^4/384\)。二十四维达到上界的 Leech 格及其存在性随所引定理使用，本节没有构造该格；不能把 \(E_8\) 的两陪集构造直接搬到二十四维就宣称得到同一对象。
+
+\ProseParagraphBreak
+
+一般最优密度与达到者的分类还要分开。上述上界并未在本节给出所有达到者的分类；两篇高维论文中的唯一性陈述限定在周期堆积内。更直观地，从一个最优格堆积中删去有限个球，所改变的占据体积有界，除以不断增大的窗口体积后趋于零，密度仍相同，配置却已经改变。因此不能仅由密度相等就断言任意堆积都逐点等于那个格模型，也不能由 \(D_n\) 的算例推断它在任意维数都是最优的。
+
+% B.4 增补结束
+
 \begin{chaptersummary}
-	格给欧氏空间增加了整数结构。换格基的行列式只能为 \(\pm1\)，因此基本区域的体积与格基选择无关。二维中，把凸格多边形分成不含额外格点的三角形，既能按面积相加，也能按内部点与边界点计数；两种计算相合便得到 Pick 公式。膨胀后的面积按平方增长，边界格点按一次增长，由此得到二维 Ehrhart 多项式。
+	格给Euclid 空间增加了整数结构。换格基的行列式只能为 \(\pm1\)，因此基本区域的体积与格基选择无关。二维中，把凸格多边形分成不含额外格点的三角形，既能按面积相加，也能按内部点与边界点计数；两种计算相合便得到 Pick 公式。膨胀后的面积按平方增长，边界格点按一次增长，由此得到二维 Ehrhart 多项式。
 
 	\ProseParagraphBreak
 
@@ -875,14 +1604,22 @@
 	\ProseParagraphBreak
 
 	对于非空紧凸集，支撑函数不仅记录包含关系，也精确记录 Hausdorff 距离。有限方向网配合统一半径界，可以控制没有采样的方向，从而为内外多面体逼近给出误差。数值表示是否可信，取决于是否附有可以核算的约束、权重和误差界，而不取决于图像是否平滑或输出了多少位小数。
+
+	\ProseParagraphBreak
+
+	离散 Euclid 等距群具有紧集相交有限的性质；Bieberbach 第一定理再用余紧性给出满秩平移格与有限点群。点群既保持长度又在格基下具有整数矩阵，这使二维旋转阶数限于 \(1,2,3,4,6\)。选取稳定子平凡的中心，轨道的距离比较产生紧的 Dirichlet 多胞形，其体积为平移格余体积除以点群阶数；滑移反射则说明有限商群不自动给出半直积分裂。
+
+	\ProseParagraphBreak
+
+	球堆积把最短距离与基本体积联系起来。周期胞积分说明跨边界的球仍恰好贡献一个球的体积，边界层估计再把局部计算变成整个空间的密度。二维约化格基的高度至少为最短距离的 \(\sqrt3/2\) 倍，由此得到三角格的最优密度 \(\pi/(2\sqrt3)\) 及等号分类。\(D_n\) 的奇偶条件与 \(E_8\) 的半整数陪集给出可直接计算的高维改进；三维、八维与二十四维任意等球堆积的统一上界则依靠所引外部定理，不能由这些算例独自推出。
 \end{chaptersummary}
 
 \BookExercises
-以下习题分别训练格基与计数、空球判定、退化分析和凸体误差估计。计算题中的每个数值都须连同适用条件解释，证书题则须同时给出所声称上下界的依据。
+以下习题分别训练格基与计数、空球判定、退化分析、凸体误差估计、晶体群与格堆积计算。计算题中的每个数值都须连同适用条件解释，证书题则须同时给出所声称上下界的依据；比较密度时，先说明所比较的是一族具体模型还是全部堆积。
 
 \begin{exercise}
 	\label{g1:ex:lattice-basis-cell}
-	在标准欧氏平面中，令 \(b_1=(2,0)\)、\(b_2=(1,1)\)，\(\Lambda=\mathbb Zb_1+\mathbb Zb_2\)。
+	在标准Euclid 平面中，令 \(b_1=(2,0)\)、\(b_2=(1,1)\)，\(\Lambda=\mathbb Zb_1+\mathbb Zb_2\)。
 	\begin{enumerate}
 		\item 给出整数点 \((x,y)\) 属于 \(\Lambda\) 的充要条件，并计算 \(\operatorname{covol}(\Lambda)\)。
 		\item 判断 \(c_1=(3,1)\)、\(c_2=(4,2)\) 是否构成同一格的格基。
@@ -951,7 +1688,7 @@
 	\[
 		(2t_1,t_2,t_0+t_1+t_2),\qquad 0\le t_0,t_1,t_2<1.
 	\]
-	若它是整数点，第二坐标迫使 \(t_2=0\)，第一坐标迫使 \(t_1=0\) 或 \(1/2\)。当 \(t_1=0\) 时，末坐标为整数迫使 \(t_0=0\)；当 \(t_1=1/2\) 时，末坐标为整数迫使 \(t_0=1/2\)。因此仅有格点 \((0,0,0)\)、\((1,0,1)\)，从而 \(h_0=1,h_1=1,h_2=0\)，得到
+	若这个点是整数点，则由第二坐标为整数可知 \(t_2=0\)，第一坐标迫使 \(t_1=0\) 或 \(1/2\)。当 \(t_1=0\) 时，末坐标为整数迫使 \(t_0=0\)；当 \(t_1=1/2\) 时，末坐标为整数迫使 \(t_0=1/2\)。因此仅有格点 \((0,0,0)\)、\((1,0,1)\)，从而 \(h_0=1,h_1=1,h_2=0\)，得到
 	\[
 		L_S(n)=\binom{n+2}{2}+\binom{n+1}{2}=(n+1)^2.
 	\]
@@ -993,7 +1730,7 @@
 \end{solution}
 
 \begin{exercise}\label{g1:ex:voronoi-interior-site}
-	在通常欧氏平面中取站点集 \(S=\{O,E,N,W,H\}\)，其中
+	在通常Euclid 平面中取站点集 \(S=\{O,E,N,W,H\}\)，其中
 	\[
 		O=(0,0),\quad E=(2,0),\quad N=(0,2),\quad W=(-2,0),\quad H=(0,-2).
 	\]
@@ -1039,7 +1776,7 @@
 		\le\sum_i\lambda_i\lVert v_i-p\rVert^2
 		\le\max_i\lVert v_i-p\rVert^2.
 	\]
-	第一个不等式可由展开平方直接得到，其差为 \(\sum_i\lambda_i\lVert v_i-x\rVert^2\ge0\)。故在每个 \(P_p\) 上都能到顶点取最大值；这有限个多胞形覆盖 \(K\)，结论成立。
+	第一个不等式可由展开平方直接得到，其差为 \(\sum_i\lambda_i\lVert v_i-x\rVert^2\ge0\)。故在每个 \(P_p\) 上，最大值都能在某个顶点处取得；这有限个多胞形覆盖 \(K\)，结论成立。
 
 	在给定三角形中，三个 Voronoi 胞为
 	\[
@@ -1088,7 +1825,7 @@
 \end{solution}
 
 \begin{exercise}\label{g1:ex:voronoi-similarity}
-	设 \(S\subset\mathbb R^d\) 为非空有限互异点集，\(f(x)=aUx+b\)，其中 \(a>0\)、\(U^{\mathsf T}U=I\)。证明 \(f\) 把 \(S\) 的 Voronoi 胞和 Delaunay 单元分别映为 \(f(S)\) 的对应胞与单元。这个结论能否把相似变换扩大为任意可逆仿射变换？用正方形顶点集及剪切 \(g(x,y)=(x+y/2,y)\) 说明。
+	设 \(S\subset\mathbb R^d\) 为非空有限互异点集，\(f(x)=aUx+b\)，其中 \(a>0\)、\(U^{\mathsf T}U=I\)。证明 \(f\) 把 \(S\) 的 Voronoi 胞和 Delaunay 单元分别映为 \(f(S)\) 的对应胞与单元。若把相似变换换成任意可逆仿射变换，这个结论是否仍然成立？用正方形顶点集及剪切 \(g(x,y)=(x+y/2,y)\) 说明。
 \end{exercise}
 \begin{solution}
 	正交性给出 \(\lVert f(x)-f(p)\rVert=a\lVert x-p\rVert\)。由于所有距离乘以同一正数，最短距离的大小顺序和等号都保持，故
@@ -1107,7 +1844,7 @@
 	\[
 		A'=(0,0),\quad B'=(1,0),\quad C'=(3/2,1),\quad D'=(1/2,1).
 	\]
-	圆 \(A'B'D'\) 的方程为 \(x^2+y^2-x-3y/4=0\)，\(C'\) 代入左边为 \(1>0\)，所以三角形 \(A'B'D'\) 有严格空圆。平行四边形关于中心的对称把它映为三角形 \(B'C'D'\)，并保持距离，所以后者也有严格空圆。两个三角形沿 \(B'D'\) 拼成整个平行四边形，构成其 Delaunay 剖分。原来的一个四边形单元因剪切变成两个三角形，故任意仿射变换并不保持这种欧氏构造。剪切保持直线和凸组合，却一般改变距离比较，这是结论失效的原因。
+	圆 \(A'B'D'\) 的方程为 \(x^2+y^2-x-3y/4=0\)，\(C'\) 代入左边为 \(1>0\)，所以三角形 \(A'B'D'\) 有严格空圆。平行四边形关于中心的对称把它映为三角形 \(B'C'D'\)，并保持距离，所以后者也有严格空圆。两个三角形沿 \(B'D'\) 拼成整个平行四边形，构成其 Delaunay 剖分。原来的一个四边形单元因剪切变成两个三角形，故任意仿射变换并不保持这种Euclid 构造。剪切保持直线和凸组合，却一般改变距离比较，这是结论失效的原因。
 \end{solution}
 
 \begin{exercise}\label{g1:ex:hausdorff-affine-stability}
@@ -1139,7 +1876,7 @@
 \end{solution}
 
 \begin{exercise}\label{g1:ex:perturbed-vertex-hulls}
-	给定两组点 \(v_1,\ldots,v_N\) 与 \(w_1,\ldots,w_N\) 在 \(\mathbb R^n\) 中，\(N\ge1\)。设 \(\varepsilon\ge0\)，且 \(\lVert v_j-w_j\rVert\le\varepsilon\) 对所有 \(j\) 成立。证明两个凸包的 Hausdorff 距离不超过 \(\varepsilon\)，并证明常数 \(1\) 不能普遍减小。若两组点的数目不相同，但每个第一组点到某个第二组点的距离不超过 \(\varepsilon\)，反向也成立，结论是否仍然成立？最后说明两个凸包的距离为零，并不保证给定编号下的对应点相同。
+	给定 \(\mathbb R^n\) 中的两组点 \(v_1,\ldots,v_N\) 与 \(w_1,\ldots,w_N\)，其中 \(N\ge1\)。设 \(\varepsilon\ge0\)，且 \(\lVert v_j-w_j\rVert\le\varepsilon\) 对所有 \(j\) 成立。证明两个凸包的 Hausdorff 距离不超过 \(\varepsilon\)，并证明常数 \(1\) 不能普遍减小。若两组点的数目不相同，但每个第一组点到某个第二组点的距离不超过 \(\varepsilon\)，反向也成立，结论是否仍然成立？最后说明两个凸包的距离为零，并不保证给定编号下的对应点相同。
 \end{exercise}
 \begin{solution}
 	记两个凸包为 \(K,L\)。对任意 \(x=\sum_j\lambda_jv_j\in K\)，其中 \(\lambda_j\ge0\)、\(\sum_j\lambda_j=1\)，取 \(y=\sum_j\lambda_jw_j\in L\)。三角不等式给出
@@ -1147,7 +1884,7 @@
 		\lVert x-y\rVert
 		\le\sum_j\lambda_j\lVert v_j-w_j\rVert\le\varepsilon.
 	\]
-	所以 \(K\subseteq L+\varepsilon\mathbb B\)，反向包含完全相同，由式\eqref{g1:eq:hausdorff-inclusions}得到结论。取各只有一个点的两组数据 \(v_1=0\)、\(w_1=\varepsilon e_1\)，其中 \(\varepsilon>0\)，两凸包的距离恰为 \(\varepsilon\)，因此不能减小常数。
+	所以 \(K\subseteq L+\varepsilon\mathbb B\)，反向包含同理可得，由式\eqref{g1:eq:hausdorff-inclusions}得到结论。取各只有一个点的两组数据 \(v_1=0\)、\(w_1=\varepsilon e_1\)，其中 \(\varepsilon>0\)，两凸包的距离恰为 \(\varepsilon\)，因此不能减小常数。
 
 	数目不相同的情形也成立。对第一组的每个点 \(v_j\)，选一个距它不超过 \(\varepsilon\) 的第二组点 \(w_{k(j)}\)。使用同一凸组合系数，\(\sum_j\lambda_jw_{k(j)}\) 仍在第二组的凸包中，即使其中有重复点也没有影响。于是得到一个方向的包含；反向重新选择邻近点，再得到另一个方向。
 
@@ -1207,7 +1944,7 @@
 		c_\delta\lVert x\rVert\le\langle u_i,x\rangle
 		\le s_i\le h_K(u_i)+\tau\le R+\tau.
 	\]
-	因此 \(P_\tau\) 有界，也是闭凸集。令 \(M=(R+\tau)/c_\delta\)。对其外于 \(K\) 的一点 \(x\)，取到 \(K\) 的最近点所给的单位方向 \(v\)，再取邻近的 \(u_i\)，有
+	因此 \(P_\tau\) 有界，也是闭凸集。令 \(M=(R+\tau)/c_\delta\)。对该集合中不属于 \(K\) 的一点 \(x\)，取到 \(K\) 的最近点所给的单位方向 \(v\)，再取邻近的 \(u_i\)，有
 	\begin{align*}
 		d(x,K)
 		&=\langle v,x\rangle-h_K(v)\\
@@ -1230,3 +1967,277 @@
 	这个修正使用的是误差的已证上界；仅凭最后几位小数看起来稳定，不能据此断言这些不等式。
 \end{solution}
 
+
+\begin{exercise}
+	\label{g1:ex:irrational-screw-periodicity}
+	设 \(R_\theta\) 是平面绕原点旋转角 \(\theta\) 的矩阵，且 \(\theta/(2\pi)\notin\mathbb Q\)。在 \(\mathbb R^3=\mathbb R^2\times\mathbb R\) 上定义
+	\[
+		g(u,z)=(R_\theta u,z+1),\qquad \Gamma=\langle g\rangle.
+	\]
+	证明 \(\Gamma\) 是离散子群，其线性像无限，平移子群只有单位元。再证明它的作用不余紧，指出 Bieberbach 第一定理的哪一个假设在此失效。
+\end{exercise}
+\begin{solution}
+	对每个 \(m\in\mathbb Z\)，都有 \(g^m(u,z)=(R_{m\theta}u,z+m)\)。非单位元素的末坐标位移是非零整数，故不存在趋于单位元的非单位元素序列，\(\Gamma\) 离散。
+
+	若 \(R_{m\theta}=R_{k\theta}\)，则 \((m-k)\theta\in2\pi\mathbb Z\)。无理性迫使 \(m=k\)，因此线性像含有无穷多个不同元素。特别地，\(g^m\) 的线性部分为恒等，当且仅当 \(m=0\)，故 \(T_\Gamma=\{\mathrm{id}\}\)，\(\Lambda_\Gamma=\{0\}\)。这也给出一个直接例子：离散等距群投影到紧群 \(O(3)\) 后，像可以无限。
+
+	对任意紧集 \(K\subset\mathbb R^3\)，函数 \((u,z)\mapsto\lVert u\rVert\) 在 \(K\) 上有上界 \(M\)。此函数在 \(\Gamma\) 作用下不变，所以 \(\Gamma K\) 仍包含在圆柱 \(\{(u,z):\lVert u\rVert\le M\}\) 内，不能覆盖 \(\mathbb R^3\)。因而作用不余紧；失效的是 Bieberbach 第一定理的余紧假设。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:translated-halfturn-group}
+	在 \(\mathbb R^2\) 中取 \(c=(1/4,0)\)，令 \(h(x)=-x+2c\)，并令 \(\Gamma\) 由全部整数格平移 \(\tau_v\)、\(v\in\mathbb Z^2\) 与 \(h\) 生成。
+	\begin{enumerate}
+		\item 求群元素的唯一表示，证明 \(\Gamma\) 为晶体群，并求其平移格与平移子群的指数。
+		\item 求出所有具有非平凡稳定子的点，并写出这些稳定子。
+		\item 把原点移到 \(c\)，即使用坐标 \(u=x-c\)。求各生成元的新表达式，并说明这次坐标改变是否改变平移向量。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	(1) 由 \(h^2=\mathrm{id}\) 与 \(h\tau_vh^{-1}=\tau_{-v}\)，每个群元素都可写成 \(\tau_v\) 或 \(\tau_vh\)，其中 \(v\in\mathbb Z^2\)。两类的线性部分分别为 \(I\) 和 \(-I\)，故不可能相等；每一类中的平移参数又唯一确定 \(v\)。作用公式分别为
+	\[
+		x\longmapsto x+v,\qquad x\longmapsto -x+v+2c.
+	\]
+	线性部分只有两种，且第一类中非单位平移的长度至少为 \(1\)，所以单位元在 \(\Gamma\) 中孤立。整数格平移已使 \([0,1]^2\) 的像覆盖平面，故作用余紧。线性部分为恒等的恰好是第一类，因此 \(\Lambda_\Gamma=\mathbb Z^2\)，\([\Gamma:T_\Gamma]=2\)。
+
+	(2) 非零平移没有固定点。元素 \(\tau_vh\) 固定 \(x\) 当且仅当
+	\[
+		x=-x+v+2c,\qquad\text{即}\qquad x=c+\frac v2.
+	\]
+	因此所求点集为 \(c+\tfrac12\mathbb Z^2\)。对其中每个点 \(x=c+v/2\)，整数向量 \(v\) 已唯一确定，其稳定子恰为 \(\{\mathrm{id},\tau_vh\}\)；其他点的稳定子只有单位元。
+
+	(3) 新坐标下，\(h\) 变为
+	\[
+		u\longmapsto h(u+c)-c=-u,
+	\]
+	而 \(\tau_v\) 变为 \(u\mapsto\tau_v(u+c)-c=u+v\)。所以半转的平移部分消失，纯平移的向量则保持不变。一般地，变换 \(x\mapsto Qx+a\) 在此坐标下变为 \(u\mapsto Qu+a+(Q-I)c\)；当 \(Q=I\) 时，附加项为零。这说明改变原点可以改变某个运动的仿射表达，却不改变同一坐标轴方向下的平移格。
+\end{solution}
+
+
+\begin{exercise}
+	\label{g1:ex:triangular-point-group-matrices}
+	取 \(b_1=(1,0)\)、\(b_2=(1/2,\sqrt3/2)\) 生成的三角格。令 \(R\) 为逆时针 \(\pi/3\) 旋转，\(S(x,y)=(x,-y)\)。
+	\begin{enumerate}
+		\item 求格基的 Gram 矩阵 \(G\) 及 \(R,S\) 在此格基下的矩阵，核对它们保持 \(G\)。
+		\item 求 \(P=\langle R,S\rangle\) 的阶。对由此格的平移及 \(R,S\) 生成的晶体群，求以稳定子平凡的点为中心的 Dirichlet 区域面积。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	(1) 两基向量长度均为 \(1\)，内积为 \(1/2\)，所以
+	\[
+		G=\begin{pmatrix}1&1/2\\1/2&1\end{pmatrix}.
+	\]
+	由 \(Rb_1=b_2\)、\(Rb_2=b_2-b_1\) 及 \(Sb_1=b_1\)、\(Sb_2=b_1-b_2\)，得到
+	\[
+		M_R=\begin{pmatrix}0&-1\\1&1\end{pmatrix},\qquad
+		M_S=\begin{pmatrix}1&1\\0&-1\end{pmatrix}.
+	\]
+	它们的行列式分别为 \(1\)、\(-1\)，直接相乘可得 \(M_R^{\mathsf T}GM_R=M_S^{\mathsf T}GM_S=G\)。例如 \(GM_R=\left(\begin{smallmatrix}1/2&-1/2\\1&1/2\end{smallmatrix}\right)\)，再左乘 \(M_R^{\mathsf T}\) 即恢复 \(G\)。两矩阵在标准坐标内积下都不是正交矩阵；这里保持的是格基对应的 \(G\)。
+
+	(2) \(R\) 的阶为 \(6\)，而 \(S^2=I\)、\(SRS=R^{-1}\)。故群内每个元素都可写成 \(R^k\) 或 \(SR^k\)，\(0\le k<6\)。同一类的六个元素不同，两类又由行列式的正负区分，所以 \(|P|=12\)。全部群元素是 \(x\mapsto Qx+v\)、\(Q\in P\)、\(v\in\Lambda_{\triangle}\)，线性部分为恒等的恰是原格平移，故平移格未增大。其余体积为 \(\sqrt3/2\)，由\cref{g1:cor:crystallographic-cell-volume}，所求面积为 \((\sqrt3/2)/12=\sqrt3/24\)。稳定子平凡的中心不能直接换成原点。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:rectangular-lattice-point-group}
+	设 \(0<a\le b\)，\(\Lambda=\mathbb Z(a,0)+\mathbb Z(0,b)\)。求所有满足 \(Q\Lambda=\Lambda\) 的 \(Q\in O(2)\)，区分 \(a<b\) 与 \(a=b\)。再说明幺模矩阵 \(M=\left(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\right)\) 在此格基下给出的格自同构为何不属于上述正交群。
+\end{exercise}
+\begin{solution}
+	若 \(a<b\)，最短非零向量只有 \(\pm(a,0)\)：有非零第二坐标的格向量长度至少为 \(b\)，而横轴上的最短长度为 \(a\)。因此每个保持格的正交变换都保持横轴；它也保持垂直的纵轴，故只能为 \(\operatorname{diag}(\varepsilon_1,\varepsilon_2)\)，其中 \(\varepsilon_i\in\{1,-1\}\)。这四个变换确实保持格，给出 \(D_2\)。
+
+	若 \(a=b\)，最短向量是 \(\pm(a,0),\pm(0,a)\)。正交变换可以把第一标准基向量送到任一坐标轴单位向量，再把第二个送到与之垂直的两个选择之一，因此得到八个带符号的置换矩阵。它们全部保持格，形成 \(D_4\)。
+
+	最后，\(M\) 把第二个格基向量 \((0,b)\) 送到 \((a,b)\)。长度由 \(b\) 变成 \(\sqrt{a^2+b^2}>b\)，所以它不是 Euclid 正交变换，虽然它和它的逆都有整数系数并保持格。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:periodic-nonlattice-packing}
+	在平面中令 \(a=(1/3,1/3)\)，\(C=\mathbb Z^2\cup(a+\mathbb Z^2)\)。
+	\begin{enumerate}
+		\item 求以 \(C\) 为圆心集合时，等圆堆积所允许的最大半径及相应密度。
+		\item 证明 \(C\) 是周期集合，却不是某个格的平移。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	(1) 同一陪集内两个不同圆心的距离至少为 \(1\)。不同陪集的圆心差具有形式 \((m+1/3,n+1/3)\)，其中 \(m,n\in\mathbb Z\)。每个坐标的绝对值至少为 \(1/3\)，且 \(m=n=0\) 时同时达到，所以跨陪集的最短距离为 \(\sqrt2/3\)。全体圆心的最短距离就是 \(\sqrt2/3\)，最大允许半径为 \(r=\sqrt2/6\)。以 \(\mathbb Z^2\) 为周期格，一个周期胞有两个不同的中心类，故\cref{g1:cor:periodic-packing-density}给出
+	\[
+		\delta=\frac{2\pi r^2}{1}=\frac\pi9.
+	\]
+	球可以跨越所选基本正方形的边界；周期密度公式已经把这些跨界部分正确计入。
+
+	(2) \(C+v=C\) 对每个 \(v\in\mathbb Z^2\) 成立，所以 \(C\) 是周期集合。若 \(C=c+\Lambda\) 是某个格的平移，由 \(0\in C\) 得 \(c\in\Lambda\)，从而 \(C=\Lambda\) 必是加法子群。但 \(a\in C\)，而 \(2a=(2/3,2/3)\) 既不在 \(\mathbb Z^2\) 中，也不在 \(a+\mathbb Z^2\) 中，矛盾。因此周期性比圆心本身构成格更一般。
+\end{solution}
+
+
+\begin{exercise}
+	\label{g1:ex:fixed-area-lattice-families}
+	固定实数 \(A>0\)。在标准 Euclid 平面中考虑矩形格族与斜格族
+	\[
+		\Lambda_r=\mathbb Z(r,0)+\mathbb Z\left(0,\frac Ar\right),\qquad r>0,
+	\]
+	\[
+		\Sigma_t=\mathbb Z(\sqrt A,0)+\mathbb Z(t\sqrt A,\sqrt A),\qquad
+		-\frac12\le t\le\frac12.
+	\]
+	\begin{enumerate}
+		\item 求两族格的余体积和最短向量长度，并计算相应最大半径圆的格堆积密度。
+		\item 求矩形格族中的最大密度与达到条件。保持面积的上述斜切是否必然增加密度？将两族的密度与二维格最优密度比较。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	(1) 两组生成向量分别组成行列式为 \(A\) 的实基，所以两族格的余体积都为 \(A\)。\(\Lambda_r\) 中整数系数为 \(m,n\) 的向量具有平方长度
+	\[
+		m^2r^2+n^2\frac{A^2}{r^2}.
+	\]
+	当 \((m,n)\ne(0,0)\) 时，至少一项不为零，故长度至少为 \(\min(r,A/r)\)；两组坐标轴上的生成向量使这个下界达到。因此
+	\[
+		\lambda_1(\Lambda_r)=\min\left(r,\frac Ar\right),\qquad
+		\delta(\Lambda_r)=\frac{\pi}{4A}\min\left(r^2,\frac{A^2}{r^2}\right).
+	\]
+	这里密度公式使用每个格所允许的最大半径 \(\lambda_1/2\)。
+
+	\(\Sigma_t\) 的一般格向量为 \(\sqrt A(m+nt,n)\)。若 \(n\ne0\)，其长度至少为 \(\sqrt A|n|\ge\sqrt A\)；若 \(n=0\) 而 \(m\ne0\)，其长度也至少为 \(\sqrt A\)。向量 \((\sqrt A,0)\) 达到这个长度，所以对所有给定的 \(t\)，都有
+	\[
+		\lambda_1(\Sigma_t)=\sqrt A,\qquad \delta(\Sigma_t)=\frac\pi4.
+	\]
+
+	(2) 两个正数 \(r^2/A\) 与 \(A/r^2\) 的乘积为 \(1\)，故它们的最小值不超过 \(1\)，等号当且仅当二者都为 \(1\)。因此矩形格族的最大密度为 \(\pi/4\)，恰在 \(r=\sqrt A\)、即正方格时达到。斜格族 \(\Sigma_t\) 从正方格出发保持面积作斜切，却始终保持同样的最短距离和密度；斜切不会必然增加密度。最后，\(\sqrt3<2\) 给出
+	\[
+		\delta(\Lambda_r)\le\frac\pi4
+		=\delta(\Sigma_t)<\frac{\pi}{2\sqrt3}.
+	\]
+	所以这两族都没有达到所有平面满格中的最优密度；固定面积本身并不足以决定密度。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:planar-lattice-contact-count}
+	设 \(\Lambda\) 为标准 Euclid 平面中的满格，\(a=\lambda_1(\Lambda)\)。在每个格点放置半径为 \(a/2\) 的闭圆盘，把与原点圆盘相切的其他圆盘数目记为 \(N(\Lambda)\)。
+	\begin{enumerate}
+		\item 证明 \(N(\Lambda)\) 只能取 \(2,4,6\)，且三种数值都能出现。
+		\item 证明 \(N(\Lambda)=6\) 当且仅当 \(\Lambda\) 与三角格相似。只知道 \(N(\Lambda)=4\)，能否断定 \(\Lambda\) 与正方格相似？给出证明或反例。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	(1) 两个半径为 \(a/2\) 的圆盘相切，当且仅当圆心距离为 \(a\)。所以 \(N(\Lambda)\) 正是长度为 \(a\) 的格向量数目。有界集只含有限格点，故这些向量有限；最短向量存在，且每个向量的相反向量也在其中，因此数目是至少为 \(2\) 的偶数。
+
+	若 \(u,v\) 是两个不同的最短向量，则 \(u-v\in\Lambda\setminus\{0\}\)，从而 \(\lVert u-v\rVert\ge a\)。令 \(\theta\in[0,\pi]\) 为二者的较小夹角，余弦公式给出
+	\[
+		a^2\le\lVert u-v\rVert^2=2a^2(1-\cos\theta),\qquad
+		\theta\ge\frac\pi3.
+	\]
+	把所有最短向量按方向角循环排列。相邻方向的圆周角距至少为 \(\pi/3\)，这些角距之和为 \(2\pi\)，故至多有六个方向。因此 \(N(\Lambda)\in\{2,4,6\}\)。格 \(\mathbb Z(1,0)+\mathbb Z(0,2)\) 的最短向量只有 \(\pm(1,0)\)，正方格 \(\mathbb Z^2\) 的最短向量为两个标准基向量及其相反向量；它们分别实现 \(2\) 和 \(4\)。三角格中的 \(\pm u,\pm v,\pm(v-u)\) 都有最短长度，因而实现 \(6\)。
+
+	(2) 若恰有六个最短向量，上述六个圆周角距都必须等于 \(\pi/3\)。取两个相邻向量 \(u,v\)，它们长度都为 \(a\)，夹角为 \(\pi/3\)，所以
+	\[
+		|\det(u,v)|=\frac{\sqrt3}{2}a^2.
+	\]
+	还需证明它们生成整个格。取 \(\Lambda\) 的任一格基矩阵 \(B\)，把 \(u,v\) 的整数坐标组成矩阵 \(M\)，则 \((u,v)=BM\)，其中 \(M\) 是非奇异整数矩阵。因此
+	\[
+		\frac{\sqrt3}{2}a^2=|\det M|\operatorname{covol}(\Lambda),\qquad
+		|\det M|\ge1.
+	\]
+	而\cref{g1:thm:planar-lattice-packing-optimum}给出 \(\operatorname{covol}(\Lambda)\ge\sqrt3a^2/2\)，所以只能有 \(|\det M|=1\)。由\cref{g1:prop:lattice-basis-change}，\(u,v\) 确为格基，格便与三角格相似。反过来，相似变换保持最短向量的数目，而三角格恰有六个，故逆向结论也成立。
+
+	四个接触邻圆不能判定正方格。例如取
+	\[
+		u=(1,0),\qquad v=\left(\frac13,\frac{2\sqrt2}{3}\right),\qquad
+		\Lambda=\mathbb Zu+\mathbb Zv.
+	\]
+	两个基向量长度都为 \(1\)。对 \(mu+nv\)，若 \(|n|\ge2\)，其纵坐标的绝对值至少为 \(4\sqrt2/3>1\)；若 \(n=0\)，长度为 \(|m|\)。若 \(n=1\)，则平方长度为 \((m+1/3)^2+8/9\)，仅在 \(m=0\) 时达到最小值 \(1\)；\(n=-1\) 的情形由取相反向量得到。因此最短向量恰为 \(\pm u,\pm v\)，有四个，但 \(\langle u,v\rangle=1/3\ne0\)。正方格的四个最短向量除相反者外两两正交，相似变换保持这个夹角关系，故该格不与正方格相似。
+\end{solution}
+
+
+\begin{exercise}
+	\label{g1:ex:dn-dual-packing}
+	设 \(n\ge3\)，\(D_n=\{z\in\mathbb Z^n:\sum_i z_i\in2\mathbb Z\}\)。定义它的对偶格为
+	\[
+		D_n^*=\{y\in\mathbb R^n:\langle y,z\rangle\in\mathbb Z
+		\text{ 对每个 }z\in D_n\}.
+	\]
+	\begin{enumerate}
+		\item 证明 \(D_n^*=\mathbb Z^n\cup(\mathbb Z^n+h_n)\)，其中 \(h_n=(1/2,\ldots,1/2)\)。给出一组显式格基，并计算余体积。
+		\item 求最短向量的长度与个数，并计算 \(\delta(D_n^*)\)。须区分 \(n=3\)、\(n=4\) 与 \(n\ge5\) 的情形。
+		\item 比较 \(D_3\) 与 \(D_3^*\) 的堆积密度，判断取对偶格是否必然保持或增加密度。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	(1) 由\cref{g1:prop:dn-packing-density}的证明，\(D_n\) 有格基 \(b_i=e_i-e_n\)、\(1\le i\le n-1\)，以及 \(b_n=2e_n\)。内积对整数线性组合是线性的，所以 \(y\in D_n^*\) 当且仅当
+	\[
+		y_i-y_n\in\mathbb Z\quad(1\le i\le n-1),\qquad
+		2y_n\in\mathbb Z.
+	\]
+	后一个条件把 \(y_n\) 限为整数或半整数，前一组条件则要求其余坐标具有相同的小数部分。于是全部坐标同为整数，或同为 \(1/2\) 加整数，这正是所求的两个陪集。
+
+	向量 \(e_1,\ldots,e_{n-1},h_n\) 都属于这个集合，而且
+	\[
+		e_n=2h_n-\sum_{i=1}^{n-1}e_i.
+	\]
+	所以它们生成全部 \(\mathbb Z^n\) 及 \(h_n\)，进而生成 \(D_n^*\)。其基矩阵的最后一行为 \((0,\ldots,0,1/2)\)，左上角为 \(I_{n-1}\)，故行列式为 \(1/2\)。因此它们实线性无关，是一组格基，\(\operatorname{covol}(D_n^*)=1/2\)。
+
+	(2) 整数类的非零向量最小长度为 \(1\)，恰由 \(\pm e_i\) 取到。半整数类的平方长度至少为 \(n/4\)，等号恰由各坐标为 \(\pm1/2\) 的 \(2^n\) 个向量取到。这里没有坐标和的奇偶限制，故所有符号选择都可用。因此
+	\[
+		\lambda_1(D_n^*)=\min\left\{1,\frac{\sqrt n}{2}\right\}.
+	\]
+	当 \(n=3\) 时，半整数类的长度更小，故最短长度为 \(\sqrt3/2\)，有 \(8\) 个最短向量。当 \(n=4\) 时，两类的最小长度都为 \(1\)，最短向量共 \(8+16=24\) 个。当 \(n\ge5\) 时，半整数类的长度严格大于 \(1\)，故最短向量只有 \(2n\) 个。
+
+	由密度公式与余体积 \(1/2\)，得到
+	\[
+		\delta(D_n^*)=
+		\begin{cases}
+			2\kappa_3(\sqrt3/4)^3=\pi\sqrt3/8,&n=3,\\[2pt]
+			\kappa_n/2^{n-1},&n\ge4,
+		\end{cases}
+	\]
+	其中使用 \(\kappa_3=4\pi/3\)。在 \(n=4\) 时，这也给出 \(\delta(D_4^*)=\pi^2/16\)。
+
+	(3) \(D_3\) 的密度为 \(\kappa_3/2^{5/2}=\pi/(3\sqrt2)\)，而
+	\[
+		\frac{\delta(D_3^*)}{\delta(D_3)}
+		=\frac{3\sqrt6}{8}<1,
+	\]
+	最后的不等式可由 \(54<64\) 得到。因此取对偶格既不必保持密度，也不必增加密度。对偶条件控制的是内积的整性；长度和余体积如何共同进入密度，仍须另作计算。
+\end{solution}
+
+\begin{exercise}
+	\label{g1:ex:e8-balanced-stretch}
+	设 \(E_8\subset\mathbb R^8\) 由式\eqref{g1:eq:e8-two-cosets}给出。对 \(t>0\)，令
+	\[
+		A_t=\operatorname{diag}(t,t^{-1},1,\ldots,1),\qquad
+		\Lambda_t=A_tE_8,\qquad a=\min\{t,t^{-1}\}.
+	\]
+	\begin{enumerate}
+		\item 证明 \(\operatorname{covol}(\Lambda_t)=1\)，并证明精确公式
+		\[
+			\lambda_1(\Lambda_t)^2=\min\{4a^2,1+a^2\}.
+		\]
+		\item 求 \(\delta(\Lambda_t)\)，以及控制最短距离的两类整数向量发生切换时的 \(t\) 值。证明当 \(t\ne1\) 时，\(\delta(\Lambda_t)<\delta(E_8)\)。
+		\item 上一问是否已经证明 \(E_8\) 在所有八维格中密度最大？说明量词上的差别。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	(1) 将 \(E_8\) 的一组格基的每个向量都乘以可逆矩阵 \(A_t\)，得到 \(\Lambda_t\) 的一组格基。因 \(\det A_t=1\)，其基矩阵的行列式绝对值仍为 \(1\)，故余体积保持不变。
+
+	\(A_t\) 在前两个坐标上的伸缩因子一个为 \(a\)，另一个为 \(a^{-1}\)，其余六个为 \(1\)，且 \(0<a\le1\)。先考虑整数类 \(D_8\) 中的非零向量。若它只有一个非零坐标，坐标和为偶数迫使该坐标的绝对值至少为 \(2\)，故变换后的平方长度至少为 \(4a^2\)；在伸缩因子为 \(a\) 的坐标方向取 \(2e_i\) 可达到这个值。若它至少有两个非零坐标，每个非零坐标的绝对值至少为 \(1\)，而两个最小的伸缩因子的平方之和为 \(a^2+1\)，故平方长度至少为 \(a^2+1\)。在因子为 \(a\) 的坐标方向与任一不变的坐标方向上各取一个 \(1\)，便得到 \(D_8\) 中达到此值的向量。因此整数类中的最小平方长度为 \(\min\{4a^2,1+a^2\}\)。
+
+	再考虑半整数类。每个坐标的绝对值至少为 \(1/2\)，所以变换后的平方长度至少为
+	\[
+		\frac{a^2+a^{-2}+6}{4}\ge2.
+	\]
+	最后一步使用 \(a^2+a^{-2}\ge2\)。而整数类已给出的最小值不超过 \(1+a^2\le2\)，故半整数类不会产生更小的长度。这就证明了所求公式。
+
+	(2) 密度公式给出
+	\[
+		\delta(\Lambda_t)
+		=\frac{\kappa_8}{2^8}
+		\bigl(\min\{4a^2,1+a^2\}\bigr)^4.
+	\]
+	两项相等当且仅当 \(4a^2=1+a^2\)，即 \(a=1/\sqrt3\)，对应 \(t=1/\sqrt3\) 或 \(t=\sqrt3\)。在 \(0<a<1/\sqrt3\) 时，单坐标向量控制最短距离；在 \(1/\sqrt3<a\le1\) 时，两个非零坐标的向量达到整数类的最短距离。切换点两类都达到最小值；\(t=1\) 时半整数类也达到同一长度。
+
+	若 \(t\ne1\)，则 \(a<1\)，因而
+	\[
+		\lambda_1(\Lambda_t)^2\le1+a^2<2
+		=\lambda_1(E_8)^2.
+	\]
+	余体积相同，故 \(\delta(\Lambda_t)<\delta(E_8)\)。
+
+	(3) 本题只比较了由指定的一族矩阵 \(A_t\) 得到的格，即一个实参数的伸缩族。所有八维格并未被这一族穷尽；例如一般格的基向量还可以发生剪切和其他形变。即使证明每个 \(t>0\) 都给不出更大密度，也未给出任意八维格的统一上界，所以尚未完成所有格中的最优性证明。
+\end{solution}

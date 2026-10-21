@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 2.3 细分与切除的证明
-% 纲要位置：几何学计划纲要.md，第 1050 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 纲要位置：几何学计划纲要.md，第 1100 行。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,489 @@
 \section{细分与切除的证明}
 \label{g2:sec:0203}
 
-待撰写
+设一个空间由两个开集覆盖。一个奇异单形可能同时穿过两个开集，因而不能直接把任意奇异链拆成分别位于两边的链。我们需要先把单形分小，并证明分小前后的链代表同一个同调类。关键操作都发生在标准单形内：目标空间不必具有距离，也不需要预先给出剖分。
+
+\ProseParagraphBreak
+
+细分后的边界必须与边界的细分一致；细分与原链之间还须有一个不离开原单形像的链同伦。这两个条件把几何上的分割变成可以通过商复形的代数操作。本节始终使用整数系数，边界取交错符号 \(\partial\sigma=\sum_i(-1)^i\sigma\delta_i\)，链同伦取“终映射减始映射”等于 \(\partial T+T\partial\) 的约定。细分、切除和 Mayer--Vietoris 序列的相关构造可参阅 \cite[第2.1节，Exact Sequences and Excision；第2.2节，Mayer--Vietoris Sequences]{Hatcher2002}。
 
 \subsection{重心细分及细分链算子}
 \label{g2:subsec:0203:01}
-待撰写
+
+先考察欧氏空间中的一个单形。把三角形的边各分成两段，再把这些小边接到三角形的重心，就得到六个小三角形。高维情形也按同一办法归纳：先细分每个边界面，再向整个单形的重心作锥。
+
+\begin{definition}[重心细分]\label{g2:def:barycentric-subdivision}
+	设 \(K=[v_0,\ldots,v_n]\) 是欧氏空间中由仿射无关顶点张成的闭 \(n\) 单形。对任意非空面 \(F=[v_{i_0},\ldots,v_{i_r}]\)，记
+	\[
+		b_F=\frac{v_{i_0}+\cdots+v_{i_r}}{r+1}
+	\]
+	为其重心。以所有严格递增的面链
+	\[
+		F_0\subsetneq F_1\subsetneq\cdots\subsetneq F_k\subset K
+	\]
+	对应的单形 \([b_{F_0},\ldots,b_{F_k}]\) 为各维单形，得到 \(K\) 的\term[zhongxin xifen]{重心细分}[barycentric subdivision]。零维单形保持不变；当 \(n\ge1\) 时，其最高维单形也可由已细分的边界面与 \(b_K\) 作锥得到。
+\end{definition}
+
+这一构造在公共面上相容，因为某个面的重心及其面链只由该面决定。它确实覆盖原单形：从重心出发的每条射线在边界上恰有一个终点，而边界已由归纳得到的小单形覆盖。不同锥的交集是其底面交集向同一重心所作的锥，因此仍沿公共面相交。这也说明递归描述与面链描述一致。
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[scale=1.05, line join=round]
+		\coordinate (v0) at (0,0);
+		\coordinate (v1) at (4,0);
+		\coordinate (v2) at (1.2,2.7);
+		\coordinate (m01) at (2,0);
+		\coordinate (m02) at (.6,1.35);
+		\coordinate (m12) at (2.6,1.35);
+		\coordinate (b) at ({5.2/3},.9);
+		\draw[thick] (v0)--(v1)--(v2)--cycle;
+		\draw (b)--(v0) (b)--(v1) (b)--(v2)
+			(b)--(m01) (b)--(m02) (b)--(m12);
+		\foreach \p in {v0,v1,v2,m01,m02,m12,b}
+			\fill (\p) circle (1.3pt);
+		\node[below left] at (v0) {\(v_0\)};
+		\node[below right] at (v1) {\(v_1\)};
+		\node[above] at (v2) {\(v_2\)};
+		\node[below] at (m01) {\(b_{01}\)};
+		\node[left] at (m02) {\(b_{02}\)};
+		\node[right] at (m12) {\(b_{12}\)};
+		\node[below left] at (b) {\(b\)};
+	\end{tikzpicture}
+	\caption{三角形的重心细分。\(b_{ij}\) 是边 \([v_i,v_j]\) 的中点，\(b\) 是三角形的重心。}
+	\label{g2:fig:barycentric-triangle}
+\end{figure}
+
+几何分割还没有指定链上的符号。为处理符号，在欧氏空间的凸集 \(K\) 中，把仿射映射
+\[
+	[w_0,\ldots,w_q]:\Delta^q\longrightarrow K,\qquad
+	(t_0,\ldots,t_q)\longmapsto\sum_{i=0}^q t_iw_i
+\]
+看作奇异单形，允许顶点重复或仿射相关。由这些映射生成的奇异链子群记为 \(L_q(K)\)。这里的方括号表示一个具体的参数化映射，不能随意交换顶点再添一个符号。另置 \(L_{-1}(K)=\mathbb Z\)，并令 \(\partial[w]=1\)，得到增广复形。
+
+\begin{lemma}[仿射链的锥算子]\label{g2:lem:affine-cone-identity}
+	设 \(K\) 是欧氏空间中的非空凸集，\(b\in K\)，\(L_*(K)\) 是由仿射奇异单形生成的整数增广链复形，满足 \(L_{-1}(K)=\mathbb Z\)、\(\partial[w]=1\)。定义
+	\[
+		c_b[w_0,\ldots,w_q]=[b,w_0,\ldots,w_q]\quad(q\ge0),
+		\qquad c_b(1)=[b].
+	\]
+	所得 \(c_b\) 称为以 \(b\) 为顶点的\term[zhui suanzi]{锥算子}[cone operator]。对所有 \(q\ge-1\)，都有
+	\[
+		\partial c_b+c_b\partial=\operatorname{id}
+	\]
+	（\(-1\) 次以下的群和映射取零）。若链的各顶点属于凸子集 \(K_0\subset K\) 且 \(b\in K_0\)，其锥链也完全位于 \(K_0\)。
+\end{lemma}
+\begin{proof}
+	当 \(q\ge0\) 时，锥单形删去第一个顶点给出原单形，其余面上的符号比原边界多一个负号。因此
+	\[
+		\partial[b,w_0,\ldots,w_q]
+		=[w_0,\ldots,w_q]
+		-\sum_{i=0}^q(-1)^i[b,w_0,\ldots,\widehat w_i,\ldots,w_q].
+	\]
+	这就是所需公式；对 \(q=0\)，它读作 \(\partial[b,w]=[w]-[b]\)。在次数 \(-1\)，则有 \(\partial c_b(1)=1\)。最后一项来自凸性：所有锥单形的像都是所列顶点的凸组合。
+\end{proof}
+
+现在递归定义仿射链上的算子 \(S\)。在次数 \(-1\) 令 \(S(1)=1\)；对仿射 \(q\) 单形 \(\lambda=[w_0,\ldots,w_q]\)，令 \(b_\lambda=(w_0+\cdots+w_q)/(q+1)\)，并置
+\begin{equation}\label{g2:eq:affine-subdivision-recursion}
+	S\lambda=c_{b_\lambda}\bigl(S(\partial\lambda)\bigr).
+\end{equation}
+右边只用到了低一次的 \(S\)，所以定义没有循环。次数零时 \(S[w]=[w]\)。对线段，若 \(m=(w_0+w_1)/2\)，便有
+\[
+	S[w_0,w_1]=[m,w_1]-[m,w_0].
+\]
+第二项的负号使它在几何上沿 \(w_0\) 到 \(m\) 的方向贡献边界；在自由奇异链群中，不能把 \(-[m,w_0]\) 直接当成与 \([w_0,m]\) 相同的生成元。用参数化单形和递归符号，正好避免这类混淆。
+
+\begin{proposition}[重心细分链算子]\label{g2:prop:subdivision-chain-map}
+	设 \(X\) 为拓扑空间，\(C_*(X;\mathbb Z)\) 为整数奇异链复形。令 \(\iota_n:\Delta^n\to\Delta^n\) 为恒等仿射单形，\(S\) 为\eqref{g2:eq:affine-subdivision-recursion}定义的仿射细分算子。对每个奇异单形 \(\sigma:\Delta^n\to X\)，定义
+	\[
+		\operatorname{sd}_X(\sigma)=\sigma_\#(S\iota_n),
+	\]
+	再按整数线性延拓。则 \(\operatorname{sd}_X\) 是链映射。对任意连续映射 \(f:X\to Y\)，有
+	\[
+		\partial\operatorname{sd}_X=\operatorname{sd}_X\partial,
+		\qquad
+		f_\#\operatorname{sd}_X=\operatorname{sd}_Yf_\#.
+	\]
+	细分 \(\operatorname{sd}_X\sigma\) 中的每个单形都因子分解为 \(\sigma\) 与 \(\Delta^n\) 内一个仿射单形的复合，像因而包含在 \(\sigma(\Delta^n)\) 中。对增广复形，补充 \(\operatorname{sd}_{-1}=\operatorname{id}_{\mathbb Z}\)，上述结论仍成立。
+\end{proposition}
+\begin{proof}
+	先在仿射链上按维数证明 \(\partial S=S\partial\)。次数零及增广次数的结论直接成立。若低维结论已成立，锥公式给出
+	\[
+		\partial S\lambda
+		=S\partial\lambda-c_{b_\lambda}\partial S\partial\lambda
+		=S\partial\lambda-c_{b_\lambda}S\partial^2\lambda
+		=S\partial\lambda.
+	\]
+	同时，仿射映射 \(h:K\to K'\) 保持重心，并满足 \(h_\#c_b=c_{h(b)}h_\#\)。对递归式归纳，得到 \(h_\#S=Sh_\#\)，包括 \(h\) 不单射的情形。
+
+	记 \(\delta_i:\Delta^{n-1}\to\Delta^n\) 为删去第 \(i\) 个顶点的面映射。利用刚证明的仿射自然性，
+	\[
+		\begin{aligned}
+			\partial\operatorname{sd}_X\sigma
+			&=\sigma_\#S(\partial\iota_n)\\
+			&=\sum_{i=0}^n(-1)^i
+				\sigma_\#(\delta_i)_\#S\iota_{n-1}\\
+			&=\sum_{i=0}^n(-1)^i
+				\operatorname{sd}_X(\sigma\delta_i)
+			=\operatorname{sd}_X\partial\sigma.
+		\end{aligned}
+	\]
+	次数零时可直接检查增广相容性。对任意连续 \(f\)，两种次序都把 \(\sigma\) 送到 \((f\sigma)_\#S\iota_n\)，故有第二个等式。递归中的锥顶和各边界面都留在原凸单形内，因此也有像的包含关系。
+\end{proof}
+
+下面的估计说明反复细分确实能把单形分得任意小。估计只涉及标准单形内的欧氏距离，不向 \(X\) 添加度量条件。
+
+\begin{lemma}[细分的直径估计]\label{g2:lem:subdivision-mesh}
+	设 \(K\) 为欧氏空间中的闭 \(n\) 单形，\(n\ge1\)，以 \(\operatorname{diam}K\) 表示其直径。一次重心细分所得的每个单形 \(L\) 都满足
+	\[
+		\operatorname{diam}L\le\frac{n}{n+1}\operatorname{diam}K.
+	\]
+	细分 \(r\) 次后，每个小单形的直径至多为
+	\[
+		\left(\frac{n}{n+1}\right)^r\operatorname{diam}K.
+	\]
+\end{lemma}
+\begin{proof}
+	凸包的直径等于其顶点之间距离的最大值：若 \(x=\sum_i a_iv_i\)、\(y=\sum_j b_jv_j\) 是两组凸组合，则
+	\[
+		\|x-y\|
+		=\left\|\sum_{i,j}a_ib_j(v_i-v_j)\right\|
+		\le\max_{i,j}\|v_i-v_j\|.
+	\]
+	一个细分单形的任意两个顶点分别为嵌套面 \(F\subsetneq G\) 的重心。若两面的顶点数分别为 \(p<q\)，把 \(G\) 中不属于 \(F\) 的顶点的平均值记作 \(b_{G\setminus F}\)，则
+	\[
+		b_G=\frac pq b_F+\frac{q-p}{q}b_{G\setminus F}.
+	\]
+	两端的重心都属于 \(K\)，而 \(1\le p<q\le n+1\)，所以
+	\[
+		\|b_G-b_F\|
+		\le\frac{q-p}{q}\operatorname{diam}K
+		\le\frac{n}{n+1}\operatorname{diam}K.
+	\]
+	结合顶点判据即得一次细分的估计。继续对各小单形应用同一估计；若某个面的维数小于 \(n\)，其收缩因子只会更小。逐次相乘便得第二式。
+\end{proof}
 
 \subsection{细分与恒等映射的链同伦}
 \label{g2:subsec:0203:02}
-待撰写
+
+细分改变了链的表达式。要证明它不改变同调，不能只说“分割前后还是同一块区域”，而要写出差链的填充。先在标准单形里构造这个填充，再沿奇异单形推到任意空间。
+
+\begin{proposition}[细分与恒等的链同伦]\label{g2:prop:subdivision-chain-homotopy}
+	设 \(X\) 为拓扑空间，\(\operatorname{sd}_X:C_*(X;\mathbb Z)\to C_*(X;\mathbb Z)\) 为重心细分链映射。存在同态
+	\[
+		T_{X,n}:C_n(X;\mathbb Z)\longrightarrow C_{n+1}(X;\mathbb Z)
+		\quad(n\ge0),
+	\]
+	使
+	\begin{equation}\label{g2:eq:subdivision-chain-homotopy}
+		\operatorname{sd}_X-\operatorname{id}
+		=\partial T_X+T_X\partial.
+	\end{equation}
+	可以同时使 \(T_X\sigma\) 中每个单形的像都包含在 \(\sigma(\Delta^n)\) 内，并使任意连续映射 \(f:X\to Y\) 满足 \(f_\#T_X=T_Yf_\#\)。对增广复形，取 \(T_{X,-1}=0\)，同一公式成立。
+\end{proposition}
+\begin{proof}
+	先在凸集的仿射增广链上作归纳。设 \(R_{-1}=0\)，低于 \(n\) 次的 \(R\) 已经满足 \(S-\operatorname{id}=\partial R+R\partial\)。对仿射 \(n\) 单形 \(\lambda=[w_0,\ldots,w_n]\)，令
+	\[
+		u_\lambda=S\lambda-\lambda-R(\partial\lambda),
+		\qquad
+		R\lambda=c_{b_\lambda}u_\lambda,
+		\qquad
+		b_\lambda=\frac{w_0+\cdots+w_n}{n+1}.
+	\]
+	这个定义的思路是：低维面上的同伦已经给出，先减去它对边界的贡献，使余下的链成为圈，再向重心作锥填充。确实，由低维链同伦式和 \(\partial^2=0\)，
+	\[
+		\partial u_\lambda
+		=S\partial\lambda-\partial\lambda-\partial R\partial\lambda
+		=S\partial\lambda-\partial\lambda
+			-(S-\operatorname{id})\partial\lambda
+		=0.
+	\]
+	锥公式于是给出
+	\[
+		\partial R\lambda
+		=\partial c_{b_\lambda}u_\lambda=u_\lambda
+		=S\lambda-\lambda-R\partial\lambda.
+	\]
+	归纳从次数零开始；此时 \(S\lambda=\lambda\)，故 \(u_\lambda=0\)、\(R\lambda=0\)。所有构造均位于 \(\lambda\) 的顶点凸包中。仿射映射保持 \(S\)、锥算子和重心，对上述递归归纳可得 \(R\) 的仿射自然性。
+
+	对奇异单形 \(\sigma:\Delta^n\to X\)，定义
+	\[
+		T_X\sigma=\sigma_\#(R\iota_n).
+	\]
+	由于 \(R\) 与每个面映射 \(\delta_i\) 相容，
+	\[
+		\partial T_X\sigma+T_X\partial\sigma
+		=\sigma_\#(\partial R\iota_n+R\partial\iota_n)
+		=\sigma_\#(S\iota_n-\iota_n)
+		=\operatorname{sd}_X\sigma-\sigma.
+	\]
+	任意连续映射的自然性由复合立即得到；像的包含关系则来自 \(R\iota_n\) 全部位于 \(\Delta^n\)。在次数 \(-1\)，等式两边均为零。
+\end{proof}
+
+以后在空间明确时简记 \(\operatorname{sd}_X\) 为 \(\operatorname{sd}\)、\(T_X\) 为 \(T\)。对固定的整数 \(r\ge0\)，令
+\begin{equation}\label{g2:eq:iterated-subdivision-homotopy}
+	D_r=\sum_{j=0}^{r-1}T\operatorname{sd}^{\,j},
+	\qquad D_0=0.
+\end{equation}
+利用细分与边界交换，逐项相消得到
+\[
+	\partial D_r+D_r\partial
+	=\sum_{j=0}^{r-1}(\operatorname{sd}-\operatorname{id})
+		\operatorname{sd}^{\,j}
+	=\operatorname{sd}^{\,r}-\operatorname{id}.
+\]
+因此每个固定次数的细分都诱导恒等同调映射。更要紧的是，若原单形的像位于某个子空间 \(B\subset X\)，则 \(\operatorname{sd}^{\,r}\sigma\) 和 \(D_r\sigma\) 的每一项仍位于 \(B\)。对相对链和开覆盖，这一性质保证同伦不会破坏已经满足的条件。
 
 \subsection{从开覆盖得到小链复形}
 \label{g2:subsec:0203:03}
-待撰写
+
+对于任意拓扑空间，“小”可以用覆盖来表达：只要求每个单形的像位于某一个指定集合内，不要求所有单形共同位于同一个集合。为了同时处理切除中的非开子空间，允许覆盖成员本身不是开集，但要求它们的内部仍覆盖全空间。
+
+\begin{definition}[小链复形]\label{g2:def:small-chain-complex}
+	设 \(X\) 为拓扑空间，\(\mathcal U=\{U_\lambda\}_{\lambda\in\Lambda}\) 是一族子空间，满足
+	\[
+		X=\bigcup_{\lambda\in\Lambda}\operatorname{int}_XU_\lambda.
+	\]
+	以所有满足 \(\sigma(\Delta^n)\subset U_\lambda\)（对某个 \(\lambda\)）的奇异 \(n\) 单形为自由生成元，得到整数奇异链子群
+	\[
+		C_n^{\mathcal U}(X)\subset C_n(X;\mathbb Z).
+	\]
+	这些群与通常的边界组成\term[xiaolian fuxing]{小链复形}[small chain complex]。对任意子空间 \(A\subset X\)，置
+	\[
+		C_*^{\mathcal U}(A)
+		=C_*^{\mathcal U}(X)\cap C_*(A;\mathbb Z),\qquad
+		C_*^{\mathcal U}(X,A)
+		=C_*^{\mathcal U}(X)/C_*^{\mathcal U}(A).
+	\]
+	其中奇异链通过包含映射视为 \(X\) 中的链。增广小链复形在次数 \(-1\) 取 \(\mathbb Z\)，零次边界仍为系数和。
+\end{definition}
+
+单形的每个面都留在其原像内，所以小链确实对边界封闭。同理，\(\operatorname{sd}\)、\(T\) 和 \(D_r\) 都保持小链；若一条链同时位于 \(A\)，这些操作还保持 \(C_*^{\mathcal U}(A)\)。这里对 \(A\) 没有开闭性要求。
+
+\begin{lemma}[有限链可细分为小链]\label{g2:lem:finite-chain-small}
+	设 \(X\) 为拓扑空间，\(\mathcal U=\{U_\lambda\}\) 满足 \(X=\bigcup_\lambda\operatorname{int}_XU_\lambda\)。给定有限条整数奇异链 \(c_1,\ldots,c_s\)，它们可以具有不同次数，则存在整数 \(r\ge0\)，使每条 \(\operatorname{sd}^{\,r}c_i\) 都属于相应次数的小链群 \(C_*^{\mathcal U}(X)\)。
+\end{lemma}
+\begin{proof}
+	先取一个奇异单形 \(\sigma:\Delta^n\to X\)。集合 \(\sigma^{-1}(\operatorname{int}_XU_\lambda)\) 是紧度量空间 \(\Delta^n\) 的开覆盖，因此有 Lebesgue 数 \(\varepsilon>0\)：直径小于 \(\varepsilon\) 的任意子集都包含在某一个覆盖成员中。
+
+	这个紧性结论可直接得到。对每个 \(x\in\Delta^n\)，取 \(\rho_x>0\)，使相对球 \(B(x,2\rho_x)\) 包含在某个覆盖成员中。由紧性选出有限个 \(B(x_j,\rho_{x_j})\) 覆盖 \(\Delta^n\)，并取 \(\varepsilon=\min_j\rho_{x_j}\)。若非空集合 \(E\) 的直径小于 \(\varepsilon\)，选 \(y\in E\) 和含 \(y\) 的 \(B(x_j,\rho_{x_j})\)，则 \(E\subset B(x_j,2\rho_{x_j})\)，从而得到所需结论。
+
+	当 \(n\ge1\) 时，\cref{g2:lem:subdivision-mesh}说明足够多次细分后，每个小单形的直径都小于 \(\varepsilon\)。其在 \(\sigma\) 下的像于是位于某个 \(U_\lambda\)；当 \(n=0\) 时，点本来已经小。每条奇异链只含有限多个单形，因此对给定的全部 \(c_i\)，可以取这些单形所需细分次数的最大值。继续细分小链仍为小链，所以这个最大值对所有 \(c_i\) 同时有效。
+\end{proof}
+
+\begin{theorem}[小链包含诱导同调同构]\label{g2:thm:small-chain-isomorphism}
+	设 \(X\) 为拓扑空间，\(A\subset X\) 为任意子空间，\(\mathcal U=\{U_\lambda\}\) 满足 \(X=\bigcup_\lambda\operatorname{int}_XU_\lambda\)。对整数系数及每个 \(n\ge0\)，包含链映射分别诱导同构
+	\[
+		H_n\bigl(C_*^{\mathcal U}(X)\bigr)\xrightarrow{\ \cong\ }H_n(X;\mathbb Z),
+		\qquad
+		H_n\bigl(C_*^{\mathcal U}(X,A)\bigr)\xrightarrow{\ \cong\ }H_n(X,A;\mathbb Z).
+	\]
+	若在次数 \(-1\) 增广为 \(\mathbb Z\)，则增广小链复形到增广奇异链复形的包含在所有整数次数上也诱导同构。
+\end{theorem}
+\begin{proof}
+	先说明绝对情形。设 \(z\in C_n(X;\mathbb Z)\) 为圈。选 \(r\) 使 \(\operatorname{sd}^{\,r}z\) 为小链；它仍是圈，而且
+	\[
+		\operatorname{sd}^{\,r}z-z=\partial D_rz
+	\]
+	说明它与 \(z\) 同调，故包含诱导满射。
+
+	若小圈 \(z\in C_n^{\mathcal U}(X)\) 在整个奇异复形中为边界，写作 \(z=\partial b\)。另选 \(r\) 使 \(\operatorname{sd}^{\,r}b\) 为小链。因 \(D_r\) 保持小链，
+	\[
+		z=\operatorname{sd}^{\,r}z-\partial D_rz
+		=\partial\bigl(\operatorname{sd}^{\,r}b-D_rz\bigr)
+	\]
+	已经是小链复形中的边界。于是包含也诱导单射。满射和单射的证明各自选择所需的细分次数，没有要求同一个次数对全部奇异单形有效。
+
+	相对情形需要同时保留落在 \(A\) 中的边界。若 \(c\in C_n(X;\mathbb Z)\) 满足 \(\partial c\in C_{n-1}(A;\mathbb Z)\)，取 \(r\) 使 \(\operatorname{sd}^{\,r}c\) 小。其边界在 \(C_*^{\mathcal U}(A)\) 中；由
+	\[
+		\operatorname{sd}^{\,r}c-c=\partial D_rc+D_r\partial c
+	\]
+	且 \(D_r\partial c\) 位于 \(A\)，它仍代表同一个相对同调类。这证明相对满射性。
+
+	再设 \(z\in C_n^{\mathcal U}(X)\)、\(\partial z\in C_{n-1}^{\mathcal U}(A)\)，并且其相对类在 \(H_n(X,A;\mathbb Z)\) 中为零。于是可写
+	\[
+		z=\partial b+a,\qquad
+		b\in C_{n+1}(X;\mathbb Z),\quad a\in C_n(A;\mathbb Z).
+	\]
+	取 \(r\) 使 \(\operatorname{sd}^{\,r}b\) 和 \(\operatorname{sd}^{\,r}a\) 都小，则
+	\[
+		z=\partial\bigl(\operatorname{sd}^{\,r}b-D_rz\bigr)
+			+\bigl(\operatorname{sd}^{\,r}a-D_r\partial z\bigr).
+	\]
+	第一个括号是 \(X\) 中的小链，第二个括号是 \(A\) 中的小链，所以 \(z\) 已是相对小链复形中的边界。次数零时，普通复形中的 \(\partial c\)、\(\partial z\) 都取零，同一证明成立。
+
+	增广情形仍有 \(\operatorname{sd}-\operatorname{id}=\partial T+T\partial\)，且 \(T_{-1}=0\)，所以上述绝对论证适用于零次增广圈。次数 \(-1\) 的链群和增广像在包含下完全相同：全部零单形本来就是小单形。更低次数的群均为零。
+\end{proof}
+
+一个空间可能含有在给定覆盖之间来回穿行任意多次的奇异单形，所以不能从“每条有限链都有足够细分次数”推断“存在一个对所有链统一有效的次数”。以上证明只在处理一个同调类或一条边界时作有限选择；包含映射本身是固定的，所得同调同构不依赖这些辅助选择。
 
 \subsection{切除定理与闭包条件}
 \label{g2:subsec:0203:04}
-待撰写
+
+在相对链复形 \(C_*(X,A)\) 中，位于 \(A\) 内的链已经被置零。若准备删去的部分被 \(A\) 的内部充分包住，那么细分后凡是接触该部分的小单形，都可以分配到 \(A\) 一侧。其余小单形留在补空间中，从而给出切除。
+
+\begin{theorem}[奇异同调的切除定理]\label{g2:thm:singular-excision}
+	设 \(X\) 为拓扑空间，\(Z\subset A\subset X\) 为子空间，且
+	\[
+		\overline Z^{\,X}\subset\operatorname{int}_X A.
+	\]
+	这里的闭包和内部均在 \(X\) 中取；不要求 \(A\) 或 \(Z\) 为开集或闭集。则包含映射
+	\[
+		(X\setminus Z,A\setminus Z)\longrightarrow(X,A)
+	\]
+	对每个 \(n\ge0\) 诱导整数同调同构
+	\[
+		H_n(X\setminus Z,A\setminus Z;\mathbb Z)
+		\xrightarrow{\ \cong\ }H_n(X,A;\mathbb Z).
+	\]
+	等价地，若子空间 \(A,B\subset X\) 满足
+	\(X=\operatorname{int}_X A\cup\operatorname{int}_X B\)，
+	则包含 \((B,A\cap B)\to(X,A)\) 在所有整数奇异同调群上诱导同构。
+\end{theorem}
+\begin{proof}
+	取 \(B=X\setminus Z\)。一般子集也满足
+	\[
+		\operatorname{int}_X B=X\setminus\overline Z^{\,X},
+	\]
+	所以闭包条件恰好等价于两个内部覆盖 \(X\)。同时 \(A\cap B=A\setminus Z\)。这说明两种表述等价，只需证明后一种。
+
+	对覆盖族 \(\mathcal U=\{A,B\}\)，小链复形就是
+	\[
+		D_*=C_*(A;\mathbb Z)+C_*(B;\mathbb Z)\subset C_*(X;\mathbb Z).
+	\]
+	每条位于 \(A\) 的链都小，故相对小链复形为 \(D_*/C_*(A;\mathbb Z)\)。由\cref{g2:thm:small-chain-isomorphism}，包含
+	\[
+		D_*/C_*(A;\mathbb Z)\longrightarrow
+		C_*(X;\mathbb Z)/C_*(A;\mathbb Z)
+	\]
+	诱导同调同构。
+
+	另一方面，包含 \(C_*(B;\mathbb Z)\to D_*\) 诱导链同构
+	\[
+		\frac{C_*(B;\mathbb Z)}{C_*(A\cap B;\mathbb Z)}
+		\xrightarrow{\ \cong\ }
+		\frac{D_*}{C_*(A;\mathbb Z)}.
+	\]
+	为核对这一点，把所有链视为 \(X\) 中奇异单形的有限整数组合。左边到右边满射，因为右边每条链都可写成 \(a+b\)，其中 \(a\) 的类为零。一个 \(B\) 中的链在右边为零，当且仅当它也属于 \(C_*(A;\mathbb Z)\)；自由基的唯一性说明
+	\[
+		C_n(A;\mathbb Z)\cap C_n(B;\mathbb Z)
+		=C_n(A\cap B;\mathbb Z).
+	\]
+	这正是所需的核。各同态都由包含诱导并与边界交换，因此把这两个映射复合，得到的就是定理中的空间对包含所诱导的同态。
+\end{proof}
+
+闭包条件保证在 \(A\) 内删去 \(Z\) 时，删去部分与 \(X\setminus A\) 之间仍有开覆盖可以分开。仅有 \(Z\subset\operatorname{int}_X A\) 不足以替代它。
+
+\begin{example}[缺少闭包条件时的切除失败]\label{g2:exm:excision-closure-failure}
+	在通常拓扑的 \(X=[0,1]\) 中，取 \(A=(0,1]\)、\(Z=(0,1)\)。虽然 \(Z\subset\operatorname{int}_X A\)，但 \(\overline Z^{\,X}=[0,1]\) 不包含在 \(\operatorname{int}_X A=(0,1]\) 中。\(A\) 与 \(X\) 都道路连通，故\cref{g2:prop:homology-point-components}给出 \(H_0(A;\mathbb Z)\to H_0(X;\mathbb Z)\) 为同构，再由\cref{g2:thm:pair-LES}的末端得到 \(H_0(X,A;\mathbb Z)=0\)。而
+	\[
+		X\setminus Z=\{0,1\},\qquad A\setminus Z=\{1\},
+	\]
+	所以
+	\[
+		H_0(X\setminus Z,A\setminus Z;\mathbb Z)
+		=\mathbb Z^2/\mathbb Z(0,1)\cong\mathbb Z.
+	\]
+	删去的区间逼近了不属于 \(A\) 的端点 \(0\)，切除前后的相对零维同调因而不同。
+\end{example}
 
 \subsection{Mayer–Vietoris 序列的导出}
 \label{g2:subsec:0203:05}
-待撰写
+
+若 \(X=U\cup V\) 是开覆盖，小链可以拆成 \(U\) 中的链与 \(V\) 中的链。拆法的差异恰好来自交集中的链；而一个整体圈拆开后，两个部分未必仍是圈，它们在交集中的边界正是连接同态要记录的内容。
+
+\begin{theorem}[Mayer--Vietoris 序列]\label{g2:thm:mayer-vietoris}
+	设 \(X\) 为拓扑空间，\(U,V\subset X\) 为开子空间且 \(X=U\cup V\)，允许其中的空间为空。记 \(W=U\cap V\)，并以
+	\[
+		i:W\hookrightarrow U,\quad j:W\hookrightarrow V,\quad
+		k:U\hookrightarrow X,\quad l:V\hookrightarrow X
+	\]
+	表示包含映射。使用整数奇异同调，存在自然的长正合列
+	\[
+		\begin{aligned}
+			\cdots&\longrightarrow H_n(W)
+			\xrightarrow{(i_*,-j_*)}H_n(U)\oplus H_n(V)
+			\xrightarrow{k_*+l_*}H_n(X)\\
+			&\xrightarrow{\delta}H_{n-1}(W)
+			\longrightarrow\cdots\longrightarrow H_0(W)
+			\xrightarrow{(i_*,-j_*)}H_0(U)\oplus H_0(V)
+			\xrightarrow{k_*+l_*}H_0(X)\longrightarrow0.
+		\end{aligned}
+	\]
+	这一长正合列称为该覆盖的\term[Mayer--Vietoris xulie]{Mayer--Vietoris 序列}[Mayer--Vietoris sequence]。对 \(n\ge1\)，先把 \([z]\in H_n(X)\) 选成相对于 \(\{U,V\}\) 的小圈，再写 \(z=a+b\)，其中 \(a\in C_n(U;\mathbb Z)\)、\(b\in C_n(V;\mathbb Z)\)，则连接同态为
+	\begin{equation}\label{g2:eq:mayer-vietoris-connecting}
+		\delta[z]=[\partial a]=[-\partial b]\in H_{n-1}(W;\mathbb Z).
+	\end{equation}
+	将全部同调群替换为增广复形定义的约化同调群，便得到对所有整数次数成立的约化长正合列；其中
+	\(\widetilde H_{-1}(Y;\mathbb Z)=0\) 对非空 \(Y\) 成立，而
+	\(\widetilde H_{-1}(\varnothing;\mathbb Z)=\mathbb Z\)。
+	在约化序列的次数零，公式中的 \(\partial a\) 指增广 \(\varepsilon(a)\in\mathbb Z\)。
+\end{theorem}
+\begin{proof}
+	令 \(D_*=C_*^{\{U,V\}}(X)=C_*(U;\mathbb Z)+C_*(V;\mathbb Z)\)。构造短正合链复形列
+	\begin{equation}\label{g2:eq:mayer-vietoris-short-exact}
+		0\longrightarrow C_*(W;\mathbb Z)
+		\xrightarrow{\ \alpha\ }
+		C_*(U;\mathbb Z)\oplus C_*(V;\mathbb Z)
+		\xrightarrow{\ \beta\ }D_*
+		\longrightarrow0,
+		\qquad
+		\alpha(c)=(c,-c),\quad\beta(a,b)=a+b.
+	\end{equation}
+	各映射均与边界交换。包含奇异单形的映射是自由群上的单射，所以 \(\alpha\) 单射；\(\beta\) 按 \(D_*\) 的定义满射。若 \(a+b=0\)，则 \(a=-b\) 同时为 \(U\) 中与 \(V\) 中的链。对奇异单形自由基逐项比较，得到 \(a\in C_*(W;\mathbb Z)\)，从而 \((a,b)=\alpha(a)\)。因此中间也正合。
+
+	\cref{g2:thm:homology-LES}把短正合链复形列变成长正合列：一个商端的圈先提升到中间复形，取边界后再唯一拉回左端，得到连接同态。在这里，圈 \(z=a+b\in D_n\) 的提升是 \((a,b)\)，其边界为
+	\[
+		(\partial a,\partial b)=(\partial a,-\partial a)
+		=\alpha(\partial a).
+	\]
+	因此连接同态正是 \([\partial a]\)。由于 \(\partial a=-\partial b\)，它是交集中的链，而且 \(\partial^2a=0\)，故确为交集中的圈。再由\cref{g2:thm:small-chain-isomorphism}将 \(H_n(D_*)\) 通过包含同构识别为 \(H_n(X;\mathbb Z)\)，就得到所述序列和符号。
+
+	也可在这里直接看出公式与选择无关。若同一个 \(z\) 有另一种拆法 \(z=a'+b'\)，则 \(c=a'-a=-(b'-b)\) 位于 \(W\)，所以 \(\partial a'-\partial a=\partial c\)。若在小链复形内把 \(z\) 换成 \(z+\partial w\)，写 \(w=p+q\)，则可把拆法换成 \((a+\partial p)+(b+\partial q)\)，连接圈不变。小链包含的单射性保证：两个小圈在整个空间中同调时，它们的差已在小链复形内为边界。因此选择代表和选择细分次数也不影响结果。
+
+	对约化版本，在左端和右端的次数 \(-1\) 置 \(\mathbb Z\)，在中间置 \(\mathbb Z\oplus\mathbb Z\)。该次数的序列为
+	\[
+		0\longrightarrow\mathbb Z
+		\xrightarrow{r\mapsto(r,-r)}
+		\mathbb Z\oplus\mathbb Z
+		\xrightarrow{(p,q)\mapsto p+q}
+		\mathbb Z\longrightarrow0,
+	\]
+	仍然正合，而且与零次增广交换。应用同一个短正合复形定理及增广小链同构，即得约化长正合列。在次数零，约化圈 \(z=a+b\) 满足 \(\varepsilon(a)+\varepsilon(b)=0\)，提升后取增广给出 \((\varepsilon(a),-\varepsilon(a))\)，因此连接类为 \([\varepsilon(a)]\)。
+
+	最后，设 \(X'=U'\cup V'\) 是另一开覆盖，连续映射 \(f:X\to X'\) 满足 \(f(U)\subset U'\)、\(f(V)\subset V'\)。它将交集链、小链及拆法 \(a+b\) 分别送到对应的交集链、小链及拆法 \(f_\#a+f_\#b\)，因而给出两个短正合复形列之间的交换映射。具体地，
+	\[
+		\delta' f_*[z]=[\partial f_\#a]
+		=f_*[\partial a]=f_*\delta[z].
+	\]
+	其余同态由包含与相加组成，也都交换。这证明普通版本和约化版本的自然性。
+\end{proof}
+
+上述短正合列还适用于内部覆盖 \(X\) 的两个子空间 \(U,V\)，因为小链同构已经在这一范围内证明。对于开覆盖，检查条件只需核对 \(U\cup V=X\)。需要区分的是覆盖条件与交集的连通性：Mayer--Vietoris 序列不要求 \(U\)、\(V\) 或 \(U\cap V\) 道路连通。
+
+\ProseParagraphBreak
+
+使用约化序列时，末端要按空集情形读出。如果 \(U,V,W\) 都非空，则它在低维以
+\[
+	\widetilde H_0(W)\longrightarrow
+	\widetilde H_0(U)\oplus\widetilde H_0(V)
+	\longrightarrow\widetilde H_0(X)\longrightarrow0
+\]
+结束。如果 \(U,V\) 非空而 \(W=\varnothing\)，末端却是
+\[
+	0\longrightarrow
+	\widetilde H_0(U)\oplus\widetilde H_0(V)
+	\longrightarrow\widetilde H_0(X)
+	\xrightarrow{\delta}\mathbb Z\longrightarrow0.
+\]
+这里 \(\delta[a+b]=\varepsilon(a)\)，记录零圈分配到 \(U\) 一侧的总系数；把交集为空时的 \(\widetilde H_{-1}\) 误写成零，就会丢掉两部分分离所产生的那一个零维约化同调生成元。
+
+\begin{example}[圆周上的连接同态]\label{g2:exm:circle-mayer-vietoris-connecting}
+	设 \(X=S^1\)，在圆周上取不同的点 \(p,q\)，并令 \(U=S^1\setminus\{p\}\)、\(V=S^1\setminus\{q\}\)。交集 \(W\) 有两个道路连通分支；分别选点 \(x,y\) 属于这两个分支。取 \(U\) 中从 \(x\) 到 \(y\) 的道路 \(a\)，以及 \(V\) 中从 \(y\) 到 \(x\) 的道路 \(b\)，将它们视为奇异一单形，则
+	\[
+		\partial a=[y]-[x],\qquad
+		\partial b=[x]-[y],\qquad
+		\delta[a+b]=[y]-[x]\in\widetilde H_0(W;\mathbb Z).
+	\]
+	\(U,V\) 都同胚于开区间，因而可缩；\cref{g2:prop:reduced-homology-degrees}说明它们的约化同调为零。交集的两个道路分支又给出 \(\widetilde H_0(W;\mathbb Z)=\mathbb Z([y]-[x])\)，所以约化 Mayer--Vietoris 序列在此给出 \(H_1(S^1;\mathbb Z)\cong\widetilde H_0(W;\mathbb Z)\cong\mathbb Z\)。这个例子也显示了连接映射的几何含义：圆周上的圈被切成两段后，单独一段的两个端点留在交集的不同分支中。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
