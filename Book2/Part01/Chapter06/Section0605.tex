@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 6.5 交形式及拓扑约束
 % 纲要位置：几何学计划纲要.md，第 1255 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,231 @@
 \section{交形式及拓扑约束}
 \label{g2:sec:0605}
 
-待撰写
+对偶把上同调类变成互补维数的同调类；再把杯积在基本类上取值，便得到两个类之间的数值配对。这个数不只计算群的秩，还能区分具有相同加性同调的流形。本节先用整数中维配对比较曲面和四维模型，再说明整数取值为什么会漏掉挠元素，以及怎样用 \(\mathbb Q/\mathbb Z\) 补回这部分信息。
 
 \subsection{中维相交形式的对称性}
 \label{g2:subsec:0605:01}
-待撰写
+要用有限整数矩阵表示交形式，先需证明紧流形的同调有限生成。这里利用紧流形在 Euclid 空间中的邻域回缩：任意紧、Hausdorff、第二可数的拓扑流形（允许边界）都是 Euclid 邻域收缩核，即存在某个嵌入 \(M\hookrightarrow\mathbb R^N\)、包含其像的开集 \(U\) 及连续回缩 \(r:U\to M\)，满足 \(r|_M=\operatorname{id}_M\)。这个输入的证明见\cite[附录A，Euclidean Neighborhood Retracts]{Hatcher2002}；它由紧流形的有限坐标覆盖嵌入及局部可缩性得到。在 \(U\) 中选一个包含 \(M\) 的有限复形，再限制回缩，就能把有限生成性传给 \(M\)。
+
+\begin{lemma}[紧流形的有限生成性]\label{g2:lem:compact-manifold-finite-homology}
+	设 \(M\) 为紧、Hausdorff、第二可数的拓扑流形，允许边界。则每个 \(H_i(M;\mathbb Z)\) 都有限生成，并且充分高次数的同调为零。
+\end{lemma}
+\begin{proof}
+	取上述嵌入及邻域回缩。紧集 \(M\) 与闭集 \(\mathbb R^N\setminus U\) 的距离为正；若补集为空，则任取正距离界。把 \(\mathbb R^N\) 分成网格足够小的闭立方体，使每个立方体的直径小于这个距离。所有与 \(M\) 相交的立方体只有有限个，因为 \(M\) 有界。令 \(P\) 为这些立方体及其全部面的并，则
+	\[
+		M\subset P\subset U.
+	\]
+	沿每个立方体的有序坐标把它剖成有限个单形，公共面使用同一个剖分，得到有限单纯复形 \(P\)。限制回缩给出 \(M\xrightarrow{i}P\xrightarrow{r}M\)，且 \(r\circ i=\operatorname{id}\)，所以 \(r_*i_*=\operatorname{id}\)。于是 \(H_i(M;\mathbb Z)\) 是 \(H_i(P;\mathbb Z)\) 的直和因子。有限胞腔链的各项为有限秩自由群，故其同调有限生成，且高于 \(\dim P\) 时为零；直和因子也有这两个性质。有限剖分用于环境中的 \(P\)，\(M\) 的有限生成性由回缩传递。
+\end{proof}
+
+设 \(M\) 是连通、闭、已定向的 \(2m\) 维拓扑流形，\(m\geq1\)，基本类为 \([M]\in H_{2m}(M;\mathbb Z)\)。用 \(\operatorname{Tor}A\) 表示阿贝尔群 \(A\) 的挠子群。令
+\[
+	F_M\coloneqq H^m(M;\mathbb Z)/\operatorname{Tor}H^m(M;\mathbb Z).
+\]
+有限生成性说明 \(F_M\) 是有限秩自由群。如果 \(a\) 是挠类，某个 \(r>0\) 满足 \(ra=0\)，则 \(r\langle a\smile b,[M]\rangle=0\)；整数中没有非零挠元素，故这个求值为零。因此下式只依赖商中的类。
+
+\begin{definition}[中维交形式]\label{g2:def:intersection-form}
+	设 \(M\) 是连通、闭、已定向的 \(2m\) 维拓扑流形。其整数\term[zhongweijiaoxingshi]{中维交形式}[middle-dimensional intersection form]是双线性配对
+	\begin{equation}\label{g2:eq:intersection-form}
+		Q_M:F_M\times F_M\longrightarrow\mathbb Z,
+		\qquad Q_M(\bar a,\bar b)=\langle a\smile b,[M]\rangle.
+	\end{equation}
+	经 Poincaré 对偶，也可把它看成 \(H_m(M;\mathbb Z)\) 的自由商上的配对。
+\end{definition}
+
+\begin{theorem}[交形式的对称性与整性]\label{g2:thm:intersection-unimodular}
+	设 \(M\) 是连通、闭、已定向的 \(2m\) 维拓扑流形。则 \(Q_M\) 满足
+	\[
+		Q_M(a,b)=(-1)^mQ_M(b,a),
+	\]
+	且映射 \(F_M\to\operatorname{Hom}(F_M,\mathbb Z)\)、\(a\mapsto Q_M(a,-)\) 是同构。因此任取整数基所得矩阵的行列式为 \(\pm1\)；这样的整数形式称为\term[danmodexingshi]{单模形式}[unimodular form]。当 \(m\) 为奇数时，\(Q_M(a,a)=0\)，并且 \(F_M\) 的秩为偶数。反转流形定向使 \(Q_M\) 变为 \(-Q_M\)。
+\end{theorem}
+\begin{proof}
+	\cref{g2:thm:cup-properties}给出 \(a\smile b=(-1)^{m^2}b\smile a\)，而 \(m^2\) 与 \(m\) 同奇偶，故得对称公式。若 \(m\) 奇，则 \(2Q_M(a,a)=0\)，在整数中即得 \(Q_M(a,a)=0\)。定向反转把基本类换成负值，所以所有求值同时反号。
+
+	单模性还需要整数万有系数定理，不能只凭域上的非退化性。\cref{g2:thm:uct-cohomology}给出
+	\[
+		0\longrightarrow\operatorname{Ext}^1_{\mathbb Z}(H_{m-1}(M;\mathbb Z),\mathbb Z)
+		\longrightarrow H^m(M;\mathbb Z)\xrightarrow{\rho}\operatorname{Hom}(H_m(M;\mathbb Z),\mathbb Z)\longrightarrow0.
+	\]
+	有限生成阿贝尔群分解及\cref{g2:prop:cyclic-ext-tor}说明左端有限，右端自由，所以左端恰是中间群的全部挠子群。于是 \(F_M\) 与 \(H_m(M;\mathbb Z)\) 自由商的整数对偶自然同构。另一方面，\cref{g2:cor:closed-poincare-duality}给出整数同构 \(D(a)=a\frown[M]\)，它也诱导两自由商之间的同构。由\eqref{g2:eq:cap-evaluation}，
+	\[
+		Q_M(a,b)=\langle b,D(a)\rangle.
+	\]
+	有限秩自由群与其整数对偶的求值是完美配对：取基及对偶基后，其矩阵就是单位阵。再复合 \(D\)，可知 \(a\mapsto Q_M(a,-)\) 是同构。一个整数方阵有整数逆，当且仅当行列式为 \(\pm1\)，于是得到矩阵形式。
+
+	若 \(m\) 奇，设其矩阵为 \(A\)、秩为 \(r\)。斜对称性给出 \(A^{\mathsf T}=-A\)，故 \(\det A=(-1)^r\det A\)。\(\det A\ne0\)，所以 \(r\) 必为偶数。
+\end{proof}
+
+上述配对适用于拓扑流形；在光滑情形下，若能选取合适的横截代表，还可以把它解释为带符号交点数。杯积配对与对偶的这项联系可参阅\cite[第3.3节，Poincaré Duality]{Hatcher2002}。
 
 \subsection{曲面和四维基本模型}
 \label{g2:subsec:0605:02}
-待撰写
+对已定向曲面 \(\Sigma_g\)，\cref{g2:thm:orientable-surface-ring}已给出一次基 \(a_1,b_1,\ldots,a_g,b_g\)，满足 \(\langle a_i\smile b_j,[\Sigma_g]\rangle=\delta_{ij}\)，同类基向量之间的乘积为零。因此交形式是
+\begin{equation}\label{g2:eq:surface-symplectic-form}
+	Q_{\Sigma_g}=\bigoplus_{i=1}^g
+	\begin{pmatrix}0&1\\-1&0\end{pmatrix}.
+\end{equation}
+同一对柄方向互相检测一次，不同柄之间不相交；交换两个一次方向，符号反转。这里的矩阵也说明为什么一个闭可定向曲面的一次 Betti 数一定为偶数。球面 \(g=0\) 的一次群为零，对应空矩阵。
+
+\ProseParagraphBreak
+
+四维时 \(m=2\)，形式改为对称。取 \(S^2\times S^2\) 的乘积定向，令 \(x,y\) 分别是两个球面的正向二次生成元的拉回。Künneth 定理及\cref{g2:prop:cross-cup-evaluation}给出 \(x^2=y^2=0\)、\(\langle xy,[S^2\times S^2]\rangle=1\)，因而
+\[
+	Q_{S^2\times S^2}=\begin{pmatrix}0&1\\1&0\end{pmatrix}.
+\]
+这个矩阵称为\term[shuangqupingmian]{双曲平面}[hyperbolic plane]。向量 \(ax+by\) 的自配对为 \(2ab\)，总是偶数。
+
+\ProseParagraphBreak
+
+给 \(\mathbb CP^2\) 取复定向，即每个复坐标按实坐标次序 \((x_1,y_1,x_2,y_2)\) 定向。复坐标变换的实行列式为复行列式绝对值的平方，故这些方向相容。取二次生成元 \(u\) 在复射影直线上求值为 \(1\)。\cref{g2:thm:complex-projective-ring}证明 \(u^2\) 是顶次生成元；其局部证明还确定这里的符号为正：两个坐标复直线的正向局部类按上述实坐标次序外积，在复定向四维球上取值 \(1\)。坐标复直线之间的复线性坐标旋转保持所选方向，故这两个局部二次类都对应同一个 \(u\)。因此
+\[
+	Q_{\mathbb CP^2}=(1),\qquad Q_{\overline{\mathbb CP^2}}=(-1),
+\]
+其中横线在本节表示反转定向，并不表示改变底空间的点集。
+
+\begin{proposition}[四维连通和的交形式]\label{g2:prop:connected-sum-intersection}
+	设 \(X,Y\) 为连通、闭、已定向的四维拓扑流形。用坐标四维球作定向相容的连通和，则
+	\[
+		F_{X\mathbin{\#}Y}\cong F_X\oplus F_Y,
+		\qquad Q_{X\mathbin{\#}Y}\cong Q_X\oplus Q_Y.
+	\]
+\end{proposition}
+\begin{proof}
+	记 \(X^\circ=X\setminus\operatorname{int}D^4\)、\(Y^\circ=Y\setminus\operatorname{int}D^4\)。用粘合球面的坐标领圈把两块加宽为开覆盖，交集形变收缩到 \(S^3\)。它的一次和二次上同调为零，所以 Mayer--Vietoris 序列给出
+	\[
+		H^2(X\mathbin{\#}Y;\mathbb Z)\cong H^2(X^\circ;\mathbb Z)\oplus H^2(Y^\circ;\mathbb Z).
+	\]
+	由切除，\((X,X^\circ)\) 的相对上同调等于 \((D^4,S^3)\) 的上同调，只在四次非零；对的正合列于是给出 \(H^2(X)\cong H^2(X^\circ)\)，\(Y\) 同理。这证明了二次群及其自由商的直和分解。
+
+	将中间粘合的 \(S^3\) 压成一点，得到映射 \(q:X\mathbin{\#}Y\to X\vee Y\)：每个带边界的半部在边界压缩后恢复原流形，因为边界的坐标环带压缩成一个四维球。在楔点附近选两边的小坐标球，用这两球的并作交集的 Mayer--Vietoris 计算，得到正次数上同调限制到两因子的直和分解；不同因子上的正次数类之杯积为零，因为它在两个因子上的限制都为零。
+
+	映射 \(q\) 再压掉另一因子，给出 \(q_X:X\mathbin{\#}Y\to X\)。在 \(X\) 中选一个远离粘合球的点，该点有唯一原像，且 \(q_X\) 在其邻域为保持定向的同胚。基本类的局部值自然性及\cref{g2:lem:compact-localization}的唯一性说明 \((q_X)_*[X\mathbin{\#}Y]=[X]\)，\(q_Y\) 同理。杯积自然性于是给出各因子内的配对保持不变，异因子的配对为零，得到所述正交直和。
+\end{proof}
+
+于是 \(\mathbb CP^2\mathbin{\#}\overline{\mathbb CP^2}\) 的形式为 \(\operatorname{diag}(1,-1)\)。它与 \(S^2\times S^2\) 的二次同调同为 \(\mathbb Z^2\)，实系数形式也都有一个正方向、一个负方向，但整数形式不等价：前者有自配对 \(1\) 的向量，后者所有自配对均为偶数。称所有自配对均为偶数的整数对称形式为\term[ouxingshi]{偶形式}[even form]，否则为\term[jixingshi]{奇形式}[odd form]；这一性质不随整数换基改变。下表把这些比较放在一起。
+\begin{center}
+	\begin{tabular}{c|c|c|c}
+		四维流形及定向 & 二次基下的交矩阵 & 奇偶性 & 正、负方向数\\\hline
+		\(S^2\times S^2\) & \(\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)\) & 偶 & \((1,1)\)\\
+		\(\mathbb CP^2\) & \((1)\) & 奇 & \((1,0)\)\\
+		\(\overline{\mathbb CP^2}\) & \((-1)\) & 奇 & \((0,1)\)\\
+		\(\mathbb CP^2\mathbin{\#}\overline{\mathbb CP^2}\) & \(\operatorname{diag}(1,-1)\) & 奇 & \((1,1)\)
+	\end{tabular}
+\end{center}
+保持定向的同胚在上同调上给出整数同构并保持基本类，因而保持交形式；反转定向的同胚至多把形式反号。奇偶性在反号后仍保持，所以最后一个模型与第一个模型即使不指定定向，也不可能同胚。
 
 \subsection{扭部分及链接配对的入口}
 \label{g2:subsec:0605:03}
-待撰写
+整数交形式把挠元素全部送到零，原因是它的值域 \(\mathbb Z\) 没有挠。要检测挠类，可以先用有理系数把某个整数倍填平，再把所得有理数看成模整数的值。群 \(\mathbb Q/\mathbb Z\) 正好容纳这样的余数，例如阶为 \(r\) 的元素可以取值 \(1/r+\mathbb Z\)。这里先给出不依赖子流形代表的上同调定义。
+
+\ProseParagraphBreak
+
+设 \(M\) 是连通、闭、已定向的 \(n\) 维拓扑流形。系数短正合列
+\[
+	0\longrightarrow\mathbb Z\longrightarrow\mathbb Q\xrightarrow{q}\mathbb Q/\mathbb Z\longrightarrow0
+\]
+给出连接映射 \(\beta:H^{k-1}(M;\mathbb Q/\mathbb Z)\to H^k(M;\mathbb Z)\)。奇异链自由，所以对应上链列逐次满射；\cref{g2:thm:homology-LES}的代表元提升构造在上链的次数方向反转后适用，连接映射由提升上链后取余边界得到。有限生成性及万有系数定理说明 \(H^k(M;\mathbb Z)\to H^k(M;\mathbb Q)\) 的核恰为挠子群；因此每个挠类 \(a\) 都可写为 \(\beta\widetilde a\)。
+
+\begin{definition}[挠类的链接配对]\label{g2:def:torsion-linking-pairing}
+	设 \(M\) 是连通、闭、已定向的 \(n\) 维拓扑流形，\(1\leq k\leq n\)。对 \(a\in\operatorname{Tor}H^k(M;\mathbb Z)\)、\(b\in\operatorname{Tor}H^{n-k+1}(M;\mathbb Z)\)，选 \(\beta\widetilde a=a\)，定义\term[lianjiepeidui]{链接配对}[linking pairing]
+	\begin{equation}\label{g2:eq:torsion-linking-pairing}
+		\lambda_M(a,b)\coloneqq\langle b\smile\widetilde a,[M]\rangle\in\mathbb Q/\mathbb Z.
+	\end{equation}
+	此处乘积使用 \(\mathbb Z\otimes(\mathbb Q/\mathbb Z)\to\mathbb Q/\mathbb Z\) 的系数配对；明确采用先 \(b\)、后 \(\widetilde a\) 的顺序。
+\end{definition}
+
+\begin{theorem}[链接配对的良定义与非退化性]\label{g2:thm:torsion-linking-perfect}
+	设 \(M\) 是连通、闭、已定向的 \(n\) 维拓扑流形，\(1\leq k\leq n\)。则\eqref{g2:eq:torsion-linking-pairing}中的 \(\lambda_M\) 不依赖 \(\widetilde a\) 的选择，并诱导同构
+	\[
+		\operatorname{Tor}H^k(M;\mathbb Z)
+		\xrightarrow{\ \cong\ }
+		\operatorname{Hom}\bigl(\operatorname{Tor}H^{n-k+1}(M;\mathbb Z),\mathbb Q/\mathbb Z\bigr).
+	\]
+	因此它在两个有限群之间都是非退化配对。反转定向使配对反号。
+\end{theorem}
+\begin{proof}
+	若换一个提升，两者相差 \(q_*v\)，其中 \(v\in H^{k-1}(M;\mathbb Q)\)。因 \(b\) 是挠类，它在有理上同调中的像为零，所以 \(b\smile v=0\)；再映到 \(\mathbb Q/\mathbb Z\)，可知两个求值相同。杯积在上同调上已经良定义，故代表上圈及基本圈的改变也不影响结果。取提升之和证明双线性。
+
+	为证明非退化性，记 \(A=H_{k-1}(M;\mathbb Z)\)，它有限生成。\(\mathbb Q\) 和 \(\mathbb Q/\mathbb Z\) 都可被任意正整数整除，因此\cref{g2:prop:cyclic-ext-tor}给出
+	\[
+		\operatorname{Ext}^1_{\mathbb Z}(\mathbb Z/r,G)=G/rG=0
+		\qquad(G=\mathbb Q\text{ 或 }\mathbb Q/\mathbb Z).
+	\]
+	有限生成群分解为有限多个循环群及自由群，故同一 Ext 消失对这里所遇到的全部同调群成立。万有系数定理及其系数自然性因而把下列上同调商识别为同态群商：
+	\[
+	\begin{aligned}
+		\frac{H^{k-1}(M;\mathbb Q/\mathbb Z)}{q_*H^{k-1}(M;\mathbb Q)}
+		&\cong\frac{\operatorname{Hom}(A,\mathbb Q/\mathbb Z)}{q_*\operatorname{Hom}(A,\mathbb Q)}\\
+		&\cong\operatorname{Hom}(\operatorname{Tor}A,\mathbb Q/\mathbb Z).
+	\end{aligned}
+	\]
+	最后一个同构由限制到挠子群给出：有理值同态在挠子群上为零；反之，一个在挠子群上为零的同态来自自由商，在其有限组基上分别选择有理数提升，就得到所需有理值同态。任意挠子群上的同态也能沿某个自由分解延拓为整个 \(A\) 上的同态，故限制满射；同构本身不依赖延拓选择。
+
+	系数长正合列说明左侧商经 \(\beta\) 正好同构于 \(\operatorname{Tor}H^k(M;\mathbb Z)\)。同时，整数 Poincaré 对偶把 \(b\) 送到
+	\[
+		b\frown[M]\in\operatorname{Tor}H_{k-1}(M;\mathbb Z)=\operatorname{Tor}A,
+	\]
+	并在这些挠子群上也是同构。帽杯求值公式给出
+	\[
+		\lambda_M(a,b)=\langle\widetilde a,b\frown[M]\rangle.
+	\]
+	所以所定义的配对正是上述字符群与 \(\operatorname{Tor}A\) 的求值。对循环群 \(\mathbb Z/r\)，映射 \(1\mapsto1/r+\mathbb Z\) 检测每个非零元素；有限直和逐项使用它，就知求值在另一侧也非退化。定向反转的结论由基本类变号得到。
+\end{proof}
+
+有一个可以直接计算的上链公式。若整数上圈 \(A,B\) 分别代表 \(a,b\)，且 \(ra=0\)，可选整数 \((k-1)\) 次上链 \(U\) 满足 \(\delta U=rA\)。那么 \(U/r\) 模整数是 \(\widetilde a\) 的一个代表，对基本圈 \(z\) 有
+\begin{equation}\label{g2:eq:linking-fractional-cochain}
+	\lambda_M(a,b)=\frac1r\langle B\smile U,z\rangle\pmod{\mathbb Z}.
+\end{equation}
+这说明“除以阶数”发生在辅助有理上链中，结果只取模整数；不能直接在整数上同调群内把挠类除以 \(r\)。
+
+\begin{example}[实射影三维空间的链接值]\label{g2:exm:rp3-linking}
+	给 \(M=\mathbb RP^3\) 任选一个定向。反足映射在 \(S^3\) 上保持定向，所以其商可定向。\cref{g2:prop:projective-integer-homology}给出 \(H_1(M;\mathbb Z)=\mathbb Z/2\)、\(H_2(M;\mathbb Z)=0\)，万有系数定理给出 \(H^2(M;\mathbb Z)=\mathbb Z/2\)。令 \(a\) 是后者的非零元，\(c\) 是前者的非零元。因为 \(H^1(M;\mathbb Q)=H^2(M;\mathbb Q)=0\)，连接映射
+	\[
+		\beta:H^1(M;\mathbb Q/\mathbb Z)\xrightarrow{\ \cong\ }H^2(M;\mathbb Z)
+	\]
+	是同构。其非零源元素 \(\widetilde a\) 在 \(c\) 上取值 \(1/2+\mathbb Z\)，这是 \(\mathbb Z/2\to\mathbb Q/\mathbb Z\) 唯一的非零同态。Poincaré 对偶必将 \(a\) 送到非零元 \(c\)，故
+	\[
+		\lambda_M(a,a)=\tfrac12+\mathbb Z.
+	\]
+	反转定向会给出 \(-1/2+\mathbb Z\)，它恰与原值相同。这个例子中整数自由交形式看不到任何二阶信息，而链接配对已经检测出这个非零类。
+\end{example}
 
 \subsection{Betti 数与 Euler 示性数的限制}
 \label{g2:subsec:0605:04}
-待撰写
+设 \(M\) 是连通闭 \(n\) 维流形，\(\mathbb F\) 是一个域。有限生成性及系数定理保证各 \(H_i(M;\mathbb F)\) 有限维，记
+\[
+	 b_i(M;\mathbb F)\coloneqq\dim_{\mathbb F}H_i(M;\mathbb F).
+\]
+如果 \(M\) 已选 \(\mathbb F\) 定向，Poincaré 对偶与域上万有系数同构给出
+\begin{equation}\label{g2:eq:betti-duality}
+	 b_i(M;\mathbb F)=b_{n-i}(M;\mathbb F).
+\end{equation}
+这里需要两项输入：对偶先把 \(H^i\) 变成 \(H_{n-i}\)，域上的求值再把 \(H^i\) 识别为 \(H_i\) 的线性对偶。若漏掉定向条件，普通系数的这项对称可能失效；例如 \(\mathbb RP^2\) 的有理 Betti 数为 \((1,0,0)\)。模二系数则对每个闭流形适用，因为其定向系统规范平凡。
+
+\begin{proposition}[Euler 示性数的约束]\label{g2:prop:euler-duality-constraints}
+	设 \(M\) 是连通闭 \(n\) 维拓扑流形，定义
+	\[
+		\chi(M)\coloneqq\sum_{i=0}^n(-1)^i b_i(M;\mathbb Q).
+	\]
+	则任意素数 \(p\) 都满足 \(\chi(M)=\sum_i(-1)^i b_i(M;\mathbb F_p)\)。若 \(n\) 为奇数，则 \(\chi(M)=0\)，不要求可定向。若 \(M\) 可定向且 \(n=4\ell+2\)，则 \(\chi(M)\) 是偶数。对已定向闭四维流形，若 \(b_2^+,b_2^-\) 为实交形式的正、负方向数，则
+	\[
+		\chi(M)=2-2b_1+b_2^++b_2^-.
+	\]
+\end{proposition}
+\begin{proof}
+	将有限生成群写为 \(H_i(M;\mathbb Z)=\mathbb Z^{r_i}\oplus T_i\)，并令 \(t_i(p)=\dim_{\mathbb F_p}(T_i\otimes\mathbb F_p)\)。对每个有限循环因子，\(\operatorname{Tor}_1^{\mathbb Z}(T_i,\mathbb F_p)\) 与 \(T_i\otimes\mathbb F_p\) 具有相同维数：\(p\) 整除其阶时均为一维，否则均为零。于是同调万有系数定理给出
+	\[
+		b_i(M;\mathbb F_p)=r_i+t_i(p)+t_{i-1}(p),\qquad b_i(M;\mathbb Q)=r_i.
+	\]
+	各项只在有限多个次数非零；事实上\cref{g2:lem:compact-localization}取 \(K=M\) 给出高于 \(n\) 次的任意常系数同调为零。将上式用于 \(i=n+1\)，还得到 \(t_n(p)=0\)，所以顶端没有残留的挠修正项。交错求和时相邻的两个 \(t_i(p)\) 恰好相消，证明系数无关的公式。
+
+	当 \(n\) 奇时，取 \(\mathbb F_2\) 系数。每个闭流形都模二可定向，故 \(b_i=b_{n-i}\)，而 \((-1)^i=-(-1)^{n-i}\)。各对次数互相抵消，所以 \(\chi(M)=0\)。若 \(n=4\ell+2\) 且可定向，在有理系数下把中间次数以外的项两两合并，得到
+	\[
+		\chi(M)=2\sum_{i<2\ell+1}(-1)^ib_i-b_{2\ell+1}.
+	\]
+	中维整数交形式是非退化交替形式，\cref{g2:thm:intersection-unimodular}已说明它的秩 \(b_{2\ell+1}\) 为偶数，故 \(\chi(M)\) 偶。四维时 \(b_0=b_4=1\)、\(b_3=b_1\)，并且 \(b_2=b_2^++b_2^-\)，代入定义即得最后的公式。
+\end{proof}
+
+实对称非退化形式在可逆实换基下的正、负方向数不变，因而差 \(\sigma(M)=b_2^+-b_2^-\) 给出四维流形的\term[fuhaocha]{符号差}[signature]。这是实对称双线性形式的惯性定律在此处的应用：把矩阵正交对角化后，正、负子空间的最大维数分别确定两项，任意换基都不能改变这两个最大维数。前面四个模型的 \(\sigma\) 分别为 \(0,1,-1,0\)；最后一个与第一个仍须用整数奇偶性区别。因此 Betti 数、Euler 示性数、符号差与整数交形式依次记录不同层次的信息，任何一个单独相同都不足以推出同胚。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

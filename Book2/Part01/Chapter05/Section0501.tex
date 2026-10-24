@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 5.1 局部系统的等价描述
 % 纲要位置：几何学计划纲要.md，第 1195 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,221 @@
 \section{局部系统的等价描述}
 \label{g2:sec:0501}
 
-待撰写
+在通常的整数链中，单形上的系数可以直接相加，因为它们都属于同一个指定的群 \(\mathbb Z\)。如果每一点只给出一个同构于 \(\mathbb Z\) 的群，情形就不同了：把一个系数送到另一点需要选择道路，绕一圈回来还可能把它变成相反数。定向的改变正会产生这种现象。本节先把“沿道路比较系数”本身定义清楚，再说明在适当的局部条件下，它也可以表现为一个局部常值的层，或一个基本群作用。
+
+\ProseParagraphBreak
+
+以下 \(R\) 为含幺交换环，系数纤维为 \(R\) 模，\(R=\mathbb Z\) 时就是阿贝尔群。这里不要求模自由或有限生成。沿用\cref{g2:def:fundamental-group}的顺序，\(\alpha*\beta\) 表示先走 \(\alpha\)、后走 \(\beta\)，\(\bar\alpha\) 为反向道路；因此运输的复合写成 \(T_{\alpha*\beta}=T_\beta\circ T_\alpha\)。
 
 \subsection{路径群胚上的运输函子}
 \label{g2:subsec:0501:01}
-待撰写
+同一端点的环路组成基本群；若同时保留所有点以及不同点之间的道路，就得到一个能直接描述运输的对象。
+
+\begin{definition}[局部系统]\label{g2:def:local-system}
+	设 \(X\) 为拓扑空间。它的\term[lujingqunpei]{路径群胚}[fundamental groupoid] \(\Pi_1(X)\) 以 \(X\) 的点为对象，以定端点同伦道路类 \([\alpha]:x\to y\) 为态射，复合为
+	\[
+		[\beta]\circ[\alpha]=[\alpha*\beta].
+	\]
+	常值道路给出恒等态射，反向道路给出逆态射；这些运算良定义由\cref{g2:def:fundamental-group}之后对重参数化和往返道路的论证保证。\symidx{\(\Pi_1(X)\)：路径群胚}
+
+	一个 \(R\) 模\term[jubuxitong]{局部系统}[local system] \(\mathcal L\) 是从 \(\Pi_1(X)\) 到 \(R\) 模范畴的函子。具体说，它给每点 \(x\) 一个模 \(\mathcal L_x\)，给每条道路类一个线性同构 \(T_\alpha:\mathcal L_x\to\mathcal L_y\)，并满足
+	\begin{equation}\label{g2:eq:local-transport-composition}
+		T_{e_x}=\operatorname{id},\qquad T_{\alpha*\beta}=T_\beta T_\alpha.
+	\end{equation}
+	\(\mathcal L_x\) 称为在 \(x\) 处的纤维，\(T_\alpha\) 称为沿 \(\alpha\) 的运输。逆道路恒等式给出 \(T_{\bar\alpha}=T_\alpha^{-1}\)。局部系统之间的态射 \(u:\mathcal L\to\mathcal K\) 是一族线性映射 \(u_x:\mathcal L_x\to\mathcal K_x\)，满足每条 \(\alpha:x\to y\) 上的自然性
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			\mathcal L_x \arrow[r,"T^{\mathcal L}_\alpha"] \arrow[d,"u_x"'] & \mathcal L_y \arrow[d,"u_y"] \\
+			\mathcal K_x \arrow[r,"T^{\mathcal K}_\alpha"'] & \mathcal K_y.
+		\end{tikzcd}
+	\]
+	\symidx{\(\mathcal L_x,T_\alpha\)：局部系统的纤维与道路运输}
+\end{definition}
+
+这个定义在任意拓扑空间上有意义；它只使用道路及其同伦，没有预先给纤维的并集指定拓扑。两个局部系统同构，指存在各纤维上均为同构的态射，其逆映射族自动满足同一自然性方形。固定一个 \(R\) 模 \(M\)，在每点都取 \(M\)、每条道路都取恒等映射，得到\term[changzhixitong]{常值系统}[constant system]，记为 \(\underline M\)。局部系统平凡，是指它同构于某个这样的系统；这并不表示已经选定那个同构。
+
+\begin{proposition}[拉回与同伦运输]\label{g2:prop:local-system-pullback}
+	设 \(f:Y\to X\) 为连续映射，\(\mathcal L\) 为 \(X\) 上的 \(R\) 模局部系统。规定
+	\[
+		(f^*\mathcal L)_y=\mathcal L_{f(y)},\qquad T^{f^*\mathcal L}_\alpha=T^{\mathcal L}_{f\circ\alpha},
+	\]
+	便得到 \(Y\) 上的局部系统，称为 \(\mathcal L\) 的\term[lahuijubuxitong]{拉回局部系统}[pullback local system]。它也逐纤维拉回态射，并满足 \((f\circ g)^*=g^*f^*\) 及恒等映射的相容性。若 \(H:Y\times I\to X\) 是从 \(f_0\) 到 \(f_1\) 的同伦，令 \(\lambda_y(t)=H(y,t)\)，则
+	\[
+		T_{\lambda_y}:(f_0^*\mathcal L)_y\longrightarrow(f_1^*\mathcal L)_y
+	\]
+	组成局部系统同构。此同构由所给同伦确定；不同的同伦可能给出不同的同构。
+\end{proposition}
+\begin{proof}
+	连续映射把定端点同伦送到定端点同伦，并保持道路拼接及常值道路，所以拉回满足\eqref{g2:eq:local-transport-composition}。态射、恒等和复合的公式都是对相应点或道路逐项求值。
+
+	对道路 \(\alpha:y\to z\)，将 \(H\) 限制在 \(\alpha\) 上得到方形 \((s,t)\mapsto H(\alpha(s),t)\)。方形内两条从左下到右上的边界路线定端点同伦，故
+	\[
+		(f_0\alpha)*\lambda_z\simeq\lambda_y*(f_1\alpha).
+	\]
+	应用运输公式即得 \(T_{\lambda_z}T_{f_0\alpha}=T_{f_1\alpha}T_{\lambda_y}\)，这正是态射的自然性。每个 \(T_{\lambda_y}\) 可逆，故得到同构。取 \(Y\) 为一点、\(f_0=f_1\) 时，同伦就是基点环路，所得同构就是该环路的单值；因此它确实可能依赖同伦。
+\end{proof}
+
+拉回的定义解释了系数为何需要跟着空间映射一起变化：若 \(y\) 映到 \(f(y)\)，在 \(y\) 使用的系数正应取自 \(\mathcal L_{f(y)}\)。稍后定义链映射时，这会成为系数所在位置的相容条件。
 
 \subsection{局部常值层与纤维}
 \label{g2:subsec:0501:02}
-待撰写
+道路运输给出不同纤维的比较，层则记录一个开集上能同时选取哪些彼此相容的系数。在运输平凡的小邻域内，选定一个值后可把它搬到各点，得到一份局部常值截面；层的限制与粘合正是为了组织这样的局部选择。
+
+\begin{definition}[局部常值层]\label{g2:def:locally-constant-sheaf}
+	拓扑空间 \(X\) 上的 \(R\) 模\term[ceng]{层}[sheaf] \(\mathscr F\)，给每个开集 \(U\) 一个 \(R\) 模 \(\mathscr F(U)\)，并给每个包含 \(V\subset U\) 一个线性限制映射 \(s\mapsto s|_V\)。限制保持恒等与复合，且满足粘合条件：若 \(U=\bigcup_iU_i\)，而 \(s_i\in\mathscr F(U_i)\) 在每个交集上相等，则存在唯一 \(s\in\mathscr F(U)\) 使 \(s|_{U_i}=s_i\)。\(\mathscr F(U)\) 的元素称为 \(U\) 上的\term[jiemian]{截面}[section]。
+
+	在 \(x\) 处，把定义在 \(x\) 的某个开邻域上的截面按“在更小邻域上一致”识别，所得模称为\term[jing]{茎}[stalk] \(\mathscr F_x\)；截面 \(s\) 的类记为 \(s_x\)，称为它在 \(x\) 处的\term[ya]{芽}[germ]。加法和数乘在两个代表的公共邻域内进行，进一步缩小邻域不改变结果，故定义良好。
+
+	给模 \(A\) 离散拓扑，\(U\mapsto\{\text{局部常值函数 }U\to A\}\) 构成常值层 \(\underline A\)。若每个 \(x\in X\) 都有开邻域 \(U\)，使限制在 \(U\) 上的层 \(\mathscr F|_U\) 同构于 \(\underline A|_U\)，其中 \(A\) 可随邻域变化，则称 \(\mathscr F\) 为\term[jubuchangzhiceng]{局部常值层}[locally constant sheaf]。层的态射是一族与限制相容的线性映射。
+\end{definition}
+
+这里的常值层允许一个不连通开集的不同部分取不同值。若仅给每个非空开集同一个模 \(A\)，并把所有限制设为恒等，就通常不满足粘合条件：两个不交开集上选的不同常值无法粘成一个共同常值。另一方面，茎只看一点附近，所以 \(\underline A_x\cong A\)，同构把一个局部常值函数的芽送到它在 \(x\) 的值。
+
+\begin{proposition}[层的纤维空间]\label{g2:prop:local-sheaf-fiber-space}
+	设 \(X\) 为拓扑空间，\(R\) 为含幺交换环。局部常值 \(R\) 模层等价于下列数据：一个覆盖 \(p:E\to X\)，各纤维具有 \(R\) 模结构，并在每点附近有保持纤维线性结构的同胚 \(p^{-1}(U)\cong U\times A\)，其中 \(A\) 取离散拓扑。态射分别取层态射和与投影相容、在各纤维上线性的连续映射。这样的 \(E\) 通过道路提升确定一个 \(R\) 模局部系统。
+\end{proposition}
+\begin{proof}
+	先由层构造空间。令 \(E(\mathscr F)=\coprod_{x\in X}\mathscr F_x\)，投影把芽送到它所在的点。对 \(s\in\mathscr F(U)\)，定义 \(\widehat s(U)=\{s_x:x\in U\}\)。以这些集合为开集的基：若 \(s_x=t_x\)，芽的定义给出 \(x\) 的邻域 \(W\)，使 \(s|_W=t|_W\)，所以 \(\widehat s(W)=\widehat t(W)\) 包含在原来两个集合的交内。每个芽有截面代表，故这些集合也覆盖 \(E(\mathscr F)\)。投影在 \(\widehat s(U)\) 上是到 \(U\) 的双射，其逆 \(x\mapsto s_x\) 连续；后一结论再次来自“两个芽相同就在某个邻域上一致”。投影本身连续，因为开集的逆像是这类基本开集的并。因此投影在每个 \(\widehat s(U)\) 上是同胚。
+
+	若 \(\mathscr F|_U\cong\underline A|_U\)，茎的对应给出 \(E(\mathscr F)|_U\cong U\times A\)。在这个对应中，基本开集就是局部常值函数的图像；它们与离散 \(A\) 的乘积拓扑一致。因此投影不仅是局部同胚，而且在同一 \(U\) 上把全部纤维同时平凡化，确为覆盖。一个层态射在茎上诱导线性映射；它把截面芽族送到像截面的芽族，所以得到连续的纤维线性映射。
+
+	反过来，对题述 \(E\) 定义 \(\mathscr S_E(U)\) 为所有连续截面 \(s:U\to E\)。加法和数乘逐点进行，在乘积邻域中就是对局部常值函数进行运算，因而仍连续。相容截面逐点粘合后连续，且唯一，故 \(\mathscr S_E\) 是层；在每个乘积邻域上，它正是常值层。映射 \(\mathscr F(U)\to\mathscr S_{E(\mathscr F)}(U)\)、\(s\mapsto(x\mapsto s_x)\) 单射，因为芽处处相同的截面局部相同，再由粘合唯一性相同。它满射，因为一个连续截面在任一点附近落入某个 \(\widehat t(V)\)，于是局部来自截面 \(t\)，这些代表在交集上具有相同的芽，因而能够唯一粘合。另一方面，\(E(\mathscr S_E)\to E\) 把截面的芽送到该点的值；在乘积邻域中它是恒等的纤维对应，故为纤维线性同胚。这两个对应也保持态射。
+
+	最后，\cref{g2:thm:covering-lifts}已证明：覆盖中从指定纤维点出发的道路提升唯一，提升终点只依赖定端点同伦类。把提升终点定义为 \(T_\alpha\)，拼接提升给出\eqref{g2:eq:local-transport-composition}。将道路有限细分到乘积邻域，在每一段内运输都是常值坐标的识别，所以线性，复合后仍线性。连续纤维线性映射把道路提升送到道路提升，由唯一性便与运输交换。
+\end{proof}
+
+纤维空间使用离散的系数拓扑。即使 \(R=\mathbb R\)、纤维为 \(\mathbb R^r\)，这里也不是把通常的向量空间拓扑放在纤维上；离散拓扑使“沿道路保持局部常值”成为一项确定的数据。后文谈平坦丛时，可以把这项运输结构与其对应的光滑向量丛联系起来。
+
+\begin{proposition}[运输的局部实现]\label{g2:prop:local-system-realization}
+	设 \(X\) 局部道路连通且半局部单连通。每个 \(R\) 模局部系统 \(\mathcal L\) 的纤维并集 \(\coprod_x\mathcal L_x\) 都有自然的覆盖拓扑及局部模平凡化，使其道路提升恢复 \(\mathcal L\) 的运输。它与\cref{g2:prop:local-sheaf-fiber-space}的构造一起，给出局部系统与局部常值 \(R\) 模层的等价。
+\end{proposition}
+\begin{proof}
+	由\cref{g2:def:local-covering-conditions}及\cref{g2:thm:universal-cover}证明开头的取邻域论证，可以取由道路连通开集 \(U\) 构成的开基，且 \(U\) 中的每条环路在 \(X\) 中零伦。固定 \(u\in U\)。若 \(y\in U\)，从 \(u\) 到 \(y\) 的两条 \(U\) 内道路的差环路在 \(X\) 中零伦，所以它们在 \(X\) 中定端点同伦，给出相同的运输。对每个 \(m\in\mathcal L_u\) 因而有确定的族
+	\[
+		s_m(y)=T_\eta(m),\qquad \eta:u\to y\text{ 位于 }U.
+	\]
+	对任意 \(y\)，\(m\mapsto s_m(y)\) 是线性同构，故这些族互不相交且填满 \(U\) 上的纤维。
+
+	把全部集合 \(s_m(U)\) 宣布为开集的基。若两个这样的族在 \(y\) 处相同，在两个底开集的交内取含 \(y\) 的上述小邻域 \(W\)。两族在 \(W\) 上均由共同的值沿 \(W\) 内道路运输得到，故在整个 \(W\) 上相同，证明了基的交集条件。投影在每个 \(s_m(U)\) 上与 \(U\) 同胚，并有保持模结构的局部同胚
+	\[
+		U\times\mathcal L_u\longrightarrow p^{-1}(U),\qquad(y,m)\longmapsto s_m(y).
+	\]
+	这给出所求覆盖。道路可有限细分到这些开集；每一段的提升正沿某个 \(s_m\) 走，其终点就是原来的运输，拼接后便恢复整条道路的运输。
+
+	局部系统态射在这样的邻域中由一点的线性映射决定，因此在所构造的覆盖上连续。若一开始已有局部模平凡化覆盖，再取同时包含在平凡化邻域内的上述小开集，则刚刚构造的 \(s_m\) 恰好是原覆盖的叶，故原拓扑被恢复。结合\cref{g2:prop:local-sheaf-fiber-space}对层与覆盖双向恢复的证明，得到连同态射在内的等价。
+\end{proof}
+
+半局部单连通性使小开集内的环路在整个空间中零伦，其运输因而为恒等。配合局部道路连通性，一个纤维中的值便能沿小开集内的道路唯一地展开为局部常值截面。这给出了路径运输与局部常值层在上述局部条件下的对应。
 
 \subsection{连通局部良好空间上的基本群表示}
 \label{g2:subsec:0501:03}
-待撰写
+现在假设 \(X\) 非空、连通、局部道路连通且半局部单连通。连通和局部道路连通使 \(X\) 道路连通：道路分支都是开集，多于一个分支便会给出分离。任选 \(x_0\in X\)，从这里到每一点都能走道路，所以一个纤维加上环路运输理应包含整个局部系统的信息。需要说明的是，如何从这份信息重建其他纤维，并把道路选择的歧义准确地除掉。
+
+\begin{theorem}[局部系统的分类]\label{g2:thm:local-system-classification}
+	设 \(X\) 非空、连通、局部道路连通且半局部单连通，\(R\) 为含幺交换环，\(x_0\in X\)，\(\pi=\pi_1(X,x_0)\)。取基点纤维及其单值
+	\begin{equation}\label{g2:eq:local-right-action}
+		M=\mathcal L_{x_0},\qquad m\cdot g=T_g(m)
+	\end{equation}
+	给出以下三类数据之间的等价：\(X\) 上的 \(R\) 模局部系统、\(X\) 上的局部常值 \(R\) 模层、以及带 \(R\) 线性右 \(\pi\) 作用的 \(R\) 模。第三类数据的态射为保持右作用的 \(R\) 线性映射。
+
+	具体地，对给定的右 \(\pi\) 模 \(M\)，取道路类万有覆盖 \(p:\widetilde X\to X\)，其中 \(g[\gamma]=[g*\gamma]\) 为左覆盖变换作用。相应的系数纤维空间为
+	\begin{equation}\label{g2:eq:associated-local-system}
+		E_M=(M\times\widetilde X)/{\sim},\qquad(m\cdot g,\widetilde x)\sim(m,g\widetilde x),
+	\end{equation}
+	\(M\) 取离散拓扑，\(E_M\) 取商拓扑，投影为 \([m,\widetilde x]\mapsto p(\widetilde x)\)。
+\end{theorem}
+\begin{proof}
+	先检查右作用。由\eqref{g2:eq:local-transport-composition}，\((m\cdot g)\cdot h=T_hT_g(m)=T_{gh}(m)=m\cdot(gh)\)，而单位环路作用为恒等。局部系统态射在 \(x_0\) 处与每条环路的运输交换，所以得到保持此右作用的线性映射。
+
+	反向构造用\cref{g2:thm:universal-cover,g2:prop:monodromy-deck}已证明的万有覆盖及左作用。式\eqref{g2:eq:associated-local-system}的等价关系正是左作用
+	\[
+		g\cdot(m,\widetilde x)=(m\cdot g^{-1},g\widetilde x)
+	\]
+	的轨道关系：先作用 \(h\) 再作用 \(g\)，第一坐标成为 \(m\cdot h^{-1}g^{-1}=m\cdot(gh)^{-1}\)，第二坐标成为 \(gh\widetilde x\)。每个作用映射是同胚，故轨道商映射是开映射，其开集饱和为这些同胚像的并。
+
+	选万有覆盖的一个道路连通均匀覆盖邻域 \(U\) 及其上一叶，记相应的逆映射为 \(s:U\to\widetilde X\)。\(\pi\) 在每个万有覆盖纤维上自由且传递：对于同终点道路类 \([\alpha],[\beta]\)，唯一的 \(g=[\beta*\bar\alpha]\) 满足 \(g[\alpha]=[\beta]\)。覆盖变换因此把所选叶送到全部其他叶。每个 \(E_M\) 中底点位于 \(U\) 的元素，都唯一写成 \([m,s(y)]\)，因为 \([m,gs(y)]=[m\cdot g,s(y)]\)。于是
+	\[
+		U\times M\longrightarrow E_M|_U,\qquad(y,m)\longmapsto[m,s(y)]
+	\]
+	为双射。它连续，并且把每个 \(V\times\{m\}\)、\(V\subset U\) 开，送到开集：该集合在商前的饱和集是 \(\{m\cdot g^{-1}\}\times gs(V)\) 对全部 \(g\) 的并。故这是同胚。换一叶只把纤维坐标改为 \(m\mapsto m\cdot g\)，这是线性同构，所以每个纤维的模结构与选择无关。
+
+	用 \(m\mapsto[m,\widetilde x_0]\)、\(\widetilde x_0=[e_{x_0}]\)，识别基点纤维与 \(M\)。代表 \(g\) 的环路从 \(\widetilde x_0\) 提升后终点为 \(g\widetilde x_0\)，因此 \(E_M\) 中相应运输的终值为
+	\[
+		[m,g\widetilde x_0]=[m\cdot g,\widetilde x_0],
+	\]
+	恰好恢复所给右作用。
+
+	若 \(M\) 来自已有局部系统 \(\mathcal L\)，定义
+	\[
+		\Phi:E_M\longrightarrow\coprod_x\mathcal L_x,\qquad
+		\Phi([m,[\gamma]])=T_\gamma(m).
+	\]
+	它尊重商关系，因为 \(T_{g*\gamma}(m)=T_\gamma(m\cdot g)\)。固定某条从 \(x_0\) 到 \(x\) 的道路，\(T_\gamma\) 给出每个纤维上的线性双射。在\cref{g2:prop:local-system-realization}的局部平凡化中，\(\Phi\) 是由固定线性同构给出的乘积映射，故连续，且逆连续；沿任一道路接上尾段也说明它保持运输。因此恢复的是原局部系统。
+
+	最后，保持右作用的线性映射 \(u:M\to N\) 诱导 \([m,\widetilde x]\mapsto[u(m),\widetilde x]\)，由商关系可知良定义，并在局部平凡化中连续且线性。任意局部系统态射都由基点分量唯一确定，因为沿 \(\gamma:x_0\to x\) 的自然性要求
+	\[
+		u_x=T^{\mathcal K}_\gamma\,u_{x_0}\,(T^{\mathcal L}_\gamma)^{-1}.
+	\]
+	上述构造给出每一个保持右作用的基点映射，所以不只对象的同构类对应，态射也一一对应。局部常值层的等价已由\cref{g2:prop:local-system-realization}证明。
+\end{proof}
+
+按已经固定的道路拼接顺序，\(g\mapsto T_g\) 满足 \(T_{gh}=T_hT_g\)，因而给出右作用。取逆便将复合顺序转换为通常的左表示：
+\begin{equation}\label{g2:eq:local-left-representation}
+	\rho:\pi\longrightarrow\operatorname{Aut}_R(M),\qquad\rho(g)=T_g^{-1}.
+\end{equation}
+此时 \(\rho(gh)=\rho(g)\rho(h)\)。当 \(M=R^r\) 并选定基时，这成为到 \(\operatorname{GL}_r(R)\) 的表示；换纤维基使表示同时共轭，而非产生一个新的局部系统同构类。群丛、群环模与局部系数的关联还可参见 \cite[第3.H节]{Hatcher2002}；比较其中的公式时须一并转换左右作用。
+
+\begin{example}[圆周上的符号系统]\label{g2:exm:sign-local-system}
+	取 \(X=S^1\)、\(R=\mathbb Z\)、\(M=\mathbb Z\)。由\cref{g2:prop:circle-fundamental-group}，\(\pi_1(S^1,1)=\mathbb Z\)，正向生成元记为 \(t\)。令 \(m\cdot t=-m\)，得到一个局部系统 \(\mathbb Z_-\)。在 \(\widetilde X=\mathbb R\)、\(p(s)=\exp(2\pi\mathrm{i}s)\) 的模型中，它的纤维空间为
+	\[
+		(\mathbb Z\times\mathbb R)/\bigl((m,s+1)\sim(-m,s)\bigr).
+	\]
+	沿一小段圆弧，整数系数保持不变；绕圆一周以后，同一起点纤维内的整数变成相反数。它不能同构于 \(\underline{\mathbb Z}\)：若基点同构为 \(u\)，自然性将要求 \(u(-m)=u(m)\)，取 \(m=1\) 即与 \(u\) 单射矛盾。它的每个纤维仍然都是 \(\mathbb Z\)，可见只列出纤维的同构类型不够。
+\end{example}
 
 \subsection{换基点和同构的相容}
 \label{g2:subsec:0501:04}
-待撰写
+分类中选择基点，是为了用一个模保存全部纤维的信息。改用另一个基点不会改变局部系统，但比较两个模时必须给出连接道路。\cref{g2:prop:basepoint-change}已用往返道路的消去证明基本群的换基点公式，下面将它与系数运输同时写出。
+
+\begin{proposition}[换基点与单值]\label{g2:prop:basepoint-local-system}
+	设 \(\mathcal L\) 为拓扑空间 \(X\) 上的 \(R\) 模局部系统，\(c:x_0\to x_1\) 为道路，\(M_i=\mathcal L_{x_i}\)。定义
+	\[
+		\psi_c:\pi_1(X,x_1)\longrightarrow\pi_1(X,x_0),\qquad
+		\psi_c([h])=[c*h*\bar c].
+	\]
+	这是群同构，且 \(T_c:M_0\to M_1\) 满足
+	\begin{equation}\label{g2:eq:basepoint-module-transport}
+		T_c(m\cdot\psi_c(h))=T_c(m)\cdot h.
+	\end{equation}
+	若 \(c':x_0\to x_1\) 为另一条道路，令 \(g=[c'*\bar c]\in\pi_1(X,x_0)\)，则
+	\[
+		T_{c'}=T_cT_g,\qquad\psi_{c'}(h)=g\psi_c(h)g^{-1}.
+	\]
+	局部系统态射 \(u:\mathcal L\to\mathcal K\) 满足 \(u_{x_1}T_c^{\mathcal L}=T_c^{\mathcal K}u_{x_0}\)，所以换基点同时保持态射以及同构的对应。
+\end{proposition}
+\begin{proof}
+	\(\psi_c\) 是\cref{g2:prop:basepoint-change}中从 \(x_0\) 到 \(x_1\) 的换基点同构的逆。直接展开可见
+	\[
+		T_{c*h*\bar c}=T_c^{-1}T_hT_c.
+	\]
+	两边左复合 \(T_c\) 就得到\eqref{g2:eq:basepoint-module-transport}。又因 \(c'\simeq(c'*\bar c)*c\)，运输公式给出 \(T_{c'}=T_cT_g\)。将 \(c'\simeq g*c\) 及其反向道路代入 \(c'*h*\bar c'\)，得到 \(\psi_{c'}(h)=g\psi_c(h)g^{-1}\)。最后的等式就是态射沿 \(c\) 的自然性方形。因此道路选择造成的两项变化彼此匹配，不会改变所描述的局部系统。
+\end{proof}
+
+若再接一条 \(d:x_1\to x_2\)，则 \(T_{c*d}=T_dT_c\)，同时 \(\psi_{c*d}=\psi_c\psi_d\)。这说明连续两次换基点与一次沿拼接道路换基点相容。纤维间的比较随连接道路而定；即使基本群交换，非恒等的环路运输仍会改变这个比较。
+
+\begin{proposition}[整体截面与平凡性]\label{g2:prop:parallel-sections}
+	设 \(X\) 非空、连通、局部道路连通且半局部单连通，\(\mathcal L\) 为 \(R\) 模局部系统，\(\mathscr F\) 为相应的局部常值层。固定 \(x_0\)，记 \(M=\mathcal L_{x_0}\)、\(\pi=\pi_1(X,x_0)\)。在 \(x_0\) 求值给出自然同构
+	\[
+		\mathscr F(X)\cong M^\pi,
+		\qquad M^\pi=\{m\in M:m\cdot g=m\text{ 对每个 }g\in\pi\}.
+	\]
+	局部系统 \(\mathcal L\) 平凡，当且仅当每个基点环路作用均为恒等。
+\end{proposition}
+\begin{proof}
+	把整体截面看成纤维覆盖的连续截面。它沿任何道路的限制都是从给定初值出发的提升，由提升唯一性，其终值必为初值的运输；所以基点值确定整个截面，而且被每条环路固定。反过来，给定 \(m\in M^\pi\)，对 \(x\in X\) 选 \(\gamma:x_0\to x\)，令 \(s(x)=T_\gamma m\)。若改用 \(\eta\)，则 \(g=[\gamma*\bar\eta]\) 满足 \([\gamma]=[g*\eta]\)，于是 \(T_\gamma m=T_\eta(m\cdot g)=T_\eta m\)，定义与选择无关。在局部平凡化邻域内，它正是沿小道路运输同一个值所得的截面，故连续。两构造互逆且线性。
+
+	常值系统的环路运输均为恒等，同构保持这一性质。若全部环路作用为恒等，上述方法可以同时用于每个 \(m\in M\)，给出 \(\underline M\to\mathcal L\) 的纤维线性同构，并与道路运输交换，故 \(\mathcal L\) 平凡。
+\end{proof}
+
+例如，\(\mathbb Z_-\) 的整体截面只有零，因为 \(m=-m\) 在 \(\mathbb Z\) 中只允许 \(m=0\)。在单连通的局部良好空间上，每个局部系统则平凡；选定一点的纤维后，沿道路运输给出不依赖道路选择的比较。这也是把系数拉到万有覆盖上以后能够使用一个固定模的原因。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

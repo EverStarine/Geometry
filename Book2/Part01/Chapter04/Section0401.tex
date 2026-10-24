@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 4.1 自由消解与系数障碍
 % 纲要位置：几何学计划纲要.md，第 1155 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,235 @@
 \section{自由消解与系数障碍}
 \label{g2:sec:0401}
 
-待撰写
+将整数系数改成模 \(m\) 系数，并不只是把最后得到的同调群逐项取模。例如，整数链复形 \(0\to\mathbb Z\xrightarrow{\times m}\mathbb Z\to0\) 的高一次同调为零；取模以后，微分变成零，高一次同调却成为 \(\mathbb Z/m\mathbb Z\)。原来不是圈的链，因为它的边界在新系数中消失而成为圈。另一方面，对整数链取到 \(\mathbb Z\) 的同态，也会使一个原来正合的序列失去正合性。本节建立的两个代数对象，分别记录这两种变化。
+
+\ProseParagraphBreak
+
+以下 \(R\) 是含幺交换主理想整环，模及同态均取在 \(R\) 上；整数系数对应 \(R=\mathbb Z\)，域也是允许的例子。主理想整环的条件将在“自由模的子模仍自由”处发挥作用。除非明确说明，模不要求有限生成，链复形集中在非负次数。链映射和链同伦仍采用\cref{g2:def:chain-map,g2:def:chain-homotopy}的公式，只把阿贝尔群同态换成 \(R\) 线性同态。
 
 \subsection{自由消解和比较同伦}
 \label{g2:subsec:0401:01}
-待撰写
+先回忆自由模实际提供的便利。一个\term[ziyou mo]{自由模}[free module] \(F=\bigoplus_{i\in I}Re_i\) 中，每个元素唯一写成有限个基元的线性组合。给出 \(F\to N\) 的线性映射，只需任意指定每个 \(e_i\) 的像。因此，若 \(q:E\to N\) 满射，任意 \(a:F\to N\) 都可提升为 \(\widetilde a:F\to E\)，使 \(q\widetilde a=a\)：对每个基元选一个 \(a(e_i)\) 的原像，再线性延拓即可。特别地，短正合列 \(0\to K\to E\to F\to0\) 的末项自由时，存在一个右逆 \(F\to E\)，从而 \(E\cong K\oplus F\)。这不表示右逆已经被数据唯一指定。
+
+\begin{proposition}[自由模的子模]\label{g2:prop:pid-free-submodule}
+	设 \(R\) 为主理想整环，\(F\) 为任意秩的自由 \(R\) 模，\(N\subset F\) 为子模。则 \(N\) 也是自由 \(R\) 模。
+\end{proposition}
+\begin{proof}
+	有限秩情形可以逐个基坐标消去；任意秩需要把同一思路按一个良序进行。采用通常的选择公理，将 \(F\) 的基写为 \(\{e_\alpha:\alpha<\kappa\}\)，其中指标按良序排列。令 \(F_\alpha\) 为所有 \(e_\beta\)、\(\beta<\alpha\) 张成的子模，令 \(N_\alpha=N\cap F_\alpha\)。在加入 \(e_\alpha\) 的一步，取最后一个坐标得到映射 \(N_{\alpha+1}\to R\)，其核为 \(N_\alpha\)，像是一个理想，故可写成 \(a_\alpha R\)。
+
+	若 \(a_\alpha=0\)，这一步没有增加子模。若 \(a_\alpha\ne0\)，选 \(x_\alpha\in N_{\alpha+1}\)，使其 \(e_\alpha\) 坐标等于 \(a_\alpha\)。任意 \(x\in N_{\alpha+1}\) 的最后坐标为 \(ra_\alpha\)，所以 \(x-rx_\alpha\in N_\alpha\)。同时，\(rx_\alpha\in N_\alpha\) 蕴含 \(ra_\alpha=0\)，由整环条件得 \(r=0\)。因此
+	\[
+		N_{\alpha+1}=N_\alpha\oplus Rx_\alpha.
+	\]
+	在极限指标 \(\lambda\) 处，有 \(N_\lambda=\bigcup_{\alpha<\lambda}N_\alpha\)，因为一个向量只有有限个非零坐标，其支撑已被较早的某一步包含。于是逐步得到的全部非零 \(x_\alpha\) 张成 \(N\)。它们线性无关：在任何有限线性关系中，取所涉及的最大指标，考察该坐标便知其系数为零，再依次消去。故这些 \(x_\alpha\) 构成 \(N\) 的自由基。这里没有把无限秩问题假装成一张有限矩阵；有限支撑确保极限步骤不增加额外关系。
+\end{proof}
+
+现在把“用生成元表示一个模，再记录生成元之间的关系”写成链复形。对 \(R\) 模 \(M\)，可以取以 \(M\) 的全部元素为基的自由模 \(F_0\)，把对应基元送到该元素，得到满射 \(\varepsilon:F_0\to M\)。再用自由模映到 \(\ker\varepsilon\)，然后继续记录关系之间的关系，便得到以下对象。
+
+\begin{definition}[自由消解]\label{g2:def:free-resolution}
+	设 \(M\) 为 \(R\) 模。一个增广链复形
+	\[
+		\cdots\longrightarrow F_2\xrightarrow{\mathrm{d}_2}F_1\xrightarrow{\mathrm{d}_1}F_0\xrightarrow{\varepsilon}M\longrightarrow0
+	\]
+	若处处正合且所有 \(F_i\) 自由，称为 \(M\) 的\term[ziyou xiaojie]{自由消解}[free resolution]。写 \(F_\bullet\to M\) 时保留增广；写链复形 \(F_\bullet\) 时则去掉 \(M\)，在零次之后接零，故 \(H_0(F_\bullet)\cong M\)，而 \(H_i(F_\bullet)=0\) 对 \(i>0\) 成立。
+\end{definition}
+
+在本章的主理想整环上，\cref{g2:prop:pid-free-submodule}说明 \(\ker\varepsilon\) 已经自由，所以总可以选到只有两项的消解
+\begin{equation}\label{g2:eq:two-term-free-resolution}
+	0\longrightarrow F_1\xrightarrow{i}F_0\xrightarrow{\varepsilon}M\longrightarrow0.
+\end{equation}
+保留一般消解的定义仍有用途：几何构造给出的自由链群不一定只有两项；我们需要证明，用不同的自由表示作计算，最终结果能够自然比较。
+
+\begin{proposition}[消解的比较]\label{g2:prop:resolution-comparison}
+	设 \(R\) 为含幺交换环，\(F_\bullet\to M\)、\(E_\bullet\to N\) 为自由 \(R\) 模消解。每个同态 \(u:M\to N\) 都有一个链映射提升 \(f:F_\bullet\to E_\bullet\)，满足 \(\varepsilon_Ef_0=u\varepsilon_F\)。任意两个这样的提升 \(f,g\) 链同伦，且可取 \(H_{-1}=0\)。特别地，同一个模的任意两个自由消解链同伦等价，所诱导的比较在链同伦意义下唯一。
+\end{proposition}
+\begin{proof}
+	构造提升的困难是，每一层选取的像还必须具有已经指定的边界。正合性保证所需边界有原像，自由性则允许逐个基元选取这些原像。先利用 \(E_0\to N\) 满射，提升 \(u\varepsilon_F\) 为 \(f_0\)。若 \(f_0,\ldots,f_{n-1}\) 已构造，则 \(f_{n-1}\mathrm{d}_{F,n}\) 的像在 \(\ker\mathrm{d}_{E,n-1}\) 中；当 \(n=1\) 时将这里的 \(\mathrm{d}_{E,0}\) 理解为增广，因为
+	\[
+		\varepsilon_Ef_0\mathrm{d}_{F,1}=u\varepsilon_F\mathrm{d}_{F,1}=0.
+	\]
+	当 \(n>1\) 时，所需等式来自 \(\mathrm{d}_Ef_{n-1}\mathrm{d}_F=f_{n-2}\mathrm{d}_F^2=0\)。由消解正合性，该核等于 \(\mathrm{d}_E(E_n)\)，故可逐个 \(F_n\) 的基元提升，得到 \(f_n\)。所构造的图为
+	\[
+		\begin{tikzcd}[column sep=large]
+			\cdots\arrow[r] & F_1\arrow[r,"\mathrm{d}_F"]\arrow[d,"f_1"] & F_0\arrow[r,"\varepsilon_F"]\arrow[d,"f_0"] & M\arrow[r]\arrow[d,"u"] & 0 \\
+			\cdots\arrow[r] & E_1\arrow[r,"\mathrm{d}_E"] & E_0\arrow[r,"\varepsilon_E"] & N\arrow[r] & 0 .
+		\end{tikzcd}
+	\]
+	若 \(f,g\) 提升同一个 \(u\)，则 \(g_0-f_0\) 的像在 \(\ker\varepsilon_E\) 中，故可提升为 \(H_0:F_0\to E_1\)。假定已做到 \(g_{n-1}-f_{n-1}=\mathrm{d}_EH_{n-1}+H_{n-2}\mathrm{d}_F\)，则
+	\[
+		\mathrm{d}_E(g_n-f_n-H_{n-1}\mathrm{d}_F)
+		=(g_{n-1}-f_{n-1}-\mathrm{d}_EH_{n-1})\mathrm{d}_F
+		=H_{n-2}\mathrm{d}_F^2=0.
+	\]
+	所以可以把括号中的映射提升为 \(H_n:F_n\to E_{n+1}\)，得到 \(g-f=\mathrm{d}_EH+H\mathrm{d}_F\)。这里 \(H_{-1}=0\)，与\cref{g2:def:chain-homotopy}的约定一致。最后，分别提升 \(\operatorname{id}_M\) 得 \(F\to E\to F\) 与 \(E\to F\to E\)；两个复合均提升恒等模同态，故分别与恒等链映射链同伦。这就给出所需的等价及唯一性。
+\end{proof}
+
+比较命题的证明只使用自由模的提升性质与消解正合性，因而适用于一般含幺交换环。主理想整环的条件进一步将计算所需的消解缩短到\eqref{g2:eq:two-term-free-resolution}。
 
 \subsection{Ext、Tor 的定义与整数循环模计算}
 \label{g2:subsec:0401:02}
-待撰写
+先把本节要施行的两个操作说清楚。记 \(\operatorname{Hom}_R(M,G)\) 为所有 \(R\) 线性映射 \(M\to G\) 组成的模；同态 \(u:M\to N\) 通过预复合给出反向映射 \(u^*:\operatorname{Hom}_R(N,G)\to\operatorname{Hom}_R(M,G)\)。而\term[zhangliangji]{张量积}[tensor product] \(M\otimes_R G\) 是由符号 \(x\otimes g\) 生成的模，对每个变量加上加法关系及关系 \(rx\otimes g=x\otimes rg=r(x\otimes g)\)。因此，任意双线性映射 \(b:M\times G\to L\) 唯一通过一个线性映射 \(\overline b:M\otimes_R G\to L\) 分解：
+\[
+	\begin{tikzcd}[column sep=large]
+		M\times G\arrow[r,"{(x,g)\mapsto x\otimes g}"]\arrow[dr,"b"'] & M\otimes_R G\arrow[d,dashed,"\exists!\,\overline b"] \\
+		& L .
+	\end{tikzcd}
+\]
+“唯一”由纯张量生成得到，“存在”由双线性使定义关系都映到零得到。这个泛性质将用于证明下列正合性。
+
+\begin{proposition}[张量与同态的正合性]\label{g2:prop:tensor-exactness}
+	设 \(R\) 为含幺交换环，\(G\) 为 \(R\) 模，\(A\xrightarrow{i}B\xrightarrow{q}D\to0\) 正合。则
+	\[
+		A\otimes_R G\xrightarrow{i\otimes1}B\otimes_R G\xrightarrow{q\otimes1}D\otimes_R G\longrightarrow0
+	\]
+	正合，且 \(0\to\operatorname{Hom}_R(D,G)\to\operatorname{Hom}_R(B,G)\to\operatorname{Hom}_R(A,G)\) 正合。若 \(F\) 自由，则 \(F\otimes_R-\) 与 \(\operatorname{Hom}_R(F,-)\) 都把模的短正合列送为短正合列。
+\end{proposition}
+\begin{proof}
+	张量后的满射性由纯张量逐个提升得到。令 \(Q=(B\otimes_R G)/\operatorname{im}(i\otimes1)\)。给 \(d\in D\) 选原像 \(b\in B\)，则 \(d\otimes g\mapsto[b\otimes g]\) 与选择无关：另一原像相差 \(i(a)\)，它在 \(Q\) 中为零。此规则双线性，故给出 \(D\otimes_R G\to Q\)，与由 \(q\otimes1\) 诱导的 \(Q\to D\otimes_R G\) 互逆。这证明中间位置正合。
+
+	对于同态模，一个 \(B\to G\) 的映射在 \(i(A)=\ker q\) 上为零，当且仅当它唯一下降为 \(D\to G\) 的映射；由此得到所陈述的正合列。若 \(F=\bigoplus_I R\)，则 \(F\otimes_R G\cong\bigoplus_I G\)，同态逐坐标作用，直和保持短正合列。对于 \(\operatorname{Hom}_R(F,-)\)，核可逐个映射检查，末端满射则由为每个基元的像选原像得到。这里使用直和中元素具有有限支撑，以及自由基上的选择；没有附加有限秩假设。
+\end{proof}
+
+注意，这里的一般张量列没有在左端补 \(0\)，一般同态列没有在右端补 \(0\)。例如 \(\mathbb Z\xrightarrow{\times m}\mathbb Z\) 是单射，但张量 \(\mathbb Z/m\mathbb Z\) 后变成零映射；而 \(2\mathbb Z\to\mathbb Z\)、\(2k\mapsto k\) 不能延拓为 \(\mathbb Z\to\mathbb Z\) 的同态。接下来的定义把这两个缺口变成可比较的群。
+
+\begin{definition}[Ext 与 Tor]\label{g2:def:ext-tor}
+	设 \(R\) 为含幺交换环，\(M,G\) 为 \(R\) 模，选自由消解 \(F_\bullet\to M\)，并去掉增广项 \(M\)。对 \(j\ge0\)，定义
+	\[
+		\operatorname{Ext}_R^j(M,G)\coloneqq H^j(\operatorname{Hom}_R(F_\bullet,G)),\qquad
+		\operatorname{Tor}^R_j(M,G)\coloneqq H_j(F_\bullet\otimes_R G).
+	\]
+	上链复形的第 \(j\) 项为 \(\operatorname{Hom}_R(F_j,G)\)，其微分取 \(\delta^j\varphi=\varphi\mathrm{d}_{j+1}\)；张量后的微分为 \(\mathrm{d}_j\otimes1\)。写 \(\operatorname{Ext}_R(M,G)\)、\(\operatorname{Tor}^R(M,G)\) 时专指次数 \(1\)。这两个构造分别称为\term[Ext hanzi]{Ext 函子}[Ext functor]与\term[Tor hanzi]{Tor 函子}[Tor functor]。\symidx{\(\operatorname{Ext}_R^j(M,G)\)：自由消解取同态后的上同调}\symidx{\(\operatorname{Tor}^R_j(M,G)\)：自由消解取张量后的同调}
+\end{definition}
+
+上链微分使次数上升一，且 \(\delta^{j+1}\delta^j\varphi=\varphi\mathrm{d}_{j+1}\mathrm{d}_{j+2}=0\)；因此上同调指 \(\ker\delta^j/\operatorname{im}\delta^{j-1}\)。这里去掉消解的增广项 \(M\)，以保留零次的系数信息。\cref{g2:prop:tensor-exactness}给出自然同构
+\[
+	\operatorname{Ext}_R^0(M,G)\cong\operatorname{Hom}_R(M,G),\qquad
+	\operatorname{Tor}^R_0(M,G)\cong M\otimes_R G.
+\]
+
+\begin{proposition}[消解独立性]\label{g2:prop:ext-tor-independence}
+	\cref{g2:def:ext-tor}的模在典范同构意义下与自由消解的选择无关。\(\operatorname{Ext}_R^j(-,-)\) 对第一变量反变、第二变量协变，\(\operatorname{Tor}^R_j(-,-)\) 对两个变量都协变；这些作用彼此交换。若 \(R\) 为主理想整环，则两者在 \(j\ge2\) 时均为零。
+\end{proposition}
+\begin{proof}
+	对 \(u:M\to N\)，选\cref{g2:prop:resolution-comparison}给出的链提升 \(f:F\to E\)。张量得到 \(f\otimes1:F\otimes G\to E\otimes G\)，取同态则得到反向上链映射 \(f^*:\operatorname{Hom}_R(E,G)\to\operatorname{Hom}_R(F,G)\)。若另一提升 \(g\) 满足 \(g-f=\mathrm{d}_EH+H\mathrm{d}_F\)，张量后同一等式仍成立；对于上链，令 \(K\varphi=\varphi H\)，则逐次数有 \(g^*-f^*=\delta K+K\delta\)。在闭上链上，右端是上边界，故两提升诱导相同的上同调映射。张量的情形同\cref{g2:prop:chain-homotopy-homology}，在圈上两像之差为边界。
+
+	两个模同态的提升可以取为其提升的复合，恒等模同态可以提升为恒等链映射，因此得到相应的函子律。特别地，对同一个模的两个消解提升恒等同态，得到互逆的同调、上同调同构；三个消解之间的比较也满足复合律，这就是“典范”的具体含义。第二变量同态 \(G\to G'\) 直接通过张量或后复合作用，并与前述提升交换。最后，当 \(R\) 为主理想整环时，可用两项自由消解计算，其次数 \(2\) 及以上均为零，故高次 Ext 与 Tor 消失。
+\end{proof}
+
+\begin{proposition}[循环模的系数障碍]\label{g2:prop:cyclic-ext-tor}
+	设 \(R\) 为主理想整环，\(a\in R\setminus\{0\}\)，\(G\) 为任意 \(R\) 模，记 \(G[a]=\{g\in G:ag=0\}\)。则对 \(G\) 自然地有
+	\[
+		\operatorname{Ext}_R^1(R/aR,G)\cong G/aG,\qquad
+		\operatorname{Tor}^R_1(R/aR,G)\cong G[a],\qquad
+		(R/aR)\otimes_R G\cong G/aG.
+	\]
+	若 \(F\) 自由，则 \(\operatorname{Ext}_R^j(F,G)=\operatorname{Tor}^R_j(F,G)=0\) 对 \(j\ge1\) 成立。对于正整数 \(m,n\)，令 \(d=\gcd(m,n)\)，则
+	\[
+		\operatorname{Ext}_{\mathbb Z}^1(\mathbb Z/m\mathbb Z,\mathbb Z/n\mathbb Z)\cong\mathbb Z/d\mathbb Z,\qquad
+		\operatorname{Tor}^{\mathbb Z}_1(\mathbb Z/m\mathbb Z,\mathbb Z/n\mathbb Z)\cong\mathbb Z/d\mathbb Z.
+	\]
+\end{proposition}
+\begin{proof}
+	用消解 \(0\to R\xrightarrow{\times a}R\to R/aR\to0\)。它的首箭头单射，因为 \(R\) 是整环且 \(a\ne0\)。取同态后得到从零次 \(G\) 到一次 \(G\) 的乘 \(a\) 映射，故一次上同调为余核 \(G/aG\)；取张量后得到从一次 \(G\) 到零次 \(G\) 的同一乘法，故一次同调为核 \(G[a]\)，零次同调为余核。系数同态与乘 \(a\) 交换，所以这些识别对 \(G\) 自然。若第一变量自由，使用仅有零次项 \(F\) 的消解即可。
+
+	对 \(G=\mathbb Z/n\mathbb Z\)，乘 \(m\) 的像是 \(d\mathbb Z/n\mathbb Z\)，商群由 \(1\) 的类生成，阶为 \(d\)。其核由 \(n/d\) 的类生成，阶也为 \(d\)。这给出最后两项的群同构，但两次出现的 \(\mathbb Z/d\mathbb Z\) 分别来自一个余核和一个核，不能只因群同构便混淆它们的自然映射。
+\end{proof}
+
+例如，\(\operatorname{Ext}_{\mathbb Z}^1(\mathbb Z/m\mathbb Z,\mathbb Z)=\mathbb Z/m\mathbb Z\)，而 \(\operatorname{Tor}^{\mathbb Z}_1(\mathbb Z/m\mathbb Z,\mathbb Z)=0\)。把第二变量换成 \(\mathbb Z/m\mathbb Z\) 后，两项都成为 \(\mathbb Z/m\mathbb Z\)。Ext 在这里记录一个整数关系的同态不能任意延拓，Tor 则记录这个关系在新系数中出现了非零核。
 
 \subsection{维数平移的最低形式}
 \label{g2:subsec:0401:03}
-待撰写
+维数平移把一个模的系数障碍转到它的关系模上。将 \(M\) 写成自由模 \(F\) 的商，并记关系模为 \(K\)，就得到短正合列 \(0\to K\to F\to M\to0\)。对这条列取同态或张量，可以把 \(M\) 的一次 Ext、Tor 分别写成余核与核；这正是随后万有系数计算所需的形式。
+
+\begin{proposition}[维数平移]\label{g2:prop:dimension-shifting}
+	设 \(R\) 为主理想整环，\(0\to K\xrightarrow{i}F\to M\to0\) 正合且 \(F\) 自由。对任意 \(R\) 模 \(G\)，有自然正合列
+	\[
+		\begin{aligned}
+			0\longrightarrow\operatorname{Hom}_R(M,G)&\longrightarrow\operatorname{Hom}_R(F,G)\longrightarrow\operatorname{Hom}_R(K,G)\\
+			&\longrightarrow\operatorname{Ext}_R^1(M,G)\longrightarrow0,
+		\end{aligned}
+	\]
+	\[
+		0\longrightarrow\operatorname{Tor}^R_1(M,G)\longrightarrow K\otimes_R G\xrightarrow{i\otimes1}F\otimes_R G\longrightarrow M\otimes_R G\longrightarrow0.
+	\]
+	若将一个自由消解接在 \(K\) 前面，则对 \(j\ge1\) 得到自然识别
+	\[
+		\operatorname{Ext}_R^{j+1}(M,G)\cong\operatorname{Ext}_R^j(K,G),\qquad
+		\operatorname{Tor}^R_{j+1}(M,G)\cong\operatorname{Tor}^R_j(K,G).
+	\]
+	在当前主理想整环条件下，\(K\) 自由，故最后两式的两端均为零。
+\end{proposition}
+\begin{proof}
+	由\cref{g2:prop:pid-free-submodule}，\(K\to F\to M\) 本身就是两项自由消解。因此 Ext 是 \(\operatorname{Hom}_R(F,G)\to\operatorname{Hom}_R(K,G)\) 的余核，Tor 是 \(K\otimes_R G\to F\otimes_R G\) 的核；其余正合位置由\cref{g2:prop:tensor-exactness}给出。若 \(\cdots\to P_1\to P_0\to K\to0\) 是自由消解，则
+	\[
+		\cdots\longrightarrow P_1\longrightarrow P_0\longrightarrow F\longrightarrow M\longrightarrow0
+	\]
+	也是自由消解，\(P_j\) 在新消解中处于次数 \(j+1\)。在次数 \(j\ge1\) 的核与像处比较两个张量复形或上链复形，公式完全相同，只是次数增加了一。比较命题保证改变消解不影响这些同构；对短正合列之间的交换图，所诱导的比较同样相容。零次不能直接如此平移，因为 \(F\) 的那一项恰好改变了最低端的核或像，它的补偿正是前面两条正合列。
+\end{proof}
+
+这两条序列也说明，选取一个自由表示以后，Ext 与 Tor 已经可以通过一个余核和一个核计算。对有限直和，可把各模的两项自由消解取直和，所以 Ext 与 Tor 对第一变量的有限直和分别分配；对第二变量的有限直和也逐项分配。无限直和不能无区别地代入同态公式：\(\operatorname{Hom}_R(\bigoplus_I M_i,G)\cong\prod_I\operatorname{Hom}_R(M_i,G)\)，右边一般是直积。
+
+\begin{proposition}[Tor 的正合列与对称性]\label{g2:prop:tor-symmetry}
+	设 \(R\) 为主理想整环，\(M,A,B,D\) 为 \(R\) 模。对短正合列 \(0\to A\to B\to D\to0\)，有自然正合列
+	\[
+		\begin{aligned}
+			0\longrightarrow\operatorname{Tor}^R_1(M,A)&\longrightarrow\operatorname{Tor}^R_1(M,B)\longrightarrow\operatorname{Tor}^R_1(M,D)\\
+			&\longrightarrow M\otimes_R A\longrightarrow M\otimes_R B\longrightarrow M\otimes_R D\longrightarrow0.
+		\end{aligned}
+	\]
+	并且存在对两个变量都自然的同构 \(\operatorname{Tor}^R_1(M,G)\cong\operatorname{Tor}^R_1(G,M)\)。特别地，第二变量自由时 Tor 也为零。
+\end{proposition}
+\begin{proof}
+	取 \(M\) 的两项自由消解 \(F_1\to F_0\)。由\cref{g2:prop:tensor-exactness}，分别张量 \(A,B,D\) 得到逐项短正合的三个链复形。应用\cref{g2:thm:homology-LES}的构造：提升商复形中的圈，取边界，再认作子复形中的圈，就得到所列序列。该证明只用了加法和线性同态，故对 \(R\) 模完全相同；两个复形只有次数 \(1,0\)，因而长正合列止于这六项。连接同态及其自然性来自同样的代表元过程。
+
+	若 \(G\) 自由，则 \(F_1\otimes_R G\to F_0\otimes_R G\) 单射，因为它是原单射的若干份直和，所以 \(\operatorname{Tor}^R_1(M,G)=0\)。再取 \(G\) 的两项自由消解 \(0\to E_1\to E_0\to G\to0\)，将其作为刚才的系数短正合列。由于含 \(E_1,E_0\) 的 Tor 项均为零，得到
+	\[
+		\operatorname{Tor}^R_1(M,G)\cong\ker(M\otimes_R E_1\longrightarrow M\otimes_R E_0).
+	\]
+	交换纯张量的两个因子，将此核识别为 \(\ker(E_1\otimes_R M\to E_0\otimes_R M)=\operatorname{Tor}^R_1(G,M)\)。这些交换与张量同态相容，连接同态自然；更换 \(E\) 时，消解比较给出的映射使所有相关方块交换。因此所构造的同构对两个模同态都自然。
+\end{proof}
 
 \subsection{张量复形与符号约定}
 \label{g2:subsec:0401:04}
-待撰写
+空间乘积将同时携带两个链的维数。若 \(x\) 的次数为 \(p\)，\(y\) 的次数为 \(q\)，它们的张量应处于总次数 \(p+q\)。问题在于取边界时，两种先后次序必须抵消，这决定了下面的符号。
+
+\begin{definition}[张量复形]\label{g2:def:tensor-chain-complex}
+	设 \(R\) 为含幺交换环，\(C,D\) 为非负 \(R\) 模链复形。其\term[zhangliang fuxing]{张量复形}[tensor product complex]定义为
+	\[
+		(C\otimes_R D)_n=\bigoplus_{p+q=n}C_p\otimes_R D_q,
+	\]
+	并对 \(x\in C_p\)、\(y\in D_q\) 规定
+	\begin{equation}\label{g2:eq:tensor-differential}
+		\mathrm{d}(x\otimes y)=\mathrm{d}_Cx\otimes y+(-1)^p x\otimes\mathrm{d}_Dy.
+	\end{equation}
+	\(R\) 模 \(G\) 作为集中在零次的复形时，这一定义恢复 \(C\otimes_R G\) 的系数变换复形。
+\end{definition}
+
+直接再取一次微分，得到
+\[
+	\mathrm{d}^2(x\otimes y)=\mathrm{d}_C^2x\otimes y+
+	\bigl((-1)^{p-1}+(-1)^p\bigr)\mathrm{d}_Cx\otimes\mathrm{d}_Dy+
+	x\otimes\mathrm{d}_D^2y=0.
+\]
+这个符号使两个混合项相消。对于两个次数为一的链，公式是 \(\mathrm{d}(x\otimes y)=\mathrm{d}x\otimes y-x\otimes\mathrm{d}y\)，正与按边界方向走一遍矩形时相对两边的方向相反相符。
+
+\begin{proposition}[交换因子与张量同伦]\label{g2:prop:tensor-sign-homotopy}
+	设 \(R\) 为含幺交换环，所有复形均为非负 \(R\) 模链复形。次数保持的链映射可逐因子取张量。交换映射
+	\[
+		\tau:C\otimes_R D\longrightarrow D\otimes_R C,
+		\qquad \tau(x\otimes y)=(-1)^{pq}y\otimes x\quad(x\in C_p,\ y\in D_q)
+	\]
+	是链同构。若 \(g-f=\mathrm{d}H+H\mathrm{d}\) 为 \(C\to C'\) 的链同伦，则 \(H\otimes1\) 给出 \(f\otimes1\) 到 \(g\otimes1\) 的链同伦。若 \(g-f=\mathrm{d}K+K\mathrm{d}\) 为 \(D\to D'\) 的链同伦，则 \(L(x\otimes y)=(-1)^p x\otimes Ky\) 给出 \(1\otimes f\) 到 \(1\otimes g\) 的链同伦。
+\end{proposition}
+\begin{proof}
+	链映射的张量与\eqref{g2:eq:tensor-differential}逐项交换。对于交换映射，\(\mathrm{d}_Dy\otimes x\) 在 \(\mathrm{d}\tau(x\otimes y)\) 中的符号为 \( (-1)^{pq}\)，在 \(\tau\mathrm{d}(x\otimes y)\) 中的符号为 \( (-1)^{p+p(q-1)}=(-1)^{pq}\)；\(y\otimes\mathrm{d}_Cx\) 的两处符号分别为 \( (-1)^{pq+q}\) 与 \( (-1)^{(p-1)q}\)，也相同。再交换一次所得符号为 \( (-1)^{2pq}=1\)，故它是链同构。
+
+	计算 \(\mathrm{d}(H\otimes1)+(H\otimes1)\mathrm{d}\) 时，含 \(Hx\otimes\mathrm{d}y\) 的两项系数为 \( (-1)^{p+1}\) 与 \( (-1)^p\)，相互抵消；余下项为 \( (\mathrm{d}H+H\mathrm{d})x\otimes y=(g-f)x\otimes y\)。对于 \(L\)，含 \(\mathrm{d}x\otimes Ky\) 的两项系数为 \( (-1)^p\) 与 \( (-1)^{p-1}\)，相互抵消，余下为 \(x\otimes(\mathrm{d}K+K\mathrm{d})y\)。这证明两个同伦公式。
+\end{proof}
+
+由此，张量一个任意复形都保持已经给出的链同伦等价，因为同伦逆与两个同伦可以逐项张量。这里断言的是链同伦等价，不能直接把它换成任意准同构；后者只保证原同调同构，未必提供可供张量的同伦。自由消解的比较恰好提供了较强的链同伦信息。
+
+\ProseParagraphBreak
+
+自由消解现在给出了 Ext、Tor 的核与余核表示，比较同伦保证这些表示与选择无关。下一节将链群拆成圈、边界和同调之间的短正合列，再用这些代数工具计算系数变化产生的项。自由消解及万有系数定理的阅读对照可见\cite[第3.1节与第3.A节]{Hatcher2002}。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

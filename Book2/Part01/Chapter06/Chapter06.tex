@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：## 第6章　流形对偶、支集与相交配对
 % 纲要位置：几何学计划纲要.md，第 1224 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,14 +14,32 @@
 \BookChapterNumber{g2:ch:06}
 
 \begin{chapterabstract}
-待撰写
+	本章以局部基本类的唯一粘合为起点，构造帽积并证明流形对偶。紧支上同调与普通同调、普通上同调与局部有限同调分别通过基本类对应，证明明确处理开集粘合及两类极限。带边界时，领圈将内部的对偶转换为 Poincaré--Lefschetz 的两个相对版本；不可定向时，定向局部系统保留绕行反号的信息。最后由杯帽求值建立整数交形式的单模性，比较曲面与四维模型，构造挠类的链接配对，并推出 Betti 数与 Euler 示性数的限制。
 \end{chapterabstract}
 
 \begin{learninggoals}
-待撰写
+	\begin{itemize}
+		\item 从局部同调生成元构造紧集上的基本类，证明局部一致性、唯一粘合及限制相容，区别闭流形与非紧流形的普通顶次同调。
+		\item 写出局部系数帽积的前后面公式，核对边界、自然性及杯帽求值，区分普通、紧支和局部有限支集条件。
+		\item 完整证明两种无边界 Poincaré 对偶，说明开覆盖、可数穷尽、邻域极限及逆极限修正项各承担的作用。
+		\item 用相对基本类和领圈证明带边界的两个对偶版本，计算区间、Möbius 带与半直线，辨认边界、定向及无穷远三种不同修正。
+		\item 证明中维交形式的对称性和整数单模性，计算典型曲面及四维模型，并用链接配对与 Euler 示性数分析拓扑约束。
+	\end{itemize}
 \end{learninggoals}
 
-待撰写
+环面的两条基本闭曲线可以互相检测：沿一个方向的曲线，与横向绕行的曲线相遇一次；交换方向，带符号的相交次序也改变。上一章给不可定向曲面换上定向系数后，原来无法粘合的顶次整数类又出现了。这两个现象都提示我们，同调并非各个次数彼此孤立的一列群。一个 \(n\) 维流形的局部方向，可能把 \(k\) 次上同调与 \(n-k\) 次同调联系起来。
+
+\ProseParagraphBreak
+
+这样的联系必须先问清“允许怎样的链”。在圆周上，常值函数可以对应整个有向圆周；在实轴上，常值函数同样存在，却没有有限的一维基本圈。在闭区间上，有限的有向区间又有两个端点。把三种空间放在一起，已经能看出紧性、无穷远与边界条件不能省略。Poincaré 对偶\footnote{Jules Henri Poincaré（1854--1912），法国数学家，在代数拓扑、微分方程与天体力学方面作出奠基性贡献。}将在明确这些条件后给出准确的同构。
+
+\ProseParagraphBreak
+
+本章先证明紧集附近的局部类如何粘合，再定义用上链截取链的帽积。无边界对偶从 Euclid 空间的计算出发，通过 Mayer--Vietoris 序列推广到整个流形。普通上同调与局部有限同调的比较还需要保留逆极限中可能非零的修正项，所需代数在本章建立。带边界的两个版本随后由领圈、内部及边界的对偶推得。
+
+\ProseParagraphBreak
+
+\chapref{g2:ch:02}的相对同调与切除用于局部化，\chapref{g2:ch:04}的上同调与杯积用于配对，\chapref{g2:ch:05}的局部系统则记录定向运输。对偶的证明直接使用拓扑流形的坐标邻域和奇异链，因而同时适用于尚未给出三角剖分或光滑结构的情形。相交数先通过杯积和基本类定义；横截代表的几何解释将在本卷后面的横截性与相交理论中进一步建立。领圈存在性及紧流形有限生成性所用的拓扑结果在相应构造处给出版本与来源。主要阅读对照见\cite[第3.3节、第3.H节]{Hatcher2002}。
 
 \input{Part01/Chapter06/Section0601}
 \input{Part01/Chapter06/Section0602}
@@ -30,8 +48,341 @@
 \input{Part01/Chapter06/Section0605}
 
 \begin{chaptersummary}
-待撰写
+	定向系统把各点的顶次局部同调和沿道路的符号运输放在一起。紧集上的局部值分类同时给出高次消失、顶次注入及相容局部类的存在，因此基本类可以唯一粘合。定向系统的规范平方为常值系统，使不可定向流形也具有规范的扭系数基本类；非紧流形的整体类则需要局部有限链。
+
+	\ProseParagraphBreak
+
+	帽积在单形前面计算上链值，把系数运到后面的首顶点，再保留这个后面。边界公式控制它何时输出绝对圈或相对圈，杯帽求值公式把它与数值配对联系起来。紧支上链帽局部有限链只留下有限项，因此普通、紧支与局部有限三种条件具有具体的链级含义。
+
+	\ProseParagraphBreak
+
+	Euclid 模型中的对偶把顶次紧支上圈送到一个点类。开覆盖的正合列与直接极限将它推广为 \(H_c^k(M;\mathcal L)\cong H_{n-k}(M;\mathcal O_R\otimes_R\mathcal L)\)。邻域对偶再把紧集附近的上同调与相对同调联系起来，两个逆极限短正合列保留相同的修正项，得到 \(H^k(M;\mathcal L)\cong H_{n-k}^{\mathrm{lf}}(M;\mathcal O_R\otimes_R\mathcal L)\)。紧时两种版本重合。
+
+	\ProseParagraphBreak
+
+	带边界时，基本类属于 \(H_n(M,\partial M;\mathcal O_R)\)，其连接像是按外法向优先约定得到的边界基本类。上同调的绝对或相对条件与同调的相对或绝对条件交换。非紧时继续使用普通同调作为目标，就必须在上同调侧保留紧支集；定向系统则独立负责绕闭路的反号。
+
+	\ProseParagraphBreak
+
+	闭定向偶维流形的中维自由商具有整数单模交形式，交换两个中维类时出现 \((-1)^m\)。曲面的形式交替，四维的形式对称；同样的 Betti 数和实符号差仍可对应不同的整数奇偶性。整数求值看不到的挠信息，由取值于 \(\mathbb Q/\mathbb Z\) 的链接配对检测。对偶还迫使任意闭奇维流形的 Euler 示性数为零，并使闭可定向 \(4\ell+2\) 维流形的 Euler 示性数为偶数。
 \end{chaptersummary}
 
 \BookExercises
-待撰写
+除题干另行说明外使用整数系数。每题先辨认空间是否紧、是否有边界、是否可定向，并明确采用哪种支集；这些条件决定对偶公式中出现的群，而不只是决定最后的一个符号。
+
+\begin{exercise}\label{g2:ex:convergent-compact-local-classes}
+	令 \(K=\{0\}\cup\{1/j:j\geq1\}\subset\mathbb R\)，在 \(\mathbb R\) 上取标准定向和整数系数。计算 \(H_1(\mathbb R,\mathbb R\setminus K;\mathbb Z)\)，把它写成由各点局部值描述的群，并给出一组具体相对圈，使该群同构于 \(\mathbb Z\oplus\bigoplus_{j\geq1}\mathbb Z\)。说明只要求“沿 \(K\) 内每条道路取值不变”为何不足以刻画这些局部值。
+\end{exercise}
+\begin{solution}
+	由\cref{g2:lem:compact-localization}，所求群是 \(K\) 上整数值局部常值函数的群。写 \(a_0\) 为 \(0\) 处的值、\(a_j\) 为 \(1/j\) 处的值。每个 \(1/j\) 在 \(K\) 中孤立，那里没有额外限制；在 \(0\) 处连续，则恰要求存在 \(N\)，使 \(a_j=a_0\) 对所有 \(j>N\) 成立。因此
+	\[
+		H_1(\mathbb R,\mathbb R\setminus K;\mathbb Z)
+		\cong\{(a_0,a_1,a_2,\ldots):a_j=a_0\text{ 对充分大的 }j\text{ 成立}\}.
+	\]
+	映射 \((a_0,a_1,a_2,\ldots)\mapsto(a_0,(a_j-a_0)_{j\geq1})\) 给出 \(\mathbb Z\oplus\bigoplus_{j\geq1}\mathbb Z\) 的同构，因为后一个数列只有有限个非零项。
+
+	取从 \(-1\) 到 \(2\) 的正向线段 \(c\)，它在所有 \(K\) 中的点都有局部值 \(1\)。对每个 \(j\)，取只包含 \(K\) 的一个点 \(1/j\) 的小闭区间，并令 \(c_j\) 为该区间的正向线段；两个端点均选在 \(\mathbb R\setminus K\) 中。则 \(c_j\) 的局部值只在 \(1/j\) 为 \(1\)，其余为零。所求类唯一写为
+	\[
+		a_0[c]+\sum_{j\geq1}(a_j-a_0)[c_j],
+	\]
+	其中求和有限。任意道路的像连通，而 \(K\) 的连通子集都只有一点，所以 \(K\) 内道路均常值。沿道路不变会允许任意数列，例如 \(a_j=j\)、\(a_0=0\)；这个数列在 \(0\) 处不连续，不能来自上述相对类。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:disconnected-top-classes}
+	固定 \(n\geq1\)，令
+	\[
+		M=\coprod_{j\geq1}S^n_j\ \amalg\ \mathbb R^n
+	\]
+	取不交并拓扑，并在每个分支选标准定向。计算普通整数 \(H_n(M;\mathbb Z)\)。是否存在一个普通同调类在每点的局部值都为 \(1\)？若删去 \(\mathbb R^n\) 分支，答案是否改变？同时说明对每个紧集 \(K\subset M\)，为什么 \([M]_K\) 仍存在。
+\end{exercise}
+\begin{solution}
+	每个奇异单形的像连通，因此位于一个分支；一条普通链只有有限个单形，故链复形是各分支链复形的直和，取同调也得到直和。每个球面分支的顶次群由基本类生成，而 \(\mathbb R^n\) 的顶次群由\cref{g2:prop:noncompact-top-homology}为零，所以
+	\[
+		H_n(M;\mathbb Z)=\bigoplus_{j\geq1}\mathbb Z[S^n_j].
+	\]
+	普通类只在有限个球面分支上有非零局部值，在 \(\mathbb R^n\) 分支上恒为零，所以不可能处处为 \(1\)。删去 \(\mathbb R^n\) 后，虽然每个分支都紧，普通链仍只能涉及有限个分支，答案依然是否定的。这也说明“各连通分支闭”不能代替整个流形紧。
+
+	各分支本身是开集；它们覆盖紧集 \(K\)，所以 \(K\) 只遇到有限个分支。在每个被遇到的分支上，\(K\) 的交是紧集，\cref{g2:thm:fundamental-class}给出该紧集上的基本类。把这些有限多个相对圈相加，就得到 \([M]_K\)。它与每个点的局部值均为 \(1\) 的要求相容，却没有要求一条链同时遍及无穷多个分支。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:ring-orientation-units}
+	设 \(M\) 是连通、不可定向的闭拓扑流形。分别取 \(R=\mathbb Z/6\)、\(\mathbb Z/8\) 和 \(\mathbb F_2\)，计算 \(H_n(M;R)\) 与 \(H_n(M;\mathcal O_R)\)，判断是否存在常系数 \(R\) 定向的基本类。再取可定向闭流形 \(N\)、\(R=\mathbb Z/5\)，在一组平行整数生成元 \(\mu\) 下令 \(\theta=2\mu\)。比较把 \(\mu\) 送到 \(2\) 与把 \(\theta\) 送到 \(1\) 这两个系数同构对规范扭基本类的作用。
+\end{exercise}
+\begin{solution}
+	由\cref{g2:exm:closed-manifold-top-homology}，普通顶次群是 \(R\) 中被 \(2\) 消灭的元素：三个环分别给出 \(\{0,3\}\cong\mathbb Z/2\)、\(\{0,4\}\cong\mathbb Z/2\) 与 \(\mathbb F_2\)。由\cref{g2:thm:fundamental-class}，扭系数顶次群分别为整个 \(\mathbb Z/6\)、\(\mathbb Z/8\) 与 \(\mathbb F_2\)，其规范基本类均对应 \(1\)。前两个环中满足 \(2a=0\) 的非零元素 \(3,4\) 都不是单位，所以不产生处处为生成元的普通类；在 \(\mathbb F_2\) 中 \(1\) 是单位，确有普通基本类。
+
+	对 \(N\)，规范扭基本类的局部值为 \(\mu\otimes\mu\)。系数映射 \(\mu\mapsto2\) 将其变为 \(2\mu=\theta\)，因此得到所选 \(R\) 定向的普通基本类。另一映射要求 \(2\mu\mapsto1\)，所以把 \(\mu\) 送到 \(3\)，得到局部值 \(3\mu\)。它仍是一个普通基本类，但对应另一种 \(R\) 定向；\(2\) 与 \(3\) 在 \(\mathbb Z/5\) 中不同。这个例子说明，对任意环单位，不能把“用定向与系数配对”和“把定向基元写成 \(1\)”混为同一个系数映射。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:discrete-support-theories}
+	设 \(X=\mathbb N\) 具有离散拓扑，系数为含幺交换环 \(R\)。计算 \(H_*(X;R)\)、\(H^*(X;R)\)、\(H_c^*(X;R)\)、\(H_*^{\mathrm{lf}}(X;R)\)，并写出次数零的两种帽积 \(H^0\otimes H_0^{\mathrm{lf}}\to H_0^{\mathrm{lf}}\)、\(H_c^0\otimes H_0^{\mathrm{lf}}\to H_0\)。最后说明为何不能给任意两个无限系数序列定义无条件的求值配对。
+\end{exercise}
+\begin{solution}
+	每条奇异单形的参数域连通，故其像在离散空间中只能是一个点。于是普通链复形是各点链复形的直和，上链复形是各点上链复形的乘积。离散空间的紧集恰是有限集，所以紧支上链复形是各点上链复形的直和；局部有限链复形则是各点链复形的乘积，因为单点邻域已经满足局部有限条件。一个点在每个次数恰有一条奇异单形，边界为交错和：正偶数次数的边界为恒等，奇数次数的边界为零。故每点复形仅在零次有同调 \(R\)，其显式收缩也可逐坐标应用于直和或乘积。得到
+	\[
+		H_0(X;R)=H_c^0(X;R)=\bigoplus_{i\ge1}R,
+		\qquad H^0(X;R)=H_0^{\mathrm{lf}}(X;R)=\prod_{i\ge1}R,
+	\]
+	所有正次数的群均为零。零次帽积就是逐点相乘：\((a_i)\frown(b_i)=(a_ib_i)\)。当 \((a_i)\) 任意时，结果仍是乘积中的元素；当 \((a_i)\) 有限支撑时，结果在直和中。因此紧支条件恰保证帽积产生有限链。若再取零链的系数和，求值为 \(\sum_i a_ib_i\)；一般环没有定义任意无穷和的运算，所以只有具备有限性条件时，这才给出所需的 \(R\) 值配对。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:ray-support-theories}
+	设 \(Y=[0,\infty)\)，系数为含幺交换环 \(R\)。计算 \(H_c^*(Y;R)\) 和 \(H_*^{\mathrm{lf}}(Y;R)\)，并与普通同调、普通上同调比较。构造一条局部有限一链，其边界是 \(-[0]\)，解释这为何不与普通 \(H_0(Y;R)=R\) 矛盾。
+\end{exercise}
+\begin{solution}
+	取紧穷尽 \(K_j=[0,j]\)。空间 \(Y\) 与补集 \(Y\setminus K_j=(j,\infty)\) 都非空可缩，包含映射在零次同调和零次上同调上为恒等，在其余次数上的群均为零。由相对长正合列，所有 \(H_m(Y,Y\setminus K_j;R)\) 与 \(H^k(Y,Y\setminus K_j;R)\) 都为零。紧支上同调的直接极限公式给出 \(H_c^k(Y;R)=0\)；局部有限同调的逆极限短正合列中，极限项与修正项均为零，故 \(H_m^{\mathrm{lf}}(Y;R)=0\)。普通理论中，\(Y\) 可缩，所以仅有 \(H_0(Y;R)=H^0(Y;R)=R\)。
+
+	令 \(e_i(t)=i+t\)，其中 \(i\ge0\)、\(0\le t\le1\)。链 \(b=\sum_{i\ge0}e_i\) 局部有限，每个正整数点的边界贡献相互抵消，原点处只剩 \(-[0]\)，所以 \(\partial b=-[0]\)。普通链复形不允许这条无穷和；任意有限零链边界的系数和为零，因此 \([0]\) 在普通同调中仍非零。从实轴改为半轴后，只剩一个无穷远方向，完整实轴的局部有限一维圈也随之消失。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:inverse-limit-correction}
+	考虑群塔 \(\mathbb Z\xleftarrow{\,2\,}\mathbb Z\xleftarrow{\,2\,}\cdots\)。令
+	\[
+		\mathbb Z_2\coloneqq\varprojlim_{N\ge1}\mathbb Z/2^N\mathbb Z,
+	\]
+	其中过渡映射为模较小的 \(2\) 次幂；把整数按其所有剩余类嵌入 \(\mathbb Z_2\)。证明该群塔的逆极限为零，而 \(\varprojlim{}^1\mathbb Z\cong\mathbb Z_2/\mathbb Z\)。可把 \(\sum_{j\ge1}2^{j-1}y_j\) 理解为一组相容的模 \(2^N\) 有限和，无须预先学习赋值或完备性。
+\end{exercise}
+\begin{solution}
+	若 \(x_j=2x_{j+1}\)，则 \(x_1\) 被所有 \(2^N\) 整除，所以 \(x_1=0\)；递推得每个 \(x_j=0\)。故逆极限为零。
+
+	定义 \(S:\prod_{j\ge1}\mathbb Z\to\mathbb Z_2\)，令其模 \(2^N\) 分量为
+	\[
+		S((y_j))_N=\sum_{j=1}^N2^{j-1}y_j\pmod{2^N}.
+	\]
+	增加 \(N\) 只增加一个被 \(2^N\) 整除的项，所以这些分量相容。任意相容剩余类都能逐次选取二进制数字 \(y_j\in\{0,1\}\) 表示，故 \(S\) 满射。记 \(\Delta((x_j))=(x_j-2x_{j+1})\)，则有限和逐项抵消给出
+	\[
+		\sum_{j=1}^N2^{j-1}(x_j-2x_{j+1})=x_1-2^Nx_{N+1}.
+	\]
+	因此 \(S(\Delta x)\) 正是整数 \(x_1\) 对应的相容剩余类，\(S\) 在余核上诱导满射 \(\operatorname{coker}\Delta\to\mathbb Z_2/\mathbb Z\)。
+
+	若 \(S(y)\) 等于某个整数 \(a\)，令 \(x_1=a\)，并递推令 \(x_{j+1}=(x_j-y_j)/2\)。这些数确为整数：显式地，
+	\[
+		x_{N+1}=\frac{a-\sum_{j=1}^N2^{j-1}y_j}{2^N},
+	\]
+	而分子能被 \(2^N\) 整除，正是 \(S(y)=a\) 的第 \(N\) 个同余条件。于是 \(\Delta x=y\)，证明诱导映射单射，得到所求同构。
+
+	修正项确实非零。例如相容的几何级数 \(s=1+4+4^2+\cdots\) 在每个模 \(2^N\) 意义下满足 \(3s=-1\)。若 \(s\) 来自整数 \(a\)，则整数 \(3a+1\) 被所有 \(2^N\) 整除，只能为零，但 \(3a=-1\) 无整数解。因此 \(s\) 给出 \(\mathbb Z_2/\mathbb Z\) 中的非零类。这个例子说明，逆极限为零并不保证同一群塔的修正项也为零。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:cylinder-support-duality}
+	令 \(M=S^1\times\mathbb R\)，取乘积定向。计算它的普通同调、普通上同调、紧支上同调与局部有限同调。进一步计算忘记支集的映射 \(H_c^k(M)\to H^k(M)\) 及包含有限链的映射 \(H_j(M)\to H_j^{\mathrm{lf}}(M)\)，并用一条具体局部有限链说明为什么圆周 \(S^1\times\{0\}\) 在后一理论中为零。
+\end{exercise}
+\begin{solution}
+	\(M\) 形变收缩到核心圆周，故普通同调与上同调均在次数 \(0,1\) 为 \(\mathbb Z\)，其余次数为零。由两种对偶，
+	\[
+		H_c^k(M)=\begin{cases}\mathbb Z,&k=1,2,\\0,&\text{其他},\end{cases}
+		\qquad H_j^{\mathrm{lf}}(M)=\begin{cases}\mathbb Z,&j=1,2,\\0,&\text{其他}.\end{cases}
+	\]
+	一次局部有限生成元可看成竖直直线 \(\{z_0\}\times\mathbb R\)，而二次生成元是整个有向圆柱。
+
+	只有 \(H_c^1(M)\to H^1(M)\) 可能非零。取共尾紧集 \(K_a=S^1\times[-a,a]\)。补空间由两个开圆柱组成，限制映射
+	\[
+		H^1(M)=\mathbb Z\longrightarrow H^1(M\setminus K_a)=\mathbb Z\oplus\mathbb Z
+	\]
+	是对角映射，因此单射。对的正合列说明 \(H^1(M,M\setminus K_a)\to H^1(M)\) 的像为零，取直接极限得忘记支集映射为零。其他次数由源或靶为零也都为零。
+
+	有限链到局部有限链的零次映射因靶为零而为零。对一次，取核心圆周的有限基本圈 \(z\)，以及半直线上的局部有限链 \(b=\sum_{i\ge0}[i,i+1]\)，满足 \(\partial b=-[0]\)。逐项作叉积得到圆柱中的局部有限二链；每个紧集只涉及有限多个区间，故求和合法。乘积边界公式给出
+	\[
+		\partial(z\times b)=\partial z\times b- z\times\partial b=z\times[0].
+	\]
+	因此核心圆周在局部有限同调中成为边界，一次映射也为零。两个方向的零映射与对偶的支集相容性一致；上面两个抽象同构于 \(\mathbb Z\) 的一次群并没有通过这个自然包含彼此同构。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:punctured-sphere-duality}
+	从 \(S^2\) 中删去 \(r\geq1\) 个不同点，得到 \(M_r\)。计算它的普通整数同调，并用对偶计算全部 \(H_c^k(M_r;\mathbb Z)\) 与 \(H_j^{\mathrm{lf}}(M_r;\mathbb Z)\)。在计算普通一次群时说明绕各个删去点的小圆周之间有何关系。
+\end{exercise}
+\begin{solution}
+	\(M_r\) 道路连通：连接两点的球面道路若经过某个删去点，可在互不相交的小圆盘中绕开它们。它是非紧、无边界的二维流形，故\cref{g2:prop:noncompact-top-homology}给出 \(H_j(M_r)=0\)（\(j\geq2\)）。令 \(V\) 为围绕删去点的 \(r\) 个不交小开圆盘的并，则 \(S^2=M_r\cup V\)，交集是 \(r\) 个穿孔圆盘的并。Mayer--Vietoris 序列给出
+	\[
+		0\longrightarrow H_2(S^2)=\mathbb Z\longrightarrow\mathbb Z^r
+		\longrightarrow H_1(M_r)\longrightarrow0.
+	\]
+	中间的 \(\mathbb Z^r\) 由交集中的小圆周生成。把球面基本圈分成盘内和盘外两部分，其连接像是各盘边界的和；每个系数的绝对值为一，这是基本类在各盘内的局部值。按盘外部分诱导的方向选择圆周生成元后，该映射为 \(1\mapsto(1,\ldots,1)\)。所以
+	\[
+		H_0(M_r)=\mathbb Z,\qquad H_1(M_r)=\mathbb Z^r/\mathbb Z(1,\ldots,1)\cong\mathbb Z^{r-1}.
+	\]
+	这也说明各小圆周之和为零，除此之外没有整数关系。
+
+	继承球面定向后，紧支对偶给出 \(H_c^1(M_r)=\mathbb Z^{r-1}\)、\(H_c^2(M_r)=\mathbb Z\)，其他次数为零。普通同调均自由，万有系数定理给出 \(H^0(M_r)=\mathbb Z\)、\(H^1(M_r)=\mathbb Z^{r-1}\)，其他次数为零；局部有限对偶遂给出 \(H_2^{\mathrm{lf}}(M_r)=\mathbb Z\)、\(H_1^{\mathrm{lf}}(M_r)=\mathbb Z^{r-1}\)，其他次数为零。特别地，删去任意有限个点都不消灭局部有限二维基本类，却使普通二维同调为零。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:degree-and-duality-injection}
+	设 \(f:M\to N\) 为连通闭已定向 \(n\) 维拓扑流形之间的连续映射。以 \(f_*[M]=d[N]\) 定义整数 \(d\)。若 \(d\) 在域 \(\mathbb F\) 中非零，证明 \(f^*:H^k(N;\mathbb F)\to H^k(M;\mathbb F)\) 在所有次数单射，\(f_*:H_k(M;\mathbb F)\to H_k(N;\mathbb F)\) 满射，因而 \(b_k(N;\mathbb F)\leq b_k(M;\mathbb F)\)。应用于四维模型，证明不存在从 \(\mathbb CP^2\) 到 \(S^2\times S^2\) 的非零映射度映射；反方向的任意映射度都为偶数。
+\end{exercise}
+\begin{solution}
+	连通闭定向流形的顶次整数群由基本类生成，故 \(d\) 唯一。若 \(0\ne\alpha\in H^k(N;\mathbb F)\)，Poincaré 对偶使 \(\alpha\frown[N]\ne0\)。域上的万有系数定理把 \(H^{n-k}(N;\mathbb F)\) 识别为 \(H_{n-k}(N;\mathbb F)\) 的线性对偶，故可选 \(\beta\) 使
+	\[
+		\langle\alpha\smile\beta,[N]\rangle
+		=\langle\beta,\alpha\frown[N]\rangle\ne0.
+	\]
+	自然性与基本类的系数变化给出
+	\[
+		\langle f^*\alpha\smile f^*\beta,[M]\rangle
+		=\langle\alpha\smile\beta,f_*[M]\rangle
+		=d\langle\alpha\smile\beta,[N]\rangle\ne0.
+	\]
+	所以 \(f^*\alpha\ne0\)，证明单射。若 \(f_*\) 的像不是全部 \(H_k(N;\mathbb F)\)，可在该像上取零而在某个像外向量上非零的线性泛函；万有系数定理把它对应到一个非零上同调类，其拉回却为零，矛盾。故 \(f_*\) 满射。各维数有限由\cref{g2:lem:compact-manifold-finite-homology}和系数定理保证，遂得 Betti 数不等式。
+
+	取 \(\mathbb F=\mathbb Q\)。\(\mathbb CP^2\) 的二次 Betti 数为一，\(S^2\times S^2\) 的为二，因此前一方向不允许非零映射度。反方向设 \(g:S^2\times S^2\to\mathbb CP^2\)，以 \(u\) 为射影空间的二次整数正向生成元，以 \(x,y\) 为两个球面类的拉回。写 \(g^*u=ax+by\)，其中 \(a,b\in\mathbb Z\)。由 \(x^2=y^2=0\)、\(xy=yx\) 和 \(\langle xy,[S^2\times S^2]\rangle=1\)，得到
+	\[
+		\deg g=\langle g^*(u^2),[S^2\times S^2]\rangle=2ab.
+	\]
+	故每个这样的映射度为偶数。这是整数乘法关系给出的进一步限制，单凭有理 Betti 数不等式看不出来。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:contractible-boundary-homology}
+	设 \(M\) 是非空、紧、可缩的 Hausdorff、第二可数拓扑 \(n\) 维流形，\(n\geq1\)，带领圈。证明 \(\partial M\ne\varnothing\)，并且
+	\[
+		\widetilde H_j(\partial M;\mathbb Z)\cong
+		\begin{cases}
+			\mathbb Z,&j=n-1,\\
+			0,&j\ne n-1.
+		\end{cases}
+	\]
+	说明这并未断言 \(\partial M\) 同胚于球面。
+\end{exercise}
+\begin{solution}
+	可缩性使 \(M\) 道路连通且基本群平凡；\cref{g2:prop:orientation-monodromy}与领圈延拓说明 \(\mathcal O_M\) 可平凡化，所以 \(M\) 可定向。若边界为空，闭流形对偶把非零的 \(H^0(M;\mathbb Z)=\mathbb Z\) 同构到 \(H_n(M;\mathbb Z)\)，而 \(n\geq1\) 与可缩性使后者为零，矛盾。因此边界非空。
+
+	由\cref{g2:thm:poincare-lefschetz}，\(H_i(M,\partial M;\mathbb Z)\cong H^{n-i}(M;\mathbb Z)\)，故相对同调只在 \(i=n\) 时为 \(\mathbb Z\)。因为 \(M\) 非空可缩，对的约化长正合列给出 \(H_i(M,\partial M)\cong\widetilde H_{i-1}(\partial M)\)，从而得到所列各群。\(n=1\) 时这包括 \(\widetilde H_0(\partial M)=\mathbb Z\)：边界是紧的零维流形，因而由恰好两个点组成。一般维数下，同调只记录这些群及相关映射，不给出边界的全部基本群或同胚类型；上面的推理没有建立球面识别定理。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:annulus-duality-boundary}
+	令 \(M=S^1\times[0,1]\)，以参数顺序“先区间、后圆周”给出定向。将外边界 \(A_1=S^1\times\{1\}\) 和内边界 \(A_0=S^1\times\{0\}\) 都暂按圆周正向选生成元，并按 \((A_1,A_0)\) 排列。计算整数系数的两种对偶同构两端各群，并写出
+	\[
+		H_2(M,\partial M)\longrightarrow H_1(\partial M)\longrightarrow H_1(M),
+		\qquad
+		H_1(M,\partial M)\longrightarrow H_0(\partial M)\longrightarrow H_0(M)
+	\]
+	中的全部矩阵。说明径向弧与核心圆周为何分别代表相对和绝对的一次生成元。
+\end{exercise}
+\begin{solution}
+	圆环形变收缩到核心圆周，故 \(H_0(M)=H_1(M)=\mathbb Z\)，其他正次数同调为零；上同调同样只在 \(0,1\) 次为 \(\mathbb Z\)。相对基本类的边界为外边界减内边界，所以第一段在所选基下为
+	\[
+		\mathbb Z\xrightarrow{\binom{1}{-1}}\mathbb Z^2
+		\xrightarrow{(1\ \ 1)}\mathbb Z.
+	\]
+	两条边界圆周沿同一圆周方向收缩到核心圆周，解释了第二个矩阵的两个 \(1\)。从内边界指向外边界的径向弧 \(\gamma\) 满足 \(\partial\gamma=[A_1]-[A_0]\)，所以第二段的矩阵也分别为 \(\binom{1}{-1}\) 与 \((1\ \ 1)\)。长正合列因而给出 \(H_2(M,\partial M)=H_1(M,\partial M)=\mathbb Z\)、\(H_0(M,\partial M)=0\)，且径向弧生成相对一次群。
+
+	两条对偶分别是
+	\[
+		H^0(M)=\mathbb Z\cong H_2(M,\partial M),\qquad
+		H^1(M)=\mathbb Z\cong H_1(M,\partial M)
+	\]
+	和
+	\[
+		H^1(M,\partial M)=\mathbb Z\cong H_1(M),\qquad
+		H^2(M,\partial M)=\mathbb Z\cong H_0(M).
+	\]
+	相对上同调的其余次数为零，可由对偶或自由同调群的万有系数定理得到。核心圆周没有边界，代表绝对一次生成元；径向弧的两个端点不相同，故不是绝对圈，但端点均在 \(\partial M\)，所以它是相对圈。二者的差别正是两种对偶中边界条件的互换。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:punctured-moebius-support}
+	从闭 Möbius 带的内部去掉一点，得到非紧流形 \(P\)，仍记原来的边界圆周为 \(A=\partial P\)。可把被去点附近的一圈压到一条内边界，从而将 \(P\) 形变收缩到两个圆周的并 \(S^1_a\vee S^1_b\)：\(a\) 绕 Möbius 核心，\(b\) 绕被去掉的点，原边界在这两个生成元中表示为 \(a^2b\)（方向可据此选取）。记 \(\mathcal O=\mathcal O_P\)。
+	\begin{enumerate}
+		\item 计算 \(H_*(P;\mathbb Z)\)、\(H_*(P;\mathcal O)\) 及两种系数下的 \(H_*(P,A)\)。
+		\item 计算 \(H_c^*(P;\mathbb Z)\) 和 \(H_c^*(P,A;\mathbb Z)\)。指出紧支集、相对条件与定向系数各自在哪一步起作用。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	(1) 楔和有一个顶点和两条边，常系数边界为零，所以 \(H_0(P;\mathbb Z)=\mathbb Z\)、\(H_1(P;\mathbb Z)=\mathbb Z^2\)，高次为零。定向系统的单值为 \(T_a=-1,T_b=1\)，扭系数胞腔边界为
+	\[
+		\mathrm d_1:\mathbb Z^2\longrightarrow\mathbb Z,\qquad
+		(x,y)\longmapsto-2x.
+	\]
+	于是 \(H_0(P;\mathcal O)=\mathbb Z/2\)、\(H_1(P;\mathcal O)=\mathbb Z\langle b\rangle\)，高次仍为零。
+
+	常系数下，边界包含在一次同调上的矩阵是 \(\binom{2}{1}\)。它单射，余核同构于 \(\mathbb Z\)，而零次包含为同构，所以 \(H_2(P,A;\mathbb Z)=0\)、\(H_1(P,A;\mathbb Z)=\mathbb Z\)、\(H_0(P,A;\mathbb Z)=0\)。定向系统限制到 \(A\) 是平凡的，因为 \(T_{a^2b}=1\)。沿 \(a^2b\) 走动时，两段 \(a\) 的系数分别为 \(1,-1\)，相互抵消；随后 \(b\) 的系数又是 \(1\)。因此 \(H_1(A;\mathcal O)\to H_1(P;\mathcal O)\) 是同构，\(H_0(A;\mathcal O)=\mathbb Z\to H_0(P;\mathcal O)=\mathbb Z/2\) 是模二化。对的长正合列给出
+	\[
+		H_2(P,A;\mathcal O)=0,\qquad
+		H_1(P,A;\mathcal O)\cong2\mathbb Z\cong\mathbb Z,\qquad
+		H_0(P,A;\mathcal O)=0.
+	\]
+	相对次数高于二的群也由长正合列消失。
+
+	(2) 原边界的紧领圈在去掉内点后仍可取为闭领圈，故\cref{g2:thm:noncompact-lefschetz}适用，维数为二。第一种对偶给出
+	\[
+		H_c^k(P;\mathbb Z)=
+		\begin{cases}
+			\mathbb Z,&k=1,\\
+			0,&k\ne1,
+		\end{cases}
+	\]
+	因为对应目标是 \(H_{2-k}(P,A;\mathcal O)\)。第二种对偶给出
+	\[
+		H_c^k(P,A;\mathbb Z)=
+		\begin{cases}
+			\mathbb Z,&k=1,\\
+			\mathbb Z/2,&k=2,\\
+			0,&k\ne1,2,
+		\end{cases}
+	\]
+	因为对应目标是 \(H_{2-k}(P;\mathcal O)\)。去点使流形非紧，所以左侧必须保留紧支集；上链是否在原边界消失，决定右侧是绝对还是相对同调；核心环路的定向反转使右侧使用 \(\mathcal O\)，产生第二式中的二阶挠元。只改其中一个条件，不能得到另外两个条件所负责的修正。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:integral-symplectic-basis}
+	设 \(F\) 为有限秩自由阿贝尔群，\(Q:F\times F\to\mathbb Z\) 是单模交替形式。证明存在整数基 \(a_1,b_1,\ldots,a_g,b_g\)，使 \(Q(a_i,b_j)=\delta_{ij}\)、\(Q(a_i,a_j)=Q(b_i,b_j)=0\)。这里要求给出整数基的构造，而不只是在实数域上将矩阵化为标准形。
+\end{exercise}
+\begin{solution}
+	对 \(\operatorname{rank}F\) 归纳。零秩时没有待选向量。非零时，取一组整数基的首元 \(a\)。它是本原向量，即不是其他向量的非单位整数倍。单模性说明同构 \(F\to F^*\)、\(x\mapsto Q(x,-)\) 将它送到本原整数线性泛函；本原泛函的系数最大公因数为 \(1\)，把最大公因数写成这些系数的整数线性组合，便得到 \(b\in F\)，使 \(Q(a,b)=1\)。
+
+	令 \(P=\mathbb Za\oplus\mathbb Zb\)。这确为直和，因为对 \(ra+sb=0\) 分别与 \(a,b\) 配对，得到 \(s=r=0\)。对任意 \(x\in F\)，令
+	\[
+		x'=x-Q(x,b)a+Q(x,a)b.
+	\]
+	由交替性及 \(Q(a,b)=1\)，直接算得 \(Q(x',a)=Q(x',b)=0\)。因此 \(F=P\oplus P^\perp\)，投影中使用的全是整数系数。若元素同时在 \(P\) 与 \(P^\perp\)，同样与 \(a,b\) 配对便知它为零。
+
+	在这个整数直和分解下，\(Q\) 的矩阵为 \(\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)\oplus Q'\)。首块行列式为 \(1\)，整体行列式为 \(\pm1\)，所以 \(Q'\) 仍单模；\(P^\perp\) 为自由直和因子且秩减二。应用归纳，合并各步得到的基即可。每一步保持整数格，这比仅在实数域上对角化更强。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:four-manifold-form-comparison}
+	令 \(X=(\mathbb CP^2\mathbin{\#}\overline{\mathbb CP^2})\mathbin{\#}(S^2\times S^2)\)、\(Y=(S^2\times S^2)\mathbin{\#}(S^2\times S^2)\)，各取相容定向。计算它们的 \(b_1,b_2,\chi,\sigma\) 及整数交形式，判断这些计算是否排除二者同胚。再证明 \(\mathbb CP^2\) 不存在反转定向的自同胚。
+\end{exercise}
+\begin{solution}
+	这些模型的一次整数同调均为零，连通和在一次上由粘合球面 \(S^3\) 的 Mayer--Vietoris 序列保持两因子的直和，因此两者 \(b_1=0\)。二次自由群均为 \(\mathbb Z^4\)，且\cref{g2:prop:connected-sum-intersection}给出
+	\[
+		Q_X=(1)\oplus(-1)\oplus H,
+		\qquad Q_Y=H\oplus H,
+		\qquad H=\begin{pmatrix}0&1\\1&0\end{pmatrix}.
+	\]
+	两种形式都各有两个正方向和两个负方向，所以 \(b_2=4\)、\(\sigma=0\)；Euler 公式给出 \(\chi=2+4=6\)。然而 \(Q_X\) 有自配对 \(1\) 的向量，\(Q_Y\) 的任意向量自配对都是偶数。整数换基以及整体反号都不改变奇偶性，因此二者不存在任何同胚；相同的 Betti 数、Euler 示性数和符号差在这里不足以区分它们。
+
+	若 \(f:\mathbb CP^2\to\mathbb CP^2\) 是反转定向的自同胚，则在 \(H^2\cong\mathbb Z\) 上有 \(f^*u=\varepsilon u\)、\(\varepsilon=\pm1\)。于是
+	\[
+		\langle f^*(u^2),[\mathbb CP^2]\rangle
+		=\varepsilon^2\langle u^2,[\mathbb CP^2]\rangle=1.
+	\]
+	另一方面，自然性将左边写成 \(\langle u^2,f_*[\mathbb CP^2]\rangle=-1\)，矛盾。因此这样的自同胚不存在。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:cyclic-linking-changes}
+	设有限循环群 \(T=\mathbb Z/r\) 上有完美双线性配对 \(\lambda:T\times T\to\mathbb Q/\mathbb Z\)，\(r\geq2\)。选生成元 \(a\)，证明 \(\lambda(a,a)=s/r+\mathbb Z\)，其中 \(\gcd(s,r)=1\)。若换生成元 \(a'=ua\)，其中 \(u\) 为模 \(r\) 单位，求新系数。由此判断 \(\mathbb Z/5\) 上系数分别为 \(1/5\) 和 \(2/5\) 的配对是否同构；如果还允许把一个配对整体反号，结论是否改变？
+\end{exercise}
+\begin{solution}
+	由 \(ra=0\)，有 \(r\lambda(a,a)=0\)，所以其值属于 \(\mathbb Q/\mathbb Z\) 中被 \(r\) 消灭的子群，即可写成 \(s/r+\mathbb Z\)。双线性给出 \(\lambda(ia,ja)=ijs/r+\mathbb Z\)。相应字符 \(\lambda(a,-)\) 的阶为 \(r/\gcd(s,r)\)；完美性要求生成元映为字符群的生成元，故 \(\gcd(s,r)=1\)。反之，若这个最大公因数为 \(1\)，字符的阶为 \(r\)，诱导的两个 \(r\) 阶循环群之间的映射就是同构。
+
+	换生成元时
+	\[
+		\lambda(a',a')=u^2\lambda(a,a)=\frac{u^2s}{r}+\mathbb Z.
+	\]
+	因此同构只能把 \(s\) 乘以单位的平方。模 \(5\) 的非零平方为 \(1,4\)，所以从 \(s=1\) 只能得到 \(1,4\)，不能得到 \(2\)。两个配对不同构。若允许反号，可能系数仍为 \(\pm1,\pm4\)，模 \(5\) 仍只是 \(1,4\)，所以结论不变。这个纯代数计算说明：即使挠群本身相同，附带的链接配对也可能不同；它没有额外断言每个给定配对已由某个指定流形实现。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:betti-duality-obstructions}
+	判断以下数据能否属于所述闭连通流形，并说明每个排除使用的条件：
+	\begin{enumerate}
+		\item 一个可定向六维流形的有理 Betti 数为 \((1,2,3,5,3,2,1)\)。
+		\item 一个任意闭七维流形的 Euler 示性数为 \(2\)。
+		\item 一个闭可定向四维流形满足 \(b_1=0\)、\(b_2=1\)、\(\sigma=0\)。
+	\end{enumerate}
+	最后说明为什么不可定向的 \(\mathbb RP^2\) 具有奇数 Euler 示性数，并不与本节的 \(4\ell+2\) 维结论矛盾。
+\end{exercise}
+\begin{solution}
+	(1) 给定数列虽然关于中间次数对称，但中间维数为 \(3\)，对应的整数自由交形式必须交替且单模，其秩 \(b_3=5\) 应为偶数，矛盾。等价地，数列的交错和为 \(-1\)，而闭可定向六维流形的 Euler 示性数必须为偶数。可定向条件用于普通有理系数的中维对偶。
+
+	(2) 不可能。任意闭奇维流形在模二系数下都具有 Betti 数对称性，所以 Euler 示性数为零；系数无关性将此值识别为整数 Euler 示性数。这里不需要可定向。
+
+	(3) 不可能。非退化的一维实对称形式只有一个正方向或一个负方向，所以 \(\sigma=1\) 或 \(-1\)，不能为零。仅有 Euler 公式会给出 \(\chi=3\)，这个数本身并不矛盾；排除来自交形式的非退化性及其惯性指数。
+
+	\(\mathbb RP^2\) 的有理同调仅在零次为 \(\mathbb Q\)，所以 \(\chi=1\)。它不可定向，不满足 \(4\ell+2\) 维偶性结论的定向假设；模二顶次基本类虽存在，特征二中的对称关系也不能推出整数中所用的交替性。因此没有矛盾。
+\end{solution}

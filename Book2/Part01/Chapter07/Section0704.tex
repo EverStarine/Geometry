@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 7.4 计算与几何族的连接
 % 纲要位置：几何学计划纲要.md，第 1290 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,17 +16,194 @@
 \section{计算与几何族的连接}
 \label{g2:sec:0704}
 
-待撰写
+积分比较把一个闭形式变成对圈的测量，但它只给出实系数信息。一个周期是整数，究竟是对形式本身的限制，还是对它所代表的类的限制？如果某个整数类有有限阶，它还能由一个非零闭形式表示吗？先澄清这些问题，再把第4章的环计算落实为具体微分形式。最后，我们把实数换成沿道路运输的向量，说明第5章的局部系统怎样进入微分方程。
+
+本节的流形均为有限维、Hausdorff、第二可数的无边界光滑流形；紧性只在明确提出时使用。积分所用链为上一节的光滑奇异链，系数为整数或实数。由其与连续奇异链的比较，它们计算同样的同调群。
 
 \subsection{闭形式、周期和整上同调的区别}
 \label{g2:subsec:0704:01}
-待撰写
+设 \(\omega\in\Omega^k(M)\) 满足 \(\mathrm d\omega=0\)。对光滑整数 \(k\) 圈 \(z=\sum_i n_i\sigma_i\)，定义其\term[zhouqi]{周期}[period]为
+\[
+	\operatorname{Per}_{\omega}([z])=\int_z\omega
+	\coloneqq\sum_i n_i\int_{\Delta^k}\sigma_i^*\omega.
+\]
+若 \(z-z'=\partial c\)，Stokes 公式给出 \(\int_{z-z'}\omega=\int_c\mathrm d\omega=0\)；若以 \(\omega+\mathrm d\eta\) 替换 \(\omega\)，在圈上的积分也不变。因此周期定义了群同态 \(H_k(M;\mathbb Z)\to\mathbb R\)，且只依赖 \([\omega]\in H^k_{\mathrm{dR}}(M)\)。当 \(k=0\) 时，闭零形式是局部常函数，它在点所代表的零圈上的周期就是函数值。
+
+整数链上的积分仍取实数值：例如在 \(\mathbb R/\mathbb Z\) 上，\(a\,\mathrm dt\) 的一周积分是任意指定的 \(a\in\mathbb R\)。另一方面，积分在挠类上恒为零：若 \(r[z]=0\)，则 \(r\int_z\omega=0\)，故 \(\int_z\omega=0\)。整周期条件所限制的是这些实数取值是否全部属于 \(\mathbb Z\)。
+
+\begin{proposition}[整周期判据]\label{g2:prop:integral-periods}
+	设 \(M\) 为无边界光滑流形，\(k\geq0\)，并且 \(H_k(M;\mathbb Z)\)、\(H_{k-1}(M;\mathbb Z)\) 有限生成，其中 \(H_{-1}=0\)。对闭形式 \(\omega\in\Omega^k(M)\)，下列条件等价：
+	\begin{enumerate}
+		\item 对每个光滑整数 \(k\) 圈 \(z\)，都有 \(\int_z\omega\in\mathbb Z\)。
+		\item 在\cref{g2:thm:de-rham}的积分同构下，\([\omega]\) 属于系数映射 \(H^k(M;\mathbb Z)\to H^k(M;\mathbb R)\) 的像。
+	\end{enumerate}
+	该像同构于 \(H^k(M;\mathbb Z)/\operatorname{Tor}H^k(M;\mathbb Z)\)，在 \(H^k(M;\mathbb R)\) 中是一个满格。特别地，此判据适用于紧光滑流形。
+\end{proposition}
+\begin{proof}
+	先恢复万有系数定理在这里的作用。\cref{g2:thm:uct-cohomology}的评价映射给出交换图
+	\[
+		\begin{tikzcd}[column sep=large]
+			H^k(M;\mathbb Z) \arrow[r,two heads,"\rho_{\mathbb Z}"] \arrow[d] & \operatorname{Hom}(H_k(M;\mathbb Z),\mathbb Z) \arrow[d] \\
+			H^k(M;\mathbb R) \arrow[r,"\rho_{\mathbb R}"'] & \operatorname{Hom}(H_k(M;\mathbb Z),\mathbb R).
+		\end{tikzcd}
+	\]
+	下方箭头是同构：有限生成群分解为自由群与有限循环群的直和，而 \(\operatorname{Ext}^1(\mathbb Z,\mathbb R)=0\)、\(\operatorname{Ext}^1(\mathbb Z/r,\mathbb R)=\mathbb R/r\mathbb R=0\)，后一个公式来自\cref{g2:prop:cyclic-ext-tor}。因此实上同调类完全由其在整数圈上的取值确定。
+
+	积分比较将 \(\rho_{\mathbb R}[\omega]\) 识别为刚定义的周期同态。如果它的值全部为整数，就得到一个同态 \(H_k(M;\mathbb Z)\to\mathbb Z\)；上方箭头满射，故这个同态提升为整数上同调类，交换性和下方箭头的单射性说明其实像正是 \([\omega]\)。反过来，整数上同调类在整数圈上当然取整数值，交换图给出所需结论。
+
+	写 \(H_k(M;\mathbb Z)\cong\mathbb Z^b\oplus T\)，其中 \(T\) 有限。右上角是 \(\mathbb Z^b\)，右下角是 \(\mathbb R^b\)，右侧映射是通常的整数格包含。左上角评价的核为 \(\operatorname{Ext}^1(H_{k-1}(M;\mathbb Z),\mathbb Z)\)，由同样的有限生成分解可知它是有限群；评价的目标无挠，所以这个核恰是全部挠子群。由此得到最后的断言。紧流形的整数同调有限生成已由\cref{g2:lem:compact-manifold-finite-homology}证明。
+\end{proof}
+
+具有上述性质的闭形式称为具有\term[zhengzhouqi]{整周期}[integral periods]。这个条件既不要求形式在坐标中的系数为整数，也不指定唯一的整数上同调提升。后者可以相差一个挠类，而所有周期仍完全相同。实上同调是向量空间，整周期类只是其中的格；任意实倍数通常会离开这个格。
+
+还有一个较弱的条件应单独辨认：\(\omega\) 为闭形式只说明积分对同调不变，并不说明任何周期为零。恰当形式的周期全部为零；在上述有限生成条件下，反方向由积分同构及评价同构成立，即所有周期为零恰好等价于 \(\omega\) 恰当。对 \(S^1=\mathbb R/\mathbb Z\)，\(\mathrm dt\) 闭且有整周期，但其一周积分为 \(1\)，所以不是恰当形式。
 
 \subsection{环面、球面及射影空间计算}
 \label{g2:subsec:0704:02}
-待撰写
+在 \(T^m=\mathbb R^m/\mathbb Z^m\) 上，坐标函数 \(t_i\) 不下降为实值函数，其微分却下降为整体一形式 \(\theta_i\)：整数平移改变函数一个常数，不改变微分。令 \(\gamma_j\) 为正向的第 \(j\) 条坐标圆周，则
+\[
+	\int_{\gamma_j}\theta_i=\delta_{ij}.
+\]
+所以积分同构将 \([\theta_i]\) 送到\cref{g2:prop:torus-cohomology-ring}中的第 \(i\) 个一次生成元的实像。该同构保持乘法，因而
+\begin{equation}\label{g2:eq:torus-de-rham-ring}
+	H^*_{\mathrm{dR}}(T^m)
+	=\Lambda_{\mathbb R}([\theta_1],\ldots,[\theta_m]).
+\end{equation}
+具体说，每个闭 \(k\) 形式都与唯一一个常系数组合 \(\sum_{i_1<\cdots<i_k}a_{i_1\cdots i_k}\theta_{i_1}\wedge\cdots\wedge\theta_{i_k}\) 相差恰当形式；这些系数就是它在相应坐标子环面上的积分。因而该类具有整周期，当且仅当所有 \(a_{i_1\cdots i_k}\) 为整数。这些常系数代表由积分比较和环面的杯积计算共同确定。
+
+对 \(n\geq1\)，在单位球面 \(S^n\subset\mathbb R^{n+1}\) 上取向外定向，并令
+\[
+	\nu=\frac{1}{\operatorname{vol}(S^n)}
+	\left.\sum_{j=0}^n(-1)^j x_j\,\mathrm dx_0\wedge\cdots\wedge\widehat{\mathrm dx_j}\wedge\cdots\wedge\mathrm dx_n\right|_{S^n}.
+\]
+分母是通常球面面积，故 \(\int_{S^n}\nu=1\)。顶次形式自动闭；它不是恰当形式，否则 Stokes 公式会使这个积分为零。球面的同调计算与积分比较给出
+\[
+	H^k_{\mathrm{dR}}(S^n)=
+	\begin{cases}
+		\mathbb R[1],&k=0,\\
+		\mathbb R[\nu],&k=n,\\
+		0,&\text{其余次数}.
+	\end{cases}
+\]
+全部正次乘积为零。任意顶次形式 \(\omega\) 都有 \([\omega]=(\int_{S^n}\omega)[\nu]\)；这给出一个无需显式求原函数的恰当性判据。
+
+复射影空间需要一个二形式，而不只是顶次体积形式。下面从单位球面构造它，使归一化可以直接检查。记 \(q:S^{2m+1}\to\mathbb CP^m\) 为 \(z\mapsto[z]\)，其中 \(m\geq1\)、\(z_j=x_j+\mathrm i y_j\)，并在球面上取
+\[
+	\alpha=\frac{1}{2\pi}\sum_{j=0}^m(x_j\,\mathrm dy_j-y_j\,\mathrm dx_j).
+\]
+圆周作用为 \(z\mapsto e^{\mathrm i\vartheta}z\)，正向参数 \(0\leq\vartheta\leq2\pi\) 的纤维上有 \(\alpha=\mathrm d\vartheta/(2\pi)\)。在仿射图中，把某个非零齐次坐标选为正实数再归一化，得到光滑局部截面 \(s\)。两条这样的截面在足够小的交叠上满足 \(s'=e^{\mathrm i f}s\)，其中 \(f\) 是实值光滑函数；直接代入给出
+\[
+	(s')^*\alpha=s^*\alpha+\frac{\mathrm df}{2\pi}.
+\]
+因此 \(\mathrm d(s^*\alpha)\) 在交叠上一致，粘成 \(\mathbb CP^m\) 上的闭二形式 \(\omega\)。这也说明 \(q^*\omega=\mathrm d\alpha\)：在局部乘积坐标中，\(\alpha\) 等于截面上的形式加上纤维角度的微分，而后者的外微分为零。\(\mathrm d\alpha\) 在球面上恰当，并不意味着下降后的 \(\omega\) 也恰当；原始的一形式 \(\alpha\) 在纤维方向不为零，不能下降到射影空间。
+
+在坐标直线 \(\mathbb CP^1\) 的图 \([1:z]\)、\(z=x+\mathrm i y\) 中，可取 \(s(z)=(1,z)/\sqrt{1+|z|^2}\)。于是
+\[
+	s^*\alpha=\frac{x\,\mathrm dy-y\,\mathrm dx}{2\pi(1+x^2+y^2)},
+	\qquad \omega=\frac{\mathrm dx\wedge\mathrm dy}{\pi(1+x^2+y^2)^2}.
+\]
+取复坐标给出的定向，利用极坐标积分得到
+\[
+	\int_{\mathbb CP^1}\omega
+	=\frac1\pi\int_0^{2\pi}\int_0^\infty\frac{r}{(1+r^2)^2}\,\mathrm dr\,\mathrm d\vartheta=1.
+\]
+被省略的点没有面积，且形式在另一张图上光滑，故这里的广义积分等于紧流形上的积分。\cref{g2:thm:complex-projective-ring}说明 \(H^2(\mathbb CP^m;\mathbb Z)\to H^2(\mathbb CP^1;\mathbb Z)\) 是同构，所以 \([\omega]\) 是在正向坐标直线上取值 \(1\) 的整数生成元的实像。乘法相容性遂给出
+\begin{equation}\label{g2:eq:projective-de-rham-ring}
+	H^*_{\mathrm{dR}}(\mathbb CP^m)
+	\cong\mathbb R[u]/(u^{m+1}),\qquad u=[\omega],\quad |u|=2.
+\end{equation}
+特别地，\(1,\omega,\ldots,\omega^m\) 的类分别给出全部偶数次的一维上同调，奇数次为零。非零的楔幂在这里由第4章已经证明的整数杯积计算保证。
+
+实射影空间则清楚显示实系数丢失了什么。\cref{g2:prop:projective-integer-homology}与万有系数定理给出，当 \(m\geq1\) 时
+\[
+	H^k(\mathbb RP^m;\mathbb Z)=
+	\begin{cases}
+		\mathbb Z,&k=0,\text{ 或 }k=m\text{ 为奇数},\\
+		\mathbb Z/2,&k\text{ 为正偶数且 }k\leq m,\\
+		0,&\text{其余次数}.
+	\end{cases}
+\]
+这里偶数次的 \(\mathbb Z/2\) 来自前一次同调的 Ext 项。换成实系数以后，这些项全部消失，故
+\[
+	H^k_{\mathrm{dR}}(\mathbb RP^m)=
+	\begin{cases}
+		\mathbb R,&k=0,\text{ 或 }k=m\text{ 为奇数},\\
+		0,&\text{其余次数}.
+	\end{cases}
+\]
+例如 \(H^2(\mathbb RP^2;\mathbb Z)=\mathbb Z/2\)，却没有非零的二次 de Rham 类。若 \(m\) 为奇数，球面对径映射保持定向，归一化球面体积形式 \(\nu\) 下降为 \(\bar\nu\)，且二重覆盖给出 \(\int_{\mathbb RP^m}\bar\nu=1/2\)；因此具有整周期的正向顶次生成元由 \(2\bar\nu\) 表示。当 \(m\) 为偶数时，对径映射反转定向，这个体积形式不能作为普通实值形式下降。
 
 \subsection{局部系统值形式的平坦联络模型}
 \label{g2:subsec:0704:03}
-待撰写
+第5章的局部系统沿道路比较不同位置的系数。若希望用微分形式作同样的计算，首先要知道怎样微分一个取值于不同纤维的对象。设 \(E\to M\) 是有限秩实光滑向量丛，取联络 \(\nabla\)，并记
+\[
+	\Omega^k(M;E)=\Gamma(\Lambda^k\mathrm T^*M\otimes E).
+\]
+沿用第一卷第15章的行标架 \(e=(e_1,\ldots,e_r)\) 与列分量约定：若 \(\nabla e=eA\)，则 \(\nabla(eu)=e(\mathrm du+Au)\)。形式上的\term[waixiebianweifen]{外协变微分}[exterior covariant derivative]定义为
+\begin{equation}\label{g2:eq:flat-valued-differential}
+	\mathrm d_\nabla(e\eta)=e(\mathrm d\eta+A\wedge\eta).
+\end{equation}
+换标架 \(e'=eg\) 时，\(A'=g^{-1}Ag+g^{-1}\mathrm dg\)、\(\eta'=g^{-1}\eta\)，代入可知右侧表示同一个整体形式。因此这一定义不依赖标架。展开两次求导并使用 \(\mathrm d(A\wedge\eta)=\mathrm dA\wedge\eta-A\wedge\mathrm d\eta\)，得到
+\begin{equation}\label{g2:eq:flat-curvature-square}
+	\mathrm d_\nabla^2(e\eta)=e(F\wedge\eta),\qquad
+	F=\mathrm dA+A\wedge A.
+\end{equation}
+这正是第一卷定理15.3.5的曲率公式。只有曲率为零的\term[pingtanlianluo]{平坦联络}[flat connection]才能给出所需上链复形；要求平方在零形式上都为零，就已经强迫 \(F=0\)。
+
+平行标架使局部联络矩阵为零，于是向量丛值形式的外协变微分就化为逐分量的普通外微分。第一卷定理15.5.2已经证明，\(F=0\) 等价于每点附近存在这样的标架。在坐标盒中写 \(A=\sum_i A_i\,\mathrm dx^i\)，其构造先解带参数的线性常微分方程
+\[
+	\partial_1g=-A_1g,\qquad g(0,x^2,\ldots,x^n)=I.
+\]
+解对参数光滑；同时解 \(\partial_1h=hA_1\)、\(h(0,x')=I\)，可得 \(hg=I\)，故换标架合法。换后 \(B_1=0\)，而零曲率给出 \(0=F_{1j}'=\partial_1B_j\)，所以其余系数只依赖 \(x^2,\ldots,x^n\)。在这些变量上归纳消去剩余系数，就得到 \(A=0\) 的标架。这里用到的参数常微分方程定理及光滑依赖已在第一卷第13.1节证明；每一步可缩小坐标盒，以取得共同定义域。反过来，平行标架中 \(A=0\) 显然使曲率为零。
+
+两个平行标架满足 \(e'=eg\) 时，\(0=g^{-1}\mathrm dg\)，所以转移矩阵局部常值。在这样的标架中保持向量分量不变，便能沿道路运输。把一个道路同伦的参数方形细分到每个小格都落在一个平行标架域，格子内两条边路的运输相同，公共边逐一抵消，证明运输只依赖定端点同伦类；这就是第一卷定理15.5.4的论证。因此平行截面组成有限维实\term[jubu xitong]{局部系统}[local system] \(\mathcal L\)。其纤维可识别为 \(E_x\)，运输即平行移动。反过来，把有限秩实局部系统的局部常转移矩阵用于粘合 \(U_i\times\mathbb R^r\)，便得到光滑向量丛；因为转移矩阵的微分为零，各片的普通微分粘成平坦联络。这两个构造在相同局部平行标架中互相恢复，也保持纤维线性且与运输相容的映射。
+
+\begin{theorem}[局部系统的 de Rham 比较]\label{g2:thm:twisted-de-rham}
+	设 \(M\) 为无边界光滑流形，\(E\to M\) 为有限秩实光滑向量丛，\(\nabla\) 为平坦联络，\(\mathcal L\) 为其平行截面局部系统。则运输后的积分诱导自然同构
+	\[
+		H^k\bigl(\Omega^*(M;E),\mathrm d_\nabla\bigr)
+		\cong H^k(M;\mathcal L).
+	\]
+	对常值系统及其平凡平坦丛，此同构就是\cref{g2:thm:de-rham}的积分同构。
+\end{theorem}
+\begin{proof}
+	先说明积分取值在哪里。对光滑单形 \(\sigma:\Delta^k\to M\)，将 \(\sigma^*E\) 的各纤维沿单形内道路运输到首顶点 \(v_0\)。单形可缩，平坦运输使这个比较与道路无关。于是 \(\sigma^*\eta\) 成为取值于固定向量空间 \(E_{\sigma(v_0)}\) 的形式，可逐分量积分；记所得元素为 \(I_\nabla\eta(\sigma)\)。这种描述没有选择基，因而积分与平行标架的改变相容。
+
+	在首顶点平行标架中，\(\mathrm d_\nabla\) 变成普通外微分，Stokes 公式逐分量成立。边界中去掉 \(v_0\) 的面以 \(v_1\) 为首顶点，必须先把它的积分沿边 \([v_0,v_1]\) 反向运回 \(v_0\)；其余各面首顶点仍是 \(v_0\)。因此
+	\begin{align*}
+		I_\nabla(\mathrm d_\nabla\eta)(\sigma)
+		&=T_{01}^{-1}I_\nabla\eta(\sigma|[v_1,\ldots,v_{k+1}])\\
+		&\quad+\sum_{i=1}^{k+1}(-1)^iI_\nabla\eta(\sigma|[v_0,\ldots,\widehat v_i,\ldots,v_{k+1}]).
+	\end{align*}
+	这恰好是\cref{g2:def:twisted-cochains}的余边界公式，故积分是上链映射。上一节的相对光滑逼近比较也适用于这个局部系统：每个单形同伦的运输把新旧首顶点纤维对应起来，棱柱公式中的公共面仍以相反符号和相同运输抵消。因此光滑局部系数上链与连续局部系数上链给出同一上同调。
+
+	在平行标架坐标小球内，形式复形在正次数的局部恰当性逐分量成立，零次核就是 \(\mathcal L\)。因此层复形
+	\[
+		0\longrightarrow\mathcal L\longrightarrow\Omega^0(E)
+		\xrightarrow{\mathrm d_\nabla}\Omega^1(E)
+		\xrightarrow{\mathrm d_\nabla}\cdots
+	\]
+	正合。形式层可以乘光滑单位分解，故由本章的细层无上同调结论及\cref{g2:thm:acyclic-resolution}，其整体截面计算 \(\mathcal L\) 的层上同调。还须把这项计算与奇异上同调通过指定的积分联系起来。
+
+	取由平行标架坐标域 \(U_i\) 组成的开覆盖。每个非空有限交 \(U_{i_0\cdots i_p}\) 是第一张坐标图中的 Euclid 开集，且第一张图的平行标架在交集上仍然平凡化 \(\mathcal L\)。该交集未必可缩，但\cref{g2:thm:de-rham}已经对任意 Euclid 开集证明普通积分同构，逐分量应用便得到这个交集上带 \(\mathcal L\) 系数的积分同构。现在将上一节的覆盖双复形换成 \(E\) 值形式与 \(\mathcal L\) 值小单形上链。形式增广行仍由光滑单位分解收缩；上链增广行仍可对每个小单形选择一个容纳它的覆盖指标作收缩，限制不改变其首顶点纤维，因而\cref{g2:lem:de-rham-augmented-rows}的证明保持有效。刚才在有限交上的积分同构说明每列的比较是同构，\cref{g2:lem:first-quadrant-comparison}遂给出总复形同构，再沿两个增广映射得到所述整体积分同构。
+
+	光滑映射的拉回与单形上的运输、积分都交换；保持联络的丛映射在平行标架中是常矩阵，也与积分交换。这给出所述自然性。
+\end{proof}
+
+\begin{example}[圆周上的平坦系数]\label{g2:exm:flat-circle-de-rham}
+	设 \(E\to S^1=\mathbb R/\mathbb Z\) 的实际正向环路运输为 \(T\in\operatorname{GL}(V)\)。在区间 \([0,1]\) 上沿路径平行平凡化，截面的列函数满足 \(f(1)=T^{-1}f(0)\)，而不是 \(f(1)=Tf(0)\)：终点的平行标架本身已相对于起点乘了 \(T\)。拉回到实线后，形式写作 \(f(t)\) 或 \(g(t)\,\mathrm dt\)，并满足所有导数的相应准周期条件。
+
+	此时微分为普通导数。零次核是满足 \(T^{-1}v=v\) 的常函数，故为 \(\ker(T-1)\)。对一次形式，令 \(b=\int_0^1g(t)\,\mathrm dt\)。若它是 \(\mathrm df\)，则
+	\[
+		b=f(1)-f(0)=(T^{-1}-1)f(0).
+	\]
+	反过来，若 \(b=(T^{-1}-1)v\)，取 \(f(t)=v+\int_0^t g(s)\,\mathrm ds\)。端点值满足准周期关系；一阶以上导数的关系来自 \(g\)，所以 \(f\) 下降为光滑截面。任给 \(b\in V\)，取支集位于 \((0,1)\)、积分为 \(1\) 的光滑函数 \(\chi\)，令 \(g=\chi b\) 并作准周期延拓，就实现这个积分。于是
+	\[
+		H^0_{\mathrm d_\nabla}(S^1;E)=\ker(T-1),\qquad
+		H^1_{\mathrm d_\nabla}(S^1;E)=V/(T^{-1}-1)V=V/(T-1)V.
+	\]
+	这与\cref{g2:prop:circle-local-coefficients}的胞腔计算相合，并解释了一次余边界为什么含逆运输。若 \(V=\mathbb R\)、\(T=-1\)，两个群均为零；但整数符号系统的一次上同调为 \(\mathbb Z/2\)。把系数几何化为实平坦丛依然不能恢复已经被实数消掉的挠信息。
+\end{example}
+
+第5章把纤维的实同调或上同调组织为基底上的局部系统；当基底光滑且这些纤维向量空间有限维时，刚才的构造将它们实现为平坦丛。于是沿基底变化的纤维上同调类可以写成平坦丛截面，\(\mathrm d_\nabla\) 测量它是否局部保持平行。这里要求有限维，且只得到所给局部系统的微分形式模型；一个局部系统仍不包含原几何族的全部粘合信息，这与\secref{g2:sec:0504}的区别一致。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

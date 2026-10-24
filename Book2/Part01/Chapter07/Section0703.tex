@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 7.3 积分与 de Rham 定理
 % 纲要位置：几何学计划纲要.md，第 1282 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,321 @@
 \section{积分与 de Rham 定理}
 \label{g2:sec:0703}
 
-待撰写
+本节把局部形式与拓扑上链联系起来。第一卷已经构造外微分、形式积分及 Stokes 公式；这里先证明连续单形能够在保留公共面的条件下光滑化，再用覆盖双复形证明积分诱导同构。整个比较均在有限维、Hausdorff、第二可数、无边界光滑流形上进行。
 
 \subsection{光滑奇异链及光滑逼近}
 \label{g2:subsec:0703:01}
-待撰写
+奇异单形只要求连续，而拉回微分形式需要导数。因此，积分以前先要解决一个几何问题：能否把用于表示同调类的有限个单形同时光滑化，并使公共面仍然完全相同？只把每个单形单独逼近，原先抵消的边界可能不再抵消；保留公共面是下面构造的核心。
+
+\begin{definition}[光滑奇异链]\label{g2:def:smooth-singular-chain}
+	设 \(M\) 为有限维、Hausdorff、第二可数的无边界光滑流形，\(R\) 为含幺交换环。映射 \(\sigma:\Delta^k\to M\) 若可延拓为标准闭单形在其仿射包中某个开邻域上的光滑映射，就称为\term[guanghua qiyi danxing]{光滑奇异单形}[smooth singular simplex]。以这些映射为基的自由 \(R\)-模记为 \(C_k^\infty(M;R)\)。面映射 \(\delta_i:\Delta^{k-1}\to\Delta^k\) 是仿射映射，故
+	\[
+		\partial\sigma=\sum_{i=0}^k(-1)^i\sigma\circ\delta_i
+	\]
+	仍是光滑链。所得同调记为 \(H_k^\infty(M;R)\)，光滑奇异上链复形记为 \(C_\infty^k(M;R)=\operatorname{Hom}_R(C_k^\infty(M;R),R)\)。
+\end{definition}
+
+这里要求在闭单形附近延拓，因而边、顶点处也有足够的导数。单形本身有角，并不要求它的像是嵌入子流形；常值单形和微分降秩的单形都允许。光滑链的构造与比较可参阅 \cite[第18章，Smooth Singular Homology]{Lee2012Smooth}。下面把所需的相对逼近直接证明出来。
+
+\begin{lemma}[紧像附近的欧氏模型]\label{g2:lem:compact-image-retraction}
+	设 \(M\) 为有限维、Hausdorff、第二可数的无边界光滑流形，\(Q\subset M\) 紧。存在 \(Q\) 的开邻域 \(V\)、光滑嵌入 \(e:V\to\mathbb R^N\)、包含 \(e(Q)\) 的开集 \(W\subset\mathbb R^N\) 和光滑映射 \(r:W\to V\)，使 \(r(e(x))=x\) 对 \(Q\) 的某个开邻域中的 \(x\) 成立。
+\end{lemma}
+\begin{proof}
+	第一卷推论12.3.6的闭集截断结论允许在相对紧坐标图 \((U_i,\varphi_i)\) 内选紧支光滑函数 \(\chi_i\)，使有限个集合 \(\{\chi_i>0\}\) 覆盖 \(Q\)。令 \(V=\{\sum_i\chi_i>0\}\)，定义
+	\[
+		e(x)=\bigl(\chi_1(x),\chi_1(x)\varphi_1(x),\ldots,\chi_s(x),\chi_s(x)\varphi_s(x)\bigr).
+	\]
+	每项在相应坐标图之外补零；支集紧含于图内保证补零光滑。如果 \(\chi_i(x)>0\)，从第 \(i\) 组分量的商便恢复 \(\varphi_i(x)\)。这同时证明 \(e\) 单射、逆映射在像上连续，以及 \(\mathrm{d}e_x\) 单射，所以 \(e\) 是嵌入。
+
+	说明为什么在 \(e(Q)\) 附近能回到这张嵌入像上。在每个 \(x\in V\) 处取 \(\mathrm{d}e_x(\mathrm{T}_xV)\) 的欧氏正交补，考虑
+	\[
+		\Psi(x,v)=e(x)+v,\qquad v\perp\mathrm{d}e_x(\mathrm{T}_xV).
+	\]
+	这些正交补组成光滑向量丛：在坐标图内，切空间由一个满秩矩阵 \(A(x)\) 的列生成，其正交投影为 \(A(A^{\mathsf T}A)^{-1}A^{\mathsf T}\)，随 \(x\) 光滑变化。在零截面处，\(\mathrm{d}\Psi\) 把切向与法向分量相加，是同构。第一卷定理11.3.3的逆函数定理因而给出每个 \((x,0)\) 附近的光滑逆。
+
+	选 \(Q\subset V_0\Subset V\)。在基点属于 \(V_0\)、\(|v|\) 充分小时，\(\Psi\) 可以同时取为单射。否则存在两组不同的 \((x_j,v_j),(y_j,w_j)\)，基点属于 \(\overline V_0\)，法向长度趋于零，而 \(\Psi(x_j,v_j)=\Psi(y_j,w_j)\)。取收敛子列后有 \(e(x)=e(y)\)，故 \(x=y\)；两组点最终都落入 \((x,0)\) 附近同一逆函数邻域，与其单射性矛盾。类似地，紧性使微分在足够小的这一邻域处处可逆。因此 \(\Psi\) 从这个开邻域到其开像是微分同胚，投影其逆映射的第一分量便得到 \(r\)。
+\end{proof}
+
+平滑目标为向量空间时，面间兼容可以用一个直接的延拓公式处理。这个步骤也解释了为什么“每个面上光滑”在单形的角处足够。
+
+\begin{lemma}[单形边界数据的光滑延拓]\label{g2:lem:simplex-face-extension}
+	设 \(b:\partial\Delta^k\to\mathbb R^N\) 连续，且在每个闭面上都可光滑延拓。则存在 \(\Delta^k\) 的开邻域上的光滑映射 \(B\)，使 \(B|_{\partial\Delta^k}=b\)。若连续映射 \(F:\Delta^k\to\mathbb R^N\) 满足 \(F|_{\partial\Delta^k}=b\)，则对每个 \(\varepsilon>0\)，可取这样的 \(B\) 使 \(\sup_{\Delta^k}|B-F|<\varepsilon\)。
+\end{lemma}
+\begin{proof}
+	先只做边界延拓。在一个边界点附近，把经过该点的 \(q\) 个面写成 \(x_1=0,\ldots,x_q=0\)，单形位于 \(x_i\geq0\) 一侧；未经过该点的面可通过缩小邻域避开。对非空 \(I\subseteq\{1,\ldots,q\}\)，记 \(p_I\) 为把这些坐标置零的投影，\(b_I\) 为 \(b\) 在相应交面上的限制，并选其光滑延拓 \(\widetilde b_I\)。在足够小的邻域内定义
+	\begin{equation}\label{g2:eq:corner-face-extension}
+		B_0(x)=\sum_{\varnothing\ne I\subseteq\{1,\ldots,q\}}(-1)^{|I|+1}\widetilde b_I(p_Ix).
+	\end{equation}
+	若 \(x\) 位于第 \(j\) 个面内，含 \(j\) 与不含 \(j\) 的项两两抵消，只留下 \(b(x)\)。这里所有投影点仍在相应闭面内，所以不同延拓在面外怎样选择并不影响这次抵消。用边界附近的有限光滑单位分解粘合这些 \(B_0\)，再乘一个在边界附近等于一的截断函数并补零，得到整个单形邻域上的光滑 \(B_1\)。
+
+	现在令 \(h=F-B_1\)。它连续且在边界为零。由一致连续性，\(h\) 在足够窄的边界邻域内任意小。取光滑截断 \(\chi\)，支集紧含于单形内部，在这个窄邻域之外等于一，则 \(\chi h\) 在全仿射包上补零仍连续，并满足 \(\|\chi h-h\|_\infty<\varepsilon/2\)。选非负光滑核 \(\rho_\delta\)，支集在半径 \(\delta\) 的球内且积分为一。卷积 \(h_\delta=\rho_\delta*(\chi h)\) 光滑；当 \(\delta\) 足够小时，它的支集仍紧含于单形内部，而且
+	\[
+		\|h_\delta-\chi h\|_\infty
+		\leq\sup_{|y|\leq\delta,\,x}|\chi(x-y)h(x-y)-\chi(x)h(x)|<\varepsilon/2.
+	\]
+	因此 \(B=B_1+h_\delta\) 满足要求。零维时没有边界，直接取给定点值即可。
+\end{proof}
+
+\begin{lemma}[相对单形光滑逼近]\label{g2:lem:relative-simplex-smoothing}
+	设 \(K\) 是有限单形复形，\(A\subset K\) 为子复形，\(M\) 为有限维、Hausdorff、第二可数的无边界光滑流形。若 \(f:|K|\to M\) 连续，且 \(f\) 在 \(A\) 的每个闭单形上光滑，则存在逐单形光滑的 \(g:|K|\to M\) 和相对 \(|A|\) 的同伦 \(H:f\simeq g\)。可以要求 \(H\) 任意接近 \(f\)：对每个单形预先指定包含其像的开集，整个单形同伦仍留在该开集内。
+
+	结论也适用于有限个单形按面识别得到的复形，包括同一个单形的不同面之间的识别。若 \(f\) 在某个单形上原已光滑，则 \(H\) 在该单形与 \([0,1]\) 的乘积上可取光滑。给定一条连续单形同伦，若其两端及指定侧面已逐面光滑，则可保持它们不变，将同伦光滑化于棱柱的有限单形剖分上。
+\end{lemma}
+\begin{proof}
+	把紧像 \(f(|K|)\) 放入\cref{g2:lem:compact-image-retraction}的模型中，记 \(F=e\circ f\)。先在 \(A\) 上保持 \(G=F\)，再依维数把 \(G\) 定义到其余单形。假设一个 \(k\) 维单形的边界上已经给定逐面光滑的 \(b\)，而且 \(b\) 接近 \(F\)。边界误差 \(b-F\) 可连续延拓到整个单形而不增加上界：从重心 \(a\) 出发，把 \(x\ne a\) 唯一写成 \(x=(1-t)a+ty\)，其中 \(y\in\partial\Delta^k\)、\(0<t\leq1\)，令
+	\[
+		E(x)=t\bigl(b(y)-F(y)\bigr),\qquad E(a)=0.
+	\]
+	这个延拓连续，\(F+E\) 恰好限制为 \(b\)。应用\cref{g2:lem:simplex-face-extension}，得到一个光滑 \(G\)，在边界上严格等于 \(b\)，并可任意接近 \(F+E\)。若第 \(k\) 维步骤另添的误差小于 \(\varepsilon/(\dim K+1)\)，全部步骤结束后的误差小于 \(\varepsilon\)。同维单形内部互不影响，公共面在处理它们以前已经固定，因此这些映射粘合为连续 \(G\)。对于按面识别的有限单形族，给每个已识别的面只选择一次数据，同一构造仍成立。
+
+	取 \(\varepsilon\) 充分小，使连接 \(F(x)\) 与 \(G(x)\) 的所有线段均落在回缩的定义域 \(W\) 内。定义
+	\begin{equation}\label{g2:eq:relative-smoothing-homotopy}
+		g(x)=r(G(x)),\qquad H(x,t)=r\bigl((1-t)F(x)+tG(x)\bigr).
+	\end{equation}
+	在 \(A\) 上两端完全相等，故同伦固定 \(A\)。紧性以及 \(r\) 的连续性保证：进一步缩小误差后，每个单形的整条同伦都留在其指定开集内。若 \(f\) 在一个单形上原已光滑，公式中的 \(F\)、\(G\) 都有邻域延拓，因而 \(H\) 在该单形的棱柱上光滑。
+
+	最后，把 \(\Delta^k\times[0,1]\) 按第2章的棱柱剖分写成有限个单形。若一条连续同伦的两端和指定侧面已经逐面光滑，就将这些面作为子复形 \(A\)，再次应用刚证的构造。得到的同伦与原同伦有相同的两端及指定侧面，并在每个棱柱单形上光滑。它在剖分界面上不必具有来自两个单形的同一法向导数；积分链只要求各闭单形光滑且公共面相同，这正是所需的相容条件。
+\end{proof}
+
+\begin{theorem}[光滑链与连续链的比较]\label{g2:thm:smooth-singular-comparison}
+	设 \(M\) 为有限维、Hausdorff、第二可数的无边界光滑流形，\(R\) 为含幺交换环。包含映射诱导自然同构
+	\[
+		H_k^\infty(M;R)\xrightarrow{\ \cong\ }H_k(M;R).
+	\]
+	特别地，限制实上链得到自然同构
+	\[
+		H^k(M;\mathbb R)\xrightarrow{\ \cong\ }H^k(C_\infty^\bullet(M;\mathbb R)).
+	\]
+	这里的自然性指光滑映射之间的自然性。
+\end{theorem}
+\begin{proof}
+	每条链只涉及有限个奇异单形。把它们以及全部面列出，相同的参数映射只保留一次，并按面关系识别其定义域。这给出上引理允许的有限单形族；即使两个不同面恰好是同一个奇异单形，它们也得到同一个光滑替代和同伦。以 \(S\) 表示这个有限族上的光滑替代，面相容性给出 \(\partial S=S\partial\)。
+
+	设 \(z\) 是连续奇异圈。对其有限单形族应用上引理，则 \(Sz\) 为光滑圈。用同伦棱柱定义 \(P\)，第2章\cref{g2:eq:prism-identity}的边界计算逐个单形给出
+	\[
+		\partial P+P\partial=S-\operatorname{id}.
+	\]
+	原公式只使用相邻面上的同伦相同，故适用于这里逐单形给出的相容同伦。于是 \(Sz-z=\partial Pz\)，证明满射。若光滑圈 \(z\) 在连续链中满足 \(z=\partial b\)，把 \(b\)、\(z\) 及其全部面同时列出，以 \(z\) 的单形及其面为固定子复形。相对逼近保持这些单形不变，故 \(\partial Sb=Sz=z\)，证明单射。这个论证使用的都是有限 \(R\)-线性组合，不要求链的系数为整数。
+
+	为说明实上同调的结论，回顾向量空间复形的直接事实：限制到圈诱导
+	\[
+		H^k(\operatorname{Hom}_{\mathbb R}(C_*,\mathbb R))
+		\cong\operatorname{Hom}_{\mathbb R}(H_k(C_*),\mathbb R).
+	\]
+	每个同调上的线性泛函先给出圈上的泛函，再经选取基延拓到 \(C_k\)，因其消去边界而成为余圈；反过来，一个余圈若在所有圈上为零，就经 \(\partial:C_k\to B_{k-1}\) 因子化，把该泛函从 \(B_{k-1}\) 延拓到 \(C_{k-1}\) 后，它便是余边界。这证明该识别，且求值公式说明识别自然。将已证同调同构代入，便得实上同调同构。光滑映射把光滑单形送到光滑单形，与包含及求值交换，故自然性成立。
+\end{proof}
+
+\begin{corollary}[光滑小链与开集对]\label{g2:cor:smooth-small-chains}
+	设 \(M\) 为有限维、Hausdorff、第二可数的无边界光滑流形，\(\mathcal U\) 为其开覆盖。由像落在某个 \(U\in\mathcal U\) 内的光滑单形生成的子复形 \(C_*^{\infty,\mathcal U}(M;R)\) 包含于 \(C_*^\infty(M;R)\)，并诱导同调同构。若 \(U\subset M\) 开，则光滑相对链与连续相对链也计算同一个 \(H_*(M,U;R)\)；实系数相对上同调亦然。
+\end{corollary}
+\begin{proof}
+	\cref{g2:prop:subdivision-chain-map,g2:prop:subdivision-chain-homotopy}中的细分及链同伦，只在参数单形内使用仿射映射与仿射锥。因此，原单形光滑时，产生的每个单形仍光滑，而且像始终留在原单形的像中。有限光滑链经足够多次细分成为小链，细分链同伦给出满射；若小圈在全部光滑链中有填充，把这个填充细分为小链，再利用原小圈与其细分之间仍属小链的链同伦，便得到小链填充。这正是\cref{g2:thm:small-chain-isomorphism}的证明，其中所有链现在都保留光滑性。
+
+	开子集 \(U\) 也是无边界光滑流形。比较 \((M,U)\) 的两条相对同调长正合列，绝对项由上一定理同构，五引理给出相对同构；实上同调再用证明中的线性泛函识别。这里要求 \(U\) 开，是为了让光滑单形在 \(U\) 中的邻域延拓与在 \(M\) 中的定义相符。
+\end{proof}
 
 \subsection{积分映射与 Stokes}
 \label{g2:subsec:0703:02}
-待撰写
+以下 \(M\) 为有限维、Hausdorff、第二可数、无边界的光滑流形，形式取实系数。写 \(C_\infty^k(M;\mathbb R)=\operatorname{Hom}_{\mathbb R}(C_k^\infty(M;\mathbb R),\mathbb R)\)，上边界仍为 \((\delta\varphi)(c)=\varphi(\partial c)\)。一个形式给上链赋值的办法已经很自然：把它在每条光滑单形上积分。
+
+\begin{definition}[积分上链]\label{g2:def:integration-cochain}
+	对 \(\omega\in\Omega^k(M)\)，定义
+	\[
+		I_M\omega(\sigma)=\int_{\Delta^k}\sigma^*\omega.
+	\]
+	标准单形采用有序顶点 \((0,e_1,\ldots,e_k)\) 及定向 \(\mathrm{d}t^1\wedge\cdots\wedge\mathrm{d}t^k\)；零次积分是函数在点上的值。此定义按线性延拓到链上。
+\end{definition}
+
+这里不要求 \(\omega\) 紧支，因为每条积分单形的定义域紧。第一卷定理14.4.5的带角 Stokes 公式\footnote{George Gabriel Stokes（1819--1903），生于爱尔兰的英国数学家、物理学家，研究流体力学与光学。}适用于闭单形：每个面带上边界定向，恰好产生奇异边界中的交替符号。因此对 \((k+1)\) 单形 \(\sigma\)，
+\begin{equation}\label{g2:eq:integration-cochain-map}
+	I_M(\mathrm{d}\omega)(\sigma)
+	=\int_{\Delta^{k+1}}\mathrm{d}(\sigma^*\omega)
+	=\sum_{j=0}^{k+1}(-1)^j\int_{\Delta^k}(\sigma\circ d_j)^*\omega
+	=(\delta I_M\omega)(\sigma).
+\end{equation}
+第一卷定理14.5.5已证明这一链级等式；现在\cref{g2:thm:smooth-singular-comparison}使它能够取值于通常的奇异上同调。具体说，光滑链包含诱导上链限制 \(j^*:C^*(M;\mathbb R)\to C_\infty^*(M;\mathbb R)\)，它在上同调上为同构，故积分定义
+\[
+	\mathcal I_M:H_{\mathrm{dR}}^k(M)\longrightarrow H^k(M;\mathbb R),
+	\qquad \mathcal I_M=(H^k(j^*))^{-1}\circ H^k(I_M).
+\]
+\symidx{\(\mathcal I_M\)：由光滑单形积分定义的 de Rham 比较映射}
+上链限制在实数域上保持同调同构，可直接用万有系数定理的域版本说明：向量空间复形可选取边界、同调及其补空间，取线性对偶后仅留下同调的对偶；不需要这些空间有限维。
+
+\begin{proposition}[积分的自然性]\label{g2:prop:integration-naturality}
+	若 \(f:M\to N\) 光滑，则 \(I_Mf^*=f^*I_N\)。因此 \(\mathcal I\) 与光滑拉回相容，特别与开子集限制相容。若 \(z\) 是光滑 \(k\) 圈，则
+	\[
+		\langle\mathcal I_M[\omega],[z]\rangle=\int_z\omega.
+	\]
+\end{proposition}
+\begin{proof}
+	在任意光滑单形 \(\sigma\) 上，\(\sigma^*f^*\omega=(f\circ\sigma)^*\omega\)，所以两个上链的值相等。光滑链包含也与 \(f\) 相容，故在其诱导同构两侧取逆仍得到自然性。求值公式正是定义。若改变闭形式代表或圈代表，差分别由\eqref{g2:eq:integration-cochain-map}化为对圈的余边界求值或对边界的闭上链求值，均为零。
+\end{proof}
+
+例如圆周上写 \(\theta=(x\,\mathrm{d}y-y\,\mathrm{d}x)/(2\pi)\)，其中 \(x^2+y^2=1\)。沿 \(t\mapsto(\cos2\pi t,\sin2\pi t)\) 的积分为 \(1\)，所以 \(\mathcal I[\theta]\) 检测一次正向绕行。这不仅说明 \(\theta\) 闭而非恰当，还固定了它与整数生成元比较时的归一化。
 
 \subsection{好覆盖和局部 Poincaré 引理}
 \label{g2:subsec:0703:03}
-待撰写
+局部求原形式与整体求原形式的差别，可以在最简单的零次就看见：每个连通小开集上的闭函数是常数，但若选取了几份不同常数，它们仍须在交集上一致才能粘成一个函数。高次形式也有同样的相容问题，只是交集上的差需要用更低次的原形式继续修正。
+
+第一卷定理14.2.2给出了星形开集上的具体算子。若 \(U\subset\mathbb R^n\) 关于 \(0\) 星形、\(k>0\)，则
+\[
+	(K\omega)_x(v_1,\ldots,v_{k-1})
+	=\int_0^1t^{k-1}\omega_{tx}(x,v_1,\ldots,v_{k-1})\,\mathrm{d}t
+\]
+满足 \(\mathrm{d}K+K\mathrm{d}=\operatorname{id}\)；零次相应公式为 \(K\mathrm{d}f=f-f(0)\)。这里的 \(t^{k-1}\) 来自收缩映射对其余 \(k-1\) 个切向量各乘一次 \(t\)。因此每个正次数闭形式局部有原形式，闭函数局部为常数。以 \(\underline{\mathbb R}\) 表示局部常值实函数层，得到层的正合序列
+\begin{equation}\label{g2:eq:de-rham-resolution}
+	0\longrightarrow\underline{\mathbb R}\longrightarrow\Omega^0
+	\xrightarrow{\mathrm{d}}\Omega^1\xrightarrow{\mathrm{d}}\cdots
+	\xrightarrow{\mathrm{d}}\Omega^n\longrightarrow0.
+\end{equation}
+正合性是在茎上检查的：给定一点的闭形式芽，先缩小到坐标星形邻域再应用上式，并不要求原形式在最初的整个开集存在。每个 \(\Omega^q\) 是光滑函数层的模，单位分解的乘法使它成为细层；\cref{g2:thm:acyclic-resolution}遂给出
+\begin{equation}\label{g2:eq:de-rham-sheaf-comparison}
+	H^k(M;\underline{\mathbb R})\cong H_{\mathrm{dR}}^k(M).
+\end{equation}
+这一式比较了层与形式，接下来还需将它与奇异上链的积分映射对应起来。
+
+\begin{definition}[光滑好覆盖]\label{g2:def:good-cover}
+	光滑流形上的开覆盖 \(\mathfrak U=(U_i)\) 若满足：每个非空有限交 \(U_{i_0\cdots i_p}\) 都能在自身内光滑收缩到一点，则称为\term[guanghuahaofugai]{光滑好覆盖}[smooth good cover]。本节用形式作收缩时，所说的好覆盖均指这一版本，它比只要求连续可缩的定义多了光滑性条件。
+\end{definition}
+
+对这种交集，第一卷定理14.2.1的同伦公式给出正次数 de Rham 上同调为零，零次为 \(\mathbb R\)；光滑棱柱同伦给光滑奇异链相同的结论。因而局部比较只剩常数函数在点上取值，积分在零次正是恒等。
+
+\ProseParagraphBreak
+
+\(\mathbb R^n\) 的任意开集都有可数的这种覆盖：取闭包仍在该开集内、端点为有理数的全部开矩形。有限交若非空仍为凸开矩形，线段收缩留在其中。圆周也可取三个略长于三分之一周的开弧，使每两个相交于一段开弧、三重交为空。这份覆盖的 Čech 复形是三角形的三条边而没有内部面，故 \(\check H^1\cong\mathbb R\)。若只用两个长开弧覆盖圆周，其交有两段，常值层在交集上有两份独立的常数，这份覆盖不满足本定义。
+
+\ProseParagraphBreak
+
+下面先在有好覆盖的区域证明比较，再处理一般流形。一般情形用坐标开集及其交，不要求这些交都可缩；交集可以有洞，只需已经知道其积分比较为同构。这种安排把局部计算与覆盖的几何形状分开。
 
 \subsection{双复形的两种收缩}
 \label{g2:subsec:0703:04}
-待撰写
+固定可数开覆盖 \(\mathfrak U=(U_i)\)。用上一节的交替指标约定，考虑两个第一象限双复形
+\[
+	A^{p,q}=\prod_{i_0<\cdots<i_p}\Omega^q(U_{i_0\cdots i_p}),
+	\qquad B^{p,q}=\prod_{i_0<\cdots<i_p}C_\infty^q(U_{i_0\cdots i_p};\mathbb R).
+\]
+横向微分是覆盖的交替限制 \(\delta_{\mathrm C}\)，纵向分别是 \(\mathrm d\) 与奇异上边界 \(\delta_{\mathrm s}\)。两种原始微分交换；总微分必须写成
+\[
+	\mathrm D_A=\delta_{\mathrm C}+(-1)^p\mathrm d,
+	\qquad \mathrm D_B=\delta_{\mathrm C}+(-1)^p\delta_{\mathrm s}
+	\quad\text{在双次数 }(p,q)\text{ 上}.
+\]
+这样两项交叉合成相消，\(\mathrm D^2=0\)。总次数 \(k\) 只含 \((0,k),\ldots,(k,0)\) 这些有限项；无限覆盖的乘积位于每一项内部，不会产生沿总对角线求无限和的问题。
+
+\begin{lemma}[两种增广行的正合性]\label{g2:lem:de-rham-augmented-rows}
+	形式的横行增广为 \(\Omega^q(M)\to A^{0,q}\to A^{1,q}\to\cdots\)。奇异上链的横行增广为
+	\[
+		C_{\infty,\mathfrak U}^q(M;\mathbb R)\longrightarrow B^{0,q}\longrightarrow B^{1,q}\longrightarrow\cdots,
+	\]
+	其中 \(C_{\infty,\mathfrak U}^q\) 是由像完全落在某个 \(U_i\) 内的光滑单形生成的小链复形的线性对偶。两条增广行均正合，且两种增广均在总上同调上给出同构。
+\end{lemma}
+\begin{proof}
+	对形式选从属于 \(\mathfrak U\) 的光滑单位分解 \((\rho_j)\)。第一卷定理12.3.5保证乘法支集留在相应开集内，且求和局部有限。对交替指标上链，令
+	\[
+		(ha)_{i_0\cdots i_{p-1}}=\sum_j\rho_j a_{j i_0\cdots i_{p-1}}.
+	\]
+	每项先在交集定义，再利用 \(\operatorname{supp}\rho_j\subset U_j\) 向其余部分延为零。在边界附近它原本就为零，故延拓仍光滑。展开交替和时，删去 \(j\) 的项为 \((\sum_j\rho_j)a=a\)，其余项两两抵消，得到 \(\delta_{\mathrm C}h+h\delta_{\mathrm C}=\operatorname{id}\)，包括增广位置。
+
+	对奇异上链，不需要给上链乘单位分解。为每条覆盖小单形 \(\sigma\) 选一个指标 \(j(\sigma)\)，使其整个像落在 \(U_{j(\sigma)}\)。定义
+	\[
+		(ha)_{i_0\cdots i_{p-1}}(\sigma)
+		=a_{j(\sigma)i_0\cdots i_{p-1}}(\sigma).
+	\]
+	只在 \(\sigma\) 完全落在相应交集时求值，故右端有定义。对固定 \(\sigma\)，仍是插入一个首指标的同一交替和消去，得到横向收缩。零次增广所需的上链也按这个逐单形公式定义，不需任何连续性。
+
+	这两个横向算子一般不与纵向微分交换；我们没有把它们直接称为总复形的收缩。\cref{g2:lem:first-quadrant-comparison}按有限总对角线逐项消去多余分量，正好把横行正合性转化为两个增广的总上同调同构。
+\end{proof}
+
+小链与全部光滑链也计算相同的上同调。\cref{g2:prop:subdivision-chain-map,g2:prop:subdivision-chain-homotopy,g2:thm:small-chain-isomorphism}的构造只把单形与仿射细分、仿射锥和棱柱复合，因而保持光滑性。每条有限链细分充分多次后落入覆盖小链；圈及填充链都可如此处理。故小链包含诱导同调同构，实数域上的线性对偶再给出上同调同构。
+
+\begin{theorem}[de Rham 定理]\label{g2:thm:de-rham}
+	设 \(M\) 为有限维、Hausdorff、第二可数、无边界的光滑流形。积分比较
+	\[
+		\mathcal I_M:H_{\mathrm{dR}}^k(M)\xrightarrow{\ \cong\ }H^k(M;\mathbb R)
+	\]
+	在每个次数为同构，并与光滑映射的拉回相容。它与\eqref{g2:eq:de-rham-sheaf-comparison}一道识别形式、常值实数层与奇异上同调；覆盖极限的 Čech 上同调也自然等于这些群。对好覆盖，单份覆盖的常值 Čech 复形已经计算它们，比较由常数包含和积分给出。
+\end{theorem}
+\begin{proof}
+	证明的目标不只是找一个抽象同构，而是核对刚才的积分映射。逐个交集上的积分组成双复形映射 \(I:A^{\bullet,\bullet}\to B^{\bullet,\bullet}\)，因为它与限制及两种纵向微分相容。两条增广在积分下也交换，得到
+	\[
+		\begin{tikzcd}[column sep=large]
+			\Omega^\bullet(M) \arrow[r] \arrow[d,"I"] & \operatorname{Tot} A \arrow[d,"I"] \\
+			C_{\infty,\mathfrak U}^\bullet(M;\mathbb R) \arrow[r] & \operatorname{Tot} B .
+		\end{tikzcd}
+	\]
+	上下两个横箭头已在上同调上为同构。
+
+	若 \(\mathfrak U\) 是好覆盖，各交集上的纵向上同调只在零次为 \(\mathbb R\)。积分把常数函数送到同值的零上圈，因此每一列都诱导同构。第一象限比较引理给出中间两个总复形的同构，再由上图得到积分同构。两种双复形还都接受常值 Čech 复形的包含，这两个包含诱导同构且与积分交换，证明所述 Čech 识别。层的识别与此相容，因为常值层到形式消解的增广正是这里使用的常数包含。
+
+	特别地，\(\mathbb R^n\) 的每个开子集都由前述有理开矩形覆盖，故已经满足结论。现在取一般 \(M\) 的可数坐标开覆盖。任一非空有限交包含于其中一个坐标域，在该坐标下是 \(\mathbb R^n\) 的开子集；上一段已给出它的积分同构。于是逐列积分仍诱导同构，虽然这些列的正次上同调未必消失。再用同一双复形比较及增广图，得到一般 \(M\) 的结论。光滑映射的自然性由\cref{g2:prop:integration-naturality}给出。流形满足 Hausdorff、第二可数、局部紧条件，故\cref{g2:thm:cech-sheaf-comparison}还将覆盖极限的 Čech 上同调识别为常值层上同调；这些比较都由同一个常数增广诱导，因而相容。
+\end{proof}
+
+在好覆盖上，可以把这段证明理解为两种计算次序：先用单位分解消去覆盖方向，留下整体形式；或者先在可缩交集上求原形式，留下常数及其 Čech 相容条件。一般坐标覆盖则需要保留交集本身的上同调。积分构造与从 Euclid 开集推广到一般流形的思路可对照\cite[第18章，Smooth Singular Homology 与 The de Rham Theorem]{Lee2012Smooth}。
 
 \subsection{乘法和支集版本的比较}
 \label{g2:subsec:0703:05}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+楔积与杯积的比较要经过乘积空间：先在乘积链上积分，再沿对角映射拉回，就能证明积分同构保持上同调乘法。在单条单形上，两种公式通常不同：楔积在整个单形上积分，Alexander--Whitney 杯积则在前面、后面分别取值。下面的证明将这种链级差别与上同调上的相容区分开来。
+
+\begin{proposition}[乘法的相容性]\label{g2:prop:de-rham-products}
+	在\cref{g2:thm:de-rham}的条件下，\(\mathcal I_M\) 保持单位和乘法：
+	\[
+		\mathcal I_M([\omega]\wedge[\eta])
+		=\mathcal I_M[\omega]\smile\mathcal I_M[\eta].
+	\]
+	对两个这样的流形，积分也把形式的外积 \(\pi_M^*\omega\wedge\pi_N^*\eta\) 送到上同调外积。
+\end{proposition}
+\begin{proof}
+	设 \(\deg\omega=p\)、\(\deg\eta=q\)，两形式闭。\cref{g2:thm:kunneth}在实数域上没有 \(\operatorname{Tor}\) 项，说明 \(H_{p+q}(M\times N;\mathbb R)\) 由各次数的乘积圈类生成。\cref{g2:thm:uct-cohomology}的域版本又说明，一个上同调类由它在全部同调类上的值确定。故只需在 \([z]\times[w]\) 上比较两类，其中 \(z,w\) 可由光滑比较取为光滑圈。
+
+	若 \(\deg z=p\)、\(\deg w=q\)，第4章的乘积链是把有向 \(\Delta^p\times\Delta^q\) 剖成 shuffle 单形后逐项求和。内部公共面相消，定向取第一因子在前。逐片积分再用有限可加性及连续函数在紧乘积区域上的迭代积分公式，得到
+	\[
+		\int_{z\times w}\pi_M^*\omega\wedge\pi_N^*\eta
+		=\left(\int_z\omega\right)\left(\int_w\eta\right).
+	\]
+	若 \(\deg z=a\)、\(\deg w=b\)、\(a+b=p+q\) 而 \((a,b)\ne(p,q)\)，则 \(a<p\) 或 \(b<q\)，对应因子上的拉回形式为零。上同调外积的值也分别由\cref{g2:prop:cross-cup-evaluation}给出相同的乘积或零。因此外积比较成立。
+
+	最后取 \(N=M\)，沿光滑对角映射 \(\Delta(x)=(x,x)\) 拉回。形式外积拉回为楔积，奇异上同调外积拉回为杯积，自然性给出结论。零次常函数 \(1\) 的积分是常值零上圈 \(1\)，所以单位也保持。这里使用的是同调的域上 Künneth 同构，没有要求上同调外积的张量映射在无限维情形仍为同构。
+\end{proof}
+
+紧支比较还要控制原形式的支集：一个闭紧支形式即使有普通原形式，该原形式也可能在无穷远处保持非零。因此，要在紧支复形中判断恰当性，需同时构造紧支的原形式。定义
+\[
+	\Omega_c^k(M)=\{\omega\in\Omega^k(M):\operatorname{supp}\omega\text{ 紧}\},
+	\qquad H_{c,\mathrm{dR}}^k(M)=H^k(\Omega_c^\bullet(M),\mathrm d).
+\]
+若 \(\omega\) 支于紧集 \(K\)，则 \(I\omega\) 在完全位于 \(M\setminus K\) 的单形上为零，因而是相对上链。第6章的定义给出自然映射
+\[
+	\mathcal I_{c,M}:H_{c,\mathrm{dR}}^k(M)\longrightarrow
+	H_c^k(M;\mathbb R)=\varinjlim_K H^k(M,M\setminus K;\mathbb R).
+\]
+
+\begin{theorem}[相对及紧支比较]\label{g2:thm:de-rham-support}
+	设 \(M\) 满足\cref{g2:thm:de-rham}的条件，\(V\subset M\) 开。复形
+	\[
+		A^k(M,V)=\Omega^k(M)\oplus\Omega^{k-1}(V),\qquad
+		\mathrm D(\omega,\eta)=(\mathrm d\omega,\omega|_V-\mathrm d\eta)
+	\]
+	约定负次形式为零，其上同调经积分自然同构于 \(H^k(M,V;\mathbb R)\)。此外，\(\mathcal I_{c,M}\) 在每个次数为同构；它与忘记支集、开嵌入的扩零及固有光滑映射的拉回相容，并把紧支楔积配对送到相应杯积配对。
+\end{theorem}
+\begin{proof}
+	先解释相对复形。一个圈由闭形式 \(\omega\) 及 \(V\) 上满足 \(\omega|_V=\mathrm d\eta\) 的原形式组成；相对条件记录的是这一份原形式数据。直接计算 \(\mathrm D^2=0\)。由投影到 \(\Omega^\bullet(M)\) 得到的短正合列，产生与空间对完全同形的长正合列。
+
+	把形式换成光滑奇异上链，得到相同的复形。上链限制 \(C_\infty^*(M)\to C_\infty^*(V)\) 逐次满射，因为可给其余单形补零；因此相对上链的核包含 \(\varphi\mapsto(\varphi,0)\) 诱导此复形的上同调同构。也可逐项验证：对一个圈 \((a,b)\)，延拓 \(b\) 为 \(\widetilde b\)，减去余边界 \(\mathrm D(\widetilde b,0)\) 后，第二项为零，第一项落在限制核内；相同操作处理边界。积分与两条长正合列交换，对 \(M,V\) 用普通 de Rham 定理及五引理，得到相对比较。光滑与连续相对模型的比较则由绝对比较和对的长正合列得到。
+
+	现在令 \(V=M\setminus K\)，并使紧集 \(K\) 增大。证明自然包含
+	\[
+		\Omega_c^\bullet(M)\longrightarrow\varinjlim_K A^\bullet(M,M\setminus K),
+		\qquad\omega\longmapsto(\omega,0)
+	\]
+	在上同调上为同构。给定右侧圈 \((\omega,\eta)\)，取光滑函数 \(\rho\)，使其在 \(K\) 的一个邻域为零，在某个更大紧集 \(L\) 外为 \(1\)。第一卷推论12.3.6的闭集截断可作此选择。把 \(\rho\eta\) 延为 \(M\) 上的形式 \(\widetilde\eta\)；它在 \(K\) 附近为零，所以延拓光滑。在更大紧集 \(L\) 对应的相对复形中，减去 \(\mathrm D(\widetilde\eta,0)\) 后得到
+	\[
+		(\omega-\mathrm d\widetilde\eta,0),
+	\]
+	且第一项在 \(M\setminus L\) 为零。这证明上同调满射。零次没有 \(\eta\)，同一结论直接由 \(\omega|_{M\setminus K}=0\) 得到。
+
+	为证单射，设紧支闭形式 \(\omega\) 在极限中为边界。在足够大紧集 \(K\) 的阶段，有 \(\omega=\mathrm d\beta\)、\(\beta|_{M\setminus K}=\mathrm d\gamma\)。用相同截断延拓 \(\rho\gamma\)，则 \(\beta-\mathrm d(\rho\gamma)\) 是紧支形式，其外微分仍为 \(\omega\)。当 \(\deg\omega=1\) 时 \(\gamma\) 的次数为负，条件已经说 \(\beta\) 在补集为零；零次没有非零边界。故各次均得单射。向量空间的滤过直接极限保持正合：圈、边界及两个代表相等都由有限个等式见证，故在某个更晚阶段已经成立。于是可交换这里的上同调与直接极限，结合相对比较得到 \(\mathcal I_{c,M}\) 同构。
+
+	忘记支集与固有拉回在积分链级相容；固有性保证紧集的逆像仍紧。开嵌入扩零则在包含支集的相对对上由切除实现，与形式的扩零相同。乘法证明也保留支集：若第一形式支于 \(K\)，就在空间对 \((M,M\setminus K)\) 上作外积比较。乘积链映射及其同伦保持补集子链，故第4章的域上 Künneth 论证下降到相对商；上述迭代积分计算仍成立。沿对角拉回后，支集回到 \(K\)。若两形式都紧支，所得支集包含在两支集的交中，取直接极限便得到紧支杯积配对。
+\end{proof}
+
+取 \(f\in C_c^\infty(\mathbb R)\)、\(\int_{\mathbb R}f(x)\,\mathrm dx=1\)。形式 \(f(x)\,\mathrm dx\) 有普通原函数 \(F(x)=\int_{-\infty}^x f(t)\,\mathrm dt\)，但 \(F\) 在正向远端为 \(1\)，不可能紧支；任何其他原函数只差常数，也不能在两端都为零。因此该形式在 \(H_{c,\mathrm{dR}}^1(\mathbb R)\) 非零，在普通 \(H_{\mathrm{dR}}^1(\mathbb R)\) 却为零。这正对应第6章 \(H_c^1(\mathbb R;\mathbb R)=\mathbb R\) 与 \(H^1(\mathbb R;\mathbb R)=0\) 的区别。

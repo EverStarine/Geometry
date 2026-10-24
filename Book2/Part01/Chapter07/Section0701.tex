@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 7.1 层与局部正合性
 % 纲要位置：几何学计划纲要.md，第 1268 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,158 @@
 \section{层与局部正合性}
 \label{g2:sec:0701}
 
-待撰写
+一个闭一形式在每个小球上都有原函数，原函数却未必能拼成整体函数。此时应同时保存各开集上的解、缩小定义域的限制，以及重叠处的差。层把这些局部资料组织在一起；层上同调则记录局部解无法整体拼合的障碍。本节先把“局部正合”与“整体正合”分开，再构造能够测量两者差别的群。
+
+以下层均为含幺交换环 \(R\) 上的模层；只研究加法时取 \(R=\mathbb Z\)。底空间在需要局部有限覆盖时假设为 Hausdorff、第二可数、局部紧空间，特别包含本书的流形。预层、层化、正合性和松弛层的论证本身不需要这些拓扑条件。
 
 \subsection{预层、层化与茎}
 \label{g2:subsec:0701:01}
-待撰写
+局部资料先按开集组织：定义域缩小时有一个限制映射，连续缩小两次应与直接限制一致。预层记录这些映射，层再要求相容的局部资料能够唯一粘合。
+
+\begin{definition}\label{g2:def:presheaf-sheaf}
+	拓扑空间 \(X\) 上的一个 \(R\) 模\term[yuceng]{预层}[presheaf] \(\mathcal F\)，给每个开集 \(U\) 指定一个模 \(\mathcal F(U)\)，给每个包含 \(V\subseteq U\) 指定限制同态 \(s\mapsto s|_V\)，满足恒等限制及逐次限制律。若对任意开覆盖 \(U=\bigcup_iU_i\)，彼此相容的截面 \(s_i\in\mathcal F(U_i)\) 都能唯一粘成 \(s\in\mathcal F(U)\)，便称 \(\mathcal F\) 为\term[ceng]{层}[sheaf]。空覆盖约定给出 \(\mathcal F(\varnothing)=0\)。与所有限制映射交换的同态族称为预层或层的态射。
+\end{definition}
+
+连续函数、光滑函数及光滑微分形式都是层：正则性是局部条件，相同的局部函数又能按其值逐点粘合。相反，“定义域上有界的连续函数”只形成预层；在 \(\mathbb R\) 上用有界开区间覆盖，各处的函数 \(x\mapsto x\) 相容，粘成的函数却不再有界。层公理要求保留任意局部可粘资料，所以有界性这种整体限制通常不应放进层的定义。
+
+\begin{definition}\label{g2:def:stalk}
+	对 \(x\in X\)，把所有 \(x\) 的开邻域上的截面作如下识别：\((U,s)\) 与 \((V,t)\) 等价，当且仅当存在 \(x\in W\subseteq U\cap V\)，使 \(s|_W=t|_W\)。所得模
+	\[
+		\mathcal F_x=\varinjlim_{x\in U}\mathcal F(U)
+	\]
+	称为 \(\mathcal F\) 在 \(x\) 的\term[jing]{茎}[stalk]，截面 \(s\) 的等价类 \(s_x\) 称为它的芽。加法和数乘在共同邻域上进行，再取等价类。
+\end{definition}
+
+芽保留的是某个未指定小邻域内的全部信息，通常远多于点值。例如光滑函数芽 \(f_x\) 决定所有阶导数，\(f(x)=0\) 却不意味着 \(f_x=0\)。后一个等式要求 \(f\) 在某邻域上恒为零。对层而言，两个截面相等当且仅当它们在每点的芽相等：芽相等给出局部相等的覆盖，再用粘合的唯一性。
+
+\begin{proposition}[层化]\label{g2:prop:sheafification}
+	任意 \(R\) 模预层 \(\mathcal F\) 有层 \(\mathcal F^{\#}\) 及自然态射 \(\eta:\mathcal F\to\mathcal F^{\#}\)，满足：\(\eta_x\) 在每点都是同构；对任意层 \(\mathcal G\)，每个预层态射 \(\mathcal F\to\mathcal G\) 都唯一经 \(\eta\) 分解。
+\end{proposition}
+\begin{proof}
+	定义 \(\mathcal F^{\#}(U)\) 为芽的族 \((a_x)_{x\in U}\)，要求每个 \(x\in U\) 都有邻域 \(V\subseteq U\) 及 \(s\in\mathcal F(V)\)，使 \(a_y=s_y\) 对所有 \(y\in V\) 成立。限制就是删去定义域外的芽。局部代表可以逐点选择，故相容的芽族唯一粘合；相加时取共同邻域即可，所以它是模层。令 \(\eta(s)=(s_x)_x\)。
+	在 \(x\) 附近，一个层化截面按定义来自原预层截面，所以 \(\eta_x\) 满射。若两个原截面的像有同一芽，则在某邻域内它们的芽族一致；尤其在 \(x\) 处原来的芽相等，故 \(\eta_x\) 单射。给定 \(f:\mathcal F\to\mathcal G\)，把局部代表 \(s\) 送至 \(f(s)\)；不同代表在每点有同一芽，因 \(\mathcal G\) 为层，其像在重叠处一致，遂能唯一粘合。局部代表也迫使此延拓唯一。
+	因此所得分解由下图表达，其中右下方的箭头由局部代表确定：
+	\[
+		\begin{tikzcd}[column sep=large]
+			\mathcal F \arrow[r,"\eta"] \arrow[dr,"f"'] & \mathcal F^{\#} \arrow[d,dashed,"\exists!\,\bar f"] \\
+			& \mathcal G.
+		\end{tikzcd}
+	\]
+\end{proof}
+
+把每个非空开集都赋予同一个模 \(A\)、限制均取恒等，得到常值预层；它的层化记为 \(\underline A\)，称为\term[changzhiceng]{常值层}[constant sheaf]。其截面恰是取值于离散模 \(A\) 的局部常值函数。一个不连通开集上的截面可以在不同分支取不同值，所以“常值层”并不表示每个开集只有一个共同常数。第5章的局部系统也可视为层：在每个平凡化邻域取局部常值截面，以运输给出的过渡映射粘合。
 
 \subsection{层的核余核及茎上的正合检测}
 \label{g2:subsec:0701:02}
-待撰写
+局部方程 \(f(s)=0\) 可以直接逐开集求解，商却更微妙：一个局部商类可能只能在不同小邻域选不同代表。因此核可以逐开集取，余核则通常要层化。
+
+\begin{proposition}[核、余核与正合性]\label{g2:prop:stalk-exactness}
+	设 \(f:\mathcal F\to\mathcal G\) 为拓扑空间 \(X\) 上的 \(R\) 模层态射。核由 \(U\mapsto\ker f_U\) 给出，余核为预层 \(U\mapsto\mathcal G(U)/f\mathcal F(U)\) 的层化；像为预层像的层化。它们在点 \(x\) 的茎分别是 \(\ker f_x\)、\(\operatorname{coker}f_x\) 和 \(\operatorname{im}f_x\)。因而层的复形正合，当且仅当每点的茎复形正合；层态射为同构，当且仅当所有茎映射为同构。
+\end{proposition}
+\begin{proof}
+	核截面的相容族在 \(\mathcal F\) 中粘合，像在 \(\mathcal G\) 中局部为零，故整体也为零；这证明核已是层。商的泛性质先在预层中成立，再用\cref{g2:prop:sheafification}得到层范畴中的余核泛性质。
+	关键是取芽保持正合。若 \(s_x\) 在某映射下为零，就能缩小代表 \(s\) 的定义域，使其像作为截面已经为零。若一个芽属于某像，选择该原像芽的代表，再缩小邻域便得到截面层面的原像。有限次等式和有限个代表只需取有限个邻域的交；这证明有向极限保持模的核、像及余核。层化不改茎，故上述茎公式成立。
+	若每点核与像相同，则核截面在每点附近来自原像，正是像层的定义；反向可直接取茎。最后，茎同构意味着核层与余核层的所有茎为零，而所有茎为零的层只能是零层；也可以把局部逆像利用唯一性直接粘成逆态射。
+\end{proof}
+
+特别地，满的层态射只保证截面\emph{局部}有原像，不保证每个开集上的截面映射满射。后文写
+\[
+	0\longrightarrow\mathcal F\longrightarrow\mathcal G\longrightarrow\mathcal H\longrightarrow0
+\]
+时，正合性均按\cref{g2:prop:stalk-exactness}理解。层化使商对象补足局部代表，因而核与余核满足通常的模运算规则；涉及核、像的图追逐可以逐茎进行，但追逐所得的局部原像仍可能没有整体选择。
 
 \subsection{整体截面与延拓障碍}
 \label{g2:subsec:0701:03}
-待撰写
+记 \(\Gamma(U,\mathcal F)=\mathcal F(U)\)，特别称 \(\Gamma(X,\mathcal F)\) 为整体截面模。对上述短正合列，
+\[
+	0\longrightarrow\Gamma(X,\mathcal F)\longrightarrow\Gamma(X,\mathcal G)\longrightarrow\Gamma(X,\mathcal H)
+\]
+总是正合：映到零的整体截面在局部属于核，核本身已经是层，故各局部原像唯一粘合。这叫整体截面的\term[zuozhenghe]{左正合性}[left exactness]，最后一箭却可能不满。
+
+\begin{example}\label{g2:exm:sheaf-antiderivative-obstruction}
+	在 \(S^1\) 上，令 \(\mathcal C^{\infty}\) 为实光滑函数层，\(\Omega^1\) 为实一形式层。局部区间上的积分说明
+	\[
+		0\longrightarrow\underline{\mathbb R}\longrightarrow\mathcal C^{\infty}\xrightarrow{\mathrm d}\Omega^1\longrightarrow0
+	\]
+	在茎上正合。可是若把 \(S^1\) 写成 \(\mathbb R/\mathbb Z\)，形式 \(\mathrm dt\) 沿一周的积分为 \(1\)，而任何 \(\mathrm df\) 沿一周的积分为 \(0\)。所以整体截面上的最后一箭不满。局部原函数在重叠处只相差常数；这些常数无法全被重新选择的局部常数消去，才是整体障碍。
+\end{example}
+
+为记录局部提升的粘合障碍，先允许在每点独立指定一个芽，再取商记录这些任意芽与真实局部截面之间的差别。反复进行这两项操作，就能构造一条具有自然映射的消解。对层 \(\mathcal F\)，设
+\[
+	T\mathcal F(U)=\prod_{x\in U}\mathcal F_x.
+\]
+这里不要求芽随点连续，也不要求它们由同一个局部截面产生；限制只是投影。故 \(T\mathcal F\) 是层，且 \(\mathcal F\to T\mathcal F\)，\(s\mapsto(s_x)_x\)，为单射。取层余核 \(Q\mathcal F=T\mathcal F/\mathcal F\)，再迭代，令
+\begin{equation}\label{g2:eq:canonical-sheaf-resolution}
+	G^q\mathcal F=TQ^q\mathcal F,\qquad
+	0\longrightarrow\mathcal F\longrightarrow G^0\mathcal F\xrightarrow{\mathrm d_G}G^1\mathcal F\xrightarrow{\mathrm d_G}\cdots,
+\end{equation}
+其中 \(Q^0\mathcal F=\mathcal F\)，微分先取商 \(TQ^q\mathcal F\to Q^{q+1}\mathcal F\)，再嵌入 \(TQ^{q+1}\mathcal F\)。像与核都等于中间的 \(Q^{q+1}\mathcal F\)，所以这是一条正合的层复形，称为本节的典范消解。
+
+\begin{definition}\label{g2:def:sheaf-cohomology}
+	拓扑空间 \(X\) 上的 \(R\) 模层 \(\mathcal F\) 的\term[cengshangtongdiao]{层上同调}[sheaf cohomology]定义为
+	\[
+		H^q(X,\mathcal F)=H^q\bigl(\Gamma(X,G^\bullet\mathcal F)\bigr),\qquad q\ge0.
+	\]
+	若对所有 \(q>0\) 都有 \(H^q(X,\mathcal F)=0\)，称 \(\mathcal F\) 在 \(X\) 上\term[wushangtongdiao]{无上同调}[acyclic]。
+\end{definition}
+
+零次核恰是 \(\Gamma(X,\mathcal F)\)，故 \(H^0(X,\mathcal F)=\Gamma(X,\mathcal F)\)。在开集 \(U\) 上限制时，茎、层商及上述逐点乘积都与限制交换，因此 \(G^\bullet\mathcal F|_U=G^\bullet(\mathcal F|_U)\)。这既定义了上同调的限制，也说明 \(H^q(U,\mathcal F)\) 无歧义。
+
+\begin{proposition}[层上同调的长正合列]\label{g2:prop:sheaf-long-exact}
+	拓扑空间 \(X\) 上每条 \(R\) 模层短正合列 \(0\to\mathcal F\to\mathcal G\to\mathcal H\to0\) 都给出自然长正合列
+	\[
+		0\to H^0(X,\mathcal F)\to H^0(X,\mathcal G)\to H^0(X,\mathcal H)
+		\xrightarrow{\partial}H^1(X,\mathcal F)\to\cdots.
+	\]
+	连接同态 \(\partial s\) 为零当且仅当 \(s\in\Gamma(X,\mathcal H)\) 能整体提升到 \(\mathcal G\)。
+\end{proposition}
+\begin{proof}
+	茎序列正合，而模的任意乘积保持短正合：满射的每个坐标各选一个原像即可。因此 \(T\) 以及 \(\Gamma(X,T(-))\) 都保持短正合。把短正合列与其 \(T\) 像排成两行，竖箭为单射；逐茎追逐得到余核列 \(0\to Q\mathcal F\to Q\mathcal G\to Q\mathcal H\to0\) 正合。更具体地，右侧一个商类先提升到中间 \(T\) 项，差额来自左侧 \(T\) 项；若中间商类落到零，再减去中间原层的局部提升，便回到左侧商类。这也证明 \(Q\) 正合，迭代后 \(Q^q\) 正合。
+	故 \(\Gamma(X,G^\bullet(-))\) 将原序列变成逐次短正合的上链复形序列。连接映射的构造与第2章的链版本相同：将右侧闭上链提升至中间，对其取微分，再由左侧单射识别所得闭上链。两种提升相差中间的左侧上链，其微分只改变一个边界。若连接类为零，减去该左侧原像后，中间提升便是闭上链；反之闭提升的微分为零。这证明连接处的正合性，另外两处由同样的提升和取像直接得到。所有步骤与短正合列的态射交换，故自然。零次的结论正是最后一句。
+\end{proof}
+
+每个层态射都逐点作用于芽，并诱导层商上的态射，因而自动给出典范消解之间的链映射。接下来先考察使高次上同调消失的延拓和局部组合机制；下一节再据此用更适合计算的消解替换典范消解。
 
 \subsection{松弛层、细层及无上同调机制}
 \label{g2:subsec:0701:04}
-待撰写
+\begin{definition}\label{g2:def:flabby-fine}
+	若层 \(\mathcal F\) 对所有开集包含 \(V\subseteq U\) 的限制 \(\mathcal F(U)\to\mathcal F(V)\) 都满射，称它为\term[songchiceng]{松弛层}[flabby sheaf]。在仿紧 Hausdorff 空间 \(X\) 上，若对每个局部有限开覆盖 \(\{U_i\}\)，都有层端同态 \(\rho_i:\mathcal F\to\mathcal F\) 及局部有限闭集族 \(K_i\subseteq U_i\)，使 \(\rho_i|_{X\setminus K_i}=0\) 且 \(\sum_i\rho_i=1\)，则称 \(\mathcal F\) 为\term[xiceng]{细层}[fine sheaf]。端同态之和在每个足够小的邻域都是有限和。
+\end{definition}
+
+松弛性允许任意延拓；细性允许把局部资料乘上有支集控制的权重后相加。两者解决障碍的方式不同。\(T\mathcal F\) 总是松弛，因为一族芽可以在较大开集其余各点取零。光滑函数层通常不松弛，例如 \(1/x\) 在 \((0,1)\) 上无法延拓成 \(\mathbb R\) 上的光滑函数；但它是细层。
+
+\begin{lemma}[松弛核的提升性质]\label{g2:lem:flabby-lifting}
+	若拓扑空间 \(X\) 上的层短正合列 \(0\to\mathcal A\to\mathcal B\to\mathcal C\to0\) 的核 \(\mathcal A\) 松弛，则 \(\mathcal B(U)\to\mathcal C(U)\) 对每个开集 \(U\) 满射。若 \(\mathcal B\) 也松弛，则 \(\mathcal C\) 松弛。
+\end{lemma}
+\begin{proof}
+	固定 \(s\in\mathcal C(U)\)，考虑它在开子集 \(V\subseteq U\) 上的提升 \(b_V\)，按延拓排序。全序族可由层公理在开集之并上粘合，故 Zorn 引理给出极大提升。若 \(x\in U\setminus V\)，茎上的满射性给出邻域 \(W\) 上的提升 \(b_W\)。在 \(V\cap W\) 上，两者之差来自 \(\mathcal A(V\cap W)\) 的唯一截面；利用松弛性把这个差延拓至 \(W\)，从 \(b_W\) 中减去后便与 \(b_V\) 相合。因此提升能延至 \(V\cup W\)，违背极大性。所以 \(V=U\)。若 \(\mathcal B\) 也松弛，先把 \(\mathcal C(V)\) 的截面提升到 \(\mathcal B(V)\)，再延至 \(\mathcal B(U)\) 并取像，就得到 \(\mathcal C\) 的松弛性。
+\end{proof}
+
+\begin{theorem}[松弛层与细层的消失]\label{g2:thm:flabby-fine-acyclic}
+	拓扑空间 \(X\) 上的松弛 \(R\) 模层无上同调，其在每个开子集上的限制也无上同调。仿紧 Hausdorff 空间 \(X\) 上的细 \(R\) 模层在 \(X\) 上无上同调。
+\end{theorem}
+\begin{proof}
+	若 \(\mathcal F\) 松弛，则在 \(0\to\mathcal F\to T\mathcal F\to Q\mathcal F\to0\) 中，前两项都松弛。\cref{g2:lem:flabby-lifting}表明 \(Q\mathcal F\) 松弛，且取整体截面仍正合。逐次迭代，典范消解的整体截面复形在正次数均正合，故上同调消失。松弛性显然保留于开子集上的限制，同一论证遂适用。
+	现设 \(\mathcal F\) 细，取 \(q>0\) 及 \(z\in\Gamma(X,G^q\mathcal F)\) 满足 \(\mathrm d_Gz=0\)。层消解的正合性给出一个开覆盖，使每个开集上存在 \(b_i\) 满足 \(\mathrm d_Gb_i=z\)。用仿紧性取局部有限开细化，仍记为 \(\{U_i\}\)，并选细性给出的 \(\rho_i,K_i\)。函子性使 \(\rho_i\) 诱导消解端同态 \(G^\bullet\rho_i\)，与 \(\mathrm d_G\) 交换。由于消解构造与开限制交换，\(G^\bullet\rho_i\) 在 \(X\setminus K_i\) 上也为零。
+	因此 \((G^{q-1}\rho_i)b_i\) 可在 \(U_i\) 外补零：在 \(U_i\cap(X\setminus K_i)\) 上两个定义都是零，层公理保证粘合。令 \(b\) 为这些整体截面的局部有限和。每点附近只有有限项，故加法、函子作用及微分均与此和交换，得到
+	\[
+		\mathrm d_Gb=\sum_i(G^q\rho_i)z
+		=G^q\Bigl(\sum_i\rho_i\Bigr)z=z.
+	\]
+	每个正次闭上链都成为边界，证明细层无上同调。这里没有要求一般微分与任意函数相乘交换；交换的是同一个层端同态在\emph{典范消解}上诱导的映射。
+\end{proof}
+
+\begin{corollary}\label{g2:cor:smooth-module-acyclic}
+	有限维、Hausdorff、第二可数的光滑流形 \(M\) 上，每个光滑函数层 \(\mathcal C^{\infty}_M\) 的模层都是细层，因而无上同调。特别地，光滑向量丛截面层及微分形式层 \(\Omega^p_M\) 均无上同调；它们在任意开子集上的限制也无上同调。
+\end{corollary}
+\begin{proof}
+	第一卷定理12.3.5说明：对每个开覆盖，可取光滑函数 \(\chi_i\)，支集族局部有限、\(\operatorname{supp}\chi_i\subseteq U_i\)，且 \(\sum_i\chi_i=1\)。在模层上取 \(\rho_i(s)=\chi_i s\)，便满足\cref{g2:def:flabby-fine}。流形的每个开子集仍为 Hausdorff、第二可数光滑流形，故限制后的结论同样成立。
+\end{proof}
+
+应用于\cref{g2:exm:sheaf-antiderivative-obstruction}，长正合列与 \(\mathcal C^{\infty}\) 的消失给出
+\[
+	H^1(S^1,\underline{\mathbb R})
+	\cong\Omega^1(S^1)/\mathrm d\mathcal C^{\infty}(S^1)\cong\mathbb R.
+\]
+最后一个同构由沿一周积分给出。若 \(a(t)\mathrm dt\) 的积分为零，\(f(t)=\int_0^t a(u)\,\mathrm du\) 是周期函数，故在圆上给出原函数；这证明其核恰为恰当形式。于是层上同调确实把局部原函数的粘合失败转成了可以计算的整体不变量。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

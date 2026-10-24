@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 5.3 定向系数和循环模型
 % 纲要位置：几何学计划纲要.md，第 1209 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,227 @@
 \section{定向系数和循环模型}
 \label{g2:sec:0503}
 
-待撰写
+同一条闭路为什么会把系数变号？在不可定向曲面上，这个符号来自一个可以看见的几何现象：把一小片有定向的圆盘沿闭路移动，回到起点时局部定向可能反转。局部同调使这件事不依赖光滑坐标，也不依赖把流形嵌入某个 Euclid 空间。本节先把这些局部生成元组织成系数系统，再用圆周和曲面的胞腔链计算其作用。
 
 \subsection{流形局部同调给出的定向系统}
 \label{g2:subsec:0503:01}
-待撰写
+设 \(M\) 是 Hausdorff、第二可数、无边界的 \(n\) 维拓扑流形。
+\cref{g2:thm:manifold-local-homology}已经通过坐标邻域、切除和穿孔 Euclid 空间的计算证明
+\[
+	\mathcal O_{M,x}\coloneqq H_n(M,M\setminus\{x\};\mathbb Z)\cong\mathbb Z
+	\qquad(x\in M).
+\]
+\symidx{\(\mathcal O_M\)：流形的整数定向局部系统}
+每个局部群的两个生成元分别表示这一点处的两种\term[ju bu ding xiang]{局部定向}[local orientation]，选择其中一个才确定了与 \(\mathbb Z\) 的具体同构。要把这些群组成局部系统，还需比较邻近点的生成元。在一个坐标球内，同一个相对同调类在各点的局部值将给出这种比较；下一引理同时说明不同坐标球上的比较如何相容。
+
+\begin{lemma}[坐标球内的生成元]\label{g2:lem:orientation-ball}
+	设 \(M\) 是 Hausdorff、第二可数、无边界的 \(n\) 维拓扑流形，\(n\geq1\)。取坐标邻域 \(U\cong\mathbb R^n\)，令 \(B\subset U\) 对应一个有正半径的闭 Euclid 球。对每个 \(x\in\operatorname{int}B\)，相对化映射
+	\[
+		r_{B,x}:H_n(M,M\setminus B;\mathbb Z)\longrightarrow\mathcal O_{M,x}
+	\]
+	都是无限循环群之间的同构。选择左侧的一个生成元，会同时指定 \(\operatorname{int}B\) 内各点的生成元。两个这样指定的生成元族在交集上的比较符号局部常值。
+\end{lemma}
+\begin{proof}
+	因为 \(B\) 紧且 \(M\) 为 Hausdorff 空间，\(B\) 在 \(M\) 中闭。切除 \(M\setminus U\) 时，其闭包就是自身，并包含在开集 \(M\setminus B\) 中，所以\cref{g2:thm:singular-excision}适用。将相对同调和局部同调都切除到 \(U\)，再用坐标，所求映射成为
+	\[
+		H_n(\mathbb R^n,\mathbb R^n\setminus B;\mathbb Z)
+		\longrightarrow H_n(\mathbb R^n,\mathbb R^n\setminus\{x\};\mathbb Z).
+	\]
+	对的长正合列把它识别为补空间包含在约化 \(n-1\) 次同调上的映射。这个包含是同伦等价：取一个在 \(B\) 外围的同心球面 \(S\)，从 \(x\in\operatorname{int}B\) 发出的每条射线都恰交 \(S\) 一次；沿这些射线径向移动，将两个补空间都形变收缩到 \(S\)。在 \(\mathbb R^n\setminus B\) 上，移动线段始终位于射线离开 \(B\) 之后，故不会穿入被删去的闭球。于是该映射为同构，且球面计算说明两端均为 \(\mathbb Z\)。这里使用约化同调也包含 \(n=1\) 时补空间有两个分支的情形。
+
+	还须证明比较符号局部不变。设 \(x\) 属于两球内部的交，且两边已各选生成元。可以在一张坐标图中选一个更小的闭球 \(C\)，使 \(x\in\operatorname{int}C\subset C\subset\operatorname{int}B_1\cap\operatorname{int}B_2\)。因为 \(C\subset B_i\)，有相对化映射
+	\[
+		H_n(M,M\setminus B_i)\longrightarrow H_n(M,M\setminus C)
+		\xrightarrow{r_{C,y}}\mathcal O_{M,y},\qquad y\in\operatorname{int}C.
+	\]
+	这个复合就是 \(r_{B_i,y}\)。三个局部群之间的映射都是同构，所以两个已选生成元在中间的同一个无限循环群中恰相差一个固定符号；再映到任意 \(y\in\operatorname{int}C\)，该符号不变。这证明了局部常值，而没有对坐标变换预设可微性。
+\end{proof}
+
+\begin{definition}[定向局部系统]\label{g2:def:orientation-local-system}
+	设 \(M\) 是 Hausdorff、第二可数、无边界的 \(n\) 维拓扑流形。以 \(\mathcal O_{M,x}=H_n(M,M\setminus\{x\};\mathbb Z)\) 为纤维，在坐标球内用\cref{g2:lem:orientation-ball}的共同相对群识别各纤维，所得秩一整数局部系统称为 \(M\) 的\term[ding xiang ju bu xi tong]{定向局部系统}[orientation local system]，记为 \(\mathcal O_M\)。当 \(n=0\) 时，流形离散，取各点的零次局部同调及常道路的恒等运输。\(M\) 的一个\term[ding xiang]{定向}[orientation]是 \(\mathcal O_M\) 的一个处处取生成元值的平行截面；存在这样的截面时，称 \(M\)\term[ke ding xiang]{可定向}[orientable]。
+\end{definition}
+
+这里的“所得局部系统”可以直接按路径写出。将路径分成有限多段，使每段落在一个球的内部；在该球内，从 \(x\) 到 \(y\) 的运输取 \(r_{B,y}r_{B,x}^{-1}\)，再按行进次序复合。引理的比较符号局部常值，说明换球或加细分段不改变运输。对固定端点的路径同伦，把参数方形细分到每个小方格的像都落在一个球内；小方格内两条绕行方式给出相同运输，逐格消去内边后，两条边界路径的运输相同。这既证明了良定义，也给出
+\[
+	T_{\alpha*\beta}=T_\beta T_\alpha,\qquad T_{\bar\alpha}=T_\alpha^{-1}.
+\]
+因此这一定义确实满足\secref{g2:sec:0501}的路径群胚函子条件。
+
+\begin{proposition}[定向与单值]\label{g2:prop:orientation-monodromy}
+	设 \(M\) 是连通、Hausdorff、第二可数、无边界的拓扑 \(n\) 维流形。固定基点 \(x_0\)，将 \(\mathcal O_{M,x_0}\) 的一个生成元记为 \(\mu_0\)。存在唯一映射
+	\[
+		w_M:\pi_1(M,x_0)\longrightarrow\{1,-1\},\qquad T_g(\mu_0)=w_M(g)\mu_0,
+	\]
+	且 \(w_M(gh)=w_M(g)w_M(h)\)。流形 \(M\) 可定向，当且仅当 \(w_M\equiv1\)，也当且仅当 \(\mathcal O_M\) 同构于常值整数系统。若可定向，它恰有两种定向。
+\end{proposition}
+\begin{proof}
+	无限循环群的自同构只可能把生成元送到自身或其负值，故 \(w_M\) 有定义。运输复合律给出所述乘法公式；把 \(\mu_0\) 换成 \( -\mu_0\) 不改变符号。若已有平行生成元族，任何闭路都保持其在基点的值，所以 \(w_M\equiv1\)。反之，连通流形局部道路连通，因而道路连通。选从 \(x_0\) 到每个 \(x\) 的路径 \(\gamma\)，令 \(\mu_x=T_\gamma\mu_0\)。若换成 \(\gamma'\)，环路 \(\gamma*\bar\gamma'\) 的运输为恒等，故所得 \(\mu_x\) 相同。这个族在各坐标球内平行，构成定向，并通过 \(k\mapsto k\mu_x\) 给出常值系统同构。
+
+	每个平行截面由基点处的值决定，因为可以沿路径运输。生成元只有 \(\mu_0,-\mu_0\) 两个，所以可定向时恰有两种定向。
+\end{proof}
+
+映射 \(w_M\) 称为\term[ding xiang zi fu]{定向特征}[orientation character]。它在选定基点后记录闭路是否反转局部定向。对光滑流形，这与坐标变换 Jacobian 行列式的符号相同：将坐标变换平移到固定原点，在足够小的球内写成 \(f(v)=Av+o(\lVert v\rVert)\)，其中 \(A=\mathrm Df_0\) 可逆。由 \(\lVert Av\rVert\geq c\lVert v\rVert\)，可把 \(f\) 与 \(A\) 线性同伦而始终不把非零小向量送到零；故两者诱导同一个局部同调映射。正定伸缩与旋转保持生成元，一次坐标反射将其变号（\cref{g2:prop:reflection-antipodal-degree}），所以该映射为乘以 \(\operatorname{sgn}\det A\)。
+
+\ProseParagraphBreak
+
+上述秩一系统定义于无边界流形。对于边界点，\cref{g2:thm:manifold-local-homology}给出 \(H_n(M,M\setminus\{x\};\mathbb Z)=0\)。本章以下的 Möbius 模型\footnote{August Ferdinand Möbius（1790--1868），德国数学家、天文学家，研究射影几何、重心坐标及单侧曲面。}先取无边界的开带；闭带所用系数会另行指定。局部同调定向及其覆盖解释可对照\cite[第3.3节，Orientations and Homology；第3.H节]{Hatcher2002}。
 
 \subsection{圆周单值下的核、余核计算}
 \label{g2:subsec:0503:02}
-待撰写
+圆周已经容纳了非平凡局部系统的基本现象。固定圆周基点及正向环路 \(t\)，给定含幺交换环 \(R\)、\(R\) 模 \(A\) 和一个 \(R\) 线性自同构 \(T:A\to A\)。令 \(\mathcal L_T\) 表示纤维为 \(A\)、正向单值为 \(T\) 的局部系统。本节用 \(A\) 表示系数模，以免与流形 \(M\) 混淆；不要求 \(A\) 自由或有限生成。
+
+\begin{proposition}[圆周的核与余核]\label{g2:prop:circle-local-coefficients}
+	在上述条件下，有
+	\begin{align*}
+		H_1(S^1;\mathcal L_T)&=\ker(T-1),& H_0(S^1;\mathcal L_T)&=A/(T-1)A,\\
+		H^0(S^1;\mathcal L_T)&=\ker(T-1),& H^1(S^1;\mathcal L_T)&=A/(T-1)A.
+	\end{align*}
+	其他非负次数的同调和上同调均为零。这些识别在固定圆周基点与胞腔方向后，对与单值交换的系数同态自然。
+\end{proposition}
+\begin{proof}
+	用一个顶点 \(v\) 和一条正向边 \(e\) 分解圆周。在万有覆盖 \(\mathbb R\) 上选顶点提升 \(\widetilde v=0\)、边提升 \(\widetilde e=[0,1]\)。按本章的左覆盖变换约定，端点为 \(t\widetilde v\)，故
+	\[
+		\mathrm d\widetilde e=(t-1)\widetilde v.
+	\]
+	\cref{g2:thm:twisted-cellular-comparison}允许用这条群环胞腔链计算局部系数同调。系数为右模，\(a\cdot t=T(a)\)，所以平衡关系把 \(a\otimes t\widetilde v\) 变成 \(T(a)\otimes\widetilde v\)，得到
+	\begin{equation}\label{g2:eq:circle-twisted-chain}
+		0\longrightarrow A\xrightarrow{\ T-1\ }A\longrightarrow0,
+	\end{equation}
+	左侧在一次，右侧在零次。其核与余核给出同调公式。
+
+	上链使用同一定理的上链版本及左模 \(A^{-}\)，其中 \(t\cdot a=T^{-1}(a)\)。若零次上链 \(\varphi\) 在 \(\widetilde v\) 上的值为 \(a\)，则
+	\[
+		(\delta\varphi)(\widetilde e)=\varphi((t-1)\widetilde v)=T^{-1}(a)-a.
+	\]
+	因而上链复形为 \(A\xrightarrow{T^{-1}-1}A\)，次数为零和一次。两个微分不能在链层面不加说明地写成同一个算子；不过
+	\[
+		T^{-1}-1=-T^{-1}(T-1),\qquad
+		\ker(T^{-1}-1)=\ker(T-1),\qquad
+		(T^{-1}-1)A=(T-1)A.
+	\]
+	最后一个等式用到 \(T\) 可逆且与 \(T-1\) 交换。因此上同调也得到陈述中的核与余核。没有其他胞腔，所以更高次数为零；系数同态若与 \(T\) 交换，就与全部微分交换，证明自然性。
+\end{proof}
+
+\(H_1\) 的条件 \(T(a)=a\) 有直接解释：带系数 \(a\) 的一圈走完之后，末端系数必须与起点相同，才没有边界。零次同调则把 \(T(a)\) 与 \(a\) 视为相同，故取余核。上同调中的零次类是平行截面，同样需要单值不变；一次类则只记录不能通过改变零次上链消除的误差。
+
+\begin{example}[符号单值]\label{g2:exm:circle-sign-system}
+	取 \(A=\mathbb Z\)、\(T=-1\)，记系统为 \(\mathbb Z_{-}\)。链微分与上链微分都为乘以 \( -2\)，所以
+	\[
+		H_1(S^1;\mathbb Z_{-})=H^0(S^1;\mathbb Z_{-})=0,
+		\qquad H_0(S^1;\mathbb Z_{-})=H^1(S^1;\mathbb Z_{-})=\mathbb Z/2.
+	\]
+	把系数改成 \(\mathbb Q\) 时，乘以 \( -2\) 是同构，两种理论的所有群都为零；改成 \(\mathbb F_2\) 时，\( -1=1\)，系统成为常值系统，零次和一次群都为 \(\mathbb F_2\)。这些结果来自改变后的链微分，而不能通过把整数答案直接逐项取张量得到全部信息。例如整数系数的一次同调是零，模二的一次同调却不为零。
+\end{example}
 
 \subsection{Möbius 型和不可定向曲面的计算}
 \label{g2:subsec:0503:03}
-待撰写
+考虑开\term[mobiusdai]{Möbius 带}[Möbius band]
+\begin{equation}\label{g2:eq:open-moebius-model}
+	B^{\circ}=(\mathbb R\times(-1,1))/\bigl((s,u)\sim(s+1,-u)\bigr).
+\end{equation}
+整数作用沿第一坐标平移，故每点都有不与其他平移相交的小矩形邻域；商是 Hausdorff、第二可数的无边界曲面。在矩形中选标准局部定向。沿核心圆周 \(u=0\) 绕行一周时，用于粘合的坐标变换为 \((s,u)\mapsto(s+1,-u)\)，它反射第二坐标，故局部定向反转。于是核心圆周上的 \(\mathcal O_{B^{\circ}}\) 正是\cref{g2:exm:circle-sign-system}的 \(\mathbb Z_{-}\)。
+
+\ProseParagraphBreak
+
+同伦 \([s,u]\mapsto[s,(1-v)u]\)、\(0\leq v\leq1\)，把 \(B^{\circ}\) 形变收缩到核心圆周，且始终与粘合相容。\cref{g2:thm:twisted-homotopy-invariance}比较的是空间及其拉回系数：这里核心包含的拉回系统是 \(\mathbb Z_{-}\)，收缩同伦又给出其拉回与 \(\mathcal O_{B^{\circ}}\) 的识别。因此
+\begin{equation}\label{g2:eq:moebius-orientation-groups}
+	\begin{aligned}
+		&H_0(B^{\circ};\mathcal O_{B^{\circ}})=\mathbb Z/2,\qquad H_k(B^{\circ};\mathcal O_{B^{\circ}})=0\quad(k\geq1),\\
+		&H^1(B^{\circ};\mathcal O_{B^{\circ}})=\mathbb Z/2,\qquad H^k(B^{\circ};\mathcal O_{B^{\circ}})=0\quad(k\ne1).
+	\end{aligned}
+\end{equation}
+若把 \((-1,1)\) 换成 \([-1,1]\)，得到闭 Möbius 带 \(B\)。在它上面取由核心收缩拉回的符号系统，以上计算仍成立；这明确指定了边界点处的秩一纤维，而不是用边界点处为零的局部二维同调来代替它。
+
+\ProseParagraphBreak
+
+闭曲面还有一个二维胞腔，这会改变最高次同调。令 \(N_h\) 为 \(h\geq1\) 个实射影平面的连通和。\eqref{g2:eq:surface-attaching-words}给出的模型有一个顶点、边 \(a_1,\ldots,a_h\) 和一个二维胞腔，附着词为 \(a_1^2\cdots a_h^2\)。每条 \(a_i\) 的小带邻域都是上述 Möbius 型模型，所以定向特征满足 \(w_{N_h}(a_i)=-1\)。关键是先保留每条边前面已经走过的路径，再让它作用于系数；只统计字母次数会漏掉这个信息。
+
+\begin{lemma}[提升后的多边形边界]\label{g2:lem:lifted-polygon-boundary}
+	设连通二维 CW 复形 \(X\) 由一个顶点、有向边 \(a_1,\ldots,a_h\) 及一个二维胞腔构成，附着映射按有限词 \(w=b_1\cdots b_\ell\) 逐边行进，其中 \(b_j=a_{i_j}^{\varepsilon_j}\)、\(\varepsilon_j=\pm1\)。令 \(\pi=\pi_1(X)\)，\(P_0=1\)、\(P_j=b_1\cdots b_j\in\pi\)，并选从 \(\widetilde v\) 到 \(a_i\widetilde v\) 的边提升 \(\widetilde e_i\)。选择二维胞腔的提升及定向，使其边界从 \(\widetilde v\) 按词 \(w\) 行进，则其群环胞腔边界为
+	\begin{equation}\label{g2:eq:lifted-word-boundary}
+		\mathrm d\widetilde f
+		=\sum_{\varepsilon_j=1}P_{j-1}\widetilde e_{i_j}
+		-\sum_{\varepsilon_j=-1}P_j\widetilde e_{i_j}.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	提升从 \(\widetilde v\) 出发，走完前 \(j-1\) 个字母后位于 \(P_{j-1}\widetilde v\)。若下一字母为 \(a_i\)，该段是 \(P_{j-1}\widetilde e_i\)，其终点为 \(P_{j-1}a_i\widetilde v=P_j\widetilde v\)。若下一字母为 \(a_i^{-1}\)，则沿 \(P_j\widetilde e_i\) 反向行进，因为该正向边从 \(P_j\widetilde v\) 通到 \(P_ja_i\widetilde v=P_{j-1}\widetilde v\)，故贡献负号。附着圆周在 \(X\) 中界住二维胞腔，所以 \(P_\ell=1\)，提升的边界闭合，且整个特征圆盘能够提升。
+
+	群环胞腔微分逐一记录这些被经过的提升边及其方向。这可由\cref{g2:thm:cellular-boundary-degree}直接核对：固定一条提升边、压掉其余边后，每次正向经过给局部度 \(1\)，每次反向经过给局部度 \( -1\)，于是正是式中的带符号和。这也说明公式计算的是实际附着边界，而不是从群展示形式猜出的一个矩阵。
+\end{proof}
+
+\begin{proposition}[不可定向曲面的定向系数]\label{g2:prop:nonorientable-twisted-homology}
+	设 \(N_h=\mathbb RP^2\mathbin{\#}\cdots\mathbin{\#}\mathbb RP^2\) 有 \(h\geq1\) 个因子，\(\mathcal O=\mathcal O_{N_h}\) 为整数定向局部系统。则
+	\[
+	\begin{array}{c|ccc}
+		k&0&1&2\\\hline
+		H_k(N_h;\mathcal O)&\mathbb Z/2&\mathbb Z^{h-1}&\mathbb Z\\
+		H^k(N_h;\mathcal O)&0&\mathbb Z^{h-1}\oplus\mathbb Z/2&\mathbb Z
+	\end{array}
+	\]
+	且高于二次的群均为零。
+\end{proposition}
+\begin{proof}
+	在上一引理中取 \(w=a_1^2\cdots a_h^2\)，并记 \(Q_i=a_1^2\cdots a_{i-1}^2\)，其中 \(Q_1=1\)。两次经过边 \(a_i\) 时，前缀分别为 \(Q_i\)、\(Q_i a_i\)，故
+	\[
+		\mathrm d\widetilde f=\sum_{i=1}^hQ_i(1+a_i)\widetilde e_i,
+		\qquad\mathrm d\widetilde e_i=(a_i-1)\widetilde v.
+	\]
+	定向系数的右作用为 \(m\cdot g=w_{N_h}(g)m\)。每个平方及每个 \(Q_i\) 作用为 \(1\)，而 \(a_i\) 作用为 \( -1\)。取平衡张量后，二维微分的每个系数都是 \(1+(-1)=0\)，一次微分的每个系数都是 \( -1-1=-2\)。由\cref{g2:thm:twisted-cellular-comparison}，同调由下列复形计算：
+	\begin{equation}\label{g2:eq:nonorientable-twisted-chain}
+		0\longrightarrow\mathbb Z\xrightarrow{\ 0\ }\mathbb Z^h
+		\xrightarrow{\ (x_1,\ldots,x_h)\mapsto-2\sum_i x_i\ }\mathbb Z\longrightarrow0.
+	\end{equation}
+	最高次核为 \(\mathbb Z\)，中间核由 \(e_i-e_h\)、\(1\leq i<h\) 自由生成，末端余核为 \(\mathbb Z/2\)。这给出同调各项，也包含 \(h=1\) 时中间群为零的情形。
+
+	上链的左作用由逆元给出，但 \(w_{N_h}(g^{-1})=w_{N_h}(g)\)，所以这里每个符号不变。直接对提升边界取值，得到
+	\begin{equation}\label{g2:eq:nonorientable-twisted-cochain}
+		0\longrightarrow\mathbb Z\xrightarrow{\ m\mapsto(-2m,\ldots,-2m)\ }\mathbb Z^h
+		\xrightarrow{\ 0\ }\mathbb Z\longrightarrow0,
+	\end{equation}
+	次数依次为零、一次和二次。第一映射单射，故 \(H^0=0\)；末端给出 \(H^2=\mathbb Z\)。令 \(u=e_1+\cdots+e_h\)，则 \(u,e_2,\ldots,e_h\) 是 \(\mathbb Z^h\) 的一组基，唯一关系为 \(2u=0\)，所以 \(H^1=\mathbb Z^{h-1}\oplus\mathbb Z/2\)。这里直接计算了扭系数上链，没有把第四章关于常值系数的万有系数公式未经核对地套到群环上。
+\end{proof}
+
+比较\cref{g2:prop:surface-integer-homology}的普通整数计算，差别集中在两条微分上：普通系数下是 \(\mathrm d_2(1)=2\sum_i e_i\)、\(\mathrm d_1=0\)；定向系数下则是 \(\mathrm d_2=0\)、\(\mathrm d_1(e_i)=-2\)。附着边本来同向出现两次，沿第一条边运输的系数反号，第二次出现便与第一次抵消，于是二维胞腔成为扭系数圈。与此同时，原来闭合的边环路带着局部定向走完后不再闭合为带系数的圈。这两个改变必须同时保留。
+
+\ProseParagraphBreak
+
+特别地，射影平面满足 \(H_2(\mathbb RP^2;\mathcal O)=\mathbb Z\)，Klein 瓶\footnote{Felix Christian Klein（1849--1925），德国数学家，以变换群组织几何的 Erlangen 纲领及函数论研究著称。} \(N_2\) 满足 \(H_1(N_2;\mathcal O)=\mathbb Z\)。这些顶次类预示定向系数会在流形对偶中起作用。
 
 \subsection{平凡化系数和遗失的单值信息}
 \label{g2:subsec:0503:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+把每个纤维分别写成 \(\mathbb Z\)，不等于把局部系统写成常值系统。前一种操作只选择各点的记号；后一种操作还要求这些记号与所有路径运输相容。若在局部平凡化中把一个生成元改成其负值，相邻区域的过渡符号会相应改变，但闭路全部过渡符号的乘积不变。对一般纤维 \(A\)，换基只把闭路单值共轭成另一种矩阵表示；对秩一整数系统，\(\{\pm1\}\) 交换，连共轭也不能改变 \( -1\)。
+
+\begin{proposition}[定向双覆盖]\label{g2:prop:orientation-double-cover}
+	设 \(M\) 是连通、Hausdorff、第二可数、无边界的拓扑 \(n\) 维流形。令
+	\[
+		\widehat M=\{(x,\mu):x\in M,\ \mu\text{ 是 }\mathcal O_{M,x}\text{ 的生成元}\}.
+	\]
+	用坐标球内的平行生成元族作为局部截面，投影 \(p:\widehat M\to M\) 成为二重覆盖，称为\term[ding xiang shuang fu gai]{定向双覆盖}[orientation double cover]。拉回 \(p^*\mathcal O_M\) 有一个规范的平行生成元 \(s(x,\mu)=\mu\)，从而是常值系统；覆盖空间 \(\widehat M\) 本身也有规范定向。\(M\) 可定向时该覆盖有两个连通分支；不可定向时它连通。
+\end{proposition}
+\begin{proof}
+	在一个坐标球内部，选择一个平行生成元族 \(\mu_x\)，则其全部原像恰为两个截面 \(x\mapsto(x,\mu_x)\)、\(x\mapsto(x,-\mu_x)\)。将这两个截面的像定义为两个与底空间球同胚的开片。\cref{g2:lem:orientation-ball}说明在交叠处两片的更换局部恒定，因此这些局部拓扑相容，并满足覆盖的均匀覆盖条件。
+
+	提升一条路径时，第二坐标按 \(\mathcal O_M\) 的运输变化，所以 \(s(x,\mu)=\mu\) 是拉回系统的平行生成元。局部同胚 \(p\) 还经局部同调的邻域同构给出
+	\[
+		H_n(\widehat M,\widehat M\setminus\{(x,\mu)\};\mathbb Z)\cong\mathcal O_{M,x}.
+	\]
+	取 \(\mu\) 的原像作为覆盖空间该点的局部定向，它们在上述开片中相容，得到 \(\widehat M\) 的规范定向。
+
+	若 \(w_M\equiv1\)，任取一处生成元并运输，得到全局的两个平行生成元族，其图像是覆盖的两个分支。若 \(w_M\) 非平凡，则有闭路把 \(\mu_0\) 送到 \( -\mu_0\)，它的提升连接基点上方的两个点。底空间道路连通，任意覆盖点都能经一条提升路径连接到这两个点之一，所以整个覆盖道路连通。
+\end{proof}
+
+这个命题改变的是底空间。虽然定向系统拉到双覆盖后平凡了，原底空间上的扭系数同调仍不能直接换成覆盖空间的普通同调。例如 \(\mathbb RP^2\) 的定向双覆盖为 \(S^2\to\mathbb RP^2\)：反足变换在 \(S^2\) 上的度为 \( -1\)，所以它交换两种局部定向；商映射因此正好给出上述二重覆盖。然而
+\[
+	H_0(\mathbb RP^2;\mathcal O)=\mathbb Z/2,
+	\qquad H_0(S^2;\mathbb Z)=\mathbb Z.
+\]
+前者还要求下降时保留交换两层所带的负号，后者计算所有覆盖链而未施加这一系数关系。
+
+\ProseParagraphBreak
+
+另一种变化是把定向系统逐纤维模 \(2\)。由于两种局部生成元在模 \(2\) 后成为同一个非零元，\(\mathcal O_M\otimes\mathbb F_2\) 规范同构于常值 \(\mathbb F_2\) 系统。这里确实消除了定向反转，但同时更换了系数环，整数中的倍数和二阶挠信息会相应变化。圆周的符号系统在\cref{g2:exm:circle-sign-system}中已经展示：原来为零的一次同调会在模二后出现。
+
+\ProseParagraphBreak
+
+这些构造给出了三种不同的简化：局部选基用来写运输公式，全局相容的选基对应于单值平凡，拉到覆盖空间或改变系数环则产生新的计算对象。圆周上的 \(T-1\) 公式和曲面的提升边界说明，具体计算中要随所选简化一同保留运输关系。

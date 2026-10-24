@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 5.2 扭系数链与上链
 % 纲要位置：几何学计划纲要.md，第 1202 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿完成，待正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,360 @@
 \section{扭系数链与上链}
 \label{g2:sec:0502}
 
-待撰写
+上一节允许系数沿道路运输。把这种系数放到链上时，一个新的问题立刻出现：一个单形的不同面不具有共同的首顶点，所以取边界时不能原样抄下同一个系数。本节先在万有覆盖上保留全部单形及其所在的覆盖层，再说明群环如何把覆盖层的改变与系数运输合并起来。最后得到不依赖万有覆盖的几何公式。
+
+\ProseParagraphBreak
+
+以下 \(R\) 为含幺交换环，\(\mathcal L\) 为 \(R\) 模局部系统。运输写作 \(T_\alpha:\mathcal L_x\to\mathcal L_y\)，其中 \(\alpha:x\to y\)；路径积 \(\alpha*\beta\) 表示先走 \(\alpha\) 再走 \(\beta\)，故 \(T_{\alpha*\beta}=T_\beta T_\alpha\)。群环模型的两小节假定 \(X\) 连通、局部道路连通且半局部单连通；从几何链的定义开始，只需给出路径群胚上的系数函子，空间本身不再需要这些局部条件。
 
 \subsection{万有覆盖链复形的群环作用}
 \label{g2:subsec:0502:01}
-待撰写
+固定基点 \(x_0\in X\)，令 \(\pi=\pi_1(X,x_0)\)。\cref{g2:thm:universal-cover}保证在本节的局部条件下存在万有覆盖 \(p:\widetilde X\to X\)，其中的点用从 \(x_0\) 出发的道路类 \([\gamma]\) 表示，投影取道路终点。\cref{g2:prop:monodromy-deck}给出的左覆盖变换作用通过在道路前面接一个环路实现：
+\[
+	g[\gamma]=[g*\gamma].
+\]
+这个作用是左作用，因为 \(g(h[\gamma])=[g*h*\gamma]=(gh)[\gamma]\)。它是覆盖变换作用，保持投影；在每一纤维上自由且可迁。因此一个底空间单形的不同提升，恰好相差唯一一个 \(g\in\pi\)。
+
+\begin{definition}[群环与覆盖链模]\label{g2:def:cover-chain-module}
+	设 \(R\) 为含幺交换环，\(\pi\) 为群。\term[qun huan]{群环}[group ring] \(\Gamma=R[\pi]\) 的元素是有限和 \(\sum_g r_g g\)，加法逐项进行，乘法由 \((rg)(sh)=rs(gh)\) 分配延拓。对具有万有覆盖的上述空间 \(X\)，令
+	\[
+		C_n(\widetilde X;R)=\bigoplus_{\widetilde\sigma:\Delta^n\to\widetilde X}R\,\widetilde\sigma,
+		\qquad g\widetilde\sigma=g\circ\widetilde\sigma.
+	\]
+	这样 \(C_n(\widetilde X;R)\) 成为左 \(\Gamma\) 模。边界取通常的面交错和，并在负次数置零。
+\end{definition}
+
+\symidx{\(R[\pi]\)：基本群的群环}
+\symidx{\(C_*(\widetilde X;R)\)：万有覆盖的左群环链复形}
+每个 \(\sigma:\Delta^n\to X\) 都有提升：\(\Delta^n\) 道路连通、局部道路连通且单连通，所以\cref{g2:prop:covering-lift-criterion}的基本群条件自动满足。选定其一个顶点的提升后，提升唯一。对每个底空间单形选一个提升，便得到一个左 \(\Gamma\) 自由基：任意提升唯一写成 \(g\widetilde\sigma\)。此外，覆盖变换与取面交换，所以
+\[
+	\partial(g\widetilde\sigma)=g\,\partial\widetilde\sigma.
+\]
+因此整个奇异链复形是左 \(\Gamma\) 自由模复形。选提升只是选基，不是额外的几何结构。
+
+\begin{example}[圆周提升边的边界]\label{g2:exm:cover-circle-boundary}
+	在 \(S^1=\mathbb R/\mathbb Z\) 上取正向环路 \(t\)，万有覆盖是 \(\mathbb R\)。令 \(\widetilde v=0\)，\(\widetilde e\) 为从 \(0\) 到 \(1\) 的路径，则终点为 \(t\widetilde v\)，故
+	\[
+		\partial\widetilde e=(t-1)\widetilde v.
+	\]
+	若只在底空间记“终点减起点”，这两个点相同，边界就写成了零。群环中的 \(t-1\) 保留了走完一圈后所在覆盖层的改变；随后让 \(t\) 作用在系数上，便能恢复这一圈的单值。
+\end{example}
 
 \subsection{左右作用及张量、Hom 的约定}
 \label{g2:subsec:0502:02}
-待撰写
+在 \(M=\mathcal L_{x_0}\) 上记 \(m\cdot g=T_g(m)\)。运输的复合约定给出
+\[
+	(m\cdot g)\cdot h=T_hT_g(m)=m\cdot(gh),
+\]
+所以 \(M\) 是右 \(\Gamma\) 模。张量积所需的两侧作用现在正好匹配：\(M\otimes_\Gamma C_n(\widetilde X;R)\) 的平衡关系是
+\begin{equation}\label{g2:eq:twisted-tensor-balance}
+	(m\cdot g)\otimes c=m\otimes(gc).
+\end{equation}
+它表示“先在系数中走过 \(g\)”和“把单形提升移到 \(g\) 所在的层”是同一条带系数链。群环一般不交换，左右侧别不能省略。
+
+\ProseParagraphBreak
+
+上链需要对左 \(\Gamma\) 模取等变同态，因此把同一个 \(R\) 模 \(M\) 改写为左模 \(M^-\)，规定
+\[
+	g\cdot m=m\cdot g^{-1}.
+\]
+这确为左作用，因为 \(g\cdot(h\cdot m)=(m\cdot h^{-1})\cdot g^{-1}=m\cdot(gh)^{-1}\)。于是有两个候选复形
+\begin{equation}\label{g2:eq:twisted-cover-complexes}
+	\begin{aligned}
+		C_n^{\mathrm{cov}}(X;M)&=M\otimes_\Gamma C_n(\widetilde X;R),
+		&\partial(m\otimes c)&=m\otimes\partial c,\\
+		C^n_{\mathrm{cov}}(X;M)&=\operatorname{Hom}_\Gamma(C_n(\widetilde X;R),M^-),
+		&(\delta f)(c)&=f(\partial c).
+	\end{aligned}
+\end{equation}
+边界的 \(\Gamma\) 线性保证这些公式良定义；\(\partial^2=0\) 随即给出 \(\delta^2=0\)。上式的 \(\operatorname{Hom}_\Gamma\) 指左模同态，不能直接把右模 \(M\) 放进第二个位置。
+
+\begin{example}[换提升时的两个变换]\label{g2:exm:twisted-lift-change}
+	把某个选定提升 \(\widetilde\sigma\) 换成 \(g\widetilde\sigma\)。同一条张量链 \(m\otimes\widetilde\sigma\) 的新系数应写成 \(m\cdot g^{-1}\)，因为
+	\[
+		(m\cdot g^{-1})\otimes(g\widetilde\sigma)=m\otimes\widetilde\sigma.
+	\]
+	等变上链的值也满足 \(f(g\widetilde\sigma)=f(\widetilde\sigma)\cdot g^{-1}\)。这个逆元来自换基关系，不是另行指定的符号；它解释了为什么同一个运输 \(T\) 在同调边界中常表现为 \(T-1\)，在上同调余边界中则表现为 \(T^{-1}-1\)。
+\end{example}
 
 \subsection{局部系数边界和连接映射}
 \label{g2:subsec:0502:03}
-待撰写
+几何模型直接把单形系数放在一个指定的纤维中。对 \(\sigma:\Delta^n\to X\)，取首顶点纤维 \(\mathcal L_{\sigma(v_0)}\)，记 \(\sigma_i=\sigma\circ\delta_i\) 为删去第 \(i\) 个顶点的面，\(\sigma_{ij}\) 为从 \(\sigma(v_i)\) 到 \(\sigma(v_j)\) 的参数边像。删去首顶点时，系数需要沿 \(\sigma_{01}\) 移动；其他面仍以原来的首顶点起始。
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[>=stealth]
+		\coordinate (v0) at (0,0);
+		\coordinate (v1) at (5,0);
+		\coordinate (v2) at (2.5,2.5);
+		\draw[->,thick] (v0) -- node[below] {\(\sigma_{01}\)} (v1);
+		\draw[->,thick] (v1) -- node[right] {\(\sigma_{12}\)} (v2);
+		\draw[->,thick] (v0) -- node[left] {\(\sigma_{02}\)} (v2);
+		\fill (v0) circle (1.5pt) node[left] {\(v_0:\ a\)};
+		\fill (v1) circle (1.5pt) node[right] {\(v_1:\ T_{01}a\)};
+		\fill (v2) circle (1.5pt) node[above] {\(v_2:\ T_{02}a=T_{12}T_{01}a\)};
+	\end{tikzpicture}
+	\caption{在参数三角形上比较系数。删去 \(v_0\) 后，边 \([v_1,v_2]\) 的系数须先送到 \(v_1\)；三角形内部的同伦使两条到 \(v_2\) 的运输一致。}
+	\label{g2:fig:local-triangle-transport}
+\end{figure}
+
+\cref{g2:fig:local-triangle-transport}画在参数单形上，顶点和边通过 \(\sigma\) 映到 \(X\)；不要求 \(\sigma\) 的像是嵌入的三角形。图中 \(T_{ij}\) 是 \(T_{\sigma_{ij}}\) 的简写。
+
+\begin{definition}[局部系数奇异链]\label{g2:def:twisted-chains}
+	设 \(X\) 为拓扑空间，\(\mathcal L\) 为其路径群胚上的 \(R\) 模运输函子。定义
+	\[
+		C_n(X;\mathcal L)=\bigoplus_{\sigma:\Delta^n\to X}\mathcal L_{\sigma(v_0)}\quad(n\ge0),
+	\]
+	将属于 \(\sigma\) 所在直和项的元素记为 \(a\sigma\)。对 \(n\ge1\) 规定
+	\begin{equation}\label{g2:eq:twisted-boundary}
+		\partial(a\sigma)=T_{\sigma_{01}}(a)\sigma_0+\sum_{i=1}^n(-1)^i a\sigma_i,
+	\end{equation}
+	并令 \(\partial_0=0\)、负次数链群为零。所得复形的同调称为\term[niu xi shu tong diao]{扭系数同调}[homology with local coefficients]，记为 \(H_n(X;\mathcal L)\)。
+\end{definition}
+
+\begin{definition}[局部系数奇异上链]\label{g2:def:twisted-cochains}
+	对同样的 \(X,R,\mathcal L\)，定义
+	\[
+		C^n(X;\mathcal L)=\prod_{\sigma:\Delta^n\to X}\mathcal L_{\sigma(v_0)}.
+	\]
+	也就是说，上链 \(\varphi\) 给每个 \(n\) 单形指定一个首顶点纤维中的值，不要求有限支撑。对 \((n+1)\) 单形 \(\sigma\)，定义
+	\begin{equation}\label{g2:eq:twisted-coboundary}
+		(\delta\varphi)(\sigma)=T_{\sigma_{01}}^{-1}\bigl(\varphi(\sigma_0)\bigr)+\sum_{i=1}^{n+1}(-1)^i\varphi(\sigma_i).
+	\end{equation}
+	所得复形的上同调称为\term[niu xi shu shang tong diao]{扭系数上同调}[cohomology with local coefficients]，记为 \(H^n(X;\mathcal L)\)。
+\end{definition}
+
+\symidx{\(H_n(X;\mathcal L),\ H^n(X;\mathcal L)\)：局部系数同调与上同调}
+上链的第一项要运输回首顶点，因而使用逆映射。链与上链都取值于 \(\mathcal L\)，但上链不是 \(C_n(X;\mathcal L)\) 到一个固定模的对偶；不同单形的值可能处在不同纤维中，不能不加说明就把它们相加。
+
+\begin{proposition}[边界的平方]\label{g2:prop:twisted-boundary-square}
+	对任意拓扑空间 \(X\)、含幺交换环 \(R\) 及 \(R\) 模运输函子 \(\mathcal L\)，上述算子满足 \(\partial^2=0\) 和 \(\delta^2=0\)。当 \(\mathcal L\) 为固定模 \(M\) 的常值系统时，它们成为通常的 \(M\) 系数奇异链与上链。
+\end{proposition}
+\begin{proof}
+	一个单形内部任意两条同端点道路同伦，因为参数域 \(\Delta^n\) 凸。因此其拉回系统可用首顶点纤维平凡化：把 \(a\in\mathcal L_{\sigma(v_0)}\) 沿参数域中从 \(v_0\) 到 \(u\) 的直线运输到 \(\sigma(u)\)。取任意面后，这个平凡化的限制与从该面首顶点开始的平凡化相容，差别正是面首顶点处的一次运输。在这个共同平凡化中，\eqref{g2:eq:twisted-boundary}就是普通交错边界，每个余维二的面仍出现两次且符号相反。
+
+	唯一需要特别留意的运输相容关系是
+	\[
+		T_{\sigma_{02}}=T_{\sigma_{12}}T_{\sigma_{01}},
+	\]
+	它由三角面中的道路同伦给出。它保证先删两个首顶点和直接沿另一边运输所得系数相同。上链公式把这些运输全部逆向送回原首顶点，所以同一关系的逆式保证 \(\delta^2=0\)。常值系统中全部运输为恒等映射，公式便恢复通常边界与余边界。
+\end{proof}
+
+\begin{theorem}[覆盖模型与几何模型]\label{g2:thm:twisted-cover-model}
+	设 \(X\) 连通、局部道路连通且半局部单连通，\(\mathcal L\) 为 \(R\) 模局部系统，\(M=\mathcal L_{x_0}\) 按上述约定取右 \(\Gamma=R[\pi_1(X,x_0)]\) 作用。则有复形同构
+	\[
+		C_*(X;\mathcal L)\cong M\otimes_\Gamma C_*(\widetilde X;R),\qquad
+		C^*(X;\mathcal L)\cong\operatorname{Hom}_\Gamma(C_*(\widetilde X;R),M^-).
+	\]
+	这些同构不依赖每个单形提升的辅助选择。
+\end{theorem}
+\begin{proof}
+	若 \(\widetilde\sigma\) 的首顶点为道路类 \([\gamma]\)，且 \(p\widetilde\sigma=\sigma\)，定义
+	\[
+		m\otimes\widetilde\sigma\longmapsto T_\gamma(m)\sigma.
+	\]
+	换成 \(g\widetilde\sigma\) 后首顶点变成 \([g*\gamma]\)，而 \(T_{g*\gamma}(m)=T_\gamma(m\cdot g)\)，恰好核对了平衡关系\eqref{g2:eq:twisted-tensor-balance}。选一个提升后，每个纤维元素唯一写成 \(T_\gamma(m)\)，所以这是逐次同构。第零面提升的首顶点由 \(\gamma*\sigma_{01}\) 表示，其系数因此是 \(T_{\sigma_{01}}T_\gamma(m)\)；其他面的首顶点不变。故该同构与边界交换。
+
+	对等变同态 \(f:C_n(\widetilde X;R)\to M^-\)，定义
+	\[
+		\varphi(\sigma)=T_\gamma\bigl(f(\widetilde\sigma)\bigr).
+	\]
+	若换提升，则 \(f(g\widetilde\sigma)=f(\widetilde\sigma)\cdot g^{-1}\)，于是
+	\[
+		T_{g*\gamma}\bigl(f(g\widetilde\sigma)\bigr)
+		=T_\gamma T_gT_{g^{-1}}\bigl(f(\widetilde\sigma)\bigr)
+		=T_\gamma\bigl(f(\widetilde\sigma)\bigr).
+	\]
+	所以该定义与选择无关；反过来令 \(f(\widetilde\sigma)=T_\gamma^{-1}\varphi(\sigma)\)，便得到等变同态。第零面中的值需先沿 \(\sigma_{01}\) 逆向运输，故 \(f\partial\) 恰对应\eqref{g2:eq:twisted-coboundary}；其余面逐项一致。
+\end{proof}
+
+现在说明映射如何作用。设 \(f:X\to Y\)，\(\mathcal L\) 在 \(X\) 上，\(\mathcal K\) 在 \(Y\) 上。一个局部系统态射 \(\eta:\mathcal L\to f^*\mathcal K\) 给出链映射
+\[
+	(f,\eta)_\#(a\sigma)=\eta_{\sigma(v_0)}(a)\,(f\sigma).
+\]
+态射的运输相容式
+\[
+	\eta_yT^{\mathcal L}_\alpha=T^{\mathcal K}_{f\alpha}\eta_x
+\]
+恰好核对第零面；其他面直接相容。因此它诱导 \(H_n(X;\mathcal L)\to H_n(Y;\mathcal K)\)，并且恒等、复合都由链上的公式保证。
+
+\ProseParagraphBreak
+
+上链先有拉回 \(f^*:C^*(Y;\mathcal K)\to C^*(X;f^*\mathcal K)\)，其公式为 \((f^*\varphi)(\sigma)=\varphi(f\sigma)\)。若希望结果取值于 \(\mathcal L\)，还需要一个方向为 \(\theta:f^*\mathcal K\to\mathcal L\) 的系数态射，令
+\[
+	(\theta_*f^*\varphi)(\sigma)=\theta_{\sigma(v_0)}\bigl(\varphi(f\sigma)\bigr).
+\]
+运输相容性再次给出上链映射及复合律。空间方向反变，固定空间上的系数方向协变；若已给的 \(\eta\) 是同构，当然可取 \(\theta=\eta^{-1}\)，但一般态射不能擅自求逆。
+
+\begin{proposition}[空间对的长正合列]\label{g2:prop:twisted-LES}
+	设 \(A\subset X\) 为子空间，\(\mathcal L\) 为 \(X\) 上的 \(R\) 模运输函子，子空间上的系数均指其限制。定义
+	\[
+		C_*(X,A;\mathcal L)=C_*(X;\mathcal L)/C_*(A;\mathcal L),\qquad
+		C^*(X,A;\mathcal L)=\ker\bigl(C^*(X;\mathcal L)\to C^*(A;\mathcal L)\bigr).
+	\]
+	它们的同调与上同调分别具有自然长正合列
+	\[
+		\cdots\longrightarrow H_n(A;\mathcal L)\longrightarrow H_n(X;\mathcal L)
+		\longrightarrow H_n(X,A;\mathcal L)\xrightarrow{\partial_*}H_{n-1}(A;\mathcal L)\longrightarrow\cdots,
+	\]
+	\[
+		\cdots\longrightarrow H^n(X,A;\mathcal L)\longrightarrow H^n(X;\mathcal L)
+		\longrightarrow H^n(A;\mathcal L)\xrightarrow{\delta_*}H^{n+1}(X,A;\mathcal L)\longrightarrow\cdots.
+	\]
+	若相对圈由 \(c\) 代表，则 \(\partial_*[c]=[\partial c]\)；若 \(\varphi\) 是 \(A\) 上的上圈，\(\widehat\varphi\) 是它在 \(X\) 上的任意上链延拓，则 \(\delta_*[\varphi]=[\delta\widehat\varphi]\)。
+\end{proposition}
+\begin{proof}
+	按单形的像是否包含在 \(A\) 中，把链群的直和项分开，得到逐次分裂的短正合链复形；上链限制则逐项忘去不在 \(A\) 中的值，任意上链可以在这些单形上补零，因而也得到短正合上链复形。这些分裂是各次数上的模分裂。
+
+	\cref{g2:thm:homology-LES}的证明只用加法、核、像及代表元提升，不要求系数为常值。因此对第一个短正合复形直接应用它，即得到同调序列及连接公式。上链情形把次数方向反过来：\(\delta\widehat\varphi\) 在 \(A\) 上为零；改变延拓增加相对上链，使连接像只改变一个相对上边界。若 \(\varphi\) 改变上边界，延拓其原上链后所得连接类也不变。在正合性上，限制为上边界的上圈可减去延拓后的上边界而变为相对上圈；连接类为零时可修正延拓使它成为上圈；相对上圈若在绝对复形中是上边界，其原上链在 \(A\) 上就是所需的连接原像。这核对了全部三类位置。以上构造与前述系数相容的空间对映射交换，所以序列自然。
+\end{proof}
+
+同一证明也给出三元组的正合列：对 \(B\subset A\subset X\)，使用 \(0\to C_*(A,B;\mathcal L)\to C_*(X,B;\mathcal L)\to C_*(X,A;\mathcal L)\to0\)，上链则反向排列。各短正合列仍由单形是否落在指定子空间中逐次分裂。
 
 \subsection{同伦不变性与切除}
 \label{g2:subsec:0502:04}
-待撰写
+普通同伦不变性中的棱柱，现在还要负责沿同伦轨迹移动系数。两个同伦映射的拉回系统通常不是字面相同的系统；应先用同伦本身给出的运输识别它们，随后才能比较诱导映射。
+
+\begin{theorem}[局部系数的同伦不变性]\label{g2:thm:twisted-homotopy-invariance}
+	设 \(F:X\times I\to Y\) 是从 \(f_0\) 到 \(f_1\) 的同伦，\(\mathcal K\) 为 \(Y\) 上的 \(R\) 模运输函子。沿 \(\tau_x(t)=F(x,t)\) 的运输给出同构
+	\[
+		\eta:f_0^*\mathcal K\longrightarrow f_1^*\mathcal K,\qquad \eta_x=T_{\tau_x}.
+	\]
+	在同调及上同调上分别有
+	\[
+		(f_1)_*\eta_*=(f_0)_*,\qquad
+		\eta_*^{-1}f_1^*=f_0^*.
+	\]
+	若 \(F(A\times I)\subset B\)，这些等式也适用于空间对 \((X,A)\)、\((Y,B)\)。因此同伦等价连同其拉回系数诱导局部系数同调与上同调的同构。
+\end{theorem}
+\begin{proof}
+	对道路 \(\alpha:x\to y\)，同伦方形说明 \((f_0\alpha)*\tau_y\) 与 \(\tau_x*(f_1\alpha)\) 同端点同伦，故 \(\eta_yT_{f_0\alpha}=T_{f_1\alpha}\eta_x\)。这证明 \(\eta\) 确为系统态射。
+
+	设 \(\sigma:\Delta^n\to X\)，\(a\in\mathcal K_{f_0\sigma(v_0)}\)。用\cref{g2:thm:singular-homotopy-invariance}中的 \(n+1\) 块有向单形剖分 \(\Delta^n\times I\)，并沿 \(F_\sigma=F\circ(\sigma\times\operatorname{id})\) 映入 \(Y\)。每块的首顶点都是 \((v_0,0)\)，故定义
+	\[
+		P_n(a\sigma)=\sum_{i=0}^n(-1)^i a\bigl(F_\sigma\circ[v_0^0,\ldots,v_i^0,v_i^1,\ldots,v_n^1]\bigr).
+	\]
+	在整个凸棱柱上把拉回系统从 \((v_0,0)\) 平凡化，便能使用前文已逐面核对的符号消去：内部面相消，侧面贡献 \(-P\partial\)，下底面贡献 \(-(f_0)_\#\)，上底面的系数为 \(T_{\tau_{\sigma(v_0)}}a\)。于是
+	\[
+		\partial P+P\partial=(f_1)_\#\eta_\#-(f_0)_\#.
+	\]
+	这里共同平凡化保证同一个内部分界面从相邻块算出的系数相同，而不只保证普通整数符号相反。
+
+	对 \(n\) 上链 \(\varphi\)，在 \((n-1)\) 单形 \(\sigma\) 上定义 \(K\varphi\) 为上述棱柱诸项的 \(\varphi\) 值按符号求和。各项首顶点均为 \(f_0\sigma(v_0)\)，所以这些值可以直接相加。相同的面消去，此时把顶面值沿 \(\tau\) 运回，给出
+	\[
+		\delta K+K\delta=\eta_*^{-1}f_1^*-f_0^*.
+	\]
+	两式分别使同伦映射在圈上相差边界、在上圈上相差上边界。若 \(\sigma\) 落在 \(A\) 中，全部棱柱项落在 \(B\) 中，所以算子下降到相对复形，或保持相对上链。最后对同伦逆应用这些等式，两种复合都在相应系数识别后成为恒等，即得到同构。
+\end{proof}
+
+切除还需要把链变小。\cref{g2:prop:subdivision-chain-map,g2:prop:subdivision-chain-homotopy}已在参数单形内部构造重心细分 \(\operatorname{sd}\) 和同伦 \(T\)，满足 \(\operatorname{sd}-1=\partial T+T\partial\)，而且不增大支撑。把 \(\sigma^*\mathcal L\) 从首顶点平凡化，给每个新单形的首顶点运输同一个系数，这两个构造就适用于局部系数。不同面的平凡化相容，所以所有链恒等式继续成立。
+
+\begin{lemma}[小链的变形收缩]\label{g2:lem:twisted-small-chain-retraction}
+	设 \(\mathcal U=\{U_\lambda\}\) 满足 \(X=\bigcup_\lambda\operatorname{int}_XU_\lambda\)。在局部系数奇异链中，只取像包含于某个 \(U_\lambda\) 的单形，得到小链复形 \(C_*^{\mathcal U}(X;\mathcal L)\)。其包含 \(j\) 有链映射逆向映射 \(r\) 及链同伦 \(H\)，满足
+	\[
+		rj=1,\qquad jr-1=\partial H+H\partial,
+	\]
+	且 \(H\) 在小链上为零。它们由有限条整数加权的参数单形及系数运输组成，保持任意子空间中的链。因此对局部系数上链也有反向的上链同伦等价，对相对复形同样成立。
+\end{lemma}
+\begin{proof}
+	关键是细分次数可以依单形变化，同时仍须得到一个链映射。按维数递归构造 \(r,H\)。零单形本来就是小的，取 \(r=1,H=0\)。设低维已构造好，处理一个 \(n\) 单形 \(\sigma\) 时，把其全部系数暂时平凡化到首顶点，并写
+	\[
+		z=\sigma+H\partial\sigma,\qquad \partial z=r\partial\sigma.
+	\]
+	右侧是小链。这里 \(z\) 是有限个参数单形的整数线性组合；所有运输都在 \(\sigma\) 的参数域内部进行。由\cref{g2:lem:finite-chain-small}的紧性和直径估计，可选 \(k\ge0\) 使 \(\operatorname{sd}^kz\) 为小链。令
+	\[
+		D_k=\sum_{j=0}^{k-1}T\operatorname{sd}^{j},\qquad
+		r\sigma=\operatorname{sd}^kz-D_k\partial z,\qquad H\sigma=D_kz.
+	\]
+	由于 \(\partial z\) 已经小且 \(D_k\) 保持小链，\(r\sigma\) 为小链。又由 \(\partial D_k+D_k\partial=\operatorname{sd}^k-1\)，得到
+	\[
+		r\sigma-\sigma=\partial D_kz+H\partial\sigma,
+		\qquad \partial r\sigma=\partial z=r\partial\sigma.
+	\]
+	若 \(\sigma\) 已经小，全部面也小，归纳中 \(H\partial\sigma=0\)；这时选 \(k=0\)，即有 \(r\sigma=\sigma,H\sigma=0\)。所有选择依单形的有限支撑作出，与系数元素无关，故按 \(R\) 线性延拓。各项仍位于原单形像中，因此任意子空间都被保持。
+
+	为说明为何同一构造适用于上链，假设某一步把首顶点在 \(x\) 的单形写成 \(\sum_i n_i\tau_i\)，第 \(i\) 项的系数由道路 \(\alpha_i:x\to\tau_i(v_0)\) 运输。它在上链上的反向作用定义为
+	\[
+		\varphi\longmapsto\sum_i n_iT_{\alpha_i}^{-1}\bigl(\varphi(\tau_i)\bigr)\in\mathcal L_x.
+	\]
+	每个值只涉及有限和，因此上链即使具有无限支撑也没有求和问题。运输的逆向复合与上链余边界相容，把上述链恒等式逐项反向后得到相应上链恒等式。支撑保持性质使相对上链也被保持。这是真正的同伦等价，未使用“对准同构取 Hom 仍为准同构”这样的额外断言。
+\end{proof}
+
+\begin{theorem}[局部系数切除]\label{g2:thm:twisted-excision}
+	设 \(Z\subset A\subset X\)，且 \(\overline Z^{\,X}\subset\operatorname{int}_X A\)，\(\mathcal L\) 为 \(X\) 上的 \(R\) 模运输函子。则包含映射诱导同构
+	\[
+		H_n(X\setminus Z,A\setminus Z;\mathcal L)\xrightarrow{\ \cong\ }H_n(X,A;\mathcal L),
+	\]
+	\[
+		H^n(X,A;\mathcal L)\xrightarrow{\ \cong\ }H^n(X\setminus Z,A\setminus Z;\mathcal L).
+	\]
+	所有子空间均使用限制系数；不要求 \(X\) 存在万有覆盖。
+\end{theorem}
+\begin{proof}
+	置 \(B=X\setminus Z\)。闭包条件等价于 \(X=\operatorname{int}_X A\cup\operatorname{int}_X B\)，所以可用覆盖 \(\mathcal U=\{A,B\}\) 的小链。直接按单形所在的直和项比较，有复形同构
+	\[
+		\frac{C_*(A;\mathcal L)+C_*(B;\mathcal L)}{C_*(A;\mathcal L)}
+		\cong\frac{C_*(B;\mathcal L)}{C_*(A\cap B;\mathcal L)}.
+	\]
+	左边是相对小链，右边是 \((B,A\cap B)\) 的全部相对链。\cref{g2:lem:twisted-small-chain-retraction}把左边与 \(C_*(X,A;\mathcal L)\) 作链同伦等价，故得到同调切除。相对小上链就是在位于 \(A\) 的单形上为零、在位于 \(B\) 的单形上任意取值且在交集上为零的赋值，因而也直接等于右侧空间对的上链。对小上链使用该引理的反向同伦，得到上同调切除。复合映射正是包含或限制所诱导的映射。
+\end{proof}
+
+上述方法还给出局部系数的 Mayer--Vietoris 序列。例如 \(X=U\cup V\) 为开覆盖时，对小链有短正合列
+\[
+	0\longrightarrow C_*(U\cap V;\mathcal L)
+	\xrightarrow{(i_\#,-j_\#)}C_*(U;\mathcal L)\oplus C_*(V;\mathcal L)
+	\xrightarrow{+}C_*^{\{U,V\}}(X;\mathcal L)\longrightarrow0.
+\]
+核的识别仍是“同时落在两处的单形恰好落在交集”。由长正合列和小链同伦等价得到同调序列；其连接映射仍把小圈 \(a+b\) 送到 \([\partial a]\)。上链用限制及限制之差得到对应短正合列：交集上的任意赋值可在 \(U\) 的其他单形上补零，所以末项满射。再取上同调便得到相应序列。这样，后面粘合局部系数类时所需的正合性具有与常值系数相同的具体来源。
+
+\ProseParagraphBreak
+
+胞腔方法把上述奇异复形改写为按胞腔组织的模型，每个胞腔携带一份系数纤维模，边界还要保留提升之间的运输。为此，在万有覆盖的胞腔复形上记录群环作用，再与系数模张量或取等变同态。群环一般不是主理想整环；这里的比较由提升后的附着映射和胞腔链构造完成，所用输入包含普通整数同调未记录的单值。
+
+\begin{theorem}[局部系数胞腔比较]\label{g2:thm:twisted-cellular-comparison}
+	设 \(X\) 为连通、局部道路连通且半局部单连通的 CW 复形，\(p:\widetilde X\to X\) 为其万有覆盖，\(A\subset X\) 为子复形，\(\widetilde A=p^{-1}(A)\)。设 \(R\) 为含幺交换环，\(\Gamma=R[\pi_1(X,x_0)]\)，\(\mathcal L\) 为 \(R\) 模局部系统，\(M=\mathcal L_{x_0}\) 取本节的右作用。则万有覆盖的胞腔链是左 \(\Gamma\) 自由复形，并有
+	\[
+	\begin{aligned}
+		H_n(X,A;\mathcal L)&\cong H_n\bigl(M\otimes_\Gamma C_*^{\mathrm{cell}}(\widetilde X,\widetilde A;R)\bigr),\\
+		H^n(X,A;\mathcal L)&\cong H^n\bigl(\operatorname{Hom}_\Gamma(C_*^{\mathrm{cell}}(\widetilde X,\widetilde A;R),M^-)\bigr).
+	\end{aligned}
+	\]
+	选定各胞腔的定向与一个提升后，若
+	\[
+		\mathrm d\widetilde e_i^n=\sum_j\lambda_{ji}\widetilde e_j^{n-1},\qquad \lambda_{ji}\in\Gamma,
+	\]
+	则同调边界把系数族 \((m_i)\) 送到 \((\sum_i m_i\lambda_{ji})_j\)，上同调余边界把 \((u_j)\) 送到 \((\sum_j\lambda_{ji}\cdot u_j)_i\)。链取直和，上链取直积。
+\end{theorem}
+\begin{proof}
+	覆盖上提升每个特征圆盘，得到 \(\widetilde X\) 的 CW 结构，且每个底空间胞腔的提升被 \(\pi\) 自由传递地置换。故选一组提升便给出左 \(\Gamma\) 自由基，胞腔边界因其由连接同态定义而与覆盖变换交换。相对情形删去属于 \(\widetilde A\) 的胞腔即可。
+
+	还需要一个能在张量和 Hom 之后继续使用的比较，而不只是同调群的同构。先构造保持骨架的 \(\Gamma\) 线性链映射
+	\[
+		J:C_*^{\mathrm{cell}}(\widetilde X;R)\longrightarrow C_*(\widetilde X;R).
+	\]
+	零维取对应的点单形。假设低于 \(n\) 次已构造好，且在骨架对的相对同调上给出胞腔的恒等识别。对每个所选提升胞腔 \(e\)，选一条相对奇异圈 \(z_e\in C_n(\widetilde X^n;R)\) 表示它的基本类，故 \(\partial z_e\) 位于 \(\widetilde X^{n-1}\)。考虑
+	\[
+		w_e=\partial z_e-J_{n-1}(\mathrm d e).
+	\]
+	它是 \(\widetilde X^{n-1}\) 中的圈，因为 \(J\) 在低次是链映射且 \(\mathrm d^2=0\)。它在 \(H_{n-1}(\widetilde X^{n-1},\widetilde X^{n-2};R)\) 中为零：第一项表示的正是胞腔边界，第二项由归纳假设表示同一个类。由骨架的维数消失性，映射
+	\[
+		H_{n-1}(\widetilde X^{n-1};R)\longrightarrow
+		H_{n-1}(\widetilde X^{n-1},\widetilde X^{n-2};R)
+	\]
+	单射，所以 \(w_e=\partial b_e\)，其中 \(b_e\in C_n(\widetilde X^{n-1};R)\)。这里 \(R\) 系数的骨架相对群和消失性正是\cref{g2:cor:cellular-coefficients}证明中给出的结论；其原因是每个圆盘对只在本维贡献一个自由的 \(R\) 项。取 \(J_n(e)=z_e-b_e\)，再按 \(\Gamma\) 线性延拓，就得到 \(\partial J_n=J_{n-1}\mathrm d\)，且不改变顶层相对类。\(n=1\) 时前一个骨架是空集，所用单射就是恒等映射。
+
+	比较每层骨架的长正合列：相对项上的 \(J\) 为刚构造的同构，前一骨架上的 \(J\) 已由归纳为同构，因此正合性给出当前骨架上的同构。具体地，将目标圈先提升其相对类，再用前一骨架的同构修正差值可得满射；对映为边界的类，先消去其相对类，再在前一骨架中消去剩余类可得单射。任意奇异链及边界关系都具有紧支撑，落在有限子复形中（\cref{g2:thm:finite-subcomplex}），所以取全部骨架的并后 \(J\) 仍为准同构。
+
+	为提升到链同伦等价，考察 \(K=\operatorname{Cone}(J)\)。\cref{g2:cor:cone-LES}说明它无同调；它在负次数为零，每一项均为自由 \(\Gamma\) 模。下有界在这里很重要：置 \(Z_n=\ker(\partial:K_n\to K_{n-1})\)，则 \(Z_0=K_0\) 为投射模。满射 \(K_1\to Z_0\) 因而可分裂，其核 \(Z_1\) 是自由模 \(K_1\) 的直和因子，故仍投射。逐次归纳，所有
+	\[
+		0\longrightarrow Z_n\longrightarrow K_n\xrightarrow{\partial}Z_{n-1}\longrightarrow0
+	\]
+	都分裂。自由模的投射性只需把每个基元提升；直和因子的投射性由先嵌入自由模、再投影得到，故这一步对任意群环成立。选分裂 \(s_n:Z_n\to K_{n+1}\)，把 \(K_n\) 写成 \(Z_n\oplus s_{n-1}Z_{n-1}\)，令 \(h(z+s_{n-1}w)=s_nz\)，便有 \(\partial h+h\partial=1\)。
+
+	从这个锥收缩可以直接取出 \(J\) 的链同伦逆。将 \(h\) 按 \(K_n=C_n(\widetilde X;R)\oplus C_{n-1}^{\mathrm{cell}}(\widetilde X;R)\) 分块，写作 \(h(y,x)=(a y+b x,c y+e x)\)。方程 \(\partial h+h\partial=1\) 的左下块给出 \(c\partial=\mathrm d c\)，左上块给出 \(Jc-1=-\partial a-a\partial\)，右下块给出 \(cJ-1=\mathrm d e+e\mathrm d\)。所以 \(c\) 正是所需链同伦逆。
+
+	张量任意右模 \(M\)，或取到任意左模 \(M^-\) 的 Hom，都把这些明确的同伦恒等式保留下来。因此不要求 \(M\) 平坦、自由或有限生成。再用\cref{g2:thm:twisted-cover-model}识别奇异端，即得绝对情形。若有子复形 \(A\)，上述构造先对 \(\widetilde A\) 的胞腔进行，再扩张到其余胞腔，选取修正链时仍在相应骨架中，故 \(J\) 保持子复形。在相对商复形上仍是自由模之间的准同构，对其映射锥重复同一分裂论证，便得相对结论。最后把张量关系及 \(\Gamma\) 线性求值作用到每个胞腔边界，立即得到陈述中的两条系数公式。
+\end{proof}
+
+例如圆周只需一条零胞腔和一条一胞腔；\cref{g2:exm:cover-circle-boundary}给出的 \(t-1\) 在链上作用为 \(m\mapsto m\cdot t-m\)，在上链上作用为 \(u\mapsto u\cdot t^{-1}-u\)。下一节将由此计算不变量与余不变量，并解释定向系数为什么能恢复不可定向曲面的顶维类。本节群环及几何模型的对照可参阅\cite[第3.H节，Local Coefficients]{Hatcher2002}；左右作用按本书的路径积顺序采用了上述显式约定。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

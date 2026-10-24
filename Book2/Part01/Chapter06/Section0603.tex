@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 6.3 Poincaré 对偶的证明
 % 纲要位置：几何学计划纲要.md，第 1241 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,237 @@
 \section{Poincaré 对偶的证明}
 \label{g2:sec:0603}
 
-待撰写
+帽积已经把一个上同调类变成维数互补的链，基本类则给出了进行这项运算的几何背景。现在要证明，这个过程既不丢失信息，也能得到每一个互补维数的同调类。证明从 Euclid 空间开始，通过开覆盖的正合列粘合，最后处理穷尽中的极限。闭流形只是其中紧支条件自动消失的一种情形。
+
+\ProseParagraphBreak
+
+本节均取 Hausdorff、第二可数、无边界的拓扑 \(n\) 维流形，\(R\) 为含幺交换环，\(\mathcal L\) 为 \(R\) 模局部系统。写 \(\mathcal O_R\) 表示定向系统。先证明
+\[
+	H_c^k(M;\mathcal L)\cong H_{n-k}(M;\mathcal O_R\otimes_R\mathcal L),
+\]
+再证明普通上同调与局部有限同调的对应。后一版本将有限链改为局部有限链，其极限比较同时处理逆极限及其修正项。
 
 \subsection{欧氏开集上的局部对偶}
 \label{g2:subsec:0603:01}
-待撰写
+对紧集 \(K\subset M\)，\cref{g2:thm:fundamental-class}给出规范类 \([M]_K\in H_n(M,M\setminus K;\mathcal O_R)\)。相对帽积定义
+\[
+	D_K:H^k(M,M\setminus K;\mathcal L)\longrightarrow H_{n-k}(M;\mathcal O_R\otimes_R\mathcal L),
+	\qquad \alpha\longmapsto\alpha\frown[M]_K.
+\]
+为何输出是绝对同调？若上圈 \(\varphi\) 在 \(M\setminus K\) 上为零，相对基本圈 \(c\) 的边界在那里，则边界公式中的 \(\varphi\frown\partial c\) 和 \(\delta\varphi\frown c\) 都为零。改变相对基本圈或上圈代表时，同一公式说明结果只改变绝对边界。
+
+\ProseParagraphBreak
+
+对 \(K\subset L\)，基本类的相对化把 \([M]_L\) 送到 \([M]_K\)，故 \(D_K\) 与上同调的支集扩大相容。取直接极限得到\term[jinzhi duiyou yingshe]{紧支对偶映射}[compactly supported duality map]
+\begin{equation}\label{g2:eq:compact-duality-map}
+	D_{c,M}:H_c^k(M;\mathcal L)\longrightarrow H_{n-k}(M;\mathcal O_R\otimes_R\mathcal L).
+\end{equation}
+若 \(j:U\hookrightarrow M\) 开，则 \(D_{c,M}j_!=j_*D_{c,U}\)：把紧支上圈及对应基本圈切除到 \(U\) 后，两边使用相同的帽积。这里的延拓 \(j_!\) 由\cref{g2:prop:compact-support-MV}中的切除同构给出，因而与基本类的限制相容。
+
+\begin{lemma}[Euclid 模型的对偶]\label{g2:lem:euclidean-duality}
+	设 \(R\) 为含幺交换环，\(A\) 为任意 \(R\) 模，\(U\) 为同胚于 \(\mathbb R^n\) 的空间。对常值系统 \(\underline A\)，映射 \(D_{c,U}\) 在各次均为同构。选定一组整数定向后，其唯一可能非零的部分是
+	\[
+		H_c^n(U;A)\cong A\xrightarrow{\ D_{c,U}\ }H_0(U;A)\cong A,
+	\]
+	此映射为恒等。
+\end{lemma}
+\begin{proof}
+	先取 \(U=\mathbb R^n\)、\(n>0\)。用越来越大的闭立方体 \(K_j\) 穷尽。补空间形变收缩到 \(S^{n-1}\)，对的长正合列给出 \(H^k(U,U\setminus K_j;A)=0\)（\(k\ne n\)），以及 \(H^n(U,U\setminus K_j;A)=A\)。这些识别由定向及连接映射确定，扩大立方体的映射保持它们，故直接极限仍为 \(A\)。普通同调因 \(U\) 可缩而只在零次为 \(A\)。
+
+	还要核对对偶映射在这两个 \(A\) 之间没有引入额外倍数。取一个包含 \(K_j\) 于内部的有向 \(n\) 单形 \(\Delta\)。径向移动把相应空间对与 \((\Delta,\partial\Delta)\) 的生成元对应起来。相对上圈 \(\varphi\) 若在 \(\Delta\) 上取值 \(a\)，前后面公式便给出 \(\varphi\frown\Delta=a[v_n]\)，其零次同调类就是 \(a\)。因此所求映射为恒等。换同胚或反转所选整数定向，会同时改变基本链和定向系统的基，规范的扭系数映射保持不变。\(n=0\) 时空间只有一点，帽积直接是 \(A\otimes_RR\cong A\)。
+\end{proof}
+
+任意局部系统在一个坐标球内都平凡：球单连通，\cref{g2:prop:parallel-sections}保证从一点运输到其他点没有道路歧义。因此上述球内计算适用于任意 \(\mathcal L\)，球与球之间的系数比较仍由原局部系统的运输给出。
 
 \subsection{Mayer–Vietoris 与五引理}
 \label{g2:subsec:0603:02}
-待撰写
+设 \(M=U\cup V\)。紧支上同调的延拓方向与普通同调的包含方向相同，所以两条 Mayer--Vietoris 序列可以按互补次数比较。要比较连接映射，须在帽积边界公式中保留相对基本圈位于补空间的边界，再利用上链的支集条件处理这些项。
+
+\begin{lemma}[对偶与开集粘合]\label{g2:lem:duality-MV}
+	设 \(M\) 为 Hausdorff、第二可数、无边界的拓扑 \(n\) 维流形，\(R\) 为含幺交换环，\(\mathcal L\) 为 \(R\) 模局部系统，\(M=U\cup V\) 为开覆盖。紧支上同调序列与系数为 \(\mathcal O_R\otimes_R\mathcal L\) 的普通同调序列，在对偶映射下除连接方块外均交换；连接方块满足
+	\begin{equation}\label{g2:eq:duality-MV-sign}
+		\partial_{\mathrm{MV}}D_{c,M}=(-1)^{k+1}D_{c,U\cap V}\delta_{\mathrm{MV}}
+		\quad\text{在 }H_c^k(M;\mathcal L)\text{ 上}.
+	\end{equation}
+	若 \(D_{c,U},D_{c,V},D_{c,U\cap V}\) 在各次为同构，则 \(D_{c,M}\) 在各次为同构。
+\end{lemma}
+\begin{proof}
+	普通箭头由帽积自然性与开集延拓的定义交换。为计算连接方块，取紧集 \(K\subset U\)、\(L\subset V\)，记 \(A=M\setminus K\)、\(B=M\setminus L\)。代表上圈 \(\varphi\) 在 \(A\cap B\) 上为零。由\cref{g2:prop:compact-support-MV}证明中的上链短正合列，可写
+	\[
+		\varphi=\varphi_A-\varphi_B,\qquad
+		\varphi_A|_A=0,\quad\varphi_B|_B=0,\quad
+		\delta\varphi_A=\delta\varphi_B.
+	\]
+	连接像由 \(\delta\varphi_A\) 表示，它在 \(A\) 内及 \(B\) 内的单形上都为零；通过小链比较，这正是支集为 \(K\cap L\) 的类。
+
+	选代表 \([M]_{K\cup L}\) 的有限链 \(c\)，按开覆盖 \(U\setminus L,U\cap V,V\setminus K\) 作足够细分，写成 \(c=a+b+d\)，三个部分依次落在这三个开集中。该覆盖确实覆盖 \(M\)：在 \(U\) 外的点在 \(V\setminus K\)，在 \(V\) 外的点在 \(U\setminus L\)。\(b\) 表示交集上的基本类，\(a+b\) 表示 \(K\) 上的基本类，故
+	\[
+		\partial(a+b)\in C_{n-1}(U\setminus K;\mathcal O_R),\qquad
+		\varphi_B\frown\partial a=0.
+	\]
+	第一个包含也可逐单形看出：\(\partial c\) 避开 \(K\cup L\)，而 \(d\) 及其面避开 \(K\)，所以 \(\partial(a+b)\) 避开 \(K\)；它仍是 \(U\) 中的链。
+
+	沿上同调连接箭头再作对偶，得到 \((\delta\varphi_A)\frown b\)。由帽积边界公式，它在 \(U\cap V\) 中与 \(\varphi_A\frown\partial b\) 同调。另一方向先得到绝对圈 \(\varphi\frown c\)，把它分成 \(U\) 中的 \(\varphi\frown a\) 和 \(V\) 中的 \(\varphi\frown(b+d)\)。普通 Mayer--Vietoris 连接映射取第一部分的边界，而
+	\[
+		\begin{aligned}
+			\partial(\varphi\frown a)
+			&=(-1)^k\varphi\frown\partial a\\
+			&=(-1)^k\varphi_A\frown\partial a
+			=(-1)^{k+1}\varphi_A\frown\partial b.
+		\end{aligned}
+	\]
+	最后一步使用 \(\varphi_A\frown\partial(a+b)=0\)。这是所需符号。局部系数在每个单形中平凡化，所有公式保持运输；细分与相对小链比较均有\cref{g2:lem:twisted-small-chain-retraction}的链同伦，所以这些代表计算确实给出原序列的映射。
+
+	最后取任意五个连续位置的正合列，将必要竖箭头乘以 \(-1\)，使方块交换；改变符号不改变是否同构。中间箭头两侧的四个箭头由假设为同构，五引理给出中间箭头同构。其图追踪含义是：满射性先用右边箭头找候选原像，再用左边箭头修正差值；单射性先将一个核元移到左侧，再用更左一项消去它。故 \(D_{c,M}\) 在所有次数均为同构。
+\end{proof}
+
+这个引理将已知开集及其交集上的对偶推广到它们的并。坐标图的交通常只是 Euclid 开集，因此下一步先从球和有限并出发证明任意 Euclid 开集上的对偶，再用于流形的坐标覆盖。
 
 \subsection{可数穷竭及极限步骤}
 \label{g2:subsec:0603:03}
-待撰写
+先处理直接极限。若 \(W_1\subset W_2\subset\cdots\) 为开集且 \(M=\bigcup_jW_j\)，则
+\begin{equation}\label{g2:eq:duality-direct-continuity}
+	\varinjlim_jH_c^k(W_j;\mathcal L)\cong H_c^k(M;\mathcal L),\qquad
+	\varinjlim_jH_q(W_j;\mathcal E)\cong H_q(M;\mathcal E).
+\end{equation}
+第一个式子由紧支集给出：每个紧集包含于某个 \(W_j\)，这是紧集对递增开覆盖取有限子覆盖的结果；两个表示相等，也已在某个较大的紧支集处相等。第二个式子由有限链给出：一条圈及证明它为边界的链都只含有限个单形，其像为紧集，所以都已包含在某个 \(W_j\) 内。这些性质分别给出两式的满射性与单射性。
+
+\begin{theorem}[紧支 Poincaré 对偶]\label{g2:thm:poincare-duality-compact}
+	设 \(M\) 是 Hausdorff、第二可数、无边界的拓扑 \(n\) 维流形，\(R\) 为含幺交换环，\(\mathcal L\) 为任意 \(R\) 模局部系统。帽积给出自然同构
+	\begin{equation}\label{g2:eq:poincare-compact}
+		D_{c,M}:H_c^k(M;\mathcal L)\xrightarrow{\ \cong\ }H_{n-k}(M;\mathcal O_R\otimes_R\mathcal L)
+	\end{equation}
+	对所有整数 \(k\) 成立；负次数群取零。这里的自然性包括系数同态以及开嵌入的紧支延拓与普通同调包含。
+\end{theorem}
+\begin{proof}
+	在 \(\mathbb R^n\) 的一个开集 \(W\) 中，取可数个闭包包含于 \(W\) 的开矩形覆盖 \(W\)，例如端点有理的坐标矩形。每个非空有限交仍是开矩形，因而同胚于 \(\mathbb R^n\)。\cref{g2:lem:euclidean-duality}给出一个矩形的结论；对有限个矩形的并归纳，新增矩形与此前并集的交是更少个矩形的并，故\cref{g2:lem:duality-MV}适用。再对前 \(j\) 个矩形的并使用\eqref{g2:eq:duality-direct-continuity}，得到 \(W\) 的结论。局部系统只需在每个矩形内平凡，不要求在整个 \(W\) 上平凡。
+
+	一般流形因第二可数而有可数个坐标球 \(U_1,U_2,\ldots\) 覆盖。令 \(V_j=U_1\cup\cdots\cup U_j\)。\(U_j\cap V_{j-1}\) 是 \(U_j\) 中的开集，在坐标下是 Euclid 空间的开集，上一段已证明其对偶。用开集粘合引理归纳得到所有 \(V_j\) 的结论，再用直接极限得到 \(M\) 的结论。各步使用的映射始终是\eqref{g2:eq:compact-duality-map}的帽积映射，所以得到的同构具有已核对的自然性。对于 \(n=0\)，坐标球是单点，相同的有限并与可数并论证仍成立。
+\end{proof}
+
+上述局部到整体证明可对照\cite[第3.3节，Duality for Noncompact Manifolds；第3.H节]{Hatcher2002}。现在转向普通上同调。要保留一个非紧流形的全部局部定向，基本链必须允许局部有限的无限和。
+
+\begin{proposition}[局部有限基本类]\label{g2:prop:lf-fundamental-class}
+	设 \(M\) 是 Hausdorff、第二可数、无边界的拓扑 \(n\) 维流形，\(R\) 为含幺交换环。存在唯一
+	\[
+		[M]_{\mathrm{lf}}\in H_n^{\mathrm{lf}}(M;\mathcal O_R)
+	\]
+	使其在每个紧集 \(K\) 上的相对化均为 \([M]_K\)。其各点局部值均为 \(\mathbf1_x\)。当 \(M\) 紧时，它就是普通基本类。
+\end{proposition}
+\begin{proof}
+	取紧穷尽 \(K_j\subset\operatorname{int}K_{j+1}\)。\cref{g2:lem:compact-localization}给出 \(H_{n+1}(M,M\setminus K_j;\mathcal O_R)=0\)。故\eqref{g2:eq:lf-limit-sequence}中的修正项为零，而相容的族 \(([M]_{K_j})_j\) 唯一提升为所求局部有限同调类。任意紧集包含于某个 \(K_j\)，所以这个类具有陈述中的全部相对化性质，且与所选穷尽无关。紧空间的局部有限链本来就是有限链。
+\end{proof}
+
+为了从紧支对偶推出局部有限对偶，需要一个中间结论。对紧集 \(K\subset M\)，定义
+\[
+	\mathcal N^k(K;\mathcal L)=\varinjlim_{V\supset K\text{ 开}}H^k(V;\mathcal L|_V),
+\]
+其中过渡映射是缩小邻域的限制。这记录一个在 \(K\) 的某个邻域上定义的类，并把在更小邻域上一致的类识别。任意紧集可能非常不规则，邻域极限与 \(H^k(K;\mathcal L|_K)\) 的比较需要另加条件。以下直接使用这个邻域定义。
+
+\begin{lemma}[紧集的邻域对偶]\label{g2:lem:neighborhood-duality}
+	设 \(M,R,\mathcal L\) 满足\cref{g2:thm:poincare-duality-compact}的条件，\(K\subset M\) 紧。在邻域 \(V\) 中以 \([M]_K\) 的切除类取帽积，得到自然同构
+	\begin{equation}\label{g2:eq:neighborhood-duality}
+		\Phi_K:\mathcal N^k(K;\mathcal L)\xrightarrow{\ \cong\ }
+		H_{n-k}(M,M\setminus K;\mathcal O_R\otimes_R\mathcal L).
+	\end{equation}
+	它与紧集包含所诱导的两侧限制相容。
+\end{lemma}
+\begin{proof}
+	映射本身由相对帽积定义：\(H^k(V;\mathcal L)\) 帽 \(H_n(V,V\setminus K;\mathcal O_R)\) 后，再映入 \(M\) 的相对同调。缩小邻域时，基本类的切除与帽积自然性保证相容。
+
+	构造证明同构所需的正合列。取紧集 \(C\) 和开邻域 \(V\)，使 \(K\subset V\subset\overline V\subset\operatorname{int}C\)。对三元组
+	\[
+		M\supset V\cup(M\setminus C)\supset M\setminus C
+	\]
+	使用上同调长正合列。左端的相对群是 \(H^*(M,M\setminus(C\setminus V);\mathcal L)\)，中间是 \(H^*(M,M\setminus C;\mathcal L)\)，第三项由不交开并识别为 \(H^*(V;\mathcal L)\)。让 \(C\) 增大、\(V\) 缩小，便得到
+	\[
+		\cdots\to H_c^k(M\setminus K;\mathcal L)\to H_c^k(M;\mathcal L)
+		\to\mathcal N^k(K;\mathcal L)\to H_c^{k+1}(M\setminus K;\mathcal L)\to\cdots.
+	\]
+	其共尾性需分别核对：每个 \(M\) 内的紧支集可包含于足够大的 \(C\)；每个 \(M\setminus K\) 内的紧集可先用邻域 \(V\) 与 \(K\) 分开，再包含于 \(C\setminus V\)；任意 \(K\) 的邻域都包含一个闭包紧的更小邻域，且该闭包可放入某个 \(\operatorname{int}C\)。局部紧 Hausdorff 性和 \(K\) 的紧性保证这些选择。直接极限的正合性已在\cref{g2:prop:compact-support-MV}的证明中核对。
+
+	把这条序列与空间对 \((M,M\setminus K)\) 的同调长正合列比较，其他位置使用已证的紧支对偶，中间使用 \(\Phi_K\)。普通箭头由相对帽积自然性交换。连接箭头也可直接检查：在上述三元组中，把 \(V\) 上的上圈 \(\varphi\) 延拓为一个在 \(M\setminus C\) 上为零的上链 \(\widehat\varphi\)，则 \(\delta\widehat\varphi\) 的支集位于 \(C\setminus V\)。取 \([M]_C\) 的代表 \(c\)，用开覆盖 \(V,M\setminus K\) 作相容的小链比较，\(\widehat\varphi\frown c\) 在模去 \(M\setminus K\) 后代表 \(\Phi_K[\varphi]\)。由于 \(\widehat\varphi\frown\partial c=0\)，有
+	\[
+		\partial(\widehat\varphi\frown c)=(-1)^{k+1}(\delta\widehat\varphi)\frown c.
+	\]
+	这正是两条连接映射相差的符号。上链的延拓只需逐单形选值；其余边界承担连接映射，不要求这个延拓本身是上链映射。小链比较采用\cref{g2:lem:twisted-small-chain-retraction}，也不会改变任一相对类。调整竖箭头的符号后应用五引理，得到 \(\Phi_K\) 同构。对更小紧集的自然性在构造时已经成立。
+\end{proof}
+
+邻域极限为何有用，可以从一个相容的序列看出来。若 \(K_j\subset U_j\subset K_{j+1}\)，其中 \(K_j\) 紧、\(U_j\) 开且递增穷尽，则对每个次数 \(k\) 有
+\[
+	H^k(U_{j+1};\mathcal L)\longrightarrow\mathcal N^k(K_{j+1};\mathcal L)
+	\longrightarrow H^k(U_j;\mathcal L)\longrightarrow\mathcal N^k(K_j;\mathcal L).
+\]
+第二箭头存在，是因为 \(K_{j+1}\) 的每个邻域都包含 \(U_j\)。相邻两个箭头的复合就是原来各群塔的过渡映射。因此普通邻域群与 \(\mathcal N^k(K_j)\) 是一个交错群塔的两个共尾子塔。
+
+\ProseParagraphBreak
+
+交错不会改变 \(\varprojlim\) 和 \(\varprojlim{}^1\)。第一项由相容序列唯一填回被省去坐标可见；第二项也可从\cref{g2:prop:locally-finite-limit}的余核定义验证。若群塔箭头为 \(q_i:G_{i+1}\to G_i\)，每隔一个坐标保留一次时，把乘积元素 \((b_i)\) 送到 \((b_{2i-1}+q_{2i-1}b_{2i})_i\)。它把 \(\Delta\) 的像送到子塔的 \(\Delta\) 像，并在余核上满射；若所得类为零，先解出奇数坐标，再令 \(x_{2i}=b_{2i}+q_{2i}x_{2i+1}\)，即可把原类写成 \(\Delta(x_i)\)，证明单射。这说明两个共尾子塔在这两个极限项上确实一致。
+
+\begin{theorem}[局部有限 Poincaré 对偶]\label{g2:thm:poincare-duality-locally-finite}
+	设 \(M\) 是 Hausdorff、第二可数、无边界的拓扑 \(n\) 维流形，\(R\) 为含幺交换环，\(\mathcal L\) 为 \(R\) 模局部系统。帽积给出同构
+	\begin{equation}\label{g2:eq:poincare-locally-finite}
+		D_{\mathrm{lf},M}:H^k(M;\mathcal L)\xrightarrow{\ \cong\ }
+		H_{n-k}^{\mathrm{lf}}(M;\mathcal O_R\otimes_R\mathcal L),
+		\qquad\alpha\longmapsto\alpha\frown[M]_{\mathrm{lf}}.
+	\end{equation}
+	它与系数同态及开集限制相容。将紧支上同调类忘记支集后取此映射，等于先取 \(D_{c,M}\)，再把有限链视为局部有限链。
+\end{theorem}
+\begin{proof}
+	帽积及支集相容性由\cref{g2:prop:support-cap-pairings}给出。关键是证明它为同构，同时保留逆极限的修正项。选一个代表 \([M]_{\mathrm{lf}}\) 的局部有限圈 \(c\)。递归选择紧集 \(K_j\) 和相对紧开集 \(U_j\)，使
+	\[
+		K_j\subset U_j\subset K_{j+1},\qquad
+		\overline U_j\subset\operatorname{int}K_{j+1},\qquad \bigcup_jK_j=M,
+	\]
+	并使 \(U_j\) 包含 \(c\) 中所有遇到 \(K_j\) 的单形的像。这样的单形只有有限条，其像的并紧；把这个并及 \(K_j\) 放入相对紧开集，再把闭包及预先选定穷尽的下一紧集放入 \(\operatorname{int}K_{j+1}\)，便可完成递归。
+
+	令 \(c_j\) 为 \(c\) 中遇到 \(K_j\) 的那些项之和。它是 \(U_j\) 中的有限链，且 \(\partial c_j\) 完全位于 \(M\setminus K_j\)：一个遇到 \(K_j\) 的面，其在 \(\partial c\) 中的全部贡献都来自已经保留的单形，所以这些贡献仍抵消。因而 \(c_j\) 表示 \([M]_{K_j}\)。同时 \(c_{j+1}-c_j\) 的每个单形都避开 \(K_j\)。
+
+	取上链复形塔 \(E_j^*=C^*(U_j;\mathcal L)\)，其限制映射逐次满射，因为可在不完全位于 \(U_j\) 的单形上任意补值。每条奇异单形的像紧，故最终位于某个 \(U_j\)，于是 \(\varprojlim E_j^*=C^*(M;\mathcal L)\)。另一方面令
+	\[
+		Q_{j,*}=C_*(M,M\setminus K_j;\mathcal O_R\otimes_R\mathcal L),
+		F_j^k=Q_{j,n-k},\qquad \mathrm d_{F_j}^k=(-1)^{k+1}\partial.
+	\]
+	最后这个符号只是把降次链复形重排为升次上链复形。帽积给出上链映射
+	\[
+		E_j^*\longrightarrow F_j^*,\qquad \varphi\longmapsto\varphi\frown c_j.
+	\]
+	边界公式以及 \(\partial c_j\) 避开 \(K_j\) 验证与微分相容；\(c_{j+1}-c_j\) 避开 \(K_j\) 则验证这些映射与群塔过渡严格相容。在逆极限上，它就是帽积 \(\varphi\frown c\)。
+
+	在第 \(j\) 项的上同调上，此映射是
+	\[
+		H^k(U_j;\mathcal L)\longrightarrow\mathcal N^k(K_j;\mathcal L)
+		\xrightarrow{\Phi_{K_j}}H_{n-k}(Q_{j,*}).
+	\]
+	第二箭头由邻域对偶为同构，第一箭头和前述交错系统一起，在 \(\varprojlim\) 及 \(\varprojlim{}^1\) 上都诱导同构。对两个上链复形塔分别应用\cref{g2:cor:cochain-limit-sequence}，便得到两条自然短正合列；左端比较的是次数 \(k-1\) 的 \(\varprojlim{}^1\)，右端比较的是次数 \(k\) 的 \(\varprojlim\)，两者均为同构。中间箭头因此为同构，而中间两群正是 \(H^k(M;\mathcal L)\) 与 \(H_{n-k}^{\mathrm{lf}}(M;\mathcal O_R\otimes_R\mathcal L)\)。这一比较同时覆盖修正项非零的情形。
+
+	系数自然性来自链公式。对于开嵌入，局部有限基本类的限制具有同一组局部值，由唯一性等于开子流形的基本类；按\cref{g2:prop:support-functoriality}中相对商塔的限制构造，帽积与这些商及切除相容，故得到开集自然性。
+\end{proof}
 
 \subsection{闭定向流形上的标准同构}
 \label{g2:subsec:0603:04}
-待撰写
+紧空间上，每条局部有限链有限，每个上链也自动具有紧支集。因此刚才两种对偶在闭流形上重合。若再选择一个 \(R\) 定向，将 \(\mathcal O_R\) 识别为常值系统，便得到通常不显式写出支集和扭系数的公式。
+
+\begin{corollary}[闭流形的 Poincaré 对偶]\label{g2:cor:closed-poincare-duality}
+	设 \(M\) 为闭的 Hausdorff、第二可数拓扑 \(n\) 维流形，\(R\) 为含幺交换环，\(\mathcal L\) 为 \(R\) 模局部系统。则
+	\[
+		H^k(M;\mathcal L)\xrightarrow{\ \alpha\mapsto\alpha\frown[M]\ }
+		H_{n-k}(M;\mathcal O_R\otimes_R\mathcal L)
+	\]
+	为同构。若 \(M\) 已选定 \(R\) 定向，则化为 \(H^k(M;\mathcal L)\cong H_{n-k}(M;\mathcal L)\)；常值系数时特别得到 \(H^k(M;R)\cong H_{n-k}(M;R)\)。若整体定向反转，对偶映射乘以 \(-1\)。
+\end{corollary}
+\begin{proof}
+	紧性使 \(H_c^k=H^k\)，所以第一结论是\cref{g2:thm:poincare-duality-compact}的直接应用。设所选 \(R\) 定向为 \(\theta\)，用\cref{g2:eq:orientation-square}的规范配对 \(b(\theta,-)\colon\mathcal O_R\to\underline R\) 平凡化定向系统，规范扭基本类就变为该定向的普通基本类。整体反向把这个类变成相反数，帽积对它线性，故对偶映射也反号。
+\end{proof}
+
+\begin{example}[圆周上的两个支集版本]\label{g2:exm:duality-line-circle}
+	对已定向的 \(S^1\)，单位上同调类 \(1\in H^0(S^1;\mathbb Z)\) 帽基本圈得到该圈，正向一次生成元帽基本圈得到零次的点类。因此 \(H^0\cong H_1\)、\(H^1\cong H_0\)。把圆周换成 \(\mathbb R\)，普通 \(H_1(\mathbb R)=0\)，原来的第一条公式就不成立。正确的两组结果是
+	\[
+		H_c^1(\mathbb R;\mathbb Z)\cong H_0(\mathbb R;\mathbb Z)=\mathbb Z,
+		\qquad H^0(\mathbb R;\mathbb Z)\cong H_1^{\mathrm{lf}}(\mathbb R;\mathbb Z)=\mathbb Z.
+	\]
+	第二个右端的生成元可由全部整数区间的有向和 \(\sum_{j\in\mathbb Z}[j,j+1]\) 表示，相邻端点抵消，且每个紧集只遇有限项。它不是普通有限链；这一点正对应左端允许常值上圈具有非紧支集。
+\end{example}
+
+流形对偶将互补次数的上同调与同调比较；同一次数中，上同调与同调的线性对偶之间还由万有系数定理联系。整数系数下，\cref{g2:thm:uct-cohomology}保留了低一次同调的 Ext 项，挠信息由此参与上同调。下一节加入边界条件，最后一节再将对偶与取值配对结合，分别构造自由部分的交形式和挠部分的链接配对。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

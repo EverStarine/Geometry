@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 4.2 万有系数定理
 % 纲要位置：几何学计划纲要.md，第 1162 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,246 @@
 \section{万有系数定理}
 \label{g2:sec:0402}
 
-待撰写
+上一节从一个模的自由消解出发定义了 Ext 与 Tor。空间的奇异链则组成一整条复形，每个次数都有自己的圈、边界和同调。微分将 \(n\) 次链送到 \(n-1\) 次边界，因此换系数时，当前次数与低一次的关系会同时参与计算：上同调的额外项来自低一次同调的 Ext，系数同调的额外项来自低一次同调的 Tor。下面用两条短正合列具体找出这些项。
+
+\ProseParagraphBreak
+
+本节取主理想整环 \(R\)、非负自由 \(R\) 模链复形 \(C\) 及任意 \(R\) 模 \(G\)，不要求自由模或同调模有限生成。记 \(Z_n=\ker\mathrm{d}_n\)、\(B_n=\operatorname{im}\mathrm{d}_{n+1}\)、\(H_n(C)=Z_n/B_n\)，并令负次数的这些模均为零。这里使用未增广复形；约化情形须先按前章的增广约定单独处理最低次数。
 
 \subsection{自由链复形的圈边界分解}
 \label{g2:subsec:0402:01}
-待撰写
+同调的定义只看到 \(B_n\subset Z_n\)，而链群 \(C_n\) 还包含不是圈的元素。这些元素的边界恰好填满 \(B_{n-1}\)。因此需要同时使用两条短正合列：
+\begin{equation}\label{g2:eq:cycles-boundaries-sequences}
+	0\longrightarrow Z_n\xrightarrow{j_n}C_n\xrightarrow{q_n}B_{n-1}\longrightarrow0,
+	\qquad
+	0\longrightarrow B_n\xrightarrow{i_n}Z_n\longrightarrow H_n(C)\longrightarrow0,
+\end{equation}
+其中 \(q_n\) 是把 \(\mathrm{d}_n\) 的靶限制为其像，故 \(\mathrm{d}_n=j_{n-1}i_{n-1}q_n\)。第一条列因末项自由而分裂；第二条列的末项 \(H_n(C)\) 可能有挠，通常不能分裂。万有系数定理正是同时利用这两种不同情形。
+
+\begin{lemma}[自由链复形的分解]\label{g2:lem:free-complex-splitting}
+	设 \(R\) 为主理想整环，\(C\) 为非负自由 \(R\) 模链复形。则所有 \(Z_n,B_n\) 自由。对每个 \(n\ge0\)，可以选取 \(s_n:B_{n-1}\to C_n\)，满足 \(q_ns_n=1\)，并得到
+	\[
+		C_n\cong Z_n\oplus B_{n-1},\qquad
+		\mathrm{d}_n(z,b)=(i_{n-1}b,0)\in Z_{n-1}\oplus B_{n-2}.
+	\]
+	因此 \(C\) 同构于一族两项复形的直和，第 \(n\) 个复形是将自由消解 \(B_n\xrightarrow{i_n}Z_n\to H_n(C)\) 放在次数 \(n+1,n\)。这项分解依赖所选 \(s_n\)。
+\end{lemma}
+\begin{proof}
+	\(Z_n,B_n\) 都是自由模 \(C_n\) 的子模，故由\cref{g2:prop:pid-free-submodule}自由。由自由模的提升性质，满射 \(q_n:C_n\to B_{n-1}\) 有右逆 \(s_n\)。同构及其逆具体为
+	\[
+		(z,b)\longmapsto j_nz+s_nb,\qquad
+		c\longmapsto(c-s_nq_nc,q_nc),
+	\]
+	第一坐标 \(c-s_nq_nc\) 的边界为零，所以确实属于 \(Z_n\)。圈的边界为零，\(s_nb\) 的边界为 \(b\in B_{n-1}\subset Z_{n-1}\)，这就证明微分公式。把每个 \(B_n\to Z_n\) 单独看成两项复形，次数 \(n\) 恰有 \(Z_n\) 与前一个复形的 \(B_{n-1}\) 两个部分，其微分与刚才的公式相同，故给出链复形直和分解。最后，如果 \(h:B_{n-1}\to Z_n\) 任意，则 \(s_n+j_nh\) 也是右逆，所以数据本身一般不能指定一个 \(s_n\)。
+\end{proof}
+
+分解后，两项复形的微分仍是包含映射 \(B_n\to Z_n\)。例如 \(B_0=2\mathbb Z\subset Z_0=\mathbb Z\)，取适当自由基后，这个微分就是乘 \(2\)，其余核为 \(\mathbb Z/2\mathbb Z\)。同调中的挠关系由此保留在两项复形中。
 
 \subsection{上同调的自然短正合列}
 \label{g2:subsec:0402:02}
-待撰写
+到系数模 \(G\) 的线性函数可以用来测量链。一个 \(n\) 次函数 \(\varphi:C_n\to G\) 若在所有边界上取零，就会对圈的同调类给出确定的值。但即使它对所有圈取零，它仍可能不是一个低次函数的上边界；这个差别将由 Ext 测量。
+
+\begin{definition}[系数上同调]\label{g2:def:cohomology-coefficients}
+	设 \(R\) 为含幺交换环，\(C\) 为非负 \(R\) 模链复形，\(G\) 为 \(R\) 模。其上链群及上链微分定义为
+	\[
+		C^n(C;G)\coloneqq\operatorname{Hom}_R(C_n,G),\qquad
+		\delta^n\varphi=\varphi\mathrm{d}_{n+1}.
+	\]
+	满足 \(\delta\varphi=0\) 的上链称为\term[shangquan]{上圈}[cocycle]；属于 \(\operatorname{im}\delta^{n-1}\) 的上链称为\term[shangbianjie]{上边界}[coboundary]。其商
+	\[
+		H^n(C;G)\coloneqq\ker\delta^n/\operatorname{im}\delta^{n-1}
+	\]
+	称为 \(C\) 的 \(G\) 系数\term[shangtongdiao]{上同调}[cohomology]。\symidx{\(H^n(C;G)\)：链复形的系数上同调}
+\end{definition}
+
+链映射 \(f:C\to D\) 通过 \(f^*\varphi=\varphi f_n\) 给出反向上链映射，因为 \(\delta(\varphi f)=\varphi f\mathrm{d}=\varphi\mathrm{d}f=f^*(\delta\varphi)\)。若 \(g-f=\mathrm{d}H+H\mathrm{d}\)，则 \(g^*-f^*=\delta K+K\delta\)，其中 \(K\varphi=\varphi H\)，所以两者诱导相同的上同调映射。读者可以把上圈理解成对边界无感的线性测量，上边界则是在圈上必然为零的那一类测量；下面的定理说明这两种“为零”之间还剩多少信息。
+
+\begin{theorem}[上同调万有系数定理]\label{g2:thm:uct-cohomology}
+	设 \(R\) 为主理想整环，\(C\) 为非负自由 \(R\) 模链复形，\(G\) 为任意 \(R\) 模。对每个 \(n\ge0\)，有短正合列
+	\begin{equation}\label{g2:eq:uct-cohomology}
+		0\longrightarrow\operatorname{Ext}_R^1(H_{n-1}(C),G)\xrightarrow{\eta}H^n(C;G)\xrightarrow{\rho}\operatorname{Hom}_R(H_n(C),G)\longrightarrow0,
+	\end{equation}
+	其中 \(\rho[\varphi]([z])=\varphi(z)\)。此列对链映射 \(C\to D\) 反变自然，对系数同态 \(G\to G'\) 协变自然，且可以分裂。一般不存在对所有链映射自然的分裂。
+\end{theorem}
+
+这称为\term[shangtongdiao wanyou xishu dingli]{上同调万有系数定理}[universal coefficient theorem for cohomology]。先证明正合性、自然性和分裂存在性；最后一项限制将在\cref{g2:exm:uct-nonnatural-splitting}用具体复形证明。
+
+\begin{proof}
+	上圈 \(\varphi\) 在 \(B_n\) 上为零，所以它在 \(Z_n\) 上的限制下降为 \(H_n(C)\to G\)。若改变 \(\varphi\) 一个上边界 \(\psi\mathrm{d}_n\)，其在所有圈上的值不变，因此 \(\rho\) 良定义。选\cref{g2:lem:free-complex-splitting}给出的投影 \(p_n:C_n\to Z_n\)，使 \(p_nj_n=1\)。对 \(a:H_n(C)\to G\)，令
+	\[
+		\sigma(a)(c)=a([p_nc]).
+	\]
+	它在 \(B_n\) 上为零，故是上圈，且 \(\rho[\sigma(a)]=a\)。因此 \(\rho\) 满射，并且 \(a\mapsto[\sigma(a)]\) 已给出一个线性的分裂。
+
+	下面以与投影选择无关的方式识别 \(\ker\rho\)。由自由消解
+	\[
+		0\longrightarrow B_{n-1}\xrightarrow{i_{n-1}}Z_{n-1}\longrightarrow H_{n-1}(C)\longrightarrow0,
+	\]
+	\cref{g2:prop:dimension-shifting}将 Ext 识别为
+	\[
+		\operatorname{Hom}_R(B_{n-1},G)\big/\operatorname{im}\bigl(\operatorname{Hom}_R(Z_{n-1},G)\xrightarrow{i_{n-1}^*}\operatorname{Hom}_R(B_{n-1},G)\bigr).
+	\]
+	对代表元 \(\lambda:B_{n-1}\to G\)，定义 \(\eta[\lambda]=[\lambda q_n]\)。由于 \(q_n\mathrm{d}_{n+1}=0\)，这确实是上圈。若 \(\lambda=\mu i_{n-1}\)，将 \(\mu:Z_{n-1}\to G\) 通过一个投影 \(C_{n-1}\to Z_{n-1}\) 延拓为 \(\psi:C_{n-1}\to G\)，便有 \(\lambda q_n=\psi\mathrm{d}_n\)，所以代表元改变只增加上边界。这里投影只用于证明代表元的改变无效，不参与 \(\eta\) 的定义。
+
+	反过来，若 \(\lambda q_n=\psi\mathrm{d}_n\)，由 \(q_n\) 满射可知 \(\lambda=\psi j_{n-1}i_{n-1}\)，故 \(\lambda\) 属于上面分母中的像，证明 \(\eta\) 单射。若 \(\rho[\varphi]=0\)，则 \(\varphi\) 在整个 \(Z_n\) 上为零，故唯一通过 \(C_n/Z_n\cong B_{n-1}\) 分解为 \(\lambda q_n\)；于是 \(\ker\rho=\operatorname{im}\eta\)。这完成正合性证明，\(n=0\) 时负次数项均为零，给出 \(H^0(C;G)\cong\operatorname{Hom}_R(H_0(C),G)\)。
+
+	对于链映射 \(f:C\to D\)，\(f\) 将 \(Z_n(C),B_n(C)\) 分别送到 \(Z_n(D),B_n(D)\)，所以给出这两个自由消解之间的链提升。限制到圈与预复合相交换，因而 \(\rho_Cf^*=H_n(f)^*\rho_D\)。对于左端，\(q_n^D f_n=f_{n-1}|_{B_{n-1}(C)}q_n^C\)，所以由 \(\lambda\mapsto\lambda q_n\) 定义的 \(\eta\) 也与预复合交换；消解独立性说明这里的左端映射正是 \(\operatorname{Ext}_R^1(H_{n-1}(f),G)\)。系数同态通过后复合作用，同样与这些公式交换。因此整条短正合列自然，而选择 \(p_n\) 得到的分裂尚无这项保证。
+\end{proof}
+
+对空间对 \((X,A)\)，令 \(C_\bullet(X,A;R)\) 为相对奇异链的自由 \(R\) 模复形：它以像不完全包含在 \(A\) 中的奇异单形为基。定义
+\[
+	H^n(X,A;G)\coloneqq H^n\bigl(\operatorname{Hom}_R(C_\bullet(X,A;R),G)\bigr).
+\]
+当 \(A=\varnothing\) 时省略 \(A\)。相对上链也可以看作 \(X\) 上在 \(C_\bullet(A;R)\) 上取零的上链，因为到 \(G\) 的同态通过商模分解恰好等价于这个消失条件。\cref{g2:thm:singular-homotopy-invariance,g2:prop:relative-homotopy-invariance}的奇异棱柱为同伦映射提供链同伦，所以上同调也具有同伦不变性。取 \(R=\mathbb Z\)，便可把上章求出的整数同调直接代入\eqref{g2:eq:uct-cohomology}。
+
+\begin{proposition}[相对上同调的正合列与切除]\label{g2:prop:relative-cohomology-exactness}
+	设 \((X,A)\) 为空间对，\(G\) 为阿贝尔群。相对奇异上同调有自然长正合列
+	\[
+		\cdots\longrightarrow H^n(X,A;G)\longrightarrow H^n(X;G)\longrightarrow H^n(A;G)\xrightarrow{\delta}H^{n+1}(X,A;G)\longrightarrow\cdots.
+	\]
+	若 \(Z\subset A\) 且 \(\overline Z\subset\operatorname{int}_X A\)，则包含诱导同构
+	\[
+		H^n(X,A;G)\xrightarrow{\ \cong\ }H^n(X\setminus Z,A\setminus Z;G).
+	\]
+\end{proposition}
+\begin{proof}
+	奇异单形基给出逐次分裂的短正合列 \(0\to C_*(A;\mathbb Z)\to C_*(X;\mathbb Z)\to C_*(X,A;\mathbb Z)\to0\)。取到 \(G\) 的同态，得到短正合上链复形
+	\[
+		0\longrightarrow C^*(X,A;G)\longrightarrow C^*(X;G)\longrightarrow C^*(A;G)\longrightarrow0.
+	\]
+	最后的限制映射满射，是因为可以在不属于 \(A\) 的单形基元上任意指定延拓值。对 \(A\) 上的闭上链 \(c\)，选取延拓 \(b\)。\(\delta b\) 在 \(A\) 上为零，故是相对上圈，令连接同态取 \([c]\mapsto[\delta b]\)。改变延拓增加一个相对上链，连接像只改变相对上边界；改变 \(c\) 一个上边界，也可以通过延拓其原上链得到同样的结论。于是它良定义。正合性仍由\cref{g2:thm:homology-LES}的“提升、取边界、取商”证明，只将次数降低改为次数上升：限制为上边界的上圈减去一个延拓的上边界后成为相对上圈；连接像为零时，可从延拓中减去相对上链使它闭；相对类在绝对群中为零时，其绝对原上链限制到 \(A\) 成为一个连接原像。这三步分别核对三个循环出现的正合位置。各限制与延拓后的边界计算都与空间对映射相容，所以长正合列自然。
+
+	对切除，\cref{g2:thm:singular-excision}在所列闭包条件下给出两空间对全部整数同调的自然同构。将两对的整数奇异链代入\cref{g2:thm:uct-cohomology}，自然性给出两条短正合列之间的交换图，其 Ext 端和 Hom 端的竖箭头均为同构。中间箭头也为同构：若一个类映为零，先看其 Hom 像，再从 Ext 端回推，得到单射性；对目标类先提升其 Hom 像，再以 Ext 类修正差值，得到满射性。这就证明上同调切除，并且适用于任意 \(G\)。
+\end{proof}
+
+因此，在一个子空间之外限制上同调类，或将某个局部计算缩到较小邻域时，也有与同调平行的正合列和切除工具。后面计算射影空间的杯积，将同时用到这两点。
+
+\begin{example}[整数上同调中的挠]\label{g2:exm:uct-lens-cohomology}
+	设 \(L=L(p,q)\) 为\cref{g2:prop:lens-cellular-model}的三维透镜空间，其中 \(p\ge2\)、\(\gcd(p,q)=1\)。该处已证明 \(H_0(L;\mathbb Z)=H_3(L;\mathbb Z)=\mathbb Z\)、\(H_1(L;\mathbb Z)=\mathbb Z/p\mathbb Z\)、其余正次数同调为零。由\cref{g2:prop:cyclic-ext-tor}，
+	\[
+		H^n(L;\mathbb Z)\cong
+		\begin{cases}
+			\mathbb Z,&n=0,3,\\
+			\mathbb Z/p\mathbb Z,&n=2,\\
+			0,&\text{其他次数}.
+		\end{cases}
+	\]
+	这里 \(H^1=0\)，因为 \(\operatorname{Hom}(\mathbb Z/p\mathbb Z,\mathbb Z)=0\)，而低一次的 \(H_0\) 自由，Ext 也为零；\(H^2\) 则全部来自 \(\operatorname{Ext}^1(\mathbb Z/p\mathbb Z,\mathbb Z)\)。所以不能把整数上同调简单称为“整数同调的对偶”：这样会丢掉从低一次挠群转来的信息。
+\end{example}
 
 \subsection{同调的系数变换形式}
 \label{g2:subsec:0402:03}
-待撰写
+现在改用张量。定义 \(H_n(C;G)\coloneqq H_n(C\otimes_R G)\)。一个原来的圈 \(z\) 当然给出新圈 \(z\otimes g\)，但前节的乘 \(m\) 例子说明，新系数可能还产生并非由旧圈张量得到的类。
+
+\begin{theorem}[同调万有系数定理]\label{g2:thm:uct-homology}
+	设 \(R\) 为主理想整环，\(C\) 为非负自由 \(R\) 模链复形，\(G\) 为任意 \(R\) 模。对每个 \(n\ge0\)，有短正合列
+	\begin{equation}\label{g2:eq:uct-homology}
+		0\longrightarrow H_n(C)\otimes_R G\xrightarrow{\alpha}H_n(C;G)\xrightarrow{\beta}\operatorname{Tor}^R_1(H_{n-1}(C),G)\longrightarrow0,
+	\end{equation}
+	其中 \(\alpha([z]\otimes g)=[z\otimes g]\)。此列对链映射及系数同态都协变自然，并且可以分裂；一般不存在对所有链映射自然的分裂。
+\end{theorem}
+
+这称为\term[tongdiao wanyou xishu dingli]{同调万有系数定理}[universal coefficient theorem for homology]。与上同调形式比较，旧同调的张量项位于自然子模，新增的 Tor 项位于自然商模。链映射分别诱导子模与商模上的映射，并与短正合列中的两条箭头相容。
+
+\begin{proof}
+	由\cref{g2:prop:dimension-shifting}，利用 \(B_{n-1}\to Z_{n-1}\to H_{n-1}(C)\) 这条自由消解，可将右端识别为
+	\[
+		\operatorname{Tor}^R_1(H_{n-1}(C),G)=\ker\bigl(i_{n-1}\otimes1:B_{n-1}\otimes_R G\longrightarrow Z_{n-1}\otimes_R G\bigr).
+	\]
+	对新系数圈 \(u\in C_n\otimes_R G\)，定义 \(\beta[u]=(q_n\otimes1)u\)。它确实落在上述核中：\(\mathrm{d}_n=j_{n-1}i_{n-1}q_n\)，而 \(j_{n-1}\otimes1\) 单射，因为 \(j_{n-1}\) 由\cref{g2:lem:free-complex-splitting}给出的投影分裂。\(q_n\mathrm{d}_{n+1}=0\) 又说明，改变 \(u\) 一个边界不改变其像。因此 \(\beta\) 良定义，且构造中没有选 \(s_n\)。
+
+	选取 \(s_n\) 后，上述核中的任意 \(t\) 均给出圈 \((s_n\otimes1)t\)，并且 \(\beta[(s_n\otimes1)t]=t\)。所以 \(\beta\) 满射，这一公式同时给出一个分裂。若 \(\beta[u]=0\)，由分裂短正合列 \(0\to Z_n\otimes_R G\to C_n\otimes_R G\to B_{n-1}\otimes_R G\to0\)，\(u\) 唯一来自 \(Z_n\otimes_R G\)。在此子模中，边界恰是 \(i_n\otimes1\) 的像：因为 \(q_{n+1}\otimes1\) 满射，\(\mathrm{d}_{n+1}\otimes1\) 的像等于 \(j_n\otimes1\) 作用在 \(\operatorname{im}(i_n\otimes1)\) 上的结果。因此
+	\[
+		\ker\beta\cong (Z_n\otimes_R G)/\operatorname{im}(i_n\otimes1)
+		\cong (Z_n/B_n)\otimes_R G=H_n(C)\otimes_R G,
+	\]
+	其中第二个同构来自张量的右正合性。识别后的包含恰是 \(\alpha([z]\otimes g)=[z\otimes g]\)，由此也证明了它的良定义和单射性。
+
+	对于链映射 \(f:C\to D\)，它在圈及边界上的限制给出上述两项自由消解的比较映射，而 \(q_n^Df_n=f_{n-1}|_{B_{n-1}(C)}q_n^C\)。张量这一等式说明 \(\beta\) 与诱导映射交换；\(\alpha\) 的自然性则直接来自 \([z\otimes g]\mapsto[f(z)\otimes g]\)。系数同态 \(G\to G'\) 也逐项与这些公式交换。故整列自然。最后的非自然分裂断言仍由下一小节的反例给出。
+\end{proof}
+
+对空间对 \((X,A)\)，链模 \(C_n(X,A;R)\) 自由，而且
+\[
+	C_n(X,A;R)\otimes_R G\cong\bigoplus_{\sigma}G,
+\]
+直和取遍像不完全包含于 \(A\) 的奇异 \(n\) 单形。这个识别将 \(\sigma\otimes g\) 送到带系数 \(g\) 的单形，微分仍按有向面取交错和，因此所得同调就是 \(G\) 系数奇异同调 \(H_n(X,A;G)\)。于是两种万有系数定理都适用于任意空间对，不需要 CW 或有限性条件。CW 分解的用途，是借助前章结果先求出作为输入的整数同调。
+
+\begin{corollary}[胞腔计算的系数变换]\label{g2:cor:cellular-coefficients}
+	设 \(X\) 为 CW 复形，\(A\subset X\) 为子复形，\(G\) 为任意阿贝尔群。则
+	\[
+		H_n\bigl(C_\bullet^{\mathrm{cell}}(X,A;\mathbb Z)\otimes_{\mathbb Z}G\bigr)\cong H_n(X,A;G)
+	\]
+	对胞腔空间对映射及系数同态自然。选定胞腔定向以后，左侧的边界矩阵由整数胞腔边界矩阵的每个整数系数乘作用在 \(G\) 上得到；当 \(G\) 是某个含幺交换环 \(R\) 上的模时，所得同构也为 \(R\) 线性。
+\end{corollary}
+\begin{proof}
+	令 \(F_{-1}=A\)、\(F_r=A\cup X^r\)，则 \(F_r\) 由 \(F_{r-1}\) 附着不属于 \(A\) 的 \(r\) 胞腔得到。\cref{g2:thm:skeletal-relative-homology}给出：\(H_q(F_r,F_{r-1};\mathbb Z)\) 仅在 \(q=r\) 非零，该项是以这些胞腔为基的自由阿贝尔群。把这一事实代入\cref{g2:thm:uct-homology}，其 Tor 项全部为零，得到自然同构
+	\[
+		H_q(F_r,F_{r-1};G)\cong
+		\begin{cases}
+			\displaystyle\bigoplus_{e^r\subset X\setminus A}G,&q=r,\\
+			0,&q\ne r.
+		\end{cases}
+	\]
+	系数为 \(G\) 的空间对及三元组仍有同调长正合列：整数奇异链的相关短正合列在每个次数都由单形基分裂，故张量 \(G\) 后保持短正合，再用\cref{g2:thm:homology-LES}即可。于是与\cref{g2:thm:relative-cellular-comparison}的证明相同，从三元组 \((F_r,F_{r-1},A)\) 的长正合列得到 \(H_q(F_r,A;G)=0\) 当 \(q>r\)，以及在 \(r\ge q+1\) 之后的稳定性。即使胞腔无限，圈及其边界关系仍由有限条奇异单形表示，其紧支撑落在有限子复形中（\cref{g2:thm:finite-subcomplex}），所以稳定值为 \(H_q(X,A;G)\)。
+
+	在 \(H_n(F_n,F_{n-1};G)\) 上把连接同态后接相对化定义为胞腔微分。前一个骨架的高维消失性给出单射 \(H_n(F_n,A;G)\to H_n(F_n,F_{n-1};G)\)，其像恰是该微分的核；下一层三元组正合列又将 \(H_n(X,A;G)\) 识别为 \(H_n(F_n,A;G)\) 模去下一层连接映射之像。因此这个胞腔复形的同调就是所需奇异同调，零次同样适用，因为 \(H_0(F_{-1},A;G)=0\)。
+
+	最后核对微分的系数。对每个 \(g\in G\)，系数同态 \(\mathbb Z\to G\)、\(1\mapsto g\) 与奇异链取边界、连接同态及相对化都交换。因此整数胞腔基元 \(e\) 的边界若为 \(\sum_{e'} a_{e'e}e'\)，则带系数 \(g\) 的胞腔边界恰为 \(\sum_{e'} e'\otimes a_{e'e}g\)。这将新胞腔复形识别为整数胞腔复形张量 \(G\)，且保留\cref{g2:thm:cellular-boundary-degree}的度系数。整个核、像及取商构造都来自自然映射，故具有所陈述的自然性。
+\end{proof}
+
+\begin{example}[换系数后出现的圈]\label{g2:exm:rp2-coefficients}
+	由\cref{g2:prop:projective-integer-homology}，\(\mathbb{RP}^2\) 的整数同调为 \(H_0=\mathbb Z\)、\(H_1=\mathbb Z/2\mathbb Z\)、其他次数为零。对任意阿贝尔群 \(G\)，两种万有系数定理给出自然识别
+	\[
+		\begin{array}{c|ccc}
+			&n=0&n=1&n=2\\ \hline
+			H_n(\mathbb{RP}^2;G)&G&G/2G&G[2]\\
+			H^n(\mathbb{RP}^2;G)&G&G[2]&G/2G
+		\end{array}
+	\]
+	其他次数均为零。每个非零次数的短正合列至多有一个非零端项，所以这里不用选择分裂；\(H^1\) 中的 \(G[2]\) 来自 \(\operatorname{Hom}(\mathbb Z/2\mathbb Z,G)\)。取 \(G=\mathbb Z/2\mathbb Z\)，次数 \(0,1,2\) 均得到一个 \(\mathbb Z/2\mathbb Z\)。新出现的二次同调是 Tor 项：整数二维胞腔的边界绕一维胞腔两次，在模 \(2\) 系数中这个边界消失。
+\end{example}
+
+若系数环本身是域 \(k\)，任意 \(k\) 向量空间都自由，Ext 与正次数 Tor 均为零。因此对于自由 \(k\) 链复形，有自然同构
+\[
+	H^n(C;k)\cong\operatorname{Hom}_k(H_n(C),k).
+\]
+这里右边是全部线性函数组成的代数对偶；无限维时不应把它与原向量空间自然识别。另一方面，以 \(R=\mathbb Z\) 使用整数同调再把 \(G\) 取为 \(\mathbb F_p\)，Tor 项通常不为零；“最终系数是域”与“消解所在的底环是域”是两个不同条件。
 
 \subsection{非典范分裂及函子性的限制}
 \label{g2:subsec:0402:04}
-待撰写
+分裂的短正合列给出中间模与两端直和的某个同构，但定理真正随映射传递的是短正合列本身。为了看清差别，下面构造一个在两端都作用为恒等、却在中间产生剪切的链自同构。这会阻止我们为所有复形一致选出一个与链映射相容的补空间。
+
+\begin{example}[不存在自然分裂]\label{g2:exm:uct-nonnatural-splitting}
+	固定整数 \(m\ge2\)。令 \(C_2=\mathbb Z\langle c\rangle\)、\(C_1=\mathbb Z\langle a,b\rangle\)、\(C_0=\mathbb Z\langle v\rangle\)，其余项为零，规定
+	\[
+		\mathrm{d}_2c=ma,\qquad\mathrm{d}_1a=0,\qquad\mathrm{d}_1b=mv.
+	\]
+	则 \(H_1(C)=\mathbb Z/m\mathbb Z\langle[a]\rangle\)、\(H_0(C)=\mathbb Z/m\mathbb Z\langle[v]\rangle\)、其他同调为零。定义链自同构 \(f\) 在次数 \(0,2\) 为恒等，并令
+	\[
+		f_1(a)=a,\qquad f_1(b)=b+a.
+	\]
+	它与微分交换，逆映射只需把 \(b+a\) 改为 \(b-a\)，且它在所有整数同调群上作用为恒等。
+
+	取 \(G=\mathbb Z/m\mathbb Z\)。张量后的微分全为零，故 \(H_1(C;G)=G\langle a,b\rangle\)。同调万有系数列的左项 \(H_1(C)\otimes G\) 是由 \(a\) 生成的子群，右项由 \(b\) 的商类生成。若有对链映射自然的分裂 \(s:G\to G^2\)，则因为 \(f\) 在右项作用为恒等，必须有 \(f_*s(1)=s(1)\)。然而任何 \(s(1)\) 都形如 \(b+ta\)，其中 \(t\in G\)，而
+	\[
+		f_*(b+ta)=b+(t+1)a\ne b+ta.
+	\]
+	这里 \(a\ne0\)，因为 \(m\ge2\)。所以这样的自然分裂不存在。
+
+	上同调同样如此。写 \(a^*,b^*\) 为到 \(G\) 的坐标函数，则 \(H^1(C;G)=G\langle a^*,b^*\rangle\)。映射 \(\rho\) 取上链在整数圈 \(a\) 上的值，所以 Ext 子模由 \(b^*\) 生成，Hom 商模由 \(a^*\) 的商类生成。预复合给出
+	\[
+		f^*(a^*)=a^*+b^*,\qquad f^*(b^*)=b^*.
+	\]
+	任何 Hom 生成元的提升均形如 \(a^*+tb^*\)，都不被 \(f^*\) 固定。因此上同调万有系数列也不存在对所有链映射自然的分裂。
+\end{example}
+
+这个反例属于自由链复形，已足以否定两条代数定理在全部对象上的自然分裂。它还指出实际计算中的遗漏：只知道 \(f\) 在整数同调上的作用，并不能总是恢复它在新系数同调或上同调上的全部作用；一个映射可以在自然子模和商模上都为恒等，同时在中间模上出现非零剪切。
+
+\ProseParagraphBreak
+
+有两类情形可以直接使用自然同构。若\eqref{g2:eq:uct-cohomology}的 Ext 项为零，\(\rho\) 本身便是自然同构；例如 \(H_{n-1}(C)\) 自由时就是如此。若\eqref{g2:eq:uct-homology}的 Tor 项为零，\(\alpha\) 本身便是自然同构；例如 \(H_{n-1}(C)\) 或 \(G\) 自由时就是如此。对于固定复形 \(C\)，预先选定\cref{g2:lem:free-complex-splitting}的所有投影与提升后，所造分裂对系数模 \(G\) 自然，因为这些选择不依赖 \(G\)。当复形也随链映射变化时，上一反例中的剪切使这种相容的分裂选择无法成立。
+
+\ProseParagraphBreak
+
+因此书写 \(H^n(C;G)\cong\operatorname{Ext}_R^1(H_{n-1}(C),G)\oplus\operatorname{Hom}_R(H_n(C),G)\)，或相应的同调直和式时，应说明已经选择分裂或只陈述模的同构类型。需要比较映射、构造配对或研究乘积时，保留自然短正合列通常能避免忘记选择所带来的影响。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

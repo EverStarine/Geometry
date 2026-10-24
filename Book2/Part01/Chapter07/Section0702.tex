@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 7.2 消解和 Čech 模型
 % 纲要位置：几何学计划纲要.md，第 1275 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,225 @@
 \section{消解和 Čech 模型}
 \label{g2:sec:0702}
 
-待撰写
+典范消解通过逐点取芽定义了层上同调。要用微分形式或开覆盖作计算，需要将这些具体对象组成的复形与典范消解比较：局部正合性控制被消解的层，各项高次上同调的消失控制取整体截面后的结果。Čech 复形则把相容条件写在开集的交叠上，细化映射负责比较不同覆盖。
 
 \subsection{无上同调消解及比较定理}
 \label{g2:subsec:0702:01}
-待撰写
+一条局部正合的层复形可以表达同一个层，但取整体截面后，还会受到各项自身上同调的影响。要求这些项的正次数上同调消失，正是下面的无上同调消解条件。
+
+\begin{definition}\label{g2:def:acyclic-resolution}
+	设 \(\mathcal F\) 是拓扑空间 \(X\) 上的 \(R\) 模层。一条正合层复形
+	\[
+		0\longrightarrow\mathcal F\xrightarrow{\varepsilon}\mathcal A^0\xrightarrow{\mathrm d_A}\mathcal A^1\xrightarrow{\mathrm d_A}\cdots
+	\]
+	称为 \(\mathcal F\) 的\term[xiaojie]{消解}[resolution]。若每个 \(\mathcal A^p\) 在 \(X\) 上无上同调，则称为无上同调消解。这里的正合性是茎上的条件，\(\Gamma(X,\mathcal A^\bullet)\) 通常并不正合。
+\end{definition}
+
+比较消解需要同时处理两个次数。下面用总复形每条对角线上有限个分量的逐项消元证明所需结论。
+
+\begin{lemma}[第一象限的比较]\label{g2:lem:first-quadrant-comparison}
+	设 \(B^{p,q}\) 是 \(R\) 模双复形，\(p,q\ge0\)，水平微分 \(h\) 与竖直微分 \(v\) 满足 \(h^2=v^2=0\) 及 \(hv=vh\)。令
+	\[
+		\operatorname{Tot}^nB=\bigoplus_{p+q=n}B^{p,q},\qquad
+		\mathrm d b=h b+(-1)^p v b\quad(b\in B^{p,q}).
+	\]
+	若每一列由复形 \(A^p\) 增广为正合列 \(0\to A^p\to B^{p,0}\to B^{p,1}\to\cdots\)，且增广与水平微分相容，则 \(A^\bullet\to\operatorname{Tot}B\) 诱导上同调同构。每行由一个竖直复形增广为正合列时也成立。若一个双复形态射在每列的上同调上为同构，则其总复形态射也为上同调同构；逐行版本同样成立。
+\end{lemma}
+\begin{proof}
+	先设各列增广正合。总次数 \(n\) 的闭元只有 \(n+1\) 个分量。看最左的分量 \(b^{0,n}\)：闭性先给出 \(vb^{0,n}=0\)。若 \(n>0\)，列正合性使它成为竖直边界；从原闭元中减去相应总边界，就消去该分量，只可能改变右下相邻分量。随后处理 \(b^{1,n-1}\)，一直到 \(b^{n,0}\)。最终只剩底行分量，它在 \(v\) 下为零，所以来自 \(A^n\)；总闭性正好说对应元素在 \(A\) 中闭。这证明满射。
+	若来自 \(A^n\) 的元为总边界，对其原像作同样消元：先消去原像最左侧正竖直次数的分量，逐次向右下移动。消去时减去总边界不改变原像的总微分。剩下的底行原像必须位于 \(\ker v\)，因而来自 \(A^{n-1}\)。故原来的元在 \(A\) 中也是边界。次数 \(0\) 直接由核的识别成立。竖直消元所需的 \((-1)^p\) 只需乘进所选原像；交换行列给出另一个版本。
+	最后设 \(f:B\to C\) 逐列诱导同构。逐列取上链映射锥，次数 \(q\) 的项为 \(C^{p,q}\oplus B^{p,q+1}\)，微分为 \((c,b)\mapsto(vc+f(b),-vb)\)。每列正合，因为映射锥闭元的第二分量先给出 \(B\) 的闭类，同构性恰能消去其障碍；再用单射性消去余下的 \(C\) 类。这也是复形短正合列长正合序列的直接结论。锥在竖直次数上至多向下多一行，统一平移后仍满足前述有限消元。于是总锥正合，等价于总映射诱导同构。行版本同理。
+\end{proof}
+
+这里的有限性指每个\emph{总次数}只出现有限个双次数，不要求每个模有限生成，也不要求整个双复形只有有限行。消元路线可画成
+\[
+	(0,n)\longrightarrow(1,n-1)\longrightarrow\cdots\longrightarrow(n,0).
+\]
+每一步都由当前列的正合性消去一个分量；这解释了为什么总复形把两种局部比较接成同一个整体比较。
+
+\begin{theorem}[无上同调消解比较]\label{g2:thm:acyclic-resolution}
+	设 \(X\) 为拓扑空间，\(\mathcal F\to\mathcal A^\bullet\) 为非负次数的无上同调 \(R\) 模层消解。则有自然同构
+	\[
+		H^n\bigl(\Gamma(X,\mathcal A^\bullet)\bigr)\cong H^n(X,\mathcal F),\qquad n\ge0.
+	\]
+	若另一消解 \(\mathcal E\to\mathcal B^\bullet\) 也无上同调，且复形态射 \(\mathcal A^\bullet\to\mathcal B^\bullet\) 扩张层态射 \(f:\mathcal F\to\mathcal E\)，则在上述同构下，它诱导的映射就是 \(H^n(X,f)\)。因而任何两个扩张同一个 \(f\) 的复形态射都给出同一上同调映射。
+\end{theorem}
+\begin{proof}
+	对 \(\mathcal A\) 的每项再取\cref{g2:eq:canonical-sheaf-resolution}的典范消解，得到
+	\[
+		B^{p,q}=\Gamma(X,G^q\mathcal A^p).
+	\]
+	水平微分来自 \(\mathrm d_A\)，竖直微分为 \(\mathrm d_G\)，函子性保证二者交换。对每个 \(q\)，函子 \(\Gamma(X,G^q(-))\) 正合，这是\cref{g2:prop:sheaf-long-exact}证明中逐点乘积与 \(Q^q\) 的正合性。因此各行由 \(\Gamma(X,G^q\mathcal F)\) 增广为正合列。另一方面，各列的正次上同调为 \(H^q(X,\mathcal A^p)=0\)，零次核是 \(\Gamma(X,\mathcal A^p)\)。\cref{g2:lem:first-quadrant-comparison}给出两条同构
+	\[
+		H^n\Gamma(X,\mathcal A^\bullet)
+		\xrightarrow{\ \cong\ }H^n(\operatorname{Tot}B)
+		\xleftarrow{\ \cong\ }H^n\Gamma(X,G^\bullet\mathcal F).
+	\]
+	左、右两个增广均为自然映射，其复合定义所求同构。给定扩张 \(f\) 的复形态射，它诱导双复形态射，并使这两条增广交换；故对应的整体映射只能是由 \(G^\bullet f\) 定义的 \(H^n(X,f)\)。这不要求在任意两个无上同调消解之间预先存在直接的复形态射。
+\end{proof}
+
+因而“用消解计算”包含两个不同判断：先在每点检查局部正合，再检查每个消解项的高次层上同调消失。只验证第一件事并不够；后一条件才保证取整体截面后得到的缺口正好是原层的上同调。对光滑形式，前者将来自局部原函数公式，后者已经由\cref{g2:cor:smooth-module-acyclic}建立。
 
 \subsection{覆盖的 Čech 复形}
 \label{g2:subsec:0702:02}
-待撰写
+给定一份开覆盖，各片截面在二重交上的差、这些差在三重交上的关系，可以逐层排列成一个复形。固定带全序指标集的开覆盖 \(\mathcal U=\{U_i\}_{i\in I}\)，记 \(U_{i_0\cdots i_p}=U_{i_0}\cap\cdots\cap U_{i_p}\)。在本章的第二可数空间中，可从任意覆盖取可数子覆盖；以下论证也适用于任意指标集。
+
+\begin{definition}\label{g2:def:cech-complex}
+	层 \(\mathcal F\) 关于覆盖 \(\mathcal U\) 的\term[cechfuxing]{Čech 复形}[Čech complex]为
+	\[
+		\check C^p(\mathcal U,\mathcal F)=\prod_{i_0<\cdots<i_p}\mathcal F(U_{i_0\cdots i_p}),\qquad
+		(\delta c)_{i_0\cdots i_{p+1}}=\sum_{a=0}^{p+1}(-1)^a c_{i_0\cdots\widehat{i_a}\cdots i_{p+1}}|_{U_{i_0\cdots i_{p+1}}}.
+	\]
+	空交集的项为零。其上同调记作 \(\check H^p(\mathcal U,\mathcal F)\)。计算中把上链按换序的符号延拓到所有指标列，重复指标的分量定义为零。
+\end{definition}
+
+每删去两个指标的项在 \(\delta^2\) 中各出现两次，符号相反，所以 \(\delta^2=0\)。零次闭元恰是重叠处相等的截面族，层公理给出
+\[
+	\check H^0(\mathcal U,\mathcal F)=\Gamma(X,\mathcal F).
+\]
+一次闭元满足 \(c_{jk}-c_{ik}+c_{ij}=0\)，表示重叠处的差已在三重交上相容；若它等于 \(b_j-b_i\)，便能通过修改局部截面消掉这些差。更高次数继续记录下一层相容关系。
+
+\begin{example}\label{g2:exm:cech-circle-two-arcs}
+	用两个连通真开弧 \(U,V\) 覆盖 \(S^1\)，使 \(U\cap V\) 有两个连通分支。对常值层 \(\underline R\)，Čech 复形为
+	\[
+		R\oplus R\xrightarrow{\delta}R\oplus R,\qquad
+		\delta(a,b)=(b-a,b-a).
+	\]
+	所以零次与一次上同调都同构于 \(R\)，高次为零。一次同构可以取 \([(u,v)]\mapsto v-u\)。如果错误地把 \(\underline R(U\cap V)\) 写成一个 \(R\)，便会丢掉圆的一次类；层的截面要按交集的连通性计算，不能只看“交集非空”。
+\end{example}
+
+\begin{proposition}[松弛层的覆盖复形]\label{g2:prop:cech-flabby}
+	对拓扑空间 \(X\) 的任意开覆盖 \(\mathcal U\) 及松弛 \(R\) 模层 \(\mathcal F\)，有 \(\check H^p(\mathcal U,\mathcal F)=0\)（\(p>0\)）。
+\end{proposition}
+\begin{proof}
+	先把覆盖复形本身作成层：令
+	\[
+		\mathcal C^p(V)=\prod_{i_0<\cdots<i_p}\mathcal F(V\cap U_{i_0\cdots i_p}).
+	\]
+	乘积中的每项都能逐覆盖粘合，所以它是层；若 \(\mathcal F\) 松弛，各项限制都满射，逐坐标选取延拓便说明 \(\mathcal C^p\) 松弛。增广 \(\mathcal F\to\mathcal C^\bullet\) 在茎上正合：固定 \(x\in U_j\)，只在 \(V\subseteq U_j\) 上工作，插入指标 \(j\) 的算子
+	\[
+		(hc)_{i_0\cdots i_{p-1}}=c_{j i_0\cdots i_{p-1}}
+	\]
+	满足 \(\delta h+h\delta=1\)，零次时增广的取值为第 \(j\) 个局部截面。这个公式在 \(V\) 上有定义，因为 \(V\cap U_{i_0\cdots i_{p-1}}\subseteq U_j\)。于是它是一个松弛消解。\cref{g2:thm:acyclic-resolution}表明它的整体截面上同调等于 \(H^p(X,\mathcal F)\)，再由松弛层的消失得到结论。
+\end{proof}
 
 \subsection{细化映射与覆盖选择}
 \label{g2:subsec:0702:03}
-待撰写
+将开集缩小为一份更细的覆盖时，原来的交叠数据可以通过限制搬到新覆盖上。为写出这种限制，需要给每个新开集指定一个包含它的旧开集；不同指定将由上链同伦比较。
+
+\begin{definition}\label{g2:def:cech-refinement}
+	若开覆盖 \(\mathcal V=\{V_j\}_{j\in J}\) 的每个成员都包含于 \(\mathcal U=\{U_i\}_{i\in I}\) 的某个成员，称 \(\mathcal V\) 细化 \(\mathcal U\)。选指标函数 \(r:J\to I\) 满足 \(V_j\subseteq U_{r(j)}\)，定义
+	\[
+		(r^*c)_{j_0\cdots j_p}=c_{r(j_0)\cdots r(j_p)}|_{V_{j_0\cdots j_p}}.
+	\]
+	右边按\cref{g2:def:cech-complex}的交错约定解释，因此 \(r\) 不需要保持指标次序。
+\end{definition}
+
+删去指标与限制交换，所以 \(r^*\delta=\delta r^*\)。同一个 \(V_j\) 可能属于多个 \(U_i\)，因此指标函数及所得上链映射还依赖选择。
+
+\begin{proposition}[细化选择的同伦]\label{g2:prop:cech-refinement-homotopy}
+	若 \(r,s:J\to I\) 是同一个覆盖细化的两种指标选择，则相应的 Čech 复形态射链同伦，因而在上同调上给出相同映射。
+\end{proposition}
+\begin{proof}
+	对 \(c\in\check C^p(\mathcal U,\mathcal F)\)、\(p\ge1\)，定义
+	\[
+		(Kc)_{j_0\cdots j_{p-1}}
+		=\sum_{a=0}^{p-1}(-1)^a c_{r(j_0)\cdots r(j_a)s(j_a)\cdots s(j_{p-1})}|_{V_{j_0\cdots j_{p-1}}},
+	\]
+	次数 \(0\) 取 \(K=0\)。每个 \(V_{j_0\cdots j_{p-1}}\) 同时包含于公式中的所有 \(U_{r(j_b)}\) 和 \(U_{s(j_b)}\)，所以限制合法。展开 \(\delta K+K\delta\) 时，位于 \(r\) 指标段内部或 \(s\) 指标段内部的删项分别与相邻求和项抵消；两段交界的内项也成对抵消，只剩全部使用 \(s\) 与全部使用 \(r\) 的两端。因此
+	\[
+		\delta K+K\delta=s^*-r^*.
+	\]
+	例如次数 \(0\) 时，\((K\delta c)_j=(\delta c)_{r(j)s(j)}=c_{s(j)}-c_{r(j)}\)，也固定了此式的方向。闭上链的两个像之差为边界，故上同调映射相同。
+\end{proof}
+
+两次细化在上同调上严格满足复合律；任意两个覆盖有由两两交组成的共同细化。因此可以定义覆盖极限
+\[
+	\check H^p(X,\mathcal F)=\varinjlim_{\mathcal U}\check H^p(\mathcal U,\mathcal F).
+\]
+在第二可数空间中只用可数覆盖即可：每个覆盖有可数子覆盖，后者也是细化。这个定义容许通过细化去掉某一次粗糙覆盖造成的多余信息。下面用覆盖双复形构造它与层上同调的比较。
+
+对于细层和局部有限覆盖，还有一个直观的收缩公式。取\cref{g2:def:flabby-fine}的 \(\rho_j\)，把 \(\rho_jc_{j i_0\cdots i_{p-1}}\) 在 \(U_{i_0\cdots i_{p-1}}\) 内作补零延拓，令
+\[
+	(hc)_{i_0\cdots i_{p-1}}=\sum_j\rho_jc_{j i_0\cdots i_{p-1}}.
+\]
+支集包含 \(U_j\) 使补零合法，局部有限性使和合法；展开时，插入指标 \(j\) 后再删去它的项给出 \(\sum_j\rho_jc=c\)，其余项相消。因此 \(\delta h+h\delta=1\)。它与松弛层的证明并不相同：这里不任意延拓局部截面，而是先乘以可补零的端同态。
 
 \subsection{无上同调覆盖的比较定理}
 \label{g2:subsec:0702:04}
-待撰写
+覆盖的交集本身也可能具有高次上同调。若每个非空有限交上的系数层都无上同调，这部分局部障碍便消失，Čech 复形中的截面数据就足以计算整个空间的层上同调。
+
+\begin{theorem}[无上同调覆盖比较]\label{g2:thm:leray-cover}
+	设 \(X\) 为拓扑空间，\(\mathcal F\) 为 \(R\) 模层，\(\mathcal U=\{U_i\}\) 为开覆盖。存在与层态射及覆盖细化相容的自然映射
+	\[
+		\check H^n(\mathcal U,\mathcal F)\longrightarrow H^n(X,\mathcal F).
+	\]
+	若对所有有限非空交 \(U_{i_0\cdots i_p}\) 及所有 \(q>0\)，都有
+	\[
+		H^q(U_{i_0\cdots i_p},\mathcal F)=0,
+	\]
+	则该映射在所有次数都是同构。这种覆盖称为 \(\mathcal F\) 的无上同调覆盖。
+\end{theorem}
+\begin{proof}
+	把覆盖与典范消解同时使用，令
+	\[
+		B^{p,q}=\check C^p(\mathcal U,G^q\mathcal F)
+		=\prod_{i_0<\cdots<i_p}\Gamma(U_{i_0\cdots i_p},G^q\mathcal F),
+		\qquad \mathrm d_{\mathrm{tot}}=\delta+(-1)^p\mathrm d_G.
+	\]
+	每个 \(G^q\mathcal F\) 松弛，所以\cref{g2:prop:cech-flabby}说明各行由 \(\Gamma(X,G^q\mathcal F)\) 增广为正合列。\cref{g2:lem:first-quadrant-comparison}给出
+	\[
+		H^n(X,\mathcal F)\xrightarrow{\ \cong\ }H^n(\operatorname{Tot}B).
+	\]
+	另一方面，\(\mathcal F\to G^0\mathcal F\) 给出 \(\check C^\bullet(\mathcal U,\mathcal F)\to\operatorname{Tot}B\)。取其上同调映射，再复合前一个同构的逆，便定义一般的比较映射。
+	每列上同调是
+	\[
+		H^q(B^{p,\bullet})=\prod_{i_0<\cdots<i_p}H^q(U_{i_0\cdots i_p},\mathcal F).
+	\]
+	这是因为典范消解与开限制交换，而且模的乘积正合，故乘积复形的核、像和商均可逐坐标计算。在无上同调覆盖的假设下，各列由 \(\check C^p(\mathcal U,\mathcal F)\) 增广为正合列，再次应用第一象限比较，就知道上述比较映射为同构。
+	层态射诱导整个双复形的态射。细化指标函数在每行给出限制映射，并与竖直微分交换；它们也与整体截面的增广交换。\cref{g2:prop:cech-refinement-homotopy}消除了细化指标的选择，故所构造映射具有所述自然性。
+\end{proof}
+
+因此覆盖极限也有自然映射 \(\check H^n(X,\mathcal F)\to H^n(X,\mathcal F)\)。如果每个覆盖都有无上同调细化，它便为同构。不过一般层未必有这样容易识别的覆盖；在本章的空间范围内，实际只须在每个固定次数把有限轮比较中出现的障碍类消去。
+
+\begin{theorem}[覆盖极限与层上同调]\label{g2:thm:cech-sheaf-comparison}
+	设 \(X\) 为 Hausdorff、第二可数、局部紧空间，\(\mathcal F\) 为 \(X\) 上任意 \(R\) 模层。则上述自然映射给出
+	\[
+		\check H^n(X,\mathcal F)\cong H^n(X,\mathcal F),\qquad n\ge0.
+	\]
+\end{theorem}
+\begin{proof}
+	需要的拓扑准备是：\(X\) 可度量化且仿紧，并且每个覆盖有局部有限、闭包包含于原覆盖成员的开细化。前两项由第一卷定理4.3.14及推论4.3.15在本定理的空间条件下给出，最后一项由第一卷引理4.4.1给出。还要一种控制多个相交开集的细化。称 \(\mathcal V\) 星细化 \(\mathcal U\)，若对每个 \(V\in\mathcal V\)，所有与 \(V\) 相交的 \(\mathcal V\) 成员之并包含于某个 \(U\in\mathcal U\)。
+	这里可直接构造星细化。取相容距离 \(d\)，令
+	\[
+		f(x)=\sup_{U\in\mathcal U}\min\{1,d(x,X\setminus U)\}>0,
+	\]
+	其中 \(U=X\) 的对应项取 \(1\)。每项及其上确界均为 \(1\)-Lipschitz 函数。令 \(B_x=B(x,f(x)/8)\)。若 \(B_x\cap B_y\ne\varnothing\)，则
+	\[
+		d(x,y)<\frac{f(x)+f(y)}8,\qquad f(y)\le\frac97f(x).
+	\]
+	从而每个 \(z\in B_y\) 都满足
+	\[
+		d(x,z)<\frac{f(x)}8+\frac{f(y)}4\le\frac{25}{56}f(x)<\frac12f(x).
+	\]
+	按上确界定义，可选 \(U\in\mathcal U\) 使 \(B(x,f(x)/2)\subseteq U\)，故这些球星细化原覆盖。再取局部有限开细化仍保留星细化性质，因为两个较小成员相交时，包含它们的两个球也相交。取两覆盖的交覆盖，还能同时要求普通细化另一指定覆盖。
+	接着证明消去局部高次类的具体断言。给定覆盖 \(\mathcal U\)、固定 \(p\ge0,q>0\)，以及每个有限交上的类 \(c_{i_0\cdots i_p}\in H^q(U_{i_0\cdots i_p},\mathcal F)\)，存在细化使其所有限制类为零。先取局部有限细化 \(\{W_a\}\)，满足 \(\overline W_a\subseteq U_{r(a)}\)。对 \(x\in X\)，只有有限个 \(a\) 满足 \(x\in\overline W_a\)，记这些指标为 \(I_x\)。选择邻域 \(N_x\)，使它不遇其余 \(W_a\)，并且包含于所有 \(U_{r(a)}\)（\(a\in I_x\)）。所有从 \(I_x\) 选出的 \(p+1\) 个指标只产生有限多个类。
+	每个正次层上同调类在每点附近消失：用典范消解的整体闭元代表它，再用消解的茎正合性取得局部原像。因此可进一步缩小 \(N_x\)，使上述有限多个类全在 \(N_x\) 上为零。取一个同时细化 \(\{W_a\}\)、又星细化 \(\{N_x\}\) 的覆盖 \(\mathcal V\)。若 \(V_{j_0},\ldots,V_{j_p}\) 有共同点，则它们之并包含于某个 \(N_x\)。每个包含 \(V_{j_b}\) 的 \(W_{a_b}\) 都遇 \(N_x\)，故 \(a_b\in I_x\)。所以相应旧类在 \(V_{j_0\cdots j_p}\) 上为零。这证明了断言，重复指标按交错约定给出零类。
+	现在使用\cref{g2:thm:leray-cover}证明中的双复形。给定 \(H^n(X,\mathcal F)\) 的类，在任意覆盖的总复形上取代表 \(z\)。其分量 \(z^{0,n}\) 的竖直微分为零；当 \(n>0\) 时，刚才的断言使它在某个细化后成为各坐标上的竖直边界。选取原像，减去总边界，便消去这一分量。继续处理 \((1,n-1),\ldots,(n-1,1)\)，每次容许再细化。经过至多 \(n\) 次，剩下的底行分量来自 \(\check C^n(\mathcal U',\mathcal F)\) 且为 Čech 闭元，证明覆盖极限比较满射。
+	若一个 Čech 闭元的层上同调类为零，它在同一覆盖的总复形中就是边界，设原像为 \(b\)。对 \(b\) 的正竖直次数分量逐次实施同样的细化与消元。其最高分量竖直闭，是因为 \(\mathrm d_{\mathrm{tot}}b\) 只有底行分量；减去总边界不改变 \(\mathrm d_{\mathrm{tot}}b\)。最后 \(b\) 只剩底行，且竖直微分为零，所以来自一个 Čech 上链，其 Čech 余边界就是原闭元在最终覆盖上的限制。故它在覆盖极限中为零，证明单射。次数 \(0\) 由层公理直接成立。全过程使用的是已有的自然比较映射，所以所得同构也自然。
+\end{proof}
+
+若 \(\mathcal U\) 的每个非空有限交都可缩，称之为\term[haofugai]{好覆盖}[good cover]。可缩性是拓扑条件，无上同调性却还涉及系数层，两者不可在一般层上直接混同。例如光滑流形上常值实数层的局部消失将由下一节的局部原函数和消解比较给出，此后相应的可缩光滑交集才可以在该比较中使用。\cref{g2:exm:cech-circle-two-arcs}的两弧覆盖不是好覆盖，但在常值实数层下仍可成为无上同调覆盖，因为两个交集分支分别无上同调。
+
+同样的工具给出一个不要求交集无上同调的计算法。若 \(X=U\cup V\)，则松弛性使
+\[
+	0\to\Gamma(X,G^q\mathcal F)\to\Gamma(U,G^q\mathcal F)\oplus\Gamma(V,G^q\mathcal F)
+	\xrightarrow{\ (a,b)\mapsto b-a\ }\Gamma(U\cap V,G^q\mathcal F)\to0
+\]
+逐次正合：最后的截面可从 \(U\cap V\) 延拓到 \(V\)。取复形的长正合列，便得层上同调的 Mayer--Vietoris 序列
+\[
+	\cdots\to H^q(X,\mathcal F)\to H^q(U,\mathcal F)\oplus H^q(V,\mathcal F)
+	\to H^q(U\cap V,\mathcal F)\to H^{q+1}(X,\mathcal F)\to\cdots.
+\]
+普通 Čech 复形只记录截面与交叠；当交集本身还含高次上同调时，双复形中的竖直方向保存了这些额外资料。下一节把这一方向换成微分形式，便得到可以直接积分计算的模型。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

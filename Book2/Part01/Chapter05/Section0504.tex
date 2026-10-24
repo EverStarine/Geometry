@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 5.4 纤维上同调如何变化
 % 纲要位置：几何学计划纲要.md，第 1216 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,17 +16,168 @@
 \section{纤维上同调如何变化}
 \label{g2:sec:0504}
 
-待撰写
+局部系统也由空间族的几何直接产生。若各个纤维在小参数邻域内组成乘积，就能在这些邻域中比较纤维同调；绕参数空间一圈后，这个比较可能成为非平凡自同构。前面给圆周指定的单值矩阵，在这里将来自纤维沿道路的运输。
+
+\ProseParagraphBreak
+
+本节由局部乘积图构造纤维丛上的运输，再用映射环面计算它对总空间同调的影响。一般纤维化的同伦提升条件将在\secref{g2:sec:0802}建立。
 
 \subsection{纤维运输在同调上的作用}
 \label{g2:subsec:0504:01}
-待撰写
+沿道路比较纤维，可以先在局部乘积图中保持纤维坐标，再把分段得到的比较复合起来。局部平凡纤维丛提供了这种乘积图；图之间的更换将使具体比较依赖选择，因此还要考察其同伦类。
+
+\begin{definition}[局部平凡纤维丛]\label{g2:def:topological-fiber-bundle}
+	设 \(B\) 为拓扑空间。满射 \(p:E\to B\) 若满足：对每个 \(b\in B\)，存在开邻域 \(U\)、空间 \(F\) 及同胚
+	\[
+		\Phi_U:p^{-1}(U)\longrightarrow U\times F,
+		\qquad\operatorname{pr}_U\Phi_U=p,
+	\]
+	则称为\term[jubupingfanxianweicong]{局部平凡纤维丛}[locally trivial fiber bundle]。\(E_b=p^{-1}(b)\) 称为纤维，\(\Phi_U\) 称为局部平凡化。在相交的两张图中，坐标变换形如 \((b,x)\mapsto(b,h_b(x))\)，它及其逆作为两个变量的映射均连续，每个 \(h_b\) 都是纤维模型之间的同胚。
+\end{definition}
+
+这里的纤维可以是圆、球面、离散集或其他空间，并不要求是向量空间。局部平凡化给出了同一个开集内两条纤维之间的一个具体同胚，但换图后，这个同胚一般也会改变。下一个结果说明，真正不依赖这些选择的是它的同伦类。
+
+\begin{proposition}[纤维运输]\label{g2:prop:fiber-transport}
+	设 \(p:E\to B\) 为局部平凡纤维丛。每条道路 \(\gamma:b\to c\) 确定纤维之间的同伦等价类
+	\[
+		[P_\gamma]:E_b\longrightarrow E_c.
+	\]
+	它只依赖 \(\gamma\) 的定端点同伦类，满足 \([P_{e_b}]=[\operatorname{id}]\)、\([P_{\gamma*\eta}]=[P_\eta P_\gamma]\) 及 \([P_{\bar\gamma}]=[P_\gamma]^{-1}\)。对覆盖基底映射 \(f:B\to B'\) 的纤维丛映射 \(u:E\to E'\)，有
+	\[
+		[u_cP_\gamma]=[P'_{f\gamma}u_b].
+	\]
+\end{proposition}
+\begin{proof}
+	将 \([0,1]\) 有限分段，使每段的 \(\gamma\) 像都包含于一张平凡化图；这由紧区间上的开覆盖及 Lebesgue 数引理得到。在一个段 \([a,d]\) 上，以该图固定纤维坐标，定义 \(E_{\gamma(a)}\to E_{\gamma(d)}\) 的同胚，再按行进次序复合，得到 \(P_\gamma\)。在同一张图中细分区间并不改变复合。
+
+	若某一段同时落在两张图 \(U,V\) 中，记从 \(U\) 坐标到 \(V\) 坐标的变换为 \(h_{\gamma(t)}\)。两种运输在固定端点坐标中的区别由连续族 \(h_{\gamma(t)}\)、\(a\leq t\leq d\) 连接，因此互相同伦。更具体地，设 \(\phi_{U,a}:E_{\gamma(a)}\to F_U\)、\(\phi_{V,d}:E_{\gamma(d)}\to F_V\) 为端点坐标，则
+	\[
+		\phi_{V,d}^{-1}h_{\gamma(t)}\phi_{U,a}:E_{\gamma(a)}\longrightarrow E_{\gamma(d)}
+	\]
+	在 \(t=a\) 时是 \(V\) 图的运输，在 \(t=d\) 时是 \(U\) 图的运输。任意两套分段先取共同细分，再逐段应用这个同伦，故得到同一个 \([P_\gamma]\)。
+
+	设 \(H:I^2\to B\) 是两条道路的定端点同伦。将方形细分为足够小的矩形，使每个闭小矩形的像落在一张丛图中。在一张图内，沿小矩形相邻两边从一个角走到对角，或者沿另外两边走，所得运输相等，因为两者都保持纤维坐标。相邻矩形采用不同图时，上一段证明允许在公共边上换图而不改变运输的同伦类。逐个越过小矩形，把底边路线改为顶边路线；左右两边的 \(H\) 为常值，运输类是恒等，故两条道路的运输同伦。拼接和反向道路的公式由分段构造直接得到。
+
+	最后，沿 \(\gamma\) 同时给源、靶丛选分段平凡化。每一小段中，\(u\) 表现为连续族 \(u_t:F\to F'\)。其两个端点映射通过 \(u_t\) 同伦，正好说明“先运输再作 \(u\)”与“先作 \(u\) 再运输”同伦。把各段同伦复合即得所述自然性。
+\end{proof}
+
+\begin{corollary}[纤维的系数系统]\label{g2:cor:fiber-homology-systems}
+	设 \(p:E\to B\) 为局部平凡纤维丛，\(R\) 为含幺交换环，\(q\geq0\)。规定
+	\[
+		(\mathcal H_q)_b=H_q(E_b;R),\qquad T^{\mathcal H_q}_\gamma=(P_\gamma)_*,
+	\]
+	以及
+	\begin{equation}\label{g2:eq:fiber-cohomology-transport}
+		(\mathcal H^q)_b=H^q(E_b;R),\qquad T^{\mathcal H^q}_\gamma=(P_{\bar\gamma})^*=(P_\gamma^{-1})^*.
+	\end{equation}
+	它们是 \(B\) 上的 \(R\) 模局部系统。若 \(B\) 局部道路连通，则两者也对应局部常值层。这里 \(P_\gamma^{-1}\) 表示同伦逆的任意代表。对各纤维上的取值配对，有
+	\[
+		\langle T^{\mathcal H^q}_\gamma\alpha,T^{\mathcal H_q}_\gamma z\rangle=\langle\alpha,z\rangle.
+	\]
+\end{corollary}
+\begin{proof}
+	同调及上同调把同伦映射变成相同的映射，因此 \([P_\gamma]\) 足以定义上述同构。运输的拼接公式在同调中直接保留。在上同调中，既要反转道路，又要拉回，两个次序反转抵消：
+	\[
+		(P_{\overline{\gamma*\eta}})^*=(P_{\bar\gamma}P_{\bar\eta})^*=(P_{\bar\eta})^*(P_{\bar\gamma})^*.
+	\]
+	于是仍满足 \(T_{\gamma*\eta}=T_\eta T_\gamma\)。在一张丛图内，纤维与固定模型的同调、上同调由坐标识别，图内道路运输都是恒等，所以这些局部系统已经在该开覆盖上平凡。若基底局部道路连通，坐标变换在每个足够小的道路连通开集上诱导相同的同调映射；因而给出局部常值的过渡映射，按\cref{g2:prop:local-sheaf-fiber-space}的截面构造得到对应层。这里局部平凡性已由丛图直接提供，无须额外要求基底半局部单连通。配对恒等式则由拉回与推前的取值相容性得到：\(P_{\bar\gamma}P_\gamma\simeq\operatorname{id}\)。
+\end{proof}
+
+上同调运输中的逆不能省略。若 \(\gamma:b\to c\)，则 \(P_\gamma^*\) 的方向是 \(H^q(E_c;R)\to H^q(E_b;R)\)，与沿道路的方向相反；\eqref{g2:eq:fiber-cohomology-transport}把它转换为向前运输。也可以保留前一种反变写法，但不能在同一计算中混用两种记号。
 
 \subsection{映射环面的扭曲}
 \label{g2:subsec:0504:02}
-待撰写
+给定空间 \(F\) 的同胚 \(f:F\to F\)，定义其\term[yingshehuanmian]{映射环面}[mapping torus]
+\begin{equation}\label{g2:eq:mapping-torus-convention}
+	E_f=(F\times[0,1])/((x,1)\sim(f(x),0)),\qquad p([x,t])=e^{2\pi\mathrm{i}t}.
+\end{equation}
+跨过粘合处时，用 \(f\) 转换纤维坐标，就得到 \(p:E_f\to S^1\) 的局部平凡化。把 \(p^{-1}(1)\) 与 \(F\times\{0\}\) 识别，则正向绕圆周一次把 \(x\) 送到 \(f(x)\)。所以 \(\mathcal H_q\) 的单值是 \(f_*\)，\(\mathcal H^q\) 的向前单值是 \((f^{-1})^*\)。这里同胚条件保证丛的局部乘积结构；一般连续自映射也能形成这个商，但其投影不自动成为局部平凡纤维丛。
+
+\begin{theorem}[映射环面的正合列]\label{g2:thm:mapping-torus-sequences}
+	设 \(F\) 为拓扑空间，\(f:F\to F\) 为同胚，\(R\) 为含幺交换环，\(E_f\) 按\eqref{g2:eq:mapping-torus-convention}定义。记
+	\[
+		\begin{aligned}
+			T_q&=f_*-1:H_q(F;R)\longrightarrow H_q(F;R),\\
+			S^q&=f^*-1:H^q(F;R)\longrightarrow H^q(F;R).
+		\end{aligned}
+	\]
+	对 \(n\geq0\)，有短正合列
+	\[
+		\begin{aligned}
+			0\longrightarrow\operatorname{coker}T_n&\longrightarrow H_n(E_f;R)\longrightarrow\ker T_{n-1}\longrightarrow0,\\
+			0\longrightarrow\operatorname{coker}S^{n-1}&\longrightarrow H^n(E_f;R)\longrightarrow\ker S^n\longrightarrow0.
+		\end{aligned}
+	\]
+	负次数群取零。第一列的左箭头由纤维包含诱导，第二列的右箭头是限制到纤维。两列对满足 \(uf=f'u\) 的映射 \(u:F\to F'\) 自然；不额外断言这些列存在自然分裂。
+\end{theorem}
+\begin{proof}
+	用两个开弧 \(U,V\) 覆盖基底圆周，使交集有两个开弧分支 \(I_0,I_1\)。它们的逆像分别与 \(F\times U,F\times V\) 及两份 \(F\times I\) 同胚，因而可缩到相应纤维。可以选择坐标使 \(I_0\) 上两张图的转换是恒等，\(I_1\) 上的转换是 \(f\)。例如将不含粘合点的一弧保留原柱坐标，而在跨越粘合点的另一弧用 \((x,1)\sim(f(x),0)\) 改写坐标。以下简写 \(A_q=H_q(F;R)\)、\(T=f_*\)。
+
+	Mayer--Vietoris 序列中从交集到两开集的映射使用前章的 \((i_*,-j_*)\) 约定，故在所选坐标中为
+	\[
+		A_q\oplus A_q\longrightarrow A_q\oplus A_q,\qquad (a,b)\longmapsto(a+b,-a-Tb).
+	\]
+	把源坐标换为 \((r,s)=(a+b,b)\)，把靶坐标 \((u,v)\) 换为 \((u,u+v)\)，则该映射变为 \((r,s)\mapsto(r,(1-T)s)\)。这些都是可逆模同态，所以其核等于 \(\ker(T-1)\)，余核等于 \(\operatorname{coker}(T-1)\)。取长正合列的相邻核与余核，便得到同调短正合列。纤维包含将 \(a\) 送入其中的余核，正合关系将 \(Ta-a\) 消去。
+
+	上同调使用相同开覆盖的反向序列。为说明这一序列的依据，整数小链有逐次分裂的短正合列
+	\[
+		0\longrightarrow C_*(p^{-1}(U\cap V))\longrightarrow C_*(p^{-1}U)\oplus C_*(p^{-1}V)\longrightarrow C_*^{\{p^{-1}U,p^{-1}V\}}(E_f)\longrightarrow0.
+	\]
+	按单形是否同时落在两个开集中选基即可给出逐次分裂。取到 \(R\) 的同态，得到反向的短正合上链复形；小链与全部链的比较由\cref{g2:thm:twisted-excision}证明中的小链同伦保证。于是提升、取上边界的构造给出上同调 Mayer--Vietoris 长正合列。其限制差映射为
+	\[
+		H^q(F;R)^2\longrightarrow H^q(F;R)^2,
+		\qquad(a,b)\longmapsto(a-b,a-f^*b).
+	\]
+	将第二靶坐标减去第一靶坐标，就得到 \((a-b,(1-f^*)b)\)，再用源坐标 \((a-b,b)\) 消去恒等块。其核、余核分别为 \(\ker(f^*-1)\)、\(\operatorname{coker}(f^*-1)\)，这给出上同调短正合列，也确认右箭头就是纤维限制。上述坐标操作与所有满足 \(uf=f'u\) 的纤维映射交换，故两列具有所述自然性。
+\end{proof}
+
+在同调一侧，圆周的\cref{g2:prop:circle-local-coefficients}将两个端项分别写成
+\[
+	H_0(S^1;\mathcal H_n),\qquad H_1(S^1;\mathcal H_{n-1}).
+\]
+上同调一侧相应为 \(H^1(S^1;\mathcal H^{n-1})\)、\(H^0(S^1;\mathcal H^n)\)：\(\mathcal H^q\) 的向前单值是 \((f^{-1})^*\)，而圆周上链微分使用单值的逆减去恒等，正好恢复 \(f^*-1\)。这种对应说明，系数系统记录的是进入总空间计算的实际数据。
+
+\begin{example}[反射的映射环面]\label{g2:exm:klein-mapping-torus}
+	取 \(F=S^1\)、\(f(z)=\bar z\)。其映射环面是 Klein 瓶：圆周沿基底走一圈后，纤维方向反转。\(f_*\) 在 \(H_0(S^1;\mathbb Z)\) 上为恒等，在 \(H_1\) 上为乘 \(-1\)。正合列给出
+	\[
+		H_0(E_f;\mathbb Z)=\mathbb Z,\qquad H_1(E_f;\mathbb Z)\cong\mathbb Z\oplus\mathbb Z/2,
+		\qquad H_n(E_f;\mathbb Z)=0\quad(n\geq2).
+	\]
+	一次的 \(\mathbb Z/2\) 来自 \(\operatorname{coker}(-2:\mathbb Z\to\mathbb Z)\)，另一个 \(\mathbb Z\) 来自基底的一周。短正合列在这里分裂，因为商群 \(\mathbb Z\) 自由；也可用反射的固定点得到截面来选择分裂。若忽略单值而把所有纤维同调当作常值系统，就会误算成环面的 \(H_1=\mathbb Z^2\)、\(H_2=\mathbb Z\)。这与\cref{g2:prop:nonorientable-twisted-homology}计算的 Klein 瓶定向系数同调又不同：那里改变的是总空间链的系数，这里总空间仍取普通整数系数，只把变化中的纤维同调作为基底上的局部系统。
+\end{example}
+
+映射环面的同调也可由映射柱对的长正合列导出，参阅\cite[第2.2节，Mayer--Vietoris Sequences]{Hatcher2002}。本节的端点识别写成 \((x,1)\sim(f(x),0)\)，不同文献若把 \(f\) 写在另一端，须先核对正向绕行所对应的运输。
 
 \subsection{为 Serre 谱序列和障碍理论准备的系数函子}
 \label{g2:subsec:0504:03}
-待撰写
+对一个以 CW 复形 \(B\) 为基底的纤维丛，基底的各个胞腔可以同时携带纤维的同调类。跨过胞腔面时，局部纤维坐标转换在同调类上的作用由 \(\mathcal H_q\) 的运输记录，因此胞腔边界自然带有局部系数。\chapref{g2:ch:11}的 Serre 谱序列\footnote{Jean-Pierre Albert Achille Serre（1926年生），法国数学家，发展了纤维化的谱序列方法，并在球面同伦群和代数几何的层方法方面作出重要贡献。}将把这种逐层计算组织成
+\[
+	E^2_{p,q}=H_p(B;\mathcal H_q),\qquad E_2^{p,q}=H^p(B;\mathcal H^q)
+\]
+的第二页。这一识别将在\secref{g2:sec:1101}连同滤过构造一起证明，后续微分及从滤过恢复总空间同调的条件也在那里建立。
+
+\ProseParagraphBreak
+
+在基底为圆周时，\cref{g2:thm:mapping-torus-sequences}已给出相应核、余核如何进入总空间。一般基底则会有更多骨架层；即使单值平凡，也不能据此把丛判为乘积，或直接断言总空间同调等于基底与纤维同调的张量。局部系统只保留纤维同调沿道路变化的部分，其他粘合信息还可能进入高层计算。
+
+\begin{proposition}[映射环面的截面]\label{g2:prop:mapping-torus-section}
+	设 \(f:F\to F\) 为同胚。投影 \(p:E_f\to S^1\) 存在连续截面，当且仅当 \(f\) 在 \(F\) 的道路分支集合上有一个固定分支。
+\end{proposition}
+\begin{proof}
+	将截面拉回到参数区间 \([0,1]\)，在柱坐标中得到连续道路 \(c:[0,1]\to F\)。首尾下降到圆周的条件恰为
+	\[
+		c(0)=f(c(1)).
+	\]
+	若截面存在，\(c(0),c(1)\) 属于同一道路分支 \(C\)，而 \(f(c(1))=c(0)\)，所以 \(f(C)=C\)。反过来，若某个道路分支 \(C\) 被 \(f\) 保持，选 \(x\in C\)，再在 \(C\) 中选一条从 \(f(x)\) 到 \(x\) 的道路 \(c\)。它满足上述端点条件，故 \(t\mapsto[c(t),t]\) 连续下降为所求截面。这里只用到了同一路径分支中两点可用道路连接的定义。
+\end{proof}
+
+这个简单判据区分了三个不同问题。若 \(f\) 有固定点，可以取常值的 \(c\)；若 \(F\) 道路连通，即使 \(f\) 没有固定点，仍可取非常值道路而得到截面；若 \(F\) 的分支被置换且没有固定分支，则没有截面。例如让 \(f\) 交换一个两点离散空间的两个点，得到圆周的连通二叶覆盖，它没有截面。但 \(H_0(F;\mathbb Z)=\mathbb Z^2\) 中的两点之和被单值固定。因此，纤维同调中存在非零不变元，并不意味着已经存在几何截面。
+
+\ProseParagraphBreak
+
+更高维的延拓问题需要更精细的系数。将一个截面从基底的 \(q\) 骨架延伸到 \((q+1)\) 胞腔时，胞腔边界上的截面在局部平凡化中表现为一个 \(S^q\to F\) 的映射。它是否可延伸到圆盘，取决于这个球面映射的同伦类，而不只取决于它的同调像。\secref{g2:sec:0801}将建立这些基点同伦类组成的 \(\pi_q(F)\) 及基本群作用，\secref{g2:sec:1201}再确定延拓问题所需的系数系统。对于道路连通且单连通的纤维，\(q\geq2\) 时运输后换纤维基点没有额外的路径选择歧义，相关阿贝尔群可按本章的群胚方式组织；一般纤维则必须保留基点路径和基本群作用。首障碍是集合、非交换群还是阿贝尔群值，也须按次数区分，不能统一写成一个常系数上同调类。
+
+\ProseParagraphBreak
+
+从圆周的核与余核到映射环面的正合列，参与计算的始终是纤维及其运输组成的整体数据。纤维群彼此同构的两个局部系统，仍可因单值不同而产生不同的同调；沿基底分解总空间时，这些运输也随各层边界一同进入计算。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 4.4 杯积与环结构
 % 纲要位置：几何学计划纲要.md，第 1176 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,284 @@
 \section{杯积与环结构}
 \label{g2:sec:0404}
 
-待撰写
+同调外积把两个空间的类放到乘积空间中。如果两个类原来就来自同一个空间，还需要一条把它们放回该空间的自然映射。对角映射 \(x\mapsto(x,x)\) 正好提供这条映射，但它的方向是从 \(X\) 到 \(X\times X\)。因此，适合沿它拉回的对象是上同调。杯积把“同一点的两份信息同时取值”转成乘法，使上同调能够记录加性群看不见的关系。本节使用任意含幺交换环 \(R\)，上边界始终取 \(\delta\varphi=\varphi\partial\)。有关杯积及其相对形式可参阅 \cite[第3.2节]{Hatcher2002}。
 
 \subsection{对角映射及杯积}
 \label{g2:subsec:0404:01}
-待撰写
+
+先把两个上链作用在张量链上的含义说清。若 \(\varphi\in C^p(X;R)\)、\(\psi\in C^q(Y;R)\)，定义次数 \(p+q\) 的线性泛函
+\[
+	(\varphi\otimes\psi)(a\otimes b)=\varphi(a)\psi(b)
+	\quad(|a|=p,\ |b|=q),
+\]
+并在其他双次数上取零。这只是一个明确的泛函定义，不要求
+\(\operatorname{Hom}(C_p,R)\otimes\operatorname{Hom}(C_q,R)\to
+\operatorname{Hom}(C_p\otimes C_q,R)\) 为同构。按上一节的总微分，
+\begin{equation}\label{g2:eq:tensor-cochain-coboundary}
+	\delta(\varphi\otimes\psi)
+	=\delta\varphi\otimes\psi+(-1)^p\varphi\otimes\delta\psi.
+\end{equation}
+所需符号由张量总微分给出。
+
+\begin{definition}[杯积]\label{g2:def:cup-product}
+	设 \(X\) 为拓扑空间，\(R\) 为含幺交换环。令 \(\Delta_X:X\to X\times X\) 为对角映射，记
+	\[
+		D_X=\operatorname{AW}\circ(\Delta_X)_\#
+		:C_*(X;R)\longrightarrow C_*(X;R)\otimes_R C_*(X;R).
+	\]
+	对 \(\varphi\in C^p(X;R)\)、\(\psi\in C^q(X;R)\)，定义其\term[beiji]{杯积}[cup product]为
+	\[
+		\varphi\smile\psi=(\varphi\otimes\psi)D_X.
+	\]
+	等价地，对 \(\sigma:\Delta^{p+q}\to X\)，
+	\begin{equation}\label{g2:eq:cup-front-back}
+		(\varphi\smile\psi)(\sigma)
+		=\varphi\bigl(\sigma[0,\ldots,p]\bigr)
+			\psi\bigl(\sigma[p,\ldots,p+q]\bigr).
+	\end{equation}
+\end{definition}
+
+切分点的位置由两个上链的次数决定：前 \(p\) 维面给第一个上链，后 \(q\) 维面给第二个。三角形上的一次上链杯积只使用边 \(01\) 与边 \(12\)；边 \(02\) 不直接出现在这条取值公式中，却通过上链的闭性参与不同代表之间的比较。这种不对称属于链层面的选择，稍后会证明它在上同调中只留下分次交换符号。\symidx{\(\smile\)：上链与上同调的杯积}
+
+\begin{proposition}[杯积的上边界]\label{g2:prop:cup-leibniz}
+	对拓扑空间 \(X\)、含幺交换环 \(R\) 以及 \(\varphi\in C^p(X;R)\)、\(\psi\in C^q(X;R)\)，有
+	\[
+		\delta(\varphi\smile\psi)
+		=\delta\varphi\smile\psi+(-1)^p\varphi\smile\delta\psi.
+	\]
+	因此杯积诱导双线性映射
+	\[
+		H^p(X;R)\otimes_R H^q(X;R)\longrightarrow H^{p+q}(X;R),
+		\qquad
+		[\varphi]\otimes[\psi]\longmapsto[\varphi\smile\psi].
+	\]
+\end{proposition}
+\begin{proof}
+	由\cref{g2:prop:aw-shuffle-chain-maps}，\(D_X\) 是链映射。将\eqref{g2:eq:tensor-cochain-coboundary}与 \(D_X\) 复合，即得所述等式。如果 \(\delta\varphi=\delta\psi=0\)，其杯积也闭；若将 \(\varphi\) 改成 \(\varphi+\delta u\)，杯积的变化为 \(\delta(u\smile\psi)\)。若将 \(\psi\) 改成 \(\psi+\delta v\)，变化为 \((-1)^p\delta(\varphi\smile v)\)。所以所得上同调类只依赖两个原类。
+\end{proof}
 
 \subsection{自然性、结合性与单位}
 \label{g2:subsec:0404:02}
-待撰写
+
+杯积的边界公式使它下降到上同调。接下来比较拉回、三次相乘和常值零次上链与这项运算的关系：拉回保持单形的各个面，三次相乘按两个切分点分割单形，常值 \(1\) 则在零维端面上给出单位元。
+
+\begin{theorem}[杯积的环性质]\label{g2:thm:cup-properties}
+	设 \(R\) 为含幺交换环，\(X\) 为拓扑空间。杯积使
+	\[
+		H^*(X;R)\coloneqq\bigoplus_{n\ge0}H^n(X;R)
+	\]
+	成为含幺分次 \(R\) 代数，乘法把次数 \(p,q\) 相加。其单位是把每个点取值为 \(1\) 的零次上圈所代表的类。对连续映射 \(f:X\to Y\)，
+	\[
+		f^*(\alpha\smile\beta)=f^*\alpha\smile f^*\beta,
+		\qquad f^*(1_Y)=1_X.
+	\]
+	特别地，同伦等价诱导上同调环同构。
+\end{theorem}
+\begin{proof}
+	双线性已经证明。若 \(\varphi,\psi,\eta\) 的次数分别为 \(p,q,r\)，则两种结合方式在任意 \((p+q+r)\) 单形 \(\sigma\) 上都给出
+	\[
+		\varphi(\sigma[0,\ldots,p])\,
+		\psi(\sigma[p,\ldots,p+q])\,
+		\eta(\sigma[p+q,\ldots,p+q+r]).
+	\]
+	因此结合律在上链上就严格成立。令 \(\mathbf1\) 在每个零单形上取值 \(1\)，则 \((\delta\mathbf1)(\gamma)=1-1=0\)；前后面公式分别取切分位置 \(0\) 和 \(p\)，直接得到
+	\[
+		\mathbf1\smile\varphi=\varphi=\varphi\smile\mathbf1.
+	\]
+	这给出单位。空空间的上同调为零，按其零环的通常约定处理。
+
+	连续映射与取面交换，故
+	\[
+		\bigl(f^*(\varphi\smile\psi)\bigr)(\sigma)
+		=\varphi(f\sigma[0,\ldots,p])\psi(f\sigma[p,\ldots,p+q])
+		=\bigl(f^*\varphi\smile f^*\psi\bigr)(\sigma).
+	\]
+	单位也保持。最后，\cref{g2:thm:singular-homotopy-invariance}的棱柱链同伦经 \(\operatorname{Hom}(-,R)\) 给出上链同伦：若 \(g_\#-f_\#=\partial P+P\partial\)，则对上圈 \(\varphi\) 有 \(g^*\varphi-f^*\varphi=\delta(\varphi P)\)。故同伦映射诱导相同的上同调映射；把它用于同伦等价及其逆，即得环同构。
+\end{proof}
+
+我们称这个分次代数为 \(X\) 的\term[shangtongdiao huan]{上同调环}[cohomology ring]。零次上同调可以理解为每个道路分支上的常值函数，杯积在零次就是逐点相乘。若 \(X\) 道路连通，则 \(H^0(X;R)=R\)，其中的元素在其他次数上按通常的标量乘法作用。
 
 \subsection{分次交换性的链同伦证明}
 \label{g2:subsec:0404:03}
-待撰写
+
+一般上链的杯积并不交换：在一个三角形上，先看边 \(01\) 再看边 \(12\)，与把两条边的任务互换，通常给出不同的数。要证明上同调上的交换律，必须找到两种取值之差的原上链，而不能直接交换前后面。
+
+\begin{proposition}[分次交换性]\label{g2:prop:graded-commutativity}
+	设 \(X\) 为拓扑空间，\(R\) 为含幺交换环。对 \(\alpha\in H^p(X;R)\)、\(\beta\in H^q(X;R)\)，
+	\[
+		\alpha\smile\beta=(-1)^{pq}\beta\smile\alpha.
+	\]
+	更具体地，存在自然算子 \(K:C_n(X;R)\to(C_*(X;R)\otimes C_*(X;R))_{n+1}\)，使
+	\begin{equation}\label{g2:eq:diagonal-switch-homotopy}
+		\tau D_X-D_X=\mathrm{d}K+K\partial,
+		\qquad
+		\tau(a\otimes b)=(-1)^{|a||b|}b\otimes a.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	先核对 \(\tau\) 是链映射。对 \(|a|=i\)、\(|b|=j\)，\(\mathrm{d}\tau(a\otimes b)\) 的两项系数分别为 \((-1)^{ij}\)、\((-1)^{ij+j}\)；\(\tau\mathrm{d}(a\otimes b)\) 中对应的 \(b\otimes\partial a\)、\(\partial b\otimes a\) 项系数分别为 \((-1)^{(i-1)j}\)、\((-1)^{i+i(j-1)}\)。前者与 \(ij+j\)、后者与 \(ij\) 模二相同，故两式一致。
+
+	于是 \(D_X\) 与 \(\tau D_X\) 是两条自然链映射。它们在零次均把一个点送到该点与自身的张量。源的通用基元是 \(\operatorname{id}_{\Delta^n}\)，目标模型 \(C_*(\Delta^n;R)\otimes C_*(\Delta^n;R)\) 的增广收缩已在\cref{g2:lem:product-model-homotopy}后给出。应用该引理便得到 \(K\)。具体地，已知低维 \(K\) 后，在模型中填充圈
+	\[
+		(\tau D-D)\operatorname{id}_{\Delta^n}
+			-K\partial\operatorname{id}_{\Delta^n},
+	\]
+	再沿 \(\sigma\otimes\sigma\) 推到任意奇异单形 \(\sigma\)。这给出所需的自然递归构造，而且 \(K\sigma\) 的两个因子始终留在 \(\sigma(\Delta^n)\) 内。
+
+	取代表上圈 \(\varphi,\psi\)，并令 \(\lambda=\varphi\otimes\psi\)。由\eqref{g2:eq:tensor-cochain-coboundary}，\(\lambda\mathrm{d}=0\)。把 \(\lambda\) 作用在\eqref{g2:eq:diagonal-switch-homotopy}两边，得到
+	\[
+		(-1)^{pq}\psi\smile\varphi-\varphi\smile\psi
+		=(\lambda K)\partial=\delta(\lambda K).
+	\]
+	故差为上边界，所述上同调等式成立。若 \(p=q=0\)，右侧没有负次上链，此时两种取值已由 \(R\) 的交换律严格相同。
+\end{proof}
+
+这样的环称为\term[fenci jiaohuan huan]{分次交换环}[graded-commutative ring]。若 \(\alpha\) 为奇次数类，只能立即推出 \(2\alpha^2=0\)，不能在整数系数下直接除以 \(2\)。当系数域的特征不为 \(2\) 时，才可据此断言所有奇次数类的平方为零。特征 \(2\) 时符号消失，奇次数平方则可能非零；下一节的非定向曲面会给出实例。
 
 \subsection{相对杯积及配对}
 \label{g2:subsec:0404:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+相对上链 \(\varphi\in C^p(X,A;R)\) 可以看成在 \(A\) 中每条链上都取零的 \(X\) 上链。若另一个上链 \(\psi\) 在 \(B\) 上为零，则它们的杯积在完全落入 \(A\) 的单形上为零，也在完全落入 \(B\) 的单形上为零。不过，一条落在 \(A\cup B\) 的单形可能同时穿过两部分。这是相对杯积必须处理的额外问题。
+
+\begin{proposition}[相对杯积]\label{g2:prop:relative-cup-product}
+	设 \(X\) 为拓扑空间，\(R\) 为含幺交换环，\(A,B\subset X\) 满足
+	\begin{equation}\label{g2:eq:relative-cup-excision-condition}
+		A\cup B
+		=\operatorname{int}_{A\cup B}A\ \cup\ \operatorname{int}_{A\cup B}B.
+	\end{equation}
+	则有自然的双线性乘积
+	\[
+		H^p(X,A;R)\otimes_R H^q(X,B;R)
+		\longrightarrow H^{p+q}(X,A\cup B;R).
+	\]
+	它与绝对杯积及相对群到绝对群的映射相容，并满足分次交换律。特别地，\(A,B\) 都开时满足此条件。取 \(A=B\) 或其中之一为空，总可得到相对上同调的乘法以及绝对上同调对它的作用。
+\end{proposition}
+\begin{proof}
+	先用整数链，令
+	\[
+		S_*=C_*(A;\mathbb Z)+C_*(B;\mathbb Z)
+		\subset C_*(A\cup B;\mathbb Z).
+	\]
+	由\eqref{g2:eq:relative-cup-excision-condition}和\cref{g2:thm:small-chain-isomorphism}，包含 \(S_*\to C_*(A\cup B;\mathbb Z)\) 诱导同调同构。商复形
+	\[
+		Q_*=C_*(A\cup B;\mathbb Z)/S_*
+	\]
+	因此无同调。每个 \(Q_n\) 仍为自由阿贝尔群，以不完全落入 \(A\) 或 \(B\) 的单形为基；其圈群和边界群也自由。\cref{g2:lem:free-complex-splitting}在同调全为零时给出的两项分解，说明 \(Q_*\) 是可缩复形。于是张量 \(R\) 后仍可缩，再取 \(\operatorname{Hom}_R(-,R)\) 也可缩。
+
+	自然满射
+	\[
+		q:C_*(X;R)/(C_*(A;R)+C_*(B;R))
+		\longrightarrow C_*(X,A\cup B;R)
+	\]
+	的核就是 \(Q_*\otimes_{\mathbb Z}R\)。两侧链模都有由单形得到的自由基，故对应短正合列逐次分裂；对其取 \(\operatorname{Hom}_R(-,R)\) 后仍正合，核复形的可缩性说明 \(q^*\) 诱导上同调同构。
+
+	现在取相对上圈 \(\varphi,\psi\)。前后面公式说明 \(\varphi\smile\psi\) 在 \(C_*(A)+C_*(B)\) 上取零，故给出 \(q\) 的源上的上圈类；经上述 \(q^*\) 的逆同构，得到 \(H^{p+q}(X,A\cup B;R)\) 中的类。更换代表时，\cref{g2:prop:cup-leibniz}中的上边界公式仍在这个商复形上成立，所以乘积良定义。连续映射保持相应子空间时，杯积和 \(q\) 都与之交换；同构的逆也自然，因此得到相对自然性。
+
+	\cref{g2:prop:graded-commutativity}构造的 \(K\sigma\) 的两个因子都留在 \(\sigma\) 的像内。若 \(\sigma\) 落在 \(A\)，\(\varphi\) 使其取值为零；若落在 \(B\)，\(\psi\) 使其取值为零。因此 \((\varphi\otimes\psi)K\) 也在 \(S_*\) 上为零，原来的交换同伦下降到同一个商复形，证明相对分次交换律。与绝对杯积的相容性由各商映射与前后面公式直接得到。
+\end{proof}
+
+当 \(A,B,C\) 都为开集时，可以继续相乘并得到 \(H^*(X,A\cup B\cup C;R)\) 中的结合律：三重上链乘积在 \(C_*(A)+C_*(B)+C_*(C)\) 上取零，小链比较与刚才相同，而两种结合方式在这个商上已经相等。这个说法也适用于任意有限个开子空间。不满足小链比较条件的一般子空间对，不能仅凭前后面公式就把值域写成 \(H^*(X,A\cup B;R)\)。
+
+\begin{definition}[取值配对与上同调外积]\label{g2:def:kronecker-cross-cohomology}
+	设 \(R\) 为含幺交换环。相对上圈 \(\varphi\) 与同次数相对圈 \(z\) 的\term[quzhi peidui]{取值配对}[evaluation pairing]定义为
+	\[
+		\langle[\varphi],[z]\rangle=\varphi(z)\in R.
+	\]
+	对 \(\alpha\in H^p(X;R)\)、\(\beta\in H^q(Y;R)\)，定义\term[shangtongdiao waiji]{上同调外积}[cohomology cross product]为
+	\[
+		\alpha\times\beta
+		=\operatorname{pr}_X^*\alpha\smile\operatorname{pr}_Y^*\beta
+		\in H^{p+q}(X\times Y;R).
+	\]
+	若 \(A\subset X\)、\(B\subset Y\) 为开子空间，同一公式利用相对杯积给出
+	\[
+		H^p(X,A;R)\otimes_R H^q(Y,B;R)
+		\longrightarrow
+		H^{p+q}(X\times Y,A\times Y\cup X\times B;R).
+	\]
+\end{definition}
+
+配对与代表无关：上边界在圈上为零，上圈在边界上为零；相对情形中，剩余链落在子空间，仍被相对上链消去。配对不总能看见所有上同调类。例如 \(H^2(\mathbb{RP}^2;\mathbb Z)=\mathbb Z/2\) 而 \(H_2(\mathbb{RP}^2;\mathbb Z)=0\)，所以这次配对恒为零。万有系数定理中的 Ext 项正是其中的一种不可见信息。\symidx{\(\langle\alpha,z\rangle\)：上同调类与同调类的取值配对}
+
+\begin{proposition}[外积的取值]\label{g2:prop:cross-cup-evaluation}
+	设 \(R\) 为含幺交换环，\(\alpha\in H^p(X;R)\)、\(\beta\in H^q(Y;R)\)、\(a\in H_p(X;R)\)、\(b\in H_q(Y;R)\)。则
+	\[
+		\langle\alpha\times\beta,a\times b\rangle
+		=\langle\alpha,a\rangle\langle\beta,b\rangle.
+	\]
+	若因子配对的次数不匹配而总次数相等，则取值为零。对开子空间 \(A\subset X\)、\(B\subset Y\)，同一结论适用于相对外积和相对配对。另有
+	\[
+		\Delta_X^*(\alpha\times\beta)=\alpha\smile\beta,
+	\]
+	以及外积的乘法规则
+	\[
+		(\alpha\times\beta)\smile(\alpha'\times\beta')
+		=(-1)^{|\beta||\alpha'|}
+			(\alpha\smile\alpha')\times(\beta\smile\beta').
+	\]
+\end{proposition}
+\begin{proof}
+	取代表上圈 \(\varphi,\psi\)。上同调外积的上链代表恰为 \((\varphi\otimes\psi)\operatorname{AW}\)，这可直接对乘积中的单形应用前后面公式。于是
+	\[
+		\langle\alpha\times\beta,a\times b\rangle
+		=(\varphi\otimes\psi)\operatorname{AW}\operatorname{sh}(z\otimes w).
+	\]
+	由\cref{g2:thm:eilenberg-zilber}，\(\operatorname{AW}\operatorname{sh}\) 与恒等链同伦；\(z\otimes w\) 是圈，\(\varphi\otimes\psi\) 是上圈，所以右侧等于 \(\varphi(z)\psi(w)\)。双次数不匹配时，泛函的定义使它为零。
+
+	相对情形还要核对模型。令 \(Z=A\times Y\cup X\times B\)。两条链映射及其自然链同伦分别保持来自 \(A\times Y\)、\(X\times B\) 的链，因而下降为
+	\[
+		\frac{C_*(X\times Y;R)}{C_*(A\times Y;R)+C_*(X\times B;R)}
+		\ \simeq_{\mathrm{ch}}\
+		C_*(X,A;R)\otimes_R C_*(Y,B;R).
+	\]
+	右侧的商描述由各奇异单形基逐项得到。由于 \(A,B\) 开，左侧分母是 \(Z\) 的开覆盖小链复形。\cref{g2:prop:relative-cup-product}证明中的可缩商论证，给出左侧与 \(C_*(X\times Y,Z;R)\) 的自然同调、上同调比较同构；通过它定义相对同调外积。杯积定义的相对上同调外积在小链商上仍由 \((\varphi\otimes\psi)\operatorname{AW}\) 表示，因此完全相同的链同伦取值证明适用。
+
+	对角公式来自 \(\operatorname{pr}_X\Delta_X=\operatorname{pr}_Y\Delta_X=\operatorname{id}_X\) 及自然性。最后，把四个拉回类按 \(\alpha,\beta,\alpha',\beta'\) 的顺序相乘，只需把 \(\beta\) 与 \(\alpha'\) 交换一次；\cref{g2:prop:graded-commutativity}给出系数 \((-1)^{|\beta||\alpha'|}\)，其余由结合律完成。
+\end{proof}
+
+这个配对公式还给出常用的上同调 Künneth 形式。若 \(k\) 为域，且对每个 \(p\)，\(H_p(X;k)\) 有限维，则
+\[
+	\bigoplus_{p+q=n}H^p(X;k)\otimes_k H^q(Y;k)
+	\xrightarrow{\ \times\ }H^n(X\times Y;k)
+\]
+为自然同构。理由是：域上的万有系数同构把上同调识别为同调的线性对偶，\cref{g2:thm:kunneth}计算乘积同调，而有限维条件保证
+\[
+	\operatorname{Hom}_k(U\otimes V,k)
+	\cong\operatorname{Hom}_k(U,k)\otimes\operatorname{Hom}_k(V,k)
+	\quad(\dim U<\infty).
+\]
+选 \(U\) 的有限基及对偶基，就可把任意双线性泛函写成这类张量的有限和；这也证明所用的代数事实。外积取值公式确认所得同构正是上面显示的映射。若 \(R\) 为主理想整环，两个空间各次同调都为有限秩自由 \(R\) 模，同一论证也适用；Ext、Tor 项在此都为零。其分次环的乘法必须采用命题中的符号规则。
+
+\begin{proposition}[局部生成元的乘积]\label{g2:prop:local-cross-normalization}
+	设 \(p,q\ge1\)，在 \(\mathbb R^p,\mathbb R^q\) 上取标准坐标定向，在 \(\mathbb R^{p+q}=\mathbb R^p\times\mathbb R^q\) 上先列第一因子坐标。令
+	\[
+		u_p\in H^p(\mathbb R^p,\mathbb R^p\setminus\{0\};\mathbb Z),
+		\qquad
+		u_q\in H^q(\mathbb R^q,\mathbb R^q\setminus\{0\};\mathbb Z)
+	\]
+	分别在正向局部同调生成元上取值 \(1\)。则相对外积 \(u_p\times u_q\) 是
+	\[
+		H^{p+q}(\mathbb R^{p+q},\mathbb R^{p+q}\setminus\{0\};\mathbb Z)
+	\]
+	的正向生成元。这个结论可迭代到任意有限个因子，也适用于原点的球形或立方体邻域。
+\end{proposition}
+\begin{proof}
+	\cref{g2:thm:manifold-local-homology}把这两个局部同调群分别识别为次数 \(p,q\) 的 \(\mathbb Z\)，其他次数为零。万有系数定理因而使相应上同调与同调的对偶一致，故在正向生成元上取值 \(1\) 唯一确定 \(u_p,u_q\)。
+
+	各取一个以原点为内点的小闭立方体，按标准坐标定向三角剖分。把各最高维单形带定向求和，得到链 \(c_p,c_q\)。在“立方体模边界”的相对胞腔链中，这个和代表正向最高维胞腔的生成元；径向投影把穿孔立方体形变收缩到边界，所以由空间对的长正合列和局部切除，它也代表正向局部类。其 shuffle 链是两个剖分的乘积剖分：每个单形乘积按格路径切分，\eqref{g2:eq:shuffle-map}中的符号使所有块带标准乘积定向，内部面在相邻块之间抵消。故 \(\operatorname{sh}(c_p\otimes c_q)\) 正是乘积立方体的正向基本链，代表局部生成元 \(c_{p+q}\)。特别地，这里给出的是正号，而不只是一个未定号的生成元。
+
+	两个穿孔子空间都开，且
+	\[
+		(\mathbb R^p\setminus\{0\})\times\mathbb R^q
+		\ \cup\ \mathbb R^p\times(\mathbb R^q\setminus\{0\})
+		=\mathbb R^{p+q}\setminus\{0\}.
+	\]
+	因此可用\cref{g2:prop:cross-cup-evaluation}的相对形式，得到
+	\[
+		\langle u_p\times u_q,c_{p+q}\rangle
+		=\langle u_p,c_p\rangle\langle u_q,c_q\rangle=1.
+	\]
+	这证明了归一化。反复应用即得多因子结论；限制到包含原点的球或立方体邻域时，切除给出同一局部群，正向基本链的选取不变。
+\end{proof}
+
+例如在 \(\mathbb C^n\) 中采用 \((x_1,y_1,\ldots,x_n,y_n)\) 的实坐标次序，每个坐标复平面的正向局部二次类相乘，给出原点的正向 \(2n\) 次类。相对杯积因此能够把若干坐标超平面的局部条件集中到它们的交点；下一节计算复射影空间的乘法时，正是用这个可直接核验的局部事实来确定系数。

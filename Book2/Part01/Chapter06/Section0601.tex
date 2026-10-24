@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 6.1 局部基本类的粘合
 % 纲要位置：几何学计划纲要.md，第 1228 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,175 @@
 \section{局部基本类的粘合}
 \label{g2:sec:0601}
 
-待撰写
+在一个小球内，最高次局部同调记录这一小块空间的定向。对偶定理需要把这些局部数据同时放到流形上：它们能否来自同一个同调类？闭流形与非紧流形在这里已有差别。有限奇异链能够覆盖整个紧流形，却不能覆盖整个非紧流形；因此先在任意紧集附近构造基本类，比一开始只讨论一个整体类更合适。
+
+\ProseParagraphBreak
+
+本节的流形均为 Hausdorff、第二可数的无边界拓扑 \(n\) 维流形，\(R\) 为含幺交换环。第五章已经构造整数定向局部系统 \(\mathcal O_M\)，并证明局部系数的切除与同伦不变性。在每个坐标球内，这些工具给出局部生成元；紧集的有限覆盖和相对 Mayer--Vietoris 序列将把它们粘成一个紧集附近的相对类。
 
 \subsection{欧氏局部同调生成元}
 \label{g2:subsec:0601:01}
-待撰写
+回忆\cref{g2:thm:manifold-local-homology}：对 \(x\in M\)，整数局部同调在次数 \(n\) 为 \(\mathbb Z\)，其他次数为零。这个无限循环群并没有首选生成元；一张有序坐标图给出的两种方向，对应两个互为负数的生成元。按\cref{g2:def:orientation-local-system}，这些群连同坐标球内的运输组成 \(\mathcal O_M\)。现把系数推广为 \(R\)，记
+\[
+	\mathcal O_{R}\coloneqq\mathcal O_M\otimes_{\mathbb Z}R.
+\]
+\symidx{\(\mathcal O_R\)：以 \(R\) 为系数的定向局部系统}
+若 \(\mathcal L\) 是 \(M\) 上任意 \(R\) 模局部系统，则有自然识别
+\begin{equation}\label{g2:eq:local-homology-with-coefficients}
+	H_i(M,M\setminus\{x\};\mathcal L)\cong
+	\begin{cases}
+		\mathcal O_{R,x}\otimes_R\mathcal L_x,&i=n,\\
+		0,&i\ne n.
+	\end{cases}
+\end{equation}
+公式中的系数纤维 \(\mathcal L_x\) 来自局部平凡化：先切除到 \(x\) 的坐标球，在球内把各纤维运输到 \(x\)，再计算常系数局部同调。球面计算中的悬挂连接同构对系数模成立，故最高次得到 \(\mathcal O_{M,x}\otimes_{\mathbb Z}\mathcal L_x\)；这与式中张量积规范相同。也可在球面的自由胞腔链上直接核对：顶次只有一个系数模，其余约化链为零。球内换一组定向，局部同调生成元和 \(\mathcal O_{R,x}\) 的基同时反号，所以识别不依赖所选坐标方向。
+
+\begin{proposition}[定向系统的平方]\label{g2:prop:orientation-square}
+	设 \(M\) 是 Hausdorff、第二可数、无边界的拓扑 \(n\) 维流形，\(R\) 为含幺交换环。存在规范的局部系统同构
+	\begin{equation}\label{g2:eq:orientation-square}
+		b:\mathcal O_R\otimes_R\mathcal O_R\xrightarrow{\ \cong\ }\underline R,
+		\qquad b((\mu\otimes a)\otimes(\mu\otimes c))=ac,
+	\end{equation}
+	其中 \(\mu\) 是整数局部同调的任一生成元，\(\underline R\) 表示常值 \(R\) 系统。因此每点有一个规范元素
+	\[
+		\mathbf 1_x=(\mu\otimes1)\otimes(\mu\otimes1)
+		\in H_n(M,M\setminus\{x\};\mathcal O_R),
+	\]
+	它对应于 \(1\in R\)，并随 \(x\) 平行变化。
+\end{proposition}
+\begin{proof}
+	整数生成元仅有 \(\mu\) 和 \(-\mu\) 两个。同时更换两因子的基，积中的符号为 \((-1)^2=1\)，故 \(b\) 无歧义。在一个坐标球内固定整数生成元族，这个映射就是 \(R\otimes_RR\to R\) 的乘法同构。路径运输也同时作用于两因子，闭路造成的两个定向符号彼此抵消，所以局部同构相容地给出全局同构。其逆把 \(1\) 送到陈述中的元素；再用\eqref{g2:eq:local-homology-with-coefficients}，便得到所述局部类。
+\end{proof}
+
+这个平方解释了为什么不可定向流形仍能有定向系数基本类：几何上的反号与系数上的反号同时发生，局部类本身不变。配对的规范归一化取整数生成元的像；换成任意 \(R\) 基 \(\theta=u\mu\) 时，\(b(\theta,\theta)=u^2\)，归一化值随之变化。
+
+\ProseParagraphBreak
+
+下面还要用到一点之外的 Euclid 模型。设 \(C\subset\mathbb R^n\) 是非空凸紧集，\(x\in C\)。选以 \(x\) 为中心、包含 \(C\) 于内部的大球，其边界为 \(S\)。沿从 \(x\) 发出的射线，\(\mathbb R^n\setminus C\) 和 \(\mathbb R^n\setminus\{x\}\) 都形变收缩到 \(S\)：一条射线与凸集的交是从起点出发的一个闭区间，因此一个已在 \(C\) 外的点移动到 \(S\) 时不会再次进入 \(C\)。由对的长正合列，映射
+\begin{equation}\label{g2:eq:convex-local-class}
+	H_i(\mathbb R^n,\mathbb R^n\setminus C;A)
+	\longrightarrow H_i(\mathbb R^n,\mathbb R^n\setminus\{x\};A)
+\end{equation}
+对任意 \(R\) 模 \(A\) 都是同构。这里允许 \(x\) 位于 \(C\) 的边界，也允许 \(C\) 没有内部；只需 \(C\) 非空且凸。若 \(n=0\)，非空凸集只有一个点，同一结论由零次链直接得到。
 
 \subsection{定向系统与紧集上的基本类}
 \label{g2:subsec:0601:02}
-待撰写
+在紧集 \(K\) 上指定局部值，需要先说清“相容”的含义。令 \(\mathcal E\) 为一个局部系统。记 \(\Gamma(K;\mathcal E|_K)\) 为其纤维空间在 \(K\) 上的连续截面：在任一局部平凡化中，截面的系数是 \(K\) 上的局部常值函数。即使 \(K\) 不是局部道路连通，也使用这个定义，不能只要求沿 \(K\) 内的道路保持不变。例如在一列点及其极限点组成的紧集上，每条道路都常值，但连续截面仍须在足够靠近极限点时取同一个系数。
+
+\begin{lemma}[紧集上的局部值]\label{g2:lem:compact-localization}
+	设 \(M\) 是 Hausdorff、第二可数、无边界的拓扑 \(n\) 维流形，\(R\) 为含幺交换环，\(\mathcal L\) 为 \(M\) 上的 \(R\) 模局部系统，\(K\subset M\) 紧。则
+	\[
+		H_i(M,M\setminus K;\mathcal L)=0\qquad(i>n),
+	\]
+	且限制到各点给出同构
+	\begin{equation}\label{g2:eq:compact-localization}
+		\rho_K:H_n(M,M\setminus K;\mathcal L)
+		\xrightarrow{\ \cong\ }\Gamma(K;(\mathcal O_R\otimes_R\mathcal L)|_K).
+	\end{equation}
+	特别地，一个顶次相对类若在 \(K\) 的每一点都有零局部值，则它为零。对紧集包含 \(K\subset L\)，相对化映射 \(H_n(M,M\setminus L;\mathcal L)\to H_n(M,M\setminus K;\mathcal L)\) 对应截面限制；对系数同态以及开邻域的切除，以上识别同样自然。
+\end{lemma}
+\begin{proof}
+	我们先说明相对类为何确实给出连续截面，再证明存在性和唯一性。令相对圈 \(z\) 表示一个顶次类，则有限链 \(\partial z\) 的像构成一个与 \(K\) 不交的紧集。每个 \(x\in K\) 都有一个闭坐标球 \(B\)，使 \(x\in\operatorname{int}B\) 且 \(B\) 避开这个紧集。于是 \(z\) 还定义 \(H_n(M,M\setminus B;\mathcal L)\) 中的类。由\eqref{g2:eq:convex-local-class}及局部系数切除，它在 \(B\) 内的各局部值属于同一个平行族。因此原来的局部值在 \(K\) 上连续，\(\rho_K\) 有定义。所有限制均来自空间对或系数映射，故自然性一旦有同构便随之成立。
+
+	粘合所需的正合性可以直接写出。暂记 \(G_i(K)=H_i(M,M\setminus K;\mathcal L)\)。对紧集 \(A,B\subset M\)，局部系数的相对 Mayer--Vietoris 序列包含
+	\begin{equation}\label{g2:eq:compact-relative-mv}
+		\begin{aligned}
+			\cdots\longrightarrow G_{i+1}(A\cap B)&\longrightarrow G_i(A\cup B)\\
+			&\xrightarrow{(r_A,r_B)}G_i(A)\oplus G_i(B)\\
+			&\xrightarrow{\mathrm{res}_A-\mathrm{res}_B}G_i(A\cap B)\longrightarrow\cdots.
+		\end{aligned}
+	\end{equation}
+	为核对它的来源，令 \(C=C_*(M;\mathcal L)\)、\(P=C_*(M\setminus A;\mathcal L)\)、\(Q=C_*(M\setminus B;\mathcal L)\)。链短正合列为
+	\[
+		0\longrightarrow C/(P\cap Q)\xrightarrow{([z],[z])}C/P\oplus C/Q
+		\xrightarrow{[u]-[v]}C/(P+Q)\longrightarrow0.
+	\]
+	这里 \(P\cap Q=C_*(M\setminus(A\cup B);\mathcal L)\)。另一方面，\(M\setminus A\) 与 \(M\setminus B\) 是 \(M\setminus(A\cap B)\) 的开覆盖；\cref{g2:lem:twisted-small-chain-retraction}说明 \(P+Q\) 包含到这个补空间的全部链是链同伦等价。比较以 \(C\) 为中间项的两个商短正合列，其子复形映射与中间映射都在同调上为同构，长正合列的图追踪便给出末项同调与 \(H_i(M,M\setminus(A\cap B);\mathcal L)\) 的同构。因而取长正合列就得到\eqref{g2:eq:compact-relative-mv}。箭头上的两个限制之差作用为 \((a,b)\mapsto a|_{A\cap B}-b|_{A\cap B}\)。
+
+	若结论对 \(A,B,A\cap B\) 已成立，就对 \(A\cup B\) 成立。高于 \(n\) 次的群在上述正合列中夹在两个零群之间；次数 \(n\) 时，因为交集的 \(n+1\) 次群为零，\((r_A,r_B)\) 单射，其像正是交上限制相同的两个类。相容截面也恰由 \(A,B\) 上限制相同的截面组成：这是有限闭覆盖上的连续映射粘合，\(A,B\) 在其并集中闭。故这一段正合列同时给出顶次局部值的存在与唯一性。
+
+	先在一张坐标图 \(U\cong\mathbb R^n\) 内证明结论；\(\mathcal L|_U\) 平凡化为一个固定模 \(A_0\)，定向系统也平凡。若紧集凸，\eqref{g2:eq:convex-local-class}给出全部结论，因为凸集连通，其局部常值截面都是常值。若紧集是有限个凸紧集的并，则利用上一段归纳。归纳中，一个新凸集与此前各凸集的交仍为凸紧集或空集；所以交集是更少个同类集合的并，归纳假设确实适用。空集的相对群与截面模均为零。
+
+	现在令 \(K\subset U\) 是任意紧集。对 \(\alpha\in H_i(M,M\setminus K;\mathcal L)\)，先用\cref{g2:thm:twisted-excision}将它表示为 \(U\) 中的有限相对圈 \(z\)。链 \(\partial z\) 的像与 \(K\) 是两个不交的紧集，在坐标中有正距离；若 \(\partial z=0\)，则任选一个正距离界。以 \(K\) 中的点为中心，取有限个足够小的闭球，使其内部覆盖 \(K\)，且其并 \(N\) 避开 \(\partial z\) 的像。于是 \(z\) 已在 \(H_i(M,M\setminus N;\mathcal L)\) 定义一个类 \(\alpha_N\)，并映到 \(\alpha\)。当 \(i>n\) 时，有限凸集并的情形给出 \(\alpha_N=0\)。当 \(i=n\) 且 \(\alpha\) 的全部局部值为零时，\(\alpha_N\) 限制到每个小球的中心为零；凸集情形说明它在这个球上的相对类为零。因此 \(\alpha_N\) 在 \(N\) 上的所有局部值为零，有限并的唯一性又给出 \(\alpha_N=0\)。这证明了一般 \(K\subset U\) 的高次消失和顶次单射。
+
+	还须实现 \(K\) 上给定的截面。在上述平凡化中，它是连续映射 \(s:K\to A_0\)，其中 \(A_0\) 取离散拓扑。紧性说明它只取有限多个值 \(a_1,\ldots,a_t\)；每个非空纤维 \(K_j=s^{-1}(a_j)\) 在 \(K\) 中既开又闭，因此是紧集。不同 \(K_j\) 的坐标距离为正。可分别选由有限个小闭球组成的紧邻域 \(N_j\supset K_j\)，使这些 \(N_j\) 两两不交。在每个 \(N_j\) 上，常值 \(a_j\) 由有限凸集并的情形给出唯一顶次相对类。对不交并使用已证的粘合，得到 \(\bigcup_jN_j\) 上的类，再限制到 \(K\)，其局部值恰为 \(s\)。这就完成了单张坐标图内的证明。
+
+	最后处理一般 \(K\subset M\)。每个点有闭包紧且包含在坐标图内的小坐标球，\(\mathcal L\) 在该图内平凡。用有限个这样的球内部覆盖 \(K\)，令 \(K_1,\ldots,K_m\) 为 \(K\) 与各闭球的交；它们紧、覆盖 \(K\)，且各在一张图内。对覆盖项数 \(m\) 归纳。令 \(A=K_1\cup\cdots\cup K_{m-1}\)、\(B=K_m\)，则
+	\[
+		A\cap B=(K_1\cap K_m)\cup\cdots\cup(K_{m-1}\cap K_m)
+	\]
+	仍由至多 \(m-1\) 个各位于坐标图内的紧集组成。归纳假设适用于 \(A,B,A\cap B\)，粘合步骤遂得到 \(K\) 的结论。若 \(n=0\)，流形离散，紧集有限，结论也可逐点直接计算。
+\end{proof}
+
+引理的关键是顶次的单射性：只要局部值相同，来自不同球、不同有限覆盖或不同代表链的构造自动给出同一个相对类。高一次群的消失使相对 Mayer--Vietoris 序列提供唯一粘合。常系数的上述论证可对照\cite[第3.3节，Orientations and Homology]{Hatcher2002}；这里把同一局部到整体过程写成了局部系数与紧集上连续截面的形式。
+
+\begin{definition}[紧集上的基本类]\label{g2:def:compact-fundamental-class}
+	设 \(M\) 是 Hausdorff、第二可数、无边界的拓扑 \(n\) 维流形，\(R\) 为含幺交换环，\(K\subset M\) 紧。在\eqref{g2:eq:compact-localization}中取 \(\mathcal L=\mathcal O_R\)，并用\eqref{g2:eq:orientation-square}，常值截面 \(1\) 唯一对应的类
+	\[
+		[M]_K\in H_n(M,M\setminus K;\mathcal O_R)
+	\]
+	称为 \(M\) 在 \(K\) 上的\term[jinjishangdejibenlei]{基本类}[fundamental class over a compact set]。其在每个 \(x\in K\) 的局部值为 \(\mathbf1_x\)。
+\end{definition}
+
+一个有向区间就能显示这种相对类如何工作。取 \(M=\mathbb R\)、\(K=[a,b]\)，用标准方向识别 \(\mathcal O_{\mathbb Z}\) 与 \(\mathbb Z\)。从 \(a-1\) 到 \(b+1\) 的有向线段是相对圈，因为两个端点都在 \(M\setminus K\) 中；它在每个 \(x\in K\) 的局部值为 \(1\)，所以代表 \([\mathbb R]_K\)。改换更远的端点不改此类。若 \(K\) 有两个不交的紧区间，顶次相对群则为 \(\mathbb Z^2\)，允许分别指定两个局部整数；基本类选的是 \((1,1)\)。
 
 \subsection{从局部一致性到整体基本类}
 \label{g2:subsec:0601:03}
-待撰写
+若紧集 \(K\subset L\)，从 \(L\) 附近的相对类限制到 \(K\) 附近，仍保留 \(K\) 上规定的局部值。局部值引理的唯一性于是使各个紧集上的基本类自动相容；紧流形的整体基本类就是取 \(K=M\) 所得的类。
+
+\begin{theorem}[基本类及其限制]\label{g2:thm:fundamental-class}
+	设 \(M\) 是 Hausdorff、第二可数、无边界的拓扑 \(n\) 维流形，\(R\) 为含幺交换环。对所有紧集 \(K\subset M\)，\([M]_K\) 存在且唯一；若 \(K\subset L\) 均紧，则
+	\begin{equation}\label{g2:eq:fundamental-class-restriction}
+		[M]_L\longmapsto[M]_K.
+	\end{equation}
+	若 \(U\subset M\) 开且包含 \(K\)，在 \(\mathcal O_{R,U}\cong\mathcal O_{R,M}|_U\) 的自然识别下，切除同构将 \([U]_K\) 送到 \([M]_K\)。若 \(M\) 紧，则
+	\[
+		[M]\coloneqq[M]_M\in H_n(M;\mathcal O_R)
+	\]
+	是规范的整体基本类，且 \(H_n(M;\mathcal O_R)\cong\Gamma(M;\underline R)\)。特别地，\(M\) 连通且紧时，\(H_n(M;\mathcal O_R)\cong R\)，\([M]\) 对应 \(1\)。
+\end{theorem}
+\begin{proof}
+	存在唯一性正是\cref{g2:lem:compact-localization}与规范平方同构的结论。紧集限制和开集切除都将每个 \(x\in K\) 处的规范局部值送到自身，由唯一性便有陈述中的相容性。紧时取 \(K=M\)，相对群成为绝对群。连通空间上的局部常值函数为常值，故最后的截面模为 \(R\)。
+\end{proof}
+
+常系数基本类需要一个定向选择。一个 \(R\)\term[huandingxiang]{定向}[orientation over a ring]是 \(\mathcal O_R\) 的平行截面 \(\theta\)，其在每点都生成该秩一自由 \(R\) 模；等价地，在整数局部生成元下，其系数是单位。\cref{g2:lem:compact-localization}在 \(\mathcal L=\underline R\) 时给出唯一类
+\[
+	[M]^{\theta}_K\in H_n(M,M\setminus K;R),\qquad
+	\rho_K([M]^{\theta}_K)=\theta|_K.
+\]
+若要从规范扭系数类直接得到它，应使用系数同构 \(b(\theta,-):\mathcal O_R\to\underline R\)：在局部写 \(\theta=u\mu\)，它把 \(\mu\) 送到 \(u\)，所以 \(\mu\otimes\mu\) 的像恰为 \(u\mu=\theta\)。当 \(\theta\) 来自整数定向时，这就是熟悉的按所选正方向将系数识别为 \(R\)。整数定向反转，常系数基本类变号；规范扭系数基本类则不变。
+
+\begin{example}[闭流形的顶次群]\label{g2:exm:closed-manifold-top-homology}
+	设 \(M\) 是连通闭 \(n\) 维拓扑流形，\(R\) 为含幺交换环。若 \(M\) 可定向，则选定整数定向后 \(H_n(M;R)\cong R\)。若不可定向，则
+	\[
+		H_n(M;R)\cong\{a\in R:2a=0\}.
+	\]
+	事实上，\cref{g2:lem:compact-localization}把常系数顶次类识别为 \(\mathcal O_R\) 的平行截面。固定一点的整数局部生成元后，截面由该点的一个系数 \(a\) 决定；定向保持环路不加条件，定向反转环路要求 \(a=-a\)。因此整数系数下不可定向闭流形的顶次群为零，而模二系数下仍有基本类。取 \(R=\mathbb Z/4\) 时，不可定向闭流形的顶次群是 \(\{0,2\}\cong\mathbb Z/2\)，但非零元素 \(2\) 不是单位，所以它不构成 \(R\) 定向的基本类。这区别了“顶次群非零”与“存在处处为生成元的类”。
+\end{example}
+
+在非紧流形上，各紧集附近的基本类仍然存在，并随紧集的包含关系相容。对于连通非紧流形，普通有限链的顶次同调为零，定向系数下也如此；下面的证明将这一消失归结为局部值在连通空间上的一致性。
+
+\begin{proposition}[非紧流形的顶次消失]\label{g2:prop:noncompact-top-homology}
+	设 \(M\) 是连通、非紧、Hausdorff、第二可数、无边界的拓扑 \(n\) 维流形，\(R\) 为含幺交换环，\(\mathcal L\) 为任意 \(R\) 模局部系统。则普通奇异同调满足
+	\[
+		H_i(M;\mathcal L)=0\qquad(i\geq n).
+	\]
+\end{proposition}
+\begin{proof}
+	取有限圈 \(z\)，其单形像的并是紧集。选开集 \(U\) 包含此并，使 \(\overline U\) 紧；具体地，用有限个闭包紧的小坐标球覆盖该紧集，再取这些球内部的并。令 \(V=M\setminus\overline U\)。两个开集 \(U,V\) 不交，且
+	\[
+		M\setminus V=\overline U,\qquad
+		M\setminus(U\cup V)=\partial U
+	\]
+	均紧。三空间 \(V\subset U\cup V\subset M\) 的相对链短正合列给出
+	\[
+		H_{i+1}(M,U\cup V;\mathcal L)\longrightarrow H_i(U\cup V,V;\mathcal L)
+		\longrightarrow H_i(M,V;\mathcal L).
+	\]
+	由于不交并，中央项就是 \(H_i(U;\mathcal L)\)。当 \(i>n\) 时，两端由\cref{g2:lem:compact-localization}的高次消失同时为零，故 \(z\) 已在 \(U\) 内为边界。
+
+	当 \(i=n\) 时，左端仍为零，所以 \(H_n(U;\mathcal L)\to H_n(M,V;\mathcal L)\) 单射。类 \([z]\in H_n(M;\mathcal L)\) 在各点的局部值构成 \(\mathcal O_R\otimes\mathcal L\) 的全局平行截面；这一点仍由避开 \(\partial z=0\) 的小球论证得到。因 \(M\) 非紧，有限链的紧像之外存在一点，那里局部值为零。连通流形道路连通，局部系统运输是同构，所以这一截面处处为零。于是 \(z\) 在 \(H_n(M,V;\mathcal L)=H_n(M,M\setminus\overline U;\mathcal L)\) 中的类，由紧集 \(\overline U\) 上局部值的单射性而为零。中央项的单射又说明 \(z\) 在 \(U\) 内为边界，从而在 \(M\) 内为边界。
+\end{proof}
+
+证明先把有限链的支撑放进一个紧集，再通过绝对群到相对群的单射使用局部值的唯一性，从而由各点局部值为零得到原类为零。\(\mathbb R^n\) 展示了这一差别：每个紧集都有相容的 \([\mathbb R^n]_K\)，普通 \(H_n(\mathbb R^n)\) 却为零（\(n\geq1\)）。下一节引入紧支上链和局部有限链，使这些紧集附近的类能够参与非紧流形的对偶。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

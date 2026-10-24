@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 4.3 空间乘积与 Eilenberg–Zilber
 % 纲要位置：几何学计划纲要.md，第 1169 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,280 @@
 \section{空间乘积与 Eilenberg–Zilber}
 \label{g2:sec:0403}
 
-待撰写
+环面的两个圆周方向提示我们：一个空间里的圈和另一个空间里的圈相乘，应当形成高一维的圈。然而，两个奇异单形的乘积以 \(\Delta^p\times\Delta^q\) 为参数，并不是一条奇异 \(p+q\) 单形。要把这幅图像变成同调计算，需要先把参数空间的乘积拆成单形，再说明这个拆分与取边界相容。本节先解决这个几何问题，随后用前两节的代数解释乘积中额外出现的挠类。有关乘积和一般系数的进一步讨论见 \cite[第3.B节]{Hatcher2002}。
 
 \subsection{Alexander–Whitney 与 shuffle 映射}
 \label{g2:subsec:0403:01}
-待撰写
+
+本节的链构造允许 \(R\) 为任意含幺交换环；谈到 Künneth\footnote{Hermann Lorenz Künneth（1892--1975），德国数学家，研究积空间的 Betti 数与挠系数公式。}短正合列时再要求 \(R\) 是主理想整环。记 \(C_*(X;R)=C_*(X;\mathbb Z)\otimes_{\mathbb Z}R\)，仍以全部奇异单形为基，使用非负次数的普通链复形。这里没有把退化单形置零：例如一条常值一维单形仍是一个链生成元。若 \(\sigma:\Delta^n\to X\)，则
+\[
+	\sigma[i_0,\ldots,i_k]\coloneqq
+	\sigma\circ[v_{i_0},\ldots,v_{i_k}]
+\]
+表示沿相应仿射面映射限制；顶点总按列出的次序排列。
+
+\begin{definition}[两个链映射]\label{g2:def:aw-shuffle}
+	设 \(X,Y\) 为拓扑空间，\(R\) 为含幺交换环。对奇异单形 \(s=(\sigma,\tau):\Delta^n\to X\times Y\)，定义\term[Alexander Whitney yingshe]{Alexander--Whitney 映射}[Alexander--Whitney map]\footnote{James Waddell Alexander（1888--1971），美国数学家，研究代数拓扑与结理论，提出 Alexander 多项式。Hassler Whitney（1907--1989），美国数学家，研究光滑流形的嵌入与特征类。}
+	\begin{equation}\label{g2:eq:aw-map}
+		\operatorname{AW}(s)
+		=\sum_{i=0}^n\sigma[0,\ldots,i]\otimes\tau[i,\ldots,n].
+	\end{equation}
+	反方向，对 \(\sigma:\Delta^p\to X\)、\(\tau:\Delta^q\to Y\)，考虑从 \((0,0)\) 到 \((p,q)\) 的格路径 \(w\)：每一步是向右的 \(H\) 或向上的 \(V\)。若路径依次经过 \((i_0,j_0),\ldots,(i_{p+q},j_{p+q})\)，令
+	\[
+		\lambda_w=[(v_{i_0},v_{j_0}),\ldots,(v_{i_{p+q}},v_{j_{p+q}})]
+		:\Delta^{p+q}\longrightarrow\Delta^p\times\Delta^q.
+	\]
+	记 \(I(w)\) 为路径词中“一个 \(V\) 在一个 \(H\) 之前”的有序对数，定义\term[shuffle yingshe]{shuffle 映射}[shuffle map]
+	\begin{equation}\label{g2:eq:shuffle-map}
+		\operatorname{sh}(\sigma\otimes\tau)
+		=\sum_w(-1)^{I(w)}(\sigma\times\tau)\circ\lambda_w.
+	\end{equation}
+	两个公式均按 \(R\)-线性延拓。
+\end{definition}
+
+第一条公式把一条 \(n\) 单形在第 \(i\) 个顶点截开，前半段交给 \(X\)，后半段交给 \(Y\)，两段共享这个顶点；第二条公式按两个因子顶点增加的先后顺序切分乘积。符号的起点是“先列 \(X\) 的坐标，再列 \(Y\) 的坐标”的乘积定向，每次交换一个 \(X\) 方向和一个 \(Y\) 方向都改变一次符号。\symidx{\(\operatorname{AW},\operatorname{sh}\)：Alexander--Whitney 映射与 shuffle 映射}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[scale=2.1]
+		\fill[blue!8] (0,0)--(1,0)--(1,1)--cycle;
+		\fill[orange!12] (0,0)--(0,1)--(1,1)--cycle;
+		\draw (0,0) rectangle (1,1);
+		\draw (0,0)--(1,1);
+		\node[below left] at (0,0) {\(\scriptstyle 00\)};
+		\node[below right] at (1,0) {\(\scriptstyle 10\)};
+		\node[above left] at (0,1) {\(\scriptstyle 01\)};
+		\node[above right] at (1,1) {\(\scriptstyle 11\)};
+		\node at (.68,.28) {\(\scriptstyle +\,HV\)};
+		\node at (.28,.68) {\(\scriptstyle -\,VH\)};
+	\end{tikzpicture}
+	\caption{两条格路径给出 \(\Delta^1\times\Delta^1\) 的两个三角形。系数分别为 \(+1\)、\(-1\)，因为路径所列顶点的定向相反；加上系数后，两块的乘积定向一致。}
+	\label{g2:fig:shuffle-square}
+\end{figure}
+
+\begin{proposition}[与边界相容]\label{g2:prop:aw-shuffle-chain-maps}
+	对任意拓扑空间 \(X,Y\) 和含幺交换环 \(R\)，\cref{g2:def:aw-shuffle}中的映射是自然链映射
+	\[
+		C_*(X\times Y;R)
+		\mathrel{\mathop{\rightleftarrows}^{\operatorname{AW}}_{\operatorname{sh}}}
+		C_*(X;R)\otimes_R C_*(Y;R),
+	\]
+	其中右侧的总微分为
+	\[
+		\mathrm{d}(a\otimes b)=\partial a\otimes b+(-1)^p a\otimes\partial b,
+		\qquad a\in C_p(X;R).
+	\]
+\end{proposition}
+\begin{proof}
+	先核对 \(\operatorname{AW}\)。对\eqref{g2:eq:aw-map}取总边界，在前半段删去第 \(j\) 个顶点时系数为 \((-1)^j\)；在后半段删去原来的第 \(j\) 个顶点时，张量符号和面符号相乘也是 \((-1)^i(-1)^{j-i}=(-1)^j\)。那些不删去切分顶点的项，恰是先对 \(s\) 取边界、再作所有切分所得的项。余下两项成对出现：
+	\[
+		(-1)^i\sigma[0,\ldots,i-1]\otimes\tau[i,\ldots,n],
+		\qquad
+		(-1)^{i-1}\sigma[0,\ldots,i-1]\otimes\tau[i,\ldots,n].
+	\]
+	它们分别来自第 \(i\) 个切分的前段末面和第 \(i-1\) 个切分的后段首面，互相抵消。零维因子的边界取零，因而端点也没有遗漏。于是 \(\mathrm{d}\operatorname{AW}=\operatorname{AW}\partial\)。
+
+	再核对 \(\operatorname{sh}\)。先看参数空间。把 \(\Delta^p\) 写成 \(0\le x_1\le\cdots\le x_p\le1\)，把 \(\Delta^q\) 写成 \(0\le y_1\le\cdots\le y_q\le1\)。把两列坐标合并排序，得到保持每列原次序的一种交错，每种交错确定一个闭单形；相邻交错在某个 \(x_i=y_j\) 处相接。因此 \(\lambda_w\) 的像覆盖乘积，并且只沿共同的面相交。
+
+	边界相消也可直接从路径看出。若删去一个转角顶点，两条仅以 \(HV\)、\(VH\) 区别的路径给出同一个面；它们的 \(I(w)\) 相差一，面位置相同，所以系数相反。若删去水平直段上的顶点 \((i,j)\)，则得到 \(X\) 的第 \(i\) 个面上的 shuffle。去掉一步 \(H\) 后，逆序数减少 \(j\)，而被删顶点的位置是 \(i+j\)，所以总符号为
+	\[
+		(-1)^{I(w)}(-1)^{i+j}=(-1)^{I(w')}(-1)^i.
+	\]
+	这正是 \(\operatorname{sh}(\partial\sigma\otimes\tau)\) 的符号。对竖直直段，去掉一步 \(V\) 使逆序数减少 \(p-i\)，故总符号为
+	\[
+		(-1)^{I(w)}(-1)^{i+j}=(-1)^{I(w')}(-1)^{p+j},
+	\]
+	对应 \((-1)^p\operatorname{sh}(\sigma\otimes\partial\tau)\)。路径端点的删除属于相应因子的首面或末面，满足同一符号公式。这列尽了所有面，证明
+	\[
+		\partial\operatorname{sh}(\sigma\otimes\tau)
+		=\operatorname{sh}(\partial\sigma\otimes\tau)
+			+(-1)^p\operatorname{sh}(\sigma\otimes\partial\tau).
+	\]
+	两个构造都只涉及参数单形的固定映射，故与任意 \(f:X\to X'\)、\(g:Y\to Y'\) 的复合相容，即具有自然性。
+\end{proof}
 
 \subsection{链同伦等价和符号}
 \label{g2:subsec:0403:02}
-待撰写
+
+上一小节得到两个方向的链映射。构造两个复合与恒等之间的链同伦，就能证明它们在同调上互逆。\cref{g2:prop:subdivision-chain-homotopy}提供了逐维构造的方法：先扣除低维面上已经构造的同伦，余下的差成为圈，再在标准模型中填充。乘积中的标准模型是两个单形的乘积及其张量链复形，下面先说明填充所需的条件。
+
+\begin{lemma}[在标准模型中填充]\label{g2:lem:product-model-homotopy}
+	设 \(R\) 为含幺交换环。源复形函子 \(F\) 取下列三种之一：
+	\[
+		C_*(X;R),\qquad
+		C_*(X\times Y;R),\qquad
+		C_*(X;R)\otimes_R C_*(Y;R).
+	\]
+	各次数的基元分别由标准模型 \(\Delta^n\)、\((\Delta^n,\Delta^n)\)、\((\Delta^p,\Delta^q)\) 的通用基元沿连续映射得到。设目标 \(G\) 是非负链复形函子，在每个所需模型上带有到 \(R\) 的增广，且增广复形无同调。若自然链映射 \(f,g:F\to G\) 在零次保持相同的增广，则存在自然链同伦
+	\[
+		g-f=\mathrm{d}K+K\mathrm{d}.
+	\]
+\end{lemma}
+\begin{proof}
+	令 \(K_{-1}=0\)。设低于 \(n\) 次的 \(K\) 已经自然地定义，并满足同伦等式。在次数 \(n\) 的一个通用基元 \(e\) 所在模型 \(M\) 上，置
+	\[
+		u=(g-f)e-K\mathrm{d}e.
+	\]
+	由链映射性质及低维等式，
+	\[
+		\mathrm{d}u=(g-f)\mathrm{d}e-\mathrm{d}K\mathrm{d}e=0.
+	\]
+	当 \(n=0\) 时应读作增广为零，这来自 \(f,g\) 的增广相同。模型增广无同调，故可选 \(v\in G_{n+1}(M)\) 使 \(\mathrm{d}v=u\)。只在这个固定模型上作一次选择，定义 \(Ke=v\)。每个实际基元唯一地由其参数映射 \(h:M\to(X,Y)\) 给出，定义 \(K(h_*e)=h_*v\)，再线性延拓。这样既得到同伦等式，也得到对 \(X,Y\) 中映射的自然性，因为后复合只把 \(h_*\) 换成新的复合推前。逐次归纳即可。
+
+	\(K\mathrm{d}e\) 已经把所有低维面的贡献纳入待填圈，所以新选择自动满足所需边界等式。退化单形也是各次数自由基中的普通成员，同样按上述方式定义其像。
+\end{proof}
+
+单形及单形的乘积都是非空凸集，可以向固定点作锥来填圈。若 \(L\) 是非空凸集，固定 \(a\in L\)，把每条奇异单形向 \(a\) 作锥，得到 \(h:C_n(L;R)\to C_{n+1}(L;R)\)。其参数式是在新顶点处取 \(a\)，其余点沿直线连接 \(a\) 与原单形；连续性来自单形像紧以及凸性。与\cref{g2:prop:subdivision-chain-homotopy}中使用的锥边界计算相同，
+\[
+	\partial h+h\partial=\operatorname{id}-i\varepsilon,
+\]
+其中 \(\varepsilon:C_*(L;R)\to R\) 在零次为系数和、正次数为零，\(i(1)\) 是顶点 \(a\)。因此 \(C_*(\Delta^p\times\Delta^q;R)\) 的增广无同调。对 \(C_*(\Delta^p;R)\otimes C_*(\Delta^q;R)\)，分别取收缩 \(h_1,h_2\) 及投影 \(P_i=i_i\varepsilon_i\)，则
+\[
+	H=h_1\otimes\operatorname{id}+P_1\otimes h_2,
+	\qquad
+	\mathrm{d}H+H\mathrm{d}
+	=\operatorname{id}-P_1\otimes P_2.
+\]
+第二项只在第一因子次数为零时非零；按张量总微分展开，第一项给出 \((\operatorname{id}-P_1)\otimes\operatorname{id}\)，第二项给出 \(P_1\otimes(\operatorname{id}-P_2)\)，混合项相消。故这个模型也满足引理的条件。
+
+\begin{theorem}[Eilenberg--Zilber 定理]\label{g2:thm:eilenberg-zilber}
+	对任意拓扑空间 \(X,Y\) 和含幺交换环 \(R\)，Alexander--Whitney 映射与 shuffle 映射互为自然的链同伦逆：
+	\[
+		\operatorname{sh}\operatorname{AW}\simeq_{\mathrm{ch}}\operatorname{id},
+		\qquad
+		\operatorname{AW}\operatorname{sh}\simeq_{\mathrm{ch}}\operatorname{id}.
+	\]
+	特别地，它们诱导互逆的自然同调同构。
+\end{theorem}
+\begin{proof}
+	对源 \(C_*(X\times Y;R)\)，通用 \(n\) 单形是
+	\[
+		\Delta^n\longrightarrow\Delta^n\times\Delta^n,\qquad t\longmapsto(t,t).
+	\]
+	任意 \(s=(\sigma,\tau)\) 都是它沿 \(\sigma\times\tau\) 的像。目标在这个模型上是凸集的奇异链，满足上面的填充条件；\(\operatorname{sh}\operatorname{AW}\) 与恒等在零次都把一个点保持不变。应用\cref{g2:lem:product-model-homotopy}，得到第一条同伦。
+
+	对源 \(C_*(X;R)\otimes C_*(Y;R)\)，次数 \(n\) 的基元 \(\sigma\otimes\tau\) 有 \(p+q=n\)，通用基元为 \(\operatorname{id}_{\Delta^p}\otimes\operatorname{id}_{\Delta^q}\)。目标在模型上是刚才给出显式收缩的张量复形，零次两映射仍相同。同一引理给出第二条同伦。\cref{g2:prop:chain-homotopy-homology}说明链同伦映射在同调上相同，故所诱导的两条同调映射互逆。
+\end{proof}
+
+这个结果称为\term[Eilenberg Zilber dingli]{Eilenberg--Zilber 定理}[Eilenberg--Zilber theorem]\footnote{Samuel Eilenberg（1913--1998），波兰裔美国数学家，是同调代数与范畴论的重要奠基者。Joseph Abraham Zilber（1923--2009），美国数学家，与 Eilenberg 研究半单纯复形和奇异同调。}。在本书使用的未归一化奇异链上，两复合通过链同伦与恒等映射对应。标准模型中的选择使链同伦具有自然性，其具体公式则随填充链的选择而变化。
+
+\begin{definition}[同调外积]\label{g2:def:homology-cross-product}
+	设 \(R\) 为含幺交换环。对圈 \(a\in C_p(X;R)\)、\(b\in C_q(Y;R)\)，定义其同调类的\term[tongdiao waiji]{同调外积}[homology cross product]为
+	\[
+		[a]\times[b]\coloneqq[\operatorname{sh}(a\otimes b)]
+		\in H_{p+q}(X\times Y;R).
+	\]
+\end{definition}
+
+这与代表无关：若把 \(a\) 换成 \(a+\partial c\)，差是 \(\partial\operatorname{sh}(c\otimes b)\)；第二因子改动时同样由总微分公式得到边界。若 \(t:X\times Y\to Y\times X\) 交换因子，路径词中的 \(H,V\) 交换使逆序数由 \(I(w)\) 变为 \(pq-I(w)\)，所以已有链等式
+\begin{equation}\label{g2:eq:cross-product-switch}
+	t_\#\operatorname{sh}(a\otimes b)
+	=(-1)^{pq}\operatorname{sh}(b\otimes a),
+	\qquad
+	t_*([a]\times[b])=(-1)^{pq}[b]\times[a].
+\end{equation}
+以后所有分次交换符号都与这个“交换 \(p\) 个方向和 \(q\) 个方向”的约定一致。
 
 \subsection{域及主理想整环上的 Künneth 定理}
 \label{g2:subsec:0403:03}
-待撰写
+
+现在乘积空间的链复形已经换成张量复形，剩下的问题纯属代数：先取同调再张量，是否等于先张量再取同调？自由圈贡献外积，不能自由选择的挠关系则产生额外项。
+
+\begin{theorem}[Künneth 定理]\label{g2:thm:kunneth}
+	设 \(R\) 为主理想整环，\(X,Y\) 为任意拓扑空间。对每个 \(n\ge0\)，存在关于 \(X,Y\) 中连续映射自然的短正合列
+	\begin{equation}\label{g2:eq:kunneth-sequence}
+		\begin{aligned}
+			0\longrightarrow\bigoplus_{p+q=n}H_p(X;R)\otimes_R H_q(Y;R)
+			&\xrightarrow{\ \times\ }H_n(X\times Y;R)\\
+			&\longrightarrow\bigoplus_{p+q=n-1}\operatorname{Tor}_1^R(H_p(X;R),H_q(Y;R))\longrightarrow0.
+		\end{aligned}
+	\end{equation}
+	该列分裂，但分裂一般不自然。若 \(R=k\) 为域，或右端所有 \(\operatorname{Tor}_1^R\) 项为零，则外积本身给出自然同构
+	\[
+		\bigoplus_{p+q=n}H_p(X;R)\otimes_R H_q(Y;R)
+		\xrightarrow{\ \cong\ }H_n(X\times Y;R).
+	\]
+\end{theorem}
+\begin{proof}
+	先对非负自由 \(R\)-链复形 \(C,D\) 证明同一代数结论，最后用\cref{g2:thm:eilenberg-zilber}。写 \(Z_p=\ker\mathrm{d}_p^C\)、\(B_p=\operatorname{im}\mathrm{d}_{p+1}^C\)，把 \(Z=(Z_p)\) 看成微分为零的复形。由主理想整环上自由模的子模自由，\(Z_p,B_p\) 都自由；令 \(Q_p=B_{p-1}\)、微分为零，其中 \(B_{-1}=0\)。取边界给出自然短正合列
+	\[
+		0\longrightarrow Z\longrightarrow C
+		\xrightarrow{\mathrm{d}^C}Q\longrightarrow0.
+	\]
+	这个列逐次分裂，因为 \(Q_p\) 自由。张量 \(D\) 后仍得到短正合链复形，故由\cref{g2:thm:homology-LES}的连接映射构造得到长正合列。
+
+	由于 \(Z_p,Q_p\) 自由且它们自身的微分为零，
+	\[
+		H_n(Z\otimes D)=\bigoplus_{p+q=n}Z_p\otimes H_q(D),
+		\qquad
+		H_n(Q\otimes D)=\bigoplus_{p+q=n}B_{p-1}\otimes H_q(D).
+	\]
+	连接映射在每个分量就是包含 \(B_{p-1}\hookrightarrow Z_{p-1}\) 张量恒等：对 \(b\otimes[z]\)，选 \(c\in C_p\) 满足 \(\mathrm{d}c=b\)，则
+	\[
+		\mathrm{d}(c\otimes z)=b\otimes z
+	\]
+	给出其像。这也是自然商映射的来源，不需要先选一个最终的分裂。
+
+	对自由消解 \(0\to B_p\to Z_p\to H_p(C)\to0\)，张量 \(H_q(D)\) 后的余核是 \(H_p(C)\otimes H_q(D)\)，核是 \(\operatorname{Tor}_1^R(H_p(C),H_q(D))\)。把长正合列在第 \(n\) 次的核与余核取出，就得到\eqref{g2:eq:kunneth-sequence}的代数形式。左边的映射把圈类张量送到其张量圈类，故经 shuffle 后正是外积。整个构造由自然的圈、边界及连接映射给出，所以短正合列自然。
+
+	还须证明分裂。\cref{g2:lem:free-complex-splitting}把 \(C\) 非典范地写成各个两项自由消解
+	\[
+		\cdots\longrightarrow0\longrightarrow B_p
+		\longrightarrow Z_p\longrightarrow0\longrightarrow\cdots
+	\]
+	的直和，其中 \(Z_p\) 位于次数 \(p\)，\(B_p\) 位于次数 \(p+1\)；对 \(D\) 作同样分解。分别取一个同调模 \(A=H_p(C)\)、\(B=H_q(D)\) 对应的两项复形，它们的张量只在次数 \(p+q,p+q+1,p+q+2\) 非零。将刚证的短正合列用于这两个复形，立即知道其同调只在前两次非零，依次是 \(A\otimes B\) 和 \(\operatorname{Tor}_1^R(A,B)\)。
+
+	因此在总次数 \(n\) 上，直和分成 \(p+q=n\) 的张量项与 \(p+q=n-1\) 的 Tor 项。上述自然短正合列在每个这样的块上分别是左端同构或右端同构，所以按这些块投影就给出其分裂。辅助分解依赖自由模中的提升，故不提供自然分裂。取 \(C=C_*(X;R)\)、\(D=C_*(Y;R)\)，再应用 Eilenberg--Zilber 定理即得空间的结论。域上的模全自由，Tor 为零；最后一项断言也直接来自正合性。
+\end{proof}
+
+这个结果称为\term[Kunneth dingli]{Künneth 定理}[Künneth theorem]。其域系数形式不要求 \(X,Y\) 为 CW 复形，也不要求同调有限维：任意奇异链只含有限个单形，每个固定总次数也只有有限种 \(p+q=n\)。这些有限性已足够完成上面的链构造。把同调换成上同调后，代数对偶与无限维张量并不总能交换，届时须另列条件。
 
 \subsection{Tor 项和积空间算例}
 \label{g2:subsec:0403:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+由\cref{g2:prop:cyclic-ext-tor}，对正整数 \(m,n\)，
+\[
+	\mathbb Z/m\otimes_{\mathbb Z}\mathbb Z/n
+	\cong\mathbb Z/\gcd(m,n),
+	\qquad
+	\operatorname{Tor}_1^{\mathbb Z}(\mathbb Z/m,\mathbb Z/n)
+	\cong\mathbb Z/\gcd(m,n).
+\]
+这两个群有相同的抽象形式，在 Künneth 公式中却相差一次。张量项由两个圈直接相乘产生，Tor 项还使用两个圈的整数倍可以被填充这一事实。
+
+\begin{example}[两种挠类]\label{g2:exm:RP2-product-torsion}
+	由\cref{g2:prop:projective-integer-homology}，\(\mathbb{RP}^2\) 的整数同调只有 \(H_0=\mathbb Z\)、\(H_1=\mathbb Z/2\) 非零。因此
+	\[
+		H_n(\mathbb{RP}^2\times\mathbb{RP}^2;\mathbb Z)
+		\cong
+		\begin{cases}
+			\mathbb Z,&n=0,\\
+			(\mathbb Z/2)^2,&n=1,\\
+			\mathbb Z/2,&n=2,3,\\
+			0,&n\ge4.
+		\end{cases}
+	\]
+	次数二的群来自 \(H_1\otimes H_1\)，次数三的群来自 \(\operatorname{Tor}_1(H_1,H_1)\)。在每个因子的胞腔链中，记一维胞腔为 \(a\)、二维胞腔为 \(A\)，则 \(\mathrm{d}A=2a\)。张量复形里
+	\[
+		z=A\otimes a+a\otimes A,\qquad
+		\mathrm{d}z=2a\otimes a-2a\otimes a=0,
+		\qquad
+		\mathrm{d}(A\otimes A)=2z.
+	\]
+	次数三的圈群由 \(z\) 生成，边界群由 \(2z\) 生成，直接显示了这条额外的二阶类。胞腔链可以用于此项计算，是因为\cref{g2:thm:cellular-singular-comparison}给出同调比较，且刚证的代数 Künneth 形式适用于这两个自由胞腔复形。
+\end{example}
+
+\begin{example}[与圆周相乘]\label{g2:exm:circle-product-homology}
+	对任意拓扑空间 \(X\) 和主理想整环 \(R\)，\(S^1\) 的 \(R\)-同调在次数零、一均为 \(R\)，其余为零。所有 Tor 项消失，所以
+	\[
+		H_n(X\times S^1;R)
+		\cong H_n(X;R)\oplus H_{n-1}(X;R).
+	\]
+	固定圆周的正向基本类后，两项分别由与一点、与该基本类作外积得到。于是 \(S^m\times S^n\) 的同调由次数 \(0,m,n,m+n\) 的四个外积类生成；当次数重合时应把相应直和保留，例如 \(m=n>0\) 时中间同调有两个生成元。
+\end{example}
+
+最后说明“分裂一般不自然”有可见的障碍。取自由复形 \(E_1=E_0=\mathbb Z\)，微分为乘以整数 \(m\ge2\)，以及 \(F_1=\mathbb Z\)、其余次数为零。链映射 \(f:E\to F\) 在次数一为恒等，在次数零为零。它在同调上全部为零。但若 \(x\in E_1\)、\(a\in E_0\) 为基元，则
+\[
+	x\otimes a-a\otimes x
+\]
+在 \(E\otimes E\) 中代表次数一的非零 \(\mathbb Z/m\) 类；\(f\otimes\operatorname{id}\) 把它送到 \(F\otimes E\) 中由 \(f(x)\otimes a\) 代表的非零 \(\mathbb Z/m\) 类。假如 Künneth 的分裂自然，这个映射就必须由两个因子在同调上的映射分别作用于张量项和 Tor 项，从而为零，矛盾。几何上可把 \(E\) 移到 Moore 空间的约化胞腔链中，并把 \(f\) 实现为压掉低维球面；相应积空间给出同样的障碍。因而计算群时可以选择分裂，讨论映射时仍须保留自然短正合列本身。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 6.2 帽积、支集与自然性
 % 纲要位置：几何学计划纲要.md，第 1234 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,350 @@
 \section{帽积、支集与自然性}
 \label{g2:sec:0602}
 
-待撰写
+杯积把两个上链相乘，帽积则让上链从一条链中取走若干维。若把上链想成检测某种横向条件的工具，检测后的链应留下满足该条件的方向。在单形上，上链取前面的值，剩余的后面成为输出链，系数沿两面的公共顶点运输。边界公式将决定这项运算何时把上圈和圈送到圈。非紧空间还要允许无穷多条单形，同时控制每个局部只产生有限和；紧支集与局部有限性分别提供这种控制。帽积和紧支上同调的基本构造可参阅 \cite[第3.3节]{Hatcher2002}。
 
 \subsection{帽积的链级定义}
 \label{g2:subsec:0602:01}
-待撰写
+沿用\cref{g2:def:twisted-chains,g2:def:twisted-cochains}的首顶点系数约定。设 \(R\) 为含幺交换环，\(\mathcal E,\mathcal L\) 是空间 \(X\) 上的 \(R\) 模局部系统；它们的逐纤维张量积记为 \(\mathcal L\otimes_R\mathcal E\)，运输是两种运输的张量积。对奇异单形 \(\sigma:\Delta^m\to X\)，仍用 \(\sigma[i_0,\ldots,i_s]\) 表示所列顶点确定的面，并用 \(T_{ij}\) 表示沿参数边从第 \(i\) 个顶点到第 \(j\) 个顶点的运输；所作用的系数系统由上标说明。
+
+\begin{definition}[帽积]\label{g2:def:cap-product}
+	对 \(\varphi\in C^k(X;\mathcal E)\) 和带系数单形 \(a\sigma\in C_m(X;\mathcal L)\)，当 \(m\ge k\) 时定义
+	\begin{equation}\label{g2:eq:cap-front-back}
+		\varphi\frown(a\sigma)
+		\coloneqq\bigl(T^{\mathcal L}_{0k}a\otimes
+		T^{\mathcal E}_{0k}\varphi(\sigma[0,\ldots,k])\bigr)\,\sigma[k,\ldots,m].
+	\end{equation}
+	当 \(m<k\) 时取零，再对有限链双线性延拓。所得运算称为\term[maoji]{帽积}[cap product]。
+\end{definition}
+
+输出单形的首顶点是 \(\sigma(v_k)\)，所以两个系数都要移到那里。最常用的情况是 \(\mathcal E=R\) 为常值系统，利用 \(\mathcal L\otimes_R R\cong\mathcal L\)，公式化为
+\[
+	\varphi\frown(a\sigma)
+	=\varphi(\sigma[0,\ldots,k])\,T^{\mathcal L}_{0k}(a)\,\sigma[k,\ldots,m].
+\]
+这与\eqref{g2:eq:cup-front-back}使用相同的前后面：上链在前面取值，后面成为留下的链。本文把上链写在左边；有些文献把链写在左边，比较公式时应先核对这一顺序。\symidx{\(\frown\)：上链作用于链的帽积}
+
+\ProseParagraphBreak
+
+对流形的定向系统 \(\mathcal O_R=\mathcal O_M\otimes_{\mathbb Z}R\)，另有典范配对
+\begin{equation}\label{g2:eq:orientation-tensor-pairing}
+	\mathcal O_R\otimes_R\mathcal O_R\longrightarrow R,
+	\qquad (ru)\otimes(su)\longmapsto rs,
+\end{equation}
+其中 \(u\) 是某点整数定向纤维的生成元。换成 \(-u\) 后两个系数同时变号，乘积不变；沿道路运输也是同时变号，所以配对与运输相容。因而取 \(\mathcal E=\mathcal L=\mathcal O_R\)，再复合这条配对，可得到常值 \(R\) 系数的帽积。不可定向流形上两份定向信息正是这样相互抵消。
+
+\begin{example}[三角形上的一次帽积]\label{g2:exm:cap-triangle}
+	设 \(\mathcal L\) 为局部系统，\(\varphi\) 为常值 \(R\) 系数的一次上链。在参数三角形 \(\sigma\) 上，
+	\[
+		\varphi\frown(a\sigma)=\varphi(\sigma[0,1])T_{01}(a)\,\sigma[1,2].
+	\]
+	取值不使用边 \([0,2]\)，输出也不是三条边的对称平均。这个不对称使定义有一个固定的链公式；不同面的关系由下面的边界等式控制。
+\end{example}
 
 \subsection{边界公式及符号}
 \label{g2:subsec:0602:02}
-待撰写
+对帽积取边界时，一部分项来自原链的边界，另一部分来自上链的余边界。把这两组项分开，便能确定所需符号，并判断帽积何时下降到绝对或相对同调。
+
+\begin{proposition}[帽积的边界]\label{g2:prop:cap-boundary}
+	对拓扑空间 \(X\)、含幺交换环 \(R\)、\(R\) 模局部系统 \(\mathcal E,\mathcal L\)，若 \(\varphi\in C^k(X;\mathcal E)\)、\(c\in C_m(X;\mathcal L)\)，则
+	\begin{equation}\label{g2:eq:cap-boundary}
+		\partial(\varphi\frown c)
+		=(-1)^k\bigl(\varphi\frown\partial c-(\delta\varphi)\frown c\bigr).
+	\end{equation}
+	因此帽积诱导自然的双线性配对
+	\[
+		H^k(X;\mathcal E)\otimes_R H_m(X;\mathcal L)
+		\longrightarrow H_{m-k}(X;\mathcal L\otimes_R\mathcal E).
+	\]
+\end{proposition}
+\begin{proof}
+	在一个参数单形上，用从首顶点出发的运输同时平凡化两个系统；\cref{g2:prop:twisted-boundary-square}的证明已说明这种平凡化与取面相容。因而只须在所有系数已放入同一纤维后计算符号。暂省略固定系数 \(a\) 以及张量符号，记 \(\varphi[i_0,\ldots,i_k]=\varphi(\sigma[i_0,\ldots,i_k])\)。当 \(m\ge k+1\) 时，
+	\[
+		\begin{aligned}
+			\varphi\frown\partial\sigma
+			={}&\sum_{i=0}^{k}(-1)^i\varphi[0,\ldots,\widehat i,\ldots,k+1]\,
+			\sigma[k+1,\ldots,m]\\
+			&+\sum_{i=k+1}^{m}(-1)^i\varphi[0,\ldots,k]\,
+			\sigma[k,\ldots,\widehat i,\ldots,m],\\
+			(\delta\varphi)\frown\sigma
+			={}&\sum_{i=0}^{k+1}(-1)^i\varphi[0,\ldots,\widehat i,\ldots,k+1]\,
+			\sigma[k+1,\ldots,m].
+		\end{aligned}
+	\]
+	相减后，第一行的前 \(k+1\) 项抵消；剩下的一项恰是输出后面的首面，其余项是后面的其他面。各项符号都比该后面的边界符号多出 \((-1)^k\)，得到\eqref{g2:eq:cap-boundary}。当 \(m=k\) 时输出为零链，等式两边均为零；当 \(m<k\) 时亦然。恢复运输即得一般情形。
+
+	若 \(\delta\varphi=0\)、\(\partial c=0\)，则输出是圈。将 \(c\) 改成 \(c+\partial b\)，输出之差为 \((-1)^k\partial(\varphi\frown b)\)；将 \(\varphi\) 改成 \(\varphi+\delta\eta\)，输出之差为 \((-1)^k\partial(\eta\frown c)\)。故所得类与代表无关。
+\end{proof}
+
+当杯积的系数也随点变化时，\eqref{g2:eq:cup-front-back}须先把后面上的上链值运回首顶点。对 \(\varphi\in C^p(X;\mathcal E)\)、\(\psi\in C^q(X;\mathcal F)\)，定义
+\begin{equation}\label{g2:eq:local-cup-front-back}
+	(\varphi\smile\psi)(\sigma)
+	=\varphi(\sigma[0,\ldots,p])\otimes
+	(T^{\mathcal F}_{0p})^{-1}\psi(\sigma[p,\ldots,p+q]).
+\end{equation}
+输出位于 \((\mathcal E\otimes_R\mathcal F)_{\sigma(v_0)}\)。在参数单形内同时平凡化两个系统，\cref{g2:prop:cup-leibniz}的前后面计算原样给出 \(\delta(\varphi\smile\psi)=\delta\varphi\smile\psi+(-1)^p\varphi\smile\delta\psi\)，故它也诱导上同调的配对。还可以复合任意与运输相容的双线性系数映射；例如 \(\mathbb Z\otimes(\mathbb Q/\mathbb Z)\to\mathbb Q/\mathbb Z\)。这不要求把每个系数模本身看成环。
+
+\begin{proposition}[自然性与杯帽相容]\label{g2:prop:cap-naturality}
+	设 \(f:X\to Y\) 连续，\(\mathcal E_Y,\mathcal L_Y\) 为 \(Y\) 上的 \(R\) 模局部系统。对 \(\varphi\in C^k(Y;\mathcal E_Y)\)、\(c\in C_m(X;f^*\mathcal L_Y)\)，有
+	\[
+		f_\#(f^*\varphi\frown c)=\varphi\frown f_\#c.
+	\]
+	此外，对 \(X\) 上的 \(R\) 模局部系统 \(\mathcal E,\mathcal F,\mathcal L\)，若 \(\varphi\in C^p(X;\mathcal E)\)、\(\psi\in C^q(X;\mathcal F)\)、\(c\in C_m(X;\mathcal L)\)，则在自然的张量结合识别下，
+	\begin{equation}\label{g2:eq:cup-cap-associativity}
+		(\varphi\smile\psi)\frown c
+		=\psi\frown(\varphi\frown c).
+	\end{equation}
+	这些等式也成立于诱导的同调配对。
+\end{proposition}
+\begin{proof}
+	第一条等式中，两侧都先在 \(f\sigma[0,\ldots,k]\) 上计算 \(\varphi\)，沿 \(f\sigma_{0k}\) 运输系数，再取 \(f\sigma[k,\ldots,m]\)。拉回系统的定义保证这两次运输是同一个映射。第二条等式中，省略运输的系统上标，两侧均为
+	\[
+		\begin{aligned}
+			\bigl(T_{0,p+q}a&\otimes T_{0,p+q}\varphi(\sigma[0,\ldots,p])\\
+			&\otimes T_{p,p+q}\psi(\sigma[p,\ldots,p+q])\bigr)\,\sigma[p+q,\ldots,m].
+		\end{aligned}
+	\]
+	这里用了 \(T_{p,p+q}T_{0p}=T_{0,p+q}\)。因此它们在链上已经相等，无须额外的分次交换符号。
+\end{proof}
+
+特别地，对常值系数 \(\alpha\in H^p(X;R)\)、\(\beta\in H^q(X;R)\) 与 \(z\in H_{p+q}(X;R)\)，在输出的零链上取系数和，得到
+\begin{equation}\label{g2:eq:cap-evaluation}
+	\langle\alpha\smile\beta,z\rangle
+	=\langle\beta,\alpha\frown z\rangle.
+\end{equation}
+这里的求值是上链在链上的取值；每一项都有限，所以没有额外的支集问题。相同公式适用于有运输相容双线性系数配对的情形，取值时再应用该配对。
+
+\begin{proposition}[相对帽积]\label{g2:prop:relative-cap}
+	设 \(X\) 为拓扑空间，\(A\subset X\)，\(\mathcal E,\mathcal L\) 为其上的 \(R\) 模局部系统。帽积给出
+	\[
+		\begin{aligned}
+			H^k(X;\mathcal E)\otimes H_m(X,A;\mathcal L)
+			&\longrightarrow H_{m-k}(X,A;\mathcal L\otimes\mathcal E),\\
+			H^k(X,A;\mathcal E)\otimes H_m(X,A;\mathcal L)
+			&\longrightarrow H_{m-k}(X;\mathcal L\otimes\mathcal E).
+		\end{aligned}
+	\]
+	若 \(A,B\subset X\) 均开，则还有
+	\begin{equation}\label{g2:eq:relative-cap-general}
+		H^k(X,A;\mathcal E)\otimes H_m(X,A\cup B;\mathcal L)
+		\longrightarrow H_{m-k}(X,B;\mathcal L\otimes\mathcal E).
+	\end{equation}
+	上述张量积均取于 \(R\)，配对满足相应的自然性。
+\end{proposition}
+\begin{proof}
+	若整条单形位于 \(A\)，其后面也位于 \(A\)，这证明第一种链商良定义。第二种配对中，\(\varphi\) 在 \(A\) 的所有单形上为零，所以它帽乘 \(A\) 内的链得到零；而相对圈 \(c\) 满足 \(\partial c\in C_*(A;\mathcal L)\)，故 \(\varphi\frown\partial c=0\)。边界公式于是把相对圈和相对上圈送到绝对圈，并保证代表无关。
+
+	一般形式先用小链模型
+	\[
+		C_*(X;\mathcal L)\big/\bigl(C_*(A;\mathcal L)+C_*(B;\mathcal L)\bigr).
+	\]
+	\(A\) 中的项被 \(\varphi\) 消去，\(B\) 中的项帽乘后仍在 \(B\)，所以公式下降到所需的商。因为 \(A,B\) 开，\cref{g2:lem:twisted-small-chain-retraction}给出此商与 \(C_*(X,A\cup B;\mathcal L)\) 的链同伦等价。再由边界公式取同调即得结论。自然性仍来自取面与映射复合相容。
+\end{proof}
 
 \subsection{紧支上同调和局部有限链}
 \label{g2:subsec:0602:03}
-待撰写
+在 \(\mathbb R\) 上，普通零次上同调由常值函数给出，但一个非零常值函数不能集中在紧集附近。另一方面，沿整条实轴逐段向右走的链可以没有边界，却不可能写成有限个单形的和。这两种现象分别要求改变上链与链的支集条件。
+
+\begin{definition}[紧支上同调]\label{g2:def:compact-support-cohomology}
+	设 \(X\) 为局部紧 Hausdorff 空间，\(\mathcal E\) 为其上的 \(R\) 模局部系统。定义
+	\[
+		C_c^k(X;\mathcal E)\coloneqq
+		\bigcup_{K\subset X\text{ 紧}}C^k(X,X\setminus K;\mathcal E),
+		\qquad H_c^k(X;\mathcal E)\coloneqq H^k(C_c^*(X;\mathcal E)).
+	\]
+	即 \(\varphi\) 属于这个复形，当且仅当存在紧集 \(K\)，使它在所有像完全位于 \(X\setminus K\) 的单形上为零。其同调称为\term[jinzhi shangtongdiao]{紧支上同调}[cohomology with compact supports]。
+\end{definition}
+
+若一条单形避开 \(K\)，它的所有面也避开 \(K\)，所以 \(\delta\) 保持这个条件。这里没有要求上链只在有限条奇异单形上非零，也没有要求它只对像包含在 \(K\) 中的单形取非零值：一条很长的单形仍可能遇到 \(K\)。例如只在原点取值 \(1\) 的零次上链，其余边界在任意从原点出发的长路径上都取值 \(-1\)；若要求单形像必须包含于某个固定紧集，就不能保持余边界运算。
+
+\ProseParagraphBreak
+
+若 \(K\subset L\)，有包含 \(C^*(X,X\setminus K;\mathcal E)\subset C^*(X,X\setminus L;\mathcal E)\)。因此
+\begin{equation}\label{g2:eq:compact-support-colimit}
+	H_c^k(X;\mathcal E)
+	\cong\varinjlim_{K\subset X\text{ 紧}}H^k(X,X\setminus K;\mathcal E).
+\end{equation}
+直接极限的含义是：一个类可在某个紧集 \(K\) 的相对上同调中表示；两个表示相同，当且仅当它们在某个更大紧集的相对上同调中相同。这也证明了公式：任意紧支上圈已有某个支集 \(K\)，而它在紧支复形中为余边界，恰当它在某个更大的紧集 \(L\) 对应的复形中为余边界。\symidx{\(H_c^k(X;\mathcal E)\)：紧支上同调}
+
+\begin{proposition}[开集延拓与紧支 Mayer--Vietoris 列]\label{g2:prop:compact-support-MV}
+	设 \(X\) 为第二可数、局部紧 Hausdorff 空间，\(\mathcal E\) 为 \(R\) 模局部系统。开嵌入 \(j:U\hookrightarrow X\) 诱导自然同态
+	\[
+		j_!:H_c^k(U;\mathcal E|_U)\longrightarrow H_c^k(X;\mathcal E).
+	\]
+	若 \(X=U\cup V\) 为开覆盖，记所有系数为相应的限制，则有长正合列
+	\begin{equation}\label{g2:eq:compact-support-MV}
+		\begin{aligned}
+			\cdots\longrightarrow H_c^k(U\cap V)
+			&\xrightarrow{(j_{U!},-j_{V!})}H_c^k(U)\oplus H_c^k(V)\\
+			&\xrightarrow{i_{U!}+i_{V!}}H_c^k(X)
+			\xrightarrow{\delta_{\mathrm{MV}}}H_c^{k+1}(U\cap V)\longrightarrow\cdots.
+		\end{aligned}
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	对紧集 \(K\subset U\)，由 \(X\) Hausdorff 可知 \(K\) 闭，且 \(X=U\cup(X\setminus K)\) 为开覆盖。\cref{g2:thm:twisted-excision}给出限制同构
+	\[
+		H^k(X,X\setminus K;\mathcal E)
+		\xrightarrow{\cong}H^k(U,U\setminus K;\mathcal E|_U).
+	\]
+	取其逆，再把 \(K\) 视为 \(X\) 的紧集，即得极限上的 \(j_!\)。切除同构自然，所以更换 \(K\) 及复合开嵌入均相容。这个延拓在上同调类上由切除定义；不能把任意奇异上链在跨越 \(U\) 边界的单形上直接填零，并据此断言与 \(\delta\) 相容。
+
+	对紧集 \(K\subset U\)、\(L\subset V\)，置 \(A=X\setminus K\)、\(B=X\setminus L\)。令 \(C^*(X,A+B;\mathcal E)\) 表示在 \(A\) 内和 \(B\) 内的所有单形上均为零的上链。逐单形分配取值给出短正合列
+	\[
+		0\longrightarrow C^*(X,A+B)
+		\xrightarrow{\eta\mapsto(\eta,-\eta)}C^*(X,A)\oplus C^*(X,B)
+		\xrightarrow{(\varphi,\psi)\mapsto\varphi+\psi}C^*(X,A\cap B)
+		\longrightarrow0.
+	\]
+	例如最后一箭头的满射性可这样检查：在完全位于 \(A\) 的单形上，把给定值交给第二个上链；在其余单形上交给第一个上链。在同时位于 \(A,B\) 的单形上，给定值本来就是零，所以两个上链满足各自的相对条件。中间核恰由 \((\eta,-\eta)\) 组成。因 \(A,B\) 开，小链变形收缩把左端的上同调识别为 \(H^*(X,A\cup B)\)。于是所得长正合列的四个支集依次是 \(K\cap L\)、\(K,L\)、\(K\cup L\)。
+
+	现在让 \(K,L\) 增大。交集 \(K\cap L\) 在 \(U\cap V\) 的紧集中共尾：给定紧集 \(J\subset U\cap V\)，可取 \(K=L=J\)。并集也在 \(X\) 的紧集中共尾。事实上，对紧集 \(P\subset U\cup V\)，局部紧 Hausdorff 性保证每点有闭包紧且包含于 \(U\) 或 \(V\) 的邻域；取有限子覆盖，把两类闭包分别并起来，再与 \(P\) 相交，就得到紧集 \(K\subset U\)、\(L\subset V\) 且 \(P=K\cup L\)。切除把各支集群识别到相应开集，直接极限便给出\eqref{g2:eq:compact-support-MV}。直接极限保持正合的理由也很具体：一个类的像为零，意味着它已在某个更大的指标处变为零；在那里利用原序列的正合性取原像即可。
+\end{proof}
+
+\begin{definition}[局部有限链]\label{g2:def:locally-finite-chains}
+	设 \(X\) 为局部紧 Hausdorff 空间，\(\mathcal L\) 为 \(R\) 模局部系统。一条\term[jubu youxian lian]{局部有限链}[locally finite chain]是形式和
+	\[
+		c=\sum_{\sigma:\Delta^m\to X}a_\sigma\sigma,
+		\qquad a_\sigma\in\mathcal L_{\sigma(v_0)},
+	\]
+	满足每点有邻域只与有限个非零系数单形的像相交。所有这样的链组成 \(C_m^{\mathrm{lf}}(X;\mathcal L)\)，按\eqref{g2:eq:twisted-boundary}逐项取边界。所得复形的同调记为 \(H_m^{\mathrm{lf}}(X;\mathcal L)\)，称为\term[jubu youxian tongdiao]{局部有限同调}[locally finite homology]。
+\end{definition}
+
+局部有限性保证每个输出面的系数是有限和，并且边界仍局部有限；每个单形只有有限多个面，且面的像包含于原单形的像。等价地，每个紧集只遇到有限个非零单形：一个方向由紧集取有限子覆盖，另一个方向由局部紧性取具有紧闭包的邻域。若 \(X\) 紧，这个条件就要求整条链有限，故局部有限同调等于普通同调。\symidx{\(C_*^{\mathrm{lf}},H_*^{\mathrm{lf}}\)：局部有限链与局部有限同调}
+
+\begin{proposition}[紧穷尽与逆极限]\label{g2:prop:locally-finite-limit}
+	设 \(X\) 为第二可数、局部紧 Hausdorff 空间，\(\mathcal L\) 为 \(R\) 模局部系统。取紧穷尽
+	\[
+		K_j\subset\operatorname{int}K_{j+1},\qquad
+		X=\bigcup_{j\ge1}\operatorname{int}K_j,
+	\]
+	并记 \(Q_j=C_*(X,X\setminus K_j;\mathcal L)\)，过渡映射 \(q_j:Q_{j+1}\to Q_j\) 为商映射。则
+	\begin{equation}\label{g2:eq:lf-chain-inverse-limit}
+		C_*^{\mathrm{lf}}(X;\mathcal L)\cong\varprojlim_j Q_j.
+	\end{equation}
+	对群塔 \(G_{j+1}\xrightarrow{q_j}G_j\)，定义
+	\[
+		\Delta:\prod_jG_j\longrightarrow\prod_jG_j,
+		\qquad\Delta((x_j))=(x_j-q_jx_{j+1}),
+	\]
+	并记 \(\varprojlim G_j=\ker\Delta\)、\(\varprojlim{}^1G_j=\operatorname{coker}\Delta\)。有自然短正合列
+	\begin{equation}\label{g2:eq:lf-limit-sequence}
+		0\longrightarrow\varprojlim{}^1_j H_{m+1}(Q_j)
+		\longrightarrow H_m^{\mathrm{lf}}(X;\mathcal L)
+		\longrightarrow\varprojlim_j H_m(Q_j)\longrightarrow0.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	先说明穷尽存在。局部紧 Hausdorff 空间中，每点有任意小的相对紧开邻域；第二可数性允许选出可数个这样的邻域覆盖 \(X\)。逐步把前 \(j\) 个邻域的闭包以及已选紧集覆盖在有限个相对紧开集中，再取这些闭包的并，便得到所需 \(K_j\)。
+
+	\(Q_{j,m}\) 的元素可唯一写成有限条像遇到 \(K_j\) 的单形的和：完全避开 \(K_j\) 的单形已在商中置零。局部有限链只含有限条遇到 \(K_j\) 的非零单形，所以可投影到 \(Q_{j,m}\)，并且这些投影相容。反过来，给定相容序列，每条单形一旦遇到某个 \(K_j\)，它在此后各坐标中的系数便固定。以此定义全部系数，每个 \(K_j\) 只遇到第 \(j\) 坐标记录的有限个非零单形。任一点属于某个 \(\operatorname{int}K_j\)，所以得到局部有限链。这两个过程互逆且与边界相容，证明\eqref{g2:eq:lf-chain-inverse-limit}。
+
+	不能在这一步直接把逆极限移到同调号外。各 \(q_j\) 在每个链次数上满射，因而
+	\[
+		0\longrightarrow\varprojlim Q_j\longrightarrow\prod_jQ_j
+		\xrightarrow{\Delta}\prod_jQ_j\longrightarrow0
+	\]
+	是短正合链复形列。满射性可递推验证：给定 \((y_j)\)，先任取 \(x_1\)，再利用 \(q_j\) 的满射性选 \(x_{j+1}\)，使 \(q_jx_{j+1}=x_j-y_j\)。乘积复形的圈、边界都逐坐标计算，所以其同调为 \(\prod_jH_m(Q_j)\)：对每个坐标的边界分别选一个原像即可。把短正合列的同调长正合列在次数 \(m\) 处截开，其左端余核与右端核正是\eqref{g2:eq:lf-limit-sequence}中的两项。
+\end{proof}
+
+这个修正项说明，逐个紧集给出相容的相对同调类，并不能自动唯一确定一个局部有限同调类。若相应的 \(\varprojlim{}^1H_{m+1}(Q_j)\) 为零，才可作这种识别。例如所有 \(H_{m+1}(Q_j)=0\) 时当然可以；若这一同调群塔的过渡映射均满射，同样的递推也使修正项为零。链群上的过渡映射满射，不能替代同调群上的这个附加条件。
+
+\begin{corollary}[上链复形的逆极限]\label{g2:cor:cochain-limit-sequence}
+	设 \(E_{j+1}^*\to E_j^*\) 是逐次满射的上链复形塔，则有自然短正合列
+	\begin{equation}\label{g2:eq:cochain-limit-sequence}
+		0\longrightarrow\varprojlim{}^1_j H^{k-1}(E_j^*)
+		\longrightarrow H^k(\varprojlim_j E_j^*)
+		\longrightarrow\varprojlim_j H^k(E_j^*)\longrightarrow0.
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	对上链复形重复上一证明的乘积短正合列。其连接映射提高次数，所以邻接项为 \(H^{k-1}\)；其他核、余核及逐次提升的论证完全相同。此证明也表明，对两个这样的塔给出相容的上链映射，就得到两条短正合列之间的自然映射。
+\end{proof}
 
 \subsection{普通、紧支和局部有限理论的配对}
 \label{g2:subsec:0602:04}
-待撰写
+局部有限链在每个紧集附近只有有限项。因此，紧支上链作用于它时只留下有限链；普通上链作用于它时则仍可能留下无穷多项，但这些项保持局部有限。两种支集条件由此决定帽积的目标。
+
+\begin{proposition}[支集与帽积]\label{g2:prop:support-cap-pairings}
+	设 \(X\) 为局部紧 Hausdorff 空间，\(\mathcal E,\mathcal L\) 为 \(R\) 模局部系统。除普通帽积外，同一前后面公式诱导
+	\[
+		\begin{aligned}
+			H^k(X;\mathcal E)\otimes H_m^{\mathrm{lf}}(X;\mathcal L)
+			&\longrightarrow H_{m-k}^{\mathrm{lf}}(X;\mathcal L\otimes\mathcal E),\\
+			H_c^k(X;\mathcal E)\otimes H_m^{\mathrm{lf}}(X;\mathcal L)
+			&\longrightarrow H_{m-k}(X;\mathcal L\otimes\mathcal E),\\
+			H_c^k(X;\mathcal E)\otimes H_m(X;\mathcal L)
+			&\longrightarrow H_{m-k}(X;\mathcal L\otimes\mathcal E).
+		\end{aligned}
+	\]
+	各张量积取于 \(R\)。这些配对与忘记紧支条件、将有限链视为局部有限链的映射相容，也与相应的杯帽结合公式相容。
+\end{proposition}
+\begin{proof}
+	对局部有限链逐项使用\eqref{g2:eq:cap-front-back}，每个输出面的像都在原单形像中，所以所得和局部有限。若 \(\varphi\) 在 \(X\setminus K\) 的单形上为零，只有前 \(k\) 维面遇到 \(K\) 的单形才可能贡献非零项；这样的整条单形也遇到 \(K\)，由局部有限性只有有限个。因此第二种输出实际上是有限链。第三种输出本来就有限。边界公式可在每个紧邻域逐项验证；证明代表无关所用的 \(\varphi\frown b\)、\(\eta\frown c\) 也保持各自所需的支集条件，所以这些运算下降到所列同调群。其他相容性来自相同的链公式。
+\end{proof}
+
+为了比较空间之间的这些群，还须区分映射方向。普通同调对任意连续映射推前，普通上同调对任意连续映射拉回；支集条件使另外两种理论分别多出限制。
+
+\begin{proposition}[支集理论中的映射]\label{g2:prop:support-functoriality}
+	设 \(X,Y\) 为第二可数、局部紧 Hausdorff 空间，\(\mathcal L\) 为 \(Y\) 上的 \(R\) 模局部系统。如果 \(f:X\to Y\) 是固有连续映射，即每个紧集的逆像均紧，则有
+	\[
+		f^*:H_c^k(Y;\mathcal L)\longrightarrow H_c^k(X;f^*\mathcal L),
+		\qquad
+		f_*:H_m^{\mathrm{lf}}(X;f^*\mathcal L)\longrightarrow H_m^{\mathrm{lf}}(Y;\mathcal L).
+	\]
+	开嵌入 \(j:U\hookrightarrow X\) 除了紧支延拓 \(j_!\)，另有局部有限同调的限制
+	\[
+		j^!:H_m^{\mathrm{lf}}(X;\mathcal L)\longrightarrow H_m^{\mathrm{lf}}(U;\mathcal L|_U).
+	\]
+	这些映射分别满足复合律；固有映射的推前、拉回满足帽积自然性公式。
+\end{proposition}
+\begin{proof}
+	若 \(\varphi\) 在 \(Y\setminus K\) 上为零，则 \(f^*\varphi\) 在 \(X\setminus f^{-1}K\) 上为零，固有性使这个支集仍紧。对局部有限链，任取 \(Y\) 的一个紧邻域 \(L\)，只有有限条原单形遇到紧集 \(f^{-1}L\)；故推前后也只有有限条像遇到 \(L\)。这样逐项复合确实定义了局部有限链映射。复合律与自然性沿用\cref{g2:prop:cap-naturality}的链计算。
+
+	开集限制不能通过简单删去不完全位于 \(U\) 的单形定义，因为一条被删单形可能有未被删的面。取 \(U\) 的紧穷尽 \(K_j\)，比较两个塔
+	\[
+		P_j=C_*(U,U\setminus K_j;\mathcal L|_U),
+		\qquad Q_j=C_*(X,X\setminus K_j;\mathcal L).
+	\]
+	包含 \(P_j\to Q_j\) 由切除诱导所有次数的同调同构；两个塔在链上均有满射过渡映射。\cref{g2:prop:locally-finite-limit}证明中的乘积短正合列同样适用于 \(Q_j\)，虽然这里 \(K_j\) 只穷尽 \(U\)。相应短正合列左右两端由逐项同调同构而同构，故中间也同构，得到
+	\[
+		H_m^{\mathrm{lf}}(U;\mathcal L|_U)
+		\xrightarrow{\cong}H_m(\varprojlim_j Q_j).
+	\]
+	一条 \(X\) 上的局部有限链对每个 \(K_j\) 都只有有限个非零项，因而自然投影到 \(\varprojlim Q_j\)。在同调上复合上面同构的逆，定义 \(j^!\)。更换穷尽可用一个共同的共尾加大系统比较；嵌套开集也由同样的相对商映射比较。因此所得映射与穷尽无关并满足复合律。
+\end{proof}
+
+\begin{table}[htbp]
+	\centering
+	\caption{四种支集约定及其基本映射方向}
+	\label{g2:tab:support-functors}
+	\begin{tabularx}{\textwidth}{@{}lXX@{}}
+		\toprule
+		理论 & 链或上链条件 & 可直接使用的空间映射 \\
+		\midrule
+		\(H_*\) & 链为有限和 & 任意连续映射推前 \\
+		\(H^*\) & 上链不加支集条件 & 任意连续映射拉回 \\
+		\(H_c^*\) & 在某紧集之外的单形上为零 & 固有映射拉回；开嵌入延拓 \\
+		\(H_*^{\mathrm{lf}}\) & 每个紧集只遇有限个非零单形 & 固有映射推前；开嵌入限制 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+表中的开嵌入延拓由切除给出，限制则使用切除与逆极限的相容。固有性保证紧集的原像紧，从而控制推前后的局部有限性。比如 \(\mathbb R\to\{*\}\) 不是固有映射：把实轴上一条由无穷多段组成的链推到一点，会要求把无穷多个系数相加，通常没有意义。
+
+\begin{example}[实轴上的支集差别]\label{g2:exm:line-supports}
+	设系数为 \(R\)。紧集 \([-j,j]\) 的补集有两个可缩分支，相对长正合列给出
+	\[
+		H^k(\mathbb R,\mathbb R\setminus[-j,j];R)
+		\cong
+		\begin{cases}R,&k=1,\\0,&k\ne1.\end{cases}
+	\]
+	次数一的 \(R\) 是限制映射 \(R\to R\oplus R\)、\(a\mapsto(a,a)\) 的余核。扩大 \(j\) 时仍保留左右两个分支，过渡映射在这个余核上为恒等，故 \(H_c^1(\mathbb R;R)=R\)，其余紧支上同调为零。相对同调列同样给出 \(H_1(\mathbb R,\mathbb R\setminus[-j,j];R)=R\)，由两端零链系数和为零的关系生成，其余相对同调为零。\eqref{g2:eq:lf-limit-sequence}中的修正项消失，所以 \(H_1^{\mathrm{lf}}(\mathbb R;R)=R\)，其他次数为零。
+
+	记 \(e_i:[0,1]\to\mathbb R\)、\(e_i(t)=i+t\)。局部有限链 \(z=\sum_{i\in\mathbb Z}e_i\) 满足 \(\partial z=0\)：每个整数点的两项边界互相抵消。令零次普通上链 \(h\) 在 \(x\le0\) 时取 \(0\)，在 \(x>0\) 时取 \(1\)，并令 \(\varphi=\delta h\)。\(h\) 不紧支，但 \(\varphi\) 在避开 \(0\) 的路径上为零，因为每条这样的路径留在同一半轴。因此 \(\varphi\) 是紧支一次上圈，且
+	\[
+		\varphi\frown z=[1].
+	\]
+	只有 \(e_0\) 贡献系数 \(1\)。点 \([1]\) 代表普通 \(H_0(\mathbb R;R)\) 中的生成元，说明这个帽积将紧支一次类与局部有限一维类配成普通零维类。另一方面，\(\varphi=\delta h\) 在普通上同调中为零；忘记支集条件确实可能消去非零类。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

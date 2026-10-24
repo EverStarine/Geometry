@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 4.5 从群到环的辨别能力
 % 纲要位置：几何学计划纲要.md，第 1183 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,17 +16,194 @@
 \section{从群到环的辨别能力}
 \label{g2:sec:0405}
 
-待撰写
+上一章已经算出环面、闭曲面和射影空间的同调群。现在的问题是：两个低次上同调类能否相乘成为高次的非零类？加性群只告诉我们每个次数有哪些元素，杯积还记录这些元素怎样共同作用于空间。下面先从坐标投影计算环面，再用连通和的压缩映射处理闭曲面；复射影空间的关键则是把若干个相对上同调类集中到同一个坐标邻域中。本节写 \(\mathbb F_2=\mathbb Z/2\mathbb Z\)，所有环同构均保留次数和单位元。
 
 \subsection{环面和闭曲面的上同调环}
 \label{g2:subsec:0405:01}
-待撰写
+取圆周的一次整数上同调生成元 \(\xi\)，使它在正向绕行的圈上取值 \(1\)。在环面 \(T^m=(S^1)^m\) 上，第 \(i\) 个坐标投影 \(p_i\) 给出类 \(x_i=p_i^*\xi\)。这些类分别来自各个圆周因子，它们的乘积可用前两节的外积及其取值公式计算：各因子的一次生成元相乘，检测相应坐标子环面的基本圈。
+
+\begin{proposition}[环面的上同调环]\label{g2:prop:torus-cohomology-ring}
+	设 \(m\geq1\)。整数系数下，\(T^m=(S^1)^m\) 的上同调环为
+	\[
+		H^*(T^m;\mathbb Z)\cong\Lambda_{\mathbb Z}(x_1,\ldots,x_m),\qquad |x_i|=1.
+	\]
+	右端是由次数为一的生成元及关系 \(x_i^2=0\)、\(x_ix_j=-x_jx_i\) 构成的\term[waidaishu]{外代数}[exterior algebra]；每个次数 \(k\) 的加性基由 \(x_{i_1}\cdots x_{i_k}\)、\(i_1<\cdots<i_k\) 给出。对任意交换含幺环 \(R\)，相同陈述成立，只需将 \(\mathbb Z\) 换成 \(R\)。
+\end{proposition}
+\begin{proof}
+	先取整数系数。圆周的整数同调仅在次数 \(0,1\) 为 \(\mathbb Z\)。由\cref{g2:thm:eilenberg-zilber,g2:thm:kunneth}，反复对圆周作乘积时，外积给出的类在每个次数构成基；这里所有参与的群均为自由群，没有额外的 \(\operatorname{Tor}\) 项。\cref{g2:prop:cross-cup-evaluation}将相应上同调外积识别为上述坐标类的杯积，并证明它们与对应乘积圈互为对偶基。
+
+	因为 \(\xi^2\in H^2(S^1;\mathbb Z)=0\)，自然性给出 \(x_i^2=p_i^*(\xi^2)=0\)。对两个不同的坐标，\cref{g2:prop:graded-commutativity}给出 \(x_ix_j=-x_jx_i\)。这些关系把每个单项式化为一个严格递增指标的单项式，或化为零；而外积已经证明所有递增单项式线性无关，所以没有其他关系。
+
+	对一般 \(R\)，把它先视为阿贝尔群。由于环面的各次整数同调有限生成且自由，\cref{g2:thm:uct-cohomology}说明整数上同调基的系数变换给出 \(H^k(T^m;R)\) 的 \(R\) 基。系数变换与杯积相容，所以刚才的生成元及全部乘法关系随之成立。在特征 \(2\) 时，负号虽然消失，\(x_i^2=0\) 仍是独立的关系，不能只从交换性中推出。
+\end{proof}
+
+对于 \(T^2\)，因此有 \(x^2=y^2=0\)，而 \(xy\) 是二次生成元。两个一次类分别测量两个方向的绕行，它们的乘积能够检测整个二维胞腔。若改成两个圆周与一个球面的楔和，虽然各次加性群一样，两个一次类却不能这样相乘；本节末尾会明确比较这两个空间。
+
+\ProseParagraphBreak
+
+为了把环面的计算搬到多柄曲面上，先说明楔和与连通和之间所用的映射。若 \(X_1,\ldots,X_s\) 是连通 CW 复形，各以一个零胞腔为基点，则有限楔和 \(W=\bigvee_iX_i\) 的约化胞腔链分解为各因子的直和。经胞腔比较及自然的万有系数正合列，限制映射给出
+\begin{equation}\label{g2:eq:wedge-positive-cohomology}
+	\widetilde H^k(W;R)\xrightarrow{\ \cong\ }\bigoplus_i\widetilde H^k(X_i;R),\qquad k>0.
+\end{equation}
+这里的乘法按分量进行：来自不同因子的两个正次类，其乘积限制到每个因子上都为零，由该同构的单射性，乘积本身就是零。零次则只有一个共同的单位元，而不是每个因子各保留一个单位元。
+
+\begin{lemma}[连通和的压缩映射]\label{g2:lem:surface-pinch-cohomology}
+	设 \(M=M_1\mathbin{\#}\cdots\mathbin{\#}M_s\) 是 \(s\geq1\) 个连通闭曲面模型的连通和。若各 \(M_i\) 可定向，给它们选择与连通和相容的定向并取 \(R=\mathbb Z\)；若不要求可定向，则取 \(R=\mathbb F_2\)。存在连续映射 \(q:M\to\bigvee_iM_i\)，使一次拉回
+	\[
+		q^*:H^1\Bigl(\bigvee_iM_i;R\Bigr)\longrightarrow H^1(M;R)
+	\]
+	为同构。若 \(\omega_i\in H^2(M_i;R)\) 是对应定向的生成元，模 \(2\) 时取唯一非零类，则各 \(\omega_i\) 在楔和中的延拓均被 \(q^*\) 送到同一个二次生成元 \(\omega\in H^2(M;R)\)。
+\end{lemma}
+\begin{proof}
+	先考虑两个曲面的连通和。将粘合用的分离圆周压成一点，左右两块各自成为 \((M_i\setminus\operatorname{int}D^2)/\partial D^2\)。这与 \(M_i\) 同胚：边界的圆环领圈在内边界压缩后变成一个圆盘，外边界上的粘合保持不变。于是得到到 \(M_1\vee M_2\) 的映射。多次作此操作，得到各因子由若干基点连成树的空间；再压掉连接这些基点的树，可把它们归并为一个楔点。等价地，可在原曲面的各连接圆周之间选互不交叉的连接弧，一并压缩。这个构造在每个因子内保留一组标准边环路。
+
+	由\eqref{g2:eq:surface-attaching-words}，可定向曲面的整数一维同调以各柄的两条边为基；模 \(2\) 时，无论可否定向，各条标准边也独立生成一维同调，因为二维胞腔的边界系数均为偶数。\(q_*\) 将这些边送到相应因子的同名边，故在一次同调上是同构。\cref{g2:thm:uct-cohomology}在一次给出自然同构 \(H^1(-;R)\cong\operatorname{Hom}_{\mathbb Z}(H_1(-;\mathbb Z),R)\)，因为零次同调是自由群；这就证明了关于 \(q^*\) 的断言。
+
+	还要确定二维生成元的倍数。将多边形模型细分为与连接圆周及连接弧相容的有限三角剖分；可先切分各边和各多边形，再作重心细分，使粘合后的三角形有一致的顶点次序。可定向时按曲面定向给各三角形取符号，模 \(2\) 时全部取系数 \(1\)。这些三角形之和 \(z\) 是奇异二圈：内部边出现两次并抵消，原多边形的成对边也按所取系数抵消。相对化到原二维胞腔时，这些小三角片各出现一次并铺满特征圆盘，所以其胞腔系数为 \(1\)；胞腔比较定理因而将 \([z]\) 识别为二维生成元。把 \(q\) 再与到第 \(i\) 个因子的收缩复合，记为 \(q_i:M\to M_i\)。在该因子内选一个避开压缩集合的三角形内点 \(y\)，其原像只有一个点，且 \(q_i\) 在此处保持定向地为局部同胚；模 \(2\) 时无须选择符号。
+
+	映到局部同调 \(H_2(M_i,M_i\setminus\{y\};R)\) 后，\((q_i)_*[z]\) 的系数因此为 \(1\)。同一个三角形和构造说明 \(M_i\) 的二维生成元也映到局部生成元：切除到该三角形内部，只剩包含 \(y\) 的那一片，边界定向与圆盘相对生成元一致。由于两边的二次群均为秩一的自由 \(R\) 模，\((q_i)_*[z]\) 恰为所选生成元。最后用取值配对的自然性得到 \(\langle q_i^*\omega_i,[z]\rangle=1\)。可定向情形下一维整数同调自由，模 \(2\) 情形下系数是域，因此相应的上同调取值同构保证 \(q_i^*\omega_i=\omega\)。
+\end{proof}
+
+\begin{theorem}[可定向曲面的上同调环]\label{g2:thm:orientable-surface-ring}
+	设 \(\Sigma_g\) 是 \(g\geq1\) 个环面的连通和，并选定定向。存在一次类 \(a_1,b_1,\ldots,a_g,b_g\) 和二次类 \(\omega\)，使
+	\[
+		H^0(\Sigma_g;\mathbb Z)=\mathbb Z,
+		\quad H^1(\Sigma_g;\mathbb Z)=\bigoplus_{i=1}^g(\mathbb Za_i\oplus\mathbb Zb_i),
+		\quad H^2(\Sigma_g;\mathbb Z)=\mathbb Z\omega.
+	\]
+	所有更高次群为零，正次生成元的乘法由
+	\begin{equation}\label{g2:eq:orientable-surface-products}
+		a_i a_j=b_i b_j=0,\qquad a_i b_j=\delta_{ij}\omega,\qquad b_j a_i=-\delta_{ij}\omega
+	\end{equation}
+	完全决定。\(\Sigma_0=S^2\) 的环为 \(\mathbb Z[\omega]/(\omega^2)\)，其中 \(|\omega|=2\)。
+\end{theorem}
+\begin{proof}
+	取\cref{g2:lem:surface-pinch-cohomology}的映射 \(q:\Sigma_g\to\bigvee_iT^2\)。在每个环面上选择\cref{g2:prop:torus-cohomology-ring}的一次基 \(x_i,y_i\)，使 \(x_i y_i=\omega_i\)，并通过收缩其他因子把这些类延拓到楔和。令 \(a_i=q^*x_i\)、\(b_i=q^*y_i\)。同因子中的平方为零，异因子之间的全部正次乘积为零；而 \(q^*\omega_i=\omega\)。杯积自然性于是给出全部关系。加性群已由\cref{g2:prop:surface-integer-homology}和万有系数定理确定，所以这些关系没有遗漏其他乘法。\(S^2\) 的结论直接来自它的上同调只在次数 \(0,2\) 非零。
+\end{proof}
+
+不可定向曲面宜先用模 \(2\) 系数观察乘法。这样即使一条边沿同一个方向出现两次，它在边界中仍会抵消。与可定向曲面的主要区别不是交换律中的负号，而是某个一次类的平方可以非零。我们先把这个现象在 \(\mathbb RP^2\) 上算清楚。
+
+\begin{lemma}[射影平面的一次平方]\label{g2:lem:projective-plane-square}
+	设 \(t\) 是 \(H^1(\mathbb RP^2;\mathbb F_2)\) 的非零类，则 \(t^2\) 是 \(H^2(\mathbb RP^2;\mathbb F_2)\) 的非零类。因此
+	\[
+		H^*(\mathbb RP^2;\mathbb F_2)\cong\mathbb F_2[t]/(t^3),\qquad |t|=1.
+	\]
+\end{lemma}
+\begin{proof}
+	考虑系数短正合列
+	\[
+		0\longrightarrow\mathbb F_2\xrightarrow{\ \iota\ }\mathbb Z/4\xrightarrow{\ \rho\ }\mathbb F_2\longrightarrow0,
+		\qquad\iota(1)=2,
+	\]
+	其中 \(\rho\) 为模 \(2\) 映射。奇异链群是自由阿贝尔群，所以对每个奇异单形逐一提升上链的值，得到上链复形的短正合列及连接同态 \(\beta:H^1(X;\mathbb F_2)\to H^2(X;\mathbb F_2)\)。它的具体算法是：把模 \(2\) 闭上链 \(c\) 的每个值提升为 \(0\) 或 \(1\)，得到模 \(4\) 上链 \(\widetilde c\)；其上边界取值于 \(\{0,2\}\)，除以 \(2\) 再模 \(2\)，所得闭上链代表 \(\beta[c]\)。
+
+	在一个奇异二单形 \([v_0v_1v_2]\) 上，记 \(c[v_0v_1]=r\)、\(c[v_1v_2]=s\)，其中 \(r,s\in\{0,1\}\)。闭性条件给出 \(c[v_0v_2]\equiv r+s\pmod2\)，因此
+	\[
+		\frac{(\delta\widetilde c)[v_0v_1v_2]}2
+		=\frac{s-\bigl((r+s)\bmod2\bigr)+r}{2}
+		\equiv rs\pmod2.
+	\]
+	右端正是\cref{g2:def:cup-product}的 \((c\smile c)[v_0v_1v_2]\)。于是对任意空间，\(\beta[c]=[c]^2\) 在一次都成立。
+
+	对 \(X=\mathbb RP^2\)，\cref{g2:prop:projective-integer-homology}给出 \(H_1(X;\mathbb Z)=\mathbb Z/2\)。一次万有系数同构及其自然性说明 \(H^1(X;\mathbb Z/4)\to H^1(X;\mathbb F_2)\) 对应 \(\operatorname{Hom}(\mathbb Z/2,\mathbb Z/4)\to\operatorname{Hom}(\mathbb Z/2,\mathbb F_2)\)。前一群的同态只能把生成元送到 \(0\) 或 \(2\)，经 \(\rho\) 都变成零。系数长正合列因而说明 \(\beta\) 在一次单射。由\cref{g2:cor:cellular-coefficients}，模 \(2\) 胞腔微分全为零；域系数的上同调取值同构因而说明 \(H^1(X;\mathbb F_2)\) 与 \(H^2(X;\mathbb F_2)\) 都是一维；于是 \(t^2=\beta(t)\ne0\)。高于二次的群为零，得到所述环。
+\end{proof}
+
+\begin{proposition}[不可定向曲面的模二上同调环]\label{g2:prop:nonorientable-surface-ring}
+	设 \(N_h\) 是 \(h\geq1\) 个实射影平面的连通和。存在一次基 \(c_1,\ldots,c_h\) 及二次生成元 \(\omega\)，使
+	\[
+		H^0(N_h;\mathbb F_2)=\mathbb F_2,\qquad
+		H^1(N_h;\mathbb F_2)=\mathbb F_2^h,\qquad
+		H^2(N_h;\mathbb F_2)=\mathbb F_2\omega,
+	\]
+	更高次群为零，而乘法为
+	\begin{equation}\label{g2:eq:nonorientable-surface-products}
+		c_i c_j=0\quad(i\ne j),\qquad c_i^2=\omega\quad(1\leq i\leq h).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	\cref{g2:lem:surface-pinch-cohomology}给出 \(q:N_h\to\bigvee_i\mathbb RP^2\)，且一次拉回同构，二次拉回将各因子的非零类送到共同的 \(\omega\)。把各因子的一次类记为 \(t_i\)，令 \(c_i=q^*t_i\)。由\cref{g2:lem:projective-plane-square}，\(c_i^2=q^*(t_i^2)=\omega\)；异因子的乘积由\eqref{g2:eq:wedge-positive-cohomology}为零。这给出了全部一次乘法，而更高正次乘积因次数超过 \(2\) 为零。
+\end{proof}
+
+这里的系数必须明确。整数系数下，\(H^2(N_h;\mathbb Z)=\mathbb Z/2\) 来自万有系数正合列中的 \(\operatorname{Ext}\) 项；模 \(2\) 系数下，顶次类又能通过三角形和来评价。它们不是可以不加说明地互换的同一个计算。特别地，模 \(2\) 交换律并不迫使奇次平方为零，\(c_i^2=\omega\) 正说明了这一点。
 
 \subsection{复射影空间的生成元和关系}
 \label{g2:subsec:0405:02}
-待撰写
+\cref{g2:prop:projective-integer-homology}已经给出 \(\mathbb CP^n\) 的整数同调：每个偶数次数 \(0,2,\ldots,2n\) 各有一个 \(\mathbb Z\)，其余为零。由于这些群自由，万有系数定理给出完全相同的上同调加性群。但是，仅凭这个结果还不能断言二次生成元 \(u\) 的平方是四次生成元：它可能是零，也可能是该生成元的某个非单位整数倍。下面的证明正是为了确定这个整数倍。
+
+\begin{theorem}[复射影空间的上同调环]\label{g2:thm:complex-projective-ring}
+	对整数 \(n\geq1\)，若 \(u\) 是 \(H^2(\mathbb CP^n;\mathbb Z)\) 的任一生成元，则
+	\[
+		H^*(\mathbb CP^n;\mathbb Z)\cong\mathbb Z[u]/(u^{n+1}),\qquad |u|=2.
+	\]
+	标准包含 \(\mathbb CP^k\hookrightarrow\mathbb CP^n\) 在 \(0\leq k\leq n\) 时将该环限制为截断到次数 \(2k\) 的环。赋予标准 CW 弱拓扑的无限复射影空间满足
+	\[
+		H^*(\mathbb CP^\infty;\mathbb Z)\cong\mathbb Z[u],\qquad |u|=2.
+	\]
+\end{theorem}
+\begin{proof}
+	先证有限维情形。记 \(X=\mathbb CP^n\)，在齐次坐标 \([z_0:\cdots:z_n]\) 中取点 \(p=[1:0:\cdots:0]\) 及 \(n\) 个超平面
+	\[
+		H_j=\{z_j=0\},\qquad A_j=X\setminus H_j=\{z_j\ne0\},\qquad 1\leq j\leq n.
+	\]
+	每个 \(A_j\) 都是仿射坐标图 \(\mathbb C^n\)，因而可缩。\cref{g2:prop:relative-cohomology-exactness}的空间对长正合列说明忘去相对条件的映射 \(H^2(X,A_j;\mathbb Z)\to H^2(X;\mathbb Z)\) 是同构，因为它两侧的 \(H^1(A_j;\mathbb Z)\)、\(H^2(A_j;\mathbb Z)\) 都为零。于是 \(u\) 有唯一相对提升 \(\widetilde u_j\)。这些提升可以理解为：计算 \(u\) 时，把超平面 \(H_j\) 之外的部分作为可以忽略的区域。
+
+	相对杯积的目标由被忽略区域的并集决定。所有 \(A_j\) 都开，且
+	\[
+		A_1\cup\cdots\cup A_n=X\setminus\{p\}.
+	\]
+	由\cref{g2:prop:relative-cup-product}，迭代相对杯积得到
+	\[
+		v=\widetilde u_1\smile\cdots\smile\widetilde u_n
+		\in H^{2n}(X,X\setminus\{p\};\mathbb Z),
+	\]
+	它在绝对上同调中的像为 \(u^n\)。证明现在分成两件事：\(v\) 是局部群的生成元，而且这个局部群到绝对顶次上同调的映射是同构。
+
+	取含 \(p\) 的仿射图 \(U=\{z_0\ne0\}\)，以 \(w_j=z_j/z_0\) 识别为 \(\mathbb C^n\)。在这里，\(A_j\cap U=\{w_j\ne0\}\)。要知道 \(\widetilde u_j\) 限制后的整数倍数，考虑坐标直线
+	\[
+		L_j=\{[z_0:0:\cdots:z_j:\cdots:0]\}\cong\mathbb CP^1.
+	\]
+	标准胞腔包含在二次同调上为同构，故 \(H^2(X;\mathbb Z)\to H^2(L_j;\mathbb Z)\) 也是同构。对于非第一条坐标直线，交换坐标给出同样的结论；这种交换是 \(X\) 的同胚，并把第一条坐标直线送到 \(L_j\)。又因 \(A_j\cap L_j=L_j\setminus\{p\}\cong\mathbb C\)，下图两条水平箭头和右侧箭头均为同构：
+	\[
+		\begin{tikzcd}[column sep=large]
+			H^2(X,A_j;\mathbb Z) \arrow[r] \arrow[d] & H^2(X;\mathbb Z) \arrow[d] \\
+			H^2(L_j,L_j\setminus\{p\};\mathbb Z) \arrow[r] & H^2(L_j;\mathbb Z).
+		\end{tikzcd}
+	\]
+	因此左侧箭头也为同构，\(\widetilde u_j\) 限制到这条直线的局部类是生成元。再切除到 \(L_j\cap U\)，得到 \(H^2(\mathbb C,\mathbb C\setminus\{0\};\mathbb Z)\) 的生成元。另一方面，空间对 \((U,A_j\cap U)\) 沿其他 \(n-1\) 个坐标同时收缩到这条坐标轴，故它的相对二次上同调也由该限制完全确定。若 \(\eta_j\) 表示 \(\mathbb C\) 在原点处的一个相对生成元，\(\pi_j:U\to\mathbb C\) 为坐标投影，则 \(\widetilde u_j|_U=\pm\pi_j^*\eta_j\)。
+
+	于是 \(v|_U\) 就是 \(n\) 个平面局部生成元的外积，至多相差符号。\cref{g2:prop:local-cross-normalization}说明，该外积与乘积圆盘的相对基本链配对为 \(\pm1\)，所以它生成
+	\[
+		H^{2n}(\mathbb C^n,\mathbb C^n\setminus\{0\};\mathbb Z)\cong\mathbb Z.
+	\]
+	这一步也可直接把每个平面换成原点周围的小闭圆盘：各相对二次类在圆盘上取值 \(\pm1\)，乘积链的评价是这些数的乘积，而乘积圆盘的边界恰对应“至少一个坐标落在边界上”。\cref{g2:prop:relative-cohomology-exactness}的切除结论把这个局部群与 \(H^{2n}(X,X\setminus\{p\};\mathbb Z)\) 识别，故 \(v\) 是后者的生成元。
+
+	最后，\(X\setminus\{p\}\) 变形收缩到超平面 \(\{z_0=0\}\cong\mathbb CP^{n-1}\)。显式收缩为
+	\[
+		[z_0:z_1:\cdots:z_n]\longmapsto[(1-t)z_0:z_1:\cdots:z_n],\qquad 0\leq t\leq1.
+	\]
+	在所用定义域中，\((z_1,\ldots,z_n)\ne0\)，所以此公式始终有定义并固定目标超平面。因而补空间在次数 \(2n-1,2n\) 的上同调均为零，空间对长正合列给出
+	\[
+		H^{2n}(X,X\setminus\{p\};\mathbb Z)\xrightarrow{\ \cong\ }H^{2n}(X;\mathbb Z).
+	\]
+	\(v\) 的像 \(u^n\) 因此是顶次生成元。
+
+	对每个 \(1\leq k\leq n\)，标准包含 \(\mathbb CP^k\hookrightarrow\mathbb CP^n\) 在二次和 \(2k\) 次上同调上都是同构；这由相容的偶维胞腔基及万有系数同构得到。将上述顶次计算用于 \(\mathbb CP^k\)，可知 \(u^k\) 生成 \(H^{2k}(\mathbb CP^n;\mathbb Z)\)。这些幂连同单位元已经穷尽全部加性基，且 \(2n\) 次以上没有群，故唯一所需截断关系是 \(u^{n+1}=0\)。
+
+	对于 \(\mathbb CP^\infty\)，每个固定次数的胞腔链和对应同调在足够大的有限阶段已经稳定；相应同调群自由，万有系数同构于是保证 \(H^{2k}(\mathbb CP^\infty;\mathbb Z)\to H^{2k}(\mathbb CP^n;\mathbb Z)\) 在 \(n\geq k\) 时为同构。选择二次生成元 \(u\)，再限制到各有限阶段，就知每个 \(u^k\) 都生成该次群。分次上同调环按各次群的直和定义，一个元素只有有限多个非零齐次分量，因此得到多项式环 \(\mathbb Z[u]\)，而不是形式幂级数环。
+\end{proof}
+
+证明中起决定作用的是超平面的共同交点。在 \(\mathbb CP^2\) 中，两个坐标射影直线交于 \(p\)，它们对应的相对二次类在 \(p\) 附近分别检测两个复坐标方向；相乘后就检测一个四维邻域。这个图景解释了 \(u^2\) 为什么有机会非零，而局部外积配对为 \(\pm1\) 则进一步排除了它只是顶次生成元的两倍或三倍。这里的坐标与相对杯积证明可与\cite[第3.2节，Spaces with Polynomial Cohomology]{Hatcher2002}对照。
 
 \subsection{相同加性同调、不同乘法结构的模型}
 \label{g2:subsec:0405:03}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+前面的计算给出两种区分空间的办法：环面的一次类可以相乘得到顶次类，复射影平面的二次类可以平方得到四次生成元。下面分别与加性同调相同的楔和比较，考察这两种乘积在楔和中为何消失。
+
+\begin{example}[环面与球面圆周的楔和]\label{g2:exm:torus-wedge-ring}
+	令 \(X=T^2\)、\(Y=S^1\vee S^1\vee S^2\)。两者的整数同调群在次数 \(0,1,2\) 分别是 \(\mathbb Z,\mathbb Z^2,\mathbb Z\)，其他次数为零。但 \(H^*(X;\mathbb Z)\) 中存在一次类 \(x,y\) 使 \(xy\ne0\)，而 \(H^*(Y;\mathbb Z)\) 中任意两个一次类的乘积均为零。后一断言可由\eqref{g2:eq:wedge-positive-cohomology}逐因子核对：在圆周因子上二次群为零，在球面因子上一次群为零。于是两环不可能同构。因为连续映射诱导保持杯积的拉回，同伦等价必诱导上同调环同构，所以 \(X,Y\) 不同伦等价。
+\end{example}
+
+\begin{example}[复射影平面与两个球面的楔和]\label{g2:exm:projective-plane-wedge-ring}
+	令 \(X=\mathbb CP^2\)、\(Y=S^2\vee S^4\)。两者的整数同调群都仅在次数 \(0,2,4\) 为 \(\mathbb Z\)。然而 \(X\) 的二次生成元 \(u\) 满足 \(u^2\ne0\)，而 \(Y\) 的每个二次类平方为零：它在 \(S^2\) 上的平方因次数为零，在 \(S^4\) 上的限制本身就为零。故两者不同伦等价。这里没有一维同调参与，差异完全发生在偶数次的乘法中。
+\end{example}
+
+系数变化还可能消去加性群的区别，同时保留乘法上的差异。对 \(g\geq1\)，\(\Sigma_g\) 与 \(N_{2g}\) 的模 \(2\) 加性同调都在次数 \(0,1,2\) 为 \(\mathbb F_2,\mathbb F_2^{2g},\mathbb F_2\)。前者任意一次类的平方为零：\eqref{g2:eq:orientable-surface-products}模 \(2\) 后，每个基元平方为零，交叉项成对出现。后者则有 \(c_i^2=\omega\ne0\)，所以两者的模 \(2\) 上同调环不同。这项比较的系数始终为 \(\mathbb F_2\)。
