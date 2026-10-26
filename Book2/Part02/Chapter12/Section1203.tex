@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 12.3 Postnikov 塔的构造
 % 纲要位置：几何学计划纲要.md，第 1486 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,283 @@
 \section{Postnikov 塔的构造}
 \label{g2:sec:1203}
 
-待撰写
+前两节把映射的构造分成逐个胞腔的延拓。本节从另一端分解问题：保留目标空间的低阶同伦群，逐次舍去高阶同伦群。第11章已用这样的截段证明有限生成性；现在要说明相邻截段怎样接在一起，以及这部分接合信息为何不能从同伦群的清单中读出。
 
 \subsection{逐次消去高阶同伦群}
 \label{g2:subsec:1203:01}
-待撰写
+
+设 \(X\) 为单连通带基点 CW 复形。\cref{g2:lem:finite-homotopy-truncations}构造了 \(X\hookrightarrow X[n]\)：依次附着 \((n+2),(n+3),\ldots\) 维胞腔，消去 \(\pi_{n+1},\pi_{n+2},\ldots\)，同时保留 \(\pi_i\)（\(i\le n\)）。注意这与取 \(n\) 骨架的方向相反。取骨架是删去高维胞腔，可能重新产生高阶同伦；这里则添加高维胞腔，为原来不能填充的球面提供填充。
+
+\begin{definition}[Postnikov 塔]\label{g2:def:postnikov-tower}
+	设 \(X\) 为道路连通带基点空间。一列带基点映射
+	\[
+		\cdots\xrightarrow{p_{n+1}}P_nX\xrightarrow{p_n}P_{n-1}X\longrightarrow\cdots\longrightarrow P_1X
+	\]
+	连同相容映射 \(a_n:X\to P_nX\)，若满足 \(p_na_n=a_{n-1}\)、\((a_n)_*:\pi_i(X)\xrightarrow{\cong}\pi_i(P_nX)\)（\(i\le n\)），以及 \(\pi_i(P_nX)=0\)（\(i>n\)），就称为 \(X\) 的\term[Postnikov ta]{Postnikov 塔}[Postnikov tower]。空间 \(P_nX\) 称为第 \(n\) 阶段；高于 \(n\) 的同伦群全为零的空间也称为一个\term[n xing]{\(n\)-型}[\(n\)-type]。
+\end{definition}
+
+Postnikov 塔\footnote{Mikhail Mikhailovich Postnikov（1927—2004），苏联、俄罗斯数学家，主要研究代数拓扑与同伦理论，长期任教于莫斯科大学。}的下标记录保留的最高同伦次数。对单连通空间，可取 \(P_1X=\{*\}\)。第一个有可能非平凡的阶段是 \(P_2X\)，它只保留 \(\pi_2(X)\)。\symidx{\(P_nX\)：空间的第 \(n\) 个 Postnikov 阶段}
+
+\begin{theorem}[Postnikov 塔的存在]\label{g2:thm:postnikov-tower-existence}
+	每个单连通带基点 CW 复形 \(X\) 都有 Postnikov 塔，且可使每张 \(p_n\)（\(n\ge2\)）为 Hurewicz 纤维化，各阶段具有 CW 同伦型。
+\end{theorem}
+\begin{proof}
+	先用 \(X[n]\) 构造相容的 CW 阶段。包含 \(X\to X[n-1]\) 可延拓为 \(q_n:X[n]\to X[n-1]\)：在一个新加的 \(d\) 胞腔上，\(d\ge n+2\)，延拓障碍属于 \(\pi_{d-1}(X[n-1])=0\)。逐胞腔作延拓，并用相对胞腔逼近保持 \(X\) 上的原映射，就得到 \(q_n|_X=\operatorname{id}_X\) 后接包含。各 \(X[n]\) 已有定义所需的同伦群。
+
+	再由下往上作路径纤维化替换。取 \(P_1X=\{*\}\)，并令 \(j_1:X[1]\to P_1X\) 为同伦等价。假定已有同伦等价 \(j_{n-1}:X[n-1]\to P_{n-1}X\)。把复合 \(f_n=j_{n-1}q_n\) 替换为
+	\[
+		P_nX=\{(z,\gamma):z\in X[n],\ \gamma:I\to P_{n-1}X,\ \gamma(0)=f_n(z)\},
+		\qquad p_n(z,\gamma)=\gamma(1).
+	\]
+	\cref{g2:prop:fibration-replacement}说明 \(p_n\) 是 Hurewicz 纤维化，而 \(j_n(z)=(z,\text{常值道路 }f_n(z))\) 是同伦等价。令 \(a_n=j_n|_X\)，便有严格等式
+	\[
+		p_na_n=j_{n-1}q_n|_X=j_{n-1}|_X=a_{n-1}.
+	\]
+	所以替换没有破坏塔的相容性，也没有改变任何阶段的同伦群。
+\end{proof}
+
+这项构造有许多选择，但阶段作为 \(X\) 的截段具有确定的同伦意义。若 \(Y\) 是带基点 \(n\)-型，则限制给出双射
+\begin{equation}\label{g2:eq:postnikov-truncation-universal}
+	[X[n],Y]_*\xrightarrow{\cong}[X,Y]_*.
+\end{equation}
+存在性来自新增胞腔的边界映入 \(Y\) 后总能填充，因为边界维数至少为 \(n+1\)。唯一性则把同一延拓问题用于圆柱：一个相对 \(d\) 胞腔对应的同伦延拓障碍在 \(\pi_d(Y)\) 中，仍为零。无限多个胞腔的延拓按弱拓扑粘合，得到全局映射与同伦。因此两个截段之间可延拓 \(X\) 上的相同映射，得到互逆到同伦的比较；这也说明将 \(X[n]\) 换成同伦等价的 \(P_nX\) 只改变模型。
+
+\ProseParagraphBreak
+
+特别地，\(P_2X\) 是 \(K(\pi_2(X),2)\) 的同伦型；如果 \(X\) 已经是 \(N\)-型，则 \(a_N:X\to P_NX\) 在全部同伦群上为同构，CW 模型之间的 Whitehead 定理便使它成为同伦等价。阶段保留的是整个低阶同伦结构，而不仅是某几个群的抽象副本。
 
 \subsection{Eilenberg–MacLane 纤维}
 \label{g2:subsec:1203:02}
-待撰写
+
+相邻阶段只相差一个同伦群，纤维正好把这个差别单独装出来。
+
+\begin{proposition}[阶段之间的纤维]\label{g2:prop:postnikov-stage-fiber}
+	设 \(X\) 为单连通带基点 CW 复形，取上一构造的纤维化塔。对 \(n\ge2\)，\(p_n:P_nX\to P_{n-1}X\) 的纤维 \(F_n\) 道路连通，并满足
+	\[
+		\pi_i(F_n)=0\quad(i\ne n),\qquad \pi_n(F_n)\cong\pi_n(X).
+	\]
+	因此它的 CW 逼近为 \(K(\pi_n(X),n)\)，阶段纤维序列可记为
+	\begin{equation}\label{g2:eq:postnikov-stage-fibration}
+		K(\pi_n(X),n)\longrightarrow P_nX\xrightarrow{p_n}P_{n-1}X.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	总空间与基底均单连通，长正合列的末段先给出纤维道路连通。对 \(i<n\)，映射 \((p_n)_*\) 是由两张 \(a_n\) 给出的同构；在 \(i=n\) 时，基底的 \(\pi_n\) 与 \(\pi_{n+1}\) 均为零。因此长正合列给出
+	\[
+		\pi_i(F_n)=0\ (i<n),\qquad \pi_n(F_n)\xrightarrow{\cong}\pi_n(P_nX)=\pi_n(X).
+	\]
+	对 \(i>n\)，两阶段对应的同伦群全为零，纤维群也为零。CW 逼近保留这些群；第9章的 Eilenberg–MacLane 定义及第11章对其模型唯一性的证明给出最后的识别。
+\end{proof}
+
+式\eqref{g2:eq:postnikov-stage-fibration}并没有说 \(P_nX\) 是基底与纤维的乘积。此前的 Hopf 丛已经表明，同样的基底与纤维可能产生不同的总空间。这里纤维只剩一个同伦群，使粘合信息能够由一个上同调类记录，但仍需要把这个类找出来。
+
+\ProseParagraphBreak
+
+整座纤维化塔还保留了 \(X\) 的弱同伦型。说明这一点有助于理解为什么逐阶研究最终足以恢复全部同伦信息。
+
+\begin{proposition}[从塔恢复弱同伦型]\label{g2:prop:postnikov-limit}
+	对\cref{g2:thm:postnikov-tower-existence}中的纤维化塔，逆极限
+	\[
+		P_\infty X=\{(z_1,z_2,\ldots)\in\textstyle\prod_nP_nX:p_n(z_n)=z_{n-1}\}
+	\]
+	带子空间拓扑。相容映射给出 \(a:X\to P_\infty X\)，它是弱同伦等价。
+\end{proposition}
+\begin{proof}
+	固定 \(i\ge1\)。同伦群系统 \(\pi_i(P_nX)\) 从 \(n\ge i\) 起稳定为 \(\pi_i(X)\)。先证明
+	\[
+		\pi_i(P_\infty X)\longrightarrow\varprojlim_n\pi_i(P_nX)
+	\]
+	满射。给定右边相容的同伦类，逐层选带基点代表 \(f_n:S^i\to P_nX\)。已有 \(f_{n-1}\) 后，\(p_nf_n\) 与 \(f_{n-1}\) 带基点同伦；相对基点提升这段同伦，便能调整 \(f_n\) 使 \(p_nf_n=f_{n-1}\) 严格成立。所有坐标合在一起给出到逆极限的连续映射。
+
+	再设 \(f:S^i\to P_\infty X\) 在每个坐标上都零伦。取足够大的 \(N\)，使 \(\pi_{i+1}(P_nX)\to\pi_{i+1}(P_{n-1}X)\) 在 \(n>N\) 时全为同构。先选 \(f_N\) 的零伦 \(G_N:D^{i+1}\to P_NX\)。假定已选 \(G_{n-1}\)，任选 \(f_n\) 的零伦 \(G_n\)。映射 \(p_nG_n\) 与 \(G_{n-1}\) 在边界相同，将它们沿边界反向粘合，得到 \(P_{n-1}X\) 中的一个 \((i+1)\) 球面类。上述同伦群满射允许从 \(P_nX\) 中提升这个类；在 \(G_n\) 的圆盘内部接入相反的球面代表，即可使两张圆盘映射相对边界同伦。相对边界的同伦提升又将其改成严格等式 \(p_nG_n=G_{n-1}\)。递推所得相容零伦给出 \(f\) 在逆极限中的零伦。前 \(N-1\) 个坐标由投影取得，所以舍去有限个初始阶段不会遗漏条件。
+
+	同样的道路构造处理道路分支：各阶段道路连通，而 \(\pi_1(P_nX)=0\) 使逐层选择的道路可以调整为相容道路。因此逆极限道路连通。综上，\(\pi_i(P_\infty X)\) 与稳定群 \(\pi_i(X)\) 同构，且这些同构由 \(a\) 给出。
+\end{proof}
+
+逆极限本身未必是 CW 复形，所以这里结论写为弱同伦等价。取它的 CW 逼近后，Whitehead 定理便恢复 \(X\) 的 CW 同伦型。上面的证明实际使用了各次同伦群最终稳定；一般逆极限不能直接把同伦群逐项取极限。
 
 \subsection{k-不变量和阶段之间的粘合}
 \label{g2:subsec:1203:03}
-待撰写
+
+前节的可表性定理把 \(H^{n+1}(B;G)\) 中的类表示为映射 \(B\to K(G,n+1)\)。给出这样的映射 \(\kappa\)，就可以拉回路径纤维化，构造
+\begin{equation}\label{g2:eq:k-invariant-path-model}
+	E_\kappa=\{(b,\lambda):b\in B,\ \lambda(0)=\kappa(b),\ \lambda(1)=*\}
+	\longrightarrow B.
+\end{equation}
+纤维是 \(\Omega K(G,n+1)\)，其唯一非零同伦群是 \(\pi_n\cong G\)。道路从 \(\kappa(b)\) 指向基点，这正是第8章规定的 \(\operatorname{hofib}(\kappa)\) 模型。它拉回的是终点固定的路径纤维化 \(P^{\mathrm{in}}K\xrightarrow{\operatorname{ev}_0}K\)。
+
+\ProseParagraphBreak
+
+关键问题是：每张阶段纤维化是否都能由这种形式得到？下面用一个实际构造证明，而后再把构造得到的映射识别为障碍类。
+
+\begin{lemma}[单一同伦纤维的粘合映射]\label{g2:lem:principal-em-fibration}
+	设 \(q:Z\to B\) 是单连通带基点 CW 复形之间的映射，\(n\ge2\)，其同伦纤维具有 \(K(G,n)\) 的弱同伦型，其中 \(G\) 为阿贝尔群。则存在带基点映射 \(\kappa:B\to K(G,n+1)\) 和覆盖 \(B\) 的弱同伦等价
+	\[
+		j:Z\longrightarrow E_\kappa,\qquad \operatorname{pr}_B j=q.
+	\]
+	可以按指定的 \(\pi_n(\operatorname{hofib}q)\cong G\) 选择模型，使纤维比较在这个群上为恒等。
+\end{lemma}
+\begin{proof}
+	先假设 \(q\) 胞腔。一般情形取带基点胞腔逼近 \(q'\) 及同伦 \(H:q\simeq q'\)；为 \(q'\) 构造比较后，在所得道路前接上 \(\kappa H(z,-)\)，并将基底坐标改为 \(q(z)\)，便得到原映射的比较。令 \(M=M_q\) 为映射柱，内含 \(Z=Z\times\{0\}\)，另一端为 \(B\)。\(M\) 形变收缩到 \(B\)，且 \((M,Z)\) 为 CW 对。同伦纤维与相对同伦群的长正合列比较给出
+	\[
+		\pi_i(M,Z)=0\ (i\ne n+1),\qquad \pi_{n+1}(M,Z)\cong G.
+	\]
+	具体地，把 \(q\) 作路径纤维化替换后，相对圆盘的基底投影与纤维中的边界互相对应，得到 \(\pi_i(M,Z)\cong\pi_{i-1}(\operatorname{hofib}q)\)（\(i\ge2\)）。这也是第8章纤维化长正合列的空间对形式。
+
+	将 \(Z\) 压成一点，记 \(Q=M/Z\)。相对 Hurewicz 定理用于单连通的 \(M,Z\)，说明 \(H_i(M,Z)=0\)（\(i\le n\)），且 \(H_{n+1}(M,Z)\cong G\)。商的相对胞腔链给出 \(\widetilde H_i(Q)\cong H_i(M,Z)\)。此外 \(Q\) 单连通：把商视作在 \(M\) 上沿 \(Z\) 附着一个锥，van Kampen 将其基本群识别为 \(\pi_1(M)\) 除去 \(\pi_1(Z)\) 的像的正规闭包，两者在这里均为零。依次使用首个非零次数的 Hurewicz 定理，便知 \(Q\) 为 \(n\) 连通，且 \(\pi_{n+1}(Q)\cong G\)。相对与绝对 Hurewicz 映射的自然性还说明，商映射诱导
+	\[
+		\pi_{n+1}(M,Z)\xrightarrow{\cong}\pi_{n+1}(Q).
+	\]
+
+	现在从 \(Q\) 开始附着维数至少为 \(n+3\) 的胞腔，逐次消去更高同伦群，得到 \(K=K(G,n+1)\) 及 \(v:Q\to K\)。复合 \(\bar\kappa:M\to Q\xrightarrow{v}K\) 在 \(Z\) 上恒取基点，并在全部相对同伦群上给出同构
+	\[
+		\pi_i(M,Z)\xrightarrow{\cong}\pi_i(K,*).
+	\]
+	将 \(\bar\kappa\) 限制到映射柱的另一端 \(B\)，定义 \(\kappa:B\to K\)。对 \(z\in Z\)，反向走过映射柱线段，得到道路 \(\lambda_z(t)=\bar\kappa([z,1-t])\)，其起点为 \(\kappa(q(z))\)、终点为 \(*\)。因此
+	\[
+		j(z)=(q(z),\lambda_z)
+	\]
+	是一张所需的连续映射。
+
+	最后验证弱等价。比较空间对 \((M,Z)\) 的长正合列与 \(E_\kappa\to B\to K\) 的同伦纤维序列，得到
+	\[
+		\begin{tikzcd}[column sep=small]
+			\pi_{i+1}(B)\arrow[r]\arrow[d,equal]&\pi_{i+1}(M,Z)\arrow[r]\arrow[d,"\cong"]&\pi_i(Z)\arrow[r]\arrow[d,"j_*"]&\pi_i(B)\arrow[r]\arrow[d,equal]&\pi_i(M,Z)\arrow[d,"\cong"]\\
+			\pi_{i+1}(B)\arrow[r]&\pi_{i+1}(K)\arrow[r]&\pi_i(E_\kappa)\arrow[r]&\pi_i(B)\arrow[r]&\pi_i(K).
+		\end{tikzcd}
+	\]
+	交换性来自 \(\bar\kappa\) 及刚写出的零伦 \(\lambda_z\)。两侧相对群的竖箭头已为同构，故长正合列给出所有 \(j_*\) 为同构；低阶项还说明两空间均单连通。所诱导的纤维比较在 \(\pi_n\) 上是某个 \(G\) 的自同构。改变 \(v\) 在唯一非零同伦群上的识别，即后接实现其逆的 \(K(G,n+1)\) 自同伦等价，就可使这张纤维比较为指定的恒等。这样的自同伦等价可按第11章 Eilenberg–MacLane 模型比较中的逐胞腔构造取得。
+\end{proof}
+
+构造中两次处理有不同作用：商 \(M/Z\) 把“在总空间上已经为零”的信息变成一个带基点对象；随后附着高维胞腔，只保留所需的 \(G\)。映射柱线段把这份相对信息重新变成 \(\kappa q\) 的一个具体零伦，所以能恢复总空间到同伦纤维的映射。
+
+\ProseParagraphBreak
+
+为了从这个构造读出上同调类，给 \(K(G,n+1)\) 选普遍类
+\[
+	\iota_{n+1}\in H^{n+1}(K(G,n+1);G)\cong\operatorname{Hom}(G,G),\qquad
+	\iota_{n+1}\longleftrightarrow\operatorname{id}_G.
+\]
+这个同构来自 Hurewicz 与万有系数定理，低于 \(n+1\) 的约化同调均为零。终点固定的路径空间可缩，所以空间对的连接同态 \(\delta_{\mathrm{in}}\) 给出同构。用
+\[
+	\sigma_{\mathrm{in}}\iota_{n+1}=\delta_{\mathrm{in}}^{-1}\operatorname{ev}_0^*\iota_{n+1}
+\]
+规定 \(H^n(\Omega K;G)\) 中的恒等类，即按这个类识别纤维的 \(\pi_n\cong G\)。第11章的相对传递判据直接给出
+\[
+	\mathrm d_{n+1}(\operatorname{id}_G)=\iota_{n+1}.
+\]
+这里仅使用加性谱序列；其构造对任意阿贝尔系数成立，不要求 \(G\) 自带环乘法。这个识别也明确记录了道路方向：反向道路映射 \(r:P^{\mathrm{in}}K\to P_*K\) 覆盖 \(K\) 上的恒等，故 \(r|_{\Omega K}^*(\sigma\iota_{n+1})=\sigma_{\mathrm{in}}\iota_{n+1}\)。在同一环路空间中，反向环路在 \(\pi_n(\Omega K)\) 上取负，因此入向与出向的两种悬挂类相差负号。引理中允许调整的纤维识别正是按这里的约定选择。
+
+\begin{definition}[阶段的 \(k\)-不变量]\label{g2:def:postnikov-k-invariant}
+	设 \(X\) 为单连通带基点 CW 复形，\(n\ge2\)，记 \(G=\pi_n(X)\)。在阶段纤维化\eqref{g2:eq:postnikov-stage-fibration}中，用 \(\pi_n(F_n)\cong G\) 将纤维类 \(\iota_F\in H^n(F_n;G)\) 识别为 \(\operatorname{id}_G\)。定义
+	\begin{equation}\label{g2:eq:postnikov-k-transgression}
+		k_{n+1}(X)=\mathrm d_{n+1}\iota_F\in H^{n+1}(P_{n-1}X;G),
+	\end{equation}
+	称为这一阶段的\term[k bubianliang]{\(k\)-不变量}[\(k\)-invariant]。下标 \(n+1\) 在本节记录上同调次数。
+\end{definition}
+
+这个传递在整个目标群中取值。因为 \(F_n\) 为 \((n-1)\) 连通，纤维上同调的第 \(1,\ldots,n-1\) 行全为零，没有更早微分改变 \((0,n)\) 与 \((n+1,0)\) 两项。基底单连通又使 \(G\) 的局部系统为常值。
+
+\begin{theorem}[由 \(k\)-不变量恢复阶段]\label{g2:thm:postnikov-k-reconstruction}
+	设 \(X\) 为单连通带基点 CW 复形。对 \(n\ge2\)，令 \(G=\pi_n(X)\)，并用\cref{g2:thm:em-representability}将 \(k_{n+1}(X)\) 表示为映射
+	\[
+		\kappa_{n+1}:P_{n-1}X\longrightarrow K(G,n+1).
+	\]
+	则 \(P_nX\) 与 \(\operatorname{hofib}(\kappa_{n+1})\) 具有相同的弱同伦型，比较保持到 \(P_{n-1}X\) 的映射及指定的纤维同伦群识别。在 CW 模型上，这给出同伦等价。特别地，若 \(k_{n+1}(X)=0\)，这一阶段分裂为 \(P_{n-1}X\times K(G,n)\) 的同伦型。
+\end{theorem}
+\begin{proof}
+	先在 \(X[n]\to X[n-1]\) 的 CW 模型上应用\cref{g2:lem:principal-em-fibration}，再经阶段同伦等价搬到 \(P_nX\to P_{n-1}X\)。得到某张 \(\kappa\) 及纤维上诱导恒等的弱等价。比较此纤维化与普遍路径纤维化，传递的自然性给出
+	\[
+		\mathrm d_{n+1}\iota_F=\kappa^*\iota_{n+1}.
+	\]
+	左边正是定义的 \(k_{n+1}(X)\)。所以构造出的 \(\kappa\) 表示所需类，可表性定理说明它与任意选定的 \(\kappa_{n+1}\) 同伦。
+
+	还需检查更换代表映射不改变总空间。若 \(H:B\times I\to K\) 是 \(\kappa_0\) 到 \(\kappa_1\) 的同伦，则在式\eqref{g2:eq:k-invariant-path-model}中的道路 \(\lambda\) 前接上反向道路 \(t\mapsto H(b,1-t)\)，得到覆盖 \(B\) 的映射 \(E_{\kappa_0}\to E_{\kappa_1}\)。用原向同伦给出逆；往返道路可保持端点收缩，故两复合与恒等映射纤维同伦。因而同伦类相同的代表给出相同的纤维同伦型。
+
+	当类为零时，取常值代表 \(\kappa=0\)。此时式\eqref{g2:eq:k-invariant-path-model}直接成为 \(B\times\Omega K(G,n+1)\)，其 CW 同伦型即 \(B\times K(G,n)\)。
+\end{proof}
+
+可以把这一构造画成拉回方块：
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		P_nX\arrow[r]\arrow[d,"p_n"']&P^{\mathrm{in}}K(G,n+1)\arrow[d,"\operatorname{ev}_0"]\\
+		P_{n-1}X\arrow[r,"\kappa_{n+1}"']&K(G,n+1).
+	\end{tikzcd}
+\]
+在本图中用同伦等价的模型替换 \(P_nX\)，上边的路径空间可缩，纤维均为 \(K(G,n)\)。底边的一张映射便决定了这一层怎样附着。
+
+\ProseParagraphBreak
+
+\(k_{n+1}\) 与阶段纤维化的首截面障碍相联系，但须遵守两种边界的方向。若障碍 \(o_{n+1}\) 按胞腔正向边界上的截面映射取值，则本书的约定给出
+\[
+	o_{n+1}=-k_{n+1}.
+\]
+可在单个胞腔上看见这个符号。把纤维化拉回 \(D^{n+1}\)，在圆盘上选一个局部截面，其边界记为 \(l\)；既定骨架截面的边界记为 \(s\)。两者的差 \(s-l\) 经纤维方向的变形代表障碍 \(o_{n+1}\)。因此与 \(\iota_F\) 配对，若 \(A\) 是骨架上延拓纤维恒等类的上圈，就有 \(A(s)-A(l)=o_{n+1}\)。延拓 \(A\) 为下一层的上链后，传递上链在该胞腔上取值 \(A(l)\)；而 \(A(s)\) 是把 \(A\) 沿骨架截面拉回后所得上链的胞腔余边界。模去余边界，便得到 \(\tau\iota_F=-o_{n+1}\)。这与第11章“延拓后取余边界”的传递约定相容。
+
+\ProseParagraphBreak
+
+对给定 \(f:Y\to P_{n-1}X\)，式\eqref{g2:eq:k-invariant-path-model}直接说明：把 \(f\) 提升到 \(P_nX\)，就是给 \(\kappa_{n+1}f\) 选一个零伦；存在条件为
+\begin{equation}\label{g2:eq:postnikov-lift-obstruction}
+	f^*k_{n+1}(X)=0\in H^{n+1}(Y;G)
+\end{equation}
+其中 \(Y\) 为 CW 复形。这一次条件是完整条件，因为纤维 \(K(G,n)\) 没有其他非零同伦群。
+
+\ProseParagraphBreak
+
+一个 \(k\)-不变量的具体表达还依赖于对阶段与系数群的识别。若 \(h:B\to B'\) 是基底比较，\(\alpha:G\to G'\) 是系数同构，则对应的相容关系为 \(\alpha_*k=h^*k'\)。系数变化改变纤维的命名，基底比较则改变类所处的空间；恢复阶段时两者都要同时记录。对非单连通空间，逐次消去高阶同伦群仍产生阶段，但 \(\pi_1\) 对 \(\pi_n\) 的作用给出局部系统 \(\Pi_n\)，相应障碍应取在 \(H^{n+1}(P_{n-1}X;\Pi_n)\) 中。作用非平凡时，不能把它替换为上述到普通 \(K(G,n+1)\) 的常系数映射。
 
 \subsection{同伦群本身为何不足以重建空间}
 \label{g2:subsec:1203:04}
-待撰写
+
+现在给出同伦群完全相同、同伦型却不同的一族空间。取
+\[
+	B=K(\mathbb Z,2)=\mathbb CP^\infty,\qquad H^*(B;\mathbb Z)=\mathbb Z[u],\quad |u|=2.
+\]
+对整数 \(m\)，可表性定理给出代表 \(m u^2\in H^4(B;\mathbb Z)\) 的映射
+\[
+	\kappa_m:B\longrightarrow K(\mathbb Z,4).
+\]
+令 \(E_m\) 为其同伦纤维的 CW 逼近。等价的路径模型给出纤维化 \(K(\mathbb Z,3)\to E_m\to K(\mathbb Z,2)\)，以下计算在该模型上进行，CW 逼近不改变同伦群与奇异同调。
+
+\begin{example}[相同同伦群的不同三型]\label{g2:exm:postnikov-two-stage-family}
+	上述 \(E_m\) 均单连通，并且
+	\[
+		\pi_i(E_m)\cong
+		\begin{cases}
+			\mathbb Z,&i=2,3,\\
+			0,&i\ne2,3\quad(i\ge1).
+		\end{cases}
+	\]
+	然而
+	\[
+		H^3(E_m;\mathbb Z)\cong\ker(\mathbb Z\xrightarrow{\times m}\mathbb Z),\qquad
+		H^4(E_m;\mathbb Z)\cong\operatorname{coker}(\mathbb Z\xrightarrow{\times m}\mathbb Z).
+	\]
+	因此不同正整数 \(m\) 给出两两不同的同伦型；\(m=0\) 与 \(m=1\) 也不同。
+\end{example}
+\begin{proof}
+	对 \(E_m\to K(\mathbb Z,2)\to K(\mathbb Z,4)\) 用同伦长正合列。二次群由基底给出；三次群由连接同态 \(\pi_4(K(\mathbb Z,4))\to\pi_3(E_m)\) 给出；其余正阶项为零。这个计算与 \(m\) 无关，因为 \(\kappa_m\) 在全部同伦群上诱导零映射：两端唯一非零的次数不同。
+
+	上同调能看见 \(m\)。纤维 \(K(\mathbb Z,3)\) 可由 \(S^3\) 附着维数至少为五的胞腔构造，故其 \(H_3=\mathbb Z\)、\(H_4=0\)；万有系数定理给出 \(H^3=\mathbb Z\)、\(H^4=0\)，一次、二次也为零。按入向路径纤维化的悬挂类选择三次生成元 \(v\)。在总次数不超过四的范围，Serre 页只有基底的 \(1,u,u^2\) 和 \((0,3)\) 处的 \(v\)。唯一可能的微分为
+	\[
+		\mathrm d_4:\mathbb Zv\longrightarrow\mathbb Zu^2,\qquad \mathrm d_4v=m u^2,
+	\]
+	其中等式来自路径模型的自然性。第三次因此留下这张映射的核，第四次留下其余核；每个次数只有一层，故无加性扩张。
+
+	当 \(m=0\) 时，\(E_0\) 为 \(K(\mathbb Z,2)\times K(\mathbb Z,3)\) 的同伦型，三次、四次上同调均为 \(\mathbb Z\)。当 \(m=1\) 时，两群均为零；当 \(m>1\) 时，第四次群为 \(\mathbb Z/m\)。这些群区分了所列空间。
+\end{proof}
+
+这个例子也解释 Whitehead 定理中的映射条件。每个 \(E_m\) 都有同样的抽象同伦群，但若一张映射在全部同伦群上诱导同构，它就必须是 CW 模型之间的同伦等价，因而还必须保持刚算出的上同调。上述已由上同调区分的空间之间不存在这样的实现映射；障碍正包含在 \(k_4=m u^2\) 中。
+
+\ProseParagraphBreak
+
+球面 \(S^2\) 给出 \(m=1\) 的一个具体来源。已有 \(\pi_2(S^2)=\pi_3(S^2)=\mathbb Z\)，所以它的第三阶段位于
+\[
+	K(\mathbb Z,3)\longrightarrow P_3S^2\longrightarrow K(\mathbb Z,2).
+\]
+\(S^2\to S^2[3]\) 只添加维数至少为五的胞腔。因而 \(H_2=\mathbb Z\)、\(H_3=H_4=0\)；即使五胞腔能对四次同调增加边界关系，原来的四次群已经为零。万有系数定理遂给出 \(H^3(P_3S^2)=H^4(P_3S^2)=0\)。写 \(k_4(S^2)=m u^2\)，上一计算迫使乘 \(m\) 无核且无余核，故 \(m=\pm1\)。改变纤维生成元的符号后可取 \(m=1\)，所以 \(P_3S^2\) 是 \(\operatorname{hofib}(u^2:\mathbb CP^\infty\to K(\mathbb Z,4))\) 的 CW 同伦型。Hopf 类提供三次同伦群，\(u^2\) 则记录这层怎样接在二次阶段上。
+
+\ProseParagraphBreak
+
+对阶段构造、主纤维化与 \(k\)-不变量的进一步阅读，可参看\cite[第4.3节，Postnikov Towers]{Hatcher2002}及\cite[第22章第4节，Postnikov systems]{May1999}。本节采用上同调次数作为 \(k\) 的下标；比较不同文献时，先核对该类所在的 \(H^{n+1}(P_{n-1}X;\pi_nX)\)，再比较下标。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

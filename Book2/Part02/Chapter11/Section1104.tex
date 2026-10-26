@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 11.4 经典群与分类空间
 % 纲要位置：几何学计划纲要.md，第 1454 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,193 @@
 \section{经典群与分类空间}
 \label{g2:sec:1104}
 
-待撰写
+第八章把一个酉矩阵的第一列取出来，得到以低一阶酉群为纤维的球面丛。这张映射适合归纳：底球面只有两个非零上同调群，纤维的环结构又来自上一步。谱序列的乘法将使整页微分由少量生成元决定。随后考察总空间可缩的圆周丛，便能看到同一个纤维生成元怎样在另一种纤维化中传递成基底上的特征类。
 
 \subsection{酉群纤维序列的计算}
 \label{g2:subsec:1104:01}
-待撰写
+
+由\cref{g2:prop:classical-sphere-bundles}，取第一列给出局部平凡丛
+\[
+	\operatorname{U}(n-1)\xrightarrow{i_n}\operatorname{U}(n)\xrightarrow{p_n}S^{2n-1},
+	\qquad i_n(A)=\operatorname{diag}(1,A).
+\]
+当 \(n\ge2\) 时，底球面单连通，所以纤维上同调的局部系统为常值。这里完全使用整数系数；保留整数才能同时判断生成元的倍数以及挠项是否出现。
+
+\begin{theorem}[酉群的整数上同调环]\label{g2:thm:unitary-cohomology}
+	对每个 \(n\ge1\)，可选齐次类 \(x_{2j-1}\in H^{2j-1}(\operatorname{U}(n);\mathbb Z)\)（\(1\le j\le n\)），使
+	\[
+		H^*(\operatorname{U}(n);\mathbb Z)\cong\Lambda_{\mathbb Z}(x_1,x_3,\ldots,x_{2n-1}).
+	\]
+	这些选择可以逐个 \(n\) 相容，使 \(i_n^*x_{2j-1}\) 为低一阶酉群中的同名类（\(j<n\)），而 \(x_{2n-1}=p_n^*\omega_{2n-1}\)，其中 \(\omega_{2n-1}\) 是球面的一个整数上同调生成元。这里的外代数具有关系 \(x_ix_j=-x_jx_i\)、\(x_i^2=0\)；每个生成元至多出现一次的递增单项式构成其整数基。
+\end{theorem}
+\begin{proof}
+	初始情形为 \(\operatorname{U}(1)=S^1\)，其环是 \(\Lambda_{\mathbb Z}(x_1)\)。设已知 \(\operatorname{U}(n-1)\) 的结论。记 \(m=2n-1\)，并将纤维中的生成元暂记为 \(\bar x_1,\ldots,\bar x_{m-2}\)。基底球面的同调自由，故第二页及其乘法为
+	\[
+		E_2^{*,*}\cong H^*(S^m;\mathbb Z)\otimes\Lambda_{\mathbb Z}(\bar x_1,\ldots,\bar x_{m-2}).
+	\]
+	只有第 \(0,m\) 两列可能非零。由 \(\mathrm d_r\) 的双次数，唯一可能非零的微分为 \(\mathrm d_m\)，从第零列指向第 \(m\) 列。对每个旧生成元，
+	\[
+		\mathrm d_m:E_m^{0,2j-1}\longrightarrow E_m^{m,2j-m},\qquad j<n,
+	\]
+	目标的第二指标至多为 \(-1\)，所以 \(\mathrm d_m\bar x_{2j-1}=0\)。底球面的类也没有非零出微分。\cref{g2:thm:serre-multiplicative}的 Leibniz 规则于是说明，所有生成元的乘积都具有零微分。这些乘积生成整页，故 \(E_2=E_\infty\)。注意，纤维本身可能在很高次数仍有非零上同调；真正使微分全部消失的是低次生成元与导数性共同作用。
+
+	每个 \(E_\infty^{p,q}\) 都是有限秩自由阿贝尔群。\cref{g2:prop:free-graded-splitting}说明 \(H^k(\operatorname{U}(n);\mathbb Z)\) 也自由：其有限滤过的每个商都有可提升的基。边缘映射的描述则给出满射
+	\[
+		i_n^*:H^*(\operatorname{U}(n);\mathbb Z)\longrightarrow H^*(\operatorname{U}(n-1);\mathbb Z).
+	\]
+	据此选择 \(x_{2j-1}\) 提升 \(\bar x_{2j-1}\)。在另一条边上，\(p_n^*\omega_m\) 的伴随分次类就是 \(E_\infty^{m,0}\) 的生成元，令它为 \(x_m\)。由于所有 \(x_{2j-1}\) 都是奇次类，杯积的分次交换律给出 \(2x_{2j-1}^2=0\)；总上同调无挠，故每个平方为零。这就构造出从所述外代数到 \(H^*(\operatorname{U}(n);\mathbb Z)\) 的环同态。
+
+	最后核对这些乘积确实构成基，以解决乘法延拓。在固定总次数 \(k\) 上，滤过只有第零列和第 \(m\) 列两个可能非零的商。不含 \(x_m\) 的递增单项式限制到纤维，正好给出第零列的一组基；含 \(x_m\) 的单项式可写成 \(x_m x_I\)，其在第 \(m\) 列的类为 \(\omega_m\bar x_I\)，也正好给出该列的一组基。任意上同调类先减去第一组基的线性组合，就落在第 \(m\) 层，再由第二组表示；任何线性关系先限制到纤维，第一组的系数都为零，再投到第 \(m\) 层，第二组的系数也都为零。因此这张环同态为同构。沿归纳过程选择提升，即得所述相容性。
+\end{proof}
+
+这个证明给出的生成元有两种来源：旧生成元从纤维提升，新生成元从底球面拉回。例如 \(\operatorname{U}(2)\) 的基为 \(1,x_1,x_3,x_1x_3\)，分别处于次数 \(0,1,3,4\)。其中 \(x_3=p_2^*\omega_3\)，而 \(x_1\) 可取行列式映射 \(\det:\operatorname{U}(2)\rightarrow S^1\) 拉回的一次生成元；行列式在标准 \(\operatorname{U}(1)\) 纤维上恰为恒等映射。
+
+\begin{corollary}[特殊酉群的整数上同调环]\label{g2:cor:special-unitary-cohomology}
+	对 \(n\ge2\)，有
+	\[
+		H^*(\operatorname{SU}(n);\mathbb Z)\cong\Lambda_{\mathbb Z}(y_3,y_5,\ldots,y_{2n-1}),\qquad |y_j|=j.
+	\]
+\end{corollary}
+\begin{proof}
+	\cref{g2:prop:classical-sphere-bundles}给出 \(\operatorname{SU}(2)\cong S^3\) 以及 \(\operatorname{SU}(n-1)\rightarrow\operatorname{SU}(n)\rightarrow S^{2n-1}\)。从 \(n=3\) 开始归纳。纤维的生成元处于次数 \(3,5,\ldots,2n-3\)，所以唯一可能的 \(\mathrm d_{2n-1}\) 在每个生成元上都有负的目标第二指标，因而全为零；导数性使全页退化。全部分次块自由，纤维生成元可以提升，新生成元由球面拉回。无挠性使奇次平方为零，含新生成元及不含新生成元的单项式分别给出两层的基。由上一证明中的逐层基论证，得到所述外代数。
+\end{proof}
 
 \subsection{通用丛和特征类的传递}
 \label{g2:subsec:1104:02}
-待撰写
+
+在上面的酉群计算中，旧生成元全部存活。现在把圆周放进总空间可缩的纤维化，其一次类就必须被消去。消去它的微分落在基底二次上同调中；自然性将把这个类送到每个具体圆周丛的基底上。
+
+\ProseParagraphBreak
+
+取有限支撑复序列构成的单位球面
+\[
+	S^\infty=\bigcup_{N\ge1}S^{2N-1}\subset\mathbb C^\infty,
+\]
+赋予与有限维球面相容的 CW 弱拓扑。这里可从实球面的逐维赤道与半球胞腔结构取并，每个有限子复形都包含于足够大的有限维球面。标量右乘给出自由 \(S^1\) 作用，其商为 \(\mathbb CP^\infty\)。在 \(z_j\ne0\) 的坐标片上，仍可选择第 \(j\) 坐标为正实数的唯一单位代表；有限阶段的这些公式相容，给出局部平凡丛
+\begin{equation}\label{g2:eq:universal-circle-bundle}
+	S^1\longrightarrow S^\infty\xrightarrow{\pi}\mathbb CP^\infty.
+\end{equation}
+其中 \(S^\infty\) 可缩。事实上，由\cref{g2:thm:finite-subcomplex}，任一球面映射的像包含在有限阶段；再放进维数大于定义域维数的球面，由\cref{g2:prop:sphere-connectivity}可知它零伦。因此 \(S^\infty\) 道路连通且全部正阶同伦群为零，\cref{g2:thm:whitehead}用于点到这个 CW 复形的映射，便得到可缩性。
+
+\ProseParagraphBreak
+
+基底上的\term[tautological-complex-line-bundle]{典范复线丛}[tautological complex line bundle]为
+\[
+	\gamma^1=\{(\ell,v):\ell\in\mathbb CP^\infty,\ v\in\ell\}\longrightarrow\mathbb CP^\infty.
+\]
+它的单位圆周丛就是\eqref{g2:eq:universal-circle-bundle}。复线的定向使其底层实二维丛 \(\gamma^1_{\mathbb R}\) 定向；按\cref{g2:def:spherical-euler-class}，记
+\[
+	u\coloneqq e(\gamma^1_{\mathbb R})=\mathrm d_2(a),\qquad a\in H^1(S^1;\mathbb Z)
+\]
+为正向纤维生成元的传递。这个 \(u\) 是 \(H^2(\mathbb CP^\infty;\mathbb Z)\cong\mathbb Z\) 的生成元：\(E_2^{0,1}\) 与 \(E_2^{2,0}\) 之间只有 \(\mathrm d_2\)，而总空间的一次、二次上同调都为零，迫使该微分既单射又满射。它与\cref{g2:thm:complex-projective-ring}选用的二次生成元至多相差符号。
+
+\ProseParagraphBreak
+
+由该定理及乘法结构，第二页和微分完整写成
+\[
+	E_2^{*,*}=\mathbb Z[u]\otimes\Lambda_{\mathbb Z}(a),\qquad |u|=(2,0),\quad |a|=(0,1),
+\]
+\[
+	\mathrm d_2(u^k)=0,\qquad \mathrm d_2(u^ka)=u^{k+1}\quad(k\ge0).
+\]
+每个正次数的底类都被上面一行的类消去，只留下单位元，正好对应总空间可缩。在有限维 Hopf 丛中，底环被 \(u^{N}=0\) 截断，因而 \(u^{N-1}a\) 留下总空间 \(S^{2N-1}\) 的顶次类；通用丛把这些有限截断相容地接在一起。
+
+\begin{proposition}[复线丛的拉回模型]\label{g2:prop:line-bundle-pullback-model}
+	设 \(B\) 为有限 CW 复形，\(L\rightarrow B\) 为连续复线丛。则存在某个 \(N\) 及连续映射 \(f:B\rightarrow\mathbb CP^{N-1}\subset\mathbb CP^\infty\)，使 \(L\cong f^*\gamma^1\)。把 \(L\) 看成定向实二维丛后，其 Euler 类满足
+	\[
+		e(L_{\mathbb R})=f^*u.
+	\]
+\end{proposition}
+\begin{proof}
+	有限 CW 复形紧且 Hausdorff，故可取有限平凡化覆盖 \(U_1,\ldots,U_N\) 及从属的连续单位分解 \(\rho_1,\ldots,\rho_N\)。这里所需的事实是 \(\rho_j\ge0\)、\(\operatorname{supp}\rho_j\subset U_j\) 及 \(\sum_j\rho_j=1\)；存在性见第一卷第4.4节的连续单位分解定理。局部 Hermitian 内积也可用这些权重相加，得到 \(L\) 上的连续正定内积，因为非零向量的各项平方长度都为正。将局部标架归一化，得到单位截面 \(s_j\)。
+
+	对 \(b\in U_j\) 及单位向量 \(v\in L_b\)，唯一写成 \(v=s_j(b)\lambda_j(v)\)，其中 \(\lambda_j(v)\in S^1\)。令
+	\[
+		J(v)=\bigl(\sqrt{\rho_1(b)}\lambda_1(v),\ldots,\sqrt{\rho_N(b)}\lambda_N(v)\bigr)\in S^{2N-1},
+	\]
+	并在 \(b\notin U_j\) 时把相应坐标规定为零。支集条件使这些补零后的坐标连续，而 \(\sum\rho_j=1\) 保证所得向量确实为单位向量。对 \(z\in S^1\)，有 \(J(vz)=J(v)z\)，故 \(f(b)=[J(v)]\) 与同一纤维中的单位向量选择无关，并由局部截面看出 \(f\) 连续。
+
+	将 \(J\) 在每条复线上复线性延拓，得到 \(L_b\) 到 \(\mathbb C^N\) 的等距单射，其像为 \(f(b)\) 所代表的复直线。因此
+	\[
+		L\longrightarrow f^*\gamma^1,\qquad v\longmapsto(b,J(v))
+	\]
+	是纤维上的复线性同构；在局部非零标架上，其逆由一个连续非零系数的倒数给出，故为丛同构。限制到单位向量便得到圆周丛的拉回交换图
+	\[
+		\begin{tikzcd}[column sep=large]
+			S(L)\arrow[r,"J"]\arrow[d] & S^\infty\arrow[d,"\pi"]\\
+			B\arrow[r,"f"'] & \mathbb CP^\infty.
+		\end{tikzcd}
+	\]
+	纤维映射保持复定向。由\cref{g2:prop:spherical-euler-naturality}，其 Euler 类为 \(f^*u\)。
+\end{proof}
+
+这个构造解释了“通用”的含义：一个具体线丛的局部标架经加权后，确定一张到射影空间的映射，再由同一个典范线丛拉回。赋予每个丛一个随拉回自然变化的上同调类，正是\term[tezheng-lei]{特征类}[characteristic class]的基本形式。这里得到的 \(e(L_{\mathbb R})\) 已是这样一个类；它由圆周的一个整数生成元及传递构造而来。不同单位分解所产生的映射都给出同一个 Euler 类，因为它们拉回得到的是同一个丛。
+
+\ProseParagraphBreak
+
+在一般秩中，射影空间将由 Grassmann 空间替代，单位向量将由酉标架替代。\chapref{g2:ch:19}将建立相应分类空间与通用丛，\chapref{g2:ch:21}再系统构造复向量丛的特征类。眼前这张圆周丛已显示出关键计算方式：先在通用模型中求纤维类的传递，再利用拉回自然性把答案送到给定基底。
 
 \subsection{维数、环结构及扭项的核验}
 \label{g2:subsec:1104:03}
-待撰写
+
+得到一个环的候选答案后，可以分别检验其次数、乘法及整数信息。对 \(\operatorname{U}(n)\)，上一小节的论证已经解决了后两者；把全部基元的次数汇总，还会产生几项直观的核验。
+
+\begin{corollary}[酉群的 Betti 数与顶次类]\label{g2:cor:unitary-betti-polynomial}
+	记 \(b_k\) 为整数上同调的秩。对 \(n\ge1\)，有
+	\[
+		\sum_k b_k(\operatorname{U}(n))t^k=\prod_{j=1}^n(1+t^{2j-1}),
+		\qquad \sum_k b_k(\operatorname{U}(n))=2^n,
+	\]
+	且最高非零次数为 \(n^2\)，由 \(x_1x_3\cdots x_{2n-1}\) 生成，Euler 示性数为零。对 \(n\ge2\)，特殊酉群的相应多项式为 \(\prod_{j=2}^n(1+t^{2j-1})\)，最高非零次数为 \(n^2-1\)，Euler 示性数也为零。
+\end{corollary}
+\begin{proof}
+	外代数的一组基由每个生成元“选取或不选取”得到，所以次数生成函数为所列乘积；令 \(t=1\) 得到总秩。最高次数是
+	\[
+		1+3+\cdots+(2n-1)=n^2,
+	\]
+	且只有选取全部生成元的一个单项式达到该次数。令 \(t=-1\)，每个奇次因子都为零，得到 Euler 示性数。特殊酉群删去一次生成元，故顶次降为 \(n^2-1\)，其余计算相同。
+\end{proof}
+
+顶次与矩阵的实参数数目一致。单位酉矩阵附近的无穷小变动由斜 Hermitian 矩阵给出：对角线有 \(n\) 个纯虚参数，每对非对角位置由一个复数决定，共有 \(n(n-1)\) 个实参数，合为 \(n^2\)。行列式为一增加迹为零的一个实条件，得到 \(n^2-1\)。这与上同调中唯一顶次单项式的位置吻合。
+
+\ProseParagraphBreak
+
+例如
+\[
+	\sum_kb_k(\operatorname{U}(3))t^k=(1+t)(1+t^3)(1+t^5)
+	=1+t+t^3+t^4+t^5+t^6+t^8+t^9.
+\]
+次数为 \(4\) 的类是 \(x_1x_3\)，次数为 \(6\) 的类是 \(x_1x_5\)，次数为 \(8\) 的类是 \(x_3x_5\)。把这些乘积列出来，有助于避免将“只有奇次生成元”误读为“只有奇次上同调”。
+
+\ProseParagraphBreak
+
+对任一素数 \(\ell\)，系数短正合列 \(0\rightarrow\mathbb Z\xrightarrow{\times\ell}\mathbb Z\rightarrow\mathbb F_\ell\rightarrow0\) 给出
+\[
+	H^k(\operatorname{U}(n);\mathbb Z)\xrightarrow{\times\ell}H^k(\operatorname{U}(n);\mathbb Z)
+	\longrightarrow H^k(\operatorname{U}(n);\mathbb F_\ell)
+	\longrightarrow H^{k+1}(\operatorname{U}(n);\mathbb Z)\xrightarrow{\times\ell}H^{k+1}(\operatorname{U}(n);\mathbb Z).
+\]
+末箭头单射，故约化模 \(\ell\) 给出整数上同调张量 \(\mathbb F_\ell\) 到模 \(\ell\) 上同调的同构。杯积与系数映射相容，因而
+\[
+	H^*(\operatorname{U}(n);\mathbb F_\ell)\cong\Lambda_{\mathbb F_\ell}(\bar x_1,\bar x_3,\ldots,\bar x_{2n-1}).
+\]
+当 \(\ell=2\) 时，奇次平方为零的理由是这些类来自整数类的约化；单凭特征二下的分次交换律不能得到这个结论。
+
+\begin{example}[旋转群中的整数挠类]\label{g2:exm:rotation-torsion-comparison}
+	\cref{g2:lem:quaternion-rotation-cover}把 \(\operatorname{SO}(3)\) 识别为 \(S^3/\{\pm1\}=\mathbb RP^3\)。\cref{g2:prop:projective-integer-homology}给出
+	\[
+		H_0\cong H_3\cong\mathbb Z,\qquad H_1\cong\mathbb Z/2,\qquad H_2=0.
+	\]
+	整数万有系数定理据此得到
+	\[
+		H^k(\operatorname{SO}(3);\mathbb Z)\cong
+		\begin{cases}
+			\mathbb Z,&k=0,3,\\
+			\mathbb Z/2,&k=2,\\
+			0,&\text{其他次数}.
+		\end{cases}
+	\]
+	其中二次的 \(\mathbb Z/2\) 是 \(\operatorname{Ext}_{\mathbb Z}^1(H_1,\mathbb Z)\)。有理系数却只剩 \(H^*(\operatorname{SO}(3);\mathbb Q)\cong\Lambda_{\mathbb Q}(z_3)\)。所以一个有理外代数答案仍可能遗漏整数挠项；酉群的整数外代数结论，依靠的是整数谱序列中自由分次块与生成元提升的完整论证。
+\end{example}
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

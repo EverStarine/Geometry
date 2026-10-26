@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 24.2 正合性和悬挂
 % 纲要位置：几何学计划纲要.md，第 1934 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,218 @@
 \section{正合性和悬挂}
 \label{g2:sec:2402}
 
-待撰写
+一张丛在整个空间上可能非平凡，限制到一个子空间后却变得平凡。相对群记录的不只是这个“变得平凡”的事实，还记录在那里如何比较两张丛。把子空间接上一顶锥，可以将比较数据变成新的粘接数据；不断重复这个过程，就会出现悬挂及长正合列。本节以有限 CW 对为主要对象，因而子复形包含具有同伦延拓性质，各次商空间仍是紧 Hausdorff 空间。
 
 \subsection{映射锥与相对 K 群}
 \label{g2:subsec:2402:01}
-待撰写
+设 \(A\subset X\) 为有限 CW 复形的子复形，暂设 \(A\ne\varnothing\)。回忆\cref{g2:def:reduced-relative-k}：\(K^0(X,A)=\widetilde K^0(X/A)\)，基点是被压缩的 \(A\)。在\cref{g2:def:mapping-cylinder-cone}的记号中，包含 \(i:A\hookrightarrow X\) 的映射锥为
+\[
+	C_i=X\cup_A CA,\qquad CA=(A\times[0,1])/(A\times\{1\}).
+\]
+锥参数 \(t=0\) 接到 \(X\) 中的 \(A\)，\(t=1\) 为锥顶。\cref{g2:cor:mapping-cone-relative-quotient}说明压掉 \(CA\) 的映射 \(C_i\to X/A\) 是同伦等价；\cref{g2:thm:bundle-homotopy-invariance}于是给出
+\begin{equation}\label{g2:eq:k-mapping-cone-model}
+	K^0(X,A)\cong\widetilde K^0(C_i).
+\end{equation}
+这个模型保留了被压缩区域的一个领状参数，适合描述丛的粘合。
+
+\begin{definition}\label{g2:def:relative-k-triple}
+	有限 CW 对 \((X,A)\) 上的一个相对丛三元组是 \((E,F,\alpha)\)，其中 \(E,F\) 为 \(X\) 上的复向量丛，\(\alpha:E|_A\xrightarrow{\cong}F|_A\) 为丛同构。三元组取直和；允许丛同构、\(\alpha\) 的同伦，以及增加 \((G,G,\operatorname{id})\)。将能够延拓为 \(X\) 上丛同构的三元组视为零，所得类群称为三元组模型。
+\end{definition}
+
+这里的同伦始终经过可逆丛映射；若只要求线性映射同伦，任何 \(\alpha\) 都能缩为零，全部边界信息便丢失了。模型中的逆元由 \((F,E,\alpha^{-1})\) 给出。事实上，在 \(A\) 上，块映射
+\[
+	\begin{pmatrix}
+		\cos t\,\alpha&-\sin t\,I_F\\
+		\sin t\,I_E&\cos t\,\alpha^{-1}
+	\end{pmatrix}:E\oplus F\longrightarrow F\oplus E
+	\qquad(0\le t\le\pi/2)
+\]
+始终可逆，将 \(\alpha\oplus\alpha^{-1}\) 连到可在整个 \(X\) 上定义的交换映射 \((e,f)\mapsto(-f,e)\)。所以两个三元组的和为零。
+
+\begin{proposition}\label{g2:prop:k-triple-model}
+	对有限 CW 对 \((X,A)\)，三元组模型自然同构于 \(K^0(X,A)\)。忘掉 \(\alpha\) 的映射对应于
+	\[
+		j:K^0(X,A)\longrightarrow K^0(X),\qquad
+		[E,F,\alpha]\longmapsto[E]-[F].
+	\]
+\end{proposition}
+\begin{proof}
+	先设 \(A\ne\varnothing\)。由\cref{g2:prop:bundle-embedding-classifier}及其后的正交补构造，选 \(G\)，使 \(F\oplus G\cong\varepsilon^N\)。于是 \(\alpha\oplus I_G\) 给 \(E\oplus G\) 在 \(A\) 上的一张平凡化。把 \(E\oplus G\) 与 \(CA\) 上的平凡秩 \(N\) 丛沿这张平凡化粘合，得到 \(C_i\) 上的丛 \(Q\)，令
+	\[
+		[E,F,\alpha]\longmapsto[Q]-[\varepsilon^N].
+	\]
+	在接缝附近，\(E\oplus G\) 的平凡化可以延到 \(A\) 的一个邻域：有限 CW 对具有邻域形变收缩，丛的同伦不变性将边界平凡化延拓到较小邻域。也可将边界标架的有限个截面延拓到邻域，再利用行列式非零的开放性。故所作粘合确为向量丛。
+
+	直和及边界同构的同伦分别变成 \(Q\) 的直和及 \(C_i\times I\) 上的丛，因此映射保持这些关系。若 \(\alpha\) 延拓到 \(X\)，它与 \(G\) 的恒等映射一起给出 \(E\oplus G\) 的整体平凡化，粘成的 \(Q\) 也平凡，故这样的三元组送到零。补丛的选择可通过共同稳定化比较：对两张补丛 \(G_0,G_1\)，分别补加平凡丛 \(F\oplus G_1\)、\(F\oplus G_0\)，再交换中间的直和块，便得到相同的分子、分母及边界同构。
+
+	还要检查所选整体平凡化。若两张平凡化相差 \(g:X\to\operatorname{GL}(N,\mathbb C)\)，边界粘接由 \(\tau\) 变为 \(g|_A\tau\)。增加一个平凡秩 \(N\) 因子后，用两个平凡坐标块之间的旋转，将 \(\operatorname{diag}(g|_A,I)\) 同伦为 \(\operatorname{diag}(I,g|_A)\)。新的粘接于是由 \(\operatorname{diag}(g|_A\tau,I)\) 变成 \(\operatorname{diag}(\tau,g|_A)\)。后一项的 \(g|_A\) 可由新增平凡因子上的整体变换 \(g\) 吸收，所以两张粘合丛稳定同构。这证明平凡化的选择也无关。
+
+	反向构造也很具体。将 \(\eta\in\widetilde K^0(C_i)\) 写成 \([Q]-[\varepsilon^N]\)。因为 \(\eta\) 在锥顶秩为零，\(Q\) 在包含 \(CA\) 的分支上秩为 \(N\)；\(CA\) 可缩，所以可平凡化 \(Q|_{CA}\)。限制到 \(X\) 与 \(A\)，就得到三元组 \((Q|_X,\varepsilon^N,\alpha)\)。两张锥上平凡化的差是 \(CA\to\operatorname{GL}(N,\mathbb C)\) 的映射。把锥收缩到顶点后，它同伦于常矩阵；常矩阵可在整个 \(X\) 上作用于平凡分母。因此两种选择给出相同的三元组类。稳定同构在 \(CA\) 上的差也以同一方式消去，故反向构造在 \(\widetilde K^0(C_i)\) 上良定义。
+
+	先粘合再限制，恢复原三元组的稳定化；先限制再粘合，则恢复原丛。二者互逆。各步与拉回相容，故同构自然。限制 \(Q\) 到 \(X\) 后的差为 \([E\oplus G]-[F\oplus G]=[E]-[F]\)，给出所述忘却映射。若 \(A=\varnothing\)，比较同构没有条件，三元组就是两张丛的形式差，恢复 \(K^0(X)\) 及约定 \(X/\varnothing=X_+\)。
+\end{proof}
+
+三元组使“在边界平凡”成为可操作的数据。例如圆盘上的两张平凡线丛可沿 \(S^1\) 用 \(z\mapsto z^m\) 比较；虽然两张底层丛完全相同，这个比较仍可能给出非零的 \(K^0(D^2,S^1)\) 类。将边界压缩后，它正成为球面上线丛的粘接次数，方向由所选圆盘及赤道约定确定。
 
 \subsection{悬挂定义负次数}
 \label{g2:subsec:2402:02}
-待撰写
+将一顶锥接在 \(A\) 上之后，还可以把 \(X\) 压成一点。所得商由锥的两端同时压为基点，正是悬挂。于是从相对问题中会自然出现 \(\widetilde K^0(\Sigma A)\)。这给负次数提供了几何定义。
+
+对有基点的有限 CW 空间 \(Y\)，沿用\cref{g2:def:reduced-suspension}的约化悬挂
+\[
+	\Sigma Y=S^1\wedge Y,
+	\qquad Y\wedge Z=(Y\times Z)/(Y\vee Z).
+\]
+基点均选为零胞腔。\(\Sigma^qY=S^q\wedge Y\) 表示连续悬挂 \(q\) 次，球面坐标按悬挂次序排列。
+
+\begin{definition}\label{g2:def:negative-k-groups}
+	对 \(q\ge0\)，定义
+	\[
+	\begin{aligned}
+		\widetilde K^{-q}(Y)&=\widetilde K^0(\Sigma^qY),\\
+		K^{-q}(X)&=\widetilde K^0(\Sigma^qX_+),\\
+		K^{-q}(X,A)&=\widetilde K^0\bigl(\Sigma^q(X/A)\bigr).
+	\end{aligned}
+	\]
+	其中 \(X_+=X\sqcup\{*\}\)，并仍令 \(X/\varnothing=X_+\)。\symidx{\(K^{-q}(X,A)\)：由悬挂定义的负次 K 群}
+\end{definition}
+
+当 \(q=0\) 时，这些定义就是上一节的群。对一般 \(q\)，负号表示以悬挂空间来定义次数，尚未把不同次数认成同一群。例如
+\[
+	K^{-1}(*)=\widetilde K^0(S^1)=0,
+	\qquad K^{-2}(*)=\widetilde K^0(S^2)\cong\mathbb Z,
+\]
+这两项来自上一节的低维球面计算。后面证明 Bott 周期性，才会得到任意空间上相隔两次的群同构。
+
+同伦不变性从零次群传来：空间映射的同伦悬挂后仍是同伦，丛拉回因而不变。若 \(X\) 本身已有基点 \(x_0\)，在零次上可以把基点处虚秩分离出去；负次数的相应分裂也将由下面的长正合列得到。
 
 \subsection{长正合列和切除}
 \label{g2:subsec:2402:03}
-待撰写
+先证明长列的中间三项。这里精确性所比较的是类的限制，而不是要求某张未经稳定化的丛已经平凡。
+
+\begin{proposition}\label{g2:prop:k-zero-exact}
+	对有限 CW 对 \((X,A)\)，序列
+	\[
+		K^0(X,A)\xrightarrow{j}K^0(X)\xrightarrow{i^*}K^0(A)
+	\]
+	在中间项正合。对有公共基点的有限 CW 对，相同结论也适用于约化群。
+\end{proposition}
+\begin{proof}
+	对三元组，\(i^*([E]-[F])=0\)，故 \(\operatorname{im}j\subseteq\ker i^*\)。反过来，将 \(u\in\ker i^*\) 写成 \([E]-[\varepsilon^N]\)。于是 \([E|_A]=[\varepsilon^N]\)。上一节的稳定同构判据给出某个 \(r\) 及同构
+	\[
+		\alpha:E|_A\oplus\varepsilon^r\cong\varepsilon^{N+r}.
+	\]
+	三元组 \((E\oplus\varepsilon^r,\varepsilon^{N+r},\alpha)\) 的像就是 \(u\)。约化版本的构造保持公共基点处的秩为零，所以证明相同。
+\end{proof}
+
+为了向左继续，先令 \(A,X\) 带公共零胞腔基点，映射锥取压掉基点锥线段的约化模型。考虑依次接锥的序列
+\begin{equation}\label{g2:eq:k-puppe-spaces}
+	A\xrightarrow{i}X\longrightarrow C_i\xrightarrow{q}\Sigma A
+	\longrightarrow\Sigma X\longrightarrow\Sigma C_i\longrightarrow\cdots.
+\end{equation}
+这里 \(q\) 把 \(X\) 压为一点；用约化锥时同时压掉基点的锥线段。各箭头之后的空间，在同伦意义下都是此前箭头的映射锥。例如 \(C_i\hookrightarrow C_i\cup_X CX\) 的目标在压掉最新附加的可缩锥 \(CX\) 后成为 \(\Sigma A\)，而该压缩由第1章的余纤维化粘合结论给出同伦等价。再次接锥并作同样压缩，就得到 \(\Sigma X\)；继续重复得到整列。锥参数逐次按 \(0\) 到 \(1\) 排列，这也规定了各连接映射的方向。
+
+\begin{theorem}\label{g2:thm:k-long-exact}
+	有限 CW 对 \((X,A)\) 有自然长正合列
+	\begin{equation}\label{g2:eq:k-long-exact}
+	\begin{aligned}
+		\cdots&\longrightarrow K^{-2}(A)\xrightarrow{\delta}K^{-1}(X,A)
+		\longrightarrow K^{-1}(X)\longrightarrow K^{-1}(A)\\
+		&\xrightarrow{\delta}K^0(X,A)\xrightarrow{j}K^0(X)
+		\xrightarrow{i^*}K^0(A).
+	\end{aligned}
+	\end{equation}
+	对带基点的空间对，亦有全部使用约化绝对群的版本。对有限 CW 子复形 \(A,B\subset X\) 且 \(X=A\cup B\)，包含诱导切除同构
+	\[
+		K^{-q}(X,A)\xrightarrow{\ \cong\ }K^{-q}(B,A\cap B)
+		\qquad(q\ge0).
+	\]
+\end{theorem}
+\begin{proof}
+	对式\eqref{g2:eq:k-puppe-spaces}中每次接锥应用\cref{g2:prop:k-zero-exact}，再以可缩锥的压缩识别各项，便得到
+	\[
+		\cdots\longrightarrow\widetilde K^0(\Sigma X)
+		\longrightarrow\widetilde K^0(\Sigma A)
+		\xrightarrow{q^*}\widetilde K^0(C_i)
+		\longrightarrow\widetilde K^0(X)\longrightarrow\widetilde K^0(A).
+	\]
+	对其悬挂反复使用同一构造，得到全部负次数。一般未约化的版本对带不交基点的包含 \(A_+\hookrightarrow X_+\) 使用约化构造即可；其余纤维正是 \(X/A\)。特别地，\(\delta:K^{-q-1}(A)\to K^{-q}(X,A)\) 由 \(\Sigma^q q\) 拉回，再通过式\eqref{g2:eq:k-mapping-cone-model}识别；新增锥坐标放在已有的 \(q\) 个悬挂坐标之后。
+
+	空间对映射 \(f:(X,A)\to(Y,B)\) 延拓为锥映射 \([a,t]\mapsto[f(a),t]\)，与包含、商映射和每次悬挂交换。所有群映射均由拉回给出，因此整列自然，特别是连接映射的方块交换。
+
+	对一般有限 CW 空间之间的胞腔映射，也可先以映射柱把它替换为子复形包含，见\cref{g2:prop:mapping-cylinder-cofibration}。映射柱形变收缩到原靶，因而同一论证给出一般映射锥的长正合列。
+
+	切除只需核对商空间。自然映射
+	\[
+		B/(A\cap B)\longrightarrow X/A
+	\]
+	将 \(B\setminus A\) 的每一点保持不变，并将交集压到基点；它是连续双射。两端均为紧 Hausdorff 空间，所以是同胚。交集为空时按约定加上不交基点，结论仍相同；\(A\) 为空的情形则为恒等。悬挂后拉回即给出各次切除同构。
+\end{proof}
+
+长列的最右端目前是 \(K^0(A)\)，限制映射通常并不满射。例如球面边界 \(S^2\subset D^3\) 上有第一陈数非零的线丛，它不可能来自可缩的 \(D^3\)。所以在一般长列右端不能直接补上零。
+
+对空间对 \((X,\{x_0\})\)，限制到基点的映射在每个次数都有来自常映射 \(X\to\{x_0\}\) 的截面。长正合列的前一次限制也满射，因而得到
+\[
+	K^{-q}(X)\cong\widetilde K^{-q}(X)\oplus K^{-q}(*).
+\]
+这里 \(X/\{x_0\}\) 就是原有基点的 \(X\)。因此“约化”在各次数中都表示除去基点上的系数项。
+
+\begin{example}\label{g2:exm:k-cells-relative}
+	若 \(X\) 从子复形 \(A\) 附上有限个 \(d\) 维胞腔得到，则
+	\[
+		X/A\cong\bigvee_{\lambda}S^d,\qquad
+		K^{-q}(X,A)\cong\bigoplus_{\lambda}\widetilde K^0(S^{d+q}).
+	\]
+	最后的楔和公式可以直接由丛看出：各球面上的虚秩零代表稳定到同一秩后，在公共基点用纤维同构粘合；改变这份同构只改变可在一个分支上吸收的常矩阵。反过来，若各分支都稳定平凡，调整基点处的常矩阵便能把各张平凡化拼在一起。因此限制到分支给出所述直和同构。这个公式把胞腔计算化为球面群；下一节会算出所有这些球面群。
+\end{example}
 
 \subsection{乘积结构的自然性}
 \label{g2:subsec:2402:04}
-待撰写
+上一节的外积把两张丛的纤维作张量积。对约化类，这个积在楔和上消失；要将它放到压缩积上，还必须保证这个消失对应于唯一的相对类。长正合列恰好提供了所需的单射性。
+
+\begin{proposition}\label{g2:prop:k-product-wedge-splitting}
+	设 \(X,Y\) 为带零胞腔基点的有限 CW 空间，\(q\ge0\)。令 \(r:X\times Y\to X\wedge Y\) 为商映射，\(j:X\vee Y\hookrightarrow X\times Y\) 为包含，则有自然分裂短正合列
+	\[
+		0\longrightarrow\widetilde K^{-q}(X\wedge Y)
+		\xrightarrow{r^*}\widetilde K^{-q}(X\times Y)
+		\xrightarrow{j^*}\widetilde K^{-q}(X)\oplus\widetilde K^{-q}(Y)
+		\longrightarrow0.
+	\]
+	右侧的截面为 \((a,b)\mapsto p_X^*a+p_Y^*b\)。
+\end{proposition}
+\begin{proof}
+	有限楔和上的约化群按前一例的丛粘合论证分裂；对负次数，再用 \(\Sigma^q(X\vee Y)\cong\Sigma^qX\vee\Sigma^qY\)。两张投影在另一条轴上都是常映射，约化类在常映射下拉回为零，因此所给公式确为 \(j^*\) 的截面。
+
+	在空间对 \((X\times Y,X\vee Y)\) 的长正合列中，\(j^*\) 在次数 \(-q\) 为满射，在前一次数 \(-q-1\) 也为满射。前一次满射使进入相对群的连接同态为零，因而 \(r^*\) 为单射；中间项的正合性又把其像识别为当前 \(j^*\) 的核。这给出整个短正合列。所有映射都与保持基点的映射交换，所以分裂自然。
+\end{proof}
+
+取 \(a\in\widetilde K^0(X)\)、\(b\in\widetilde K^0(Y)\)。普通外积 \(a\boxtimes b=p_X^*a\,p_Y^*b\) 限制到两条轴上均为零。由命题，它是唯一一个 \(\widetilde K^0(X\wedge Y)\) 类的拉回；仍用 \(a\boxtimes b\) 记这个\term[yuehua-waiji]{约化外积}[reduced external product]。因此
+\[
+	r^*(a\boxtimes b)=p_X^*a\,p_Y^*b.
+\]
+存在性来自正合性，唯一性来自前一次限制映射的满射，二者都不能只从“在楔和上为零”一句话略去。
+
+对有限 CW 对，商空间有自然同胚
+\[
+	(X/A)\wedge(Y/B)
+	\cong\frac{X\times Y}{A\times Y\,\cup\,X\times B},
+\]
+从而得到相对外积。再放入悬挂球面，就得到
+\begin{equation}\label{g2:eq:relative-k-product}
+	K^{-p}(X,A)\otimes K^{-q}(Y,B)
+	\longrightarrow K^{-p-q}(X\times Y,A\times Y\cup X\times B).
+\end{equation}
+具体次序是先排列 \(S^p,S^q\) 两个悬挂块，再排列空间因子。拉回保持直和、张量积以及各商映射，因此
+\[
+	(f\times g)^*(a\boxtimes b)=f^*a\boxtimes g^*b.
+\]
+单位、结合律及分配律同样由零次外积传来。交换两个负次数因子时，除交换丛的张量因子外，还要交换 \(p\)、\(q\) 个悬挂坐标，因而得到符号 \((-1)^{pq}\)。其来源可以逐个坐标看清：交换两个 \(S^1\) 因子是球面的一个反射；反射一条悬挂坐标将两半锥互换，把粘接函数 \(g\) 换成 \(g^{-1}\)。稳定块旋转将 \(\operatorname{diag}(g,g^{-1})\) 连到恒等，所以它在约化 \(K\) 群上取负元。逐次作 \(pq\) 次交换便得到该符号。
+
+对连接同态，最常用的是零次丛类的模自然性。给定 \(a\in K^0(X)\) 及 \(b\in K^{-q-1}(A)\)，有
+\begin{equation}\label{g2:eq:k-boundary-module-zero}
+	\delta(i^*a\cdot b)=a\cdot\delta b.
+\end{equation}
+可以先在未压缩的锥模型中验证：在 \(A\times I\) 上，将代表 \(b\) 的粘接数据与来自 \(X\) 的丛 \(a\) 张量；先粘合再张量，或先张量再粘合，得到同构的丛。对虚丛作分配，再悬挂，即得公式。等价地，锥上的相对对角映射 \([a,t]\mapsto(a,[a,t])\) 与压掉 \(X\) 的映射交换，配合外积自然性给出同一个结论。这里系数 \(a\) 为零次，没有交换悬挂块的符号；处理一般分次公式时须同时保留式\eqref{g2:eq:relative-k-product}的坐标次序。
+
+下一节将把这个分裂用于 \(Y=S^2\)。基本乘积定理先确定 \(K^0(X\times S^2)\)，随后对两条轴取核，便能将其中的新因子识别为 \(\widetilde K^0(X\wedge S^2)=\widetilde K^0(\Sigma^2X)\)。积空间、楔和与压缩积在这个步骤中承担三项不同的作用。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

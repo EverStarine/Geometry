@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 15.3 法丛与管状邻域
 % 纲要位置：几何学计划纲要.md，第 1590 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,171 @@
 \section{法丛与管状邻域}
 \label{g2:sec:1503}
 
-待撰写
+在子流形的一点附近，适配坐标把它写成 \(\mathbb R^k\times\{0\}\)。沿整个子流形移动时，这些横向坐标可能发生扭转，所以邻域通常不能写成一个固定乘积。法丛恰好记录横向方向怎样拼接。管状邻域定理说明：只要把每条纤维取得足够短，这个线性模型就能实际描述子流形的一个开邻域。
 
 \subsection{辅助度量及法向局部指数}
 \label{g2:subsec:1503:01}
-待撰写
+
+设 \(S\subset N\) 是无边界流形 \(N\) 的无边界嵌入子流形。\secref{g2:sec:1403}已定义内在的法丛
+\[
+	\nu_N S=\mathrm{T}N|_S/\mathrm{T}S.
+\]
+一个法向量首先是模去切向量后的等价类。由第一卷第12章第3节的丛度量存在及正交补命题，在 \(N\) 上选光滑 Riemann 度量 \(g\)，便能把每个等价类 \(v\in\nu_NS\) 唯一地表示为正交向量 \(\iota_g(v)\in(\mathrm{T}S)^\perp\)。正交投影的局部矩阵由光滑正定矩阵的逆给出，所以 \(\iota_g\) 随基点光滑。
+
+\ProseParagraphBreak
+
+还要把这个向量变成附近的一个实际点。为此，在 \(\mathrm{T}N\) 上选择一个光滑联络 \(\nabla\)；第一卷第15章第1节用局部平凡联络的单位分解加权证明了其存在。这里只需要联络给出的短时曲线，度量负责选出法向代表。若坐标中的联络系数为 \(\Gamma^a_{bc}\)，初值为 \((x,v)\) 的曲线满足
+\[
+	\ddot z^a+\Gamma^a_{bc}(z)\dot z^b\dot z^c=0,
+	\qquad z(0)=x,\quad\dot z(0)=v.
+\]
+把 \((z,\dot z)\) 当作一阶方程的未知量，第一卷第13章第1节的存在唯一性与初值光滑依赖定理适用。\(v=0\) 时解是常曲线，因此对 \((x,0)\) 的充分小邻域，解都能存在到时间1。令
+\[
+	\exp_x^\nabla(v)=z_{x,v}(1).
+\]
+它在 \(\mathrm{T}N\) 的零截面某邻域上光滑，称为该联络的局部指数映射。方程由 \(\nabla_{\dot z}\dot z=0\) 给出，与坐标选择相容。
+
+\ProseParagraphBreak
+
+在常解 \((x,0)\) 处，对初速度作一阶变化，二次速度项的一阶变化为零，故变分方程为 \(J''=0\)、\(J(0)=0\)、\(J'(0)=w\)。于是 \(J(1)=w\)，即
+\[
+	\mathrm{d}_v\exp_x^\nabla\big|_{v=0}=\operatorname{id}_{\mathrm{T}_xN}.
+\]
+同时 \(\exp_x^\nabla(0)=x\)，所以在基点方向上的微分也是恒等。定义法向映射
+\[
+	\Phi(v)=\exp_x^\nabla(\iota_gv),\qquad v\in\nu_xS.
+\]
+选择任意联络已足够；此处没有要求测地线在任意长时间存在，也没有使用最短路径性质。
 
 \subsection{零截面附近的逆函数论证}
 \label{g2:subsec:1503:02}
-待撰写
+
+零截面处的切空间有规范分解
+\[
+	\mathrm{T}_{0_x}(\nu_NS)\cong\mathrm{T}_xS\oplus\nu_xS.
+\]
+第一项来自零截面的微分，第二项是纤维中的速度。在局部丛坐标中，这就是基底坐标与纤维坐标的分解；零纤维坐标使过渡函数中对基点求导的附加项消失，因此分解与平凡化无关。
+
+\begin{proposition}\label{g2:prop:normal-exponential-local}
+	对上面构造的 \(\Phi\)，有 \(\Phi(0_x)=x\)，且
+	\[
+		\mathrm{d}\Phi_{0_x}(u,v)=u+\iota_g(v).
+	\]
+	故 \(\Phi\) 在每个 \(0_x\) 的某邻域内为局部微分同胚。
+\end{proposition}
+\begin{proof}
+	基点方向和纤维方向的微分已分别算出。由于 \(\mathrm{T}_xN=\mathrm{T}_xS\oplus(\mathrm{T}_xS)^\perp\)，右边是线性同构。第一卷第11章第3节的逆函数定理遂给出局部逆。
+\end{proof}
+
+这个结论还没有把整个零截面附近的不同纤维分开。即使每一点附近都有逆，来自相距很远的两个基点的短向量仍可能被送到同一点。紧子流形可用紧性统一选择半径；非紧情形需要让半径随位置缩小。
+
+\begin{example}\label{g2:exm:shrinking-circle-tubes}
+	在平面中取圆周的不交并
+	\[
+		S=\coprod_{j\ge1}\{(3j,0)+j^{-1}(\cos\theta,\sin\theta):\theta\in\mathbb R\}.
+	\]
+	这是闭的非紧嵌入一维子流形。采用 Euclid 度量和直线指数时，若统一法向半径为 \(\varepsilon>0\)，选 \(j\) 使 \(j^{-1}<\varepsilon\)，则第 \(j\) 个圆的所有向心法向量都可到达圆心，法向映射不再单射。各圆上的半径改为小于 \(1/(2j)\)，则这些问题消失。局部逆的存在并不保证统一的正半径。
+\end{example}
 
 \subsection{非紧子流形的变半径控制}
 \label{g2:subsec:1503:03}
-待撰写
+
+以下缩小论证既用于法向指数，也会用于比较不同的管状映射。保留紧参数族的版本，可以同时处理一段同位，而不用对无穷多个参数分别选邻域。
+
+\begin{lemma}\label{g2:lem:zero-section-shrinking}
+	设 \(S\subset N\) 是闭的无边界嵌入子流形，\(E\to S\) 为有丛度量的光滑向量丛，\(\dim E=\dim N\)。设 \(\Phi_t\) 是依赖于 \(t\in[0,1]\) 的联合光滑映射，在所有零向量附近有定义，并满足
+	\[
+		\Phi_t(0_x)=x,\qquad \mathrm{d}(\Phi_t)_{0_x}\text{ 为同构}.
+	\]
+	则存在连续函数 \(\varepsilon:S\to(0,\infty)\)，使每个 \(\Phi_t\) 在
+	\[
+		E_\varepsilon=\{v\in E:|v|<\varepsilon(\pi(v))\}
+	\]
+	上都是到 \(N\) 中开集的微分同胚；各局部逆对 \(t\) 也光滑。只有一个映射时，视为常参数族即可。
+\end{lemma}
+\begin{proof}
+	由\cref{g2:lem:smooth-proper-exhaustion}，选非负光滑固有函数 \(h:N\to[0,\infty)\)，记 \(K_j=S\cap\{h\le j\}\)。闭性保证 \(K_j\) 紧。对每个 \(j\)，存在 \(r_j>0\)，使所有 \(t\) 下、基点在 \(K_j\) 上且长度小于 \(r_j\) 的向量都在定义域内，微分可逆，而且
+	\[
+		|h(\Phi_t(v))-h(\pi(v))|<1/3.
+	\]
+	这是对紧集 \([0,1]\times\{0_x:x\in K_j\}\) 使用有限覆盖和连续性。还可要求同一个 \(t\) 下，这些向量之间没有重合的像。若做不到，便有 \(t_i\)、不同的 \(v_i,w_i\)，基点都在 \(K_j\)，长度都趋零，且 \(\Phi_{t_i}(v_i)=\Phi_{t_i}(w_i)\)。取子列使 \(t_i\to t\)、\(\pi(v_i)\to x\)、\(\pi(w_i)\to y\)。极限等式给出 \(x=y\)。但映射 \((t,v)\mapsto(t,\Phi_t(v))\) 在 \((t,0_x)\) 的微分可逆，故其局部单射性排除了这样的序列。缩小后可令 \(r_j\) 单调不增。
+
+	选连续正函数 \(\varepsilon(x)\)，使当 \(j-1\le h(x)\le j\) 时有 \(\varepsilon(x)<r_{j+3}\)。例如先在整数点选单调递减且足够小的正数，作分段线性插值，再与 \(h|_S\) 复合即可。必要时用\cref{g2:thm:relative-smooth-approximation}将这个正函数换成更小的光滑正函数。
+
+	设 \(v,w\in E_\varepsilon\)，且 \(\Phi_t(v)=\Phi_t(w)\)。上述高度估计给出 \(|h(\pi(v))-h(\pi(w))|<2/3\)。若 \(j-1\le h(\pi(v))\le j\)，则两个基点都属于 \(K_{j+1}\)，而两个向量的长度都小于 \(r_{j+1}\)：第二个基点至多比第一个提前或推后一层，半径选择中预留的三层已涵盖这一差别。\(K_{j+1}\) 上的单射性于是给出 \(v=w\)。故每个 \(\Phi_t\) 在整个 \(E_\varepsilon\) 上单射。
+
+	它的微分处处可逆，因此是开映射；单射的局部微分同胚便是到其开像的微分同胚。参数逆的光滑性同样来自 \((t,v)\mapsto(t,\Phi_t(v))\) 的局部逆，各局部逆由唯一性相容。
+\end{proof}
+
+上面的紧集论证还允许法丛随参数变化。具体地，设 \(K\) 紧且无边界，\(i_t:K\to N\) 为光滑嵌入族，\(E\to[0,1]\times K\) 是光滑向量丛。若一个零截面附近的光滑映射
+\[
+	\mathcal F(t,x,v)=(t,F(t,x,v))
+\]
+满足 \(F(t,x,0)=i_t(x)\)，且 \(\mathrm{d}\mathcal F\) 在零截面处可逆，则它在某个共同的小圆盘丛上仍是到相对开像的微分同胚。事实上，带时间的零截面像由紧空间 \([0,1]\times K\) 嵌入 \([0,1]\times N\)；若任意小半径仍有两个向量像重合，取趋零向量及基点的收敛子列，极限像相等便迫使时间和基点都相等，再由该点的局部逆排除重合。零截面紧同时给出定义域与可逆微分的统一半径。此论证只用丛的局部平凡化，不要求把所有 \(E_{t,x}\) 预先识别成一个固定丛。在参数端点，先局部延拓系数；由于第一坐标始终是 \(t\)，逆函数定理所得的局部逆也保持时间，因而可限制回半空间。这一版本将在同位延拓中保持每个时刻的子流形。
+
+若 \(S\) 原来没有在 \(N\) 中闭，先取所有适配坐标域的并 \(N_0\)。它是包含 \(S\) 的开集，且 \(S\) 在 \(N_0\) 中闭：任何 \(z\in N_0\) 都位于某张适配图内，图中的坐标切片是相对闭集，因而一个不在切片上的点不可能是 \(S\) 的聚点。在 \(N_0\) 中应用引理即可。由此，管状邻域存在性不要求原嵌入固有，但所需半径可以趋于零。
 
 \subsection{管状邻域及其选择无关性}
 \label{g2:subsec:1503:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+\begin{definition}\label{g2:def:tubular-neighborhood}
+	设 \(S\subset N\) 为无边界嵌入子流形。一张\term[guanzhuanglinyu]{管状邻域映射}[tubular neighborhood map]是从 \(\nu_NS\) 的零截面某邻域 \(V\) 到 \(N\) 的开集 \(U\supset S\) 的微分同胚 \(\tau:V\to U\)，满足 \(\tau(0_x)=x\)，并且纤维方向的微分在取法商后为恒等：
+	\[
+		\nu_xS\longrightarrow\mathrm{T}_xN\longrightarrow\nu_xS,
+		\qquad v\longmapsto\mathrm{d}\tau_{0_x}(0,v)\longmapsto v.
+	\]
+	称 \(U\) 为 \(S\) 的\term[guanzhuanglinyu]{管状邻域}[tubular neighborhood]。可缩小 \(V\)，使它为上一引理中的变半径圆盘丛。
+\end{definition}
+
+\begin{theorem}[管状邻域定理]\label{g2:thm:tubular-neighborhood}
+	每个无边界光滑流形中的无边界嵌入子流形都有管状邻域。子流形紧时可取常数法向半径，一般情形可取正的变半径。
+\end{theorem}
+\begin{proof}
+	度量与联络给出的法向指数 \(\Phi\) 满足\cref{g2:prop:normal-exponential-local}，故\cref{g2:lem:zero-section-shrinking}在适当环境开集中给出 \(\tau=\Phi|_{E_\varepsilon}\)。其零截面值正确，纤维微分是 \(\iota_g\)，取商后为恒等，因此满足定义。若 \(S\) 紧，连续正函数 \(\varepsilon\) 有正的下界，进一步取更小常数即可。
+\end{proof}
+
+例如 \(S^k\subset\mathbb R^{k+1}\) 的外法向线丛平凡，\(\tau(x,t)=(1+t)x\)、\(|t|<1/2\)，给出一条环形邻域。在 Möbius 带总空间中，零截面的法线丛仍是 Möbius 线丛；其邻域是扭转的带，而非圆周与区间的乘积。管状模型保留的是整个法丛的拼接。
+
+\ProseParagraphBreak
+
+在 \(U=\tau(E_\varepsilon)\) 上，令 \(r=\pi\circ\tau^{-1}\)，得到光滑淹没 \(r:U\to S\)，且 \(r|_S=\operatorname{id}\)。纤维缩放给出
+\[
+	R_s(\tau(v))=\tau((1-s)v),\qquad0\le s\le1,
+\]
+因此 \(U\) 光滑形变收缩到 \(S\)。变半径条件只依赖基点，故整条线段 \((1-s)v\) 都留在定义域内。这些结论常用来把邻域中的问题送回子流形。\cref{g2:fig:tubular-retraction}画出圆周的情形。
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter15-TubularNeighborhood}
+	\caption[法向纤维与管状邻域收缩]{圆周附近的短法向纤维填成环形邻域。投影 \(r\) 将同一纤维上的点送回基点 \(x\)；纤维缩放则给出从恒等映射到 \(r\) 的形变。}
+	\label{g2:fig:tubular-retraction}
+\end{figure}
+
+
+\begin{proposition}\label{g2:prop:tubular-uniqueness}
+	设 \(\tau_0,\tau_1\) 是同一个无边界嵌入子流形 \(S\subset N\) 的两张管状邻域映射，均按上述定义正规化法方向微分。存在法丛零截面的一个共同邻域及联合光滑族 \(\tau_t\)、\(0\le t\le1\)，使每张 \(\tau_t\) 都是管状邻域映射，端点为原映射的限制，并且整族在零截面上不变。
+\end{proposition}
+\begin{proof}
+	先缩小到 \(\tau_1(v)\) 落在 \(\tau_0\) 的像内，令 \(F=\tau_0^{-1}\circ\tau_1\)。它是法丛零截面附近的微分同胚，固定零截面，且诱导的法方向微分为恒等。记纤维缩放为 \(\delta_t(v)=tv\)。对 \(t>0\)，定义
+	\[
+		F_t=\delta_{1/t}\circ F\circ\delta_t.
+	\]
+	在局部丛坐标中写 \(F(x,v)=(a(x,v),b(x,v))\)。零截面与正规化条件给出
+	\[
+		a(x,0)=x,\qquad b(x,0)=0,\qquad \partial_vb(x,0)=I.
+	\]
+	于是
+	\[
+		F_t(x,v)=\left(a(x,tv),\frac{b(x,tv)}t\right),\qquad
+		\frac{b(x,tv)}t=\int_0^1\partial_vb(x,stv)v\,\mathrm{d}s.
+	\]
+	积分表达说明这族光滑延到 \(t=0\)，且 \(F_0(x,v)=(x,v)\)。这些表达来自整体纤维缩放，故不同平凡化中的延拓相容。零截面处的微分形如
+	\[
+		\mathrm{d}(F_t)_{0_x}(u,v)=(u+tB_xv,v),
+	\]
+	始终可逆。
+
+	令 \(\tau_t=\tau_0\circ F_t\)。紧参数区间保证它们在零截面的某共同邻域都有定义；对这一族使用\cref{g2:lem:zero-section-shrinking}，取得共同的变半径邻域，使各张都为到开像的微分同胚。它们固定零截面，法方向微分都是恒等，且 \(t=0,1\) 时分别为 \(\tau_0,\tau_1\)。
+\end{proof}
+
+这就是这里的选择无关性：缩小邻域后，度量、联络和半径所给出的不同管状坐标可以通过固定子流形的光滑同位相连。它并未指定唯一的一张坐标图。若一个邻域参数化在法商上诱导的是丛自同构 \(A\)，先把纤维变量换成 \(A^{-1}v\)，便得到定义中的正规化；把这项识别写清楚，才能比较相同法丛上的两张映射。Euclid 空间中的法向加法与变半径构造还可参看\cite[第138--141页，定理6.24及命题6.25]{Lee2012Smooth}。

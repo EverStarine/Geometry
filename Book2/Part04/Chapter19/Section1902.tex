@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 19.2 通用丛和 Grassmann 模型
 % 纲要位置：几何学计划纲要.md，第 1746 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,206 @@
 \section{通用丛和 Grassmann 模型}
 \label{g2:sec:1902}
 
-待撰写
+若能把一张秩 \(n\) 向量丛的每根纤维都线性嵌入同一个 \(\mathbb K^N\)，那么每个基点就确定一个 \(n\) 维子空间。原来的丛因而可以用一张到“所有 \(n\) 维子空间组成的空间”的映射来描述。这里 \(\mathbb K\) 表示 \(\mathbb R\) 或 \(\mathbb C\)，秩始终按 \(\mathbb K\) 计算。本节把这一直观构造写成局部坐标，并说明当不同丛需要不同的 \(N\) 时，如何把这些模型放在同一个空间中。
 
 \subsection{有限维通用丛}
 \label{g2:subsec:1902:01}
-待撰写
+第1章已用正交投影矩阵定义 Grassmann 空间，并在\cref{g2:thm:grassmann-schubert-cw}中构造其胞腔分解。这里记为
+\[
+	\operatorname{Gr}_n(\mathbb K^N)=\{V\subseteq\mathbb K^N:\dim_{\mathbb K}V=n\},\qquad 1\le n\le N.
+\]
+拓扑由 \(V\mapsto P_V\) 给出，其中 \(P_V\) 是标准内积下的正交投影。矩阵条件 \(P=P^*\)、\(P^2=P\)、\(\operatorname{tr}P=n\) 是闭条件，且 \(\|P\|\le1\)，所以该空间紧且 Hausdorff。现在需要一种能同时描述子空间及其内部向量的坐标。
+
+\ProseParagraphBreak
+
+固定正交分解 \(\mathbb K^N=A\oplus A^\perp\)，其中 \(\dim A=n\)。令 \(U_A\) 为投影 \(\pi_A|_V:V\to A\) 可逆的那些 \(V\)。这样的子空间唯一写成线性映射 \(L:A\to A^\perp\) 的图：
+\[
+	V=\operatorname{graph}L=\{a+L(a):a\in A\}.
+\]
+设 \(B_L\) 表示矩阵 \(\binom{I}{L}\)，则
+\[
+	P_V=B_L(I+L^*L)^{-1}B_L^*.
+\]
+反过来，若按 \(A\oplus A^\perp\) 把 \(P_V\) 分块，则 \(L=P_{21}P_{11}^{-1}\)。这些公式证明图参数与投影矩阵相互连续，且在有限维矩阵变量中光滑。可逆条件是开条件，故 \(U_A\) 开。任意子空间 \(V\) 都属于 \(U_V\)，这些图坐标覆盖整个空间，坐标变换也是由矩阵乘法及可逆矩阵求逆组成。因此实 Grassmann 空间的实维数为 \(n(N-n)\)，复 Grassmann 空间的复维数为 \(n(N-n)\)。
+
+\begin{definition}\label{g2:def:finite-tautological-bundle}
+	对 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\) 及 \(1\le n\le N\)，定义\term[dianfan-xiangliangcong]{典范向量丛}[tautological vector bundle]
+	\[
+		\gamma_n^N=\{(V,v)\in\operatorname{Gr}_n(\mathbb K^N)\times\mathbb K^N:v\in V\},\qquad \pi(V,v)=V,
+	\]
+	总空间取积空间的子空间拓扑。其在 \(V\) 上的纤维就是 \(V\) 本身。
+\end{definition}
+
+它确实是秩 \(n\) 向量丛，而不只是附带线性纤维的映射。在 \(U_A\) 上，局部平凡化及逆为
+\[
+	(V,v)\longmapsto(V,\pi_Av),\qquad
+	(V,a)\longmapsto(V,a+L_Va).
+\]
+二者连续且逐纤维线性。特别地，选定 \(A\) 的一组基 \(a_1,\ldots,a_n\) 后，\(a_j+L_Va_j\) 就给出 \(U_A\) 上的一组连续局部标架。\(n=1\) 时，基底分别是 \(\mathbb RP^{N-1}\)、\(\mathbb CP^{N-1}\)，所得典范线丛正是前面射影空间中的模型。
+
+\ProseParagraphBreak
+
+一张映射 \(c:X\to\operatorname{Gr}_n(\mathbb K^N)\) 的拉回丛可以直接写成
+\[
+	c^*\gamma_n^N=\{(x,v)\in X\times\mathbb K^N:v\in c(x)\}.
+\]
+因此有限维典范丛统一描述了平凡丛 \(X\times\mathbb K^N\) 的所有秩 \(n\) 子丛。这里的 \(N\) 控制可容纳的子丛；下一步证明紧基底上的每张有限秩丛都能放入某个这样的平凡丛。
 
 \subsection{由截面构造分类映射}
 \label{g2:subsec:1902:02}
-待撰写
+一张非平凡丛通常没有一组处处独立的全局标架，但可以有更多全局截面，在每一点共同张成纤维。多出来的截面允许我们先使用局部标架，再把每个标架在其定义域以外补成零。单位分解恰好提供所需权重。
+
+\begin{proposition}\label{g2:prop:bundle-embedding-classifier}
+	设 \(X\) 为仿紧 Hausdorff 空间，\(E\to X\) 为秩 \(n\) 的实或复向量丛，并有有限平凡化覆盖 \(U_1,\ldots,U_m\)。则存在逐纤维线性的丛嵌入
+	\[
+		J:E\longrightarrow X\times\mathbb K^{mn}
+	\]
+	和连续映射 \(c_J:X\to\operatorname{Gr}_n(\mathbb K^{mn})\)，满足 \(c_J(x)=J(E_x)\) 及 \(E\cong c_J^*\gamma_n^{mn}\)。特别地，紧 Hausdorff 基底上的每张有限秩向量丛都有这样的有限维模型。
+\end{proposition}
+\begin{proof}
+	取从属连续单位分解 \(\rho_1,\ldots,\rho_m\)，满足 \(\operatorname{supp}\rho_i\subseteq U_i\)。所用的是第一卷第4.4节的连续单位分解定理，其条件正是仿紧与 Hausdorff。将各局部内积加权求和，得到 \(E\) 上的连续正定内积。对每个 \(U_i\) 的局部标架作逐向量正交化，得到正交单位标架 \(e_{i1},\ldots,e_{in}\)；归一化的分母始终为正，故标架连续。
+
+	令 \(s_{ia}=\sqrt{\rho_i}\,e_{ia}\) 于 \(U_i\)，在其余地方补零。支集闭且包含于 \(U_i\)，所以每个不属于 \(U_i\) 的点都有一个邻域使该截面恒为零，补零连续。它们定义满射
+	\[
+		A_x:\mathbb K^{mn}\longrightarrow E_x,\qquad
+		(z_{ia})\longmapsto\sum_{i,a}z_{ia}s_{ia}(x).
+	\]
+	至少一个 \(\rho_i(x)>0\)，对应的 \(n\) 个截面已张成 \(E_x\)，所以确实满射。令 \(\tau_i(v)\in\mathbb K^n\) 为 \(v\in E_x\) 在第 \(i\) 组正交标架下的坐标。伴随映射给出
+	\begin{equation}\label{g2:eq:weighted-bundle-embedding}
+		J_x(v)=A_x^*(v)
+		=\bigl(\sqrt{\rho_1(x)}\,\tau_1(v),\ldots,
+		\sqrt{\rho_m(x)}\,\tau_m(v)\bigr).
+	\end{equation}
+	不在 \(U_i\) 时相应坐标仍取零。正交性与 \(\sum_i\rho_i=1\) 给出
+	\[
+		\|J_x(v)\|^2=\sum_i\rho_i(x)\|v\|^2=\|v\|^2.
+	\]
+	故 \(J_x\) 是等距单射，且 \(A_xJ_x=I_{E_x}\)。其像的正交投影为 \(P_x=J_xA_x\)，矩阵元连续依赖于 \(x\)，所以 \(c_J(x)=\operatorname{im}P_x\) 连续。
+
+	映射 \(v\mapsto(x,J_xv)\) 是 \(E\) 到 \(c_J^*\gamma_n^{mn}\) 的逐纤维线性同构，逆为 \((x,z)\mapsto A_xz\)，故是丛同构。这给出拉回图
+	\[
+		\begin{tikzcd}[column sep=large]
+			E\arrow[r,"{v\mapsto(c_J(x),J_xv)}"]\arrow[d]&\gamma_n^{mn}\arrow[d]\\
+			X\arrow[r,"c_J"']&\operatorname{Gr}_n(\mathbb K^{mn}).
+		\end{tikzcd}
+	\]
+	最后，紧 Hausdorff 空间仿紧，且任意局部平凡化覆盖有有限子覆盖，所以满足已用条件。
+\end{proof}
+
+这个构造也解释了映射为何取值于 Grassmann 空间：局部标架经加权提供了多个坐标，真正与原纤维对应的是这些坐标共同张成的 \(n\) 维像空间。\term[fenlei-yingshe]{分类映射}[classifying map]是给定一个拉回同构 \(E\cong c^*\gamma\) 的这种映射；不同权重与标架可能给出不同的 \(c\)。下一节将证明，在统一的无限模型中，它们具有同一个同伦类。
 
 \subsection{维数增大与相容嵌入}
 \label{g2:subsec:1902:03}
-待撰写
+增大环境维数时，把 \(\mathbb K^N\) 嵌入 \(\mathbb K^{N+1}\) 的前 \(N\) 个坐标，便得到闭嵌入
+\[
+	i_N:\operatorname{Gr}_n(\mathbb K^N)\longrightarrow\operatorname{Gr}_n(\mathbb K^{N+1}),\qquad V\longmapsto V\oplus0.
+\]
+投影矩阵只是在右下角添零，所以它连续；紧源到 Hausdorff 目标的单射给出嵌入。典范丛相容地满足 \(i_N^*\gamma_n^{N+1}\cong\gamma_n^N\)，同构在纤维上就是 \(v\mapsto(v,0)\)。因此把一个分类映射移入更大的环境，不会改变它表示的秩 \(n\) 丛。
+
+\ProseParagraphBreak
+
+另一个有用构造是正交补丛。在 \(\operatorname{Gr}_n(\mathbb K^N)\) 上令
+\[
+	(\gamma_n^N)^\perp=\{(V,w):w\in V^\perp\}.
+\]
+它由连续投影矩阵 \(I-P_V\) 描述，秩为 \(N-n\)，图坐标同样给出局部平凡化。逐纤维相加得到
+\begin{equation}\label{g2:eq:tautological-orthogonal-sum}
+	\gamma_n^N\oplus(\gamma_n^N)^\perp
+	\cong\operatorname{Gr}_n(\mathbb K^N)\times\mathbb K^N.
+\end{equation}
+拉回这个同构，便知满足\cref{g2:prop:bundle-embedding-classifier}条件的 \(E\) 有某张补丛 \(F\)，使 \(E\oplus F\) 平凡。补丛本身可以非平凡。
+
+\begin{example}\label{g2:exm:sphere-tangent-stable-triviality}
+	把单位球面 \(S^m\) 嵌入 \(\mathbb R^{m+1}\)，其切空间为 \(x^\perp\)。于是 \(x\mapsto x^\perp\) 将 \(\mathrm TS^m\) 表示为 \(\gamma_m^{m+1}\) 的拉回。正交补直线由处处非零的法向量 \(x\) 张成，故为平凡线丛。具体同构为
+	\[
+		\mathrm TS^m\oplus\varepsilon^1\longrightarrow\varepsilon^{m+1},
+		\qquad(x,v,t)\longmapsto(x,v+tx),
+	\]
+	其中 \(\varepsilon^r=S^m\times\mathbb R^r\)。逆映射将 \(z\) 分解为 \(z-\langle z,x\rangle x\) 与 \(\langle z,x\rangle\)。
+
+	然而 \(\mathrm TS^2\) 不平凡。若有连续非零切向量场，将它归一化为 \(v(x)\)，则
+	\[
+		H(x,t)=\cos(\pi t)x+\sin(\pi t)v(x)
+	\]
+	始终为单位向量，会给出恒等映射与对径映射之间的同伦。两者在 \(S^2\) 上的度分别为 \(1\)、\(-1\)，与\cref{g2:prop:degree-basic,g2:prop:reflection-antipodal-degree}矛盾。因此加一条平凡线后得到的同构，并不保证原秩下也有同构。
+\end{example}
+
+这里有两种不同的增大：\(N\) 增大只改变装载纤维的环境，\(E\mapsto E\oplus\varepsilon^r\) 则实际增加纤维的秩。前者用于固定秩的分类空间，后者产生稳定分类。例子中的切丛说明，稳定操作可能遗失原秩下的信息。
 
 \subsection{无限 Grassmann 空间的拓扑}
 \label{g2:subsec:1902:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+把 \(\mathbb K^\infty\) 定义为有限支撑序列构成的向量空间，即 \(\bigcup_N\mathbb K^N\)。它的每个有限维子空间都包含于某个 \(\mathbb K^N\)：只须对一组有限基向量的支撑取并。因而所有 \(n\) 维子空间可以由前面的有限模型穷尽。
+
+\begin{definition}\label{g2:def:infinite-grassmann}
+	对固定 \(n\ge1\)，定义
+	\[
+		G_n=\operatorname{Gr}_n(\mathbb K^\infty)
+		=\bigcup_{N\ge n}\operatorname{Gr}_n(\mathbb K^N).
+	\]
+	赋予它\term[zhijixian-ruotuopu]{直极限弱拓扑}[weak direct-limit topology]：集合 \(U\subseteq G_n\) 开，当且仅当每个 \(U\cap\operatorname{Gr}_n(\mathbb K^N)\) 都在该有限模型中开。同样，令 \(\gamma_n=\bigcup_N\gamma_n^N\)，总空间也取直极限弱拓扑。
+\end{definition}
+
+这些弱拓扑的作用是把“由各有限阶段定义的映射”粘合成连续映射。有限阶段的原有拓扑保留不变：一个有限阶段中的闭集，在所有更大的阶段中仍闭，所以在整个直极限中闭。投影矩阵的各个坐标函数在所有阶段连续，故在 \(G_n\) 上连续，并能分离不同子空间，因此 \(G_n\) 是 Hausdorff 空间。第1章的 Schubert 胞腔与上述嵌入相容：在 \(\mathbb K^N\) 中的胞腔恰好是最大枢轴指标不超过 \(N\) 的那些胞腔，闭包关系保持不变。所以这些有限子复形取并也给出 \(G_n\) 的 CW 结构，其弱拓扑就是这里规定的拓扑。
+
+\begin{lemma}\label{g2:lem:grassmann-compact-stage}
+	固定 \(n\ge1\) 及 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。在上述弱拓扑下，\(\operatorname{Gr}_n(\mathbb K^\infty)\) 的每个紧子集都包含于某个有限阶段 \(\operatorname{Gr}_n(\mathbb K^N)\)。因此紧空间上的映射及其同伦都可在足够大的有限阶段中进行。
+\end{lemma}
+\begin{proof}
+	若紧集 \(K\) 不包含于任一阶段，可递归选择点 \(x_j\in K\) 与严格递增的整数 \(N_j\)，使第 \(N_j\) 阶段包含全部先前选过的点，而 \(x_j\) 不在该阶段。于是点集 \(A=\{x_j:j\ge1\}\) 与每个有限阶段都只有有限交。对任意子集 \(A'\subseteq A\)，该交仍有限，因有限阶段 Hausdorff而闭。弱拓扑遂说明 \(A'\) 在 \(G_n\) 中闭。特别地，\(A\) 是 \(K\) 的闭子集，且其每个子集都闭，所以 \(A\) 是紧的无限离散空间。这与单点开覆盖没有有限子覆盖矛盾。
+
+	连续映射的紧像满足第一项。若定义域 \(X\) 紧，则 \(X\times I\) 也紧，将第一项用于同伦映射即可。
+\end{proof}
+
+判断一张从弱直极限出发的同伦是否连续，还需要同时处理时间参数。下面把这一点明确下来，后面的坐标移动将反复使用它。
+
+\begin{lemma}\label{g2:lem:grassmann-parameter-continuity}
+	设 \(Y=\bigcup_NY_N\) 取由各 \(Y_N\) 规定的直极限拓扑，\(L\) 为局部紧 Hausdorff 空间。映射 \(F:Y\times L\to Z\) 连续，当且仅当各限制 \(F|_{Y_N\times L}\) 连续。特别地，这适用于 \(Y=G_n\)、\(L=I\)，以及局部丛坐标中的 \(L=\mathbb K^n\)。
+\end{lemma}
+\begin{proof}
+	必要性直接来自限制映射。反过来，给连续映射集 \(C(L,Z)\) 取紧开拓扑，其子基本开集为
+	\[
+		[C,O]=\{u:u(C)\subseteq O\},\qquad C\subseteq L\ \text{紧},\quad O\subseteq Z\ \text{开}.
+	\]
+	每个连续映射 \(F_N:Y_N\times L\to Z\) 的伴随映射 \(y\mapsto F_N(y,\cdot)\) 连续：若 \(F_N(\{y\}\times C)\subseteq O\)，紧性允许把 \(C\) 上的有限个乘积邻域合并，得到 \(y\) 的一个邻域，使同样的包含对该邻域内全部点成立。由 \(Y\) 的终拓扑性质，这些伴随映射合成连续映射 \(Y\to C(L,Z)\)。
+
+	局部紧 Hausdorff 条件保证求值 \(C(L,Z)\times L\to Z\) 连续。具体地，若 \(u(t)\in O\)，可取 \(t\) 的开邻域 \(V\)，使 \(\overline V\) 紧且包含于 \(u^{-1}(O)\)；于是 \([\overline V,O]\times V\) 的求值落在 \(O\) 内。将求值与前述伴随映射复合，便得到 \(F\) 的连续性。
+\end{proof}
+
+现在验证无限典范丛仍然局部平凡。对任意有限坐标集 \(J\subset\mathbb N\)、\(|J|=n\)，记 \(A_J\) 为相应的坐标 \(n\) 平面，\(U_J\subseteq G_n\) 为 \(\pi_{A_J}|_V\) 可逆的子空间集合。它与各有限阶段的交都是开集，所以 \(U_J\) 开。任一 \(n\) 个线性无关向量构成的矩阵都有一个非零 \(n\) 阶子式，故这些 \(U_J\) 覆盖 \(G_n\)。有限阶段的平凡化
+\[
+	(V,v)\longmapsto(V,\pi_{A_J}v)
+\]
+相容地取并，给出 \(\gamma_n|_{U_J}\to U_J\times A_J\)。它的连续性由总空间的弱拓扑得到，逆映射在每个有限阶段乘 \(A_J\) 上连续，再由\cref{g2:lem:grassmann-parameter-continuity}得到整体连续。这里 \(U_J\) 本身取其与各阶段交所给的弱拓扑；这是开子空间上的终拓扑。于是 \(\gamma_n\) 是一张真正的秩 \(n\) 向量丛，且具有可数平凡化覆盖。
+
+\begin{lemma}\label{g2:lem:universal-numerable-cover}
+	无限典范丛 \(\gamma_n\to G_n\) 的可数坐标平凡化覆盖 \(\{U_J\}\) 有从属的局部有限连续单位分解。此外，在每个有限阶段中，只有有限个权重可能非零。
+\end{lemma}
+\begin{proof}
+	枚举全部 \(n\) 元坐标集为 \(J_1,J_2,\ldots\)。对 \(V\in G_n\)，置
+	\[
+		f_j(V)=\det\bigl(P_V[J_j,J_j]\bigr).
+	\]
+	这是投影矩阵相应主子式。在一个包含 \(V\) 的有限阶段选正交单位标架矩阵 \(Q\)，则 \(P_V=QQ^*\)，所以 \(f_j(V)=|\det Q_{J_j}|^2\ge0\)。对 \(\det(Q^*Q)\) 作矩阵乘积的子式展开，重复行指标的项由行列式的交替性抵消，剩下每个 \(n\) 元坐标集的两个共轭子式之积，得到
+	\[
+		\sum_j f_j(V)=\det(Q^*Q)=1.
+	\]
+	在第 \(N\) 阶段，只有 \(J_j\subseteq\{1,\ldots,N\}\) 时该函数才可能非零；这样的 \(j\) 只有有限个。并且 \(f_j>0\) 的集合正是 \(U_{J_j}\)。
+
+	原函数族的支集未必局部有限，因此先削去每一项的一小部分。令
+	\[
+		a_j=2^{-j-1},\qquad g_j(V)=\max\{0,f_j(V)-a_j\}.
+	\]
+	有 \(\operatorname{supp}g_j\subseteq\{f_j\ge a_j\}\subseteq U_{J_j}\)。对固定 \(V\)，取 \(j_0\) 包含所有在 \(V\) 处非零的 \(f_j\)。集合
+	\[
+		C=\bigcup_{j>j_0}\{f_j\ge a_j\}
+	\]
+	与每个有限阶段的交只是有限个闭集的并，故 \(C\) 在弱拓扑下闭；且 \(V\notin C\)。开邻域 \(G_n\setminus C\) 不遇到任何 \(j>j_0\) 的支集，证明了局部有限性。
+
+	又因 \(\sum_j a_j=1/2\)，有 \(\sum_jg_j(V)\ge1/2>0\)。局部有限性使这个和连续。于是
+	\[
+		\rho_j(V)=\frac{g_j(V)}{\sum_i g_i(V)}
+	\]
+	就是所需单位分解。在每个有限阶段只有有限个 \(f_j\) 非零，相同结论也适用于 \(\rho_j\)。
+\end{proof}
+
+最后把有限嵌入构造用于可数局部有限数据。设 \(E\to X\) 有可数平凡化覆盖及从属局部有限单位分解，则式\eqref{g2:eq:weighted-bundle-embedding}按 \(i=1,2,\ldots\) 排列坐标，给出 \(E\to X\times\mathbb K^\infty\) 的逐纤维单射。在每个基点的某个邻域内，只有固定有限个权重可能非零，所以其分类映射局部落在一个固定有限阶段；前面的矩阵公式因此直接保证它连续。若 \(X\) 仿紧 Hausdorff 且有可数平凡化覆盖，先取局部有限细化与从属单位分解，再把属于同一原覆盖成员的权重相加，即得到这样的可数局部有限数据。局部有限支集的并仍闭，故分组后支集仍包含于对应平凡化域。这样，非紧基底也得到无限典范丛的拉回表示。

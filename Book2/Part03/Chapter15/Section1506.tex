@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 15.6 固有淹没的局部平凡性
 % 纲要位置：几何学计划纲要.md，第 1610 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -19,29 +19,243 @@
 \section{固有淹没的局部平凡性}
 \label{g2:sec:1506}
 
-待撰写
+淹没定理说明，满秩映射在每个源点附近都像一个坐标投影。然而，一条纤维可能穿过许多张坐标图：把这些局部投影拼在一起，能否得到整个纤维附近的乘积？本节用沿基底路径移动纤维的方法回答这个问题。固有性保证移动过程中没有点在有限时间内逃向无穷远，因而同一套构造能作用于整条纤维。
 
 \subsection{水平分布和局部提升方程}
 \label{g2:subsec:1506:01}
-待撰写
+
+先设 \(p:E\to B\) 是无边界光滑流形之间的淹没。记 \(\dim E=m\)、\(\dim B=b\)。每一点的核
+\[
+	V_e=\ker\mathrm{d}p_e\subseteq\mathrm{T}_eE
+\]
+有固定维数 \(m-b\)，由满秩矩阵的局部消元可知，它们组成 \(\mathrm{T}E\) 的光滑子丛 \(V\)，称为\term{垂直切丛}[vertical tangent bundle]。若 \(e\in p^{-1}(y)\)，则 \(V_e=\mathrm{T}_e(p^{-1}(y))\)：垂直方向就是留在当前纤维内的运动方向。
+
+在 \(E\) 上选一个辅助 Riemann 度量，令 \(H=V^\perp\)。第一卷第12章已经证明，光滑向量丛可取光滑度量，光滑子丛的正交补仍是光滑子丛。因此
+\[
+	\mathrm{T}E=V\oplus H,
+	\qquad \mathrm{d}p_e|_{H_e}:H_e\longrightarrow\mathrm{T}_{p(e)}B
+\]
+是线性同构。它的逆随 \(e\) 光滑变化：在局部标架中，这就是一个可逆光滑矩阵的逆。记这个逆为
+\begin{equation}\label{g2:eq:horizontal-right-inverse}
+	L_e:\mathrm{T}_{p(e)}B\longrightarrow\mathrm{T}_eE,
+	\qquad \mathrm{d}p_e\circ L_e=\operatorname{id}.
+\end{equation}
+像丛 \(H\) 称为一个\term{水平分布}[horizontal distribution]。给定基底的一个速度，\(L_e\) 选出总空间中与它对应的速度。这里不要求水平分布满足 Frobenius 可积条件；提升一条曲线只需求解常微分方程，不需要存在处处切于 \(H\) 的高维子流形。
+
+\ProseParagraphBreak
+
+设 \(\psi:U_0\to\mathbb R^b\) 是基底坐标图，\(u\in\mathbb R^b\)。在 \(p^{-1}(U_0)\) 上定义依赖参数 \(u\) 的向量场
+\begin{equation}\label{g2:eq:radial-horizontal-field}
+	X_u(e)=L_e\bigl(\mathrm{d}(\psi^{-1})_{\psi(p(e))}u\bigr).
+\end{equation}
+若 \(e(t)\) 是它的积分曲线，链式法则给出
+\[
+	\frac{\mathrm{d}}{\mathrm{d}t}\psi(p(e(t)))
+	=\mathrm{d}\psi_{p(e(t))}\mathrm{d}p_{e(t)}X_u(e(t))=u.
+\]
+所以基底坐标沿直线运动：
+\begin{equation}\label{g2:eq:horizontal-base-line}
+	\psi(p(e(t)))=\psi(p(e(0)))+tu.
+\end{equation}
+这条等式同时说明提升方程的含义与求解方向：我们先在基底指定直线，再用 \(L\) 确定总空间中的运动。
+
+对一条光滑路径 \(c(t)\subset U_0\)，将上述常向量 \(u\) 换成 \(\frac{\mathrm{d}}{\mathrm{d}t}(\psi\circ c)(t)\)，便得到含时向量场。如果初始点位于 \(p^{-1}(c(0))\)，同一个计算说明解始终投影到 \(c(t)\)。第一卷第13章第1节的局部存在唯一性和初值、参数光滑依赖定理适用：系数关于 \((t,e)\) 光滑，而含时方程也可通过增加时间坐标写成自治方程。下面需要补上的，是这些局部解能存在多久。
 
 \subsection{固有性保证的统一存在区间}
 \label{g2:subsec:1506:02}
-待撰写
+
+回忆，\(p\) 固有是指每个紧集 \(K\subset B\) 的原像 \(p^{-1}(K)\) 紧。因而，只要基底路径始终留在同一个紧集内，它的任何水平提升也都被限制在一个紧集内。这与第一卷第13章第2节的逃逸判据正好配合：光滑向量场的最大积分曲线若在有限时刻不能继续，就必定离开定义域中的每个紧集。
+
+\begin{lemma}\label{g2:lem:proper-horizontal-lift}
+	设 \(p:E\to B\) 是固有淹没，\(c:[0,1]\to U_0\) 是光滑路径，且 \(c([0,1])\) 包含在 \(U_0\) 的某个紧子集中。对每个 \(e_0\in p^{-1}(c(0))\)，由选定水平分布确定的提升都在整个 \([0,1]\) 上存在且唯一。
+\end{lemma}
+\begin{proof}
+	先由局部存在唯一性得到经过 \(e_0\) 的提升。设它的向前最大存在时刻为 \(T\leq1\)。在 \(t<T\) 时，它的投影等于 \(c(t)\)，所以提升位于紧集 \(p^{-1}(c([0,1]))\subset p^{-1}(U_0)\) 内。把时间作为附加坐标后，积分曲线位于紧集 \([0,1]\times p^{-1}(c([0,1]))\) 内。路径及向量场可在端点附近光滑延拓；有限个局部存在邻域给出这个紧集附近统一的短时存在区间。因此解可以越过 \(T\) 继续，与 \(T\) 是不可延拓的端点矛盾。若只需解到 \(T=1\)，同一论证保证端点值存在。唯一性来自局部唯一性。
+\end{proof}
+
+这里的“统一”不要求预先给整条非紧纤维估计一个全局速度界。固有性已经使初始纤维和路径上方的全部区域紧，从而可用有限个局部方程控制所有初始点。对于依赖光滑参数的路径，还可把参数加入自治方程，令其导数为零；当参数限制在紧集内时，同样的有限覆盖论证给出共同的存在区间。随后，初值与参数光滑依赖定理便保证提升同时光滑依赖于起点和参数。关于这两个常微分方程工具，可对照 \cite[第9章，第215--217页]{Lee2012Smooth}。
+
+\ProseParagraphBreak
+
+固有性在这里有实际作用。例如
+\[
+	p:\mathbb R^2\setminus\{(0,0)\}\longrightarrow\mathbb R,
+	\qquad p(x,y)=x
+\]
+处处为淹没，但 \(p^{-1}(0)\cong\mathbb R\setminus\{0\}\) 有两个连通分支，\(p^{-1}(x)\cong\mathbb R\) 对 \(x\ne0\) 只有一个连通分支。因此 \(0\) 附近不存在以整条纤维为因子的局部乘积。满秩条件没有阻止纤维的一部分从缺失点附近消失；这个映射也确实不固有。
 
 \subsection{沿基底径向路径构造平凡化}
 \label{g2:subsec:1506:03}
-待撰写
+
+固定 \(y_0\in B\)，取坐标图 \(\psi:U_0\to\mathbb R^b\)，使 \(\psi(y_0)=0\)。缩小后可取 \(r>0\)，使闭球 \(\overline{B(0,2r)}\) 包含在 \(\psi(U_0)\) 中。令
+\[
+	U=\psi^{-1}(B(0,r)),\qquad F=p^{-1}(y_0).
+\]
+对 \(y\in U\)，选择从 \(y_0\) 到 \(y\) 的坐标径向路径
+\[
+	c_y(t)=\psi^{-1}(t\psi(y)),\qquad 0\leq t\leq1.
+\]
+每一条路径都位于紧集 \(K=\psi^{-1}(\overline{B(0,r)})\) 内，而且随 \((t,y)\) 光滑变化。
+
+记 \(\varphi_u^t(e)\) 为式 \eqref{g2:eq:radial-horizontal-field} 中向量场 \(X_u\) 的局部流。由 \cref{g2:lem:proper-horizontal-lift}，对任意 \((z,y)\in F\times U\)，表达式
+\begin{equation}\label{g2:eq:ehresmann-trivialization}
+	\Phi(z,y)=\varphi_{\psi(y)}^1(z)
+\end{equation}
+都有定义。式 \eqref{g2:eq:horizontal-base-line} 说明
+\[
+	p(\Phi(z,y))=y.
+\]
+因此 \(\Phi\) 已经具有局部平凡化所需的投影关系。它把纤维 \(F\) 中每一点沿同一条基底路径搬运到 \(p^{-1}(y)\)，而不是分别在源空间中挑选互不相干的坐标图。
+
+为了从另一条纤维回到 \(F\)，对 \(e\in p^{-1}(U)\) 固定 \(u=\psi(p(e))\)，沿 \(X_u\) 反向流动一个单位时间。它在基底中的坐标是 \((1+t)u\)，\(-1\leq t\leq0\)，仍留在 \(K\) 内，故同样存在。于是候选逆映射为
+\begin{equation}\label{g2:eq:ehresmann-inverse}
+	\Psi(e)=\bigl(\varphi_{\psi(p(e))}^{-1}(e),p(e)\bigr).
+\end{equation}
+这里上标 \(-1\) 表示时间 \(-1\)，而参数 \(\psi(p(e))\) 在这次反向流动中保持不变。若在途中不断按当前位置重新设定参数，方程就变了，也不再是原路径的逆向提升。
 
 \subsection{平凡化及其逆的光滑性}
 \label{g2:subsec:1506:04}
-待撰写
+
+\begin{theorem}[Ehresmann 定理]\label{g2:thm:ehresmann}
+	设 \(E,B\) 是无边界光滑流形，\(p:E\to B\) 是固有的满淹没。则每个 \(y_0\in B\) 都有邻域 \(U\)，使得存在微分同胚
+	\[
+		\Phi:F\times U\longrightarrow p^{-1}(U),\qquad F=p^{-1}(y_0),
+	\]
+	满足 \(p\circ\Phi=\operatorname{pr}_U\)。特别地，\(p\) 是以紧流形为纤维的光滑纤维丛。
+\end{theorem}
+\begin{proof}
+	淹没定理给出 \(F\) 的光滑子流形结构，固有性给出其紧性。按照前两小节选取水平分布和坐标径向路径，并定义式 \eqref{g2:eq:ehresmann-trivialization} 与 \eqref{g2:eq:ehresmann-inverse}。
+
+	先验证光滑性。向量场 \(X_u(e)\) 关于 \((e,u)\) 光滑，所以流映射 \((t,e,u)\mapsto\varphi_u^t(e)\) 在其存在域内光滑。它的存在域是开集，这是初值与参数光滑依赖定理的一部分。上一小节已证明，定义 \(\Phi\) 所需的每个 \((1,z,\psi(y))\) 和定义 \(\Psi\) 所需的每个 \((-1,e,\psi(p(e)))\) 都在这个存在域内。因此限制到这些初值并复合光滑映射后，\(\Phi\) 与 \(\Psi\) 都光滑。此处分别使用了两个事实：固有性保证解确实走到指定时刻，参数依赖定理保证到达点光滑变化。
+
+	再验证互逆。若 \(u=\psi(y)\)，则 \(p(\varphi_u^1(z))=y\)，故逆向运动使用的仍是同一个向量场 \(X_u\)。流的唯一性给出
+	\[
+		\varphi_u^{-1}(\varphi_u^1(z))=z,
+		\qquad \varphi_u^1(\varphi_u^{-1}(e))=e.
+	\]
+	于是 \(\Psi\Phi=\operatorname{id}_{F\times U}\)、\(\Phi\Psi=\operatorname{id}_{p^{-1}(U)}\)。投影关系已经验证，定理得证。
+\end{proof}
+
+若基底连通，则它道路连通。沿连接两个基点的路径取有限个局部平凡化，逐次比较相邻纤维，就知所有纤维彼此微分同胚。这个结论仍允许全局的粘合发生扭转。例如 \(S^1\to S^1\)、\(z\mapsto z^2\) 是固有满淹没，纤维为两个点，局部有上述乘积；总空间 \(S^1\) 连通，而 \(\{1,2\}\times S^1\) 不连通，因此全局并不是这个乘积。
+
+所选度量、水平分布和基底径向坐标都影响具体的 \(\Phi\)。更换选择后仍得到合法的局部平凡化；两种平凡化之间的坐标变换在每条纤维上是一个微分同胚，并随基点光滑变化。定理保证局部乘积的存在，不指定一个天然的纤维识别。
 
 \subsection{Ehresmann 定理的边界推广条件}
 \label{g2:subsec:1506:05}
-待撰写
+
+有边界时，水平提升还必须尊重边界。先讨论基底无边界、总空间可能有边界的情形。
+
+\begin{proposition}\label{g2:prop:ehresmann-source-boundary}
+	设 \(E\) 是有边界光滑流形，\(B\) 无边界，\(p:E\to B\) 固有、满射且处处为淹没。若限制 \(p|_{\partial E}:\partial E\to B\) 也是淹没，则每个 \(y_0\in B\) 附近都有保持边界的局部平凡化
+	\[
+		(p^{-1}(U),p^{-1}(U)\cap\partial E)
+		\cong(F,\partial F)\times U,
+		\qquad \partial F=F\cap\partial E.
+	\]
+\end{proposition}
+\begin{proof}
+	关键是构造满足 \eqref{g2:eq:horizontal-right-inverse} 的 \(L\)，并使边界点的 \(L_e\) 取值于 \(\mathrm{T}_e\partial E\)。在边界点附近，\(p|_{\partial E}\) 满秩，故可将基底坐标 \(q^1,\ldots,q^b\) 的拉回补成边界坐标，再加一个边界定义函数 \(r\geq0\)。这些函数给出适配坐标 \((q,z,r)\)，其中 \(p\) 就是 \(q\) 投影。令基底坐标方向的局部提升保持 \((z,r)\) 不变，便得到沿边界切向的局部右逆。内点附近按普通淹没坐标选择局部右逆。
+
+	取从属于这些邻域的光滑单位分解 \(\{\rho_i\}\)，把局部右逆 \(L_i\) 拼成 \(L=\sum_i\rho_iL_i\)。由于 \(\sum_i\rho_i=1\)，有 \(\mathrm{d}p\circ L=\operatorname{id}\)；在边界点，每个有贡献的 \(L_i\) 都取值于边界切空间，因此 \(L\) 也如此。其像与 \(\ker\mathrm{d}p\) 互补。
+
+	现在按前述公式构造 \(X_u\)。它沿 \(\partial E\) 切向，其流保持边界，也保持内部。第一卷第13章第2节已说明这一点：在半空间坐标中，切向条件使法向方程写成 \(\dot r=a(q,z,r)r\)，所以 \(r=0\) 与 \(r>0\) 都在存在区间内保持。紧集上的统一短时存在和逃逸判据也适用于这样的向量场。故固有性保证正、反向提升均存在。原来的 \(\Phi\) 与 \(\Psi\) 保持边界且互逆，给出结论。适配坐标同时说明纤维是有边界子流形，边界恰为 \(F\cap\partial E\)。
+\end{proof}
+
+不能直接对任意度量取 \((\ker\mathrm{d}p)^\perp\)，就宣称所得水平分布沿边界切向：正交性并不自动带来这个条件。上面的局部右逆加单位分解，正是为解决这一点而作。
+
+\ProseParagraphBreak
+
+边界上的满秩条件也不能删除。考虑光滑带边界曲面
+\[
+	E=\{(x,y)\in\mathbb R^2:|y|\leq2,\ x^2+y^2\geq1\},
+	\qquad p(x,y)=x.
+\]
+它的边界由两条水平直线和单位圆组成，彼此不相交，因而没有角点。映射 \(p\) 固有、满射，而且 \(\mathrm{d}p=\mathrm{d}x\) 在二维切空间上处处满射。然而，\(|x|<1\) 时纤维为两段闭区间，\(|x|>1\) 时纤维为一段闭区间，所以在 \(x=\pm1\) 附近不可能局部平凡。问题恰发生在圆周上的 \((\pm1,0)\)：此处 \(p|_{\partial E}\) 的微分为零。
+
+\ProseParagraphBreak
+
+如果基底也有边界，需说明总空间的哪一部分对应基底边界。一个适用于无角点流形的清楚版本如下。
+
+\begin{proposition}\label{g2:prop:ehresmann-base-boundary}
+	设 \(E,B\) 是有边界光滑流形，\(p:E\to B\) 是固有满淹没，并满足
+	\[
+		p^{-1}(\partial B)=\partial E.
+	\]
+	则 \(p\) 在基底的半空间邻域上也有光滑局部平凡化，纤维是紧的无边界流形。
+\end{proposition}
+\begin{proof}
+	先看 \(e\in\partial E\)。取源和目标的边界坐标，分别记法向坐标为 \(r\geq0\)、\(s\geq0\)。因为 \(s\circ p\) 在 \(r=0\) 上为零，可写成
+	\[
+		s(p(q,r))=r\,a(q,r).
+	\]
+	其边界切向导数为零。满秩条件迫使 \(a(q,0)\ne0\)，而内点映到内点迫使 \(a(q,0)>0\)。因此 \(p\) 在法向上为同向的非退化映射；同时，\(\mathrm{d}p\) 将边界切空间满射到基底的边界切空间。于是 \(p|_{\partial E}:\partial E\to\partial B\) 是固有满淹没。
+
+	固定 \(y_0\in\partial B\)。对这个无边界流形之间的限制映射应用 \cref{g2:thm:ehresmann}，得到某个边界邻域 \(V\) 上的平凡化，纤维 \(F=p^{-1}(y_0)\) 紧且无边界。把 \(V\) 缩小，使其闭包位于一张边界坐标图中，再取基底的半空间邻域 \(V\times[0,\varepsilon)\)，记其法向坐标为 \(s\)。在该邻域上选择 \(\mathrm{d}p\) 的光滑右逆，提升 \(\partial/\partial s\) 得到向量场 \(Y\)。上面的法向计算说明，\(Y\) 在 \(\partial E\) 上严格指向内侧。
+
+	从边界平凡化中的点出发，沿 \(Y\) 流动时间 \(s\)。基底的 \(V\) 坐标保持不变，法向坐标恰好由 \(0\) 增为 \(s\)。紧性给出统一的短时存在，缩小 \(\varepsilon\) 后定义出
+	\[
+		F\times V\times[0,\varepsilon)\longrightarrow p^{-1}(V\times[0,\varepsilon)).
+	\]
+	任意右侧点的逆构造是沿 \(Y\) 反向流动，直到法向坐标降为零，再使用边界平凡化的逆。在到达零之前，轨道保持在内部；其基底轨道是紧线段，固有性防止在途中逃逸。到达边界时，向量场在局部半空间坐标中可光滑延拓到开集，故流与反向到达映射一直光滑到边界。唯一性证明这两个构造互逆。基底内点附近则直接应用无边界版本。
+\end{proof}
+
+例如闭圆盘上的投影 \(\overline D^2\to[-1,1]\)、\((x,y)\mapsto x\) 固有、满射，在二维切空间上处处满秩，但它不满足 \(p^{-1}(\partial B)=\partial E\)。端点上方的纤维为单点，内部纤维为线段，确实不能局部平凡。若还希望纤维本身有边界，那么它与有边界基底的乘积通常会出现角点；此时需另行规定各边界面的对应关系，上述无角点版本不涉及这种更一般的结构。
 
 \subsection{光滑平凡与复解析平凡的区别}
 \label{g2:subsec:1506:06}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+一个复流形同时是实光滑流形。全纯映射的坐标表达满足复可微条件，而一般的实光滑映射没有这个约束。因此，固有全纯淹没可以应用 \cref{g2:thm:ehresmann}，但所得平凡化首先是实光滑的。下面用复环面说明，全纯平凡化确实可能不存在。
+
+取上半平面 \(\{\tau\in\mathbb C:\operatorname{Im}\tau>0\}\) 中的一个小开圆盘 \(U\)，定义格子与复环面
+\[
+	\Lambda_\tau=\mathbb Z+\mathbb Z\tau,
+	\qquad E_\tau=\mathbb C/\Lambda_\tau.
+\]
+把这些环面组成一个族，可令 \(\mathbb Z^2\) 作用于 \(\mathbb C\times U\)：
+\[
+	(m,n)\cdot(z,\tau)=(z+m+n\tau,\tau),
+\]
+并取商空间 \(E=(\mathbb C\times U)/\mathbb Z^2\)。这个作用自由且适当不连续。后一条可以直接检查：在任意紧集上，\(\operatorname{Im}\tau\) 有正下界，而 \(z\) 有界；若平移前后的点都在该紧集中，先由虚部估计得到整数 \(n\) 有界，再由实部估计得到 \(m\) 有界，故只有有限个群元素能使紧集与其像相交。由于作用由全纯变换给出，局部商坐标使 \(E\) 成为复流形，映射
+\[
+	p:E\longrightarrow U,\qquad [z,\tau]\longmapsto\tau
+\]
+是全纯淹没，纤维正是 \(E_\tau\)。
+
+这个族甚至有一个显式的实光滑全局平凡化：
+\begin{equation}\label{g2:eq:complex-torus-smooth-family}
+	(\mathbb R^2/\mathbb Z^2)\times U\longrightarrow E,
+	\qquad ([s,t],\tau)\longmapsto[s+t\tau,\tau].
+\end{equation}
+它的逆在代表元上由
+\[
+	t=\frac{\operatorname{Im}z}{\operatorname{Im}\tau},
+	\qquad s=\operatorname{Re}z-t\operatorname{Re}\tau
+\]
+给出；更换格子代表元只改变 \((s,t)\) 的整数部分。因此它是良定义的实光滑微分同胚。纤维 \(\mathbb R^2/\mathbb Z^2\) 紧，故 \(p\) 固有。
+
+\ProseParagraphBreak
+
+这些实光滑同胚的纤维是否也彼此双全纯？这里“双全纯”是指映射及其逆都全纯。下面的判别将把这个问题归结为格子的变化。
+
+\begin{lemma}\label{g2:lem:complex-torus-lattices}
+	若 \(\mathbb C/\Lambda\) 与 \(\mathbb C/\Lambda'\) 双全纯，则存在 \(a\in\mathbb C\setminus\{0\}\)，使 \(a\Lambda=\Lambda'\)。反过来，这个条件也给出双全纯同构。
+\end{lemma}
+\begin{proof}
+	商映射 \(\mathbb C\to\mathbb C/\Lambda\) 是万有覆盖。给定双全纯同构 \(f\)，把它与前一个覆盖映射复合。由于 \(\mathbb C\) 单连通，覆盖映射的提升定理给出提升 \(F:\mathbb C\to\mathbb C\)；覆盖映射局部双全纯，所以 \(F\) 也是全纯的。这里用到 \cref{g2:prop:covering-lift-criterion}：\(\mathbb C\) 道路连通、局部道路连通，且基本群为零，因此满足提升所需的子群条件。
+
+	对每个 \(\lambda\in\Lambda\)，差 \(F(z+\lambda)-F(z)\) 取值于离散集 \(\Lambda'\)，又随 \(z\) 连续，故为常量。求导得 \(F'(z+\lambda)=F'(z)\)。于是 \(F'\) 在一个紧基本平行四边形上有界，周期性又使它在全平面上有界。由有界整函数为常数的 Liouville 定理，\footnote{Joseph Liouville（1809--1882），法国数学家。}\(F'=a\)，从而 \(F(z)=az+c\)。这里使用的复分析结论可由 Cauchy 导数估计迅速推出。\footnote{Augustin-Louis Cauchy（1789--1857），法国数学家，研究极限与收敛的严格表述，建立了复函数积分理论的基本结果。}若整函数 \(h\) 满足 \(|h|\leq M\)，则在任意半径 \(R\) 的圆盘中心有 \(|h'|\leq M/R\)，令 \(R\to\infty\) 即得 \(h'=0\)。
+
+	因为 \(f\) 为局部同构，\(a\ne0\)；又因 \(F(z+\lambda)-F(z)=a\lambda\in\Lambda'\)，有 \(a\Lambda\subseteq\Lambda'\)。若某个 \(\mu\in\Lambda'\) 不属于 \(a\Lambda\)，则 \(z\) 与 \(z+\mu/a\) 在 \(\mathbb C/\Lambda\) 中不同，却被 \(f\) 映到同一点，与单射性矛盾。故 \(a\Lambda=\Lambda'\)。反过来，\(z\mapsto az\) 在商空间上直接诱导所需同构。
+\end{proof}
+
+对 \(\Lambda_\tau=\mathbb Z+\mathbb Z\tau\)，上述格子条件等价于
+\begin{equation}\label{g2:eq:torus-modular-equivalence}
+	\sigma=\frac{A\tau+B}{C\tau+D},
+	\qquad
+	\begin{pmatrix}A&B\\C&D\end{pmatrix}\in\mathrm{SL}(2,\mathbb Z).
+\end{equation}
+理由是，\((1,\sigma)\) 与 \((a,a\tau)\) 是同一个格子的两组正定向整数基，换基矩阵的行列式为 \(1\)；将两个基的关系相除便得到此式。反过来，若有此式，则 \((C\tau+D,A\tau+B)\) 是 \(\Lambda_\tau\) 的整数基，乘以 \((C\tau+D)^{-1}\) 后得到 \(\Lambda_\sigma\)。
+
+固定一个 \(\tau_0\)，整数矩阵只有可数多个，所以与 \(E_{\tau_0}\) 双全纯的参数至多可数。任意开圆盘却有不可数多个参数，故不存在 \(\tau_0\) 的邻域，使该族中的所有纤维都与 \(E_{\tau_0}\) 双全纯。全纯局部平凡化会给出这样的纤维同构，因此不可能存在。
+
+式 \eqref{g2:eq:complex-torus-smooth-family} 将差别呈现得很具体：所有纤维的实光滑结构相同，格子的复形状却随 \(\tau\) 改变。Ehresmann 证明中的辅助度量、水平补空间和单位分解都是实光滑构造，它们正好提供前一种意义的平凡化。

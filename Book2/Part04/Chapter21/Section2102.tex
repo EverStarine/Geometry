@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 21.2 射影丛与分裂原理
 % 纲要位置：几何学计划纲要.md，第 1812 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,193 @@
 \section{射影丛与分裂原理}
 \label{g2:sec:2102}
 
-待撰写
+上一节把一维纤维的粘合写成了一次或二次上同调类。对于高秩丛，可以先在每根纤维中选一条线，再到商空间中选下一条线；这样会产生一个新的底空间，其上原丛分裂为线丛之和。这个操作要能用于计算，必须保证拉回没有丢掉原来的上同调类。射影丛的上同调公式正好提供这一单射性，而公式的基础是一种把纤维上的基延拓到总空间的方法。
 
 \subsection{Leray–Hirsch 的证明}
 \label{g2:subsec:2102:01}
-待撰写
+平凡丛 \(B\times F\) 上的外积，把底空间类与纤维类组合成总空间的类。对一般纤维丛，纤维中的某个类未必能延拓到总空间：第11章 Hopf 丛的纤维生成元就会被传递微分消去。若能找到足够多的整体类，并且它们在每根纤维上组成一组基，便可恢复与乘积情形相同的模分解。这是 Leray--Hirsch 定理所表达的条件。\footnote{Jean Leray（1906--1998），法国数学家，研究代数拓扑与偏微分方程，发展了层与谱序列方法。Guy Hirsch（1915--1993），比利时数学家，研究代数拓扑中的纤维空间与同调。}
+
+\begin{theorem}[Leray--Hirsch]\label{g2:thm:leray-hirsch}
+	设 \(p:Y\to B\) 为 Serre 纤维化，\(B\) 为道路连通 CW 复形，纤维非空且道路连通，\(R\) 为含幺交换环。设存在有限组齐次类
+	\[
+		e_1=1,e_2,\ldots,e_N\in H^*(Y;R),\qquad |e_i|=d_i,
+	\]
+	使其限制 \(e_i|_{F_b}\) 对每个 \(b\in B\) 都组成分次 \(R\) 模 \(H^*(F_b;R)\) 的一组基。则
+	\begin{equation}\label{g2:eq:leray-hirsch-map}
+		\Psi:\bigoplus_{i=1}^N H^{k-d_i}(B;R)\xrightarrow{\ \cong\ }H^k(Y;R),
+		\qquad(a_i)\longmapsto\sum_{i=1}^N p^*a_i\smile e_i
+	\end{equation}
+	对所有整数 \(k\) 为同构，其中负次群取零。特别地，\(p^*\) 单射，且 \(H^*(Y;R)\) 是以 \(e_1,\ldots,e_N\) 为基的自由 \(H^*(B;R)\) 模。
+\end{theorem}
+\begin{proof}
+	先说明整体类消除了纤维基的运输歧义。沿道路 \(\gamma:b\to c\) 作纤维运输时，起点包含映射与“先运输、再包含到总空间”的映射同伦。因此 \(e_i|_{F_b}\) 恰好被运输为 \(e_i|_{F_c}\)。这些类组成一组基，所以它们同时给出纤维上同调局部系统的常值识别；这一点不要求底空间单连通。
+
+	下面按底空间的骨架证明式\eqref{g2:eq:leray-hirsch-map}。记 \(Y_s=p^{-1}(B^s)\)。第11章的\cref{g2:lem:fibration-disk-model}把每个特征圆盘上拉回的纤维化与 \(D^s\times F\) 作纤维同伦比较；式\eqref{g2:eq:serre-cell-relative-groups}据此给出
+	\[
+		H^k(Y_s,Y_{s-1};R)\cong\prod_{\alpha\in\mathcal E_s}H^{k-s}(F_{b_\alpha};R),
+	\]
+	其中 \(\mathcal E_s\) 是全部 \(s\) 胞腔的集合。即使同一维有无限多个胞腔，这里也取直积。
+
+	相对杯积定义同一公式的相对版本
+	\begin{equation}\label{g2:eq:leray-hirsch-relative-map}
+		\bigoplus_i H^{k-d_i}(B^s,B^{s-1};R)\longrightarrow H^k(Y_s,Y_{s-1};R),
+		\qquad(a_i)\longmapsto\sum_i p^*a_i\smile e_i|_{Y_s}.
+	\end{equation}
+	在一张特征圆盘上，\(e_i\) 的限制对应 \(\operatorname{pr}_F^*(e_i|_F)\)，因为圆盘可缩。故相对映射将圆盘的正生成元 \(u_s\) 乘以系数 \(a_i\)，再送到 \(u_s\times(a_i e_i|_F)\)。按照假设，这在每个胞腔上都是同构。由于 \(i\) 的总数有限，有限直和与胞腔索引的直积可以交换，因而式\eqref{g2:eq:leray-hirsch-relative-map}对全部胞腔仍是同构。
+
+	用这些映射比较 \((B^s,B^{s-1})\) 与 \((Y_s,Y_{s-1})\) 的长正合列。顶行取有限个移次数后的底空间序列的直和。限制与杯积自然交换，连接映射也交换：若用闭上链代表整体类 \(e_i\)，延拓上链 \(a\) 后有
+	\[
+		\mathrm d(p^*a\smile e_i)=p^*(\mathrm da)\smile e_i,
+	\]
+	因为 \(\mathrm de_i=0\)。把整体类放在右侧，正好保持这个连接映射的符号。零骨架上，结论就是各纤维基的直积识别。归纳假定 \(Y_{s-1}\) 上已有同构，由相对项同构及五引理得到 \(Y_s\) 上的同构。这完成任意有限维骨架的证明，不要求其中胞腔个数有限。
+
+	对无限维底空间，固定总次数 \(k\ge0\)，取 \(s>k\)。\cref{g2:thm:serre-spectral-sequence}的收敛证明已给出
+	\[
+		H^k(Y;R)\xrightarrow{\ \cong\ }H^k(Y_s;R).
+	\]
+	恢复该结论所用的条件：骨架相对群在次数小于骨架维数时为零，故整数同调在固定次数上最终稳定；每条奇异链及边界关系投影到 \(B\) 后落在有限子复形中，所以稳定值就是全部总空间的同调。再用上同调万有系数定理得到上述 \(R\) 系数限制同构。同样，所有 \(H^{k-d_i}(B;R)\) 在 \(B^s\) 上已经稳定，因为 \(d_i\ge0\)。这些限制映射与 \(\Psi\) 交换，故有限维骨架上已经证明的同构给出所需结论。\(k<0\) 时两边为零。最后 \(e_1=1\) 说明 \(p^*a\) 是第一项的像，直和表达的唯一性保证 \(p^*\) 单射。
+\end{proof}
+
+定理得到的是带有明确基的模同构。两个基元 \(e_i,e_j\) 的乘积还要重新用这组基展开，其中的底空间系数可能非零。后面射影丛的一条首一关系，正是把这些乘法系数组织起来的方法。
+
+\ProseParagraphBreak
+
+迭代构造射影丛时，新的底空间未必已经带有指定 CW 结构。Leray--Hirsch 的结论仍可通过弱逼近搬运，具体如下。设 \(B\) 为道路连通空间、\(p:Y\to B\) 为 Serre 纤维化，且存在定理中的整体类。由\cref{g2:thm:relative-cw-approximation}，从一点出发可构造 CW 复形 \(K\) 及弱同伦等价 \(h:K\to B\)。作拉回方块
+\[
+	\begin{tikzcd}[column sep=large]
+		Y_K \arrow[r,"\widehat h"] \arrow[d,"p_K"'] & Y \arrow[d,"p"]\\
+		K \arrow[r,"h"'] & B .
+	\end{tikzcd}
+\]
+每根对应纤维上的映射是恒等识别，故\cref{g2:prop:fibration-comparison}说明 \(\widehat h\) 也是弱同伦等价。\cref{g2:lem:weak-equivalence-homology}又说明 \(h^*\)、\(\widehat h^*\) 在普通 \(R\) 系数上同调中均为同构；这里的系数结论由整数奇异同调同构和自然的上同调万有系数正合列得到。拉回后的 \(\widehat h^*e_i\) 仍限制为纤维基，因而在 \(K\) 上使用定理，再沿上述两个上同调同构搬回，便得到 \(B\) 上的同一公式。这个论证只改变计算模型，实际的纤维丛与整体类保持在原空间上。底空间不连通时逐道路分支处理。
 
 \subsection{射影丛上同调}
 \label{g2:subsec:2102:02}
-待撰写
+设 \(E\to B\) 为实或复秩 \(r\ge1\) 向量丛，底空间为 CW 复形。它的\term[sheyingcong]{射影丛}[projective bundle]记为
+\[
+	p:\mathbb P(E)\longrightarrow B,\qquad \mathbb P(E)_b=\{\text{\(E_b\) 中的一维线性子空间}\}.
+\]
+本书采用线子空间约定。它在实情形的纤维为 \(\mathbb RP^{r-1}\)，复情形为 \(\mathbb CP^{r-1}\)。局部丛图把它写成 \(U\times\mathbb P(\mathbb K^r)\)，过渡函数作用于线子空间，所以这是局部平凡纤维丛。由\cref{g2:thm:bundle-serre}，它满足上一小节所用的提升条件。
+
+\ProseParagraphBreak
+
+在 \(\mathbb P(E)\) 上有一张自然的线丛
+\[
+	\lambda_E=\{(\ell,v):\ell\subset E_{p(\ell)},\ v\in\ell\}\subset p^*E,
+\]
+称为\term[sheyingcong-chongyanxiancong]{重言线丛}[tautological line bundle]。其纤维就是参数点本身所表示的直线。在实情形置 \(t=w_1(\lambda_E)\)；复情形置
+\[
+	h=c_1(\lambda_E^*)=-c_1(\lambda_E).
+\]
+复情形用对偶线丛，是为了使 \(h\) 在每根复射影纤维上成为正向超平面生成元，沿用上一节对 \(c_1\) 的归一化。
+
+\begin{theorem}[射影丛公式]\label{g2:thm:projective-bundle}
+	设 \(E\to B\) 为 CW 复形上的实或复秩 \(r\ge1\) 向量丛，\(p:\mathbb P(E)\to B\) 为线子空间射影丛。
+	\begin{enumerate}
+		\item 实情形取 \(R=\mathbb F_2\)、\(z=t=w_1(\lambda_E)\)、\(d=1\)；复情形取 \(R=\mathbb Z\)、\(z=h=c_1(\lambda_E^*)\)、\(d=2\)。在相应系数下，\(1,z,\ldots,z^{r-1}\) 是 \(H^*(\mathbb P(E);R)\) 作为 \(H^*(B;R)\) 模的一组基。
+		\item 存在唯一的一组类 \(a_i(E)\in H^{di}(B;R)\)，\(1\le i\le r\)，满足
+		\begin{equation}\label{g2:eq:projective-relation-coefficients}
+			z^r+p^*a_1(E)z^{r-1}+\cdots+p^*a_r(E)=0.
+		\end{equation}
+		将底空间系数沿 \(p^*\) 作用，便有分次环同构
+		\begin{equation}\label{g2:eq:projective-ring-presentation}
+			H^*(\mathbb P(E);R)\cong H^*(B;R)[z]\big/\bigl(z^r+a_1(E)z^{r-1}+\cdots+a_r(E)\bigr).
+		\end{equation}
+	\end{enumerate}
+	结论同样适用于从 CW 底空间经有限次射影丛构造得到的基空间。
+\end{theorem}
+\begin{proof}
+	限制到一根纤维后，\(\lambda_E\) 就成为通常射影空间的重言线丛。上一节的\cref{g2:prop:line-characteristic-classes}确定 \(t\) 与 \(h\) 的纤维生成元。\cref{g2:thm:real-projective-mod-two-ring,g2:thm:complex-projective-ring}分别给出
+	\[
+		H^*(\mathbb RP^{r-1};\mathbb F_2)=\mathbb F_2[t]/(t^r),\qquad
+		H^*(\mathbb CP^{r-1};\mathbb Z)=\mathbb Z[h]/(h^r).
+	\]
+	因此 \(1,z,\ldots,z^{r-1}\) 限制为每根纤维上的完整基，\cref{g2:thm:leray-hirsch}证明第一项。
+
+	用这组模基唯一展开 \(-z^r\)，便得到式\eqref{g2:eq:projective-relation-coefficients}。各项总次数为 \(dr\)，所以 \(z^{r-i}\) 前面的系数必须位于 \(H^{di}(B;R)\)。这说明每个 \(a_i(E)\) 的存在、次数和唯一性。
+
+	令 \(A=H^*(B;R)\)。实情形在特征二中分次交换的符号为一，复情形的 \(z\) 为偶数次，所以两种情形的 \(z\) 都与系数交换。首一关系使任意多项式都能逐次消去最高次幂，得到唯一候选余式 \(b_0+b_1z+\cdots+b_{r-1}z^{r-1}\)。若一个多项式映到总空间的零类，它的余式也映到零；第一项的模基独立性说明所有 \(b_j=0\)。于是核恰由这条首一关系生成，得到第二项的环同构。逐次射影丛的情形使用上一小节的弱逼近论证；每个投影仍是局部平凡纤维丛，整体类及其纤维限制完全相同。
+\end{proof}
+
+\(r=1\) 时，\(\mathbb P(E)=B\)、\(\lambda_E=E\)，关系分别成为 \(t+a_1(E)=0\) 与 \(h+a_1(E)=0\)。因此实情形的系数是 \(w_1(E)\)，复情形的系数是 \(c_1(E)\)。对平凡秩 \(r\) 丛，射影丛是 \(B\times\mathbb P(\mathbb K^r)\)，\(z\) 从第二因子拉回，故 \(z^r=0\)；唯一性说明所有 \(a_i(E)\) 为零。高秩丛的这些系数怎样与线丛之和联系起来，将成为下一节构造示性类的关键。
 
 \subsection{旗丛拉回的单射性}
 \label{g2:subsec:2102:03}
-待撰写
+射影丛已经选出一条线：\(\lambda_E\subset p^*E\)。取纤维内积后，它有正交补，于是
+\[
+	p^*E=\lambda_E\oplus\lambda_E^\perp.
+\]
+这一步把一个秩 \(r\) 丛拆成一条线和一个秩 \(r-1\) 丛。继续对正交补作射影丛，就能逐次选出全部线；每次拉回都由射影丛公式保证单射。
+
+\begin{theorem}[分裂原理]\label{g2:thm:splitting-principle}
+	设 \(E\to B\) 为 CW 复形上的实或复秩 \(r\ge1\) 向量丛。存在空间 \(\operatorname{Fl}(E)\)、投影 \(q:\operatorname{Fl}(E)\to B\) 及其上的线丛 \(L_1,\ldots,L_r\)，使
+	\[
+		q^*E\cong L_1\oplus\cdots\oplus L_r.
+	\]
+	实情形的 \(q^*:H^*(B;\mathbb F_2)\to H^*(\operatorname{Fl}(E);\mathbb F_2)\) 单射；复情形的 \(q^*:H^*(B;\mathbb Z)\to H^*(\operatorname{Fl}(E);\mathbb Z)\) 单射。对有限组同底空间丛，可以找到同一张保持相应上同调单射的拉回，使它们同时分裂为线丛之和。
+\end{theorem}
+\begin{proof}
+	\(r=1\) 时取恒等映射。设 \(r\ge2\)，由第19章的纤维内积构造为 \(E\) 选内积，复情形用 Hermitian 内积。置 \(B_0=B\)、\(E_0=E\)。归纳令
+	\[
+		B_j=\mathbb P(E_{j-1}),\qquad \pi_j:B_j\to B_{j-1},\qquad
+		\pi_j^*E_{j-1}=L_j\oplus E_j,
+	\]
+	其中 \(L_j\) 是重言线丛，\(E_j=L_j^\perp\) 的秩为 \(r-j\)。拉回内积在每一步都给出连续的正交补，因而这里是实际向量丛的直和。
+
+	在 \(j=r-1\) 时，剩余的 \(E_{r-1}\) 已是一条线，记为 \(L_r\)。令 \(\operatorname{Fl}(E)=B_{r-1}\)，\(q=\pi_1\circ\cdots\circ\pi_{r-1}\)，并将前面出现的 \(L_j\) 全部拉回到最后一层。逐次代入各个直和式，就得到 \(q^*E=\bigoplus_jL_j\)。该构造的点是在一根纤维里选择一个有序的正交线分解；将前 \(j\) 条线相加，得到维数为 \(j\) 的子空间，因而也可理解为一面完全旗。反过来，完全旗及内积通过逐层正交补恢复这些线。
+
+	每个 \(\pi_j\) 的射影丛上同调都有以 \(1\) 为第一项的自由模基。\cref{g2:thm:projective-bundle}及其最后一句保证 \(\pi_j^*\) 单射，所以复合 \(q^*\) 单射。第二层以后无需为 \(B_j\) 另选 CW 结构；先前的弱逼近论证正是为了在这些实际空间上使用同一公式。
+
+	若有丛 \(E,F\) 需要同时分裂，先对 \(E\) 作上述构造，再在 \(\operatorname{Fl}(E)\) 上对拉回的 \(F\) 重复构造。前一份线丛分解在继续拉回后仍然成立，全部投影的上同调拉回仍单射。对任意有限组丛归纳即可。若同时含实丛和复丛，可以统一取模二系数：复射影纤维的整系数基约化模二后仍为基，故相应单射性也成立。
+\end{proof}
+
+分裂原理使下面这类证明成为可能：先把原空间上的两个类拉回旗空间，利用线丛分解算出它们相等，再由 \(q^*\) 单射推出原类相等。原丛本身可以不分裂。例如复射影平面的切丛是否分裂，涉及原底空间上的线子丛存在性；分裂原理是在另一张空间上逐点加入选择线的参数。它保证比较上同调类时信息保留，而不在原空间上产生新的子丛。
 
 \subsection{以形式根进行对称多项式计算}
 \label{g2:subsec:2102:04}
-待撰写
+在分裂空间上，复丛的线因子给出二次类 \(x_i=c_1(L_i)\)，实丛的线因子给出模二一次类 \(x_i=w_1(L_i)\)。同一组线因子重新排列时，所有不依赖排列的表达式应当是这些 \(x_i\) 的对称多项式。把它们叫作\term[xingshigen]{形式根}[formal roots]，就是先在分裂空间上按线类计算，再把对称表达式写回原空间的示性类。
+
+\ProseParagraphBreak
+
+所需代数事实可以直接证明。对形式变量 \(X_1,\ldots,X_r\)，记
+\[
+	e_j(X_1,\ldots,X_r)=\sum_{1\le i_1<\cdots<i_j\le r}X_{i_1}\cdots X_{i_j},\qquad e_0=1.
+\]
+这些是初等对称多项式，并满足
+\[
+	\prod_{i=1}^r(T+X_i)=T^r+e_1T^{r-1}+\cdots+e_r.
+\]
+这里的 \(T\) 只是多项式变量。
+
+\begin{lemma}\label{g2:lem:symmetric-polynomial-roots}
+	设 \(A\) 为含幺交换环。每个对称多项式 \(f\in A[X_1,\ldots,X_r]\) 都能唯一写成 \(e_1,\ldots,e_r\) 的多项式。
+\end{lemma}
+\begin{proof}
+	先处理固定总次数的齐次多项式，按字典序比较单项式，令 \(X_1\) 优先于 \(X_2\)，依次类推。若 \(cX_1^{a_1}\cdots X_r^{a_r}\) 是 \(f\) 的首项，则对称性迫使
+	\[
+		a_1\ge a_2\ge\cdots\ge a_r.
+	\]
+	否则交换一对逆序指数会得到同系数的更大单项式，与首项的选择矛盾。多项式
+	\[
+		e_1^{a_1-a_2}e_2^{a_2-a_3}\cdots e_{r-1}^{a_{r-1}-a_r}e_r^{a_r}
+	\]
+	的首项正是 \(X_1^{a_1}\cdots X_r^{a_r}\)，且首项系数为一。从 \(f\) 中减去它的 \(c\) 倍，首项严格下降。固定总次数只有有限个单项式，所以反复相减最终结束，得到所需表达。一般多项式按总次数分开处理。
+
+	对于唯一性，不同的 \(e_1^{b_1}\cdots e_r^{b_r}\) 具有不同首项，其指数依次为
+	\[
+		b_1+\cdots+b_r,\ b_2+\cdots+b_r,\ \ldots,\ b_r.
+	\]
+	因此一份非零的有限线性组合，其最大首项不能被其余项消去。即使 \(A\) 有零因子，这个论证仍成立，因为这些首项的系数都是一。
+\end{proof}
+
+在复情形，所有 \(x_i\) 的次数为二，故它们在整数上同调中彼此交换；在实情形，模二系数同样消除了分次交换的符号。因此可以把上述多项式恒等式直接代入线类。比如
+\[
+	\sum_i x_i^2=e_1(x)^2-2e_2(x),\qquad
+	\sum_{i<j}(x_i+x_j)=(r-1)e_1(x).
+\]
+前一个公式把所有平方写成两个对称量，后一个公式只需计数：每个 \(x_i\) 在所有无序对中出现 \(r-1\) 次。若取模二系数，系数 \(2\) 约化为零，第一式就变成 \(\sum_i x_i^2=e_1(x)^2\)。
+
+\ProseParagraphBreak
+
+形式根的使用顺序也随之明确。下一节先由射影关系的唯一系数构造底空间上的类，再证明其拉回为 \(e_j(x_1,\ldots,x_r)\)。此后，每次对偶、张量或直和的计算，都可在线丛分裂后完成，再借单射性返回底空间。单独一个 \(x_i\) 通常只存在于分裂空间；最终的对称表达式才由这些已构造的底空间类表示。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

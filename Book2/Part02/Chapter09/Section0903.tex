@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 9.3 Whitehead 定理
 % 纲要位置：几何学计划纲要.md，第 1351 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,106 @@
 \section{Whitehead 定理}
 \label{g2:sec:0903}
 
-待撰写
+同伦群由球面映射探测空间，CW 复形则由球面附着圆盘构成。这两种球面的来源能够接合：如果一个映射没有留下任何相对同伦类，那么它的映射柱中的每个胞腔都能压回源空间。逐骨架拼合这些压缩，就得到整个空间的同伦逆。Whitehead 定理将这种构造写成一个检测同伦等价的判据。
 
 \subsection{弱同伦等价与映射柱}
 \label{g2:subsec:0903:01}
-待撰写
+
+\begin{definition}[弱同伦等价]\label{g2:def:weak-homotopy-equivalence}
+	连续映射 \(f:X\rightarrow Y\) 称为\term[ruo tong lun deng jia]{弱同伦等价}[weak homotopy equivalence]，如果 \(f_*:\pi_0(X)\rightarrow\pi_0(Y)\) 是双射，且对每个 \(x\in X\) 和每个 \(i\ge1\)，
+	\[
+		f_*:\pi_i(X,x)\longrightarrow\pi_i(Y,f(x))
+	\]
+	都是同构。
+\end{definition}
+
+在道路连通空间上，只须在一个基点处验证各阶同构；其他基点可由\cref{g2:prop:basepoint-action}运输过去。相同的抽象同伦群还没有给出这里要求的映射 \(f\)：判据检验的是同一个连续映射在全部维数上的作用。
+
+\ProseParagraphBreak
+
+回顾\cref{g2:def:mapping-cylinder-cone,g2:prop:mapping-cylinder-retract}，映射柱及其分解是
+\[
+	M_f=(X\times I\amalg Y)/((x,1)\sim f(x)),
+	\qquad X\xrightarrow{j}M_f\xrightarrow{p}Y,
+\]
+其中 \(j(x)=[x,0]\)、\(p([x,t])=f(x)\)、\(p(y)=y\)，且 \(pj=f\)。映射 \(p\) 通过把柱线推向 \(t=1\) 给出到 \(Y\) 的强形变收缩。因此由空间对的同伦序列，\(f\) 是弱同伦等价，恰好等价于 \((M_f,jX)\) 为任意阶连通。这样，把映射变成包含之后，各阶相对群都成为可以直接压缩圆盘的条件。
+
+\begin{lemma}[胞腔映射的映射柱]\label{g2:lem:cellular-mapping-cylinder}
+	设 \(f:X\rightarrow Y\) 是 CW 复形之间的胞腔映射，则 \(M_f\) 是 CW 复形，其中 \(X\times\{0\}\) 与 \(Y\) 都是子复形。
+\end{lemma}
+\begin{proof}
+	保留 \(Y\) 的胞腔和 \(X\times\{0\}\) 的胞腔，并对 \(X\) 的每个 \(r\) 胞腔添一个开柱体 \(e^r\times(0,1)\)，把它看成 \((r+1)\) 胞腔。其闭特征圆盘可用 \(D^r\times I\) 表示，边界的三个部分分别进入 \(X\times\{0\}\)、由低维胞腔产生的柱体以及 \(Y^r\)；最后一项使用 \(f(X^r)\subset Y^r\)。所以胞腔边界进入所要求的低维骨架。映射柱的商拓扑在 \(Y\) 和各 \(D^r\times I\) 上检验连续性；\cref{g2:lem:weak-product}说明这正是所列胞腔的弱拓扑。因此得到的是原来的映射柱拓扑。
+\end{proof}
 
 \subsection{相对逐骨架收缩}
 \label{g2:subsec:0903:02}
-待撰写
+
+圆盘压缩已经解决了一个胞腔的问题。对整个 CW 复形，需要让低维部分先到达指定子空间，并在处理高维胞腔时保留它。第1章的同伦延拓性质负责把局部修正扩展为全空间上的同伦，弱拓扑负责处理无限多个胞腔。
+
+\begin{lemma}[逐骨架压缩]\label{g2:lem:cellular-compression}
+	设 \((K,L)\) 为 CW 对，\(B\subset Y\) 非空，\(f:(K,L)\rightarrow(Y,B)\) 连续。对 \(K\setminus L\) 中出现的每个正维胞腔维数 \(m\)，假定 \(\pi_m(Y,B,b)=0\) 对所有 \(b\in B\) 成立；若出现零胞腔，再假定 \(Y\) 的每个道路分支与 \(B\) 相交。则 \(f\) 可以相对 \(L\) 同伦到一个取值于 \(B\) 的映射。
+\end{lemma}
+\begin{proof}
+	按维数依次修正 \(f\)。假定目前的映射 \(f_{m-1}\) 已把 \(L\cup K^{m-1}\) 映入 \(B\)。对每个不属于 \(L\) 的 \(m\) 胞腔，取特征映射 \(\chi:D^m\rightarrow K\)，于是
+	\[
+		f_{m-1}\chi:(D^m,S^{m-1})\longrightarrow(Y,B).
+	\]
+	由\cref{g2:lem:disk-compression}，它可以固定整个边界地移入 \(B\)。对同维的全部胞腔同时作这种压缩，并固定 \(L\cup K^{m-1}\)，便得到 \(L\cup K^m\) 上的同伦；各闭圆盘边界相容，\cref{g2:lem:weak-product}保证粘合连续。由\cref{g2:thm:relative-CW-HEP}，把它延拓到整个 \(K\)，仍固定已指定的 \(L\cup K^{m-1}\)。所得终映射 \(f_m\) 把 \(L\cup K^m\) 映入 \(B\)。对于 \(m=0\)，先为每个新增顶点选一条通向 \(B\) 的道路，随后作同样的延拓。
+
+	把第 \(m\) 层修正安排在时间区间
+	\[
+		[1-2^{-m},\,1-2^{-(m+1)}],\qquad m=0,1,2,\ldots.
+	\]
+	任一 \(r\) 维特征圆盘在第 \(r\) 层结束后逐点不再移动，故可把 \(t=1\) 的值定义为其稳定值。每个特征圆盘与 \(I\) 的积上，这是一段有限次拼接的连续同伦，之后接常值段；在 \(L\times I\) 上始终为原映射。再由\cref{g2:lem:weak-product}，得到整个 \(K\times I\) 上的连续同伦，包括累积时刻 \(t=1\)。它的终映射取值于 \(B\)，且从始至终固定 \(L\)。
+\end{proof}
+
+这段证明还说明，压缩各个胞腔时不必使它们在靶空间中互不相交。需要相容的是公共边界上的映射与同伦；CW 的附着和弱拓扑恰好把这一相容性转化为整体连续性。
 
 \subsection{CW 对上的 Whitehead 定理}
 \label{g2:subsec:0903:03}
-待撰写
+
+\begin{theorem}[Whitehead]\label{g2:thm:whitehead}
+	设 \(X,Y\) 为 CW 复形，\(f:X\rightarrow Y\) 连续。则 \(f\) 是同伦等价，当且仅当它是弱同伦等价。若 \(X\) 是 \(Y\) 的子复形且 \(f\) 为包含，则弱同伦等价还保证 \(X\) 是 \(Y\) 的强形变收缩核。
+\end{theorem}
+\begin{proof}
+	同伦等价诱导道路分支双射及各阶同伦群同构，必要性成立。证明充分性时，先处理子复形包含 \(X\hookrightarrow Y\)。弱等价和\cref{g2:thm:pair-homotopy-sequence}给出 \(\pi_m(Y,X,x)=0\) 对所有 \(m\ge1\) 和 \(x\in X\) 成立；分支双射还保证每个 \(Y\) 分支遇到 \(X\)。把\cref{g2:lem:cellular-compression}用于恒等映射 \((Y,X)\rightarrow(Y,X)\)，得到
+	\[
+		H:Y\times I\longrightarrow Y,\qquad
+		H(y,0)=y,\quad H(Y,1)\subset X,\quad H(x,t)=x.
+	\]
+	这正是所需强形变收缩。零维与一维情形已包含在压缩引理的道路条件和相对同伦集条件中。
+
+	对一般 \(f\)，先由\cref{g2:thm:cellular-approximation}取与它同伦的胞腔映射 \(f_c\)。同伦时基点的轨迹通过\cref{g2:prop:basepoint-action}比较诱导映射，因此 \(f_c\) 仍为弱同伦等价。由\cref{g2:lem:cellular-mapping-cylinder}，\((M_{f_c},jX)\) 是 CW 对。映射柱收缩 \(p:M_{f_c}\rightarrow Y\) 为同伦等价，且 \(pj=f_c\)，所以 \(j\) 在道路分支及各阶同伦群上都是同构。刚证的包含情形说明 \(j\) 为同伦等价，因而 \(f_c=pj\) 为同伦等价。与它同伦的 \(f\) 也有同伦逆。
+\end{proof}
+
+\begin{corollary}[相对 Whitehead 判据]\label{g2:cor:relative-whitehead}
+	设 \((X,A)\)、\((Y,A)\) 为 CW 对，公共子复形 \(A\) 取相同 CW 结构。若 \(f:X\rightarrow Y\) 是弱同伦等价且 \(f|_A=\operatorname{id}_A\)，则 \(f\) 是相对 \(A\) 的同伦等价：存在 \(g:Y\rightarrow X\)，满足 \(g|_A=\operatorname{id}_A\)，且 \(gf\simeq\operatorname{id}_X\)、\(fg\simeq\operatorname{id}_Y\) 的同伦都固定 \(A\)。特别地，保持零胞腔基点的 CW 弱同伦等价具有保持基点的同伦逆和同伦。
+\end{corollary}
+\begin{proof}
+	由胞腔逼近的相对版本，可先把 \(f\) 固定 \(A\) 地变成胞腔映射。取映射柱 \(M_f\)，再把每条 \(\{a\}\times I\)、\(a\in A\)，压成一点，所得空间记为 \(W\)。这使柱的两端共享同一个 \(A\)。它有一个 CW 结构：保留 \(X\) 与 \(Y\) 的胞腔，只把公共 \(A\) 计算一次，对 \(X\setminus A\) 的每个胞腔再添其开柱体。与\cref{g2:lem:cellular-mapping-cylinder}相同的边界与商拓扑论证表明，\(X,Y\) 均为 \(W\) 的子复形。
+
+	柱线向 \(Y\) 推进的强形变收缩仍可下降到 \(W\)，记其终映射为 \(p:W\rightarrow Y\)；它固定 \(A\)，且 \(p|_X=f\)。因此 \(X\hookrightarrow W\) 是弱同伦等价。由\cref{g2:thm:whitehead}的子复形版本，\(W\) 又强形变收缩到 \(X\)，记收缩终映射为 \(r:W\rightarrow X\)。令 \(g=r|_Y\)。将到 \(X\) 的收缩后复合 \(p\) 并限制到 \(Y\)，得到 \(fg\simeq\operatorname{id}_Y\)；将到 \(Y\) 的收缩后复合 \(r\) 并限制到 \(X\)，得到 \(gf\simeq\operatorname{id}_X\)。两种收缩都固定公共的 \(A\)，所以同伦也固定 \(A\)。最后接回最初的相对胞腔逼近同伦，即得原映射的结论。
+\end{proof}
+
+于是，\cref{g2:cor:sparse-cw-model}中的模型既有指定的胞腔维数，也保留了所需的基点或子空间。另一个直接应用是：道路连通 CW 复形若所有正阶同伦群均为零，选一个顶点的包含就是弱同伦等价，故该空间可强形变收缩到该顶点。Whitehead 判据与压缩证明可参照\cite[第4.1节，Whitehead's Theorem]{Hatcher2002}。
 
 \subsection{非 CW 对象的范围界线}
 \label{g2:subsec:0903:04}
-待撰写
+
+CW 条件在证明中提供了逐胞腔构造同伦的方式。对一般空间，球面探测到的全部信息可能仍不足以控制连续映射的逆。下面的例子把差别集中在道路分支的拓扑上。
+
+\begin{example}\label{g2:exm:rationals-weak-equivalence}
+	以 \(\mathbb Q_{\mathrm{disc}}\) 表示带离散拓扑的有理数集，以 \(\mathbb Q\) 表示实数直线的通常子空间。恒等集合映射
+	\[
+		j:\mathbb Q_{\mathrm{disc}}\longrightarrow\mathbb Q
+	\]
+	连续，并且是弱同伦等价，却不是同伦等价。
+
+	先说明 \(\mathbb Q\) 的每个连通子集只有一点。若某个子集含有 \(a<b\)，可在其间选无理数 \(c\)；与 \(({-\infty},c)\) 及 \((c,\infty)\) 的交把该子集分成两个非空、不交的相对开集。因此道路以及从任一 \(S^n\)、\(n\ge1\)，到 \(\mathbb Q\) 的映射均为常值。两空间的道路分支都是单点，所有正阶同伦群都为零，故 \(j\) 满足弱等价的全部条件。
+
+	若 \(j\) 有连续同伦逆 \(g:\mathbb Q\rightarrow\mathbb Q_{\mathrm{disc}}\)，同伦 \(jg\simeq\operatorname{id}_{\mathbb Q}\) 在每个点处给出 \(\mathbb Q\) 中的一条道路。这条道路只能恒定，所以 \(g(q)=q\) 对每个 \(q\in\mathbb Q\) 成立。但集合恒等映射 \(\mathbb Q\rightarrow\mathbb Q_{\mathrm{disc}}\) 不连续：离散空间中的开集 \(\{0\}\) 的原像，在通常 \(\mathbb Q\) 中不是开集。矛盾。
+\end{example}
+
+这个例子的源是一个零维 CW 复形，靶却不能被上述弱等价替换为同伦等价。若源、靶都已具有 CW 同伦型，Whitehead 判据则仍然适用：用各自的 CW 模型前后复合 \(f\)，所得 CW 映射仍是弱等价，应用定理后再接回两端的同伦等价即可。实际使用判据时，先找到这样的 CW 模型，便能把“各阶同伦群同构”转化为真正的空间同伦等价。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

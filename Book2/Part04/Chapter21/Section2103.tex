@@ -1,11 +1,11 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 21.3 一般示性类的构造
 % 纲要位置：几何学计划纲要.md，第 1819 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
-% * Chern 类的存在唯一性
+% * 陈类的存在唯一性
 % * Stiefel–Whitney 类及实射影丛关系
 % * 自然性和 Whitney 和公式
 % * 对偶、张量和复化
@@ -16,25 +16,317 @@
 \section{一般示性类的构造}
 \label{g2:sec:2103}
 
-待撰写
+射影丛公式把一张秩 \(r\) 丛的粘合信息写入一个首一多项式关系，旗丛又把这个多项式变成线性因子的乘积。现在用关系的系数定义一般示性类，再利用旗丛拉回的单射性，把线丛上的计算送回原基空间。这一顺序同时解决存在性、选择无关性与计算问题。
 
-\subsection{Chern 类的存在唯一性}
+以下主要以 CW 复形为基，有限秩丛均带纤维内积。证明中的射影丛及旗丛使用上一节的弱 CW 逼近比较。Thom 类也可沿同一比较运输：盘丛、球丛均为局部平凡丛，拉回到 CW 弱逼近后，总空间映射由纤维化同伦长正合列为弱等价；绝对上同调比较及对的长正合列给出相对上同调同构。因此第20章的 Thom、Euler 及其自然性可用于这些实际拉回丛。
+
+\subsection{陈类的存在唯一性}
 \label{g2:subsec:2103:01}
-待撰写
+设 \(E\to B\) 为复秩 \(r\ge1\) 丛。在 \(p:\mathbb P(E)\to B\) 上记典范线丛为 \(\lambda\)，置 \(h=c_1(\lambda^*)\)。\cref{g2:thm:projective-bundle}说明 \(1,h,\ldots,h^{r-1}\) 是 \(H^*(B;\mathbb Z)\) 模基。因此 \(h^r\) 可以唯一写成这些幂的线性组合；其各项的总次数必须同为 \(2r\)。
+
+\begin{definition}\label{g2:def:chern-classes-projective}
+	复秩 \(r\) 丛 \(E\to B\) 的\term[chen-lei]{陈类}[Chern classes]为唯一满足
+	\begin{equation}\label{g2:eq:chern-projective-relation}
+		h^r+p^*c_1(E)h^{r-1}+p^*c_2(E)h^{r-2}+\cdots+p^*c_r(E)=0
+	\end{equation}
+	的类 \(c_i(E)\in H^{2i}(B;\mathbb Z)\)。置 \(c_0(E)=1\)，\(i>r\) 时置 \(c_i(E)=0\)，并称 \(c(E)=1+c_1(E)+\cdots+c_r(E)\) 为总陈类。
+\end{definition}
+
+当 \(r=1\) 时，\(\mathbb P(E)=B\)、\(\lambda=E\)，关系变成 \(-c_1(E)+c_1(E)=0\)，故新定义延续上一节的线丛规范。正号排列来自 \(h=c_1(\lambda^*)\)：如果改用 \(c_1(\lambda)=-h\)，关系的系数就要交错变号。
+
+\begin{theorem}\label{g2:thm:characteristic-existence-uniqueness}
+	CW 复形上的复有限秩向量丛具有上述自然陈类。若 \(q:Y\to B\) 是使 \(q^*E=L_1\oplus\cdots\oplus L_r\) 的旗丛，记 \(x_j=c_1(L_j)\)，则
+	\begin{equation}\label{g2:eq:chern-root-formula}
+		q^*c_i(E)=\sum_{j_1<\cdots<j_i}x_{j_1}\cdots x_{j_i},\qquad
+		q^*c(E)=\prod_{j=1}^r(1+x_j).
+	\end{equation}
+	自然性及这个分裂公式唯一确定全部 \(c_i\)。
+\end{theorem}
+\begin{proof}
+	射影丛模基已经保证存在唯一的关系系数。若 \(f:A\to B\)，则拉回方块中的 \(\mathbb P(f^*E)\to\mathbb P(E)\) 将 \(\lambda\) 拉回为新的典范线丛，故也将 \(h\) 拉回为新的 \(h\)。拉回式\eqref{g2:eq:chern-projective-relation}并用新射影丛的模基唯一性，得到 \(c_i(f^*E)=f^*c_i(E)\)。
+
+	为确定关系的系数，先设 \(E=L_1\oplus\cdots\oplus L_r\) 已分裂。在 \(\mathbb P(E)\) 上，丛
+	\[
+		\operatorname{Hom}_{\mathbb C}(\lambda,p^*E)
+		=\bigoplus_{j=1}^r(\lambda^*\otimes p^*L_j)
+	\]
+	有一个处处非零截面：每点的直线包含映射 \(\lambda_\ell\hookrightarrow E_{p(\ell)}\)。\cref{g2:prop:euler-basic-properties}说明它的底层定向实丛 Euler 类为零；同一命题的直和公式及线丛的 \(c_1=e_{\mathrm{Th}}\) 给出
+	\[
+		0=\prod_{j=1}^r c_1(\lambda^*\otimes p^*L_j)
+		=\prod_{j=1}^r(h+p^*x_j).
+	\]
+	这里使用的是已证明的 Euler 类乘法，并未预先假定一般陈类的乘法。展开右端，与唯一的首一射影关系比较，得到 \(c_i(E)\) 是 \(x_j\) 的第 \(i\) 个初等对称式。
+
+	一般情形拉回到旗丛，用自然性及刚才的分裂计算得到式\eqref{g2:eq:chern-root-formula}。由\cref{g2:thm:splitting-principle}，\(q^*\) 单射，所以这些等式唯一确定原基空间上的类；任何其他自然赋类若满足同样的分裂公式，拉回后相同，原来也必相同。
+\end{proof}
+
+例如秩二时，形式根 \(x_1,x_2\) 给出 \(c_1=x_1+x_2\)、\(c_2=x_1x_2\)，射影丛关系为 \(h^2+c_1h+c_2=0\)。根是旗空间上的实际一次线丛类，未必分别下降到底空间；能下降的这些对称式已经由射影关系独立构造。这是“形式根”计算可以可靠使用的依据。
 
 \subsection{Stiefel–Whitney 类及实射影丛关系}
 \label{g2:subsec:2103:02}
-待撰写
+对实秩 \(r\) 丛，射影纤维是 \(\mathbb RP^{r-1}\)，用模二系数后它同样有一列由一次类的幂组成的基。这里不需要给原丛或射影纤维选整数方向。
+
+\begin{definition}\label{g2:def:stiefel-whitney-projective}
+	设 \(E\to B\) 为实秩 \(r\ge1\) 向量丛，\(p:\mathbb P(E)\to B\) 为实射影丛，\(\lambda\) 为典范实线丛，\(t=w_1(\lambda)\)。唯一满足
+	\begin{equation}\label{g2:eq:sw-projective-relation}
+		t^r+p^*w_1(E)t^{r-1}+p^*w_2(E)t^{r-2}+\cdots+p^*w_r(E)=0
+	\end{equation}
+	的类 \(w_i(E)\in H^i(B;\mathbb F_2)\)，称为 \(E\) 的\term[Stiefel-Whitney-lei]{Stiefel--Whitney 类}[Stiefel--Whitney classes]。置 \(w_0=1\)、\(w_i=0\)（\(i>r\)），并记 \(w(E)=\sum_iw_i(E)\)。
+\end{definition}
+
+\begin{theorem}\label{g2:thm:stiefel-whitney-construction}
+	上述类对 CW 基空间上的实丛自然。若旗丛拉回使 \(q^*E=L_1\oplus\cdots\oplus L_r\)，并记 \(a_j=w_1(L_j)\)，则
+	\begin{equation}\label{g2:eq:sw-root-formula}
+		q^*w(E)=\prod_{j=1}^r(1+a_j).
+	\end{equation}
+	自然性及该分裂公式唯一确定这些类；秩一时与\cref{g2:def:first-stiefel-whitney-line}一致。
+\end{theorem}
+\begin{proof}
+	射影丛的模二模基保证关系系数存在唯一，射影拉回方块保证自然性。若 \(E\) 已分裂，\(\operatorname{Hom}_{\mathbb R}(\lambda,p^*E)\) 仍有处处非零的包含截面。它分裂成 \(\lambda^*\otimes p^*L_j\) 的直和。由式\eqref{g2:eq:line-mod-two-euler}及模二 Euler 直和公式，得到
+	\[
+		0=e_2(\operatorname{Hom}(\lambda,p^*E))
+		=\prod_{j=1}^r(t+p^*a_j).
+	\]
+	与式\eqref{g2:eq:sw-projective-relation}比较唯一系数，即得分裂公式。一般丛再拉回实旗丛；\(q^*\) 在模二上同调上单射，所以相同论证给出唯一性。秩一的关系为 \(t+w_1(E)=0\)，正好恢复线丛类。
+\end{proof}
+
+\begin{proposition}\label{g2:prop:first-classes-determinants}
+	对 CW 基空间上的实丛 \(E\) 与复丛 \(F\)，有
+	\[
+		w_1(E)=w_1(\det E),\qquad c_1(F)=c_1(\det F).
+	\]
+	实丛可定向当且仅当 \(w_1(E)=0\)。
+\end{proposition}
+\begin{proof}
+	在相应旗丛上，行列式线丛是各线因子的张量积，因此其第一类是各根之和；这也是两个总类的一次项。拉回单射使等式在底空间成立。实丛方向的输运为过渡矩阵的行列式符号，恰好是 \(\det E\) 的方向输运，所以可定向性由\cref{g2:prop:real-line-first-class}判定。
+\end{proof}
+
+\begin{theorem}\label{g2:thm:top-class-euler}
+	若 \(E\to B\) 为 CW 基空间上的实秩 \(r\) 丛，则 \(w_r(E)=e_2(E)\)。若 \(E\) 整数可定向，则 \(w_r(E)=\rho_2 e_{\mathrm{Th}}(E)\)。若 \(F\to B\) 为复秩 \(r\) 丛，则
+	\[
+		c_r(F)=e_{\mathrm{Th}}(F_{\mathbb R}),
+	\]
+	右侧采用复自然定向。
+\end{theorem}
+\begin{proof}
+	先在旗丛上分裂成线丛。实情形中，模二 Euler 类是各线的 \(w_1\) 之积，恰为式\eqref{g2:eq:sw-root-formula}的最高项。复情形中，实丛的直和顺序按各复线的正向实二平面排列，正是复自然定向；Euler 直和公式使最高类为 \(x_1\cdots x_r\)，恰为 \(c_r\)。再由拉回单射得到原空间等式。整数定向丛的 Thom 类约化模二后是规范模二 Thom 类，零截面拉回与系数约化交换，得到中间断言。
+\end{proof}
 
 \subsection{自然性和 Whitney 和公式}
 \label{g2:subsec:2103:03}
-待撰写
+两张丛直和后，在线丛分裂模型中只是把两组根放在一起。因此直和公式来自一个简单的乘法，但要让它在原基空间成立，需要同时分裂两张丛并保留拉回单射。
+
+\begin{theorem}[Whitney 和公式]\label{g2:thm:whitney-sum}
+	设 \(B\) 为 CW 复形。对其上的复有限秩丛 \(E,F\)，以及实有限秩丛 \(V,W\)，分别有
+	\begin{equation}\label{g2:eq:whitney-total-formulas}
+		c(E\oplus F)=c(E)c(F),\qquad w(V\oplus W)=w(V)w(W).
+	\end{equation}
+	两组类都在添上平凡直和因子时不变。自然性、线丛归一化、秩以上的消失及式\eqref{g2:eq:whitney-total-formulas}也唯一刻画各组类。
+\end{theorem}
+\begin{proof}
+	先取 \(E\) 的旗丛，再取拉回 \(F\) 的旗丛。复合拉回仍单射，且两丛同时分裂，设根分别为 \(x_i,y_j\)。直和的根就是它们的合并，所以
+	\[
+		q^*c(E\oplus F)=\prod_i(1+x_i)\prod_j(1+y_j)
+		=q^*(c(E)c(F)).
+	\]
+	单射性给出复情形。实旗丛及一次模二根给出完全相同的乘法论证。平凡丛分裂成第一类均为零的线丛，其总类为 \(1\)，从而得到稳定性。任何另一组满足所列性质的类，在旗丛上由线丛归一化与直和公式确定为同一个根乘积，故由单射性与本构造一致。
+\end{proof}
+
+短正合列 \(0\to E\to G\to F\to0\) 也满足这个公式，因为纤维内积给出 \(G\cong E\oplus E^\perp\)，而 \(E^\perp\to F\) 是丛同构。这里需要的是拓扑分裂，若原丛带有全纯等额外结构，不要求分裂保持那些结构。
+
+\ProseParagraphBreak
+
+现在完成第13章留下的 Thom 平方比较。记实秩 \(r\) 丛的模二 Thom 类为 \(U\)，用第20章同构定义 \(w_i^{\mathrm{Sq}}\) 使
+\[
+	\operatorname{Sq}^iU=p^*w_i^{\mathrm{Sq}}(E)\smile U.
+\]
+\cref{g2:prop:thom-square-properties}已经用平方的自然性与 Cartan 公式证明这组类的自然性、直和公式和秩以上消失。第20章提供的 Thom 同构及纤维积直和公式使同一论证适用于本节的基空间，余下只需核对线丛归一化。
+
+\begin{theorem}\label{g2:thm:thom-square-comparison}
+	对 CW 复形上的实有限秩丛 \(E\)，射影丛构造的 Stiefel--Whitney 类满足
+	\begin{equation}\label{g2:eq:thom-sw-identity-proved}
+		\operatorname{Sq}(U)=p^*w(E)\smile U.
+	\end{equation}
+	因此 \(w_i^{\mathrm{Sq}}(E)=w_i(E)\)。
+\end{theorem}
+\begin{proof}
+	设 \(L\) 为实线丛，\(U\) 是它的一次模二 Thom 类。平方的最高项性质给出 \(\operatorname{Sq}^1U=U\smile U\)。记 \(j^*\) 为忘去相对条件，则零截面与盘丛投影互为同伦逆，故
+	\[
+		j^*U=p^*e_2(L).
+	\]
+	相对杯积与绝对—相对杯积相容，所以
+	\[
+		U\smile U=j^*U\smile U=p^*e_2(L)\smile U.
+	\]
+	Thom 同构的单射性及式\eqref{g2:eq:line-mod-two-euler}说明 \(w_1^{\mathrm{Sq}}(L)=e_2(L)=w_1(L)\)。其余正次项由秩一消失。于是这组平方类满足刚才唯一性定理的全部条件，必与射影丛构造相同。
+\end{proof}
+
+这一步把作用于总空间相对类的平方运算，识别为基空间上的示性类。对流形的对角嵌入应用它，便能把切丛类与第13章已经定义的 Wu 类联系起来。
+
+\begin{theorem}[Wu 公式]\label{g2:thm:wu-formula}
+	设 \(M\) 为连通闭光滑 \(n\) 维流形，\(v(M)\) 为\cref{g2:def:wu-class}按模二对偶定义的总 Wu 类。则
+	\[
+		w(\mathrm TM)=\operatorname{Sq}(v(M)).
+	\]
+	这个等式不要求 \(M\) 整数可定向。
+\end{theorem}
+\begin{proof}
+	全部系数取 \(\mathbb F_2\)。先说明证明的目标：把对角线的 Thom 类平方化，一边读出法丛的 \(w\)，另一边用对偶基读出 Wu 类的平方。记 \(H=H^*(M;\mathbb F_2)\)，并以 \(\epsilon(a)\) 表示 \(a\) 的 \(n\) 次分量在 \([M]_2\) 上的求值。闭流形有有限 CW 同伦型，故 \(H\) 有限维；Poincaré 对偶给出齐次基 \(b_\alpha\) 及其对偶基 \(b^\alpha\)，满足
+	\[
+		\epsilon(b_\alpha b^\beta)=\delta_\alpha^\beta.
+	\]
+	对角嵌入 \(\Delta:M\hookrightarrow M\times M\) 的法丛同构于 \(\mathrm TM\)：商线性映射 \((v,w)\mapsto w-v\) 的核就是对角切空间。由管状邻域的 Thom 类定义推前 \(\Delta_!a\)，即先在邻域内取 \(a\) 与法丛 Thom 类的乘积，再经切除和忘去相对条件得到 \(H^{n+\deg a}(M\times M;\mathbb F_2)\) 中的类。第20章法向局部对偶的同一计算给出
+	\[
+		\langle\Delta_!a\smile z,[M\times M]_2\rangle
+		=\langle a\smile\Delta^*z,[M]_2\rangle.
+	\]
+	令 \(D=\Delta_!1\)。由域系数 Künneth 同构和上式的完美配对，
+	\begin{equation}\label{g2:eq:diagonal-dual-basis}
+		D=\sum_\alpha b_\alpha\times b^\alpha.
+	\end{equation}
+	例如将右边与 \(x\times y\) 相乘后求值，得到 \(\sum_\alpha\epsilon(b_\alpha x)\epsilon(b^\alpha y)=\epsilon(xy)\)，恰与对角拉回相同，故这确是 \(D\)。
+
+	自然性使平方与相对类到绝对类的映射交换；\cref{g2:thm:thom-square-comparison}于是给出
+	\[
+		\operatorname{Sq}(D)=\Delta_!w(\mathrm TM)
+		=D\smile\operatorname{pr}_1^*w(\mathrm TM).
+	\]
+	最后一个等式是邻域内的杯积公式：\(\operatorname{pr}_1\) 限制在管状邻域后，与收缩到对角线再投影同伦，所以其拉回正是 Thom 同构中的基空间因子。
+
+	在 \(H\otimes H\) 上施加线性映射 \(1\otimes\epsilon\)。对右边，式\eqref{g2:eq:diagonal-dual-basis}给出 \((1\otimes\epsilon)D=1\)，所以结果是 \(w(\mathrm TM)\)。对左边，Cartan 公式和外积相容性给出
+	\[
+		(1\otimes\epsilon)\operatorname{Sq}(D)
+		=\sum_\alpha\operatorname{Sq}(b_\alpha)\,\epsilon(\operatorname{Sq}(b^\alpha)).
+	\]
+	Wu 类的定义逐次数合起来正是 \(\epsilon(\operatorname{Sq}(x))=\epsilon(v(M)x)\)。因此上式等于
+	\[
+		\operatorname{Sq}\left(\sum_\alpha b_\alpha\,\epsilon(v(M)b^\alpha)\right)
+		=\operatorname{Sq}(v(M)),
+	\]
+	最后一步是对偶基展开。两边比较即得所求公式，全程只使用模二基本类。
+\end{proof}
+
+这就证明了\cref{g2:thm:wu-tangent-preview}的预告。低次时，\(w_1=v_1\)、\(w_2=v_2+\operatorname{Sq}^1v_1\)；后者额外的一项说明 Wu 类本身与切丛类一般不同。第13章中 \(\mathbb RP^2\) 与 \(\mathbb CP^2\) 的计算现在分别给出实际切丛的总类，而不再只是运算产生的候选表达。
 
 \subsection{对偶、张量和复化}
 \label{g2:subsec:2103:04}
-待撰写
+对偶、张量与复化改变线丛的根，因此可以用同一个分裂过程计算。进行比较时须保留系数：复陈类位于整数上同调，实 Stiefel--Whitney 类位于模二上同调，二者之间使用约化映射 \(\rho_2\)。
+
+\begin{proposition}\label{g2:prop:chern-operations}
+	设 \(E,F\) 为 CW 基空间上的复丛，秩分别为 \(r,s\)，形式陈根为 \(x_i,y_j\)。则
+	\[
+		c_k(E^*)=c_k(\overline E)=(-1)^k c_k(E),\qquad
+		c(E\otimes F)=\prod_{i,j}(1+x_i+y_j),
+	\]
+	第二式在同时分裂空间中计算，再由单射性理解于底空间。特别地，
+	\[
+		c_1(E\otimes F)=s\,c_1(E)+r\,c_1(F).
+	\]
+	若 \(L\) 为复线丛、\(\ell=c_1(L)\)，则
+	\begin{equation}\label{g2:eq:chern-line-twist}
+		c_k(E\otimes L)=\sum_{j=0}^k\binom{r-j}{k-j}c_j(E)\ell^{k-j}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	在同时分裂空间，\(E^*\)、\(\overline E\) 的线因子第一类为 \(-x_i\)，因为线丛对偶与共轭都变号；第 \(k\) 个初等对称式遂乘以 \((-1)^k\)。张量积实际分裂为全部 \(L_i\otimes K_j\)，每个因子的第一类为 \(x_i+y_j\)，给出乘积公式及其一次项。
+
+	对线丛扭转，把第 \(k\) 个初等对称式写为 \(e_k(x_1+\ell,\ldots,x_r+\ell)\)。从一项的 \(k\) 个因子中选 \(j\) 个贡献 \(x\)，其余贡献 \(\ell\)；固定那 \(j\) 个根后，还可从其余 \(r-j\) 个位置选出 \(k-j\) 个，故系数为 \(\binom{r-j}{k-j}\)。这证明式\eqref{g2:eq:chern-line-twist}。各等式都是对称式，且拉回单射，因此在底空间成立。
+\end{proof}
+
+实丛的对偶由内积与自身同构，所以 \(w(E^*)=w(E)\)。若两实丛分别分裂为根 \(a_i,b_j\) 的实线丛，则其张量积满足 \(w(E\otimes F)=\prod_{i,j}(1+a_i+b_j)\)。这些公式的乘积次数不同，不能把总陈类的整数系数式直接改名为总 Stiefel--Whitney 类的式子。
+
+\begin{proposition}\label{g2:prop:real-complex-characteristic}
+	对 CW 基空间上的复秩 \(r\) 丛 \(F\)，有
+	\begin{equation}\label{g2:eq:complex-real-sw}
+		w_{2i}(F_{\mathbb R})=\rho_2c_i(F),\qquad w_{2i+1}(F_{\mathbb R})=0.
+	\end{equation}
+	对实丛 \(E\) 的复化 \(E_{\mathbb C}=E\otimes_{\mathbb R}\mathbb C\)，有
+	\begin{equation}\label{g2:eq:complexification-chern-mod-two}
+		\rho_2c_i(E_{\mathbb C})=w_i(E)^2,\qquad 2c_{2j+1}(E_{\mathbb C})=0.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	在复旗丛上分裂 \(F\)。该拉回不仅在整数上同调单射，在模二上同调也单射，因为复射影纤维的幂基约化后仍是一组基。每条复线的底层实二平面定向，故 \(w_1=0\)，而\cref{g2:thm:top-class-euler}给出 \(w_2=\rho_2c_1\)。对各线因子应用 Whitney 公式，得 \(w(F_{\mathbb R})=\prod_i(1+\rho_2x_i)\)，比较次数即得第一组公式。
+
+	映射 \(v+\mathrm i w\mapsto(v,w)\) 给出实丛同构 \((E_{\mathbb C})_{\mathbb R}\cong E\oplus E\)，于是
+	\[
+		\sum_i\rho_2c_i(E_{\mathbb C})=w(E)^2=\sum_iw_i(E)^2
+	\]
+	在模二系数下成立；最后一步的混合项成对相消。比较次数得到第二组的第一个式子。复化丛有规范的复线性同构 \(E_{\mathbb C}\cong\overline{E_{\mathbb C}}\)，由共轭的陈公式得 \(c_i=(-1)^ic_i\)，故奇下标项被 \(2\) 消去。
+\end{proof}
+
+例如实线丛复化后虽然只有一个陈类，这个类也未必为零：式\eqref{g2:eq:line-complexification-bockstein}精确把它写成方向类的整数 Bockstein。其模二约化为 \(\operatorname{Sq}^1w_1=w_1^2\)，与式\eqref{g2:eq:complexification-chern-mod-two}一致。复化保留了某些实方向信息，但把它从一次模二群移入二次整数扭群。
 
 \subsection{Pontryagin 类的定义及符号}
 \label{g2:subsec:2103:05}
-待撰写
+实丛复化以后得到整数陈类。奇下标类可能只剩二阶扭信息，偶下标类则给出位于 \(4i\) 次的 Pontryagin 类。定义中的交错符号使定向实二平面的第一 Pontryagin 类成为 Euler 类的平方。
+
+\begin{definition}\label{g2:def:pontryagin-classes}
+	实有限秩丛 \(E\to B\) 的\term[Pontryagin-lei]{Pontryagin 类}[Pontryagin classes]定义为
+	\begin{equation}\label{g2:eq:pontryagin-definition}
+		p_i(E)=(-1)^i c_{2i}(E_{\mathbb C})\in H^{4i}(B;\mathbb Z),\qquad p(E)=1+p_1(E)+p_2(E)+\cdots.
+	\end{equation}
+	若 \(2i>\operatorname{rank}_{\mathbb R}E\)，则该项为零。
+\end{definition}
+
+Pontryagin\footnote{\OriginalName{Лев Семёнович Понтрягин}（Lev Semenovich Pontryagin，1908--1988），苏联数学家，研究代数拓扑、拓扑群与最优控制理论。}类对实丛定义，不要求它可定向。
+
+\begin{proposition}\label{g2:prop:pontryagin-properties}
+	对 CW 基空间上的实丛，Pontryagin 类自然且在加平凡直和因子后不变，并满足
+	\[
+		\rho_2p_i(E)=w_{2i}(E)^2.
+	\]
+	若 \(E\) 是定向实秩 \(2r\) 丛，则 \(p_r(E)=e_{\mathrm{Th}}(E)^2\)。若 \(F\) 为复丛，形式陈根为 \(x_j\)，则
+	\begin{equation}\label{g2:eq:pontryagin-complex-underlying}
+		p(F_{\mathbb R})=\prod_j(1+x_j^2),\qquad
+		p_1(F_{\mathbb R})=c_1(F)^2-2c_2(F).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	自然性、稳定性来自复化与陈类的相应性质。模二约化时符号消失，再用式\eqref{g2:eq:complexification-chern-mod-two}即可。
+
+	对定向秩 \(2r\) 丛 \(E\)，实同构 \((E_{\mathbb C})_{\mathbb R}\cong E\oplus E\) 所比较的两种方向须明确。若 \(e_1,\ldots,e_{2r}\) 为正向实基，复自然实方向是交错排列 \((e_1,\mathrm i e_1,\ldots,e_{2r},\mathrm i e_{2r})\)，直和方向则先放全部 \(e_j\)，再放全部 \(\mathrm i e_j\)。它们相差 \((-1)^{(2r)(2r-1)/2}=(-1)^r\)。最高陈类等于复方向 Euler 类，因而
+	\[
+		c_{2r}(E_{\mathbb C})=(-1)^re_{\mathrm{Th}}(E\oplus E)=(-1)^re_{\mathrm{Th}}(E)^2.
+	\]
+	代入定义便得 \(p_r=e_{\mathrm{Th}}^2\)。
+
+	最后，复线性同构 \((F_{\mathbb R})_{\mathbb C}\cong F\oplus\overline F\) 可在每根纤维由复结构的 \(\pm\mathrm i\) 特征子空间给出。因此其陈总类在分裂空间为
+	\[
+		\prod_j(1+x_j)(1-x_j)=\prod_j(1-x_j^2).
+	\]
+	取偶下标项再乘 \((-1)^i\)，得到式\eqref{g2:eq:pontryagin-complex-underlying}。一次项利用 \(\sum_jx_j^2=(\sum_jx_j)^2-2\sum_{i<j}x_ix_j\) 化成所列公式。
+\end{proof}
+
+整数 Pontryagin 类的直和关系还要保留奇陈类的乘积。直接从陈类的 Whitney 公式分开偶、奇下标，可得
+\begin{equation}\label{g2:eq:pontryagin-sum-torsion}
+	\begin{split}
+		p_k(E\oplus F)={}&\sum_{i+j=k}p_i(E)p_j(F)\\
+		&+(-1)^k\!\sum_{\substack{a+b=2k\\a,b\text{ 为奇数}}}c_a(E_{\mathbb C})c_b(F_{\mathbb C}).
+	\end{split}
+\end{equation}
+第二行被 \(2\) 消去，但未必等于零。因此
+\[
+	p(E\oplus F)=p(E)p(F)\quad\text{于 }H^*(B;\mathbb Z[1/2])
+\]
+总是成立；在整数上同调中，若相关群没有二阶扭，或者相关奇陈乘积全部消失，也可使用同一公式。特别是两个丛都来自复丛的底层实丛时，上面根的成对表达使这些奇项确实为零。
+
+\begin{example}\label{g2:exm:pontryagin-whitney-torsion}
+	令 \(L\to\mathbb RP^4\) 为典范实线丛，\(a=w_1(L)\)，\(t=c_1(L_{\mathbb C})=\widetilde\beta_2a\)。由第13章 \(\rho_2\widetilde\beta_2=\operatorname{Sq}^1\) 及最高平方性质，\(\rho_2t=a^2\)，所以 \(\rho_2(t^2)=a^4\ne0\)，从而 \(t^2\ne0\)。每条实线丛的 Pontryagin 类在正次全为零，但
+	\[
+		p_1(L\oplus L)=-c_2(L_{\mathbb C}\oplus L_{\mathbb C})=-t^2\ne0.
+	\]
+	这里整个差正是式\eqref{g2:eq:pontryagin-sum-torsion}的奇下标乘积。换成实或有理系数后 \(t\) 消失，便看不到这个例子中的区别。
+\end{example}
+
+至此，三个系列的次数与系数可以并列为
+\[
+\begin{array}{c|c|c|c}
+	\text{丛的类型}&\text{类}&\text{所在群}&\text{构造所用数据}\\\hline
+	\text{实秩 }r&w_i&H^i(B;\mathbb F_2)&\text{实射影丛关系}\\
+	\text{复秩 }r&c_i&H^{2i}(B;\mathbb Z)&\text{复射影丛关系}\\
+	\text{实秩 }r&p_i&H^{4i}(B;\mathbb Z)&(-1)^ic_{2i}(E_{\mathbb C})
+\end{array}
+\]
+下一节将这些类作用于实际切丛和结构群约化；下一章再在实、复系数中用曲率给出代表。整数类及其扭项已经在拓扑构造中确定，曲率比较须与这里的规范一致。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

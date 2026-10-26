@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 23.3 手术与把手
 % 纲要位置：几何学计划纲要.md，第 1903 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,227 @@
 \section{手术与把手}
 \label{g2:sec:2303}
 
-待撰写
+配边把两个流形放在同一个高一维流形的边界上。若沿高度切开这个配边，中间截面会怎样变化？第17章的把手附着已经给出答案所需的局部模型。本节从这个模型出发，说明怎样有目的地改变基本群，以及为什么同样的办法走到中维时会遇到相交问题。
 
 \subsection{局部手术和配边的把手分解}
 \label{g2:subsec:2303:01}
-待撰写
+设 \(M\) 是闭光滑 \(n\) 维流形，\(0\le p\le n-1\)。要在一个 \(p\) 维球面附近动手，首先需要的不只是嵌入 \(S^p\hookrightarrow M\)，而是一个乘积邻域
+\[
+	\varphi:S^p\times D^{n-p}\hookrightarrow M.
+\]
+它等价于给中心球面选择一组法标架，再应用管状邻域定理。记 \(C=M\setminus\varphi(S^p\times\operatorname{int}D^{n-p})\)。两块
+\[
+	S^p\times D^{n-p},\qquad D^{p+1}\times S^{n-p-1}
+\]
+具有同一个边界 \(S^p\times S^{n-p-1}\)，因而可以相互替换。
+
+\begin{definition}\label{g2:def:surgery}
+	沿 \(\varphi\) 的\term[shoushu]{\(p\) 维手术}[surgery]是流形
+	\[
+		M_\varphi=C\cup_{\varphi|_{S^p\times S^{n-p-1}}}(D^{p+1}\times S^{n-p-1}),
+	\]
+	粘合处使用领圈并磨圆。把 \(D^{p+1}\times D^{n-p}\) 沿 \(S^p\times D^{n-p}\) 接到 \(M\times\{1\}\)，所得 \((n+1)\) 维配边称为这次手术的\term[shoushuji]{手术迹}[trace of surgery]，记为 \(W_\varphi\)。
+\end{definition}
+
+\begin{proposition}\label{g2:prop:surgery-trace}
+	\(W_\varphi\) 从 \(M\) 出发只有一个指标 \(p+1\) 的把手，另一端边界是 \(M_\varphi\)。反向看，它从 \(M_\varphi\) 出发只有一个指标 \(n-p\) 的把手。若 \(M\) 定向，按定向兼容的附着方式构造，则 \(\partial W_\varphi=(-M)\amalg M_\varphi\)。
+\end{proposition}
+\begin{proof}
+	乘积圆盘的边界由两个面组成：
+	\[
+		\partial(D^{p+1}\times D^{n-p})
+		=(S^p\times D^{n-p})\cup(D^{p+1}\times S^{n-p-1}).
+	\]
+	第一个面附着后成为内部接缝，第二个面与 \(C\) 合成新边界。这正是定义中的替换。对照\cref{g2:def:morse-handle}，核心圆盘是 \(D^{p+1}\times\{0\}\)，故指标为 \(p+1\)。倒转配边方向，交换两个圆盘因子，原来的自由面成为附着面，新的核心为 \(D^{n-p}\)，指标成为 \(n-p\)。最后按外法向优先的边界定向约定，乘积的下端带相反定向，上端带原定向，得到所述边界公式。
+\end{proof}
+
+三个维数分别是：接受手术的流形维数 \(n\)、被取走的中心球面维数 \(p\)、手术迹的把手指标 \(p+1\)。这里把“\(p\) 维手术”按球面维数命名；其他文献还可能按把手指标命名。
+
+\begin{proposition}\label{g2:prop:surgery-euler}
+	一次 \(p\) 维手术满足
+	\[
+		\chi(M_\varphi)-\chi(M)=(-1)^{n-p-1}-(-1)^p.
+	\]
+	因此奇数维时 Euler 示性数不变，偶数维时改变量为 \(-2(-1)^p\)。
+\end{proposition}
+\begin{proof}
+	利用领圈把粘合分解加厚成开覆盖，Mayer--Vietoris 序列给出 Euler 示性数的加法公式。两次分解具有相同的 \(C\) 和交界 \(S^p\times S^{n-p-1}\)，相减后只剩
+	\[
+		\chi(D^{p+1}\times S^{n-p-1})-\chi(S^p\times D^{n-p})
+		=1+(-1)^{n-p-1}-1-(-1)^p.
+	\]
+	球面的 Euler 示性数来自它的零胞腔和顶维胞腔，圆盘可缩；故公式也包括 \(S^0\) 出现的端点情形。
+\end{proof}
+
+\begin{example}\label{g2:exm:surface-surgery}
+	在定向曲面上，\(p=0\) 的手术取走两个小圆盘，再用圆柱 \(D^1\times S^1\) 接起两个边界圆。如果两个圆盘位于同一连通曲面，就增加一个把手，\(\chi\) 减少 \(2\)；如果它们分别位于两张曲面，就把两张曲面连成其连通和。反向的 \(p=1\) 手术切去一个圆柱邻域，再用两个圆盘封口，\(\chi\) 增加 \(2\)。沿不分离圆周切开会减少一个把手，沿分离圆周切开则产生两个分支。相同的局部替换可以有不同的全局效果，区别来自附着球面的位置。
+\end{example}
+
+任意紧光滑配边 \((W;M_0,M_1)\) 都可以这样逐步扫描。\Cref{g2:prop:boundary-morse-function}给出在两端领圈内等于高度参数、内部只有有限个非退化临界点且临界值互异的函数。逐次应用\cref{g2:thm:morse-handle-attachment}，每跨过一个指标 \(\lambda\) 的临界点，截面便经历一次 \((\lambda-1)\) 维手术。指标 \(0\) 和 \(n+1\) 分别使一个 \(S^n\) 分支诞生或消失，需要另计。这样得到的是有限把手分解；把手的位置和法标架保留了仅凭配边群元素看不到的信息。
 
 \subsection{基本群与中维障碍}
 \label{g2:subsec:2303:02}
-待撰写
+先考察手术能否消去一个指定环路。直觉上，沿这个环路接上圆盘便会让它可缩；手术还必须同时补上横向厚度，保证结果仍是流形。手术迹将这两件事分开处理。
+
+\begin{proposition}\label{g2:prop:surgery-fundamental-group}
+	设 \(M\) 连通，\(1\le p\le n-3\)，并沿 \(\varphi:S^p\times D^{n-p}\hookrightarrow M\) 做手术。则 \(M_\varphi\) 连通，且
+	\[
+		\pi_1(M_\varphi)\cong
+		\begin{cases}
+			\pi_1(M)/\langle\!\langle[\alpha]\rangle\!\rangle,&p=1,\\
+			\pi_1(M),&p\ge2.
+		\end{cases}
+	\]
+	这里 \(\alpha=\varphi|_{S^1\times\{0\}}\)，用一条道路把它接到固定基点；\(\langle\!\langle[\alpha]\rangle\!\rangle\) 表示它生成的正规子群。更换这条道路只会共轭 \([\alpha]\)，不改变该正规子群。
+\end{proposition}
+\begin{proof}
+	由\cref{g2:prop:surgery-trace,g2:lem:handle-core-retraction}，从 \(M\) 到 \(W_\varphi\) 的同伦效果是附着一个 \((p+1)\) 胞腔。对于 \(X\cup_\beta D^k\)，\(k\ge2\)，取圆盘内部及圆盘中心的补集作为开覆盖：前者可缩，后者收缩到 \(X\)，交集收缩到 \(S^{k-1}\)。\Cref{g2:thm:van-kampen}于是给出
+	\[
+		\pi_1(X\cup_\beta D^k)=
+		\begin{cases}
+			\pi_1(X)/\langle\!\langle\beta_*\pi_1(S^1)\rangle\!\rangle,&k=2,\\
+			\pi_1(X),&k\ge3.
+		\end{cases}
+	\]
+	第二行用到了 \(S^{k-1}\) 单连通。因而从 \(M\) 出发计算 \(\pi_1(W_\varphi)\)，正好得到命题右侧。
+
+	反向的核心胞腔维数是 \(n-p\ge3\)。它的附着球面连通，不能把原有的不同连通分支接在一起；而 \(W_\varphi\) 从连通的 \(M\) 附着一个把手得到，故本身连通。因此 \(M_\varphi\) 也连通。对反向附着再用上式，\(\pi_1(M_\varphi)\to\pi_1(W_\varphi)\) 是同构。把两端的计算结合起来即得结论。
+\end{proof}
+
+维数限制在证明中有明确位置：\(n-p\ge3\) 保证反向附着不改变基本群。如果反向把手的指标降到 \(2\)，它也能消去关系；降到 \(1\)，则可能新增环路或连接分支。三维流形沿圆周的手术恰好落在前一种情形，因此不能套用上面的商群公式。
+
+\ProseParagraphBreak
+
+在高维定向流形中，有限组基本群生成元可用互不相交的嵌入圆周表示。每个圆周的法丛是定向的，而 \(S^1\) 上的定向实向量丛平凡，因而可以选择法标架。当 \(n\ge4\) 时，逐次作 \(1\) 维手术便能消去这些生成元。这说明存在同一有向配边类中的单连通代表；这一步改变了原流形的同伦型。
+
+\ProseParagraphBreak
+
+想继续消去更高同伦群，就要用嵌入的 \(S^p\) 代表待消去元素，并为它选择法标架。横截性提供一个有用的维数判断：两个 \(p\) 维代表在 \(n\) 维流形中的预期相交维数是 \(2p-n\)。在 \(2p<n\) 时，有希望通过一般位置使它们不相交；在 \(n=2p\) 时，交点成为孤立点，不能再靠一个小扰动全部移走。这是中维在手术理论中反复出现的原因。
+
+\ProseParagraphBreak
+
+设 \(M^{2q}\) 闭、连通、定向。其自由中维同调上的相交配对可写成
+\[
+	\lambda(x,y)=\bigl\langle\operatorname{PD}(x)\smile\operatorname{PD}(y),[M]\bigr\rangle,
+	\qquad x,y\in H_q(M;\mathbb Z)/\text{挠子群}.
+\]
+这里 \(\operatorname{PD}(x)\in H^q(M;\mathbb Z)\) 是 Poincar\'e 对偶类，模挠意义下的取值不依赖代表；杯积的分次交换律给出 \(\lambda(y,x)=(-1)^q\lambda(x,y)\)。因而 \(q\) 偶数时得到对称形式，\(q\) 奇数时得到斜对称形式。若两个类由互不相交的球面代表，则交数为零。若一个球面具有平凡法丛，沿其中一个非零法向量场略作推移，就得到与自身不相交的同调代表，所以它的自交数也必须为零。法标架与相交数据都是能否实施手术的实际条件。
+
+\begin{example}\label{g2:exm:surgery-hyperbolic-pair}
+	在 \(S^q\times S^q\) 中，取 \(a=[S^q\times\{y\}]\)、\(b=[\{x\}\times S^q]\)，并选择乘积定向，则
+	\[
+		\bigl(\lambda(a_i,a_j)\bigr)_{(a_1,a_2)=(a,b)}
+		=\begin{pmatrix}0&1\\(-1)^q&0\end{pmatrix}.
+	\]
+	两个因子球面各自都有平凡法丛，却具有非零交数，所以不可能同时由互不相交的代表实现。手术中的代数整理需要选择合适的半组生成元并保留与之对偶的数据；仅逐项检查每个生成元的自交数还不够。
+\end{example}
+
+基本群非平凡时，还需记录交点的道路信息。对两个带基点道路的、基本群像为零的球面代表，在交点 \(z\) 沿第一个球面到达 \(z\)，再沿第二个球面返回基点，得到 \(g_z\in\pi=\pi_1(M)\)。把交点符号 \(\varepsilon_z\) 一同记下，形成群环中的和
+\[
+	\lambda=\sum_z\varepsilon_z g_z\in\mathbb Z[\pi].
+\]
+固定基点道路后，这些标签可比较；改变选择会引入相应的群作用。取增广 \(\mathbb Z[\pi]\to\mathbb Z\)、把每个群元素送到 \(1\)，才得到普通整数交数。因此两个符号相反但群标签不同的交点，虽然在整数计数中相消，却未必能用下述圆盘消去。中维手术障碍保留群环配对及与自交、法标架有关的二次数据，原因就在这里。
 
 \subsection{维数条件下的 Whitney 技巧}
 \label{g2:subsec:2303:03}
-待撰写
+设定向子流形 \(A^a,B^b\subset X^{a+b}\) 横截相交，\(u,v\) 是符号相反的两个交点。在 \(A\) 中选一条连接 \(u,v\) 的嵌入弧，在 \(B\) 中再选一条反向连接的嵌入弧，使弧内部避开其他交点。它们合成一条带两个角的闭曲线，称为 Whitney 圆周。若能用一个圆盘填住它，就可以尝试把 \(A\) 的这一小片沿圆盘推过 \(B\)，使两次穿越一起消失。
+
+\ProseParagraphBreak
+
+这个圆盘还必须光滑嵌入，内部与 \(A\cup B\) 不相交，边界按上述两条弧落在两张片上。沿两条边界弧由片内方向给出的法向数据也须能延拓到整个圆盘，形成与两片相容的乘积邻域；这称为圆盘具有 Whitney 标架。只有闭曲线可缩，尚未检查这两件事。下面把已有这种局部乘积模型时的消点操作写出。
+
+\begin{lemma}\label{g2:lem:local-whitney-move}
+	设上述两个交点具有一个带 Whitney 标架的圆盘，其内部避开 \(A\cup B\)，且其小邻域内没有其他片。则存在支撑在该邻域中的光滑同痕，把 \(A\) 移成 \(A'\)，使
+	\[
+		A'\cap B=(A\cap B)\setminus\{u,v\}.
+	\]
+	这里同痕作用于 \(A\)，比较相交时保持 \(B\) 为原来的子流形。
+\end{lemma}
+\begin{proof}
+	标架把圆盘的小邻域识别为一个平面邻域 \(U\) 乘上 \(\mathbb R^{a-1}\times\mathbb R^{b-1}\) 中的小圆盘。在这个识别下，两张片分别写成
+	\[
+		C_A\times\mathbb R^{a-1}\times\{0\},\qquad
+		C_B\times\{0\}\times\mathbb R^{b-1},
+	\]
+	其中平面弧 \(C_A,C_B\) 围成待消去的二角形。把 \(C_A\) 推过这个二角形，可得到支撑在 \(U\) 内的平面同痕 \(G_t\)，使 \(G_1(C_A)\) 与 \(C_B\) 不相交。
+
+	这个平面操作可以直接实现：把 \(C_B\) 拉直为横轴，把相关的 \(C_A\) 写成 \(y=h(x)\)，其中两个横截零点之间 \(h<0\)，两端外侧 \(h>0\)。选紧支光滑函数 \(k\ge0\)，使 \(h+k>0\) 于相关区间，令 \(h_t=h+tk\)。每条图像都嵌入；取沿图像等于 \(k(x)\partial_y\)、离开图像附近便截断为零的时变向量场，它的流将 \(h_0\) 送到 \(h_t\)，给出所需 \(G_t\)。二角形的两边嵌入且内部没有其他片，允许先作上述平面坐标调整。
+
+	取横向变量上的光滑截断 \(\rho(x,y)\)，在 \((0,0)\) 附近为 \(1\)，靠近横向邻域边界为 \(0\)，定义
+	\[
+		H_t(z,x,y)=\bigl(G_{t\rho(x,y)}(z),x,y\bigr).
+	\]
+	每个固定 \((x,y)\) 的平面映射都是微分同胚，逆映射也光滑依赖参数，故 \(H_t\) 是同痕，并可与邻域外的恒等映射拼接。移动后的第一张片仍有 \(y=0\)，第二张片仍有 \(x=0\)，所以二者若相交，只能发生在 \(x=y=0\)。此处 \(\rho=1\)，相交等价于 \(G_1(C_A)\cap C_B\)，已经为空。邻域外没有变化，故恰好消去指定的两个交点。
+\end{proof}
+
+上述引理把几何操作与圆盘的存在问题分开了。以下是高维中常用的一组充分条件。
+
+\begin{theorem}[Whitney 技巧]\label{g2:thm:whitney-trick}
+	设 \(X^{a+b}\) 是单连通定向光滑流形，\(A^a,B^b\) 是其中连通、定向、横截相交的闭嵌入子流形。若 \(a,b\ge3\)，则任意两个符号相反的交点可以通过 \(A\) 的光滑同痕消去，而不改变其余交点。
+\end{theorem}
+
+这里引用完整的 Whitney 圆盘与标架构造，见 \cite[定理6.6及引理6.7]{Milnor1965HCobordism}；群环标签版本见 \cite[第7.3节]{Ranicki2002Surgery}。其维数机制如下：单连通性使 Whitney 圆周能够由圆盘填充；对填充圆盘作相对一般位置调整，可能出现的自交维数是 \(4-(a+b)<0\)，与 \(A\)、\(B\) 内部的预期相交维数分别是 \(2-b<0\)、\(2-a<0\)。这些不等式使圆盘可以嵌入且内部避开两片。剩下的边界法向扭转由标架构造处理，随后应用\cref{g2:lem:local-whitney-move}。标架这一步是引用定理的一部分，不能只由“圆盘可缩”替代。
+
+\ProseParagraphBreak
+
+在四维中若 \(a=b=2\)，刚才三个预期维数都变成 \(0\)。填充圆盘本身可以有双点，也可以穿过原来的两张曲面；试图消去一对交点可能又产生新的交点。单连通性仍解决边界圆周可缩的问题，却不能保证存在内部干净且带所需标架的嵌入圆盘。已经给定这种圆盘时，局部消点引理仍然成立；失去的是由一般位置自动得到圆盘的步骤。下一节的四维光滑现象与这道障碍密切相关。
 
 \subsection{h-配边及手术分类的精确外部输入}
 \label{g2:subsec:2303:04}
-待撰写
+配边允许中间截面改变许多次。若两端的包含映射都已经是同伦等价，这些把手在同伦论意义下没有留下新信息，能否把它们全部取消？
+
+\begin{definition}\label{g2:def:h-cobordism}
+	紧光滑配边 \((W;M_0,M_1)\) 称为\term[hpeibian]{\(h\)-配边}[h-cobordism]，如果两个包含 \(M_i\hookrightarrow W\) 都是同伦等价。称它为乘积配边，是指存在微分同胚
+	\[
+		F:M_0\times[0,1]\longrightarrow W,
+		\qquad F(x,0)=x,\quad F(M_0\times\{1\})=M_1.
+	\]
+\end{definition}
+
+\begin{theorem}[\(h\)-配边定理]\label{g2:thm:h-cobordism}
+	设 \((W;M_0,M_1)\) 为光滑 \(h\)-配边，\(M_0,M_1\) 是闭连通流形，\(\dim W\ge6\)。如果 \(M_0\) 单连通，则 \(W\) 是乘积配边，特别地 \(M_0\) 与 \(M_1\) 微分同胚。
+\end{theorem}
+
+这是 Smale 的定理；完整证明可见 \cite[第6--9节，定理9.1]{Milnor1965HCobordism}。包含为同伦等价保证 \(W\) 和 \(M_1\) 也单连通。证明先把相对把手链复形中的代数消去实现为把手滑动，再用 Whitney 技巧把代数交数化成恰好一次的几何相交，最后取消相邻指标的把手。这个过程所用的高维把手整理是本节的外部输入。定理给出的是固定下端 \(M_0\) 的乘积结构；任意预先指定的上端参数化不一定也逐点固定。
+
+\ProseParagraphBreak
+
+非单连通时，相对万有覆盖的链复形是 \(\mathbb Z[\pi]\) 上的带基自由链复形，其中 \(\pi=\pi_1(M_0)\)。同伦等价使它链可缩，但把它约去所需的基变换未必能由初等变换及把基元素乘以 \(\pm g\)、\(g\in\pi\) 实现。这份差别由\term[whiteheadniuzi]{Whitehead 扭子}[Whitehead torsion]记录：
+\[
+	\tau(W,M_0)\in\operatorname{Wh}(\pi),\qquad
+	\operatorname{Wh}(\pi)=K_1(\mathbb Z[\pi])/\langle[\pm g]:g\in\pi\rangle.
+\]
+这里 \(K_1(R)\) 是把可逆矩阵稳定化后再模去初等矩阵所得的群；利用链收缩构造奇、偶维链群之间的基变换，取其稳定类，便定义上述扭子。改变胞腔提升和定向会产生 \(\pm g\)，所以要再除掉这些类。构造及其不变性详见 \cite[第8.1--8.2节]{Ranicki2002Surgery}。
+
+\begin{theorem}[\(s\)-配边定理]\label{g2:thm:s-cobordism}
+	设 \((W;M_0,M_1)\) 为光滑 \(h\)-配边，两端闭且连通，\(\dim W\ge6\)。则它是固定 \(M_0\) 的乘积配边，当且仅当 \(\tau(W,M_0)=0\)。
+\end{theorem}
+
+这一版本见 \cite[第8.2节]{Ranicki2002Surgery}；扭子为零的 \(h\)-配边称为 \(s\)-配边。由于 \(\operatorname{Wh}(\{1\})=0\)，单连通版本是它的特例。使用定理时，首先要有两个包含映射的同伦等价，再检验扭子；两端同调群同构尚未给出这些条件。
+
+\ProseParagraphBreak
+
+最后说明手术怎样把一个“接近同伦等价”的映射改成同伦等价。设 \(M^n,N^n\) 闭、连通、定向。一个\term[duyifayingse]{度一法映射}[degree-one normal map]包含度为 \(1\) 的映射 \(f:M\to N\)、\(N\) 上的稳定实向量丛 \(\xi\)，以及稳定丛同构 \(b:\nu_M\cong f^*\xi\)。这里 \(\nu_M\) 是稳定法丛，同构也可表示为选定 \(\mathrm{T}M\oplus f^*\xi\) 的稳定平凡化。\(\xi\) 是数据的一部分，不预设为 \(\nu_N\)。称两份这样的数据\term[fapeibian]{法配边}[normally bordant]，是指存在配边上的映射及稳定法丛数据延拓它们，目标丛保持为 \(\xi\)。
+
+\begin{theorem}[手术障碍定理]\label{g2:thm:simply-connected-surgery-obstruction}
+	设 \(N^n\) 是单连通闭定向光滑流形，\(n\ge5\)，\((f,b):M^n\to N^n\) 是度一法映射。存在只依赖其法配边类的障碍
+	\[
+		\theta(f,b)\in L_n(\mathbb Z),
+	\]
+	它为零当且仅当 \((f,b)\) 法配边于一个同伦等价 \(f':M'\to N\)。这里
+	\[
+		L_n(\mathbb Z)\cong
+		\begin{cases}
+			\mathbb Z,&n\equiv0\pmod4,\\
+			\mathbb Z/2,&n\equiv2\pmod4,\\
+			0,&n\text{ 为奇数}.
+		\end{cases}
+	\]
+\end{theorem}
+
+这里引用手术障碍定理及单连通 \(L\) 群计算 \cite[定理3.2、13A.1]{Wall1999Surgery}。原定理表述为单同伦等价；此处基本群平凡，Whitehead 群为零，因而与同伦等价一致。\(L_n(\mathbb Z)\) 是二次手术障碍群：在偶数维，它保留中维相交形式及二次细化模去可通过标准手术消去的数据后的类。\(4k\) 维的整数由相交形式的符号差除以 \(8\) 给出，\(4k+2\) 维的二值障碍由相应中维二次形式的二值不变量给出；这些代数构造和上表的计算也包含在所引结果中。
+
+\ProseParagraphBreak
+
+例如，当目标维数为 \(5\) 或 \(7\) 时，一旦已经给出度一法映射，其障碍群为零，所以可以在法配边中得到同伦等价。输出是新的 \(M'\) 及 \(M'\simeq N\)；从同伦等价走到微分同胚还需进一步信息。对固定同伦类型的光滑流形进行分类，还须研究法数据之间的差别、手术群的作用和 \(s\)-配边关系。把这几个层次分清，下一节同一拓扑类型上不同光滑结构的例子才不会显得与手术理论矛盾。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

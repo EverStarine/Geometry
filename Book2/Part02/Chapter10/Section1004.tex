@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 10.4 收敛和延拓问题
 % 纲要位置：几何学计划纲要.md，第 1409 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,216 @@
 \section{收敛和延拓问题}
 \label{g2:sec:1004}
 
-待撰写
+各页的构造说明了怎样不断修正一个代表元，还需要回答这些修正最终计算什么。最便于把握的情形是：在每个总次数内，滤过只有有限层。此时，足够高阶的“近似闭”已经成为真正的闭，所有可能影响它的边界也已经进入计算。极限页因而给出上同调的逐层商群；把这些商群拼回整个群及其乘法，则留下另一类问题。
 
 \subsection{有界及第一象限收敛}
 \label{g2:subsec:1004:01}
-待撰写
+
+这里的有限性按总次数判断。对于固定的 \(n\)，只需存在整数 \(a_n<b_n\)，使 \(F^{a_n}C^n=C^n\)、\(F^{b_n}C^n=0\)；不同次数允许使用不同的界。这比整个复形共用一对上下界更适合第一象限双复形。
+
+\begin{theorem}[有限滤过的收敛]\label{g2:thm:filtered-complex-convergence}
+	设 \((C^\bullet,\mathrm d,F)\) 为带递减滤过的 \(R\) 模上链复形，且对每个 \(n\)，\(F^pC^n\) 在 \(p\) 足够小时等于 \(C^n\)，在 \(p\) 足够大时等于零。则对每个 \((p,q)\)，其谱序列 \(E_r^{p,q}\) 在 \(r\) 足够大时稳定，稳定值记为 \(E_\infty^{p,q}\)。在上同调上定义
+	\begin{equation}\label{g2:eq:induced-cohomology-filtration}
+		F^pH^n(C)\coloneqq\operatorname{im}\bigl(H^n(F^pC)\longrightarrow H^n(C)\bigr).
+	\end{equation}
+	这是每次数有限的递减滤过，并有自然同构
+	\[
+		E_\infty^{p,q}\cong F^pH^{p+q}(C)/F^{p+1}H^{p+q}(C).
+	\]
+	此时记作 \(E_r^{p,q}\Longrightarrow H^{p+q}(C)\)，称该谱序列\term[shoulian]{收敛}[convergence]到 \(H^*(C)\)。
+\end{theorem}
+\begin{proof}
+	固定 \(p,n=p+q\)，记 \(Z^n=\ker(\mathrm d:C^n\to C^{n+1})\)、\(B^n=\mathrm dC^{n-1}\)。我们直接考察\secref{g2:sec:1002}的代表元公式。取 \(r\) 足够大，使
+	\[
+		F^{p+r}C^{n+1}=0,\qquad F^{p-r+1}C^{n-1}=C^{n-1}.
+	\]
+	于是分子中“\(\mathrm dx\in F^{p+r}\)”变为“\(\mathrm dx=0\)”，而边界的原像已经允许取遍 \(C^{n-1}\)。具体地，
+	\[
+		\begin{aligned}
+			Z_r^{p,n}&=F^pC^n\cap Z^n,\\
+			Z_{r-1}^{p+1,n}&=F^{p+1}C^n\cap Z^n,\\
+			\mathrm d Z_{r-1}^{p-r+1,n-1}&=F^pC^n\cap B^n.
+		\end{aligned}
+	\]
+	第三式来自 \(Z_{r-1}^{p-r+1,n-1}=\{y\in C^{n-1}:\mathrm dy\in F^pC^n\}\)。因此所有足够大的页都由同一个商群给出：
+	\begin{equation}\label{g2:eq:stable-page-cycles-boundaries}
+		E_\infty^{p,n-p}\cong
+		\frac{F^pC^n\cap Z^n}{F^{p+1}C^n\cap Z^n+F^pC^n\cap B^n}.
+	\end{equation}
+	这些识别与页间同调相容，因为代表元已经是真正的圈，高阶微分均取其零微分。
+
+	再把这个商与上同调滤过比较。\eqref{g2:eq:induced-cohomology-filtration}的等价表达是
+	\[
+		F^pH^n(C)=\frac{(F^pC^n\cap Z^n)+B^n}{B^n}.
+	\]
+	把 \(x\in F^pC^n\cap Z^n\) 送到 \([x]\) 再模去 \(F^{p+1}H^n(C)\)，得到满射。它的核由那些可以写成 \(x=z+\mathrm dy\) 的元素组成，其中 \(z\in F^{p+1}C^n\cap Z^n\)。因 \(x,z\in F^pC^n\)，必有 \(\mathrm dy\in F^pC^n\cap B^n\)，所以核正是\eqref{g2:eq:stable-page-cycles-boundaries}的分母。这证明所需同构。
+
+	若 \(F^pC^n=C^n\)，则每个 \(n\) 次上同调类都有该层代表，故 \(F^pH^n=H^n\)；若 \(F^pC^n=0\)，则 \(F^pH^n=0\)。因此目标滤过仍然有限。滤过上链映射将上述圈、边界和它们的包含同时送到另一复形中的对应对象，故这些同构自然。
+\end{proof}
+
+\begin{corollary}[第一象限双复形]\label{g2:cor:first-quadrant-convergence}
+	设 \(C^{p,q}\) 为第一象限反交换双复形，即 \(C^{p,q}=0\) 除非 \(p,q\ge0\)。令 \(\operatorname{Tot}^nC=\bigoplus_{p+q=n}C^{p,q}\)，并按第一指标递减滤过。则相应谱序列收敛到 \(H^*(\operatorname{Tot}C)\)。每格在有限页后稳定，每条总次数对角线上也只有有限个极限项。
+\end{corollary}
+\begin{proof}
+	固定 \(n\ge0\)，对角线上只有 \((0,n),\ldots,(n,0)\) 这 \(n+1\) 个位置。因此 \(F^0\operatorname{Tot}^nC=\operatorname{Tot}^nC\)、\(F^{n+1}\operatorname{Tot}^nC=0\)，可用上一主定理。
+
+	还可直接看出每格的稳定范围。\(\mathrm d_r\) 从 \((p,q)\) 去往 \((p+r,q-r+1)\)，当 \(r>q+1\) 时靶在第一象限外；进入此格的微分来自 \((p-r,q+r-1)\)，当 \(r>p\) 时源在第一象限外。故 \(r>\max\{p,q+1\}\) 后，两端微分都为零，该格不再变化。
+\end{proof}
+
+“每格最终不变”与“整个目标由有限个商群恢复”分别使用了箭头的范围和每个总次数上的有限滤过。给一张抽象谱序列画出第一象限，只能先得到前一项；要把它认作某个复形的上同调，还须说明该复形、所用总化及目标滤过。
 
 \subsection{穷尽、分离与完备性的角色}
 \label{g2:subsec:1004:02}
-待撰写
+
+当滤过有无限多层时，“一直可以修正”与“存在一个修正完毕的元素”开始分开。下面三个条件分别控制哪些元素被看到、哪些元素能被区分，以及无穷次相容修正能否留下一个元素。
+
+\begin{definition}[滤过的三种性质]\label{g2:def:filtration-exhaustive-separated-complete}
+	设 \(M\) 为带递减滤过 \(F^pM\) 的 \(R\) 模。若 \(\bigcup_pF^pM=M\)，称滤过\term[qiongjin-lvguo]{穷尽}[exhaustive]；若 \(\bigcap_pF^pM=0\)，称滤过\term[fenli-lvguo]{分离}[separated]。令
+	\[
+		\widehat M=\varprojlim_{p\to+\infty}M/F^pM
+		=\left\{(\overline x_p)_p:\overline x_{p+1}\bmod F^pM=\overline x_p\right\}.
+	\]
+	若自然映射 \(M\to\widehat M\)、\(x\mapsto(x\bmod F^pM)_p\) 为同构，称滤过\term[wanbei-lvguo]{完备}[complete]。
+\end{definition}
+
+上式中的逆极限就是一列相容的有限精度数据，无需预先掌握逆极限的其他性质。自然映射的核为 \(\bigcap_pF^pM\)，所以完备蕴含分离；其满射性保证每列相容数据来自一个实际元素。对上链复形，这些条件先逐次施加于 \(C^n\)，而上同调上的诱导滤过还需另外考察。
+
+\ProseParagraphBreak
+
+穷尽性防止对象有一部分始终在滤过之外。例如，令 \(C^0=k\)、其他次数为零，却取全部 \(F^pC=0\)，便会得到零谱序列而遗漏 \(H^0(C)=k\)。分离性则防止一个非零元素藏在所有层内：同一个复形若取全部 \(F^pC=C\)，每个相邻商仍为零，整个 \(k\) 都不可见。有限滤过自动排除这两种现象。
+
+\begin{example}[无限修正与完备化]\label{g2:exm:incomplete-filtered-complex}
+	设 \(k\) 为域，取两项复形
+	\[
+		C^0=k[t]\xrightarrow{\,1-t\,}C^1=k[t],
+	\]
+	并令 \(F^pC^i=t^pk[t]\)（\(p\ge0\)），\(F^pC^i=C^i\)（\(p<0\)）。它的滤过穷尽且分离。在每个相邻商中，乘以 \(1-t\) 的首项都是恒等映射，所以 \(E_1=0\)，所有后续页也为零。但直接计算给出
+	\[
+		H^0(C)=0,\qquad H^1(C)=k[t]/(1-t)\cong k.
+	\]
+	这个非零群的诱导滤过完全不分离：因为商中 \(t=1\)，每个 \(F^pH^1\) 都是整个 \(k\)。例如 \(1\) 与 \(t^N\) 之差是边界，故 \([1]\) 在任意深的层中都有代表。
+
+	若想使 \(1\) 成为真正的边界，需要解 \((1-t)x=1\)。有限和 \(x_N=1+t+\cdots+t^{N-1}\) 满足 \((1-t)x_N=1-t^N\)，每提高一次精度都能消去一项，但极限 \(1+t+t^2+\cdots\) 不在 \(k[t]\) 中。完备化把系数模换成 \(k[[t]]\) 后，这个极限存在，乘以 \(1-t\) 成为同构，新的复形才无上同调。这里零谱序列对两个复形都相同，改变的是无限修正是否仍留在原复形内。
+\end{example}
+
+完备性解决相容极限的存在，却不单独保证边界像闭合。为看清这一区别，令 \(V=\bigoplus_{i\ge1}ke_i\)，取 \(M=V[[t]]\)，即系数在 \(V\) 中的形式幂级数，每一个系数都是有限线性组合。\(t\) 进滤过使 \(M\) 完备且分离：模 \(t^p\) 的相容数据逐个指定全部系数。定义连续 \(k[[t]]\) 线性映射 \(T:M\to M\)，使 \(T(e_i)=t^ie_i\)。它良定义，因为输出中任一固定 \(t\) 次数只会接收有限个较低次数的输入；按每个 \(e_i\) 的系数观察，\(T\) 就是乘以 \(t^i\)，所以它单射。
+
+\ProseParagraphBreak
+
+在两项复形 \(M\xrightarrow{T}M\) 中，元素 \(y=\sum_{i\ge1}t^ie_i\) 不是边界：其唯一可能原像的常数系数应为 \(\sum_{i\ge1}e_i\)，不属于 \(V\)。但任意有限部分 \(y_N=\sum_{i=1}^Nt^ie_i\) 都是 \(T(\sum_{i=1}^Ne_i)\)，且 \(y-y_N\in F^{N+1}M\)。因此 \([y]\ne0\) 却属于全部 \(F^pH^1\)。这说明即使链级各项穷尽、分离、完备，上同调滤过仍可能不分离。一般无限滤过的收敛需要继续控制这样的边界与极限问题；本章的逐总度有限条件使全部过程在有限步内结束。
 
 \subsection{极限页与目标的伴随分次}
 \label{g2:subsec:1004:03}
-待撰写
+
+\cref{g2:thm:filtered-complex-convergence}中的极限同构可以直接理解为“首个非零滤过层”。设 \([x]\in H^n(C)\) 可由 \(x\in F^pC^n\) 中的圈代表。它在 \(E_\infty^{p,n-p}\) 中为零，当且仅当它还可以用更深一层的圈表示，即存在 \(z\in F^{p+1}C^n\cap Z^n\) 和 \(y\in C^{n-1}\)，使
+\[
+	x=z+\mathrm dy.
+\]
+因而极限页在第 \(p\) 层记录的是“能在这一层出现、却不能移到下一层”的上同调信息。
+
+\ProseParagraphBreak
+
+这一解释也说明代表元的两种不确定性。加入更深一层的圈，不改变当前的首项；加入任意边界，不改变上同调类。\eqref{g2:eq:stable-page-cycles-boundaries}正好把这两种变化同时取商。于是收敛所给出的完整陈述是
+\[
+	\operatorname{gr}_F H^n(C)
+	=\bigoplus_pF^pH^n(C)/F^{p+1}H^n(C)
+	\cong\bigoplus_{p+q=n}E_\infty^{p,q}.
+\]
+这里的直和发生在伴随分次对象中。把右侧直接写成 \(H^n(C)\) 还需要为各层挑选相容的提升。
+
+\begin{corollary}[维数与单层检测]\label{g2:cor:spectral-sequence-dimension}
+	在\cref{g2:thm:filtered-complex-convergence}的条件下，若系数为域 \(k\)，且固定总次数 \(n\) 上的极限项均有限维，则
+	\[
+		\dim_kH^n(C)=\sum_{p+q=n}\dim_kE_\infty^{p,q}.
+	\]
+	若某一总次数上只有一个可能非零的极限项 \(E_\infty^{p,n-p}\)，则 \(H^n(C)\) 与该项自然同构；这一结论对一般 \(R\) 模也成立。
+\end{corollary}
+\begin{proof}
+	有限滤过中每个相邻商的维数可加，沿全部层相加即得公式。若只有第 \(p\) 层的商可能非零，则其前面的相邻包含全为等号，故 \(F^pH^n=H^n\)；其后面的相邻包含也全为等号，直到滤过为零，故 \(F^{p+1}H^n=0\)。于是极限同构已经是 \(H^n\cong E_\infty^{p,n-p}\)，没有选择提升的步骤。
+\end{proof}
 
 \subsection{加性隐藏延拓}
 \label{g2:subsec:1004:04}
-待撰写
+
+知道全部相邻商以后，恢复一个有限滤过群需要逐层求解短正合列。为简化记号，把滤过重编号为
+\[
+	H=F^0H\supset F^1H\supset\cdots\supset F^{N+1}H=0.
+\]
+令 \(G^p=F^pH/F^{p+1}H\)，则每一步都有
+\begin{equation}\label{g2:eq:hidden-additive-extension}
+	0\longrightarrow F^{p+1}H\longrightarrow F^pH\longrightarrow G^p\longrightarrow0.
+\end{equation}
+已知两端而恢复中间对象的任务称为\term[yincang-yantuo]{隐藏延拓}[hidden extension]问题；这里首先讨论其加性结构。
+
+\begin{proposition}[自由分次块的分裂]\label{g2:prop:free-graded-splitting}
+	设一个 \(R\) 模 \(H\) 具有有限递减滤过，且每个相邻商 \(G^p\) 都是自由 \(R\) 模。则存在与滤过相容的模同构
+	\[
+		H\cong\bigoplus_pG^p.
+	\]
+	该同构一般依赖各商模的基及其提升，不由滤过唯一指定。特别地，域上的有限滤过总能作为向量空间分裂。
+\end{proposition}
+\begin{proof}
+	在\eqref{g2:eq:hidden-additive-extension}中，对 \(G^p\) 的每个基元任取一个 \(F^pH\) 中的原像，线性延拓得到截面 \(s_p:G^p\to F^pH\)。设商映射为 \(q_p\)，则 \(q_ps_p=\operatorname{id}\)。任意 \(h\in F^pH\) 唯一写成
+	\[
+		h=\bigl(h-s_pq_p(h)\bigr)+s_pq_p(h),
+	\]
+	第一项属于 \(F^{p+1}H\)，两项所属子模交为零。因此 \(F^pH=F^{p+1}H\oplus s_p(G^p)\)。从最深非零层向外递推，得到所述同构，并把每个 \(F^pH\) 识别为指标至少为 \(p\) 的各项之和。
+
+	若把一个基元的提升加上 \(F^{p+1}H\) 的元素，它仍为同一基元的提升，却一般改变截面。故论证给出的是依赖选择的分裂。
+\end{proof}
+
+对含挠群的商，基元提升可能满足新的倍数关系，因而中间群可能不分裂。即使自由性已经保证加性分裂，选出的截面也未必保持其他映射或乘法。下一节将把这些不同层次的选择落实为可直接计算的群与滤过映射。
 
 \subsection{乘法延拓与额外几何信息}
 \label{g2:subsec:1004:05}
-待撰写
+
+许多几何应用同时保留杯积。代数上，设 \(C^\bullet\) 具有结合的乘法及单位元 \(1\in C^0\)，其中 \(1\in F^0C^0\)，\(C^nC^m\subset C^{n+m}\)，微分满足
+\[
+	\mathrm d(xy)=(\mathrm dx)y+(-1)^nx\,\mathrm dy\qquad(x\in C^n),
+\]
+并且 \(F^pC\cdot F^sC\subset F^{p+s}C\)。这种数据称为\term[chengfa-lvguo]{乘法滤过}[multiplicative filtration]的微分分次代数。乘法把每层的信息送到滤过指标之和所在的层，故也能随各页传递。
+
+\begin{proposition}[谱序列的乘法]\label{g2:prop:multiplicative-spectral-sequence}
+	设 \(R\) 为含幺交换环，\(C^\bullet\) 为带乘法滤过的微分分次 \(R\) 代数。则每页都有由代表元乘法诱导的结合乘法
+	\[
+		E_r^{p,q}\otimes_RE_r^{s,t}\longrightarrow E_r^{p+s,q+t},
+	\]
+	且 \(\mathrm d_r\) 满足总次数符号的 Leibniz 公式
+	\[
+		\mathrm d_r(uv)=(\mathrm d_ru)v+(-1)^{p+q}u\,\mathrm d_rv.
+	\]
+	页间同调同构保持乘法。若滤过逐总度有限，则极限同构保持乘法，因而 \(E_\infty\cong\operatorname{gr}_FH^*(C)\) 为双分次代数同构。若 \(C\) 的乘法分次交换，则各页乘法也分次交换。
+\end{proposition}
+\begin{proof}
+	第零页直接对乘法及微分取相邻商即可。对于 \(r\ge1\)，令 \(x\in Z_r^{p,n}\)、\(y\in Z_r^{s,m}\)。由滤过乘法及 Leibniz 公式，\(xy\in F^{p+s}C^{n+m}\)，且
+	\[
+		\mathrm d(xy)\in F^{p+r}C^{n+1}F^sC^m+F^pC^nF^{s+r}C^{m+1}
+		\subset F^{p+s+r}C^{n+m+1}.
+	\]
+	故 \(xy\in Z_r^{p+s,n+m}\)。
+
+	为核对选择无关性，先在 \(x\) 上加入 \(u\in Z_{r-1}^{p+1,n}\)。这时 \(uy\in F^{p+s+1}\)，并且 \(\mathrm d(uy)\in F^{p+s+r}\)，所以 \(uy\in Z_{r-1}^{p+s+1,n+m}\)，属于乘积所在页的分母。再在 \(x\) 上加入 \(\mathrm dv\)，其中 \(v\in Z_{r-1}^{p-r+1,n-1}\)。有
+	\[
+		(\mathrm dv)y=\mathrm d(vy)-(-1)^{n-1}v\,\mathrm dy.
+	\]
+	这里 \(vy\in F^{p+s-r+1}\)，且 \(\mathrm d(vy)\in F^{p+s}\)，故 \(vy\in Z_{r-1}^{p+s-r+1,n+m-1}\)，第一项是允许的边界。第二项满足 \(v\,\mathrm dy\in F^{p+s+1}\) 及 \(\mathrm d(v\,\mathrm dy)=(\mathrm dv)(\mathrm dy)\in F^{p+s+r}\)，故也是允许的更深层圈。改变 \(y\) 的代表时作同样计算，便知乘法良定义。
+
+	结合律由代表元结合律继承，单位元由 \(1\) 的页类给出；\(\mathrm d_r\) 用 \(\mathrm d\) 表示，所以直接将原 Leibniz 公式取页类，就得到所述符号。两个能提升到下一页的代表元相乘后仍能提升，且其类始终由同一个乘积表示，因此\cref{g2:thm:spectral-sequence-page-transition}的同构保持乘法。
+
+	在收敛条件下，目标滤过的乘法条件来自圈的乘法：\(F^pH^n\cdot F^sH^m\subset F^{p+s}H^{n+m}\)。极限同构把 \(x\) 的页类送到 \([x]\) 的相邻商类，所以也把 \(xy\) 送到 \([x][y]\)，从而保持乘法和单位元。分次交换性同样由代表元的对应等式继承。
+\end{proof}
+
+由此得到的仍是伴随分次环。若 \(x\in F^pH\)、\(y\in F^sH\) 的首项乘积为零，只能推出 \(xy\in F^{p+s+1}H\)，其在更深层中的值尚未确定。这就是乘法隐藏延拓的来源。
+
+\begin{example}[同一分次环中的不同平方]\label{g2:exm:hidden-multiplicative-extension}
+	设 \(k\) 为域，比较两个三维 \(k\) 代数
+	\[
+		A=k[x]/(x^3),\qquad B=k[x,y]/(x^2,xy,y^2).
+	\]
+	在 \(A\) 中记 \(y=x^2\)；两边均以 \(1,x,y\) 为向量空间基。分别取 \(F^0=A\) 或 \(B\)、\(F^1=ky\)、\(F^2=0\)，并向两侧常值延拓。这都是乘法滤过。两者的零次相邻商均为 \(k[x]/(x^2)\)，一次相邻商均为 \(ky\)，\(x\) 在一次商上的作用都为零。因此它们的伴随分次环同构，加性滤过也同构。
+
+	但 \(A\) 中 \(x^2=y\ne0\)、\(x^3=0\)，而 \(B\) 中每个幂零元素都是 \(ax+by\)，平方均为零。因幂零阶在代数同构下保持，两环不同构。将这两个代数分别看成集中在上链次数零、微分为零的复形，会得到从零页起就退化且逐页相同的乘法谱序列；其目标环仍有上述差异。\(A\) 中 \(x^2\) 的首项在 \(F^0/F^1\) 中消失，实际乘积却进入了 \(F^1\)。
+\end{example}
+
+在几何计算中，解除这种不确定性通常要重新选取实际上同调类，利用限制映射、已知子空间上的杯积、与基本类的配对，或另一个可比较的滤过。第4章计算复射影空间上同调环时，确定 \(u^2\) 是顶次生成元，正是靠局部外积配对排除了可能的零值与非单位倍数（\cref{g2:thm:complex-projective-ring}）。谱序列提供逐层候选，额外的几何计算则确定这些候选在目标中的具体提升与乘积。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 17.1 临界点及 Morse 引理
 % 纲要位置：几何学计划纲要.md，第 1659 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,162 @@
 \section{临界点及 Morse 引理}
 \label{g2:sec:1701}
 
-待撰写
+把山地浸入逐渐上涨的水中，水面经过普通高度时，岸线只是移动；经过谷底或山口时，水域可能多出一个分支，或把原有分支连接起来。对流形上的函数，决定这种变化的首先是临界点附近的形状。二阶导数给出最容易计算的信息，Morse 引理则说明：在非退化临界点附近，换一套光滑坐标就能把函数精确化成二次型。
 
 \subsection{Hessian 的内在定义}
 \label{g2:subsec:1701:01}
-待撰写
+
+设 \(f:M\to\mathbb R\) 光滑。临界点 \(p\) 满足 \(\mathrm df_p=0\)，所以 \(f\) 沿任何方向的一阶变化都为零。要比较不同方向的二阶变化，不能只把某张坐标图里的二阶偏导数矩阵当成天然对象：换坐标时通常会出现额外的一阶导数项。临界点条件恰好使这些项消失。
+
+\begin{proposition}\label{g2:prop:critical-hessian-intrinsic}
+	设 \(M\) 为无边界光滑流形，\(f\in C^\infty(M)\)，\(p\) 为 \(f\) 的临界点。对 \(v,w\in\mathrm T_pM\)，任取局部光滑向量场 \(V,W\)，使 \(V_p=v\)、\(W_p=w\)，则
+	\[
+		\operatorname{Hess}_pf(v,w)\coloneqq V(Wf)(p)
+	\]
+	与延拓的选择无关，并给出 \(\mathrm T_pM\) 上的对称双线性型。在坐标 \(x^1,\ldots,x^n\) 中，它的矩阵为 \((\partial_i\partial_jf(p))\)。
+\end{proposition}
+\begin{proof}
+	写 \(V=\sum_iV^i\partial_i\)、\(W=\sum_jW^j\partial_j\)。乘积法则给出
+	\[
+		V(Wf)(p)=\sum_{i,j}V^i(p)\partial_iW^j(p)\partial_jf(p)
+		+\sum_{i,j}V^i(p)W^j(p)\partial_i\partial_jf(p).
+	\]
+	第一项因 \(\mathrm df_p=0\) 为零，第二项只取决于 \(v,w\)，并且对它们双线性。混合偏导数相等又给出对称性。定义左端用向量场作用于函数写成，已经不依赖坐标；右端给出所述矩阵。
+\end{proof}
+
+这个双线性型称为 \(f\) 在临界点的\term[Hessianxing]{Hessian 型}[Hessian]。若坐标变换写作 \(x=x(y)\)，则在临界点
+\[
+	H_y=J^{\mathsf T}H_xJ,\qquad J=\left(\frac{\partial x^i}{\partial y^j}(p)\right).
+\]
+这是合同变换。因此矩阵的秩及正、负惯性指数有坐标无关的意义；矩阵的具体特征值则随坐标缩放改变。在非临界点，\(f(x)=x\) 经过局部坐标变换 \(y=x+x^2\)，其在原点的二阶导数从 \(0\) 变成 \(-2\)。这说明临界点条件在上述构造中的作用。
+
+\begin{definition}\label{g2:def:morse-critical-point}
+	设 \(f\) 为光滑 \(n\) 维流形上的实值光滑函数，\(p\) 为内部临界点。若 \(\operatorname{Hess}_pf\) 非退化，就称 \(p\) 为\term[feituohualinjiedian]{非退化临界点}[nondegenerate critical point]。该型的负惯性指数称为 \(p\) 的\term[Morsezhibiao]{Morse 指标}[Morse index]，记作 \(\lambda(p)\)。无边界流形上的光滑函数若所有临界点都非退化，就称为\term[Morsehanshu]{Morse 函数}[Morse function]。
+\end{definition}
+
+指标 \(\lambda(p)\) 等于 Hessian 在其上负定的子空间的最大维数，满足 \(0\le\lambda(p)\le n\)。它计数的是独立的下降方向。\(x^2+y^2\)、\(-x^2+y^2\)、\(-x^2-y^2\) 在原点的指标依次为 \(0,1,2\)。其中鞍点同时有上升和下降方向，不能用“极大或极小”两类描述。
+
+\ProseParagraphBreak
+
+定义允许不同临界点有相同的临界值。例如 \(\cos(2\theta)\) 是圆上的 Morse 函数，却有两个同高的极大点和两个同高的极小点。以后逐个跨越临界值时，会另外使用使临界值互异的扰动。
 
 \subsection{非退化标准形的逐变量消去}
 \label{g2:subsec:1701:02}
-待撰写
+
+Taylor 展开把函数写成二次项加高阶余项；对次水平集的粘合来说，精确的标准形更方便，因为可以直接沿坐标方向构造变形。下面的证明将高阶项吸收到坐标中。关键操作仍是配平方，但平方前的系数现在是光滑函数，必须同时检查所得变量确实构成坐标。
+
+\begin{theorem}[Morse 引理]\label{g2:thm:morse-lemma}
+	设 \(M\) 为无边界光滑 \(n\) 维流形，\(f:M\to\mathbb R\) 光滑，\(p\) 为指标 \(\lambda\) 的非退化临界点。则存在以 \(p\) 为原点的光滑坐标 \((y_1,\ldots,y_n)\)，使
+	\begin{equation}\label{g2:eq:morse-normal-form}
+		f=f(p)-y_1^2-\cdots-y_\lambda^2+y_{\lambda+1}^2+\cdots+y_n^2.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先在以 \(p\) 为原点的小凸坐标域内计算，并减去常数 \(f(p)\)。沿线段 \(t\mapsto tx\) 两次使用微积分基本定理，利用 \(f(0)=0\)、\(\mathrm df_0=0\)，得到
+	\[
+		f(x)=\sum_{i,j=1}^n x_ix_j a_{ij}(x),\qquad
+		a_{ij}(x)=\int_0^1(1-t)\partial_i\partial_jf(tx)\,\mathrm dt.
+	\]
+	矩阵 \(A(x)=(a_{ij}(x))\) 光滑、对称，且 \(A(0)=H/2\)。先作线性坐标变换，把 \(A(0)\) 化成对角矩阵；非退化性保证每个对角元非零。
+
+	现在消去第一变量与其余变量的混合项。缩小邻域，使 \(a_{11}\) 不变号，记其符号为 \(\varepsilon_1\)。配平方得到
+	\[
+		f(x)=a_{11}(x)\left(x_1+\sum_{j>1}\frac{a_{1j}(x)}{a_{11}(x)}x_j\right)^2
+		+\sum_{i,j>1}x_ix_j\left(a_{ij}(x)-\frac{a_{i1}(x)a_{1j}(x)}{a_{11}(x)}\right).
+	\]
+	令
+	\[
+		y_1=\sqrt{|a_{11}(x)|}\left(x_1+\sum_{j>1}\frac{a_{1j}(x)}{a_{11}(x)}x_j\right),
+		\qquad y_j=x_j\quad(j>1).
+	\]
+	由于 \(a_{1j}(0)=0\) 对 \(j>1\) 成立，此变换在零处的微分是对角矩阵，第一对角元为 \(\sqrt{|a_{11}(0)|}\)，其余为 \(1\)。第一卷第11章第3节的逆函数定理因而给出局部光滑逆。换成这套坐标后，函数成为
+	\[
+		\varepsilon_1y_1^2+\sum_{i,j>1}y_iy_j b_{ij}(y),
+	\]
+	其中 \(B(0)\) 仍是非退化对角矩阵。这里 \(b_{ij}\) 可以依赖 \(y_1\)，并不影响下一步：保持 \(y_1\) 不动，对其余变量配平方即可。
+
+	更一般地，已分离出前 \(k-1\) 个平方后，余项具有 \(\sum_{i,j\ge k}z_iz_j c_{ij}(z)\) 的形式，且剩余系数矩阵在零处非退化、对角。保持前 \(k-1\) 个坐标和后 \(n-k\) 个坐标不动，只把第 \(k\) 个坐标改成
+	\[
+		\sqrt{|c_{kk}(z)|}\left(z_k+\sum_{j>k}\frac{c_{kj}(z)}{c_{kk}(z)}z_j\right).
+	\]
+	同一微分检验保证这仍是坐标变换，并分离出一个符号为 \(\operatorname{sgn}c_{kk}(0)\) 的平方。有限次之后得到 \(f=\sum_i\varepsilon_i y_i^2\)。这套坐标中的 Hessian 为 \(2\operatorname{diag}(\varepsilon_1,\ldots,\varepsilon_n)\)，合同不变性说明负号恰有 \(\lambda\) 个。重排坐标并加回 \(f(p)\)，即得公式。
+\end{proof}
+
+在标准形中，微分为 \(2\sum_i\varepsilon_i y_i\,\mathrm dy_i\)，所以原点是邻域内唯一的临界点。非退化临界点因此孤立；紧流形上的 Morse 函数只有有限个临界点，因为临界点集是闭的，而这些隔离邻域给出它的一个开覆盖，紧性提供有限子覆盖。
+
+\begin{example}\label{g2:exm:morse-coordinate-completion}
+	考虑 \(f(x,y)=x^2+2xy+2y^2+y^3\)。原点的 Hessian 为 \(\left(\begin{smallmatrix}2&2\\2&4\end{smallmatrix}\right)\)，正定。直接写成
+	\[
+		f=(x+y)^2+y^2(1+y)
+	\]
+	后，取 \(u=x+y\)、\(v=y\sqrt{1+y}\)，便得到 \(f=u^2+v^2\)。变换在原点的行列式为 \(1\)，所以 \((u,v)\) 确为局部坐标。余项 \(y^3\) 进入了坐标 \(v\)，无须令它等于零或用近似舍去。
+\end{example}
+
+退化临界点可能有不同的局部行为。\(x^4+y^2\) 在原点是严格极小值，但 Hessian 有核；任何局部坐标变换都保持 Hessian 的秩，故它不能变成非退化二次型。非退化性给出了能被有限个正、负平方完全描述的那类临界点。
 
 \subsection{Morse 函数的存在与扰动}
 \label{g2:subsec:1701:03}
-待撰写
+
+局部标准形很有用，还需要知道流形上能否找到这样的函数。把 \(\mathrm df\) 看成余切丛的一个截面，临界点就是它与零截面的交点。在临界点，截面沿纤维方向的导数正是 Hessian，所以非退化性等价于这个交点横截。扰动时须仍保持截面是某个函数的微分；直接对函数加入局部线性项就能做到这一点。
+
+\begin{theorem}\label{g2:thm:morse-approximation}
+	设 \(M\) 为有限维、Hausdorff、第二可数的无边界光滑流形，\(r\ge2\) 为有限整数。每个 \(f\in C^\infty(M)\) 的任意强 \(C^r\) 邻域中都有光滑 Morse 函数。若 \(M\) 紧，则 Morse 函数还构成 \(C^\infty(M)\) 中关于 \(C^2\) 拓扑的开集。
+\end{theorem}
+\begin{proof}
+	先说明局部扰动。在坐标域 \(U\) 中取紧集 \(K\)，并选紧支于 \(U\) 的光滑函数 \(\rho\)，使其在 \(K\) 的一个邻域 \(V\) 上等于 \(1\)。令
+	\[
+		f_a=f+\rho\sum_{j=1}^n a_jx^j,\qquad a\in\mathbb R^n,
+	\]
+	并在 \(U\) 外仍取 \(f_a=f\)。在 \(V\) 上，微分的坐标分量为
+	\[
+		G(a,x)=(\partial_1f(x)+a_1,\ldots,\partial_nf(x)+a_n).
+	\]
+	\(G\) 关于参数的微分为恒等矩阵，所以它是淹没。\cref{g2:thm:parametric-transversality}说明：任意小参数中都有 \(a\)，使 \(G_a\) 横截于 \(\{0\}\)。在 \(G_a=0\) 处，\(\mathrm D_xG_a\) 就是 \(f_a\) 的 Hessian，横截等价于它可逆。因此 \(f_a\) 在 \(K\) 上只有非退化临界点，且扰动在任意指定有限阶意义下随 \(a\to0\) 趋于零。
+
+	保持已经得到的非退化性需要二阶控制。对任意紧集 \(L\)，条件“\(f\) 在 \(L\) 上的全部临界点非退化”等价于微分截面 \(x\mapsto(x,\mathrm df_x)\) 在 \(L\) 上横截于余切丛的零截面。后者是闭嵌入子流形。由\cref{g2:prop:transversality-open-on-compact}，该条件对截面的 \(C^1\) 小扰动开放，也就对函数的 \(C^2\) 小扰动开放。坐标上，这分别控制非临界区域的一阶导数不变成零，以及临界点邻域内 Hessian 的可逆性。
+
+	若 \(M\) 紧，取有限个上述紧集 \(K_i\)，使其内部覆盖 \(M\)，依次作局部扰动。在每一步把参数取得足够小，就能保留先前紧集上的非退化性，并使总 \(C^r\) 误差小于给定界。最后的函数在所有 \(K_i\) 上满足条件，因而为 Morse 函数。刚才的紧集开放性取 \(L=M\)，也证明了紧情形的开放结论。
+
+	一般的 \(M\) 取可数、局部有限的相对紧坐标域 \(U_i\)，以及 \(K_i\subset U_i\)，使 \(\operatorname{Int}K_i\) 覆盖 \(M\)。每步扰动紧支于 \(U_i\)。对原强邻域在第 \(\ell\) 个控制块上的容差 \(\varepsilon_\ell\)，要求第 \(i\) 步在那里耗用小于 \(2^{-i-1}\varepsilon_\ell\)。第 \(i\) 步完成后，在 \(K_i\) 上选一个保持非退化性的 \(C^2\) 容差 \(\delta_i>0\)；对后来第 \(j\) 步，另要求它在覆盖 \(K_i\) 的坐标块上的 \(C^2\) 改变量小于 \(2^{-(j-i+1)}\delta_i\)。每步只遇到有限多个原控制块和有限多个先前要求，故可以同时满足。局部有限性又使每点附近只有有限次实际改变，所以极限函数光滑。误差级数保证它仍在原邻域内，并保留每个 \(K_i\) 上的非退化性。这是\cref{g2:thm:relative-transversality}证明中的逐块选择，此处每一步都通过函数的局部线性项实施。
+\end{proof}
+
+\begin{proposition}\label{g2:prop:distinct-morse-critical-values}
+	设 \(M\) 为紧无边界光滑流形，\(f:M\to\mathbb R\) 为 Morse 函数。任意有限阶 \(C^r\) 邻域内都存在 Morse 函数 \(g\)，与 \(f\) 有完全相同的临界点和指标，且不同临界点的 \(g\) 值互异。
+\end{proposition}
+\begin{proof}
+	临界点为有限个 \(p_1,\ldots,p_N\)。取两两不交的坐标邻域 \(U_i\)，以及紧支于 \(U_i\)、在 \(p_i\) 的较小邻域 \(V_i\) 上为 \(1\) 的截断函数 \(\rho_i\)。令 \(g=f+\sum_i c_i\rho_i\)。在每个 \(V_i\) 上，\(g\) 与 \(f\) 相差常数，故临界点和 Hessian 完全相同。在紧集 \(M\setminus\bigcup_iV_i\) 上，\(\mathrm df\) 处处不为零；相对于任一度量，它的范数有正下界。令全部 \(c_i\) 足够小，便使这里的 \(\mathrm dg\) 仍不为零。最后避开有限个等式 \(f(p_i)+c_i=f(p_j)+c_j\)，可使所有临界值互异。参数还可任意小，所以满足所给 \(C^r\) 要求。
+\end{proof}
+
+这种调整改变临界高度，却不改变局部的下降方向数。它使相邻两个正则水平之间可以只放一个临界点，正适合下一节逐次描述次水平集的变化。
 
 \subsection{相对及带边界数据}
 \label{g2:subsec:1701:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+在粘合问题中，一部分函数已经规定好，例如边界附近要把高度直接当成领圈参数。此时扰动应避开那一部分。能保持哪些数据，取决于固定区域里原有临界点是否已经非退化。
+
+\begin{proposition}\label{g2:prop:relative-morse-approximation}
+	设 \(M\) 为有限维、Hausdorff、第二可数的无边界光滑流形，\(A\subset M\) 闭，\(f\in C^\infty(M)\) 在 \(A\) 的某开邻域上只有非退化临界点。则对任意有限整数 \(r\ge2\)，可在 \(f\) 的任意强 \(C^r\) 邻域内找到 Morse 函数 \(g\)，使 \(g=f\) 在 \(A\) 的某开邻域上成立。
+\end{proposition}
+\begin{proof}
+	在已满足条件的开集 \(U\) 中选 \(A\subset W\subset\overline W\subset V\subset\overline V\subset U\)。先用逐紧块的 \(C^2\) 开放性，缩小给定强邻域，使其中的函数在 \(\overline V\) 上都保持非退化性。再对 \(M\setminus V\) 取局部有限的紧坐标块及支集域，使支集均避开 \(\overline W\)。按\cref{g2:thm:morse-approximation}的局部线性扰动及误差分配逐块处理，得到在整个 \(M\) 上为 Morse 的 \(g\)。全部改动支集避开 \(\overline W\)，所以 \(g=f\) 于 \(W\)。
+\end{proof}
+
+带边界时，本章所用数据是边界为正则水平，临界点都在内部。下述构造同时适用于只有外边界的紧流形和两端高度已指定的配边。
+
+\begin{proposition}\label{g2:prop:boundary-morse-function}
+	设 \(M\) 为紧光滑带边界 \(n\) 维流形，\(n\ge1\)，并把边界分成互不相交的开闭子集 \(\partial M=\partial_-M\amalg\partial_+M\)，允许其中一部分为空。给定 \(a<b\)，存在光滑函数 \(f:M\to[a,b]\) 及两侧的领圈，使
+	\[
+		f(x,t)=a+t\quad\text{在 }\partial_-M\text{ 的较小领圈内},\qquad
+		f(x,t)=b-t\quad\text{在 }\partial_+M\text{ 的较小领圈内}.
+	\]
+	这里 \(t\ge0\) 指向内部。函数在内部取值于 \((a,b)\)，所有临界点非退化且临界值互异。可选择在领圈内为 \(\mathrm dt^2+g_{\partial M}\) 的 Riemann 度量；此时 \(\nabla f\) 在 \(\partial_-M\) 严格向内，在 \(\partial_+M\) 严格向外。
+\end{proposition}
+\begin{proof}
+	由\cref{g2:thm:collar-neighborhood}选择两侧互不相交的领圈，并把宽度取得小于 \((b-a)/4\)。在更小的领圈内分别规定 \(f_0=a+t\)、\(f_0=b-t\)，在领圈以外取常数 \((a+b)/2\)。用只依赖 \(t\) 的截断函数把这些表达作凸组合，得到光滑 \(f_0\)。在内部出现的各个参与值都严格介于 \(a,b\)，所以 \(a<f_0<b\)；在固定的较小领圈内，\(\mathrm df_0=\pm\mathrm dt\)，没有临界点。
+
+	对 \(\operatorname{Int}M\) 应用\cref{g2:prop:relative-morse-approximation}，固定一条更窄领圈中的全部函数值。所有实际改动可支撑在远离边界的一个紧集内；在那里 \(f_0\) 与 \(a,b\) 都有正距离。因此同时要求 \(C^0\) 误差足够小，就能保持 \(a<f<b\)。所得函数与 \(f_0\) 在边界邻域一致，故光滑延拓到 \(M\)。临界点避开固定领圈，处在紧集内，因而只有有限个。按\cref{g2:prop:distinct-morse-critical-values}的截断常数构造，在内部各临界点附近作更小的扰动，即可使临界值互异而不改变边界数据及值域。
+
+	在领圈上先取乘积度量 \(\mathrm dt^2+g_{\partial M}\)，再用单位分解延拓为全局正定度量，并保持较小领圈上的度量不变。由梯度定义 \(g(\nabla f,\cdot)=\mathrm df\)，两端分别有 \(\nabla f=\partial_t\) 和 \(\nabla f=-\partial_t\)。因为 \(t\) 向内增加，这给出所需指向。
+\end{proof}
+
+特别地，取 \(\partial_-M=\varnothing\)，便得到边界为最高水平、梯度处处外向的 Morse 函数。它将用于带边界的 Poincaré--Hopf 公式。若事先要求在某邻域逐点保留一个退化临界点，Morse 逼近就无法满足；相对命题中的条件准确描述了固定数据应先具备的性质。

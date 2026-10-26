@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 9.1 连通度与相对胞腔结构
 % 纲要位置：几何学计划纲要.md，第 1338 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,112 @@
 \section{连通度与相对胞腔结构}
 \label{g2:sec:0901}
 
-待撰写
+球面有一个零胞腔和一个顶维胞腔，这使低维球面映射可以被胞腔逼近压成常值。现在把问题反过来：如果一个空间的低阶同伦群都为零，能否给它找一个没有相应低维胞腔的模型？为此需要分清两种操作：把给定映射的像移入子空间，以及通过附着新胞腔改进整个空间的模型。
 
 \subsection{连通度和胞腔的消去}
 \label{g2:subsec:0901:01}
-待撰写
+
+\begin{definition}[连通度]\label{g2:def:connectivity}
+	设 \(n\ge0\) 为整数。非空空间 \(X\) 称为\term[lian tong du]{\(n\) 连通}[\(n\)-connected]，如果它道路连通，且 \(\pi_i(X,x)=0\) 对 \(1\le i\le n\) 成立。空间对 \((X,A)\) 称为 \(n\) 连通，如果 \(X\) 的每个道路分支都与 \(A\) 相交，并且对每个 \(a\in A\) 有
+	\[
+		\pi_i(X,A,a)=0\qquad(1\le i\le n).
+	\]
+	其中相对一阶的等号表示尖点集只有指定元素。连续映射 \(f:A\rightarrow X\) 称为 \(n\) 连通，如果它的映射柱对 \((M_f,A\times\{0\})\) 为 \(n\) 连通。
+\end{definition}
+
+零连通就是道路连通，一连通就是单连通。由\cref{g2:prop:basepoint-action}，在道路连通空间内，绝对群的消失与选哪个基点无关。由\cref{g2:thm:pair-homotopy-sequence}，当 \(n\ge1\) 时，映射 \(f\) 为 \(n\) 连通，等价于 \(f_*:\pi_0(A)\rightarrow\pi_0(X)\) 为双射，且在每个基点处满足
+\[
+	f_*:\pi_i(A,a)\longrightarrow\pi_i(X,f(a))
+	\quad\begin{cases}
+		\text{为同构},&1\le i<n,\\
+		\text{为满射},&i=n.
+	\end{cases}
+\]
+这里映射柱收缩到 \(X\)，所以它的绝对同伦群可用 \(X\) 的同伦群替换。低阶分支条件也有具体含义：相对道路类为零保证同一 \(X\) 分支内的 \(A\) 中两点已能在 \(A\) 内连通。
+
+\begin{lemma}[圆盘压缩]\label{g2:lem:disk-compression}
+	设 \(B\subset Y\)、\(m\ge1\)，并且 \(\pi_m(Y,B,b)=0\) 对所有 \(b\in B\) 成立。则每个连续映射 \(u:(D^m,S^{m-1})\rightarrow(Y,B)\) 都可固定整个边界地同伦到一个取值于 \(B\) 的映射。反之，这种压缩性质蕴含上述相对同伦群或同伦集为零。当 \(m=0\) 时，相应的压缩性质等价于 \(Y\) 的每个道路分支与 \(B\) 相交。
+\end{lemma}
+\begin{proof}
+	在 \(S^{m-1}\) 上选一点 \(s_0\)，令 \(b=u(s_0)\)。\cref{g2:def:relative-homotopy}的圆盘模型使 \(u\) 表示 \(\pi_m(Y,B,b)\) 的元素。它为零，故存在 \(H:D^m\times I\rightarrow Y\)，满足 \(H(-,0)=u\)、\(H(-,1)=b\)，且 \(H(S^{m-1}\times I)\subset B\)。这时整个边界可以在 \(B\) 中移动；要把边界固定住，就把这段运动反向放进圆盘外侧的一层领圈。
+
+	写 \(r=\lVert z\rVert\)、\(a_s=1-s/2\)，定义
+	\[
+		K(z,s)=\begin{cases}
+			H(z/a_s,s),&r\le a_s,\\
+			H(z/r,2(1-r)),&a_s\le r\le1.
+		\end{cases}
+	\]
+	在 \(r=a_s\) 处，两式的时间参数都为 \(s\)，因而相合。两块是闭集，分母在各自使用的区域内非零，故粘合给出连续同伦。\(K(z,0)=u(z)\)，而在 \(r=1\) 上恒有 \(K(z,s)=H(z,0)=u(z)\)。当 \(s=1\) 时，内半圆盘映到 \(b\)，外半领圈映到 \(B\)，所以整个终映射取值于 \(B\)。
+
+	反过来，压缩后的映射 \(v:D^m\rightarrow B\) 可在 \(B\) 内收缩到 \(v(s_0)\)：取 \(v((1-t)z+ts_0)\)。此同伦固定 \(s_0\)，其边界始终在 \(B\) 中，故为相对零伦。对于 \(m=0\)，一个圆盘就是一点，将它移入 \(B\) 正是选一条通往 \(B\) 的道路。
+\end{proof}
+
+领圈保留的是原来指定的边界值。这个细节使压缩可以在许多已经粘合的胞腔上同时进行：公共边界不动，各圆盘上的同伦就能继续粘在一起。
+
+\begin{proposition}[附着维数与连通度]\label{g2:prop:cell-dimension-connectivity}
+	设 \((X,A)\) 是 CW 对，\(n\ge0\)，且 \(X\setminus A\) 的全部胞腔维数均大于 \(n\)。则 \((X,A)\) 为 \(n\) 连通。特别地，若 \(n\ge1\)，包含 \(A\hookrightarrow X\) 在 \(\pi_i\) 上对 \(i<n\) 诱导同构，对 \(i=n\) 诱导满射，并在道路分支上诱导双射。
+\end{proposition}
+\begin{proof}
+	先取 \(1\le i\le n\) 的圆盘代表 \((D^i,S^{i-1},s_0)\rightarrow(X,A,a)\)。可先在 \(A\) 内沿道路把 \(a\) 移到其所在胞腔的某个顶点，再用\cref{g2:prop:basepoint-action}运输基点；群是否为零不受影响。给圆盘与边界取以 \(s_0\) 为顶点的 CW 结构，由\cref{g2:cor:cellular-pairs}作空间对的胞腔逼近并固定 \(s_0\)。终映射的像位于 \(X^i\)，而维数假设给出 \(X^i\subset A\)，故该相对类为零。零维同样由胞腔逼近得出：每个点都可沿道路移到 \(X^0\subset A\)。最后应用空间对的同伦长正合列及其分支项即可。
+\end{proof}
+
+例如，给 \(A\) 附着四维及更高维胞腔，不改变基本群和第二同伦群，并且使 \(\pi_3(A)\rightarrow\pi_3(X)\) 满射。四胞腔的边界是三球面，所以它已经可能消去 \(\pi_3\) 中的元素。临界维数的“满射”记录的正是这种可能的消去。
 
 \subsection{相对逼近及附着维数}
 \label{g2:subsec:0901:02}
-待撰写
+
+一个映射 \(f:A\rightarrow X\) 在同伦群上有两类缺口：\(A\) 中某些球面到了 \(X\) 才能填充，或者 \(X\) 中某些球面尚未由 \(A\) 表示。前一类可在 \(A\) 中附加相应的填充圆盘，后一类可把球面直接添进模型。每轮只处理一个维数，便能保留此前已经得到的同构。
+
+\begin{theorem}[相对 CW 逼近]\label{g2:thm:relative-cw-approximation}
+	设 \(A\) 是带有零胞腔 \(a_0\) 的道路连通 CW 复形，\(X\) 是道路连通空间，\(n\ge0\)，且 \(f:(A,a_0)\rightarrow(X,x_0)\) 为 \(n\) 连通映射。则存在包含 \(A\) 为子复形的 CW 复形 \(Z\)，以及延拓 \(q:Z\rightarrow X\)，使得
+	\begin{enumerate}
+		\item \(Z\setminus A\) 的所有胞腔维数均至少为 \(n+1\)，其附着映射可取保持基点；
+		\item \(q|_A=f\)，且 \(q_*:\pi_i(Z,a_0)\rightarrow\pi_i(X,x_0)\) 对每个 \(i\ge1\) 都是同构。
+	\end{enumerate}
+	这样的 \(q\) 称为一个\term[CW bi jin]{CW 逼近}[CW approximation]。它在道路分支上也是双射，因而是\secref{g2:sec:0903}所定义的弱同伦等价。
+\end{theorem}
+\begin{proof}
+	先设 \(n\ge1\)，从 \(Z_n=A\)、\(q_n=f\) 出发。归纳假定 \(q_k:Z_k\rightarrow X\) 为 \(k\) 连通。对于 \(\ker(q_{k*}:\pi_k(Z_k,a_0)\rightarrow\pi_k(X,x_0))\) 的每个元素，选择一个带基点胞腔代表 \(\alpha:S^k\rightarrow Z_k\)。这里用\cref{g2:thm:cellular-approximation}固定基点，所以 \(\alpha(S^k)\subset Z_k^k\)。沿每个 \(\alpha\) 附着一个 \((k+1)\) 胞腔；由于 \(q_k\alpha\) 零伦，\(q_k\) 可以用这个零伦延拓到所添圆盘。
+
+	再对 \(\pi_{k+1}(X,x_0)\) 的每个元素选一个带基点球面代表，在 \(a_0\) 处以常值边界附着一个 \((k+1)\) 胞腔，得到一个相应的 \((k+1)\) 球面，并把它映成所选代表。记完成两种附着后的空间为 \(Z_{k+1}\)，延拓为 \(q_{k+1}\)。其在 \(\pi_{k+1}\) 上满射，因为所需的球面代表已逐一添入。
+
+	由\cref{g2:prop:cell-dimension-connectivity}，\(Z_k\hookrightarrow Z_{k+1}\) 在 \(\pi_i\)、\(i<k\) 上为同构，在 \(\pi_k\) 上满射。于是 \(q_{k+1}\) 保留了低于 \(k\) 维的同构，也在 \(\pi_k\) 上保持满射。若 \(\beta\in\pi_k(Z_{k+1})\) 被 \(q_{k+1*}\) 送到零，可把它提升为 \(\alpha\in\pi_k(Z_k)\)。这个 \(\alpha\) 属于 \(\ker q_{k*}\)，第一种附着已经给它加上填充圆盘，故 \(\beta=0\)。因此 \(q_{k+1}\) 为 \((k+1)\) 连通。
+
+	当 \(n=0\) 时，先在 \(a_0\) 处添圆周，分别映成 \(\pi_1(X,x_0)\) 的各个元素。所得 \(Z_1\rightarrow X\) 在基本群上满射，且源、靶仍道路连通，故从 \(k=1\) 接入上述归纳。这一步只添一胞腔，符合最低维数的要求。
+
+	令 \(Z=\bigcup_{k\ge n}Z_k\)，在所有胞腔上取 CW 弱拓扑；在 \(n=0\) 情形把刚才的第一步也包含在内。附着映射均为胞腔映射，因而原来 \(A\) 的各维胞腔与新胞腔共同给出 CW 结构。相容的 \(q_k\) 在各特征圆盘上连续，故粘成连续映射 \(q:Z\rightarrow X\)。任一球面映射以及任一球面同伦的像都紧，由\cref{g2:thm:finite-subcomplex}落在有限子复形中，也就落在某个 \(Z_k\) 中。对于固定的 \(i\)，取 \(k>i\)；\(q_k\) 在 \(\pi_i\) 上已经同构，后续只添维数大于 \(i+1\) 的胞腔，保持这个同构。紧像论证遂给出 \(q_*\) 在 \(\pi_i\) 上的双射。所有附着均保持 \(a_0\)，结论成立。
+\end{proof}
+
+构造中的两种圆盘作用可用下面两幅交换图表示：左图用圆盘填掉核中的球面，右图把靶中的球面代表添入模型。两图中的 \(Z_{k+1}\) 表示完成本轮附着后的空间。
+\[
+	\begin{tikzcd}[column sep=large]
+		S^k \arrow[r,"\alpha"] \arrow[d,hook] & Z_k \arrow[d,hook] & S^{k+1} \arrow[r,hook] \arrow[d,"\beta"'] & Z_{k+1} \arrow[d,"q_{k+1}"]\\
+		D^{k+1} \arrow[r,"\text{特征映射}"'] & Z_{k+1} & X \arrow[r,equal] & X .
+	\end{tikzcd}
+\]
+
+\begin{corollary}[稀疏胞腔模型]\label{g2:cor:sparse-cw-model}
+	设 \(n\ge2\)。若带有零胞腔基点的 CW 复形 \(X\) 为 \((n-1)\) 连通，则存在带基点同伦等价 \(q:Y\rightarrow X\)，使 \(Y^0=\{*\}\)、\(Y^{n-1}=\{*\}\)，且所有正维附着映射保持基点。更一般地，若 \((X,A)\) 为 \((n-1)\) 连通 CW 对且 \(A\) 道路连通，则存在 CW 对 \((Z,A)\) 及相对 \(A\) 的同伦等价 \((Z,A)\rightarrow(X,A)\)，其中 \(Z\setminus A\) 的胞腔维数均至少为 \(n\)。
+\end{corollary}
+\begin{proof}
+	第一项对 \(\{*\}\rightarrow X\) 应用\cref{g2:thm:relative-cw-approximation}，第二项对 \(A\hookrightarrow X\) 应用该定理，均得到所需胞腔维数及弱同伦等价。由\cref{g2:thm:whitehead,g2:cor:relative-whitehead}，它们分别为带基点、相对 \(A\) 的同伦等价。这两个结果将在\secref{g2:sec:0903}由圆盘压缩和逐骨架同伦延拓证明；其证明只用本节的\cref{g2:lem:disk-compression}及第1、8章的结果。
+\end{proof}
+
+这里“消去低维胞腔”落实为更换同伦等价的 CW 模型。原来的分解仍可能含有许多一胞腔或二胞腔；新模型把它们承载的可收缩信息吸收进同伦等价中。相对版本则逐点保留 \(A\)，使已经指定的边界和映射仍能继续使用。上述逐维构造与相对模型可参照\cite[第4.1节，CW Approximation]{Hatcher2002}。
 
 \subsection{同伦群为零的几何含义}
 \label{g2:subsec:0901:03}
-待撰写
+
+绝对群的消失对应球面的填充，相对群的消失对应圆盘的压缩。这两种图像的维数相差一：\(\pi_i(X)=0\) 让 \(S^i\) 填成 \(D^{i+1}\)，而 \(\pi_i(X,A)=0\) 让一个已经在 \(X\) 中的 \(D^i\) 固定边界地移入 \(A\)。
+
+\begin{proposition}[逐胞腔延拓]\label{g2:prop:connectivity-extension}
+	设 \((K,L)\) 为 CW 对，\(Y\) 为非空道路连通空间。若每个 \(K\setminus L\) 中的 \(m\) 胞腔在 \(m\ge2\) 时都满足 \(\pi_{m-1}(Y,y)=0\)，则每个连续映射 \(f:L\rightarrow Y\) 可延拓为 \(K\rightarrow Y\)。特别地，若 \(Y\) 为 \(r\) 连通且 \(K\setminus L\) 的胞腔维数不超过 \(r+1\)，则这种延拓存在。
+\end{proposition}
+\begin{proof}
+	在新增零胞腔上任取 \(Y\) 中的点。对一胞腔，边界是两点，道路连通性提供连接两端像的道路。假设已经定义到相对 \((m-1)\) 骨架；对一个 \(m\) 胞腔，将其附着映射与已定义映射复合，得到 \(S^{m-1}\rightarrow Y\)。当 \(m\ge2\) 时，它在所选边界基点处代表零类，因而有零伦。将零伦的常值末端压成一点，就得到 \(D^m\rightarrow Y\) 的填充。所有圆盘填充与旧映射在边界一致，所以逐层粘合。最终映射在每个特征圆盘上连续，CW 弱拓扑保证整体连续。
+\end{proof}
+
+例如，\(S^3\) 为二连通，所以从三维 CW 复形的任意子复形到 \(S^3\) 的映射都能延拓。若再附着四胞腔，则需要填充的是三球面映射；恒等映射 \(S^3\rightarrow S^3\) 的度为 \(1\)，已经不能填成四球内的映射。连通度恰好指出逐胞腔延拓在哪一维首次可能遇到障碍。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

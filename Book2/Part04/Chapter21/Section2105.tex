@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 21.5 Grassmann 流形的胞腔、Schubert 类与相交计算
 % 纲要位置：几何学计划纲要.md，第 1834 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -22,29 +22,326 @@
 \section{Grassmann 流形的胞腔、Schubert 类与相交计算}
 \label{g2:sec:2105}
 
-待撰写
+示性类已经能把向量丛的运算变成上同调计算。现在反过来问：这些上同调类是否有具体的几何代表，它们的杯积又在数什么？复 Grassmann 流形提供了一个可以同时看见两面的模型。一个子空间与固定旗相交的维数条件给出 Schubert 簇；通用商丛的陈类恰好代表其中最简单的一类条件。最后，\(\operatorname{Gr}(2,4)\) 上一个四次杯积将回答三维射影空间中四条直线的公共截线问题。
+
+以下记 \(G=\operatorname{Gr}(k,n)=\operatorname{Gr}_k(\mathbb C^n)\)，其中 \(1\le k<n\)，并置 \(q=n-k\)、\(N=kq\)。它是复维数 \(N\) 的紧光滑流形，始终采用复结构给出的实定向及整数上同调。第1章的\cref{g2:thm:grassmann-schubert-cw}已经证明胞腔的特征映射及闭包关系；这里恢复坐标含义，再用它们构造同调类并计算乘法。有关胞腔、相交与通用丛的经典叙述，可参阅\cite[第1章第5节，The Cell Decomposition、The Schubert Calculus、Universal Bundles]{GriffithsHarris1994}。
 
 \subsection{固定完全旗与 Schubert 胞腔的秩条件}
 \label{g2:subsec:2105:01}
-待撰写
+固定一条\term[wanquanqi]{完全旗}[complete flag]
+\[
+	0=F_0\subset F_1\subset\cdots\subset F_n=\mathbb C^n,
+	\qquad\dim_{\mathbb C}F_i=i.
+\]
+选取与它相容的基 \(e_1,\ldots,e_n\)，使 \(F_i=\operatorname{span}(e_1,\ldots,e_i)\)。对 \(V\in G\)，整数 \(\dim(V\cap F_i)\) 从零增到 \(k\)，每步最多增加一，所以恰有 \(k\) 个跳跃位置
+\[
+	1\le d_1<d_2<\cdots<d_k\le n.
+\]
+第1章用这些递增指标编号胞腔。为了让指标直接记录余维，现在改用 \(\lambda_i=q+i-d_i\)。于是 \(q\ge\lambda_1\ge\cdots\ge\lambda_k\ge0\)。这样的整数列称为放在 \(k\times q\) 矩形中的一个分拆，记其大小为 \(|\lambda|=\sum_i\lambda_i\)。它可画成左对齐的方格行，行长依次为 \(\lambda_1,\ldots,\lambda_k\)；方格总数将成为复余维。
+
+\begin{definition}\label{g2:def:schubert-partition-locus}
+	给定上述旗与分拆，令 \(d_i=q+i-\lambda_i\)。具有跳跃位置恰为 \(d_1,\ldots,d_k\) 的子空间组成 Schubert 胞腔 \(C_\lambda(F_\bullet)\)。其闭包
+	\begin{equation}\label{g2:eq:schubert-rank-conditions}
+		\Omega_\lambda(F_\bullet)=\{V\in G:\dim(V\cap F_{d_i})\ge i,\ 1\le i\le k\}
+	\end{equation}
+	称为相对于该旗的\term[Schubert-cu]{Schubert 簇}[Schubert variety]。
+\end{definition}
+
+只写 \(\dim(V\cap F_{d_i})=i\) 还不足以定义开胞腔：还要排除跳跃提前发生。因此等价的精确条件是同时要求
+\[
+	\dim(V\cap F_{d_i})=i,\qquad\dim(V\cap F_{d_i-1})=i-1.
+\]
+例如 \(k=1\) 时，\(C_{(j)}=\mathbb P(F_{n-j})\setminus\mathbb P(F_{n-j-1})\)，而 \(\Omega_{(j)}=\mathbb P(F_{n-j})\) 是复射影空间中的余维 \(j\) 线性子空间。闭包中的不等式允许跳跃提前发生；它们比开胞腔的等式更适合描述极限。
+
+\ProseParagraphBreak
+
+这些条件也确实是矩阵的秩条件。若 \(V\) 由一个满秩 \(n\times k\) 矩阵 \(A\) 的列张成，则
+\[
+	\dim(V\cap F_d)=k-\operatorname{rank}(\mathbb C^k\xrightarrow{A}\mathbb C^n\longrightarrow\mathbb C^n/F_d).
+\]
+因而 \(\dim(V\cap F_d)\ge i\) 等价于最后 \(n-d\) 行组成的矩阵秩不超过 \(k-i\)，可由全部 \((k-i+1)\) 阶子式为零表达。这里条件与所选 \(V\) 的基无关，因为更换基只在右侧乘一个可逆矩阵。它说明 Schubert 簇在 Grassmann 坐标中由多项式方程给出，也说明闭集中的奇点为何可能出现：一个秩条件的不同阶退化会在同一闭包中相遇。
 
 \subsection{行阶梯形坐标、偶维胞腔与整数上同调基}
 \label{g2:subsec:2105:02}
-待撰写
+在 \(C_\lambda\) 内，从右向左消元得到唯一的基
+\begin{equation}\label{g2:eq:schubert-echelon-coordinates}
+	v_i=e_{d_i}+\sum_{\substack{a<d_i\\a\notin\{d_1,\ldots,d_{i-1}\}}}z_{ia}e_a,
+	\qquad 1\le i\le k.
+\end{equation}
+第 \(i\) 个向量有 \(d_i-i=q-\lambda_i\) 个自由复系数，因而
+\[
+	C_\lambda\cong\mathbb C^{N-|\lambda|},\qquad
+	\Omega_\lambda=\coprod_{\mu_i\ge\lambda_i\ \text{对所有 }i}C_\mu.
+\]
+胞腔的实维数是 \(2(N-|\lambda|)\)。例如在 \(\operatorname{Gr}(2,4)\) 中，\(\lambda=(1,0)\) 对应 \((d_1,d_2)=(2,4)\)，可以把一组基作为矩阵的行写成
+\[
+	\begin{pmatrix}z_{11}&1&0&0\\z_{21}&0&z_{23}&1\end{pmatrix}.
+\]
+三个自由复数给出六维实胞腔；分拆只有一个方格，故它在八维实 Grassmann 流形中余维二。
+
+\begin{proposition}\label{g2:prop:schubert-integral-basis}
+	复 Grassmann 流形 \(G=\operatorname{Gr}(k,n)\) 的整数同调与上同调没有扭元，奇数次群均为零。每个 \(\Omega_\lambda\) 有一个由其开胞腔复定向确定的类
+	\[
+		[\Omega_\lambda]\in H_{2(N-|\lambda|)}(\Omega_\lambda;\mathbb Z).
+	\]
+	把这些类推入 \(G\)，得到各次同调的基；其 Poincar\'e 对偶
+	\begin{equation}\label{g2:eq:schubert-class-definition}
+		\sigma_\lambda=\mathrm{PD}_G[\Omega_\lambda]\in H^{2|\lambda|}(G;\mathbb Z)
+	\end{equation}
+	称为\term[Schubert-lei]{Schubert 类}[Schubert class]，并构成整数上同调的加法基。这些类与所选完全旗无关。
+\end{proposition}
+\begin{proof}
+	由\cref{g2:thm:grassmann-schubert-cw}，上述集合给出有限 CW 结构，且全部胞腔的实维数为偶数。胞腔微分降低一次，所以其源或靶必为零，全部微分为零。于是同调在每个偶数维自由生成于该维胞腔，在奇数维为零。万有系数定理中的 Ext 项也为零，得到对应的上同调结论。
+
+	\(\Omega_\lambda\) 是一个子复形，唯一的最高维胞腔为 \(C_\lambda\)，其余胞腔的实维数至少低二。故其最高维同调为 \(\mathbb Z\)，到最高维胞腔相对同调的映射为同构。选择在 \(C_\lambda\) 上给出复定向生成元的唯一类，便定义了 \([\Omega_\lambda]\)。包含诱导的胞腔链映射将这个生成元送到 \(G\) 中同一胞腔的生成元，所以所有这类类组成同调基。这里的构造只用胞腔复形，并未要求整个闭包是流形。
+
+	\(G\) 是闭定向流形，\cref{g2:cor:closed-poincare-duality}将这个同调基送到上同调基。任意两条完全旗由某个 \(g\in\operatorname{GL}_n(\mathbb C)\) 联系。该群道路连通：极分解先把正定因子收缩到恒等，酉因子再逐个缩小其特征值的辐角。因此可取从恒等到 \(g\) 的道路，给出 \(G\) 上恒等映射与 \(V\mapsto gV\) 的同伦。后一个映射保持各开胞腔的复定向，并把对应的 Schubert 簇相互送到，所以它们给出相同同调类及对偶类。
+\end{proof}
+
+几何相交时，还可以用一个实际的闭光滑流形来代表这个类。令 \(\widetilde\Omega_\lambda\) 由所有旗
+\[
+	0=W_0\subset W_1\subset\cdots\subset W_k,
+	\qquad\dim W_i=i,\quad W_i\subset F_{d_i}
+\]
+组成，并令 \(\rho_\lambda(W_\bullet)=W_k\)。已选 \(W_{i-1}\) 后，选择 \(W_i\) 等价于在 \(F_{d_i}/W_{i-1}\) 中选一条线，因而每一步都是复射影丛，纤维为 \(\mathbb{CP}^{d_i-i}\)。这说明 \(\widetilde\Omega_\lambda\) 是紧光滑复流形，复维数为 \(\sum_i(d_i-i)=N-|\lambda|\)。
+
+\ProseParagraphBreak
+
+映射 \(\rho_\lambda\) 的像恰为 \(\Omega_\lambda\)：给定满足秩条件的 \(V\)，可在嵌套的 \(V\cap F_{d_i}\) 中逐次选择 \(W_i\)。若 \(V\in C_\lambda\)，则维数迫使 \(W_i=V\cap F_{d_i}\)，选择唯一；在这个开集上，常秩核空间随矩阵坐标光滑且复解析地变化。因此 \(\rho_\lambda\) 在开胞腔上是保持复定向的同构，而
+\begin{equation}\label{g2:eq:schubert-resolution-class}
+	(\rho_\lambda)_*[\widetilde\Omega_\lambda]=[\Omega_\lambda].
+\end{equation}
+最后一个等式可限制到最高维胞腔核对：两边都给出其正生成元，上一命题的唯一性使它们相等。这个旗模型将闭包低维处的多重选择留在纤维中，同时为相交理论提供一个光滑源。
 
 \subsection{通用子丛、商丛和特殊 Schubert 类}
 \label{g2:subsec:2105:03}
-待撰写
+在 \(G\) 上有通用子丛 \(S\) 与商丛 \(Q\)：它们在 \(V\) 处的纤维分别为 \(V\) 和 \(\mathbb C^n/V\)。这是第19章典范丛的有限维模型，构成短正合列
+\begin{equation}\label{g2:eq:grassmann-tautological-sequence}
+	0\longrightarrow S\longrightarrow\underline{\mathbb C}^{\,n}\longrightarrow Q\longrightarrow0.
+\end{equation}
+选择 Hermitian 内积后可把 \(Q\) 识别为 \(S^\perp\)，所以 Whitney 和公式给出 \(c(S)c(Q)=1\)。这个等式已经把两张丛的陈类联系起来；以下识别它们所记录的几何条件。
+
+\begin{theorem}\label{g2:thm:special-schubert-chern}
+	在 \(G=\operatorname{Gr}(k,n)\) 上，令 \(q=n-k\)。对 \(1\le j\le q\)，有
+	\begin{equation}\label{g2:eq:special-schubert-quotient}
+		\sigma_j:=\sigma_{(j,0,\ldots,0)}=c_j(Q).
+	\end{equation}
+	特别地，\(\sigma_1=c_1(Q)=c_1(S^*)=c_1(\det S^*)\)。
+\end{theorem}
+\begin{proof}
+	取 \(A=F_{q+1-j}\)，记 \(a=\dim A=q+1-j\)。对于分拆 \((j,0,\ldots,0)\)，除第一个条件外，其余条件由维数不等式自动成立。因此 \(\Omega_j=\{V:V\cap A\ne0\}\)。为把这个非零交条件写成一个横截零集，在 \(G\times\mathbb P(A)\) 上记 \(\ell\) 为从第二因子拉回的重言线丛，考虑秩 \(q\) 丛 \(\ell^*\otimes Q\) 的截面
+	\[
+		s(V,L):L\hookrightarrow\mathbb C^n\longrightarrow\mathbb C^n/V.
+	\]
+	其零集为 \(Z=\{(V,L):L\subset A\cap V\}\)。固定 \(L\) 后，\(V/L\) 可任取 \(\mathbb C^n/L\) 中的 \((k-1)\) 维子空间，所以 \(Z\) 是 \(\mathbb P(A)\) 上的光滑 Grassmann 丛。
+
+	还可直接核对截面横截：在 \(L\subset V\) 处，\(G\) 的切空间由图坐标识别为 \(\operatorname{Hom}_{\mathbb C}(V,\mathbb C^n/V)\)。截面在这些方向的微分，除一个无关紧要的负号外，就是限制到 \(L\) 的映射
+	\[
+		\operatorname{Hom}(V,\mathbb C^n/V)\longrightarrow\operatorname{Hom}(L,\mathbb C^n/V),
+	\]
+	它满射，因为 \(L\) 上的线性映射可沿任意补空间延拓。故 \(s\) 横截于零截面。由\cref{g2:thm:top-class-euler}以及\cref{g2:thm:euler-transverse-zero-duality}，\(Z\) 的对偶类是 \(c_q(\ell^*\otimes Q)\)，定向就是复定向。
+
+	令 \(h=c_1(\ell^*)\)。分裂原理把 \(Q\) 的形式根记为 \(x_1,\ldots,x_q\)，从而
+	\begin{equation}\label{g2:eq:schubert-incidence-top-chern}
+		c_q(\ell^*\otimes Q)=\prod_{b=1}^q(h+x_b)
+		=\sum_{i=0}^q h^{q-i}c_i(Q).
+	\end{equation}
+	这是在旗丛拉回后验证的对称多项式恒等式；拉回单射使它在原空间成立。沿 \(\mathbb P(A)=\mathbb{CP}^{a-1}\) 求值时，只有 \(h^{a-1}=h^{q-j}\) 留下系数一，所以式\eqref{g2:eq:schubert-incidence-top-chern}给出 \(c_j(Q)\)。
+
+	把这个系数提取写成同调推前，便可直接使用已证的乘积求值公式。记投影为 \(\pi:G\times\mathbb P(A)\to G\)。对任意 \(\beta\in H^{2(N-j)}(G;\mathbb Z)\)，顶陈类与零点类的比较给出
+	\[
+	\begin{aligned}
+		\langle\beta,\pi_*[Z]\rangle
+		&=\langle\pi^*\beta,[Z]\rangle\\
+		&=\left\langle\pi^*\beta\smile\sum_i h^{q-i}c_i(Q),[G\times\mathbb{CP}^{a-1}]\right\rangle\\
+		&=\langle\beta\smile c_j(Q),[G]\rangle.
+	\end{aligned}
+	\]
+	全部次数均为偶数，交换因子没有符号。另一方面，\(\pi|_Z\) 的像为 \(\Omega_j\)，在其开胞腔上 \(V\cap A\) 恰为一维，故该处投影是保持复定向的同构。最高维胞腔的归一化给出 \(\pi_*[Z]=[\Omega_j]\)。\(G\) 的整数上同调自由，Poincar\'e 配对非退化，因此上述全部求值确定 \(\sigma_j=c_j(Q)\)。最后对式\eqref{g2:eq:grassmann-tautological-sequence}取一次陈类，并用对偶与行列式的公式，得到 \(\sigma_1\) 的其余表达。
+\end{proof}
+
+这个证明的几何步骤是先把“至少有一条交线”改成“连这条线也一起选出”。增加 \(\mathbb P(A)\) 参数后，退化条件成为一张向量丛的横截截面零集；随后沿这些参数求值，消去辅助选择，得到所求陈类。
 
 \subsection{利用旗的移动及相交配对计算低阶乘法}
 \label{g2:subsec:2105:04}
-待撰写
+同一个 Schubert 类可以由许多不同旗给出的簇代表。移动旗的用途，是让相交发生在光滑开胞腔中并且横截；这时每个复交点贡献 \(+1\)，杯积便成为实际计数。
+
+\begin{proposition}\label{g2:prop:schubert-moving-flags}
+	设分拆 \(\lambda^{(1)},\ldots,\lambda^{(m)}\) 满足 \(\sum_b|\lambda^{(b)}|=N\)。可以选择处于一般位置的完全旗 \(F_\bullet^{(b)}\)，使各 \(\Omega_{\lambda^{(b)}}(F_\bullet^{(b)})\) 的公共交集是有限个点，全部位于各自开胞腔中且横截，并且
+	\[
+		\#\bigcap_{b=1}^m\Omega_{\lambda^{(b)}}(F_\bullet^{(b)})
+		=\left\langle\prod_{b=1}^m\sigma_{\lambda^{(b)}},[G]\right\rangle.
+	\]
+	这里一般位置可取为旗参数空间中的一个开稠密集合；交集允许为空。
+\end{proposition}
+\begin{proof}
+	群 \(\operatorname{GL}_n(\mathbb C)\) 在 \(G\) 上传递作用。作用映射 \((g,V)\mapsto gV\) 是淹没：在图坐标 \(\mathrm T_VG=\operatorname{Hom}(V,\mathbb C^n/V)\) 中，矩阵的一阶变化可以任意指定这张线性映射。因此将一个固定光滑胞腔随 \(g\) 移动，\cref{g2:thm:parametric-transversality}保证对一般参数，它横截于任意另一个固定光滑子流形。
+
+	每个 Schubert 簇只有有限个胞腔。依次移动这些旗，同时对全部胞腔组合应用参数横截性，就使任意组合的相交都横截。若所有胞腔都取开胞腔，预期复维数为 \(N-\sum_b|\lambda^{(b)}|=0\)。若至少一个取闭包中的低维胞腔，其复维数至少再低一，预期维数变成负数，横截性迫使交集为空。所以全部交点落在开胞腔中。簇的闭性与 \(G\) 的紧性使总交集紧，而零维横截交集离散，故只有有限点。
+
+	用式\eqref{g2:eq:schubert-resolution-class}的光滑旗模型代表各同调类。其乘积映射到 \(G^m\)，公共交点对应于这个映射对对角子流形的逆像；由于交点都在开胞腔中，那里各旗模型与 Schubert 簇相同，逆像仍然横截。将\cref{g2:thm:geometric-intersection-pairing}用于对角子流形，再用帽积的自然性及各个基本类的推前，所得求值就是所列杯积在 \([G]\) 上的值。这也把带奇点闭包的计数归结为闭光滑源与光滑对角的相交。
+
+	在交点附近，所有切空间和法向商空间都是复向量空间，横截比较映射为复线性同构，其实行列式为复行列式绝对值的平方，严格为正。因此每个点的符号为 \(+1\)。最后，光滑旗模型紧，横截性在参数的小变动下保持；同时交点避开各闭包的低维部分，这一避开条件也由紧性保持。故所选好参数构成开集，参数横截性给出的稠密性则使它成为开稠密集。
+\end{proof}
+
+为了从这些计数读出一个类的系数，需要知道哪两个 Schubert 类相互对偶。定义矩形中的补分拆
+\[
+	\lambda^c=(q-\lambda_k,q-\lambda_{k-1},\ldots,q-\lambda_1).
+\]
+它把矩形中余下的方格旋转半周再左对齐，满足 \(|\lambda|+|\lambda^c|=N\)。
+
+\begin{proposition}\label{g2:prop:schubert-complement-pairing}
+	若 \(|\lambda|+|\mu|=N\)，则
+	\begin{equation}\label{g2:eq:schubert-complement-pairing}
+		\langle\sigma_\lambda\smile\sigma_\mu,[G]\rangle
+		=\begin{cases}1,&\mu=\lambda^c,\\0,&\mu\ne\lambda^c.\end{cases}
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	采用相反的两条坐标旗
+	\[
+		F_d=\operatorname{span}(e_1,\ldots,e_d),\qquad
+		F'_d=\operatorname{span}(e_{n-d+1},\ldots,e_n).
+	\]
+	若某个 \(i\) 满足 \(\lambda_i+\mu_{k+1-i}>q\)，则相应两个旗子空间的维数和不超过 \(n\)，且它们在相反坐标旗中不相交。然而若 \(V\) 同时满足两组秩条件，它在这两个不相交子空间中分别至少有 \(i\) 维和 \(k+1-i\) 维，总计至少 \(k+1\) 维，矛盾。因此交集非空要求全部 \(\lambda_i+\mu_{k+1-i}\le q\)。将这些不等式求和，左边为 \(N=kq\)，所以每一项都必须取等号，即 \(\mu=\lambda^c\)。
+
+	在补分拆情形，记 \(d_i=q+i-\lambda_i\)。上面的两子空间分别是 \(F_{d_i}\) 与 \(\operatorname{span}(e_{d_i},\ldots,e_n)\)，交集恰为 \(\mathbb Ce_{d_i}\)。由于 \(V\) 在二者中的维数之和至少为 \(k+1\)，它必须包含 \(e_{d_i}\)。对全部 \(i\) 使用此论证，唯一可能的交点便是
+	\[
+		V_0=\operatorname{span}(e_{d_1},\ldots,e_{d_k}).
+	\]
+	它确实满足两组条件，并位于两个开胞腔中。
+
+	最后核对横截性。取补空间由非枢轴坐标向量张成，图坐标中的切向量为 \(A:V_0\to\mathbb C^n/V_0\)。由式\eqref{g2:eq:schubert-echelon-coordinates}，第一片的切方向是 \(A(e_{d_i})\) 在非枢轴行 \(a<d_i\) 的系数；相反旗的第二片恰好允许非枢轴行 \(a>d_i\) 的系数。这两组参数不交且合起来覆盖全部图坐标，所以切空间互补。复定向使唯一交点的符号为正，由前一命题的相交解释得到式\eqref{g2:eq:schubert-complement-pairing}。
+\end{proof}
+
+因此，若某个齐次类写成 \(\alpha=\sum_\lambda a_\lambda\sigma_\lambda\)，则
+\[
+	a_\lambda=\langle\alpha\smile\sigma_{\lambda^c},[G]\rangle.
+\]
+一个乘积的系数就能通过增加一项互补几何条件来求出。下面在最小的非射影空间例子中把这些条件逐项算完。
 
 \subsection{\texorpdfstring{\(\operatorname{Gr}(2,4)\) 的杯积计算与四条直线问题}{Gr(2,4) 的杯积计算与四条直线问题}}
 \label{g2:subsec:2105:05}
-待撰写
+把 \(\operatorname{Gr}(2,4)\) 的点 \(V\) 看成 \(\mathbb{CP}^3\) 中的射影直线 \(\mathbb P(V)\)。固定射影旗“点 \(P\) 位于直线 \(L\)，而 \(L\) 位于平面 \(H\)”后，六个分拆的含义如下。
+\begin{center}
+	\begin{tabular}{ccl}
+		\hline
+		分拆 & 复余维 & 所参数化的射影直线 \\
+		\hline
+		\(\varnothing\) & \(0\) & 全部直线 \\
+		\((1)\) & \(1\) & 与 \(L\) 相交 \\
+		\((2)\) & \(2\) & 经过 \(P\) \\
+		\((1,1)\) & \(2\) & 包含于 \(H\) \\
+		\((2,1)\) & \(3\) & 经过 \(P\) 且包含于 \(H\) \\
+		\((2,2)\) & \(4\) & 等于给定直线 \(L\) \\
+		\hline
+	\end{tabular}
+\end{center}
+其中 \(\Omega_2\) 与 \(\Omega_{11}\) 都同构于 \(\mathbb{CP}^2\)，\(\Omega_{21}\) 是一束直线组成的 \(\mathbb{CP}^1\)，而 \(\Omega_{22}\) 是一点。\(\Omega_1\) 的闭包却不必光滑，因而前面的光滑代表与移动旗论证在此已有实际用途。为简化式子，省略下标分拆中的逗号。
+
+\begin{proposition}\label{g2:prop:gr24-schubert-products}
+	\(G=\operatorname{Gr}(2,4)\) 的非零正次乘积由以下等式及交换律决定：
+	\begin{equation}\label{g2:eq:gr24-schubert-products}
+	\begin{gathered}
+		\sigma_1^2=\sigma_2+\sigma_{11},\qquad
+		\sigma_1\sigma_2=\sigma_1\sigma_{11}=\sigma_{21},\\
+		\sigma_1\sigma_{21}=\sigma_{22},\qquad
+		\sigma_2^2=\sigma_{11}^2=\sigma_{22},\qquad
+		\sigma_2\sigma_{11}=0.
+	\end{gathered}
+	\end{equation}
+	特别地，\(\sigma_1^3=2\sigma_{21}\)、\(\sigma_1^4=2\sigma_{22}\)，且 \(\langle\sigma_{22},[G]\rangle=1\)。
+\end{proposition}
+\begin{proof}
+	先求余维互补的乘积。经过两个不同点的射影直线唯一，所以 \(\sigma_2^2=\sigma_{22}\)。同时位于两个不同平面的直线是它们的交线，所以 \(\sigma_{11}^2=\sigma_{22}\)。点若不在给定平面中，就没有既经过该点又包含于该平面的直线，故 \(\sigma_2\sigma_{11}=0\)。这也与补分拆配对相符：\((2)\) 与 \((1,1)\) 各自为自身的补。
+
+	在平面 \(H\) 中经过点 \(P\) 的直线组成一束。另取一条不包含于 \(H\) 的直线 \(L\)，并使交点 \(Q=L\cap H\) 不等于 \(P\)。这束直线中恰有连接 \(P,Q\) 的一条与 \(L\) 相交，所以 \(\sigma_1\sigma_{21}=\sigma_{22}\)。一般位置保证交点横截，复定向使系数为一。
+
+	六次群只由 \(\sigma_{21}\) 生成。若 \(P\notin L\)，经过 \(P\) 且与 \(L\) 相交的直线组成平面 \(\langle P,L\rangle\) 中的直线束，正是某条旗的 \(\Omega_{21}\)。在一般位置下相交横截于光滑部分，因而 \(\sigma_1\sigma_2=\sigma_{21}\)。同理，平面 \(H\) 内与一条横穿 \(H\) 的直线相交，等价于经过 \(L\cap H\)，所以 \(\sigma_1\sigma_{11}=\sigma_{21}\)。也可把这两个等式分别与 \(\sigma_1\) 配对，由刚才的唯一交点计数及非退化性确定系数。
+
+	最后写 \(\sigma_1^2=a\sigma_2+b\sigma_{11}\)。分别乘 \(\sigma_2\) 与 \(\sigma_{11}\) 并在 \([G]\) 上求值，前面已经算得的乘积给出 \(a=b=1\)。其余两式由继续乘 \(\sigma_1\) 得到。次数超过八的类为零，因此没有其他正次乘积需要决定。
+\end{proof}
+
+这里的两种余维二条件不能混为一类：经过一个点与位于一个平面都给出一份 \(\mathbb{CP}^2\)，但它们在 \(G\) 中有不同同调类。它们各自的自交为一，彼此的交数为零，正是四次群秩为二的几何表现。
+
+\ProseParagraphBreak
+
+也可以将乘法表写成陈类的环表示。记 \(h=\sigma_1\)、\(s=\sigma_{11}\)。取一个非零线性函数 \(\alpha:\mathbb C^4\to\mathbb C\)，它限制到各 \(V\) 上给出 \(S^*\) 的截面。零点集是 \(V\subset\ker\alpha\)，即 \(\Omega_{11}\)。在这个零集处，图坐标微分为 \(A\mapsto\alpha\circ A\)，满射到 \(V^*\)，所以截面横截；于是
+\[
+	s=c_2(S^*),\qquad c(S)=1-h+s,
+	\qquad c(Q)=1+h+(h^2-s).
+\]
+其中 \(c_2(Q)=\sigma_2=h^2-s\)，与特殊 Schubert 类公式一致。乘法表等价于
+\begin{equation}\label{g2:eq:gr24-cohomology-ring}
+	H^*(\operatorname{Gr}(2,4);\mathbb Z)
+	\cong\mathbb Z[h,s]/(h^3-2hs,\ s^2-h^2s),
+	\qquad\deg h=2,\quad\deg s=4.
+\end{equation}
+为核对没有漏掉整数关系，先用两条关系推出 \(h^3s=0\)、\(s^3=0\)、\(h^5=0\)：例如 \(h^3s=2hs^2=2h^3s\)，相减即得第一式。故商环由 \(1,h,h^2,s,hs,s^2\) 加法生成；这些元素的像分别为 \(1,\sigma_1,\sigma_2+\sigma_{11},\sigma_{11},\sigma_{21},\sigma_{22}\)，构成同调所给自由基的另一组整数基，所以映射既满又单。
+
+\begin{theorem}\label{g2:thm:four-lines-two-transversals}
+	在 \(\mathbb{CP}^3\) 中，对处于一般位置的四条射影直线，恰有两条射影直线同时与它们相交；两条解不同，每条解的局部相交重数为一。
+\end{theorem}
+\begin{proof}
+	每条给定直线产生一份 \(\Omega_1\) 条件。由\cref{g2:prop:schubert-moving-flags}，一般位置下四份条件横截相交于各自开胞腔，故都是孤立的光滑交点，局部符号为 \(+1\)。总数于是为
+	\[
+		\langle\sigma_1^4,[G]\rangle
+		=2\langle\sigma_{22},[G]\rangle=2.
+	\]
+	横截性的局部方程具有可逆复 Jacobian 矩阵，故每个零点都是单零点，其局部重数为一。
+\end{proof}
+
+这个数字还可以在一个直观的二次曲面模型中看出。先取三条两两不交的直线。前两条来自分解 \(\mathbb C^4=A\oplus B\) 的两个二维因子；第三条由于与它们都不交，可以写成某个同构 \(T:A\to B\) 的图。借助 \(T\) 识别 \(B\cong A\)，三条线便为
+\[
+	L_1=\mathbb P(A\oplus0),\quad L_2=\mathbb P(0\oplus A),\quad
+	L_3=\{[a:a]:[a]\in\mathbb P(A)\}.
+\]
+一条同时遇到前两条线的直线必连接 \([a:0]\) 与 \([0:b]\)。它再与第三条相交，当且仅当 \(a,b\) 成比例。因此三条线的公共截线恰为
+\[
+	\ell_{[a]}=\{[sa:ta]:[s:t]\in\mathbb{CP}^1\},\qquad[a]\in\mathbb P(A).
+\]
+这些直线扫出二次曲面
+\begin{equation}\label{g2:eq:three-lines-ruled-quadric}
+	Q=\{[x_1:x_2:y_1:y_2]:x_1y_2-x_2y_1=0\}
+	\cong\mathbb{CP}^1\times\mathbb{CP}^1.
+\end{equation}
+这个同构就是 \(([a],[s:t])\mapsto[sa:ta]\)：秩一的二乘二矩阵可分解为列向量乘行向量，两个因子分别只差非零倍数，所以参数唯一。非零秩一矩阵处方程的梯度不为零，故曲面光滑。固定 \([s:t]\) 得到包含原三条线的一个线族，固定 \([a]\) 得到公共截线的另一个线族。
+
+\ProseParagraphBreak
+
+一般的第四条线不包含于 \(Q\)，其参数代入二次方程后得到一个有两个不同根的齐次二次式。因而它与 \(Q\) 相交于两个点，每点唯一确定一条 \(\ell_{[a]}\)。这两条截线不同：若两个点属于同一条 \(\ell_{[a]}\)，则第四条线就是这条截线，因而包含于 \(Q\)，与选择矛盾。这给出了两条解的具体几何位置。若第四条线与 \(Q\) 相切，两个交点可能合并；若第四条线本身属于适当线族，还可能出现整族解。一般位置在这里排除的正是这些退化。
 
 \subsection{与 V.27.5 中 Chow 环及 Plücker 方程计算的比较}
 \label{g2:subsec:2105:06}
-待撰写
+Grassmann 流形也有一个具体的射影方程模型。定义 Pl\"ucker 映射\footnote{Julius Pl\"ucker（1801--1868），德国数学家，研究解析几何、直线几何及数学物理。}
+\[
+	\iota:G\longrightarrow\mathbb P(\textstyle\bigwedge^k\mathbb C^n),
+	\qquad\operatorname{span}(v_1,\ldots,v_k)\longmapsto[v_1\wedge\cdots\wedge v_k].
+\]
+换基只将外积乘以行列式，所以射影点不变。非零可分解外积 \(\xi=v_1\wedge\cdots\wedge v_k\) 又能恢复原子空间为 \(\{v:v\wedge\xi=0\}\)，故映射单射。在一个非零 \(k\) 阶子式对应的图域中，图矩阵的各项都是其他子式与这一子式之比，所以逆坐标光滑且微分单射。\(G\) 紧，因而 \(\iota\) 是到其像的光滑复嵌入。
+
+\ProseParagraphBreak
+
+其拉回的射影重言线在 \(V\) 处正是 \(\bigwedge^kV\)，所以
+\[
+	\iota^*\mathcal O(1)=\det S^*,\qquad\iota^*c_1(\mathcal O(1))=\sigma_1.
+\]
+这里 \(\mathcal O(1)\) 表示复射影空间的超平面线丛。若固定一个 \(q\) 维子空间 \(A\)，投影 \(\mathbb C^n\to\mathbb C^n/A\) 的行列式在 \(\bigwedge^k\mathbb C^n\) 上给出线性函数。它在 \(V\) 的 Pl\"ucker 点处为零，恰好当 \(V\cap A\ne0\)，所以特殊除子 \(\Omega_1\) 确为这一嵌入下的超平面截面。杯积中的每个 \(\sigma_1\)，因此也可以理解为加入一条这样的线性方程。
+
+\ProseParagraphBreak
+
+对 \(\operatorname{Gr}(2,4)\)，令 \(p_{ij}\) 为外积的六个坐标。由 \(\xi\wedge\xi=0\) 得到
+\begin{equation}\label{g2:eq:gr24-plucker-quadric}
+	p_{12}p_{34}-p_{13}p_{24}+p_{14}p_{23}=0.
+\end{equation}
+反过来，若某个坐标如 \(p_{12}\ne0\)，把它归一化为一，便可取矩阵
+\[
+	\begin{pmatrix}
+		1&0&-p_{23}&-p_{24}\\
+		0&1&p_{13}&p_{14}
+	\end{pmatrix}.
+\]
+它的前五个相应子式是指定坐标，最后一个为 \(p_{13}p_{24}-p_{14}p_{23}=p_{34}\)。其他非零坐标图只需重新排列基，所以式\eqref{g2:eq:gr24-plucker-quadric}正好刻画 Pl\"ucker 像。因而这个 Grassmann 流形是 \(\mathbb{CP}^5\) 中的光滑二次超曲面，\(\int_G\sigma_1^4=2\) 与其二次方程相呼应。
+
+第五卷第27章第5节将沿这个同一模型组织 Chow 环与方程计算：子簇先按有理等价形成代数循环类，再通过复几何的循环类映射与这里的整数上同调比较，并处理具体方程的消去、局部重数和退化参数。当前已经建立的是胞腔基本类、特殊陈类与横截相交计数；一般位置下每个点的局部贡献已由复横截性确定为一。转到代数模型后，重数还要在点合并或交集不横截时继续记录总计数，两种描述因此共享同一算例而承担不同的计算任务。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

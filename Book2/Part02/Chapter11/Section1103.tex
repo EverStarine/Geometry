@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 11.3 球丛和路径纤维化
 % 纲要位置：几何学计划纲要.md，第 1447 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,234 @@
 \section{球丛和路径纤维化}
 \label{g2:sec:1103}
 
-待撰写
+球面纤维只有零次与顶次上同调，谱序列因而只有两行；球面基底则只留下两列。这样的图形让微分的来源和去向十分明确。Hopf 丛展示一个非零微分如何消去纤维的类，球丛把这个微分组织成底空间上的 Euler 类；路径纤维化的总空间可缩，又反过来迫使回路空间产生一列新的类。以下计算均使用整数系数，另行注明系数变化时才改变系数。
 
 \subsection{Hopf 丛中的非零微分}
 \label{g2:subsec:1103:01}
-待撰写
+先看\cref{g2:prop:hopf-bundles}已经构造的复 Hopf 丛
+\[
+	S^1\longrightarrow S^3\xrightarrow{p}S^2.
+\]
+底空间单连通，所以纤维上同调构成常值局部系统。取 \(u\in H^1(S^1;\mathbb Z)\)、\(x\in H^2(S^2;\mathbb Z)\) 为生成元，第二页只有 \(1,u,x,xu\) 四项，分别位于 \((0,0),(0,1),(2,0),(2,1)\)。唯一可能非零的微分是
+\[
+	\mathrm d_2:\mathbb Zu\longrightarrow\mathbb Zx.
+\]
+因为 \(H^1(S^3)=H^2(S^3)=0\)，源端的核和靶端的余核都必须为零。因此这张微分是乘 \(1\) 或乘 \(-1\)，并非仅仅“某个非零整数倍”。在两个生成元中调整一个的符号，可写成 \(\mathrm d_2u=x\)。余下的 \(xu\) 位于总次数三，给出 \(S^3\) 的顶次类。
+
+\ProseParagraphBreak
+
+对四元数 Hopf 丛 \(S^3\to S^7\to S^4\)，同一推理把唯一的微分换成
+\[
+	\mathrm d_4:H^3(S^3;\mathbb Z)\xrightarrow{\cong}H^4(S^4;\mathbb Z).
+\]
+这里 \(H^3(S^7)=H^4(S^7)=0\) 同时排除了核和余核；\((4,3)\) 处的乘积类存活，给出总空间的七次类。微分的长度由纤维顶次加一决定，已知总空间的消失次数则决定这张微分必须是同构。
+
+\begin{example}[高维复 Hopf 丛]\label{g2:exm:serre-complex-hopf}
+	设 \(n\ge1\)。单位向量到它所张复直线的投影给出 \(S^1\to S^{2n+1}\to\mathbb CP^n\)。在第 \(j\) 个齐次坐标非零的开集，要求该坐标为正实数得到连续单位截面，再用圆周数乘恢复整个纤维；这与\cref{g2:prop:hopf-bundles}的局部平凡化相同。由\cref{g2:thm:complex-projective-ring}，第二页为
+	\[
+		E_2^{*,*}=\mathbb Z[x]/(x^{n+1})\otimes\Lambda_{\mathbb Z}(u),\qquad |x|=(2,0),\quad |u|=(0,1).
+	\]
+	限制到 \(\mathbb CP^1\) 恢复上一计算。选取相容符号后，\(\mathrm d_2u=x\)；乘法规则给出
+	\[
+		\mathrm d_2(x^ju)=x^{j+1}\quad(0\le j<n),\qquad \mathrm d_2(x^nu)=0.
+	\]
+	于是第三页只剩 \(1\) 和 \(x^nu\)，后者的总次数为 \(2n+1\)。底空间的每个非单位幂都成为边界，只有最上方的纤维类乘积因没有靶项而保留下来。这个计算同时恢复总空间的上同调，并说明 \(p^*x=0\) 为什么与 \(x\ne0\) 相容：\(x\) 正是被纤维类传递消去的底空间类。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[x=1.55cm,y=1.45cm]
+		\draw[->] (-.4,-.45)--(4.2,-.45) node[right] {\(p\)};
+		\draw[->] (-.45,-.4)--(-.45,1.6) node[above] {\(q\)};
+		\foreach \j/\lab in {0/0,1/2,2/4,3/6} {\node[below] at (\j,-.45) {\(\lab\)};}
+		\node[left] at (-.45,0) {\(0\)};
+		\node[left] at (-.45,1) {\(1\)};
+		\node[blue!65!black] (a0) at (0,0) {\(1\)};
+		\node (a1) at (1,0) {\(x\)};
+		\node (a2) at (2,0) {\(x^2\)};
+		\node (a3) at (3,0) {\(x^3\)};
+		\node (b0) at (0,1) {\(u\)};
+		\node (b1) at (1,1) {\(xu\)};
+		\node (b2) at (2,1) {\(x^2u\)};
+		\node[blue!65!black] (b3) at (3,1) {\(x^3u\)};
+		\draw[->,thick] (b0)--node[right,font=\small] {\(\mathrm d_2\)} (a1);
+		\draw[->,thick] (b1)--node[right,font=\small] {\(\mathrm d_2\)} (a2);
+		\draw[->,thick] (b2)--node[right,font=\small] {\(\mathrm d_2\)} (a3);
+	\end{tikzpicture}
+	\caption[复 Hopf 丛的第二页]{\(S^1\to S^7\to\mathbb CP^3\) 的第二页。每个标记表示一个无限循环群；三张箭头均为同构，蓝色两项存活到极限页。横坐标按偶数标记，箭头实际增加两个基底次数。}
+	\label{g2:fig:serre-hopf-differential}
+\end{figure}
 
 \subsection{球丛与 Euler 类的联系}
 \label{g2:subsec:1103:02}
-待撰写
+现在把上述微分从某个算例中抽出来。设 \(p:E\to B\) 为纤维 \(S^m\) 的纤维丛，\(m\ge1\)，底空间为道路连通 CW 复形。纤维定向要求沿任何道路运输都保持顶次上同调的正向生成元；于是各纤维的 \(H^m(S^m;\mathbb Z)\) 组成带指定生成元的常值系统。只要求球面纤维，并不能省略这一条件：运输反向时，顶行应使用相应定向局部系统。
+
+\begin{definition}[球丛的 Euler 类]\label{g2:def:spherical-euler-class}
+	设 \(p:E\to B\) 是底空间为道路连通 CW 复形的定向 \(S^m\) 丛，\(m\ge1\)。令 \(u\in E_2^{0,m}\cong\mathbb Z\) 为纤维正向上同调生成元。第二页仅有 \(q=0,m\) 两行，因而 \(u\) 存活至第 \(m+1\) 页，且该页的 \((m+1,0)\) 项仍为 \(H^{m+1}(B;\mathbb Z)\)。定义
+	\begin{equation}\label{g2:eq:spherical-euler-transgression}
+		e(p)\coloneqq\mathrm d_{m+1}u\in H^{m+1}(B;\mathbb Z),
+	\end{equation}
+	称为这个定向球丛的\term[euler-lei]{Euler 类}[Euler class]。若 \(V\to B\) 为带正定内积的定向实秩 \(m+1\) 向量丛，则其单位球丛按纤维单位球面的边界定向取向，并记 \(e(V)=e(S(V)\to B)\)。
+\end{definition}
+
+这个定义使 Euler 类直接表示纤维定向类的传递。球丛除了顶行到零行以外没有其他可能的微分，所以此处靶端是完整的 \(H^{m+1}(B;\mathbb Z)\)，没有一般传递中出现的先前微分之像的商。向量丛的 Thom 类将给出另一种构造；两种构造的符号比较在该理论建立时进行，本节始终使用式\eqref{g2:eq:spherical-euler-transgression}的连接同态约定。
+
+\begin{proposition}[自然性与截面]\label{g2:prop:spherical-euler-naturality}
+	设 \(p:E\to B\) 为定向 \(S^m\) 丛，\(m\ge1\)，\(B\) 为道路连通 CW 复形。对从道路连通 CW 复形出发的映射 \(f:B'\to B\)，拉回丛取拉回定向，则
+	\[
+		e(f^*p)=f^*e(p).
+	\]
+	反转纤维定向使 Euler 类变号。若 \(p\) 有连续截面，则 \(e(p)=0\)。
+\end{proposition}
+\begin{proof}
+	拉回映射在第二页把纤维生成元送到拉回纤维的同向生成元，并与微分交换，因而给出自然性。反转定向把 \(u\) 换成 \(-u\)，线性性给出变号。
+
+	类 \(e(p)\) 是微分之像，所以在极限页为零。由\cref{g2:prop:serre-edge-maps}中基底边缘映射的识别，\(p^*e(p)=0\)。若 \(s:B\to E\) 为截面，则 \(s^*p^*=\operatorname{id}\)，从而 \(e(p)=s^*p^*e(p)=0\)。
+\end{proof}
+
+Euler 类也控制全部上同调群之间的关系。为看清指标，记 \(a\in H^p(B;\mathbb Z)\) 在顶行的对应元为 \(au\)。Leibniz 规则给出
+\[
+	\mathrm d_{m+1}(au)=(-1)^p a\smile e(p).
+\]
+符号不会改变这张映射的核与像；固定各次顶行的识别后，就能把它们串成一条正合列。
+
+\begin{theorem}[球丛的上同调正合列]\label{g2:thm:sphere-bundle-cohomology}
+	设 \(p:E\to B\) 为定向 \(S^m\) 丛，\(m\ge1\)，\(B\) 为道路连通 CW 复形。存在由纤维定向确定、对拉回自然的同态 \(p_!:H^k(E;\mathbb Z)\to H^{k-m}(B;\mathbb Z)\)，使下列序列正合：
+	\begin{equation}\label{g2:eq:sphere-bundle-exact-sequence}
+		\begin{aligned}
+			\cdots\longrightarrow H^{k-m-1}(B)&\xrightarrow{\;a\mapsto a\smile e(p)\;}H^k(B)\xrightarrow{p^*}H^k(E)\\
+			&\xrightarrow{p_!}H^{k-m}(B)\xrightarrow{\;a\mapsto a\smile e(p)\;}H^{k+1}(B)\longrightarrow\cdots.
+		\end{aligned}
+	\end{equation}
+	负次数群取零。在局部乘积 \(U\times S^m\) 上，\(p_!\) 提取与纤维顶次生成元相乘的系数。
+\end{theorem}
+\begin{proof}
+	第二页至第 \(m+1\) 页都相同，此后没有可能非零的微分。于是对 \(k\ge0\)，零行给出
+	\[
+		E_\infty^{k,0}=\frac{H^k(B)}{e(p)\smile H^{k-m-1}(B)},
+	\]
+	顶行给出
+	\[
+		E_\infty^{k-m,m}=\ker\bigl(H^{k-m}(B)\xrightarrow{\;a\mapsto a\smile e(p)\;}H^{k+1}(B)\bigr).
+	\]
+	第一式中把 \(e(p)\) 放在左边或右边只差各次的符号，得到同一子群。总次数 \(k\) 的滤过只有这两层可能非零。零行对应较大的滤过下标，因此它是 \(H^k(E)\) 的子群，顶行是相应商群。若 \(k<m\)，顶行不存在，以下商群便为零。收敛及基底边缘映射给出自然短正合列
+	\[
+		0\longrightarrow E_\infty^{k,0}\xrightarrow{\;\overline{p^*}\;}H^k(E)\longrightarrow E_\infty^{k-m,m}\longrightarrow0.
+	\]
+	定义 \(p_!\) 为最后一个满射与 \(E_\infty^{k-m,m}\subset H^{k-m}(B)\) 的复合。于是 \(\ker p_!=\operatorname{im}p^*\)，\(\operatorname{im}p_!=\ker(\smile e(p))\)，且 \(\ker p^*=\operatorname{im}(\smile e(p))\)。让 \(k\) 遍历各次就得到所列长正合列。
+
+	这一构造只用自然滤过、商映射和纤维定向确定的顶行识别，故对拉回自然。在乘积丛上，第二页已等于极限页，顶行由 \(a\times u\) 表示；上述商映射把它送到 \(a\)，而把零行类送到零。这正是所述局部公式。
+\end{proof}
+
+在 \(k=m\) 时，\(p_!:H^m(E)\to H^0(B)=\mathbb Z\) 就是把上同调类限制到纤维后读取其定向系数。因此正合性给出一个具体解释：\(e(p)=0\) 当且仅当纤维正向生成元能延拓成整个 \(E\) 上的 \(m\) 次上同调类。连续截面的存在是另一种几何条件，它蕴含上述延拓条件。对于平凡球丛，延拓类就是第二投影拉回的球面生成元；对于两种 Hopf 丛，Euler 类是底空间的顶次生成元，所以这样的延拓类不存在。
 
 \subsection{路径—回路纤维化}
 \label{g2:subsec:1103:03}
-待撰写
+给带基点空间 \((B,b_0)\)，记 \(P_{b_0}B\) 为从 \(b_0\) 出发的道路空间，\(\Omega B\) 为首尾都在 \(b_0\) 的回路空间。\cref{g2:prop:path-fibration}说明终点映射 \(\operatorname{ev}_1:P_{b_0}B\to B\) 是 Hurewicz 纤维化；其纤维为 \(\Omega B\)。收缩
+\[
+	\gamma(t)\longmapsto\gamma((1-s)t),\qquad 0\le s\le1,
+\]
+把整个道路空间缩到常值道路。这使谱序列的目标十分简单：除 \(E_\infty^{0,0}\cong\mathbb Z\) 外，其余项全为零。各页中出现的正次类必须通过微分成对消失。
+
+\begin{proposition}[球面回路空间的加性群]\label{g2:prop:loop-sphere-additive}
+	设 \(m\ge1\)。则
+	\[
+		H_k(\Omega S^{m+1};\mathbb Z)\cong H^k(\Omega S^{m+1};\mathbb Z)\cong
+		\begin{cases}
+			\mathbb Z,&k=jm\text{，其中 }j\ge0,\\
+			0,&\text{其余 }k.
+		\end{cases}
+	\]
+\end{proposition}
+\begin{proof}
+	先用同调谱序列确定同调群，再用万有系数定理转到上同调。球面 \(S^{m+1}\) 单连通，且对任意阿贝尔群 \(A\)，胞腔链给出 \(H_p(S^{m+1};A)=A\)（\(p=0,m+1\)），其余为零。因此第二页只有 \(p=0,m+1\) 两列，每列的第 \(q\) 项均为 \(A_q=H_q(\Omega S^{m+1};\mathbb Z)\)。回路空间道路连通，因为 \(\pi_1(S^{m+1})=0\)，所以 \(A_0=\mathbb Z\)。
+
+	同调微分降低基底次数。唯一可能非零的是
+	\[
+		\mathrm d_{m+1}:E^{m+1}_{m+1,q}=A_q\longrightarrow E^{m+1}_{0,q+m}=A_{q+m},\qquad q\ge0.
+	\]
+	每个源项都处于正总次数，且没有微分进入；若这张映射有非零核，该核会存活到 \(E^\infty\)。每个靶项也处于正总次数，且没有微分离开；若有非零余核，它同样会存活。这与道路空间可缩矛盾，故所有这些映射都是同构。
+
+	当 \(0<q<m\) 时，\((0,q)\) 项既没有可能的来箭头，也没有去箭头，故 \(A_q=0\)。结合 \(A_{q+m}\cong A_q\) 与 \(A_0=\mathbb Z\)，递推便得到同调群。它们都自由，\cref{g2:thm:uct-cohomology}中的 Ext 项为零，故 \(H^k\cong\operatorname{Hom}(H_k,\mathbb Z)\)，给出同样的上同调群。
+\end{proof}
+
+相同的两列图也可以直接在上同调中使用。取 \(x\in H^{m+1}(S^{m+1};\mathbb Z)\) 为生成元，令 \(a_0=1\)。因为所有非平凡箭头必须为同构，可以逐次选取 \(a_j\in H^{jm}(\Omega S^{m+1};\mathbb Z)\)，使
+\begin{equation}\label{g2:eq:loop-sphere-normalized-differential}
+	\mathrm d_{m+1}a_j=x a_{j-1}\qquad(j\ge1).
+\end{equation}
+此式中的 \(a_j\) 位于第零列，\(xa_{j-1}\) 位于第 \(m+1\) 列。在到达这一页以前没有其他微分，所以这里的乘法仍是纤维上同调的真实杯积；接下来可以用 Leibniz 规则从这些等式算出它。
 
 \subsection{悬挂和回路空间的所选计算}
 \label{g2:subsec:1103:04}
-待撰写
+回路空间使维数降低一，悬挂使维数升高一。\cref{g2:prop:suspension-loop-adjunction}已经把这种关系写成映射的伴随。上同调也有相应的次数移动，而且在第一次非零次数，它正好反向描述路径纤维化的传递。
+
+\begin{definition}[上同调悬挂]\label{g2:def:cohomology-suspension}
+	设 \(B\) 为带基点的道路连通 CW 复形，\(q\ge1\)。道路空间可缩，因而空间对的连接同态
+	\[
+		\delta:H^q(\Omega B;\mathbb Z)\xrightarrow{\cong}H^{q+1}(P_{b_0}B,\Omega B;\mathbb Z)
+	\]
+	是同构。终点映射给出空间对的映射 \(p:(P_{b_0}B,\Omega B)\to(B,b_0)\)。定义\term[shangtongdiao-xuangua]{上同调悬挂}[cohomology suspension]
+	\[
+		\sigma:\widetilde H^{q+1}(B;\mathbb Z)\longrightarrow H^q(\Omega B;\mathbb Z),\qquad \sigma=\delta^{-1}p^*,
+	\]
+	其中 \(\widetilde H^{q+1}(B)\) 与 \(H^{q+1}(B,b_0)\) 用自然同构识别。
+\end{definition}
+
+这个定义也能直接从回路的求值看出。映射 \(\operatorname{ev}:I\times\Omega B\to B\)、\((t,\gamma)\mapsto\gamma(t)\) 在两端恒取基点，所以给出空间对映射 \((I\times\Omega B,\partial I\times\Omega B)\to(B,b_0)\)。把 \(\operatorname{ev}^*\alpha\) 中区间的相对一次方向去掉，就得到 \(\sigma\alpha\)。这里“去掉”指由区间正向相对生成元给出的同构
+\[
+	H^q(\Omega B)\xrightarrow{\cong}H^{q+1}(I\times\Omega B,\partial I\times\Omega B),\qquad v\longmapsto[I]^*\times v.
+\]
+它来自区间相对链只有一个一次生成元的乘积计算；区间的定向取 \(0\) 指向 \(1\)。
+
+\ProseParagraphBreak
+
+为核对这与定义相同，令 \(K(t,\gamma)(s)=\gamma(ts)\)。这是从 \(I\times\Omega B\) 到 \(P_{b_0}B\) 的连续映射；当 \(t=0\) 时是常值回路，当 \(t=1\) 时是 \(\gamma\)，故它是上述空间对之间的映射，且 \(pK=\operatorname{ev}\)。连接同态的自然性说明，\(K^*\delta v\) 是把上端的 \(v\) 与下端的零作差后得到的相对类，恰为 \([I]^*\times v\)。这也固定了公式中的符号。求值还下降为 \(\Sigma\Omega B\to B\)；上同调悬挂就是沿这一映射拉回后，用悬挂的次数同构降低一度。
+
+\begin{proposition}[首次传递与悬挂]\label{g2:prop:first-transgression-suspension}
+	设 \(n\ge2\)，\(B\) 为 \((n-1)\) 连通的带基点 CW 复形。在路径纤维化的整数上同调谱序列中，传递
+	\[
+		\mathrm d_n:H^{n-1}(\Omega B;\mathbb Z)\xrightarrow{\cong}H^n(B;\mathbb Z)
+	\]
+	是同构，其逆为上同调悬挂 \(\sigma\)。
+\end{proposition}
+\begin{proof}
+	由\cref{g2:thm:hurewicz-absolute}，\(H_i(B;\mathbb Z)=0\) 对 \(0<i<n\) 成立；两个万有系数定理进一步给出 \(H_i(B;A)=H^i(B;A)=0\)，其中 \(A\) 为任意阿贝尔群，\(0<i<n\)。这里一次群涉及的零次整数同调为 \(\mathbb Z\)，不会产生 Tor 或 Ext 项。
+
+	先在同调谱序列中看 \(E^2_{0,q}=H_q(\Omega B;\mathbb Z)\)。当 \(0<q<n-1\) 时，任何可能进入它的微分都从 \((r,q-r+1)\) 出发，其中 \(2\le r\le q+1<n\)；这些项因基底相应系数同调消失而为零。第零列没有去箭头，故该项会原样存活。道路空间可缩又迫使它为零。回路空间道路连通，所以万有系数定理给出 \(H^q(\Omega B;\mathbb Z)=0\)（\(0<q<n-1\)）。当 \(n=2\) 时，这个区间为空。
+
+	现在转到上同调谱序列。上述消失说明 \((0,n-1)\) 项在第 \(n\) 页前没有非零去箭头，也没有来箭头；\((n,0)\) 项在此以前没有非零来箭头。两项分别就是所述两个完整上同调群。
+
+	微分 \(\mathrm d_n\) 是它们唯一可能的消失途径，道路空间可缩迫使它的核、余核全为零。对任意 \(\alpha\in H^n(B;\mathbb Z)\)，按定义有 \(\delta(\sigma\alpha)=p^*\alpha\)。式\eqref{g2:eq:transgression-relative-criterion}的代表元判定于是给出 \(\mathrm d_n(\sigma\alpha)=\alpha\)；本次数没有更早微分产生的商。故 \(\sigma\) 正是这张同构的逆。
+\end{proof}
+
+在 \(B=S^{m+1}\) 时，式\eqref{g2:eq:loop-sphere-normalized-differential}中的第一项就是 \(a_1=\sigma x\)。伴随映射 \(\eta:S^m\to\Omega S^{m+1}\)、\(z\mapsto(t\mapsto[z,t])\) 将它拉回为 \(S^m\) 的生成元：求值与 \(\operatorname{id}_I\times\eta\) 的复合正是悬挂的商映射，而区间相对方向的消去恢复球面的次数同构。因此 \(a_1\) 确实从原来的球面类产生；其后的 \(a_2,a_3,\ldots\) 则需要进一步的乘法计算。
+
+\begin{theorem}[奇维球面回路空间的杯积]\label{g2:thm:odd-sphere-loop-ring}
+	设 \(m\ge2\) 为偶数。对按式\eqref{g2:eq:loop-sphere-normalized-differential}选取的生成元，\(H^*(\Omega S^{m+1};\mathbb Z)\) 有加性基 \(a_0=1,a_1,a_2,\ldots\)，\(|a_j|=jm\)，且
+	\begin{equation}\label{g2:eq:loop-sphere-divided-powers}
+		a_i a_j=\binom{i+j}{i}a_{i+j}\qquad(i,j\ge0).
+	\end{equation}
+	这个分次环称为一个次数 \(m\) 元素上的\term[chumi-daishu]{除幂代数}[divided power algebra]，记为 \(\Gamma_{\mathbb Z}(a_1)\)。特别地，\(a_1^j=j!a_j\)。
+\end{theorem}
+\begin{proof}
+	加性群已由\cref{g2:prop:loop-sphere-additive}确定。记 \(a_i a_j=c_{ij}a_{i+j}\)，其中 \(c_{ij}\in\mathbb Z\)；单位元给出 \(c_{0j}=c_{i0}=1\)。由于 \(m\) 为偶数，每个 \(a_i\) 的总次数都为偶数，Leibniz 规则没有负号。且 \(x\) 与 \(a_i\) 交换，因此当 \(i,j>0\) 时，
+	\[
+		\begin{aligned}
+			\mathrm d_{m+1}(a_i a_j)
+			&=x a_{i-1}a_j+a_i x a_{j-1}\\
+			&=(c_{i-1,j}+c_{i,j-1})x a_{i+j-1}.
+		\end{aligned}
+	\]
+	另一方面，左端等于 \(c_{ij}x a_{i+j-1}\)。目标群为无限循环群，故
+	\[
+		c_{ij}=c_{i-1,j}+c_{i,j-1}.
+	\]
+	这个递推连同边界值唯一决定 \(c_{ij}=\binom{i+j}{i}\)，证明乘法公式。再反复使用 \(a_1a_j=(j+1)a_{j+1}\)，便得到 \(a_1^j=j!a_j\)。计算发生在微分尚未改变的第 \(m+1\) 页的第零列，该列本来就是纤维上同调环，故已经确定了所求环的乘法。
+\end{proof}
+
+除幂记号容易引起一次系数误读。在整数环中，\(a_j\) 是独立选定的生成元；写成 \(a_1^j/j!\) 只能帮助记忆，不能在整数上同调里真的除以 \(j!\)。例如 \(H^*(\Omega S^3;\mathbb Z)\) 满足 \(a_1^2=2a_2\)、\(a_1a_2=3a_3\)。换成有理系数后才可以除以阶乘，得到 \(H^*(\Omega S^3;\mathbb Q)\cong\mathbb Q[a_1]\)。
+
+\ProseParagraphBreak
+
+偶维球面则出现另一种现象。例如 \(H^1(\Omega S^2;\mathbb Z)\cong\mathbb Z\)，但其生成元 \(a\) 满足 \(a^2=0\)：分次交换性给出 \(2a^2=0\)，而 \(H^2(\Omega S^2;\mathbb Z)\cong\mathbb Z\) 无挠。这时二次群依然非零，其生成元并不来自 \(a\) 的平方。上述环均指上同调的杯积；回路拼接还会在同调上产生另一种乘积，二者的次数、定义域及结构不同，不能把其中一个的生成元关系移到另一个上使用。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

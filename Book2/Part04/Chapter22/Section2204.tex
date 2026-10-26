@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
-% 纲要标题：### 22.4 Chern–Simons 与几何应用
+% 纲要标题：### 22.4 陈–Simons 与几何应用
 % 纲要位置：几何学计划纲要.md，第 1872 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,24 +14,256 @@
 % 
 % 纲要内容结束
 
-\section{Chern–Simons 与几何应用}
+\section{陈–Simons 与几何应用}
 \label{g2:sec:2204}
 
-待撰写
+两个联络给出同一个示性上同调类，二者的曲率形式却未必相等。\secref{g2:sec:2202}的转移公式把这个差写成一个外微分；现在保留那个次数低一的形式，便得到能随联络变化的几何量。在三维，二次不变多项式的四次曲率形式因维数消失，三次转移形式仍可以积分。问题随之变成：这个积分依赖哪些选择，改变标架时为何会出现整数？
 
 \subsection{次级形式的定义}
 \label{g2:subsec:2204:01}
-待撰写
+设 \(P\) 是次数为 \(k\ge1\) 的对称不变多项式，\(\nabla_0,\nabla_1\) 是同一张光滑丛上的两个联络。沿直线路径 \(\nabla_t=\nabla_0+t a\)，其中 \(a=\nabla_1-\nabla_0\)，定义
+\begin{equation}\label{g2:eq:relative-chern-simons-form}
+	\operatorname{CS}_P(\nabla_0,\nabla_1)
+	\coloneqq k\int_0^1P(a,F_t,\ldots,F_t)\,\mathrm dt.
+\end{equation}
+这就是\cref{g2:thm:chern-weil-transgression}中的转移形式，称为相对于 \(\nabla_0\) 的\term[chen-Simons-xingshi]{陈--Simons 形式}[Chern--Simons form]\footnote{James Harris Simons（1938--2024），美国数学家，研究微分几何，并与陈省身共同发展次级示性不变量。陈省身的简介见第21章。}。它是底空间上的整体 \((2k-1)\) 次形式，并满足
+\[
+	\mathrm d\operatorname{CS}_P(\nabla_0,\nabla_1)=P(F_1^k)-P(F_0^k).
+\]
+若右边为零，则它给出 de Rham 上同调类。这个条件可能来自两个曲率代表相等，也可能来自底空间维数小于 \(2k\)。
+
+\ProseParagraphBreak
+
+这里的参照联络是定义的一部分。\cref{g2:prop:transgression-path-homotopy}说明，保持两端点而更换联络路径只改变一个恰当形式；对三个联络，还有
+\begin{equation}\label{g2:eq:chern-simons-reference-change}
+	\operatorname{CS}_P(\nabla_0,\nabla_2)
+	\equiv\operatorname{CS}_P(\nabla_0,\nabla_1)+\operatorname{CS}_P(\nabla_1,\nabla_2)
+	\pmod{\mathrm d\Omega^{2k-2}}.
+\end{equation}
+因此换参照联络时，变化由另一份转移形式决定。若原丛已有一个全局标架，可以取该标架下的平凡联络 \(\mathrm d\) 为参照；换一个随点变化的标架，也就换了这个参照联络。这正是下面规范变换公式的来源。次级形式的原始构造及选择依赖可参阅\cite[第3节]{ChernSimons1974}。
+
+\begin{proposition}\label{g2:prop:su-two-chern-simons-form}
+	设 \(A\in\Omega^1(M;\mathfrak{su}(2))\) 为光滑流形 \(M\) 上平凡 \(\operatorname{SU}(2)\) 丛在一个固定标架中的联络矩阵，\(F=\mathrm dA+A\wedge A\)。定义
+	\begin{equation}\label{g2:eq:su-two-chern-simons-density}
+		\operatorname{CS}(A)=\frac1{8\pi^2}\operatorname{tr}\left(A\wedge\mathrm dA+\frac23A\wedge A\wedge A\right).
+	\end{equation}
+	则 \(\operatorname{CS}(A)=\operatorname{CS}_{c_2}(\mathrm d,\mathrm d+A)\)，且
+	\[
+		\mathrm d\operatorname{CS}(A)=\frac1{8\pi^2}\operatorname{tr}(F\wedge F)=c_2(\nabla).
+	\]
+\end{proposition}
+\begin{proof}
+	\(\mathfrak{su}(2)\) 由无迹反 Hermitian 矩阵组成，故 \(\operatorname{tr}F=0\)。本章采用 \(c(\nabla)=\det(I+\mathrm iF/(2\pi))\)，其二次项为
+	\[
+		c_2(\nabla)=\frac1{8\pi^2}\left(\operatorname{tr}(F^2)-(\operatorname{tr}F)^2\right)=\frac1{8\pi^2}\operatorname{tr}(F^2).
+	\]
+	相应极化为 \(P(X,Y)=\operatorname{tr}(XY)/(8\pi^2)\)。从零联络到 \(A\) 的路径是 \(A_t=tA\)，曲率为 \(F_t=t\mathrm dA+t^2A^2\)。代入式\eqref{g2:eq:relative-chern-simons-form}，得到
+	\[
+		2\int_0^1\frac1{8\pi^2}\operatorname{tr}\bigl(A(t\mathrm dA+t^2A^2)\bigr)\,\mathrm dt
+		=\frac1{8\pi^2}\operatorname{tr}\left(A\mathrm dA+\frac23A^3\right).
+	\]
+	转移恒等式给出它的外微分。这里的乘法均含外乘；迹的分次循环律保证该计算与矩阵的非交换乘法相容。
+\end{proof}
+
+若 \(\dim M=3\)，四形式 \(c_2(\nabla)\) 因维数恒为零，因而 \(\operatorname{CS}(A)\) 闭。其积分却可以随 \(A\) 连续变化：四次拓扑类在这个维数不提供数值，三次次级形式还记得联络。
 
 \subsection{三维基本例子及整数模糊}
 \label{g2:subsec:2204:02}
-待撰写
+现在固定一个连通闭定向光滑三维流形 \(M\)。在平凡 \(\operatorname{SU}(2)\) 丛的一张标架中，令
+\[
+	S(A)=\int_M\operatorname{CS}(A)\in\mathbb R.
+\]
+为了解它在换标架后的变化，先在群本身上计算一个规范化三次形式。
+
+\begin{lemma}\label{g2:lem:su-two-integral-three-form}
+	将 \(\operatorname{SU}(2)\) 与单位三维球面识别为
+	\[
+		q=(x_0,x_1,x_2,x_3)\longmapsto
+		\begin{pmatrix}x_0+\mathrm i x_1&x_2+\mathrm i x_3\\-x_2+\mathrm i x_3&x_0-\mathrm i x_1\end{pmatrix},
+		\qquad\sum_{j=0}^3x_j^2=1.
+	\]
+	给 \(S^3\) 使用 \(\mathbb R^4\) 中单位球的外法向优先边界定向，记由左平移定义的 Lie 代数值一形式为 \(\vartheta=q^{-1}\mathrm dq\)。则
+	\begin{equation}\label{g2:eq:su-two-normalized-volume}
+		\omega=-\frac1{24\pi^2}\operatorname{tr}(\vartheta^3),\qquad \int_{S^3}\omega=1.
+	\end{equation}
+	因此对任意光滑映射 \(g:M\to\operatorname{SU}(2)\)，有 \(\int_Mg^*\omega=\deg g\in\mathbb Z\)。
+\end{lemma}
+\begin{proof}
+	在单位元处，与坐标 \(x_1,x_2,x_3\) 对应的切向量为
+	\[
+		I=\begin{pmatrix}\mathrm i&0\\0&-\mathrm i\end{pmatrix},\qquad
+		J=\begin{pmatrix}0&1\\-1&0\end{pmatrix},\qquad
+		K=\begin{pmatrix}0&\mathrm i\\\mathrm i&0\end{pmatrix}.
+	\]
+	它们满足 \(I^2=J^2=K^2=-1\)、\(IJ=K\)、\(JK=I\)、\(KI=J\)，逆序乘积变号。三次外乘在 \((I,J,K)\) 上取值是六个交错矩阵乘积之和；每个交错乘积都等于 \(-1\)，所以
+	\[
+		\operatorname{tr}(\vartheta^3)(I,J,K)=6\operatorname{tr}(-1)=-12.
+	\]
+	在点 \((1,0,0,0)\)，这组切基为球面的正向标准正交基。左乘单位四元数保持 \(\mathbb R^4\) 的 Euclid 范数，因而保持球面圆度量；它随单位四元数连续变化，且恒等左乘保向，所以全部左乘保向。\(\vartheta\) 与圆体积形式均左不变，刚才在单位元的计算遂给出
+	\[
+		-\frac1{24\pi^2}\operatorname{tr}(\vartheta^3)=\frac1{2\pi^2}\,\mathrm{vol}_{S^3}.
+	\]
+	为核对常数，球坐标 \((\cos\chi,\sin\chi\,u)\)，\(u\in S^2\)、\(0\le\chi\le\pi\)，给出体积
+	\[
+		\operatorname{vol}(S^3)=\operatorname{area}(S^2)\int_0^\pi\sin^2\chi\,\mathrm d\chi=4\pi\cdot\frac\pi2=2\pi^2.
+	\]
+	故 \(\omega\) 的积分为一。最后使用\cref{g2:thm:degree-comparison}：该定理在闭连通同维定向流形之间将归一化顶次形式的拉回积分识别为基本类所定义的整数映射度。这里两端恰为三维，故所有条件满足。
+\end{proof}
+
+\begin{theorem}\label{g2:thm:chern-simons-gauge-integer}
+	设 \(M\) 为连通闭定向光滑三维流形，\(A\) 为平凡 \(\operatorname{SU}(2)\) 丛的一张标架下的光滑联络矩阵。对任意光滑规范变换 \(g:M\to\operatorname{SU}(2)\)，令
+	\[
+		A^g=g^{-1}Ag+g^{-1}\mathrm dg,\qquad \theta=g^{-1}\mathrm dg,\qquad B=g^{-1}Ag.
+	\]
+	则有形式恒等式
+	\begin{equation}\label{g2:eq:chern-simons-gauge-formula}
+		\operatorname{CS}(A^g)-\operatorname{CS}(A)
+		=-\frac1{8\pi^2}\mathrm d\operatorname{tr}(\theta\wedge B)+g^*\omega,
+	\end{equation}
+	并且
+	\begin{equation}\label{g2:eq:chern-simons-integer-shift}
+		S(A^g)-S(A)=\deg g.
+	\end{equation}
+	于是 \(S(A)\bmod\mathbb Z\in\mathbb R/\mathbb Z\) 与全局标架无关，并在规范变换下不变。
+\end{theorem}
+\begin{proof}
+	记 \(R=g^{-1}(\mathrm dA)g\)。微分乘积法则和 \(\mathrm d(g^{-1})=-g^{-1}(\mathrm dg)g^{-1}\) 给出
+	\[
+		\mathrm d\theta=-\theta^2,\qquad \mathrm dB=R-\theta B-B\theta.
+	\]
+	为把所有符号看清，先省略公因子 \(1/(8\pi^2)\)。迹中三个一次形式作循环置换时符号为正，因此展开 \(B+\theta\) 的三次项后，三个含两个 \(B\) 的项相同，三个含两个 \(\theta\) 的项也相同。于是
+	\[
+	\begin{aligned}
+		&\operatorname{tr}\left((B+\theta)\mathrm d(B+\theta)+\frac23(B+\theta)^3\right)
+		-\operatorname{tr}\left(A\mathrm dA+\frac23A^3\right)\\
+		&\qquad=\operatorname{tr}(\theta R-B\theta^2)-\frac13\operatorname{tr}(\theta^3).
+	\end{aligned}
+	\]
+	另一方面，
+	\[
+		\mathrm d\operatorname{tr}(\theta B)
+		=\operatorname{tr}(-\theta^2B-\theta(R-\theta B-B\theta))
+		=-\operatorname{tr}(\theta R)+\operatorname{tr}(B\theta^2).
+	\]
+	代回即得式\eqref{g2:eq:chern-simons-gauge-formula}，因为 \(-\operatorname{tr}(\theta^3)/(24\pi^2)=g^*\omega\)。在闭流形上，恰当三次形式的积分由 Stokes 定理为零；\cref{g2:lem:su-two-integral-three-form}将剩下的一项化为 \(\deg g\)。因此变换前后的实数相差整数，模整数的值不变。
+\end{proof}
+
+取 \(M=S^3=\operatorname{SU}(2)\)、\(A=0\) 和 \(g(q)=q\)，便得到
+\[
+	A^g=\vartheta,\qquad F_{A^g}=0,\qquad S(0)=0,\qquad S(\vartheta)=1.
+\]
+两个平坦联络在规范变换下等价，但在各自矩阵表达中得到的实数不同。整数模糊由换标架的同伦类产生；把数值取到 \(\mathbb R/\mathbb Z\) 后，这两份表达才一致。
 
 \subsection{边界、延拓和相对不变量}
 \label{g2:subsec:2204:03}
-待撰写
+有边界时，式\eqref{g2:eq:chern-simons-gauge-formula}中的恰当项会留下边界积分。另一方面，在四维内部积分 \(c_2(\nabla)\)，也自然要求在三维边界记录一个陈--Simons 修正。下面把这两件事组织为相对不变量。所有边界都取外法向优先定向，所用 Stokes 定理是第一卷第14.4节的版本：对紧有向光滑流形及光滑至边界的形式，\(\int_W\mathrm d\eta=\int_{\partial W}\eta\)。
+
+\begin{proposition}\label{g2:prop:relative-chern-simons-integer}
+	设 \(W\) 为紧定向光滑四维流形，\(M=\partial W\)，\(E\to W\) 为具有 \(\operatorname{SU}(2)\) 结构的复秩二光滑丛，并给边界丛选一张 \(\operatorname{SU}(2)\) 标架 \(s\)。对任意相容光滑联络 \(\nabla\)，记其边界矩阵为 \(A_s\)。则
+	\begin{equation}\label{g2:eq:relative-second-chern-number}
+		N(W,E,s)=\int_W c_2(\nabla)-\int_M\operatorname{CS}(A_s)
+	\end{equation}
+	是一个只依赖 \((W,E,s)\) 的整数。若 \(s'=sg\)，其中 \(g:M\to\operatorname{SU}(2)\)，则
+	\[
+		N(W,E,s')=N(W,E,s)-\sum_{M_\alpha\subset M}\deg(g|_{M_\alpha}).
+	\]
+\end{proposition}
+\begin{proof}
+	\cref{g2:thm:collar-neighborhood}在紧光滑边界附近给出乘积领圈。先把边界标架延到这条领圈：沿领圈的法向区间作平行移动，便把边界上的丛识别为领圈上的乘积。于是 \(s\) 在领圈上确定平凡联络。联络构成仿射空间，用只依赖领参数的光滑截断将给定联络与这个平凡联络插值，可得到一个联络 \(\nabla^0\)，使它在较小领圈上恰为 \(\mathrm d\)。
+
+	对 \(\nabla^0\) 与 \(\nabla\) 使用转移公式，再用 Stokes 定理，得到
+	\[
+	\begin{aligned}
+		\int_Wc_2(\nabla)-\int_Wc_2(\nabla^0)
+		&=\int_M\operatorname{CS}_{c_2}(\nabla^0|_M,\nabla|_M)\\
+		&=\int_M\operatorname{CS}(A_s).
+	\end{aligned}
+	\]
+	因此式\eqref{g2:eq:relative-second-chern-number}等于 \(\int_Wc_2(\nabla^0)\)。将 \(W\) 与反向副本 \(-W\) 沿边界粘合为闭定向四维流形 \(X\)。在第二份 \(-W\) 上取平凡复秩二丛，并用 \(s\) 与第一份 \(E\) 粘合，得到 \(E_X\)。两边联络在领圈标架中都为零，故光滑粘合为 \(\nabla_X\)。于是
+	\[
+		\int_Wc_2(\nabla^0)=\int_Xc_2(\nabla_X)
+		=\langle c_2(E_X),[X]\rangle\in\mathbb Z.
+	\]
+	最后一个等式是\cref{g2:thm:chern-weil-chern-comparison}，其中整数陈类先映到实上同调，再由积分与基本类配对。闭合后的丛 \(E_X\) 由边界粘合数据确定；改变领圈识别只给出同构的丛，因为两种向内延拓可沿领参数收缩回同一边界标架。因此右侧与联络及辅助选择无关。
+
+	改用 \(s'=sg\) 时，内部曲率积分不变，边界矩阵由 \(A_s\) 变为 \(A_s^g\)。对每个边界分支应用式\eqref{g2:eq:chern-simons-integer-shift}，便得到所列变化公式。边界方向已进入各分支映射度的定义。
+\end{proof}
+
+特别地，如果边界上的联络有一份四维延拓，那么
+\begin{equation}\label{g2:eq:chern-simons-extension-mod-integer}
+	S(A_s)\equiv\int_Wc_2(\nabla)\pmod{\mathbb Z}.
+\end{equation}
+两份延拓的内部积分相差整数。也可把两份填充沿共同边界粘合，第二份反向，差便等于闭四维流形上的陈数。若需先使联络在领圈成为边界联络的乘积，可用保持边界值的插值；转移形式在边界的限制为零，所以此调整不改变四维积分。这个论证说明，整性来自闭合后的整数拓扑类，而边界联络仍决定模整数的连续数值。
+
+\ProseParagraphBreak
+
+相对上同调也直接记录同一个修正。对包含 \(j:M\hookrightarrow W\)，采用复形
+\[
+	\mathcal C^r=\Omega^r(W)\oplus\Omega^{r-1}(M),\qquad
+	\mathrm D(\alpha,\beta)=(\mathrm d\alpha,j^*\alpha-\mathrm d\beta).
+\]
+有 \(\mathrm D^2=0\)。这个复形与边界限制为零的相对形式复形计算同一上同调：边界形式可沿领圈延拓并用截断补零，因而限制映射 \(\Omega^*(W)\to\Omega^*(M)\) 逐次满射；由核的短正合列与上述复形的长正合列比较，恒等映射在外侧给出同构，中间也为同构。结合\cref{g2:thm:de-rham-support}，它就是 \(H^*(W,M;\mathbb R)\) 的一个模型。
+
+\ProseParagraphBreak
+
+成对形式 \((c_2(\nabla),\operatorname{CS}(A_s))\) 是闭元，因为边界上 \(\mathrm d\operatorname{CS}(A_s)=j^*c_2(\nabla)\)。其相对求值为
+\[
+	\langle(\alpha,\beta),[W,M]\rangle=\int_W\alpha-\int_M\beta.
+\]
+对一个余边界 \(\mathrm D(\eta,\xi)\)，右端由两次 Stokes 公式为零，所以只依赖相对类。式\eqref{g2:eq:relative-second-chern-number}正是这个求值；边界的平凡化说明了为什么这里需要相对数据。
 
 \subsection{与规范场和指标理论的接口}
 \label{g2:subsec:2204:04}
-待撰写
+三维陈--Simons 积分首先给出一个具体的变分问题。将所有 \(\mathfrak{su}(2)\) 值一次形式看成平凡丛的联络空间，允许它们作任意光滑变化。
+
+\begin{proposition}\label{g2:prop:chern-simons-variation}
+	设 \(M\) 为闭定向光滑三维流形，\(A\) 为平凡 \(\operatorname{SU}(2)\) 丛的联络矩阵，\(a\in\Omega^1(M;\mathfrak{su}(2))\)。则
+	\begin{equation}\label{g2:eq:chern-simons-variation}
+		\left.\frac{\mathrm d}{\mathrm dt}\right|_{t=0}S(A+ta)
+		=\frac1{4\pi^2}\int_M\operatorname{tr}(a\wedge F_A).
+	\end{equation}
+	因此 \(S\) 的临界联络恰为平坦联络。
+\end{proposition}
+\begin{proof}
+	对式\eqref{g2:eq:su-two-chern-simons-density}求导，用迹的分次循环律，得到
+	\[
+	\begin{aligned}
+		\delta\operatorname{tr}\left(A\mathrm dA+\frac23A^3\right)
+		&=\operatorname{tr}(a\mathrm dA+A\mathrm da+2aA^2)\\
+		&=2\operatorname{tr}(aF_A)-\mathrm d\operatorname{tr}(Aa).
+	\end{aligned}
+	\]
+	闭流形上的最后一项积分为零，故得到变分公式。若 \(F_A=0\)，所有变分都为零。反过来，给 \(M\) 临时选一个 Riemann 度量，并对 \(\mathfrak{su}(2)\) 取正定内积 \(\langle X,Y\rangle=-\operatorname{tr}(XY)\)。对实二次形式定义一次形式 \(*\gamma\)，使 \(\beta\wedge *\gamma=\langle\beta,\gamma\rangle\mathrm{vol}_M\) 对所有二次形式 \(\beta\) 成立；在正向正交余标架中，它将 \(e^1\wedge e^2\) 送到 \(e^3\)，其余两项循环处理，故逐点存在且唯一。对 Lie 代数值形式逐个系数应用它。若处处驻定，可取 \(a=*F_A\)。因为一次与二次形式交换时符号为正，
+	\[
+		0=\int_M\operatorname{tr}((*F_A)\wedge F_A)=-\int_M|F_A|^2\,\mathrm{vol}_M.
+	\]
+	非负连续函数的积分为零迫使 \(F_A=0\)。辅助度量只用于检验变分泛函非退化，原来的作用量不含这个选择。
+\end{proof}
+
+实数作用量在规范变换下可增加整数，因此对整数 \(\ell\)，相位
+\[
+	\exp\bigl(2\pi\mathrm i\ell S(A)\bigr)
+\]
+在规范变换下不变。整数条件可以直接在 \(S^3\) 上检验：恒等映射产生一次单位平移，要求相位不变就有 \(e^{2\pi\mathrm i\ell}=1\)。如果流形有边界，变分中还保留 \(-\int_{\partial M}\operatorname{tr}(Aa)/(8\pi^2)\)；固定边界联络使 \(a\) 的切向限制为零，从而消去这一项。边界条件因此是变分问题实际数据的一部分。
+
+\ProseParagraphBreak
+
+指标理论会使用另一种方便相加的曲率组合。对复向量丛的联络定义有限次数意义下的形式
+\begin{equation}\label{g2:eq:chern-character-curvature-form}
+	\operatorname{ch}(\nabla)=\operatorname{tr}\exp\left(\frac{\mathrm iF}{2\pi}\right)
+	=\operatorname{rank}E+\sum_{j\ge1}\frac1{j!}\left(\frac{\mathrm i}{2\pi}\right)^j\operatorname{tr}(F^j).
+\end{equation}
+在给定有限维底流形上，超过维数的形式自动为零，所以这里只需有限和。每一项来自不变多项式，因而闭，且其上同调类与联络无关。它称为\term[chen-tezheng-xingshi]{陈特征形式}[Chern character form]。
+
+\ProseParagraphBreak
+
+直和曲率是分块对角矩阵，所以 \(\operatorname{ch}(\nabla^E\oplus\nabla^F)=\operatorname{ch}(\nabla^E)+\operatorname{ch}(\nabla^F)\)。张量丛曲率为 \(F_E\otimes I+I\otimes F_F\)，两个偶次矩阵形式可交换，指数因而分解，迹也分解，得到张量乘法公式。在分裂空间上，若陈根为 \(x_j\)，则其上同调类为 \(\sum_j e^{x_j}\)。分裂拉回单射使这个表达返回原空间；前三项为
+\[
+	\operatorname{ch}(E)=\operatorname{rank}E+c_1(E)+\frac12\bigl(c_1(E)^2-2c_2(E)\bigr)+\cdots
+\]
+的实或复系数像。特别在刚才的 \(\operatorname{SU}(2)\) 模型中，四次陈特征分量等于 \(-c_2\)，其转移形式就是 \(-\operatorname{CS}(A)\)。
+
+\ProseParagraphBreak
+
+第24章将把这种可加表达放进拓扑 K 理论。另一方面，解析指标是适当 Fredholm 算子的 \(\dim\ker D-\dim\operatorname{coker}D\)；把它与示性形式积分联系起来，需要构造算子、证明 Fredholm 性并建立相应指标定理，第三卷第17章将给出所选版本及其证明范围。本章已经提供其中的曲率表达、拓扑归一化和改变联络时的边界项。对 Euler 形式，\cref{g2:thm:chern-weil-euler-comparison}与上一章的切丛 Euler 求值直接给出闭定向偶维流形上的 Euler 示性数积分；一般椭圆算子的指标则还需要相应的解析输入。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

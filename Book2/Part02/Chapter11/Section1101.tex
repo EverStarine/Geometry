@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 11.1 几何滤过及第二页
 % 纲要位置：几何学计划纲要.md，第 1433 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,238 @@
 \section{几何滤过及第二页}
 \label{g2:sec:1101}
 
-待撰写
+在乘积 \(B\times F\) 中，基底的一条 \(p\) 维胞腔与纤维中的一个 \(q\) 维类共同贡献总次数 \(p+q\)。一般纤维化也能逐胞腔作这种分解，但相邻胞腔的系数要经过纤维运输，高维附着还会产生新的微分。本节把这两个现象分别落实为第二页中的局部系数和后续页上的 \(\mathrm d_r\)。
 
 \subsection{基底骨架的逆像}
 \label{g2:subsec:1101:01}
-待撰写
+
+设 \(p:E\to B\) 是纤维化，\(B\) 为连通 CW 复形，选定顶点 \(b_0\) 及非空纤维 \(F=p^{-1}(b_0)\)。记 \(B^{(s)}\) 为 \(s\) 骨架，令
+\begin{equation}\label{g2:eq:serre-skeletal-filtration}
+	E_s=p^{-1}(B^{(s)}),\qquad E_s=\varnothing\quad(s<0).
+\end{equation}
+\(E_s\) 中保留了全部纤维方向，只限制基底方向的维数。例如 \(E_0\) 是各顶点上纤维的不交并，通常远非零维空间。\symidx{\(E_s=p^{-1}(B^{(s)})\)：纤维化的基底骨架滤过}
+
+\ProseParagraphBreak
+
+以含幺交换环 \(R\) 为系数，在奇异上链上取
+\[
+	\mathcal F^a C^n(E;R)=C^n(E,E_{a-1};R).
+\]
+这里右端是对 \(E_{a-1}\) 中所有奇异 \(n\) 单形取零的上链。限制映射给出短正合列
+\[
+	0\longrightarrow C^\bullet(E,E_a;R)\longrightarrow C^\bullet(E,E_{a-1};R)
+	\longrightarrow C^\bullet(E_a,E_{a-1};R)\longrightarrow0.
+\]
+末项满射的理由很具体：先给 \(E_a\) 中的单形赋值，再在其余单形上补零。由\cref{g2:prop:filtered-exact-couple}，这组正合列产生谱序列，其第一页是
+\begin{equation}\label{g2:eq:serre-first-page}
+	E_1^{a,b}=H^{a+b}(E_a,E_{a-1};R),\qquad
+	\mathrm d_1:E_1^{a,b}\longrightarrow E_1^{a+1,b}.
+\end{equation}
+\(\mathrm d_1\) 也可直接看成三元组 \((E_{a+1},E_a,E_{a-1})\) 的连接同态。第一指标记录基底胞腔维数；第二指标为何会成为纤维的上同调次数，需要计算这些相对群。
+
+\ProseParagraphBreak
+
+下面先使用 Hurewicz 纤维化，即允许任意拓扑参数空间的同伦提升。它使一整条纤维能够同时沿道路移动。为把计算用于第8章的 Serre 纤维化，先补充一个关于奇异同调的事实；它也解释为何路径空间模型足以承担本章计算。
+
+\begin{lemma}[弱等价与奇异同调]\label{g2:lem:weak-equivalence-homology}
+	设 \(f:X\to Y\) 是拓扑空间之间的弱同伦等价。则对任意阿贝尔群 \(A\)，\(f\) 诱导全部奇异同调及上同调群的同构
+	\[
+		H_n(X;A)\xrightarrow{\cong}H_n(Y;A),\qquad
+		H^n(Y;A)\xrightarrow{\cong}H^n(X;A).
+	\]
+\end{lemma}
+\begin{proof}
+	把 \(f\) 换成映射柱中的包含 \(X\subset M_f\)。映射柱收缩到 \(Y\)，故所有相对同伦群 \(\pi_i(M_f,X)\) 为零，每个道路分支也都遇到 \(X\)。我们说明任意整数相对奇异圈都表示零类。
+
+	一个相对奇异圈只有有限个带整数系数的单形。按系数的绝对值复制单形，并用正、负号记录其定向；把边界中互相抵消的同一个面两两粘合，未配对的面均映入 \(X\)。所得有限胞腔对 \((K,L)\) 带有映射 \((K,L)\to(M_f,X)\)，原相对圈是这个有限模型上一条相对链的像。这里允许不同面之间作同一性识别；各开单形仍给出有限 CW 结构，\(L\) 由映入 \(X\) 的未配对面及其各面构成。由\cref{g2:lem:cellular-compression}，此映射可以固定 \(L\) 同伦到 \(X\)。相对棱柱公式表明原圈的类等于其终映射下的类，后者为零。因此 \(H_n(M_f,X;\mathbb Z)=0\)；零次同样由道路分支条件得到。
+
+	空间对长正合列给出全部整数同调同构。最后应用\cref{g2:thm:uct-homology,g2:thm:uct-cohomology}的自然性，Hom、张量、Ext 和 Tor 两端均为同构，因而任意系数的中间项也为同构。
+\end{proof}
+
+对 Serre 纤维化 \(p\)，\cref{g2:prop:fibration-replacement}给出同一基底上的 Hurewicz 纤维化 \(\widehat p:\widehat E\to B\) 及映射 \(j:E\to\widehat E\)，其中 \(j\) 是同伦等价。比较两条纤维化同伦长正合列，\(j_b:F_b\to\widehat F_b\) 在每个纤维上是弱同伦等价；低阶分支的对应由道路提升的终点给出。再把\cref{g2:prop:fibration-comparison}用于每个骨架上的拉回，得到 \(E_s\to\widehat E_s\) 的弱同伦等价。由刚证的引理及空间对正合列，\((E_s,E_{s-1})\to(\widehat E_s,\widehat E_{s-1})\) 诱导全部相对同调与上同调同构，并与连接映射交换。因此替换前后的第一页以及各次导出页一致。
 
 \subsection{纤维局部平凡模型与相对群}
 \label{g2:subsec:1101:02}
-待撰写
+
+纤维丛在坐标邻域内有实际的乘积表示。Hurewicz 纤维化未必有这样的同胚，但拉回到一个圆盘后具有保持基底的纤维同伦乘积模型；计算相对同调只需后一性质。
+
+\begin{lemma}[圆盘上的纤维模型]\label{g2:lem:fibration-disk-model}
+	设 \(\pi:V\to D^a\) 为 Hurewicz 纤维化，\(F_0=\pi^{-1}(0)\) 非空。则 \(V\to D^a\) 与 \(D^a\times F_0\to D^a\) 纤维同伦等价。特别地，对任意系数环 \(R\)，选定圆盘的定向后有
+	\[
+		H_{a+b}(V,\pi^{-1}S^{a-1};R)\cong H_b(F_0;R),\qquad
+		H^{a+b}(V,\pi^{-1}S^{a-1};R)\cong H^b(F_0;R).
+	\]
+	在 \(a=0\) 时边界取空集；在 \(b<0\) 时两边均为零。
+\end{lemma}
+\begin{proof}
+	对 \(x\in D^a\)，从中心到 \(x\) 取径向道路 \(t\mapsto tx\)。用 \(D^a\times F_0\) 作参数空间提升这族道路，得到保持基底的映射 \(D^a\times F_0\to V\)。反向径向道路的提升给出 \(V\to D^a\times F_0\)。先去再回的道路可固定两端收缩为常值道路；提升这一双参数同伦，得到两个复合与恒等映射之间的纤维同伦。不同提升之间也由相对提升作同样的比较。所有终端同伦都保持基底，故同时保留边界上的子空间。
+
+	于是空间对等价于 \((D^a\times F_0,S^{a-1}\times F_0)\)。其相对链同伦类型是纤维链复形向上平移 \(a\) 次：反复把圆盘沿两个半球切开，三元组连接映射和切除每次将相对次数降低一，最终到达 \(H_b(F_0;R)\)。这正是相对悬挂同构的 \(a\) 次复合。上链反向使用同一连接映射得到上同调同构，也可写成
+	\[
+		v\longmapsto u_a\times v,
+	\]
+	其中 \(u_a\in H^a(D^a,S^{a-1};R)\) 是所选定向的生成元。改变圆盘定向使这两个同构同时反号。
+\end{proof}
+
+现在对 \(B\) 的每个有向 \(a\) 胞腔 \(e_\alpha^a\) 选特征映射 \(\chi_\alpha:D^a\to B^{(a)}\)，记中心像为 \(b_\alpha\)，拉回的总空间及其边界为 \((V_\alpha,W_\alpha)\)。这些空间对映入 \((E_a,E_{a-1})\)，并给出
+\begin{equation}\label{g2:eq:serre-cell-relative-groups}
+\begin{aligned}
+	H_{a+b}(E_a,E_{a-1};R)&\cong\bigoplus_\alpha H_b(F_{b_\alpha};R),\\
+	H^{a+b}(E_a,E_{a-1};R)&\cong\prod_\alpha H^b(F_{b_\alpha};R).
+\end{aligned}
+\end{equation}
+同调取直和，因为一条链只用有限个胞腔；上同调取直积，因为一个上链可以在全部胞腔上赋值。
+
+\ProseParagraphBreak
+
+说明这里如何使用切除。\(B^{(a-1)}\) 在 \(B^{(a)}\) 中有一个由各胞腔外侧径向环带组成的邻域，径向压缩使该邻域形变收缩到 \(B^{(a-1)}\)。把压缩提升到总空间，邻域逆像与 \(E_{a-1}\) 同伦等价；提升不必逐点固定 \(E_{a-1}\)，但限制在它上面的同伦始终留在其中，足以得到这个同伦等价。切去较小环带后，各胞腔内部的逆像彼此分离。因此切除把相对群拆成各 \((V_\alpha,W_\alpha)\) 的群，再应用圆盘引理便得到\eqref{g2:eq:serre-cell-relative-groups}。对无限多个胞腔，这个论证在链上逐条进行，任意链涉及的基底紧像只经过有限子复形，见\cref{g2:thm:finite-subcomplex}；上链则由同一小链比较取 Hom，得到所列直积。
+
+\ProseParagraphBreak
+
+由此已经看出谱序列位于第一象限：\(a<0\) 或 \(b<0\) 时第一页为零，随后各页也为零。下一步要确定不同胞腔所携带的 \(H^b(F_{b_\alpha};R)\) 应怎样比较。
 
 \subsection{运输作用及局部系数}
 \label{g2:subsec:1101:03}
-待撰写
+
+给基底中的道路 \(\gamma:b\to c\)，Hurewicz 提升把整条纤维沿 \(\gamma\) 移动，得到 \(T_\gamma:F_b\to F_c\)。反向道路给出同伦逆，定端点道路同伦给出映射同伦；拼接道路则满足
+\[
+	T_{\gamma*\eta}\simeq T_\eta T_\gamma.
+\]
+这里仍按先走 \(\gamma\)、再走 \(\eta\) 的顺序。因而纤维同调组成\cref{g2:def:local-system}意义下的局部系统
+\[
+	\mathcal H_b(F;R)_x=H_b(F_x;R),\qquad
+	\mathcal H_b(F;R)([\gamma])=(T_\gamma)_*.
+\]
+纤维上同调也组成协变的局部系统，但运输必须把逆映射的拉回写进去：
+\begin{equation}\label{g2:eq:serre-cohomology-transport}
+	\mathcal H^b(F;R)_x=H^b(F_x;R),\qquad
+	\mathcal H^b(F;R)([\gamma])=(T_{\bar\gamma})^*=(T_\gamma^*)^{-1}.
+\end{equation}
+因为 \(T_\gamma^*\) 本身从终点纤维的上同调指向起点，取逆后才与道路方向一致。一般 Serre 纤维化通过上一小节的 \(j_x\) 所诱导同构，把这些局部系统搬回实际纤维的同调与上同调。\symidx{\(\mathcal H_b(F;R),\mathcal H^b(F;R)\)：纤维同调与上同调局部系统}
+
+\ProseParagraphBreak
+
+选取从 \(b_0\) 到各点的道路，可以把所有纤维群识别为 \(H_b(F;R)\) 或 \(H^b(F;R)\)。不同道路相差基点环路，所以这些识别与选择无关，恰好要求 \(\pi_1(B,b_0)\) 的相应作用平凡。基底单连通保证这一点；有些非单连通基底也满足它。例如定向球丛的顶维纤维同调作用平凡，而反转纤维定向的绕行给出乘 \(-1\)。
+
+\begin{proposition}[第一张微分]\label{g2:prop:serre-cellular-first-differential}
+	设 \(p:E\to B\) 是基底为连通 CW 复形、纤维非空的 Serre 纤维化，\(R\) 为含幺交换环。在\eqref{g2:eq:serre-cell-relative-groups}的识别下，\((E_1^{\bullet,b},\mathrm d_1)\) 是 \(B\) 以 \(\mathcal H^b(F;R)\) 为系数的胞腔上链复形。对应的同调第一张微分是以 \(\mathcal H_b(F;R)\) 为系数的胞腔边界。
+\end{proposition}
+\begin{proof}
+	先考察一条 \((a+1)\) 胞腔怎样沿边界经过某条 \(a\) 胞腔。第一张同调微分是
+	\[
+		H_{a+1+b}(E_{a+1},E_a;R)\xrightarrow{\partial}H_{a+b}(E_a;R)
+		\longrightarrow H_{a+b}(E_a,E_{a-1};R).
+	\]
+	在基底上，这正是\cref{g2:thm:cellular-boundary-degree}计算胞腔关联数所用的“取边界，再压去低一层”的构造。先把附着球面在目标胞腔内部的逆像分成有限个有向小圆盘；通过胞腔逼近与局部度的同伦表示，每个小圆盘对该胞腔贡献 \(+1\) 或 \(-1\)，余下部分不进入它的内部。圆盘引理把每份纤维类搬到相应小圆盘上。沿附着映射把该类送往目标胞腔时，还要沿连接两个中心的道路作纤维运输。因此每份贡献是相应的关联符号乘上该道路的 \((T_\gamma)_*\)。这就是\cref{g2:thm:twisted-cellular-comparison}中的胞腔边界：在万有覆盖中记录各条道路所给的群环系数，再让它作用于系数纤维。
+
+	这个论证的符号由一维情形固定。区间的边界是终点减起点；在端点纤维中，一条相对类的边界对应一对互为相反数的类。交换端点便使其反号。高维的圆盘同构由这些连接映射反复组成，故每次反转基底定向也恰好乘 \(-1\)，与胞腔关联数一致。
+
+	对上同调，把上述连接与相对化箭头反向，纤维映射变成拉回。按\eqref{g2:eq:serre-cohomology-transport}，这恰好是局部上链余边界中的逆运输。若运输平凡，公式便简化为
+	\[
+		(\mathrm d_1u)(e_\beta^{a+1})=\sum_\alpha[e_\beta^{a+1}:e_\alpha^a]\,u(e_\alpha^a).
+	\]
+	每个目标胞腔的附着球面具有紧像，故只涉及有限子复形；即使第一页是无限直积，每一个输出坐标仍只依赖有限个输入坐标。这说明刚才逐胞腔给出的公式确定整个上链同态，没有把直积误当成直和。一般作用时在每项加入已述逆运输，得到局部系数的同一公式。
+\end{proof}
 
 \subsection{第二页的识别与收敛条件}
 \label{g2:subsec:1101:04}
-待撰写
+
+第一页沿水平方向取上同调，便得到基底的局部系数上同调。由这一构造得到的序列称为\term[Serre puxulie]{Serre 谱序列}[Serre spectral sequence]。下面同时陈述两种次数约定，后面计算环结构主要用上同调，有限生成问题则用同调。
+
+\begin{theorem}[Serre 谱序列]\label{g2:thm:serre-spectral-sequence}
+	设 \(p:E\to B\) 是 Serre 纤维化，\(B\) 为连通 CW 复形，纤维 \(F=p^{-1}(b_0)\) 非空，\(R\) 为含幺交换环。基底骨架的逆像给出第一象限谱序列
+	\begin{equation}\label{g2:eq:serre-cohomology-e2}
+		E_2^{a,b}=H^a(B;\mathcal H^b(F;R))\ \Longrightarrow\ H^{a+b}(E;R),\qquad
+		\mathrm d_r:E_r^{a,b}\longrightarrow E_r^{a+r,b-r+1}.
+	\end{equation}
+	收敛的含义是：在每个总次数 \(n\) 上有有限递减滤过
+	\[
+		H^n(E;R)=\mathcal F^0H^n\supset\cdots\supset\mathcal F^{n+1}H^n=0,
+	\]
+	其中
+	\begin{equation}\label{g2:eq:serre-target-filtration}
+		\mathcal F^aH^n=\ker\bigl(H^n(E;R)\longrightarrow H^n(E_{a-1};R)\bigr),
+		\qquad E_\infty^{a,n-a}\cong\mathcal F^aH^n/\mathcal F^{a+1}H^n.
+	\end{equation}
+	同调版采用递增滤过及下指标，写作
+	\begin{equation}\label{g2:eq:serre-homology-e2}
+		E^2_{a,b}=H_a(B;\mathcal H_b(F;R))\ \Longrightarrow\ H_{a+b}(E;R),\qquad
+		\mathrm d_r:E^r_{a,b}\longrightarrow E^r_{a-r,b+r-1}.
+	\end{equation}
+	其有限滤过为 \(\mathcal F_aH_n=\operatorname{im}(H_n(E_a;R)\to H_n(E;R))\)，满足 \(\mathcal F_{-1}H_n=0\)、\(\mathcal F_nH_n=H_n(E;R)\)，且 \(E^\infty_{a,n-a}\cong\mathcal F_aH_n/\mathcal F_{a-1}H_n\)。两种谱序列均有 \(E_{r+1}=H(E_r,\mathrm d_r)\)，并在固定位置上从有限页起稳定。
+\end{theorem}
+\begin{proof}
+	第一页及微分已由\cref{g2:prop:serre-cellular-first-differential}识别。\cref{g2:thm:twisted-cellular-comparison}把相应胞腔复形的上同调、同调识别为局部系数奇异群，因而给出两个第二页。上同调微分的双次数来自\cref{g2:prop:filtered-exact-couple}；同调中连接映射降低总次数一，并使基底指标从 \(a\) 走向 \(a-r\)，故剩下的纤维指标增加 \(r-1\)。导出正合偶定理给出逐页取同调的关系。
+
+	收敛要分别处理基底有限维和无限维的情形。若 \(B=B^{(s)}\)，骨架滤过只有 \(s+1\) 层，上链滤过在每一度都有限，\cref{g2:thm:filtered-complex-convergence}适用。由空间对正合列，诱导滤过的像
+	\[
+		\operatorname{im}\bigl(H^n(E,E_{a-1};R)\to H^n(E;R)\bigr)
+	\]
+	正是\eqref{g2:eq:serre-target-filtration}的核。同调的相同证明把子复形的像作为递增滤过，得到所述商群。
+
+	对无限维基底，先由\eqref{g2:eq:serre-cell-relative-groups}知
+	\[
+		H_k(E_s,E_{s-1};\mathbb Z)=0\qquad(k<s).
+	\]
+	相对同调长正合列因此说明：\(H_n(E_s;\mathbb Z)\to H_n(E_{s+1};\mathbb Z)\) 在 \(s>n\) 时为同构，在 \(s=n\) 时为满射。每条有限奇异链投影到基底后具有紧像，落在有限子复形中；表示边界关系的链也如此。故
+	\[
+		\varinjlim_s H_n(E_s;\mathbb Z)\cong H_n(E;\mathbb Z),
+	\]
+	并且 \(H_n(E_s;\mathbb Z)\to H_n(E;\mathbb Z)\) 在 \(s>n\) 时已经稳定为同构。由同调及上同调万有系数定理，任意 \(R\) 系数也有
+	\[
+		H_n(E_s;R)\cong H_n(E;R),\qquad H^n(E;R)\cong H^n(E_s;R)\qquad(s>n).
+	\]
+	此外 \(H_n(E_n;R)\to H_n(E;R)\) 满射，而 \(H_k(E,E_n;\mathbb Z)=0\) 对 \(k\le n\) 成立；上同调万有系数定理给出 \(H^n(E,E_n;R)=0\)。这分别证明 \(\mathcal F_nH_n=H_n\) 和 \(\mathcal F^{n+1}H^n=0\)。
+
+	最后比较有限骨架的谱序列。任意固定页号和双次数只涉及长正合列图中的有限段；把基底截在足够高的骨架，不改变这些群及其导出映射。第一象限还保证：在总次数 \(n\) 的固定位置上，当 \(r>\max\{a,b+1\}\) 时，上同调中射入、射出的微分都为零；同调也有对应的有限界。因此可先取足够高的有限骨架，用有限滤过的商群识别，再用刚证的稳定同构返回 \(E\)。限制映射保持所有相对正合列，故这些识别同时保持诱导滤过，得到\eqref{g2:eq:serre-target-filtration}和同调版的结论。
+\end{proof}
+
+乘法的构造还需要在链上同时看见基底滤过和胞腔维数。下面的模型将两者放在同一 CW 复形中。
+
+\begin{lemma}[保持滤过的胞腔模型]\label{g2:lem:serre-filtered-cw-model}
+	设 \(p:E\to B\) 满足\cref{g2:thm:serre-spectral-sequence}的条件，\(E_s=p^{-1}(B^{(s)})\)。存在 CW 复形及子复形滤过
+	\[
+		X_0\subset X_1\subset\cdots\subset X=\bigcup_sX_s
+	\]
+	和相容映射 \(h_s:X_s\to E_s\)，使每个 \(h_s\) 及 \(h:X\to E\) 都是弱同伦等价；\(X_s\setminus X_{s-1}\) 中的胞腔维数均至少为 \(s\)。因此胞腔上链的滤过
+	\[
+		\mathcal F^sC_{\mathrm{cell}}^n(X;R)=C_{\mathrm{cell}}^n(X,X_{s-1};R)
+	\]
+	满足 \(\mathcal F^0C_{\mathrm{cell}}^n=C_{\mathrm{cell}}^n\)、\(\mathcal F^{n+1}C_{\mathrm{cell}}^n=0\)，且其谱序列从第一页起与上述骨架谱序列同构。
+\end{lemma}
+\begin{proof}
+	对 \(s\ge1\)，\((E_s,E_{s-1})\) 是 \((s-1)\) 连通对。事实上，一个 \(i\) 维相对圆盘映射在 \(i<s\) 时，投影到基底后可固定边界同伦进入 \(B^{(s-1)}\)：这是\cref{g2:prop:cell-dimension-connectivity,g2:lem:disk-compression}对只附着 \(s\) 胞腔的基底对给出的结论。把同伦相对圆盘边界提升，便把原映射压入 \(E_{s-1}\)。每个新纤维点也可沿通向胞腔边界的道路移入 \(E_{s-1}\)，给出所需分支条件。
+
+	先取 \(E_0\) 各分支的 CW 逼近，合成 \(h_0:X_0\to E_0\)。在构造 \(X_1\) 时，对映入同一 \(E_1\) 分支的各个 \(X_0\) 分支，先用一胞腔把选定顶点连接起来，并把这些边映成相应道路。随后逐分支应用\cref{g2:thm:relative-cw-approximation}的 \(n=0\) 情形，仍只添维数至少为一的胞腔，得到 \(X_1\to E_1\) 的弱等价。对于 \(s\ge2\)，复合 \(X_{s-1}\to E_{s-1}\to E_s\) 为 \((s-1)\) 连通映射，且在分支上为双射；逐分支应用同一定理，只添维数至少为 \(s\) 的胞腔，得到 \(X_s\to E_s\) 的弱等价。所有映射在已有子复形上保持不变，故其并给出连续映射 \(h\)。球面及其同伦在 \(E\) 中的基底投影有紧像，落在某个 \(B^{(s)}\)；\(X\) 中的球面及同伦也落在某个 \(X_s\)。于是各阶段的同伦群同构传到并，证明 \(h\) 为弱等价。
+
+	一条 \(n\) 胞腔只能在 \(s\le n\) 的阶段加入，所以 \(X_n\) 已含全部 \(n\) 胞腔。这正给出逐度有限的两端条件。弱等价引理及空间对正合列使 \(h\) 在每个 \((X_s,X_{s-1})\) 上诱导同调与上同调同构；再用\cref{g2:thm:relative-cellular-comparison}及万有系数定理，将相对胞腔上同调与奇异上同调识别。这些映射保持三元组连接同态，故给出第一页和正合偶的同构，随后各页也同构。
+\end{proof}
+
+这个证明使用了普通奇异同调在负次数为零，以及每条链只有有限支撑。它还说明：上链的骨架滤过本身未必逐度有限，但所求 \(H^n\) 在足够高的骨架上已经稳定。后一个事实才把第10章的有限滤过收敛结论接到这里。
+
+\ProseParagraphBreak
+
+若基底单连通，或指定次数的纤维作用平凡，就可把第二页写成 \(H^a(B;H^b(F;R))\)。进一步写成 \(H^a(B;R)\otimes_RH^b(F;R)\) 还需要系数比较的条件。例如 \(H^b(F;R)\) 是有限秩自由 \(R\) 模时，按有限个系数分量计算上链便得到该同构；在域上，基底同调各次有限维也足够。保留局部系数记号，可以把这些额外条件与谱序列本身的存在条件分开。
+
+\begin{example}[球面纤维的反号运输]\label{g2:exm:serre-twisted-sphere-mapping-torus}
+	取 \(f:S^2\to S^2\) 为反足映射，令
+	\[
+		M_f=(S^2\times[0,1])/((x,1)\sim(f(x),0)).
+	\]
+	投影 \(M_f\to S^1\) 是球面纤维丛。按第5章的端点约定，正向绕行的运输为 \(f\)；\(f\) 的度是 \(-1\)，所以 \(\mathcal H^2(S^2;\mathbb Z)\) 是反号局部系统，而 \(\mathcal H^0\) 是常值系统。圆周只有一个零胞腔和一个一胞腔，对反号系统，其胞腔上链为
+	\[
+		0\longrightarrow\mathbb Z\xrightarrow{-2}\mathbb Z\longrightarrow0.
+	\]
+	因此 \(E_2^{0,2}=0\)、\(E_2^{1,2}=\mathbb Z/2\)，零行另有 \(E_2^{0,0}=E_2^{1,0}=\mathbb Z\)。基底只有两列，全部高阶微分为零；每个非零总次数只有一个分次块，遂得
+	\[
+		H^k(M_f;\mathbb Z)\cong
+		\begin{cases}
+			\mathbb Z,&k=0,1,\\
+			\mathbb Z/2,&k=3,\\
+			0,&\text{其他 }k.
+		\end{cases}
+	\]
+	若把纤维系数误当成常值，第二、第三次都会得到 \(\mathbb Z\)。这里需要纠正的不是后续微分，而是第二页中已经存在的绕行作用。
+\end{example}
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

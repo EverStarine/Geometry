@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 18.4 复形、不变性与经典同调
 % 纲要位置：几何学计划纲要.md，第 1720 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,339 @@
 \section{复形、不变性与经典同调}
 \label{g2:sec:1804}
 
-待撰写
+临界点已经给出分次生成元，零维轨线空间也已经可以有限计数。现在需要回答三个相互关联的问题：这些计数是否满足链复形的关系，改变函数与度量会不会改变答案，以及所得同调怎样与流形原来的奇异同调相认。前两个问题都由一维模空间的边界回答；第三个问题则要把轨线的交点计数与上一章的把手附着映射联系起来。本节系数均为 \(\mathbb F_2\)。
 
 \subsection{微分和边界平方为零}
 \label{g2:subsec:1804:01}
-待撰写
+
+固定闭光滑 \(n\) 维流形 \(M\) 上的正规化 Morse--Smale 数据 \(\mathcal D=(f,X)\)，并取实现 \(X=-\operatorname{grad}_g f\) 的度量。令
+\[
+	C_k(\mathcal D)=\bigoplus_{\lambda(p)=k}\mathbb F_2\,p,\qquad
+	n(p,q)=\#\mathcal M(p,q)\pmod2
+	\quad(\lambda(p)-\lambda(q)=1).
+\]
+第一个式子表示以指标 \(k\) 的临界点为基的向量空间；\(n(p,q)\) 计数的是除去时间平移后的整条轨线。\cref{g2:cor:zero-dimensional-trajectories-finite}保证这个数有限。定义
+\begin{equation}\label{g2:eq:morse-trajectory-differential}
+	\partial_kp=\sum_{\lambda(q)=k-1}n(p,q)\,q.
+\end{equation}
+这次的边界映射有了实际的动力学含义：沿下降方向，从 \(p\) 走向指标低一的临界点。
+
+\begin{theorem}\label{g2:thm:morse-differential-square-zero}
+	对闭光滑流形上的正规化 Morse--Smale 数据，式\eqref{g2:eq:morse-trajectory-differential}定义有限维链复形，即 \(\partial_{k-1}\partial_k=0\)。
+\end{theorem}
+\begin{proof}
+	固定 \(\lambda(p)=k\)、\(\lambda(q)=k-2\)。\(\partial^2p\) 中 \(q\) 的系数是
+	\[
+		\sum_{\lambda(r)=k-1}
+		\#\mathcal M(p,r)\,\#\mathcal M(r,q)\pmod2.
+	\]
+	\cref{g2:thm:one-dimensional-compactification}已经将这些断裂对逐个识别为紧一维流形 \(\overline{\mathcal M}(p,q)\) 的边界点：断裂紧性保证没有遗漏的极限，粘合的存在、唯一性及反向覆盖给出每一点的半区间邻域。紧一维流形的每个区间分支有两个边界点，圆周分支没有边界点，所以边界总数为偶数。上式为零。对所有 \(q\) 都成立，故 \(\partial^2p=0\)，再由线性延拓得到结论。
+\end{proof}
+
+\begin{definition}\label{g2:def:morse-smale-homology}
+	上述复形称为 \(\mathcal D\) 的\term[Morse-Smale fuxing]{Morse--Smale 复形}[Morse--Smale complex]，其同调
+	\[
+		HM_k(\mathcal D;\mathbb F_2)
+		=\ker\partial_k/\operatorname{im}\partial_{k+1}
+	\]
+	称为相应的\term[Morse tongdiao]{Morse 同调}[Morse homology]。\symidx{\(HM_k(\mathcal D;\mathbb F_2)\)：Morse 同调}
+\end{definition}
+
+\begin{example}\label{g2:exm:circle-morse-complex}
+	在圆周上取一个极大点 \(p\) 与一个极小点 \(q\) 的 Morse 函数。两个方向的弧各给一条从 \(p\) 到 \(q\) 的下降轨线。因此
+	\[
+		C_1=\mathbb F_2p,\qquad C_0=\mathbb F_2q,\qquad
+		\partial p=(1+1)q=0.
+	\]
+	得到 \(HM_1=HM_0=\mathbb F_2\)。两条轨线确实存在，但在模二计数中抵消。若只判断“是否有一条路可达”，就会把 \(\partial p\) 错写成 \(q\)，丢失圆周的一次同调。
+\end{example}
 
 \subsection{延拓映射与参数族链同伦}
 \label{g2:subsec:1804:02}
-待撰写
+
+设 \(\mathcal D^0=(f^0,g^0)\)、\(\mathcal D^1=(f^1,g^1)\) 是两组正规化 Morse--Smale 数据。选光滑族 \((f_t,g_t)\)，在 \(t\le-T\) 时恒为第一组，在 \(t\ge T\) 时恒为第二组。中间的 \(f_t\) 可以有退化临界点；我们求解的是明确依赖时间的方程
+\begin{equation}\label{g2:eq:morse-continuation-equation}
+	\dot x(t)=-\operatorname{grad}_{g_t}f_t(x(t)),\qquad
+	\lim_{t\to-\infty}x(t)=p,\quad
+	\lim_{t\to+\infty}x(t)=q.
+\end{equation}
+解空间记为 \(\mathcal N(p,q)\)。方程一般不保持时间平移，因此这里不再除以 \(\mathbb R\)。
+
+\ProseParagraphBreak
+
+这仍是一个有限维相交问题。记从 \(-T\) 到 \(T\) 的时间依赖流映射为 \(F:M\to M\)，则在 \(t=-T\) 求值给出
+\begin{equation}\label{g2:eq:continuation-finite-intersection}
+	\mathcal N(p,q)\cong
+	W^u_0(p)\cap F^{-1}(W^s_1(q)).
+\end{equation}
+紧性保证有限时间流存在，倒着解方程给出其光滑逆。选择过渡数据，使这些相交横截，就称该延拓数据正则；此时 \(\dim\mathcal N(p,q)=\lambda(p)-\lambda(q)\)。
+
+\begin{lemma}\label{g2:lem:regular-continuation-data}
+	对闭光滑流形上的两组正规化 Morse--Smale 端点数据，可以选到正则延拓数据。更一般地，给定紧有限维参数流形 \(S\)，可在保持已经正则的参数边界数据及时间两端不变的条件下，将过渡数据任意小地扰动，使联合解空间
+	\[
+		\mathcal N_S(p,q)=\{(s,x):s\in S,\ x\text{ 满足参数 }s\text{ 的式\eqref{g2:eq:morse-continuation-equation}}\}
+	\]
+	成为维数 \(\lambda(p)-\lambda(q)+\dim S\) 的光滑流形；参数边界给出其相应边界。
+\end{lemma}
+\begin{proof}
+	在式\eqref{g2:eq:continuation-finite-intersection}中考察总体求值映射 \((s,z)\mapsto F_s(z)\)，其中 \(z\in W^u_0(p)\)。需要使它横截 \(W^s_1(q)\)，并对参数边界同时成立。说明可用的扰动足够后，就能应用第14章的相对参数横截性。
+
+	固定一条解与其中时刻 \(t_0\in(-T,T)\)。在其附近的坐标中，给 \(f_t\) 加上支撑于很短时间区间和小空间邻域的线性坐标函数乘截断。它在轨线上造成的向量场变分可以在 \(t_0\) 附近取任意切向量方向。设流的线性演化为 \(P(T,\tau)\)，终点的一阶变化是
+	\[
+		\delta F(z)=\int_{-T}^T P(T,\tau)\,\delta X_\tau(x(\tau))\,\mathrm d\tau.
+	\]
+	\(P(T,t_0)\) 可逆；将时间截断集中于 \(t_0\)，便可选出 \(n\) 个扰动，使这 \(n\) 个终点变分仍线性无关。因此加入参数后的总体映射局部为下沉，足以实现所需横截性。参数边界已正则处保持不动，在其他地方给扰动再乘参数截断即可。
+
+	不稳定流形可能非紧，故在其可数紧穷尽上依次实施这一构造，每一步取足够小的 \(C^j\) 扰动，保留前面紧块上已经取得的横截性，并使第 \(j\) 步的前 \(j\) 阶误差不超过预先选定的可求和上界。这与\cref{g2:thm:morse-smale-existence}的紧块构造相同，得到光滑极限；临界点对只有有限多个，可一并加入紧块序列。最后由横截逆像定理得到维数公式。对 \(S\) 的边界作相对扰动，边界识别也由同一定理给出。
+\end{proof}
+
+当 \(\lambda(p)=\lambda(q)\) 时，\(\mathcal N(p,q)\) 为有限集。\cref{g2:lem:continuation-broken-compactness}保证序列只有两端断裂的可能；每一非恒定端轨线都严格降低指标，正则中心解的指标差则非负，所以总指标差为零时不能断裂。由此定义\term[yantuo yingshe]{延拓映射}[continuation map]
+\begin{equation}\label{g2:eq:continuation-map}
+	\Psi_{10}(p)=\sum_{\lambda(q)=\lambda(p)}
+	\bigl(\#\mathcal N(p,q)\pmod2\bigr)\,q.
+\end{equation}
+
+\begin{theorem}[Morse 延拓]\label{g2:thm:morse-continuation}
+	对闭光滑流形上的正规化 Morse--Smale 数据，式\eqref{g2:eq:continuation-map}是链映射。任意两个连接相同端点数据的正则延拓所给出的映射 \(\Psi,\Psi'\) 链同伦。所得同调映射与过渡选择无关，且满足
+	\[
+		(\Psi_{20})_*=(\Psi_{21})_*(\Psi_{10})_*,
+		\qquad(\Psi_{00})_*=\operatorname{id},
+		\qquad(\Psi_{01})_*=(\Psi_{10})_*^{-1}.
+	\]
+\end{theorem}
+\begin{proof}
+	先证明链映射关系。若 \(\lambda(p)-\lambda(q)=1\)，正则 \(\mathcal N(p,q)\) 是一维的。延拓紧性与\cref{g2:lem:parametric-tail-gluing}给出其紧一维流形紧化，边界恰为
+	\[
+		\bigsqcup_{\lambda(r)=\lambda(p)-1}
+		\mathcal M_0(p,r)\times\mathcal N(r,q)
+		\ \sqcup\
+		\bigsqcup_{\lambda(r)=\lambda(p)}
+		\mathcal N(p,r)\times\mathcal M_1(r,q).
+	\]
+	指标计数排除了多重断裂；每个所列端点都有由粘合给出的唯一半区间。数边界点的奇偶性即得 \(\Psi_{10}\partial_0+\partial_1\Psi_{10}=0\)。
+
+	对于两组正则延拓，在它们之间选参数 \(s\in[0,1]\) 的过渡族，保持 \(s=0,1\) 及时间两端不变。函数的凸组合与度量的凸组合提供一个初始族，再用\cref{g2:lem:regular-continuation-data}作联合正则化。定义
+	\[
+		K(p)=\sum_{\lambda(q)=\lambda(p)+1}
+		\bigl(\#\mathcal N_{[0,1]}(p,q)\pmod2\bigr)\,q.
+	\]
+	这里维数为 \(\lambda(p)-\lambda(q)+1=0\)。参数端点处的同维空间指标差为负，因而为空；带参数紧性与维数计数也排除了断裂，所以计数有限。
+
+	对 \(\lambda(p)=\lambda(q)\) 的一维参数空间，其边界既包含 \(s=0,1\) 的解，也包含左端一条普通轨线接参数解、或参数解接右端一条普通轨线。参数粘合给出每个断裂端的半区间，因此得到
+	\begin{equation}\label{g2:eq:continuation-chain-homotopy}
+		\Psi'+\Psi=\partial_1K+K\partial_0.
+	\end{equation}
+	这说明同调上的映射不依赖过渡族。
+
+	为证明复合关系，先执行 \(0\to1\) 的过渡，保持中间数据一段时间 \(2R\)，再执行 \(1\to2\) 的过渡。令 \(R\to\infty\)。\cref{g2:lem:continuation-broken-compactness}的长间隔版本将极限分成两条中心延拓轨线，可能夹有中间数据的梯度轨线。对于总指标差零，两条正则中心解的指标差均非负，非恒定中间轨线会严格降低指标，故中间只能停在同一个临界点 \(r\)，且两条中心解的指标差均为零。于是极限恰为
+	\[
+		\bigsqcup_{\lambda(r)=\lambda(p)}
+		\mathcal N_{01}(p,r)\times\mathcal N_{12}(r,q).
+	\]
+	这是一有限集。长间隔粘合为每一对提供充分大 \(R\) 时的唯一解；反向覆盖及紧性排除了其他解。因此对充分大 \(R\)，计数映射就是 \(\Psi_{21}\Psi_{10}\)。有限 \(R\) 的延拓均由式\eqref{g2:eq:continuation-chain-homotopy}诱导相同的同调映射，故复合公式成立。
+
+	恒定过渡在同指标端点之间只有 \(p=q\) 的恒定解：若 \(p\ne q\)，非恒定自主轨线要求指标严格下降。这些恒定解正则，因为 \(W^u(p)\) 与 \(W^s(p)\) 的切空间互补，故恒定延拓给出恒等映射。把反向过渡与原过渡复合，再用选择无关性与复合公式，便得到逆映射公式。
+\end{proof}
+
+延拓计数中没有把中间函数强制维持为 Morse 函数，因而临界点的出生、消失或临界值交换都不妨碍同调不变性。真正承担紧性的是闭流形、固定的时间两端以及过渡只发生在有限时间内；真正承担维数与边界识别的是联合横截性和端部粘合。用这些具体条件，便可准确区分本节的链同伦与仅对抽象向量空间作一次同构选择。
 
 \subsection{由把手滤过构造比较映射}
 \label{g2:subsec:1804:03}
-待撰写
+
+轨线计数已经给出一个链复形。为了认出它计算的同调，关键是把“流到 \(q\) 的轨线”与“附着边界穿过 \(q\) 的共核心”识别起来。若把手按指标排列，前者正好可以在同一个中间水平上计数。下面先说明这种排列可以保持下降场 \(X\) 不变。
+
+\begin{lemma}\label{g2:lem:morse-value-rearrangement}
+	设 \((f,X)\) 是闭光滑 \(n\) 维流形上的正规化 Morse--Smale 数据。存在具有相同临界点、指标及正规化下降场 \(X\) 的 Morse 函数 \(h\)，使
+	\[
+		\lambda(p)-\frac14<h(p)<\lambda(p)+\frac14
+		\quad\text{对每个临界点 }p.
+	\]
+	不同临界点的 \(h\) 值仍可互异。特别地，\(k+\frac12\) 是正则值，其下方恰好包含指标不超过 \(k\) 的临界点。
+\end{lemma}
+\begin{proof}
+	先处理相邻两个临界高度的交换。设 \(f(p)<f(q)\)，两者之间没有其他临界值，并且没有从 \(q\) 到 \(p\) 的下降轨线。在它们外侧选正则水平 \(a<f(p)<f(q)<b\)，使闭带中只有这两个临界点。我们构造一个仍以 \(X\) 为下降场的函数，将这两个临界高度交换，保持闭带外及各临界点的二次型不变。
+
+	在中间正则水平 \(L\) 上，\(q\) 的局部不稳定出球面向下流到 \(L\)，\(p\) 的局部稳定入球面反向流到 \(L\)。两侧这段闭带无临界点，所以首次到达映射光滑；出、入球面紧，首次到达时间一致有界，得到 \(L\) 上两个紧子流形。它们没有交点，因为一个交点恰给出从 \(q\) 到 \(p\) 的轨线。因此可为它们选不交的厚邻域。
+
+	还可把这种分离延伸到整条闭带。将 \(p\) 的局部稳定与不稳定圆盘沿流延至上、下端水平，得到带内截断的稳定、不稳定集合之并 \(K_p\)；定义 \(K_q\) 类似。下降流的任意两端都趋于临界点，见\cref{g2:prop:morse-energy-limits}。因此上述流线必在有限时间到达相应端水平：若其中一条始终留在闭带，唯一可能的另一临界极限将给出被排除的 \(q\to p\)。首次到达时间在紧局部球面上连续，所以仍一致有界。于是 \(K_p,K_q\) 都紧，且不相交；交点若不为临界点，也将是一条 \(q\to p\) 轨线上的点。可在闭带内为二者选择不交的小流管。
+
+	需要一个沿流不变的截断，以免拼接函数时产生失去下降性的导数项。在 \(p\) 的正规化坐标块
+	\[
+		|u|\le r,\qquad |v|\le r
+	\]
+	内，量 \(|u|^2|v|^2\) 沿 \(X=(2u,-2v)\) 不变。选光滑截断 \(\rho\)，在零附近等于一，在很小的正数以外为零，并取
+	\(\chi_p=\rho(|u|^2|v|^2)\)。
+	把它沿轨线延至 \(a,b\) 两端水平，在未经过其支集的轨线上置零。支集避开块的入、出面的交角，所以这种延拓在流盒中光滑，并满足 \(X\chi_p=0\)。当支撑参数缩小时，支集只落在 \(K_p\) 的任意指定小流管中；这一点由前述一致有界的首次到达时间和流的连续依赖保证。它在 \(p\) 邻域等于一。指标零或 \(n\) 时，相应的一侧球面为空，该构造在以临界点为端点的流管分支上取常值一即可。对 \(q\) 同样构造 \(\chi_q\)，并使两者支集不交。
+
+	选区间 \([a,b]\) 上的光滑严格递增微分同胚 \(\theta_p,\theta_q\)，在两端附近为恒等，在各自临界高度附近为平移，并使
+	\[
+		\theta_q(f(q))<\theta_p(f(p)).
+	\]
+	这样的函数可通过积分一个处处为正、在指定小区间等于一的光滑导数构造；将这些小区间取得足够短，就能指定所需的内部像值。置
+	\[
+		\widetilde f
+		=(1-\chi_p-\chi_q)f+\chi_p\theta_p(f)+\chi_q\theta_q(f)
+	\]
+	于闭带内，外部取 \(\widetilde f=f\)。因两端附近 \(\theta_p,\theta_q\) 为恒等，拼接光滑。又因 \(X\chi_p=X\chi_q=0\)，
+	\[
+		X\widetilde f=
+		\bigl(1-\chi_p-\chi_q+\chi_p\theta_p'(f)+\chi_q\theta_q'(f)\bigr)Xf<0
+	\]
+	于非临界点。系数严格为正，因为截断支集不交。在临界点附近只加了常数，Morse 坐标、指标及 \(X\) 的正规化表达均保持。这就实现了交换。
+
+	若下方 \(p\) 的指标大于上方 \(q\) 的指标，则\cref{g2:prop:trajectory-quotient}排除了 \(q\to p\)，所以可以进行上述交换。对有限个临界高度反复交换相邻的指标逆序对，便能使指标随高度不减；每次减少一个逆序对，故过程有限。最后对函数作一次严格递增的值域变换，把指标 \(k\) 的所有临界值放入 \((k-\frac14,k+\frac14)\)，并使该变换在每个临界值的足够小邻域上导数为一。于是局部仍只加常数，所有要求成立。
+\end{proof}
+
+重排只改变用来切分流形的高度；向量场 \(X\) 及其全部无参数轨线完全未变。以下令
+\[
+	N_k=h^{-1}\bigl((-\infty,k+\tfrac12]\bigr),
+	\qquad -1\le k\le n.
+\]
+于是 \(N_{-1}=\varnothing\)、\(N_n=M\)。\cref{g2:thm:morse-handle-attachment}给出从 \(N_{k-1}\) 到 \(N_k\) 的全部指标 \(k\) 把手。因此
+\[
+	H_j(N_k,N_{k-1};\mathbb F_2)=
+	\begin{cases}
+		\displaystyle\bigoplus_{\lambda(p)=k}\mathbb F_2[D_p],&j=k,\\
+		0,&j\ne k.
+	\end{cases}
+\]
+这里 \(D_p\) 可取为 \(p\) 的局部不稳定圆盘，连同其出球面沿流到 \(h=k-\frac12\) 的有限流柱。它是一张紧的 \(k\) 维圆盘：出球面上的轨线在到达该水平前不能趋向另一指标 \(k\) 的临界点，故首次到达时间一致有界。该圆盘的边界记为 \(\Lambda_p\)。这一构造只使用紧圆盘及有限时间流，并不需要先把整个非紧的 \(W^u(p)\) 紧化。
+
+\begin{proposition}\label{g2:prop:morse-handle-incidence}
+	设 \((f,X)\) 为闭流形上的正规化 Morse--Smale 数据，\(h,N_k,D_p\) 如上。令
+	\[
+		C_k^{\mathrm{fil}}=H_k(N_k,N_{k-1};\mathbb F_2),
+	\]
+	并把 \(\mathrm d_k^{\mathrm{fil}}\) 定义为空间对的连接同态后接相对化映射：
+	\[
+		H_k(N_k,N_{k-1})\longrightarrow H_{k-1}(N_{k-1})
+		\longrightarrow H_{k-1}(N_{k-1},N_{k-2}).
+	\]
+	则
+	\begin{equation}\label{g2:eq:morse-handle-incidence}
+		\mathrm d_k^{\mathrm{fil}}[D_p]
+		=\sum_{\lambda(q)=k-1}\#_2\mathcal M(p,q)\,[D_q].
+	\end{equation}
+	因此 \(p\mapsto[D_p]\) 是 Morse 链复形到这个滤过链复形的链同构。
+\end{proposition}
+\begin{proof}
+	连接同态将相对圆盘类送到其边界类 \([\Lambda_p]\)。对指标 \(k-1\) 的 \(q\)，把局部稳定圆盘反向流到同一个水平 \(h=k-\frac12\)，得到共核心圆盘 \(D_q^s\)，其边界记为 \(\Gamma_q\)。中间只有其他指标 \(k-1\) 的临界点，Morse--Smale 条件排除同指标连接，因此同样得到一致有限的到达时间和紧圆盘。它在 \(q\) 的把手坐标中是核心的横向圆盘；向上延长的流柱把它延至 \(N_{k-1}\) 的边界。
+
+	在 \(h=k-\frac12\) 上，
+	\[
+		\Lambda_p=W^u(p)\cap h^{-1}(k-\tfrac12),\qquad
+		\Gamma_q=W^s(q)\cap h^{-1}(k-\tfrac12).
+	\]
+	两者横截，维数分别为 \(k-1\) 与 \(n-k\)，其维数之和为水平集维数 \(n-1\)。交点遂为零维，且每个交点对应唯一一条 \(p\to q\) 的轨线。由\cref{g2:cor:zero-dimensional-trajectories-finite}，其数目有限。
+
+	另一方面，把 \(N_{k-1}\) 中各把手的厚度按\cref{g2:lem:handle-core-retraction}收缩，再压掉 \(N_{k-2}\) 及除 \(q\) 外的其余核心，得到识别第 \(q\) 个相对生成元的映射到 \(S^{k-1}\)。它在 \(q\) 的核心中心附近就是把手坐标的核心投影 \((u,v)\mapsto u\)，中心的逆像为共核心 \(D_q^s\)。因而 \([\Lambda_p]\) 的 \(q\) 系数，按\cref{g2:thm:cellular-boundary-degree}的度公式，等于它与 \(D_q^s\) 的交点数模二。可把 \(\Lambda_p\) 沿下降流向内部推动一个小时间：交点沿稳定流管一一移动，转成流形内部的横截交点，避免边界上的坐标歧义。于是该系数恰为 \(\#_2(\Lambda_p\cap\Gamma_q)=\#_2\mathcal M(p,q)\)。\(k=1\) 时同一计算把边界的两个端点按所在零把手计数，使用普通零次同调即可。逐个 \(q\) 得到公式及链同构。
+\end{proof}
+
+还可以把比较落实为到奇异链复形的链映射，而不只识别两组抽象同调。以下构造也说明其中的填充选择为什么不影响结果。所有链均取 \(\mathbb F_2\) 系数。
+
+\begin{theorem}\label{g2:thm:morse-singular-comparison}
+	设 \(\mathcal D=(f,X)\) 为闭流形上的正规化 Morse--Smale 数据。存在链映射
+	\[
+		\Theta:C_\bullet(\mathcal D)\longrightarrow C_\bullet(M;\mathbb F_2)
+	\]
+	使指标 \(k\) 的生成元 \(p\) 被送到支于 \(N_k\) 的奇异链，且在 \(H_k(N_k,N_{k-1};\mathbb F_2)\) 中代表 \([D_p]\)。该映射诱导同构
+	\begin{equation}\label{g2:eq:morse-singular-isomorphism}
+		\Theta_*:HM_k(\mathcal D;\mathbb F_2)\xrightarrow{\ \cong\ }H_k(M;\mathbb F_2).
+	\end{equation}
+	对固定的把手滤过，满足这些条件的两种构造链同伦。
+\end{theorem}
+\begin{proof}
+	按指标归纳构造 \(\Theta\)。指标零时，把生成元送到对应圆盘中心的零链。假设低于 \(k\) 的生成元已经定义。为 \(D_p\) 选择相对基本链 \(\sigma_p\in C_k(N_k)\)，其边界 \(\eta_p=\partial\sigma_p\) 支于 \(N_{k-1}\)。由\cref{g2:prop:morse-handle-incidence}，
+	\(\eta_p\) 与 \(\Theta(\partial p)\) 在 \(H_{k-1}(N_{k-1},N_{k-2})\) 中代表同一个类。两者都是圈，后者的边界为 \(\Theta(\partial^2p)=0\)。
+
+	由\cref{g2:cor:morse-cell-type}，\(N_{k-2}\) 具有维数不超过 \(k-2\) 的 CW 同伦模型，故 \(H_{k-1}(N_{k-2})=0\)。空间对长正合列于是说明
+	\[
+		H_{k-1}(N_{k-1})\longrightarrow H_{k-1}(N_{k-1},N_{k-2})
+	\]
+	单射。因此圈 \(\eta_p+\Theta(\partial p)\) 在 \(N_{k-1}\) 中同调为零，可选 \(b_p\in C_k(N_{k-1})\) 满足
+	\[
+		\partial b_p=\eta_p+\Theta(\partial p).
+	\]
+	定义 \(\Theta(p)=\sigma_p+b_p\)，便有 \(\partial\Theta(p)=\Theta(\partial p)\)，且相对类仍为 \([D_p]\)。这完成了归纳。第一步之后的 \(k=1\) 使用 \(N_{-1}=\varnothing\)，同一单射论证成立。
+
+	记 \(C_{\le k}(\mathcal D)\) 为由指标不超过 \(k\) 的临界点生成的子复形。映射 \(\Theta\) 给出链复形短正合列之间的映射
+	\[
+		\begin{tikzcd}[column sep=small]
+			0 \arrow[r]&C_{\le k-1}(\mathcal D)\arrow[r]\arrow[d,"\Theta"]&
+			C_{\le k}(\mathcal D)\arrow[r]\arrow[d,"\Theta"]&
+			C_{\le k}(\mathcal D)/C_{\le k-1}(\mathcal D)\arrow[r]\arrow[d]&0\\
+			0 \arrow[r]&C_\bullet(N_{k-1})\arrow[r]&
+			C_\bullet(N_k)\arrow[r]&
+			C_\bullet(N_k,N_{k-1})\arrow[r]&0.
+		\end{tikzcd}
+	\]
+	最右端的商复形只在次数 \(k\) 有生成元，而 \(\Theta\) 将它们送到相对同调基 \([D_p]\)，所以右侧竖箭头诱导全部次数的同调同构。由零层开始，对长正合列用五引理归纳，得到每个 \(C_{\le k}(\mathcal D)\to C_\bullet(N_k)\) 都是同调同构。在 \(k=n\) 时便得到\eqref{g2:eq:morse-singular-isomorphism}。
+
+	最后比较 \(\Theta,\Theta'\)。按指标构造 \(K(p)\in C_{k+1}(N_k)\)，要求
+	\[
+		\Theta+\Theta'=\partial K+K\partial.
+	\]
+	假设低于 \(k\) 的 \(K\) 已构造，则
+	\(z_p=\Theta(p)+\Theta'(p)+K(\partial p)\)
+	是 \(N_k\) 中的 \(k\) 圈。它的相对类为零，因为前两项代表同一个 \([D_p]\)，最后一项支于 \(N_{k-1}\)。又因 \(H_k(N_{k-1})=0\)，长正合列说明 \([z_p]=0\) 于 \(H_k(N_k)\)，可选择 \(K(p)\) 使 \(\partial K(p)=z_p\)。零层也适用 \(H_0(\varnothing)=0\)。归纳即得所需链同伦。
+\end{proof}
 
 \subsection{同调同构及对选择的独立性}
 \label{g2:subsec:1804:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+上面的同构使用了一次高度重排及一些奇异链填充。填充的独立性已由链同伦解决；要比较不同函数、下降场和重排，需核对它与延拓映射相容。这里可以利用延拓方程在有限时间区间上的流，将问题化为一个确切的滤过映射。
+
+\begin{proposition}\label{g2:prop:morse-comparison-continuation}
+	设 \(\mathcal D^0=(f_0,X_0)\)、\(\mathcal D^1=(f_1,X_1)\) 为闭流形 \(M\) 上的正规化 Morse--Smale 数据，\(\Psi_{10}\) 为正则延拓数据所定义的链映射。则奇异同调比较满足
+	\[
+		\Theta_{1*}(\Psi_{10})_*=\Theta_{0*}:
+		HM_*(\mathcal D^0;\mathbb F_2)\longrightarrow H_*(M;\mathbb F_2).
+	\]
+	因此比较同构不依赖高度重排，并且在延拓给出的识别下不依赖全部 Morse 数据选择。
+\end{proposition}
+\begin{proof}
+	设延拓场在 \(s\le -T_0\) 时为 \(X_0\)，在 \(s\ge T_0\) 时为 \(X_1\)。中间非自主流的时间映射记为 \(F:M\to M\)，它是与恒等映射同痕的微分同胚：从初始时刻逐渐流至末时刻给出同痕。延拓轨线与交点
+	\[
+		F(W^u_0(p))\cap W^s_1(q)
+	\]
+	一一对应，正则性等价于这些流形横截；指标相等时，延拓紧性保证交点有限。\(\Psi_{10}\) 的矩阵就是这些零维交点的模二计数。
+
+	分别对两端函数重排，得到 \(N^i_k\)，并用 \(\phi_t^i\) 记 \(X_i\) 的自主流。下面说明可在 \(F\) 前后各复合一个充分长的正时间流，使其成为全部层的滤过映射。定义
+	\[
+		A^0_k=\bigcap_{t\ge0}\phi_t^0(N^0_k),\qquad
+		B^1_{>k}=\bigcap_{t\ge0}\phi_{-t}^1(M\setminus\operatorname{Int}N^1_k).
+	\]
+	这些集合都是紧嵌套集的交，因而紧。由轨线两端极限存在，并利用 \(N^i_k\) 正向不变，可逐点识别为
+	\[
+		A^0_k=\bigcup_{\lambda(p)\le k}W^u_0(p),\qquad
+		B^1_{>k}=\bigcup_{\lambda(q)>k}W^s_1(q).
+	\]
+	例如，属于第一交集的点在全部负时间里都留在 \(N^0_k\)，故其负端临界点指标不超过 \(k\)；反之，从此类临界点出发的下降轨线始终留在这个次水平集。第二个识别同理考察全部正时间。
+
+	横截性使
+	\(F(W^u_0(p))\cap W^s_1(q)=\varnothing\)
+	在 \(\lambda(p)<\lambda(q)\) 时成立，因为其预期维数为负。因此 \(F(A^0_k)\cap B^1_{>k}=\varnothing\)。紧集的分离性给出 \(A^0_k\) 的邻域 \(U_k\)，使 \(F(\overline U_k)\) 仍避开 \(B^1_{>k}\)。嵌套紧集还给出一致的吸引性质：充分大 \(R\) 满足 \(\phi_R^0(N^0_k)\subset U_k\)。否则可以取不进入 \(U_k\) 的一列点，并在某个固定紧集内取极限，得到属于全部 \(\phi_t^0(N^0_k)\) 却不在 \(U_k\) 的点，矛盾。
+
+	每个不属于 \(B^1_{>k}\) 的点，沿目标正向流最终进入 \(\operatorname{Int}N^1_k\)。对紧集 \(F(\phi_R^0(N^0_k))\)，有限子覆盖给出统一的进入时间；进入后一直留在其中。这里只有有限个 \(k\)，故可统一取 \(R,S>0\)，使
+	\[
+		G=\phi_S^1\circ F\circ\phi_R^0,\qquad
+		G(N^0_k)\subset N^1_k\quad\text{对所有 }k.
+	\]
+	于是 \(G\) 是实际的滤过映射，并且 \(G\) 与 \(F\)、与恒等映射同伦。
+
+	现在计算它在相对生成元上的作用。源中 \(\phi_R^0(D_p)\) 随 \(R\) 增大穷尽 \(W^u_0(p)\)。指标相等的相关交点总数有限，增大 \(R\) 可使它们全部位于这张扩大的核心盘内部。它的像与 \(W^s_1(q)\) 横截；再增大 \(S\)，可把全部这些有限交点沿目标流送入 \(q\) 的局部共核心内部。流保持横截性，而且不会产生新交点。因此，按\cref{g2:prop:morse-handle-incidence}证明中核心投影的局部度计算，滤过链映射
+	\[
+		G_k:H_k(N^0_k,N^0_{k-1})\longrightarrow H_k(N^1_k,N^1_{k-1})
+	\]
+	在临界点基下的矩阵恰为 \(\Psi_{10}\)。先前的滤过包含在增大 \(R,S\) 后仍保持，因为两个次水平集都正向不变。
+
+	连接同态与相对化映射的自然性使 \(G_\bullet\) 为链映射。奇异链比较的归纳也与此相容：\(\Theta_1\Psi_{10}\) 和 \(C_\bullet(G)\Theta_0\) 都将源的次数 \(k\) 送入 \(C_\bullet(N^1_k)\)，并在相对同调中给出同一个 \(G_k[D_p]\)。按\cref{g2:thm:morse-singular-comparison}最后一段的逐指标填充，二者链同伦；所需消失条件仍是 \(H_k(N^1_{k-1})=0\)。取同调后得到
+	\[
+		\Theta_{1*}(\Psi_{10})_*=G_*\Theta_{0*}=\Theta_{0*}.
+	\]
+	最后一个等号使用 \(G\simeq\operatorname{id}_M\)。
+
+	同一 \(X\) 的两种高度重排可取 \(F=\operatorname{id}_M\)。Morse--Smale 横截性本身保证上述正则性；相等指标的交点只有同一临界点处的常值轨线，所以延拓矩阵是恒等。由此两种重排给出同一个比较同构。一般 Morse 数据之间的结论则由已经构造的延拓映射得到。
+\end{proof}
+
+由此，Morse 同调中的一个类经过任何允许的选择与延拓，最终都对应于 \(M\) 上同一个奇异同调类。原来的临界点数、轨线条数和链群基可以改变，比较同构把这些不同的链模型组织在同一个拓扑不变量之下。

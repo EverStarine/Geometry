@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 17.3 Morse 不等式
 % 纲要位置：几何学计划纲要.md，第 1673 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,180 @@
 \section{Morse 不等式}
 \label{g2:sec:1703}
 
-待撰写
+一个指标为 \(k\) 的临界点会添入一个 \(k\) 维胞腔，但这个胞腔未必留下一个新的 \(k\) 维同调类。它的边界可能填掉原有的 \((k-1)\) 维类；即使暂时产生新类，也可能在更高的水平被下一维胞腔填掉。因此临界点数应当给出同调维数的上界，而不宜直接与之相等。本节把这些产生与消去写成有限维线性代数，由此得到各维下界、交错和下界以及 Euler 等式。
 
 \subsection{相对同调的临界贡献}
 \label{g2:subsec:1703:01}
-待撰写
+
+把旧次水平集压成一个点后，一个新把手的厚度已经没有同伦意义，只留下其核心圆盘及边界。这使相对同调特别适合记录一次临界点穿越。
+
+\begin{proposition}\label{g2:prop:morse-relative-contribution}
+	设 \(f:M\to\mathbb R\) 为光滑函数，\(a<b\) 为正则值，\(f^{-1}([a,b])\) 紧且位于 \(M\) 的内部，并且带中恰有一个非退化临界点，其指标为 \(\lambda\)。记 \(A=M^a\)、\(B=M^b\)。对任意域 \(\mathbb F\)，有
+	\[
+		H_j(B,A;\mathbb F)\cong
+		\begin{cases}
+			\mathbb F,&j=\lambda,\\
+			0,&j\ne\lambda.
+		\end{cases}
+	\]
+	在 \(\lambda\ge1\) 时，若相关同调群有限维，则这一跨越恰有两种可能：\(b_\lambda\) 增加一，或 \(b_{\lambda-1}\) 减少一；其他次数不变。这里 \(b_j(X)=\dim_{\mathbb F}H_j(X;\mathbb F)\)。在 \(\lambda=0\) 时，\(b_0\) 增加一。
+\end{proposition}
+\begin{proof}
+	先用\cref{g2:prop:morse-regular-band}将两端无临界的水平带收掉。\cref{g2:thm:morse-handle-attachment}及其后的相对收缩把 \((B,A)\) 化为
+	\[
+		(A\cup_\varphi(D^\lambda\times D^{n-\lambda}),A).
+	\]
+	附着面的领圈保证可在相对同调中作切除；再将第二个圆盘因子收缩，得到圆盘对 \((D^\lambda,S^{\lambda-1})\)。它的相对同调在 \(\lambda\) 次是一维，在其他次数为零。\(\lambda=0\) 时把附着球面理解为空集，计算就是 \(H_*(\{\mathrm{pt}\},\varnothing;\mathbb F)\)。
+
+	把这个结果放入空间对长正合列（\cref{g2:thm:pair-LES}），\(\lambda\ge1\) 时只剩
+	\[
+		0\longrightarrow H_\lambda(A;\mathbb F)\longrightarrow H_\lambda(B;\mathbb F)
+		\longrightarrow\mathbb F\xrightarrow{\delta}H_{\lambda-1}(A;\mathbb F)
+		\longrightarrow H_{\lambda-1}(B;\mathbb F)\longrightarrow0.
+	\]
+	连接映射 \(\delta\) 将新圆盘的相对类送到附着球面的同调类，正如\cref{g2:prop:single-cell-homology-change}中由代表链取边界的计算。域上的一维空间只有零子空间与全空间；故 \(\delta=0\) 时，高一次同调增加一维，低一次不变；\(\delta\ne0\) 时它为单射，高一次不变，低一次取去一个一维子空间的商。\(\lambda=1\) 时此列仍使用普通 \(H_0\)：附着一条带可以把两个连通分支接成一个。最后，零把手独立添入一个圆盘分支，所以只使 \(b_0\) 增加一。
+\end{proof}
+
+例如，在两个不交圆盘之间接一条一把手，连通分支数从二变一；在同一圆盘的两段边界之间接一条不扭转的带，则形成环带，出现一个一次同调类。两次附着的相对同调都在一次为一维，差别全部由连接映射记录。
 
 \subsection{滤过链群与弱不等式}
 \label{g2:subsec:1703:02}
-待撰写
+
+设 \(M\) 是紧 \(n\) 维光滑流形，无边界时取 Morse 函数；有边界时取在领圈上等于 \(b-t\)、在内部小于 \(b\) 的 Morse 函数，其中 \(t\ge0\) 向内。设临界点指标为 \(k\) 的个数为 \(m_k\)。分开临界值后，实际次水平集给出有限滤过
+\[
+	\varnothing=M^{a_0}\subset M^{a_1}\subset\cdots\subset M^{a_N}\simeq M.
+\]
+每一相邻对的相对同调记录一个临界点。这里的序号 \(i\) 按高度排列，临界点指标却可能上下变化。
+
+\ProseParagraphBreak
+
+\cref{g2:cor:morse-cell-type}给出一个同伦等价于 \(M\) 的有限 CW 复形 \(K\)，它恰有 \(m_k\) 个 \(k\) 胞腔。回到第3章按维数构造的骨架链群，置
+\[
+	C_k=H_k(K^k,K^{k-1};\mathbb F)\cong\mathbb F^{m_k},\qquad
+	\mathrm d_k:C_k\longrightarrow C_{k-1}.
+\]
+\cref{g2:thm:cellular-singular-comparison}的骨架长正合列证明对域系数同样成立，因而
+\[
+	H_k(C_\bullet,\mathrm d)\cong H_k(K;\mathbb F)\cong H_k(M;\mathbb F).
+\]
+这两个滤过的比较尤其重要：不能直接把高度滤过第 \(i\) 层叫作“\(i\) 次链群”。当前 \(\mathrm d_k\) 是附着映射给出的胞腔边界；它尚未被解释为梯度轨线的带符号计数。
+
+\begin{proposition}\label{g2:prop:morse-chain-ranks}
+	设 \(M\) 为紧光滑 \(n\) 维流形，\(f\) 为 Morse 函数；若边界非空，再假设 \(f=b-t\) 于向内领圈且 \(f<b\) 于内部。对任意域 \(\mathbb F\)，存在有限链复形 \(C_\bullet\)，使
+	\[
+		\dim_{\mathbb F}C_k=m_k,\qquad H_k(C_\bullet)\cong H_k(M;\mathbb F).
+	\]
+	记 \(b_k=\dim_{\mathbb F}H_k(M;\mathbb F)\)、\(r_k=\operatorname{rank}_{\mathbb F}\mathrm d_k\)，并令 \(r_0=r_{n+1}=0\)，则
+	\begin{equation}\label{g2:eq:morse-rank-identity}
+		m_k=b_k+r_k+r_{k+1}\qquad(0\le k\le n).
+	\end{equation}
+	特别地，\(m_k\ge b_k\)。
+\end{proposition}
+\begin{proof}
+	上面的有限 CW 构造提供了所需链复形。因为 \(\mathrm d_k\mathrm d_{k+1}=0\)，有 \(\operatorname{im}\mathrm d_{k+1}\subset\ker\mathrm d_k\)，且
+	\[
+		\dim\ker\mathrm d_k=m_k-r_k,\qquad
+		\dim H_k(C_\bullet)=m_k-r_k-r_{k+1}.
+	\]
+	移项便得\eqref{g2:eq:morse-rank-identity}；两项秩非负给出不等式。
+\end{proof}
+
+式\eqref{g2:eq:morse-rank-identity}说明一个次数中的临界点为什么可能多于同调类：其中 \(r_k\) 个方向不是圈，另外 \(r_{k+1}\) 个圈方向是更高一次边界。由于这些方向分别发生在相邻次数，将各维不等式孤立地看待，还会漏掉一组更强的约束。
 
 \subsection{强不等式和 Euler 等式}
 \label{g2:subsec:1703:03}
-待撰写
+
+定义两个只含有限项的多项式
+\[
+	\mathcal M_f(t)=\sum_{k=0}^n m_kt^k,\qquad
+	P_M(t;\mathbb F)=\sum_{k=0}^n b_kt^k.
+\]
+它们分别把临界点指标与同调次数放进幂次中。前一个称为 \(f\) 的\term[Morse duoxiangshi]{Morse 多项式}[Morse polynomial]；后一个是域系数的 Poincaré 多项式。\symidx{\(\mathcal M_f(t)\)：Morse 多项式}
+
+\begin{theorem}[Morse 不等式]\label{g2:thm:morse-inequalities}
+	设 \(M\) 为紧光滑 \(n\) 维流形，\(f:M\to\mathbb R\) 为 Morse 函数。若 \(\partial M\ne\varnothing\)，要求在向内领圈上 \(f=b-t\)，并且内部 \(f<b\)。对任意域 \(\mathbb F\)，记 \(m_k\) 为指标 \(k\) 的临界点数，\(b_k=\dim_{\mathbb F}H_k(M;\mathbb F)\)。则存在系数为非负整数的多项式 \(Q(t)\)，使
+	\begin{equation}\label{g2:eq:morse-polynomial-identity}
+		\mathcal M_f(t)=P_M(t;\mathbb F)+(1+t)Q(t).
+	\end{equation}
+	因而有弱不等式 \(m_k\ge b_k\)，以及强不等式
+	\begin{equation}\label{g2:eq:strong-morse-inequalities}
+		\sum_{j=0}^k(-1)^{k-j}m_j
+		\ge \sum_{j=0}^k(-1)^{k-j}b_j
+		\qquad(0\le k\le n).
+	\end{equation}
+	在最高次数的交错和中等号成立，具体为
+	\begin{equation}\label{g2:eq:morse-euler-equality}
+		\sum_{k=0}^n(-1)^km_k=\chi(M).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	用\cref{g2:prop:morse-chain-ranks}的秩，取 \(Q(t)=\sum_{k=0}^{n-1}r_{k+1}t^k\)。于是 \((1+t)Q(t)\) 的 \(t^k\) 系数为 \(r_k+r_{k+1}=m_k-b_k\)，得到多项式恒等式。对\eqref{g2:eq:morse-rank-identity}作从零次到 \(k\) 次的有限交错求和，所有内部项抵消，只留下
+	\[
+		\sum_{j=0}^k(-1)^{k-j}(m_j-b_j)=r_{k+1}\ge0.
+	\]
+	这便是强不等式；在 \(k=n\) 时 \(r_{n+1}=0\)，故等号成立。
+
+	最后说明右端为什么就是 Euler 示性数。\cref{g2:cor:morse-cell-type}给出的有限 CW 复形与 \(M\) 同伦等价，故 \(\chi(M)\) 可由其胞腔交错和定义。\cref{g2:thm:euler-homology}的秩相消证明在任意域上成立，所以这个整数也等于 \(\sum_k(-1)^kb_k\)。这同时说明所得 Euler 等式不依赖系数域。
+\end{proof}
+
+在 \eqref{g2:eq:morse-polynomial-identity} 中代入 \(t=1\)，得到总临界点数的约束
+\[
+	\#\operatorname{Crit}(f)=\sum_kb_k+2Q(1).
+\]
+超出总同调维数的临界点数必为偶数。不过，式中的代数配对并未指定空间中的两张把手能够直接消去；实际消去还需要控制附着位置，\subsecref{g2:subsec:1705:02}将给出可以实现消去的局部模型。
+
+\begin{example}
+	设 \(M\) 为连通闭可定向曲面，亏格为 \(g\)，并取任意域作为系数。\cref{g2:prop:surface-integer-homology}给出 \(b_0=b_2=1\)、\(b_1=2g\)。Morse 不等式与 Euler 等式给出
+	\[
+		m_0\ge1,\qquad m_2\ge1,\qquad
+		m_1=m_0+m_2+2g-2.
+	\]
+	因此若只有一个极小点和一个极大点，就恰有 \(2g\) 个鞍点；每多出一个极值点，鞍点数也必须相应增加。环面上常见的一个极小点、两个鞍点、一个极大点，正好达到这些下界。
+\end{example}
 
 \subsection{完美 Morse 函数及反例}
 \label{g2:subsec:1703:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+各维下界能否同时达到，取决于函数，也取决于选择什么系数。这个区别在有挠同调的流形上尤其明显。
+
+\begin{definition}\label{g2:def:perfect-morse}
+	设 \(M\) 为紧光滑流形，\(f\) 满足\cref{g2:thm:morse-inequalities}的条件。若对一个指定域 \(\mathbb F\) 有
+	\[
+		m_k=\dim_{\mathbb F}H_k(M;\mathbb F)\quad\text{对所有 }k,
+	\]
+	则称 \(f\) 是关于 \(\mathbb F\) 的\term[wanmei Morse hanshu]{完美 Morse 函数}[perfect Morse function]。
+\end{definition}
+
+由\eqref{g2:eq:morse-rank-identity}，完美等价于相应胞腔复形的全部边界映射为零，也等价于 \(Q(t)=0\)。它意味着每个临界点都留下独立的同调贡献。球面的标准高度只有指标零与指标 \(n\) 的两个临界点，因而对所有域都完美。
+
+\begin{example}\label{g2:exm:projective-perfect-morse}
+	在 \(\mathbb RP^2\) 上，取 \(a_0<a_1<a_2\)，令
+	\[
+		f([x_0:x_1:x_2])=
+		\frac{a_0x_0^2+a_1x_1^2+a_2x_2^2}{x_0^2+x_1^2+x_2^2}.
+	\]
+	临界点是三条坐标轴，指标依次为 \(0,1,2\)；完整坐标计算见\subsecref{g2:subsec:1705:01}。其 Morse 多项式为 \(1+t+t^2\)。由\cref{g2:prop:rp-cellular-boundary}，整数胞腔边界 \(\mathrm d_2\) 是乘二，\(\mathrm d_1=0\)。在 \(\mathbb F_2\) 上两者都为零，所以 \(P_{\mathbb RP^2}(t;\mathbb F_2)=1+t+t^2\)，此函数完美；在 \(\mathbb Q\) 上，\(P_{\mathbb RP^2}(t;\mathbb Q)=1\)，且
+	\[
+		\mathcal M_f(t)-P_{\mathbb RP^2}(t;\mathbb Q)
+		=t+t^2=(1+t)t.
+	\]
+	同一个函数在有理系数下就不完美。
+\end{example}
+
+\begin{proposition}\label{g2:prop:rational-perfect-no-torsion}
+	若紧光滑流形 \(M\) 存在满足\cref{g2:thm:morse-inequalities}边界条件、且关于 \(\mathbb Q\) 完美的 Morse 函数，则 \(H_k(M;\mathbb Z)\) 对所有 \(k\) 都是自由阿贝尔群。
+\end{proposition}
+\begin{proof}
+	有限 CW 模型的整数胞腔链群是自由阿贝尔群。有理完美性使所有胞腔边界矩阵的有理秩为零，所以这些整数矩阵本身为零。它们的核就是整个链群，像为零；由\cref{g2:thm:cellular-singular-comparison}，所得整数同调即为自由的胞腔链群。
+\end{proof}
+
+因此 \(\mathbb RP^2\) 不只是上述函数未能达到有理下界：其 \(H_1\cong\mathbb Z/2\) 说明根本不存在有理完美 Morse 函数。只看有理 Betti 数会丢失这项障碍。
+
+\ProseParagraphBreak
+
+即使流形有完美函数，也可以选到临界点更多的函数。例如 \(S^1\) 上 \(f_r(\theta)=\cos(r\theta)\)，其中整数 \(r\ge1\)，有 \(r\) 个极小点与 \(r\) 个极大点，故
+\[
+	\mathcal M_{f_r}(t)=r(1+t),\qquad
+	P_{S^1}(t;\mathbb F)=1+t,\qquad Q(t)=r-1.
+\]
+所有这些函数的临界点交错和都是零，但只有 \(r=1\) 时完美。Euler 等式只保留交错总量，Morse 不等式则逐次保留了更多约束。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 16.4 不动点与 Lefschetz 公式
 % 纲要位置：几何学计划纲要.md，第 1646 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,278 @@
 \section{不动点与 Lefschetz 公式}
 \label{g2:sec:1604}
 
-待撰写
+方程 \(f(x)=x\) 的未知数只有一个点，但它同时比较了输入与输出。把二者放到乘积空间中，不动点就变成图像与对角线的交点。上一节的局部度可以给每个孤立交点一个整数；本节将证明，这些整数的总和能够直接从 \(f\) 在上同调上的作用读出。局部方程与全局线性代数由对角类联系起来。
+
+本节的流形均为闭、已定向的光滑流形，先设维数 \(n\geq1\)。上同调计算采用实系数，基本类取所选定向。闭性同时保证有限维性、有限的横截不动点集，以及扰动时的一致控制。
 
 \subsection{图像和对角线}
 \label{g2:subsec:1604:01}
-待撰写
+
+对光滑映射 \(f:M\to M\)，定义图像及对角线
+\[
+	\Gamma_f=\{(x,f(x)):x\in M\},
+	\qquad \Delta=\{(x,x):x\in M\}\subset M\times M.
+\]
+映射 \(\gamma_f(x)=(x,f(x))\) 与 \(\delta(x)=(x,x)\) 都是嵌入。确实，它们的第一投影都是恒等映射，因此微分单射，逆映射由第一投影限制给出。两者都通过这个参数化取 \(M\) 的定向，环境 \(M\times M\) 取第一因子在前的乘积定向。于是
+\[
+	\Gamma_f\cap\Delta=\{(x,x):f(x)=x\}.
+\]
+
+在不动点 \(x\) 处，两个切空间为
+\[
+	\mathrm{T}_{(x,x)}\Gamma_f=\{(v,\mathrm{d}f_xv):v\in\mathrm{T}_xM\},
+	\qquad \mathrm{T}_{(x,x)}\Delta=\{(w,w):w\in\mathrm{T}_xM\}.
+\]
+它们互补，当且仅当 \(\operatorname{id}-\mathrm{d}f_x\) 可逆。这样的不动点称为\term[feituibudongdian]{非退化不动点}[nondegenerate fixed point]。因此，全部不动点非退化恰好等价于 \(\gamma_f\pitchfork\Delta\)。非退化条件也可说成：\(1\) 不是 \(\mathrm{d}f_x\) 的特征值。
+
+\ProseParagraphBreak
+
+我们采用第16.2节的顺序：先列 \(\Gamma_f\) 的正向切基，再列 \(\Delta\) 的正向切基。相对于 \(\mathrm{T}_xM\oplus\mathrm{T}_xM\) 的乘积正向基，合并后的矩阵为
+\begin{equation}\label{g2:eq:graph-diagonal-determinant}
+	\begin{pmatrix}I&I\\ \mathrm{d}f_x&I\end{pmatrix},
+	\qquad
+	\det\begin{pmatrix}I&I\\ \mathrm{d}f_x&I\end{pmatrix}
+	=\det(I-\mathrm{d}f_x).
+\end{equation}
+第二个等式由第二块行减去 \(\mathrm{d}f_x\) 乘第一块行得到。它决定了本节局部公式中的次序。
+
+从法丛也能核对这个符号。对角线的法商与 \(\mathrm{T}_xM\) 的识别取为
+\begin{equation}\label{g2:eq:diagonal-normal-difference}
+	\frac{\mathrm{T}_xM\oplus\mathrm{T}_xM}{\{(w,w)\}}
+	\longrightarrow\mathrm{T}_xM,
+	\qquad [(u,v)]\longmapsto u-v.
+\end{equation}
+它符合“法向在前、对角线切向在后”的定向：用 \((u,0)\) 代表法向，再接上 \((w,w)\)，所得矩阵 \(\left(\begin{smallmatrix}I&I\\0&I\end{smallmatrix}\right)\) 行列式为 \(1\)。图像微分复合这个法商映射，恰好是 \(v\mapsto v-\mathrm{d}f_xv\)。
+
+\begin{figure}[tbp]
+	\centering
+	\begin{tikzpicture}[scale=1.35,>=stealth]
+		\draw[->] (-.15,0)--(2.65,0) node[right] {$x$};
+		\draw[->] (0,-.15)--(0,2.95) node[above] {$y$};
+		\draw[gray,dashed] (0,0)--(2.55,2.55) node[right] {$\Delta$};
+		\draw[thick,blue!65!black,domain=0:2.4,samples=60] plot (\x,{\x+.4*(\x-.6)*(\x-1.8)});
+		\node[blue!65!black] at (2.04,2.78) {$\Gamma_f$};
+		\fill (.6,.6) circle (1.4pt) node[above left] {$+1$};
+		\fill (1.8,1.8) circle (1.4pt) node[below right] {$-1$};
+	\end{tikzpicture}
+	\caption{一维局部模型中，图像斜率小于 \(1\) 时交点符号为正，大于 \(1\) 时为负。图中两个交点的带符号和为零。}
+	\label{g2:fig:graph-diagonal-indices}
+\end{figure}
 
 \subsection{横截不动点的局部指数}
 \label{g2:subsec:1604:02}
-待撰写
+
+先设 \(x_0\) 是连续映射 \(f:M\to M\) 的孤立不动点。取正向坐标 \(\chi\)，使 \(\chi(x_0)=0\)，再取足够小的闭球 \(\overline B_r\)，保证它和它经局部表达 \(\widetilde f=\chi f\chi^{-1}\) 的像都留在该坐标域内，且球内唯一不动点是零。令
+\[
+	h(u)=u-\widetilde f(u).
+\]
+则 \(h\) 在 \(\partial B_r\) 上非零。第16.3节的局部度给出整数
+\begin{equation}\label{g2:eq:fixed-point-index-definition}
+	\operatorname{ind}(f,x_0)
+	=\deg\!\left(\frac{h}{\lVert h\rVert}:\partial B_r\longrightarrow S^{n-1}\right),
+\end{equation}
+称为 \(f\) 在 \(x_0\) 的\term[budongdianzhishu]{不动点指数}[fixed point index]。球面取球的边界定向。\(n=1\) 时用约化零维同调解释这个度，等价地，
+\begin{equation}\label{g2:eq:one-dimensional-fixed-index}
+	\operatorname{ind}(f,x_0)=\frac{\operatorname{sgn}h(r)-\operatorname{sgn}h(-r)}2.
+\end{equation}
+这个整数测量局部位移 \(u-\widetilde f(u)\) 在不动点周围绕零点的次数。
+
+半径的选择不影响指数。两个小球之间没有零点，局部度的切除与边界同伦不变性使它们给出相同的整数。坐标选择也不影响指数。若 \(\psi\) 是两组正向坐标间的变换，则在足够小的凸坐标邻域中，
+\[
+	\psi(u)-\psi(\widetilde f(u))
+	=A(u)\bigl(u-\widetilde f(u)\bigr),
+	\quad
+	A(u)=\int_0^1\mathrm{D}\psi_{\widetilde f(u)+t(u-\widetilde f(u))}\,\mathrm{d}t.
+\]
+当 \(u\to0\) 时，\(A(u)\to\mathrm{D}\psi_0\)。这个极限矩阵可逆且行列式为正；进一步缩小邻域后，\(A(u)\) 与 \(\mathrm{D}\psi_0\) 的直线插值处处可逆。因此位移图在新坐标中只经过一次正向的源坐标变化，以及一次不经过零点的目标线性变形，局部度保持不变。
+
+\begin{proposition}\label{g2:prop:nondegenerate-fixed-index}
+	设 \(M\) 为已定向光滑 \(n\) 维流形，\(n\geq1\)，\(f:M\to M\) 光滑，\(x\) 是非退化不动点。则 \(x\) 孤立，且
+	\[
+		\operatorname{ind}(f,x)=\operatorname{sgn}\det(I-\mathrm{d}f_x).
+	\]
+	这个整数也是按 \((\Gamma_f,\Delta)\) 顺序计算的局部相交符号。
+\end{proposition}
+\begin{proof}
+	在上述坐标中，\(\mathrm{D}h_0=I-\mathrm{D}\widetilde f_0\) 可逆。逆函数定理使零点孤立。又有 \(h(u)=Au+o(\lVert u\rVert)\)，其中 \(A=\mathrm{D}h_0\)。取 \(c>0\)，使 \(\lVert Au\rVert\geq c\lVert u\rVert\)；在足够小的球面上，余项小于 \(c\lVert u\rVert/2\)。于是 \(Au+t(h(u)-Au)\) 对 \(0\leq t\leq1\) 始终非零，故局部度等于可逆线性映射 \(A\) 的度，即 \(\operatorname{sgn}\det A\)。最后使用 \eqref{g2:eq:graph-diagonal-determinant}。
+\end{proof}
+
+指数还适用于退化不动点。例如在实线原点附近，\(f(t)=t+t^2\) 的位移为 \(-t^2\)，由 \eqref{g2:eq:one-dimensional-fixed-index} 得指数 \(0\)；\(f(t)=t+t^3\) 的位移为 \(-t^3\)，指数为 \(-1\)。两者在原点都满足 \(f'(0)=1\)，所以微分本身已经不能决定指数，边界上的位移仍能决定它。
+
+\ProseParagraphBreak
+
+退化情形可以通过小扰动与横截情形联系起来。我们需要的是扰动映射 \(f\)，同时保留“第一坐标等于输入”的图像结构。下面给出可直接使用的构造。
+
+\begin{lemma}\label{g2:lem:nondegenerate-fixed-point-perturbation}
+	设 \(M\) 为闭光滑流形，\(f:M\to M\) 光滑。存在任意接近 \(f\) 的光滑映射 \(g\)，使全部不动点非退化，且 \(g\) 与 \(f\) 光滑同伦。这些不动点只有有限多个。
+\end{lemma}
+\begin{proof}
+	用有限张坐标图和光滑截断，构造有限个光滑向量场 \(Y_1,\ldots,Y_N\)，使它们在每点张成 \(\mathrm{T}M\)：在较小图域上取坐标向量场，在较大图域内乘以截断后补零；较小图域覆盖 \(M\)。第一卷第13章第2节的紧支向量场完备性定理说明，紧无边界流形上的这些向量场的流 \(\varphi_j^t\) 在全部时间存在。对 \(a=(a_1,\ldots,a_N)\) 定义
+	\[
+		f_a=\varphi_N^{a_N}\circ\cdots\circ\varphi_1^{a_1}\circ f,
+		\qquad G(a,x)=(x,f_a(x)).
+	\]
+	在 \(a=0\) 处，参数导数在第二因子给出全部 \(\mathrm{T}_{f(x)}M\)，而 \(x\) 方向在第一因子给出全部 \(\mathrm{T}_xM\)。所以 \(G\) 的微分满射。满射性是开条件，由 \(M\) 紧，可取零参数的一个共同邻域，使 \(G\) 在其上处处为淹没，因而横截于 \(\Delta\)。
+
+	\cref{g2:thm:parametric-transversality}说明，任意接近零的参数中都能选到 \(a\)，使 \(\gamma_{f_a}\pitchfork\Delta\)。取 \(g=f_a\) 即得所需非退化性，\(f_{ta}\) 给出光滑同伦。参数趋于零时，流的参数依赖保证 \(f_a\) 在各阶导数上一致趋于 \(f\)。最后，不动点集是紧空间中的闭集，非退化性又使其每一点孤立，因此它是有限集。
+\end{proof}
+
+设原映射的全部不动点已孤立。用互不相交的小坐标球 \(B_1,\ldots,B_s\) 围住它们。在这些球的补集上，\(d(x,f(x))\) 有正下界，所以足够小的扰动不会在补集中产生不动点；在各球边界上，局部位移也有正下界。\cref{g2:thm:local-index-additivity}因而给出
+\begin{equation}\label{g2:eq:fixed-index-conservation}
+	\operatorname{ind}(f,x_i)
+	=\sum_{y\in B_i,\ g(y)=y}\operatorname{ind}(g,y).
+\end{equation}
+右侧若已非退化，就是有限个 \(\pm1\) 的和。这个等式说明，一个退化不动点在扰动后可以分裂、合并或消失，而它在固定边界内的指数总和保持不变。连续 \(f\) 也适用：先用 \cref{g2:thm:relative-smooth-approximation}取任意接近且同伦的光滑映射，再作上述扰动；球边界上的非零位移沿坐标直线同伦保持非零。
 
 \subsection{对角类和上同调迹}
 \label{g2:subsec:1604:03}
-待撰写
+
+现在将局部计数转成上同调计算。\cref{g2:lem:compact-manifold-finite-homology}已经证明，紧流形的整数同调有限生成。回顾其中的有限性机制：把 \(M\) 嵌入某个 Euclid 空间，在其回缩邻域内选一个包含 \(M\) 的有限立方网格复形 \(P\)，则 \(M\to P\to M\) 的复合为恒等，故 \(H_*(M)\) 是有限复形同调的直和因子。在本章的光滑情形，第15章的嵌入与管状邻域定理直接提供这个邻域回缩。域上的万有系数定理于是保证每个 \(H^q(M;\mathbb R)\) 有限维；\cref{g2:thm:de-rham}又使 \(q>n\) 时的上同调与零形式空间的上同调相同，因而为零。
+
+记 \(b_q=\dim H^q(M;\mathbb R)\)。闭流形对偶 \cref{g2:cor:closed-poincare-duality}与帽积求值式 \eqref{g2:eq:cap-evaluation}说明，配对
+\[
+	H^q(M;\mathbb R)\times H^{n-q}(M;\mathbb R)
+	\longrightarrow\mathbb R,
+	\qquad (\alpha,\beta)\longmapsto\langle\alpha\smile\beta,[M]\rangle
+\]
+是完美配对。这里“完美”指任一侧都同构于另一侧的线性对偶：Poincaré 对偶先把一侧变为同调，再由域上的万有系数同构解释求值。因此可以选基
+\[
+	\alpha_1^q,\ldots,\alpha_{b_q}^q\in H^q(M;\mathbb R),
+	\qquad \beta_1^{n-q},\ldots,\beta_{b_q}^{n-q}\in H^{n-q}(M;\mathbb R),
+\]
+满足
+\begin{equation}\label{g2:eq:lefschetz-dual-bases}
+	\langle\alpha_i^q\smile\beta_j^{n-q},[M]\rangle=\delta_{ij}.
+\end{equation}
+上标表示次数；这两组基按“先 \(\alpha\)、后 \(\beta\)”的顺序对偶。
+
+\ProseParagraphBreak
+
+令
+\[
+	\eta_\Delta=\operatorname{PD}_{M\times M}[\Delta]\in H^n(M\times M;\mathbb R).
+\]
+依本卷 \(D\eta=\eta\frown[M\times M]\) 的约定，\(D\eta_\Delta=\delta_*[M]\)。所以对任意 \(\theta\in H^n(M\times M;\mathbb R)\)，
+\begin{equation}\label{g2:eq:diagonal-class-characterization}
+	\langle\eta_\Delta\smile\theta,[M\times M]\rangle
+	=\langle\theta,\delta_*[M]\rangle
+	=\langle\delta^*\theta,[M]\rangle.
+\end{equation}
+这个等式刻画了对角类；它要求 \(\eta_\Delta\) 在杯积中放在前面。
+
+\begin{proposition}\label{g2:prop:diagonal-class-expansion}
+	设 \(M\) 是闭、已定向光滑 \(n\) 维流形，并按 \eqref{g2:eq:lefschetz-dual-bases}选取实上同调的对偶基。则
+	\begin{equation}\label{g2:eq:diagonal-class-expansion}
+		\eta_\Delta
+		=\sum_{q=0}^n\sum_{i=1}^{b_q}
+			(-1)^{nq}\,\beta_i^{n-q}\times\alpha_i^q.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	有限维条件使第4章的上同调 Künneth 同构适用；故只需用所有乘积类 \(a\times b\)，其中 \(a\in H^q(M;\mathbb R)\)、\(b\in H^{n-q}(M;\mathbb R)\)，测试右侧是否满足 \eqref{g2:eq:diagonal-class-characterization}。其他次数的项与这个乘积类相乘后，在至少一个因子上超过维数或无法达到顶次，求值为零。
+
+	写 \(a=\sum_i a_i\alpha_i^q\)、\(b=\sum_j b_j\beta_j^{n-q}\)。由 \cref{g2:prop:cross-cup-evaluation}的乘法与取值公式，
+	\begin{align*}
+		\bigl\langle(\beta_i^{n-q}\times\alpha_i^q)\smile(a\times b),[M\times M]\bigr\rangle
+		&=(-1)^{q^2}\langle\beta_i^{n-q}\smile a,[M]\rangle
+			\langle\alpha_i^q\smile b,[M]\rangle\\
+		&=(-1)^{q^2+q(n-q)}a_i b_i\\
+		&=(-1)^{nq}a_i b_i.
+	\end{align*}
+	第一行的符号来自把第二因子的 \(\alpha_i^q\) 移过第一因子的 \(a\)；第二行还将 \(\beta_i^{n-q}\) 与 \(a\) 交换次序。乘上展开式中的 \((-1)^{nq}\) 后，两项符号相消，求和得到 \(\sum_i a_i b_i=\langle a\smile b,[M]\rangle\)。另一方面，\(\delta^*(a\times b)=a\smile b\)，恰好给出所需测试值。
+
+	最后，\(M\times M\) 上的 Poincaré 对偶与完美配对说明，一个 \(n\) 次上同调类由它与全部 \(n\) 次类的顶次配对唯一确定。因此右侧就是 \(\eta_\Delta\)。
+\end{proof}
+
+例如对正向圆周取 \(\omega\in H^1(S^1;\mathbb R)\)、\(\langle\omega,[S^1]\rangle=1\)，公式给出
+\[
+	\eta_\Delta=\omega\times1-1\times\omega.
+\]
+它对应第一坐标减第二坐标，与 \eqref{g2:eq:diagonal-normal-difference}相符。若用微分形式计算，\cref{g2:prop:de-rham-products}保证积分比较同时保持拉回、外积和杯积；因此可以将上面的 \(\alpha_i,\beta_i\) 换成闭形式代表、把杯积换成楔积，所有交换符号完全相同。
+
+\ProseParagraphBreak
+
+对连续映射 \(f:M\to M\)，定义\term[Lefschetzshu]{Lefschetz 数}[Lefschetz number]为
+\begin{equation}\label{g2:eq:lefschetz-number}
+	L(f)=\sum_{q=0}^n(-1)^q
+		\operatorname{tr}\bigl(f^*:H^q(M;\mathbb R)\to H^q(M;\mathbb R)\bigr).
+\end{equation}
+有限维性使每项的迹有定义，而 \(\operatorname{tr}(P^{-1}AP)=\operatorname{tr}(A)\) 保证它与基无关。同伦映射诱导相同的上同调同态，所以 \(L(f)\) 只依赖同伦类。域上的上同调是同调的线性对偶，因此 \(f^*\) 与 \(f_*\) 的矩阵互为转置、迹相同。再用整数同调除去挠部分的有限秩自由群，可见各迹都是整数；实系数提供了方便的配对计算，并未使最终的不变量变成任意实数。
+
+\begin{theorem}[Lefschetz 公式]\label{g2:thm:lefschetz-formula}
+	设 \(M\) 是闭、已定向的光滑 \(n\) 维流形，\(n\geq1\)，\(f:M\to M\) 连续。若全部不动点孤立，则它们只有有限多个，且
+	\[
+		L(f)=\sum_{x\in\operatorname{Fix}(f)}\operatorname{ind}(f,x).
+	\]
+	特别地，若 \(f\) 光滑且全部不动点非退化，则
+	\begin{equation}\label{g2:eq:lefschetz-nondegenerate-formula}
+		L(f)=\sum_{f(x)=x}\operatorname{sgn}\det(I-\mathrm{d}f_x).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先设 \(f\) 光滑且全部不动点非退化。\cref{g2:thm:geometric-intersection-pairing}应用于 \(\gamma_f:M\to M\times M\) 和闭子流形 \(\Delta\)，给出
+	\[
+		\sum_{f(x)=x}\operatorname{sgn}\det(I-\mathrm{d}f_x)
+		=I(\Gamma_f,\Delta)
+		=\langle\gamma_f^*\eta_\Delta,[M]\rangle.
+	\]
+	这里第一因子上的参数化保证 \(\Gamma_f\) 使用 \(M\) 的原定向，而对角法向的符号已经在 \eqref{g2:eq:graph-diagonal-determinant}核对。
+
+	写 \(f^*\alpha_i^q=\sum_j A^q_{ji}\alpha_j^q\)。外积的定义与 \(\operatorname{pr}_1\gamma_f=\operatorname{id}\)、\(\operatorname{pr}_2\gamma_f=f\) 给出
+	\[
+		\gamma_f^*(\beta_i^{n-q}\times\alpha_i^q)
+		=\beta_i^{n-q}\smile f^*\alpha_i^q.
+	\]
+	于是
+	\begin{align*}
+		\langle\gamma_f^*\eta_\Delta,[M]\rangle
+		&=\sum_{q,i,j}(-1)^{nq}A^q_{ji}
+			\langle\beta_i^{n-q}\smile\alpha_j^q,[M]\rangle\\
+		&=\sum_{q,i,j}(-1)^{nq+q(n-q)}A^q_{ji}\delta_{ji}\\
+		&=\sum_q(-1)^q\sum_i A^q_{ii}=L(f).
+	\end{align*}
+	最后一步使用 \(nq+q(n-q)\equiv q\pmod2\)。交错迹的符号因此来自对角类与分次交换律，而非另加的一套计数约定。
+
+	现在设 \(f\) 连续且全部不动点孤立。它的不动点集闭且紧，若无限就有聚点，该聚点仍为不动点，与孤立性矛盾。取前述互不相交的坐标球围住所有不动点，先光滑逼近，再用 \cref{g2:lem:nondegenerate-fixed-point-perturbation}得到同伦映射 \(g\)，使其不动点全部非退化。将两次改动都取得足够小，则 \(g\) 的不动点仍全部落在这些球中，并满足每个球内的指数守恒式 \eqref{g2:eq:fixed-index-conservation}。因此
+	\[
+		L(f)=L(g)=\sum_{g(y)=y}\operatorname{ind}(g,y)
+		=\sum_{f(x)=x}\operatorname{ind}(f,x).
+	\]
+	这也证明非横截时的公式与扰动选择无关。
+\end{proof}
 
 \subsection{Lefschetz 数非零的存在推论}
 \label{g2:subsec:1604:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+\begin{corollary}[Lefschetz 不动点定理]\label{g2:cor:lefschetz-fixed-point}
+	设 \(M\) 是闭、已定向光滑 \(n\) 维流形，\(n\ge1\)，\(f:M\to M\) 连续。若 \(L(f)\ne0\)，则 \(f\) 至少有一个不动点。不要求不动点集离散。
+\end{corollary}
+\begin{proof}
+	反设 \(f\) 没有不动点。选择 \(M\) 上的一个距离，紧性给出
+	\[
+		\varepsilon=\min_{x\in M}d(x,f(x))>0.
+	\]
+	由 \cref{g2:thm:relative-smooth-approximation}，可取与 \(f\) 同伦的光滑映射 \(g\)，满足 \(\sup_x d(f(x),g(x))<\varepsilon/2\)。于是
+	\[
+		d(x,g(x))\geq d(x,f(x))-d(f(x),g(x))>\varepsilon/2,
+	\]
+	故 \(g\) 也没有不动点。其图像与对角线不相交，因而满足横截条件；\cref{g2:thm:lefschetz-formula}中的和为空，给出 \(L(g)=0\)。同伦不变性使 \(L(f)=0\)，矛盾。
+\end{proof}
+
+这里紧性保证了无不动点条件在一致小扰动下保持。对非紧直线，平移 \(t\mapsto t+1\) 没有不动点，却在普通实上同调上有 \(L=1\)；闭流形假设不能仅用“各次上同调有限维”代替。有限复形的链级证明及其回缩空间版本可参阅 \cite[第2.C节，The Lefschetz Fixed Point Theorem]{Hatcher2002}。
+
+\ProseParagraphBreak
+
+先看球面。对 \(f:S^n\to S^n\)、\(n\geq1\)，只有零次和顶次实上同调非零。零次上的作用为恒等，顶次上的作用是乘以映射度，所以
+\begin{equation}\label{g2:eq:sphere-lefschetz-degree}
+	L(f)=1+(-1)^n\deg f.
+\end{equation}
+因此，无不动点映射必须有 \(\deg f=(-1)^{n+1}\)。对径映射 \(x\mapsto-x\) 正好具有这个度，并且没有不动点。特别地，偶维球面上与恒等映射同伦的连续映射都有不动点，因为此时 \(L=2\)。
+
+对恒等映射，每个上同调群上的作用都是恒等，因而
+\begin{equation}\label{g2:eq:identity-lefschetz-euler-characteristic}
+	L(\operatorname{id}_M)=\sum_q(-1)^qb_q=\chi(M).
+\end{equation}
+只要 \(\chi(M)\ne0\)，所有与恒等映射同伦的连续自映射都有不动点。这里直接使用 Euler 示性数的同调定义，无须把恒等映射的不动点集扰动成有限集后才定义 \(L\)。
+
+最后，\(L=0\) 只表示带符号的总量消失。圆周的恒等映射满足 \(L=1-1=0\)，却每一点都是不动点；非平凡旋转也有 \(L=0\)，而没有不动点。若全部不动点非退化，则每项为 \(\pm1\)，于是 \(\#\operatorname{Fix}(f)\geq|L(f)|\)；退化不动点的指数则应按局部度计算。零维闭流形是有限点集，此时只有 \(H^0\)，拉回矩阵的迹正好数出不动点，结论也直接成立。

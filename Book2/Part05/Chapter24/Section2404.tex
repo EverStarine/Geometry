@@ -1,11 +1,11 @@
 % !TeX root = ../../Book2.tex
-% 纲要标题：### 24.4 Chern 特征与指标问题
+% 纲要标题：### 24.4 陈特征与指标问题
 % 纲要位置：几何学计划纲要.md，第 1963 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；一般指标定理采用正文所列的准确外部输入。
 
 % 纲要内容开始
 % 
-% * 有理 Chern 特征和乘法
+% * 有理陈特征和乘法
 % * 有限 CW 上与偶奇上同调的比较
 % * 椭圆符号的紧支 K 类
 % * 解析指标与拓扑指标的区别
@@ -14,24 +14,275 @@
 % 
 % 纲要内容结束
 
-\section{Chern 特征与指标问题}
+\section{陈特征与指标问题}
 \label{g2:sec:2404}
 
-待撰写
+一张虚丛可以有许多不同的代表，而上同调类便于加减和计算。第21章的陈类已经把丛变成了上同调数据，不过总陈类把直和变成乘法，尚不能直接成为 \(K^0\) 到上同调环的环同态。本节先换一组适合加法与张量积的示性类，随后解释：为什么一个微分方程的最高阶部分也会确定一张虚丛，以及这份拓扑数据如何给出解空间之间的维数差。
 
-\subsection{有理 Chern 特征和乘法}
+\subsection{有理陈特征和乘法}
 \label{g2:subsec:2404:01}
-待撰写
+设 \(L\) 是复线丛，记 \(x=c_1(L)\)。线丛张量积满足 \(c_1(L\otimes L')=x+x'\)，所以指数式 \(e^x\) 正好把张量积变成乘法。若一张秩 \(r\) 的丛分裂为线丛之和，就把这些指数相加。分裂原理允许我们将这个想法用于一般复向量丛。
+
+\begin{definition}\label{g2:def:chern-character}
+	设 \(X\) 为有限 CW 空间，\(E\to X\) 为秩 \(r\) 的复向量丛。在\cref{g2:thm:splitting-principle}的分裂空间上记其陈根为 \(x_1,\ldots,x_r\)。定义\term[chen tezheng]{陈特征}[Chern character]
+	\[
+		\operatorname{ch}(E)\coloneqq\sum_{a=1}^r e^{x_a}
+		=\sum_{j\ge0}\operatorname{ch}_j(E),\qquad
+		\operatorname{ch}_0(E)=r,\quad
+		\operatorname{ch}_j(E)=\frac1{j!}\sum_{a=1}^r x_a^j\in H^{2j}(X;\mathbb Q).
+	\]
+	这里各个对称多项式先写成 \(c_1(E),\ldots,c_r(E)\) 的多项式，再视为 \(X\) 上的类。若 \(X\) 不连通，零次项逐个连通分支取秩。
+\end{definition}
+
+这个定义中没有无穷级数的收敛问题：\(H^q(X;\mathbb Q)=0\) 当 \(q>\dim X\)，所以只有有限项可能非零。为何各项确实降到 \(X\)，也可以直接从 Newton 恒等式看出。令 \(p_j=\sum_a x_a^j\)、\(c_0=1\)，则
+\[
+	p_j-c_1p_{j-1}+c_2p_{j-2}-\cdots+(-1)^{j-1}c_{j-1}p_1+(-1)^j j c_j=0,
+\]
+其中 \(c_j=0\) 当 \(j>r\)。因此 \(p_j\) 是陈类的整数系数多项式，除以 \(j!\) 后给出唯一的有理类。前几项为
+\begin{equation}\label{g2:eq:chern-character-low-terms}
+	\operatorname{ch}(E)=r+c_1+\frac{c_1^2-2c_2}{2}
+	+\frac{c_1^3-3c_1c_2+3c_3}{6}+\cdots.
+\end{equation}
+这些分母说明，有理系数从定义开始就有实际作用。例如在 \(\mathbb CP^2\) 上取 \(H=\gamma^*\)、\(h=c_1(H)\)，便有 \(\operatorname{ch}(H)=1+h+h^2/2\)。
+
+\begin{proposition}\label{g2:prop:chern-character-ring}
+	对有限 CW 空间 \(X\)，公式
+	\[
+		\operatorname{ch}([E]-[F])=\operatorname{ch}(E)-\operatorname{ch}(F)
+	\]
+	给出自然的含幺环同态
+	\[
+		\operatorname{ch}:K^0(X)\longrightarrow H^{\mathrm{even}}(X;\mathbb Q)
+		\coloneqq\bigoplus_{j\ge0}H^{2j}(X;\mathbb Q).
+	\]
+	它与外积相容，且 \(\operatorname{ch}_j(E^*)=(-1)^j\operatorname{ch}_j(E)\)。
+\end{proposition}
+\begin{proof}
+	先在同一个分裂空间上把 \(E,F\) 都分裂。\Cref{g2:thm:splitting-principle}保证其拉回在有理上同调中单射，所以在那里验证的等式能够降回 \(X\)。设根分别为 \(x_a,y_b\)。直和的根是两组根的并，故
+	\[
+		\operatorname{ch}(E\oplus F)=\sum_a e^{x_a}+\sum_b e^{y_b}.
+	\]
+	张量积则分裂为所有 \(L_a\otimes M_b\) 的直和，其根是 \(x_a+y_b\)，于是
+	\[
+		\operatorname{ch}(E\otimes F)
+		=\sum_{a,b}e^{x_a+y_b}
+		=\Bigl(\sum_a e^{x_a}\Bigr)\Bigl(\sum_b e^{y_b}\Bigr).
+	\]
+	这里根的次数为 \(2\)，杯积交换，有限截断的指数因此满足通常的乘法恒等式。平凡线丛的根为零，特征为 \(1\)。加法性使 \(\operatorname{ch}\) 经群完备化唯一延拓；若两对丛在稳定同构后相等，其陈特征之差也相等，因此虚丛的表示无关。上述乘法式随之延拓到虚丛。
+
+	陈类与拉回相容，定义中的多项式也与拉回相容，故所得同态自然。对 \(X\times Y\) 上两个投影的拉回应用乘法式，就得到外积公式。最后，\(E^*\) 的根为 \(-x_a\)，其 \(j\) 次幂和是原来的 \((-1)^j\) 倍，给出对偶公式。
+\end{proof}
+
+对秩零类，零次分量消失。特别地，本章的 Bott 元满足
+\begin{equation}\label{g2:eq:chern-bott-positive}
+	\operatorname{ch}(\beta)=\operatorname{ch}([H]-1)=e^h-1=h
+	\quad\text{于 }\widetilde H^*(S^2;\mathbb Q),
+\end{equation}
+因为 \(h^2=0\)。这既固定了接下来悬挂比较的正方向，也说明 Bott 元在上同调中对应二次生成元。
 
 \subsection{有限 CW 上与偶奇上同调的比较}
 \label{g2:subsec:2404:02}
-待撰写
+负一次 \(K\) 群由悬挂定义，因而其陈特征也应该由悬挂得到。记
+\[
+	s:H^q(X,A;\mathbb Q)\xrightarrow{\cong}
+	\widetilde H^{q+1}(\Sigma(X/A);\mathbb Q)
+\]
+为与\secref{g2:sec:2402}锥坐标方向一致的上同调悬挂同构。将相对 \(K\) 类视为商空间上的约化类，可定义相对的偶陈特征。对 \(u\in K^{-1}(X,A)=\widetilde K^0(\Sigma(X/A))\)，定义
+\[
+	\operatorname{ch}^{-1}(u)\coloneqq s^{-1}\operatorname{ch}(u)
+	\in H^{\mathrm{odd}}(X,A;\mathbb Q)
+	\coloneqq\bigoplus_{j\ge0}H^{2j+1}(X,A;\mathbb Q).
+\]
+悬挂后的约化零次上同调为零，所以右端恰由正的奇次数组成。绝对情形采用 \(X/\varnothing=X_+\)，与本章的未约化 \(K^{-1}(X)\) 一致。
+
+\begin{theorem}\label{g2:thm:rational-chern-character}
+	对有限 CW 对 \((X,A)\)，陈特征给出自然同构
+	\[
+	\begin{aligned}
+		K^0(X,A)\otimes_{\mathbb Z}\mathbb Q&\xrightarrow{\cong}H^{\mathrm{even}}(X,A;\mathbb Q),\\
+		K^{-1}(X,A)\otimes_{\mathbb Z}\mathbb Q&\xrightarrow{\cong}H^{\mathrm{odd}}(X,A;\mathbb Q).
+	\end{aligned}
+	\]
+	绝对情形的第一行是含幺环同构。
+\end{theorem}
+\begin{proof}
+	证明按胞腔数归纳。需要先把球面上的比较与连接映射的相容性说明清楚，否则不能仅凭两边都具有长正合列就应用五引理。
+
+	由\cref{g2:thm:complex-bott-periodicity,g2:prop:k-sphere-coefficients}，偶维球面 \(S^{2m}\) 的约化零次 \(K\) 群由 \(m\) 个 Bott 元的约化外积生成。式\eqref{g2:eq:chern-bott-positive}及外积公式把这个生成元送到 \(h_1\boxtimes\cdots\boxtimes h_m\)，即压缩积 \(S^2\wedge\cdots\wedge S^2\cong S^{2m}\) 的有向上同调生成元。另一种奇偶性的球面群为零。奇维球面悬挂一次成为偶维球面；按刚才的定义，负一次陈特征同样把相应生成元送到奇次上同调生成元。零维情形则由秩给出。故两种比较在每个球面及其有限楔和上都是有理同构。
+
+	再看连接映射。\Cref{g2:thm:k-long-exact}中的连接由映射锥的商映射 \(X\cup_A CA\to\Sigma A\) 拉回给出；上同调的连接也是同一商映射的拉回，再经悬挂识别。陈特征与拉回相容，而我们用这同一个悬挂方向定义 \(\operatorname{ch}^{-1}\)，所以由负次数群组成的正合列与上同调列之间各个方块都交换。当用 Bott 周期性将次数折回偶、奇两类时，式\eqref{g2:eq:chern-bott-positive}说明乘 \(\beta\) 正对应两次上同调悬挂，因而这些方块仍然交换。这一步只使用已经证明的 Bott 周期性，并未用待证的有理同构来推断周期性。
+
+	设 \(X^n\) 是 \(n\) 维骨架。相对商 \(X^n/X^{n-1}\) 是有限个 \(S^n\) 的楔和，故相对群上的比较已经是同构。对两个正合列取连续五项
+	\[
+		K^{j-1}(X^{n-1})\longrightarrow K^j(X^n,X^{n-1})
+		\longrightarrow K^j(X^n)\longrightarrow K^j(X^{n-1})
+		\longrightarrow K^{j+1}(X^n,X^{n-1}),
+	\]
+	其中次数按二周期解释。将此列张量 \(\mathbb Q\)，正合性保持：把每个元素写成分数后清除有限个分母，就把核像问题化回原来的整数正合列。其下方放置相同奇偶性的有理上同调列。由骨架归纳及球面计算，中间一项以外的四个竖箭头均为同构，五引理给出中间一项的同构。由有限零骨架出发，经过有限次便得到绝对结论。对任意有限 CW 对再取其长正合列，应用同样的五引理，得到相对结论。乘法相容性已由\cref{g2:prop:chern-character-ring}证明。
+\end{proof}
+
+因此，对有限 CW 空间，复 \(K\) 理论与普通上同调的差异包含两部分：有理化前的扭元，以及有理上同调中哪些类实际来自整数 \(K\) 类的整性条件。\Cref{g2:exm:k-moore-torsion}中的 Moore 空间给出第一种现象：其约化 \(K^0\) 群是 \(\mathbb Z/q\)，而正次数有理上同调全为零，陈特征看不到这些非零扭元。上面的 \(\mathbb CP^2\) 算例则说明，来自实际线丛的特征也可以带有分数系数。
 
 \subsection{椭圆符号的紧支 K 类}
 \label{g2:subsec:2404:03}
-待撰写
+设 \(M\) 是闭光滑流形，\(E,F\to M\) 是有限秩复光滑向量丛，\(P:C^\infty(M,E)\to C^\infty(M,F)\) 是 \(m\ge1\) 阶线性微分算子。在局部坐标和丛标架下写成
+\[
+	P=\sum_{|\alpha|\le m}a_\alpha(x)\partial_x^\alpha.
+\]
+固定 Fourier 约定，以 \(\partial_{x_j}\) 对应 \(i\xi_j\)。其\term[zhufuhao]{主符号}[principal symbol]为
+\[
+	\sigma_m(P)(x,\xi)=\sum_{|\alpha|=m}a_\alpha(x)(i\xi)^\alpha:
+	E_x\longrightarrow F_x.
+\]
+换坐标时，最高阶导数按余切变量作张量变换；导数落在换坐标或换标架的系数上时只贡献低阶项。因此这个公式给出 \(\mathrm T^*M\) 上由 \(\pi^*E\) 到 \(\pi^*F\) 的整体丛映射。对 \(t>0\) 有 \(\sigma_m(P)(x,t\xi)=t^m\sigma_m(P)(x,\xi)\)。
+
+\begin{definition}\label{g2:def:elliptic-symbol-k-class}
+	若对每个 \(x\in M\) 及非零 \(\xi\in\mathrm T_x^*M\)，\(\sigma_m(P)(x,\xi)\) 都是复线性同构，则称 \(P\) 为\term[tuoyuan suanzi]{椭圆算子}[elliptic operator]。取一个 Riemann 度量，以 \(D(\mathrm T^*M)\)、\(S(\mathrm T^*M)\) 表示单位闭余球丛及其边界。定义其符号类为
+	\[
+		[\sigma(P)]\coloneqq
+		[\pi^*E,\pi^*F,\sigma_m(P)|_{S(\mathrm T^*M)}]
+		\in K^0\bigl(D(\mathrm T^*M),S(\mathrm T^*M)\bigr).
+	\]
+\end{definition}
+
+这里使用的正是\cref{g2:prop:k-triple-model}的三元组模型：两张丛在球丛内部不必同构，但在边界上由可逆主符号给出同构。将向量的长度径向压入单位球后，余切丛的一点紧化同胚于 \(D(\mathrm T^*M)/S(\mathrm T^*M)\)。因而这个群也写成
+\[
+	K_c^0(\mathrm T^*M)\coloneqq\widetilde K^0\bigl((\mathrm T^*M)^+\bigr),
+\]
+称为\term[jinzhi K lilun]{紧支 \(K\) 理论}[compactly supported K-theory]。下标 \(c\) 表达的是相对平凡化数据：在紧集以外，两个丛由指定同构相抵消。丛本身并不需要在零截面外消失。
+
+\ProseParagraphBreak
+
+还有一个有用的等价描述。在 \(\mathrm T^*M\) 上考虑两项复形
+\[
+	0\longrightarrow\pi^*E\xrightarrow{\ \sigma_m(P)\ }\pi^*F\longrightarrow0.
+\]
+它在零截面外正合，零截面又因 \(M\) 闭而紧，所以它代表一个紧支类。一般有限复形在紧集外正合，也可给出这样的类：取 Hermitian 度量，将偶次项与奇次项分别相加，以 \(\mathrm d+\mathrm d^*\) 从偶次和映到奇次和。正合处的拉普拉斯算子 \(\mathrm d\mathrm d^*+\mathrm d^*\mathrm d\) 可逆，所以这个奇偶映射可逆。两项复形时便恢复上述三元组。此模型及其乘积的详细构造可见\cite[第2节，第489--494页]{AtiyahSinger1968I}。
+
+\begin{proposition}\label{g2:prop:symbol-class-invariance}
+	闭光滑流形上复向量丛间椭圆微分算子的符号类不依赖定义单位余球时所取的度量。连续变形的可逆主符号给出相同的 \(K_c^0(\mathrm T^*M)\) 类；特别地，增加低于主阶数的项不改变该类。直和算子的符号类是原来两类之和。
+\end{proposition}
+\begin{proof}
+	两个度量之间以正定二次型的凸组合连接。沿每条非零余切射线作径向重新缩放，便把各个单位余球丛连续识别；主符号的正齐次性说明重新缩放只乘一个正实数。这个因子可在正数中连接到 \(1\)，因此三元组类不变。主符号的同伦正是三元组允许的边界同构同伦。低阶项不进入 \(\sigma_m(P)\)，直和则给出主符号的块对角和，与三元组的加法一致。
+\end{proof}
+
+在圆周 \(M=\mathbb R/2\pi\mathbb Z\) 上，\(P=\mathrm d/\mathrm d\theta\) 作用于复值函数，主符号是 \(i\xi\)。单位余球有两个分支，边界同构分别是常数 \(i\) 与 \(-i\)。在这两个分支上各取一条从该常数到 \(1\) 的复非零道路，就将边界同构同伦为恒等；恒等同构延拓到整个单位余球丛，所以
+\begin{equation}\label{g2:eq:circle-derivative-symbol-zero}
+	[\sigma(\mathrm d/\mathrm d\theta)]=0\quad\text{于 }K_c^0(\mathrm T^*S^1).
+\end{equation}
+这是一次相对 \(K\) 类的计算，尚未数微分方程的解。
 
 \subsection{解析指标与拓扑指标的区别}
 \label{g2:subsec:2404:04}
-待撰写
+现在从同一算子 \(P\) 出发，分别构造一个分析整数与一个拓扑整数。分析一侧必须先保证两个被相减的维数有限。所用的椭圆分析结论是：闭光滑 \(M\) 上的 \(m\) 阶椭圆算子，在 Sobolev 完备化后给出 Fredholm 算子
+\[
+	P:H^s(M,E)\longrightarrow H^{s-m}(M,F),
+\]
+其像闭，核与余核有限维，核及伴随核中的弱解均光滑，且指标与 \(s\) 无关。\(H^s\) 在整数 \(s\ge0\) 时可以理解为直到 \(s\) 阶弱导数平方可积的截面空间；完备化使“闭像”成为可用的分析性质。这里调用\cite[第6节，式(6.1)，第517--519页]{AtiyahSinger1968I}中的结论，Sobolev 截面与 Fredholm 分析分别安排在第三卷第11.2节、第13.2节，指标的几何应用见第三卷第17.4节的安排。
+
+\begin{definition}\label{g2:def:analytic-index}
+	设 \(M\) 闭且光滑，\(P:C^\infty(M,E)\to C^\infty(M,F)\) 为复向量丛间的椭圆微分算子。它的\term[jiexi zhibiao]{解析指标}[analytic index]为
+	\[
+		\operatorname{ind}_{\mathrm a}(P)\coloneqq
+		\dim_{\mathbb C}\ker P-\dim_{\mathbb C}\operatorname{coker}P.
+	\]
+	这里余核可以在上述 Sobolev 空间中取商；由椭圆正则性，也可用光滑截面取商。选度量后，余核与形式伴随 \(P^*\) 的核自然对应。
+\end{definition}
+
+拓扑一侧要把余切丛上的紧支类送到一点上的 \(K^0(\mathrm{pt})=\mathbb Z\)。与普通上同调的 Gysin 映射相似，这需要法丛上的 Thom 类。复向量丛恰好具有一个可直接构造的 \(K\) 理论 Thom 类。
+
+\begin{proposition}\label{g2:prop:complex-k-thom}
+	设 \(V\to X\) 是有限 CW 空间上的秩 \(r\) 复向量丛。以 \(p:V\to X\) 为投影，\(v\in p^*V\) 为总空间上的典范截面。外代数复形
+	\[
+		0\longrightarrow p^*\Lambda^0V
+		\xrightarrow{v\wedge}p^*\Lambda^1V
+		\xrightarrow{v\wedge}\cdots
+		\xrightarrow{v\wedge}p^*\Lambda^rV\longrightarrow0
+	\]
+	定义一个类 \(\lambda_V\in K_c^0(V)\)。乘这个类给出同构
+	\[
+		\Phi_V:K^j(X)\xrightarrow{\cong}K_c^j(V),\qquad
+		a\longmapsto p^*a\cdot\lambda_V,\qquad j=0,-1.
+	\]
+	其相对版本也成立；若 \(X\) 是闭光滑流形上一张有限秩实光滑向量丛的总空间，\(V\to X\) 为复光滑向量丛，同样得到紧支版本 \(K_c^j(X)\cong K_c^j(V)\)。
+\end{proposition}
+\begin{proof}
+	取 Hermitian 度量。记 \(\varepsilon(v)\) 为楔乘 \(v\)，\(\iota(v)=\varepsilon(v)^*\) 为其伴随；在每个纤维上
+	\[
+		\varepsilon(v)\iota(v)+\iota(v)\varepsilon(v)=|v|^2\operatorname{id}.
+	\]
+	所以 \(v\ne0\) 时，\(\iota(v)/|v|^2\) 是这个复形的收缩同伦，复形正合。等价地，\(\varepsilon(v)+\iota(v)\) 从偶次外幂和映到奇次外幂和，在零截面外可逆。由此得到紧支三元组。度量间的道路给出同伦，外代数构造与丛同构相容，故此类整体良定义。
+
+	在一维复纤维上，复形是 \(\mathbb C\xrightarrow{z}\mathbb C\)。按\cref{g2:prop:k-triple-model}的粘合方向，原点盘的标架在无穷远盘中等于 \(z\) 倍标架。这是典范线丛 \(\gamma\to\mathbb CP^1\) 的过渡式；因此
+	\begin{equation}\label{g2:eq:k-koszul-bott-sign}
+		\lambda_{\mathbb C}=[\gamma]-1=[H]^{-1}-1=-\beta.
+	\end{equation}
+	最后一个等式使用 \(\beta^2=0\)。这也可以从本章粘接约定核对：正向 \(H\) 将无穷远盘的坐标乘 \(z\) 送入原点盘，而上述三元组将原点盘的坐标乘 \(z\) 送入无穷远盘，故二者互为逆线丛。
+
+	对直和有带分次的外代数同构 \(\Lambda^*(V\oplus W)\cong\Lambda^*V\widehat\otimes\Lambda^*W\)，微分对应张量总微分。因此 \(\lambda_{V\oplus W}=\lambda_V\boxtimes\lambda_W\)（在共同底空间上取相应拉回）。在平凡秩 \(r\) 丛上，乘 \(\lambda_V\) 就是乘 \((-1)^r\beta^{\boxtimes r}\)，由复 Bott 周期性是同构。
+
+	一般 \(X\) 按有限骨架过滤。将 \(V\) 限制到一个胞腔的特征圆盘上，它平凡；对于一对相邻骨架，相对 Thom 空间的商是这些圆盘上相对 Thom 空间的有限楔和，因而相对映射正是刚才证明的平凡丛版本。Thom 类由整体外代数复形给出，限制到骨架和边界时保持同一复形，故各个长正合列方块交换。从零骨架开始应用五引理，得到结论。对 \((X,A)\) 用相对骨架作同样的归纳，证明相对版本。
+
+	最后，若底空间 \(X\) 是闭光滑流形上一张有限秩实光滑向量丛的总空间，以半径递增的闭球丛穷尽它。每个紧集都包含在某个球丛的内部；紧支 \(K\) 类因而来自相应球丛及边界的相对群。球丛与边界具有有限 CW 对的同伦型，上一段的相对同构可用，并与扩大半径相容。取这些群的直极限，便得到所述紧支版本。此时外代数复形本身只在纤维方向具有紧支；与底空间的紧支类相乘后，所得复形在总空间中才具有紧支。
+\end{proof}
+
+这里采用的是原始指标论文的外代数 \(V\) 约定，见\cite[第2节，第493--494页]{AtiyahSinger1968I}。式\eqref{g2:eq:k-koszul-bott-sign}说明它与本章正陈根的 Bott 元相差一个负号；下述推前和末端整数识别始终使用同一套 \(\lambda\) 约定。
+
+\ProseParagraphBreak
+
+取光滑嵌入 \(i:M\hookrightarrow\mathbb R^N\)，记其实法丛为 \(\nu\)。度量把 \(\mathrm T^*M\) 识别为 \(\mathrm TM\)，而切映射给出嵌入 \(\mathrm Ti:\mathrm TM\hookrightarrow\mathrm T\mathbb R^N\)。其法丛同构于从 \(M\) 拉回的 \(\nu\oplus\nu\)：第一份来自底空间的法位移，第二份来自切向量的法分量。这个分解可由一个联络写出，改变联络只产生同伦。按
+\[
+	(a,b)\longmapsto a+ib
+\]
+给两份法方向赋予复结构，就得到 \(p^*(\nu\otimes_{\mathbb R}\mathbb C)\)。它的复秩为 \(N-\dim M\)。因此此处的复 Thom 类来自两份相同实法丛的组合。
+
+\ProseParagraphBreak
+
+先沿这个复法丛作 Thom 映射，再将管状邻域中的紧支类延为环境中零，得到
+\[
+	(\mathrm Ti)_!:K_c^0(\mathrm TM)\longrightarrow
+	K_c^0(\mathrm T\mathbb R^N).
+\]
+“延为零”由一点紧化之间的压缩映射实现：环境中管状邻域以外的部分送到无穷远点，故其方向是 \(K\) 类的拉回。将 \((x,v)\in\mathrm T\mathbb R^N\) 写成 \(x+iv\in\mathbb C^N\)，前一命题及 Bott 周期性给出
+\[
+	K_c^0(\mathrm T\mathbb R^N)=K_c^0(\mathbb C^N)
+	=\mathbb Z\,\lambda_{\mathbb C^N},\qquad
+	\lambda_{\mathbb C^N}=\lambda_{\mathbb C}^{\boxtimes N}=(-1)^N\beta^{\boxtimes N}.
+\]
+令 \(b_N\) 把 \(\lambda_{\mathbb C^N}\) 送到 \(1\)。于是\term[tuopu zhibiao]{拓扑指标}[topological index]是复合
+\begin{equation}\label{g2:eq:topological-index-pushforward}
+	\operatorname{ind}_{\mathrm t}:K_c^0(\mathrm T^*M)
+	\xrightarrow{\ \cong\ }K_c^0(\mathrm TM)
+	\xrightarrow{\ (\mathrm Ti)_!\ }K_c^0(\mathbb C^N)
+	\xrightarrow{\ b_N\ }\mathbb Z.
+\end{equation}
+这里既固定了法丛中“底法方向在前、纤维法方向在后”的次序，也固定了末端生成元，因而不会因混用 Bott 元的符号改变指标。
+
+\ProseParagraphBreak
+
+这个整数与嵌入和辅助度量无关。度量的变化给出一族识别，管状邻域的变化给出同伦的压缩映射；Thom 类在这些同伦下自然。增加一个平凡环境实方向时，推前额外乘 \(\lambda_{\mathbb C}\)，而末端 \(b_{N+1}\) 正好消去这一因子，故整数不变。对两个嵌入 \(i_0:M\to\mathbb R^{N_0}\)、\(i_1:M\to\mathbb R^{N_1}\)，在乘积环境中用
+\[
+	x\longmapsto\bigl(\cos t\,i_0(x),\sin t\,i_1(x)\bigr),
+	\qquad 0\le t\le\pi/2,
+\]
+连接其稳定化。每个中间映射至少有一个非零系数的嵌入分量，因而仍是嵌入；沿这族嵌入的法丛及管状邻域给出同伦的推前。末端交换环境实坐标只在复化后作复线性变换，保持 \(\lambda\) 类。上述构造与独立性的完整拓扑处理见\cite[第3节，第497--499页]{AtiyahSinger1968I}。
+
+\begin{theorem}[Atiyah--Singer 指标定理]\label{g2:thm:atiyah-singer-topological-index}
+	设 \(M\) 为闭光滑流形，\(E,F\to M\) 为有限秩复光滑向量丛，\(P:C^\infty(M,E)\to C^\infty(M,F)\) 为椭圆微分算子。则
+	\[
+		\operatorname{ind}_{\mathrm a}(P)
+		=\operatorname{ind}_{\mathrm t}([\sigma(P)]),
+	\]
+	其中右端使用式\eqref{g2:eq:topological-index-pushforward}的复法丛推前及 \(\lambda_{\mathbb C^N}\mapsto1\) 的归一化。
+\end{theorem}
+
+这个结论称为\term[Atiyah-Singer-zhibiao-dingli]{Atiyah--Singer 指标定理}[Atiyah--Singer index theorem]。\footnote{Michael Francis Atiyah（1929--2019），英国数学家，参与建立拓扑 \(K\) 理论，并研究几何与数学物理之间的联系。Isadore Manuel Singer（1924--2021），美国数学家，研究微分几何与泛函分析。}这里引用\cite[第6节，定理(6.7)，第520页]{AtiyahSinger1968I}的结论，取其等变陈述中的作用群为平凡群。完整证明还要建立椭圆算子的解析指标在这些拓扑推前下的相容性；原文第8、9节完成这一环节。解析指标从有限维核与余核得到整数，拓扑指标从符号的紧支类及法丛得到整数，定理把这两种构造联系起来。
+
+\begin{example}\label{g2:exm:circle-derivative-index}
+	对圆周上的 \(P=\mathrm d/\mathrm d\theta\)，周期解 \(Pf=0\) 恰是常函数，核为一维。方程 \(Pf=g\) 有周期光滑解，当且仅当
+	\[
+		\int_0^{2\pi}g(\theta)\,\mathrm d\theta=0.
+	\]
+	必要性来自对导数积分；充分性由 \(f(\theta)=\int_0^\theta g(t)\,\mathrm dt\) 给出，零积分保证周期性，且 \(g\) 的周期性保证各阶导数在接缝吻合。因此余核由平均值给出，也是一维，解析指标为 \(1-1=0\)。另一方面，式\eqref{g2:eq:circle-derivative-symbol-zero}已算出符号类为零，拓扑指标随之为零。这个例子中，核与余核都非零，二者的差却只由符号的拓扑类决定。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

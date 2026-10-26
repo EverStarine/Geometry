@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 12.4 几何中的截面障碍
 % 纲要位置：几何学计划纲要.md，第 1493 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,17 +16,184 @@
 \section{几何中的截面障碍}
 \label{g2:sec:1204}
 
-待撰写
+给每个点连续选一个单位向量，是一个截面问题。沿一个胞腔的边界走一圈，已经选好的向量可能在纤维球面上绕出非零同伦类，这就阻止它填满胞腔。上一章则从纤维定向类的上同调延拓定义了 Euler 类。本节把这两种延拓放到同一个胞腔上比较，再用向量场、平面丛和曲面上的计算说明：障碍类的次数、系数以及消失后的结论都由纤维决定。
 
 \subsection{球丛的首障碍与 Euler 类}
 \label{g2:subsec:1204:01}
-待撰写
+设 \(p:E\rightarrow B\) 是定向 \(S^m\) 丛，\(m\ge1\)，其中 \(B\) 为道路连通 CW 复形。这里的定向仍指沿道路运输保持纤维的正向顶次类。\cref{g2:prop:sphere-connectivity}给出 \(\pi_j(S^m)=0\) 对 \(1\le j<m\) 成立，再加上纤维道路连通，故可以从零骨架开始逐胞腔选截面，一直得到 \(s:B^m\rightarrow E_m\)，其中 \(E_m=p^{-1}(B^m)\)。第一次可能失败发生在 \((m+1)\) 胞腔：将丛拉回其特征圆盘并平凡化，边界截面成为 \(a:S^m\rightarrow S^m\)。\cref{g2:lem:sphere-degree-classification}说明它零伦当且仅当 \(\deg a=0\)，所以延拓问题成为一个整数是否为零的问题。
+
+\ProseParagraphBreak
+
+源球面取胞腔圆盘的正向边界，目标球面取纤维定向。\cref{g2:thm:primary-obstruction}于是给出与初始截面选择无关的首障碍
+\[
+	o_{m+1}(p)\in H^{m+1}(B;\mathbb Z).
+\]
+系数为普通整数，是因为保持纤维定向的运输在 \(\pi_m(S^m)\cong\mathbb Z\) 上作用恒等。\cref{g2:def:spherical-euler-class}所定义的 \(e(p)=\mathrm d_{m+1}u\) 也在这个群里；其中 \(u\) 是纤维的正向上同调生成元。比较二者时需要保留连接同态的符号，下面的局部计算同时给出识别及其符号。
+
+\begin{theorem}[球丛的首障碍]\label{g2:thm:sphere-primary-euler}
+	设 \(p:E\rightarrow B\) 为定向 \(S^m\) 丛，\(m\ge1\)，\(B\) 为道路连通 CW 复形。障碍上链按正向胞腔边界上的截面映射度取值，Euler 类按式\eqref{g2:eq:spherical-euler-transgression}定义，则
+	\begin{equation}\label{g2:eq:primary-euler-sign}
+		o_{m+1}(p)=-e(p).
+	\end{equation}
+	若 \(\dim B\le m+1\)，则 \(p\) 有连续截面当且仅当 \(e(p)=0\)。对定向圆周丛 \(m=1\)，这一等价对任意维数的 CW 底空间均成立。
+\end{theorem}
+\begin{proof}
+	先比较同一个胞腔上的两种延拓。固定 \(B^m\) 上的截面 \(s\)。由\cref{g2:prop:serre-transgression}，纤维生成元 \(u\) 可延拓为 \(v\in H^m(E_m;\mathbb Z)\)：底空间只有 \(m\) 维，球丛谱序列中唯一可能离开 \((0,m)\) 的微分已落在其维数以外。以
+	\[
+		v-p^*s^*v
+	\]
+	替换 \(v\)，不改变它在纤维上的限制，并使 \(s^*v=0\)。减去这一底空间类，是为了把截面所带的贡献从延拓类中消去。
+
+	取一个正向 \((m+1)\) 胞腔的特征映射 \(\chi:D^{m+1}\rightarrow B\)，在拉回丛 \(D^{m+1}\times S^m\) 中使用保持纤维定向的平凡化。令 \(x\in H^m(\partial D^{m+1};\mathbb Z)\) 为正向边界生成元。边界上的乘积有
+	\[
+		H^m(\partial D^{m+1}\times S^m;\mathbb Z)=\mathbb Z\operatorname{pr}_1^*x\oplus\mathbb Z\operatorname{pr}_2^*u.
+	\]
+	\(v\) 在纤维上的值为 \(u\)，所以它在这个边界乘积上的限制必为
+	\[
+		\operatorname{pr}_2^*u+\lambda\operatorname{pr}_1^*x,\qquad \lambda\in\mathbb Z.
+	\]
+	边界截面是图映射 \(\Gamma_a(z)=(z,a(z))\)。把上式沿 \(\Gamma_a\) 拉回，条件 \(s^*v=0\) 给出
+	\[
+		0=a^*u+\lambda x=(\deg a+\lambda)x,
+	\]
+	从而 \(\lambda=-\deg a\)。
+
+	现在使用空间对 \((D^{m+1}\times S^m,\partial D^{m+1}\times S^m)\) 的连接同态。纤维类 \(\operatorname{pr}_2^*u\) 已定义在整个圆盘乘积上，故连接同态将它送到零；\(\operatorname{pr}_1^*x\) 则被送到圆盘的正向相对生成元乘纤维的零次单位元。后一个正号可以直接由上链检查：若 \(\widetilde x\) 延拓边界代表元，则
+	\[
+		\langle\mathrm d\widetilde x,[D^{m+1}]\rangle=\langle x,\partial[D^{m+1}]\rangle=1.
+	\]
+	因此 \(v\) 的上同调延拓障碍在该胞腔上的值是 \(\lambda=-\deg a\)。\cref{g2:prop:serre-transgression}把这些值组成的上圈识别为 \(\mathrm d_{m+1}u\)，而截面首障碍的值为 \(\deg a\)。逐胞腔比较后得到式\eqref{g2:eq:primary-euler-sign}。
+
+	若 \(\dim B\le m+1\)，首障碍为零时，\cref{g2:thm:primary-obstruction}允许先修改 \(B^m\) 上的截面，再将它延拓到全部 \((m+1)\) 胞腔；这已经覆盖整个 \(B\)。反之，全局截面使全部胞腔障碍为零。结合比较式便得到所述等价。若 \(m=1\)，首障碍为零后先延拓到 \(B^2\)，以后每一步的系数群 \(\pi_q(S^1)\)（\(q\ge2\)）都为零，因而可以继续延拓。各骨架上的截面相容，由 CW 弱拓扑粘合为全局连续截面。
+\end{proof}
+
+式\eqref{g2:eq:primary-euler-sign}中的负号来自已经固定的两种约定：截面障碍取边界映射的正向度，上一章 Euler 类取“延拓后取余边界”的传递。若采用首障碍来规范 Euler 类，其记号对应这里的 \(-e(p)\)。判定截面存在时只使用这个类是否为零，因而两种规范给出相同判定；计算它在定向基本类上的具体整数时则必须保持所选符号。
+
+\ProseParagraphBreak
+
+对 \(m\ge2\)，\(e(p)=0\) 保证可以选到 \(B^{m+1}\) 上的截面。继续向上延拓仍要考察 \(\pi_{m+1}(S^m),\pi_{m+2}(S^m),\ldots\) 中的障碍，下一步落在 \(H^{m+2}(B;\Pi_{m+1}(p))\) 中，并可能依赖已选截面。球面低阶同伦群的消失给出上述维数范围；圆周的全部高阶同伦群消失，则使其首障碍成为任意维数上的完整判据。若球丛不定向，首障碍仍可构造，但系数须换为由纤维定向反转给出作用的整数局部系统；上述普通整数 Euler 类的陈述以定向为条件。
 
 \subsection{向量场及结构群约化}
 \label{g2:subsec:1204:02}
-待撰写
+设 \(V\rightarrow B\) 为实秩 \(r\) 向量丛，并给定一个连续正定内积。记 \(S(V)\) 为各纤维单位球面组成的球丛，\(\varepsilon_B^k=B\times\mathbb R^k\) 为平凡秩 \(k\) 丛。无零截面 \(v\) 可逐点归一化为 \(v/\|v\|\)，所以寻找无零截面就是寻找 \(S(V)\) 的截面。对光滑流形上的光滑向量丛，第一卷第12章第3节的内积存在定理保证了这样的光滑内积；其假设为流形有限维、Hausdorff 且第二可数，证明是用局部有限的光滑单位分解将局部 Euclid 内积相加。
+
+\ProseParagraphBreak
+
+还可以从标架看这个问题。局部选取正交标架后，过渡矩阵属于 \(\operatorname O(r)\)。若第一根标架向量能够在不同图上保持不变，过渡矩阵便有 \(\operatorname{diag}(1,A)\) 的形式。这提示我们，整体向量场对应于过渡矩阵所能取值的群变小。
+
+\begin{definition}[正交结构群约化]\label{g2:def:orthogonal-reduction}
+	设 \(V\rightarrow B\) 是带连续正定内积的实秩 \(r\) 向量丛，\(0\le k\le r\)。若存在局部正交标架，使所有过渡矩阵都落在子群
+	\[
+		\left\{\begin{pmatrix}I_k&0\\0&A\end{pmatrix}:A\in\operatorname O(r-k)\right\}\subseteq\operatorname O(r),
+	\]
+	则称 \(V\) 的正交\term[jiegouqun-yuehua]{结构群约化}[reduction of structure group]到 \(\operatorname O(r-k)\)。这里约定 \(\operatorname O(0)\) 为平凡群。对定向丛，使用正向正交标架，并将两个正交群换成相应的特殊正交群，就得到到 \(\operatorname{SO}(r-k)\) 的约化。
+\end{definition}
+
+\begin{proposition}[独立截面与约化]\label{g2:prop:sections-orthogonal-reduction}
+	设 \(V\rightarrow B\) 为带连续正定内积的实秩 \(r\) 向量丛，\(1\le k\le r\)。以下条件等价：
+	\begin{equivalences}
+		\item \(V\) 有 \(k\) 个逐点线性无关的连续截面；
+		\item \(V\) 有 \(k\) 个逐点正交归一的连续截面；
+		\item 存在秩 \(r-k\) 向量丛 \(W\)，使 \(V\cong\varepsilon_B^k\oplus W\)；
+		\item 正交结构群可约化到 \(\operatorname O(r-k)\)。
+	\end{equivalences}
+	对光滑向量丛及光滑内积，同一等价在全部截面、丛同构和局部标架都要求光滑时成立。若 \(V\) 已定向，则上述条件也等价于到 \(\operatorname{SO}(r-k)\) 的约化。
+\end{proposition}
+\begin{proof}
+	对逐点独立的截面 \(v_1,\ldots,v_k\) 作 Gram--Schmidt 正交化：令
+	\[
+		w_j=v_j-\sum_{i<j}\langle v_j,e_i\rangle e_i,\qquad e_j=\frac{w_j}{\|w_j\|}.
+	\]
+	独立性保证每个 \(w_j\) 都处处非零，故这些公式保持连续性；在光滑情形也保持光滑性。由此得到 I 推出 II，反向蕴含直接成立。
+
+	给定 II 中的正交截面，令 \(W_b\) 为它们在 \(V_b\) 中的共同正交补。映射
+	\[
+		P_b(v)=v-\sum_{i=1}^k\langle v,e_i(b)\rangle e_i(b)
+	\]
+	是到 \(W_b\) 的投影。在某点选取 \(r-k\) 个局部截面，其投影在该点构成 \(W_b\) 的基；相应 Gram 行列式在附近仍非零，因此这些投影给出 \(W\) 的局部标架。这证明 \(W\) 确为连续子丛，光滑时也为光滑子丛。映射
+	\[
+		\varepsilon_B^k\oplus W\longrightarrow V,\qquad (b,t_1,\ldots,t_k,w)\longmapsto\sum_i t_i e_i(b)+w
+	\]
+	是丛同构，其逆由内积系数与 \(P_b\) 给出，故 II 推出 III。一个直和分解中平凡因子的标准截面又给出 I。
+
+	在 \(W\) 上局部正交化标架，将它接到 \(e_1,\ldots,e_k\) 后面，便得到 \(V\) 的局部正交标架。不同图上的前 \(k\) 根相同，过渡矩阵因而具有所述块对角形式，得到 IV。反过来，这种过渡矩阵固定前 \(k\) 根标准向量，所以各图中的这些局部截面粘成全局正交截面。定向情形下，当 \(k<r\) 时，由 \(V\) 的定向及有序截面组赋予 \(W\) 相容定向，再使用 \(W\) 的正向正交标架。当 \(k=r\) 时，可在每个连通分支上按需反转最后一根向量，使全标架保持给定定向。于是同样得到特殊正交群的结论。
+\end{proof}
+
+这个证明使用的正交补构造也见第一卷第12章第3节；这里把投影写出，是为了说明它同时适用于连续丛，以及约化中的标架如何实际产生。第一卷第12章第1节的“整体标架与平凡性”正是上述 \(k=r\) 的情形。
+
+\ProseParagraphBreak
+
+把一个纤维中全部有序正交 \(k\) 标架放在一起，得到\term[stiefel-cong]{Stiefel 丛}[Stiefel bundle] \(V_k(V)\rightarrow B\)，其纤维是
+\[
+	V_k(\mathbb R^r)=\{(e_1,\ldots,e_k):\langle e_i,e_j\rangle=\delta_{ij}\}.
+\]
+局部正交标架将它平凡化为 \(U\times V_k(\mathbb R^r)\)，过渡矩阵同时作用于每根向量，所以此构造与局部选择相容。它的截面就是 \(k\) 个正交单位截面。\(k=1\) 恢复单位球丛；\(k>1\) 时，延拓所用的纤维同伦群变成 Stiefel 空间的同伦群。这将“找多少个独立向量场”统一成了截面问题。\symidx{\(V_k(\mathbb R^r)\)：有序正交 \(k\) 标架的 Stiefel 空间}
+
+\ProseParagraphBreak
+
+在 \(r\) 维光滑流形 \(M\) 上取 \(V=\mathrm TM\)，处处非零向量场等价于单位切丛的截面，也等价于正交结构群从 \(\operatorname O(r)\) 约化到 \(\operatorname O(r-1)\)。这里连续存在性与光滑存在性一致。事实上，给一个连续无零截面 \(v\)，在每点附近取局部光滑截面 \(w_i\)，使 \(\|w_i-v\|<\|v\|/2\)；可以在局部标架中固定该点的系数，再由连续性缩小邻域来做到。用第一卷第12章第3节的光滑单位分解 \(\{\varphi_i\}\) 形成 \(w=\sum_i\varphi_iw_i\)，便有
+\[
+	\|w-v\|\le\sum_i\varphi_i\|w_i-v\|<\frac{\|v\|}{2},
+\]
+故 \(w\) 是光滑无零截面。在维数不超过 \(r\) 的 CW 底空间上，\(r\ge2\) 的定向秩 \(r\) 向量丛只有首个截面障碍落在可见维数内，所以 \(e(V)=0\) 正好判定无零截面的存在。
+
+\ProseParagraphBreak
+
+秩一时单位纤维是离散的 \(S^0\)，延拓首先要求两端所选分支能够连起来。例如 Möbius 线丛
+\[
+	L=([0,1]\times\mathbb R)/\bigl((1,t)\sim(0,-t)\bigr)\longrightarrow S^1
+\]
+的截面在区间上由连续函数 \(a\) 表示，端点条件为 \(a(1)=-a(0)\)。若 \(a(0)=0\)，已经有零点；若不为零，介值定理仍迫使 \(a\) 在区间内取零。单位纤维的两个点绕基底一圈后交换，正是无法选取连续分支的原因。这个障碍发生在一维，属于离散纤维的分支问题。
 
 \subsection{低维空间上的完整延拓计算}
 \label{g2:subsec:1204:03}
-待撰写
+二维底空间配圆周纤维时，整个延拓过程只需一个整数上圈：先在顶点和边上选截面，再读取各面边界的绕数。下面先让过渡函数直接给出这个整数，再在切丛上把它拆成两个局部贡献。
+
+\begin{example}[球面上的旋转粘合]\label{g2:exm:clutched-plane-obstruction}
+	给 \(S^2\) 一个定向，把它写成两张闭圆盘 \(D_+\cup D_-\)。在公共边界上用 \(t\in\mathbb R/2\pi\mathbb Z\) 表示 \(D_-\) 的正向边界参数。对整数 \(k\)，将两张平凡定向实平面丛按
+	\[
+		(t,z)_+\sim(t,e^{\mathrm i kt}z)_-,\qquad z\in\mathbb C\cong\mathbb R^2,
+	\]
+	粘合，得到定向平面丛 \(V_k\rightarrow S^2\)；Euclid 内积因旋转粘合而给出全局内积。
+
+	在 \(D_+\) 上选常值单位截面 \(1\)，它在 \(D_-\) 的边界坐标中变成 \(e^{\mathrm i kt}\)，绕数为 \(k\)。把 \(D_+\) 作为已经固定截面的子复形，填入 \(D_-\) 的相对首障碍就是这个整数。由于 \(D_+\) 可缩，\(H^2(S^2,D_+;\mathbb Z)\rightarrow H^2(S^2;\mathbb Z)\) 为同构；正向 \(D_-\) 对应满足 \(\langle\omega,[S^2]\rangle=1\) 的生成元 \(\omega\)。于是
+	\[
+		o_2(S(V_k))=k\omega,\qquad e(V_k)=-k\omega.
+	\]
+	\cref{g2:thm:sphere-primary-euler}说明 \(V_k\) 有无零截面当且仅当 \(k=0\)。这里即使允许修改 \(D_+\) 上的截面，结论也相同：其沿边界的附加绕数为零，因为它已经延拓到 \(D_+\) 内部。\(k=0\) 时粘合为恒等，两个标准基向量直接粘成整体标架。
+\end{example}
+
+对闭定向连通曲面 \(\Sigma_g\) 上的定向平面丛 \(V\)，同一个方法把存在性归结为一个整数。\cref{g2:prop:surface-integer-homology,g2:thm:uct-cohomology}给出 \(H^2(\Sigma_g;\mathbb Z)\cong\mathbb Z\)；取正向生成元 \(\omega\)，写 \(e(V)=q\omega\)。于是 \(V\) 有无零截面当且仅当 \(q=0\)。一旦选定一个单位截面 \(s_0\)，平面定向与内积给出逐纤维的正向四分之一转 \(J\)，\((s_0,Js_0)\) 就是全局正向正交标架。因此每个单位截面都唯一写为
+\[
+	s=f_1s_0+f_2Js_0,\qquad f=(f_1,f_2):\Sigma_g\longrightarrow S^1.
+\]
+截面的同伦对应这些映射的同伦。\(S^1\) 是 \(K(\mathbb Z,1)\)，故\cref{g2:thm:em-representability}给出
+\[
+	\{\text{单位截面的同伦类}\}\cong H^1(\Sigma_g;\mathbb Z)\cong\mathbb Z^{2g}.
+\]
+这里自由同伦与保基点同伦给出相同的分类：选基点 \(b_0\)，将 \(f\) 换成 \(f/f(b_0)\) 就使基点映到 \(1\)，而任意同伦 \(H\) 也可规范为 \(H(b,t)/H(b_0,t)\)。这个坐标依赖于 \(s_0\)：更换参考截面会平移所有坐标。各整数可由曲面标准 \(2g\) 条生成回路上 \(f\) 的绕数读出；曲面二胞腔的附着字是交换子的乘积，其总绕数为零，所以这些整数可以任意指定。
+
+\begin{example}[球面与环面的切向量场]\label{g2:exm:tangent-sphere-torus-obstruction}
+	给 \(S^2\subset\mathbb R^3\) 外向定向，令 \(e_3=(0,0,1)\)。将常向量 \(e_3\) 正交投影到切平面，得到光滑切向量场
+	\[
+		v(x)=e_3-x_3x.
+	\]
+	因为 \(\langle v(x),x\rangle=x_3-x_3=0\)，它确实切于球面；其零点恰为南北极 \(S=-e_3,N=e_3\)。删去两极附近的互不相交小圆盘，余下的圆环记为 \(A\)。在 \(A\) 上归一化 \(v\)，就有单位切丛的截面。要填回两个圆盘，分别计算这两个边界截面的绕数。
+
+	在北极附近用 \((x_1,x_2)\) 作坐标，\(x_3=\sqrt{1-x_1^2-x_2^2}\)。向量场在坐标切标架中的两个系数是
+	\[
+		(-x_3x_1,-x_3x_2).
+	\]
+	沿小圆周把正函数 \(x_3\) 连续变到 \(1\)，该非零系数向量同伦到 \((-x_1,-x_2)\)，其归一化是圆周上的旋转半圈，度为 \(+1\)。南极附近 \(x_3=-\sqrt{1-x_1^2-x_2^2}\)，同样的系数向量同伦到 \((x_1,x_2)\)，故度也为 \(+1\)。南极这张坐标与外向定向相反，但改用正向坐标会同时反转圆盘参数及坐标切标架的定向，两次符号变化相消，所以局部贡献仍为 \(+1\)。
+
+	取以 \(A\) 为子复形、两张正向圆盘为剩余二胞腔的相对 CW 结构。这两个障碍组成 \(H^2(S^2,A;\mathbb Z)\cong\mathbb Z^2\) 中的 \((1,1)\)。忘掉固定在 \(A\) 上的截面，得到绝对首障碍；相对类到绝对类的映射将两个值相加，因为正向基本圈在两张圆盘上的系数都是 \(1\)。因此
+	\[
+		o_2(S(\mathrm TS^2))=2\omega,\qquad e(\mathrm TS^2)=-2\omega
+	\]
+	沿用式\eqref{g2:eq:primary-euler-sign}的规范。这里零点附近正向小圆周上的归一化向量场之度，就是该零点的\term[lingdian-jubu-zhibiao]{局部指标}[local index]；两极的指标总和为 \(2\)，对应首障碍 \(o_2\) 的取值。这证明球面不存在处处非零连续切向量场，也解释了为什么改变原向量场的局部形状不能把所有零点一起消去：所得绝对障碍类保持不变。
+
+	环面 \(T^2=\mathbb R^2/(2\pi\mathbb Z)^2\) 则有两个整体向量场 \(\partial/\partial\theta_1\)、\(\partial/\partial\theta_2\)。它们来自 \(\mathbb R^2\) 的常向量场，在格点平移下不变，所以可下降，且处处独立。故 \(\mathrm TT^2\cong\varepsilon_{T^2}^2\)，首障碍及 Euler 类均为零；选择这个标架后，单位向量场的同伦类由两条基本回路上的绕数 \((a,b)\in\mathbb Z^2\) 完全描述。
+\end{example}
+
+这些计算分出了三个不同层次：Möbius 线丛在选取单位纤维的分支时失败；定向平面丛的分支问题自动解决，首障碍是面边界的整数绕数；首障碍消失之后，已有截面的不同同伦类还由低一次的上同调记录。截面是否存在与存在之后有多少种同伦选择，因而分别对应本章的障碍类与差类。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

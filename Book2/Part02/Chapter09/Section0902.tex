@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 9.2 Hurewicz 定理
 % 纲要位置：几何学计划纲要.md，第 1344 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,267 @@
 \section{Hurewicz 定理}
 \label{g2:sec:0902}
 
-待撰写
+球面映射 \(f:S^n\to X\) 一方面给出同伦类，另一方面把球面的基本同调类送成 \(X\) 中的一个 \(n\) 维圈。两种信息何时相同？第8章的 Hopf 映射说明，高阶同伦信息可以在同调中全部消失；而如果所有较低维的球面都已能够填充，首个可能非零的同伦群恰好能由同调计算。Hurewicz 定理把这里的“较低维”写成准确的连通度条件，并给出一张自然的比较映射。
 
 \subsection{Hurewicz 映射的构造}
 \label{g2:subsec:0902:01}
-待撰写
+
+固定定向球面 \(S^n\) 的生成元 \(\iota_n\in H_n(S^n;\mathbb Z)\)，其中 \(n\ge1\)。这里的生成元来自\cref{g2:thm:sphere-homology}；改变球面定向会同时改变它的符号。以下同调均取整数系数。
+
+\begin{definition}[Hurewicz 映射]\label{g2:def:hurewicz-map}
+	设 \((X,x_0)\) 为带基点空间，\(n\ge1\)。映射
+	\[
+		h_n:\pi_n(X,x_0)\longrightarrow H_n(X;\mathbb Z),\qquad [f]\longmapsto f_*(\iota_n)
+	\]
+	称为 \(n\) 次\term[Hurewiczyingshe]{Hurewicz 映射}[Hurewicz map]。对带基点空间对 \((X,A,x_0)\) 及 \(n\ge2\)，选择相对球的生成元 \(u_n\in H_n(D^n,S^{n-1};\mathbb Z)\)，并定义
+	\[
+		h_n:\pi_n(X,A,x_0)\longrightarrow H_n(X,A;\mathbb Z),\qquad [F]\longmapsto F_*(u_n).
+	\]
+	\symidx{\(h_n\)：Hurewicz 映射}相对类使用第8章的立方体约定：顶面进入 \(A\)，其余面映到 \(x_0\)。相对球的定向取为，使连接同态把 \(u_n\) 送到这个顶面在压去其边界后所表示的 \(\iota_{n-1}\)。
+\end{definition}
+
+同伦不变性保证定义不依赖代表。相对构造也有同样性质，因为相对同伦始终把边界留在 \(A\) 内。这张映射保留了球面所携带的定向圈，却忘掉该圈必须由一个球面参数化这一要求。
+
+\begin{proposition}[自然性与加法]\label{g2:prop:hurewicz-naturality}
+	对任意带基点空间 \((X,x_0)\)，\(h_n:\pi_n(X,x_0)\to H_n(X;\mathbb Z)\) 在 \(n\ge1\) 时是群同态；相对 Hurewicz 映射在 \(n\ge2\) 时也是群同态。两者对带基点映射及空间对映射自然，并与空间对长正合列中的映射相容。特别地，采用上述定向时有
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			\pi_n(X,A,x_0) \arrow[r,"\partial"] \arrow[d,"h_n"'] & \pi_{n-1}(A,x_0) \arrow[d,"h_{n-1}"] \\
+			H_n(X,A) \arrow[r,"\delta"'] & H_{n-1}(A).
+		\end{tikzcd}
+	\]
+\end{proposition}
+\begin{proof}
+	把球面沿赤道压成一点，得到拼接映射 \(c:S^n\to S^n\vee S^n\)。在第8章的加法约定下，\([f]+[g]\) 由 \((f\vee g)c\) 代表。两个球面各自向原球面的投影与 \(c\) 复合，都把一个半球的内部保持定向地送到球面去掉基点的部分，因而次数为 \(1\)。第3章的胞腔同调给出 \(H_n(S^n\vee S^n)\cong\mathbb Z\oplus\mathbb Z\)，所以
+	\[
+		c_*(\iota_n)=(\iota_n,\iota_n),\qquad h_n([f]+[g])=f_*(\iota_n)+g_*(\iota_n).
+	\]
+	\(n=1\) 时把左边的加法读作环路拼接，论证仍成立。对相对立方体，沿第一个坐标拼接时，两个半立方体继承相同方向；它们的公共面都映到基点，所代表的相对基本链相加便是整个立方体的基本链。因此相对映射同样保持群运算。
+
+	若 \(a:X\to Y\)，则 \((af)_*(\iota_n)=a_*f_*(\iota_n)\)，这就是自然性；空间对情形完全相同。最后，连接同态在链上通过取边界定义。相对基本链的边界中，除顶面之外的各面均映到基点，取约化同调后为零，而顶面正代表 \(\partial[F]\)。所选定向使这一项带正号，所以 \(\delta h_n[F]=h_{n-1}\partial[F]\)。其余相容方块由包含和取商的自然性得到。
+\end{proof}
+
+例如，在 \(X=S^n\) 时，定义直接给出
+\[
+	h_n([f])=\deg(f)\,\iota_n.
+\]
+因此，证明球面的 Hurewicz 映射为同构，恰好等于证明球面自映射由次数分类。到目前为止，我们知道次数是同伦不变量且保持加法；它的单射性仍需要证明。
 
 \subsection{一维交换化与高维首个非零群}
 \label{g2:subsec:0902:02}
-待撰写
+
+环路的拼接一般不交换，奇异同调群却是阿贝尔群，因此 \(h_1\) 必定忘掉交换子。问题是它是否还忘掉别的信息。
+
+\begin{theorem}[一维 Hurewicz 定理]\label{g2:thm:hurewicz-one}
+	设 \(X\) 为道路连通空间，\(x_0\in X\)。则 \(h_1\) 满射，且
+	\[
+		\ker h_1=[\pi_1(X,x_0),\pi_1(X,x_0)].
+	\]
+	因而它诱导自然同构
+	\[
+		\pi_1(X,x_0)^{\mathrm{ab}}\xrightarrow{\ \cong\ }H_1(X;\mathbb Z),
+	\]
+	其中右上标 \(\mathrm{ab}\) 表示对全部交换子生成的正规子群取商。
+\end{theorem}
+\begin{proof}
+	我们把任意一次圈转成基点环路，并核对二维边界恰好成为交换化后的关系。对每个点 \(p\in X\) 选一条从 \(x_0\) 到 \(p\) 的道路 \(\gamma_p\)，其中 \(\gamma_{x_0}\) 为常值道路。若奇异一维单形 \(\sigma\) 从 \(p\) 到 \(q\)，令
+	\[
+		L(\sigma)=[\gamma_p*\sigma*\overline\gamma_q]\in\pi_1(X,x_0)^{\mathrm{ab}},
+	\]
+	并把 \(L\) 加性延拓到奇异一维链群。对于一个奇异二单形 \(\tau\)，记其三条边为 \(\tau_{01},\tau_{12},\tau_{02}\)。三角形内部给出定端点同伦 \(\tau_{01}*\tau_{12}\simeq\tau_{02}\)，故
+	\[
+		L(\partial\tau)=L(\tau_{12})-L(\tau_{02})+L(\tau_{01})=0.
+	\]
+	这里沿公共顶点来回走的 \(\overline\gamma_{p_1}*\gamma_{p_1}\) 可以收缩，而交换化允许按链的加法排列三项。因此 \(L\) 在圈群上诱导同态 \(\ell:H_1(X)\to\pi_1(X,x_0)^{\mathrm{ab}}\)。
+
+	为核对它是逆映射，先回忆道路在奇异链中的拼接关系。若 \(\alpha,\beta\) 可以首尾相接，把三角形的三个顶点依次映到参数区间的 \(0,1/2,1\)，在三角形上线性延拓，再复合 \(\alpha*\beta\)，便得到一个二单形，其边界是 \(\beta-(\alpha*\beta)+\alpha\)。因此拼接与链的相加模边界一致；反向道路与原道路的和模边界为零，因为来回道路定端点零伦，而常值一单形本身是常值二单形的边界。
+
+	现在令 \(z=\sum_j a_j\sigma_j\) 为一次圈，\(\sigma_j:p_j\to q_j\)。上述关系说明 \(h_1\ell[z]\) 由
+	\[
+		\sum_j a_j(\gamma_{p_j}+\sigma_j-\gamma_{q_j})
+	\]
+	代表。\(\partial z=0\) 恰好说，在每个顶点处出发系数和与到达系数和相等，所以所有 \(\gamma_p\) 项逐点抵消，余下就是 \(z\)。另一方面，若 \(\sigma\) 已是 \(x_0\) 处的环路，则 \(L(\sigma)=[\sigma]\)，故 \(\ell h_1\) 在交换化上为恒等。两者互逆，结论成立；同构的自然性来自 \(h_1\) 的自然性，并不依赖辅助道路的选择。
+\end{proof}
+
+在高维，\(\pi_n\) 本来已经交换；需要排除的是较低维的同伦障碍。以下定理的“首个”包括 \(\pi_n\) 仍为零的情况，因而也能用来逐维检测连通度。
+
+\begin{theorem}[Hurewicz 定理]\label{g2:thm:hurewicz-absolute}
+	设 \(X\) 为 \((n-1)\) 连通的 CW 复形，\(n\ge2\)，基点取为一个顶点。则
+	\[
+		\widetilde H_i(X;\mathbb Z)=0\quad(0\le i<n),\qquad
+		h_n:\pi_n(X,x_0)\xrightarrow{\ \cong\ }H_n(X;\mathbb Z).
+	\]
+	同样的结论适用于具有该 CW 同伦型的带基点空间。
+\end{theorem}
+
+证明放在下一小节。它将把两种群都写成“\(n\) 维胞腔生成，\((n+1)\) 维胞腔给出关系”的商群，并证明比较映射把相同的生成元与关系对应起来。
+
+\begin{example}[两个次数的区别]\label{g2:exm:hurewicz-first-degree}
+	二维球面单连通，定理给出 \(\pi_2(S^2)\cong H_2(S^2)=\mathbb Z\)。对于三次同伦群，\(S^2\) 不满足所需的二连通条件；事实上 \(H_3(S^2)=0\)，而第8章已经证明 Hopf 映射在 \(\pi_3(S^2)\) 中有无穷阶。另一方面，\(S^3\) 二连通，所以 \(\pi_3(S^3)\cong\mathbb Z\)；再结合\cref{g2:prop:complex-hopf-homotopy}中 Hopf 丛诱导的同构 \(\pi_3(S^3)\to\pi_3(S^2)\)，得到 \(\pi_3(S^2)\cong\mathbb Z\)，且 Hopf 映射是生成元。这也完成第8章留下的生成元识别。
+\end{example}
 
 \subsection{绝对定理的证明}
 \label{g2:subsec:0902:03}
-待撰写
+
+胞腔链能直接计算同调；要证明它也计算首个同伦群，就要控制一个球面经过胞腔附着后何时变得零伦。下面使用的一般同伦切除定理在\cref{g2:thm:homotopy-excision}给出：若 CW 复形 \(Z=U\cup V\) 的交集 \(C=U\cap V\) 非空道路连通，且 \((U,C)\)、\((V,C)\) 分别为 \(r\)、\(s\) 连通，其中 \(r,s\ge0\)，则
+\[
+	\pi_i(U,C)\longrightarrow\pi_i(Z,V)
+\]
+在 \(i<r+s\) 时为同构，在 \(i=r+s\) 时为满射。这个一般定理作为外部输入，其精确版本与来源见该处；下面逐项证明本节所需的推论。胞腔证明的组织可对照\cite[第4.2节，Excision for Homotopy Groups]{Hatcher2002}及\cite[第15章，第1节]{May1999}。
+
+\begin{lemma}[球面次数与同伦类]\label{g2:lem:sphere-degree-classification}
+	对每个 \(n\ge1\)，次数同态
+	\[
+		\deg:\pi_n(S^n)\longrightarrow\mathbb Z
+	\]
+	是同构，且恒等映射的同伦类对应 \(1\)。
+\end{lemma}
+\begin{proof}
+	\(n=1\) 时，\cref{g2:prop:circle-fundamental-group}的绕数给出 \(\pi_1(S^1)\cong\mathbb Z\)，生成元是恒等环路；次数在这个生成元上为 \(1\)，故结论成立。\(n=2\) 时，\cref{g2:prop:complex-hopf-homotopy}用 Hopf 丛的长正合列证明了 \(\pi_2(S^2)\cong\mathbb Z\)。次数是到 \(\mathbb Z\) 的同态，又把恒等映射送到 \(1\)，所以满射；无限循环群到 \(\mathbb Z\) 的满射必为同构。
+
+	设 \(k\ge2\)。把 \(S^{k+1}\) 写成沿赤道 \(S^k\) 粘合的两个闭锥 \(C_+S^k\)、\(C_-S^k\)。由\cref{g2:prop:sphere-connectivity}，\(S^k\) 为 \((k-1)\) 连通；空间对长正合列及锥的可缩性说明两个锥对均为 \(k\) 连通。切除定理在次数 \(k+1<2k\) 给出中间的同构：
+	\[
+		\pi_k(S^k)\xrightarrow[\partial^{-1}]{\ \cong\ }
+		\pi_{k+1}(C_+S^k,S^k)
+		\xrightarrow{\ \cong\ }
+		\pi_{k+1}(S^{k+1},C_-S^k)
+		\xleftarrow{\ \cong\ }\pi_{k+1}(S^{k+1}).
+	\]
+	外侧同构同样来自空间对序列。把球面映射 \(f\) 分别延为两个锥上的锥映射，便可在这个图中追踪它的相对代表；合起来正是悬挂 \(Sf\)。特别地，恒等映射被送到悬挂球面的恒等映射，定向同时按这两个半球选择。于是若 \(\pi_k(S^k)\) 由恒等类无限循环生成，\(\pi_{k+1}(S^{k+1})\) 也如此。由 \(k=2\) 归纳，所有这些群都由恒等类生成；次数将生成元送到 \(1\)，所以它们的次数同态均为同构。
+\end{proof}
+
+\begin{lemma}[球面楔和的首个同伦群]\label{g2:lem:wedge-sphere-first-homotopy}
+	设 \(n\ge2\)，\(W=\bigvee_{\alpha\in\Lambda}S^n_\alpha\) 取 CW 拓扑，\(j_\alpha:S^n_\alpha\to W\) 为各包含。则
+	\[
+		\bigoplus_{\alpha\in\Lambda}\mathbb Z\xrightarrow{\ \cong\ }\pi_n(W),\qquad
+		(m_\alpha)_\alpha\longmapsto\sum_\alpha m_\alpha[j_\alpha].
+	\]
+	若 \(p_\alpha:W\to S^n_\alpha\) 压去其他球面，则 \([f]\) 的第 \(\alpha\) 个坐标为 \(\deg(p_\alpha f)\)。在这些基下，\(h_n:\pi_n(W)\to H_n(W;\mathbb Z)\) 为恒等矩阵。
+\end{lemma}
+\begin{proof}
+	先设 \(\Lambda\) 有限。有限乘积 \(P=\prod_\alpha S^n_\alpha\) 的乘积胞腔分解中，\(W\) 正是 \(n\) 骨架，余下胞腔最早出现在维数 \(2n\)。胞腔逼近说明 \((P,W)\) 为 \((2n-1)\) 连通。由于 \(n+1\le2n-1\)，空间对序列在 \(\pi_n(W)\to\pi_n(P)\) 两旁的相对群均为零，所以这个映射是同构。到乘积的球面映射及其定基点同伦逐坐标对应，拼接也逐坐标进行，故
+	\[
+		\pi_n(P)\cong\prod_\alpha\pi_n(S^n_\alpha)\cong\bigoplus_\alpha\mathbb Z.
+	\]
+	上一引理把每个坐标识别为次数，便得到所述基和坐标公式。
+
+	若 \(\Lambda\) 无限，\cref{g2:thm:finite-subcomplex}保证任意球面映射及任意球面同伦的像都落入有限子复形。这里有限子复形就是有限多个球面的楔和。因此有限情形分别给出满射性与单射性，所有坐标也只有有限个非零。最后，胞腔同调把 \((j_\alpha)_*(\iota_n)\) 识别为第 \(\alpha\) 个胞腔基，而 \(h_n[j_\alpha]=(j_\alpha)_*(\iota_n)\)，故比较矩阵为恒等。
+\end{proof}
+
+接下来需要比较相对球面与压去子空间后的球面。普通同调对 CW 对可在所有次数这样比较，同伦群则只能在连通度保证的范围内这样做。
+
+\begin{lemma}[压去子复形的同伦比较]\label{g2:lem:relative-quotient-homotopy}
+	设 \((X,A)\) 为 CW 对，\(A\ne\varnothing\)，基点取在 \(A\) 的顶点中。若 \((X,A)\) 为 \(r\) 连通、\(A\) 为 \(s\) 连通，其中 \(r,s\ge1\)，则商映射诱导
+	\[
+		q_*:\pi_i(X,A)\longrightarrow\pi_i(X/A)
+	\]
+	在 \(1\le i\le r+s\) 时为同构，在 \(i=r+s+1\) 时为满射；次数一的相对项按尖点集理解。
+\end{lemma}
+\begin{proof}
+	沿 \(A\subset X\) 粘上约化锥 \(CA=A\times I/(A\times\{1\}\cup\{x_0\}\times I)\)，得到 \(Z=X\cup_A CA\)。\(CA\) 可保持基点收缩。空间对序列说明 \((CA,A)\) 为 \((s+1)\) 连通，于是同伦切除给出
+	\[
+		\pi_i(X,A)\longrightarrow\pi_i(Z,CA)
+	\]
+	在 \(i<r+s+1\) 时同构，在等号处满射。由于 \(CA\) 可缩，\(\pi_i(Z)\to\pi_i(Z,CA)\) 是同构。
+
+	再说明压去 \(CA\) 确实给出同伦等价 \(Z\to Z/CA=X/A\)。由 CW 对的同伦延拓性质（\cref{g2:thm:relative-CW-HEP}），\(CA\) 内固定基点的收缩可以延为 \(Z\) 上从恒等映射出发的同伦 \(H_t\)。终映射在 \(CA\) 上为常值，因而下降成 \(v:Z/CA\to Z\)，满足 \(v\bar q\simeq\operatorname{id}_Z\)，其中 \(\bar q:Z\to Z/CA\)。对每个 \(t\)，\(H_t(CA)\subset CA\)，所以 \(\bar qH_t\) 也下降到商；由\cref{g2:lem:quotient-interval}，这些映射组成连续同伦，给出 \(\bar qv\simeq\operatorname{id}_{Z/CA}\)。这些同伦保持基点。将这两个同构与切除同态复合，所得就是原商映射 \(q\) 的诱导同态，故得到所述范围。
+\end{proof}
+
+\begin{lemma}[胞腔给出的同伦关系]\label{g2:lem:cell-attachment-homotopy-presentation}
+	设 \(n\ge2\)，\(W=\bigvee_{\alpha\in\Lambda}S^n_\alpha\)，并沿带基点映射 \(\varphi_\beta:S^n\to W\) 附着一族 \((n+1)\) 胞腔，得到 \(V\)。则
+	\[
+		\pi_n(V)\cong
+		\left(\bigoplus_{\alpha\in\Lambda}\mathbb Z[j_\alpha]\right)
+		\Big/\left\langle[\varphi_\beta]:\beta\in B\right\rangle.
+	\]
+	每个关系 \([\varphi_\beta]\) 在第 \(\alpha\) 个坐标的系数为 \(\deg(p_\alpha\varphi_\beta)\)。
+\end{lemma}
+\begin{proof}
+	\((V,W)\) 只附着 \((n+1)\) 胞腔，故为 \(n\) 连通。\(W\) 为 \((n-1)\) 连通，并且
+	\[
+		V/W=\bigvee_{\beta\in B}S^{n+1}_\beta.
+	\]
+	上一引理取 \(r=n\)、\(s=n-1\)。由于 \(n+1\le2n-1\)，在所需次数得到
+	\[
+		\pi_{n+1}(V,W)\cong\pi_{n+1}(V/W)\cong\bigoplus_{\beta\in B}\mathbb Z.
+	\]
+	各胞腔的特征圆盘给出左边的相对类，压去边界后正是右边各球面的恒等映射。若用第8章的立方体代表，只需把圆盘边界上一块小邻域压到所选基点，再把它对应到立方体的侧面与底面；该压缩与恒等映射同伦，保持相对定向和所代表的类。因此这些特征圆盘类确实组成一组基。
+
+	空间对序列的相关部分为
+	\[
+		\pi_{n+1}(V,W)\xrightarrow{\partial}\pi_n(W)\longrightarrow\pi_n(V)\longrightarrow0.
+	\]
+	连接映射取特征圆盘的边界，所以把第 \(\beta\) 个基送到附着类 \([\varphi_\beta]\)。正合性说明这些恰好是全部关系，而前一个楔和引理把它们的坐标识别为 \(\deg(p_\alpha\varphi_\beta)\)。
+\end{proof}
+
+\begin{proof}[\cref{g2:thm:hurewicz-absolute}的证明]
+	由\cref{g2:cor:sparse-cw-model}，可以用一个基点保持同伦等价 \(Y\to X\) 替换 \(X\)，使 \(Y\) 只有一个零胞腔，没有维数 \(1,\ldots,n-1\) 的胞腔，并使附着映射保持基点。该模型的构造及所用 Whitehead 定理见\cref{g2:sec:0901,g2:sec:0903}。同伦群和同调群在此替换下都同构，\(h_n\) 的自然性使两个比较方块交换，所以只须在 \(Y\) 上证明。
+
+	\(Y\) 的约化胞腔链群在 \(i<n\) 时为零，因而 \(\widetilde H_i(Y)=0\)。令
+	\[
+		W=Y^n=\bigvee_{\alpha\in\Lambda}S^n_\alpha,\qquad V=Y^{n+1}.
+	\]
+	胞腔逼近分别作用于球面 \(S^n\) 和同伦 \(S^n\times I\)，给出 \(\pi_n(V)\cong\pi_n(Y)\)：前者把任何球面映射移入 \(n\) 骨架，后者把两个已有代表之间的同伦移入 \((n+1)\) 骨架并固定两端。同调方面，维数高于 \(n+1\) 的胞腔不出现在计算 \(H_n\) 的两张边界映射中，所以 \(H_n(V)\cong H_n(Y)\)。
+
+	记 \(V\) 中各 \((n+1)\) 胞腔的附着映射为 \(\varphi_\beta\)。前一引理把 \(\pi_n(V)\) 写成下列上行的余核；\cref{g2:thm:cellular-boundary-degree}说明胞腔微分的矩阵也恰为 \(\deg(p_\alpha\varphi_\beta)\)，所以得到交换图
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			\displaystyle\bigoplus_\beta\mathbb Z \arrow[r,"{([\varphi_\beta])}"] \arrow[d,equal] & \pi_n(W) \arrow[r] \arrow[d,"h_n","\cong"'] & \pi_n(V) \arrow[r] \arrow[d,"h_n"] & 0 \\
+			\displaystyle\bigoplus_\beta\mathbb Z \arrow[r,"\mathrm d_{n+1}"'] & H_n(W) \arrow[r] & H_n(V) \arrow[r] & 0.
+		\end{tikzcd}
+	\]
+	左方块的交换来自相同的次数系数，也可由特征圆盘的相对 Hurewicz 映射与边界自然性看出；右方块由包含的自然性得到。中间竖箭头是楔和引理给出的同构，而且把上行关系子群送到下行关系子群，因而在余核上诱导同构。交换图保证这个诱导同构就是 \(h_n\)。结合两次骨架比较及 \(Y\to X\) 的同伦等价，定理得证。对具有上述 CW 同伦型的空间，再沿其同伦等价作同一自然性比较即可。
+\end{proof}
+
+这个证明也解释了连通度的作用。消去低维胞腔以后，每个 \(n\) 胞腔的边界都已压到一点，所以它本身就是球面；而 \((n+1)\) 胞腔边界上的全部信息，在这个维数恰好由各球面次数记录。若保留低维同伦信息，后一判断便不再成立。
 
 \subsection{相对版本及单连通条件}
 \label{g2:subsec:0902:04}
-待撰写
+
+相对群研究的是边界留在 \(A\) 内的圆盘。把 \(A\) 压成一点，会把每个这样的圆盘变成球面；上一小节的商比较告诉我们，\(A\) 的连通度控制这种转换何时丢失信息。
+
+\begin{theorem}[相对 Hurewicz 定理]\label{g2:thm:hurewicz-relative}
+	设 \((X,A)\) 为 CW 对，\(X\) 与 \(A\) 均单连通，基点 \(x_0\in A\) 为顶点。若 \(n\ge2\) 且 \((X,A)\) 为 \((n-1)\) 连通，则
+	\[
+		H_i(X,A;\mathbb Z)=0\quad(0\le i<n),\qquad
+		h_n:\pi_n(X,A,x_0)\xrightarrow{\ \cong\ }H_n(X,A;\mathbb Z).
+	\]
+	该同构对带基点 CW 对映射自然。在 \(n=2\) 时，源群也是阿贝尔群。
+\end{theorem}
+\begin{proof}
+	令 \(q:X\to X/A\) 为商映射。\cref{g2:lem:relative-quotient-homotopy}取 \(r=n-1\)、\(s=1\)，得到
+	\[
+		q_*:\pi_i(X,A)\xrightarrow{\ \cong\ }\pi_i(X/A)\qquad(1\le i\le n).
+	\]
+	因此 \(X/A\) 为 \((n-1)\) 连通 CW 复形，绝对 Hurewicz 定理适用。
+
+	同调中的商比较在这里可直接从胞腔链看出。\(X/A\) 有一个代表 \(A\) 的顶点，其余胞腔与 \(X\setminus A\) 的胞腔一一对应。把该顶点的链作为增广的基准，得到链同构
+	\[
+		C_\bullet^{\mathrm{cell}}(X,A)\cong
+		C_\bullet^{\mathrm{cell}}(X/A,\{A\});
+	\]
+	在零次，把其他顶点送到它与基准顶点之差，就与约化胞腔复形对应。两边的边界均由原附着边界删除落在 \(A\) 中的项得到。由\cref{g2:thm:relative-cellular-comparison}及其自然性，商映射于是诱导
+	\[
+		H_i(X,A)\xrightarrow{\ \cong\ }\widetilde H_i(X/A)\qquad(i\ge0).
+	\]
+	绝对定理先给出这些群在 \(i<n\) 时为零，再给出图中的下方同构：
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			\pi_n(X,A) \arrow[r,"h_n"] \arrow[d,"q_*","\cong"'] & H_n(X,A) \arrow[d,"q_*","\cong"'] \\
+			\pi_n(X/A) \arrow[r,"h_n"',"\cong"] & \widetilde H_n(X/A).
+		\end{tikzcd}
+	\]
+	商映射把相对基本类 \(u_n\) 送到 \(D^n/S^{n-1}\) 的球面基本类，所以这个图交换。其余三条箭头为同构，故上方箭头也是同构。自然性已在\cref{g2:prop:hurewicz-naturality}证明。对于 \(n=2\)，空间对序列中的 \(\pi_2(X)\to\pi_2(X,A)\to\pi_1(A)=0\) 还直接说明 \(\pi_2(X,A)\) 是阿贝尔群 \(\pi_2(X)\) 的商。
+\end{proof}
+
+\begin{example}[单连通条件失效时]\label{g2:exm:hurewicz-nonsimply-connected}
+	令 \(A=S^1\vee S^1\)，\(X=CA\) 为它的锥。\(X\) 可缩，\(A\) 道路连通，所以 \((X,A)\) 为一连通。两个空间对长正合列给出
+	\[
+		\pi_2(X,A)\cong\pi_1(A)=F(a,b),\qquad
+		H_2(X,A)\cong H_1(A)=\mathbb Z^2.
+	\]
+	\(F(a,b)\) 是两个生成元的自由群。Hurewicz 映射与连接同态相容，所以此处的相对 \(h_2\) 正是自由群的交换化；交换子 \(aba^{-1}b^{-1}\) 被送到零，却是非平凡的相对同伦类。这里 \(X\) 已单连通，失去的是 \(A\) 的单连通性。
+\end{example}
+
+从圆盘的角度看，\(A\) 中的基点道路可以绕过非平凡环路，改变带基点的相对类；奇异同调不记录这种绕行。一般的相对 Hurewicz 定理会把基本群作用所给出的关系也取商，相关版本见\cite[第4.2节，The Hurewicz Theorem]{Hatcher2002}。本章使用的单连通条件使这些关系消失，也正好提供商比较在次数 \(n\) 上的同构范围。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

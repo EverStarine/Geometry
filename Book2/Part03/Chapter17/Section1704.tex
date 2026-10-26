@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 17.4 Poincaré–Hopf 的证明
 % 纲要位置：几何学计划纲要.md，第 1680 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,151 @@
 \section{Poincaré–Hopf 的证明}
 \label{g2:sec:1704}
 
-待撰写
+一个指标为 \(\lambda\) 的临界点，在拓扑上添入一张 \(\lambda\) 维胞腔，在梯度场中则产生一个指标为 \((-1)^\lambda\) 的零点。前者对 Euler 示性数的贡献也恰好是 \((-1)^\lambda\)。因此，对于 Morse 梯度场，局部零点的方向计数已经与整体拓扑一致。第16章证明的指标和不变性将把这一结论传给任意只有孤立零点的光滑向量场。
 
 \subsection{梯度零点指标与 Morse 指标}
 \label{g2:subsec:1704:01}
-待撰写
+
+先看局部二次型。若在 \(p\) 附近有 Morse 坐标
+\[
+	f=f(p)-u_1^2-\cdots-u_\lambda^2+u_{\lambda+1}^2+\cdots+u_n^2,
+\]
+并使度量在这张坐标中为 Euclidean 度量，则
+\[
+	\operatorname{grad}f=(-2u_1,\ldots,-2u_\lambda,2u_{\lambda+1},\ldots,2u_n).
+\]
+负平方方向反转，正平方方向保持，故小球上的方向映射有度 \((-1)^\lambda\)。任意度量下的梯度未必具有这组分量，但下列结论仍成立。
+
+\begin{proposition}\label{g2:prop:gradient-morse-index}
+	设 \(M\) 为光滑 \(n\) 维流形，\(n\ge1\)，\(f:M\to\mathbb R\) 为光滑函数，\(p\in\operatorname{Int}M\) 为指标 \(\lambda\) 的非退化临界点。对任意光滑 Riemann 度量 \(g\)，梯度场 \(\operatorname{grad}_g f\) 在 \(p\) 处有非退化零点，且
+	\[
+		\operatorname{ind}_p(\operatorname{grad}_g f)=(-1)^\lambda.
+	\]
+\end{proposition}
+\begin{proof}
+	记 \(G=(g_{ij}(p))\)，\(H=(\partial_i\partial_jf(p))\)。由梯度的定义 \(g(\operatorname{grad}_g f,v)=\mathrm df(v)\)，其坐标系数为 \(g^{ij}\partial_jf\)。在 \(p\) 处求导时，含 \(\partial_jf(p)\) 的项消失，所以
+	\[
+		\mathrm D_p(\operatorname{grad}_g f)=G^{-1}H.
+	\]
+	\(G\) 正定且 \(H\) 非退化，故此线性算子可逆。又因 \(\det G>0\)，其实行列式的符号等于 \(\det H\) 的符号，即 \((-1)^\lambda\)。将\cref{g2:prop:nondegenerate-vector-index}的非退化零点公式用于这个线性化，即得结论。这也重新说明了式\eqref{g2:eq:gradient-index-hessian}为何与度量的选择无关。
+\end{proof}
+
+若 \(M\) 闭，\(f\) 为 Morse 函数，记指标为 \(\lambda\) 的临界点个数为 \(m_\lambda\)。\cref{g2:thm:morse-inequalities}中的 Euler 等式于是给出
+\begin{equation}\label{g2:eq:morse-gradient-index-sum}
+	\sum_{\mathrm df_p=0}\operatorname{ind}_p(\operatorname{grad}_g f)
+	=\sum_{\lambda=0}^n(-1)^\lambda m_\lambda
+	=\chi(M).
+\end{equation}
+这里两边的计数各有明确对象：中间是把手的指标，左边是梯度零点的局部球面度。它们相同的原因是同一个 Hessian 的负方向同时控制了这两个数。
 
 \subsection{指标和的扰动不变性}
 \label{g2:subsec:1704:02}
-待撰写
+
+在闭流形上，\cref{g2:thm:total-vector-index-invariance}已经允许把任意两个具有孤立零点的场相互比较。它不要求二者之间的每个中间场仍有孤立零点：先在两端各个小球内非退化化，再将场的同伦扰动为横截截面，整个零点集就组成有向一维配边。新产生的零点在这条配边中以相反符号成对出现。带边界时还要控制零点不从边界进入或离开，所需条件可以准确写成下面的形式。
+
+\begin{lemma}\label{g2:lem:relative-total-index-invariance}
+	设 \(M\) 为紧光滑 \(n\) 维流形，\(n\ge1\)，允许有边界且不要求可定向。设 \(X_0,X_1\) 为光滑向量场，在边界上非零，在内部只有孤立零点。如果存在光滑向量场族 \(X_t\)，\(0\le t\le1\)，连接它们，且
+	\[
+		X_t(p)\ne0\qquad(p\in\partial M,\ 0\le t\le1),
+	\]
+	则两端内部零点的指标和相同。
+\end{lemma}
+\begin{proof}
+	边界与参数区间均紧，故在任意固定度量下，\(|X_t|\) 在 \(\partial M\times[0,1]\) 上有正下界。由连续性，可取一个边界邻域，使所有 \(X_t\) 在其中都非零。两端的零点集因而是内部的紧离散集，故有限。
+
+	在两端各个零点的不交坐标球内应用\cref{g2:prop:local-transverse-vector-perturbation}，把 \(X_i\) 改成仅有非退化零点的 \(Y_i\)。这些改动支于内部，且局部指标总和保持。将改动的同伦接到 \(X_t\) 两端，并用光滑参数函数使新同伦在端点附近恒定，得到从 \(Y_0\) 到 \(Y_1\) 的光滑截面同伦，边界邻域仍无零点。
+
+	在可能出现零点的中间紧区域，取有限个由局部切标架乘截断函数得到的截面，使它们逐点张成纤维；截断函数支集避开边界及两个时间端点。加入这些截面的任意小线性组合后，由\cref{g2:thm:parametric-transversality}可使同伦横截于拉回切丛的零截面。端点附近原有的横截性保持，边界邻域的非零性也由正下界保持。全部零点于是组成紧的一维流形 \(Z\)，其边界只在 \(t=0,1\) 两端。
+
+	这里的取向与\cref{g2:thm:total-vector-index-invariance}的证明相同：基底按“\(M\) 的局部坐标、时间”排列，纤维使用同一组 \(M\) 坐标的切标架，再按法向优先规定 \(Z\) 的方向。变换 \(M\) 坐标时，基底方向和纤维方向的符号同时改变，因而 \(Z\) 的方向能够拼接，不要求 \(M\) 可定向。若端点零点的系数微分为 \(A\)，正纤维基的提升为 \((A^{-1}e_j,0)\)，所以 \(Z\) 的正时间方向符号为 \(\operatorname{sgn}\det A\)。边界取向在 \(t=1\) 给出正的局部指标，在 \(t=0\) 给出负的局部指标。
+
+	紧有向一维流形的边界符号和为零，故 \(Y_0,Y_1\) 的总指标相等。两端局部扰动的可加性再给出 \(X_0,X_1\) 的等式。
+\end{proof}
+
+此条件控制整个同伦的边界值；只知道两端的场在边界上非零并不足够。例如区间 \([-1,1]\) 上，\(X_0=\partial_x\) 没有零点，而 \(X_1=x\partial_x\) 有指标为 \(+1\) 的零点。两者在端点都非零，但在左端 \(-1\) 的方向相反，连接它们的任何连续场族都必须在某个时刻经过零向量。
 
 \subsection{任意孤立零点向量场的公式}
 \label{g2:subsec:1704:03}
-待撰写
+
+现在可以把只对梯度场得到的计数式变成所有向量场共有的公式。通常称为\term[poincare-hopf-dingli]{Poincaré--Hopf 定理}[Poincaré--Hopf theorem]的正是这个结论。
+
+\begin{theorem}[Poincaré--Hopf 定理]\label{g2:thm:poincare-hopf}
+	设 \(M\) 为闭光滑 \(n\) 维流形，\(n\ge1\)，不要求可定向，\(X\) 为只有孤立零点的光滑向量场。则其零点有限，且
+	\begin{equation}\label{g2:eq:poincare-hopf}
+		\sum_{X(p)=0}\operatorname{ind}_p(X)=\chi(M).
+	\end{equation}
+	允许 \(X\) 处处非零，此时左边为空和。
+\end{theorem}
+\begin{proof}
+	零点集是紧空间 \(M\) 中的闭集，故紧；每个零点孤立，故这个紧离散集有限。由\cref{g2:thm:morse-approximation}，选取 \(M\) 上的 Morse 函数 \(f\)，并任取光滑 Riemann 度量 \(g\)。它的梯度场仅在 \(f\) 的非退化临界点处为零。闭流形上的总指标不变性\cref{g2:thm:total-vector-index-invariance}给出
+	\[
+		\sum_{X(p)=0}\operatorname{ind}_p(X)
+		=\sum_{\mathrm df_p=0}\operatorname{ind}_p(\operatorname{grad}_g f).
+	\]
+	再用式\eqref{g2:eq:morse-gradient-index-sum}，右边等于 \(\chi(M)\)。
+\end{proof}
+
+整个证明中，定向的用途局限于坐标球的源空间和向量分量空间，而且这两种方向在换坐标时一起改变。因而不可定向流形仍有整数值的局部指标和，不需要把结论改成模二等式。
+
+\begin{corollary}\label{g2:cor:nonzero-field-euler-obstruction}
+	设 \(M\) 为闭光滑流形，维数至少为1。若 \(M\) 上存在处处非零的光滑向量场，则 \(\chi(M)=0\)。
+\end{corollary}
+\begin{proof}
+	将\cref{g2:thm:poincare-hopf}用于该场，左边是空和。
+\end{proof}
+
+例如 \(\chi(S^{2k})=2\)，故偶维球面上每个光滑切向量场都必须消失；此前球面两极的具体指标计算现在有了整体原因。对闭连通可定向曲面 \(\Sigma_g\)，公式为 \(\sum_p\operatorname{ind}_p(X)=2-2g\)。球面的零点必须留下总指标2，双环面则留下总指标 \(-2\)。指标既可以为负，也可以在退化零点处具有绝对值大于1，因此总指标公式本身不能直接当作零点个数公式。
+
+\ProseParagraphBreak
+
+\cref{g2:thm:poincare-hopf}已经完成了第16章所记 \(J(M)=\chi(M)\) 的比较。若进一步把这个数写成切丛 Euler 类的求值，可接续第20章的构造：本卷式\eqref{g2:eq:euler-index-normalization-preview}区分了正向纤维 Thom 规范与第11章的球丛传递规范，具体比较见\cref{g2:thm:euler-primary-comparison,g2:cor:tangent-euler-characteristic}。这里的证明直接使用局部指标、把手和 Euler 等式，保留了这些既有符号约定。
 
 \subsection{边界版本及指向条件}
 \label{g2:subsec:1704:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+在带边界流形上，向量场可以从边界带走方向计数。要得到只含 \(\chi(M)\) 的等式，边界方向须固定在一种允许的类型内。取任意 Riemann 度量并记外单位法向为 \(\nu\)。称 \(X\) 在边界\term[yanbianjiewaixiang]{严格外向}[strictly outward pointing]，若
+\[
+	g(X,\nu)>0\quad\text{在 }\partial M\text{ 上};
+\]
+严格内向则要求该量小于零。这一性质只取决于向量在法向商线中的方向，与选择何种度量无关。若边界领坐标为 \((y,t)\in\partial M\times[0,\varepsilon)\)，\(t\) 朝内部增加，则严格外向等价于 \(\mathrm dt(X)<0\)。
+
+\begin{theorem}\label{g2:thm:poincare-hopf-boundary}
+	设 \(M\) 为紧光滑 \(n\) 维流形，\(n\ge1\)，不要求可定向，\(X\) 为光滑向量场，在内部只有孤立零点。若 \(X\) 在全部边界上严格外向，则
+	\[
+		\sum_{X(p)=0}\operatorname{ind}_p(X)=\chi(M).
+	\]
+	若 \(X\) 在全部边界上严格内向，则
+	\[
+		\sum_{X(p)=0}\operatorname{ind}_p(X)=(-1)^n\chi(M).
+	\]
+	边界为空时，这两种条件均为空条件。
+\end{theorem}
+\begin{proof}
+	先设 \(X\) 严格外向。由\cref{g2:prop:boundary-morse-function}，可取光滑函数 \(f\)，其内部临界点均非退化，在边界领上满足 \(f(y,t)=b-t\)，且全部内部点的函数值小于 \(b\)。取在该领上为乘积的度量，则 \(\operatorname{grad}f=-\partial_t\) 严格外向。它的零点正是内部临界点。
+
+	两个严格外向向量的任意凸组合仍严格外向，因为外法向分量是两个正数的凸组合。因此
+	\[
+		X_s=(1-s)X+s\operatorname{grad}f
+	\]
+	在整个 \(\partial M\times[0,1]\) 上非零。\cref{g2:lem:relative-total-index-invariance}表明，\(X\) 与该梯度场有相同的总指标。对这样的边界常值 Morse 函数，\cref{g2:thm:morse-inequalities}的把手计数仍给出
+	\[
+		\chi(M)=\sum_{\lambda=0}^n(-1)^\lambda m_\lambda.
+	\]
+	最后一个无临界的边界领不改变同伦类型；此前每个内部临界点贡献一个相应指标的把手。由\cref{g2:prop:gradient-morse-index}，这就是梯度场的总指标，外向公式得证。若 \(M\) 有无边界的连通分支，在这些分支应用闭流形版本后求和即可。
+
+	若 \(X\) 严格内向，则 \(-X\) 严格外向。在任一孤立零点的小球上，\(-X\) 的归一化映射是 \(X\) 的归一化映射后复合 \(S^{n-1}\) 的对径映射。后者是 \(-I\) 的球面映射，度为 \(\operatorname{sgn}\det(-I)=(-1)^n\)，故
+	\[
+		\operatorname{ind}_p(-X)=(-1)^n\operatorname{ind}_p(X).
+	\]
+	将外向公式用于 \(-X\) 并乘以 \((-1)^n\)，即得内向公式。
+\end{proof}
+
+圆球 \(D^n\) 上的径向场 \(X(x)=x\) 严格外向，唯一零点指标为 \(1=\chi(D^n)\)；向内场 \(-x\) 的指标为 \((-1)^n\)，正好符合第二式。在奇数维，这两个数不同。例如区间 \([-1,1]\) 上的向内场 \(-x\partial_x\) 具有指标 \(-1\)，而区间的 Euler 示性数为1。
+
+\ProseParagraphBreak
+
+若边界方向混合，就不能直接使用上述两个等式。圆盘上的常向量场 \((1,0)\) 处处非零，但其外法向分量在右半圆为正、左半圆为负，在上下两个点为零，故零点和 \(0\) 与 \(\chi(D^2)=1\) 并不相等。边界切向条件同样需要区别是否允许边界零点：圆盘上的场 \(X(x,y)=(1-x^2-y^2,0)\) 在边界为零，因此满足字面上的切向条件，却在内部无零点。它不能代入只对内部孤立零点求和的边界定理。
+
+\ProseParagraphBreak
+
+处处非零的切向边界场则可以处理。设 \(X|_{\partial M}\) 切向且非零，在边界领内把外法向延拓为 \(\nu\)，取支于该领、在边界等于1的截断函数 \(\rho\)，令 \(X_\varepsilon=X+\varepsilon\rho\nu\)。同伦 \(X+s\varepsilon\rho\nu\) 在边界始终非零：切向的 \(X\) 与法向的新增项正交，而 \(X\) 本身非零。取足够小的 \(\varepsilon>0\)，紧边界附近原有的正范数下界保证整个领内仍无零点，领外则未改动。于是 \(X_\varepsilon\) 严格外向且保持全部内部零点及其指标，外向公式仍给出总和 \(\chi(M)\)。这个论证说明，真正需要控制的是边界上的非零同伦，而不只是给边界场贴上“切向”或“法向”的名称。

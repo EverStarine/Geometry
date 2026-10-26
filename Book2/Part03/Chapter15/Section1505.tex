@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 15.5 同位延拓
 % 纲要位置：几何学计划纲要.md，第 1603 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,120 @@
 \section{同位延拓}
 \label{g2:sec:1505}
 
-待撰写
+把一个圆在平面中平移，可以同时平移整个平面；若只想移动圆附近的区域，还可以把平移速度截断。一般的嵌入族也提出同样的问题：已经规定子流形上的每个点怎样运动，能否让整个环境流形一起运动，并使远处保持原样？困难在于不同时间的速度给在不同位置上。先把这些速度写成随时间变化的向量场，再延拓到环境中，流的唯一性就能保证它准确实现原来的运动。
 
 \subsection{沿子流形给出的时间依赖向量场}
 \label{g2:subsec:1505:01}
-待撰写
+
+\begin{definition}\label{g2:def:smooth-isotopy}
+	设 \(K,N\) 为光滑流形。光滑映射 \(i:[0,1]\times K\to N\) 若对每个 \(t\) 都使 \(i_t=i(t,-)\) 成为嵌入，就称为一个光滑\term[tongwei]{同位}[isotopy]。若光滑映射 \(\Phi:[0,1]\times N\to N\) 的每个 \(\Phi_t\) 都是微分同胚，且 \(\Phi_0=\operatorname{id}_N\)，则称其为\term[huanjingtongwei]{环境同位}[ambient isotopy]。
+\end{definition}
+
+同位指定的是一族带参数的嵌入，而不只是一族集合。即使 \(i_t(K)\) 始终是同一个子集，其上的点也可能沿子流形移动。例如 \(i_t(e^{\mathrm i\theta})=e^{\mathrm i(\theta+t)}\) 保持圆周的像不变，却让每个标记点转动。环境同位若延拓这个族，应满足 \(\Phi_t\circ i_0=i_t\)，而非仅把两个像集合相互送到。
+
+\ProseParagraphBreak
+
+对光滑同位定义
+\[
+	v(t,i_t(x))=\frac{\partial}{\partial t}i(t,x)\in\mathrm{T}_{i_t(x)}N.
+\]
+因为 \(i_t\) 单射，右端唯一确定左端；这个向量属于环境切空间，未必切于 \(i_t(K)\)。为理解其光滑性，考虑带时间标记的映射
+\[
+	\widehat i:[0,1]\times K\longrightarrow[0,1]\times N,
+	\qquad(t,x)\longmapsto(t,i_t(x)).
+\]
+其微分为 \((a,u)\mapsto(a,a\partial_ti+\mathrm{d}i_t(u))\)，所以单射。若 \(K\) 紧，\(\widehat i\) 又是从紧空间到 Hausdorff 空间的连续单射，因而是嵌入。于是在其像上，\(v\) 是向量丛 \(\operatorname{pr}_N^*\mathrm{T}N\) 的光滑截面。这正是需要延拓的数据：时间分量保持为零，空间分量等于指定速度。
 
 \subsection{管状邻域延拓与截断}
 \label{g2:subsec:1505:02}
-待撰写
+
+先取紧无边界的 \(K\)。在 \(N\) 上选度量，令 \(E_{t,x}\) 为 \(\mathrm{d}i_t(\mathrm{T}_xK)\) 的正交补。这些空间在 \([0,1]\times K\) 上组成光滑向量丛：在局部标架中，正交投影由光滑的 Gram 矩阵及其逆给出。用\secref{g2:sec:1503}的法向指数构造
+\[
+	\mathcal E(t,x,u)=\bigl(t,\exp_{i_t(x)}u\bigr),\qquad u\in E_{t,x}.
+\]
+在零截面上它的微分可逆，且第一分量仍为 \(t\)。\cref{g2:lem:zero-section-shrinking}的紧参数版本给出零截面邻域，使 \(\mathcal E\) 成为到 \([0,1]\times N\) 中轨迹邻域的微分同胚。其逆的基点分量定义保持时间的光滑收缩
+\[
+	R(t,y)=(t,i_t(x)).
+\]
+这里的法向坐标只用于把空间点拉回同一时刻的子流形。
+
+\ProseParagraphBreak
+
+有了 \(R\)，向量场仍不能直接写成 \(v\circ R\)：这个向量位于 \(\mathrm{T}_{i_t(x)}N\)，而需要的值应位于 \(\mathrm{T}_yN\)。可以用局部标架明确解决这个问题。取覆盖轨迹的有限个向量丛平凡化，记环境切丛的局部标架为 \(e_{\alpha j}\)，并在轨迹上取从属单位分解 \(\lambda_\alpha\)。将
+\[
+	v=\sum_j v_\alpha^j e_{\alpha j}
+\]
+中的系数 \(v_\alpha^j\) 及权重 \(\lambda_\alpha\) 与 \(R\) 复合，再在 \((t,y)\) 处使用标架 \(e_{\alpha j}(y)\)。缩小邻域，使涉及的基点和 \(y\) 都落在该平凡化内，就得到
+\[
+	\widetilde X(t,y)=\sum_{\alpha,j}\lambda_\alpha(R(t,y))\,
+	v_\alpha^j(R(t,y))\,e_{\alpha j}(y).
+\]
+在原轨迹上 \(R\) 是恒等，权重之和为1，故 \(\widetilde X=v\)。各项按其支集补零，得到光滑延拓。
+
+\ProseParagraphBreak
+
+设 \(\Omega\subset N\) 是包含整个运动轨迹 \(i([0,1]\times K)\) 的开集。轨迹紧，因此可在上述时空邻域中选一个光滑截断 \(\chi\)，于轨迹附近等于1，支集含于 \([0,1]\times\Omega\)，且支集的空间投影是紧集。第一卷第12章的光滑截断定理适用于这个带边界的时空区域。令 \(X_t(y)=\chi(t,y)\widetilde X(t,y)\)，在其余地方补零，则
+\[
+	X_t(i_t(x))=\partial_ti(t,x),\qquad
+	\bigcup_{0\le t\le1}\operatorname{supp}X_t\subset L\Subset\Omega.
+\]
+一个共同的紧集 \(L\) 控制所有时刻的支集，是下一步得到整个时间区间上环境流的关键。
 
 \subsection{环境流及支集控制}
 \label{g2:subsec:1505:03}
-待撰写
+
+\begin{lemma}\label{g2:lem:uniformly-supported-evolution}
+	设 \(N\) 为无边界光滑流形，\(X_t\) 是 \(0\le t\le1\) 上光滑的时间依赖向量场。若存在紧集 \(L\subset N\)，使 \(X_t=0\) 于 \(N\setminus L\)，对所有 \(t\) 同时成立，则其演化映射 \(\Phi_{t,s}:N\to N\) 对全部 \(s,t\in[0,1]\) 有定义，光滑且为微分同胚，逆为 \(\Phi_{s,t}\)。它在 \(N\setminus L\) 上为恒等。
+\end{lemma}
+\begin{proof}
+	第一卷第13章第1节“演化映射”给出局部存在、联合光滑性与逆映射公式。这里只需保证解能走到指定的时间。\(N\setminus L\) 中的点对全部时间都是零点，所以从这些点出发的解恒定。若一条从 \(L\) 出发的解进入 \(N\setminus L\)，从进入处反向使用唯一性，它在此前也应是同一条常值解，矛盾。因此这条解始终留在 \(L\)。
+
+	若最大存在区间有一个位于 \([0,1]\) 内的有限端点，时空轨道就留在紧集 \([0,1]\times L\) 中。把 \(X_t\) 写成增广向量场 \(\partial_t+X_t\)，对这个紧集用有限个局部初值邻域取得统一的正存在时间，便能从靠近端点的时刻重新启动并越过它，与最大性矛盾。这正是第一卷第13章第2节逃逸判据的证明；端点0、1处先将光滑系数作局部时间延拓即可。故演化在整个指定时间区间存在，原有的逆映射与光滑依赖结论同时成立。
+\end{proof}
+
+\begin{theorem}[同位延拓定理]\label{g2:thm:isotopy-extension}
+	设 \(K\) 为紧无边界光滑流形，\(N\) 为无边界光滑流形，\(i:[0,1]\times K\to N\) 为光滑同位。对任意包含 \(i([0,1]\times K)\) 的开集 \(\Omega\subset N\)，存在环境同位 \(\Phi_t\)，使
+	\[
+		\Phi_t\circ i_0=i_t,
+	\]
+	且所有 \(\Phi_t\) 在同一个紧集 \(L\Subset\Omega\) 外均为恒等。
+\end{theorem}
+\begin{proof}
+	用上一小节的管状延拓与截断构造 \(X_t\)，再用\cref{g2:lem:uniformly-supported-evolution}取 \(\Phi_t=\Phi_{t,0}\)。对任意 \(x\in K\)，曲线 \(t\mapsto i_t(x)\) 满足
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}i_t(x)=X_t(i_t(x)),\qquad i_{t=0}(x)=i_0(x).
+	\]
+	它与 \(t\mapsto\Phi_t(i_0(x))\) 是同一个初值问题的解，故由唯一性相等。共同紧支集给出所述支集控制。
+\end{proof}
+
+\begin{example}\label{g2:exm:translated-sphere-isotopy}
+	设 \(a\in\mathbb R^{n+1}\)，\(i_t(x)=x+ta\)，其中 \(x\in S^n\)。整个运动轨迹紧，沿它的速度恒为 \(a\)。选择在轨迹邻域为1的紧支函数 \(\chi\)，以 \(X(y)=\chi(y)a\) 为环境向量场。每条指定轨道始终在 \(\chi=1\) 的区域，故环境流在球面上恰好实现 \(x\mapsto x+ta\)，在远处保持恒等。环境的其他点如何移动由截断决定，因此延拓存在而不唯一。
+\end{example}
+
+同位由嵌入组成这个要求不能放松成一般同伦。例如圆周上的常值映射与某些度为零的映射可以连续变形，但常值映射无法由环境微分同胚作用于一个嵌入得到；环境运动始终保留嵌入的单射性与局部秩。
 
 \subsection{相对同位和非紧限制}
 \label{g2:subsec:1505:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+先看需要固定一个环境闭集 \(B\subset N\) 的情形。若存在开集 \(V\supset B\)，使轨迹进入 \(V\) 时的指定速度全部为零，即
+\[
+	\partial_ti(t,x)=0\qquad\text{当 }i_t(x)\in V,
+\]
+那么可让延拓后的环境同位在 \(B\) 的某邻域恒为恒等。事实上，速度非零的轨迹点的闭包是轨迹中的紧集，且避开 \(V\)；取一个在该紧集附近为1、支集避开 \(B\) 的截断函数，将前面的延拓场再乘以它。它在速度非零处保持原值，在其余轨迹点仍为零，所以仍延拓原同位，而支集与 \(B\) 分离。若仅要求同位在 \(K\) 的某个闭子集 \(A\) 上逐点不变，则原构造已经保证 \(X_t(i_0(x))=0\) 对 \(x\in A\) 成立，环境流因而逐点固定 \(i_0(A)\)；这并不自动固定其整个邻域。
+
+\ProseParagraphBreak
+
+紧源还可以换成受控的非紧源。一个足够条件是：\(i_0:K\to N\) 为固有嵌入，并存在固定紧集 \(C\subset K\)，使 \(i_t(x)=i_0(x)\) 对所有 \(x\notin C\) 和所有 \(t\) 成立。在这种情况下，\(\widehat i\) 是固有嵌入：紧目标集的原像落在 \([0,1]\times C\) 与 \([0,1]\times i_0^{-1}(L)\) 的并中，其中 \(L\) 为该目标集的空间投影。速度截面在轨迹上的支集紧，可在其附近按同样的局部标架构造延拓，并在其余轨迹上保留零值，再截断为有共同紧支集的场。流的论证不变，得到环境同位。
+
+\begin{example}\label{g2:exm:noncompact-isotopy-no-extension}
+	令 \(K=N=\mathbb R\)，定义
+	\[
+		i_t(x)=\begin{cases}
+			\dfrac{\arctan(tx)}{t},&t>0,\\
+			x,&t=0.
+		\end{cases}
+	\]
+	积分表达 \(i_t(x)=\int_0^x(1+t^2u^2)^{-1}\,\mathrm{d}u\) 说明它在 \((t,x)\) 上光滑，且 \(\partial_x i_t>0\)，故每个 \(i_t\) 都是嵌入。当 \(t>0\) 时，其像是有界开区间 \((-\pi/(2t),\pi/(2t))\)；而 \(i_0\) 是整个实线的恒等映射。如果存在环境同位延拓它，\(\Phi_t\circ i_0=i_t\) 就迫使 \(\Phi_t=i_t\)，与 \(\Phi_t\) 必须满射到 \(\mathbb R\) 矛盾。非紧源上，各个切片是嵌入本身并不足够。
+\end{example}
+
+源 \(K\) 若紧但有边界，可以把速度截面的延拓改在半空间坐标中进行：先将各局部光滑分量延过边界，再用时空单位分解拼接，保留沿轨迹的原值。局部嵌入的半空间标准形由其延拓的浸入标准形给出，因此这一步适用于带边界的轨迹；截断和流的证明随后相同。环境 \(N\) 若有边界，所需延拓场必须沿 \(\partial N\) 切向，才能产生保持 \(N\) 的双侧运动。一个直接适用的相对版本是原同位在环境边界的某邻域内恒定，并把延拓场的支集选在内部；第一卷第13章第2节的边界切向流结论也说明了这一条件的作用。

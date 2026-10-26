@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 23.2 Pontryagin–Thom 对应
 % 纲要位置：几何学计划纲要.md，第 1893 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -18,25 +18,233 @@
 \section{Pontryagin–Thom 对应}
 \label{g2:sec:2302}
 
-待撰写
+第14章把同伦的正则逆像组织成配边。这里增加一项数据：目标点处的一组基通过微分拉回，给逆像的每条法纤维一组基。反过来，这组法标架把逆像附近的法方向统一认成同一个圆盘，于是能够把整个邻域压到一个球面。本节先在固定环境维数中证明这两个构造互逆，再消去嵌入维数的选择。
 
 \subsection{嵌入和法丛标架}
 \label{g2:subsec:2302:01}
-待撰写
+固定整数 \(n\ge0\)、\(k\ge1\)，记 \(N=n+k\)，并以一点紧化写 \(S^N=\mathbb R^N\cup\{\infty\}\)。设 \(i:M^n\hookrightarrow\mathbb R^N\) 是闭光滑流形的嵌入。取 Euclid 内积，法丛为 \(\nu_i=(\mathrm di(\mathrm TM))^\perp\)。一组\term[fachong-biaojia]{法丛标架}[normal framing]是丛同构
+\[
+	b:M\times\mathbb R^k\longrightarrow\nu_i,
+	\qquad b(x,a)=\sum_{j=1}^ka_jb_j(x).
+\]
+它指定有次序的法向量，并不限于指定法丛定向。正交化可以通过连续的 Gram--Schmidt 过程实现，因而不改变标架的同伦类。
+
+\begin{definition}\label{g2:def:embedded-framed-bordism}
+	两张带法标架的闭子流形 \((M_0,b_0),(M_1,b_1)\subset\mathbb R^N\) 称为嵌入带标架配边，如果存在紧光滑子流形
+	\[
+		W^{n+1}\subset\mathbb R^N\times[0,1],\qquad
+		\partial W=(M_0\times\{0\})\sqcup(M_1\times\{1\}),
+	\]
+	其端点附近分别是乘积领圈，且 \(W\) 的秩 \(k\) 法丛有标架，沿领圈等于相应 \(b_i\)。这类配边的等价类集合记为 \(\mathcal F_{n,k}\)。
+\end{definition}
+
+圆柱、时间反向及领圈粘合分别给出自反性、对称性及传递性。此时记录的是放在指定 \(\mathbb R^N\) 中的子流形及其法标架；上一节的 \(\Omega_n^{\mathrm{fr}}\) 则由抽象流形的稳定切标架定义。二者的关系从下式开始：
+\begin{equation}\label{g2:eq:normal-to-tangent-framing}
+	\phi_b:\mathrm TM\oplus\varepsilon^k\longrightarrow\varepsilon^N,
+	\qquad \phi_b(v,a)=\mathrm di(v)+b(a).
+\end{equation}
+这里 \(\varepsilon^r=M\times\mathbb R^r\)。切空间与法空间的直和填满环境空间，所以这是稳定切标架。在嵌入后面增加一个零坐标，并把新坐标方向接在法标架末尾，就把 \(\phi_b\) 变为 \(\phi_b\oplus\operatorname{id}_{\mathbb R}\)。
+
+\begin{lemma}\label{g2:lem:tangent-normal-framing}
+	固定紧流形的一个 Euclid 嵌入。允许增加平凡的环境坐标后，式\eqref{g2:eq:normal-to-tangent-framing}给出稳定法标架同伦类与稳定切标架同伦类的一一对应。这个结论也适用于带参数的紧族，以及在闭子集附近已经固定标架的相对情形。
+\end{lemma}
+\begin{proof}
+	先检验法丛能够稳定平凡化。若 \(\phi:\mathrm TM\oplus\varepsilon^r\cong\varepsilon^{n+r}\)，则
+	\[
+		\nu_i\oplus\varepsilon^{n+r}
+		\cong\nu_i\oplus\mathrm TM\oplus\varepsilon^r
+		\cong\varepsilon^{N+r}.
+	\]
+	这是实际丛同构：对 \((w,z)\)，写 \(\phi^{-1}(z)=(v,a)\)，送到 \((\mathrm di(v)+w,a)\)。增加 \(n+r\) 个环境坐标便把左边变成新嵌入的实际法丛，因而至少存在一组法标架 \(b_0\)。
+
+	还需比较标架本身，而不仅比较丛是否平凡。对一张已有平凡化的丛，另一张平凡化由连续矩阵映射 \(g:M\to\operatorname{GL}(s,\mathbb R)\) 唯一描述；稳定同伦允许用 \(g\oplus I\) 代替 \(g\)。这些矩阵的基本消去规则是
+	\[
+		\operatorname{diag}(g,h)\simeq\operatorname{diag}(gh,I).
+	\]
+	确实，令 \(R_t=\left(\begin{smallmatrix}\cos t\,I&-\sin t\,I\\ \sin t\,I&\cos t\,I\end{smallmatrix}\right)\)，则
+	\[
+		\operatorname{diag}(g,I)R_t\operatorname{diag}(I,h)R_t^{-1},
+		\qquad 0\le t\le\pi/2,
+	\]
+	从 \(\operatorname{diag}(g,h)\) 连到 \(\operatorname{diag}(gh,I)\)。旋转还把两对角块互换，所以稳定矩阵同伦类的乘法可交换；特别地，取逆给出逆元，改变平凡化造成的共轭不改变稳定类。
+
+	用 \(b_0\) 识别法丛后，所有稳定法标架构成上述稳定矩阵类的一个自由传递作用集；由 \(\phi_{b_0}\) 识别后，稳定切标架也如此。把 \(b_0\) 改为 \(b_0g\)，式\eqref{g2:eq:normal-to-tangent-framing}就把切标架改为在法方向上作用 \(g\)、切方向上作用恒等的矩阵。补加一份 \(\mathrm TM\oplus\nu_i\cong\varepsilon^N\)，即可把这些丛块交换到平凡坐标块中；上述旋转消去规则表明，它的稳定矩阵类正是 \([g]\)。所以两个自由传递作用集之间的映射也是双射。具体说，任何所需切标架与 \(\phi_{b_0}\) 的差都能放到新增的平凡法坐标中实现，而差为零恰好意味着法标架稳定同伦。
+
+	所有同构与旋转都逐点连续地依赖参数。相对情形中，当两份数据已经一致时，差矩阵为 \(I\)，这些旋转公式始终给出 \(I\)。故同一个论证保持指定区域的数据，亦适用于参数族。
+\end{proof}
+
+这个对应沿边界须使用上一节的外法向优先约定。若 \(W\subset\mathbb R^N\times[0,1]\) 在端点为乘积，把其稳定切标架的最后一个环境坐标乘以 \((-1)^N\)，则顶端诱导 \(\phi_{b_1}\) 的稳定化，底端诱导 \(\phi_{b_0}\) 的逆元。这个固定符号来自把时间方向移过前面 \(N\) 个坐标。因此嵌入带标架配边确实给出抽象带标架配边；反向构造时使用同一符号即可保持边界标架。
 
 \subsection{管状邻域坍缩映射}
 \label{g2:subsec:2302:02}
-待撰写
+\cref{g2:thm:tubular-neighborhood}给出一张管状邻域。在当前 Euclid 环境中可以直接取
+\[
+	\tau:M\times D^k_\epsilon\longrightarrow\mathbb R^N,
+	\qquad \tau(x,v)=i(x)+b(x,v),
+\]
+其中 \(D^k_\epsilon=\{v:|v|<\epsilon\}\)。零截面上的微分可逆，且 \(M\) 紧，故可选统一的 \(\epsilon>0\) 使 \(\tau\) 为嵌入。
+
+为把邻域边缘送到 \(S^k\) 的无穷远点，选光滑非增函数 \(\rho:[0,\infty)\to[0,1]\)，在零附近等于 \(1\)，在 \(s<\epsilon^2\) 时为正，在 \(s\ge\epsilon^2\) 时为零。定义
+\[
+	q_\epsilon(v)=\frac{v}{\rho(|v|^2)}\quad(|v|<\epsilon),
+	\qquad q_\epsilon(v)=\infty\quad(|v|\ge\epsilon).
+\]
+径向函数严格增加且趋于无穷，故开圆盘被保向微分同胚地送到 \(\mathbb R^k\)。在目标无穷远点附近使用反演坐标，公式变为 \(\rho(|v|^2)v/|v|^2\)，它在 \(|v|=\epsilon\) 处光滑接上零。因此 \(q_\epsilon\) 是取值于球面的光滑映射，且在零附近为恒等。
+
+\begin{definition}[Pontryagin--Thom 坍缩]\label{g2:def:pt-collapse}
+	带法标架子流形 \((M,b)\) 的坍缩映射为
+	\begin{equation}\label{g2:eq:pt-collapse}
+		C_{M,b}:S^N\longrightarrow S^k,\qquad
+		C_{M,b}(z)=
+		\begin{cases}
+			q_\epsilon(v),&z=\tau(x,v),\ |v|<\epsilon,\\
+			\infty,&z\notin\tau(M\times D^k_\epsilon).
+		\end{cases}
+	\end{equation}
+\end{definition}
+
+在这个公式中，沿 \(M\) 的位置 \(x\) 被忘掉，法方向坐标 \(v\) 被保留，邻域以外全部成为基点。其商空间写法是
+\[
+	S^N\longrightarrow\operatorname{Th}(\nu_i)
+	\cong M_+\wedge S^k\longrightarrow S^k.
+\]
+这里 \(M_+\) 表示给 \(M\) 添一个不交基点；最后一箭头把 \(M\) 全部送到 \(S^0\) 的非基点。第20章的 Thom 空间因此出现为构造的中间一步。法标架保证每个纤维球面都用同一坐标送到目标。
+
+\begin{proposition}\label{g2:prop:collapse-choice-independence}
+	固定 \((M,b)\) 时，坍缩映射的基点同伦类与管状邻域、半径及截断函数无关。法标架的一条同伦也给出坍缩映射的基点同伦。
+\end{proposition}
+\begin{proof}
+	先处理半径：在已经定义的管状邻域内，让半径沿正数区间变化，并对固定的截断函数作相应缩放，即得到连续同伦。两个半径于是可同时缩到较小者。固定半径后，两份截断函数的凸组合仍在开圆盘内为正、边缘外为零，且在零附近为 \(1\)，代入上式便得到同伦。
+
+	两张正规化的管状邻域由\cref{g2:prop:tubular-uniqueness}在共同较小邻域上连成光滑族。其参数区间和 \(M\) 均紧，可以取统一半径；在每张管状邻域上使用同一个 \(q_\epsilon\)，所得公式连成基点同伦。若改变的是标架 \(b_t\)，则直接对 \(\tau_t(x,v)=i(x)+b_t(x,v)\) 使用相同的紧性论证。各同伦的支撑都位于一个有界集合内，故在 \(\infty\) 附近保持基点。
+\end{proof}
+
+\begin{example}\label{g2:exm:pt-zero-dimensional-degree}
+	设 \(M\subset\mathbb R^k\) 是有限点集，每点的法标架是 \(\mathbb R^k\) 的一组有序基。坍缩映射的正则值 \(0\) 恰有这些原像，局部映射度为 \(\operatorname{sgn}\det b_x\)。于是
+	\[
+		\deg C_{M,b}=\sum_{x\in M}\operatorname{sgn}\det b_x.
+	\]
+	零维时，正则逆像记录的就是带符号点数；高维时，点集被流形及其法标架代替。
+\end{example}
 
 \subsection{横截逆像构造反向映射}
 \label{g2:subsec:2302:03}
-待撰写
+给定基点映射 \(f:S^N\to S^k\)，先使它在 \(\infty\) 的一个邻域内恒等于基点。这可以在目标基点的坐标球中，用截断函数把较小邻域的像收缩到基点实现。随后应用\cref{g2:thm:relative-smooth-approximation,g2:thm:relative-transversality}，固定这个邻域，使 \(f\) 光滑且横截于 \(0\in\mathbb R^k\subset S^k\)。因此
+\[
+	M_f=f^{-1}(0)\subset\mathbb R^N
+\]
+是紧无边界 \(n\) 维子流形。由\cref{g2:prop:transverse-normal-bundle}，微分诱导法丛同构 \(\nu_{M_f}\cong M_f\times\mathrm T_0S^k\)。使用目标的标准坐标基，得到明确的法标架
+\begin{equation}\label{g2:eq:regular-fiber-framing}
+	b_f(x,a)=\bigl(\mathrm df_x|_{\nu_x}\bigr)^{-1}(a).
+\end{equation}
+这说明为什么配边必须带标架：微分给出的信息比逆像的抽象微分同胚类型更多。
+
+\begin{proposition}\label{g2:prop:regular-fiber-framed-homotopy}
+	正则逆像构造给出良定义的映射
+	\[
+		P:\pi_N(S^k)\longrightarrow\mathcal F_{n,k},\qquad
+		[f]\longmapsto[M_f,b_f].
+	\]
+\end{proposition}
+\begin{proof}
+	设两张已经光滑且横截于零的代表 \(f_0,f_1\) 基点同伦。由于参数区间紧，可在一个共同的基点邻域把整条同伦改为恒取基点，并在时间端点附近改为常值同伦。相对光滑逼近与带边界相对横截逼近保持这些区域不变，给出光滑 \(H:S^N\times[0,1]\to S^k\)，使 \(H\pitchfork\{0\}\)。于是
+	\[
+		W=H^{-1}(0)\subset\mathbb R^N\times[0,1]
+	\]
+	紧且具有所需乘积领圈。微分 \(\mathrm dH\) 在法方向上的逆给出标架，沿端点恰为 \(b_{f_i}\)。这就是定义中的嵌入带标架配边。任何两次逼近所得代表都与原映射基点同伦，所以构造不依赖逼近。
+\end{proof}
+
+也可选取另一个正则值及其正向坐标基。把它们沿一条球面上的路径运输到 \(0\)，再对相应映射同伦使用上述命题，所得配边类不变。为使构造与公式始终可直接比较，以下固定 \(0\) 和标准基。
 
 \subsection{同伦与配边的双向对应}
 \label{g2:subsec:2302:04}
-待撰写
+\begin{theorem}[Pontryagin--Thom 对应]\label{g2:thm:pt-fixed-ambient}
+	对 \(n\ge0\)、\(k\ge1\)，坍缩和正则逆像给出互逆的双射
+	\[
+		\mathcal F_{n,k}\ \underset{P}{\overset{C}{\rightleftarrows}}\ \pi_{n+k}(S^k).
+	\]
+\end{theorem}
+\begin{proof}
+	先说明坍缩尊重配边。若 \(W\subset\mathbb R^N\times[0,1]\) 是带法标架配边，可在其领圈上使用乘积管状邻域，在内部使用管状邻域。具体可选在领圈上为乘积的度量，再用法指数映射；紧性使内部半径可缩到不碰到环境边界，领圈上的法向则始终水平。由此得到取值于 \(S^k\) 的坍缩映射
+	\[
+		S^N\times[0,1]\longrightarrow S^k,
+	\]
+	端点为两端子流形的坍缩。管状邻域的选择不影响端点同伦类，所以 \(C\) 在配边类上良定义。
+
+	对 \(C_{M,b}\)，零点集合恰为 \(M\)，且 \(q_\epsilon\) 在零附近是恒等。故微分在法方向上为 \(b^{-1}\)，正则逆像的标架正是 \(b\)。这就证明 \(P\circ C=\operatorname{id}\)。
+
+	再证明另一个复合。取横截于零的光滑代表 \(f\)，记 \(M=f^{-1}(0)\)。若 \(M\) 为空，则 \(f\) 落在可缩空间 \(S^k\setminus\{0\}\) 内，可保持基点收缩，与空流形的坍缩同伦。以下设 \(M\ne\varnothing\)。由于源紧，临界点的像是闭集，可选 \(0\) 的小闭圆盘 \(\overline D_\delta^k\)，使其内部及边界上均无临界值。限制
+	\[
+		f:f^{-1}(D_\delta^k)\longrightarrow D_\delta^k
+	\]
+	为固有淹没。回忆第15章第6节的证明：取 \(\mathrm df\) 的光滑右逆，沿从零到 \(v\) 的径向线段提升；固有性保证轨道存在至终点。正向和反向提升互逆，给出
+	\[
+		\Phi:M\times D_\delta^k\xrightarrow{\ \cong\ }f^{-1}(D_\delta^k),
+		\qquad f(\Phi(x,v))=v.
+	\]
+	右逆可取正交法方向的逆，所以 \(\Phi\) 在零截面的法方向微分恰为 \(b_f\)。这是一张与 \(f\) 相适配的管状邻域。
+
+	最后把目标的 \(D_\delta^k\) 以外压到无穷远。取前述截断函数 \(\rho\)，令
+	\[
+		r_s(v)=\frac{v}{(1-s)+s\rho(|v|^2)}\quad(0\le s<1),
+		\qquad r_1=q_\delta,\qquad r_s(\infty)=\infty.
+	\]
+	这是球面上从恒等到 \(q_\delta\) 的基点同伦：在分母趋于零的位置，分子远离零，像趋于球面的基点；在零附近分母恒为 \(1\)。于是 \(r_s\circ f\) 把 \(f\) 同伦为一张在适配管状邻域上按 \(v\) 坍缩、在其外恒为基点的映射，即 \(C_{M,b_f}\)。结合\cref{g2:prop:collapse-choice-independence}便得到 \(C\circ P=\operatorname{id}\)。
+\end{proof}
+
+证明中两种“相对”要求有明确分工：横截逼近保持同伦端点，管状邻域保持配边领圈。它们分别保证从同伦得到的配边具有正确边界，以及从配边得到的同伦具有正确端点。适配管状邻域则把本卷已经证明的固有淹没平凡化用于一个正则值的小邻域。
 
 \subsection{稳定维数与选择无关性}
 \label{g2:subsec:2302:05}
-待撰写
+把 \(\mathbb R^N\) 嵌入 \(\mathbb R^{N+1}\) 的最后坐标为零的超平面，并令
+\[
+	\sigma(M,b)=(M,(b_1,\ldots,b_k,e_{N+1})).
+\]
+配边也可增加同一个零坐标，因此得到 \(\sigma:\mathcal F_{n,k}\to\mathcal F_{n,k+1}\)。在管状邻域取乘积圆盘 \(D^k\times D^1\)，坍缩公式就是两个因子的坍缩之积。利用
+\[
+	S^N\wedge S^1\cong S^{N+1},\qquad S^k\wedge S^1\cong S^{k+1},
+\]
+它等于 \(C_{M,b}\wedge\operatorname{id}_{S^1}\) 的同伦类。乘积圆盘的角可圆滑，或直接把它径向识别为圆盘；\cref{g2:prop:collapse-choice-independence}保证结果相同。因此
+\begin{equation}\label{g2:eq:pt-suspension-compatibility}
+	C\bigl(\sigma[M,b]\bigr)=E\bigl(C[M,b]\bigr),
+\end{equation}
+其中 \(E\) 正是第9章第5节的悬挂同态。两边都把新增坐标放在最后，故没有坐标交换产生的额外符号。
+
+\begin{proposition}\label{g2:prop:stable-embedded-abstract-bordism}
+	忘掉环境嵌入、保留式\eqref{g2:eq:normal-to-tangent-framing}给出的稳定切标架，得到双射
+	\[
+		\varinjlim_k\mathcal F_{n,k}\cong\Omega_n^{\mathrm{fr}}.
+	\]
+\end{proposition}
+\begin{proof}
+	满射性来自紧流形的 Euclid 嵌入及\cref{g2:lem:tangent-normal-framing}：先嵌入，再增加坐标把指定稳定切标架实现为实际法标架。
+
+	为证明单射性，设两端的抽象稳定切标架由紧配边 \(W\) 连接。我们说明怎样在增加环境坐标后把这张配边嵌入，并保持给定端点嵌入。在两个边界领圈上选时间函数 \(t\)，分别为靠近 \(0\)、\(1\) 的领圈坐标；在其余内部令 \(0<t<1\)。把给定端点的空间坐标光滑延拓成 \(a:W\to\mathbb R^N\)，在较小领圈上与时间无关。选 \(W\) 的一个 Euclid 嵌入 \(j:W\hookrightarrow\mathbb R^L\)，以及非负函数 \(\rho\)，使它在这两个较小领圈上为零，在其余区域为正。则
+	\[
+		F(w)=\bigl(a(w),\rho(w)j(w),\rho(w),t(w)\bigr)
+	\]
+	是到 \(\mathbb R^{N+L+1}\times[0,1]\) 的嵌入。在 \(\rho>0\) 处，\((\rho j,\rho)\) 恢复 \(j\)，既保证单射也保证微分单射；在 \(\rho=0\) 的领圈上，\((a,t)\) 是给定的乘积嵌入。正值区域不会与零值区域重合，两个端点领圈又由时间区分。最后由紧性得到嵌入。这里 \(j\) 的存在也可直接在带边界坐标图中，用有限张局部坐标和截断函数作第15章第1节的构造。
+
+	对 \(F\) 的法丛应用\cref{g2:lem:tangent-normal-framing}，并按本节开头的边界符号调整，得到对应 \(W\) 指定稳定切标架的稳定法标架。端点的法标架与原给定标架具有相同稳定切标架，故在进一步稳定后同伦。在领圈上接入这两条标架同伦，再增加足够坐标把稳定法标架变成实际法标架，就得到所需嵌入带标架配边。因此原来的两项在直接极限中相同。
+\end{proof}
+
+环境嵌入的选择也可以直接看见。对 \(i_0:M\to\mathbb R^{N_0}\)、\(i_1:M\to\mathbb R^{N_1}\)，
+\[
+	j_t(x)=\bigl(\cos(\pi t/2)i_0(x),\sin(\pi t/2)i_1(x)\bigr)
+\]
+在每个时刻都是嵌入，因为至少一个非零系数乘着一张嵌入。其迹 \((j_t(x),t)\) 是圆柱嵌入；固定的稳定切标架沿圆柱延拓，再由切、法标架对应产生稳定法标架。端点坐标块可通过增加坐标后的旋转放到统一位置。于是两次嵌入给出同一个稳定类。这里允许增加维数十分关键：某个低维空间中的不同打结方式，可能并不由该空间内的同位连接。
+
+\begin{theorem}[稳定 Pontryagin--Thom 对应]\label{g2:thm:stable-pontryagin-thom}
+	对每个 \(n\ge0\)，有群同构
+	\[
+		\Omega_n^{\mathrm{fr}}\cong\pi_n^{\mathrm S}
+		=\varinjlim_k\pi_{n+k}(S^k).
+	\]
+	当 \(k\ge n+2\) 时，右边可由 \(\pi_{n+k}(S^k)\) 表示。
+\end{theorem}
+\begin{proof}
+	固定维数的双射与式\eqref{g2:eq:pt-suspension-compatibility}给出直接极限的双射；再用\cref{g2:prop:stable-embedded-abstract-bordism}识别左边。将两张带标架子流形平移、缩放到互不相交的两个球内，不改变稳定类。它们的不交并的坍缩，先把两球外压成基点，再分别作两张坍缩，正是球面同伦群的夹缩加法。因此双射保持群运算。最后，\cref{g2:thm:freudenthal}在 \(n+k\le2k-2\)，即 \(k\ge n+2\) 时保证后续悬挂均为同构。
+\end{proof}
+
+稳定化把“嵌在哪里”从不变量中移去，却保留稳定标架。例如 \(\Omega_0^{\mathrm{fr}}\cong\pi_0^{\mathrm S}\cong\mathbb Z\)，对应就是\cref{g2:exm:pt-zero-dimensional-degree}的带符号点数。对更高维流形，改变稳定标架可能改变配边类；标架同伦不改变它，而任意两组标架未必同伦。稳定切标架、法标架与球面稳定同伦的这组对应也可参阅\cite[第1讲第5节，命题1.73及推论1.74]{Freed2019FieldTheory}。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

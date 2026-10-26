@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 19.1 丛的运算与同伦不变性
 % 纲要位置：几何学计划纲要.md，第 1739 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,189 @@
 \section{丛的运算与同伦不变性}
 \label{g2:sec:1901}
 
-待撰写
+把圆周上的每一点换成一条直线，既可以得到平凡线丛，也可以得到 Möbius 线丛。纤维维数相同，区别发生在绕行一周后的粘合。分类向量丛首先要确定允许怎样改变局部坐标，以及底空间中的连续变形会不会改变所得的丛。本节把第一卷的光滑丛语言转到连续范畴，再建立分类映射将要使用的同伦不变性。
 
 \subsection{过渡函数、拉回和丛同构}
 \label{g2:subsec:1901:01}
-待撰写
+
+以下 \(\mathbb K\) 表示 \(\mathbb R\) 或 \(\mathbb C\)。第一卷第12章第1节中，向量丛的局部平凡化把每根纤维线性识别为同一个向量空间。本章允许一般拓扑基空间，要求平凡化及换架连续；当底空间和过渡函数都光滑时，便恢复那里的光滑向量丛。
+
+\begin{definition}\label{g2:def:topological-vector-bundle}
+	设 \(X\) 为拓扑空间。一个秩为 \(n\) 的 \(\mathbb K\)-向量丛是连续映射 \(\pi:E\to X\)，其每根纤维 \(E_x=\pi^{-1}(x)\) 是 \(n\) 维 \(\mathbb K\)-向量空间，并且每点附近存在开集 \(U\) 及同胚
+	\[
+		\phi_U:E|_U\longrightarrow U\times\mathbb K^n,
+	\]
+	使第一分量为 \(\pi\)，第二分量在各纤维上线性可逆。这种同胚称为局部平凡化。覆盖恒等映射、逐纤维线性的连续映射称为丛同态；若它是逐纤维可逆的，则称为丛同构。
+\end{definition}
+
+逐纤维可逆已经保证逆映射连续：局部表示是连续矩阵 \(A(x)\in\operatorname{GL}_n(\mathbb K)\)，而逆矩阵的各元素由行列式和余子式连续给出。因此，同构要求的不只是逐点存在某个线性同构，而是这些同构随基点连续变化。记同构类的集合为 \(\operatorname{Vect}_n^{\mathbb K}(X)\)，平凡秩 \(n\) 丛记为 \(\varepsilon_X^n=X\times\mathbb K^n\)。
+
+\ProseParagraphBreak
+
+在覆盖 \(\{U_i\}\) 上选平凡化 \(\phi_i\)，坐标列向量满足 \(v_i=g_{ij}(x)v_j\)，其中
+\[
+	g_{ij}:U_i\cap U_j\longrightarrow\operatorname{GL}_n(\mathbb K),
+	\qquad g_{ij}g_{jk}=g_{ik},\quad g_{ii}=I.
+\]
+这些连续矩阵就是\term[guodu hanshu]{过渡函数}[transition functions]。反过来，满足上述余循环等式的矩阵把各 \(U_i\times\mathbb K^n\) 粘合起来：在重叠处将第 \(j\) 张图的 \((x,v)\) 与第 \(i\) 张图的 \((x,g_{ij}(x)v)\) 识别。余循环等式恰好保证识别的传递性。取商拓扑后，各张图的饱和开集给出局部乘积，因而所得对象确实是向量丛。
+
+\begin{proposition}\label{g2:prop:bundle-transition-isomorphism}
+	设 \(E,F\) 是同一基空间上的有限秩 \(\mathbb K\)-向量丛，在共同开覆盖上的过渡函数分别为 \(g_{ij},h_{ij}\)。丛同态 \(E\to F\) 等价于连续矩阵族 \(A_i\)，满足
+	\[
+		A_i g_{ij}=h_{ij}A_j.
+	\]
+	同秩时，它是丛同构当且仅当各 \(A_i(x)\) 可逆。特别地，将局部坐标改为 \(v'_i=b_i(x)v_i\)，过渡函数变为 \(g'_{ij}=b_i g_{ij}b_j^{-1}\)。
+\end{proposition}
+\begin{proof}
+	局部同态写成 \((x,v_i)\mapsto(x,A_i(x)v_i)\)。同一个向量也可用第 \(j\) 张图表示；两种输出相同恰好要求 \(A_ig_{ij}v_j=h_{ij}A_jv_j\) 对所有 \(v_j\) 成立。这就是所列等式，它保证局部连续映射粘成整体同态。逆矩阵连续说明同构判据，最后的换架公式由 \(v'_i=b_ig_{ij}b_j^{-1}v'_j\) 得到。
+\end{proof}
+
+丛的运算由纤维运算和过渡函数共同确定。例如 \(E\oplus F\)、\(E\otimes F\) 和 \(E^*\) 的过渡矩阵依次为
+\[
+	\begin{pmatrix}g_{ij}&0\\0&h_{ij}\end{pmatrix},
+	\qquad g_{ij}\otimes h_{ij},
+	\qquad(g_{ij}^{-1})^{\mathsf T}.
+\]
+这里复丛的 \(E^*\) 取复线性对偶，所以出现转置而不是共轭转置。矩阵乘法、张量积及逆转置保留余循环等式，故这些纤维运算都得到向量丛；同样有 \(\operatorname{Hom}(E,F)=E^*\otimes F\) 与外幂 \(\bigwedge^kE\)。
+
+\ProseParagraphBreak
+
+对连续映射 \(f:Y\to X\)，定义\term[lahui cong]{拉回丛}[pullback bundle]
+\[
+	f^*E=\{(y,e)\in Y\times E:f(y)=\pi(e)\},\qquad (y,e)\longmapsto y.
+\]
+其局部平凡化来自 \(E\) 在 \(U_i\) 上的平凡化，过渡函数为 \(g_{ij}\circ f\)。下面的方块既交换，也刻画了这个构造的泛性质：
+\[
+	\begin{tikzcd}
+		f^*E\arrow[r]\arrow[d]&E\arrow[d,"\pi"]\\
+		Y\arrow[r,"f"']&X.
+	\end{tikzcd}
+\]
+具体说，若 \(q:F\to Y\) 是另一向量丛，\(\Phi:F\to E\) 是覆盖 \(f\) 的逐纤维线性连续映射，则唯一的分解为 \(v\mapsto(q(v),\Phi(v))\in f^*E\)。连续性来自积与子空间拓扑。由此得到自然同构 \((f\circ h)^*E\cong h^*(f^*E)\)，以及拉回与直和、张量积、对偶交换；逐点写下对应的有序组或张量即可核对它们与过渡函数相容。
 
 \subsection{区间上的平凡化延拓}
 \label{g2:subsec:1901:02}
-待撰写
+
+为比较同伦的两端，先考察 \(E\to X\times I\)，其中 \(I=[0,1]\)。局部坐标能把相邻时间的纤维对应起来，但一张坐标通常覆盖不了整个区间。区间的紧性提供有限次接续；接缝处需要调整坐标，使两段的对应真正一致。
+
+\begin{lemma}\label{g2:lem:bundle-cylinder-local-trivialization}
+	设 \(E\to X\times I\) 为有限秩实或复向量丛。对每个 \(x\in X\)，存在开邻域 \(U\)，使 \(E|_{U\times I}\) 平凡。若已给定 \(E|_{U\times\{0\}}\) 的平凡化，可以在缩小 \(U\) 后将其延拓到整条柱体。
+\end{lemma}
+\begin{proof}
+	沿紧集 \(\{x\}\times I\) 取有限个乘积邻域上的平凡化。取这有限个基空间邻域的交，并对时间作细分
+	\[
+		0=t_0<t_1<\cdots<t_m=1,
+	\]
+	使每个 \(U\times[t_{j-1},t_j]\) 都落在其中一张平凡化内。这样的细分存在，因为有限个时间开区间覆盖紧区间，具有正的 Lebesgue 数。
+
+	设前一段已使用坐标 \(\psi_{j-1}\)，后一段原来的坐标为 \(\phi_j\)。在接缝 \(t=t_{j-1}\) 上，二者相差一个连续可逆矩阵 \(B_j(y)\)：\(\psi_{j-1}(y,t_{j-1})=B_j(y)\phi_j(y,t_{j-1})\)。将后一段坐标改为 \(\psi_j(y,t)=B_j(y)\phi_j(y,t)\)，就在接缝处相同。有限个闭时间段的粘合引理使这些坐标拼成一个连续平凡化；逆坐标也按同样方式粘合，因此确为同胚。在第一段先乘一个只依赖 \(y\) 的可逆矩阵，就能匹配任意指定的起点平凡化，再依次接续。
+\end{proof}
+
+固定这样的柱体平凡化，保持坐标列向量不变，便得到局部运输
+\[
+	T_U(y;s,t):E_{(y,s)}\longrightarrow E_{(y,t)},
+	\qquad 0\le s,t\le1.
+\]
+它连续依赖 \((y,s,t)\)，并满足 \(T_U(y;t,t)=I\) 和 \(T_U(y;t,r)T_U(y;s,t)=T_U(y;s,r)\)。不同柱体平凡化所得运输可以不同。下一步用单位分解决定每次使用哪一张图及使用多长的时间，使这些局部运输有次序地接成整体同构。
 
 \subsection{同伦拉回丛的同构}
 \label{g2:subsec:1901:03}
-待撰写
+
+此处使用第一卷第4章第4节的连续单位分解定理：仿紧 Hausdorff 空间的任意开覆盖都有从属连续单位分解 \(\{\rho_i\}\)，支集族局部有限，\(\operatorname{supp}\rho_i\subset U_i\)，并且 \(\sum_i\rho_i=1\)。局部有限性使每一点附近的求和实际只有有限项。下面用这些函数分配时间，而不把可逆矩阵作平均，因为可逆矩阵的平均未必仍可逆。
+
+\begin{theorem}[丛的同伦不变性]\label{g2:thm:bundle-homotopy-invariance}
+	设 \(X\) 为仿紧 Hausdorff 空间，\(E\to X\times I\) 为有限秩实或复向量丛，\(E_0=E|_{X\times\{0\}}\)。则存在覆盖 \(X\times I\) 恒等映射的丛同构
+	\[
+		\operatorname{pr}_X^*E_0\cong E,
+	\]
+	它在 \(t=0\) 上为恒等。因此 \(E_0\cong E_1\)。若 \(f_0,f_1:X\to Y\) 连续同伦，\(V\to Y\) 为有限秩向量丛，则 \(f_0^*V\cong f_1^*V\)。
+\end{theorem}
+\begin{proof}
+	由\cref{g2:lem:bundle-cylinder-local-trivialization}取开覆盖 \(\{U_i\}_{i\in A}\)，使各 \(U_i\times I\) 上都有平凡化及运输 \(T_i\)。取从属的局部有限单位分解 \(\rho_i\)，再给指标集选一个良序。良序只用来固定有限个实际运输的先后，最终同构不要求与这项选择无关。
+
+	令
+	\[
+		a_i(x)=\sum_{j<i}\rho_j(x),\qquad b_i(x)=a_i(x)+\rho_i(x).
+	\]
+	这些函数连续，因为每点附近只有有限个支集。对目标时间 \(t\in I\)，第 \(i\) 次运输从高度 \(t a_i(x)\) 到 \(t b_i(x)\)。当 \(x\in U_i\) 时，使用
+	\[
+		L_i(x,t)=T_i\bigl(x;t a_i(x),t b_i(x)\bigr).
+	\]
+	当 \(x\notin\operatorname{supp}\rho_i\) 时，两高度相同，令 \(L_i\) 为该纤维上的恒等映射。两种规定在交叠处一致；支集包含于 \(U_i\)，所以它们合成两个图拉回丛之间的连续同构。这个支集条件同时保证，在需要使用局部运输的地方，所选坐标始终有定义。
+
+	现在固定 \(x\)。只有有限个 \(\rho_i(x)\) 非零，按既定顺序复合相应 \(L_i(x,t)\)，得到
+	\[
+		L(x,t):E_{(x,0)}\longrightarrow E_{(x,t)}.
+	\]
+	这些时间段首尾相接，因为累积和从零增加到一；零权重给出的段只是恒等。要证明 \(L\) 连续，取 \(x\) 的一个只遇到有限多个支集的邻域 \(W\)。在 \(W\times I\) 上，将这有限个指标全部按顺序列入复合，包括可能权重为零的项，便得到一个固定的有限连续复合。它与逐点定义一致，所以 \(L\) 连续。反向复合这些运输给出连续逆，故 \(L\) 是所需丛同构。\(t=0\) 时每一段都是恒等。
+
+	若 \(H:X\times I\to Y\) 是从 \(f_0\) 到 \(f_1\) 的同伦，将前一结论用于 \(H^*V\)。它的两端分别是 \(f_0^*V\)、\(f_1^*V\)，故得到最后的断言。
+\end{proof}
+
+这项构造处理了非紧底空间：不同点可以需要不同数量、不同位置的时间坐标图；局部有限性保证附近的搬运仍由有限个连续步骤给出。同构依赖平凡化及单位分解，定理确定的是同构类。
+
+\begin{corollary}\label{g2:cor:contractible-base-trivial-bundle}
+	仿紧 Hausdorff 可缩空间上的每个有限秩实或复向量丛都平凡。更一般地，若 \(f:X\to Y\) 是仿紧 Hausdorff 空间之间的同伦等价，则拉回给出 \(\operatorname{Vect}_n^{\mathbb K}(Y)\to\operatorname{Vect}_n^{\mathbb K}(X)\) 的双射。
+\end{corollary}
+\begin{proof}
+	可缩时，恒等映射与某个常值映射 \(c_{x_0}\) 同伦，而 \(c_{x_0}^*E=X\times E_{x_0}\)，故由定理得到平凡性。一般地，若 \(g\) 为 \(f\) 的同伦逆，则 \(g^*f^*=(f\circ g)^*\) 与 \(f^*g^*=(g\circ f)^*\) 在同构类上分别为恒等，故互为逆映射。
+\end{proof}
+
+例如，圆环 \(S^1\times I\) 上的向量丛都来自核心圆周；从内圆周限制和从外圆周限制所得的丛同构。这样的同构并不规定绕圆周的平行移动，后者还需要联络。
+
+\begin{corollary}\label{g2:cor:principal-bundle-homotopy}
+	设 \(X\) 为仿紧 Hausdorff 空间，\(G\) 为拓扑群，\(P\to X\times I\) 为局部平凡的右主 \(G\) 丛。则 \(P\cong\operatorname{pr}_X^*(P|_{X\times\{0\}})\)，且同构可在零端取为恒等。因而同伦映射拉回主 \(G\) 丛得到同构主丛。
+\end{corollary}
+\begin{proof}
+	右主丛的局部模型是 \(U\times G\)，右作用为第二分量的右乘；换平凡化在第二分量上左乘一个连续的群值函数。因而柱体平凡化仍可逐段调整并粘合，保持第二坐标的局部运输是右 \(G\) 等变的。上一定理只复合这些运输，没有使用纤维加法。以相同的时间分配与局部有限复合构造同构，它自动右 \(G\) 等变。
+\end{proof}
 
 \subsection{球面上的 clutching 构造}
 \label{g2:subsec:1901:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+把 \(S^m\)、\(m\ge1\) 分成两个闭半球 \(D_+^m,D_-^m\)，交集为赤道 \(S^{m-1}\)。半球可缩，其上的向量丛平凡；全部粘合信息因而集中到赤道上的一族可逆线性变换。
+
+\begin{definition}\label{g2:def:clutching-bundle}
+	对连续映射 \(g:S^{m-1}\to\operatorname{GL}_n(\mathbb K)\)，将两个平凡丛 \(D_+^m\times\mathbb K^n\)、\(D_-^m\times\mathbb K^n\) 按
+	\[
+		(x,v)_+\sim(x,g(x)v)_-\qquad(x\in S^{m-1})
+	\]
+	粘合，所得丛记为 \(E_g\to S^m\)。映射 \(g\) 称为这个构造的\term[clutching hanshu]{粘合函数}[clutching function]。
+\end{definition}
+
+赤道附近的局部平凡性可以直接看见。取领圈 \(S^{m-1}\times(-\varepsilon,\varepsilon)\)，在正半侧保持原坐标，在负半侧乘 \(g(x)^{-1}\)；两侧在赤道上给出相同的坐标。因而商空间在每个赤道点附近仍为乘积，远离赤道则沿用半球内的平凡化。
+
+\begin{theorem}[球面上的粘合分类]\label{g2:thm:clutching-classification}
+	设 \(m,n\ge1\)。每个 \(S^m\) 上的秩 \(n\) 实或复向量丛同构于某个 \(E_g\)。两粘合函数 \(g,h\) 给出同构丛，当且仅当存在连续映射
+	\[
+		A_\pm:D_\pm^m\longrightarrow\operatorname{GL}_n(\mathbb K)
+	\]
+	使赤道上有 \(h=A_-gA_+^{-1}\)。同伦的粘合函数给出同构丛。
+
+	复丛的同构类因而与 \([S^{m-1},\operatorname{GL}_n(\mathbb C)]\) 双射；若只考虑带指定取向的实丛及保向同构，则相应地与 \([S^{m-1},\operatorname{GL}_n^+(\mathbb R)]\) 双射。
+\end{theorem}
+\begin{proof}
+	由\cref{g2:cor:contractible-base-trivial-bundle}，给定丛在两个半球上都可平凡化；沿赤道比较这两套坐标就得到 \(g\)，原丛由同样的识别关系恢复。若有覆盖球面恒等映射的同构 \(E_g\to E_h\)，在两半球内分别表示为 \(A_+,A_-\)。赤道上的同一点先粘合再映射或先映射再粘合，给出
+	\[
+		A_-(x)g(x)v=h(x)A_+(x)v.
+	\]
+	这就是所述关系。反过来，满足关系的两半球同构在接缝处相容，因而粘成整体同构。
+
+	若 \(g_t\) 是粘合函数间的同伦，就在赤道乘区间上用 \(g_t\) 粘合两个 \(D_\pm^m\times I\times\mathbb K^n\)。刚才的领圈坐标同时依赖 \(t\)，所以得到 \(S^m\times I\) 上的向量丛，其两端为 \(E_{g_0},E_{g_1}\)。\cref{g2:thm:bundle-homotopy-invariance}说明两端同构。
+
+	最后，\(\operatorname{GL}_n(\mathbb C)\) 与 \(\operatorname{GL}_n^+(\mathbb R)\) 都道路连通。这里可用极分解先将可逆矩阵连续变为酉矩阵或正向正交矩阵，再由酉矩阵的特征角、实正交矩阵的二维旋转块把它连到单位矩阵。\(A_\pm\) 可沿半球收缩同伦到一个常值，而这个常值再连到单位元。因此 \(h=A_-gA_+^{-1}\) 蕴含 \(h\simeq g\)。带取向时先在两半球选保向标架，所有矩阵都落在正行列式群中。于是上述满射在相应同伦类上也单射。
+\end{proof}
+
+常用计算还可以把群缩小。极分解给出形变收缩
+\[
+	A\longmapsto A(A^*A)^{-s/2},\qquad 0\le s\le1,
+\]
+复数情形终点在 \(\operatorname U(n)\)，实数情形终点在 \(\operatorname O(n)\)，正行列式分支则在 \(\operatorname{SO}(n)\)。正定矩阵的实幂由正交或酉对角化定义，并连续依赖矩阵；在任一固定紧谱区间上用多项式一致逼近相应正实函数，也能直接验证这种连续性。因此上述球面分类可以分别使用 \(\operatorname U(n)\) 和 \(\operatorname{SO}(n)\)。对 \(m\ge2\)，归一化映射 \(g(x)\mapsto g(x_0)^{-1}g(x)\) 将自由同伦类识别为这些连通群的 \(\pi_{m-1}\)：给定自由同伦 \(H(x,t)\)，乘上 \(H(x_0,t)^{-1}\) 就得到定基点同伦。
+
+\ProseParagraphBreak
+
+未指定取向的实丛需要保留换架关系中的两个分支。当 \(m\ge2\) 时，赤道连通，\(\det g\) 符号恒定；必要时在一个半球改用反向标架，可使 \(g\) 落在正行列式群中。因此每个这样的实丛都可定向。遗忘取向后，还须将 \(g\) 与 \(JgJ^{-1}\) 识别，其中 \(J\) 是一个固定反射矩阵。确实，两半球同时反向换架改变了总取向；反之，在 \(h,g\) 均正行列式的等式 \(h=A_-gA_+^{-1}\) 中，\(A_-\) 与 \(A_+\) 的行列式符号必须相同，故两者可同时同伦到 \(I\) 或同时同伦到 \(J\)。普通实丛的分类便是相应 \(\pi_{m-1}\operatorname{SO}(n)\) 对这个反射共轭作用的轨道集。
+
+\ProseParagraphBreak
+
+\(m=1\) 时，赤道 \(S^0\) 有两个点，不能用连通性将二者的行列式符号合并。沿两个闭弧平凡化后，可以把一个接缝矩阵化为单位矩阵，另一个接缝留下一个矩阵 \(B\)。\(\det B>0\) 时实丛平凡，\(\det B<0\) 时同构于 Möbius 线丛与 \(n-1\) 条平凡线的直和：把 \(B\) 分别沿其所在连通分支变到 \(I\) 或 \(\operatorname{diag}(-1,1,\ldots,1)\) 即得。复矩阵群只有一个连通分支，所以圆周上的复向量丛全部平凡。这个一维例子显示，换架的连通分支本身就是分类数据。

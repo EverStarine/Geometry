@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 24.3 复 Bott 周期性的多项式粘接证明
 % 纲要位置：几何学计划纲要.md，第 1941 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -30,37 +30,352 @@
 \section{复 Bott 周期性的多项式粘接证明}
 \label{g2:sec:2403}
 
-待撰写
+把向量丛拉回到 \(X\times S^2\)，再与球面上的一条线丛相乘，会得到两类容易描述的丛。本节证明，每个虚丛都能唯一写成这两类的线性组合。困难在于参数 \(x\in X\) 可以变化：逐点计算粘接矩阵的绕数，只给出整数，不能恢复随 \(x\) 变化的一整张丛。我们将用矩阵多项式的线性化，把这份变化保存在一个连续的谱子丛中。
+
+证明的基本乘积部分允许 \(X\) 为紧 Hausdorff 空间；转入相对群和胞腔计算时取有限 CW 对。所需分析只涉及圆周上的一致逼近及有限矩阵的谱分解，下面把相应论证一并给出。
 
 \subsection{\texorpdfstring{\(\mathbb{CP}^1\) 上的 Hopf 线丛与 Bott 元}{CP¹ 上的 Hopf 线丛与 Bott 元}}
 \label{g2:subsec:2403:01}
-待撰写
+沿用上一节球面粘接的方向：在 \(\mathbb CP^1\) 上以 \(z=z_1/z_0\)、\(w=z_0/z_1\) 为坐标，取 \(D_+\) 为 \(w\) 圆盘、\(D_-\) 为 \(z\) 圆盘，在赤道上按
+\[
+	(x,v)_+\sim(x,zv)_-
+\]
+粘合。所得线丛为 \(H=\gamma^*\)，即典范线丛的对偶，满足 \(c_1(H)=h\)，其中 \(h\) 是复定向下的正生成元。固定球面上的一个基点，定义\term[Bott-yuan]{Bott 元}[Bott element]
+\[
+	\beta=[H]-1\in\widetilde K^0(S^2).
+\]
+\symidx{\(\beta=[H]-1\)：复 Bott 元}这一选择使下一节的陈特征把 \(\beta\) 送到 \(h\)。有些文献用 \(\gamma\) 定义 Bott 元，得到相反的生成元；本节全部公式使用上面的粘接方向。
+
+\begin{lemma}\label{g2:lem:bott-square-zero}
+	在 \(K^0(S^2)\) 中有 \(\beta^2=0\)。因此对每个整数 \(j\)，有 \([H]^j=1+j\beta\)。
+\end{lemma}
+\begin{proof}
+	\(H^{\otimes2}\oplus\varepsilon^1\) 与 \(H\oplus H\) 的粘接矩阵分别为 \(\operatorname{diag}(z^2,1)\) 与 \(\operatorname{diag}(z,z)\)。它们的差为 \(\operatorname{diag}(z,z^{-1})\)。这个圆周在 \(\operatorname{SU}(2)\) 中可缩：下面的矩阵给出一张填充盘，\(0\le r\le1\)、\(|z|=1\)：
+	\[
+		\begin{pmatrix}
+			rz&-\sqrt{1-r^2}\\
+			\sqrt{1-r^2}&r\overline z
+		\end{pmatrix}.
+	\]
+	在 \(r=0\) 它与 \(z\) 无关，再把这个常矩阵沿旋转连到恒等即可。乘上 \(\operatorname{diag}(z,z)\) 后得到两张粘接矩阵的同伦，故两丛同构。于是 \([H]^2+1=2[H]\)，即 \(\beta^2=0\)。正次幂由二项式展开给出；\((1+\beta)(1-\beta)=1\)，故负次幂也有同一公式。
+\end{proof}
+
+这个零平方来自丛的实际粘接同伦。此时还不能仅因 \(H^4(S^2)=0\) 就推断 K 类的乘积为零，后者是另一种不变量中的等式。
 
 \subsection{\texorpdfstring{\(X\times S^2\) 上向量丛的粘接函数模型}{X×S² 上向量丛的粘接函数模型}}
 \label{g2:subsec:2403:02}
-待撰写
+设 \(E\to X\) 是复向量丛，\(f(x,z)\) 是拉回丛在 \(X\times S^1\) 上的自同构。沿 \(f\) 粘合两份 \(E\times D^2\)，得到 \(X\times S^2\) 上的丛，记作 \(\mathcal C(E,f)\)。这个记号表示实际向量丛，其 K 类另写为 \([\mathcal C(E,f)]\)。例如
+\begin{equation}\label{g2:eq:k-clutching-products}
+	\mathcal C(E,1)=p_X^*E,\qquad
+	\mathcal C(E,z^j)=p_X^*E\otimes p_S^*H^j.
+\end{equation}
+在一般 \(f\) 上乘标量 \(z^j\)，也等于把粘成的丛张量上 \(p_S^*H^j\)。与 \(z\) 无关的丛自同构可以通过改变一侧圆盘上的平凡化吸收。
+
+\begin{proposition}\label{g2:prop:k-parametric-clutching}
+	设 \(X\) 为紧 Hausdorff 空间。每个 \(X\times S^2\) 上的有限秩复向量丛 \(V\) 都可写成 \(\mathcal C(E,f)\)。可以取 \(E=V|_{X\times\{1\}}\)，并使 \(f(x,1)=1\)；在这个识别下，正规化的粘接函数由 \(V\) 确定到同伦。粘接函数的同伦产生同构的丛。
+\end{proposition}
+\begin{proof}
+	两个圆盘都可收缩到公共边界点 \(1\)。第19章的丛同伦不变性因此把 \(V\) 在两半球上的限制分别识别为 \(E\times D^2\)。把每个识别乘上它在 \(1\) 处的逆，可使两份识别在 \(E\) 上均为恒等；赤道上的比较就是所需 \(f\)。
+
+	两次这样的圆盘识别相差一个圆盘参数族 \(g(x,u)\in\operatorname{Aut}(E_x)\)，并满足 \(g(x,1)=1\)。把圆盘收缩到 \(1\)，就把 \(g\) 连到恒等，始终保持该点不动。分别在两侧这样做，得到两张正规化粘接函数之间的同伦。若从一开始给出粘接同伦，则可在 \(X\times S^2\times I\) 上粘合成丛，再由同伦不变性识别两个端点。更换 \(V\) 的同构代表时，其在 \(X\times\{1\}\) 上的限制同时识别 \(E\)，上述论证仍适用。
+\end{proof}
+
+所以问题化成了简化一个圆周参数族 \(f(x,z)\)。以下各步允许添加直和因子，也允许改变圆盘上的识别；所有操作都说明它们在 K 群中造成的具体变化。
 
 \subsection{Laurent 多项式逼近与粘接同伦的保持}
 \label{g2:subsec:2403:03}
-待撰写
+为丛 \(E\) 选 Hermitian 度量，以纤维算子范数取一致范数。紧性给出
+\[
+	M_f=\sup_{(x,z)\in X\times S^1}\lVert f(x,z)^{-1}\rVert<\infty.
+\]
+若 \(\lVert\ell-f\rVert<M_f^{-1}\)，则整条线段 \(f+s(\ell-f)\) 都可逆：把它写成 \(f(1+s f^{-1}(\ell-f))\)，第二因子的逆由收敛的几何级数给出。因而，足够好的一致逼近同时保持了粘接与同伦类。
+
+\begin{lemma}\label{g2:lem:k-laurent-approximation}
+	设 \(X\) 为紧 Hausdorff 空间、\(E\to X\) 为有限秩复向量丛。每张连续粘接函数 \(f\) 都可一致逼近为可逆的 Laurent 多项式
+	\[
+		\ell(x,z)=\sum_{j=-m}^{d}a_j(x)z^j,\qquad a_j\in\Gamma(X,\operatorname{End}E),
+	\]
+	并与其粘接同伦。若两端已经是 Laurent 多项式，而且二者粘接同伦，则可以选择一条各时刻都是 Laurent 多项式、次数统一有界的粘接同伦，保持两个端点。
+\end{lemma}
+\begin{proof}
+	在每条纤维中沿角参数取积分，定义 Fourier 系数。\footnote{Joseph Fourier（1768--1830），法国数学家，研究热传导与三角级数。}
+	\[
+		a_j(x)=\frac1{2\pi}\int_{-\pi}^{\pi}f(x,e^{\mathrm it})e^{-\mathrm ijt}\,\mathrm dt.
+	\]
+	局部丛坐标中的这些积分连续；换坐标只作与 \(t\) 无关的共轭，所以它们组成整体的丛自同态。取加权平均
+	\[
+		\ell_q(x,e^{\mathrm i\theta})=
+		\sum_{|j|\le q}\left(1-\frac{|j|}{q+1}\right)a_j(x)e^{\mathrm ij\theta}.
+	\]
+	它也等于把 \(f(x,e^{\mathrm i(\theta-t)})\) 与核
+	\[
+		F_q(t)=\frac1{q+1}\left|\sum_{r=0}^{q}e^{\mathrm irt}\right|^2
+	\]
+	作平均。直接展开可见 \(F_q\ge0\)、\((2\pi)^{-1}\int F_q=1\)；对任意 \(\delta>0\)，在 \(\delta\le|t|\le\pi\) 上有 \(F_q(t)\le((q+1)\sin^2(\delta/2))^{-1}\)。连续性与紧性又保证角参数的小变化使 \(f\) 对全部 \(x\) 一致小变。因此将积分分成 \(|t|<\delta\) 和余下部分，先令前者的振幅小，再令后者的核质量小，便得 \(\ell_q\to f\) 一致。取误差小于 \(M_f^{-1}\)，上述几何级数论证给出可逆性及线段同伦。
+
+	对给定同伦 \(f_t\)，在紧参数空间 \(X\times I\) 上使用同一构造，取得统一次数的近似 \(q_t\)。若两端为 \(\ell_0,\ell_1\)，改取
+	\[
+		q'_t=q_t+(1-t)(\ell_0-q_0)+t(\ell_1-q_1).
+	\]
+	它保持端点，仍有统一的有限 Laurent 次数；若原误差为 \(\eta\)，修正后的误差至多 \(2\eta\)。先把 \(\eta\) 取到小于整族逆矩阵范数上界倒数的一半，就仍然处处可逆。
+\end{proof}
+
+这个证明只在圆周方向作逼近，对参数空间不要求坐标或可微结构。尤其可以把额外的同伦参数与原来的 \(x\) 一起处理，这是稍后证明逆映射不依赖选择的依据。
 
 \subsection{增添平凡因子后的多项式粘接线性化}
 \label{g2:subsec:2403:04}
-待撰写
+写 \(\ell=z^{-m}q\)，其中 \(m\ge0\)、\(q=a_0+a_1z+\cdots+a_dz^d\)。标量因子先保留，最后由 \(H^{-m}=1-m\beta\) 处理；眼前的任务是消去 \(q\) 中的高次幂。增加变量后，高次关系可以变成一串一次关系，这与把高阶常微分方程改写为一阶方程组的做法相近。
+
+\begin{lemma}\label{g2:lem:k-polynomial-linearization}
+	设 \(q(x,z)=\sum_{j=0}^d a_j(x)z^j\) 在 \(X\times S^1\) 上可逆。对 \(n\ge d\)，把缺少的系数补为零，在 \((n+1)E\) 上定义一次矩阵多项式
+	\begin{equation}\label{g2:eq:k-linearization-matrix}
+		L_n(q)=
+		\begin{pmatrix}
+			I&-zI&0&\cdots&0\\
+			0&I&-zI&\cdots&0\\
+			\vdots&\ddots&\ddots&\ddots&\vdots\\
+			0&\cdots&0&I&-zI\\
+			a_n&a_{n-1}&\cdots&a_1&a_0
+		\end{pmatrix}.
+	\end{equation}
+	它在单位圆上可逆，而且
+	\[
+		\mathcal C(E,q)\oplus p_X^*(nE)\cong\mathcal C((n+1)E,L_n(q)).
+	\]
+	当 \(n=0\) 时，\(L_0(q)=a_0\)。
+\end{lemma}
+\begin{proof}
+	依次把第1列的 \(z\) 倍加到第2列，再把新第2列的 \(z\) 倍加到第3列，直至最后一列。前 \(n\) 行变成 \((I_n,0)\)，右下角变成 \(q\)。再从末行减去前面各行的适当丛自同态倍，得到 \(\operatorname{diag}(I,\ldots,I,q)\)。每个操作都是左乘或右乘一个可逆的块初等矩阵；把所加项乘以参数 \(t\in[0,1]\)，即可连续完成该操作。因此原矩阵可逆，且它与所得对角矩阵粘接同伦，给出所述丛同构。系数是丛映射也不妨碍这些操作，因为乘法次序已由块矩阵固定。
+\end{proof}
+
+这里增加的 \(p_X^*(nE)\) 在球面方向为常丛。若要求增加的因子在整个积空间上平凡，选补丛 \(G\) 使 \(nE\oplus G\cong\varepsilon^r\)，再在上述等式两边加上 \(p_X^*G\)，就得到
+\[
+	\mathcal C(E,q)\oplus\varepsilon^r
+	\cong\mathcal C((n+1)E\oplus G,L_n(q)\oplus I_G).
+\]
+所以稳定化确实能把多项式粘接化为一次粘接。保留 \(E\) 的写法则便于追踪拉回、直和及同伦参数。
+
+例如对 \(q=a_0+a_1z+a_2z^2\)，一次矩阵为
+\[
+	\begin{pmatrix}I&-zI&0\\0&I&-zI\\a_2&a_1&a_0\end{pmatrix}.
+\]
+前两行把三个变量联系成逐次乘 \(z\) 的关系，最后一行才把这串关系收集成原来的二次多项式。线性化增加矩阵大小，却降低了圆周参数的次数。
 
 \subsection{单位圆内外的谱分解与连续子丛}
 \label{g2:subsec:2403:05}
-待撰写
+设一次粘接函数为 \(P(x,z)=A(x)z+B(x)\)。系数 \(A\) 可能不可逆，所以不能直接除以 \(A\)。先利用圆盘的一个自同构把取值于 \(z=1\) 处的可逆性移到最高次系数中：对 \(0\le t<1\)，有
+\begin{equation}\label{g2:eq:k-pencil-mobius}
+	(1+tz)P\left(x,\frac{z+t}{1+tz}\right)
+	=(A+tB)z+(tA+B).
+\end{equation}
+当 \(|z|=1\) 时，\(|(z+t)/(1+tz)|=1\)，且 \(1+tz\ne0\)，所以右边始终是可逆的一次粘接函数。在 \(t=1\) 时，\(A+tB=A+B=P(x,1)\) 可逆。由紧性，可取对所有 \(x\) 都适用的 \(t_0<1\)，使 \(A+t_0B\) 可逆。改变一侧圆盘上的丛识别后，便把粘接函数化为
+\[
+	zI+C(x),\qquad C=(A+t_0B)^{-1}(t_0A+B).
+\]
+由于它在单位圆上可逆，\(C(x)\) 没有模长为 \(1\) 的特征值。
+
+\begin{lemma}\label{g2:lem:k-continuous-spectral-splitting}
+	设 \(C\) 是紧 Hausdorff 空间 \(X\) 上复向量丛 \(E\) 的自同态，且每条纤维上的谱都避开单位圆。则存在唯一的 \(C\) 不变子丛分解
+	\[
+		E=E_<\oplus E_>,
+	\]
+	其中 \(C|_{E_<}\) 的全部特征值在单位圆内，\(C|_{E_>}\) 的全部特征值在单位圆外。此分解连续依赖 \(C\)，并与丛拉回、直和及丛同构相容。
+\end{lemma}
+\begin{proof}
+	沿逆时针单位圆定义有限矩阵积分
+	\[
+		\Pi(x)=\frac1{2\pi\mathrm i}\int_{|\zeta|=1}(\zeta I-C(x))^{-1}\,\mathrm d\zeta.
+	\]
+	被积矩阵连续且处处有定义；紧性保证局部坐标中的积分连续。换坐标时它按共轭变换，因而 \(\Pi\) 是整体丛自同态。为说明它做了什么，只需在一条纤维中考察 Jordan 块 \(J=\lambda I+N\)、\(N^r=0\)：
+	\[
+		(\zeta I-J)^{-1}=\sum_{a=0}^{r-1}\frac{N^a}{(\zeta-\lambda)^{a+1}}.
+	\]
+	在单位圆上展开几何级数，积分只取 \(\zeta^{-1}\) 的系数。\(|\lambda|<1\) 时只有 \(a=0\) 的积分为 \(1\)，其余为零；\(|\lambda|>1\) 时各项积分都为零。因此 \(\Pi\) 在圆内的广义特征空间上为恒等，在圆外的广义特征空间上为零。特别地，\(\Pi^2=\Pi\)，且它与 \(C\) 交换。
+
+	连续幂等矩阵的秩为 \(\operatorname{tr}\Pi\)，是连续的整数值函数，故局部常数。选取一点处 \(\Pi\) 的若干独立列，在足够小的邻域上仍然独立，便得到像空间的局部标架；对 \(I-\Pi\) 同样处理。这证明 \(E_<=\operatorname{im}\Pi\)、\(E_>=\ker\Pi\) 是子丛。上述 Jordan 计算还说明，任何满足谱条件的不变分解都必须等于它们，故分解唯一。积分公式直接保持拉回、直和与共轭，参数连续性也由同一公式得到。
+\end{proof}
+
+这个构造不要求逐个连续选取特征值，更不要求连续选取每个特征向量。单个特征值可以相遇，广义特征空间的维数也可能重新分配；只要谱不穿过单位圆，圆内全部广义特征空间的总和仍组成连续子丛。
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[scale=0.85]
+		\draw[->] (-2,0)--(3.6,0);
+		\draw[->] (0,-1.6)--(0,1.7);
+		\draw (0,0) circle (1.2);
+		\fill (0.35,0.45) circle (2pt);
+		\fill (-0.55,-0.4) circle (2pt);
+		\fill (2.1,0.6) circle (2pt);
+		\node at (-1.45,1.15) {\(|\lambda|=1\)};
+		\node[anchor=west] at (4,0.7) {圆内谱：\(E_<\)，粘接保留 \(z\)};
+		\node[anchor=west] at (4,-0.55) {圆外谱：\(E_>\)，粘接化为常值};
+	\end{tikzpicture}
+	\caption{谱分解把一次粘接中的两种几何贡献分开；圆周上没有特征值。}
+	\label{g2:fig:k-spectral-splitting}
+\end{figure}
+
+在 \(E_<\) 上，\(zI+sC_<\)、\(0\le s\le1\)，始终可逆，把粘接化为 \(zI\)；在 \(E_>\) 上，\(szI+C_>\) 始终可逆，把粘接化为与 \(z\) 无关的 \(C_>\)。吸收这个常值自同构后，得到
+\begin{equation}\label{g2:eq:k-pencil-split}
+	\mathcal C(E,Az+B)\cong p_X^*E_>\oplus(p_X^*E_<\otimes p_S^*H).
+\end{equation}
+把由一次粘接 \(P\) 按上述步骤取得的圆内子丛记为 \(S(P)\)。这里的同构类不依赖充分靠近 \(1\) 的 \(t_0\)：连接两种 \(t_0\)，在 \(X\times I\) 上应用谱分解，再用丛同伦不变性即可。一次粘接的同伦也保持 \(S(P)\) 的同构类，因为可在整个紧参数空间上选统一的 \(t_0\)。
+
+还需记住两项更具体的相容性。若 \(P'=UPV\)，其中 \(U,V\) 是与 \(z\) 无关的丛自同构，则正规化后的 \(C'\) 等于 \(V^{-1}CV\)，所以 \(S(P')\cong S(P)\)。直和则给出 \(S(P\oplus Q)\cong S(P)\oplus S(Q)\)。对两个基本例子，公式直接给出
+\begin{equation}\label{g2:eq:k-pencil-basic-spectra}
+	S(I_E)=0,\qquad S(zI_E)=E.
+\end{equation}
+前者的正规化矩阵为 \(t_0^{-1}I\)，谱在圆外；后者为 \(t_0I\)，谱在圆内。
 
 \subsection{\texorpdfstring{\(K^0(X\times S^2)\) 的基本乘积定理及逆映射}{K⁰(X×S²) 的基本乘积定理及逆映射}}
 \label{g2:subsec:2403:06}
-待撰写
+\begin{theorem}[基本乘积定理]\label{g2:thm:k-basic-product}
+	设 \(X\) 为紧 Hausdorff 空间。外积给出自然的环同构
+	\[
+		\mu_X:K^0(X)\otimes_{\mathbb Z}\mathbb Z[H]/(H-1)^2
+		\xrightarrow{\ \cong\ }K^0(X\times S^2).
+	\]
+	等价地，每个元素都可唯一写成 \(p_X^*a+p_X^*b\cdot p_S^*\beta\)，其中 \(a,b\in K^0(X)\)。
+\end{theorem}
+\begin{proof}
+	先求满射。对实际丛 \(\mathcal C(E,f)\)，选 Laurent 近似 \(z^{-m}q\)，再取 \(n\ge\deg q\)。记
+	\[
+		F=(n+1)E,\qquad S=S(L_n(q)),\qquad F=S\oplus F_>.
+	\]
+	线性化与谱分解给出
+	\[
+	\begin{aligned}
+		[\mathcal C(E,f)]
+		&=\bigl([F_>]\boxtimes1+[S]\boxtimes[H]-n[E]\boxtimes1\bigr)\cdot p_S^*[H]^{-m}\\
+		&=[E]\boxtimes1+\bigl([S]-m[E]\bigr)\boxtimes\beta.
+	\end{aligned}
+	\]
+	第二步用了 \([F_>]+[S]=(n+1)[E]\) 和 \([H]^j=1+j\beta\)。每个虚丛都是实际丛之差，所以 \(\mu_X\) 满射。
+
+	要证明唯一性，不能只把上式当作逆映射，因为其中的 \(S\) 是经过选择才得到的。用形式变量 \(u\)、\(u^2=0\)，定义候选
+	\begin{equation}\label{g2:eq:k-product-inverse}
+		\nu[\mathcal C(E,f)]
+		=[E]+\bigl([S(L_n(q))]-m[E]\bigr)u
+		\quad\text{于 }K^0(X)[u]/(u^2).
+	\end{equation}
+	下面逐项消去选择。
+
+	首先，补高多项式的次数不会改变 \(S\)。在 \(L_{n+1}(q)\) 中，左下角为零；把第一列的 \(tz\) 倍加到第二列，就只把第一行的 \(-zI\) 改为 \(-(1-t)zI\)。这是一次粘接之间的同伦，终点分裂为 \(I_E\oplus L_n(q)\)。由式\eqref{g2:eq:k-pencil-basic-spectra}，有
+	\begin{equation}\label{g2:eq:k-linearization-stabilizations}
+		S(L_{n+1}(q))\cong S(L_n(q)),\qquad
+		S(L_{n+1}(zq))\cong S(L_n(q))\oplus E.
+	\end{equation}
+	第二式也要在一次粘接中证明。在 \(L_{n+1}(zq)\) 的末列，唯一非零项是倒数第二行的 \(-zI\)，末行末项为零。把末列的 \(tz^{-1}\) 倍加到倒数第二列，只把那个位置的 \(I\) 改为 \((1-t)I\)，所以所得矩阵仍为一次粘接。终点可通过固定的行列排列分裂成 \(L_n(q)\) 与 \(-zI_E\)。与 \(z\) 无关的左右同构不改变谱子丛，且 \(S(-zI_E)\cong E\)，故得到第二式。这里特别保留了“一次”这一条件；仅知道两个粘成的丛同构，还不能反过来假定谱子丛相同。
+
+	现在把 \(z^{-m}q\) 改写为 \(z^{-m-1}(zq)\)。第二式说明 \([S]\) 增加 \([E]\)，而 \(m[E]\) 也增加 \([E]\)，故式\eqref{g2:eq:k-product-inverse}不变。与第一式合用，就证明它不依赖 \(m,n\) 的选择。充分靠近 \(1\) 的 \(t_0\) 的无关性已由谱子丛同伦证明。
+
+	若改变 Laurent 逼近，或改变同伦的粘接函数，\cref{g2:lem:k-laurent-approximation}给出保持两端的 Laurent 多项式同伦。取共同的 \(m,n\)，把线性化和谱分解用于 \(X\times I\)，所得两个端点谱子丛同构。最后，\cref{g2:prop:k-parametric-clutching}说明同一实际丛的正规化粘接函数只有这些同伦与底丛识别的差别。因此 \(\nu\) 只依赖丛的同构类。
+
+	对两丛取相同的次数界，线性化矩阵在重新排列直和因子后保持直和，谱子丛也保持直和；所以 \(\nu\) 可加，由群完备化唯一延拓为群同态。前面的满射计算已经证明 \(\mu_X\nu=\operatorname{id}\)。反向复合可在加法生成元 \([E]\) 和 \([E][H]^{-1}\) 上核对：它们分别由 \(f=1\) 和 \(f=z^{-1}\) 表示，都可取 \(q=1,n=0\)，故 \(S=0\)。\(\nu\) 分别给出 \([E]\) 和 \([E](1-u)\)，恰是所需原像。这两种元素生成 \(K^0(X)[u]/u^2\)，所以 \(\nu\mu_X=\operatorname{id}\)。
+
+	\(\mu_X\) 本来就是环同态，故双射后成为环同构。它由拉回和外积定义，因此对 \(X\) 的映射自然，其唯一逆映射也自然。整个证明没有使用 K 理论的 Künneth 公式。
+\end{proof}
+
+逆映射的常数项 \(a\) 是把虚丛限制到任一 \(X\times\{s_0\}\) 得到的类；第二项 \(b\) 则测量圆周粘接中随 \(X\) 变化的扭转。对一个点，\(b\) 退化为整数绕数；对一般 \(X\)，它本身是一项虚丛。这正是谱子丛比逐点特征值计数多保留的信息。
 
 \subsection{相对群、约化外积与二次悬挂同构}
 \label{g2:subsec:2403:07}
-待撰写
+现在取带基点有限 CW 复形 \(X\)。把 \(X\vee S^2\) 看作 \(X\times S^2\) 中两条基点截面的并，商映射为
+\[
+	q:X\times S^2\longrightarrow X\wedge S^2\cong\Sigma^2X.
+\]
+上一节的\cref{g2:prop:k-product-wedge-splitting}说明，\(q^*\) 将约化 K 群单射到积空间的 K 群，其像正是限制到楔和为零的部分。单射性用了前一阶限制映射的分裂，因而这里不仅是在计算一个形式上的核。
+
+在基本乘积定理中，把元素写成 \(a+b\beta\)。限制到 \(X\times\{s_0\}\) 得到 \(a\)；当 \(a=0\) 后，限制到 \(\{x_0\}\times S^2\) 得到 \(b|_{x_0}\,\beta\)。所以楔和限制的核恰为
+\[
+	\{b\boxtimes\beta:b\in\widetilde K^0(X)\}.
+\]
+这里约化群只要求基点处的秩为零；\(X\) 不连通时，并未附加其他分支的秩条件。
+
+\begin{theorem}[复 Bott 周期性]\label{g2:thm:complex-bott-periodicity}
+	对带基点有限 CW 复形 \(X\)，约化外积给出自然同构
+	\[
+		B_X:\widetilde K^0(X)\xrightarrow{\ \cong\ }\widetilde K^0(\Sigma^2X),
+		\qquad a\longmapsto a\boxtimes\beta.
+	\]
+	对每个有限 CW 对 \((X,A)\) 及 \(q\ge0\)，同样有自然同构
+	\[
+		K^{-q}(X,A)\cong K^{-q-2}(X,A).
+	\]
+\end{theorem}
+\begin{proof}
+	前面的核计算与 \(q^*\) 的单射性已经证明第一项。若 \(A\ne\varnothing\)，将它应用到带基点商空间 \(X/A\)；若 \(A=\varnothing\)，应用到 \(X_+\)。再对这些空间作 \(q\) 次约化悬挂，就得到第二项。
+
+	相对外积所用的商有明确识别：
+	\[
+		\frac{X\times S^2}{A\times S^2\ \cup\ X\times\{s_0\}}
+		\cong (X/A)\wedge S^2.
+	\]
+	所以相对同构也是由同一个 \(\beta\) 的外积给出，而不是另选的一组抽象同构。对带基点映射 \(g:X\to Y\)，拉回与外积交换；积空间商映射也交换，故 \(B_Xg^*=(\Sigma^2g)^*B_Y\)。对的映射及其商映射同样满足这个关系。长正合列中的连接映射由映射锥的压缩构造，压缩再与 \(S^2\) 作压缩积仍给出相同构造；若移动新增的两个悬挂坐标，符号为 \((-1)^{2q}=1\)。因此周期同构与相对长正合列相容。
+\end{proof}
+
+本书把球面因子写在外积的右侧，以便与增加最后两个悬挂坐标一致。通过 \(X\wedge S^2\cong S^2\wedge X\) 交换因子，也可把同构记为 \(\beta\boxtimes-\)。它是同一个二次悬挂同构的另一种排列。
 
 \subsection{复周期性、球面系数及有限 CW 空间的计算}
 \label{g2:subsec:2403:08}
-待撰写
+周期性允许把负次数的长正合列接成二周期序列。以下记 \(K^1=K^{-1}\)，并用已经构造的 \(B\) 识别次数相差二的群。对有限 CW 对，六项序列因而为
+\[
+	\begin{tikzcd}[column sep=large]
+		K^0(X,A)\arrow[r]&K^0(X)\arrow[r]&K^0(A)\arrow[d,"\delta"]\\
+		K^1(A)\arrow[u,"\delta"]&K^1(X)\arrow[l]&K^1(X,A)\arrow[l].
+	\end{tikzcd}
+\]
+从 \(K^0(A)\) 出发的箭头，是先用周期性移到负次数，再取已经定义的连接同态。每个箭头仍有明确的映射锥来源。
+
+\begin{proposition}\label{g2:prop:k-sphere-coefficients}
+	对 \(r\ge0\)，有
+	\[
+		\widetilde K^0(S^{2r})\cong\mathbb Z,\qquad
+		\widetilde K^0(S^{2r+1})=0.
+	\]
+	在 \(\widetilde K^0(S^{2r})\) 中，\(\beta^{\boxtimes r}\) 是一个生成元，其中 \(r=0\) 时取 \(S^0\) 非基点处的秩一生成元。因此 \(K^{-q}(\mathrm{pt})\) 在 \(q\) 偶数时为 \(\mathbb Z\)，奇数时为零。
+\end{proposition}
+\begin{proof}
+	\(\widetilde K^0(S^0)\cong\mathbb Z\) 来自两个点上的秩差；\(\widetilde K^0(S^1)=0\) 来自第24.1节的圆周复丛平凡性。反复使用 \(B_X\) 即得到全部球面群，同时把偶维的生成元逐次送为外积生成元。点的负次数群按定义为 \(\widetilde K^0(S^q)\)。
+\end{proof}
+
+\begin{example}\label{g2:exm:k-projective-additive}
+	复射影空间的胞腔结构给出 \(\mathbb CP^r/\mathbb CP^{r-1}\cong S^{2r}\)。相对群与球面系数因此给出短正合列
+	\[
+		0\longrightarrow\mathbb Z\longrightarrow K^0(\mathbb CP^r)
+		\longrightarrow K^0(\mathbb CP^{r-1})\longrightarrow0,
+	\]
+	并有 \(K^1(\mathbb CP^r)\cong K^1(\mathbb CP^{r-1})\)。从 \(\mathbb CP^0\) 开始归纳，得到
+	\[
+		K^0(\mathbb CP^r)\cong\mathbb Z^{r+1},\qquad K^1(\mathbb CP^r)=0.
+	\]
+	每步的短正合列可作为阿贝尔群分裂，因为商群自由；这项计算并未指定分裂或完整的环生成元。\(r=1\) 时，基本乘积定理已经给出更强的环结论 \(K^0(\mathbb CP^1)=\mathbb Z[\beta]/(\beta^2)\)。
+\end{example}
+
+一般地，有限 CW 复形每次附着有限个 \(d\) 维胞腔，相对商便是有限个 \(S^d\) 的楔和。上述球面系数与长正合列将计算递归到前一骨架，也证明两个奇偶 K 群均有限生成。附着映射仍然决定连接同态；仅知道胞腔数并不足以知道最终群。
+
+\begin{example}\label{g2:exm:k-moore-torsion}
+	设 \(m\ge2\)，令 \(M_m=S^1\cup_{z\mapsto z^m}D^2\)。在映射锥长正合列中，度 \(m\) 的圆周映射作用于 \(\widetilde K^{-1}(S^1)=\widetilde K^0(S^2)\cong\mathbb Z\) 为乘 \(m\)：悬挂保持度数，而第24.1节的 \(c_1\) 整数描述说明二球面上拉回按度数倍乘。于是关键一段为
+	\[
+		0\longrightarrow\widetilde K^1(M_m)\longrightarrow\mathbb Z
+		\xrightarrow{\times m}\mathbb Z
+		\longrightarrow\widetilde K^0(M_m)\longrightarrow0.
+	\]
+	所以 \(\widetilde K^1(M_m)=0\)、\(\widetilde K^0(M_m)\cong\mathbb Z/m\)。这个例子说明，复周期性与有限生成性并不排除扭元。
+\end{example}
+
+\ProseParagraphBreak
+
+实向量丛的群完备化给出实 K 理论，记为 \(KO^0\)，负次数与相对群仍用悬挂和商空间定义。它具有另一种周期：对有限 CW 对，存在自然同构
+\[
+	KO^{-q}(X,A)\cong KO^{-q-8}(X,A),\qquad q\ge0.
+\]
+这里调用实 Bott 周期性；其表示空间形式与系数表见\cite[第II章第3节；第IV章第3节]{Weibel2013KBook}。这项八周期结论是本章的外部输入。为便于比较，点的系数为
+\[
+	\begin{array}{c|cccccccc}
+		q\bmod8&0&1&2&3&4&5&6&7\\\hline
+		KO^{-q}(\mathrm{pt})&\mathbb Z&\mathbb Z/2&\mathbb Z/2&0&\mathbb Z&0&0&0\\
+		K^{-q}(\mathrm{pt})&\mathbb Z&0&\mathbb Z&0&\mathbb Z&0&\mathbb Z&0
+	\end{array}
+\]
+例如实线丛在圆周上有 Möbius 扭转，而复圆周丛全部平凡，系数表的一次项已经反映出这项差异。本节用复矩阵及其圆内外谱子丛完成的二周期证明，所确定的是复 K 理论。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,12 +1,12 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 22.3 拓扑类的比较
 % 纲要位置：几何学计划纲要.md，第 1865 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 线丛上的归一化
-% * 分裂原理及一般 Chern 类
+% * 分裂原理及一般陈类
 % * Pontryagin 形式与 Euler 的 Pfaffian
 % * 曲率形式看不到的扭信息
 % 
@@ -15,21 +15,227 @@
 \section{拓扑类的比较}
 \label{g2:sec:2203}
 
-待撰写
+上一节已证明不变多项式给出与联络无关的上同调类。现在还要回答：它究竟是第21章定义的哪个拓扑类？闭性与选择无关性本身不能确定整数倍或正负号。我们先在线丛上用过渡函数固定归一化，再通过保持上同调单射的分裂空间推广。以下流形均为有限维、Hausdorff、第二可数的无边界光滑流形；记 \(c_j(E)_{\mathbb R}\)、\(p_j(E)_{\mathbb R}\)、\(e_{\mathrm{Th}}(E)_{\mathbb R}\) 为相应整数类在实上同调中的像，并用\cref{g2:thm:de-rham}的积分同构与 de Rham 类比较。
+
+这些拓扑构造在光滑基空间上的意义，沿用\secref{g2:sec:2102}开头的弱 CW 逼近比较：射影丛、盘丛和球丛都是局部平凡纤维丛，拉回到 CW 弱逼近后，总空间仍由同伦长正合列给出弱等价；奇异上同调及空间对的长正合列于是给出所需同构。射影关系的系数与 Thom 纤维生成元的唯一性使原空间上的类被唯一确定，并保持拉回及乘法公式。因此这里使用的是光滑流形及其实际旗丛上的拓扑类。
 
 \subsection{线丛上的归一化}
 \label{g2:subsec:2203:01}
-待撰写
+设 \(L\to M\) 为 Hermitian 复线丛，\(\nabla\) 为保持该度量的酉联络。在局部单位标架 \(e_\alpha\) 下，用 \(\nabla(e_\alpha f)=e_\alpha(\mathrm df+A_\alpha f)\) 记其联络形式。其中 \(A_\alpha\) 是纯虚的一形式，曲率为 \(F_\nabla=\mathrm dA_\alpha\)。线丛中 \(A_\alpha\wedge A_\alpha=0\)，所以局部公式尤其简单。
 
-\subsection{分裂原理及一般 Chern 类}
+\begin{proposition}\label{g2:prop:chern-weil-line-normalization}
+	设 \(L\to M\) 为无边界光滑流形上的 Hermitian 复线丛，\(\nabla\) 为酉联络。则实闭二形式
+	\begin{equation}\label{g2:eq:chern-line-curvature}
+		c_1(\nabla)=\frac{\mathrm i}{2\pi}F_\nabla
+	\end{equation}
+	在 de Rham 同构下代表 \(c_1(L)_{\mathbb R}\)，其中拓扑类按\cref{g2:def:first-chern-line}的复定向 Euler 规范定义。
+\end{proposition}
+\begin{proof}
+	沿用\secref{g2:sec:2101}的标架约定 \(e_\beta=e_\alpha g_{\alpha\beta}\)。在细化后的交集上取实角度 \(g_{\alpha\beta}=\exp(2\pi\mathrm i\theta_{\alpha\beta})\)，则
+	\[
+		A_\beta-A_\alpha=2\pi\mathrm i\,\mathrm d\theta_{\alpha\beta},\qquad
+		n_{\alpha\beta\gamma}=(\delta\theta)_{\alpha\beta\gamma}\in\mathbb Z.
+	\]
+	\cref{g2:prop:chern-transition-comparison}已证明整数二上圈 \(n\) 代表 \(c_1(L)\)。这里要追踪的只是它在实系数下如何变为曲率。令
+	\[
+		b_\alpha=\frac{\mathrm i}{2\pi}A_\alpha,\qquad
+		\omega=\frac{\mathrm i}{2\pi}F_\nabla.
+	\]
+	于是 \(\mathrm db_\alpha=\omega|_{U_\alpha}\)，\(\delta b=-\mathrm d\theta\)。在第7章的 Čech--形式双复形中，若 Čech 次数为 \(p\)，总微分为 \(D=\delta+(-1)^p\mathrm d\)。因此
+	\[
+		D b=\omega-\mathrm d\theta,\qquad D\theta=n-\mathrm d\theta,
+		\qquad \omega-n=D(b-\theta).
+	\]
+	这说明整体闭形式 \(\omega\) 与实常值二上圈 \(n\) 在总复形中给出同一类。第7章 de Rham 证明中的两个增广比较，以及\cref{g2:prop:chern-transition-comparison}中随覆盖细化的比较，将这个等式送到普通实上同调。故 \([\omega]=c_1(L)_{\mathbb R}\)。纯虚曲率乘以 \(\mathrm i\) 后为实形式，符号也已由上述两次微分确定。
+\end{proof}
+
+可以在 \(\mathbb CP^1\) 上把这一规范直接积分出来。对典范线丛 \(\gamma=\mathcal O(-1)\)，在仿射坐标 \(z=x+\mathrm i y\) 中取单位截面
+\[
+	e(z)=\frac{(1,z)}{\sqrt{1+|z|^2}}.
+\]
+将平凡丛的微分正交投影到 \(\gamma\)，得到酉联络。由 \(A=e^*\mathrm de\) 逐项求导，有
+\begin{equation}\label{g2:eq:tautological-line-curvature}
+	A=\frac{\overline z\,\mathrm dz-z\,\mathrm d\overline z}{2(1+|z|^2)},\qquad
+	F=\frac{\mathrm d\overline z\wedge\mathrm dz}{(1+|z|^2)^2},\qquad
+	\frac{\mathrm iF}{2\pi}=-\frac{\mathrm dx\wedge\mathrm dy}{\pi(1+x^2+y^2)^2}.
+\end{equation}
+此形式在另一张射影图中光滑延拓；无穷远点对积分无贡献。采用复定向，极坐标计算给出
+\[
+	\int_{\mathbb CP^1}\frac{\mathrm iF}{2\pi}
+	=-\frac1\pi\int_0^{2\pi}\!\int_0^\infty\frac{r}{(1+r^2)^2}\,\mathrm dr\,\mathrm d\varphi=-1.
+\]
+对偶线丛的联络形式和曲率同时反号，故 \(\mathcal O(1)\) 的积分为 \(1\)。这与上一章 \(h=c_1(\gamma^*)\) 的正生成元约定一致。
+
+\subsection{分裂原理及一般陈类}
 \label{g2:subsec:2203:02}
-待撰写
+曲率是矩阵值二形式。其各个条目都是偶数次形式，因而在相互楔乘时交换；这使通常的行列式多项式可以直接代入。对复秩 \(r\) 丛上的复线性联络，定义
+\begin{equation}\label{g2:eq:total-chern-form}
+	c(\nabla)=\det\!\left(I+\frac{\mathrm i}{2\pi}F_\nabla\right)
+	=1+c_1(\nabla)+\cdots+c_r(\nabla),\qquad c_j(\nabla)\in\Omega^{2j}(M;\mathbb C).
+\end{equation}
+例如令 \(X=\mathrm iF_\nabla/(2\pi)\)，则
+\[
+	c_1(\nabla)=\operatorname{tr}X,\qquad
+	c_2(\nabla)=\frac12\bigl((\operatorname{tr}X)^2-\operatorname{tr}(X\wedge X)\bigr).
+\]
+二分之一在这里是形式系数中的实数，尚未对任何整数上同调类作除法。行列式系数是不变多项式，所以\cref{g2:thm:chern-weil-closed,g2:thm:chern-weil-transgression}已经保证这些形式闭合，且其类不依赖联络。
+
+\begin{theorem}[陈类的曲率代表]\label{g2:thm:chern-weil-chern-comparison}
+	设 \(E\to M\) 为无边界光滑流形上的有限秩复向量丛。对任意复线性联络 \(\nabla\)，式\eqref{g2:eq:total-chern-form}的 \(c_j(\nabla)\) 代表拓扑类 \(c_j(E)\) 在 \(H^{2j}(M;\mathbb C)\) 中的像。若 \(\nabla\) 保持某个 Hermitian 度量，则各 \(c_j(\nabla)\) 都是实形式，代表 \(c_j(E)_{\mathbb R}\)。
+\end{theorem}
+\begin{proof}
+	先取酉联络。曲率矩阵满足 \(F^*=-F\)，故 \(X=\mathrm iF/(2\pi)\) 满足 \(X^*=X\)。对交换的偶次形式条目，取复共轭使行列式变成转置行列式，因而各系数为实形式。
+
+	对 \(E\) 作上一章的复旗丛构造 \(q:\operatorname{Fl}(E)\to M\)。它由光滑射影丛逐次组成，拉回丛有实际光滑正交分解 \(q^*E=L_1\oplus\cdots\oplus L_r\)。射影丛的 Leray--Hirsch 基 \(1,h,\ldots,h^{r-1}\) 在实系数下仍然成立，所以 \(q^*\) 对实上同调单射。这里使用\cref{g2:thm:projective-bundle,g2:thm:splitting-principle}的同一证明；光滑总空间的实际旗丛满足其弱逼近与局部平凡条件。
+
+	在各 \(L_a\) 上取酉联络 \(\nabla_a\)，并令 \(\nabla^\oplus=\bigoplus_a\nabla_a\)。这张直和联络与 \(q^*\nabla\) 通常不同，但转移公式说明它们给出同一陈上同调类。直和曲率为分块对角矩阵，故
+	\[
+		c(\nabla^\oplus)=\prod_{a=1}^r\left(1+\frac{\mathrm i}{2\pi}F_{\nabla_a}\right).
+	\]
+	线丛归一化及 de Rham 同构的乘法相容性把右端的类变成 \(\prod_a(1+c_1(L_a)_{\mathbb R})\)。上一章的 Whitney 公式又将这个乘积识别为 \(c(q^*E)_{\mathbb R}=q^*c(E)_{\mathbb R}\)。因此两组类的拉回相等，\(q^*\) 单射给出原空间上的等式。
+
+	最后，对任意复线性联络，选择 Hermitian 度量并取一个酉联络。两者之差是整体的 \(\operatorname{End}_{\mathbb C}E\) 值一形式，可以作仿射路径。把转移公式用于行列式系数，得各复形式之差恰当，故复上同调类相同。
+\end{proof}
+
+分裂过程中改变联络是证明的关键：原联络未必保持所选线分解，曲率也未必已经分块。转移先允许我们换成易计算的直和联络，单射再把所得等式带回底空间。由此可同时读出
+\[
+	[c_1(\nabla)]=c_1(\det E)_{\mathbb R},\qquad
+	[c_r(\nabla)]=e_{\mathrm{Th}}(E_{\mathbb R})_{\mathbb R},
+\]
+第二式采用复方向，使用\cref{g2:thm:top-class-euler}。对任意闭定向 \(2r\) 维流形上的复秩 \(r\) 丛，\(\int_Mc_r(\nabla)\) 因而是整数。更多陈单项式达到顶次时也有同样的整性，来源是它们代表整数拓扑类。
 
 \subsection{Pontryagin 形式与 Euler 的 Pfaffian}
 \label{g2:subsec:2203:03}
-待撰写
+对实丛 \(E\)，实联络复线性延拓到 \(E_{\mathbb C}\)，其曲率仍由同一个实矩阵表示。因此可按上一章定义取
+\begin{equation}\label{g2:eq:pontryagin-curvature-forms}
+	p_j(\nabla)=(-1)^j c_{2j}(\nabla_{\mathbb C}),\qquad
+	[p_j(\nabla)]=p_j(E)_{\mathbb R}.
+\end{equation}
+当 \(\nabla\) 保持内积时，\(F^t=-F\)。于是 \(\det(I+tF)=\det(I-tF)\)，奇数次行列式系数为零，偶数次系数给出
+\begin{equation}\label{g2:eq:pontryagin-determinant-form}
+	p(\nabla)=\det\!\left(I+\frac{F}{2\pi}\right),\qquad
+	p_1(\nabla)=-\frac1{8\pi^2}\operatorname{tr}(F\wedge F).
+\end{equation}
+在总形式等式中，第 \(j\) 项的微分形式次数为 \(4j\)。这里的整数类比较来自陈比较定理及定义；在实系数中，上一章直和公式的二阶扭修正消失。
+
+\ProseParagraphBreak
+
+Euler 类需要记住方向。对 \(2m\) 阶斜对称矩阵 \(X=(X_{ab})\)，定义其\term[Pfaffian]{Pfaffian}[Pfaffian]\footnote{Johann Friedrich Pfaff（1765--1825），德国数学家，研究微积分及一阶微分方程。}
+\begin{equation}\label{g2:eq:pfaffian-definition}
+	\operatorname{Pf}(X)=\frac1{2^m m!}\sum_{\sigma\in S_{2m}}\operatorname{sgn}(\sigma)
+	X_{\sigma(1)\sigma(2)}\cdots X_{\sigma(2m-1)\sigma(2m)}.
+\end{equation}
+例如二阶时为 \(X_{12}\)，四阶时为 \(X_{12}X_{34}-X_{13}X_{24}+X_{14}X_{23}\)。这些交错符号来自体积的方向。若 \(\xi_1,\ldots,\xi_{2m}\) 是辅助向量空间的一组对偶基，令 \(\eta_X=\frac12\sum_{a,b}X_{ab}\xi_a\wedge\xi_b\)，则直接展开可得
+\[
+	\frac1{m!}\eta_X^m=\operatorname{Pf}(X)\,\xi_1\wedge\cdots\wedge\xi_{2m}.
+\]
+线性换元在顶外幂上乘行列式，所以
+\[
+	\operatorname{Pf}(B^tXB)=\det(B)\operatorname{Pf}(X).
+\]
+特别地，Pfaffian 对 \(\operatorname{SO}(2m)\) 的共轭作用不变。分块对角时顶外积按块相乘，故 Pfaffian 也相乘。实斜对称矩阵的正交标准形由 \(\left(\begin{smallmatrix}0&a_j\\-a_j&0\end{smallmatrix}\right)\) 组成，在此形上 \(\operatorname{Pf}(X)=\prod_j a_j\)、\(\det X=\prod_j a_j^2\)，从而
+\begin{equation}\label{g2:eq:pfaffian-square}
+	\operatorname{Pf}(X)^2=\det X.
+\end{equation}
+这些是多项式恒等式，因而也适用于偶次微分形式构成的交换系数环。
+
+\begin{definition}\label{g2:def:euler-curvature-form}
+	设 \(E\to M\) 为定向实秩 \(2m\) 光滑丛，带内积及保持内积的联络 \(\nabla\)。在正向正交标架中记曲率矩阵为 \(F\)，定义其\term[Euler-xingshi]{Euler 形式}[Euler form]为
+	\begin{equation}\label{g2:eq:euler-pfaffian-form}
+		e(\nabla)=\operatorname{Pf}\!\left(\frac{F}{2\pi}\right)\in\Omega^{2m}(M;\mathbb R).
+	\end{equation}
+\end{definition}
+
+\(\operatorname{SO}(2m)\) 不变性保证局部式子粘合。前两节给出它的闭性及同一度量下的联络无关性。若更换内积，两个内积之间的正定平方根给出保向等距丛同构；先用这个同构运输联络，再作联络路径，便知其上同调类也不依赖内积。
+
+\ProseParagraphBreak
+
+秩二时，取正向正交标架 \((u,v)\) 并设 \(Ju=v\)。若 \(\nabla u=\alpha v\)、\(\nabla v=-\alpha u\)，则
+\[
+	A=\begin{pmatrix}0&-\alpha\\\alpha&0\end{pmatrix},\qquad
+	F=\begin{pmatrix}0&-\mathrm d\alpha\\\mathrm d\alpha&0\end{pmatrix},\qquad
+	e(\nabla)=-\frac{\mathrm d\alpha}{2\pi}.
+\]
+将这个定向平面丛看作复线丛，复标架 \(u\) 的联络形式为 \(\mathrm i\alpha\)，所以它的第一陈形式也是 \(-\mathrm d\alpha/(2\pi)\)。线丛比较已经证明，这正是实平面丛 Euler 类的代表。推广到更高秩需要一个实系数的平面分裂，而上一章实线分裂仅保证模二单射；下面单独建立所需工具。
+
+\begin{lemma}\label{g2:lem:oriented-plane-splitting-real}
+	设 \(E\to M\) 为无边界光滑流形上的定向实秩 \(2m\ge2\) 丛。存在光滑纤维丛 \(q:Y\to M\)，使 \(q^*:H^*(M;\mathbb R)\to H^*(Y;\mathbb R)\) 单射，且 \(q^*E\) 分裂为 \(m\) 个有序定向实平面丛的直和，其直和方向等于给定方向。
+\end{lemma}
+\begin{proof}
+	\(m=1\) 时取 \(Y=M\)、\(q=\operatorname{id}\)，原丛已经是一张定向平面丛。以下设 \(m\ge2\)。选内积，令 \(Y\) 的点是在一根 \(E_x\) 中选择一个有序正交二维分解，并给各平面定向，要求乘积方向为原方向。纤维是
+	\[
+		Z_m=\operatorname{SO}(2m)/\operatorname{SO}(2)^m.
+	\]
+	这是紧光滑齐性空间；商的光滑局部截面由第一卷第17.1节的闭子群商定理给出，因而局部正交标架将这些纤维粘成光滑丛。选出的平面组成 \(q^*E\) 的实际光滑子丛。
+
+	先证明纤维可定向且 \(\chi(Z_m)=2^{m-1}m!\)。稳定子 \(\operatorname{SO}(2)^m\) 连通，作用在商切空间上的行列式符号恒为正，所以在一个点选方向后，由左平移得到 \(\operatorname{SO}(2m)\) 不变方向。纤维实维数为 \(d=2m(m-1)\)。取标准坐标平面 \(P_1,\ldots,P_m\)，令实斜对称矩阵 \(H\) 在 \(P_j\) 上以正速度 \(a_j\) 旋转，其中各 \(a_j>0\) 且两两不同。它在 \(Z_m\) 上产生一个向量场。零点是每个所选平面均被 \(H\) 保持的分解。
+
+	\(H^2\) 的特征值为互异的 \(-a_j^2\)，相应实特征空间恰是 \(P_j\)。任意 \(H\) 不变实二维子空间，也被 \(H^2\) 的谱投影保持；而 \(H\) 在每个 \(P_j\) 中没有不变实直线。因此该子空间必须是某个 \(P_j\)。零点遂有 \(m!\) 种平面排列和 \(2^{m-1}\) 种满足总方向条件的方向选择。
+
+	在一个零点，切空间由不同平面之间的斜对称非对角块组成。把两平面各看成一条复线，一个实线性块分为复线性部分与复反线性部分；共轭旋转在这两个实二维参数空间上的速度分别为 \(\pm a_i\mp a_j\) 与 \(\pm a_i\pm a_j\)。因各速度的绝对值不同且非零，这些旋转速度都非零。向量场的线性化因而是可逆斜对称算子，每个二维旋转块的行列式为速度平方，故总行列式为正。每个孤立零点的指标为 \(+1\)。\cref{g2:thm:poincare-hopf}给出所述 \(\chi(Z_m)\)；\(m=1\) 时纤维为一点，同一值为 \(1\)。
+
+	现在令 \(V=\ker\mathrm dq\) 为定向竖直切丛，其方向来自刚才的不变纤维方向。取闭 \(d\) 形式 \(\eta\) 代表 \(e_{\mathrm{Th}}(V)_{\mathbb R}\)。这个代表的存在只用 de Rham 同构和已经建立的拓扑 Euler 类。限制到每根纤维，由\cref{g2:cor:tangent-euler-characteristic}有
+	\[
+		\int_{Y_x}\eta=\chi(Z_m)=:N_m\ne0.
+	\]
+	\cref{g2:thm:fiber-integration-forms}的投影公式于是给出
+	\[
+		q_!\bigl(q^*a\smile[\eta]\bigr)=N_m a\qquad(a\in H^*(M;\mathbb R)).
+	\]
+	实数 \(N_m\) 可逆，因此 \(q^*a=0\) 迫使 \(a=0\)。这就证明单射性。
+\end{proof}
+
+\begin{theorem}[Euler 类的曲率代表]\label{g2:thm:chern-weil-euler-comparison}
+	设 \(E\to M\) 为无边界光滑流形上的定向实秩 \(2m\) 丛，\(\nabla\) 保持给定内积。则
+	\begin{equation}\label{g2:eq:euler-curvature-comparison}
+		\left[\operatorname{Pf}\!\left(\frac{F_\nabla}{2\pi}\right)\right]
+		=e_{\mathrm{Th}}(E)_{\mathbb R}.
+	\end{equation}
+	方向反转使两侧同时反号。
+\end{theorem}
+\begin{proof}
+	取前一引理的 \(q:Y\to M\)，写 \(q^*E=V_1\oplus\cdots\oplus V_m\)。在各定向平面丛上取度量联络，再作直和。它与 \(q^*\nabla\) 给出同一 Pfaffian 上同调类；分块乘法及秩二比较给出
+	\[
+		q^*[e(\nabla)]
+		=\prod_j[e(\nabla_j)]
+		=\prod_j e_{\mathrm{Th}}(V_j)_{\mathbb R}
+		=e_{\mathrm{Th}}(q^*E)_{\mathbb R}.
+	\]
+	最后一个等式是\cref{g2:prop:euler-basic-properties}的有向直和公式，采用与所给分解一致的直和方向。由 \(q^*\) 单射和 Euler 类自然性，得到式\eqref{g2:eq:euler-curvature-comparison}。方向反转时，正交换架的行列式为 \(-1\)，Pfaffian 变号；拓扑 Euler 类也因 Thom 纤维生成元变号而反号。
+\end{proof}
+
+由式\eqref{g2:eq:pfaffian-square}，对同一秩 \(2m\) 度量联络还有形式恒等式 \(e(\nabla)\wedge e(\nabla)=p_m(\nabla)\)，与上一章的整数关系相符。对曲面切丛，第一卷第9.1节采用 \(\nabla u=\alpha v\)、\(\mathrm d\alpha=-K\,\mathrm dA\)，所以这里得到 \(e(\nabla)=K\,\mathrm dA/(2\pi)\)。更一般地，闭定向 \(2m\) 维 Riemann 流形的 Levi--Civita 联络满足
+\begin{equation}\label{g2:eq:gauss-bonnet-curvature-input}
+	\int_M\operatorname{Pf}\!\left(\frac{F^{\mathrm{LC}}}{2\pi}\right)=\chi(M),
+\end{equation}
+因为 Euler 比较与\cref{g2:cor:tangent-euler-characteristic}将积分化成拓扑 Euler 数。这给出了第三卷高维 Gauss--Bonnet 所用的归一化；曲率分量展开和几何应用将在那里继续讨论。
 
 \subsection{曲率形式看不到的扭信息}
 \label{g2:subsec:2203:04}
-待撰写
+若整数上同调类 \(u\) 被某个非零整数 \(n\) 消去，则其在实上同调中的像满足 \(n u_{\mathbb R}=0\)，故为零。微分形式代表的是这个系数变换后的类。因此曲率可以计算整数示性类的实周期，却不能从零实类恢复其中的扭元。
+
+\begin{example}\label{g2:exm:flat-torsion-chern-line}
+	取 \(\mathbb RP^2\) 上的典范实线丛 \(L\)，将其复化为 \(L_{\mathbb C}\)。它可由 \(S^2\times\mathbb C\) 按 \((x,z)\sim(-x,-z)\) 得到。平凡联络在这个常值换架下保持不变，所以下降为平坦酉联络，曲率为零。
+
+	但其第一陈类为 \(t=\widetilde\beta_2(w_1(L))\in H^2(\mathbb RP^2;\mathbb Z)\)。令 \(a=w_1(L)\)，则第13章的 Bockstein 比较给出 \(\rho_2t=\operatorname{Sq}^1a=a^2\ne0\)，所以 \(t\ne0\)。它被二消去，实像为零，与零曲率相符。沿基本群的非平凡闭路作平行移动，得到 \(-1\)，故联络的闭路数据仍能看见这份扭转。
+\end{example}
+
+在 \(\mathbb RP^4\) 上，同一实线丛的两份直和还有 \(p_1(L\oplus L)=-t^2\ne0\)，见\cref{g2:exm:pontryagin-whitney-torsion}。这个实平面丛的常值过渡矩阵为 \(\pm I\)，也有平坦度量联络；其 Pontryagin 形式与 Euler 形式均为零，而整数类可以保留二阶扭。两个例子分别说明，陈和 Pontryagin 的实曲率比较都需要保留“系数变换”这一环节。
+
+\ProseParagraphBreak
+
+平坦联络使全部正次陈形式与 Pontryagin 形式为零；平坦\emph{度量}联络还使 Euler 形式为零。对一般实联络，Euler 的 Pfaffian 构造要求曲率位于某个正交结构的斜对称矩阵中，不能省略度量相容条件。另一方面，即使底丛平凡，也可有非零的恰当曲率形式；拓扑类为零只说明上同调类消失。下一节的次级形式会记录两个代表之间的差以及规范变换留下的闭形式。
+
+本节归一化可汇总为下表，其中 \(F\) 使用本章的 \(\mathrm dA+A\wedge A\) 约定。
+\begin{center}
+	\begin{tabular}{lll}
+		\hline
+		对象与条件 & 曲率代表 & 拓扑实类 \\
+		\hline
+		复丛，酉联络 & \(\det(I+\mathrm iF/(2\pi))\) & \(c(E)_{\mathbb R}\) \\
+		实丛，度量联络 & \(\det(I+F/(2\pi))\) & \(p(E)_{\mathbb R}\) \\
+		定向实偶秩丛，度量联络 & \(\operatorname{Pf}(F/(2\pi))\) & \(e_{\mathrm{Th}}(E)_{\mathbb R}\) \\
+		\hline
+	\end{tabular}
+\end{center}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

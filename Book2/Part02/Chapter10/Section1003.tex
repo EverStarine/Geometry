@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 10.3 正合偶与比较方法
 % 纲要位置：几何学计划纲要.md，第 1403 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,169 @@
 \section{正合偶与比较方法}
 \label{g2:sec:1003}
 
-待撰写
+相邻两层滤过之间有短正合列，因此它们的上同调之间有长正合列。把所有层的长正合列放在一起，可以同时记录“从深层映入浅层”“取一层商”和“边界落入下一层”这三种操作。正合偶将这些操作组织成一个可反复导出的三角形；高阶微分由同一个三角形逐次产生。这个组织方式尤其适合比较两套滤过，以及追踪总上同调与谱序列边缘之间的映射。
 
 \subsection{正合偶及导出偶}
 \label{g2:subsec:1003:01}
-待撰写
+
+先暂时略去双指标，只保留模和同态。以下各模都在同一个含幺交换环 \(R\) 上；阿贝尔群对应 \(R=\mathbb Z\)。
+
+\begin{definition}[正合偶]\label{g2:def:exact-couple}
+	由两个 \(R\) 模 \(D,E\) 和三个 \(R\) 线性映射组成的图
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			D \arrow[rr,"i"] && D \arrow[dl,"j"] \\
+			& E \arrow[ul,"k"] &
+		\end{tikzcd}
+	\]
+	若在三个顶点均正合，即 \(\operatorname{im}i=\ker j\)、\(\operatorname{im}j=\ker k\)、\(\operatorname{im}k=\ker i\)，就称为一个\term[zhenghe ou]{正合偶}[exact couple]。“偶”指这里有 \(D,E\) 两个模；图中的两份 \(D\) 表示同一个模。若各模带分次，则还要求三个映射具有指定的齐次次数。
+\end{definition}
+
+先沿 \(E\xrightarrow{k}D\xrightarrow{j}E\) 走一圈，令 \(\mathrm d=jk\)。正合性给出 \(kj=0\)，于是 \(\mathrm d^2=j(kj)k=0\)。因此可以取 \(E\) 关于这张微分的同调。下一页所需的信息也能够同时保留下来。
+
+\begin{theorem}[导出正合偶]\label{g2:thm:derived-exact-couple}
+	设 \((D,E,i,j,k)\) 为正合偶，\(\mathrm d=jk\)。令
+	\[
+		D'\coloneqq i(D),\qquad E'\coloneqq\ker\mathrm d/\operatorname{im}\mathrm d.
+	\]
+	下列公式定义一个新的正合偶：
+	\[
+		i'=i|_{D'},\qquad j'(ia)=[ja],\qquad k'([e])=ke\quad(e\in\ker\mathrm d).
+	\]
+	它称为原正合偶的\term[daochu zhenghe ou]{导出正合偶}[derived exact couple]。
+\end{theorem}
+\begin{proof}
+	先检验公式中的选择。\(i(D')=i^2(D)\subset D'\)，所以 \(i'\) 有所需的靶。对 \(j'\)，有 \(\mathrm d(ja)=j(kj)a=0\)，故 \(ja\) 是圈。若 \(ia_1=ia_2\)，则 \(a_1-a_2\in\ker i=\operatorname{im}k\)，可写为 \(ke\)，于是 \(ja_1-ja_2=jke=\mathrm de\) 是边界。这说明 \(j'(ia)\) 不依赖 \(a\) 的选择。对 \(k'\)，若 \(e\) 是圈，则 \(jke=0\)，所以 \(ke\in\ker j=i(D)=D'\)。若将 \(e\) 改为 \(e+\mathrm df\)，则 \(k\mathrm df=kjkf=0\)，故 \(k'\) 也良定义。所有公式均保持加法和数乘。
+
+	再逐个顶点验证正合性。若 \(a'=ia\in D'\)，则
+	\[
+		j'i'(a')=[ja']=[jia]=0.
+	\]
+	反之，若 \(j'(ia)=0\)，则 \(ja=\mathrm de=jke\) 对某个 \(e\) 成立。因此 \(a-ke\in\ker j=\operatorname{im}i\)，可写成 \(ib\)。再作用 \(i\)，利用 \(ik=0\)，得到 \(ia=i^2b=i'(ib)\)。故 \(\ker j'=\operatorname{im}i'\)。
+
+	在 \(E'\) 处，\(k'j'(ia)=kja=0\)。若 \(k'([e])=ke=0\)，则 \(e=ja\) 对某个 \(a\) 成立，因而 \([e]=j'(ia)\)。这给出 \(\ker k'=\operatorname{im}j'\)。
+
+	最后，\(i'k'([e])=ike=0\)。若 \(a'\in D'\) 且 \(i'a'=0\)，原正合性给出 \(a'=ke\)。又因 \(a'\in\operatorname{im}i=\ker j\)，有 \(\mathrm de=jke=ja'=0\)，所以 \([e]\in E'\) 有定义，且 \(k'([e])=a'\)。因此 \(\ker i'=\operatorname{im}k'\)，三处均正合。
+\end{proof}
+
+从 \((D_1,E_1)\) 出发反复导出，便得到 \(E_{r+1}=H(E_r,\mathrm d_r)\)，其中 \(\mathrm d_r=j_rk_r\)。这个等式给出下一页的群，而导出偶还同时给出下一张微分所需的 \(j_{r+1},k_{r+1}\)。只保存某页的抽象群和当前微分，就会遗漏这些后续映射。
+
+\ProseParagraphBreak
+
+正合偶的映射也逐页传递。具体地，若 \(a:D\to\bar D\)、\(b:E\to\bar E\) 分别与 \(i,j,k\) 交换，则 \(b\mathrm d=\bar{\mathrm d}b\)，所以诱导 \(b':E'\to\bar E'\)；\(a\) 限制为 \(a':i(D)\to\bar i(\bar D)\)。代入导出公式，例如 \(b'j'(ix)=[b jx]=[\bar j ax]=\bar j'a'(ix)\)，就知导出后的三个方块仍交换。因而一张正合偶映射给出所有页上的相容映射。
 
 \subsection{与滤过构造的对应}
 \label{g2:subsec:1003:02}
-待撰写
+
+回到递减滤过上链复形 \((C^\bullet,\mathrm d,F)\)。每个 \(F^pC\) 都是子复形；相邻两层给出短正合列
+\[
+	0\longrightarrow F^{p+1}C\longrightarrow F^pC\longrightarrow\operatorname{gr}_F^pC\longrightarrow0.
+\]
+第2章的连接同态按“提升一个圈，再取微分”构造，见\cref{g2:prop:connecting-map,g2:thm:homology-LES,g2:prop:connecting-natural}。将上链复形重标为 \(C_n=C^{-n}\)，即可应用同一长正合列；所有构造也保持 \(R\) 数乘。再恢复上指标，连接同态便提高总次数一。
+
+\begin{proposition}[滤过复形的正合偶]\label{g2:prop:filtered-exact-couple}
+	设 \(C^\bullet\) 是带递减子复形滤过的 \(R\) 模上链复形。令
+	\[
+		D_1^{p,q}=H^{p+q}(F^pC),\qquad
+		E_1^{p,q}=H^{p+q}(\operatorname{gr}_F^pC).
+	\]
+	包含、取商及连接同态分别给出正合偶中的映射
+	\[
+	\begin{aligned}
+		i_1&:D_1^{p,q}\longrightarrow D_1^{p-1,q+1},\\
+		j_1&:D_1^{p,q}\longrightarrow E_1^{p,q},\\
+		k_1&:E_1^{p,q}\longrightarrow D_1^{p+1,q}.
+	\end{aligned}
+	\]
+	其各次导出页与\secref{g2:sec:1002}的代表元构造自然同构，且该同构保留每页的微分。
+\end{proposition}
+\begin{proof}
+	上述短正合列在总次数 \(n=p+q\) 附近的长正合列为
+	\[
+		\cdots\longrightarrow H^n(F^{p+1}C)\longrightarrow H^n(F^pC)
+		\longrightarrow H^n(\operatorname{gr}_F^pC)\longrightarrow H^{n+1}(F^{p+1}C)\longrightarrow\cdots.
+	\]
+	在所有 \(p,q\) 上取直和，正好得到上述三个映射的正合偶。包含保持总次数且使第一指标减一，所以第二指标加一；连接同态使第一指标和总次数都加一，所以第二指标不变。这核对了所列双次数。
+
+	为了比较后续各页，沿用上一节的记号
+	\[
+		Z_r^{p,n}=\{x\in F^pC^n:\mathrm dx\in F^{p+r}C^{n+1}\},\qquad r\ge0.
+	\]
+	代表元构造给出
+	\[
+		E_r^{p,q}=\frac{Z_r^{p,n}}{Z_{r-1}^{p+1,n}+\mathrm dZ_{r-1}^{p-r+1,n-1}},\qquad n=p+q,\quad r\ge1.
+	\]
+	我们将在每一页保持下面的具体识别：
+	\begin{equation}\label{g2:eq:derived-filtered-couple}
+	\begin{aligned}
+		D_r^{p,q}&=\operatorname{im}\bigl(H^n(F^{p+r-1}C)\longrightarrow H^n(F^pC)\bigr),\\
+		i_r&:D_r^{p,q}\longrightarrow D_r^{p-1,q+1},\\
+		j_r&:D_r^{p,q}\longrightarrow E_r^{p+r-1,q-r+1},\\
+		k_r&:E_r^{p,q}\longrightarrow D_r^{p+1,q}.
+	\end{aligned}
+	\end{equation}
+	这里 \(i_r\) 仍由包含诱导。若 \(a\in D_r^{p,q}\) 可由闭上链 \(y\in F^{p+r-1}C^n\) 表示，则 \(j_r(a)=[y]_r\)；若 \([x]_r\in E_r^{p,q}\)，则 \(k_r([x]_r)\) 是 \(\mathrm dx\) 在 \(H^{n+1}(F^{p+1}C)\) 中的类。
+
+	这些公式的选择无关性可以直接检查。对 \(j_r\)，两个闭代表 \(y,y'\in F^{p+r-1}C^n\) 若在 \(H^n(F^pC)\) 中相同，则 \(y-y'=\mathrm dz\)，其中 \(z\in F^pC^{n-1}\) 且 \(\mathrm dz\in F^{p+r-1}C^n\)，即 \(z\in Z_{r-1}^{p,n-1}\)。这正落在目标页分母的边界项中。对 \(k_r\)，因 \(\mathrm dx\in F^{p+r}C^{n+1}\) 且 \(\mathrm d^2x=0\)，其上同调类属于所列的 \(D_r^{p+1,q}\)。更换 \(x\) 时，页分母的第一项改变 \(\mathrm dx\) 一个 \(F^{p+1}C\) 中的边界，第二项不改变 \(\mathrm dx\)，所以 \(k_r\) 良定义。
+
+	当 \(r=1\) 时，\(j_1\) 就是取商，\(k_1\) 就是连接同态；\(E_1\) 也已是 \(\operatorname{gr}_F C\) 的上同调。假定第 \(r\) 页的识别成立。导出后 \(D_{r+1}=i_r(D_r)\)，在位置 \((p,q)\) 恰为从 \(H^n(F^{p+r}C)\) 到 \(H^n(F^pC)\) 的像，得到下一次的第一行公式。
+
+	在 \(E_r\) 上，上述 \(k_r\) 先取 \(\mathrm dx\) 的闭类，\(j_r\) 再取它的页类，所以复合确实是
+	\[
+		j_rk_r([x]_r)=[\mathrm dx]_r\in E_r^{p+r,q-r+1}.
+	\]
+	它与代表元构造的 \(\mathrm d_r\) 相同。由\cref{g2:thm:spectral-sequence-page-transition}，其同调自然识别为代表元构造的 \(E_{r+1}\)。在这个识别下，一个下一页的类可由 \(x\in Z_{r+1}^{p,n}\) 表示；导出的 \(k_{r+1}\) 仍取 \([\mathrm dx]\)，而此时 \(\mathrm dx\) 已在更深一层 \(F^{p+r+1}\) 中。对于 \(j_{r+1}\)，写 \(a'=i_ra\in D_{r+1}^{p,q}\)，其中 \(a\in D_r^{p+1,q-1}\)，并选闭上链 \(y\in F^{p+r}C^n\) 表示 \(a\)。导出公式给出 \(j_{r+1}(a')=[j_ra]=[y]_{r+1}\)。因此两张结构映射也吻合，归纳完成。所有识别均由包含、取商和取微分给出，与滤过上链映射交换，所以它们自然。
+\end{proof}
+
+公式\eqref{g2:eq:derived-filtered-couple}解释了高阶微分的指标：\(k_r\) 先将代表元的微分留在下一层的上同调中，\(j_r\) 再沿已经导出的 \(r-1\) 层读取它。因此 \(\mathrm d_r\) 的第一指标增加 \(r\)，总次数只增加一，第二指标便减少 \(r-1\)。这与逐层消去较浅分量的计算是同一个过程。
 
 \subsection{边缘同态和比较定理}
 \label{g2:subsec:1003:03}
-待撰写
+
+当谱序列位于第一象限时，两条坐标轴上的项只会从一个方向变化。我们采用具体的充分条件：\(C^n=0\)（\(n<0\)）、\(F^0C^n=C^n\) 且 \(F^{n+1}C^n=0\)（\(n\ge0\)）。于是 \(E_0^{p,q}=0\) 除非 \(p,q\ge0\)，后续各页也如此。下一节的\cref{g2:thm:filtered-complex-convergence}将证明
+\[
+	E_\infty^{p,n-p}\cong F^pH^n(C)/F^{p+1}H^n(C),\qquad
+	F^pH^n(C)=\operatorname{im}\bigl(H^n(F^pC)\to H^n(C)\bigr).
+\]
+这里先在这个识别下描述边缘及其映射；其依据将在下一节落实到闭上链与边界。
+
+\begin{proposition}[第一象限的边缘同态]\label{g2:prop:spectral-sequence-edge-maps}
+	设 \(C\) 为带递减子复形滤过的上链复形，\(C^m=0\)（\(m<0\)），且对每个 \(m\ge0\) 有 \(F^0C^m=C^m\)、\(F^{m+1}C^m=0\)。令 \(n\ge0\)。存在对滤过上链映射自然的\term[bianyuan tongtai]{边缘同态}[edge homomorphisms]
+	\[
+		E_2^{n,0}\longrightarrow H^n(C)\longrightarrow E_2^{0,n}.
+	\]
+	左方映射的像是 \(F^nH^n(C)\)，它经由满射 \(E_2^{n,0}\to E_\infty^{n,0}\) 得到；右方映射的核是 \(F^1H^n(C)\)，它经由单射 \(E_\infty^{0,n}\to E_2^{0,n}\) 得到。
+\end{proposition}
+\begin{proof}
+	对底行 \((n,0)\)，在 \(r\ge2\) 时离开的微分落到第二指标 \(1-r<0\) 的位置，故为零。因此从第2页起，每一页到下一页都是由进入微分产生的商映射，得到 \(E_2^{n,0}\twoheadrightarrow E_\infty^{n,0}\)。第一象限条件使 \(F^{n+1}H^n(C)=0\)，由收敛识别，\(E_\infty^{n,0}=F^nH^n(C)\)，再接包含便得到左边缘同态及其像。
+
+	对左列 \((0,n)\)，进入微分来自第一指标 \(-r<0\) 的位置，故为零。每次取同调因此只取离开微分的核，得到 \(E_\infty^{0,n}\hookrightarrow E_2^{0,n}\)。又因 \(F^0H^n(C)=H^n(C)\)，收敛识别给出 \(H^n(C)/F^1H^n(C)\cong E_\infty^{0,n}\)。先取这个商，再接上述单射，就得到右边缘同态及其核。各步骤都是自然的，故所得两张映射也自然。
+\end{proof}
+
+在代表元上，左边缘同态尤其直接。\(E_2^{n,0}\) 中的类可由 \(x\in F^nC^n\)、\(\mathrm dx\in F^{n+2}C^{n+1}=0\) 表示，因此 \(x\) 已经是总复形的闭上链；将它送到 \([x]\in H^n(C)\) 就是该映射。右边缘同态则从总复形中的闭上链出发，读取它在第零层的类。后面的微分检验这个第零层类能否逐层提升为总闭上链，因此右边缘的像正是存活到极限页的部分。
+
+\ProseParagraphBreak
+
+比较定理则从某一页的同构出发，逐层恢复总上同调的同构。这里需要有限滤过：若只知道所有相邻商同构，却没有控制无限深处，不能直接完成最后的恢复。
+
+\begin{theorem}[滤过复形的比较定理]\label{g2:thm:spectral-sequence-comparison}
+	设 \(f:C\to\bar C\) 为滤过 \(R\) 模上链复形之间的滤过上链映射。假定两个滤过在每个上链次数均有限，即对每个 \(n\) 存在整数 \(a_n\le b_n\)，使
+	\[
+		F^{a_n}C^n=C^n,\quad F^{b_n}C^n=0,
+	\]
+	且 \(\bar C\) 也满足相同形式的条件，界可以不同。若某一页 \(r_0\ge1\) 上
+	\[
+		f_{r_0}:E_{r_0}^{p,q}(C)\longrightarrow E_{r_0}^{p,q}(\bar C)
+	\]
+	对所有 \(p,q\) 均为同构，则每张后续页映射均为同构，且 \(H^n(f)\) 对所有 \(n\) 均为同构。进一步，它将 \(F^pH^n(C)\) 同构地映到 \(F^pH^n(\bar C)\)。
+\end{theorem}
+\begin{proof}
+	滤过映射诱导的页映射与 \(\mathrm d_r\) 交换，见\cref{g2:prop:spectral-sequence-naturality}，也可由本节正合偶的自然性得到。因此某页为复形同构，下一页取同调后仍为同构。归纳得到全部 \(r\ge r_0\) 的同构。
+
+	由\cref{g2:thm:filtered-complex-convergence}，各个位置最终稳定，而且极限页自然识别为总上同调的伴随分次。因此 \(H^n(f)\) 在每个相邻商 \(F^pH^n/F^{p+1}H^n\) 上诱导同构。固定 \(n\)，两边的上同调滤过都有限；取共同的上下界后，可从最深的零层向浅层归纳。
+
+	具体地，假设 \(f:F^{p+1}H^n(C)\to F^{p+1}H^n(\bar C)\) 已为同构。若 \(x\in F^pH^n(C)\) 的像为零，则它在第 \(p\) 个商中的像为零；商映射的单射性使 \(x\in F^{p+1}H^n(C)\)，再由归纳假设得 \(x=0\)。若 \(y\in F^pH^n(\bar C)\)，商映射的满射性给出 \(x\in F^pH^n(C)\)，使 \(y-f(x)\in F^{p+1}H^n(\bar C)\)。由归纳假设，这个差为某个 \(x'\in F^{p+1}H^n(C)\) 的像，所以 \(y=f(x+x')\)。这同时证明该层的单射和满射。归纳到整个 \(H^n\) 后，结论成立，并保留各层。
+\end{proof}
+
+比较定理常用来更换计算模型。例如，一张双复形映射若在每列的上同调上都是同构，按列滤过所得的 \(E_1\) 页便同构；在第一象限条件下，它就诱导总上同调同构。实际使用时，先把较容易计算的一页对应起来，再由有限滤过把局部比较传到整体。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

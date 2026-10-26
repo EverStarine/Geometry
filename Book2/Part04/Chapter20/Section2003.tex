@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 20.3 Euler 类与零点
 % 纲要位置：几何学计划纲要.md，第 1786 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿已撰写。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,214 @@
 \section{Euler 类与零点}
 \label{g2:sec:2003}
 
-待撰写
+Thom 类在每根纤维上记录零向量的局部方向。把这个类拉回到底空间，就能把截面零点附近的信息合并为底空间上的一个上同调类。本节将说明，这个类既是横截零点集的对偶类，也是第十二章首障碍的向量丛版本；在切丛上求值，又回到第十七章的 Euler 示性数。
 
 \subsection{零截面拉回}
 \label{g2:subsec:2003:01}
-待撰写
+设 \(p:E\to B\) 为秩 \(r\ge1\) 的定向实向量丛，底空间满足上一节 Thom 同构的条件。记零截面为 \(s_0\)，并令 \(E^\times=E\setminus s_0(B)\)。先取整数系数，由所给纤维定向选取 Thom 类
+\[
+	u_E\in H^r(E,E^\times;\mathbb Z).
+\]
+要在底空间上得到一个类，可以先忘去相对条件，再沿零截面拉回。这里忘去相对条件的映射记为 \(j:H^r(E,E^\times)\to H^r(E)\)。
+
+\begin{definition}\label{g2:def:thom-euler-class}
+	丛 \(E\) 的\term[Eulerlei]{Euler 类}[Euler class]定义为
+	\begin{equation}\label{g2:eq:thom-euler-definition}
+		e_{\mathrm{Th}}(E)=s_0^*j(u_E)\in H^r(B;\mathbb Z).
+	\end{equation}
+	以后也将右端简写为 \(s_0^*u_E\)，其中包含上述忘去相对条件的映射。更一般地，不指定定向时，取 \(U_E\in H^r(E,E^\times;p^*\mathcal O_E)\)，便得到
+	\[
+		e_{\mathrm{Th}}(E)=s_0^*j(U_E)\in H^r(B;\mathcal O_E).
+	\]
+\end{definition}
+
+下标 \(\mathrm{Th}\) 保留了本书已有的符号区别：第十一章把球面丛的传递 \(d_ru\) 记为 \(e(S(E))\)，而式\eqref{g2:eq:thom-euler-definition}采用正向纤维 Thom 类。两者的确切关系将在\cref{g2:thm:euler-primary-comparison}中证明。系数换成交换环 \(R\) 时，同一构造给出 \(R\) 系数版本；下述整系数公式经系数映射仍然成立。
+
+\begin{proposition}\label{g2:prop:euler-basic-properties}
+	Euler 类有以下性质。
+	\begin{enumerate}
+		\item 对连续映射 \(f:C\to B\)，有 \(e_{\mathrm{Th}}(f^*E)=f^*e_{\mathrm{Th}}(E)\)。
+		\item 若 \(E\) 有处处非零截面，则 \(e_{\mathrm{Th}}(E)=0\)。
+		\item 若 \(E,F\to B\) 都定向，直和按 \(E\) 在前、\(F\) 在后的次序定向，则
+		\begin{equation}\label{g2:eq:euler-direct-sum}
+			e_{\mathrm{Th}}(E\oplus F)=e_{\mathrm{Th}}(E)\smile e_{\mathrm{Th}}(F).
+		\end{equation}
+		\item 将 \(E\) 的纤维定向反转，Euler 类乘以 \(-1\)。
+	\end{enumerate}
+	前三项也适用于定向局部系统系数，直和公式中的系数按 \(\mathcal O_{E\oplus F}\cong\mathcal O_E\otimes\mathcal O_F\) 识别。
+\end{proposition}
+\begin{proof}
+	记拉回丛映射为 \(\widetilde f:f^*E\to E\)。\cref{g2:prop:thom-naturality-sum}给出 \(u_{f^*E}=\widetilde f^{\,*}u_E\)。零截面满足 \(\widetilde f\circ s_{0,C}=s_{0,B}\circ f\)，而忘去相对条件与拉回交换，故第一项成立。
+
+	任意截面 \(s:B\to E\) 都通过 \(H(b,t)=t\,s(b)\) 与零截面同伦，所以 \(s^*j(u_E)=e_{\mathrm{Th}}(E)\)。若 \(s\) 处处非零，它的像包含在 \(E^\times\) 中；相对长正合列说明 \(j(u_E)\) 在 \(E^\times\) 上的限制为零，于是第二项成立。
+
+	设 \(q_E:E\oplus F\to E\)、\(q_F:E\oplus F\to F\) 为投影。Thom 类的直和公式将 \(u_{E\oplus F}\) 写成 \(q_E^*u_E\smile q_F^*u_F\)。两个相对消失集的并正是直和的非零部分，因为 \((v,w)\ne(0,0)\) 等价于至少一个分量非零。忘去相对条件后沿零截面拉回，杯积的自然性给出式\eqref{g2:eq:euler-direct-sum}，因子次序保持不变。纤维定向反转使每根纤维上的正生成元乘以 \(-1\)，由 Thom 类唯一性有 \(u_E\mapsto-u_E\)，从而得到第四项。
+
+	带局部系数时，同伦 \(H\) 始终覆盖底空间的恒等映射，故其系数识别是恒等运输；自然性与杯积公式使用的正是上一节的局部系统识别。前面的论证逐步成立。
+\end{proof}
+
+非零截面使 Euler 类消失的原因可以直接从几何上看出：截面可以在总空间里缩向零截面，但它本身完全避开了 Thom 类所记录的零集。接下来把这个解释与逐胞腔延拓的整数对应起来。
+
+\begin{theorem}\label{g2:thm:euler-primary-comparison}
+	设 \(E\to B\) 为道路连通 CW 复形上的定向实 \(r\) 维向量丛，\(r\ge2\)。单位球面丛取由纤维定向诱导的边界定向，则
+	\begin{equation}\label{g2:eq:euler-primary-comparison}
+		e_{\mathrm{Th}}(E)=o_r(S(E))=-e(S(E))\quad\text{于 }H^r(B;\mathbb Z).
+	\end{equation}
+	这里 \(o_r\) 是\cref{g2:thm:sphere-primary-euler}中按胞腔边界映射度定义的首障碍，\(e(S(E))=d_ru\) 是第十一章采用的传递。
+\end{theorem}
+\begin{proof}
+	球面 \(S^{r-1}\) 的低阶同伦群消失，故存在 \(B^{r-1}\) 上的单位截面 \(v\)。把它视为向量丛截面，可以延拓到 \(B^r\)：在每个 \(r\) 胞腔的特征圆盘上平凡化拉回丛，若边界截面的系数为 \(a:S^{r-1}\to S^{r-1}\)，就在圆盘上取 \(F(tu)=t\,a(u)\)、\(F(0)=0\)。这些延拓在边界与已有截面一致，因而按 CW 弱拓扑粘成连续截面 \(s\)。
+
+	由于 \(s\) 在 \(B^{r-1}\) 上非零，拉回给出
+	\[
+		c=s^*u_E\in H^r(B^r,B^{r-1};\mathbb Z).
+	\]
+	我们计算它在一个正向 \(r\) 胞腔上的值。把拉回丛写成 \(D^r\times\mathbb R^r\)，Thom 类来自第二因子的正生成元。截面拉回就是由 \(F:(D^r,S^{r-1})\to(\mathbb R^r,\mathbb R^r\setminus\{0\})\) 诱导的相对上同调映射。两边的连接同态都把正向边界球面的生成元送到正向圆盘的相对生成元；这是等式 \(\langle\mathrm d\widetilde u,[D^r]\rangle=\langle u,\partial[D^r]\rangle\) 所确定的符号。因此 \(c\) 在此胞腔上的系数正是 \(\deg a\)。这与首障碍上链的定义逐胞腔相同。
+
+	忘去 \(B^{r-1}\) 的相对条件后，\(c\) 成为 \(s^*j(u_E)\)。截面 \(s\) 与零截面的线性同伦说明，这就是 \(e_{\mathrm{Th}}(E)|_{B^r}\)。另一方面，首障碍上链是胞腔上闭链，其类在 \(B^r\) 上的限制也是这个类。由于 \((B,B^r)\) 没有维数不超过 \(r\) 的相对胞腔，\(H^r(B,B^r;\mathbb Z)=0\)，故 \(H^r(B;\mathbb Z)\to H^r(B^r;\mathbb Z)\) 单射。于是 \(e_{\mathrm{Th}}(E)=o_r(S(E))\)。最后，\cref{g2:thm:sphere-primary-euler}已按同一边界定向证明 \(o_r(S(E))=-d_ru\)，得到第二个等号。
+\end{proof}
+
+这个证明落实了式\eqref{g2:eq:euler-index-normalization-preview}中的比较。秩一的定向实线丛则可以直接处理：度量和定向在每根纤维上选出唯一的正单位向量，组成非零截面，所以它的 Euler 类为零。其单位球面是 \(S^0\)，不需要套用上面连通球面纤维的传递公式。
 
 \subsection{横截截面的零点类}
 \label{g2:subsec:2003:02}
-待撰写
+对于光滑截面，零点附近的线性化把抽象的 Thom 类变成一个可画出的法向模型。设 \(M\) 是闭定向 \(m\) 维光滑流形，\(E\to M\) 是定向的光滑实 \(r\) 维向量丛，\(1\le r\le m\)，且 \(s\) 与零截面横截。于是 \(Z=s^{-1}(0)\) 是闭的 \(m-r\) 维子流形。在 \(z\in Z\) 处，局部标架中的截面系数微分给出满射
+\[
+	\mathrm D^{\mathrm v}s_z:\mathrm T_zM\longrightarrow E_z,
+	\qquad\ker\mathrm D^{\mathrm v}s_z=\mathrm T_zZ.
+\]
+上标 \(\mathrm v\) 表示取纤维方向的微分。改变标架时出现的标架微分项乘以 \(s(z)=0\)，所以这张映射不依赖局部标架，并诱导法丛同构 \(\nu_MZ\cong E|_Z\)。
+
+\ProseParagraphBreak
+
+以下始终采用\emph{法向在前}的定向约定：先通过 \(\mathrm D^{\mathrm v}s\) 给法丛定向，再要求“正向法基，随后是正向切基”组成 \(M\) 的正向基。写成定向线的顺序就是
+\begin{equation}\label{g2:eq:euler-zero-orientation}
+	\operatorname{or}(\nu_MZ)\,\operatorname{or}(\mathrm TZ)=\operatorname{or}(\mathrm TM|_Z).
+\end{equation}
+若改用切向在前的约定，零点流形的定向会差因子 \((-1)^{r(m-r)}\)。把次序写清楚，后面的杯积、帽积便有确定的符号。
+
+\begin{theorem}\label{g2:thm:euler-transverse-zero-duality}
+	在上述条件及定向下，记包含为 \(i:Z\hookrightarrow M\)，则
+	\begin{equation}\label{g2:eq:euler-zero-dual}
+		e_{\mathrm{Th}}(E)\frown[M]=i_*[Z].
+	\end{equation}
+	因此 \(e_{\mathrm{Th}}(E)\) 是横截零点流形的 Poincar\'e 对偶类。特别地，对 \(a\in H^{m-r}(M;\mathbb Z)\)，
+	\begin{equation}\label{g2:eq:euler-zero-evaluation}
+		\langle e_{\mathrm{Th}}(E)\smile a,[M]\rangle=\langle i^*a,[Z]\rangle.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	截面是空间对之间的映射 \(s:(M,M\setminus Z)\to(E,E^\times)\)，所以有带零点支集的类
+	\[
+		u_s=s^*u_E\in H^r(M,M\setminus Z;\mathbb Z).
+	\]
+	它的绝对像为 \(e_{\mathrm{Th}}(E)\)。先证明 \(u_s\) 在 \(Z\) 的管状邻域内就是法丛的 Thom 类。由\cref{g2:thm:tubular-neighborhood}取管状映射 \(\tau:V\subset\nu_MZ\to N\subset M\)。在每个 \(z\in Z\) 的小法向圆盘上，截面系数映射在原点的微分为保持定向的同构 \(\mathrm D^{\mathrm v}s_z|_{\nu_zZ}\)。把圆盘缩小后，系数映射与这个线性同构的直线同伦在穿孔圆盘上非零：余项相对于半径趋于零，而可逆线性项的长度至少是半径的一个正倍数。故它的局部映射度为 \(+1\)。于是 \(\tau^*u_s\) 在每根法向纤维上限制为正生成元；由\cref{g2:thm:thom-isomorphism}的唯一性，它等于法丛 Thom 类。
+
+	现在对这个相对类作帽积。将 \([M]\) 送到 \(H_m(M,M\setminus Z)\)，再用切除移入 \(H_m(N,N\setminus Z)\)，得到邻域的相对基本类 \([N]_Z\)。\cref{g2:prop:relative-cap}给出
+	\[
+		(u_s|_N)\frown[N]_Z\in H_{m-r}(N;\mathbb Z).
+	\]
+	管状收缩 \(N\to Z\) 将此类送到 \([Z]\)。为核对这一步及其符号，可以在任一点用正向法坐标 \(x_1,\ldots,x_r\) 和正向切坐标 \(y_1,\ldots,y_{m-r}\) 计算：环境基本类按 \((x,y)\) 排列，Thom 类是 \(x\) 方向的正相对生成元。第六章欧氏局部对偶的帽积计算先取前面的 \(r\) 个法向方向，余下的就是 \(y\) 方向的正基本类。相对帽积与限制、切除相容，所以这些局部计算给出收缩后那个类在 \(Z\) 每一点的正局部定向；基本类的唯一性说明它就是 \([Z]\)。
+
+	最后，相对帽积与忘去支集相容，故将邻域中的类推入 \(M\)，得到
+	\[
+		e_{\mathrm{Th}}(E)\frown[M]
+		=(N\hookrightarrow M)_*\bigl((u_s|_N)\frown[N]_Z\bigr)=i_*[Z].
+	\]
+	式\eqref{g2:eq:cap-evaluation}采用的次序为 \(\langle\alpha\smile\beta,[M]\rangle=\langle\beta,\alpha\frown[M]\rangle\)。取 \(\alpha=e_{\mathrm{Th}}(E)\)、\(\beta=a\)，再用求值自然性，即得式\eqref{g2:eq:euler-zero-evaluation}。
+\end{proof}
+
+例如，横截截面的零点集若有正维数，Euler 类记录的是它在环境流形中的同调类。零点集可能由几个分支组成，这些分支在同调中还可能互相抵消。因此 Euler 类为零允许一个给定截面仍有零点；如何更换截面而消去全部零点，还要看球面丛的延拓障碍。
 
 \subsection{局部指标与 Euler 数}
 \label{g2:subsec:2003:03}
-待撰写
+现在设丛的秩等于底流形维数 \(m\)。横截零点集成为有限个带符号的点；对非横截但孤立的零点，也可用小球面上的映射度计数。设 \(s\) 在 \(z\) 有孤立零点，取保持 \(M\) 定向的局部坐标和保持 \(E\) 定向的局部标架，把 \(s\) 写成 \(F:\mathbb R^m\to\mathbb R^m\)。对充分小的正数 \(\varepsilon\)，定义
+\begin{equation}\label{g2:eq:section-local-index}
+	\operatorname{ind}_z(s)=\deg\left(u\longmapsto\frac{F(\varepsilon u)}{\lVert F(\varepsilon u)\rVert}\right),
+	\qquad u\in S^{m-1}.
+\end{equation}
+当 \(m=1\) 时，次数取约化零维同调上的次数。缩小球面通过无零点的环带给出同伦；改变正向坐标或正向标架，源和目标的局部定向都保持，所以此整数不变。等价地，它是局部空间对的映射在正向相对顶次生成元上的倍数，正如\cref{g2:prop:vector-index-well-defined}所用的描述。若 \(\mathrm D^{\mathrm v}s_z\) 可逆，则同余项比较给出
+\[
+	\operatorname{ind}_z(s)=\operatorname{sgn}\det\mathrm D^{\mathrm v}s_z.
+\]
+这里的行列式在上述两个正向标架中计算。
+
+\begin{theorem}\label{g2:thm:euler-index-evaluation}
+	设 \(E\to M\) 是闭定向 \(m\) 维光滑流形上的定向实 \(m\) 维向量丛，\(m\ge1\)。若光滑截面 \(s\) 的零点都孤立，则
+	\begin{equation}\label{g2:eq:euler-index-evaluation}
+		\langle e_{\mathrm{Th}}(E),[M]\rangle=\sum_{s(z)=0}\operatorname{ind}_z(s).
+	\end{equation}
+	左端称为该定向丛在 \(M\) 上的\term[Eulershu]{Euler 数}[Euler number]。
+\end{theorem}
+\begin{proof}
+	零点集闭且离散，又包含在紧空间 \(M\) 中，故是有限集 \(Z=\{z_1,\ldots,z_k\}\)。在这些点周围取互不相交的正向坐标小球 \(D_i\)，使边界上没有零点，并在球内正向平凡化 \(E\)。切除给出
+	\[
+		H^m(M,M\setminus Z;\mathbb Z)
+		\cong\bigoplus_{i=1}^kH^m(D_i,D_i\setminus\{z_i\};\mathbb Z).
+	\]
+	在这个识别下，\(s^*u_E\) 的第 \(i\) 项正是局部系数映射 \(F_i\) 拉回的正生成元，其倍数为式\eqref{g2:eq:section-local-index}中的次数。基本类 \([M]\) 在相对同调中则送到各正局部基本类组成的向量。相对求值把这些分量求和，因而给出右端。由于 \(s^*u_E\) 的绝对像是 \(e_{\mathrm{Th}}(E)\)，求值的自然性给出左端。
+\end{proof}
+
+对横截截面，每一点的正负号恰好是式\eqref{g2:eq:euler-zero-orientation}给零维流形赋予的符号，所以本定理也与零点流形的对偶公式一致。孤立退化零点的整数指标则把附近若干正、负横截零点的贡献合并在一起。
+
+\begin{corollary}\label{g2:cor:tangent-euler-characteristic}
+	对闭定向光滑流形 \(M\)，维数 \(m\ge1\)，有
+	\begin{equation}\label{g2:eq:tangent-euler-characteristic}
+		\langle e_{\mathrm{Th}}(\mathrm TM),[M]\rangle=\chi(M).
+	\end{equation}
+	当 \(m\ge2\) 时，第十一章球面丛的记号相应满足
+	\[
+		\langle e(S(\mathrm TM)),[M]\rangle=-\chi(M).
+	\]
+\end{corollary}
+\begin{proof}
+	取一个 Morse 函数的梯度场。第十七章已证明这种函数存在，并且其临界点有限、梯度零点孤立。将\cref{g2:thm:euler-index-evaluation}用于切丛，左端等于梯度场的局部指标和；\cref{g2:thm:poincare-hopf}说明这个和为 \(\chi(M)\)。再用\cref{g2:thm:euler-primary-comparison}即得第二式。
+\end{proof}
+
+对非定向闭流形也有同一个整数公式。此时 \(e_{\mathrm{Th}}(\mathrm TM)\in H^m(M;\mathcal O_M)\)，基本类取在 \(H_m(M;\mathcal O_M)\) 中，求值时使用规范配对 \(\mathcal O_M\otimes\mathcal O_M\to\mathbb Z\)。前一定理的局部切除证明仍然成立：反转局部坐标时，局部基本类和切丛纤维的生成元同时反号，其乘积不变。因此局部贡献仍是第十六章定义的向量场指标，再由\cref{g2:thm:poincare-hopf}得到 \(\chi(M)\)。
+
+\begin{example}\label{g2:ex:euler-tangent-spheres-surfaces}
+	设 \(\omega_n\in H^n(S^n;\mathbb Z)\) 满足 \(\langle\omega_n,[S^n]\rangle=1\)。球面的胞腔计算给出 \(\chi(S^n)=1+(-1)^n\)，所以
+	\[
+		e_{\mathrm{Th}}(\mathrm TS^n)=\bigl(1+(-1)^n\bigr)\omega_n.
+	\]
+	特别地，\(e_{\mathrm{Th}}(\mathrm TS^2)=2\omega_2\)，与\cref{g2:exm:tangent-sphere-torus-obstruction}中两个极点各有指标 \(+1\) 的计算相符。对亏格为 \(g\) 的闭定向曲面 \(\Sigma_g\)，若 \(\langle\omega,[\Sigma_g]\rangle=1\)，同理有
+	\[
+		e_{\mathrm{Th}}(\mathrm T\Sigma_g)=(2-2g)\omega.
+	\]
+	环面情形为零；乘积坐标方向同时给出了一个处处非零向量场。
+\end{example}
 
 \subsection{零 Euler 类不足以消除所有高阶障碍}
 \label{g2:subsec:2003:04}
-待撰写
+Euler 类精确记录球面丛的首障碍。当定向 \(r\) 维丛的 CW 底空间维数不超过 \(r\) 时，\(r\ge2\)，它为零就足以找到非零截面：\cref{g2:thm:sphere-primary-euler}先将截面延到 \(r\) 骨架，而此时已没有更高胞腔。秩二还有一个特殊性：纤维为 \(S^1\)，所有更高同伦群消失，所以任意 CW 底空间上的定向二维丛都满足“Euler 类为零当且仅当存在非零截面”。更高秩与更高维底空间允许继续出现障碍。
+
+\begin{example}\label{g2:ex:zero-euler-no-section}
+	在 \(S^4\) 上存在一个定向实三维丛 \(E\)，满足 \(e_{\mathrm{Th}}(E)=0\)，却没有处处非零截面。
+
+	将 \(S^4\) 写成两个四维圆盘沿 \(S^3\) 粘合。在赤道上用\cref{g2:lem:quaternion-rotation-cover}的映射
+	\[
+		\rho:S^3\longrightarrow\operatorname{SO}(3),\qquad
+		\rho(q)(v)=qvq^{-1}\quad(v\in\operatorname{Im}\mathbb H)
+	\]
+	粘合两个平凡三维丛。映射 \(\rho\) 是二重覆盖，纤维离散；覆盖的同伦群提升或\cref{g2:thm:fibration-homotopy-sequence}说明
+	\[
+		\rho_*:\pi_3(S^3)\xrightarrow{\ \cong\ }\pi_3(\operatorname{SO}(3)).
+	\]
+	由\cref{g2:lem:sphere-degree-classification}，左端为 \(\mathbb Z\)，恒等映射代表生成元。因此 \([\rho]=\rho_*[\operatorname{id}_{S^3}]\ne0\)。球面上的粘合分类\cref{g2:thm:clutching-classification}随即表明 \(E\) 不平凡。另一方面，\(H^3(S^4;\mathbb Z)=0\)，所以它的 Euler 类必为零。
+
+	若 \(E\) 有非零截面，归一化后可分裂出一条定向平凡线，写成 \(E\cong\varepsilon^1\oplus F\)，其中正交补 \(F\) 是定向二维丛。二维定向丛在 \(S^4\) 上的粘合类属于
+	\[
+		\pi_3(\operatorname{SO}(2))=\pi_3(S^1)=0.
+	\]
+	最后一个等号可由通用覆盖 \(\mathbb R\to S^1\) 得到：三维球面的映射及其同伦都能提升到可缩的 \(\mathbb R\)。因此 \(F\) 平凡，进而 \(E\) 平凡，与刚才的计算矛盾。这证明了所求结论。
+
+	这个例子中还可以看到后一个障碍的形状。取固定单位向量 \(v_0\in S^2\)，在一个半球上选常值单位截面；转到另一半球的平凡化后，赤道上的截面为
+	\[
+		S^3\longrightarrow S^2,\qquad q\longmapsto\rho(q)v_0
+	\]
+	或按粘合方向取其逆变换。稳定 \(v_0\) 的旋转群是 \(\operatorname{SO}(2)\)，故有纤维丛 \(\operatorname{SO}(2)\to\operatorname{SO}(3)\to S^2\)。其长正合列和 \(\pi_2(S^1)=\pi_3(S^1)=0\) 说明 \(\pi_3(\operatorname{SO}(3))\to\pi_3(S^2)\) 是同构。于是上述赤道映射非零伦，不能延入第二个四维圆盘。逆变换只把非零生成元反号，不影响失败的结论。首障碍所在的三次上同调已经为零，阻止截面延拓的正是这个四维胞腔上的 \(\pi_3(S^2)\) 障碍。
+\end{example}
+
+这个反例把两种结论分开了：Euler 类给出首个可计算的消失条件；要获得处处非零截面，还须把截面继续延过余下的全部胞腔。底空间维数、球面纤维的高阶同伦群以及已经选择的低维截面，共同决定后面的延拓问题。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

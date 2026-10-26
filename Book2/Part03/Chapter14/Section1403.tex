@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 14.3 横截逆像和参数定理
 % 纲要位置：几何学计划纲要.md，第 1556 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,179 @@
 \section{横截逆像和参数定理}
 \label{g2:sec:1403}
 
-待撰写
+正则值定理处理方程 \(f(x)=y\)：微分能够独立改变全部输出时，解集有预期维数。现在把一个点 \(y\) 换成子流形 \(S\subset N\)，研究条件 \(f(x)\in S\)。沿着 \(S\) 的输出变化不会破坏这个条件，真正需要控制的是离开 \(S\) 的方向。横截性正是把“全部输出方向”改成“全部法方向”后的满秩条件。
 
 \subsection{线性横截条件与切空间}
 \label{g2:subsec:1403:01}
-待撰写
+
+设 \(S\subset N\) 是无边界光滑流形 \(N\) 的嵌入子流形。在 \(y\in S\) 处，用包含映射的微分把 \(\mathrm{T}_yS\) 视为 \(\mathrm{T}_yN\) 的子空间。商空间 \(\mathrm{T}_yN/\mathrm{T}_yS\) 记录法方向：两个向量只要相差一个切于 \(S\) 的向量，就代表同一个法方向。这里还没有选择内积，因而“法”暂时不表示垂直。
+
+\begin{definition}[横截性]\label{g2:def:transversality}
+	设 \(M,N\) 为无边界光滑流形，\(S\subset N\) 为无边界嵌入子流形，\(f:M\to N\) 光滑。若对每个 \(x\in f^{-1}(S)\) 都有
+	\begin{equation}\label{g2:eq:transverse-linear-condition}
+		\mathrm{d}f_x(\mathrm{T}_xM)+\mathrm{T}_{f(x)}S=\mathrm{T}_{f(x)}N,
+	\end{equation}
+	则称 \(f\) 与 \(S\) \term[hengjiexing]{横截}[transverse]，记作 \(f\pitchfork S\)。若只在 \(x\in K\cap f^{-1}(S)\) 处要求此等式，就说 \(f\) 在 \(K\subset M\) 上与 \(S\) 横截。
+\end{definition}
+
+横截条件等价于商映射
+\[
+	\overline{\mathrm{d}f_x}:\mathrm{T}_xM\longrightarrow\mathrm{T}_{f(x)}N/\mathrm{T}_{f(x)}S,
+	\qquad v\longmapsto[\mathrm{d}f_x(v)]
+\]
+满射。因而只需补足 \(S\) 缺少的方向；\(\mathrm{d}f_x\) 本身可以不满射。当 \(S=\{y\}\) 时，\(\mathrm{T}_yS=0\)，这个条件恰好说 \(y\) 是正则值。淹没与每个嵌入子流形都横截；若 \(f(M)\cap S=\varnothing\)，横截条件也成立，因为没有需要检查的点。记号中的横截并不要求相交。
+
+\begin{example}\label{g2:exm:transverse-curves}
+	取 \(S=\mathbb R\times\{0\}\subset\mathbb R^2\)。映射 \(f(t)=(t,t)\) 在唯一交点处给出斜向量 \((1,1)\)，它与 \(S\) 的切向量 \((1,0)\) 张成平面，所以 \(f\pitchfork S\)。映射 \(g(t)=(t,t^2)\) 在零处只给出 \((1,0)\)，与 \(S\) 相切，故不横截。映射 \(h(t)=(t,t^2+1)\) 的像避开 \(S\)，也与 \(S\) 横截。\cref{g2:fig:transversality-curves}将这三种情形并排画出。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter14-Transversality}
+	\caption[横截、相切与空交]{横轴表示子流形 \(S\)，曲线表示映射的像。左图在交点处补足法方向；中图的切线仍落在 \(S\) 内；右图没有交点，也满足横截条件。}
+	\label{g2:fig:transversality-curves}
+\end{figure}
+
+若 \(A,B\subset N\) 都是嵌入子流形，对包含映射 \(i_A:A\hookrightarrow N\) 使用上述定义，就得到两子流形的横截条件
+\[
+	\mathrm{T}_yA+\mathrm{T}_yB=\mathrm{T}_yN\qquad(y\in A\cap B).
+\]
+它对 \(A,B\) 对称。两条空间曲线在 \(\mathbb R^3\) 中若有交点，两个一维切空间之和至多二维，所以不可能横截；相交曲线在图上看起来“交叉”，还不足以判断横截性，环境维数也参与条件。
 
 \subsection{逆像的维数及法丛}
 \label{g2:subsec:1403:02}
-待撰写
+
+第一卷第11章第4节的嵌入子流形坐标切片说明：若 \(S\) 的余维为 \(c\)，那么在每个 \(y\in S\) 附近，可以找一个淹没 \(q:V\to\mathbb R^c\)，使 \(S\cap V=q^{-1}(0)\)。具体说，选取把 \(S\) 写成最后 \(c\) 个坐标为零的适配坐标，再令 \(q\) 取出这 \(c\) 个坐标。于是 \(f(x)\in S\) 局部变成 \(q(f(x))=0\)。
+
+\begin{theorem}[横截逆像]\label{g2:thm:transverse-preimage}
+	设 \(M^m,N^n\) 为无边界光滑流形，\(S\subset N\) 为余维 \(c\) 的无边界嵌入子流形，\(f:M\to N\) 光滑且 \(f\pitchfork S\)。则非空的 \(W=f^{-1}(S)\) 是 \(M\) 的 \((m-c)\) 维嵌入子流形，并且
+	\begin{equation}\label{g2:eq:transverse-preimage-tangent}
+		\mathrm{T}_xW=\{v\in\mathrm{T}_xM:\mathrm{d}f_x(v)\in\mathrm{T}_{f(x)}S\}.
+	\end{equation}
+	若 \(c>m\)，则 \(W=\varnothing\)。若 \(S\) 在 \(N\) 中闭，则 \(W\) 在 \(M\) 中闭。
+\end{theorem}
+\begin{proof}
+	在 \(y=f(x)\in S\) 附近取上述 \(q\)。因为 \(\ker\mathrm{d}q_y=\mathrm{T}_yS\)，横截条件等价于 \(\mathrm{d}(q\circ f)_x\) 满射。为看清这一步，任取 \(a\in\mathbb R^c\)，先用 \(q\) 为淹没找到 \(u\in\mathrm{T}_yN\) 满足 \(\mathrm{d}q_y(u)=a\)，再由横截性把 \(u\) 写成 \(\mathrm{d}f_x(v)+w\)，其中 \(w\in\mathrm{T}_yS\)。于是 \(a=\mathrm{d}(q\circ f)_x(v)\)。反过来，若这个复合满射，对任意 \(u\in\mathrm{T}_yN\) 选择 \(v\) 满足 \(\mathrm{d}(q\circ f)_x(v)=\mathrm{d}q_y(u)\)，便有 \(u-\mathrm{d}f_x(v)\in\mathrm{T}_yS\)。
+
+	因此 \(0\) 是 \(q\circ f:f^{-1}(V)\to\mathbb R^c\) 的正则值。第一卷第11章第4节的正则水平集定理给出局部的 \((m-c)\) 维坐标切片，切空间为 \(\ker\mathrm{d}(q\circ f)_x\)，即\eqref{g2:eq:transverse-preimage-tangent}。这些局部切片都取 \(M\) 的子空间拓扑，且坐标转换来自环境坐标的限制，故拼成所述嵌入子流形。若 \(c>m\)，从 \(m\) 维空间到 \(c\) 维空间不可能满射，所以不存在原像点。最后，\(S\) 闭时由 \(f\) 连续得到 \(W\) 闭。
+\end{proof}
+
+例如，两张在 \(N^n\) 中横截相交的子流形 \(A^a,B^b\)，其交非空时维数为 \(a+b-n\)，且在交点处
+\[
+	\mathrm{T}_y(A\cap B)=\mathrm{T}_yA\cap\mathrm{T}_yB.
+\]
+这是将定理用于 \(i_A:A\hookrightarrow N\) 的直接结果。横截条件保证方程提供了独立约束；一个余维 \(c\) 的目标子流形，恰好在源中施加 \(c\) 个独立方程。
+
+\ProseParagraphBreak
+
+切空间公式还可以记录随点变化的法方向。对嵌入子流形 \(S\subset N\)，定义其\term[facong]{法丛}[normal bundle]为商向量丛
+\[
+	\nu_N S\coloneqq\mathrm{T}N|_S/\mathrm{T}S.
+\]
+在适配坐标中，这个商丛由最后 \(c\) 个坐标方向给出局部标架；换坐标诱导光滑可逆的商空间变换，因而确实定义了秩 \(c\) 的光滑向量丛。若选取 Riemann 度量，正交投影将此商丛识别为 \((\mathrm{T}S)^\perp\)，但商丛的定义本身不依赖度量。
+
+\begin{proposition}[逆像的法丛]\label{g2:prop:transverse-normal-bundle}
+	在\cref{g2:thm:transverse-preimage}的条件下，令 \(\bar f=f|_W:W\to S\)。微分诱导规范的光滑向量丛同构
+	\[
+		\nu_M W\longrightarrow\bar f^{\,*}\nu_N S,
+		\qquad[v]\longmapsto[\mathrm{d}f(v)].
+	\]
+	等价地，有短正合列
+	\[
+		0\longrightarrow\mathrm{T}W\longrightarrow\mathrm{T}M|_W
+		\xrightarrow{\ \overline{\mathrm{d}f}\ }\bar f^{\,*}\nu_N S\longrightarrow0.
+	\]
+\end{proposition}
+\begin{proof}
+	由\eqref{g2:eq:transverse-preimage-tangent}，\(\overline{\mathrm{d}f_x}\) 的核恰为 \(\mathrm{T}_xW\)，横截性又保证它满射。线性代数的商空间同构定理逐点给出所述同构。它们还须组成光滑丛映射：在源与目标的适配坐标中，微分由光滑矩阵表示，取法方向就是取相应的商矩阵，因而随点光滑。取商后的矩阵为可逆的 \(c\) 阶矩阵，其逆由伴随矩阵除以非零行列式给出，亦光滑。整个定义只使用微分与自然商映射，所以与坐标无关。
+\end{proof}
+
+由此可见，横截逆像除了继承预期的维数，也继承目标子流形的法方向。例如，若 \(S\) 的法丛已经给定定向，就可以通过这个同构给 \(W\) 的法丛定向。后面的相交数构造将使用这项信息。
 
 \subsection{由总体映射到几乎处处参数}
 \label{g2:subsec:1403:03}
-待撰写
+
+一个指定映射可能不横截。给它增加几个可自由调节的参数后，参数方向有机会补足原来缺少的法方向。例如
+\[
+	F:\mathbb R\times\mathbb R\longrightarrow\mathbb R,
+	\qquad F(a,t)=t^2-a.
+\]
+固定 \(a=0\) 时，\(F_0(t)=t^2\) 与 \(\{0\}\) 不横截；总体映射却处处是淹没，因为 \(\partial F/\partial a=-1\)。下面的定理把这种可调节性转化为关于单个参数的结论。
+
+\begin{theorem}[参数横截性]\label{g2:thm:parametric-transversality}
+	设 \(P,M,N\) 为无边界光滑流形，\(S\subset N\) 为无边界嵌入子流形，\(F:P\times M\to N\) 光滑。若 \(F\pitchfork S\)，则对几乎处处的 \(a\in P\)，切片映射 \(F_a:M\to N\)，\(F_a(x)=F(a,x)\)，满足 \(F_a\pitchfork S\)。这里的例外集在 \(P\) 的每张坐标图内都为 Lebesgue 零测集；特别地，好参数在 \(P\) 中稠密。
+\end{theorem}
+\begin{proof}
+	先把所有满足约束的参数与源点放在一起。由\cref{g2:thm:transverse-preimage}，
+	\[
+		Z=F^{-1}(S)\subset P\times M
+	\]
+	是光滑嵌入子流形。考虑投影 \(\pi:Z\to P\)，\(\pi(a,x)=a\)。我们证明：\(a\) 是 \(\pi\) 的正则值，当且仅当 \(F_a\pitchfork S\)。这样就能将横截性问题交给\cref{g2:thm:sard}。
+
+	固定 \((a,x)\in Z\)，令 \(y=F(a,x)\)、\(Q=\mathrm{T}_yN/\mathrm{T}_yS\)。把总体微分送到这个商空间，分别记参数方向与源方向的部分为
+	\[
+		B:\mathrm{T}_aP\longrightarrow Q,\qquad
+		A:\mathrm{T}_xM\longrightarrow Q.
+	\]
+	于是总体微分为 \((u,v)\mapsto Bu+Av\)。总体横截性表示 \(\operatorname{im}B+\operatorname{im}A=Q\)，而切空间公式给出
+	\[
+		\mathrm{T}_{(a,x)}Z=\{(u,v):Bu+Av=0\}.
+	\]
+	投影微分 \(\mathrm{d}\pi_{(a,x)}\) 满射，等价于每个 \(u\) 都能配一个 \(v\)，使 \(Bu+Av=0\)，即 \(\operatorname{im}B\subset\operatorname{im}A\)。结合总体的满射性，这恰好等价于 \(\operatorname{im}A=Q\)，也就是 \(F_a\) 在 \(x\) 处与 \(S\) 横截。对该参数下的所有 \(x\) 同时检查，就得到所需等价；若纤维为空，两边的条件都成立。
+
+	Sard 定理说明 \(\pi\) 的临界值集为零测集，故其补集中的所有参数都横截。任意非空坐标开集都有正测度，不可能整个包含在例外集中，所以好参数稠密。零维参数空间中，Sard 的结论表示没有坏参数，此时上述线性证明也直接给出每个切片横截。
+\end{proof}
+
+上述证明使用的不是 \(F\) 的正则值，而是约束流形 \(Z\) 到参数空间的投影的正则值。正则值条件保证：改变参数以后，可以同时改变源点来补偿约束的变化。这正是把总体可调节性传到单个切片的步骤。横截逆像和参数定理也可参看\cite[第6章，第143--146页]{Lee2012Smooth}。
+
+\begin{example}\label{g2:exm:parametric-parabola}
+	回到 \(F(a,t)=t^2-a\)，约束流形 \(Z\) 是参数平面中的抛物线 \(a=t^2\)，投影为 \(\pi(t)=t^2\)。它只有一个临界值 \(a=0\)。当 \(a>0\) 时，两个零点 \(\pm\sqrt a\) 处导数非零；当 \(a<0\) 时，没有零点；两类参数都满足横截性。\(a=0\) 是两个零点合并的时刻。参数定理说明坏参数集很小，却并不声称所有参数都好，也不保证不同好参数的原像具有相同的连通分支数。
+\end{example}
 
 \subsection{稠密性、剩余性和泛型的区别}
 \label{g2:subsec:1403:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+参数定理使用有限维参数空间的测度；“映射经过任意小扰动就能横截”则使用函数空间的拓扑。要把这两种表述衔接起来，先需要一个稳定性事实：已经在紧集上满足的横截条件，可以承受足够小的一阶扰动。
+
+\begin{proposition}[紧集上的横截开放性]\label{g2:prop:transversality-open-on-compact}
+	设 \(M,N\) 为无边界光滑流形，\(S\subset N\) 为闭的无边界嵌入子流形，\(K\subset M\) 紧。若光滑映射 \(f:M\to N\) 在 \(K\) 上与 \(S\) 横截，则 \(f\) 有一个弱 \(C^1\) 邻域，其中每个光滑映射在 \(K\) 上仍与 \(S\) 横截。特别地，当 \(M\) 紧时，全部 \(C^1\) 横截映射构成 \(C^1(M,N)\) 中的开集。
+\end{proposition}
+\begin{proof}
+	对每个 \(x\in K\)，区分两种情形。若 \(f(x)\notin S\)，因 \(S\) 闭，可取 \(x\) 的相对紧邻域 \(U_x\)，使 \(f(\overline U_x)\) 落在 \(N\setminus S\) 中；充分小的 \(C^0\) 扰动在较小闭邻域上仍避开 \(S\)。这一控制可用覆盖该紧像的有限张坐标图表达。
+
+	若 \(f(x)\in S\)，取适配坐标及局部定义函数 \(q:V\to\mathbb R^c\)。横截性使 \(\mathrm{D}(q\circ f)\) 的某个 \(c\) 阶子式在 \(x\) 非零。缩小相对紧的 \(U_x\)，可使 \(f(\overline U_x)\subset V\)，且这个子式的绝对值在 \(\overline U_x\) 上有正下界。对 \(g\) 在此紧集上的值与一阶导数施加足够小的坐标误差，就能保持 \(g(\overline U_x)\subset V\) 并使同一个子式仍非零。因此 \(q\circ g\) 在这里为淹没，尤其在 \(g^{-1}(S)\cap U_x\) 上满足横截条件。
+
+	这些邻域覆盖 \(K\)。取有限子覆盖，再同时施加相应的有限个紧集 \(C^1\) 条件，便得到所需弱 \(C^1\) 邻域。取 \(K=M\) 得最后结论；该证明只涉及一阶导数，因而也适用于 \(C^1\) 映射。
+\end{proof}
+
+闭性在这里用来阻止新的交点从 \(S\) 的遗漏极限点附近出现。例如 \(S=\{1,1/2,1/3,\ldots\}\subset\mathbb R\) 是非闭的零维嵌入子流形。从单点流形到 \(\mathbb R\) 的映射 \(f(*)=0\) 避开 \(S\)，因而横截；任意接近它的某个常值映射 \(f_j(*)=1/j\) 却不横截。这个例子即使源紧，开放性仍然失效。
+
+\ProseParagraphBreak
+
+源的紧性与所选拓扑也须匹配。映射 \(f(x)=x\) 从 \(\mathbb R\) 到自身与 \(\{0\}\) 横截。取光滑函数 \(\rho\)，使其在零附近等于 \(1\)，在 \([-1,1]\) 外为零，令
+\[
+	g_j(x)=x\bigl(1-\rho(x-j)\bigr).
+\]
+在每个固定紧集上，\(g_j\) 最终与 \(f\) 完全相同，所以 \(g_j\to f\) 于弱 \(C^\infty\) 拓扑；但 \(g_j\) 在 \(j\) 附近恒为零，均不横截。紧集上的开放性无法一次控制逃往无穷远处的交点。
+
+\begin{definition}[稠密与剩余]\label{g2:def:generic-residual}
+	在拓扑空间 \(X\) 中，若 \(A\) 与每个非空开集相交，则称 \(A\) \term[choumi]{稠密}[dense]。若 \(A\) 包含一个可数个开稠密集的交，则称 \(A\) 为\term[shengyuji]{剩余集}[residual set]。一个性质在剩余集上成立时，通常称其为\term[fanxing]{泛型}[generic]性质，使用时须同时说明空间及其拓扑。
+\end{definition}
+
+稠密性保证任意小的邻域里有好对象，剩余性则记录可数个开稠密要求能够同时成立。在 Baire 空间中，每个可数开稠密交都稠密。例如 \(\mathbb R\) 具有这个性质：给定非空开区间及开稠密集 \(U_1,U_2,\ldots\)，依次在前一个区间内部与 \(U_j\) 的交中选非空闭区间，令长度趋零；实数的完备性给出一个属于所有区间的点。这个嵌套区间论证说明了完备性如何使可数条件同时实现。一般拓扑空间未必有此性质：在 \(\mathbb Q\) 的相对拓扑中，枚举其点为 \(q_1,q_2,\ldots\)，每个 \(\mathbb Q\setminus\{q_j\}\) 都开且稠密，交却为空。
+
+\ProseParagraphBreak
+
+对光滑映射空间，本章使用的具体结论是：若 \(M,N\) 无边界，\(S\subset N\) 是闭的无边界嵌入子流形，则
+\[
+	\mathcal T_S=\{f\in C^\infty(M,N):f\pitchfork S\}
+\]
+在弱 \(C^\infty\) 拓扑及\secref{g2:sec:1401}定义的强 \(C^\infty\) 拓扑中都稠密且为剩余集。稠密性由下一节的\cref{g2:thm:relative-transversality}证明：其中取固定闭集为空，便能在任意给定的强邻域内得到横截映射。剩余性的推导则很短。取紧集穷尽 \(K_1\subset K_2\subset\cdots\)，\(\bigcup_jK_j=M\)，令
+\[
+	\mathcal U_j=\{f:f\text{ 在 }K_j\text{ 上与 }S\text{ 横截}\}.
+\]
+由\cref{g2:prop:transversality-open-on-compact}，每个 \(\mathcal U_j\) 在这两种拓扑中都开；全局横截映射的稠密性又使每个 \(\mathcal U_j\) 稠密。最后 \(\mathcal T_S=\bigcap_j\mathcal U_j\)。这里稠密性有单独的扰动证明，不需要先对整个流形映射空间证明一个 Baire 定理。
+
+\ProseParagraphBreak
+
+“几乎处处”与“泛型”也不是同一个量词。将有理数枚举为 \(q_i\)，对每个 \(k\) 取以这些点为中心的开区间，使总长度小于 \(2^{-k}\)，其并 \(U_k\) 开且稠密。于是 \(G=\bigcap_kU_k\) 是稠密剩余集，却有测度零，因为它包含在每个总长度小于 \(2^{-k}\) 的 \(U_k\) 中。相应地，\(\mathbb R\setminus G\) 为满测集，却是可数个闭且无内点的集合之并。函数空间中的泛型结论不附带一个未指定的概率分布；参数横截定理的几乎处处结论则明确使用有限维参数坐标中的 Lebesgue 测度。

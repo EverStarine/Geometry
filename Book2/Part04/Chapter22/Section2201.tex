@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 22.1 不变多项式与曲率
 % 纲要位置：几何学计划纲要.md，第 1852 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,232 @@
 \section{不变多项式与曲率}
 \label{g2:sec:2201}
 
-待撰写
+曲率在每张局部标架中是一张二形式矩阵，换标架时按共轭变化。矩阵的某个分量因而不能直接定义底空间上的标量形式；迹、行列式这类不随共轭改变的表达却有机会粘合。接下来的问题是：怎样把普通矩阵多项式作用到二形式上，又为什么所得形式一定闭？前一个问题由极化和楔积回答，后一个问题则由不变性与 Bianchi 恒等式共同解决。
 
 \subsection{对称不变多项式及极化}
 \label{g2:subsec:2201:01}
-待撰写
+先把需要的代数输入单独写清。设 \(G\) 为有限维实 Lie 群，Lie 代数为 \(\mathfrak g\)，取值域 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。即使取复值，下文也把 \(\mathfrak g\) 视为实向量空间，所用多项式及多重线性映射在实变量上展开；对复 Lie 代数也可另取复多项式。本文的矩阵例子包括 \(\operatorname{GL}(r,\mathbb C)\)、\(\operatorname U(r)\) 和 \(\operatorname{SO}(r)\)。
+
+\begin{definition}\label{g2:def:invariant-polynomial}
+	设 \(k\ge1\)。若次数为 \(k\) 的齐次多项式 \(P:\mathfrak g\to\mathbb K\) 满足
+	\[
+		P(\operatorname{Ad}_gX)=P(X)\qquad(g\in G,\ X\in\mathfrak g),
+	\]
+	就称 \(P\) 为 \(\operatorname{Ad}_G\)\term[bubianduoxiangshi]{不变多项式}[invariant polynomial]。常数视为次数零的不变多项式，全部此类多项式组成分次代数 \(I^*(G;\mathbb K)\)。
+\end{definition}
+
+次数为 \(k\) 指 \(P(tX)=t^kP(X)\)，这里同时要求 \(P\) 确实是坐标中的多项式。矩阵群的伴随作用为共轭，因此 \(\operatorname{tr}(X^k)\) 是不变多项式。写
+\[
+	\det(I+tX)=\sum_{j=0}^r e_j(X)t^j,
+\]
+则每个系数 \(e_j\) 也不变，且次数为 \(j\)。例如
+\[
+	e_1(X)=\operatorname{tr}X,\qquad
+	e_2(X)=\frac12\bigl((\operatorname{tr}X)^2-\operatorname{tr}(X^2)\bigr).
+\]
+第二式可从行列式的二阶项看出：它是所有主二阶子式之和，而每个非对角乘积在 \(\operatorname{tr}(X^2)\) 中出现两次。这些系数随后将产生各阶陈形式。
+
+\ProseParagraphBreak
+
+要把 \(P\) 作用于形式，先把一个 \(k\) 次表达改写成接受 \(k\) 个线性输入的表达。例如 \(\operatorname{tr}(X^2)\) 对应 \((X,Y)\mapsto\operatorname{tr}(XY)\)。一般情形有同样的唯一构造。
+
+\begin{proposition}\label{g2:prop:polarization-invariance}
+	设 \(P:\mathfrak g\to\mathbb K\) 为次数 \(k\ge1\) 的齐次多项式，其中 \(\mathfrak g\) 是有限维实 Lie 代数，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。则存在唯一的对称 \(k\) 重实线性映射，也记为 \(P\)，使 \(P(X,\ldots,X)=P(X)\)。它由
+	\begin{equation}\label{g2:eq:invariant-polarization}
+		P(X_1,\ldots,X_k)
+		=\frac1{k!}\left.\frac{\partial^k}{\partial t_1\cdots\partial t_k}
+		P\!\left(\sum_{j=1}^k t_jX_j\right)\right|_{t_1=\cdots=t_k=0}
+	\end{equation}
+	给出。若原多项式 \(\operatorname{Ad}_G\) 不变，则极化后同时作用于全部输入仍不变，且
+	\begin{equation}\label{g2:eq:infinitesimal-polynomial-invariance}
+		\sum_{j=1}^kP(X_1,\ldots,[Y,X_j],\ldots,X_k)=0
+		\qquad(Y,X_1,\ldots,X_k\in\mathfrak g).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	在任一线性坐标中，将 \(P\) 展成次数 \(k\) 的单项式之和。把 \(\sum t_jX_j\) 代入后，\(t_1\cdots t_k\) 的系数在每个 \(X_j\) 中恰取一次坐标，因而对每个输入线性；互换两个下标不改变这个系数，所以它对称。若全部输入等于 \(X\)，齐次性使被微分的式子等于 \((t_1+\cdots+t_k)^kP(X)\)，其中 \(t_1\cdots t_k\) 的系数是 \(k!P(X)\)。这证明所给构造的对角值正确。
+
+	反过来，任一对称 \(k\) 重线性映射 \(B\) 的对角多项式在 \(\sum t_jX_j\) 处展开时，\(t_1\cdots t_k\) 的系数为 \(k!B(X_1,\ldots,X_k)\)。所以对角值唯一决定全部输入值，证明唯一性。这个构造称为\term[jihua]{极化}[polarization]。
+
+	若原式不变，把 \(\operatorname{Ad}_gX_j\) 代入极化公式，线性性使它等于先对 \(\sum t_jX_j\) 作伴随作用，再使用原式的不变性。因此极化后仍不变。最后令 \(g=\exp(tY)\)，对
+	\[
+		P(\operatorname{Ad}_{\exp(tY)}X_1,\ldots,\operatorname{Ad}_{\exp(tY)}X_k)
+		=P(X_1,\ldots,X_k)
+	\]
+	在 \(t=0\) 求导，利用第一卷第16.1节“伴随微分”给出的 \(\left.\frac{\mathrm d}{\mathrm dt}\right|_0\operatorname{Ad}_{\exp(tY)}X_j=[Y,X_j]\)，便得式\eqref{g2:eq:infinitesimal-polynomial-invariance}。该结论适用于这里的任意有限维实 Lie 群，将群的共轭作用在恒等元处求导就得到 Lie 括号。
+\end{proof}
+
+例如 \(P(X)=\operatorname{tr}(X^k)\) 的极化为
+\[
+	P(X_1,\ldots,X_k)=\frac1{k!}\sum_{\sigma\in S_k}
+	\operatorname{tr}(X_{\sigma(1)}\cdots X_{\sigma(k)}).
+\]
+一般矩阵不能任意交换次序，所以需要这个对称化；在 \(k=2\) 时，迹的循环性质使两项相等，公式才简化为 \(\operatorname{tr}(X_1X_2)\)。如果 \(G\) 不连通，式\eqref{g2:eq:infinitesimal-polynomial-invariance}只检验恒等连通分支上的不变性，定义仍须要求全部 \(g\in G\)。后面下降到整个丛时，用到的正是这项完整条件。
 
 \subsection{丛值外乘与迹}
 \label{g2:subsec:2201:02}
-待撰写
+先在一个平凡化域 \(U\) 上工作。对矩阵值形式 \(\alpha=(\alpha^i{}_j)\in\Omega^p(U;\operatorname{End}(\mathbb K^r))\) 和 \(\beta\in\Omega^q(U;\operatorname{End}(\mathbb K^r))\)，规定
+\begin{equation}\label{g2:eq:matrix-form-product}
+	(\alpha\wedge\beta)^i{}_j=\sum_a\alpha^i{}_a\wedge\beta^a{}_j.
+\end{equation}
+它同时进行标量形式的楔积和矩阵的乘法。结合律由两种乘法的结合律给出，但通常没有 \(\alpha\wedge\beta=(-1)^{pq}\beta\wedge\alpha\)，因为矩阵系数还保留次序。记 \(\operatorname{tr}\alpha=\sum_i\alpha^i{}_i\)，则
+\begin{equation}\label{g2:eq:graded-trace-cyclicity}
+	\operatorname{tr}(\alpha\wedge\beta)=(-1)^{pq}\operatorname{tr}(\beta\wedge\alpha).
+\end{equation}
+证明只需在 \(\sum_{i,a}\alpha^i{}_a\wedge\beta^a{}_i\) 中交换两个标量形式，再交换求和下标。特别地，任意矩阵值一形式 \(A\) 都满足 \(\operatorname{tr}(A\wedge A)=0\)，而矩阵 \(A\wedge A\) 本身可以非零。
+
+\ProseParagraphBreak
+
+对于一般 Lie 代数，以一组基 \(E_a\) 写 \(\alpha=\sum_a\alpha^aE_a\)、\(\beta=\sum_b\beta^bE_b\)，定义
+\[
+	[\alpha\wedge\beta]=\sum_{a,b}\alpha^a\wedge\beta^b[E_a,E_b].
+\]
+这是双线性张量运算，换基不改变结果。矩阵 Lie 代数中，它等于 \(\alpha\wedge\beta-(-1)^{pq}\beta\wedge\alpha\)，所以对一形式 \(A\) 有 \(\tfrac12[A\wedge A]=A\wedge A\)。同样，对上小节的极化 \(P\) 和次数分别为 \(q_1,\ldots,q_k\) 的 \(\mathfrak g\) 值形式，定义
+\begin{equation}\label{g2:eq:polynomial-on-bundle-forms}
+	P(\alpha_1,\ldots,\alpha_k)
+	=\sum_{a_1,\ldots,a_k}P(E_{a_1},\ldots,E_{a_k})
+	\alpha_1^{a_1}\wedge\cdots\wedge\alpha_k^{a_k}.
+\end{equation}
+右边是次数 \(q_1+\cdots+q_k\) 的标量形式。交换相邻两个输入会出现 \((-1)^{q_iq_{i+1}}\)；因此对二形式 \(F\)，各输入可以直接交换，记
+\[
+	P(F)\coloneqq P(F,\ldots,F)\in\Omega^{2k}(U;\mathbb K).
+\]
+这里 \(k\) 是多项式次数，\(2k\) 才是外微分形式的次数。次数零的多项式直接给出常数零形式。
+
+\ProseParagraphBreak
+
+现在恢复丛的局部数据。光滑主右 \(G\) 丛的局部截面取 \(s_j=s_i g_{ij}\)，联络与曲率的表达为
+\begin{equation}\label{g2:eq:cw-local-connection-curvature}
+	\begin{gathered}
+		A_j=\operatorname{Ad}_{g_{ij}^{-1}}A_i+g_{ij}^*\theta^L,\\
+		F_i=\mathrm dA_i+\frac12[A_i\wedge A_i],\qquad
+		F_j=\operatorname{Ad}_{g_{ij}^{-1}}F_i,
+	\end{gathered}
+\end{equation}
+其中 \(\theta^L_g=(\mathrm dL_{g^{-1}})_g\) 是用左平移识别群上切空间所得的 \(\mathfrak g\) 值一形式。第一卷第18.2节“主联络的局部数据”和第18.3节“曲率的水平性与局部表达”已对任意有限维实 Lie 群证明这些公式：联络多出换截面本身的导数，曲率则是水平等变的，所以换截面时只剩伴随作用。矩阵群中，\(g^*\theta^L=g^{-1}\mathrm dg\)，故
+\[
+	A'=g^{-1}Ag+g^{-1}\mathrm dg,\qquad
+	F=\mathrm dA+A\wedge A,\qquad F'=g^{-1}Fg.
+\]
+对向量丛的行标架 \(e'=eg\)，截面写成 \(s=ev\)，这与 \(\nabla s=e(\mathrm dv+Av)\) 的约定一致。
+
+\begin{proposition}\label{g2:prop:covariant-form-calculus}
+	设 \(P\to M\) 为光滑主右 \(G\) 丛并带联络，其中 \(G\) 为有限维实 Lie 群。对伴随丛值 \(p\) 形式 \(\alpha\)，局部公式
+	\begin{equation}\label{g2:eq:adjoint-covariant-form-derivative}
+		\mathrm D_A\alpha=\mathrm d\alpha+[A\wedge\alpha]
+	\end{equation}
+	粘成整体的伴随丛值 \((p+1)\) 形式，并满足 \(\mathrm D_A^2\alpha=[F\wedge\alpha]\)。矩阵群情形，在全部自同态丛值形式上还可写为
+	\[
+		\mathrm D_A\alpha=\mathrm d\alpha+A\wedge\alpha-(-1)^p\alpha\wedge A,
+	\]
+	且对次数 \(p,q\) 的形式 \(\alpha,\beta\)，有
+	\[
+	\begin{gathered}
+		\mathrm D_A(\alpha\wedge\beta)
+		=(\mathrm D_A\alpha)\wedge\beta+(-1)^p\alpha\wedge\mathrm D_A\beta,\\
+		\mathrm d\operatorname{tr}\alpha=\operatorname{tr}(\mathrm D_A\alpha).
+	\end{gathered}
+	\]
+\end{proposition}
+\begin{proof}
+	若 \(\alpha'=\operatorname{Ad}_{g^{-1}}\alpha\)，令 \(\theta=g^*\theta^L\)。对随点变化的伴随作用求导，得到
+	\[
+		\mathrm d\alpha'=\operatorname{Ad}_{g^{-1}}\mathrm d\alpha-[\theta\wedge\alpha'].
+	\]
+	可以先对零次函数沿一条曲线求导，再对每个标量形式系数使用外微分乘积法则得到此式。代入 \(A'=\operatorname{Ad}_{g^{-1}}A+\theta\)，含 \(\theta\) 的两项抵消，故 \(\mathrm D_{A'}\alpha'=\operatorname{Ad}_{g^{-1}}\mathrm D_A\alpha\)，正是整体伴随丛值形式所需的变换律。
+
+	为算平方，用分次乘积法则展开：\(\mathrm d[A\wedge\alpha]=[\mathrm dA\wedge\alpha]-[A\wedge\mathrm d\alpha]\)。于是
+	\[
+		\mathrm D_A^2\alpha=[\mathrm dA\wedge\alpha]+[A\wedge[A\wedge\alpha]]
+		=\left[\left(\mathrm dA+\tfrac12[A\wedge A]\right)\wedge\alpha\right].
+	\]
+	最后一步是分次 Jacobi 恒等式；它由普通 Lie 代数 Jacobi 恒等式对基分量展开得到。具体而言，将两次出现的 \(A\) 的下标互换并相加，内层两项组合成 \([[A,A],\alpha]\)，因而出现系数 \(1/2\)。这证明平方公式。
+
+	矩阵乘积公式则直接展开两边。\(\mathrm d\) 的两项给出通常的分次 Leibniz 公式，右边中间的两个 \(\alpha\wedge A\wedge\beta\) 项系数相反，剩下左、右各一个联络项。最后，式\eqref{g2:eq:graded-trace-cyclicity}给出 \(\operatorname{tr}(A\wedge\alpha)=(-1)^p\operatorname{tr}(\alpha\wedge A)\)，所以 \(\mathrm D_A\alpha\) 的迹中联络项也相消。
+\end{proof}
+
+\(\mathrm D_A^2\) 通常不为零，其偏离恰由曲率控制；因此这里尚未得到一个新的上链复形。我们将利用不变多项式把丛值形式变成普通形式，在这一标量结果上使用通常的外微分 \(\mathrm d\)。
 
 \subsection{Bianchi 恒等式给出的闭性}
 \label{g2:subsec:2201:03}
-待撰写
+第一卷已证明曲率的协变导数为零，即 Bianchi 恒等式。\footnote{Luigi Bianchi（1856--1928），意大利数学家，研究微分几何、曲面变换与数论。}为看清它怎样使标量表达闭，先恢复局部抵消，再把不变性作用于联络项。
+
+\begin{proposition}\label{g2:prop:cw-bianchi}
+	设 \(A\) 是有限维实 Lie 代数值联络一形式，\(F=\mathrm dA+\tfrac12[A\wedge A]\)。则
+	\begin{equation}\label{g2:eq:cw-bianchi}
+		\mathrm D_AF=\mathrm dF+[A\wedge F]=0.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	分次反交换律与微分法则给出
+	\[
+		\mathrm d[A\wedge A]=-2[A\wedge\mathrm dA].
+	\]
+	而 \([A\wedge[A\wedge A]]=0\)：在任意三个切向输入上展开，它等于普通 Jacobi 恒等式三项之和的两倍。因此
+	\[
+		\mathrm dF=-[A\wedge\mathrm dA],\qquad
+		[A\wedge F]=[A\wedge\mathrm dA],
+	\]
+	两式相加为零。矩阵情形还可逐项看见抵消：
+	\[
+	\begin{aligned}
+		\mathrm dF&=\mathrm dA\wedge A-A\wedge\mathrm dA,\\
+		A\wedge F-F\wedge A&=A\wedge\mathrm dA-\mathrm dA\wedge A.
+	\end{aligned}
+	\]
+	其中三次项 \(A\wedge A\wedge A\) 彼此相消。这也是第一卷第18.3节所证恒等式在当前约定下的局部表达。
+\end{proof}
+
+\begin{lemma}\label{g2:lem:invariant-form-differential}
+	设 \(G\) 为有限维实 Lie 群，\(P\in I^k(G;\mathbb K)\)，其中 \(k\ge1\)。在光滑主右 \(G\) 丛的一张局部截面中，取联络形式 \(A\) 和次数为 \(q_j\) 的伴随丛值形式 \(\alpha_j\)。则
+	\begin{equation}\label{g2:eq:invariant-form-differential}
+		\mathrm dP(\alpha_1,\ldots,\alpha_k)
+		=\sum_{j=1}^k(-1)^{q_1+\cdots+q_{j-1}}
+		P(\alpha_1,\ldots,\mathrm D_A\alpha_j,\ldots,\alpha_k).
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	先把右边的 \(\mathrm D_A\alpha_j\) 换成 \(\mathrm d\alpha_j\)。式\eqref{g2:eq:polynomial-on-bundle-forms}逐项使用外微分乘积法则，就得到左边。故只需证明新增的全部括号项之和为零。
+
+	将 \(A\) 的一个分量写为 \(aY\)，其中 \(a\) 是标量一形式，\(Y\in\mathfrak g\)；将其余输入的一个分量写为 \(\eta_jX_j\)。第 \(j\) 个括号贡献中，把 \(a\) 从第 \(j\) 个位置移到最前，产生符号 \((-1)^{q_1+\cdots+q_{j-1}}\)，恰好抵消式中已有的同一符号。于是这些项共有形式因子 \(a\wedge\eta_1\wedge\cdots\wedge\eta_k\)，其系数之和为
+	\[
+		\sum_j P(X_1,\ldots,[Y,X_j],\ldots,X_k)=0,
+	\]
+	最后使用式\eqref{g2:eq:infinitesimal-polynomial-invariance}。对所有分量求和，即得所需恒等式。
+\end{proof}
+
+\begin{theorem}\label{g2:thm:chern-weil-closed}
+	设 \(G\) 为有限维实 Lie 群，\(P\to M\) 为带光滑联络的主右 \(G\) 丛，\(M\) 为有限维、Hausdorff、第二可数光滑流形。若 \(f\in I^k(G;\mathbb K)\)，则局部曲率表达 \(f(F_i)\) 粘成 \(M\) 上的整体闭 \(2k\) 形式。矩阵丛情形特别有
+	\[
+		\mathrm d\operatorname{tr}(F^k)=0,
+		\qquad \mathrm d e_k(F)=0,
+	\]
+	其中 \(F^k=F\wedge\cdots\wedge F\)，\(e_k(F)\) 是 \(\det(I+tF)\) 中 \(t^k\) 的系数。
+\end{theorem}
+\begin{proof}
+	若 \(k=0\)，所得形式为常数，结论直接成立。对 \(k\ge1\)，曲率变换式及完整的伴随不变性给出 \(f(F_j)=f(F_i)\)，所以各张图的标量形式粘合。\cref{g2:lem:invariant-form-differential}中令全部输入为 \(F\)。因为每项次数为二，微分公式的全部符号为正；极化对称性再给出
+	\[
+		\mathrm df(F)=k f(\mathrm D_AF,F,\ldots,F)=0,
+	\]
+	末项由\cref{g2:prop:cw-bianchi}为零。因此粘合所得形式闭。\(\operatorname{tr}(X^k)\) 与 \(e_k(X)\) 都是前面已经验证的不变多项式，代入即可。行列式在这里也合法，因为各矩阵项都是二形式，彼此属于外代数的偶次交换部分。
+\end{proof}
+
+对两个不变多项式 \(f,h\)，还有 \((fh)(F)=f(F)\wedge h(F)\)。这可以把形式分量视为交换的偶次变量，直接在普通多项式恒等式中代入，也可由极化展开逐项核对。由此，不变多项式的乘法恰好变成闭形式的楔积，所增加的只是次数翻倍。
+
+\begin{example}\label{g2:exm:curvature-trace-zero-nonflat}
+	在 \(\mathbb R^2\) 的平凡复秩二丛上，取
+	\[
+		A=X\,\mathrm dx+Y\,\mathrm dy,\qquad
+		X=\begin{pmatrix}0&1\\0&0\end{pmatrix},\quad
+		Y=\begin{pmatrix}0&0\\1&0\end{pmatrix}.
+	\]
+	矩阵系数不变，所以 \(\mathrm dA=0\)，但
+	\[
+		F=[X,Y]\,\mathrm dx\wedge\mathrm dy
+		=\begin{pmatrix}1&0\\0&-1\end{pmatrix}\mathrm dx\wedge\mathrm dy\ne0.
+	\]
+	其迹为零；次数至少四的曲率标量形式又因底空间二维而为零。这张联络有非零曲率，迹型闭形式却全部为零。闭形式提取的是曲率的某些不变组合，而非恢复全部曲率矩阵。
+\end{example}
+
+本节已把每个不变多项式变成一个闭形式。它是否给出只依赖丛的上同调类，还需要比较同一张丛上不同联络的结果；下一节将构造两种曲率形式之差的一个明确原始形式。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 20.2 Thom 同构的证明
 % 纲要位置：几何学计划纲要.md，第 1779 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,161 @@
 \section{Thom 同构的证明}
 \label{g2:sec:2002}
 
-待撰写
+一根实 \(r\) 维纤维的相对上同调只在 \(r\) 次留下一个生成元。Thom 同构要证明的是：这些生成元沿底空间拼起来后，只会把底空间的上同调整体升高 \(r\) 次；纤维方向在绕圈时的反转，则由定向局部系统记录。证明分为局部乘积、有限覆盖粘合和一般 CW 基空间三个层次。第三步还会说明，无穷多个胞腔不会额外要求一个未经证明的极限交换。
+
+本节固定含幺交换环 \(R\)，取实秩 \(r\ge1\) 向量丛 \(p:E\to B\)。记 \(D=D(E)\)、\(S=S(E)\)，并沿用 \(\mathcal O_{E,R}\) 表示纤维定向局部系统。没有选定全局定向时，Thom 类取值于 \(p^*\mathcal O_{E,R}\)；选定 \(R\) 定向后，才将它写成普通系数类 \(u_E\)。
 
 \subsection{局部乘积上的杯积同构}
 \label{g2:subsec:2002:01}
-待撰写
+先把纤维固定为同一张圆盘。设 \(A\) 为一个空间，\(\mathcal L\) 为其上的 \(R\) 模局部系统，\(u_r\in H^r(D^r,S^{r-1};R)\) 在正向圆盘上取值为 \(1\)。考虑
+\begin{equation}\label{g2:eq:local-thom-map}
+	H^q(A;\mathcal L)\longrightarrow H^{q+r}(A\times D^r,A\times S^{r-1};\operatorname{pr}_A^*\mathcal L),
+	\qquad a\longmapsto a\times u_r.
+\end{equation}
+这里的乘积顺序是底空间在先、纤维在后，后面所有定向和符号都从这个顺序出发。
+
+\begin{lemma}\label{g2:lem:local-thom-isomorphism}
+	式\eqref{g2:eq:local-thom-map}对所有整数 \(q\) 都是同构，且等于 \(a\mapsto\operatorname{pr}_A^*a\smile\operatorname{pr}_{D^r}^*u_r\)。其中负次上同调约定为零；不要求 \(R\) 为域，也不要求 \(H^*(A;\mathcal L)\) 自由。
+\end{lemma}
+\begin{proof}
+	先取区间对 \((I,\partial I)\)。空间对 \((A\times I,A\times\partial I)\) 的长正合列中，限制映射在投影同伦等价给出的识别下为
+	\[
+		H^q(A;\mathcal L)\longrightarrow H^q(A;\mathcal L)\oplus H^q(A;\mathcal L),\qquad a\longmapsto(a,a).
+	\]
+	这个映射单射，其余核由两端值之差识别为 \(H^q(A;\mathcal L)\)。正合性于是给出升高一次的同构。区间按 \(0\) 到 \(1\) 定向时，连接映射把端值 \((0,1)\) 送到正生成元；外积的链公式说明，与它相差一个只依赖次数的符号的连接同构正是 \(a\mapsto a\times u_1\)，所以后者也是同构。
+
+	同一个论证适用于任意空间对 \((A,C)\)：只需把上述各群换为相对群，并将目标的子空间改为 \((C\times I)\cup(A\times\partial I)\)。逐次应用 \(r\) 次，得到与 \(r\) 个正向区间基本上同调类作外积的同构。正向立方体对 \((I^r,\partial I^r)\) 与 \((D^r,S^{r-1})\) 保向同胚，故得到式\eqref{g2:eq:local-thom-map}。
+
+	外积与杯积的关系来自第4章的 Alexander--Whitney 公式：先拉回两个因子，再按给定顺序作杯积，所得类就是外积。局部系数只沿 \(A\) 方向运输，区间方向的系数恒定，所以整个证明对 \(\mathcal L\) 同样成立。也可以用\cref{g2:thm:eilenberg-zilber}的相对链模型理解这一点：圆盘对的链复形链同伦等价于仅在 \(r\) 次有一个自由 \(R\) 项的复形，因而此处没有额外的 Tor 项。
+\end{proof}
+
+若 \(E|_A\) 平凡，选择一个纤维方向便得到局部 Thom 类 \(u_A=1\times u_r\)。反转所选方向使 \(u_A\) 变号，也使 \(\mathcal O_{E,R}\) 的局部基变号；两者相乘得到的扭系数类不变。这正是把局部类粘成规范 \(U_E\) 的理由。局部引理同时给出低次消失性：盘球丛对的上同调在低于 \(r\) 次时为零，\(r\) 次类则由每个连通分支上的纤维取值唯一决定。
 
 \subsection{Mayer–Vietoris 粘合}
 \label{g2:subsec:2002:02}
-待撰写
+设 \(B=A\cup C\) 是开覆盖，并假设已经在 \(A\)、\(C\)、\(A\cap C\) 上完成 Thom 类与同构的构造。两个局部 Thom 类在交集上相等，因为它们在每根纤维上的值都是定向系统的恒等元，而交集上的 Thom 同构说明这个条件唯一确定 \(r\) 次类。相对 Mayer--Vietoris 序列中的一段为
+\[
+	H^{r-1}(D_{A\cap C},S_{A\cap C};p^*\mathcal O_{E,R})
+	\longrightarrow H^r(D,S;p^*\mathcal O_{E,R})
+	\longrightarrow H^r(D_A,S_A;p^*\mathcal O_{E,R})\oplus H^r(D_C,S_C;p^*\mathcal O_{E,R}).
+\]
+左端等于 \(H^{-1}(A\cap C;R)=0\)。正合性既保证两个局部类能够粘合，也保证粘合唯一。局部系数的这条序列来自\secref{g2:sec:0502}的小上链短正合列；这里对盘丛及其球丛同时取限制，得到相对版本。
+
+记粘成的类为 \(U\)。对任意局部系统 \(\mathcal L\)，用
+\[
+	a\longmapsto p^*a\smile U
+\]
+比较底空间与盘球丛对的两条 Mayer--Vietoris 序列。目标系数是 \(p^*(\mathcal L\otimes_R\mathcal O_{E,R})\)。限制与这个映射交换，连接映射也交换：在小上链模型中，取一个表示 \(U\) 的整体闭上链，先把交集上的上链延拓到两边，再作余边界，有
+\[
+	\mathrm d(c\smile U)=\mathrm dc\smile U
+\]
+因为 \(\mathrm dU=0\)。Thom 类放在右边，使这里没有额外的次数符号。于是相邻四个竖直映射已是同构时，正合性与五引理给出中间的同构。
+
+\begin{proposition}\label{g2:prop:finite-cover-thom}
+	若 \(E\to B\) 有有限个平凡化开集覆盖，则存在唯一的规范扭 Thom 类，且与它作杯积给出所有局部系数下的 Thom 同构。
+\end{proposition}
+\begin{proof}
+	对平凡化开集个数归纳。一个开集时就是\cref{g2:lem:local-thom-isomorphism}。设前 \(N-1\) 个开集的并为 \(A\)，最后一个为 \(C\)。\(A\) 由归纳假设处理，\(C\) 平凡，而 \(A\cap C\) 被前 \(N-1\) 个开集与 \(C\) 的交覆盖，仍是一份至多含 \(N-1\) 个成员的平凡化覆盖。因此前面的粘合论证适用。归纳同时证明唯一性、低次消失性和全部系数下的同构。
+\end{proof}
+
+这个证明不要求交集可缩，也不要求存在良覆盖；交集只需继承丛的平凡化。紧 Hausdorff 底空间上的向量丛总能从平凡化覆盖中取出有限子覆盖，因此已经包含在命题中。对非紧底空间，则需要说明无穷拼接究竟如何控制。
 
 \subsection{一般基空间的有限维或穷竭控制}
 \label{g2:subsec:2002:03}
-待撰写
+现在设 \(B\) 为任意 CW 复形，允许无限维，也允许每一维有无限多个胞腔。由\cref{g2:lem:cw-paracompact-partitions}，它是仿紧 Hausdorff 空间，因而丛上有连续纤维度量。记 \(B^p\) 为 \(p\) 维骨架。
+
+\begin{theorem}[Thom 同构]\label{g2:thm:thom-isomorphism}
+	设 \(E\to B\) 为 CW 复形上的实秩 \(r\ge1\) 向量丛，\(R\) 为含幺交换环。存在唯一的类
+	\[
+		U_E\in H^r(D(E),S(E);p^*\mathcal O_{E,R}),
+	\]
+	其在每根纤维上的限制是\cref{g2:def:twisted-thom-class}规定的恒等元。对每个 \(R\) 模局部系统 \(\mathcal L\)，映射
+	\begin{equation}\label{g2:eq:twisted-thom-isomorphism}
+		\Phi_E:H^q(B;\mathcal L)\xrightarrow{\ \cong\ }
+		H^{q+r}(D(E),S(E);p^*(\mathcal L\otimes_R\mathcal O_{E,R})),
+		\qquad a\longmapsto p^*a\smile U_E
+	\end{equation}
+	为同构。选定 \(R\) 定向后，\(U_E\) 对应普通 Thom 类 \(u_E\)，公式化为
+	\[
+		\Phi_E(a)=p^*a\smile u_E:\ H^q(B;\mathcal L)\xrightarrow{\ \cong\ }H^{q+r}(D(E),S(E);p^*\mathcal L).
+	\]
+\end{theorem}
+\begin{proof}
+	先构造能够同时记录全部胞腔的相对模型。令
+	\[
+		F_{-1}=S(E),\qquad F_p=S(E)\cup D(E|_{B^p}).
+	\]
+	每个 \(p\) 胞腔的特征映射 \(\chi:D^p\to B^p\) 拉回一个可缩空间上的丛，由\cref{g2:cor:contractible-base-trivial-bundle}可平凡化。因而从 \(F_{p-1}\) 到 \(F_p\) 添加的块为
+	\[
+		\bigl(D^p\times D^r,(\partial D^p\times D^r)\cup(D^p\times S^{r-1})\bigr).
+	\]
+	这是一张 \((p+r)\) 维圆盘及其边界，内部对应底胞腔上范数小于一的向量。特征圆盘在边界上的丛坐标通过过渡函数附着；不同平凡化只改变这张附着映射的表达。
+
+	这些块给出 \((D(E),S(E))\) 的相对胞腔结构。其拓扑也与实际的盘丛拓扑相同：在丛图内，底空间的弱拓扑与紧圆盘纤维的乘积仍由特征圆盘的乘积检测。这里用的是\cref{g2:lem:grassmann-parameter-continuity}证明中的局部紧参数事实；\(D^r\) 紧，故不会把乘积误换成另一种拓扑。相对胞腔比较的证明只用逐层添加圆盘和切除，因此\cref{g2:thm:twisted-cellular-comparison}的相对论证同样适用，即使起始子空间 \(S(E)\) 没有预先选定胞腔结构。
+
+	给底胞腔定向，并在其特征圆盘上选一个纤维方向，乘积块按“底在先、纤维在后”定向。链的边界公式为
+	\[
+		\partial(c_p\times d_r)=(\partial c_p)\times d_r+(-1)^pc_p\times\partial d_r.
+	\]
+	第二项落在 \(S(E)\)，在相对链中为零。第一项在跨过附着处时还要运输纤维方向，因此其关联数正是底胞腔关联数乘以 \(\mathcal O_E\) 的运输符号。对任意局部系统 \(\mathcal K\)，得到上链复形的次数平移识别
+	\begin{equation}\label{g2:eq:thom-cellular-complex}
+		C^{p+r}_{\mathrm{cell}}(D(E),S(E);p^*\mathcal K)
+		\cong C^p_{\mathrm{cell}}(B;\mathcal K\otimes_R\mathcal O_{E,R}).
+	\end{equation}
+	两边的余边界在此识别下相同。换掉一个纤维方向时，乘积胞腔的方向及定向系统的坐标同时变号，所以识别不依赖这份辅助选择。这里每个次数的上链群是各胞腔系数的\emph{直积}；链的边界只含有限多个项，故对任意上链求值仍是有限和。
+
+	取 \(\mathcal K=\mathcal O_{E,R}\)，由\cref{g2:prop:bundle-orientation-square}的规范配对 \(\mathcal O_{E,R}\otimes_R\mathcal O_{E,R}\cong R\)，右边成为底空间的普通上链。常值零次上链 \(1\) 对应一个 \(r\) 次相对上链，其余边界为零；所表示的类记为 \(U_E\)。它在零胞腔的纤维上取规范值。任一点沿所在胞腔内的道路接到低维骨架，再逐次接到某个顶点；在道路拉回的平凡丛中，纤维限制按定向系统运输，所以全部纤维上的值均为规范值。反过来，\(r\) 次相对上链完全由零胞腔上的这些值确定，且低于 \(r\) 次没有相对胞腔，因此该类唯一。
+
+	还要证明这个上链同构确实由与 \(U_E\) 作杯积实现。对 \(B^p\) 与 \(B^{p-1}\) 的空间对，杯积给出
+	\[
+		H^q(B^p,B^{p-1};\mathcal L)\longrightarrow
+		H^{q+r}(D(E|_{B^p}),S(E|_{B^p})\cup D(E|_{B^{p-1}});p^*(\mathcal L\otimes_R\mathcal O_{E,R})).
+	\]
+	两个群分别只在 \(q=p\) 时非零。切除把它们识别为各胞腔贡献的直积；在每个块上，映射就是 \(a\mapsto a\times u_r\)，由\cref{g2:lem:local-thom-isomorphism}为同构，且将一个系数送到同一个系数。对于两条骨架长正合列，限制映射显然交换，连接映射仍因 \(U_E\) 是放在右侧的闭类而交换。由零骨架开始归纳并用五引理，便在每个有限维骨架上证明了所需的杯积同构；同一维含无限多个胞腔时，逐项同构取直积仍为同构。
+
+	最后固定 \(q\ge0\)。底空间的 \(H^q\) 由次数 \(q-1,q,q+1\) 的胞腔上链及两个余边界决定，所以限制到 \(B^{q+1}\) 不改变它。相对盘球丛的 \(H^{q+r}\) 由同样三层、整体升高 \(r\) 次的胞腔上链决定，也不因再加高维骨架而变化。故 \(B^{q+1}\) 上已证的同构就是 \(B\) 上的同构。\(q<0\) 时两边都由维数消失。这个论证既不要求胞腔可数，也没有把上同调与任意递增并直接交换。定向后的公式来自 \(\mathcal O_{E,R}\cong R\) 的系数识别。
+\end{proof}
+
+证明中的“有限控制”是固定上同调次数后只需有限多个\emph{维数层}，并不是说所有上同调类都支撑在有限子复形上。例如无穷多个圆周的楔和的一次上同调是 \(\prod_{j\ge1}R\)，一个类可以同时在无限多个圆周上非零。直接把有限子复形的上同调取直极限，只会保留有限支撑，得到错误的群。胞腔上链的直积正好保留了这部分信息。
+
+\ProseParagraphBreak
+
+若仿紧 Hausdorff 空间 \(B\) 具有 CW 同伦型，以上结论也适用。取同伦等价 \(h:K\to B\)，在 \(K\) 上对 \(h^*E\) 应用定理。由\cref{g2:thm:bundle-homotopy-invariance}，同伦逆及两条复合同伦提升为相应拉回丛的同构和同伦，从而盘球丛对也同伦等价；度量不同处使用\cref{g2:prop:thom-relative-models}的径向识别。将 \(U_{h^*E}\) 经这个同构运回即可。它的纤维限制仍为规范值，故与同伦模型及辅助选择无关。下一小节的自然性也可由同一纤维条件得到。
+
+特别取 \(R=\mathbb F_2\)，方向符号全部变为 \(1\)，任何实丛都具有规范的模二 Thom 类。\cref{g2:thm:thom-mod-two-preview}预告的存在性、唯一性与同构至此已证明；其乘积与拉回相容性接着由唯一性推出。
 
 \subsection{自然性与直和相容}
 \label{g2:subsec:2002:04}
-待撰写
+局部纤维上的规范值不仅构造了 Thom 类，也使其自然性几乎不再需要另选上链。这里仍须辨认直和时的相对空间对以及乘积顺序。
+
+\begin{proposition}\label{g2:prop:thom-naturality-sum}
+	设下述基空间为 CW 复形或仿紧 Hausdorff 的 CW 同伦型空间。
+	\begin{enumerate}
+		\item 对连续映射 \(f:A\to B\)，拉回丛的映射 \(\widehat f:(D(f^*E),S(f^*E))\to(D(E),S(E))\) 满足 \(\widehat f^*U_E=U_{f^*E}\)，其中定向局部系统按拉回识别。选定定向后，同一等式对 \(u_E\) 成立。
+		\item 若 \(B,C\) 为有限 CW 复形，对秩分别为 \(r,s\) 的实丛 \(E\to B\)、\(F\to C\)，外直和 \(E\boxplus F\to B\times C\) 的定向系统为 \(\mathcal O_{E,R}\boxtimes\mathcal O_{F,R}\)，其 Thom 类在乘积盘球模型中为 \(U_E\times U_F\)。
+		\item 对同一基空间上的 \(E,F\)，直和的 Thom 类是两份 Thom 类在纤维积模型中的相对杯积，纤维方向按 \(E\) 在先、\(F\) 在后选定。
+	\end{enumerate}
+	第二项也适用于 \(B\times C\) 本身满足 Thom 同构条件的情形；第三项不要求给 \(B\times B\) 选择拓扑模型。
+\end{proposition}
+\begin{proof}
+	拉回度量后，\(\widehat f\) 在每根纤维上就是相应圆盘对的线性等距同构。它把定向系统的恒等元拉回为恒等元，故第一项由 Thom 类的唯一性成立。若度量不同，径向变换给出相同的相对上同调识别。
+
+	第二项中，在 \(E\boxplus F\) 上暂取最大范数 \(\|(v,w)\|_{\max}=\max(\|v\|,\|w\|)\)。它的单位盘球对为
+	\[
+		\bigl(D(E)\times D(F),\ (S(E)\times D(F))\cup(D(E)\times S(F))\bigr).
+	\]
+	与通常平方和范数的模型由逐射线缩放同胚，且保持方向。相对外积 \(U_E\times U_F\) 在每个纤维上是两个规范生成元的外积，恰为按给定顺序定向的 \((r+s)\) 维圆盘的规范生成元。因此它是外直和的 Thom 类。
+
+	对第三项，直接使用同一底空间的纤维积盘球对。分别拉回 \(U_E\) 和 \(U_F\) 后，它们对“第一向量位于球面”和“第二向量位于球面”相对，杯积便对这两个子空间的并相对。每根纤维上的值为 \(u_r\times u_s\)，由唯一性得到直和的 Thom 类。在第二项也适用的场合，这个构造正是将外直和沿对角线拉回。
+\end{proof}
+
+\ProseParagraphBreak
+
+在定向情形，外直和的 Thom 同构还有一个需要记住的次数符号。若 \(a\in H^q(B;R)\)、\(b\in H^t(C;R)\)，则
+\begin{equation}\label{g2:eq:thom-external-sign}
+	\Phi_E(a)\times\Phi_F(b)=(-1)^{rt}\Phi_{E\boxplus F}(a\times b).
+\end{equation}
+因为左边的因子顺序是 \(a,u_E,b,u_F\)，右边是 \(a,b,u_E,u_F\)，需要把次数 \(r\) 的 \(u_E\) 越过次数 \(t\) 的 \(b\)。这并不改变 Thom 类自身的乘积公式：取 \(a=b=1\) 时符号就是正号。它提醒我们，纤维的升次数作用与普通杯积一样遵守分次交换规则。
+
+系数环同态 \(R\to R'\) 也把规范纤维值 \(1\) 送到 \(1\)，故将 \(U_{E,R}\) 送到 \(U_{E,R'}\)。特别是整系数 Thom 类约化模二得到模二 Thom 类。这一相容性使下一章能够在同一几何对象上比较整数 Euler 类、模二运算与特征类。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

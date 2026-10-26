@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 20.1 Thom 空间及定向
 % 纲要位置：几何学计划纲要.md，第 1773 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,180 @@
 \section{Thom 空间及定向}
 \label{g2:sec:2001}
 
-待撰写
+一根实 \(r\) 维纤维本身可缩，它的普通上同调看不出维数；把零点以外的部分作为相对项后，便出现一个 \(r\) 维生成元。本章把这个局部生成元沿整张向量丛组织起来。首先需要说明采用哪一个相对空间，以及纤维坐标反转方向时生成元如何变化。
 
 \subsection{盘丛、球丛与相对模型}
 \label{g2:subsec:2001:01}
-待撰写
+本章设 \(B\) 为 CW 复形，\(p:E\to B\) 为秩 \(r\ge1\) 的实向量丛，零截面记为 \(s_0\)。\cref{g2:lem:cw-paracompact-partitions}保证 \(B\) 仿紧；将局部 Euclid 内积按从属单位分解求和，就得到连续纤维内积。这是\secref{g2:sec:1902}构造丛嵌入时已经使用的方法，局部有限性使它同样适用于无限覆盖。以下固定这样一个内积，并记 \(\|v\|\) 为相应范数。
+
+\begin{definition}\label{g2:def:disk-sphere-thom}
+	向量丛 \(E\) 的\term[pancong]{盘丛}[disk bundle]、\term[qiucong]{球丛}[sphere bundle]分别为
+	\[
+		D(E)=\{v\in E:\|v\|\le1\},\qquad S(E)=\{v\in E:\|v\|=1\}.
+	\]
+	把整个 \(S(E)\) 压成同一个基点 \(*\)，所得带基点空间
+	\[
+		\operatorname{Th}(E)=D(E)/S(E)
+	\]
+	称为 \(E\) 的\term[thom-kongjian]{Thom 空间}[Thom space]。另记 \(E^\times=E\setminus s_0(B)\)。
+\end{definition}
+
+在局部正交标架中，盘丛和球丛分别是 \(U\times D^r\) 与 \(U\times S^{r-1}\)。Thom 商把所有这些纤维的边界共同送到 \(*\)；各纤维内部的点仍然保留。所以它同时记住纤维的维数及纤维之间的粘合方式。对基底只有一点的情形，这一构造就是 \(D^r/S^{r-1}\cong S^r\)。
+
+\begin{proposition}\label{g2:prop:thom-relative-models}
+	对上述向量丛，\((D(E),S(E))\) 是 NDR 对。包含映射
+	\[
+		(D(E),S(E))\longrightarrow(E,E^\times)
+	\]
+	在同调和上同调中诱导同构，系数可以取从 \(B\) 拉回的局部系统。对常系数环 \(R\)，商映射还诱导自然同构
+	\begin{equation}\label{g2:eq:thom-relative-quotient}
+		\widetilde H^k(\operatorname{Th}(E);R)\xrightarrow{\ \cong\ }H^k(D(E),S(E);R).
+	\end{equation}
+	约化同调也有相同的商空间比较。
+\end{proposition}
+\begin{proof}
+	先给出控制球面附近的径向同伦。对 \(v\in D(E)\)，令 \(\rho=\|v\|\)，并置
+	\[
+		u(v)=\min\{1,2(1-\rho)\},\qquad
+		H(v,t)=\left(1-t+\frac{t}{\max\{\rho,1/2\}}\right)v.
+	\]
+	分母处处为正，故包括零截面在内该式连续。其范数始终不超过一；当 \(\rho=1\) 时同伦固定 \(v\)，当 \(u(v)<1\) 时有 \(\rho>1/2\)，从而 \(\|H(v,1)\|=1\)。又 \(u^{-1}(0)=S(E)\)。这逐项满足\cref{g2:def:NDR-pair}的条件，所以球丛包含是\cref{g2:thm:NDR-cofibration}所述的闭余纤维化。
+
+	径向映射 \(v\mapsto v/\max\{1,\|v\|\}\) 给出 \(E\) 到 \(D(E)\) 的强形变收缩；线性插值保持每根纤维，且固定盘丛。同样，\(v\mapsto v/\|v\|\) 给出 \(E^\times\) 到 \(S(E)\) 的强形变收缩。因此包含映射在两个空间和两个相对子空间的同调、上同调上分别诱导同构。把这些映射放入对的长正合列，五引理给出所需的相对同构。所有同伦均保持 \(p(v)\) 不变，故拉回系数的识别也是固定的；局部系数情形使用\cref{g2:thm:twisted-homotopy-invariance}的同伦不变性。
+
+	最后核对商空间比较。取球面附近的开领圈
+	\[
+		N=\{v\in D(E):\|v\|>1/2\}.
+	\]
+	上面的同伦限制为 \(N\) 到 \(S(E)\) 的强形变收缩，且在商上把 \(N/S(E)\) 收缩到 \(*\)。诱导同伦连续，是因为商映射与局部紧区间 \(I\) 的乘积仍为商映射，见\cref{g2:lem:quotient-interval}。于是长正合列给出
+	\[
+		\begin{aligned}
+			H^k(D(E),N;R)&\xrightarrow{\ \cong\ }H^k(D(E),S(E);R),\\
+			H^k(\operatorname{Th}(E),N/S(E);R)&\cong\widetilde H^k(\operatorname{Th}(E);R).
+		\end{aligned}
+	\]
+	商映射在 \(D(E)\setminus S(E)\) 上是到 \(\operatorname{Th}(E)\setminus\{*\}\) 的同胚。分别从上述两个对中切除 \(S(E)\) 和 \(\{*\}\)，所得对因而同胚。切除条件成立：这两个闭集分别包含于开集 \(N\) 和 \(N/S(E)\) 内。由\cref{g2:prop:relative-cohomology-exactness}的上同调切除，两个对的上同调相同。合并这些同构便得到式\eqref{g2:eq:thom-relative-quotient}，而且合成映射正是商映射诱导的映射。同调的证明逐步相同，所用切除是\cref{g2:thm:singular-excision}。
+\end{proof}
+
+盘球丛模型适合使用长正合列，\((E,E^\times)\) 适合讨论零截面附近的几何，而 Thom 空间把相对问题写成一个带基点空间的约化上同调。以上论证说明这些模型为何给出同一份常系数信息。局部系数将在相对模型上保留：从 \(B\) 拉回的局部系统一般不能在压缩整个 \(S(E)\) 后成为商空间上的局部系统。
+
+\ProseParagraphBreak
+
+内积的选择不会改变 Thom 空间的同胚类型。若两组范数为 \(\|\cdot\|_0,\|\cdot\|_1\)，则
+\[
+	v\longmapsto
+	\begin{cases}
+		\dfrac{\|v\|_0}{\|v\|_1}v,&v\ne0,\\
+		0,&v=0
+	\end{cases}
+\]
+把第一组盘球丛送到第二组盘球丛，交换下标便得逆。在任何局部标架中，两组正定内积在每个基点附近具有统一的范数比较常数，所以该映射在零截面也连续。它因此诱导 Thom 空间的同胚。若 \(B\) 紧，则 \(D(E)\) 紧，且 \(v\mapsto v/(1-\|v\|)\) 将开盘丛同胚到 \(E\)，这时 \(\operatorname{Th}(E)\) 正是总空间 \(E\) 的一点紧化。非紧基底时使用上述盘球丛商定义；\cref{g2:ex:noncompact-thom-not-compactification}将具体比较两种构造。
 
 \subsection{局部纤维生成元}
 \label{g2:subsec:2001:02}
-待撰写
+固定 \(b\in B\)，记 \(D_b=D(E)\cap E_b\)、\(S_b=S(E)\cap E_b\)。相对球的计算给出
+\begin{equation}\label{g2:eq:fiber-orientation-group}
+	H_j(D_b,S_b;\mathbb Z)\cong
+	\begin{cases}
+		\mathbb Z,&j=r,\\
+		0,&j\ne r.
+	\end{cases}
+\end{equation}
+这也可由 \(D_b/S_b\cong S^r\) 及\cref{g2:thm:sphere-homology}得到。选一组有序线性坐标，就选出顶维相对基本类 \(o_b=[D_b,S_b]\)；反转坐标方向时它变成 \(-o_b\)。由上一小节的相对比较，它也确定 \(H_r(E_b,E_b\setminus\{0\};\mathbb Z)\) 的一个生成元。
+
+\ProseParagraphBreak
+
+对于任意 Abel 群 \(A\)，上同调万有系数定理给出自然识别
+\begin{equation}\label{g2:eq:fiber-top-cohomology-hom}
+	H^r(D_b,S_b;A)\cong\operatorname{Hom}_{\mathbb Z}\bigl(H_r(D_b,S_b;\mathbb Z),A\bigr),
+\end{equation}
+其余次数的相对上同调为零。这里顶维相对同调是自由群，且其余相对同调消失，所以万有系数定理中的 \(\operatorname{Ext}\) 项为零，见式\eqref{g2:eq:uct-cohomology}。当 \(A=\mathbb Z\) 时，与 \(o_b\) 对偶的生成元 \(u_b\) 由
+\[
+	\langle u_b,o_b\rangle=1
+\]
+刻画。方向改变使 \(o_b\) 和 \(u_b\) 同时变号。这一配对将是把局部方向转成 Thom 类的标准化条件。
+
+\ProseParagraphBreak
+
+球面取向采用外法向在前的边界约定。长正合列的边界映射于是满足 \(\partial o_b=[S_b]\)。秩一时这个公式读成
+\[
+	\partial[-1,1]=[1]-[-1]\in\widetilde H_0(S^0;\mathbb Z).
+\]
+若球面的约化顶维上同调类 \(\omega_b\) 在 \([S_b]\) 上取值一，则对的连接映射满足 \(\delta\omega_b=u_b\)：在链上有 \(\langle\delta\omega_b,o_b\rangle=\langle\omega_b,\partial o_b\rangle=1\)。这个约定固定了后面球丛长正合列中纤维积分的正负号。
+
+\begin{definition}\label{g2:def:bundle-orientation-system}
+	向量丛 \(E\) 的\term[xiangliangcong-dingxiang-jubuxitong]{定向局部系统}[orientation local system]记为 \(\mathcal O_E\)，其在 \(b\) 处的群为
+	\[
+		\mathcal O_{E,b}=H_r(E_b,E_b\setminus\{0\};\mathbb Z).
+	\]
+	局部平凡化给出这些群之间的识别，沿路径依次使用局部识别便得到输运。若可为每个 \(b\) 选取生成元 \(o_b\in\mathcal O_{E,b}\)，使它们在局部平凡化中相容，则称 \(E\) \term[xiangliangcong-kedingxiang]{可定向}[orientable]；这样一组选择称为 \(E\) 的一个定向。
+\end{definition}
+
+这一定向描述每根向量空间纤维的方向，基底本身不需要是流形，也不需要已有定向。它与\chapref{g2:ch:05}中流形的定向局部系统使用同一种局部同调思想；此处取的是纤维在零点的局部同调。
+
+\begin{proposition}\label{g2:prop:bundle-orientation-transport}
+	若两组局部坐标的过渡函数为 \(g_{\alpha\beta}:U_\alpha\cap U_\beta\to\operatorname{GL}_r(\mathbb R)\)，则 \(\mathcal O_E\) 的相应过渡函数为
+	\[
+		\operatorname{sgn}\det g_{\alpha\beta}\in\{1,-1\}.
+	\]
+	这些函数定义秩一的整数局部系统，其路径输运只依赖端点固定的路径同伦类。在每个路径连通分支上，\(E\) 可定向当且仅当所有闭路在 \(\mathcal O_E\) 上的输运都是恒等。
+\end{proposition}
+\begin{proof}
+	先考察一个可逆线性映射 \(A:\mathbb R^r\to\mathbb R^r\)。极分解把它写成正交矩阵与正定矩阵的乘积；正定矩阵可沿 \((1-t)P+tI\) 连到恒等。行列式为正的正交矩阵由二维平面旋转组成，可以把各旋转角连续缩到零。因此 \(\det A>0\) 时，\(A\) 与恒等映射通过可逆线性映射同伦，在相对顶维同调上作用为 \(+1\)。若 \(\det A<0\)，先复合一次坐标反射便化为前一种情形；反射在相对基本类上作用为 \(-1\)，与\cref{g2:prop:reflection-antipodal-degree}的球面度计算一致。故所求作用正是 \(\operatorname{sgn}\det A\)。
+
+	行列式连续且不为零，所以其符号在交集上局部常值。过渡函数的乘法关系经行列式符号仍成立，因而确实得到局部系统。用这些局部常值识别沿路径输运，细分路径或改变局部平凡化均由过渡关系保证不改变合成；对路径同伦，把参数方形细分到每个小方形落入一个平凡化域，小方形内的输运相消，得到端点固定的同伦不变性。这也就是\secref{g2:sec:0501}中局部系统的路径描述。
+
+	若已有相容生成元，任何闭路都把它送回自身，故输运恒等。反过来，在一个分支中固定 \(b_0\) 及一个生成元 \(o_{b_0}\)，沿从 \(b_0\) 到 \(b\) 的路径输运它。两条路径之差是一条闭路，所以假设保证所得 \(o_b\) 与路径无关；局部平凡化中的输运恒定，又保证这些生成元相容。CW 复形局部道路连通，因此上述逐分支的构造给出所需定向。
+\end{proof}
+
+\begin{example}\label{g2:exm:complex-bundle-real-orientation}
+	每张复秩 \(m\) 向量丛的底层实秩 \(2m\) 丛都有自然定向。对一组复基 \(e_1,\ldots,e_m\)，取实有序基
+	\[
+		(e_1,\mathrm i e_1,e_2,\mathrm i e_2,\ldots,e_m,\mathrm i e_m).
+	\]
+	若复坐标变换矩阵为 \(A\)，其底层实矩阵的行列式为 \(\det_{\mathbb R}A=|\det_{\mathbb C}A|^2>0\)。这个公式可在复化后看出：实矩阵的复化分解为 \(A\) 与 \(\overline A\) 两块，行列式为 \(\det A\cdot\overline{\det A}\)。因此更换复标架不会改变上述实方向，局部方向自动粘合。
+\end{example}
 
 \subsection{系数环及扭定向系统}
 \label{g2:subsec:2001:03}
-待撰写
+取交换有幺环 \(R\)，并令
+\[
+	\mathcal O_{E,R}=\mathcal O_E\otimes_{\mathbb Z}R.
+\]
+这是秩一自由 \(R\) 模的局部系统，过渡函数仍为 \(\pm1\)，现将它们视作 \(R\) 中的单位。一个 \(R\) 定向是 \(\mathcal O_{E,R}\) 与常局部系统 \(\underline R\) 的同构，等价地，是一组相容的纤维 \(R\) 模基元。整数定向经系数变换给出 \(R\) 定向；若 \(2=0\) 于 \(R\)，则两个整数方向都给出同一个模 \(R\) 基元，故每张实向量丛都有规范的 \(R\) 定向。特别地，模二系数完全消除了方向反转造成的符号。
+
+\begin{example}\label{g2:exm:mobius-orientation-system}
+	设 \(L\to S^1\) 为 Möbius 线丛，其矩形模型沿两端按 \((0,t)\sim(1,-t)\) 粘合。沿基圆一周，纤维的相对基本类变成其相反数，所以 \(\mathcal O_L\) 的单值作用为 \(-1\)，它没有整数定向。若一个类 \(u\in H^1(D(L),S(L);\mathbb Z)\) 在每根纤维上都是生成元，则沿基圆输运后其限制必须仍为自身，同时又要变号。这要求一个整数生成元等于其相反数，矛盾。用 \(\mathbb F_2\) 系数时两个符号相同，方向障碍消失。\secref{g2:sec:1304}已经利用这一模二 Thom 类研究了平方运算，见\cref{g2:exm:mobius-thom-square}。
+\end{example}
+
+为了对所有实丛统一处理整数系数，可以让系数也随纤维方向一起变化。固定 \(b\)，式\eqref{g2:eq:fiber-top-cohomology-hom}给出规范识别
+\begin{equation}\label{g2:eq:twisted-fiber-endomorphism}
+	H^r(D_b,S_b;\mathcal O_{E,R,b})
+	\cong\operatorname{Hom}_{\mathbb Z}(\mathcal O_{E,b},\mathcal O_{E,R,b})
+	\cong\operatorname{End}_R(\mathcal O_{E,R,b}).
+\end{equation}
+第二个同构把群同态唯一延拓为 \(R\) 线性映射。右端有一个不依赖任何基元的元素：恒等映射。整数系数时它就是 \(\operatorname{id}_{\mathcal O_{E,b}}\)；一般系数时，在中间一项对应 \(m\mapsto m\otimes1\)。
+
+\begin{definition}\label{g2:def:twisted-thom-class}
+	类
+	\[
+		U_E\in H^r(D(E),S(E);p^*\mathcal O_{E,R})
+	\]
+	若在每个纤维上的限制都对应式\eqref{g2:eq:twisted-fiber-endomorphism}中的恒等映射，就称为 \(E\) 的\term[niu-thom-lei]{扭 Thom 类}[twisted Thom class]。需要区分系数环时记为 \(U_{E,R}\)。若选定 \(E\) 的 \(R\) 定向 \(\mathcal O_{E,R}\cong\underline R\)，由它得到的常系数类记为 \(u_E\)，称为这个定向的 Thom 类；其纤维限制在选定的相对基本类上取值一。
+\end{definition}
+
+这一标准化把两次变号配成了方向无关的条件。具体地，选一个整数方向 \(o_b\)，并令 \(u_b(o_b)=1\)，则局部扭类写成 \(u_b\otimes(o_b\otimes1)\)。更换方向时两个因子都变号，张量保持不变；在式\eqref{g2:eq:twisted-fiber-endomorphism}中，这正是同一个恒等映射。在 Möbius 例中，它也沿闭路保持不变。局部条件能否确定一个全局上同调类，需要进一步的粘合证明；下一节的\cref{g2:thm:thom-isomorphism}将证明这样的类存在、唯一，并说明乘以它为何给出次数平移。
+
+\begin{proposition}\label{g2:prop:bundle-orientation-square}
+	存在规范的局部系统同构
+	\begin{equation}\label{g2:eq:bundle-orientation-square}
+		\mathcal O_{E,R}\otimes_R\mathcal O_{E,R}\xrightarrow{\ \cong\ }\underline R.
+	\end{equation}
+	在任一整数方向 \(o_b\) 下，它将 \((o_b\otimes a)\otimes(o_b\otimes c)\) 送到 \(ac\)。
+\end{proposition}
+\begin{proof}
+	每个纤维都是秩一自由 \(R\) 模，所以该规则给出一个同构。把 \(o_b\) 换成 \(-o_b\) 时，同一元素的两个系数都变成相反数，乘积不变，故映射与方向选择无关。沿路径输运时，两个定向因子具有同一符号，其乘积为 \((\pm1)^2=1\)，因而这些纤维同构与输运相容，给出局部系统同构。
+\end{proof}
+
+这与\cref{g2:prop:orientation-square}中流形定向系统的平方配对是同一种构造。它解释了后面公式中为什么会出现一个或两个定向因子：乘一个扭 Thom 类会添上 \(\mathcal O_{E,R}\)，两个相同的定向因子则可按式\eqref{g2:eq:bundle-orientation-square}规范消去。此后的杯积按“底空间类在前、Thom 类在后”排列，记作 \(p^*a\smile U_E\)。这一顺序同时确定次数交换可能带来的符号。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 24.1 向量丛的群完备化
 % 纲要位置：几何学计划纲要.md，第 1927 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,215 @@
 \section{向量丛的群完备化}
 \label{g2:sec:2401}
 
-待撰写
+第19章把向量丛分类为到 Grassmann 空间的映射，却还没有把全部丛组织成一个可作减法的对象。直和是现成的加法，但一张正秩丛不可能通过直和得到零丛，因此通常没有逆元。本节把“比较两张丛的差”作为新的对象：增加同一张辅助丛不会改变差，稳定同构由此成为等式，张量积则成为乘法。后面正合列与周期性所计算的，正是这套稳定的丛信息。
 
 \subsection{\texorpdfstring{\(K^0\)、约化 \(K^0\) 与相对群}{K⁰、约化 K⁰ 与相对群}}
 \label{g2:subsec:2401:01}
-待撰写
+本节的底空间先取紧 Hausdorff 空间 \(X\)，丛取有限秩连续复向量丛。允许秩随连通分支变化；秩函数局部常值，紧性保证它只取有限多个值。记 \(\operatorname{Vect}_{\mathbb C}(X)\) 为这些丛的同构类所成集合，包含零丛。直和使它成为交换幺半群：运算满足结合律、交换律并有零元，但尚未保证逆元，也不能预先作消去。
+
+若把 \((E,F)\) 理解为形式差 \(E-F\)，那么 \((E\oplus G,F\oplus G)\) 应表示同一个差。不过只允许这种直接增添，还不足以让所有形式差自然组成群；下面的关系把所需稳定比较一次写全。
+
+\begin{definition}\label{g2:def:topological-k-zero}
+	对紧 Hausdorff 空间 \(X\)，在复向量丛对上规定
+	\[
+		(E,F)\sim(E',F')
+		\quad\Longleftrightarrow\quad
+		E\oplus F'\oplus G\cong E'\oplus F\oplus G
+	\]
+	对某张复向量丛 \(G\to X\) 成立。所得等价类集合记作 \(K^0(X)\)，称为 \(X\) 的复\term[tuopu-K-qun]{拓扑 K 群}[topological K-group]。丛对的类写作 \([E]-[F]\)，其中 \([E]\) 表示 \((E,0)\) 的类。运算为
+	\[
+		([E]-[F])+([E']-[F'])=[E\oplus E']-[F\oplus F'].
+	\]
+	这样的形式差称为\term[xucong]{虚丛}[virtual bundle]。\symidx{\(K^0(X)\)：复向量丛的群完备化}
+\end{definition}
+
+\begin{proposition}\label{g2:prop:k-group-completion}
+	上述关系为等价关系，\(K^0(X)\) 是交换群，其零元为 \([0]\)，\([E]-[F]\) 的逆元为 \([F]-[E]\)。映射
+	\[
+		j:\operatorname{Vect}_{\mathbb C}(X)\longrightarrow K^0(X),\qquad E\longmapsto[E]
+	\]
+	具有如下泛性质：对任意阿贝尔群 \(A\) 及保持直和、零元的映射 \(a:\operatorname{Vect}_{\mathbb C}(X)\to A\)，存在唯一群同态 \(\overline a:K^0(X)\to A\) 满足 \(\overline a\circ j=a\)。
+\end{proposition}
+\begin{proof}
+	自反性可取 \(G=0\)，对称性由交换等式两侧得到。若比较 \((E,F)\)、\((E',F')\) 使用辅助丛 \(G\)，比较 \((E',F')\)、\((E'',F'')\) 使用 \(G'\)，则先后代入两份同构可得
+	\[
+		E\oplus F''\oplus(F'\oplus G\oplus G')
+		\cong E''\oplus F\oplus(F'\oplus G\oplus G').
+	\]
+	这证明传递性，并显示为什么关系中保留辅助丛。对两份稳定同构取直和，就得到它们之和的稳定同构，所以加法良定义。结合与交换来自丛直和的相应同构，而 \((E\oplus F,F\oplus E)\sim(0,0)\)，故所列逆元成立。
+
+	定义 \(\overline a([E]-[F])=a(E)-a(F)\)。若两对等价，对定义中的同构应用 \(a\)，在群 \(A\) 中消去 \(a(G)\)，便得到相同的差。因此它良定义且可加。每个元素都是两个 \(j\) 的值之差，所以这一要求也确定了唯一的 \(\overline a\)。相应交换图为
+	\[
+		\begin{tikzcd}[column sep=large]
+			\operatorname{Vect}_{\mathbb C}(X)\arrow[r,"j"]\arrow[dr,"a"']&K^0(X)\arrow[d,dashed,"\exists!\,\overline a"]\\
+			&A.
+		\end{tikzcd}
+	\]
+\end{proof}
+
+这个构造称为幺半群的\term[qun-wanbeihua]{群完备化}[group completion]。它把所有可加的丛不变量统一到同一个群上。例如，单点上的复向量空间只由维数决定，故 \(K^0(\{*\})\cong\mathbb Z\)。对一般 \(X\)，逐点取秩给出
+\[
+	\operatorname{rk}:K^0(X)\longrightarrow C(X,\mathbb Z),\qquad
+	\operatorname{rk}([E]-[F])(x)=\dim E_x-\dim F_x,
+\]
+其中 \(C(X,\mathbb Z)\) 是连续整数值函数群。这个整数差称为虚秩。连通时它是单个整数；不连通时各分支可以不同。
+
+\begin{definition}\label{g2:def:reduced-relative-k}
+	对带基点的紧 Hausdorff 空间 \((X,x_0)\)，定义\term[yuehua-K-qun]{约化 K 群}[reduced K-group]
+	\[
+		\widetilde K^0(X)=\ker\bigl(i^*:K^0(X)\longrightarrow K^0(\{x_0\})=\mathbb Z\bigr),
+	\]
+	其中 \(i\) 为基点包含，\(i^*\) 取纤维的虚维数。对有限 CW 对 \((X,A)\)，定义\term[xiangdui-K-qun]{相对 K 群}[relative K-group]
+	\[
+		K^0(X,A)=\widetilde K^0(X/A).
+	\]
+	若 \(A\ne\varnothing\)，商空间以压缩后的 \(A\) 为基点；若 \(A=\varnothing\)，约定此处的 \(X/A\) 为 \(X_+=X\sqcup\{*\}\)。\symidx{\(\widetilde K^0(X)\)：基点纤维虚秩为零的 K 群}\symidx{\(K^0(X,A)\)：有限 CW 对的相对 K 群}
+\end{definition}
+
+记 \(\varepsilon^r=X\times\mathbb C^r\)，并以 \(1=[\varepsilon^1]\) 表示平凡线丛的类。基点取秩有分裂 \(m\mapsto m1\)，故
+\begin{equation}\label{g2:eq:k-rank-splitting}
+	K^0(X)\cong\mathbb Z\oplus\widetilde K^0(X),\qquad
+	x\longmapsto\bigl(\operatorname{rk}_{x_0}x,\ x-(\operatorname{rk}_{x_0}x)1\bigr).
+\end{equation}
+当 \(X\) 不连通时，约化只消去所选基点处的虚秩，其他分支上的秩仍可非零。例如 \(K^0(S^0)\cong\mathbb Z^2\)，选其中一点为基点后有 \(\widetilde K^0(S^0)\cong\mathbb Z\)。又因为 \(K^0(X_+)\cong K^0(X)\oplus\mathbb Z\)，空子空间约定给出 \(K^0(X,\varnothing)=K^0(X)\)，而 \(K^0(X,X)=0\)。下一节将把商空间定义改写为 \(A\) 上带有指定同构的数据，从而构造相对映射和连接同态。
 
 \subsection{稳定同构和虚丛}
 \label{g2:subsec:2401:02}
-待撰写
+形式差的两个成员可以简化为“一张实际丛减去一个平凡丛”。其几何依据是第19章的补丛构造：由\cref{g2:prop:bundle-embedding-classifier}，紧基底上的有限秩丛可嵌入某个 \(\varepsilon^N\)，正交补就是所需补丛。局部常秩情形按有限多个开闭秩层分别构造，再把环境维数增到同一个 \(N\)，所以同样成立。
+
+\begin{proposition}\label{g2:prop:k-stable-equality}
+	设 \(X\) 紧且 Hausdorff。每个 \(x\in K^0(X)\) 都可写成 \([E]-[\varepsilon^N]\)。对两张复向量丛 \(E,F\to X\)，有
+	\[
+		[E]=[F]\text{ 于 }K^0(X)
+		\quad\Longleftrightarrow\quad
+		E\oplus\varepsilon^N\cong F\oplus\varepsilon^N
+	\]
+	对某个 \(N\ge0\) 成立。因此群中的实际丛等式恰好是第19章所说的稳定同构。
+\end{proposition}
+\begin{proof}
+	给定 \([E]-[F]\)，取补丛 \(F'\) 使 \(F\oplus F'\cong\varepsilon^N\)。在形式差的两项中加上 \(F'\)，便得
+	\[
+		[E]-[F]=[E\oplus F']-[\varepsilon^N].
+	\]
+	若 \([E]=[F]\)，定义给出某个 \(G\) 使 \(E\oplus G\cong F\oplus G\)。再取 \(G'\) 使 \(G\oplus G'\cong\varepsilon^N\)，在两边加 \(G'\) 即得稳定同构。反过来，存在这样的稳定同构时，在等价关系中直接取 \(G=\varepsilon^N\) 即可。
+\end{proof}
+
+特别地，在带基点的空间上，每个 \(\widetilde K^0(X)\) 的类可写成 \([E]-[\varepsilon^N]\)，且 \(\operatorname{rank}E_{x_0}=N\)。若 \(X\) 连通，\(E\) 在所有点的秩都为 \(N\)。对连通 \(X\)，两项 \([E]-\operatorname{rank}E\) 与 \([F]-\operatorname{rank}F\) 相同，正是说两丛补加适当数量的平凡线以后同构；补加数量可不同，是因为已经减掉各自的秩。
+
+\ProseParagraphBreak
+
+虚丛的“负号”来自群运算。例如 \(-[E]=[0]-[E]\) 的虚秩是负数，而对偶丛 \(E^*\) 与 \(E\) 的实际秩相同。因而对偶通常不是直和的逆元。另一方面，若一个短正合列
+\[
+	0\longrightarrow E'\longrightarrow E\longrightarrow E''\longrightarrow0
+\]
+由 \(X\) 上有限秩复向量丛组成，那么 Hermitian 度量使 \(E'\) 的正交补映到 \(E''\) 的每根纤维上成为同构，故 \(E\cong E'\oplus E''\)，从而 \([E]=[E']+[E'']\)。这里讨论连续复向量丛；所取正交补是连续的，论证并没有要求它保持额外的全纯结构。
+
+\begin{proposition}\label{g2:prop:k-pullback-homotopy}
+	连续映射 \(f:X\to Y\) 在紧 Hausdorff 空间之间诱导群同态
+	\[
+		f^*:K^0(Y)\longrightarrow K^0(X),\qquad
+		f^*([E]-[F])=[f^*E]-[f^*F].
+	\]
+	它满足 \((g\circ f)^*=f^*g^*\)、\(\operatorname{id}^*=\operatorname{id}\)，同伦的映射诱导相同同态。带基点映射还保持约化群，有限 CW 对的映射通过商空间诱导相对群同态。
+\end{proposition}
+\begin{proof}
+	拉回保持丛同构与直和，所以保持定义中的等价关系和群运算。复合拉回与逐次拉回之间的纤维识别给出函子等式。若 \(f_0\simeq f_1\)，把任一 \(Y\) 上的丛沿同伦拉回到 \(X\times I\)，\cref{g2:thm:bundle-homotopy-invariance}说明两端限制同构，故它们在 \(K^0\) 中的类相同。基点纤维与商空间映射的自然性分别给出最后两项。
+\end{proof}
+
+可缩的非空紧 Hausdorff 空间于是有 \(K^0(X)\cong\mathbb Z\)，且任一基点下 \(\widetilde K^0(X)=0\)。具体地，收缩把每张丛同构到一个常值纤维丛；从此例开始，丛的稳定计算与空间的同伦类型联系起来。
 
 \subsection{clutching 与球面计算}
 \label{g2:subsec:2401:03}
-待撰写
+球面可分为两个可缩半球，丛在各半球都能平凡化，所以差异只留在赤道的粘合函数中。\cref{g2:thm:clutching-classification}已经证明，对 \(m\ge2\)，秩 \(r\) 复丛的同构类由
+\[
+	\pi_{m-1}(\operatorname{U}(r))
+\]
+分类。这里先用极分解把 \(\operatorname{GL}_r(\mathbb C)\) 缩到 \(\operatorname{U}(r)\)，再把赤道基点处的矩阵乘回单位矩阵，把自由同伦化为基点同伦。若 \(g\) 是粘合函数，则加一条平凡线把它变为 \(\operatorname{diag}(g,1)\)。
+
+\begin{proposition}\label{g2:prop:k-clutching-spheres}
+	对 \(m\ge2\)，粘合构造给出自然群同构
+	\[
+		\varinjlim_r\pi_{m-1}(\operatorname{U}(r))
+		\xrightarrow{\ \cong\ }\widetilde K^0(S^m),
+		\qquad[g]\longmapsto[E_g]-r.
+	\]
+	直接极限沿 \(g\mapsto\operatorname{diag}(g,1)\) 取；两项代表相同，是指它们在某个共同的有限秩阶段同伦。
+\end{proposition}
+\begin{proof}
+	上一命题把约化类写成 \([E]-r\)，球面连通保证 \(\operatorname{rank}E=r\)，故粘合分类给出满射。若两粘合丛给出相同约化类，\cref{g2:prop:k-stable-equality}说明补加平凡线后两丛同构。再用固定秩的粘合分类，就得到稳定后的粘合函数同伦。这证明单射。
+
+	直和对应分块矩阵 \(\operatorname{diag}(g,h)\)。把两块先稳定到同阶，令
+	\[
+		R_t=\begin{pmatrix}\cos t\,I&-\sin t\,I\\\sin t\,I&\cos t\,I\end{pmatrix},\qquad
+		0\le t\le\pi/2.
+	\]
+	则 \(\operatorname{diag}(g,I)R_t\operatorname{diag}(I,h)R_t^{-1}\) 从 \(\operatorname{diag}(g,h)\) 连到 \(\operatorname{diag}(gh,I)\)，且在赤道基点始终为单位矩阵。拓扑群的球面映射中，逐点乘法与同伦群的拼接相同：把代表写在立方体上，两种运算具有同一单位元并满足逐坐标的交换律
+	\[
+		(f_1*f_2)(g_1*g_2)=(f_1g_1)*(f_2g_2),
+	\]
+	其中 \(*\) 表示沿同一个坐标拼接。将某两项取常值单位映射，就在同伦类上得到逐点乘积等于拼接。因此分块和表示同伦群的和，所构造双射为群同构。
+\end{proof}
+
+低维计算已经可以完成。第19章说明圆周上的复丛全部平凡，故 \(K^0(S^1)\cong\mathbb Z\)、\(\widetilde K^0(S^1)=0\)。对 \(S^2\)，\cref{g2:prop:classical-low-homotopy}给出
+\[
+	\det_*:\pi_1(\operatorname{U}(r))\xrightarrow{\ \cong\ }\pi_1(S^1)=\mathbb Z,
+\]
+且增加单位矩阵块保持这个同构。因此 \(\widetilde K^0(S^2)\cong\mathbb Z\)，分类整数就是 \(\det g\) 的绕数。由\cref{g2:prop:first-classes-determinants,g2:prop:chern-transition-comparison}，它也等于 \(\langle c_1(E_g),[S^2]\rangle\)，只须保持同一组赤道方向与坐标约定。
+
+下面固定与第21章一致的正生成元。将 \(S^2\) 识别为复定向的 \(\mathbb CP^1\)，取
+\[
+	z=z_1/z_0,\qquad w=z_0/z_1=1/z,\qquad H=\gamma^*.
+\]
+对典范线丛 \(\gamma\)，局部标架为 \(e_z=(1,z)\)、\(e_w=(w,1)=z^{-1}e_z\)；对偶标架因而满足 \(e_w^*=z e_z^*\)。沿用第19章的关系 \((x,v)_+\sim(x,g(x)v)_-\)，取 \(D_+\) 为 \(w\) 圆盘、\(D_-\) 为 \(z\) 圆盘，并以 \(z=e^{\mathrm i\theta}\)、\(\theta\) 增大参数化赤道，则 \(g(z)=z\) 的粘合丛正是 \(H\)。第21章已经核定 \(c_1(H)=h\)、\(\langle h,[\mathbb CP^1]\rangle=1\)，所以
+\begin{equation}\label{g2:eq:k-two-sphere-additive}
+	\widetilde K^0(S^2)=\mathbb Z\,([H]-1),\qquad
+	K^0(S^2)=\mathbb Z\,1\oplus\mathbb Z\,([H]-1).
+\end{equation}
+秩 \(r\ge1\)、第一陈数为 \(d\) 的丛满足 \([E]=r+d([H]-1)\)。事实上它还同构于 \(H^{\otimes d}\oplus\varepsilon^{r-1}\)：这张丛的粘合矩阵 \(\operatorname{diag}(z^d,1,\ldots,1)\) 与 \(g\) 有相同行列式绕数，故在 \(\operatorname{U}(r)\) 中同伦。负数 \(d\) 按对偶张量幂理解。
+
+\begin{example}\label{g2:exm:k-sphere-tangent-line}
+	\(\mathbb CP^1\) 的复切线丛满足 \(c_1(\mathrm T\mathbb CP^1)=2h\)，见式\eqref{g2:eq:complex-projective-tangent-classes}，因此
+	\[
+		[\mathrm T\mathbb CP^1]-1=2([H]-1)\ne0.
+	\]
+	球面的实切丛加一条实平凡线可平凡化，与这个结论并不冲突：这里用的是复一维切丛，稳定操作只允许加入复平凡方向。实、复理论的稳定信息不同，后面讨论周期性时也须保留基域。
+\end{example}
 
 \subsection{环结构和外积}
 \label{g2:subsec:2401:04}
-待撰写
+直和给出加法，张量积给出另一种运算。它在实际丛上满足 \((E\oplus F)\otimes G\cong(E\otimes G)\oplus(F\otimes G)\)，所以可以把张量积按分配律延到虚丛。
+
+\begin{proposition}\label{g2:prop:k-ring-structure}
+	对紧 Hausdorff 空间 \(X\)，下式把 \(K^0(X)\) 变为含幺交换环：
+	\[
+		([E]-[F])([G]-[J])
+		=[E\otimes G\oplus F\otimes J]-[E\otimes J\oplus F\otimes G].
+	\]
+	单位元为 \(1=[\varepsilon^1]\)。连续映射的拉回是含幺环同态；基点取秩也是含幺环同态，因而 \(\widetilde K^0(X)\) 是 \(K^0(X)\) 的理想。
+\end{proposition}
+\begin{proof}
+	固定一张实际丛 \(G\)，映射 \(E\mapsto[E\otimes G]\) 对直和可加，故由群完备化的泛性质唯一延拓为 \(K^0(X)\to K^0(X)\) 的同态。该同态又对 \(G\) 的直和可加，因此对第二个变量再次用泛性质，得到唯一的双线性乘法。展开两份差，就得到所列公式，也同时证明它与代表选择无关。
+
+	实际丛的张量积有结合、交换及单位同构，这些等式对形式差双线性延拓，故得到环公理。拉回保持直和、张量积及平凡线丛，因而保持乘法和单位。纤维维数满足 \(\dim(E_x\otimes G_x)=\dim E_x\dim G_x\)，所以取秩也乘法相容，其核便为理想。
+\end{proof}
+
+\begin{definition}\label{g2:def:k-external-product}
+	设 \(X,Y\) 为紧 Hausdorff 空间，\(p_X,p_Y\) 为积空间的投影。对 \(x\in K^0(X)\)、\(y\in K^0(Y)\)，定义\term[K-lilun-waiji]{K 理论外积}[external product in K-theory]
+	\[
+		x\boxtimes y=p_X^*x\,p_Y^*y\in K^0(X\times Y).
+	\]
+	对实际丛，它由 \(E\boxtimes F=p_X^*E\otimes p_Y^*F\) 表示。\symidx{\(x\boxtimes y\)：K 理论外积}
+\end{definition}
+
+外积可加于每个变量，且对连续映射 \(f:X'\to X\)、\(g:Y'\to Y\)，有
+\begin{equation}\label{g2:eq:k-external-naturality}
+	(f\times g)^*(x\boxtimes y)=f^*x\boxtimes g^*y.
+\end{equation}
+这是因为 \(p_X\circ(f\times g)=f\circ p_{X'}\)，另一投影亦然，再使用拉回的乘法相容性。若 \(X=Y\)，沿对角映射 \(\Delta:X\to X\times X\) 拉回便得到原来的乘法：\(\Delta^*(x\boxtimes y)=xy\)。交换两因子的映射则把 \(x\boxtimes y\) 送到 \(y\boxtimes x\)；当前两项均为零次，尚无分次符号。
+
+\ProseParagraphBreak
+
+若 \(X,Y\) 有基点，\(x\in\widetilde K^0(X)\)、\(y\in\widetilde K^0(Y)\)，那么 \(x\boxtimes y\) 在 \(X\times\{y_0\}\) 与 \(\{x_0\}\times Y\) 上的限制均为零。这为把外积看作压缩积 \(X\wedge Y\) 上的类提供了必要条件；下一节将通过相对正合性构造相应的约化外积，并证明其与这里的绝对外积相容。
+
+在 \(S^2\) 的例子中，我们已得到 \(1\) 与 \([H]-1\) 组成的加法基。环结构还要求计算 \(([H]-1)^2\)，而积空间 \(X\times S^2\) 上的丛更需要知道两项系数是否都能从 \(K^0(X)\) 取得。这两件事将在\secref{g2:sec:2403}中由多项式粘合构造一起解决。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,12 +1,12 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 21.1 线丛与通用生成元
 % 纲要位置：几何学计划纲要.md，第 1806 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 实线丛和第一 Stiefel–Whitney 类
-% * 复线丛与第一 Chern 类
+% * 复线丛与第一陈类
 % * 过渡函数、分类空间和指数序列的比较
 % 
 % 纲要内容结束
@@ -14,17 +14,161 @@
 \section{线丛与通用生成元}
 \label{g2:sec:2101}
 
-待撰写
+第19章已把实线丛与复线丛分别分类为一次模二类与二次整数类。本节为这两个分类类选定几何规范：实线丛沿闭路是否反向，复线丛的截面绕一个零点转过多少圈。这样选定后，后面射影丛关系中的系数及形式根就有确定的含义。尤其复射影空间上“正生成元”与“典范线丛的第一类”相差一个负号，不能只凭它们都生成同一个群就将二者混同。
 
 \subsection{实线丛和第一 Stiefel–Whitney 类}
 \label{g2:subsec:2101:01}
-待撰写
+设 \(L\to B\) 为 CW 复形上的实线丛，赋予纤维内积。其单位球丛是二重覆盖，每根纤维的两个点代表两个方向。沿一条闭路运输方向，回来时或保持、或反转，得到
+\[
+	\pi_1(B,b)\longrightarrow\{\pm1\}\cong\mathbb F_2.
+\]
+在不连通的空间上逐分支理解。这个同态就是\cref{g2:prop:bundle-orientation-transport}中的定向单值；经 \(H^1(B;\mathbb F_2)\cong\operatorname{Hom}(\pi_1(B),\mathbb F_2)\) 的识别，它成为一个上同调类。
 
-\subsection{复线丛与第一 Chern 类}
+\begin{definition}\label{g2:def:first-stiefel-whitney-line}
+	实线丛 \(L\to B\) 的\term[diyi-Stiefel-Whitney-lei]{第一 Stiefel--Whitney 类}[first Stiefel--Whitney class]为
+	\[
+		w_1(L)=f_L^*a\in H^1(B;\mathbb F_2),
+	\]
+	其中 \(f_L:B\to\mathbb RP^\infty\) 分类 \(L\)，\(a\) 是 \(H^1(\mathbb RP^\infty;\mathbb F_2)\) 的非零元。它等价于上面的方向输运同态。
+\end{definition}
+
+分类映射的同伦唯一性使定义与选择无关。等价描述可在通用丛上核对：\(S^\infty\to\mathbb RP^\infty\) 的非平凡环路交换两个单位向量，所以通用方向同态非零，恰代表 \(a\)；拉回后仍成立。
+
+\begin{proposition}\label{g2:prop:real-line-first-class}
+	对 CW 复形 \(B\) 上的实线丛 \(L,K\)，有
+	\[
+		w_1(L\otimes K)=w_1(L)+w_1(K),\qquad w_1(L^*)=w_1(L).
+	\]
+	映射 \([L]\mapsto w_1(L)\) 是实线丛同构类在张量积下的群到 \(H^1(B;\mathbb F_2)\) 的自然同构。以下条件等价：\(w_1(L)=0\)、\(L\) 可定向、\(L\) 有处处非零截面、\(L\) 平凡。
+\end{proposition}
+\begin{proof}
+	两个方向符号相乘，对应 \(\mathbb F_2\) 中相加；对偶的符号是原符号的逆，而 \((\pm1)^{-1}=\pm1\)。这给出两个公式。分类双射是\cref{g2:prop:line-bundle-cohomology-classification}，方向同态的描述确定了其中的通用生成元。
+
+	由\cref{g2:prop:bundle-orientation-transport}，类为零等价于可定向。度量和定向在每根纤维上选出唯一的正单位向量，它在局部定向标架中连续，因此给出非零截面。非零截面 \(s\) 产生平凡化 \((b,t)\mapsto t s(b)\)，其逆在局部标架中由除以一个非零连续函数给出。平凡丛显然可定向，于是各条件等价。
+\end{proof}
+
+这里“一条非零截面就是完整标架”使用了秩一。对高秩丛，选定方向只会把结构群从 \(\operatorname O(r)\) 降到 \(\operatorname{SO}(r)\)，仍可能有许多非平凡的换架；本章后面的类将继续测量这些信息。
+
+\ProseParagraphBreak
+
+实线丛的这个类也有零点解释。令 \(e_2(L)\) 为第20章规范模二 Thom 类沿零截面的拉回，则
+\begin{equation}\label{g2:eq:line-mod-two-euler}
+	e_2(L)=w_1(L).
+\end{equation}
+为证明它，只需先检查通用丛在 \(\mathbb RP^1\) 上的限制，因为 \(H^1(\mathbb RP^\infty;\mathbb F_2)\to H^1(\mathbb RP^1;\mathbb F_2)\) 是同构。这个限制是 Möbius 线丛。将基圆参数写为 \(0\le\theta\le2\pi\)，局部单位向量为 \(v_\theta=(\cos(\theta/2),\sin(\theta/2))\)，截面
+\[
+	s(\theta)=\cos(\theta/2)v_\theta
+\]
+在两端吻合，且恰在 \(\theta=\pi\) 有一个横截零点。第20章的局部切除与零点求值证明在模二系数下不需要方向，故 \(\langle e_2(L),[S^1]_2\rangle=1\)。于是通用 \(e_2\) 正是 \(a\)，再用自然性得到式\eqref{g2:eq:line-mod-two-euler}。方向反转与模二零点数，因而是同一条线丛信息的两种表达。
+
+\subsection{复线丛与第一陈类}
 \label{g2:subsec:2101:02}
-待撰写
+复一维纤维的底层实平面有自然方向。它的零点指标是整数，而非只有奇偶性，因此前一章的 Euler 类给出了复线丛的整数分类类。
+
+\begin{definition}\label{g2:def:first-chern-line}
+	CW 复形 \(B\) 上复线丛 \(L\) 的\term[diyi-chen-lei]{第一陈类}[first Chern class]定义为
+	\begin{equation}\label{g2:eq:first-chern-euler}
+		c_1(L)=e_{\mathrm{Th}}(L_{\mathbb R})\in H^2(B;\mathbb Z),
+	\end{equation}
+	其中 \(L_{\mathbb R}\) 按复基 \(e\) 所给实基 \((e,\mathrm i e)\) 定向。
+\end{definition}
+
+陈类得名于陈省身\footnote{陈省身（Shiing-shen Chern，1911--2004），生于中国、长期在中国与美国工作的数学家，研究整体微分几何、示性类及 Gauss--Bonnet 理论。}。这里先在秩一引入它，较高秩的各个 \(c_i\) 将由这些线丛类之间的对称关系构造。
+
+\begin{proposition}\label{g2:prop:line-characteristic-classes}
+	对 CW 复形 \(B\) 上的复线丛，\([L]\mapsto c_1(L)\) 是张量积群到 \(H^2(B;\mathbb Z)\) 的自然同构，并且
+	\begin{equation}\label{g2:eq:line-chern-operations}
+		c_1(L\otimes K)=c_1(L)+c_1(K),\qquad
+		c_1(L^*)=c_1(\overline L)=-c_1(L).
+	\end{equation}
+	在 \(\mathbb CP^n\) 上，记典范复线丛为 \(\gamma\)，并令 \(h=c_1(\gamma^*)\)。则 \(h\) 在复定向射影直线上的求值为 \(1\)，且
+	\[
+		H^*(\mathbb CP^n;\mathbb Z)=\mathbb Z[h]/(h^{n+1}),\qquad c_1(\gamma)=-h.
+	\]
+\end{proposition}
+\begin{proof}
+	\cref{g2:exm:thom-hopf-gysin}说明通用复线丛在 \(\mathbb CP^1\) 上的 Euler 类是整数生成元，因此 \(c_1(\gamma)\) 是 \(H^2(\mathbb CP^\infty;\mathbb Z)\) 的生成元。用它作为\cref{g2:prop:line-bundle-cohomology-classification}中的通用生成元，即得自然分类及张量加法。\(L\otimes L^*\) 平凡，所以对偶类变号。纤维 Hermitian 内积给出复线性同构 \(\overline L\cong L^*\)，故共轭类也变号。
+
+	还要确定这个生成元相对于复定向的符号。在 \(\mathbb CP^1\) 上，线性函数 \((z_0,z_1)\mapsto z_0\) 限制到每条直线，给出 \(\gamma^*\) 的截面。它只有一个零点 \([0:1]\)。在该点附近用 \(w=z_0/z_1\) 作复坐标，用 \((w,1)\) 作 \(\gamma\) 的标架，截面的局部表达就是 \(w\)。其微分为复恒等映射，实行列式为正，所以零点指标为 \(+1\)。\cref{g2:thm:euler-index-evaluation}给出 \(\langle c_1(\gamma^*),[\mathbb CP^1]\rangle=1\)。
+
+	\cref{g2:thm:complex-projective-ring}已经证明正二次生成元的各次幂组成射影空间的整数上同调基。代入刚才确定的 \(h\)，便得环公式以及 \(c_1(\gamma)=-h\)。
+\end{proof}
+
+例如，\(\gamma^*\) 的截面由一次齐次线性函数产生，零点组成一个超平面；它的第一类因此常称为超平面类。记 \(\mathcal O(1)=\gamma^*\)、\(\mathcal O(m)=\mathcal O(1)^{\otimes m}\)，负整数幂按对偶解释，则
+\[
+	c_1(\mathcal O(m))=m h.
+\]
+在射影直线上，这个整数还等于相应截面的零点指标和。\(\mathcal O(-1)=\gamma\) 给出负生成元，与本书第11章球丛传递的规范需按 \(e_{\mathrm{Th}}=-e(S(L_{\mathbb R}))\) 换算；这里始终采用正向复纤维的 Thom 规范。
 
 \subsection{过渡函数、分类空间和指数序列的比较}
 \label{g2:subsec:2101:03}
-待撰写
+分类映射便于证明自然性，过渡函数便于从局部数据实际算出类。下面取 Hausdorff、第二可数的光滑流形 \(B\)，用连续函数讨论其上的线丛。给丛选内积后，实线丛的过渡函数可取在 \(\{\pm1\}\)，复线丛的过渡函数可取在 \(\operatorname U(1)\)。固定局部单位标架 \(e_\alpha\)，约定
+\begin{equation}\label{g2:eq:line-transition-convention}
+	e_\beta=e_\alpha g_{\alpha\beta},\qquad
+	g_{\alpha\beta}g_{\beta\gamma}=g_{\alpha\gamma}.
+\end{equation}
+因此同一个向量的坐标满足 \(v_\alpha=g_{\alpha\beta}v_\beta\)。这条约定将决定后面角度差的符号。
+
+\ProseParagraphBreak
+
+对实线丛写 \(g_{\alpha\beta}=(-1)^{a_{\alpha\beta}}\)，其中 \(a_{\alpha\beta}\) 取值于 \(\mathbb F_2\)。余循环条件成为 \(a_{\alpha\beta}+a_{\beta\gamma}=a_{\alpha\gamma}\)，更换标架只加一个 Čech 余边界。沿闭路依次经过图域，符号的乘积就是 \(a_{\alpha\beta}\) 的和，所以这个 Čech 一次类代表 \(w_1(L)\)。
+
+复线丛的过渡函数连续变化，不能直接视为整数上链。先作局部有限的平凡覆盖细化；每点附近只有有限组换架需要处理，各换架都能局部提升到实角度，再用星细化使新的交叠落入相应提升域。这与\cref{g2:thm:cech-sheaf-comparison}中同时处理有限交叠数据的方法相同，也适用于后面的二重覆盖提升。这样可以在细化后的交集上选取角度
+\[
+	g_{\alpha\beta}=e^{2\pi\mathrm i\theta_{\alpha\beta}},\qquad \theta_{\alpha\beta}\in\mathbb R.
+\]
+三重交集上未必能使角度严格相加，差
+\begin{equation}\label{g2:eq:chern-cech-integer-cocycle}
+	n_{\alpha\beta\gamma}
+	=\theta_{\beta\gamma}-\theta_{\alpha\gamma}+\theta_{\alpha\beta}
+	\in\mathbb Z
+\end{equation}
+恰好是局部常值整数。由于 \(\delta^2\theta=0\)，有 \(\delta n=0\)。改换角度使 \(\theta\) 加一个整数一上链，\(n\) 因而只变一个余边界；改换标架的影响也一样，因为新角度差先是实零上链的余边界，再加整数修正。这给出一个选择无关的整数二次类。
+
+这一计算是\term[zhishucengduanzhenghelie]{指数序列}[exponential sequence]的连接同态。以 \(\mathcal C_{\mathbb R}\)、\(\mathcal C_{\operatorname U(1)}\) 分别表示连续实函数层与连续圆值函数层，有阿贝尔群层短正合列
+\begin{equation}\label{g2:eq:line-exponential-sequence}
+	0\longrightarrow\underline{\mathbb Z}\longrightarrow\mathcal C_{\mathbb R}
+	\xrightarrow{\ f\mapsto e^{2\pi\mathrm i f}\ }\mathcal C_{\operatorname U(1)}\longrightarrow0.
+\end{equation}
+指数映射在茎上满射，因为每个圆值函数在一点附近的像可放入一个有连续角度的开弧；其核就是局部常值整数函数。连续单位分解使 \(\mathcal C_{\mathbb R}\) 为细层，\cref{g2:thm:flabby-fine-acyclic}给出其正次上同调为零。于是\cref{g2:prop:sheaf-long-exact}给出
+\[
+	\partial:\ H^1(B,\mathcal C_{\operatorname U(1)})\xrightarrow{\ \cong\ }H^2(B,\underline{\mathbb Z}).
+\]
+左边的余循环按式\eqref{g2:eq:line-transition-convention}粘合复线丛，余边界对应换标架，因而恰好分类复线丛；连接映射的上链公式正是式\eqref{g2:eq:chern-cech-integer-cocycle}。
+
+\begin{proposition}\label{g2:prop:chern-transition-comparison}
+	在上述条件与过渡函数约定下，指数序列所得的类 \([n]\) 在常值层、Čech 与奇异上同调的比较下等于 \(c_1(L)\)。
+\end{proposition}
+\begin{proof}
+	先说明所用比较及其几何含义。对局部有限覆盖的小奇异上链作 Čech 双复形，水平方向按每个单形分别看，是包含该单形的非空指标集所成单形的增广上链复形，选其中一个指标便给出收缩，所以正合。竖直方向在固定覆盖上可以有高次上同调，但每点都有可缩坐标邻域，高次类在足够小邻域内限制为零。重复\cref{g2:thm:cech-sheaf-comparison}证明中的星细化构造，可在固定总次数内逐轮消去这些高次分量；局部有限性保证每点只需同时处理有限组交叠数据。零次核是局部常值系数，小链与全体奇异链的比较又不改变上同调，故覆盖极限中的整数 Čech 上同调与奇异上同调相同。层上同调一侧由同一\cref{g2:thm:cech-sheaf-comparison}比较。这个论证对 \(\mathbb Z\) 和 \(\mathbb F_2\) 都成立，也说明为什么不必要求原覆盖的全部交集可缩。
+
+	在这个比较中，可将换架数据沿一张细分的二维圆盘读取。先在顶点选单位向量，再沿边选择连续角度提升；每张小三角形边界上的角度增量除以 \(2\pi\)，就是把单位截面延入该三角形的绕数障碍。三条边分别改变标架时，提升所多出的整数按交错方向相加，恰为
+	\[
+		\theta_{\beta\gamma}-\theta_{\alpha\gamma}+\theta_{\alpha\beta}=n_{\alpha\beta\gamma}.
+	\]
+	更换边上的角度选择只改变一个整数一上链，故整体障碍类正是 \([n]\)。这也具体描述了上述双复形比较如何把过渡函数二上圈送到截面延拓的二上圈。
+
+	为固定正负号，把正向 \(z\) 圆盘与 \(w=1/z\) 圆盘拼成复定向 \(S^2\)，在赤道上约定 \(e_w=e_z g\)。将赤道细分为选有实角度 \(\theta_j\) 的弧，上式求和时内部边贡献相消，留下
+	\[
+		\sum_j\bigl(\theta_j(\text{弧终点})-\theta_j(\text{弧起点})\bigr)=\deg g.
+	\]
+	这正是以 \(z\) 圆盘的正边界方向读取的绕数。对典范线丛，\(e_z=(1,z)\)、\(e_w=(w,1)\)，所以 \(g=z^{-1}\)，得到 \(-1\)；它与前一小节的 \(c_1(\gamma)=-h\) 一致。最后，\cref{g2:thm:euler-primary-comparison}已证明定向实二维丛的绕数首障碍等于 \(e_{\mathrm{Th}}\)。因此 \([n]=e_{\mathrm{Th}}(L_{\mathbb R})=c_1(L)\)。
+\end{proof}
+
+所以三种表达保存的是同一份数据：分类映射拉回通用生成元，过渡角度在三重交集上留下整数误差，截面在二维胞腔边界上留下绕数。张量两个线丛时，过渡函数相乘、角度相加，式\eqref{g2:eq:chern-cech-integer-cocycle}也直接解释了 \(c_1\) 的可加性。
+
+\begin{proposition}\label{g2:prop:real-line-complexification-bockstein}
+	对 CW 复形 \(B\) 上的实线丛 \(L\)，其复化满足
+	\begin{equation}\label{g2:eq:line-complexification-bockstein}
+		c_1(L\otimes_{\mathbb R}\mathbb C)=\widetilde\beta_2(w_1(L)),
+	\end{equation}
+	其中 \(\widetilde\beta_2:H^1(B;\mathbb F_2)\to H^2(B;\mathbb Z)\) 来自 \(0\to\mathbb Z\xrightarrow{2}\mathbb Z\to\mathbb F_2\to0\)。特别地，这个第一陈类被 \(2\) 消去。
+\end{proposition}
+\begin{proof}
+	在过渡函数模型中，实过渡符号为 \((-1)^{a_{\alpha\beta}}\)，选 \(a_{\alpha\beta}\in\{0,1\}\) 为整数提升。复化后可取角度 \(\theta_{\alpha\beta}=a_{\alpha\beta}/2\)，所以第一陈上圈是 \(\delta a/2\)。这与式\eqref{g2:eq:bockstein-divide-two}给出的整数 Bockstein 代表完全相同。
+
+	为推广到所有 CW 基空间，只需在通用实线丛上比较两个自然类。两类都位于 \(H^2(\mathbb RP^\infty;\mathbb Z)\)，而到 \(\mathbb RP^2\) 的限制是单射：相对空间没有二次以下的胞腔，故相对二次上同调为零。\(\mathbb RP^2\) 是闭光滑曲面，刚才的比较已经适用，所以通用两类相等，再沿分类映射拉回即得结论。最后由系数长正合列，乘二与 \(\widetilde\beta_2\) 相邻，复合为零。
+\end{proof}
+
+一个非平凡的实线丛因此可能复化成平凡丛，例如圆周上的 Möbius 线丛，因为 \(H^2(S^1;\mathbb Z)=0\)；也可能留下非零的二阶扭陈类。后面研究 Pontryagin 类时，这种扭信息正是需要保留整数系数的原因之一。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

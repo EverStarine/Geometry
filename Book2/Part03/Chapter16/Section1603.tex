@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 16.3 向量场零点指标
 % 纲要位置：几何学计划纲要.md，第 1639 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,219 @@
 \section{向量场零点指标}
 \label{g2:sec:1603}
 
-待撰写
+平面上的径向场 \((x,y)\) 与旋转场 \((-y,x)\) 都在原点消失，但周围轨道的样子很不相同。若沿一个小圆周走一圈，两者的向量方向却都正向转动一圈。鞍形场 \((x,-y)\) 的方向则反向转动一圈。零点指标记录这种方向绕转；它能在零点分裂、合并时保持总和，因此比直接计算零点个数更稳定。\cref{g2:exm:tangent-sphere-torus-obstruction}已经在球面两极使用过这个数，本节将它定义在任意维数，并证明坐标无关性与可加性。
 
 \subsection{局部球面映射度}
 \label{g2:subsec:1603:01}
-待撰写
+
+设 \(X\) 是光滑 \(n\) 维流形 \(M\) 上的向量场，\(n\ge1\)，\(p\) 是一个孤立零点。选坐标 \(x:U\to\mathbb R^n\)，使 \(x(p)=0\)，把向量场写成
+\[
+	X=\sum_{j=1}^n F^j(x)\frac{\partial}{\partial x^j},\qquad F(0)=0.
+\]
+在坐标像中取以零为中心的闭球 \(\overline B_\varepsilon\)，使 \(F\) 在球内没有其他零点。边界上可以归一化，得到
+\begin{equation}\label{g2:eq:vector-index-sphere-map}
+	\widehat F_\varepsilon:S^{n-1}\longrightarrow S^{n-1},\qquad
+	u\longmapsto\frac{F(\varepsilon u)}{|F(\varepsilon u)|}.
+\end{equation}
+源球面与目标球面均按标准 \(\mathbb R^n\) 的外法向优先边界取向。径向位置被压缩了，留下的是每个位置上的向量朝向。
+
+\begin{definition}\label{g2:def:vector-field-local-index}
+	设 \(M\) 为无边界光滑 \(n\) 维流形，\(n\ge1\)，\(X\) 为光滑向量场，\(p\) 为孤立零点。式\eqref{g2:eq:vector-index-sphere-map}的映射度称为 \(X\) 在 \(p\) 处的\term[lingdian-jubu-zhibiao]{局部指标}[local index]，记为
+	\[
+		\operatorname{ind}_p(X)=\deg\widehat F_\varepsilon.
+	\]
+	当 \(n=1\) 时，球面为 \(S^0\)，度使用\cref{g2:def:sphere-degree}之后约定的约化零次同调。
+\end{definition}
+
+\begin{proposition}\label{g2:prop:vector-index-well-defined}
+	上述整数与充分小的半径及所选坐标无关。定义不要求 \(M\) 可定向。
+\end{proposition}
+\begin{proof}
+	先把球面度与局部同调联系起来。空间对映射
+	\[
+		F:(\overline B_\varepsilon,\overline B_\varepsilon\setminus\{0\})
+		\longrightarrow(\mathbb R^n,\mathbb R^n\setminus\{0\})
+	\]
+	在 \(n\) 次局部同调上诱导乘一个整数的同态。对的长正合列将两端的正局部类分别送到正向小球面的类；穿孔空间再径向收缩到球面，得到的正是 \(\widehat F_\varepsilon\)。因此局部同调的整数与上式的度相同。\(n=1\) 时连接映射取值于 \(\widetilde H_0(S^0)\)，论证仍成立。由切除，缩小邻域不改变局部同调同态；也可以直接用两半径之间的球面归一化给出同伦。这说明半径选择无关。
+
+	再设另一坐标为 \(y=h(x)\)，其中 \(h(0)=0\)，\(A(x)=\mathrm Dh(x)\) 可逆。向量场的新系数 \(G\) 满足
+	\[
+		G(h(x))=A(x)F(x).
+	\]
+	缩小球后，可要求 \(\|A(0)^{-1}(A(x)-A(0))\|<1/2\)，从而 \((1-t)A(x)+tA(0)\) 对所有 \(t\in[0,1]\) 均可逆。故 \(A(x)F(x)\) 与 \(A(0)F(x)\) 通过仅在原点为零的映射同伦。
+
+	令 \(\sigma=\operatorname{sgn}\det A(0)\)。局部同调的复合性质和\cref{g2:prop:regular-local-degree-sign}给出
+	\[
+		\deg_0(G\circ h)=\sigma\deg_0G,\qquad
+		\deg_0(A(0)F)=\sigma\deg_0F.
+	\]
+	中间同伦使两式左端相等，消去 \(\sigma\) 得 \(\deg_0G=\deg_0F\)。坐标反向时，源坐标与切向量分量同时改变方向，两次符号相消，所以无须选择整体定向。
+\end{proof}
+
+在一维，若 \(X=f(x)\partial_x\) 且零为孤立零点，则
+\begin{equation}\label{g2:eq:one-dimensional-vector-index}
+	\operatorname{ind}_0(X)
+	=\frac{\operatorname{sgn}f(\varepsilon)-\operatorname{sgn}f(-\varepsilon)}2.
+\end{equation}
+这是 \([+]-[-]\) 在归一化映射下的像：从左向右由负变正贡献 \(+1\)，由正变负贡献 \(-1\)，两端同号贡献 \(0\)。因而孤立零点也可以有零指标。
+
+\begin{example}\label{g2:exm:planar-index-windings}
+	在标准平面切标架中，把系数对看成一个复数。\(F(z)=z^k\)、\(k\ge1\)，在小圆周上归一化为 \(e^{\mathrm i\theta}\mapsto e^{\mathrm i k\theta}\)，所以原点指标为 \(k\)；\(F(z)=\overline z^{\,k}\) 的指标为 \(-k\)。\(F(x,y)=(x^2+y^2,0)\) 也只有原点一个零点，但归一化方向恒为 \((1,0)\)，指标为零。每个整数都可成为平面孤立零点的指标。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter16-LocalIndices}
+	\caption{三个平面场在小圆周上的方向。径向场与旋转场均有指标 \(+1\)，鞍形场的指标为 \(-1\)；箭头表示向量方向，灰圆表示取样位置。}
+	\label{g2:fig:vector-index-models}
+\end{figure}
 
 \subsection{非退化零点的行列式符号}
 \label{g2:subsec:1603:02}
-待撰写
+
+在零点处，向量场的系数导数具有内在含义。对 \(G(h(x))=A(x)F(x)\) 求导，含 \(\mathrm DA\) 的项因 \(F(0)=0\) 而消失，从而
+\[
+	\mathrm DG(0)=A(0)\,\mathrm DF(0)\,A(0)^{-1}.
+\]
+不同坐标得到共轭矩阵，它们表示同一个线性算子 \(\mathrm D_pX:\mathrm T_pM\to\mathrm T_pM\)，称为 \(X\) 在零点的线性化。若它可逆，则该零点称为\term[feituohualingdian]{非退化零点}[nondegenerate zero]。逆函数定理保证这种零点孤立。
+
+\begin{proposition}\label{g2:prop:nondegenerate-vector-index}
+	设 \(M\) 为无边界光滑 \(n\) 维流形，\(n\ge1\)，\(X\) 为光滑向量场，\(p\) 为非退化零点。则
+	\begin{equation}\label{g2:eq:nondegenerate-index}
+		\operatorname{ind}_p(X)=\operatorname{sgn}\det(\mathrm D_pX).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	在以 \(p\) 为原点的坐标中写 \(F(x)=Ax+R(x)\)，其中 \(A=\mathrm DF(0)\) 可逆，且 \(|R(x)|/|x|\to0\)。紧单位球面上 \(|Au|\) 的正最小值记为 \(c\)。取小球，使 \(|R(x)|<c|x|/2\)。则对 \(0\le t\le1\)、\(x\ne0\)，
+	\[
+		|Ax+tR(x)|\ge c|x|-|R(x)|>c|x|/2.
+	\]
+	所以球面上的归一化把 \(F\) 与 \(A\) 同伦起来。线性同构的局部度等于其行列式符号，见\cref{g2:prop:regular-local-degree-sign}，故得公式。这个估计同时说明高阶项为什么不改变非退化零点的指标。
+\end{proof}
+
+\begin{example}\label{g2:exm:linear-vector-indices}
+	\(\mathbb R^n\) 上的径向场 \(X(x)=x\) 有指标 \(+1\)，向内场 \(X(x)=-x\) 有指标 \((-1)^n\)。平面旋转场 \((-y,x)\) 的线性化矩阵为 \(\left(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\right)\)，行列式为1，指标也是 \(+1\)；鞍形场 \((x,-y)\) 的行列式为 \(-1\)。指标因而区分方向绕转，却不单独区分向外、向内或旋转的动力学行为。
+\end{example}
+
+这个公式还直接联系函数的临界点。设 \(h\) 为实值光滑函数，\(p\) 为临界点，在某个 Riemann 度量下取梯度场。若 \(G=(g_{ij}(p))\) 是度量矩阵，\(H=(\partial_i\partial_jh(p))\) 是 Hessian 矩阵，则
+\[
+	\mathrm D_p(\operatorname{grad}h)=G^{-1}H.
+\]
+因为 \(\mathrm dh_p=0\)，对度量系数求导所产生的项全部为零；也正因这一条件，Hessian 在临界点的变换是双线性型的合同变换。若 \(H\) 非退化并有 \(\lambda\) 个负特征值，由 \(G\) 正定可得
+\begin{equation}\label{g2:eq:gradient-index-hessian}
+	\operatorname{ind}_p(\operatorname{grad}h)=(-1)^\lambda.
+\end{equation}
+这里使用实对称矩阵的惯性定律：非退化对称型可选基写成若干 \(-1\) 与 \(+1\) 的对角阵，负号个数在换基下不变。第17章将进一步解释这些负方向怎样决定次水平集增加的把手。
 
 \subsection{局部扰动与指标可加性}
 \label{g2:subsec:1603:03}
-待撰写
+
+一个退化零点可在扰动后分成多个非退化零点。只要边界上的向量始终非零，小球边界记录的方向绕转就没有改变；下面的求和公式说明这个边界数据怎样分配给内部各零点。
+
+\begin{theorem}[局部指标可加性]\label{g2:thm:local-index-additivity}
+	设 \(n\ge1\)，\(D\subset\mathbb R^n\) 为闭圆球，\(F\) 是其某邻域上取值于 \(\mathbb R^n\) 的连续映射，在 \(\partial D\) 上非零。若 \(D\) 内的零点为有限集 \(\{p_1,\ldots,p_s\}\)，则
+	\begin{equation}\label{g2:eq:local-index-sum}
+		\deg\left(\frac{F}{|F|}\bigg|_{\partial D}\right)
+		=\sum_{j=1}^s\deg_{p_j}(F).
+	\end{equation}
+	源边界取外法向优先取向，目标取标准球面取向；\(n=1\) 使用约化零次同调。若 \(F_t\) 为连续同伦，且所有 \(t\in[0,1]\) 的边界值都非零，则左侧的整数不变。因而当两个端点都只有有限个零点时，它们的局部度总和相同。
+\end{theorem}
+\begin{proof}
+	在各 \(p_j\) 附近取互不相交的小闭球 \(D_j\subset\operatorname{Int}D\)，使它们各只含该零点。挖去这些球的内部，得到带边界的紧区域
+	\[
+		W=D\setminus\bigcup_j\operatorname{Int}D_j.
+	\]
+	在 \(W\) 上，\(\widehat F=F/|F|\) 连续且处处有定义。以标准 \(\mathbb R^n\) 给 \(W\) 定向，其相对基本类的边界为
+	\[
+		\partial[W,\partial W]=[\partial D]-\sum_j[\partial D_j].
+	\]
+	内边界带负号，因为 \(W\) 的外法向指向被挖掉的球内，与各球自身的外法向相反。\cref{g2:prop:boundary-fundamental-class}给出基本类与边界的关系；也可在有限个小坐标块中将带有共同面的定向链相加，内部面相消，直接得到该式。
+
+	把这条边界视作 \(W\) 中的链，其同调类为零。经 \(\widehat F\) 推到 \(S^{n-1}\)，便得到
+	\[
+		\left(\deg(\widehat F|_{\partial D})-\sum_j\deg(\widehat F|_{\partial D_j})\right)[S^{n-1}]=0.
+	\]
+	每个内球面的度由\cref{g2:prop:vector-index-well-defined}证明中的局部同调比较，等于 \(\deg_{p_j}F\)，于是得求和式。空零点集时直接取 \(W=D\)，得到边界度为零。\(n=1\) 时，\(W\) 是有限个区间，边界正负端点的和在 \(\widetilde H_0(S^0)\) 中满足同一等式。
+
+	若边界同伦始终非零，归一化给出球面映射的同伦，因此度不变。这个论证不要求中间时刻的内部零点仍然孤立。
+\end{proof}
+
+\begin{proposition}\label{g2:prop:local-transverse-vector-perturbation}
+	设 \(X\) 为光滑流形 \(M\) 上的光滑向量场，\(p\) 为孤立零点。可在任意充分小的坐标球内部作任意小的光滑扰动，使球内全部零点非退化，同时保持球边界附近及球外的场不变。扰动后各零点的指标总和等于 \(\operatorname{ind}_p(X)\)。
+\end{proposition}
+\begin{proof}
+	仍在坐标中以 \(F\) 表示系数。取两个同心小球 \(D'\subset\operatorname{Int}D\)，使 \(F\) 在闭环带 \(D\setminus\operatorname{Int}D'\) 上非零；该紧集上的 \(|F|\) 有正下界 \(c\)。选光滑截断 \(\rho\)，在 \(D'\) 附近为1，在 \(\partial D\) 附近为零，且 \(0\le\rho\le1\)。考虑
+	\[
+		F_a(x)=F(x)-\rho(x)a,\qquad |a|<c/2.
+	\]
+	环带上 \(|F_a|\ge c-|a|>0\)，所有新零点只能在 \(D'\) 内。由\cref{g2:thm:sard}，可取任意小的 \(a\)，使它为 \(F\) 的正则值。因此这些零点的 \(\mathrm DF_a=\mathrm DF\) 可逆。新零点集闭且包含于 \(D'\) 的紧集，又因逆函数定理离散，故有限。固定 \(\rho\) 后，扰动的每个有限阶导数均随 \(|a|\) 趋零。
+
+	把系数改动用原坐标切标架变回向量场，在球外补零。这是光滑紧支改动。整个直线同伦 \(F-t\rho a\) 在边界上等于 \(F\)，所以\cref{g2:thm:local-index-additivity}给出指标总和不变。
+\end{proof}
+
+\begin{example}\label{g2:exm:index-splitting-polynomial}
+	平面场 \(F(z)=z^k\) 的原点指标为 \(k\)。对小的非零复数 \(a\)，方程 \(z^k=a\) 有 \(k\) 个互异根，且各根处的微分是乘 \(kz^{k-1}\) 的复线性映射，实行列式为 \(|kz^{k-1}|^2>0\)。因此退化零点分裂成 \(k\) 个指标为 \(+1\) 的零点。相反，\(F_t(x,y)=(x^2-t,y)\) 在 \(t>0\) 时有两个零点，指标分别为 \(+1,-1\)；\(t<0\) 时没有零点，\(t=0\) 的孤立零点指标为零。取参数足够小并固定一个围住它们的小圆盘，其边界始终无零点，两个不同的点数都对应总指标零。
+\end{example}
+
+局部指标非零必定迫使每个保持边界无零同伦的终点仍有零点：若终点整个球内无零点，求和式右边为空和，与非零的边界度矛盾。这个判据允许内部形状改变很大，控制的是边界同伦和总指标。
 
 \subsection{Euler 类的后续解释}
 \label{g2:subsec:1603:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+在闭流形上，孤立零点只有有限个，可以把全部局部指标相加。先用有向一维配边证明，这个总和不依赖所选向量场；随后再说明它与前面球丛障碍以及后面 Euler 类构造的关系。
+
+\begin{theorem}\label{g2:thm:total-vector-index-invariance}
+	设 \(M\) 为闭光滑 \(n\) 维流形，\(n\ge1\)，不要求可定向。若光滑向量场 \(X_0,X_1\) 都只有孤立零点，则
+	\[
+		\sum_{X_0(p)=0}\operatorname{ind}_p(X_0)
+		=\sum_{X_1(p)=0}\operatorname{ind}_p(X_1).
+	\]
+	允许某个场处处非零，此时对应总和为零。
+\end{theorem}
+\begin{proof}
+	由紧性，两个零点集有限。在各零点的不交小坐标球内应用\cref{g2:prop:local-transverse-vector-perturbation}，把它们改为零点非退化的场 \(Y_0,Y_1\)，每侧的总指标保持不变。用一个在端点附近恒定的光滑函数 \(\lambda:[0,1]\to[0,1]\)，连接两场为
+	\[
+		Y(x,t)=(1-\lambda(t))Y_0(x)+\lambda(t)Y_1(x).
+	\]
+	这是 \(M\times[0,1]\) 上拉回切丛的截面，在两端的时间邻域已经横截于零截面。
+
+	可以保持这些时间邻域不动，把整个截面扰动为横截截面。说明这一应用仍可保持“截面”条件：在中间时间段选有限张切丛局部标架，用截断函数乘各标架向量，得到有限个截面 \(s_j(x,t)\)，使它们在需要改动的每一点张成该点的纤维。对有限参数族 \(Y+\sum_ja_js_j\)，参数方向的导数满射到纤维，因此总体截面横截于零截面。在端点邻域原场已经横截，足够小的参数仍保持；\cref{g2:thm:parametric-transversality}遂给出所需参数。于是全部零点组成紧的一维带边界流形 \(Z\)，其边界正是两端零点。
+
+	给 \(Z\) 定向时，在局部先取 \(M\) 坐标、再取时间坐标，切丛纤维使用同一组 \(M\) 坐标的标架。规定“正向纤维基的提升在前，\(Z\) 的正向切向量在后”给出 \(M\times[0,1]\) 的这组方向。若变换 \(M\) 坐标，基底的 \(M\) 方向和纤维方向同时反号或同时保持，因此所得 \(Z\) 方向不变。即使 \(M\) 不可定向，这些线方向仍能拼成整体定向。
+
+	在端点附近场与时间无关。若该零点的系数微分为 \(A\)，则正纤维基可用 \((A^{-1}e_j,0)\) 提升，再接 \(\partial_t\)。这个有序基相对于“\(M\) 坐标后接时间”的行列式为 \(\det A^{-1}\)，所以 \(Z\) 的正切向量的时间方向符号为 \(\operatorname{sgn}\det A\)。由外法向优先的边界约定，\(t=1\) 端贡献 \(+\operatorname{sgn}\det A\)，\(t=0\) 端贡献 \(-\operatorname{sgn}\det A\)。
+
+	紧有向一维流形是有限个圆周和区间的并；区间的两端符号相反，圆周无边界。因此 \(\partial Z\) 的带符号总数为零，得到 \(Y_1\) 与 \(Y_0\) 的指标和相等，再由局部扰动的可加性回到 \(X_1,X_0\)。
+\end{proof}
+
+上述有限参数构造也可从零场出发，选出横截于零截面的光滑向量场；紧性使其只有有限个非退化零点。因此每个闭流形都可选到参与计数的场，记这个只依赖 \(M\) 的整数为 \(J(M)\)。例如标准球面 \(S^n\subset\mathbb R^{n+1}\) 上，取 \(a=(0,\ldots,0,1)\)，令
+\[
+	X(x)=a-\langle a,x\rangle x.
+\]
+其零点为 \(\pm a\)。在这两点的切空间上，线性化分别为 \(-\operatorname{id}\) 与 \(+\operatorname{id}\)，所以
+\[
+	J(S^n)=(-1)^n+1.
+\]
+环面有来自覆盖空间常向量的无零场，因此 \(J(T^n)=0\)。\secref{g2:sec:1704}将利用函数临界点与把手分解，证明一般公式 \(J(M)=\chi(M)\)，即 Poincaré--Hopf 定理；本节提供其中局部指标及总和不变性的部分。
+
+\ProseParagraphBreak
+
+指标与截面障碍可以在同一张小球上比较。若定向实秩 \(n\) 丛在一张 \(n\) 维球上平凡化，一个截面在球边界非零，归一化后就给出从 \(S^{n-1}\) 到纤维单位球面的映射。它的度既是内部零点的总指标，也是第12章逐胞腔延拓中的首障碍值。这说明后面的整体零点类应当把各个局部方向度收集到一个 \(n\) 次上同调类中。
+
+\ProseParagraphBreak
+
+这里须沿用本卷已经选定的 Euler 符号。对定向秩 \(n\ge2\) 的实丛 \(V\to B\)，第11章把球丛的 Euler 类规范为传递 \(e(S(V))=\mathrm d_nu\)，其中 \(u\) 是纤维球面的正生成元；\cref{g2:thm:sphere-primary-euler}已证明
+\[
+	o_n(S(V))=-e(S(V)).
+\]
+\secref{g2:sec:2003}从正向纤维 Thom 类 \(u_V\) 与零截面 \(s_0\) 构造零点规范的 Euler 类，并在\cref{g2:thm:euler-primary-comparison}证明比较
+\begin{equation}\label{g2:eq:euler-index-normalization-preview}
+	e_{\mathrm{Th}}(V):=s_0^*u_V=o_n(S(V))=-e(S(V)).
+\end{equation}
+这里 \(u_V\in H^n(V,V\setminus s_0(B);\mathbb Z)\) 在每根正向纤维上限制为正生成元；沿零截面拉回后得到底空间上的绝对类。对闭已定向 \(n\) 维流形上的定向秩 \(n\ge2\) 丛，该节的\cref{g2:thm:euler-index-evaluation}还对仅有孤立零点的光滑截面证明
+\[
+	\sum_p\operatorname{ind}_p(s)
+	=\langle e_{\mathrm{Th}}(V),[M]\rangle
+	=-\langle e(S(V)),[M]\rangle.
+\]
+此处截面指标用正向基底坐标及正向纤维标架计算。取 \(V=\mathrm TM\) 时，它就是本节的向量场指标。比如第12章算得 \(e(S(\mathrm TS^2))=-2\omega\)，这里两极的指标和为 \(2\)；式\eqref{g2:eq:euler-index-normalization-preview}恰好把两种规范对应起来。保留这个区别，后续从谱序列、截面或 Thom 类计算同一个几何对象时，数值符号才能一致。

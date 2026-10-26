@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 13.3 基本关系和可计算后果
 % 纲要位置：几何学计划纲要.md，第 1518 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,271 @@
 \section{基本关系和可计算后果}
 \label{g2:sec:1303}
 
-待撰写
+前节从高阶链对角构造了平方运算。现在要把它用于计算：一个类写成乘积时，平方怎样分配到各因子？两次运算复合后，有没有可以化简的关系？这些问题分别由 Cartan 公式与 Adem 关系回答。本节先把乘法公式落实到链映射的比较，再证明一次平方就是 Bockstein；随后把一般复合关系用于射影空间与附着映射。
 
 \subsection{Cartan 公式的链级证明}
 \label{g2:subsec:1303:01}
-待撰写
+
+对 \(x\in H^p(X;\mathbb F_2)\)、\(y\in H^q(X;\mathbb F_2)\)，\(\operatorname{Sq}^r(xy)\) 的次数是 \(p+q+r\)。若把增加的 \(r\) 次分给两个因子，得到的候选项是 \(\operatorname{Sq}^a(x)\operatorname{Sq}^b(y)\)，其中 \(a+b=r\)。Cartan 公式\footnote{Henri Paul Cartan（1904—2008），法国数学家，研究代数拓扑、同调代数与多复变分析。}说明所有这些项的和恰好给出答案。证明的关键是让高阶对角的指标也能够分到两个因子，而非把普通杯积的乘法相容性直接搬过来。
+
+\begin{lemma}[自由消解上的对角]\label{g2:lem:steenrod-resolution-diagonal}
+	令 \(W_i=\mathbb F_2[C_2]e_i\)，其中 \(C_2=\{1,T\}\)，\(\mathrm d e_i=(1+T)e_{i-1}\)（\(i\ge1\)），零次增广把 \(e_0,Te_0\) 都送到 \(1\)。在 \(W\otimes W\) 上令 \(T\) 同时作用于两因子。公式
+	\begin{equation}\label{g2:eq:steenrod-resolution-diagonal}
+		\psi(e_i)=\sum_{a+b=i}e_a\otimes T^a e_b,
+		\qquad \psi(Te_i)=T\psi(e_i)
+	\end{equation}
+	定义一个保持增广的 \(\mathbb F_2[C_2]\) 链映射。
+\end{lemma}
+\begin{proof}
+	等变性由第二个公式规定。计算 \(\mathrm d\psi(e_i)\) 时，对第一因子求边界所得项为
+	\[
+		\sum_{a+b=i-1}\bigl(e_a+Te_a\bigr)\otimes T^{a+1}e_b,
+	\]
+	对第二因子求边界所得项为
+	\[
+		\sum_{a+b=i-1}e_a\otimes\bigl(T^a e_b+T^{a+1}e_b\bigr).
+	\]
+	两式相加，\(e_a\otimes T^{a+1}e_b\) 成对消去，剩下
+	\[
+		\sum_{a+b=i-1}\bigl(e_a\otimes T^a e_b+Te_a\otimes T^{a+1}e_b\bigr)
+		=(1+T)\psi(e_{i-1})=\psi(\mathrm d e_i).
+	\]
+	在零次，\(\psi(e_0)=e_0\otimes e_0\)，故保持增广。公式中的 \(T^a\) 正是使中间项抵消所需的交换；删去它便一般不再是链映射。
+\end{proof}
+
+下面记 \(C=C_*(X;\mathbb F_2)\)、\(C'=C_*(Y;\mathbb F_2)\)，并写 \(A=\operatorname{AW}:C_*(X\times Y)\to C\otimes C'\)。这是\cref{g2:thm:eilenberg-zilber}中的 Alexander--Whitney 比较映射。将前节的高阶对角合写为 \(D:W\otimes C\to C\otimes C\)，即 \(D(e_i\otimes c)=D_i(c)\)。交换 \(T\) 在目标上互换两个链因子。
+
+\begin{theorem}[Cartan 公式]\label{g2:thm:steenrod-cartan}
+	设 \(X\) 为拓扑空间，\(x\in H^p(X;\mathbb F_2)\)、\(y\in H^q(X;\mathbb F_2)\)。对每个 \(r\ge0\)，
+	\begin{equation}\label{g2:eq:steenrod-cartan}
+		\operatorname{Sq}^r(x\smile y)=\sum_{a+b=r}\operatorname{Sq}^a(x)\smile\operatorname{Sq}^b(y).
+	\end{equation}
+	对于不同空间上的类，同样有外积公式
+	\begin{equation}\label{g2:eq:steenrod-external-cartan}
+		\operatorname{Sq}^r(x\times y)=\sum_{a+b=r}\operatorname{Sq}^a(x)\times\operatorname{Sq}^b(y).
+	\end{equation}
+	两式也适用于 CW 对的相对乘积及带基点 CW 复形的约化外积。
+\end{theorem}
+\begin{proof}
+	先证明外积公式。链级有两种运算路线：先对乘积空间作高阶对角，再分别用 \(A\)；或先用 \(A\) 分开两个空间，再把高阶指标用 \(\psi\) 分开。它们给出
+	\[
+		F_i=(A\otimes A)D_i^{X\times Y},\qquad
+		G_i=\rho\sum_{j+k=i}\bigl(D_j^X\otimes T^jD_k^Y\bigr)A,
+	\]
+	其中 \(\rho\) 将四个因子的次序由 \(X,X,Y,Y\) 改成 \(X,Y,X,Y\)。式\eqref{g2:eq:steenrod-resolution-diagonal}及高阶对角恒等式说明，\(F,G\) 都是从 \(W\otimes C_*(X\times Y)\) 到 \((C\otimes C')^{\otimes2}\) 的等变链映射；它们在零次顶点上都给出同一个四重顶点。
+
+	这里需要一组同时兼顾所有 \(i\) 的比较同伦。具体构造如下。对乘积空间的一条奇异 \(m\) 单形 \(\sigma=(\sigma_X,\sigma_Y)\)，先在通用模型 \((\Delta^m,\Delta^m)\) 上工作。目标四个因子的有限面链复形有增广收缩：若每个因子的首顶点投影为 \(P\)、锥算子为 \(h\)，则
+	\[
+		K=h\otimes1\otimes1\otimes1+P\otimes h\otimes1\otimes1
+		+P\otimes P\otimes h\otimes1+P\otimes P\otimes P\otimes h
+	\]
+	满足 \(\mathrm dK+K\mathrm d=1-P^{\otimes4}\)。按 \(i+m\) 归纳，设所有较低总次数的 \(H\) 已选，令
+	\[
+		R_{i,m}=(F_i+G_i)(\sigma)+H_i(\partial\sigma)+(1+T)H_{i-1}(\sigma),
+	\]
+	其中 \(H_{-1}=0\)。因为 \(F,G\) 是链映射，归纳中的边界等式及 \((1+T)^2=0\) 给出 \(\mathrm dR_{i,m}=0\)；总次数为零时，改读为其增广为零。取 \(H_i(\sigma)=KR_{i,m}\)，并沿 \(\sigma_X,\sigma_Y\) 推前，再按 \(W\) 的自由生成元等变延拓。这样在每一步都有
+	\[
+		F_i+G_i=\mathrm dH_i+H_i\partial+(1+T)H_{i-1}.
+	\]
+	较低面的 \(H_i\) 已纳入 \(R_{i,m}\)，所以新选择保持所有面相容；推前的定义又保证自然性。这就是两种链级路线之间所需的完整比较。
+
+	取代表上圈 \(u\) 与 \(v\)，次数分别为 \(p,q\)，并将 \(\lambda=(u\otimes v)\otimes(u\otimes v)\) 作用于最后的等式。由于 \(\lambda\mathrm d=0\)，且 \(\lambda T=\lambda\)，两个路线的取值之差为余边界 \(\delta(\lambda H_i)\)。第一条路线在 \(i=p+q-r\) 时代表 \(\operatorname{Sq}^r(x\times y)\)。第二条路线中，\(T^j\) 交换相同的两个 \(v\)，不改变取值；对应项是
+	\[
+		(u\smile_j u)\times(v\smile_k v),\qquad j+k=p+q-r.
+	\]
+	当 \(j>p\) 时，\(D_j\) 作用的输入次数为 \(2p-j<j\)，由前节的维数消失性质，该项为零；\(k>q\) 时同理。令 \(a=p-j\)、\(b=q-k\)，剩余项恰好满足 \(a+b=r\)，从而得到外积公式。\(r>p+q\) 时两边都由不稳定条件为零。
+
+	令 \(Y=X\)，沿对角映射 \(\Delta:X\to X\times X\) 拉回。平方的自然性及 \(\Delta^*(x\times y)=x\smile y\) 给出杯积公式。上述链映射和同伦都由单形的面组成；若一个代表上链在指定子空间上为零，相应的比较仍在该子空间上为零。因此同一论证给出绝对类与相对类的乘积，以及同一 CW 对内的相对乘积。一般相对外积可按第4章的小链比较在 \(A\times Y\cup X\times B\) 上取商；CW 对的商识别再给出约化外积公式。
+\end{proof}
+
+定义\term[zong Steenrod pingfang]{总 Steenrod 平方}[total Steenrod square]为
+\[
+	\operatorname{Sq}(x)=\sum_{i\ge0}\operatorname{Sq}^i(x).
+\]
+对每个齐次类，该和由不稳定条件只有有限项。Cartan 公式因而可以写成 \(\operatorname{Sq}(xy)=\operatorname{Sq}(x)\operatorname{Sq}(y)\)：总平方是保持单位的环同态，但它把一个齐次类送到若干不同次数的和。单个 \(\operatorname{Sq}^r\) 则始终将次数增加 \(r\)。
 
 \subsection{低阶关系的代表性证明}
 \label{g2:subsec:1303:02}
-待撰写
+
+一次平方把 \(H^n\) 送到 \(H^{n+1}\)，与系数短正合列产生的 Bockstein 次数相同。在一次类上，两者都给出普通平方。要从这一个低维计算推广到所有次数，关键是悬挂与可表性：先把同一例子悬挂，再把它放到普遍空间的低维骨架中。
+
+\begin{proposition}[一次平方与 Bockstein]\label{g2:prop:sq-one-bockstein}
+	对任意 CW 复形 \(X\) 及 \(n\ge0\)，系数列 \(0\to\mathbb F_2\to\mathbb Z/4\to\mathbb F_2\to0\) 的 Bockstein 满足
+	\[
+		\operatorname{Sq}^1=\beta:H^n(X;\mathbb F_2)\longrightarrow H^{n+1}(X;\mathbb F_2),
+		\qquad \operatorname{Sq}^1\operatorname{Sq}^1=0.
+	\]
+\end{proposition}
+\begin{proof}
+	\(n=0\) 时，每个零次类是各道路分支上的常值函数，可以用同样的整数常值提升，所以 \(\beta=0\)；\(\operatorname{Sq}^1=0\) 则由不稳定条件得到。
+
+	先取 \(\mathbb RP^2\) 的一次生成元 \(t\)。\cref{g2:lem:projective-plane-square}已经通过一个二单形上的整数提升计算证明 \(\beta(t)=t^2\)，而平方的顶次条件给出 \(\operatorname{Sq}^1(t)=t^2\)。这两种运算均与约化悬挂相容：平方由\cref{g2:prop:squares-connecting-suspension}，Bockstein 由\cref{g2:prop:bockstein-suspension}，其系数连接同态与空间对连接同态的交换符号在模 \(2\) 下消去。
+
+	对 \(n\ge1\)，令 \(M_n=\Sigma^{n-1}\mathbb RP^2\)。由于 \(\mathbb RP^2=S^1\cup_2 e^2\)，悬挂后得到 \(M_n=S^n\cup_2 e^{n+1}\)。其非零约化整数同调只有 \(H_n(M_n)=\mathbb Z/2\)；当 \(n\ge2\) 时，胞腔维数与 Hurewicz 定理又给出 \(\pi_n(M_n)=\mathbb Z/2\) 及更低同伦群为零。\(n=1\) 时基本群同样是 \(\mathbb Z/2\)。第9章消去高阶同伦群的构造因此可从 \(M_n\) 出发，仅添加维数至少为 \(n+2\) 的胞腔，得到 \(K=K(\mathbb F_2,n)\)。
+
+	令 \(j:M_n\hookrightarrow K\)，\(\iota_n\) 为 \(K\) 的普遍 \(n\) 次类。包含在 \(H^n\) 上为同构，并将 \(\iota_n\) 拉回悬挂类 \(t_n=s^{n-1}t\)。相对胞腔维数给出 \(H^{n+1}(K,M_n;\mathbb F_2)=0\)，所以上同调长正合列说明
+	\[
+		j^*:H^{n+1}(K;\mathbb F_2)\longrightarrow H^{n+1}(M_n;\mathbb F_2)
+	\]
+	单射。悬挂相容及低维计算给出
+	\[
+		j^*\operatorname{Sq}^1\iota_n=\operatorname{Sq}^1t_n
+		=s^{n-1}(t^2)=\beta(t_n)=j^*\beta(\iota_n).
+	\]
+	单射性使两种运算在 \(\iota_n\) 上相同。任意 \(x\in H^n(X;\mathbb F_2)\) 由\cref{g2:thm:em-representability}写为 \(f^*\iota_n\)，自然性便给出 \(\operatorname{Sq}^1x=\beta x\)。
+
+	最后，\cref{g2:prop:mod-two-bockstein}已经证明 \(\beta^2=0\)：若整数提升满足 \(\delta A=2B\)，则 \(\delta B=0\)，所以第一次 Bockstein 的像已有闭的整数提升，第二次为零。结合刚证的识别便得到 \(\operatorname{Sq}^1\operatorname{Sq}^1=0\)。
+\end{proof}
+
+Cartan 公式在 \(r=1\) 时还给出
+\[
+	\beta(xy)=\beta(x)y+x\beta(y).
+\]
+因此模 \(2\) Bockstein 是次数为 \(1\) 的导子。它的零值也有直接意义：\(\operatorname{Sq}^1x=0\) 当且仅当 \(x\) 可以提升为一个模 \(4\) 上同调类。这一结论来自系数长正合列的正合性；“可以逐单形提升为上链”总能做到，所检验的是能否让提升仍为余圈。
 
 \subsection{一般 Adem 关系及其外部证明输入}
 \label{g2:subsec:1303:03}
-待撰写
+
+Cartan 公式处理运算与乘法的关系。连续做两次平方时，输入与输出仍是单个上同调类，出现的是运算之间的复合关系。以下乘积 \(\operatorname{Sq}^a\operatorname{Sq}^b\) 按映射复合读取：先作右边的 \(\operatorname{Sq}^b\)，再作左边的 \(\operatorname{Sq}^a\)。
+
+\begin{theorem}[Adem 关系]\label{g2:thm:steenrod-adem}
+	对模 \(2\) Steenrod 平方，若整数 \(a,b\) 满足 \(0<a<2b\)，则在任意 CW 对的模 \(2\) 上同调上有
+	\begin{equation}\label{g2:eq:steenrod-adem}
+		\operatorname{Sq}^a\operatorname{Sq}^b
+		=\sum_{j=0}^{\lfloor a/2\rfloor}
+		\binom{b-j-1}{a-2j}\operatorname{Sq}^{a+b-j}\operatorname{Sq}^j.
+	\end{equation}
+	二项式系数在 \(\mathbb F_2\) 中取值，若下标大于非负上标则为零，并有 \(\operatorname{Sq}^0=\operatorname{id}\)。
+\end{theorem}
+
+这是本章使用的外部结构定理。其完整证明见\cite[第4.L节，Steenrod Squares and Powers]{Hatcher2002}中 Adem 关系的证明：比较两次对称幂构造，通过交换两组 \(C_2\) 作用得到系数恒等式，再用二进制展开抽出式\eqref{g2:eq:steenrod-adem}。所用运算与本章模 \(2\) 平方相同；相对版本由 CW 商空间的约化上同调得到。Adem 关系\footnote{José Adem Chahín（1921—1991），墨西哥数学家，研究代数拓扑，给出了 Steenrod 运算之间的复合关系。}将不可约束的复合式变成可逐步化简的表达。
+
+\ProseParagraphBreak
+
+例如，取 \(a=1\)，求和只有 \(j=0\) 一项，得到
+\[
+	\operatorname{Sq}^1\operatorname{Sq}^{2k}=\operatorname{Sq}^{2k+1}\quad(k\ge1),
+	\qquad \operatorname{Sq}^1\operatorname{Sq}^{2k+1}=0\quad(k\ge0).
+\]
+再取 \(a=b=2\)，\(j=0\) 的系数为 \(\binom12=0\)，\(j=1\) 的系数为 \(\binom00=1\)，所以
+\[
+	\operatorname{Sq}^2\operatorname{Sq}^2=\operatorname{Sq}^3\operatorname{Sq}^1.
+\]
+两边都增加四次，但中间经过的上同调群不同。若某个空间的 \(H^{n+1}\) 为零，这条等式就使 \(\operatorname{Sq}^2\operatorname{Sq}^2\) 在 \(H^n\) 上为零，即使 \(H^{n+2}\) 与 \(H^{n+4}\) 都不为零。
+
+\ProseParagraphBreak
+
+称复合单项式 \(\operatorname{Sq}^{i_1}\cdots\operatorname{Sq}^{i_s}\) 为\term[kerongxu danxiangshi]{可容许单项式}[admissible monomial]，若每个相邻指标满足 \(i_j\ge2i_{j+1}\)。若某对指标违反条件，Adem 关系把它替换为若干项，其中新左指标 \(a+b-j>a\)，而总次数不变。固定总次数时正指标序列只有有限多个，按字典序递增的替换遂会终止，得到可容许单项式的线性组合。这个过程提供一种化简算法；关于这些单项式线性独立的结论需要进一步的普遍空间计算。
 
 \subsection{实射影空间上的 Steenrod 平方}
 \label{g2:subsec:1303:04}
-待撰写
+
+一次类 \(t\) 满足 \(\operatorname{Sq}(t)=t+t^2\)。若一个空间的环由 \(t\) 生成，Cartan 公式便能确定全部平方。第4章已证明 \(\mathbb RP^2\) 的环；下面先把这一环计算扩展到全部实射影空间，使随后的运算公式具有完整的基础。
+
+\begin{theorem}[实射影空间的模二上同调环]\label{g2:thm:real-projective-mod-two-ring}
+	对 \(m\ge1\)，令 \(t\) 为 \(H^1(\mathbb RP^m;\mathbb F_2)\) 的非零类，则
+	\[
+		H^*(\mathbb RP^m;\mathbb F_2)=\mathbb F_2[t]/(t^{m+1}),\qquad |t|=1.
+	\]
+	对于 \(m=\infty\)，得到多项式环 \(\mathbb F_2[t]\)。标准包含将这个一次生成元拉回同名生成元。
+\end{theorem}
+\begin{proof}
+	取标准双覆盖 \(S^\infty\to\mathbb RP^\infty\)，覆盖变换记为 \(g\)。每个维数的胞腔在覆盖中有两个提升，选其中一个为 \(e_i\)，另一个为 \(ge_i\)。把球面写成两个半球，公共边界的两个提升分别来自 \(e_{i-1}\) 与 \(ge_{i-1}\)；模 \(2\) 时定向符号消失。因此覆盖的增广胞腔链为
+	\[
+		W_i=\mathbb F_2[C_2]e_i,\qquad \mathrm d e_i=(1+g)e_{i-1}.
+	\]
+	也可直接看出其正合性：在群环中，乘 \(1+g\) 的核与像都由 \(1+g\) 生成；零次的像正好是增广的核。底空间上链因此为 \(\operatorname{Hom}_{\mathbb F_2[C_2]}(W,\mathbb F_2)\)，其中系数作用平凡，每次为一维且微分为零。
+
+	还需确定杯积。\cref{g2:lem:steenrod-resolution-diagonal}中的对角现可读为
+	\[
+		\psi(e_i)=\sum_{a+b=i}e_a\otimes g^a e_b.
+	\]
+	它确实计算底空间的杯积，理由如下。\(S^\infty\) 是可缩的 CW 复形：任意球面映射的紧像包含于某个有限阶段 \(S^N\)，而包含 \(S^N\to S^{N+1}\) 可在一个半球内收缩；故所有同伦群为零，再用 Whitehead 定理。覆盖中的奇异链及胞腔链因而都是增广无同调的自由群环复形。自由性允许按生成元逐维构造保持增广的链比较；每次待延拓的边界是圈，由目标增广无同调填充。反向比较与链同伦也用同一递推构造，所以两套复形等变链同伦等价。
+
+	把奇异 Alexander--Whitney 对角经上述比较搬到 \(W\otimes W\)。它与 \(\psi\) 都是保持增广的等变链映射。目标 \(W\otimes W\) 作为 \(\mathbb F_2\) 链复形增广无同调，因为 \(W\) 的线性收缩可按张量收缩公式相乘。按 \(W\) 的自由群环生成元递推，填充两映射之差及低维同伦边界，就得到等变链同伦。因此用 \(\psi\) 计算的乘积与奇异杯积相同。
+
+	记 \(u_j\) 为在 \(e_j\) 上取值 \(1\) 的等变上链。式中的 \(g^a\) 对平凡系数不改变取值，于是
+	\[
+		(u_a\smile u_b)(e_{a+b})=(u_a\otimes u_b)(e_a\otimes g^a e_b)=1.
+	\]
+	故 \(u_a u_b=u_{a+b}\)，尤其 \(u_j=u_1^j\)，给出 \(\mathbb RP^\infty\) 的多项式环。有限骨架的胞腔上链在次数 \(0,\ldots,m\) 与无限复形相同，且微分仍为零，所以限制在这些次数为同构，高于 \(m\) 的群为零。乘法自然性便给出截断关系与所述包含的行为。
+\end{proof}
+
+对 \(j\ge0\)，总平方与二项式展开给出
+\[
+	\operatorname{Sq}(t^j)=\bigl(t+t^2\bigr)^j
+	=\sum_{i=0}^j\binom ji t^{j+i}.
+\]
+逐次数比较，得到
+\begin{equation}\label{g2:eq:projective-steenrod-formula}
+	\operatorname{Sq}^i(t^j)=\binom ji t^{j+i},
+\end{equation}
+在 \(\mathbb RP^m\) 中还须令所有超过 \(m\) 次的幂为零。这里有两种独立的消失原因：二项式系数可能为偶数，所得次数也可能超过空间的维数。
+
+\ProseParagraphBreak
+
+二进制写法使系数的奇偶性可以直接读出。若 \(j=\sum_\nu j_\nu2^\nu\)，\(j_\nu\in\{0,1\}\)，则在 \(\mathbb F_2[z]\) 中
+\[
+	(1+z)^j=\prod_{j_\nu=1}(1+z^{2^\nu}).
+\]
+因此 \(\binom ji\) 为奇数，当且仅当 \(i\) 的每个非零二进制位也出现在 \(j\) 中。例如 \(j=5=101_2\) 时，只允许 \(i=0,1,4,5\)，故在 \(\mathbb RP^{10}\) 中
+\[
+	\operatorname{Sq}(t^5)=t^5+t^6+t^9+t^{10}.
+\]
+若换成 \(\mathbb RP^8\)，最后两项由维数消去，剩下 \(t^5+t^6\)。
 
 \subsection{附着映射和 Hopf 不变量的约束}
 \label{g2:subsec:1303:05}
-待撰写
+
+上同调运算的自然性会限制附着映射。设 \(f:S^{2n-1}\to S^n\) 是带基点映射，\(n\ge2\)，其映射锥为
+\[
+	C_f=S^n\cup_f e^{2n}.
+\]
+胞腔链给出 \(H^n(C_f;\mathbb Z)=\mathbb Zu\)、\(H^{2n}(C_f;\mathbb Z)=\mathbb Zv\)，其他正次数为零。固定两个胞腔的定向后，唯一整数 \(H(f)\) 由
+\begin{equation}\label{g2:eq:hopf-invariant-cup-square}
+	u\smile u=H(f)v
+\end{equation}
+定义，称为 \(f\) 的\term[Hopf bubianliang]{Hopf 不变量}[Hopf invariant]。改变顶胞腔定向会改变其符号，奇偶性不受影响。这里的定义把附着关系转成了一次能够计算的杯积。
+
+\begin{proposition}[奇 Hopf 不变量的次数约束]\label{g2:prop:hopf-invariant-power-two}
+	设 \(n\ge2\)、\(f:S^{2n-1}\to S^n\)。若 \(H(f)\) 为奇数，则 \(n\) 必为 \(2\) 的幂。
+\end{proposition}
+\begin{proof}
+	以 \(\bar u,\bar v\) 表示两个整数生成元的模 \(2\) 像。顶次平方与式\eqref{g2:eq:hopf-invariant-cup-square}给出 \(\operatorname{Sq}^n\bar u=\bar v\ne0\)。假定 \(n\) 不是 \(2\) 的幂，写成 \(n=2^r+a\)，其中 \(0<a<2^r\)。对 \(\operatorname{Sq}^a\operatorname{Sq}^{2^r}\) 使用 Adem 关系，其 \(j=0\) 项的系数是
+	\[
+		\binom{2^r-1}{a}=1\quad\text{于 }\mathbb F_2.
+	\]
+	这是因为 \((1+z)^{2^r-1}=1+z+\cdots+z^{2^r-1}\) 在模 \(2\) 下成立。于是可以从关系中解出
+	\[
+		\operatorname{Sq}^n
+		=\operatorname{Sq}^a\operatorname{Sq}^{2^r}
+		+\sum_{j=1}^{\lfloor a/2\rfloor}
+		\binom{2^r-j-1}{a-2j}\operatorname{Sq}^{n-j}\operatorname{Sq}^j.
+	\]
+	将它作用在 \(\bar u\) 上。右侧每项先增加一个严格介于 \(0\) 与 \(n\) 之间的次数，因此经过 \(H^{n+s}(C_f;\mathbb F_2)\)、\(0<s<n\)，这些群全为零。右侧为零，与 \(\operatorname{Sq}^n\bar u\ne0\) 矛盾。
+\end{proof}
+
+这个证明用到了两项不同信息：杯积决定顶次平方非零，Adem 关系则迫使某些顶次平方分解为经过中间次数的运算。空间的上同调恰好在这些中间次数消失，才产生矛盾。
+
+\begin{proposition}[由平方检测悬挂后的附着]\label{g2:prop:hopf-square-stable-detection}
+	若 \(n\ge2\) 且 \(f:S^{2n-1}\to S^n\) 的 Hopf 不变量为奇数，则对每个 \(k\ge0\)，\(\Sigma^k f:S^{2n+k-1}\to S^{n+k}\) 都不是零伦。因此它在稳定群 \(\pi_{n-1}^{\mathrm S}\) 中给出非零元素。
+\end{proposition}
+\begin{proof}
+	约化悬挂与带基点映射锥相容，故 \(C_{\Sigma^k f}\) 与 \(\Sigma^k C_f\) 同伦等价。悬挂相容性把 \(\operatorname{Sq}^n\bar u=\bar v\) 送到
+	\[
+		\operatorname{Sq}^n(s^k\bar u)=s^k\bar v\ne0.
+	\]
+	若 \(\Sigma^k f\) 零伦，沿一个零伦改变附着映射，得到 \(C_{\Sigma^k f}\simeq S^{n+k}\vee S^{2n+k}\)。这个楔和的低次生成元来自到 \(S^{n+k}\) 的收缩映射拉回；球面的 \(H^{2n+k}\) 为零，所以其 \(\operatorname{Sq}^n\) 为零。自然性迫使楔和上同一个运算也为零，产生矛盾。稳定群中的零元意味着某次足够高的悬挂为零，故所得稳定元素非零。
+\end{proof}
+
+Hopf 映射 \(S^3\to S^2\) 给出具体例子。把 \(\mathbb CP^2\) 的一条坐标直线视为 \(\mathbb CP^1\)，剩下部分是一张四胞腔。特征映射可写成
+\[
+	D^4\longrightarrow\mathbb CP^2,\qquad
+	(z_0,z_1)\longmapsto[z_0:z_1:\sqrt{1-|z_0|^2-|z_1|^2}].
+\]
+其边界正是将单位向量 \((z_0,z_1)\) 送到复直线 \([z_0:z_1]\) 的 Hopf 投影，因此映射锥为 \(\mathbb CP^2\)。由\cref{g2:thm:complex-projective-ring}，二次生成元的平方生成四次群，故相容定向下 \(H(f)=1\)。于是 \(\operatorname{Sq}^2\) 检测到 Hopf 映射的全部悬挂。
+
+\ProseParagraphBreak
+
+悬挂以后，正次杯积可能全部为零，\(\operatorname{Sq}^2\) 仍保留刚才的非零值。这展示了稳定运算比单独的环乘法多记录了什么：它能追踪随悬挂一起上移的两层之间的附着信息。上述次数约束与稳定检测的进一步讨论，可参看\cite[第4.L节，Steenrod Squares and Powers]{Hatcher2002}。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

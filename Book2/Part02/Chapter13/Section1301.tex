@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 13.1 自然运算及基本例子
 % 纲要位置：几何学计划纲要.md，第 1505 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,178 @@
 \section{自然运算及基本例子}
 \label{g2:sec:1301}
 
-待撰写
+模 \(2\) 上同调把所有整数倍数压成奇偶性。例如，一个胞腔边界若原来是乘 \(2\)，模 \(2\) 后便成为零；边界是乘 \(4\) 时也一样。所得上同调群可能完全相同，却还有一种自然操作能分辨这两种情况：先把上圈提升到更精细的系数，计算它在那里还剩多少边界。这个操作将成为本章第一个改变次数的例子。
 
 \subsection{系数短正合列与 Bockstein}
 \label{g2:subsec:1301:01}
-待撰写
+
+设 \((X,A)\) 为空间对，给定阿贝尔群的短正合列
+\begin{equation}\label{g2:eq:coefficient-short-exact}
+	0\longrightarrow G\xrightarrow{\iota}E\xrightarrow{\rho}Q\longrightarrow0.
+\end{equation}
+相对奇异链群 \(C_j(X,A;\mathbb Z)\) 以不完全落在 \(A\) 中的奇异单形为自由基。因此，对每个基元分别提升取值，就得到上链复形的短正合列
+\[
+	0\longrightarrow C^*(X,A;G)\xrightarrow{\iota_*}C^*(X,A;E)\xrightarrow{\rho_*}C^*(X,A;Q)\longrightarrow0.
+\]
+这里使用了链群自由；仅有任意模之间的短正合列时，对其取 \(\operatorname{Hom}\) 未必仍然右正合。由第2章的连接同态构造，有系数长正合列
+\[
+	\cdots\longrightarrow H^n(X,A;E)\xrightarrow{\rho_*}H^n(X,A;Q)\xrightarrow{\beta}H^{n+1}(X,A;G)\xrightarrow{\iota_*}H^{n+1}(X,A;E)\longrightarrow\cdots.
+\]
+其中的 \(\beta\) 称为该系数列的\term[Bockstein-tongtai]{Bockstein 同态}[Bockstein homomorphism]。\footnote{\OriginalName{Меер Феликсович Бокштейн}（Meer Feliksovich Bockstein，1913—1990），苏联数学家，研究代数拓扑、同调系数系统和维数论。}\symidx{\(\beta\)：模 \(2\) Bockstein 同态；一般系数列时另行指明}
+
+\begin{proposition}[Bockstein 的上链公式]\label{g2:prop:bockstein-cochain}
+	对空间对 \((X,A)\) 及系数列\eqref{g2:eq:coefficient-short-exact}，若 \(a\in C^n(X,A;Q)\) 为上圈，取提升 \(\widetilde a\in C^n(X,A;E)\)，并由
+	\[
+		\iota_* b=\delta\widetilde a
+	\]
+	定义 \(b\in C^{n+1}(X,A;G)\)，则 \(b\) 为上圈，且 \(\beta[a]=[b]\)。此类与提升和上圈代表的选择无关，对空间对映射及系数短正合列的交换映射自然，并且
+	\[
+		\beta[a]=0\quad\Longleftrightarrow\quad[a]\text{ 是某个 }H^n(X,A;E)\text{ 类的像}.
+	\]
+\end{proposition}
+\begin{proof}
+	因为 \(\rho_*\delta\widetilde a=\delta a=0\)，正合性与 \(\iota_*\) 单射给出唯一的 \(b\)。又有 \(\iota_*\delta b=\delta^2\widetilde a=0\)，所以 \(\delta b=0\)。若提升改为 \(\widetilde a+\iota_*c\)，则 \(b\) 改为 \(b+\delta c\)。若原上圈改为 \(a+\delta v\)，先提升 \(v\) 为 \(\widetilde v\)，可取新提升 \(\widetilde a+\delta\widetilde v\)；它的上边界未变。两种变化都不改变 \([b]\)。相加提升即得到同态性，先拉回再提升或先沿系数交换图送出再提升则给出自然性。
+
+	若 \([b]=0\)，写 \(b=\delta c\)，则 \(\widetilde a-\iota_*c\) 已经闭，且仍投影为 \(a\)。反过来，若 \([a]\) 是某个 \(E\) 系数上圈的像，可先改变 \(a\) 的代表使其实际等于该像，再以这个上圈作为提升；所得 \(b=0\)。这也直接证明了所述正合性判据。
+\end{proof}
+
+这个判据解释了 Bockstein 测量的内容：上链总能逐个取值提升，困难在于能否把提升仍选成上圈。它给出的是一个具体障碍类，而非对系数群大小的比较。
+
+\ProseParagraphBreak
+
+本章主要使用下面两条列：
+\[
+	0\longrightarrow\mathbb Z\xrightarrow{\times2}\mathbb Z\xrightarrow{\rho_2}\mathbb F_2\longrightarrow0,
+	\qquad
+	0\longrightarrow\mathbb F_2\xrightarrow{1\mapsto2}\mathbb Z/4\longrightarrow\mathbb F_2\longrightarrow0.
+\]
+第一条的连接同态记为 \(\widetilde\beta_2:H^n(-;\mathbb F_2)\to H^{n+1}(-;\mathbb Z)\)，第二条记为 \(\beta:H^n(-;\mathbb F_2)\to H^{n+1}(-;\mathbb F_2)\)。给模 \(2\) 上圈 \(a\) 逐值选择整数提升 \(\widetilde a\)，就有
+\begin{equation}\label{g2:eq:bockstein-divide-two}
+	\widetilde\beta_2[a]=\left[\frac{\delta\widetilde a}{2}\right],\qquad
+	\beta[a]=\left[\frac{\delta\widetilde a}{2}\bmod2\right].
+\end{equation}
+上边界取值均为偶数，故这里的除法是在整数上链中逐值进行，随后才约化系数。
+
+\begin{proposition}[模 \(2\) Bockstein 的性质]\label{g2:prop:mod-two-bockstein}
+	对任意空间对，\(\beta=\rho_{2*}\widetilde\beta_2\) 且 \(\beta^2=0\)。对任意空间 \(X\) 及 \(x,y\in H^*(X;\mathbb F_2)\)，有
+	\begin{equation}\label{g2:eq:bockstein-derivation}
+		\beta(x\smile y)=\beta x\smile y+x\smile\beta y.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	两个公式中的代表元立即给出 \(\beta=\rho_{2*}\widetilde\beta_2\)。整数系数长正合列中，相邻两张映射满足 \(\widetilde\beta_2\rho_{2*}=0\)，所以
+	\[
+		\beta^2=\rho_{2*}\widetilde\beta_2\rho_{2*}\widetilde\beta_2=0.
+	\]
+	也可以直接看代表：\(\delta\widetilde a/2\) 已是整数上圈，故其模 \(2\) 类再取 Bockstein 为零。
+
+	设整数提升 \(\widetilde a,\widetilde b\) 分别代表 \(x,y\) 的模 \(2\) 上圈，\(|x|=p\)。整数杯积的边界公式给出
+	\[
+		\frac{\delta(\widetilde a\smile\widetilde b)}2
+		=\frac{\delta\widetilde a}2\smile\widetilde b+(-1)^p\widetilde a\smile\frac{\delta\widetilde b}2.
+	\]
+	取模 \(2\) 后，右边两项分别代表 \(\beta x\smile y\) 与 \(x\smile\beta y\)，负号消失，即得式\eqref{g2:eq:bockstein-derivation}。
+\end{proof}
+
+\begin{example}[同群而不同的 Bockstein]\label{g2:exm:moore-bockstein-comparison}
+	取 \(n\ge2\) 和 \(r\ge1\)，令 \(M_r=S^n\cup_{2^r}e^{n+1}\)，附着映射的度为 \(2^r\)。整数约化胞腔上链为
+	\[
+		\mathbb Z\xrightarrow{\times2^r}\mathbb Z
+	\]
+	并置于次数 \(n,n+1\)。因此所有 \(M_r\) 的模 \(2\) 约化上同调均只在这两个次数各有一个 \(\mathbb F_2\)。记对应生成元为 \(x,y\)。提升取值为 \(1\) 的胞腔上圈并用式\eqref{g2:eq:bockstein-divide-two}，得到
+	\[
+		\beta x=(2^{r-1}\bmod2)y.
+	\]
+	所以 \(r=1\) 时 \(\beta x=y\)，\(r\ge2\) 时 \(\beta x=0\)。胞腔与奇异模型的比较对系数列自然，故这里算的正是同一 Bockstein。
+
+	这些空间的全部正次杯积都因维数而为零。因此 \(M_1\) 与 \(M_2\) 甚至有相同的模 \(2\) 上同调环，\(\beta\) 仍能将它们区分。另一方面，\(M_2\) 与 \(M_3\) 的这一次运算也相同；单个 Bockstein 所读取的是边界除以 \(2\) 后的奇偶性。
+\end{example}
 
 \subsection{稳定、非稳定与次数}
 \label{g2:subsec:1301:02}
-待撰写
+
+前一小节的 \(\beta\) 为每个空间、每个次数都给出一张自然同态。杯平方也自然，因为拉回保持杯积，但它的次数变化不同。先把这些区别写成定义，后面的下标就有明确含义。
+
+\begin{definition}[上同调运算]\label{g2:def:cohomology-operation}
+	固定阿贝尔群 \(G,B\) 与整数 \(n,m\ge0\)。若对每个 CW 复形 \(X\) 给出集合映射
+	\[
+		\theta_X:H^n(X;G)\longrightarrow H^m(X;B),
+	\]
+	并对每张连续映射 \(f:X\to Y\) 满足 \(f^*\theta_Y(x)=\theta_X(f^*x)\)，就称 \(\theta\) 为一个\term[shangtongdiao-yunsuan]{上同调运算}[cohomology operation]，其次数增量为 \(m-n\)。若各 \(\theta_X\) 均为群同态，称其为加性运算。对空间对及约化上同调可以作相同定义。
+\end{definition}
+
+自然性要求运算与每张空间映射相容；加性则要求同一空间内的相加与运算相容，两者是不同条件。例如整数杯平方 \(x\mapsto x^2:H^2(X;\mathbb Z)\to H^4(X;\mathbb Z)\) 自然，却不加性。在 \(\mathbb CP^2\) 上取二次生成元 \(u\)，有 \((2u)^2=4u^2\ne2u^2\)。模 \(2\) 杯平方则加性，因为 \((x+y)^2=x^2+y^2\)，交叉项由分次交换性成对抵消。
+
+\ProseParagraphBreak
+
+第9章的约化悬挂 \(\Sigma X=CX/X\) 同时把细胞维数提高一。对带基点 CW 复形，约化锥可缩，\cref{g2:prop:relative-cohomology-exactness}的连接同态及商空间比较给出上同调悬挂同构
+\begin{equation}\label{g2:eq:cohomology-suspension-upward}
+	s:\widetilde H^n(X;\mathbb F_2)\xrightarrow{\cong}H^{n+1}(CX,X;\mathbb F_2)\xrightarrow{\cong}\widetilde H^{n+1}(\Sigma X;\mathbb F_2).
+\end{equation}
+这里的 \(s\) 提高次数。第11章路径纤维化中的 \(\sigma:H^{n+1}(B)\to H^n(\Omega B)\) 则降低次数，两者的定义域与构造不同。
+
+\begin{definition}[稳定运算]\label{g2:def:stable-cohomology-operation}
+	设 \(r\ge0\)。一族模 \(2\) 约化上同调运算
+	\[
+		\theta_n:\widetilde H^n(-;\mathbb F_2)\longrightarrow\widetilde H^{n+r}(-;\mathbb F_2),\qquad n\ge0,
+	\]
+	若满足 \(\theta_{n+1}s=s\theta_n\)，称为次数 \(r\) 的\term[wending-shangtongdiao-yunsuan]{稳定上同调运算}[stable cohomology operation]。只在固定输入次数上讨论的运算称为非稳定运算；它是否属于某个稳定族，需要另行检验。
+\end{definition}
+
+“稳定”保持的是运算增加的次数 \(r\)，而非输入次数 \(n\)。杯平方将 \(n\) 变成 \(2n\)，它本身没有固定的次数增量。后面构造的 \(\operatorname{Sq}^i\) 则始终增加 \(i\) 次；当输入类的次数刚好为 \(i\) 时，它才等于普通杯平方。上标 \(i\) 因而记录次数增量，而不是进行 \(i\) 次平方。
+
+\begin{proposition}[Bockstein 与悬挂]\label{g2:prop:bockstein-suspension}
+	模 \(2\) Bockstein 与空间对上同调长正合列的连接同态相容，因而构成次数 \(1\) 的稳定运算。
+\end{proposition}
+\begin{proof}
+	记空间对 \((X,A)\) 的连接同态为 \(\partial^*\)。取 \(A\) 上的模 \(2\) 上圈 \(a\)，将它逐值提升并延拓为 \(X\) 上的整数上链 \(c\)。因为 \((\delta c)|_A\) 为偶数上链，可以在 \(X\) 上选整数上链 \(d\)，满足 \(d|_A=(\delta c)|_A/2\)。于是
+	\[
+		b=\delta c-2d
+	\]
+	在 \(A\) 上为零；其模 \(2\) 类代表 \(\partial^*[a]\)。又有 \(\delta b=-2\delta d\)，所以 \(\beta\partial^*[a]\) 由 \(-\delta d\bmod2\) 代表。另一方面，\(d|_A\bmod2\) 代表 \(\beta[a]\)，故 \(\partial^*\beta[a]\) 由 \(\delta d\bmod2\) 代表。模 \(2\) 后两者相同，即 \(\beta\partial^*=\partial^*\beta\)。这里 \(\delta d|_A=0\)，所以所用上链确实都是相对上圈。
+
+	将此结论用于锥对 \((CX,X)\)，再通过式\eqref{g2:eq:cohomology-suspension-upward}识别，就有 \(\beta s=s\beta\)。零次约化群使用同一增广复形论证；零次 Bockstein 本身为零，因为零次模 \(2\) 上圈可逐道路分支提升成整数上圈。
+\end{proof}
+
+在 \(\mathbb RP^2\) 上，\cref{g2:lem:projective-plane-square}已经证明一次生成元满足 \(\beta t=t^2\ne0\)。因此悬挂后 \(\beta(st)=s(t^2)\ne0\)。这给出一个次数二到次数三的非零运算；普通杯平方 \((st)^2\) 却落在四次，而悬挂射影平面的四次上同调为零。这个例子展示了稳定运算保留而普通乘法无法保留的信息。
 
 \subsection{可表性和 Eilenberg–MacLane 空间}
 \label{g2:subsec:1301:03}
-待撰写
+
+一项运算要求同时作用于所有空间，看起来需要无穷多份数据。上一章的可表性定理把任意类 \(x\in H^n(X;G)\) 写成 \(f^*\iota_n\)，其中 \(f:X\to K(G,n)\)。自然性随即把 \(\theta(x)\) 也写成一个普遍类的拉回。因此，确定一项运算只需确定它对 \(\iota_n\) 的作用。
+
+\begin{theorem}[运算的普遍类]\label{g2:thm:operations-representability}
+	设 \(G,B\) 为阿贝尔群，\(n,m\ge1\)，取带基点 CW 模型 \(K(G,n)\) 及其普遍类 \(\iota_n\)。所有自然运算 \(\theta:H^n(-;G)\to H^m(-;B)\) 与
+	\[
+		H^m(K(G,n);B)
+	\]
+	一一对应，对应为 \(\theta\mapsto\theta(\iota_n)\)。若 \(c\) 为此普遍类，\(x=f^*\iota_n\)，则
+	\[
+		\theta_X(x)=f^*c.
+	\]
+	进一步，以映射 \(\widehat\theta:K(G,n)\to K(B,m)\) 表示 \(c\) 后，运算就是将表示 \(x\) 的映射后接 \(\widehat\theta\)。
+\end{theorem}
+\begin{proof}
+	由\cref{g2:thm:em-representability}，每个 \(x\) 均可写为 \(f^*\iota_n\)，且 \(f\) 的同伦类由 \(x\) 唯一确定。对已给运算，自然性迫使
+	\[
+		\theta_X(x)=\theta_X(f^*\iota_n)=f^*\theta_{K(G,n)}(\iota_n).
+	\]
+	因此普遍类唯一决定运算。
+
+	反过来，给定 \(c\in H^m(K(G,n);B)\)，对 \(x\) 选择表示映射 \(f\) 并令 \(\theta_X(x)=f^*c\)。若选择另一张 \(f'\)，可表性使 \(f\simeq f'\)，故拉回相同，运算良定义。对 \(h:Y\to X\)，类 \(h^*x\) 由 \(fh\) 表示，因而 \(\theta_Y(h^*x)=h^*f^*c=h^*\theta_X(x)\)，得到自然性。取 \(X=K(G,n)\)、\(f=\operatorname{id}\)，所得普遍类恰为原来的 \(c\)。最后对 \(c\) 再用一次可表性，就得到映射 \(\widehat\theta\) 及复合描述。
+\end{proof}
+
+自然运算可以在普遍空间上检验恒等式。这将在低阶平方关系的证明中很有用：只要在足够低的骨架上比较两个普遍类，再证明限制映射在相应次数单射，就能把等式推广到所有空间。
+
+\ProseParagraphBreak
+
+加性也有一个具体的普遍判据。记 \(K=K(G,n)\)，令 \(\mu:K\times K\to K\) 表示类 \(\operatorname{pr}_1^*\iota_n+\operatorname{pr}_2^*\iota_n\)；无限 CW 乘积在这里取 CW 逼近模型，相应同伦类与上同调不变。若 \(c=\theta(\iota_n)\)，则
+\begin{equation}\label{g2:eq:operation-primitive-criterion}
+	\theta\text{ 加性}\quad\Longleftrightarrow\quad\mu^*c=\operatorname{pr}_1^*c+\operatorname{pr}_2^*c.
+\end{equation}
+必要性是把加性用于两个普遍拉回类。反过来，给定 \(x,y\in H^n(X;G)\)，选择各自的表示映射 \(f,g\)，把右端恒等式沿 \((f,g)\) 拉回，就得到 \(\theta(x+y)=\theta(x)+\theta(y)\)。这说明自然性与加性虽不等同，但都可以在明确的类上核对。
+
+\ProseParagraphBreak
+
+这项分类不直接给出 \(H^*(K(G,n);B)\) 的全部计算。对本章所需的模 \(2\) 运算，我们将从单形上的链对角构造可计算的普遍类，再用自然性和乘法规律把它们作用到具体空间。Bockstein 的更多系数计算可参看\cite[第3.E节]{Hatcher2002}，运算与普遍类的关系见同书\cite[第4.L节，Steenrod Squares and Powers]{Hatcher2002}。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

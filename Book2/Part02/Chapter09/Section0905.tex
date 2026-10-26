@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 9.5 悬挂、Freudenthal 定理与稳定范围
 % 纲要位置：几何学计划纲要.md，第 1365 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；一般同伦切除准确外引，双锥应用与稳定范围在正文证明。
 
 % 纲要内容开始
 % 
@@ -27,29 +27,185 @@
 \section{悬挂、Freudenthal 定理与稳定范围}
 \label{g2:sec:0905}
 
-待撰写
+把球面上的映射沿一个新方向拉长，再把两端压成一点，就得到维数同时提高一的映射。这个操作称为悬挂。它保留了多少同伦信息，是从逐个同伦群的计算走向稳定同伦的关键问题。本节先把悬挂写成可直接操作的商空间，再利用两个锥的粘合说明：当空间的低维同伦群已经消失时，一定范围内的同伦类在悬挂后既不丢失，也不新增。
 
 \subsection{\texorpdfstring{约化悬挂、回路伴随及自然映射 \(X\to\Omega\Sigma X\)}{约化悬挂、回路伴随及自然映射 X→\GeometryPdfOmega{}\GeometryPdfCapitalSigma{}X}}
 \label{g2:subsec:0905:01}
-待撰写
+回忆第3章的未约化悬挂：将 \(X\times I\) 的上下两端各压成一点。若 \(X\) 已有基点 \(x_0\)，还可以把整条 \(\{x_0\}\times I\) 压到基点，这样所有构造都保持基点。本节的带基点 CW 复形均取基点为零胞腔；这保证基点包含具有同伦延拓性质。一般地，包含 \(\{x_0\}\hookrightarrow X\) 为余纤维化时，称基点为\term[liangjidian]{良基点}[well-pointed]。
+
+\begin{definition}[约化悬挂与约化锥]\label{g2:def:reduced-suspension}
+	设 \((X,x_0)\) 为带基点空间。它的\term[yuehuaxuangua]{约化悬挂}[reduced suspension]和\term[yuehuazhui]{约化锥}[reduced cone]分别为
+	\[
+		\Sigma X\coloneqq\frac{X\times I}{X\times\{0,1\}\,\cup\,\{x_0\}\times I},\qquad
+		C_*X\coloneqq\frac{X\times I}{X\times\{0\}\,\cup\,\{x_0\}\times I}.
+	\]
+	分母所示子空间各压成一个基点。约化锥中的 \([x,1]\) 给出 \(X\) 的底面，公式 \([x,t]\mapsto[x,(1-s)t]\) 给出固定基点的收缩。带基点映射 \(f:X\rightarrow Y\) 诱导 \(\Sigma f([x,t])=[f(x),t]\)。
+\end{definition}
+
+在带基点 CW 模型中，这些商保留 CW 结构，底面包含 \(X\hookrightarrow C_*X\) 是子复形包含。把两份约化锥沿底面相粘，得到
+\[
+	\Sigma X=C_+X\cup_X C_-X.
+\]
+约定 \(C_+X\) 由悬挂参数 \(0\le t\le1/2\) 给出，\(C_-X\) 由 \(1/2\le t\le1\) 给出，公共底面是 \(X\times\{1/2\}\)。第一顶锥的锥参数 \(v\) 对应悬挂参数 \(t=v/2\)，因此锥参数从顶点到公共底面递增。两锥的顶点与基点线均已合为基点。由球面的立方体商模型，\(\Sigma S^i\cong I^{i+1}/\partial I^{i+1}\cong S^{i+1}\)，最后一坐标取悬挂参数；\(\Sigma\operatorname{id}_{S^i}\) 对应 \(\operatorname{id}_{S^{i+1}}\)。
+
+\begin{proposition}[悬挂与回路的伴随]\label{g2:prop:suspension-loop-adjunction}
+	设 \(X,Y\) 为带基点空间，\(\Omega Y\) 取紧开拓扑。带基点映射由下列公式一一对应，并诱导自然双射
+	\[
+		[\Sigma X,Y]_*\cong[X,\Omega Y]_*,\qquad
+		F\longmapsto\widehat F,\quad \widehat F(x)(t)=F([x,t]).
+	\]
+	恒等映射 \(\operatorname{id}_{\Sigma X}\) 对应自然映射
+	\[
+		\eta_X:X\longrightarrow\Omega\Sigma X,\qquad
+		\eta_X(x)(t)=[x,t].
+	\]
+\end{proposition}
+\begin{proof}
+	先看映射本身。一个从 \(X\times I\) 到 \(Y\) 的连续映射能下降到约化悬挂，当且仅当它在两端及基点线上恒取 \(y_0\)。由区间的紧性及紧开拓扑的指数律，这等价于连续映射 \(x\mapsto(t\mapsto F(x,t))\) 取值于 \(\Omega Y\)，且把 \(x_0\) 送到常值回路。两种公式互为逆映射。
+
+	对带参数的映射使用同一公式，就得到同伦之间的对应；商映射与区间取积仍为商映射，见\cref{g2:lem:quotient-interval}，所以由 \(X\times I\times I\) 下降的同伦连续。对源的预复合和对靶的后复合都与公式交换，故双射自然。把 \(F\) 取为恒等映射便得到 \(\eta_X\)，并且对带基点 \(f:X\rightarrow Y\) 有严格等式 \(\Omega\Sigma f\circ\eta_X=\eta_Y\circ f\)。
+\end{proof}
+
+这项伴随把一个几何操作变成了对同一个空间的自然映射。对 \(i\ge1\)，\term[xuangua-tongtai]{悬挂同态}[suspension homomorphism]定义为
+\[
+	E:\pi_i(X)\longrightarrow\pi_{i+1}(\Sigma X),\qquad [f]\longmapsto[\Sigma f].
+\]
+球面上的加法由夹断映射定义，悬挂与这一夹断相容，所以 \(E\) 是群同态。经\cref{g2:exm:loop-space-shift}的同构 \(\pi_i(\Omega\Sigma X)\cong\pi_{i+1}(\Sigma X)\)，它正是 \((\eta_X)_*\)：映射 \(\eta_X\circ f\) 的伴随就是 \([u,t]\mapsto[f(u),t]\)。因此，悬挂保留哪些次数的信息，也就是 \(\eta_X\) 在哪些次数诱导同构。
 
 \subsection{同伦切除在两个锥粘合中的使用}
 \label{g2:subsec:0905:02}
-待撰写
+同调切除允许从粘合中去掉一块公共部分。同伦群记录更细的映射与延拓问题，相应比较只在由连通度控制的范围内成立。下面使用其 CW 版本，证明可查 \cite[第4.2节，Excision for Homotopy Groups]{Hatcher2002}。该定理是本节的外部输入；两个锥的连通度、比较映射及次数换算将在下文逐一落实。
+
+\begin{theorem}[同伦切除]\label{g2:thm:homotopy-excision}
+	设 CW 复形 \(Z=A\cup B\)，其中 \(A,B\) 为子复形，\(C=A\cap B\) 非空且道路连通，基点取在 \(C\) 中。设 \(r,s\ge0\)，空间对 \((A,C)\) 为 \(r\) 连通，\((B,C)\) 为 \(s\) 连通。则在次数 \(j\ge1\)，包含诱导的映射
+	\[
+		\pi_j(A,C)\longrightarrow\pi_j(Z,B)
+	\]
+	在 \(j<r+s\) 时为同构，在 \(j=r+s\) 时为满射。这里在次数 \(j\ge2\) 使用相对同伦群，在次数 \(j=1\) 使用相应尖点集并将同构理解为双射。
+\end{theorem}
+
+其中 \(r\) 连通的含义是相对同伦对象在次数不超过 \(r\) 时消失，零次条件要求每个道路分支与子空间相交。将定理用于双锥，所比较的推出图为
+\[
+	\begin{tikzcd}
+		X \arrow[r,hook] \arrow[d,hook] & C_+X \arrow[d,hook] \\
+		C_-X \arrow[r,hook] & \Sigma X.
+	\end{tikzcd}
+\]
+图中两条水平箭头之间的比较，恰是
+\[
+	\pi_j(C_+X,X)\longrightarrow\pi_j(\Sigma X,C_-X).
+\]
+两侧都把圆盘边界放进指定子空间；左侧要求整张圆盘落在一顶锥中，右侧允许它使用整个悬挂。切除定理说明，低维时允许使用另一顶锥没有增加新的相对类。
+
+\ProseParagraphBreak
+先计算两个锥提供的连通度。假设 \(X\) 为 \((n-1)\) 连通且 \(n\ge2\)。两锥可缩，故\cref{g2:thm:pair-homotopy-sequence}给出
+\[
+	\partial:\pi_j(C_\pm X,X)\xrightarrow{\ \cong\ }\pi_{j-1}(X)\qquad(j\ge2).
+\]
+右侧在 \(2\le j\le n\) 为零；次数一的相对尖点集也只有一个元素，因为锥可缩而 \(X\) 道路连通。因此两对 \((C_\pm X,X)\) 都是 \(n\) 连通。切除中的连通度是 \(n,n\)，比 \(X\) 本身的连通度各高一；这一差别决定了最后的稳定范围。
 
 \subsection{\texorpdfstring{\((n-1)\) 连通带基点 CW 复形的悬挂定理}{(n−1) 连通带基点 CW 复形的悬挂定理}}
 \label{g2:subsec:0905:03}
-待撰写
+悬挂定理把上面的相对比较转回绝对同伦群。Freudenthal 的结果说明，连通度越高，能够无损悬挂的次数越多。\footnote{Hans Freudenthal（1905—1990），生于德国的荷兰数学家，在代数拓扑和数学教育方面作出重要贡献，1937年发表悬挂定理研究。人物资料见 MacTutor 的 \href{https://mathshistory.st-andrews.ac.uk/Biographies/Freudenthal/}{Hans Freudenthal 传记}。}
+
+\begin{theorem}[Freudenthal 悬挂定理]\label{g2:thm:freudenthal}
+	设 \(n\ge2\)，\(X\) 为 \((n-1)\) 连通的 CW 复形，基点为一个零胞腔。则悬挂同态
+	\[
+		E:\pi_i(X)\longrightarrow\pi_{i+1}(\Sigma X)
+	\]
+	在 \(1\le i\le2n-2\) 时为同构，在 \(i=2n-1\) 时为满射。等价地，自然映射 \(\eta_X:X\rightarrow\Omega\Sigma X\) 在次数小于 \(2n-1\) 时诱导同构，在次数 \(2n-1\) 时诱导满射。
+\end{theorem}
+\begin{proof}
+	在带基点 CW 模型中写 \(\Sigma X=C_+X\cup_XC_-X\)。上一小节已经证明两对 \((C_\pm X,X)\) 是 \(n\) 连通。由\cref{g2:thm:homotopy-excision}，中间的包含映射与两侧的相对同伦序列组成
+	\[
+		\begin{tikzcd}[column sep=small]
+			\pi_i(X) & \pi_{i+1}(C_+X,X) \arrow[l,"\partial"',"\cong"] \arrow[r,"e"] & \pi_{i+1}(\Sigma X,C_-X) & \pi_{i+1}(\Sigma X) \arrow[l,"j_*"',"\cong"] .
+		\end{tikzcd}
+	\]
+	左侧边界同构来自 \(C_+X\) 可缩；右侧同构来自 \(C_-X\) 可缩。后一个断言在 \(i=1\) 也成立：正合列两侧的 \(\pi_2(C_-X)\) 与 \(\pi_1(C_-X)\) 都为零。于是复合 \(j_*^{-1}e\partial^{-1}\) 在 \(i+1<2n\) 时为同构，在 \(i+1=2n\) 时为满射。这分别等价于 \(i\le2n-2\) 与 \(i=2n-1\)。
+
+	还要识别这项复合确实是悬挂。给定 \(f:S^i\rightarrow X\)，将它写成 \(f:(I^i,\partial I^i)\rightarrow(X,x_0)\)。用悬挂参数表示，公式 \(F(u,t)=[f(u),t/2]\) 取值于 \(C_+X\)；它在底面和侧面取基点，在顶面取公共底面的 \(f(u)\)。所以它是\cref{g2:def:relative-homotopy}中的相对圆盘代表，且 \(\partial[F]=[f]\)，即 \([F]=\partial^{-1}[f]\)。
+
+	在球面的立方体商模型中，\(\Sigma f\) 的公式是 \(G(u,t)=[f(u),t]\)。当它作为 \((\Sigma X,C_-X)\) 中的相对映射时，连续变形
+	\[
+		H_s(u,t)=\bigl[f(u),(1-s/2)t\bigr],\qquad 0\le s\le1,
+	\]
+	将 \(G\) 变为 \(F\)。底面和侧面始终取基点；顶面的悬挂参数为 \(1-s/2\in[1/2,1]\)，所以顶面始终落在指定子空间 \(C_-X\)。这正是允许的相对同伦，因而 \(j_*[\Sigma f]=e[F]=e\partial^{-1}[f]\)。几何上，它把整段悬挂压到第一顶锥，同时允许顶面沿第二顶锥移动。所用边界就是顶面 \(f\)，与既定边界约定一致。于是 \(j_*^{-1}e\partial^{-1}=E\)，结论成立。
+\end{proof}
+
+证明中的三种次数可压缩为一张对应表，使用时先找准被比较的是圆盘维数还是球面维数：
+\[
+	\begin{array}{c|c|c}
+		\text{对象或映射} & \text{同构范围} & \text{满射的临界次数}\\ \hline
+		\pi_j(C_+X,X)\rightarrow\pi_j(\Sigma X,C_-X) & j<2n & j=2n\\
+		\pi_i(X)\rightarrow\pi_{i+1}(\Sigma X) & i\le2n-2 & i=2n-1
+	\end{array}
+\]
+悬挂使源球面和靶空间同时增加一个悬挂方向，而相对边界把圆盘维数减一；表中的两个换算来自这两项不同操作。
 
 \subsection{\texorpdfstring{球面同伦群在固定差值 \(i-n\) 下的稳定化}{球面同伦群在固定差值 i−n 下的稳定化}}
 \label{g2:subsec:0905:04}
-待撰写
+球面 \(S^n\) 是 \((n-1)\) 连通的，见\cref{g2:prop:sphere-connectivity}。因此对 \(n\ge2\)，悬挂给出
+\[
+	\pi_i(S^n)\longrightarrow\pi_{i+1}(S^{n+1}),
+	\qquad i\le2n-2\ \text{时为同构}.
+\]
+每次悬挂都使 \(i,n\) 同时加一，所以应固定差值 \(k=i-n\) 来排列这些群。以 \(k\ge0\) 为例，得到
+\[
+	\pi_{n+k}(S^n)\xrightarrow{E}\pi_{n+k+1}(S^{n+1})\xrightarrow{E}\pi_{n+k+2}(S^{n+2})\longrightarrow\cdots.
+\]
+不等式 \(n+k\le2n-2\) 等价于 \(n\ge k+2\)。一旦达到这个维数，后面的每一步都在同构范围内，因为悬挂一次使左侧与右侧之间的余量再增加一。
+
+\begin{definition}[球面的稳定同伦群]\label{g2:def:stable-sphere-homotopy}
+	对整数 \(k\)，沿悬挂同态取直接极限，定义球面的第 \(k\) 个\term[wending-tonglunqun]{稳定同伦群}[stable homotopy group]为
+	\[
+		\pi_k^{\mathrm S}\coloneqq\varinjlim_{n}\pi_{n+k}(S^n).
+	\]
+	取 \(n\) 充分大以保证 \(n\ge2\)、\(n+k\ge2\)。极限的元素由某一步中的同伦类表示；两项代表相同，当且仅当它们经过有限次悬挂后在同一个群中相等。
+\end{definition}
+
+对 \(k\ge0\)，\cref{g2:thm:freudenthal}给出自然同构
+\[
+	\pi_{n+k}(S^n)\cong\pi_k^{\mathrm S}\qquad(n\ge k+2).
+\]
+直接极限在这里可以理解为一条最终全由同构组成的链的共同取值。比如差值 \(k=1\) 时，\(\pi_3(S^2)\rightarrow\pi_4(S^3)\) 是临界满射，从 \(\pi_4(S^3)\) 开始得到稳定值；差值 \(k=2\) 时，\(\pi_5(S^3)\rightarrow\pi_6(S^4)\) 是临界满射，从 \(\pi_6(S^4)\) 开始稳定。定理在这里确定比较映射的性质；具体群的数值仍由各自的计算给出。
+
+\ProseParagraphBreak
+差值零的稳定群可以直接认出。\cref{g2:prop:complex-hopf-homotopy}通过复 Hopf 纤维化得到 \(\pi_2(S^2)\cong\mathbb Z\)，而\cref{g2:lem:degree-homotopy-additivity}给出的度数同态 \(\deg:\pi_2(S^2)\rightarrow\mathbb Z\) 把恒等映射送到 \(1\)。因此它是满射，也是无限循环群之间的同构。悬挂将恒等映射送到恒等映射，故从 \(n=2\) 开始得到 \(\pi_n(S^n)\cong\mathbb Z\)，并有 \(\pi_0^{\mathrm S}\cong\mathbb Z\)。这里的稳定下标零表示“源与靶的维数差为零”，与通常的道路分支集 \(\pi_0(X)\) 含义不同。
 
 \subsection{稳定范围、临界次数和范围以外信息的区别}
 \label{g2:subsec:0905:05}
-待撰写
+同构范围内，一个悬挂后的类恰好有一个悬挂前的类；临界次数只保证至少有一个原像，多个原像可能合并。下例把这种合并写成一张明确的附着映射。
+
+\begin{example}[临界悬挂中的非零核]\label{g2:exm:critical-suspension-kernel}
+	令 \(W=S^2\vee S^2\)，基点为公共零胞腔。乘积 \(S^2\times S^2\) 由 \(W\) 附着一个四胞腔得到，记其附着映射为 \(a:S^3\rightarrow W\)。则 \([a]\ne0\)，但 \(E[a]=0\)。因此在 \(n=2\)、\(i=3=2n-1\) 的临界次数，悬挂确实可以有核。
+\end{example}
+\begin{proof}
+	把四圆盘取为 \(D^2\times D^2\)。在 \(D^2\times S^1\) 上，\(a\) 是投向第一份 \(D^2/S^1=S^2\)；在 \(S^1\times D^2\) 上，\(a\) 是投向第二份球面；公共部分 \(S^1\times S^1\) 都送到基点。两式在交集相容，给出 \(\partial(D^2\times D^2)\cong S^3\) 上的连续映射。这正是乘积顶胞腔的边界。
+
+	若 \(a\) 零伦，\cref{g2:prop:homotopic-attaching-maps}便给出 \(S^2\times S^2\simeq S^2\vee S^2\vee S^4\)。但在乘积中，两个投影拉回的二次整数上同调生成元 \(u,v\) 满足 \(u\smile v\ne0\)：由\cref{g2:prop:cross-cup-evaluation}，它在乘积基本类上的取值为 \(1\)。在后一楔和中，任意两个二次类的乘积都为零，因为限制到每个 \(S^2\) 因子时四次群为零，限制到 \(S^4\) 因子时二次群为零，而各因子的限制共同检测四次类，见\eqref{g2:eq:wedge-positive-cohomology}。上同调环在同伦等价下保持，所以矛盾，\([a]\ne0\)。
+
+	再设 \(j:W\hookrightarrow S^2\times S^2\) 为包含。构造
+	\[
+		r:\Sigma(S^2\times S^2)\longrightarrow\Sigma S^2\vee\Sigma S^2\cong\Sigma W
+	\]
+	如下：先在悬挂参数的中点夹断，得到两个悬挂的楔和，再在前一份使用第一投影的悬挂，在后一份使用第二投影的悬挂。具体地，\(r([(x,y),t])\) 在 \(0\le t\le1/2\) 等于第一份中的 \([x,2t]\)，在 \(1/2\le t\le1\) 等于第二份中的 \([y,2t-1]\)。分界处及被压缩的子空间均映到基点，所以公式连续下降。
+
+	将 \(r\Sigma j\) 限制到第一份 \(\Sigma S^2\)，它先用前半段完成恒等映射，再在后半段停留于基点；限制到第二份时，先在基点停留，再用后半段完成恒等映射。连续缩去停留段，得到固定公共基点的同伦 \(r\Sigma j\simeq\operatorname{id}_{\Sigma W}\)。由于 \(ja\) 延到乘积四胞腔，它零伦，故 \((\Sigma j)(\Sigma a)\) 也零伦。复合左逆 \(r\) 得到 \(\Sigma a\simeq*\)，即 \(E[a]=0\)。
+\end{proof}
+
+这个例子还解释了稳定化为何可能简化计算：乘积顶胞腔把两份球面联系起来，联系可以由杯积检测；一次悬挂已经使这张非零附着映射消失。对于 \(i>2n-1\) 的次数，悬挂定理没有给出单射或满射的统一结论，必须继续利用空间的具体结构。若某个空间具有比所选 \(n-1\) 更高的连通度，则应先提高 \(n\) 再应用定理；所谓范围是由已知连通度得到的统一保证。
 
 \subsection{与带标架配边、谱及 K 理论中不同稳定化的衔接}
 \label{g2:subsec:0905:06}
-待撰写
+球面稳定群可以用映射、几何子流形和一整列空间来研究。这里先列出三种实际操作，说明后续章节怎样与本节相接。
+
+\ProseParagraphBreak
+第23章从嵌入 \(M^k\hookrightarrow\mathbb R^{k+n}\) 及法丛的一组标架出发，将管状邻域中的法向圆盘沿标架识别为 \(D^n\)，再把邻域外部压到一点，构造映射 \(S^{k+n}\rightarrow S^n\)。若把环境嵌入再加一个零坐标，并给法丛增加这一坐标的单位向量，源与靶都多出一个方向；相应坍缩映射与本节悬挂的比较将在第23.2节证明。这样，固定维数 \(k\) 的带标架几何对象就与固定差值 \((k+n)-n=k\) 相对应。将同伦与配边建立双向对应，还要在那里处理横截逆像及各项选择的无关性。
+
+\ProseParagraphBreak
+附录 C 用\term[pu]{谱}[spectrum]组织一列空间及其结构映射。以序列模型写，数据具有形式 \(E_0,E_1,\ldots\) 及 \(\Sigma E_n\rightarrow E_{n+1}\)；对一个球面映射先悬挂，再复合结构映射，就得到 \(\pi_{n+k}(E_n)\rightarrow\pi_{n+k+1}(E_{n+1})\)。球面谱取 \(E_n=S^n\)，结构映射为 \(\Sigma S^n\cong S^{n+1}\)，因而恢复本节的系统。这种组织方式保留了每一步比较映射，适合把稳定类作为整体来研究。
+
+\ProseParagraphBreak
+第24章的向量丛稳定化则从固定底空间 \(X\) 上的丛出发，执行 \(V\mapsto V\oplus\underline{\mathbb C}\)，再考虑稳定同构与虚丛。它增加的是纤维维数，底空间仍是 \(X\)。悬挂稳定化改变空间及映射的维数，这两项操作的联系需要具体构造。例如球面上的复向量丛可由赤道粘接映射 \(S^{m-1}\rightarrow\operatorname{GL}_r(\mathbb C)\) 描述；添加平凡直线对应矩阵包含 \(A\mapsto\operatorname{diag}(A,1)\)，而悬挂球面对应赤道维数的改变。第24章将通过粘接与乘积定理研究这些变化之间的关系。本节给出的稳定范围，是球面映射在悬挂下最终不变的保证。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 18.2 轨线序列和断裂紧化
 % 纲要位置：几何学计划纲要.md，第 1706 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,239 @@
 \section{轨线序列和断裂紧化}
 \label{g2:sec:1802}
 
-待撰写
+轨线可以越来越靠近一个中间临界点，在那里停留越来越久，再继续下降。每一条轨线都从 \(p\) 到 \(q\)，极限却可能要由“从 \(p\) 到 \(r\)”和“从 \(r\) 到 \(q\)”两条轨线合起来描述。要把轨线数用作链复形的系数，首先必须知道这种退化能发生多少次，以及是否还有别的轨线逃失方式。本节利用下降的函数值为轨线选定截点，把紧性问题化成有限个紧水平集中的收敛问题。
 
 \subsection{能量恒等式与临界值下降}
 \label{g2:subsec:1802:01}
-待撰写
+
+固定闭光滑流形 \(M\)、Morse 函数 \(f\) 和光滑 Riemann 度量 \(g\)，令 \(X=-\operatorname{grad}_g f\)。前节所选的正规化数据满足这些条件。闭性保证 \(X\) 的流对所有实时间存在：第一卷第13章第2节的紧支完备性定理适用，因为此时整个流形就是一个紧支集。
+
+\begin{proposition}\label{g2:prop:morse-energy-limits}
+	设 \(M\) 为闭光滑流形，\(f:M\to\mathbb R\) 为 Morse 函数，\(g\) 为光滑 Riemann 度量。任何非恒定解
+	\[
+		\dot\gamma(t)=-\operatorname{grad}_g f(\gamma(t)),\qquad t\in\mathbb R,
+	\]
+	都存在临界点 \(p,q\)，使 \(\gamma(t)\to p\) 当 \(t\to-\infty\)，\(\gamma(t)\to q\) 当 \(t\to+\infty\)。而且 \(f(p)>f(q)\)，并有
+	\begin{equation}\label{g2:eq:morse-energy-identity}
+		E(\gamma)\coloneqq\int_{-\infty}^{+\infty}|\dot\gamma(t)|_g^2\,\mathrm{d}t
+		=f(p)-f(q).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	梯度的定义给出
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}f(\gamma(t))
+		=\mathrm{d}f_{\gamma(t)}(\dot\gamma(t))
+		=-|\operatorname{grad}_g f(\gamma(t))|_g^2.
+	\]
+	积分于有限区间 \([a,b]\)，得到
+	\[
+		\int_a^b|\dot\gamma|_g^2\,\mathrm{d}t
+		=f(\gamma(a))-f(\gamma(b)).
+	\]
+	\(f\) 在紧流形上有界，因此两端的函数值极限存在，且正、负半轴上的能量均有限。还要证明轨线本身收敛，而不只证明其函数值收敛。
+
+	考察正向极限集
+	\[
+		\omega(\gamma)=\bigcap_{T\ge0}\overline{\{\gamma(t):t\ge T\}}.
+	\]
+	其中每个集合都是非空紧连通集，且随 \(T\) 增大而递减；因此交也是非空紧连通集。若 \(x\in\omega(\gamma)\) 不是临界点，就可取 \(x\) 的邻域 \(V\)，以及稍大的邻域 \(U\)，使 \(|\operatorname{grad}f|\ge\delta>0\) 于 \(U\)。流的连续性和 \(\overline V\subset U\) 的紧性给出统一的 \(h>0\)：从 \(V\) 出发的轨线在时间 \([0,h]\) 内留在 \(U\)。轨线无限次进入 \(V\)；选取间隔大于 \(h\) 的进入时刻，每次在随后长度 \(h\) 的区间耗费至少 \(h\delta^2\) 的能量，与正向能量有限矛盾。故 \(\omega(\gamma)\) 全由临界点组成。
+
+	Morse 临界点孤立，在紧流形上只有有限个。有限集的非空连通子集只有一个点，因此 \(\omega(\gamma)=\{q\}\)。若轨线不趋于 \(q\)，可取一个离 \(q\) 有正距离的点列，并由紧性取得另一个正向聚点，矛盾。负向极限同理为某个临界点 \(p\)。令有限区间的两端趋于无穷，即得能量恒等式。非恒定轨线在任何有限时刻均不经过临界点，否则由常微分方程解的唯一性，它将恒定；故其能量严格为正，\(f(p)>f(q)\)。
+\end{proof}
+
+能量在本章就是下降掉的函数值。它控制的是整个过程的总变化量，并不控制需要多长时间：在临界点附近，梯度很小，轨线可以用很长时间下降很少的高度。这正是断裂极限的来源。
+
+\begin{example}
+	在局部标准模型 \(f=c-u^2+v^2\) 中，下降方程为 \(\dot u=2u\)、\(\dot v=-2v\)，所以
+	\[
+		u(t)=e^{2t}u(0),\qquad v(t)=e^{-2t}v(0).
+	\]
+	从 \(v=\varepsilon\) 的截面进入，且 \(u(0)=\eta>0\)，到达 \(u=\varepsilon\) 所需的时间为
+	\[
+		T=\frac12\log\frac{\varepsilon}{\eta}.
+	\]
+	当 \(\eta\to0\) 时，\(T\to\infty\)；前半段趋于沿 \(v\) 轴进入原点的轨线，后半段经重新选定时间零点后趋于沿 \(u\) 轴离开原点的轨线。原点是两个极限段的共同端点。
+\end{example}
 
 \subsection{选定时间平移后的局部收敛}
 \label{g2:subsec:1802:02}
-待撰写
+
+非参数轨线没有指定的时间零点。若任意选择参数，同一条轨线作越来越大的平移，便可能在每个有限时间区间都趋于一个恒定临界点。为保留一段真正的运动，应先让轨线在一个固定正则水平上经过时间零点。
+
+\begin{lemma}\label{g2:lem:anchored-trajectory-convergence}
+	设 \(M\) 闭，\(X=-\operatorname{grad}_g f\)，其中 \(f\) 为 Morse 函数。设 \(a\) 为正则值，\(\gamma_\nu\) 为满足 \(f(\gamma_\nu(0))=a\) 的下降轨线。则可取子列及一条非恒定下降轨线 \(\gamma\)，使
+	\[
+		\gamma_\nu\longrightarrow\gamma
+		\quad\text{于每个有界时间区间，按 }C^\infty\text{ 收敛}.
+	\]
+	若所有 \(\gamma_\nu\) 都连接同一对临界点 \(p,q\)，则极限轨线的两个端点 \(p',q'\) 满足
+	\[
+		f(p)\ge f(p')>a>f(q')\ge f(q).
+	\]
+\end{lemma}
+\begin{proof}
+	水平集 \(f^{-1}(a)\) 紧，故可使 \(x_\nu=\gamma_\nu(0)\to x\in f^{-1}(a)\)。设 \(\Phi_t\) 为 \(X\) 的流，则 \(\gamma_\nu(t)=\Phi_t(x_\nu)\)。第一卷第13章第1节的光滑依赖定理说明 \((t,x)\mapsto\Phi_t(x)\) 光滑。限制到任意紧时间区间后，所有阶导数都连续，因而 \(\Phi_t(x_\nu)\to\Phi_t(x)\) 按 \(C^\infty\) 收敛。\(a\) 为正则值，故 \(X(x)\ne0\)，极限轨线非恒定。
+
+	若原轨线连接 \(p,q\)，对每个固定 \(t\) 都有 \(f(q)\le f(\gamma_\nu(t))\le f(p)\)。取极限，再让 \(t\to\pm\infty\)，并用\cref{g2:prop:morse-energy-limits}，便得到所述端点不等式。
+\end{proof}
+
+这项引理保留了穿过指定水平的那一段轨线。它的端点可能已经改变，例如原来的 \(p\to q\) 轨线在极限中变成了 \(p'\to q'\)。其余下降过程要到别的水平上重新选定时间零点才能看见。
+
+\ProseParagraphBreak
+
+下面记录一个连接相邻截点的判断。取正则值 \(a>b\)，设 \(\gamma_\nu(0)=x_\nu\in f^{-1}(a)\)，并记其经过 \(f^{-1}(b)\) 的时间为 \(\tau_\nu>0\)，对应点为 \(y_\nu\)。若 \(x_\nu\to x\)、\(y_\nu\to y\)，则：
+
+\begin{itemize}
+	\item 若 \(\tau_\nu\) 有界，取子列使其趋于 \(\tau\)，便有 \(y=\Phi_\tau(x)\)，两截点属于同一条极限轨线。
+	\item 若 \(\tau_\nu\to\infty\)，则从 \(x\) 出发的正向轨线始终留在 \(f\ge b\)，而从 \(y\) 出发的负向轨线始终留在 \(f\le a\)。若 \([b,a]\) 内恰有一个临界点 \(r\)，两条轨线相应的极限端点就都只能是 \(r\)。
+\end{itemize}
+
+第二点的“始终”可逐个固定时间检验：对任意 \(T>0\)，当 \(\tau_\nu>T\) 时，\(f(\Phi_T(x_\nu))\ge b\)，取极限即可；负向论证相同。随后由上一命题，两端必须收敛到带中的临界点。正则端水平不含临界点，带中又只有 \(r\)，因此两段确实在同一个 \(r\) 接合。
 
 \subsection{有限次断裂和能量控制}
 \label{g2:subsec:1802:03}
-待撰写
+
+设 \(p\ne q\) 为临界点，且 \(f(p)>f(q)\)。一个从 \(p\) 到 \(q\) 的\term[duanlie guixian]{断裂轨线}[broken trajectory]是有限序列
+\[
+	\boldsymbol\gamma=(\gamma_1,\ldots,\gamma_\ell),\qquad
+	\gamma_i\in\mathcal M(p_{i-1},p_i),\qquad
+	p_0=p,\quad p_\ell=q,
+\]
+其中各段均为非恒定非参数轨线。它的临界值严格下降：
+\[
+	f(p_0)>f(p_1)>\cdots>f(p_\ell).
+\]
+两条相接轨线各自拥有时间平移的自由，故断裂轨线记录的是各段的非参数类，没有额外的共同时间参数。未断裂轨线对应 \(\ell=1\)。
+
+\begin{theorem}[断裂轨线紧性]\label{g2:thm:broken-trajectory-compactness}
+	设 \(M\) 为闭光滑流形，\(f\) 为临界值互异的 Morse 函数，\(X=-\operatorname{grad}_g f\)。设 \(p,q\) 为满足 \(f(p)>f(q)\) 的临界点。从 \(p\) 到 \(q\) 的下降轨线序列都存在一个有限断裂极限：可取子列、临界点链 \(p=p_0,\ldots,p_\ell=q\) 及时间平移 \(s_{\nu,i}\)，使
+	\[
+		\gamma_\nu(\,\cdot+s_{\nu,i})\longrightarrow\gamma_i
+		\quad\text{于紧时间区间按 }C^\infty\text{ 收敛},
+		\qquad
+		\gamma_i\in\mathcal M(p_{i-1},p_i).
+	\]
+	相邻两段的平移满足 \(s_{\nu,i+1}-s_{\nu,i}\to+\infty\)，而能量完整分解为
+	\begin{equation}\label{g2:eq:broken-energy-sum}
+		E(\gamma_\nu)=f(p)-f(q)=\sum_{i=1}^{\ell}E(\gamma_i).
+	\end{equation}
+	全部断裂轨线组成一个紧 Hausdorff 空间；其拓扑可由下述有限组正则水平上的交点确定。
+\end{theorem}
+\begin{proof}
+	列出 \(f(q)\) 与 \(f(p)\) 之间的全部临界值，包括端点：
+	\[
+		c_0=f(p)>c_1>\cdots>c_m=f(q).
+	\]
+	每个区间 \((c_{j+1},c_j)\) 选一个正则值 \(a_j\)，令 \(L_j=f^{-1}(a_j)\)。每条 \(p\to q\) 轨线恰好与每个 \(L_j\) 相交一次，记交点为 \(x_{\nu,j}\)。有限乘积 \(\prod_{j=0}^{m-1}L_j\) 紧；取共同子列，使所有 \(x_{\nu,j}\to x_j\)。再对有限个相邻水平间的通过时间取子列，使每个时间或者趋于有限值，或者趋于正无穷。
+
+	在 \(x_{\nu,j}\) 处把时间平移为零，由\cref{g2:lem:anchored-trajectory-convergence}得到穿过 \(x_j\) 的完整极限轨线。如果两个相邻水平间的通过时间有限，上面关于相邻截点的判断说明，这两条极限轨线只是同一轨线的不同参数选择，应合并为一段。如果通过时间趋于无穷，两水平之间恰有临界值 \(c_{j+1}\)，且因临界值互异只有一个临界点；同一判断说明，上段的正端点与下段的负端点就是这个点。最上段的负端点只能为 \(p\)：它的函数值介于 \(a_0\) 与 \(f(p)\) 之间，而这一区域仅有临界点 \(p\)。最下段同理以 \(q\) 结束。于是全部非重复段接成所需的临界点链，而不只是互不相关的局部极限。
+
+	为每一段选它穿过的一个 \(L_j\)，以原轨线到达该水平的时刻为 \(s_{\nu,i}\)。跨过相邻两段接点时，通过时间已经趋于无穷，故相邻平移之差也趋于无穷。段数至多为 \(m\)。若将全部不同临界值之间的最小正差记为 \(\Delta\)，还可写出
+	\[
+		\ell\Delta\le f(p)-f(q).
+	\]
+	每段的能量由其两端临界值之差给出，有限求和逐项抵消，便得到\eqref{g2:eq:broken-energy-sum}。这条等式说明未被任何局部极限段捕获的能量为零；长时间停留本身没有另带一份正能量。
+
+	最后给出整个断裂空间的拓扑并核实其紧性。任一断裂链都在每个 \(L_j\) 上恰有一个交点，故有评价映射
+	\[
+		\operatorname{ev}:\overline{\mathcal M}(p,q)
+		\longrightarrow\prod_{j=0}^{m-1}L_j.
+	\]
+	这里 \(\overline{\mathcal M}(p,q)\) 暂表示所有有限断裂链的集合。该映射为单射：一条非恒定轨线由其任意一个点唯一决定，而每段连接两个不同临界值，必穿过所选水平中的至少一个；因而全部截点确定各段及它们的连接次序。用这个单射赋予断裂空间子空间拓扑。
+
+	其像是闭集。事实上，给定一列断裂链及其截点的极限，可能出现的临界点链只有有限种；取子列使链的临界点序列固定。分别对每个非恒定段应用刚才的有限水平论证，使它进一步分裂成有限条轨线，再按原有共同端点串接。得到的仍是从 \(p\) 到 \(q\) 的有限断裂链，且其截点恰为给定极限。因此评价像序列闭。有限乘积是紧度量空间，序列闭即闭，所以断裂空间紧且 Hausdorff。
+
+	在未断裂部分，这个拓扑与正则水平截面的通常拓扑一致：任取一处截点，附近的非断裂轨线到其他固定正则水平的到达时间，由流的光滑依赖和横截性随该截点连续变化；反过来乘积收敛当然蕴含该截点收敛。更换所选正则水平也不改变拓扑，因为同一相邻临界值间没有临界点，流给出两个水平的光滑对应。
+\end{proof}
+
+若数据还满足 Morse--Smale 条件，每个非恒定段都满足
+\[
+	\lambda(p_{i-1})-\lambda(p_i)\ge1,
+\]
+因为\cref{g2:prop:trajectory-quotient}给出的轨线空间维数为两端指标差减一，非空光滑流形不能有负维数。因此
+\[
+	\ell\le\lambda(p)-\lambda(q).
+\]
+能量的临界值下降给出有限性，横截性还把可出现的段数限制在指标差以内。这两种控制分别来自函数的下降和稳定、不稳定流形的相交。
+
+\ProseParagraphBreak
+
+\(\overline{\mathcal M}(p,q)\) 的记号记录了允许断裂后的紧空间。下一节将证明，指标差为二时，每个断裂点都有一条由真实未断轨线形成的半开邻域。因此在链复形所需的零维、一维情形，这个空间确实是原轨线空间的紧化，并具有确定的边界结构。
+
+\begin{lemma}\label{g2:lem:broken-local-crossing}
+	设 \((f,g)\) 为闭流形上的正规化 Morse--Smale 数据，未断轨线 \(\gamma_\nu\in\mathcal M(p,q)\) 在上述拓扑中趋于一断裂链 \((\alpha,\beta)\in\mathcal M(p,r)\times\mathcal M(r,q)\)。在 \(r\) 的正规化坐标中选充分小的闭箱
+	\[
+		B_\varepsilon=\{(u,v):|u|\le\varepsilon,\ |v|\le\varepsilon\},
+	\]
+	使 \(\alpha\) 沿稳定轴在 \((0,v_0)\) 进入 \(|v|=\varepsilon\)，\(\beta\) 沿不稳定轴在 \((u_0,0)\) 离开 \(|u|=\varepsilon\)。则对充分大的 \(\nu\)，\(\gamma_\nu\) 的相应进入点、离开点趋于 \((0,v_0)\)、\((u_0,0)\)，且这次通过箱子的时间 \(T_\nu\to+\infty\)。
+\end{lemma}
+\begin{proof}
+	在 \(\alpha\) 所穿过的一个正则水平上固定时间零点。评价拓扑的收敛和\cref{g2:lem:anchored-trajectory-convergence}使原轨线在这个锚点附近的任意固定有限时间区间上趋于 \(\alpha\)。从锚点到 \((0,v_0)\) 的时间有限；到达截面处有
+	\[
+		X(|v|^2-\varepsilon^2)=-4\varepsilon^2\ne0.
+	\]
+	因此隐函数定理和流的光滑依赖使附近轨线的截面交点连续变化，得到进入点收敛。沿 \(\beta\) 从另一个水平截点向后追踪，同理得到离开点收敛。
+
+	箱内方程为 \(u(t)=e^{2t}u(0)\)、\(v(t)=e^{-2t}v(0)\)。从进入面出发，\(|u|\) 增加而 \(|v|\) 减少，故只会从离开面离开。两次求得的交点属于同一次通过：进入面的函数值至少为 \(f(r)\)，离开面的函数值至多为 \(f(r)\)，而非恒定轨线严格下降，离开后不能再进入。设进入点的第一分量为 \(u_\nu\)。它不能为零，否则该轨线将一直趋于 \(r\) 而无法继续到 \(q\)；于是
+	\[
+		T_\nu=\frac12\log\frac{\varepsilon}{|u_\nu|}\longrightarrow+\infty,
+	\]
+	因为 \(u_\nu\to0\)。
+\end{proof}
+
+\begin{lemma}\label{g2:lem:continuation-broken-compactness}
+	设 \(M\) 为闭光滑流形，\(K\) 为紧光滑参数空间，\((f_{t,\sigma},g_{t,\sigma})\) 为光滑族，其中 \(\sigma\in K\)。假设存在 \(T>0\)，使族在 \(t\le-T\) 和 \(t\ge T\) 分别等于固定的 Morse 数据 \((f_-,g_-)\)、\((f_+,g_+)\)，两端 Morse 函数的临界值分别互异。设 \(\sigma_\nu\to\sigma\)，且
+	\[
+		\dot\eta_\nu=-\operatorname{grad}_{g_{t,\sigma_\nu}}f_{t,\sigma_\nu}(\eta_\nu),
+		\qquad
+		\eta_\nu(-\infty)=p,\quad\eta_\nu(+\infty)=q,
+	\]
+	其中 \(p,q\) 是固定的两端临界点。则可取子列，得到一条参数为 \(\sigma\) 的中心延拓轨线 \(\eta\)，其两端为 \(r_-,r_+\)，以及从 \(p\) 到 \(r_-\) 的有限 \(f_-\) 断裂链和从 \(r_+\) 到 \(q\) 的有限 \(f_+\) 断裂链。允许任一端的链为空。中心轨线按紧时间区间 \(C^\infty\) 收敛，端部各段经时间平移后按相同意义收敛。能量有统一上界，并等于极限各段能量之和。
+\end{lemma}
+\begin{proof}
+	取子列使 \(\eta_\nu(0)\) 在紧流形中收敛。带参数常微分方程的光滑依赖给出一条定义在整个实轴的极限解 \(\eta\)，以及紧时间区间上的 \(C^\infty\) 收敛。此处定义时间零点由外加的族 \(f_{t,\sigma}\) 固定，不能再将中心轨线任意平移。两端方程已经自治，故\cref{g2:prop:morse-energy-limits}在两条半轴上给出临界极限 \(r_-,r_+\)。
+
+	在负端取所有位于 \(f_-(r_-)\) 与 \(f_-(p)\) 之间的正则水平，重复紧性定理的有限截点论证。过渡时间有限的截点合并为一段，发散的截点之间出现唯一的临界点。最后一段接到 \(r_-\)：若极限中心负尾非恒定，就再取一个位于其负端极限值以下、且由该尾穿过的正则水平，中心轨线的局部收敛确定这一截点；若负尾恒定于 \(r_-\)，则以收敛的终点 \(\eta_\nu(-T)\to r_-\) 代替最后的截点。若前一截点到此终点的时间有界，流的唯一性将迫使一条非恒定轨线在有限时间到达临界点，矛盾；所以最后的时间趋于无穷，端点确为 \(r_-\)。由此得到所述负端链。正端用相同论证，时间方向相反。两端各只有有限个临界值，故断裂次数有限。
+
+	沿非自治解求导得到
+	\begin{equation}\label{g2:eq:continuation-energy-identity}
+		E(\eta_\nu)
+		=f_-(p)-f_+(q)
+		+\int_{-T}^{T}\partial_t f_{t,\sigma_\nu}(\eta_\nu(t))\,\mathrm{d}t.
+	\end{equation}
+	这里 \(E(\eta_\nu)=\int_{\mathbb R}|\dot\eta_\nu|_{g_{t,\sigma_\nu}}^2\,\mathrm{d}t\)，等式由有限区间积分再取两端极限得到。紧性使积分项的绝对值不超过
+	\[
+		2T\max_{[-T,T]\times K\times M}|\partial_t f_{t,\sigma}|.
+	\]
+	中心区间上的收敛使该积分项趋于 \(\eta\) 的同类积分。两端各段能量分别相加为 \(f_-(p)-f_-(r_-)\)、\(f_+(r_+)-f_+(q)\)；中心能量由同一公式计算。三部分之和正好是原能量的极限，故没有遗漏。
+\end{proof}
+
+这一证明还有一个用于延拓复合的形式。若时间族由两个固定长度的过渡区间组成，中间在一套固定 Morse 数据上停留长度 \(R\)，当 \(R\to\infty\) 时，分别在两个过渡区间的中心选定时间零点，可取得两条中心延拓轨线。中间自治段用有限正则水平作相同提取，得到连接两条中心轨线的有限梯度断裂链；两端仍可有上述断裂。能量恒等式中的时间导数只支撑于两个固定过渡区间，故上界与 \(R\) 无关。这个结论控制可能的极限；这些极限附近的局部坐标与粘合将在后面构造延拓映射时使用。
 
 \subsection{零维紧性及计数有限性}
 \label{g2:subsec:1802:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+现在可以回答链群微分中的第一个实际问题：指标相差一的临界点之间，究竟是否只有有限条非参数轨线？
+
+\begin{corollary}\label{g2:cor:zero-dimensional-trajectories-finite}
+	设 \(M\) 为闭光滑流形，\((f,g)\) 为 Morse--Smale 数据，\(f\) 的临界值互异。若 \(\lambda(p)-\lambda(q)=1\)，则 \(\mathcal M(p,q)\) 是有限集。
+\end{corollary}
+\begin{proof}
+	\cref{g2:prop:trajectory-quotient}的横截交维数公式使 \(\mathcal M(p,q)\) 为零维光滑流形，因而每一点都是孤立点。\cref{g2:thm:broken-trajectory-compactness}说明任何序列都有有限断裂极限。但若断成至少两段，每段指标严格下降至少一，便有 \(\lambda(p)-\lambda(q)\ge2\)，与假设矛盾。所以所有极限仍在 \(\mathcal M(p,q)\) 内，原空间已经紧。紧离散空间有限：其各个单点邻域组成开覆盖，有限子覆盖即给出有限点集。
+\end{proof}
+
+于是可定义
+\[
+	n_2(p,q)\coloneqq\#\mathcal M(p,q)\pmod2\in\mathbb F_2.
+\]
+有限性必须先于这个计数；零维只说明局部孤立，不能排除无穷多个点向一个未加入的断裂极限聚集。指标差为一时，正是严格的指标下降排除了这种聚集。
+
+\ProseParagraphBreak
+
+当 \(\lambda(p)-\lambda(q)=2\) 时，最多出现两段，所有可能的新增点都属于
+\[
+	\bigsqcup_{\lambda(r)=\lambda(q)+1}
+	\mathcal M(p,r)\times\mathcal M(r,q).
+\]
+每个因子已经由上述推论知道有限，故候选断裂点也有限。不过，“只有这些候选极限”仍未说明每个候选点附近是一条半开弧，也没有排除多条弧以同一个方式聚集。下一节的粘合与唯一性将准确补上这项局部几何事实。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 9.4 检测与构造的应用
 % 纲要位置：几何学计划纲要.md，第 1358 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,180 @@
 \section{检测与构造的应用}
 \label{g2:sec:0904}
 
-待撰写
+Hurewicz 定理把首个同伦群变成同调群，Whitehead 定理把全部同伦群的比较变成同伦等价。将它们接起来，就能用链复形检测某些映射；反过来，胞腔附着又能把指定的代数数据做成空间。本节分别实现这两个方向。
 
 \subsection{单连通 CW 空间的同调判据}
 \label{g2:subsec:0904:01}
-待撰写
+
+先设 \(f:X\to Y\) 已在所有整数同调群上诱导同构。把它换成映射柱包含以后，相对同调全为零。若两边单连通，一个残留的相对同伦群总有最低的非零次数；相对 Hurewicz 定理会迫使同一次数的相对同调也非零。这给出下面的判据。
+
+\begin{theorem}[单连通空间的同调判据]\label{g2:thm:homological-whitehead}
+	设 \(X,Y\) 为单连通 CW 复形，\(f:X\to Y\) 连续。则 \(f\) 是同伦等价，当且仅当
+	\[
+		f_*:H_i(X;\mathbb Z)\longrightarrow H_i(Y;\mathbb Z)
+	\]
+	对所有 \(i\ge0\) 都是同构。
+\end{theorem}
+\begin{proof}
+	同伦等价保持同调，故只须证明充分性。由胞腔逼近，把 \(f\) 换成同伦的胞腔映射，再写成 \(X\hookrightarrow M_f\to Y\)。\cref{g2:lem:cellular-mapping-cylinder}保证 \((M_f,X)\) 是 CW 对，且 \(M_f\simeq Y\)。所以 \(M_f\) 与 \(X\) 都单连通，同调长正合列则给出 \(H_i(M_f,X;\mathbb Z)=0\) 对所有 \(i\) 成立。
+
+	空间对的同伦序列先说明 \((M_f,X)\) 一连通。对 \(n\ge2\) 归纳：若已知它为 \((n-1)\) 连通，\cref{g2:thm:hurewicz-relative}便给出
+	\[
+		\pi_n(M_f,X)\cong H_n(M_f,X;\mathbb Z)=0.
+	\]
+	于是它也是 \(n\) 连通。这证明全部相对同伦群为零，故 \(X\hookrightarrow M_f\) 为弱同伦等价。\cref{g2:thm:whitehead}使它成为同伦等价，再复合映射柱收缩便得到 \(f\) 的结论。
+\end{proof}
+
+\begin{corollary}\label{g2:cor:simply-connected-acyclic}
+	单连通 CW 复形 \(X\) 可缩，当且仅当 \(\widetilde H_i(X;\mathbb Z)=0\) 对所有 \(i\ge0\) 成立。
+\end{corollary}
+\begin{proof}
+	必要性由同伦不变性得到。反过来，对映射 \(X\to\{*\}\) 使用上一判据即可。
+\end{proof}
+
+判据的输入包含一张具体映射。这一点在使用时很有帮助：要证明构造出来的 \(f\) 是同伦等价，只需计算它在胞腔链上的作用。若只列出两组抽象同构的同调群，还须解决是否存在这样的 \(f\)；下面的例子会说明这一步可能失败。
 
 \subsection{Moore 空间的构造}
 \label{g2:subsec:0904:02}
-待撰写
+
+球面 \(S^n\) 的约化整数同调只在一次出现，且等于 \(\mathbb Z\)。我们希望把这个 \(\mathbb Z\) 换成任意阿贝尔群 \(A\)，同时保留“只有一次非零约化同调”的性质。
+
+\begin{definition}[Moore 空间]\label{g2:def:moore-space}
+	设 \(A\) 为阿贝尔群，\(n\ge2\)。一个 \((n-1)\) 连通 CW 复形 \(M(A,n)\)，若满足
+	\[
+		\widetilde H_i(M(A,n);\mathbb Z)\cong
+		\begin{cases}A,&i=n,\\0,&i\ne n,\end{cases}
+	\]
+	就称为 \(A\) 的 \(n\) 维\term[Moore kongjian]{Moore 空间}[Moore space]。\symidx{\(M(A,n)\)：Moore 空间}这里的“\(n\) 维”指非零同调所在的次数，所构造的 CW 复形通常还含 \((n+1)\) 胞腔。
+\end{definition}
+
+Moore\footnote{John Coleman Moore（1923—2016），美国数学家，主要从事代数拓扑研究，在同伦群与同调代数方面作出贡献。}空间的构造来自一个自由呈示。第4章已经证明整数自由模的子模仍自由（\cref{g2:prop:pid-free-submodule}），所以任选自由群到 \(A\) 的满射，就能得到短正合列
+\begin{equation}\label{g2:eq:moore-presentation}
+	0\longrightarrow F_1\xrightarrow{d}F_0\longrightarrow A\longrightarrow0,
+\end{equation}
+其中 \(F_0,F_1\) 都是自由阿贝尔群。基可以无限，但每个元素总只有有限个非零坐标。
+
+\begin{proposition}[Moore 空间的存在与同伦型]\label{g2:prop:moore-existence}
+	对任意阿贝尔群 \(A\) 及 \(n\ge2\)，存在只含一个零胞腔、一些 \(n\) 胞腔及 \((n+1)\) 胞腔的 \(M(A,n)\)。它满足 \(\pi_n(M(A,n))\cong A\)，且其同伦型由 \(A\) 和 \(n\) 决定。
+\end{proposition}
+\begin{proof}
+	设 \(\{e_\alpha\}\)、\(\{b_\beta\}\) 分别为 \(F_0\)、\(F_1\) 的基。先取
+	\[
+		W=\bigvee_\alpha S^n_\alpha.
+	\]
+	由\cref{g2:lem:wedge-sphere-first-homotopy}，各球面包含类给出 \(\pi_n(W)\cong F_0\)。把 \(d(b_\beta)=\sum_\alpha m_{\alpha\beta}e_\alpha\) 实现为带基点球面映射 \(\varphi_\beta:S^n\to W\)：将有限多个小球外的部分压到基点，再把所得各球面以指定次数送入相应的 \(S^n_\alpha\)。次数为负时加入一次反射，零系数不用添加。沿所有 \(\varphi_\beta\) 附着 \((n+1)\) 胞腔，记所得 CW 复形为 \(M\)。
+
+	每个胞腔的附着次数恰为 \(m_{\alpha\beta}\)，所以 \(M\) 的约化胞腔链复形只有
+	\[
+		0\longrightarrow F_1\xrightarrow{d}F_0\longrightarrow0,
+	\]
+	其中两项分别处在次数 \(n+1,n\)。\(d\) 单射且余核为 \(A\)，故同调满足定义。由胞腔维数判据，\(M\) 为 \((n-1)\) 连通；Hurewicz 定理再给出 \(\pi_n(M)\cong H_n(M;\mathbb Z)\cong A\)。
+
+	还须证明选择呈示和代表映射不会改变同伦型。令 \(N\) 为任一满足定义的 Moore 空间，并选定 \(H_n(N;\mathbb Z)\cong A\)。Hurewicz 同构使每个 \(e_\alpha\) 在 \(A\) 中的像都有球面代表，因而得到 \(g:W\to N\)。对每个关系，\([g\varphi_\beta]\in\pi_n(N)\cong A\) 正是 \(d(b_\beta)\) 在 \(A\) 中的像，故为零。选择这些零伦，就能把 \(g\) 延拓到 \(M\to N\)。所得映射在 \(H_n\) 上诱导指定的恒等识别，在零次及其他次数也都是同构。\(M,N\) 均单连通，\cref{g2:thm:homological-whitehead}于是给出同伦等价。
+\end{proof}
+
+\begin{example}[一个挠生成元]\label{g2:exm:cyclic-moore-space}
+	对整数 \(m\ge2\)，沿次数为 \(m\) 的 \(S^n\to S^n\) 附着一个 \((n+1)\) 胞腔，得到
+	\[
+		M(\mathbb Z/m,n)=S^n\cup_m e^{n+1}.
+	\]
+	胞腔微分是 \(\mathbb Z\xrightarrow{\times m}\mathbb Z\)，因此低一项留下 \(\mathbb Z/m\)，高一项没有核。几何上，新圆盘的边界使原球面类的 \(m\) 倍可以填充，于是 \(\pi_n\) 中出现关系 \(m\iota=0\)。
+
+	更一般地，若 \(A\cong\mathbb Z^r\oplus\bigoplus_{j=1}^s\mathbb Z/m_j\)，可取 \(r\) 个 \(S^n\) 与这些 \(M(\mathbb Z/m_j,n)\) 的楔和。其胞腔边界为相应的对角矩阵，故同调正是 \(A\)。特别地，\(M(\mathbb Z,n)\simeq S^n\)，而 \(M(0,n)\) 可缩。
+\end{example}
+
+将同一附着方法用于 \(n=1\)，仍能安排一次同调及二维边界，但环路的非交换关系会参与 \(\pi_1\) 的计算。本节在定义中保留 \(n\ge2\)，使 Hurewicz 同构和上面的同伦型论证都能直接适用。
 
 \subsection{相同同调与不同同伦类型}
 \label{g2:subsec:0904:03}
-待撰写
+
+先看基本群造成的差别。令
+\[
+	X=T^2=S^1\times S^1,\qquad Y=S^1\vee S^1\vee S^2.
+\]
+两者都有一个零胞腔、两个一胞腔和一个二胞腔。环面的二胞腔沿交换子 \(aba^{-1}b^{-1}\) 附着，各字母的指数和为零；\(Y\) 的二胞腔沿常值映射附着。因此两者的胞腔微分都为零，整数同调同为
+\[
+	H_0\cong\mathbb Z,\qquad H_1\cong\mathbb Z^2,\qquad H_2\cong\mathbb Z,
+\]
+更高次数为零。可是\cref{g2:prop:two-cell-presentation}给出
+\[
+	\pi_1(X)=\langle a,b\mid aba^{-1}b^{-1}=1\rangle\cong\mathbb Z^2,
+	\qquad \pi_1(Y)=F(a,b).
+\]
+前者交换，后者的交换子是非空约化字，故非交换。它们不能同伦等价。一次同调只看见交换化，因而恰好遗漏了这里的区别。
+
+\ProseParagraphBreak
+
+即使两边单连通，同调群的抽象一致也仍需要一张实现映射。第4章的\cref{g2:exm:projective-plane-wedge-ring}比较了
+\[
+	P=\mathbb CP^2,\qquad Q=S^2\vee S^4.
+\]
+两者都没有一胞腔，因而单连通；整数同调均只在次数 \(0,2,4\) 为 \(\mathbb Z\)。但 \(P\) 的二次生成元 \(u\) 满足 \(u^2\ne0\)，且 \(u^2\) 生成四次群；\(Q\) 的二次生成元 \(v\) 满足 \(v^2=0\)。这些乘法已由\cref{g2:thm:complex-projective-ring}及楔和上的限制计算得到。
+
+假如 \(f:Q\to P\) 在整数同调上都是同构，则万有系数定理及自然性使 \(f^*\) 在上同调上也都是同构，故 \(f^*u=\pm v\)。杯积自然性给出
+\[
+	f^*(u^2)=(f^*u)^2=v^2=0,
+\]
+与四次同构矛盾。反方向若有同调同构 \(g:P\to Q\)，则 \(g^*v=\pm u\)，却会有 \(0=g^*(v^2)=u^2\)，同样矛盾。因此两个方向都不存在实现这些同调同构的映射。单连通同调判据在这里仍然有效：它准确指出，实现映射一旦存在，就必须同时保留由连续映射带来的乘法结构。
+
+\ProseParagraphBreak
+
+还有一种不同的现象：对一张已经给出的映射，同调可能完全看不见它。Hopf 映射 \(S^3\to S^2\) 在全部正次同调上诱导零映射，却由\cref{g2:exm:hurewicz-first-degree}代表 \(\pi_3(S^2)\cong\mathbb Z\) 的生成元。Hurewicz 定理之所以能排除这种现象，是因为它只在连通度所保证的首个次数建立同构。
 
 \subsection{Eilenberg–MacLane 空间的初步存在}
 \label{g2:subsec:0904:04}
-待撰写
+
+Moore 空间将约化同调集中在一次，却可能有许多更高同伦群，例如 \(M(\mathbb Z,2)=S^2\) 仍有非零 \(\pi_3\)。现在换一个构造目标：保留指定的一次同伦群，再逐阶消去其余同伦群。
+
+\begin{definition}[Eilenberg–MacLane 空间]\label{g2:def:eilenberg-maclane-space}
+	设 \(n\ge1\)。道路连通 CW 复形 \(K(G,n)\)，若满足
+	\[
+		\pi_i(K(G,n))\cong
+		\begin{cases}G,&i=n,\\0,&i\ge1,\ i\ne n,\end{cases}
+	\]
+	就称为\term[Eilenberg MacLane kongjian]{Eilenberg–MacLane 空间}[Eilenberg–MacLane space]。当 \(n\ge2\) 时，\(G\) 必为阿贝尔群；当 \(n=1\) 时允许任意群。\symidx{\(K(G,n)\)：Eilenberg–MacLane 空间}
+\end{definition}
+
+这个名称纪念 Eilenberg 与 Mac Lane\footnote{Saunders Mac Lane（1909—2005），美国数学家，与 Samuel Eilenberg 共同创立范畴论，并推动同调代数的发展。}在代数拓扑中的工作。先证明存在性；构造中最有用的一步，是高维胞腔能够消去一个同伦群，同时保留较低维的信息。
+
+\begin{lemma}[消去一个同伦群]\label{g2:lem:kill-homotopy-group}
+	设 \(Z\) 为道路连通带基点 CW 复形，\(k\ge2\)。对 \(\pi_k(Z)\) 的每个元素选一个带基点代表 \(S^k\to Z\)，并沿这些映射附着 \((k+1)\) 胞腔，得到 \(Z'\)。则 \(\pi_k(Z')=0\)，且 \(Z\hookrightarrow Z'\) 在所有 \(i<k\) 次同伦群上诱导同构。
+\end{lemma}
+\begin{proof}
+	先把附着映射相对基点胞腔逼近到 \(Z^k\)，以得到所需 CW 附着。由\cref{g2:prop:cell-dimension-connectivity}，\((Z',Z)\) 为 \(k\) 连通。因此包含在 \(i<k\) 时诱导同构，在 \(i=k\) 时诱导满射。另一方面，\(\pi_k(Z)\) 的每个类都已成为某个新胞腔的边界，在 \(Z'\) 中为零。这个满射同时是零映射，所以 \(\pi_k(Z')=0\)。
+\end{proof}
+
+\begin{theorem}[Eilenberg–MacLane 空间的存在]\label{g2:thm:eilenberg-maclane-existence}
+	任意群 \(G\) 都有 \(K(G,1)\)；任意阿贝尔群 \(A\) 及 \(n\ge2\) 都有 \(K(A,n)\)。
+\end{theorem}
+\begin{proof}
+	对 \(K(A,n)\)，从 \(Z_n=M(A,n)\) 开始，已有 \(\pi_n(Z_n)\cong A\) 及 \(\pi_i(Z_n)=0\)（\(i<n\)）。依次对 \(k=n+1,n+2,\ldots\) 使用上一引理，令 \(Z_k\) 由 \(Z_{k-1}\) 附着 \((k+1)\) 胞腔消去 \(\pi_k\)，最后取带 CW 弱拓扑的并
+	\[
+		K=\bigcup_{k\ge n} Z_k.
+	\]
+	每一步都保留已处理的更低同伦群。要验证无限次附着没有改变结论，固定一个次数 \(i\)。任意 \(S^i\to K\) 的像都落在有限子复形，因而落在某个 \(Z_k\)；任意两映射之间的同伦也如此（\cref{g2:thm:finite-subcomplex}）。取 \(k\ge\max\{i,n\}\)，这一阶段的 \(\pi_i\) 已达到所需值，后续包含均保持它。因此 \(\pi_i(K)\) 正好为这些已稳定的群。
+
+	对任意群 \(G\)，选一个呈示 \(G=\langle S\mid R\rangle\)。以 \(S\) 为指标取圆周楔和，再对 \(R\) 中的每个关系字附着一个二胞腔。\cref{g2:prop:two-cell-presentation}给出一个道路连通 CW 复形 \(Z_1\)，其基本群为 \(G\)。从 \(k=2\) 开始，依次附着 \((k+1)\) 胞腔消去 \(\pi_k\)。这些胞腔维数至少为 \(3\)，所以始终保留基本群。相同的有限子复形论证说明最后得到的空间具有 \(\pi_1=G\) 和全部高阶同伦群为零的性质。
+\end{proof}
+
+任意群都可以取这样的呈示：把群的每个元素当作一个生成元，并把所有乘法关系加入关系集。实际计算时通常选择更小的呈示，以减少初始胞腔。
+
+\begin{example}[圆周、环面与无限复射影空间]\label{g2:exm:basic-eilenberg-maclane-spaces}
+	覆盖 \(\mathbb R\to S^1\) 给出 \(\pi_1(S^1)\cong\mathbb Z\) 和全部高阶同伦群为零，所以 \(S^1\) 是 \(K(\mathbb Z,1)\)。取有限乘积得到 \(T^r\) 是 \(K(\mathbb Z^r,1)\)，因为球面映射与同伦逐坐标对应。
+
+	一个次数更高的具体模型是 \(\mathbb CP^\infty=K(\mathbb Z,2)\)。为证明它，先取有限维 Hopf 丛
+	\[
+		S^1\longrightarrow S^{2m+1}\longrightarrow\mathbb CP^m.
+	\]
+	其投影把单位向量送到它张成的复直线。在 \(z_j\ne0\) 的坐标片上，可选唯一使第 \(j\) 坐标为正实数的单位代表 \(s_j\)，再写任一原像为 \(s_j\lambda\)、\(\lambda\in S^1\)，便得到局部平凡化。因而第8章的纤维化长正合列适用。球面的低维同伦群消失，圆周的高阶群也为零，于是对 \(m\ge1\) 有
+	\[
+		\pi_1(\mathbb CP^m)=0,\qquad
+		\pi_2(\mathbb CP^m)\xrightarrow[\partial]{\ \cong\ }\pi_1(S^1)=\mathbb Z,
+	\]
+	并在 \(3\le i<2m+1\) 时有 \(\pi_i(\mathbb CP^m)=0\)。标准包含 \(\mathbb CP^m\hookrightarrow\mathbb CP^{m+1}\) 来自球面与坐标的包含，在选定基点的纤维上是 \(S^1\) 的恒等映射；连接同态的自然性说明这些二次同构相容。
+
+	最后，\(\mathbb CP^\infty\) 的每个有限子复形包含于某个 \(\mathbb CP^m\)，故球面映射及其同伦都能放进足够大的有限阶段。固定 \(i\) 后取 \(2m+1>i\)，上述计算便给出极限空间的 \(\pi_2\cong\mathbb Z\) 及其余正阶同伦群为零。
+\end{example}
+
+因此，\(M(\mathbb Z,2)=S^2\) 与 \(K(\mathbb Z,2)=\mathbb CP^\infty\) 尽管具有同样的首个非零同伦群，后续结构却不同：前者保留高阶同伦，后者用更高胞腔消去它；这些新胞腔又留下 \(H_{2j}(\mathbb CP^\infty;\mathbb Z)\cong\mathbb Z\)（\(j\ge1\)）。规定同调与规定同伦由此导向两类不同模型。有关这些构造，可参看\cite[第4.2节，Eilenberg–MacLane Spaces 与 The Hurewicz Theorem]{Hatcher2002}。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

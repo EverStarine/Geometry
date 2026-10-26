@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 10.2 各页与高阶微分
 % 纲要位置：几何学计划纲要.md，第 1395 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,198 @@
 \section{各页与高阶微分}
 \label{g2:sec:1002}
 
-待撰写
+一个上链在伴随分次中闭合，只说明它的微分进入了更深一层。若要把它改成整个复形中的闭上链，就需要逐层消去剩下的微分；每一轮都会遇到新的障碍。谱序列的一页保存当前仍可继续的类，高阶微分则记录下一层尚未消去的部分。下面直接在原复形中选择代表元，从这个过程构造各页。
 
 \subsection{零页和第一页的构造}
 \label{g2:subsec:1002:01}
-待撰写
+
+设 \(R\) 为含幺交换环，\((C^\bullet,\mathrm d)\) 为 \(R\) 模上链复形，带有递减的子复形滤过 \(F^{p+1}C^\bullet\subset F^pC^\bullet\)。本节的各页构造不要求滤过有界；何时能从各页恢复目标上同调，由\secref{g2:sec:1004}处理。总次数为 \(n=p+q\)，第一指标 \(p\) 记录滤过层，第二指标随总次数确定。
+
+\begin{definition}[零页与第一页]\label{g2:def:spectral-sequence-initial-pages}
+	滤过上链复形 \((C^\bullet,F)\) 的\term[lingye]{零页}[zeroth page]为
+	\[
+		E_0^{p,q}(C,F)\coloneqq F^pC^{p+q}/F^{p+1}C^{p+q},\qquad
+		\mathrm d_0:E_0^{p,q}\longrightarrow E_0^{p,q+1},\quad [x]\longmapsto[\mathrm dx].
+	\]
+	它的\term[diyiye]{第一页}[first page]定义为
+	\[
+		E_1^{p,q}(C,F)\coloneqq H^{p+q}(F^pC^\bullet/F^{p+1}C^\bullet).
+	\]
+\end{definition}
+
+由于 \(\mathrm d(F^pC^n)\subset F^pC^{n+1}\)，零页微分保持第一指标；更换代表元所差的 \(F^{p+1}\) 项仍被送入 \(F^{p+1}\)，所以映射良定义。\(\mathrm d^2=0\) 给出 \(\mathrm d_0^2=0\)。因而第一页面上的每一列，正是零页相应列的上同调。
+
+\ProseParagraphBreak
+
+把这个定义写回原复形，取 \(x\in F^pC^n\)。它在零页闭合的条件是 \(\mathrm dx\in F^{p+1}C^{n+1}\)；它代表第一页面上的零类，当且仅当可以写成 \(x=a+\mathrm db\)，其中 \(a\in F^{p+1}C^n\)、\(b\in F^pC^{n-1}\)。于是
+\begin{equation}\label{g2:eq:first-page-representatives}
+	E_1^{p,q}=
+	\frac{\{x\in F^pC^n:\mathrm dx\in F^{p+1}C^{n+1}\}}
+	{F^{p+1}C^n+\mathrm d(F^pC^{n-1})},\qquad n=p+q.
+\end{equation}
+第一项分母删除在本层已经不可见的上链，第二项删除本层的边界。这两个来源在更高页面仍然存在，只是允许的修正范围会随页数变化。
 
 \subsection{延拓一个代表元到下一层}
 \label{g2:subsec:1002:02}
-待撰写
+
+从 \(x\in F^pC^n\)、\(\mathrm dx\in F^{p+1}C^{n+1}\) 开始，希望找到 \(x_1\in F^{p+1}C^n\)，使
+\[
+	\mathrm d(x+x_1)\in F^{p+2}C^{n+1}.
+\]
+这要求 \(\mathrm dx\) 在 \(F^{p+1}/F^{p+2}\) 中的类成为一个边界，其原像可以取为 \(-x_1\)。如果能够完成，就继续寻找更深的修正；如果不能，当前剩下的微分就是障碍。重要的是保留修正后的整个代表元，因为下一次障碍会依赖这些修正。
+
+\ProseParagraphBreak
+
+对按列滤过的反交换双复形，这个过程尤其具体。设 \(x_0\in C^{p,q}\)，总微分为 \(\mathrm d=\mathrm d_{\mathrm h}+\mathrm d_{\mathrm v}\)。先要求 \(\mathrm d_{\mathrm v}x_0=0\)，再依次寻找
+\[
+	x_j\in C^{p+j,q-j}\quad(1\le j\le r-1),\qquad
+	\mathrm d_{\mathrm h}x_{j-1}+\mathrm d_{\mathrm v}x_j=0.
+\]
+这样 \(x=x_0+\cdots+x_{r-1}\) 满足
+\begin{equation}\label{g2:eq:spectral-sequence-staircase}
+	\mathrm dx=\mathrm d_{\mathrm h}x_{r-1}\in C^{p+r,q-r+1}.
+\end{equation}
+每次横向微分的像，都要用下一列的纵向边界抵消。头两步可表示为
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		C^{p,q} \arrow[r,"\mathrm d_{\mathrm h}"] & C^{p+1,q} & \\
+		& C^{p+1,q-1} \arrow[u,"\mathrm d_{\mathrm v}"] \arrow[r,"\mathrm d_{\mathrm h}"'] & C^{p+2,q-1}.
+	\end{tikzcd}
+\]
+图中向上的箭头是需要取原像的纵向微分；它通常没有逆映射。只有相应横向像确为纵向边界时，才有可选的 \(x_1\)。反交换关系还保证 \(\mathrm d_{\mathrm h}x_{r-1}\) 纵向闭合：当 \(r=1\) 时使用 \(\mathrm d_{\mathrm v}x_0=0\)；当 \(r\ge2\) 时，将 \(\mathrm d_{\mathrm v}x_{r-1}=-\mathrm d_{\mathrm h}x_{r-2}\) 代入 \(\mathrm d_{\mathrm v}\mathrm d_{\mathrm h}=-\mathrm d_{\mathrm h}\mathrm d_{\mathrm v}\)，再用 \(\mathrm d_{\mathrm h}^2=0\) 即得零。
+
+\ProseParagraphBreak
+
+一般滤过未必能分裂成这些列，因而用“微分至少落入多深一层”来表述同一过程。对 \(r\ge0\) 定义
+\begin{equation}\label{g2:eq:spectral-sequence-approximate-cocycles}
+	Z_r^{p,n}\coloneqq
+	\{x\in F^pC^n:\mathrm dx\in F^{p+r}C^{n+1}\}.
+\end{equation}
+这里 \(Z_0^{p,n}=F^pC^n\)，而 \(Z_{r+1}^{p,n}\subset Z_r^{p,n}\)。上标 \(n\) 是总次数，区别于 \(E_r^{p,q}\) 中的第二指标 \(q\)。\(Z_r\) 中的元素仍可能有非零微分，只是这个微分在前 \(r\) 层中不可见。
+
+\begin{definition}[滤过复形的各页]\label{g2:def:spectral-sequence-pages}
+	设 \((C^\bullet,F)\) 为带递减子复形滤过的 \(R\) 模上链复形。对 \(r\ge1\)、\(n=p+q\)，定义
+	\begin{equation}\label{g2:eq:spectral-sequence-page-quotient}
+		E_r^{p,q}(C,F)\coloneqq
+		\frac{Z_r^{p,n}}
+		{Z_{r-1}^{p+1,n}+\mathrm d Z_{r-1}^{p-r+1,n-1}}.
+	\end{equation}
+	称 \(E_r\) 为第 \(r\) 页，元素 \(x\in Z_r^{p,n}\) 在该页的类记为 \([x]_r\)。
+\end{definition}
+
+先核对这个商确实有意义。若 \(a\in Z_{r-1}^{p+1,n}\)，则 \(\mathrm da\in F^{p+r}C^{n+1}\)，所以 \(a\in Z_r^{p,n}\)。若 \(b\in Z_{r-1}^{p-r+1,n-1}\)，则 \(\mathrm db\in F^pC^n\)，且 \(\mathrm d^2b=0\)，故 \(\mathrm db\in Z_r^{p,n}\)。两项分母都位于分子中。取 \(r=1\)，正好回到\eqref{g2:eq:first-page-representatives}。
+
+\ProseParagraphBreak
+
+第一项分母允许把代表元改动到更深一层，但修正本身不能破坏已经达到的微分深度；这就是 \(a\in Z_{r-1}^{p+1,n}\) 的条件。第二项允许删去从较浅层产生的边界，前提是边界已经进入当前层。下一小节证明，按这些等价关系记录的剩余微分与选择无关；随后还将证明这些商确实逐页由上同调得到。
 
 \subsection{微分次数和平方为零}
 \label{g2:subsec:1002:03}
-待撰写
+
+若 \(x\in Z_r^{p,n}\)，其剩余微分 \(\mathrm dx\) 在总次数 \(n+1\)、滤过层 \(p+r\)。因此它的第二指标只能为 \((n+1)-(p+r)=q-r+1\)。这给出了高阶箭头的方向。
+
+\begin{proposition}[页面微分]\label{g2:prop:spectral-sequence-differential}
+	对任意带递减子复形滤过的 \(R\) 模上链复形 \((C^\bullet,F)\) 及 \(r\ge1\)，公式
+	\begin{equation}\label{g2:eq:spectral-sequence-differential}
+		\mathrm d_r:E_r^{p,q}\longrightarrow E_r^{p+r,q-r+1},\qquad
+		[x]_r\longmapsto[\mathrm dx]_r
+	\end{equation}
+	定义良好的 \(R\) 线性映射，且 \(\mathrm d_r^2=0\)。它的双次数为 \((r,1-r)\)，总次数为 \(1\)。
+\end{proposition}
+\begin{proof}
+	\(\mathrm dx\in F^{p+r}C^{n+1}\) 且 \(\mathrm d^2x=0\)，故 \(\mathrm dx\in Z_r^{p+r,n+1}\)，确实能代表目标页的元素。若更换代表元为
+	\[
+		x'=x+a+\mathrm db,\qquad
+		a\in Z_{r-1}^{p+1,n},\quad b\in Z_{r-1}^{p-r+1,n-1},
+	\]
+	则 \(\mathrm dx'-\mathrm dx=\mathrm da\)。在目标的分母中，边界项正是
+	\[
+		\mathrm d Z_{r-1}^{(p+r)-r+1,n}=\mathrm d Z_{r-1}^{p+1,n},
+	\]
+	所以 \([\mathrm dx']_r=[\mathrm dx]_r\)。线性由原微分线性得到。连续作用两次，所用代表元成为 \(\mathrm d^2x=0\)，因此 \(\mathrm d_r^2=0\)。
+\end{proof}
+
+\(\mathrm d_0\) 留在同一列并向上一步，\(\mathrm d_1\) 向右一步，\(\mathrm d_2\) 向右两步、向下一步；以后每次向右多走一步、向下多走一步。这些方向始终使总次数增加一。在双复形中，\eqref{g2:eq:spectral-sequence-staircase}于是给出
+\[
+	\mathrm d_r[x_0+\cdots+x_{r-1}]_r=[\mathrm d_{\mathrm h}x_{r-1}]_r.
+\]
+高阶微分的“高阶”指通过修正跨越的滤过层数；原复形中的运算仍是同一个 \(\mathrm d\)。
 
 \subsection{页间同调的证明}
 \label{g2:subsec:1002:04}
-待撰写
+
+现在证明，各页商公式正好实现“删除当前边界，保留能够再提升一层的类”。证明的关键是：\(\mathrm d_r[x]_r=0\) 并不要求原代表元已经满足 \(\mathrm dx\in F^{p+r+1}\)，但它保证能换到满足这个条件的代表元。
+
+\begin{theorem}[页间上同调]\label{g2:thm:spectral-sequence-page-transition}
+	设 \((C^\bullet,F)\) 为带递减子复形滤过的 \(R\) 模上链复形。对所有 \(r\ge0\)，存在由原复形代表元诱导的自然同构
+	\[
+		E_{r+1}^{p,q}\cong
+		\frac{\ker(\mathrm d_r:E_r^{p,q}\to E_r^{p+r,q-r+1})}
+		{\operatorname{im}(\mathrm d_r:E_r^{p-r,q+r-1}\to E_r^{p,q})}.
+	\]
+	当 \(r\ge1\) 时，它将 \(x\in Z_{r+1}^{p,p+q}\) 在下一页的类送到 \([x]_r\) 的上同调类。
+\end{theorem}
+\begin{proof}
+	\(r=0\) 的结论就是第一页的定义。以下设 \(r\ge1\)，固定 \(n=p+q\)。若 \(x\in Z_{r+1}^{p,n}\)，则 \(\mathrm dx\in F^{p+r+1}C^{n+1}\) 且再次微分为零，所以
+	\[
+		\mathrm dx\in Z_{r-1}^{p+r+1,n+1}.
+	\]
+	这是目标 \(E_r^{p+r,q-r+1}\) 的一项分母，故 \(\mathrm d_r[x]_r=0\)。于是有映射
+	\[
+		\Phi:Z_{r+1}^{p,n}\longrightarrow H(E_r,\mathrm d_r)^{p,q},\qquad
+		x\longmapsto\text{\([x]_r\) 的上同调类}.
+	\]
+
+	先证 \(\Phi\) 满射。取一个 \(\mathrm d_r\) 闭类 \([x]_r\)，其中 \(x\in Z_r^{p,n}\)。目标页中 \([\mathrm dx]_r=0\)，所以可以写成
+	\[
+		\mathrm dx=u+\mathrm dv,\qquad
+		u\in Z_{r-1}^{p+r+1,n+1},\quad v\in Z_{r-1}^{p+1,n}.
+	\]
+	于是 \(x-v\in F^pC^n\)，且 \(\mathrm d(x-v)=u\in F^{p+r+1}C^{n+1}\)，即 \(x-v\in Z_{r+1}^{p,n}\)。同时 \(v\) 属于原页分母，故 \([x-v]_r=[x]_r\)。这找到了所需的更深代表元。
+
+	再求 \(\Phi\) 的核。若 \(a\in Z_r^{p+1,n}\)，它属于 \(Z_{r-1}^{p+1,n}\)，所以已经在 \(E_r^{p,q}\) 中为零。若 \(b\in Z_r^{p-r,n-1}\)，则 \([\mathrm db]_r=\mathrm d_r[b]_r\)，故在页面上同调中为零。这说明
+	\[
+		Z_r^{p+1,n}+\mathrm d Z_r^{p-r,n-1}\subset\ker\Phi.
+	\]
+	这些元素都属于 \(Z_{r+1}^{p,n}\)：第一项的微分已进入 \(F^{p+r+1}\)，第二项再次微分为零。
+
+	反过来，设 \(x\in Z_{r+1}^{p,n}\) 且 \(\Phi(x)=0\)。这表示存在 \(y\in Z_r^{p-r,n-1}\)，使 \([x]_r=[\mathrm dy]_r\)。因而
+	\[
+		x-\mathrm dy=a+\mathrm db,\qquad
+		a\in Z_{r-1}^{p+1,n},\quad b\in Z_{r-1}^{p-r+1,n-1}.
+	\]
+	由于 \(a=x-\mathrm d(y+b)\)，有 \(\mathrm da=\mathrm dx\in F^{p+r+1}C^{n+1}\)，故 \(a\in Z_r^{p+1,n}\)。又有 \(y+b\in F^{p-r}C^{n-1}\)，而 \(\mathrm d(y+b)=x-a\in F^pC^n\)，故 \(y+b\in Z_r^{p-r,n-1}\)。因此
+	\[
+		x=a+\mathrm d(y+b)\in Z_r^{p+1,n}+\mathrm d Z_r^{p-r,n-1}.
+	\]
+	核恰为这个子模。按\eqref{g2:eq:spectral-sequence-page-quotient}，商掉它就是 \(E_{r+1}^{p,q}\)，所以 \(\Phi\) 诱导所述同构。构造只用了原代表元及取商；下一小节将逐项核对它与滤过映射相容。
+\end{proof}
+
+上述双分次模、微分及页间同构组成\term[puxulie]{谱序列}[spectral sequence]，记为 \((E_r^{p,q},\mathrm d_r)\)。\symidx{\(E_r^{p,q}\)：谱序列第 \(r\) 页，双次数为 \((p,q)\)}\symidx{\(\mathrm d_r\)：谱序列微分，双次数为 \((r,1-r)\)}计算 \((E_r,\mathrm d_r)\) 的上同调确定下一页的模；下一页的微分则仍要回到原复形寻找代表元。保留完整修正链，正是为了继续进行这一计算。
 
 \subsection{滤过映射和自然性}
 \label{g2:subsec:1002:05}
-待撰写
+
+一个保持滤过的上链映射会把每一层的消去过程送到目标复形中的同一层。因而不仅有目标上同调之间的映射，也能在计算的每一页作比较。
+
+\begin{proposition}[谱序列的自然性]\label{g2:prop:spectral-sequence-naturality}
+	设 \((C^\bullet,F)\)、\((D^\bullet,F)\) 为带递减子复形滤过的 \(R\) 模上链复形，\(f:C^\bullet\to D^\bullet\) 为满足 \(f(F^pC^n)\subset F^pD^n\) 的上链映射。则每个 \(r\ge0\) 都有双次数为 \((0,0)\) 的映射
+	\[
+		f_r:E_r^{p,q}(C)\longrightarrow E_r^{p,q}(D),
+	\]
+	它与 \(\mathrm d_r\) 交换，且经页间同构有 \(f_{r+1}=H(f_r)\)。恒等映射诱导各页恒等，复合满足 \((gf)_r=g_rf_r\)。
+\end{proposition}
+\begin{proof}
+	对 \(r=0\)，在每个商 \(F^p/F^{p+1}\) 上取诱导映射即可。对 \(r\ge1\)，若 \(x\in Z_r^{p,n}(C)\)，则 \(f(x)\in F^pD^n\)，且
+	\[
+		\mathrm d_Df(x)=f(\mathrm d_Cx)\in F^{p+r}D^{n+1}.
+	\]
+	因此 \(f\) 把分子送入相应分子。同一论证使它保持 \(Z_{r-1}^{p+1,n}\)，上链映射等式则使它把 \(\mathrm d_CZ_{r-1}^{p-r+1,n-1}\) 送入 \(\mathrm d_DZ_{r-1}^{p-r+1,n-1}\)。所以 \(f_r[x]_r=[f(x)]_r\) 良定义，并且
+	\[
+		\mathrm d_rf_r[x]_r=[\mathrm d_Df(x)]_r=[f(\mathrm d_Cx)]_r=f_r\mathrm d_r[x]_r.
+	\]
+	页间同构把一个更深闭元送到它在原页的上同调类。在两个方向上使用 \(f\)，代表元都变成同一个 \(f(x)\)，故所需自然方块交换。恒等与复合也由代表元公式直接得到。
+\end{proof}
+
+例如，如果某一页的 \(f_r\) 在所有双次数上都是同构，那么它是页面上链复形的同构，取上同调后 \(f_{r+1}\) 仍是同构，归纳可知后续每一页都如此。要进一步判断目标上同调上的 \(H^*(f)\)，还需将稳定页面与目标滤过对应，并处理各层之间的延拓；这正是后两节比较与收敛定理的任务。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

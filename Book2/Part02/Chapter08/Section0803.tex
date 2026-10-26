@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 8.3 同伦长正合列的证明
 % 纲要位置：几何学计划纲要.md，第 1318 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,182 @@
 \section{同伦长正合列的证明}
 \label{g2:sec:0803}
 
-待撰写
+设 \(p:E\to B\) 是 Serre 纤维化，选定 \(e_0\in E\)，记 \(b_0=p(e_0)\)、\(F=p^{-1}(b_0)\)。底空间中的一个球面映射未必能提升为总空间中的球面映射：沿参数逐步提升以后，最后一个面可能停在 \(F\) 中的一张非平凡球面上。连接映射记录的正是这个未能收拢的面。先允许这一个面在纤维中移动，提升就总能完成；这把纤维化问题与已经建立的相对同伦联系起来。
 
 \subsection{连接映射的提升构造}
 \label{g2:subsec:0803:01}
-待撰写
+
+沿用\cref{g2:def:relative-homotopy}的立方体模型，令 \(I^n=I^{n-1}\times I\)，最后一个坐标记为 \(t\)，并令
+\[
+	J^{n-1}=(\partial I^{n-1}\times I)\cup(I^{n-1}\times\{0\}).
+\]
+顶面 \(t=1\) 可以映入 \(F\)，其余面必须映到 \(e_0\)。投影到 \(B\) 后，整个边界都成为 \(b_0\)，于是有映射
+\[
+	P_n:\pi_n(E,F,e_0)\longrightarrow\pi_n(B,b_0),\qquad [v]\longmapsto[pv].
+\]
+
+\begin{proposition}
+	\label{g2:prop:fibration-relative-comparison}
+	若 \(p:E\to B\) 是 Serre 纤维化，\(e_0\in E\)、\(b_0=p(e_0)\)、\(F=p^{-1}(b_0)\)，则 \(P_n\) 在 \(n\ge2\) 时是群同构，在 \(n=1\) 时是保持基点的集合双射。
+\end{proposition}
+
+\begin{proof}
+	给定 \(u:(I^n,\partial I^n)\to(B,b_0)\)，先在 \(J^{n-1}\) 上指定常值提升 \(e_0\)。\cref{g2:lem:relative-homotopy-lift}把这个提升延拓到整个立方体，得到 \(\widetilde u\)。因为 \(u\) 在顶面也等于 \(b_0\)，\(\widetilde u\) 的顶面落在 \(F\)，所以它定义相对类，且 \(P_n[\widetilde u]=[u]\)。这证明满射。
+
+	再设 \(v_0,v_1\) 的投影由保持边界基点的同伦 \(H:I^n\times I_s\to B\) 连接。在 \(s=0,1\) 上分别指定提升 \(v_0,v_1\)，在 \(J^{n-1}\times I_s\) 上指定 \(e_0\)。它们在交叠处一致。把 \(t\) 看成提升的时间坐标，其余 \(n\) 个坐标为 \((x,s)\)，这些已知数据恰好位于底面和全部侧面；唯有 \(t=1\) 的面尚未指定。再次应用相对提升引理，得到 \(\widetilde H\)。在顶面上，\(p\widetilde H=H=b_0\)，所以顶面始终留在 \(F\)；这正是 \(v_0\) 与 \(v_1\) 的相对同伦。这个论证也适用于 \(n=1\)，直接证明了尖点集上的单射。
+
+	当 \(n\ge2\) 时，投影保持沿第一坐标的拼接，故 \(P_n\) 是群同态。已经得到的双射因而是群同构。
+\end{proof}
+
+\begin{definition}
+	\label{g2:def:fibration-connecting-map}
+	在上述条件下，纤维化的\term[lian jie ying she]{连接映射}[connecting map]定义为
+	\[
+		\partial_n=\partial\circ P_n^{-1}:\pi_n(B,b_0)\longrightarrow\pi_{n-1}(F,e_0).
+	\]
+	这里右侧的 \(\partial\) 是空间对 \((E,F)\) 的顶面限制。因此，对上述提升 \(\widetilde u\)，有
+	\[
+		\partial_n[u]=[\widetilde u(-,1)].
+	\]
+	当 \(n=1\) 时，右侧指提升道路终点所在的道路连通分支。
+\end{definition}
+
+\cref{g2:prop:fibration-relative-comparison}同时解释了构造为何与选择无关：同一底空间同伦类的所有提升给出同一相对类，顶面因而给出同一纤维同伦类。\(n\ge2\) 时连接映射是群同态；\(n=1\) 时其值域为 \(\pi_0(F)\)，通常只具有带基点集合的结构。
 
 \subsection{逐项验证正合性}
 \label{g2:subsec:0803:02}
-待撰写
+
+连接映射的意义可以表述为一个可检验的问题：顶面能否在纤维中缩掉？若能，就可以把提升补成一个球面。反过来，如果已经有一个总空间中的球面，它的投影便不会留下这个障碍。下面把这两个方向与另外两处核、像关系一起证明。
+
+\begin{theorem}
+	\label{g2:thm:fibration-homotopy-sequence}
+	设 \(p:E\to B\) 是 Serre 纤维化，\(e_0\in E\)，\(b_0=p(e_0)\)，\(F=p^{-1}(b_0)\)，\(i:F\hookrightarrow E\) 为包含。存在自然的长正合列
+	\[
+		\cdots\longrightarrow\pi_n(F,e_0)\xrightarrow{i_*}\pi_n(E,e_0)
+		\xrightarrow{p_*}\pi_n(B,b_0)\xrightarrow{\partial_n}\pi_{n-1}(F,e_0)
+		\longrightarrow\cdots
+	\]
+	其低阶部分为
+	\[
+		\begin{aligned}
+			\pi_2(B,b_0)&\xrightarrow{\partial_2}\pi_1(F,e_0)
+			\xrightarrow{i_*}\pi_1(E,e_0)\xrightarrow{p_*}\pi_1(B,b_0)\\
+			&\xrightarrow{\partial_1}\pi_0(F,e_0)\xrightarrow{i_*}\pi_0(E,e_0)
+			\xrightarrow{p_*}\pi_0(B,b_0).
+		\end{aligned}
+	\]
+	群项上的正合指像等于核；尖点集项上的正合指前一映射的像等于后一映射所取基点的原像。若 \(B\) 道路连通，则 \(\pi_0(F)\to\pi_0(E)\) 满射，可以在其后接一个单点集。
+\end{theorem}
+
+\begin{proof}
+	\cref{g2:thm:pair-homotopy-sequence}给出 \((E,F,e_0)\) 的相对同伦序列。以\cref{g2:prop:fibration-relative-comparison}中的 \(P_n\) 替换相对项，就得到定理中的映射：\(\pi_n(E)\) 先相对化再由 \(P_n\) 投影，正是通常的 \(p_*\)。下面也直接辨认每一种正合位置，以说明各个核代表什么几何事实。
+
+	在 \(\pi_n(E)\) 处，纤维中的映射投影为常值，所以 \(\operatorname{im}i_*\subseteq\ker p_*\)。若带基点球面映射 \(a\) 的投影有带基点零伦，则用球面及其基点组成的 CW 对，提升这个零伦并令基点始终为 \(e_0\)。初始提升为 \(a\)，最终提升整个落在 \(F\)。因此 \([a]\) 来自 \(\pi_n(F)\)。这一论证对 \(n\ge1\) 都成立。
+
+	在 \(\pi_n(B)\) 处，\(n\ge2\) 时，先取 \(u\) 的提升 \(v\)，其顶面为 \(a\)。若 \([a]=0\in\pi_{n-1}(F)\)，取 \(a\) 在 \(F\) 中的带基点零伦 \(A(x,s)\)。在 \(v\) 顶端接上这个零伦，得到
+	\[
+		w(x,t)=
+		\begin{cases}
+			v(x,2t),&0\le t\le\tfrac12,\\
+			A(x,2t-1),&\tfrac12\le t\le1.
+		\end{cases}
+	\]
+	\(w\) 的整个边界都等于 \(e_0\)，而 \(pw\) 等于先运行 \(u\)、再停在 \(b_0\) 的重参数映射，故 \([u]=p_*[w]\)。若 \([u]\) 一开始来自 \(\pi_n(E)\)，便可选整个边界为 \(e_0\) 的提升，连接类为零。\(n=1\) 时，同一个构造把“顶面零伦”换成“在 \(F\) 内从提升终点走回 \(e_0\) 的道路”，证明 \(\partial_1^{-1}([e_0])=\operatorname{im}p_*\)。
+
+	在 \(\pi_{n-1}(F)\) 处，\(n\ge2\) 时，连接映射给出的顶面连同提升立方体，已经提供它在 \(E\) 中的零伦。反过来，若 \(a:I^{n-1}/\partial I^{n-1}\to F\) 在 \(E\) 中有带基点零伦，反向运行这个零伦就得到 \(v:I^n\to E\)，底面和侧面为 \(e_0\)，顶面为 \(a\)。此时 \(pv\) 的整个边界为 \(b_0\)，而 \(\partial_n[pv]=[a]\)。这也包括可能非交换的 \(\pi_1(F)\)。
+
+	在 \(\pi_0(F)\) 处，连接映射得到的点由提升道路与 \(e_0\) 相连，所以它落在 \(\pi_0(E)\) 的基点原像中。反过来，若 \(y\in F\) 在 \(E\) 中与 \(e_0\) 由道路 \(c\) 相连，则 \(pc\) 是 \(b_0\) 处的环路，且 \(\partial_1[pc]=[y]\)。在 \(\pi_0(E)\) 处，若 \(e\in E\) 的投影在 \(b_0\) 的分支中，提升从 \(p(e)\) 到 \(b_0\) 的道路，得到从 \(e\) 到 \(F\) 的道路；反方向由 \(p(F)=\{b_0\}\) 立即得到。若 \(B\) 道路连通，这就对 \(E\) 的所有分支成立。
+\end{proof}
+
+\begin{example}
+	\label{g2:exm:loop-space-shift}
+	令 \(B\) 是带基点空间，\(P_{b_0}B\) 为从 \(b_0\) 出发的道路空间，终点映射的纤维为回路空间 \(\Omega B\)。\cref{g2:prop:path-fibration}给出这个 Hurewicz 纤维化。\(P_{b_0}B\) 由 \(\gamma(t)\mapsto\gamma((1-s)t)\) 保持常值道路地收缩，所以长正合列给出
+	\[
+		\pi_n(B,b_0)\cong\pi_{n-1}(\Omega B,c_{b_0})\quad(n\ge2),
+		\qquad \pi_1(B,b_0)\cong\pi_0(\Omega B).
+	\]
+	后一个式子的集合双射在回路拼接下也是群同构。对 \(u(x,t)\)，可以取提升 \(\widetilde u(x,t)(r)=u(x,tr)\)；其顶面正是 \(x\mapsto(t\mapsto u(x,t))\)。这说明指标降低一次来自把一个参数变成回路参数。
+\end{example}
 
 \subsection{基点、连通分支和群作用}
 \label{g2:subsec:0803:03}
-待撰写
+
+序列末端还能记录总空间有多少个道路连通分支。沿底空间中的环路提升，一个纤维分支可能被带到另一个分支；能够这样互相到达的分支，在总空间中恰好连在一起。这是第1章覆盖单值作用在一般纤维化中的延续。
+
+\begin{proposition}
+	\label{g2:prop:fibration-component-action}
+	设 \(p:E\to B\) 是 Serre 纤维化，\(B\) 道路连通，且 \(F=p^{-1}(b_0)\ne\varnothing\)。沿环路提升的终点定义右作用
+	\[
+		\pi_0(F)\times\pi_1(B,b_0)\longrightarrow\pi_0(F),\qquad
+		[y]\cdot[\beta]=[\widetilde\beta(1)],\quad\widetilde\beta(0)=y.
+	\]
+	此作用的轨道集合与 \(\pi_0(E)\) 自然对应。对 \(e_0\in F\)，连接映射为 \(\partial_1[\beta]=[e_0]\cdot[\beta]\)，而 \([e_0]\) 的稳定子是 \(p_*\pi_1(E,e_0)\)。
+\end{proposition}
+
+\begin{proof}
+	固定一个起点，两条提升的终点在 \(F\) 中相连：把两条提升放在一个方形的两条相对边上，在初始边指定该起点，底空间映射取与第二参数无关的原道路；缺少终点边的三条边组成提升引理中的部分边界。补全提升后，终点边就是所需的纤维内道路。若起点在 \(F\) 中沿一条道路变化，把这条道路作为方形的初始边，同样得到终点分支不变。底空间道路的端点固定同伦也由相同的方形提升处理。因此作用良定义。
+
+	道路乘法 \(\alpha*\beta\) 先走 \(\alpha\)，后走 \(\beta\)。依次提升两段，就有 \(([y]\cdot[\alpha])\cdot[\beta]=[y]\cdot[\alpha*\beta]\)；常值道路作用为恒等，反向道路给出逆变换，所以这是右作用。作用同轨的点通过提升道路在 \(E\) 中相连；若两点在 \(E\) 中相连，投影道路就是实现相应运输的底空间环路。再由 \(B\) 道路连通时每个总空间分支都遇到 \(F\)，得到轨道集合的断言。
+
+	若环路是 \(E\) 中基点环路的投影，就固定 \([e_0]\)。反过来，若其提升终点与 \(e_0\) 在 \(F\) 中相连，接上这条纤维内道路就得到 \(E\) 中的环路，投影与原环路同伦。因而稳定子恰为 \(p_*\pi_1(E,e_0)\)。
+\end{proof}
+
+\begin{example}
+	\label{g2:exm:covering-sequence-tail}
+	对 \(p:S^1\to S^1\)、\(p(z)=z^m\)，\(m\ge2\)，取基点 \(1\)。纤维是 \(m\) 次单位根，低阶序列为
+	\[
+		0\longrightarrow\mathbb Z\xrightarrow{\times m}\mathbb Z
+		\xrightarrow{\partial_1}\{1,\zeta,\ldots,\zeta^{m-1}\}\longrightarrow\{*\},
+		\qquad\zeta=e^{2\pi\mathrm i/m},
+	\]
+	其中 \(\partial_1(k)=\zeta^k\)。整数绕行数通过提升终点记录其模 \(m\) 的余数；纤维分支只有一个轨道，所以总空间连通。在一般连通覆盖中，纤维仍是一个传递的 \(\pi_1(B)\)-集合，稳定子可以不是正规子群。末端的集合因而要由作用理解，不能一概当作商群。
+\end{example}
+
+高阶群还需要追踪基点。若 \(\lambda\) 是 \(E\) 中从 \(e_0\) 到 \(e_1\) 的道路，\(\beta=p\lambda\)，则以 \(\lambda\) 规定移动的基点，可以运输纤维的带基点球面：对 \(a:S^r\to p^{-1}(\beta(0))\)，提升底空间同伦 \((z,t)\mapsto\beta(t)\)，同时规定 \((*,t)\mapsto\lambda(t)\)。相对提升引理给出终端球面，并由带第二同伦参数的同一构造保证其类与选择无关。反向道路提供逆映射。若 \(\lambda\) 是环路，依次提升对应于道路拼接，便得到 \(\pi_1(E,e_0)\) 在 \(\pi_r(F,e_0)\) 上的右作用；当 \(\lambda\) 位于 \(F\) 内时，它就是\cref{g2:prop:basepoint-action}中的基点变化作用。
+
+\ProseParagraphBreak
+
+这也解释了为何 \(\pi_0(F)\) 的运输只需底空间环路，而带基点高阶群还要指定基点的移动。选择不同的纤维内回程，最终识别之间相差一个基本群作用。实际计算中，若纤维道路连通且单连通，这个差异消失；对一般纤维，则把移动基点的道路连同群写清楚。沿 \(\lambda\) 改变总空间基点、沿 \(p\lambda\) 改变底空间基点，再用上述运输改变纤维基点，得到的长正合列彼此对应；连接映射的相容性来自对同一立方体及其顶面同时进行提升。
 
 \subsection{自然性与比较}
 \label{g2:subsec:0803:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+纤维化经常通过拉回、坐标变换或映射路径构造与另一个纤维化比较。要把一次计算搬到新模型上，必须确认连接映射也随这些映射一起变化。它的提升定义恰好使这种相容性成为直接的复合关系。
+
+\begin{proposition}
+	\label{g2:prop:fibration-sequence-naturality}
+	设 \(p:E\to B\)、\(p':E'\to B'\) 为 Serre 纤维化，带基点映射 \(h:E\to E'\)、\(g:B\to B'\) 满足 \(p'h=gp\)。记对应基点纤维为 \(F,F'\)，\(h_F=h|_F\)。则 \(h_F,h,g\) 诱导长正合列之间的态射，特别地
+	\[
+		\begin{tikzcd}[column sep=large]
+			\pi_n(E)\arrow[r,"p_*"]\arrow[d,"h_*"']&\pi_n(B)\arrow[r,"\partial_n"]\arrow[d,"g_*"]&\pi_{n-1}(F)\arrow[d,"(h_F)_*"]\\
+			\pi_n(E')\arrow[r,"p'_*"]&\pi_n(B')\arrow[r,"\partial'_n"]&\pi_{n-1}(F')
+		\end{tikzcd}
+	\]
+	交换。\(n=1\) 时右端按带基点集合解释；\(\pi_0(F)\) 的右作用也与 \(g_*\) 和 \((h_F)_*\) 相容。
+\end{proposition}
+
+\begin{proof}
+	若 \(v\) 是 \(u\) 的提升，则 \(hv\) 是 \(gu\) 的提升，且 \((hv)(-,1)=h_F(v(-,1))\)。这给出连接映射所在方块的交换性。其他方块只涉及包含与投影的复合；道路提升的终点也由 \(h_F\) 送到相应终点，故分支作用相容。
+\end{proof}
+
+下面的比较结论在替换空间或替换纤维时尤其有用。若一个连续映射在道路分支上为双射，并在每个基点的所有正次同伦群上为同构，就称它为\term[ruo tong lun deng jia]{弱同伦等价}[weak homotopy equivalence]。
+
+\begin{proposition}
+	\label{g2:prop:fibration-comparison}
+	设 \(p:E\to B\)、\(p':E'\to B'\) 是 Serre 纤维化，\(B,B'\) 道路连通，连续映射 \(h:E\to E'\)、\(g:B\to B'\) 满足 \(p'h=gp\)。选 \(b_0\in B\)，令 \(F=p^{-1}(b_0)\)、\(F'=(p')^{-1}(g(b_0))\)，并假设 \(F,F'\) 非空。如果 \(g\) 与 \(h_F=h|_F:F\to F'\) 都是弱同伦等价，则 \(h\) 也是弱同伦等价。
+\end{proposition}
+
+\begin{proof}
+	由\cref{g2:prop:fibration-component-action}，总空间的分支是纤维分支的作用轨道。\(\pi_1(B)\to\pi_1(B')\) 为同构，\(\pi_0(F)\to\pi_0(F')\) 为等变双射，故 \(\pi_0(E)\to\pi_0(E')\) 为双射。每个分支都含有纤维点；基点变化同构允许在这样的点上检查其余同伦群。
+
+	固定 \(e\in F\)。先证明 \(h_*:\pi_n(E,e)\to\pi_n(E',h(e))\) 单射，其中 \(n\ge1\)。若 \(h_*x=0\)，由底空间同伦群上的单射知 \(p_*x=0\)，于是 \(x=i_*a\)。又有 \(i'_*(h_F)_*a=0\)，正合性给出 \((h_F)_*a=\partial'_{n+1}b'\)。由底空间同伦群上的满射，取 \(b\) 使 \(g_*b=b'\)。自然性和 \((h_F)_*\) 的单射给出 \(a=\partial_{n+1}b\)，故 \(x=0\)。在 \(n=1\) 时，零元按群的单位元理解，这个论证仍逐项成立。
+
+	再给定 \(x'\in\pi_n(E')\)。取 \(b\in\pi_n(B)\) 使 \(g_*b=p'_*x'\)。\(n\ge2\) 时，\((h_F)_*\partial_n b=0\)，由纤维群上的单射知 \(\partial_n b=0\)，所以 \(b=p_*x_0\)。\(n=1\) 时用 \(\pi_0(F)\to\pi_0(F')\) 的单射得到同样结论：\(\partial_1b\) 必为基点分支，故也有 \(b=p_*x_0\)。于是 \(x'\) 与 \(h_*x_0\) 的差属于 \(\ker p'_*\)，来自某个纤维类 \(a'\)；选 \(a\) 使 \((h_F)_*a=a'\)，便得到 \(x'\) 的原像。对于 \(n=1\)，具体取 \(a'\) 满足 \(i'_*a'=x'(h_*x_0)^{-1}\)，原像为 \(i_*a\,x_0\)。这证明所有正次同伦群上的满射。
+\end{proof}
+
+\cref{g2:prop:fibration-replacement}还把任意带基点映射 \(f:X\to Y\) 换成 \(E_f\to Y\)，其中 \(E_f\simeq X\)。把这个同伦等价诱导的同构代入长正合列，得到
+\[
+	\cdots\longrightarrow\pi_n(F_f)\longrightarrow\pi_n(X)
+	\xrightarrow{f_*}\pi_n(Y)\longrightarrow\pi_{n-1}(F_f)\longrightarrow\cdots.
+\]
+这里 \(F_f=\operatorname{hofib}_{y_0}(f)\)，其元素同时保存一个 \(x\in X\) 和一条从 \(f(x)\) 到 \(y_0\) 的道路。因而这个序列测量的是映射 \(f\) 的同伦纤维；即使普通原像 \(f^{-1}(y_0)\) 很小，这些道路数据仍能记录 \(f\) 对同伦群的作用。

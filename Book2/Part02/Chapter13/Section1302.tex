@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 13.2 Steenrod 平方的构造
 % 纲要位置：几何学计划纲要.md，第 1511 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,253 @@
 \section{Steenrod 平方的构造}
 \label{g2:sec:1302}
 
-待撰写
+杯积把两个上圈相乘，交换两个因子时需要一张链同伦。若继续比较这张同伦与交换后的同伦，又会遇到高一阶的同伦。本节逐阶构造这组数据。将同一个上圈放在两个因子上，交换项在模2系数下相消，于是每一阶数据都能产生一个新的上同调类。构造中的次数、零值范围和代表元无关性都从同一条边界恒等式得到。
 
 \subsection{链对角的高阶同伦}
 \label{g2:subsec:1302:01}
-待撰写
+
+本节固定系数域 \(\mathbb F_2\)，记 \(C=C_*(X;\mathbb F_2)\)。这些是第2章的奇异链，退化单形仍保留为自由基元；所有张量积也在 \(\mathbb F_2\) 上取。因 \(-1=1\)，张量边界为
+\[
+	\partial(a\otimes b)=\partial a\otimes b+a\otimes\partial b,
+\]
+交换算子为 \(T(a\otimes b)=b\otimes a\)。令 \(D_0\) 为第4章的 Alexander--Whitney 对角：
+\[
+	D_0\sigma=\sum_{r=0}^m\sigma[0,\ldots,r]\otimes\sigma[r,\ldots,m],\qquad \sigma:\Delta^m\to X.
+\]
+\cref{g2:prop:graded-commutativity}已给出连接 \(D_0\) 与 \(TD_0\) 的一次链同伦；现在需要一整列 \(D_i\)。
+
+\begin{lemma}[高阶链对角]\label{g2:lem:higher-diagonals}
+	对每个拓扑空间 \(X\)，存在关于连续映射自然的线性算子
+	\[
+		D_i:C_m(X;\mathbb F_2)\longrightarrow(C\otimes C)_{m+i},\qquad i\ge0,
+	\]
+	其中 \(D_0\) 是上述对角，\(D_{-1}=0\)，并满足
+	\begin{equation}\label{g2:eq:higher-diagonal-identity}
+		\partial D_i+D_i\partial=(1+T)D_{i-1}.
+	\end{equation}
+	可以使 \(D_i\sigma\) 的每个因子均为 \(\sigma\) 的面，且
+	\begin{equation}\label{g2:eq:higher-diagonal-normalization}
+		D_i\sigma=0\quad(i>m),\qquad D_m\sigma=\sigma\otimes\sigma.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	先在有序标准单形的有限面链复形 \(L=C_*^{\mathrm{face}}(\Delta^m;\mathbb F_2)\) 中构造，再沿 \(\sigma\otimes\sigma\) 推到 \(X\)。\(L\) 的基是非空顶点子集所张的有向面，模2系数使定向符号消失。设 \(v=0\) 为首顶点，令 \(h\) 把不含 \(v\) 的面接到 \(v\) 上，含 \(v\) 的面则送到零。令 \(P\) 把每个顶点送到 \([v]\)，正次链送到零。锥的边界公式给出
+	\[
+		\partial h+h\partial=1+P.
+	\]
+	例如对不含 \(v\) 的正维面，锥的底面留下原面，侧面与 \(h\partial\) 相消；对一个顶点 \([j]\)，等式是 \(\partial[0j]=[j]+[0]\)。因此
+	\[
+		K=h\otimes1+P\otimes h,\qquad
+		\partial K+K\partial=1+P\otimes P
+	\]
+	收缩张量面链。特别地，正次圈均可用 \(K\) 填充；零次且增广为零的圈也一样。
+
+	按单形维数 \(m\) 归纳，在同一维数内按 \(i=1,\ldots,m\) 递推。面上的算子已由低维构造确定。对顶维面 \(s=[0\cdots m]\)，置
+	\begin{equation}\label{g2:eq:higher-diagonal-recursion}
+		z_i=D_i\partial s+(1+T)D_{i-1}s,
+		\qquad D_is=Kz_i.
+	\end{equation}
+	其中 \(D_i\partial s\) 在每个面上使用该面的既定算子，再包含到 \(L\otimes L\)。低维及较低 \(i\) 的恒等式给出
+	\[
+		\partial z_i=(1+T)D_{i-1}\partial s
+		+(1+T)D_{i-1}\partial s+(1+T)^2D_{i-2}s=0,
+	\]
+	因为 \((1+T)^2=0\)。在 \(i=1\) 时，同一计算使用 \(D_0\) 是链映射及 \(D_{-1}=0\)。\(z_i\) 的次数为 \(m+i-1>0\)，故 \(\partial Kz_i=z_i\)，正好得到式\eqref{g2:eq:higher-diagonal-identity}。
+
+	还需验证顶部值，才能确定所得运算的规范。\(m=0\) 时 \(D_0[v]=[v]\otimes[v]\)；\(m=1\) 时递归直接给出 \(D_1[01]=[01]\otimes[01]\)。设 \(m\ge2\)，并已知各真面上的顶部值。递归产生的每个张量项，其第一因子都含首顶点 \(0\)：这是 \(h\otimes1+P\otimes h\) 的形式所保证的，\(D_0\) 也具有这一性质。记 \(f=[1\cdots m]\)，即唯一不含 \(0\) 的余维一面。在 \(D_{m-1}s\) 的递归中，\(D_{m-1}\partial s\) 是各面 \(a\otimes a\) 之和；其中只有 \(f\otimes f\) 经 \(K\) 给出 \(s\otimes f\)，系数为 \(1\)。另一部分 \((1+T)D_{m-2}s\) 不含 \(f\otimes f\)，因为 \(D_{m-2}s\) 的第一因子含 \(0\)，故不会再贡献这个系数。同时 \(D_{m-1}s\) 不可能含 \(f\otimes s\)。
+
+	因此 \(K(1+T)D_{m-1}s\) 中 \(s\otimes s\) 的系数为 \(1\)。\(D_m\partial s=0\)，而 \((L\otimes L)_{2m}\) 只有基元 \(s\otimes s\)，遂得 \(D_ms=s\otimes s\)。对 \(i>m\) 规定 \(D_is=0\)。若 \(i=m+1\)，边界恒等式右边为 \((1+T)(s\otimes s)=0\)；若 \(i>m+1\)，各项均为零。因此所有次数的恒等式成立。
+
+	最后，任意奇异单形 \(\sigma\) 上的算子定义为刚才有限面链表达式的推前。连续映射只改变这个推前所用的 \(\sigma\)，不改变表达式；所以构造自然。每一项只用原单形的面，故具有所述支撑性质。
+\end{proof}
+
+这项递归给出了实际可计算的链算子。以 \([012]\) 简记三角形及其各个面，可得到
+\[
+	\begin{aligned}
+		D_1[012]&=[012]\otimes[01]+[02]\otimes[012]+[012]\otimes[12],\\
+		D_2[012]&=[012]\otimes[012].
+	\end{aligned}
+\]
+第一式的两因子总维数为 \(3\)，第二式为 \(4\)。\(D_1\) 填补普通对角与交换对角的差；\(D_2\) 又填补 \(D_1+TD_1\)。这里的高阶指链映射增加的次数，因子仍然是原三角形的面。
+
+\ProseParagraphBreak
+
+下一节比较乘积空间上的两种构造时，需要把整列 \(D_i\) 一起处理。记 \(C_2=\{1,T\}\)，取自由 \(\mathbb F_2[C_2]\) 消解
+\[
+	W_i=\mathbb F_2[C_2]e_i,\qquad
+	\partial e_i=(1+T)e_{i-1}\quad(i>0),\qquad \varepsilon(e_0)=1.
+\]
+它的正合性可逐项检查：在群环的基 \(1,T\) 中，乘 \(1+T\) 的核与像都是由 \(1+T\) 张成的一维子空间；零次增广的核也相同。式\eqref{g2:eq:higher-diagonal-identity}恰好说明
+\[
+	D:W\otimes C\longrightarrow C\otimes C,\qquad D(e_i\otimes c)=D_i(c)
+\]
+是等变链映射，其中 \(T\) 作用在源的 \(W\) 因子及靶的两因子交换上。
+
+\begin{lemma}[高阶对角的比较]\label{g2:lem:higher-diagonal-comparison}
+	设源链函子 \(F\) 为 \(C_*(X;\mathbb F_2)\)、\(C_*(X\times Y;\mathbb F_2)\) 或 \(C_*(X;\mathbb F_2)\otimes C_*(Y;\mathbb F_2)\)。设目标链函子 \(G\) 带有与增广相容的 \(C_2\) 作用，在源的各标准单形模型上，其增广复形无同调。两张自然等变链映射 \(A,B:W\otimes F\to G\)，若在零次保持相同增广，则存在自然等变链同伦
+	\[
+		A+B=\partial H+H\partial.
+	\]
+	特别地，两列高阶对角可由自然算子 \(H_i\) 比较：
+	\begin{equation}\label{g2:eq:higher-diagonal-comparison}
+		D_i+D'_i=\partial H_i+H_i\partial+(1+T)H_{i-1},\qquad H_{-1}=0.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	这是\cref{g2:lem:product-model-homotopy}在自由消解上的逐基元版本。对 \(e_i\otimes c\) 按总次数 \(i+|c|\) 归纳，其中 \(c\) 为相应标准模型上的通用基元。已构造低次 \(H\) 后，待填的链为
+	\[
+		u=(A+B)(e_i\otimes c)+H\partial(e_i\otimes c).
+	\]
+	两张映射的链性质与低次同伦式使 \(\partial u=0\)。总次数为零时，\(u\) 的增广为零。目标模型增广无同调，故可选 \(v\) 使 \(\partial v=u\)，并定义 \(H(e_i\otimes c)=v\)。在 \(Te_i\otimes c\) 上取 \(Tv\)，便保证等变性；两者是不同的自由基元，所以没有额外的固定点条件。沿参数映射推前到任意实际单形，再线性延拓，就得到自然性及所需同伦。把等式限制到 \(e_i\otimes c\)，即得最后的分量公式。
+\end{proof}
+
+标准单形链的有限张量积满足此引理的无同调条件，因为前面的锥收缩可以逐因子使用。这说明比较并不要求两种构造在链上完全相同；自然等变链同伦已经足以使它们诱导相同的平方运算。
 
 \subsection{cup-i 乘积及边界恒等式}
 \label{g2:subsec:1302:02}
-待撰写
+
+高阶对角的两个因子可以分别交给两个上链求值。若 \(a\) 的次数是 \(p\)，\(b\) 的次数是 \(q\)，只有 \(D_i\) 中双次数为 \((p,q)\) 的部分有贡献；因此输入单形的维数应为 \(p+q-i\)。
+
+\begin{definition}[高阶杯积]\label{g2:def:cup-i-product}
+	设 \(X\) 为拓扑空间，\(a\in C^p(X;\mathbb F_2)\)、\(b\in C^q(X;\mathbb F_2)\)。定义\term[gaojie-beiji]{高阶杯积}[cup-\(i\) product]
+	\[
+		a\smile_i b=(a\otimes b)D_i\in C^{p+q-i}(X;\mathbb F_2),\qquad i\ge0,
+	\]
+	并约定 \(\smile_i=0\) 对 \(i<0\) 成立。\(i=0\) 时就是通常的杯积。
+\end{definition}
+
+例如两个一次上链 \(a,b\) 的 \(a\smile_1b\) 仍是一次上链，在一条边上取值为 \(a[01]b[01]\)。一个一次上链 \(a\) 与二次上链 \(b\) 则满足
+\[
+	(a\smile_1b)[012]=a[02]b[012].
+\]
+这些公式来自刚列出的 \(D_1\)，说明下标 \(i\) 记录降低了多少总次数。由于 \(D_i\sigma\) 的因子都是 \(\sigma\) 的面，还得到
+\begin{equation}\label{g2:eq:cup-i-dimension}
+	a\smile_i b=0\quad\text{若 }i>\min(p,q).
+\end{equation}
+事实上，输入维数 \(m=p+q-i\) 此时小于 \(p\) 或小于 \(q\)，相应的面根本不存在。\symidx{\(\smile_i\)：降低总次数 \(i\) 的高阶杯积}
+
+\begin{proposition}[高阶杯积的边界]\label{g2:prop:cup-i-boundary}
+	对任意拓扑空间 \(X\)、模2上链 \(a,b\) 及 \(i\ge0\)，有
+	\begin{equation}\label{g2:eq:cup-i-boundary}
+		\delta(a\smile_i b)=\delta a\smile_i b+a\smile_i\delta b
+		+a\smile_{i-1}b+b\smile_{i-1}a.
+	\end{equation}
+	所有这些运算均与连续映射的拉回相容；若 \(a,b\) 中至少一个在子空间 \(A\) 的链上为零，所得高阶杯积也在 \(A\) 的链上为零。
+\end{proposition}
+\begin{proof}
+	把 \(a\otimes b\) 作用在式\eqref{g2:eq:higher-diagonal-identity}上。左端的 \((a\otimes b)D_i\partial\) 是 \(\delta(a\smile_i b)\)，另一项由张量边界变成 \(\delta a\smile_i b+a\smile_i\delta b\)。右端的恒等项与交换项分别给出 \(a\smile_{i-1}b\)、\(b\smile_{i-1}a\)，整理即得公式。自然性来自 \(D_i\) 的自然性。若单形的像在 \(A\) 中，它的所有面也在 \(A\) 中；求值时相应因子为零，所以相对条件得到保持。
+\end{proof}
+
+对两个上圈，公式简化为
+\[
+	\delta(a\smile_{i+1}b)=a\smile_i b+b\smile_i a.
+\]
+它说明 \(\smile_{i+1}\) 正是 \(\smile_i\) 交换性误差的原上链。但单独的 \(a\smile_i b\) 未必闭；当两边都放入同一个上圈 \(a\) 时，最后两项才必然相消。这是从双线性高阶杯积转向平方运算的关键。
 
 \subsection{平方运算与余链选择无关性}
 \label{g2:subsec:1302:03}
-待撰写
+
+令 \(a\) 为 \(n\) 次上圈。\(a\smile_j a\) 的次数为 \(2n-j\)。若希望得到提高次数 \(k\) 的运算，就应取 \(j=n-k\)；这里平方运算的上标与高阶杯积的下标有不同含义。
+
+\begin{definition}[Steenrod 平方]\label{g2:def:steenrod-square}
+	设 \(X\) 为拓扑空间，\(x=[a]\in H^n(X;\mathbb F_2)\)，\(n\ge0\)。对整数 \(k\ge0\)，定义
+	\begin{equation}\label{g2:eq:steenrod-cup-i-definition}
+		\operatorname{Sq}^k x=
+		\begin{cases}
+			[a\smile_{n-k}a],&0\le k\le n,\\
+			0,&k>n.
+		\end{cases}
+	\end{equation}
+	这称为 \(x\) 的第 \(k\) 个\term[steenrod-pingfang]{Steenrod 平方}[Steenrod square]，其值属于 \(H^{n+k}(X;\mathbb F_2)\)。相对上同调中使用相对上圈作同一定义。
+\end{definition}
+
+\begin{theorem}[平方运算的良定义与加性]\label{g2:thm:steenrod-squares}
+	上述公式对拓扑空间及空间对给出同态
+	\[
+		\operatorname{Sq}^k:H^n(X,A;\mathbb F_2)\longrightarrow H^{n+k}(X,A;\mathbb F_2).
+	\]
+	它与代表上圈及高阶对角的自然等变同伦选择无关。
+\end{theorem}
+\begin{proof}
+	只需处理 \(0\le k\le n\)，置 \(j=n-k\)。由上圈的闭性及式\eqref{g2:eq:cup-i-boundary}，
+	\[
+		\delta(a\smile_j a)=a\smile_{j-1}a+a\smile_{j-1}a=0,
+	\]
+	所以定义中的表达式确实代表上同调类。
+
+	若 \(a,b\) 都为 \(n\) 次上圈，则
+	\[
+		(a+b)\smile_j(a+b)+a\smile_j a+b\smile_j b
+		=a\smile_j b+b\smile_j a=\delta(a\smile_{j+1}b).
+	\]
+	因此相加只产生一个余边界，给出加性。
+
+	若把 \(a\) 换成 \(a+\delta c\)，\(|c|=n-1\)，先用同一公式处理两个交叉项，再用边界恒等式计算纯余边界项：
+	\[
+		\delta c\smile_j\delta c
+		=\delta\bigl(c\smile_j\delta c+c\smile_{j-1}c\bigr).
+	\]
+	两式合起来给出完全的代表元变化公式
+	\[
+		(a+\delta c)\smile_j(a+\delta c)+a\smile_j a
+		=\delta\bigl(a\smile_{j+1}\delta c+c\smile_j\delta c+c\smile_{j-1}c\bigr).
+	\]
+	当 \(j=0\) 时，含 \(\smile_{-1}\) 的项按约定为零，公式仍成立。\(n=0\) 时没有负次余边界，代表元本来就是唯一的零次上圈。因此良定义在全部所述次数成立。相对情形中 \(a,c\) 都在 \(A\) 上为零，上面写出的原上链也在 \(A\) 上为零，所以证明同时保持相对条件。
+
+	最后，若 \(D_i\) 换为 \(D'_i\)，使用式\eqref{g2:eq:higher-diagonal-comparison}。\(a\otimes a\) 是闭泛函，且 \((a\otimes a)(1+T)=0\)，故
+	\[
+		(a\otimes a)(D_j+D'_j)=\delta\bigl((a\otimes a)H_j\bigr).
+	\]
+	所以这种链同伦选择不改变所得上同调类；相对情形由构造的自然性同样成立。
+\end{proof}
+
+加性的证明还解释了模2系数的重要性。公式中出现的两次相同项相加为零，平方因而变成了一个群同态。这里使用的是同一个次数上的两个输入；将不同次数的类放在一起时，仍应逐次解释各个 \(\operatorname{Sq}^k\)。\symidx{\(\operatorname{Sq}^k\)：提高模2上同调次数 \(k\) 的 Steenrod 平方}
 
 \subsection{自然性、单位与不稳定条件}
 \label{g2:subsec:1302:04}
-待撰写
+
+构造还保留了三项可以直接读取的性质：后复合连续映射不改变面公式，顶部对角把上链值平方，而零阶对角恢复普通杯积。它们分别给出自然性、零次平方与最高可能的平方。
+
+\begin{proposition}[平方的基本性质]\label{g2:prop:squares-basic-properties}
+	设 \(f:(X,A)\to(Y,B)\) 为连续空间对映射，\(x\in H^n(Y,B;\mathbb F_2)\)。则
+	\[
+		f^*(\operatorname{Sq}^k x)=\operatorname{Sq}^k(f^*x),\qquad
+		\operatorname{Sq}^0x=x,\qquad
+		\operatorname{Sq}^n x=x\smile x,\qquad
+		\operatorname{Sq}^k x=0\quad(k>n).
+	\]
+	特别地，在绝对零次上同调中，\(\operatorname{Sq}^0(1)=1\)，而 \(\operatorname{Sq}^k(1)=0\) 对 \(k>0\) 成立。
+\end{proposition}
+\begin{proof}
+	自然性由高阶杯积与拉回相容得到。若 \(a\) 为 \(n\) 次上圈，则在任意 \(n\) 单形 \(\sigma\) 上，顶部规范给出
+	\[
+		(a\smile_n a)(\sigma)=(a\otimes a)(\sigma\otimes\sigma)=a(\sigma)^2=a(\sigma).
+	\]
+	所以 \(\operatorname{Sq}^0\) 在代表上链上已经是恒等。\(\operatorname{Sq}^n\) 使用 \(\smile_0=\smile\)，故为杯积平方；\(k>n\) 时的零值按定义成立。单位的结论是将 \(n=0\) 代入这些公式。
+\end{proof}
+
+后两式称为平方运算的\term[bu-wending-tiaojian]{不稳定条件}[instability conditions]：它们把运算的上标与输入类的次数联系起来。与此同时，固定 \(k\) 的整族 \(\operatorname{Sq}^k\) 又是稳定运算，即与悬挂同构相容。两个说法分别涉及输入次数的限制与改变空间的悬挂操作，下面从空间对的连接映射证明后者。
+
+\begin{proposition}[连接映射与悬挂]\label{g2:prop:squares-connecting-suspension}
+	对空间对 \((X,A)\)，其上同调连接映射 \(\delta_{(X,A)}:H^n(A;\mathbb F_2)\to H^{n+1}(X,A;\mathbb F_2)\) 满足
+	\[
+		\operatorname{Sq}^k\delta_{(X,A)}=\delta_{(X,A)}\operatorname{Sq}^k.
+	\]
+	因此，对带基点 CW 复形 \(Y\)，约化上同调的悬挂同构 \(s:\widetilde H^n(Y;\mathbb F_2)\to\widetilde H^{n+1}(\Sigma Y;\mathbb F_2)\) 满足 \(\operatorname{Sq}^k s=s\operatorname{Sq}^k\)。
+\end{proposition}
+\begin{proof}
+	给定 \(A\) 上的 \(n\) 次上圈 \(c\)，将其作为上链延拓到 \(X\)，记为 \(a\)。这样的延拓存在，因为落在 \(A\) 中的奇异单形是 \(X\) 的奇异链基的一部分，可以在其余基元上任意取值。令 \(b=\delta a\)；它在 \(A\) 上为零，且代表连接类 \(\delta_{(X,A)}[c]\)。
+
+	先设 \(0\le k\le n\)，置 \(j=n+1-k\)。高阶杯积边界公式给出
+	\[
+		\delta\bigl(a\smile_j b+a\smile_{j-1}a\bigr)=b\smile_j b.
+	\]
+	确切地，第一项的余边界除 \(b\smile_j b\) 外还有 \(a\smile_{j-1}b+b\smile_{j-1}a\)；这两项恰与第二项的余边界相消。括号中的上链限制到 \(A\) 后，第一项为零，第二项为 \(c\smile_{n-k}c\)。因此右端既代表 \(\operatorname{Sq}^k\delta_{(X,A)}[c]\)，又代表 \(\delta_{(X,A)}\operatorname{Sq}^k[c]\)。
+
+	若 \(k=n+1\)，右边 \(\delta_{(X,A)}\operatorname{Sq}^{n+1}[c]\) 为零；左边由 \(b\smile b=\delta(a\smile b)\) 表示，而 \(a\smile b\) 在 \(A\) 上为零，所以也为相对余边界。\(k>n+1\) 时两边均由不稳定条件为零。这证明全部次数的连接相容性。
+
+	最后对约化锥对 \((CY,Y)\) 使用结论。锥可缩，故其连接映射在约化上同调中是同构；CW 对的商比较将 \(H^{n+1}(CY,Y;\mathbb F_2)\) 自然识别为 \(\widetilde H^{n+1}(CY/Y;\mathbb F_2)=\widetilde H^{n+1}(\Sigma Y;\mathbb F_2)\)。这个复合正是悬挂同构。平方与连接、商映射的拉回都相容，遂得悬挂等式。
+\end{proof}
+
+例如，悬挂空间的正次杯积为零，却仍可能有非零的 \(\operatorname{Sq}^k\)。一个类悬挂后，原来最高次的平方不再是新类的最高次平方；它可作为较低上标的稳定运算保留下来。下一节会用这一点识别 \(\operatorname{Sq}^1\) 与 Bockstein，并用乘积公式进行实际计算。平方运算的性质及不同构造的阅读对照可参看\cite[第4.L节，Steenrod Squares and Powers]{Hatcher2002}。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 19.3 分类定理的证明
 % 纲要位置：几何学计划纲要.md，第 1753 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,171 @@
 \section{分类定理的证明}
 \label{g2:sec:1903}
 
-待撰写
+一个丛可以用许多套局部标架描述，也可以嵌入许多不同维数的平凡丛。分类定理要把这些选择统一为一个同伦类：同构丛给出同伦的映射，同伦映射又拉回同构丛。后一方向已有区间运输；前一方向的关键是把两个纤维嵌入放入互相正交的坐标块，再在它们之间连续旋转。本节始终取 \(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，秩 \(n\ge1\) 固定。
 
 \subsection{丛到分类映射的构造}
 \label{g2:subsec:1903:01}
-待撰写
+上一节的嵌入构造使用可数个坐标块。仿紧空间的平凡化覆盖却未必可数，因而先要说明，如何把许多局部标架重新组织为可数套。这里合并的是互不相交的开块，在不同块上分别选标架即可。
+
+\begin{lemma}\label{g2:lem:bundle-countable-trivialization}
+	设 \(X\) 为仿紧 Hausdorff 空间，\(E\to X\) 为秩 \(n\) 的局部平凡向量丛。存在可数开覆盖 \(\{V_k\}_{k\ge1}\)，使 \(E|_{V_k}\) 平凡，并存在局部有限连续单位分解 \(\{\psi_k\}\)，满足 \(\operatorname{supp}\psi_k\subset V_k\)。同一结论适用于局部平凡主 \(G\) 丛。
+\end{lemma}
+\begin{proof}
+	取一套平凡化开覆盖及从属局部有限单位分解 \(\{\rho_\alpha\}\)。这里使用第一卷第4章第4节的连续单位分解定理：每个支集包含在一个平凡化开集中，且 \(\sum_\alpha\rho_\alpha=1\)。对非空有限指标集 \(S\)，置
+	\[
+		V_S=\left\{x:\min_{\alpha\in S}\rho_\alpha(x)
+		>\max\bigl(\{\rho_\beta(x):\beta\notin S\}\cup\{0\}\bigr)\right\}.
+	\]
+	在任一点的某个邻域内，只有有限个 \(\rho_\alpha\) 可能非零，所以这里的最大值局部是有限个连续函数的最大值。故 \(V_S\) 开。对 \(\alpha\in S\)，在 \(V_S\) 上有 \(\rho_\alpha>0\)，因此 \(V_S\) 包含在相应平凡化开集中。
+
+	若 \(S\ne S'\) 且 \(|S|=|S'|\)，可取 \(\alpha\in S\setminus S'\)、\(\beta\in S'\setminus S\)。属于两个开集的点将同时满足 \(\rho_\alpha>\rho_\beta\) 与 \(\rho_\beta>\rho_\alpha\)，矛盾。于是
+	\[
+		V_k=\coprod_{|S|=k}V_S
+	\]
+	是两两不交开块的并，每块上任选已有标架就给出整个 \(V_k\) 上的连续标架。每个点 \(x\) 的正值指标集 \(S_x=\{\alpha:\rho_\alpha(x)>0\}\) 有限非空，且 \(x\in V_{S_x}\)，故这些 \(V_k\) 覆盖 \(X\)。再取从属于这个覆盖的局部有限单位分解，把支集分配给同一 \(V_k\) 的函数求和，便得到所需 \(\psi_k\)。局部有限性保证求和连续及支集仍在 \(V_k\) 内。主丛只需把标架换成局部截面，整个合并论证相同。
+\end{proof}
+
+取上述标架坐标 \(\tau_k:E|_{V_k}\to V_k\times\mathbb K^n\)。将 \(\sqrt{\psi_k(x)}\,\tau_{k,x}(v)\) 在 \(V_k\) 外补为零，组成
+\[
+	J_x(v)=\bigl(\sqrt{\psi_1(x)}\,\tau_{1,x}(v),
+	\sqrt{\psi_2(x)}\,\tau_{2,x}(v),\ldots\bigr)\in\mathbb K^\infty.
+\]
+支集条件保证补零连续，局部有限性保证每个基点附近只有有限个坐标块。至少一个系数为正，故 \(J_x\) 单射。在每个这样的邻域内，\cref{g2:prop:bundle-embedding-classifier}证明中的有限维投影公式适用，得到连续映射
+\[
+	c_E:X\longrightarrow\operatorname{Gr}_n(\mathbb K^\infty),
+	\qquad c_E(x)=J_x(E_x),\qquad E\cong c_E^*\gamma_n.
+\]
+其中的丛同构直接把 \(v\in E_x\) 送到 \((x,J_xv)\)。下面证明这个映射的同伦类只由丛的同构类决定。
 
 \subsection{同伦类与选择无关性}
 \label{g2:subsec:1903:02}
-待撰写
+两个单射的线性插值可能失去单射性：例如 \(J\) 与 \(-J\) 的中点为零。把它们移到正交坐标块后，插值的两个分量便不能互相抵消。为比较插值的端点与原嵌入，还需要一个连续移动坐标的位置的办法。
+
+\begin{lemma}\label{g2:lem:orthogonal-embedding-homotopy}
+	设 \(E\to X\) 是秩 \(n\) 的实或复向量丛，\(J_0,J_1:E\to\mathbb K^\infty\) 为连续纤维线性单射。假设每个 \(x\in X\) 有邻域 \(U\) 及有限 \(N\)，使 \(J_0(E|_U),J_1(E|_U)\subset\mathbb K^N\)。则两个映射 \(x\mapsto J_i(E_x)\) 在无限 Grassmann 空间中同伦。
+\end{lemma}
+\begin{proof}
+	在标准基上定义两种坐标嵌入
+	\[
+		A(e_j)=e_{2j},\qquad B(e_j)=e_{2j-1}.
+	\]
+	它们的像互相正交。先证明 \(L_t=(1-t)I+tA\) 和 \(M_t=(1-t)I+tB\) 对 \(0\le t\le1\) 都单射。若有限支撑向量 \(v\ne0\) 的最高非零坐标为 \(v_m\)，则 \(t>0\) 时 \(L_tv\) 的第 \(2m\) 坐标为 \(tv_m\ne0\)。对 \(M_t\)，当 \(m>1\) 时看第 \(2m-1\) 坐标；当 \(m=1\) 时 \(M_tv=v\)。\(t=0\) 为恒等，故结论成立。
+
+	现在依次使用 \(L_tJ_0\)、下面的旋转、以及反向的 \(M_tJ_1\)：
+	\begin{equation}\label{g2:eq:orthogonal-classifier-rotation}
+		J_t(v)=\cos\frac{\pi t}{2}\,AJ_0(v)
+		+\sin\frac{\pi t}{2}\,BJ_1(v),\qquad 0\le t\le1.
+	\end{equation}
+	对 \(0<t<1\)，两个正交分量的系数均非零，\(J_t(v)=0\) 必使 \(v=0\)；端点也是单射。在每个 \(U\) 上，所有公式都发生在固定有限维空间中，所以相应的子空间随 \((x,t)\) 连续。把这三段重参数化到一个区间，便得到所需同伦。
+\end{proof}
+
+特别地，上面从两套单位分解得到的嵌入满足此局部有限维条件，因为两套支集族的并仍局部有限。若先给定同构 \(\phi:E\to F\)，把 \(F\) 的嵌入与 \(\phi\) 复合后应用引理，同样得到 \(c_E\simeq c_F\)。由此，选择标架、度量、覆盖和单位分解都不改变所构造的同伦类。
+
+\ProseParagraphBreak
+
+分类定理还要处理任意连续映射 \(a:X\to\operatorname{Gr}_n(\mathbb K^\infty)\)。其像在每一点附近未必已经落在某个有限阶段，因而需要把这种映射先连续变为局部有限维的映射。上一节的通用单位分解提供了统一的做法。
+
+\begin{lemma}\label{g2:lem:classifier-local-finite-replacement}
+	在无限 Grassmann 空间上存在连续自映射 \(c\)，满足 \(c\simeq\operatorname{id}\)，且每一点有邻域被 \(c\) 映入某个有限 Grassmann 空间。
+\end{lemma}
+\begin{proof}
+	使用\cref{g2:lem:universal-numerable-cover}的坐标图 \(U_{J_j}\) 及局部有限单位分解 \(\rho_j\)。在 \(U_{J_j}\) 上，坐标投影 \(\pi_{J_j}:V\to\mathbb K^n\) 是线性同构。令
+	\[
+		Q_V(v)=\bigl(\sqrt{\rho_1(V)}\,\pi_{J_1}v,
+		\sqrt{\rho_2(V)}\,\pi_{J_2}v,\ldots\bigr),\qquad
+		c(V)=Q_V(V).
+	\]
+	在 \(\rho_j=0\) 处该分量取零。对每个 \(V\)，至少一个非零分量来自可逆的坐标投影，因此 \(Q_V\) 单射。局部有限性说明 \(c\) 在每一点附近落入固定有限阶段，有限维投影矩阵公式保证连续。
+
+	比较通用丛的原始包含 \(v\mapsto v\) 与 \(Q_V\)。在每个有限 \(\operatorname{Gr}_n(\mathbb K^N)\) 上，上一节的单位分解只有有限项可能非零，因而这两个嵌入的值都落在某个共同有限维空间。\cref{g2:lem:orthogonal-embedding-homotopy}证明中的三个显式公式可同时用于所有 \(V\)，在每个有限阶段乘 \(I\) 上连续。由\cref{g2:lem:grassmann-parameter-continuity}，它们在整个直极限乘 \(I\) 上连续，给出 \(\operatorname{id}\simeq c\)。
+\end{proof}
+
+这一替换保留拉回丛：\(Q\) 本身就给出 \(\gamma_n\cong c^*\gamma_n\)。所以对任意 \(a\)，一方面有 \(a\simeq c\circ a\)，另一方面可把 \(a^*\gamma_n\) 通过 \(Q\) 嵌入一个在基点附近只用有限坐标的平凡空间。这正是前一引理所需的条件。
 
 \subsection{同伦映射给出同构丛}
 \label{g2:subsec:1903:03}
-待撰写
+令 \(\operatorname{Vect}^{\mathbb K}_n(X)\) 表示 \(X\) 上秩 \(n\) 的 \(\mathbb K\) 向量丛的同构类集合；\([X,Y]\) 表示不要求基点的连续映射同伦类。分类首先是这两个集合之间的对应。
+
+\begin{theorem}[向量丛分类]\label{g2:thm:vector-bundle-classification}
+	设 \(X\) 为仿紧 Hausdorff 空间，\(n\ge1\)，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。拉回通用丛给出双射
+	\begin{equation}\label{g2:eq:vector-bundle-classification}
+		[X,\operatorname{Gr}_n(\mathbb K^\infty)]
+		\longrightarrow\operatorname{Vect}^{\mathbb K}_n(X),
+		\qquad [a]\longmapsto[a^*\gamma_n].
+	\end{equation}
+	对仿紧 Hausdorff 空间之间的连续映射 \(h:Y\to X\)，此双射将分类映射的预合成 \([a]\mapsto[a\circ h]\) 对应于向量丛的拉回 \([E]\mapsto[h^*E]\)。
+\end{theorem}
+\begin{proof}
+	若 \(a_0\simeq a_1\)，同伦 \(H:X\times I\to\operatorname{Gr}_n(\mathbb K^\infty)\) 拉回得到 \(X\times I\) 上的丛。由\cref{g2:thm:bundle-homotopy-invariance}，它的两端限制同构，即 \(a_0^*\gamma_n\cong a_1^*\gamma_n\)。所以式\eqref{g2:eq:vector-bundle-classification}良定义。
+
+	给定 \(E\)，\cref{g2:lem:bundle-countable-trivialization}与本节第一小节的构造给出 \(c_E\)，并有 \(E\cong c_E^*\gamma_n\)。这证明满射。
+
+	为证明单射，设 \(a_0^*\gamma_n\cong a_1^*\gamma_n\)，用该同构把两者视为同一个丛 \(E\)。对两个原始纤维包含施行上一引理中的 \(Q\)，得到局部有限维嵌入 \(J_0,J_1\)。它们对应的映射为 \(c\circ a_0,c\circ a_1\)，因此由\cref{g2:lem:orthogonal-embedding-homotopy}同伦。再用 \(c\simeq\operatorname{id}\)，得到
+	\[
+		a_0\simeq c\circ a_0\simeq c\circ a_1\simeq a_1.
+	\]
+	最后，拉回的定义给出自然同构 \((a\circ h)^*\gamma_n\cong h^*(a^*\gamma_n)\)，它在纤维上保持同一个向量，故所述自然性成立。
+\end{proof}
+
+这项自然性可画为交换图：
+\[
+	\begin{tikzcd}[column sep=large]
+		{[X,\operatorname{Gr}_n(\mathbb K^\infty)]} \arrow[r,"\cong"] \arrow[d,"h^*"']
+		&\operatorname{Vect}^{\mathbb K}_n(X) \arrow[d,"h^*"]\\
+		{[Y,\operatorname{Gr}_n(\mathbb K^\infty)]} \arrow[r,"\cong"]
+		&\operatorname{Vect}^{\mathbb K}_n(Y).
+	\end{tikzcd}
+\]
+由此也可重新理解\cref{g2:cor:contractible-base-trivial-bundle}：同伦等价保持丛的同构类集合，可缩基上的分类映射都同伦于常值，而常值拉回的每根纤维都是同一个固定向量空间。
 
 \subsection{适用基空间与数值型限制}
 \label{g2:subsec:1903:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+上述构造中真正使用的覆盖条件，是平凡化覆盖具有从属局部有限单位分解。这样的覆盖称为\term[shuzhixing fugai]{数值型覆盖}[numerable cover]，具有这种平凡化覆盖的丛称为数值型丛。定义中的函数使不同局部标架能够进入一个连续的全局构造；“每点只出现有限个非零项”还须加强为“每点某个邻域只出现有限项”，才能保证弱直极限中的连续性。仿紧 Hausdorff 条件保证所有局部平凡丛都有这样的覆盖，前面的可数化引理再把坐标块变成可数个。
+
+\ProseParagraphBreak
+
+本书常用的紧 Hausdorff 空间和第二可数 Hausdorff 流形都满足仿紧性，见第一卷第4章第4节。CW 复形也满足这一条件，下面补出所需的单位分解论证。在处理一般基空间时，应分别检查从属单位分解以及区间运输所需的覆盖条件；仅有逐点的局部平凡性，还没有提供上述拼接数据。
+
+\begin{lemma}\label{g2:lem:cw-paracompact-partitions}
+	每个 CW 复形都是仿紧 Hausdorff 空间。
+\end{lemma}
+\begin{proof}
+	CW 结构的 Hausdorff 性属于本卷的定义。给定开覆盖，按骨架构造从属局部有限单位分解。零骨架离散，在每点取一个权重一的函数即可。假设已经在 \(X^{(k)}\) 上构造好 \(\rho_\alpha\)，每个支集位于一个指定覆盖成员 \(U_\alpha\)。对一个 \((k+1)\) 胞腔的特征映射 \(\phi:D^{k+1}\to X\)，边界球面上只有有限个 \(\rho_\alpha\phi\) 可能非零，因为边界紧而原支集族局部有限。
+
+	在圆盘的边界领圈用径向坐标 \((r,u)\)，将旧函数延为 \(\chi(r)\rho_\alpha(\phi(u))\)，其中 \(\chi=1\) 于边界的一个领圈，在稍远处为零。可将领圈取得充分薄，使每个延拓支集仍包含于 \(\phi^{-1}(U_\alpha)\)：每个旧函数在球面上的支集紧且落在这个开集内，涉及的旧函数又只有有限个。对圆盘的拉回开覆盖选有限单位分解 \(\psi_j\)，加入新函数 \((1-\chi)\psi_j\)。旧函数之和为 \(\chi\)，新函数之和为 \(1-\chi\)，所以总和为一。新函数在边界附近为零，可在其余胞腔上补零；旧函数与已有骨架上的值相同。逐胞腔进行，便将单位分解延拓到下一骨架。
+
+	还须核对经过无限多个胞腔和骨架后仍局部有限。对旧骨架上一点，先取只遇到有限个旧支集的邻域。在每个新胞腔中，将这个邻域沿边界领圈向内延伸，领圈薄到新函数仍为零，且径向对应的边界点仍在原邻域内。所得邻域只遇到原来的那有限个指标。按骨架继续作这样的延伸，得到与各骨架相交都开的邻域，因 CW 弱拓扑而在整个空间中开；始终没有增加可能非零的函数指标。胞腔内部的点从其所在骨架开始作同一论证。故最终函数族局部有限，函数自身则由弱拓扑连续。它从属于给定开覆盖，其正值集给出局部有限开细化，所以 \(X\) 仿紧。
+\end{proof}
+
+分类定理因此适用于全部 CW 复形。有限维时，胞腔逼近还给出有限 Grassmann 模型的统一维数界。
+
+\begin{proposition}\label{g2:prop:finite-grassmann-approximation}
+	设 \(X\) 是维数不超过 \(d\) 的 CW 复形，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，令 \(a=\dim_{\mathbb R}\mathbb K\)。则每个映射 \(X\to\operatorname{Gr}_n(\mathbb K^\infty)\) 同伦于取值在
+	\[
+		\operatorname{Gr}_n(\mathbb K^{n+\lfloor d/a\rfloor})
+	\]
+	中的映射。若 \(N\ge n+\lfloor(d+1)/a\rfloor\)，则包含诱导双射
+	\[
+		[X,\operatorname{Gr}_n(\mathbb K^N)]
+		\xrightarrow{\ \cong\ }
+		[X,\operatorname{Gr}_n(\mathbb K^\infty)].
+	\]
+	特别地，\(X\) 还为仿紧 Hausdorff 时，右侧可由式\eqref{g2:eq:vector-bundle-classification}识别为秩 \(n\) 丛的同构类。
+\end{proposition}
+\begin{proof}
+	\cref{g2:thm:grassmann-schubert-cw}用严格递增的指标 \(I=(i_1<\cdots<i_n)\) 给出 Grassmann 胞腔，其实维数为
+	\[
+		a\sum_{j=1}^n(i_j-j).
+	\]
+	这些胞腔及特征映射与标准坐标包含相容：同一指标的构造只在前 \(i_n\) 个坐标中进行。因此有限阶段为子复形，它们的并具有上述弱拓扑的 CW 结构。每个非负项 \(i_j-j\) 的和若不超过 \(\lfloor d/a\rfloor\)，就有 \(i_n\le n+\lfloor d/a\rfloor\)。所以整个 \(d\) 骨架都包含在所述有限阶段内。对映射应用\cref{g2:thm:cellular-approximation}，其像可同伦到 \(d\) 骨架，得到第一项结论。
+
+	为核对单射，设两个取值在 \(\operatorname{Gr}_n(\mathbb K^N)\) 中的映射在无限空间中同伦。先在这个有限子复形内分别作胞腔逼近，得到端点为胞腔映射的同伦。对 \(X\times I\) 相对 \(X\times\{0,1\}\) 作胞腔逼近；相对新增胞腔的维数至多为 \(d+1\)，故同伦像落在无限 Grassmann 空间的 \((d+1)\) 骨架内。该骨架包含在给定的 \(N\) 阶段中，因而同伦也可留在这一有限阶段。与两端原有的有限阶段同伦相接，得到单射。满射由第一项结论和 \(N\) 的界成立。
+\end{proof}
+
+这里有两种不同的增大。固定 \(n\) 而增大环境维数 \(N\)，分类的仍是实际秩 \(n\) 的丛；将 \(E\) 换成 \(E\oplus\varepsilon^r\)，则改变了纤维秩，其中 \(\varepsilon^r=X\times\mathbb K^r\)。后一操作对应
+\[
+	\operatorname{Gr}_n(\mathbb K^\infty)\longrightarrow
+	\operatorname{Gr}_{n+r}(\mathbb K^\infty),\qquad
+	V\longmapsto\mathbb K^r\oplus V,
+\]
+右侧把原来的坐标整体后移 \(r\) 位。这才是丛的稳定化。同秩丛 \(E,F\) 若在加上同秩平凡丛后同构，称为稳定同构。上一节的球面切丛例子说明，稳定同构可能丢失原秩下的信息。第24章的 \(K\) 理论将在直和运算上组织这种稳定信息；本章的分类双射始终保留固定秩。

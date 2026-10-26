@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 18.3 粘合与低维边界结构
 % 纲要位置：几何学计划纲要.md，第 1713 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,266 @@
 \section{粘合与低维边界结构}
 \label{g2:sec:1803}
 
-待撰写
+断裂紧性说明一列轨线可能趋向两段首尾相接的轨线，但还没有说明每一对断裂轨线都能从未断裂轨线逼近，也没有排除多个分支汇到同一个断裂点。要把断裂点认作一维流形的边界，必须证明它附近恰有一个半开区间。本节利用临界点附近已经正规化的流，把这一问题写成有限维匹配方程；横截性给出可逆的线性部分，收缩映射给出唯一的非线性修正。
 
 \subsection{断裂轨线的局部拼接}
 \label{g2:subsec:1803:01}
-待撰写
+
+固定闭光滑 \(n\) 维流形上的正规化 Morse--Smale 数据 \((f,X)\)，沿用下降约定 \(X=-\operatorname{grad}_g f\)。设
+\[
+	\alpha\in\mathcal M(p,r),\qquad
+	\beta\in\mathcal M(r,q),\qquad
+	\lambda(p)=\lambda(r)+1=\lambda(q)+2.
+\]
+记 \(a=\lambda(r)\)、\(b=n-a\)。在 \(r\) 附近取正规化坐标
+\[
+	f(u,v)=f(r)-|u|^2+|v|^2,\qquad
+	X(u,v)=(2u,-2v),\qquad
+	(u,v)\in\mathbb R^a\times\mathbb R^b.
+\]
+这里 \(a,b\ge1\)。选充分小的 \(\varepsilon>0\)，使闭箱体
+\[
+	Q_\varepsilon=\{|u|\le\varepsilon,\ |v|\le\varepsilon\}
+\]
+位于坐标域内。轨线 \(\alpha\) 从稳定方向进入此箱，交进入截面
+\[
+	\Sigma_{\mathrm{in}}=\{|u|<\varepsilon,\ |v|=\varepsilon\}
+\]
+于 \((0,v_0)\)；轨线 \(\beta\) 从不稳定方向离开，交离开截面
+\[
+	\Sigma_{\mathrm{out}}=\{|u|=\varepsilon,\ |v|<\varepsilon\}
+\]
+于 \((u_0,0)\)。这两张截面都与 \(X\) 横截，因为在它们上分别有
+\[
+	X(|v|^2)=-4\varepsilon^2,\qquad X(|u|^2)=4\varepsilon^2.
+\]
+
+\ProseParagraphBreak
+
+想把两段轨线接成一条，进入点就不能仍有 \(u=0\)，否则轨线只会趋向 \(r\)，永远不会离开。应给它一个很小的不稳定分量，让它在临界点附近停留很长时间后从离开截面穿出。正规化流使停留时间与这个小分量之间的关系能够精确计算。
+
+\begin{lemma}\label{g2:lem:local-passage-equations}
+	在上述正规化箱体中，一条轨线从 \((u_-,v_-)\in\Sigma_{\mathrm{in}}\) 出发，经过时间 \(T>0\) 到达 \((u_+,v_+)\in\Sigma_{\mathrm{out}}\)，当且仅当
+	\begin{equation}\label{g2:eq:local-passage-matching}
+		u_-=\rho u_+,\qquad v_+=\rho v_-,
+		\qquad \rho=e^{-2T}\in(0,1).
+	\end{equation}
+	此时整段轨线留在 \(Q_\varepsilon\) 中，且
+	\[
+		|u_-|=|v_+|=\rho\varepsilon,\qquad
+		T=-\tfrac12\log\rho.
+	\]
+\end{lemma}
+\begin{proof}
+	微分方程的解为 \(u(t)=e^{2t}u_-\)、\(v(t)=e^{-2t}v_-\)，代入 \(t=T\) 即得两式。反过来，若两式成立，则这条显式解连接两个给定截点；其不稳定分量范数单调增加到 \(\varepsilon\)，稳定分量范数单调减小自 \(\varepsilon\)，所以中间始终位于箱体内，也不会重复穿过两张截面。
+\end{proof}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Chapter18-LocalGluing}
+	\caption[正规化流的局部粘合]{在范数坐标中，未断裂轨线满足 \(\lVert u\rVert\lVert v\rVert=\rho\varepsilon^2\)。当 \(\rho\to0\) 时，它趋近稳定轴与不稳定轴上的两段轨线；两截点间的流时间趋向无穷。}
+	\label{g2:fig:local-trajectory-gluing}
+\end{figure}
+
+因而 \(\rho\to0\) 就是停留时间 \(T\to\infty\)。在几何紧化中加入的是极限 \(\alpha\#\beta\)，并不把一条需要无限时间穿过临界点的曲线冒充为普通轨线。接下来要让两个截点不仅满足局部流方程，还分别属于来自 \(p\) 与趋向 \(q\) 的真实轨线。
 
 \subsection{线性化和横截性给出的逆}
 \label{g2:subsec:1803:02}
-待撰写
+
+在 \((0,v_0)\) 附近，取
+\[
+	A=W^u(p)\cap\Sigma_{\mathrm{in}}
+\]
+中由 \(\alpha\) 确定的局部分支。在 \((u_0,0)\) 附近，同样取
+\[
+	B=W^s(q)\cap\Sigma_{\mathrm{out}}
+\]
+中由 \(\beta\) 确定的分支。它们的维数分别为 \(a\) 和 \(b\)：与流横截的截面将稳定或不稳定流形的维数各减去一。
+
+\ProseParagraphBreak
+
+Morse--Smale 条件此时有一个具体用途。进入截面中的稳定盘边缘由 \(u=0\) 描述；\(A\) 与它横截，且两者维数之和为 \(n-1\)。所以投影 \((u,v)\mapsto u\) 限制到 \(\mathrm T_{(0,v_0)}A\) 是线性同构。由逆函数定理，缩小邻域后可写成
+\[
+	A=\{(u,V(u)):|u|<\delta\},\qquad
+	V(0)=v_0,\quad |V(u)|=\varepsilon.
+\]
+离开截面上同理，\(B\) 与 \(v=0\) 的不稳定盘边缘横截，故
+\[
+	B=\{(U(v),v):|v|<\delta\},\qquad
+	U(0)=u_0,\quad |U(v)|=\varepsilon.
+\]
+这一步正是指数差为一发挥作用的地方：每一段断裂轨线的无参数模空间维数为零，因此图表示中不再留下额外的自由坐标。
+
+\ProseParagraphBreak
+
+将这两个图代入\eqref{g2:eq:local-passage-matching}。未知量是进入端的小分量 \(u\) 和离开端的小分量 \(v\)，方程成为
+\begin{equation}\label{g2:eq:gluing-finite-equation}
+	F_\rho(u,v)=
+	\begin{pmatrix}
+		u-\rho U(v)\\
+		v-\rho V(u)
+	\end{pmatrix}=0.
+\end{equation}
+\(\rho=0\) 时，解是 \((0,0)\)，对应给定断裂轨线。在这个点的线性化为恒等映射；小的 \(\rho\) 下，
+\[
+	\mathrm DF_\rho(u,v)=
+	\begin{pmatrix}
+		I_a&-\rho\,\mathrm DU(v)\\
+		-\rho\,\mathrm DV(u)&I_b
+	\end{pmatrix}.
+\]
+原先看似涉及整条轨线的匹配问题，现在只剩一个 \(n\) 维方程。流的进入方向与离开方向已由图表示分别处理，横截性保证这里没有丢失约束或引入多余变量。
+
+\begin{lemma}\label{g2:lem:gluing-uniform-inverse}
+	设 \(U,V\) 如上，且在闭球 \(|u|,|v|\le\delta\) 上有
+	\[
+		\|\mathrm DU\|,\ \|\mathrm DV\|\le L.
+	\]
+	使用乘积范数 \(\|(u,v)\|_*=\max\{|u|,|v|\}\)。若 \(0\le\rho L<1/2\)，则 \(\mathrm DF_\rho(u,v)\) 在此区域处处可逆，并满足
+	\[
+		\|(\mathrm DF_\rho(u,v))^{-1}\|_*\le2.
+	\]
+\end{lemma}
+\begin{proof}
+	令 \(E_\rho=I-\mathrm DF_\rho\)。其两个分量分别是 \(\rho\,\mathrm DU(v)\) 与 \(\rho\,\mathrm DV(u)\) 对另一个变量的作用，因此在乘积范数下 \(\|E_\rho\|_*\le\rho L<1/2\)。级数
+	\[
+		I+E_\rho+E_\rho^2+\cdots
+	\]
+	按算子范数收敛，左右乘以 \(I-E_\rho\) 都得到恒等映射，所以它就是所需逆。其范数至多为 \((1-\rho L)^{-1}\le2\)。
+\end{proof}
+
+这个一致界说明停留时间增长时，匹配方程的求解没有变得奇异。会发散的是时间坐标 \(T\)，而紧化所用的坐标 \(\rho=e^{-2T}\) 已把这一现象放在有限端点。
 
 \subsection{非线性修正与唯一性}
 \label{g2:subsec:1803:03}
-待撰写
+
+直接取进入点 \((\rho u_0,v_0)\) 与离开点 \((u_0,\rho v_0)\) 能满足线性流的两端关系，却未必准确落在 \(A\) 与 \(B\) 上。非线性图函数 \(U,V\) 负责修正这一误差。下述证明同时给出存在、唯一和参数依赖。
+
+\begin{theorem}[一断裂粘合]\label{g2:thm:one-break-gluing}
+	设 \(M\) 为闭光滑流形，\((f,X)\) 为正规化 Morse--Smale 数据，且 \(\lambda(p)-\lambda(r)=\lambda(r)-\lambda(q)=1\)。每一对
+	\[
+		(\alpha,\beta)\in\mathcal M(p,r)\times\mathcal M(r,q)
+	\]
+	都有 \(\rho_0>0\) 及一个单射
+	\[
+		G_{\alpha,\beta}:(0,\rho_0)\longrightarrow\mathcal M(p,q),
+	\]
+	其像恰为给定断裂轨线的某个穿孔邻域。该映射在正参数处光滑；令 \(G_{\alpha,\beta}(0)=\alpha\#\beta\) 后，它给出该断裂点的半开区间坐标。参数等于轨线通过指定正规化箱体的 \(e^{-2T}\)，因而粘合对这个参数唯一。
+\end{theorem}
+\begin{proof}
+	选定前两小节中的箱体、局部分支与图函数，缩小 \(\delta\) 使它们在闭球上光滑。取 \(\rho_0>0\)，满足
+	\[
+		\rho_0\varepsilon<\delta/2,\qquad \rho_0L<1/2.
+	\]
+	方程\eqref{g2:eq:gluing-finite-equation}等价于不动点方程
+	\[
+		(u,v)=K_\rho(u,v),\qquad
+		K_\rho(u,v)=\bigl(\rho U(v),\rho V(u)\bigr).
+	\]
+	由于 \(|U|=|V|=\varepsilon\)，\(K_\rho\) 将乘积闭球映入其内部；导数估计说明其 Lipschitz 常数至多为 \(\rho L<1/2\)。从 \((0,0)\) 开始反复代入，所得序列的相邻距离按几何级数衰减，因此为 Cauchy 列，收敛于一个不动点 \((u_\rho,v_\rho)\)。若有两个不动点，它们的距离不超过原距离的一半，只能相等。这也直接证明了所需的收缩映射结论。
+
+	在解处，\cref{g2:lem:gluing-uniform-inverse}给出可逆线性化。由带参数隐函数定理，解随 \(\rho\) 光滑变化，并延伸到 \(\rho=0\)。还可由不动点方程读出
+	\begin{equation}\label{g2:eq:gluing-first-order}
+		u_\rho=\rho u_0+O(\rho^2),\qquad
+		v_\rho=\rho v_0+O(\rho^2).
+	\end{equation}
+	例如第一式的误差满足
+	\[
+		|u_\rho-\rho u_0|
+		=\rho|U(v_\rho)-U(0)|
+		\le\rho L|v_\rho|
+		=L\varepsilon\rho^2.
+	\]
+	第二式相同。解在每个固定的有限阶导数中也平滑依赖于参数，这是隐函数定理的光滑结论。
+
+	进入点 \((u_\rho,V(u_\rho))\) 属于 \(W^u(p)\)，离开点 \((U(v_\rho),v_\rho)\) 属于 \(W^s(q)\)，两者由\cref{g2:lem:local-passage-equations}的一段真实轨线连接。向前、向后继续积分，便得到从 \(p\) 到 \(q\) 的完整轨线。进入截点已经固定了它的时间平移自由度，所以这给出 \(G_{\alpha,\beta}(\rho)\)。由于进入点的不稳定分量范数为 \(\rho\varepsilon\)，不同参数给出不同轨线。
+
+	当 \(\rho\to0\) 时，两截点分别趋向 \((0,v_0)\)、\((u_0,0)\)，而箱内停留时间趋向无穷。箱外的有限轨段由流的光滑依赖趋向 \(\alpha\)、\(\beta\) 的相应部分。\cref{g2:lem:broken-local-crossing}遂说明粘合轨线在断裂紧化的拓扑中趋向 \(\alpha\#\beta\)。
+
+	还须证明全部附近轨线都由这个构造得到。若一列未断裂轨线趋向 \(\alpha\#\beta\)，同一局部穿越引理说明它们的进入、离开截点分别趋向上述两点，且箱内时间 \(T\to\infty\)。对充分靠后的轨线，两截点落在已选的 \(A,B\) 分支中。这里分支由两段外部轨线的局部收敛确定：在靠近 \(p,q\) 的固定截面上选相应小盘，再沿有限时间流搬运到箱体截面，便得到这些局部分支。它们的截点必满足\eqref{g2:eq:gluing-finite-equation}，参数为 \(e^{-2T}\)。不动点唯一性迫使该轨线等于 \(G_{\alpha,\beta}(e^{-2T})\)。
+
+	最后，\(\rho=|u_\rho|/\varepsilon\) 是进入截点的连续函数，在正参数处光滑；而 \(\rho\to0\) 恰好对应指定断裂。因此 \(G\) 及其逆在加入端点后都连续。若不存在一个被粘合像覆盖的断裂邻域，就能在这个可度量的紧化空间中取一列趋向断裂点、却不在粘合像中的轨线，与上一段矛盾。于是得到所述半开区间坐标。
+\end{proof}
+
+这里既证明了断裂轨线能够拼接，也证明了它附近只有一支解。若只验证误差趋于零，而没有可逆性与唯一性，就仍可能出现多支曲线在同一个断裂点汇合；那样的空间不能用半开区间描述。
+
+\ProseParagraphBreak
+
+后面改变函数或度量时，流在一个有限时间段内会依赖时间。临界点附近的长停留仍发生在两端已经固定的下降场中，因此同一匹配方程还能处理这些断裂。为明确后面的调用范围，先记录所需的参数版本。
+
+\begin{lemma}\label{g2:lem:parametric-tail-gluing}
+	设 \(M\) 闭，\(X_s(t,\cdot)\) 是有限维参数 \(s\) 下的光滑向量场族，在 \(t\le-S\)、\(t\ge S\) 时分别等于固定的正规化 Morse--Smale 下降场 \(X^-,X^+\)。把满足指定两端临界点条件的轨线在固定时间切片上表示为稳定与不稳定流形的匹配，并假设这些匹配在含参数的空间内横截。则以下零维断裂配置都有唯一的半开粘合坐标：
+	\begin{enumerate}
+		\item 一段指数差一的 \(X^-\) 轨线，接一条零维的参数化过渡轨线；
+		\item 一条零维的参数化过渡轨线，接一段指数差一的 \(X^+\) 轨线；
+		\item 两条各为零维的过渡轨线，中间插入同一正规化下降场的长时间流；长度作为额外参数。
+	\end{enumerate}
+	这里“零维”指包含题设参数后的预期维数为零，并要求该配置实际横截。前两种情形的参数是临界点附近长停留时间的指数，第三种情形的参数是所插入长时间的指数。若断裂配置还带有光滑局部坐标，则把这些坐标保留为附加参数，得到对应的乘积领圈。
+\end{lemma}
+\begin{proof}
+	先处理第一种情形。选一个 \(t_0<-S\)，使核心过渡轨线在 \(t_0\) 时已位于中间临界点 \(r\) 的正规化图中。固定时间 \(t_0\) 以后到达目标稳定流形的初值，构成子流形 \(B_s\)：它是目标稳定流形经有限时间流微分同胚的逆像。有限时间流可逆，是因为反向求解同一光滑常微分方程给出其逆；\(M\) 紧保证有关有限时间内解始终存在。
+
+	写 \(a=\lambda(r)\)、\(b=n-a\)。若无额外参数，核心过渡轨线的零维横截性是 \(B\) 与 \(\{v=0\}=W^u_{\mathrm{loc}}(r)\) 横截相交。因此 \(B\) 可写成 \((U(v),v)\)；此处 \(U(0)\) 可以非零，也可以为零，不要求它位于离开球面。若有参数，则考虑
+	\[
+		\widetilde B=\{(s,x):x\in B_s\}\subset P\times M.
+	\]
+	它与 \(P\times W^u_{\mathrm{loc}}(r)\) 的交是零维且横截，所以稳定坐标投影 \((s,u,v)\mapsto v\) 在 \(\widetilde B\) 的切空间上可逆。逆函数定理于是给出
+	\[
+		\widetilde B=\{(s(v),U(v),v)\}.
+	\]
+	这说明参数也由匹配决定，不能在求解后再任意选取。
+
+	前一段指数差一轨线仍在进入截面上给出 \(A=(u,V(u))\)、\(|V|=\varepsilon\)。从该截面到固定时间 \(t_0\) 的停留时间若为 \(T\)，方程仍是
+	\[
+		u=\rho U(v),\qquad v=\rho V(u),\qquad \rho=e^{-2T}.
+	\]
+	图函数及导数在小闭邻域中有统一界。取 \(\rho\) 足够小，不动点映射就将一个乘积闭球映入自身，且导数范数小于 \(1/2\)；前一定理的存在、唯一与光滑依赖证明逐字适用。求出的 \(s=s(v_\rho)\) 恢复原参数，进入时刻为 \(t_0+\frac12\log\rho\)，恢复了过渡轨线的绝对时间。即使 \(U(0)=0\)，方程仍成立；此时临界点处等待到时间 \(t_0\) 的核心过渡，也由相同公式逼近。因为 \(|v|=\rho\varepsilon\)，参数可以从解恢复。反向覆盖由两端断裂收敛及匹配唯一性得到。
+
+	第二种情形在固定时间 \(t_1>S\) 上作同样处理。来自左端的初值条件写成 \(A=(u,V(u))\)，右端指数差一轨线给出离开截面上的 \(B=(U(v),v)\)、\(|U|=\varepsilon\)。含参数时也用联合横截性将参数作为图函数的一部分。局部流仍给出相同两式，参数由 \(|u|/\varepsilon\) 恢复。
+
+	第三种情形，在前一过渡轨线之后、后一过渡轨线之前分别选固定时间切片，并将切片沿中间的自治流移入 \(r\) 的正规化图。两条过渡轨线的零维横截性分别给出图 \(A=(u,V(u))\)、\(B=(U(v),v)\)，但不再要求任一图位于球面。将两个切片间的流时间记为 \(T\)，匹配还是同一方程。这里 \(T\) 本来就是给定的颈长参数，所以即使 \(U(0)=V(0)=0\)，也不会失去参数的唯一性。原颈长与 \(T\) 相差选切片造成的固定常数，只将 \(\rho\) 乘上一个正数。收缩与反向覆盖仍如前。
+
+	若断裂交集维数为 \(d>0\)，先在该横截交集上选坐标 \(\eta\in\mathbb R^d\)。稳定坐标投影的核恰是交集的切空间；补上 \(\eta\) 后即可用逆函数定理将图写成 \(U(\eta,v)\)、\(V(\eta,u)\) 及相应参数函数。在一个小的紧坐标邻域上，导数界可统一选取，因此不动点解光滑依赖于 \((\eta,\rho)\)，并给出乘积领圈。这也说明有限个参数不会改变证明的核心估计。
+\end{proof}
 
 \subsection{一维紧化的边界识别}
 \label{g2:subsec:1803:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+现在把局部领圈与上一节的全局紧性合在一起。设 \(\lambda(p)-\lambda(q)=2\)。沿任何非恒定轨线，Morse--Smale 横截性使临界点指标至少下降一；所以从 \(p\) 到 \(q\) 的断裂最多只有两段，中间点的指标必为 \(\lambda(q)+1\)。
+
+\begin{theorem}\label{g2:thm:one-dimensional-compactification}
+	设 \(M\) 为闭光滑流形，\((f,X)\) 为正规化 Morse--Smale 数据，且 \(\lambda(p)-\lambda(q)=2\)。则
+	\[
+		\overline{\mathcal M}(p,q)
+		=
+		\mathcal M(p,q)\ \sqcup\
+		\bigsqcup_{\lambda(r)=\lambda(q)+1}
+		\mathcal M(p,r)\times\mathcal M(r,q)
+	\]
+	具有紧的一维光滑带边界流形结构，内部光滑结构为轨线商的原有结构，且
+	\begin{equation}\label{g2:eq:broken-boundary-identification}
+		\partial\overline{\mathcal M}(p,q)
+		=
+		\bigsqcup_{\lambda(r)=\lambda(q)+1}
+		\mathcal M(p,r)\times\mathcal M(r,q).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	\cref{g2:thm:broken-trajectory-compactness}给出上述集合上的紧 Hausdorff 可度量拓扑；指标下降排除了三段及更多段断裂。\cref{g2:prop:trajectory-quotient}说明未断裂部分是光滑一维流形。
+
+	每个候选中间点 \(r\) 的两侧模空间都为零维，故由\cref{g2:cor:zero-dimensional-trajectories-finite}为有限集。临界点本身也只有有限多个，所以待加入的断裂点总数有限。对每个断裂点，\cref{g2:thm:one-break-gluing}提供一个与紧化拓扑相同的半开区间坐标。利用 Hausdorff 性与有限性，将这些邻域缩小为两两不交。
+
+	这些边界图与内部图在正参数区域的转移是光滑的：粘合解由带参数隐函数定理光滑给出，逆参数为进入截点的 \(|u|/\varepsilon\)，而 \(u\ne0\) 时范数是光滑函数。不同边界图没有交，因此不需要在不同断裂点之间额外验证转移。内部点只有开区间邻域，新增点恰有半开区间邻域；这证明了带边界流形结构，也逐点识别了式\eqref{g2:eq:broken-boundary-identification}中的边界。其紧性已经由断裂紧性获得。
+\end{proof}
+
+由此才能应用紧一维流形的结构：每个连通分支是圆周或闭区间，闭区间的两个端点组成一对。这个配对是全局紧化的结果，未必能从一对给定的临界点中预先指定哪个断裂与哪个断裂配在一起。
+
+\begin{example}\label{g2:exm:torus-four-intervals}
+	在 \(T^2=S^1\times S^1\) 上，各取一个只有一个极大点和一个极小点的 Morse 函数，并取正规化下降场的乘积。将两个函数的高度范围选为不同大小，使四个临界值互异。记最高点为 \(p\)，最低点为 \(q\)，两个鞍点为 \(r_1,r_2\)。每个圆周上，从极大点到极小点有两条无参数轨线。选定第一因子的某一条 \(\gamma_1\) 和第二因子的某一条 \(\gamma_2\) 后，乘积轨线可写成
+	\[
+		t\longmapsto\bigl(\gamma_1(t+\tau),\gamma_2(t)\bigr),\qquad \tau\in\mathbb R.
+	\]
+	共同时间平移已经被除去，剩下的 \(\tau\) 表示两因子下降的相对先后。两因子各有两种轨线选择，所以 \(\mathcal M(p,q)\) 有四个这样的开区间分支。\(\tau\to+\infty\) 与 \(\tau\to-\infty\) 分别对应一因子先下降完、另一因子后下降完的两种断裂，经过不同鞍点。紧化于是给出四个闭区间、共八个边界点。每个鞍点贡献两侧各两种轨线的四个组合，与式\eqref{g2:eq:broken-boundary-identification}一致。
+\end{example}
+
+对于上一引理中的过渡轨线和参数族，在两端断裂紧性成立、联合匹配横截的条件下，同样可将这些局部领圈装配成零维紧集或一维紧流形。其边界除了自治端部的断裂，还包括原参数区间的端点；长颈族则另有颈长趋于无穷时的两条过渡轨线。下一节将逐项写出这些边界，分别得到链映射、链同伦和复合关系。

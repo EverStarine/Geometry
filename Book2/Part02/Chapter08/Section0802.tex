@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 8.2 纤维化和替换构造
 % 纲要位置：几何学计划纲要.md，第 1311 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,212 @@
 \section{纤维化和替换构造}
 \label{g2:sec:0802}
 
-待撰写
+设一个点在底空间 \(B\) 中移动，而我们已经在它的起点上方选定了 \(E\) 中的一点。覆盖的道路提升给出一种跟随它移动的方法。如果同时移动的是一族点，就需要提升整个同伦。这个要求能够把底空间中的零伦搬到总空间，从而把一个同伦类是否消失的问题转成纤维中的边界问题。纤维化正是用这种提升能力描述映射。
 
 \subsection{Serre 与 Hurewicz 提升性质}
 \label{g2:subsec:0802:01}
-待撰写
+
+\begin{definition}[同伦提升与纤维化]\label{g2:def:serre-fibration}
+	设 \(p:E\rightarrow B\) 连续，\(Z\) 为拓扑空间。若对任意连续映射 \(a:Z\rightarrow E\) 与 \(H:Z\times I\rightarrow B\)，只要 \(H(z,0)=p(a(z))\)，就存在连续映射 \(\widetilde H:Z\times I\rightarrow E\)，满足
+	\[
+		p\widetilde H=H,\qquad \widetilde H(z,0)=a(z),
+	\]
+	则称 \(p\) 对 \(Z\) 具有\term[tongluntishengxingzhi]{同伦提升性质}[homotopy lifting property]。若它对每个闭圆盘 \(D^m\)（\(m\ge0\)）都有此性质，称 \(p\) 为\term[Serrexianweihua]{Serre 纤维化}[Serre fibration]；若它对每个拓扑空间 \(Z\) 都有此性质，称 \(p\) 为\term[Hurewiczxianweihua]{Hurewicz 纤维化}[Hurewicz fibration]。\footnote{Witold Hurewicz（1904--1956），波兰数学家，后在美国工作，系统发展了高阶同伦群，并在维数理论中作出重要贡献。}这里不另外要求 \(p\) 满射。
+\end{definition}
+
+提升数据组成下图；虚线同时满足两个三角形中的等式。
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		Z\times\{0\} \arrow[r,"a"] \arrow[d,hook] & E \arrow[d,"p"] \\
+		Z\times I \arrow[r,"H"'] \arrow[ur,dashed,"\widetilde H"] & B
+	\end{tikzcd}
+\]
+取 \(Z=D^0\) 得到道路提升，取 \(Z=I\) 得到一族道路的提升。Hurewicz 纤维化当然是 Serre 纤维化。后者只要求闭圆盘上的提升，却足以处理球面映射及其同伦，因为这些问题都由有限个圆盘及其边界组成。
+
+\begin{example}[乘积投影与覆盖]\label{g2:exm:product-cover-fibrations}
+	对任意拓扑空间 \(B,F\)，投影 \(p:B\times F\rightarrow B\) 是 Hurewicz 纤维化。把初始提升写成 \(a(z)=(H(z,0),v(z))\)，则
+	\[
+		\widetilde H(z,t)=(H(z,t),v(z))
+	\]
+	就是所需提升。覆盖也是 Hurewicz 纤维化：\cref{g2:thm:covering-lifts}已经对任意参数空间证明了连续同伦的提升。覆盖提升由初值唯一决定；乘积投影的提升通常有很多，例如还可以在 \(F\) 内连续移动第二个坐标。
+\end{example}
+
+在证明长正合列时，常常还要指定同伦在参数空间边界上的提升。下面的相对形式说明，这些边界条件可以一起保持。
+
+\begin{lemma}[相对 CW 对上的提升]\label{g2:lem:relative-homotopy-lift}
+	设 \(p:E\rightarrow B\) 为 Serre 纤维化，\((K,L)\) 为相对 CW 复形。给定连续映射 \(H:K\times I\rightarrow B\)，以及定义在
+	\[
+		A=(K\times\{0\})\cup(L\times I)
+	\]
+	上的连续提升 \(a:A\rightarrow E\)，满足 \(pa=H|_A\)，则 \(a\) 可以延拓成 \(H\) 在整个 \(K\times I\) 上的提升。特别地，对一个闭立方体，若已在除某一个面之外的全部边界面上给出相容提升，它就能延拓到整个立方体。
+\end{lemma}
+\begin{proof}
+	先处理一个新胞腔。需要提升的空间是 \(C=D^m\times I\)，已经指定提升的部分为
+	\[
+		A_m=(D^m\times\{0\})\cup(\partial D^m\times I).
+	\]
+	空间对 \((C,A_m)\) 同胚于 \((D^m\times I,D^m\times\{0\})\)。可以在圆柱边界上看见这个同胚：沿每条从下底中心经过下底边缘、侧面、上底边缘而到上底中心的折线，保持角方向，把“下底加侧面”所占的参数区间线性缩为下底所占的区间，把余下区间线性伸长。这样得到边界的自同胚，将 \(A_m\) 送到下底；再沿从圆柱中心出发的径向线段延拓，就得到整个圆柱的自同胚。\(m=0\) 时两对原本相同。把给定的底映射与已知提升都通过这个同胚搬运，Serre 提升性质便给出 \(C\) 上的提升，再搬回去。这个论证只用面上的相容性，对角点附近的映射没有额外要求。
+
+	现在从 \(L\times I\) 和整个 \(K\times\{0\}\) 出发，按相对胞腔的维数递增构造。处理一个特征映射 \(\phi:D^m\rightarrow K\) 时，下底的提升由初值给定，侧面的提升已在前一骨架上构造；两者在交集一致。刚才的圆柱结论将它们延到 \(D^m\times I\)。同一维的不同胞腔在边界上都沿用旧提升，因而能粘合。\cref{g2:lem:weak-product}保证，只要在 \(L\times I\) 及每个特征圆盘乘 \(I\) 上连续，所得映射就在 \(K\times I\) 上连续；因此胞腔可以无限多个。
+
+	立方体的一个面可取为上底，其余面正是下底与各侧面的并。圆盘与立方体的同胚把单胞腔结论转为最后的断言；任意指定的面都可通过交换、反转坐标移到上底。
+\end{proof}
 
 \subsection{路径空间和同伦纤维}
 \label{g2:subsec:0802:02}
-待撰写
+
+路径本身也可以作为空间中的点。赋予 \(C(I,B)\) 紧开拓扑，其子基由“某一紧集 \(K\subset I\) 的像落在给定开集 \(U\subset B\) 内”的路径组成。在\cref{g2:lem:quotient-interval}的证明中已经建立了这里需要的指数律：对任意拓扑空间 \(Z\)，映射 \(Z\rightarrow C(I,B)\) 连续，当且仅当其伴随映射 \(Z\times I\rightarrow B\) 连续。证明的两个关键点是 \(I\) 的局部紧 Hausdorff 性和紧集的有限覆盖性质。因此，下面的路径族可以通过含一个额外区间参数的公式直接检验连续性。
+
+\begin{definition}[基点道路空间与回路空间]\label{g2:def:path-loop-space}
+	设 \((B,b_0)\) 为带基点拓扑空间。在紧开拓扑下令
+	\[
+		P_{b_0}B\coloneqq\{\gamma:I\rightarrow B:\gamma(0)=b_0\},\qquad
+		\Omega_{b_0}B\coloneqq\{\gamma\in P_{b_0}B:\gamma(1)=b_0\}.
+	\]
+	两者分别称为\term[jidiandaolukongjian]{基点道路空间}[based path space]与\term[huilukongjian]{回路空间}[loop space]。它们都以常值道路为基点。记终点求值映射为 \(\operatorname{ev}_1(\gamma)=\gamma(1)\)。\symidx{\(P_{b_0}B\)：从 \(b_0\) 出发的道路空间}\symidx{\(\Omega_{b_0}B\)：以 \(b_0\) 为基点的回路空间}
+\end{definition}
+
+\begin{proposition}[道路空间的纤维化]\label{g2:prop:path-fibration}
+	对任意带基点拓扑空间 \((B,b_0)\)，终点求值映射
+	\[
+		\operatorname{ev}_1:P_{b_0}B\longrightarrow B
+	\]
+	是 Hurewicz 纤维化，其在 \(b_0\) 上的纤维为 \(\Omega_{b_0}B\)，而总空间 \(P_{b_0}B\) 可缩。
+\end{proposition}
+\begin{proof}
+	设 \(Z\) 为任意拓扑空间，初始提升给出连续道路族 \(\alpha_z\)，底同伦为 \(H:Z\times I\rightarrow B\)，满足 \(H(z,0)=\alpha_z(1)\)。移动到时刻 \(s\) 时，把原道路与已经走过的底道路接在一起；同时让后一段所占时间从零连续增长。具体定义
+	\[
+		\lambda_{z,s}(t)=
+		\begin{cases}
+			\alpha_z((1+s)t),&0\le t\le(1+s)^{-1},\\
+			H(z,(1+s)t-1),&(1+s)^{-1}\le t\le1.
+		\end{cases}
+	\]
+	在接缝处，两式均等于 \(\alpha_z(1)=H(z,0)\)。它们分别定义在两个闭集上并且连续，所以 \((z,s,t)\mapsto\lambda_{z,s}(t)\) 连续。指数律给出连续的道路族 \(\widetilde H(z,s)=\lambda_{z,s}\)。其起点恒为 \(b_0\)，终点为 \(H(z,s)\)，且 \(s=0\) 时恰为原道路 \(\alpha_z\)，故这是所需提升。
+
+	定义收缩
+	\[
+		K(\gamma,s)(t)=\gamma((1-s)t).
+	\]
+	指数律再次保证其连续。它从恒等映射变到常值道路，始终固定常值道路，故 \(P_{b_0}B\) 可缩。纤维的描述直接来自终点条件。
+\end{proof}
+
+这个例子把“球面映射怎样移动”转成了“回路怎样成族”：总空间中的道路可以缩回起点，底空间的同伦信息于是集中在回路空间中。下一节的长正合列将把这种观察写成 \(\pi_n(B)\cong\pi_{n-1}(\Omega_{b_0}B)\)。
+
+\begin{definition}[同伦纤维]\label{g2:def:homotopy-fiber}
+	设 \(f:X\rightarrow B\) 连续，\(b_0\in B\)。赋予下列空间以 \(X\times C(I,B)\) 的子空间拓扑：
+	\[
+		\operatorname{hofib}_{b_0}(f)\coloneqq
+		\{(x,\gamma):\gamma(0)=f(x),\ \gamma(1)=b_0\}.
+	\]
+	称它为 \(f\) 在 \(b_0\) 上的\term[tonglunxianwei]{同伦纤维}[homotopy fiber]。若已选 \(x_0\in X\) 且 \(f(x_0)=b_0\)，它的基点取 \((x_0,c_{b_0})\)，其中 \(c_{b_0}\) 是常值道路。\symidx{\(\operatorname{hofib}_{b_0}(f)\)：映射在 \(b_0\) 上的同伦纤维}
+\end{definition}
+
+通常纤维要求 \(f(x)=b_0\)，同伦纤维则把从 \(f(x)\) 到 \(b_0\) 的道路也保留下来。这样，底点沿道路移动时，已经选择的路径可以随之拼接。比如 \(X\) 只有一个点且 \(f(*)=b_0\) 时，同伦纤维就是 \(\Omega_{b_0}B\)。
 
 \subsection{纤维丛的同伦提升}
 \label{g2:subsec:0802:03}
-待撰写
+
+局部乘积中的提升只要保持纤维坐标不变。要把这种办法用于纤维丛，需要让不同局部乘积中的选择在交界处接合。闭圆盘的紧性使我们可以把整个提升问题分成有限多个落在单个平凡化邻域内的小问题。
+
+回顾\cref{g2:def:topological-fiber-bundle}：连续满射 \(p:E\to B\) 局部平凡，指每个 \(b\in B\) 都有开邻域 \(U\)、一个纤维模型 \(F_U\) 及同胚
+\[
+	h_U:p^{-1}(U)\longrightarrow U\times F_U,
+	\qquad \operatorname{pr}_U\circ h_U=p|_{p^{-1}(U)}.
+\]
+当这些模型都可选为同一个非空空间 \(F\) 时，称其纤维为 \(F\)。以下证明用到的是这样的局部乘积图及其连续性。
+
+\begin{theorem}[纤维丛的提升]\label{g2:thm:bundle-serre}
+	任意局部平凡纤维丛 \(p:E\rightarrow B\) 都是 Serre 纤维化，并且具有\cref{g2:lem:relative-homotopy-lift}中的相对 CW 同伦提升性质。
+\end{theorem}
+\begin{proof}
+	闭圆盘同胚于闭立方体，所以只需处理 \(H:I^m\times I\rightarrow B\) 及其初始提升。对一组平凡化邻域 \(\{U_\alpha\}\)，逆像 \(\{H^{-1}(U_\alpha)\}\) 是紧度量空间 \(I^m\times I\) 的开覆盖。取一个 Lebesgue 数，再把空间坐标与时间坐标都作足够细的有限等距细分，使每个小棱柱 \(C\times[t_j,t_{j+1}]\) 的像包含在某个 \(U_\alpha\) 内。Lebesgue 数的存在可由有限子覆盖直接证明：若不存在，就能选取直径趋零却不落在任何一个覆盖成员内的子集，选点取收敛子列后，与极限点的一个覆盖邻域矛盾。
+
+	按时间片顺序提升。在一片内部，先提升空间网格的顶点，再提升边、二维面，直到所有 \(m\) 维小立方体。处理一个 \(r\) 维网格胞腔 \(C\) 时，在
+	\[
+		A_C=(C\times\{t_j\})\cup(\partial C\times[t_j,t_{j+1}])
+	\]
+	上已经有提升：下底来自前一时间片，侧面来自本片较低维胞腔。取包含整个 \(H(C\times[t_j,t_{j+1}])\) 的平凡化邻域 \(U_\alpha\)。把已有提升写成
+	\[
+		h_\alpha\bigl(\widetilde H(z,t)\bigr)
+		=\bigl(H(z,t),v(z,t)\bigr),\qquad (z,t)\in A_C.
+	\]
+	由\cref{g2:prop:disk-hep}，经缩放和圆盘、立方体间的同胚，有回缩 \(r_C:C\times[t_j,t_{j+1}]\rightarrow A_C\)。定义新提升为
+	\[
+		\widetilde H(z,t)=h_\alpha^{-1}\bigl(H(z,t),v(r_C(z,t))\bigr).
+	\]
+	它的投影严格等于当前 \(H(z,t)\)，并在 \(A_C\) 上等于原提升。对于零维胞腔，回缩就是退回该时间片的起点。因此整个逐维构造可以开始，也不会改变已完成的边界。有限闭集粘合保证每片连续，再逐时间片粘合，得到全部同伦的提升。由\cref{g2:lem:relative-homotopy-lift}即得相对 CW 形式。
+\end{proof}
+
+覆盖对应离散纤维的局部乘积，其提升唯一性使各局部选择自动一致。一般纤维丛需要上面保持边界的延拓步骤。纤维丛的这一提升证明也可对照 \cite[第4.2节，Fiber Bundles]{Hatcher2002}。
+
+\begin{example}[纤维化中纤维的形状可以改变]\label{g2:exm:fibration-not-bundle}
+	令
+	\[
+		E=\{(b,v)\in\mathbb R^2:|v|\le|b|\},
+		\qquad p(b,v)=b.
+	\]
+	这是一个 Hurewicz 纤维化。事实上，给定任意 \(H:Z\times I\rightarrow\mathbb R\) 和初始提升 \(a(z)=(H(z,0),v_0(z))\)，令
+	\[
+		v(z,t)=\max\{-|H(z,t)|,\min\{v_0(z),|H(z,t)|\}\}.
+	\]
+	最大、最小运算连续，\((H(z,t),v(z,t))\) 始终落在 \(E\)，且因 \(|v_0(z)|\le|H(z,0)|\)，在时刻零恢复给定初值。\(p^{-1}(0)\) 是一点，\(p^{-1}(b)\) 在 \(b\ne0\) 时是非退化闭区间，所以 \(p\) 在零点附近没有局部平凡化。提升性质控制连续变形，局部平凡化还要求邻近纤维具有相同的拓扑形状。
+\end{example}
 
 \subsection{拉回和映射的纤维化替换}
 \label{g2:subsec:0802:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+先看怎样限制底空间。若 \(u:C\rightarrow B\) 连续，将 \(E\) 中位于 \(u(c)\) 上方的点与 \(c\) 配对，得到
+\[
+	u^*E\coloneqq\{(c,e)\in C\times E:u(c)=p(e)\},
+	\qquad p_C(c,e)=c.
+\]
+其中取乘积空间的子空间拓扑。这个\term[lahuixianweihua]{拉回}[pullback]给出交换图
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		u^*E \arrow[r,"\operatorname{pr}_E"] \arrow[d,"p_C"'] & E \arrow[d,"p"] \\
+		C \arrow[r,"u"'] & B.
+	\end{tikzcd}
+\]
+图中左上空间只由“右边投影与下边映射相等”的条件确定。
+
+\begin{proposition}[拉回保持提升性质]\label{g2:prop:fibration-pullback}
+	设 \(p:E\rightarrow B\) 与 \(u:C\rightarrow B\) 连续。若 \(p\) 为 Serre 纤维化，则 \(p_C:u^*E\rightarrow C\) 也是；若 \(p\) 为 Hurewicz 纤维化，则 \(p_C\) 也为 Hurewicz 纤维化。若 \(p\) 是以 \(F\) 为纤维的纤维丛，则 \(p_C\) 也是以 \(F\) 为纤维的纤维丛。
+\end{proposition}
+\begin{proof}
+	设 \(H:Z\times I\rightarrow C\) 及初始提升 \(a(z)=(H(z,0),e(z))\) 已给定。对底同伦 \(uH\)，用 \(p\) 的提升性质取以 \(e(z)\) 为初值的提升 \(\widetilde H_E\)。则
+	\[
+		\widetilde H_C(z,t)=\bigl(H(z,t),\widetilde H_E(z,t)\bigr)
+	\]
+	落在 \(u^*E\)，且满足所需初值与投影等式。允许的参数空间 \(Z\) 与原提升性质相同，因此两种纤维化均得到保持。对纤维丛，在 \(u^{-1}(U)\) 上用原平凡化的第二个坐标，就得到 \(p_C^{-1}(u^{-1}(U))\cong u^{-1}(U)\times F\)。
+\end{proof}
+
+任意映射也可以加入一条路径，变成具有提升性质的映射。加入的路径可以随底同伦延长，而把它缩回初点又能恢复原来的源空间。
+
+\begin{proposition}[映射的纤维化替换]\label{g2:prop:fibration-replacement}
+	设 \(f:X\rightarrow B\) 为拓扑空间之间的连续映射。令
+	\[
+		E_f\coloneqq\{(x,\gamma)\in X\times C(I,B):\gamma(0)=f(x)\},
+		\qquad p_f(x,\gamma)=\gamma(1),
+	\]
+	并取 \(j(x)=(x,c_{f(x)})\)、\(q(x,\gamma)=x\)。则 \(p_f\) 为 Hurewicz 纤维化，\(p_fj=f\)，\(qj=\operatorname{id}_X\)，且 \(jq\) 与 \(\operatorname{id}_{E_f}\) 相对 \(j(X)\) 同伦。因此 \(j:X\rightarrow E_f\) 是同伦等价。\(p_f\) 在 \(b_0\in B\) 上的实际纤维就是 \(\operatorname{hofib}_{b_0}(f)\)。\symidx{\(E_f\)：映射的道路空间替换}
+\end{proposition}
+\begin{proof}
+	给定任意参数空间 \(Z\)、初始提升 \(a(z)=(x(z),\alpha_z)\) 及底同伦 \(H:Z\times I\rightarrow B\)，其中 \(H(z,0)=\alpha_z(1)\)。保持 \(x(z)\) 不动，并采用\cref{g2:prop:path-fibration}中的道路 \(\lambda_{z,s}\)，定义
+	\[
+		\widetilde H(z,s)=\bigl(x(z),\lambda_{z,s}\bigr).
+	\]
+	每条 \(\lambda_{z,s}\) 的起点仍是 \(\alpha_z(0)=f(x(z))\)，所以它落在 \(E_f\)；终点与初值也分别给出 \(p_f\widetilde H=H\) 和 \(\widetilde H(z,0)=a(z)\)。上述公式的连续性已由指数律证明，故 \(p_f\) 为 Hurewicz 纤维化。
+
+	公式
+	\[
+		K((x,\gamma),s)=\bigl(x,t\mapsto\gamma((1-s)t)\bigr)
+	\]
+	给出 \(\operatorname{id}_{E_f}\) 到 \(jq\) 的同伦，并固定所有常值道路；\(qj=\operatorname{id}_X\) 与 \(p_fj=f\) 可直接求值得到。最后，\(p_f^{-1}(b_0)\) 的两个路径端点条件与同伦纤维的定义完全相同。
+\end{proof}
+
+纤维化替换把 \(f\) 分解为
+\[
+	X\xrightarrow[\simeq]{\ j\ }E_f\xrightarrow{\ p_f\ }B.
+\]
+于是可以对 \(p_f\) 使用长正合列，并用同伦等价 \(j\) 将总空间中的同伦群换回 \(X\)。这正是同伦纤维进入一般映射问题的用途。

@@ -1,13 +1,13 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 22.2 转移和联络无关性
 % 纲要位置：几何学计划纲要.md，第 1858 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 联络路径及参数积分
 % * 两曲率代表之差的恰当性
-% * 自然性和 Chern–Weil 同态
+% * 自然性和陈–Weil 同态
 % * 规范变换下的变化
 % 
 % 纲要内容结束
@@ -15,21 +15,279 @@
 \section{转移和联络无关性}
 \label{g2:sec:2202}
 
-待撰写
+同一张丛可以选择许多联络，它们的曲率通常也不同。上一节证明了不变多项式作用于曲率后得到闭形式；要让这个形式代表丛本身的类，还须解释改变联络为何只增加一个恰当形式。办法是让联络随一个参数连续变化，把曲率代表的变化率写成外微分，再沿参数积分。所得的原始形式还保留了两条联络之间的比较信息，将成为次级示性形式的来源。
 
 \subsection{联络路径及参数积分}
 \label{g2:subsec:2202:01}
-待撰写
+固定光滑主右矩阵 Lie 群丛 \(Q\to M\)，其结构群为 \(G\)，Lie 代数为 \(\mathfrak g\)。本节的流形有限维、Hausdorff、第二可数；参数族在闭区间的端点光滑，意思是局部可以光滑延拓到稍大的区间。第一卷第18.2节“主联络的仿射空间”命题说明，两条联络之差属于 \(\Omega^1(M;\operatorname{ad}Q)\)。恢复它在局部的含义：若联络矩阵为 \(A_0,A_1\)，则换架时
+\[
+	A_j'=g^{-1}A_jg+g^{-1}\mathrm dg\quad(j=0,1),
+	\qquad a'=g^{-1}ag,\quad a=A_1-A_0.
+\]
+相减后微分项消去，故 \(a\) 是一张整体伴随丛值一形式。反过来，将任意这样的 \(a\) 加到一条联络上，仍满足联络的换架规律。因此
+\begin{equation}\label{g2:eq:affine-connection-path}
+	\nabla_t=\nabla_0+t a,\qquad A_t=A_0+t a,\qquad 0\le t\le1
+\end{equation}
+给出连接两条联络的路径。对酉联络或正交联络，差分别取值于斜 Hermitian 或反对称矩阵，这条路径也保持相应相容性。
+
+\begin{proposition}\label{g2:prop:curvature-path-variation}
+	设 \(Q\to M\) 为光滑主右矩阵群丛，\(\nabla_t\) 是其光滑联络路径，局部矩阵与曲率分别为 \(A_t\)、\(F_t=\mathrm dA_t+A_t\wedge A_t\)。记 \(\dot A_t=\partial_tA_t\)，并以 \(\mathrm D_t\) 表示伴随丛值形式的协变外微分。则 \(\dot A_t\) 是整体伴随丛值一形式，而且
+	\begin{equation}\label{g2:eq:curvature-path-variation}
+		\partial_tF_t=\mathrm D_t\dot A_t.
+	\end{equation}
+	若 \(P:\mathfrak g^k\to\mathbb K\) 是对称 \(\operatorname{Ad}(G)\) 不变 \(k\) 线性式，\(k\ge1\)、\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)，则
+	\begin{equation}\label{g2:eq:chern-weil-form-variation}
+		\partial_tP(F_t,\ldots,F_t)
+		=k\,\mathrm dP(\dot A_t,F_t,\ldots,F_t),
+	\end{equation}
+	右侧有 \(k-1\) 个曲率因子。
+\end{proposition}
+\begin{proof}
+	取不随参数变化的局部截面。过渡函数 \(g\) 与 \(t\) 无关，对换架公式求导即得 \(\dot A_t'=g^{-1}\dot A_tg\)，所以它们确实粘成伴随丛值形式。逐项求导给出
+	\[
+		\partial_tF_t=\mathrm d\dot A_t+\dot A_t\wedge A_t+A_t\wedge\dot A_t.
+	\]
+	一形式的协变外微分为 \(\mathrm D_t\dot A_t=\mathrm d\dot A_t+A_t\wedge\dot A_t+\dot A_t\wedge A_t\)，这证明第一式。两个乘积项都是加号，是因为被微分的形式次数为一。
+
+	每个 \(F_t\) 的次数为二，交换两个曲率因子不产生符号。因此 \(P\) 的对称性给出
+	\[
+		\partial_tP(F_t,\ldots,F_t)
+		=kP(\mathrm D_t\dot A_t,F_t,\ldots,F_t).
+	\]
+	另一方面，\cref{g2:lem:invariant-form-differential}将普通外微分改写为各因子的协变外微分。作用于第一个因子得到上式右边除去 \(k\) 的部分；作用于其余因子的项都含有 \(\mathrm D_tF_t\)，由\cref{g2:prop:cw-bianchi}为零。故
+	\[
+		\mathrm dP(\dot A_t,F_t,\ldots,F_t)
+		=P(\mathrm D_t\dot A_t,F_t,\ldots,F_t),
+	\]
+	完成第二式的证明。
+\end{proof}
+
+沿参数积分是对形式系数作通常的一元积分。更准确地，对光滑族 \(\alpha_t\in\Omega^r(M;\mathbb K)\)，定义
+\[
+	\left(\int_0^1\alpha_t\,\mathrm dt\right)_x(v_1,\ldots,v_r)
+	=\int_0^1(\alpha_t)_x(v_1,\ldots,v_r)\,\mathrm dt.
+\]
+紧参数区间上的光滑依赖允许在局部坐标中逐项求导，因此积分仍为光滑 \(r\) 形式，并且与 \(\mathrm d_M\) 交换。这个积分不改变底空间形式的次数。
+
+\ProseParagraphBreak
+
+也可以把上述计算放到 \([0,1]\times M\) 上。令拉回丛在参数方向没有联络分量，则它的曲率为
+\[
+	\widehat F=F_t+\mathrm dt\wedge\dot A_t.
+\]
+我们将参数微分写在前面。由于 \((\mathrm dt)^2=0\)，有
+\begin{equation}\label{g2:eq:chern-weil-cylinder-form}
+	P(\widehat F,\ldots,\widehat F)
+	=P(F_t,\ldots,F_t)+\mathrm dt\wedge kP(\dot A_t,F_t,\ldots,F_t).
+\end{equation}
+总空间上的闭性在 \(\mathrm dt\) 分量中恰好给出式\eqref{g2:eq:chern-weil-form-variation}。这样，联络变化率成为参数方向的一份曲率，而转移形式将由含有这份曲率的项积分得到。
 
 \subsection{两曲率代表之差的恰当性}
 \label{g2:subsec:2202:02}
-待撰写
+\begin{definition}\label{g2:def:chern-weil-transgression}
+	设 \(\Gamma=(\nabla_t)_{0\le t\le1}\) 是固定光滑主 \(G\) 丛上的光滑联络路径，\(P\) 是次数 \(k\ge1\) 的对称不变多项式。形式
+	\begin{equation}\label{g2:eq:chern-weil-transgression}
+		T_P(\Gamma)=k\int_0^1P(\dot A_t,F_t,\ldots,F_t)\,\mathrm dt
+		\in\Omega^{2k-1}(M;\mathbb K)
+	\end{equation}
+	称为这条路径的\term[zhuanyixingshi]{转移形式}[transgression form]。对式\eqref{g2:eq:affine-connection-path}的仿射路径，简记为 \(T_P(\nabla_0,\nabla_1)\)。
+\end{definition}
 
-\subsection{自然性和 Chern–Weil 同态}
+这里每个被积项都是整体标量形式：\(\dot A_t\) 和 \(F_t\) 都按共轭变换，而 \(P\) 不变。其次数为 \(1+2(k-1)=2k-1\)，比曲率代表低一次。
+
+\begin{theorem}[陈--Weil 转移公式]\label{g2:thm:chern-weil-transgression}
+	设 \(Q\to M\) 为光滑主右矩阵群丛，\(P\) 为次数 \(k\ge1\) 的实或复对称不变多项式，\(\Gamma=(\nabla_t)\) 为连接 \(\nabla_0,\nabla_1\) 的光滑联络路径。则
+	\begin{equation}\label{g2:eq:chern-weil-transgression-differential}
+		\mathrm dT_P(\Gamma)=P(F_1,\ldots,F_1)-P(F_0,\ldots,F_0).
+	\end{equation}
+	因此闭形式 \(P(F_\nabla,\ldots,F_\nabla)\) 的 de Rham 上同调类与联络无关。
+\end{theorem}
+\begin{proof}
+	参数积分与外微分交换，故\cref{g2:prop:curvature-path-variation}给出
+	\[
+	\begin{aligned}
+		\mathrm dT_P(\Gamma)
+		&=\int_0^1 k\,\mathrm dP(\dot A_t,F_t,\ldots,F_t)\,\mathrm dt\\
+		&=\int_0^1\partial_tP(F_t,\ldots,F_t)\,\mathrm dt\\
+		&=P(F_1,\ldots,F_1)-P(F_0,\ldots,F_0).
+	\end{aligned}
+	\]
+	最后一步是逐个形式系数使用微积分基本定理。任意两条联络可由仿射路径连接，右侧总为恰当形式；结合\cref{g2:thm:chern-weil-closed}的闭性，得到上同调类与联络无关。
+\end{proof}
+
+例如复线丛上取 \(P(X)=\mathrm iX/(2\pi)\)。由于 \(k=1\)，转移形式就是 \(\mathrm i(\nabla_1-\nabla_0)/(2\pi)\)，曲率之差是它的外微分。高次数中的额外曲率因子，使同一思路能比较所有陈--Weil 形式。
+
+\ProseParagraphBreak
+
+转移形式本身仍可能随连接路径改变。其可控程度需要一个二参数计算；仅知道两份转移形式的外微分相同，只能推出差闭，还不能推出差恰当。
+
+\begin{proposition}\label{g2:prop:transgression-path-homotopy}
+	设 \(Q\to M\) 为光滑主右矩阵群丛，\(P\) 为次数 \(k\ge1\) 的对称不变多项式。若两条光滑联络路径 \(\Gamma_0,\Gamma_1\) 具有相同起点与终点，则 \(T_P(\Gamma_1)-T_P(\Gamma_0)\) 为恰当形式。特别地，对三条联络 \(\nabla_0,\nabla_1,\nabla_2\)，
+	\begin{equation}\label{g2:eq:transgression-triangle-mod-exact}
+		T_P(\nabla_0,\nabla_2)
+		\equiv T_P(\nabla_0,\nabla_1)+T_P(\nabla_1,\nabla_2)
+		\pmod{\mathrm d\Omega^{2k-2}(M;\mathbb K)}.
+	\end{equation}
+	仿射转移还严格满足 \(T_P(\nabla_1,\nabla_0)=-T_P(\nabla_0,\nabla_1)\)。
+\end{proposition}
+\begin{proof}
+	由于联络空间是仿射空间，可用
+	\[
+		\nabla_{s,t}=(1-s)\nabla_t^{\,0}+s\nabla_t^{\,1}
+	\]
+	连接两条路径，而且在 \(t=0,1\) 处不随 \(s\) 变化。记局部矩阵为 \(A_{s,t}\)，令 \(a=\partial_tA\)、\(b=\partial_sA\)、\(F=\mathrm d_MA+A\wedge A\)。在方形与 \(M\) 的乘积上取无参数分量的联络，其曲率为
+	\[
+		\widehat F=F+\mathrm ds\wedge b+\mathrm dt\wedge a.
+	\]
+	展开 \(P(\widehat F^k)\)，写成
+	\[
+		\omega+\mathrm ds\wedge U+\mathrm dt\wedge V
+		+\mathrm ds\wedge\mathrm dt\wedge W,
+	\]
+	其中
+	\[
+	\begin{aligned}
+		\omega&=P(F^k),&
+		U&=kP(b,F^{k-1}),\\
+		V&=kP(a,F^{k-1}),&
+		W&=k(k-1)P(a,b,F^{k-2}).
+	\end{aligned}
+	\]
+	\(k=1\) 时约定 \(W=0\)。这里 \(F^j\) 表示连续放入 \(j\) 个曲率因子。核对最后一项的符号：\((\mathrm ds\wedge b)\wedge(\mathrm dt\wedge a)=-\mathrm ds\wedge\mathrm dt\wedge b\wedge a\)，再交换两个一形式 \(a,b\) 又产生一个负号，故得到上述 \(W\)。
+
+	总外微分为零。比较 \(\mathrm ds\wedge\mathrm dt\) 的系数，得到
+	\[
+		\partial_sV-\partial_tU+\mathrm d_MW=0.
+	\]
+	在方形上积分，并用固定端点条件 \(b(s,0)=b(s,1)=0\)，有
+	\[
+	\begin{aligned}
+		T_P(\Gamma_1)-T_P(\Gamma_0)
+		&=\int_0^1\int_0^1\partial_sV\,\mathrm dt\,\mathrm ds\\
+		&=\int_0^1\bigl(U(s,1)-U(s,0)\bigr)\,\mathrm ds
+		-\mathrm d_M\int_0^1\int_0^1W\,\mathrm dt\,\mathrm ds\\
+		&=-\mathrm d_M\int_0^1\int_0^1W\,\mathrm dt\,\mathrm ds.
+	\end{aligned}
+	\]
+	这给出了差的显式原始形式。
+
+	为证明三角式，先沿 \(\nabla_0\) 到 \(\nabla_1\) 的路径走，再沿 \(\nabla_1\) 到 \(\nabla_2\) 走。作保向参数变换不会改变式\eqref{g2:eq:chern-weil-transgression}，因为 \(\dot A_t\,\mathrm dt\) 按一元换元公式变换。可将两段在端点附近重新参数化为常值，再光滑拼接；积分是两段积分之和。将这条路径与 \(\nabla_0\) 到 \(\nabla_2\) 的仿射路径比较，刚才的二参数计算给出式\eqref{g2:eq:transgression-triangle-mod-exact}。最后，反向走仿射路径使速度换号，换元后直接得到严格的反对称性。
+\end{proof}
+
+因此，两条固定联络之间有一个与路径无关的元素
+\[
+	[T_P(\nabla_0,\nabla_1)]
+	\in\Omega^{2k-1}(M;\mathbb K)/\mathrm d\Omega^{2k-2}(M;\mathbb K).
+\]
+这是形式模去恰当形式的商；只有当两端的曲率代表相等时，转移形式才闭，才能进一步称为 de Rham 上同调类。
+
+\subsection{自然性和陈–Weil 同态}
 \label{g2:subsec:2202:03}
-待撰写
+将不变多项式的次数加倍，恰好对应曲率形式的次数。记
+\[
+	I^*(G;\mathbb K)=\bigoplus_{k\ge0}I^k(G;\mathbb K)
+\]
+为对称不变多项式代数，其中 \(I^k\) 的元素是次数 \(k\) 的齐次多项式，并与其极化后的对称 \(k\) 线性式对应。乘积取普通多项式乘积；极化给出的组合系数已包含在乘积定义中。
+
+\begin{theorem}[陈--Weil 同态]\label{g2:thm:chern-weil-homomorphism}
+	设 \(G\) 为矩阵 Lie 群，\(Q\to M\) 为有限维、Hausdorff、第二可数光滑流形上的光滑主右 \(G\) 丛，\(\mathbb K=\mathbb R\) 或 \(\mathbb C\)。对任意光滑联络 \(\nabla\)，令
+	\begin{equation}\label{g2:eq:chern-weil-homomorphism}
+		\operatorname{cw}_Q(P)=[P(F_\nabla,\ldots,F_\nabla)].
+	\end{equation}
+	这定义了与联络无关的保单位代数同态
+	\[
+		\operatorname{cw}_Q:I^*(G;\mathbb K)\longrightarrow
+		H_{\mathrm{dR}}^{\mathrm{even}}(M;\mathbb K),
+		\qquad I^k\longrightarrow H_{\mathrm{dR}}^{2k}.
+	\]
+	对光滑映射 \(f:N\to M\)，它满足
+	\begin{equation}\label{g2:eq:chern-weil-pullback}
+		\operatorname{cw}_{f^*Q}(P)=f^*\operatorname{cw}_Q(P).
+	\end{equation}
+	对结构群同态 \(\rho:H\to G\) 与主 \(H\) 丛 \(R\to M\)，若 \(Q=R\times_\rho G\)，则
+	\[
+		\operatorname{cw}_{Q}(P)=\operatorname{cw}_{R}(\rho^*P),
+		\qquad
+		(\rho^*P)(X_1,\ldots,X_k)=P(\rho_*X_1,\ldots,\rho_*X_k).
+	\]
+\end{theorem}
+\begin{proof}
+	光滑主丛存在联络：局部平凡丛先取零联络，用从属光滑单位分解在总空间上加权；权重之和为一保持竖直再现条件，底空间上的权重保持等变性。这是第一卷第18.2节“主联络的存在”定理的构造。闭性由\cref{g2:thm:chern-weil-closed}保证，联络无关性由\cref{g2:thm:chern-weil-transgression}保证，故式\eqref{g2:eq:chern-weil-homomorphism}有定义。
+
+	固定一条联络。对多项式相加、乘标量，代入曲率的运算相应相加、乘标量。对次数分别为 \(k,\ell\) 的 \(P_1,P_2\)，在极化后的乘积中，每项都把 \(k+\ell\) 个二次曲率因子分给两组。因这些因子均为偶次，重排不产生符号；极化的平均系数又使全部相同项的系数和为一。因此
+	\[
+		(P_1P_2)(F^{k+\ell})=P_1(F^k)\wedge P_2(F^\ell).
+	\]
+	常数多项式 \(1\) 给出常数零形式 \(1\)，从而得到保单位代数同态。
+
+	拉回联络在局部为 \(\mathrm d+f^*A\)。因为拉回与外微分、外乘交换，其曲率是 \(f^*F\)，所以
+	\[
+		P(F_{f^*\nabla}^k)=f^*P(F_\nabla^k).
+	\]
+	在源流形上若另选一条联络，转移公式使所得上同调类不变，于是得到自然性。
+
+	最后，沿 \(\rho\) 扩张结构群后的局部联络矩阵为 \(\rho_*A\)。Lie 代数同态保持括号，故相应曲率为 \(\rho_*F\)。将它代入 \(P\) 得到 \((\rho^*P)(F^k)\)，证明最后一式。
+\end{proof}
+
+自然性也在转移形式的层次成立。若拉回整条路径，则
+\begin{equation}\label{g2:eq:transgression-pullback}
+	T_P(f^*\Gamma)=f^*T_P(\Gamma),
+\end{equation}
+因为速度、曲率和参数积分都与拉回交换。这是一条形式等式，比上同调类自然性更精细。下一节将选取确定的行列式及 Pfaffian 多项式，把式\eqref{g2:eq:chern-weil-homomorphism}与上一章的拓扑类逐一比较。
 
 \subsection{规范变换下的变化}
 \label{g2:subsec:2202:04}
-待撰写
+规范变换是覆盖底空间恒等映射的主丛自同构。沿用第一卷第18.4节“联络的规范变换”命题，在固定局部截面中写成
+\[
+	A^g=g^{-1}Ag+g^{-1}\mathrm dg,\qquad F^g=g^{-1}Fg.
+\]
+这里的局部群值函数满足伴随换架规律，因而表示同一个整体规范变换；平凡丛中它就是一张整体映射 \(g:M\to G\)。不变多项式立即给出 \(P((F^g)^k)=P(F^k)\)，是代表形式的严格相等。
+
+\begin{proposition}\label{g2:prop:transgression-gauge-naturality}
+	设 \(Q\to M\) 为光滑主右矩阵群丛，\(P\) 为次数 \(k\ge1\) 的对称不变多项式，\(g\) 为固定规范变换。对任意联络路径 \(\Gamma\)，同时变换路径上的所有联络，有
+	\[
+		T_P(\Gamma^g)=T_P(\Gamma).
+	\]
+	因此仿射转移满足
+	\begin{equation}\label{g2:eq:transgression-gauge-invariant-pair}
+		T_P(\nabla_0^g,\nabla_1^g)=T_P(\nabla_0,\nabla_1).
+	\end{equation}
+	只比较一条联络及其变换时，\(T_P(\nabla,\nabla^g)\) 是闭形式，其上同调类与 \(\nabla\) 无关。
+\end{proposition}
+\begin{proof}
+	\(g\) 不随路径参数改变，所以 \(\partial_tA_t^g=g^{-1}\dot A_tg\)，而 \(F_t^g=g^{-1}F_tg\)。将这些式子代入 \(P\)，共轭由不变性消去，被积形式逐项不变。规范变换还把仿射路径送到变换后两端之间的仿射路径，因为附加项 \(g^{-1}\mathrm dg\) 的系数为一，故得到式\eqref{g2:eq:transgression-gauge-invariant-pair}。
+
+	转移公式给出
+	\[
+		\mathrm dT_P(\nabla,\nabla^g)=P((F^g)^k)-P(F^k)=0.
+	\]
+	再取另一联络 \(\nabla'\)。用\cref{g2:prop:transgression-path-homotopy}沿四个端点依次比较，模去恰当形式有
+	\[
+	\begin{aligned}
+		T_P(\nabla',(\nabla')^g)
+		&\equiv T_P(\nabla',\nabla)+T_P(\nabla,\nabla^g)
+		+T_P(\nabla^g,(\nabla')^g)\\
+		&=-T_P(\nabla,\nabla')+T_P(\nabla,\nabla^g)
+		+T_P(\nabla,\nabla')\\
+		&=T_P(\nabla,\nabla^g).
+	\end{aligned}
+	\]
+	两个外侧项由同时规范不变性及反对称性抵消，所以闭转移类与所选联络无关。
+\end{proof}
+
+\begin{example}\label{g2:exm:circle-gauge-transgression}
+	取 \(S^1=\mathbb R/\mathbb Z\) 上的平凡酉线丛，\(\nabla=\mathrm d\)，并令 \(g(x)=e^{2\pi\mathrm i m x}\)，其中 \(m\in\mathbb Z\)。角度 \(x\) 本身不是圆周上的实函数，但 \(\mathrm dx\) 是整体一形式，且正向积分为 \(1\)。于是
+	\[
+		A^g=g^{-1}\mathrm dg=2\pi\mathrm i m\,\mathrm dx.
+	\]
+	对 \(P(X)=\mathrm iX/(2\pi)\)，有
+	\[
+		T_P(\nabla,\nabla^g)=\frac{\mathrm i}{2\pi}(A^g-0)
+		=-m\,\mathrm dx,\qquad
+		\int_{S^1}T_P(\nabla,\nabla^g)=-m.
+	\]
+	\(m\ne0\) 时，这个闭形式不是恰当形式，因为闭曲线上恰当一形式的积分为零。两端曲率都为零，但规范变换的绕数仍留在转移形式中。
+\end{example}
+
+因此，曲率代表的规范不变性与转移形式的选择依赖各自有准确的含义：同时改变一对联络，转移形式保持相等；固定一端而用规范变换改变另一端，可以留下非零闭类。后面的三维例子将把同样的现象写成整数改变的积分，从而得到模整数的不变量。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

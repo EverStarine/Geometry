@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 15.1 高维初始嵌入与泛型投影
 % 纲要位置：几何学计划纲要.md，第 1576 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,133 @@
 \section{高维初始嵌入与泛型投影}
 \label{g2:sec:1501}
 
-待撰写
+一张坐标图把流形的一小块放进 Euclid 空间，但不同图中的坐标不能直接首尾相接。先让每张图负责几个独立的坐标分量，便能把局部信息全部保存下来；得到一个维数可能很高的嵌入后，再寻找不会压坏切向量、也不会合并不同点的投影方向。紧流形上的证明由这两步完成。非紧流形还须控制无穷远，否则单射浸入的像仍可能发生拓扑上的聚集。
 
 \subsection{由局部坐标构造整体嵌入}
 \label{g2:subsec:1501:01}
-待撰写
+
+先回忆第一卷第11章第4节的区别：浸入要求微分单射；嵌入还要求映射是到子空间像的同胚。对紧源，连续单射到 Hausdorff 空间自动是到像的同胚，因此只需构造单射浸入。
+
+\begin{proposition}\label{g2:prop:finite-coordinate-embedding}
+	每个紧光滑 \(n\) 维流形 \(M\)，允许有边界，都能光滑嵌入某个有限维 Euclid 空间。
+\end{proposition}
+\begin{proof}
+	由第一卷第12章第3节的相对紧坐标细化与截断构造，取有限张图 \((U_i,x_i)\)，以及较小开集 \(V_i\) 和光滑函数 \(\rho_i:M\to[0,1]\)，使 \(V_i\) 覆盖 \(M\)，\(\rho_i=1\) 于 \(\overline V_i\) 的邻域，\(\operatorname{supp}\rho_i\Subset U_i\)。把 \(\rho_i x_i\) 在 \(U_i\) 外补零，定义
+	\[
+		F(p)=\bigl(\rho_1(p),\rho_1(p)x_1(p),\ldots,
+		\rho_s(p),\rho_s(p)x_s(p)\bigr)\in\mathbb R^{s(n+1)}.
+	\]
+	补零光滑，因为每个支集离相应图域的边缘留有邻域。
+
+	若 \(F(p)=F(q)\)，选 \(i\) 使 \(p\in V_i\)。则 \(\rho_i(p)=\rho_i(q)=1\)，尤其 \(q\in U_i\)，而对应的向量块给出 \(x_i(p)=x_i(q)\)，故 \(p=q\)。在 \(p\in V_i\) 附近，第 \(i\) 个向量块就是 \(x_i\)，其微分单射，故 \(\mathrm{d}F_p\) 单射。最后，紧性保证连续逆，因而 \(F\) 为嵌入。边界图中的完整坐标微分同样可逆，所以证明也包括带边界情形。
+\end{proof}
+
+保留额外的标量 \(\rho_i\) 有实际作用：它告诉我们哪个坐标块正在工作，并允许从乘积 \(\rho_i x_i\) 恢复坐标。若只把加权坐标相加到同一个 \(\mathbb R^n\) 中，来自不同图的信息可能相互抵消，也可能把不同点混在一起。
 
 \subsection{投影方向的坏集合}
 \label{g2:subsec:1501:02}
-待撰写
+
+设已有单射浸入 \(F:M^n\to\mathbb R^q\)。对单位向量 \(v\)，记 \(\pi_v:\mathbb R^q\to v^\perp\) 为正交投影。投影可能以两种方式失败：某条非零切向量被压成零，或者连接两个像点的割线被压成零。这两种情况都能把“坏方向”写成一个光滑映射的像。
+
+\ProseParagraphBreak
+
+在 \(M\) 上选一个辅助丛度量，记单位切丛为 \(U\mathrm{T}M\)。第一卷第12章第3节的丛度量存在定理保证这种选择；单位球在每个局部标架中是光滑超曲面，故 \(\dim U\mathrm{T}M=2n-1\)。考虑
+\[
+	\tau:U\mathrm{T}M\longrightarrow S^{q-1},\qquad
+	\tau(x,u)=\frac{\mathrm{d}F_x(u)}{|\mathrm{d}F_x(u)|},
+\]
+以及去掉对角线的点对空间上的映射
+\[
+	\sigma:(M\times M)\setminus\Delta_M\longrightarrow S^{q-1},\qquad
+	\sigma(x,y)=\frac{F(x)-F(y)}{|F(x)-F(y)|}.
+\]
+分母分别由浸入性和单射性保证非零。\(v\) 属于 \(\tau\) 的像，恰好意味着某个非零切向量落入 \(\ker\pi_v\)；\(v\) 属于 \(\sigma\) 的像，恰好意味着某对不同点被投影合并。由于 \(u\) 与 \(-u\)、\((x,y)\) 与 \((y,x)\) 都出现，这两个像已同时包含正、反方向。
+
+\begin{proposition}\label{g2:prop:good-projection-directions}
+	设 \(F:M^n\to\mathbb R^q\) 是光滑单射浸入，\(n\ge1\)，\(M\) 允许有边界。若 \(q>2n\)，则几乎每个单位方向 \(v\) 使 \(\pi_v\circ F\) 为浸入；若 \(q>2n+1\)，则几乎每个 \(v\) 同时使它单射。好方向在单位球中稠密。
+\end{proposition}
+\begin{proof}
+	当 \(q>2n\) 时，\(\dim U\mathrm{T}M=2n-1<q-1\)，由\cref{g2:cor:sard-lower-dimension}，\(\tau\) 的像零测。当 \(q>2n+1\) 时，点对空间维数 \(2n<q-1\)，\(\sigma\) 的像也零测；两者的并仍零测。任一非空球面开集有正测度，所以补集稠密。
+
+	若源有边界，将单位切丛分为底点在内部与边界的两部分，维数分别为 \(2n-1\)、\(2n-2\)。点对空间则分为内部乘内部、内部乘边界、边界乘内部、边界乘边界四个无边界流形，维数分别至多 \(2n,2n-1,2n-1,2n-2\)。在每一部分应用同一低维像结论，再取有限并即可。\(n=0\) 时没有切向条件；点对空间可数，割线方向的像也可数。
+\end{proof}
 
 \subsection{弱 Whitney 维数界}
 \label{g2:subsec:1501:03}
-待撰写
+
+\begin{theorem}[弱 Whitney 嵌入定理]\label{g2:thm:weak-whitney-compact}
+	设 \(M\) 是紧光滑 \(n\) 维流形，允许有边界。则 \(M\) 可光滑嵌入 \(\mathbb R^{2n+1}\)。若 \(n\ge1\)，还存在光滑浸入 \(M\to\mathbb R^{2n}\)。
+\end{theorem}
+\begin{proof}
+	若 \(n=0\)，紧零维流形是有限点集，直接选直线中的相同数目互异点即可。以下设 \(n\ge1\)。先由\cref{g2:prop:finite-coordinate-embedding}得到某个 \(F:M\to\mathbb R^q\)。若 \(q\le2n+1\)，补零坐标即可；否则用\cref{g2:prop:good-projection-directions}选好方向，将维数降一，所得仍是单射浸入。紧性使它仍为嵌入，所以可以重复，直到环境维数为 \(2n+1\)。从这里再投影一次，切向坏方向的维数仍小于目标方向球的维数，因此能保留浸入性，得到 \(\mathbb R^{2n}\) 中的浸入。
+\end{proof}
+
+最后一次投影有一个明确变化：割线映射的源与方向球同为 \(2n\) 维，零测论证已经不能排除其像覆盖一块开区域。于是微分仍可单射，不同点却可能投到一起。下一节的强界正要处理这些双点。
+
+\begin{example}\label{g2:exm:circle-bad-projection}
+	单位圆 \(S^1\subset\mathbb R^2\) 沿竖直方向投到横轴，成为函数 \((x,y)\mapsto x\)。圆的最高点和最低点有相同的像，而最左点和最右点的切线竖直，在那里投影微分为零。对圆周投到直线，转动方向只会转动这些坏点；维数条件不足时，没有理由期待避开全部坏方向。
+\end{example}
 
 \subsection{非紧源的穷竭及固有性}
 \label{g2:subsec:1501:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+现在令 \(M\) 为无边界光滑流形，仍假设有限维、Hausdorff 且第二可数。单射浸入未必是嵌入；第一卷第11章第4节的固有单射浸入命题给出可用的判据：若紧集的原像都紧，则到像的逆连续。下面会在构造过程中一直保留这个条件。
+
+\begin{lemma}\label{g2:lem:smooth-proper-exhaustion}
+	每个这样的 \(M\) 都有非负光滑函数 \(h:M\to[0,\infty)\)，使每个次水平集 \(h^{-1}([0,c])\) 紧。
+\end{lemma}
+\begin{proof}
+	取第一卷第12章第3节构造中的紧穷竭 \(K_j\subset\operatorname{int}K_{j+1}\)，\(\bigcup_jK_j=M\)。以光滑截断选 \(\chi_j:M\to[0,1]\)，在 \(K_j\) 附近等于1，支集包含于 \(\operatorname{int}K_{j+1}\)。定义
+	\[
+		h=\sum_{j\ge1}(1-\chi_j).
+	\]
+	任一点附近属于某个 \(K_m\) 的内部，当 \(j\ge m\) 时对应项恒为零，所以该和局部有限且光滑。若 \(x\notin K_{m+1}\)，则前 \(m\) 项均为1，故 \(h(x)\ge m\)。对给定 \(c\)，选整数 \(m>c\)，次水平集便是 \(K_{m+1}\) 的闭子集，因此紧。
+\end{proof}
+
+为了得到有限维的初始嵌入，把 \(h\) 的相邻壳层分配到两个坐标块。由\cref{g2:thm:sard}，对每个整数 \(j\ge0\) 可选正则值
+\[
+	j<a_j<b_j<j+1.
+\]
+令 \(D_0=h^{-1}([0,1])\)、\(E_0=h^{-1}([0,a_1])\)，并对 \(j\ge1\) 令
+\[
+	D_j=h^{-1}([j,j+1]),\qquad E_j=h^{-1}([b_{j-1},a_{j+1}]).
+\]
+这些 \(E_j\) 是紧带边界流形，\(D_j\subset\operatorname{Int}E_j\)，且同为偶数或同为奇数的不同 \(E_j\) 两两不交。正则值条件在边界附近把 \(h\) 变成一个坐标，因此 \(E_j\) 的边界确为相应水平集，不会出现尖角。
+
+\ProseParagraphBreak
+
+由紧源情形，取嵌入 \(f_j:E_j\to\mathbb R^{2n+1}\)，以及 \(\beta_j\) 在 \(D_j\) 附近等于1、支集包含于 \(\operatorname{Int}E_j\) 的光滑截断。补零后定义
+\[
+	F(x)=\left(\sum_{j\text{ 偶}}\beta_j(x)f_j(x),\quad
+	\sum_{j\text{ 奇}}\beta_j(x)f_j(x),\quad h(x)\right)
+	\in\mathbb R^{4n+3}.
+\]
+每个坐标块在一点附近至多出现一项，且壳层族局部有限，所以 \(F\) 光滑。若 \(F(x)=F(y)\)，先由最后一坐标知 \(h(x)=h(y)\)；选 \(j\) 使 \(x\in D_j\)，便有 \(y\in D_j\)。相应奇偶块给出 \(f_j(x)=f_j(y)\)，从而 \(x=y\)。在 \(x\in D_j\) 附近，这一块就是 \(f_j\)，其微分单射，所以 \(F\) 为浸入。最后坐标 \(h\) 保证 \(F\) 固有：紧目标集的原像是某个紧次水平集的闭子集。因此 \(F\) 已经是有限维空间中的固有嵌入。
+
+\ProseParagraphBreak
+
+普通投影未必保留固有性。为控制它，先把前 \(4n+2\) 个坐标用微分同胚
+\[
+	z\longmapsto\frac{z}{\sqrt{1+|z|^2}}
+\]
+压进单位球，保留最后坐标 \(h\)。所得固有嵌入的像包含于某条直线 \(L\) 周围的有界半径管中。若再选投影方向 \(v\notin L\)，这一“管轴”仍留下非零方向，不能全部被压掉。
+
+\begin{lemma}\label{g2:lem:proper-projection-tube}
+	设 \(F:M\to\mathbb R^q\) 为固有映射，其像包含于直线 \(L\) 周围的半径 \(R\) 管中。若单位向量 \(v\notin L\)，则 \(\pi_v\circ F\) 固有，且其像仍包含于直线 \(\pi_v(L)\) 周围某个有界半径管中。
+\end{lemma}
+\begin{proof}
+	写 \(z=s+b\)，其中 \(s\in L\)、\(|b|\le R\)。因为 \(v\notin L\)，\(\pi_v|_L\) 单射，故存在 \(c>0\)，使 \(|\pi_v(s)|\ge c|s|\)。若 \(|\pi_v(z)|\le B\)，则
+	\[
+		c|s|\le|\pi_v(z)|+|\pi_v(b)|\le B+R,
+	\]
+	从而 \(|z|\le(B+R)/c+R\)。因此紧目标集的原像闭且包含于 \(F\) 的一个紧集原像中，因而紧。另一方面，\(\pi_v(z)\) 到 \(\pi_v(L)\) 的距离不超过 \(|\pi_v(b)|\le R\)，得到管的控制。
+\end{proof}
+
+\begin{theorem}[弱 Whitney 嵌入定理的固有形式]\label{g2:thm:weak-whitney-proper}
+	每个有限维、Hausdorff、第二可数的无边界光滑 \(n\) 维流形都能固有地光滑嵌入 \(\mathbb R^{2n+1}\)。若 \(n\ge1\)，还存在到 \(\mathbb R^{2n}\) 的固有光滑浸入。
+\end{theorem}
+\begin{proof}
+	若 \(n=0\)，第二可数的零维流形是至多可数的离散集，将各点依次送到不同非负整数便是固有嵌入。以下设 \(n\ge1\)，使用上面构造的有界管内固有嵌入。当环境维数 \(q>2n+1\) 时，先避开\cref{g2:prop:good-projection-directions}的零测坏方向，再避开管轴的两个单位方向。这样得到的投影仍单射、浸入且固有，因而仍是嵌入；\cref{g2:lem:proper-projection-tube}还保留了下一步所需的管。迭代到 \(q=2n+1\) 即得第一项。若 \(n\ge1\)，再选一次避开切向坏方向和管轴的投影，保留浸入性与固有性，得到第二项。
+\end{proof}
+
+以上壳层与管轴构造也见\cite[第132--135页，引理6.13--6.14及定理6.15]{Lee2012Smooth}。紧性和固有性在证明中承担了不同工作：前者把有限张坐标图拼成初始嵌入，后者阻止非紧源在投影后从无穷远重新聚到有限位置。关于带边界非紧流形，可在\secref{g2:sec:1504}构造双化以后，将双化流形的固有嵌入限制到原来的闭半边。

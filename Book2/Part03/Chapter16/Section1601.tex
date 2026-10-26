@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 16.1 度的不同定义
 % 纲要位置：几何学计划纲要.md，第 1625 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,212 @@
 \section{度的不同定义}
 \label{g2:sec:1601}
 
-待撰写
+圆周映射 \(z\mapsto z^k\) 的度既可以从顶维同调读出，也可以在一个目标点处数原像，还可以由角形式的积分求得。这三个计算测量的是同一件事：源流形按方向把目标覆盖了多少次。对一般流形，临界点会使覆盖片出现、合并或消失，非紧源还允许原像逃到无穷远。本节先解释每个正则原像的符号，再证明三种度的一致性，并把无穷远处所需的条件写清楚。除另有说明，流形均有限维、Hausdorff、第二可数。
 
 \subsection{正则值处的局部符号}
 \label{g2:subsec:1601:01}
-待撰写
+
+设 \(f:M^n\to N^n\) 为定向无边界光滑流形间的光滑映射，\(n\ge1\)。若 \(y\) 是正则值，则每个 \(x\in f^{-1}(y)\) 处的微分 \(\mathrm{d}f_x\) 是同构。在源、目标各取一组正向基，定义
+\[
+	\varepsilon_x(f)=\operatorname{sgn}\det(\mathrm{d}f_x)\in\{1,-1\}.
+\]
+更换正向基只会让行列式乘以正数，因此该符号与基无关。它记录这一小片是保持方向还是反转方向，不能用行列式的绝对值替代。
+
+\begin{proposition}\label{g2:prop:regular-local-degree-sign}
+	设 \(f:M^n\to N^n\) 为定向无边界光滑流形间的光滑映射，\(n\ge1\)，且 \(\mathrm{d}f_x\) 可逆。按定向局部同调生成元定义的局部度满足
+	\[
+		\deg_x(f)=\varepsilon_x(f).
+	\]
+	若 \(f\) 固有，则每个正则值的原像有限。
+\end{proposition}
+\begin{proof}
+	\cref{g2:def:local-degree}中的空间对定义可直接用于定向流形：由坐标切除，\(H_n(M,M\setminus\{x\};\mathbb Z)\cong\mathbb Z\)，其正生成元由定向指定。在正向坐标中把 \(x,f(x)\) 移到原点，写 \(f(z)=Az+r(z)\)，其中 \(A=\mathrm{d}f_x\) 可逆、\(|r(z)|/|z|\to0\)。取 \(c>0\) 使 \(|Az|\ge c|z|\)，再把坐标球缩小，使 \(|r(z)|<c|z|/2\)。于是
+	\[
+		|Az+s r(z)|\ge c|z|/2>0\qquad(z\ne0,\ 0\le s\le1).
+	\]
+	这给出穿孔空间对上的同伦，所以局部度等于线性映射 \(A\) 的局部度。
+
+	对可逆矩阵作 Gram--Schmidt 分解，上三角部分可在保持对角元为正时连续变为恒等；正交部分则用平面旋转化为恒等，或化为一次坐标反射，分别对应 \(\det A>0\) 与 \(\det A<0\)。这些变化始终保持可逆，故仍是穿孔空间对同伦。恒等映射保持局部生成元，反射使其变号：通过相对球与边界球的连接同构，这正是\cref{g2:prop:reflection-antipodal-degree}已证的反射度。于是局部度为 \(\operatorname{sgn}\det A\)。
+
+	第一卷第11章第3节的逆函数定理又说明正则原像的每个点都孤立。若 \(f\) 固有，纤维 \(f^{-1}(y)\) 是紧集；紧离散集有限，得到最后一项。
+\end{proof}
+
+对固有 \(f\) 及其正则值 \(y\)，可以先记带符号计数
+\[
+	d_y(f)=\sum_{x\in f^{-1}(y)}\varepsilon_x(f),
+\]
+空原像对应空和0。\cref{g2:thm:sard}保证存在正则值。为什么在变形时要数正负号，而不只数点数？一条有向的一维逆像会把新生或消失的两个端点赋予相反符号。
+
+\begin{proposition}\label{g2:prop:oriented-regular-fiber-cobordism}
+	设 \(M^n\) 为紧定向无边界光滑流形，\(N^n\) 为定向无边界光滑流形，\(n\ge1\)。若光滑映射 \(f_0,f_1:M\to N\) 同伦，且 \(y\in N\) 同时为两者的正则值，则 \(d_y(f_0)=d_y(f_1)\)。
+\end{proposition}
+\begin{proof}
+	\cref{g2:thm:transverse-homotopy-cobordism}给出光滑同伦 \(H:M\times[0,1]\to N\)，在两端的时间邻域分别等于 \(f_0,f_1\)，并横截于 \(\{y\}\)。因 \(M\) 紧，\(W=H^{-1}(y)\) 是紧一维带边界流形，边界为两个端点纤维。
+
+	这里给 \(M\times[0,1]\) 取 \(M\) 的方向在前、时间方向在后的乘积定向。给 \(W\) 的取向规定如下：先取 \(\mathrm{T}_yN\) 的正向基，选它们经 \(\mathrm{d}H\) 的任意提升，再接一条 \(\mathrm{T}W\) 的正向基，所得应是环境的正向基。这就是商方向在前、核方向在后的约定；改变提升只添加核方向，不改变取向。
+
+	在端点附近，\(H(x,t)=f_j(x)\)，故 \(\partial_t\) 张成核。提升目标正向基到 \(\mathrm{T}_xM\) 后，其相对 \(M\) 的符号为 \(\varepsilon_x(f_j)\)，所以 \(W\) 的正向切向量是 \(\varepsilon_x(f_j)\partial_t\)。按照外法向优先的边界定向，\(t=1\) 端点的符号是 \(\varepsilon_x(f_1)\)，\(t=0\) 端点的符号是 \(-\varepsilon_x(f_0)\)。第一卷第14章第4节的 Stokes 定理对 \(W\) 上常函数1给出
+	\[
+		0=\int_W\mathrm{d}1=\int_{\partial W}1
+		=d_y(f_1)-d_y(f_0).
+	\]
+	因而两个带符号计数相等。
+\end{proof}
 
 \subsection{同调定义与积分定义的比较}
 \label{g2:subsec:1601:02}
-待撰写
+
+第3章对球面定义的度可以原样推广到连通闭定向流形。这里“闭”仍表示紧且无边界。\cref{g2:thm:fundamental-class}给出由定向确定的正生成元 \([M]\in H_n(M;\mathbb Z)\) 与 \([N]\in H_n(N;\mathbb Z)\)。对连续映射 \(f:M\to N\)，唯一满足
+\begin{equation}\label{g2:eq:manifold-homological-degree}
+	f_*[M]=(\deg f)[N]
+\end{equation}
+的整数称为 \(f\) 的映射度。这个定义已说明同伦不变性；还须证明正则值计数和积分确实产生这一整数。
+
+\ProseParagraphBreak
+
+比较积分时，一个容易被略过的环节是：在基本类上对积分上链求值，为什么等于通常的流形积分？第7章给出了形式与奇异上同调的积分比较，下面用坐标盒中的基本类补足这一识别，也同时准备非紧情形所需的支集版本。
+
+\begin{lemma}\label{g2:lem:integration-fundamental-pairing}
+	设 \(M^n\) 为定向无边界光滑流形，\(n\ge1\)，\(\omega\in\Omega_c^n(M)\)。以 \([M]_{\mathrm{lf}}\) 表示与该定向对应的局部有限基本类，则
+	\[
+		\bigl\langle\mathcal I_{c,M}[\omega],[M]_{\mathrm{lf}}\bigr\rangle
+		=\int_M\omega.
+	\]
+	左端的求值先在包含 \(\operatorname{supp}\omega\) 的紧集上相对化；若 \(M\) 闭，它就是通常的上同调与基本类配对。
+\end{lemma}
+\begin{proof}
+	\cref{g2:thm:de-rham-support}把紧支形式的积分解释为紧支上同调类。若支集包含于紧集 \(K\)，这个上链在完全落入 \(M\setminus K\) 的单形上为零，因此可对 \([M]_K\) 求值；\cref{g2:prop:lf-fundamental-class}说明 \([M]_{\mathrm{lf}}\) 的相对化恰为 \([M]_K\)。
+
+	先设 \(\omega\) 的支集紧含于一张正向坐标盒的内部。在该图域内取一个内部包含支集的闭盒，将它按正向仿射单形剖分，所得有限光滑链 \(c\) 的边界避开支集。在支集的每一点，\(c\) 的局部同调值都是正生成元；由\cref{g2:lem:compact-localization}的唯一性，\(c\) 表示该支集上的基本类。于是积分上链的定义及有限可加性给出
+	\[
+		\langle I\omega,c\rangle=\sum_{\sigma\text{ 为盒中单形}}\int_\sigma\omega
+		=\int_M\omega.
+	\]
+	对于一般紧支 \(\omega\)，用有限张较小正向坐标盒覆盖支集，并以从属光滑单位分解写成有限和 \(\omega=\sum_\alpha\omega_\alpha\)，每项都紧支于相应盒内。对每项应用刚才的计算，再用配对和积分的线性性相加即得结论。
+\end{proof}
+
+\begin{theorem}[映射度比较定理]\label{g2:thm:degree-comparison}
+	设 \(M,N\) 为连通闭定向光滑 \(n\) 维流形，\(n\ge1\)，\(f:M\to N\) 光滑。则对每个正则值 \(y\in N\)，
+	\begin{equation}\label{g2:eq:degree-regular-value}
+		\deg f=\sum_{x\in f^{-1}(y)}\operatorname{sgn}\det(\mathrm{d}f_x).
+	\end{equation}
+	对每个光滑顶次形式 \(\omega\in\Omega^n(N)\)，还有
+	\begin{equation}\label{g2:eq:degree-integral}
+		\int_M f^*\omega=(\deg f)\int_N\omega.
+	\end{equation}
+	因此正则值计数与正则值的选择无关；任取 \(\int_N\eta=1\) 的顶次形式，积分 \(\int_Mf^*\eta\) 都等于上述同调度。
+\end{theorem}
+\begin{proof}
+	紧源使 \(f\) 固有，故 \(F=f^{-1}(y)\) 有限。先比较基本类在这些点附近的像。切除给出
+	\[
+		H_n(M,M\setminus F;\mathbb Z)
+		\cong\bigoplus_{x\in F}H_n(M,M\setminus\{x\};\mathbb Z),
+	\]
+	并把 \([M]\) 的限制送到各局部正生成元组成的向量。与第3章的局部度求和相同，空间对映射给出交换图
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			H_n(M;\mathbb Z) \arrow[r] \arrow[d,"f_*"'] & \displaystyle\bigoplus_{x\in F}H_n(M,M\setminus\{x\};\mathbb Z) \arrow[d,"\sum f_{*,x}"] \\
+			H_n(N;\mathbb Z) \arrow[r] & H_n(N,N\setminus\{y\};\mathbb Z).
+		\end{tikzcd}
+	\]
+	沿左、下两边，\([M]\) 变为 \((\deg f)[N]_y\)；沿上、右两边，\cref{g2:prop:regular-local-degree-sign}给出 \(\sum_{x\in F}\varepsilon_x(f)[N]_y\)。右侧每个局部箭头先经切除取到只含这一个原像点的小邻域，再由 \(f\) 的限制诱导。比较系数即得\eqref{g2:eq:degree-regular-value}。若 \(F\) 为空，上方相对群为零，同一论证给出度为零。
+
+	所有顶次形式都闭。由\cref{g2:lem:integration-fundamental-pairing,g2:prop:integration-naturality}及上同调求值的自然性，
+	\begin{align*}
+		\int_Mf^*\omega
+		&=\bigl\langle\mathcal I_M[f^*\omega],[M]\bigr\rangle
+		=\bigl\langle f^*\mathcal I_N[\omega],[M]\bigr\rangle\\
+		&=\bigl\langle\mathcal I_N[\omega],f_*[M]\bigr\rangle
+		=(\deg f)\int_N\omega.
+	\end{align*}
+	最后，在一张正向坐标图内取非负、非零的紧支顶次形式，再除以其正积分，就得到 \(\int_N\eta=1\) 的形式。因此积分的倍数唯一，且已由基本类证明为整数。
+\end{proof}
+
+这个证明补全了第一卷第14章第5节预先陈述的次数积分公式。维数0时，连通闭流形只有一个点，基本类记录该点的定向符号，积分就是带符号求值，同一公式直接成立。积分表达适用于所有顶次形式，包括积分为零的形式；只有把度写成两个积分之比时，才要求分母非零。局部微分给出的正负号决定同调中的整数，而积分把这个整数读成拉回后的总量。正则值与积分的比较也见\cite[第457--459页，定理17.35及命题17.36]{Lee2012Smooth}。
 
 \subsection{固有映射和非紧情形的条件}
 \label{g2:subsec:1601:03}
-待撰写
+
+连通非紧流形的普通顶次同调为零，见\cref{g2:prop:noncompact-top-homology}。因此把\eqref{g2:eq:manifold-homological-degree}中的普通基本类照搬过去，会失去要计数的信息。第6章的局部有限链允许沿整个流形延伸，只要求每个紧集遇到有限项；其基本类仍在每一点具有正的局部值。
+
+\begin{definition}\label{g2:def:proper-manifold-degree}
+	设 \(M,N\) 为连通定向无边界光滑 \(n\) 维流形，\(n\ge1\)，\(f:M\to N\) 为固有连续映射。由
+	\[
+		f_*[M]_{\mathrm{lf}}=(\deg f)[N]_{\mathrm{lf}}
+	\]
+	确定的整数称为 \(f\) 的映射度。这里使用整数系数的局部有限同调。
+\end{definition}
+
+这个定义的两个依据需要同时保留。\cref{g2:thm:poincare-duality-locally-finite}在次数0给出 \(H_n^{\mathrm{lf}}(N;\mathbb Z)\cong H^0(N;\mathbb Z)=\mathbb Z\)，基本类对应1。另一方面，\cref{g2:prop:support-functoriality}中的固有性使推前有定义：目标紧集 \(K\) 的逆像紧，故原局部有限链只有有限条单形可能在推前后遇到 \(K\)。若 \(M,N\) 都闭，这一定义就是前面的普通同调度。
+
+\begin{theorem}[固有映射的度公式]\label{g2:thm:proper-degree-formulas}
+	设 \(f:M^n\to N^n\) 为连通定向无边界光滑流形间的固有光滑映射，\(n\ge1\)。对任一正则值 \(y\) 及任一紧支顶次形式 \(\omega\in\Omega_c^n(N)\)，有
+	\[
+		\deg f=\sum_{x\in f^{-1}(y)}\operatorname{sgn}\det(\mathrm{d}f_x),
+		\qquad \int_Mf^*\omega=(\deg f)\int_N\omega.
+	\]
+	特别地，非零度强迫 \(f\) 满射。
+\end{theorem}
+\begin{proof}
+	正则纤维紧且离散，因而有限。将局部有限基本类相对化到 \(f^{-1}(y)\) 与 \(\{y\}\)，得到与\cref{g2:thm:degree-comparison}相同的交换图；各局部值仍是正生成元，故得到符号求和公式。
+
+	固有性保证 \(\operatorname{supp}f^*\omega\subset f^{-1}(\operatorname{supp}\omega)\) 紧。由\cref{g2:thm:de-rham-support}的固有拉回相容性，\(\mathcal I_{c,M}[f^*\omega]=f^*\mathcal I_{c,N}[\omega]\)。紧支上链与局部有限链的求值满足
+	\[
+		\langle f^*a,c\rangle=\langle a,f_*c\rangle;
+	\]
+	两边实际都只涉及支集附近的有限项，逐单形就是同一项。再用\cref{g2:lem:integration-fundamental-pairing}和度的定义，得到积分公式。若 \(y\) 不在像内，它自动是正则值，空和公式便给出 \(\deg f=0\)。
+\end{proof}
+
+同伦也须保留无穷远处的控制。设 \(H:M\times[0,1]\to N\) 是连续同伦；称它为固有同伦，是指这个整体映射固有。它使两个端点在局部有限同调上的推前相同。为验证这一点，对局部有限链逐项使用\cref{g2:thm:singular-homotopy-invariance}的棱柱算子。若某个输出棱柱遇到目标紧集 \(K\)，原单形必遇到紧集
+\[
+	\operatorname{pr}_M\bigl(H^{-1}(K)\bigr).
+\]
+这样的原单形只有有限条，每条棱柱又只剖成有限个单形，所以棱柱算子仍局部有限，原来的等式 \(\partial P+P\partial=H_{1\#}-H_{0\#}\) 继续成立。因此固有同伦保持映射度。
+
+\begin{example}\label{g2:exm:proper-slices-not-proper-homotopy}
+	对 \(0\le t\le1\) 令 \(H_t:\mathbb R\to\mathbb R\)、\(H_t(x)=x+t x^2\)。每个固定时刻的映射都固有：\(t=0\) 时为恒等，\(t>0\) 时二次项使函数在两端趋于正无穷。值0对每张切片都是正则值。\(t=0\) 时只有原像0、符号为正，故度为1；\(t>0\) 时原像为 \(0,-1/t\)，导数分别为 \(1,-1\)，故度为0。
+
+	整体同伦并不固有，因为 \(H^{-1}(0)\) 包含 \((-1/t,t)\)，当 \(t\downarrow0\) 时这些点逃向无穷远。两条相反符号的分支中有一条从无穷远进入，正好说明“每张切片固有”不能代替“整个同伦固有”。
+\end{example}
+
+连映射本身都不固有时，正则值计数也可能随位置改变。例如 \(f:\mathbb R\to\mathbb R\)、\(f(x)=e^x\)，每个正数有一个符号为正的原像，每个负数没有原像。其像未覆盖零点附近的负半轴，而趋向0的原像跑向负无穷。积分虽对某些拉回仍收敛，也不能据此指定统一的度：\(\int_{\mathbb R}f^*(a(y)\,\mathrm{d}y)=\int_0^\infty a(y)\,\mathrm{d}y\)，随紧支函数 \(a\) 在正、负半轴间的分布变化，无法等于一个固定整数乘 \(\int_{\mathbb R}a(y)\,\mathrm{d}y\)。
 
 \subsection{复合公式及典型计算}
 \label{g2:subsec:1601:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+\begin{proposition}\label{g2:prop:manifold-degree-laws}
+	设 \(M,N,P\) 为连通定向无边界光滑 \(n\) 维流形，\(n\ge1\)，\(f:M\to N\)、\(g:N\to P\) 固有连续。则
+	\[
+		\deg(g\circ f)=(\deg g)(\deg f),\qquad\deg(\operatorname{id}_M)=1.
+	\]
+	保定向微分同胚的度为1，反定向微分同胚的度为 \(-1\)。反转源或目标其中一端的定向使度变号，同时反转两端则不变。
+\end{proposition}
+\begin{proof}
+	固有映射的复合仍固有，局部有限推前满足复合律，所以
+	\[
+		(gf)_*[M]_{\mathrm{lf}}
+		=g_*\bigl((\deg f)[N]_{\mathrm{lf}}\bigr)
+		=(\deg f)(\deg g)[P]_{\mathrm{lf}}.
+	\]
+	恒等映射保持基本类。微分同胚是固有映射，每个目标点只有一个正则原像，符号求和公式给出 \(\pm1\)。定向反转使对应基本类乘以 \(-1\)，代入定义即得最后一项。
+\end{proof}
+
+若 \(p:M\to N\) 是连通定向流形间的 \(r\) 层光滑覆盖，且局部微分保持定向，则 \(\deg p=r\)；若处处反向，则 \(\deg p=-r\)。有限层覆盖在流形间固有：目标紧集可由有限个闭包位于均匀覆盖邻域的小坐标块覆盖，每块的全部原像是有限个紧块。局部符号在连通源上恒定，故上面两个结论直接由每个纤维的 \(r\) 项求和得到。圆周 \(z\mapsto z^k\) 的度 \(k\) 是这一计算的一维例子。
+
+\begin{example}\label{g2:exm:torus-integer-matrix-degree}
+	令 \(T^n=\mathbb R^n/\mathbb Z^n\)，取标准定向。对整数矩阵 \(A\in\operatorname{Mat}_{n\times n}(\mathbb Z)\)，映射
+	\[
+		f_A([x])=[Ax]
+	\]
+	良定义。形式 \(\eta=\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n\) 在整数平移下不变，因而下降到环面，且 \(\int_{T^n}\eta=1\)。直接计算 \(f_A^*\eta=(\det A)\eta\)，所以
+	\[
+		\deg f_A=\det A.
+	\]
+	例如 \(A=\begin{pmatrix}2&1\\0&-3\end{pmatrix}\) 给出度 \(-6\)。若 \(\det A\ne0\)，每个点都是正则点，各原像点的符号均为 \(\operatorname{sgn}\det A\)，所以符号求和公式说明每个纤维有 \(|\det A|\) 个点；若 \(\det A=0\)，积分拉回为零，度也为零。行列式同时包含覆盖片数与方向，两者在这一模型中恰好合为一个整数。
+\end{example}
+
+\begin{example}\label{g2:exm:antipodal-differential-degree}
+	给 \(S^n\subset\mathbb R^{n+1}\) 取外法向优先定向，对径映射 \(a(x)=-x\) 的度为 \((-1)^{n+1}\)，与第3章的同调计算相同。若 \((x,v_1,\ldots,v_n)\) 是环境中的正向基，映射后的外法向是 \(-x\)，切向量为 \(-v_i\)。整个 \(n+1\) 元组乘以 \(-1\)，故其符号为 \((-1)^{n+1}\)。这就是 \(\mathrm{d}a_x\) 相对于源、目标球面定向的符号。直接把它看作“\(n\) 个切向量都变负”会漏掉目标点的外法向也已改变这一事实。
+\end{example}
+
+度不等于未经加权的覆盖次数。例如 \(p(x)=x^3-x\) 是实线到实线的固有映射；在正则值0上有三个原像 \(-1,0,1\)，导数符号为 \(+,-,+\)，因此度为1。在充分大的正则值上只有一个原像，符号仍为正。临界值两侧原像数变化，代数和却保持不变。

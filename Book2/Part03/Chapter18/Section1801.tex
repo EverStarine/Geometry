@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 18.1 梯度流的局部动力学
 % 纲要位置：几何学计划纲要.md，第 1699 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,266 @@
 \section{梯度流的局部动力学}
 \label{g2:sec:1801}
 
-待撰写
+上一章的胞腔边界由把手的附着映射定义。若要用下降轨线直接计算边界，首先必须回答：从一个临界点出发的轨线有多少自由度，能够流向另一个临界点的条件又消去多少自由度？稳定与不稳定流形给出这两组参数；横截性保证相交后的维数等于预期值。最后还要删去沿同一条轨线移动时间原点的一个参数。
 
 \subsection{双曲临界点和稳定流形定理}
 \label{g2:subsec:1801:01}
-待撰写
+
+在 Euclid 空间中，线性方程 \(\dot z=Az\) 的解为 \(e^{tA}z(0)\)。特征值实部为负的方向在正时间收缩，实部为正的方向在负时间收缩。若没有实部为零的特征值，两类方向便有严格的指数间隔。
+
+\begin{definition}\label{g2:def:hyperbolic-zero}
+	设光滑向量场 \(X\) 在 \(p\) 处为零。若线性化 \(\mathrm D_pX:\mathrm T_pM\to\mathrm T_pM\) 的复特征值都不在虚轴上，就称 \(p\) 为\term[shuangqulingdian]{双曲零点}[hyperbolic zero]。实部为负、为正的广义特征空间分别记为 \(E^s_p,E^u_p\)，称为稳定与不稳定子空间。
+\end{definition}
+
+线性化在零点处按共轭变换，与第16章使用的 \(\mathrm D_pX\) 是同一对象。对负梯度 \(X=-\operatorname{grad}_g f\)，在 Morse 临界点处有
+\[
+	\mathrm D_pX=-G^{-1}H,
+\]
+其中 \(G\) 为正定度量矩阵，\(H\) 为 Hessian 矩阵。它与对称矩阵 \(-G^{-1/2}HG^{-1/2}\) 相似，所以全部特征值实且非零。若临界点的 Morse 指标为 \(\lambda\)，正特征值有 \(\lambda\) 个，负特征值有 \(n-\lambda\) 个。
+
+\begin{theorem}[局部稳定流形定理]\label{g2:thm:hyperbolic-stable-manifold}
+	设 \(X\) 是光滑流形上的光滑向量场，\(p\) 为双曲零点。则在 \(p\) 的邻域内存在光滑嵌入圆盘 \(W^s_{\mathrm{loc}}(p)\)、\(W^u_{\mathrm{loc}}(p)\)，分别切于 \(E^s_p,E^u_p\)。充分靠近 \(p\)、在所有正时间内留在该邻域的轨线，恰从局部稳定流形出发，并指数趋于 \(p\)；负时间的对应结论对局部不稳定流形成立。这里的“局部”允许缩小圆盘及用于控制轨线的邻域。
+\end{theorem}
+\begin{proof}
+	给出稳定流形的构造；将时间反向便得到另一部分。取以 \(p\) 为零的坐标，写
+	\[
+		X(z)=Az+R(z),\qquad R(0)=0,\qquad \mathrm DR(0)=0.
+	\]
+	记 \(P_s,P_u\) 为沿不变分解 \(E^s\oplus E^u\) 的投影。由矩阵指数的 Jordan 形式，可选 \(a>0,C\ge1\)，使
+	\[
+		\lVert e^{tA}P_s\rVert\le Ce^{-at},\qquad
+		\lVert e^{-tA}P_u\rVert\le Ce^{-at}\quad(t\ge0).
+	\]
+	多项式因子可吸收到稍慢的指数中。将 \(R\) 乘以小球上的截断函数，可在整个坐标空间得到全局 Lipschitz 函数，其 Lipschitz 常数 \(L\) 任意小，且在更小球内仍是原来的 \(R\)。这里 \(\mathrm DR(0)=0\) 同时控制 \(R\) 的导数和截断产生的项。
+
+	固定 \(0<\beta<a\)，考虑连续路径的完备赋范空间
+	\[
+		\mathcal B_\beta=
+		\left\{z:[0,\infty)\to E^s\oplus E^u:
+		\lVert z\rVert_\beta=\sup_{t\ge0}e^{\beta t}|z(t)|<\infty\right\}.
+	\]
+	给定稳定初值 \(\xi\in E^s\)，把寻找轨线改写成寻找下式的不动点：
+	\begin{equation}\label{g2:eq:stable-integral-equation}
+		\begin{aligned}
+			(\mathcal T_\xi z)(t)
+			={}&e^{tA}\xi+\int_0^t e^{(t-s)A}P_sR(z(s))\,\mathrm ds\\
+			&-\int_t^\infty e^{(t-s)A}P_uR(z(s))\,\mathrm ds.
+		\end{aligned}
+	\end{equation}
+	第一项把稳定初值向前推进；最后一项从未来施加“没有增长分量”的条件。这正是决定不稳定初值所需的额外约束。两项积分分别满足
+	\[
+		\lVert\mathcal T_\xi z-\mathcal T_\xi w\rVert_\beta
+		\le CL\left(\frac1{a-\beta}+\frac1{a+\beta}\right)
+		\lVert z-w\rVert_\beta.
+	\]
+	例如第一项积分的加权估计为
+	\[
+		e^{\beta t}\int_0^t Ce^{-a(t-s)}L e^{-\beta s}\,\mathrm ds
+		\le \frac{CL}{a-\beta}.
+	\]
+	选 \(L\) 使总常数 \(\kappa<1\)，逐次迭代 \(\mathcal T_\xi\) 即得唯一不动点 \(z_\xi\)，并有
+	\[
+		\lVert z_\xi\rVert_\beta\le\frac{C}{1-\kappa}|\xi|.
+	\]
+	取 \(\xi\) 足够小，这条路径始终处在原向量场未被截断的球中。对积分式求导可得 \(\dot z_\xi=X(z_\xi)\)，而 \(P_sz_\xi(0)=\xi\)。于是初值集合是图像
+	\[
+		\xi\longmapsto \xi+h(\xi),\qquad
+		h(\xi)=-\int_0^\infty e^{-sA}P_uR(z_\xi(s))\,\mathrm ds.
+	\]
+
+	还需说明图像光滑，而不只连续。截断后 \(R\) 的各阶导数有界；在上述加权范数中，对积分逐次求导的估计仍由指数积分控制。\(\mathrm D_z\mathcal T_\xi\) 的算子范数小于 \(\kappa\)，因此
+	\[
+		(I-\mathrm D_z\mathcal T_\xi)^{-1}
+		=\sum_{j=0}^\infty(\mathrm D_z\mathcal T_\xi)^j
+	\]
+	一致收敛。对不动点等式作差商，再移项乘上这个逆，便得 \(z_\xi\) 对 \(\xi\) 的一阶导数；迭代同一步骤得到所有阶导数及其连续性。故 \(h\) 光滑。由于 \(\mathrm DR(0)=0\)，在零路径处求导得到 \(\mathrm Dh(0)=0\)，图像切于 \(E^s\)。
+
+	最后验证刻画的唯一性。若原方程的一条正向轨线始终留在足够小球内，它是有界路径。变参数公式在不稳定分量上从 \(t\) 积分至 \(T\)，再令 \(T\to\infty\)；因 \(e^{(t-T)A}P_uz(T)\to0\)，得到\eqref{g2:eq:stable-integral-equation}。同一算子在普通有界连续路径范数（即 \(\beta=0\)）中也为收缩，可预先将 \(L\) 取得同时满足这一要求。因此该有界路径必等于已构造的 \(z_\xi\)，从而指数衰减并从图像出发。流的唯一性保证图像在轨线仍处于局部邻域期间不变。这完成了稳定流形的构造与刻画。
+\end{proof}
+
+非线性稳定流形一般不是线性子空间。例如 \(\dot u=u+v^2,\ \dot v=-v\) 的稳定流形为 \(u=-v^2/3\)，它在零处切于 \(v\) 轴；后面的习题将直接解出这一图像。线性化确定切方向，积分方程则决定曲面本身怎样弯曲。
 
 \subsection{稳定、不稳定流形的维数}
 \label{g2:subsec:1801:02}
-待撰写
+
+本章在闭流形上进行计数。紧性保证光滑向量场的流 \(\Phi_t\) 对所有 \(t\in\mathbb R\) 存在，这里使用第一卷第13章第2节的紧流形完备性。对零点 \(p\)，定义
+\[
+	W^s(p)=\{x:\lim_{t\to+\infty}\Phi_t(x)=p\},\qquad
+	W^u(p)=\{x:\lim_{t\to-\infty}\Phi_t(x)=p\}.
+\]
+它们分别称为\term[wendingliuxing]{稳定流形}[stable manifold]与\term[buwendingliuxing]{不稳定流形}[unstable manifold]。\symidx{\(W^s(p),W^u(p)\)：稳定与不稳定流形}
+
+\begin{proposition}\label{g2:prop:morse-stable-unstable}
+	设 \(M^n\) 为闭光滑流形，\(f:M\to\mathbb R\) 为 Morse 函数，\(X=-\operatorname{grad}_g f\)。对指标为 \(\lambda(p)\) 的临界点 \(p\)，\(W^s(p)\)、\(W^u(p)\) 具有自然的单射浸入流形结构，维数分别为 \(n-\lambda(p)\)、\(\lambda(p)\)。在 \(p\) 处，它们的切空间分别是 \(\mathrm D_pX\) 的稳定与不稳定子空间。
+\end{proposition}
+\begin{proof}
+	上一小节已经证明 \(p\) 双曲，并计算了两种线性子空间的维数。局部稳定图像与其各个向后流像
+	\[
+		\Phi_{-t}(W^s_{\mathrm{loc}}(p)),\qquad t\ge0,
+	\]
+	覆盖 \(W^s(p)\)：趋于 \(p\) 的轨线在充分大时间后留在局部邻域。局部图像上的稳定坐标满足 \(\dot\xi=A_s\xi+O(|\xi|^2)\)。正定二次型
+	\[
+		Q(\xi)=\int_0^\infty |e^{tA_s}\xi|^2\,\mathrm dt
+	\]
+	沿该方程的导数为 \(-|\xi|^2+O(|\xi|^3)\)，所以足够小的 \(Q\) 子水平椭球给出正向不变的局部圆盘。因而可只取整数时间 \(t=0,1,2,\ldots\)，得到递增的圆盘族。相邻圆盘的重叠转换由光滑流给出，其微分可逆；因此这些图拼成同维光滑流形，包含到 \(M\) 的映射为单射浸入。对反向流作相同构造得到 \(W^u(p)\)。切空间与维数来自局部稳定流形定理。
+\end{proof}
+
+为使断裂点附近的粘合能够写成具体方程，以下选择在 Morse 坐标中具有精确线性表达的下降场。先在\cref{g2:thm:morse-approximation}给出的 Morse 函数上，用\cref{g2:prop:distinct-morse-critical-values}分开临界值。
+
+\begin{definition}\label{g2:def:normalized-morse-data}
+	设 \(M\) 为闭光滑流形，\(f\) 为临界值互异的 Morse 函数。若光滑向量场 \(X\) 满足 \(Xf<0\) 于非临界点，并且在每个临界点的某张 Morse 坐标中有
+	\begin{equation}\label{g2:eq:normalized-negative-gradient}
+		f=f(p)-|u|^2+|v|^2,\qquad
+		X(u,v)=(2u,-2v),
+		\quad u\in\mathbb R^{\lambda(p)},\ v\in\mathbb R^{n-\lambda(p)},
+	\end{equation}
+	就把 \((f,X)\) 称为本章的正规化 Morse 数据。
+\end{definition}
+
+这种数据总能选到。取各临界点互不相交的 Morse 坐标邻域，在其中规定 Euclid 度量，再用单位分解与外部度量拼接，保持更小邻域内的度量不变。所得 \(X=-\operatorname{grad}_g f\) 满足\eqref{g2:eq:normalized-negative-gradient}。反过来，定义中的每个 \(X\) 也确实是某个光滑度量的负梯度：在非临界区域令 \(\alpha=-\mathrm df\)，则 \(\alpha(X)>0\)，并有分解
+\[
+	\mathrm TM=\mathbb RX\oplus\ker\alpha.
+\]
+在 \(\ker\alpha\) 上任选正定内积 \(h\)，规定
+\[
+	g(aX+v,bX+w)=ab\,\alpha(X)+h(v,w).
+\]
+于是 \(g(X,\cdot)=\alpha=-\mathrm df\)。临界点附近的 Euclid 度量满足同一等式，用单位分解拼接时此线性等式仍保持，得到所需全局光滑度量。
+
+\ProseParagraphBreak
+
+对正规化数据，局部稳定与不稳定圆盘分别为 \(u=0\)、\(v=0\)，轨线的表达为
+\[
+	u(t)=e^{2t}u(0),\qquad v(t)=e^{-2t}v(0).
+\]
+这项选择将高阶项放到临界点以外，后面可直接用停留时间 \(T\) 与参数 \(e^{-2T}\) 描述经过临界邻域的长轨线。第18.4节将通过延拓映射比较不同的数据选择。
+
+\ProseParagraphBreak
+
+此时全局稳定流形还可明确参数化为 \(\mathbb R^{n-\lambda(p)}\)。取局部稳定球面 \(|v|=\varepsilon\)，对 \(v\ne0\) 定义
+\[
+	\iota_s(v)=\Phi_{-\frac12\log(|v|/\varepsilon)}
+	\left(0,\varepsilon\frac{v}{|v|}\right),\qquad \iota_s(0)=p.
+\]
+当 \(|v|\le\varepsilon\) 时，这就是局部坐标点 \((0,v)\)；当 \(|v|>\varepsilon\) 时，则沿完整流向后延拓。每条非恒定稳定轨线恰好经过局部球面一次，故它给出全局一一参数化，逆映射由光滑的到达时间给出。零维情形直接为一个点。反向时间同样参数化 \(W^u(p)\cong\mathbb R^{\lambda(p)}\)。这里采用的是前述自然浸入流形结构；特别地，这两个流形都可缩，后面可以在它们上面连续选择方向。
 
 \subsection{Morse–Smale 扰动}
 \label{g2:subsec:1801:03}
-待撰写
+
+从 \(p\) 出发并流向 \(q\) 的非恒定轨线，其每个点都在 \(W^u(p)\cap W^s(q)\) 中。两个流形若相切，交集可能有多余维数，计数也会对扰动不稳定。因此需要第14章的横截条件。
+
+\begin{definition}\label{g2:def:morse-smale-data}
+	闭光滑流形上的正规化 Morse 数据 \((f,X)\) 满足下列横截性时，称它满足\term[Morse-Smale tiaojian]{Morse--Smale 条件}[Morse--Smale condition]：
+	\[
+		W^u(p)\pitchfork W^s(q)\qquad
+		\text{对全部临界点 }p,q,
+	\]
+	条件在相交点处的含义是两切空间之和为整个 \(\mathrm T_xM\)；对浸入流形用其上述自然流形结构判断。
+\end{definition}
+
+\begin{theorem}[Morse--Smale 扰动]\label{g2:thm:morse-smale-existence}
+	设 \((f,X_0)\) 是闭光滑流形上的正规化 Morse 数据，并在各临界点选定更小的、两两不交的闭坐标邻域。则 \(X_0\) 的每个 \(C^\infty\) 邻域中都有光滑向量场 \(X\)，使 \((f,X)\) 满足 Morse--Smale 条件，且 \(X=X_0\) 于这些闭邻域的某个固定邻域。函数 \(f\) 及全部临界点均保持不变。
+\end{theorem}
+\begin{proof}
+	把问题化为有限时间的流映射横截性，这样每次扰动只需有限个参数。对每个临界点 \(p\)，在固定线性邻域内部取局部出球面
+	\[
+		S_p^-=\{(u,0):|u|=\varepsilon_p\},
+	\]
+	维数为 \(\lambda(p)-1\)；对每个 \(q\) 取入球面
+	\[
+		S_q^+=\{(0,v):|v|=\varepsilon_q\},
+	\]
+	维数为 \(n-\lambda(q)-1\)。空维球面取空集。任何从 \(p\) 到 \(q\) 的非恒定轨线，都恰好经过这两个球面一次。考察
+	\[
+		E_X:S_p^-\times(0,\infty)\longrightarrow M,\qquad
+		E_X(a,T)=\Phi_T^X(a).
+	\]
+	条件 \(E_X\pitchfork S_q^+\) 等价于 \(W^u(p)\pitchfork W^s(q)\)：\(E_X\) 的微分包含不稳定方向及流方向，而在入球面上
+	\(\mathrm T W^s(q)=\mathrm T S_q^+\oplus\mathbb RX\)。
+	同一流方向已经在 \(E_X\) 的像内，故两种切空间满秩条件相同。\(p=q\) 的情形在临界点由正、负子空间互补自动成立，且严格下降排除了非恒定同宿轨线。
+
+	先只要求在紧集 \(K_N=S_p^-\times[1/N,N]\) 上横截，\(N\) 为正整数。若 \(E_{X_0}(a,T)\in S_q^+\)，该连接段在两临界邻域之间必经过一个允许扰动的小流盒。对支于该流盒的场 \(Y\)，终点关于 \(X_\theta=X_0+\theta Y\) 的一阶变化为
+	\begin{equation}\label{g2:eq:flow-endpoint-variation}
+		\left.\frac{\partial}{\partial\theta}\right|_0
+		\Phi_T^{X_\theta}(a)
+		=\int_0^T
+		\mathrm d\Phi_{T-s}^{X_0}\bigl(Y(\Phi_s^{X_0}(a))\bigr)\,\mathrm ds.
+	\end{equation}
+	这由第一卷第13章第1节的参数光滑依赖及其变分方程得到：对流方程求参数导数，再用基本解矩阵积分。选一小段时间上的光滑截断函数，其积分为一；对任意目标向量 \(w\in\mathrm T_{\Phi_T(a)}M\)，沿这段轨线规定
+	\[
+		Y(\Phi_s(a))=\rho(s)\,
+		(\mathrm d\Phi_{T-s})^{-1}w.
+	\]
+	用流盒坐标横向延拓并加截断，便得到允许的光滑场，使\eqref{g2:eq:flow-endpoint-variation}恰等于 \(w\)。因 \(f\) 严格下降，流盒可选在一个小高度带中，该轨线不会再次经过其支集。因此有限个这样的场就能在此约束点补足全部终点方向。
+
+	约束点集 \(K_N\cap E_{X_0}^{-1}(S_q^+)\) 紧。取有限覆盖，收集上述有限个场 \(Y_1,\ldots,Y_L\)，得到
+	\[
+		(a,T,\theta)\longmapsto
+		\Phi_T^{X_0+\sum_i\theta_iY_i}(a).
+	\]
+	在足够小的参数球内，它在 \(K_N\) 附近与 \(S_q^+\) 横截。原来避开 \(S_q^+\) 的其余紧部分仍避开它，因 \(S_q^+\) 闭。由\cref{g2:thm:parametric-transversality}，任意小参数中都有使切片在 \(K_N\) 上横截的选择。充分小的场扰动还保持 \(Xf<0\)：固定临界邻域之外是紧集，原来的 \(-X_0f\) 在那里有正下界。临界邻域内的场完全未改。
+
+	现在同时实现全部条件。临界点对只有有限多个，而 \(N=1,2,\ldots\)，故可把这些紧集横截要求排成可数序列。每项要求由刚才的构造在允许场空间中稠密；由有限时间流的一阶连续依赖及\cref{g2:prop:transversality-open-on-compact}，它又是开条件。逐项选光滑场 \(X_j\)，使第 \(j\) 项及先前各项成立，并把第 \(j\) 次改动的 \(C^j\) 范数取得小于 \(2^{-j}\) 倍的指定容差。每次再为已满足的有限个条件选择保持它们的开邻域，分配后续改动的总误差小于这些邻域的容差。还把所有改动的总 \(C^0\) 误差限制在保持下降条件的界内，并满足最初给定的 \(C^\infty\) 邻域中的有限阶控制。
+
+	于是 \(X_j\) 在每个 \(C^r\) 范数中收敛；在有限坐标覆盖上逐阶取极限，得到光滑 \(X\)。全部紧集横截条件由各自预留的余量保持，固定邻域内的表达也未变。任意有限时间的连接轨线属于某个 \(K_N\)，所以所有不稳定与稳定流形都横截。这便得到所需的 \(X\)。
+\end{proof}
+
+这里的扰动改变临界点之间的轨线走向，同时完整保留临界点附近的线性模型。这两种控制将在后面同时使用：横截性给粘合方程的可逆线性部分，局部线性模型给小参数的精确表达。
 
 \subsection{轨线空间及平移群商}
 \label{g2:subsec:1801:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+对不同临界点 \(p,q\)，设 \(\widetilde{\mathcal M}(p,q)\) 为满足
+\[
+	\dot\gamma(t)=X(\gamma(t)),\qquad
+	\lim_{t\to-\infty}\gamma(t)=p,\qquad
+	\lim_{t\to+\infty}\gamma(t)=q
+\]
+的非恒定参数化轨线。由流的唯一性，取值 \(\gamma\mapsto\gamma(0)\) 将其识别为 \(W^u(p)\cap W^s(q)\)。时间平移
+\[
+	(\tau\cdot\gamma)(t)=\gamma(t+\tau)
+\]
+只改变零时刻，不改变下降路径。将这一冗余除去，得到\term[guixianmolikongjian]{轨线模空间}[moduli space of trajectories]
+\[
+	\mathcal M(p,q)=\widetilde{\mathcal M}(p,q)/\mathbb R.
+\]
+本章的计数都在这个商空间中进行。\symidx{\(\mathcal M(p,q)\)：无参数下降轨线空间}
+
+\begin{proposition}\label{g2:prop:trajectory-quotient}
+	设 \((f,X)\) 是闭光滑 \(n\) 维流形上的正规化 Morse--Smale 数据，\(p\ne q\) 为临界点。若 \(\mathcal M(p,q)\ne\varnothing\)，则 \(f(p)>f(q)\)、\(\lambda(p)>\lambda(q)\)，而 \(\mathcal M(p,q)\) 是维数
+	\[
+		\dim\mathcal M(p,q)=\lambda(p)-\lambda(q)-1
+	\]
+	的光滑流形。任取 \(f(q)<a<f(p)\) 中的正则值，取唯一交点给出微分同胚
+	\begin{equation}\label{g2:eq:trajectory-level-section}
+		\mathcal M(p,q)\cong
+		W^u(p)\cap W^s(q)\cap f^{-1}(a).
+	\end{equation}
+	时间平移作用自由且固有。
+\end{proposition}
+\begin{proof}
+	非恒定轨线上 \(\frac{\mathrm d}{\mathrm dt}f(\gamma(t))=Xf<0\)，所以两端临界值严格下降。\cref{g2:thm:transverse-preimage}的交集维数公式给出
+	\[
+		\dim\widetilde{\mathcal M}(p,q)
+		=\lambda(p)+(n-\lambda(q))-n
+		=\lambda(p)-\lambda(q).
+	\]
+	非零流向量 \(X\) 同时切于这两张流形，故交集的非空维数至少为一，得到指标严格下降。沿交集，\(\mathrm df(X)<0\)，所以 \(f=a\) 再切去一维。
+
+	轨线上 \(f\) 连续且严格递减，两端值分别为 \(f(p),f(q)\)，故每条轨线恰有一个点在水平 \(a\) 上。记这个截面为 \(S\)。由到达方程 \(f(\Phi_t(x))=a\) 及其时间导数 \(Xf\ne0\)，隐函数定理给出到达时间对 \(x\) 的光滑依赖。因此
+	\[
+		S\times\mathbb R\longrightarrow\widetilde{\mathcal M}(p,q),
+		\qquad(z,t)\longmapsto\Phi_t(z)
+	\]
+	为微分同胚；逆映射把一个点送回其唯一截面点，并记录所用时间。于是平移作用对应第二因子上的普通平移，既自由又固有：若初、末两点在两个指定紧集中，它们的时间坐标之差有界，截面坐标也在紧集中，作用映射的相应原像为紧集。取商就得到 \(S\) 的光滑结构及\eqref{g2:eq:trajectory-level-section}。换另一正则水平时，过渡映射是流的首次到达映射，仍光滑，故这个结构不依赖所选水平。
+\end{proof}
+
+对于不同临界点，模空间非空的必要条件是指标至少下降一。指标相差一时，商空间为零维；相差二时，它为一维。零维目前只说明每条轨线在附近孤立，是否总共有有限条还要使用下一节的断裂紧性。
+
+\begin{example}\label{g2:exm:sphere-meridian-moduli}
+	标准 \(S^n\) 的高度函数只有最高点 \(p\) 与最低点 \(q\)。其负梯度轨线是由北向南的子午线；除去时间平移后，每条子午线由赤道上的唯一交点确定。因此
+	\[
+		\mathcal M(p,q)\cong S^{n-1}.
+	\]
+	对 \(n=1\)，它是两条半圆轨线组成的两点集；对 \(n=2\)，它是一圈轨线。将度量在极点附近改成正规化度量，并保持径向方向，可保留这组无参数轨线。这个例子也显示，若不除去平移，即使只有一条几何路径，仍会出现一整条 \(\mathbb R\) 的参数。
+\end{example}

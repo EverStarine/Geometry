@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 11.5 有限生成与进一步方法
 % 纲要位置：几何学计划纲要.md，第 1460 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,17 +16,179 @@
 \section{有限生成与进一步方法}
 \label{g2:sec:1105}
 
-待撰写
+谱序列也能回答比“这个群到底是什么”更粗、却更普遍的问题。例如，有限 CW 复形的同调由有限矩阵计算，但它的高阶同伦群并没有同样直接的矩阵表示。能否至少证明每个同伦群只需有限多个生成元？这一节用谱序列把有限生成性在纤维、基底与总空间之间传递，再用第9章的胞腔附着将同伦群逐层分离出来。以下未注明的同调均取整数系数。
 
 \subsection{Serre 类的最低语言}
 \label{g2:subsec:1105:01}
-待撰写
+
+一个页面上的群经取核、取像和取商，成为下一页的群；目标群又是有限个极限页项的逐次扩张。因此，适合被谱序列追踪的性质，应当在这几种操作下保持。
+
+\begin{definition}[Serre 类]\label{g2:def:serre-class}
+	阿贝尔群的一类 \(\mathcal C\)，若包含零群，且对任意短正合列 \(0\to A\to B\to C\to0\) 都有
+	\[
+		B\in\mathcal C\quad\Longleftrightarrow\quad A,C\in\mathcal C,
+	\]
+	就称为一个\term[Serre lei]{Serre 类}[Serre class]。这等价于对取子群、取商及有限次扩张封闭。若一个同态的核与余核都属于 \(\mathcal C\)，便称它为模 \(\mathcal C\) 的同构。
+\end{definition}
+
+有限生成阿贝尔群组成一个 Serre 类，记为 \(\mathcal C_{\mathrm{fg}}\)。其子群有限生成可由整数自由模的子模定理及有限生成群分解推出，商群显然由生成元的像生成。对扩张，提升商群的一组有限生成元，再加入子群的一组有限生成元，就得到中间群的有限生成集。有限阿贝尔群也组成一个 Serre 类：短正合列中中间群的阶是两端群阶的乘积。
+
+\ProseParagraphBreak
+
+Serre 类的定义本身没有规定张量积与 Tor 的行为。使用第二页时，还须核对这些系数运算。对 \(\mathcal C_{\mathrm{fg}}\)，将两群写成有限个无限循环群与有限循环群的直和，再用\cref{g2:prop:cyclic-ext-tor}，可知它们的张量积和 \(\operatorname{Tor}_1^{\mathbb Z}\) 仍有限生成。于是当 \(H_i(B)\) 与 \(A\) 都逐次有限生成时，同调万有系数短正合列
+\begin{equation}\label{g2:eq:finite-generation-coefficients}
+	0\longrightarrow H_p(B)\otimes A\longrightarrow H_p(B;A)
+	\longrightarrow\operatorname{Tor}_1^{\mathbb Z}(H_{p-1}(B),A)\longrightarrow0
+\end{equation}
+说明系数同调也有限生成。下面用这一项具体性质，而不对任意 Serre 类作未经核对的推广。
 
 \subsection{所选有限生成定理的证明}
 \label{g2:subsec:1105:02}
-待撰写
+
+称一个道路连通空间具有\term[tongdiao-youxianxing]{逐次有限生成同调}[degreewise finitely generated homology]，如果每个 \(H_n(-;\mathbb Z)\) 都有限生成。各次数可以有不同数量的生成元，也允许无限多个次数非零。譬如 \(\mathbb CP^\infty\) 满足此条件，尽管它有无限多个胞腔。
+
+\begin{lemma}[纤维化中的有限生成性]\label{g2:lem:fibration-finite-generation}
+	设 \(F\to E\to B\) 是道路连通空间的纤维化，基底为单连通 CW 复形。若 \(F,E,B\) 中任意两个具有逐次有限生成同调，则第三个也有。
+\end{lemma}
+\begin{proof}
+	用同调谱序列
+	\[
+		E^2_{p,q}=H_p(B;H_q(F))\Longrightarrow H_{p+q}(E),\qquad
+		\mathrm d_r:E^r_{p,q}\to E^r_{p-r,q+r-1}.
+	\]
+	单连通性消去了运输作用，且 \(H_0(F)=H_0(B)=\mathbb Z\)。每个固定位置经过有限多页便稳定，每个目标次数也只有有限层。
+
+	先设 \(B,F\) 的同调逐次有限生成。式\eqref{g2:eq:finite-generation-coefficients}使全部第二页项有限生成。取核、取商保留此性质，故全部极限页项也有限生成；目标群由有限个这样的群扩张而成，结论随之成立。
+
+	再设 \(F,E\) 满足条件，归纳证明 \(H_k(B)\) 有限生成。假定次数小于 \(k\) 的基底群已有此性质，则第二页中所有 \(p<k\) 的项都有限生成。同调零行没有来箭头，所以对 \(2\le r\le k\) 有
+	\[
+		0\longrightarrow E^{r+1}_{k,0}\longrightarrow E^r_{k,0}
+		\xrightarrow{\mathrm d_r}\operatorname{im}\mathrm d_r\longrightarrow0,
+	\]
+	其中像是 \(E^r_{k-r,r-1}\) 的子群，故有限生成。稳定项 \(E^\infty_{k,0}\) 是 \(H_k(E)\) 的一个分级商，也有限生成。倒着经过有限多页，短正合列遂说明 \(E^2_{k,0}=H_k(B)\) 有限生成。\(k=1\) 时没有这些微分，结论直接来自稳定项；这也给出归纳起点。
+
+	最后设 \(B,E\) 满足条件，归纳证明 \(H_k(F)\) 有限生成。零列没有去箭头，可能进入 \((0,k)\) 的微分只有
+	\[
+		\mathrm d_r:E^r_{r,k-r+1}\longrightarrow E^r_{0,k},\qquad 2\le r\le k+1.
+	\]
+	所有源项的纤维次数都小于 \(k\)，故按归纳假设及系数公式有限生成。各页有短正合列
+	\[
+		0\longrightarrow\operatorname{im}\mathrm d_r\longrightarrow E^r_{0,k}
+		\longrightarrow E^{r+1}_{0,k}\longrightarrow0.
+	\]
+	从 \(H_k(E)\) 的有限生成分级商 \(E^\infty_{0,k}\) 倒推，便得 \(E^2_{0,k}=H_k(F)\) 有限生成。零次群为 \(\mathbb Z\)，提供了这里的归纳起点。
+\end{proof}
+
+\begin{corollary}\label{g2:cor:loop-finite-generation}
+	若单连通 CW 复形 \(B\) 具有逐次有限生成同调，则 \(\Omega B\) 也有。
+\end{corollary}
+\begin{proof}
+	将引理的第三种情形用于 \(\Omega B\to P_{b_0}B\to B\)。道路空间可缩，回路空间因基底单连通而道路连通。
+\end{proof}
+
+要把结论送到同伦群，需要先处理只含一个同伦群的空间。下述证明把所需模型与有限性理由一并写出。
+
+\begin{lemma}[Eilenberg–MacLane 空间的有限生成性]\label{g2:lem:em-space-finite-generation}
+	若 \(A\) 是有限生成阿贝尔群，则对每个 \(n\ge1\)，空间 \(K(A,n)\) 具有逐次有限生成整数同调。
+\end{lemma}
+\begin{proof}
+	先说明这里选择哪个 CW 模型不影响结论。对 \(n\ge2\)，用第9章的稀疏 CW 模型把 \(K(A,n)\) 换成除一个顶点外没有低于 \(n\) 维胞腔的模型。其 \(n\) 骨架是球面楔和，且 \(H_n=C_n/\operatorname{im}\partial_{n+1}\)。给定另一个 \(K(A,n)\)，把每个 \(n\) 胞腔的球面送到它所代表的 \(A\) 中元素；Hurewicz 同构保证这样的代表存在。每个 \((n+1)\) 胞腔的边界在 \(A\) 中为零，故可延拓；更高胞腔的延拓障碍落在目标已消失的高阶同伦群中，也全为零。所得映射在唯一非零同伦群上为同构，Whitehead 定理给出同伦等价。对 \(n=1\)，先在一骨架实现基本群的指定同态，二胞腔的关系保证延拓，随后用目标高阶同伦群全零延拓。因而同样得到模型唯一性。非 CW 纤维可先取 CW 逼近；\cref{g2:lem:weak-equivalence-homology}保证所用同调不变。
+
+	现处理 \(n=1\)。将 \(A\) 写成 \(\mathbb Z^r\times G\)，其中 \(G\) 是有限阿贝尔群。环面 \(T^r\) 是 \(K(\mathbb Z^r,1)\)，已有有限 CW 模型。对有限群 \(G\)，构造如下空间：在次数 \(k\) 为每个序列 \((g_0,\ldots,g_k)\) 放置一个 \(k\) 单形，按删去一个顶点的面映射粘合，并把相邻重复顶点的退化单形压到相应低维单形。所得实现记为 \(EG\)。它是 CW 复形，\(G\) 通过同时左乘全部顶点自由作用；商 \(BG\) 每维只有有限多个胞腔，因为每维的序列总数有限。
+
+	\(EG\) 可缩有一个直接的公式。对由 \((g_0,\ldots,g_k)\) 与重心坐标 \((t_0,\ldots,t_k)\) 表示的点，送到由
+	\[
+		(1,g_0,\ldots,g_k),\qquad (s,(1-s)t_0,\ldots,(1-s)t_k)
+	\]
+	表示的点，\(0\le s\le1\)。它与面、退化的识别相容；\(s=0\) 是原点，\(s=1\) 是顶点 \(1\)。有限群的自由作用在 Hausdorff 空间上给出覆盖：对一点及其有限多个不同的平移，先取互不相交的小邻域，再有限次相交得到与所有非平凡平移不交的邻域。故 \(EG\to BG\) 是具有可缩总空间的通用覆盖，\(BG\) 是 \(K(G,1)\)。其每维胞腔链为有限秩自由群，所以每个同调群有限生成。乘积 \(T^r\times BG\) 的同伦群逐坐标计算，说明它是 \(K(A,1)\)；Künneth 定理及有限生成群的张量、Tor 性质给出其同调有限生成。
+
+	对 \(n\ge2\) 作归纳。路径纤维化
+	\[
+		\Omega K(A,n)\longrightarrow P K(A,n)\longrightarrow K(A,n)
+	\]
+	的纤维由同伦长正合列具有 \(K(A,n-1)\) 的同伦群，取 CW 逼近并用刚证的模型唯一性，便知其同调逐次有限生成。总空间可缩，基底单连通。\cref{g2:lem:fibration-finite-generation}中“纤维与总空间推出基底”的情形完成归纳。
+\end{proof}
+
+接着把一个空间的同伦群分成有限层。这里先构造有限生成证明所用的部分；第12章将进一步研究层与层之间的附着信息。
+
+\begin{lemma}[有限同伦截段]\label{g2:lem:finite-homotopy-truncations}
+	设 \(X\) 为单连通带基点 CW 复形。对每个 \(n\ge1\)，存在包含 \(X\hookrightarrow X[n]\)，使
+	\[
+		\pi_i(X[n])\cong\pi_i(X)\ (i\le n),\qquad \pi_i(X[n])=0\ (i>n),
+	\]
+	且包含在 \(H_i\) 上对 \(i\le n\) 为同构。可以选择延拓恒等映射的映射 \(X[n]\to X[n-1]\)（\(n\ge2\)），其同伦纤维为 \(K(\pi_n(X),n)\) 的弱同伦型；\(X[1]\) 可缩。
+\end{lemma}
+\begin{proof}
+	从 \(X\) 出发，依次用\cref{g2:lem:kill-homotopy-group}消去 \(\pi_{n+1},\pi_{n+2},\ldots\)。所加胞腔维数至少为 \(n+2\)，因此所有 \(i\le n\) 次同伦群保持不变，相对胞腔链在次数小于 \(n+2\) 时为零，故相应同调也保持。对无限并，第9章的紧像有限子复形论证保证固定次数的同伦群达到稳定值。\(n=1\) 时，初始基本群已为零，所得 \(X[1]\) 的全部同伦群均为零，Whitehead 定理使它可缩。
+
+	在 \(X[n]\) 的子复形 \(X\) 上取包含到 \(X[n-1]\) 的映射。一个新增 \(d\) 胞腔满足 \(d\ge n+2\)，延拓所需消去的边界类属于 \(\pi_{d-1}(X[n-1])=0\)，所以可逐胞腔延拓到整个 \(X[n]\)。将所得映射作第8章的路径纤维化替换，记纤维为 \(F_n\)。在次数 \(i<n\) 上，映射诱导由 \(X\) 给出的同构；基底在次数 \(i\ge n\) 的群均为零。长正合列因而给出
+	\[
+		\pi_i(F_n)=0\ (i\ne n),\qquad \pi_n(F_n)\cong\pi_n(X).
+	\]
+	两空间单连通还保证纤维道路连通。取纤维的 CW 逼近，即得到指定的 Eilenberg–MacLane 同伦型。
+\end{proof}
+
+\begin{theorem}[Serre 有限生成定理]\label{g2:thm:serre-finite-generation}
+	对单连通 CW 复形 \(X\)，下列两个条件等价：
+	\begin{enumerate}
+		\item 每个 \(H_n(X;\mathbb Z)\) 都有限生成；
+		\item 每个 \(\pi_n(X)\)（\(n\ge2\)）都有限生成。
+	\end{enumerate}
+	特别地，单连通有限 CW 复形的全部同伦群都有限生成。
+\end{theorem}
+\begin{proof}
+	先假定全部同伦群有限生成。\(X[1]\) 可缩，从它开始沿
+	\[
+		K(\pi_j(X),j)\longrightarrow X[j]\longrightarrow X[j-1]
+	\]
+	逐层归纳。这里的箭头按上一引理作纤维化替换，仍用原名表示同伦等价的总空间。Eilenberg–MacLane 引理使每一纤维的同调逐次有限生成，纤维化引理再把此性质传到 \(X[j]\)。固定 \(n\)，取 \(j\ge n\)，包含给出 \(H_n(X)\cong H_n(X[j])\)，所以 \(H_n(X)\) 有限生成。相同论证还说明：若只知道 \(\pi_i(X)\) 在 \(i\le j\) 有限生成，则 \(X[j]\) 的全部同调已经逐次有限生成。
+
+	反过来，假定全部 \(H_i(X)\) 有限生成，归纳证明 \(\pi_n(X)\) 有限生成。起点 \(n=2\) 是 Hurewicz 同构 \(\pi_2(X)\cong H_2(X)\)。设低于 \(n\) 的同伦群已知有限生成。上一段的有限截段结论保证基底 \(Y=X[n-1]\) 的全部同调有限生成。令 \(Z=X[n]\)，考虑纤维化 \(F_n\to Z\to Y\)。纤维 \((n-1)\) 连通，故
+	\[
+		H_q(F_n)=0\ (0<q<n),\qquad H_n(F_n)\cong\pi_n(F_n)\cong\pi_n(X).
+	\]
+	在同调谱序列中，这使前 \(n-1\) 个正行为空。总次数 \(n\) 只可能有 \((n,0)\) 和 \((0,n)\) 两项；唯一可能击中后一项的箭头是
+	\[
+		\mathrm d_{n+1}:H_{n+1}(Y)=E^{n+1}_{n+1,0}\longrightarrow E^{n+1}_{0,n}=H_n(F_n).
+	\]
+	源端在前几页未改变，因为较早的去箭头都落入空行，零行又无来箭头。目标项的稳定余核是目标滤过的最浅子群，因而有正合列
+	\begin{equation}\label{g2:eq:finite-generation-five-terms}
+		H_{n+1}(Y)\xrightarrow{\mathrm d_{n+1}}H_n(F_n)
+		\longrightarrow H_n(Z)\longrightarrow H_n(Y)\longrightarrow0.
+	\end{equation}
+	第一映射的像有限生成，因为 \(H_{n+1}(Y)\) 有限生成；它的余核是 \(H_n(Z)\cong H_n(X)\) 的子群，也有限生成。因此中间群 \(H_n(F_n)\cong\pi_n(X)\) 是两个有限生成群的扩张，仍有限生成，完成归纳。
+
+	若 \(X\) 为有限 CW 复形，其胞腔链只有有限多个有限秩自由群，故所有同调群有限生成，最后的断言随即成立。
+\end{proof}
+
+证明的关键出现在式\eqref{g2:eq:finite-generation-five-terms}：未知的 \(\pi_n(X)\) 被放进一个纤维首个同调群，左边控制它被消去的部分，右边控制剩下的部分。两部分都有限生成，就足以控制整个未知群。这里无需算出传递的具体整数矩阵。
+
+\ProseParagraphBreak
+
+例如，对每个 \(m\ge2\) 和 \(n\ge2\)，\(\pi_n(S^m)\) 都是有限生成阿贝尔群。结论没有给出其阶，也没有断言它是有限群：\(\pi_m(S^m)=\mathbb Z\)，且前面已算出 \(\pi_3(S^2)=\mathbb Z\)。逐次有限生成与“所有高阶群都是有限群”是不同的断言。单连通假设也确实承担作用，章末将用 \(S^1\vee S^2\) 展示失去这一假设后的现象。
 
 \subsection{Adams 和 Eilenberg–Moore 方法需要的新输入}
 \label{g2:subsec:1105:03}
-待撰写
+
+到这里，Serre 方法的输入与输出已经清楚：由基底和纤维的同调、运输作用及几何关系，求总空间的同调。路径纤维化使同一方法也能反求回路空间。若目标变成稳定同伦群，或已知基底与总空间而想系统地反求纤维的环结构，就需要不同的构造。
+
+\ProseParagraphBreak
+
+Adams\footnote{John Frank Adams（1930—1989），英国数学家，发展了计算稳定同伦群的谱序列方法，并在球面同伦与上同调运算方面作出重要贡献。}方法把模素数上同调与作用在它上面的自然运算一起使用。例如，两个分次向量空间相同的上同调，如果运算的作用不同，就会给出不同的代数输入。为此需要三项新结构：描述这些运算及其关系的代数；在该代数的模范畴中构造消解和高阶 Ext；把逐层消解实现为谱的塔，并证明它在相应素数完备化意义下收敛。第4章的 Ext 是理解消解的起点，但只计算整数模之间的一次 Ext，还没有包含这些结构。第13章将先讨论上同调运算，第9章的稳定化则提供稳定同伦的入口。
+
+\ProseParagraphBreak
+
+Eilenberg–Moore 方法面向同伦拉回。对于 \(F\to E\to B\)，纤维可以理解为 \(E\) 与一个点在 \(B\) 上的同伦拉回；相应的代数模型涉及把 \(C^*(E;k)\) 与 \(k\) 在 \(C^*(B;k)\) 上作导出张量积。这里 \(k\) 是域，“导出”表示先用适当的自由模型替换，以保留普通张量积会丢失的关系。它所需的新输入是带乘法的上链模型、条形消解，以及将该代数模型与实际同伦纤维比较的定理。在单连通与适当有限型条件下，第二页可用分次上同调代数上的 Tor 描述；这些比较与收敛条件须随新构造一同证明。
+
+\ProseParagraphBreak
+
+一个小的代数计算能说明为什么会出现这种输入。设 \(A=k[u]\)、\(|u|=2\)，增广把 \(u\) 送到零。\(k\) 作为分次 \(A\) 模有自由消解
+\[
+	0\longrightarrow A\varepsilon\xrightarrow{\ \varepsilon\mapsto u\ }A\longrightarrow k\longrightarrow0,
+\]
+其中 \(\varepsilon\) 的内部次数为二、消解次数为一。张量 \(k\) 后微分为零，所得 Tor 只有单位和一个总次数 \(2-1=1\) 的生成元；用 \(\varepsilon^2=0\) 的自由微分分次代数模型，可见其乘法为外代数。这个答案与 \(\Omega\mathbb CP^\infty\simeq S^1\) 的上同调吻合；后一个同伦型由 \(\mathbb CP^\infty=K(\mathbb Z,2)\)、路径长正合列及上面的模型唯一性得到。要对一般纤维化作同样的推断，承担几何与代数之间联系的正是新的比较定理。
+
+\ProseParagraphBreak
+
+本章的下一步则回到空间本身：有限截段 \(X[n]\to X[n-1]\) 已把一个同伦群分离为纤维，但仍未说明这些纤维怎样附着成原空间。第12章的障碍类与 Postnikov 分解将记录这部分数据，使这里用于证明有限性的构造进一步成为描述同伦类型的工具。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

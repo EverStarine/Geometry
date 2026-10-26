@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 13.4 与示性类的后续比较
 % 纲要位置：几何学计划纲要.md，第 1526 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -18,17 +18,177 @@
 \section{与示性类的后续比较}
 \label{g2:sec:1304}
 
-待撰写
+对一张向量丛，每个纤维的单位圆盘都贡献一个最高次相对上同调生成元。若把这些生成元组成整体的 Thom 类，再对它施加 Steenrod 平方，所得信息就能测量向量丛的粘合。本节先写明这项比较所用的对象与结论，再从已经建立的平方运算和 Poincaré 对偶计算 Wu 类。Thom 类的整体存在与同构在第20章证明，与 Stiefel--Whitney 类及切丛的识别在第21章完成。
 
 \subsection{Thom 类上的运算}
 \label{g2:subsec:1304:01}
-待撰写
+
+设 \(V\to B\) 为有限 CW 复形上的实秩 \(r\) 向量丛，\(r\ge1\)，并选取连续正定内积。它的单位圆盘丛与单位球丛分别记为
+\[
+	D(V)=\{v\in V:\|v\|\le1\},\qquad S(V)=\{v\in V:\|v\|=1\}.
+\]
+将全部单位球面同时压成一个点，得到\term[Thom-kongjian]{Thom 空间}[Thom space]\footnote{René Thom（1923--2002），法国数学家，发展了配边理论，并研究奇点及突变理论。}
+\[
+	\operatorname{Th}(V)\coloneqq D(V)/S(V).
+\]
+每个纤维圆盘的边界被压成这个共同基点，因而纤维在商中成为一个带基点 \(S^r\)。这个构造保留了纤维在底空间上如何粘合，同时让纤维的最高次相对类能够看作商空间上的约化类。单位球丛有径向领圈，故空间对的上同调与商的约化上同调相同：
+\[
+	H^q(D(V),S(V);\mathbb F_2)\cong\widetilde H^q(\operatorname{Th}(V);\mathbb F_2).
+\]
+下文优先使用左侧，这样底空间类经投影拉回后，可以直接与相对类相乘。
+
+\begin{definition}[模二 Thom 类]\label{g2:def:mod-two-thom-class}
+	设 \(V\to B\) 为带连续正定内积的实秩 \(r\) 向量丛，\(r\ge1\)。若
+	\[
+		U_V\in H^r(D(V),S(V);\mathbb F_2)
+	\]
+	限制到每个纤维对 \((D(V_b),S(V_b))\cong(D^r,S^{r-1})\) 时，都是其 \(r\) 次上同调的非零元素，就称 \(U_V\) 为 \(V\) 的模二\term[Thom-lei]{Thom 类}[Thom class]。
+\end{definition}
+
+模二系数下，一个一维向量空间只有一个非零元素，所以反转纤维定向不改变这个局部要求。这正是任意实向量丛都能具有模二 Thom 类的原因；整数版本则必须保留纤维定向及其运输。
+
+\ProseParagraphBreak
+
+下面先陈述具体结论，完整证明见\cref{g2:thm:thom-isomorphism,g2:prop:thom-naturality-sum}。此处固定有限 CW 底空间，已足以覆盖本节的例子；更一般底空间的控制随 Thom 同构的完整证明一起处理。
+
+\begin{theorem}[模二 Thom 同构]\label{g2:thm:thom-mod-two-preview}
+	设 \(V\to B\) 为有限 CW 复形上的实秩 \(r\) 向量丛，\(r\ge1\)，并选取连续正定内积。则存在唯一的模二 Thom 类 \(U_V\)，且投影 \(p:D(V)\to B\) 给出同构
+	\begin{equation}\label{g2:eq:thom-mod-two-isomorphism}
+		\Phi_V:H^q(B;\mathbb F_2)\xrightarrow{\cong}H^{q+r}(D(V),S(V);\mathbb F_2),\qquad a\longmapsto p^*a\smile U_V.
+	\end{equation}
+	Thom 类及此同构与向量丛的拉回相容；两个丛的外积 Thom 类是各自 Thom 类的上同调外积。
+\end{theorem}
+
+Thom 同构的局部内容是圆盘对的相对上同调只有最高次非零；整体证明须把局部生成元粘合，并证明杯积映射在粘合后仍为同构。这两步由\secref{g2:sec:2002}分别完成。所述版本及其与示性类的关系可对照\cite[第23章第5--6节]{May1999}。
+
+\ProseParagraphBreak
+
+使用上述 Thom 同构，相对平方运算把 \(U_V\) 送到 \(H^{r+i}(D(V),S(V);\mathbb F_2)\)，所以唯一存在一个 \(i\) 次底空间类，使
+\begin{equation}\label{g2:eq:thom-square-identity}
+	\operatorname{Sq}^i U_V=p^*w_i^{\mathrm{Sq}}(V)\smile U_V,
+	\qquad w_i^{\mathrm{Sq}}(V)=\Phi_V^{-1}(\operatorname{Sq}^i U_V).
+\end{equation}
+上标暂时标明这组类由平方运算产生；它与射影丛构造的 Stiefel--Whitney 类的识别，完整证明见\cref{g2:thm:thom-square-comparison}。\(U_V\) 的次数是 \(r\)，所以 \(\operatorname{Sq}^i U_V\) 的次数为 \(r+i\)，经 \(\Phi_V^{-1}\) 后恰好降回 \(i\)。这个次数检查也说明，式中参与运算的是总空间对上的 \(U_V\)，而 \(w_i^{\mathrm{Sq}}\) 位于底空间。
+
+\ProseParagraphBreak
+
+对平凡丛 \(\varepsilon_B^r=B\times\mathbb R^r\)，Thom 类是 \(1\times u\)，其中 \(u\in H^r(D^r,S^{r-1};\mathbb F_2)\) 为生成元。正次数平方在 \(1\) 上为零，在 \(u\) 上也为零，因为目标相对上同调已高于 \(r\)。相对外积的 Cartan 公式于是给出
+\[
+	w_0^{\mathrm{Sq}}(\varepsilon_B^r)=1,\qquad w_i^{\mathrm{Sq}}(\varepsilon_B^r)=0\quad(i>0).
+\]
+一般丛的 \(\operatorname{Sq}^i U_V\) 则可能非零：每张纤维上看不到的高次类，能够通过底空间方向进入总空间对的上同调。这使平方运算能够读出丛的整体信息。
 
 \subsection{Stiefel–Whitney 类的另一解释}
 \label{g2:subsec:1304:02}
-待撰写
+
+第21章要构造的\term[Stiefel-Whitney-lei]{Stiefel--Whitney 类}[Stiefel--Whitney class]\footnote{Eduard Stiefel（1909--1978），瑞士数学家，早期研究拓扑学，后从事数值分析与科学计算。Whitney 的简介见本卷 Alexander--Whitney 映射处。}是一组随实向量丛自然变化的模二上同调类。式\eqref{g2:eq:thom-square-identity}给出它们的运算解释。为看清两种构造为何应当一致，先使用 Thom 同构及其相容性，直接推出这些类的基本规则。
+
+\begin{proposition}[Thom 平方类的基本性质]\label{g2:prop:thom-square-properties}
+	对有限 CW 复形上的实向量丛，按式\eqref{g2:eq:thom-square-identity}定义 \(w_i^{\mathrm{Sq}}\)。则对秩 \(r\ge1\) 的丛 \(V\)，有
+	\[
+		w_0^{\mathrm{Sq}}(V)=1,\qquad w_i^{\mathrm{Sq}}(V)=0\quad(i>r).
+	\]
+	对有限 CW 复形之间的映射 \(f:B'\to B\) 及同一底空间上的两个正秩实向量丛 \(V,W\)，有
+	\begin{align*}
+		w_i^{\mathrm{Sq}}(f^*V)&=f^*w_i^{\mathrm{Sq}}(V),\\
+		w_k^{\mathrm{Sq}}(V\oplus W)&=\sum_{i+j=k}w_i^{\mathrm{Sq}}(V)\smile w_j^{\mathrm{Sq}}(W).
+	\end{align*}
+	特别地，添加平凡直和因子不改变这些类。
+\end{proposition}
+\begin{proof}
+	\(\operatorname{Sq}^0U_V=U_V\) 及 \(\operatorname{Sq}^iU_V=0\)（\(i>r\)）结合 \(\Phi_V\) 单射，立即给出前两条。
+
+	给拉回丛使用拉回内积，令 \(F:(D(f^*V),S(f^*V))\to(D(V),S(V))\) 为丛映射。其每张纤维映射都是所给线性识别，因此 \(F^*U_V=U_{f^*V}\)。用平方的自然性和 \(pF=fp'\)，得到
+	\[
+		\operatorname{Sq}^iU_{f^*V}=F^*\operatorname{Sq}^iU_V
+		=(p')^*f^*w_i^{\mathrm{Sq}}(V)\smile U_{f^*V}.
+	\]
+	再用拉回丛的 Thom 同构单射，即得自然性。
+
+	先将两丛放在不同底空间上，考虑外直和丛 \(V\boxplus W\to B\times C\)。使用纤维中的最大范数，其圆盘对可写成
+	\[
+		\bigl(D(V)\times D(W),\ S(V)\times D(W)\cup D(V)\times S(W)\bigr).
+	\]
+	最大范数与 Euclid 直和范数之间的径向变换给出相同的圆盘对同伦型。外积 \(U_V\times U_W\) 限制到每张纤维都是最高次相对生成元，所以按 Thom 类的唯一性，它就是外直和的 Thom 类。\cref{g2:thm:steenrod-cartan}的相对外积形式于是给出
+	\[
+		\operatorname{Sq}^k(U_V\times U_W)
+		=\sum_{i+j=k}\operatorname{Sq}^iU_V\times\operatorname{Sq}^jU_W
+		=\Phi_{V\boxplus W}\!\left(\sum_{i+j=k}w_i^{\mathrm{Sq}}(V)\times w_j^{\mathrm{Sq}}(W)\right).
+	\]
+	由 Thom 同构单射可读出外直和公式。同底空间的 \(V\oplus W\) 是沿对角映射 \(B\to B\times B\) 拉回 \(V\boxplus W\)，自然性将外积变成杯积，便得到所列公式。最后取 \(W\) 为平凡丛，使用上一小节算出的类，得到稳定性。
+\end{proof}
+
+这些规则分别来自平方的恒等项、不稳定条件、自然性与 Cartan 公式。这里的证明把两套性质逐项对应起来；\cref{g2:thm:thom-square-comparison}进一步证明线丛归一化，再用分裂原理得到唯一性，从而去掉上标 \(\mathrm{Sq}\)。
+
+\begin{example}[Möbius 线丛的 Thom 平方]\label{g2:exm:mobius-thom-square}
+	设 \(L\to S^1\) 为 Möbius 线丛。它的圆盘丛是 Möbius 带，球丛是边界圆周。将边界压成一点后，得到实射影平面的同伦型：圆盘丛收缩到中心圆周，而边界到中心的投影是二重覆盖，所以其同伦余纤维是 \(S^1\cup_2 e^2=\mathbb RP^2\)。
+
+	由上一节的射影空间环计算，\(\widetilde H^*(\operatorname{Th}(L);\mathbb F_2)\) 在一次、二次由 \(t,t^2\) 生成，且 \(t^2\ne0\)。Thom 类必须是唯一非零的一次类 \(U_L=t\)，所以
+	\[
+		\operatorname{Sq}^1U_L=U_L^2=t^2\ne0.
+	\]
+	因此，若用 Thom 同构把它搬回 \(S^1\)，所得 \(w_1^{\mathrm{Sq}}(L)\) 就是 \(H^1(S^1;\mathbb F_2)\) 的非零元素。这与平凡线丛的零值相区别。第21章将把这个类与纤维定向绕基底一周后是否反转对应起来。
+\end{example}
+
+这个例子显示，相对类的平方可以非零，即使底空间本身没有二次上同调。二次类在 Thom 空间中，Thom 同构再将其次数减一；若一开始就把 \(U_L\) 当成底空间上的一次类，就会错误地令它的平方消失。
 
 \subsection{Wu 公式的所选版本和范围}
 \label{g2:subsec:1304:03}
-待撰写
+
+还有一种方法把平方运算组织成几何类：在闭流形上先把 \(\operatorname{Sq}^i x\) 与基本类配对，再用 Poincaré 对偶把这个数值泛函表示为杯积。本小节采用的是将切丛类写成 Wu 类之平方的版本。
+
+\begin{definition}[Wu 类]\label{g2:def:wu-class}
+	设 \(M\) 为连通闭光滑 \(n\) 维流形，\([M]_2\in H_n(M;\mathbb F_2)\) 为模二基本类。对 \(0\le i\le n\)，满足
+	\begin{equation}\label{g2:eq:wu-defining-pairing}
+		\langle v_i(M)\smile x,[M]_2\rangle
+		=\langle\operatorname{Sq}^i x,[M]_2\rangle
+		\qquad\bigl(x\in H^{n-i}(M;\mathbb F_2)\bigr)
+	\end{equation}
+	的唯一类 \(v_i(M)\in H^i(M;\mathbb F_2)\)，称为第 \(i\) 个\term[Wu-lei]{Wu 类}[Wu class]。令 \(v(M)=\sum_{i=0}^n v_i(M)\)，称为总 Wu 类。
+\end{definition}
+
+这些类由吴文俊\footnote{吴文俊（1919--2017），中国数学家，研究拓扑学中的示性类与嵌入问题，并开创数学机械化方法。}引入。它们的存在唯一性已经可以从本卷前面的结果证明。
+
+\begin{proposition}[Wu 类的确定与消失范围]\label{g2:prop:wu-existence-vanishing}
+	对连通闭光滑 \(n\) 维流形 \(M\)，式\eqref{g2:eq:wu-defining-pairing}唯一确定 \(v_i(M)\)。此外，\(v_0(M)=1\)，且 \(v_i(M)=0\) 对 \(i>n/2\) 成立。
+\end{proposition}
+\begin{proof}
+	模二系数下每个流形都有规范的局部定向，因此\cref{g2:cor:closed-poincare-duality}可用于 \(M\)，无须另加整数可定向条件。结合域上的万有系数同构，杯积给出完美配对
+	\[
+		H^i(M;\mathbb F_2)\otimes H^{n-i}(M;\mathbb F_2)\longrightarrow\mathbb F_2,
+		\qquad a\otimes x\longmapsto\langle a\smile x,[M]_2\rangle.
+	\]
+	由于 \(\operatorname{Sq}^i\) 可加，右侧的 \(x\mapsto\langle\operatorname{Sq}^i x,[M]_2\rangle\) 是线性泛函，完美配对恰好将它表示为唯一的 \(v_i\)。\(i=0\) 时 \(\operatorname{Sq}^0x=x\)，所以 \(v_0=1\)。若 \(i>n/2\)，则输入次数 \(n-i<i\)，不稳定条件使 \(\operatorname{Sq}^i x=0\) 对所有输入成立；完美配对便迫使 \(v_i=0\)。
+\end{proof}
+
+现在把这些完全由上同调运算确定的类与切丛联系起来。下面的公式在\cref{g2:thm:wu-formula}中由 Thom 平方与对角嵌入完整证明；其准确陈述也见\cite[第23章第3节]{May1999}。
+
+\begin{theorem}[Wu 公式]\label{g2:thm:wu-tangent-preview}
+	设 \(M\) 为连通闭光滑 \(n\) 维流形。它的切丛 Stiefel--Whitney 类与式\eqref{g2:eq:wu-defining-pairing}确定的 Wu 类满足
+	\begin{equation}\label{g2:eq:wu-tangent-formula}
+		w(\mathrm TM)=\operatorname{Sq}(v(M)),\qquad
+		w_k(\mathrm TM)=\sum_{i+j=k}\operatorname{Sq}^i v_j(M).
+	\end{equation}
+	这里 \(\operatorname{Sq}=\sum_{i\ge0}\operatorname{Sq}^i\)，等式按上同调次数逐项解释。
+\end{theorem}
+
+这项比较把对角嵌入 \(M\hookrightarrow M\times M\) 的法丛识别为 \(\mathrm TM\)，再将其 Thom 类的平方写为对偶配对。\cref{g2:thm:wu-formula}利用第20章的 Thom 同构完成这部分几何证明。眼下已经可以独立算出 \(v(M)\) 与 \(\operatorname{Sq}(v(M))\)；公式说明这些计算怎样给出切丛类。
+
+\begin{example}[射影平面的 Wu 类]\label{g2:exm:projective-plane-wu-classes}
+	对 \(M=\mathbb RP^2\)，上一节给出 \(H^*(M;\mathbb F_2)=\mathbb F_2[t]/(t^3)\)，\(|t|=1\)，且 \(\langle t^2,[M]_2\rangle=1\)。\(\operatorname{Sq}^1t=t^2\)，故定义配对要求 \(\langle v_1t,[M]_2\rangle=1\)，于是 \(v_1=t\)。高于 \(n/2=1\) 的 Wu 类为零，所以
+	\[
+		v(\mathbb RP^2)=1+t,\qquad
+		\operatorname{Sq}(v(\mathbb RP^2))=1+t+t^2.
+	\]
+	Wu 比较式因此将给出 \(w(\mathrm T\mathbb RP^2)=1+t+t^2\)。\(v_2=0\) 与 \(w_2=t^2\) 同时成立：总平方还把 \(v_1\) 推向更高次数。
+
+	再取 \(M=\mathbb CP^2\)。由\cref{g2:thm:complex-projective-ring}及系数变换，\(H^*(M;\mathbb F_2)=\mathbb F_2[h]/(h^3)\)，\(|h|=2\)，且 \(\langle h^2,[M]_2\rangle=1\)。一次上同调为零，故 \(v_1=0\)；\(\operatorname{Sq}^2h=h^2\) 使 \(v_2=h\)，更高 Wu 类由消失范围为零。因此
+	\[
+		v(\mathbb CP^2)=1+h,\qquad
+		\operatorname{Sq}(v(\mathbb CP^2))=1+h+h^2.
+	\]
+	其中 \(\operatorname{Sq}^1h=0\) 是因为三次上同调为零。相应的切丛结论为 \(w_2(\mathrm T\mathbb CP^2)=h\)、\(w_4(\mathrm T\mathbb CP^2)=h^2\)。两种射影平面的计算都只需生成元上的平方与顶次配对；整数可定向性不影响这套模二计算。
+\end{example}
+
+Wu 类的定义使用闭流形的普通基本类及完美配对。若有边界，Poincaré--Lefschetz 对偶会在一侧引入相对上同调；若非紧，则须选择紧支或局部有限版本。因此式\eqref{g2:eq:wu-tangent-formula}在本节按连通闭光滑流形陈述，不把同一组普通上同调公式直接套到带边界或非紧情形。对一般实向量丛，式\eqref{g2:eq:thom-square-identity}则是不同的陈述：它使用丛的 Thom 类，而没有使用底空间的流形基本类。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

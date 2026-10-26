@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 23.1 配边及其几何构造
 % 纲要位置：几何学计划纲要.md，第 1887 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,161 @@
 \section{配边及其几何构造}
 \label{g2:sec:2301}
 
-待撰写
+球面是球的边界，环面是实心环面的边界。这两张曲面的拓扑不同，却都能由一张高一维的紧流形填满。若把两个闭流形一起看成某张紧流形的全部边界，就得到一种允许拓扑改变的比较关系。需要同时决定的是：填充过程中应保留哪些几何资料？只要求光滑结构、再要求方向、进一步指定切丛的稳定标架，会得到不同的配边关系。
 
 \subsection{定向、无定向和带标架配边}
 \label{g2:subsec:2301:01}
-待撰写
+本节的闭流形均指紧且无边界的光滑流形，可以不连通。配边自身允许有边界，但也要求紧；例如用无限延伸的圆柱填充一个端面，不能作为这里的配边。
+
+\begin{definition}\label{g2:def:unoriented-oriented-bordism}
+	设 \(M_0,M_1\) 为闭光滑 \(n\) 维流形。若存在紧光滑 \(n+1\) 维流形 \(W\)，使
+	\[
+		\partial W\cong M_0\amalg M_1,
+	\]
+	就称 \(M_0\) 与 \(M_1\)\term[peibian]{配边}[bordant]；此时没有指定方向，亦称无定向配边。若 \(M_0,M_1,W\) 均定向，并且上述识别保向地写成
+	\[
+		\partial W\cong(-M_0)\amalg M_1,
+	\]
+	就称二者定向配边。这里 \(-M_0\) 表示反转方向，边界方向按外法向优先约定确定。把 \(M_0\) 称为入边界、\(M_1\) 称为出边界。若 \(M\) 与空流形配边，就称 \(M\) 为相应意义下的边界。
+\end{definition}
+
+外法向优先的具体含义是：若 \(\nu\) 指向 \(W\) 外部，则 \((v_1,\ldots,v_n)\) 在边界上为正向，恰好当 \((\nu,v_1,\ldots,v_n)\) 在 \(W\) 上为正向。区间的两个端点因而具有相反符号；一般的圆柱也同样有一端带负号。这与\cref{g2:prop:boundary-fundamental-class}中连接同态满足 \(\partial[W,\partial W]=[\partial W]\) 的约定一致。
+
+例如 \(S^n=\partial D^{n+1}\) 是无定向边界，也是取诱导方向后的定向边界。\(\partial(D^2\times S^1)=S^1\times S^1\)，所以二维环面也为边界。将填充球面与环面的三维流形取不交并，就能得到球面到环面的定向配边。配边只记录两端是否能共同出现，\(W\) 内部没有要求每个中间截面都与两端微分同胚。
+
+现在给切向量规定一组随点光滑变化的坐标。实际切丛可能没有全局标架，但加入若干平凡方向后可能出现标架；球面的径向补充就是例子。用 \(\varepsilon_M^r=M\times\mathbb R^r\) 表示带标准基的实平凡丛，底空间清楚时省略下标。
+
+\begin{definition}\label{g2:def:stable-framed-bordism}
+	闭光滑 \(n\) 维流形 \(M\) 上的一个\term[wendingqiebiaojia]{稳定切标架}[stable tangent framing]是丛同构
+	\[
+		\varphi:\mathrm TM\oplus\varepsilon^r\xrightarrow{\ \cong\ }\varepsilon^{n+r},
+	\]
+	其中 \(r\ge0\)。把 \(\varphi\) 换成 \(\varphi\oplus\operatorname{id}_{\varepsilon^s}\) 称为稳定化；两个稳定切标架在稳定到同一秩后若可经丛同构同伦相连，就视为同一稳定标架。带稳定切标架的流形之间的微分同胚，也要求保持此稳定同伦类。
+
+	紧光滑带边界流形 \(W^{n+1}\) 的稳定切标架诱导边界标架，采用下面的外法向约定。若 \(\partial W\) 的标架分别等于 \(-\varphi_0\) 与 \(\varphi_1\)，就称 \((M_0,\varphi_0)\) 与 \((M_1,\varphi_1)\)\term[daibiaojiapeibian]{带标架配边}[framed bordant]。其中 \(-\varphi\) 是先稳定化，再将一个平凡方向的坐标反号所得的标架。
+\end{definition}
+
+把稳定方向的标准正向与目标空间的标准正向固定下来，\(\varphi\) 就确定了 \(\mathrm TM\) 的方向。但是方向只区分基变换行列式的正负，标架还指定了整组坐标如何随点变化；即使方向相同，两组标架之间也可能有无法消去的扭转。忘掉标架得到定向，忘掉定向得到无定向流形。边界上需要延拓的资料随之逐层减少。
+
+下面把边界标架的符号写清楚，以便随后把带标架流形变成球面之间的映射。设
+\[
+	\Phi:\mathrm TW\oplus\varepsilon^r\longrightarrow\varepsilon^{n+1+r},
+\]
+取沿边界的向外横截向量场 \(\nu\)，令 \(v\in\mathrm T\partial W\)、\(a\in\mathbb R^r\)、\(t\in\mathbb R\)。将新增的稳定坐标放在最后，定义
+\begin{equation}\label{g2:eq:boundary-tangent-framing}
+	(\partial\Phi)(v,a,t)=\Phi\bigl(v+(-1)^{n+r}t\nu,a\bigr).
+\end{equation}
+从 \((v_1,\ldots,v_n,a_1,\ldots,a_r,\nu)\) 把 \(\nu\) 移到最前，经过 \(n+r\) 次交换，故式中的符号恰好保证诱导方向是外法向优先。公式中多出的一维正是边界在 \(W\) 内的法线，它解释了为何这里自然使用稳定标架。
+
+这个定义不依赖所取向外横截向量场：这些向量场的正的法向分量可作线性插值，过程中始终横截，故所得标架同伦。若先把 \(\Phi\) 稳定化一次，式\eqref{g2:eq:boundary-tangent-framing}中的符号会改变，但新增的两个平凡坐标同时改变排列；两种边界标架相差末两坐标上的旋转 \((b,t)\mapsto(-t,b)\)，它经旋转角从 \(0\) 连续变到 \(\pi/2\) 与恒等相连。因此定义与稳定次数相容。类似地，反射哪一个平凡坐标也不影响逆标架的稳定同伦类：在两个平凡方向组成的平面内转动反射轴即可互相连接。
+
+球面的径向同构
+\[
+	\mathrm TS^n\oplus\varepsilon^1\longrightarrow\varepsilon^{n+1},\qquad(v,t)\longmapsto v+tx
+\]
+在\cref{g2:eq:sphere-stable-tangent-characteristic}已经出现。按本节的边界约定，球内标准切标架诱导的是 \((v,t)\mapsto v+(-1)^ntx\)。这给出了每个球面上一组确实能延拓到球内的稳定标架。讨论带标架配边时，球面与它所选的标架一起构成对象。
 
 \subsection{粘合、逆元与群结构}
 \label{g2:subsec:2301:02}
-待撰写
+若 \(W_{01}\) 从 \(M_0\) 配边到 \(M_1\)，\(W_{12}\) 从 \(M_1\) 配边到 \(M_2\)，应能沿共同的 \(M_1\) 把二者接起来。\cref{g2:thm:collar-neighborhood}提供了所需的光滑接缝：每个边界分支附近有 \(M_1\times[0,\varepsilon)\) 的坐标。将两侧的非负参数分别写成 \(u\) 和 \(-u\)，接缝邻域就成为 \(M_1\times(-\varepsilon,\varepsilon)\)。这在商空间上给出光滑流形结构，其剩余边界为 \((-M_0)\amalg M_2\)。定向情形在接缝处一侧为出边界、一侧为入边界，恰好使两个方向相接。
+
+带标架情形还要把标架接起来。在领圈内利用乘积分解识别各切丛，标架就成为一族可逆矩阵；将领圈参数在靠近边界处平滑地压到零，便可把这族标架改成与参数无关。如果给定的边界标架只在稳定后同伦，先稳定到共同秩，再把该同伦放进一段圆柱，使两侧在接缝处逐点一致。对入边界反转外法向时，式\eqref{g2:eq:boundary-tangent-framing}的最后一坐标反号，正与入边界上的 \(-\varphi\) 相抵消。因此拼接后的 \(\mathrm TW\) 上得到同一组稳定标架。
+
+圆柱同时说明了为何反转方向或反射标架应当给出逆元。若 \(\varphi:\mathrm TM\oplus\varepsilon^r\to\varepsilon^{n+r}\)，在 \(M\times[0,1]\) 上定义
+\begin{equation}\label{g2:eq:framed-cylinder}
+	\Psi(v+s\partial_u,a)=\bigl(\varphi(v,a),(-1)^{n+r}s\bigr).
+\end{equation}
+其稳定次数为 \(r\)。在上端 \(u=1\)，外法向为 \(\partial_u\)，边界公式给出 \((\varphi(v,a),t)\)；在下端 \(u=0\)，外法向为 \(-\partial_u\)，得到 \((\varphi(v,a),-t)\)。因此它的边界是 \((M,\varphi)\amalg(M,-\varphi)\)。忘掉标架，便恢复 \(\partial(M\times[0,1])=(-M)\amalg M\) 的定向圆柱。
+
+\begin{proposition}\label{g2:prop:bordism-group}
+	对每个整数 \(n\ge0\)，闭光滑 \(n\) 维流形的无定向配边、定向配边、带稳定切标架的配边都是等价关系。不交并诱导交换群，分别记作
+	\[
+		\Omega_n^{\mathrm O},\qquad\Omega_n^{\mathrm{SO}},\qquad\Omega_n^{\mathrm{fr}}.
+	\]
+	单位元是空流形的类。定向群中 \([M]\) 的逆元为 \([-M]\)，带标架群中 \([M,\varphi]\) 的逆元为 \([M,-\varphi]\)；无定向群中每个元素都是自身的逆元。忘掉标架、忘掉定向分别给出群同态
+	\[
+		\Omega_n^{\mathrm{fr}}\longrightarrow\Omega_n^{\mathrm{SO}}\longrightarrow\Omega_n^{\mathrm O}.
+	\]
+\end{proposition}
+\begin{proof}
+	圆柱给出自反性。交换入边界与出边界，定向情形同时反转 \(W\) 的方向，带标架情形同时反射 \(W\) 的一个稳定坐标，便得到反向配边；无定向情形只须交换边界标识。这证明对称性。上述领圈拼接证明传递性。
+
+	若分别给出 \(M\) 到 \(M'\)、\(N\) 到 \(N'\) 的配边，取它们的不交并就得到 \(M\amalg N\) 到 \(M'\amalg N'\) 的配边，故不交并在等价类上良定义。不交并的结合与交换微分同胚保持各分支所带的结构，给出结合律与交换律，空流形给出单位元。圆柱的全部边界是 \((-M)\amalg M\)，或 \((M,-\varphi)\amalg(M,\varphi)\)，所以这些不交并代表零。无定向时同一个圆柱的边界是两份 \(M\)，故 \(2[M]=0\)。最后，保留较少资料仍是配边，而且与不交并相容，因此两个忘却映射都是群同态。
+\end{proof}
+
+\begin{example}\label{g2:exm:zero-dimensional-bordism}
+	零维闭流形是有限个点。定向时每个点有一个符号，定义其代数点数为正点数减去负点数。若它是某个紧定向一维流形 \(W\) 的边界，则把常值上同调类 \(1\in H^0(W;\mathbb Z)\) 与边界基本类配对，有
+	\[
+		\langle1,[\partial W]\rangle
+		=\langle1,i_*\partial[W,\partial W]\rangle=0,
+	\]
+	因为对的长正合列中 \(i_*\partial=0\)。所以代数点数在定向配边下不变。反之，代数点数为零时，可以将每个负点与一个正点配成一对，用一个定向区间连接；这些区间的不交并填满所有点。因此
+	\[
+		\Omega_0^{\mathrm{SO}}\cong\mathbb Z.
+	\]
+	无定向时改用 \(\mathbb F_2\) 系数，同一论证说明边界的点数必为偶数；偶数个点又可两两用区间配对，故 \(\Omega_0^{\mathrm O}\cong\mathbb F_2\)。这两个计算中，代数点数与奇偶数分别是完整的不变量。
+\end{example}
 
 \subsection{示性数的配边不变性}
 \label{g2:subsec:2301:03}
-待撰写
+第21章的示性类依赖切丛，第6章的基本类则允许对顶次上同调类求值。二者结合所得的 Stiefel--Whitney 数与 Pontryagin 数已在\cref{g2:def:characteristic-numbers}定义。配边提供了一条检验这些数的办法：若流形确是边界，它的稳定切丛来自填充流形，因而有关示性类也能延拓；能延拓的顶次类在整个边界上的求值为零。
+
+\begin{theorem}\label{g2:thm:characteristic-number-bordism}
+	设 \(M_0,M_1\) 为闭光滑 \(n\) 维流形。若二者无定向配边，则每个 Stiefel--Whitney 数相同：对正整数 \(i_1,\ldots,i_s\) 满足 \(\sum i_j=n\)，有
+	\[
+		\left\langle\prod_jw_{i_j}(\mathrm TM_0),[M_0]_2\right\rangle
+		=\left\langle\prod_jw_{i_j}(\mathrm TM_1),[M_1]_2\right\rangle.
+	\]
+	若二者定向配边且 \(n=4k\)，则每个整数 Pontryagin 数相同：对 \(\sum i_j=k\)，有
+	\[
+		\left\langle\prod_jp_{i_j}(\mathrm TM_0),[M_0]\right\rangle
+		=\left\langle\prod_jp_{i_j}(\mathrm TM_1),[M_1]\right\rangle.
+	\]
+	因此相应边界的上述各数均为零。每个 Stiefel--Whitney 数定义同态 \(\Omega_n^{\mathrm O}\to\mathbb F_2\)，每个 Pontryagin 数定义同态 \(\Omega_{4k}^{\mathrm{SO}}\to\mathbb Z\)。
+\end{theorem}
+\begin{proof}
+	先证明有关切丛关系，再把求值转移到配边内。设 \(W\) 为相应的紧光滑配边，记 \(A=\partial W\)、\(i:A\hookrightarrow W\)。向外横截向量场给出实际丛同构
+	\[
+		\mathrm TA\oplus\varepsilon^1\cong i^*\mathrm TW.
+	\]
+	Stiefel--Whitney 类的 Whitney 公式及自然性（\cref{g2:thm:whitney-sum}）于是给出 \(w_j(\mathrm TA)=i^*w_j(\mathrm TW)\)。对于 Pontryagin 类，复化这一稳定同构，再用 \(p_j(E)=(-1)^jc_{2j}(E_{\mathbb C})\)，同样得到整数等式 \(p_j(\mathrm TA)=i^*p_j(\mathrm TW)\)。这里加的是平凡丛，其总陈类为 \(1\)，所以整数系数的稳定性直接成立。
+
+	无定向情形令 \(R=\mathbb F_2\)，定向情形令 \(R=\mathbb Z\)。相对基本类与边界基本类满足
+	\[
+		[W,A]_R\in H_{n+1}(W,A;R),\qquad
+		\partial[W,A]_R=[A]_R,
+	\]
+	这是\cref{g2:prop:relative-fundamental-class,g2:prop:boundary-fundamental-class}；模二系数时每个流形都具有该基本类。对的长正合列包含
+	\[
+		H_{n+1}(W,A;R)\xrightarrow{\partial}H_n(A;R)\xrightarrow{i_*}H_n(W;R),
+	\]
+	故 \(i_*[A]_R=0\)。对任意 \(\alpha\in H^n(W;R)\)，上同调与同调配对的自然性给出
+	\begin{equation}\label{g2:eq:extendible-class-boundary-zero}
+		\langle i^*\alpha,[A]_R\rangle=\langle\alpha,i_*[A]_R\rangle=0.
+	\end{equation}
+	取 \(\alpha=\prod_jw_{i_j}(\mathrm TW)\) 或 \(\alpha=\prod_jp_{i_j}(\mathrm TW)\)，前述切丛关系说明其边界限制恰是所需的示性类乘积。模二时 \([A]_2=[M_0]_2+[M_1]_2\)，而定向整数情形 \([A]=-[M_0]+[M_1]\)，所以零求值分别给出定理中的两条等式。
+
+	在不交并上，基本类是各分支基本类之和，示性类逐分支限制为原来的示性类，故每个求值具有可加性。这也证明它们在配边群上诱导所述同态。
+\end{proof}
+
+这个证明的核心是式\eqref{g2:eq:extendible-class-boundary-zero}：全体边界在 \(W\) 内同调于零。它直接保留了模二与整数信息。Euler 数则还依赖实际切丛的秩，不能由 \(\mathrm TA\oplus\varepsilon^1\) 恢复；例如 \(S^2\) 是 \(D^3\) 的边界，却有 \(\chi(S^2)=2\)。
+
+\begin{example}\label{g2:exm:projective-bordism-obstructions}
+	在 \(\mathbb RP^2\) 上，令 \(a\in H^1(\mathbb RP^2;\mathbb F_2)\) 为非零类。式\eqref{g2:eq:real-projective-tangent-classes}给出
+	\[
+		w(\mathrm T\mathbb RP^2)=(1+a)^3=1+a+a^2.
+	\]
+	由于 \(\langle a^2,[\mathbb RP^2]_2\rangle=1\)，其 \(w_1^2\) 数与 \(w_2\) 数均为 \(1\)。因此 \(\mathbb RP^2\) 不能成为任何紧光滑三维流形的全部边界。
+
+	给 \(\mathbb CP^2\) 取复定向，并令 \(h=c_1(\lambda^*)\) 满足 \(\langle h^2,[\mathbb CP^2]\rangle=1\)。由式\eqref{g2:eq:complex-projective-pontryagin}，
+	\[
+		p_1(\mathrm T\mathbb CP^2)=3h^2,\qquad
+		\langle p_1,[\mathbb CP^2]\rangle=3.
+	\]
+	所以 \(\mathbb CP^2\) 不是定向边界。更进一步，\(m[\mathbb CP^2]\) 的此项 Pontryagin 数为 \(3m\)，当 \(m\ne0\) 时不会消失，故 \([\mathbb CP^2]\) 在 \(\Omega_4^{\mathrm{SO}}\) 中具有无限阶。
+\end{example}
+
+如果 \(M\) 带稳定切标架，\(\mathrm TM\oplus\varepsilon^r\) 平凡便使所有正次 Stiefel--Whitney 类与 Pontryagin 类为零。因而这些数可以先检验一张流形有没有稳定标架；但在已有标架后，它们不能分辨标架本身的扭转。下一节将用球面映射记录这部分资料。
+
+陈数所需的结构还包括复结构。若 \(M^{2m}\) 的 \(\mathrm TM\oplus\varepsilon^{2r}\) 已选复结构，并且配边 \(W^{2m+1}\) 的稳定切丛 \(\mathrm TW\oplus\varepsilon^{2r+1}\) 也有复结构，按外法向约定在边界上诱导给定的稳定复结构，就可以讨论稳定复配边。此时边界陈类是 \(W\) 上陈类的限制，式\eqref{g2:eq:extendible-class-boundary-zero}的整数证明原样适用，得到陈数的配边不变性。普通定向配边只要求方向能延拓，故若要用陈数作障碍，还须指定这项复结构的延拓条件。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：### 10.1 几何滤过到代数滤过
 % 纲要位置：几何学计划纲要.md，第 1388 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,154 @@
 \section{几何滤过到代数滤过}
 \label{g2:sec:1001}
 
-待撰写
+给空间逐层附着胞腔时，每一层都可以用相对同调描述，但这些层如何影响最后的同调，还取决于层与层之间的边界。滤过把“已经加入哪些部分”保存在链复形中；伴随分次先把各层分开，谱序列再逐步恢复层间的联系。本节先从骨架与相对链说明滤过的来源，再固定后面计算所用的指标和符号。
 
 \subsection{骨架滤过与相对链}
 \label{g2:subsec:1001:01}
-待撰写
+
+设 \(X\) 是一个 \(N\) 维 CW 复形，记 \(X^p\) 为它的 \(p\) 骨架，并约定 \(X^{-1}=\varnothing\)、\(X^p=X\)（\(p\ge N\)）。以含幺交换环 \(R\) 为系数，奇异链群具有子复形序列
+\[
+	0\subset C_\bullet(X^0;R)\subset C_\bullet(X^1;R)\subset\cdots\subset C_\bullet(X;R).
+\]
+这里的包含是把同一个奇异单形看成到更大空间的映射。单形的各面仍落在原来的骨架中，所以边界保持各层。相邻两层的商恰好是相对链复形：
+\[
+	C_\bullet(X^p;R)/C_\bullet(X^{p-1};R)=C_\bullet(X^p,X^{p-1};R).
+\]
+\cref{g2:thm:skeletal-relative-homology}及系数变化的\cref{g2:cor:cellular-coefficients}表明，这些相对同调集中在次数 \(p\)，并由 \(p\) 胞腔生成。连接映射追踪胞腔边界如何落入低一层，最终组成胞腔边界。这就是通过分层计算整个空间的一种典型情形。
+
+\ProseParagraphBreak
+
+上链的方向与链相反：限制到较小子空间使信息减少，因此用“在已知部分上为零”定义递减的层。对奇异上链复形 \(C^\bullet(X;R)\)，令
+\begin{equation}\label{g2:eq:skeletal-cochain-filtration}
+	F^pC^n(X;R)=\ker\bigl(C^n(X;R)\longrightarrow C^n(X^{p-1};R)\bigr).
+\end{equation}
+于是 \(F^0C^n=C^n\)、\(F^{N+1}C^n=0\)，且 \(F^{p+1}C^n\subset F^pC^n\)。上边界 \(\mathrm d\varphi(\sigma)=\varphi(\partial\sigma)\) 保持这些子模，因为落在 \(X^{p-1}\) 内的单形，其边界也落在那里。
+
+限制上链给出复形同构
+\begin{equation}\label{g2:eq:skeletal-associated-graded}
+	F^pC^\bullet(X;R)/F^{p+1}C^\bullet(X;R)
+	\cong C^\bullet(X^p,X^{p-1};R).
+\end{equation}
+为核对满射，只需把右侧的上链在不属于 \(X^p\) 的奇异单形上赋值为零。右侧已在 \(X^{p-1}\) 上为零，所得延拓便属于 \(F^p\)；限制映射的核正是 \(F^{p+1}\)。这个赋值用于证明逐次满射，限制映射本身与上边界交换，因此诱导所写的商复形同构。
+
+\ProseParagraphBreak
+
+骨架每次只加入一个维数的胞腔，所以相对群格外集中。更一般的分层，例如把底空间骨架拉回到纤维化的总空间，每一层还携带纤维内部的上同调；这时层间关系会出现在不止一个次数。第11章将从这种几何滤过出发，本章先处理任何滤过复形共有的代数问题。
 
 \subsection{递增、递减滤过及指标换算}
 \label{g2:subsec:1001:02}
-待撰写
+
+在模 \(M\) 上，\term[dizeng lvguo]{递增滤过}[increasing filtration]是一族 \(G_pM\subset G_{p+1}M\)；\term[dijian lvguo]{递减滤过}[decreasing filtration]是一族 \(F^{p+1}M\subset F^pM\)。指标取整数，改写 \(F^pM=G_{-p}M\) 就能交换两种记法。这里的指标只表示层数，与链或上链次数是两件事。
+
+\ProseParagraphBreak
+
+本章主要使用上链复形和递减滤过，并在二维表格中记
+\[
+	\text{滤过次数}=p,\qquad\text{总上链次数}=n=p+q.
+\]
+因此 \(q=n-p\) 是由前两者决定的辅助指标。总微分把 \(n\) 提高一；若某一步检测到的微分还把滤过次数提高 \(r\)，它的两个指标就必须改变为
+\begin{equation}\label{g2:eq:spectral-bidegree-convention}
+	(p,q)\longmapsto(p+r,q-r+1).
+\end{equation}
+箭头向右移动 \(r\) 格，再向下移动 \(r-1\) 格。总次数的增量始终是 \(1\)，而不是页数 \(r\)。
+
+\ProseParagraphBreak
+
+若资料使用递增滤过的链复形 \((C_m,\partial)\)，可先设 \(\widehat C^n=C_{-n}\)，把降一次的边界改写成升一次的微分，再设 \(F^p\widehat C^n=G_{-p}C_{-n}\)。原来的两个同调指标 \((a,b)\)、总次 \(a+b\)，对应上同调指标 \((p,q)=(-a,-b)\)。于是上式变回
+\[
+	\mathrm d_r:E^r_{a,b}\longrightarrow E^r_{a-r,b+r-1},
+\]
+它的总同调次数降低一。这解释了同调谱序列和上同调谱序列中箭头方向的差别。比较不同记号时，应先确认总次数以及滤过的增减方向，再换算两个坐标。
 
 \subsection{滤过复形与伴随分次}
 \label{g2:subsec:1001:03}
-待撰写
+
+下面把几何例子中真正用到的性质抽出来。系数仍取含幺交换环 \(R\)，所有复形和同态均为 \(R\) 线性的。
+
+\begin{definition}[滤过上链复形]\label{g2:def:filtered-cochain-complex}
+	设 \((C^\bullet,\mathrm d)\) 为 \(R\) 模上链复形。一族子模 \(F^pC^n\) 若满足
+	\[
+		F^{p+1}C^n\subset F^pC^n,\qquad
+		\mathrm d(F^pC^n)\subset F^pC^{n+1},
+	\]
+	就给出一个\term[lvguo shanglian fuxing]{滤过上链复形}[filtered cochain complex]。保持滤过的上链映射 \(f:C\to C'\) 指满足 \(f\mathrm d=\mathrm d'f\) 及 \(f(F^pC^n)\subset F^pC'^n\) 的次数零映射。\symidx{\(F^pC^n\)：上链复形的递减滤过}
+\end{definition}
+
+每个 \(F^pC^\bullet\) 都是子复形。要单独观察第 \(p\) 层，将更深的第 \(p+1\) 层压成零即可。
+
+\begin{definition}[伴随分次复形]\label{g2:def:associated-graded-complex}
+	滤过上链复形 \((C,F)\) 的\term[bansui fenci]{伴随分次}[associated graded]为
+	\[
+		\operatorname{gr}_F^pC^n=F^pC^n/F^{p+1}C^n,\qquad
+		\operatorname{gr}_F C=\bigoplus_p\operatorname{gr}_F^pC.
+	\]
+	微分由 \(x+F^{p+1}\mapsto\mathrm dx+F^{p+1}\) 诱导，保持 \(p\)，并使总次数增加一。\symidx{\(\operatorname{gr}_F\)：滤过的伴随分次}
+\end{definition}
+
+若换代表 \(x\) 为 \(x+y\)、\(y\in F^{p+1}\)，微分的差 \(\mathrm dy\) 仍在 \(F^{p+1}\)，所以定义良好；平方为零来自 \(\mathrm d^2=0\)。一个保持滤过的上链映射也能在这些商上逐层诱导上链映射。
+
+\begin{example}[被分次隐藏的微分]\label{g2:exm:graded-zero-nonzero-differential}
+	取域 \(k\) 上的两项复形 \(C^0=ku\)、\(C^1=kv\)，并令 \(\mathrm du=v\)。赋予 \(u\) 滤过次数 \(0\)、\(v\) 滤过次数 \(2\)，即
+	\[
+		F^pC^0=\begin{cases}ku,&p\le0,\\0,&p>0,\end{cases}
+		\qquad
+		F^pC^1=\begin{cases}kv,&p\le2,\\0,&p>2.\end{cases}
+	\]
+	微分保持递减滤过，但它把 \(u\) 送到了更深的第二层。因此伴随分次中的微分为零，\(u,v\) 都留下非零分次上同调类；原复形的微分却是同构，全部上同调为零。层间跨越两格的这项微分，将在谱序列的第二页被检测到。
+\end{example}
+
+由此可见，把 \(C\) 换成 \(\operatorname{gr}_F C\) 会保留逐层数据，却暂时隐去进入更深层的微分。后面的各页正是通过恢复这些部分，逐步接近原复形的上同调。
 
 \subsection{双复形总化及符号}
 \label{g2:subsec:1001:04}
-待撰写
+
+第7章的 Čech 与消解计算同时带有两个次数，并用总复形把两种微分合起来。为了直接追踪高阶微分，本章把符号吸收到竖直微分中，使两个方向反交换。
+
+\begin{definition}[双复形与总复形]\label{g2:def:anticommuting-bicomplex}
+	一个 \(R\) 模\term[shuang fuxing]{双复形}[bicomplex]由双分次模 \(B^{p,q}\) 及微分
+	\[
+		\mathrm d_{\mathrm h}:B^{p,q}\longrightarrow B^{p+1,q},\qquad
+		\mathrm d_{\mathrm v}:B^{p,q}\longrightarrow B^{p,q+1}
+	\]
+	组成，满足
+	\[
+		\mathrm d_{\mathrm h}^{\,2}=\mathrm d_{\mathrm v}^{\,2}=0,\qquad
+		\mathrm d_{\mathrm h}\mathrm d_{\mathrm v}+\mathrm d_{\mathrm v}\mathrm d_{\mathrm h}=0.
+	\]
+	其直和\term[zong fuxing]{总复形}[total complex]定义为
+	\[
+		\operatorname{Tot}^nB=\bigoplus_{p+q=n}B^{p,q},\qquad
+		\mathrm d=\mathrm d_{\mathrm h}+\mathrm d_{\mathrm v}.
+	\]
+	若 \(p<0\) 或 \(q<0\) 时 \(B^{p,q}=0\)，则称为第一象限双复形。此时每个总次数的直和只有有限项。
+\end{definition}
+
+\begin{proposition}\label{g2:prop:total-complex-filtrations}
+	双复形的总微分满足 \(\mathrm d^2=0\)。第一象限双复形的总复形具有两种每个次数内有限的递减滤过：
+	\begin{equation}\label{g2:eq:column-row-filtrations}
+		F^p\operatorname{Tot}^nB=\bigoplus_{a\ge p}B^{a,n-a},\qquad
+		G^q\operatorname{Tot}^nB=\bigoplus_{b\ge q}B^{n-b,b}.
+	\end{equation}
+	第一种滤过的伴随分次微分为 \(\mathrm d_{\mathrm v}\)，第二种为 \(\mathrm d_{\mathrm h}\)。
+\end{proposition}
+\begin{proof}
+	展开平方得到
+	\[
+		\mathrm d^2=\mathrm d_{\mathrm h}^{\,2}
+		+\mathrm d_{\mathrm h}\mathrm d_{\mathrm v}
+		+\mathrm d_{\mathrm v}\mathrm d_{\mathrm h}
+		+\mathrm d_{\mathrm v}^{\,2}=0.
+	\]
+	两个微分都不降低水平指标，也都不降低竖直指标，因此保持各自的滤过。对 \(F\) 取相邻商后只保留水平次数 \(p\) 的一列；\(\mathrm d_{\mathrm h}\) 进入下一层而被商去，余下 \(\mathrm d_{\mathrm v}\)。对 \(G\) 同理。第一象限条件还给出 \(F^0\operatorname{Tot}^n=G^0\operatorname{Tot}^n=\operatorname{Tot}^n\) 及 \(F^{n+1}\operatorname{Tot}^n=G^{n+1}\operatorname{Tot}^n=0\)（\(n\ge0\)）。
+\end{proof}
+
+\cref{g2:lem:first-quadrant-comparison}使用的是交换微分 \(h,v\) 和公式 \(\mathrm d=h+(-1)^pv\)。在 \(B^{p,q}\) 上设
+\[
+	\mathrm d_{\mathrm h}=h,\qquad \mathrm d_{\mathrm v}=(-1)^pv,
+\]
+就得到本节约定：两个混合复合分别是 \((-1)^phv\) 和 \((-1)^{p+1}vh\)，和为零。因此两处的总复形完全相同；区别只是是否把 \((-1)^p\) 预先放进竖直箭头。
+
+\ProseParagraphBreak
+
+计算时，把 \(B^{p,q}\) 画在平面坐标 \((p,q)\) 上，\(\mathrm d_{\mathrm h}\) 向右、\(\mathrm d_{\mathrm v}\) 向上，而一条总次数为 \(n\) 的上链沿斜线 \(p+q=n\) 分布。先对列取上同调，再计算横向诱导微分，是滤过 \(F\) 的前两步；先对行计算则来自 \(G\)。如果一个横向像只是竖直边界，就能用右下方的分量抵消它，抵消过程继续向右下方延伸。这条阶梯将在下一节给出高阶微分的具体代表。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
