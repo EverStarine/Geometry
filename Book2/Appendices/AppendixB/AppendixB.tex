@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：## 附录 B　分层空间、局部拓扑与交叉同调
 % 纲要位置：几何学计划纲要.md，第 2006 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -39,84 +39,1169 @@
 \label{g2:app:B}
 \BookChapterNumber{g2:app:B}
 
-待撰写
+\begin{chapterabstract}
+	奇异空间可以分成光滑的层，但各层怎样接近彼此，决定了微分方法能否继续使用。本附录以 Whitney 条件约束切空间与割线的极限，以管状控制数据协调逐层运动，并从受控流推导固有族的第一同位引理。随后转向链接与锥模型，说明普通 Poincaré 对偶怎样失败，并以允许链建立可计算的交叉同调，证明锥与悬挂公式。最后用结点模型连接可构造层、中间延拓和附近圈，完整计算平滑化中的消失圈及其边界扭转。
+\end{chapterabstract}
+
+\begin{learninggoals}
+	\begin{itemize}
+		\item 检查边界条件与 Whitney 条件，用切空间和割线的极限辨认失败，并从横截切片构造链接。
+		\item 解释管状投影、横向半径和受控场的相容方程，重建第一同位引理中固有性保证流存在的步骤。
+		\item 对链与边界分别检验允许性，计算锥和悬挂的交叉同调，分清互补允许函数的对偶与自身对偶。
+		\item 用结点的常值层、正规化直接像和交叉复形辨认不同的局部粘合数据。
+		\item 计算 \(uv=t\) 的圆环纤维与消失圈，区别普通同调上的单值变换和固定边界参数的返回映射。
+	\end{itemize}
+\end{learninggoals}
+
+一张光滑曲面的小邻域像圆盘；两张圆盘在中心相接后，中心附近的空间就不再像一张圆盘。把公共点单独看成零维流形，把其余部分看成二维流形，便能继续逐块使用微分学。可是，怎样判断这些光滑部分接得足够好？从一块移动到另一块附近时，切方向会不会突然消失？原本能在圆盘里填掉的圈，是否仍能按相同方式填掉？分层、控制数据和允许链分别处理这些问题。
+
+\ProseParagraphBreak
+
+所需基础主要是本卷第2—6章的链复形、局部同调与对偶，第7章的层、茎及消解，以及第14—15章的横截性、管状邻域和固有淹没的局部平凡性。正文在实际使用处恢复相应条件。基础部分完整展开 Whitney \((b)\Rightarrow(a)\)、切片横截性、固有平凡化的流构造、锥与悬挂公式和代表算例。相容控制数据的存在与受控积分采用 Mather 的理论；一般交叉同调对偶及层模型的比较按指定版本引用。层方法一节给出中间延拓的准确含义及结点计算，完整的导出范畴与层论对偶可循所引文献继续学习。
 
 \section{分层的几何条件}
 \label{g2:sec:B01}
-待撰写
+
+两条直线相交形成的十字，在交点以外都是一维流形；交点本身则是一张零维流形。把它们分开后，每一块都能使用微分学，但还要知道各块怎样靠近交点。分层的第一步是选出这些光滑部分，第二步是约束部分之间的接近方式。Whitney 条件把后一项要求写成切空间与割线的极限关系。
 
 \subsection{局部有限分层与边界条件}
 \label{g2:subsec:B01:01}
-待撰写
+
+\begin{definition}\label{g2:def:smooth-stratification}
+	设 \(M\) 为无边界光滑流形，\(X\subset M\) 为局部闭子集。一族两两不交的连通、局部闭、无边界光滑嵌入子流形 \(\mathcal S\)，若满足下列条件，就称为 \(X\) 的一个\term[guanghuafenceng]{光滑分层}[smooth stratification]，其中每个 \(S\in\mathcal S\) 称为一个\term[ceng]{层}[stratum]：
+	\begin{enumerate}
+		\item \(X=\bigsqcup_{S\in\mathcal S}S\)。
+		\item \(M\) 中每一点都有只与有限多个层相交的邻域，这称为局部有限性。
+		\item 若两个不同层 \(S,R\) 满足 \(S\cap\overline R\ne\varnothing\)，则 \(S\subset\overline R\setminus R\)，并且 \(\dim S<\dim R\)。这里闭包取于 \(M\)；这一要求称为\term[fencengbianjietiaojian]{边界条件}[frontier condition]。
+	\end{enumerate}
+	当 \(S\subset\overline R\setminus R\) 时，记 \(S<R\)，称 \(S\) 是 \(R\) 的较低层。
+\end{definition}
+
+这里的“边界”是 \((\overline R\setminus R)\cap X\)，不是流形 \(R\) 自身的带边界结构：每个层都是无边界流形。局部闭也不等于在 \(M\) 中闭。例如一条开射线是局部闭子流形，它的端点可以成为另一个层。把各层要求为连通，是为了让“某一层上的局部情形”对应一块实际相连的区域。
+
+\ProseParagraphBreak
+
+边界条件说，一层若碰到了另一层的闭包，就必须整层包含在该闭包中。它保证 \(\overline R\cap X\) 是若干层的并。由局部有限性及维数下降，所有维数不超过 \(k\) 的层的并
+\[
+	X_k=\bigcup_{\dim S\leq k}S
+\]
+在 \(X\) 中闭。确实，若 \(x_i\in X_k\) 收敛到 \(x\in X\)，局部有限性允许取子列，使全部 \(x_i\) 落在同一个层 \(R\) 中；含 \(x\) 的层若不同于 \(R\)，便是维数更小的较低层。因此 \(x\in X_k\)。分层由此给出闭集滤过，稍后允许链的维数条件将沿这个滤过逐层检查。
+
+\begin{example}\label{g2:exm:cross-stratification}
+	实平面中的 \(X=\{(x,y):xy=0\}\) 可以分为原点和四条开射线。层维数分别为 \(0\) 和 \(1\)，每条射线的边界只有原点，边界条件成立。
+
+	若把整个横轴作为一层，纵轴去掉原点后分成两层，仍然得到了光滑流形的分拆，却不满足边界条件：上半纵轴的闭包只碰到横轴的原点，没有包含整条横轴。问题就在于把横轴中性质不同的点放进了同一层；把原点单独划出即可修正。
+\end{example}
+
+局部有限性也有实际作用。把 \(\mathbb R\) 的每个点各自作为一层，虽是光滑零维流形的分拆，却使任意开区间碰到无限多层。此时仅有“逐层光滑”几乎不再限制一个映射，后面也无法用有限次局部构造协调邻近的层。定义中的局部有限性排除了这样的分拆。
 
 \subsection{Whitney (a)、(b) 的切空间极限}
 \label{g2:subsec:B01:02}
-待撰写
+
+边界条件只涉及哪些点位于闭包中，还没有约束切方向。设 \(S<R\)，\(x\in S\)。在 \(x\) 附近取环境坐标，把切空间识别为 \(\mathbb R^m\) 的子空间。若 \(r=\dim R\)，则 \(\mathrm T_{x_i}R\) 是 Grassmann 流形 \(\operatorname{Gr}_r(\mathbb R^m)\) 中的一点。它的收敛可具体理解为相应正交投影矩阵的收敛；该 Grassmann 流形紧，所以任意一列切空间都有收敛子列。极限空间的维数仍为 \(r\)。
+
+\begin{definition}\label{g2:def:whitney-conditions}
+	设 \(R,S\) 是光滑流形 \(M\) 中两个不交的嵌入子流形，\(x\in S\cap\overline R\)。在 \(x\) 附近的环境坐标中作如下定义。
+	\begin{enumerate}
+		\item 若对每列 \(x_i\in R\)、\(x_i\to x\)，只要 \(\mathrm T_{x_i}R\to\tau\)，就有 \(\mathrm T_xS\subset\tau\)，则称 \((R,S)\) 在 \(x\) 满足\term[Whitney a tiaojian]{Whitney (a) 条件}[Whitney condition (a)]。
+		\item 若对每两列 \(x_i\in R\)、\(y_i\in S\)，当 \(x_i,y_i\to x\)、\(\mathrm T_{x_i}R\to\tau\)，且割线方向 \(\mathbb R(x_i-y_i)\to\ell\) 时，总有 \(\ell\subset\tau\)，则称 \((R,S)\) 在 \(x\) 满足\term[Whitney b tiaojian]{Whitney (b) 条件}[Whitney condition (b)]。
+	\end{enumerate}
+	一个光滑分层若对每对相邻层 \(S<R\) 及每点 \(x\in S\) 满足 (b)，就称为\term[Whitney fenceng]{Whitney 分层}[Whitney stratification]。
+\end{definition}
+
+(a) 要求较高层留下较低层原有的切向；(b) 还要求，从低层点连到高层点的接近方向能够进入高层的极限切空间。第二个条件中的 \(y_i\) 可以移动，因此它比只考察固定割线 \(x_ix\) 更强。定义及以下关系可对照\cite[第1—2节]{Mather2012TopologicalStability}。
+
+\ProseParagraphBreak
+
+这两个条件不依赖坐标。若 \(h\) 是换坐标的微分同胚，则切空间极限变为 \(\mathrm dh_x(\tau)\)，低层切空间变为 \(\mathrm dh_x(\mathrm T_xS)\)。对割线，在一个凸坐标小邻域内用导数积分得到
+\[
+	h(x_i)-h(y_i)=\mathrm dh_x(x_i-y_i)+o(\lVert x_i-y_i\rVert).
+\]
+因为 \(\mathrm dh\) 在趋近 \(x\) 的线段上一致趋近 \(\mathrm dh_x\)，这里的误差相对于两点间距为小量。又因为 \(\mathrm dh_x\) 可逆，割线极限也按 \(\mathrm dh_x\) 变换，所以两个包含条件都保持。
+
+\begin{proposition}\label{g2:prop:whitney-b-implies-a}
+	对不交的光滑嵌入子流形 \(R,S\subset M\) 及 \(x\in S\cap\overline R\)，Whitney (b) 条件蕴含 Whitney (a) 条件。
+\end{proposition}
+\begin{proof}
+	取 \(x_i\in R\)、\(x_i\to x\)，并设 \(\mathrm T_{x_i}R\to\tau\)。任取 \(0\ne v\in\mathrm T_xS\)，选取 \(S\) 内的光滑曲线 \(\gamma\)，使 \(\gamma(0)=x\)、\(\gamma'(0)=v\)。令 \(\delta_i=\lVert x_i-x\rVert\)、\(t_i=\sqrt{\delta_i}\)，并取 \(y_i=\gamma(t_i)\)。由于两层不交，\(\delta_i>0\)，且
+	\[
+		\frac{x_i-y_i}{t_i}
+		=\frac{x_i-x}{t_i}-\frac{\gamma(t_i)-x}{t_i}\longrightarrow-v.
+	\]
+	这里第一项的范数为 \(\sqrt{\delta_i}\to0\)，第二项趋于 \(v\)。所以割线极限是 \(\mathbb Rv\)，(b) 给出 \(v\in\tau\)。对所有 \(v\) 都成立，便得到 \(\mathrm T_xS\subset\tau\)。若 \(S\) 为零维层，这个包含自动成立。
+\end{proof}
+
+\begin{example}\label{g2:exm:whitney-spiral}
+	在 \(\mathbb R^2\) 中取对数螺旋
+	\[
+		R=\{\gamma(r):r>0\},\qquad
+		\gamma(r)=\bigl(r\cos(4\log r),r\sin(4\log r)\bigr),
+	\]
+	并令 \(S=\{0\}\)。半径就是参数 \(r\)，故 \(\gamma\) 为光滑嵌入；\(R\cup S\) 是闭集，\(\{R,S\}\) 满足局部有限性与边界条件。因为低层只有一个点，(a) 自动成立。取 \(r_i=e^{-\pi i/2}\)，则 \(\gamma(r_i)=(r_i,0)\)，而
+	\[
+		\gamma'(r_i)=(1,4).
+	\]
+	所以割线极限为横轴，切线极限为 \(\mathbb R(1,4)\)，不满足 (b)。\cref{g2:fig:whitney-spiral}显示的正是这两种方向的差异。这个例子说明，把奇点单独作为零维层，只能自动解决 (a)，不能自动解决 (b)。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixB-StrataSpiral}
+	\caption{对数螺旋在逐次缩小后重复同一种接近方式。图中横向割线与斜向切线之间始终有非零夹角；在趋向原点的选定子列上，两者各自收敛。}
+	\label{g2:fig:whitney-spiral}
+\end{figure}
+
+\begin{example}\label{g2:exm:complex-umbrella-whitney-a}
+	复杂的接近方式也会发生在代数方程中。取
+	\[
+		X=\{(x,y,z)\in\mathbb C^3:zx^2-y^2=0\},\qquad
+		S=\{x=y=0\},\qquad R=X\setminus S.
+	\]
+	在 \(R\) 上必有 \(x\ne0\)，参数化 \((u,v)\mapsto(u,uv,v^2)\) 将 \(\mathbb C^*\times\mathbb C\) 与 \(R\) 双全纯识别。故 \(R\) 是连通复二维流形；\(S\) 是复直线，而且 \(S\subset\overline R\)，所以这两个层满足边界条件。
+
+	沿实参数 \(t>0\) 取 \(p_t=(t,t^2,t^2)\)。由定义方程的微分，复切平面为
+	\[
+		2t\,\delta x-2\delta y+\delta z=0.
+	\]
+	其极限是 \(\{-2\delta y+\delta z=0\}\)，不包含低层的 \(z\) 方向。因此 (a) 在原点失败。所有单独的层都是解析子流形，仍不足以保证它们组成 Whitney 分层；还需要检查层与层之间的条件。这是\cite[第1节]{Mather2012TopologicalStability}中解析模型的直接计算。
+\end{example}
 
 \subsection{横截切片与链接}
 \label{g2:subsec:B01:03}
-待撰写
+
+在一个正维层上移动，与朝向这个层的法方向接近，是两种不同的变化。横截切片把第一种变化暂时固定，使我们集中观察第二种变化。设 \(x\) 属于维数 \(d\) 的层 \(S\)，在环境坐标 \(M\supset U\cong\mathbb R^m\) 中选过 \(x\) 的 \((m-d)\) 维仿射平面 \(N\)，满足
+\[
+	\mathrm T_xN\oplus\mathrm T_xS=\mathrm T_xM.
+\]
+缩小邻域后，\(N\cap S=\{x\}\)。称 \(X\cap N\) 在 \(x\) 附近的部分为一张\term[faxiangqiepian]{法向切片}[normal slice]。这里“法向”只要求横截补空间，不要求必须选择正交补。
+
+\begin{proposition}\label{g2:prop:normal-slice-link}
+	设 \(X\) 是光滑流形中的局部闭 Whitney 分层子集，\(x\in S\) 属于 \(d\) 维层，\(N\) 为上述仿射法向切片。充分缩小 \(x\) 的邻域后，\(N\) 与所有在此出现的较高层 \(R>S\) 横截，且 \(R\cap N\) 的维数为 \(\dim R-d\)。存在 \(\varepsilon_0>0\)，使对所有 \(0<\varepsilon<\varepsilon_0\)，\(N\) 内以 \(x\) 为中心、半径为 \(\varepsilon\) 的球面均与这些切片层横截。
+\end{proposition}
+\begin{proof}
+	局部有限性使我们只需处理有限个层；不以 \(x\) 为闭包点的层可在缩小邻域后排除。若有某一层 \(R\) 在趋近 \(x\) 的点 \(z_i\in R\cap N\) 处不与 \(N\) 横截，取子列使 \(\mathrm T_{z_i}R\to\tau\)。由 (a)，\(\tau\) 包含 \(\mathrm T_xS\)，因而 \(\tau+\mathrm T_xN=\mathrm T_xM\)。线性满秩是开条件，所以对充分大的 \(i\)，已有 \(\mathrm T_{z_i}R+\mathrm T_xN=\mathrm T_xM\)，矛盾。维数结论由\cref{g2:thm:transverse-preimage}得到。
+
+	再设存在趋于 \(x\) 的点 \(z_i\in R\cap N\)，使球面在 \(z_i\) 处不与 \(R\cap N\) 横截。平方距离 \(\rho(z)=\lVert z-x\rVert^2\) 在这些点限制到 \(R\cap N\) 的微分为零，等价于 \(z_i-x\) 与 \(\mathrm T_{z_i}(R\cap N)\) 正交。取子列使切空间及单位径向量分别收敛；记 \(\mathrm T_{z_i}R\to\tau\)、\((z_i-x)/\lVert z_i-x\rVert\to v\)。由 (b)，\(v\in\tau\)，又因为 \(z_i,x\in N\)，有 \(v\in\mathrm T_xN\)。前一段的横截性保证交子空间连续变化，故
+	\[
+		\mathrm T_{z_i}(R\cap N)=\mathrm T_{z_i}R\cap\mathrm T_xN
+		\longrightarrow\tau\cap\mathrm T_xN.
+	\]
+	于是 \(v\) 既属于 \(\tau\cap\mathrm T_xN\)，又与它正交。这与 \(\lVert v\rVert=1\) 矛盾。有限多个层可共取一个足够小的 \(\varepsilon_0\)。
+\end{proof}
+
+\begin{definition}\label{g2:def:stratum-link}
+	在上一命题的条件下，取充分小的 \(\varepsilon>0\)。紧分层集
+	\[
+		L_x=X\cap N\cap\{z:\lVert z-x\rVert=\varepsilon\}
+	\]
+	称为所选法向切片中 \(x\) 处的\term[fencenglianjie]{链接}[link]。链接的层取自各 \(R\cap N\) 与球面横截交的连通分支；若 \(\dim R=r\)，相应非空层的维数为 \(r-d-1\)。
+\end{definition}
+
+紧性可在把 \(X\) 取为一个小邻域内的相对闭集后看出：所选球面留在该邻域内部，故其与 \(X\cap N\) 的交是紧球面的闭子集。链接记录离开低层时出现的方向及这些方向彼此怎样连接，而不是把所有接近方向一律认作一个球面。
+
+\begin{example}\label{g2:exm:node-link}
+	对于实十字 \(\{xy=0\}\subset\mathbb R^2\) 的原点层，法向切片就是整个平面，链接由圆周上的四个点组成，如\cref{g2:fig:cross-link}所示。在非原点的一维层上，局部空间是一段直线，法向切片只留下一个点，没有其他层穿入。
+
+	复结点 \(X=\{zw=0\}\subset\mathbb C^2\) 的原点链接则是
+	\[
+		\{(z,0):|z|=\varepsilon\}\ \sqcup\ \{(0,w):|w|=\varepsilon\},
+	\]
+	即三维球面 \(S^3_\varepsilon\) 内两条互不相交的圆。这里每个正维层的复维数为 \(1\)、实维数为 \(2\)，所以链接维数为 \(1\)。沿径向缩放，\(X\cap\overline B_\varepsilon\) 恰是这个两圆之并的闭锥。它的两张复圆盘只在锥顶相接，不能把两圆之并换成一条圆而保留局部拓扑。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixB-StrataLink}
+	\caption{实十字的原点链接是四个点。径向伸缩把每个链接点展开成一条射线，四条射线共用同一个锥顶。}
+	\label{g2:fig:cross-link}
+\end{figure}
+
+一般 Whitney 分层也有相应的局部乘积锥结构。准确地说，对局部闭 Whitney 分层集中的 \(d\) 维层点 \(x\)，可选择层内邻域 \(U\)、一张足够小的法向切片及其紧链接 \(L_x\)，使 \(X\) 中 \(x\) 的某个邻域分层同胚于
+\[
+	U\times cL_x,\qquad
+	cL_x=(L_x\times[0,1))/(L_x\times\{0\}),
+\]
+并把低层对应于 \(U\times\{\text{锥顶}\}\)。当局部只含 \(S\) 时，法向因子就是一个点。这里的分层同胚在每个层上光滑，但一般不来自环境流形的微分同胚。这个结论采用管状控制数据与分层局部平凡性定理，见\cite[第7节及第10节的管邻域局部平凡性]{Mather2012TopologicalStability}；它也保证同一层上充分邻近点的链接具有相同分层同胚型，以及充分小半径和相容法向切片之间的选择无关性。
+
+\ProseParagraphBreak
+
+在结点例子中，径向缩放已经直接给出锥的每一条母线。一般情形中，控制数据提供可与其他层协调的投影与径向函数；下一节将说明这些对象怎样生成连续的保层流。这也解释了为什么仅仅证明小球面横截，还需要进一步的控制才能组织整个邻域。
 
 \subsection{代数、解析和光滑分层的区别}
 \label{g2:subsec:B01:04}
-待撰写
+
+“各层光滑”是对分拆结果的要求；“空间由代数或解析方程给出”则是对原始对象的要求。一个代数集可以有奇点，取出其光滑部分再递归处理剩余集，能给出维数逐步下降的分解。但\cref{g2:exm:complex-umbrella-whitney-a}说明，光滑部分与剩余部分的切向关系仍可能要求进一步细分。
+
+\ProseParagraphBreak
+
+复解析集具有一个重要的分层存在定理：若 \(X\) 是复流形中的复解析子集，则它存在局部有限的 Whitney 分层，各层可取为连通、局部闭的复解析子流形。这里 Whitney 条件按底层实光滑流形理解，故复 \(d\) 维层的实维数是 \(2d\)。这一存在结论采用 Whitney 的解析分层定理；定理的出处及与原始光滑部分分解的区别见\cite[第470页]{Goresky2012StratificationIntroduction}。对复代数集，它直接适用于相应的复解析空间；若还要求层本身代数、与指定子集相容或对某个映射满足 Thom 条件，则要使用包含这些额外要求的版本。
+
+\begin{table}[htbp]
+	\centering
+	\caption{方程范畴与分层条件所控制的信息}
+	\label{g2:tab:stratification-categories}
+	\begin{tabularx}{\textwidth}{@{}lXX@{}}
+		\toprule
+		语境 & 原始数据 & 仍须辨明的问题 \\
+		\midrule
+		代数 & 多项式方程；若允许不等式则进入半代数语境 & 光滑部分的分拆是否已满足边界与 Whitney 条件 \\
+		复解析 & 局部全纯方程，层可选为复解析子流形 & 复维数与实维数、局部有限性及所用分层存在版本 \\
+		实解析 & 局部实解析方程；实半解析集还允许不等式 & 解析／半解析条件与分层相容要求须逐项保留 \\
+		任意光滑 & 局部或整体 \(C^\infty\) 方程 & 零点集甚至可能不存在局部有限光滑分层 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+最后一行的差别可以具体看见。设 \(C\subset\mathbb R\) 是标准 Cantor 集。若它有局部有限光滑分层，则每个连通层只能是一个点：它不包含任何非退化区间，而 \(\mathbb R\) 中正维嵌入子流形局部必包含开区间。可是 \(C\) 没有孤立点，每个点的任意邻域都含无限多个不同点层，违背局部有限性。
+
+\ProseParagraphBreak
+
+另一方面，\(C\) 确实能写成一个光滑函数的零点集。取覆盖 \(\mathbb R\setminus C\) 的可数族有理开区间 \(I_j\)，使各闭包仍在补集中；选非负光滑紧支函数 \(\psi_j\)，在 \(I_j\) 内为正、支集包含于 \(\mathbb R\setminus C\)。令
+\[
+	a_j=\frac{2^{-j}}{1+\max_{0\leq k\leq j}\lVert\psi_j^{(k)}\rVert_\infty},
+	\qquad f=\sum_{j=1}^{\infty}a_j\psi_j.
+\]
+对任意固定 \(k\)，从 \(j\geq k\) 起，\(k\) 阶导数项的范数都不超过 \(2^{-j}\)，所以各阶导数级数一致收敛，\(f\) 为 \(C^\infty\) 函数。所有项在 \(C\) 上为零，而每个补集点至少使一项严格为正，故 \(f^{-1}(0)=C\)。光滑方程本身因而不能保证我们需要的几何分层；解析和代数结构的分层存在定理提供了实质性的额外信息。
 
 \section{控制数据与局部平凡性}
 \label{g2:sec:B02}
-待撰写
+
+在光滑流形上，沿一个向量场移动点，可以把相邻纤维联系起来。分层空间还多出一个问题：上层的点靠近下层时，各层分别定义的运动能否接成连续运动？管状投影记录点落在下层的哪个位置，横向半径记录它离下层多远。让运动与这两种记录相容，就能把逐层的微分方程组织成整个空间上的局部流。
 
 \subsection{管状控制数据及相容性}
 \label{g2:subsec:B02:01}
-待撰写
+
+设 \(X\) 是光滑流形 \(M\) 中的一个局部闭 Whitney 分层子集，分层记为 \(\mathcal S\)。若 \(S\subset\overline T\setminus T\)，记 \(S<T\)。第15章的管状邻域定理可以分别用于每一层：因为 \(S\) 局部闭，可以先在 \(M\) 的适当开子集中使它成为闭子流形，再取管状邻域。我们需要把这些分别存在的管状邻域选得彼此相容。
+
+\begin{definition}\label{g2:def:tubular-control-data}
+	对每个层 \(S\in\mathcal S\)，取一个管状邻域 \(U_S\)、光滑收缩 \(\pi_S:U_S\to S\) 及光滑函数 \(\rho_S:U_S\to[0,\infty)\)。在管状坐标中，\(\rho_S\) 是法向纤维的正定平方范数，故 \(\rho_S^{-1}(0)=S\)。若经过必要的缩小后，对每对 \(S<T\) 都有
+	\[
+		(\pi_S,\rho_S):T\cap U_S\longrightarrow S\times(0,\infty)
+	\]
+	为淹没，并且在两边都有定义的邻域内满足
+	\begin{equation}\label{g2:eq:tube-control-identities}
+		\pi_S\circ\pi_T=\pi_S,\qquad
+		\rho_S\circ\pi_T=\rho_S,
+	\end{equation}
+	则称这组数据为分层的\term[guanzhuang kongzhi shuju]{管状控制数据}[tubular control data]。
+\end{definition}
+
+第一条等式说，先向一个较高层投影，再向较低层投影，与直接向较低层投影相同。第二条等式说，第一次投影也不改变相对于较低层测得的横向半径。遇到三个以上相邻的层时，这些等式使各次投影保留同一份低层坐标；它们正是以后拼接向量场所需的相容条件。
+
+\ProseParagraphBreak
+
+淹没条件也有具体含义。在较高层内，既可以改变 \(\pi_S\) 所记录的低层位置，又可以独立改变正半径 \(\rho_S\)。例如闭半平面 \(X=\{(x,y):y\ge0\}\) 按边界 \(S=\{y=0\}\) 与内部 \(T=\{y>0\}\) 分层，取
+\[
+	\pi_S(x,y)=(x,0),\qquad \rho_S(x,y)=y^2.
+\]
+则 \((x,y)\mapsto(x,y^2)\) 在 \(y>0\) 的 Jacobian 行列式是 \(2y\ne0\)，所以它是淹没。沿水平方向移动时，\(\pi_S\) 随之移动，\(\rho_S\) 保持不变，见\cref{g2:fig:control-tube}。
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixB-ControlTube}
+	\caption{半平面中的控制数据。投影 \(\pi_S\) 取边界上的位置，\(\rho_S=y^2\) 取横向平方距离；水平运动在各高度上投影为同一边界运动。}
+	\label{g2:fig:control-tube}
+\end{figure}
+
+\begin{theorem}\label{g2:thm:compatible-control-data}
+	设 \(X\) 是有限维光滑流形 \(M\) 中的局部闭 Whitney 分层子集。则 \(X\) 有管状控制数据。若还有光滑映射 \(f:M\to B\)，其中 \(B\) 是无边界光滑流形，且每个限制 \(f|_S:S\to B\) 都是淹没，则可把控制数据选成在各 \(U_S\) 上满足
+	\begin{equation}\label{g2:eq:f-compatible-control}
+		f\circ\pi_S=f.
+	\end{equation}
+\end{theorem}
+
+这里采用控制数据的存在定理，见\cite[第7节]{Mather2012TopologicalStability}。相容部分所需的环境淹没条件也已满足：\(\mathrm{d}(f|_S)_x\) 满射意味着 \(\mathrm{d}f_x\) 满射，而满秩是开条件，故可以把环境缩小到包含 \(X\) 的开邻域，使 \(f\) 在该邻域为淹没。定理的构造按层的维数归纳，Whitney 条件保证管状投影与半径在上层联合满秩，再相对已经构造好的低层邻域调整新管。普通管状邻域定理只处理单个子流形，这里额外获得的是式\eqref{g2:eq:tube-control-identities}的整组相容性。
+
+\ProseParagraphBreak
+
+若 \(f|_S\) 是淹没且满足式\eqref{g2:eq:f-compatible-control}，我们说 \(f|_X\) 是相对于这些数据的\term[shoukong yanmo]{受控淹没}[controlled submersion]。一个底空间向量 \(w\in\mathrm{T}_{f(x)}B\) 在不同层上的提升，必须在同一条纤维记录下相互配合；这比为每个层独立选择一个水平补空间要求更强。
 
 \subsection{分层向量场和积分}
 \label{g2:subsec:B02:02}
-待撰写
+
+\begin{definition}\label{g2:def:controlled-stratified-vector-field}
+	设 \(X\) 带有管状控制数据。一个\term[fenceng xiangliangchang]{分层向量场}[stratified vector field]是一族逐层光滑向量场 \(V=(V_S)_{S\in\mathcal S}\)，其中 \(V_S(x)\in\mathrm{T}_xS\)。若对每个低层 \(S\)，在其足够小的管状邻域内，对所有 \(T>S\) 满足
+	\begin{equation}\label{g2:eq:controlled-vector-field}
+		\mathrm{d}\pi_S(V_T)=V_S\circ\pi_S,
+		\qquad \mathrm{d}\rho_S(V_T)=0,
+	\end{equation}
+	则称 \(V\) 为\term[shoukong fenceng xiangliangchang]{受控分层向量场}[controlled stratified vector field]。
+\end{definition}
+
+逐层光滑只说明在每一层内部可以使用微分方程定理。它本身没有规定跨层的连续性；即使额外要求 \(V\) 作为环境切丛的截面连续，也还不能保证解对初值唯一或保持原层。控制条件直接规定运动应当怎样接近低层。受控场也未必是环境切丛中的连续截面：横向角速度可以很大，而其轨道始终保持很小的半径；\cref{g2:ex:controlled-rapid-rotation}将给出可显式求解的例子。
+
+\begin{proposition}\label{g2:prop:control-along-trajectories}
+	设 \(V\) 为受控分层向量场，\(\gamma(t)\) 是上层 \(T\) 内的一条积分曲线，并在某时间区间内处于式\eqref{g2:eq:controlled-vector-field}成立的 \(S\) 管状邻域。则
+	\[
+		\rho_S(\gamma(t))\text{ 为常数},\qquad
+		\pi_S\gamma(t)\text{ 是 }V_S\text{ 的积分曲线}.
+	\]
+	特别地，这样一段上层轨道不能在有限端点收敛到 \(S\)。
+\end{proposition}
+\begin{proof}
+	链式法则给出
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}\rho_S(\gamma(t))
+		=\mathrm{d}\rho_S(V_T(\gamma(t)))=0,
+	\]
+	以及
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}\pi_S\gamma(t)
+		=\mathrm{d}\pi_S(V_T(\gamma(t)))
+		=V_S(\pi_S\gamma(t)).
+	\]
+	第一式的常数严格为正，因为轨道位于 \(T\) 而不在 \(S\)。若它趋于 \(S\) 中一点，\(\rho_S\) 的连续性会使这个常数趋于零，产生矛盾。投影曲线的初值确定后，低层上的光滑常微分方程唯一性又说明它就是低层的相应轨道。
+\end{proof}
+
+受控场的存在及整个空间上的积分由下面两个结果提供，见\cite[第9—10节]{Mather2012TopologicalStability}。
+
+\begin{theorem}\label{g2:thm:controlled-lifting-flow}
+	设 \(X\) 是有限维光滑流形中的局部闭 Whitney 分层子集，并固定一组管状控制数据。
+	\begin{enumerate}
+		\item 若 \(f:X\to B\) 是到光滑流形的受控淹没，则任意光滑向量场 \(W\) 在 \(X\) 上都有受控提升 \(V\)，满足 \(\mathrm{d}(f|_S)(V_S)=W\circ f|_S\) 对每个层成立。
+		\item 任意受控分层向量场 \(V\) 都生成唯一的最大保层局部流 \(\Phi:D\to X\)。这里 \(D\subset\mathbb R\times X\) 为含 \(\{0\}\times X\) 的开集，\(\Phi\) 联合连续，限制到每个层及其时间定义域时光滑，并满足流的组合律与逆映射公式。若一条最大轨道在有限端点之前始终留在 \(X\) 的一个紧集中，则可越过该端点继续积分。
+	\end{enumerate}
+\end{theorem}
+
+这一定理把两个不同的工作分开：提升部分按层构造满足相容方程的速度；积分部分保证这些逐层的轨道在整个 \(X\) 上连续相接。提升过程中，\((\pi_S,\rho_S)\) 的淹没性使局部线性方程可解，控制等式保证与已经给定的低层速度相容。积分过程中，\cref{g2:prop:control-along-trajectories}的半径恒定排除了有限时间撞入低层；投影曲线的连续依赖与半径控制共同保证初值趋于低层时，轨道也趋于相应的低层轨道。第15章光滑流的紧集延拓论证由此获得了分层版本。
+
+\ProseParagraphBreak
+
+还需区分空间的切向控制与映射纤维的切向控制。设光滑映射 \(f:M\to B\) 在相邻两层 \(T,S\) 上都为常秩映射。\(\ker\mathrm{d}(f|_T)_x\) 是上层中经过 \(x\) 的纤维的切空间，它可能比 \(\mathrm{T}_xT\) 小得多。
+
+\begin{definition}\label{g2:def:thom-af}
+	在上述常秩条件下，若对每个 \(s\in S\) 及每列 \(x_i\in T\)、\(x_i\to s\)，只要纤维切空间在 Grassmann 流形中有极限
+	\[
+		\ker\mathrm{d}(f|_T)_{x_i}\longrightarrow\tau,
+	\]
+	就有 \(\ker\mathrm{d}(f|_S)_s\subset\tau\)，则称 \((T,S)\) 满足\term[Thom-af-tiaojian]{Thom \(a_f\) 条件}[Thom's \(a_f\) condition]。
+\end{definition}
+
+Whitney \((a)\) 比较整层的切空间，Thom \(a_f\) 比较映射纤维的切空间。这个定义来自映射的分层平凡性理论，见\cite[第11节]{Mather2012TopologicalStability}。对接下来采用的第一同位引理，所有层都淹没到同一个光滑底空间，此时 Whitney \((a)\) 已经能推出 \(a_f\)。
+
+\begin{proposition}\label{g2:prop:whitney-submersion-thom}
+	设 \(f:M\to B\) 光滑，\(S<T\) 是光滑层，\((T,S)\) 满足 Whitney \((a)\)，且 \(f|_T\) 与 \(f|_S\) 都是到同一 \(B\) 的淹没。则 \((T,S)\) 满足 Thom \(a_f\) 条件。
+\end{proposition}
+\begin{proof}
+	取 \(x_i\to s\) 且纤维切空间趋于 \(\tau\)。在局部坐标中取子列，使 \(\mathrm{T}_{x_i}T\to\sigma\)；Whitney \((a)\) 给出 \(\mathrm{T}_sS\subset\sigma\)。任取 \(v\in\ker\mathrm{d}(f|_S)_s\)，可选 \(v_i\in\mathrm{T}_{x_i}T\) 使 \(v_i\to v\)，于是 \(\mathrm{d}f_{x_i}(v_i)\to0\)。
+
+	令 \(q=\dim B\)。因 \(f|_S\) 淹没，可选 \(w_1,\ldots,w_q\in\mathrm{T}_sS\)，使 \(\mathrm{d}f_s(w_j)\) 为目标切空间的基。选 \(w_{ij}\in\mathrm{T}_{x_i}T\) 趋于 \(w_j\)，则当 \(i\) 足够大时，\(\mathrm{d}f_{x_i}(w_{ij})\) 仍为基，且对应基矩阵的逆有统一界。故可唯一写成
+	\[
+		\mathrm{d}f_{x_i}(v_i)=\sum_{j=1}^q c_{ij}\mathrm{d}f_{x_i}(w_{ij}),
+		\qquad c_{ij}\longrightarrow0.
+	\]
+	于是 \(v_i'=v_i-\sum_jc_{ij}w_{ij}\) 位于 \(\ker\mathrm{d}(f|_T)_{x_i}\)，且 \(v_i'\to v\)，所以 \(v\in\tau\)。若最初的层切空间未整列收敛，对任意子列重复取收敛子列即可；纤维切空间的已定极限始终是同一个 \(\tau\)，故结论对原列成立。
+\end{proof}
+
+\begin{example}\label{g2:exm:whitney-not-thom-af}
+	在闭半平面取边界层 \(S=\{y=0\}\)、内部层 \(T=\{y>0\}\)，令 \(f(x,y)=xy\)。这是 Whitney 分层，\(f|_T\) 的秩恒为 \(1\)，\(f|_S\) 的秩恒为 \(0\)。沿 \((0,y_i)\)、\(y_i\downarrow0\)，有
+	\[
+		\mathrm{d}f=y_i\,\mathrm{d}x,
+		\qquad\ker\mathrm{d}(f|_T)_{(0,y_i)}=\mathbb R\partial_y.
+	\]
+	然而 \(\ker\mathrm{d}(f|_S)_{(0,0)}=\mathbb R\partial_x\)，不包含在这个极限中。故 \(a_f\) 在原点失败。这里失去的是低层对同一底空间的淹没性；只有整层的良好相接，还不能控制降秩映射的纤维。
+\end{example}
 
 \subsection{第一同位引理的选定固有版本}
 \label{g2:subsec:B02:03}
-待撰写
+
+现在把底空间中的坐标移动提升到 \(X\)。如果每个提升都能沿所需时间积分，并且对初值连续，就能把一张纤维搬到邻近的每张纤维。固有性负责提供这些轨道共同需要的紧集。
+
+\begin{theorem}[第一同位引理]\label{g2:thm:first-isotopy-lemma}
+	设 \(X\) 为无边界光滑流形 \(M\) 中的闭 Whitney 分层子集，\(B\) 为无边界光滑流形，\(f:M\to B\) 光滑。假设 \(f|_X\) 固有，即紧集的原像紧，并且 \(f|_S:S\to B\) 对每个层 \(S\) 都是淹没。则每个 \(b_0\in B\) 都有邻域 \(U\) 及保层同胚
+	\begin{equation}\label{g2:eq:first-isotopy-trivialization}
+		h:(f^{-1}(b_0)\cap X)\times U\longrightarrow f^{-1}(U)\cap X,
+		\qquad f(h(x,b))=b.
+	\end{equation}
+	其中源端第一因子按各层与纤维的交来分层；\(h\) 在相应各层的乘积上为微分同胚。
+\end{theorem}
+
+该结论见\cite[第11节，第一同位引理]{Mather2012TopologicalStability}。下面用已声明的控制数据与受控流定理证明局部乘积的构造。
+
+\begin{proof}
+	在 \(b_0\) 附近取坐标，把它记为 \(0\in\mathbb R^q\)。选开坐标盒 \(U=(-a,a)^q\)，使其闭包包含在较大的坐标盒 \(U'\) 内，并使 \(\overline{U'}\) 紧且仍处于同一坐标图。将 \(X\) 限制到 \(f^{-1}(U')\)。由\cref{g2:thm:compatible-control-data}选与 \(f\) 相容的控制数据，再由\cref{g2:thm:controlled-lifting-flow}提升每个坐标向量场 \(\partial_{b_j}\)，得到受控场 \(V_j\) 及局部流 \(\Phi_j^t\)。沿其轨道有
+	\[
+		f(\Phi_j^t(x))=f(x)+t e_j
+	\]
+	只要轨道仍在此坐标区域内，此式就成立。
+
+	所需的轨道是把底坐标从 \(0\) 逐个改到 \(b=(b_1,\ldots,b_q)\)，或者按相反次序返回 \(0\)。这些底路径全部留在 \(\overline U\)。固有性使
+	\[
+		K=X\cap f^{-1}(\overline U)
+	\]
+	紧，而且 \(K\) 包含在流所在的开集 \(X\cap f^{-1}(U')\) 中。若某一步在到达所需时间前停止，其轨道始终留在 \(K\)，便与受控流的紧集延拓性质矛盾。因此每一步和相应的反向步骤都能完成。这里直接使用整个 \(X\) 上的局部流定义域；单个层中的紧性未必成立，因为序列可以趋向低层。
+
+	记 \(F_0=X\cap f^{-1}(0)\)，定义
+	\[
+		h(x,b)=\Phi_q^{b_q}\circ\cdots\circ\Phi_1^{b_1}(x),
+		\qquad (x,b)\in F_0\times U.
+	\]
+	它将各层保留，且 \(f(h(x,b))=b\)。对 \(y\in X\cap f^{-1}(U)\)，令 \(b=f(y)\)，定义
+	\[
+		k(y)=\bigl(\Phi_1^{-b_1}\circ\cdots\circ\Phi_q^{-b_q}(y),b\bigr).
+	\]
+	流的逆映射公式按相反顺序逐个消去，给出 \(k\circ h=\operatorname{id}\) 及 \(h\circ k=\operatorname{id}\)。不需要各个 \(V_j\) 彼此交换；这里把积分次序固定，并在逆映射中反转次序。
+
+	每个 \(\Phi_j\) 对时间及初值联合连续，所以 \(h,k\) 都连续。限制到一个层后，\(f|_S\) 是淹没，\(S\cap f^{-1}(0)\) 为光滑子流形，各步流又是光滑的；上述两个互逆映射在该层上因而都光滑。若 \(F_0\) 为空，同样的反向运动说明足够小的 \(U\) 上没有纤维点，结论读作两个空空间的同胚。
+\end{proof}
+
+当 \(X\) 只有一个层时，这就是固有淹没的局部平凡性。多层情形中，\(h\) 是整个空间的同胚，并在各层上光滑；它还保存链接与各层的相接方式。于是沿同一底空间小邻域，不仅普通纤维的同调群相同，层与层之间的局部拓扑也由同一组映射联系起来。
+
+\ProseParagraphBreak
+
+例如，把一个固定紧分层空间 \(F\) 乘以光滑流形 \(B\)，投影 \(F\times B\to B\) 固有且逐层淹没；局部平凡化就是乘积本身。更有用的是反向使用定理：当给定族没有现成的乘积坐标时，只要能验证 Whitney 条件、逐层淹没和固有性，就可以通过受控流构造这样的坐标。
 
 \subsection{缺少控制或固有性时的失败}
 \label{g2:subsec:B02:04}
-待撰写
+
+先看仅靠逐层光滑和整体连续为何不够。在同一个闭半平面分层上，令
+\[
+	V(x,y)=\begin{cases}
+		-\sqrt y\,\partial_y,&y>0,\\
+		0,&y=0.
+	\end{cases}
+\]
+它作为环境切丛截面连续，在每层上光滑，也确实切于每层。但从 \((x_0,y_0)\)、\(y_0>0\) 出发的内部轨道是
+\[
+	x(t)=x_0,\qquad
+	y(t)=\bigl(\sqrt{y_0}-t/2\bigr)^2,
+	\qquad 0\le t<2\sqrt{y_0}.
+\]
+它在有限时间到达边界。若继续停在边界上，就把不同的内点压到同一个边界点，所得映射不能是同胚；若坚持保持原层，就不能在边界点的任何邻域取得共同的正时间。对 \(\rho_S=y^2\)，直接计算给出
+\[
+	\mathrm{d}\rho_S(V)=-2y^{3/2}\ne0.
+\]
+因此它正好违反了防止撞层的半径控制。这个例子的分层本身是 Whitney 的，失败发生在所选速度场。
+
+\ProseParagraphBreak
+
+再看固有性。取光滑流形 \(X=\mathbb R^2\setminus\{(0,0)\}\)，只有一个层，令 \(f(x,y)=x\)。其微分处处满射，但
+\[
+	f^{-1}(0)=\{0\}\times(\mathbb R\setminus\{0\}),
+	\qquad f^{-1}(t)=\{t\}\times\mathbb R\quad(t\ne0).
+\]
+第一张纤维有两个连通分支，其他纤维只有一个，因此零附近不可能局部平凡。水平提升场 \(\partial_x\) 的某些轨道会在有限时间碰到被删去的点；这些轨道没有留在 \(X\) 内的紧集中。更直接地，紧底集 \(\{0\}\) 的原像就不紧，故 \(f\) 不固有。
+
+\ProseParagraphBreak
+
+这两个例子分别对应证明中的两个步骤。控制等式把邻近不同层的运动接好，固有性把所需底路径上方的轨道留在一个紧集里。第一同位引理中的假设由此各自承担了明确的作用。
 
 \section{锥、链接与允许链}
 \label{g2:sec:B03}
-待撰写
+
+沿一个层移动时，控制数据把附近的横截拓扑组织成同一种模型；走到较低维的层时，链接本身的同调便会进入计算。一个锥整体可缩，顶点附近却可能保留并非球面所能具有的局部同调。交叉同调从这里出发：限制链接触奇异层的维数，使某些普通同调中的填充不再被允许，从而留下与奇点结构相适应的同调类。
 
 \subsection{局部锥模型与普通对偶的失败}
 \label{g2:subsec:B03:01}
-待撰写
+
+先固定一个便于逐链计算的范围。取有限维分段线性空间，简记为 PL 空间，其分层与三角剖分相容。这里的相容表示各闭滤过子集都是子多面体，经过细分后成为子复形。PL 条件使维数、切开和锥链都能在有限个单形上读出。
+
+\begin{definition}\label{g2:def:pl-stratified-pseudomanifold}
+	一个无边界的 \(n\) 维\term[fenchengweiliuxing]{分层伪流形}[stratified pseudomanifold]在本节指带闭滤过
+	\[
+		\varnothing=X^{-1}\subset X^0\subset\cdots\subset X^{n-2}=X^{n-1}\subset X^n=X
+	\]
+	的纯 \(n\) 维 PL 空间，满足以下条件：\(X\setminus X^{n-2}\) 是稠密的 \(n\) 维流形；非空差集 \(X^s\setminus X^{s-1}\) 是 \(s\) 维流形；其中 \(s<n\) 时每一点都有保持分层的邻域同胚
+	\[
+		\mathbb R^s\times cL,\qquad
+		cL=(L\times[0,1))/(L\times\{0\}),
+	\]
+	其中 \(L\) 为紧的 \((n-s-1)\) 维分层伪流形，定义按维数递归，零维情形取有限点集。\(cL\) 称为\term[kaizhui]{开锥}[open cone]，被压成的一点记为 \(v\)。\(X^{n-2}\) 称为奇异集，\(X\setminus X^{n-2}\) 称为正则部分。正则部分的定向称为这个伪流形的定向。
+\end{definition}
+
+等式 \(X^{n-1}=X^{n-2}\) 排除了余维一的奇异层；边界流形因而不在这个定义中。纯维数要求每个局部部分都位于 \(n\) 维片的闭包中，不能在曲面上另接一根孤立的线段。链接可以不连通，这一点对后面具有多个局部分支的结点很有用。定义中的开锥没有底边界：参数 \(r=1\) 未被加入。靠近顶点的 \(0\le r<\varepsilon\) 仍是同一种模型。
+
+\ProseParagraphBreak
+
+取一个闭 \((n-1)\) 维 PL 流形 \(L\)，只把 \(cL\) 的顶点作为奇异层。锥可缩，去掉顶点后是 \(L\times(0,1)\)，形变收缩到任意水平链接。相对同调长正合列因而给出
+\begin{equation}\label{g2:eq:cone-local-homology}
+	H_i(cL,cL\setminus\{v\};F)\cong\widetilde H_{i-1}(L;F),\qquad i\ge1,
+\end{equation}
+这里 \(F\) 为任意域。这个公式也可从链看出：把链接中的 \((i-1)\) 维圈锥到顶点，所得 \(i\) 维链的边界位于去顶点的部分，因而成为相对圈。流形内点的局部同调只在顶维有一个 \(F\)，所以若链接具有额外的约化同调，顶点就不是流形点。
+
+\begin{example}\label{g2:exm:suspended-torus-duality-failure}
+	取二维环面 \(T^2\)，令 \(X=ST^2\) 为第2章的未约化悬挂。它由两个闭锥沿共同链接粘合，只有南、北两个奇异点，是紧、定向的三维分层伪流形。由\cref{g2:thm:suspension-homology}的链证明在域系数下的同一计算，
+	\[
+		H_i(X;F)\cong
+		\begin{cases}
+			F,&i=0,3,\\
+			F^2,&i=2,\\
+			0,&\text{其余次数}.
+		\end{cases}
+	\]
+	若闭三维流形的通常对偶仍成立，就应有 \(H_2(X;F)\cong H^1(X;F)\)。但左边为 \(F^2\)，右边由域系数万有系数定理等于零。因此\cref{g2:cor:closed-poincare-duality}的流形假设在这里确实不能删除。局部原因也很明确：式\eqref{g2:eq:cone-local-homology}给出顶点处 \(H_2(X,X\setminus\{v\};F)=F^2\)，而三维流形内点的这一群应为零。
+\end{example}
+
+环面的一条本质一圈可以沿悬挂方向锥到顶点，因此在普通同调中消失；环面上的一圈又可以分别向两个顶点取锥，合起来形成一个二圈。这解释了同调从一次转到二次的现象。为了获得与定向相适应的对偶，可以控制哪种次数的链允许穿过顶点，而不是让所有正次圈都无条件在顶点处填掉。
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixB-ConeModels}
+	\caption{开锥与双锥的径向结构。横向椭圆标记一份链接 \(L\)，不表示其实际维数；右图的两个锥沿中部的 \(L\) 粘合成为悬挂。沿径向取锥可以填掉链接中的圈，允许链的条件将限制这一步。}
+	\label{g2:fig:cone-suspension-models}
+\end{figure}
 
 \subsection{允许函数（perversity）的维数限制与允许链}
 \label{g2:subsec:B03:02}
-待撰写
+
+若一个 \(i\) 维链与余维 \(k\) 的光滑子流形处于一般位置，通常希望交集的维数至多为 \(i-k\)。奇异层附近未必能如此移动链。允许函数为这个维数界增加受控的余量，而且越靠近高余维层，余量的增长不能过快。
+
+\begin{definition}\label{g2:def:gm-perversity}
+	一个经典的\term[yunxuhanshu]{允许函数}[perversity]是整数函数 \(\bar p:\{2,\ldots,n\}\to\mathbb Z\)，满足
+	\[
+		\bar p(2)=0,\qquad
+		\bar p(k+1)-\bar p(k)\in\{0,1\}.
+	\]
+	因此 \(0\le\bar p(k)\le k-2\)。零允许函数为 \(\bar0(k)=0\)，顶允许函数为 \(\bar t(k)=k-2\)。给定 \(\bar p\)，其\term[hubuyunxuhanshu]{互补允许函数}[complementary perversity]是 \(\bar q=\bar t-\bar p\)。
+\end{definition}
+
+互补函数也满足定义：它相邻两项的增量是 \(1-(\bar p(k+1)-\bar p(k))\)，仍为 \(0\) 或 \(1\)。两种常用的中间选择是
+\begin{equation}\label{g2:eq:middle-perversities}
+	\bar m(k)=\left\lfloor\frac{k-2}{2}\right\rfloor,
+	\qquad
+	\bar n(k)=\left\lceil\frac{k-2}{2}\right\rceil.
+\end{equation}
+它们互补，在偶数余维相等，在奇数余维相差 \(1\)。这些数的意义将由锥公式中的临界次数显现出来。
+
+\ProseParagraphBreak
+
+记 \(C_i^{\mathrm{PL}}(X;F)\) 为有限 PL \(i\) 维链群：在一个与滤过相容的局部有限三角剖分上，取有限个有向 \(i\) 单形的线性组合，并把一条链与它在细分后的表达识别。任意有限次计算可以通过共同细分放在同一个链群中。记 \(|\xi|\) 为合并相同单形并消去零系数后链的支集，空集的维数约定为 \(-\infty\)。这些是有限支撑链，即使 \(X\) 非紧，链的支集也紧。
+
+\begin{definition}\label{g2:def:intersection-chain-complex}
+	设 \(X\) 为 \(n\) 维 PL 分层伪流形，\(F\) 为域，\(\bar p\) 为经典允许函数。若 \(\xi\in C_i^{\mathrm{PL}}(X;F)\) 对所有 \(2\le k\le n\) 都满足
+	\begin{align}
+		\dim\bigl(|\xi|\cap X^{n-k}\bigr)&\le i-k+\bar p(k),\label{g2:eq:allowable-support}\\
+		\dim\bigl(|\partial\xi|\cap X^{n-k}\bigr)&\le i-1-k+\bar p(k),\label{g2:eq:allowable-boundary}
+	\end{align}
+	则称 \(\xi\) 为 \(\bar p\)-\term[yunxulian]{允许链}[allowable chain]。这些链组成的群记为 \(IC_i^{\bar p}(X;F)\)，其边界取普通链的边界。复形的同调
+	\[
+		IH_i^{\bar p}(X;F)\coloneqq H_i(IC_*^{\bar p}(X;F))
+	\]
+	称为 \(X\) 的 \(\bar p\)-\term[jiaochatongdiao]{交叉同调}[intersection homology]。
+	\symidx{\(IH_*^{\bar p}(X;F)\)：有限支集交叉同调}
+\end{definition}
+
+维数条件对和与数乘稳定：一条和链的支集包含在两支集的并中，边界也如此。更关键的是，式\eqref{g2:eq:allowable-boundary}恰好说明 \(\partial\xi\) 满足下一次数的支集条件，而 \(\partial^2\xi=0\) 自动满足它的边界条件。因此 \(IC_*^{\bar p}\) 确实是一个子复形。只对 \(|\xi|\) 加条件会遗漏这一步。
+
+\ProseParagraphBreak
+
+这些条件也可以逐层检查：在余维 \(c\) 的每个实际层 \(S\) 上要求 \(\dim(|\xi|\cap S)\le i-c+\bar p(c)\)，对边界同样要求。因为 \(c-\bar p(c)\) 随 \(c\) 非减，高余维层上的界不弱于把它纳入更大滤过子集时的界；有限链只遇有限个层，取有限并即可恢复式\eqref{g2:eq:allowable-support}。反向则由 \(S\subset X^{n-c}\) 直接得到。这解释了只含孤立奇点时，为何只需检验顶点的实际余维。
+
+\ProseParagraphBreak
+
+还应把整条链的边界与各单形各自的边界区分开来。允许链的若干面可能沿奇异层相互抵消，留下的总边界才满足维数界；不能据此要求每个带非零系数的单形都单独成为允许链。第2章的链复形也利用公共面的抵消，这里同样的抵消还决定一条链是否进入所选复形。
+
+\begin{example}\label{g2:exm:allowable-isolated-three-point}
+	设三维伪流形只有孤立奇异点，故只需检查余维 \(3\) 的条件。一个非空支集与顶点的交集维数为 \(0\)，因此 \(i\) 维链能接触顶点的首个次数是 \(i=3-\bar p(3)\)。
+	\begin{center}
+		\begin{tabular}{@{}c c c c@{}}
+			\toprule
+			允许函数 & 一维链 & 二维链 & 三维链 \\
+			\midrule
+			\(\bar p(3)=0\) & 避开顶点 & 避开顶点 & 可经过顶点，边界须避开 \\
+			\(\bar p(3)=1\) & 避开顶点 & 可经过顶点，边界须避开 & 可经过顶点 \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	于是两种选择都不允许一条道路借奇点连接不同的局部分支；但在第二种选择下，链接中的一圈已经可以用经过顶点的二维锥链填掉。
+\end{example}
+
+当奇异集为空时，所有限制都是空条件，\(IC_*^{\bar p}=C_*^{\mathrm{PL}}\)，交叉同调就是普通同调。当 \(\bar p\le\bar q\) 时，维数限制变宽，得到链包含及自然同态
+\[
+	IC_*^{\bar p}(X;F)\subset IC_*^{\bar q}(X;F),\qquad
+	IH_i^{\bar p}(X;F)\longrightarrow IH_i^{\bar q}(X;F).
+\]
+后一同态未必单射：放宽允许条件也加入了新的填充链，可能把原来非零的圈变为边界。下面的锥模型会直接出现这种现象。PL 允许链的经典定义及一般的交叉乘积见\cite[第1--2节]{GoreskyMacPherson1980Intersection}。
 
 \subsection{锥公式的代表性计算}
 \label{g2:subsec:B03:03}
-待撰写
+
+设 \(L\) 是非空闭 \((n-1)\) 维 PL 流形，\(n\ge2\)，\(cL\) 只有顶点这一奇异层。把
+\[
+	r\coloneqq n-1-\bar p(n)
+\]
+作为临界次数。经典允许函数满足 \(1\le r\le n-1\)。对一个 \(i\) 维圈而言，是否能够锥到顶点，取决于其填充链的维数 \(i+1\)，所以这个临界值比允许链首次接触顶点的维数少 \(1\)。
+
+\begin{theorem}[锥公式]\label{g2:thm:intersection-cone-formula}
+	设 \(L\) 是非空闭 \((n-1)\) 维 PL 流形，\(n\ge2\)，\(cL\) 按顶点及其补空间分层。对域 \(F\) 和经典允许函数 \(\bar p\)，有限支撑交叉同调满足
+	\begin{equation}\label{g2:eq:intersection-cone-formula}
+		IH_i^{\bar p}(cL;F)\cong
+		\begin{cases}
+			H_i(L;F),&0\le i<n-1-\bar p(n),\\
+			0,&i\ge n-1-\bar p(n).
+		\end{cases}
+	\end{equation}
+	低次数的同构由任意固定水平链接 \(L\times\{a\}\subset cL\)、\(0<a<1\) 的包含诱导。
+\end{theorem}
+\begin{proof}
+	令 \(r=n-1-\bar p(n)\)。如果 \(i<r\)，则对 \(i\) 维链和 \((i+1)\) 维链，接触顶点的上界分别为
+	\[
+		i-n+\bar p(n)=i-r-1<0,
+		\qquad i+1-n+\bar p(n)=i-r<0.
+	\]
+	因此用来表示 \(IH_i^{\bar p}\) 的圈以及用来判定它是否为边界的链，都必须避开顶点。反过来，完全位于 \(cL\setminus\{v\}\) 的链自动允许。故在这一次数计算交叉同调，与计算 \(L\times(0,1)\) 的普通同调相同。投影到 \(L\) 与水平包含之间的径向同伦始终避开顶点，且把有限链的紧支集留在一个紧的径向带内，所以给出所述同构。
+
+	若 \(i\ge r\)，取任意允许的 \(i\) 维圈 \(z\)。其支集位于某个截断锥 \(0\le a\le b<1\) 内。把它向顶点取锥，得到有限 \((i+1)\) 维 PL 链 \(v*z\)，满足
+	\[
+		\partial(v*z)=z-v*(\partial z)=z.
+	\]
+	这个链恒等式可在相容细分后逐单形核对：把顶点放在有向单形的首位，第一张面是原单形，其余面正是带负号的边界锥；重复顶点产生的退化项取零。锥的径向结构保证所有这些单形仍位于 \(cL\) 内。因为 \(r\ge1\)，这里 \(i\ge1\)，没有零次锥算子中的增广项。
+
+	新链除顶点外都在正则部分，与顶点的交集至多零维；而
+	\[
+		(i+1)-n+\bar p(n)=i-r\ge0.
+	\]
+	它满足支集条件，其边界又正是已知允许的 \(z\)，所以也满足边界条件。因此每个允许圈都是允许边界。特别在临界次数 \(i=r\) 时，圈本身仍须避开顶点，但填充它的 \((r+1)\) 维锥链刚好开始获准接触顶点；这说明临界行应当归入零群的一侧。
+\end{proof}
+
+这里也解释了普通锥的收缩为什么不能直接用于交叉同调。将整个锥收缩到顶点，会把原来避开奇异层的低维链送到不允许的位置；它不是保持允许复形的链同伦。普通同伦等价所保持的信息，比这里带有分层与维数条件的信息少。
+
+\begin{example}\label{g2:exm:cone-torus-intersection}
+	对 \(cT^2\)，\(n=3\)。若 \(\bar p(3)=0\)，临界次数 \(r=2\)，所以
+	\[
+		IH_0^{\bar p}(cT^2;F)=F,\qquad
+		IH_1^{\bar p}(cT^2;F)=F^2,
+	\]
+	其余群为零。若 \(\bar q(3)=1\)，临界次数为 \(1\)，只有 \(IH_0^{\bar q}=F\) 非零。于是允许函数增大所诱导的一次同调映射正是 \(F^2\to0\)：两个环面基本圈都被新允许的二维锥链填掉了。
+\end{example}
+
+再把两个锥拼成悬挂 \(SL\)。取开覆盖 \(U_+=SL\setminus\{v_-\}\)、\(U_-=SL\setminus\{v_+\}\)，交集是没有奇点的 \(L\times(-1,1)\)。本例的允许链仍有 Mayer--Vietoris 长正合列。原因可以直接检验：把一条有限链在中央的一个水平链接上切开，取水平面避开所用剖分的顶点，并对切片作有限细分；新出现的切口边界完全位于正则部分，因此不破坏允许条件。任意允许链都由此拆为 \(U_+,U_-\) 内两条允许链，交集上的关系与普通链相同。对短正合列
+\[
+	0\longrightarrow IC_*^{\bar p}(U_+\cap U_-)
+	\xrightarrow{z\mapsto(z,-z)}IC_*^{\bar p}(U_+)\oplus IC_*^{\bar p}(U_-)
+	\xrightarrow{(a,b)\mapsto a+b}IC_*^{\bar p}(SL)\longrightarrow0
+\]
+使用第2章的连接同态构造，便得到所需长正合列。这里交集没有奇异层，所以它的交叉同调就是 \(H_*(L;F)\)。
+
+\begin{proposition}\label{g2:prop:intersection-suspension}
+	设 \(L\) 为非空闭 \((n-1)\) 维 PL 流形，\(n\ge2\)，\(SL\) 的奇异层只含两个顶点。令 \(r=n-1-\bar p(n)\)，则
+	\begin{equation}\label{g2:eq:intersection-suspension}
+		IH_i^{\bar p}(SL;F)\cong
+		\begin{cases}
+			H_i(L;F),&0\le i<r,\\
+			0,&i=r,\\
+			H_{i-1}(L;F),&i>r.
+		\end{cases}
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	在上述长正合列中，交集到两侧的映射为
+	\[
+		H_i(L;F)\longrightarrow IH_i^{\bar p}(U_+;F)\oplus IH_i^{\bar p}(U_-;F).
+	\]
+	当 \(i<r\) 时，锥公式将它识别为 \(x\mapsto(x,-x)\)，是单射，余核同构于 \(H_i(L;F)\)；当 \(i\ge r\) 时，目标为零。若 \(i<r\)，前一次数的同一映射仍为单射，故得到第一行；\(i=0\) 时长正合列在零次之后终止，结论相同。当 \(i=r\) 时，\(IH_i^{\bar p}(SL)\) 嵌入 \(H_{r-1}(L)\)，其像是单射 \(x\mapsto(x,-x)\) 的核，因而为零。当 \(i>r\) 时，相邻两侧锥的群都为零，连接同态便给出 \(IH_i^{\bar p}(SL)\cong H_{i-1}(L)\)。
+\end{proof}
+
+取 \(L=T^2\)，前述普通对偶失败的例子便有如下三组可比较的数据：
+\begin{center}
+	\begin{tabular}{@{}l c c c c@{}}
+		\toprule
+		同调理论 & 次数 \(0\) & 次数 \(1\) & 次数 \(2\) & 次数 \(3\) \\
+		\midrule
+		普通 \(H_i(ST^2;F)\) & \(F\) & \(0\) & \(F^2\) & \(F\) \\
+		\(IH_i^{\bar p}(ST^2;F)\)，\(\bar p(3)=0\) & \(F\) & \(F^2\) & \(0\) & \(F\) \\
+		\(IH_i^{\bar q}(ST^2;F)\)，\(\bar q(3)=1\) & \(F\) & \(0\) & \(F^2\) & \(F\) \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+中间两列的缺口没有被抹去，而是分配给了互补的两种允许条件。第二行的一次群与第三行的二次群具有相同维数，第二行的二次群与第三行的一次群也相配；这正是交叉同调对偶应当采用的形式。
 
 \subsection{交叉同调的对偶定理：精确陈述及证明输入}
 \label{g2:subsec:B03:04}
-待撰写
+
+流形上的交数把互补维数的圈移到横截位置，再计算交点的符号。伪流形中还要保证交点不会落到奇异层，且改变代表时不会从奇异层出现新的边界项。互补允许函数恰好留下足够的维数余量。
+
+\begin{theorem}[Goresky--MacPherson 对偶]\label{g2:thm:intersection-poincare-duality}
+	设 \(X\) 为紧、无边界、定向的 \(n\) 维 PL 分层伪流形，奇异集余维至少为 \(2\)。若经典允许函数 \(\bar p,\bar q\) 满足
+	\[
+		\bar p(k)+\bar q(k)=k-2\qquad(2\le k\le n),
+	\]
+	则有非退化的有理交叉配对
+	\[
+		IH_i^{\bar p}(X;\mathbb Q)\otimes_{\mathbb Q}
+		IH_{n-i}^{\bar q}(X;\mathbb Q)\longrightarrow\mathbb Q.
+	\]
+	等价地，配对诱导
+	\[
+		IH_i^{\bar p}(X;\mathbb Q)
+		\cong\operatorname{Hom}_{\mathbb Q}(IH_{n-i}^{\bar q}(X;\mathbb Q),\mathbb Q).
+	\]
+\end{theorem}
+
+此处采用 Goresky 与 MacPherson 建立的有理系数对偶定理\cite[第3.3节]{GoreskyMacPherson1980Intersection}。\footnote{Robert Mark Goresky（1950年生），加拿大裔美国数学家，研究奇异空间的拓扑、表示论与算术几何。Robert Duncan MacPherson（1944年生），美国数学家，研究奇异空间、特征类与分层空间的拓扑。}定理中的紧性使有限支撑与局部有限支撑无需分开；定向用于给正则部分上的交点赋号；域系数则把结论写成向量空间的非退化配对。一般非紧情形必须重新安排支撑条件，正如第6章普通流形对偶所做的那样。
+
+\ProseParagraphBreak
+
+先看配对的维数理由。取次数分别为 \(i,n-i\) 的允许圈 \(\xi,\eta\)。将它们放到适合分层的 PL 一般位置后，在余维 \(k\) 的层中，交集维数的上界为
+\[
+	\bigl(i-k+\bar p(k)\bigr)+\bigl(n-i-k+\bar q(k)\bigr)-(n-k)
+	=\bar p(k)+\bar q(k)-k=-2.
+\]
+所以交点全部位于正则部分，并在那里成为有限个有符号的点。若 \(\xi\) 改变一个允许的 \((i+1)\) 维边界，相应交集是一维链；同一计算的上界变为 \(-1\)，它也避开奇异层。其有向端点之和为零，正好给出交数不依赖代表的结论。这个算式解释了互补条件中的 \(k-2\)，也说明为什么只知道正则部分上横截还不够。
+
+\ProseParagraphBreak
+
+一般定理的证明还需要两类输入。第一类是保持允许维数界的一般位置与移动结果，使上述交数能够对任意允许同调类定义，并与细分、边界相容。第二类负责证明配对非退化。\cite[第3.1--3.3节]{GoreskyMacPherson1980Intersection}从相容剖分构造嵌套的基本集，将一个交叉同调群表示为两个普通同调群之间的像，再用相对对偶把互补的交叉同调群表示为反向上同调映射的像。最后，有限维向量空间映射的像与其对偶映射的像自然非退化配对，便完成代数步骤。这里未展开的技术部分是基本集的构造、相对对偶的适用性，以及所得配对与交叉交数的一致性。锥公式提供了可直接计算的局部模型，下一节的交叉链层则进一步组织这些局部数据。
+
+\ProseParagraphBreak
+
+对 \(ST^2\)，可以具体看见非退化配对。选环面的有向基圈 \(a,b\)，使 \(a\cdot_{T^2}b=1\)。在 \(\bar p(3)=0\) 的理论中，水平圈 \(a,b\) 保留为一次类；在 \(\bar q(3)=1\) 的理论中，把一个基圈分别锥到两顶点并按相反边界方向合起来，得到悬挂二圈。它的顶点接触被二维允许界许可。水平圈与悬挂圈的交点都在中部正则带内，交数恢复环面上的交形式，选择相容的定向后矩阵为
+\[
+	\begin{pmatrix}0&1\\-1&0\end{pmatrix}.
+\]
+行列式为 \(1\)，故一次与二次这两个二维向量空间确实非退化配对。零次与三次则由一点和定向基本类相配。
+
+\ProseParagraphBreak
+
+式\eqref{g2:eq:middle-perversities}的两种中间允许函数在本例中分别为 \(0,1\)，所得群并不相同，因此不能把对偶误写成同一个中间理论与自身配对。若一个分层伪流形的所有奇异层都具有偶数实余维，那么两种函数在实际出现的层上相等，所定义的允许复形也相同。复代数或复解析分层中的复维数差对应偶数实余维，这便是下一节中间延拓观点的一项几何动机。
 
 \section{层方法与消失圈}
 \label{g2:sec:B04}
-待撰写
+
+一个链接说明奇点周围有什么圈；当奇点沿某个层移动时，这些圈还会彼此运输。若空间本身随参数退化，又需要比较退化前后的圈。层把局部数据及其限制关系保存下来，因而能同时处理这两个问题。这里“层”指第7章的 sheaf，分层中的光滑部分则用 \(S\) 等符号表示。本节采用有理系数 \(F=\mathbb Q\)，先在结点上看清层的粘合，再说明交叉链的层模型，最后直接计算结点平滑化的附近圈与消失圈。
 
 \subsection{可构造层和局部系统}
 \label{g2:subsec:B04:01}
-待撰写
+
+回忆\cref{g2:def:presheaf-sheaf,g2:def:stalk}：层给开集分配截面，并规定截面怎样限制和粘合；茎保存一点附近的截面芽。局部系统是局部同构于常值层的层，其纤维沿道路运输，绕闭路所得的自同构就是单值变换。第5章与\cref{g2:subsec:0704:03}已分别从局部系数和光滑平坦联络说明这种运输。
+
+\begin{definition}\label{g2:def:constructible-sheaf}
+	设 \(\mathcal S\) 是 \(X\) 的局部有限分层。若 \(F\) 向量空间层 \(\mathcal F\) 在每个层 \(S\) 上的限制 \(i_S^{-1}\mathcal F\) 都是有限秩局部系统，就称 \(\mathcal F\) 为关于 \(\mathcal S\) 的\term[kegouzaoceng]{可构造层}[constructible sheaf]。这里 \(i_S:S\hookrightarrow X\)，限制层的茎满足 \((i_S^{-1}\mathcal F)_x=\mathcal F_x\)。若一个有界层复形的所有上同调层都可构造，就称它为可构造复形。
+\end{definition}
+
+可构造性让层内的变化由局部系统控制，而把秩的跳跃留在较低层。即使各层上的局部系统都已给出，层与层之间仍有粘合信息。最简单的例子是复平面中的两条坐标轴
+\[
+	X=\{(u,v)\in\mathbb C^2:uv=0\},\qquad o=(0,0),\qquad U=X\setminus\{o\}.
+\]
+它的两个一维复分支只在 \(o\) 相遇。把两条轴分开，得到映射
+\[
+	\nu:\widetilde X=\mathbb C\sqcup\mathbb C\longrightarrow X,
+	\qquad u\longmapsto(u,0),\quad v\longmapsto(0,v).
+\]
+它在 \(U\) 上是一一对应，在 \(o\) 上有两个原像；这就是此例的正规化。以下只用这个明确的映射。
+
+\begin{proposition}\label{g2:prop:node-sheaf-sequence}
+	记 \(F_X\) 为常值层，\(F_o\) 为支于原点、该点茎为 \(F\) 的摩天楼层。则有短正合列
+	\begin{equation}\label{g2:eq:node-sheaf-sequence}
+		0\longrightarrow F_X\longrightarrow\nu_*F_{\widetilde X}
+		\xrightarrow{\;b-a\;}F_o\longrightarrow0.
+	\end{equation}
+	中间层在两条开分支上的秩均为 \(1\)，在 \(o\) 的茎为 \(F^2\)；第一箭在 \(o\) 的茎上是对角嵌入 \(a\mapsto(a,a)\)。
+\end{proposition}
+\begin{proof}
+	直接像的定义是 \((\nu_*F_{\widetilde X})(V)=F_{\widetilde X}(\nu^{-1}V)\)。在原点的小邻域，两条分支各给一张圆盘，所以局部常值截面由两个数 \((a,b)\) 决定。常值层在这两张圆盘的公共点附近必须取同一值，故第一箭是对角映射。把 \((a,b)\) 映为 \(b-a\)，其核恰是对角线，且满射到 \(F\)。在 \(U\) 上，第一箭是同构而最后一层为零。依\cref{g2:prop:stalk-exactness}的逐茎判据，所给层列正合。
+\end{proof}
+
+设 \(j:U\hookrightarrow X\)。普通直接像 \(j_*F_U\) 在原点也有茎 \(F^2\)，因为穿孔邻域有两个连通分支，故此例中 \(j_*F_U\cong\nu_*F_{\widetilde X}\)。另一方面，延零层 \(j_!F_U\) 在 \(U\) 上等于 \(F_U\)，在原点的茎为零。具体说，\((j_!F_U)(V)\) 由 \(V\cap U\) 上支集在 \(V\) 中闭的截面组成；这个支集条件保证能够在原点附近延为零。因此 \(j_!F_U,F_X,j_*F_U\) 是同一个局部系统的三种不同延拓。它们的区别正在于原点允许接收哪些局部截面。
+
+\ProseParagraphBreak
+
+也可以在一个圆周层上取有单值变换的局部系统。选定一点的纤维 \(V\) 和绕行自同构 \(A:V\to V\)，就得到
+\[
+	H^0(S^1;\mathcal L)=\ker(A-I),\qquad
+	H^1(S^1;\mathcal L)=\operatorname{coker}(A-I).
+\]
+把圆周切开为区间，截面的两个端值须由 \(A\) 相接；其上链复形就是 \(V\xrightarrow{A-I}V\)。这恢复了局部系数的圆周计算，也说明只知道“各点的茎都是 \(V\)”还不足以恢复层。
 
 \subsection{交叉链层与中间延拓的动机}
 \label{g2:subsec:B04:02}
-待撰写
+
+允许链限制了怎样经过奇异层。要把这些条件局部化，一个开集里的链必须还能限制到更小开集，并允许把相容的局部链粘合。有限链的切割未必仍是同一个有限三角剖分中的链，因此层模型使用局部有限链及其芽：每个紧集只碰到有限多个单形，允许性对链与边界都施加，再经细分、局部化和层化形成复形。紧空间上的局部有限支集仍是有限的；非紧空间上的整体截面则对应局部有限支集版本。这是从上一节的有限支集交叉同调转向层时必须保留的支集区别。
+
+\ProseParagraphBreak
+
+为说明中间延拓，以下取纯复维 \(d\) 的复代数簇 \(X\)，给定相容的复 Whitney 分层，正则开稠密部分记为 \(U\)。各层的实余维都是偶数，中间允许函数在余维 \(2r\) 取值 \(r-1\)。将实维 \(2d\) 的交叉链复形重标次数为
+\[
+	q=2d-i
+\]
+并层化，所得未移位交叉复形记为 \(\mathcal P_X\)。其在 \(U\) 上与 \(F_U\) 准同构，后者位于次数 \(0\)。这里沿用\cref{g2:def:quasi-isomorphism}的准同构概念，要求在所有上同调层上诱导同构；光滑部分的这项归一化来自定向局部基本类，而复结构给出了自然的实定向。
+
+\ProseParagraphBreak
+
+层复形的整体上同调需要同时计算层的局部粘合与复形自身的微分。具体可取一个松弛消解形成双复形，再对其整体截面的总复形取上同调；所得群记为 \(\mathbb H^q(X;\mathcal P_X)\)，称为\term[chaoshangtongdiao]{超上同调}[hypercohomology]。它是第7章消解方法对层复形的推广。交叉链模型的比较定理给出：当 \(X\) 紧时，
+\begin{equation}\label{g2:eq:intersection-sheaf-degree}
+	\mathbb H^q(X;\mathcal P_X)\cong IH_{2d-q}^{\bar m}(X;F).
+\end{equation}
+这里 \(\bar m\) 表示中间允许函数。非紧情形同一左端对应局部有限支集交叉同调，有限支集版本须改用紧支超上同调。所用层模型及比较是本节引用的理论输入，见\cite[第5.4节]{Dimca2004Sheaves}；下面用延拓计算把它具体化。
+
+\ProseParagraphBreak
+
+为什么仅把 \(F_U\) 直接像到 \(X\) 还不够？普通 \(j_*\) 只记零次截面，而穿孔邻域的圈也会影响奇点。取消解后再作直接像得到 \(Rj_*\)，其上同调层在 \(x\) 的茎满足
+\[
+	\mathcal H^q(Rj_*F_U)_x
+	=\varinjlim_{x\in V}H^q(V\cap U;F).
+\]
+上式说明 \(Rj_*\) 记录了所有次数的局部信息。允许函数还要从中选取适当的次数，这一步由截断完成。对一个上链复形 \(K^\bullet\)，良好截断 \(\tau_{\leq a}K^\bullet\) 在次数小于 \(a\) 处保持原项，在次数 \(a\) 处改为 \(\ker(K^a\to K^{a+1})\)，在更高次数置零。于是它保留 \(q\leq a\) 的上同调，消去 \(q>a\) 的上同调。
+
+\ProseParagraphBreak
+
+令 \(U_r\) 为所有复余维小于 \(r\) 的层之并，\(j_r:U_r\hookrightarrow U_{r+1}\)，其中 \(U_1=U\)、\(U_{d+1}=X\)。上述交叉复形可以按如下规则构造，等号理解为准同构意义下的识别：
+\begin{equation}\label{g2:eq:intersection-truncation}
+	\mathcal P_1=F_U,\qquad
+	\mathcal P_{r+1}=\tau_{\leq r-1}Rj_{r*}\mathcal P_r,
+	\qquad \mathcal P_X=\mathcal P_{d+1}.
+\end{equation}
+每次添入一组奇异层，先收集其穿孔邻域的信息，再按中间允许函数截断。逐层构造与交叉链模型的识别属于一般比较定理；可参见\cite[命题5.2.10、定理5.4.1]{Dimca2004Sheaves}。上一节锥公式的阈值由“链能否碰到锥顶”决定，此处的截断则用上同调次数表达同一局部限制。
+
+\begin{example}\label{g2:exm:node-intersection-sheaf}
+	对两条复轴的结点，\(d=1\)，只有添入原点这一步。穿孔小邻域同伦等价于两个不交圆周，因此
+	\[
+		\mathcal H^q(Rj_*F_U)_o=
+		\begin{cases}F^2,&q=0,1,\\0,&\text{其余次数}.
+		\end{cases}
+	\]
+	按\cref{g2:eq:intersection-truncation}保留次数 \(0\)，得到
+	\[
+		\mathcal P_X\simeq j_*F_U\cong\nu_*F_{\widetilde X}.
+	\]
+	它在结点保留两份分支数据，所对应的有限支集零次计算见\cref{g2:ex:cone-disconnected-link}。允许一维链不能经过实余维二的奇点，因而不能借交点把两条分支接成一条允许路径；层的两维茎正是这种分支分离的局部表现。
+\end{example}
+
+为了说明“中间”一词的精确含义，还需要改变次数。按上链移位约定 \(K[d]^a=K^{a+d}\)，定义
+\[
+	\operatorname{IC}_X=\mathcal P_X[d].
+\]
+\symidx{\(\operatorname{IC}_X\)：反常归一化的交叉复形}
+于是 \(\operatorname{IC}_X|_U=F_U[d]\)，常值层位于次数 \(-d\)。在这个归一化下，交叉复形属于\term[fanchangceng]{反常层}[perverse sheaf]所成的范畴。其对象是可构造复形 \(K\)，对每个复维 \(s\) 的层 \(S\)，要求
+\[
+	\mathcal H^a(i_S^{-1}K)=0\quad(a>-s),\qquad
+	\mathcal H^a(i_S^!K)=0\quad(a<-s).
+\]
+这里 \(i_S^!\) 是在使 \(S\) 成为闭子集的局部邻域中取支于 \(S\) 的导出截面，再限制到 \(S\)；它记录靠近该层的相对上同调。第一条件控制通常限制，第二条件控制带支集限制，因此两边约束互为对偶。反常层一般是复形，名称中的“层”并不要求它只集中在次数 \(0\)。
+
+\ProseParagraphBreak
+
+这些对象构成 Abel 范畴，因而有核、余核和像；这一结构及下面的识别采用\cite[第5.1节、定义5.2.6及第5.4节]{Dimca2004Sheaves}的理论。记 \({}^p\mathcal H^0\) 为该范畴的零次上同调函子，其作用是从一个可构造复形提取相应的反常层。\term[zhongjian yantuo]{中间延拓}[intermediate extension]定义为此范畴内的像
+\begin{equation}\label{g2:eq:intermediate-extension}
+	j_{!*}(F_U[d])
+	=\operatorname{im}\bigl({}^p\mathcal H^0(j_!F_U[d])
+	\longrightarrow{}^p\mathcal H^0(Rj_*F_U[d])\bigr),
+	\qquad \operatorname{IC}_X\simeq j_{!*}(F_U[d]).
+\end{equation}
+它是延拓 \(F_U[d]\) 的反常层中，既没有支于 \(X\setminus U\) 的非零子对象、也没有支于该处的非零商对象的唯一一个。这样的条件排除了只在奇异集上额外添加的数据。式中的像取在反常层范畴里；结点例子已经显示，若改为普通层中 \(j_!F_U\to j_*F_U\) 的像，就会在原点得到零茎，得不到 \(\mathcal P_X\) 的 \(F^2\)。
 
 \subsection{平滑族与退化族的附近圈}
 \label{g2:subsec:B04:03}
-待撰写
+
+现在让空间随一个复参数变化。设 \(f:X\to\Delta\) 为映到小复圆盘的全纯映射，\(X_0=f^{-1}(0)\)，\(X^*=f^{-1}(\Delta^*)\)，其中 \(\Delta^*=\Delta\setminus\{0\}\)。若 \(f\) 是光滑流形间的固有淹没映射，\cref{g2:sec:B02}给出的局部平凡化使相邻纤维可以沿道路运输，因而它们的上同调组成局部系统。当 \(0\) 是退化值时，去掉 \(0\) 后仍可运输，但绕 \(0\) 一圈可能留下非平凡单值变换。
+
+\ProseParagraphBreak
+
+在奇点附近，首先要明确所比较的纤维有多大。设 \(X\) 在 \(x\) 附近光滑，\(f(x)=0\)，且 \(x\) 是 \(f\) 的孤立临界点。取局部复坐标中的小闭球 \(B_\epsilon(x)\)。对充分小的 \(\epsilon>0\) 以及满足 \(0<|t|\ll\epsilon\) 的 \(t\)，
+\[
+	F_x=f^{-1}(t)\cap B_\epsilon(x)
+\]
+为局部 Milnor 纤维。边界横截性和小参数下纤维类型的稳定是 Milnor 纤维定理的输入，多项式情形见\cite[第4—6节]{Milnor1968SingularPoints}，全纯局部版本及其层解释见\cite[第4.2节]{Dimca2004Sheaves}。这里比较的是固定小球中的纤维；整条非紧纤维还可能在远处发生变化。若 \(f\) 在 \(x\) 是淹没映射，局部坐标可把 \(f\) 写成一个坐标投影，局部纤维便可缩。
+
+\ProseParagraphBreak
+
+为同时保存局部纤维的上同调及绕行作用，取 \(\Delta^*\) 的通用覆盖
+\[
+	(0,\eta)\times\mathbb R\longrightarrow\Delta^*,\qquad
+	(r,\theta)\longmapsto re^{i\theta},
+\]
+并将其拉回到 \(X^*\)，得到 \(q:\widetilde X^*\to X^*\)。记 \(j:X^*\hookrightarrow X\)、\(i:X_0\hookrightarrow X\)、\(\widetilde j=j\circ q\)。\term[fujinquan]{附近圈复形}[nearby cycle complex]定义为
+\begin{equation}\label{g2:eq:nearby-cycle-complex}
+	R\psi_fF_X=i^{-1}R\widetilde j_*F_{\widetilde X^*}.
+\end{equation}
+\symidx{\(R\psi_f\)：未移位附近圈}
+覆盖上的甲板变换 \(\theta\mapsto\theta+2\pi\) 诱导其单值变换。使用通用覆盖的作用是把底空间上的绕圈展开，使局部取到的是某个纤维的数据，再单独保留绕行的作用；直接对 \(X^*\) 作普通直接像会把这些信息混在一起。
+
+\ProseParagraphBreak
+
+在上述局部 Milnor 情形，附近圈的茎满足
+\begin{equation}\label{g2:eq:nearby-stalk-milnor}
+	\mathcal H^a(R\psi_fF_X)_x\cong H^a(F_x;F).
+\end{equation}
+这个茎公式及其与单值变换的相容性，见\cite[定义4.2.1、命题4.2.2]{Dimca2004Sheaves}。它把一个层复形转化为可计算的局部空间上同调。
+
+\ProseParagraphBreak
+
+常值函数可以限制到附近纤维，因而有专门化映射 \(\mathrm{sp}:F_{X_0}\to R\psi_fF_X\)。其映射锥称为\term[xiaoshiquan]{消失圈复形}[vanishing cycle complex]，本节固定未移位约定
+\begin{equation}\label{g2:eq:vanishing-cycle-triangle}
+	R\phi_fF_X=\operatorname{Cone}(\mathrm{sp}),\qquad
+	F_{X_0}\xrightarrow{\mathrm{sp}}R\psi_fF_X
+	\longrightarrow R\phi_fF_X\longrightarrow F_{X_0}[1].
+\end{equation}
+\symidx{\(R\phi_f\)：未移位消失圈}
+对上链映射 \(s:A^\bullet\to B^\bullet\)，这里的锥在次数 \(a\) 为 \(B^a\oplus A^{a+1}\)，微分是
+\[
+	\partial(b,c)=(\partial_Bb+s(c),-\partial_Ac).
+\]
+与\cref{g2:cor:cone-LES}的同调版本相同，链映射关系保证 \(\partial^2=0\)；短正合列 \(0\to B^\bullet\to\operatorname{Cone}(s)\to A[1]^\bullet\to0\) 给出上同调长正合列。这解释了为什么映射锥适合衡量两个复形的差异。所用消失圈约定与\cite[定义4.2.4]{Dimca2004Sheaves}一致；若改用 \(R\phi_f[-1]\)，下面的非零次数要相应平移。
+
+\begin{proposition}\label{g2:prop:vanishing-reduced-fiber}
+	在\cref{g2:eq:nearby-stalk-milnor}适用且局部纤维非空的情形，
+	\[
+		\mathcal H^a(R\phi_fF_X)_x\cong\widetilde H^a(F_x;F).
+	\]
+	特别地，淹没点的消失圈为零。
+\end{proposition}
+\begin{proof}
+	常值层在 \(x\) 的茎只在次数 \(0\) 等于 \(F\)。专门化在该次数把一个常数送到 \(F_x\) 各连通分支上的同一常数；因 \(F_x\ne\varnothing\)，这是单射。映射锥的长正合列于是给出次数 \(0\) 的余核 \(H^0(F_x;F)/F\)，次数 \(a>0\) 的 \(H^a(F_x;F)\)，以及负次数的零群。这些恰为约化上同调。淹没点的局部纤维可缩，故全部约化上同调为零。
+\end{proof}
+
+附近圈保留局部平滑纤维的全部上同调，消失圈去掉来自常数的那一份。即使一个固有平滑族的整条纤维有很多圈，只要映射处处淹没，局部消失圈仍然为零：每个点附近的纤维都是小圆盘。整体纤维的圈与奇点造成的局部变化由此得到区分。
 
 \subsection{结点退化的消失圈计算}
 \label{g2:subsec:B04:04}
-待撰写
+
+考察 \(f:\mathbb C^2\to\mathbb C\)，\(f(u,v)=uv\)。微分
+\[
+	\mathrm{D}f_{(u,v)}(a,b)=va+ub
+\]
+只在原点失去满秩。中心纤维是刚才的两条复轴；邻近纤维 \(uv=t\ne0\) 则把两条分支连接起来。下面在小球里直接看见这个连接区域。
+
+\begin{proposition}\label{g2:prop:nodal-milnor-annulus}
+	设 \(0<|t|<\epsilon^2/2\)。局部纤维
+	\[
+		F_t=\{uv=t,\ |u|^2+|v|^2\leq\epsilon^2\}
+	\]
+	是一张闭圆环。其上同调只在次数 \(0,1\) 各为 \(F\)，因而
+	\[
+		\mathcal H^a(R\psi_fF_{\mathbb C^2})_o=
+		\begin{cases}F,&a=0,1,\\0,&\text{其余次数},\end{cases}
+		\qquad
+		\mathcal H^a(R\phi_fF_{\mathbb C^2})_o=
+		\begin{cases}F,&a=1,\\0,&\text{其余次数}.\end{cases}
+	\]
+\end{proposition}
+\begin{proof}
+	由 \(v=t/u\) 得 \(u\ne0\)。写 \(r=|u|\)，球条件等价于 \(r^2+|t|^2/r^2\leq\epsilon^2\)，亦即
+	\[
+		r_-\leq r\leq r_+,\qquad
+		r_\pm^2=\frac{\epsilon^2\pm\sqrt{\epsilon^4-4|t|^2}}2.
+	\]
+	给定的范围保证 \(0<r_-<r_+\)。故 \(u\mapsto(u,t/u)\) 把闭圆环 \(r_-\leq|u|\leq r_+\) 微分同胚地映到 \(F_t\)。半径 \(\sqrt{|t|}\) 位于两端之间，将半径线性移动到这个数而保持辐角，便给出到中间圆周的形变收缩。因此 \(H^0,H^1\) 各一维。最后应用\cref{g2:prop:vanishing-reduced-fiber}。
+\end{proof}
+
+取正实数 \(t\)。上面圆环的核心圈可以写成
+\begin{equation}\label{g2:eq:node-vanishing-circle}
+	\delta_t(\alpha)=\bigl(\sqrt t\,e^{i\alpha},\sqrt t\,e^{-i\alpha}\bigr),
+	\qquad 0\leq\alpha\leq2\pi.
+\end{equation}
+它生成 \(H_1(F_t;F)\)，且每一点到原点的距离均为 \(\sqrt{2t}\)，故当 \(t\downarrow0\) 时整条圈缩向结点。这就是此例中“消失圈”的几何对象；\(\mathcal H^1(R\phi)_o\) 是与这个一维同调相配对的上同调空间。图\ref{g2:fig:node-degeneration}将圆环、核心圈和中心纤维的两条局部分支画在一起。
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixB-Node}
+	\caption{结点平滑化的拓扑示意。左侧是有两条边界的圆环；红色核心圈在退化时收缩，中心纤维成为两张只在一点相遇的圆盘。图示抽象的实二维纤维，未将 \(\mathbb C^2\) 识别为三维空间。}
+	\label{g2:fig:node-degeneration}
+\end{figure}
+
+这个模型也能澄清单值变换的一个细节。沿 \(t=t_0e^{i\theta}\) 绕行，映射
+\[
+	(u,v)\longmapsto(u,e^{i\theta}v)
+\]
+保持球条件，把 \(F_{t_0}\) 送到 \(F_{t_0e^{i\theta}}\)，并在 \(\theta=2\pi\) 回到恒等。因此普通 \(H_1(F_{t_0};F)\) 上的单值变换是恒等。但若要求运输固定圆环两端的指定边界参数，所得相对边界的同位类仍有信息。
+
+\ProseParagraphBreak
+
+在外边界固定 \(u\) 的辐角，在内边界固定 \(v\) 的辐角。取光滑函数 \(\chi(r)\)，使它在内边界附近等于 \(1\)、在外边界附近等于 \(0\)。用
+\[
+	(r,\alpha)\longmapsto
+	\left(r e^{i(\alpha+\theta\chi(r))},
+	\frac{t_0}{r}e^{i(\theta-\alpha-\theta\chi(r))}\right)
+\]
+作运输，恰保持上述两个边界参数。回到 \(\theta=2\pi\) 后得到
+\begin{equation}\label{g2:eq:nodal-dehn-twist}
+	h(r,\alpha)=\bigl(r,\alpha+2\pi\chi(r)\bigr).
+\end{equation}
+这是一重 Dehn 扭转：两条边界逐点固定，中间角度转过一整圈。它在相对边界意义下不与恒等同位。确实，将圆环展开为条带 \([r_-,r_+]\times\mathbb R\)，一条从外边界到内边界的径向弧在扭转后两端的提升角度相差 \(2\pi\)；固定端点的同伦不能改变这个整数绕数。若允许边界在同位过程中转动，这项障碍便消失。普通一次同调只见核心圈的生成元保持不变，故也不能检测这个相对边界的整数。
+
+\ProseParagraphBreak
+
+现在可以比较结点的三种数据：常值层在结点的茎是 \(F\)，表示两支在同一个点粘合；未移位交叉复形的茎是 \(F^2\)，保留两条独立分支；附近圈的茎上同调在次数 \(0,1\) 各有一份 \(F\)，表示平滑后的圆环连通且有一个核心圈。最后这一圈在极限中收缩，成为消失圈。三者分别回答粘合、允许链和退化的问题，同一个局部方程已把它们的差别全部展示出来。
+
+
+结点之外的复奇点还会产生多个消失圈及它们的交形式。第四卷附录 B 将沿小球纤维化、Picard--Lefschetz 变换和 Milnor 数继续展开；本附录提供的是分层局部拓扑、允许链与结点退化之间的联系。
+
+\begin{chaptersummary}
+	\begin{itemize}
+		\item 分层的边界条件控制闭包关系，Whitney 条件控制切方向的极限；\((b)\) 蕴含 \((a)\)，并保证充分小法向球面的横截性。链接记录横向局部拓扑。
+		\item 控制数据使投影与横向半径相容。受控提升及积分把底空间的运动提升为保层流，固有性提供共同紧集，从而得到第一同位引理的局部乘积。
+		\item 允许链同时限制支集与边界碰到奇异层的维数。锥上低于 \(n-1-\bar p(n)\) 的同调继承链接，高于或等于该次数的圈可被允许锥链填掉。互补允许函数给出有理交叉对偶。
+		\item 可构造层保留各层的局部系统及跨层粘合；交叉复形的逐层截断与中间延拓组织允许链的局部信息。实维、复维和复形移位分别决定计算中的次数。
+		\item \(uv=t\) 的局部纤维是圆环，其核心圈随 \(t\to0\) 收缩。未移位消失圈在次数 \(1\) 为一维；普通同调上的返回作用为恒等，固定边界参数时仍留下 Dehn 扭转。
+	\end{itemize}
+\end{chaptersummary}
+
+\BookExercises
+
+\begin{exercise}\label{g2:ex:cusp-whitney-link}
+	将实尖点 \(X=\{(x,y):y^2=x^3\}\) 分为原点和去掉原点后的两个连通分支。验证这是 Whitney 分层，计算原点的链接，并用参数 \(t\mapsto(t^2,t^3)\) 说明这个局部拓扑与光滑直线有何相同、有何不同。
+\end{exercise}
+\begin{solution}
+	两支分别对应 \(t>0\) 与 \(t<0\)，在每支上参数导数 \((2t,3t^2)\ne0\)，且参数可由 \(t=y/x\) 恢复，故都是嵌入一维流形。每支的边界只有原点，局部有限性与边界条件成立。
+
+	趋近原点时，切线由 \((2,3t)\) 张成，极限为横轴；割线由 \((1,t)\) 张成，也趋于横轴。低层只有原点，所有可用的低层点序列均恒为零，因此这个计算核对了 (b) 的全部序列，(a) 随之成立。小圆与每支各交一次：方程 \(t^4+t^6=\varepsilon^2\) 在 \(t>0\) 严格递增，对正负参数各有唯一解，所以链接有两个点。
+
+	参数映射在零点附近是连续双射，逆函数在非零点为 \(y/x\)，在零处由 \(|t|^2=x\to0\) 连续。因此尖点邻域同胚于开区间，与光滑直线的局部拓扑相同。但它不是嵌入的光滑一维子流形：若存在以零为中心、导数非零的光滑参数，其切线只能是横轴，横坐标应在原点附近取正负两种符号；尖点却完全位于 \(x\geq0\)。分层同胚保留拓扑，并不自动恢复环境中的光滑嵌入性质。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:whitney-product-strata}
+	设 \(X\subset\mathbb R^m\) 带有局部有限 Whitney 分层 \(\mathcal S\)。证明 \(\{S\times\mathbb R^k:S\in\mathcal S\}\) 是 \(X\times\mathbb R^k\) 的 Whitney 分层。说明在 \((x,u)\in S\times\mathbb R^k\) 处，可以选取与 \(x\in S\) 相同的法向链接。
+\end{exercise}
+\begin{solution}
+	乘积层连通、局部闭且光滑，局部有限性及边界条件直接由原分层继承。设 \((x_i,u_i)\in R\times\mathbb R^k\)、\((y_i,v_i)\in S\times\mathbb R^k\) 趋于同一点。乘积切空间为 \(\mathrm T_{x_i}R\oplus\mathbb R^k\)；若它们收敛，投影到第一因子可知其极限为 \(\tau\oplus\mathbb R^k\)，其中 \(\mathrm T_{x_i}R\to\tau\)。
+
+	将割向量 \((x_i-y_i,u_i-v_i)\) 归一化。取子列使两个分量分别趋于 \((a,b)\)。若 \(a=0\)，极限显然属于 \(\tau\oplus\mathbb R^k\)。若 \(a\ne0\)，第一分量自身的单位方向趋于 \(a/\lVert a\rVert\)，原分层的 (b) 条件给出 \(a\in\tau\)，第二分量 \(b\) 则本来就在 \(\mathbb R^k\) 中。因此乘积分层满足 (b)。
+
+	若 \(N\) 是 \(x\in S\) 的法向切片，则 \(N\times\{u\}\) 是 \((x,u)\) 处的法向切片，因为它的切空间与 \(\mathrm T_xS\oplus\mathbb R^k\) 直和为整个环境切空间。其与 \(X\times\mathbb R^k\) 的交就是 \((N\cap X)\times\{u\}\)，取相同半径即得到同一个链接。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:normal-crossing-link-homology}
+	对整数 \(m\geq1\)，设 \(X\subset\mathbb C^m\) 是 \(m\) 条复坐标轴之并，按原点和各轴去掉原点分层。证明它是 Whitney 分层，求原点链接的整数同调，并计算 \(H_j(X\cap B_\varepsilon,(X\cap B_\varepsilon)\setminus\{0\};\mathbb Z)\)。
+\end{exercise}
+\begin{solution}
+	每条去原点坐标轴是连通复一维流形，其切空间恒为相应的实二维坐标平面；从原点到轴上任一点的割线也包含在同一平面内，因此 (b) 成立。局部有限性和边界条件直接可见。
+
+	链接是 \(m\) 条互不相交的圆之并，所以 \(H_0(L;\mathbb Z)=\mathbb Z^m\)、\(H_1(L;\mathbb Z)=\mathbb Z^m\)，其余次数为零。令 \(U=X\cap B_\varepsilon\)。径向缩放把 \(U\) 收缩到原点，而 \(U\setminus\{0\}\) 沿径向形变收缩到任意较小半径的链接。相对同调长正合列因而给出 \(H_j(U,U\setminus\{0\})\cong\widetilde H_{j-1}(L)\)，故
+	\[
+		H_j(U,U\setminus\{0\};\mathbb Z)=
+		\begin{cases}
+			\mathbb Z^m,&j=2,\\
+			\mathbb Z^{m-1},&j=1,\\
+			0,&\text{其他次数}.
+		\end{cases}
+	\]
+	当 \(m=1\) 时恢复实二维流形的局部同调。\(m>1\) 时既出现多个顶维局部生成元，又出现额外的一次相对同调；这些差别准确记录了多张圆盘只在原点接合的局部形状。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:controlled-rapid-rotation}
+	把 \(X=\mathbb R\times\mathbb R^2\) 分为轴 \(S=\mathbb R\times\{0\}\) 和补集 \(T\)。用坐标 \((u,r,\theta)\) 表示 \(T\)，取 \(\pi_S(u,r,\theta)=(u,0)\)、\(\rho_S=r^2\)。在 \(S\) 上令 \(V_S=\partial_u\)，在 \(T\) 上令 \(V_T=\partial_u+r^{-2}\partial_\theta\)。证明这是受控分层向量场，求其流，并证明流在整个 \(X\) 上联合连续，而向量场作为环境切丛截面不连续。
+\end{exercise}
+\begin{solution}
+	因为 \(\mathrm{d}\pi_S(\partial_u)=\partial_u\)、\(\mathrm{d}\pi_S(\partial_\theta)=0\)，第一条控制等式成立；\(V_T(r^2)=0\) 给出第二条。逐层求解得到
+	\[
+		\Phi^t(u,r,\theta)=(u+t,r,\theta+t/r^2)\quad(r>0),
+		\qquad \Phi^t(u,0)=(u+t,0).
+	\]
+	这些映射对所有实数 \(t\) 有定义，逆为 \(\Phi^{-t}\)。若 \((t_i,u_i,r_i,\theta_i)\to(t,u,0)\)，则像的轴坐标趋于 \(u+t\)，横向坐标的模仍为 \(r_i\to0\)，与角度的快速变化无关，所以联合连续性在轴上也成立。离开轴时由公式光滑。
+
+	在 Euclid 度量下，\(\partial_\theta\) 的长度为 \(r\)，所以角向部分 \(r^{-2}\partial_\theta\) 的长度为 \(r^{-1}\)，在趋近轴时发散。故 \(V_T\) 不可能趋于轴上的 \(\partial_u\)。此例说明受控流的连续性来自位置与半径的控制，不要求其生成场在环境切丛中连续。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:control-radius-choice}
+	在闭半平面 \(X=\{y\ge0\}\) 的边界／内部分层上，令 \(f(x,y)=x\)、\(\pi(x,y)=(x,0)\)。分别采用 \(\rho_1=y^2\) 与 \(\rho_2=e^{2x}y^2\) 作为横向平方半径。求底场 \(\partial_x\) 在两套数据下、于边界附近满足控制等式的提升，计算相应流，并说明两套数据为何给出不同的水平运输。
+\end{exercise}
+\begin{solution}
+	写提升为 \(V=a\partial_x+b\partial_y\)。投影条件要求 \(a=1\)。对 \(\rho_1\)，半径条件为 \(2yb=0\)，所以内部有 \(b=0\)，流为 \((x,y)\mapsto(x+t,y)\)。对 \(\rho_2\)，有
+	\[
+		V\rho_2=2e^{2x}y^2+2e^{2x}yb.
+	\]
+	令其为零得 \(b=-y\)，流为 \((x,y)\mapsto(x+t,e^{-t}y)\)。二者都在边界上限制为平移，保持内部与边界，并给出各竖直纤维之间的同胚。\(\rho_2\) 是在法线丛上采用随 \(x\) 变化的正定范数，因而也是合法管状数据。第一种运输保持实际高度，第二种运输保持加权高度 \(e^xy\)；局部平凡化的存在并不指定唯一的水平运输。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:stratified-compact-fibers-not-proper}
+	令 \(X=\{(x,y)\in\mathbb R^2:y=0\text{ 或 }xy=1\}\)，把直线与双曲线的两个分支作为三个层，令 \(f(x,y)=x\)。验证这是闭 Whitney 分层集，且 \(f\) 在每层上为淹没。证明每张纤维都紧，而 \(f\) 在零附近不局部平凡；指出其固有性失败的具体序列。
+\end{exercise}
+\begin{solution}
+	\(X\) 是多项式 \(y(xy-1)\) 的零集，因而闭。三个层都是闭的一维光滑子流形，两两不交；任意有限点附近没有不同层相互趋近的情况，因此边界条件及 Whitney 条件成立。直线上的 \(x\) 是坐标，双曲线上也可用 \(x\in(0,\infty)\) 或 \(x\in(-\infty,0)\) 参数化为 \((x,1/x)\)，故各层限制都是淹没。
+
+	当 \(t\ne0\) 时，纤维为 \(\{(t,0),(t,1/t)\}\)；当 \(t=0\) 时，纤维只有 \((0,0)\)。每张纤维有限，因而紧，但纤维基数在零处改变，不能局部平凡。取 \((x_n,y_n)=(1/n,n)\)，其像落在紧集 \([0,1]\)，点列却没有收敛子列，故 \(f^{-1}([0,1])\) 不紧。固有性要求一整个紧底集的原像紧，逐个纤维紧不能替代这一条件。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:allowable-total-boundary}
+	在三维开锥 \(cT^2\) 的一个水平环面上，取由三条有向边组成的一圈 \(z=e_1+e_2+e_3\)。把它锥到顶点，得到 \(C=v*z\)。分别对 \(\bar p(3)=0\) 与 \(\bar q(3)=1\) 判断 \(C\) 是否为允许链，并在后一情形说明为何 \(C\) 的三个锥三角形不必各自成为允许链。
+\end{exercise}
+\begin{solution}
+	\(C\) 为二维链，支集与顶点的交集为一个点，维数为零。对 \(\bar p(3)=0\)，支集上界是 \(2-3=-1\)，故 \(C\) 不允许。对 \(\bar q(3)=1\)，支集上界为零，第一项条件满足。又因为 \(z\) 为圈，锥恒等式给出 \(\partial C=z\)，它完全位于水平环面，避开顶点；所以边界也满足上界 \(1-3+1=-1\)。因此 \(C\) 为 \(\bar q\)-允许链。
+
+	对其中一条边 \(e_j=[x_j,x_{j+1}]\)，单个锥三角形的边界是 \(e_j-[v,x_{j+1}]+[v,x_j]\)。两条径向边接触顶点，使这个一维边界不满足 \(-1\) 的上界，故该三角形单独不是允许链。三个三角形相加时，径向边成对抵消，才留下允许的总边界。这也说明检查链时必须先计算并化简整条边界。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:cone-disconnected-link}
+	令 \(L=S^1\sqcup S^1\)，\(X=cL\) 仅以共同顶点为奇异层。计算普通同调与经典允许函数下的交叉同调，说明为何连通的 \(X\) 仍可有二维的 \(IH_0(X;F)\)。再取 \(Y=SL\)，计算其全部交叉同调，并在有理系数下核对互补次数的维数。
+\end{exercise}
+\begin{solution}
+	\(X\) 是两个开圆盘在圆心相接的空间，整体可缩，所以 \(H_0(X;F)=F\)，正次普通同调为零。它的实维数为 \(2\)，经典允许函数只能取 \(\bar p(2)=0\)，锥公式的临界次数为 \(r=1\)。因此
+	\[
+		IH_0^{\bar p}(X;F)=H_0(L;F)=F^2,
+		\qquad IH_i^{\bar p}(X;F)=0\quad(i>0).
+	\]
+	允许的一维链必须避开顶点，因而无法把不同开圆盘中的点连接起来。零次交叉同调记录的是这里由允许道路连接的两个部分，这与整个空间借顶点相连并不矛盾。
+
+	对 \(Y=SL\)，\cref{g2:prop:intersection-suspension}给出
+	\[
+		IH_0^{\bar p}(Y;F)=F^2,\qquad IH_1^{\bar p}(Y;F)=0,
+		\qquad IH_2^{\bar p}(Y;F)=H_1(L;F)=F^2.
+	\]
+	其他次数为零。这里 \(\bar p\) 与自身互补，两份圆周的悬挂给出两份定向二维基本类；选在各分支正则部分内的两个点分别与它们配对，得到单位矩阵。因此有理系数下零次与二次的二维群非退化相配，一次的零群也与自身相配。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:marked-sphere-intersection}
+	在 \(S^n\) 上标记南、北两点为零维层，其余部分为正则层，其中 \(n\ge2\)。对任意经典允许函数计算此分层下的 \(IH_*^{\bar p}(S^n;F)\)。解释为何把本来光滑的点列为单独一层，在这个模型中没有改变同调。
+\end{exercise}
+\begin{solution}
+	按纬向坐标，\(S^n\cong SS^{n-1}\)，两个标记点正是悬挂顶点。令 \(r=n-1-\bar p(n)\)，则 \(1\le r\le n-1\)。链接 \(S^{n-1}\) 的同调只在 \(0,n-1\) 次为 \(F\)。悬挂公式的低次数部分保留 \(H_0(S^{n-1})=F\)，但不可能保留次数 \(n-1\)，因为该次数不小于 \(r\)。高次数部分 \(H_{i-1}(S^{n-1})\) 则只在 \(i=n\) 给出 \(F\)；\(i=1\) 不满足 \(i>r\)。于是
+	\[
+		IH_i^{\bar p}(S^n;F)=
+		\begin{cases}F,&i=0,n,\\0,&\text{其余次数}.
+		\end{cases}
+	\]
+	这与普通球面同调一致。局部上，每个标记点的链接为球面，缺少能在临界次数以下形成额外交叉同调的中间维圈；全局的顶维基本类则仍被允许。这个计算验证了所给分层的结论，一般的分层不变性还需要比较不同允许复形的定理。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:even-codimension-middle}
+	令 \(L=S^1\times S^2\)，\(X=SL\)，只把两个悬挂顶点列为奇异层。证明上下中间允许函数虽在余维 \(3\) 处不同，却在 \(X\) 上给出同一个允许复形，并计算其交叉同调。再与 \(X\) 的普通同调比较，检验有理系数下四维对偶所要求的各个维数。
+\end{exercise}
+\begin{solution}
+	\(X\) 的实维数为 \(4\)，两个奇异层都为零维，故实际出现的余维只有 \(4\)。上下中间函数都满足 \(\bar p(4)=1\)。虽然闭滤过中的 \(X^1,X^2\) 也含这两个点，余维 \(2,3\) 对它们施加的条件较弱：\(k-\bar p(k)\) 随 \(k\) 非减，所以余维 \(4\) 的上界最严格。两种函数因此给出相同复形。
+
+	\(L\) 的同调在 \(0,1,2,3\) 次都为 \(F\)，其余为零，可由球面同调及域系数 Künneth 公式得到。临界次数 \(r=4-1-1=2\)，悬挂公式于是给出
+	\[
+		IH_i^{\bar m}(X;F)\cong
+		\begin{cases}F,&i=0,1,3,4,\\0,&\text{其余次数}.
+		\end{cases}
+	\]
+	普通悬挂同构则给出 \(H_0(X;F)=F\)、\(H_2(X;F)=H_3(X;F)=H_4(X;F)=F\)，而 \(H_1(X;F)=0\)。交叉同调的维数满足 \(0\leftrightarrow4\)、\(1\leftrightarrow3\)、\(2\leftrightarrow2\) 的对称性；普通同调在 \(1\leftrightarrow3\) 处不对称。取 \(F=\mathbb Q\) 时，上下中间复形相同，\cref{g2:thm:intersection-poincare-duality}就给出这个中间交叉同调与自身的非退化配对。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:nodal-curve-cohomology}
+	设 \(C\) 为一条紧的有理结点曲线，其正规化为 \(\nu:S^2\to C\)，拓扑上把 \(S^2\) 的两个不同点 \(a,b\) 识别为一个结点 \(o\)。以 \(F=\mathbb Q\) 为系数，利用层正合列计算普通上同调与中间交叉同调，并说明一次群不同的原因。
+\end{exercise}
+\begin{solution}
+	与\cref{g2:prop:node-sheaf-sequence}相同的逐茎计算给出
+	\[
+		0\longrightarrow F_C\longrightarrow\nu_*F_{S^2}\longrightarrow F_o\longrightarrow0.
+	\]
+	结点的小邻域在正规化中是两个不交圆盘，其他点的小邻域是一张圆盘，故高次直接像 \(R^q\nu_*F_{S^2}\) 对 \(q>0\) 为零。取消解并计算整体截面，得到 \(H^q(C;\nu_*F_{S^2})=H^q(S^2;F)\)；也可用这些圆盘组成的无上同调覆盖作同一计算。摩天楼层无高次上同调，其整体截面为 \(F\)。长正合列的开始是
+	\[
+		0\longrightarrow H^0(C;F)\longrightarrow F
+		\xrightarrow{\;0\;}F\longrightarrow H^1(C;F)\longrightarrow0.
+	\]
+	中间映射为零，因为球面上的全局常数在 \(a,b\) 取相同值。于是 \(H^0(C;F)=H^1(C;F)=F\)，继续读长正合列得 \(H^2(C;F)=F\)，其余群为零。
+
+	中间交叉复形在正则点是常值层，在结点按次数零截断得到 \(\mathcal P_C=\nu_*F_{S^2}\)，因此 \(\mathbb H^q(C;\mathcal P_C)=H^q(S^2;F)\)。由\cref{g2:eq:intersection-sheaf-degree}，
+	\[
+		IH_i^{\bar m}(C;F)=\begin{cases}F,&i=0,2,\\0,&\text{其余次数}.\end{cases}
+	\]
+	从 \(a\) 到 \(b\) 的弧在识别后成为普通一圈，贡献 \(H_1(C;F)\)；它经过结点，不是一条允许的一维圈。这解释了普通一次群与交叉一次群的差别。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:power-vanishing-cycles}
+	对 \(f:\mathbb C\to\mathbb C\)，\(f(z)=z^m\)，其中 \(m\geq2\)，计算原点的附近圈与未移位消失圈各次数的上同调。描述一次正向绕行对非零消失圈空间的作用，并求其特征多项式。
+\end{exercise}
+\begin{solution}
+	当 \(0<|t|\ll\epsilon\) 时，局部纤维是在小圆盘中的 \(m\) 个不同根，故附近圈的茎仅在次数 \(0\) 等于 \(F^m\)。专门化把 \(a\in F\) 映成 \((a,\ldots,a)\)，所以
+	\[
+		\mathcal H^0(R\phi_fF_{\mathbb C})_0=F^m/F(1,\ldots,1),
+	\]
+	维数为 \(m-1\)，其余次数为零。沿 \(t=t_0e^{i\theta}\) 连续选根，每个根在 \(\theta=2\pi\) 后移到下一个根，故在零次上同调上诱导循环置换或其逆，取决于采用运输还是拉回记号；二者有相同的特征多项式。\(F^m\) 上循环置换的特征多项式为 \(T^m-1\)，对角线是特征值 \(1\) 的一维不变子空间，商空间上的特征多项式因而为
+	\[
+		\frac{T^m-1}{T-1}=1+T+\cdots+T^{m-1}.
+	\]
+	特别是 \(m=2\) 时，消失圈位于次数 \(0\)，其单值变换为 \(-1\)。这里邻近纤维的变化是连通分支合并，与结点曲线平滑化中次数 \(1\) 的核心圈消失不同。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:node-base-change}
+	对结点族作基变换 \(t=s^m\)，\(m\geq1\)。在 \(s\ne0\) 的纤维上沿 \(s\) 正向绕零一圈，比较普通一次同调上的单值变换与固定两端边界参数的返回映射。证明后者的相对边界同位类随 \(m\) 不同而不同。
+\end{exercise}
+\begin{solution}
+	\(s\) 绕行一圈时 \(t\) 绕行 \(m\) 圈。普通一次同调上的原返回作用为恒等，复合 \(m\) 次仍为恒等。保持外边界的 \(u\) 参数和内边界的 \(v\) 参数时，\cref{g2:eq:nodal-dehn-twist}则变为
+	\[
+		h^m(r,\alpha)=\bigl(r,\alpha+2\pi m\chi(r)\bigr).
+	\]
+	取外边界上一点作为提升的起点，把一条连接两条边界的径向弧提升到圆环的条带覆盖。其像的另一端角度比原弧增加 \(2\pi m\)。在固定两条边界的同位中，两端的提升只能连续变化，而终点相差的整周数是整数，故恒定。因此 \(h^m\) 与 \(h^n\) 相对边界同位必有 \(m=n\)。本题直接比较光滑纤维及其绕行运输，不需把基变换后总空间的奇点当成光滑点。
+\end{solution}

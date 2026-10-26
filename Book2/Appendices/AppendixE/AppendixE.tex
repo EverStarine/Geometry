@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：## 附录 E　有理同伦与微分分次代数
 % 纲要位置：几何学计划纲要.md，第 2085 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；含正文、证明、例子、习题与完整解答，尚未正式审核。
 % 证明范围与先修：固定单连通、有限型 CW 空间及其有理模型，使用本卷第4、7、9、12章的乘积、de Rham 比较、同伦群与 Postnikov 语言。PL 多项式微分形式模型在有理数域上构造；光滑流形的 de Rham 代数在实数域上构造，经系数扩张后比较，不能将实模型直接说成有理模型。完成选定球面、射影空间与 Massey 乘积算例；一般 Sullivan 存在、唯一性与有理同伦对应定理准确外引，Kähler 形式性注明第四卷背景及外部输入。不扩展为一般 operad 或高阶范畴课程。
 
 % 纲要内容开始
@@ -43,96 +43,1136 @@
 \label{g2:app:E}
 \BookChapterNumber{g2:app:E}
 
-待撰写
+\begin{chapterabstract}
+	有理同伦论用带微分的分次交换代数记录空间在有理化后保留的同伦信息。多项式微分形式给一般空间提供有理模型，光滑流形的 de Rham 代数则在实数域上与它比较。最小模型通过闭生成元保存上同调类，通过非零微分记录乘法关系；Sullivan 对应进一步将生成元与有理同伦群联系起来。本附录完成奇偶维球面、复射影空间、乘积及代表映射的计算，再以三重 Massey 乘积展示上同调环以外的信息。形式性描述何时可以用零微分的上同调代数代替原模型，Kähler 情形中的微分引理给出一个重要的几何来源。
+\end{chapterabstract}
+
+\begin{learninggoals}
+	\begin{itemize}
+		\item 核对分次交换、张量乘法与微分的符号，判断一张代数态射是否为拟同构。
+		\item 在单形上构造有理多项式形式，说明它与实 de Rham 形式比较时需要的系数扩张。
+		\item 用逐阶加入生成元的方式理解最小模型，区分上同调类、自由生成元及有理同伦群。
+		\item 计算球面、射影空间和乘积的最小模型，利用保持微分的条件求出映射对同伦的作用。
+		\item 计算三重 Massey 乘积及其不定性，验证非形式性障碍，并解释 Kähler 形式性的代数推导。
+	\end{itemize}
+\end{learninggoals}
+
+在 \(S^2\) 上，二次上同调生成元 \(u\) 满足 \(u^2=0\)。只写下这个等式时，我们已经把一个问题隐藏了：在计算上同调以前，代表 \(u\) 的闭元之平方怎样成为边界？若把一个原元素 \(y\) 连同关系 \(\mathrm dy=x^2\) 一起保存，代数中便同时出现次数二和次数三的生成元。它们最终对应 \(S^2\) 的两个非零有理同伦群；三次上同调虽然为零，三次同伦方向仍然保留下来。
+
+\ProseParagraphBreak
+
+这也说明为何需要比较整个微分代数。第4章通过杯积区别了加性上同调相同的空间，本附录再追问：上同调环中乘积为零时，其原元素的选择还能带来什么信息？球面与射影空间会给出可以完整计算的最小模型，三重 Massey 乘积则将若干个乘法关系的相容性组织成新的上同调类。
+
+\ProseParagraphBreak
+
+空间的主要范围固定为单连通、各次有理上同调有限维的 CW 空间。代数先在 \(\mathbb Q\) 上建立；遇到光滑流形时再经 \(\mathbb Q\to\mathbb R\) 与 de Rham 代数比较。所需基础是第4章的上同调乘积与域系数 Künneth 公式、第7章的 de Rham 比较、第8—9章的同伦群，以及第12章以分层附着数据组织同伦信息的观点。用到这些结论时，会在具体计算中恢复其条件与含义。
+
+\ProseParagraphBreak
+
+一般模型的存在、唯一性和有理同伦对应按 Sullivan 理论引用；本附录展开代表模型的构造与拟同构检验、映射计算和 Massey 乘积的选择问题。最后的 Kähler 应用使用明确的外部微分引理，并证明它如何导出形式性。这样，抽象对应负责将代数和空间相连，实际计算则说明这种联系怎样使用。
 
 \section{分次交换微分代数与模型}
 \label{g2:sec:E01}
-待撰写
+
+第7章的 de Rham 理论把拓扑问题转成了闭形式、恰当形式与楔积的计算。若把所有恰当形式直接视为零，就得到上同调环；但一个乘积为什么为零、可以选哪一个原形式，这些信息随之丢失。微分分次代数保留形成上同调以前的乘法与微分。为了研究有理同伦，我们还需要把这套语言放在 \(\mathbb Q\) 上，使它能够用于一般 CW 空间，而不只用于光滑流形。
 
 \subsection{分次交换代数与微分的符号}
 \label{g2:subsec:E01:01}
-待撰写
+
+先固定特征为零的域 \(k\)，主要取 \(\mathbb Q\) 或 \(\mathbb R\)。本附录使用上链次数：微分使次数增加 \(1\)。若齐次元素 \(a\) 的次数为 \(p\)，记作 \(|a|=p\)。这里的次数将同时控制乘法交换和微分越过一个因子时的符号。
+
+\begin{definition}\label{g2:def:cdga}
+	域 \(k\) 上的\term[fencijiaohuanweifenfen cidaisu]{分次交换微分代数}[commutative differential graded algebra]，简称 CDGA，是非负分次向量空间 \(A=\bigoplus_{n\geq0}A^n\)，带有单位 \(1\in A^0\)、结合的双线性乘法 \(A^p\times A^q\to A^{p+q}\) 及线性微分 \(\mathrm d:A^n\to A^{n+1}\)，满足
+	\[
+		ab=(-1)^{|a||b|}ba,\qquad \mathrm d^2=0,\qquad
+		\mathrm d(ab)=(\mathrm da)b+(-1)^{|a|}a\,\mathrm db
+	\]
+	对全部齐次元素成立。记这一对象为 \((A,\mathrm d)\)。
+\end{definition}
+
+若 \(|a|\) 为奇数，交换公式给出 \(a^2=-a^2\)，特征零便推出 \(a^2=0\)。偶次元素则可以有任意高的非零幂。微分的 Leibniz 公式与第7章的外微分完全一致；特别地，\(\mathrm d1=\mathrm d(1\cdot1)=2\mathrm d1\)，故单位闭。对任意 CDGA，闭元素的乘积仍闭；若 \(a\) 闭而 \(b=\mathrm dc\)，则
+\[
+	ab=(-1)^{|a|}\mathrm d(ac).
+\]
+因此闭元素中的恰当元素构成理想，乘法下降到
+\[
+	H^n(A)=\frac{\ker(\mathrm d:A^n\to A^{n+1})}{\operatorname{im}(\mathrm d:A^{n-1}\to A^n)},\qquad
+	[a][b]=[ab].
+\]
+所得 \(H^*(A)\) 是分次交换代数；将它看成 CDGA 时，微分取零。零微分记录的是已经取商后的对象，并不自动保留原来选取原元素的方式。
+
+\ProseParagraphBreak
+
+两个空间的乘积在代数一侧对应张量积。若 \((A,\mathrm d_A)\)、\((B,\mathrm d_B)\) 是非负分次 CDGA，则在 \(A\otimes_kB\) 上规定
+\begin{equation}\label{g2:eq:cdga-tensor-signs}
+	\begin{aligned}
+		(a\otimes b)(a'\otimes b')&=(-1)^{|b||a'|}aa'\otimes bb',\\
+		\mathrm d(a\otimes b)&=\mathrm d_Aa\otimes b+(-1)^{|a|}a\otimes\mathrm d_Bb.
+	\end{aligned}
+\end{equation}
+乘法中的符号来自把中间的 \(b\) 越过 \(a'\)；微分中的符号来自让微分越过第一因子。再施一次微分，混合项的系数为 \((-1)^{|a|+1}+(-1)^{|a|}=0\)，其余两项由 \(\mathrm d_A^2=\mathrm d_B^2=0\) 消失。把乘法公式代入 Leibniz 公式时，移动 \(b\) 与 \(a'\) 所增加的次数又恰好给出相同符号，故张量积仍是 CDGA。后文所有乘积模型都采用式\eqref{g2:eq:cdga-tensor-signs}。
 
 \subsection{微分代数态射与拟同构}
 \label{g2:subsec:E01:02}
-待撰写
+
+给空间换一种可计算的表示时，我们通常不要求每个代数元素都一一对应。例如区间上的多项式函数远多于常数函数，但区间可缩，其上同调只留下常数。合适的比较关系应允许这种冗余，同时保存乘法、微分以及由它们得到的上同调。
+
+\begin{definition}\label{g2:def:cdga-quasi-isomorphism}
+	两个 \(k\) 上 CDGA 之间的\term[weifendaisutaishi]{微分代数态射}[morphism of differential graded algebras] \(f:(A,\mathrm d_A)\to(B,\mathrm d_B)\) 是保持次数、单位和乘法的 \(k\) 线性映射，并满足 \(f\mathrm d_A=\mathrm d_Bf\)。若诱导映射 \(H^n(f):H^n(A)\to H^n(B)\) 对每个 \(n\) 都是同构，则称 \(f\) 为\term[nitonggou]{拟同构}[quasi-isomorphism]，以 \(\xrightarrow{\simeq}\) 标记。
+\end{definition}
+
+例如令
+\[
+	P=k[t]\otimes\Lambda(\mathrm dt),\qquad |t|=0,\quad |\mathrm dt|=1,\quad
+	\mathrm d f(t)=f'(t)\,\mathrm dt.
+\]
+这里 \(\Lambda(\mathrm dt)\) 表示一维外代数，故 \((\mathrm dt)^2=0\)。闭的零次元素恰为常数；每个 \(g(t)\,\mathrm dt\) 都有多项式原函数，因为 \(t^m\) 的积分是 \(t^{m+1}/(m+1)\)，分母在特征零域中可逆。所以 \(H^0(P)=k\)，\(H^{>0}(P)=0\)。常数包含与取值映射
+\[
+	k\xrightarrow{\ \iota\ }P\xrightarrow{\ \varepsilon_0\ }k,\qquad
+	\varepsilon_0(t)=0,\quad\varepsilon_0(\mathrm dt)=0
+\]
+都是拟同构，而 \(P\) 与 \(k\) 显然不是同一个分次代数。这个例子也说明不宜要求 \(A^0=k\)：模型中可以包含非恒定的零次函数，只要它们在微分作用下产生正确的上同调。
+
+\begin{definition}\label{g2:def:cdga-model}
+	若两个 \(k\) 上 CDGA 能由有限条拟同构连接，箭头方向可交替，即
+	\[
+		A\xleftarrow{\simeq}C_1\xrightarrow{\simeq}C_2\xleftarrow{\simeq}\cdots\xrightarrow{\simeq}B,
+	\]
+	就说它们\term[weifendaisuruodengjia]{弱等价}[weakly equivalent]，记作 \(A\simeq B\)，并称 \(A\) 为 \(B\) 的一个微分代数\term[moxing]{模型}[model]。稍后对空间 \(X\) 构造 \(A_{\mathrm{PL}}(X;\mathbb Q)\) 后，它的模型便称为 \(X\) 的有理模型。
+\end{definition}
+
+允许箭头反向，是因为一个拟同构通常没有 CDGA 意义下的直接逆映射。上述关系自动给出上同调代数同构，但我们仍保存连接它们的微分代数态射。仅给一份抽象的上同调环同构没有提供这些态射；第四节的 Massey 乘积将具体展示两者的差别。下一节所构造的最小模型会选出特别适于计算的代数，并给出指向原代数的拟同构。
 
 \subsection{有理多项式微分形式模型}
 \label{g2:subsec:E01:03}
-待撰写
+
+一般拓扑空间没有光滑坐标，却有从标准单形出发的连续映射。我们在每张标准单形上放置多项式形式，再要求它们在面与退化单形上相容。这样，形式的系数可以一直取有理数，连续空间本身也不必先选一个光滑结构。
+
+\begin{definition}\label{g2:def:polynomial-forms}
+	设 \(k\) 为特征零域。在标准 \(n\) 单形的重心坐标 \(t_0,\ldots,t_n\) 上，定义多项式形式代数
+	\[
+		\Omega_{\mathrm{poly}}(\Delta^n;k)
+		=\frac{k[t_0,\ldots,t_n]\otimes\Lambda(\mathrm dt_0,\ldots,\mathrm dt_n)}{(t_0+\cdots+t_n-1,\ \mathrm dt_0+\cdots+\mathrm dt_n)},
+	\]
+	其中 \(|t_i|=0\)、\(|\mathrm dt_i|=1\)，微分由 \(\mathrm d(t_i)=\mathrm dt_i\)、\(\mathrm d(\mathrm dt_i)=0\) 延拓。分母理想在微分下不变，因此商上微分良定义。
+\end{definition}
+
+消去 \(t_0\) 与 \(\mathrm dt_0\) 后，它就是 \(k[t_1,\ldots,t_n]\otimes\Lambda(\mathrm dt_1,\ldots,\mathrm dt_n)\)。但保留全部重心坐标更便于描述单形间的映射。设保序映射 \(\theta:[m]\to[n]\) 把顶点 \(j\) 送到顶点 \(\theta(j)\)，相应仿射映射记为 \(\theta_*:\Delta^m\to\Delta^n\)。在源重心坐标 \(u_j\) 下，其拉回为
+\begin{equation}\label{g2:eq:polynomial-simplex-pullback}
+	\theta_*^*t_i=\sum_{\theta(j)=i}u_j,\qquad
+	\theta_*^*\mathrm dt_i=\sum_{\theta(j)=i}\mathrm du_j.
+\end{equation}
+若 \(\theta\) 是漏掉某顶点的面映射，相应坐标被置零；若它合并两个相邻顶点，相应坐标被替换为两坐标之和。总和仍为 \(1\)，微分总和仍为零，所以拉回保持定义关系。两次拉回的求和按顶点的两次像分组，等于复合映射的拉回，这给出了全部面与退化相容关系。
+
+\begin{definition}\label{g2:def:apl-algebra}
+	设 \(X\) 为拓扑空间。一个 \(q\) 次\term[PLduoxiangshiweifenxingshi]{PL 多项式微分形式}[PL polynomial differential form] \(\omega\) 是一族元素：对每条奇异单形 \(\sigma:\Delta^n\to X\)，赋予
+	\[
+		\omega_\sigma\in\Omega_{\mathrm{poly}}^q(\Delta^n;k),
+	\]
+	且对每个保序 \(\theta:[m]\to[n]\) 满足
+	\[
+		\omega_{\sigma\circ\theta_*}=\theta_*^*\omega_\sigma.
+	\]
+	这些相容族组成的 CDGA 记为 \(A_{\mathrm{PL}}(X;k)\)，乘法与微分均逐单形定义。本附录省略系数时，\(A_{\mathrm{PL}}(X)\) 总指 \(A_{\mathrm{PL}}(X;\mathbb Q)\)。\symidx{\(A_{\mathrm{PL}}(X;k)\)：系数域为 \(k\) 的 PL 多项式微分形式代数}
+\end{definition}
+
+这里并没有对连续映射 \(\sigma\) 求导：\(\omega_\sigma\) 是赋给它的多项式形式，定义中的拉回只作用于仿射映射 \(\theta_*\)。连续映射 \(f:X\to Y\) 则给出 CDGA 态射
+\[
+	f^*:A_{\mathrm{PL}}(Y;k)\longrightarrow A_{\mathrm{PL}}(X;k),\qquad
+	(f^*\omega)_\sigma=\omega_{f\circ\sigma}.
+\]
+因此这个构造与通常的微分形式一样反变，但它适用于连续空间和连续映射。
+
+\begin{proposition}\label{g2:prop:polynomial-poincare}
+	对特征零域 \(k\) 与任意 \(n\geq0\)，常数包含 \(k\to\Omega_{\mathrm{poly}}(\Delta^n;k)\) 是拟同构。具体地，存在次数为 \(-1\) 的线性算子 \(K\)，满足
+	\[
+		\mathrm dK+K\mathrm d=\operatorname{id}-\iota\varepsilon_0,
+	\]
+	其中 \(\varepsilon_0\) 是在顶点 \(t_0=1\) 取值，\(\iota\) 是常数包含。
+\end{proposition}
+\begin{proof}
+	置 \(x_i=t_i\)、\(1\leq i\leq n\)。定义次数为 \(-1\) 的反导子 \(\iota_E\)，使 \(\iota_E x_i=0\)、\(\iota_E\mathrm dx_i=x_i\)，并按分次 Leibniz 法则延拓。例如
+	\[
+		\iota_E(p\,\mathrm dx_{i_1}\cdots\mathrm dx_{i_q})
+		=p\sum_{j=1}^q(-1)^{j-1}x_{i_j}\,\mathrm dx_{i_1}\cdots\widehat{\mathrm dx_{i_j}}\cdots\mathrm dx_{i_q}.
+	\]
+	算子 \(\mathrm d\iota_E+\iota_E\mathrm d\) 是次数零的导子，在每个 \(x_i\) 与 \(\mathrm dx_i\) 上都取该元素本身。故若 \(p\) 是次数为 \(r\) 的齐次多项式，则
+	\[
+		(\mathrm d\iota_E+\iota_E\mathrm d)(p\,\mathrm dx_{i_1}\cdots\mathrm dx_{i_q})
+		=(r+q)p\,\mathrm dx_{i_1}\cdots\mathrm dx_{i_q}.
+	\]
+	把 \(r+q\) 称为这一单项的总权重；\(\mathrm d\) 和 \(\iota_E\) 都保持权重。在正权重部分取 \(K=(r+q)^{-1}\iota_E\)，在常数部分取零。特征零保证除法合法，由上式即得所需同伦公式。正次数的闭形式因此恰当，零次闭元素只留下常数，结论成立。
+\end{proof}
+
+单形上的收缩还没有解决全空间的粘合问题：各面上的原形式必须满足相容关系。一般比较定理把这一局部计算与单形的相容延拓结合起来，给出以下结论。
+
+\begin{theorem}\label{g2:thm:pl-de-rham-comparison}
+	设 \(X\) 为 CW 空间，\(k=\mathbb Q\) 或 \(\mathbb R\)。逐单形积分
+	\[
+		I:A_{\mathrm{PL}}^q(X;k)\longrightarrow C^q(X;k),\qquad
+		I(\omega)(\sigma)=\int_{\Delta^q}\omega_\sigma
+	\]
+	是上链映射，并诱导自然的分次代数同构
+	\[
+		H^*(A_{\mathrm{PL}}(X;k))\cong H^*(X;k).
+	\]
+\end{theorem}
+
+上链映射部分可直接核对：仿射面的拉回条件把 Stokes 公式的交替边界积分变成奇异上边界。多项式在有理顶点单形上的积分为有理数，所以 \(k=\mathbb Q\) 时没有离开系数域。诱导同构及杯积相容的一般比较在此作为外部定理使用，取\cite[第2节，第15—17页]{FelixHalperin2017SullivanModels}的 \(A_{\mathrm{PL}}\) 构造与比较版本；单形相容延拓及逐胞腔比较的证明见\cite[第7节，定理7.1及其后的多项式形式、半单纯复形例子，第297—299页]{Sullivan1977Infinitesimal}。原始积分 \(I\) 一般不逐项保持乘法：楔积在整个单形上积分，杯积则在前、后子面上分别取值。这里的代数同构发生在上同调上，不能据此把 \(I\) 当成 CDGA 拟同构。
 
 \subsection{光滑流形的实 de Rham 代数}
 \label{g2:subsec:E01:04}
-待撰写
+
+若 \(M\) 为有限维、Hausdorff、第二可数、无边界光滑流形，其实值光滑微分形式、楔积和外微分组成实 CDGA
+\[
+	(\Omega^*(M;\mathbb R),\mathrm d).
+\]
+\cref{g2:thm:de-rham,g2:prop:de-rham-products}已经证明，积分把它的上同调环自然地识别为 \(H^*(M;\mathbb R)\)。其中闭形式给出周期，恰当形式的周期为零；楔积与杯积的相容通过乘积链上的积分，再沿对角映射拉回得到。这正是我们现在希望保留到取上同调以前的几何代数。
+
+\ProseParagraphBreak
+
+例如在定向闭曲面 \(S^2\) 上，取积分为 \(1\) 的面积形式 \(\omega\)。它满足 \(\mathrm d\omega=0\)，且因维数为二而有 \(\omega\wedge\omega=0\)。这些等式属于实 de Rham 代数；\([\omega]\) 的周期归一化则使其对应于来自整数上同调的实类。然而任意光滑函数以及它与 \(\omega\) 的乘积都允许实系数，单靠这份实代数并未指定哪一个有理结构应当被保留。
+
+\ProseParagraphBreak
+
+在有限型情形，有理类在实上同调中的像可以通过周期辨认。\cref{g2:thm:uct-cohomology}的域版本把 \(H^q(M;\mathbb Q)\) 识别为 \(H_q(M;\mathbb Q)\) 的有理线性对偶；若该同调空间有限维，选一组有理圈基底，一个实类来自有理类当且仅当它在这组基底上的全部周期为有理数。这是对上同调类的条件，而非对某张坐标中的每个形式系数施加条件。即使选定了各次有理类代表，也还要处理它们乘积之间的恰当关系；\(A_{\mathrm{PL}}(M;\mathbb Q)\) 在代数层面同时保留了这些数据。
 
 \subsection{系数扩张与模型比较}
 \label{g2:subsec:E01:05}
-待撰写
+
+把有理模型与实形式联系起来，第一步是把基域从 \(\mathbb Q\) 扩张到 \(\mathbb R\)。这一步在微分代数层面很直接：将每个次数张量上 \(\mathbb R\)，微分取 \(\mathrm d\otimes1\)，乘法按双线性延拓。关键在于核对它与上同调以及空间上的系数变换相容。
+
+\begin{proposition}\label{g2:prop:cdga-scalar-extension}
+	设 \(K/k\) 为域扩张，\((A,\mathrm d)\) 为非负分次 \(k\) 上 CDGA。自然映射
+	\[
+		H^*(A)\otimes_kK\longrightarrow H^*(A\otimes_kK),\qquad
+		[a]\otimes\lambda\longmapsto[a\otimes\lambda]
+	\]
+	是分次代数同构。因此系数扩张保持 CDGA 拟同构及弱等价。
+\end{proposition}
+\begin{proof}
+	令 \(Z^n=\ker\mathrm d\)、\(B^n=\operatorname{im}\mathrm d\)。在向量空间中选择补空间，使
+	\[
+		A^n=B^n\oplus H_0^n\oplus L^n,\qquad Z^n=B^n\oplus H_0^n.
+	\]
+	微分限制为同构 \(L^n\xrightarrow{\cong}B^{n+1}\)，在另两项为零。张量上 \(K\) 后同样成立，所以上同调正是 \(H_0^n\otimes_kK\)。这证明自然映射为同构；补空间只是验证工具，映射本身由闭元素代表定义，与选择无关。其乘法相容直接由张量积乘法得出。若 \(f\) 是拟同构，就在这两个自然同构之间张量 \(H^*(f)\)，得到 \(f\otimes1\) 仍是拟同构；对有限条拟同构逐条应用即可。
+\end{proof}
+
+注意上述命题不需要 \(A^n\) 有限维。空间的系数比较则还涉及线性对偶：一般而言，\(\operatorname{Hom}_{\mathbb Q}(V,\mathbb Q)\otimes\mathbb R\) 未必覆盖 \(\operatorname{Hom}_{\mathbb Q}(V,\mathbb R)\)。当每个 \(H_n(X;\mathbb Q)\) 有限维时，这个障碍消失，因而
+\[
+	H^*(X;\mathbb Q)\otimes_{\mathbb Q}\mathbb R\xrightarrow{\cong}H^*(X;\mathbb R).
+\]
+具体地，在每个有限维同调空间选择基底，两侧都由同一有限组对偶坐标确定；自然系数映射保持杯积。这就是本附录要求有限型的一个实际用途。
+
+\begin{theorem}\label{g2:thm:rational-real-model-comparison}
+	设 \(M\) 为单连通、有限维、Hausdorff、第二可数、无边界光滑流形，并假设 \(H_n(M;\mathbb Q)\) 对每个 \(n\) 有限维。则自然系数态射
+	\[
+		A_{\mathrm{PL}}(M;\mathbb Q)\otimes_{\mathbb Q}\mathbb R
+		\longrightarrow A_{\mathrm{PL}}(M;\mathbb R)
+	\]
+	是拟同构，并有实 CDGA 的弱等价
+	\[
+		A_{\mathrm{PL}}(M;\mathbb Q)\otimes_{\mathbb Q}\mathbb R
+		\simeq\Omega^*(M;\mathbb R).
+	\]
+	因此 \(M\) 的任一有理模型经系数扩张后，成为其实 de Rham 代数的模型。
+\end{theorem}
+
+第一项结论由已列比较即可推出。把有限线性组合的有理系数形式逐单形看作实系数形式，得到所述态射。积分与系数包含交换，故其上同调位于交换图
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		H^*(A_{\mathrm{PL}}(M;\mathbb Q))\otimes\mathbb R \arrow[r] \arrow[d,"\cong"'] & H^*(A_{\mathrm{PL}}(M;\mathbb R)) \arrow[d,"\cong"] \\
+		H^*(M;\mathbb Q)\otimes\mathbb R \arrow[r,"\cong"'] & H^*(M;\mathbb R).
+	\end{tikzcd}
+\]
+竖箭头来自\cref{g2:thm:pl-de-rham-comparison}，左上角再使用\cref{g2:prop:cdga-scalar-extension}。由此上方箭头是同构。全体相容族的张量积未必等于全部实系数相容族；所需结论只是这张自然态射为拟同构。
+
+\ProseParagraphBreak
+
+第二项是比上同调环同构更强的实微分代数比较，采用\cite[第2节，第17页，第2项比较]{FelixHalperin2017SullivanModels}。它由多项式形式与逐单形光滑形式的共同比较给出 CDGA 拟同构链；一般构造在此作为外部输入。结合上一命题，若 \(A\simeq A_{\mathrm{PL}}(M;\mathbb Q)\)，便有 \(A\otimes\mathbb R\simeq\Omega^*(M;\mathbb R)\)。这样得到的方向很明确：先保留一个有理模型，再扩张成实模型；直接计算实形式时，则只能先声称得到了实模型，额外的有理结构需要另外指定。
 
 \section{最小模型与有理同伦}
 \label{g2:sec:E02}
-待撰写
+
+上一节的多项式形式代数保留乘法和微分，但包含大量并非独立的信息。为了计算，我们希望用较少的生成元表达同一有理同伦型。这里的“较少”有一个精确含义：微分中不出现可以直接抵消一对生成元的线性项。构造时先加入生成元表示缺少的上同调类，再加入生成元使多余的类成为边界；后一种生成元即使本身不闭，仍可能记录重要的同伦信息。
 
 \subsection{自由分次交换代数与生成元}
 \label{g2:subsec:E02:01}
-待撰写
+
+设 \(V=\bigoplus_{n\ge1}V^n\) 为有理分次向量空间。给定一组生成元后，暂时只施加分次交换律，得到\term[ziyou fenci jiaohuan daishu]{自由分次交换代数}[free graded-commutative algebra]
+\[
+	\Lambda V=\operatorname{Sym}(V^{\mathrm{even}})\otimes\Lambda(V^{\mathrm{odd}}).
+\]
+同一个 \(\Lambda\) 记号在左边表示整个自由分次交换代数，右边第二因子才是通常的外代数。偶数次生成元可以取任意非负整数次幂；奇数次生成元的平方为零，因为 \(v^2=-v^2\)，而基域的特征为零。选定齐次基并给它排序后，有序单项式构成向量空间基，奇数次基元在每个单项式中至多出现一次。\symidx{\(\Lambda V\)：自由分次交换代数}
+
+\ProseParagraphBreak
+
+例如，若 \(|a|=2\)、\(|b|=3\)，则 \(\Lambda(a,b)=\mathbb Q[a]\otimes\Lambda(b)\)，每个元素唯一写成 \(P(a)+Q(a)b\)。这里 \(b^2=0\)，而 \(a^2\) 不是零。代数的次数由总次数决定，单项式长度则数使用了几个生成元；\(a^2\) 的次数为 \(4\)，长度为 \(2\)。下面的最小性使用长度，因此要将这两个计数分开。
+
+\begin{proposition}\label{g2:prop:free-cdga-extension}
+	设 \(V\) 为正次数有理分次向量空间。每个次数为 \(1\) 的线性映射 \(\delta:V\to\Lambda V\) 都唯一延拓为满足分次 Leibniz 公式的导子 \(\mathrm d\)。若 \(\mathrm d\delta(v)=0\) 对所有生成元 \(v\) 成立，则 \(\mathrm d^2=0\)。给定另一分次交换微分代数 \((A,\mathrm d_A)\)，次数为零的线性映射 \(f:V\to A\) 唯一延拓为保单位的分次代数态射 \(F:\Lambda V\to A\)；它是微分代数态射，当且仅当
+	\[
+		\mathrm d_Af(v)=F(\delta(v))\qquad(v\in V).
+	\]
+\end{proposition}
+\begin{proof}
+	在齐次单项式上，Leibniz 公式强迫
+	\[
+		\mathrm d(v_1\cdots v_r)=\sum_{i=1}^r(-1)^{|v_1|+\cdots+|v_{i-1}|}v_1\cdots\delta(v_i)\cdots v_r.
+	\]
+	将两个相邻生成元交换时，分次交换符号与导子符号相容，故此式下降到 \(\Lambda V\)。对奇数次 \(v\)，还有 \(\mathrm d(v^2)=\delta(v)v-v\delta(v)=0\)，因为 \(\delta(v)\) 为偶数次。这也检查了平方为零的关系。
+
+	对齐次 \(u,w\) 连用两次 Leibniz 公式，中间两项系数相反，得到 \(\mathrm d^2(uw)=\mathrm d^2(u)w+u\mathrm d^2(w)\)。因此 \(\mathrm d^2\) 是偶导子，只要在生成元上为零便在全部单项式上为零。最后，代数态射由生成元像唯一决定；\(A\) 中同样满足分次交换与奇数次平方为零，故任意给定的齐次像都能延拓。若交换微分的等式对生成元成立，Leibniz 公式使它对全部乘积成立。
+\end{proof}
+
+生成元的具体选取可以改变，例如可用 \(z+ab\) 替换与 \(ab\) 同次的生成元 \(z\)。与选取无关的是\term[bukefenjie shang]{不可分解商}[indecomposable quotient]
+\[
+	Q(\Lambda V)=\frac{(\Lambda V)^+}{((\Lambda V)^+)^2}\cong V,
+\]
+其中上标 \(+\) 表示正次数部分，分母由至少两个正次数元素的乘积张成。右边同构来自选定的生成空间；左边直接从代数定义，因此不依赖某组坐标式的生成元。
 
 \subsection{最小性、滤过与逐阶构造}
 \label{g2:subsec:E02:02}
-待撰写
+
+从自由代数构造模型，关键是安排每个新生成元的微分只使用已经构造好的数据。Sullivan\footnote{Dennis Parnell Sullivan（1941年生），美国数学家，研究代数与几何拓扑、动力系统；有理同伦的微分代数方法是其代表工作之一。}用以下滤过表达这一要求。
+
+\begin{definition}\label{g2:def:minimal-sullivan-algebra}
+	设 \(V=V^{\ge1}\) 为有理分次向量空间。若自由分次交换微分代数 \((\Lambda V,\mathrm d)\) 具有递增的齐次子空间滤过
+	\[
+		V(0)\subset V(1)\subset\cdots,\qquad V=\bigcup_{j\ge0}V(j),
+	\]
+	满足 \(\mathrm dV(0)=0\) 及 \(\mathrm dV(j+1)\subset\Lambda V(j)\)，就称它为\term[Sullivan daishu]{Sullivan 代数}[Sullivan algebra]。若还满足
+	\[
+		\mathrm dV\subset\Lambda^{\ge2}V,
+	\]
+	即生成元的微分不含长度为一的项，就称它\term[zuixiao Sullivan daishu]{最小}[minimal]。这里 \(\Lambda^{\ge2}V\) 表示长度至少为二的单项式所张成的空间。
+\end{definition}
+
+在本附录主要使用的 \(V=V^{\ge2}\) 情形，最小性使一个 \(n\) 次生成元的微分只使用次数严格小于 \(n\) 的生成元：微分的总次数为 \(n+1\)，至少有两个次数不小于 \(2\) 的因子，所以每个因子的次数至多为 \(n-1\)。于是按生成元的次数递增即可安排 Sullivan 滤过。允许一次数生成元时，同次生成元之间也可能相互进入微分，此时单独保留上述滤过要求就有必要。
+
+\ProseParagraphBreak
+
+最小性排除的最简单对象是 \(C=\Lambda(u_2,v_3)\)、\(\mathrm du=v\)、\(\mathrm dv=0\)，下标表示次数。它有两个生成元，却只有常数上同调：每个元素写成 \(P(u)+Q(u)v\)，且
+\[
+	\mathrm dP(u)=P'(u)v,\qquad \mathrm d(Q(u)v)=0.
+\]
+有理多项式总有有理原函数，所以所有 \(Q(u)v\) 都是边界，闭的 \(P(u)\) 只有常数。故 \(C\to\mathbb Q\) 是拟同构。线性关系 \(\mathrm du=v\) 表明这对生成元可以一起消去；最小模型正是要去掉这种可抵消的数据。
+
+\begin{proposition}\label{g2:prop:minimal-elementary-extension}
+	设 \(\phi:(M,\mathrm d)\to(A,\mathrm d_A)\) 为有理分次交换微分代数态射，\(M\) 为自由分次交换代数。
+	\begin{enumerate}
+		\item 对闭元 \(a\in A^n\)、\(n\ge2\)，可以加入生成元 \(x\) 并规定 \(|x|=n\)、\(\mathrm dx=0\)、\(\phi(x)=a\)。
+		\item 对闭元 \(c\in M^n\)、\(n\ge3\)，若 \(\phi(c)=\mathrm d_Ab\)，可以加入生成元 \(y\) 并规定 \(|y|=n-1\)、\(\mathrm dy=c\)、\(\phi(y)=b\)。
+	\end{enumerate}
+	两种延拓都给出微分平方为零的自由微分代数及其到 \(A\) 的态射。第一种将 \([a]\) 纳入上同调映射的像，第二种使原来核中的 \([c]\) 成为边界。若旧代数最小，且第二种中的 \(c\) 为可分解元，则延拓保持最小性。
+\end{proposition}
+\begin{proof}
+	第一种的 \(\mathrm d^2x=0\) 与 \(\mathrm d_A\phi(x)=0\) 由闭性得到。第二种的 \(\mathrm d^2y=\mathrm dc=0\)，且 \(\mathrm d_A\phi(y)=\mathrm d_Ab=\phi(c)=\phi(\mathrm dy)\)。应用\cref{g2:prop:free-cdga-extension}，这些等式就保证全部代数上的要求。加入的生成元放在滤过的后面；其微分为零或已在旧代数中，所以滤过条件也得到保持。最后两项关于上同调的结论分别来自 \(x\) 闭且映到 \(a\)，以及 \(c=\mathrm dy\)。
+\end{proof}
+
+上述两种操作分别修补上同调映射的不满射与不单射。加入新生成元又可能产生新的闭组合，因此逐阶构造需要继续处理新出现的核。下面算到第五次，具体看一次这样的反馈。
+
+\begin{example}\label{g2:exm:minimal-model-low-stages}
+	取零微分代数 \(A=\mathbb Q\oplus\mathbb Q\alpha\oplus\mathbb Q\beta\)，其中 \(|\alpha|=|\beta|=2\)，所有正次数元素的乘积为零。先取 \(M_2=\mathbb Q[a,b]\)、\(|a|=|b|=2\)，令 \(a\mapsto\alpha\)、\(b\mapsto\beta\)，便补齐第二次上同调。但 \(a^2,ab,b^2\) 都映到零，于是取
+	\[
+		M_3=\Lambda(a_2,b_2,x_3,y_3,z_3),\qquad
+		\mathrm dx=a^2,\quad \mathrm dy=ab,\quad \mathrm dz=b^2,
+	\]
+	并把三个新生成元都映到零。
+
+	三个三次生成元的微分线性无关，所以 \(H^3(M_3)=0\)。四次部分由 \(a^2,ab,b^2\) 张成，恰好都是边界，故 \(H^4(M_3)=0\)。第五次部分有基 \(ax,ay,az,bx,by,bz\)，其微分依次为
+	\[
+		a^3,\quad a^2b,\quad ab^2,\quad a^2b,\quad ab^2,\quad b^3.
+	\]
+	因此闭元空间由 \(ay-bx\)、\(az-by\) 张成。四次部分的微分为零，所以这两个闭元都不是边界。它们记录的是前三条乘法关系之间的关系。
+
+	再加入四次生成元 \(u,v\)，规定
+	\[
+		\mathrm du=ay-bx,\qquad \mathrm dv=az-by,
+	\]
+	并仍把它们映到零，就得到 \(M_4\to A\)。新微分确实平方为零，因为 \(a(ab)-b(a^2)=0\) 及 \(a(b^2)-b(ab)=0\)。由于没有一次元素，含 \(u,v\) 的新乘积最早出现在第六次；它们在第四次又不产生闭的线性组合。因此到第五次为止，\(M_4\to A\) 已在上同调上同构。更高次仍需继续计算，不能仅凭低次已对齐就停止构造。
+\end{example}
 
 \subsection{单连通有限型空间的最小模型}
 \label{g2:subsec:E02:03}
-待撰写
+
+最小模型同时包含一个自由代数和一张比较映射。比较映射会随闭代表、原函数的选择而改变，所以唯一性要允许同伦。对两张微分代数态射 \(f_0,f_1:M\to A\)，一个\term[weifen daishu tonglun]{微分代数同伦}[cdga homotopy]是态射
+\[
+	H:M\longrightarrow A\otimes\mathbb Q[t,\mathrm dt],\qquad |t|=0,\quad |\mathrm dt|=1,
+\]
+使把 \(t\) 分别代入 \(0,1\)、把 \(\mathrm dt\) 代入零后得到 \(f_0,f_1\)。张量微分采用上一节的符号。源为 Sullivan 代数时，这给出态射上的同伦等价关系；一般提升与同伦性质采用\cite[第2节，第16页]{FelixHalperin2017SullivanModels}的版本。
+
+\begin{theorem}[Sullivan 最小模型定理]\label{g2:thm:sullivan-minimal-model-existence}
+	设 \(A\) 为非负次数有理分次交换微分代数，满足 \(H^0(A)=\mathbb Q\)、\(H^1(A)=0\)，且每个 \(H^n(A)\) 有限维。则存在最小 Sullivan 代数 \(M=(\Lambda V,\mathrm d)\) 与拟同构
+	\[
+		m:M\longrightarrow A,
+	\]
+	其中 \(V=V^{\ge2}\)，每个 \(V^n\) 有限维。若 \(m':M'\to A\) 是另一个最小模型，则有微分代数同构 \(\chi:M'\to M\)，使 \(m\chi\) 与 \(m'\) 同伦。此外，最小 Sullivan 代数之间的拟同构本身就是同构。
+\end{theorem}
+
+一般存在、唯一性与刚性在这里引用 Sullivan 理论。构造的加类、杀类步骤及唯一性证明见\cite[第5节第一种情形，第288—289页；第4节，命题4.2]{Sullivan1977Infinitesimal}；上述现代微分代数表述见\cite[第2节，定理2.1及随后注释，第16—17页；第7节例2，第22页]{FelixHalperin2017SullivanModels}。前一小节已经展示实际计算时怎样选生成元和微分；一般定理还保证整个逐阶过程可以完成，并保证不同选择得到同构的最小代数。
+
+\ProseParagraphBreak
+
+对单连通 CW 空间 \(X\)，本附录说它\term[youli youxianxing]{有理有限型}[rationally of finite type]，是指每个 \(H^n(X;\mathbb Q)\) 有限维。若有有限个每一维的胞腔，这一条件成立；它不要求全部次数合起来有限维。由上一节的比较定理，\(A_{\mathrm{PL}}(X;\mathbb Q)\) 满足最小模型定理的假设。取
+\[
+	m_X:M_X=(\Lambda V_X,\mathrm d)\xrightarrow{\ \simeq\ }A_{\mathrm{PL}}(X;\mathbb Q),
+\]
+称 \(M_X\) 连同这张映射为 \(X\) 的\term[zuixiao moxing]{最小模型}[minimal model]。有些场合只写 \(M_X\)，但核验某个候选模型时，仍须构造到 \(A_{\mathrm{PL}}(X;\mathbb Q)\) 的拟同构或一个已经证明等价的模型比较。
+
+\ProseParagraphBreak
+
+给定 \(f:X\to Y\)，形式的拉回方向为 \(A_{\mathrm{PL}}(f):A_{\mathrm{PL}}(Y)\to A_{\mathrm{PL}}(X)\)。最小模型的提升性质给出一张 \(f^\sharp:M_Y\to M_X\)，使下图在微分代数同伦意义下交换：
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		M_Y\arrow[r,"f^\sharp"]\arrow[d,"m_Y"',"\simeq"] & M_X\arrow[d,"m_X","\simeq"']\\
+		A_{\mathrm{PL}}(Y;\mathbb Q)\arrow[r,"A_{\mathrm{PL}}(f)"'] & A_{\mathrm{PL}}(X;\mathbb Q).
+	\end{tikzcd}
+\]
+\(f^\sharp\) 称为 \(f\) 的 Sullivan 代表，其同伦类由 \(f\) 的同伦类确定。这里不要求图严格交换：选闭代表时作出的调整通常正由代数同伦吸收。
 
 \subsection{生成元与有理同伦群}
 \label{g2:subsec:E02:04}
-待撰写
+
+在最小代数中，微分把生成元送到可分解元，因此在不可分解商上诱导的微分为零。这个商保存的不是上同调类：一个生成元可以有非零微分，却仍给出不可分解商中的非零元素。Sullivan 对应把这些生成元解释为有理同伦群的对偶。
+
+\begin{theorem}[Sullivan 同伦对应]\label{g2:thm:sullivan-homotopy-correspondence}
+	设 \(X\) 为单连通有理有限型 CW 空间，\(m_X:(\Lambda V_X,\mathrm d)\to A_{\mathrm{PL}}(X;\mathbb Q)\) 为最小模型。对每个 \(n\ge2\)，存在自然同构
+	\[
+		\pi_n(X)\otimes_{\mathbb Z}\mathbb Q\cong\operatorname{Hom}_{\mathbb Q}(V_X^n,\mathbb Q),
+		\qquad V_X^n\cong\operatorname{Hom}_{\mathbb Q}(\pi_n(X)\otimes\mathbb Q,\mathbb Q).
+	\]
+	若 \(f:X\to Y\) 是这样的空间之间的映射，\(f^\sharp:M_Y\to M_X\) 为其 Sullivan 代表，则 \(\pi_n(f)\otimes\mathbb Q\) 对偶于不可分解商上的线性映射
+	\[
+		Q(f^\sharp)^n:V_Y^n\longrightarrow V_X^n.
+	\]
+\end{theorem}
+
+这里采用\cite[第4节，定理4.1及之前的构造，第19页]{FelixHalperin2017SullivanModels}；空间实现及同伦计算的原始证明见\cite[第8节，定理8.1，第301—303页；第10节，定理10.1，第307页]{Sullivan1977Infinitesimal}。对球面映射 \(g:S^n\to X\)，其拉回在模型层面可以与 \(H^*(S^n;\mathbb Q)\) 比较。球面中任意两个正次数类之积为零，所以模型中可分解项的像为零；\(n\) 次生成元的像是基本上同调类的某个有理倍数。这些倍数组成作用于 \(V_X^n\) 的线性泛函。一般对应定理证明这样的配对恰好识别全部有理同伦群。
+
+\ProseParagraphBreak
+
+实际计算因而分成两件事。求上同调要计算闭元模边界，乘积关系由微分决定；求有理同伦群的维数，则数最小模型各次的独立生成元。对映射，先写出每个生成元的像，再删去长度至少为二的项，就得到同伦群所需的对偶线性矩阵。即使两个模型的各次生成元数相同，它们的微分也可能不同，故它们仍可能表示不同的有理同伦型。
+
+\ProseParagraphBreak
+
+这一点也与第12.3节的 Postnikov 描述相呼应。\cref{g2:thm:postnikov-k-reconstruction}说明，指定各阶同伦群以后，仍需 \(k\)-不变量来说明各层怎样结合；生成元的次数记录群出现在哪些维数，而最小模型的微分继续保存这些结合信息。因此仅列 \(\dim V_X^n\) 不能代替写出 \(\mathrm d\)。
 
 \subsection{Sullivan 主定理及其使用条件}
 \label{g2:subsec:E02:05}
-待撰写
+
+有理同伦保留的是把高阶同伦群中的整数乘法可逆化以后的信息。例如 \(\mathbb Z\otimes\mathbb Q=\mathbb Q\)，而有限阿贝尔群张量 \(\mathbb Q\) 后为零。为了比较空间本身，采用与此相配的\term[youlihua]{有理化}[rationalization]：对于单连通 CW 空间 \(X\)，它是一张到单连通有理 CW 空间的映射 \(r_X:X\to X_{\mathbb Q}\)，使
+\[
+	\pi_n(X)\otimes\mathbb Q\xrightarrow{\ \cong\ }\pi_n(X_{\mathbb Q})\qquad(n\ge2).
+\]
+右端已是有理向量空间。这样的有理化存在，且在同伦意义下具有到有理空间的普遍性；其构造与所需版本见\cite[第8节，第22页]{FelixHalperin2017SullivanModels}。
+
+\begin{theorem}[Sullivan 有理同伦定理]\label{g2:thm:sullivan-rational-equivalence}
+	设 \(X,Y\) 为单连通有理有限型 CW 空间，\(M_X,M_Y\) 为其有理最小模型。
+	\begin{enumerate}
+		\item 模型反变地给出自然双射
+		\[
+			[X_{\mathbb Q},Y_{\mathbb Q}]\cong[M_Y,M_X]_{\mathrm{CDGA}},
+		\]
+		左边为连续映射的同伦类，右边为微分代数态射的同伦类。等价地，左边可写 \([X,Y_{\mathbb Q}]\)。
+		\item \(X_{\mathbb Q}\) 与 \(Y_{\mathbb Q}\) 同伦等价，当且仅当 \(M_X\) 与 \(M_Y\) 作为微分代数同构。
+		\item 每个满足 \(V=V^{\ge2}\)、\(\dim V^n<\infty\) 的有理最小 Sullivan 代数 \((\Lambda V,\mathrm d)\)，都是某个单连通、有理有限型的有理 CW 空间的最小模型。
+	\end{enumerate}
+\end{theorem}
+
+这是本附录引用的主定理范围。空间实现与态射比较采用\cite[第3节，第18页；第4节，定理4.2，第19页；第8节，第22页]{FelixHalperin2017SullivanModels}的有限型版本；原始空间实现构造及映射同伦对应见\cite[第8节，定理8.1及注释(i)，第301—303页；第10节，定理10.1]{Sullivan1977Infinitesimal}。在该范围内，有限维对偶能准确恢复每阶同伦群，单连通性则排除了基本群及其对高阶同伦群的非平凡作用。后者若出现，需要另行记录相应的幂零性及作用条件。
+
+\ProseParagraphBreak
+
+由这个定理和最小模型的刚性，空间之间的映射 \(f\) 在有理同伦群上逐阶同构，当且仅当 \(f^\sharp\) 为最小微分代数的同构，也当且仅当 \(f\) 在有理上同调上同构。这里的比较在有理化以后进行。例如球面的次数 \(2\) 映射在有理上同调上可逆，却在整数顶维同调 \(\mathbb Z\) 上为不满射的乘 \(2\)，所以原映射不是同伦等价。
+
+\ProseParagraphBreak
+
+计算一个候选模型时，可以据此逐项落实：先核对自由代数及最小微分，再给出与目标空间多项式形式的拟同构，随后读出生成元和映射的线性部分。只写出一个与空间同构的上同调环，还没有给出所需的微分代数比较；下一节的球面与射影空间会把这些步骤全部算出。
 
 \section{球面与射影空间计算}
 \label{g2:sec:E03}
-待撰写
+
+一个最小模型需要记录两类信息：哪些上同调类应当出现，哪些看起来可以相乘的表达式实际必须成为边界。奇维球面只需第一类数据；偶维球面和复射影空间还需要一名生成元来消去多余的幂。下面直接把这些代数映到 \(A_{\mathrm{PL}}\)，检验所得映射确为拟同构，再用 Sullivan 对应读出有理同伦群。这样可以看清公式的来由，也能确认计算的对象确实是所给空间。
 
 \subsection{奇维球面的模型}
 \label{g2:subsec:E03:01}
-待撰写
+
+由\cref{g2:thm:sphere-homology}及域系数的万有系数公式，对 \(n\geq2\)，球面只有零次和 \(n\) 次有理上同调。记定向给出的顶次生成元为 \(u\)。若 \(n\) 为奇数，分次交换律本身就强迫 \(u^2=0\)，所以先试着只加入一个闭生成元。
+
+\begin{proposition}\label{g2:prop:odd-sphere-minimal-model}
+	设奇整数 \(n\geq3\)。球面 \(S^n\) 的有理最小模型为
+	\[
+		\mathcal M(S^n)=(\Lambda(x),\mathrm d),\qquad |x|=n,\qquad \mathrm dx=0.
+	\]
+	其有理同伦群满足
+	\[
+		\pi_j(S^n)\otimes\mathbb Q\cong
+		\begin{cases}
+			\mathbb Q,&j=n,\\
+			0,&j\geq2,\ j\ne n.
+		\end{cases}
+	\]
+\end{proposition}
+\begin{proof}
+	取 \(A_{\mathrm{PL}}(S^n;\mathbb Q)\) 中代表 \(u\) 的闭元 \(a\)。因为 \(n\) 为奇数且基域特征为零，有 \(a^2=-a^2\)，从而 \(a^2=0\)。所以 \(x\mapsto a\) 给出 CDGA 态射
+	\[
+		\mu:(\Lambda(x),0)\longrightarrow A_{\mathrm{PL}}(S^n;\mathbb Q).
+	\]
+	源代数的向量空间基只有 \(1,x\)，其微分为零。\(H(\mu)\) 将它们送到目标上同调的基 \(1,u\)，故为同构，\(\mu\) 是拟同构。源自由且无一次微分项，是最小 Sullivan 代数。其生成空间只在次数 \(n\) 有一维；\cref{g2:thm:sullivan-homotopy-correspondence}遂给出所列有理同伦群。
+\end{proof}
+
+这里的消失结论经过了张量 \(\mathbb Q\)。例如整数同伦群中的有限阶元素在有理化后消失，模型没有给出它们的阶数。我们从上同调出发建立模型，再由一般对应定理得到同伦结论；从两次非零上同调本身并不能直接推出其余同伦群消失。
 
 \subsection{偶维球面的模型}
 \label{g2:subsec:E03:02}
-待撰写
+
+若 \(n\) 为偶数，自由生成元 \(x\) 会产生多项式 \(x^2,x^3,\ldots\)。而球面中 \(u^2=0\)，所以这些多余的类必须被消去。加入 \(y\) 并令 \(\mathrm dy=x^2\)，既把第一个多余的平方变成边界，也通过 \(\mathrm d(x^ky)=x^{k+2}\) 一次消去其后的全部幂。微分升一次，因此 \(y\) 的次数必须是 \(2n-1\)。
+
+\begin{proposition}\label{g2:prop:even-sphere-minimal-model}
+	设偶整数 \(n\geq2\)。球面 \(S^n\) 的有理最小模型为
+	\[
+		\mathcal M(S^n)=(\Lambda(x,y),\mathrm d),\qquad
+		|x|=n,\quad |y|=2n-1,\quad \mathrm dx=0,\quad \mathrm dy=x^2.
+	\]
+	其有理同伦群在次数 \(n,2n-1\) 各为 \(\mathbb Q\)，其余 \(j\geq2\) 的次数为零。
+\end{proposition}
+\begin{proof}
+	\(x\) 为偶次、\(y\) 为奇次，故源代数为 \(\mathbb Q[x]\otimes\Lambda(y)\)。每个元素唯一写成 \(P(x)+Q(x)y\)，并且
+	\[
+		\mathrm d\bigl(P(x)+Q(x)y\bigr)=Q(x)x^2.
+	\]
+	在多项式环 \(\mathbb Q[x]\) 中乘 \(x^2\) 单射，所以闭元恰为 \(P(x)\)，边界恰为理想 \((x^2)\)。于是
+	\[
+		H^*(\Lambda(x,y),\mathrm d)=\mathbb Q[x]/(x^2).
+	\]
+	要把这个代数认作球面的模型，还需实际给出比较映射。取代表顶次类的闭元 \(a\in A_{\mathrm{PL}}^n(S^n;\mathbb Q)\)。由于 \(H^{2n}(S^n;\mathbb Q)=0\)，闭元 \(a^2\) 是边界；取 \(b\in A_{\mathrm{PL}}^{2n-1}(S^n;\mathbb Q)\) 满足 \(\mathrm db=a^2\)。自由性使
+	\[
+		x\longmapsto a,\qquad y\longmapsto b
+	\]
+	延拓为 CDGA 态射，它在上同调上将 \(1,[x]\) 送到 \(1,u\)，所以是拟同构。按先 \(x\) 后 \(y\) 排列，微分只用前面的生成元且为可分解项，故模型最小。最后由\cref{g2:thm:sullivan-homotopy-correspondence}，两名生成元分别贡献次数 \(n,2n-1\) 的一维有理同伦群。
+\end{proof}
+
+生成元 \(y\) 并不闭，因而不代表任何 \((2n-1)\) 次上同调类；它仍记录一个同伦方向。特别地，对 \(S^2\) 有
+\[
+	\mathcal M(S^2)=\bigl(\Lambda(x_2,y_3),\ \mathrm dy_3=x_2^2\bigr),
+	\qquad H^3(S^2;\mathbb Q)=0,\quad \pi_3(S^2)\otimes\mathbb Q=\mathbb Q.
+\]
+下标在这里标记次数。第8章的 Hopf 映射已经让我们见过这一差别：它在三次上同调中不可见，却有非平凡的三次同伦类。模型中的微分保留了上同调取商时被消去的那条关系及其填充。
+
+\ProseParagraphBreak
+
+还可以把该模型直接映到其上同调代数：令 \(x\mapsto u\)、\(y\mapsto0\)，其中 \(u^2=0\)。这是拟同构。因而微分为零的代数 \(\mathbb Q[u]/(u^2)\) 也能作为一个模型，但它不是自由的最小模型。后面读生成元与同伦群时，使用的是 \(\Lambda(x,y)\) 中的两名自由生成元，不能改从这个商代数只数出一名。
 
 \subsection{复射影空间的模型}
 \label{g2:subsec:E03:03}
-待撰写
+
+\cref{g2:thm:complex-projective-ring}已经通过超平面交点证明
+\[
+	H^*(\mathbb CP^m;\mathbb Q)=\mathbb Q[u]/(u^{m+1}),\qquad |u|=2.
+\]
+取 \(u\) 在标准复射影直线上积分为 \(1\)。它的前 \(m\) 个幂都要保留，只有 \(u^{m+1}\) 开始消失。因此偶维球面的构造可以直接调整：将被微分消去的 \(x^2\) 换成 \(x^{m+1}\)。
+
+\begin{proposition}\label{g2:prop:projective-minimal-model}
+	对整数 \(m\geq1\)，复射影空间 \(\mathbb CP^m\) 的有理最小模型为
+	\[
+		\mathcal M(\mathbb CP^m)=(\Lambda(x,y),\mathrm d),\qquad
+		|x|=2,\quad |y|=2m+1,\quad \mathrm dx=0,\quad \mathrm dy=x^{m+1}.
+	\]
+	其有理同伦群仅在次数 \(2,2m+1\) 非零，且这两次均为 \(\mathbb Q\)。
+\end{proposition}
+\begin{proof}
+	仍将每个代数元写成 \(P(x)+Q(x)y\)。其微分为 \(Q(x)x^{m+1}\)，所以
+	\[
+		H^*(\Lambda(x,y),\mathrm d)=\mathbb Q[x]/(x^{m+1}).
+	\]
+	取 \(a\in A_{\mathrm{PL}}^2(\mathbb CP^m;\mathbb Q)\) 代表 \(u\)。由于 \([a]^{m+1}=0\)，可选 \(b\) 满足 \(\mathrm db=a^{m+1}\)。映射 \(x\mapsto a\)、\(y\mapsto b\) 保持微分，在上同调上把 \(1,[x],\ldots,[x]^m\) 送到 \(1,u,\ldots,u^m\)，因而为拟同构。又因 \(m+1\geq2\)，\(\mathrm dy\) 是可分解项，先 \(x\) 后 \(y\) 的顺序使其成为最小 Sullivan 模型。有理同伦群由两名生成元的次数读出。
+\end{proof}
+
+当 \(m=1\) 时，这正是 \(\mathbb CP^1\cong S^2\) 的模型。对 \(\mathbb CP^2\)，生成元次数为 \(2,5\)，关系 \(\mathrm dy=x^3\) 同时允许 \([x]^2\) 存活并消去 \([x]^3\)。尽管空间实维数为四，仍有非零的五次有理同伦群；同伦群的次数并不受空间维数截断。同偶维球面一样，映射 \(x\mapsto u\)、\(y\mapsto0\) 还给出到零微分代数 \(\mathbb Q[u]/(u^{m+1})\) 的拟同构：它保持微分，并将刚求出的全部上同调基对应起来。
+
+\ProseParagraphBreak
+
+无限复射影空间的情况更简单。其上同调环为 \(\mathbb Q[u]\)，所以取闭代表 \(a\) 后，\(x\mapsto a\) 就给出拟同构
+\[
+	(\mathbb Q[x],0)\longrightarrow A_{\mathrm{PL}}(\mathbb CP^\infty;\mathbb Q),\qquad |x|=2.
+\]
+这里没有需要消去的幂，也就没有 \(y\)。\(\mathbb CP^\infty\) 单连通，且每个次数的有理上同调有限维，故仍满足本附录的有限型条件；由对应定理，其有理同伦群只在二次为 \(\mathbb Q\)。这说明“有限型”允许无穷多个非零上同调次数。
+
+\begin{table}[htbp]
+	\centering
+	\caption{球面与射影空间的有理最小模型}
+	\label{g2:tab:sphere-projective-models}
+	\begin{tabularx}{\textwidth}{@{}lXX@{}}
+		\toprule
+		空间 & 生成元、次数与微分 & 非零有理同伦群的次数 \\
+		\midrule
+		\(S^n\)，奇数 \(n\geq3\) & \(|x|=n,\ \mathrm dx=0\) & \(n\) \\
+		\(S^n\)，偶数 \(n\geq2\) & \(|x|=n,\ |y|=2n-1,\ \mathrm dy=x^2\) & \(n,\ 2n-1\) \\
+		\(\mathbb CP^m\)，\(m\geq1\) & \(|x|=2,\ |y|=2m+1,\ \mathrm dy=x^{m+1}\) & \(2,\ 2m+1\) \\
+		\(\mathbb CP^\infty\) & \(|x|=2,\ \mathrm dx=0\) & \(2\) \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+表中每个列出的有理同伦群都为一维，其余正于一次的群为零；含 \(y\) 的行均还有 \(\mathrm dx=0\)。读表时应同时看生成元和微分：生成元的次数给出群，微分还约束这些群之间的拓扑联系及可能的映射。
 
 \subsection{乘积空间与映射的模型计算}
 \label{g2:subsec:E03:04}
-待撰写
+
+有了单个空间的模型，下一步是让计算保留投影、包含和复合映射。空间映射 \(f:X\to Y\) 对应反方向的代数映射 \(\mathcal M(Y)\to\mathcal M(X)\)。除了保持次数和乘法，还要保持微分；正是最后一个条件，迫使某些同伦方向的系数随另一些方向一起变化。
+
+\begin{proposition}\label{g2:prop:product-minimal-model}
+	设 \(X,Y\) 为单连通的有限型 CW 空间，\(\mathcal M(X)=(\Lambda V,\mathrm d)\)、\(\mathcal M(Y)=(\Lambda W,\mathrm d)\) 为其有理最小模型。则
+	\[
+		\mathcal M(X\times Y)\cong\mathcal M(X)\otimes\mathcal M(Y)
+		\cong\bigl(\Lambda(V\oplus W),\mathrm d\bigr)
+	\]
+	是乘积的最小模型。两张投影对应因子代数的包含，微分沿用张量符号约定。
+\end{proposition}
+\begin{proof}
+	先取两空间模型的拟同构 \(\mu_X,\mu_Y\)。投影拉回和目标的分次交换性给出 CDGA 态射
+	\[
+		\mu(a\otimes b)=p_X^*\mu_X(a)\,p_Y^*\mu_Y(b)
+		:\mathcal M(X)\otimes\mathcal M(Y)\longrightarrow A_{\mathrm{PL}}(X\times Y;\mathbb Q).
+	\]
+	乘法中的符号来自将第二因子的元越过第一因子的元，微分的符号则来自 Leibniz 法则，所以这张映射同时保持两种结构。
+
+	域上的复形可分解为零微分的上同调代表空间，以及形如 \(L^j\xrightarrow{\mathrm d}B^{j+1}\) 的可缩两项块。后者与任意复形张量仍可缩：若收缩为 \(h\)，取 \(h\otimes1\)，总微分中另一个因子产生的两项因 \(h\) 降一次而相消。因此
+	\[
+		H^*(\mathcal M(X)\otimes\mathcal M(Y))
+		\cong H^*(X;\mathbb Q)\otimes H^*(Y;\mathbb Q).
+	\]
+	在空间一侧，\cref{g2:thm:kunneth}的域系数同调公式没有 Tor 项。逐次有限维使张量的对偶等于对偶的张量；再用\cref{g2:prop:cross-cup-evaluation}的外积配对公式，可知上同调外积也是同构。\(H(\mu)\) 恰是这张外积，故 \(\mu\) 为拟同构。最后把两套 Sullivan 滤过合并，微分仍只用较早生成元，且没有一次项，所以张量模型最小。
+\end{proof}
+
+例如 \(S^2\times S^3\) 的模型为
+\[
+	\bigl(\Lambda(x_2,y_3,z_3),\mathrm d\bigr),\qquad
+	\mathrm dx=\mathrm dz=0,\qquad \mathrm dy=x^2.
+\]
+三次有理同伦群有两个方向，分别来自 \(y,z\)；三次上同调却只有 \([z]\) 一个方向。这正是两个因子的差别在乘积中的保留。
+
+\begin{proposition}\label{g2:prop:degree-map-minimal-model}
+	设 \(f:S^n\to S^n\) 为次数 \(k\in\mathbb Z\) 的连续映射，\(n\geq2\)。奇数 \(n\) 时，其最小模型映射为 \(x\mapsto kx\)。偶数 \(n\) 时，其最小模型映射为
+	\[
+		x\longmapsto kx,\qquad y\longmapsto k^2y.
+	\]
+	因而偶维情形中，\(f_*\) 在 \(\pi_{2n-1}(S^n)\otimes\mathbb Q\) 上是乘 \(k^2\)。
+\end{proposition}
+\begin{proof}
+	模型态射在 \(n\) 次上同调上必须等于 \(f^*\)，所以 \(x\) 只能映到 \(kx\)。奇数情形已确定整张态射。偶数情形中，次数 \(2n-1\) 的代数元只有 \(y\) 的倍数，故设其像为 \(cy\)。保持微分要求
+	\[
+		c x^2=\mathrm d(cy)=f_{\mathcal M}(\mathrm dy)
+		=f_{\mathcal M}(x^2)=k^2x^2,
+	\]
+	于是 \(c=k^2\)。该公式确实给出 CDGA 态射。Sullivan 对应保证实际 \(f\) 有模型代表，而以上次数和微分的限制又唯一确定它，所以它就是所求代表。在不可分解元上取线性部分，并使用有理同伦对偶的自然性，得到最后的结论。
+\end{proof}
+
+同样，若 \(f:\mathbb CP^m\to\mathbb CP^m\) 满足 \(f^*u=ru\)，则模型必须满足
+\[
+	x\longmapsto rx,\qquad y\longmapsto r^{m+1}y.
+\]
+这里实际空间映射的 \(r\) 为整数，而有理化空间之间允许 \(r\in\mathbb Q\)。其顶次上同调作用为乘 \(r^m\)，\((2m+1)\) 次有理同伦作用为乘 \(r^{m+1}\)。两个指数来自不同的次数与关系。
+
+\ProseParagraphBreak
+
+再看 \(S^3\to S^2\)。对每个 \(c\in\mathbb Q\)，都有模型态射
+\begin{equation}\label{g2:eq:rational-hopf-model}
+	\varphi_c:\bigl(\Lambda(x_2,y_3),\mathrm dy=x^2\bigr)\longrightarrow(\Lambda(z_3),0),
+	\qquad \varphi_c(x)=0,\quad\varphi_c(y)=cz.
+\end{equation}
+保持微分是因为 \(\varphi_c(x^2)=0=\mathrm d(cz)\)。所有这些映射在正次上同调上的作用相同，均为零；但它们在三次不可分解元上的作用不同。
+
+\begin{proposition}\label{g2:prop:rational-hopf-models-distinct}
+	式\eqref{g2:eq:rational-hopf-model}中的两个 CDGA 态射 \(\varphi_c,\varphi_{c'}\) 同伦，当且仅当 \(c=c'\)。因此它们给出两球面有理化之间不同的同伦类。
+\end{proposition}
+\begin{proof}
+	采用前节的多项式同伦，目标为 \(\Lambda(z_3)\otimes\mathbb Q[t,\mathrm dt]\)。这个代数的二次部分为零，所以任何同伦 \(\Phi\) 都满足 \(\Phi(x)=0\)。其三次部分由 \(p(t)z\) 组成，故 \(\Phi(y)=p(t)z\)。交换微分给出
+	\[
+		\mathrm d\Phi(y)=-p'(t)z\,\mathrm dt=\Phi(x^2)=0.
+	\]
+	由于系数特征为零，\(p\) 为常数，两端取值相同，得到 \(c=c'\)。反之相同态射有常值同伦。最后应用\cref{g2:thm:sullivan-rational-equivalence}的同伦态射对应。
+\end{proof}
+
+\cref{g2:prop:complex-hopf-homotopy}已经证明 Hopf 投影在三次同伦群上为同构。选定与该同构相配的有理同伦生成元后，其模型就是 \(\varphi_1\)。这给出一个可计算的例子：空间本身可以由其上同调代数的拟同构类型描述，而一张映射仍可能包含上同调环映射看不见的信息。
 
 \section{Massey 乘积、形式性与几何}
 \label{g2:sec:E04}
-待撰写
+
+在上同调环中，等式 \([a][b]=0\) 告诉我们 \(ab\) 是边界，却没有保存把它写成边界时所选的原始元。当相邻两个乘积 \(ab\)、\(bc\) 都是边界时，两个原始元可以组成一个新的闭元。这个闭元比较了同一个三重乘积 \(abc\) 的两种消去方式，也使我们看到：微分代数包含的信息可以超过上同调环本身。
 
 \subsection{三重 Massey 乘积与定义条件}
 \label{g2:subsec:E04:01}
-待撰写
+
+以下代数均为 \(k=\mathbb Q\) 或 \(\mathbb R\) 上的非负分次交换微分代数，微分升一次。先取三个齐次闭元 \(a,b,c\)，次数分别为 \(p,q,r\)，并假定
+\[
+	[a][b]=0,\qquad [b][c]=0.
+\]
+这两个等式恰好保证存在 \(u,v\) 满足
+\begin{equation}\label{g2:eq:massey-defining-system}
+	\mathrm du=ab,\qquad \mathrm dv=bc,
+	\qquad |u|=p+q-1,\quad |v|=q+r-1.
+\end{equation}
+于是 \(av\) 与 \(uc\) 都是 \(p+q+r-1\) 次元，且
+\[
+	\mathrm d(av)=(-1)^pabc,\qquad \mathrm d(uc)=abc.
+\]
+取两者的适当差，便得到闭元
+\begin{equation}\label{g2:eq:massey-representative}
+	m(a,b,c;u,v)=av+(-1)^{p+1}uc.
+\end{equation}
+这里出现的负一次来自原始元的次数；三重 Massey 乘积与普通三元相乘的总次数因而不同。
+
+\begin{definition}\label{g2:def:triple-massey-product}
+	设 \((A,\mathrm d)\) 为 \(k\) 上的分次交换微分代数，\(\alpha\in H^p(A)\)、\(\beta\in H^q(A)\)、\(\gamma\in H^r(A)\)，其中 \(p,q,r\geq1\)。若 \(\alpha\beta=\beta\gamma=0\)，其\term[sanchongMasseychengji]{三重 Massey 乘积}[triple Massey product]为子集
+	\[
+		\langle\alpha,\beta,\gamma\rangle
+		\subset H^{p+q+r-1}(A),
+	\]
+	由所有代表 \(a,b,c\) 及所有满足式\eqref{g2:eq:massey-defining-system}的 \(u,v\) 所给出的类 \([m(a,b,c;u,v)]\) 组成。若其中包含零，就说这个三重乘积消失。
+\end{definition}
+
+这个运算以 Massey 命名。\footnote{William Schumacher Massey（1920--2017），美国数学家，研究代数拓扑，发展了高阶上同调乘积及用正合偶组织谱序列的方法。}它通常给出一组类，而非唯一的类。已有 \(u\) 后，加上任意同次闭元仍是 \(ab\) 的原始元；这种选择自由必须一并保留。上述符号约定固定了下文全部计算，另一些文献使用相差整体符号的代表。关于这一运算及形式性的关系，可参看\cite[第4节，第260—262页]{DeligneGriffithsMorganSullivan1975}。
+
+\ProseParagraphBreak
+
+在最容易观察的 \(p=q=r=2\) 情形，代表就是 \(av-uc\)，其微分为 \(abc-abc=0\)。若 \(ab\) 或 \(bc\) 的上同调类非零，则所需原始元不存在，三重乘积尚未定义。普通三元乘积 \(\alpha\beta\gamma=0\) 单独成立并不足以给出这两个原始元。
 
 \subsection{代表选择与不定性}
 \label{g2:subsec:E04:02}
-待撰写
+
+固定代表时，改变原始元的影响容易算出；还须说明换掉 \(a,b,c\) 的闭代表不会改变所得集合。下面将两种选择分开计算。
+
+\begin{proposition}\label{g2:prop:massey-indeterminacy}
+	设 \((A,\mathrm d)\) 为 \(k=\mathbb Q\) 或 \(\mathbb R\) 上的分次交换微分代数，齐次上同调类 \(\alpha,\beta,\gamma\) 的次数为正整数 \(p,q,r\)，并满足 \(\alpha\beta=\beta\gamma=0\)。若 \(\mu\) 是其中一个三重乘积代表类，则
+	\begin{equation}\label{g2:eq:massey-coset}
+		\langle\alpha,\beta,\gamma\rangle
+		=\mu+\alpha H^{q+r-1}(A)+H^{p+q-1}(A)\gamma.
+	\end{equation}
+	右端不依赖所选闭代表。因此三重乘积也确定商空间
+	\[
+		\frac{H^{p+q+r-1}(A)}{\alpha H^{q+r-1}(A)+H^{p+q-1}(A)\gamma}
+	\]
+	中的一个元素。
+\end{proposition}
+\begin{proof}
+	先固定 \(a,b,c\)。另外两个原始元必写成 \(u'=u+z\)、\(v'=v+w\)，其中 \(z,w\) 闭，次数分别为 \(p+q-1\)、\(q+r-1\)。两代表之差为
+	\[
+		m(a,b,c;u',v')-m(a,b,c;u,v)=aw+(-1)^{p+1}zc.
+	\]
+	取上同调便落在式\eqref{g2:eq:massey-coset}的两个乘积子空间之和中。反过来，每个这样的乘积类都可以选闭代表 \(z,w\) 实现，所以恰好得到整个陪集。
+
+	再一次只改动一个闭代表。若 \(a'=a+\mathrm ds\)，其中 \(|s|=p-1\)，取 \(u'=u+sb\)、\(v'=v\)，则 \(\mathrm du'=a'b\)，并且
+	\[
+		m(a',b,c;u',v)-m(a,b,c;u,v)=\mathrm d(sv).
+	\]
+	若 \(b'=b+\mathrm dt\)，其中 \(|t|=q-1\)，取
+	\[
+		u'=u+(-1)^pat,\qquad v'=v+tc.
+	\]
+	它们分别以 \(ab'\)、\(b'c\) 为微分，而三重代表的改变量为
+	\[
+		atc+(-1)^{p+1}(-1)^patc=0.
+	\]
+	最后，若 \(c'=c+\mathrm dw\)，其中 \(|w|=r-1\)，取 \(u'=u\)、\(v'=v+(-1)^qbw\)。此时两代表之差为
+	\[
+		(-1)^qabw+(-1)^{p+1}u\,\mathrm dw=(-1)^q\mathrm d(uw).
+	\]
+	所以三类代表变化都能配上原始元的变化，使代表类保持不变。任意同时变化可分成这三步，且反向变化也适用。闭代表不影响乘积子空间，故整个陪集保持不变。
+\end{proof}
+
+式\eqref{g2:eq:massey-coset}中的子空间称为三重乘积的\term[Masseybudingxing]{不定性}[indeterminacy]。实际判断一个三重乘积是否非零，需要检验 \(\mu\) 是否落在这个子空间之外；只算出一张非零闭代表还不够。若两处相关上同调 \(H^{q+r-1}(A)\)、\(H^{p+q-1}(A)\) 都为零，不定性便消失，三重乘积确实只有一个值。
+
+\begin{proposition}\label{g2:prop:massey-quasi-isomorphism}
+	设 \(f:(A,\mathrm d)\to(B,\mathrm d)\) 是 \(k=\mathbb Q\) 或 \(\mathbb R\) 上的分次交换微分代数态射，\(\langle\alpha,\beta,\gamma\rangle\) 已定义，则
+	\[
+		H(f)\bigl(\langle\alpha,\beta,\gamma\rangle\bigr)
+		\subset\langle H(f)\alpha,H(f)\beta,H(f)\gamma\rangle.
+	\]
+	若 \(f\) 是拟同构，则为等号，且目标中的三重乘积可定义当且仅当对应的源中乘积可定义。
+\end{proposition}
+\begin{proof}
+	态射保持微分和乘法，故 \(f(a),f(b),f(c);f(u),f(v)\) 仍是一组合法数据，其代表正是 \(f(m)\)。这证明包含关系。
+
+	若 \(H(f)\) 是代数同构，它既反映两个相邻乘积是否为零，又把源中的不定性子空间满射到目标的不定性子空间。选择一个源代表类 \(\mu\)，其像已经在目标三重乘积中；由\cref{g2:prop:massey-indeterminacy}，两个集合都是经过 \(H(f)\mu\)、具有同一不定性子空间的陪集，因而相等。
+\end{proof}
+
+这给出使用模型的直接依据：可以在容易计算的微分代数中完成三重乘积计算，再沿拟同构比较到原空间的形式模型。普通态射通常只给包含关系；目标中新增的上同调类可能增加原始元的选择，从而增大不定性。
 
 \subsection{形式性与上同调代数模型}
 \label{g2:subsec:E04:03}
-待撰写
+
+一个复形若只保留其上同调，便把微分改成零。作为向量空间的复形，在域上可以选择补空间做到这样的比较；保留乘法时，任意选择的代表却未必相乘相容。形式性问的正是乘法也能否随这个简化一起保留。
+
+\begin{definition}\label{g2:def:formal-cdga}
+	设 \((A,\mathrm d)\) 为 \(k=\mathbb Q\) 或 \(\mathbb R\) 上的分次交换微分代数。若存在有限列分次交换微分代数及拟同构，把 \((A,\mathrm d)\) 与 \((H^*(A),0)\) 连接起来，且各箭头可以朝任一方向，就称 \(A\) 在 \(k\) 上具有\term[xingshixing]{形式性}[formality]。空间 \(X\) 在 \(\mathbb Q\) 上具有形式性，是指 \(A_{\mathrm{PL}}(X;\mathbb Q)\) 具有形式性。
+\end{definition}
+
+例如，若 \(\mathcal M\to A\) 是最小模型，并且已经构造拟同构 \(\mathcal M\to(H^*(A),0)\)，则
+\[
+	(A,\mathrm d)\xleftarrow{\simeq}(\mathcal M,\mathrm d)
+	\xrightarrow{\simeq}(H^*(A),0)
+\]
+就直接证明了形式性。\secref{g2:sec:E03}中球面和复射影空间的模型到其上同调环的映射正属于这种情形。偶维球面的最小模型虽然有非零微分 \(\mathrm dy=x^2\)，仍可把 \(x\) 送到基本上同调类、\(y\) 送到零，得到这个拟同构。形式性因而允许最小模型有微分；要求的是它能通过保持乘法的拟同构被上同调代数代替。
+
+\begin{proposition}\label{g2:prop:formality-massey-obstruction}
+	设 \((A,\mathrm d)\) 是 \(k=\mathbb Q\) 或 \(\mathbb R\) 上具有形式性的分次交换微分代数。则其中每个已定义的三重 Massey 乘积都包含零。特别地，若某个已定义三重乘积不包含零，则 \(A\) 不具有形式性。
+\end{proposition}
+\begin{proof}
+	在零微分代数 \((H^*(A),0)\) 中，两个上同调类的乘积为零就是代数元素的乘积为零。因此可以取两个原始元均为零，得到三重代表零。沿形式性拟同构列，在每一步使用\cref{g2:prop:massey-quasi-isomorphism}的等号，把三重乘积作为一个陪集运输回去；是否包含零在同构下保持。于是 \(A\) 中相应三重乘积也包含零。
+\end{proof}
+
+这里的消失表示包含零，集合仍可能含有由不定性产生的非零类。反过来，检验若干三重乘积消失尚未构造整张代数的形式性比较；较高乘积及不同消去选择之间的相容性仍可能携带信息。\cite[第4节，第262页]{DeligneGriffithsMorganSullivan1975}说明了统一选择与逐个消失之间的区别。
 
 \subsection{可核验的非形式性障碍}
 \label{g2:subsec:E04:04}
-待撰写
+
+下面的例子只用六个五次单项式的线性关系，就能把上面的障碍算出来。取
+\begin{equation}\label{g2:eq:nonformal-cdga}
+	A=\mathbb Q[a,b,c]\otimes\Lambda(x,y),\qquad
+	|a|=|b|=|c|=2,\quad |x|=|y|=3,
+\end{equation}
+并令
+\[
+	\mathrm da=\mathrm db=\mathrm dc=0,\qquad
+	\mathrm dx=ab,\quad \mathrm dy=bc.
+\]
+微分按分次 Leibniz 规则延拓。它在各生成元上的平方都为零，故在整个自由代数上平方为零。先列 \(a,b,c\)，再列 \(x,y\)，微分总落在较早生成元的可分解部分；这是一张没有一次生成元、逐次有限维的最小 Sullivan 代数。它用于描述两条乘法关系及其间的关系，与\cite[第4节，第261页]{DeligneGriffithsMorganSullivan1975}的单连通非形式模型有相同的构造思想。
+
+\begin{proposition}\label{g2:prop:explicit-nonformal-model}
+	式\eqref{g2:eq:nonformal-cdga}中的有理微分代数满足
+	\[
+		H^3(A)=0,\qquad H^5(A)=\mathbb Q[ay-xc],
+	\]
+	且
+	\[
+		\langle[a],[b],[c]\rangle=\{[ay-xc]\}\ne\{0\}.
+	\]
+	因此 \(A\) 不具有形式性。
+\end{proposition}
+\begin{proof}
+	三次部分由 \(x,y\) 张成，其微分为线性无关的四次单项式 \(ab,bc\)。所以三次闭元只有零。四次部分全由 \(a,b,c\) 的二次单项式组成，微分恒为零，因此五次边界也只有零。
+
+	五次部分的基及其微分为
+	\[
+		\begin{array}{c|rrrrrr}
+			\text{基元}&ax&bx&cx&ay&by&cy\\\hline
+			\text{微分}&a^2b&ab^2&abc&abc&b^2c&bc^2
+		\end{array}
+	\]
+	右行只有第三、第四项重复，其余四项及 \(abc\) 在多项式环中线性无关。故五次闭元恰为 \(\mathbb Q(ay-cx)\)。\(c\) 为偶次，\(cx=xc\)，于是得到所述 \(H^5(A)\)，且该类非零。
+
+	取 \(u=x\)、\(v=y\)，三重代表为 \(ay-xc\)。不定性是 \([a]H^3(A)+H^3(A)[c]\)，已经证明它为零。所以三重乘积是所写的单点集，不含零。\cref{g2:prop:formality-massey-obstruction}给出非形式性。
+\end{proof}
+
+两条关系 \(ab=\mathrm dx\)、\(bc=\mathrm dy\) 在上同调中都变成零，然而用它们消去 \(abc\) 得到的两个原始元 \(xc\)、\(ay\) 之差仍是非零类。这说明“记住乘积为零”与“记住乘积怎样成为边界”之间的差别。
+
+\ProseParagraphBreak
+
+代数 \(A\) 与 \((H^*(A),0)\) 按定义有同一个上同调代数，却不可能由拟同构列连接。这已经给出上同调环不足以决定微分代数模型的明确例子。它满足\cref{g2:thm:sullivan-rational-equivalence}中有理实现的条件，因而可实现为一个单连通有理空间的模型；这里算出的障碍属于该有理同伦型。紧光滑流形的实现另有维数、对偶性等要求，此例的计算只使用上述有理空间实现。
 
 \subsection{Kähler 流形形式性的外部输入}
 \label{g2:subsec:E04:05}
-待撰写
+
+有些几何条件能系统地消除这类高阶信息。设 \(M\) 为复流形，\(J\) 是其复结构；若 Hermitian 度量 \(g\) 的实二形式 \(\omega(X,Y)=g(JX,Y)\) 闭，就称 \(g\) 为\term[Kahlerduliang]{Kähler 度量}[Kähler metric]。\footnote{Erich Kähler（1906--2000），德国数学家，研究几何、微分方程和数学物理，引入了以其姓氏命名的度量结构。}第四卷第17.1节将从相容度量与局部势展开这一条件，第17.4节将讨论相应的 Hodge 分解与 \(\partial\bar\partial\) 引理。这里需要的解析输入直接取自已发表文献。
+
+\ProseParagraphBreak
+
+在复坐标中，复值形式按 \(\mathrm dz_j\)、\(\mathrm d\bar z_j\) 的数目分型，外微分分解为 \(\mathrm d=\partial+\bar\partial\)。取
+\begin{equation}\label{g2:eq:dc-convention}
+	\mathrm d^c=\mathrm i(\bar\partial-\partial),\qquad
+	(\mathrm d^c)^2=0,\qquad
+	\mathrm d\mathrm d^c+\mathrm d^c\mathrm d=0.
+\end{equation}
+这个算子保持实形式；在复值形式上有 \(\mathrm d\mathrm d^c=2\mathrm i\partial\bar\partial\)。紧 Kähler 流形满足
+\begin{equation}\label{g2:eq:ddc-lemma}
+	\ker\mathrm d^c\cap\operatorname{im}\mathrm d
+	=\operatorname{im}(\mathrm d\mathrm d^c)
+	=\ker\mathrm d\cap\operatorname{im}\mathrm d^c.
+\end{equation}
+这就是这里使用的 \(\mathrm d\mathrm d^c\) 引理：一个同时被两张微分消去、且是其中一张微分的边界的形式，实际上可以写成两张微分的复合。外部证明见\cite[第5节，引理5.11及注5.14，第266—267页]{DeligneGriffithsMorganSullivan1975}；它使用紧流形的 Hodge 分解、Green 算子和 Kähler 恒等式。两边的对称版本由这些恒等式同样得到，也见该文第5.15项的等价条件。下面只用式\eqref{g2:eq:ddc-lemma}证明代数上的结论。
+
+\begin{theorem}[Kähler 形式性定理]\label{g2:thm:kahler-formality}
+	设 \(M\) 为紧、连通、无边界的 Kähler 流形。则实 de Rham 代数 \((\Omega^*(M;\mathbb R),\mathrm d)\) 具有形式性。若 \(M\) 还单连通，则其有理模型 \(A_{\mathrm{PL}}(M;\mathbb Q)\) 也具有形式性。
+\end{theorem}
+\begin{proof}
+	先证实数域上的结论，采用\cite[第6节，第一种证明，第270—271页]{DeligneGriffithsMorganSullivan1975}的代数构造。记 \(\Omega=\Omega^*(M;\mathbb R)\)、\(C=\ker\mathrm d^c\)。因为 \(\mathrm d^c\) 是导子，\(C\) 是子代数；反交换式说明 \(\mathrm dC\subset C\)。此外 \(\operatorname{im}\mathrm d^c\) 是 \(C\) 中的理想：若 \(\mathrm d^c\alpha=0\)，则 \(\alpha\mathrm d^c\beta=(-1)^{|\alpha|}\mathrm d^c(\alpha\beta)\)。所以
+	\[
+		H_{\mathrm d^c}=\ker\mathrm d^c/\operatorname{im}\mathrm d^c
+	\]
+	是分次交换代数。对 \(\alpha\in C\)，式\eqref{g2:eq:ddc-lemma}给出 \(\mathrm d\alpha\in\operatorname{im}(\mathrm d\mathrm d^c)\subset\operatorname{im}\mathrm d^c\)，故商上诱导的微分为零。我们得到两张代数态射
+	\[
+		\begin{tikzcd}[column sep=large]
+			(\Omega,\mathrm d)&(C,\mathrm d)\arrow[l,hook',"i"']\arrow[r,two heads,"q"]&(H_{\mathrm d^c},0).
+		\end{tikzcd}
+	\]
+	目标是证明这两张箭头都是拟同构。
+
+	先看包含 \(i\)。给一个 \(\mathrm d\)-闭形式 \(\alpha\)，其 \(\mathrm d^c\alpha\) 属于 \(\ker\mathrm d\cap\operatorname{im}\mathrm d^c\)，可写成 \(\mathrm d\mathrm d^c\beta\)。于是 \(\alpha+\mathrm d\beta\) 同时被 \(\mathrm d\)、\(\mathrm d^c\) 消去，并代表原来的 de Rham 类。这证明 \(H(i)\) 满射。若 \(\alpha\in C\) 是 \(\mathrm d\)-闭的，且在 \(\Omega\) 中为 \(\mathrm d\)-边界，则同一引理使 \(\alpha=\mathrm d\mathrm d^c\gamma\)。原始元 \(\mathrm d^c\gamma\) 仍属于 \(C\)，故 \(\alpha\) 已在 \(C\) 中为边界。这证明单射。
+
+	再看投影 \(q\)。给 \(H_{\mathrm d^c}\) 中的类，选代表 \(\alpha\in C\)。由 \(\mathrm d\alpha=\mathrm d\mathrm d^c\beta\)，形式 \(\alpha-\mathrm d^c\beta\) 既 \(\mathrm d\)-闭又仍代表原来的 \(\mathrm d^c\) 类。这证明 \(H(q)\) 满射。若 \(\alpha\in C\) 是 \(\mathrm d\)-闭的，且它的 \(\mathrm d^c\) 类为零，则 \(\alpha\in\ker\mathrm d\cap\operatorname{im}\mathrm d^c\)。写成 \(\alpha=\mathrm d\mathrm d^c\gamma\)，又在 \(C\) 中得到原始元。因此 \(H(q)\) 也单射。
+
+	两张同构共同给出代数同构 \(H_{\mathrm d^c}\cong H^*_{\mathrm{dR}}(M;\mathbb R)\)。把它接到右侧，便得到从实 de Rham 代数到其零微分上同调代数的拟同构列，证明实形式性。
+
+	最后假定 \(M\) 单连通。紧光滑流形具有有限 CW 型，其有理最小模型满足本附录的有限型条件。\secref{g2:sec:E01}的比较把该模型扩张到 \(\mathbb R\) 后与实 de Rham 代数连接，因此扩域后的模型具有形式性。此处再用形式性的降域定理：特征零的幂零最小代数具有形式性，当且仅当它在域扩张后具有形式性。该结论采用\cite[第12节，定理12.1，第316页；证明说明见第319页]{Sullivan1977Infinitesimal}，给出有理模型的形式性。这个降域步骤处理保持乘法的模型比较，不能由向量空间上同调的系数扩张单独代替。
+\end{proof}
+
+于是紧单连通 Kähler 流形的有理同伦型可以由有理上同调代数的最小模型恢复，其中每个可定义的三重 Massey 乘积都包含零。另一方面，只要一个单连通有限型空间的有理模型出现不含零的三重乘积，它就不可能具有紧 Kähler 流形的有理同伦型。这个结论把可计算的代数障碍直接转成几何结构的限制。
+
+\begin{chaptersummary}
+	\begin{itemize}
+		\item CDGA 同时保留乘法与升一次的微分，拟同构要求在所有次数上诱导上同调同构。模型比较允许由拟同构组成的链；一张链映射或一个上同调环同构本身还没有提供这种比较。
+		\item \(A_{\mathrm{PL}}\) 以单形上的有理多项式形式及相容条件构造。实 de Rham 代数经系数扩张与它比较；实闭形式要代表有理类，还需与有理系数结构相容。
+		\item 最小模型以自由生成元和可分解微分保存同伦信息。单连通有限型条件下，生成空间的逐次对偶给出有理同伦群，模型态射的线性部分给出相应同伦作用。
+		\item 奇维球面有一个闭生成元；偶维球面用 \(\mathrm dy=x^2\) 消去多余平方，\(\mathbb CP^m\) 用 \(\mathrm dy=x^{m+1}\) 截断幂。积空间对应模型的张量积，保持微分的条件把映射的各个系数联系起来。
+		\item 三重 Massey 乘积利用两个恰当乘积的原元素构造闭元，其全部取值构成由指定上同调乘积给出的陪集。不包含零的三重乘积阻碍形式性；Kähler 的 \(\mathrm d\mathrm d^c\) 引理则提供连接 de Rham 代数与零微分上同调代数的拟同构链。
+	\end{itemize}
+\end{chaptersummary}
+
+\BookExercises
+
+\begin{exercise}\label{g2:ex:laurent-polynomial-forms}
+	设 \(k\) 为特征零域。在 Laurent 多项式代数上取微分代数 \(A=k[t,t^{-1}]\otimes\Lambda(\mathrm dt)\)，其中 \(|t|=0\)、\(|\mathrm dt|=1\)，微分为通常求导。计算 \(H^*(A)\)，并说明 \(\mathrm dt/t\) 为什么没有 Laurent 多项式原函数。单形上多项式形式的收缩证明在这里哪一步发生了变化？
+\end{exercise}
+\begin{solution}
+	若有限和 \(f(t)=\sum_{m\in\mathbb Z}a_mt^m\) 满足 \(f'=0\)，则对全部 \(m\ne0\) 有 \(ma_m=0\)，故只有常数项。因此 \(H^0(A)=k\)。全部一次形式闭，且当 \(m\ne-1\) 时，
+	\[
+		t^m\,\mathrm dt=\mathrm d\left(\frac{t^{m+1}}{m+1}\right).
+	\]
+	导数中的 \(t^{-1}\mathrm dt\) 系数永远为零：它只能来自常数项的导数，而该导数为零。故 \(H^1(A)=k[\mathrm dt/t]\)，更高次数为零；作为分次代数，\(H^*(A)\cong\Lambda_k(u)\)、\(|u|=1\)。
+
+	在多项式收缩中，正次形式的总权重 \(r+q\) 为正，能够取其倒数。这里 \(t^{-1}\mathrm dt\) 的权重恰为 \(-1+1=0\)，无法按同一公式除掉；从几何式的收缩看，取值顶点 \(t=0\) 也已被 \(t^{-1}\) 排除。多出的上同调因此有明确的代数原因。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:integration-not-multiplicative}
+	在 \(\mathbb R\) 上令 \(f(x)=x\)、\(\omega=\mathrm dx\)，取光滑奇异单形 \(\sigma:[0,1]\to\mathbb R\)、\(\sigma(t)=t\)。以第4章前面、后面的 Alexander--Whitney 杯积约定，分别计算
+	\[
+		I(f\omega)(\sigma),\qquad (I(f)\smile I(\omega))(\sigma),\qquad
+		(I(\omega)\smile I(f))(\sigma).
+	\]
+	说明这些结果为什么不与 de Rham 上同调环同构矛盾。
+\end{exercise}
+\begin{solution}
+	直接积分得到 \(I(f\omega)(\sigma)=\int_0^1t\,\mathrm dt=1/2\)。零次在前的杯积使用起点，在后的杯积使用终点，因此
+	\[
+		(I(f)\smile I(\omega))(\sigma)=f(0)\int_0^1\mathrm dt=0,
+	\qquad
+		(I(\omega)\smile I(f))(\sigma)=\left(\int_0^1\mathrm dt\right)f(1)=1.
+	\]
+	这表明积分不是从楔积到该杯积的代数态射，奇异杯积也不是链级严格分次交换的。上同调乘法比较适用于闭元素的类，而本题 \(f\) 不闭，\(\mathrm df=\mathrm dx\ne0\)。一般闭形式的楔积与杯积相容由第7章在上同调层面证明，并不要求这里的三份上链逐项相等。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:infinite-coefficient-extension}
+	令 \(V=\bigoplus_{j\geq1}\mathbb Q e_j\)。证明自然映射
+	\[
+		\operatorname{Hom}_{\mathbb Q}(V,\mathbb Q)\otimes_{\mathbb Q}\mathbb R
+		\longrightarrow\operatorname{Hom}_{\mathbb Q}(V,\mathbb R)
+	\]
+	不是满射。用 \(X=\bigvee_{j\geq1}S^2\) 说明空间上同调的系数比较为何需要保留有限型条件，尽管微分复形本身的上同调与域扩张交换不需要有限维。
+\end{exercise}
+\begin{solution}
+	右侧的一个线性映射由任意实数序列 \((r_j)\)、\(r_j=f(e_j)\) 决定。左侧元素却是有限和 \(\sum_{i=1}^m f_i\otimes\lambda_i\)，其像满足
+	\[
+		r_j=\sum_{i=1}^m f_i(e_j)\lambda_i\in\operatorname{span}_{\mathbb Q}\{\lambda_1,\ldots,\lambda_m\}
+	\]
+	对全部 \(j\) 成立。取一列在 \(\mathbb Q\) 上线性无关的实数 \((r_j)\)，所得映射就不在像中。这列实数可归纳选取，因为有限维有理线性子空间可数，而 \(\mathbb R\) 不可数。
+
+	空间 \(X\) 有一个零胞腔和可数个二胞腔，全部胞腔边界为零。由\cref{g2:thm:cellular-singular-comparison}，\(H_2(X;\mathbb Q)=\bigoplus_{j\geq1}\mathbb Q\)，其他正次有理同调为零。\cref{g2:thm:uct-cohomology}的域版本把 \(H^2(X;\mathbb Q)\) 与 \(H^2(X;\mathbb R)\) 分别识别为上述两种对偶，所以上同调系数映射不是满射。问题出在无限维线性对偶与扩张的次序，不在对固定复形施行张量的正合性；\cref{g2:prop:cdga-scalar-extension}仍然成立。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:minimal-quadratic-relation}
+	考虑有理最小代数 \(M=\Lambda(a_2,b_2,u_3)\)，微分为 \(\mathrm da=\mathrm db=0\)、\(\mathrm du=a^2+b^2\)。计算 \(H^*(M)\)。若 \(M\) 是单连通有理有限型 CW 空间 \(X\) 的最小模型，求其非零有理同伦群，并说明 \([a]^2=-[b]^2\) 是否意味着它们都为零。
+\end{exercise}
+\begin{solution}
+	每个元素唯一写成 \(P(a,b)+Q(a,b)u\)，其中 \(P,Q\in\mathbb Q[a,b]\)。所有多项式项闭，且
+	\[
+		\mathrm d(Q(a,b)u)=Q(a,b)(a^2+b^2).
+	\]
+	多项式环为整环，\(a^2+b^2\ne0\)，所以含 \(u\) 的闭元只能为零。偶数次边界恰组成理想 \((a^2+b^2)\)，故
+	\[
+		H^*(M)=\mathbb Q[a,b]/(a^2+b^2).
+	\]
+	该模型第二次有两个生成元，第三次有一个，其他次数没有。因此由\cref{g2:thm:sullivan-homotopy-correspondence}，\(\pi_2(X)\otimes\mathbb Q\cong\mathbb Q^2\)、\(\pi_3(X)\otimes\mathbb Q\cong\mathbb Q\)，其余高阶有理同伦群为零。
+
+	四次边界空间只是 \(\mathbb Q(a^2+b^2)\)，并不包含 \(a^2\) 或 \(b^2\) 本身。因而这两个平方类均非零，互为负数。关系说明一个线性组合消失，并不使组合中的各项分别消失。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:minimal-automorphism-linear-part}
+	令 \(M=(\Lambda(x_2,y_3,z_5),0)\)。写出 \(M\) 的所有保次数微分代数自同构，并计算它们在不可分解商上的作用。构造两张不同自同构，使它们在全部不可分解商上相同，却在第五次上同调上不同。这两张态射能否微分代数同伦？
+\end{exercise}
+\begin{solution}
+	第二次空间由 \(x\) 张成，第三次空间由 \(y\) 张成，第五次空间由 \(z,xy\) 张成。故任何保次数态射必有
+	\[
+		x\longmapsto ax,\qquad y\longmapsto by,\qquad z\longmapsto cz+e xy
+	\]
+	的形式，其中 \(a,b,c,e\in\mathbb Q\)。微分为零，所以这些选择均给微分代数态射。若它是同构，则在不可分解商上诱导同构，迫使 \(a,b,c\ne0\)。反过来，这些标量非零时可以先解出 \(x,y\)，再由第三个等式解出 \(z\)，得到多项式形式的逆。因此全部自同构恰由 \(a,b,c\in\mathbb Q^\times\)、\(e\in\mathbb Q\) 参数化。
+
+	在不可分解商上，\(xy\) 被消去，只留下三个标量 \(a,b,c\)。取恒等态射以及 \(x\mapsto x\)、\(y\mapsto y\)、\(z\mapsto z+xy\)，便得到题目要求的两个自同构。由于微分为零，\([z]\)、\([xy]\) 是第五次上同调中的独立类，两张态射的上同调作用不同。
+
+	微分代数同伦必诱导相同的上同调映射。具体地，在 \(A\otimes\mathbb Q[t,\mathrm dt]\) 上定义次数为 \(-1\) 的算子 \(K\)，令 \(K(a t^j)=0\)、\(K(a t^j\mathrm dt)=(-1)^{|a|}a/(j+1)\)。代入张量微分即得 \(\mathrm d_AK+K\mathrm d=\operatorname{ev}_1-\operatorname{ev}_0\)。与同伦 \(H\) 复合后，\(KH\) 是两端态射之间的链同伦。因此这两张态射不同伦。这说明同伦群上的全部线性作用可以相同，而映射的同伦类仍然不同。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:same-generators-different-differential}
+	比较两个最小代数
+	\[
+		M_0=(\Lambda(a_2,b_3),0),\qquad
+		M_1=(\Lambda(a_2,b_3),\mathrm db=a^2).
+	\]
+	求它们的上同调环。若单连通有理有限型 CW 空间 \(X_0,X_1\) 分别具有这两个最小模型，证明它们的有理同伦群作为分次向量空间同构，但有理同伦型不同。说明为什么这不与 Whitehead 定理矛盾。
+\end{exercise}
+\begin{solution}
+	第一张代数微分为零，所以 \(H^*(M_0)=\mathbb Q[a]\otimes\Lambda(b)\)。第二张代数中，每个元素写成 \(P(a)+Q(a)b\)，其微分为 \(Q(a)a^2\)；多项式环中乘 \(a^2\) 单射，故只有 \(P(a)\) 是闭元，边界理想为 \((a^2)\)。于是
+	\[
+		H^*(M_1)=\mathbb Q[a]/(a^2).
+	\]
+	两者的生成元次数和数目相同，所以都满足 \(\pi_2(X_i)\otimes\mathbb Q\cong\mathbb Q\)、\(\pi_3(X_i)\otimes\mathbb Q\cong\mathbb Q\)，其他高阶有理同伦群为零。上同调却不同：例如 \(M_0\) 的三次上同调非零，而 \(M_1\) 的三次上同调为零。因此两最小代数不同构，由\cref{g2:thm:sullivan-rational-equivalence}，两空间的有理同伦型不同。
+
+	Whitehead 定理要求存在一张映射，在各阶同伦群上都诱导同构。题目只给出两组群之间的抽象同构，没有提供能同时实现它们的映射。若有这样一张有理化后的映射，Whitehead 定理会迫使两有理化空间同伦等价，进而上同调同构，与刚才的计算矛盾。缺少的正是与各层结合数据相容的映射。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:projective-product-rational-types}
+	比较 \(X=\mathbb CP^3\) 与 \(Y=S^2\times S^4\) 的有理上同调加性群、上同调环及有理同伦群。它们能否有相同的有理同伦型？指出乘法和最小模型各如何看出差别。
+\end{exercise}
+\begin{solution}
+	两者的有理上同调加性群都在次数 \(0,2,4,6\) 为一维，其余为零。但
+	\[
+		H^*(X;\mathbb Q)=\mathbb Q[u]/(u^4),\qquad
+		H^*(Y;\mathbb Q)=\mathbb Q[a,b]/(a^2,b^2),\qquad |u|=|a|=2,\ |b|=4.
+	\]
+	在 \(X\) 中任意非零二次类的平方非零，在 \(Y\) 中二次类的平方全为零，所以两分次环不同构。
+
+	模型分别为
+	\[
+		\mathcal M(X)=\bigl(\Lambda(x_2,y_7),\ \mathrm dy=x^4\bigr),
+	\]
+	\[
+		\mathcal M(Y)=\bigl(\Lambda(a_2,s_3,b_4,t_7),\ \mathrm ds=a^2,\ \mathrm dt=b^2\bigr),
+	\]
+	其余生成元微分为零。\(X\) 的非零有理同伦群只在次数 \(2,7\)，\(Y\) 的则在次数 \(2,3,4,7\)，每次都是一维。这再次排除有理同伦等价。乘法检查已经足够区分两空间；模型另外说明其差异还体现在哪些同伦次数中。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:projective-inclusion-model}
+	设 \(1\leq k\leq m\)。为标准包含 \(i:\mathbb CP^k\hookrightarrow\mathbb CP^m\) 写出一个最小模型态射，核对其在两名生成元上的次数与微分。当 \(k<m\) 时，它如何作用于不可分解元？再证明：若 \(k>m\)，任意连续映射 \(f:\mathbb CP^k\to\mathbb CP^m\) 在二次有理上同调上均为零，其有理化为零伦映射。
+\end{exercise}
+\begin{solution}
+	记两模型的生成元为 \(x_k,y_k\) 和 \(x_m,y_m\)，其微分为 \(\mathrm dy_j=x_j^{j+1}\)。包含对应反向态射
+	\[
+		i_{\mathcal M}(x_m)=x_k,\qquad
+		i_{\mathcal M}(y_m)=x_k^{m-k}y_k.
+	\]
+	第二项次数为 \(2(m-k)+(2k+1)=2m+1\)，其微分为 \(x_k^{m-k}x_k^{k+1}=x_k^{m+1}\)，正好等于 \(i_{\mathcal M}(\mathrm dy_m)\)。它在二次类上给出标准限制。当 \(k\leq m\) 时，次数与微分条件唯一确定具有该二次作用的模型态射，故确为包含的代表。\(k<m\) 时，\(y_m\) 的像为可分解元，所以在不可分解商中为零；二次生成元则保持。
+
+	若 \(k>m\)，写 \(f^*u_m=r u_k\)。因为 \(u_m^{m+1}=0\)，有 \(r^{m+1}u_k^{m+1}=0\)。此时 \(m+1\leq k\)，\(u_k^{m+1}\ne0\)，故 \(r=0\)。源空间的模型 \(\mathcal M(\mathbb CP^k)\) 在次数 \(2m+1\) 没有元：它的首个奇次生成元是 \(y_k\)，次数更高。因此 \(f\) 的模型必须同时将 \(x_m,y_m\) 送到零，也就是常值映射的模型。由有理同伦态射对应，\(f\) 的有理化零伦。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:two-sphere-product-model-maps}
+	在 \(S^2\times S^2\) 的模型
+	\[
+		\bigl(\Lambda(x_2,z_2,y_3,w_3),\mathrm d\bigr),\qquad
+		\mathrm dy=x^2,\quad\mathrm dw=z^2
+	\]
+	中，设一张 CDGA 自态射在二次生成元上为 \(x\mapsto ax+bz\)、\(z\mapsto cx+dz\)，其中 \(a,b,c,d\in\mathbb Q\)。求它存在的充要条件及三次生成元的像，并判定何时它代表有理自同伦等价。
+\end{exercise}
+\begin{solution}
+	三次部分仅由 \(y,w\) 张成，且它们的微分线性无关。因为
+	\[
+		(ax+bz)^2=a^2x^2+2abxz+b^2z^2,
+	\]
+	若这个平方是某个三次元的微分，\(xz\) 项必须为零，即 \(ab=0\)。同理必须有 \(cd=0\)。在这两个条件下，唯一可能且确实有效的延拓是
+	\[
+		y\longmapsto a^2y+b^2w,\qquad
+		w\longmapsto c^2y+d^2w.
+	\]
+	因为代数自由，检验生成元上的微分已足够，所以两个条件也充分。
+
+	若代表有理自同伦等价，其二次有理同伦作用必须可逆，故 \(ad-bc\ne0\)。结合 \(ab=cd=0\)，系数矩阵只能是对角且 \(a,d\ne0\)，或反对角且 \(b,c\ne0\)。两种情况下三次作用的对应非零系数是这些数的平方，模型态射自身具有逆态射，故确为有理自同伦等价。由此得到的限制比“任选一个可逆二阶矩阵作用于二次群”严格，原因正是两个平方关系必须同时保持。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:projective-power-map}
+	设整数 \(m\geq1\)、\(r\geq1\)，考虑
+	\[
+		F_r:\mathbb CP^m\longrightarrow\mathbb CP^m,
+		\qquad [z_0:\cdots:z_m]\longmapsto[z_0^r:\cdots:z_m^r].
+	\]
+	证明它良定义，计算它的二次上同调作用、映射度和 \((2m+1)\) 次有理同伦作用。再说明如何构造二次上同调作用为乘任意整数的自映射。
+\end{exercise}
+\begin{solution}
+	非零坐标组至少有一个非零分量，取幂后仍不全为零；将原坐标同时乘 \(\lambda\ne0\)，所得坐标同时乘 \(\lambda^r\)，故射影点不变。各仿射图内表达为光滑多项式，所以 \(F_r\) 连续。
+
+	限制到标准 \(\mathbb CP^1\) 后，在仿射坐标中是 \(z\mapsto z^r\)。非零有限正则值有 \(r\) 个原像，每处的非零复导数保持实定向，所以它在射影直线上的映射度为 \(r\)。标准包含在二次上同调上为同构，故 \(F_r^*u=ru\)。于是
+	\[
+		F_r^*(u^m)=r^m u^m,\qquad \deg F_r=r^m.
+	\]
+	模型为 \(x\mapsto rx\)、\(y\mapsto r^{m+1}y\)，故另一项有理同伦作用为乘 \(r^{m+1}\)。
+
+	复共轭 \(C([z])=[\bar z]\) 在射影直线上反转实定向，因而 \(C^*u=-u\)。对负整数 \(s\)，取 \(C\circ F_{|s|}\)；对零取常值映射，对正整数取上面的幂映射。这样得到二次上同调作用为任意指定整数的自映射。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:massey-nonzero-indeterminacy}
+	在零微分代数 \(B=(\mathbb Q[a,b,c]\otimes\Lambda(z))/(ab,bc)\) 中，令 \(|a|=|b|=|c|=2\)、\(|z|=3\)。计算 \(\langle[a],[b],[c]\rangle\)，并解释为什么所得集合含有非零元素，却不构成非形式性障碍。
+\end{exercise}
+\begin{solution}
+	代数微分为零，\(ab=bc=0\)，所以可以取两个原始元均为零，获得代表零。三次部分只有 \(\mathbb Qz\)，故不定性为
+	\[
+		[a]H^3(B)+H^3(B)[c]=\operatorname{span}_{\mathbb Q}\{[az],[zc]\}.
+	\]
+	两个单项式 \(az,zc\) 都不在理想 \((ab,bc)\) 中，并且线性无关，因此三重乘积恰为这个二维子空间。它包含许多非零类，也包含零。
+
+	\(B\) 自身就是其上同调的零微分代数，所以具有形式性。障碍要求整个三重乘积不含零；任意挑选一个非零原始元所产生的非零代表，并不能满足这一要求。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:small-nonformal-model}
+	令 \(B=\mathbb Q[a,b]\otimes\Lambda(x,y)\)，其中 \(|a|=|b|=2\)、\(|x|=|y|=3\)，微分为 \(\mathrm dx=a^2\)、\(\mathrm dy=ab\)、\(\mathrm da=\mathrm db=0\)。计算 \(H^3(B)\)、\(H^4(B)\)、\(H^5(B)\) 以及 \(\langle[a],[a],[b]\rangle\)，判定形式性。
+\end{exercise}
+\begin{solution}
+	三次的基为 \(x,y\)，微分 \(a^2,ab\) 线性无关，故 \(H^3(B)=0\)。四次元均闭，四次边界由 \(a^2,ab\) 张成，所以 \(H^4(B)=\mathbb Q[b^2]\)。五次的基 \(ax,bx,ay,by\) 的微分依次为
+	\[
+		a^3,\quad a^2b,\quad a^2b,\quad ab^2.
+	\]
+	因此五次闭元由 \(ay-bx\) 张成。四次微分恒为零，五次没有非零边界，于是 \(H^5(B)=\mathbb Q[ay-bx]\)。
+
+	取 \(u=x\)、\(v=y\)，由 \(\mathrm du=a^2\)、\(\mathrm dv=ab\) 得到三重代表 \(ay-xb\)。偶次元 \(b\) 与 \(x\) 交换，不定性又由 \(H^3(B)=0\) 消去，故
+	\[
+		\langle[a],[a],[b]\rangle=\{[ay-bx]\}.
+	\]
+	其中唯一元素非零，所以 \(B\) 不具有形式性。这个计算说明，相邻乘积的两个关系即使共用同一个类，也能产生非形式性障碍。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:massey-extension-scalars}
+	设 \(A\) 为有理分次交换微分代数，\(A_{\mathbb R}=A\otimes_{\mathbb Q}\mathbb R\)。证明：若 \(A\) 中一个已定义的三重 Massey 乘积不含零，则其三个类扩张到 \(A_{\mathbb R}\) 后的三重乘积也不含零。说明为什么此结论并不要求把实代数中的所有原始元限制为有理元。
+\end{exercise}
+\begin{solution}
+	域扩张是正合的，故 \(H^j(A_{\mathbb R})=H^j(A)\otimes_{\mathbb Q}\mathbb R\)，且乘法与此同构相容。记原来的三重乘积为 \(\mu+I\)，其中
+	\[
+		I=\alpha H^{q+r-1}(A)+H^{p+q-1}(A)\gamma.
+	\]
+	把一组有理定义数据张量到实数域，便得到代表 \(\mu\otimes1\)。实代数的全部不定性为 \(I\otimes\mathbb R\)，因为两张乘法映射扩域后的像正是各自像空间的扩域。由陪集公式，实三重乘积因而等于
+	\[
+		\mu\otimes1+I\otimes\mathbb R.
+	\]
+	若它含零，则 \(\mu\) 在 \((H^{p+q+r-1}(A)/I)\otimes\mathbb R\) 中的像为零。任意有理向量空间到其扩域的映射 \(v\mapsto v\otimes1\) 都单射，可由把非零 \(v\) 扩为一组基看出。因此 \(\mu\in I\)，与原乘积不含零矛盾。
+
+	实原始元的确可以有实系数；这些额外选择已经完全包含在扩大的不定性 \(I\otimes\mathbb R\) 中。证明比较的是代表模去全部不定性之后的类，而非要求逐个原始元都来自有理数域。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:massey-product-with-sphere}
+	取式\eqref{g2:eq:nonformal-cdga}中的 \(A\)，再取三球面的模型 \((\Lambda(t),0)\)、\(|t|=3\)。在 \(B=A\otimes\Lambda(t)\) 中计算 \(\langle[a],[b],[c]\rangle\)，判断与球面模型张量后非形式性障碍是否仍然存在。
+\end{exercise}
+\begin{solution}
+	由于 \(t^2=0\)、\(\mathrm dt=0\)，作为复形，\(B=A\oplus At\)，微分分别在两部分作用。故
+	\[
+		H^j(B)=H^j(A)\oplus H^{j-3}(A)t.
+	\]
+	正文已算出 \(H^3(A)=0\)、\(H^5(A)=\mathbb Q[ay-xc]\)，而 \(H^2(A)=\operatorname{span}\{[a],[b],[c]\}\)。于是
+	\[
+		H^3(B)=\mathbb Q[t],\qquad
+		H^5(B)=\mathbb Q[ay-xc]\oplus\operatorname{span}\{[at],[bt],[ct]\}.
+	\]
+	仍取 \(u=x\)、\(v=y\)，代表为 \(ay-xc\)，新不定性由 \([at],[tc]\) 张成。所以
+	\[
+		\langle[a],[b],[c]\rangle
+		=[ay-xc]+\operatorname{span}_{\mathbb Q}\{[at],[ct]\}.
+	\]
+	由上面的直和分解，代表 \([ay-xc]\) 不属于右侧不定性，故这个陪集仍不含零，\(B\) 仍不具有形式性。与三球面相乘增加了原始元的自由，却没有消去原来的障碍。
+\end{solution}

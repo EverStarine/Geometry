@@ -1,7 +1,7 @@
 % !TeX root = ../../Book2.tex
 % 纲要标题：## 附录 A　结、链环与低维拓扑
 % 纲要位置：几何学计划纲要.md，第 1974 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 % 补充范围与先修：三维分解采用紧、连通、可定向三维流形的明确版本，边界环面情形另核条件；使用第一卷基本群、覆盖和本附录结补空间、Dehn 填充。素分解、JSJ 与几何化的深层定理准确外引；几何模型接第三卷空间形式及几何群论附录，Ricci 流输入见第三卷第27章，不承担一般三维分类证明。
 
 % 纲要内容开始
@@ -42,80 +42,1067 @@
 \label{g2:app:A}
 \BookChapterNumber{g2:app:A}
 
-待撰写
+\begin{chapterabstract}
+	结把一个圆周嵌入三维空间，却能留下丰富的补空间拓扑。本附录先由结图计算 Wirtinger 群展示与链环数，再构造 Seifert 曲面，用沿曲面切开得到的无限循环覆盖推导 Alexander 模的矩阵表示，完成三叶结与八字结的计算。Dehn 填充把边界上的斜率变成新流形的关系，带框架链环则把四维把手与三维边界联系起来。最后借助素分解、JSJ 分解及几何化定理，说明球面、环面和齐性几何怎样组织三维流形，并用双曲填充展示拓扑操作引起的几何变化。
+\end{chapterabstract}
+
+\begin{learninggoals}
+	\begin{itemize}
+		\item 区分结图、空间中的环境同位与结外部，按统一的交叉号和经线方向读出结群及链环数。
+		\item 构造 Seifert 曲面，把无限循环覆盖的一次同调写成有限的 Laurent 多项式关系，理解 Alexander 多项式的选择无关性。
+		\item 从实际曲面计算三叶结与八字结的 Seifert 矩阵、多项式与亏格，辨认这些不变量能区分的信息。
+		\item 解释 Dehn 斜率、整数框架和边界填充，计算手术流形的基本群及一维同调。
+		\item 在准确的紧性、定向与边界条件下使用三维分解及几何化的陈述，并以环面丛和结外部辨认其几何含义。
+	\end{itemize}
+\end{learninggoals}
+
+若只看一个结本身，它作为抽象空间总是圆周。差别藏在圆周嵌入 \(S^3\) 的方式里：一条围绕结的道路能否缩去，两个绕行能否交换，沿一张跨越曲面前进后进入覆盖的哪一层，这些问题都要在补空间中回答。这里也就有了两条互相补充的路线：结图给出有限的计算，补空间说明计算为何保持不变。
+
+\ProseParagraphBreak
+
+主要准备是第1章的 van Kampen 定理与覆盖分类，第2—4章的同调、Mayer--Vietoris 序列和整数矩阵计算，第6章的流形定向与对偶，以及第14—15章的横截性、管状邻域和同位延拓。每次调用会在所需位置恢复条件。前两节把具体不变量的构造与证明展开；三维流形的手术表示、素分解、JSJ 分解和几何化则在准确陈述后注明正式来源。读者可以先完成结群和 Alexander 多项式的例子，再带着这些可计算的对象进入后两节。
 
 \section{结图与补空间}
 \label{g2:sec:A01}
-待撰写
+
+一根闭合绳圈在空间中绕了几圈，通常不能靠投影图中的交叉数判断：拉出一个小圈就能增加一个交叉，绳圈本身却没有打出新结。研究结需要把两件事联系起来：哪些图形变化代表同一个空间对象，哪些代数计算在这些变化下保持不变。补空间把这两个问题接到本卷已经建立的基本群与同调上。
 
 \subsection{环境同位及 Reidemeister 操作}
 \label{g2:subsec:A01:01}
-待撰写
+
+\begin{definition}\label{g2:def:oriented-link-exterior}
+	在有向三维球面 \(S^3\) 中，有限个圆周的不交并的光滑嵌入之像称为\term[lianhuan]{链环}[link]；只有一个分支时称为\term[jie]{结}[knot]。每个圆周选定定向，就得到有向链环 \(L=K_1\sqcup\cdots\sqcup K_m\)。若存在光滑映射族 \(H_t:S^3\rightarrow S^3\)，使每个 \(H_t\) 是微分同胚、\(H_0=\operatorname{id}\)，且 \(H_1\) 保持各分支定向地把一个链环送到另一个，则称二者\term[huanjingtongwei]{环境同位}[ambient isotopic]。
+	选取互不相交的闭管状邻域 \(\nu K_i\cong S^1\times D^2\)，记 \(\nu L=\bigsqcup_i\nu K_i\)。链环的\term[waibu]{外部}[exterior]是紧流形
+	\[
+		E_L\coloneqq S^3\setminus\operatorname{int}\nu L,
+		\qquad \partial E_L=\bigsqcup_{i=1}^m T_i,
+		\qquad T_i\cong S^1\times S^1.
+	\]
+\end{definition}
+
+管状邻域中的乘积结构来自结的定向法二维丛的平凡性：沿圆周搬运一组正标架，回到起点时的变换属于连通群 \(\operatorname{GL}^+(2,\mathbb R)\)，可沿圆周修正掉它。因此边界确为环面。补空间 \(S^3\setminus L\) 沿每个法圆盘的径向向外推，形变收缩到 \(E_L\)；它们的基本群和同调相同。外部保留了紧性及边界，稍后粘回实心环面时尤其方便。
+
+\ProseParagraphBreak
+
+环境同位允许弯曲、拉伸与移动绳圈，但在每个时刻保持嵌入。\cref{g2:thm:isotopy-extension}说明，紧源流形的光滑嵌入同位可以延拓为环境同位，所以实际构造时只需画出绳圈如何连续移动。这里源是有限个圆周，紧性和无边界条件均满足。标准平面圆称为\term[pingfanjie]{平凡结}[unknot]；位于互不相交小球中的 \(m\) 个标准圆构成 \(m\) 分支\term[pingfanlianhuan]{平凡链环}[unlink]。
+
+\ProseParagraphBreak
+
+从不在链环上的一点作立体投影，可把问题放到 \(\mathbb R^3\) 中。对嵌入作任意小的光滑同位后，向 \(xy\) 平面的投影可取为浸入，只有有限个横截二重点，没有三重点。在每个二重点标明哪一段位于较高的 \(z\) 坐标，就得到\term[jietu]{结图}[link diagram]；图中以短缺口表示下穿的一段。由平面曲线及有限个上下关系，可以把各交叉附近的一段稍微抬高、另一段稍微压低，再在交叉邻域外插值，恢复空间链环。
+
+\ProseParagraphBreak
+
+图中的局部变化有三种基本形式，称为\term[Reidemeister caozuo]{Reidemeister 操作}[Reidemeister move]。\footnote{Kurt Werner Friedrich Reidemeister（1893--1971），德国数学家，研究群论、结理论与组合拓扑。}第一型增删一个扭圈；第二型增删一对交叉，其中同一条局部弧在两个交叉处都从另一条弧上方经过；第三型将一条弧越过另外两条弧的交叉，三条弧的相对高低次序保持不变。\cref{g2:fig:reidemeister-moves}给出每型的一个代表，其旋转、镜像及相容的定向形式也属于相应操作。
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixA-Reidemeister}
+	\caption[三种 Reidemeister 操作]{三种 Reidemeister 操作。细线的缺口表示下穿；每一对图在小圆盘外保持相同。第二型中同一条弧连续上穿两次，第三型中三条弧的高低次序保持不变。}
+	\label{g2:fig:reidemeister-moves}
+\end{figure}
+
+每种操作都能在一个小三维球中实现。第一型将弯起的一小段绕出投影平面再放平；第二型把一条弧抬到另一条之上后从其投影一侧移到另一侧；第三型先让最高的一段离开其余两段，再平移它越过下方交叉。整个移动保持端点附近不动，各段在空间中始终不相交，因而由同位延拓定理得到支撑在该球内的环境同位。
+
+\begin{theorem}[Reidemeister 定理]\label{g2:thm:reidemeister}
+	两个光滑有向链环环境同位，当且仅当它们的任意正则结图可以经有限次保持定向的平面同位及三种 Reidemeister 操作互相变换。
+\end{theorem}
+
+充分性已由上述局部移动证明。必要性是结图理论中的一般位置定理：将一参数空间同位作相对端点的小扰动，使投影只在有限个时刻失去正则性；孤立的投影折返、两弧相切和三弧投影共点，分别产生第一、第二、第三型变化。这里需要同时控制参数与投影的多重点。一般位置部分采用文献中的 Reidemeister 定理；光滑与分段线性版本的对应及定理陈述见\cite[第1章，第2--4页]{Lickorish1997KnotTheory}。这一结果允许用结图做计算，也解释了为什么单纯数全部交叉不能给出结不变量。
 
 \subsection{Wirtinger 展示及结群}
 \label{g2:subsec:A01:02}
-待撰写
+
+绕着一段绳子的小圆不能穿过绳子收缩；沿绳子移动这个圆时，它又会受到其他绳段的阻挡。因此补空间的环路不仅记录“绕了多少次”，还记录绕行的次序。我们先给这些环路选定统一方向。
+
+\begin{definition}\label{g2:def:meridian-knot-group}
+	设 \(L\subset S^3\) 是光滑有向链环。取与 \(K_i\) 横截相交一次、与其他分支不交的小法圆盘 \(D_i\)。给 \(D_i\) 定向，使“圆盘的正基在前、\(K_i\) 的正切向量在后”给出 \(S^3\) 的定向。圆盘的正向边界 \(\mu_i=\partial D_i\) 称为\term[jingxian]{正经线}[positive meridian]。选取从基点到 \(\mu_i\) 的道路后，它给出 \(\pi_1(E_L)\) 的元素；改变道路只改变共轭代表。群 \(\pi_1(E_L)\) 称为链环群；对一个结称为\term[jiequn]{结群}[knot group]。
+\end{definition}
+
+将一个有交叉的结图在每个下穿处断开，得到若干\term[jietu hu]{图弧}[diagram arc]。一条图弧可能从若干交叉的上方通过，但内部没有下穿点。给每条图弧配一个正经线生成元，取基点在投影平面的高处，连接道路始终从图的上方到达该弧附近。这样便能从一个交叉读出三个生成元的关系。
+
+\ProseParagraphBreak
+
+固定 \(xy\) 平面通常的定向，正 \(z\) 方向朝向观察者。若交叉处上穿和下穿的投影正切向量分别是 \(u,v\)，定义交叉号
+\[
+	\epsilon(c)=\operatorname{sgn}\det(u,v)\in\{+1,-1\}.
+\]
+设上穿弧标为 \(a\)，下穿弧沿其定向先标为 \(b\)、后标为 \(c\)，则局部关系是
+\begin{equation}\label{g2:eq:wirtinger-relation}
+	c=a^{-\epsilon(c)}b\,a^{\epsilon(c)}.
+\end{equation}
+此处道路乘法仍是先走左边、再走右边。\cref{g2:fig:wirtinger-sign}把两种符号和对应关系同时画出；计算时可先按图读式，再检验自己的经线方向。
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixA-Wirtinger}
+	\caption[交叉号与 Wirtinger 关系]{交叉号与 Wirtinger 关系。两图的上穿弧均标为 \(a\)，下穿弧的进入段、离开段分别标为 \(b,c\)；经线均按正方向选取。}
+	\label{g2:fig:wirtinger-sign}
+\end{figure}
+
+\begin{theorem}[Wirtinger 展示]\label{g2:thm:wirtinger}
+	设 \(L\subset S^3\) 是光滑有向链环，给定其正则结图。每条图弧取一个正经线生成元，每个交叉加入\eqref{g2:eq:wirtinger-relation}，所得群展示就是 \(\pi_1(E_L)\)。没有下穿点的分支另取一个生成元。
+\end{theorem}
+
+这一展示称为\term[Wirtinger zhanshi]{Wirtinger 展示}[Wirtinger presentation]。\footnote{Wilhelm Wirtinger（1865--1945），奥地利数学家，研究复分析、几何及结群。}它把基本群的几何计算化成有限个字与关系。
+
+\begin{proof}
+	将结图实现为如下空间链环：图弧主体在 \(z=0\) 平面内，下穿处各有一小段向下弯到 \(z=-\delta\)。这些下弯段所在的小盒互不相交。先看平面 \(z=-\delta\) 以上的补空间 \(A\)，再逐个加上下方的小盒，最后补入其余下半空间。取各块的小开邻域，并沿树状细管连接到共同基点，便可使用\cref{g2:thm:van-kampen}：每一步的两个开集及交集都道路连通，细管组成树因而不增加环路。
+
+	在 \(A\) 中，每条图弧是一条两端落在边界平面上的桥弧。它与自身的平面投影之间有一张竖直桥圆盘；下穿处留出的缺口保证这些圆盘互不相交。把桥弧的细管邻域删去后，\(A\) 是带有一个个隧道的半空间。在每个隧道后方取一张横截圆盘，沿所有这些圆盘切开即得到一个球形区域。重新粘回每对圆盘相当于接上一根一柄，所以 \(A\) 形变收缩到每条图弧对应一个圆周的楔和。于是 \(\pi_1(A)\) 是由图弧正经线自由生成的群。
+
+	现在加入一个下弯段下方的小盒 \(B\)。下弯段位于盒子的上面，盒子内部不含链环，故 \(B\) 可缩；它与 \(A\) 的交集形变收缩到一张删去内部小线段的圆盘，因而同伦等价于圆周。这个圆周沿下穿段的两侧绕行，给出唯一需要加入的关系。要计算它在 \(\pi_1(A)\) 中的字，从高处把进入段的正经线沿下穿段移到离开段：连接道路绕过上穿弧一次，故两个经线互为共轭。
+
+	具体地，把上穿方向取为 \(+y\)，下穿方向取为 \(+x\)，则 \(\epsilon=-1\)。正经线在法平面中的方向由 \((D,a)\) 的定向确定，从上方观察基点道路，移动到右侧的连接道路比左侧多绕正经线 \(a\) 一次。因此 \(c=aba^{-1}\)，边界字是 \(c^{-1}aba^{-1}\)。将上穿方向反向，正经线改为 \(a^{-1}\)，得到 \(c=a^{-1}ba\)。旋转图形及反向下穿方向得到其余定向形式，统一为\eqref{g2:eq:wirtinger-relation}。van Kampen 定理说明，粘入 \(B\) 正好模掉这个字的正规闭包。
+
+	对全部小盒重复此过程，便加入全部交叉关系。余下的下半空间是一块无绳段的球形区域；它与已加入部分的交集可沿下弯段旁已经填入的盒子向外推，形变收缩到一个圆盘，所以两者都单连通。再用一次 van Kampen 定理不会加入生成元或关系。这说明上述展示给出了全部关系。若某分支完全没有下穿点，可在它上面加一个第一型小圈后应用同一构造；新增交叉只给出同一经线与自己的共轭关系，消去多余记号后留下一个生成元。此处的分块计算也可对照\cite[第3章D节，第56--61页]{Rolfsen2003Knots}。
+\end{proof}
+
+\begin{example}\label{g2:exm:trefoil-group}
+	\cref{g2:fig:trefoil-wirtinger}中的三叶结取三个图弧经线 \(a,b,c\)。按图示定向，三个交叉号都是 \(-1\)，交叉关系为
+	\[
+		b=cac^{-1},\qquad c=aba^{-1},\qquad a=bcb^{-1}.
+	\]
+	由第二式消去 \(c\)，第三式等价于 \(aba=bab\)。反过来，这个等式给出 \(b=ab ab^{-1}a^{-1}=cac^{-1}\)，故第一式也成立。于是三叶结的群为
+	\begin{equation}\label{g2:eq:trefoil-group}
+		\pi_1(E_K)\cong\langle a,b\mid aba=bab\rangle.
+	\end{equation}
+	令 \(a\mapsto(12)\)、\(b\mapsto(23)\)，两边都映为 \((13)\)，得到到对称群 \(S_3\) 的满同态。因此这个群非阿贝尔。平凡结外部是实心环面，基本群为 \(\mathbb Z\)；同位的结有同胚的外部，所以三叶结不与平凡结同位。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixA-Trefoil}
+	\caption[三叶结的三个经线生成元]{三叶结的三个经线生成元。箭头给出定向，字母标记两次下穿之间的图弧。按\cref{g2:fig:wirtinger-sign}的符号约定，三个交叉均为负交叉。}
+	\label{g2:fig:trefoil-wirtinger}
+\end{figure}
+
+基本群能看见非交换信息，而一次同调只保留各分支的总绕行次数。下面先用补空间的分解精确确定这一点。
+
+\begin{proposition}\label{g2:prop:link-exterior-homology}
+	设 \(L=K_1\sqcup\cdots\sqcup K_m\subset S^3\) 是光滑有向链环，\(m\geq1\)。其外部的整数同调满足
+	\[
+		H_0(E_L)=\mathbb Z,\qquad H_1(E_L)=\bigoplus_{i=1}^m\mathbb Z[\mu_i],\qquad H_2(E_L)=\mathbb Z^{m-1},
+	\]
+	且 \(H_j(E_L)=0\) 对 \(j\geq3\) 成立，其中 \(\mu_i\) 为各分支的正经线。
+\end{proposition}
+\begin{proof}
+	空间中连接两点的道路经小扰动可避开一维链环，再径向推到外部，故 \(E_L\) 连通。令 \(N=\nu L\)、\(T=\partial N\)。把 \(E_L,N\) 沿边界领圈各自加宽，便得到 \(S^3\) 的开覆盖，交集形变收缩到 \(T\)。\cref{g2:thm:mayer-vietoris}的一段为
+	\[
+		0=H_2(S^3)\longrightarrow H_1(T)
+		\xrightarrow{(i_*,-j_*)}H_1(E_L)\oplus H_1(N)
+		\longrightarrow H_1(S^3)=0.
+	\]
+	中间映射因而是同构。每个 \(T_i\) 上取经线 \(\mu_i\) 和沿 \(S^1\) 方向的任一截面曲线 \(\ell_i\)。映到 \(N\) 后，\([\mu_i]\) 为零，\([\ell_i]\) 成为第 \(i\) 个实心环面的核心生成元。因此 \(\ker j_*\) 恰由全部 \([\mu_i]\) 自由生成。上述同构把这个核同构地送到 \(H_1(E_L)\oplus0\)，得到一次同调的结论。
+
+	由\cref{g2:thm:poincare-lefschetz}，\(H_3(E_L)\cong H^0(E_L,\partial E_L)=0\)：一个在连通外部上常值而在非空边界上为零的函数只能为零；更高次群也由同一对偶消失。另一段 Mayer--Vietoris 序列成为
+	\[
+		0\longrightarrow H_3(S^3)\longrightarrow H_2(T)
+		\longrightarrow H_2(E_L)\longrightarrow0.
+	\]
+	连接映射把球面的基本类送到各边界环面的基本类之和。具体符号由\cref{g2:prop:boundary-fundamental-class}的外法向优先约定确定；给各环面使用一致的边界定向后，这就是 \(1\mapsto(1,\ldots,1)\)。所以 \(H_2(E_L)=\mathbb Z^m/\mathbb Z(1,\ldots,1)\cong\mathbb Z^{m-1}\)。
+\end{proof}
 
 \subsection{链环数的相交定义}
 \label{g2:subsec:A01:03}
-待撰写
+
+设两条有向闭曲线 \(K,J\) 互不相交。取一张以 \(K\) 为边界的有向薄膜，数 \(J\) 从薄膜的一侧穿到另一侧的次数，并给反向穿越相反符号，就得到链环数的几何想法。薄膜可以自交；真正有用的是带重数的相交计数及其边界，而非薄膜的形状。
+
+\begin{definition}\label{g2:def:linking-number}
+	设 \(K,J\subset S^3\) 是不相交的光滑有向结。因为 \(H_1(S^3;\mathbb Z)=0\)，可取整数光滑奇异二链 \(F\)，使 \(\partial F=K\)，这里把定向圆周的一次基本圈也记为 \(K\)。将 \(F\) 相对边界作横截扰动，定义\term[lianhuanshu]{链环数}[linking number]
+	\[
+		\operatorname{lk}(K,J)\coloneqq I(F,J).
+	\]
+	在每个相交原像处，依次放置 \(F\) 的正向二基和 \(J\) 的正切向量，与 \(S^3\) 定向比较；符号再乘该单形的整数系数。\(I(F,J)\) 是全部这些数的和。
+\end{definition}
+
+这里的光滑链可以直接从有限奇异链得到：先细分到坐标球内，逐维光滑逼近单形，并在已经处理的公共面上固定；再逐维作相对横截扰动。公共面的相同扰动使边界中应抵消的项仍然抵消。这正是\cref{g2:thm:relative-transversality}的相对条件在有限个单形上的应用。横截性保证二链与曲线的交点是有限个带符号的原像点。若 \(K\) 恰好界定一张嵌入有向曲面，也可直接用该曲面作为 \(F\)。
+
+\begin{proposition}\label{g2:prop:linking-number-properties}
+	设 \(K,J\subset S^3\) 是不相交的光滑有向结。上述整数与二链及横截扰动的选择无关，只依赖两条曲线的有向环境同位类，并满足
+	\[
+		\operatorname{lk}(K,J)=\operatorname{lk}(J,K),\qquad
+		\operatorname{lk}(-K,J)=\operatorname{lk}(K,-J)=-\operatorname{lk}(K,J).
+	\]
+	反转 \(S^3\) 的定向也使链环数变号。对任意有向正则图，若求和只遍历一条来自 \(K\)、另一条来自 \(J\) 的混合交叉，则
+	\begin{equation}\label{g2:eq:linking-crossings}
+		\operatorname{lk}(K,J)=\frac12\sum_{c\text{ 为混合交叉}}\epsilon(c).
+	\end{equation}
+	对固定 \(K\)，映射 \([J]\mapsto\operatorname{lk}(K,J)\) 是 \(H_1(E_K;\mathbb Z)\rightarrow\mathbb Z\) 的同构，将正经线送到 \(1\)。
+\end{proposition}
+\begin{proof}
+	先说明所用的相交边界规律。横截的二链与二链相交成一链，三链与一链相交也成一链。每个参数单形的相交一链在内部的端点成对抵消，只剩参数单形边界上的端点；公共面的两次出现因奇异边界的交错符号抵消。紧的一链所有端点的代数和为零。这与\cref{g2:thm:intersection-homotopy-invariance}中用一维横截逆像配对端点的论证相同，区别是这里同时保留链的边界。
+
+	若 \(F,F'\) 都以 \(K\) 为边界，则 \(F-F'\) 是二圈。由 \(H_2(S^3)=0\)，可写成 \(\partial C\)。使 \(C\) 与闭曲线 \(J\) 横截，上一段的端点抵消给出 \(I(\partial C,J)=0\)，故 \(I(F,J)=I(F',J)\)。不同横截扰动之间的棱柱同伦也给出同样的端点抵消，保证相交数与扰动无关。
+
+	再取 \(\partial G=J\)，使 \(F,G\) 及其边界两两横截。\(F\cap G\) 的端点分为 \(K\cap G\) 和 \(F\cap J\) 两类。采用外法向优先的边界定向，两类对总边界的贡献分别为 \(I(K,G)\) 和 \(-I(F,J)\)，所以
+	\[
+		I(K,G)-I(F,J)=0.
+	\]
+	这个相对负号也可在两张横截半平面组成的局部坐标中核对：沿交线走入一张曲面的内侧，与走出另一张曲面的内侧产生相反端点。交换一维和二维正基的符号是 \((-1)^{1\cdot2}=1\)，故 \(I(K,G)=I(G,K)\)，得到对称性。改变曲线或空间定向时的符号由相交定义直接得到。环境同位把 \(F\) 一起搬动，保留全部局部符号，故保持链环数。
+
+	若 \(J-J'=\partial B\)，且 \(B\) 位于 \(S^3\setminus K\)，同一边界计算给出 \(I(F,\partial B)=I(\partial F,B)=I(K,B)=0\)。所以链环数只依赖 \(J\) 在外部中的同调类，且对整数链相加是线性的。正经线的圆盘与 \(K\) 正交一次，故 \(\operatorname{lk}(\mu,K)=1\)；利用对称性，\(\operatorname{lk}(K,\mu)=1\)。\cref{g2:prop:link-exterior-homology}已经证明 \([\mu]\) 是 \(H_1(E_K)\) 的自由生成元，因此得到最后的同构。
+
+	最后证明图式公式。将一处混合交叉从 \(K\) 上穿改为 \(K\) 下穿，设改变前交叉号为 \(\epsilon\)。移动过程中 \(K\) 扫过一条带定向的薄带 \(A\)，其边界为 \(K_{\mathrm{new}}-K_{\mathrm{old}}\)。薄带与 \(J\) 相交一次。薄带的基次序为“移动时间、\(K\) 的方向”，移动方向为 \(-\partial_z\)，故交点符号为
+	\[
+		\operatorname{sgn}\det(-\partial_z,u,v)
+		=-\operatorname{sgn}\det(u,v)=-\epsilon.
+	\]
+	于是链环数改变 \(-\epsilon\)。右边的半交叉和也改变 \(({-\epsilon}-\epsilon)/2=-\epsilon\)。反向换交叉得到相反变化；同一分支的自交叉改变则使两边都不变，因为移动薄带避开另一分支。
+
+	有限次交叉改变可以把链环变成平凡链环。具体地，先指定分支的高低顺序，将不同分支的交叉全部改成与此顺序相容；再在每个分支上标记起点，沿定向行走，把首次遇到的每个自交叉都改成上穿。这种下降图可从起点开始依次把已经走过的弧抬高拉直，剩余弧始终位于其下，最终变成圆。不同分支可放入不同高度的互不相交小球。平凡链环的两条曲线界定互不相交圆盘，链环数为零；其无交叉图的半交叉和也为零。逐步反向恢复所作改变，由相同的变化量得到\eqref{g2:eq:linking-crossings}。
+\end{proof}
+
+\begin{example}\label{g2:exm:hopf-linking}
+	两个分支的 Hopf 链环有一个只含两个混合交叉的图。选择定向使两处交叉号都为 \(+1\)，则链环数为 \(1\)。把其中一个分支反向，链环数成为 \(-1\)；同时反向两个分支则仍为 \(1\)。这也解释了公式中的 \(1/2\)：一次完整的绕行在正则投影中贡献两个同号交叉。
+\end{example}
+
+对多分支链环，以上同调计算和正经线的小圆盘进一步给出
+\[
+	H_1(E_L;\mathbb Z)\longrightarrow\mathbb Z^m,
+	\qquad [\gamma]\longmapsto
+	\bigl(\operatorname{lk}(\gamma,K_1),\ldots,\operatorname{lk}(\gamma,K_m)\bigr)
+\]
+为同构：第 \(i\) 条正经线映为第 \(i\) 个标准基向量。将 \(\gamma\) 换成整数一圈时，链环数按线性延拓理解。这些整数给出了外部中一维同调类的几何坐标；对单个结只有一个坐标，所以更细的信息需要从结群或覆盖空间中提取。
 
 \section{Seifert 曲面与 Alexander 不变量}
 \label{g2:sec:A02}
-待撰写
+
+结外部的一次同调总是 \(\mathbb Z\)，它只记住一条闭曲线绕结多少次。要继续分辨结，可以把这些绕行次数拆成不同的层，再研究各层之间如何相接。这产生一个带平移作用的一次同调群。另一方面，结所围成的定向曲面能把无限多层的粘合压缩为一个有限整数矩阵；Alexander 多项式正是由这个矩阵得到的。
 
 \subsection{Seifert 曲面的构造}
 \label{g2:subsec:A02:01}
-待撰写
+
+平面中的简单闭曲线围成圆盘，空间中的结也围成嵌入曲面，但曲面可能带柄。要求曲面可定向，是为了既能谈边界方向，又能区分曲面的两侧。
+
+\begin{definition}\label{g2:def:seifert-surface}
+	设 \(K\subset S^3\) 为有向光滑结。边界方向为 \(K\) 的紧、连通、可定向光滑嵌入曲面 \(F\subset S^3\) 称为 \(K\) 的\term[seifert-qumian]{Seifert 曲面}[Seifert surface]。
+\end{definition}
+这个构造把结图中的交叉变成曲面上的带。\footnote{Karl Johannes Herbert Seifert（1907--1996），德国数学家，对三维流形、纤维化和结理论作出了重要贡献。}
+
+\begin{proposition}[Seifert 算法]\label{g2:prop:seifert-algorithm}
+	设有向结 \(K\) 的正则结图有 \(c\) 个交叉。把每个交叉按方向平滑化，得到 \(s\) 条互不相交的平面闭曲线。则这些闭曲线可张成 \(s\) 个圆盘，并用 \(c\) 条半扭带连接为 \(K\) 的 Seifert 曲面，其亏格为
+	\begin{equation}\label{g2:eq:seifert-algorithm-genus}
+		g(F)=\frac{c-s+1}{2}.
+	\end{equation}
+	特别地，每个有向光滑结都有 Seifert 曲面。
+\end{proposition}
+\begin{proof}
+	在每个交叉的小圆盘内，原图有两条入向短弧和两条出向短弧。把端点按不相交的方式重新接成两条有向弧，使入向接出向；这个要求唯一确定平滑化。不同交叉的圆盘取成互不相交，全部平滑化后便得到 \(s\) 条有向简单闭曲线。
+
+	先让每条曲线张成一个圆盘。平面中的圆盘可能相互包含，因此把嵌套圆盘的内部推到不同高度，边缘附近保留很窄的领圈。可从最内层开始逐层处理：已处理的内层圆盘放在较低的高度，下一层圆盘的内部从它们上方通过；在各自边缘的窄领圈中接回原边界。有限个圆盘因此两两不交。给圆盘定向，使其边界方向等于平滑化后的方向。
+
+	在每个原交叉处把一条矩形带沿两条短边接到对应圆盘边缘。带取半扭，使两条长边恢复原来的上、下穿越信息。平滑化时保留的入、出方向恰好保证两端的边界定向与带的定向相容。由于交叉圆盘两两不交，各条带可放在各自很小的三维邻域中；沿原图的窄领圈接到圆盘时，也可避开其余圆盘。这样得到嵌入的定向曲面，且其有向边界就是原结图所表示的 \(K\)。把接缝和折角磨光便得到光滑曲面。
+
+	每块圆盘和每条带都连到原结的边界上，而沿 \(K\) 走一周会经过所有这些块。因此所得曲面连通。它由 \(s\) 个零柄和 \(c\) 个一柄构成，故 \(\chi(F)=s-c\)。连通可定向亏格 \(g\)、一个边界分量的曲面满足 \(\chi(F)=1-2g\)，解出即得所示公式。
+\end{proof}
+
+这里算出的是所选结图产生的曲面亏格。不同结图可能给出不同大小的曲面。所有 Seifert 曲面亏格的最小值称为\term[jiedekuige]{结的亏格}[knot genus]，记作 \(g(K)\)；非负整数的良序性保证这个最小值能达到。后面将从多项式得到一个下界，再与构造出的曲面比较。
 
 \subsection{无限循环覆盖和 Alexander 模}
 \label{g2:subsec:A02:02}
-待撰写
+
+记 \(E=S^3\setminus\operatorname{int}\nu K\) 为有向结 \(K\) 的外部，\(\nu K\) 是闭管状邻域。\cref{g2:prop:link-exterior-homology}说明 \(H_1(E;\mathbb Z)\cong\mathbb Z\)，正经线是其生成元；\cref{g2:prop:linking-number-properties}把这个同构具体写成 \([\gamma]\mapsto\operatorname{lk}(\gamma,K)\)。于是有满同态
+\[
+	\phi:\pi_1(E)\longrightarrow\mathbb Z,
+	\qquad[\gamma]\longmapsto\operatorname{lk}(\gamma,K).
+\]
+\(E\) 是连通光滑流形，因而局部道路连通、半局部单连通。\cref{g2:thm:covering-classification}适用，给出与 \(\ker\phi\) 对应的连通覆盖 \(\widetilde E\to E\)。\(\ker\phi\) 是正规子群，所以\cref{g2:cor:regular-covering}说明该覆盖正规，且其覆盖变换群为 \(\pi_1(E)/\ker\phi\cong\mathbb Z\)；把正经线的提升终点所对应的变换记作 \(t\)。这就是\term[wuxianxunhuanfugai]{无限循环覆盖}[infinite cyclic cover]。
+
+\begin{definition}\label{g2:def:alexander-module}
+	有向光滑结 \(K\subset S^3\) 的\term[alexander-mo]{Alexander 模}[Alexander module]是
+	\[
+		A_K=H_1(\widetilde E;\mathbb Z),\qquad
+		\Lambda=\mathbb Z[t,t^{-1}],
+	\]
+	其中 Laurent 多项式的作用由覆盖变换给出：\(t^n[z]=[(t^n)_*z]\)，整数系数按同调群的加法作用。\symidx{\(A_K\)：结的 Alexander 模}\symidx{\(\Lambda=\mathbb Z[t,t^{-1}]\)：Alexander 模的系数环}
+\end{definition}
+
+把 \(A_K\) 只当作阿贝尔群，会丢失哪些同调类相差一层的信息。\(\Lambda\) 模结构同时保留每层内部的一次同调和层间平移。有向结的环境同位保持链环数，因而提升为与覆盖变换相容的覆盖同构，诱导 Alexander 模的同构；换提升基点只相当于再复合某个 \(t^n\)。
+
+\ProseParagraphBreak
+
+现在用曲面把这个覆盖实际拼出来。取 Seifert 曲面 \(F\)，把边界领圈移入 \(E\)，得到边界位于 \(\partial E\) 上的正常嵌入曲面，仍记为 \(F\)。取正法向 \(n\)，使“\(n\) 在前、曲面有向基在后”给出 \(S^3\) 的方向。切开 \(E\) 中 \(F\) 的一个双侧领圈，得到 \(Y\)；切口的正、负面分别记为 \(F^+\)、\(F^-\)，包含记为 \(i_+,i_-:F\to Y\)。忽略靠近 \(\partial E\) 的领圈变形后，\(Y\) 也可看成 \(S^3\setminus\operatorname{int}N(F)\)，其中 \(N(F)\) 是原曲面在 \(S^3\) 中的正则邻域。
+
+取由 \(j\in\mathbb Z\) 编号的副本 \(Y_j\)，把 \(Y_j\) 的负面与 \(Y_{j+1}\) 的正面粘合。穿过 \(F\) 时，从负法向一侧到正法向一侧的交数为 \(+1\)，故路径每正穿过一次，就从第 \(j\) 层进入第 \(j+1\) 层。任意闭路的总层数变化为它与 \(F\) 的交数，也就是 \(\phi\)。因此这个粘合空间确为上述覆盖，\(t\) 把 \(Y_j\) 移到 \(Y_{j+1}\)。
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixA-SeifertCover.tex}
+	\caption{沿曲面切开后逐层粘合。每条接缝把 \(F^-_j\) 与 \(F^+_{j+1}\) 识别；向右移动一层代表正经线。}
+	\label{g2:fig:seifert-cover}
+\end{figure}
+
+要计算粘合后的同调，先找 \(H_1(Y)\) 的一组可读基。
+
+\begin{lemma}\label{g2:lem:seifert-linking-dual}
+	设 \(F\subset S^3\) 为亏格 \(g\)、一个边界分量的定向光滑嵌入曲面，\(Y=S^3\setminus\operatorname{int}N(F)\)。则 \(Y\) 连通，\(H_1(Y;\mathbb Z)\cong\mathbb Z^{2g}\)，且链环数给出完美配对
+	\[
+		H_1(Y;\mathbb Z)\times H_1(F;\mathbb Z)\longrightarrow\mathbb Z.
+	\]
+	因此任取 \(H_1(F;\mathbb Z)\) 的基 \(a_1,\ldots,a_{2g}\)，都有唯一一组同调基 \(\alpha_1,\ldots,\alpha_{2g}\) 满足 \(\operatorname{lk}(\alpha_i,a_j)=\delta_{ij}\)。
+\end{lemma}
+\begin{proof}
+	把 \(F\) 表示成一个圆盘加 \(2g\) 条带，其邻域 \(N=N(F)\) 就是一个三维零柄加 \(2g\) 个一柄。故 \(N\) 收缩到 \(2g\) 个圆的楔和，\(\partial N\) 是亏格 \(2g\) 的闭曲面。每个 \(Y\) 的分支都须接触 \(\partial N\)：否则它同时是连通空间 \(S^3\) 的开闭分支。\(\partial N\) 连通，而且在 \(N\) 的外侧有连通领圈，所以这些分支只有一个。
+
+	用领圈把 \(N\) 和 \(Y\) 加宽成开覆盖，应用\cref{g2:thm:mayer-vietoris}。由于 \(H_2(S^3)=H_1(S^3)=0\)，得到
+	\[
+		H_1(\partial N;\mathbb Z)\xrightarrow{\ \cong\ }
+		H_1(N;\mathbb Z)\oplus H_1(Y;\mathbb Z).
+	\]
+	在每个一柄内取一张横截圆盘 \(D_i\)。它的边界 \(\alpha_i\) 位于 \(\partial N\)，向外微推即可看成 \(Y\) 中的曲线。在柄体边界的通常 \(2g\) 对经、纬基中，这些 \(\partial D_i\) 生成包含映射 \(H_1(\partial N)\to H_1(N)\) 的核：每个横截圆盘边界在 \(N\) 内为零，另一个基曲线沿对应一柄走一周，映到 \(H_1(N)\) 的一组自由基。上述同构于是说明 \([\alpha_i]\) 是 \(H_1(Y)\) 的基。
+
+	令 \(a_j\) 为沿第 \(j\) 个带走一周的曲面脊线，并给 \(D_i\) 定向使 \(D_i\cdot a_j=\delta_{ij}\)。链环数的相交定义给出 \(\operatorname{lk}(\alpha_i,a_j)=\delta_{ij}\)，故配对完美。一般整数基由一个可逆整数矩阵得到，对偶基按逆转置改变，结论随之成立。
+\end{proof}
+
+对无限串粘合使用 Mayer--Vietoris 序列，得到
+\begin{equation}\label{g2:eq:cyclic-cover-mv}
+	\begin{split}
+	H_1(F)\otimes_{\mathbb Z}\Lambda
+	&\xrightarrow{\ t(i_+)_*-(i_-)_*\ }
+	H_1(Y)\otimes_{\mathbb Z}\Lambda\longrightarrow H_1(\widetilde E)\\
+	&\longrightarrow H_0(F)\otimes_{\mathbb Z}\Lambda
+	\xrightarrow{\ t-1\ }H_0(Y)\otimes_{\mathbb Z}\Lambda.
+	\end{split}
+\end{equation}
+这里每个张量积就是按层编号的同调群直和；奇异链只有有限项，所以任意一次链关系都已出现在有限段粘合中，有限段的序列取并便给出此式。接缝把 \((i_-)_*a\) 的第 \(j\) 层副本与 \((i_+)_*a\) 的第 \(j+1\) 层副本识别，因而第一支箭头正是 \(t(i_+)_*-(i_-)_*\)。\(F,Y\) 连通使最后两项都等于 \(\Lambda\)，而乘 \(t-1\) 为单射。因此 \(A_K\) 就是第一支箭头的余核。
 
 \subsection{Seifert 矩阵的多项式计算}
 \label{g2:subsec:A02:03}
-待撰写
+
+曲面上的两条曲线可能相交，不能直接取链环数；把其中一条推到曲面的正侧后，它们就分离了。这一步保留了曲面嵌在三维空间中的信息。
+
+\begin{definition}\label{g2:def:seifert-matrix}
+	设 \(F\) 是有向结 \(K\) 的亏格 \(g\) Seifert 曲面，\(a_1,\ldots,a_{2g}\) 为 \(H_1(F;\mathbb Z)\) 的基。将 \(a_i\) 沿正法向微推为 \(a_i^+\)。整数矩阵
+	\begin{equation}\label{g2:eq:seifert-matrix-convention}
+		V=(V_{ij}),\qquad V_{ij}=\operatorname{lk}(a_i^+,a_j)
+	\end{equation}
+	称为这组基的\term[seifert-juzhen]{Seifert 矩阵}[Seifert matrix]。
+\end{definition}
+
+该数只依赖同调类：若 \(a_i\) 在 \(F\) 内改变一个边界，推移后的边界由 \(F^+\) 内的二维链张成，与 \(F\) 中的第二条曲线不相交；第二个变量的同调不变性同理。因而它确定整数双线性型。若 \(a'_i=\sum_jP_{ij}a_j\)，则 \(V'=PVP^{\mathsf T}\)。这里始终把第一个变量推向正侧；与采用第二个变量推移的文献比较时，矩阵要转置。
+
+\begin{proposition}\label{g2:prop:seifert-intersection}
+	设 \(V\) 为上述 Seifert 矩阵，\(a_i^-\) 为负向推移。则
+	\[
+		\operatorname{lk}(a_i^-,a_j)=V_{ji},\qquad
+		V_{ij}-V_{ji}=a_i\cdot_F a_j.
+	\]
+	特别地，\(V-V^{\mathsf T}\) 是单模的斜对称整数矩阵，\(\det(V-V^{\mathsf T})=1\)。
+\end{proposition}
+\begin{proof}
+	把两条曲线同时沿领圈正向移动，把 \((a_i^-,a_j)\) 移到 \((a_i,a_j^+)\)，过程保持二者不交。链环数的同位不变性与对称性于是给出第一式。
+
+	取从 \(a_i^-\) 到 \(a_i^+\) 的窄带扫掠链 \(C_i\)，按“正法向、\(a_i\) 的切向”定向，则 \(\partial C_i=a_i^+-a_i^-\)。若代表曲线在 \(F\) 内横截相交，\(C_i\) 与 \(a_j\) 的交点恰是 \(a_i\) 与 \(a_j\) 的交点；交号由 \((n,\dot a_i,\dot a_j)\) 决定，正是曲面交号。因此
+	\[
+		\operatorname{lk}(a_i^+,a_j)-\operatorname{lk}(a_i^-,a_j)
+		=C_i\cdot a_j=a_i\cdot_F a_j.
+	\]
+	把 \(F\) 的唯一边界封上一张圆盘，不改变一次同调及其中的交形式。\cref{g2:eq:surface-symplectic-form}给出的柄基将其写成 \(g\) 个 \(\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)\) 的直和，每块行列式为 \(1\)。整数换基的行列式为 \(\pm1\)，在合同变换中出现两次，故任意基下行列式仍为 \(1\)。
+\end{proof}
+
+\begin{theorem}\label{g2:thm:seifert-alexander-presentation}
+	设 \(K\subset S^3\) 是有向光滑结，\(V\) 是亏格 \(g\) 的 Seifert 曲面的矩阵，采用式\eqref{g2:eq:seifert-matrix-convention}的约定。则 \(A_K\) 有 \(2g\) 个生成元 \(\alpha_1,\ldots,\alpha_{2g}\) 及 \(2g\) 条关系
+	\begin{equation}\label{g2:eq:alexander-seifert-relations}
+		\sum_{j=1}^{2g}(tV_{ij}-V_{ji})\alpha_j=0,
+		\qquad 1\leq i\leq2g.
+	\end{equation}
+	亦即，以各行为关系的矩阵为 \(tV-V^{\mathsf T}\)。
+\end{theorem}
+\begin{proof}
+	取\cref{g2:lem:seifert-linking-dual}的链环对偶基。若 \(z=\sum_jc_j\alpha_j\)，则 \(c_j=\operatorname{lk}(z,a_j)\)。因此两侧包含分别是
+	\[
+		(i_+)_*a_i=\sum_jV_{ij}\alpha_j,
+		\qquad(i_-)_*a_i=\sum_jV_{ji}\alpha_j.
+	\]
+	将这两个表达式代入式\eqref{g2:eq:cyclic-cover-mv}的余核描述，便逐行得到所述关系。若把模元写成列坐标，则线性映射的矩阵为 \((tV-V^{\mathsf T})^{\mathsf T}\)；行关系约定和列坐标约定给出同一组关系，行列式也相同。
+\end{proof}
+
+还要说明为何取行列式能摆脱曲面和基的选择。这里的工作环 \(\Lambda\) 是交换整环，却不是主理想整环；例如理想 \((2,t-1)\) 不是主理想。我们使用的只是表示矩阵的子式理想。
+
+\begin{lemma}\label{g2:lem:module-order-ideal}
+	设 \(R\) 为交换含幺环，有限表示的 \(R\) 模 \(M\) 有 \(n\) 个生成元。把每条关系写成一行，得到 \(m\times n\) 矩阵 \(P\)。所有 \(n\) 阶子式生成的理想只依赖 \(M\)；当 \(m<n\) 时此理想为零，\(n=0\) 时约定为 \(R\)。当 \(m=n\) 时，该理想为 \((\det P)\)。
+\end{lemma}
+\begin{proof}
+	更换生成元或关系的可逆基变换不改变子式理想：矩阵乘积的任意最大阶子式按行列展开，是原最大阶子式的线性组合；再用逆变换得到反向包含。加入一条已有关系的线性组合也不改变理想，因为新子式可沿新增行展开为旧子式的线性组合。
+
+	若新增生成元 \(y\) 并规定 \(y=\sum_jc_jx_j\)，新表示通过列初等变换化为 \(\operatorname{diag}(P,1)\)。它的非零 \((n+1)\) 阶子式必须含最后的行和列，删去它们正好得到 \(P\) 的 \(n\) 阶子式，故理想不变。
+
+	任意两个有限表示可以先通过这种新增生成元的操作同时包含两组生成元，再加入另一表示的关系。由于它们都表示同一个模，两组关系生成同一个关系子模；每条新增关系都是原关系的有限线性组合。反向删去多余关系和生成元便从一个表示到另一个表示。所述理想在每一步都不变。
+\end{proof}
+
+这个理想称为\term[lingjieFittinglixiang]{零阶 Fitting 理想}[zeroth Fitting ideal]。\footnote{Hans Fitting（1906--1938），德国数学家，研究群的结构和模的行列式理想。}对 \(M=A_K\)，\cref{g2:thm:seifert-alexander-presentation}给出方阵表示，故理想是主理想。
+
+\begin{definition}\label{g2:def:alexander-polynomial}
+	有向光滑结 \(K\) 的\term[alexander-duoxiangshi]{Alexander 多项式}[Alexander polynomial]是其 Alexander 模的上述子式理想的一个生成元，记为 \(\Delta_K(t)\)。具体地，可取
+	\begin{equation}\label{g2:eq:alexander-determinant}
+		\Delta_K(t)=\det(tV-V^{\mathsf T}).
+	\end{equation}
+	生成元相差 \(\Lambda\) 的一个单位，即 \(\pm t^k\)，\(k\in\mathbb Z\)；用 \(f\doteq g\) 表示这种相差关系。\symidx{\(\Delta_K(t)\)：结的 Alexander 多项式}
+\end{definition}
+
+为核对单位的范围，设非零 Laurent 多项式的最小、最大指数分别为 \(m,M\)。两个多项式相乘时首尾系数均不消失，故指数跨度 \(M-m\) 相加。若乘积为 \(1\)，两者跨度只能都是零，整数系数也只能为 \(\pm1\)，于是单位恰为 \(\pm t^k\)。因此上述定义给出的歧义已经完全列明。不同曲面产生同一个 \(A_K\) 的表示，子式理想不变；两个非零生成元在整环中生成同一主理想，必相差单位。这就证明了曲面选择和基选择无关性。
+
+\begin{proposition}\label{g2:prop:alexander-basic-properties}
+	设 \(K\subset S^3\) 为有向光滑结，则 \(\Delta_K(t)\ne0\)，并满足
+	\[
+		\Delta_K(t^{-1})\doteq\Delta_K(t),\qquad
+		\Delta_K(1)=\pm1,\qquad
+		\operatorname{span}\Delta_K\leq2g(K).
+	\]
+	这里 \(\operatorname{span}\) 是最高非零指数减最低非零指数。对任一亏格 \(g\) 的曲面，由式\eqref{g2:eq:alexander-determinant}选出的代表还满足
+	\[
+		\Delta_K(1)=1,\qquad
+		t^{2g}\Delta_K(t^{-1})=\Delta_K(t).
+	\]
+\end{proposition}
+\begin{proof}
+	在 \(t=1\) 处，\cref{g2:prop:seifert-intersection}给出 \(\det(V-V^{\mathsf T})=1\)，所以行列式多项式非零。令 \(n=2g\)，则
+	\[
+	\begin{aligned}
+		t^n\det(t^{-1}V-V^{\mathsf T})
+		&=\det(V-tV^{\mathsf T})\\
+		&=\det(V^{\mathsf T}-tV)
+		=(-1)^n\det(tV-V^{\mathsf T})
+		=\det(tV-V^{\mathsf T}).
+	\end{aligned}
+	\]
+	每个矩阵元的次数至多为 \(1\)，故该行列式是次数至多 \(2g\) 的普通多项式，其跨度至多 \(2g\)。取亏格最小的曲面即得下界。乘以 \(\pm t^k\) 不改变跨度及所述结论。
+\end{proof}
+
+空矩阵的行列式约定为 \(1\)。因此平凡结的圆盘曲面给出 \(A_K=0\)、\(\Delta_K=1\)。多项式非零也说明 \(A_K\) 是 \(\Lambda\) 上的挠模：用伴随矩阵乘表示关系，便见 \(\det(tV-V^{\mathsf T})\) 杀死每个生成元。
 
 \subsection{三叶结和八字结的核验}
 \label{g2:subsec:A02:04}
-待撰写
+
+以下把曲面、矩阵和多项式放在同一次计算中。\cref{g2:fig:seifert-braids}给出两个闭辫图的构造数据：从上向下读交叉，\(\sigma_i\) 表示第 \(i\) 股从上方越过右邻股，\(\sigma_i^{-1}\) 表示相反穿越；各股下端分别接回同列上端，接线在图框外平行绕行。两个闭辫分别为
+\[
+	\widehat{(\sigma_1\sigma_2)^2},\qquad
+	\widehat{(\sigma_1\sigma_2^{-1})^2}.
+\]
+第一幅是绕标准环面纵、横方向分别两次和三次的 \((2,3)\) 环面结，即三叶结；第二幅是八字结的四交叉图。闭合所对应的置换都是一个三循环，所以两图都只有一个分量。
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/AppendixA-SeifertBraids.tex}
+	\caption{两个四交叉闭辫及其带连接顺序。\(D_1,D_2,D_3\) 表示平滑化后的三个圆盘，\(e_1,e_3\) 连接前两个圆盘，\(e_2,e_4\) 连接后两个圆盘；竖线只记录同一圆盘上的附着顺序。}
+	\label{g2:fig:seifert-braids}
+\end{figure}
+
+两图沿方向平滑化后都有三个圆，故其曲面都有 \(c=4,s=3\)，由式\eqref{g2:eq:seifert-algorithm-genus}得亏格 \(1\)。这组带还给出两条可直接追踪的基曲线：\(a\) 沿 \(e_1\) 从 \(D_1\) 到 \(D_2\)，再经 \(e_3\) 返回；\(b\) 沿 \(e_2\) 从 \(D_2\) 到 \(D_3\)，再经 \(e_4\) 返回。其余部分分别在圆盘中连接。在 \(D_2\) 上，四条带按 \(e_1,e_2,e_3,e_4\) 交替附着，故两个返回弧相交一次；选择 \(b\) 的方向使 \(a\cdot_F b=-1\)。
+
+下面说明读矩阵所需的空间信息。把 \(D_2\) 在四个附着点之间展开为一个方形，共用该方形的两条环带分别是 \((e_1,e_3)\) 和 \((e_2,e_4)\)。每条环带的两次半扭组成一次整扭。第一条环带记为 \(A\)，第二条记为 \(B\)；展开时可把 \(A\) 的其余部分放在方形一侧的小球内，\(B\) 的其余部分放在另一侧。这称为沿方形的拼接。曲面的整体方向取成共用方形的正法向指向 \(A\) 所在的小球；必要时同时反转结和曲面的方向即可达到这一约定。于是 \(a^+\) 与 \(b\) 分居两球，给出
+\[
+	\operatorname{lk}(a^+,b)=0.
+\]
+这一分离也可在原带图中实施：先把 \(e_1,e_3\) 之间的圆盘片翻到图后方，再将 \(a^+\) 沿该片推入后方小球。\(a\) 与 \(b\) 的单次交点和\cref{g2:prop:seifert-intersection}随后确定 \(\operatorname{lk}(b^+,a)=1\)。
+
+自链环数由环带的整扭读出。先看第一条环带的两条有向边界：它们形成由 \(e_1,e_3\) 给出的两交叉链环。图中左股从上方越过右股，投影切向依次为 \((1,-1)\)、\((-1,-1)\)，故按\cref{g2:prop:linking-number-properties}的约定，每个交叉号均为 \(-1\)，两条边界的链环数为 \(-1\)。环带两条边界的诱导方向沿核心恰好相反；改为两条同向的核心平行曲线时，需要反转其中一条的方向。因此 \(\operatorname{lk}(a^+,a)=+1\)。三叶结的第二条环带具有相同整扭，仍为 \(+1\)；八字结把 \(e_2,e_4\) 的穿越同时反转，所得自链环数为 \(-1\)。于是得到
+\begin{equation}\label{g2:eq:trefoil-figure-eight-seifert}
+	V_{3_1}=\begin{pmatrix}1&0\\1&1\end{pmatrix},
+	\qquad
+	V_{4_1}=\begin{pmatrix}1&0\\1&-1\end{pmatrix}.
+\end{equation}
+这里的非对角元来自两条基曲线如何在共用方形中穿过，两个对角元来自各自环带的整扭。因此矩阵的四个数均由指定曲面和推移决定。
+
+对三叶结，
+\[
+	tV_{3_1}-V_{3_1}^{\mathsf T}
+	=\begin{pmatrix}t-1&-1\\t&t-1\end{pmatrix},
+	\qquad
+	\Delta_{3_1}(t)=(1-t)^2+t=t^2-t+1.
+\]
+第一行关系给出 \(\alpha_2=(t-1)\alpha_1\)，代入第二行后剩下 \((t^2-t+1)\alpha_1=0\)，所以还能读出
+\[
+	A_{3_1}\cong\Lambda/(t^2-t+1).
+\]
+对八字结，
+\[
+	tV_{4_1}-V_{4_1}^{\mathsf T}
+	=\begin{pmatrix}t-1&-1\\t&1-t\end{pmatrix},
+	\qquad
+	\det(tV_{4_1}-V_{4_1}^{\mathsf T})=-t^2+3t-1.
+\]
+因此通常可取
+\[
+	\Delta_{4_1}(t)=t^2-3t+1,
+	\qquad A_{4_1}\cong\Lambda/(t^2-3t+1).
+\]
+最后这次整体变号使 \(\Delta_{4_1}(1)=-1\)，与一般的 \(\pm1\) 结论相符。两个多项式的跨度都是 \(2\)，所以 \(g(3_1),g(4_1)\geq1\)；已构造的曲面给出反向不等式，故二者亏格恰为 \(1\)。它们的多项式互不相差 \(\pm t^k\)，又都不等价于 \(1\)，因此这两个结互不等价，且都不是平凡结。
+
+曲面算法、切开覆盖与 Seifert 矩阵的经典展开可参阅\cite[第5章第A、C节；第8章第A--C节]{Rolfsen2003Knots}。该书把第二个变量推向正侧；比较其矩阵时须按本节约定转置。
 
 \section{三维手术}
 \label{g2:sec:A03}
-待撰写
+
+结补空间有一个环面边界。把原来挖掉的实心环面放回去，当然得到 \(S^3\)；若先扭转边界上的对应关系再放回去，就可能得到另一个闭三维流形。这一操作把结的嵌入方式变成了构造流形的数据。计算的关键是：新实心环面的哪一条边界曲线在填入后成为圆盘的边界？
 
 \subsection{Dehn 填充和斜率}
 \label{g2:subsec:A03:01}
-待撰写
+
+设 \(K\subset S^3\) 是有向结，\(E_K=S^3\setminus\operatorname{int}\nu K\) 是其外部。边界 \(T=\partial E_K\) 上有两条特别的曲线。\term[jingxian]{经线}[meridian] \(\mu\) 围绕结横截面一周，取向使 \(\operatorname{lk}(\mu,K)=1\)；\term[shouxuanweixian]{首选纬线}[preferred longitude] \(\lambda\) 沿结的方向走一周，并满足 \(\operatorname{lk}(\lambda,K)=0\)。沿 Seifert 曲面把 \(K\) 向外推开，便得到这样的 \(\lambda\)：截去曲面与 \(\nu K\) 相交的边缘后，余下曲面位于 \(E_K\) 内，以 \(\lambda\) 为边界。因此
+\[
+	H_1(T;\mathbb Z)=\mathbb Z\mu\oplus\mathbb Z\lambda,
+	\qquad H_1(E_K;\mathbb Z)=\mathbb Z\mu,
+	\qquad [\lambda]=0\text{ 于 }H_1(E_K;\mathbb Z).
+\]
+这里外部的同调来自\cref{g2:prop:link-exterior-homology}。任意另一条沿结走一周的边界曲线形如 \(\lambda+n\mu\)，其与 \(K\) 的链环数是 \(n\)，所以链环数为零的要求也证明了首选纬线的唯一性。
+
+\begin{definition}\label{g2:def:dehn-slope}
+	环面 \(T\) 上的\term[xielv]{斜率}[slope]是本质简单闭曲线的无向同位类，其中“本质”指不在 \(T\) 内围成圆盘。固定基 \((\mu,\lambda)\) 后，斜率由本原类
+	\[
+		\alpha=p\mu+q\lambda,\qquad \gcd(p,q)=1,
+	\]
+	表示，且 \((p,q)\) 与 \((-p,-q)\) 表示同一斜率。记该斜率为 \(p/q\)，经线斜率记为 \(\infty=1/0\)。
+\end{definition}
+
+为何必须取本原类？沿一条本质简单闭曲线切开环面得到圆环，可以在圆环内取连接两条边界的弧；粘回后，这条弧成为与原曲线相交一次的闭曲线。因此原曲线的同调类与某个整类的交数为 \(1\)，其两坐标不可能有公因子。反过来，\(\mathbb R^2/\mathbb Z^2\) 中直线 \(u\mapsto (pu,qu)\) 在 \(\gcd(p,q)=1\) 时给出简单闭曲线。环面上本质简单闭曲线由本原同调类确定同位类，这是环面曲线分类的结论；可参看\cite[第2章C节]{Rolfsen2003Knots}。于是“一个有理数”实际编码的是应当压成圆盘边界的整条曲线。
+
+\begin{proposition}\label{g2:prop:slope-intersection}
+	斜率 \(\alpha=p\mu+q\lambda\) 与 \(\beta=r\mu+s\lambda\) 的代表曲线之间，最小几何交点数为
+	\begin{equation}\label{g2:eq:slope-distance}
+		\Delta(\alpha,\beta)=|ps-qr|.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	代数交数在所选基下为 \(ps-qr\) 或其相反数，取决于环面的定向，因此任意横截代表的交点总数至少为其绝对值。把环面写成 \(\mathbb R^2/\mathbb Z^2\)，取方向分别为 \((p,q)\)、\((r,s)\) 的直线代表。行列式非零时，它们的交点由格子商 \(\mathbb Z^2/\langle(p,q),(r,s)\rangle\) 参数化，数目恰是行列式的绝对值；行列式为零时，两条本原方向平行，平移其中一条即可使它们不相交。两种情形都达到下界。
+\end{proof}
+
+\begin{definition}\label{g2:def:dehn-filling}
+	设 \(M\) 是定向紧三维流形，\(T\subset\partial M\) 是一个环面边界分支。给定斜率 \(\alpha\)，取边界反向同胚
+	\[
+		\varphi:\partial(D^2\times S^1)\longrightarrow T
+	\]
+	把 \(\partial D^2\times\{1\}\) 送到 \(\alpha\) 的代表。所得流形 \(M(\alpha)=M\cup_\varphi(D^2\times S^1)\) 称为沿 \(\alpha\) 的\term[dehntianchong]{Dehn 填充}[Dehn filling]。对结外部，记 \(E_K(p\mu+q\lambda)=S^3_{p/q}(K)\)，也称沿 \(K\) 的 \(p/q\) \term[dehnshoushu]{Dehn 手术}[Dehn surgery]。\footnote{Max Wilhelm Dehn（1878--1952），德国数学家，研究几何、拓扑及组合群论；第一卷的剪刀合同中也出现了以他命名的不变量。}
+\end{definition}
+
+斜率只指定了粘合映射对经线的作用，为什么已经够用？两种粘合的差别是一个保持实心环面经线斜率的边界自同胚。环面自同胚的同位类由它在 \(H_1\) 上的整数矩阵决定，见\cite[第2章D节定理4]{Rolfsen2003Knots}。保持经线斜率的保向矩阵形如
+\[
+	\begin{pmatrix}\varepsilon&k\\0&\varepsilon\end{pmatrix},\qquad \varepsilon\in\{1,-1\},\quad k\in\mathbb Z.
+\]
+当 \(\varepsilon=1\) 时，它由实心环面自同胚 \((z,e^{i\theta})\mapsto(e^{ik\theta}z,e^{i\theta})\) 实现；同时对两坐标作复共轭可处理 \(\varepsilon=-1\) 的情形。边界上的同位也可沿领圈延拓。因此两种粘合给出同胚的填充流形，确实只需记录斜率。
+
+\begin{proposition}\label{g2:prop:dehn-filling-group}
+	若 \(M\) 连通，则
+	\[
+		\pi_1(M(\alpha))\cong\pi_1(M)/\langle\!\langle\alpha\rangle\!\rangle.
+	\]
+	右边的 \(\alpha\) 表示将斜率曲线通过一条道路接到基点后所得的元素，双尖括号表示其正规闭包。
+\end{proposition}
+\begin{proof}
+	选另一条边界曲线 \(\eta\)，使 \((\alpha,\eta)\) 构成 \(H_1(T)\) 的基。在新实心环面内，\(\alpha\) 为零，\(\eta\) 则生成其基本群 \(\langle c\rangle\cong\mathbb Z\)。在粘合处加上领圈，使两部分成为可应用 van Kampen 定理的开覆盖，便得到
+	\[
+		\pi_1(M(\alpha))\cong
+		\bigl(\pi_1(M)*\langle c\rangle\bigr)/\langle\!\langle\alpha,\eta c^{-1}\rangle\!\rangle.
+	\]
+	用第二个关系消去 \(c\)，只余下第一个关系。改换接基点的道路只会将 \(\alpha\) 共轭，反向走曲线则将它取逆，两者都不改变正规闭包。
+\end{proof}
+
+\begin{proposition}\label{g2:prop:knot-filling-homology}
+	对任意结 \(K\) 与既约斜率 \(p/q\)，有
+	\[
+		H_1(S^3_{p/q}(K);\mathbb Z)\cong\mathbb Z/p\mathbb Z,
+	\]
+	其中 \(p=0\) 时右边为 \(\mathbb Z\)。当 \(p\ne0\) 时，填充流形的 \(H_2(-;\mathbb Z)=0\)；当 \(p=0\) 时，\(H_2(-;\mathbb Z)\cong\mathbb Z\)。
+\end{proposition}
+\begin{proof}
+	将上一命题的群展示交换化。外部的 \(H_1\) 由 \(\mu\) 生成，\(\lambda\) 的像为零，故新关系 \(p\mu+q\lambda=0\) 正是 \(p\mu=0\)。填充流形闭、连通、可定向，\cref{g2:cor:closed-poincare-duality,g2:thm:uct-cohomology}给出
+	\[
+		H_2(S^3_{p/q}(K);\mathbb Z)\cong H^1(S^3_{p/q}(K);\mathbb Z)
+		\cong\operatorname{Hom}(\mathbb Z/p\mathbb Z,\mathbb Z),
+	\]
+	由此得到后半部分。
+\end{proof}
+
+这说明 \(H_1\) 能看见斜率的分子，却看不见分母和结的形状。它是很有效的第一步筛选，也为后面出现相同同调、不同几何的流形留下了空间。
+
+\begin{example}\label{g2:exm:unknot-filling}
+	无结 \(U\) 的外部也是实心环面。此时原来的 \(\lambda\) 围成外部中的经线圆盘，而原来的 \(\mu\) 沿外部的核心绕一周。沿 \(\infty\) 填充是把原邻域放回去，所以 \(S^3_{\infty}(U)=S^3\)。沿 \(0\) 填充把两个实心环面的经线相配；可取粘合为两个圆盘沿圆周的粘合与 \(S^1\) 的恒等映射之积，因此
+	\[
+		S^3_0(U)\cong(D^2\cup_{S^1}D^2)\times S^1\cong S^2\times S^1.
+	\]
+	沿外部经线圆盘扭转 \(q\) 次会把 \(\mu\) 变为 \(\mu+q\lambda\)，所以 \(S^3_{1/q}(U)\cong S^3\)。更一般地，本附录把 \(S^3_{p/q}(U)\) 记为\term[toujingkongjian]{透镜空间}[lens space] \(L(p,q)\)。本节比较透镜空间时不固定定向；采用别的粘合坐标时，文献中的 \(q\) 可能改变符号。
+\end{example}
 
 \subsection{手术图及边界变化}
 \label{g2:subsec:A03:02}
-待撰写
+
+对于 \(m\) 分支链环 \(L=K_1\cup\cdots\cup K_m\)，可以同时在各边界环面上填充。\term[shoushutu]{手术图}[surgery diagram]由链环图和每个分支旁的斜率组成，标号的意思始终相对于该分支的经线与首选纬线。一个整数标号 \(n_i\) 表示新圆盘的边界是 \(n_i\mu_i+\lambda_i\)，而非 \(\mu_i+n_i\lambda_i\)。斜率的这一步读取决定了后面的同调关系。
+
+\ProseParagraphBreak
+
+整数系数还有一个四维解释。结的\term[kuangjia]{框架}[framing]是在结的法二维丛上选一组连续基；等价地，可以选一个处处非零的法向量场，其方向告诉我们怎样推开结。两种框架的差由这个方向绕圈的次数 \(n\in\mathbb Z\) 测量。以 Seifert 曲面给出的零链环推开为零框架，\(n\) 框架的平行曲线便代表 \(\lambda+n\mu\)。在图的平面内直接推开的“黑板框架”不自动是零框架：其与原结的链环数等于该分支所有自交叉符号之和，必须据此换算。
+
+\begin{proposition}\label{g2:prop:framed-surgery-trace}
+	沿 \(S^3=\partial D^4\) 中一个带整数框架的链环附着四维 \(2\)-把手，得到的紧四维流形 \(W_L\) 满足
+	\[
+		\partial W_L\cong S^3_{n_1,\ldots,n_m}(L).
+	\]
+\end{proposition}
+\begin{proof}
+	一个四维 \(2\)-把手是 \(D^2\times D^2\)，附着区为 \(S^1\times D^2\)。把附着区识别为 \(K_i\) 的管状邻域，法圆盘的识别方式由框架决定。附着之后，旧边界中的 \(S^1\times\operatorname{int}D^2\) 被移去，代之以把手的另一块边界 \(D^2\times S^1\)。新块的经线 \(\partial D^2\times\{v\}\) 在旧邻域中对应沿框架推开的 \(K_i\)，因而在外部边界上是 \(\lambda_i+n_i\mu_i\)。这恰是所述 Dehn 填充。不同把手的附着区不相交，逐个操作便得到一般情形；接缝处的角可在领圈内磨平，不改变所得边界的同胚类型。
+\end{proof}
+
+把手的维数容易让人混淆：在四维内部附着的是一个 \(2\)-把手，而在三维边界上发生的是“挖出实心环面，再以另一种方式填入实心环面”。两种描述给出的是同一个局部变化，分别适合研究内部的交叉形式与边界的基本群。
+
+\begin{proposition}\label{g2:prop:surgery-linking-matrix}
+	对整数带框架链环 \(L\)，令
+	\[
+		B_{ii}=n_i,\qquad B_{ij}=\operatorname{lk}(K_i,K_j)\quad(i\ne j).
+	\]
+	则其手术流形的一维整数同调有展示
+	\[
+		H_1(S^3_{n_1,\ldots,n_m}(L);\mathbb Z)\cong\operatorname{coker}(B:\mathbb Z^m\longrightarrow\mathbb Z^m).
+	\]
+	若 \(\det B\ne0\)，这个群有限，阶为 \(|\det B|\)；若 \(\det B=\pm1\)，手术流形具有 \(S^3\) 的整数同调。
+\end{proposition}
+\begin{proof}
+	由\cref{g2:prop:link-exterior-homology}，链环外部的 \(H_1\) 由 \(\mu_1,\ldots,\mu_m\) 自由生成。一条闭曲线在这个基中的第 \(j\) 个系数，就是它与 \(K_j\) 的链环数。\(\lambda_i\) 与 \(K_i\) 的链环数为零；对 \(j\ne i\)，从 \(K_i\) 到 \(\lambda_i\) 的推开在 \(K_i\) 的小邻域内完成，不经过 \(K_j\)，故
+	\[
+		[\lambda_i]=\sum_{j\ne i}\operatorname{lk}(K_i,K_j)\mu_j.
+	\]
+	第 \(i\) 个填充加入的关系为 \(n_i\mu_i+[\lambda_i]=0\)。合在一起便是矩阵 \(B\) 的关系，且链环数的对称性保证 \(B=B^{\mathsf T}\)。有限群的阶由第3章的整数矩阵标准形计算。行列式为 \(\pm1\) 时 \(H_1=0\)，整数对偶又给出 \(H_2=0\)；闭、连通、可定向保证 \(H_0=H_3=\mathbb Z\)。
+\end{proof}
+
+\begin{example}\label{g2:exm:hopf-surgery-homology}
+	取链环数为 \(1\) 的 Hopf 链环，两分支标号分别为 \(a,b\)。其关系为
+	\[
+		a\mu_1+\mu_2=0,\qquad \mu_1+b\mu_2=0.
+	\]
+	第一式给出 \(\mu_2=-a\mu_1\)，第二式化为 \((1-ab)\mu_1=0\)。因此同调为 \(\mathbb Z/(ab-1)\mathbb Z\)，当 \(ab=1\) 时按约定读作 \(\mathbb Z\)。例如标号 \((2,3)\) 给出 \(\mathbb Z/5\mathbb Z\)；标号 \((0,0)\) 却给出零群。后者与两个互不相链的零标号圆不同：对于分离的两圆，矩阵为零，同调是 \(\mathbb Z^2\)。即使标号完全相同，链环的互相缠绕仍会改变流形。
+\end{example}
 
 \subsection{三维分类所需的额外定理}
 \label{g2:subsec:A03:03}
-待撰写
+
+我们已经能由一个带框架链环构造闭三维流形，并从图计算其基本群或同调。接下来的自然问题是，这样的构造能覆盖多大的范围？
+
+\begin{theorem}[Lickorish--Wallace]\label{g2:thm:lickorish-wallace}
+	每个闭、连通、定向三维流形都保向同胚于沿 \(S^3\) 中某个链环作整数 Dehn 手术所得的流形。
+\end{theorem}
+
+这是本节采用的三维拓扑定理，完整证明见\cite[第9章I节，特别是定理1]{Rolfsen2003Knots}。其构造思想与前面的把手观点相通：先把流形分成两块同亏格的把手体，差异集中在公共曲面的粘合映射；再把曲面映射拆成沿简单闭曲线的扭转，把这些扭转改写为附近曲线上的整数手术。这里需要的额外输入是把手体分解的存在性以及曲面映射类群由 Dehn 扭转生成，后一个生成定理承担了从任意粘合到有限手术图的关键一步。\footnote{William Bernard Raymond Lickorish（1938年生），英国数学家，研究结与三维流形；Andrew Hugh Wallace（1926--2008），苏格兰裔美国数学家，研究拓扑及手术方法。两人分别建立了这一三维流形手术表示定理。}
+
+\ProseParagraphBreak
+
+手术表示定理把流形放进了一个可以操作的语言，但不同的图仍可能表示同一个流形。\cref{g2:exm:unknot-filling}中所有 \(1/q\) 标号无结都给出 \(S^3\)。另一方面，相同的同调也未必来自同胚的流形。透镜空间提供了一个已经可以清楚辨认的例子：对 \(p>0\)、\(\gcd(p,q)=\gcd(p,q')=1\)，其无定向同胚分类为
+\[
+	L(p,q)\cong L(p,q')
+	\quad\Longleftrightarrow\quad
+	q'\equiv\pm q^{\pm1}\pmod p.
+\]
+这条分类结果及其证明来源见\cite[第9章B节注7]{Rolfsen2003Knots}；它使用了比一维同调更细的不变量。取 \(p=7\)，\(q=1\) 能产生的右端剩余类只有 \(1,6\)，所以 \(L(7,1)\) 与 \(L(7,2)\) 不同胚，虽然两者的 \(H_1\) 都是 \(\mathbb Z/7\mathbb Z\)。
+
+\ProseParagraphBreak
+
+下一节从另一个方向组织这些流形：寻找能切开流形的球面与环面，先把整体分成较基本的块，再研究每一块的几何。手术图解释流形怎样被造出，分解定理解释造出的流形内部有哪些自然结构；两者将在结外部的填充中相遇。
 
 \section{三维分解与几何化}
 \label{g2:sec:A04}
-待撰写
+
+一次 Dehn 填充只改变一个环面附近的粘合，却可能把结外部变成几何性质很不同的闭流形。要理解这种变化，可以先寻找把三维流形分成较简单部分的曲面：球面检测连通和，环面则保留两条相互独立的基本群方向。下面把这两层分解与几何模型联系起来。流形取光滑范畴，嵌入的球面、环面和圆盘也取光滑嵌入；所用深层分解定理采用紧、连通、可定向三维流形的版本。
 
 \subsection{连通和与素分解}
 \label{g2:subsec:A04:01}
-待撰写
+
+设 \(M,N\) 是闭、连通、有向三维流形。在各自内部去掉一个小坐标球的内部，再沿边界球面作反向粘合，得到有向连通和 \(M\#N\)。反向是相对于两个带边界流形的边界定向而言的，它使两侧的内部定向能够拼接。不同坐标球及粘合的选择给出定向保持微分同胚的结果；这里用到二维球面的定向保持微分同胚与恒等映射同痕这一经典事实。三维连通和及其选择无关性可参阅 \cite[第1.2节]{AschenbrennerFriedlWilton2015}。球面 \(S^3\) 是此运算的单位，因为去掉小球后留下的仍是一个三维球。
+
+\ProseParagraphBreak
+
+这项操作在基本群上尤其容易辨认。记 \(M^\circ,N^\circ\) 为去球后的两部分，用领圈把它们加宽为 \(M\#N\) 的开覆盖，交集形变收缩到 \(S^2\)。\Cref{g2:thm:van-kampen}的单连通交集情形因而给出
+\begin{equation}\label{g2:eq:three-connected-sum-groups}
+	\pi_1(M\#N)\cong\pi_1(M)*\pi_1(N),\qquad
+	H_1(M\#N;\mathbb Z)\cong H_1(M;\mathbb Z)\oplus H_1(N;\mathbb Z).
+\end{equation}
+其中去掉小球不改变基本群：把这个球重新粘回去时，球和交界 \(S^2\) 都单连通。一次同调的公式也可从\cref{g2:thm:mayer-vietoris}直接看出：交集的一次同调为零，而 \(H_0(S^2)\to H_0(M^\circ)\oplus H_0(N^\circ)\) 是单射。因此相邻的零次项没有给一次同调增加新关系。
+
+\begin{definition}\label{g2:def:prime-three-manifold}
+	设 \(P\) 是闭、连通、可定向三维流形，且 \(P\not\cong S^3\)。若每个连通和表示 \(P\cong M\#N\) 都至少有一个因子同胚于 \(S^3\)，则称 \(P\) 为\term[su sanwei liuxing]{素三维流形}[prime 3-manifold]。
+\end{definition}
+
+排除单位 \(S^3\) 后，素因子的个数才有唯一性可言。以 \(S^2\) 作分界切开流形，再给出现的球面边界补上三维球，是连通和构造的逆向操作；关键问题是这种切割能否在有限步后终止，以及不同切法是否得到相同的因子。
+
+\begin{theorem}[Kneser--Milnor 素分解定理]\label{g2:thm:prime-decomposition-three}
+	每个闭、连通、有向三维流形 \(M\) 都可写成有限个有向素三维流形的连通和
+	\[
+		M\cong P_1\#\cdots\#P_r.
+	\]
+	当 \(M\cong S^3\) 时允许 \(r=0\)。忽略排列次序后，因子由 \(M\) 唯一确定到定向保持微分同胚。
+\end{theorem}
+
+这里引用素分解定理；陈述与证明文献见 \cite[第1.2节]{AschenbrennerFriedlWilton2015}。Kneser 的有限性方法\footnote{Hellmuth Kneser（1898--1973），德国数学家，研究三维流形的分解及曲面映射问题。}和 Milnor 的唯一性结果说明，寻找球面分界并非无休止地改变表示，而是把问题归约到确定的一组素因子。
+
+\ProseParagraphBreak
+
+对 \(S^1\times S^2\)，球面 \(\{\theta_0\}\times S^2\) 的补空间是 \((S^1\setminus\{\theta_0\})\times S^2\)，仍然连通。因此它不能成为一个三维球的边界：嵌入球的边界必把球内部与外部隔开。另一方面，\(S^1\times S^2\) 是素流形。这个例子说明，“不能拆成两个非平凡连通和因子”与“每个球面都围住一个球”之间仍有差别；后一个条件将成为下一层分解的起点。
 
 \subsection{不可约性与不可压缩环面}
 \label{g2:subsec:A04:02}
-待撰写
+
+\begin{definition}\label{g2:def:irreducible-three-manifold}
+	设 \(M\) 是连通三维流形。若每个嵌入在 \(\operatorname{int}M\) 中的二维球面都是 \(M\) 内某个嵌入三维球的边界，则称 \(M\) \term[bukeyue sanwei liuxing]{不可约}[irreducible]。
+\end{definition}
+
+闭、可定向、不可约且不同于 \(S^3\) 的三维流形必为素流形：任何连通和分界球面若围住一个球，相应一侧补球后就是 \(S^3\)。逆向的准确结论是：闭、可定向素三维流形除了 \(S^1\times S^2\) 以外都不可约；这一结论与上述 \(S^1\times S^2\) 的素性一并引用 \cite[第1.2节]{AschenbrennerFriedlWilton2015}。
+
+\ProseParagraphBreak
+
+结外部已经具有不可约性。设 \(K\subset S^3\) 为光滑结，\(E_K=S^3\setminus\operatorname{int}\nu K\)，其中 \(\nu K\) 是闭管状邻域。对 \(\operatorname{int}E_K\) 中的嵌入球面 \(S\)，三维球面嵌入定理说明 \(S\) 在 \(S^3\) 中的两侧闭包都是球；这里采用光滑版本，见 \cite[序言，第vi页]{Lickorish1997KnotTheory}。连通集 \(\nu K\) 与 \(S\) 不交，故完全位于一侧；另一侧的球便包含在 \(E_K\) 内。这就验证了定义的要求。
+
+\ProseParagraphBreak
+
+在不可约流形里继续寻找球面只会切去球。环面则有非平凡基本群 \(\mathbb Z^2\)，因而可能沿切口保留新的粘合信息。要排除那些其实可以被圆盘压扁的环面，需要同时看它在自身内部和在流形内部的环路。
+
+\begin{definition}\label{g2:def:incompressible-torus}
+	设 \(M\) 是紧、连通、可定向三维流形，\(T\subset\operatorname{int}M\) 是嵌入环面。若包含诱导的同态 \(\pi_1(T)\to\pi_1(M)\) 单射，则称 \(T\) 为\term[bukeyasuo huanmian]{不可压缩环面}[incompressible torus]。若 \(T\) 与 \(\partial M\) 的某个分支共同界定一个嵌入的乘积 \(T^2\times[0,1]\)，则称它\term[bianjie pingxing]{边界平行}[boundary-parallel]。不可压缩且不边界平行的环面称为\term[benzhi huanmian]{本质环面}[essential torus]。
+\end{definition}
+
+可定向三维流形中的环面是双侧的，即有邻域 \(T\times(-\varepsilon,\varepsilon)\)：环面的定向与环境定向共同给出一条连续法向。沿 \(T\) 切开，就是去掉这个邻域后保留两份边界环面。
+
+\ProseParagraphBreak
+
+环面 \(T\) 的\term[yasuo pan]{压缩盘}[compression disk]是嵌入圆盘 \(D\subset M\)，满足 \(D\cap T=\partial D\)，且 \(\partial D\) 在 \(T\) 内不零伦。圆盘说明 \(\partial D\) 在 \(M\) 内零伦，所以不可压缩环面必没有压缩盘。反方向用到 Loop 定理：紧三维流形的边界曲面包含若在基本群上不单射，便存在边界本质、内部位于流形内部的嵌入圆盘。将这一结论用于沿双侧环面切开的流形，可得到
+\[
+	\pi_1(T)\longrightarrow\pi_1(M)\text{ 单射}
+	\quad\Longleftrightarrow\quad
+	T\text{ 没有压缩盘}.
+\]
+这是 Loop 定理的曲面形式；所需嵌入圆盘的存在及两种表述的联系见 \cite[第1.3—1.4节]{AschenbrennerFriedlWilton2015}。一个连续零伦圆盘可能自交，Loop 定理恰好负责把这里需要的圆盘实现为嵌入。
+
+\ProseParagraphBreak
+
+例如实心环面 \(D^2\times S^1\) 的边界具有压缩盘 \(D^2\times\{1\}\)。边界的经线在边界上非平凡，却在实心环面里收缩。相反，\(T^3=S^1\times S^1\times S^1\) 中的坐标环面 \(S^1\times S^1\times\{1\}\) 在基本群上给出 \((m,n)\mapsto(m,n,0)\)，故不可压缩；环境无边界，它也不可能边界平行。判断环面是否本质，既要检查环路，也要检查它是否只从原边界推入了一小段。
 
 \subsection{JSJ 分解的选定陈述}
 \label{g2:subsec:A04:03}
-待撰写
+
+\(T^3\) 内有许多本质环面，沿不同方向切割都能得到乘积块。若把每个能切的环面都当作必切对象，就不会得到有用的规范分解。JSJ 分解把具有整体圆纤维结构的区域保留下来，再分离其余没有本质环面的部分。
+
+\ProseParagraphBreak
+
+先说明其中的圆纤维结构。取互素整数 \(a>0,b\)，把 \(D^2\times[0,1]\) 的上下两面按
+\[
+	(z,1)\sim(e^{2\pi\mathrm{i}b/a}z,0)
+\]
+粘合。这是实心环面；竖直线段在粘合后接成圆。中心 \(z=0\) 一次就闭合，非中心纤维通常要经过 \(a\) 次粘合才闭合。把流形分成圆，并要求每条圆的邻域都与某个这样的纤维实心环面相同，所得结构称为\term[Seifert qianwei jiegou]{Seifert 纤维结构}[Seifert fibration]；具有这种结构的三维流形称为 Seifert 纤维空间。\(a>1\) 的中心圆是重数为 \(a\) 的异常纤维。普通圆丛对应所有局部模型都取 \(a=1\) 的情形。局部旋转模型说明异常发生在纤维的绕行方式上，流形本身仍然光滑。
+
+\ProseParagraphBreak
+
+若紧三维流形中每个内部不可压缩环面都边界平行，就称该流形\term[wuhuanmian]{无环面}[atoroidal]。本节采用这个针对嵌入环面的定义；有些文献对所有基本群单射的环面映射提出条件，所用术语相同，强度有所不同。以下分解把 Seifert 纤维空间单独列出。
+
+\begin{theorem}[JSJ 分解]\label{g2:thm:JSJ-three}
+	设 \(M\) 是紧、连通、可定向、不可约三维流形，边界为空或由环面组成。存在有限族两两不交的内部本质环面 \(T_1,\ldots,T_k\)，使沿它们切开所得的每个连通块都是 Seifert 纤维空间或无环面流形。允许 \(k=0\)。在满足这些性质的环面族中，分支数最少者在环境同痕意义下唯一。
+\end{theorem}
+
+这是 Jaco--Shalen--Johannson 分解的环面版本\footnote{William Howard Jaco（1940年生），美国数学家；Peter B. Shalen，美国数学家；Klaus Johannson（1948年生），德国数学家。他们分别研究三维流形的特征子流形、基本群及同伦等价，Jaco 与 Shalen 的共同工作和 Johannson 的独立工作建立了此分解。}，这里引用 \cite[第1.6节]{AschenbrennerFriedlWilton2015}。边界条件限定了此处采用的纯环面表述；一般曲面边界的特征子流形理论还会涉及环带。最少性排除了额外插入的平行环面，也避免把一个已有整体 Seifert 结构的块任意细分。
+
+\ProseParagraphBreak
+
+切开得到的流形和把边界重新配对的映射共同保存原空间。可以用一张图记录这种关系：每个连通块是一个顶点，每个切割环面是一条连接相邻块的边；同一个块的两个边界重新粘合时得到回边。图上的边还要记住两侧边界环面的识别，正如 Dehn 填充必须记住斜率。仅列出各块的名称，不能恢复原流形。
+
+\begin{example}\label{g2:exm:seifert-trefoil-exterior}
+	在 \(S^3\subset\mathbb C^2\) 上考虑圆周作用
+	\[
+		e^{\mathrm{i}\theta}\cdot(z_1,z_2)=(e^{2\mathrm{i}\theta}z_1,e^{3\mathrm{i}\theta}z_2).
+	\]
+	当 \(z_1z_2\ne0\) 时，稳定子满足 \(e^{2\mathrm{i}\theta}=e^{3\mathrm{i}\theta}=1\)，故为平凡群，轨道是在乘积环面上绕行 \(2\) 次和 \(3\) 次的三叶结。两条坐标圆的稳定子阶分别为 \(2,3\)。作用的局部模型正是上述纤维实心环面。去掉一条普通轨道的管状邻域后，作用仍给出整个三叶结外部的 Seifert 纤维结构。因此这个结外部在 JSJ 分解中可以作为一个完整的 Seifert 块。
+\end{example}
 
 \subsection{八种几何与几何化定理}
 \label{g2:subsec:A04:04}
-待撰写
+
+圆纤维和本质环面是拓扑结构。几何化进一步问：能否给分解后的部分配置一种局部均匀的度量？这里的“均匀”表示等距变换能够把任一点送到任意另一点；它不要求所有方向都相同。例如 \(S^2\times\mathbb R\) 中，沿球面和沿直线的方向显然承担不同作用。
+
+\ProseParagraphBreak
+
+三维模型几何通常用 \((X,G)\) 表示：\(X\) 为单连通三维流形，Lie 群 \(G\) 传递作用在 \(X\) 上，点的稳定子紧。紧稳定子允许选取 \(G\) 不变的 Riemann 度量。分类时还要求该几何在这类作用中是极大的，并存在离散子群 \(\Gamma\subset G\) 自由、正常不连续地作用，使 \(\Gamma\backslash X\) 紧；这些条件排除通过任意缩小对称群产生的重复模型。一个流形具有以 \(X\) 为模型的完整几何结构，意味着它带有来自这种商的完整局部均匀度量。模型的定义及八种几何的分类见 \cite[第4—5节]{Scott1983}。
+
+\begin{table}[htbp]
+	\centering
+	\small
+	\caption{八种三维模型几何；最后一栏给出代表性的紧商或紧商构造}
+	\label{g2:tab:eight-three-geometries}
+	\begin{tabularx}{\textwidth}{@{}l l X@{}}
+		\toprule
+		模型 & 几何特征 & 紧商例子 \\
+		\midrule
+		\(S^3\) & 常截面曲率 \(+1\) & 球面及自由有限等距作用的商，如透镜空间 \\
+		\(\mathbb E^3\) & 平坦 & \(T^3=\mathbb R^3/\mathbb Z^3\) \\
+		\(\mathbb H^3\) & 常截面曲率 \(-1\) & 闭双曲三维流形；也可由双曲结的非例外填充得到 \\
+		\(S^2\times\mathbb R\) & 乘积度量 & \(S^2\times S^1\) \\
+		\(\mathbb H^2\times\mathbb R\) & 乘积度量 & \(\Sigma_g\times S^1\)，\(g\ge2\)，\(\Sigma_g\) 带闭双曲曲面度量 \\
+		\(\widetilde{\mathrm{SL}_2(\mathbb R)}\) & 覆盖 Lie 群上的标准齐性度量 & 闭双曲曲面的单位切丛 \\
+		\(\mathrm{Nil}\) & 三维 Heisenberg 群的标准几何 & 整数 Heisenberg 格的商 \\
+		\(\mathrm{Sol}\) & 两个水平方向反向伸缩 & 双曲整数矩阵给出的环面映射环面 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+表中的 \(\widetilde{\mathrm{SL}_2(\mathbb R)}\) 是 \(\mathrm{SL}_2(\mathbb R)\) 的万有覆盖 Lie 群。“完整”排除了人工截断度量后造成的有限距离缺口。表列模型都允许紧商；同一模型的其他离散商未必紧。例如 \(\mathbb H^3\) 的双曲结补空间是非紧的完整有限体积商，这正是带环面边界的紧流形在几何化中要考虑其内部的原因。
+
+\ProseParagraphBreak
+
+后两种模型可用具体公式辨认。\(\mathrm{Nil}\) 是矩阵群
+\[
+	\left\{\begin{pmatrix}1&x&z\\0&1&y\\0&0&1\end{pmatrix}:x,y,z\in\mathbb R\right\},
+	\qquad g_{\mathrm{Nil}}=\mathrm{d}x^2+\mathrm{d}y^2+(\mathrm{d}z-x\,\mathrm{d}y)^2.
+\]
+群乘法为 \((x,y,z)(x',y',z')=(x+x',y+y',z+z'+xy')\)。左平移保持 \(\mathrm{d}x,\mathrm{d}y,\mathrm{d}z-x\mathrm{d}y\)，故保持所写度量。整数坐标组成离散子群；依次作整数左平移，可以把 \(x,y,z\) 调整到有界区间，故其商紧。\(\mathrm{Sol}\) 则可在 \(\mathbb R^3\) 上写为
+\begin{equation}\label{g2:eq:sol-metric}
+	g_{\mathrm{Sol}}=e^{-2z}\mathrm{d}x^2+e^{2z}\mathrm{d}y^2+\mathrm{d}z^2.
+\end{equation}
+变换 \((x,y,z)\mapsto(e^c x,e^{-c}y,z+c)\) 是等距变换，显示一个水平方向被拉伸时，另一个方向被压缩。表中各模型及这些紧商的几何性质可对照 \cite[第4节，尤其第467—472页]{Scott1983}。
+
+\begin{theorem}[三维几何化定理]\label{g2:thm:geometrization-three}
+	设 \(M\) 是紧、连通、可定向、不可约三维流形，边界为空或由环面组成。可沿有限族两两不交的内部不可压缩环面切开，使所得每个连通块或者是 Seifert 纤维空间，或者其内部具有完整、有限体积、截面曲率恒为 \(-1\) 的 Riemann 度量。对闭、连通、可定向且基本群有限的三维流形，另有球面化结论：它同胚于 \(S^3/\Gamma\)，其中有限群 \(\Gamma\) 自由地以等距变换作用于 \(S^3\)。
+\end{theorem}
+
+该定理采用 \cite[第1.7节]{AschenbrennerFriedlWilton2015}的几何化与球面化表述。Thurston 提出的几何化图景\footnote{William Paul Thurston（1946--2012），美国数学家，在叶状结构、双曲三维流形和低维几何拓扑方面作出基础性贡献。}由 Perelman 的工作完成。\footnote{\OriginalName{Григорий Яковлевич Перельман}（Grigori Yakovlevich Perelman，1966年生），俄罗斯数学家，以 Ricci 流方法解决三维几何化与 Poincaré 猜想。}这里引用这一深层结果，所需 Ricci 流、奇点与手术理论的进一步说明安排在第三卷第27章。
+
+\ProseParagraphBreak
+
+对任意闭、连通、可定向三维流形，先用\cref{g2:thm:prime-decomposition-three}分成素因子；\(S^1\times S^2\) 因子具有 \(S^2\times\mathbb R\) 几何，其余素因子不可约，因而可应用\cref{g2:thm:geometrization-three}。有限基本群的因子属于球面几何；其余因子中的双曲块与 Seifert 块提供了下一层结构。这说明球面分解、环面分解和齐性几何各自处理哪一部分问题。
+
+\ProseParagraphBreak
+
+JSJ 分解与“把每块的内部赋予八种完整有限体积几何之一”的几何分解需要区分。最直观的例子来自 \(\mathrm{Sol}\)。取
+\[
+	A=\begin{pmatrix}2&1\\1&1\end{pmatrix}\in\mathrm{SL}_2(\mathbb Z),\qquad
+	M_A=(T^2\times[0,1])/((x,1)\sim(Ax,0)).
+\]
+其两个特征值为 \(\lambda=(3+\sqrt5)/2\) 和 \(\lambda^{-1}\)。在实特征向量坐标下，\(A\) 变成 \(\operatorname{diag}(\lambda,\lambda^{-1})\)，并保持相应的二维格。令 \(c=\log\lambda\)，格平移与 \((x,y,z)\mapsto(\lambda x,\lambda^{-1}y,z+c)\) 都保持\eqref{g2:eq:sol-metric}。用格平行四边形乘以 \([0,c]\) 作基本区域，便得到紧的 \(\mathrm{Sol}\) 商，其底空间是 \(M_A\)（采用反向圆周参数时单值矩阵为 \(A^{-1}\)，所得映射环面微分同胚）。所以 \(M_A\) 整体已经是一个几何流形。
+
+\ProseParagraphBreak
+
+另一方面，\(M_A\) 的 JSJ 环面是一张环面纤维，切开得到 Seifert 块 \(T^2\times[0,1]\)；这个结论见 \cite[第1.9节]{AschenbrennerFriedlWilton2015}。这里无需为获得 \(\mathrm{Sol}\) 几何而作同一切割。一般的几何分解还须妥善处理 Klein 瓶的扭曲区间邻域；把一个这样的邻域保留为 JSJ 块，与沿其单侧核心 Klein 瓶分开，在几何分解中承担不同作用。完整的调整见同一文献第1.9节。因而 JSJ 的唯一性准确地属于最少的环面族，不应转述为每个 Seifert 纤维结构或每种几何切法都唯一。
 
 \subsection{结补空间、Dehn 填充与几何变化}
 \label{g2:subsec:A04:05}
-待撰写
+
+结的紧外部 \(E_K\) 保留边界环面，便于记录经线、首选纬线和填充映射；其内部则同胚于 \(S^3\setminus K\)，适合放置完整几何。若 \(\operatorname{int}E_K\) 具有完整有限体积双曲度量，就称 \(K\) 为\term[shuangqu jie]{双曲结}[hyperbolic knot]。
+
+\ProseParagraphBreak
+
+双曲结的唯一边界分支对应一个尖点。在双曲上半空间
+\[
+	\mathbb H^3=\{(x,y,t):t>0\},\qquad
+	g=\frac{\mathrm{d}x^2+\mathrm{d}y^2+\mathrm{d}t^2}{t^2}
+\]
+中，对水平方向的秩二平移格取商，再限制到 \(t\ge1\)。令 \(r=\log t\)，便得到尖点模型
+\begin{equation}\label{g2:eq:hyperbolic-torus-cusp}
+	T^2\times[0,\infty),\qquad g=\mathrm{d}r^2+e^{-2r}g_0,
+\end{equation}
+其中 \(g_0\) 是一个平坦环面度量。走向 \(r=\infty\) 的任何道路长度至少等于其 \(r\) 坐标的总变化，故这一端无限远；但它的体积为
+\[
+	\operatorname{Area}(T^2,g_0)\int_0^\infty e^{-2r}\,\mathrm{d}r
+	=\frac12\operatorname{Area}(T^2,g_0)<\infty.
+\]
+完整与有限体积因此可以同时发生：环面横截面收缩得足够快，而纵向距离仍然无限。完整有限体积双曲三维流形的环面端具有这种尖点形式，所用结构结果见 \cite[第1.7节]{AschenbrennerFriedlWilton2015}；第三卷第9章与附录 D 将进一步讨论双曲商的度量性质。
+
+\ProseParagraphBreak
+
+现在沿某个斜率把尖点截断处的边界填入实心环面。拓扑操作总能完成，双曲度量是否能够随之调整则是另一项存在性问题。
+
+\begin{theorem}[双曲 Dehn 填充定理]\label{g2:thm:hyperbolic-dehn-filling}
+	设 \(M\) 是紧、连通、可定向三维流形，\(\partial M\) 恰有一个环面分支，且 \(\operatorname{int}M\) 具有完整、有限体积、截面曲率为 \(-1\) 的度量。则除有限多个无向斜率 \(\alpha\) 外，闭流形 \(M(\alpha)\) 都具有完整双曲度量。
+\end{theorem}
+
+该定理由 Thurston 建立；这里采用 Petronio--Porti 给出的完整证明中的单尖点情形\cite[定理0.1，第1项]{PetronioPorti2000}。原陈述允许多个尖点，并说足够远的填充系数给出双曲结构。对一个尖点，斜率由互素整数对 \((p,q)\) 模去共同变号表示；有界区域内这样的整数对只有有限多个，所以得到上面的有限例外表述。这里“除有限多个”指斜率集合，不能理解为任取一个预先指定的填充就一定双曲。
+
+\ProseParagraphBreak
+
+在结外部上，经线填充 \(E_K(\mu)\cong S^3\) 把删去的管状邻域原样粘回。\(S^3\) 不可能带完整双曲度量：完整双曲三维流形的万有覆盖是 \(\mathbb H^3\)，而单连通的 \(S^3\) 自身就是其万有覆盖，二者一个紧、一个非紧。因此每个双曲结至少有这个例外斜率。
+
+\ProseParagraphBreak
+
+其余斜率把拓扑计算与几何存在联系起来。对 \(p\mu+q\lambda\) 的填充，\cref{g2:prop:knot-filling-homology}给出 \(H_1(S^3_{p/q}(K);\mathbb Z)\cong\mathbb Z/p\mathbb Z\)，其中 \(p=0\) 时记为 \(\mathbb Z\)。若固定 \(q=1\)，不同正整数 \(p\) 给出不同斜率；双曲填充定理说明其中充分大的 \(p\) 都产生闭双曲三维流形。这些流形的一次同调可以是不同阶的有限群。有限的是基本群的阿贝尔化，不能据此把流形归入“有限基本群因子”的球面情形。几何化与同调计算在此回答不同的问题，并能同时应用于同一个填充结果。
+
+\begin{chaptersummary}
+	正则结图把空间链环编码为带上下信息的平面曲线。Reidemeister 操作描述图形的等价变化，Wirtinger 展示把图弧变为经线生成元、把交叉变为共轭关系。链环数既是跨越二链与另一分支的相交数，也是混合交叉符号和的一半；各分支的链环数共同给出外部一维同调的坐标。
+
+	\ProseParagraphBreak
+
+	沿 Seifert 曲面切开并逐层粘合，把正经线绕行实现为覆盖变换 \(t\)。曲面的正、负推移分别给出 \(V\) 与 \(V^{\mathsf T}\)，因此 Alexander 模有行关系矩阵 \(tV-V^{\mathsf T}\)。其最大阶子式理想保证行列式不依赖曲面的选择，只留下单位 \(\pm t^k\) 的歧义。三叶结与八字结的计算同时展示了矩阵、模、多项式和亏格下界之间的联系。
+
+	\ProseParagraphBreak
+
+	Dehn 填充使指定斜率在新流形中围成圆盘，因此在基本群中加入相应的正规关系。对单结的 \(p/q\) 手术，一维同调为 \(\mathbb Z/p\mathbb Z\)；对整数带框架链环，它由对角为框架、非对角为链环数的矩阵呈示。球面切割、最少环面切割与齐性几何进一步揭示三维流形的结构。双曲填充说明同一个结外部的绝大多数斜率可产生双曲闭流形，而经线填充仍回到 \(S^3\)：粘合数据既改变代数关系，也影响整体几何。
+\end{chaptersummary}
+
+\BookExercises
+
+\begin{exercise}\label{g2:ex:trefoil-torus-presentation}
+	设 \(G=\langle a,b\mid aba=bab\rangle\)。令 \(u=aba\)、\(v=ab\)，证明
+	\[
+		G\cong\langle u,v\mid u^2=v^3\rangle.
+	\]
+	写出反向代换，并证明 \(u^2=v^3\) 是 \(G\) 的非平凡中心元素。
+\end{exercise}
+\begin{solution}
+	由 \(aba=bab\)，有 \(u^2=(aba)(bab)=(ab)^3=v^3\)。又有 \(a=v^{-1}u\) 和 \(b=u^{-1}v^2\)。反过来，在 \(\langle u,v\mid u^2=v^3\rangle\) 中以这两式定义 \(a,b\)，则 \(ab=v\)、\(aba=u\)，并且
+	\[
+		bab=u^{-1}v^2v^{-1}u\,u^{-1}v^2
+		=u^{-1}v^3=u.
+	\]
+	因此两组代换互为逆，给出所求同构。元素 \(u^2=v^3\) 既与 \(u\) 交换，也与 \(v\) 交换，故在中心中。将 \(a,b\) 同时送到 \(1\in\mathbb Z\)，关系两边都送到 \(3\)，得到群同态；它把 \(u^2\) 送到 \(6\)，所以此中心元素非平凡，且具有无限阶。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:unlink-hopf-complements}
+	证明两分支平凡链环的群是自由群 \(F_2\)，而 Hopf 链环的群是 \(\mathbb Z^2\)。说明它们的一次同调为何不能区分这两个链环。计算 Hopf 链环群时可使用
+	\[
+		S^3=\{(z_1,z_2)\in\mathbb C^2:|z_1|^2+|z_2|^2=1\},
+		\qquad L=\{z_1=0\}\cup\{z_2=0\}.
+	\]
+\end{exercise}
+\begin{solution}
+	平凡链环有无交叉图，每个分支贡献一个经线，没有交叉关系，所以 Wirtinger 展示给出 \(\langle a,b\mid\ \rangle=F_2\)。在所给的 Hopf 链环模型中，补空间满足 \(z_1,z_2\neq0\)。映射
+	\[
+		(z_1,z_2)\longmapsto\bigl(z_1/|z_1|,z_2/|z_2|,|z_1|^2\bigr)
+	\]
+	将补空间微分同胚地识别为 \(S^1\times S^1\times(0,1)\)，其逆为 \((u,v,s)\mapsto(\sqrt{s}\,u,\sqrt{1-s}\,v)\)。因此补空间形变收缩到环面，群为 \(\mathbb Z^2\)。这个模型的两条核心圆在立体投影后正是一次互套的两个圆，即 Hopf 链环。自由群 \(F_2\) 非交换，而 \(\mathbb Z^2\) 交换，所以两个群不同；将群阿贝尔化后两者都成为 \(\mathbb Z^2\)，也与\cref{g2:prop:link-exterior-homology}的两分支计算一致。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:linking-crossing-bound}
+	设两个有向 \(m\) 分支链环 \(L,L'\) 的分支已经对应。证明，任何将 \(L\) 变成 \(L'\) 的环境同位和交叉改变序列，至少需要
+	\[
+		\sum_{1\leq i<j\leq m}
+		\bigl|\operatorname{lk}(K_i,K_j)-\operatorname{lk}(K_i',K_j')\bigr|
+	\]
+	次混合交叉改变。再考虑把两条同向竖直弧连续交叉 \(2r\) 次后闭合得到的两分支链环，其中 \(r\geq1\)，各交叉号均为 \(+1\)。证明使它变为平凡链环所需的最少混合交叉改变数恰为 \(r\)。
+\end{exercise}
+\begin{solution}
+	环境同位保持全部两两链环数，自交叉改变也保持它们。一次发生在第 \(i,j\) 分支之间的混合交叉改变，只将该对分支的链环数改变 \(1\) 或 \(-1\)。所以每一对分支至少要发生相应绝对差那么多次改变；每次改变只属于一对分支，求和即得下界。
+
+	题给闭合图的两个分支交替位于左右位置，\(2r\) 次交叉后各自回到原位置，全部交叉均为混合交叉。由\eqref{g2:eq:linking-crossings}，其链环数为 \(r\)，故至少需要 \(r\) 次改变。将连续交叉分成 \(r\) 对，每对中改变一个交叉。改变后该对成为一正一负的相邻交叉，可用第二型 Reidemeister 操作一起消去。消去全部交叉后剩下两个不相交的标准闭合圆，所以 \(r\) 次已经足够。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:seifert-stabilized-diagram}
+	一个有向结图有 \(c\) 个交叉、\(s\) 个 Seifert 圆。分别考虑加入一个 Reidemeister 第一类小圈，以及在两条方向相反的平行弧之间加入一个可消去的第二类交叉对。求相应的 \(c,s\) 变化，并说明 Seifert 算法给出的曲面亏格如何变化。第二种情况下区分两条弧属于同一个还是不同的 Seifert 圆。
+\end{exercise}
+\begin{solution}
+	第一类小圈增加一个交叉。定向平滑化会切出一个新的小圆，故 \((c,s)\) 变为 \((c+1,s+1)\)，公式 \((c-s+1)/2\) 不变。曲面上相应新增一个圆盘和一条连接它的带，两者可以一起缩去。
+
+	对方向相反的两条弧，第二类交叉对平滑化后在两交叉之间形成一个新小圆，剩余两条弧的连接方式则作一次交换。若原弧位于不同的 Seifert 圆上，交换连接把那两个圆并成一个圆，再加小圆，总数不变；故 \((c,s)\) 变为 \((c+2,s)\)，算法曲面的亏格增加 \(1\)。若原弧位于同一个 Seifert 圆上，交换连接把该圆分成两个，再加小圆，圆数增加 \(2\)；故 \((c,s)\) 变为 \((c+2,s+2)\)，亏格不变。这说明结图改变虽不改变结的最小亏格，却可能给算法曲面增加一个柄。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:alexander-connected-sum}
+	设有向结 \(K,J\subset S^3\) 分别有 Seifert 矩阵 \(V,W\)。在互不相交的三维球内取相应曲面，用一条无扭带连接边界上的短弧，得到连通和 \(K\mathbin{\#}J\) 的曲面。证明它有 Seifert 矩阵 \(V\oplus W\)，并求三叶结与八字结连通和的 Alexander 模、Alexander 多项式和亏格。
+\end{exercise}
+\begin{solution}
+	连接带不产生新的一次同调类：把带的中线缩成连接两个曲面的区间，所得空间的一次同调是原两曲面一次同调的直和。取原来的两组基，跨越两球的链环数为零，因为其中一条曲线可在其所在球内张成二维链，与另一球内的曲线不相交。两球内的推移与原先相同，故矩阵为 \(V\oplus W\)。
+
+	于是表示矩阵也为块对角阵，得到
+	\[
+		A_{K\#J}\cong A_K\oplus A_J,
+		\qquad \Delta_{K\#J}\doteq\Delta_K\Delta_J.
+	\]
+	对题中两结，
+	\[
+		A_{3_1\#4_1}\cong
+		\Lambda/(t^2-t+1)\oplus\Lambda/(t^2-3t+1),
+	\]
+	且可取
+	\[
+		\Delta_{3_1\#4_1}(t)
+		=(t^2-t+1)(t^2-3t+1)
+		=t^4-4t^3+5t^2-4t+1.
+	\]
+	其跨度为 \(4\)，故亏格至少为 \(2\)；连接两张亏格一曲面的无扭带给出亏格二曲面，所以亏格恰为 \(2\)。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:alexander-mirror-reversal}
+	设 \(V\) 是有向结 \(K\) 的 Seifert 矩阵。证明反转结方向可用矩阵 \(V^{\mathsf T}\)，取镜像可用矩阵 \(-V^{\mathsf T}\)。由此证明 Alexander 多项式既不能区分一个结与其反向，也不能区分一个结与其镜像。
+\end{exercise}
+\begin{solution}
+	反转曲面方向，使其边界方向变成反向的结；环境方向不变，故正法向变为原负法向。仍取原一次同调基，矩阵元变为 \(\operatorname{lk}(a_i^-,a_j)=V_{ji}\)，得到 \(V^{\mathsf T}\)。
+
+	取一个反转 \(S^3\) 方向的镜像映射 \(r\)，曲面按 \(r\) 推送的方向定向。由于环境方向反转，镜像曲面的正推移对应原曲面的负推移；链环数又因环境反向而变号。因此镜像矩阵元为 \(-\operatorname{lk}(a_i^-,a_j)=-V_{ji}\)。
+
+	若 \(V\) 为 \(2g\) 阶，则
+	\[
+		\det(tV^{\mathsf T}-V)=\det(tV-V^{\mathsf T}),
+	\]
+	而把整个矩阵再乘 \(-1\) 不改变偶数阶行列式。故两种操作都保持 Alexander 多项式的等价类。这里直接使用的是给定矩阵的关系，结是否同位于其镜像仍需别的不变量判断。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:alexander-nonprincipal-ring}
+	在 \(\Lambda=\mathbb Z[t,t^{-1}]\) 中证明理想 \(I=(2,t-1)\) 不是主理想。再设 \(M=\Lambda/I\)，写出它的一组有限表示并求零阶子式理想；说明为何对一般有限表示模，不能仅取某个方阵行列式来替代这一理想。
+\end{exercise}
+\begin{solution}
+	若 \(I=(f)\)，则 \(f\) 整除 \(2\)。把最低指数移到零后，比较乘积的最高和最低指数可知 \(f\) 只能相差单位于 \(1\) 或 \(2\)。\(I\ne\Lambda\)，因为代入 \(t=1\) 再模 \(2\) 的环同态 \(\Lambda\to\mathbb F_2\) 把 \(I\) 杀死而不把 \(1\) 杀死；故 \(f\) 不能是单位。另一方面，\(2\) 不整除 \(t-1\)，因为后者有奇数系数，故 \(f\) 也不能相差单位于 \(2\)。矛盾说明 \(I\) 不是主理想。
+
+	模 \(M\) 有一个生成元 \(x\) 以及两条关系 \(2x=0\)、\((t-1)x=0\)。以行为关系的矩阵为
+	\[
+		P=\begin{pmatrix}2\\t-1\end{pmatrix}.
+	\]
+	其所有一阶子式生成的正是 \(I\)。若 \(M\) 还能由方阵表示，表示无关性将迫使 \(I\) 由该方阵的行列式生成，与已经证明的非主性矛盾。结的 Alexander 模之所以能用一个行列式，是因为切开 Seifert 曲面提供了方阵表示。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:filling-core-generator}
+	在 \(S^3_{p/q}(K)\) 中，设 \(C\) 是新填入实心环面的核心圆。证明 \([C]\) 生成填充流形的一维整数同调。进一步，若选择 \(\eta=r\mu+s\lambda\) 满足 \(ps-qr=1\)，求 \([C]\) 在经线生成元下的表达，并解释它为何不依赖补曲线 \(\eta\) 的选择。
+\end{exercise}
+\begin{solution}
+	选择核心取向，使实心环面的经向补曲线对应于 \(\eta\)，则 \([C]=[\eta]=r[\mu]\)，因为 \([\lambda]=0\)。由 \(ps-qr=1\) 得 \(qr\equiv-1\pmod p\)。若 \(p\ne0\)，\(r\) 与 \(p\) 互素，故 \(r[\mu]\) 生成 \(\mathbb Z/p\mathbb Z\)。若 \(p=0\)，本原性给出 \(q=\pm1\)，等式进一步给出 \(r=\mp1\)，所以它也生成 \(\mathbb Z\)。同样满足行列式为 \(1\) 的另一个补曲线形如 \(\eta+k\alpha\)，故 \(r\) 变为 \(r+kp\)，在商群中不改变该类；若将核心取向反转，则生成元相应取负。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:chain-surgery-eight}
+	取三个有向圆构成的链环，相邻两圆的链环数为 \(1\)，第一圆与第三圆的链环数为零。三个整数框架依次为 \(2,3,2\)。计算手术后闭三维流形的全部整数同调群，并写出三条经线在同一个循环生成元下的表达。
+\end{exercise}
+\begin{solution}
+	关系矩阵及相应关系是
+	\[
+		B=\begin{pmatrix}2&1&0\\1&3&1\\0&1&2\end{pmatrix},
+		\qquad 2\mu_1+\mu_2=0,\quad
+		\mu_1+3\mu_2+\mu_3=0,\quad \mu_2+2\mu_3=0.
+	\]
+	前两式依次消去 \(\mu_2,\mu_3\)，得到 \(\mu_2=-2\mu_1\)、\(\mu_3=5\mu_1\)。第三式变成 \(8\mu_1=0\)，且没有其他关系。因此 \(H_1\cong\mathbb Z/8\mathbb Z\)，这些等式也给出了所求的经线类。流形闭、连通、可定向，所以 \(H_0=H_3=\mathbb Z\)；整数对偶与万有系数定理给出 \(H_2\cong\operatorname{Hom}(H_1,\mathbb Z)=0\)。其他次数为零。行列式 \(\det B=8\) 与群的阶相符，但只有行列式还不足以排除一般情形下出现多个循环因子；本题的消元证明了该群确实循环。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:split-surgery-sum}
+	设带框架链环 \(L=L_1\sqcup L_2\) 的两部分位于 \(S^3\) 中两个互不相交的三维球内。证明沿 \(L\) 手术所得流形是分别沿 \(L_1,L_2\) 手术所得流形的连通和。由此辨认 \(m\) 个互相分离的零框架无结的手术流形，并计算其基本群。
+\end{exercise}
+\begin{solution}
+	取一个将两部分分开的二球面，令其将 \(S^3\) 分成两个球。管状邻域和全部填充都在球的内部进行，因此分隔球面在手术后保持不变。对其两侧各补一个三维球，分别得到单独沿 \(L_1,L_2\) 手术的闭流形；反过来，移去这两个补球并沿边界粘合，正是连通和的定义。因此手术结果是两者的连通和。
+
+	\cref{g2:exm:unknot-filling}已给出一个零框架无结的手术结果为 \(S^1\times S^2\)。反复使用前一结论，\(m\) 个分离的零框架无结给出 \(\#_{i=1}^{m}(S^1\times S^2)\)。沿分隔球面应用 van Kampen 定理，交集可取为 \(S^2\) 的领圈，基本群为零，故连通和的基本群是各部分基本群的自由积，即 \(\mathbb Z*\cdots*\mathbb Z\)，为秩 \(m\) 的自由群。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:three-connected-sum-homology}
+	设 \(P\) 为闭、连通、可定向三维流形，且 \(H_1(P;\mathbb Z)=\mathbb Z/5\mathbb Z\)。对 \(r\ge1\)，令 \(M_r=P\#\bigl(\#^r(S^1\times S^2)\bigr)\)。计算所有次数的整数同调，用 \(\pi_1(P)\) 表示 \(\pi_1(M_r)\)，说明 \(r\) 如何从同调中恢复，并在 \(M_r\) 内指出一张非分离球面。
+\end{exercise}
+\begin{solution}
+	\Cref{g2:eq:three-connected-sum-groups}给出 \(H_1(M_r;\mathbb Z)=\mathbb Z^r\oplus\mathbb Z/5\mathbb Z\)。\(M_r\) 闭、连通且可定向，故 \(H_0(M_r;\mathbb Z)=H_3(M_r;\mathbb Z)=\mathbb Z\)，高于三次的群为零。由\cref{g2:cor:closed-poincare-duality,g2:thm:uct-cohomology}，
+	\[
+		H_2(M_r;\mathbb Z)\cong H^1(M_r;\mathbb Z)
+		\cong\operatorname{Hom}(H_1(M_r;\mathbb Z),\mathbb Z)
+		\cong\mathbb Z^r.
+	\]
+	这里万有系数中的 \(\operatorname{Ext}(H_0(M_r),\mathbb Z)\) 为零，因为 \(H_0(M_r)=\mathbb Z\) 自由。于是 \(r\) 就是第一 Betti 数，也等于二次同调的秩。基本群则为 \(\pi_1(P)*F_r\)，其中 \(F_r\) 是 \(r\) 个无限循环群的自由积。
+
+	在一个 \(S^1\times S^2\) 因子内取球面 \(\{\theta_0\}\times S^2\)，并把构造连通和的小球选在其外。切开这张球面后，该因子变成连通的 \([0,1]\times S^2\)；沿其他连通和颈部接上的部分仍与它相连，所以这张球面在 \(M_r\) 中非分离。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:sol-torus-bundle-group}
+	对正文中的 \(A=\begin{pmatrix}2&1\\1&1\end{pmatrix}\)，设 \(M_A\) 为其环面映射环面。求 \(\pi_1(M_A)\) 的展示及 \(H_1(M_A;\mathbb Z)\)，证明环面纤维在基本群上单射，并说明 \(M_A\) 与 \(S^1\times S^2\) 虽有相同的一次整数同调却不同胚。
+\end{exercise}
+\begin{solution}
+	记环面两条坐标环路为 \(a,b\)，沿底圆方向的一条环路为 \(t\)，选择其方向使共轭作用为 \(A\)。切开映射环面后用 van Kampen 粘回，得到
+	\[
+		\pi_1(M_A)=\langle a,b,t\mid [a,b]=1,\ tat^{-1}=a^2b,\ tbt^{-1}=ab\rangle
+		\cong\mathbb Z^2\rtimes_A\mathbb Z.
+	\]
+	半直积的乘法是 \((v,n)(w,m)=(v+A^nw,n+m)\)。每个字可用展示中的共轭关系化成 \(a^ub^vt^n\)；其到半直积的像唯一确定三个整数，反过来这些三元组按同一关系相乘，因而给出所写同构。特别地，纤维群由 \((v,0)\) 表示，\(v\mapsto(v,0)\) 单射。
+
+	阿贝尔化后，两条共轭关系给出 \([a]+[b]=0\) 与 \([a]=0\)，所以 \([a]=[b]=0\)，而 \([t]\) 自由。等价地，
+	\[
+		H_1(M_A;\mathbb Z)\cong\mathbb Z\oplus\operatorname{coker}(A-I),\qquad
+		A-I=\begin{pmatrix}1&1\\1&0\end{pmatrix},\quad\det(A-I)=-1,
+	\]
+	故余核为零，\(H_1(M_A;\mathbb Z)=\mathbb Z\)。但 \(\pi_1(M_A)\) 非阿贝尔，例如 \(tat^{-1}=a^2b\ne a\)，后一不等式由纤维群单射保证。\(S^1\times S^2\) 的基本群为阿贝尔群 \(\mathbb Z\)，两者因此不同胚。
+\end{solution}
+
+\begin{exercise}\label{g2:ex:infinitely-many-hyperbolic-fillings}
+	设 \(K\subset S^3\) 为双曲结，对正整数 \(n\) 记 \(Y_n=E_K(n\mu+\lambda)\)。证明存在整数 \(N\)，使所有 \(n>N\) 的 \(Y_n\) 都是闭双曲三维流形且两两不同胚。再证明这些 \(Y_n\) 都是有理同调三维球面，尽管其整数一次同调群的阶趋于无穷。
+\end{exercise}
+\begin{solution}
+	整数对 \((n,1)\) 互素，且在模去共同变号后仍互不相同，故给出无限多个不同斜率。\Cref{g2:thm:hyperbolic-dehn-filling}的例外斜率只有有限多个，取 \(N\) 大于其中出现在本列的所有正整数系数即可。
+
+	\Cref{g2:prop:knot-filling-homology}给出 \(H_1(Y_n;\mathbb Z)=\mathbb Z/n\mathbb Z\)。不同正整数的有限循环群阶不同，所以相应 \(Y_n\) 不同胚。每个 \(Y_n\) 闭、连通、可定向，零次和三次有理同调为 \(\mathbb Q\)。\Cref{g2:thm:uct-homology}给出一次有理同调为零；由\cref{g2:cor:closed-poincare-duality}的域系数版本，二次有理同调与一次有理上同调同构，也为零。因此 \(H_*(Y_n;\mathbb Q)\cong H_*(S^3;\mathbb Q)\)。这里有理系数恰好消去了阶为 \(n\) 的整数挠群；这解释了有理同调相同为何容许整数挠子群不断增大。
+\end{solution}
