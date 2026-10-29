@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 2.1 局部化与局部环
 % 纲要位置：几何学计划纲要.md，第 5074 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,236 @@
 \section{局部化与局部环}
 \label{g5:sec:0201}
 
-待撰写
+在\cref{g5:prop:model-local-ring}中，一个点附近的函数写成 \(a/b\)，其中分母在该点不为零。这个条件只规定哪些元素可以作分母，并不依赖多项式的具体形式。现在从任意交换环出发，构造同时把一批元素变成单位的环。环中可能有零因子，因而需要保留第一章已经出现的现象：允许更多分母，有时也会使非零元素变为零。
+
+\ProseParagraphBreak
+
+本章的环均交换且含幺，环同态保持单位元，模满足 \(1m=m\)。允许零环；局部环则按非零环理解。除非另作说明，基域不要求代数闭。局部化的基本构造和理想对应可对照\cite[第4节，第20--24页]{Matsumura1989}。
 
 \subsection{乘法集、分式及泛性质}
 \label{g5:subsec:0201:01}
-待撰写
+
+设 \(A\) 为环。包含 \(1\)、且对乘法封闭的子集 \(S\subseteq A\) 称为\term[chengfaji]{乘法集}[multiplicative set]。典型例子是
+\[
+	\{1,f,f^2,\ldots\},\qquad A\setminus\mathfrak p
+	\quad(\mathfrak p\text{ 为素理想}).
+\]
+后一集合封闭正是素性条件的另一种说法。这里允许 \(0\in S\)；这种情形最终得到零环。
+
+\ProseParagraphBreak
+
+希望把 \((a,s)\in A\times S\) 写成分式 \(a/s\)。若允许分母成为单位，则任何被 \(S\) 中某个元素杀掉的元素也必须成为零。因此适当的等价关系是
+\[
+	(a,s)\sim(b,t)
+	\quad\Longleftrightarrow\quad
+	u(ta-sb)=0\text{ 对某个 }u\in S.
+\]
+自反性和对称性直接成立。若 \(u(ta-sb)=0\) 且 \(v(rb-tc)=0\)，则
+\[
+	uvt(ra-sc)
+	=uv\bigl[r(ta-sb)+s(rb-tc)\bigr]=0,
+\]
+而 \(uvt\in S\)，所以关系也传递。
+
+\begin{definition}\label{g5:def:ring-localization}
+	设 \(A\) 为交换含幺环，\(S\subseteq A\) 为乘法集。以上等价类组成的集合记作 \(S^{-1}A\)，定义
+	\[
+	\frac as+\frac bt=\frac{at+bs}{st},\qquad
+	\frac as\frac bt=\frac{ab}{st}.
+	\]
+	这个环称为 \(A\) 关于 \(S\) 的\term[jubuhua]{局部化}[localization]，自然同态为 \(\iota:A\to S^{-1}A,\ a\mapsto a/1\)。 对 \(S=\{f^n:n\geq0\}\) 记作 \(A_f\)。
+\end{definition}
+\symidx{\(S^{-1}A,\ A_f\)：环的局部化}
+
+说明运算不依赖代表元。例如 \(u(s'a-sa')=0\) 时，把 \(a/s\) 换成 \(a'/s'\)，加法所得两个分子的交叉差是 \(t^2(s'a-sa')\)，乘法所得的交叉差是 \(bt(s'a-sa')\)，都被 \(u\) 杀掉。再对第二个分式作同样比较即可。环公理由通分后的环公理给出，零元、单位元分别是 \(0/1,1/1\)，而 \(s/1\) 的逆为 \(1/s\)。
+
+\begin{proposition}\label{g5:prop:localization-zero}
+	设 \(A\) 为交换含幺环，\(S\) 为乘法集。则
+	\[
+	\frac as=0\ \Longleftrightarrow\
+	ta=0\text{ 对某个 }t\in S,\qquad
+	\ker\iota=\{a\in A:ta=0\text{ 对某个 }t\in S\}.
+	\]
+	\(S^{-1}A\) 为零环当且仅当 \(0\in S\)。自然同态 \(\iota\) 单射当且仅当对每个 \(s\in S\)，乘法 \(a\mapsto sa\) 在 \(A\) 上单射。
+\end{proposition}
+\begin{proof}
+	第一式是 \(a/s=0/1\) 的定义，核的公式随之得到。取 \(a=s=1\)，可知 \(1/1=0/1\) 当且仅当某个 \(t\in S\) 为零。最后，核为零等价于没有非零元素被 \(S\) 中任何元素杀掉，这正是所述乘法映射的单射性。
+\end{proof}
+
+例如在 \(A=k[x,y]/(xy)\) 中，\(\overline y\ne0\)，但在 \(A_{\overline x}\) 中 \(\overline y/1=0\)，因为 \(\overline x\,\overline y=0\)。事实上
+\[
+	A_{\overline x}\cong k[x,x^{-1}],
+\]
+同构把 \(x\) 送到 \(x\)，把 \(y\) 送到零。局部化在这里保留 \(x\ne0\) 的轴上部分，也同时去掉了另一条轴的函数信息。
+
+\begin{theorem}[局部化的泛性质]\label{g5:thm:localization-universal}
+	设 \(A,B\) 为交换含幺环，\(S\subseteq A\) 为乘法集，\(\varphi:A\to B\) 为环同态。若每个 \(\varphi(s)\)、\(s\in S\) 都是 \(B\) 的单位，则存在唯一环同态
+	\[
+	\widetilde\varphi:S^{-1}A\longrightarrow B,\qquad
+	\widetilde\varphi(a/s)=\varphi(a)\varphi(s)^{-1},
+	\]
+	满足 \(\widetilde\varphi\circ\iota=\varphi\)。
+\end{theorem}
+\begin{proof}
+	若 \(u(ta-sb)=0\)，应用 \(\varphi\) 后，\(\varphi(u),\varphi(s),\varphi(t)\) 都可逆，所以 \(\varphi(a)\varphi(s)^{-1}=\varphi(b)\varphi(t)^{-1}\)。故公式良定义；通分公式说明它保持加法、乘法及单位元。另一方面，每个分式都是 \((a/1)(s/1)^{-1}\)，所以任何满足要求的同态都必须采用这个公式，唯一性成立。
+\end{proof}
+
+泛性质使不同的构造可直接比较。例如先把 \(f\) 变成单位，再把 \(g\) 变成单位，与一次把 \(fg\) 变成单位得到同构的环：
+\[
+	(A_f)_{g/1}\cong A_{fg}.
+\]
+原因是 \(fg\) 可逆当且仅当 \(f,g\) 都可逆；两边的同态由泛性质唯一确定，复合在 \(A\) 上为恒等，因而在局部化上也为恒等。
 
 \subsection{素理想处的局部化}
 \label{g5:subsec:0201:02}
-待撰写
+
+把指定点之外不消失的函数都作分母，会得到局部环。对一般环，“指定点”的代数条件由一个素理想承担。先说明分式属于扩张理想的判据。若 \(I\subseteq A\) 是理想，则由 \(\iota(I)\) 生成的理想等于
+\[
+	S^{-1}I=\{a/s:a\in I,\ s\in S\}.
+\]
+有限个这种分式可通分，分子仍在 \(I\) 中，故右侧确实是理想。对任意代表元有
+\begin{equation}\label{g5:eq:localized-ideal-membership}
+	\frac as\in S^{-1}I
+	\quad\Longleftrightarrow\quad
+	ta\in I\text{ 对某个 }t\in S.
+\end{equation}
+若 \(a/s=b/u\)、\(b\in I\)，取 \(v\in S\) 使 \(v(ua-sb)=0\)，则 \(vua=vsb\in I\)。反过来，\(ta\in I\) 时写成 \(a/s=ta/(ts)\) 即可。
+
+\begin{theorem}\label{g5:thm:prime-localization}
+	设 \(A\) 为交换含幺环，\(S\subseteq A\) 为乘法集。扩张与收缩给出保包含关系的双射
+	\[
+	\{\mathfrak p\subseteq A:\mathfrak p\text{ 素且 }\mathfrak p\cap S=\varnothing\}
+	\ \longleftrightarrow\ \operatorname{Spec}(S^{-1}A),
+	\qquad \mathfrak p\longmapsto S^{-1}\mathfrak p.
+	\]
+	这里 \(\operatorname{Spec}R\) 暂表示环 \(R\) 的全部素理想所成的集合。 对 \(A\) 的任一素理想 \(\mathfrak p\)，环 \(A_{\mathfrak p}=(A\setminus\mathfrak p)^{-1}A\) 是局部环，其唯一极大理想为 \(\mathfrak pA_{\mathfrak p}\)。
+\end{theorem}
+\begin{proof}
+	若 \(\mathfrak p\cap S=\varnothing\)，由\eqref{g5:eq:localized-ideal-membership}及素性， \(a/s\in S^{-1}\mathfrak p\) 等价于 \(a\in\mathfrak p\)。 因此扩张是真理想，且两个分式的乘积属于它时，至少一个分式属于它。它为素理想，收缩恰为 \(\mathfrak p\)。
+
+	若 \(\mathfrak q\subset S^{-1}A\) 素，收缩 \(\mathfrak p=\iota^{-1}(\mathfrak q)\) 素，且与 \(S\) 不交，因为单位不属于真理想。 又因 \(s/1\) 可逆，\(a/s\in\mathfrak q\) 当且仅当 \(a/1\in\mathfrak q\)，即 \(a\in\mathfrak p\)。故 \(\mathfrak q=S^{-1}\mathfrak p\)，两种操作互逆。
+
+	取 \(S=A\setminus\mathfrak p\)。若 \(a/s\notin\mathfrak pA_{\mathfrak p}\)，则 \(a\notin\mathfrak p\)，其逆就是 \(s/a\)。故该理想之外全是单位，一切真理想都包含在它里面，它是唯一极大理想。
+\end{proof}
+\symidx{\(A_{\mathfrak p}\)：环在素理想 \(\mathfrak p\) 处的局部化}
+
+这里沿用第一章的定义：有唯一极大理想的非零环称为局部环，常写为 \((R,\mathfrak m)\)。任一非零环的真理想都包含于极大理想：包含该理想的真理想组成偏序集，每条链的并仍为真理想，因为若并含 \(1\)，链中某个理想就含 \(1\)；极大性原理遂给出极大元。因此在局部环中，非单位恰组成 \(\mathfrak m\)。特别地，\(1-a\) 在 \(a\in\mathfrak m\) 时必为单位，否则 \(1=(1-a)+a\in\mathfrak m\)。
+
+\begin{example}\label{g5:exm:localizing-axis}
+	设 \(k\) 为域，\(A=k[x,y]/(xy)\)，以下用 \(x,y\) 表示剩余类。 在素理想 \(\mathfrak p=(x)\) 处，\(y\) 可逆，故 \(x=0\)；所有非零 \(k[y]\) 元素也成为单位，得到
+	\[
+	A_{\mathfrak p}\cong k(y).
+	\]
+	在 \(\mathfrak m=(x,y)\) 处，\(x,y\) 都非零。例如若 \(x/1=0\)，则有 \(s\notin\mathfrak m\) 使 \(sx\in(xy)\) 于 \(k[x,y]\)；约去 \(x\) 得 \(s\in(y)\)，矛盾。对 \(y\) 同理。因此 \(A_{\mathfrak m}\) 仍有两个非零元素之积为零，能够看到两条轴在原点相遇。
+\end{example}
+
+整环 \(A\) 在零素理想处的局部化是分式域 \(\operatorname{Frac}A\)。对素数 \(p\)，\(\mathbb Z_{(p)}\) 的元素是分母不被 \(p\) 整除的有理数，其极大理想由 \(p\) 生成。这些例子表明，局部化既可取在几何点处，也可取在一个不可约分支所对应的素理想处。
 
 \subsection{单位、剩余域与局部同态}
 \label{g5:subsec:0201:03}
-待撰写
+
+局部环把“不在指定素理想中”变成“可除”。在一般乘法集下，单位也有一个直接的判据。
+
+\begin{proposition}\label{g5:prop:units-residue-fields}
+	设 \(A\) 为交换含幺环，\(S\) 为乘法集。分式 \(a/s\in S^{-1}A\) 可逆当且仅当 \((a)\cap S\ne\varnothing\)。 对每个素理想 \(\mathfrak p\subset A\)，有自然同构
+	\[
+	\kappa(\mathfrak p):=A_{\mathfrak p}/\mathfrak pA_{\mathfrak p}
+	\cong\operatorname{Frac}(A/\mathfrak p).
+	\]
+\end{proposition}
+\begin{proof}
+	若 \(ab\in S\)，则 \(sb/(ab)\) 是 \(a/s\) 的逆。反过来，若 \((a/s)(b/t)=1\)，存在 \(u\in S\) 使 \(u(ab-st)=0\)。于是 \(a(ub)=ust\in S\)，得到判据。
+
+	映射
+	\[
+	A_{\mathfrak p}\longrightarrow\operatorname{Frac}(A/\mathfrak p),
+	\qquad a/s\longmapsto\overline a/\overline s
+	\]
+	良定义，因为 \(s\notin\mathfrak p\)。分式域中的每个分母都可如此提升，故映射满。其核恰为分子属于 \(\mathfrak p\) 的分式，即 \(\mathfrak pA_{\mathfrak p}\)，商环同构成立。
+\end{proof}
+
+对局部环 \((R,\mathfrak m)\)，域 \(R/\mathfrak m\) 称为它的\term[shengyuyu]{剩余域}[residue field]。上式的 \(\kappa(\mathfrak p)\) 是点 \(\mathfrak p\) 的剩余域。\symidx{\(\kappa(\mathfrak p)\)：素理想 \(\mathfrak p\) 处的剩余域} 在有限型代数闭域代数的极大理想处，弱零点定理使剩余域等于基域；在 \(k[x,y]/(xy)\) 的 \((x)\) 处，剩余域却是 \(k(y)\)。两者记录的分别是闭点上的值和沿整条不可约分支的有理函数值。
+
+\begin{definition}\label{g5:def:local-homomorphism}
+	设 \((R,\mathfrak m)\)、\((T,\mathfrak n)\) 为局部环。满足 \(\varphi(\mathfrak m)\subseteq\mathfrak n\) 的环同态 \(\varphi:R\to T\) 称为\term[jubutongtai]{局部同态}[local homomorphism]。
+\end{definition}
+
+这个条件等价于 \(\varphi^{-1}(\mathfrak n)=\mathfrak m\)：\(\mathfrak m\) 外的元素是单位，其像仍为单位，因而不可能落在 \(\mathfrak n\) 中。局部同态于是诱导剩余域的嵌入 \(R/\mathfrak m\hookrightarrow T/\mathfrak n\)。 一般的局部环之间的环同态未必局部。例如
+\[
+	k[t]_{(t)}\hookrightarrow k(t)
+\]
+把非单位 \(t\) 送成单位，靶的极大理想是零，所以不是局部同态。
+
+\ProseParagraphBreak
+
+若 \(\varphi:A\to B\) 为环同态，\(\mathfrak q\subset B\) 素，令 \(\mathfrak p=\varphi^{-1}(\mathfrak q)\)，则有自然局部同态
+\[
+	A_{\mathfrak p}\longrightarrow B_{\mathfrak q},
+	\qquad a/s\longmapsto\varphi(a)/\varphi(s).
+\]
+分母可用，是因为 \(s\notin\mathfrak p\) 意味着 \(\varphi(s)\notin\mathfrak q\)；分子在 \(\mathfrak p\) 时像在 \(\mathfrak q\)，故同态局部。这是以后几何映射在点附近诱导环同态的基本形式。
 
 \subsection{理想扩缩和饱和}
 \label{g5:subsec:0201:04}
-待撰写
+
+对环同态 \(\varphi:A\to B\)，理想 \(I\subseteq A\) 的\term[kuozhanglixiang]{扩张}[extension]是 \(IB\)，由 \(\varphi(I)\) 生成；理想 \(J\subseteq B\) 的\term[shousuolixiang]{收缩}[contraction]是 \(\varphi^{-1}(J)\)。一般只有 \(I\subseteq(IB)^c\)、\(J^cB\subseteq J\)。局部化时，后一包含总是等号，前一包含的差别恰由可用分母决定。
+
+\begin{proposition}\label{g5:prop:localization-ideals}
+	设 \(A\) 为交换含幺环，\(S\subseteq A\) 为乘法集，\(\iota:A\to S^{-1}A\) 为自然同态。则
+	\[
+	\iota^{-1}(S^{-1}I)=
+	I:S^\infty:=\{a\in A:sa\in I\text{ 对某个 }s\in S\},
+	\qquad
+	J=S^{-1}\iota^{-1}(J).
+	\]
+	因而扩缩给出 \(S^{-1}A\) 的理想与 \(A\) 中满足 \(I:S^\infty=I\) 的理想之间的双射。 若 \(\overline S\) 是 \(S\) 在 \(A/I\) 中的像，则
+	\[
+	S^{-1}A/S^{-1}I\cong\overline S^{-1}(A/I).
+	\]
+	若 \(A\) 是 Noether 环，则 \(S^{-1}A\) 也是 Noether 环。
+\end{proposition}
+\begin{proof}
+	第一个公式是\eqref{g5:eq:localized-ideal-membership}在分母为 \(1\) 时的情形。 若 \(a/s\in J\)，乘以单位 \(s/1\) 得 \(a/1\in J\)，所以 \(a\in\iota^{-1}(J)\)；反向包含来自理想性。这证明第二个公式，进而证明双射。 映射 \(a/s\mapsto\overline a/\overline s\) 满，其核是满足某个 \(ta\in I\) 的分式，故核为 \(S^{-1}I\)，商环公式得证。 最后若 \(A\) Noether，每个收缩理想由有限个 \(a_1,\ldots,a_r\) 生成，其扩张由 \(a_1/1,\ldots,a_r/1\) 生成；第二个公式说明这已涵盖局部化中的每个理想。
+\end{proof}
+
+当 \(S=\{f^n:n\geq0\}\) 时，上式就是第一章消去计算中的饱和 \(I:f^\infty\)。例如 \((xy):x^\infty=(y)\) 于 \(k[x,y]\)，因为可逆的 \(x\) 不再对方程 \(xy=0\) 贡献一个分支。
+
+\ProseParagraphBreak
+
+现在给全部素理想一个拓扑，使“在某点附近”成为统一的说法。环 \(A\) 的\term[supuxiang]{素谱}[prime spectrum]是集合 \(\operatorname{Spec}A\)，其闭集定义为
+\[
+	V(I)=\{\mathfrak p\in\operatorname{Spec}A:I\subseteq\mathfrak p\},
+	\qquad I\subseteq A\text{ 为理想}.
+\]
+素性给出 \(V(IJ)=V(I)\cup V(J)\)，且 \(\bigcap_\lambda V(I_\lambda)=V(\sum_\lambda I_\lambda)\)； 配合 \(V(0)=\operatorname{Spec}A\)、\(V(A)=\varnothing\)，得到 Zariski 拓扑。 记 \(D(f)=\{\mathfrak p:f\notin\mathfrak p\}\)。 这里的点包括非极大素理想；\(V(I)\) 表示含 \(I\) 的素理想集，与第一章的经典零点集须按所在空间区分。
+\symidx{\(\operatorname{Spec}A\)：环 \(A\) 的素谱}
+
+\begin{proposition}\label{g5:prop:radical-prime-intersection}
+	设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想。则
+	\[
+	\sqrt I=\bigcap_{\mathfrak p\supseteq I,\ \mathfrak p\text{ 素}}\mathfrak p,
+	\]
+	其中空族理想的交约定为 \(A\)。因而 \(V(I)=V(J)\) 当且仅当 \(\sqrt I=\sqrt J\)。
+\end{proposition}
+\begin{proof}
+	若 \(a^n\in I\subseteq\mathfrak p\)，素性给出 \(a\in\mathfrak p\)，所以左侧包含于右侧。 若 \(a\notin\sqrt I\)，在 \(A/I\) 中 \(\overline a\) 的任何幂都非零；故 \((A/I)_{\overline a}\ne0\)。取其一个极大理想，依次收缩到 \(A/I\) 和 \(A\)，得到一个含 \(I\) 而不含 \(a\) 的素理想。这证明反向包含。 最后，同一个闭集给出同一族素理想的交，所以给出同一根式；反方向由素理想都是根式理想立即得到。
+\end{proof}
+
+\begin{proposition}\label{g5:prop:spec-basic-opens}
+	设 \(A\) 为交换含幺环。主开集 \(D(f)\) 构成 \(\operatorname{Spec}A\) 的开基， \(D(f)\cap D(g)=D(fg)\)，且每个 \(D(f)\) 都是拟紧的，即任意开覆盖均有有限子覆盖。 局部化的素理想对应给出同胚
+	\[
+	\operatorname{Spec}A_f\cong D(f).
+	\]
+	特别地，\(\operatorname{Spec}A=D(1)\) 拟紧。
+\end{proposition}
+\begin{proof}
+	对任何理想 \(I\)，有 \(\operatorname{Spec}A\setminus V(I)=\bigcup_{a\in I}D(a)\)。 素性又给出交集公式，所以主开集构成开基。
+
+	局部化的素理想对应把 \(\operatorname{Spec}A_f\) 双射到不含 \(f\) 的素理想集。 在此双射下，主开集 \(D(a/f^n)\) 对应 \(D(a)\cap D(f)\)，因此双射及其逆都连续，得到同胚。
+
+	最后先证任意环 \(R\) 的素谱拟紧。把一个开覆盖细化为主开覆盖 \(\{D(a_\lambda)\}\)。 若 \((a_\lambda)_\lambda\) 是真理想，它包含于某个极大理想，该极大理想就不属于任何 \(D(a_\lambda)\)，矛盾。 所以 \(1=\sum_{i=1}^n b_i a_{\lambda_i}\) 对有限个指标成立。 这些 \(D(a_{\lambda_i})\) 已覆盖素谱，因为素理想不可能同时含所有 \(a_{\lambda_i}\)。 取回它们所属的原覆盖成员便得有限子覆盖。 再对 \(R=A_f\) 应用这一结论与刚证的同胚，得到 \(D(f)\) 拟紧。
+\end{proof}
+
+一点 \(\mathfrak p\) 的闭包是 \(V(\mathfrak p)\)：每个包含该点的闭集都含这个集合。它在 \(\mathfrak p\) 极大时才是闭点；对整环，零素理想的闭包是整个素谱。这样的点称为所在不可约闭集的\term[fanxingdian]{泛型点}[generic point]。确实，若 \(V(\mathfrak p)=V(I)\cup V(J)\)，点 \(\mathfrak p\) 必在其中一边，而该边既为闭集就含其闭包 \(V(\mathfrak p)\)，所以此闭集不可约。用一个点代表整条分支，与在该点取分式域是相容的：两者都让我们考察分支的一般位置。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

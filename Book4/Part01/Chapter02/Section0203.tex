@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 2.3 亚纯微分和 Riemann–Hurwitz
 % 纲要位置：几何学计划纲要.md，第 3529 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,359 @@
 \section{亚纯微分和 Riemann–Hurwitz}
 \label{g4:sec:0203}
 
-待撰写
+局部模型 \(w=z^e\) 同时改变两种数据。一个普通靶点有 \(e\) 个邻近原像，而微分满足 \(\mathrm{d}w=e z^{e-1}\,\mathrm{d}z\)，在源点多出 \(e-1\) 阶零点。前者影响覆盖的拓扑计数，后者影响微分的零极点。这一节把两种计数放在一起：先使微分的阶数和留数成为坐标无关的量，再证明分歧对典范线丛及曲面亏格的修正公式。
 
 \subsection{微分在坐标变换下的阶数}
 \label{g4:subsec:0203:01}
-待撰写
+在平面上，积分的对象是 \(a(z)\,\mathrm{d}z\)。若换坐标 \(z=z(\zeta)\)，链式法则要求同时改变函数系数和微分因子：
+\[
+	a(z)\,\mathrm{d}z
+	=a(z(\zeta))\frac{\mathrm{d}z}{\mathrm{d}\zeta}\,\mathrm{d}\zeta.
+\]
+因此，曲面上的微分应由一族相容的局部表达式描述，单独的系数函数通常不能粘成全局函数。
+
+\begin{definition}
+	\label{g4:def:0203:meromorphic-differential}
+	设 \(X\) 是黎曼曲面。在每张全纯坐标图 \(z:U\rightarrow\mathbb C\) 中给定表达式 \(\omega=a_z(z)\,\mathrm{d}z\)，其中 \(a_z\) 亚纯，并要求交叠图上的表达式满足
+	\begin{equation}
+		\label{g4:eq:0203:differential-transition}
+		a_\zeta(\zeta)=a_z(z(\zeta))\frac{\mathrm{d}z}{\mathrm{d}\zeta}.
+	\end{equation}
+	这样的一族局部表达式称为 \(X\) 上的\term[yachunweifen]{亚纯微分}[meromorphic differential]，也称亚纯一形式。若每个局部系数均全纯，则称为\term[quanchunweifen]{全纯微分}[holomorphic differential]。
+\end{definition}
+
+坐标变换的导数全纯且处处非零，所以一个图中的系数全纯，当且仅当另一个图中的系数全纯。在没有极点处，这些表达式给出实曲面上的复值光滑一形式。这里选择的形式具有 \(a(z)\,\mathrm{d}z\) 的局部形状；一般复值光滑一形式还可以有 \(\mathrm{d}\overline z\) 项。
+
+\begin{proposition}
+	\label{g4:prop:0203:order-invariance}
+	设 \(X\) 是连通黎曼曲面，\(\omega\) 是不恒为零的亚纯微分，\(p\in X\)。在满足 \(z(p)=0\) 的全纯坐标中，写
+	\[
+		\omega=z^m u(z)\,\mathrm{d}z,\qquad m\in\mathbb Z,\quad u(0)\ne0,
+	\]
+	其中 \(u\) 在原点附近全纯。则整数 \(m\) 与坐标选择无关，称为 \(\omega\) 在 \(p\) 的阶数，记为 \(\operatorname{ord}_p\omega\)。阶数为正时，\(p\) 是相应阶数的零点；阶数为负时，\(p\) 是 \(-m\) 阶极点。
+\end{proposition}
+
+\begin{proof}
+	若一个图中的系数在开集上恒零，式\eqref{g4:eq:0203:differential-transition}与恒等定理会把恒零性沿重叠图传遍连通曲面。因此，\(\omega\not\equiv0\) 保证每个局部系数都不恒零，可使用\cref{g4:def:0102:meromorphic}后的零极点分解。
+
+	换另一中心坐标 \(\zeta\)，则 \(z=\zeta v(\zeta)\)，其中 \(v(0)\ne0\)，而 \(\mathrm{d}z/\mathrm{d}\zeta\) 在原点也非零。于是新系数为
+	\[
+		\zeta^m v(\zeta)^m u(z(\zeta))
+		\frac{\mathrm{d}z}{\mathrm{d}\zeta}.
+	\]
+	除 \(\zeta^m\) 外，各因子都在原点全纯且非零，包括 \(m<0\) 时的 \(v^m\)。故新坐标中的阶数仍为 \(m\)。
+\end{proof}
+
+零点与极点因局部分解而离散，在紧曲面上只有有限个。微分因子在合法的坐标变换下不改变阶数；在分歧映射的拉回中，它却可能产生零点，因为 \(w=z^e\) 在 \(e>1\) 时不是坐标变换。
+
+\begin{example}
+	\label{g4:exm:0203:sphere-differential}
+	在球面 \(\mathbb P^1\) 的有限坐标 \(z\) 中取 \(\omega=\mathrm{d}z\)。无穷远坐标为 \(\zeta=1/z\)，所以
+	\[
+		\omega=-\zeta^{-2}\,\mathrm{d}\zeta.
+	\]
+	它在有限点没有零极点，在无穷远有二阶极点。因此“系数等于 \(1\)”只描述一个仿射图，不能用来判断整个球面上的正则性。更一般地，
+	\[
+		z^m\,\mathrm{d}z=-\zeta^{-m-2}\,\mathrm{d}\zeta
+	\]
+	给出任意整数 \(m\) 时的无穷远阶数。
+\end{example}
+
+\begin{example}
+	\label{g4:exm:0203:torus-differential}
+	设 \(X=\mathbb C/\Lambda\) 是复环面，\(\Lambda\) 为格。商映射的局部逆之间相差平移 \(z\mapsto z+\lambda\)，而 \(\mathrm{d}(z+\lambda)=\mathrm{d}z\)。因此平面上的 \(\mathrm{d}z\) 下降为 \(X\) 上处处非零的全纯微分。这里坐标 \(z\) 本身不能在环面上单值选取，其微分却可以。
+\end{example}
 
 \subsection{留数及整体留数定理}
 \label{g4:subsec:0203:02}
-待撰写
+阶数记录最先出现的 Laurent 项，留数则选出积分绕行一周后留下的那一项。对避开极点的分片 \(C^1\) 道路 \(\gamma\)，把参数区间分成有限段，使每段位于一张图内，并逐段规定
+\[
+	\int_\gamma\omega
+	=\sum_j\int_{t_{j-1}}^{t_j}
+	a_{z_j}(z_j(\gamma(t)))\,(z_j\circ\gamma)'(t)\,\mathrm{d}t.
+\]
+细分不改变和式；式\eqref{g4:eq:0203:differential-transition}与一元换元公式保证换图也不改变积分。
+
+\begin{proposition}
+	\label{g4:prop:0203:residue-invariance}
+	设 \(\omega\) 是黎曼曲面 \(X\) 上的亚纯微分，\(p\in X\)。在中心坐标 \(z(p)=0\) 中展开
+	\[
+		\omega=\left(\sum_{n=-N}^{\infty}c_nz^n\right)\mathrm{d}z.
+	\]
+	系数 \(c_{-1}\) 与坐标选择无关，记为 \(\operatorname{Res}_p\omega\)，称为 \(\omega\) 在 \(p\) 的留数。充分小的正向坐标圆周 \(\gamma\) 满足
+	\[
+		\int_\gamma\omega=2\pi\mathrm{i}\operatorname{Res}_p\omega.
+	\]
+	全纯点的留数为零。
+\end{proposition}
+
+\begin{proof}
+	积分公式由\cref{g4:thm:0102:laurent}的系数公式得到。为核对坐标不变性，将有限主部逐项处理。对 \(n\ne-1\)，
+	\[
+		z^n\,\mathrm{d}z=\mathrm{d}\left(\frac{z^{n+1}}{n+1}\right).
+	\]
+	亚纯函数的微分在任何坐标中的 Laurent 展开都没有 \(\zeta^{-1}\,\mathrm{d}\zeta\) 项：逐项求导时，能产生指数 \(-1\) 的原项指数只能是 \(0\)，其导数为零。全纯余项换坐标后仍全纯。最后，对中心坐标变换 \(z=\zeta v(\zeta)\)、\(v(0)\ne0\)，有
+	\[
+		\frac{\mathrm{d}z}{z}
+		=\frac{\mathrm{d}\zeta}{\zeta}
+		+\frac{v'(\zeta)}{v(\zeta)}\,\mathrm{d}\zeta.
+	\]
+	后一项全纯，所以 \(z^{-1}\,\mathrm{d}z\) 在新坐标中的留数仍为 \(1\)。由线性性得到结论。
+\end{proof}
+
+在有限平面区域中，留数之和等于外边界积分；紧无边界曲面没有留下这样的外边界，全部局部留数因而必须相互抵消。
+
+\begin{theorem}[整体留数定理]
+	\label{g4:thm:0203:global-residue}
+	设 \(X\) 是紧连通黎曼曲面，\(\omega\) 是 \(X\) 上的亚纯微分。则
+	\[
+		\sum_{p\in X}\operatorname{Res}_p\omega=0.
+	\]
+	该和只有有限个可能非零的项。
+\end{theorem}
+
+这个结论称为\term[zhengtiliushudingli]{整体留数定理}[global residue theorem]。证明使用第一卷第14.4节定理14.4.3 的 Stokes 公式：对紧有向光滑实曲面 \(M\) 及光滑至边界的一形式 \(\alpha\)，有 \(\int_{\partial M}\alpha=\int_M\mathrm{d}\alpha\)，边界按曲面位于左侧定向。复值形式分别对实部、虚部应用这一公式即可；紧性自动满足该定理的紧支条件。
+
+\begin{proof}
+	亚纯微分的极点在紧曲面上离散，因而只有有限个，记为 \(p_1,\ldots,p_s\)。为每个极点取一个中心坐标圆盘 \(D_j\)，使其闭包两两不交，盘内没有其他极点。删去这些开盘，得到紧的带光滑边界曲面
+	\[
+		M=X\setminus\bigcup_{j=1}^s D_j.
+	\]
+	复坐标的变换保持定向，给 \(M\) 取由 \(X\) 继承的定向。形式 \(\omega\) 在 \(M\) 的邻域全纯，因此光滑至边界。在任一局部坐标中，
+	\[
+		\mathrm{d}\omega
+		=\mathrm{d}(a(z)\,\mathrm{d}z)
+		=a'(z)\,\mathrm{d}z\wedge\mathrm{d}z=0.
+	\]
+	这里全纯性给出 \(\mathrm{d}a=a'(z)\,\mathrm{d}z\)。Stokes 公式于是给出 \(\int_{\partial M}\omega=0\)。每条孔口边界作为 \(M\) 的边界按顺时针方向走，而计算留数的小圆按逆时针方向走，所以
+	\[
+		0=-\sum_{j=1}^s\int_{\partial D_j}\omega
+		=-2\pi\mathrm{i}\sum_{j=1}^s\operatorname{Res}_{p_j}\omega.
+	\]
+	其余点的留数为零，得到所需等式。若没有极点，则各项本来就为零。
+\end{proof}
+
+在 \(\mathbb P^1\) 上，\(\mathrm{d}z/z\) 在 \(0\) 的留数为 \(1\)，而在 \(\zeta=1/z\) 坐标中等于 \(-\mathrm{d}\zeta/\zeta\)，所以无穷远的留数为 \(-1\)。紧曲面上的亚纯微分不能只有一个简单极点，因为该点留数必非零；只有一个高阶极点则可能成立，\cref{g4:exm:0203:sphere-differential}中的 \(\mathrm{d}z\) 就只有一个二阶极点，其留数为零。紧性也确实参与结论：在非紧曲面 \(\mathbb C\) 上，\(\mathrm{d}z/z\) 只有原点这一个极点，留数之和为 \(1\)。
 
 \subsection{典范除子与微分拉回}
 \label{g4:subsec:0203:03}
-待撰写
+若把一个微分乘以亚纯函数，它的零极点阶数就逐点相加。用有限整数和记录这些阶数，可以把这类变换写成加法公式。
+
+\begin{definition}
+	\label{g4:def:0203:divisor}
+	设 \(X\) 是紧连通黎曼曲面。有限形式和
+	\[
+		D=\sum_{p\in X}n_p[p],\qquad n_p\in\mathbb Z,
+	\]
+	称为 \(X\) 上的\term[chuzi]{除子}[divisor]。它的次数为 \(\deg D=\sum_p n_p\)；若所有 \(n_p\ge0\)，则称 \(D\) 为\term[youxiaochuzi]{有效除子}[effective divisor]。不恒为零的亚纯函数 \(h\) 确定\term[zhuchuzi]{主除子}[principal divisor]
+	\[
+		\operatorname{div}(h)=\sum_p\operatorname{ord}_p(h)[p].
+	\]
+	两个除子之差为主除子时，称它们\term[xianxingdengjia]{线性等价}[linearly equivalent]。
+\end{definition}
+
+由阶数的乘除法则，\(\operatorname{div}(h_1h_2)=\operatorname{div}(h_1)+\operatorname{div}(h_2)\)、\(\operatorname{div}(1/h)=-\operatorname{div}(h)\)，所以线性等价确为等价关系。
+
+\begin{proposition}
+	\label{g4:prop:0203:principal-degree}
+	紧连通黎曼曲面 \(X\) 上的每个主除子次数均为零。因此线性等价的除子具有相同次数。
+\end{proposition}
+
+\begin{proof}
+	对非零常数 \(h\)，主除子为零。若 \(h\) 非常值，\cref{g4:prop:0201:meromorphic-map}把它视为全纯映射 \(h:X\rightarrow\mathbb P^1\)：在极点处使用靶坐标 \(1/h\)，其零点阶数就是原来的极点阶数。由\cref{g4:thm:0202:degree}，\(0\) 与 \(\infty\) 两条纤维的重数和都等于同一个次数 \(d\)。于是
+	\[
+		\deg\operatorname{div}(h)
+		=\sum_{h(p)=0}e_p(h)-\sum_{h(p)=\infty}e_p(h)
+		=d-d=0.
+	\]
+	最后对两个线性等价除子的差使用这一结论。
+\end{proof}
+
+对一条已给定的不恒为零的亚纯微分 \(\omega\)，同样定义
+\[
+	\operatorname{div}(\omega)=\sum_p\operatorname{ord}_p(\omega)[p],
+\]
+称为它的\term[dianfanchuzi]{典范除子}[canonical divisor]。若 \(\eta\) 是另一条非零亚纯微分，则局部商 \(a_z/b_z\) 在换坐标时消去同一个导数因子，粘成全局非零亚纯函数 \(h=\omega/\eta\)，并且
+\begin{equation}
+	\label{g4:eq:0203:canonical-linear-equivalence}
+	\operatorname{div}(\omega)-\operatorname{div}(\eta)
+	=\operatorname{div}(h).
+\end{equation}
+因此这些典范除子彼此线性等价，次数也相同。一般紧曲面上非零亚纯微分的存在将在\secref{g4:sec:0304}构造亚纯截面时证明；当前的定义和比较适用于已经给出的微分。
+
+\ProseParagraphBreak
+
+微分的局部标架本身总可以构造。对全纯坐标 \(z\)，取一维复向量空间的局部标架 \(\mathrm{d}z\)，并按
+\[
+	\mathrm{d}z=\frac{\mathrm{d}z}{\mathrm{d}\zeta}\,\mathrm{d}\zeta
+\]
+粘合各个局部乘积 \(U\times\mathbb C\)。导数非零保证过渡因子可逆，链式法则保证三重交叠处的相容性。这给出 \(X\) 的\term[dianfanxiancong]{典范线丛}[canonical line bundle]，记为 \(K_X\)。这里全纯线丛指局部与 \(U\times\mathbb C\) 相同、过渡函数为处处非零全纯函数的一维复向量丛；典范线丛的局部全纯或亚纯截面分别就是 \(a(z)\,\mathrm{d}z\) 这样的表达式。一般线丛和除子的对应将在下一章系统建立。
+\symidx{\(K_X\)：黎曼曲面的典范线丛}
+
+\begin{proposition}
+	\label{g4:prop:0203:pullback-order}
+	设 \(F:X\rightarrow Y\) 是连通黎曼曲面之间的非恒定全纯映射，\(\eta\) 是 \(Y\) 上不恒为零的亚纯微分。对 \(p\in X\)，记 \(q=F(p)\)、\(e=e_p(F)\)。则拉回 \(F^*\eta\) 是 \(X\) 上不恒为零的亚纯微分，并且
+	\begin{equation}
+		\label{g4:eq:0203:pullback-order}
+		\operatorname{ord}_p(F^*\eta)
+		=e_p(F)\operatorname{ord}_{F(p)}\eta+e_p(F)-1.
+	\end{equation}
+	留数满足
+	\[
+		\operatorname{Res}_p(F^*\eta)
+		=e_p(F)\operatorname{Res}_{F(p)}\eta.
+	\]
+\end{proposition}
+
+\begin{proof}
+	在局部坐标 \(z,w\) 中，若 \(\eta=a(w)\,\mathrm{d}w\)，则规定
+	\[
+		F^*\eta=a(w(F(z)))\frac{\mathrm{d}(w\circ F)}{\mathrm{d}z}\,\mathrm{d}z.
+	\]
+	链式法则使这一表达式与源、靶坐标选择相容。由\cref{g4:thm:0202:local-model}，可取中心坐标使 \(w\circ F=z^e\)。写 \(\eta=w^m u(w)\,\mathrm{d}w\)，其中 \(u(0)\ne0\)，便有
+	\[
+		F^*\eta=e z^{em+e-1}u(z^e)\,\mathrm{d}z.
+	\]
+	系数中 \(e u(0)\ne0\)，这证明拉回不局部恒零，并给出阶数公式。对留数，在同样坐标中写 \(\eta=\sum_n c_nw^n\,\mathrm{d}w\)，得到
+	\[
+		F^*\eta=\sum_n e c_n z^{en+e-1}\,\mathrm{d}z.
+	\]
+	指数等于 \(-1\) 当且仅当 \(n=-1\)，所以留数为 \(e c_{-1}\)。
+\end{proof}
+
+公式中的 \(e-1\) 完全来自微分因子。若 \(\eta\) 在 \(q\) 全纯且非零，则 \(F^*\eta\) 在 \(p\) 恰有 \(e-1\) 阶零点；若 \(\eta\) 在 \(q\) 有简单极点，\(m=-1\)，拉回的阶数仍为 \(-1\)，但留数乘以 \(e\)。例如 \(\mathrm{d}w/w\) 在 \(w=z^e\) 下变成 \(e\,\mathrm{d}z/z\)。
 
 \subsection{分歧除子和 Hurwitz 公式的证明}
 \label{g4:subsec:0203:04}
-待撰写
+对于紧曲面间的非恒定映射，分歧点只有有限个。因此可以把\cref{g4:prop:0203:pullback-order}中额外出现的 \(e_p-1\) 同时记录为一个除子。以下始终把 \(X,Y\) 取为紧连通黎曼曲面，并令 \(F:X\rightarrow Y\) 非恒定，\(d=\deg F\)。
+
+\begin{definition}
+	\label{g4:def:0203:ramification-divisor}
+	设 \(X,Y\) 是紧连通黎曼曲面，\(F:X\rightarrow Y\) 是非恒定全纯映射。其\term[fenqichuzi]{分歧除子}[ramification divisor]为
+	\[
+		R_F\coloneqq\sum_{p\in X}(e_p(F)-1)[p].
+	\]
+	它是有效除子。对 \(Y\) 上的除子 \(D=\sum_q n_q[q]\)，定义
+	\[
+		F^*D\coloneqq\sum_q n_q\sum_{F(p)=q}e_p(F)[p].
+	\]
+	\symidx{\(R_F\)：全纯映射的分歧除子}
+\end{definition}
+
+纤维重数公式直接给出
+\begin{equation}
+	\label{g4:eq:0203:divisor-degree-pullback}
+	\deg(F^*D)=d\,\deg D.
+\end{equation}
+若 \(h\) 是 \(Y\) 上非零亚纯函数，局部幂模型还给出 \(F^*\operatorname{div}(h)=\operatorname{div}(h\circ F)\)，所以除子拉回保持线性等价。
+
+\begin{theorem}[除子形式的 Hurwitz 公式]
+	\label{g4:thm:0203:divisor-hurwitz}
+	设 \(F:X\rightarrow Y\) 是紧连通黎曼曲面之间的非恒定全纯映射。对 \(Y\) 上每条不恒为零的亚纯微分 \(\eta\)，有
+	\begin{equation}
+		\label{g4:eq:0203:divisor-hurwitz}
+		\operatorname{div}(F^*\eta)
+		=F^*\operatorname{div}(\eta)+R_F.
+	\end{equation}
+	在典范线丛之间，微分给出一个全纯丛映射
+	\[
+		(\mathrm{d}F)^*:F^*K_Y\longrightarrow K_X,
+	\]
+	其零点除子恰为 \(R_F\)。相应地有全纯线丛同构
+	\begin{equation}
+		\label{g4:eq:0203:canonical-bundle-hurwitz}
+		K_X\cong F^*K_Y\otimes\mathcal O_X(R_F),
+	\end{equation}
+	其中 \(\mathcal O_X(R_F)\) 的局部标架在 \(p\) 的中心坐标中为 \(z^{-(e_p(F)-1)}\)。
+\end{theorem}
+
+先说明末式涉及的局部对象。在 \(F^*K_Y\) 中，点 \(p\) 处的纤维取为 \(K_Y\) 在 \(F(p)\) 的纤维，靶坐标的 \(\mathrm{d}w\) 给出一个处处非零的抽象标架，记为 \(\widehat{\mathrm{d}w}\)。它经 \((\mathrm{d}F)^*\) 后才成为实际一形式 \(F^*(\mathrm{d}w)\)，后者在分歧点可以为零。对有效除子 \(R=\sum r_p[p]\)，在各支集点附近选两两不交的中心坐标圆盘，并取标架 \(z^{-r_p}\)；在支集之外取标架 \(1\)，便定义了 \(\mathcal O_X(R)\)。交叠处的比值全纯且非零；换中心坐标只使标架乘以一个全纯单位。它的局部全纯截面以亚纯函数表示时，允许在 \(p\) 有至多 \(r_p\) 阶极点。
+
+\begin{proof}
+	式\eqref{g4:eq:0203:divisor-hurwitz}逐点比较系数，就是\cref{g4:prop:0203:pullback-order}。
+
+	对线丛陈述，在归一化坐标 \(w\circ F=z^e\) 中，微分的局部表达式为
+	\[
+		\widehat{\mathrm{d}w}\longmapsto e z^{e-1}\,\mathrm{d}z.
+	\]
+	换坐标后源、靶标架都乘以全纯单位，链式法则保证这些局部映射粘合。其系数的零点阶数为 \(e-1\)，所以零点除子是 \(R_F\)。在张量积中乘上 \(\mathcal O_X(R_F)\) 的局部标架后，得到
+	\[
+		\widehat{\mathrm{d}w}\otimes z^{-(e-1)}
+		\longmapsto e\,\mathrm{d}z.
+	\]
+	右边处处非零，因此这给出全纯局部同构。各式在分歧点之外都是原来微分映射乘以相应的亚纯函数，故在交叠处相合；经过分歧点的等式由全纯延拓保持。于是它们粘合成式\eqref{g4:eq:0203:canonical-bundle-hurwitz}。
+\end{proof}
+
+微分的局部零点修正还具有一个拓扑解释。每个普通靶点按 \(d\) 张覆盖片计数；一个分支值的纤维中，若某个点的指数为 \(e\)，则 \(e\) 张覆盖片在该点合并，只留下一个顶点，少计 \(e-1\)。把这项损失累加，就得到亏格公式。
+
+\ProseParagraphBreak
+
+所需的曲面拓扑结果来自第一卷第6章。定理6.2.10 给出紧 Hausdorff 第二可数曲面（允许边界）的有限三角剖分；命题6.2.14 证明顶点、边、面数的交错和 \(V-E+F\) 与剖分无关，称为\term[Eulershixingshu]{Euler 示性数}[Euler characteristic]，记为 \(\chi\)。第一卷定理6.5.4 与命题6.5.2 进一步说明，紧连通可定向无边界曲面同胚于球面添 \(g\) 个手柄所得的曲面，其中整数 \(g\ge0\) 唯一，称为\term[kuige]{亏格}[genus]，且 \(\chi=2-2g\)。黎曼曲面由复图册带有自然定向，所以这些结论适用。
+
+\begin{theorem}[Riemann--Hurwitz 公式]
+	\label{g4:thm:0203:riemann-hurwitz}
+	设 \(X,Y\) 是紧连通黎曼曲面，\(F:X\rightarrow Y\) 为次数 \(d\ge1\) 的非恒定全纯映射。则
+	\begin{equation}
+		\label{g4:eq:0203:hurwitz-euler}
+		\chi(X)=d\,\chi(Y)-\sum_{p\in X}(e_p(F)-1),
+	\end{equation}
+	等价地，
+	\begin{equation}
+		\label{g4:eq:0203:riemann-hurwitz}
+		2g(X)-2=d\bigl(2g(Y)-2\bigr)+\deg R_F.
+	\end{equation}
+\end{theorem}
+
+这是\term[RiemannHurwitzgongshi]{Riemann--Hurwitz 公式}[Riemann--Hurwitz formula]。证明先删去分支值周围的小盘，在剩余部分按真正的覆盖计算，再把源、靶的圆盘分别封回。这样，每个分歧点的计数损失都对应一个具体的封盘数。
+
+\begin{proof}
+	设分支值集合为 \(B=\{q_1,\ldots,q_s\}\)。由\cref{g4:lem:0202:isolated-fiber}，每个 \(q_j\) 有中心坐标邻域，使其全部逆像分解为纤维中各点的互不相交坐标盘，在这些盘上 \(F\) 写成 \(w=z^{e_p}\)。把靶盘进一步缩小，可取两两不交的闭坐标盘 \(\overline{D_j}\)，使它们各只含一个分支值，且其全部逆像恰为这些源盘内的闭圆盘。若 \(D_j\) 在 \(w\) 坐标中半径为 \(\rho_j\)，则相应源盘在 \(z\) 坐标中的半径为 \(\rho_j^{1/e_p}\)。特别地，每个纤维点贡献一个源盘，包含未分歧的纤维点。
+
+	记 \(r_j=\#F^{-1}(q_j)\)、\(N=\sum_jr_j\)，并设
+	\[
+		Y_0=Y\setminus\bigcup_jD_j,\qquad
+		X_0=X\setminus F^{-1}\left(\bigcup_jD_j\right).
+	\]
+	它们是带光滑边界的紧曲面；允许先把各连通分支分别计数。所有分歧点已被删去，\cref{g4:thm:0202:unbranched-cover}使 \(F|_{X_0}:X_0\rightarrow Y_0\) 成为 \(d\) 叶覆盖。边界点也满足覆盖条件：沿靶圆周取足够小的半邻域，其各逆分支把这一个半邻域同胚地提升到源圆周旁边。
+
+	恢复第一卷命题6.5.3 所用的计数步骤。先对 \(Y_0\) 取有限三角剖分，使边界为子复形。均匀覆盖邻域给出 \(Y_0\) 的开覆盖。在有限复形的一个度量中，紧性给出 \(\delta>0\)，使每个直径小于 \(\delta\) 的集合都落在某个均匀覆盖邻域中。充分多次重心细分后，每个闭单形的直径均小于 \(\delta\)，因而每个闭单形都落在一个均匀覆盖邻域中。于是每个顶点、开边、开三角形都恰有 \(d\) 个提升；闭三角形的提升与它的各条边、各个顶点相容，组成 \(X_0\) 的有限三角剖分。因此
+	\[
+		\chi(X_0)=d\,\chi(Y_0).
+	\]
+	这个计数对有边界或不连通的紧曲面同样成立，因为所有分支的顶点、边、面数相加即可。
+
+	再计算封盘的变化。每个边界圆周先取 \(m\ge3\) 个顶点与 \(m\) 条边，给封入的圆盘添一个中心，连到这 \(m\) 个顶点。新增一个顶点、\(m\) 条边和 \(m\) 个三角形，故交错和增加 \(1-m+m=1\)。所以
+	\[
+		\chi(Y_0)=\chi(Y)-s,\qquad
+		\chi(X_0)=\chi(X)-N.
+	\]
+	结合覆盖计数得
+	\[
+		\chi(X)=d\chi(Y)-ds+N.
+	\]
+	最后由\cref{g4:thm:0202:degree}，对每个 \(q_j\) 有 \(\sum_{F(p)=q_j}e_p=d\)，因而
+	\[
+		ds-N
+		=\sum_{j=1}^s\sum_{F(p)=q_j}(e_p-1)
+		=\sum_{p\in X}(e_p-1).
+	\]
+	所有实际分歧点都出现在这些纤维中，其他点的贡献为零，故得到式\eqref{g4:eq:0203:hurwitz-euler}。若 \(B\) 为空，直接令 \(X_0=X\)、\(Y_0=Y\)、\(s=N=0\)，同一覆盖计数给出结论。代入 \(\chi(X)=2-2g(X)\)、\(\chi(Y)=2-2g(Y)\)，整理即得式\eqref{g4:eq:0203:riemann-hurwitz}。
+\end{proof}
+
+\begin{example}
+	\label{g4:exm:0203:power-map-hurwitz}
+	对球面映射 \(F:\mathbb P^1\rightarrow\mathbb P^1\)、\(F(z)=z^d\)，其中 \(d\ge1\)，原点与无穷远的局部指数都为 \(d\)，其余点为 \(1\)。所以
+	\[
+		R_F=(d-1)[0]+(d-1)[\infty],\qquad \deg R_F=2d-2.
+	\]
+	Riemann--Hurwitz 公式成为 \(-2=-2d+(2d-2)\)。另一方面，靶球面的 \(\eta=\mathrm{d}w\) 满足 \(\operatorname{div}(\eta)=-2[\infty]\)，故除子公式给出
+	\[
+		\operatorname{div}(F^*\mathrm{d}w)
+		=-2d[\infty]+R_F
+		=(d-1)[0]-(d+1)[\infty].
+	\]
+	这与直接计算 \(F^*\mathrm{d}w=d z^{d-1}\,\mathrm{d}z\) 完全一致，尤其无穷远的微分因子贡献了额外的二阶极点。
+\end{example}
+
+有效性 \(\deg R_F\ge0\) 给出若干直接限制。球面不能非恒定地映到正亏格紧曲面：若 \(g(X)=0\)、\(g(Y)\ge1\)，式\eqref{g4:eq:0203:riemann-hurwitz}左边为 \(-2\)，右边非负，矛盾。两个亏格为 \(1\) 的曲面之间若有非恒定全纯映射，它必无分歧，因为公式迫使 \(\deg R_F=0\)。若 \(F:X\rightarrow\mathbb P^1\) 的次数为 \(2\)，则每个分歧点的指数只能为 \(2\)，每个分支值也只能有这一个重数为 \(2\) 的原像；于是分支值的个数恰为 \(2g(X)+2\)。下一节的显式方程将把这些整数限制实现为具体的曲面。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

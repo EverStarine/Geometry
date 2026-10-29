@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 3.2 Noether 正规化的证明
 % 纲要位置：几何学计划纲要.md，第 5122 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,254 @@
 \section{Noether 正规化的证明}
 \label{g5:sec:0302}
 
-待撰写
+一条曲线可以由许多坐标描述，但坐标之间的关系常使其中一些方向由其余方向代数地决定。问题在于：能否选出若干没有代数关系的函数，使整个坐标环成为它们所生成多项式环上的有限模？这种选择会把曲线或更高维的方程模型有限地投到一个仿射空间。它既提供具体的有限性，也为下一节比较维数准备一个可计算的基底。
+
+\ProseParagraphBreak
+
+本节允许任意基域 \(k\)，有限型 \(k\) 代数允许零因子和幂零元，但假设它非零。证明的核心是把一个非零关系变成关于最后一个生成元的首一关系，再减少生成元的个数。无限域上的线性代换可对照\cite[第33节，引理2，第262页]{Matsumura1989}；下面同时给出适用于有限域的幂次代换。
 
 \subsection{代数依赖的变换消元}
 \label{g5:subsec:0302:01}
-待撰写
+
+先明确所要保留的“独立方向”。设 \(B\) 为非零 \(k\) 代数。元素 \(t_1,\ldots,t_d\in B\) 称为在 \(k\) 上\term[daishuduli]{代数独立}[algebraically independent]，是指代入同态
+\[
+	k[T_1,\ldots,T_d]\longrightarrow B,\qquad T_i\longmapsto t_i
+\]
+单射，即没有非零多项式关系。否则称为代数相关。空组按代数独立理解，它生成的子代数就是 \(k\)。
+
+\ProseParagraphBreak
+
+对有限生成域扩张 \(L/k\)，若 \(t_1,\ldots,t_d\) 代数独立，且 \(L/k(t_1,\ldots,t_d)\) 为代数扩张，则称这组元素为一个\term[chaoyueji]{超越基}[transcendence basis]。从域的有限生成元中选取一个极大的代数独立子组，就能得到超越基：其余每个生成元若仍超越于已有子组生成的域，就可继续加入。下面说明不同选择的项数相同。
+
+\begin{lemma}\label{g5:lem:transcendence-bound}
+	设 \(L/k\) 为域扩张，且 \(L\) 在子域 \(k(v_1,\ldots,v_d)\) 上代数。则 \(L\) 中每个在 \(k\) 上代数独立的有限组至多有 \(d\) 项。因此，有限生成域扩张的任意两个超越基具有相同项数。
+\end{lemma}
+\begin{proof}
+	证明的办法是逐次用独立元素替换原来的生成元，同时保留“整个域在这些元素上代数”的性质。先设 \(F\subseteq L\)，且 \(L/F(v_1,\ldots,v_s)\) 代数；若 \(u\in L\) 超越于 \(F\)，则可在 \(v_i\) 中选一个非空的极小子组，使 \(u\) 在该子组生成的域上代数。写这个子组为 \(W,v_j\)，则 \(u\) 超越于 \(F(W)\)，但代数于 \(F(W,v_j)\)。清除一条代数关系的分母，得到
+	\[
+	P(u,v_j)=0,\qquad 0\ne P(U,V)\in F(W)[U,V].
+	\]
+	关系确实涉及 \(V\)，否则 \(u\) 已代数于 \(F(W)\)。又因 \(u\) 超越于 \(F(W)\)，把 \(U\) 代为 \(u\) 不会使非零系数多项式变为零，故 \(P(u,V)\) 是一个非零多项式。因此 \(v_j\) 代数于 \(F(W,u)\)。这说明可以删除 \(v_j\)、加入 \(u\)，而 \(L\) 仍在新生成的域上代数。
+
+	现在取代数独立的 \(u_1,\ldots,u_r\)。先以 \(F=k\) 加入 \(u_1\)，再以 \(F=k(u_1)\) 加入 \(u_2\)，如此继续；独立性保证每次要加入的元素都超越于已有的 \(F\)。每一步可删除一个剩余的 \(v_i\)。若 \(r>d\)，经过 \(d\) 步后 \(L\) 已代数于 \(k(u_1,\ldots,u_d)\)，却还含一个超越于这个域的 \(u_{d+1}\)，矛盾。故 \(r\leq d\)。对两个超越基交换角色，各得一个不等式，便知项数相同。
+\end{proof}
+
+这个共同项数称为 \(L/k\) 的\term[chaoyuecishu]{超越次数}[transcendence degree]，记为 \(\operatorname{trdeg}_k L\)。对有限型整代数 \(B\)，也把 \(\operatorname{trdeg}_k\operatorname{Frac}B\) 简记为 \(\operatorname{trdeg}_k B\)。超越次数首先是域中代数独立方向的数目；它与素理想链长度的相等将在下一节证明。
+\symidx{\(\operatorname{trdeg}_k L\)：域扩张的超越次数}
+
+\ProseParagraphBreak
+
+现在设 \(B=k[b_1,\ldots,b_n]\)。若生成元已经代数独立，\(B\) 本身就是多项式环。若有关系
+\[
+	f(b_1,\ldots,b_n)=0,\qquad 0\ne f\in k[X_1,\ldots,X_n],
+\]
+便希望改换生成元，使这个关系关于最后一个生成元首一。这样最后一个生成元将整于其余生成元生成的子代数，整个环也就成为这个较小子代数上的有限模。
+
+\begin{lemma}\label{g5:lem:monic-elimination}
+	设 \(k\) 为域，\(B=k[b_1,\ldots,b_n]\ne0\)，并设 \(c_1,\ldots,c_{n-1}\in B\) 满足
+	\[
+	B=k[c_1,\ldots,c_{n-1},b_n].
+	\]
+	若 \(b_n\) 满足一个系数在 \(B'=k[c_1,\ldots,c_{n-1}]\) 中的 \(m\) 次首一方程，\(m\geq1\)，则 \(B\) 是由 \(1,b_n,\ldots,b_n^{m-1}\) 生成的有限 \(B'\) 模。
+\end{lemma}
+\begin{proof}
+	首一方程把 \(b_n^m\) 写成较低幂的 \(B'\) 线性组合。继续乘以 \(b_n\) 并递推，所有更高幂都能作同样归约。因为 \(B=B'[b_n]\)，这些有限个幂便生成整个 \(B\)。这也是\cref{g5:prop:integral-finite-criterion}在当前生成元选择下的具体形式。
+\end{proof}
+
+关键在“首一”。例如 \(xy=1\) 给出关于 \(y\) 的关系 \(xy-1=0\)，但不能在 \(k[x]\) 中把首项系数 \(x\) 除掉。事实上 \(k[x,x^{-1}]\) 不是有限 \(k[x]\) 模：若 \(x^{-1}\) 整于 \(k[x]\)，将其首一方程乘以适当的 \(x\) 的幂，会得到常数项为 \(1\)、其余项都被 \(x\) 整除的零多项式，代入 \(x=0\) 即矛盾。下面的代换将改变所选投影方向，使首项系数成为非零常数。
 
 \subsection{无限基域的线性投影}
 \label{g5:subsec:0302:02}
-待撰写
+
+在无限域上，非零多项式不可能在全部点处取零。对此可按变量个数归纳：把多项式看成最后一个变量的多项式，先为其一个非零系数选出非零取值，再避开所得一元多项式的有限个根。这个简单事实允许选到一个适合消元的方向。
+
+\begin{lemma}\label{g5:lem:linear-monic-change}
+	设 \(k\) 为无限域，\(0\ne f\in k[X_1,\ldots,X_n]\) 的总次数为 \(m\geq1\)。则存在 \(a_1,\ldots,a_{n-1}\in k\)，使
+	\[
+	f(Y_1+a_1T,\ldots,Y_{n-1}+a_{n-1}T,T)
+	\]
+	作为 \(k[Y_1,\ldots,Y_{n-1}]\) 上的 \(T\) 多项式，其次数为 \(m\)，首项系数属于 \(k^\times\)。这是可逆线性代换
+	\(Y_i=X_i-a_iX_n,\ T=X_n\)。
+\end{lemma}
+\begin{proof}
+	令 \(f_m\) 为 \(f\) 的最高次齐次部分。多项式
+	\(f_m(Z_1,\ldots,Z_{n-1},1)\) 非零：同次齐次单项式中，前 \(n-1\) 个指数已经决定最后一个指数，所以代入 \(X_n=1\) 不会合并不同单项式。由 \(k\) 无限，可选 \(a_i\) 使
+	\[
+	c=f_m(a_1,\ldots,a_{n-1},1)\ne0.
+	\]
+	代换后 \(T^m\) 的系数正是 \(c\)，总次数小于 \(m\) 的项不能贡献 \(T^m\)。所以除以常数 \(c\) 就得到一个首一多项式。代换的逆是 \(X_i=Y_i+a_iT,\ X_n=T\)，故可逆。
+\end{proof}
+
+将引理用于生成元的一个关系，并令 \(c_i=b_i-a_ib_n\)，便知 \(b_n\) 整于 \(k[c_1,\ldots,c_{n-1}]\)。由于 \(b_i=c_i+a_ib_n\)，原环恰等于这个子代数添入 \(b_n\)，从而有限。每次都只改换线性坐标；递归进行时，前一步得到的线性组合再作线性组合，仍然是原坐标的线性组合。
+
+\begin{example}\label{g5:exm:hyperbola-finite-projection}
+	设 \(k\) 为域，\(B=k[x,y]/(xy-1)\)，仍用 \(x,y\) 表示剩余类。原来的投影坐标 \(x\) 不能使 \(B\) 成为有限 \(k[x]\) 模；改取 \(t=x+y\)，则
+	\[
+	x^2-tx+1=0,\qquad y=t-x.
+	\]
+	事实上存在同构
+	\[
+	B\cong k[T,X]/(X^2-TX+1),
+	\qquad T\longmapsto x+y,\quad X\longmapsto x.
+	\]
+	反向把 \(x\) 送到 \(X\)、\(y\) 送到 \(T-X\)，因为 \(X(T-X)=1\)，所以这张映射良定义，两复合为恒等。关于 \(X\) 作首一除法，得右侧是以 \(1,X\) 为基的自由 \(k[T]\) 模；唯一性来自非零首一多项式的倍式不可能具有更低的 \(X\) 次数。因此 \(k[t]\) 确实是一个多项式子环，\(B\) 为其上的秩二有限自由模。
+\end{example}
+
+这个例子也说明，正规化参数通常并不唯一：选择取决于当前方程及方便的投影方向。同一个 \(B\) 可以在一个坐标方向上不是有限的，在另一个方向上却由一个首一方程控制。
 
 \subsection{有限基域的非线性变换}
 \label{g5:subsec:0302:03}
-待撰写
+
+有限域上的非零多项式可能在所有有理点处消失，因而不能照搬刚才选择 \(a_i\) 的方法。可以改为让不同单项式带上不同的 \(T\) 次数，使最高次项只能来自一个原单项式。这里所需的是指数的唯一表示，与域中有多少元素无关。
+
+\begin{lemma}\label{g5:lem:weighted-monic-change}
+	设 \(k\) 为任意域，\(0\ne f\in k[X_1,\ldots,X_n]\) 为非常数多项式。存在正整数 \(N\)，使
+	\[
+	f(Y_1+T^N,Y_2+T^{N^2},\ldots,Y_{n-1}+T^{N^{n-1}},T)
+	\]
+	作为 \(T\) 多项式的首项系数是非零常数。相应的代换
+	\(Y_i=X_i-X_n^{N^i},\ T=X_n\)
+	是多项式环的自同构。
+\end{lemma}
+\begin{proof}
+	取 \(N\geq2\)，严格大于 \(f\) 中出现的全部单项式的各个指数。给
+	\(X_1^{\alpha_1}\cdots X_n^{\alpha_n}\)
+	指定权
+	\[
+	w(\alpha)=\alpha_n+N\alpha_1+N^2\alpha_2+\cdots+N^{n-1}\alpha_{n-1}.
+	\]
+	这些指数均在 \(0,\ldots,N-1\) 内，所以整数的 \(N\) 进表示保证不同单项式有不同的权。取 \(f\) 中权最大的单项式，设其系数为 \(c\ne0\)。代换后，它的最高 \(T\) 次项是 \(cT^{w(\alpha)}\)；展开时只要从某个因子选到 \(Y_i\)，\(T\) 次数就严格下降。其余原单项式的权都更小，不能抵消这一项。因此新多项式的最高项系数恰为 \(c\)。
+
+	逆代换是 \(X_i=Y_i+T^{N^i},\ X_n=T\)，故这确实是多项式坐标的可逆变换。上述最高项的系数没有使用任何可变的域元素，因而对有限域及任意特征同样成立。
+\end{proof}
+
+\begin{example}\label{g5:exm:finite-field-nonlinear-normalization}
+	取
+	\[
+	B=\mathbb F_2[x,y]/\bigl(xy(x-y)\bigr).
+	\]
+	三个非零线性形式 \(x,y,x-y\) 都不能给出一个使 \(B\) 有限的多项式子环。因为对其中任一个 \(\ell\)，都有
+	\[
+	B/\ell B\cong\mathbb F_2[z],
+	\]
+	这是无限维的 \(\mathbb F_2\) 向量空间；而有限 \(\mathbb F_2[\ell]\) 模模去 \(\ell\) 后必为有限维向量空间。这个判断使用纤维的方程代数，即使有限域上的有理点只有有限个，障碍仍然存在。
+
+	改取 \(u=x-y^3\)，代入 \(x=u+y^3\) 后，原关系成为
+	\[
+	y^7-y^5-uy^2+u^2y=0.
+	\]
+	这在特征二中当然也可把减号写成加号。坐标代换可逆，因此
+	\[
+	B\cong
+	\mathbb F_2[U,Y]/(Y^7-Y^5-UY^2+U^2Y).
+	\]
+	关于 \(Y\) 的首一除法给出自由基 \(1,Y,\ldots,Y^6\)，从而 \(B\) 是多项式子环 \(\mathbb F_2[u]\) 上的有限模。非线性坐标在这里完成了所有线性坐标都不能完成的有限投影。
+\end{example}
 
 \subsection{有限多项式子代数}
 \label{g5:subsec:0302:04}
-待撰写
+
+现在将一步消元反复进行。由于每一步都减少所需的代数生成元个数，过程必定终止；而整性和模有限性的传递性保证，最终的子代数仍控制整个原环。
+
+\begin{theorem}[Noether 正规化]\label{g5:thm:noether-normalization}
+	设 \(k\) 为任意域，\(B=k[b_1,\ldots,b_n]\ne0\) 为有限型交换 \(k\) 代数。则存在 \(0\leq d\leq n\) 及代数独立的元素 \(t_1,\ldots,t_d\in B\)，使
+	\[
+	A=k[t_1,\ldots,t_d]\subseteq B,\qquad B\text{ 为有限 }A\text{ 模}.
+	\]
+	若 \(k\) 无限，可以取各 \(t_i\) 为原生成元 \(b_1,\ldots,b_n\) 的 \(k\) 线性组合。
+\end{theorem}
+\begin{proof}
+	按 \(n\) 归纳。\(n=0\) 时 \(B=k\)，取 \(d=0\)。一般地，若 \(b_1,\ldots,b_n\) 代数独立，取 \(t_i=b_i\)，此时 \(B=A\)。否则存在非零关系 \(f(b_1,\ldots,b_n)=0\)。由于 \(B\ne0\)，非零常数不可能成为关系，所以 \(f\) 非常数。
+
+	对任意域，使用\cref{g5:lem:weighted-monic-change}，令
+	\(c_i=b_i-b_n^{N^i}\)。原关系经代换和除以非零首项系数后，给出 \(b_n\) 在
+	\(B'=k[c_1,\ldots,c_{n-1}]\)
+	上的首一方程，且 \(B=B'[b_n]\)。由\cref{g5:lem:monic-elimination}，\(B\) 是有限 \(B'\) 模。归纳假设给出多项式子环
+	\(A=k[t_1,\ldots,t_d]\subseteq B'\)，使 \(B'\) 是有限 \(A\) 模。若 \(u_i\) 生成 \(B\) 作为 \(B'\) 模，\(v_j\) 生成 \(B'\) 作为 \(A\) 模，则全部有限个 \(v_ju_i\) 生成 \(B\) 作为 \(A\) 模。于是得到结论。
+
+	若 \(k\) 无限，每一步改用\cref{g5:lem:linear-monic-change}，则 \(c_i\) 是当前生成元的线性组合。归纳过程所得 \(t_i\) 仍是最初的 \(b_i\) 的线性组合，得到最后的断言。
+\end{proof}
+
+这一定理及所得的多项式子环称为\term[Noetherzhengguihua]{Noether 正规化}[Noether normalization]。有限型说明存在有限个代数生成元，结论则找到一个多项式子环，使整个代数在它上面有有限个模生成元；两种有限性在证明中各有作用。
+
+\begin{corollary}\label{g5:cor:normalization-transcendence}
+	设 \(k\) 为域，\(B\ne0\) 为有限型 \(k\) 代数，并取一份 Noether 正规化
+	\(A=k[t_1,\ldots,t_d]\subseteq B\)。
+	若 \(B\) 为整环，则
+	\[
+	d=\operatorname{trdeg}_k\operatorname{Frac}B.
+	\]
+	一般地，\(d\) 等于 \(B\) 的各个极小素理想 \(\mathfrak q\) 所对应的域
+	\(\operatorname{Frac}(B/\mathfrak q)\)
+	的超越次数的最大值。
+\end{corollary}
+\begin{proof}
+	先设 \(B\) 为整环。令 \(K=\operatorname{Frac}A\)，则
+	\((A\setminus\{0\})^{-1}B\)
+	是有限维 \(K\) 代数，也是整环。任一非零元素的乘法是有限维向量空间上的单射，因而满射，故该元素有逆。这一局部化就是 \(\operatorname{Frac}B\)，它为 \(K\) 的有限代数扩张，所以 \(t_1,\ldots,t_d\) 是一个超越基。
+
+	一般地，对每个素理想 \(\mathfrak q\subset B\)，商环 \(B/\mathfrak q\) 有限于
+	\(A/(\mathfrak q\cap A)\)。其分式域因此代数于后者的分式域，而后者由至多 \(d\) 个域生成元生成，故超越次数至多为 \(d\)。
+	另一方面，由\cref{g5:thm:lying-over}，存在 \(B\) 的素理想 \(\mathfrak Q\) 收缩为 \(A\) 的零理想。由 Hilbert 基定理，环 \(B\) Noether，故 \(\mathfrak Q\) 包含一个极小素理想 \(\mathfrak q\)；其存在与有限性也见\cref{g5:cor:minimal-support-associated}应用于 \(B\) 自身的情形。此时 \(\mathfrak q\cap A=0\)，因而 \(A\subseteq B/\mathfrak q\) 仍有限，第一部分说明该分支的分式域超越次数正好为 \(d\)。
+\end{proof}
+
+因此 \(d\) 由原代数决定，所选的参数函数却可以变化。对于整环，Noether 正规化选择的是较小的多项式子环 \(A\subseteq B\)；通常所说的正规化则要研究较大的整闭包 \(B\subseteq\overline B\subseteq\operatorname{Frac}B\)。两种构造改变的对象及包含方向不同，下一章将单独研究后一种构造。
 
 \subsection{几何中的有限投影}
 \label{g5:subsec:0302:05}
-待撰写
+
+回到代数闭域 \(k\) 上的仿射代数集。由第一章的映射对应，函数 \(t_1,\ldots,t_d\in k[X]\) 决定正则映射
+\[
+	\pi:X\longrightarrow\mathbb A_k^d,\qquad
+	x\longmapsto(t_1(x),\ldots,t_d(x)).
+\]
+代数独立表示靶的坐标环单射到源的坐标环；模有限性进一步控制映射像和纤维。
+
+\begin{definition}\label{g5:def:finite-affine-morphism}
+	设 \(k\) 为代数闭域，\(X,Y\) 为仿射代数集，\(\varphi:X\to Y\) 为正则映射。若通过拉回同态
+	\(\varphi^*:k[Y]\to k[X]\)，环 \(k[X]\) 成为有限 \(k[Y]\) 模，则称 \(\varphi\) 为\term[youxianyingshe]{有限映射}[finite morphism]，也称有限态射。
+\end{definition}
+
+这个定义只用坐标环及其同态，因而不依赖为 \(X,Y\) 选择的仿射嵌入。有限映射还对复合封闭：若 \(k[Z]\) 上的有限个模生成元生成 \(k[Y]\)，而 \(k[Y]\) 上的有限个模生成元生成 \(k[X]\)，它们两两相乘就给出 \(k[X]\) 在 \(k[Z]\) 上的有限组生成元。
+
+\begin{proposition}\label{g5:prop:finite-affine-closed-fibres}
+	设 \(k\) 为代数闭域，\(\varphi:X\to Y\) 为仿射代数集之间的有限映射。则 \(\varphi\) 把每个闭集映为闭集，特别地
+	\[
+	\varphi(X)=V_Y(\ker\varphi^*).
+	\]
+	每个点的纤维都是有限点集。若 \(k[X]\) 可由 \(N\) 个元素生成为 \(k[Y]\) 模，则每个纤维的点数至多为 \(N\)。
+\end{proposition}
+\begin{proof}
+	设 \(Z\subseteq X\) 为非空闭集，令 \(C=k[Z]\)。这是 \(k[X]\) 的商环，所以仍为有限 \(k[Y]\) 模。记复合 \(k[Y]\to C\) 的核为 \(J\)，则
+	\(k[Y]/J\subseteq C\) 是有限整扩张。对 \(V_Y(J)\) 中一点所对应的极大理想 \(\mathfrak m/J\)，lying-over 给出其上的素理想 \(\mathfrak q\subseteq C\)。商环 \(C/\mathfrak q\) 是整于域 \(k[Y]/\mathfrak m=k\) 的整环，因而是域；又由弱零点定理，其剩余域是 \(k\)。所以 \(\mathfrak q\) 对应 \(Z\) 中一个映到指定点的点。这证明 \(\varphi(Z)=V_Y(J)\)。空集的像仍为空集，故闭映射结论成立；取 \(Z=X\) 得到所述像公式。
+
+	对 \(y\in Y\)，设 \(\mathfrak m_y\subset k[Y]\) 为其极大理想。保留纤维方程的代数是
+	\[
+	C_y=k[X]/\mathfrak m_yk[X].
+	\]
+	给定的 \(N\) 个模生成元在这个商中张成一个至多 \(N\) 维的 \(k\) 向量空间。纤维中的点对应 \(C_y\) 的极大理想；点集的约化坐标环则是 \(C_y\) 除去幂零元后的商。
+	若有 \(r\) 个不同的点，它们的极大理想 \(\mathfrak n_1,\ldots,\mathfrak n_r\) 两两互素。对每个 \(i\ne j\)，可取 \(b_{ij}\in\mathfrak n_j\) 且 \(b_{ij}\equiv1\pmod{\mathfrak n_i}\)。乘积 \(e_i=\prod_{j\ne i}b_{ij}\) 在这 \(r\) 个点处的取值为第 \(i\) 个标准向量，所以取值映射 \(C_y\to k^r\) 满射。因此
+	\(r\leq\dim_k C_y\leq N\)。任意选取的不同点都受同一上界限制，故纤维有限。
+\end{proof}
+
+\begin{corollary}\label{g5:cor:finite-geometric-projection}
+	设 \(k\) 为代数闭域，\(X\subseteq\mathbb A_k^n\) 为非空仿射代数集。则存在一个由环境空间上的线性形式给出的有限满射
+	\[
+	X\longrightarrow\mathbb A_k^d.
+	\]
+	若 \(X\) 不可约，则 \(d=\operatorname{trdeg}_k k(X)\)。
+\end{corollary}
+\begin{proof}
+	代数闭域无限。对 \(B=k[X]\) 应用\cref{g5:thm:noether-normalization}的线性版本，得到代数独立的线性形式 \(t_i\) 及有限包含
+	\(k[t_1,\ldots,t_d]\subseteq B\)。由映射对应得到 \(\pi\)，它有限，且拉回的核为零。上一命题说明其像是整个 \(\mathbb A_k^d\)。不可约时 \(B\) 为整环，参数数目由\cref{g5:cor:normalization-transcendence}给出。
+\end{proof}
+
+例如在特征不为二的代数闭域上，曲线 \(y^2=x\) 到 \(x\) 轴的投影对应
+\(k[x]\subset k[y]\)、\(x\mapsto y^2\)，是以 \(1,y\) 为模基的有限映射。非零 \(a\) 的纤维有两个点，而 \(a=0\) 的纤维只有一个点；方程代数
+\(k[y]/(y^2-a)\) 却始终有维数二，在零点处由幂零元保留重合信息。有限性约束的是整个纤维代数，不要求各纤维具有同样多个不同点。
+
+\ProseParagraphBreak
+
+相反，双曲线 \(xy=1\) 向 \(x\) 轴的投影像为 \(D(x)\)，不是闭集，因而不是有限映射；\cref{g5:exm:hyperbola-finite-projection}中的 \(t=x+y\) 则给出一个有限满射。选择合适的投影使每个被消去的坐标满足首一方程，这正是代数证明在几何中的作用。下一节将用这些有限投影把素理想链的长度与独立参数的数目联系起来。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 3.3 椭圆工具与 Serre 对偶
 % 纲要位置：几何学计划纲要.md，第 3563 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,433 @@
 \section{椭圆工具与 Serre 对偶}
 \label{g4:sec:0303}
 
-待撰写
+一个光滑 \(L\) 值 \((0,1)\) 形式 \(\alpha\) 在小圆盘上总能写成 \(\bar\partial u\)，但这些局部解未必能粘成全局解。上一节把粘合障碍表示为上同调类；现在要证明障碍空间有限维，并找出检验某个障碍是否为零的全部线性条件。答案是与 \(K_X\otimes L^{-1}\) 的全纯截面积分配对。证明的分析部分从平面上的一个一阶估计开始，紧性负责把局部控制转为全局分解。
 
 \subsection{\texorpdfstring{曲面上的 \(\bar{\partial}\) 主符号}{曲面上的 \={∂} 主符号}}
 \label{g4:subsec:0303:01}
-待撰写
+设 \(X\) 是紧黎曼曲面，\(L\to X\) 是全纯线丛。在全纯坐标 \(z=x+\mathrm{i}y\) 和全纯标架 \(e\) 中，
+\[
+	D\coloneqq\bar\partial_L,\qquad
+	D(u e)=\frac{\partial u}{\partial\overline z}\,
+	\mathrm{d}\overline z\otimes e,\qquad
+	\frac{\partial}{\partial\overline z}
+	=\frac12(\partial_x+\mathrm{i}\partial_y).
+\]
+标架变换全纯，所以这一公式在交叠处相容。对一阶算子，主符号保留最高阶导数，并把 \(\partial_{x_j}\) 替成 \(\mathrm{i}\xi_j\)。因此对实余切向量 \(\xi=\xi_x\,\mathrm{d}x+\xi_y\,\mathrm{d}y\)，有
+\begin{equation}
+	\label{g4:eq:0303:dbar-symbol}
+	\sigma_D(\xi)(a e)
+	=\frac{\mathrm{i}\xi_x-\xi_y}{2}\,
+	a\,\mathrm{d}\overline z\otimes e.
+\end{equation}
+当 \(\xi\ne0\) 时，这个一维复向量空间之间的映射可逆；这就是 \(D\) 的\term[tuoyuanxing]{椭圆性}[ellipticity]。下面的估计说明符号可逆在函数层面意味着什么：全部一阶导数可以由 \(Du\) 控制，而不只是某个方向的导数。
+
+\begin{lemma}
+	\label{g4:lem:0303:plane-estimate}
+	对平面上的每个紧支光滑复函数 \(v\)，有
+	\begin{equation}
+		\label{g4:eq:0303:plane-estimate}
+		\|\partial_xv\|_{L^2(\mathbb R^2)}^2+
+		\|\partial_yv\|_{L^2(\mathbb R^2)}^2
+		=4\|\partial_{\overline z}v\|_{L^2(\mathbb R^2)}^2.
+	\end{equation}
+	因而 \(\|v\|_{H^1}^2=\|v\|_2^2+4\|\partial_{\overline z}v\|_2^2\)，其中 \(\|v\|_{H^1}^2=\|v\|_2^2+\|\partial_xv\|_2^2+\|\partial_yv\|_2^2\)。
+\end{lemma}
+\begin{proof}
+	先补出所需的 Fourier 展开依据。\footnote{Jean Baptiste Joseph Fourier（1768--1830），法国数学家、物理学家，研究热传导并发展三角级数方法。}在方形环面 \(T^2=(\mathbb R/2\pi\mathbb Z)^2\) 上使用归一化测度 \((2\pi)^{-2}\mathrm{d}x\,\mathrm{d}y\)。函数 \(e_k(x,y)=e^{\mathrm{i}(k_1x+k_2y)}\)、\(k\in\mathbb Z^2\)，由直接积分构成正交单位族。
+
+	它们的线性张成空间在 \(L^2(T^2)\) 中稠密。为说明这一点，先对连续函数使用一维核
+	\[
+		F_N(t)=\frac1{N+1}\left|\sum_{j=0}^N e^{\mathrm{i}jt}\right|^2.
+	\]
+	它非负，归一化积分为 \(1\)，且在距 \(2\pi\mathbb Z\) 至少 \(\delta>0\) 的地方满足 \(F_N(t)\le C_\delta/(N+1)\)。后一估计来自几何级数公式。两个这样的核的乘积在 \(T^2\) 上仍非负、积分为 \(1\)，其原点任意固定邻域之外的积分趋于零。把卷积积分分成这个邻域及其补集，由连续函数的一致连续性可知，卷积一致趋于原函数。每个卷积都是有限三角多项式。这里将 \(L^2\) 视为光滑函数按平方积分范数的完备化；光滑函数本身连续，故上述一致逼近给出所需的 \(L^2\) 稠密性。
+
+	记 \(\widehat v(k)=(v,e_k)_{L^2}\)。对有限正交和应用勾股等式，再用刚证得的稠密性，得到
+	\[
+		\|v\|_2^2=\sum_{k\in\mathbb Z^2}|\widehat v(k)|^2.
+	\]
+	光滑函数的导数系数可由分部积分计算：
+	\[
+		\widehat{\partial_xv}(k)=\mathrm{i}k_1\widehat v(k),\qquad
+		\widehat{\partial_yv}(k)=\mathrm{i}k_2\widehat v(k),\qquad
+		\widehat{\partial_{\overline z}v}(k)
+		=\frac{\mathrm{i}k_1-k_2}{2}\widehat v(k).
+	\]
+	由于 \(|\mathrm{i}k_1-k_2|^2=k_1^2+k_2^2\)，三条范数等式立即给出式\eqref{g4:eq:0303:plane-estimate}的周期版本。对平面紧支函数，取包含其支集的大方框，在框的边界附近函数恒零，故可光滑周期延拓。将方框缩放到上述标准方框，导数同时乘以相应缩放因子，便得到平面公式。归一化测度的常数在等式两侧相同。
+\end{proof}
+
+要把这个估计用于整个曲面，需要固定能对极限操作保持完备的函数空间。先取有限全纯坐标域与标架 \((U_j,z_j,e_j)\)，再取从属光滑单位分解 \(\rho_j\)，使 \(\operatorname{supp}\rho_j\Subset U_j\)。这种有限分解可直接构造：先取仍覆盖 \(X\) 的较小坐标圆盘，在对应较大坐标盘中选取非负光滑函数，令其在小盘上等于 \(1\)，最后除以这些函数之和。
+
+\ProseParagraphBreak
+
+同时在 \(L\) 上选光滑 Hermitian 度量，在 \(X\) 上选与复结构相容的光滑度量。\footnote{Charles Hermite（1822--1901），法国数学家，研究椭圆函数与代数方程，并证明 \(e\) 的超越性。}局部写作
+\[
+	|e|^2=h>0,\qquad \mathrm{d}s^2=\lambda|\,\mathrm{d}z\,|^2,\qquad
+	\mathrm{d}A=\lambda\,\mathrm{d}x\,\mathrm{d}y.
+\]
+它们都可用上述单位分解对局部正定度量加权得到。内积对第一变量线性，故对局部表达 \(s=u e\)、\(\alpha=a\,\mathrm{d}\overline z\otimes e\)，平方范数分别为
+\begin{equation}
+	\label{g4:eq:0303:l2-metrics}
+	\|s\|_0^2=\int_X h|u|^2\,\mathrm{d}A,\qquad
+	\|\alpha\|_1^2=\int_X \frac{2h}{\lambda}|a|^2\,\mathrm{d}A.
+\end{equation}
+这些写法按局部坐标解释并以单位分解求和；被积密度本身与坐标无关。因 \(|\mathrm{d}\overline z|^2=2/\lambda\)，第二个范数也可在每张图中写成 \(2\int h|a|^2\,\mathrm{d}x\,\mathrm{d}y\)。
+
+\begin{definition}
+	\label{g4:def:0303:sobolev}
+	在紧黎曼曲面 \(X\) 的全纯线丛 \(L\) 上，将光滑截面按平方积分范数完备化，得到 \(L^2(X,L)\)。若 \(s=u_j e_j\)，定义
+	\[
+		\|s\|_{H^1_{\mathrm{Sob}}}^2
+		=\sum_j\|(\rho_j u_j)\circ z_j^{-1}\|_{H^1(\mathbb R^2)}^2,
+	\]
+	其中每个局部函数在坐标域外补零。按此范数完备化所得空间记为 \(H^1_{\mathrm{Sob}}(X,L)\)，称为一阶\term[Sobolevkongjian]{Sobolev 空间}[Sobolev space]。\footnote{\OriginalName{Сергей Львович Соболев}（Sergei Lvovich Sobolev，1908--1989），苏联数学家，研究偏微分方程，并发展广义函数与函数空间方法。}对 \(L\) 值 \((0,1)\) 形式也可用光滑局部标架作相同定义。
+\end{definition}
+
+不同有限图册、标架和单位分解所得范数彼此等价。在每个紧交叠集上，坐标变换及其逆的一阶导数有界，标架变换函数及其逆、各截断函数的一阶导数也有界；换元公式和乘积法则把一套局部范数控制在另一套的有限和之内。再交换两套选择，得到反向控制。
+
+\ProseParagraphBreak
+
+\(H^1_{\mathrm{Sob}}\) 的元素可视为具有平方可积弱一阶导数的截面。这里弱导数由 \(\int(\partial_xu)\varphi=-\int u\,\partial_x\varphi\) 等测试函数等式定义。光滑逼近列在上述范数中收敛时，函数和各导数分别在 \(L^2\) 中收敛，故测试等式保持；反过来，对紧支弱可微函数作光滑核卷积，函数与各弱导数都在 \(L^2\) 中收敛，因卷积与弱导数交换且平移在 \(L^2\) 中连续。截断后逐图操作便给出反向识别。这也证明完备化到 \(L^2\) 的自然映射是单射；下文把它写成连续包含 \(H^1_{\mathrm{Sob}}(X,L)\subset L^2(X,L)\)。上标的 \(\mathrm{Sob}\) 用来与层上同调 \(H^1(X,\mathcal O(L))\) 区分。
+
+\begin{proposition}
+	\label{g4:prop:0303:global-estimate}
+	设 \(X\) 是紧黎曼曲面，\(L\to X\) 为全纯线丛，度量与上述 Sobolev 范数已经固定。算子
+	\[
+		D:H^1_{\mathrm{Sob}}(X,L)\longrightarrow L^2(X,\Lambda^{0,1}\mathrm{T}^*X\otimes L)
+	\]
+	连续，并存在常数 \(C\)，使
+	\begin{equation}
+		\label{g4:eq:0303:global-estimate}
+		\|s\|_{H^1_{\mathrm{Sob}}}
+		\le C\bigl(\|Ds\|_1+\|s\|_0\bigr)
+	\end{equation}
+	对所有 \(s\in H^1_{\mathrm{Sob}}(X,L)\) 成立。
+\end{proposition}
+\begin{proof}
+	先设 \(s\) 光滑。在全纯标架中，乘积法则给出
+	\[
+		\partial_{\overline z_j}(\rho_j u_j)
+		=\rho_j\partial_{\overline z_j}u_j+
+		(\partial_{\overline z_j}\rho_j)u_j.
+	\]
+	对每个紧支局部函数应用\cref{g4:lem:0303:plane-estimate}。第一项由 \(Ds\) 的局部 \(L^2\) 范数控制；第二项因截断函数的一阶导数有界，由 \(s\) 的 \(L^2\) 范数控制。支集上度量权函数与坐标面积密度都有正的上下界，有限求和得到式\eqref{g4:eq:0303:global-estimate}。反向的连续性估计 \(\|Ds\|_1\le C'\|s\|_{H^1_{\mathrm{Sob}}}\) 由一阶导数表达和有限局部化得到。最后按定义用光滑截面逼近，将算子及估计延拓到完备空间。
+\end{proof}
 
 \subsection{Fredholm 和调和代表的最低证明链}
 \label{g4:subsec:0303:02}
-待撰写
+估计\eqref{g4:eq:0303:global-estimate}右边仍有 \(\|s\|_0\)。这一较弱范数项不能直接删掉，因为全纯截面属于 \(D\) 的核。紧嵌入将表明：去掉有限维的核之后，它可以被 \(\|Ds\|_1\) 吸收。
+
+\begin{lemma}[Rellich 紧嵌入]
+	\label{g4:lem:0303:rellich}
+	设 \(X\) 是紧、无边界的光滑曲面，\(E\) 是其上的有限秩光滑复向量丛。用有限坐标、标架和截断函数定义一阶 Sobolev 范数，则包含 \(H^1_{\mathrm{Sob}}(X,E)\hookrightarrow L^2(X,E)\) 是紧的：每个 \(H^1_{\mathrm{Sob}}\) 有界序列都有 \(L^2\) 收敛子列。
+\end{lemma}
+Rellich 紧嵌入把“一阶导数有界”变成对振荡的统一限制。\footnote{Franz Rellich（1906--1955），奥地利—德国数学家，研究线性算子的扰动与数学物理中的分析问题。}下面用有限频率截断给出当前版本的证明。
+\begin{proof}
+	先考虑 \(T^2\) 上的标量函数列 \(v_n\)，满足 \(\|v_n\|_{H^1}\le M\)。上一小节的正交展开及导数系数公式先对光滑函数成立，再由 \(H^1\) 逼近延拓，给出
+	\[
+		\sum_{k\in\mathbb Z^2}(1+|k|^2)|\widehat v_n(k)|^2\le M^2.
+	\]
+	令 \(P_Rv=\sum_{|k|\le R}\widehat v(k)e_k\)，则
+	\begin{equation}
+		\label{g4:eq:0303:fourier-tail}
+		\|v_n-P_Rv_n\|_2^2
+		=\sum_{|k|>R}|\widehat v_n(k)|^2\le R^{-2}M^2.
+	\end{equation}
+	对每个整数 \(R\)，\(P_Rv_n\) 位于一个固定有限维空间的有界集内，因而有收敛子列。依次对 \(R=1,2,\ldots\) 取子列，再取对角子列，使所有有限频率截断均收敛。给定 \(\varepsilon>0\)，先选 \(R\) 使 \(2M/R<\varepsilon/2\)，再使这个有限截断中的两项之差小于 \(\varepsilon/2\)。三角不等式与\eqref{g4:eq:0303:fourier-tail}表明对角子列在 \(L^2\) 中为 Cauchy 列，因此收敛。
+
+	在曲面上，将有界截面列乘以定义范数时选定的各截断函数，并在每个坐标方框内补零、周期化。每个标架分量都满足刚证得的结论。坐标与标架只有有限多个，可逐次取子列，使全部局部截断分量在 \(L^2\) 中收敛。由于 \(\sum_j\rho_j=1\)，截面等于这些局部截断截面之和；坐标范数与丛的 \(L^2\) 范数在紧支集上等价，故所得子列在全局 \(L^2\) 中收敛。
+\end{proof}
+
+下文用到一个完备内积空间的基本事实。这样的空间称为\term[Hilbertkongjian]{Hilbert 空间}[Hilbert space]。\footnote{David Hilbert（1862--1943），德国数学家，研究不变量、几何公理化与积分方程。}若 \(V\) 是其中的闭线性子空间，则每个向量 \(x\) 唯一写成 \(x=v+w\)，其中 \(v\in V\)、\(w\perp V\)。证明可从到 \(V\) 的距离下确界出发：取逼近最小距离的 \(v_n\)，平行四边形恒等式使 \(v_n\) 为 Cauchy 列；闭性给出极限 \(v\)，再对 \(v+t a\)、\(a\in V\)，分别取实数及纯虚数 \(t\) 比较平方距离，得到 \(x-v\perp V\)。这也证明正交投影的范数至多为 \(1\)。
+
+\begin{definition}
+	\label{g4:def:0303:fredholm}
+	两个 Hilbert 空间之间的有界线性算子 \(T:H\to H'\)，若核有限维、像闭，并且余核 \(H'/\operatorname{im}T\) 有限维，则称为\term[Fredholmsuanzi]{Fredholm 算子}[Fredholm operator]。其指标为 \(\operatorname{ind}T=\dim\ker T-\dim\operatorname{coker}T\)。\footnote{Ivar Fredholm（1866--1927），瑞典数学家，以积分方程研究推动了线性算子理论的发展。}
+\end{definition}
+
+\begin{theorem}
+	\label{g4:thm:0303:fredholm}
+	设 \(X\) 是紧黎曼曲面，\(L\to X\) 是全纯线丛，并固定光滑度量。算子
+	\[
+		D=\bar\partial_L:H^1_{\mathrm{Sob}}(X,L)
+		\longrightarrow L^2(X,\Lambda^{0,1}\mathrm{T}^*X\otimes L)
+	\]
+	为 Fredholm 算子。其核恰为全纯截面空间 \(H^0(X,L)\)。若
+	\[
+		\mathscr H^{0,1}(X,L)
+		\coloneqq(\operatorname{im}D)^\perp,
+	\]
+	则这个空间有限维，且其中所有元素均光滑。每个平方可积形式有唯一分解
+	\begin{equation}
+		\label{g4:eq:0303:orthogonal-decomposition}
+		\alpha=Du+\beta,\qquad
+		u\in H^1_{\mathrm{Sob}}(X,L),\quad
+		u\perp H^0(X,L),\quad
+		\beta\in\mathscr H^{0,1}(X,L).
+	\end{equation}
+	若 \(\alpha\) 光滑，则 \(u\) 也光滑。因此每个 \(H^1(X,\mathcal O(L))\) 类具有唯一的 \(\mathscr H^{0,1}(X,L)\) 代表。
+\end{theorem}
+\begin{proof}
+	先说明弱解的正则性。若 \(u\in H^1_{\mathrm{Sob}}\) 且 \(Du=0\)，则在全纯标架中，系数满足分布方程 \(\partial_{\overline z}u=0\)。\cref{g4:lem:0302:weak-weyl}说明它等于全纯函数，故 \(\ker D=H^0(X,L)\)。更一般地，若 \(Du=\alpha\) 而 \(\alpha\) 光滑，由\cref{g4:thm:0302:local-dbar}，每个小坐标盘上有光滑局部解 \(v\)，满足 \(Dv=\alpha\)。差 \(u-v\) 弱全纯，因此全纯，故 \(u\) 光滑。
+
+	令 \(N=\ker D\)。若 \(N\) 无限维，按 \(L^2\) 内积逐次正交化，可取其中的正交单位列 \(s_n\)。由\cref{g4:prop:0303:global-estimate}，\(\|s_n\|_{H^1_{\mathrm{Sob}}}\le C\)。Rellich 紧嵌入给出 \(L^2\) 收敛子列；但任意不同两项的 \(L^2\) 距离为 \(\sqrt2\)，矛盾。因此 \(N\) 有限维。
+
+	现在证明去掉核后的估计
+	\begin{equation}
+		\label{g4:eq:0303:coercive}
+		\|u\|_{H^1_{\mathrm{Sob}}}\le C_0\|Du\|_1,
+		\qquad u\perp N.
+	\end{equation}
+	若不存在这样的 \(C_0\)，归一化后可取 \(u_n\perp N\)，满足 \(\|u_n\|_{H^1_{\mathrm{Sob}}}=1\)、\(\|Du_n\|_1\to0\)。取其 \(L^2\) 收敛子列。把\eqref{g4:eq:0303:global-estimate}用于 \(u_n-u_m\)，右边两项都趋于零，故该子列实际在 \(H^1_{\mathrm{Sob}}\) 中收敛到 \(u\)。连续性给出 \(Du=0\)，而 \(L^2\) 正交条件给出 \(u\perp N\)，所以 \(u=0\)。这与 \(\|u\|_{H^1_{\mathrm{Sob}}}=1\) 矛盾。
+
+	若 \(Du_n\) 在 \(L^2\) 中收敛，先从每个 \(u_n\) 减去其到有限维空间 \(N\) 的 \(L^2\) 正交投影；这不改变 \(Du_n\)。估计\eqref{g4:eq:0303:coercive}使修改后的 \(u_n\) 在 \(H^1_{\mathrm{Sob}}\) 中为 Cauchy 列。它的极限 \(u\) 满足 \(Du=\lim Du_n\)，所以 \(\operatorname{im}D\) 闭。
+
+	还需控制正交补。设局部 \(\beta=b\,\mathrm{d}\overline z\otimes e\in(\operatorname{im}D)^\perp\)。用支集在该图内的任意光滑截面 \(u e\) 测试，得到
+	\[
+		0=(D(u e),\beta)_1
+		=2\int h\,(\partial_{\overline z}u)\overline b\,
+		\mathrm{d}x\,\mathrm{d}y.
+	\]
+	按弱导数定义，这等价于 \(\partial_{\overline z}(h\overline b)=0\)。弱全纯正则性说明 \(q=h\overline b\) 全纯，故 \(\beta\) 光滑。这些函数还给出全局截面 \(q\,\mathrm{d}z\otimes e^{-1}\)。事实上，若 \(w=\phi(z)\)、\(e'=g e\)，则
+	\[
+		b'=\frac{b}{g\,\overline{\phi'}},\qquad
+		h'=|g|^2h,\qquad
+		h'\overline{b'}=\frac{g}{\phi'}h\overline b,
+	\]
+	正好是 \(K_X\otimes L^{-1}\) 的截面变换律。因此 \(\beta\mapsto q\,\mathrm{d}z\otimes e^{-1}\) 给出到 \(H^0(X,K_X\otimes L^{-1})\) 的反线性单射。刚才证明核有限维的论证适用于任意全纯线丛，特别适用于 \(K_X\otimes L^{-1}\)，故这个目标有限维，正交补也有限维。
+
+	像已闭，Hilbert 空间的正交投影给出 \(L^2=\operatorname{im}D\oplus\mathscr H^{0,1}(X,L)\)。每个像中的元素都有原像，再从原像减去其到 \(N\) 的投影，便得到\eqref{g4:eq:0303:orthogonal-decomposition}；若有两种这样的表示，相减后先由两个正交子空间得到 \(D(u-u')=0\)、\(\beta=\beta'\)，再由 \(u-u'\perp N\) 得到 \(u=u'\)。若 \(\alpha\) 光滑，则 \(\beta\) 已光滑，前面的弱解正则性应用于 \(Du=\alpha-\beta\)，给出 \(u\) 光滑。
+
+	最后，\cref{g4:thm:0302:dolbeault}已将 \(H^1(X,\mathcal O(L))\) 识别为光滑 \((0,1)\) 形式模去 \(D\) 的光滑像。每个这样的形式由上述分解与某个 \(\beta\) 同类；若 \(\beta=Dv\) 且 \(\beta\) 与像正交，则 \(\|\beta\|_1^2=0\)。所以代表存在且唯一。
+\end{proof}
+
+紧性在这里有两项具体作用：有限局部化使全局估计只有有限个常数，紧嵌入则排除了无限个彼此正交而仍有统一一阶控制的解。式\eqref{g4:eq:0303:coercive}还说明，选取与全纯截面正交的解后，解随右端在 \(L^2\) 范数中连续变化。
 
 \subsection{积分配对及形式伴随}
 \label{g4:subsec:0303:03}
-待撰写
+正交分解中留下的 \(\beta\) 满足什么方程？在有限维线性代数中，像的正交补是伴随的核。这里也有相同关系，但伴随须由积分分部计算，度量权函数与微分形式的次数都会进入公式。
+
+\begin{proposition}
+	\label{g4:prop:0303:formal-adjoint}
+	设 \(X\) 是紧黎曼曲面，\(L\) 带光滑 Hermitian 度量，局部记号采用\eqref{g4:eq:0303:l2-metrics}。算子 \(D=\bar\partial_L\) 的形式伴随，即满足
+	\[
+		(Du,\beta)_1=(u,D^*\beta)_0
+	\]
+	的光滑微分算子，局部为
+	\begin{equation}
+		\label{g4:eq:0303:adjoint}
+		D^*(b\,\mathrm{d}\overline z\otimes e)
+		=-\frac{2}{h\lambda}\partial_z(hb)\,e.
+	\end{equation}
+	这里等式两边均使用 \(L^2\) 内积。\cref{g4:thm:0303:fredholm}中的空间 \(\mathscr H^{0,1}(X,L)\) 恰为光滑形式中 \(D^*\) 的核。
+\end{proposition}
+\begin{proof}
+	若 \(u e\) 紧支于一张图，分部积分给出
+	\[
+		(D(u e),\beta)_1
+		=2\int h(\partial_{\overline z}u)\overline b\,\mathrm{d}x\,\mathrm{d}y
+		=-2\int u\,\partial_{\overline z}(h\overline b)\,
+		\mathrm{d}x\,\mathrm{d}y.
+	\]
+	而式\eqref{g4:eq:0303:adjoint}代入 \((u e,D^*\beta)_0\) 后恰为右端。用单位分解把任意光滑 \(u\) 写成有限个这样的紧支截面之和，便得到全局等式；积分等式也保证局部伴随表达式在交叠处一致。
+
+	若 \(\beta\in\mathscr H^{0,1}(X,L)\)，前一定理已证明它光滑。它与 \(Du\) 的内积对所有光滑 \(u\) 为零，故与 \(D^*\beta\) 的内积恒零，取 \(u=D^*\beta\) 得到 \(D^*\beta=0\)。反之，\(D^*\beta=0\) 使它与所有光滑 \(Du\) 正交；光滑截面在 \(H^1_{\mathrm{Sob}}\) 中稠密，故它与整个像正交。
+\end{proof}
+
+曲面上没有 \((0,2)\) 形式，所以 \((0,1)\) 形式上的 \(\bar\partial\) 复形已经到达末端。相应的非负算子为
+\[
+	\Delta_{\bar\partial,L}\beta=DD^*\beta,\qquad
+	(\Delta_{\bar\partial,L}\beta,\beta)_1=\|D^*\beta\|_0^2.
+\]
+因而光滑形式满足 \(\Delta_{\bar\partial,L}\beta=0\) 当且仅当 \(D^*\beta=0\)。这样的形式称为\term[tiaohuelingyi]{调和 \((0,1)\) 形式}[harmonic \((0,1)\)-form]。\cref{g4:thm:0303:fredholm}因此给出了每个上同调类的唯一调和代表。度量确定这个代表，上同调类本身不依赖度量。
+
+\ProseParagraphBreak
+
+现在构造不含度量的配对。对光滑 \(L\) 值 \((0,1)\) 形式 \(\alpha\) 与全纯截面 \(\eta\in H^0(X,K_X\otimes L^{-1})\)，先将 \(L^{-1}\) 与 \(L\) 收缩，再按 \(\eta\) 在前的次序作楔积，得到普通复值二形式。定义
+\begin{equation}
+	\label{g4:eq:0303:serre-pairing}
+	B([\alpha],\eta)\coloneqq
+	\frac1{2\pi\mathrm{i}}\int_X\eta\wedge\alpha.
+\end{equation}
+局部若 \(\eta=q\,\mathrm{d}z\otimes e^{-1}\)、\(\alpha=a\,\mathrm{d}\overline z\otimes e\)，则 \(\eta\wedge\alpha=qa\,\mathrm{d}z\wedge\mathrm{d}\overline z\)，标架因子相消。
+
+\begin{proposition}
+	\label{g4:prop:0303:pairing-adjoint}
+	设 \(X\) 是紧黎曼曲面，\(L\to X\) 为全纯线丛。式\eqref{g4:eq:0303:serre-pairing}是 \(H^1(X,\mathcal O(L))\times H^0(X,K_X\otimes L^{-1})\) 上良定义的复双线性配对。固定度量后，局部公式
+	\begin{equation}
+		\label{g4:eq:0303:antilinear-identification}
+		\mathcal J\bigl(b\,\mathrm{d}\overline z\otimes e\bigr)
+		=-h\overline b\,\mathrm{d}z\otimes e^{-1}
+	\end{equation}
+	给出反线性同构
+	\[
+		\mathcal J:\mathscr H^{0,1}(X,L)
+		\xrightarrow{\ \cong\ }H^0(X,K_X\otimes L^{-1}).
+	\]
+	对每个光滑 \(\alpha\) 和每个调和 \(\beta\)，有
+	\begin{equation}
+		\label{g4:eq:0303:pairing-inner-product}
+		B([\alpha],\mathcal J\beta)=\frac1{2\pi}(\alpha,\beta)_1.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	若将 \(\alpha\) 改成 \(\alpha+Du\)，由 \(\eta\) 全纯及楔积的次序，有
+	\[
+		\eta\wedge Du=-\mathrm{d}(u\eta).
+	\]
+	右边为全局一形式的外微分。第一卷第14.4节定理14.4.3 的 Stokes 公式应用于紧无边界的 \(X\)，给出其积分为零。于是配对只依赖 Dolbeault 类，双线性直接来自积分。
+
+	\cref{g4:thm:0303:fredholm}证明中的坐标计算已经说明 \(h\overline b\,\mathrm{d}z\otimes e^{-1}\) 是全局截面；添负号不改变变换律。式\eqref{g4:eq:0303:adjoint}说明
+	\[
+		D^*\beta=0
+		\quad\Longleftrightarrow\quad
+		\partial_z(hb)=0
+		\quad\Longleftrightarrow\quad
+		\partial_{\overline z}(h\overline b)=0.
+	\]
+	所以调和形式经 \(\mathcal J\) 变成全纯截面。反过来，若 \(\eta=q\,\mathrm{d}z\otimes e^{-1}\) 全纯，令 \(b=-\overline q/h\)。同一变换律使这些系数粘成全局光滑形式，且上式给出 \(D^*\beta=0\)。这证明满射与单射，复共轭则给出反线性。
+
+	最后，复坐标的正定向使 \(\mathrm{d}z\wedge\mathrm{d}\overline z=-2\mathrm{i}\,\mathrm{d}x\wedge\mathrm{d}y\)。因此
+	\[
+		\frac1{2\pi\mathrm{i}}\int_X(\mathcal J\beta)\wedge\alpha
+		=\frac1\pi\int_X h a\overline b\,\mathrm{d}x\,\mathrm{d}y
+		=\frac1{2\pi}(\alpha,\beta)_1.
+	\]
+	各式可逐图求和，所以得到全局恒等式。公式\eqref{g4:eq:0303:antilinear-identification}中的负号正是为配合这一楔积次序。
+\end{proof}
 
 \subsection{配对非退化性}
 \label{g4:subsec:0303:04}
-待撰写
+积分为零可能来自正负抵消，所以只知道配对存在，还不能断定它能检测所有上同调类。调和代表提供了一个针对给定类选取测试截面的方法：将代表 \(\beta\) 送到 \(\mathcal J\beta\)，积分就成为严格正的平方范数。
+
+\begin{theorem}[曲面上的 Serre 对偶]
+	\label{g4:thm:0303:serre-duality}
+	设 \(X\) 是紧黎曼曲面，\(L\to X\) 是全纯线丛。积分配对
+	\[
+		B:H^1(X,\mathcal O(L))\times
+		H^0(X,K_X\otimes L^{-1})\longrightarrow\mathbb C,
+		\qquad
+		B([\alpha],\eta)=\frac1{2\pi\mathrm{i}}\int_X\eta\wedge\alpha
+	\]
+	在两个有限维复向量空间之间非退化。因此它给出自然的复线性同构
+	\begin{equation}
+		\label{g4:eq:0303:serre-duality}
+		H^1(X,\mathcal O(L))
+		\cong H^0(X,K_X\otimes L^{-1})^\vee,
+	\end{equation}
+	其中 \({}^\vee\) 表示复线性对偶空间。
+\end{theorem}
+\begin{proof}
+	有限性已由\cref{g4:thm:0303:fredholm}对 \(L\) 及 \(K_X\otimes L^{-1}\) 给出。设 \([\alpha]\ne0\)，取其唯一调和代表 \(\beta\)。该代表不为零，故
+	\[
+		B([\alpha],\mathcal J\beta)
+		=B([\beta],\mathcal J\beta)
+		=\frac1{2\pi}\|\beta\|_1^2>0.
+	\]
+	所以第一个变量非退化。若 \(\eta\ne0\)，由\cref{g4:prop:0303:pairing-adjoint}可唯一写成 \(\eta=\mathcal J\beta\)，其中 \(\beta\ne0\) 调和。同样的等式说明 \(B([\beta],\eta)>0\)，所以第二个变量也非退化。
+
+	由双线性，映射 \([\alpha]\mapsto(\eta\mapsto B([\alpha],\eta))\) 是复线性的。两侧非退化分别给出两个有限维空间到对方对偶的单射，故维数相等，这个映射为同构。它由全局积分定义，因此与证明中选择的度量、坐标和代表无关。
+\end{proof}
+
+这就是本章所用的\term[Serreduiou]{Serre 对偶}[Serre duality]。这里的对偶是复线性对偶；证明中的 \(\mathcal J\) 是依赖度量的反线性识别。两个陈述的线性类型不同，但由\eqref{g4:eq:0303:pairing-inner-product}准确地联系起来。
+
+\begin{corollary}
+	\label{g4:cor:0303:solvability}
+	设 \(X\) 是紧黎曼曲面，\(L\to X\) 为全纯线丛，\(\alpha\) 是光滑 \(L\) 值 \((0,1)\) 形式。方程 \(\bar\partial_Lu=\alpha\) 有全局光滑解，当且仅当
+	\[
+		\int_X\eta\wedge\alpha=0
+		\quad\text{对所有 }\eta\in H^0(X,K_X\otimes L^{-1})\text{ 成立}.
+	\]
+	解的全体在任一解上加 \(H^0(X,L)\) 得到。若记 \(h^q(X,L)=\dim_{\mathbb C}H^q(X,\mathcal O(L))\)，则
+	\[
+		h^1(X,L)=h^0(X,K_X\otimes L^{-1}),\qquad
+		\operatorname{ind}\bar\partial_L=h^0(X,L)-h^1(X,L).
+	\]
+\end{corollary}
+\begin{proof}
+	方程可解恰好表示 \([\alpha]=0\)，再用 Serre 配对的非退化性即可。两个解之差在 \(\bar\partial_L\) 的核中，故为全纯截面。维数等式由对偶同构得到；最后一个等式由 Fredholm 指标的定义和调和代表同构得到。
+\end{proof}
+
+\begin{example}
+	\label{g4:exm:0303:flat-torus}
+	取方形复环面 \(X=\mathbb C/(2\pi\mathbb Z+2\pi\mathrm{i}\mathbb Z)\)，并令 \(L\) 为平凡线丛，\(h=\lambda=1\)。形式 \(\mathrm{d}z\) 与 \(\mathrm{d}\overline z\) 都在平移商上有定义。任一全纯微分除以处处非零的 \(\mathrm{d}z\)，得到全纯函数；\cref{g4:prop:0201:meromorphic-map}使它为常数。因此 \(H^0(X,K_X)=\mathbb C\,\mathrm{d}z\)，而伴随公式给出 \(\mathscr H^{0,1}(X,\mathcal O_X)=\mathbb C\,\mathrm{d}\overline z\)。
+
+	若 \(\alpha=a(x,y)\,\mathrm{d}\overline z\)，其唯一调和代表为
+	\[
+		\beta=\left(\frac1{4\pi^2}
+		\int_{[0,2\pi]^2}a(x,y)\,\mathrm{d}x\,\mathrm{d}y\right)
+		\mathrm{d}\overline z.
+	\]
+	这正是常数函数方向上的正交投影。配对直接计算为
+	\[
+		B([\alpha],\mathrm{d}z)
+		=-\frac1\pi\int_{[0,2\pi]^2}a(x,y)\,
+		\mathrm{d}x\,\mathrm{d}y.
+	\]
+	所以 \(\bar\partial u=\alpha\) 可解，当且仅当 \(a\) 的平均值为零。若平均值为零，以 \(e^{\mathrm{i}(k_1x+k_2y)}\) 展开，唯一平均值为零的解具有系数
+	\[
+		\widehat u(0)=0,\qquad
+		\widehat u(k)=\frac{2\widehat a(k)}{\mathrm{i}k_1-k_2},
+		\quad k\ne0.
+	\]
+	光滑 \(a\) 的系数经任意次分部积分后按任意多项式阶衰减，分母对 \(k\ne0\) 的模为 \(|k|\)，故解级数及其任意阶导数一致收敛。这也直接验证了光滑解的存在。
+\end{example}
 
 \subsection{与留数配对的比较}
 \label{g4:subsec:0303:05}
-待撰写
+主部问题把局部极点数据作为输入：给定有限多个点附近的亚纯截面，要求找到一个全局亚纯截面，恰有这些主部。截断函数把这一问题转成 \(\bar\partial\) 方程；Serre 配对随后把全局积分重新集中到各极点处的留数。
+
+\ProseParagraphBreak
+
+设 \(S=\{p_1,\ldots,p_m\}\subset X\)。在两两不交的坐标圆盘 \(U_j\) 上选全纯标架 \(e_j\) 和中心坐标 \(z_j(p_j)=0\)，把给定主部写成
+\[
+	P_j=\left(\sum_{\nu=1}^{N_j}c_{j,\nu}z_j^{-\nu}\right)e_j.
+\]
+取 \(0\le\chi_j\le1\)，使 \(\chi_j\) 支持在 \(U_j\) 内，且在 \(p_j\) 的一个邻域恒等于 \(1\)。在 \(X\setminus S\) 上令 \(s=\sum_j\chi_jP_j\)，并在这个去点曲面上按普通微分计算 \(\alpha=Ds\)。由于 \(P_j\) 在去心盘上全纯，且 \(\chi_j\) 在更小盘中恒为 \(1\)，\(\alpha\) 在各点的去心邻域为零，故可补零成为 \(X\) 上的光滑 \((0,1)\) 形式。这里的 \(\alpha\) 指这一光滑延拓，不表示含极点截面的全局分布导数。例如\cref{g4:thm:0302:local-dbar}证明中的核恒等式给出 \(\partial_{\overline z}(1/z)=\pi\delta_0\)，而 \(1/z\) 在去心盘上的普通导数为零。
+
+\ProseParagraphBreak
+
+按上一节的约定，Čech 差分为 \((\delta b)_{ij}=b_j-b_i\)，局部亚纯提升 \(s_i\) 给出主部的连接余圈 \(c_{ij}=s_j-s_i\)，而比较映射将它送到 \([D(\sum_i\rho_i s_i)]\)。在当前的圆盘覆盖中，取局部提升为各 \(P_j\) 及 \(X\setminus S\) 上的零，便由\cref{g4:prop:0302:principal-parts-class}得到上述 \([\alpha]\)。记这个连接类为 \(\delta P\in H^1(X,\mathcal O(L))\)。改变截断函数只使 \(s\) 改变一个全局光滑截面；将 \(P_j\) 改变一个局部全纯截面也有同样效果。因此 \(\delta P\) 只依赖主部，不依赖这些选择。
+
+\begin{proposition}
+	\label{g4:prop:0303:residue-pairing}
+	设 \(X\) 是紧黎曼曲面，\(L\to X\) 为全纯线丛，\(P=(P_1,\ldots,P_m)\) 是有限点集 \(S\) 处给定的 \(L\) 值主部，并用上述约定定义连接类 \(\delta P=[\alpha]\)。对任意 \(\eta\in H^0(X,K_X\otimes L^{-1})\)，有
+	\begin{equation}
+		\label{g4:eq:0303:residue-pairing}
+		B(\delta P,\eta)
+		=\frac1{2\pi\mathrm{i}}\int_X\eta\wedge\alpha
+		=\sum_{j=1}^m\operatorname{Res}_{p_j}(P_j\eta).
+	\end{equation}
+	乘积 \(P_j\eta\) 是普通亚纯微分，其留数与坐标、标架及主部代表的选择无关。
+\end{proposition}
+\begin{proof}
+	标架 \(e_j\) 与 \(e_j^{-1}\) 在乘积中相消，故 \(P_j\eta\) 是亚纯一形式。其留数的坐标无关性由\cref{g4:prop:0203:residue-invariance}给出；主部代表增加全纯截面时，乘积只增加全纯微分，不改变留数。
+
+	只须计算一个圆盘内的贡献。取 \(\varepsilon>0\) 足够小，使 \(\chi_j=1\) 在 \(|z_j|\le\varepsilon\) 附近，并取较大的坐标圆周，使 \(\chi_j\) 在该圆周附近为零。令 \(A_j\) 为两圆周之间的闭圆环。其内的 \(s_j=\chi_jP_j\) 光滑，且 \(\eta\) 全纯，所以
+	\[
+		\eta\wedge Ds_j=-\mathrm{d}(s_j\eta).
+	\]
+	圆环外边界按逆时针定向，内边界按顺时针定向。Stokes 公式因此给出
+	\[
+		\int_{U_j}\eta\wedge D(\chi_jP_j)
+		=-\int_{\partial A_j}s_j\eta
+		=\int_{|z_j|=\varepsilon}^{\text{逆时针}}P_j\eta
+		=2\pi\mathrm{i}\operatorname{Res}_{p_j}(P_j\eta).
+	\]
+	第一处积分按前述光滑延拓理解，因其支集位于圆环中而等于圆环上的积分。中间等式的正号来自两个负号：一个来自外微分公式，一个来自内边界方向。对 \(j\) 求和并除以 \(2\pi\mathrm{i}\)，即得所需公式。
+\end{proof}
+
+\begin{corollary}
+	\label{g4:cor:0303:principal-parts-criterion}
+	设 \(X\) 是紧黎曼曲面，\(L\to X\) 为全纯线丛。在有限点集 \(S\) 给定 \(L\) 值主部 \(P_j\)。存在一个全局亚纯截面，在 \(S\) 以外全纯，且在每个 \(p_j\) 具有指定主部，当且仅当
+	\[
+		\sum_j\operatorname{Res}_{p_j}(P_j\eta)=0
+		\quad\text{对所有 }\eta\in H^0(X,K_X\otimes L^{-1})\text{ 成立}.
+	\]
+\end{corollary}
+\begin{proof}
+	\cref{g4:prop:0302:principal-parts-class}已证明：指定主部可由全局亚纯截面实现，当且仅当连接类 \(\delta P\) 为零。由 Serre 配对的非退化性，这又等价于 \(B(\delta P,\eta)=0\) 对所有 \(\eta\) 成立。将\cref{g4:prop:0303:residue-pairing}代入，即得所列留数条件。
+\end{proof}
+
+例如，在复环面上取平凡线丛，并用来自平面的局部平移坐标给出简单极点主部 \(c_j/z_j\)。全纯微分空间由 \(\mathrm{d}z\) 张成，故条件恰为 \(\sum_jc_j=0\)。一个非零简单极点主部不能单独实现；在两个不同点指定互为相反数的简单主部，则存在实现它们的亚纯函数。这里的留数是 \((c_j/z_j)\,\mathrm{d}z_j\) 的留数，正是积分配对检测到的局部系数。下一节将通过逐点增加可允许的主部，计算这些有限维空间的维数。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

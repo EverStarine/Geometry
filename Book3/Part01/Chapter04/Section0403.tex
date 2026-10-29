@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 4.3 局部实现的结构方法
 % 纲要位置：几何学计划纲要.md，第 2244 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,360 @@
 \section{局部实现的结构方法}
 \label{g3:sec:0403}
 
-待撰写
+前三组方程是浸入所必须满足的条件，现在把问题反过来：若只给出长度、法方向及第二基本形式，能否把这些数据放进一个实际的环境空间？困难不在某一个点，而在相邻点的标架怎样同时移动。沿一条曲线可以解常微分方程；沿两个方向先后移动时，结果相容的条件正是 Gauss、Codazzi 与 Ricci 方程。下面将它们合成一个平坦联络，再由平行标架恢复位置。
 
 \subsection{给定度量、法丛及对称型}
 \label{g3:subsec:0403:01}
-待撰写
+
+设 \(M^n\) 为无边界光滑流形，\(n\geq1\)。尚未有浸入时，“法丛”先只是一个抽象的实秩 \(r\geq0\) 光滑向量丛 \(E\to M\)，带正定纤维内积 \(\langle\ ,\ \rangle_E\) 和保持该内积的联络 \(\nabla^E\)。其余数据是光滑黎曼度量 \(g\) 和光滑对称双线性型
+\[
+	B\in\Gamma(\operatorname{Sym}^2\mathrm T^*M\otimes E).
+\]
+这时 \(B(X,Y)\) 已经指定“向哪个法方向弯曲”，但尚未把该法方向识别为某个环境切空间中的向量。记 \(\nabla\) 为 \(g\) 的 Levi-Civita 联络，按
+\[
+	g(A_\xi X,Y)=\langle B(X,Y),\xi\rangle_E
+\]
+定义自伴算子 \(A_\xi\)。秩 \(r=0\) 时，\(E,B,A\) 的各项均按零理解。
+
+\ProseParagraphBreak
+
+固定一个实数 \(c\)，表示待实现的环境截面曲率。上一节的空间形式相容方程在这些抽象数据上仍有意义：
+\begin{align}
+	\mathrm{Rm}(X,Y,Z,W)
+	&=c\bigl(g(X,Z)g(Y,W)-g(X,W)g(Y,Z)\bigr)\notag\\
+	&\quad+\langle B(X,Z),B(Y,W)\rangle_E
+	-\langle B(X,W),B(Y,Z)\rangle_E,\label{g3:eq:abstract-gauss-data}\\
+	(\nabla B)(X;Y,Z)&=(\nabla B)(Y;X,Z),\label{g3:eq:abstract-codazzi-data}\\
+	\langle R^E(X,Y)\xi,\eta\rangle_E
+	&=g([A_\xi,A_\eta]X,Y).\label{g3:eq:abstract-ricci-data}
+\end{align}
+这里
+\[
+	(\nabla B)(X;Y,Z)
+	=\nabla^E_X(B(Y,Z))-B(\nabla_XY,Z)-B(Y,\nabla_XZ),
+\]
+而 \(R^E(X,Y)=\nabla^E_X\nabla^E_Y-\nabla^E_Y\nabla^E_X-\nabla^E_{[X,Y]}\)。三式分别对应\cref{g3:cor:space-form-compatibility}中的切向、混合与法向相容条件。
+
+\ProseParagraphBreak
+
+为明确实现的目标，令 \(N=n+r\)，并记 \(Q_c^N\) 为以下标准模型：\(c=0\) 时取 \(\mathbb R^N\)；\(c>0\) 时取半径 \(1/\sqrt c\) 的圆球面。若 \(c<0\)，令 \(a=\sqrt{|c|}\)，在 \(\mathbb R^{N+1}\) 上取双线性型
+\[
+	\langle z,z\rangle_-=\sum_{i=1}^N(z^i)^2-(z^{N+1})^2,
+\]
+并取双曲面的一片
+\[
+	Q_c^N=\{z:\langle z,z\rangle_-=1/c,\ z^{N+1}>0\}.
+\]
+它的诱导度量正定：写 \(z=(x,\sqrt{a^{-2}+|x|^2})\)，切向量 \(v\) 的平方长度为
+\[
+	|v|^2-\frac{\langle x,v\rangle^2}{a^{-2}+|x|^2}>0
+	\qquad(v\ne0).
+\]
+因此这里虽然借助一个有负方向的线性空间，所构造的环境 \(Q_c^N\) 仍是黎曼流形。
+
+\ProseParagraphBreak
+
+对 \(c\ne0\)，统一记 \(\varepsilon=\operatorname{sign}c\)、\(a=\sqrt{|c|}\)，把环境线性空间最后一维的平方长度取为 \(\varepsilon\)。二次曲面满足 \(\langle f,f\rangle_\varepsilon=1/c\)，其单位法向 \(af\) 的平方长度为 \(\varepsilon\)。对曲面切向场 \(U,V\)，普通求导的法分量由 \(\langle V,f\rangle_\varepsilon=0\) 得到，因而
+\begin{equation}\label{g3:eq:quadric-ambient-derivative}
+	\partial_UV=\nabla^{Q}_UV-c\langle U,V\rangle_\varepsilon f.
+\end{equation}
+切向投影 \(\nabla^Q\) 保持诱导度量且无挠，所以是其 Levi-Civita 联络。将上式代入环境平直联络的曲率恒等式，取切向分量便得
+\[
+	R^{Q}(U,V)W=c\bigl(\langle V,W\rangle U-\langle U,W\rangle V\bigr).
+\]
+故这些模型的曲率与式\eqref{g3:eq:abstract-gauss-data}中的 \(c\) 一致。
+\ProseParagraphBreak
+
+这些模型也满足空间形式所要求的完备性。Euclid 空间的通常距离完备；圆球面由紧性及\cref{g3:cor:compact-riemannian-complete}完备。负曲率模型可与上一章的上半空间直接比较。对 \(x\in\mathbb R^{N-1}\)、\(y>0\)，令
+\[
+	\Theta(x,y)=\left(\frac{x}{ay},
+	\frac{|x|^2+y^2-1}{2ay},
+	\frac{|x|^2+y^2+1}{2ay}\right).
+\]
+直接代入得到 \(\langle\Theta,\Theta\rangle_-=-a^{-2}\)，且最后一分量为正。反过来，若双曲面点记为 \((z',z^N,t)\)，则 \(u=t-z^N>0\)，其唯一原像为
+\[
+	y=\frac1{au},\qquad x=\frac{z'}u.
+\]
+因此 \(\Theta\) 是光滑双射且逆光滑。记 \(v=t+z^N\)，环境内积写成 \(|\mathrm dz'|^2-\mathrm du\,\mathrm dv\)。将 \(z'=x/(ay)\)、\(u=1/(ay)\)、\(v=(|x|^2+y^2)/(ay)\) 代入并求导，混合项抵消，得到
+\[
+	\Theta^*g_{Q_c}=\frac1{a^2y^2}\bigl(|\mathrm dx|^2+\mathrm dy^2\bigr).
+\]
+当 \(N\geq2\) 时，\cref{g3:exm:hyperbolic-warped-halfspace}已经证明右侧未缩放的半空间度量完备，乘以正数 \(a^{-2}\) 后仍完备。当 \(N=1\) 时省去 \(x\)，用 \(r=a^{-1}\log y\) 把它写成整条实线的 \(\mathrm dr^2\)，同样完备。
 
 \subsection{标架系统及相容性}
 \label{g3:subsec:0403:02}
-待撰写
+
+先把切空间和法空间放在同一个丛中。在 \(F_0=\mathrm TM\oplus E\) 上取直和内积，并定义
+\begin{equation}\label{g3:eq:submanifold-data-connection}
+	D_X(Y+\xi)
+	=\nabla_XY-A_\xi X+B(X,Y)+\nabla^E_X\xi.
+\end{equation}
+若浸入已经存在，这就是环境联络分别写出切向和法向分量后的表达。它确为保持直和内积的联络：两个纯切向或纯法向输入由各自的度量相容性处理；一个切向、一个法向输入所产生的交叉项为
+\[
+	-g(A_\xi X,Y)+\langle\xi,B(X,Y)\rangle_E=0.
+\]
+因此这个构造把 \(B\) 与 \(A\) 放在彼此相反的两个非对角块中。
+
+\begin{proposition}\label{g3:prop:compatibility-flat-connection}
+	设 \(M^n,g,E,\nabla^E,B\) 为上述光滑数据，\(n\geq1\)，\(c\in\mathbb R\)。当 \(c=0\) 时，三式\eqref{g3:eq:abstract-gauss-data}--\eqref{g3:eq:abstract-ricci-data}等价于 \(D\) 平坦。当 \(c\ne0\) 时，在
+	\[
+		F_c=\mathrm TM\oplus E\oplus\mathbb R s,
+		\qquad\langle s,s\rangle=\varepsilon
+	\]
+	上取各项正交，并定义
+	\begin{equation}\label{g3:eq:augmented-submanifold-connection}
+		\widehat D_X(Y+\xi+t s)
+		=\nabla_XY-A_\xi X+a tX
+		+B(X,Y)+\nabla^E_X\xi
+		+\bigl(Xt-\varepsilon a g(X,Y)\bigr)s.
+	\end{equation}
+	则 \(\widehat D\) 保持该非退化内积，而且三组相容方程等价于 \(\widehat D\) 平坦。
+\end{proposition}
+\begin{proof}
+	记
+	\[
+		C(X,Y,Z)=(\nabla B)(X;Y,Z)-(\nabla B)(Y;X,Z).
+	\]
+	直接在式\eqref{g3:eq:submanifold-data-connection}中求两次导数，切向输入 \(Z\) 给出
+	\begin{equation}\label{g3:eq:data-connection-curvature-tangent}
+		R^D(X,Y)Z
+		=R(X,Y)Z-A_{B(Y,Z)}X+A_{B(X,Z)}Y+C(X,Y,Z).
+	\end{equation}
+	其中前三项在 \(\mathrm TM\)，最后一项在 \(E\)。例如法向部分展开为
+	\[
+		\begin{aligned}
+		&B(X,\nabla_YZ)-B(Y,\nabla_XZ)
+		+\nabla^E_XB(Y,Z)-\nabla^E_YB(X,Z)\\
+		&\hspace{30mm}-B([X,Y],Z),
+		\end{aligned}
+	\]
+	用 \([X,Y]=\nabla_XY-\nabla_YX\) 整理后正是 \(C\)。对法向输入 \(\xi\)，其法向曲率分量为
+	\[
+		\bigl(R^D(X,Y)\xi\bigr)^E
+		=R^E(X,Y)\xi-B(X,A_\xi Y)+B(Y,A_\xi X).
+	\]
+	与 \(\eta\) 配对，便得到
+	\[
+		\left\langle\bigl(R^D(X,Y)\xi\bigr)^E,\eta\right\rangle_E
+		=\langle R^E(X,Y)\xi,\eta\rangle_E-g([A_\xi,A_\eta]X,Y).
+	\]
+	由于 \(D\) 保持内积，其曲率算子对直和内积反对称；因此余下的法向输入、切向输出块由 \(C\) 的负转置确定。于是所有曲率块为零，恰等价于 \(c=0\) 的 Gauss、Codazzi、Ricci 三式。
+
+	现在设 \(c\ne0\)。新增项也保持内积，因为
+	\[
+		\langle\widehat D_Xs,Y\rangle
+		+\langle s,\widehat D_XY\rangle
+		=a g(X,Y)-\varepsilon^2a g(X,Y)=0.
+	\]
+	其余新增配对立即为零，故 \(\widehat D\) 是度量联络。又有 \(\widehat D_Xs=aX\)，所以
+	\[
+		R^{\widehat D}(X,Y)s
+		=a\bigl(\nabla_XY-\nabla_YX-[X,Y]+B(X,Y)-B(Y,X)\bigr)=0.
+	\]
+	这里也用到 \(g(X,Y)=g(Y,X)\)，使 \(s\) 分量抵消。由曲率的反对称性，任意输入的曲率输出都没有 \(s\) 分量。
+
+	对切向输入 \(Z\)，新增的切向曲率项只有
+	\[
+		-\varepsilon a^2g(Y,Z)X+\varepsilon a^2g(X,Z)Y
+		=-c\bigl(g(Y,Z)X-g(X,Z)Y\bigr).
+	\]
+	因此
+	\[
+		\begin{aligned}
+		\bigl(R^{\widehat D}(X,Y)Z\bigr)^{\mathrm TM}
+		={}&R(X,Y)Z-A_{B(Y,Z)}X+A_{B(X,Z)}Y\\
+		&-c\bigl(g(Y,Z)X-g(X,Z)Y\bigr),
+		\end{aligned}
+	\]
+	而法向部分仍为 \(C(X,Y,Z)\)。法向输入、法向输出块也没有改变。将切向公式的输入换为 \(W\) 再与 \(Z\) 配对，其为零恰好给出式\eqref{g3:eq:abstract-gauss-data}；其余两个块分别给出另外两式。因此三式与增广联络平坦等价。
+\end{proof}
+
+把曲率变成零以后，还要真正解出标架，不能只把“平坦”当作可积的同义词。下一引理证明所需的局部构造。这里用到的分析输入是第一卷第13.1节的“局部初值问题”与“初值与参数的光滑依赖”：光滑常微分方程的解局部存在唯一，并在共同小区间上光滑依赖初值与有限维参数。下面将矩阵条目作为未知量、尚未行进的坐标作为参数使用这两个结果。
+
+\begin{lemma}[平坦联络的局部标架]\label{g3:lem:flat-connection-local-frame}
+	设 \(F\to M\) 为有限秩实光滑向量丛，\(M\) 无边界，\(\mathscr D\) 为曲率为零的光滑联络。给定 \(p\in M\) 及一个线性同构 \(\Phi_p:F_p\to V\)，其中 \(V\) 为同维实向量空间，则在 \(p\) 的某个连通坐标盒 \(U\) 上，存在唯一的光滑丛同构 \(\Phi:F|_U\to U\times V\)，使它在 \(p\) 等于指定同构，且
+	\begin{equation}\label{g3:eq:parallel-trivialization-derivative}
+		X(\Phi\sigma)=\Phi(\mathscr D_X\sigma)
+	\end{equation}
+	对每个光滑截面 \(\sigma\) 成立。若联络保持一个非退化内积，且 \(\Phi_p\) 是到 \(V\) 的线性等距，则每个 \(\Phi_x\) 都是线性等距。
+\end{lemma}
+\begin{proof}
+	在 \(p\) 附近取行标架 \(e\)，使 \(p\) 的坐标为零，并写
+	\[
+		\mathscr D(eu)=e\left(\mathrm du+\sum_i A_i u\,\mathrm dx^i\right).
+	\]
+	取 \(V\) 中与 \(e(p)\) 对应的基后，所求平行标架写为 \(b=eG\)，其方程为
+	\begin{equation}\label{g3:eq:parallel-frame-matrix-system}
+		\partial_iG=-A_iG,\qquad G(0)=I.
+	\end{equation}
+	平坦条件则是
+	\[
+		\partial_iA_j-\partial_jA_i+A_iA_j-A_jA_i=0.
+	\]
+
+	先沿第一坐标轴解式\eqref{g3:eq:parallel-frame-matrix-system}的 \(i=1\) 方程。假定已经在前 \(k-1\) 个坐标组成的盒上得到解，就以该解为 \(x^k=0\) 处的初值，沿第 \(k\) 个坐标解 \(\partial_kG=-A_kG\)，将前 \(k-1\) 个坐标作为参数，其余坐标仍取零。所引常微分方程定理保证在缩小的共同盒上得到光滑解。有限步构造只需缩小有限次。
+
+	关键在于新一步不破坏先前方程。对 \(i<k\)，令误差矩阵 \(E_i=\partial_iG+A_iG\)。由刚解出的方程，
+	\[
+		\partial_kE_i
+		=-A_kE_i+
+		\bigl(\partial_kA_i-\partial_iA_k+A_kA_i-A_iA_k\bigr)G
+		=-A_kE_i.
+	\]
+	在 \(x^k=0\) 上误差为零，唯一性便给出 \(E_i=0\)。归纳至 \(k=n\)，即解出了所有坐标方向的方程。每一步中，若初值矩阵可逆，另解 \(\partial_kK=KA_k\) 且初值为其逆，则 \(\partial_k(KG)=0\)，故 \(KG=I\)。因此所得 \(G\) 始终可逆，\(b\) 确为标架。
+
+	这个标架满足 \(\mathscr Db=0\)，称为\term[pingxingbiaojia]{平行标架}[parallel frame]。令 \(\Phi\) 把 \(b\) 的各列送到 \(V\) 中固定基，便得到式\eqref{g3:eq:parallel-trivialization-derivative}。两个这样的标架之间的过渡矩阵所有偏导均为零，所以在连通盒中为常矩阵；初值相同则矩阵为恒等，证明唯一性。若 \(\mathscr D\) 保持内积，则 \(X\langle b_i,b_j\rangle=0\)，各配对恒等于初值配对。故初始线性等距延拓后仍为线性等距，这也适用于有一个负方向的内积。
+\end{proof}
+
+在平行标架中，丛中的变化已经变成固定向量空间中的普通求导。Euclid 情形还需把速度一形式积分成位置。为补齐这一步，设坐标域关于原点星形，\(\alpha=\sum_i\alpha_i\,\mathrm dx^i\) 是取值于有限维向量空间的光滑闭一形式。定义
+\begin{equation}\label{g3:eq:star-shaped-one-form-primitive}
+	f(x)=b+\int_0^1\sum_i\alpha_i(tx)x^i\,\mathrm dt.
+\end{equation}
+由闭性 \(\partial_j\alpha_i=\partial_i\alpha_j\)，在积分号内求导得到
+\[
+	\partial_jf(x)=\int_0^1\left(\alpha_j(tx)
+	+t\sum_i x^i\partial_i\alpha_j(tx)\right)\mathrm dt
+	=\int_0^1\frac{\mathrm d}{\mathrm dt}\bigl(t\alpha_j(tx)\bigr)\mathrm dt
+	=\alpha_j(x).
+\]
+因此 \(\mathrm df=\alpha\)，且 \(f(0)=b\)。同一连通域中的两个原函数只差常向量。
 
 \subsection{空间形式中的局部基本定理}
 \label{g3:subsec:0403:03}
-待撰写
+
+现在可以把相容性转成存在性。所谓实现，还必须指定抽象法丛与实际法丛怎样对应；只要求诱导度量相同，会丢掉本节给定的一部分数据。
+
+\begin{theorem}[子流形的局部基本定理]\label{g3:thm:submanifold-fundamental-local}
+	设 \(M^n\) 为无边界光滑流形，\(n\geq1\)，\(g\) 为光滑黎曼度量，\(E\to M\) 为秩 \(r\geq0\) 的光滑 Euclid 向量丛，\(\nabla^E\) 为其度量联络，\(B\in\Gamma(\operatorname{Sym}^2\mathrm T^*M\otimes E)\) 光滑。固定 \(c\in\mathbb R\)。若这些数据满足式\eqref{g3:eq:abstract-gauss-data}--\eqref{g3:eq:abstract-ricci-data}，则每个 \(p\in M\) 都有一个连通邻域 \(U\)，其上存在光滑等距浸入
+	\[
+		f:(U,g)\longrightarrow Q_c^{n+r}
+	\]
+	及覆盖恒等映射的光滑纤维等距 \(\iota:E|_U\to N_fU\)，使
+	\[
+		B_f(X,Y)=\iota(B(X,Y)),\qquad
+		\nabla^{\perp,f}_X(\iota\xi)=\iota(\nabla^E_X\xi).
+	\]
+	反之，具有这样法丛识别的等距浸入必满足三组相容方程。
+\end{theorem}
+
+这是\term[ziliuxingjubujibendingli]{子流形的局部基本定理}[local fundamental theorem of submanifolds]。它给出浸入及完整法丛数据。
+
+\begin{proof}
+	先设 \(c=0\)。由\cref{g3:prop:compatibility-flat-connection}，\(F_0\) 上的 \(D\) 平坦。取小坐标盒，并由\cref{g3:lem:flat-connection-local-frame}构造保持内积的 \(\Phi:F_0|_U\to U\times\mathbb R^{n+r}\)。把切向量包含到 \(F_0\) 后定义向量值一形式
+	\[
+		\alpha(X)=\Phi(X).
+	\]
+	式\eqref{g3:eq:parallel-trivialization-derivative}给出
+	\[
+		\begin{aligned}
+		\mathrm d\alpha(X,Y)
+		&=\Phi(D_XY-D_YX-[X,Y])\\
+		&=\Phi\bigl(\nabla_XY-\nabla_YX-[X,Y]+B(X,Y)-B(Y,X)\bigr)=0.
+		\end{aligned}
+	\]
+	这里无挠性与 \(B\) 的对称性共同保证位置可积。由式\eqref{g3:eq:star-shaped-one-form-primitive}取得 \(f\)，满足 \(\mathrm df=\alpha\)。因为 \(\Phi\) 保持内积，
+	\[
+		\langle\mathrm df(X),\mathrm df(Y)\rangle=g(X,Y).
+	\]
+	故 \(\mathrm df\) 单射，\(f\) 是等距浸入。
+
+	定义 \(\iota\xi=\Phi(\xi)\)。它与 \(\mathrm df(\mathrm TM)=\Phi(\mathrm TM)\) 正交，维数又恰为 \(r\)，所以识别了全部法丛。对切向与法向截面分别求导，得到
+	\[
+		\partial_X(\mathrm df(Y))=\mathrm df(\nabla_XY)+\iota B(X,Y),
+		\qquad
+		\partial_X(\iota\xi)=-\mathrm df(A_\xi X)+\iota(\nabla^E_X\xi).
+	\]
+	这两式正是所需的第二基本形式与法联络。
+
+	再设 \(c\ne0\)。此时对平坦的 \(\widehat D\) 取内积保持的平凡化
+	\[
+		\Phi:F_c|_U\longrightarrow U\times\mathbb R^{n+r+1},
+	\]
+	目标的内积按前述 \(\varepsilon\) 选择。定义
+	\begin{equation}\label{g3:eq:quadric-immersion-from-frame}
+		f=\frac1a\Phi(s).
+	\end{equation}
+	由于 \(\widehat D_Xs=aX\)，有
+	\[
+		\mathrm df(X)=\Phi(X),\qquad
+		\langle f,f\rangle_\varepsilon=\frac\varepsilon{a^2}=\frac1c.
+	\]
+	于是 \(f\) 落在所需二次曲面上，并且仍为等距浸入。当 \(c<0\) 时，在初始同构中把 \(s_p\) 送到所选正时间方向；由连续性及 \(U\) 连通，\(f\) 始终落在双曲面的同一片。
+
+	仍令 \(\iota\xi=\Phi(\xi)\)。它既与 \(\Phi(\mathrm TM)\) 正交，也与 \(\Phi(s)=af\) 正交，所以属于 \(Q_c^{n+r}\) 内的法空间。对 \(\mathrm df(Y)\) 作普通求导，得到
+	\[
+		\partial_X(\mathrm df(Y))
+		=\mathrm df(\nabla_XY)+\iota B(X,Y)-c\,g(X,Y)f.
+	\]
+	最后一项是式\eqref{g3:eq:quadric-ambient-derivative}中二次曲面本身的法分量。去掉该项，\(Q_c^{n+r}\) 内的第二基本形式恰为 \(\iota B\)。同时
+	\[
+		\partial_X(\iota\xi)
+		=-\mathrm df(A_\xi X)+\iota(\nabla^E_X\xi).
+	\]
+	这里没有径向分量，因为 \(g(\mathrm df(X),\iota\xi)=0\)，所以它也直接给出 \(Q_c^{n+r}\) 中的法联络。至此存在性证明完毕。逆向结论正是\cref{g3:cor:space-form-compatibility}。
+\end{proof}
+
+当 \(r=0\) 时，这个构造给出常截面曲率度量到相应模型的局部等距。余维为正时，\(\iota\) 则使抽象法向量成为实际环境向量；平均曲率也随之实现为 \(H_f=\iota(\operatorname{tr}_gB/n)\)。高余维中若删去法联络或 Ricci 方程，前面的联络就未必平坦，因而不能继续这个构造。
 
 \subsection{唯一性及整体单值障碍}
 \label{g3:subsec:0403:04}
-待撰写
+
+初始标架和初始位置的选择改变了所得映射，但没有改变实现的数据。以下唯一性始终固定源流形中的点对应，并同时比较法丛识别。
+
+\begin{proposition}[保持法丛识别的唯一性]\label{g3:prop:submanifold-fundamental-uniqueness}
+	设 \(U\) 连通，\((f_1,\iota_1)\)、\((f_2,\iota_2)\) 是同一组光滑数据 \((g,E,\nabla^E,B)\) 到标准模型 \(Q_c^{n+r}\) 的实现。则存在环境等距 \(T\)，使
+	\[
+		f_2=T\circ f_1,\qquad
+		\iota_2=\mathrm dT\circ\iota_1.
+	\]
+	当 \(c=0\) 时，\(T\) 可取为唯一的 Euclid 刚性变换；当 \(c\ne0\) 时，\(T\) 可取为唯一一个保持上述线性环境内积、并限制到指定二次曲面分支的线性变换。
+\end{proposition}
+\begin{proof}
+	若 \(c=0\)，每个实现给出纤维同构
+	\[
+		\Psi_j(Y+\xi)=\mathrm df_j(Y)+\iota_j\xi.
+	\]
+	Gauss 与 Weingarten 公式说明 \(X(\Psi_j\sigma)=\Psi_j(D_X\sigma)\)。因此在任一平行标架域中，\(\Psi_j\) 把平行标架送到一组常向量，故 \(Q=\Psi_2\Psi_1^{-1}\) 是常正交矩阵。这个结论是局部的，\(U\) 连通使同一个 \(Q\) 在全域成立。于是 \(\mathrm df_2=Q\,\mathrm df_1\)，故 \(f_2-Qf_1=b\) 为常向量，取 \(T(z)=Qz+b\) 即可。\(Q\) 由一点处切向和法向的完整正交分解确定，\(b\) 再由该点的位置确定，因而唯一。
+
+	若 \(c\ne0\)，改取
+	\[
+		\Psi_j(Y+\xi+t s)
+		=\mathrm df_j(Y)+\iota_j\xi+a t f_j.
+	\]
+	式\eqref{g3:eq:quadric-ambient-derivative}表明这次有 \(X(\Psi_j\sigma)=\Psi_j(\widehat D_X\sigma)\)。所以 \(Q=\Psi_2\Psi_1^{-1}\) 仍为保持环境内积的常矩阵。把 \(s\) 代入便得 \(f_2=Qf_1\)，把 \(E\) 代入得到法丛等式。它把 \(f_1(p)\) 送到 \(f_2(p)\)；在双曲情形，两点位于同一指定片，故 \(Q\) 保持这一片。位置径向、切向与法向共同张成整个线性环境空间，因此 \(Q\) 也唯一。
+\end{proof}
+
+局部唯一性使解能够沿路径继续，但“能够继续”与“绕一周后回到原解”是两个条件。先说明单连通性如何消去后者。
+
+\begin{proposition}[单连通数据的整体实现]\label{g3:prop:submanifold-fundamental-global}
+	设 \(M^n\) 连通、单连通、无边界，\(n\geq1\)，且 \(g,E,\nabla^E,B\) 是全域光滑数据，满足曲率 \(c\) 的三组相容方程。则存在定义在整个 \(M\) 上的等距浸入 \(f:M\to Q_c^{n+r}\) 及实现数据的法丛等距 \(\iota\)。它们仍满足\cref{g3:prop:submanifold-fundamental-uniqueness}的唯一性。
+\end{proposition}
+\begin{proof}
+	先把局部平行标架延拓为整体平凡化。两个平行标架在交叠的每个连通分支上只差常矩阵。因此沿一条连续路径，可以把参数区间有限细分，使每一小段都位于一个平行标架域内，再逐段保持标架分量。增加分点不改变结果；两种选择取共同细分后，在每段连通的路径像上，常过渡矩阵也给出相同结果。这就定义了沿连续路径的纤维同构。
+
+	若两条路径定端点同伦，把同伦参数方形细分为足够小的矩形，使每格的像都位于一个平行标架域内。这样的有限细分由参数方形的紧性取得。在每一格中，先向右再向上与先向上再向右都保持同一标架分量，因而得到相同同构。逐格用此等式替换路径，内部边的运输与反向运输抵消，便得两条边界路径的运输相同；两条端点边是常路径，不产生变化。于是运输只依赖定端点同伦类。单连通性保证同端点路径同伦，所以从固定基点的一个基出发，运输得到全域标架。在每个局部平行域内，它与已有标架只差常矩阵，因而光滑且平行。
+
+	对 \(c\ne0\)，用这个整体平凡化代入式\eqref{g3:eq:quadric-immersion-from-frame}，立即得到全域实现。对于 \(c=0\)，整体平凡化先给出闭一形式 \(\alpha(X)=\Phi(X)\)，还需证明它有全域原函数。每个小坐标盒内，式\eqref{g3:eq:star-shaped-one-form-primitive}已经给出局部原函数；同一连通交叠上的两个原函数只差常向量。因此沿连续路径，把各小段端点的局部原函数之差相加，所得增量与细分和局部原函数选择无关；对分片光滑路径，它就是通常的积分。对定端点同伦再用前段的矩形网格，每格的四边增量和为零，内部边相消，故总增量在同伦下不变。单连通性使这个增量只依赖终点。固定基点值，遂得到全域 \(f\)，而在每个小盒上它与局部原函数只差常向量，故光滑且 \(\mathrm df=\alpha\)。其余验证与局部定理相同。
+\end{proof}
+
+这个命题不要求 \(g\) 完备，所得映射也不必单射。这里的整体结论是浸入在整个给定流形上有定义。
+
+\ProseParagraphBreak
+
+在非单连通流形上，同一个构造给出更具体的判据。令 \(\mathscr D_c=D\) 当 \(c=0\)，令 \(\mathscr D_c=\widehat D\) 当 \(c\ne0\)。要把局部实现连同给定法丛识别拼成全域实现，首先必须使 \(\mathscr D_c\) 沿每条闭路径的运输为恒等。这个条件等价于存在整体平行平凡化：充分性由从固定基点运输得到，必要性则由平凡化中分量不变得到。非零 \(c\) 时，这已经足够，位置由 \(s\) 的像给出；\(c=0\) 时，还必须且只须
+\begin{equation}\label{g3:eq:euclidean-development-periods}
+	\int_\gamma\alpha=0
+	\qquad\text{对每条分片光滑闭路径 }\gamma,
+	\qquad\alpha(X)=\Phi(X).
+\end{equation}
+必要性来自 \(\alpha=\mathrm df\)，充分性来自沿路径积分定义原函数。更换整体平行平凡化只会给 \(\alpha\) 乘一个固定线性等距，所以周期是否为零不依赖这一选择。
+
+\ProseParagraphBreak
+
+也可以直接观察沿环路继续一个局部实现后所得的返回等距。Euclid 情形中，它可能既旋转标架，又平移位置；即使前一部分为恒等，后一部分仍可能非零。这正是整体单值的两个不同障碍。要求法丛识别也返回，意味着整个适应标架返回；只观察浸入的像集，无法判断这一条件。
+
+\begin{example}\label{g3:exm:flat-circle-development-period}
+	在 \(M=\mathbb R/L\mathbb Z\)、\(L>0\) 上取度量 \(\mathrm ds^2\)，令 \(e=\partial_s\) 为全局单位切向场。取平凡法线丛 \(E=M\times\mathbb R\nu\)，令 \(\nabla^E\nu=0\)、\(B=0\)，并取 \(c=0\)。一维中三组曲率方程全部成立，\(D\) 也有全局平行标架 \((e,\nu)\)，因此标架沿圆周返回原值。然而相应位置一形式为 \(\alpha=(1,0)\,\mathrm ds\)，它沿正向一周的积分为 \((L,0)\ne0\)。在参数直线上得到的实现 \(f(s)=(s,0)\) 满足 \(f(s+L)=f(s)+(L,0)\)，不能下降到圆周。局部相容性、全局平行标架与位置闭合，在这个例子中分别成为可直接检验的条件。
+\end{example}
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

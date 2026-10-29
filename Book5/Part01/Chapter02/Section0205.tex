@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 2.5 局部检测与局部自由
 % 纲要位置：几何学计划纲要.md，第 5102 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,323 @@
 \section{局部检测与局部自由}
 \label{g5:sec:0205}
 
-待撰写
+一个模可以在每个点附近用不同的生成元描述。要把这些描述用于整体问题，需要知道两件事：逐点为零是否足以推出整体为零，以及一点处的基能否在邻域内继续作为基。前一个问题由零化子和局部化解决；后一个问题还要控制生成元之间的关系，因此有限呈示条件十分重要。本节把这些局部信息与有限投射模联系起来，最后用一个带幂零元的基环说明只看纤维维数会丢掉什么。
+
+\ProseParagraphBreak
+
+以下环均为交换含幺环，模均为含幺模。用 \(\operatorname{Spec}A\)、\(D(f)\) 和 \(\kappa(\mathfrak p)\) 分别表示素谱、主开集和素理想处的剩余域，沿用\secref{g5:sec:0201}的约定。
 
 \subsection{模消失和同态同构的检测}
 \label{g5:subsec:0205:01}
-待撰写
+
+若一个元素在 \(\mathfrak p\) 处变为零，就有某个不属于 \(\mathfrak p\) 的元素杀掉它。反过来，只要该元素原来不为零，其零化子就是一个真理想，可以放进某个极大理想中；在这个极大理想处，任何允许作分母的元素都不能杀掉它。
+
+\begin{proposition}
+\label{g5:prop:local-detection}
+	设 \(A\) 为交换含幺环，\(M\) 为任意 \(A\) 模。下列条件等价：
+	\begin{equivalences}
+		\item \(M=0\)；
+		\item 对每个素理想 \(\mathfrak p\subset A\)，有 \(M_{\mathfrak p}=0\)；
+		\item 对每个极大理想 \(\mathfrak m\subset A\)，有 \(M_{\mathfrak m}=0\)。
+	\end{equivalences}
+	因此，对任意 \(A\) 线性同态 \(u:M\rightarrow N\)，它是单射、满射或同构，当且仅当对每个素理想处的局部化具有相应性质；也可以只在全部极大理想处检验。
+\end{proposition}
+\begin{proof}
+	前两个蕴含由局部化定义及极大理想是素理想得到。反过来，若 \(m\in M\) 非零，则
+	\[
+		\operatorname{Ann}_A(m)=\{a\in A:am=0\}
+	\]
+	是真理想，包含在某个极大理想 \(\mathfrak m\) 中。如果 \(m/1=0\) 于 \(M_{\mathfrak m}\)，局部化的零元判据给出 \(s\notin\mathfrak m\) 且 \(sm=0\)，这与 \(s\in\operatorname{Ann}_A(m)\subseteq\mathfrak m\) 矛盾。所以一个非零模必有非零的极大理想局部化。
+
+	由\cref{g5:thm:localization-exact}，局部化与核、余核相容。把模消失的结论分别用于 \(\ker u\) 和 \(\operatorname{coker}u\)，就得到单射和满射的判据；二者同时成立便是同构。
+\end{proof}
+
+这里没有有限生成假设。逐点局部化保留了每个元素被哪些分母杀掉的信息，足以检测整个模。同一方法还说明，两张同态相等可以逐点核验：对它们的差应用零映射判据即可。这些局部检测可对照\cite[第4节，定理4.6]{Matsumura1989}。
+
+\ProseParagraphBreak
+
+若把局部模再模去其极大理想，就得到纤维
+\[
+	M(\mathfrak p)\coloneqq M\otimes_A\kappa(\mathfrak p)
+	\cong M_{\mathfrak p}/\mathfrak pM_{\mathfrak p}.
+\]
+\symidx{\(M(\mathfrak p)\)：模在 \(\mathfrak p\) 处的纤维}
+对于有限生成 \(M\)，Nakayama 引理给出 \(M(\mathfrak p)=0\) 当且仅当 \(M_{\mathfrak p}=0\)，所以纤维也能检测消失，只检查极大理想处便够。这是\cite[第4节，定理4.8]{Matsumura1989}中的有限模版本。没有有限生成条件时则不同：作为 \(\mathbb Z\) 模的 \(\mathbb Q\) 非零，但对每个素数 \(p\)，有 \(\mathbb Q/p\mathbb Q=0\)。在同态的检测中，也应先检验局部模上的核与余核，不能把上述同构判据直接换成任意模的纤维同构判据。
 
 \subsection{有限生成投射模的局部刻画}
 \label{g5:subsec:0205:02}
-待撰写
+
+自由模的一个有用性质是可以逐个提升基向量：若 \(E\rightarrow F\) 满射，则任意映射 \(A^n\rightarrow F\) 都能提升到 \(E\)。投射模把这一提升性质从选定的自由基中抽取出来。它允许模在整体上没有统一的基，而仍能在满射下分离出自身。
+
+\begin{definition}
+\label{g5:def:projective-module}
+	设 \(A\) 为交换含幺环。若 \(A\) 模 \(P\) 满足：对每个满同态 \(q:E\rightarrow F\) 和每个同态 \(v:P\rightarrow F\)，存在同态 \(\widetilde v:P\rightarrow E\) 使 \(q\widetilde v=v\)，则称 \(P\) 为\term[toushemo]{投射模}[projective module]。
+\end{definition}
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		&P\arrow[d,"v"]\arrow[dl,dashed,"\widetilde v"']\\
+		E\arrow[r,two heads,"q"']&F
+	\end{tikzcd}
+\]
+图中所有箭头均为 \(A\) 线性映射。提升要求存在，通常不唯一。该定义与自由模直和项的描述可参看\cite[附录B，Projective and injective modules，第277页]{Matsumura1989}。
+
+\begin{proposition}
+\label{g5:prop:projective-dual-basis}
+	设 \(A\) 为交换含幺环，\(P\) 为 \(A\) 模。下列条件等价：
+	\begin{equivalences}
+		\item \(P\) 有限生成且投射；
+		\item 存在 \(A\) 模 \(Q\) 和非负整数 \(n\)，使 \(P\oplus Q\cong A^n\)；
+		\item 存在有限多个 \(p_i\in P\) 和 \(\lambda_i\in\operatorname{Hom}_A(P,A)\)，使对所有 \(p\in P\) 都有
+		\[
+			p=\sum_{i=1}^n\lambda_i(p)p_i.
+		\]
+	\end{equivalences}
+	此外，有限生成投射模必有限呈示。
+\end{proposition}
+\begin{proof}
+	若 \(P\) 有限生成，选满同态 \(\pi:A^n\rightarrow P\)。投射性将 \(\operatorname{id}_P\) 提升为 \(s:P\rightarrow A^n\)，满足 \(\pi s=\operatorname{id}_P\)。于是
+	\[
+		A^n=s(P)\oplus\ker\pi,
+	\]
+	因为每个 \(a\in A^n\) 可写为 \(s\pi(a)+(a-s\pi(a))\)，两部分分别在这两个子模中，交为零。这证明第一条件蕴含第二条件。
+
+	若 \(P\) 是 \(A^n\) 的直和项，给定 \(q:E\rightarrow F\) 和 \(v:P\rightarrow F\)，先用到 \(P\) 的投影把 \(v\) 扩成 \(A^n\rightarrow F\)，再逐个提升标准基的像，得到 \(A^n\rightarrow E\)。限制到 \(P\) 就是所需提升。\(P\) 也是 \(A^n\) 的商模，因而有限生成。
+
+	在 \(\pi s=\operatorname{id}_P\) 中，令 \(p_i=\pi(e_i)\)，令 \(\lambda_i\) 为 \(s\) 的第 \(i\) 个坐标函数，就得到第三条件。反过来，由第三条件定义
+	\[
+		\pi:A^n\longrightarrow P,\quad e_i\longmapsto p_i,
+		\qquad
+		s:P\longrightarrow A^n,\quad
+		p\longmapsto(\lambda_1(p),\ldots,\lambda_n(p)).
+	\]
+	则 \(\pi s=\operatorname{id}_P\)，重新得到直和分解。
+
+	最后，\(Q\) 是 \(A^n\) 的商模，故有限生成。上述满同态 \(A^n\rightarrow P\) 的核同构于 \(Q\)，从而给出 \(P\) 的有限呈示。
+\end{proof}
+
+第三个条件称为\term[duioujibiaozhun]{对偶基标准}[dual basis criterion]。这里的 \(p_i\) 可以有关系，\(\lambda_i(p_j)\) 也未必在 \(i=j\) 时为 \(1\)、在 \(i\ne j\) 时为 \(0\)；所要求的是这些秩一算子的和等于恒等算子。若把 \(P\) 看成 \(A^n\) 的直和项，复合 \(s\pi:A^n\rightarrow A^n\) 的矩阵 \(E\) 满足 \(E^2=E\)，且其像就是 \(P\)。反过来，一个幂等矩阵也给出分解 \(A^n=\operatorname{im}E\oplus\operatorname{im}(1-E)\)。
+
+\ProseParagraphBreak
+
+局部环上的有限投射模可以选出真正的基。剩余向量空间先决定所需的基向量数；投射分裂随后使关系模也有限生成，从而能对关系再应用一次 Nakayama 引理。
+
+\begin{proposition}
+\label{g5:prop:projective-local-free}
+	设 \((R,\mathfrak m)\) 为交换含幺局部环，\(P\) 为有限生成投射 \(R\) 模。则 \(P\) 是有限秩自由模，其秩为
+	\[
+		r=\dim_{R/\mathfrak m}(P/\mathfrak mP).
+	\]
+	因此，任意交换含幺环 \(A\) 上的有限生成投射模，在每个素理想处的局部化都是有限秩自由模。
+\end{proposition}
+\begin{proof}
+	提升 \(P/\mathfrak mP\) 的一组基。由\cref{g5:cor:nakayama-generators}，这些提升给出满同态 \(\pi:R^r\rightarrow P\)。投射性使它分裂，所以 \(R^r\cong K\oplus P\)，其中 \(K=\ker\pi\) 是有限生成模。模去 \(\mathfrak m\) 后仍有直和分解
+	\[
+		(R/\mathfrak m)^r\cong K/\mathfrak mK\oplus P/\mathfrak mP.
+	\]
+	右侧第二项已为 \(r\) 维，故第一项为零。Nakayama 引理给出 \(K=0\)，于是 \(\pi\) 是同构。
+
+	若 \(P\oplus Q\cong A^n\)，局部化得到 \(P_{\mathfrak p}\oplus Q_{\mathfrak p}\cong A_{\mathfrak p}^n\)，所以 \(P_{\mathfrak p}\) 仍有限生成且投射。再应用刚证的局部环结论即可。
+\end{proof}
+
+这里使用的是有限投射模的版本；其证明可对照\cite[第2节，定理2.5的有限模情形]{Matsumura1989}。下一小节将证明反向结论：有限呈示模若在每个点处自由，便是整体上的有限投射模。证明需要把点处的基扩展到开集，再将开集上的分裂拼成一个整体分裂。
 
 \subsection{常秩、有限呈示及局部自由}
 \label{g5:subsec:0205:03}
-待撰写
+
+在一点选出的生成元可以扩展到邻域，这是\cref{g5:prop:generators-near-prime}的结论。但“生成”之外还要证明没有关系，才能得到自由基。下面利用有限呈示，把这项要求化为有限多个关系元同时消失。
+
+\begin{lemma}
+\label{g5:lem:local-basis-extension}
+	设 \(A\) 为交换含幺环，\(M\) 为有限呈示 \(A\) 模，\(\mathfrak p\in\operatorname{Spec}A\)。若 \(M_{\mathfrak p}\) 是自由 \(A_{\mathfrak p}\) 模，则存在 \(f\notin\mathfrak p\) 使 \(M_f\) 是自由 \(A_f\) 模；给定的 \(M_{\mathfrak p}\) 的一组基可以在这样的邻域上扩展为一组基。
+\end{lemma}
+\begin{proof}
+	因为 \(M\) 有限生成，\(M_{\mathfrak p}\) 的自由秩 \(r\) 有限。把给定基写成 \(\xi_i=m_i/s_i\)，其中 \(m_i\in M\)、\(s_i\notin\mathfrak p\)。乘以各自的单位 \(s_i\)，可知 \(m_i/1\) 也构成基。令 \(\varphi:A^r\rightarrow M\) 把标准基送到 \(m_i\)。由\cref{g5:prop:generators-near-prime}，存在 \(f_0\notin\mathfrak p\)，使 \(\varphi_{f_0}:A_{f_0}^r\rightarrow M_{f_0}\) 满射。
+
+	有限呈示在局部化后仍有限呈示，因为可以逐项局部化一个有限关系矩阵。故由\cref{g5:prop:finite-presentation-kernel}，\(K=\ker\varphi_{f_0}\) 是有限生成 \(A_{f_0}\) 模。它在 \(\mathfrak pA_{f_0}\) 处的局部化为零，因为 \(\varphi_{\mathfrak p}\) 是基给出的同构。逐个杀掉 \(K\) 的有限生成元，再把所用分母相乘，得到 \(a\notin\mathfrak p\)，使 \(K\) 在进一步反演 \(a\) 后为零。具体说，这些分母在 \(A_{f_0}\) 中可写成 \(a_j/f_0^{e_j}\)，其中 \(a_j\notin\mathfrak p\)，取 \(a=\prod_j a_j\) 即可。由局部化正合性，\(\varphi_{f_0a}\) 是同构。
+
+	最后令 \(f=f_0a\prod_i s_i\)。所有 \(s_i\) 在 \(A_f\) 中为单位，所以再将基 \(m_i/1\) 分别除以 \(s_i\)，就得到扩展原基 \(\xi_i\) 的自由基。
+\end{proof}
+
+这同时证明有限呈示模的自由点组成开集，参看\cite[第4节，定理4.10(ii)]{Matsumura1989}。证明中有限生成用于控制余核，有限呈示用于控制选定满射的核；两个有限性条件对应不同的步骤。
+
+\ProseParagraphBreak
+
+若模可以在覆盖素谱的主开集上分别选出有限自由基，就称其\term[jubuziyou]{局部自由}[locally free]。在本章的模语言中，这具体指一个主开覆盖 \(D(f_i)\) 和同构 \(M_{f_i}\cong A_{f_i}^{r_i}\)；秩 \(r_i\) 可以随开集改变。
+
+\begin{theorem}
+\label{g5:thm:finite-projective-local}
+	设 \(A\) 为交换含幺环，\(M\) 为有限呈示 \(A\) 模。下列条件等价：
+	\begin{equivalences}
+		\item \(M\) 是有限生成投射模；
+		\item 对每个素理想 \(\mathfrak p\)，\(M_{\mathfrak p}\) 是自由 \(A_{\mathfrak p}\) 模；
+		\item 对每个极大理想 \(\mathfrak m\)，\(M_{\mathfrak m}\) 是自由 \(A_{\mathfrak m}\) 模；
+		\item 存在有限主开覆盖 \(\operatorname{Spec}A=\bigcup_{i=1}^tD(f_i)\)，使每个 \(M_{f_i}\) 是有限秩自由 \(A_{f_i}\) 模。
+	\end{equivalences}
+\end{theorem}
+\begin{proof}
+	第一条件蕴含第二条件，已由\cref{g5:prop:projective-local-free}证明；第二条件自然蕴含第三条件。若第三条件成立，由\cref{g5:lem:local-basis-extension}，每个极大理想都有一个主开邻域，使 \(M\) 在其中自由。这些主开集的定义元素生成单位理想，否则某个极大理想会包含它们全部，与其已被覆盖矛盾。于是 \(1\) 是有限多个定义元素的线性组合，相应的有限多个主开集就覆盖整个素谱，得到第四条件。
+
+	最后设第四条件成立，选满同态 \(\pi:F=A^n\rightarrow M\)。因为 \(M_{f_i}\) 自由，可提升其自由基，得到一个局部分裂
+	\[
+		s_i:M_{f_i}\longrightarrow F_{f_i},\qquad
+		\pi_{f_i}s_i=\operatorname{id}_{M_{f_i}}.
+	\]
+	我们要把它变成整体映射，再组合各个局部分裂。由 \(M\) 有限呈示及\cref{g5:prop:hom-localization}，
+	\[
+		\operatorname{Hom}_A(M,F)_{f_i}
+		\cong\operatorname{Hom}_{A_{f_i}}(M_{f_i},F_{f_i}),
+	\]
+	所以可以写 \(s_i=\tau_i/f_i^{a_i}\)，其中 \(\tau_i:M\rightarrow F\) 为整体同态。等式 \(\pi_{f_i}s_i=\operatorname{id}\) 表明
+	\(\pi\tau_i-f_i^{a_i}\operatorname{id}_M\) 在反演 \(f_i\) 后为零。再对 \(\operatorname{Hom}_A(M,M)\) 使用同一局部化结论，找到 \(b_i\geq0\) 使
+	\[
+		\pi(f_i^{b_i}\tau_i)=f_i^{a_i+b_i}\operatorname{id}_M
+		\quad\text{在整个 }M\text{ 上成立}.
+	\]
+	可再乘一次 \(f_i\)，使指数 \(N_i\) 为正。记相应调整后的同态为 \(\rho_i\)，于是 \(\pi\rho_i=f_i^{N_i}\operatorname{id}_M\)。
+
+	由于 \(D(f_i^{N_i})=D(f_i)\) 仍覆盖素谱，存在 \(c_i\in A\) 使 \(\sum_i c_i f_i^{N_i}=1\)。因此
+	\[
+		s=\sum_i c_i\rho_i:M\longrightarrow F,\qquad
+		\pi s=\sum_i c_i f_i^{N_i}\operatorname{id}_M=\operatorname{id}_M.
+	\]
+	这给出整体分裂。由\cref{g5:prop:projective-dual-basis}，\(M\) 是有限生成投射模。
+\end{proof}
+
+局部基不必在交集上逐项相同；上面拼合的是满射的分裂。有限呈示让局部同态可以清除分母成为整体同态，而主开覆盖让相应分母的幂产生单位理想。这一局部刻画也见于\cite[第7节，定理7.12]{Matsumura1989}。
+
+\ProseParagraphBreak
+
+在自由邻域上，纤维的维数就是自由基的项数。因此，有限投射模具有一个逐点可读的\term[zhihanshu]{秩函数}[rank function]：
+\[
+	\operatorname{rk}_M(\mathfrak p)
+	\coloneqq\dim_{\kappa(\mathfrak p)}M(\mathfrak p).
+\]
+\symidx{\(\operatorname{rk}_M(\mathfrak p)\)：有限投射模在一点的秩}
+若 \(M_f\cong A_f^r\)，则这个函数在 \(D(f)\) 上恒等于 \(r\)，所以秩函数局部常值。其每个取值的原像都是开集，补集也是其他取值的原像之并，因而也是闭集。特别地，若 \(\operatorname{Spec}A\) 非空且连通，秩在全空间恒定。
+
+\begin{example}
+\label{g5:exm:projective-varying-rank}
+	设 \(k\) 为域，\(A=k\times k\)，并取幂等元 \(e=(1,0)\)。模 \(P=Ae\) 满足
+	\[
+		A=Ae\oplus A(1-e),
+	\]
+	所以它有限生成且投射。\(A\) 的两个素理想是 \(\mathfrak p_1=0\times k\) 和 \(\mathfrak p_2=k\times0\)：素理想必须包含 \(e,1-e\) 之一，因为它们的乘积为零，而不能同时包含二者。模 \(P\) 在第一点处为一维自由模，在第二点处为零模，秩分别是 \(1,0\)。这两个点都是开闭集，故秩函数仍局部常值，但不存在整数 \(r\) 使 \(P\cong A^r\)。
+\end{example}
+
+对于一般有限呈示模，纤维维数可能在特殊点增大。一个关系矩阵可以把这种变化的发生位置写成子式方程。
+
+\begin{proposition}
+\label{g5:prop:fiber-upper-semicontinuity}
+	设 \(A\) 为交换含幺环，\(M\) 有有限呈示
+	\[
+		A^s\xrightarrow{H}A^n\longrightarrow M\longrightarrow0.
+	\]
+	记 \(H\) 的 \(q\) 阶子式生成的理想为 \(J_q(H)\)，不存在这种子式时规定 \(J_q(H)=0\)。则
+	\[
+		\nu_M(\mathfrak p)\coloneqq
+		\dim_{\kappa(\mathfrak p)}M(\mathfrak p)
+		=n-\operatorname{rank}_{\kappa(\mathfrak p)}H(\mathfrak p),
+	\]
+	且对 \(1\leq r\leq n\)，有
+	\[
+		\{\mathfrak p:\nu_M(\mathfrak p)\geq r\}
+		=V(J_{n-r+1}(H)).
+	\]
+	因此纤维维数函数\term[shangbanlianxu]{上半连续}[upper semicontinuous]，即它大于等于给定整数的点集为闭集。
+\end{proposition}
+\begin{proof}
+	由\cref{g5:prop:tensor-right-exact}，将呈示张量 \(\kappa(\mathfrak p)\) 后得到
+	\[
+		\kappa(\mathfrak p)^s\xrightarrow{H(\mathfrak p)}
+		\kappa(\mathfrak p)^n\longrightarrow M(\mathfrak p)\longrightarrow0.
+	\]
+	向量空间的秩公式给出所述维数。它至少为 \(r\)，当且仅当矩阵的秩至多为 \(n-r\)，也就是所有 \(n-r+1\) 阶子式在 \(\kappa(\mathfrak p)\) 中为零。一个 \(A\) 中元素在 \(\kappa(\mathfrak p)\) 中为零，当且仅当它属于 \(\mathfrak p\)。所以这一条件恰是 \(J_{n-r+1}(H)\subseteq\mathfrak p\)。当 \(r\leq0\) 或 \(r>n\) 时，相应集合分别为全空间或空集，仍为闭集。
+\end{proof}
+
+例如 \(A=k[t]\)、\(M=A/(t)\) 有关系矩阵 \((t)\)。在 \(t\ne0\) 的点处，纤维为零；在 \((t)\) 处，纤维维数为 \(1\)。关系的系数在该点消失，使纤维中可见的关系减少，因此维数增大。有限生成模的纤维维数也上半连续：在一点选出至多 \(r\) 个生成元后，\cref{g5:prop:generators-near-prime}使它们在邻域内继续生成；结合 Nakayama 引理，便知 \(\{\nu_M\leq r\}\) 为开集。有限呈示则进一步给出上面的有限矩阵与子式公式。
 
 \subsection{纤维维数不足以单独判定平坦的模型}
 \label{g5:subsec:0205:04}
-待撰写
+
+局部自由模在每个邻域都像固定数目的独立坐标，因此与它作张量积会保留单射。平坦性抽取的正是这个性质：变换系数时，原来嵌在另一个模中的关系不能突然被压成零。\secref{g5:sec:0202}已经说明张量积总是右正合，因而还需要控制的是左端的单射。
+
+\begin{definition}
+\label{g5:def:flat-module}
+	设 \(A\) 为交换含幺环。若 \(A\) 模 \(M\) 满足：对每个单同态 \(L\hookrightarrow N\)，诱导映射
+	\[
+		L\otimes_A M\longrightarrow N\otimes_A M
+	\]
+	仍为单射，则称 \(M\) 为\term[pingtanmo]{平坦模}[flat module]。等价地，函子 \(-\otimes_A M\) 保持短正合列。
+\end{definition}
+
+自由模 \(A^r\) 平坦，因为张量后只是取 \(r\) 份原映射的直和。有限投射模也平坦：若 \(P\oplus Q\cong A^r\)，那么与 \(P\) 张量后的映射是与 \(A^r\) 张量后所得单射的一个直和分量。局部化 \(A_f\) 作为 \(A\) 模同样平坦，这是张量积与局部化相容以及局部化正合性的直接结果。
+
+\begin{example}
+\label{g5:exm:constant-fiber-not-flat}
+	设 \(k\) 为域，\(A=k[\varepsilon]/(\varepsilon^2)\)，\(M=A/(\varepsilon)\)。素谱只有 \(\mathfrak m=(\varepsilon)\) 一个点，剩余域为 \(k\)，且
+	\[
+		M\otimes_A k\cong k.
+	\]
+	所以纤维维数在整个基上恒为 \(1\)。然而 \(M\) 不平坦。取理想 \(I=(\varepsilon)\) 的包含 \(I\hookrightarrow A\)，张量 \(M\) 后得到
+	\[
+		I\otimes_A M\cong I/\varepsilon I=I
+		\longrightarrow A\otimes_A M\cong M.
+	\]
+	左端非零，映射却把 \(\varepsilon\otimes\overline1\) 送到 \(\varepsilon\overline1=0\)，因而不是单射。纤维只看到剩余域，丢掉了基环中的非零幂零方向；平坦性同时检验这个方向与模之间的关系。
+\end{example}
+
+这个模甚至有限呈示：\(A\xrightarrow{\varepsilon}A\rightarrow M\rightarrow0\) 就是一个有限呈示。因此在允许非约化基环时，有限呈示与纤维维数局部常值合在一起，仍不能替代平坦性。要理解平坦与局部自由的联系，应直接分析张量积对关系模的作用。
+
+\begin{proposition}
+\label{g5:prop:flat-local-detection}
+	设 \(A\) 为交换含幺环，\(M\) 为任意 \(A\) 模。则 \(M\) 平坦，当且仅当每个 \(M_{\mathfrak p}\) 都是平坦 \(A_{\mathfrak p}\) 模。也可以只检查全部极大理想。
+\end{proposition}
+\begin{proof}
+	若 \(M\) 平坦，取 \(A_{\mathfrak p}\) 模的单射 \(L\hookrightarrow N\)，将其视为 \(A\) 模的单射。对任意 \(A_{\mathfrak p}\) 模 \(L\)，有自然同构
+	\[
+		L\otimes_A M\cong L\otimes_{A_{\mathfrak p}}M_{\mathfrak p},
+	\]
+	因为 \(A\setminus\mathfrak p\) 中的元素已经在 \(L\) 上可逆，纯张量的分母可以移到 \(L\) 一侧。于是 \(M\) 的平坦性给出 \(M_{\mathfrak p}\) 的平坦性。
+
+	反过来，设所有极大理想处的局部模都平坦。对任意单射 \(L\hookrightarrow N\)，记诱导映射 \(L\otimes_A M\rightarrow N\otimes_A M\) 的核为 \(K\)。将它在极大理想 \(\mathfrak m\) 处局部化，利用局部化的正合性及其与张量积相容，得到
+	\[
+		K_{\mathfrak m}
+		=\ker\bigl(L_{\mathfrak m}\otimes_{A_{\mathfrak m}}M_{\mathfrak m}
+		\longrightarrow N_{\mathfrak m}\otimes_{A_{\mathfrak m}}M_{\mathfrak m}\bigr)=0.
+	\]
+	最后一个等号来自局部化仍保持原单射，以及 \(M_{\mathfrak m}\) 平坦。由\cref{g5:prop:local-detection}，\(K=0\)，故 \(M\) 平坦。
+\end{proof}
+
+下面的证明用一个具体等式控制关系。若 \(0\rightarrow K\rightarrow F\rightarrow M\rightarrow0\) 正合，平坦性保证 \(K\) 与 \(IF\) 的交没有比 \(IK\) 更多的元素。取局部环的极大理想作为 \(I\)，就可以把“极小生成元”提升为“自由基”。
+
+\begin{theorem}
+\label{g5:thm:finite-presented-flat}
+	设 \(A\) 为交换含幺环，\(M\) 为有限呈示 \(A\) 模。则以下条件等价：\(M\) 平坦；\(M\) 局部自由；\(M\) 是有限生成投射模。
+\end{theorem}
+\begin{proof}
+	由\cref{g5:thm:finite-projective-local}，后两个条件等价；有限投射模平坦已经在定义后证明。因此只需证明，有限呈示平坦模在每个素理想处自由。
+
+	先设 \(M\) 为任意环上的平坦模，且 \(0\rightarrow K\rightarrow F\xrightarrow{\pi}M\rightarrow0\) 正合。对任意理想 \(I\subseteq A\)，我们证明
+	\begin{equation}
+	\label{g5:eq:flat-kernel-intersection}
+		K\cap IF=IK.
+	\end{equation}
+	包含 \(IK\subseteq K\cap IF\) 直接成立。若 \(x\in K\cap IF\)，写 \(x=\sum_j a_jv_j\)，其中 \(a_j\in I\)、\(v_j\in F\)。张量
+	\(z=\sum_j a_j\otimes v_j\in I\otimes_A F\)
+	在 \(I\otimes_A M\) 中的像，经乘法映射到 \(M\) 后为 \(\pi(x)=0\)。平坦性使 \(I\otimes_A M\rightarrow A\otimes_A M=M\) 为单射，所以 \(z\) 在 \(I\otimes_A M\) 中的像已经为零。再用张量积的右正合性，
+	\[
+		I\otimes_A K\longrightarrow I\otimes_A F
+		\longrightarrow I\otimes_A M\longrightarrow0,
+	\]
+	可知 \(z\) 来自 \(I\otimes_A K\)。对这些张量作标量乘法，就得到 \(x\in IK\)，证明了\eqref{g5:eq:flat-kernel-intersection}。
+
+	现在固定 \(\mathfrak p\)，令 \(R=A_{\mathfrak p}\)、\(\mathfrak m=\mathfrak pA_{\mathfrak p}\)、\(P=M_{\mathfrak p}\)。模 \(P\) 仍有限呈示，并由\cref{g5:prop:flat-local-detection}知它平坦。提升 \(P/\mathfrak mP\) 的一组基，得到满同态 \(R^r\rightarrow P\)。记其核为 \(K\)。由\cref{g5:prop:finite-presentation-kernel}，\(K\) 有限生成；由\cref{g5:prop:minimal-presentation-local}，\(K\subseteq\mathfrak mR^r\)。把\eqref{g5:eq:flat-kernel-intersection}用于 \(I=\mathfrak m\)、\(F=R^r\)，便得到
+	\[
+		K=K\cap\mathfrak mR^r=\mathfrak mK.
+	\]
+	Nakayama 引理使 \(K=0\)，因此 \(P\cong R^r\)。这对所有素理想成立，再由\cref{g5:thm:finite-projective-local}得到结论。
+\end{proof}
+
+平坦性的局部检测与有限呈示模的上述等价关系可对照\cite[第7节，定理7.1、7.10、7.12及其推论]{Matsumura1989}。在\cref{g5:exm:constant-fiber-not-flat}中，极小满射 \(A\rightarrow M\) 的核为 \(K=(\varepsilon)\)，虽然 \(K\subseteq\mathfrak mA\)，却有 \(\mathfrak mK=0\ne K\)。这恰好指出平坦证明在哪里失败：纤维中看不见的关系 \(\varepsilon\overline1=0\) 仍保留在局部模中。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

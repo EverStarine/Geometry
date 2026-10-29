@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 3.2 不同曲率约束
 % 纲要位置：几何学计划纲要.md，第 2203 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,364 @@
 \section{不同曲率约束}
 \label{g3:sec:0302}
 
-待撰写
+曲率张量同时接受四个方向，实际几何问题却常常只指定一个二维平面、一个径向方向，或者一小块区域的总体积。截面曲率、Ricci 曲率与标量曲率分别对应这些不同的观察方式。\footnote{Gregorio Ricci-Curbastro（1853--1925），意大利数学家，创立绝对微分学，并与 Levi-Civita 合作发展其几何应用。}它们都来自同一个曲率张量，但取值所保留的信息和“为正”的含义并不相同。本节先建立这些量之间的精确关系，再用可以直接核算的例子辨明各种正性条件。
 
 \subsection{截面曲率和二维截面}
 \label{g3:subsec:0302:01}
-待撰写
+
+回顾\cref{g3:def:sectional-curvature}。对 \(\sigma\subset\mathrm{T}_pM\) 的任意一组基 \(X,Y\)，本章的四阶张量约定将截面曲率写为
+\begin{equation}
+	\label{g3:eq:sectional-bivector}
+	K_p(\sigma)
+	=\frac{\mathrm{Rm}(X,Y,X,Y)}{|X\wedge Y|_g^2}
+	=\frac{\langle\mathcal R(X\wedge Y),X\wedge Y\rangle}{|X\wedge Y|_g^2},
+\end{equation}
+其中 \(|X\wedge Y|_g^2=g(X,X)g(Y,Y)-g(X,Y)^2\) 是平行四边形面积的平方。因此当 \(u,v\) 为 \(\sigma\) 的正交单位基时，\(K_p(\sigma)=\mathrm{Rm}(u,v,u,v)\)。
+
+\ProseParagraphBreak
+
+这个商与平面中的基无关。事实上，若 \(X'=aX+bY\)、\(Y'=cX+dY\)，则 \(X'\wedge Y'=(ad-bc)X\wedge Y\)。\eqref{g3:eq:sectional-bivector}的分子和分母同时乘以 \((ad-bc)^2\)。特别地，反转平面定向也不改变曲率。这个检验解释了为何必须除以面积平方：仅有四阶张量的分子，会随着所选基的长度和夹角变化。
+
+\begin{definition}
+	\label{g3:def:sectional-curvature-algebraic}
+	设 \((V,g)\) 为维数 \(n\geq2\) 的实内积空间，\(A\) 为 \(V\) 上的代数曲率张量。对二维子空间 \(\sigma=\operatorname{span}\{X,Y\}\)，定义它的截面曲率为
+	\[
+		K_A(\sigma)=\frac{A(X,Y,X,Y)}{|X\wedge Y|_g^2}.
+	\]
+	同样的换基计算保证它只依赖 \(\sigma\)。
+\end{definition}
+
+截面曲率看似只读取了四阶张量中两个输入重复的值，却能恢复全部分量。下面的恢复过程除了利用双线性，还将用到第一 Bianchi 恒等式。
+
+\begin{proposition}
+	\label{g3:prop:sectional-determines-curvature}
+	设 \((V,g)\) 为有限维实内积空间，\(\dim V\geq2\)，\(A,B\) 是其上的代数曲率张量。若它们在每个二维子空间上的截面曲率相同，则 \(A=B\)。
+\end{proposition}
+\begin{proof}
+	令 \(D=A-B\)。截面曲率相等说明对线性无关的 \(x,y\)，有 \(D(x,y,x,y)=0\)；线性相关时，同一式子由反对称性成立。因此这个等式对所有 \(x,y\) 都成立。下面作两次极化，再用第一 Bianchi 恒等式消去剩余分量。
+
+	将第一个重复向量替换为 \(x+z\)，利用交换两对输入的对称性，得到
+	\[
+		0=D(x+z,y,x+z,y)=2D(x,y,z,y).
+	\]
+	再在刚得到的等式中将 \(y\) 替换为 \(y+w\)，便有
+	\[
+		D(x,y,z,w)+D(x,w,z,y)=0.
+	\]
+	由最后两个输入的反对称性，这等价于
+	\begin{equation}
+		\label{g3:eq:sectional-zero-polarization}
+		D(x,y,z,w)=D(x,w,y,z).
+	\end{equation}
+	于是交换两对输入再用该式，得到
+	\[
+		D(y,z,x,w)=D(x,w,y,z)=D(x,y,z,w).
+	\]
+	同样，
+	\[
+		\begin{aligned}
+			D(z,x,y,w)&=D(y,w,z,x)=D(y,x,w,z)\\
+			&=D(x,y,z,w),
+		\end{aligned}
+	\]
+	最后一步同时交换第一对和第二对输入。第一 Bianchi 恒等式的三个循环项因而相等：
+	\[
+		0=D(x,y,z,w)+D(y,z,x,w)+D(z,x,y,w)
+		=3D(x,y,z,w).
+	\]
+	故 \(D=0\)。
+\end{proof}
+
+\begin{corollary}
+	\label{g3:cor:pointwise-isotropic-curvature}
+	设 \((V,g)\) 为维数至少为二的实内积空间。代数曲率张量 \(A\) 在所有二维子空间上的截面曲率均为同一个实数 \(k\)，当且仅当
+	\begin{equation}
+		\label{g3:eq:constant-sectional-algebraic}
+		A(X,Y,Z,W)
+		=k\bigl(g(X,Z)g(Y,W)-g(X,W)g(Y,Z)\bigr).
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	右端具有两对输入的反对称性与交换两对输入的对称性，第一 Bianchi 循环和中的六个乘积逐对抵消，故它是代数曲率张量。令 \(Z=X,W=Y\)，分子恰为 \(k|X\wedge Y|_g^2\)，所以它的截面曲率恒为 \(k\)。反过来，若 \(A\) 也有这些截面值，\cref{g3:prop:sectional-determines-curvature}使两个张量相同。
+\end{proof}
+
+这里的 \(k\) 只描述一个切空间中的各个平面。若在流形上逐点应用这一推论，首先得到的仍是可能随点变化的 \(k(p)\)；它何时必须为常数，将由本节稍后的微分恒等式决定。
 
 \subsection{Ricci 曲率与体积效应}
 \label{g3:subsec:0302:02}
-待撰写
+
+固定一个方向 \(v\)，可以分别观察包含 \(v\) 的各个二维平面。若把正交于 \(v\) 的所有方向同时考虑，对相应曲率求和便比单个截面更适合描述横向体积的变化。这个求和应由张量的迹来定义，使结果不依赖所选的正交基。
+
+\begin{definition}
+	\label{g3:def:ricci-scalar}
+	设 \((M^n,g)\) 为光滑黎曼流形，\(\mathrm{Rm}\) 采用\cref{g3:def:curvature-four-tensor}的约定。在任意正交单位基 \(e_1,\ldots,e_n\) 下，定义\term[ricciqulv]{Ricci 曲率}[Ricci curvature]为二阶协变张量
+	\begin{equation}
+		\label{g3:eq:ricci-definition}
+		\operatorname{Ric}(Y,W)
+		=\sum_{i=1}^n\mathrm{Rm}(e_i,Y,e_i,W)
+		=\operatorname{tr}\bigl(X\mapsto R(X,Y)W\bigr).
+	\end{equation}
+	它的迹称为\term[biaoliangqulv]{标量曲率}[scalar curvature]，记为
+	\[
+		\operatorname{Scal}=\operatorname{tr}_g\operatorname{Ric}
+		=\sum_{j=1}^n\operatorname{Ric}(e_j,e_j).
+	\]
+\end{definition}
+
+定义中的 \(X\mapsto R(X,Y)W\) 是同一个切空间上的线性自映射，其迹不依赖基。一般坐标中的公式为
+\begin{equation}
+	\label{g3:eq:ricci-scalar-contractions}
+	\operatorname{Ric}_{jl}=g^{ik}\mathrm{Rm}_{ijkl},\qquad
+	\operatorname{Scal}=g^{jl}\operatorname{Ric}_{jl}.
+\end{equation}
+这些公式还说明两者随基点光滑变化。\(\operatorname{Ric}\) 对两个向量线性，\(\operatorname{Scal}\) 则是每一点处的实数。
+
+\symidx{\(\operatorname{Ric}\)}
+\symidx{\(\operatorname{Scal}\)}
+
+\begin{proposition}
+	\label{g3:prop:ricci-sectional-trace}
+	在 \(n\) 维光滑黎曼流形上，\(\operatorname{Ric}\) 是对称二阶张量。若 \(n\geq2\)、\(|v|_g=1\)，并将 \(v=e_1\) 补成正交单位基，则
+	\begin{equation}
+		\label{g3:eq:ricci-sectional-sum}
+		\operatorname{Ric}(v,v)=\sum_{a=2}^nK(\operatorname{span}\{v,e_a\}).
+	\end{equation}
+	特别地，若一点处所有截面曲率位于 \([a,b]\)，则在该点有二次型不等式
+	\[
+		(n-1)a\,g\leq\operatorname{Ric}\leq(n-1)b\,g.
+	\]
+\end{proposition}
+\begin{proof}
+	由交换两对输入的对称性，
+	\[
+		\mathrm{Rm}(e_i,Y,e_i,W)=\mathrm{Rm}(e_i,W,e_i,Y),
+	\]
+	求和即得 Ricci 对称性。将 \(Y=W=v=e_1\) 代入定义，\(i=1\) 的项因反对称性为零，其余每项是一个正交单位二维平面的截面曲率，得到\eqref{g3:eq:ricci-sectional-sum}。最后对单位向量应用逐项上下界，再利用二次齐次性恢复一般向量，即得二次型估计。
+\end{proof}
+
+因此 \(\operatorname{Ric}(v,v)/(n-1)\) 是沿单位方向 \(v\) 所见的这些正交截面的平均曲率。求和中的个别截面值可以变化，和却不受补全正交基的方式影响。在维数二，只有一个横向方向，所以 \(\operatorname{Ric}=Kg\)；维数增加后，正负截面可能在同一个方向的求和中抵消。
+
+\ProseParagraphBreak
+
+这个迹如何进入体积，可以先由下一节将证明的展开辨认。固定 \(p\)，在 \(\mathrm{T}_pM\) 中取正交单位基，并用指数映射得到法坐标。对单位向量 \(v\)，\cref{g3:prop:normal-volume-density}将证明
+\begin{equation}
+	\label{g3:eq:ricci-volume-direction}
+	\sqrt{\det(g_{ij}(tv))}
+	=1-\frac16\operatorname{Ric}_p(v,v)t^2+O(t^3).
+\end{equation}
+左侧是指数坐标下的体积密度与切空间 Euclid 体积密度之比。横向各方向的一阶偏差为零，二阶偏差在行列式中相加，因而出现截面曲率的迹。对某个 \(v\) 有 \(\operatorname{Ric}(v,v)>0\) 时，这个方向上足够近的体积比小于一；负值则使二阶修正朝相反方向变化。公式的推导放在法坐标二阶展开之后，当前 Ricci 张量的定义和对称性只用了代数收缩。
 
 \subsection{标量曲率与收缩}
 \label{g3:subsec:0302:03}
-待撰写
+
+再对 Ricci 张量取迹，就把对某个方向的观察合成一个数。对任意正交单位基，\eqref{g3:eq:ricci-sectional-sum}给出
+\begin{equation}
+	\label{g3:eq:scalar-sectional-average}
+	\operatorname{Scal}
+	=2\sum_{i<j}K(\operatorname{span}\{e_i,e_j\})
+	=2\operatorname{tr}\mathcal R.
+\end{equation}
+每个坐标二维平面在 Ricci 的总和中出现两次，这解释了系数 \(2\)。因此 \(\operatorname{Scal}/(n(n-1))\) 是这 \(n(n-1)/2\) 个截面曲率的平均；其数值与所选正交基无关。常截面曲率 \(k\) 的代数模型满足
+\[
+	\operatorname{Ric}=(n-1)kg,\qquad
+	\operatorname{Scal}=n(n-1)k.
+\]
+
+\ProseParagraphBreak
+
+也可以对所有单位径向方向作平均。记 \(\mathrm{d}\sigma\) 为 \(\mathrm{T}_pM\) 的单位球面上的面积测度。由坐标反射和坐标置换的对称性，\(\int v^iv^j\,\mathrm{d}\sigma=0\) 当 \(i\ne j\)，而各 \(\int(v^i)^2\,\mathrm{d}\sigma\) 相同；再用 \(\sum_i(v^i)^2=1\)，得到
+\[
+	\frac1{\operatorname{Area}(S^{n-1})}
+	\int_{S^{n-1}}\operatorname{Ric}_p(v,v)\,\mathrm{d}\sigma(v)
+	=\frac1n\operatorname{Scal}(p).
+\]
+这正是所有径向的体积偏差合成小球体积偏差时出现标量曲率的原因。\cref{g3:thm:small-ball-volume}将在下一节证明：对充分小的 \(r>0\)，
+\begin{equation}
+	\label{g3:eq:scalar-small-ball-preview}
+	\operatorname{Vol}_g(B_d(p,r))
+	=\omega_n r^n\left(1-\frac{\operatorname{Scal}(p)}{6(n+2)}r^2+O(r^4)\right),
+\end{equation}
+其中 \(\omega_n\) 是单位 Euclid \(n\) 球的体积。定向不参与这一公式，体积始终按密度积分。
+
+\ProseParagraphBreak
+
+曲率的这些收缩还满足微分约束。第二 Bianchi 恒等式将曲率在不同方向上的导数联系起来；取迹后，Ricci 的散度恰好由标量曲率的微分控制。
+
+\begin{proposition}[缩并 Bianchi 恒等式]
+	\label{g3:prop:contracted-bianchi}
+	在光滑黎曼流形 \((M,g)\) 上，定义对称二阶张量 \(S\) 的散度为一形式
+	\[
+		(\operatorname{div}S)(Y)=\sum_i(\nabla_{e_i}S)(e_i,Y),
+	\]
+	其中 \(e_i\) 是任意正交单位基。则
+	\begin{equation}
+		\label{g3:eq:contracted-bianchi}
+		\operatorname{div}\operatorname{Ric}=\tfrac12\mathrm{d}\operatorname{Scal}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	在任意一点取正交法坐标，使该点处 \(g_{ij}=\delta_{ij}\)、\(\nabla_{e_i}e_j=0\)。因 \(\nabla g=0\)，协变微分与用度量作收缩可交换。\eqref{g3:eq:second-bianchi-components}给出
+	\[
+		\nabla_a\mathrm{Rm}_{ijkl}
+		+\nabla_i\mathrm{Rm}_{jakl}
+		+\nabla_j\mathrm{Rm}_{aikl}=0.
+	\]
+	先令 \(k=a\) 并求和。由第一对指标的反对称性及 Ricci 定义，得到
+	\[
+		\sum_a\nabla_a\mathrm{Rm}_{ijal}
+		-\nabla_i\operatorname{Ric}_{jl}
+		+\nabla_j\operatorname{Ric}_{il}=0.
+	\]
+	再令 \(l=i\) 并对 \(i\) 求和。由于 \(\sum_i\mathrm{Rm}_{ijai}=-\operatorname{Ric}_{ja}\)，上式变成
+	\[
+		-\sum_a\nabla_a\operatorname{Ric}_{ja}
+		-\sum_i\nabla_i\operatorname{Ric}_{ji}
+		+\nabla_j\operatorname{Scal}=0.
+	\]
+	Ricci 对称性使前两项相同，所以 \(2(\operatorname{div}\operatorname{Ric})_j=\partial_j\operatorname{Scal}\)。所选点任意，且两边都是一形式，故所得等式在全流形成立。
+\end{proof}
+
+例如 \(\operatorname{div}(\operatorname{Ric}-\tfrac12\operatorname{Scal}\,g)=0\)。若某类曲率条件使 Ricci 与度量成比例，这个微分恒等式就会限制比例因子。Schur 定理给出一个基本应用。\footnote{Friedrich Heinrich Schur（1856--1932），德国数学家，研究微分几何、变换群与几何基础；这里的 Schur 定理与群表示论中 Issai Schur 的引理由不同数学家得到。}
+
+\begin{theorem}[Schur]
+	\label{g3:thm:schur}
+	设 \((M^n,g)\) 为连通光滑黎曼流形，\(n\geq3\)。若在每一点 \(p\)，所有二维子空间的截面曲率具有同一个值 \(k(p)\)，则 \(k\) 在 \(M\) 上为常数。因此 \(M\) 具有常截面曲率。
+\end{theorem}
+\begin{proof}
+	由\cref{g3:cor:pointwise-isotropic-curvature}，在每一点都有\eqref{g3:eq:constant-sectional-algebraic}，从而
+	\[
+		\operatorname{Ric}=(n-1)kg,\qquad
+		\operatorname{Scal}=n(n-1)k.
+	\]
+	第二式先说明 \(k=\operatorname{Scal}/(n(n-1))\) 是光滑函数。利用 \(\nabla g=0\)，第一式给出 \(\operatorname{div}\operatorname{Ric}=(n-1)\mathrm{d}k\)。代入\eqref{g3:eq:contracted-bianchi}，得
+	\[
+		(n-1)\mathrm{d}k=\tfrac12n(n-1)\mathrm{d}k,
+		\qquad (n-1)(n-2)\mathrm{d}k=0.
+	\]
+	维数条件使 \(\mathrm{d}k=0\)，所以 \(k\) 局部为常数；连通性使这些局部常数在整个 \(M\) 上相同。
+\end{proof}
+
+维数二时，每个切空间本来就只有一个二维子空间，定理的逐点条件不施加额外限制。例如在 \(\mathbb R^2\) 上取
+\[
+	g=\mathrm{d}r^2+e^{2r^2}\mathrm{d}\theta^2.
+\]
+由\eqref{g3:eq:warped-surface-curvature}，令 \(f(r)=e^{r^2}\) 后得到
+\[
+	K(r,\theta)=-\frac{f''(r)}{f(r)}=-2-4r^2,
+\]
+它不是常数。在这个维数，\(\operatorname{Ric}=Kg\)、\(\operatorname{Scal}=2K\)，缩并 Bianchi 等式两边都等于 \(\mathrm{d}K\)，不再约束 \(K\) 的变化。
 
 \subsection{高维不同正性条件的严格区别}
 \label{g3:subsec:0302:04}
-待撰写
+
+曲率算子非负，是说 \(\langle\mathcal R\omega,\omega\rangle\geq0\) 对所有二向量 \(\omega\) 成立；截面曲率非负只在 \(\omega=X\wedge Y\) 这类可分解二向量上作同样的检验。Ricci 非负是二次型 \(\operatorname{Ric}(v,v)\geq0\)，标量曲率非负则只检验一个实数。正曲率算子、正 Ricci 曲率分别指相应二次型正定；正截面曲率要求每个二维截面的值严格为正。
+
+\begin{proposition}
+	\label{g3:prop:curvature-positivity-implications}
+	在维数 \(n\geq2\) 的黎曼流形的每一点，都有
+	\begin{equation}
+		\label{g3:eq:curvature-positivity-chain}
+		\mathcal R\geq0\ \Longrightarrow\ K\geq0
+		\ \Longrightarrow\ \operatorname{Ric}\geq0
+		\ \Longrightarrow\ \operatorname{Scal}\geq0.
+	\end{equation}
+	将其中全部非负号换为严格正号，同样成立。维数二时，四种非负性彼此等价，四种严格正性也彼此等价；维数三时，曲率算子与截面曲率具有相同的非负性和严格正性。
+\end{proposition}
+\begin{proof}
+	第一个箭头来自\eqref{g3:eq:sectional-bivector}，第二个来自\eqref{g3:eq:ricci-sectional-sum}，最后一个来自正交基下取迹。严格正性时，单位方向的 Ricci 和包含 \(n-1\geq1\) 个正数，标量曲率又是 \(n\) 个正数之和。
+
+	维数二时，\(\Lambda^2\mathrm{T}_pM\) 是一维的，曲率算子就是乘以 \(K\)；同时 \(\operatorname{Ric}=Kg\)、\(\operatorname{Scal}=2K\)，故各条件等价。维数三时，每个非零二向量都可分解。具体说，对正交基 \(e_1,e_2,e_3\)，若
+	\[
+		\omega=a\,e_1\wedge e_2+b\,e_1\wedge e_3+c\,e_2\wedge e_3,
+		\qquad a\ne0,
+	\]
+	则
+	\[
+		\omega=\left(e_1-\frac ca e_3\right)\wedge(ae_2+be_3).
+	\]
+	若 \(a=0\)，可重新排列基，使某个非零系数占据该位置。因此在三维，截面曲率的检验已经遍历全部非零二向量，得到所述等价性。
+\end{proof}
+
+截面曲率决定整个张量，并不意味着截面上的正性自动成为整个二向量空间上的正性。\cref{g3:prop:sectional-determines-curvature}的恢复过程包含极化求差，求差不会保持正号。下面先在单个内积空间上展示这些区别，再由下一节的局部实现将它们用于度量。
+
+\ProseParagraphBreak
+
+构造代数例子时需要核对第一 Bianchi 恒等式。任取 \(\Lambda^2V\) 上的自伴算子 \(A\)，令 \(T_{ijkl}=\langle A(e_i\wedge e_j),e_k\wedge e_l\rangle\)。它自动具有两对指标的反对称性与交换两对的对称性。第一 Bianchi 恒等式等价于
+\begin{equation}
+	\label{g3:eq:operator-bianchi-test}
+	T_{ijkl}-T_{ikjl}+T_{iljk}=0.
+\end{equation}
+左侧交换任意相邻两个指标都会变号，这可直接由上述三种对称性核对；例如交换 \(i,j\) 后得到 \(-T_{ijkl}-T_{iljk}+T_{ikjl}\)。所以有重复指标时它自动为零。三维没有四个互异的指标，任意自伴算子因而都通过这个检验；四维则只剩下一个独立条件 \(T_{1234}-T_{1324}+T_{1423}=0\)。
+
+\begin{example}
+	\label{g3:exm:ricci-positive-sectional-negative}
+	在 \(\mathbb R^3\) 的标准正交基下，令曲率算子在 \(e_1\wedge e_2,e_1\wedge e_3,e_2\wedge e_3\) 上为对角算子，相应特征值记为 \(\kappa_{12},\kappa_{13},\kappa_{23}\)。上一段已经验证它给出代数曲率张量。直接收缩可得
+	\[
+		\operatorname{Ric}
+		=\operatorname{diag}(\kappa_{12}+\kappa_{13},
+		\kappa_{12}+\kappa_{23},\kappa_{13}+\kappa_{23}),
+	\]
+	且 \(\operatorname{Scal}=2(\kappa_{12}+\kappa_{13}+\kappa_{23})\)。取
+	\[
+		(\kappa_{12},\kappa_{13},\kappa_{23})=(-1,2,2),
+	\]
+	则 \(\operatorname{Ric}=\operatorname{diag}(1,1,4)\) 正定，但 \(K(e_1,e_2)=-1\)。因此 Ricci 严格为正不能推出截面曲率非负。
+\end{example}
+
+\begin{example}
+	\label{g3:exm:scalar-positive-ricci-negative}
+	在同一三维构造中取
+	\[
+		(\kappa_{12},\kappa_{13},\kappa_{23})=(-2,3,0).
+	\]
+	则 \(\operatorname{Ric}=\operatorname{diag}(1,-2,3)\)，而 \(\operatorname{Scal}=2>0\)。标量曲率严格为正仍允许 Ricci 张量有负方向。它记录总和的符号，不能判断每一项的符号。
+\end{example}
+
+\begin{example}
+	\label{g3:exm:sectional-positive-operator-negative}
+	在定向 Euclid 空间 \(\mathbb R^4\) 中，记 \(e_{ij}=e_i\wedge e_j\)，并取下列六个正交单位二向量：
+	\[
+		\begin{aligned}
+			\sigma_1&=(e_{12}+e_{34})/\sqrt2,&
+			\tau_1&=(e_{12}-e_{34})/\sqrt2,\\
+			\sigma_2&=(e_{13}-e_{24})/\sqrt2,&
+			\tau_2&=(e_{13}+e_{24})/\sqrt2,\\
+			\sigma_3&=(e_{14}+e_{23})/\sqrt2,&
+			\tau_3&=(e_{14}-e_{23})/\sqrt2.
+		\end{aligned}
+	\]
+	定义自伴算子 \(\mathcal R\)，使 \(\sigma_1,\sigma_2,\sigma_3\) 的特征值分别为 \(-1,3,3\)，而三个 \(\tau_i\) 的特征值都为 \(5/3\)。在原二向量基中，相应三个交叉分量为
+	\[
+		T_{1234}=-\tfrac43,\qquad
+		T_{1324}=-\tfrac23,\qquad
+		T_{1423}=\tfrac23.
+	\]
+	它们满足\eqref{g3:eq:operator-bianchi-test}，所以这确实是一个代数曲率张量的算子。
+
+	现在检查所有截面，而不只检查六个坐标截面。记 \(\nu=e_1\wedge e_2\wedge e_3\wedge e_4\)。直接作外积得到
+	\[
+		\sigma_i\wedge\sigma_j=\delta_{ij}\nu,\qquad
+		\tau_i\wedge\tau_j=-\delta_{ij}\nu,\qquad
+		\sigma_i\wedge\tau_j=0.
+	\]
+	若 \(\omega=X\wedge Y\) 是单位可分解二向量，写成 \(\omega=\sum_i a_i\sigma_i+\sum_i b_i\tau_i\)。因为 \(\omega\wedge\omega=0\) 且 \(|\omega|=1\)，有
+	\[
+		\sum_i a_i^2-\sum_i b_i^2=0,\qquad
+		\sum_i a_i^2+\sum_i b_i^2=1.
+	\]
+	两组平方和因此都为 \(1/2\)，从而
+	\[
+		\langle\mathcal R\omega,\omega\rangle
+		\geq-\sum_i a_i^2+\tfrac53\sum_i b_i^2
+		=\tfrac13>0.
+	\]
+	所有二维截面曲率都严格为正；然而 \(\langle\mathcal R\sigma_1,\sigma_1\rangle=-1\)，所以曲率算子具有负特征值。这里 \(\sigma_1\wedge\sigma_1=\nu\ne0\)，它恰好不是某个二维平面的可分解二向量。
+\end{example}
+
+这三个例子首先是单个切空间中的代数数据。\cref{g3:prop:curvature-local-realization}将在下一节证明：任意这样的代数曲率张量都能实现为一个光滑黎曼度量在原点的曲率。上述严格正性与所展示的负方向在充分小的邻域内还会保持。对 Ricci 张量和曲率算子，这来自矩阵分量的连续性；对四维例子的截面曲率，取光滑正交标架后，单位可分解二向量构成固定的紧集，原点处统一的 \(1/3\) 下界可在邻近点保留为某个正下界。因此这些数据给出实际的小开球上的度量反例，说明\eqref{g3:eq:curvature-positivity-chain}的逆向推理在相应维数确实失败；附加紧性或完备性后的整体存在问题需要另外的构造。
+
+\ProseParagraphBreak
+
+相反，若一点处 \(K\geq0\) 且 \(\operatorname{Scal}=0\)，则任一正交基下的非负截面曲率之和为零。将任意指定的二维平面补入一组正交基，就知该平面的曲率也为零；\cref{g3:prop:sectional-determines-curvature}遂给出该点处 \(\mathrm{Rm}=0\)。这个结论同时使用了非负性与零总和。单独的标量曲率为零仍允许不同方向的正负曲率相互抵消。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

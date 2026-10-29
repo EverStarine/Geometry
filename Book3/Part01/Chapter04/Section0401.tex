@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 4.1 切向与法向分解
 % 纲要位置：几何学计划纲要.md，第 2230 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,403 @@
 \section{切向与法向分解}
 \label{g3:sec:0401}
 
-待撰写
+沿子流形移动一个切向量，环境中的导数可能离开切空间。第一章将导数的切向部分识别为诱导度量的 Levi-Civita 联络，现在保留下来的法向部分记录浸入怎样弯曲。法向量自身也会变化：它的切向导数由同一弯曲数据决定，法向导数则构成法丛上的联络。余维大于一时，法向空间中还有独立的转动，必须把这部分一起记录。
 
 \subsection{第二基本形式和形算子}
 \label{g3:subsec:0401:01}
-待撰写
+
+设 \(f:(M^n,g)\to(\bar M^{n+r},\bar g)\) 为光滑等距浸入，其中 \(n\ge1\)，两流形均无边界，且 \(g=f^*\bar g\)。沿 \(f\) 的向量场，是给每个源点 \(p\) 指定一个向量 \(W(p)\in\mathrm{T}_{f(p)}\bar M\) 的光滑截面。它们所在的丛记为 \(f^*\mathrm{T}\bar M\)。即使两个不同源点有同一个像，这两个源点上的纤维仍分别记录。
+
+\begin{definition}\label{g3:def:normal-bundle}
+	设 \(f:(M^n,g)\to(\bar M^{n+r},\bar g)\) 为光滑等距浸入。其\term[facong]{法丛}[normal bundle]为
+	\[
+		N_fM\coloneqq
+		\{(p,\xi):p\in M,\ \xi\in\mathrm{T}_{f(p)}\bar M,\
+			\bar g(\xi,\mathrm df_p(v))=0
+			\text{ 对所有 }v\in\mathrm{T}_pM\}.
+	\]
+	其截面称为法向量场。正交分解记为
+	\[
+		f^*\mathrm{T}\bar M=\mathrm df(\mathrm{T}M)\oplus N_fM,
+		\qquad W=W^\top+W^\perp.
+	\]
+\end{definition}
+\symidx{\(N_fM\)}
+
+这个分解随点光滑。事实上，在源坐标中令 \(f_i=\mathrm df(\partial_i)\)，则切向投影为
+\[
+	W^\top=\sum_{i,j}g^{ij}\bar g(W,f_i)f_j.
+\]
+矩阵 \((g^{ij})\) 光滑，故两个投影均光滑，法向投影具有常秩 \(r\)。局部选择线性无关的投影像，再作光滑正交化，就得到法丛的局部正交单位标架。
+
+\ProseParagraphBreak
+
+沿 \(f\) 的环境协变导数采用\cref{g3:prop:induced-connection-projection}中的定义。若 \(f^a=y^a\circ f\)、\(W=W^a\partial_{y^a}|_f\)，则
+\[
+	\bar\nabla^f_XW
+	=\left(X(W^a)+\bar\Gamma^a_{bc}(f)\,X(f^b)W^c\right)
+		\partial_{y^a}|_f.
+\]
+它只使用沿 \(f\) 的数据。以下将 \(\bar\nabla^f_X\) 简写为 \(\bar\nabla_X\)，其中 \(X\) 始终是源流形上的向量场。这一联络满足环境度量的乘积规则，而上述命题给出
+\[
+	(\bar\nabla_X\mathrm df(Y))^\top=\mathrm df(\nabla_XY).
+\]
+
+\begin{definition}\label{g3:def:second-fundamental-form}
+	设 \(f:(M^n,g)\to(\bar M,\bar g)\) 为光滑等距浸入。定义它的\term[dierjibenxingshi]{第二基本形式}[second fundamental form]为法丛值的二阶协变张量
+	\[
+		B(X,Y)\coloneqq(\bar\nabla_X\mathrm df(Y))^\perp.
+	\]
+\end{definition}
+\symidx{\(B\)}
+
+\begin{proposition}\label{g3:prop:gauss-decomposition}
+	光滑等距浸入 \(f:(M,g)\to(\bar M,\bar g)\) 的第二基本形式光滑、对称，并对两个输入都为 \(C^\infty(M)\) 线性。切向与法向分解给出
+	\begin{equation}\label{g3:eq:gauss-decomposition}
+		\bar\nabla_X\mathrm df(Y)=\mathrm df(\nabla_XY)+B(X,Y).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	对光滑函数 \(h\)，第一输入的函数线性直接来自联络；第二输入则满足
+	\[
+		\bar\nabla_X\mathrm df(hY)
+		=X(h)\mathrm df(Y)+h\bar\nabla_X\mathrm df(Y).
+	\]
+	第一项切向，取法向投影后为零，故 \(B(X,hY)=hB(X,Y)\)。各投影和联络系数光滑，因而 \(B\) 光滑。
+
+	环境联络的无挠性沿浸入表现为
+	\[
+		\bar\nabla_X\mathrm df(Y)-\bar\nabla_Y\mathrm df(X)
+		=\mathrm df([X,Y]).
+	\]
+	可由上面的坐标公式直接核对：含 \(\bar\Gamma^a_{bc}\) 的两项因下指标对称而相消，余下分量为 \(X(Yf^a)-Y(Xf^a)=[X,Y]f^a\)。右侧切向，取法向投影即得 \(B(X,Y)=B(Y,X)\)。最后将环境导数分成两个正交分量，切向部分由诱导联络公式给出，得到式\eqref{g3:eq:gauss-decomposition}。
+\end{proof}
+
+式\eqref{g3:eq:gauss-decomposition}称为 Gauss 公式。它把内在联络与浸入的额外二阶数据分开。反过来，对法向场求导，也会出现切向分量；由于切向场与法向场的内积恒为零，这个分量已由 \(B\) 决定。
+
+\begin{definition}\label{g3:def:shape-operator}
+	设 \(f:(M,g)\to(\bar M,\bar g)\) 为光滑等距浸入。对法向量 \(\xi\in N_{f,p}M\)，定义\term[xingsuanzi]{形算子}[shape operator]
+	\(A_\xi:\mathrm{T}_pM\to\mathrm{T}_pM\)，使
+	\begin{equation}\label{g3:eq:shape-operator-pairing}
+		g(A_\xi X,Y)=\bar g(B(X,Y),\xi)
+		\qquad(X,Y\in\mathrm{T}_pM).
+	\end{equation}
+	正定内积保证这个线性算子存在且唯一。
+\end{definition}
+\symidx{\(A_\xi\)}
+
+\begin{proposition}\label{g3:prop:weingarten-decomposition}
+	设 \(f:(M,g)\to(\bar M,\bar g)\) 为光滑等距浸入。形算子随 \(\xi\) 线性变化，且每个 \(A_\xi\) 都自伴。对光滑法向场 \(\xi\)，令
+	\(\nabla^\perp_X\xi=(\bar\nabla_X\xi)^\perp\)，则
+	\begin{equation}\label{g3:eq:weingarten-formula}
+		\bar\nabla_X\xi=-\mathrm df(A_\xi X)+\nabla^\perp_X\xi.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	关于 \(\xi\) 的线性由式\eqref{g3:eq:shape-operator-pairing}及唯一性得到。在坐标中，\((A_\xi)^i{}_j=g^{ik}\bar g(B(\partial_j,\partial_k),\xi)\)，故对光滑法向场，形算子场也光滑。由 \(B\) 对称，
+	\[
+		g(A_\xi X,Y)=\bar g(B(X,Y),\xi)
+		=\bar g(B(Y,X),\xi)=g(X,A_\xi Y),
+	\]
+	所以 \(A_\xi\) 自伴。对恒等式 \(\bar g(\xi,\mathrm df(Y))=0\) 沿 \(X\) 求导，得到
+	\[
+		\bar g(\bar\nabla_X\xi,\mathrm df(Y))
+		=-\bar g(\xi,\bar\nabla_X\mathrm df(Y))
+		=-g(A_\xi X,Y).
+	\]
+	这对所有 \(Y\) 成立，故切向分量是 \(-\mathrm df(A_\xi X)\)；余下分量正是所定义的 \(\nabla^\perp_X\xi\)。
+\end{proof}
+
+式\eqref{g3:eq:weingarten-formula}称为\term[weingartengongshi]{Weingarten 公式}[Weingarten formula]。\footnote{Julius Weingarten（1836--1910），德国数学家，研究曲面等距变形与曲率线。}其负号来自正交关系的求导。若余维为一，取局部单位法向 \(\nu\)，则 \(\bar\nabla_X\nu\) 与 \(\nu\) 正交，已没有法向分量，所以 \(\bar\nabla_X\nu=-\mathrm df(A_\nu X)\)。
+
+\begin{example}\label{g3:exm:sphere-extrinsic-sign}
+	对半径 \(a>0\) 的圆球面 \(S^n(a)\subset\mathbb R^{n+1}\)，取外向单位法向 \(\nu(p)=p/a\)。环境联络为普通导数，故对切向量 \(X\)，
+	\[
+		\mathrm D_X\nu=\frac1aX,\qquad
+		A_\nu=-\frac1a\operatorname{id},\qquad
+		B(X,Y)=-\frac1a g(X,Y)\nu.
+	\]
+	这些等式直接来自法向的变化，与第一章球面诱导联络的符号相容。把 \(\nu\) 改为 \(-\nu\) 会改变 \(A_\nu\) 的符号，但不改变法丛值张量 \(B\)。
+\end{example}
 
 \subsection{法联络及其曲率}
 \label{g3:subsec:0401:02}
-待撰写
+
+法向导数中的切向部分已经由 \(B\) 决定，余下部分比较的是相邻法向空间中的向量。余维为一时，单位法向的这部分导数为零；余维较高时，保持长度的法向量还可以在法向空间内部转动。
+
+\begin{definition}\label{g3:def:normal-connection}
+	设 \(f:(M,g)\to(\bar M,\bar g)\) 为光滑等距浸入。法丛上的\term[falianluo]{法联络}[normal connection]定义为
+	\[
+		\nabla^\perp_X\xi=(\bar\nabla_X\xi)^\perp,
+		\qquad \xi\in\Gamma(N_fM).
+	\]
+	法向场 \(\xi\) 若满足 \(\nabla^\perp_X\xi=0\) 对所有 \(X\) 成立，则称为法平行的。
+\end{definition}
+\symidx{\(\nabla^\perp\)}
+
+\begin{proposition}\label{g3:prop:normal-connection-metric}
+	光滑等距浸入的 \(\nabla^\perp\) 是法丛上的光滑联络，并与法丛上的诱导内积相容，即
+	\begin{equation}\label{g3:eq:normal-connection-metric}
+		X\bar g(\xi,\zeta)
+		=\bar g(\nabla^\perp_X\xi,\zeta)
+			+\bar g(\xi,\nabla^\perp_X\zeta).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	正交投影为光滑丛映射，环境联络对求导方向为函数线性，所以
+	\[
+		\nabla^\perp_{hX}\xi=h\nabla^\perp_X\xi,\qquad
+		\nabla^\perp_X(h\xi)=X(h)\xi+h\nabla^\perp_X\xi.
+	\]
+	与实线性一起，这正是丛联络的各项公理。环境度量相容性给出
+	\[
+		X\bar g(\xi,\zeta)
+		=\bar g(\bar\nabla_X\xi,\zeta)+\bar g(\xi,\bar\nabla_X\zeta).
+	\]
+	这里 \(\xi,\zeta\) 都法向，另一个输入的切向分量不贡献内积，因此可将两个环境导数都替换为其法向投影，得到式\eqref{g3:eq:normal-connection-metric}。
+\end{proof}
+
+\begin{definition}\label{g3:def:normal-curvature}
+	光滑等距浸入的\term[faqulv]{法曲率}[normal curvature]为法丛联络的曲率
+	\begin{equation}\label{g3:eq:normal-curvature-definition}
+		R^\perp(X,Y)\xi
+		\coloneqq\nabla^\perp_X\nabla^\perp_Y\xi
+			-\nabla^\perp_Y\nabla^\perp_X\xi
+			-\nabla^\perp_{[X,Y]}\xi.
+	\end{equation}
+	若 \(R^\perp=0\)，称法联络平坦。
+\end{definition}
+\symidx{\(R^\perp\)}
+
+\begin{proposition}\label{g3:prop:normal-connection-curvature}
+	设 \(f:(M,g)\to(\bar M,\bar g)\) 为光滑等距浸入。\(R^\perp(X,Y)\xi\) 对 \(X,Y,\xi\) 均为函数线性，对 \(X,Y\) 反对称，且在法向输入上满足
+	\begin{equation}\label{g3:eq:normal-curvature-skew}
+		\bar g(R^\perp(X,Y)\xi,\zeta)
+		=-\bar g(\xi,R^\perp(X,Y)\zeta).
+	\end{equation}
+	因而 \(R^\perp\) 是取值于法丛斜自伴算子的二形式。
+\end{proposition}
+\begin{proof}
+	反对称性来自定义。对光滑函数 \(h\)，利用
+	\([hX,Y]=h[X,Y]-Y(h)X\)，展开第一输入得
+	\[
+		\begin{aligned}
+			R^\perp(hX,Y)\xi
+			={}&h\nabla^\perp_X\nabla^\perp_Y\xi
+				-\nabla^\perp_Y(h\nabla^\perp_X\xi)\\
+			&-h\nabla^\perp_{[X,Y]}\xi
+				+Y(h)\nabla^\perp_X\xi
+			=hR^\perp(X,Y)\xi.
+		\end{aligned}
+	\]
+	第二输入的函数线性由反对称性得到。对于法向输入，
+	\[
+		\nabla^\perp_X\nabla^\perp_Y(h\xi)
+		=X(Yh)\xi+(Yh)\nabla^\perp_X\xi
+			+(Xh)\nabla^\perp_Y\xi
+			+h\nabla^\perp_X\nabla^\perp_Y\xi.
+	\]
+	交换 \(X,Y\) 并减去括号方向的导数后，函数的二阶导数合成为
+	\(XYh-YXh-[X,Y]h=0\)，两个交叉项也抵消，因此第三输入函数线性。局部标架展开说明它只取决于各输入在一点的值，并且光滑。
+
+	最后将度量相容式连续使用两次：
+	\[
+		\begin{aligned}
+			XY\bar g(\xi,\zeta)
+			={}&\bar g(\nabla^\perp_X\nabla^\perp_Y\xi,\zeta)
+				+\bar g(\nabla^\perp_Y\xi,\nabla^\perp_X\zeta)\\
+			&+\bar g(\nabla^\perp_X\xi,\nabla^\perp_Y\zeta)
+				+\bar g(\xi,\nabla^\perp_X\nabla^\perp_Y\zeta).
+		\end{aligned}
+	\]
+	交换 \(X,Y\) 后中间两项相消，再减去 \([X,Y]\bar g(\xi,\zeta)\)，左侧为零，右侧为式\eqref{g3:eq:normal-curvature-skew}两边移到一起的和。
+\end{proof}
+
+在局部正交单位法标架 \(\nu=(\nu_1,\ldots,\nu_r)\) 中，定义一形式矩阵 \(\eta=(\eta^\alpha{}_\beta)\)，使
+\begin{equation}\label{g3:eq:normal-connection-matrix}
+	\nabla^\perp\nu_\beta=\sum_\alpha\nu_\alpha\eta^\alpha{}_\beta,
+	\qquad \eta^\alpha{}_\beta(X)=\bar g(\nabla^\perp_X\nu_\beta,\nu_\alpha).
+\end{equation}
+度量相容性给出 \(\eta^{\mathsf T}=-\eta\)。若法向场的列分量为 \(u\)，即 \(\xi=\nu u\)，则
+\[
+	\nabla^\perp_X\xi=\nu\bigl(Xu+\eta(X)u\bigr).
+\]
+因此平行性是关于各方向导数的方程 \(Xu=-\eta(X)u\)。
+
+\begin{proposition}\label{g3:prop:normal-curvature-matrix}
+	光滑等距浸入在局部正交单位法标架中的法曲率矩阵为
+	\begin{equation}\label{g3:eq:normal-curvature-matrix}
+		F^\perp=\mathrm d\eta+\eta\wedge\eta,\qquad
+		R^\perp(X,Y)\nu_\beta
+			=\sum_\alpha\nu_\alpha(F^\perp)^\alpha{}_\beta(X,Y).
+	\end{equation}
+	这里 \((\eta\wedge\eta)^\alpha{}_\beta
+	=\sum_\gamma\eta^\alpha{}_\gamma\wedge\eta^\gamma{}_\beta\)。
+\end{proposition}
+\begin{proof}
+	将式\eqref{g3:eq:normal-connection-matrix}代入曲率定义，\(\nu_\alpha\) 的系数为
+	\[
+		\begin{aligned}
+			&X(\eta^\alpha{}_\beta(Y))
+				-Y(\eta^\alpha{}_\beta(X))
+				-\eta^\alpha{}_\beta([X,Y])\\
+			&\qquad+\sum_\gamma
+				\bigl(\eta^\alpha{}_\gamma(X)\eta^\gamma{}_\beta(Y)
+				-\eta^\alpha{}_\gamma(Y)\eta^\gamma{}_\beta(X)\bigr).
+		\end{aligned}
+	\]
+	第一行是 \(\mathrm d\eta^\alpha{}_\beta(X,Y)\)，第二行是矩阵外积的对应分量，故得到所述公式。
+\end{proof}
+
+局部正交单位法标架只要求每点的内积矩阵为单位矩阵。若进一步要求它在一个开邻域内法平行，就要求 \(\eta\) 在整个邻域为零，由式\eqref{g3:eq:normal-curvature-matrix}必有 \(R^\perp=0\)。下面的直接计算说明，这一要求对一般浸入不成立。
+
+\begin{example}\label{g3:exm:nonflat-normal-connection}
+	在 \(\mathbb R^4\) 中考虑图像浸入
+	\[
+		f(x,y)=\left(x,y,\frac{x^2}{2},xy\right).
+	\]
+	其坐标切向量为 \(f_x=(1,0,x,y)\)、\(f_y=(0,1,0,x)\)，以下两个场处处法向且线性无关：
+	\[
+		\xi_1=(-x,0,1,0),\qquad
+		\xi_2=(-y,-x,0,1).
+	\]
+	它们不要求在整个邻域正交，在原点则为正交单位基。法向 Gram 矩阵及其行列式为
+	\[
+		G_N=
+		\begin{pmatrix}1+x^2&xy\\xy&1+x^2+y^2\end{pmatrix},
+		\qquad
+		d_N=(1+x^2)(1+x^2+y^2)-x^2y^2>0.
+	\]
+	由于 \(\partial_y\xi_1=0\)，有 \(\nabla^\perp_{\partial_y}\xi_1=0\)。写
+	\(\nabla^\perp_{\partial_x}\xi_1=a\xi_1+b\xi_2\)，对两法向场取内积便得
+	\[
+		G_N\binom{a}{b}=\binom{x}{y},\qquad
+		a=\frac{x(1+x^2)}{d_N},\quad b=\frac{y}{d_N}.
+	\]
+	在原点 \(a=b=0\)、\(\partial_ya=0\)、\(\partial_yb=1\)，所以
+	\[
+		R^\perp(\partial_x,\partial_y)\xi_1\big|_{(0,0)}
+		=-\nabla^\perp_{\partial_y}(a\xi_1+b\xi_2)\big|_{(0,0)}
+		=-\xi_2(0,0)\ne0.
+	\]
+	因此任何包含原点的邻域都不存在处处法平行的法标架。环境空间本身平坦，并不使这个法联络平坦。
+\end{example}
+
+若法丛秩为一，任一局部单位法向 \(\nu\) 满足
+\(\bar g(\nabla^\perp_X\nu,\nu)=0\)，而法向空间由 \(\nu\) 张成，故 \(\nabla^\perp\nu=0\)、\(R^\perp=0\)。这个局部结论不需要一个全局单位法向；是否能在整个流形选取这样的法向，是法线丛的另一项整体性质。
 
 \subsection{平均曲率向量}
 \label{g3:subsec:0401:03}
-待撰写
+
+第二基本形式为每个切向方向给出一个法向弯曲向量。对正交方向求平均，应当得到不依赖所选切向基的法向量；这正是对 \(B\) 作度量迹的作用。
+
+\begin{definition}\label{g3:def:mean-curvature-vector}
+	设 \(f:(M^n,g)\to(\bar M,\bar g)\) 为光滑等距浸入，\(n\ge1\)。其\term[pingjunqulvxiangliang]{平均曲率向量}[mean curvature vector]为
+	\begin{equation}\label{g3:eq:mean-curvature-vector}
+		H\coloneqq\frac1n\operatorname{tr}_gB
+			=\frac1n\sum_{i=1}^nB(e_i,e_i),
+	\end{equation}
+	其中 \(e_1,\ldots,e_n\) 为任意正交单位基。若 \(H\) 恒为零，称 \(f\) 为\term[jixiaojinru]{极小浸入}[minimal immersion]，相应浸入子流形称为极小子流形。
+\end{definition}
+\symidx{\(H\)}
+
+若 \(e'_i=\sum_j e_jQ_{ji}\)，其中 \(Q\) 为正交矩阵，则
+\[
+	\sum_iB(e'_i,e'_i)
+	=\sum_{j,k}\left(\sum_iQ_{ji}Q_{ki}\right)B(e_j,e_k)
+	=\sum_jB(e_j,e_j).
+\]
+这既证明定义与正交基无关，也说明 \(H\) 是光滑法向场。在一般坐标中，
+\[
+	H=\frac1n g^{ij}B(\partial_i,\partial_j).
+\]
+与任意法向量 \(\xi\) 配对，式\eqref{g3:eq:shape-operator-pairing}又给出
+\begin{equation}\label{g3:eq:mean-curvature-shape-trace}
+	\bar g(H,\xi)=\frac1n\operatorname{tr}A_\xi.
+\end{equation}
+因此 \(H=0\) 等价于每个法向形算子都无迹。
+
+\ProseParagraphBreak
+
+对超曲面，选择单位法向 \(\nu\) 后可写 \(H=h\nu\)，其中 \(h=\operatorname{tr}A_\nu/n\) 是带符号的平均曲率。换成 \(-\nu\) 后，\(A_\nu\) 与 \(h\) 同时变号，向量 \(H\) 不变。由\cref{g3:exm:sphere-extrinsic-sign}，外向法向的圆球面满足
+\[
+	h=-\frac1a,\qquad H=-\frac1a\nu.
+\]
+平均曲率向量指向球心；它在这里采用平均值归一化，而非未除以维数的迹。
+
+\begin{example}\label{g3:exm:curve-mean-curvature-vector}
+	设 \(\gamma:I\to\bar M\) 为单位速光滑曲线，并给 \(I\) 度量 \(\mathrm ds^2\)。记 \(T=\dot\gamma\)。一维域中的单位坐标向量满足 \(\nabla_{\partial_s}\partial_s=0\)，所以 Gauss 公式给出
+	\[
+		B(\partial_s,\partial_s)=\bar{\mathrm D}_sT,\qquad
+		H=\bar{\mathrm D}_sT.
+	\]
+	单位速条件使右侧与 \(T\) 正交。于是曲线的平均曲率向量就是其曲率向量，而单位速曲线是极小浸入当且仅当它是环境测地线。
+\end{example}
 
 \subsection{全测地和全脐子流形}
 \label{g3:subsec:0401:04}
-待撰写
+
+两种特殊弯曲情形可以直接用 \(B\) 描述。一种是所有方向都没有法向弯曲；另一种是所有单位切向方向的法向弯曲完全相同。前者对应测地线的保持，后者对应每个法向形算子都是数量算子。
+
+\begin{definition}\label{g3:def:totally-geodesic-umbilical}
+	设 \(f:(M^n,g)\to(\bar M,\bar g)\) 为光滑等距浸入，\(n\ge1\)。若 \(B\equiv0\)，称 \(f\) 为\term[quancedijinru]{全测地浸入}[totally geodesic immersion]。若每点 \(p\) 存在法向量 \(\zeta_p\)，使
+	\[
+		B_p(v,v)=g_p(v,v)\zeta_p\qquad
+		\text{对所有 }v\in\mathrm{T}_pM,
+	\]
+	则称 \(f\) 为\term[quanqijinru]{全脐浸入}[totally umbilical immersion]。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:totally-geodesic-characterization}
+	设 \(f:(M,g)\to(\bar M,\bar g)\) 为光滑等距浸入。则 \(f\) 全测地，当且仅当每条 \(M\) 中的测地线经 \(f\) 映射后仍是保持原参数的环境测地线。此时，对每个 \(p\) 及足够小的 \(v\in\mathrm{T}_pM\)，有
+	\begin{equation}\label{g3:eq:totally-geodesic-exponential}
+		f(\exp_p^M v)=\exp_{f(p)}^{\bar M}(\mathrm df_pv).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	对任意光滑曲线 \(\gamma\)，将 Gauss 公式沿曲线使用，得到加速度分解
+	\begin{equation}\label{g3:eq:immersion-curve-acceleration}
+		\bar{\mathrm D}_t(\mathrm df(\dot\gamma))
+		=\mathrm df(\mathrm D_t\dot\gamma)+B(\dot\gamma,\dot\gamma).
+	\end{equation}
+	具体地，在坐标中写 \(\dot\gamma=\dot x^i\partial_i\)，左侧为
+	\(\ddot x^i f_i+\dot x^i\dot x^j\bar\nabla_{\partial_i}f_j\)；
+	代入式\eqref{g3:eq:gauss-decomposition}，切向部分合成为
+	\(\mathrm df((\ddot x^k+\Gamma^k_{ij}\dot x^i\dot x^j)\partial_k)\)，
+	法向部分即上式所列的 \(B\)。
+
+	若 \(B=0\)，当 \(\gamma\) 为测地线时，两项都为零，故 \(f\circ\gamma\) 是环境测地线。反过来，固定 \(p\) 及任意 \(v\in\mathrm{T}_pM\)。由\cref{g3:thm:geodesic-ivp}，存在以 \((p,v)\) 为初值的局部测地线。若其像也是环境测地线，在时间零代入加速度分解，得到 \(B_p(v,v)=0\)。由 \(B\) 对称，
+	\[
+		2B_p(v,w)=B_p(v+w,v+w)-B_p(v,v)-B_p(w,w)=0.
+	\]
+	所以 \(B=0\)。
+
+	最后，在全测地情形，\(f\circ\gamma_{p,v}\) 与环境中以
+	\((f(p),\mathrm df_pv)\) 为初值的测地线相同，这由同一初值唯一性得到。当 \(v\) 足够小，使两条曲线均定义到时间一时，比较时间一的值即得式\eqref{g3:eq:totally-geodesic-exponential}。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:umbilical-characterization}
+	设 \(f:(M^n,g)\to(\bar M,\bar g)\) 为光滑等距浸入，\(n\ge1\)。它全脐，当且仅当
+	\begin{equation}\label{g3:eq:umbilical-second-fundamental-form}
+		B(X,Y)=g(X,Y)H.
+	\end{equation}
+	这又等价于对每个法向量 \(\xi\)，有
+	\[
+		A_\xi=\bar g(H,\xi)\operatorname{id}.
+	\]
+	全脐浸入是全测地的，当且仅当其平均曲率向量为零。
+\end{proposition}
+\begin{proof}
+	若 \(B_p(v,v)=g_p(v,v)\zeta_p\)，对 \(v+w\) 作同样计算，再减去 \(v,w\) 两式，得到
+	\(B_p(v,w)=g_p(v,w)\zeta_p\)。在正交单位基中取迹，便有
+	\(nH_p=n\zeta_p\)，所以 \(\zeta_p=H_p\)，得到式\eqref{g3:eq:umbilical-second-fundamental-form}。反向蕴含由令 \(Y=X\) 得到。
+
+	将该式与任意 \(\xi\) 配对，形算子的定义给出
+	\[
+		g(A_\xi X,Y)=g(X,Y)\bar g(H,\xi),
+	\]
+	由度量非退化性得到数量算子表达。反过来，若所有 \(A_\xi\) 都具有这一形式，则 \(B(X,Y)-g(X,Y)H\) 与每个法向量正交；它本身法向，故为零。最后在全脐公式中令 \(H=0\) 即得 \(B=0\)，而 \(B=0\) 总使其迹 \(H\) 为零。
+\end{proof}
+
+Euclid 空间中的仿射子空间有常值切空间，环境导数的法向分量恒为零，因此全测地。圆球面由\cref{g3:exm:sphere-extrinsic-sign}满足 \(B=gH\)，故全脐，但它的 \(H\ne0\)，所以并非全测地。维数一时，每个单位切向量只差一个符号，任何曲线浸入都自动全脐；此时全测地与极小的条件则都要求曲率向量为零。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

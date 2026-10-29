@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 2.1 指数映射与法坐标
 % 纲要位置：几何学计划纲要.md，第 2161 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,328 @@
 \section{指数映射与法坐标}
 \label{g3:sec:0201}
 
-待撰写
+在 Euclid 空间中，从点 \(p\) 沿初速度 \(v\) 直行，时间 \(t\) 后到达 \(p+tv\)。这既确定一条曲线，也把原点附近的向量变成 \(p\) 附近的点。在黎曼流形上，“速度不改变”应写成速度沿自身的协变导数为零。先解这一初值问题，再把时间一的终点作为向量的像，就得到指数映射。它在零向量附近可逆，由此产生的坐标使从中心出发的测地线成为直线；这些曲线的长度极小性还需要度量的进一步分析。
 
 \subsection{测地线方程及初值依赖}
 \label{g3:subsec:0201:01}
-待撰写
+
+设 \(\gamma:I\to M\) 为光滑曲线，\(V(t)\in\mathrm{T}_{\gamma(t)}M\) 为沿曲线的光滑向量场。在坐标中写 \(\gamma(t)=(x^i(t))\)、\(V(t)=V^k(t)\partial_k|_{\gamma(t)}\)，沿曲线的协变导数为
+\begin{equation}\label{g3:eq:covariant-derivative-along-curve}
+	\mathrm{D}_tV
+	=\left(\dot V^k+\Gamma^k_{ij}(x(t))\dot x^iV^j\right)\partial_k.
+\end{equation}
+这是把式\eqref{g3:eq:coordinate-covariant-derivative}限制到曲线后的表达；向量场沿曲线的分量可以独立指定，不要求先在曲线像的邻域上延拓。上一章的 Christoffel 换坐标公式保证这个表达在交叠处一致。度量相容性给出
+\[
+	\frac{\mathrm{d}}{\mathrm{d}t}g(V,W)
+	=g(\mathrm{D}_tV,W)+g(V,\mathrm{D}_tW).
+\]
+
+\begin{definition}\label{g3:def:geodesic}
+	设 \((M,g)\) 为无边界光滑黎曼流形，\(\nabla\) 为其 Levi-Civita 联络。若光滑曲线 \(\gamma:I\to M\) 满足 \(\mathrm{D}_t\dot\gamma=0\)，则称 \(\gamma\) 为\term[cedixian]{测地线}[geodesic]。常值曲线也包括在内。坐标中的测地线方程是
+	\begin{equation}\label{g3:eq:geodesic-equation}
+		\ddot x^k+\Gamma^k_{ij}(x)\dot x^i\dot x^j=0,
+		\qquad k=1,\ldots,n.
+	\end{equation}
+\end{definition}
+
+这是一组二阶方程，所以初值同时包括位置 \(p\) 与速度 \(v\in\mathrm{T}_pM\)。把速度也作为未知量，令 \(v^i=\dot x^i\)，就得到切丛坐标 \((x^i,v^i)\) 中的一阶系统
+\[
+	\dot x^k=v^k,\qquad
+	\dot v^k=-\Gamma^k_{ij}(x)v^iv^j.
+\]
+其右端定义切丛上的光滑向量场
+\begin{equation}\label{g3:eq:geodesic-spray}
+	S=v^i\frac{\partial}{\partial x^i}
+	-\Gamma^k_{ij}(x)v^iv^j\frac{\partial}{\partial v^k}.
+\end{equation}
+称其为\term[cedixianpenwu]{测地线喷雾}[geodesic spray]。换坐标时，速度分量按 \(\widetilde v^a=(\partial y^a/\partial x^i)v^i\) 变换；对此求时间导数产生的二阶坐标导数，恰与 Christoffel 变换中的二阶项抵消。因此各图中的 \(S\) 表示同一个切丛向量场。它的积分曲线正是 \((\gamma(t),\dot\gamma(t))\)。
+
+\begin{theorem}\label{g3:thm:geodesic-ivp}
+	设 \((M,g)\) 为有限维、Hausdorff、第二可数、无边界的光滑黎曼流形。对每个 \(p\in M\)、\(v\in\mathrm{T}_pM\)，存在唯一的最大测地线
+	\[
+		\gamma_{p,v}:I_{p,v}\longrightarrow M,\qquad
+		\gamma_{p,v}(0)=p,\quad \dot\gamma_{p,v}(0)=v,
+	\]
+	其中 \(I_{p,v}\) 为含零的开区间，任意同初值测地线都是它的限制。集合
+	\[
+		\mathcal D=\{(t,p,v):v\in\mathrm{T}_pM,\ t\in I_{p,v}\}
+		\subset\mathbb R\times\mathrm{T}M
+	\]
+	开，映射 \((t,p,v)\mapsto(\gamma_{p,v}(t),\dot\gamma_{p,v}(t))\) 在其上光滑。每条测地线速度的长度恒为 \(|v|_g\)。当 \(v=0\) 时，测地线恒为 \(p\)，且 \(I_{p,0}=\mathbb R\)；当 \(a\ne0\) 时，
+	\begin{equation}\label{g3:eq:geodesic-scaling}
+		I_{p,av}=a^{-1}I_{p,v},\qquad
+		\gamma_{p,av}(t)=\gamma_{p,v}(at).
+	\end{equation}
+	任意仿射重参数 \(t=as+b\) 仍给出测地线。
+\end{theorem}
+\begin{proof}
+	第一卷第13.1节“最大局部流”定理说明：无边界、有限维、Hausdorff、第二可数光滑流形上的光滑向量场，有唯一的最大积分曲线；它们的时间与初值组成开定义域，解映射在该定义域上联合光滑。切丛 \(\mathrm{T}M\) 是满足这些条件的 \(2n\) 维流形，而式\eqref{g3:eq:geodesic-spray}给出其上的光滑向量场。因此该定理适用于 \(S\)。其积分曲线的第一组方程保证第二分量是第一分量的速度，第二组方程正是测地线方程，故得到存在、唯一、最大区间及光滑依赖。
+	% 跨卷依赖：g1:thm:maximal-local-flow，已核读其陈述与证明。
+
+	由度量相容性，
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}|\dot\gamma|_g^2
+		=2g(\mathrm{D}_t\dot\gamma,\dot\gamma)=0,
+	\]
+	所以速度长度为常数。零初值速度给出常曲线，唯一性使它就是最大解。
+
+	若 \(a\ne0\)，曲线 \(t\mapsto\gamma_{p,v}(at)\) 的协变加速度是原曲线协变加速度的 \(a^2\) 倍，且初速度为 \(av\)，故它是相应初值解。最大性先给出 \(a^{-1}I_{p,v}\subset I_{p,av}\)；再用缩放因子 \(a^{-1}\) 得反向包含，证明式\eqref{g3:eq:geodesic-scaling}。同一求导计算允许时间平移，因而仿射重参数保持测地线方程。
+\end{proof}
+
+对于非恒定测地线，参数中的“匀速”是方程的一部分。若以光滑函数 \(t=h(s)\) 重参数，则
+\[
+	\mathrm{D}_s\frac{\mathrm{d}}{\mathrm{d}s}\gamma(h(s))
+	=h''(s)\dot\gamma(h(s)).
+\]
+原速度处处非零，因此新曲线仍满足测地线方程当且仅当 \(h''=0\)。曲线的像可以不变，所用参数却未必仍是测地线参数。
 
 \subsection{指数映射的微分}
 \label{g3:subsec:0201:02}
-待撰写
+
+初速度的大小同时记录了单位时间内走多远。由缩放公式，沿速度 \(v\) 运动时间 \(t\)，与沿速度 \(tv\) 运动时间一到达同一点。于是可以把时间固定，将所有允许的初速度组织成一个映射。
+
+\begin{definition}\label{g3:def:exponential-map}
+	设 \((M,g)\) 为光滑无边界黎曼流形。定义
+	\[
+		\mathcal E=\{(p,v)\in\mathrm{T}M:1\in I_{p,v}\},
+		\qquad
+		\mathcal E_p=\mathcal E\cap\mathrm{T}_pM.
+	\]
+	映射
+	\[
+		\operatorname{Exp}:\mathcal E\longrightarrow M,\qquad
+		\operatorname{Exp}(p,v)=\gamma_{p,v}(1)
+	\]
+	称为\term[zhishuyingshe]{指数映射}[exponential map]，其在单个切空间上的限制记为 \(\exp_p:\mathcal E_p\to M\)。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:exponential-local}
+	设 \((M,g)\) 为有限维、Hausdorff、第二可数、无边界光滑黎曼流形。指数映射的定义域 \(\mathcal E\) 是包含零截面的开集，\(\operatorname{Exp}\) 光滑；每个 \(\mathcal E_p\) 关于零向量星形，即 \(v\in\mathcal E_p\)、\(0\le t\le1\) 时 \(tv\in\mathcal E_p\)。在自然识别 \(\mathrm{T}_0(\mathrm{T}_pM)=\mathrm{T}_pM\) 下，
+	\begin{equation}\label{g3:eq:exponential-derivative-zero}
+		(\mathrm{d}\exp_p)_0=\operatorname{id}_{\mathrm{T}_pM}.
+	\end{equation}
+	因此存在 \(R>0\)，使 \(\exp_p\) 在切空间开球 \(B_p(0,R)=\{v:|v|_g<R\}\) 上为到其像的微分同胚。此外，端点映射
+	\begin{equation}\label{g3:eq:geodesic-endpoint-map}
+		F:\mathcal E\longrightarrow M\times M,\qquad
+		F(p,v)=(p,\exp_pv)
+	\end{equation}
+	在每个 \((p,0)\) 附近为局部微分同胚。
+\end{proposition}
+\begin{proof}
+	\(\mathcal E\) 是开集 \(\mathcal D\) 在时间一的切片，故开；指数映射是测地流在该切片上的位置分量，故光滑。零速度解对所有时间存在，所以 \(\mathcal E\) 包含零截面。若 \(v\in\mathcal E_p\)，开区间 \(I_{p,v}\) 包含 \([0,1]\)。对 \(0<t\le1\)，式\eqref{g3:eq:geodesic-scaling}说明 \(1\in I_{p,tv}\)，而 \(t=0\) 已经处理，故纤维星形。
+
+	任取 \(w\in\mathrm{T}_pM\)。当 \(s\) 充分接近零时，缩放公式给出
+	\[
+		\exp_p(sw)=\gamma_{p,w}(s).
+	\]
+	在 \(s=0\) 求导，右侧导数是初速度 \(w\)，便得到式\eqref{g3:eq:exponential-derivative-zero}。第一卷定理11.3.3的逆函数定理适用于同维无边界流形之间微分可逆的光滑映射，因此 \(\exp_p\) 在零向量的某个邻域上为微分同胚。取包含于该邻域的小球，即得所述 \(R\)。
+	% 跨卷依赖：g1:thm:inverse-function。
+
+	最后看起点也变化的情形。在零截面处有自然分裂
+	\[
+		\mathrm{T}_{(p,0)}(\mathrm{T}M)
+		\simeq\mathrm{T}_pM\oplus\mathrm{T}_pM:
+	\]
+	第一项由零截面上移动起点得到，第二项由固定起点、改变纤维向量得到。由于 \(\exp_x0=x\)，第一项对终点的导数是恒等；式\eqref{g3:eq:exponential-derivative-zero}说明第二项也是恒等。故
+	\[
+		\mathrm{d}F_{(p,0)}(\xi,\eta)=(\xi,\xi+\eta).
+	\]
+	这个线性映射可逆，逆为 \((\xi,\zeta)\mapsto(\xi,\zeta-\xi)\)。再次应用逆函数定理，得到 \((p,0)\) 和 \((p,p)\) 的开邻域之间的光滑局部逆。
+\end{proof}
+
+\begin{definition}\label{g3:def:normal-neighborhood}
+	若 \(U\subset\mathcal E_p\) 是包含零、关于零星形的开集，且 \(\exp_p|_U\) 为微分同胚，则称 \(\exp_p(U)\) 为 \(p\) 的\term[falinyu]{法邻域}[normal neighborhood]。当 \(U=B_p(0,R)\) 为球时，称其像为 \(p\) 的\term[faqiu]{法球}[normal ball]。
+\end{definition}
+
+这里的球先在切空间中按 \(g_p\) 定义，其像与内在距离球的关系将在长度极小性之后建立。\cref{g3:prop:exponential-local}的端点映射还说明：起点与终点同时作小变化时，连接它们的一个小初速度可以光滑地求出。第二节将据此统一邻近起点可用的半径。
+
+\begin{example}\label{g3:exm:interval-exponential-domain}
+	在开区间 \(M=(0,1)\) 上取 \(g=\mathrm{d}x^2\)。测地线是 \(\gamma_{p,v}(t)=p+tv\)，只允许取使其仍落在 \((0,1)\) 的最大时间区间。因此
+	\[
+		\mathcal E_p=(-p,1-p),\qquad \exp_p(v)=p+v.
+	\]
+	定义域包含零且星形，却通常不是整个切空间。指数映射局部存在无需整体延拓到所有时间。
+\end{example}
+
+\begin{example}\label{g3:exm:round-sphere-exponential}
+	半径 \(a>0\) 的圆球面 \(S_a^n\subset\mathbb R^{n+1}\) 取诱导度量。对 \(p\in S_a^n\) 及非零 \(v\in\mathrm{T}_pS_a^n\)，令
+	\[
+		\gamma(t)=\cos(t|v|/a)p
+		+a\sin(t|v|/a)\frac{v}{|v|}.
+	\]
+	因为 \(p\perp v\)、\(|p|=a\)，这条曲线始终在球面上，初速度为 \(v\)，且 \(\gamma''(t)=-(|v|^2/a^2)\gamma(t)\) 沿法向。由\cref{g3:prop:induced-connection-projection}，其协变加速度为零，所以唯一性给出
+	\begin{equation}\label{g3:eq:round-sphere-exponential}
+		\exp_p(v)=\cos(|v|/a)p
+		+a\frac{\sin(|v|/a)}{|v|}v,
+		\qquad \exp_p(0)=p.
+	\end{equation}
+	右端在零处光滑，因为 \(\cos(|v|/a)\) 和 \(\sin(|v|/a)/|v|\) 都是 \(|v|^2\) 的光滑函数。
+
+	这个映射把 \(B_p(0,\pi a)\) 微分同胚地送到 \(S_a^n\setminus\{-p\}\)。事实上，对既非 \(p\) 又非 \(-p\) 的 \(q\)，令
+	\[
+		\vartheta=\arccos\frac{\langle p,q\rangle}{a^2}\in(0,\pi),
+		\qquad
+		u=\frac{q-\cos\vartheta\,p}{a\sin\vartheta}.
+	\]
+	则 \(u\) 是唯一的单位切向量，使 \(q=\exp_p(a\vartheta u)\)。此逆在远离 \(p\) 处光滑，在 \(p\) 附近与逆函数定理给出的光滑逆一致。半径等于 \(\pi a\) 的所有向量则映到同一个对径点 \(-p\)，显示局部可逆的范围会受到整体几何限制。
+\end{example}
 
 \subsection{Gauss 引理的变分证明}
 \label{g3:subsec:0201:03}
-待撰写
+
+指数映射把每条径向直线变成测地线。若同时改变初速度的方向，这些测地线便形成一族曲线。比较径向运动与这种横向变化，就可以判断指数映射如何处理正交关系；它也是随后证明长度极小性的依据。这个结论称为 Gauss 引理。\footnote{Carl Friedrich Gauss（1777--1855），德国数学家，在数论、微分几何和测地学等领域作出重要贡献。}
+
+\begin{lemma}[Gauss 引理]\label{g3:lem:gauss}
+	设 \((M,g)\) 为光滑无边界黎曼流形，\(p\in M\)，\(v\in\mathcal E_p\)，并用向量空间的平移识别 \(\mathrm{T}_v(\mathrm{T}_pM)=\mathrm{T}_pM\)。对任意 \(w\in\mathrm{T}_pM\)，有
+	\begin{equation}\label{g3:eq:gauss-lemma}
+		g_{\exp_pv}\bigl((\mathrm{d}\exp_p)_vv,(\mathrm{d}\exp_p)_vw\bigr)
+		=g_p(v,w).
+	\end{equation}
+	特别地，指数映射保持径向向量的长度，并把与 \(v\) 正交的向量送到与径向速度正交的向量。
+\end{lemma}
+\begin{proof}
+	\(v=0\) 时等式两边都为零。以下固定 \(v\ne0\)。由于 \(\mathcal E_p\) 开，可取小参数区间，使 \(v+sw\in\mathcal E_p\)。考虑光滑变分
+	\[
+		H(s,t)=\exp_p\bigl(t(v+sw)\bigr)=\gamma_{p,v+sw}(t),
+		\qquad 0\le t\le1.
+	\]
+	记沿这个变分的向量场 \(T=\partial_tH\)、\(V=\partial_sH\)。每条 \(t\)-曲线都是测地线，故 \(\mathrm{D}_tT=0\)；又因 \(H(s,0)=p\)，有 \(V(s,0)=0\)。
+
+	先补明混合协变导数为何可以交换。在任一覆盖变分像的坐标图内，
+	\[
+		(\mathrm{D}_tV)^k
+		=\partial_t\partial_sH^k+\Gamma^k_{ij}(H)\partial_tH^i\partial_sH^j,
+	\]
+	而 \((\mathrm{D}_sT)^k\) 由交换 \(s,t\) 得到。普通混合偏导相等，且无挠性给出 \(\Gamma^k_{ij}=\Gamma^k_{ji}\)，所以
+	\begin{equation}\label{g3:eq:mixed-variation-derivatives}
+		\mathrm{D}_tV=\mathrm{D}_sT.
+	\end{equation}
+	这个计算只用光滑映射 \(H\) 的坐标表达，不要求 \(H\) 是浸入，因而也适用于 \(t=0\)。
+
+	由度量相容性和式\eqref{g3:eq:mixed-variation-derivatives}，
+	\[
+		\partial_t g(T,V)
+		=g(T,\mathrm{D}_tV)
+		=g(T,\mathrm{D}_sT)
+		=\frac12\partial_s g(T,T).
+	\]
+	每条测地线常速，故 \(g(T,T)=g_p(v+sw,v+sw)\)，与 \(t\) 无关。在 \(s=0\) 处，上式右端就是 \(g_p(v,w)\)。从 \(t=0\) 积分到 \(t=1\)，利用初始内积为零，得到
+	\[
+		g(T(0,1),V(0,1))=g_p(v,w).
+	\]
+	链式法则给出 \(T(0,1)=(\mathrm{d}\exp_p)_vv\)、\(V(0,1)=(\mathrm{d}\exp_p)_vw\)，即为所求。取 \(w=v\) 得径向长度保持；取 \(w\perp v\) 得正交关系。
+\end{proof}
+
+在法球去掉中心的部分，写 \(v=ru\)，其中 \(|u|_g=1\)、\(r>0\)。定义径向单位向量
+\[
+	\partial_r\big|_{\exp_p(ru)}=(\mathrm{d}\exp_p)_{ru}u.
+\]
+Gauss 引理说明其长度为一，并与固定半径的球面像正交。因此在这些极坐标中，度量可以写成
+\[
+	g=\mathrm{d}r^2+g_r,
+\]
+其中 \(g_r\) 是单位方向球面上的一族正定度量。这里 \(g_r\) 随 \(r\) 及方向变化，中心 \(r=0\) 则应使用下面的光滑法坐标。
 
 \subsection{法坐标中的度量与联络}
 \label{g3:subsec:0201:04}
-待撰写
+
+在 \(\mathrm{T}_pM\) 选一组 \(g_p\)-正交单位基 \((E_1,\ldots,E_n)\)。把法球中的点写成
+\[
+	q=\exp_p(x^iE_i),
+\]
+便得到以 \(p\) 为中心的\term[fazuobiao]{法坐标}[normal coordinates] \(x^1,\ldots,x^n\)。这些坐标先在切空间中作线性坐标，再经指数映射送到流形；它们的特殊性来自径向直线恰好成为测地线。
+
+\begin{proposition}\label{g3:prop:normal-coordinate-first-order}
+	设 \((M,g)\) 为光滑无边界黎曼流形，在 \(p\) 的法邻域中采用由 \(g_p\)-正交单位基产生的法坐标。则在中心 \(p\)，
+	\begin{equation}\label{g3:eq:normal-coordinate-first-order}
+		g_{ij}(p)=\delta_{ij},\qquad
+		\Gamma^k_{ij}(p)=0,\qquad
+		\partial_k g_{ij}(p)=0.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	由 \((\mathrm{d}\exp_p)_0=\operatorname{id}\)，有 \(\partial_i|_p=E_i\)，故 \(g_{ij}(p)=\delta_{ij}\)。对任意 \(a=(a^1,\ldots,a^n)\)，曲线 \(t\mapsto\exp_p(ta^iE_i)\) 在足够小时间内是测地线，其法坐标为 \(x^i(t)=ta^i\)。在 \(t=0\) 将它代入测地线方程，得到
+	\[
+		\Gamma^k_{ij}(p)a^ia^j=0\qquad\text{对一切 }a.
+	\]
+	先取 \(a\) 为单个坐标基向量，再取两个坐标基向量的和，并用 \(\Gamma^k_{ij}=\Gamma^k_{ji}\)，便得到所有系数都为零。最后，度量相容性写成
+	\[
+		\partial_k g_{ij}
+		=\Gamma^\ell_{ki}g_{\ell j}+\Gamma^\ell_{kj}g_{i\ell};
+	\]
+	在 \(p\) 求值就得到度量的一阶偏导全部为零。
+\end{proof}
+
+所以在中心附近，Taylor 公式给出 \(g_{ij}(x)=\delta_{ij}+O(|x|^2)\)。法坐标消去了中心处的一阶度量变化；二阶及更高阶变化仍记录实际几何。第三章将把二阶项与曲率联系起来。极坐标中的 \(\mathrm{d}r^2+g_r\) 和这里的 \(g_{ij}(x)\) 描述同一度量：前者突出径向正交性，后者在中心仍保持光滑。
 
 \subsection{局部径向极小性}
 \label{g3:subsec:0201:05}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+考虑从法球中心 \(p\) 走到 \(q=\exp_p(v)\)。径向测地线长度为 \(|v|_g\)。沿其他曲线前进时，速度可以分成径向分量和球面方向分量；Gauss 引理使两部分正交，因此球面方向的运动会增加总长度。还须处理一个整体问题：竞争曲线可能先离开法球，再从外面绕回 \(q\)。缩小一层法球后，首次离开所付出的长度足以排除这种捷径。
+
+\begin{proposition}\label{g3:prop:normal-radial-minimality}
+	设 \((M,g)\) 为有限维、Hausdorff、第二可数、无边界光滑黎曼流形，\(p\in M\)、\(R>0\)，并设 \(\exp_p:B_p(0,R)\to U_R\) 为微分同胚。则有以下结论。
+	\begin{enumerate}
+		\item 对 \(v\in B_p(0,R)\)，从 \(p\) 到 \(q=\exp_pv\) 的任意连续分片 \(C^1\) 曲线 \(c:[a,b]\to M\) 都满足
+		\[
+			L_g(c)\ge |v|_g.
+		\]
+		径向测地线 \(t\mapsto\exp_p(tv)\)、\(0\le t\le1\)，达到这个下界。
+		\item 若 \(v\ne0\)，等号成立当且仅当
+		\[
+			c(t)=\exp_p(\lambda(t)v),
+		\]
+		其中 \(\lambda:[a,b]\to[0,1]\) 为非减的连续分片 \(C^1\) 函数，\(\lambda(a)=0\)、\(\lambda(b)=1\)。因此允许停顿时，最短曲线的像仍是唯一的径向线段；固定参数区间及常速后，曲线也唯一。
+		\item 对任意 \(0<r<R\)，曲线从 \(p\) 首次到达 \(U_r=\exp_p(B_p(0,r))\) 的边界时，已经走过的长度至少为 \(r\)。集合 \(\overline{U_r}=\exp_p(\overline{B_p(0,r)})\) 紧。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	先在 \(U_R\) 内比较长度。令 \(x(t)=\exp_p^{-1}(c(t))\)、\(\rho(t)=|x(t)|_g\)。在 \(x(t)\ne0\) 处，Gauss 引理与内积不等式给出
+	\[
+		|\dot\rho(t)|
+		=\left|g\left((\mathrm{d}\exp_p)_{x(t)}
+			\frac{x(t)}{|x(t)|_g},\dot c(t)\right)\right|
+		\le|\dot c(t)|_g.
+	\]
+	曲线经过 \(p\) 时，\(\rho\) 未必可微。为直接处理这些时刻，取
+	\[
+		\rho_\varepsilon(t)=\sqrt{|x(t)|_g^2+\varepsilon^2},
+		\qquad\varepsilon>0.
+	\]
+	它在每个 \(C^1\) 片段上都是 \(C^1\)。在 \(x\ne0\) 处，其导数为 \(\rho/\sqrt{\rho^2+\varepsilon^2}\) 乘以 \(\dot\rho\)；在 \(x=0\) 处，直接求导得零。因此处处有 \(|\dot\rho_\varepsilon|\le|\dot c|_g\)。逐片积分并令 \(\varepsilon\to0\)，对任意子区间 \([s,t]\) 得到
+	\begin{equation}\label{g3:eq:radial-length-bound}
+		L_g(c|_{[s,t]})\ge|\rho(t)-\rho(s)|.
+	\end{equation}
+	这个论证也包括速度为零和多次经过中心的曲线。
+
+	再排除离开法球的竞争曲线。固定 \(|v|_g<r<R\)。闭切球 \(\overline{B_p(0,r)}\) 紧，其像 \(K_r\) 紧，因 \(M\) 为 Hausdorff 空间而闭；又因 \(\exp_p\) 在更大的开球上为微分同胚，\(K_r\) 的内部是 \(U_r\)，边界是半径 \(r\) 的切球面之像。因此 \(K_r=\overline{U_r}\subset U_R\)。若 \(c\) 离开 \(U_r\)，连续性给出首次到达边界的时刻 \(\tau\)，且 \(c([a,\tau])\subset K_r\)。这段曲线可在 \(U_R\) 中提升，式\eqref{g3:eq:radial-length-bound}给出
+	\[
+		L_g(c)\ge L_g(c|_{[a,\tau]})\ge r>|v|_g.
+	\]
+	若 \(c\) 始终在 \(U_r\) 中，直接用式\eqref{g3:eq:radial-length-bound}得到 \(L_g(c)\ge|v|_g\)。径向测地线的速度长度恒为 \(|v|_g\)，故在时间区间 \([0,1]\) 上恰有此长度。这也证明了第三项。
+
+	最后分析等号。设 \(v\ne0\) 且 \(L_g(c)=|v|_g\)。刚才的严格不等式保证曲线始终在 \(U_r\) 中。对任意 \(a\le s\le t\le b\)，分别对三段使用式\eqref{g3:eq:radial-length-bound}，并考虑有向径向变化，得到
+	\[
+		\begin{aligned}
+		L_g(c)
+		&=L_g(c|_{[a,s]})+L_g(c|_{[s,t]})+L_g(c|_{[t,b]})\\
+		&\ge \rho(s)+\bigl(\rho(t)-\rho(s)\bigr)
+			+\bigl(\rho(b)-\rho(t)\bigr)=\rho(b).
+		\end{aligned}
+	\]
+	总和已经取等，三项分别减去对应有向径向变化均非负，因此每项也取等，特别地
+	\[
+		L_g(c|_{[s,t]})=\rho(t)-\rho(s)\ge0.
+	\]
+	所以 \(\rho\) 非减，集合 \(\{t:\rho(t)>0\}\) 是离开中心以后的一个区间。在这个区间内写 \(x=\rho u\)、\(|u|_g=1\)。Gauss 引理使径向与角向速度正交，故在每个光滑片段上
+	\[
+		|\dot c|_g^2
+		=\dot\rho^{\,2}
+		+\left|(\mathrm{d}\exp_p)_x(\rho\dot u)\right|_g^2.
+	\]
+	任意这类子区间上的长度等号说明，连续非负函数 \(|\dot c|_g-\dot\rho\) 的积分为零，因而它恒为零。上式与 \(\mathrm{d}\exp_p\) 可逆性给出 \(\dot u=0\)。有限个分段端点处的连续性使这些常方向一致，最终必须为 \(u=v/|v|_g\)。在其余时间曲线恒为 \(p\)，所以 \(c(t)=\exp_p(\lambda(t)v)\)，其中 \(\lambda=\rho/|v|_g\) 非减。由于此时 \(\rho=\langle x,u\rangle_{g_p}\)，\(\lambda\) 在经过中心的分段上也为 \(C^1\)。
+
+	反过来，这种重参数曲线的速度长度是 \(\lambda'(t)|v|_g\)，逐片积分恰得 \(|v|_g\)。若要求常速，\(\lambda'(t)\) 必为 \(1/(b-a)\)，从而 \(\lambda(t)=(t-a)/(b-a)\)。当 \(v=0\) 时，下界为零，只有常曲线取得等号。
+\end{proof}
+
+特别地，每条测地线的足够短子段都是端点之间的最短曲线：在子段起点取法球，再用初值唯一性把该段识别为径向测地线。在这里，“足够短”由起点附近指数映射的可逆范围决定。球面例子说明，延长同一条测地线以后可能到达多个径向方向汇合的点；局部的最短性并不自动延续到任意长的区间。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：## 第1章　黎曼度量与 Levi-Civita 联络
 % 纲要位置：几何学计划纲要.md，第 2124 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,14 +14,40 @@
 \BookChapterNumber{g3:ch:01}
 
 \begin{chapterabstract}
-待撰写
+	光滑结构允许求导，黎曼度量进一步规定切向量的长度和夹角。本章由局部正定矩阵构造整体度量，建立梯度、体积密度、散度及分部积分公式；再从度量相容和无挠两个要求导出 Koszul 公式，证明 Levi-Civita 联络的存在唯一性。坐标标架与正交标架给出同一联络的两种表达，第一结构方程把无挠条件写成微分形式等式。诱导度量、乘积、共形变换和翘曲积展示这些公式的计算方式，二维模型与常数缩放则确定本卷的曲率符号和尺度约定。
 \end{chapterabstract}
 
 \begin{learninggoals}
-待撰写
+	\begin{itemize}
+		\item 从局部度量矩阵计算长度、梯度、体积密度与散度，并说明换坐标时这些几何量为何保持不变。
+		\item 从度量相容和无挠条件推导 Koszul 公式，逐项验证它定义联络所需的线性及乘积法则。
+		\item 在坐标标架和正交标架之间转换联络系数，用第一结构方程核验计算。
+		\item 计算诱导、共形和翘曲积度量的联络，比较常数缩放对长度、体积和曲率的影响。
+	\end{itemize}
 \end{learninggoals}
 
-待撰写
+在平面中，同一条曲线可以用直角坐标表示，也可以用极坐标表示。若曲线写成 \((r(t),\theta(t))\)，其速度的长度平方是
+\[
+	\dot r(t)^2+r(t)^2\dot\theta(t)^2.
+\]
+角度变化相同，在较大的圆周上走过的弧长就较长。这里的系数 \(r^2\) 记录坐标方向的实际尺度；它并不表示平面本身发生了弯曲。推广到流形时，我们在每个切空间上指定内积，并要求其系数随位置光滑变化。这使长度的定义脱离某一次坐标选择，也使没有预先嵌入空间的流形能够讨论体积和梯度。
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch01-PolarCoordinateVectors}
+	\caption[极坐标方向的长度]{极坐标方向的长度。图中 \(q\) 的半径是 \(p\) 的两倍；用相同绘图比例表示向量时，两个径向坐标向量长度相同，角向坐标向量的长度则相差两倍。}
+	\label{g3:fig:polar-coordinate-vectors}
+\end{figure}
+
+\cref{g3:fig:polar-coordinate-vectors}显示了度量如何记录坐标方向的尺度。有了长度，还需要比较邻近点的向量。在平面的极坐标标架中，径向和角向单位向量都随角度转动，所以只对向量的分量求导会漏掉标架本身的变化。联络把这部分变化计入导数。我们将要求这种导数满足内积的乘积法则，并使两个方向求导的反对称部分与向量场的括号一致。两个要求共同确定一个联络，其坐标表达和标架表达可以互相检验。
+
+\ProseParagraphBreak
+
+本章使用第一卷第11章的坐标图与切空间、第12章的张量和光滑单位分解，以及第14章的微分形式、密度积分和 Stokes 公式；每次实际调用时会恢复所需条件。\footnote{George Gabriel Stokes（1819--1903），生于爱尔兰的英国数学家、物理学家，研究流体力学与光学。}第一卷第15章学过的一般联络可帮助理解这些构造，本章仍给出切丛联络的定义和度量决定联络的证明。阅读本章无需先学第二卷的同调与同伦理论。度量给出曲线长度，长度的下确界如何成为距离、测地线如何产生法坐标，将在\chapref{g3:ch:02}展开。
+
+\ProseParagraphBreak
+
+以下光滑指 \(C^\infty\)，流形取有限维、Hausdorff、第二可数；除讨论边界积分时另作说明外，取实维数 \(n\ge1\) 且无边界。度量不要求可定向、紧或完备。坐标写为 \(x^1,\ldots,x^n\)，\(\partial_i\) 表示坐标向量场；同一单项式中重复的一个上指标和一个下指标表示从 \(1\) 到 \(n\) 求和。需要对照其他表述时，可参看 Petersen 第3版第1.1--1.2节和第1.4.2--1.4.4节的度量与标架、第2.2节和第2.4节的联络，以及第4.2.1节、第4.2.3节和第4.3.1节的球面与翘曲积模型\cite[第1.1--1.2节; 第1.4.2--1.4.4节; 第2.2节; 第2.4节; 第4.2.1节; 第4.2.3节; 第4.3.1节]{Petersen2016}。
 
 \input{Part01/Chapter01/Section0101}
 \input{Part01/Chapter01/Section0102}
@@ -29,8 +55,260 @@
 \input{Part01/Chapter01/Section0104}
 
 \begin{chaptersummary}
-待撰写
+	黎曼度量逐点给出正定内积，单位分解把局部度量粘合为整体度量。音乐同构将一形式变为向量，因而把函数的微分变为梯度；行列式给出按绝对 Jacobian 变换的体积密度。散度描述密度沿流的变化，积分公式把它与边界通量相连，并确定非负 Laplace 算子 \(\Delta_g=-\operatorname{div}_g\operatorname{grad}_g\) 的符号。
+
+	\ProseParagraphBreak
+
+	度量相容保证微分与内积相容，无挠把联络的反对称部分固定为向量场括号。Koszul 公式同时落实这两个要求，既给出唯一性，也构造出所需联络。坐标中的 Christoffel 系数和正交标架中的反对称联络矩阵描述同一个对象；标架变化时出现的导数项，解释了为何联络系数本身不是张量。
+
+	\ProseParagraphBreak
+
+	诱导度量可用环境导数的切向投影计算，乘积度量把两个因子的联络分开。共形因子的微分以及翘曲函数的对数导数，则分别控制相应的联络修正。二维翘曲模型给出 \(K=-f''/f\)，而常数缩放 \(g\mapsto c^2g\) 保持联络并使截面曲率乘以 \(c^{-2}\)。这些计算将在测地线和曲率理论中继续作为可直接核验的模型。
 \end{chaptersummary}
 
 \BookExercises
-待撰写
+
+\begin{exercise}\label{g3:ex:metric-convex-comparison}
+	设 \(g,h\) 为同一 \(n\) 维光滑流形 \(M\) 上的黎曼度量。
+	\begin{enumerate}
+		\item 若 \(M\) 紧，证明存在常数 \(0<c\le C<\infty\)，使 \(c\,g(v,v)\le h(v,v)\le C\,g(v,v)\) 对一切切向量成立，并比较两种度量下的曲线长度、对偶度量和体积密度。
+		\item 在 \(\mathbb R^2\) 上构造体积密度相同、却没有上述整体比较常数的两个度量。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	1. 每一点附近可取一个闭包紧含于坐标图的小邻域。在这个闭包与坐标单位球面的乘积上，连续正函数 \(h(v,v)/g(v,v)\) 有正的最小值和有限最大值。紧性使有限个这样的小邻域覆盖 \(M\)；取各下界的最小值、各上界的最大值，即得 \(c,C\)。对分片光滑曲线逐点开平方再积分，得到
+	\[
+		\sqrt c\,L_g(\gamma)\le L_h(\gamma)\le\sqrt C\,L_g(\gamma).
+	\]
+	逐点选 \(g\) 正交单位基，并将 \(h\) 的正定矩阵正交对角化，其特征值 \(\lambda_i\) 都落在 \([c,C]\) 内。对偶度量的特征值是 \(\lambda_i^{-1}\)，密度之比是 \(\sqrt{\lambda_1\cdots\lambda_n}\)，所以
+	\[
+		C^{-1}g^{-1}\le h^{-1}\le c^{-1}g^{-1},\qquad
+		c^{n/2}\mu_g\le\mu_h\le C^{n/2}\mu_g.
+	\]
+	前一组不等式按二次型理解，后一组按正密度的逐点大小理解。
+
+	2. 取 \(g=\mathrm dx^2+\mathrm dy^2\)、\(h=e^{2x}\mathrm dx^2+e^{-2x}\mathrm dy^2\)。二者的矩阵行列式均为一，体积密度相同；但在向量 \(\partial_x\) 上的比值为 \(e^{2x}\)，既无全局正下界，也无有限上界。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:non-diagonal-gradient}
+	在 \(\mathbb R^2\) 上令
+	\[
+		g=(\mathrm dx+x\,\mathrm dy)^2+\mathrm dy^2.
+	\]
+	证明它是黎曼度量，求其体积密度、\(\operatorname{grad}_g y\) 和 \(\Delta_g y\)。解释为何后一个结果不与紧流形上 Laplace 算子的积分性质矛盾。
+\end{exercise}
+\begin{solution}
+	若 \(v=a\partial_x+b\partial_y\)，则 \(g(v,v)=(a+xb)^2+b^2\)，仅在 \(a=b=0\) 时为零。矩阵及逆矩阵为
+	\[
+		G=\begin{pmatrix}1&x\\x&1+x^2\end{pmatrix},\qquad
+		G^{-1}=\begin{pmatrix}1+x^2&-x\\-x&1\end{pmatrix},\qquad
+		\det G=1.
+	\]
+	所以 \(\mu_g=|\mathrm dx\,\mathrm dy|\)，且
+	\[
+		\operatorname{grad}_g y=-x\partial_x+\partial_y,\qquad
+		\Delta_g y=-\bigl(\partial_x(-x)+\partial_y1\bigr)=1.
+	\]
+	这里底空间非紧，函数及其梯度都不紧支；无边界紧流形上的积分结论不能用于这组数据。体积密度与普通面积相同，也不意味着梯度相同。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:conformal-laplacian}
+	设 \((M^n,g)\) 为无边界黎曼流形，\(u,f\in C^\infty(M)\)，\(\widetilde g=e^{2u}g\)。证明
+	\[
+		\operatorname{grad}_{\widetilde g}f=e^{-2u}\operatorname{grad}_g f,
+		\qquad \operatorname{div}_{\widetilde g}X=\operatorname{div}_gX+nX(u),
+	\]
+	以及
+	\[
+		\Delta_{\widetilde g}f
+		=e^{-2u}\bigl(\Delta_g f-(n-2)g(\operatorname{grad}_g u,\operatorname{grad}_g f)\bigr).
+	\]
+	推得在二维时，方程 \(\Delta_g f=0\) 及紧支函数的能量 \(\int_M|\operatorname{grad}_g f|_g^2\mu_g\) 均保持共形不变。
+\end{exercise}
+\begin{solution}
+	由梯度的定义，\(\widetilde g(e^{-2u}\operatorname{grad}_g f,Y)=Y(f)\)，得到第一式。行列式给出 \(\mu_{\widetilde g}=e^{nu}\mu_g\)，故散度的局部公式给出
+	\[
+		\operatorname{div}_{\widetilde g}X
+		=\frac{1}{e^{nu}\sqrt{\det G}}\partial_i
+		\bigl(e^{nu}\sqrt{\det G}\,X^i\bigr)
+		=\operatorname{div}_gX+nX(u).
+	\]
+	再用 \(\operatorname{div}_g(aX)=a\operatorname{div}_gX+X(a)\)，得到
+	\[
+		-\operatorname{div}_{\widetilde g}(e^{-2u}\operatorname{grad}_g f)
+		=e^{-2u}\Delta_g f+(2-n)e^{-2u}g(\operatorname{grad}_g u,\operatorname{grad}_g f).
+	\]
+	当 \(n=2\)，额外的一阶项消失，正因子 \(e^{-2u}\) 不改变方程的零解集。一般维数下，能量的被积密度变为
+	\[
+		|\operatorname{grad}_{\widetilde g}f|_{\widetilde g}^2\mu_{\widetilde g}
+		=e^{(n-2)u}|\operatorname{grad}_g f|_g^2\mu_g;
+	\]
+	二维时因子等于一，紧支性保证积分有限。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:compact-harmonic-functions}
+	设 \((M,g)\) 是连通、紧且无边界的黎曼流形。证明每个满足 \(\Delta_g f=0\) 的光滑实函数都是常数；并证明方程 \(\Delta_g f=h\) 有光滑解的必要条件是 \(\int_M h\mu_g=0\)。给出非紧或有边界情形下第一条结论失效的例子。
+\end{exercise}
+\begin{solution}
+	分部积分给出
+	\[
+		0=\int_M f\Delta_g f\,\mu_g
+		=\int_M|\operatorname{grad}_g f|_g^2\mu_g.
+	\]
+	被积函数非负且连续，故处处为零。于是 \(\mathrm df=0\)，函数局部常值，再由连通性成为常数。将 \(\Delta_g f=h\) 积分，散度定理给出 \(\int_Mh\mu_g=0\)。这一步只得到必要条件。普通实线上 \(f(x)=x\) 是非常数调和函数；在带 Euclid 度量的紧区间 \([0,1]\) 上，同一函数仍满足内部的 \(-f''=0\)，其边界值没有被要求相同。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:hessian-torsion}
+	设 \(\nabla\) 为无边界光滑流形上的联络，\(T\) 为其挠率。对光滑实函数 \(f\) 定义双线性表达式
+	\[
+		H_f(X,Y)=X(Yf)-(\nabla_XY)f.
+	\]
+	证明它是光滑协变二阶张量，并求 \(H_f(X,Y)-H_f(Y,X)\)。推得：\(\nabla\) 无挠当且仅当每个局部光滑函数的 \(H_f\) 都对称。写出其坐标表达式。
+\end{exercise}
+\begin{solution}
+	第一变量乘以光滑函数 \(a\) 时，两项均乘以 \(a\)。第二变量变为 \(aY\) 时，\(X(a)Yf\) 与联络乘积法则给出的同一项抵消，也只留下 \(aH_f(X,Y)\)。因此两变量均为 \(C^\infty\) 线性。相减得到
+	\[
+		H_f(X,Y)-H_f(Y,X)
+		=[X,Y]f-(\nabla_XY-\nabla_YX)f
+		=-\mathrm df\bigl(T(X,Y)\bigr).
+	\]
+	无挠即推出对称。反过来，每一点处的余向量都能写成某个局部线性坐标函数的微分；若右侧对所有这样的函数为零，则 \(T(X,Y)=0\)。坐标中
+	\[
+		(H_f)_{ij}=\partial_i\partial_jf-\Gamma^k{}_{ij}\partial_kf.
+	\]
+	当 \(\nabla\) 为度量的 Levi-Civita 联络时，由内积乘积法则还得 \(H_f(X,Y)=g(\nabla_X\operatorname{grad}_g f,Y)\)。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:metric-connection-three-form}
+	设 \((M,g)\) 为无边界黎曼流形，\(\nabla\) 为其 Levi-Civita 联络，\(H\) 为光滑三形式。用
+	\[
+		g(A_XY,Z)=\tfrac12H(X,Y,Z)
+	\]
+	定义 \(A\)，并令 \(D_XY=\nabla_XY+A_XY\)。证明 \(D\) 是度量相容联络，且其挠率满足 \(g(T^D(X,Y),Z)=H(X,Y,Z)\)。证明它是唯一具有这两项性质的联络。
+\end{exercise}
+\begin{solution}
+	由度量的非退化性，\(A_XY\) 唯一确定且光滑；三形式的张量性使 \(A\) 对 \(X,Y\) 均为 \(C^\infty\) 线性，故 \(D\) 满足联络法则。由 \(H(X,Y,Z)=-H(X,Z,Y)\)，有
+	\[
+		g(A_XY,Z)+g(Y,A_XZ)=0,
+	\]
+	所以给 \(\nabla\) 加上 \(A\) 仍保持度量相容。又因 \(\nabla\) 无挠，
+	\[
+		g(T^D(X,Y),Z)
+		=g(A_XY-A_YX,Z)=H(X,Y,Z).
+	\]
+	若 \(D'\) 也有这些性质，记 \(B_XY=D'_XY-D_XY\) 和 \(b(X,Y,Z)=g(B_XY,Z)\)。相同挠率给出前两变量对称，度量相容给出后两变量反对称。依次交换变量，得到
+	\[
+		\begin{aligned}
+			b(X,Y,Z)&=b(Y,X,Z)=-b(Y,Z,X)\\
+			&=-b(Z,Y,X)=b(Z,X,Y)=b(X,Z,Y)\\
+			&=-b(X,Y,Z).
+		\end{aligned}
+	\]
+	所以 \(b=0\)，由非退化性 \(B=0\)，即 \(D'=D\)。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:same-connection-two-metrics}
+	设 \(g,h\) 是同一无边界光滑流形上的黎曼度量，\(\nabla\) 为 \(g\) 的 Levi-Civita 联络。逐点定义 \(S\) 使 \(h(X,Y)=g(SX,Y)\)。证明 \(S\) 是光滑、正定且关于 \(g\) 自伴的切丛自同态，并证明两种度量有相同的 Levi-Civita 联络当且仅当
+	\[
+		(\nabla_XS)Y\coloneqq\nabla_X(SY)-S(\nabla_XY)=0
+	\]
+	对所有 \(X,Y\) 成立。举出两种并非常数倍、却具有相同联络的度量。
+\end{exercise}
+\begin{solution}
+	矩阵表达为 \(S=G^{-1}H\)，因此光滑。由 \(h\) 对称得到 \(g(SX,Y)=g(X,SY)\)，由 \(h(X,X)>0\) 得到正定性。使用 \(\nabla g=0\) 对定义式求导，得
+	\[
+		Xh(Y,Z)-h(\nabla_XY,Z)-h(Y,\nabla_XZ)
+		=g((\nabla_XS)Y,Z).
+	\]
+	右侧恒零等价于 \(\nabla h=0\)。\(\nabla\) 已无挠，所以由存在唯一性定理，这又等价于 \(\nabla\) 是 \(h\) 的 Levi-Civita 联络。在 \(\mathbb R^2\) 上取 \(g=\mathrm dx^2+\mathrm dy^2\)、\(h=2\mathrm dx^2+3\mathrm dy^2\)，两者系数均为常数，联络系数都为零，但并非常数倍。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:shear-coordinates}
+	对微分同胚 \(F:\mathbb R^2\to\mathbb R^2\)、\(F(u,v)=(u,v+u^2)\)，令 \(g=F^*(\mathrm dx^2+\mathrm dy^2)\)。计算 \(g\) 的矩阵及全部非零 Christoffel 系数，再在标架
+	\[
+		e_1=\partial_u-2u\partial_v,\qquad e_2=\partial_v
+	\]
+	中计算联络形式和曲率形式。
+\end{exercise}
+\begin{solution}
+	\(F^{-1}(x,y)=(x,y-x^2)\)，且 \(\mathrm dx=\mathrm du\)、\(\mathrm dy=\mathrm dv+2u\,\mathrm du\)，所以
+	\[
+		G=\begin{pmatrix}1+4u^2&2u\\2u&1\end{pmatrix},\qquad \det G=1.
+	\]
+	用 Christoffel 公式得到唯一非零系数 \(\Gamma^v{}_{uu}=2\)。也可利用 \(\mathrm dF(\partial_u)=\partial_x+2u\partial_y\)、\(\mathrm dF(\partial_v)=\partial_y\)：对前者再沿 \(\partial_u\) 求环境导数，得到 \(2\partial_y\)，其余方向导数为零。
+
+	\(\mathrm dF(e_1)=\partial_x\)、\(\mathrm dF(e_2)=\partial_y\)，故 \((e_1,e_2)\) 正交归一，且每个 \(e_i\) 在所有方向上都平行。因此 \(\omega=0\)、\(\Omega=0\)。直接核对时，\(\nabla_{\partial_u}(\partial_u-2u\partial_v)=2\partial_v-2\partial_v=0\)。这个计算展示了非零坐标联络系数与零曲率可以同时出现。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:rotating-frame}
+	在带普通度量的平面开集 \(U\) 上取任意光滑函数 \(\varphi\)，令
+	\[
+		e_1=\cos\varphi\,\partial_x+\sin\varphi\,\partial_y,\qquad
+		e_2=-\sin\varphi\,\partial_x+\cos\varphi\,\partial_y.
+	\]
+	求对偶余标架、联络矩阵和曲率矩阵。判断这组标架何时能在每一点附近成为某组坐标的坐标标架。
+\end{exercise}
+\begin{solution}
+	对偶余标架为 \(\theta^1=\cos\varphi\,\mathrm dx+\sin\varphi\,\mathrm dy\)、\(\theta^2=-\sin\varphi\,\mathrm dx+\cos\varphi\,\mathrm dy\)。逐项求导得 \(\nabla e_1=e_2\mathrm d\varphi\)、\(\nabla e_2=-e_1\mathrm d\varphi\)，故
+	\[
+		\omega=\begin{pmatrix}0&-\mathrm d\varphi\\\mathrm d\varphi&0\end{pmatrix},\qquad
+		\Omega=\mathrm d\omega+\omega\wedge\omega=0.
+	\]
+	无挠性给出
+	\[
+		[e_1,e_2]=-e_1(\varphi)e_1-e_2(\varphi)e_2.
+	\]
+	若为坐标标架，其括号必须为零，故 \(\mathrm d\varphi=0\)。反之，\(\varphi\) 局部常值时，固定旋转后的直角坐标便给出所需坐标标架。因此条件是 \(\varphi\) 在每个连通分支上为常数；任意位置依赖的旋转仍给出正交标架，却一般不是坐标标架。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:warped-radial-laplacian}
+	设 \((F^m,h)\) 是无边界黎曼流形，\(I\subset\mathbb R\) 是开区间，\(f:I\to(0,\infty)\) 光滑。在 \(I\times F\) 上取 \(g=\mathrm dr^2+f(r)^2h\)。对只依赖 \(r\) 的函数 \(v\)，求 \(\Delta_gv\)，并求出所有满足 \(\Delta_gv=0\) 的这类函数。将结果用于 \(m=n-1\)、\(f(r)=r\)、\(r>0\)，区分 \(n=2\) 与 \(n>2\)。
+\end{exercise}
+\begin{solution}
+	在 \(F\) 的任一坐标中，\(\mu_g=f^m|\mathrm dr|\mu_h\)，而 \(\operatorname{grad}_g v=v'\partial_r\)，所以
+	\[
+		\Delta_gv=-f^{-m}(f^mv')'
+		=-v''-m\frac{f'}f v'.
+	\]
+	调和方程等价于 \(f^mv'=B\)，故全部解为
+	\[
+		v(r)=A+B\int_{r_0}^r f(t)^{-m}\,\mathrm dt.
+	\]
+	在穿孔 Euclid 空间的径向模型中，\(n=2\) 得到 \(A+B\log r\)；\(n>2\) 得到 \(A+Br^{2-n}\)，其中常数已重新命名。非恒定解在原点发散，因此不能直接延拓为整个空间上的光滑调和函数。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:torus-revolution}
+	设 \(a>b>0\)，用两个模 \(2\pi\) 的角参数表示旋转环面
+	\[
+		X(\varphi,\theta)=\bigl((a+b\cos\varphi)\cos\theta,
+		(a+b\cos\varphi)\sin\theta,b\sin\varphi\bigr).
+	\]
+	求诱导度量、总面积及曲率 \(K\)，指出正曲率、负曲率和零曲率所在的位置。
+\end{exercise}
+\begin{solution}
+	两个偏导互相垂直，长度分别为 \(b\) 和 \(a+b\cos\varphi>0\)，故
+	\[
+		g=b^2\mathrm d\varphi^2+(a+b\cos\varphi)^2\mathrm d\theta^2,\qquad
+		\mu_g=b(a+b\cos\varphi)|\mathrm d\varphi\,\mathrm d\theta|.
+	\]
+	在参数基本矩形上积分，得到 \(\operatorname{Area}(M)=4\pi^2ab\)。局部取 \(r=b\varphi\)，则 \(f(r)=a+b\cos(r/b)\)，由 \(K=-f''/f\) 得
+	\[
+		K=\frac{\cos\varphi}{b(a+b\cos\varphi)}.
+	\]
+	因此外侧 \(\cos\varphi>0\) 时为正，内侧 \(\cos\varphi<0\) 时为负，顶部和底部的两个平行圆 \(\cos\varphi=0\) 上为零。弧长变量 \(r\) 只需局部选取，公式对参数周期相容，故给出整个环面上的光滑函数。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:round-sphere-height}
+	令 \(S_a^n=\{x\in\mathbb R^{n+1}:|x|=a\}\)，\(a>0\)，取诱导度量，令 \(q(x)=x_{n+1}\)。用切向投影计算 \(\operatorname{grad}q\)，并证明 \(\Delta q=(n/a^2)q\)。解释该公式在常数缩放下的变化。
+\end{exercise}
+\begin{solution}
+	记最后一个常坐标向量为 \(E\)。球面在 \(x\) 处的单位法向为 \(x/a\)，因此
+	\[
+		\operatorname{grad}q=E-\frac{q}{a^2}x.
+	\]
+	对切向量 \(V\) 求环境导数，得到 \(-V(q)x/a^2-qV/a^2\)。第一项法向，投影到切空间后为
+	\[
+		\nabla_V\operatorname{grad}q=-\frac{q}{a^2}V.
+	\]
+	在 \(n\) 维切空间上取迹，\(\operatorname{div}\operatorname{grad}q=-nq/a^2\)，依本书的符号约定即得所求。若把度量乘以 \(c^2\)，则梯度乘以 \(c^{-2}\)，散度在常数体积缩放下不变，故 Laplace 算子乘以 \(c^{-2}\)。半径从 \(a\) 变为 \(ca\) 时系数变为 \(n/(c^2a^2)\)，与公式一致。
+\end{solution}

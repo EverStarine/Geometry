@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 1.1 方程与坐标环
 % 纲要位置：几何学计划纲要.md，第 5032 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,305 @@
 \section{方程与坐标环}
 \label{g5:sec:0101}
 
-待撰写
+平面中的两条坐标轴可以写成一个方程 \(xy=0\)，也可以写成 \((xy)^2=0\)。它们有完全相同的点，却给出不同的多项式商环。要分清方程、点集与点集上的函数，首先需要回答两个问题：哪些方程具有相同的零点？一个在所有零点处消失的多项式，与原方程之间有什么代数关系？本节的零点定理把这两个问题归结为理想的根式；有限生成性则保证，允许任意多方程并不会超出有限方程组的范围。
+
+除另有说明外，本节的 \(k\) 是代数闭域，环均交换且含幺，环同态保持单位元。多项式环 \(k[x_1,\ldots,x_n]\) 记作 \(R_n\)，\(n\) 为非负整数。若某个代数结论不需要代数闭条件，将在陈述中采用任意域或一般环。
 
 \subsection{Zariski 拓扑、理想和根式}
 \label{g5:subsec:0101:01}
-待撰写
+
+先把方程看成函数。\term[fangshekongjian]{仿射空间}[affine space] \(\mathbb A_k^n\) 的点是 \(k^n\) 中的有序数组；\(f\in R_n\) 在 \(a=(a_1,\ldots,a_n)\) 处的值是 \(f(a_1,\ldots,a_n)\)。\symidx{\(\mathbb A_k^n\)：\(k\) 上的仿射空间}与光滑几何中可以任意缩小的球不同，这里先用多项式方程决定闭集。
+
+\begin{definition}\label{g5:def:affine-zero-set}
+	设 \(k\) 为域，\(S\subset k[x_1,\ldots,x_n]\)。其\term[gongtonglingdianji]{共同零点集}[common zero set]为
+	\[
+		V(S)=\{a\in\mathbb A_k^n:f(a)=0\text{ 对一切 }f\in S\}.
+	\]
+	具有这一形式的子集称为\term[fangshedaishuji]{仿射代数集}[affine algebraic set]。对 \(T\subset\mathbb A_k^n\)，定义其\term[linghualixiang]{零化理想}[vanishing ideal]
+	\[
+		I(T)=\{f\in k[x_1,\ldots,x_n]:f(a)=0\text{ 对一切 }a\in T\}.
+	\]
+\end{definition}
+
+\(I(T)\) 对加法及乘以任意多项式封闭，所以确实是理想。若 \((S)\) 表示由 \(S\) 的元素作有限多项式线性组合所得的理想，则 \(V(S)=V((S))\)：原方程同时为零时，它们的任何这种组合也为零。因此可以直接用理想记录一组方程。
+
+对理想 \(J,K\subset R_n\) 以及任意理想族 \(\{J_\lambda\}\)，有
+\begin{equation}\label{g5:eq:zero-set-operations}
+	V(J)\cup V(K)=V(JK)=V(J\cap K),\qquad
+	\bigcap_\lambda V(J_\lambda)=V\left(\sum_\lambda J_\lambda\right).
+\end{equation}
+这里 \(JK\) 由全部乘积 \(fg\)（\(f\in J,g\in K\)）生成。第一式的实质是：若一点既不在 \(V(J)\) 又不在 \(V(K)\)，可分别选 \(f,g\) 在该点非零，于是 \(fg\) 也非零；而 \(JK\subset J\cap K\) 给出中间的比较。第二式直接表示所有方程同时成立。再加上 \(V(0)=\mathbb A_k^n\)、\(V(1)=\varnothing\)，这些等式说明代数集满足拓扑闭集公理。由此得到的拓扑称为\term[Zariskituopu]{Zariski 拓扑}[Zariski topology]。\footnote{Oscar Zariski（原名 Ascher Zaritsky，1899—1986），生于俄国，后长期在美国任教；他以交换代数方法发展代数几何基础，研究局部一致化与奇点消解。}
+
+若 \(X\subset\mathbb A_k^n\) 是代数集，其拓扑取子空间拓扑。\term[zhukaiji]{主开集}[principal open subset]
+\[
+	D_X(f)=\{a\in X:f(a)\ne0\}=X\setminus V(f)
+\]
+构成 \(X\) 的一个开基，因为 \(X\setminus V(J)=\bigcup_{f\in J}D_X(f)\)。它们还满足 \(D_X(f)\cap D_X(g)=D_X(fg)\)。省略下标时，所在的代数集由上下文确定。
+
+在 \(\mathbb A_k^1\) 上，真闭集恰为有限点集：非零一元多项式只有有限多个根，反过来 \(\{a_1,\ldots,a_r\}=V(\prod_i(x-a_i))\)。代数闭域是无限域，否则 \(\prod_{a\in k}(t-a)-1\) 将是没有根的非常数多项式。因此任意两个非空开集相交，两个不同点无法用不交的开邻域分离。这种拓扑适于记录方程的退化和稠密性，其邻域性质与通常的度量拓扑明显不同。
+
+环中某个正整数次幂为零的元素称为\term[milingyuan]{幂零元}[nilpotent element]。相同的零点还容许改变方程的幂次。若 \(f^r(a)=0\)，域中没有非零幂零元，故 \(f(a)=0\)。这个事实引出下述运算。
+
+\begin{definition}\label{g5:def:radical-coordinate-ring}
+	设 \(R\) 为交换含幺环，\(J\subset R\) 为理想。它的\term[genshi]{根式}[radical]是
+	\[
+		\sqrt J=\{f\in R:f^r\in J\text{ 对某个整数 }r\geq1\}.
+	\]
+	若 \(J=\sqrt J\)，称 \(J\) 为\term[genshilixiang]{根式理想}[radical ideal]。只有零元是幂零元的环称为\term[yuehuahuan]{约化环}[reduced ring]。对域 \(k\) 上的仿射代数集 \(X\subset\mathbb A_k^n\)，其\term[zuobiaohuan]{坐标环}[coordinate ring]定义为
+	\[
+		k[X]=k[x_1,\ldots,x_n]/I(X).
+	\]
+\end{definition}
+\symidx{\(\sqrt J\)：理想 \(J\) 的根式}
+\symidx{\(k[X]\)：仿射代数集 \(X\) 的坐标环}
+
+根式确实是理想。若 \(f^r,g^s\in J\)，则 \((f+g)^{r+s-1}\) 的每一项含 \(f^r\) 或 \(g^s\)，从而落在 \(J\)；乘法封闭由 \((af)^r=a^rf^r\) 给出。同一定义还说明 \(\sqrt{\sqrt J}=\sqrt J\)，以及
+\[
+	R/J\text{ 约化}\quad\Longleftrightarrow\quad J=\sqrt J.
+\]
+对点集 \(T\)，理想 \(I(T)\) 总是根式理想；而 \(V(J)=V(\sqrt J)\)。目前由定义只能得到 \(\sqrt J\subset I(V(J))\)，反向包含正是本节要证明的主要结果。
+
+坐标环可以直接看成 \(X\) 上全部多项式函数组成的环：两个多项式的限制相同，当且仅当它们的差属于 \(I(X)\)。例如，抛物线 \(X=V(y-x^2)\subset\mathbb A_k^2\) 上的多项式函数都唯一写成 \(x\) 的多项式。具体地，以 \(y-x^2\) 作关于 \(y\) 的带余除法，得 \(f(x,y)=q(x,y)(y-x^2)+r(x)\)；若 \(f\) 在抛物线上为零，则 \(r(a)=0\) 对所有 \(a\in k\) 成立，由 \(k\) 无限得到 \(r=0\)。于是
+\[
+	I(X)=(y-x^2),\qquad k[X]\cong k[x].
+\]
+这已经把一个平面中的曲线转写成一个与嵌入坐标较少相关的代数对象。
 
 \subsection{Hilbert 基定理的有限性证明}
 \label{g5:subsec:0101:02}
-待撰写
+
+定义 \(V(S)\) 时允许 \(S\) 无穷，因而首先要知道能否用有限多个方程代替它。所需性质属于多项式环本身：每个理想均有限生成。Hilbert\footnote{David Hilbert（1862—1943），德国数学家；他在不变量论、几何公理化和积分方程等领域作出基础性贡献。}基定理把这件事归结为系数环的有限性。
+
+\begin{definition}\label{g5:def:noetherian-ring}
+	若交换含幺环 \(R\) 的每个理想均由有限多个元素生成，则称 \(R\) 为\term[Noetherhuan]{Noether 环}[Noetherian ring]。\footnote{Emmy Amalie Noether（1882—1935），德国数学家；她以理想和模的结构及链条件推进抽象代数，并建立连续对称性与守恒律的联系。}
+\end{definition}
+
+这个条件等价于理想的\term[shengliantiaojian]{升链条件}[ascending chain condition]：任意链 \(J_1\subset J_2\subset\cdots\) 最终稳定。若每个理想有限生成，则 \(\bigcup_iJ_i\) 的有限生成元全属于某个 \(J_N\)，故 \(J_i=J_N\) 对 \(i\geq N\) 成立。反之，若一个理想没有有限生成集，便可每次选出一个不属于此前生成理想的元素，得到无限严格升链。特别地，一个域是 Noether 环，因为其理想只有 \(0\) 和全域。
+
+\begin{theorem}[Hilbert 基定理]\label{g5:thm:hilbert-basis}
+	设 \(R\) 为交换含幺 Noether 环，则 \(R[t]\) 也是 Noether 环。因此，对任意域 \(k\) 和有限整数 \(n\geq0\)，\(k[x_1,\ldots,x_n]\) 的每个理想均有限生成。
+\end{theorem}
+
+此定理的原文名称是 \foreignidx{Hilbert basis theorem}Hilbert basis theorem。证明的想法是逐次消去多项式的最高次项。系数环保证每一给定次数所需的最高项系数有限生成，而升链条件保证只需照顾有限多个次数。
+
+\begin{proof}
+	固定理想 \(J\subset R[t]\)。对每个 \(d\geq0\)，令
+	\[
+		A_d=\{a\in R:\text{存在 }f\in J,\ \deg f\leq d,
+		\text{且 }t^d\text{ 的系数为 }a\}.
+	\]
+	这里零多项式也允许出现。加法和乘以 \(R\) 中元素说明 \(A_d\) 是 \(R\) 的理想；把见证多项式乘以 \(t\)，得到 \(A_d\subset A_{d+1}\)。因此存在 \(d_0\)，使 \(A_d=A_{d_0}\) 对一切 \(d\geq d_0\) 成立。
+
+	对 \(0\leq d\leq d_0\)，取 \(A_d\) 的有限生成元 \(a_{d1},\ldots,a_{dr_d}\)，并选 \(f_{dj}\in J\)，其次数不超过 \(d\)，且 \(t^d\) 的系数为 \(a_{dj}\)。若 \(A_d=0\)，不必选多项式。我们证明有限集合 \(\{f_{dj}\}\) 生成 \(J\)。
+
+	设 \(f\in J\) 非零，次数为 \(e\)，最高项系数为 \(a\)。令 \(d=\min(e,d_0)\)。因为 \(A_e=A_d\)，可以写 \(a=\sum_jc_ja_{dj}\)，其中 \(c_j\in R\)。于是
+	\[
+		f-\sum_jc_jt^{e-d}f_{dj}
+	\]
+	仍属于 \(J\)，且其次数严格小于 \(e\)，或者它为零。反复进行，每次都使非负整数次数下降，最终到达零。这便把 \(f\) 写成所选多项式的 \(R[t]\) 线性组合。故 \(J\) 有限生成。逐个添加变量，得到最后的结论。
+\end{proof}
+
+由此，对任何 \(S\subset k[x_1,\ldots,x_n]\)，可以取 \((S)=(f_1,\ldots,f_r)\)，从而 \(V(S)=V(f_1,\ldots,f_r)\)。这里保证的是某个有限方程组存在；如何从给定生成元得到适于判断理想成员关系的生成元，将在\secref{g5:sec:0104}讨论。
+
+有限性还直接控制闭集的分解和开覆盖。
+
+\begin{proposition}\label{g5:prop:affine-noetherian}
+	设 \(k\) 为域，\(X\subset\mathbb A_k^n\) 为仿射代数集。多项式环 \(k[x_1,\ldots,x_n]\) 的每个商环都是 Noether 环，特别地 \(k[X]\) 是 Noether 环。\(X\) 中的闭集降链最终稳定；这样的拓扑空间称为\term[Noetherkongjian]{Noether 空间}[Noetherian space]。而且 \(X\) 的每个子空间均\term[nijin]{拟紧}[quasi-compact]，即其每个开覆盖都有有限子覆盖。
+\end{proposition}
+\begin{proof}
+	若 \(R\) 是 Noether 环，商环 \(R/J\) 的理想 \(L\) 在商映射下的原像是 \(R\) 的理想，选取原像的有限生成元再取剩余类，便生成 \(L\)。这证明关于商环的断言。
+
+	若 \(Z_1\supset Z_2\supset\cdots\) 是 \(X\) 的闭集降链，则它们也是 \(\mathbb A_k^n\) 的闭集，而 \(I(Z_1)\subset I(Z_2)\subset\cdots\) 是理想升链。对任何闭集 \(Z=V(J)\)，由 \(J\subset I(Z)\) 及定义可得 \(V(I(Z))=Z\)。因此理想链稳定蕴含原闭集链稳定。
+
+	设 \(Y\subset X\)。若 \(C_i\) 是 \(Y\) 中的闭集降链，则它们在 \(X\) 中的闭包也是降链，且 \(C_i=Y\cap\overline{C_i}\)。故 \(Y\) 仍为 Noether 空间。取补集，\(Y\) 的开集升链也最终稳定。如果 \(Y\) 的一个开覆盖没有有限子覆盖，就能每次加入一个覆盖成员，使已有有限并严格增大，得到无限严格开集升链，矛盾。
+\end{proof}
+
+这里的拟紧性只涉及开覆盖，不附加不同点之间的分离条件。例如 \(\mathbb A_k^1\setminus\{0\}\) 仍然拟紧；以后在这样的主开集上拼合局部分式时，有限子覆盖会把局部数据化成有限次代数运算。
 
 \subsection{弱零点定理与 Zariski 引理}
 \label{g5:subsec:0101:03}
-待撰写
+
+给定点 \(a\in\mathbb A_k^n\)，求值同态 \(f\mapsto f(a)\) 的核是极大理想
+\[
+	\mathfrak m_a=(x_1-a_1,\ldots,x_n-a_n).
+\]
+事实上，把多项式中的变量逐个换成 \(a_i\)，便把 \(f-f(a)\) 写成这些一次式的线性组合；商环因而等于 \(k\)。反过来，一个极大理想是否总来自这样的点？极大理想的商是域，但还需知道这个域没有增加新的常数。关键是区分“作为代数有限生成”和“作为域有限生成”：\(k(t)\) 由一个元素作为域生成，却不能由有限多个元素作为 \(k\) 代数生成。
+
+\begin{lemma}[Zariski 引理]\label{g5:lem:zariski}
+	设 \(k\subset L\) 为域扩张。若 \(L\) 作为 \(k\) 代数有限生成，即 \(L=k[\alpha_1,\ldots,\alpha_m]\)，则 \(L/k\) 是有限代数扩张。
+\end{lemma}
+
+这一结果的原文名称是 \foreignidx{Zariski's lemma}Zariski's lemma。证明把可能出现的超越元留作变量，再观察有限多个代数生成元只能引入有限种分母；一个有超越元的域则要求所有非零多项式均可逆。
+
+\begin{proof}
+	在给定的有限生成元中选一个极大的代数无关子集，重排为 \(\alpha_1,\ldots,\alpha_r\)。代数无关指它们不满足非零的 \(k\) 系数多项式关系。因此
+	\[
+		A=k[\alpha_1,\ldots,\alpha_r]\cong k[t_1,\ldots,t_r],
+		\qquad K=k(\alpha_1,\ldots,\alpha_r).
+	\]
+	其余生成元 \(\beta_1,\ldots,\beta_s\) 都在 \(K\) 上代数，否则可以扩大该子集。各取一个首一代数方程，选取一个非零 \(d\in A\)，使这些方程的全部系数均属于
+	\[
+		A[1/d]=\{a/d^q:a\in A,\ q\geq0\}\subset K.
+	\]
+	记此环为 \(R\)。因为 \(L=A[\beta_1,\ldots,\beta_s]\) 是域，已包含 \(1/d\)，所以 \(L=R[\beta_1,\ldots,\beta_s]\)。
+
+	先说明这迫使 \(R\) 本身也是域。设 \(\beta_j\) 满足的首一方程次数为 \(e_j\)。用这些方程降低幂次，\(L\) 中每个元素都是有限个单项式
+	\[
+		\beta_1^{i_1}\cdots\beta_s^{i_s},\qquad 0\leq i_j<e_j,
+	\]
+	的 \(R\) 线性组合。将这些单项式列作 \(w_1=1,w_2,\ldots,w_N\)。对任意 \(u\in L\)，可写 \(uw_i=\sum_jc_{ij}w_j\)，其中 \(c_{ij}\in R\)。若 \(C=(c_{ij})\)，则 \((uI_N-C)w=0\)。左乘伴随矩阵可得 \(\det(uI_N-C)w_i=0\) 对每个 \(i\) 成立；由 \(w_1=1\)，得到 \(u\) 满足一个 \(R\) 系数首一方程。这种性质称为在 \(R\) 上\term[zhengyuan]{整}[integral]。
+
+	特别地，对非零 \(a\in R\)，元素 \(u=a^{-1}\in L\) 满足
+	\[
+		u^N+c_{N-1}u^{N-1}+\cdots+c_0=0,\qquad c_i\in R.
+	\]
+	乘以 \(a^{N-1}\)，即得 \(a^{-1}=-(c_{N-1}+c_{N-2}a+\cdots+c_0a^{N-1})\in R\)。故 \(R\) 是域。
+
+	若 \(r\geq1\)，这与 \(R=A[1/d]\) 的形式矛盾。具体地，将 \(d\) 看成变量 \(t_2,\ldots,t_r\) 的多项式，选其一个非零系数 \(c(t_1)\in k[t_1]\)。一元多项式环 \(k[t_1]\) 有无穷多个首一不可约多项式：若只有有限多个，其乘积加一的任何不可约因子都不在这份列表内。因而可以选首一不可约 \(p(t_1)\)，使 \(p\nmid c\)，从而 \(p\nmid d\)。商环
+	\[
+		A/(p)\cong\bigl(k[t_1]/(p)\bigr)[t_2,\ldots,t_r]
+	\]
+	是整环。若 \(p\) 在 \(A[1/d]\) 中可逆，就有 \(1/p=b/d^q\)，即 \(d^q=pb\)；在上述整环中取剩余类，与 \(d\) 的类非零矛盾。因此 \(R\) 不是域。
+
+	于是 \(r=0\)，全部生成元都在 \(k\) 上代数。逐个降低各生成元的幂次，有限多个单项式便张成 \(L\) 这个 \(k\) 向量空间，故 \([L:k]<\infty\)。
+\end{proof}
+
+证明中用到的一元多项式因式分解，仅来自次数归纳和带余除法。选取 \(p\) 的步骤对有限域也成立，所以引理本身不需要 \(k\) 代数闭。
+
+\begin{theorem}[弱零点定理]\label{g5:thm:weak-nullstellensatz}
+	设 \(k\) 为代数闭域，\(n\geq0\)。\(k[x_1,\ldots,x_n]\) 的每个极大理想唯一写成
+	\[
+		\mathfrak m_a=(x_1-a_1,\ldots,x_n-a_n),\qquad a\in\mathbb A_k^n.
+	\]
+	因此，该多项式环的每个真理想 \(J\) 都有共同零点：\(V(J)\ne\varnothing\)。等价地，有限多项式组 \(f_1,\ldots,f_r\) 没有共同零点，当且仅当存在多项式 \(h_1,\ldots,h_r\) 使 \(\sum_i h_if_i=1\)。
+\end{theorem}
+
+\foreignidx{weak Nullstellensatz}其原文名称是 weak Nullstellensatz。
+\begin{proof}
+	设 \(\mathfrak m\) 为极大理想，\(L=k[x_1,\ldots,x_n]/\mathfrak m\)。常数域 \(k\) 嵌入 \(L\)，且 \(L\) 由坐标的剩余类作为 \(k\) 代数生成。由\cref{g5:lem:zariski}，\(L/k\) 有限代数；由于 \(k\) 代数闭，每个代数元素的最小多项式都是一次式，故 \(L=k\)。记 \(x_i\) 的像为 \(a_i\)，即有 \(x_i-a_i\in\mathfrak m\)。而由求值映射已知 \(\mathfrak m_a\) 极大，故 \(\mathfrak m=\mathfrak m_a\)。坐标的像也证明 \(a\) 唯一。
+
+	每个真理想 \(J\) 包含于一个极大理想：在此 Noether 环中，如果从 \(J\) 开始始终可以取更大的真理想，就会产生不稳定的升链。选取 \(\mathfrak m_a\supset J\)，便有 \(a\in V(J)\)。最后，\(V(f_1,\ldots,f_r)=\varnothing\) 等价于 \((f_1,\ldots,f_r)\) 是单位理想，这恰好是所述多项式恒等式。
+\end{proof}
+
+代数闭条件用于把 \(L\) 识别为 \(k\)。例如 \((x^2+1)\subset\mathbb R[x]\) 是极大理想，其商为 \(\mathbb C\)，却没有实零点。因而换基域以后，仅用 \(k\) 值点不能原样保留这条对应。
 
 \subsection{强零点定理的 Rabinowitsch 论证}
 \label{g5:subsec:0101:04}
-待撰写
+
+弱零点定理把“没有解”变成了一个多项式恒等式。若已知 \(f\) 在 \(V(J)\) 上处处为零，我们要把这一事实也转成没有解的问题。新增一个变量 \(t\)，方程 \(1-tf=0\) 强迫 \(f\ne0\)，所以它不可能与 \(J\) 中的方程同时成立。这就是 \term[Rabinowitschlunzheng]{Rabinowitsch 论证}[Rabinowitsch trick]的构造。\footnote{这一论证的原论文署名为 J. L. Rabinowitsch，题为 \emph{Zum Hilbertschen Nullstellensatz}，刊于 \emph{Mathematische Annalen} 第102卷（1930），第520页，DOI：\href{https://doi.org/10.1007/BF01782361}{10.1007/BF01782361}。}
+
+\begin{theorem}[强零点定理]\label{g5:thm:nullstellensatz}
+	设 \(k\) 为代数闭域，\(J\subset k[x_1,\ldots,x_n]\) 为理想，则
+	\[
+		I(V(J))=\sqrt J.
+	\]
+	换言之，一个多项式 \(f\) 在 \(J\) 的全部共同零点处为零，当且仅当存在整数 \(N\geq1\) 使 \(f^N\in J\)。
+\end{theorem}
+
+\foreignidx{Hilbert's Nullstellensatz}此结果也称 Hilbert's Nullstellensatz；与上一小节相区分时称 strong Nullstellensatz。\foreignidx{strong Nullstellensatz}
+\begin{proof}
+	已知 \(\sqrt J\subset I(V(J))\)。反过来，设 \(f\in I(V(J))\)。若 \(f=0\)，结论成立；以下设 \(f\ne0\)。由\cref{g5:thm:hilbert-basis}，写 \(J=(g_1,\ldots,g_r)\)。在 \(k[x_1,\ldots,x_n,t]\) 中考虑
+	\[
+		J'=(g_1,\ldots,g_r,1-tf).
+	\]
+	它没有共同零点：在前 \(r\) 个方程的零点处，\(f=0\)，所以最后一个表达式等于 \(1\)。由\cref{g5:thm:weak-nullstellensatz}，存在多项式 \(a_i(x,t),b(x,t)\)，满足
+	\[
+		1=\sum_{i=1}^r a_i(x,t)g_i(x)+b(x,t)(1-tf(x)).
+	\]
+	在由多项式之比组成的分式域 \(k(x_1,\ldots,x_n)\) 中代入 \(t=1/f\)，得到
+	\[
+		1=\sum_{i=1}^r a_i(x,1/f)g_i(x).
+	\]
+	取整数 \(N\geq1\)，不小于各 \(a_i\) 关于 \(t\) 的次数，乘以 \(f^N\)。此时 \(f^Na_i(x,1/f)\) 均为多项式，故 \(f^N\) 是 \(g_i\) 的多项式线性组合，即 \(f^N\in J\)。
+\end{proof}
+
+这个证明解释了为何结论出现“某个幂”：新变量消去后产生分母 \(f\)，清分母便得到 \(f^N\)。指数反映方程理想的结构，不能从点集自动读出。例如 \(J=(x^2,y)\subset k[x,y]\) 的零点只有原点，\(x\) 在那里为零，但 \(x\notin J\)，而 \(x^2\in J\)。
+
+在代数闭域上的这一版本及其与闭集的关系，可对照 \cite[第I章第1节，定理1.3A及推论1.4]{Hartshorne1977}。
 
 \subsection{不可约分支及反变对应}
 \label{g5:subsec:0101:05}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+零点定理给出了从方程恢复点集、再从点集恢复全部消失方程的准确结果。与之相伴的另一个问题是：一组方程描述的是一个整体，还是若干代数集的并？前者将由素理想刻画。
+
+\begin{theorem}\label{g5:thm:affine-closed-correspondence}
+	设 \(k\) 为代数闭域。映射 \(X\mapsto I(X)\)、\(J\mapsto V(J)\) 给出 \(\mathbb A_k^n\) 的代数闭子集与 \(k[x_1,\ldots,x_n]\) 的根式理想之间互逆的、反转包含关系的对应。更一般地，对任意子集 \(T\subset\mathbb A_k^n\)，有
+	\[
+		\overline T=V(I(T)).
+	\]
+	因此，对任意理想 \(J,K\subset k[x_1,\ldots,x_n]\)，
+	\[
+		V(J)=V(K)\quad\Longleftrightarrow\quad\sqrt J=\sqrt K.
+	\]
+\end{theorem}
+\begin{proof}
+	增加方程会缩小零点集，增加点会缩小零化理想，故两映射都反转包含。\cref{g5:thm:nullstellensatz}给出 \(I(V(J))=\sqrt J\)；对闭集 \(X\) 已有 \(V(I(X))=X\)。在根式理想上，它们因而互逆。
+
+	对任意 \(T\)，闭集 \(V(I(T))\) 包含 \(T\)。若另一个闭集 \(V(J)\) 包含 \(T\)，则 \(J\subset I(T)\)，所以 \(V(I(T))\subset V(J)\)。这证明它正是 \(T\) 的闭包。最后的等价式由互逆对应和 \(V(J)=V(\sqrt J)\) 得到。
+\end{proof}
+
+\begin{definition}\label{g5:def:irreducible-affine}
+	非空拓扑空间 \(X\) 若不能写成两个真闭子集的并，就称为\term[bukeyue]{不可约}[irreducible]。域 \(k\) 上不可约的仿射代数集称为\term[fangshecu]{仿射簇}[affine variety]。仿射代数集的极大不可约闭子集称为它的\term[bukeyuefenliang]{不可约分量}[irreducible component]。
+\end{definition}
+
+本卷以“仿射代数集”容许可约情形，“仿射簇”则带有非空和不可约条件。不可约性的一个常用等价说法是：任意两个非空开集均相交。取补集即得这一等价；由它还可推出每个非空开集都稠密，且本身不可约。事实上，若非空开集 \(U\) 不稠密，则它与 \(X\setminus\overline U\) 是不交的非空开集；而 \(U\) 的两个非空相对开集也是 \(X\) 的开集，故必相交。
+
+\begin{proposition}\label{g5:prop:irreducible-prime}
+	设 \(k\) 为代数闭域，\(X\subset\mathbb A_k^n\) 为代数集。则下列条件等价：\(X\) 不可约；\(I(X)\) 是素理想；\(k[X]\) 是整环。这里素理想要求为真理想，整环要求 \(1\ne0\)。
+\end{proposition}
+\begin{proof}
+	设 \(X\) 不可约。若 \(fg\in I(X)\)，则
+	\[
+		X=(X\cap V(f))\cup(X\cap V(g)).
+	\]
+	不可约性使其中一项等于 \(X\)，故 \(f\in I(X)\) 或 \(g\in I(X)\)；非空性保证 \(I(X)\ne R_n\)，所以它是素理想。
+
+	反过来，设 \(I(X)\) 素，并假设 \(X=Y\cup Z\)，其中 \(Y,Z\) 是两个真闭子集。由\cref{g5:thm:affine-closed-correspondence}的反向包含，可选
+	\[
+		f\in I(Y)\setminus I(X),\qquad g\in I(Z)\setminus I(X).
+	\]
+	但 \(fg\) 在 \(Y\cup Z=X\) 上为零，违背素性。\(I(X)\) 为真也排除了 \(X=\varnothing\)。最后，商环无非零零因子恰好是素理想定义在商中的表述。
+\end{proof}
+
+不可约并不等于连通。例如两坐标轴的并 \(V(xy)=V(x)\cup V(y)\) 可约，却连通：每条轴不可约从而连通，两者又相交。这里 \((xy)=(x)\cap(y)\)：若一个多项式同时被 \(x\) 和 \(y\) 整除，逐项比较即可知每个单项式均含 \(xy\)。故 \((xy)\) 是根式理想，其商环约化，但 \(\bar x\bar y=0\) 而两因子都非零，记录了两个分量的存在。
+
+\begin{theorem}\label{g5:thm:irreducible-components}
+	设 \(k\) 为代数闭域，\(X\subset\mathbb A_k^n\) 为非空仿射代数集。存在唯一的有限组互不包含的不可约闭子集 \(X_1,\ldots,X_r\)，使
+	\[
+		X=X_1\cup\cdots\cup X_r.
+	\]
+	唯一性按重排理解；这些集合恰为 \(X\) 的不可约分量。并且
+	\[
+		I(X)=I(X_1)\cap\cdots\cap I(X_r),
+	\]
+	其中 \(I(X_i)\) 恰为包含 \(I(X)\) 的极小素理想。
+\end{theorem}
+\begin{proof}
+	由\cref{g5:prop:affine-noetherian}，\(X\) 的闭集降链最终稳定。假如存在不能写成有限个不可约闭集之并的闭集，则在所有这样的闭集中可选极小的 \(Z\)：否则不断选择更小的反例会产生无限严格降链。\(Z\) 非空且可约，故 \(Z=Z'\cup Z''\)，其中 \(Z',Z''\) 都是真闭子集。由极小性，它们各有有限分解，其并即给出 \(Z\) 的有限分解，矛盾。
+
+	从所得有限分解中删除被其他成员包含的项，得到 \(X_1,\ldots,X_r\)。如果不可约子集 \(Y\) 包含于有限个闭集之并，便包含于其中一个：将 \(Y\) 与这些闭集相交，对有限项数用不可约性归纳即可。于是 \(X\) 的任意不可约闭子集都包含于某个 \(X_i\)。由于 \(X_i\) 互不包含，它们恰是极大不可约闭子集，也就证明了唯一性。
+
+	多项式在一个有限并上为零，当且仅当它在每个成员上为零，故理想等式成立。由\cref{g5:prop:irreducible-prime}，每个 \(I(X_i)\) 素。对任何包含 \(I(X)\) 的素理想 \(\mathfrak p\)，集合 \(V(\mathfrak p)\) 是 \(X\) 的不可约闭子集，因而包含于某个 \(X_i\)；取理想即得 \(I(X_i)\subset\mathfrak p\)。反过来，\(I(X_i)\) 之间互不包含，所以它们正是所述极小素理想。
+\end{proof}
+
+下面的对应表汇集了当前已经证明的翻译。全局不可约分量只记录闭集怎样分解；同一个不可约曲线在某一点附近可能出现的不同局部分支，留待\secref{g5:sec:0105}的具体模型辨认。
+\begin{table}[htbp]
+	\centering
+	\caption{代数闭域上仿射代数集与理想的对应}
+	\label{g5:tab:affine-dictionary}
+	\begin{tabular}{ll}
+		\toprule
+		几何对象或运算 & 代数对象或运算 \\
+		\midrule
+		代数闭子集 \(X\subset\mathbb A_k^n\) & 根式理想 \(I(X)\subset R_n\) \\
+		点 \(a\) & 极大理想 \(\mathfrak m_a\) \\
+		不可约代数集 & 素理想 \\
+		不可约分量 & 包含 \(I(X)\) 的极小素理想 \\
+		\(X\cup Y\) & \(I(X)\cap I(Y)\) \\
+		\(X\cap Y\) & \(\sqrt{I(X)+I(Y)}\) \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+最后一行是因为 \(X\cap Y=V(I(X)+I(Y))\)，再应用强零点定理。
+
+坐标环的范围也随之明确：它们恰是有限生成的约化 \(k\) 代数。一个方向已由定义说明；另一个方向，若 \(A\) 是有限生成的约化 \(k\) 代数，取生成元得到满同态 \(R_n\to A\)，记核为 \(J\)。约化性使 \(J\) 为根式，零点定理便给出 \(A\cong k[V(J)]\)。非零整环对应仿射簇，零环对应空集。不同的生成元可能给出不同仿射空间中的方程；下一节将通过映射与环同态说明，这些呈示怎样表达同一个几何对象。

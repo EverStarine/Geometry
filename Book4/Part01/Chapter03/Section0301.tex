@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 3.1 线丛与除子的几何
 % 纲要位置：几何学计划纲要.md，第 3549 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,248 @@
 \section{线丛与除子的几何}
 \label{g4:sec:0301}
 
-待撰写
+全纯函数可以在各个坐标圆盘中分别求出，真正的整体问题却在于这些局部函数如何接上。微分已经给出一个例子：同一个一形式写成 \(a_i(z_i)\,\mathrm{d}z_i\) 时，换坐标会同时改变标架 \(\mathrm{d}z_i\) 和系数 \(a_i\)。线丛把这种“局部一维、交叠处相差一个非零函数”的结构抽出来；除子则把允许出现的零点、极点及其阶数加入同一套粘合规则。这样，求函数、指定主部和构造射影坐标都能转化为求线丛截面。
 
 \subsection{过渡函数、截面和同构}
 \label{g4:subsec:0301:01}
-待撰写
+
+先固定过渡函数的方向。局部标架是每根一维纤维中连续选出的非零向量；对全纯线丛，要求这种选择随底点全纯变化。
+
+\begin{definition}\label{g4:def:0301:line-bundle}
+	设 \(X\) 为黎曼曲面。一个\term[quanchunxiancong]{全纯线丛}[holomorphic line bundle] \(L\to X\) 在每个开集 \(U_i\) 上有局部全纯标架 \(e_i\)，使纤维中的向量唯一写成 \(\xi_i e_i(p)\)，其中 \(p\in U_i\)、\(\xi_i\in\mathbb C\)。在交叠上规定
+	\begin{equation}\label{g4:eq:0301:transition-convention}
+		e_j=g_{ij}e_i,\qquad
+		g_{ij}\in\mathcal O^\times(U_i\cap U_j).
+	\end{equation}
+	这里 \(\mathcal O^\times\) 表示处处非零的全纯函数。过渡函数满足
+	\[
+		g_{ii}=1,\qquad g_{ji}=g_{ij}^{-1},\qquad
+		g_{ij}g_{jk}=g_{ik}
+	\]
+	以及相应的定义域条件。截面 \(s\) 在局部写作 \(s=s_i e_i\)；它全纯或亚纯，是指各系数 \(s_i\) 分别全纯或亚纯。系数的相容条件为
+	\begin{equation}\label{g4:eq:0301:section-convention}
+		s_i=g_{ij}s_j.
+	\end{equation}
+\end{definition}
+
+条件\eqref{g4:eq:0301:section-convention}直接来自 \(s_i e_i=s_j e_j=s_jg_{ij}e_i\)。反过来，给定满足余圈条件的 \(g_{ij}\)，就能把各个 \(U_i\times\mathbb C\) 按
+\[
+	(p,\xi_j,j)\sim(p,g_{ij}(p)\xi_j,i)
+\]
+粘合起来。余圈条件使三重交叠上的识别传递，且每根纤维中的线性结构相容；所得空间局部就是 \(U_i\times\mathbb C\)。这给出了线丛，而不需要先把它嵌入某个固定的向量空间。
+
+\ProseParagraphBreak
+
+若把标架换成 \(\widetilde e_i=a_i e_i\)，其中 \(a_i\) 全纯且处处非零，则
+\[
+	\widetilde g_{ij}=\frac{a_j}{a_i}g_{ij},
+	\qquad
+	\widetilde s_i=a_i^{-1}s_i.
+\]
+因此过渡函数的具体形式依赖标架；两个这样的余圈经这类局部换标架联系时，给出同构线丛。线丛同构指保持底点、在每根纤维上为复线性同构且全纯的映射。一个线丛全纯平凡，当且仅当它有处处非零的全局全纯截面：此截面给出同构 \((p,\xi)\mapsto \xi s(p)\)，反过来取平凡丛的常截面 \(1\) 即可。
+
+\ProseParagraphBreak
+
+张量积 \(L\otimes M\) 的标架为 \(e_i\otimes f_i\)，过渡函数是两组过渡函数的乘积；对偶线丛 \(L^{-1}\) 的过渡函数为 \(g_{ij}^{-1}\)。对全纯映射 \(F:Y\to X\)，把局部标架和过渡函数沿 \(F\) 拉回，得到 \(F^*L\)，其过渡函数是 \(g_{ij}\circ F\)。例如典范线丛 \(K_X\) 的标架为 \(\mathrm{d}z_i\)，有
+\[
+	\mathrm{d}z_j=\frac{\mathrm{d}z_j}{\mathrm{d}z_i}\,\mathrm{d}z_i;
+\]
+一形式系数恰按\eqref{g4:eq:0301:section-convention}变换。
+
+\ProseParagraphBreak
+
+以后用 \(\mathcal O(L)(U)\) 表示 \(U\) 上的全纯截面，用 \(\mathcal M(L)(U)\) 表示亚纯截面。它们有自然限制映射，且在交叠上相等的局部截面能唯一粘合，因此分别组成全纯截面层与亚纯截面层。层的一般定义将在\secref{g4:sec:0302}给出；此处每个层都由这些具体的局部截面理解。记
+\[
+	H^0(X,L)=\Gamma(X,\mathcal O(L))=\mathcal O(L)(X).
+\]
+平凡线丛的截面层简写为 \(\mathcal O_X\) 与 \(\mathcal M_X\)。
 
 \subsection{除子及线性等价}
 \label{g4:subsec:0301:02}
-待撰写
+
+回顾\cref{g4:def:0203:divisor}：除子 \(D=\sum n_p[p]\) 是有限个点的整数线性组合，次数为 \(\deg D=\sum n_p\)，全部系数非负时称为有效。若 \(D-E=\operatorname{div}(f)\)，其中 \(f\) 为非零亚纯函数，就记 \(D\sim E\)，称二者线性等价。这些零极点数据现在将用来规定线丛的局部标架。
+
+\ProseParagraphBreak
+
+允许函数在一点有极点，可以看作改变局部标架。例如 \(z^{-n}\) 在函数意义下有 \(n\) 阶极点，但若把它作为某个新线丛的非零标架，则 \(f(z)z^{-n}\) 是全纯截面，恰好只要求 \(f\) 全纯。这使“准许极点”成为线丛自身的一部分。
+
+\begin{definition}\label{g4:def:0301:divisor-bundle}
+	设 \(X\) 为紧连通黎曼曲面，\(D=\sum_p n_p[p]\) 为除子。取坐标开覆盖 \(U_i\)，并在各 \(U_i\) 上取非零亚纯函数 \(f_i\)，满足 \(\operatorname{div}(f_i)=D|_{U_i}\)。例如在只含一个支撑点 \(p\) 的中心坐标圆盘中，可取 \(f_i=z_i^{n_p}\)；在避开支撑的开集上取 \(f_i=1\)。以
+	\[
+		e_i=f_i^{-1},\qquad e_j=\frac{f_i}{f_j}e_i
+	\]
+	为局部标架和过渡规则所得的线丛，记为 \(\mathcal O_X(D)\)，或简写为 \(\mathcal O(D)\)，称为 \(D\) 的\term[chuzixiancong]{除子线丛}[divisor line bundle]。
+\end{definition}
+
+交叠上的 \(f_i/f_j\) 没有零点也没有极点，因而是全纯单位，且这些比值满足余圈条件。若把 \(f_i\) 换成具有相同除子的另一个函数，二者之比仍为全纯单位，所以只改变局部标架，所得线丛相同至自然同构。把 \(\mathcal O(D)\) 的截面看成亚纯函数，定义等价于
+\begin{equation}\label{g4:eq:0301:divisor-sections}
+	H^0(X,\mathcal O(D))
+	=\{f\in\mathcal M_X(X)\setminus\{0\}:\operatorname{div}(f)+D\ge0\}\cup\{0\}.
+\end{equation}
+确实，\(f=s_i e_i=s_i/f_i\)，故截面系数 \(s_i=ff_i\) 全纯，当且仅当各点的阶数满足这一不等式。正的 \(n_p\) 允许函数有至多 \(n_p\) 阶极点；负的 \(n_p\) 则要求函数至少有 \(-n_p\) 阶零点。
+
+\ProseParagraphBreak
+
+亚纯函数相乘给出自然同构
+\[
+	\mathcal O(D)\otimes\mathcal O(E)\cong\mathcal O(D+E),
+	\qquad
+	\mathcal O(D)^{-1}\cong\mathcal O(-D).
+\]
+对任意全纯线丛 \(L\)，记 \(L(D)=L\otimes\mathcal O(D)\)。它的全纯截面可以看成 \(L\) 的亚纯截面，允许的零极点由 \(D\) 修正。这里 \(\mathcal O(D)\) 同时也常指相应的全纯截面层；出现总空间或张量积时按线丛理解，出现开集上的函数或正合列时按截面层理解。
+
+\begin{proposition}\label{g4:prop:0301:section-divisor}
+	设 \(X\) 为紧连通黎曼曲面，\(L\to X\) 为全纯线丛，并已给定一条不恒为零的亚纯截面 \(s\)。在局部全纯标架中写 \(s=f_i e_i\)，则
+	\[
+		\operatorname{ord}_p(s)\coloneqq\operatorname{ord}_p(f_i)
+	\]
+	与标架无关，并定义有限除子 \(D=\operatorname{div}_L(s)\)。乘以 \(s\) 给出全纯线丛同构
+	\[
+		\mathcal O(D)\longrightarrow L,\qquad h\longmapsto hs.
+	\]
+\end{proposition}
+\begin{proof}
+	换标架时，系数乘以一个全纯单位，所以阶数不变。非零亚纯截面的零极点局部有限，紧性使其总数有限。在 \(U_i\) 上，\(\mathcal O(D)\) 可取标架 \(f_i^{-1}\)，乘以 \(s\) 把这个标架送到 \(e_i\)。因此该映射局部全纯、处处可逆，并在交叠处由同一乘法公式相容，故粘成全局同构。
+\end{proof}
+
+这个命题从一条已经给出的亚纯截面恢复线丛。一般全纯线丛上这种截面的存在，是\secref{g4:sec:0304}的证明任务。两个已给非零亚纯截面 \(s,t\) 的比值则总能定义：局部系数相除时过渡函数消去，得到全局非零亚纯函数 \(s/t\)，并有
+\[
+	\operatorname{div}_L(s)-\operatorname{div}_L(t)
+	=\operatorname{div}(s/t).
+\]
+
+\begin{proposition}\label{g4:prop:0301:principal-trivial}
+	设 \(X\) 为紧连通黎曼曲面，\(D,E\) 为除子。则
+	\[
+		D\sim E\quad\Longleftrightarrow\quad
+		\mathcal O(D)\cong\mathcal O(E).
+	\]
+	特别地，\(D\) 为主除子当且仅当 \(\mathcal O(D)\) 全纯平凡。
+\end{proposition}
+\begin{proof}
+	先证后一结论。若 \(D=\operatorname{div}(f)\)，则亚纯函数 \(1/f\) 作为 \(\mathcal O(D)\) 的全纯截面处处不为零，因为其截面除子为 \(\operatorname{div}(1/f)+D=0\)。它给出全局平凡化。反之，若 \(\mathcal O(D)\) 平凡，取处处非零的全纯截面，按\eqref{g4:eq:0301:divisor-sections}把它写成亚纯函数 \(h\)。局部系数处处非零意味着 \(\operatorname{div}(h)+D=0\)，所以 \(D=\operatorname{div}(1/h)\) 为主除子。对 \(\mathcal O(D)\otimes\mathcal O(E)^{-1}\cong\mathcal O(D-E)\) 应用这一结论，即得全部等价。
+\end{proof}
+
+例如在球面上，坐标函数 \(z-a\) 的除子为 \([a]-[\infty]\)。所以任意有限除子 \(D\) 都线性等价于 \((\deg D)[\infty]\)：逐个用这些主除子把有限点移到无穷远即可。对 \(n\ge0\)，
+\[
+	H^0(\mathbb P^1,\mathcal O(n[\infty]))
+	=\operatorname{span}_{\mathbb C}\{1,z,\ldots,z^n\}.
+\]
+因为这样的亚纯函数在有限平面全纯，且在无穷远的极点阶数至多为 \(n\)，\cref{g4:prop:0101:cauchy-estimate}的 Cauchy 估计使它成为次数至多 \(n\) 的多项式。另一例是 \(\mathrm{d}z\) 的除子为 \(-2[\infty]\)，故\cref{g4:prop:0301:section-divisor}给出 \(K_{\mathbb P^1}\cong\mathcal O(-2[\infty])\)。
 
 \subsection{主部层和点处修改}
 \label{g4:subsec:0301:03}
-待撰写
+
+给定极点的位置与阶数后，还可以进一步指定 Laurent 展开中的负幂系数。这些有限项只依赖截面在该点附近的行为；相差全纯截面的两个局部表达具有相同主部。
+
+\begin{definition}\label{g4:def:0301:principal-parts}
+	设 \(L\to X\) 为黎曼曲面上的全纯线丛。亚纯截面模去全纯截面所得的商层
+	\[
+		\mathcal P(L)=\mathcal M(L)/\mathcal O(L)
+	\]
+	称为 \(L\) 的\term[zhubuceng]{主部层}[sheaf of principal parts]。在中心坐标 \(z\) 和局部标架 \(e\) 下，一个主部芽可唯一表示为
+	\[
+		\left(\frac{a_{-N}}{z^N}+\cdots+\frac{a_{-1}}z\right)e,
+	\]
+	其中只保留有限个负幂项。换坐标或换标架时，按亚纯截面的变换规则再模去全纯项。
+\end{definition}
+
+这里的商是在局部取的：\(\mathcal P(L)(U)\) 由局部主部资料组成，未必是某一条 \(U\) 上亚纯截面的主部。每个局部主部都可用自身的有限 Laurent 和实现，所以
+\begin{equation}\label{g4:eq:0301:principal-parts-sequence}
+	0\longrightarrow\mathcal O(L)\longrightarrow
+	\mathcal M(L)\longrightarrow\mathcal P(L)\longrightarrow0
+\end{equation}
+局部正合。一个主部资料在紧曲面上只能支撑于有限个点：它局部由亚纯截面表示，因此支撑局部有限，紧性再给出有限性。反过来，在有限个点任意指定这样的主部，在其余点取零，就给出一个全局主部资料，因为它们在避开各支撑点的交叠处都为零。
+
+\begin{example}\label{g4:exm:0301:principal-obstruction}
+	取\cref{g4:prop:0204:cubic}的光滑三次曲线 \(E\) 及处处非零的全纯微分 \(\omega\)。固定 \(p\in E\)，局部积分 \(\omega\) 可取中心坐标 \(z\)，使 \(\omega=\mathrm{d}z\)。只在 \(p\) 指定函数主部 \(1/z\)，在其他点指定零主部。若有全局亚纯函数 \(f\) 实现这一资料，则 \(f\omega\) 只有一个简单极点，并且在 \(p\) 的留数为 \(1\)，与\cref{g4:thm:0203:global-residue}矛盾。因此局部可解的主部资料可能不能整体实现。
+\end{example}
+
+增加一个允许极点的阶数，只增加一个局部系数。这种有限的改动将成为 Riemann--Roch 推导中的计数单位。
+
+\begin{proposition}\label{g4:prop:0301:point-modification}
+	设 \(X\) 为紧连通黎曼曲面，\(L\to X\) 为全纯线丛，\(D\) 为除子，\(p\in X\)。选定 \(p\) 附近的坐标与 \(L\) 的标架后，有局部正合列
+	\begin{equation}\label{g4:eq:0301:point-modification}
+		0\longrightarrow\mathcal O(L(D))
+		\longrightarrow\mathcal O(L(D+[p]))
+		\longrightarrow\mathbb C_p\longrightarrow0.
+	\end{equation}
+	其中 \(\mathbb C_p(U)=\mathbb C\) 当 \(p\in U\)，否则为零，称为支撑于 \(p\) 的一维\term[motianceng]{摩天层}[skyscraper sheaf]。内在地，右端是以纤维 \(L(D+[p])_p\) 为值的一维摩天层；把它识别为 \(\mathbb C_p\) 需要上述局部选择。
+\end{proposition}
+\begin{proof}
+	设 \(D\) 在 \(p\) 的系数为 \(n\)，取中心坐标 \(z\) 和 \(L\) 的标架 \(e\)。两线丛在此分别以 \(z^{-n}e\) 和 \(z^{-(n+1)}e\) 为标架。把二者都看作 \(L\) 的亚纯截面，包含映射为
+	\[
+		b(z)z^{-n}e\longmapsto zb(z)\,z^{-(n+1)}e.
+	\]
+	所以在第二个标架下，像恰好是系数在 \(p\) 消失的截面，商由 \(a(z)z^{-(n+1)}e\mapsto a(0)\) 给出。任意复数都可局部取为常系数 \(a\)，因此商映射局部满射，核恰为左边。离开 \(p\) 后两层相同，商为零。这个局部系数也正是 \(L(D+[p])\) 的截面在 \(p\) 的纤维值，给出内在描述。
+\end{proof}
+
+正合列说的是局部主部系数可以任意选择。全局截面能否实现这个系数，仍是一个整体问题；上例已经显示局部满射不能直接换成全局截面的满射。\secref{g4:sec:0302}和\secref{g4:sec:0303}将把这个差别分别组织为上同调类和对偶配对。
 
 \subsection{线性系与有理映射}
 \label{g4:subsec:0301:04}
-待撰写
+
+几条取值于同一条线丛的截面，可以组成不依赖标架的齐次坐标。假设 \(s_0,\ldots,s_r\) 在一点不同时为零，写成 \(s_\nu=f_\nu e\) 后取
+\[
+	p\longmapsto[f_0(p):\cdots:f_r(p)].
+\]
+换标架会给所有系数乘上同一个非零因子，所以射影点保持不变。共同零点则要求先找出各截面的公共消失因子。
+
+\begin{definition}\label{g4:def:0301:linear-system}
+	设 \(X\) 为紧连通黎曼曲面，\(L\to X\) 为全纯线丛，\(0\ne V\subset H^0(X,L)\) 为有限维子空间。非零截面模去非零常数倍所得的 \(\mathbb P(V)\) 称为一个\term[xianxingxi]{线性系}[linear system]。若每个 \(s\in V\) 都在 \(p\) 消失，则 \(p\) 称为它的\term[jidian]{基点}[base point]。由
+	\[
+		b_p=\min_{0\ne s\in V}\operatorname{ord}_p(s),
+		\qquad B=\sum_p b_p[p]
+	\]
+	得到的有效除子称为固定除子。取一组基后，\(b_p\) 就是各基截面阶数的最小值。全部全纯截面给出的线性系称为完全线性系；其有限维性将在本章的椭圆论证中得到。
+\end{definition}
+
+固定除子支撑有限，因为它的支撑包含于任意一条非零基截面的零点集。对除子 \(D\)，完全线性系也可写成
+\[
+	|D|=\{D'\ge0:D'\sim D\}
+	\cong\mathbb P H^0(X,\mathcal O(D)).
+\]
+对应把非零亚纯函数 \(f\) 送到 \(\operatorname{div}(f)+D\)。满射是线性等价的定义；若两个函数给出同一个除子，它们的比值没有零极点，因紧性而为非零常数，所以恰好只需模去常数倍。
+
+\begin{proposition}\label{g4:prop:0301:linear-system-map}
+	设 \(X\) 为紧连通黎曼曲面，\(L\to X\) 为全纯线丛，\(V\subset H^0(X,L)\) 为维数 \(r+1\ge1\) 的子空间，固定除子为 \(B\)。则 \(V\) 可视为 \(H^0(X,L(-B))\) 中无基点的子空间，并定义全纯映射
+	\[
+		\Phi_V:X\longrightarrow\mathbb P(V^*)\cong\mathbb P^r.
+	\]
+	它在去掉基点后的开集上由各截面的齐次坐标给出，在基点处唯一延拓。并且
+	\[
+		\Phi_V^*\mathcal O_{\mathbb P^r}(1)\cong L(-B).
+	\]
+\end{proposition}
+\begin{proof}
+	在 \(p\) 附近取坐标 \(z\) 和 \(L\) 的标架。令 \(m=b_p\)，把各截面系数同时除以 \(z^m\)。商都全纯，且至少一个在 \(p\) 非零；这正是将它们视为 \(L(-B)\) 的截面。因而除去固定除子后没有基点。在某一截面 \(s_j\) 非零的邻域内，射影映射的仿射坐标为 \(s_\nu/s_j\)，它们是全纯函数。改变标架只乘同一因子，改变 \(V\) 的基只改变目标射影坐标，所以映射良定义。由于原开集稠密，连续延拓唯一。
+
+	说明最后的线丛同构。射影空间上，在 \(Z_j\ne0\) 的图中，把 \(Z_j\) 记作 \(\mathcal O(1)\) 的标架；两图之间的标架关系为 \(Z_k=(Z_k/Z_j)Z_j\)。拉回后，过渡函数变成 \(s_k/s_j\)，恰好是 \(L(-B)\) 在非消失截面 \(s_j,s_k\) 之间的标架变换。故两个线丛同构。
+\end{proof}
+
+线性系 \(\mathbb P(V)\) 参数化的是截面及其零除子，映射的目标却是对偶射影空间 \(\mathbb P(V^*)\)：一个点 \(p\) 给出求值映射 \(V\to L_p\)，选定 \(L_p\) 的非零标架后成为一个非零线性泛函，改变标架只改变这个泛函的非零倍数。两种射影空间在选基后都可写成 \(\mathbb P^r\)，但它们的几何职责不同。
+
+\ProseParagraphBreak
+
+本节所讨论的有理映射可在射影坐标中由一组不同时恒零的亚纯函数写出。在紧曲面上，先用一个有效除子统一控制它们的极点，便把它们变成同一条 \(\mathcal O(D)\) 的全纯截面。再除去固定除子，就得到上一个命题的全纯映射。因此，光滑曲面上的这种射影有理映射总能跨过原来未定义的有限点延拓。球面上的 \(1,z,\ldots,z^n\) 给出
+\[
+	[Z:T]\longmapsto[T^n:ZT^{n-1}:\cdots:Z^n],
+\]
+其中 \(n\ge1\)；在 \(n=1\) 时为射影坐标变换，在一般 \(n\) 时为\term[youlizhengguiquxian]{有理正规曲线}[rational normal curve]的参数化。
+
+\begin{proposition}\label{g4:prop:0301:embedding-criterion}
+	设 \(X\) 为紧连通黎曼曲面，\(L\to X\) 为全纯线丛，有限维子空间 \(V\subset H^0(X,L)\) 无基点。其射影映射 \(\Phi_V\) 是全纯嵌入，当且仅当下列两项成立：
+	\begin{enumerate}
+		\item 对任意 \(p\ne q\)，存在 \(s\in V\)，使 \(s(p)=0\)、\(s(q)\ne0\)；
+		\item 对任意 \(p\)，存在 \(s_0,s\in V\)，使 \(s_0(p)\ne0\)，且局部函数 \(s/s_0\) 在 \(p\) 的导数不为零。
+	\end{enumerate}
+	第一项称为分离点，第二项称为分离切向量。
+\end{proposition}
+\begin{proof}
+	无基点保证求值核 \(\ker(V\to L_p)\) 是一个超平面。两点具有相同射影像，恰好表示这两个超平面相同。因此第一项等价于 \(\Phi_V\) 单射。在 \(s_0\ne0\) 的仿射图中，映射的坐标是若干比值 \(s_j/s_0\)。其微分在一维切空间上单射，当且仅当至少一个比值的导数不为零；这正是第二项，且不依赖所选中心坐标。
+
+	两项同时成立时，\(\Phi_V\) 是单射全纯浸入。紧空间到 Hausdorff 空间的连续单射是到其像的同胚；在每个源点，取一个导数不为零的目标仿射坐标，一元逆函数定理使像的其他坐标成为该坐标的全纯函数。因此像局部为复子流形，且逆映射全纯，得到全纯嵌入。反过来，全纯嵌入既单射又浸入，以上两项由相同坐标论证立即得到。
+\end{proof}
+
+下一步所需的计数问题已经很具体：全局截面在一个点的取值能否任意指定，在两个点的取值能否独立指定，或在一个点能否同时指定值和一阶导数。Riemann--Roch 将把这些问题化为对除子增加或减去一个、两个点的维数比较。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

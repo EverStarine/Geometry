@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 1.2 留数、次数与解析延拓
 % 纲要位置：几何学计划纲要.md，第 3488 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,340 @@
 \section{留数、次数与解析延拓}
 \label{g4:sec:0102}
 
-待撰写
+围绕一个零点走一周时，函数值可能绕原点走若干周；沿一条闭路延拓局部定义的对数时，回到起点的值又可能增加 \(2\pi\mathrm{i}\)。这两种现象都把局部解析数据变成了沿闭路测得的整体信息。前者由对数导数的积分计数，后者则要求比较不同路径上的函数芽。本节先把孤立奇点写成可积分的级数，再讨论零点计数和解析延拓。
 
 \subsection{亚纯函数和主部}
 \label{g4:subsec:0102:01}
-待撰写
+在圆盘内，全纯函数由非负整数次幂展开；若中心被挖去，\(1/(z-a)\) 已经表明必须允许负次幂。负次幂记录了函数在缺失点附近无法由普通幂级数描述的部分。先在整个环域中构造这种展开，再令内半径趋于零，便能同时处理极点和更复杂的孤立奇点。
+
+\begin{theorem}[Laurent 展开]\label{g4:thm:0102:laurent}
+	设 \(0\leq r<R\leq\infty\)，函数 \(f\) 在环域
+	\[
+		A=\{z\in\mathbb C:r<|z-a|<R\}
+	\]
+	上全纯。则存在唯一的一列复数 \((c_n)_{n\in\mathbb Z}\)，使得
+	\[
+		f(z)=\sum_{n=-\infty}^{\infty}c_n(z-a)^n,
+		\qquad
+		c_n=\frac{1}{2\pi\mathrm{i}}
+		\int_{|\zeta-a|=\rho}\frac{f(\zeta)}{(\zeta-a)^{n+1}}\,\mathrm{d}\zeta
+	\]
+	对任意 \(r<\rho<R\) 成立，积分圆周取逆时针方向。正次与负次两部分分别在 \(A\) 的每个紧子集上一致绝对收敛。
+\end{theorem}
+这个展开称为\term[laurentzhankai]{Laurent 展开}[Laurent expansion]。\footnote{Pierre Alphonse Laurent（1813—1854），法国数学家、工程师，研究复函数的级数展开与变分问题。}
+\begin{proof}
+	关键是把环域的外边界和内边界分开：外圆贡献非负次幂，内圆贡献负次幂。固定 \(z\in A\)，选取
+	\[
+		r<\rho_1<|z-a|<\rho_2<R.
+	\]
+	在两圆之间的闭环域上应用\cref{g4:prop:0101:cauchy-domain}，内边界的正向是顺时针方向，故
+	\[
+		f(z)=\frac{1}{2\pi\mathrm{i}}
+		\int_{|\zeta-a|=\rho_2}\frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta
+		-\frac{1}{2\pi\mathrm{i}}
+		\int_{|\zeta-a|=\rho_1}\frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta.
+	\]
+	外圆上用几何级数
+	\[
+		\frac{1}{\zeta-z}
+		=\sum_{n=0}^{\infty}\frac{(z-a)^n}{(\zeta-a)^{n+1}},
+	\]
+	内圆上则用
+	\[
+		\frac{1}{\zeta-z}
+		=-\sum_{k=0}^{\infty}\frac{(\zeta-a)^k}{(z-a)^{k+1}}.
+	\]
+	在任意较小的闭环域 \(\rho_1<r'\leq|z-a|\leq R'<\rho_2\) 上，两式的公比分别不超过 \(R'/\rho_2\) 和 \(\rho_1/r'\)，均严格小于 \(1\)。因此可以逐项积分，所得两级数在该闭环域上一致绝对收敛。
+
+	对每个整数 \(n\)，被积函数 \(f(\zeta)/(\zeta-a)^{n+1}\) 在 \(A\) 上全纯。在两条半径之间的闭环域上应用边界积分为零的结论，说明其圆周积分与半径无关，故上述系数都可用同一个 \(\rho\) 表示。任意紧子集均包含在一个这样的较小闭环域中，得到所需收敛性。若已有另一展开，在 \(|z-a|=\rho\) 上逐项乘以 \((z-a)^{-m-1}\) 积分，只有第 \(m\) 项的积分非零，因而必恢复同一系数 \(c_m\)，唯一性得证。
+\end{proof}
+
+取 \(r=0\) 时，点 \(a\) 称为 \(f\) 的\term[guliqidian]{孤立奇点}[isolated singularity]。展开中的
+\[
+	\sum_{k=1}^{\infty}c_{-k}(z-a)^{-k}
+\]
+称为该奇点的\term[zhubu]{主部}[principal part]。若主部为零，非负次幂部分给出穿过 \(a\) 的全纯延拓，称 \(a\) 为\term[kequqidian]{可去奇点}[removable singularity]。若主部恰有有限个非零项，且最负的非零项为 \(c_{-m}(z-a)^{-m}\)，则称 \(a\) 为 \(m\) 阶\term[jidian]{极点}[pole]；等价地，
+\[
+	f(z)=(z-a)^{-m}u(z),\qquad u\text{ 在 }a\text{ 附近全纯},\quad u(a)\neq0.
+\]
+主部有无穷多个非零项时，称 \(a\) 为\term[benzhiqidian]{本性奇点}[essential singularity]。这三种情况穷尽孤立奇点，因为它们正是负次幂系数的三种可能。
+
+\begin{proposition}\label{g4:prop:0102:singularity-tests}
+	设 \(f\) 在 \(0<|z-a|<R\) 上全纯。则 \(a\) 可去当且仅当 \(f\) 在某个去心邻域上有界；\(a\) 是极点当且仅当 \(|f(z)|\rightarrow\infty\) 当 \(z\rightarrow a\)。
+\end{proposition}
+\begin{proof}
+	若 \(|f|\leq M\)，则对于每个 \(k\geq1\)，Laurent 系数公式给出
+	\[
+		|c_{-k}|\leq M\rho^k.
+	\]
+	令 \(\rho\rightarrow0\)，所有负次幂系数都为零。反向由全纯延拓的连续性得到。极点的局部表示直接给出模趋于无穷。反之，若 \(|f(z)|\rightarrow\infty\)，则 \(f\) 在充分小的去心圆盘上无零点，且 \(1/f\rightarrow0\)。可去性判据把 \(1/f\) 延拓为在 \(a\) 取零的全纯函数；它在去心圆盘上不为零，故由\cref{g4:thm:0101:identity}，该零点具有有限阶。取倒数便得到极点表示。
+\end{proof}
+
+\begin{definition}\label{g4:def:0102:meromorphic}
+	设 \(\Omega\subset\mathbb C\) 为域。若 \(P\subset\Omega\) 在 \(\Omega\) 内无聚点，\(f\) 在 \(\Omega\setminus P\) 上全纯，且每个 \(a\in P\) 都是 \(f\) 的极点，则称 \(f\) 为 \(\Omega\) 上的\term[yachunhanshu]{亚纯函数}[meromorphic function]，在极点处约定 \(f(a)=\infty\)。允许 \(P=\varnothing\)，所以全纯函数也是亚纯函数。若 \(f\) 不恒为零，则在每个 \(a\in\Omega\) 附近可以唯一地写出阶数
+	\[
+		f(z)=(z-a)^m u(z),\qquad m\in\mathbb Z,\quad u(a)\neq0,
+	\]
+	其中 \(u\) 全纯。整数 \(m\) 记为 \(\operatorname{ord}_a f\)：零点处为正，极点处为负，其余点为零。\symidx{\(\operatorname{ord}_a f\)：亚纯函数的阶数}
+\end{definition}
+
+若 \(g,h\) 在域上全纯且 \(h\) 不恒为零，则 \(g/h\) 在 \(h\neq0\) 处定义，在共同零点处约去相同次数的因子后，所得函数是亚纯的。局部阶数满足
+\[
+	\operatorname{ord}_a(fg)=\operatorname{ord}_a f+\operatorname{ord}_a g,
+	\qquad
+	\operatorname{ord}_a(f/g)=\operatorname{ord}_a f-\operatorname{ord}_a g
+\]
+（各函数均不恒为零）。这些等式把乘除法转成整数的加减，是后续用除子记录零极点的基础。
+
+\begin{example}\label{g4:exm:0102:laurent-domains}
+	同一函数在不同环域上的 Laurent 展开可以不同。例如
+	\[
+		\frac{1}{z(z-1)}=-\frac1z+\frac1{z-1}
+		=\begin{cases}
+			-\dfrac1z-\displaystyle\sum_{n=0}^{\infty}z^n,&0<|z|<1,\\[6pt]
+			\displaystyle\sum_{n=2}^{\infty}z^{-n},&|z|>1.
+		\end{cases}
+	\]
+	第二式不能用于读取 \(0\) 处的主部，因为它的环域并不贴近 \(0\)。另一方面，\(e^{1/z}=\sum_{n=0}^{\infty}z^{-n}/n!\) 在 \(0\) 处具有本性奇点，所以它不是整个复平面上的亚纯函数；在去心平面上它仍是全纯函数。奇点的类型必须连同所讨论的定义域一起判断。
+\end{example}
 
 \subsection{留数定理及辐角原理}
 \label{g4:subsec:0102:02}
-待撰写
+对圆周积分，Laurent 级数中只有 \((z-a)^{-1}\) 一项留下贡献。因此，一个系数便能控制围绕奇点的积分。
+
+\begin{definition}\label{g4:def:0102:residue}
+	设 \(f\) 在 \(a\) 的去心邻域上全纯。其 Laurent 展开的系数 \(c_{-1}\) 称为 \(f\) 在 \(a\) 处的\term[liushu]{留数}[residue]，记为 \(\operatorname{Res}_{z=a}f\)。\symidx{\(\operatorname{Res}_{z=a}f\)：留数}对于充分小的正向圆周，
+	\[
+		\operatorname{Res}_{z=a}f
+		=\frac{1}{2\pi\mathrm{i}}\int_{|z-a|=\rho}f(z)\,\mathrm{d}z.
+	\]
+\end{definition}
+
+若 \(a\) 是至多 \(m\) 阶极点，则把 \((z-a)^m f(z)\) 展开成普通幂级数，可得实用公式
+\[
+	\operatorname{Res}_{z=a}f
+	=\frac{1}{(m-1)!}
+	\left.\frac{\mathrm{d}^{m-1}}{\mathrm{d}z^{m-1}}
+	\bigl((z-a)^m f(z)\bigr)\right|_{z=a}.
+\]
+这里先把括号内函数全纯延拓到 \(a\)，再求导。特别地，若 \(g,h\) 在 \(a\) 附近全纯，\(h(a)=0\)、\(h'(a)\neq0\)，则
+\[
+	\operatorname{Res}_{z=a}\frac{g(z)}{h(z)}=\frac{g(a)}{h'(a)}.
+\]
+
+\begin{theorem}[留数定理]\label{g4:thm:0102:residue}
+	设 \(G\subset\mathbb C\) 是有界域，边界由有限条互不相交的分片 \(C^2\) 正则简单闭曲线组成，角点内角在 \((0,2\pi)\) 内，并按使 \(G\) 位于左侧的方向定向。设 \(f\) 在 \(\overline G\) 的一个开邻域中，除有限个内点 \(a_1,\ldots,a_N\in G\) 外全纯，各 \(a_j\) 都是孤立奇点。则
+	\[
+		\int_{\partial G}f(z)\,\mathrm{d}z
+		=2\pi\mathrm{i}\sum_{j=1}^N\operatorname{Res}_{z=a_j}f.
+	\]
+\end{theorem}
+这就是\term[liushudingli]{留数定理}[residue theorem]的有限多边界版本；内边界取顺时针方向。这里每条边界弧的正则性指其 \(C^2\) 参数化的一阶导数不为零，角点内角指两条相邻边界弧在区域一侧所夹的角；这些条件与\eqref{g4:eq:0101:green}采用的边界条件一致。
+\begin{proof}
+	在每个 \(a_j\) 周围挖去一个闭圆盘，令这些圆盘两两不交且包含于 \(G\)。剩余闭区域的一个邻域上 \(f\) 全纯，由\cref{g4:prop:0101:cauchy-domain}的边界积分结论，其总边界积分为零。因此
+	\[
+		\int_{\partial G}f(z)\,\mathrm{d}z
+		=\sum_{j=1}^N\int_{|z-a_j|=\rho_j}f(z)\,\mathrm{d}z,
+	\]
+	右侧各圆均取逆时针方向。每个圆周积分由 Laurent 系数公式恰等于对应留数的 \(2\pi\mathrm{i}\) 倍。若挖孔后出现多个连通分支，对各分支相加得到同一等式。
+\end{proof}
+
+留数也可以内在地赋给亚纯一形式 \(f(z)\,\mathrm{d}z\)。若换用局部全纯坐标 \(z=a+\phi(w)\)，其中 \(\phi(0)=0\)、\(\phi'(0)\neq0\)，则
+\[
+	\operatorname{Res}_{w=0}\bigl(f(a+\phi(w))\phi'(w)\bigr)
+	=\operatorname{Res}_{z=a}f(z).
+\]
+为看清这一点，把亚纯函数的有限主部逐项处理。除 \((z-a)^{-1}\mathrm{d}z\) 外，各负次幂项都是某个亚纯函数的微分，换坐标后仍是微分，其 Laurent 展开的 \(w^{-1}\mathrm{d}w\) 系数为零；全纯部分也不产生负次幂。剩下的一项满足
+\[
+	\frac{\phi'(w)}{\phi(w)}\,\mathrm{d}w
+	=\frac{\mathrm{d}w}{w}+\frac{v'(w)}{v(w)}\,\mathrm{d}w,
+	\qquad \phi(w)=wv(w),\quad v(0)\neq0,
+\]
+故留数为 \(1\)。这一不变性解释了为什么曲面上的留数应当属于一形式：只改变函数表达式而遗漏微分因子，数值一般会改变。
+
+\ProseParagraphBreak
+
+接下来把积分用于数零点。对一条避开 \(0\) 的分片 \(C^1\) 闭曲线 \(\eta:[0,1]\rightarrow\mathbb C\setminus\{0\}\)，记
+\[
+	\operatorname{Ind}(\eta,0)
+	\coloneqq\frac{1}{2\pi\mathrm{i}}\int_\eta\frac{\mathrm{d}w}{w}.
+\]
+这个数称为曲线关于 \(0\) 的\term[raoshu]{绕数}[winding number]。它是整数：把参数区间分成有限个小段，使每段的像落在某个可选连续辐角的小圆盘中，在相邻段上调整辐角的 \(2\pi\) 整数倍，使之连续拼接。于是有分片 \(C^1\) 的函数 \(r(t)>0\)、\(\theta(t)\in\mathbb R\)，满足 \(\eta(t)=r(t)e^{\mathrm{i}\theta(t)}\)，且
+\[
+	\int_\eta\frac{\mathrm{d}w}{w}
+	=\log r(1)-\log r(0)+\mathrm{i}\bigl(\theta(1)-\theta(0)\bigr)
+	=2\pi\mathrm{i}k,
+\]
+其中 \(k\in\mathbb Z\)，因为 \(\eta(1)=\eta(0)\)。所以绕数记录的是总辐角增量，而不是曲线图形的某种单调转动次数。
+
+\begin{theorem}[辐角原理]\label{g4:thm:0102:argument}
+	设 \(G\subset\mathbb C\) 是有界域，边界由有限条互不相交的分片 \(C^2\) 正则简单闭曲线组成，角点内角在 \((0,2\pi)\) 内，并取正向。设 \(f\) 在包含 \(\overline G\) 的某个域上亚纯且不恒为零，在 \(\partial G\) 上没有零点或极点。则
+	\[
+		\frac{1}{2\pi\mathrm{i}}\int_{\partial G}\frac{f'(z)}{f(z)}\,\mathrm{d}z
+		=\sum_{a\in G}\operatorname{ord}_a f
+		=N_G(f)-P_G(f),
+	\]
+	其中 \(N_G(f)\)、\(P_G(f)\) 分别按重数统计 \(G\) 内的零点数和极点数。左侧也等于各条边界像曲线 \(f\circ\gamma\) 关于 \(0\) 的绕数之和。
+\end{theorem}
+这里的\term[fujiaoyuanli]{辐角原理}[argument principle]把解析阶数变为整数值的边界数据。
+\begin{proof}
+	零点和极点在 \(\overline G\) 的邻域中离散，而边界上没有这两类点；紧性保证 \(G\) 内只有有限个。若
+	\[
+		f(z)=(z-a)^m u(z),\qquad u(a)\neq0,
+	\]
+	则
+	\[
+		\frac{f'(z)}{f(z)}=\frac{m}{z-a}+\frac{u'(z)}{u(z)},
+	\]
+	后项在 \(a\) 附近全纯。因此 \(f'/f\) 在 \(a\) 的留数为 \(m\)，即零点阶数取正、极点阶数取负。对 \(f'/f\) 应用\cref{g4:thm:0102:residue}便得等式。沿每条边界曲线作代换 \(w=f(z)\)，即得到像曲线的绕数表达式。
+\end{proof}
 
 \subsection{Rouché 与映射次数}
 \label{g4:subsec:0102:03}
-待撰写
+零点的位置可能随函数扰动而移动，而绕数只取整数值。只要扰动过程中边界像不经过原点，整数就无法连续改变。这给出了不必求出零点位置的计数方法。
+
+\begin{theorem}[Rouché 定理]\label{g4:thm:0102:rouche}
+	设 \(G\subset\mathbb C\) 是有界域，边界由有限条互不相交的分片 \(C^2\) 正则简单闭曲线组成，角点内角在 \((0,2\pi)\) 内。函数 \(f,g\) 在 \(\overline G\) 的一个开邻域上全纯，并且
+	\[
+		|g(z)-f(z)|<|f(z)|\qquad(z\in\partial G).
+	\]
+	则 \(f\) 与 \(g\) 在 \(G\) 内的零点总数相同，零点均按重数统计。
+\end{theorem}
+这一零点比较结论称为\term[rouchedingli]{Rouché 定理}[Rouché's theorem]。\footnote{Eugène Rouché（1832—1910），法国数学家，研究复函数的零点计数，并参与编写几何学教材。}
+\begin{proof}
+	以线段插值连接两个函数：\(f_t=f+t(g-f)\)，\(0\leq t\leq1\)。边界上有
+	\[
+		|f_t(z)|\geq|f(z)|-t|g(z)-f(z)|>0.
+	\]
+	边界紧，且 \((t,z)\mapsto f_t(z)\) 连续，故分母在 \([0,1]\times\partial G\) 上与零保持正距离。于是
+	\[
+		n(t)=\frac{1}{2\pi\mathrm{i}}\int_{\partial G}\frac{f_t'(z)}{f_t(z)}\,\mathrm{d}z
+	\]
+	是 \(t\) 的连续函数。由\cref{g4:thm:0102:argument}，它等于 \(f_t\) 的零点数，因而取整数值。连续的整数值函数在区间上为常数，所以 \(n(0)=n(1)\)。
+\end{proof}
+
+\begin{example}\label{g4:exm:0102:rouche-polynomial}
+	令 \(p(z)=z^5+3z+1\)。在 \(|z|=1\) 上，
+	\[
+		|p(z)-3z|=|z^5+1|\leq2<3=|3z|,
+	\]
+	故单位圆盘内恰有一个零点。在 \(|z|=2\) 上，
+	\[
+		|p(z)-z^5|=|3z+1|\leq7<32=|z^5|,
+	\]
+	故半径 \(2\) 的圆盘内恰有五个零点。因此环域 \(1<|z|<2\) 内共有四个零点，均按重数计；两个边界圆上都没有零点。比较项由所选边界上的大小决定，同一个多项式在两条圆周上适合比较的主项并不相同。
+\end{example}
+
+设 \(G\) 为边界满足\cref{g4:thm:0102:rouche}条件的有界域，\(f\) 在 \(\overline G\) 的邻域上全纯，且在 \(G\) 上不恒定。对任意 \(w\notin f(\partial G)\)，定义
+\begin{equation}\label{g4:eq:0102:degree}
+	\deg(f,G,w)\coloneqq
+	\frac{1}{2\pi\mathrm{i}}\int_{\partial G}\frac{f'(z)}{f(z)-w}\,\mathrm{d}z
+	=\sum_{\substack{z\in G\\f(z)=w}}\operatorname{ord}_z(f-w).
+\end{equation}
+这是 \(f\) 在 \(G\) 中关于目标点 \(w\) 的\term[yingshecishu]{映射次数}[mapping degree]。等式由辐角原理应用于 \(f-w\) 得到，也说明该数是非负整数。由于积分依 \(w\) 连续，它在 \(\mathbb C\setminus f(\partial G)\) 的每个连通分支上恒定。因而，只要目标点不越过边界像，纤维的重数总和就保持不变。
+
+\ProseParagraphBreak
+
+若 \(w\) 的所有原像都是正则点，即 \(f'(z)\neq0\)，\cref{g4:thm:0101:inverse}给出每个原像附近的一张全纯逆分支，\eqref{g4:eq:0102:degree}便是这些原像的个数。在临界点附近，\cref{g4:thm:0101:local-power}把映射化成 \(\zeta\mapsto\zeta^m\)：非零的小目标值有 \(m\) 个互异原像，目标值到达临界值后它们合并成一个 \(m\) 重原像。次数保存的正是合并前后的这个总数。
+
+\begin{proposition}\label{g4:prop:0102:local-count}
+	设 \(f\) 在 \(a\in\mathbb C\) 的邻域上全纯，且 \(f-f(a)\) 在 \(a\) 有 \(m\geq1\) 阶零点。则存在 \(r>0\) 和 \(\varepsilon>0\)，使得对每个满足 \(|w-f(a)|<\varepsilon\) 的 \(w\)，方程 \(f(z)=w\) 在 \(|z-a|<r\) 内恰有 \(m\) 个解，按重数统计。
+\end{proposition}
+\begin{proof}
+	取充分小的 \(r\)，使 \(f-f(a)\) 在 \(0<|z-a|\leq r\) 上无零点，并在闭圆盘的邻域上全纯。令
+	\[
+		\varepsilon=\min_{|z-a|=r}|f(z)-f(a)|>0.
+	\]
+	在该圆周上，\(|(f-w)-(f-f(a))|=|w-f(a)|<|f-f(a)|\)。由\cref{g4:thm:0102:rouche}，\(f-w\) 与 \(f-f(a)\) 的零点总数同为 \(m\)。
+\end{proof}
+
+这个证明还显示，小扰动保持的是总重数，未必保持互异零点数。例如 \(z^2-t\) 在 \(t\neq0\) 时有两个单零点，在 \(t=0\) 时只有一个二重零点。
 
 \subsection{函数芽的延拓和路径依赖}
 \label{g4:subsec:0102:04}
-待撰写
+幂级数只在某个圆盘中给出函数，但圆盘的边界未必是函数真正的障碍。例如 \(\sum_{n\geq0}z^n\) 的收敛半径为 \(1\)，它的和 \(1/(1-z)\) 却可以穿过单位圆上除 \(1\) 外的所有点。延拓要保留的是邻域中函数的全部局部信息，而不是某个圆盘或某个展开式。
+
+\begin{definition}\label{g4:def:0102:germ-continuation}
+	设 \(a\in\Omega\subset\mathbb C\)，其中 \(\Omega\) 为域。两个在 \(a\) 的邻域上定义的全纯函数，若在某个更小邻域中相等，则视为等价；等价类称为 \(a\) 处的\term[hanshuya]{全纯函数芽}[germ of a holomorphic function]，记为 \([f]_a\)。
+
+	设 \(\gamma:[0,1]\rightarrow\Omega\) 为从 \(a\) 出发的连续路径。一个沿 \(\gamma\) 的\term[jiexiyantuo]{解析延拓}[analytic continuation]由有限分割
+	\[
+		0=t_0<t_1<\cdots<t_N=1
+	\]
+	以及圆盘 \(U_j\subset\Omega\) 上的全纯函数 \(f_j\) 给出，满足 \(\gamma([t_{j-1},t_j])\subset U_j\)，第一项代表指定的初始函数芽，且
+	\[
+		[f_j]_{\gamma(t_j)}=[f_{j+1}]_{\gamma(t_j)}
+		\qquad(1\leq j<N).
+	\]
+	末项给出的 \([f_N]_{\gamma(1)}\) 称为延拓的终点函数芽。
+\end{definition}
+
+这里的相等要求是在交点的一个邻域中相等；只要求数值相等无法传递导数和幂级数。两个圆盘的交集是连通的，所以由\cref{g4:thm:0101:identity}，相邻代表实际上在整个交集上一致。分割与圆盘只是记录延拓的工具，可以继续细分或缩小而不改变沿路径所得的函数芽。
+
+\begin{lemma}\label{g4:lem:0102:continuation-unique}
+	设 \(\Omega\subset\mathbb C\) 为域，\(\gamma:[0,1]\rightarrow\Omega\) 为连续路径。指定 \(\gamma(0)\) 处的全纯函数芽后，若沿 \(\gamma\) 的解析延拓存在，则每个 \(\gamma(t)\) 处随路径传递的函数芽都唯一，特别是终点函数芽唯一。
+\end{lemma}
+\begin{proof}
+	比较两条延拓链，先对它们的分割取公共细分。在每个小参数区间内，两条链分别由两个圆盘上的函数代表，且路径段同时落在这两个圆盘中。开始时两个代表的芽相同；圆盘交集连通，恒等定理使两个代表在交集上相同，于是这一段的终点芽也相同。接着利用各自延拓链在接点处的相容性，进入下一段。有限次归纳便得到所有分割点的芽相同；把任意给定 \(t\) 加入分割，便知该处的芽也相同。
+\end{proof}
+
+固定路径上的唯一性仍允许不同路径给出不同结果。在 \(1\) 附近取满足 \(L(1)=0\)、\(e^{L(z)}=z\) 的局部对数，沿单位圆 \(\gamma(t)=e^{2\pi\mathrm{i}t}\) 延拓。连续辐角在这条路径上是 \(2\pi t\)，故沿途的值为 \(2\pi\mathrm{i}t\)，终点对数芽在 \(1\) 的值变成 \(2\pi\mathrm{i}\)。从同一起点走常值路径，终点值仍为 \(0\)。同样，从 \(\sqrt1=1\) 出发的平方根沿此圆周的值为 \(e^{\pi\mathrm{i}t}\)，一周后变成 \(-1\)。
+
+\ProseParagraphBreak
+
+上述值确实来自解析延拓链。对任意 \(b\neq0\)，在 \(|z-b|<|b|\) 内写成
+\[
+	L_b(z)=\ell_b+\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}n
+	\left(\frac{z-b}{b}\right)^n,\qquad e^{\ell_b}=b.
+\]
+逐项求导得 \(L_b'(z)=1/z\)，且 \(e^{L_b(z)}/z\) 的导数为零，在 \(b\) 取值 \(1\)，所以 \(e^{L_b(z)}=z\)。相邻圆盘上两个这样的对数相差 \(2\pi\mathrm{i}\) 的整数倍；调整常数后即可沿路径拼接。平方根由 \(e^{L_b/2}\) 得到。这也说明导致路径依赖的是绕过缺失点后的常数变化。
+
+\ProseParagraphBreak
+
+回顾这里的拓扑条件：两条同起终点路径\term[dingduandiantonglun]{定端点同伦}[homotopic relative to endpoints]，是指存在连续变形 \(H(t,s)\)，在变形过程中始点和终点始终固定。域内每条闭路都能这样收缩到常值路径时，称该域\term[danliantong]{单连通}[simply connected]。等价地，域内任意两条同起终点路径都定端点同伦；把一条路径接上另一条的反向路径，便得到这两个表述之间的对应。
+
+\begin{theorem}[单值定理]\label{g4:thm:0102:monodromy}
+	设 \(\Omega\subset\mathbb C\) 为域，\(a\in\Omega\)，且 \(\mathfrak f\) 是 \(a\) 处的全纯函数芽。假设 \(\mathfrak f\) 可以沿 \(\Omega\) 中每条从 \(a\) 出发的连续路径解析延拓。则沿两条定端点同伦路径得到的终点函数芽相同。特别地，若 \(\Omega\) 单连通，则存在唯一的全纯函数 \(F\) 定义在整个 \(\Omega\) 上，使 \([F]_a=\mathfrak f\)，且所有上述延拓均给出 \(F\) 的相应局部函数芽。
+\end{theorem}
+这里的\term[danzhidingli]{单值定理}[monodromy theorem]要求沿每条路径都能延拓。单连通是消除路径选择的拓扑条件，延拓存在性则是关于所给函数芽的解析条件。
+\begin{proof}
+	先证明一条有限延拓链在路径的小变动下仍然有效。固定从 \(a\) 到 \(b\) 的路径 \(\gamma\)，取延拓链 \((U_j,f_j)\) 和相应分割。每个紧集 \(\gamma([t_{j-1},t_j])\) 都包含于开圆盘 \(U_j\)，故存在 \(\delta_j>0\)，使这一紧集的 \(\delta_j\) 邻域仍包含于 \(U_j\)。令 \(\delta\) 为有限个 \(\delta_j\) 的最小值。若另一条路径 \(\widetilde\gamma\) 具有相同端点，并满足
+	\[
+		\sup_{0\leq t\leq1}|\widetilde\gamma(t)-\gamma(t)|<\delta,
+	\]
+	则它的每个相应路径段仍位于 \(U_j\)。相邻函数在圆盘交集上相等，所以同一列 \(f_j\) 也给出沿 \(\widetilde\gamma\) 的延拓；起终点固定，两条路径的初始芽与终点芽分别相同。由\cref{g4:lem:0102:continuation-unique}，这就是 \(\widetilde\gamma\) 的唯一终点芽。
+
+	现在设 \(H:[0,1]^2\rightarrow\Omega\) 是定端点同伦，令 \(\gamma_s(t)=H(t,s)\)，其中 \(H(0,s)=a\)、\(H(1,s)=b\)。按假设，每条 \(\gamma_s\) 都有延拓。固定 \(s_0\)，对 \(\gamma_{s_0}\) 使用上一段的有限链；由 \(H\) 在紧方形上一致连续，\(s\) 充分靠近 \(s_0\) 时，\(\gamma_s\) 与 \(\gamma_{s_0}\) 在上述一致距离下小于 \(\delta\)。因此终点芽关于 \(s\) 局部不变。区间 \([0,1]\) 连通，一个局部不变的取值在全区间上必相同：给定一个值，其原像和补集都是开集，且原像非空。所以 \(s=0\) 与 \(s=1\) 的终点芽相同。
+
+	若 \(\Omega\) 单连通，则任意两条具有相同端点的路径定端点同伦。对每个 \(b\in\Omega\)，用任意一条从 \(a\) 到 \(b\) 的路径延拓，并把终点芽的值记为 \(F(b)\)；刚才的结论保证选择无关。为证明 \(F\) 全纯，固定一条到 \(b\) 的路径，令它的末项代表为圆盘 \(U\) 上的函数 \(h\)。在 \(b\) 周围取更小圆盘 \(V\subset U\)。对于 \(c\in V\)，先沿原路径到 \(b\)，再沿线段到 \(c\)，末段使用同一个函数 \(h\)，便得 \(F(c)=h(c)\)。因此 \(F\) 在每点附近都是全纯的，并具有指定初始芽。唯一性由域上的恒等定理得到。
+\end{proof}
+
+例如，\(1/(1-z)\) 在 \(0\) 处的函数芽不能沿 \(\mathbb C\) 中终点为 \(1\) 的路径全纯延拓：若终点附近存在全纯代表 \(h\)，在与前一段重合的开集上便有 \((1-z)h(z)=1\)，恒等定理会使此式在 \(1\) 附近成立，在 \(z=1\) 处矛盾。因此，尽管 \(\mathbb C\) 单连通，单值定理的延拓存在性假设仍不满足。
+
+\begin{proposition}\label{g4:prop:0102:logarithm}
+	设 \(\Omega\subset\mathbb C\) 是单连通域，\(f\) 在 \(\Omega\) 上全纯且处处非零。则存在全纯函数 \(L\) 使 \(e^L=f\)。指定 \(a\in\Omega\) 及一个满足 \(e^\ell=f(a)\) 的数 \(\ell\) 后，可唯一选定满足 \(L(a)=\ell\) 的 \(L\)。此外，对每个整数 \(m\geq1\)，\(f\) 有全纯 \(m\) 次根；任意两个这样的根相差一个常数 \(m\) 次单位根。
+\end{proposition}
+\begin{proof}
+	每个 \(b\in\Omega\) 附近，都可选圆盘 \(U_b\subset\Omega\)，使 \(|f(z)/f(b)-1|<1\)。选择 \(\ell_b\) 满足 \(e^{\ell_b}=f(b)\)，并令
+	\[
+		L_b(z)=\ell_b+\sum_{n=1}^{\infty}\frac{(-1)^{n+1}}n
+		\left(\frac{f(z)}{f(b)}-1\right)^n.
+	\]
+	与前面的局部对数计算相同，\(L_b'=f'/f\)、\(e^{L_b}=f\)。若两个局部对数定义在相交圆盘上，其差的指数恒为 \(1\)，故差只取 \(2\pi\mathrm{i}\mathbb Z\) 中的值；连续性和交集连通性说明这个差是常数。
+
+	从 \(a\) 出发任取一条连续路径。用上述圆盘覆盖它的紧像，取参数区间的有限细分，使每个小路径段落在某个圆盘中。先把第一项对数的值调整为指定的 \(\ell\)，再依次加上 \(2\pi\mathrm{i}\) 的整数倍，使相邻对数在交点的芽相同。这样便构成沿该路径的解析延拓。由\cref{g4:thm:0102:monodromy}，这些局部对数粘成整个 \(\Omega\) 上的全纯 \(L\)。恒等式 \(e^L=f\) 在局部成立，故处处成立。两个全纯对数之差在连通域上是常数 \(2\pi\mathrm{i}k\)，指定初值便确定唯一选择。
+
+	令 \(g=e^{L/m}\)，则 \(g^m=f\)。若 \(\widetilde g^m=f\)，因为 \(f\neq0\)，比值 \(\widetilde g/g\) 全纯且只取有限个 \(m\) 次单位根中的值，连通性使之恒定。
+\end{proof}
+
+全纯对数的存在还可由闭路积分检测。在任意域 \(\Omega\) 上，无零点全纯函数 \(f\) 有全纯对数，当且仅当
+\[
+	\int_\gamma\frac{f'(z)}{f(z)}\,\mathrm{d}z=0
+	\qquad\text{对每条分片 }C^1\text{ 闭路 }\gamma\subset\Omega.
+\]
+必要性由 \(f'/f=L'\) 得到。反之，固定 \(a\) 及 \(e^\ell=f(a)\)，定义
+\[
+	L(z)=\ell+\int_a^z\frac{f'(\zeta)}{f(\zeta)}\,\mathrm{d}\zeta.
+\]
+域中任意两点可用折线路径连接，闭路积分为零使定义与所选折线路径无关。在小圆盘内沿最后一条线段求导，得 \(L'=f'/f\)，从而 \((fe^{-L})'=0\)，初值使 \(fe^{-L}=1\)。在 \(\mathbb C\setminus\{0\}\) 上取 \(f(z)=z\)，单位圆的积分为 \(2\pi\mathrm{i}\)，所以不存在全域对数。留数、绕数与延拓的路径依赖在这个例子中给出了同一障碍的三种表达。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

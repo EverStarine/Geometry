@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 3.4 Riemann–Roch 的推导
 % 纲要位置：几何学计划纲要.md，第 3571 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,242 @@
 \section{Riemann–Roch 的推导}
 \label{g4:sec:0304}
 
-待撰写
+上一节把全局求解的障碍表示成一个有限维空间，并用微分与积分识别了它的对偶。现在改变允许的极点：只在一个点多允许一阶极点，会给局部主部增加一个复参数。这个参数有时产生一个新截面，有时消去一个上同调障碍，但两者的交错和始终增加 \(1\)。由这一计数出发，我们将先构造亚纯截面，再定义一般线丛的次数并推出公式。
 
 \subsection{线丛 Euler 示性数的有限性}
 \label{g4:subsec:0304:01}
-待撰写
+
+本节中 \(X\) 始终是紧连通黎曼曲面，\(L\) 是其上的全纯线丛。为简化记号，写
+\[
+	H^q(L)=H^q(X,\mathcal O(L)),\qquad h^q(L)=\dim_{\mathbb C}H^q(L).
+\]
+这里 \(\mathcal O(L)\) 是全纯截面层，\(H^0(L)\) 就是全局全纯截面空间。由\cref{g4:thm:0302:dolbeault}，\(H^1(L)\) 可以用光滑 \(L\) 值 \((0,1)\) 形式模去 \(\bar\partial\) 像来计算，且 \(q\ge2\) 时 \(H^q(L)=0\)。
+
+\begin{proposition}
+	\label{g4:prop:0304:finite-euler}
+	紧连通黎曼曲面上的全纯线丛 \(L\) 满足 \(h^0(L),h^1(L)<\infty\)。整数
+	\[
+		\chi(L)=h^0(L)-h^1(L)
+	\]
+	称为 \(L\) 的上同调 Euler 示性数，并有
+	\[
+		\chi(L)=h^0(L)-h^0(K_X\otimes L^{-1}).
+	\]
+\end{proposition}
+\begin{proof}
+	\cref{g4:thm:0303:fredholm}给出 \(\bar\partial_L\) 的有限维核、闭像和有限维余核；光滑正则性与 Dolbeault 比较把它们分别识别为 \(H^0(L)\) 和 \(H^1(L)\)。由\cref{g4:thm:0303:serre-duality}，\(H^1(L)\) 的对偶与 \(H^0(K_X\otimes L^{-1})\) 同构，故二者维数相等，得到末式。
+\end{proof}
+
+这里的 \(\chi(L)\) 是线丛截面及其障碍的交错维数，与第二章的拓扑量 \(\chi(X)\) 是不同的对象。二者将在本节末通过亏格联系起来。先记
+\[
+	g_{\mathrm{an}}=h^0(K_X),
+\]
+称为 \(X\) 的\term[jiexikuige]{解析亏格}[analytic genus]。紧曲面上的全纯函数均为常数，所以 \(h^0(\mathcal O_X)=1\)；对偶给出 \(h^1(\mathcal O_X)=g_{\mathrm{an}}\)，于是
+\begin{equation}
+	\label{g4:eq:0304:structure-euler}
+	\chi(\mathcal O_X)=1-g_{\mathrm{an}}.
+\end{equation}
+这已经确定了所有次数计算的起点。
 
 \subsection{增加一个点的正合列}
 \label{g4:subsec:0304:02}
-待撰写
+
+固定 \(p\in X\)，记 \(L(p)=L\otimes\mathcal O_X([p])\)。若 \(z(p)=0\)，\(e\) 是 \(L\) 的局部全纯标架，则 \(z^{-1}e\) 是 \(L(p)\) 的局部标架。包含 \(L\hookrightarrow L(p)\) 在这两个标架中由乘以 \(z\) 表示。因此商层只支撑在 \(p\)，其截面空间是一个一维向量空间 \(Q_p\)：局部截面
+\[
+	s=\bigl(c_{-1}z^{-1}+c_0+c_1z+\cdots\bigr)e
+\]
+在商中只留下主部系数 \(c_{-1}\)。换坐标或标架会改变这个系数的数值，却不会改变商空间及其维数。\cref{g4:prop:0301:point-modification}已经给出相应的层短正合列；下面直接构造所需的全部上同调映射。
+
+\begin{theorem}[点修改的六项正合列]
+	\label{g4:thm:0304:point-exact}
+	设 \(L\) 是紧连通黎曼曲面 \(X\) 上的全纯线丛，\(p\in X\)。存在正合列
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			0\arrow[r]&H^0(L)\arrow[r]&H^0(L(p))\arrow[r,"\nu_p"]&Q_p\arrow[d,"\delta_p"]\\
+			&0&H^1(L(p))\arrow[l]&H^1(L)\arrow[l]
+		\end{tikzcd}
+	\]
+	其中 \(\nu_p\) 取新增的主部系数。特别地，
+	\begin{equation}
+		\label{g4:eq:0304:point-euler}
+		\chi(L(p))=\chi(L)+1.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先构造连接映射。给定 \(q\in Q_p\)，在 \(p\) 的坐标圆盘内选一个亚纯局部截面 \(s\)，代表这一主部。取光滑截断 \(\rho\)，在 \(p\) 附近等于 \(1\)，支集包含在该圆盘内。\(\rho s\) 是全局光滑的 \(L(p)\) 截面；在 \(X\setminus\{p\}\) 上按普通导数计算 \(\bar\partial(\rho s)\)，所得形式在 \(p\) 附近为零，因而补零后成为全局光滑的 \(L\) 值 \((0,1)\) 形式。定义
+	\[
+		\delta_p(q)=[\bar\partial(\rho s)]\in H^1(L).
+	\]
+	这里没有对含极点的 \(L\) 截面作全局分布微分。若改变 \(s\) 或 \(\rho\)，两种 \(\rho s\) 的差在 \(p\) 附近没有主部，因而是全局光滑 \(L\) 截面；相应形式之差 \(\bar\partial\) 正合，所以连接映射良定义。
+
+	在 \(H^0(L)\) 与 \(H^0(L(p))\) 处的正合性来自包含关系：一个至多有简单极点的截面属于 \(H^0(L)\)，当且仅当主部系数为零。在 \(Q_p\) 处，若 \(q\) 来自全局全纯 \(L(p)\) 截面 \(t\)，则 \(\rho s-t\) 是光滑 \(L\) 截面，故 \(\delta_p(q)=0\)。反过来，若 \(\bar\partial(\rho s)=\bar\partial u\)，其中 \(u\) 是全局光滑 \(L\) 截面，则 \(t=\rho s-u\) 是全纯 \(L(p)\) 截面，其新增主部恰为 \(q\)。
+
+	记包含诱导的映射为 \(i\)。显然 \(i\delta_p(q)=0\)，因为 \(\bar\partial(\rho s)\) 在 \(L(p)\) 中是一个全局 \(\bar\partial\) 像。现设 \([\alpha]\in H^1(L)\) 映到零，即 \(i\alpha=\bar\partial v\)，\(v\) 是光滑 \(L(p)\) 截面。在 \(p\) 附近，由\cref{g4:thm:0302:local-dbar}取光滑 \(L\) 截面 \(w\)，使 \(\bar\partial w=\alpha\)。于是 \(v-iw\) 在该邻域是全纯 \(L(p)\) 截面。取它的主部为 \(q\)，再取上述 \(s,\rho\)。差 \(v-\rho s\) 在 \(p\) 附近是光滑 \(L\) 截面，因为其可能的主部已经消去；在其余地方亦如此。因此存在全局光滑 \(L\) 截面 \(u\)，使 \(v-\rho s=iu\)。求导得到 \(\alpha-\bar\partial(\rho s)=\bar\partial u\)，故 \([\alpha]=\delta_p(q)\)。这证明在 \(H^1(L)\) 处正合。
+
+	最后证明 \(H^1(L)\to H^1(L(p))\) 满射。给定光滑 \(L(p)\) 值形式 \(\beta\)，先在 \(p\) 附近解 \(\bar\partial v=\beta\)，再减去 \(\bar\partial(\rho v)\)。所得代表在 \(p\) 的较小邻域恒为零，故可以视为全局光滑的 \(L\) 值形式。它给出 \([\beta]\) 的原像，六项列遂全部正合。
+
+	所有向量空间均有限维，而 \(\dim Q_p=1\)。正合性使相邻像与核的维数抵消，得到
+	\[
+		h^0(L)-h^0(L(p))+1-h^1(L)+h^1(L(p))=0.
+	\]
+	移项就是式\eqref{g4:eq:0304:point-euler}。
+\end{proof}
+
+这个等式区分了两个可能。因为 \(Q_p\) 一维，\(\delta_p\) 或为零，或为单射。前一种情形，新增的主部可以实现，\(h^0\) 增加 \(1\)，\(h^1\) 不变；后一种情形，\(h^0\) 不变，\(h^1\) 减少 \(1\)。每加一个点，并不保证马上多出一个截面，但总会给截面或障碍带来一次可计数的变化。
 
 \subsection{亚纯截面的存在而非预设}
 \label{g4:subsec:0304:03}
-待撰写
+
+连续增加同一个点，得到 \(L(np)=L\otimes\mathcal O_X(n[p])\)。这表示允许截面在 \(p\) 有至多 \(n\) 阶极点。正合列使交错维数每次增加 \(1\)，而障碍维数始终非负；因此允许的极点阶数足够大时，非零截面必然出现。
+
+\begin{theorem}[亚纯截面的存在]
+	\label{g4:thm:0304:meromorphic-section}
+	设 \(L\) 是紧连通黎曼曲面 \(X\) 上的全纯线丛。对任意指定的 \(p\in X\)，存在不恒为零的亚纯截面 \(s\)，它在 \(X\setminus\{p\}\) 上全纯。具体地，若整数 \(n\ge0\) 满足 \(n+\chi(L)>0\)，就可使 \(s\) 在 \(p\) 的极点阶数不超过 \(n\)。因此每个全纯线丛均同构于某个 \(\mathcal O_X(D)\)。
+\end{theorem}
+\begin{proof}
+	对式\eqref{g4:eq:0304:point-euler}归纳，得到
+	\[
+		\chi(L(np))=\chi(L)+n.
+	\]
+	由于 \(h^1(L(np))\ge0\)，有
+	\[
+		h^0(L(np))=\chi(L)+n+h^1(L(np))\ge\chi(L)+n.
+	\]
+	右边为正时，取非零全纯截面 \(s\in H^0(L(np))\)。在 \(p\) 的局部标架中，它写成 \(a(z)z^{-n}e\)，其中 \(a\) 全纯；因此视为 \(L\) 的截面时至多有一个 \(n\) 阶极点，其余地方全纯。
+
+	\(s\) 的零极点在局部由非零亚纯系数的阶数给出，在紧曲面上只有有限个。令 \(D=\operatorname{div}_L(s)\)。\cref{g4:prop:0301:section-divisor}给出 \(L\cong\mathcal O_X(D)\)。具体地，映射把局部亚纯函数 \(f\) 送到 \(fs\)；条件 \(\operatorname{div}(f)+D\ge0\) 恰好保证乘积全纯，并且局部乘以非零全纯单位后就是标架之间的同构。
+\end{proof}
+
+应用于 \(L=K_X\)，便得到第二章所需的一条非零亚纯微分。对一个已经给出复图册的紧曲面，这个存在性来自局部求解与全局有限维障碍；并不需要先为曲面写出代数方程。
+
+\begin{corollary}[到球面的有限映射]
+	\label{g4:cor:0304:meromorphic-map-existence}
+	设 \(X\) 是紧连通黎曼曲面，\(p\in X\)。则存在非恒定亚纯函数 \(f\)，它只可能在 \(p\) 有极点，且极点阶数不超过 \(g_{\mathrm{an}}+1\)。相应映射 \(f:X\to\mathbb P^1\) 全纯、满射且有限，其次数不超过 \(g_{\mathrm{an}}+1\)。
+\end{corollary}
+\begin{proof}
+	由式\eqref{g4:eq:0304:structure-euler}及刚才的估计，
+	\[
+		h^0(\mathcal O_X(n[p]))\ge n+1-g_{\mathrm{an}}.
+	\]
+	取 \(n=g_{\mathrm{an}}+1\)，右边等于 \(2\)。该空间包含常数，故还有一个非常值函数 \(f\)。它在 \(p\) 以外全纯，在 \(p\) 至多有 \(n\) 阶极点；若也无极点，就会因紧性而为常数，所以这里实际存在极点。\cref{g4:prop:0201:meromorphic-map,g4:thm:0202:finite-map}把它变成满射的有限全纯球面映射。其次数等于无穷远纤维的总重数，即 \(p\) 处的极点阶数，故不超过 \(n\)。
+\end{proof}
+
+\begin{definition}
+	\label{g4:def:0304:line-bundle-degree}
+	设 \(L\) 是紧连通黎曼曲面上的全纯线丛，取一条不恒为零的亚纯截面 \(s\)。定义
+	\[
+		\deg L=\deg\operatorname{div}_L(s).
+	\]
+	这个整数称为 \(L\) 的\term[xiancongdecishu]{次数}[degree of a line bundle]。
+\end{definition}
+
+定义与 \(s\) 的选择无关。若换成 \(t\)，比值 \(s/t\) 是全局非零亚纯函数，而且 \(\operatorname{div}_L(s)-\operatorname{div}_L(t)=\operatorname{div}(s/t)\)。由\cref{g4:prop:0203:principal-degree}，右边次数为零。线丛同构也保持截面的局部阶数，因此次数只依赖同构类。
+
+\begin{proposition}
+	\label{g4:prop:0304:degree-rules}
+	设 \(L,M\) 是紧连通黎曼曲面 \(X\) 上的全纯线丛，\(D\) 为除子。则
+	\[
+		\deg\mathcal O_X(D)=\deg D,\qquad
+		\deg(L\otimes M)=\deg L+\deg M,\qquad
+		\deg L^{-1}=-\deg L.
+	\]
+	如果 \(L\) 有非零全纯截面，则 \(\deg L\ge0\)；若还满足 \(\deg L=0\)，则 \(L\) 平凡。
+\end{proposition}
+\begin{proof}
+	\(\mathcal O_X(D)\) 的亚纯截面 \(1\)，在 \(D\) 的系数为 \(n_p\) 的点附近，相对于标架 \(z^{-n_p}\) 的系数是 \(z^{n_p}\)，故其截面除子恰为 \(D\)。给 \(L,M\) 选非零亚纯截面 \(s,t\)，其张量积的阶数逐点相加，倒数截面的阶数逐点取负，得到两个次数法则。
+
+	非零全纯截面的除子有效，故其次数非负。若次数为零，每个非负的局部零点阶数都为零，所以截面处处不消失；它提供全局全纯标架，使 \(L\) 平凡。
+\end{proof}
 
 \subsection{由除子约化得到次数公式}
 \label{g4:subsec:0304:04}
-待撰写
+
+现在每个全纯线丛都能用除子表示。一个除子只是有限个点的整数和，因此可从平凡线丛出发，逐次增加或减去一个点。每一步的 Euler 示性数变化已经确定，这就把局部主部参数的计数推广到了任意线丛。
+
+\begin{theorem}[Riemann--Roch 公式的解析形式]
+	\label{g4:thm:0304:riemann-roch}
+	设 \(X\) 是紧连通黎曼曲面，\(L\) 是其上的全纯线丛，并令 \(g_{\mathrm{an}}=h^0(K_X)\)。则
+	\begin{equation}
+		\label{g4:eq:0304:riemann-roch}
+		h^0(L)-h^0(K_X\otimes L^{-1})
+		=\deg L+1-g_{\mathrm{an}}.
+	\end{equation}
+	若 \(D\) 是除子，记 \(\ell(D)=h^0(\mathcal O_X(D))\)，并选择任一非零亚纯微分的典范除子 \(K\)，则
+	\[
+		\ell(D)-\ell(K-D)=\deg D+1-g_{\mathrm{an}}.
+	\]
+\end{theorem}
+\begin{proof}
+	先对任意线丛 \(A\) 使用点修改公式。它给出 \(\chi(A(p))=\chi(A)+1\)；将 \(A\) 换成 \(A(-p)\)，又得到 \(\chi(A(-p))=\chi(A)-1\)。所以对任意有限除子 \(D=\sum n_p[p]\)，逐个点逐次修改可得
+	\[
+		\chi(\mathcal O_X(D))=\chi(\mathcal O_X)+\sum_p n_p.
+	\]
+	由\cref{g4:thm:0304:meromorphic-section}取 \(L\cong\mathcal O_X(D)\)，并用\cref{g4:prop:0304:degree-rules}识别次数，便有
+	\[
+		\chi(L)=\deg L+\chi(\mathcal O_X)=\deg L+1-g_{\mathrm{an}}.
+	\]
+	再由\cref{g4:thm:0303:serre-duality}把 \(h^1(L)\) 替换成 \(h^0(K_X\otimes L^{-1})\)，得到式\eqref{g4:eq:0304:riemann-roch}。
+
+	非零亚纯微分已经存在，其除子 \(K\) 给出 \(K_X\cong\mathcal O_X(K)\)。局部标架的乘除表明 \(\mathcal O_X(K)\otimes\mathcal O_X(D)^{-1}\cong\mathcal O_X(K-D)\)，所以线丛公式就是所述除子公式。
+\end{proof}
+
+左边的第二项保留了实际的全局障碍。如果只数允许的极点阶数，右边的 \(\deg L+1-g_{\mathrm{an}}\) 可能低估截面空间；与它相差的数目恰为对偶微分的维数。次数足够大时，这个对偶线丛的次数变负，障碍才会消失。
+
+\begin{corollary}
+	\label{g4:cor:0304:canonical-degree}
+	紧连通黎曼曲面满足
+	\[
+		\deg K_X=2g_{\mathrm{an}}-2,\qquad h^1(K_X)=1.
+	\]
+\end{corollary}
+\begin{proof}
+	对偶给出 \(h^1(K_X)=h^0(\mathcal O_X)=1\)。在式\eqref{g4:eq:0304:riemann-roch}中取 \(L=K_X\)，左边为 \(g_{\mathrm{an}}-1\)，右边为 \(\deg K_X+1-g_{\mathrm{an}}\)。整理得到次数公式。
+\end{proof}
 
 \subsection{解析亏格与拓扑亏格}
 \label{g4:subsec:0304:05}
-待撰写
+
+第二章的亏格 \(g(X)\) 来自紧定向曲面的拓扑分类，而 \(g_{\mathrm{an}}\) 来自全纯微分的维数。现在已经构造出非恒定亚纯函数，便可把这两个数放进同一个分歧覆盖：微分拉回的除子次数由解析计算得到，同一映射的总分歧又受拓扑 Riemann--Hurwitz 公式控制。
+
+\begin{theorem}[两种亏格相等]
+	\label{g4:thm:0304:genus-comparison}
+	设 \(X\) 是紧连通黎曼曲面，\(g(X)\) 是其底层闭定向曲面的亏格。则
+	\[
+		h^0(K_X)=h^1(\mathcal O_X)=g(X),
+		\qquad \deg K_X=2g(X)-2.
+	\]
+	因此式\eqref{g4:eq:0304:riemann-roch}中的解析亏格可直接写成拓扑亏格 \(g=g(X)\)。
+\end{theorem}
+\begin{proof}
+	由\cref{g4:cor:0304:meromorphic-map-existence}，取一个非恒定全纯映射 \(f:X\to\mathbb P^1\)，记 \(d=\deg f\)。靶球面上的亚纯微分 \(\eta=\mathrm{d}w\) 只有无穷远处的二阶极点，其除子为 \(-2[\infty]\)。局部幂模型说明 \(f^*\eta\) 不恒为零，因此它的除子代表 \(K_X\)。由\cref{g4:thm:0203:divisor-hurwitz}，
+	\[
+		\operatorname{div}(f^*\eta)=-2f^*[\infty]+R_f,
+		\qquad \deg K_X=-2d+\deg R_f.
+	\]
+	另一方面，第二章的数值公式\cref{g4:thm:0203:riemann-hurwitz}已经从曲面三角剖分与封盘计数证明
+	\[
+		2g(X)-2=-2d+\deg R_f.
+	\]
+	比较得到 \(\deg K_X=2g(X)-2\)。\cref{g4:cor:0304:canonical-degree}又给出 \(\deg K_X=2g_{\mathrm{an}}-2\)，所以 \(g_{\mathrm{an}}=g(X)\)。最后由对偶的 \(h^1(\mathcal O_X)=h^0(K_X)\) 完成全部等式。
+\end{proof}
+
+由此，紧曲面上的标准公式写成
+\[
+	h^0(L)-h^1(L)=\deg L+1-g,
+	\qquad h^1(L)=h^0(K_X\otimes L^{-1}).
+\]
+求解障碍、零极点的总阶数和曲面的手柄数分别出现在这两个等式中。证明中起桥梁作用的有限球面映射，是通过允许一个高阶极点构造出来的。
+
+\begin{example}
+	\label{g4:exm:0304:sphere-cohomology}
+	在 \(X=\mathbb P^1\) 上取 \(L=\mathcal O_X(k[\infty])\)，\(k\in\mathbb Z\)。当 \(k\ge0\) 时，截面是有限平面上全纯、在无穷远极点阶数至多为 \(k\) 的函数。由 Cauchy 估计，它们正是次数至多为 \(k\) 的多项式，故维数为 \(k+1\)。若 \(k<0\)，截面必须是无有限极点且在无穷远消失的函数；紧性使它只能为零。因此
+	\[
+		h^0(L)=\max(k+1,0).
+	\]
+	球面亏格为零，Riemann--Roch 给出 \(h^0(L)-h^1(L)=k+1\)，从而
+	\[
+		h^1(L)=\max(-k-1,0).
+	\]
+	例如 \(\mathcal O_X(-[\infty])\) 的两个上同调群都为零，而 \(K_X\cong\mathcal O_X(-2[\infty])\) 有一维 \(H^1\)，与对偶于常数函数相符。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

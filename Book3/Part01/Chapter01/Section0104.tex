@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 1.4 度量的实际计算
 % 纲要位置：几何学计划纲要.md，第 2148 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,290 @@
 \section{度量的实际计算}
 \label{g3:sec:0104}
 
-待撰写
+一个度量往往先由几何构造给出：曲面的长度来自环境空间，两个空间可以作乘积，已有度量也可以乘上随点变化的正函数。若对每种构造都重新展开全部 Christoffel 系数，计算中的共同结构就会被指标遮住。本节先用 Levi-Civita 联络的唯一性和 Koszul 公式求出一般表达，再在具体模型中核对。所有度量与映射均光滑，流形无边界；出现坐标区间端点时，另行说明度量能否光滑延拓。
 
 \subsection{诱导度量和乘积度量}
 \label{g3:subsec:0104:01}
-待撰写
+设 \(F:M\rightarrow N\) 为光滑映射，\(\bar g\) 是 \(N\) 上的黎曼度量。把 \(N\) 上的内积沿微分拉回，得到
+\[
+	(F^*\bar g)_p(v,w)=\bar g_{F(p)}(\mathrm dF_pv,\mathrm dF_pw).
+\]
+这个对称二阶张量总是半正定；它在每点正定，当且仅当 \(\mathrm dF_p\) 单射。因此，浸入正好保证拉回张量成为黎曼度量，称为 \(F\) 的\term[youdaoduliang]{诱导度量}[induced metric]。取局部坐标 \(x^i\) 和 \(y^a\)，其矩阵是
+\begin{equation}\label{g3:eq:induced-metric-coordinates}
+	g_{ij}(x)=\sum_{a,b}\bar g_{ab}(F(x))
+	\frac{\partial F^a}{\partial x^i}\frac{\partial F^b}{\partial x^j}.
+\end{equation}
+例如图像 \(F(x)=(x,h(x))\subset\mathbb R^{n+1}\) 的度量满足 \(g_{ij}=\delta_{ij}+\partial_i h\,\partial_j h\)。对任意非零向量 \(v\)，有 \(g(v,v)=|v|^2+(\mathrm dh(v))^2>0\)。若改取 \(F(t)=t^2\)，则拉回 \(\mathrm dy^2\) 得 \(4t^2\mathrm dt^2\)，在 \(t=0\) 退化；这一点正是映射不再浸入的位置。
+
+\ProseParagraphBreak
+
+环境中已有协变导数时，沿子流形求导会产生切向和法向两部分。切向部分仍能比较子流形内的向量，并保持其内积。
+
+\begin{proposition}\label{g3:prop:induced-connection-projection}
+	设 \(F:M\rightarrow(N,\bar g)\) 为光滑浸入，\(g=F^*\bar g\)，\(\bar\nabla\) 为 \(\bar g\) 的 Levi-Civita 联络。则 \(g\) 的 Levi-Civita 联络由
+	\begin{equation}\label{g3:eq:induced-connection-projection}
+		\mathrm dF(\nabla_XY)
+		=\bigl(\bar\nabla^F_X(\mathrm dF(Y))\bigr)^\top
+	\end{equation}
+	确定，其中 \(\top\) 表示向 \(\mathrm dF(\mathrm TM)\) 的正交投影，\(\bar\nabla^F\) 表示沿 \(F\) 求环境协变导数。
+\end{proposition}
+\begin{proof}
+	先说明沿映射求导的含义。若 \(W=\sum_aW^a\partial_{y^a}|_{F(x)}\) 为沿 \(F\) 的向量场，则
+	\[
+		\bar\nabla^F_XW
+		=\sum_a\left(X(W^a)+\sum_{b,c}\bar\Gamma^a_{bc}(F(x))
+		X(F^b)W^c\right)\partial_{y^a}|_{F(x)}.
+	\]
+	它就是在环境局部延拓后沿 \(\mathrm dF(X)\) 求导；公式只使用沿 \(F\) 的取值及其切向导数，所以与所选延拓无关，坐标变换后也一致。浸入局部可看成嵌入，故这一解释适用于每个源点附近，即使 \(F\) 在不同源点的像重合也无妨。
+
+	正交投影光滑，且 \(\mathrm dF:\mathrm TM\rightarrow\mathrm dF(\mathrm TM)\) 是丛同构。因此右端确定一个光滑联络，线性及 Leibniz 法则均由环境联络继承。对向量场 \(X,Y,Z\)，环境度量相容性给出
+	\[
+		Xg(Y,Z)=\bar g(\bar\nabla^F_X\mathrm dF(Y),\mathrm dF(Z))
+		+\bar g(\mathrm dF(Y),\bar\nabla^F_X\mathrm dF(Z)).
+	\]
+	法向分量与切向场正交，故这正是所构造联络的度量相容性。又因为 \(\bar\Gamma^a_{bc}=\bar\Gamma^a_{cb}\)，前述坐标公式中含 \(\bar\Gamma\) 的项在交换 \(X,Y\) 后抵消，而剩余第 \(a\) 个分量为
+	\[
+		X(Y(F^a))-Y(X(F^a))=[X,Y](F^a).
+	\]
+	所以 \(\bar\nabla^F_X\mathrm dF(Y)-\bar\nabla^F_Y\mathrm dF(X)=\mathrm dF([X,Y])\)。投影后即得无挠性，结论由\cref{g3:thm:levi-civita}的唯一性得到。
+\end{proof}
+
+\begin{example}\label{g3:exm:round-sphere-connection}
+	半径 \(a>0\) 的球面 \(S_a^n\subset\mathbb R^{n+1}\) 取诱导度量，位置向量记为 \(p\)。对球面切向量场 \(Y\) 求导，\(\langle Y,p\rangle=0\) 给出
+	\[
+		\langle D_XY,p\rangle=-\langle Y,X\rangle.
+	\]
+	由于单位法向为 \(p/a\)，环境导数的法向分量为 \(-a^{-2}\langle X,Y\rangle p\)。故
+	\[
+		\nabla_XY=D_XY+a^{-2}\langle X,Y\rangle p.
+	\]
+	右端确实与 \(p\) 正交。这一表达直接显示：环境中的导数通常离开切平面，补上的径向项恰好消去法向分量。
+\end{example}
+
+另一种常用构造来自两个独立方向。设 \((M,g)\)、\((N,h)\) 为黎曼流形，在 \(M\times N\) 上令
+\[
+	G=\pi_M^*g+\pi_N^*h,
+\]
+其中 \(\pi_M,\pi_N\) 是两个投影。此度量称为\term[chengjiduliang]{乘积度量}[product metric]；它使两个因子的切空间彼此正交，并保留各因子原有的内积。
+
+\begin{proposition}\label{g3:prop:product-connection}
+	设 \(G\) 为两个光滑黎曼流形 \((M,g)\)、\((N,h)\) 的乘积度量。将 \(M\) 上的向量场 \(X,Y\) 和 \(N\) 上的向量场 \(U,V\) 提升到乘积，则
+	\begin{equation}\label{g3:eq:product-connection}
+		\nabla^G_XY=\nabla^g_XY,\qquad
+		\nabla^G_UV=\nabla^h_UV,\qquad
+		\nabla^G_XU=\nabla^G_UX=0.
+	\end{equation}
+	右端的因子向量场同样理解为其提升。
+\end{proposition}
+\begin{proof}
+	提升场满足 \([X,U]=0\)，且 \(U(g(X,Y))=X(h(U,V))=0\)。把三个同属 \(M\) 的场代入 Koszul 公式\eqref{g3:eq:koszul-formula}，便得到因子 \(g\) 的公式；以一个 \(N\) 方向的场作最后一个配对场，所有项均为零。因此 \(\nabla^G_XY\) 的 \(M\) 分量为 \(\nabla^g_XY\)，\(N\) 分量为零。交换因子可得第二式。对 \(\nabla^G_XU\)，分别与 \(M\)、\(N\) 方向配对时，各项也都为零，故它为零；无挠性给出 \(\nabla^G_UX=0\)。这些提升场在局部张成切丛，结合联络的线性与 Leibniz 法则便确定所有向量场的导数。
+\end{proof}
+
+这里混合导数为零的对象是来自单个因子的提升场。若 \(U\) 再乘上依赖 \(M\) 坐标的函数 \(b\)，便有 \(\nabla^G_X(bU)=X(b)U\)。例如圆柱 \(\mathbb R\times S^1\) 上的度量 \(\mathrm dz^2+a^2\mathrm d\theta^2\) 是乘积度量，坐标场之间的联络系数全为零；它作为空间曲面仍然弯曲，切向协变导数只记录长度几何。
 
 \subsection{共形变换的联络}
 \label{g3:subsec:0104:02}
-待撰写
+在同一流形上，把每点所有方向的长度按同一个比例改变，可保留角度，同时改变不同位置之间的尺度。设 \(u\in C^\infty(M)\)，度量
+\[
+	\widetilde g=e^{2u}g
+\]
+称为 \(g\) 的\term[gongxingbianhuan]{共形变换}[conformal change]。向量长度乘以 \(e^u\)，两个非零向量夹角的余弦则不变，因为角度公式的分子与分母同时乘以 \(e^{2u}\)。联络还会感受到比例函数的变化率。
+
+\begin{proposition}\label{g3:prop:conformal-connection}
+	设 \((M,g)\) 为光滑黎曼流形，\(u\in C^\infty(M)\)，\(\widetilde g=e^{2u}g\)。其 Levi-Civita 联络满足
+	\begin{equation}\label{g3:eq:conformal-connection}
+		\widetilde\nabla_XY
+		=\nabla_XY+X(u)Y+Y(u)X-g(X,Y)\operatorname{grad}_g u.
+	\end{equation}
+	在同一局部坐标中，令 \(u_i=\partial_i u\)，则
+	\begin{equation}\label{g3:eq:conformal-christoffel}
+		\widetilde\Gamma^k_{ij}
+		=\Gamma^k_{ij}+\delta^k_j u_i+\delta^k_i u_j
+		-g_{ij}\sum_\ell g^{k\ell}u_\ell.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	分别将 \(\widetilde g\) 和 \(g\) 代入 Koszul 公式。含括号的项只整体乘以 \(e^{2u}\)；对度量求导时出现新项，例如
+	\[
+		X\bigl(e^{2u}g(Y,Z)\bigr)
+		=e^{2u}Xg(Y,Z)+2e^{2u}X(u)g(Y,Z).
+	\]
+	将 \(\widetilde g\) 的公式除以 \(e^{2u}\)，再减去 \(g\) 的公式，得到
+	\[
+		2g(\widetilde\nabla_XY-\nabla_XY,Z)
+		=2X(u)g(Y,Z)+2Y(u)g(X,Z)-2Z(u)g(X,Y).
+	\]
+	由梯度定义 \(g(\operatorname{grad}_g u,Z)=Z(u)\)，右端恰好是\eqref{g3:eq:conformal-connection}中三个修正项与 \(2Z\) 的配对。内积非退化便得该式；取 \(X=\partial_i,Y=\partial_j\) 并展开梯度，得到坐标表达。
+\end{proof}
+
+这个公式把两个效应分开了：常数倍缩放不改变联络，随位置变化的尺度则通过 \(\mathrm du\) 进入协变导数。修正项对 \(X,Y\) 对称，与两个联络都无挠相符。
+
+\begin{example}\label{g3:exm:half-plane-connection}
+	在上半平面 \(\{(x,y)\in\mathbb R^2:y>0\}\) 上取
+	\[
+		g_a=\frac{a^2}{y^2}(\mathrm dx^2+\mathrm dy^2),\qquad a>0.
+	\]
+	相对于平坦度量，\(u=\log a-\log y\)，故 \(u_x=0,u_y=-1/y\)。由\eqref{g3:eq:conformal-christoffel}得全部非零系数
+	\[
+		\Gamma^x_{xy}=\Gamma^x_{yx}=-\frac1y,\qquad
+		\Gamma^y_{xx}=\frac1y,\qquad
+		\Gamma^y_{yy}=-\frac1y.
+	\]
+	参数 \(a\) 不出现在这些系数中。取正交单位标架 \(e_1=(y/a)\partial_x\)、\(e_2=(y/a)\partial_y\)，便有
+	\[
+		\nabla_{e_1}e_1=\frac1a e_2,\qquad
+		\nabla_{e_1}e_2=-\frac1a e_1,\qquad
+		\nabla_{e_2}e_1=\nabla_{e_2}e_2=0.
+	\]
+	因而 \(\omega^2{}_1=\mathrm dx/y\)，且
+	\[
+		\mathrm d\omega^2{}_1
+		=\frac{\mathrm dx\wedge\mathrm dy}{y^2}
+		=\frac1{a^2}\theta^1\wedge\theta^2.
+	\]
+	按\eqref{g3:eq:surface-curvature-form}的约定，\(K=-a^{-2}\)。同一联络在不同尺度的正交单位标架下有不同的系数；曲率的数值还要用度量作单位化。
+\end{example}
 
 \subsection{翘曲积与旋转模型}
 \label{g3:subsec:0104:03}
-待撰写
+乘积度量让各个切片具有相同尺度。若切片随另一个变量逐渐放大或缩小，最直接的模型是用一个正函数控制切片度量。
+
+\begin{definition}\label{g3:def:warped-product-interval}
+	设 \(I\subset\mathbb R\) 为开区间，\((F,h)\) 为 \(m\) 维光滑黎曼流形，\(f:I\rightarrow(0,\infty)\) 为光滑函数。在 \(I\times F\) 上，度量
+	\begin{equation}\label{g3:eq:warped-product-interval}
+		g=\mathrm dr^2+f(r)^2h
+	\end{equation}
+	称为以 \(I\) 为底的\term[qiaoquji]{翘曲积}[warped product]度量，\(f\) 称为\term[qiaoquhanshu]{翘曲函数}[warping function]。式中将 \(\mathrm dr\) 与 \(h\) 各自沿投影拉回，并略去拉回记号。
+\end{definition}
+
+正性条件使每个切片 \(\{r\}\times F\) 的度量非退化。为避免混淆，以下 \(U,V,W\) 均表示 \(F\) 上向量场在乘积中的提升，它们与 \(\partial_r\) 的括号为零；\(D\) 表示 \(h\) 的 Levi-Civita 联络。
+
+\begin{proposition}\label{g3:prop:warped-product-connection}
+	设 \(I\subset\mathbb R\) 为开区间，\((F,h)\) 为光滑黎曼流形，\(f>0\) 为 \(I\) 上光滑函数。度量 \(g=\mathrm dr^2+f^2h\) 的 Levi-Civita 联络满足
+	\begin{equation}\label{g3:eq:warped-product-connection}
+		\begin{aligned}
+			\nabla_{\partial_r}\partial_r&=0,\\
+			\nabla_{\partial_r}U=\nabla_U\partial_r&=\frac{f'}fU,\\
+			\nabla_UV&=D_UV-ff' h(U,V)\partial_r.
+		\end{aligned}
+	\end{equation}
+	若 \(\dim F=m\)，其体积密度为 \(\mu_g=f^m|\mathrm dr|\,\mu_h\)。
+\end{proposition}
+\begin{proof}
+	径向方向与纤维方向正交，且 \(g(\partial_r,\partial_r)=1\)，所以 Koszul 公式分别与 \(\partial_r,W\) 配对时均给出 \(\nabla_{\partial_r}\partial_r=0\)。对混合导数，与 \(\partial_r\) 的配对为零，而
+	\[
+		2g(\nabla_{\partial_r}U,V)
+		=\partial_r\bigl(f^2h(U,V)\bigr)=2ff'h(U,V).
+	\]
+	这给出第二行的第一个等号；无挠性及 \([\partial_r,U]=0\) 给出另一个。对两个纤维场，径向分量为
+	\[
+		2g(\nabla_UV,\partial_r)
+		=-\partial_r\bigl(f^2h(U,V)\bigr)=-2ff'h(U,V).
+	\]
+	与另一个纤维场 \(W\) 配对时，\(U,V,W\) 都不对 \(f\) 求导，Koszul 公式的每项都带同一个因子 \(f^2\)，除去此因子后正是 \(D\) 的公式。因此纤维分量为 \(D_UV\)，得到第三行。最后，度量矩阵按径向与纤维分块，行列式为 \(f^{2m}\det(h_{\alpha\beta})\)，开正平方根即得密度公式。
+\end{proof}
+
+若 \(E_1,\ldots,E_m\) 是 \(h\) 的局部正交单位标架，则 \(e_\alpha=f^{-1}E_\alpha\) 与 \(e_0=\partial_r\) 构成 \(g\) 的正交单位标架。前式给出
+\[
+	\nabla_{\partial_r}e_\alpha
+	=-\frac{f'}{f^2}E_\alpha+\frac1f\frac{f'}f E_\alpha=0.
+\]
+因此，在固定纤维点的径向曲线上，按 \(f^{-1}\) 调整长度的纤维标架恰好平行。未单位化的提升场则有导数 \((f'/f)U\)，这说明标架的尺度变化如何进入联络。
+
+\begin{example}\label{g3:exm:surface-of-revolution-metric}
+	取平面曲线 \((f(r),z(r))\)，满足 \(f(r)>0\) 和 \(f'(r)^2+z'(r)^2=1\)。绕竖轴旋转得
+	\[
+		\Phi(r,\theta)=\bigl(f(r)\cos\theta,f(r)\sin\theta,z(r)\bigr).
+	\]
+	其中 \(r\) 是母线弧长，\(\theta\in\mathbb R/2\pi\mathbb Z\)。直接计算
+	\[
+		\langle\Phi_r,\Phi_r\rangle=1,\qquad
+		\langle\Phi_r,\Phi_\theta\rangle=0,\qquad
+		\langle\Phi_\theta,\Phi_\theta\rangle=f^2,
+	\]
+	故诱导度量正是 \(\mathrm dr^2+f^2\mathrm d\theta^2\)。取 \(f=a,z=r\) 得圆柱；取 \(f=a\sin(r/a),z=a\cos(r/a)\) 且 \(0<r<\pi a\) 得去掉两极的半径 \(a\) 球面。乘积模型中规定 \(f>0\)；球极处 \(f=0\) 是上述参数化失效，球面自身的诱导度量仍然光滑正定。
+\end{example}
+
+一般的翘曲积度量不必来自 \(\mathbb R^3\) 中上述弧长旋转参数化。例如 \(f(r)=a\sinh(r/a)\) 在 \(r>0\) 满足 \(f'(r)>1\)，不可能再找到实函数 \(z\) 使 \(f'^2+z'^2=1\)。这个度量作为内在黎曼度量仍然完全合法，其几何量可直接由联络求得。
 
 \subsection{不同曲率归一化的比较}
 \label{g3:subsec:0104:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+长度单位的变化会同时改变许多公式。先固定正数 \(c\)，将 \(n\) 维流形上的度量改为 \(\widehat g=c^2g\)。由长度和密度的定义，以及\cref{g3:prop:conformal-connection}的常数情形，得到
+\begin{equation}\label{g3:eq:constant-metric-scaling}
+	|v|_{\widehat g}=c|v|_g,\qquad
+	L_{\widehat g}(\gamma)=cL_g(\gamma),\qquad
+	\mu_{\widehat g}=c^n\mu_g,\qquad
+	\widehat\nabla=\nabla.
+\end{equation}
+曲率算子由联络定义，因此对固定向量场有 \(\widehat R(X,Y)Z=R(X,Y)Z\)。若把输出向量再与第四个向量作内积，则对应四阶张量乘以 \(c^2\)。截面曲率\eqref{g3:eq:sectional-curvature}的分子乘以 \(c^2\)，分母乘以 \(c^4\)，于是
+\begin{equation}\label{g3:eq:sectional-curvature-scaling}
+	K_{\widehat g}(\sigma)=c^{-2}K_g(\sigma)
+\end{equation}
+对每个二维切平面 \(\sigma\) 成立。因而“曲率张量不变”须说明所指的是哪种张量；作为作用于三个向量场并输出一个向量场的算子，\(R\) 不变，单位二维截面上的曲率数值却按长度平方的倒数缩放。
+
+\ProseParagraphBreak
+
+在旋转型二维度量上，可以把这一尺度规律直接算出来。设 \(f>0\)，取
+\[
+	e_1=\partial_r,\qquad e_2=f^{-1}\partial_\theta,
+	\qquad\theta^1=\mathrm dr,\quad\theta^2=f\,\mathrm d\theta.
+\]
+由\eqref{g3:eq:warped-product-connection}得到
+\begin{equation}\label{g3:eq:warped-surface-frame}
+	\begin{aligned}
+		\nabla_{e_1}e_1&=0,&\nabla_{e_1}e_2&=0,\\
+		\nabla_{e_2}e_1&=\frac{f'}f e_2,&
+		\nabla_{e_2}e_2&=-\frac{f'}f e_1.
+	\end{aligned}
+\end{equation}
+因此联络一形式为 \(\omega^2{}_1=f'\mathrm d\theta\)。按\eqref{g3:eq:surface-curvature-form}，
+\[
+	\mathrm d\omega^2{}_1=f''\mathrm dr\wedge\mathrm d\theta
+	=-Kf\,\mathrm dr\wedge\mathrm d\theta,
+\]
+从而
+\begin{equation}\label{g3:eq:warped-surface-curvature}
+	K=-\frac{f''}{f}.
+\end{equation}
+
+再用协变导数核对符号。记 \(b=f'/f\)，有 \([e_1,e_2]=-be_2\)，所以
+\[
+	\begin{aligned}
+		R(e_1,e_2)e_2
+		&=\nabla_{e_1}(-be_1)-\nabla_{e_2}(0)-\nabla_{-be_2}e_2\\
+		&=-(b'+b^2)e_1=-\frac{f''}{f}e_1.
+	\end{aligned}
+\]
+与 \(e_1\) 作内积便恢复同一结果。这里的括号项不可省略：\((e_1,e_2)\) 已作单位化，一般不是坐标标架。
+
+\begin{table}[htbp]
+	\centering
+	\caption{旋转型二维度量的曲率归一化}
+	\label{g3:tab:constant-curvature-models}
+	\begin{tabular}{llll}
+		\toprule
+		模型 & \(f(r)\) & 参数范围 & \(K=-f''/f\)\\
+		\midrule
+		Euclid 平面 & \(r\) & \(r>0\) & \(0\)\\
+		半径 \(a\) 的球面 & \(a\sin(r/a)\) & \(0<r<\pi a\) & \(a^{-2}\)\\
+		双曲平面 & \(a\sinh(r/a)\) & \(r>0\) & \(-a^{-2}\)\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\cref{g3:tab:constant-curvature-models}中 \(a>0\)，角变量的周期均为 \(2\pi\)。第一行通过通常的极坐标还原平面；第二行由前面的球面浸入补上两极。第三行令 \(\rho=\tanh(r/(2a))\)，则 \(0<\rho<1\)，并且
+\[
+	\mathrm dr=\frac{2a}{1-\rho^2}\,\mathrm d\rho,\qquad
+	a\sinh(r/a)=\frac{2a\rho}{1-\rho^2}.
+\]
+故该度量变为
+\begin{equation}\label{g3:eq:hyperbolic-disk-scale}
+	g_a=\frac{4a^2}{(1-\rho^2)^2}
+	\bigl(\mathrm d\rho^2+\rho^2\mathrm d\theta^2\bigr)
+	=\frac{4a^2}{(1-x^2-y^2)^2}(\mathrm dx^2+\mathrm dy^2).
+\end{equation}
+最后一个表达在整个开单位圆盘上光滑正定，补上了极坐标遗漏的中心；它给出本节双曲平面的圆盘模型。在 \(r>0\) 已算得曲率 \(-a^{-2}\)，中心处由光滑性延续为同值。取 \(a=1\) 得曲率 \(-1\)；若圆盘度量写成 \((1-x^2-y^2)^{-2}(\mathrm dx^2+\mathrm dy^2)\)，则相应 \(a=1/2\)，曲率是 \(-4\)。两式相差一个常数因子，比较其长度和曲率公式时须同时保留这一因子。
+
+\ProseParagraphBreak
+
+上述模型把一般公式的几种作用联系起来：诱导度量说明局部矩阵来自哪里，联络的唯一性简化了投影与乘积计算，共形及翘曲积公式把尺度的导数显露出来，最后由同一个联络在坐标标架和正交标架中得到相同的曲率符号。下一章将利用这些已经可以实际计算的联络，研究满足 \(\nabla_{\dot\gamma}\dot\gamma=0\) 的曲线及其长度性质。

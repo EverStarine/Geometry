@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 2.3 Nakayama 与局部生成
 % 纲要位置：几何学计划纲要.md，第 5088 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,154 @@
 \section{Nakayama 与局部生成}
 \label{g5:sec:0203}
 
-待撰写
+设 \((A,\mathfrak m)\) 为局部环。把一个有限 \(A\)-模 \(M\) 模去 \(\mathfrak mM\)，就得到剩余域上的有限维向量空间。线性代数能从这个向量空间找出基，但基的任意提升是否真的生成 \(M\)？这里需要把一个“模掉极大理想之后成立”的结论提升为环上的结论。关键事实是 \(1-a\) 在 \(a\in\mathfrak m\) 时可逆；行列式把有限多条生成关系集中到这样一个元素上。
+
+\ProseParagraphBreak
+
+本节证明 \term[Nakayamayinli]{Nakayama 引理}[Nakayama's lemma]及其生成元形式。\footnote{中山正（なかやま ただし，Tadasi Nakayama，1912—1964），日本数学家，研究结合代数、表示论与环论；以其名字命名的引理刻画有限模的局部生成。} 行列式论证与局部生成元可对照\cite[第2节，定理2.1--2.3]{Matsumura1989}。
 
 \subsection{行列式技巧}
 \label{g5:subsec:0203:01}
-待撰写
+
+先回想有限维向量空间中的一个方法：写出线性变换的矩阵，再用伴随矩阵把一个矩阵方程化为行列式方程。模的生成元不一定线性无关，但只要目标是得到一个作用在整个模上为零的多项式，同样的计算仍然有效。
+
+\begin{lemma}[行列式技巧]\label{g5:lem:determinant-trick}
+	设 \(A\) 为交换含幺环，\(M\) 为由 \(n\geq1\) 个元素生成的 \(A\)-模， \(I\subseteq A\) 为理想，\(\varphi:M\to M\) 为 \(A\)-线性同态。 若 \(\varphi(M)\subseteq IM\)，则存在 \(a_j\in I^j\)、\(1\leq j\leq n\)，使
+	\[
+	\varphi^n+a_1\varphi^{n-1}+\cdots+a_n\operatorname{id}_M=0.
+	\]
+\end{lemma}
+\begin{proof}
+	取生成元 \(m_1,\ldots,m_n\)。把 \(\varphi(m_i)\in IM\) 中出现的每个模元素再用这些生成元表示，可以写出
+	\[
+	\varphi(m_i)=\sum_{j=1}^n c_{ij}m_j,\qquad c_{ij}\in I.
+	\]
+	令 \(C=(c_{ij})\)。把 \(\varphi\) 看成作用于每个分量的算子，则
+	\[
+	(\varphi\,\operatorname{id}_{A^n}-C)
+	\begin{pmatrix}m_1\\ \vdots\\m_n\end{pmatrix}=0.
+	\]
+	这个矩阵的系数属于由标量作用及 \(\varphi\) 生成的交换算子环；标量与 \(\varphi\) 交换，是因为 \(\varphi\) 为 \(A\)-线性的。因此可以左乘伴随矩阵，得到
+	\[
+	\det(\varphi\,\operatorname{id}_{A^n}-C)\,m_i=0
+	\quad(1\leq i\leq n).
+	\]
+	在多项式 \(\det(T\operatorname{id}_{A^n}-C)\) 中，\(T^{n-j}\) 的系数是若干个 \(j\) 个矩阵元素乘积的和，故属于 \(I^j\)。将 \(T\) 换成 \(\varphi\)，所得算子杀掉所有生成元，便杀掉整个 \(M\)。这里没有把生成元当作基，也没有要求它们的关系为零。
+\end{proof}
+
+取 \(\varphi=\operatorname{id}_M\)，行列式技巧立即把条件 \(IM=M\) 变成一个单独元素的消去关系。
+
+\begin{proposition}\label{g5:prop:nakayama-ideal}
+	设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想，\(M\) 为有限生成 \(A\)-模。 若 \(IM=M\)，则存在 \(a\in I\) 使
+	\[
+	(1-a)M=0.
+	\]
+\end{proposition}
+\begin{proof}
+	若 \(M=0\)，取 \(a=0\)。否则选有限生成元并对恒等同态应用\cref{g5:lem:determinant-trick}，得到 \((1+a_1+\cdots+a_n)M=0\)，其中 \(a_j\in I^j\subseteq I\)。 取 \(a=-\sum_j a_j\) 即得结论。
+\end{proof}
+
+这个命题中的 \(1-a\) 未必可逆。例如在 \(A=k[t]\)、\(M=A/(t-1)\) 中，\(tM=M\)，且 \((1-t)M=0\)，但 \(M\ne0\)。局部环的极大理想条件恰好排除了这种情形。
 
 \subsection{局部 Nakayama 引理}
 \label{g5:subsec:0203:02}
-待撰写
+
+\begin{theorem}[Nakayama 引理]\label{g5:thm:nakayama-local}
+	设 \((A,\mathfrak m)\) 为交换含幺局部环，\(M\) 为有限生成 \(A\)-模。 若 \(\mathfrak mM=M\)，则 \(M=0\)。 更一般地，若 \(N\subseteq M\) 是子模且 \(M=N+\mathfrak mM\)，则 \(M=N\)。
+\end{theorem}
+\begin{proof}
+	由\cref{g5:prop:nakayama-ideal}，存在 \(a\in\mathfrak m\) 使 \((1-a)M=0\)。而 \(1-a\) 是单位，故 \(M=0\)。 对一般情形，商模 \(M/N\) 仍有限生成，且给定等式意味着
+	\[
+	M/N=\mathfrak m(M/N).
+	\]
+	应用第一部分得到 \(M/N=0\)，即 \(M=N\)。
+\end{proof}
+
+这里无需假设 \(N\) 有限生成，也无需假设 \(A\) Noether。真正被使用的有限性是商模 \(M/N\) 有限生成；若单独已知这一点，第二个结论依然成立。
+
+\begin{corollary}\label{g5:cor:nakayama-generators}
+	设 \((A,\mathfrak m)\) 为交换含幺局部环，\(k=A/\mathfrak m\)，\(M\) 为有限生成 \(A\)-模，\(m_1,\ldots,m_r\in M\)。 则 \(m_1,\ldots,m_r\) 生成 \(M\)，当且仅当它们在 \(M/\mathfrak mM\) 中的像张成这个 \(k\)-向量空间。
+\end{corollary}
+\begin{proof}
+	若它们生成 \(M\)，模去 \(\mathfrak mM\) 后仍张成。 反过来，令 \(N=\sum_iAm_i\)。像张成意味着 \(M=N+\mathfrak mM\)，由 Nakayama 引理得到 \(M=N\)。
+\end{proof}
+
+特别地，一个有限模是否为零，可以在局部环的剩余向量空间上检测：
+\[
+	M=0\quad\Longleftrightarrow\quad M/\mathfrak mM=0.
+\]
+这个向量空间只保留模在该点的值；它能检测消失，是因为模仅有有限多个生成方向，可以一次用行列式消去。它并不因此保留模的全部关系。
 
 \subsection{极小生成元和剩余向量空间}
 \label{g5:subsec:0203:03}
-待撰写
+
+一个有限生成元组若删去任何一项就不能继续生成，称为\term[jixiaoshengchengyuan]{极小生成元组}[minimal generating set]。一般环上极小生成元组的大小未必能由一个向量空间决定；局部环则给出精确答案。
+
+\begin{proposition}\label{g5:prop:minimal-generators-local}
+	设 \((A,\mathfrak m)\) 为交换含幺局部环，\(k=A/\mathfrak m\)，\(M\) 为有限生成 \(A\)-模。 令 \(r=\dim_k(M/\mathfrak mM)\)。则：
+	\begin{enumerate}
+		\item 一个有限生成元组极小，当且仅当其在 \(M/\mathfrak mM\) 中的像为一组基；
+		\item 每个极小生成元组都恰有 \(r\) 项，任何生成元组都至少有 \(r\) 项；
+		\item 若 \(m_1,\ldots,m_r\) 与 \(n_1,\ldots,n_r\) 都为极小生成元组，则可以写成
+		\(n_i=\sum_j c_{ij}m_j\)，其中矩阵 \(C=(c_{ij})\) 可逆。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	生成元的像张成剩余向量空间。若这些像线性相关，线性代数允许删去一个像仍保持张成；由\cref{g5:cor:nakayama-generators}，对应的模元素也可删去，因此原组不极小。反过来，若这些像为一组基，删去任何一项就不再张成，故原生成元组极小。 这也证明项数结论；向量空间的基任意提升后都生成，说明这样的极小生成元组确实存在。
+
+	对最后一项，因 \(m_j\) 生成，可以选出系数 \(c_{ij}\)。模去 \(\mathfrak m\) 后，\(\overline C\) 是两组基之间的换基矩阵，故 \(\det\overline C\ne0\)。于是 \(\det C\notin\mathfrak m\)，为 \(A\) 的单位；伴随矩阵公式给出 \(C^{-1}\)。
+\end{proof}
+
+极小生成元组不一定是模的基。“极小”只禁止删去生成元；“基”还要求一切线性关系平凡。例如 \(A=k[t]_{(t)}\) 上的 \(M=A/(t^2)\) 由一个元素 \(\overline1\) 极小生成，却有非平凡关系 \(t^2\overline1=0\)。在一个局部环上，剩余向量空间维数给出生成元的数目，不能单独给出关系的数目。
+
+\begin{proposition}\label{g5:prop:minimal-presentation-local}
+	设 \((A,\mathfrak m)\) 为交换含幺局部环，\(\pi:A^r\to M\) 为满的 \(A\)-线性同态，\(K=\ker\pi\)。 则标准基的像为 \(M\) 的极小生成元组，当且仅当 \(K\subseteq\mathfrak mA^r\)。
+\end{proposition}
+\begin{proof}
+	满性给出 \(\mathfrak mM=\pi(\mathfrak mA^r)\)，所以
+	\[
+	\pi^{-1}(\mathfrak mM)=K+\mathfrak mA^r.
+	\]
+	因而诱导映射
+	\[
+	(A/\mathfrak m)^r\longrightarrow M/\mathfrak mM
+	\]
+	的核为 \((K+\mathfrak mA^r)/\mathfrak mA^r\)。 标准基的像为基当且仅当这个映射单射，即 \(K\subseteq\mathfrak mA^r\)。 再应用\cref{g5:prop:minimal-generators-local}即可。
+\end{proof}
+
+\begin{example}\label{g5:exm:two-generators-maximal-ideal}
+	设 \(k\) 为域，\(A=k[x,y]_{(x,y)}\)，\(\mathfrak m=(x,y)A\)。 向量空间 \(\mathfrak m/\mathfrak m^2\) 的基为 \(x,y\) 的像。 它们张成；若 \(\alpha x+\beta y\in\mathfrak m^2\)、\(\alpha,\beta\in k\)，乘以常数项非零的分母后比较一次项，便得 \(\alpha=\beta=0\)。 因而 \(\mathfrak m\) 至少需要两个生成元。 但这两个生成元有关系 \(y x-x y=0\)，所以不是一组自由基。 事实上 \(\mathfrak m\) 不可能是任何有限秩自由模：若它自由，剩余向量空间迫使秩为二；而局部化到分式域 \(k(x,y)\) 后， \(\mathfrak m\otimes_A k(x,y)=k(x,y)\) 只有维数一，矛盾。
+\end{example}
 
 \subsection{生成元提升及有限性假设}
 \label{g5:subsec:0203:04}
-待撰写
+
+在几何上常常先在一点找生成元，再希望它们在某个邻域内仍然有效。局部化的分母和有限性恰好把这一点的选择延展到一个主开集。
+
+\begin{proposition}\label{g5:prop:generators-near-prime}
+	设 \(A\) 为交换含幺环，\(M\) 为有限生成 \(A\)-模，\(\mathfrak p\subset A\) 为素理想。 若 \(m_1/1,\ldots,m_r/1\) 生成 \(M_{\mathfrak p}\)，其中 \(m_i\in M\)，则存在 \(f\notin\mathfrak p\)，使 \(m_1/1,\ldots,m_r/1\) 生成 \(M_f\)。 更一般地，若 \(\xi_1,\ldots,\xi_r\in M_{\mathfrak p}\) 生成，则在某个 \(D(f)\ni\mathfrak p\) 上可以用 \(M_f\) 中的元素表示这些 \(\xi_i\)，并生成 \(M_f\)。
+\end{proposition}
+\begin{proof}
+	令 \(N=\sum_iAm_i\)，\(Q=M/N\)。由局部化的正合性， \(Q_{\mathfrak p}=0\)。取 \(Q\) 的有限生成元 \(q_1,\ldots,q_n\)。 每个 \(q_j/1=0\)，所以存在 \(s_j\notin\mathfrak p\) 使 \(s_jq_j=0\)。 取 \(f=\prod_js_j\)（当 \(Q=0\) 时可取 \(f=1\)），则 \(fQ=0\)，从而 \(Q_f=0\)。 再用正合性得到 \(M_f=N_f\)。
+
+	对一般情形，写 \(\xi_i=m_i/s_i\)、\(s_i\notin\mathfrak p\)。 因为每个 \(s_i\) 在 \(A_{\mathfrak p}\) 中可逆，\(m_i/1\) 同样生成。 对它们用前一结论得到 \(f_0\)，再令 \(f=f_0\prod_i s_i\)。 每个 \(s_i\) 在 \(A_f\) 中都成为单位，故 \(\xi_i\) 在 \(M_f\) 中有定义并继续生成。
+\end{proof}
+
+结合 Nakayama 引理，先在
+\[
+	M\otimes_A\kappa(\mathfrak p)
+	\cong M_{\mathfrak p}/\mathfrak pM_{\mathfrak p}
+\]
+中选基，再提升并清除分母，就可在某个主开邻域上找到有限个生成元。上式来自局部化与张量积相容，以及 \(N\otimes_R R/J\cong N/JN\)。关系是否也能在一个邻域内同时控制，则涉及有限呈示，下一节之后将用它处理局部自由性。
+
+\ProseParagraphBreak
+
+有限生成性不可删除。取 \(A=k[t]_{(t)}\)、\(\mathfrak m=(t)\)，令 \(M=k(t)\)。
+	在 \(M\) 上乘以 \(t\) 可逆，所以 \(\mathfrak mM=M\)，但 \(M\ne0\)。 这个模不是有限生成的：任取有限个有理函数，它们在 \(t=0\) 处的极点阶数有一个共同上界；用 \(A\) 的元素作线性组合不会增加这个上界，因而不能得到所有 \(t^{-n}\)。 其剩余向量空间为零，已不能检测模是否消失。
+
+\ProseParagraphBreak
+
+这个例子也说明，为每个元素分别找到一个分母，与找到对整个模有效的同一个分母是两件事。
+	在\cref{g5:prop:generators-near-prime}中，有限多个生成元允许把有限个 \(s_j\) 相乘；无限多个元素通常没有这样的共同选择。 后续从点附近的代数信息恢复开集上的构造时，有限生成控制生成元，有限呈示进一步控制关系。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

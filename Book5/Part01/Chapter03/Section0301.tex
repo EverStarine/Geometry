@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 3.1 整扩张及有限性
 % 纲要位置：几何学计划纲要.md，第 5115 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,405 @@
 \section{整扩张及有限性}
 \label{g5:sec:0301}
 
-待撰写
+在 \(k[t^2]\subset k[t]\) 中，令 \(u=t^2\) 并把它看作底环元素，则新增的函数 \(t\) 是首一多项式 \(T^2-u\) 的根。因此 \(t\) 的每个高次幂都可化成 \(1,t\) 的 \(k[t^2]\) 线性组合。一个方程由此控制了整个扩张的大小。与之相比，\(k[t]\subset k[t,t^{-1}]\) 中\(t^{-1}\) 是多项式 \(tT-1\) 的根，其最高次系数 \(t\) 却不是底环中的单位；\(t^{-1}\) 的各次幂不能用有限多个 \(k[t]\) 模生成元统一控制。首一条件正是这两种情形的分界。
+
+\ProseParagraphBreak
+
+第一章证明 Zariski 引理时已经用过整元素；本节将这种性质与第二章的有限模联系起来，再研究素理想沿扩张如何移动。以下各环均为交换含幺环，环同态保持单位；写 \(A\subseteq B\) 时表示含幺子环。整性的基本判据、整闭包及素理想升降定理可对照\cite[第9节，第64--68页]{Matsumura1989}。
 
 \subsection{首一方程与有限模判据}
 \label{g5:subsec:0301:01}
-待撰写
+
+设 \(A\subseteq B\)。若 \(b\in B\) 满足
+\[
+	b^n+a_1b^{n-1}+\cdots+a_n=0,
+	\qquad n\geq1,\quad a_i\in A,
+\]
+就说 \(b\) 在 \(A\) 上整。这里最高次系数为 \(1\)，所以每次乘以 \(b\) 所产生的新幂都能用较低次幂表示。若 \(B\) 的每个元素都在 \(A\) 上整，则称 \(A\subseteq B\) 为\term[zhengkuozhang]{整扩张}[integral extension]。对于一般 \(A\) 代数，同样可以用结构同态的像作为方程系数来定义整性。
+
+\begin{definition}
+\label{g5:def:finite-algebra}
+	设 \(A\) 为交换含幺环，\(B\) 为交换含幺 \(A\) 代数。若 \(B\) 作为 \(A\) 模有限生成，则称 \(B\) 为\term[youxiandaishu]{有限代数}[finite algebra]；当结构同态为包含 \(A\subseteq B\) 时，也称其为\term[youxiankuozhang]{有限扩张}[finite extension]。若只要求存在有限个元素 \(b_1,\ldots,b_r\) 使 \(B=A[b_1,\ldots,b_r]\)，则称 \(B\) 为\term[youxianxingdaishu]{有限型代数}[algebra of finite type]。
+\end{definition}
+
+有限代数限制线性组合所需的生成元；有限型代数允许对生成元取任意次乘积。例如 \(k[t]\) 是有限型 \(k\) 代数，却不是有限 \(k\) 代数。为精确表述下面的判据，再约定：若一个 \(R\) 模 \(M\) 满足 \(\operatorname{Ann}_R(M)=0\)，就称它为\term[zhongshimo]{忠实模}[faithful module]。这表示一个标量若杀掉全部模元素，就只能是零。
+
+\begin{proposition}
+\label{g5:prop:integral-finite-criterion}
+	设 \(A\subseteq B\) 为交换含幺环的扩张，\(b\in B\)。下列条件等价：
+	\begin{equivalences}
+		\item \(b\) 在 \(A\) 上整；
+		\item \(A[b]\) 是有限生成 \(A\) 模；
+		\item 存在包含 \(1\) 的有限生成 \(A\) 子模 \(M\subseteq B\)，使 \(bM\subseteq M\)；
+		\item 存在一个忠实 \(A[b]\) 模 \(N\)，其作为 \(A\) 模有限生成。
+	\end{equivalences}
+\end{proposition}
+\begin{proof}
+	若 \(b\) 满足次数为 \(n\) 的首一方程，则
+	\[
+		b^n=-a_1b^{n-1}-\cdots-a_n.
+	\]
+	归纳地，每个 \(b^j\)、\(j\geq n\) 都是 \(1,b,\ldots,b^{n-1}\) 的 \(A\) 线性组合。因此 \(A[b]=A+Ab+\cdots+Ab^{n-1}\)，第一条件蕴含第二条件。取 \(M=A[b]\)，得到第三条件。
+
+	若第三条件成立，\(M\) 上的 \(A\) 标量作用与乘以 \(b\) 的作用使它成为 \(A[b]\) 模。若 \(c\in A[b]\) 杀掉 \(M\)，则 \(c=c\cdot1=0\)，因为 \(1\in M\)。所以 \(M\) 忠实，得到第四条件。
+
+	最后设第四条件成立。乘以 \(b\) 是有限生成 \(A\) 模 \(N\) 上的 \(A\) 线性算子。对这个算子用\cref{g5:lem:determinant-trick}，其中理想取 \(A\)，得到
+	\[
+		(b^n+a_1b^{n-1}+\cdots+a_n)N=0,
+		\qquad a_i\in A.
+	\]
+	忠实性把作用在 \(N\) 上为零提升为 \(A[b]\) 中的等式，即得到第一条件。若 \(N=0\)，忠实性迫使 \(A[b]\) 为零环，此时 \(b=0\)，同样满足首一方程。
+\end{proof}
+
+判据的作用是把方程问题改写为稳定性问题：找到一个有限生成模，使乘以 \(b\) 不会把元素移出该模，就可以利用行列式恢复首一方程。忠实性负责保证所得方程在环中成立。若删去它，零模对任何 \(b\) 都稳定，却不能提供任何整性信息。
+
+\begin{proposition}
+\label{g5:prop:integral-elements-subring}
+	设 \(A\subseteq B\) 为交换含幺环的扩张。
+	\begin{enumerate}
+		\item 若 \(b_1,\ldots,b_r\in B\) 都在 \(A\) 上整，则 \(A[b_1,\ldots,b_r]\) 是有限生成 \(A\) 模。
+		\item \(B\) 中在 \(A\) 上整的元素组成一个含 \(A\) 的子环。
+		\item \(B\) 是有限 \(A\) 代数，当且仅当它是有限型 \(A\) 代数并且在 \(A\) 上整。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	对每个 \(b_i\) 选一条次数为 \(n_i\) 的首一方程。反复用方程降低每个变量的幂次，便得有限生成集
+	\[
+		\bigl\{b_1^{e_1}\cdots b_r^{e_r}:0\leq e_i<n_i\bigr\}.
+	\]
+	这证明第一项。
+
+	若 \(b,c\) 整，则 \(A[b,c]\) 有限生成。对其中任意元素 \(u\)，模 \(A[b,c]\) 包含 \(1\) 且在乘以 \(u\) 下稳定，故\cref{g5:prop:integral-finite-criterion}说明 \(u\) 整。特别地，\(b+c\)、\(bc\)、\(-b\) 都整；每个 \(a\in A\) 满足 \(T-a=0\)，所以这些元素构成含 \(A\) 的子环。
+
+	若 \(B\) 作为 \(A\) 模由 \(b_1,\ldots,b_r\) 生成，则这些元素也作为代数生成 \(B\)。而对任意 \(b\in B\)，有限模 \(B\) 本身包含 \(1\) 且在乘以 \(b\) 下稳定，故 \(b\) 整。反过来，若 \(B=A[b_1,\ldots,b_r]\) 且各生成元整，则第一项给出模有限性。
+\end{proof}
+
+这里的“有限型”条件有实际作用。令
+\[
+	B=k[x_1,x_2,\ldots]/(x_i^2:i\geq1).
+\]
+每个元素只涉及有限多个变量，所在的有限变量子代数由平方自由单项式生成，因而在 \(k\) 上整；整个 \(B\) 却含无穷多个线性无关的 \(\overline{x_i}\)，所以不有限。这个例子只用单项式即可检验整性与模有限性的区别。
 
 \subsection{整性传递和整闭包}
 \label{g5:subsec:0301:02}
-待撰写
+
+连续添入几个整元素，仍然只需有限多个模生成元。即使中间环没有一个统一的有限生成集，一条给定首一方程也只涉及有限多个系数；因此可以先把这些系数放进一个有限子代数。
+
+\begin{proposition}
+\label{g5:prop:integrality-transitive}
+	设 \(A\subseteq B\subseteq C\) 为交换含幺环的扩张。
+	\begin{enumerate}
+		\item 若 \(B\) 是有限 \(A\) 代数，\(C\) 是有限 \(B\) 代数，则 \(C\) 是有限 \(A\) 代数。
+		\item 若 \(B\) 在 \(A\) 上整，且 \(c\in C\) 在 \(B\) 上整，则 \(c\) 在 \(A\) 上整。特别地，若 \(C\) 在 \(B\) 上整，则 \(C\) 在 \(A\) 上整。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	若 \(b_1,\ldots,b_r\) 生成 \(A\) 模 \(B\)，且 \(c_1,\ldots,c_s\) 生成 \(B\) 模 \(C\)，则 \(b_ic_j\) 生成 \(A\) 模 \(C\)，证明第一项。
+
+	对第二项，取 \(c\) 的首一方程
+	\[
+		c^n+b_1c^{n-1}+\cdots+b_n=0,\qquad b_i\in B.
+	\]
+	令 \(D=A[b_1,\ldots,b_n]\)。由于各 \(b_i\) 在 \(A\) 上整，\cref{g5:prop:integral-elements-subring}说明 \(D\) 有限于 \(A\)。这条方程又说明 \(D[c]\) 有限于 \(D\)，所以第一项使 \(D[c]\) 有限于 \(A\)。它包含 \(1\) 且在乘以 \(c\) 下稳定，有限模判据便给出 \(c\) 在 \(A\) 上整。
+\end{proof}
+
+\begin{definition}
+\label{g5:def:integral-closure}
+	设 \(A\subseteq B\) 为交换含幺环的扩张。\(B\) 中全部在 \(A\) 上整的元素组成的子环，称为 \(A\) 在 \(B\) 中的\term[zhengbibao]{整闭包}[integral closure]，本节记为 \(\overline A^{\,B}\)。若 \(\overline A^{\,B}=A\)，则称 \(A\) 在 \(B\) 中整闭。若 \(A\) 是整环，并且它在分式域 \(\operatorname{Frac}(A)\) 中整闭，则称 \(A\) 为\term[zhengbizhenghuan]{整闭整环}[integrally closed domain]。
+\end{definition}
+
+整性传递说明 \(\overline A^{\,B}\) 在 \(B\) 中整闭：一个元素若在 \(\overline A^{\,B}\) 上整，就在 \(A\) 上整，因而已属于 \(\overline A^{\,B}\)。整闭包由指定的外环决定；对整环说“整闭”时，外环取它自身的分式域。
+
+\begin{proposition}
+\label{g5:prop:ufd-integrally-closed}
+	每个唯一分解整环都是整闭整环。
+\end{proposition}
+\begin{proof}
+	设 \(A\) 为唯一分解整环，\(z=a/b\in\operatorname{Frac}(A)\)，其中 \(b\ne0\)，\(a,b\) 没有共同的不可约因子。若 \(z\) 满足次数为 \(n\) 的首一方程，清除分母得到
+	\[
+		a^n+c_1a^{n-1}b+\cdots+c_nb^n=0.
+	\]
+	因此 \(b\mid a^n\)。唯一分解和互素性迫使 \(b\) 为单位，故 \(z\in A\)。
+\end{proof}
+
+例如 \(\mathbb Z\) 与域 \(k\) 上的一元多项式环 \(k[t]\) 都整闭。相反，\(A=k[t^2,t^3]\) 的分式域为 \(k(t)\)，其中 \(t=t^3/t^2\) 在 \(A\) 上整，但 \(t\notin A\)，因为 \(A\) 中多项式的一次项总为零。事实上 \(A\) 在 \(k(t)\) 中的整闭包正是 \(k[t]\)：一方面 \(k[t]=A[t]\) 在 \(A\) 上整；另一方面，任何在 \(A\) 上整的 \(z\in k(t)\) 也在 \(k[t]\) 上整，而 \(k[t]\) 整闭。这使尖点模型中的参数 \(t\) 有了一个由首一方程决定的位置，后面讨论正规化时将继续分析这一扩张。
+
+\begin{proposition}
+\label{g5:prop:integral-localization-quotient}
+	设 \(A\subseteq B\) 为交换含幺环的扩张，\(S\subseteq A\) 为含 \(1\) 的乘法集，\(J\subseteq B\) 为理想。
+	\begin{enumerate}
+		\item 若 \(B\) 在 \(A\) 上整，则 \(S^{-1}B\) 在 \(S^{-1}A\) 上整，且 \(B/J\) 在 \(A/(J\cap A)\) 上整。若原扩张有限，这两个扩张也有限。
+		\item 不要求 \(B\) 在 \(A\) 上整，仍有
+		\[
+			\overline{S^{-1}A}^{\,S^{-1}B}
+			=S^{-1}\bigl(\overline A^{\,B}\bigr).
+		\]
+		\item 若 \(A\) 是整闭整环且 \(0\notin S\)，则 \(S^{-1}A\) 也是整闭整环。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	若 \(b\) 满足首一方程，除以 \(s^n\) 就得到
+	\[
+		(b/s)^n+(a_1/s)(b/s)^{n-1}+\cdots+a_n/s^n=0.
+	\]
+	将原方程模去 \(J\)，也得到商环中的首一方程。这证明第一项的整性；有限模生成元在局部化或取商后仍生成，证明有限性。
+
+	第二项中，从右到左的包含已由同一分式方程得到。反过来，设 \(z=b/s\in S^{-1}B\) 在 \(S^{-1}A\) 上整，写出
+	\[
+		z^n+\sum_{i=1}^n\frac{a_i}{t_i}z^{n-i}=0,
+		\qquad a_i\in A,\quad t_i\in S.
+	\]
+	令 \(d=\prod_i t_i\)，先乘以 \(s^n d^n\)。于是 \(db\) 满足一个 \(A\) 系数的首一方程
+	\[
+		F(db)=0\quad\text{于 }S^{-1}B,\qquad
+		F(T)=T^n+\sum_{i=1}^n\alpha_iT^{n-i},
+		\quad \alpha_i=a_i s^i d^i/t_i\in A.
+	\]
+	这里 \(\alpha_i\) 的表示是 \(A\) 中的乘积，因为 \(t_i\) 是 \(d\) 的一个因子。局部化的消失判据给出 \(u\in S\) 使 \(uF(db)=0\) 于 \(B\)。令 \(c=udb\)，则
+	\[
+		c^n+\sum_{i=1}^n u^i\alpha_i c^{n-i}
+		=u^nF(db)=0.
+	\]
+	因此 \(c\in\overline A^{\,B}\)，并且 \(z=c/(uds)\)，得到反向包含。这个额外的 \(u\) 处理了 \(B\) 中可能存在的零因子。
+
+	对第三项，把第二项用于 \(B=\operatorname{Frac}(A)\)。因为 \(0\notin S\)，\(S^{-1}A\) 仍为整环，且与 \(A\) 具有相同的分式域；其在该域中的整闭包就是 \(S^{-1}A\)。
+\end{proof}
+
+整性可以传到商环，而“先取整闭包再取商”一般不等于“先取商再取整闭包”。例如在 \(A=k[x]\subset B=k[x,t]\) 中，\(A\) 在 \(B\) 中整闭：若一个多项式的 \(t\) 次数为正，它代入首一方程后，最高 \(t\) 次数项无法被其他项抵消。取 \(J=(t^2-x)\)，则 \(J\cap A=0\)，且 \(B/J\cong k[t]\)，底环像为 \(k[t^2]\)。此时 \(t\) 在底环像上整，整闭包已经增大为 \(k[t]\)。商环中新增加的方程改变了哪些元素是整的。
 
 \subsection{lying-over 与 incomparability}
 \label{g5:subsec:0301:03}
-待撰写
+
+环的包含 \(A\subseteq B\) 给出素谱上的收缩映射
+\[
+	\operatorname{Spec}B\longrightarrow\operatorname{Spec}A,
+	\qquad \mathfrak q\longmapsto\mathfrak q\cap A.
+\]
+若 \(\mathfrak q\cap A=\mathfrak p\)，就说 \(\mathfrak q\) 位于 \(\mathfrak p\) 之上。整性将保证每个 \(\mathfrak p\) 上方都有素理想，并且同一 \(\mathfrak p\) 上方的不同素理想彼此不能包含。证明先把问题缩到域上；此时首一方程还可以用来求逆。
+
+\begin{lemma}
+\label{g5:lem:integral-field-extension}
+	设 \(A\subseteq B\) 为整环的整扩张。则 \(A\) 为域，当且仅当 \(B\) 为域。因此，对任意交换含幺环的整扩张 \(R\subseteq T\) 及素理想 \(\mathfrak q\subset T\)，\(\mathfrak q\) 为极大理想，当且仅当 \(\mathfrak q\cap R\) 为极大理想。
+\end{lemma}
+\begin{proof}
+	设 \(A\) 为域，取 \(0\ne b\in B\)。在 \(b\) 的所有首一方程中取次数最低的一条
+	\[
+		b^n+a_1b^{n-1}+\cdots+a_n=0.
+	\]
+	其常数项 \(a_n\) 非零：否则在整环中约去 \(b\)，会得到次数更低的首一方程。于是
+	\[
+		b^{-1}=-a_n^{-1}(b^{n-1}+a_1b^{n-2}+\cdots+a_{n-1})\in B.
+	\]
+	故 \(B\) 为域。
+
+	反过来，若 \(B\) 为域，则对 \(0\ne a\in A\)，元素 \(a^{-1}\in B\) 在 \(A\) 上整。将其次数为 \(n\) 的首一方程乘以 \(a^{n-1}\)，得到
+	\[
+		a^{-1}=-(c_1+c_2a+\cdots+c_na^{n-1})\in A,
+	\]
+	所以 \(A\) 也是域。
+
+	最后，\(R/(\mathfrak q\cap R)\subseteq T/\mathfrak q\) 是整环的整扩张；将刚证结论用于这两个商环即可。
+\end{proof}
+
+\foreignidx{lying-over theorem}
+\begin{theorem}[lying-over]
+\label{g5:thm:lying-over}
+	设 \(A\subseteq B\) 为交换含幺环的整扩张。对每个 \(\mathfrak p\in\operatorname{Spec}A\)，存在 \(\mathfrak q\in\operatorname{Spec}B\) 满足
+	\[
+		\mathfrak q\cap A=\mathfrak p.
+	\]
+	即素谱上的收缩映射是满射。
+\end{theorem}
+\begin{proof}
+	令 \(S=A\setminus\mathfrak p\)。由局部化的正合性，包含 \(A\subseteq B\) 给出包含
+	\[
+		A_{\mathfrak p}\subseteq S^{-1}B,
+	\]
+	并由\cref{g5:prop:integral-localization-quotient}知它仍为整扩张。注意右侧记为 \(S^{-1}B\)：它只反演 \(A\setminus\mathfrak p\)，并未预先选择 \(B\) 的某个素理想。
+
+	因为 \(A_{\mathfrak p}\ne0\)，环 \(S^{-1}B\) 也非零，故存在极大理想 \(\mathfrak n\)。由\cref{g5:lem:integral-field-extension}，\(\mathfrak n\cap A_{\mathfrak p}\) 为极大理想；而 \(A_{\mathfrak p}\) 只有极大理想 \(\mathfrak pA_{\mathfrak p}\)，所以二者相等。将 \(\mathfrak n\) 收缩到 \(B\)，记为 \(\mathfrak q\)。素理想的局部化对应给出
+	\[
+		\mathfrak q\cap A
+		=(\mathfrak pA_{\mathfrak p})\cap A=\mathfrak p.
+	\]
+\end{proof}
+
+\foreignidx{incomparability theorem}
+\begin{theorem}[incomparability]
+\label{g5:thm:incomparability}
+	设 \(A\subseteq B\) 为交换含幺环的整扩张。若 \(\mathfrak q_1\subseteq\mathfrak q_2\) 是 \(B\) 的素理想，且
+	\[
+		\mathfrak q_1\cap A=\mathfrak q_2\cap A=\mathfrak p,
+	\]
+	则 \(\mathfrak q_1=\mathfrak q_2\)。
+\end{theorem}
+\begin{proof}
+	仍令 \(S=A\setminus\mathfrak p\)。由\cref{g5:thm:prime-localization}，两个素理想都与 \(S\) 不交，其扩张 \(S^{-1}\mathfrak q_i\) 是 \(S^{-1}B\) 的素理想，收缩到 \(A_{\mathfrak p}\) 均为 \(\mathfrak pA_{\mathfrak p}\)。由\cref{g5:lem:integral-field-extension}，它们都是极大理想。原来的包含在局部化后仍成立，故两个极大理想相等；再收缩到 \(B\)，得到 \(\mathfrak q_1=\mathfrak q_2\)。
+\end{proof}
+
+这两个定理分别给出“存在”与“不能严格包含”，合称时仍须区分各自的内容。同一个底层素理想上方可以有多个点。例如取 \(k=\mathbb C\)、\(A=k[u]\subseteq B=k[t]\)，包含由 \(u=t^2\) 给出。在 \((u-1)\) 上方有两个极大理想 \((t-1)\)、\((t+1)\)，它们互不包含；在 \((u)\) 上方则只有 \((t)\)。这里每个点都有原像，原像的个数可以变化。
+
+\begin{corollary}
+\label{g5:cor:integral-spec-closed}
+	设 \(A\subseteq B\) 为交换含幺环的整扩张，\(\pi:\operatorname{Spec}B\rightarrow\operatorname{Spec}A\) 为收缩映射。对每个理想 \(J\subseteq B\)，有
+	\[
+		\pi\bigl(V_B(J)\bigr)=V_A(J\cap A).
+	\]
+	因此 \(\pi\) 是闭映射。
+\end{corollary}
+\begin{proof}
+	若 \(\mathfrak q\supseteq J\)，则 \(\mathfrak q\cap A\supseteq J\cap A\)，给出一个包含。反过来，对 \(\mathfrak p\supseteq J\cap A\)，在整扩张
+	\[
+		A/(J\cap A)\subseteq B/J
+	\]
+	上应用\cref{g5:thm:lying-over}，得到位于 \(\mathfrak p/(J\cap A)\) 之上的素理想。它在 \(B\) 中的原像包含 \(J\)，且收缩到 \(A\) 为 \(\mathfrak p\)，给出反向包含。
+\end{proof}
+
+特别地，整扩张下有 \(IB\cap A\subseteq\sqrt I\) 和 \(\sqrt{IB}\cap A=\sqrt I\)。后一等式也可直接从素理想描述看出：包含 \(I\) 的每个底层素理想都有上方素理想，且那个上方素理想包含 \(IB\)。因此整扩张可以增加元素与分支，却不会使一个底层闭集失去它的所有原像。
 
 \subsection{going-up 及整闭基底下的 going-down}
 \label{g5:subsec:0301:04}
-待撰写
+
+有了一个点的原像，还可以问素理想的包含关系能否一起提升。对于 \(\mathfrak p_1\subseteq\mathfrak p_2\)，先指定 \(\mathfrak p_1\) 上方的点再向上延伸，称为\term[shangxingxingzhi]{上行性质}[going-up]；先指定 \(\mathfrak p_2\) 上方的点再向下寻找，称为\term[xiaxingxingzhi]{下行性质}[going-down]。两种问题的区别在于预先固定哪一个端点：
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		\mathfrak q_1\arrow[r,hook,dashed]\arrow[d,mapsto]
+		&\underset{\text{待求}}{\mathfrak q_2}\arrow[d,mapsto]\\
+		\mathfrak p_1\arrow[r,hook]&\mathfrak p_2
+	\end{tikzcd}
+	\qquad
+	\begin{tikzcd}[column sep=large,row sep=large]
+		\underset{\text{待求}}{\mathfrak q_1}\arrow[r,hook,dashed]\arrow[d,mapsto]
+		&\mathfrak q_2\arrow[d,mapsto]\\
+		\mathfrak p_1\arrow[r,hook]&\mathfrak p_2.
+	\end{tikzcd}
+\]
+竖箭头表示理想收缩，横箭头表示包含。左图的上行只需整性；右图的下行将在底环整闭、上环为整环的条件下得到证明。
+
+\begin{theorem}[going-up]
+\label{g5:thm:going-up}
+	设 \(A\subseteq B\) 为交换含幺环的整扩张，\(\mathfrak p_1\subseteq\mathfrak p_2\) 为 \(A\) 的素理想。若 \(\mathfrak q_1\in\operatorname{Spec}B\) 满足 \(\mathfrak q_1\cap A=\mathfrak p_1\)，则存在素理想 \(\mathfrak q_2\supseteq\mathfrak q_1\)，使 \(\mathfrak q_2\cap A=\mathfrak p_2\)。
+\end{theorem}
+\begin{proof}
+	要使找到的素理想包含 \(\mathfrak q_1\)，可以先模去 \(\mathfrak q_1\)。由商环相容性，
+	\[
+		A/\mathfrak p_1\subseteq B/\mathfrak q_1
+	\]
+	仍是整扩张。对 \(A/\mathfrak p_1\) 的素理想 \(\mathfrak p_2/\mathfrak p_1\) 应用\cref{g5:thm:lying-over}，再把所得素理想取回 \(B\)，就得到包含 \(\mathfrak q_1\) 且收缩为 \(\mathfrak p_2\) 的 \(\mathfrak q_2\)。
+\end{proof}
+
+上行证明通过取商实现。下行需要把问题放进 \(B_{\mathfrak q_2}\)，因为它的素理想对应于包含在 \(\mathfrak q_2\) 中的素理想。但这里反演了 \(B\setminus\mathfrak q_2\)，局部化后的环未必仍在 \(A\) 上整。我们将直接证明：扩张 \(\mathfrak p_1\) 再收缩，不会额外包含 \(A\setminus\mathfrak p_1\) 中的元素。控制这些分母，关键在于最小多项式的系数。
+
+\begin{lemma}
+\label{g5:lem:normal-minimal-polynomial}
+	设 \(A\) 为整闭整环，\(K=\operatorname{Frac}(A)\)，\(L/K\) 为代数域扩张，\(b\in L\)。则 \(b\) 在 \(A\) 上整，当且仅当它在 \(K\) 上的首一最小多项式属于 \(A[T]\)。
+\end{lemma}
+\begin{proof}
+	若最小多项式属于 \(A[T]\)，它本身就是所需首一方程。反过来，设 \(b\) 在 \(A\) 上整，取 \(g(T)\in A[T]\) 首一且 \(g(b)=0\)，并记其最小多项式为 \(h(T)\in K[T]\)。多项式除法表明 \(h\mid g\) 于 \(K[T]\)。
+
+	在 \(h\) 的一个分裂域中，按重数写
+	\[
+		h(T)=\prod_{i=1}^n(T-b_i).
+	\]
+	每个根 \(b_i\) 也是 \(g\) 的根，故在 \(A\) 上整。最小多项式的各系数是这些根的初等对称多项式，因整元素组成子环，它们均在 \(A\) 上整；同时这些系数属于 \(K\)。\(A\) 在 \(K\) 中整闭，便迫使这些系数都属于 \(A\)。按重数分解允许不可分情形，不需要假设 \(L/K\) 可分。
+\end{proof}
+
+这就是\cite[第9节，定理9.2，第65页]{Matsumura1989}的最小多项式判据。进一步，若元素来自一个素理想的扩张，最小多项式的系数也会落入该素理想。
+
+\begin{lemma}
+\label{g5:lem:integral-prime-coefficients}
+	设 \(A\subseteq B\) 为整环的整扩张，\(A\) 整闭，\(K=\operatorname{Frac}(A)\)，\(\mathfrak p\in\operatorname{Spec}A\)。若 \(y\in\mathfrak pB\)，则 \(y\) 在 \(K\) 上的首一最小多项式可写为
+	\[
+		h_y(T)=T^n+c_1T^{n-1}+\cdots+c_n,
+		\qquad c_i\in\mathfrak p.
+	\]
+\end{lemma}
+\begin{proof}
+	写 \(y=\sum_{i=1}^r a_i b_i\)，其中 \(a_i\in\mathfrak p\)、\(b_i\in B\)。令 \(C=A[b_1,\ldots,b_r]\)，则 \(C\) 是包含 \(1\) 的有限生成 \(A\) 模，且 \(yC\subseteq\mathfrak pC\)。对乘以 \(y\) 的算子使用\cref{g5:lem:determinant-trick}，得到首一多项式
+	\[
+		g(T)=T^N+d_1T^{N-1}+\cdots+d_N,
+		\qquad d_i\in\mathfrak p^i,
+		\qquad g(y)C=0.
+	\]
+	因为 \(1\in C\)，有 \(g(y)=0\)。
+
+	由\cref{g5:lem:normal-minimal-polynomial}，\(h_y\in A[T]\)。又 \(h_y\mid g\) 于 \(K[T]\)。用首一多项式 \(h_y\) 在 \(A[T]\) 中作除法，余式也属于 \(A[T]\)；它在 \(K[T]\) 中为零，所以已经为零。因此
+	\[
+		g(T)=h_y(T)q(T),\qquad q(T)\in A[T]\text{ 首一}.
+	\]
+	模去 \(\mathfrak p\)，得到
+	\[
+		T^N=\overline h_y(T)\,\overline q(T)
+		\quad\text{于 }(A/\mathfrak p)[T].
+	\]
+	再嵌入域 \(\operatorname{Frac}(A/\mathfrak p)\) 上的多项式环。一个首一多项式若整除 \(T^N\)，它只能是 \(T\) 的某个幂：域上多项式唯一分解，而 \(T\) 是 \(T^N\) 的唯一首一不可约因子。故 \(\overline h_y(T)=T^n\)，即每个 \(c_i\in\mathfrak p\)。
+\end{proof}
+
+\begin{theorem}[going-down]
+\label{g5:thm:going-down}
+	设 \(A\subseteq B\) 为整环的整扩张，并假设 \(A\) 是整闭整环。若 \(\mathfrak p_1\subseteq\mathfrak p_2\) 是 \(A\) 的素理想，且 \(\mathfrak q_2\in\operatorname{Spec}B\) 满足 \(\mathfrak q_2\cap A=\mathfrak p_2\)，则存在素理想 \(\mathfrak q_1\subseteq\mathfrak q_2\)，使
+	\[
+		\mathfrak q_1\cap A=\mathfrak p_1.
+	\]
+\end{theorem}
+\begin{proof}
+	先证明
+	\begin{equation}
+	\label{g5:eq:going-down-contraction}
+		\mathfrak p_1B_{\mathfrak q_2}\cap A=\mathfrak p_1.
+	\end{equation}
+	从右到左的包含成立。若 \(x\) 属于左侧但不属于 \(\mathfrak p_1\)，合并有限和中的分母，可以找到 \(s\in B\setminus\mathfrak q_2\) 使 \(xs\in\mathfrak p_1B\)。这里把 \(A,B\) 都看成 \(\operatorname{Frac}(B)\) 的子环，因而清分母是整环中的等式。又 \(x\notin\mathfrak p_1\) 蕴含 \(x\ne0\)。
+
+	记 \(s\) 在 \(K=\operatorname{Frac}(A)\) 上的首一最小多项式为
+	\[
+		h_s(T)=T^n+c_1T^{n-1}+\cdots+c_n,\qquad c_i\in A.
+	\]
+	系数属于 \(A\) 来自\cref{g5:lem:normal-minimal-polynomial}。因 \(x\in K^\times\)，\(xs\) 的首一最小多项式恰为
+	\[
+		x^n h_s(T/x)
+		=T^n+xc_1T^{n-1}+\cdots+x^nc_n.
+	\]
+	确实，这个多项式以 \(xs\) 为根；变量替换 \(T\mapsto T/x\) 保持不可约性，也保持次数。因为 \(xs\in\mathfrak p_1B\)，\cref{g5:lem:integral-prime-coefficients}给出 \(x^ic_i\in\mathfrak p_1\)。\(\mathfrak p_1\) 素且不含 \(x\)，所以所有 \(c_i\in\mathfrak p_1\)。
+
+	于是 \(h_s(s)=0\) 意味着
+	\[
+		s^n=-c_1s^{n-1}-\cdots-c_n
+		\in\mathfrak p_1B\subseteq\mathfrak q_2.
+	\]
+	\(\mathfrak q_2\) 的素性迫使 \(s\in\mathfrak q_2\)，与分母的选择矛盾，证明了\eqref{g5:eq:going-down-contraction}。
+
+	现在令 \(R=B_{\mathfrak q_2}\)、\(I=\mathfrak p_1R\)，再把 \(A\setminus\mathfrak p_1\) 的像全部反演。\eqref{g5:eq:going-down-contraction}说明这个乘法集与 \(I\) 不交，所以
+	\[
+		(A\setminus\mathfrak p_1)^{-1}(R/I)\ne0.
+	\]
+	这是局部化为零环的判据：若它为零，就会有一个被反演的元素已经落在 \(I\) 中。取此非零环的一个极大理想，并逐次收缩，得到 \(R\) 的素理想 \(\mathfrak r\)，它包含 \(I\) 且不交 \(A\setminus\mathfrak p_1\)。因此 \(\mathfrak r\cap A=\mathfrak p_1\)。
+
+	最后令 \(\mathfrak q_1=\mathfrak r\cap B\)。由素理想的局部化对应，\(R=B_{\mathfrak q_2}\) 的每个素理想都收缩为包含在 \(\mathfrak q_2\) 中的素理想，故 \(\mathfrak q_1\subseteq\mathfrak q_2\)；再次收缩到 \(A\) 得 \(\mathfrak q_1\cap A=\mathfrak p_1\)，完成证明。
+\end{proof}
+
+上述结论不要求 \(A\) Noether，也不要求 \(B\) 有限于 \(A\)。整闭性的作用集中在最小多项式系数落回 \(A\) 的步骤；整性的有限模判据随后控制这些系数模 \(\mathfrak p_1\) 的值。定理的陈述可参看\cite[第9节，定理9.4(ii)，第68页]{Matsumura1989}。
+
+\begin{example}
+\label{g5:exm:going-down-nonnormal}
+	设 \(k\) 为特征不等于 \(2\) 的域，令
+	\[
+		B=k[s,t],\qquad
+		x=s^2-1,\quad y=s(s^2-1),\qquad
+		A=k[x,y,t]\subset B.
+	\]
+	这里 \(A\) 中 \(x,y\) 满足 \(y^2=x^2(x+1)\)，对应结点曲线与直线的乘积。由于 \(s^2=x+1\)，扩张 \(B=A[s]\) 有限且整。又 \(s=y/x\in\operatorname{Frac}(A)\)，但 \(s\notin A\)：每个 \(A\) 中元素在 \((s,t)=(1,0)\) 与 \((-1,0)\) 处取相同值，而 \(s\) 的两个值不同。因此 \(A\) 不整闭。
+
+	令
+	\[
+		\mathfrak q_+=(s-1,t),\qquad
+		\mathfrak q_-=(s+1,t),\qquad
+		\mathfrak q=(s-1-t).
+	\]
+	这三个商环分别为 \(k,k,k[t]\)，故这些理想都是素理想。两个极大理想 \(\mathfrak q_+,\mathfrak q_-\) 在 \(A\) 中都收缩为 \(\mathfrak p_2=(x,y,t)\)。设 \(\mathfrak p_1=\mathfrak q\cap A\)。由于 \(\mathfrak q\subseteq\mathfrak q_+\)，有 \(\mathfrak p_1\subseteq\mathfrak p_2\)；且这是严格包含，因为 \(x\) 模 \(\mathfrak q\) 等于 \(t(t+2)\ne0\)，所以 \(x\notin\mathfrak p_1\)，而 \(x\in\mathfrak p_2\)。
+
+	在反演 \(x\) 后，\(s=y/x\) 给出 \(A_x=B_x\)。由素理想局部化对应，\(\mathfrak p_1\) 上方只有一个 \(B\) 的素理想，即 \(\mathfrak q\)。但 \(\mathfrak q\not\subseteq\mathfrak q_-\)：元素 \(s-1-t\) 在 \((-1,0)\) 处的值为 \(-2\ne0\)。因此从指定上端 \(\mathfrak q_-\) 无法向下找到 \(\mathfrak p_1\) 的原像，going-down 在这个有限整扩张中失败。
+\end{example}
+
+上环为整环的条件也有相应边界。例如取整闭整环 \(A=k[t]\)，令 \(B=k[t]\times k\)，并用 \(a(t)\mapsto(a(t),a(0))\) 嵌入。这个扩张有限；素理想 \(\mathfrak q_2=k[t]\times0\) 收缩为 \((t)\)。它本身也是 \(B\) 的极小素理想，因为在直积中每个素理想都来自一个因子，所以其下方没有收缩为 \((0)\) 的素理想。整性保证上行；在所给定的分支上实现下行，还需要定理中控制基环与上环的条件。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

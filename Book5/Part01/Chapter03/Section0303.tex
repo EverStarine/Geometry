@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 3.3 Krull 维数与高度
 % 纲要位置：几何学计划纲要.md，第 5130 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,421 @@
 \section{Krull 维数与高度}
 \label{g5:sec:0303}
 
-待撰写
+一条不可约曲线可以包含点，一个不可约曲面又可以包含曲线。沿这样的严格包含逐次下降，最多能走多少步，是一种不依赖坐标选择的维数定义。在素谱中，不可约闭集写成 \(V(\mathfrak p)\)，而闭集的包含方向与素理想的包含方向相反。因此，维数问题可以转化为素理想链的长度问题。
+
+\ProseParagraphBreak
+
+上一节的正规化给出有限个代数无关的参数。本节将证明，这些参数的数目恰好等于素链所测出的维数。另一项核心问题是：用 \(r\) 个方程切出的不可约分支，能够具有多大的高度？回答它需要 \term[Krullweishu]{Krull 维数}[Krull dimension]及高度定理。\footnote{Wolfgang Krull（1899--1971），德国数学家，建立了交换环的维数理论，并对赋值论与理想理论作出重要贡献。} 维数的基本定义与有限型整代数的结论可对照\cite[第5节，第30--35页]{Matsumura1989}；高度定理的陈述可对照\cite[第13节，定理13.5]{Matsumura1989}。
 
 \subsection{素链、局部维数和高度}
 \label{g5:subsec:0303:01}
-待撰写
+
+\begin{definition}\label{g5:def:krull-dimension}
+	设 \(A\) 为交换含幺环。一条严格包含的有限\term[sulian]{素链}[chain of prime ideals]
+	\[
+	\mathfrak p_0\subsetneq\mathfrak p_1\subsetneq\cdots\subsetneq\mathfrak p_r
+	\]
+	的长度为 \(r\)，即严格包含的次数。所有素链长度的上确界称为 \(A\) 的 Krull 维数，记为 \(\dim A\)。对非零环，它属于 \(\{0,1,2,\ldots\}\cup\{\infty\}\)；约定零环的维数为 \(-\infty\)。
+	对 \(\mathfrak p\in\operatorname{Spec}A\)，所有以 \(\mathfrak p\) 为末项的素链长度的上确界，称为 \(\mathfrak p\) 的\term[gaodu]{高度}[height]，记为 \(\operatorname{ht}_A\mathfrak p\)。对真理想 \(I\subsetneq A\)，再定义
+	\[
+	\operatorname{ht}_A I
+	=\inf_{\mathfrak p\supseteq I}\operatorname{ht}_A\mathfrak p.
+	\]
+\end{definition}
+\symidx{\(\dim A\)：环的 Krull 维数}
+\symidx{\(\operatorname{ht}_A\mathfrak p\)：素理想的高度}
+
+长度为零的链只有一个素理想。因此，非零环维数为零，恰表示它的素理想之间没有严格包含，也即每个素理想都是极大理想。对整环，这又等价于环本身为域：零理想是素理想，若它也是极大理想，商环就是原环。
+
+\ProseParagraphBreak
+
+这个定义也给出了 \(\operatorname{Spec}A\) 的拓扑维数。事实上，每个非空不可约闭集都是某个 \(V(\mathfrak p)\)。若 \(V(I)\) 不可约且 \(fg\in\sqrt I\)，则
+\[
+	V(I)\subseteq V(fg)=V(f)\cup V(g),
+\]
+不可约性使 \(V(I)\) 包含于其中一边，由\cref{g5:prop:radical-prime-intersection}便有 \(f\in\sqrt I\) 或 \(g\in\sqrt I\)，所以 \(\sqrt I\) 为素理想；反向已经在\secref{g5:subsec:0201:04}说明。再由根式与素理想的对应，素链恰好给出严格下降的非空不可约闭集链。
+
+\begin{proposition}\label{g5:prop:dimension-localization}
+	设 \(A\) 为非零交换含幺环，\(\mathfrak p\in\operatorname{Spec}A\)。则
+	\begin{equation}\label{g5:eq:height-local-dimension}
+	\begin{aligned}
+	\operatorname{ht}_A\mathfrak p&=\dim A_{\mathfrak p},\\
+	\dim A&=\sup_{\mathfrak q\in\operatorname{Spec}A}\operatorname{ht}_A\mathfrak q
+	=\sup_{\mathfrak m\text{ 为极大理想}}\dim A_{\mathfrak m}.
+	\end{aligned}
+	\end{equation}
+	若 \(I\subsetneq A\)，则 \(\dim(A/I)\leq\dim A\)。特别地，
+	\[
+	\dim\bigl(A/\sqrt{(0)}\bigr)=\dim A.
+	\]
+\end{proposition}
+\begin{proof}
+	由\cref{g5:thm:prime-localization}，\(A_{\mathfrak p}\) 的素理想与 \(A\) 中包含于 \(\mathfrak p\) 的素理想保序对应。\(A_{\mathfrak p}\) 是局部环，它的每条素链都能在末端接上极大理想 \(\mathfrak pA_{\mathfrak p}\)，所以其维数就是以该极大理想为末项的链长上确界。这给出第一个等式。\(A\) 中任意素链的末项都包含于某个极大理想，把这个极大理想接到链的末端便得到其余等式。
+	商环 \(A/I\) 的素理想与包含 \(I\) 的素理想保序对应，故商环中的链也是原环中的链。每个素理想都包含 \(\sqrt{(0)}\)，所以商去幂零根时素链一条也没有删去，维数不变。
+\end{proof}
+
+\(\dim A_{\mathfrak p}\) 称为环在 \(\mathfrak p\) 处的\term[jubuweishu]{局部维数}[local dimension]。它计算的是到达 \(\mathfrak p\) 以前的素链；\(\dim(A/\mathfrak p)\) 则计算从 \(\mathfrak p\) 出发向上的素链，也就是闭集 \(V(\mathfrak p)\) 的维数。例如在 \(k[t]\) 中，零素理想处的局部环是 \(k(t)\)，局部维数为零，而其闭包是整个一维素谱。对 \(a\in k\)，闭点 \((t-a)\) 的高度为一，其闭包只有一个点，维数为零。
+
+\ProseParagraphBreak
+
+这里 \(\dim k[t]=1\) 只用了单变量多项式环是主理想整环：它的每个非零素理想都由不可约多项式生成，因此极大。对 \(k[x_1,\ldots,x_n]\)，目前先能写出长度为 \(n\) 的素链
+\begin{equation}\label{g5:eq:coordinate-prime-chain}
+	(0)\subsetneq(x_1)\subsetneq(x_1,x_2)
+	\subsetneq\cdots\subsetneq(x_1,\ldots,x_n).
+\end{equation}
+每一步的商环仍是多项式整环，故这些理想确实为素理想。它给出维数的下界；证明没有更长的素链，则需要本节后面的定理。
+
+\begin{proposition}\label{g5:prop:dimension-minimal-components}
+	设 \(A\) 为非零 Noether 环，\(\mathfrak p_1,\ldots,\mathfrak p_s\) 为其全部极小素理想。则
+	\[
+	\dim A=\max_{1\leq i\leq s}\dim(A/\mathfrak p_i).
+	\]
+\end{proposition}
+\begin{proof}
+	\cref{g5:cor:minimal-support-associated}应用于有限模 \(A\)，说明极小素理想只有有限多个，而且每个素理想都包含其中一个。给定 \(A\) 中的任意素链，取包含于链首项的 \(\mathfrak p_i\)。整条链都包含 \(\mathfrak p_i\)，所以在 \(A/\mathfrak p_i\) 中给出同样长度的链。反之，每个商环中的素链都提升为 \(A\) 中的素链。对长度取上确界即得结论。
+\end{proof}
 
 \subsection{主理想定理的证明}
 \label{g5:subsec:0303:02}
-待撰写
+
+一个方程 \(f=0\) 的不可约分支对应于 \((f)\) 上的极小素理想。\term[zhulixiangdingli]{主理想定理}[principal ideal theorem]断言，在 Noether 环中，这些素理想的高度至多为一。证明的关键是先把所考察的分支局部化，使它成为唯一的闭点，再比较素理想的幂。下面先建立证明所需的下降链条件。
+
+\begin{lemma}\label{g5:lem:local-radical-artinian-quotient}
+	设 \((R,\mathfrak m)\) 为 Noether 局部环，\(J\subsetneq R\) 满足 \(\sqrt J=\mathfrak m\)。则存在 \(N\geq1\) 使 \(\mathfrak m^N\subseteq J\)，并且 \(R/J\) 的理想下降链稳定。
+\end{lemma}
+\begin{proof}
+	取 \(\mathfrak m\) 的有限组生成元 \(u_1,\ldots,u_s\)。若 \(s=0\)，则 \(R\) 为域且 \(J=0\)，结论成立。否则，由 \(u_i\in\sqrt J\)，可取 \(e_i\geq1\) 使 \(u_i^{e_i}\in J\)。令
+	\[
+	N=1+\sum_{i=1}^s(e_i-1).
+	\]
+	任意总次数为 \(N\) 的 \(u_i\) 单项式都有一个指数至少为相应的 \(e_i\)，所以属于 \(J\)。这些单项式生成 \(\mathfrak m^N\)，故 \(\mathfrak m^N\subseteq J\)。
+
+	令 \(\kappa=R/\mathfrak m\)，考察有限滤过
+	\[
+	F_0=R/J\supseteq F_1\supseteq\cdots\supseteq F_N=0,
+	\qquad F_i=(\mathfrak m^i+J)/J.
+	\]
+	每个 \(F_i/F_{i+1}\) 都被 \(\mathfrak m\) 杀掉，又是有限 \(R\) 模，因而是有限维 \(\kappa\) 向量空间。给定 \(R/J\) 的理想下降链 \(L_1\supseteq L_2\supseteq\cdots\)，各
+	\[
+	\frac{(L_j\cap F_i)+F_{i+1}}{F_{i+1}}
+	\subseteq F_i/F_{i+1}
+	\]
+	随 \(j\) 构成向量子空间下降链。有限维性及 \(i\) 的有限性保证这些链在同一个指标以后全部稳定。
+
+	如果相邻两项 \(L'\supseteq L''\) 在每层具有相同的像，则它们相等。确实，由 \(F_N=0\) 开始向上归纳：若已知 \(L'\cap F_{i+1}=L''\cap F_{i+1}\)，对任意 \(v\in L'\cap F_i\)，同像性给出 \(w\in L''\cap F_i\) 使 \(v-w\in F_{i+1}\)，归纳假设又给出 \(v-w\in L''\)，于是 \(v\in L''\cap F_i\)。取 \(i=0\) 即得 \(L'=L''\)。因此原下降链也稳定。
+\end{proof}
+
+这个引理把一个环上的理想链，化成有限多个剩余域向量空间中的子空间链。以下证明会把它用于 \(J=(a)\)。为使模 \(a\) 后得到的关系能重新提升到原环，我们先把素理想的幂局部化再收缩；这样得到的理想对乘以 \(a\) 自动具有消去性质。
+
+\begin{lemma}\label{g5:lem:principal-local-domain}
+	设 \((R,\mathfrak m)\) 为 Noether 局部整环，\(a\in\mathfrak m\) 且 \(\sqrt{(a)}=\mathfrak m\)。则 \(\dim R\leq1\)。
+\end{lemma}
+\begin{proof}
+	若 \(a=0\)，则整环中 \(\sqrt{(0)}=0\)，所以 \(\mathfrak m=0\)，\(R\) 为域。以下设 \(a\ne0\)。只需证明每个严格包含于 \(\mathfrak m\) 的素理想 \(\mathfrak p\) 都为零。这样的 \(\mathfrak p\) 不含 \(a\)，否则它包含 \(\sqrt{(a)}=\mathfrak m\)。对 \(n\geq1\)，令
+	\[
+	Q_n=\mathfrak p^nR_{\mathfrak p}\cap R.
+	\]
+	这些理想满足 \(Q_{n+1}\subseteq Q_n\)，而 \(a/1\) 在 \(R_{\mathfrak p}\) 中为单位，故
+	\begin{equation}\label{g5:eq:symbolic-power-cancellation}
+	ac\in Q_n\quad\Longrightarrow\quad c\in Q_n.
+	\end{equation}
+	由\cref{g5:lem:local-radical-artinian-quotient}，\(R/(a)\) 中的下降链
+	\[
+	\frac{Q_1+(a)}{(a)}\supseteq
+	\frac{Q_2+(a)}{(a)}\supseteq\cdots
+	\]
+	稳定。因此存在 \(n\geq1\) 使 \(Q_n+(a)=Q_{n+1}+(a)\)。对 \(v\in Q_n\)，可写 \(v=w+ac\)，其中 \(w\in Q_{n+1}\)。于是 \(ac\in Q_n\)，由\eqref{g5:eq:symbolic-power-cancellation}得 \(c\in Q_n\)，所以
+	\[
+	Q_n=Q_{n+1}+aQ_n.
+	\]
+
+	商模 \(Q_n/Q_{n+1}\) 有限生成，因为 \(R\) Noether；它等于自身的 \(a\) 倍，从而等于自身的 \(\mathfrak m\) 倍。由\cref{g5:thm:nakayama-local}，这个商模为零，即 \(Q_n=Q_{n+1}\)。
+
+	现在在 \(\mathfrak p\) 处局部化。局部化理想的收缩再扩张恢复原理想，故
+	\[
+	\mathfrak p^nR_{\mathfrak p}=Q_nR_{\mathfrak p}
+	=Q_{n+1}R_{\mathfrak p}=\mathfrak p^{n+1}R_{\mathfrak p}.
+	\]
+	\(R_{\mathfrak p}\) 也是 Noether 局部环。对有限模 \(\mathfrak p^nR_{\mathfrak p}\) 再用一次 Nakayama 引理，得到 \(\mathfrak p^nR_{\mathfrak p}=0\)。若 \(b\in\mathfrak p\)，则 \((b/1)^n=0\)。局部化后的环仍是整环，而且 \(R\rightarrow R_{\mathfrak p}\) 单射，所以 \(b=0\)。这证明 \(\mathfrak p=0\)，从而素链长度至多为一。
+\end{proof}
+
+上述 \(Q_n\) 称为 \(\mathfrak p\) 的第 \(n\) 个\term[fuhaomi]{符号幂}[symbolic power]，通常记为 \(\mathfrak p^{(n)}\)。一般有 \(\mathfrak p^n\subseteq\mathfrak p^{(n)}\)，两者未必相等。这里需要符号幂，是因为 \(a\notin\mathfrak p\) 使 \(a\) 在局部化后成为单位，从而保证\eqref{g5:eq:symbolic-power-cancellation}。证明中的两次 Nakayama 引理分别消去 \(Q_n/Q_{n+1}\) 和 \(\mathfrak p^nR_{\mathfrak p}\)，作用的局部环也分别是 \(R\) 和 \(R_{\mathfrak p}\)。
+
+\begin{theorem}[Krull 主理想定理]\label{g5:thm:principal-ideal}
+	设 \(A\) 为 Noether 环，\(f\in A\)。若 \(\mathfrak p\) 是包含 \((f)\) 的极小素理想，则
+	\[
+	\operatorname{ht}_A\mathfrak p\leq1.
+	\]
+	特别地，若 \(A\) 为整环且 \(f\ne0\) 不是单位，则每个这样的 \(\mathfrak p\) 都有高度一。
+\end{theorem}
+\begin{proof}
+	令 \(R=A_{\mathfrak p}\)、\(\mathfrak m=\mathfrak pA_{\mathfrak p}\)。局部化的素理想对应说明，\(\mathfrak m\) 是 \(R\) 中唯一包含 \(fR\) 的素理想，所以 \(\sqrt{fR}=\mathfrak m\)。若 \(\dim R\geq2\)，便存在素链
+	\[
+	\mathfrak q_0\subsetneq\mathfrak q_1\subsetneq\mathfrak m.
+	\]
+	商环 \(R/\mathfrak q_0\) 是 Noether 局部整环；\(f\) 的像 \(\overline f\) 所生成理想的根式等于 \(\mathfrak m/\mathfrak q_0\)，因为 \(fR\subseteq fR+\mathfrak q_0\subseteq\mathfrak m\)。\cref{g5:lem:principal-local-domain}给出 \(\dim(R/\mathfrak q_0)\leq1\)，却又有长度为二的素链
+	\[
+	(0)\subsetneq\mathfrak q_1/\mathfrak q_0
+	\subsetneq\mathfrak m/\mathfrak q_0,
+	\]
+	矛盾。因此 \(\operatorname{ht}_A\mathfrak p=\dim R\leq1\)。在整环且 \(f\ne0\) 的情形，\(\mathfrak p\ne0\)，素链 \((0)\subsetneq\mathfrak p\) 又给出高度至少为一。
+\end{proof}
+
+极小性不可省去。例如 \(k[x,y]\) 中的 \((x,y)\) 包含主理想 \((x)\)，但它下方存在素链 \((0)\subsetneq(x)\subsetneq(x,y)\)，高度至少为二。主理想定理控制的是方程 \(x=0\) 的整个不可约分支，而非分支上每一个更小闭子集的高度。
 
 \subsection{广义高度定理}
 \label{g5:subsec:0303:03}
-待撰写
+
+一个方程所产生的高度界，怎样推广到多个方程？关键是把任意一条素链变成商环中的素链，并控制能够损失的长度。下面的引理完成这一点；它也将说明局部环中逐次加入方程时，维数每次至多下降一。
+
+\begin{lemma}\label{g5:lem:principal-dimension-drop}
+	设 \((R,\mathfrak m)\) 为 Noether 局部环，\(a\in\mathfrak m\)。则
+	\[
+	\dim R\leq\dim\bigl(R/(a)\bigr)+1.
+	\]
+\end{lemma}
+\begin{proof}
+	给定一条以极大理想为末项的素链
+	\[
+	\mathfrak q_0\subsetneq\mathfrak q_1\subsetneq\cdots
+	\subsetneq\mathfrak q_d=\mathfrak m.
+	\]
+	我们将构造一条全部包含 \(a\)、长度至少为 \(d-1\) 的素链。它在 \(R/(a)\) 中仍严格，便得到所需估计。
+
+	由于 \(a\in\mathfrak m\)，存在最小指标 \(t\) 使 \(a\in\mathfrak q_t\)。如果 \(t=0\)，原链的每一项都包含 \(a\)，结论已经成立。以下设 \(t\geq1\)。令 \(\mathfrak p_t=\mathfrak q_t\)，再从 \(i=t-1\) 向 \(i=0\) 递归选择
+	\[
+	\mathfrak q_i+(a)\subseteq\mathfrak p_i
+	\subseteq\mathfrak p_{i+1},
+	\]
+	其中 \(\mathfrak p_i\) 为 \(\mathfrak q_i+(a)\) 上的一个极小素理想。这样的选择总能完成：\(\mathfrak p_{i+1}\) 包含 \(\mathfrak q_i+(a)\)，而 Noether 商环 \(R/(\mathfrak q_i+(a))\) 中的每个素理想都包含一个极小素理想，见\cref{g5:cor:minimal-support-associated}。
+
+	对 \(0\leq i\leq t-2\)，有 \(\mathfrak p_i\subsetneq\mathfrak p_{i+1}\)。若相等，因为 \(a\notin\mathfrak q_{i+1}\)，就有
+	\[
+	\mathfrak q_i\subsetneq\mathfrak q_{i+1}
+	\subsetneq\mathfrak p_i.
+	\]
+	但 \(\mathfrak p_i/\mathfrak q_i\) 是 Noether 环 \(R/\mathfrak q_i\) 中主理想 \((\overline a)\) 上的极小素理想，\cref{g5:thm:principal-ideal}要求它的高度至多为一，与上面的长度二素链矛盾。
+
+	因此
+	\[
+	\mathfrak p_0\subsetneq\cdots\subsetneq\mathfrak p_{t-1}
+	\subseteq\mathfrak q_t\subsetneq\cdots\subsetneq\mathfrak q_d
+	\]
+	全部包含 \(a\)，且只有中间的 \(\mathfrak p_{t-1}\subseteq\mathfrak q_t\) 可能成为等号。删去可能的重复项后，所得素链的长度至少为 \(d-1\)。于是每个这样的 \(d\) 都满足
+	\(d\leq\dim(R/(a))+1\)。任意素链都能接到 \(\mathfrak m\)，对链长取上确界即得结论；这个论证也涵盖维数为无穷的可能情形。
+\end{proof}
+
+证明中向下选择 \(\mathfrak p_i\)，是为了始终保留素理想之间的包含关系。主理想定理随后保证：原链在遇到包含 \(a\) 的项以前，相邻两层不会被合并。把这个逐链估计在商环中反复使用，就得到\term[Krullgaodudingli]{Krull 高度定理}[Krull's height theorem]。
+
+\begin{theorem}[Krull 高度定理]\label{g5:thm:height-theorem}
+	设 \(A\) 为 Noether 环，真理想 \(I=(f_1,\ldots,f_r)\) 由 \(r\) 个元素生成。若 \(\mathfrak p\) 是 \(I\) 上的极小素理想，则
+	\[
+	\operatorname{ht}_A\mathfrak p\leq r.
+	\]
+	因而 \(\operatorname{ht}_A I\leq r\)。允许 \(r=0\)，此时 \(I=(0)\)。
+\end{theorem}
+\begin{proof}
+	在 \(\mathfrak p\) 处局部化，记 \(R=A_{\mathfrak p}\)、\(\mathfrak m=\mathfrak pA_{\mathfrak p}\)。由于 \(\mathfrak p\) 在 \(I\) 上极小，\(\mathfrak m\) 是 \(R\) 中唯一包含 \(IR\) 的素理想。因此 \(R/IR\) 的素谱只有一个点，维数为零。
+
+	依次记
+	\[
+	R_j=R/(f_1,\ldots,f_j)R\qquad(0\leq j\leq r),
+	\]
+	其中 \(R_0=R\)。各 \(R_j\) 都是非零 Noether 局部环，因为这些生成元都属于 \(\mathfrak m\)。对 \(R_{j-1}\) 中 \(f_j\) 的像应用\cref{g5:lem:principal-dimension-drop}，得到
+	\[
+	\dim R_{j-1}\leq\dim R_j+1.
+	\]
+	从 \(\dim R_r=0\) 开始向前归纳，便有 \(\dim R\leq r\)。由\eqref{g5:eq:height-local-dimension}，这正是所求的高度界。\(r=0\) 时，\(R=R/IR\) 已为零维，同样成立。
+\end{proof}
+
+这个结论也称\term[guangyigaodudingli]{广义高度定理}[generalized principal ideal theorem]。主理想定理对应于 \(r=1\)，而 \(k[x_1,\ldots,x_r]\) 中的 \((x_1,\ldots,x_r)\) 表明上界可以取到：\eqref{g5:eq:coordinate-prime-chain}中的坐标素链给出高度至少为 \(r\)，高度定理给出高度至多为 \(r\)。
+
+\begin{corollary}\label{g5:cor:noetherian-local-finite-dimension}
+	设 \((R,\mathfrak m)\) 为 Noether 局部环，且 \(\mathfrak m\) 能由 \(r\) 个元素生成。则 \(\dim R\leq r<\infty\)。特别地，Noether 环的每个素理想都有有限高度。
+\end{corollary}
+\begin{proof}
+	\(\mathfrak m\) 是自身上唯一的极小素理想，故高度定理给出
+	\(\dim R=\operatorname{ht}_R\mathfrak m\leq r\)。对一般 Noether 环的素理想 \(\mathfrak p\)，局部化 \(A_{\mathfrak p}\) 仍为 Noether 环，其极大理想有限生成，再用同一结论即可。
+\end{proof}
+
+维数因此给出了方程数目的下界：若 \((R,\mathfrak m)\) 为维数 \(d\) 的 Noether 局部环，且 \(\sqrt{(f_1,\ldots,f_r)}=\mathfrak m\)，则 \(r\geq d\)。下一节将构造恰好 \(d\) 个这样的元素，并把它们称为参数系。
 
 \subsection{有限型代数维数与超越次数}
 \label{g5:subsec:0303:04}
-待撰写
+
+上一节把有限型代数表示为多项式子代数上的有限模。对于整环，其参数数目由分式域的超越次数确定。为了把这个数与素链长度联系起来，先说明严格增加一个素理想会使超越次数严格下降。下面的论证适用于任意基域，所用的只是代数独立与有限生成。
+
+\begin{lemma}\label{g5:lem:strict-prime-transcendence-drop}
+	设 \(k\) 为域，\(B\) 为有限型 \(k\) 代数且为整环，\(\mathfrak q\ne(0)\) 为 \(B\) 的素理想。则
+	\[
+	\operatorname{trdeg}_k\operatorname{Frac}(B/\mathfrak q)
+	<\operatorname{trdeg}_k\operatorname{Frac}(B).
+	\]
+\end{lemma}
+\begin{proof}
+	写 \(B=k[b_1,\ldots,b_s]\)。从 \(b_i\) 在 \(B/\mathfrak q\) 中的像里选取一个极大代数无关子集，重排指标后记为 \(\overline b_1,\ldots,\overline b_e\)。其余生成元都在 \(k(\overline b_1,\ldots,\overline b_e)\) 上代数，所以这些像构成 \(\operatorname{Frac}(B/\mathfrak q)\) 的一个超越基。\(b_1,\ldots,b_e\) 本身也代数无关：原环中的多项式关系在商环中仍成立。因此
+	\[
+	e\leq d=\operatorname{trdeg}_k\operatorname{Frac}(B).
+	\]
+	若 \(e=d\)，则 \(\operatorname{Frac}(B)\) 在 \(K=k(b_1,\ldots,b_e)\) 上代数；否则再加入一个超越于 \(K\) 的元素，就得到 \(d+1\) 个代数无关元，与\cref{g5:lem:transcendence-bound}矛盾。令
+	\[
+	S=k[b_1,\ldots,b_e]\setminus\{0\}.
+	\]
+	因为 \(\overline b_1,\ldots,\overline b_e\) 代数无关，\(S\cap\mathfrak q=\varnothing\)。另一方面，
+	\[
+	S^{-1}B=K[b_{e+1},\ldots,b_s]
+	\]
+	是由有限多个代数元生成的 \(K\) 代数，故是有限维 \(K\) 向量空间：对各生成元取代数方程并用其约去高次幂，就得到有限个单项式张成。它又是整环，所以是域；事实上，任意非零元素的乘法为有限维向量空间的单射，因而满射。
+	但 \(S\cap\mathfrak q=\varnothing\) 使 \(S^{-1}\mathfrak q\) 为这个域的真理想，而 \(\mathfrak q\ne0\) 及整环的局部化单射性又使 \(S^{-1}\mathfrak q\ne0\)，矛盾。因此 \(e<d\)。
+\end{proof}
+
+该证明的要点是：若取素商后没有损失代数无关参数，就能同时把这些参数中的非零多项式变为单位。原环此时变成有限代数域扩张，原来非零的素理想却必须仍为真理想，两者无法同时成立。
+
+\begin{theorem}[有限型代数的维数]\label{g5:thm:affine-dimension}
+	设 \(k\) 为任意域，\(A\) 为非零有限型 \(k\) 代数。
+	若 \(A\) 为整环，则
+	\begin{equation}\label{g5:eq:affine-dimension-transcendence}
+	\dim A=\operatorname{trdeg}_k\operatorname{Frac}(A).
+	\end{equation}
+	一般地，若 \(\mathfrak p_1,\ldots,\mathfrak p_s\) 为 \(A\) 的全部极小素理想，则
+	\begin{equation}\label{g5:eq:affine-dimension-components}
+	\dim A=\max_{1\leq i\leq s}
+	\operatorname{trdeg}_k\operatorname{Frac}(A/\mathfrak p_i).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先设 \(A\) 为整环，并记 \(d=\operatorname{trdeg}_k\operatorname{Frac}(A)\)。对任意素链
+	\[
+	\mathfrak q_0\subsetneq\mathfrak q_1\subsetneq\cdots\subsetneq\mathfrak q_r,
+	\]
+	各 \(A/\mathfrak q_i\) 都是有限型 \(k\) 代数，且都是整环。对相邻两项应用\cref{g5:lem:strict-prime-transcendence-drop}，得到一列严格下降的非负整数
+	\[
+	\operatorname{trdeg}_k\operatorname{Frac}(A/\mathfrak q_0)
+	>\cdots>
+	\operatorname{trdeg}_k\operatorname{Frac}(A/\mathfrak q_r)\geq0.
+	\]
+	首项至多为 \(d\)：若 \(\mathfrak q_0=0\) 则相等，若 \(\mathfrak q_0\ne0\) 则再用一次该引理。故 \(r\leq d\)，从而 \(\dim A\leq d\)。
+
+	反向用\cref{g5:thm:noether-normalization,g5:cor:normalization-transcendence}：存在代数无关的 \(t_1,\ldots,t_d\in A\)，使
+	\[
+	C=k[t_1,\ldots,t_d]\subseteq A
+	\]
+	为有限整扩张。\(C\) 中有长度为 \(d\) 的坐标素链
+	\[
+	(0)\subsetneq(t_1)\subsetneq\cdots\subsetneq(t_1,\ldots,t_d).
+	\]
+	当 \(d=0\) 时，这条链只含 \((0)\) 一项。由\cref{g5:thm:lying-over}，可先在 \(A\) 中选取位于 \((0)\) 上方的素理想；再反复应用\cref{g5:thm:going-up}，便把整条链提升到 \(A\)。各提升理想的收缩互不相同，所以提升后的包含也都严格，长度仍为 \(d\)。因此 \(\dim A\geq d\)，证明\eqref{g5:eq:affine-dimension-transcendence}。
+
+	一般的 \(A\) 由\cref{g5:thm:hilbert-basis,g5:prop:affine-noetherian}知为 Noether 环。\cref{g5:prop:dimension-minimal-components}给出
+	\(\dim A=\max_i\dim(A/\mathfrak p_i)\)，再对每个整环 \(A/\mathfrak p_i\) 使用已证的有限型代数结论，就得到\eqref{g5:eq:affine-dimension-components}。
+\end{proof}
+
+\begin{corollary}\label{g5:cor:polynomial-dimension}
+	对任意域 \(k\) 和整数 \(n\geq0\)，有
+	\[
+	\dim k[x_1,\ldots,x_n]=n.
+	\]
+\end{corollary}
+\begin{proof}
+	分式域 \(k(x_1,\ldots,x_n)\) 对 \(k\) 的超越次数为 \(n\)，应用\cref{g5:thm:affine-dimension}即可。
+\end{proof}
+
+代数闭域 \(k\) 上的非空仿射代数集 \(X\)，其维数定义为 \(\dim X=\dim k[X]\)。坐标环同构保持素链，因此这个定义与仿射实现无关。若 \(X\) 不可约，就得到 \(\dim X=\operatorname{trdeg}_k k(X)\)；一般情形则取各不可约分量维数的最大值。这样，坐标中独立参数的数目与不可约闭集链的长度给出了同一个维数。
+
+\begin{example}\label{g5:exm:mixed-dimensional-components}
+	设 \(k\) 为任意域，令
+	\[
+	A=k[x,y,z]/(xy,xz).
+	\]
+	在 \(k[x,y,z]\) 中有
+	\[
+	(xy,xz)=(x)\cap(y,z).
+	\]
+	右端包含左端。反之，若 \(xg\in(y,z)\)，模去 \((y,z)\) 得到 \(x\overline g=0\)；商环 \(k[x]\) 是整环，故 \(\overline g=0\)，即 \(g\in(y,z)\)。这证明交理想等式。两个素理想 \((x)\)、\((y,z)\) 互不包含，而且任何包含其交的素理想都包含其中一个，所以它们恰是交理想上的极小素理想。
+	相应两个分支的商环分别为
+	\[
+	A/\bigl((x)/(xy,xz)\bigr)\cong k[y,z],
+	\qquad
+	A/\bigl((y,z)/(xy,xz)\bigr)\cong k[x].
+	\]
+	由\cref{g5:thm:affine-dimension}，两者维数分别为二和一，而 \(\dim A=2\)。当 \(k\) 为代数闭域时，相应代数集为平面 \(x=0\) 与 \(x\) 轴，交于原点。
+	令 \(\mathfrak p=(y,z)/(xy,xz)\)。它是极小素理想，所以 \(\operatorname{ht}_A\mathfrak p=0\)，但 \(\dim(A/\mathfrak p)=1\)。于是
+	\[
+	\operatorname{ht}_A\mathfrak p+\dim(A/\mathfrak p)=1<2=\dim A.
+	\]
+	这个计算说明，整体维数取决于最高维的分支，某个素理想的高度则只计算到达该素理想的链。两者相减一般不能给出其闭包的维数。
+\end{example}
 
 \subsection{整扩张的维数保持}
 \label{g5:subsec:0303:05}
-待撰写
+
+有限型代数的维数证明已经用到：多项式子环中的素链可以沿整扩张提升。对一般整扩张，lying-over 与 going-up 保证底环中的链不会丢失，incomparability 保证上层的严格链收缩后仍然严格。这两点合起来给出维数相等。
+
+\begin{theorem}\label{g5:thm:integral-dimension}
+	设 \(A\subseteq B\) 为非零交换含幺环的整扩张。则
+	\[
+	\dim B=\dim A,
+	\]
+	其中允许维数为无穷。对任意 \(\mathfrak q\in\operatorname{Spec}B\)，令 \(\mathfrak p=\mathfrak q\cap A\)，还有
+	\[
+	\dim(B/\mathfrak q)=\dim(A/\mathfrak p).
+	\]
+	更一般地，对任意交换含幺环同态 \(\varphi:A\rightarrow B\)，若 \(B\) 在 \(\varphi(A)\) 上整，则
+	\[
+	\dim B=\dim(A/\ker\varphi).
+	\]
+\end{theorem}
+\begin{proof}
+	设 \(\mathfrak q_0\subsetneq\cdots\subsetneq\mathfrak q_r\) 为 \(B\) 中的素链。收缩得到 \(A\) 中的包含链。若相邻两项收缩相同，就与\cref{g5:thm:incomparability}矛盾。因此收缩后的每一步都严格，长度仍为 \(r\)，从而 \(\dim B\leq\dim A\)。
+
+	反过来，给定 \(A\) 中任意素链 \(\mathfrak p_0\subsetneq\cdots\subsetneq\mathfrak p_r\)，先由\cref{g5:thm:lying-over}选取 \(\mathfrak q_0\in\operatorname{Spec}B\)，使 \(\mathfrak q_0\cap A=\mathfrak p_0\)。再由\cref{g5:thm:going-up}逐步得到
+	\[
+	\mathfrak q_0\subseteq\mathfrak q_1\subseteq\cdots\subseteq\mathfrak q_r,
+	\qquad \mathfrak q_i\cap A=\mathfrak p_i.
+	\]
+	收缩互不相同，故这些包含全部严格。因此 \(\dim B\geq\dim A\)。对所有有限链的长度取上确界，两个不等式也涵盖无穷维情形。
+
+	给定 \(\mathfrak q\) 后，诱导包含 \(A/\mathfrak p\subseteq B/\mathfrak q\) 仍为整扩张，对它使用已经证明的结论即得第二个等式。对于一般整同态，先用 \(A/\ker\varphi\cong\varphi(A)\) 代替底环，再对 \(\varphi(A)\subseteq B\) 使用结论。若 \(B=0\)，两边均为零环的维数 \(-\infty\)。
+\end{proof}
+
+这个维数等式适用于任意整扩张。整性通过素理想的上行与不可比性直接控制全部有限素链。若希望比较指定点处的高度，则还需要保留提升链的上端点；这正是 going-down 所处理的问题。
+
+\begin{proposition}\label{g5:prop:integral-height-comparison}
+	设 \(A\subseteq B\) 为非零交换含幺环的整扩张，\(\mathfrak q\in\operatorname{Spec}B\)，\(\mathfrak p=\mathfrak q\cap A\)。则
+	\[
+	\operatorname{ht}_B\mathfrak q\leq\operatorname{ht}_A\mathfrak p.
+	\]
+	若这个扩张还满足 going-down，则等号成立。特别地，若 \(A\) 是整闭整环、\(B\) 是整环，则等号成立。
+\end{proposition}
+\begin{proof}
+	每条以 \(\mathfrak q\) 为末项的素链收缩后，依不可比性仍严格，且末项为 \(\mathfrak p\)，因此得到第一个不等式。若有 going-down，给定任意以 \(\mathfrak p\) 为末项的链
+	\[
+	\mathfrak p_0\subsetneq\cdots\subsetneq\mathfrak p_r=\mathfrak p,
+	\]
+	从指定的 \(\mathfrak q_r=\mathfrak q\) 开始，逐次向下选取 \(\mathfrak q_i\subseteq\mathfrak q_{i+1}\)，使其收缩为 \(\mathfrak p_i\)。收缩的严格性保证所选链也严格，于是 \(\operatorname{ht}_B\mathfrak q\geq r\)。取上确界即得反向不等式。最后的充分条件由\cref{g5:thm:going-down}给出。
+\end{proof}
+
+比较这两个证明可以看出端点的作用。证明整体维数相等时，先随意选定链首素理想的一个上方素理想，再向上提升；证明指定 \(\mathfrak q\) 的高度相等时，必须从这个已经给定的末项向下构造。虽然得到的都是同样长度的链，所需要的提升方向却不同。
+
+\begin{example}\label{g5:exm:integral-dimension-cusp}
+	设 \(k\) 为任意域。包含
+	\[
+	k[t^2,t^3]\subseteq k[t]
+	\]
+	为有限整扩张：\(t\) 满足首一方程 \(T^2-t^2=0\)，而 \(k[t]\) 由 \(1,t\) 作为 \(k[t^2,t^3]\) 模生成。因此
+	\[
+	\dim k[t^2,t^3]=\dim k[t]=1.
+	\]
+	把 \(u,v\) 分别映到 \(t^2,t^3\)，可得
+	\[
+	k[u,v]/(v^2-u^3)\cong k[t^2,t^3].
+	\]
+	确实，模去 \(v^2-u^3\) 后每个多项式可写为 \(a(u)+v b(u)\)；代入后，\(a(t^2)\) 只含偶次幂，\(t^3b(t^2)\) 只含奇次幂，两者之和为零便迫使 \(a=b=0\)。这既核对了核理想，也说明尖点曲线与其参数直线具有同一维数。
+\end{example}
+
+一般整同态中的核确实影响维数。例如满同态 \(k[x,y]\rightarrow k[y]\)、\(x\mapsto0\)、\(y\mapsto y\) 为整同态，每个目标元素都满足一个首一的一次方程。但源环维数为二、目标环维数为一，维数相等发生在
+\[
+	k[x,y]/(x)\cong k[y]
+\]
+与目标环之间。因而应用整扩张的维数保持时，先确定底环在目标环中的像，就确定了实际参与比较的空间。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

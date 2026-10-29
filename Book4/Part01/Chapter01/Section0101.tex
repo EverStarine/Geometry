@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 1.1 全纯性和局部映射
 % 纲要位置：几何学计划纲要.md，第 3481 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,308 @@
 \section{全纯性和局部映射}
 \label{g4:sec:0101}
 
-待撰写
+映射 \(z\mapsto z^2\) 把辐角加倍，却在每个非零点附近保持相交曲线之间的有向角。这两个事实分别涉及有限范围内的绕转和一点处的线性近似。全纯函数的几何从这种区别开始：复导数约束无穷小形状，幂级数则把临界点附近的整个映射化为一个幂映射。我们先从复可微出发证明幂级数的存在，再建立这一局部模型。
+
+\ProseParagraphBreak
+
+本章用 \(D(a,r)=\{z\in\mathbb C:|z-a|<r\}\) 表示开圆盘，\(\mathbb D=D(0,1)\) 表示单位圆盘。\term[quyu]{区域}[domain]指非空连通开集；开集未必连通。圆周的正向为逆时针，复平面的定向由有序实坐标 \((x,y)\) 给定。
 
 \subsection{Cauchy–Riemann 方程与幂级数}
 \label{g4:subsec:0101:01}
-待撰写
+把 \(f=u+\mathrm i v\) 看成实平面的映射时，它的一阶变化通常由一个任意实矩阵给出。复可微要求这个矩阵等于乘以某个复数；非零复数的乘法是一次旋转与正比例伸缩的复合，因而把两个方向之间的角度保留下来。
+
+\begin{definition}
+	\label{g4:def:0101:holomorphic}
+	设 \(U\subset\mathbb C\) 开，\(a\in U\)。若极限
+	\[
+		f'(a)=\lim_{h\to0,\ h\ne0}\frac{f(a+h)-f(a)}{h}
+	\]
+	存在，则称 \(f:U\to\mathbb C\) 在 \(a\) 处复可微；这里 \(h\) 沿复平面中的任意方向趋于零。若 \(f\) 在 \(U\) 每点复可微，则称它在 \(U\) 上\term[quanchun]{全纯}[holomorphic]，全体这样的函数记为 \(\mathcal O(U)\)。在整个 \(\mathbb C\) 上全纯的函数称为\term[zhenghanshu]{整函数}[entire function]。
+	\symidx{\(\mathcal O(U)\)：开集 \(U\) 上的全纯函数}
+\end{definition}
+
+复导数存在等价于 \(f(a+h)=f(a)+Ah+o(|h|)\)，其中 \(A=f'(a)\)。因此复可微已经蕴含实可微。反过来，若 \(f=u+\mathrm i v\) 在 \(a\) 实可微，则
+\[
+	\mathrm{D}f_a=
+	\begin{pmatrix}u_x&u_y\\v_x&v_y\end{pmatrix}_a
+\]
+表示复数乘法，当且仅当 \(u_x=v_y\)、\(u_y=-v_x\)。这就是\term[cauchyriemannfangcheng]{Cauchy--Riemann 方程}[Cauchy--Riemann equations]。\footnote{Cauchy，Augustin-Louis Cauchy（1789--1857），法国数学家，研究实分析、复分析与置换群。Riemann，Georg Friedrich Bernhard Riemann（1826--1866），德国数学家，建立复函数的曲面观点，并深刻影响了微分几何与积分理论。}在此情形
+\begin{equation}
+	\label{g4:eq:0101:complex-linear}
+	f'=u_x+\mathrm i v_x,\qquad
+	\mathrm{D}f=
+	\begin{pmatrix}\operatorname{Re}f'&-\operatorname{Im}f'\\
+	\operatorname{Im}f'&\operatorname{Re}f'\end{pmatrix},\qquad
+	\det\mathrm{D}f=|f'|^2.
+\end{equation}
+尤其对 \(C^1\) 函数，满足这些方程与全纯等价。后面还要证明，全纯函数自动具有任意阶连续导数，因而定义中无需另加 \(C^1\) 假设。
+
+\ProseParagraphBreak
+
+只检查一点处的偏导关系并不足够。例如令 \(f(0)=0\)，在 \((x,y)\ne(0,0)\) 时令
+\[
+	f(x+\mathrm i y)=\frac{x^3y}{x^4+y^2}.
+\]
+它在原点连续，因为 \(|x^3y|/(x^4+y^2)\le |x|/2\)；沿两条坐标轴为零，所以四个实偏导在原点满足上述方程。但沿 \(y=x^2\)，有 \(f(x+\mathrm i x^2)=x/2\)，故复差商趋于 \(1/2\)，而沿实轴差商为零。这里缺少的正是实可微性。
+
+\begin{definition}
+	\label{g4:def:0101:analytic}
+	若函数在每点 \(a\) 的某圆盘内都可表示为收敛幂级数 \(\sum_{n\ge0}c_n(z-a)^n\)，则称它\term[jiexihanshu]{解析}[analytic]。
+\end{definition}
+
+收敛半径为 \(R>0\) 的幂级数在 \(|z-a|\le r<R\) 上一致绝对收敛，且可逐项求导。具体说，选 \(r<\rho<R\)，则 \(|c_n|\rho^n\) 有界，而 \(\sum n(r/\rho)^{n-1}\) 收敛，控制了导数级数的一致收敛；积分基本定理随后说明其和确为原函数的导数。逐次使用这一估计，得到所有阶导数。因此解析蕴含全纯，且 \(c_n=f^{(n)}(a)/n!\)。困难的反向结论是：仅有一次复导数，为何就能恢复整个幂级数？
+
+\ProseParagraphBreak
+
+全纯函数的和、积、复合仍全纯；分母非零处的商也全纯。这些性质由差商法则直接得到。特别地，\(\exp z=\sum z^n/n!\) 全纯，满足 \((\exp z)'=\exp z\) 和 \(\exp(z+w)=\exp z\exp w\)；后者可由绝对收敛级数的乘积逐项合并得到。取 \(w=-z\) 可知指数从不为零。它将成为构造局部对数和根的工具。
 
 \subsection{Cauchy 积分及解析性的证明}
 \label{g4:subsec:0101:02}
-待撰写
+边界上的函数值是否足以决定内部？实可微函数可以在圆盘内部任意作紧支扰动；全纯函数的答案却完全不同。关键是先证明小三角形边界上的积分为零，再把这个消去关系用于带一个极点的积分核。
+
+\ProseParagraphBreak
+
+对分片 \(C^1\) 曲线 \(\gamma:[\alpha,\beta]\to U\) 及连续函数 \(f\)，定义
+\[
+	\int_\gamma f(z)\,\mathrm{d}z
+	=\int_\alpha^\beta f(\gamma(t))\gamma'(t)\,\mathrm{d}t.
+\]
+积分按分段相加，反向改变符号，且绝对值不超过曲线长度乘以曲线上 \(|f|\) 的上界。若 \(F'=f\)，链式法则给出 \(\int_\gamma f\,\mathrm{d}z=F(\gamma(\beta))-F(\gamma(\alpha))\)，所以原函数的存在会使闭曲线积分消失。
+
+\begin{theorem}[Cauchy--Goursat 定理]
+	\label{g4:thm:0101:goursat}
+	设 \(U\subset\mathbb C\) 开，\(f\in\mathcal O(U)\)。若闭三角形 \(T\) 包含于 \(U\)，则
+	\[
+		\int_{\partial T}f(z)\,\mathrm{d}z=0.
+	\]
+\end{theorem}
+这称为\term[cauchygoursatdingli]{Cauchy--Goursat 定理}[Cauchy--Goursat theorem]。\footnote{Goursat，Édouard Jean-Baptiste Goursat（1858--1936），法国数学家，研究复分析与微分方程；其积分定理去掉了对全纯函数导数连续性的预设。}
+\begin{proof}
+	记原积分为 \(I\)。连接三条边的中点，得到四个相似小三角形；内部边两两抵消，故至少一个小三角形的积分绝对值不小于 \(|I|/4\)。重复选取，得到套叠闭三角形 \(T_n\)，直径和周长分别为 \(2^{-n}\operatorname{diam}T\)、\(2^{-n}\ell(\partial T)\)，且其积分绝对值不小于 \(4^{-n}|I|\)。紧性及直径趋零保证交集为一点 \(p\in U\)。
+
+	在 \(p\) 复可微给出
+	\[
+		f(z)=f(p)+f'(p)(z-p)+(z-p)\varepsilon(z),\qquad \varepsilon(z)\longrightarrow0.
+	\]
+	常数项和一次项有显式原函数，闭边界积分为零。因此
+	\[
+		4^{-n}|I|\le 4^{-n}\ell(\partial T)\operatorname{diam}T
+		\sup_{z\in T_n}|\varepsilon(z)|.
+	\]
+	约去 \(4^{-n}\) 并令 \(n\to\infty\)，得到 \(I=0\)。
+\end{proof}
+
+\begin{lemma}
+	\label{g4:lem:0101:primitive}
+	设 \(D\subset\mathbb C\) 是开圆盘，\(g:D\to\mathbb C\) 连续。若 \(g\) 在每个闭三角形 \(T\subset D\) 的边界上积分为零，则 \(g\) 在 \(D\) 上有全纯原函数。特别地，全纯函数在圆盘上有原函数。
+\end{lemma}
+\begin{proof}
+	固定 \(b\in D\)，沿直线段定义 \(G(z)=\int_{[b,z]}g(\zeta)\,\mathrm{d}\zeta\)。圆盘凸，三角形的零积分给出
+	\[
+		G(z+h)-G(z)=\int_{[z,z+h]}g(\zeta)\,\mathrm{d}\zeta
+		=h\int_0^1g(z+th)\,\mathrm{d}t.
+	\]
+	连续性使右端除以 \(h\) 后趋于 \(g(z)\)。于是 \(G'=g\)，原函数在整个圆盘上定义。
+\end{proof}
+
+下一步会用到一个轻微推广：若 \(g\) 在圆盘上连续，仅在一点 \(p\) 可能不全纯，上述三角形积分仍为零。若三角形遇到 \(p\)，先把它分成以 \(p\) 为顶点的至多三个三角形，再在该顶点切去直径 \(\varepsilon\) 的小三角形。剩余多边形可剖分成不经过 \(p\) 的三角形，对它们用\cref{g4:thm:0101:goursat}。原积分与剩余积分的差由总长度 \(O(\varepsilon)\) 的线段积分组成；\(g\) 在附近有界，故差趋零。点落在边上时用同样切割。这样，\cref{g4:lem:0101:primitive}也适用于这个连续延拓。
+
+\begin{theorem}[Cauchy 积分公式]
+	\label{g4:thm:0101:cauchy-formula}
+	设 \(U\subset\mathbb C\) 开，\(f\in\mathcal O(U)\)，且 \(\overline{D(a,r)}\subset U\)。对每个 \(z\in D(a,r)\)，有
+	\begin{equation}
+		\label{g4:eq:0101:cauchy-formula}
+		f(z)=\frac{1}{2\pi\mathrm i}\int_{|\zeta-a|=r}
+		\frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta.
+	\end{equation}
+	进而 \(f\) 在该圆盘上有收敛幂级数
+	\begin{equation}
+		\label{g4:eq:0101:power-series}
+		f(z)=\sum_{n=0}^\infty c_n(z-a)^n,\qquad
+		c_n=\frac{1}{2\pi\mathrm i}\int_{|\zeta-a|=r}
+		\frac{f(\zeta)}{(\zeta-a)^{n+1}}\,\mathrm{d}\zeta
+		=\frac{f^{(n)}(a)}{n!}.
+	\end{equation}
+	级数在每个较小闭圆盘上一致绝对收敛。因此全纯与解析等价，全纯函数为 \(C^\infty\)。
+\end{theorem}
+公式\eqref{g4:eq:0101:cauchy-formula}称为\term[cauchyjifengongshi]{Cauchy 积分公式}[Cauchy integral formula]。
+\begin{proof}
+	因闭圆盘紧含于 \(U\)，可把半径略增，仍留在 \(U\)。对固定的内部点 \(z\)，在稍大的圆盘上令
+	\[
+		g(\zeta)=\frac{f(\zeta)-f(z)}{\zeta-z}\quad(\zeta\ne z),\qquad g(z)=f'(z).
+	\]
+	它在 \(z\) 连续，在其余点全纯。前面的推广及原函数引理说明其圆周积分为零。另一方面，因 \(|z-a|<r\)，在积分圆周上可以一致展开
+	\[
+		\frac1{\zeta-z}
+		=\sum_{n=0}^\infty\frac{(z-a)^n}{(\zeta-a)^{n+1}}.
+	\]
+	参数化 \(\zeta=a+r e^{\mathrm i t}\) 可见，右端各项积分除 \(n=0\) 给出 \(2\pi\mathrm i\) 外，其余均为零。因此 \(\int(\zeta-z)^{-1}\,\mathrm{d}\zeta=2\pi\mathrm i\)。把 \(g\) 的零积分展开，便得积分公式。
+
+	将同一几何级数代入积分公式。在 \(|z-a|\le s<r\) 上，\(|z-a|/r\le s/r<1\)，所以可一致逐项积分，得到所列 \(c_n\)。若圆周上的最大模为 \(M_r\)，则 \(|c_n|\le M_r/r^n\)，再次保证较小闭圆盘上的一致绝对收敛。幂级数逐项求导已在前面证明，故 \(c_n=f^{(n)}(a)/n!\)，并得到所有阶导数。
+\end{proof}
+
+\begin{proposition}[Cauchy 估计]
+	\label{g4:prop:0101:cauchy-estimate}
+	设 \(f\) 在闭圆盘 \(\overline{D(a,r)}\) 的邻域全纯，\(M_r=\max_{|z-a|=r}|f(z)|\)。则对所有整数 \(n\ge0\)，
+	\[
+		|f^{(n)}(a)|\le\frac{n!M_r}{r^n}.
+	\]
+	更一般地，设 \(U\subset\mathbb C\) 开，\(f\in\mathcal O(U)\)，\(K\subset U\) 紧。若 \(\delta>0\)，所有 \(D(z,\delta)\)（\(z\in K\)）的闭包都包含于 \(U\)，且 \(|f|\le M\) 在这些圆盘上成立，则 \(\sup_K|f^{(n)}|\le n!M/\delta^n\)。
+\end{proposition}
+\begin{proof}
+	对\eqref{g4:eq:0101:power-series}中的系数积分取绝对值，使用圆周长度 \(2\pi r\) 即得第一式。对每个 \(z\in K\) 以它为圆心重复同一估计，便得第二式。
+\end{proof}
+
+这个估计把函数值的控制转成所有阶导数的控制。例如有界整函数 \(f\) 若满足 \(|f|\le M\)，则对任意 \(a\) 和任意 \(r>0\)，有 \(|f'(a)|\le M/r\)。令 \(r\to\infty\)，得到 \(f'=0\)，再沿线段积分可知 \(f\) 为常数。这里半径能够无限增大，正是定义域为整个平面的作用。
+
+\ProseParagraphBreak
+
+有了光滑性，就能把圆盘公式扩展到带孔区域。所需实变量公式为
+\begin{equation}
+	\label{g4:eq:0101:green}
+	\int_{\partial G}(P\,\mathrm{d}x+Q\,\mathrm{d}y)
+	=\int_G(Q_x-P_y)\,\mathrm{d}x\,\mathrm{d}y.
+\end{equation}
+这里 \(G\) 有界，边界由有限条互不相交的分片 \(C^2\) 正则简单闭曲线组成，角点内角在 \((0,2\pi)\) 内，\(P,Q\) 在 \(\overline G\) 的邻域为 \(C^1\)；边界按区域位于左侧定向。第一卷第9.1节引理9.1.9 已由积分基本定理、有限局部分解和角点截去极限证明这一 Green 公式。\footnote{Green，George Green（1793--1841），英国数学家，以位势理论、Green 函数和积分公式著称。}复系数情形分别用于实部和虚部即可。本章对一般边界区域均使用上述条件；圆盘和圆环是最常用的情形。
+
+\begin{proposition}
+	\label{g4:prop:0101:cauchy-domain}
+	设 \(G\subset\mathbb C\) 是有界区域，边界满足公式\eqref{g4:eq:0101:green}所述条件，\(f\) 在 \(\overline G\) 的邻域全纯。则
+	\[
+		\int_{\partial G} f(\zeta)\,\mathrm{d}\zeta=0,
+		\qquad
+		f(z)=\frac1{2\pi\mathrm i}\int_{\partial G}
+		\frac{f(\zeta)}{\zeta-z}\,\mathrm{d}\zeta\quad(z\in G).
+	\]
+	有孔时，外边界逆时针，内边界顺时针。
+\end{proposition}
+\begin{proof}
+	写 \(f\,\mathrm{d}z=(u\,\mathrm{d}x-v\,\mathrm{d}y)+\mathrm i(v\,\mathrm{d}x+u\,\mathrm{d}y)\)。由\eqref{g4:eq:0101:green}，两部分的面积被积函数分别为 \(-v_x-u_y\) 与 \(u_x-v_y\)，恰由 Cauchy--Riemann 方程为零。使用该公式合法，因为\cref{g4:thm:0101:cauchy-formula}已经给出 \(f\) 的光滑性。
+
+	对第二式，在 \(z\) 周围删去闭小圆盘 \(\overline{D(z,\varepsilon)}\subset G\)。核 \(f(\zeta)/(\zeta-z)\) 在剩余区域的闭包附近全纯，第一式说明其原边界积分等于小圆的逆时针积分。后者写成
+	\[
+		\mathrm i\int_0^{2\pi} f(z+\varepsilon e^{\mathrm i t})\,\mathrm{d}t
+	\]
+	并令 \(\varepsilon\to0\)，即得到 \(2\pi\mathrm i f(z)\)。
+\end{proof}
 
 \subsection{零点阶数与局部幂模型}
 \label{g4:subsec:0101:03}
-待撰写
+幂级数的第一个非零项不仅给出近似，还决定零点的重数。把其后的非零因子吸收到新坐标里，便能把近似变成精确等式。
+
+\begin{proposition}
+	\label{g4:prop:0101:zero-order}
+	设 \(f\) 在点 \(a\) 的邻域全纯且 \(f(a)=0\)。恰有下列一种情形成立：\(f\) 在 \(a\) 的某邻域恒为零；或者存在唯一整数 \(m\ge1\) 及全纯函数 \(u\)，使
+	\[
+		f(z)=(z-a)^m u(z),\qquad u(a)\ne0.
+	\]
+	后一情形的 \(a\) 是孤立零点，整数 \(m\) 称为其\term[lingdiandejieshu]{零点阶数}[order of a zero]或重数，记为 \(\operatorname{ord}_a f\)。
+\end{proposition}
+\begin{proof}
+	在 \(a\) 展开幂级数。若全部系数为零，则函数在收敛圆盘上为零；否则取第一个非零系数的指标 \(m\)，提出 \((z-a)^m\) 即得 \(u\)。其常数项非零，连续性保证缩小圆盘后 \(u\) 处处非零。幂级数系数的唯一性给出 \(m\) 和 \(u\) 的唯一性。
+\end{proof}
+
+\begin{theorem}[恒等定理]
+	\label{g4:thm:0101:identity}
+	设 \(\Omega\subset\mathbb C\) 是区域，\(f,g\in\mathcal O(\Omega)\)。若集合 \(\{z:f(z)=g(z)\}\) 在 \(\Omega\) 内有聚点，则 \(f=g\) 在整个 \(\Omega\) 上成立。特别地，非恒零全纯函数在区域中的零点离散。
+\end{theorem}
+\begin{proof}
+	令 \(h=f-g\)。由\cref{g4:prop:0101:zero-order}，零点的聚点附近必有 \(h=0\)。令 \(E\) 为所有具有恒零邻域的点的集合，则 \(E\) 非空且开。若 \(p\in\overline E\cap\Omega\)，且 \(p\notin E\)，任意靠近 \(p\) 的 \(E\) 中点都是 \(h\) 的零点，因而 \(p\) 是零点聚点；前述局部结论又给出 \(p\in E\)，矛盾。所以 \(E\) 在 \(\Omega\) 中也闭。连通性给出 \(E=\Omega\)。
+\end{proof}
+
+连通条件用于把一处的相等传播到整个区域；内聚点条件则用于启动传播。函数 \(\sin(\pi/z)\) 在穿孔圆盘上有零点 \(1/n\) 向缺失的原点聚集，却并非恒零。由幂级数定义的正弦全纯，故这个例子确实只在聚点的位置上不同。
+
+\ProseParagraphBreak
+
+为了把 \((z-a)^m u(z)\) 改写为新坐标的 \(m\) 次幂，需要先说明一个导数非零的候选坐标为何可逆。以下证明也给出逆函数的全纯性。
+
+\begin{theorem}[全纯逆函数定理]
+	\label{g4:thm:0101:inverse}
+	设 \(f\) 在 \(a\in\mathbb C\) 的邻域全纯，且 \(f'(a)\ne0\)。则存在 \(a\) 和 \(f(a)\) 的开邻域 \(V,W\)，使 \(f:V\to W\) 双射，其逆 \(g\) 全纯，且
+	\[
+		g'(w)=\frac1{f'(g(w))}.
+	\]
+\end{theorem}
+\begin{proof}
+	通过平移和除以 \(f'(a)\)，化为 \(a=f(a)=0\)、\(f'(0)=1\)，并写 \(f(z)=z+h(z)\)。由已证的导数连续性，取 \(r>0\)，使 \(h(0)=0\) 且 \(|h'|\le q<1\) 在 \(\overline{D(0,r)}\) 上成立。沿直线段积分得到
+	\[
+		|h(z)-h(\zeta)|\le q|z-\zeta|,\qquad
+		|f(z)-f(\zeta)|\ge(1-q)|z-\zeta|.
+	\]
+	故 \(f\) 在此圆盘上单射。对 \(|w|<(1-q)r\)，迭代 \(z_{n+1}=w-h(z_n)\)，从 \(z_0=0\) 开始。映射把闭圆盘映入自身，且相邻差按因子 \(q\) 缩小。几何级数估计说明 \((z_n)\) 是 Cauchy 列，其极限 \(z\) 满足 \(f(z)=w\)；又 \(|z|\le |w|/(1-q)<r\)。同一压缩估计保证解唯一。
+
+	令 \(W=D(0,(1-q)r)\)、\(V=f^{-1}(W)\cap D(0,r)\)，便得到所需双射。上述下界使逆 \(g\) 为 Lipschitz 连续。若 \(w'\to w\)，\(z'=g(w')\)、\(z=g(w)\)，则
+	\[
+		\frac{g(w')-g(w)}{w'-w}
+		=\left(\frac{f(z')-f(z)}{z'-z}\right)^{-1}
+		\longrightarrow\frac1{f'(z)}.
+	\]
+	这里 \(|f'(z)|\ge1-q\)，所以极限合法。还原归一化即得结论。
+\end{proof}
+
+\begin{theorem}[局部幂模型]
+	\label{g4:thm:0101:local-power}
+	设 \(\Omega\subset\mathbb C\) 是区域，\(f\in\mathcal O(\Omega)\) 非恒定，\(a\in\Omega\)。令 \(m=\operatorname{ord}_a(f-f(a))\)。则存在 \(a\) 附近的全纯坐标 \(w=\phi(z)\)，满足 \(\phi(a)=0\)、\(\phi'(a)\ne0\)，并且
+	\begin{equation}
+		\label{g4:eq:0101:local-power}
+		f(z)=f(a)+\phi(z)^m.
+	\end{equation}
+	在充分小的坐标邻域 \(V=\phi^{-1}(D(0,\rho))\) 内，每个 \(0<|b-f(a)|<\rho^m\) 恰有 \(m\) 个不同原像；\(f(a)\) 的唯一原像为 \(a\)，重数为 \(m\)。
+\end{theorem}
+\begin{proof}
+	恒等定理保证 \(f-f(a)\) 不会在 \(a\) 附近恒零。由零点分解，写成 \((z-a)^m u(z)\)。缩小圆盘使 \(|u(z)/u(a)-1|<1\)。级数
+	\[
+		L(\xi)=\sum_{n=1}^\infty\frac{(-1)^{n+1}}n\xi^n\qquad(|\xi|<1)
+	\]
+	满足 \(L'=1/(1+\xi)\)、\(L(0)=0\)。对 \(e^{L(\xi)}/(1+\xi)\) 求导得到零，由初值可知 \(e^{L(\xi)}=1+\xi\)。任取 \(c^m=u(a)\)，令
+	\[
+		v(z)=c\exp\left(\frac1m L\left(\frac{u(z)}{u(a)}-1\right)\right),\qquad
+		\phi(z)=(z-a)v(z).
+	\]
+	便有 \(v^m=u\)、\(\phi'(a)=c\ne0\)。\cref{g4:thm:0101:inverse}使 \(\phi\) 在缩小邻域上成为全纯可逆坐标，且给出\eqref{g4:eq:0101:local-power}。再把坐标像缩为 \(D(0,\rho)\)。方程 \(w^m=b-f(a)\) 的 \(m\) 个根都在这个圆盘内且互不相同，映回便得原像计数。
+\end{proof}
+
+\begin{theorem}[开映射定理]
+	\label{g4:thm:0101:open-mapping}
+	区域 \(\Omega\subset\mathbb C\) 上的非恒定全纯函数把开集映为开集。它在点 \(a\) 附近单射，当且仅当 \(f'(a)\ne0\)。
+\end{theorem}
+\begin{proof}
+	对任意开集中的点 \(a\)，在其中取\cref{g4:thm:0101:local-power}的坐标邻域。其像包含 \(f(a)\) 的圆盘，故像开。若 \(f'(a)=0\)，局部幂模型中的 \(m\ge2\)，足够靠近 \(f(a)\) 的非中心点在任意足够小邻域内有多个原像，不能局部单射。若 \(f'(a)\ne0\)，逆函数定理给出局部单射。
+\end{proof}
+
+对非恒定全纯函数，\(f'(a)=0\) 的点称为\term[linjiedian]{临界点}[critical point]，其像称为临界值；局部幂模型中的整数 \(m\) 记录这里的重数。譬如 \(f(z)=z^3-3z\) 在 \(a=1\) 处满足
+\[
+	f(z)+2=(z-1)^2(z+2),
+\]
+故局部重数为 \(2\)；在原点导数为 \(-3\)，局部重数为 \(1\)。临界点附近的二重性与函数作为三次多项式的整体次数是不同的计数。
 
 \subsection{全纯逆函数及分支}
 \label{g4:subsec:0101:04}
-待撰写
+逆函数定理给出的逆只在一个邻域内有效。当目标点移动时，这些局部逆可能接续，也可能绕一圈后互换；这正是下一节解析延拓所要记录的现象。
+
+\begin{definition}
+	\label{g4:def:0101:biholomorphic}
+	设 \(U,V\subset\mathbb C\) 为开集。若 \(f:U\to V\) 是全纯双射且逆映射也全纯，则称 \(f\) 为\term[shuangquanchunyingshe]{双全纯映射}[biholomorphic map]。区域上的单射全纯函数称为\term[danyehanshu]{单叶函数}[univalent function]。若 \(f\) 全纯且 \(f'\) 处处非零，则它局部保有向角，称为保向\term[gongxingyingshe]{共形映射}[conformal map]；本章讨论的共形映照在声称区域等价时还要求双射。
+\end{definition}
+
+由\cref{g4:thm:0101:open-mapping}，单叶函数的导数处处非零，像为开集；全局集合逆在每点附近都等于\cref{g4:thm:0101:inverse}给出的全纯局部逆，所以单叶函数总是到其像的双全纯映射。保角性则由\eqref{g4:eq:0101:complex-linear}直接得到：若两条正则曲线在 \(a\) 的切向量为 \(v_1,v_2\ne0\)，两条像曲线的切向量为 \(f'(a)v_1,f'(a)v_2\)，其比值仍为 \(v_2/v_1\)，故有向夹角不变。与此同时，长度元乘以 \(|f'(a)|\)，面积元乘以 \(|f'(a)|^2\)。
+
+\begin{example}
+	\label{g4:exm:0101:square-branches}
+	设 \(S=\mathbb C\setminus(-\infty,0]\)。每个 \(z\in S\) 唯一写成 \(r e^{\mathrm i\theta}\)，其中 \(r>0\)、\(-\pi<\theta<\pi\)。函数
+	\[
+		s(z)=\sqrt r\,e^{\mathrm i\theta/2}
+	\]
+	连续，取值于右半平面，且 \(s(z)^2=z\)。在每个 \(z_0\in S\)，平方映射在 \(s(z_0)\ne0\) 处有全纯局部逆；连续性保证 \(s\) 在充分小邻域内选中的正是这个逆，因此 \(s\) 全纯。另一个根为 \(-s\)。它们是平方根的两个\term[fenzhi]{分支}[branch]，即在指定区域上单值全纯地选择根。
+\end{example}
+
+这两个分支不能作为平方根延伸到整个 \(\mathbb C\setminus\{0\}\)。若存在连续平方根 \(s\)，沿 \(z=e^{\mathrm i t}\)、\(0\le t\le2\pi\) 考察
+\[
+	q(t)=s(e^{\mathrm i t})e^{-\mathrm i t/2}.
+\]
+它连续且平方为 \(1\)，故在区间上恒为 \(1\) 或恒为 \(-1\)。于是 \(s(e^{2\pi\mathrm i})=-s(1)\)，与起终点相同矛盾。删去一条射线使辐角可以单值选取；保留整个穿孔平面，则沿环路的返回变化无法消去。
+
+\ProseParagraphBreak
+
+导数处处非零也不能保证整体单射。例如指数映射满足 \((e^z)'=e^z\ne0\)，但 \(e^{z+2\pi\mathrm i}=e^z\)。局部幂模型在每点都是一次幂，整体上仍有无穷多个逆分支。要把局部信息用于整体构造，接下来需要两种工具：边界积分对原像的计数，以及沿路径接续函数芽时的唯一性。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

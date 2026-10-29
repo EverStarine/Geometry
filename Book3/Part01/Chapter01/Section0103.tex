@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 1.3 标架与结构方程
 % 纲要位置：几何学计划纲要.md，第 2142 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,187 @@
 \section{标架与结构方程}
 \label{g3:sec:0103}
 
-待撰写
+坐标标架的优点是向量场两两交换，代价是度量矩阵往往随点变化。若在每点把基改成正交单位基，度量矩阵就恒为单位矩阵，但新的基向量场通常不再交换。联络一形式和结构方程把这两种变化一起记录下来，使度量的计算可以在适合几何形状的标架中进行。
 
 \subsection{正交标架和联络一形式}
 \label{g3:subsec:0103:01}
-待撰写
+
+给定局部光滑标架 \((v_1,\ldots,v_n)\)，依次作正交化：
+\[
+	e_1=\frac{v_1}{|v_1|_g},\qquad
+	w_j=v_j-\sum_{a<j}g(v_j,e_a)e_a,\qquad
+	e_j=\frac{w_j}{|w_j|_g}.
+\]
+各 \(w_j\) 处处非零，因为原标架线性无关；平方范数为正的光滑函数，其平方根和倒数光滑。因此这给出光滑的\term[zhengjiaodanweibiaojia]{正交单位标架}[orthonormal frame]。局部存在这样的标架不要求流形可定向。
+
+\begin{definition}\label{g3:def:connection-one-forms}
+	设 \((M,g)\) 为光滑黎曼流形，\(\nabla\) 为其 Levi-Civita 联络。在开集 \(U\) 上取光滑行标架 \(e=(e_1,\ldots,e_n)\)，以
+	\[
+		\nabla_Xe_j=e_i\omega^i{}_j(X)
+	\]
+	定义\term[lianluoyixingshi]{联络一形式}[connection one-forms] \(\omega^i{}_j\)，并记矩阵 \(\omega=(\omega^i{}_j)\)。若 \(u\) 为分量列，则
+	\begin{equation}\label{g3:eq:frame-connection}
+		\nabla_X(eu)=e\bigl(X(u)+\omega(X)u\bigr),\qquad
+		\nabla e=e\omega.
+	\end{equation}
+	对偶余标架写为列 \(\theta=(\theta^1,\ldots,\theta^n)^{\mathsf T}\)，满足 \(\theta^i(e_j)=\delta^i_j\)，故 \(X=e\theta(X)\)。
+\end{definition}
+
+上下指标的位置记录输入与输出：\(j\) 指被微分的标架向量，\(i\) 指结果的分量；求导方向留给一形式接受。在坐标标架中，\(\omega^k{}_j=\Gamma^k_{ij}\,\mathrm{d}x^i\)。这与第一卷第15章的行标架、列分量约定一致，该卷将一般丛的联络矩阵记作 \(A\)。
+
+\begin{proposition}\label{g3:prop:frame-metric-and-change}
+	设 \((M,g)\) 为光滑黎曼流形，\(\nabla\) 为与 \(g\) 相容的光滑联络。在局部标架 \(e\) 中记 \(G=(g(e_i,e_j))\)，联络矩阵为 \(\omega\)。则
+	\[
+		\mathrm{d}G=\omega^{\mathsf T}G+G\omega.
+	\]
+	特别地，在正交单位标架中，\(\omega^i{}_j=-\omega^j{}_i\)。若 \(e'=eQ\)，其中 \(Q:U\to\operatorname{O}(n)\) 为光滑正交矩阵函数，则
+	\begin{equation}\label{g3:eq:orthonormal-frame-change}
+		\omega'=Q^{-1}\omega Q+Q^{-1}\mathrm{d}Q,\qquad
+		\theta'=Q^{-1}\theta.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	度量相容性给出
+	\[
+		\mathrm{d}\bigl(g(e_i,e_j)\bigr)
+		=\omega^k{}_i g(e_k,e_j)+g(e_i,e_k)\omega^k{}_j,
+	\]
+	即所述矩阵等式。若 \(G=I\)，左侧为零，便得到斜对称性。换标架时，对 \(eQ\) 使用乘积规则：
+	\[
+		\nabla e'=e(\omega Q+\mathrm{d}Q)
+		=e'Q^{-1}(\omega Q+\mathrm{d}Q).
+	\]
+	与 \(\nabla e'=e'\omega'\) 比较即得第一式。由 \(X=e\theta(X)=eQ\theta'(X)\) 得第二式。
+\end{proof}
+
+正交标架的度量系数虽为常数，联络系数仍可非零。若 \([e_i,e_j]=c^k{}_{ij}e_k\)，将三个标架向量代入 Koszul 公式，得到
+\begin{equation}\label{g3:eq:orthonormal-koszul}
+	2\omega^k{}_j(e_i)=c^k{}_{ij}-c^i{}_{jk}+c^j{}_{ki}.
+\end{equation}
+度量的变化现在由标架向量的括号表达。特别地，若正交单位标架的所有括号都为零，则此标架中的联络矩阵为零。
 
 \subsection{Cartan 第一结构方程}
 \label{g3:subsec:0103:02}
-待撰写
+
+余标架 \(\theta\) 把实际切向量转为标架分量。它的外微分能检测标架的不交换性，因为
+\[
+	\mathrm{d}\theta^k(e_i,e_j)
+	=e_i\bigl(\theta^k(e_j)\bigr)-e_j\bigl(\theta^k(e_i)\bigr)
+	-\theta^k([e_i,e_j])=-c^k{}_{ij}.
+\]
+将这部分变化与联络一形式合并，就得到 Cartan 第一结构方程。\footnote{Élie Joseph Cartan（1869--1951），法国数学家，在 Lie 群与 Lie 代数、微分方程和微分几何之间建立了深刻联系，发展了移动标架与外微分方法。}
+
+\begin{proposition}[Cartan 第一结构方程]\label{g3:prop:first-structure-equation}
+	设 \(M\) 为光滑 \(n\) 维无边界流形，\(\nabla\) 为光滑切丛联络，\(e\) 为一个局部光滑标架，\(\theta\) 为其对偶余标架，\(\omega\) 为相应联络矩阵。定义挠率分量二形式 \(\Theta^i(X,Y)=\theta^i(T^\nabla(X,Y))\)，则
+	\begin{equation}\label{g3:eq:first-structure-equation}
+		\Theta^i=\mathrm{d}\theta^i+\omega^i{}_j\wedge\theta^j.
+	\end{equation}
+	特别地，黎曼度量的 Levi-Civita 联络在正交单位标架中满足
+	\begin{equation}\label{g3:eq:levi-civita-structure-equations}
+		\mathrm{d}\theta^i+\omega^i{}_j\wedge\theta^j=0,
+		\qquad \omega^i{}_j+\omega^j{}_i=0.
+	\end{equation}
+	给定正交单位余标架 \(\theta\) 后，这两组等式唯一确定联络一形式 \(\omega\)。
+\end{proposition}
+\begin{proof}
+	由式\eqref{g3:eq:frame-connection}，\(\nabla_XY\) 的第 \(i\) 个分量为
+	\[
+		X(\theta^i(Y))+\omega^i{}_j(X)\theta^j(Y).
+	\]
+	交换 \(X,Y\) 再减去 \([X,Y]\) 的分量，得到
+	\begin{align*}
+		\Theta^i(X,Y)
+		={}&X(\theta^i(Y))-Y(\theta^i(X))-\theta^i([X,Y])\\
+		&+\omega^i{}_j(X)\theta^j(Y)-\omega^i{}_j(Y)\theta^j(X).
+	\end{align*}
+	前三项是 \(\mathrm{d}\theta^i(X,Y)\)，后两项是 \((\omega^i{}_j\wedge\theta^j)(X,Y)\)，故第一式成立。无挠性与度量相容性给出式\eqref{g3:eq:levi-civita-structure-equations}。
+
+	反过来，一组光滑一形式 \(\omega^i{}_j\) 通过式\eqref{g3:eq:frame-connection}定义局部联络：一形式对方向的线性和普通导数的乘积规则保证式\eqref{g3:eq:connection-rules}。若它满足所写的两组等式，第一式保证无挠，第二式保证保持 \(g=\sum_i\theta^i\otimes\theta^i\)。由\cref{g3:thm:levi-civita}的局部唯一性，它就是该区域上的 Levi-Civita 联络。
+\end{proof}
+
+\begin{example}\label{g3:exm:polar-moving-frame}
+	继续\cref{g3:exm:polar-christoffel}的极坐标平面。在 \(r>0\) 的局部区域取
+	\[
+		e_1=\partial_r,\qquad e_2=r^{-1}\partial_\varphi,
+		\qquad \theta^1=\mathrm{d}r,\quad\theta^2=r\,\mathrm{d}\varphi.
+	\]
+	这是正交单位标架，且 \([e_1,e_2]=-r^{-1}e_2\)。斜对称性使联络矩阵只有一个独立一形式：记 \(\omega^2{}_1=\alpha\)、\(\omega^1{}_2=-\alpha\)。第一结构方程为
+	\[
+		\mathrm{d}\theta^1-\alpha\wedge\theta^2=0,
+		\qquad \mathrm{d}\theta^2+\alpha\wedge\theta^1=0.
+	\]
+	设 \(\alpha=a\,\mathrm{d}r+b\,\mathrm{d}\varphi\)。第一式给出 \(a=0\)，第二式给出 \(b=1\)，故
+	\[
+		\omega=
+		\begin{pmatrix}0&-\mathrm{d}\varphi\\ \mathrm{d}\varphi&0\end{pmatrix}.
+	\]
+	于是 \(\nabla_{e_1}e_2=0\)、\(\nabla_{e_2}e_1=r^{-1}e_2\)、\(\nabla_{e_2}e_2=-r^{-1}e_1\)，与坐标系数换算所得相同。特别地，\(\mathrm{d}\theta^2=\mathrm{d}r\wedge\mathrm{d}\varphi\ne0\)，但它恰被 \(\omega^2{}_1\wedge\theta^1\) 抵消；无挠不要求各余标架分量都闭。
+\end{example}
+
+这个例子还可以直接通过换架得到。笛卡儿标架的联络矩阵为零，极坐标正交标架是将其旋转角度 \(\varphi\) 得到的，因此式\eqref{g3:eq:orthonormal-frame-change}给出 \(\omega=Q^{-1}\mathrm{d}Q\)。一般地，在定向黎曼曲面上，若正向正交单位标架旋转了光滑角度 \(\psi\)，同样计算可得
+\begin{equation}\label{g3:eq:surface-connection-rotation}
+	\alpha'=\alpha+\mathrm{d}\psi,
+	\qquad \alpha=\omega^2{}_1.
+\end{equation}
+联络一形式随标架转动增加了角度的微分，而 \(\mathrm{d}\alpha\) 保持不变。这个二形式将记录曲面的曲率。
 
 \subsection{曲率形式的预告与符号约定}
 \label{g3:subsec:0103:03}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+对向量场依次沿两个方向求协变导数，次序改变以后可以产生新的向量。方向场的括号本身也会贡献一次求导，因此定义
+\begin{equation}\label{g3:eq:curvature-definition}
+	R(X,Y)Z\coloneqq\nabla_X\nabla_YZ-\nabla_Y\nabla_XZ-\nabla_{[X,Y]}Z.
+\end{equation}
+这沿用第一卷第15.3节的丛联络曲率约定；第三章将系统讨论黎曼曲率的对称性与收缩。这里先得到计算模型所需的矩阵公式，并固定截面曲率的正负号。
+
+\begin{proposition}\label{g3:prop:curvature-form}
+	设 \(M\) 为光滑无边界流形，\(\nabla\) 为光滑切丛联络。式\eqref{g3:eq:curvature-definition}对 \(X,Y,Z\) 均为 \(C^\infty(M)\) 线性。在局部标架 \(e\) 中，若 \(\nabla e=e\omega\)，则
+	\begin{equation}\label{g3:eq:curvature-matrix}
+		\Omega=\mathrm{d}\omega+\omega\wedge\omega,
+		\qquad
+		R(X,Y)(eu)=e\Omega(X,Y)u,
+	\end{equation}
+	其中 \((\omega\wedge\omega)^i{}_j=\sum_k\omega^i{}_k\wedge\omega^k{}_j\)。换标架 \(e'=eQ\) 后，\(\Omega'=Q^{-1}\Omega Q\)。对黎曼度量的 Levi-Civita 联络，在正交单位标架中还有 \(\Omega^i{}_j=-\Omega^j{}_i\)。
+\end{proposition}
+\begin{proof}
+	用式\eqref{g3:eq:frame-connection}计算两次导数，并将结果的分量写出。在 \(R(X,Y)(eu)\) 中，对 \(u\) 的二阶导数合成 \((XY-YX-[X,Y])u=0\)，含 \(X(u)\) 或 \(Y(u)\) 的交叉项也相消，剩下
+	\[
+		\bigl(X(\omega(Y))-Y(\omega(X))-\omega([X,Y])
+		+\omega(X)\omega(Y)-\omega(Y)\omega(X)\bigr)u.
+	\]
+	前三项是 \(\mathrm{d}\omega(X,Y)\)，后两项是 \((\omega\wedge\omega)(X,Y)\)。于是得到式\eqref{g3:eq:curvature-matrix}，且右侧对三个输入都为函数线性，证明张量性。
+
+	同一向量的分量满足 \(u=Qu'\)，由 \(e\Omega u=e'\Omega'u'\) 得 \(\Omega'=Q^{-1}\Omega Q\)。若 \(\omega\) 斜对称，则
+	\[
+		\Omega^j{}_i
+		=-\mathrm{d}\omega^i{}_j
+		+\sum_k\omega^k{}_j\wedge\omega^i{}_k
+		=-\mathrm{d}\omega^i{}_j-\sum_k\omega^i{}_k\wedge\omega^k{}_j
+		=-\Omega^i{}_j.
+	\]
+	第二个等号使用了一形式楔积的反交换性。
+\end{proof}
+
+矩阵乘法参与楔积，故 \(\omega\wedge\omega\) 一般不为零。另一方面，曲率没有换架公式中的附加微分项，因而它是在不同标架中表达同一个张量。极坐标平面的 \(\omega\) 非零，但 \(\mathrm{d}\omega=0\)、\(\omega\wedge\omega=0\)，所以 \(R=0\)。
+
+\begin{definition}\label{g3:def:sectional-curvature}
+	设 \((M,g)\) 为维数至少为二的光滑黎曼流形，\(R\) 为其 Levi-Civita 联络的曲率。对线性无关的 \(v,w\in\mathrm{T}_pM\)，定义
+	\begin{equation}\label{g3:eq:sectional-curvature}
+		K(v,w)=\frac{g(R(v,w)w,v)}{g(v,v)g(w,w)-g(v,w)^2}.
+	\end{equation}
+	它称为二维平面 \(\operatorname{span}\{v,w\}\) 的\term[jiemianqulv]{截面曲率}[sectional curvature]。
+\end{definition}
+
+分母是 \(v,w\) 张成平行四边形的面积平方。这个值确实只依赖二维平面：若 \(v'=av+bw\)、\(w'=cv+dw\)，则 \(R(v',w')=(ad-bc)R(v,w)\)。又因 \(R(v,w)\) 关于 \(g\) 反对称，分子和分母在换基后都乘以 \((ad-bc)^2\)，比值不变。
+
+\ProseParagraphBreak
+
+在定向曲面上取正向正交单位标架，记 \(\alpha=\omega^2{}_1\)。由于二维斜对称矩阵只有一个独立分量，\((\omega\wedge\omega)^2{}_1=0\)。又有
+\[
+	K=g(R(e_1,e_2)e_2,e_1)=\Omega^1{}_2(e_1,e_2),
+\]
+从而
+\begin{equation}\label{g3:eq:surface-curvature-form}
+	\mathrm{d}\alpha=\Omega^2{}_1=-K\,\theta^1\wedge\theta^2.
+\end{equation}
+这与第一卷第9章的 \(\mathrm{d}\omega=-K\,\mathrm{d}A\) 相同，其中该卷的单个一形式 \(\omega\) 对应这里的 \(\alpha\)。下一节将以旋转型度量计算正、负曲率模型，检验这个符号如何进入实际公式。

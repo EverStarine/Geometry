@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 2.2 有限模与正合性
 % 纲要位置：几何学计划纲要.md，第 5081 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,509 @@
 \section{有限模与正合性}
 \label{g5:sec:0202}
 
-待撰写
+曲线的理想、在某点消失的函数、方程之间的关系，都可以相加，也可以乘以坐标环中的函数；它们却未必有一个保持在原集合内的乘法。模把这类对象纳入同一代数语言。选取有限多个生成元以后，问题转为哪些线性组合等于零；继续记录这些关系，就得到一个矩阵呈示。改变系数环或允许某些函数作分母时，生成元和关系怎样变化，是本节要解决的问题。
+
+\ProseParagraphBreak
+
+以下 \(A\) 始终为交换含幺环，模上的单位元作用为恒等。环可以有零因子，也不预设 Noether 条件。有限生成性、有限呈示和 Noether 条件承担不同的作用：有限生成限制要控制的元素数目，有限呈示还限制关系数目，Noether 条件则保证有限生成模的子模仍然有限生成。
 
 \subsection{有限生成、有限呈示及关系矩阵}
 \label{g5:subsec:0202:01}
-待撰写
+
+域上的向量空间允许任意非零标量相除，环上的线性运算则可能出现 \(am=0\) 而 \(a,m\) 均非零的情形。例如，在 \(A/(f)\) 中，\(f\) 乘以每个剩余类都为零。保留线性运算的公理而不要求标量可逆，便得到模。
+
+\begin{definition}\label{g5:def:module}
+	设 \(A\) 为交换含幺环。加法交换群 \(M\) 连同运算 \(A\times M\rightarrow M\)、\((a,m)\mapsto am\)，若满足
+	\[
+		a(m+n)=am+an,\quad
+		(a+b)m=am+bm,\quad
+		(ab)m=a(bm),\quad 1m=m,
+	\]
+	就称为一个 \(A\)\term[mo]{模}[module]。保持加法且满足 \(f(am)=af(m)\) 的映射 \(f:M\rightarrow N\) 称为 \(A\)\term[motongtai]{模同态}[module homomorphism]，也称 \(A\) 线性映射。对加法和 \(A\) 中标量作用封闭的子群称为\term[zimo]{子模}[submodule]。
+\end{definition}
+
+环 \(A\) 本身是 \(A\) 模，理想正是它的子模；对理想 \(I\)，商环 \(A/I\) 也可看成 \(A\) 模。一般地，若 \(L\subseteq M\) 为子模，则商群 \(M/L\) 上的运算 \(a(m+L)=am+L\) 良定义，给出\term[shangmo]{商模}[quotient module]。这里良定义所需的正是 \(aL\subseteq L\)。
+
+\ProseParagraphBreak
+
+对集合 \(E\)，记 \(A^{(E)}\) 为所有只有有限个非零坐标的族 \((a_e)_{e\in E}\)，按坐标相加及乘标量。其标准向量 \(e_e\) 使每个元素唯一写成有限和 \(\sum_e a_e e_e\)。具有这种基的模称为\term[ziyoumo]{自由模}[free module]。有限集合 \(E=\{1,\ldots,q\}\) 对应 \(A^q\)；一般的 \(A^{(E)}\) 也称为 \(E\) 份 \(A\) 的直和。任意模族的直和同样只允许有限个非零坐标。给出从自由模到 \(M\) 的同态，等价于任意指定各基向量在 \(M\) 中的像，这使自由模适于记录生成元。
+
+\begin{definition}\label{g5:def:finite-presentation}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模。若存在有限多个元素 \(m_1,\ldots,m_q\)，使每个元素均为 \(\sum_i a_i m_i\)，则称 \(M\)\term[youxianshengchengmo]{有限生成}[finitely generated]，本卷也简称有限 \(A\) 模。相应满同态
+	\[
+		\pi:A^q\longrightarrow M,\qquad (a_i)\longmapsto\sum_i a_i m_i
+	\]
+	的核称为这组生成元的关系模。若能选择有限组生成元，使关系模也有限生成，则称 \(M\)\term[youxianchengshi]{有限呈示}[finitely presented]。
+\end{definition}
+
+设关系模由 \(r_1,\ldots,r_p\in A^q\) 生成，把这些列向量排成 \(q\times p\) 矩阵 \(D\)。于是
+\begin{equation}\label{g5:eq:matrix-presentation}
+	A^p\xrightarrow{\,D\,}A^q\xrightarrow{\,\pi\,}M\longrightarrow0,
+	\qquad M\cong A^q/\operatorname{im}D.
+\end{equation}
+这里矩阵 \(D\) 的第 \(j\) 列记录第 \(j\) 条关系，不要求这些关系线性无关。有限呈示同时记录有限多个生成元和有限多条生成关系；“有限”也不是说 \(M\) 的底集合有限。例如 \(k[t]\) 作为自身的模由 \(1\) 生成，作为 \(k\) 向量空间却无限维；它作为 \(k\) 代数由 \(t\) 生成，又是另一种有限性。
+
+\begin{example}\label{g5:exm:ideal-relation-matrix}
+	设 \(k\) 为域，\(A=k[x,y]\)。理想 \(J=(x,y)\) 由两个元素生成，满同态 \(A^2\rightarrow J\) 为 \((a,b)\mapsto ax+by\)。若 \(ax+by=0\)，令 \(x=0\)，得到 \(b(0,y)y=0\)，所以 \(b=xh\)；再在整环中约去 \(x\)，得 \(a=-yh\)。因此关系模由 \((-y,x)\) 生成，呈示为
+	\[
+		A\xrightarrow{\binom{-y}{x}}A^2
+		\xrightarrow{(x\;\;y)}J\longrightarrow0.
+	\]
+	同样，对任意 \(a\in A\)，模 \(A/(a)\) 的呈示为 \(A\xrightarrow{a}A\rightarrow A/(a)\rightarrow0\)。即使 \(a\) 是零因子，这仍然是呈示；首箭头无需单射。
+\end{example}
+
+有限呈示的定义先允许选择一组方便的生成元。后面在某点选出的生成元可能不同，因此需要确认更换有限生成元不会破坏关系的有限性。
+
+\begin{proposition}\label{g5:prop:finite-presentation-kernel}
+	设 \(A\) 为交换含幺环，\(M\) 为有限呈示 \(A\) 模。若 \(P\) 是有限生成 \(A\) 模，且 \(q:P\rightarrow M\) 为满同态，则 \(\ker q\) 有限生成。特别地，每个满同态 \(A^n\rightarrow M\) 的核都有限生成。
+\end{proposition}
+\begin{proof}
+	先证明 \(P=A^n\) 的情形。取一个有限呈示中的满同态 \(\pi:A^r\rightarrow M\)，设其核由 \(u_1,\ldots,u_s\) 生成。因为两张映射都满，可以逐个提升基向量的像，得到同态
+	\[
+		\alpha:A^n\longrightarrow A^r,\qquad
+		\beta:A^r\longrightarrow A^n,\qquad
+		\pi\alpha=q,\quad q\beta=\pi.
+	\]
+	于是 \(\beta(u_j)\) 和 \((1-\beta\alpha)e_i\) 都属于 \(\ker q\)。对任意 \(v\in\ker q\)，有 \(\alpha(v)\in\ker\pi\)，写作 \(\sum_j a_j u_j\)，便得到
+	\[
+		v=\beta\alpha(v)+(1-\beta\alpha)v
+		=\sum_j a_j\beta(u_j)+(1-\beta\alpha)v.
+	\]
+	最后一项是有限个 \((1-\beta\alpha)e_i\) 的线性组合，故这些元素生成 \(\ker q\)。
+
+	对一般有限生成的 \(P\)，取满同态 \(v:A^n\rightarrow P\)。刚才的结论说明 \(\ker(qv)\) 有限生成，而 \(v(\ker(qv))=\ker q\)：对 \(\ker q\) 中任意元素，任取它在 \(A^n\) 中的原像即可。有限组生成元的像因此生成 \(\ker q\)。
+\end{proof}
+
+这一结论及关系模的解释可对照\cite[第2节，定理2.6]{Matsumura1989}。它也给出一个有效的否定判据：如果某个有限自由模满射到 \(M\) 的核不能有限生成，则 \(M\) 不是有限呈示。
+
+\begin{example}\label{g5:exm:finite-not-presented}
+	取域 \(k\) 上的环 \(A=k[x_1,x_2,\ldots]\) 和理想 \(I=(x_1,x_2,\ldots)\)。每个多项式只涉及有限多个变量，因此 \(I\) 不能有限生成：假定有限多项式 \(f_1,\ldots,f_r\) 生成它，取没有出现在这些多项式中的 \(x_j\)，将它们涉及的变量全置为零，便会把每个 \(f_i\) 送到零，而把 \(x_j\) 保留为非零多项式。于是 \(x_j\notin(f_1,\ldots,f_r)\)，矛盾。模 \(A/I\cong k\) 由一个元素生成，但满同态 \(A\rightarrow A/I\) 的核不有限生成，由上个命题知它不是有限呈示。
+\end{example}
+
+在 Noether 环上，这种差别消失。关键是把第1章对理想的有限生成性推广到有限个坐标。
+
+\begin{proposition}\label{g5:prop:noetherian-finite-modules}
+	设 \(A\) 为交换含幺 Noether 环，\(M\) 为有限生成 \(A\) 模。则 \(M\) 的每个子模均有限生成，且 \(M\) 有限呈示。特别地，\(M\) 的子模升链最终稳定。
+\end{proposition}
+\begin{proof}
+	先对 \(n\) 归纳证明 \(A^n\) 的每个子模有限生成。\(n=0\) 时直接成立，\(n=1\) 时正是 Noether 环的定义。设 \(N\subseteq A^n\)，以最后一个坐标投影到 \(A\)，像是一个理想 \(J\)。取 \(J\) 的有限生成元 \(a_1,\ldots,a_r\)，以及它们在 \(N\) 中的提升 \(v_1,\ldots,v_r\)。投影的核是 \(N\cap(A^{n-1}\times0)\)，由归纳假设有有限生成元 \(w_1,\ldots,w_s\)。对 \(v\in N\)，先用 \(\sum_i c_i v_i\) 消去最后一个坐标，余项便在该核中，因而 \(v_i,w_j\) 一起生成 \(N\)。
+
+	现在取满同态 \(\pi:A^n\rightarrow M\)。对 \(L\subseteq M\)，子模 \(\pi^{-1}(L)\subseteq A^n\) 有限生成，其生成元的像生成 \(L\)。此外 \(\ker\pi\) 也有限生成，故 \(M\) 有限呈示。
+
+	若 \(L_1\subseteq L_2\subseteq\cdots\) 是 \(M\) 的子模升链，则其并仍为子模。选这个并的有限生成元，它们全落在某个 \(L_N\) 中，因而以后所有 \(L_i\) 都等于 \(L_N\)。
+\end{proof}
+
+所有子模均有限生成的模称为 \term[Noethermo]{Noether 模}[Noetherian module]；与理想的情形相同，这等价于子模升链条件。上述归纳说明，有限生成模上的这一性质来自系数环，而非仅仅来自生成元数目。\cref{g5:thm:hilbert-basis,g5:prop:affine-noetherian}保证域上有限变量多项式环及其商环都是 Noether 环，因此仿射坐标环上的有限模都适用这个命题。
 
 \subsection{核、余核和正合列}
 \label{g5:subsec:0202:02}
-待撰写
+
+矩阵呈示中的连续箭头表达了两件事：列出的关系确实变为零，而且所有变为零的线性组合均由这些关系生成。正合性把这两件事合并成一个可在每个位置检查的条件。
+
+\begin{definition}\label{g5:def:exact-modules}
+	设 \(A\) 为交换含幺环，\(f:M\rightarrow N\) 为 \(A\) 线性映射。其\term[he]{核}[kernel]、像和\term[yuhe]{余核}[cokernel]分别为
+	\[
+		\ker f=\{m\in M:f(m)=0\},\qquad
+		\operatorname{im}f=f(M),\qquad
+		\operatorname{coker}f=N/f(M).
+	\]
+	一列 \(A\) 线性映射 \(L\xrightarrow{u}M\xrightarrow{v}N\) 若满足 \(\operatorname{im}u=\ker v\)，就称为在 \(M\) 处\term[zhenghe]{正合}[exact]。在每个内部位置均满足这一条件的序列称为正合列。形如
+	\[
+		0\longrightarrow L\xrightarrow{i}M\xrightarrow{q}N\longrightarrow0
+	\]
+	的正合列称为\term[duanzhenghelie]{短正合列}[short exact sequence]；这等价于 \(i\) 单射、\(q\) 满射且 \(\ker q=i(L)\)。
+\end{definition}
+
+核与像对加法及标量乘法封闭，因而确为子模。对任何同态 \(f\)，映射 \(m+\ker f\mapsto f(m)\) 良定义、单射且满射到像，给出
+\[
+	M/\ker f\cong\operatorname{im}f.
+\]
+因此每个短正合列都把 \(N\) 识别为 \(M/i(L)\)。商映射 \(q:M\rightarrow M/L\) 的泛性质也可直接读出：若 \(h:M\rightarrow P\) 在 \(L\) 上为零，则 \(\overline h(m+L)=h(m)\) 是唯一使下图交换的线性映射。
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		M\arrow[r,"q"]\arrow[dr,"h"']&M/L\arrow[d,dashed,"\overline h"]\\
+		&P
+	\end{tikzcd}
+\]
+这个分解性质将在张量积和 \(\operatorname{Hom}\) 的正合性证明中反复使用：先证明某张映射消去指定关系，再让它通过商模。
+
+\begin{proposition}\label{g5:prop:split-exact-modules}
+	设 \(A\) 为交换含幺环，\(0\rightarrow L\xrightarrow{i}M\xrightarrow{q}N\rightarrow0\) 为 \(A\) 模短正合列。以下条件等价：存在 \(A\) 线性映射 \(s:N\rightarrow M\) 使 \(qs=1_N\)；存在 \(A\) 线性映射 \(r:M\rightarrow L\) 使 \(ri=1_L\)；存在同构 \(L\oplus N\rightarrow M\)，把标准包含与投影分别变为 \(i,q\)。满足这些条件的短正合列称为\term[fenliezhenghelie]{分裂正合列}[split exact sequence]。
+\end{proposition}
+\begin{proof}
+	若有 \(s\)，则 \(\Phi(l,n)=i(l)+s(n)\) 是同构。它单射，因为先作用 \(q\) 得 \(n=0\)，再由 \(i\) 单射得 \(l=0\)；它满射，因为对任意 \(m\)，元素 \(m-s(q(m))\) 在 \(\ker q=i(L)\) 中。由唯一表达 \(m=i(l)+s(n)\) 取 \(r(m)=l\)，得到 \(ri=1_L\)。
+
+	反之，若有 \(r\)，对 \(n\in N\) 选 \(m\in M\) 使 \(q(m)=n\)，令 \(s(n)=m-i(r(m))\)。若更换原像为 \(m+i(l)\)，这个表达式不变，因为 \(ri(l)=l\)。所以 \(s\) 良定义且线性，并满足 \(qs=1_N\)。直和同构则立即给出两张这样的映射。
+\end{proof}
+
+向量空间的短正合列总能通过延拓基而分裂，环上的模却未必如此。例如对域 \(k\) 和 \(A=k[t]\)，
+\[
+	0\longrightarrow A\xrightarrow{\,t\,}A\longrightarrow A/(t)\longrightarrow0
+\]
+不分裂：若有截面，把 \(1\in A/(t)\) 送到 \(a\in A\)，线性性要求 \(ta=0\)，整环性使 \(a=0\)，与其模 \(t\) 的像为 \(1\) 矛盾。
+
+\ProseParagraphBreak
+
+短正合列还可传递有限生成性。如果两端 \(L,N\) 都有限生成，把 \(N\) 的有限生成元提升到 \(M\)，再加入 \(L\) 的有限生成元的像，就生成 \(M\)：先消去一个元素在 \(N\) 中的像，余项落在 \(L\) 中。像与商模总继承有限生成性，核则需要另外判断；\cref{g5:exm:finite-not-presented}中满同态 \(A\rightarrow A/I\) 的核便不有限生成。
 
 \subsection{张量积、Hom 及标量变换}
 \label{g5:subsec:0202:03}
-待撰写
+
+把系数从 \(A\) 换成另一个环 \(B\)，并不是只把原模中的标量符号改名。例如由 \(A\) 换成 \(A/I\)，应当使 \(I\) 乘以任何元素都为零；由 \(A\) 换成 \(A[t]\)，又应允许新变量参与线性组合。张量积用一个统一构造实现这些改变，而 \(\operatorname{Hom}\) 记录改变前后允许的线性映射。
+
+\begin{definition}\label{g5:def:tensor-product}
+	设 \(A\) 为交换含幺环，\(M,N,P\) 为 \(A\) 模。映射 \(b:M\times N\rightarrow P\) 若固定任一变量后对另一变量均 \(A\) 线性，就称为 \(A\) 双线性映射。\(M,N\) 在 \(A\) 上的\term[zhangliangji]{张量积}[tensor product]是一个 \(A\) 模 \(M\otimes_A N\)，连同双线性映射 \(\tau(m,n)=m\otimes n\)，满足以下泛性质：每个 \(A\) 双线性映射 \(b:M\times N\rightarrow P\) 都唯一分解为
+	\[
+		b=\widetilde b\circ\tau,\qquad
+		\widetilde b:M\otimes_A N\longrightarrow P
+	\]
+	且 \(\widetilde b\) 为 \(A\) 线性映射。
+\end{definition}
+\symidx{\(M\otimes_A N\)：\(A\) 模的张量积}
+
+这里测试对象 \(P\) 可以是任意 \(A\) 模。图中上面的箭头双线性，虚线箭头线性；两类映射的区别正是这个构造的内容。
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		M\times N\arrow[r,"\tau"]\arrow[dr,"b"']&
+		M\otimes_A N\arrow[d,dashed,"\exists!\,\widetilde b"]\\
+		&P
+	\end{tikzcd}
+\]
+
+\begin{proposition}\label{g5:prop:tensor-construction}
+	任意交换含幺环 \(A\) 上的两个模 \(M,N\) 都有张量积。它在与 \(\tau\) 相容的唯一同构意义下唯一，且每个元素都可以写成有限和 \(\sum_i m_i\otimes n_i\)。
+\end{proposition}
+\begin{proof}
+	取以集合 \(M\times N\) 为基的自由 \(A\) 模，基向量暂记为 \([m,n]\)。商去由以下所有元素生成的子模：
+	\[
+	\begin{aligned}
+		&[m+m',n]-[m,n]-[m',n],\\
+		&[m,n+n']-[m,n]-[m,n'],\\
+		&[am,n]-a[m,n],\qquad [m,an]-a[m,n].
+	\end{aligned}
+	\]
+	把 \([m,n]\) 的剩余类记为 \(m\otimes n\)。这些关系保证 \(\tau\) 双线性。给定 \(b\)，自由模上唯一的线性映射 \([m,n]\mapsto b(m,n)\) 恰好消去所有上述关系，所以通过商得到 \(\widetilde b\)。商模由这些剩余类生成，故分解唯一，每个元素也都是有限个纯张量之和。
+
+	若另一个对象 \(T'\) 有同一泛性质，两次应用泛性质得到 \(M\otimes_A N\rightarrow T'\) 及反向映射。两个复合均在每个 \(m\otimes n\) 上为恒等，因而就是恒等同态。这证明所述唯一性。
+\end{proof}
+
+一般元素需要有限和，未必是一个纯张量。对同态 \(f:M\rightarrow M'\)、\(g:N\rightarrow N'\)，双线性映射 \((m,n)\mapsto f(m)\otimes g(n)\) 诱导线性映射 \(f\otimes g\)，由此可以比较各种张量积。交换两个变量，或把 \(a\otimes m\) 映到 \(am\)，分别给出
+\[
+	M\otimes_A N\cong N\otimes_A M,\qquad
+	A\otimes_A M\cong M.
+\]
+第一张映射的逆仍交换变量，第二张映射的逆为 \(m\mapsto1\otimes m\)。类似地，有限直和逐个分量给出 \(A^q\otimes_A M\cong M^q\)。这些同构都与给定同态相容，因而可以直接用于一列映射中。
+
+\begin{proposition}\label{g5:prop:tensor-right-exact}
+	设 \(A\) 为交换含幺环，\(P\) 为任意 \(A\) 模。若
+	\[
+		L\xrightarrow{u}M\xrightarrow{v}N\longrightarrow0
+	\]
+	是 \(A\) 模正合列，则
+	\[
+		L\otimes_A P\xrightarrow{u\otimes1}M\otimes_A P
+		\xrightarrow{v\otimes1}N\otimes_A P\longrightarrow0
+	\]
+	也正合。这个性质称为张量积的\term[youzhenghe]{右正合性}[right exactness]。
+\end{proposition}
+\begin{proof}
+	每个纯张量 \(n\otimes p\) 都可由 \(m\otimes p\) 提升，其中 \(v(m)=n\)，所以 \(v\otimes1\) 满射。令 \(T\) 为所有 \(u(l)\otimes p\) 生成的子模，即 \(\operatorname{im}(u\otimes1)\)。复合为零说明 \(T\subseteq\ker(v\otimes1)\)，从而有诱导同态
+	\[
+		\alpha:(M\otimes_A P)/T\longrightarrow N\otimes_A P.
+	\]
+	为证明它是同构，对 \((n,p)\in N\times P\)，任取 \(m\) 使 \(v(m)=n\)，赋以 \(m\otimes p\) 模 \(T\) 的类。两个原像之差属于 \(\ker v=u(L)\)，所以所得类相同。由原像的加法及标量乘法，这张映射双线性，因而诱导
+	\[
+		\beta:N\otimes_A P\longrightarrow(M\otimes_A P)/T.
+	\]
+	两张映射在纯张量上的复合均为恒等，故互逆。这证明核恰好等于 \(T\)。
+\end{proof}
+
+特别地，对理想 \(I\subseteq A\) 及 \(A\) 模 \(M\)，有
+\begin{equation}\label{g5:eq:quotient-tensor}
+	(A/I)\otimes_A M\cong M/IM,\qquad
+	\overline a\otimes m\longmapsto am+IM,
+\end{equation}
+其中 \(IM\) 由所有有限和 \(\sum_j a_jm_j\)（\(a_j\in I\)）组成。该式可由 \(I\rightarrow A\rightarrow A/I\rightarrow0\) 张量后得到，亦可直接写出逆映射 \(m+IM\mapsto\overline1\otimes m\)。因此张量上 \(A/I\) 确实让 \(I\) 的全部标量作用消失。
+
+\begin{example}\label{g5:exm:tensor-loses-injection}
+	设 \(k\) 为域，\(A=k[t]\)。把短正合列 \(0\rightarrow A\xrightarrow{t}A\rightarrow A/(t)\rightarrow0\) 与 \(A/(t)\cong k\) 作张量，得到
+	\[
+		k\xrightarrow{\,0\,}k\xrightarrow{\,1\,}k\longrightarrow0.
+	\]
+	它右正合，但第一张映射不再单射。原映射是乘以 \(t\)，而在新系数中 \(t=0\)，故这个失败可以直接由运算看出。张量积一般不保持短正合列左端的单射。
+\end{example}
+
+另一个基本构造是全部线性映射组成的模：
+\[
+	\operatorname{Hom}_A(M,N)
+	=\{f:M\rightarrow N:f\text{ 为 }A\text{ 线性}\}.
+\]
+按 \((f+g)(m)=f(m)+g(m)\)、\((af)(m)=af(m)\) 运算，它是 \(A\) 模；最后一个断言使用 \(A\) 的交换性。\(\operatorname{Hom}\) 对第一变量用预合成而反变，对第二变量用后合成而协变。例如 \(\operatorname{Hom}_A(A^q,N)\cong N^q\)，同构把一个映射送到各基向量的像。
+
+\begin{proposition}\label{g5:prop:hom-left-exact}
+	设 \(A\) 为交换含幺环，\(P\) 为任意 \(A\) 模，且
+	\(0\rightarrow L\xrightarrow{i}M\xrightarrow{q}N\rightarrow0\) 为短正合列。则下列两列正合：
+	\[
+		0\longrightarrow\operatorname{Hom}_A(P,L)
+		\xrightarrow{i_*}\operatorname{Hom}_A(P,M)
+		\xrightarrow{q_*}\operatorname{Hom}_A(P,N),
+	\]
+	\[
+		0\longrightarrow\operatorname{Hom}_A(N,P)
+		\xrightarrow{q^*}\operatorname{Hom}_A(M,P)
+		\xrightarrow{i^*}\operatorname{Hom}_A(L,P).
+	\]
+	这分别称为 \(\operatorname{Hom}\) 对第二变量及对第一变量的\term[zuozhenghe]{左正合性}[left exactness]，第二列同时反转箭头方向。
+\end{proposition}
+\begin{proof}
+	第一列中，\(i_*\) 单射，因为 \(i\) 单射。若 \(h:P\rightarrow M\) 满足 \(qh=0\)，其像在 \(i(L)\) 中，通过 \(i\) 的逆识别便得到唯一的 \(P\rightarrow L\)，所以 \(\ker q_*=\operatorname{im}i_*\)。
+
+	第二列中，\(q^*\) 单射，因为 \(q\) 满射。若 \(h:M\rightarrow P\) 在 \(i(L)\) 上为零，就由商模的泛性质唯一通过 \(M/i(L)\cong N\)。故 \(\ker i^*=\operatorname{im}q^*\)。
+\end{proof}
+
+两列的最后一张箭头通常都不满。仍取 \(A=k[t]\) 的上述短正合列，在第一列令 \(P=A/(t)\)，有 \(\operatorname{Hom}_A(P,A)=0\)，因为 \(P\) 的生成元被 \(t\) 杀死，而 \(A\) 中没有非零元素被 \(t\) 杀死；但 \(\operatorname{Hom}_A(P,A/(t))\cong k\)。在第二列令 \(P=A\)，限制映射在 \(\operatorname{Hom}_A(A,A)\cong A\) 的识别下是乘以 \(t\)，同样不满。前一种失败表示映射未必能沿满射提升，后一种表示子模上的映射未必能延拓。
+
+\ProseParagraphBreak
+
+张量积和 \(\operatorname{Hom}\) 通过同一个双线性表达相联系：
+\[
+	\operatorname{Hom}_A(M\otimes_A N,P)
+	\cong\operatorname{Hom}_A\bigl(M,\operatorname{Hom}_A(N,P)\bigr).
+\]
+左端的 \(h\) 对应 \(m\mapsto(n\mapsto h(m\otimes n))\)。反过来，右端给出的二元赋值双线性，故由张量积的泛性质恢复 \(h\)；两过程互逆。这一公式说明，把双线性映射的一项暂时固定，便将张量问题转成线性映射问题。
+
+\ProseParagraphBreak
+
+现在给定交换含幺环同态 \(\varphi:A\rightarrow B\)。每个 \(B\) 模 \(N\) 通过 \(an=\varphi(a)n\) 成为 \(A\) 模，称为\term[biaoliangxianzhi]{标量限制}[restriction of scalars]。反向的构造是
+\[
+	M_B=B\otimes_A M,\qquad
+	b'(b\otimes m)=b'b\otimes m,
+\]
+称为 \(M\) 从 \(A\) 到 \(B\) 的\term[biaoliangkuozhang]{标量扩张}[extension of scalars]。乘法与张量关系相容，故这里的 \(B\) 作用良定义。记 \(\eta(m)=1\otimes m\)，则对任意 \(B\) 模 \(N\)，有自然双射
+\begin{equation}\label{g5:eq:scalar-adjunction}
+	\operatorname{Hom}_B(B\otimes_A M,N)
+	\cong\operatorname{Hom}_A(M,N).
+\end{equation}
+映射的方向及其所保持的标量见下图。
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		M\arrow[r,"\eta"]\arrow[dr,"f\ (A\text{ 线性})"']&
+		B\otimes_A M\arrow[d,dashed,"\widetilde f\ (B\text{ 线性})"]\\
+		&N
+	\end{tikzcd}
+\]
+确实，给定 \(f\)，公式 \(\widetilde f(b\otimes m)=bf(m)\) 尊重张量关系且 \(B\) 线性；反过来取 \(\widetilde f\eta\)。由于所有纯张量都是 \(b\eta(m)\)，两过程互逆，分解也唯一。这里并不要求 \(\eta\) 单射；当 \(B=A/I\) 时，它就是 \(M\rightarrow M/IM\)。
+
+\ProseParagraphBreak
+
+若 \(M\) 由矩阵 \(D:A^p\rightarrow A^q\) 呈示，张量积的右正合性给出
+\[
+	B^p\xrightarrow{\,\varphi(D)\,}B^q\longrightarrow B\otimes_A M\longrightarrow0,
+\]
+其中 \(\varphi(D)\) 表示逐项把系数送入 \(B\)。所以有限呈示在任意标量扩张后仍有限呈示；计算商环上的模或某一点的纤维时，可以直接在关系矩阵中代入新系数。
+
+\ProseParagraphBreak
+
+连续两次扩张与一次扩张相容。对 \(A\rightarrow B\rightarrow C\)，有
+\[
+	C\otimes_B(B\otimes_A M)\cong C\otimes_A M,\qquad
+	c\otimes(b\otimes m)\longmapsto cb\otimes m,
+\]
+逆映射为 \(c\otimes m\mapsto c\otimes(1\otimes m)\)。此外
+\begin{equation}\label{g5:eq:tensor-scalar-change}
+	B\otimes_A(M\otimes_A N)
+	\cong (B\otimes_A M)\otimes_B(B\otimes_A N).
+\end{equation}
+这里 \(b\otimes(m\otimes n)\) 映到 \((b\otimes m)\otimes(1\otimes n)\)，反向将 \((b\otimes m)\otimes(c\otimes n)\) 映到 \(bc\otimes(m\otimes n)\)。两式分别尊重各层加法与标量关系，且在纯张量上复合为恒等，故确为互逆同构。张量构造、右正合性及这些标量变换公式可对照\cite[附录A，第266--269页]{Matsumura1989}。
 
 \subsection{局部化的正合性}
 \label{g5:subsec:0202:04}
-待撰写
+
+对一个模允许分母，与对环允许分母有相同的目标：让乘法集中每个元素的标量作用变成可逆运算。模中原有的零因子作用也决定哪些元素会在这一过程中消失。记 \(S\subseteq A\) 含 \(1\) 且对乘法封闭，允许 \(0\in S\)。
+
+\begin{definition}\label{g5:def:module-localization}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模，\(S\subseteq A\) 为乘法集。在 \(M\times S\) 上规定
+	\[
+		(m,s)\sim(n,t)
+		\quad\Longleftrightarrow\quad
+		u(tm-sn)=0\ \text{对某个 }u\in S.
+	\]
+	等价类记作 \(m/s\)，所得集合记为 \(S^{-1}M\)，称为 \(M\) 关于 \(S\) 的局部化。其中的运算为
+	\[
+		\frac ms+\frac nt=\frac{tm+sn}{st},\qquad
+		\frac at\cdot\frac ms=\frac{am}{ts}.
+	\]
+	第二个公式中的 \(a/t\) 属于 \(S^{-1}A\)。
+\end{definition}
+\symidx{\(S^{-1}M\)：模 \(M\) 关于乘法集 \(S\) 的局部化}
+
+先核对等价关系。自反和对称直接成立；若 \(u(tm-sn)=0\)、\(v(rn-t\ell)=0\)，则
+\[
+	uvt(rm-s\ell)
+	=vr\,u(tm-sn)+us\,v(rn-t\ell)=0,
+\]
+而 \(uvt\in S\)，故关系传递。运算与代表无关也可用同一方法核验。例如 \(u(s'm-sm')=0\) 时，给 \(m/s\) 与 \(m'/s'\) 分别加 \(n/t\)，所得两分子交叉相乘之差为 \(t^2(s'm-sm')\)，仍被 \(u\) 杀死；更换另一加数再做一次即可。更换标量或被乘分式的代表同样消去交叉乘积之差。由共同分母检查加法及标量公理，\(S^{-1}M\) 因而成为 \(S^{-1}A\) 模。
+
+\ProseParagraphBreak
+
+自然映射 \(\iota:M\rightarrow S^{-1}M\)、\(m\mapsto m/1\) 为 \(A\) 线性映射。直接把分式与 \(0/1\) 比较，得到最常用的判据：
+\begin{equation}\label{g5:eq:module-localization-zero}
+	\frac ms=0\text{ 于 }S^{-1}M
+	\quad\Longleftrightarrow\quad
+	um=0\text{ 对某个 }u\in S.
+\end{equation}
+所以局部化允许非零元素消失，而消失恰由一个被反演的标量造成。若 \(0\in S\)，所有元素都变成零，得到零环上的零模。
+
+\begin{proposition}\label{g5:prop:module-localization-universal}
+	设 \(A\) 为交换含幺环，\(S\subseteq A\) 为乘法集，\(M\) 为 \(A\) 模。对每个 \(S^{-1}A\) 模 \(N\)，任意 \(A\) 线性映射 \(f:M\rightarrow N\) 都唯一通过 \(\iota\) 分解为一个 \(S^{-1}A\) 线性映射
+	\[
+		\widetilde f:S^{-1}M\longrightarrow N,\qquad
+		\widetilde f(m/s)=(s/1)^{-1}f(m).
+	\]
+\end{proposition}
+\begin{proof}
+	若 \(u(tm-sn)=0\)，应用 \(f\) 并在 \(N\) 中除以可逆标量 \(u,s,t\)，得到 \(s^{-1}f(m)=t^{-1}f(n)\)，所以公式良定义。分式运算保证它 \(S^{-1}A\) 线性；每个 \(m/s=(1/s)\iota(m)\)，又保证它是唯一可能的分解。
+\end{proof}
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		M\arrow[r,"\iota"]\arrow[dr,"f"']&
+		S^{-1}M\arrow[d,dashed,"\widetilde f"]\\
+		&N
+	\end{tikzcd}
+\]
+这里下方测试对象的 \(A\) 模结构由 \(A\rightarrow S^{-1}A\) 限制而来。对任意 \(A\) 线性映射 \(f:M\rightarrow N\)，分式公式
+\[
+	S^{-1}f:S^{-1}M\longrightarrow S^{-1}N,\qquad
+	m/s\longmapsto f(m)/s
+\]
+给出相应的局部化映射，并保持恒等及复合。
+
+\begin{theorem}\label{g5:thm:localization-exact}
+	设 \(A\) 为交换含幺环，\(S\subseteq A\) 为乘法集。局部化保持 \(A\) 模正合列：若 \(L\xrightarrow{u}M\xrightarrow{v}N\) 在 \(M\) 处正合，则
+	\[
+		S^{-1}L\xrightarrow{S^{-1}u}S^{-1}M
+		\xrightarrow{S^{-1}v}S^{-1}N
+	\]
+	在 \(S^{-1}M\) 处正合。此外，单射局部化后仍单射，满射局部化后仍满射；特别地，短正合列仍变为短正合列。这里不要求环 Noether，也不要求模有限生成。
+\end{theorem}
+\begin{proof}
+	由 \(vu=0\)，局部化后仍有 \((S^{-1}v)(S^{-1}u)=0\)，故像包含于核。反过来，若 \(m/s\) 被 \(S^{-1}v\) 送到零，由\eqref{g5:eq:module-localization-zero}，存在 \(t\in S\) 使 \(tv(m)=0\)。于是 \(tm\in\ker v=\operatorname{im}u\)，可选 \(\ell\in L\) 满足 \(u(\ell)=tm\)。从而
+	\[
+		\frac ms=\frac{tm}{ts}
+		=(S^{-1}u)\left(\frac{\ell}{ts}\right),
+	\]
+	证明核包含于像。这一步说明，局部化后出现的零关系可以乘一个分母后还原为原模中的零关系。
+
+	若 \(u\) 单射且 \(u(\ell)/s=0\)，则某个 \(t\in S\) 满足 \(u(t\ell)=0\)，故 \(t\ell=0\)，于是 \(\ell/s=0\)。若 \(v\) 满射，对任意 \(n/s\)，先取 \(m\) 使 \(v(m)=n\)，就得到原像 \(m/s\)。这分别证明单射和满射的保持。
+\end{proof}
+
+对同态 \(f:M\rightarrow N\)，将定理用于核、像、余核的相应正合列，得到自然同构
+\[
+\begin{aligned}
+	S^{-1}(\ker f)&\cong\ker(S^{-1}f),\\
+	S^{-1}(\operatorname{im}f)&\cong\operatorname{im}(S^{-1}f),\\
+	S^{-1}(\operatorname{coker}f)&\cong\operatorname{coker}(S^{-1}f).
+\end{aligned}
+\]
+例如子模 \(L\subseteq M\) 局部化后仍可视为子模，且
+\(S^{-1}(M/L)\cong S^{-1}M/S^{-1}L\)。有限直和也与局部化交换：把有限个分式通分得到同一分母，反向再逐个取坐标，即有 \(S^{-1}(M^q)\cong(S^{-1}M)^q\)。
+
+\begin{proposition}\label{g5:prop:localization-tensor}
+	设 \(A\) 为交换含幺环，\(S\subseteq A\) 为乘法集，\(M,N\) 为任意 \(A\) 模，记 \(B=S^{-1}A\)。存在自然同构
+	\[
+		B\otimes_A M\xrightarrow{\ \sim\ }S^{-1}M,\qquad
+		(a/s)\otimes m\longmapsto am/s.
+	\]
+	此外
+	\[
+		S^{-1}(M\otimes_A N)
+		\cong(S^{-1}M)\otimes_B(S^{-1}N),
+	\]
+	其反向公式为 \((m/s)\otimes(n/t)\mapsto(m\otimes n)/(st)\)。
+\end{proposition}
+\begin{proof}
+	赋值 \((a/s,m)\mapsto am/s\) 对 \(A\) 双线性，故给出第一张映射。逆映射应为 \(m/s\mapsto(1/s)\otimes m\)。若 \(u(tm-sn)=0\)，则在张量积中
+	\[
+		(1/s)\otimes m=(1/(ust))\otimes utm
+		=(1/(ust))\otimes usn=(1/t)\otimes n,
+	\]
+	故逆映射良定义。它线性，并在纯张量及分式上与原映射互逆。
+
+	将这个同构与\eqref{g5:eq:tensor-scalar-change}组合，得到第二个同构。其正向将 \((m\otimes n)/s\) 送到 \((m/s)\otimes(n/1)\)；按分式关系及 \(B\) 中标量的平衡关系，它与陈述中的反向公式互逆。
+\end{proof}
+
+由此，局部化是一个保持全部正合性的标量扩张实例，与\cref{g5:exm:tensor-loses-injection}中的商环标量扩张不同。这些结论的标准表述见\cite[第4节，定理4.4--4.5]{Matsumura1989}。一个有限矩阵在 \(A\) 上的关系，可以逐点局部化后继续研究，其核与余核不会在这个转换中产生额外误差。
+
+\ProseParagraphBreak
+
+对 \(\operatorname{Hom}\)，局部化后的线性映射还需要能够用原来的映射和一个共同分母表示。有限生成元控制映射的值，有限关系控制这些值是否真的定义了映射；这正是有限呈示条件发挥作用的位置。
+
+\begin{proposition}\label{g5:prop:hom-localization}
+	设 \(A\) 为交换含幺环，\(S\subseteq A\) 为乘法集，\(M,N\) 为 \(A\) 模。存在自然的 \(S^{-1}A\) 线性映射
+	\[
+		\Theta:S^{-1}\operatorname{Hom}_A(M,N)
+		\longrightarrow
+		\operatorname{Hom}_{S^{-1}A}(S^{-1}M,S^{-1}N),
+	\]
+	由
+	\[
+		\Theta(f/s)(m/t)=f(m)/(st)
+	\]
+	给出。若 \(M\) 有限生成，\(\Theta\) 单射；若 \(M\) 有限呈示，\(\Theta\) 为同构。两种结论均不要求 \(N\) 有限生成。
+\end{proposition}
+\begin{proof}
+	每个 \(f\) 先给出 \(S^{-1}f\)，再乘以可逆标量 \(1/s\)，所以公式对 \(m/t\) 良定义。若 \(f/s=g/r\)，则某个 \(u\in S\) 满足 \(u(rf-sg)=0\)，在每个元素处求值并反演 \(u,r,s\)，便得到相同的局部化映射。因此 \(\Theta\) 良定义且线性。
+
+	若 \(M\) 由 \(m_1,\ldots,m_q\) 生成，且 \(\Theta(f/s)=0\)，则每个 \(f(m_i)\) 都被某个 \(u_i\in S\) 杀死。取 \(u=\prod_i u_i\)，便有 \(uf=0\) 于整个 \(M\)，从而 \(f/s=0\)。这证明有限生成时的单射性。
+
+	若 \(M\) 有有限呈示
+	\[
+		A^p\xrightarrow{D}A^q\longrightarrow M\longrightarrow0,
+	\]
+	则 \(\operatorname{Hom}\) 的左正合性把 \(\operatorname{Hom}_A(M,N)\) 识别为映射
+	\[
+		D_N:N^q\longrightarrow N^p,\qquad
+		(n_i)_{i=1}^q\longmapsto
+		\left(\sum_{i=1}^q d_{ij}n_i\right)_{j=1}^p
+	\]
+	的核。这里 \(d_{ij}\) 是 \(D\) 的第 \(i\) 行、第 \(j\) 列；一个从 \(A^q\) 出发的映射通过 \(M\)，恰好要求它消去每一列关系。
+
+	记 \(B=S^{-1}A\)、\(N_S=S^{-1}N\)。由局部化正合性及有限直和相容性，\(S^{-1}\operatorname{Hom}_A(M,N)\) 识别为
+	\[
+		(N_S)^q\xrightarrow{\,D_{N_S}\,}(N_S)^p
+	\]
+	的核。另一方面，局部化原呈示得到 \(B^p\xrightarrow{D}B^q\rightarrow S^{-1}M\rightarrow0\)，再用 \(\operatorname{Hom}_B(-,N_S)\)，可知
+	\(\operatorname{Hom}_B(S^{-1}M,N_S)\) 正是同一个核。两种识别将 \(f/s\) 送到同一组 \(f(m_i)/s\)，因此诱导的同构就是 \(\Theta\)。
+\end{proof}
+
+从生成元的角度，这个证明可读为两次清分母：先使有限多个像有共同分母，再使有限多条关系的误差同时变为零。第二步解释了为何对任意环只要求有限生成还不足以保证满射。
+
+\begin{example}\label{g5:exm:hom-localization-failure}
+	设 \(k\) 为域，取交换环
+	\[
+		A=k[t,x_1,x_2,\ldots]\big/
+		(x_ix_j,\ t^i x_i:\ i,j\geq1),
+		\qquad I=(\overline x_1,\overline x_2,\ldots)\subseteq A.
+	\]
+	每个元素唯一写成
+	\[
+		p(t)+\sum_{i\in F}q_i(t)\overline x_i,\qquad
+		p\in k[t],\quad \deg q_i<i,\quad F\text{ 有限}.
+	\]
+	这是因为关系恰好消去含两个 \(x_i\) 因子的单项式，以及每个 \(t^r x_i\) 中 \(r\geq i\) 的项；其余单项式的系数不受这些关系改变。特别地 \(I^2=0\)，而 \(I\) 不是有限生成理想：乘以 \(A\) 的元素只能改变已有 \(\overline x_i\) 的系数，不能从有限个指标生成新指标。故 \(M=A/I\cong k[t]\) 是有限生成但非有限呈示的 \(A\) 模。
+
+	令 \(S=\{1,t,t^2,\ldots\}\)。每个 \(\overline x_i\) 都被某个 \(t\) 的幂杀死，所以 \(S^{-1}I=0\)，并有
+	\(S^{-1}A\cong k[t,t^{-1}]\)、\(S^{-1}M\cong S^{-1}A\)。
+	另一方面，若 \(a=p(t)+\sum q_i(t)\overline x_i\) 杀死全部 \(I\)，则 \(p(t)\overline x_i=0\) 对每个 \(i\) 成立，也就是 \(p(t)\) 被所有 \(t^i\) 整除，只能有 \(p=0\)。所以 \(I\) 的零化理想恰为 \(I\)。同态 \(A/I\rightarrow A\) 由 \(1+I\) 的像决定，故
+	\[
+		\operatorname{Hom}_A(M,A)=I,\qquad
+		S^{-1}\operatorname{Hom}_A(M,A)=0.
+	\]
+	但是
+	\(\operatorname{Hom}_{S^{-1}A}(S^{-1}M,S^{-1}A)\cong k[t,t^{-1}]\ne0\)。
+	这里 \(\Theta\) 不满：每条关系可以各自乘上某个 \(t\) 的幂而消失，却没有一个幂能同时消去无限多条关系。
+\end{example}
+
+若 \(A\) 为 Noether 环，\cref{g5:prop:noetherian-finite-modules}使有限生成的 \(M\) 自动有限呈示，因而上个反例不会出现。\cref{g5:prop:hom-localization}特别保证，在仿射坐标环上的有限模之间，局部化后的映射可以在原环上的映射中清除一个共同分母；这正是以后把某点处的线性构造推广到邻域时所需的有限性。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

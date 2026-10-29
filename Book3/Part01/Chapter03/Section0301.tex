@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 3.1 曲率的代数结构
 % 纲要位置：几何学计划纲要.md，第 2196 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,350 @@
 \section{曲率的代数结构}
 \label{g3:sec:0301}
 
-待撰写
+第一章用联络一形式算出了若干度量的曲率，第二章又在每点建立了使联络系数消失的法坐标。联络系数在一点为零，并不使它们的导数也为零；曲率正从这些导数之间的差别中出现。本节先说明曲率为何只依赖输入向量在一点的值，再把它写成四阶张量，逐一找出由度量相容性和无挠性带来的对称关系。最后将这些分量组织为二向量空间上的自伴算子，使二维截面的曲率与一个有限维线性算子联系起来。
 
 \subsection{曲率张量性及符号}
 \label{g3:subsec:0301:01}
-待撰写
+
+对函数而言，两个方向导数的交换子是 Lie 括号：\(X(Yf)-Y(Xf)=[X,Y]f\)。向量场的协变导数还要记录切空间的变化，因而同样减去括号方向的导数后，仍可能留下一个非零项。沿用式\eqref{g3:eq:curvature-definition}的顺序，我们把这个余项作为本章的曲率。
+
+\begin{definition}\label{g3:def:riemann-curvature}
+	设 \((M,g)\) 为有限维、无边界光滑黎曼流形，\(\nabla\) 为其 Levi-Civita 联络。定义
+	\[
+		R(X,Y)Z
+		=\nabla_X\nabla_YZ-\nabla_Y\nabla_XZ-\nabla_{[X,Y]}Z.
+	\]
+	所得 \(R\) 称为度量 \(g\) 的\term[limanqulvzhangliang]{黎曼曲率张量}[Riemann curvature tensor]。
+\end{definition}
+
+第一章已从联络矩阵得到曲率的张量性。下面直接检查联络的乘积规则，说明各导数项为何消去；这一计算对任意光滑线性联络也适用。
+
+\begin{proposition}\label{g3:prop:riemann-curvature-tensorial}
+	设 \((M,g)\) 为有限维、无边界光滑黎曼流形。它的曲率 \(R(X,Y)Z\) 对 \(X,Y,Z\) 都为 \(C^\infty(M)\) 线性，并满足 \(R(X,Y)=-R(Y,X)\)。因此每个点 \(p\) 的曲率确定一个交替双线性映射
+	\[
+		R_p:\mathrm{T}_pM\times\mathrm{T}_pM
+		\longrightarrow\operatorname{End}(\mathrm{T}_pM),
+	\]
+	并随 \(p\) 光滑变化。
+\end{proposition}
+\begin{proof}
+	反对称性由定义直接得到。对光滑函数 \(f\)，由 \([fX,Y]=f[X,Y]-Y(f)X\)，有
+	\begin{align*}
+		R(fX,Y)Z
+		&=f\nabla_X\nabla_YZ-\nabla_Y(f\nabla_XZ)
+			-\nabla_{f[X,Y]-Y(f)X}Z\\
+		&=fR(X,Y)Z.
+	\end{align*}
+	两个含 \(Y(f)\nabla_XZ\) 的项相消。第二个输入的函数线性再由反对称性得到。对于第三个输入，先展开
+	\[
+		\nabla_X\nabla_Y(fZ)
+		=X(Yf)Z+(Yf)\nabla_XZ+(Xf)\nabla_YZ
+			+f\nabla_X\nabla_YZ.
+	\]
+	交换 \(X,Y\) 后，中间两项相消；再减去 \(\nabla_{[X,Y]}(fZ)\)，得到
+	\[
+		R(X,Y)(fZ)
+		=fR(X,Y)Z+\bigl(X(Yf)-Y(Xf)-[X,Y]f\bigr)Z
+		=fR(X,Y)Z.
+	\]
+	在局部标架中展开三个输入，函数线性将全部分量移到外面，所以一点处的结果只取决于三个向量在该点的值。联络系数与输入标架光滑，因而输出分量光滑。
+\end{proof}
+
+在坐标 \((x^i)\) 中，固定指标顺序
+\[
+	R(\partial_i,\partial_j)\partial_b
+	=R^a{}_{b i j}\partial_a.
+\]
+其中 \(i,j\) 是求导方向，\(b\) 是被作用的向量指标，\(a\) 是输出指标。由于坐标向量场交换，
+\[
+	\nabla_{\partial_i}\nabla_{\partial_j}\partial_b
+	=\bigl(\partial_i\Gamma^a_{jb}
+		+\Gamma^a_{ic}\Gamma^c_{jb}\bigr)\partial_a.
+\]
+交换 \(i,j\) 并作差，便得到可直接计算的公式
+\begin{equation}\label{g3:eq:curvature-coordinate-components}
+	R^a{}_{b i j}
+	=\partial_i\Gamma^a_{jb}-\partial_j\Gamma^a_{ib}
+	+\Gamma^a_{ic}\Gamma^c_{jb}-\Gamma^a_{jc}\Gamma^c_{ib}.
+\end{equation}
+这与 \(\Omega=\mathrm{d}\omega+\omega\wedge\omega\) 一致，因为坐标标架中 \(\omega^a{}_b=\Gamma^a_{ib}\,\mathrm{d}x^i\)。下文改变张量的写法时始终保留这一求导顺序。
 
 \subsection{四阶张量的对称性}
 \label{g3:subsec:0301:02}
-待撰写
+
+曲率给出一个向量。用度量把它与另一个向量配对，就得到四个输入的实数，从而可以比较不同位置之间的交换关系。配对时的槽位顺序必须固定，因为交换最后两个向量会改变符号。
+
+\begin{definition}\label{g3:def:curvature-four-tensor}
+	设 \((M,g)\) 为有限维、无边界光滑黎曼流形，\(R\) 为其 Levi-Civita 联络的曲率。定义协变四阶张量
+	\begin{equation}\label{g3:eq:curvature-four-tensor}
+		\mathrm{Rm}(X,Y,Z,W)\coloneqq g(R(X,Y)W,Z).
+	\end{equation}
+	在局部标架中记
+	\[
+		R_{ijkl}=\mathrm{Rm}(e_i,e_j,e_k,e_l).
+	\]
+	特别地，在坐标标架中，
+	\begin{equation}\label{g3:eq:curvature-lowered-components}
+		R_{ijkl}=g_{km}R^m{}_{l i j},\qquad
+		R^a{}_{b i j}=g^{ak}R_{ijkb}.
+	\end{equation}
+\end{definition}
+\symidx{\(\mathrm{Rm}\)}
+
+因此，对正交单位向量 \(u,v\)，第一章的截面曲率就是
+\[
+	K(u,v)=\mathrm{Rm}(u,v,u,v).
+\]
+最后两个槽位在式\eqref{g3:eq:curvature-four-tensor}中按 \(W,Z\) 的次序进入向量曲率与内积。这个选择使正曲率球面的 \(R_{1212}\) 为正，也使稍后定义的曲率算子在球面上具有正特征值。
+
+\begin{proposition}\label{g3:prop:curvature-symmetries}
+	设 \((M,g)\) 为有限维、无边界光滑黎曼流形，\(\mathrm{Rm}\) 按式\eqref{g3:eq:curvature-four-tensor}定义。对每一点的切向量 \(X,Y,Z,W\)，有
+	\begin{align}
+		\mathrm{Rm}(X,Y,Z,W)
+			&=-\mathrm{Rm}(Y,X,Z,W),\label{g3:eq:curvature-first-pair-skew}\\
+		\mathrm{Rm}(X,Y,Z,W)
+			&=-\mathrm{Rm}(X,Y,W,Z),\label{g3:eq:curvature-last-pair-skew}\\
+		\mathrm{Rm}(X,Y,Z,W)
+			&=\mathrm{Rm}(Z,W,X,Y).\label{g3:eq:curvature-pair-interchange}
+	\end{align}
+\end{proposition}
+\begin{proof}
+	第一式是 \(R(X,Y)=-R(Y,X)\) 与度量配对的结果。第二式来自度量相容性。事实上，将内积求导两次得到
+	\begin{align*}
+		XYg(Z,W)
+		={}&g(\nabla_X\nabla_YZ,W)
+			+g(\nabla_YZ,\nabla_XW)\\
+		&+g(\nabla_XZ,\nabla_YW)
+			+g(Z,\nabla_X\nabla_YW).
+	\end{align*}
+	交换 \(X,Y\) 后，中间两项抵消；再减去 \([X,Y]g(Z,W)\)。由于 \(XY-YX-[X,Y]\) 在函数上为零，得到
+	\[
+		g(R(X,Y)Z,W)+g(Z,R(X,Y)W)=0.
+	\]
+	这正是最后两个槽位的反对称性。
+
+	为了证明两对槽位的交换关系，固定一点 \(p\)，使用\cref{g3:prop:normal-coordinate-first-order}给出的法坐标。在 \(p\) 处有 \(g_{ij}=\delta_{ij}\)、\(\Gamma^k_{ij}=0\)、\(\partial_k g_{ij}=0\)。对 Christoffel 公式求导并在 \(p\) 取值，得到
+	\[
+		\partial_i\Gamma^m_{jl}(p)
+		=\frac12\delta^{ma}
+		\bigl(\partial_i\partial_jg_{la}
+			+\partial_i\partial_lg_{ja}
+			-\partial_i\partial_ag_{jl}\bigr)(p).
+	\]
+	这里乘在逆度量导数后的度量一阶导数为零。将上式代入式\eqref{g3:eq:curvature-coordinate-components}，其中二次联络项在 \(p\) 消失，而 \(\partial_i\partial_jg_{la}\) 与交换指标后的对应项抵消，于是
+	\begin{equation}\label{g3:eq:curvature-normal-second-derivatives}
+		R_{ijkl}(p)
+		=\frac12\bigl(
+			\partial_i\partial_lg_{jk}
+			+\partial_j\partial_kg_{il}
+			-\partial_i\partial_kg_{jl}
+			-\partial_j\partial_lg_{ik}
+		\bigr)(p).
+	\end{equation}
+	利用 \(g_{ij}=g_{ji}\) 及普通混合偏导可交换，可见将 \((i,j)\) 与 \((k,l)\) 交换后，右侧不变。因此 \(R_{ijkl}(p)=R_{klij}(p)\)。两侧都是四阶张量，对一组坐标基成立就对任意四个切向量成立；点 \(p\) 又任意，第三式得证。
+\end{proof}
+
+现在得到相互配合的两种计算方式：在一般坐标中用式\eqref{g3:eq:curvature-coordinate-components}，在某个法坐标中心用式\eqref{g3:eq:curvature-normal-second-derivatives}。后一个公式只计算该点的曲率；它将度量二阶偏导中实际参与曲率的组合明确列出，第三节再反过来讨论曲率怎样决定法坐标展开的二阶项。
 
 \subsection{第一、第二 Bianchi 恒等式}
 \label{g3:subsec:0301:03}
-待撰写
+
+反对称性和两对槽位的交换还没有列出曲率的全部约束。无挠性还使三个方向的曲率作用在循环相加时抵消；对曲率再求一次协变导数，又出现另一条循环关系。这两条关系分别称为第一、第二 Bianchi 恒等式。\footnote{Luigi Bianchi（1856--1928），意大利数学家，研究曲面、黎曼几何和连续变换群。}
+
+\ProseParagraphBreak
+
+先明确曲率的协变导数。它对 \(R\) 的输出求导，并扣除各输入自身的变化：
+\begin{equation}\label{g3:eq:covariant-derivative-curvature}
+	\begin{aligned}
+		(\nabla_A R)(X,Y)Z
+		={}&\nabla_A(R(X,Y)Z)-R(\nabla_AX,Y)Z\\
+		&-R(X,\nabla_AY)Z-R(X,Y)\nabla_AZ.
+	\end{aligned}
+\end{equation}
+联络的乘积规则使每个输入中出现的函数导数相消，因此它对 \(A,X,Y,Z\) 都为函数线性。对 \(\mathrm{Rm}\) 也按相同方式扣除四个槽位的变化；度量相容性保证
+\[
+	(\nabla_A\mathrm{Rm})(X,Y,Z,W)
+	=g((\nabla_A R)(X,Y)W,Z).
+\]
+在坐标中，简记
+\[
+	\nabla_a R_{ijkl}
+	=(\nabla_{\partial_a}\mathrm{Rm})
+		(\partial_i,\partial_j,\partial_k,\partial_l).
+\]
+其具体表达为
+\[
+	\nabla_a R_{ijkl}
+	=\partial_aR_{ijkl}
+	-\Gamma^m_{ai}R_{mjkl}-\Gamma^m_{aj}R_{imkl}
+	-\Gamma^m_{ak}R_{ijml}-\Gamma^m_{al}R_{ijkm}.
+\]
+
+\begin{theorem}[Bianchi 恒等式]\label{g3:thm:bianchi-identities}
+	设 \((M,g)\) 为有限维、无边界光滑黎曼流形，\(\nabla,R,\mathrm{Rm}\) 分别为其 Levi-Civita 联络、曲率及式\eqref{g3:eq:curvature-four-tensor}中的四阶张量。对任意光滑向量场，第一 Bianchi 恒等式为
+	\begin{equation}\label{g3:eq:first-bianchi-identity}
+		R(X,Y)Z+R(Y,Z)X+R(Z,X)Y=0;
+	\end{equation}
+	第二 Bianchi 恒等式为
+	\begin{equation}\label{g3:eq:second-bianchi-identity}
+		(\nabla_A R)(X,Y)Z+(\nabla_XR)(Y,A)Z
+			+(\nabla_YR)(A,X)Z=0.
+	\end{equation}
+	以四阶张量表示时，相应的坐标等式是
+	\begin{align}
+		R_{ijkl}+R_{jkil}+R_{kijl}&=0,\label{g3:eq:first-bianchi-components}\\
+		\nabla_aR_{ijkl}+\nabla_iR_{jakl}+\nabla_jR_{aikl}&=0.
+			\label{g3:eq:second-bianchi-components}
+	\end{align}
+\end{theorem}
+\begin{proof}
+	两条恒等式均为张量等式，可以固定一点 \(p\)，取该点的法坐标后在坐标基上检验。在 \(p\) 处，第一条向量恒等式的第 \(a\) 个分量是
+	\[
+		R^a{}_{k i j}+R^a{}_{i j k}+R^a{}_{j k i}.
+	\]
+	由式\eqref{g3:eq:curvature-coordinate-components}及 \(\Gamma(p)=0\)，它等于
+	\[
+		\partial_i\Gamma^a_{jk}-\partial_j\Gamma^a_{ik}
+		+\partial_j\Gamma^a_{ki}-\partial_k\Gamma^a_{ji}
+		+\partial_k\Gamma^a_{ij}-\partial_i\Gamma^a_{kj}
+	\]
+	在 \(p\) 的值。无挠性使 \(\Gamma^a_{ij}=\Gamma^a_{ji}\) 在整个坐标域中成立，因而这六项两两抵消。得到向量恒等式后，与 \(W\) 配对，再用最后两个槽位的反对称性，便得到循环前三个槽位的式\eqref{g3:eq:first-bianchi-components}。
+
+	对第二条恒等式，在法坐标中心，输入和输出上的联络修正项全为零，故 \((\nabla_{\partial_a}R)\) 的分量是 \(\partial_aR^l{}_{k i j}\)。从全坐标域成立的式\eqref{g3:eq:curvature-coordinate-components}求导，每个二次联络项的导数都含有一个 \(\Gamma\) 因子，所以在 \(p\) 取值后为零。于是
+	\[
+		\partial_aR^l{}_{k i j}(p)
+		=\bigl(\partial_a\partial_i\Gamma^l_{jk}
+			-\partial_a\partial_j\Gamma^l_{ik}\bigr)(p).
+	\]
+	循环置换 \(a,i,j\) 并相加，所得六项为
+	\[
+		\begin{aligned}
+		&\partial_a\partial_i\Gamma^l_{jk}
+			-\partial_a\partial_j\Gamma^l_{ik}
+			+\partial_i\partial_j\Gamma^l_{ak}\\
+		&\qquad-\partial_i\partial_a\Gamma^l_{jk}
+			+\partial_j\partial_a\Gamma^l_{ik}
+			-\partial_j\partial_i\Gamma^l_{ak}.
+		\end{aligned}
+	\]
+	混合偏导相等使其为零，证明式\eqref{g3:eq:second-bianchi-identity}。再将被作用的向量取为 \(\partial_l\)，并与 \(\partial_k\) 配对；由于 \(\nabla g=0\)，协变求导与这种配对交换，便得到式\eqref{g3:eq:second-bianchi-components}。
+\end{proof}
+
+第一 Bianchi 恒等式也常在固定第三槽位的形式下使用：将式\eqref{g3:eq:first-bianchi-identity}中的循环向量取为 \(X,Y,W\)，再与 \(Z\) 配对，得到
+\[
+	\mathrm{Rm}(X,Y,Z,W)
+	+\mathrm{Rm}(Y,W,Z,X)
+	+\mathrm{Rm}(W,X,Z,Y)=0.
+\]
+它与循环前三槽的表达等价，选择哪一式取决于需要收缩或交换哪些指标。第一条恒等式约束一点处的曲率值，第二条约束曲率在相邻点之间的变化。
+
+\begin{definition}\label{g3:def:algebraic-curvature-tensor}
+	设 \(V\) 为有限维实内积空间。若一个四重线性映射 \(A:V^4\to\mathbb R\) 满足
+	\begin{align*}
+		A(X,Y,Z,W)&=-A(Y,X,Z,W)=-A(X,Y,W,Z),\\
+		A(X,Y,Z,W)&=A(Z,W,X,Y),\\
+		A(X,Y,Z,W)+A(Y,Z,X,W)+A(Z,X,Y,W)&=0,
+	\end{align*}
+	则称 \(A\) 为 \(V\) 上的\term[daishuqulvzhangliang]{代数曲率张量}[algebraic curvature tensor]。
+\end{definition}
+
+因此，每个黎曼流形在一点处的 \(\mathrm{Rm}_p\) 都是代数曲率张量。这个定义收集了曲率值本身的对称关系；涉及 \(\nabla R\) 的第二 Bianchi 恒等式则属于随点变化的微分约束。后面的模型与分解可以先在有限维内积空间中研究这些代数关系，再讨论它们如何由度量实现。
 
 \subsection{曲率算子及二形式上的作用}
 \label{g3:subsec:0301:04}
-待撰写
+
+截面曲率接受一个二维平面。用二向量 \(X\wedge Y\) 表示带面积尺度的平面，曲率的四个输入便可以分成两对，成为二向量之间的双线性配对。这种表示既保留了截面曲率，也使不同二维方向之间的耦合成为一个线性算子的矩阵分量。
+
+\ProseParagraphBreak
+
+在内积空间 \(V\) 上，\(\Lambda^2V\) 的诱导内积由
+\[
+	\langle X\wedge Y,Z\wedge W\rangle_{\Lambda^2}
+	=\langle X,Z\rangle\langle Y,W\rangle
+	-\langle X,W\rangle\langle Y,Z\rangle
+\]
+确定。若 \((e_1,\ldots,e_n)\) 为 \(V\) 的正交单位基，则 \(e_i\wedge e_j\)、\(i<j\)，组成 \(\Lambda^2V\) 的正交单位基，所以这是正定内积。特别地，\(|X\wedge Y|^2\) 就是 \(X,Y\) 张成的平行四边形面积的平方。
+
+\begin{definition}\label{g3:def:curvature-operator}
+	设 \((M,g)\) 为有限维、无边界光滑黎曼流形。点 \(p\) 处的\term[qulvsuanzi]{曲率算子}[curvature operator]是线性映射
+	\[
+		\mathcal R_p:\Lambda^2\mathrm{T}_pM\longrightarrow
+			\Lambda^2\mathrm{T}_pM,
+	\]
+	由下式唯一确定：
+	\begin{equation}\label{g3:eq:curvature-operator-pairing}
+		\bigl\langle\mathcal R_p(X\wedge Y),Z\wedge W\bigr\rangle_{\Lambda^2}
+		=\mathrm{Rm}_p(X,Y,Z,W).
+	\end{equation}
+\end{definition}
+\symidx{\(\mathcal R\)}
+
+\begin{proposition}\label{g3:prop:curvature-operator-self-adjoint}
+	设 \((M,g)\) 为有限维、无边界光滑黎曼流形。式\eqref{g3:eq:curvature-operator-pairing}良定义一个光滑、逐点自伴的曲率算子。在正交单位标架中，
+	\begin{equation}\label{g3:eq:curvature-operator-components}
+		\mathcal R(e_i\wedge e_j)
+		=\sum_{k<l}R_{ijkl}\,e_k\wedge e_l.
+	\end{equation}
+	若 \(\xi=u\wedge v\) 表示某二维平面的正交单位基，则
+	\[
+		K(u,v)=\langle\mathcal R\xi,\xi\rangle_{\Lambda^2}.
+	\]
+\end{proposition}
+\begin{proof}
+	\(\mathrm{Rm}\) 对第一对和第二对输入分别交替，故对每一对都可以通过外积空间分解，得到 \(\Lambda^2\mathrm{T}_pM\) 上的双线性型 \(B\)。具体地，在正交单位基中令
+	\[
+		B\left(\sum_{i<j}a_{ij}e_i\wedge e_j,
+			\sum_{k<l}b_{kl}e_k\wedge e_l\right)
+		=\sum_{i<j,\ k<l}a_{ij}b_{kl}R_{ijkl}.
+	\]
+	交替性保证它在可分解二向量上等于右侧的四阶张量配对；这类二向量张成整个空间，故该双线性型由张量本身唯一确定，与基的选择无关。正定内积将线性泛函唯一表示成向量，从而对每个第一输入产生唯一的 \(\mathcal R_p\)。在正交基中写出这个向量，正是式\eqref{g3:eq:curvature-operator-components}，故其系数随点光滑。
+
+	两对槽位的交换关系说明 \(B(\xi,\eta)=B(\eta,\xi)\)。因此
+	\[
+		\langle\mathcal R\xi,\eta\rangle
+		=B(\xi,\eta)=B(\eta,\xi)
+		=\langle\xi,\mathcal R\eta\rangle,
+	\]
+	即算子自伴。最后取 \(\xi=u\wedge v\)，由式\eqref{g3:eq:curvature-four-tensor}及截面曲率定义得到最后的等式。
+\end{proof}
+
+通过度量的音乐同构，还可以把同一算子放在二形式空间 \(\Lambda^2\mathrm{T}_p^*M\) 上。具体地，将 \(X\wedge Y\) 送到 \(X^\flat\wedge Y^\flat\)，得到等距同构 \(\flat_2\)；其逆记为 \(\sharp_2\)。在二形式上定义 \(\mathcal R=\flat_2\circ\mathcal R\circ\sharp_2\)，沿用相同符号。若
+\[
+	\alpha=\frac12\alpha_{ij}\theta^i\wedge\theta^j,\qquad
+	\alpha_{ij}=-\alpha_{ji},
+\]
+其中 \((\theta^i)\) 是正交单位余标架，则
+\begin{equation}\label{g3:eq:curvature-operator-two-forms}
+	(\mathcal R\alpha)_{ij}=\frac12R_{ijkl}\alpha_{kl}.
+\end{equation}
+这里对所有 \(k,l\) 求和，系数 \(1/2\) 消去有序指标对的重复计数；若仅对 \(k<l\) 求和，就没有这个因子。此算子按点作用于二形式场，不含微分。
+
+\begin{example}\label{g3:exm:surface-curvature-operator}
+	在二维黎曼流形的一点，\(\Lambda^2\mathrm{T}_pM\) 为一维。任取正交单位基 \(e_1,e_2\)，由 \(R_{1212}=K\) 得
+	\[
+		\mathcal R_p=K(p)\operatorname{id}.
+	\]
+	两对反对称性使全部四阶分量由 \(R_{1212}\) 决定，因此对任意四个切向量，
+	\[
+		\mathrm{Rm}(X,Y,Z,W)
+		=K\bigl(g(X,Z)g(Y,W)-g(X,W)g(Y,Z)\bigr).
+	\]
+	由度量的非退化性恢复向量曲率，得到
+	\[
+		R(X,Y)Z=K\bigl(g(Y,Z)X-g(X,Z)Y\bigr).
+	\]
+	半径 \(a\) 的圆球面有 \(K=a^{-2}\)，故其曲率算子为 \(a^{-2}\operatorname{id}\)；Euclid 平面的算子为零，曲率归一化为 \(-1\) 的双曲平面上则为 \(-\operatorname{id}\)。这三个例子同时检验了四阶张量的槽位和曲率算子的符号。
+\end{example}
+
+\begin{example}\label{g3:exm:self-adjoint-without-bianchi}
+	自伴性记录了两对槽位的交换，第一 Bianchi 恒等式还提供额外限制。在四维 Euclid 空间取正交单位余基 \((\theta^1,\ldots,\theta^4)\)，令
+	\[
+		A(X,Y,Z,W)=(\theta^1\wedge\theta^2\wedge\theta^3\wedge\theta^4)(X,Y,Z,W).
+	\]
+	这个四阶张量在每一对槽位内反对称，交换两对槽位时不变，因而同样定义一个自伴算子。但
+	\[
+		A_{1234}+A_{2314}+A_{3124}=1+1+1=3.
+	\]
+	所以它不是代数曲率张量。将一个自伴矩阵用作曲率候选时，还须保留第一 Bianchi 恒等式这一代数条件。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

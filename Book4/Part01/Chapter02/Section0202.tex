@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 2.2 分歧与有限映射
 % 纲要位置：几何学计划纲要.md，第 3522 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,287 @@
 \section{分歧与有限映射}
 \label{g4:sec:0202}
 
-待撰写
+平方映射在非零点附近有两张逆函数分支；目标点移到零时，两张分支合到同一个源点。这种合并并没有使原像的总重数减少。对于紧黎曼曲面之间的全纯映射，局部幂模型与紧性将保证：每个目标点只有有限个原像，按局部重数计数所得的总数处处相同。去掉有限个特殊目标点后，这个映射就成为通常的有限叶覆盖；沿环路接续逆分支产生的置换，则记录各张片怎样连接。
 
 \subsection{局部幂模型及分歧指数}
 \label{g4:subsec:0202:01}
-待撰写
+平面区域中的局部幂模型可以在曲面的坐标中使用，但必须先核对所得整数不依赖坐标。源点的坐标与目标点的坐标承担不同的作用：前者改变参数，后者改变测量函数值的方式；二者都应保留局部覆盖的重数。
+
+\begin{theorem}\label{g4:thm:0202:local-model}
+	设 \(X,Y\) 是连通、无边界的黎曼曲面，\(f:X\rightarrow Y\) 是非恒定全纯映射。对每个 \(p\in X\)，令 \(q=f(p)\)。则存在以 \(p,q\) 为中心的全纯坐标 \(z,w\)，使
+	\[
+		z(p)=w(q)=0,\qquad w\circ f=z^e
+	\]
+	在 \(p\) 的某邻域内成立，其中整数 \(e\geq1\) 只依赖 \(f,p\)，与坐标选择无关。缩小坐标邻域后，可以令源坐标像为 \(D(0,r)\)，目标坐标像为 \(D(0,r^e)\)，其交换关系为
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			U\arrow[r,"f"]\arrow[d,"z"']&V\arrow[d,"w"]\\
+			D(0,r)\arrow[r,"\zeta\mapsto\zeta^e"']&D(0,r^e).
+		\end{tikzcd}
+	\]
+	在此邻域中，中心值的原像为 \(p\)，每个非中心值恰有 \(e\) 个互异原像，且这些原像处的微分均非零。
+\end{theorem}
+\begin{proof}
+	由\cref{g4:prop:0201:identity}，连通源曲面上的全纯映射若在一个非空开集恒定，就在整个曲面上恒定。因此当前的 \(f\) 在每点附近都非恒定。
+
+	任选以 \(p,q\) 为中心的坐标 \(u,w\)，缩小源邻域使其像位于目标坐标域中。函数 \(w\circ f\circ u^{-1}\) 在 \(0\) 全纯且局部非恒定，并在 \(0\) 取值零。\cref{g4:thm:0101:local-power}给出局部可逆的全纯函数 \(\phi\)，使
+	\[
+		w\circ f\circ u^{-1}(\xi)=\phi(\xi)^e.
+	\]
+	令 \(z=\phi\circ u\)，便得到所需坐标式。再把 \(z\) 的像缩为 \(D(0,r)\)，并把 \(w\) 的像缩为 \(D(0,r^e)\)。幂映射的根计数和导数 \(e\zeta^{e-1}\) 给出最后的结论。
+
+	为证明整数不依赖坐标，考虑任意坐标表达
+	\[
+		w\circ f\circ u^{-1}(\xi)=a_e\xi^e+O(\xi^{e+1}),\qquad a_e\neq0.
+	\]
+	换源坐标相当于代入 \(\xi=c\widetilde\xi+O(\widetilde\xi^2)\)，其中 \(c\neq0\)；换目标中心坐标相当于复合 \(\widetilde w=bw+O(w^2)\)，其中 \(b\neq0\)。新的首个非零项为 \(ba_ec^e\widetilde\xi^e\)，其次数仍是 \(e\)。
+\end{proof}
+
+\begin{definition}\label{g4:def:0202:ramification}
+	设 \(f:X\rightarrow Y\) 是连通、无边界黎曼曲面之间的非恒定全纯映射。\cref{g4:thm:0202:local-model}中的整数称为 \(f\) 在 \(p\) 的\term[fenqizhishu]{分歧指数}[ramification index]，记为 \(e_p(f)\)。若 \(e_p(f)>1\)，则称 \(p\) 为\term[fenqidian]{分歧点}[ramification point]；它的像称为\term[fenzhizhi]{分支值}[branch value]。记
+	\[
+		\operatorname{Ram}(f)\coloneqq\{p\in X:e_p(f)>1\},\qquad B_f\coloneqq f(\operatorname{Ram}(f)).
+	\]
+	不在 \(B_f\) 中的目标点称为正则值。\symidx{\(e_p(f)\)：全纯映射的分歧指数}\symidx{\(\operatorname{Ram}(f),B_f\)：分歧点集与分支值集}
+\end{definition}
+
+分歧指数为 \(1\) 当且仅当 \(\mathrm{d}f_p\neq0\)，也当且仅当 \(f\) 在 \(p\) 附近双全纯。因此分歧点正是临界点，分支值正是临界值；在讨论覆盖的合并时，分歧的说法还同时记录整数 \(e_p(f)\)。由局部坐标的同胚性和幂映射的开性，非恒定全纯曲面映射把开集映为开集。
+
+\ProseParagraphBreak
+
+对复合映射，这个整数相乘。若 \(f:X\rightarrow Y\)、\(g:Y\rightarrow Z\) 都是连通无边界黎曼曲面之间的非恒定全纯映射，则
+\begin{equation}\label{g4:eq:0202:ramification-composition}
+	e_p(g\circ f)=e_p(f)e_{f(p)}(g).
+\end{equation}
+事实上，在以相应点为中心的坐标中，若 \(f\) 的首项为 \(a z^e\)，\(g\) 的首项为 \(b w^k\)，则复合的首项为 \(ba^kz^{ek}\)，系数非零。
+
+\begin{example}\label{g4:exm:0202:power-sphere}
+	设 \(m\geq2\)。映射 \(f:\mathbb P^1\rightarrow\mathbb P^1\)、\(f(z)=z^m\) 在 \(0\) 处的分歧指数为 \(m\)，在每个非零有限点处为 \(1\)。无穷远处应改用源坐标 \(u=1/z\) 和目标坐标 \(v=1/w\)，于是 \(v\circ f=u^m\)，故 \(e_\infty(f)=m\)。源曲面上有两个分歧点，目标曲面上也有两个分支值 \(0,\infty\)。一幅有限平面坐标图会遗漏无穷远处的同一种局部现象。
+\end{example}
 
 \subsection{紧性、开映射与满射}
 \label{g4:subsec:0202:02}
-待撰写
+局部幂模型说明单个原像是孤立的，却还没有给出全曲面上的原像总数。原像可能不断逃向无穷远，也可能聚向定义域中缺失的点。紧性将排除这两种逃逸，并使目标点附近的全部原像同时受控。
+
+\begin{definition}\label{g4:def:0202:finite-map}
+	黎曼曲面之间的全纯映射若满足每个纤维有限，且为\term[guyouyingshe]{固有映射}[proper map]，即目标中每个紧集的原像都紧，则称为\term[youxianquanchunyingshe]{有限全纯映射}[finite holomorphic map]。
+\end{definition}
+
+\begin{theorem}\label{g4:thm:0202:finite-map}
+	设 \(X,Y\) 是连通、无边界的黎曼曲面，\(X\) 紧，\(f:X\rightarrow Y\) 是非恒定全纯映射。则 \(f\) 满射，\(Y\) 也紧，且 \(f\) 是有限全纯映射。分歧点集 \(\operatorname{Ram}(f)\) 和分支值集 \(B_f\) 都有限。
+\end{theorem}
+\begin{proof}
+	由\cref{g4:thm:0202:local-model}，\(f\) 是开映射，所以 \(f(X)\) 是 \(Y\) 中的非空开集。另一方面，\(X\) 紧而 \(f\) 连续，故 \(f(X)\) 紧；\(Y\) 为 Hausdorff 空间，所以这个像也闭。\(Y\) 连通，得到 \(f(X)=Y\)，同时证明 \(Y\) 紧。
+
+	对任意 \(q\in Y\)，纤维 \(f^{-1}(q)\) 是 \(X\) 中的闭集，因而紧。局部幂模型使每个纤维点在该纤维中孤立。于是纤维作为子空间既紧又离散；以它的单点组成开覆盖，紧性迫使只有有限个点。对任意紧集 \(K\subset Y\)，Hausdorff 性使 \(K\) 闭，故 \(f^{-1}(K)\) 是紧空间 \(X\) 的闭子集。这样，\(f\) 也固有。
+
+	最后，在源、目标坐标中，\(\mathrm{d}f=0\) 恰好等价于坐标表达的导数为零。这个导数全纯，且不在任何小圆盘上恒零，否则 \(f\) 会局部恒定。由\cref{g4:thm:0101:identity}，导数零点局部离散；导数的连续性又使临界点集局部闭，因此 \(\operatorname{Ram}(f)\) 是 \(X\) 中的闭离散子集。它同样因紧性而有限，其像 \(B_f\) 也有限。
+\end{proof}
+
+特别地，紧连通黎曼曲面上的复值全纯函数必为常数：若它非恒定，以 \(\mathbb C\) 为目标应用上述定理，会得到 \(\mathbb C\) 紧的矛盾。允许函数取值于 \(\mathbb P^1\) 后，极点成为到达目标无穷远点的正常映射行为，这为紧曲面上的亚纯函数留下了空间。
+
+\begin{example}\label{g4:exm:0202:noncompact-fibers}
+	指数映射
+	\[
+		\exp:\mathbb C\longrightarrow\mathbb C^*,\qquad
+		\mathbb C^*=\mathbb C\setminus\{0\},
+	\]
+	处处导数非零并且满射。对任意 \(w\neq0\)，若 \(e^\ell=w\)，则
+	\[
+		\exp^{-1}(w)=\{\ell+2\pi\mathrm{i}k:k\in\mathbb Z\}.
+	\]
+	这些原像各自孤立，但有无穷多个；纤维也不紧。源空间失去紧性后，局部非分歧不能控制整体叶数。另一个例子是包含映射 \(\mathbb D\hookrightarrow\mathbb C\)：它是单叶开映射，却不满射，说明开像还需要闭像条件才能由目标连通性推出满射。
+\end{example}
+
+紧性还会给出比有限性更强的局部描述。设某个目标点的原像已有 \(p_1,\ldots,p_r\)，要在这个点附近计数，就必须保证没有别处的原像突然出现。下一个引理把这一步单独提出。
+
+\begin{lemma}\label{g4:lem:0202:isolated-fiber}
+	设 \(X,Y\) 是连通、无边界的黎曼曲面，\(X\) 紧，\(f:X\rightarrow Y\) 非恒定全纯。固定 \(q\in Y\)，写
+	\[
+		f^{-1}(q)=\{p_1,\ldots,p_r\},\qquad e_i=e_{p_i}(f).
+	\]
+	则存在 \(q\) 的坐标圆盘 \(V\) 及互不相交的源坐标圆盘 \(U_1,\ldots,U_r\)，使
+	\[
+		f^{-1}(V)=\bigsqcup_{i=1}^r U_i,
+		\qquad w(V)=D(0,\delta),\qquad z_i(U_i)=D(0,\delta^{1/e_i}),
+	\]
+	且 \(w\circ f=z_i^{e_i}\) 在每个 \(U_i\) 上成立。这些坐标在各自闭圆盘的邻域仍然定义，并有 \(f^{-1}(\overline V)=\bigsqcup_i\overline{U_i}\)。因而 \(q\) 是 \(V\) 中唯一可能的分支值；每个 \(q'\in V\setminus\{q\}\) 在 \(U_i\) 中有 \(e_i\) 个互异原像。
+\end{lemma}
+\begin{proof}
+	先固定 \(q\) 附近坐标域 \(O\) 上的中心坐标 \(w\)。由\cref{g4:thm:0202:local-model}的证明，保持这个目标坐标不变，也能在每个 \(p_i\) 附近选择源坐标 \(z_i\)，使 \(w\circ f=z_i^{e_i}\)。因为纤维有限且 \(X\) 为 Hausdorff 空间，可将这些源坐标邻域缩成两两不交的圆盘 \(W_i\)，并使其闭包仍位于原坐标域内。记 \(z_i(W_i)=D(0,r_i)\)。
+
+	集合 \(K=X\setminus\bigcup_iW_i\) 紧，且 \(q\notin f(K)\)。所以 \(O\setminus f(K)\) 是 \(q\) 的开邻域。选择充分小的 \(\delta>0\)，使 \(\overline{D(0,\delta)}\subset w(O\setminus f(K))\)，并满足 \(\delta<r_i^{e_i}\) 对每个 \(i\) 成立。
+
+	令 \(V=w^{-1}(D(0,\delta))\)。若 \(f(x)\in V\)，则 \(x\notin K\)，所以全部原像都已落在某个 \(W_i\) 中。在该圆盘内，\(|w(f(x))|<\delta\) 等价于 \(|z_i(x)|<\delta^{1/e_i}\)，故
+	\[
+		U_i\coloneqq z_i^{-1}(D(0,\delta^{1/e_i}))
+	\]
+	给出所述精确分解。由于半径严格小于原半径，所有闭圆盘仍处于坐标域内部。最后的根计数由幂映射直接得到。
+\end{proof}
 
 \subsection{次数和纤维重数}
 \label{g4:subsec:0202:03}
-待撰写
+在分支值上，不同原像点可能合并，直接数点数会发生跳跃；局部幂模型则告诉我们，合并所得的一个点应计入它的分歧指数。紧性提供的全部原像分解使这种局部计数可以在整个目标曲面上传递。
+
+\begin{theorem}\label{g4:thm:0202:degree}
+	设 \(X,Y\) 是连通、无边界的黎曼曲面，\(X\) 紧，\(f:X\rightarrow Y\) 非恒定全纯。则存在整数 \(d\geq1\)，使每个 \(q\in Y\) 都满足
+	\begin{equation}\label{g4:eq:0202:fiber-degree}
+		\sum_{p\in f^{-1}(q)}e_p(f)=d.
+	\end{equation}
+	该整数称为 \(f\) 的次数，记为 \(\deg f\)。对每个正则值 \(q\in Y\setminus B_f\)，有 \(\#f^{-1}(q)=d\)；对任意目标点，则 \(\#f^{-1}(q)\leq d\)。
+\end{theorem}
+\begin{proof}
+	记等式左侧为 \(n(q)\)。它是有限正整数，因为\cref{g4:thm:0202:finite-map}已经给出有限性与满射性。固定 \(q\)，使用\cref{g4:lem:0202:isolated-fiber}的全部原像分解。对 \(q'\in V\setminus\{q\}\)，它在第 \(i\) 个源圆盘中有 \(e_i\) 个互异原像，而且这些点的分歧指数都为 \(1\)。因此
+	\[
+		n(q')=\sum_{i=1}^r e_i=n(q).
+	\]
+	所以 \(n\) 在 \(Y\) 上局部为常数。\(Y\) 连通，局部常值函数必为常数，得到整数 \(d\)。每个 \(e_p(f)\geq1\) 给出点数不超过 \(d\)；在正则值上全部指数均为 \(1\)，故点数恰等于 \(d\)。
+\end{proof}
+
+这个次数与\eqref{g4:eq:0102:degree}的平面计数相容。在每个源坐标圆盘中，对目标局部函数 \(w\circ f\) 使用辐角原理，中心纤维贡献 \(e_i\)；把所有源圆盘的贡献相加，正好得到 \(\deg f\)。因此次数既可以从纤维重数求得，也可以从局部边界的绕数求得。\symidx{\(\deg f\)：紧黎曼曲面间全纯映射的次数}
+
+\begin{corollary}\label{g4:cor:0202:degree-one}
+	设 \(X,Y\) 是紧、连通、无边界的黎曼曲面，\(f:X\rightarrow Y\) 非恒定全纯。则 \(\deg f=1\) 当且仅当 \(f\) 为双全纯映射。
+\end{corollary}
+\begin{proof}
+	若次数为 \(1\)，每个纤维的正整数重数之和为 \(1\)，所以它恰有一个点，且该点的分歧指数为 \(1\)。于是 \(f\) 双射，并在每点附近有全纯局部逆；这些局部逆由集合逆的唯一性粘成全纯的全局逆。反向由双全纯映射的局部次数为 \(1\) 以及纤维只有一个点得到。
+\end{proof}
+
+\begin{proposition}\label{g4:prop:0202:degree-composition}
+	设 \(X,Y,Z\) 是紧、连通、无边界的黎曼曲面，\(f:X\rightarrow Y\)、\(g:Y\rightarrow Z\) 是非恒定全纯映射。则
+	\[
+		\deg(g\circ f)=(\deg g)(\deg f).
+	\]
+\end{proposition}
+\begin{proof}
+	任取 \(r\in Z\)，按中间点 \(q=f(p)\) 对复合映射的纤维分组，并应用\eqref{g4:eq:0202:ramification-composition}，得到
+	\begin{align*}
+		\deg(g\circ f)
+		&=\sum_{q\in g^{-1}(r)}\ \sum_{p\in f^{-1}(q)}e_p(f)e_q(g)\\
+		&=\sum_{q\in g^{-1}(r)}e_q(g)\deg f
+		=(\deg g)(\deg f).
+	\end{align*}
+	这里各纤维都有限，所以分组与求和不涉及收敛问题。
+\end{proof}
+
+\begin{example}\label{g4:exm:0202:cubic-fibers}
+	把 \(f(z)=z^3-3z\) 视为 \(\mathbb P^1\) 的自映射。其无穷远纤维只有 \(\infty\)，在坐标 \(u=1/z\)、\(v=1/w\) 中有
+	\[
+		v\circ f=\frac{u^3}{1-3u^2},
+	\]
+	故 \(e_\infty(f)=3\)，\cref{g4:thm:0202:degree}给出 \(\deg f=3\)。有限临界点为 \(\pm1\)，分歧指数均为 \(2\)，对应分支值 \(\mp2\)。例如
+	\[
+		f(z)+2=(z-1)^2(z+2)
+	\]
+	说明 \(-2\) 的纤维是一个二重原像 \(1\) 和一个单原像 \(-2\)，总重数仍为 \(3\)。正则值的纤维有三个互异点；在分支值上，有些点合并，而重数和保持不变。
+\end{example}
 
 \subsection{去掉分歧点后的覆盖及单值}
 \label{g4:subsec:0202:04}
-待撰写
+正则值附近，所有局部幂模型都是一次幂。因此，只要同时覆盖该点的全部原像，就会得到一个均匀覆盖邻域。这里需要从源曲面删去分支值的全部原像：某个分支值上方也可能存在未分歧的点，它们同样不能留在目标已被删去的覆盖中。
+
+\begin{theorem}\label{g4:thm:0202:unbranched-cover}
+	设 \(X,Y\) 是紧、连通、无边界的黎曼曲面，\(f:X\rightarrow Y\) 非恒定全纯，\(d=\deg f\)。令
+	\[
+		Y^\circ=Y\setminus B_f,\qquad
+		X^\circ=X\setminus f^{-1}(B_f).
+	\]
+	则 \(X^\circ,Y^\circ\) 均连通，且限制映射
+	\[
+		f^\circ:X^\circ\longrightarrow Y^\circ
+	\]
+	是 \(d\) 叶覆盖。更精确地，每个 \(q\in Y^\circ\) 都有开圆盘邻域 \(V\subset Y^\circ\)，使 \((f^\circ)^{-1}(V)\) 为 \(d\) 个开圆盘的不交并，每个圆盘上的限制都是到 \(V\) 的双全纯映射。
+\end{theorem}
+\begin{proof}
+	对正则值 \(q\)，\cref{g4:lem:0202:isolated-fiber}中所有 \(e_i\) 均为 \(1\)。因而 \(q\) 附近存在精确的原像分解，每张源圆盘都双全纯地映到同一目标圆盘上。缩小该目标圆盘使其避开其余有限个分支值，便得到所述均匀覆盖邻域。正则纤维的点数为 \(d\)，所以有 \(d\) 张覆盖片。
+
+	还需证明删去这些点不会使曲面断开。一般地，连通二维流形 \(M\) 去掉有限集 \(A\) 后仍连通。若 \(M\setminus A\) 可分为两个不交非空开闭子集 \(P,Q\)，对每个 \(a\in A\) 取一个只含这个删去点的坐标圆盘 \(D_a\)。去心圆盘 \(D_a\setminus\{a\}\) 连通，故它完全落在 \(P\) 或完全落在 \(Q\)。把 \(a\) 分配到对应的一侧，得到 \(M\) 的两个不交开集：原先未删去的点有避开 \(A\) 的小邻域，重新放回的点则有整个 \(D_a\) 作为邻域。二者仍非空且覆盖 \(M\)，与 \(M\) 连通矛盾。因此 \(M\setminus A\) 连通。它也局部道路连通，所以道路分支都是开集，连通性进一步使它道路连通。\cref{g4:thm:0202:finite-map}保证 \(B_f\) 及其全部原像 \(f^{-1}(B_f)\) 都有限，将上述论证分别用于它们，得到 \(Y^\circ,X^\circ\) 的连通性。
+\end{proof}
+
+上一定理中的覆盖是\term[wufenqifugai]{无分歧覆盖}[unramified covering]：其覆盖片到目标的局部同胚同时是双全纯映射。对前面的三次映射，有
+\[
+	\operatorname{Ram}(f)=\{-1,1,\infty\},\qquad B_f=\{-2,2,\infty\},
+	\qquad f^{-1}(B_f)=\{-2,-1,1,2,\infty\}.
+\]
+源点 \(\pm2\) 本身未分歧，却位于被删去的目标点上方，故也要删去。这样得到的源曲面才映入 \(Y^\circ\)。
+
+\ProseParagraphBreak
+
+覆盖的道路提升在这里有直接的解析含义：给定一个目标路径和起始原像，沿路径不断接续局部逆函数，便得到唯一的原像路径。所用拓扑结论已在第一卷第5.3节定理5.3.5和推论5.3.7证明：任意覆盖都有指定初点的唯一道路提升；同起终点且定端点同伦的路径，从同一原像出发提升后终点相同。前者的证明把紧参数区间细分到均匀覆盖邻域，逐片取逆；后者把同伦一起提升，其终点连续地落在离散纤维中，因而不随同伦参数改变。本节的 \(f^\circ\) 已满足覆盖假设，所以这两个结论都可直接使用。
+
+\begin{proposition}\label{g4:prop:0202:monodromy}
+	设 \(f:X\rightarrow Y\) 是紧、连通、无边界黎曼曲面之间的非恒定全纯映射，并按\cref{g4:thm:0202:unbranched-cover}定义 \(f^\circ:X^\circ\rightarrow Y^\circ\)。固定 \(q_0\in Y^\circ\)，记 \(S=f^{-1}(q_0)\)，则 \(\#S=\deg f\)。对基于 \(q_0\) 的环路 \(\alpha\)，令 \(\sigma_\alpha(p)\) 是 \(\alpha\) 从 \(p\in S\) 出发的提升终点。则 \(\sigma_\alpha\) 是 \(S\) 的置换，只依赖 \([\alpha]\in\pi_1(Y^\circ,q_0)\)。道路拼接 \(\alpha*\beta\) 按先走 \(\alpha\)、后走 \(\beta\) 约定时，有
+	\begin{equation}\label{g4:eq:0202:monodromy-order}
+		\sigma_{\alpha*\beta}=\sigma_\beta\circ\sigma_\alpha,
+		\qquad \sigma_{\bar\alpha}=\sigma_\alpha^{-1}.
+	\end{equation}
+	因此 \(p\cdot[\alpha]\coloneqq\sigma_\alpha(p)\) 给出基本群在 \(S\) 上的右作用，并且该作用传递。
+\end{proposition}
+\begin{proof}
+	指定初点的唯一提升使 \(\sigma_\alpha\) 有定义，定端点同伦的提升结论使它只依赖环路类。先沿 \(\alpha\) 提升，再从到达的点沿 \(\beta\) 提升，所得拼接就是 \(\alpha*\beta\) 的提升，故其终点为 \(\sigma_\beta(\sigma_\alpha(p))\)。反向路径的提升正好把终点送回起点，所以 \(\sigma_{\bar\alpha}\) 为逆置换。常值环路给出恒等置换，因而这些等式构成右作用公理。
+
+	对任意 \(p,p'\in S\)，\(X^\circ\) 道路连通，所以有其中一条路径 \(\eta\) 从 \(p\) 到 \(p'\)。投影 \(f\circ\eta\) 是基于 \(q_0\) 的环路，\(\eta\) 本身就是它从 \(p\) 出发的提升。因此 \(\sigma_{f\circ\eta}(p)=p'\)，作用传递。
+\end{proof}
+
+这称为覆盖的\term[danzhizuoyong]{单值作用}[monodromy action]。固定纤维的一次编号后，可以把各 \(\sigma_\alpha\) 写成置换；换编号会将它们同时共轭，映射本身不提供优先编号。如果置换群按通常函数复合作乘法，\eqref{g4:eq:0202:monodromy-order}具有反向次序；要写成群同态，可用 \([\alpha]\mapsto\sigma_{\bar\alpha}\)。本节沿用直接记录路径行进的右作用。
+
+\begin{proposition}\label{g4:prop:0202:local-monodromy}
+	设 \(f:X\rightarrow Y\) 是紧、连通、无边界黎曼曲面之间的非恒定全纯映射。固定 \(q\in Y\)，写 \(f^{-1}(q)=\{p_1,\ldots,p_r\}\)、\(e_i=e_{p_i}(f)\)。取\cref{g4:lem:0202:isolated-fiber}的目标坐标圆盘 \(V\)，在 \(V\setminus\{q\}\) 中选一点为基点。绕 \(q\) 一周的正向小圆周所给单值置换，由 \(r\) 个不交循环组成，循环长度依次为 \(e_1,\ldots,e_r\)；长度为 \(1\) 的循环表示固定点。
+\end{proposition}
+\begin{proof}
+	先选坐标中的正实点 \(\rho\) 为基点，用目标坐标把环路写成 \(w(t)=\rho e^{2\pi\mathrm{i}t}\)，\(0\leq t\leq1\)，其中 \(0<\rho<\delta\)。在第 \(i\) 个源圆盘上，初始纤维点可标为
+	\[
+		z_{i,k}=\rho^{1/e_i}e^{2\pi\mathrm{i}k/e_i},\qquad k\in\mathbb Z/e_i\mathbb Z.
+	\]
+	从该点出发的提升为
+	\[
+		z_{i,k}(t)=\rho^{1/e_i}e^{2\pi\mathrm{i}(t+k)/e_i},
+	\]
+	终点是 \(z_{i,k+1}\)。于是每个源圆盘提供一个 \(e_i\) 循环，不同圆盘互不相交，全部纤维也由它们穷尽。若把基点沿一条路径移到别处，路径提升给出的纤维双射只会同时共轭这些循环，因此循环长度保持不变。
+\end{proof}
+
+所以，若某个局部单值在 \(d\) 个字母上的循环数为 \(r\)，则该分支值上方恰有 \(r\) 个点，并且
+\[
+	\sum_{p\in f^{-1}(q)}(e_p(f)-1)=d-r.
+\]
+置换的循环分解不仅数出逆分支，还记录这些分支在补入目标中心后怎样合并。下一节的分歧除子会把这个重数差逐点汇总。
+
+\ProseParagraphBreak
+
+还可以反过来，从去心圆盘上的有限覆盖恢复中心。这个结论使按单值构造的拓扑覆盖能够补成真正的分歧映射。
+
+\begin{lemma}\label{g4:lem:0202:punctured-disk-cover}
+	记 \(\mathbb D^*=\{w\in\mathbb C:0<|w|<1\}\)。设 \(E\) 是无边界黎曼曲面，允许不连通，\(p:E\rightarrow\mathbb D^*\) 是 \(n\) 叶覆盖，\(1\leq n<\infty\)，且每个覆盖片到目标的限制都双全纯。则 \(E\) 有有限个连通分支 \(E_1,\ldots,E_r\)。存在正整数 \(e_1,\ldots,e_r\)，总和为 \(n\)，以及双全纯映射 \(h_i:E_i\rightarrow\mathbb D^*\)，使
+	\[
+		p|_{E_i}=h_i^{e_i}.
+	\]
+	正向绕原点一周的单值置换，其循环长度正是 \(e_1,\ldots,e_r\)。每个 \(E_i\) 可以补入一个点 \(a_i\)，使 \(h_i\) 延拓为到 \(\mathbb D\) 的全纯坐标；投影延拓为局部幂映射，且在 \(a_i\) 的分歧指数为 \(e_i\)。不同规范化给出相容的补点复结构；任意两个这样的覆盖之间保持投影的覆盖等价都唯一延拓为补点后的双全纯等价。
+\end{lemma}
+\begin{proof}
+	先恢复所需覆盖分类的具体内容。第一卷第5.4节定理5.4.6、定理5.4.7说明：当底空间道路连通、局部道路连通且半局部单连通时，带基点连通覆盖由基本群的一个子群确定，覆盖叶数等于该子群的指数；相同子群对应保持投影的覆盖同胚。去心圆盘具有这些局部性质，因为每点都有不含原点的普通圆盘邻域。它沿径向形变收缩到任意固定半径 \(\rho_0\in(0,1)\) 的圆周，形变可写为
+	\[
+		H(w,t)=\left((1-t)+\frac{t\rho_0}{|w|}\right)w.
+	\]
+	其模是 \((1-t)|w|+t\rho_0\)，始终位于 \((0,1)\)。结合第一卷第5.1节定理5.1.13的圆周基本群计算，得到 \(\pi_1(\mathbb D^*,\rho_0)\cong\mathbb Z\)，正向一周对应生成元 \(1\)。
+
+	因为 \(E\) 局部道路连通，其连通分支就是道路分支，而且是开集。每个分支都映满 \(\mathbb D^*\)：从该分支任一点的投影沿目标路径到任意给定点，取提升即可仍在同一分支中到达它的纤维。因此每个分支都遇到 \(p^{-1}(\rho_0)\)，分支数至多为 \(n\)。把均匀覆盖邻域取为圆盘，则每张覆盖片连通，完全位于一个分支中，所以各分支上的限制仍是覆盖。设其叶数为 \(e_i\)，则 \(\sum_i e_i=n\)。
+
+	对连通覆盖 \(E_i\rightarrow\mathbb D^*\)，分类定理给出的子群在 \(\mathbb Z\) 中指数为 \(e_i\)。整数群唯一具有该指数的子群是 \(e_i\mathbb Z\)：任一非零子群由其最小正整数生成，陪集正好按该整数取余数；零子群的指数无限。另一方面，标准映射
+	\[
+		P_{e_i}:\mathbb D^*\longrightarrow\mathbb D^*,\qquad z\longmapsto z^{e_i}
+	\]
+	是连通的 \(e_i\) 叶覆盖，局部选择辐角即可写出各张逆分支。它把一周环路送成绕行 \(e_i\) 周的环路，所以对应子群正是 \(e_i\mathbb Z\)。选择基点后，分类定理给出覆盖同胚 \(h_i:E_i\rightarrow\mathbb D^*\)，满足 \(P_{e_i}\circ h_i=p\)。
+
+	这个拓扑同胚自动双全纯。取足够小的目标圆盘，使两覆盖均有双全纯的局部逆；在相应覆盖片上，\(h_i\) 等于 \(p\) 后接 \(P_{e_i}\) 的一个局部逆。于是 \(h_i\) 局部全纯，反向同理，得到所需双全纯映射。标准幂覆盖的一周单值为一个 \(e_i\) 循环，故整个覆盖的循环分解如所述。
+
+	现在在每个 \(E_i\) 增加一点 \(a_i\)，用 \(h_i\) 将 \(E_i\cup\{a_i\}\) 识别为 \(\mathbb D\)，并规定 \(h_i(a_i)=0\)。这同时定义了补点拓扑与复结构，原投影延拓为 \(h_i^{e_i}\)。若 \(\widetilde h_i\) 是另一种保持同一投影的规范化，则
+	\[
+		\left(\frac{\widetilde h_i}{h_i}\right)^{e_i}=1
+	\]
+	在连通的 \(E_i\) 上成立。比值连续且取值于有限集，所以恒等于某个 \(e_i\) 次单位根 \(\zeta\)。两坐标只差旋转 \(\widetilde h_i=\zeta h_i\)，在补入的中心处也全纯可逆，因此定义同一补点结构。
+
+	更一般地，保持投影的覆盖等价会把一个连通分支送到另一个同叶数分支。在两边的规范化坐标中，它同样满足 \(\widetilde z^{e_i}=z^{e_i}\)，因而是 \(z\mapsto\zeta z\)，唯一延拓并将中心映到中心。唯一性也由原去心圆盘在补点圆盘中的稠密性得到。
+\end{proof}
+
+幂指数、局部单值的循环长度和补点后合并的叶数由此成为同一个整数。构造显式覆盖时，可以先在删去有限个目标点的区域中安排各张片的接续，再逐个使用这个引理补入缺失的纤维。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

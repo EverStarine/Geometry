@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 4.2 三组相容方程
 % 纲要位置：几何学计划纲要.md，第 2237 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,282 @@
 \section{三组相容方程}
 \label{g3:sec:0402}
 
-待撰写
+给定等距浸入 \(F\colon(M^n,g)\to(\bar M^{n+q},\bar g)\)，切向与法向分解把环境联络写成 \(\nabla\)、\(\nabla^\perp\) 和第二基本形式 \(B\)。现在对这些分解再求一次导数。两次协变微分的交换差一方面是环境曲率，另一方面由内在曲率、法曲率与 \(B\) 共同组成；比较不同分量，就得到三组相容方程。这些关系也会约束反向问题：任意给出的度量、法联络和对称型，能否来自同一个浸入？
+
+\ProseParagraphBreak
+
+本节沿用\cref{g3:prop:gauss-decomposition}及\eqref{g3:eq:weingarten-formula}的符号。把 \(X\in\mathrm{T}M\) 与 \(\mathrm dF(X)\) 识别，记沿 \(F\) 的环境联络为 \(\bar\nabla\)，于是
+\begin{equation}\label{g3:eq:submanifold-connection-splitting}
+	\bar\nabla_XY=\nabla_XY+B(X,Y),\qquad
+	\bar\nabla_X\xi=-A_\xi X+\nabla_X^\perp\xi.
+\end{equation}
+这里 \(X,Y\) 为切向量场，\(\xi\) 为法截面；\(\bar R(X,Y)\) 表示 \(\bar R(\mathrm dF(X),\mathrm dF(Y))\)，\(\bar{\mathrm{Rm}}(X,Y,Z,W)\) 也表示在四个切向输入上的环境曲率张量。
+
+\ProseParagraphBreak
+
+计算中使用沿浸入的曲率恒等式
+\begin{equation}\label{g3:eq:pullback-ambient-curvature}
+	\bar\nabla_X\bar\nabla_Ys-\bar\nabla_Y\bar\nabla_Xs-\bar\nabla_{[X,Y]}s
+	=\bar R(X,Y)s
+\end{equation}
+对任意沿 \(F\) 的截面 \(s\) 成立。它可以直接由联络矩阵核验：在环境的一个局部标架中，联络矩阵为 \(\bar\omega\)，沿浸入的联络矩阵就是 \(F^*\bar\omega\)。由\eqref{g3:eq:curvature-matrix}，其曲率矩阵是
+\[
+	\mathrm d(F^*\bar\omega)+(F^*\bar\omega)\wedge(F^*\bar\omega)
+	=F^*(\mathrm d\bar\omega+\bar\omega\wedge\bar\omega)
+	=F^*\bar\Omega.
+\]
+在 \((X,Y)\) 上求值便得\eqref{g3:eq:pullback-ambient-curvature}。这也说明计算不要求 \(F\) 的像整体上是嵌入子流形。
 
 \subsection{Gauss 方程}
 \label{g3:subsec:0402:01}
-待撰写
+
+先把环境曲率作用在切向量上，再取切向分量。第一次求导产生的法向量 \(B(Y,Z)\)，在第二次求导时又通过形算子产生切向分量，这正是内在曲率与环境曲率之间的差项。
+
+\begin{theorem}\label{g3:thm:gauss-equation}
+	设 \(F\colon(M^n,g)\to(\bar M^{n+q},\bar g)\) 为光滑等距浸入，\(B\) 为其第二基本形式。采用 \(\mathrm{Rm}(X,Y,Z,W)=g(R(X,Y)W,Z)\) 的约定，对任意切向量 \(X,Y,Z,W\)，有\term[Gauss fangcheng]{Gauss 方程}[Gauss equation]
+	\begin{equation}\label{g3:eq:gauss-equation}
+		\begin{aligned}
+		\mathrm{Rm}(X,Y,Z,W)
+		={}&\bar{\mathrm{Rm}}(X,Y,Z,W)\\
+		&+\langle B(X,Z),B(Y,W)\rangle
+		-\langle B(X,W),B(Y,Z)\rangle.
+		\end{aligned}
+	\end{equation}
+	若 \(X,Y\) 为正交单位向量，则相应截面曲率满足
+	\begin{equation}\label{g3:eq:gauss-sectional-curvature}
+		K_M(X\wedge Y)
+		=K_{\bar M}(\mathrm dF(X)\wedge \mathrm dF(Y))
+		+\langle B(X,X),B(Y,Y)\rangle-\lVert B(X,Y)\rVert^2.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	对切向量场 \(Z\) 连用两次\eqref{g3:eq:submanifold-connection-splitting}，得到
+	\begin{equation}\label{g3:eq:gauss-double-derivative}
+		\begin{aligned}
+		\bar\nabla_X\bar\nabla_YZ
+		={}&\nabla_X\nabla_YZ-A_{B(Y,Z)}X\\
+		&+B(X,\nabla_YZ)+\nabla_X^\perp B(Y,Z).
+		\end{aligned}
+	\end{equation}
+	交换 \(X,Y\)，作差后再减去 \(\bar\nabla_{[X,Y]}Z\)。由\eqref{g3:eq:pullback-ambient-curvature}，切向部分为
+	\begin{equation}\label{g3:eq:gauss-vector-equation}
+		(\bar R(X,Y)Z)^\top
+		=R(X,Y)Z-A_{B(Y,Z)}X+A_{B(X,Z)}Y.
+	\end{equation}
+	把式中 \(Z\) 换成 \(W\)，与切向量 \(Z\) 作内积。利用
+	\[
+		g(A_{B(Y,W)}X,Z)=\langle B(X,Z),B(Y,W)\rangle
+	\]
+	及同类等式，整理即为\eqref{g3:eq:gauss-equation}。最后令第三、第四个输入依次为 \(X,Y\)，便得\eqref{g3:eq:gauss-sectional-curvature}。
+\end{proof}
+
+Gauss 方程右侧的外在项可以为正，也可以为负。余维为一时，取单位法向 \(\nu\)，写 \(B(X,Y)=h(X,Y)\nu\)，它在一组正交单位向量上的贡献是 \(h(X,X)h(Y,Y)-h(X,Y)^2\)。例如半径为 \(a\) 的 Euclid 球面采用外法向时，\(B=-g\nu/a\)，因而这一贡献是 \(1/a^2\)。标量形式 \(h\) 随单位法向反转而变号，向量值的 \(B=h\nu\) 及 Gauss 方程中的二次组合保持不变。
 
 \subsection{Codazzi 方程}
 \label{g3:subsec:0402:02}
-待撰写
+
+取\eqref{g3:eq:gauss-double-derivative}所得曲率的法向分量，出现的是 \(B\) 的一阶导数。\(B\) 既有法向输出，又有两个切向输入，因此求导时必须同时使用法联络和切联络；只对其分量作普通微分会遗漏输入向量本身的变化。
+
+\begin{definition}\label{g3:def:second-fundamental-covariant-derivative}
+	设 \(B\) 为等距浸入的第二基本形式。定义其\term[dier jiben xingshi de xiebian daoshu]{第二基本形式的协变导数}[covariant derivative of the second fundamental form]为
+	\begin{equation}\label{g3:eq:second-fundamental-covariant-derivative}
+		(\nabla B)(X;Y,Z)
+		=\nabla_X^\perp(B(Y,Z))
+		-B(\nabla_XY,Z)-B(Y,\nabla_XZ).
+	\end{equation}
+	分号把求导方向与 \(B\) 原有的两个输入分开。
+\end{definition}
+
+由联络的 Leibniz 法则，若把 \(Y\) 换成 \(fY\)，第一项产生的 \(X(f)B(Y,Z)\) 与第二项中的同类项抵消；对 \(Z\) 也是如此，对 \(X\) 则直接线性。因此 \(\nabla B\) 是法丛值的三阶协变张量。\(B\) 的对称性还给出
+\[
+	(\nabla B)(X;Y,Z)=(\nabla B)(X;Z,Y).
+\]
+下面的 Codazzi 方程描述另外两个输入交换时的差。
+
+\begin{theorem}\label{g3:thm:codazzi-equation}
+	设 \(F\colon(M^n,g)\to(\bar M^{n+q},\bar g)\) 为光滑等距浸入，\(B\) 为其第二基本形式，\(\nabla B\) 如\eqref{g3:eq:second-fundamental-covariant-derivative}所定义。对任意切向量 \(X,Y,Z\)，有\term[Codazzi fangcheng]{Codazzi 方程}[Codazzi equation]
+	\begin{equation}\label{g3:eq:codazzi-equation}
+		(\bar R(X,Y)Z)^\perp
+		=(\nabla B)(X;Y,Z)-(\nabla B)(Y;X,Z).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	在\eqref{g3:eq:gauss-double-derivative}中交换 \(X,Y\) 并相减，再减去 \(\bar\nabla_{[X,Y]}Z\) 的法向分量，得到
+	\[
+		\begin{aligned}
+		(\bar R(X,Y)Z)^\perp
+		={}&\nabla_X^\perp B(Y,Z)-\nabla_Y^\perp B(X,Z)\\
+		&+B(X,\nabla_YZ)-B(Y,\nabla_XZ)-B([X,Y],Z).
+		\end{aligned}
+	\]
+	另一方面，展开 \((\nabla B)(X;Y,Z)-(\nabla B)(Y;X,Z)\)，其中涉及第一个输入求导的两项合为
+	\[
+		-B(\nabla_XY,Z)+B(\nabla_YX,Z)
+		=-B([X,Y],Z),
+	\]
+	因为 Levi-Civita 联络无挠。其余四项与上式相同，故得结论。
+\end{proof}
+
+若环境是常截面曲率 \(c\) 的空间，则
+\[
+	\bar R(X,Y)Z=c\bigl(g(Y,Z)X-g(X,Z)Y\bigr)
+\]
+仍为切向量，Codazzi 方程的左端为零。这时 \(\nabla B\) 对前两个输入也对称，结合原有的后两个输入对称性，便对三个输入完全对称。余维为一时，局部单位法向 \(\nu\) 满足 \(\nabla^\perp\nu=0\)；写 \(B=h\nu\)，上式就成为
+\[
+	(\nabla_Xh)(Y,Z)=(\nabla_Yh)(X,Z).
+\]
+这说明熟悉的标量值 Codazzi 关系，是法丛值关系在一维法丛中的表达。
 
 \subsection{Ricci 法曲率方程}
 \label{g3:subsec:0402:03}
-待撰写
+
+前两式都来自环境曲率作用在切向量上。若改为法向量，取其法向分量，就会比较法联络的曲率与形算子之间的交换差。继续记
+\[
+	R^\perp(X,Y)\xi
+	=\nabla_X^\perp\nabla_Y^\perp\xi
+	-\nabla_Y^\perp\nabla_X^\perp\xi
+	-\nabla_{[X,Y]}^\perp\xi,
+\]
+并令 \([A_\xi,A_\eta]=A_\xi A_\eta-A_\eta A_\xi\)。形算子分别自伴，但它们的交换子通常不为零。
+
+\begin{theorem}\label{g3:thm:ricci-equation}
+	设 \(F\colon(M^n,g)\to(\bar M^{n+q},\bar g)\) 为光滑等距浸入，\(A\) 为其形算子，\(R^\perp\) 为法联络的曲率。对任意切向量 \(X,Y\) 和法向量 \(\xi,\eta\)，有\term[Ricci faqulv fangcheng]{Ricci 法曲率方程}[Ricci equation]
+	\begin{equation}\label{g3:eq:ricci-equation}
+		\langle R^\perp(X,Y)\xi,\eta\rangle
+		=\langle\bar R(X,Y)\xi,\eta\rangle
+		+g([A_\xi,A_\eta]X,Y).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先对 Weingarten 公式再求一次导数，只写法向部分：
+	\[
+		(\bar\nabla_X\bar\nabla_Y\xi)^\perp
+		=-B(X,A_\xi Y)+\nabla_X^\perp\nabla_Y^\perp\xi.
+	\]
+	交换 \(X,Y\) 相减，并减去 \(\bar\nabla_{[X,Y]}\xi\) 的法向部分，得到
+	\begin{equation}\label{g3:eq:ricci-vector-equation}
+		(\bar R(X,Y)\xi)^\perp
+		=R^\perp(X,Y)\xi-B(X,A_\xi Y)+B(Y,A_\xi X).
+	\end{equation}
+	这里 \(A_\xi Y\) 已被视为一个切向量场；它的切向导数不会进入所取的法向分量。将等式与 \(\eta\) 作内积并移项，有
+	\[
+		\begin{aligned}
+		\langle R^\perp(X,Y)\xi,\eta\rangle
+		-\langle\bar R(X,Y)\xi,\eta\rangle
+		&=g(A_\eta X,A_\xi Y)-g(A_\eta Y,A_\xi X)\\
+		&=g((A_\xi A_\eta-A_\eta A_\xi)X,Y),
+		\end{aligned}
+	\]
+	最后一步使用两个形算子的自伴性。这就确定了\eqref{g3:eq:ricci-equation}的符号。
+\end{proof}
+
+在空间形式中，三组方程有一个便于直接使用的统一版本。
+
+\begin{corollary}\label{g3:cor:space-form-compatibility}
+	设 \(F\colon(M^n,g)\to(\bar M^{n+q},\bar g)\) 为光滑等距浸入，环境具有常截面曲率 \(c\)。则其第二基本形式、形算子和法联络满足
+	\begin{align}
+		\mathrm{Rm}(X,Y,Z,W)
+		={}&c\bigl(g(X,Z)g(Y,W)-g(X,W)g(Y,Z)\bigr)\notag\\
+		&+\langle B(X,Z),B(Y,W)\rangle
+		-\langle B(X,W),B(Y,Z)\rangle,
+		\label{g3:eq:gauss-space-form}\\
+		(\nabla B)(X;Y,Z)
+		={}&(\nabla B)(Y;X,Z),
+		\label{g3:eq:codazzi-space-form}\\
+		\langle R^\perp(X,Y)\xi,\eta\rangle
+		={}&g([A_\xi,A_\eta]X,Y).
+		\label{g3:eq:ricci-space-form}
+	\end{align}
+\end{corollary}
+\begin{proof}
+	常曲率张量的表达式见\eqref{g3:eq:constant-sectional-algebraic}。对切向量 \(X,Y,Z\)，它给出的 \(\bar R(X,Y)Z\) 是切向的；对法向量 \(\xi\)，则有
+	\[
+		\bar R(X,Y)\xi
+		=c\bigl(\bar g(Y,\xi)X-\bar g(X,\xi)Y\bigr)=0.
+	\]
+	把这两个事实分别代入三组方程，即得全部公式。
+\end{proof}
+
+Ricci 方程还给出法曲率为零的一个纯线性代数判据。这里的结论是逐点的；它本身没有选择随点变化的全局标架。
+
+\begin{proposition}\label{g3:prop:flat-normal-shape-commutation}
+	设 \(F\colon(M^n,g)\to\bar M^{n+q}\) 为到常截面曲率空间的光滑等距浸入，\(p\in M\)。下列条件等价：
+	\begin{equivalences}
+		\item \(R^\perp_p=0\)。
+		\item 对任意 \(\xi,\eta\in(N_FM)_p\)，有 \([A_\xi,A_\eta]=0\)。
+		\item 存在 \(\mathrm{T}_pM\) 的一组正交单位基 \((e_i)\)，使 \(B(e_i,e_j)=0\) 对所有 \(i\ne j\) 成立。
+	\end{equivalences}
+\end{proposition}
+\begin{proof}
+	由\eqref{g3:eq:ricci-space-form}，第一条与第二条等价。取法空间的一组正交单位基 \((\nu_\alpha)\)。若第二条成立，则有限个自伴算子 \(A_{\nu_\alpha}\) 两两交换，可以同时正交对角化：先分解为第一个算子的特征子空间，交换性使每个子空间对其余算子不变，再在这些子空间内逐个对角化。得到的正交单位基满足
+	\[
+		\langle B(e_i,e_j),\nu_\alpha\rangle
+		=g(A_{\nu_\alpha}e_i,e_j)=0\qquad(i\ne j)
+	\]
+	对每个 \(\alpha\) 成立，故得第三条。反之，第三条使所有 \(A_\xi\) 在同一基中为对角矩阵，因而两两交换。
+\end{proof}
+
+余维为一时，局部单位法向是法联络的平行截面，故 \(R^\perp=0\)；所有形算子又都是同一个算子的数倍，Ricci 方程自动成立。余维至少为二时，形算子是否交换便成为一个需要核对的新条件。
 
 \subsection{高余维中不能删除的独立条件}
 \label{g3:subsec:0402:04}
-待撰写
+
+现在暂时不假定已经有浸入。给定黎曼流形 \((M,g)\)、带内积的秩 \(q\) 向量丛 \(E\)、度量联络 \(D\)，以及对称型 \(B\in\Gamma(\operatorname{Sym}^2\mathrm{T}^*M\otimes E)\)。定义 \(A_\xi\) 仍用 \(g(A_\xi X,Y)=\langle B(X,Y),\xi\rangle\)，定义 \(\nabla B\) 时把法联络换成 \(D\)。于是\eqref{g3:eq:gauss-space-form}--\eqref{g3:eq:ricci-space-form}都成为这些给定数据可以满足或不满足的条件。下列例子均取 \(c=0\)，显示三组条件分别包含独立的信息。
+
+\begin{example}\label{g3:exm:gauss-codazzi-without-ricci}
+	令 \(M=\mathbb R^2\)，\(g=\mathrm dx^2+\mathrm dy^2\)，并取平凡秩二 Euclid 向量丛 \(E\) 及全局正交单位标架 \((\nu_1,\nu_2)\)。令 \(\omega=x\,\mathrm dy\)，定义
+	\[
+		D_X\nu_1=\omega(X)\nu_2,\qquad
+		D_X\nu_2=-\omega(X)\nu_1,
+	\]
+	并按 Leibniz 法则延拓到任意截面。联络矩阵反对称，所以 \(D\) 保持内积。取 \(B=0\)。这时 \(A_\xi=0\)、\(\nabla B=0\)，底流形又平直，因此 Gauss 与 Codazzi 方程全部成立。
+
+	然而法丛的给定联络不平坦。直接计算得
+	\[
+		R^E(X,Y)\nu_1=\mathrm d\omega(X,Y)\nu_2,
+		\qquad \mathrm d\omega=\mathrm dx\wedge\mathrm dy,
+	\]
+	特别地
+	\[
+		\langle R^E(\partial_x,\partial_y)\nu_1,\nu_2\rangle=1.
+	\]
+	Ricci 方程的右侧却是 \(g([A_{\nu_1},A_{\nu_2}]\partial_x,\partial_y)=0\)。所以这些数据不能由到 \(\mathbb R^4\) 的等距浸入实现，尽管已经满足前两组相容方程。阻碍来自联络的非零曲率，而不只是某个标架中的联络系数不为零。
+\end{example}
+
+\begin{example}\label{g3:exm:gauss-ricci-without-codazzi}
+	仍取平直的 \(\mathbb R^2\)，令 \(E\) 为带平行单位截面 \(\nu\) 的平凡线丛，并取
+	\[
+		B=y\,\mathrm dx\otimes\mathrm dx\,\nu.
+	\]
+	在基 \((\partial_x,\partial_y)\) 中，\(A_\nu=\operatorname{diag}(y,0)\)。Gauss 方程右侧的唯一独立截面值为 \(y\cdot0-0=0\)，与平直度量相符；法联络平坦，线丛情形的交换子也为零，所以 Ricci 方程成立。但
+	\[
+		(\nabla B)(\partial_y;\partial_x,\partial_x)=\nu,
+		\qquad
+		(\nabla B)(\partial_x;\partial_y,\partial_x)=0,
+	\]
+	故 Codazzi 方程不成立。这个例子说明逐点满足曲率的代数关系，还不能保证第二基本形式的一阶变化相容。
+\end{example}
+
+\begin{example}\label{g3:exm:codazzi-ricci-without-gauss}
+	取相同的平直底流形与平坦线丛，改令 \(B=g\nu\)。由于 \(\nabla g=0\) 且 \(D\nu=0\)，有 \(\nabla B=0\)，Codazzi 方程成立；Ricci 方程仍自动成立。可是 \(A_\nu=\mathrm{Id}\)，Gauss 方程要求底流形的截面曲率为 \(1\)，实际却为 \(0\)。因此 Gauss 方程也不能由另外两式推出。若希望这两个线丛例子也有余维二，只需添加一个平凡平坦的法线方向，并令 \(B\) 在该方向的分量为零。
+\end{example}
+
+三个例子的区别可归纳为\cref{g3:tab:compatibility-independence}。表中的每一行都是待实现的抽象数据；真正由浸入诱导的数据必然同时满足三组方程。
+
+\begin{table}[htbp]
+	\centering
+	\caption{平直二维底流形上三组相容条件的独立性}
+	\label{g3:tab:compatibility-independence}
+	\begin{tabular}{llll}
+		\toprule
+		给定数据 & Gauss & Codazzi & Ricci \\
+		\midrule
+		\(B=0\)，法联络曲率非零 & 成立 & 成立 & 不成立 \\
+		\(B=y\,\mathrm dx^2\nu\)，法联络平坦 & 成立 & 不成立 & 成立 \\
+		\(B=g\nu\)，法联络平坦 & 不成立 & 成立 & 成立 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+在前面的推导中，Gauss 与 Codazzi 分别给出环境曲率作用在切向输入时的切向和法向部分；Ricci 给出它作用在法向输入时的法向部分。剩下的混合部分由度量联络曲率算子的反对称性确定。这正是三组方程适合作为局部实现条件的原因。下一节将把满足这些条件的数据组成一个标架系统，并由该系统构造实际浸入。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

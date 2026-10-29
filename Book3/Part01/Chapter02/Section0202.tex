@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 2.2 内在距离和凸邻域
 % 纲要位置：几何学计划纲要.md，第 2169 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,244 @@
 \section{内在距离和凸邻域}
 \label{g3:sec:0202}
 
-待撰写
+从一点出发，足够短的径向测地线已经给出了最短路。现在需要同时移动两个端点：哪些邻近点可以由唯一的短测地线连接，这条线是否仍留在原来的邻域内？回答这些问题之前，先把所有曲线长度的下确界变成一个真正的距离，并核对它与原来的流形拓扑一致。本节的流形均无边界；除讨论连通分支的说明外，均假设连通。
 
 \subsection{分片光滑长度和距离拓扑}
 \label{g3:subsec:0202:01}
-待撰写
+
+本章的分片光滑曲线具有有限分割，在每个闭子区间上光滑到端点，允许在分割点有角点或出现常值段。长度沿用\cref{g3:def:riemannian-length}的定义。把曲线分成两段，长度就是两段长度之和；反向参数化不改变长度。这两项性质使“在所有连接曲线中取下确界”能够满足距离的对称性与三角不等式。
+
+\begin{lemma}
+	\label{g3:lem:piecewise-smooth-connected}
+	连通光滑流形中的任意两点都可以用有限段光滑曲线连接。
+\end{lemma}
+\begin{proof}
+	固定一点 \(p\)，令 \(A\) 为可以从 \(p\) 用分片光滑曲线到达的点集。若 \(q\in A\)，在 \(q\) 附近选坐标球；球内的每一点都可由坐标直线段连接到 \(q\)，接在已有曲线之后便仍可从 \(p\) 到达。因此 \(A\) 开。若 \(q\notin A\)，以 \(q\) 为中心的足够小坐标球也不含 \(A\) 中的点，否则沿反向坐标线段就能到达 \(q\)。故补集也开。由 \(p\in A\) 和连通性，\(A=M\)。
+\end{proof}
+
+\begin{definition}
+	\label{g3:def:riemannian-distance}
+	在连通黎曼流形 \((M,g)\) 上，定义\term[neizaijuli]{内在距离}[intrinsic distance]
+	\begin{equation}
+		\label{g3:eq:riemannian-distance}
+		d_g(p,q)\coloneqq\inf_{\gamma}L_g(\gamma),
+	\end{equation}
+	其中 \(\gamma:[0,1]\to M\) 遍历所有从 \(p\) 到 \(q\) 的分片光滑曲线。度量明确时写作 \(d\)。满足 \(L_g(\gamma)=d(p,q)\) 的曲线称为两点之间的\term[zuiduanquxian]{最短曲线}[minimizing curve]。
+\end{definition}
+
+若流形不连通，在每个连通分支上分别使用这个定义；不同分支间没有连接曲线，规定下确界为 \(+\infty\)。以下关于通常有限值距离的结果都在一个连通分支上使用。
+
+\begin{theorem}
+	\label{g3:thm:riemannian-distance}
+	设 \((M,g)\) 为连通、有限维、Hausdorff、第二可数的无边界光滑黎曼流形。\(d_g\) 是 \(M\) 上的有限值距离，且它诱导的拓扑恰为原来的流形拓扑。
+\end{theorem}
+\begin{proof}
+	\cref{g3:lem:piecewise-smooth-connected}保证下确界所取的集合非空；每条分片光滑曲线的参数区间紧，长度有限，故 \(d(p,q)<\infty\)。长度非负，常值曲线给出 \(d(p,p)=0\)，反向曲线给出 \(d(p,q)=d(q,p)\)。对 \(\varepsilon>0\)，选择从 \(p\) 到 \(q\)、从 \(q\) 到 \(r\) 的曲线，使长度分别小于 \(d(p,q)+\varepsilon\)、\(d(q,r)+\varepsilon\)。拼接并线性重参数化后，得到
+	\[
+		d(p,r)\leq d(p,q)+d(q,r)+2\varepsilon.
+	\]
+	令 \(\varepsilon\downarrow0\) 得三角不等式。这里没有假设下确界已经取到。
+
+	关键是证明不同点的距离为正，同时排除绕出坐标图后任意缩短的可能。固定 \(p\)，选坐标 \(z\)，使 \(z(p)=0\)，且某个闭坐标球 \(\{|z|\leq a\}\) 紧含于图域，其中 \(a>0\)。由\cref{g3:prop:metric-coordinate-bounds}，这个闭球上存在 \(0<c\leq C\)，使
+	\[
+		c|\xi|^2\leq g_{ij}(z)\xi^i\xi^j\leq C|\xi|^2.
+	\]
+	记开坐标球为 \(U_a\)。任何从 \(p\) 出发并离开 \(U_a\) 的曲线，第一次到达边界以前的部分都留在闭坐标球中；这部分的坐标长度至少为 \(a\)，所以其几何长度至少为 \(\sqrt c\,a\)。因此
+	\begin{equation}
+		\label{g3:eq:coordinate-exit-cost}
+		d(p,q)\geq\sqrt c\,a\qquad(q\notin U_a).
+	\end{equation}
+	若 \(q\in U_a\)，留在闭球内的连接曲线长度至少为 \(\sqrt c\,|z(q)|\)；离开的曲线则至少长 \(\sqrt c\,a\)，也不小于这个下界。另一方面，坐标直线段 \(t\mapsto tz(q)\) 的长度至多为 \(\sqrt C\,|z(q)|\)。于是
+	\begin{equation}
+		\label{g3:eq:distance-coordinate-bounds}
+		\sqrt c\,|z(q)|\leq d(p,q)\leq\sqrt C\,|z(q)|
+		\qquad(q\in U_a).
+	\end{equation}
+	由两式可见，只要 \(q\ne p\)，距离就严格为正。
+
+	最后，\eqref{g3:eq:distance-coordinate-bounds}的上界说明足够小的坐标球包含于任意给定的 \(d\) 球；下界连同\eqref{g3:eq:coordinate-exit-cost}说明足够小的 \(d\) 球包含于任意给定的小坐标球。两类邻域在 \(p\) 处互相细化，而 \(p\) 任意，故拓扑相同。
+\end{proof}
+
+我们分别用 \(B_d(p,r)\) 和 \(\overline B_d(p,r)=\{q:d(p,q)\leq r\}\) 表示开距离球和闭距离球；切空间中的球写为 \(B_p(0,r)=\{v\in\mathrm{T}_pM:|v|_g<r\}\)。三角不等式还给出
+\[
+	|d(p,q)-d(p',q')|\leq d(p,p')+d(q,q'),
+\]
+所以距离作为 \(M\times M\) 上的函数连续。这里的闭距离球仅按不等式定义；它是否紧以及是否等于某个指数映射的像，仍需进一步证明。
 
 \subsection{短测地线与强凸邻域}
 \label{g3:subsec:0202:02}
-待撰写
+
+一个固定中心的法邻域来自 \(\exp_p\) 的局部可逆性。为了把中心也作为变量，考虑同时记录起点与终点的映射
+\[
+	E(x,v)=(x,\exp_xv).
+\]
+\cref{g3:prop:exponential-local}已经证明它在零截面附近局部可逆。下面把这一结论转成对一族中心都适用的半径，并用径向极小性辨认相应的距离球。
+
+\begin{lemma}
+	\label{g3:lem:uniform-normal-neighborhood}
+	设 \((M,g)\) 为连通无边界光滑黎曼流形，\(p\in M\)。存在 \(p\) 的开邻域 \(V\) 和常数 \(r>0\)，使对每个 \(x\in V\)，指数映射在 \(B_x(0,4r)\) 上有定义并且是到其像的微分同胚。对 \(0<\rho\leq2r\)，有
+	\begin{equation}
+		\label{g3:eq:uniform-normal-balls}
+		\begin{aligned}
+			B_d(x,\rho)&=\exp_x B_x(0,\rho),\\
+			\overline B_d(x,\rho)&=\exp_x\overline B_x(0,\rho).
+		\end{aligned}
+	\end{equation}
+	这些闭距离球紧。每个 \(y\in\overline B_d(x,2r)\) 都由唯一的常速最短测地线 \([0,1]\to M\) 与 \(x\) 连接；任意其他最短曲线都是该线段的单调重参数化，允许停顿。
+
+	还可使任意 \(x,y\in V\) 满足 \(d(x,y)<r\)，并使
+	\[
+		\log_x y=\exp_x^{-1}(y),\qquad
+		\gamma_{x,y}(t)=\exp_x(t\log_xy)
+	\]
+	光滑依赖于 \((x,y)\) 及 \(0\leq t\leq1\)。对任意紧集 \(K\subset M\)，也存在一个 \(r_K>0\)，使上述关于指数映射、距离球与最短线的结论对所有中心 \(x\in K\) 同时成立。
+\end{lemma}
+\begin{proof}
+	先给出统一的指数映射范围，再排除从外部绕行的短曲线。由\cref{g3:prop:exponential-local}，可取 \((p,0)\) 在 \(\mathrm{T}M\) 中的邻域 \(\mathcal U\)，使 \(E\) 在 \(\mathcal U\) 上为微分同胚。在局部切丛平凡化中，缩小一个相对紧的底邻域 \(V_0\)，再取足够小的正数 \(r\)，可使
+	\[
+		\{(x,v):x\in V_0,\ |v|_g<4r\}\subset\mathcal U.
+	\]
+	具体说，\(\mathcal U\) 含有底坐标小球与某个 Euclid 纤维小球的乘积，而\cref{g3:prop:metric-coordinate-bounds}在底坐标闭球上给出统一的范数比较；将 \(4r\) 选得足够小即可。由于 \(E\) 保持第一个分量，限制到每一纤维就得到 \(\exp_x\) 的单射性和光滑逆。
+
+	固定 \(x\in V_0\)，记 \(U_x=\exp_x B_x(0,3r)\)。\(\exp_x\) 在更大的 \(4r\) 球上为微分同胚，所以 \(\overline U_x=\exp_x\overline B_x(0,3r)\)，边界是半径 \(3r\) 的切球面之像。由\cref{g3:prop:normal-radial-minimality}，在 \(U_x\) 中，从 \(x\) 到 \(\exp_xv\) 的任意连接曲线长度至少为 \(|v|_g\)，等号只对应单调径向曲线。任意从 \(x\) 离开 \(U_x\) 的曲线，第一次到达边界之前已经付出至少 \(3r\) 的长度；这一点可沿曲线先取趋于首次出界时刻的内点，应用径向下界，再令径向长度趋于 \(3r\)。
+
+	因此，对 \(|v|_g\leq2r\)，径向测地线的长度 \(|v|_g\) 比出界代价小，它是流形中所有连接曲线中的最短线，且等号仍只能是单调径向曲线。反过来，若 \(d(x,y)\leq2r\)，按下确界定义可选长度小于 \(3r\) 的连接曲线。它不能离开 \(U_x\)，故 \(y\in U_x\)。对每条长度趋于 \(d(x,y)\) 的此类曲线使用径向下界，得
+	\[
+		|\exp_x^{-1}y|_g\leq d(x,y).
+	\]
+	径向线给出反向不等式，所以两者相等。开、闭球等式同时成立；闭切球在有限维向量空间中紧，它的连续像也紧。常速条件确定了径向线的参数，故常速最短线唯一；\(x=y\) 时唯一最短线为常值曲线。
+
+	逆映射 \(E^{-1}\) 在其像上光滑，因而刚得到的 \(\log_xy\) 随两端点光滑变化。利用已经证明的距离拓扑一致性，将 \(V_0\) 缩小到 \(p\) 的邻域 \(V\)，使 \(V\subset B_d(p,r/3)\)。三角不等式给出任意 \(x,y\in V\) 的距离小于 \(2r/3\)，所以 \((x,y)\) 都落在该光滑逆的定义域内。\(t\log_xy\) 始终在相同的指数映射范围内，故 \(\gamma_{x,y}\) 也光滑依赖所有参数，包括对角线 \(x=y\)。
+
+	最后，对紧集 \(K\) 中每点作上述构造，从所得底邻域选有限子覆盖 \(V_1,\ldots,V_m\)。若相应半径为 \(r_1,\ldots,r_m\)，取 \(r_K=\min_i r_i>0\)。每个 \(x\in K\) 至少属于一个 \(V_i\)，在其中已经证明的结论限制到较小半径后仍成立。
+\end{proof}
+
+这个引理同时说明黎曼距离局部具有紧闭球，并给出了最短线随端点变化的公式。它还没有说明连接 \(V\) 中两点的短线始终留在 \(V\) 中：法邻域控制的是从一个中心出发的径向线，而任意两点之间的线需要另外的凸性条件。
+
+\begin{definition}
+	\label{g3:def:strongly-convex-neighborhood}
+	黎曼流形中的开集 \(U\) 若满足：任意 \(x,y\in U\) 在整个流形中有唯一的常速最短测地线连接，并且这条线的像包含于 \(U\)，则称 \(U\) 为\term[qiangtulinyu]{强凸邻域}[strongly convex neighborhood]。
+\end{definition}
+
+\begin{theorem}
+	\label{g3:thm:strongly-convex-neighborhood}
+	设 \((M,g)\) 为连通无边界光滑黎曼流形，\(p\in M\)。对 \(p\) 的任意开邻域 \(O\)，存在强凸邻域 \(U\)，使 \(p\in U\)、\(\overline U\) 紧且 \(\overline U\subset O\)。其中的最短线 \(\gamma_{x,y}(t)\) 光滑依赖两端点与参数，函数 \((x,y)\mapsto d(x,y)^2\) 在 \(U\times U\) 上光滑。
+\end{theorem}
+\begin{proof}
+	先用\cref{g3:lem:uniform-normal-neighborhood}取得 \(p\) 的邻域 \(V\) 及其中两点间的唯一短线。我们将选择一个更小的坐标球：先证明这些短线不可能逃出一个较大的坐标球，再用一个沿测地线凸的函数把它们压回小球。
+
+	在 \(V\cap O\) 中取以 \(p\) 为原点的坐标 \(z=(z^1,\ldots,z^n)\)，令 \(h(z)=|z|^2\)。对仿射参数测地线 \(\gamma\)，坐标方程给出
+	\begin{equation}
+		\label{g3:eq:coordinate-square-convexity}
+		\frac{\mathrm{d}^2}{\mathrm{d}t^2}h(\gamma(t))
+		=2\sum_k(\dot z^k)^2
+		-2\sum_{i,j,k}z^k\Gamma^k_{ij}(z)\dot z^i\dot z^j.
+	\end{equation}
+	Christoffel 系数在 \(0\) 附近有界，而第二项还带有因子 \(z^k\)。故可取 \(R>0\)，使闭坐标球 \(\{|z|\leq R\}\) 紧含于 \(V\cap O\)，并且在该闭球内，对所有坐标向量 \(\xi\)，有
+	\[
+		\left|\sum_{i,j,k}z^k\Gamma^k_{ij}(z)\xi^i\xi^j\right|
+		\leq\tfrac12|\xi|^2.
+	\]
+	于是任何留在这个球中的测地线都满足 \((h\circ\gamma)''\geq|\dot z|^2\geq0\)。再在闭球上取度量比较常数 \(0<c\leq C\)。
+
+	选择 \(\delta>0\)，满足
+	\[
+		\delta<R/2,\qquad 2\sqrt C\,\delta<\sqrt c\,R/2,
+	\]
+	并令 \(U=\{|z|<\delta\}\)。对 \(x,y\in U\)，\(\gamma_{x,y}\) 是上述引理给出的全局最短测地线。坐标直线段留在 \(U\) 中，给出
+	\[
+		L_g(\gamma_{x,y})=d(x,y)\leq\sqrt C\,|z(y)-z(x)|
+		<2\sqrt C\,\delta.
+	\]
+	如果 \(\gamma_{x,y}\) 离开较大的坐标球 \(\{|z|<R\}\)，那么从 \(x\) 到首次出界点的一段，坐标位移至少为 \(R-|z(x)|>R/2\)，几何长度便大于 \(\sqrt c\,R/2\)。这与刚得到的长度上界矛盾，所以整条短线留在大球中。
+
+	现在可沿整条线使用\eqref{g3:eq:coordinate-square-convexity}。凸函数不超过其两端点之间的线性插值，故
+	\[
+		h(\gamma_{x,y}(t))\leq(1-t)h(x)+th(y)<\delta^2
+		\qquad(0\leq t\leq1).
+	\]
+	因此它实际上始终留在 \(U\) 内。最短线在整个流形中的唯一性已由前一个引理给出，于是 \(U\) 强凸。其闭包为闭坐标球，紧且包含于 \(O\)。光滑端点依赖同样由前一个引理继承；最后
+	\[
+		d(x,y)^2=g_x(\log_xy,\log_xy)
+	\]
+	是光滑函数，包括 \(x=y\) 时也成立。
+\end{proof}
+
+证明使用的是固定坐标中的 \(|z|^2\)，并不要求先知道距离平方的二阶导数。它将两种作用分开：出界长度下界保证所选短线留在可估计的区域，沿线的凸性再保证它留在所需的小邻域。一个点的法邻域未必本身就具有这种两端点凸性。
 
 \subsection{局部唯一性和整体多条最短线}
 \label{g3:subsec:0202:03}
-待撰写
+
+最短路的唯一性只在上述邻域范围内得到。另一个局部事实则没有端点接近的限制：如果一条最短路由光滑测地线段拼成，拼接处的方向必须相接。否则可以把角点附近替换成一条更短的小弦。
+
+\begin{lemma}
+	\label{g3:lem:corner-shortening}
+	设 \((M,g)\) 为无边界光滑黎曼流形，两条单位速测地线段 \(\gamma_-:[-a,0]\to M\)、\(\gamma_+:[0,b]\to M\) 满足 \(a,b>0\) 及 \(\gamma_-(0)=\gamma_+(0)=z\)。若
+	\[
+		A=\dot\gamma_-(0)\ne\dot\gamma_+(0)=B,
+	\]
+	则它们的拼接不是两端点之间的最短曲线。更准确地说，在 \(z\) 的任意邻域内都能替换拼接曲线的一小段，使其余部分保持不变而总长度严格减小。
+\end{lemma}
+\begin{proof}
+	在 \(\mathrm{T}_zM\) 中选 \(g_z\) 正交单位基，并用 \(\exp_z\) 给出法坐标。因反向测地线仍是测地线，由初值唯一性，对足够小的 \(s>0\)，有
+	\[
+		\gamma_-(-s)=\exp_z(-sA),\qquad
+		\gamma_+(s)=\exp_z(sB).
+	\]
+	原拼接段的长度为 \(2s\)。用切空间中的直线段
+	\[
+		v_s(t)=-sA+ts(A+B),\qquad 0\leq t\leq1,
+	\]
+	经指数映射后的曲线代替它。\(|A|=|B|=1\) 且 \(A\ne B\)，故 \(|A+B|<2\)。法坐标度量在原点为单位矩阵，由连续性，在 \(|v|\leq s\) 上存在 \(\varepsilon_s\to0\)，使
+	\[
+		g_{ij}(v)\xi^i\xi^j\leq(1+\varepsilon_s)|\xi|^2.
+	\]
+	线段 \(v_s\) 留在该球内，因而替代曲线的长度至多为
+	\[
+		\sqrt{1+\varepsilon_s}\,s|A+B|<2s
+	\]
+	只要 \(s\) 足够小。若 \(A+B=0\)，两截断端点相同，替代曲线直接取常值即可。将 \(s\) 同时取得小于 \(a,b\)，并使整个坐标小球包含于指定邻域，便得到所需的局部替换。新曲线仍分片光滑，其在替换端点出现的角点不影响它作为长度竞争曲线的资格。
+\end{proof}
+
+\begin{corollary}
+	\label{g3:cor:minimizing-curve-geodesic}
+	在连通无边界黎曼流形中，每条按弧长参数化的分片光滑最短曲线都是光滑的单位速测地线。特别地，两条单位速测地线段若拼成一条最短曲线，则它们在接点的速度相同，因而由初值唯一性属于同一条测地线。
+\end{corollary}
+\begin{proof}
+	最短曲线的每个子段仍最短，否则替换该子段即可缩短全曲线。对曲线任一内点，使用\cref{g3:lem:uniform-normal-neighborhood}选取邻域 \(V\) 与半径 \(r\)，再缩小该点两侧的参数区间，使两端点都在 \(V\) 中，子段长度小于 \(r\)。引理中的等号刻画说明，这个小段是唯一径向最短线的单调重参数化；弧长参数使重参数化在非零长度小段上为平移。因此曲线在每个内点附近都是光滑单位速测地线，在端点具有相应的单侧延拓。特别结论也可直接由\cref{g3:lem:corner-shortening}排除方向不接的情形，再用\cref{g3:thm:geodesic-ivp}连接两段。
+\end{proof}
+
+这个结果只说明达到距离的曲线必须满足测地线方程。逆命题需要长度范围：一条测地线可以在短时间内最短，继续走下去却变得更长；两点之间还可能有多条同样短的测地线。
+
+\begin{example}
+	\label{g3:exm:circle-distance}
+	半径 \(a>0\) 的圆周写为 \(\theta\mapsto(a\cos\theta,a\sin\theta)\)，诱导度量为 \(a^2\mathrm{d}\theta^2\)。若两点的角度代表为 \(\alpha,\beta\)，则
+	\begin{equation}
+		\label{g3:eq:circle-distance}
+		d(\alpha,\beta)=a\min_{k\in\mathbb Z}|\beta-\alpha+2\pi k|.
+	\end{equation}
+	为证明下界，沿任意连接曲线连续选取实值角度，使起始角为 \(\alpha\)。这种选择可先在一个角度坐标片中进行，再沿有限个相邻坐标片以加上 \(2\pi\) 的整数倍来接续；初始值固定后，交叠处连续性使接续唯一。终点角度必为 \(\beta+2\pi k\)，而曲线长度满足
+	\[
+		L=a\int_0^1|\dot\theta(t)|\,\mathrm{d}t
+		\geq a|\beta-\alpha+2\pi k|.
+	\]
+	对使右侧最小的 \(k\)，用线性角度参数就取得等号，证明距离公式。
+
+	若两点不对径，较短圆弧是唯一最短线；若两点对径，两个半圆都长 \(\pi a\)，给出两条最短线。再绕一周的常速圆弧仍是测地线，却不再最短。因此强凸邻域中的唯一性是最短线的唯一性，不排除连接同两点而绕行到邻域外的较长测地线。
+\end{example}
+
+\begin{example}
+	\label{g3:exm:sphere-multiple-minimizers}
+	在半径 \(a\) 的标准球面 \(S_a^n\) 上，\cref{g3:exm:round-sphere-exponential}给出 \(\exp_p\) 在 \(B_p(0,\pi a)\) 上的微分同胚，其像为去掉对径点 \(-p\) 的球面。对 \(q\ne-p\)，径向极小性因此给出唯一最短线，长度为
+	\[
+		d(p,q)=a\arccos\frac{\langle p,q\rangle}{a^2}.
+	\]
+	让 \(q\) 沿一个大圆趋于 \(-p\)。由\cref{g3:thm:riemannian-distance}及距离的连续性，得到 \(d(p,-p)=\pi a\)。每个单位切向量 \(u\in\mathrm{T}_pS_a^n\) 都给出一条达到这个距离的半大圆
+	\[
+		\gamma_u(t)=\cos(t/a)p+a\sin(t/a)u,
+		\qquad 0\leq t\leq\pi a.
+	\]
+	当 \(n\geq2\) 时，\(u\) 可以在单位切球面上连续变化，所以对径点之间有无穷多条最短线；\(n=1\) 时恰好回到圆周的两条半圆。局部端点参数化在对径点处失去单值性，这为后面的割迹提供了第一个模型。
+\end{example}
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

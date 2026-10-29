@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 2.4 支集与关联素理想
 % 纲要位置：几何学计划纲要.md，第 5095 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,399 @@
 \section{支集与关联素理想}
 \label{g5:sec:0204}
 
-待撰写
+局部化能够使一个非零模变为零，也能够使模中的某个非零元素消失。于是有两个相近而不同的问题：这个模在哪些素理想处仍然非零？它的哪些部分能够被一个素理想精确地零化？前一个问题产生支集，后一个问题产生关联素理想。关联素理想还会记录集中在较小闭集上的代数信息，使我们能进一步把一个理想分解成保留幂次的准素分量。
+
+\ProseParagraphBreak
+
+以下在 \(\operatorname{Spec}A\) 上讨论支集，点是素理想，闭集 \(V(I)\) 由包含 \(I\) 的素理想组成。支集的基本定义适用于任意交换含幺环；关联素理想的存在、有限性和准素分解中的有限性条件将在各个结果中写明。可对照\cite[第4节，第25--26页；第6节，第38--42页]{Matsumura1989}阅读。
 
 \subsection{支集和零化子}
 \label{g5:subsec:0204:01}
-待撰写
+例如，对 \(A/(f)\) 在 \(\mathfrak p\) 处局部化，如果 \(f\notin\mathfrak p\)，那么 \(f\) 成为单位，而它在这个模上作用为零，所以整个局部化模为零。若想同时处理多个关系以及一般的有限模，就要把“哪些标量把它杀掉”整理成一个理想。
+
+\begin{definition}\label{g5:def:support-annihilator}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模。元素 \(m\in M\) 的\term[linghuazi]{零化子}[annihilator]及模 \(M\) 的零化子分别是
+	\[
+		\operatorname{Ann}_A(m)=\{a\in A:am=0\},\qquad
+		\operatorname{Ann}_A(M)=\{a\in A:aM=0\}
+		=\bigcap_{m\in M}\operatorname{Ann}_A(m).
+	\]
+	它们都是 \(A\) 的理想。模 \(M\) 的\term[zhiji]{支集}[support]定义为
+	\[
+		\operatorname{Supp}_A(M)=\{\mathfrak p\in\operatorname{Spec}A:M_{\mathfrak p}\ne0\}.
+	\]
+	底环明确时省略下标 \(A\)。规定 \(\operatorname{Ann}_A(0)=A\)、\(\operatorname{Supp}_A(0)=\varnothing\)。
+\end{definition}
+\symidx{\(\operatorname{Ann}_A(M)\)：模的零化子}
+\symidx{\(\operatorname{Supp}_A(M)\)：模的支集}
+
+映射 \(A\to Am\)、\(a\mapsto am\) 的核是 \(\operatorname{Ann}_A(m)\)，所以
+\[
+	Am\cong A/\operatorname{Ann}_A(m).
+\]
+一个元素生成的循环子模，由它的零化子完全决定。对任意模则有 \(\operatorname{Ann}_A(M)\subseteq\operatorname{Ann}_A(m)\)；整个模的共同零化条件可能比任何一个元素的零化条件都少。
+
+\begin{proposition}\label{g5:prop:support-annihilator}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模。总有
+	\[
+		\operatorname{Supp}_A(M)\subseteq V(\operatorname{Ann}_A(M)).
+	\]
+	若 \(M\) 有限生成，则等号成立，支集因而是闭集。特别地，对任意理想 \(I\subseteq A\)，有 \(\operatorname{Supp}_A(A/I)=V(I)\)。
+\end{proposition}
+\begin{proof}
+	若某个 \(a\in\operatorname{Ann}_A(M)\) 不属于 \(\mathfrak p\)，则 \(a/1\) 在 \(A_{\mathfrak p}\) 中可逆，却把 \(M_{\mathfrak p}\) 的每个元素送到零，所以 \(M_{\mathfrak p}=0\)。这证明一般的包含关系。
+
+	现在设 \(M\) 由 \(m_1,\ldots,m_r\) 生成，且 \(M_{\mathfrak p}=0\)。由模局部化的零元判据\eqref{g5:eq:module-localization-zero}，对每个 \(i\) 存在 \(s_i\notin\mathfrak p\) 使 \(s_im_i=0\)。令 \(s=\prod_i s_i\)，则 \(s\notin\mathfrak p\)，且 \(s\) 杀掉全部生成元，从而 \(sM=0\)。故 \(\operatorname{Ann}_A(M)\) 不包含在 \(\mathfrak p\) 中。这给出有限生成情形的反向包含。最后，\(A/I\) 由 \(1+I\) 生成，且其零化子为 \(I\)，于是得到商模公式。
+\end{proof}
+
+证明中有限生成性的作用，是把各个元素所需的分母合成一个共同分母。对无限多个生成元，不能作这样的有限乘积。
+
+\begin{example}\label{g5:exm:nonclosed-module-support}
+	设 \(k\) 为代数闭域，\(A=k[t]\)，取无限直和
+	\[
+		M=\bigoplus_{a\in k}A/(t-a).
+	\]
+	一个多项式若杀掉整个 \(M\)，就在所有 \(a\in k\) 处取零，故 \(\operatorname{Ann}_A(M)=0\)。在 \((0)\) 处局部化时，每个直和分量都被可逆的 \(t-a\) 杀掉；直和中的每个元素只有有限个非零坐标，所以 \(M_{(0)}=0\)。在 \((t-a)\) 处，第 \(a\) 个分量仍非零。由于 \(k[t]\) 的非零素理想正是这些极大理想，
+	\[
+		\operatorname{Supp}_A(M)=\{(t-a):a\in k\},
+		\qquad V(\operatorname{Ann}_A(M))=\operatorname{Spec}k[t].
+	\]
+	这个支集包含全部闭点而遗漏泛型点 \((0)\)。任何包含它的闭集 \(V(J)\) 都要求 \(J\) 中每个多项式在全部 \(a\) 处取零，因而 \(J=0\)。所以支集稠密，却不是闭集。
+\end{example}
+
+\begin{proposition}\label{g5:prop:support-exact}
+	设 \(A\) 为交换含幺环，\(0\to L\to M\to N\to0\) 为 \(A\) 模的短正合列。则
+	\[
+		\operatorname{Supp}_A(M)=\operatorname{Supp}_A(L)\cup\operatorname{Supp}_A(N).
+	\]
+	这里不要求模有限生成。
+\end{proposition}
+\begin{proof}
+	对任意 \(\mathfrak p\in\operatorname{Spec}A\)，\cref{g5:thm:localization-exact}给出短正合列
+	\[
+		0\longrightarrow L_{\mathfrak p}\longrightarrow M_{\mathfrak p}
+		\longrightarrow N_{\mathfrak p}\longrightarrow0.
+	\]
+	中间项为零当且仅当两端都为零。对全部 \(\mathfrak p\) 应用这个等价关系，就得到支集公式。
+\end{proof}
+
+因此，通过一条有限滤过把模拆成较简单的商模时，原模的支集就是这些商模支集的并。接下来要构造一种商模形如 \(A/\mathfrak p\) 的滤过，使其支集成为素理想确定的不可约闭集。
 
 \subsection{关联素理想的存在和有限性}
 \label{g5:subsec:0204:02}
-待撰写
+若一个非零元素 \(m\) 的零化子恰为素理想 \(\mathfrak p\)，则循环子模 \(Am\cong A/\mathfrak p\) 在整条 \(V(\mathfrak p)\) 上存活。它不仅指出了某个局部化非零，还在原模中找到了一个承载这条闭集的具体子模。
+
+\begin{definition}\label{g5:def:associated-prime}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模。若素理想 \(\mathfrak p\) 可以写成 \(\operatorname{Ann}_A(m)\)，其中 \(0\ne m\in M\)，则称 \(\mathfrak p\) 为 \(M\) 的\term[guanliansulixiang]{关联素理想}[associated prime ideal]。全部关联素理想组成的集合记为 \(\operatorname{Ass}_A(M)\)。等价地，\(\mathfrak p\in\operatorname{Ass}_A(M)\) 当且仅当存在单射 \(A/\mathfrak p\hookrightarrow M\)。零模的关联素理想集为空。
+\end{definition}
+\symidx{\(\operatorname{Ass}_A(M)\)：模的关联素理想集}
+
+一般元素的零化子未必素。例如在 \(k[t]/(t^2)\) 中，\(1\) 的零化子为 \((t^2)\)，而 \(t\) 的零化子是 \((t)\)。把元素换成一个适当的非零倍式，可能增大它的零化子；Noether 条件保证这个过程不会无限严格上升。
+
+\begin{lemma}\label{g5:lem:associated-prime-exists}
+	设 \(A\) 为交换含幺 Noether 环，\(M\ne0\) 为任意 \(A\) 模。在集合
+	\[
+		\{\operatorname{Ann}_A(m):0\ne m\in M\}
+	\]
+	中按包含关系取的每个极大元都是素理想。因此 \(\operatorname{Ass}_A(M)\ne\varnothing\)。
+\end{lemma}
+\begin{proof}
+	Noether 环的理想升链条件保证这个非空理想族有极大元。取 \(\mathfrak p=\operatorname{Ann}_A(m)\) 为其中一个；由于 \(m\ne0\)，有 \(\mathfrak p\ne A\)。若 \(ab\in\mathfrak p\)、\(b\notin\mathfrak p\)，则 \(bm\ne0\)，并有
+	\[
+		\mathfrak p\subseteq\operatorname{Ann}_A(bm).
+	\]
+	极大性迫使二者相等。由 \(abm=0\)，得到 \(a\in\operatorname{Ann}_A(bm)=\mathfrak p\)，所以 \(\mathfrak p\) 为素理想。
+\end{proof}
+
+这个引理只要求环 Noether，没有要求 \(M\) 有限生成。有限生成性将用于控制关联素理想的总数。为此先说明，关联素理想怎样经过短正合列。
+
+\begin{proposition}\label{g5:prop:ass-exact-sequence}
+	设 \(A\) 为交换含幺环，\(0\to L\to M\to N\to0\) 为短正合列，则
+	\[
+		\operatorname{Ass}_A(L)\subseteq\operatorname{Ass}_A(M)
+		\subseteq\operatorname{Ass}_A(L)\cup\operatorname{Ass}_A(N).
+	\]
+	特别地，有限个模的直和满足
+	\[
+		\operatorname{Ass}_A(M_1\oplus\cdots\oplus M_r)
+		=\bigcup_{i=1}^r\operatorname{Ass}_A(M_i).
+	\]
+\end{proposition}
+\begin{proof}
+	将 \(L\) 识别为 \(M\) 的子模。其非零元素的零化子不变，所以第一个包含成立。对 \(\mathfrak p\in\operatorname{Ass}_A(M)\)，取循环子模 \(C=Am\cong A/\mathfrak p\)。若 \(C\cap L=0\)，则 \(C\to N\) 为单射，故 \(\mathfrak p\in\operatorname{Ass}_A(N)\)。
+
+	若 \(C\cap L\ne0\)，选 \(0\ne bm\in C\cap L\)。由于 \(\operatorname{Ann}_A(m)=\mathfrak p\)，有 \(b\notin\mathfrak p\)。对于 \(a\in A\)，
+	\[
+		abm=0\quad\Longleftrightarrow\quad ab\in\mathfrak p
+		\quad\Longleftrightarrow\quad a\in\mathfrak p,
+	\]
+	最后一个等价使用了素性及 \(b\notin\mathfrak p\)。因此 \(\operatorname{Ann}_A(bm)=\mathfrak p\)，说明 \(\mathfrak p\in\operatorname{Ass}_A(L)\)。这证明第二个包含。对直和，短正合列给出向右的包含，每个直和分量嵌入整个直和又给出反向包含，有限次归纳即得公式。
+\end{proof}
+
+关联素理想在商模中的行为与子模不同。例如取域 \(k\) 上的 \(A=k[t]\)，短正合列
+\[
+	0\longrightarrow A\xrightarrow{\,t\,}A\longrightarrow A/(t)\longrightarrow0
+\]
+中，前两个非零模的关联素理想均为 \((0)\)，商模却出现 \((t)\)。因此不能把上个命题中的包含关系一概改成等号。
+
+\begin{theorem}\label{g5:thm:prime-filtration}
+	设 \(A\) 为交换含幺 Noether 环，\(M\) 为有限生成 \(A\) 模。则存在有限滤过
+	\[
+		0=M_0\subsetneq M_1\subsetneq\cdots\subsetneq M_r=M,
+		\qquad M_i/M_{i-1}\cong A/\mathfrak p_i,
+	\]
+	其中各 \(\mathfrak p_i\) 为素理想；\(M=0\) 时允许 \(r=0\)。这样的滤过称为\term[sulvguo]{素滤过}[prime filtration]，并满足
+	\[
+		\operatorname{Ass}_A(M)\subseteq\{\mathfrak p_1,\ldots,\mathfrak p_r\},
+		\qquad \operatorname{Supp}_A(M)=\bigcup_{i=1}^r V(\mathfrak p_i).
+	\]
+	特别地，\(\operatorname{Ass}_A(M)\) 为有限集合。
+\end{theorem}
+\begin{proof}
+	若 \(M\ne0\)，由\cref{g5:lem:associated-prime-exists}选择 \(M_1\cong A/\mathfrak p_1\) 的非零循环子模。若 \(M_1\ne M\)，对非零商模 \(M/M_1\) 作同样选择，再把选出的循环子模拉回 \(M\)，得到 \(M_2\)。如此继续，每一步都严格增大子模。由\cref{g5:prop:noetherian-finite-modules}，有限生成 \(A\) 模满足子模升链条件，因此只能作有限步，并且终止时必须达到 \(M\)。
+
+	对素理想 \(\mathfrak p\)，模 \(A/\mathfrak p\) 中每个非零元素的零化子都是 \(\mathfrak p\)，所以 \(\operatorname{Ass}_A(A/\mathfrak p)=\{\mathfrak p\}\)。对滤过中逐个短正合列使用\cref{g5:prop:ass-exact-sequence}，得到关联素理想的包含关系。同样使用\cref{g5:prop:support-exact,g5:prop:support-annihilator}，得到支集的有限并公式。
+\end{proof}
+
+素滤过中的 \(\mathfrak p_i\) 可能重复，也可能包含并非 \(M\) 的关联素理想的素理想；滤过是构造工具，\(\operatorname{Ass}_A(M)\) 才是由模本身确定的集合。现在考察局部化怎样从这个集合中选出仍然可见的素理想。
+
+\begin{theorem}\label{g5:thm:associated-localization}
+	设 \(A\) 为交换含幺 Noether 环，\(M\) 为 \(A\) 模，\(S\subseteq A\) 为乘法集。则
+	\[
+		\operatorname{Ass}_{S^{-1}A}(S^{-1}M)
+		=\{S^{-1}\mathfrak p:\mathfrak p\in\operatorname{Ass}_A(M),\quad
+		\mathfrak p\cap S=\varnothing\}.
+	\]
+	左右的素理想通过\cref{g5:thm:prime-localization}的扩张、收缩对应。
+\end{theorem}
+\begin{proof}
+	若 \(\mathfrak p=\operatorname{Ann}_A(m)\) 且 \(\mathfrak p\cap S=\varnothing\)，则 \(m/1\ne0\)，否则某个 \(s\in S\) 满足 \(sm=0\)，与不交条件矛盾。又有
+	\[
+		\frac as\frac m1=0
+		\quad\Longleftrightarrow\quad tam=0\text{ 对某个 }t\in S
+		\quad\Longleftrightarrow\quad a\in\mathfrak p.
+	\]
+	最后一步使用 \(ta\in\mathfrak p\)、\(t\notin\mathfrak p\) 及素性。因此 \(m/1\) 的零化子恰为 \(S^{-1}\mathfrak p\)。
+
+	反过来，设 \(\mathfrak q\) 是某个非零 \(m/s\in S^{-1}M\) 的零化子。因为 \(s/1\) 可逆，\(m/1\) 的零化子同样是 \(\mathfrak q\)。令 \(\mathfrak p\subseteq A\) 为 \(\mathfrak q\) 的收缩；它为素理想、与 \(S\) 不交，且 \(\mathfrak q=S^{-1}\mathfrak p\)。Noether 性使 \(\mathfrak p=(a_1,\ldots,a_\ell)\) 有限生成。每个 \(a_i\) 在局部化后杀掉 \(m/1\)，所以存在 \(t_i\in S\) 使 \(t_i a_im=0\)。取 \(t=\prod_i t_i\)，便有 \(\mathfrak p\cdot tm=0\)。
+
+	元素 \(tm\) 非零，因为其局部化是单位 \(t/1\) 乘以非零的 \(m/1\)。若 \(b\cdot tm=0\)，局部化并约去这个单位，得到 \((b/1)(m/1)=0\)，故 \(b\in\mathfrak p\)。于是 \(\operatorname{Ann}_A(tm)=\mathfrak p\)，证明 \(\mathfrak p\in\operatorname{Ass}_A(M)\)。若 \(0\in S\)，局部化环和模都为零，右侧也没有与 \(S\) 不交的素理想，公式仍成立。
+\end{proof}
+
+这个反向证明解释了为何需要把局部化中的元素乘以一个共同分母：最初的 \(m\) 未必已被整个 \(\mathfrak p\) 杀掉，而 \(tm\) 可以做到。所用有限性来自素理想 \(\mathfrak p\) 的有限生成，因此这里仍不需要 \(M\) 有限生成。
 
 \subsection{零因子及嵌入分支}
 \label{g5:subsec:0204:03}
-待撰写
+支集知道模在哪里存在，却没有直接告诉我们哪些标量的乘法会失去单射性。关联素理想恰好补足这一信息：它们的并就是所有能杀掉非零元素的标量。
+
+\begin{definition}\label{g5:def:module-zero-divisor}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模。若存在 \(0\ne m\in M\) 使 \(am=0\)，则称 \(a\in A\) 为 \(M\) 上的\term[lingyinzi]{零因子}[zero divisor]。其余元素的乘法映射 \(M\xrightarrow{a}M\) 为单射，称为 \(M\) 上的\term[zhengzeyuan]{正则元}[regular element]。特别地，\(M\ne0\) 时零元素也是零因子；零模上每个元素都是正则元。
+\end{definition}
+
+\begin{theorem}\label{g5:thm:zero-divisors-associated}
+	设 \(A\) 为交换含幺 Noether 环，\(M\) 为任意 \(A\) 模。则 \(M\) 上的零因子集恰为
+	\[
+		\bigcup_{\mathfrak p\in\operatorname{Ass}_A(M)}\mathfrak p.
+	\]
+\end{theorem}
+\begin{proof}
+	若 \(a\in\mathfrak p=\operatorname{Ann}_A(m)\)，其中 \(m\ne0\)，则 \(am=0\)，所以 \(a\) 为零因子。反过来，若 \(a\) 为零因子，则子模 \(L=\{m\in M:am=0\}\) 非零。由\cref{g5:lem:associated-prime-exists}，\(L\) 中有一个非零元素 \(m\)，其零化子是素理想 \(\mathfrak p\)。这个零化子在 \(M\) 中仍相同，所以 \(\mathfrak p\in\operatorname{Ass}_A(M)\)，而 \(am=0\) 又给出 \(a\in\mathfrak p\)。
+\end{proof}
+
+在 Noether 环的有限模上，检验一个元素是否正则因而只需避开有限多个关联素理想。这种判定保留了支集中可能看不见的较小部分；先比较两个集合各自的极小元。
+
+\begin{corollary}\label{g5:cor:minimal-support-associated}
+	设 \(A\) 为交换含幺 Noether 环，\(M\) 为有限生成 \(A\) 模。则
+	\[
+		\operatorname{Ass}_A(M)\subseteq\operatorname{Supp}_A(M),\qquad
+		\operatorname{Supp}_A(M)=
+		\bigcup_{\mathfrak p\in\operatorname{Ass}_A(M)}V(\mathfrak p).
+	\]
+	按理想包含关系，\(\operatorname{Supp}_A(M)\) 与 \(\operatorname{Ass}_A(M)\) 有相同的极小元。它们为有限多个，其闭包恰是支集的不可约分支。
+\end{corollary}
+\begin{proof}
+	若 \(\mathfrak p=\operatorname{Ann}_A(m)\)、\(m\ne0\)，则对每个包含 \(\mathfrak p\) 的素理想 \(\mathfrak q\)，元素 \(m/1\in M_{\mathfrak q}\) 非零：否则有 \(s\notin\mathfrak q\) 使 \(sm=0\)，就会有 \(s\in\mathfrak p\subseteq\mathfrak q\)，矛盾。因此 \(V(\mathfrak p)\subseteq\operatorname{Supp}_A(M)\)，也得到第一个包含。
+
+	现在取 \(\mathfrak q\in\operatorname{Supp}_A(M)\)。由\cref{g5:prop:localization-ideals}，\(A_{\mathfrak q}\) 为 Noether 环，而 \(M_{\mathfrak q}\ne0\)。\cref{g5:lem:associated-prime-exists}保证它有一个关联素理想。再由\cref{g5:thm:associated-localization}，该素理想来自某个 \(\mathfrak p\in\operatorname{Ass}_A(M)\)，且 \(\mathfrak p\subseteq\mathfrak q\)。于是 \(\mathfrak q\in V(\mathfrak p)\)，证明并集公式。
+
+	由于关联素理想集有限，其中每个元素都包含一个极小元。因此上式可以只对这些极小元取并，而任意支集素理想都包含其中一个。结合 \(\operatorname{Ass}_A(M)\subseteq\operatorname{Supp}_A(M)\)，两个集合的极小元恰好相同。每个 \(V(\mathfrak p)\) 都不可约，且理想之间互不包含使这些闭集也互不包含。有限个闭集的并中的任一不可约子集必落在其中一项内，否则把相交拆开就违反不可约性。故这些 \(V(\mathfrak p)\) 正是支集的不可约分支。
+\end{proof}
+
+对 Noether 环上的有限模，支集中的极小素理想称为\term[guliguanliansulixiang]{孤立关联素理想}[isolated associated prime]，也称极小关联素理想；其余关联素理想称为\term[qianrusulixiang]{嵌入素理想}[embedded prime]。若 \(\mathfrak p\) 为嵌入素理想，它包含一个更小的关联素理想 \(\mathfrak q\)，所以 \(V(\mathfrak p)\) 严格包含在 \(V(\mathfrak q)\) 中。它所记录的子模集中在已有不可约分支的一个较小闭集上。
+
+\begin{example}\label{g5:exm:associated-embedded-point}
+	设 \(k\) 为任意域，\(R=k[x,y]\)，\(I=(x^2,xy)\)，\(M=R/I\)。这是\cref{g5:ex:radical-embedded-model}中已出现的模型；现在把它作为 \(R\) 模计算。以 \(\overline x,\overline y\) 表示剩余类，每个元素唯一写成
+	\[
+		a(\overline y)+b\overline x,\qquad a(y)\in k[y],\quad b\in k.
+	\]
+	存在性来自 \(\overline x^2=\overline x\,\overline y=0\)；唯一性来自 \(I\) 中每个单项式都含 \(x^2\) 或 \(xy\)，不能出现非零的 \(a(y)+bx\)。
+
+	因为 \(f(x,y)\overline x=f(0,0)\overline x\)，且 \(\overline x\ne0\)，有
+	\[
+		\operatorname{Ann}_R(\overline x)=(x,y).
+	\]
+	另一方面，\(f(x,y)\overline y=f(0,y)\overline y\)，而 \(k[y]\) 是整环，所以
+	\[
+		\operatorname{Ann}_R(\overline y)=(x).
+	\]
+	两者都是关联素理想。为了排除其他关联素理想，取子模 \(R\overline x\cong R/(x,y)\)，其商模为 \(R/(x)\)。短正合列
+	\[
+		0\longrightarrow R/(x,y)\xrightarrow{\,1\mapsto\overline x\,}M
+		\longrightarrow R/(x)\longrightarrow0
+	\]
+	与\cref{g5:prop:ass-exact-sequence}给出
+	\[
+		\operatorname{Ass}_R(M)=\{(x),(x,y)\},\qquad
+		\operatorname{Supp}_R(M)=V(x).
+	\]
+	支集只有一条不可约分支 \(V(x)\)，但 \(R\overline x\) 是支撑在原点 \((x,y)\) 上的非零子模。其元素 \(\overline x\) 在 \(y\) 可逆时消失，在原点局部化后仍非零，因为没有原点之外的分母能落入它的零化子 \((x,y)\)。因此 \((x)\) 为孤立关联素理想，\((x,y)\) 为嵌入素理想。零因子集为 \((x)\cup(x,y)=(x,y)\)；例如 \(y\) 是零因子，虽然它不属于唯一的极小关联素理想 \((x)\)。
+\end{example}
+
+只检查支集的不可约分支，会漏掉上例中 \(y\) 杀掉 \(\overline x\) 的现象。准素分解的目标就是在分解方程理想时保留这种信息，同时区分哪些分量由理想唯一决定。
 
 \subsection{准素分解的所需版本}
 \label{g5:subsec:0204:04}
-待撰写
+第一章的根式理想与不可约分支对应，使我们能把代数集拆成不可约闭集。但取根式会丢掉 \(x^2\) 与 \(x\) 的区别；本小节直接分解理想，允许一个分量内部带有幂零元素。与素理想相比，适当放宽的条件是：乘积为零时，一个因子可能只在取幂后才变为零。
+
+\begin{definition}\label{g5:def:primary-ideal}
+	设 \(A\) 为交换含幺环。真理想 \(Q\subsetneq A\) 若满足
+	\[
+		ab\in Q,\quad b\notin Q
+		\quad\Longrightarrow\quad a^n\in Q\text{ 对某个 }n\ge1,
+	\]
+	则称为\term[zhunsulixiang]{准素理想}[primary ideal]。若 \(\sqrt Q=\mathfrak p\)，则称 \(Q\) 为 \(\mathfrak p\) 准素理想。把真理想写成有限个准素理想的交，称为\term[zhunsufenjie]{准素分解}[primary decomposition]。
+\end{definition}
+
+等价地，\(Q\) 为准素理想，当且仅当商环 \(A/Q\) 的每个零因子都是幂零元。定义中的 \(b\notin Q\) 正保证 \(b+Q\) 是检验零因子的非零元素。素理想当然准素，此时可以取 \(n=1\)。
+
+\begin{lemma}\label{g5:lem:primary-ideal-properties}
+	设 \(A\) 为交换含幺环，\(Q\subsetneq A\) 为准素理想，\(\mathfrak p=\sqrt Q\)。则 \(\mathfrak p\) 是素理想。对 \(c\notin Q\)，理想
+	\[
+		Q:c=\{a\in A:ac\in Q\}
+	\]
+	仍为 \(\mathfrak p\) 准素理想。有限个 \(\mathfrak p\) 准素理想的交也为 \(\mathfrak p\) 准素理想。此外，若 \(\iota:A\to A_{\mathfrak p}\) 为自然同态，则
+	\[
+		\iota^{-1}(QA_{\mathfrak p})=Q.
+	\]
+\end{lemma}
+\begin{proof}
+	若 \(ab\in\sqrt Q\)、\(b\notin\sqrt Q\)，则对某个 \(r\) 有 \(a^rb^r\in Q\)，而 \(b^r\notin Q\)。准素性给出 \(a^{rn}\in Q\)，所以 \(a\in\sqrt Q\)。这证明 \(\mathfrak p\) 为素理想。
+
+	由于 \(c\notin Q\)，\(Q:c\) 是真理想。若 \(ab\in Q:c\)、\(b\notin Q:c\)，则 \(abc\in Q\)、\(bc\notin Q\)，故某个 \(a^n\in Q\subseteq Q:c\)。所以 \(Q:c\) 准素。包含关系 \(Q\subseteq Q:c\) 给出 \(\mathfrak p\subseteq\sqrt{Q:c}\)；反之，若 \(a^r c\in Q\)，由 \(c\notin Q\) 得到 \(a\in\mathfrak p\)，所以两根式相同。
+
+	设 \(Q_1,\ldots,Q_r\) 都是 \(\mathfrak p\) 准素理想。有限交的根式仍为 \(\mathfrak p\)：一个元素分别有幂属于各个 \(Q_i\)，取指数的最大值即可使同一个幂属于交。若 \(ab\in\bigcap_iQ_i\)、\(b\notin\bigcap_iQ_i\)，选择一个 \(b\notin Q_j\)，则 \(a\in\mathfrak p\)，进而某个 \(a^N\in\bigcap_iQ_i\)。因此该交准素。
+
+	最后，若 \(a/1\in QA_{\mathfrak p}\)，由\cref{g5:prop:localization-ideals}，存在 \(s\notin\mathfrak p\) 使 \(sa\in Q\)。如果 \(a\notin Q\)，准素性将给出 \(s\in\sqrt Q=\mathfrak p\)，矛盾。故 \(a\in Q\)，证明收缩公式。
+\end{proof}
+
+准素性也可以完全用关联素理想表述。
+
+\begin{proposition}\label{g5:prop:primary-associated-singleton}
+	设 \(A\) 为交换含幺 Noether 环，\(Q\subsetneq A\) 为理想。则 \(Q\) 准素，当且仅当 \(\operatorname{Ass}_A(A/Q)\) 只有一个元素。在这种情形下，
+	\[
+		\operatorname{Ass}_A(A/Q)=\{\sqrt Q\}.
+	\]
+\end{proposition}
+\begin{proof}
+	若 \(Q\) 准素，令 \(\mathfrak p=\sqrt Q\)。取任意 \(\mathfrak q\in\operatorname{Ass}_A(A/Q)\)，它是某个非零剩余类的零化子。由于 \(Q\) 杀掉全部商模，有 \(Q\subseteq\mathfrak q\)，故 \(\mathfrak p\subseteq\mathfrak q\)。另一方面，\(\mathfrak q\) 中每个元素都在 \(A/Q\) 上是零因子，准素性使它模 \(Q\) 幂零，所以 \(\mathfrak q\subseteq\mathfrak p\)。关联素理想的存在性保证集合非空，于是它恰为 \(\{\mathfrak p\}\)。
+
+	反过来，若 \(\operatorname{Ass}_A(A/Q)=\{\mathfrak p\}\)，则\cref{g5:cor:minimal-support-associated,g5:prop:support-annihilator}给出 \(V(Q)=V(\mathfrak p)\)。由\cref{g5:prop:radical-prime-intersection}，\(\sqrt Q=\mathfrak p\)。\cref{g5:thm:zero-divisors-associated}又说明 \(A/Q\) 上的零因子恰为 \(\mathfrak p\) 中的元素，它们模 \(Q\) 都幂零，故 \(Q\) 准素。
+\end{proof}
+
+为了证明每个理想都有这样的分解，先作一个较粗的拆分。一个真理想 \(J\) 若不能表示成两个严格包含它的理想之交，就称为\term[bukeyuelixiang]{不可约理想}[irreducible ideal]。这里不可约描述的是理想的交分解，与闭集的不可约性需要分别判断；后者只看根式。
+
+\begin{lemma}\label{g5:lem:irreducible-ideal-primary}
+	设 \(A\) 为交换含幺 Noether 环。每个真理想都是有限个不可约理想的交，而且每个不可约理想均准素。
+\end{lemma}
+\begin{proof}
+	先证明有限分解。若存在不能作有限不可约分解的真理想，则由理想升链条件，可在这些反例中取一个按包含关系极大的 \(J\)。它本身不可能不可约，故有 \(J=J_1\cap J_2\)，其中两个 \(J_i\) 都严格包含 \(J\)。两者仍为真理想，否则这个交就等于另一项而无法严格增大。由 \(J\) 的极大性，每个 \(J_i\) 都是有限个不可约理想的交，将两份表达式合并，就给出 \(J\) 的有限不可约分解，矛盾。
+
+	再设 \(Q\) 不可约。转到商环 \(B=A/Q\)，其中零理想不可约。若 \(ab=0\) 且 \(b\ne0\)，要证明 \(a\) 幂零。考虑升链
+	\[
+		(0:a)\subseteq(0:a^2)\subseteq\cdots,
+		\qquad (0:a^n)=\{u\in B:a^nu=0\}.
+	\]
+	商环 \(B\) 的理想升链提升为 \(A\) 中含 \(Q\) 的理想升链，故 \(B\) 仍 Noether。所以可以取 \(N\ge1\) 使 \((0:a^N)=(0:a^{N+1})\)。现在若 \(z\in(a^N)\cap(b)\)，写成 \(z=a^Nu=bv\)。由 \(ab=0\)，有 \(a^{N+1}u=az=0\)；稳定性遂给出 \(a^Nu=0\)，也就是 \(z=0\)。因此
+	\[
+		(0)=(a^N)\cap(b).
+	\]
+	零理想不可约而 \((b)\ne0\)，迫使 \((a^N)=0\)。这就证明 \(a^N=0\)，从而 \(Q\) 准素。
+\end{proof}
+
+\begin{theorem}[准素分解定理]\label{g5:thm:primary-decomposition}
+	\termidx[zhunsufenjiedingli]{准素分解定理}\foreignidx{primary decomposition theorem}设 \(A\) 为交换含幺 Noether 环，\(I\subsetneq A\) 为真理想。则存在有限分解
+	\[
+		I=Q_1\cap\cdots\cap Q_r,
+	\]
+	其中每个 \(Q_i\) 均准素。可以要求这份分解不可删去任何一项，且 \(\mathfrak p_i=\sqrt{Q_i}\) 两两不同。满足这两个条件的分解称为\term[jixiaozhunsufenjie]{极小准素分解}[minimal primary decomposition]。
+\end{theorem}
+\begin{proof}
+	由\cref{g5:lem:irreducible-ideal-primary}，先将 \(I\) 写成有限个不可约理想的交，它们都是准素理想。将根式相同的项合并，由\cref{g5:lem:primary-ideal-properties}，合并后的交仍是同一个素理想对应的准素理想。再删去不影响交的冗余项，有限次后便得到所需分解。
+\end{proof}
+
+这个定理保证分解存在。分解中的根式与实际准素理想承担不同信息：根式指出分量所在的闭集，准素理想还保留闭集上的幂次。下一定理分别判断它们的唯一性；对应结论可参见\cite[第6节，定理6.8]{Matsumura1989}。
+
+\begin{theorem}\label{g5:thm:primary-uniqueness}
+	设 \(A\) 为交换含幺 Noether 环，\(I\subsetneq A\)，并取一个极小准素分解
+	\[
+		I=\bigcap_{i=1}^rQ_i,\qquad \mathfrak p_i=\sqrt{Q_i}.
+	\]
+	则
+	\[
+		\operatorname{Ass}_A(A/I)=\{\mathfrak p_1,\ldots,\mathfrak p_r\}.
+	\]
+	因此分解中的素理想集与分量数由 \(I\) 唯一决定。若 \(\mathfrak p_i\) 为其中的极小元，则对应的孤立准素分量也唯一，且
+	\[
+		Q_i=\{a\in A:a/1\in IA_{\mathfrak p_i}\}.
+	\]
+\end{theorem}
+\begin{proof}
+	自然的对角映射
+	\[
+		A/I\longrightarrow\bigoplus_{i=1}^r A/Q_i,\qquad
+		a+I\longmapsto(a+Q_1,\ldots,a+Q_r)
+	\]
+	为单射，因为它的核由 \(\bigcap_iQ_i=I\) 决定。由\cref{g5:prop:ass-exact-sequence,g5:prop:primary-associated-singleton}，得到
+	\[
+		\operatorname{Ass}_A(A/I)\subseteq\bigcup_i\operatorname{Ass}_A(A/Q_i)
+		=\{\mathfrak p_1,\ldots,\mathfrak p_r\}.
+	\]
+	为了证明每个 \(\mathfrak p_i\) 都实际出现，固定 \(i\)。不可删去 \(Q_i\) 意味着可选择
+	\[
+		c\in\bigcap_{j\ne i}Q_j\setminus Q_i,
+	\]
+	单项分解时把空交约定为 \(A\)。于是 \(c+I\) 非零，且
+	\[
+		\operatorname{Ann}_A(c+I)=I:c=Q_i:c.
+	\]
+	由\cref{g5:lem:primary-ideal-properties}，这个理想为 \(\mathfrak p_i\) 准素理想。因此循环子模 \(A(c+I)\cong A/(Q_i:c)\) 的关联素理想集恰为 \(\{\mathfrak p_i\}\)。子模的关联素理想属于原模，所以 \(\mathfrak p_i\in\operatorname{Ass}_A(A/I)\)，反向包含得证。
+
+	现在设 \(\mathfrak p_i\) 极小。对每个 \(j\ne i\)，都有 \(\mathfrak p_j\nsubseteq\mathfrak p_i\)。取 \(s_j\in\mathfrak p_j\setminus\mathfrak p_i\)，则某个 \(s_j^{n_j}\in Q_j\)。它在 \(A_{\mathfrak p_i}\) 中为单位，故 \(Q_jA_{\mathfrak p_i}=A_{\mathfrak p_i}\)。有限交与局部化相容：若一个分式分别属于各扩张理想，对每一项选一个使分子落入该理想的分母，再乘起这有限多个分母，就使分子落入原来的交。因此
+	\[
+		IA_{\mathfrak p_i}
+		=\bigcap_j Q_jA_{\mathfrak p_i}
+		=Q_iA_{\mathfrak p_i}.
+	\]
+	最后由\cref{g5:lem:primary-ideal-properties}的收缩公式，\(Q_iA_{\mathfrak p_i}\) 收缩回 \(A\) 正是 \(Q_i\)。所给表达式仅涉及 \(I\) 与 \(\mathfrak p_i\)，所以孤立分量唯一。
+\end{proof}
+
+\begin{example}\label{g5:exm:nonunique-embedded-component}
+	在任意域 \(k\) 上，令 \(R=k[x,y]\)、\(I=(x^2,xy)\)。同一理想有两份极小准素分解：
+	\[
+		I=(x)\cap(x^2,y)
+		=(x)\cap(x^2,xy,y^2).
+	\]
+	这个例子也见\cite[第6节，习题6.6]{Matsumura1989}。逐一核验如下。\((x)\) 为素理想，而
+	\[
+		R/(x^2,y)\cong k[x]/(x^2),\qquad
+		R/(x^2,xy,y^2)\cong k\oplus k\overline x\oplus k\overline y
+	\]
+	中，第二个商的理想 \((\overline x,\overline y)\) 平方为零。这两个商环中，常数项非零的元素都可用有限几何级数求逆；常数项为零的元素都幂零。因此它们的全部零因子均幂零，两个理想都为 \((x,y)\) 准素理想。
+
+	再核对交。若 \(f=xg\in(x^2,y)\)，令 \(y=0\)，可知 \(g(x,0)\) 被 \(x\) 整除，所以 \(g\in(x,y)\)，于是 \(f\in(x^2,xy)\)。若 \(f=xg\in(x^2,xy,y^2)=(x,y)^2\)，则 \(f\) 没有一次项，迫使 \(g\) 的常数项为零，同样得到 \(g\in(x,y)\)。这证明两个交都包含于 \(I\)；反向包含从生成元直接可见。每份分解都不可删项：\(x\) 在第一项中却不在第二项中，而 \(y\) 或 \(y^2\) 分别给出第二项中不属于第一项的元素。
+
+	两份分解的孤立分量均为 \((x)\)，关联素理想集均为 \(\{(x),(x,y)\}\)，但嵌入分量不同，因为 \(y\in(x^2,y)\) 而 \(y\notin(x^2,xy,y^2)\)。所以嵌入素理想由 \(I\) 确定，具体的嵌入准素分量可以随分解改变。
+\end{example}
+
+准素分解因而同时保留两种可用信息：由关联素理想定位零因子及嵌入部分，由孤立分量的局部化公式恢复各不可约分支上的方程。所有这些有限分解均建立在 Noether 条件上；证明中它分别保证零化子能够取极大元、素滤过能够终止，以及不可约理想证明中的零化子升链能够稳定。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

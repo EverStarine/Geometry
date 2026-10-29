@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 1.3 极值原理和刚性
 % 纲要位置：几何学计划纲要.md，第 3495 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,376 @@
 \section{极值原理和刚性}
 \label{g4:sec:0103}
 
-待撰写
+一个全纯函数在小圆盘内可以有任意高阶的零点，但它的模不能在内点形成孤立的峰。这个限制把局部解析性转化为整体控制：边界上的估计约束内部，极值处的等号又往往迫使整个函数具有特殊形式。圆盘自映射最清楚地体现了这一点。先固定一个点，把函数与恒等映射比较，再改变所固定的点，就能得到适合所有圆盘自映射的长度尺度。
 
 \subsection{最大模及调和函数}
 \label{g4:subsec:0103:01}
-待撰写
+先从几何图像理解模的极值。若 \(f\) 非常值，则\cref{g4:thm:0101:open-mapping}说明它把开集映成开集。假如 \(f(a)\ne0\)，一个包含 \(f(a)\) 的小圆盘必有模大于 \(\lvert f(a)\rvert\) 的点；因此像集不可能在 \(f(a)\) 处贴住以原点为中心的圆而完全留在圆内。
+
+\begin{theorem}[最大模原理]
+	\label{g4:thm:0103:maximum-modulus}
+	设 \(\Omega\subset\mathbb C\) 是区域，\(f\colon\Omega\rightarrow\mathbb C\) 全纯。若 \(\lvert f\rvert\) 在 \(\Omega\) 的某一点取得局部最大值，则 \(f\) 在 \(\Omega\) 上为常值。若进一步假设 \(\Omega\) 有界，且 \(f\) 连续延拓到 \(\overline\Omega\)，则
+	\[
+		\max_{\overline\Omega}\lvert f\rvert
+		=\max_{\partial\Omega}\lvert f\rvert.
+	\]
+\end{theorem}
+
+\begin{proof}
+	设 \(a\in\Omega\)，存在邻域 \(U\subset\Omega\) 使 \(\lvert f(z)\rvert\leq\lvert f(a)\rvert\)。若 \(f\) 非常值，开映射定理使 \(f(U)\) 成为包含 \(f(a)\) 的开集，因而包含模大于 \(\lvert f(a)\rvert\) 的点，矛盾。这也覆盖 \(f(a)=0\) 的情形；此时局部上界本身就迫使 \(f|_U=0\)。
+
+	在有界域的情形，\(\overline\Omega\) 是非空紧集，连续函数 \(\lvert f\rvert\) 在其上取得最大值。若最大值在内点取得，前一结论使 \(f\) 为常值，边界也取得同一值；否则最大值直接在边界取得。有界非空区域的边界非空，所以右端有意义。
+\end{proof}
+
+这里的\term[zuidamoyuanli]{最大模原理}[maximum modulus principle]控制的是复函数的模。实部和虚部同样受到极值限制，其原因可以用一个实偏微分方程表达。
+
+\begin{definition}
+	\label{g4:def:0103:harmonic}
+	设 \(U\subset\mathbb R^2\) 开，\(u\colon U\rightarrow\mathbb R\) 为 \(C^2\) 函数。若
+	\[
+		\Delta u=-(u_{xx}+u_{yy})=0,
+	\]
+	则称 \(u\) 为\term[tiaohehanshu]{调和函数}[harmonic function]。这里 \(\Delta\) 沿用全书的非负 Laplace 算子约定。\footnote{Pierre-Simon Laplace（1749--1827），法国数学家，研究天体力学、概率论与位势理论。}若实函数 \(v\) 使 \(u+\mathrm{i}v\) 在 \(U\subset\mathbb C\) 上全纯，则称 \(v\) 为 \(u\) 的\term[tiaohegonge]{调和共轭}[harmonic conjugate]。
+\end{definition}
+
+全纯函数 \(f=u+\mathrm{i}v\) 的实部与虚部都是调和函数。事实上，全纯函数由幂级数表示，因而可以连续求任意阶偏导；对 Cauchy–Riemann 方程 \(u_x=v_y\)、\(u_y=-v_x\) 再求导，得到 \(u_{xx}+u_{yy}=v_{yx}-v_{xy}=0\)，对 \(v\) 也有同样结论。反方向的困难在于能否由 \(u\) 恢复 \(v\)：所需导数必须满足
+\[
+	v_x=-u_y,\qquad v_y=u_x.
+\]
+调和方程正是这两个导数的相容条件。
+
+\begin{proposition}
+	\label{g4:prop:0103:harmonic-conjugate}
+	设 \(u\) 是区域 \(\Omega\subset\mathbb C\) 上的实值调和函数。则每一点附近都有调和共轭。在整个 \(\Omega\) 上存在调和共轭，当且仅当对每条分片 \(C^1\) 闭曲线 \(\gamma\subset\Omega\) 都有
+	\begin{equation}
+		\label{g4:eq:0103:conjugate-period}
+		\int_\gamma(-u_y\,\mathrm{d}x+u_x\,\mathrm{d}y)=0.
+	\end{equation}
+	若全局调和共轭存在，则相差一个实常数。
+\end{proposition}
+
+\begin{proof}
+	先在包含给定点 \((x_0,y_0)\) 且闭包位于 \(\Omega\) 内的小开矩形上构造。沿水平线段再沿竖直线段积分，令
+	\[
+		v(x,y)=-\int_{x_0}^{x}u_y(s,y_0)\,\mathrm{d}s
+		+\int_{y_0}^{y}u_x(x,t)\,\mathrm{d}t.
+	\]
+	由微积分基本定理，\(v_y=u_x\)。另一方向的导数满足
+	\[
+		v_x=-u_y(x,y_0)+\int_{y_0}^{y}u_{xx}(x,t)\,\mathrm{d}t
+		=-u_y(x,y_0)-\int_{y_0}^{y}u_{yy}(x,t)\,\mathrm{d}t
+		=-u_y(x,y).
+	\]
+	因此 \(u+\mathrm{i}v\) 满足 Cauchy–Riemann 方程且为 \(C^1\)，从而全纯。这也说明 \(u\) 实际上局部是解析函数的实部，具有任意阶连续偏导。
+
+	若全局的 \(v\) 存在，被积一形式就是 \(\mathrm{d}v\)，其沿闭曲线的积分为零。反过来，假设式\eqref{g4:eq:0103:conjugate-period}成立。固定 \(a\in\Omega\)，对任意 \(z\in\Omega\) 取从 \(a\) 到 \(z\) 的分片 \(C^1\) 道路，定义 \(v(z)\) 为该道路上的积分。开连通的平面区域内任意两点都能用折线连接：从 \(a\) 能以折线到达的点构成非空开闭子集，故就是全域。两条道路的积分之差是拼接闭曲线上的积分，因此 \(v\) 与道路选择无关。把终点在一个小矩形内移动，局部积分公式给出 \(v_x=-u_y\)、\(v_y=u_x\)，所以所得 \(v\) 确为全局调和共轭。两个共轭之差的两个偏导数都为零，沿连接任意两点的折线积分便知其为常数。
+\end{proof}
+
+\begin{example}
+	\label{g4:exm:0103:log-modulus}
+	函数 \(u(z)=\log\lvert z\rvert\) 在 \(\mathbb C^*\) 上调和。写成 \(u(x,y)=\tfrac12\log(x^2+y^2)\)，直接求导得
+	\[
+		-u_y\,\mathrm{d}x+u_x\,\mathrm{d}y
+		=\frac{-y\,\mathrm{d}x+x\,\mathrm{d}y}{x^2+y^2}.
+	\]
+	在单位圆 \(z=\mathrm{e}^{\mathrm{i}t}\)、\(0\leq t\leq2\pi\) 上，其积分为 \(2\pi\)。因此 \(u\) 没有全局调和共轭。局部共轭是辐角；沿单位圆走一周，辐角增加 \(2\pi\)，正是式\eqref{g4:eq:0103:conjugate-period}检测到的障碍。
+\end{example}
+
+调和函数的值还可以从周围的圆周恢复。对 \(u=\operatorname{Re}f\)，这一现象来自 Cauchy 积分公式；以下证明直接从调和方程出发，因而不需要先在整个圆盘上选择共轭。
+
+\begin{proposition}[调和函数的平均值性质]
+	\label{g4:prop:0103:harmonic-mean}
+	设 \(u\) 是开集 \(U\subset\mathbb C\) 上的实值调和函数，\(\overline{D(a,R)}\subset U\)。则对 \(0<r\leq R\)，有
+	\[
+		u(a)=\frac1{2\pi}\int_0^{2\pi}u(a+r\mathrm{e}^{\mathrm{i}\theta})\,\mathrm{d}\theta
+		=\frac1{\pi r^2}\int_{D(a,r)}u(x,y)\,\mathrm{d}x\,\mathrm{d}y.
+	\]
+\end{proposition}
+
+\begin{proof}
+	令 \(v(r,\theta)=u(a+r\mathrm{e}^{\mathrm{i}\theta})\)，圆周平均为 \(m(r)=(2\pi)^{-1}\int_0^{2\pi}v(r,\theta)\,\mathrm{d}\theta\)。极坐标中的链式法则给出
+	\[
+		m''(r)+\frac1r m'(r)
+		=\frac1{2\pi}\int_0^{2\pi}
+		\left((u_{xx}+u_{yy})(a+r\mathrm{e}^{\mathrm{i}\theta})
+		-\frac1{r^2}v_{\theta\theta}(r,\theta)\right)
+		\,\mathrm{d}\theta=0.
+	\]
+	这里角向二阶导数的一周积分为零，调和性使 \(u_{xx}+u_{yy}=0\)。因此 \((rm'(r))'=0\)。\(u\) 在中心附近的梯度有界，所以 \(m'(r)\) 有界，\(rm'(r)\rightarrow0\)。于是 \(m'(r)=0\)，再由 \(m(r)\rightarrow u(a)\) 得第一式。用极坐标对圆周平均再乘 \(2r\,\mathrm{d}r\) 积分，得到圆盘平均公式。
+\end{proof}
+
+\begin{corollary}[调和函数的极值原理]
+	\label{g4:cor:0103:harmonic-maximum}
+	设 \(u\) 是区域 \(\Omega\subset\mathbb C\) 上的实值调和函数。若 \(u\) 在内点取得局部最大值或局部最小值，则 \(u\) 为常值。若 \(\Omega\) 有界且 \(u\in C(\overline\Omega)\)，则 \(u\) 的最大值和最小值均在 \(\partial\Omega\) 上取得。特别地，两个在 \(\Omega\) 上调和、在 \(\overline\Omega\) 上连续且边界值相同的实函数必相等。
+\end{corollary}
+
+\begin{proof}
+	设 \(a\) 为局部最大值点，取足够小的圆盘使其中 \(u\leq u(a)\)。每个以 \(a\) 为中心的小圆周上的平均值都等于 \(u(a)\)，连续非负函数 \(u(a)-u\) 因积分为零而在该圆周恒为零。让半径变化，便知 \(u\) 在一个开圆盘内为常数。
+
+	要把这一结论传到整个连通域，考虑 \(h=u_x-\mathrm{i}u_y\)。调和方程与混合偏导交换分别给出 \(h\) 的两条 Cauchy–Riemann 方程，所以 \(h\) 在 \(\Omega\) 上全纯。它在刚才的圆盘内为零，由\cref{g4:thm:0101:identity}知 \(h\equiv0\)。于是 \(u\) 的梯度在整个区域为零，故 \(u\) 为常数。对 \(-u\) 应用同一论证得到最小值结论。有界域上的边界结论由闭包紧性与内点极值结论得到；最后对两个函数之差应用最大值和最小值结论，便知其恒为零。
+\end{proof}
+
+边界条件因此决定了调和延拓的唯一性。存在性需要另行构造：极值原理比较的是已经存在的两个函数。类似地，若全纯函数 \(f\) 在区域内无零点，对 \(1/f\) 应用最大模原理，便得到 \(\lvert f\rvert\) 的最小值原则。无零点这一条件不可省略，例如 \(f(z)=z\) 的模就在原点取得最小值。
 
 \subsection{Schwarz 引理与等号}
 \label{g4:subsec:0103:02}
-待撰写
+设 \(f\colon\mathbb D\rightarrow\mathbb D\) 全纯并满足 \(f(0)=0\)。由于原点的零点至少有一阶，可以把 \(f(z)\) 除以 \(z\)；对商函数应用最大模原理，就能把值域的界 \(\lvert f\rvert<1\) 改进为随 \(z\) 缩小的界。这是\term[Schwarzyinli]{Schwarz 引理}[Schwarz lemma]的基本想法。\footnote{Hermann Amandus Schwarz（1843--1921），德国数学家，研究共形映射、极小曲面与变分问题。}
+
+\begin{theorem}[Schwarz 引理]
+	\label{g4:thm:0103:schwarz}
+	若 \(f\colon\mathbb D\rightarrow\mathbb D\) 全纯且 \(f(0)=0\)，则
+	\[
+		\lvert f(z)\rvert\leq\lvert z\rvert\quad(z\in\mathbb D),
+		\qquad \lvert f'(0)\rvert\leq1.
+	\]
+	若存在非零 \(z_0\in\mathbb D\) 使 \(\lvert f(z_0)\rvert=\lvert z_0\rvert\)，或者 \(\lvert f'(0)\rvert=1\)，则存在 \(\theta\in\mathbb R\) 使 \(f(z)=\mathrm{e}^{\mathrm{i}\theta}z\)。这些旋转也都满足等号。
+\end{theorem}
+
+\begin{proof}
+	由 \(f\) 在原点的幂级数，函数
+	\[
+		g(z)=
+		\begin{cases}
+			f(z)/z,&z\ne0,\\
+			f'(0),&z=0
+		\end{cases}
+	\]
+	在整个 \(\mathbb D\) 上全纯。固定 \(0<r<1\)，在 \(\lvert z\rvert=r\) 上有 \(\lvert g(z)\rvert\leq1/r\)。\cref{g4:thm:0103:maximum-modulus}将此界传到闭圆盘 \(\lvert z\rvert\leq r\)。对每个固定 \(z\in\mathbb D\)，令 \(r\uparrow1\)，得到 \(\lvert g(z)\rvert\leq1\)，这同时给出两条不等式。
+
+	任一等号条件都表示 \(\lvert g\rvert\) 在一个内点取得最大值 \(1\)。最大模原理于是使 \(g\) 为模等于 \(1\) 的常数，故 \(g=\mathrm{e}^{\mathrm{i}\theta}\)。反方向直接代入即可。
+\end{proof}
+
+等号所给的信息比不等式本身更强：一个非零点的模或原点的导数达到界，就能决定整个函数。若 \(f'(0)=0\)，还可以继续提取零点因子。具体地，若 \(f\) 在原点的零点阶数至少为正整数 \(m\)，对全纯延拓的 \(f(z)/z^m\) 在半径 \(r\) 的圆上估计，再令 \(r\uparrow1\)，得到 \(\lvert f(z)\rvert\leq\lvert z\rvert^m\)。若在非零点取等号，同一极值论证给出 \(f(z)=\mathrm{e}^{\mathrm{i}\theta}z^m\)。例如 \(z^2\) 把靠近原点的点压得更靠近原点，同时保留了一个二阶分歧点。
+
+\ProseParagraphBreak
+
+固定原点的条件使比较特别简洁。若 \(f(0)\ne0\)，\(\lvert f(z)\rvert\leq\lvert z\rvert\) 在 \(z=0\) 便不成立。要对任意全纯圆盘自映射获得同样有效的结论，需要先把任意选定的点及其像同时移到原点。
 
 \subsection{Schwarz–Pick 的度量形式}
 \label{g4:subsec:0103:03}
-待撰写
+对 \(a\in\mathbb D\)，定义分式线性映射
+\begin{equation}
+	\label{g4:eq:0103:disk-normalization}
+	\phi_a(z)\coloneqq\frac{z-a}{1-\overline a z}.
+\end{equation}
+分母在 \(\mathbb D\) 内非零，且直接展开分子分母的模平方可得
+\begin{equation}
+	\label{g4:eq:0103:disk-normalization-identities}
+	1-\lvert\phi_a(z)\rvert^2
+	=\frac{(1-\lvert a\rvert^2)(1-\lvert z\rvert^2)}{\lvert1-\overline a z\rvert^2},
+	\qquad
+	\phi_a'(z)=\frac{1-\lvert a\rvert^2}{(1-\overline a z)^2}.
+\end{equation}
+第一式说明 \(\phi_a\) 把圆盘映入自身；解出 \(z\) 又得到
+\[
+	\phi_a^{-1}(w)=\frac{w+a}{1+\overline a w}=\phi_{-a}(w).
+\]
+因此 \(\phi_a\) 是具有全纯逆的圆盘双射，把 \(a\) 移到 \(0\)。
+
+\begin{theorem}[Schwarz--Pick 定理]
+	\label{g4:thm:0103:schwarz-pick}
+	若 \(f\colon\mathbb D\rightarrow\mathbb D\) 全纯，则对任意 \(z,w\in\mathbb D\)，有
+	\begin{equation}
+		\label{g4:eq:0103:schwarz-pick-two-points}
+		\left\lvert\frac{f(z)-f(w)}{1-\overline{f(w)}f(z)}\right\rvert
+		\leq
+		\left\lvert\frac{z-w}{1-\overline w z}\right\rvert,
+	\end{equation}
+	并且对每个 \(z\in\mathbb D\)，有
+	\begin{equation}
+		\label{g4:eq:0103:schwarz-pick-derivative}
+		\frac{\lvert f'(z)\rvert}{1-\lvert f(z)\rvert^2}
+		\leq\frac1{1-\lvert z\rvert^2}.
+	\end{equation}
+	若第一式在某对不同点取等号，或第二式在某一点取等号，则 \(f\) 是圆盘的全纯双射，且逆映射全纯。反过来，每个这样的映射在上述两式中处处取等号。
+\end{theorem}
+
+\begin{proof}
+	固定 \(a\in\mathbb D\)，把定义域中的 \(a\) 和值域中的 \(f(a)\) 分别移到原点，令
+	\[
+		g=\phi_{f(a)}\circ f\circ\phi_a^{-1}.
+	\]
+	这些映射组成交换图
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			\mathbb D \arrow[r,"f"] \arrow[d,"\phi_a"']
+			& \mathbb D \arrow[d,"\phi_{f(a)}"] \\
+			\mathbb D \arrow[r,"g"'] & \mathbb D.
+		\end{tikzcd}
+	\]
+	图中 \(a\) 与 \(f(a)\) 均被竖直映射送到 \(0\)，所以 \(g(0)=0\)。由\cref{g4:thm:0103:schwarz}，
+	\[
+		\lvert\phi_{f(a)}(f(z))\rvert\leq\lvert\phi_a(z)\rvert,
+		\qquad \lvert g'(0)\rvert\leq1.
+	\]
+	第一式正是所需的两点不等式。又由链式法则和式\eqref{g4:eq:0103:disk-normalization-identities}，
+	\[
+		g'(0)=\frac{1-\lvert a\rvert^2}{1-\lvert f(a)\rvert^2}f'(a),
+	\]
+	于是得到导数不等式。
+
+	若在不同点 \(z\ne a\) 的两点不等式中取等号，Schwarz 引理的等号条件使 \(g(\zeta)=\mathrm{e}^{\mathrm{i}\theta}\zeta\)；导数等号也给出相同结论。因此
+	\[
+		f=\phi_{f(a)}^{-1}\circ R_\theta\circ\phi_a,
+		\qquad R_\theta(\zeta)=\mathrm{e}^{\mathrm{i}\theta}\zeta.
+	\]
+	每个因子均有全纯逆，所以 \(f\) 也是这样的双射。反过来，若 \(f\) 及其逆都全纯，分别对二者应用两点不等式，得到互反的两个不等式，故必须取等号。对导数不等式也同样处理，并使用 \((f^{-1})'(f(z))f'(z)=1\)，即得处处等号。
+\end{proof}
+
+这个结果称为\term[SchwarzPickdingli]{Schwarz--Pick 定理}[Schwarz--Pick theorem]。\footnote{Georg Alexander Pick（1859--1942），奥地利数学家，研究复变函数、微分方程与几何；格点多边形的面积公式也以其姓氏命名。}例如，当 \(a\ne0\) 时，\(\lvert\phi_a'(a)\rvert=(1-\lvert a\rvert^2)^{-1}>1\)，上述圆盘双射在 \(a\) 附近会放大平面通常的长度。导数不等式中的分母给出了适合圆盘的修正。
+
+\begin{definition}
+	\label{g4:def:0103:hyperbolic-distance}
+	在单位圆盘上取长度元素
+	\[
+		\mathrm{d}s_{\mathbb D}=\lambda_{\mathbb D}(z)\lvert\mathrm{d}z\rvert,
+		\qquad \lambda_{\mathbb D}(z)\coloneqq\frac2{1-\lvert z\rvert^2}.
+	\]
+	这称为圆盘的\term[shuangquduliang]{双曲度量}[hyperbolic metric]。分片 \(C^1\) 曲线 \(\gamma\colon[0,1]\rightarrow\mathbb D\) 的长度定义为
+	\[
+		L_{\mathbb D}(\gamma)=\int_0^1
+		\frac{2\lvert\gamma'(t)\rvert}{1-\lvert\gamma(t)\rvert^2}\,\mathrm{d}t.
+	\]
+	两点间的双曲距离 \(d_{\mathbb D}(z,w)\) 是连接它们的全部这种曲线长度的下确界。
+	\symidx{\(\lambda_{\mathbb D}\)：单位圆盘的双曲长度密度}
+	\symidx{\(d_{\mathbb D}\)：单位圆盘的双曲距离}
+\end{definition}
+
+长度密度处处为正，而且 \(\lambda_{\mathbb D}\geq2\)，所以每条连接 \(z,w\) 的曲线长度至少为 \(2\lvert z-w\rvert\)。圆盘内的直线段给出有限长度的连接。反向参数化保持长度，拼接曲线的长度相加，因而这一构造确实给出有限的距离函数。密度在接近边界时增大，表示靠近单位圆的同样一小段平面长度会被赋予更大的双曲长度。
+
+\begin{proposition}
+	\label{g4:prop:0103:hyperbolic-distance-formula}
+	对任意 \(z,w\in\mathbb D\)，令
+	\[
+		q=\left\lvert\frac{z-w}{1-\overline w z}\right\rvert.
+	\]
+	则 \(0\leq q<1\)，并且
+	\begin{equation}
+		\label{g4:eq:0103:hyperbolic-distance}
+		d_{\mathbb D}(z,w)=\log\frac{1+q}{1-q}
+		=2\operatorname{artanh}q.
+	\end{equation}
+	每个 \(\phi_a\) 和每个旋转都保持这一距离。
+\end{proposition}
+
+\begin{proof}
+	由式\eqref{g4:eq:0103:disk-normalization-identities}，
+	\[
+		\lambda_{\mathbb D}(\phi_a(z))\lvert\phi_a'(z)\rvert
+		=\lambda_{\mathbb D}(z).
+	\]
+	链式法则于是说明 \(\phi_a\) 保持每条曲线的双曲长度；它的逆也把连接曲线一一对应起来，所以保持长度的下确界。旋转的长度保持性直接来自模的不变性。取 \(a=w\)，便把待算距离化为原点到某个模为 \(q\) 的点的距离。
+
+	设 \(\gamma\) 从 \(0\) 连到 \(\zeta\)。径向运动给出最短长度的候选；为比较任意曲线，先用光滑近似处理半径在过原点时可能不可微的问题。对 \(\varepsilon>0\)，令
+	\[
+		r_\varepsilon(t)=\sqrt{\lvert\gamma(t)\rvert^2+\varepsilon^2}-\varepsilon.
+	\]
+	它分片 \(C^1\)，满足 \(0\leq r_\varepsilon(t)\leq\lvert\gamma(t)\rvert\)，且由求导与复数模的不等式可得
+	\[
+		\lvert r_\varepsilon'(t)\rvert
+		=\frac{\lvert\operatorname{Re}(\overline{\gamma(t)}\gamma'(t))\rvert}
+		{\sqrt{\lvert\gamma(t)\rvert^2+\varepsilon^2}}
+		\leq\lvert\gamma'(t)\rvert.
+	\]
+	令
+	\[
+		A(r)=\log\frac{1+r}{1-r},\qquad A'(r)=\frac2{1-r^2}.
+	\]
+	曲线像是圆盘内的紧集，所以这里的分母有正下界。由一元微积分的链式法则，
+	\[
+		L_{\mathbb D}(\gamma)
+		\geq\int_0^1\frac{2\lvert r_\varepsilon'(t)\rvert}{1-r_\varepsilon(t)^2}\,\mathrm{d}t
+		\geq A(r_\varepsilon(1))-A(r_\varepsilon(0)).
+	\]
+	因 \(r_\varepsilon(0)=0\)、\(r_\varepsilon(1)\rightarrow\lvert\zeta\rvert\)，令 \(\varepsilon\downarrow0\) 得 \(L_{\mathbb D}(\gamma)\geq A(\lvert\zeta\rvert)\)。径向线段 \(\gamma(t)=t\zeta\) 恰好达到这个下界，因为半径沿曲线单调增加。因此原点到 \(\zeta\) 的距离是 \(A(\lvert\zeta\rvert)\)，从而得到所示公式。
+\end{proof}
+
+Schwarz–Pick 的导数不等式现在可以写成
+\[
+	\lambda_{\mathbb D}(f(z))\lvert f'(z)\rvert
+	\leq\lambda_{\mathbb D}(z).
+\]
+沿任意分片 \(C^1\) 曲线积分，得到 \(L_{\mathbb D}(f\circ\gamma)\leq L_{\mathbb D}(\gamma)\)。在所有连接两点的曲线上取下确界，便有
+\begin{equation}
+	\label{g4:eq:0103:hyperbolic-contraction}
+	d_{\mathbb D}(f(z),f(w))\leq d_{\mathbb D}(z,w).
+\end{equation}
+因此全纯圆盘自映射都使双曲距离不增加。式\eqref{g4:eq:0103:hyperbolic-distance}中的实函数 \(q\mapsto\log((1+q)/(1-q))\) 严格递增，所以两个不同点间的距离相等，恰好对应\cref{g4:thm:0103:schwarz-pick}的两点等号情形，迫使映射具有全纯逆。
+
+\begin{example}
+	\label{g4:exm:0103:square-contraction}
+	对 \(f(z)=z^2\)，双曲长度的局部伸缩比为
+	\[
+		\frac{\lambda_{\mathbb D}(f(z))\lvert f'(z)\rvert}
+		{\lambda_{\mathbb D}(z)}
+		=\frac{2\lvert z\rvert(1-\lvert z\rvert^2)}{1-\lvert z\rvert^4}
+		=\frac{2\lvert z\rvert}{1+\lvert z\rvert^2}<1.
+	\]
+	最后一步来自 \((1-\lvert z\rvert)^2>0\)。原点处的伸缩比为零，与分歧相符；趋近边界时伸缩比趋于 \(1\)，所以在整个圆盘上不存在统一小于 \(1\) 的伸缩上界。另一方面，原点到实数 \(r\in(0,1)\) 的距离为 \(\log((1+r)/(1-r))\)，当 \(r\uparrow1\) 时趋于无穷。
+\end{example}
 
 \subsection{双全纯映射与自同构}
 \label{g4:subsec:0103:04}
-待撰写
+保持全纯结构的坐标变换要求正向与反向都全纯，这正是\cref{g4:def:0101:biholomorphic}中的双全纯映射。由\cref{g4:thm:0101:open-mapping}及其后的局部逆论证，全纯单射就是到其像的双全纯映射。区域 \(U\subset\mathbb C\) 到自身的双全纯映射称为 \(U\) 的\term[quanchunzitonggou]{全纯自同构}[holomorphic automorphism]，其全体在复合下构成群 \(\operatorname{Aut}(U)\)。对圆盘来说，Schwarz 引理的等号条件足以确定这个群的所有元素。
+
+\begin{theorem}
+	\label{g4:thm:0103:disk-aut}
+	单位圆盘的全纯自同构恰好是
+	\[
+		f(z)=\mathrm{e}^{\mathrm{i}\theta}\frac{z-a}{1-\overline a z},
+		\qquad a\in\mathbb D,\quad\theta\in\mathbb R.
+	\]
+	其中 \(a=f^{-1}(0)\) 唯一，\(\theta\) 按模 \(2\pi\) 唯一。特别地，固定原点的全纯自同构都是旋转。
+\end{theorem}
+
+\begin{proof}
+	所示映射都是式\eqref{g4:eq:0103:disk-normalization}与旋转的复合，已知具有全纯逆。反过来，设 \(f\) 为全纯自同构，取 \(a=f^{-1}(0)\)，令 \(h=f\circ\phi_a^{-1}\)。则 \(h\) 与 \(h^{-1}\) 都固定 \(0\)。对二者分别应用\cref{g4:thm:0103:schwarz}，得到
+	\[
+		\lvert h(z)\rvert\leq\lvert z\rvert
+		=\lvert h^{-1}(h(z))\rvert\leq\lvert h(z)\rvert.
+	\]
+	于是处处取等号，Schwarz 引理给出 \(h(z)=\mathrm{e}^{\mathrm{i}\theta}z\)，从而 \(f=R_\theta\circ\phi_a\)。\(a\) 由唯一的零点决定；固定 \(a\) 后，旋转因子也由任一非零点的像决定。
+\end{proof}
+
+一个圆盘坐标的选择因此有两种自由：先指定哪个点成为原点，再指定该点的方向。固定这两项就能得到唯一性。
+
+\begin{corollary}
+	\label{g4:cor:0103:normalized-unique}
+	设 \(\Omega\subset\mathbb C\) 是区域，\(a\in\Omega\)。若 \(f,g\colon\Omega\rightarrow\mathbb D\) 均为双全纯映射，且
+	\[
+		f(a)=g(a)=0,\qquad f'(a)>0,\qquad g'(a)>0,
+	\]
+	其中导数的不等式表示正实数，则 \(f=g\)。
+\end{corollary}
+
+\begin{proof}
+	映射 \(h=g\circ f^{-1}\) 是固定 \(0\) 的圆盘自同构，故由\cref{g4:thm:0103:disk-aut}可写成 \(h(z)=\mathrm{e}^{\mathrm{i}\theta}z\)。又
+	\[
+		\mathrm{e}^{\mathrm{i}\theta}=h'(0)=\frac{g'(a)}{f'(a)}>0.
+	\]
+	正实数中只有 \(1\) 的模为 \(1\)，所以 \(h\) 是恒等映射，\(f=g\)。
+\end{proof}
+
+\begin{example}
+	\label{g4:exm:0103:half-plane}
+	上半平面 \(\mathbb H=\{w\in\mathbb C:\operatorname{Im}w>0\}\) 与圆盘双全纯等价。具体映射及其逆为
+	\[
+		\psi(w)=\frac{w-\mathrm{i}}{w+\mathrm{i}},
+		\qquad \psi^{-1}(z)=\mathrm{i}\frac{1+z}{1-z}.
+	\]
+	由
+	\[
+		1-\lvert\psi(w)\rvert^2
+		=\frac{4\operatorname{Im}w}{\lvert w+\mathrm{i}\rvert^2},
+		\qquad \lvert\psi'(w)\rvert=\frac2{\lvert w+\mathrm{i}\rvert^2},
+	\]
+	既可检查 \(\psi(\mathbb H)\subset\mathbb D\)，也可得到圆盘双曲长度的拉回
+	\[
+		\lambda_{\mathbb D}(\psi(w))\lvert\psi'(w)\rvert\lvert\mathrm{d}w\rvert
+		=\frac{\lvert\mathrm{d}w\rvert}{\operatorname{Im}w}.
+	\]
+	因此上半平面的长度元素可以从圆盘坐标直接恢复。区域在平面中是否有界，不是双全纯等价的不变量。
+\end{example}
+
+圆盘自同构的分类解决了圆盘坐标的唯一性问题。对一个给定的平面区域，能否首先找到这样的坐标，需要构造全纯单射并控制其极限；下一节将用正规族把这一存在问题变成一个导数极值问题。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

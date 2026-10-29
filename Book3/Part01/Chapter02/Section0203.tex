@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 2.3 Hopf–Rinow 定理
 % 纲要位置：几何学计划纲要.md，第 2175 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,205 @@
 \section{Hopf–Rinow 定理}
 \label{g3:sec:0203}
 
-待撰写
+短测地线已经能在小邻域内实现距离。要把它延长到远处，可能遇到两种不同障碍：一条测地线在有限时间内离开流形，或者一列越来越短的连接曲线始终没有极小者。本节证明，在有限维无边界黎曼流形上，这两个问题都由度量完备性控制；它还等价于闭有界集的紧性。这一联系称为\term[HopfRinowdingli]{Hopf--Rinow 定理}[Hopf--Rinow theorem]。\footnote{Heinz Hopf（1894--1971），德裔瑞士数学家，主要研究代数拓扑，提出了 Hopf 不变量。Willi Rinow（1907--1979），德国数学家，研究微分几何、拓扑和度量空间。}
+
+\ProseParagraphBreak
+
+以下 \((M,g)\) 为连通、有限维、无边界的光滑黎曼流形，\(d=d_g\) 为\cref{g3:thm:riemannian-distance}中的内在距离。连通性保证任意两点的距离有限；距离拓扑与流形拓扑相同，使局部坐标、紧性和距离收敛可以配合使用。证明先处理有限时间的延拓，再从一个基点构造极小测地线，最后由有限维切空间中的闭球得到流形上的紧性。
 
 \subsection{度量完备推出延拓}
 \label{g3:subsec:0203:01}
-待撰写
+一个 Cauchy 序列中的点彼此越来越近，但其极限可能落在被删去的位置。\footnote{Augustin-Louis Cauchy（1789--1857），法国数学家，在分析的严格化和复函数理论方面作出重要贡献。}若每个关于 \(d\) 的 Cauchy 序列都在 \(M\) 内收敛，就称 \((M,g)\)\term[duliangwanbei]{度量完备}[metrically complete]。若每个测地线初值 \((p,v)\in\mathrm TM\) 的最大解都定义在整个实轴上，就称 \((M,g)\)\term[cediwanbei]{测地完备}[geodesically complete]。前一个定义涉及任意点列，后一个只涉及测地线方程的解。
+
+\begin{proposition}\label{g3:prop:metric-complete-geodesic-extension}
+	设 \((M,g)\) 为连通、有限维、无边界的光滑黎曼流形。若 \((M,d_g)\) 完备，则 \((M,g)\) 测地完备。
+\end{proposition}
+\begin{proof}
+	设 \(\gamma:(a,b)\rightarrow M\) 是最大测地线，假设右端点 \(b<\infty\)。由\cref{g3:thm:geodesic-ivp}，速度长度为常数 \(c\ge0\)，因此对 \(a<s<t<b\)，有
+	\[
+		d(\gamma(s),\gamma(t))\le L_g(\gamma|_{[s,t]})=c|t-s|.
+	\]
+	当 \(t\uparrow b\) 时，\(\gamma(t)\) 是 Cauchy 的。取一列 \(t_j\uparrow b\)，完备性给出 \(\gamma(t_j)\rightarrow q\in M\)；同一距离估计再推出整个曲线尾部都收敛于 \(q\)。
+
+	要把位置极限用作测地线初值，还需取得速度极限。取包含 \(q\) 的坐标图，并在图内取较小邻域，使其闭包 \(K\) 紧且仍含于该坐标图。充分靠近 \(b\) 的曲线尾部落在 \(K\) 中。记其坐标为 \(x(t)\)，坐标 Euclid 范数为 \(|\cdot|\)。在 \(K\) 上，度量矩阵的最小特征值有正下界 \(\lambda>0\)，故
+	\[
+		\lambda|\dot x(t)|^2\le g(\dot\gamma(t),\dot\gamma(t))=c^2.
+	\]
+	Christoffel 系数在 \(K\) 上有界，测地线方程
+	\[
+		\ddot x^k(t)=-\Gamma^k{}_{ij}(x(t))\dot x^i(t)\dot x^j(t)
+	\]
+	因此给出加速度的统一界 \(|\ddot x(t)|\le C\)。于是 \(|\dot x(t)-\dot x(s)|\le C|t-s|\)，从而 \(\dot x(t)\) 也在 \(t\uparrow b\) 时收敛。将其极限解释为 \(v\in\mathrm T_qM\)。
+
+	在相空间坐标 \((x,\dot x)\) 中，曲线趋于 \((q,v)\)，测地线方程的右端也趋于该点的值。把 \((x,\dot x)\) 在 \(b\) 定义为这一极限，原方程的积分形式延续到 \(b\)，所以这是一个到端点仍满足方程的解。再由\cref{g3:thm:geodesic-ivp}在初值 \((q,v)\) 处的局部存在唯一性，可以将解延长到 \(b\) 之后，与最大性矛盾。对反向参数作同样论证，排除有限左端点。因此 \((a,b)=\mathbb R\)。
+\end{proof}
+
+这里常速性先把有限时间区间变成有限长度的曲线尾部，完备性再给出位置极限。位置极限本身还不足以应用二阶方程的初值定理；局部度量下界和联络系数上界共同保证速度也有极限。
 
 \subsection{从测地完备构造最短测地线}
 \label{g3:subsec:0203:02}
-待撰写
+现在反过来假设测地线能从一个基点 \(p\) 向所有方向走任意远。任意取一个方向通常到不了指定点 \(q\)，所以还需要选出正确方向。做法是取从 \(p\) 到 \(q\) 的近似最短曲线，只观察它们第一次穿过 \(p\) 附近小球面的点。这个球面紧，因而能够选出一个极限方向；随后利用距离等号和无角点性质证明，该方向一直走下去就会到达 \(q\)。
+
+\begin{lemma}\label{g3:lem:first-sphere-distance-equality}
+	设 \((M,g)\) 为连通、有限维、无边界的光滑黎曼流形，\(x\ne q\)。取 \(0<\rho<d(x,q)\)，使闭球 \(\overline B_d(x,\rho)\) 位于 \(x\) 的法邻域中，且满足\cref{g3:lem:uniform-normal-neighborhood}中的闭球表示。则存在 \(y\in M\)，使
+	\begin{equation}\label{g3:eq:first-sphere-distance-equality}
+		d(x,y)=\rho,\qquad d(x,q)=\rho+d(y,q).
+	\end{equation}
+	从 \(x\) 到 \(y\) 的径向测地线长度为 \(\rho\)，并实现两点间距离。
+\end{lemma}
+\begin{proof}
+	记 \(\ell=d(x,q)\)。按距离的定义，取分片光滑曲线 \(c_j\) 连接 \(x,q\)，且 \(L_g(c_j)\le\ell+1/j\)。沿每条曲线，连续函数 \(d(x,c_j(t))\) 从零变为 \(\ell>\rho\)，所以有第一次等于 \(\rho\) 的时刻，记对应点为 \(y_j\)。曲线的前段长度至少为 \(\rho\)，于是
+	\[
+		d(y_j,q)\le L_g(c_j)-\rho\le\ell+\frac1j-\rho.
+	\]
+	小球面 \(\{y:d(x,y)=\rho\}\) 是紧闭球的闭子集，故取子列可使 \(y_j\rightarrow y\)。距离连续性给出 \(d(x,y)=\rho\) 和 \(d(y,q)\le\ell-\rho\)。另一方面，三角不等式给出 \(\ell\le\rho+d(y,q)\)，两者合起来就是所求等式。径向测地线的性质来自所取法邻域的局部极小性。
+\end{proof}
+
+这个引理只使用小球面的紧性。近似最短曲线在小球外可以很不规则，证明也不要求整列曲线收敛。
+
+\begin{proposition}\label{g3:prop:complete-basepoint-minimizers}
+	设 \((M,g)\) 为连通、有限维、无边界的光滑黎曼流形。若存在 \(p\in M\)，使 \(\exp_p\) 定义在整个 \(\mathrm T_pM\) 上，则每个 \(q\in M\) 都能由一条从 \(p\) 出发、长度为 \(d(p,q)\) 的测地线到达。特别地，\(\exp_p:\mathrm T_pM\rightarrow M\) 满射。
+\end{proposition}
+\begin{proof}
+	当 \(q=p\) 时取常值曲线。设 \(q\ne p\)，记 \(\ell=d(p,q)>0\)。取足够小的 \(0<\varepsilon<\ell\)，用\cref{g3:lem:first-sphere-distance-equality}得到 \(y\)，满足
+	\[
+		d(p,y)=\varepsilon,\qquad d(y,q)=\ell-\varepsilon.
+	\]
+	将唯一的短径向测地线写成 \(y=\exp_p(\varepsilon v)\)，其中 \(|v|_g=1\)。假设保证
+	\[
+		\gamma(t)=\exp_p(tv)
+	\]
+	对所有 \(t\ge0\) 有定义，并且是同一条单位速测地线。这里用到了\cref{g3:thm:geodesic-ivp}中的仿射缩放及唯一性：\(\exp_p(tv)\) 的时间一解就是初速度 \(v\) 的解在时间 \(t\) 的取值。
+
+	考虑能够保持到 \(q\) 的距离等号的时刻集合
+	\[
+		A=\{t\in[\varepsilon,\ell]:d(\gamma(t),q)=\ell-t\}.
+	\]
+	它包含 \(\varepsilon\)，且由连续性是闭集，故有最大元 \(a\)。对每个 \(t\in A\)，一方面 \(d(p,\gamma(t))\le t\)，另一方面三角不等式给出
+	\[
+		\ell\le d(p,\gamma(t))+d(\gamma(t),q)
+		=d(p,\gamma(t))+\ell-t.
+	\]
+	因此 \(d(p,\gamma(t))=t\)，即 \(\gamma|_{[0,t]}\) 已经是极小段。
+
+	若 \(a<\ell\)，令 \(x=\gamma(a)\)。在 \(x\) 处选取足够小的 \(0<\delta<\ell-a\)，再次使用\cref{g3:lem:first-sphere-distance-equality}，得到 \(z\) 及从 \(x\) 到 \(z\) 的单位速短测地线 \(\eta:[0,\delta]\rightarrow M\)，满足
+	\[
+		d(x,z)=\delta,\qquad d(z,q)=\ell-a-\delta.
+	\]
+	先走 \(\gamma|_{[0,a]}\)，再走 \(\eta\)，总长度为 \(a+\delta\)。而
+	\[
+		d(p,z)\ge d(p,q)-d(z,q)=a+\delta,
+	\]
+	所以这条拼接曲线也实现 \(p,z\) 间距离。若接点两侧的单位速度不同，\cref{g3:lem:corner-shortening}便能在接点附近严格缩短，产生矛盾。因此 \(\eta'(0)=\gamma'(a)\)。测地线初值唯一性随即给出 \(\eta(s)=\gamma(a+s)\)，于是
+	\[
+		d(\gamma(a+\delta),q)=\ell-(a+\delta).
+	\]
+	这说明 \(a+\delta\in A\)，与 \(a\) 为最大元矛盾。故 \(a=\ell\)，从而 \(d(\gamma(\ell),q)=0\)，即 \(\gamma(\ell)=q\)。该段长度为 \(\ell\)，正是所求极小测地线。
+\end{proof}
+
+这一论证中，全域定义的 \(\exp_p\) 只负责保证选定的测地线随时可以继续走。它在远处是否单射、微分是否可逆都没有被使用；距离等号决定哪些线段仍然极小，无角点性质则将下一段的方向固定为原测地线的延伸方向。
 
 \subsection{有界闭集紧性}
 \label{g3:subsec:0203:03}
-待撰写
+一旦每个点都能从 \(p\) 沿极小测地线到达，流形中的距离球就由切空间中的向量球控制。有限维性在这里把“初速度长度有界”变成了紧性。
+
+\begin{proposition}\label{g3:prop:complete-basepoint-proper}
+	设 \((M,g)\) 为连通、有限维、无边界的光滑黎曼流形，且 \(\exp_p\) 在某个 \(p\in M\) 的整个切空间上有定义。则对每个 \(R\ge0\)，
+	\begin{equation}\label{g3:eq:closed-ball-exponential-image}
+		\overline B_d(p,R)
+		=\exp_p\{v\in\mathrm T_pM:|v|_g\le R\}.
+	\end{equation}
+	因此 \(M\) 的每个闭有界子集都是紧集。
+\end{proposition}
+\begin{proof}
+	若 \(|v|_g\le R\)，径向测地线 \(t\mapsto\exp_p(tv)\)、\(0\le t\le1\) 的长度为 \(|v|_g\)，故 \(d(p,\exp_pv)\le R\)。这给出右侧包含于左侧。反过来，若 \(d(p,q)\le R\)，由\cref{g3:prop:complete-basepoint-minimizers}可取长度为 \(d(p,q)\) 的极小测地线从 \(p\) 到 \(q\)，从而 \(q=\exp_pv\)，且 \(|v|_g=d(p,q)\le R\)。
+
+	有限维内积空间 \(\mathrm T_pM\) 的闭球紧，\(\exp_p\) 连续，所以\eqref{g3:eq:closed-ball-exponential-image}中的像紧。若 \(C\subset M\) 闭且有界，则由三角不等式，它包含在某个以 \(p\) 为中心的有限半径闭球中。因此 \(C\) 是紧集的闭子集，故紧。
+\end{proof}
+
+\begin{lemma}\label{g3:lem:proper-metric-complete}
+	若度量空间 \((X,d)\) 的每个闭有界子集都紧，则 \((X,d)\) 完备。
+\end{lemma}
+\begin{proof}
+	设 \((x_j)\) 为 Cauchy 序列。其尾部落在一个固定半径球中，前面有限项也有有限距离，故整列包含在某个闭有界球内。紧性给出收敛子列 \(x_{j_k}\rightarrow x\)。对任意 \(\varepsilon>0\)，取 \(N\) 使 \(i,j\ge N\) 时 \(d(x_i,x_j)<\varepsilon/2\)，再取 \(j_k\ge N\) 使 \(d(x_{j_k},x)<\varepsilon/2\)。于是 \(j\ge N\) 时 \(d(x_j,x)<\varepsilon\)，所以整个序列收敛于 \(x\)。
+\end{proof}
+
+闭有界集紧性还提供了后续极限论证所需的具体形式：只要一列点距某个基点的距离有统一上界，就能提取收敛子列。这里不能把闭球的紧性理解为指数映射在该球上单射；球面上的对径点已经说明，不同初始方向可以在同一点相遇。
 
 \subsection{等价条件的完整闭环}
 \label{g3:subsec:0203:04}
-待撰写
+上述几个步骤已经覆盖了完备性之间的所有必要方向。将它们合并，便得到本节的整体结论。
+
+\begin{theorem}[Hopf--Rinow]\label{g3:thm:hopf-rinow}
+	设 \((M,g)\) 为连通、有限维、无边界的光滑黎曼流形，\(d_g\) 为其内在距离。下列条件等价：
+	\begin{equivalences}
+		\item \label{g3:item:hr-metric-complete}\((M,d_g)\) 是完备度量空间。
+		\item \label{g3:item:hr-geodesic-complete}\((M,g)\) 测地完备，即每个测地线初值的最大解定义在 \(\mathbb R\) 上。
+		\item \label{g3:item:hr-basepoint-complete}存在 \(p\in M\)，使 \(\exp_p\) 定义在整个 \(\mathrm T_pM\) 上。
+		\item \label{g3:item:hr-closed-bounded-compact}\(M\) 的每个关于 \(d_g\) 闭且有界的子集都紧。
+	\end{equivalences}
+	在这些等价条件成立时，任意两点之间都有一条实现内在距离的测地线。
+\end{theorem}
+\begin{proof}
+	\cref{g3:prop:metric-complete-geodesic-extension}给出\itemref{g3:item:hr-metric-complete}推出\itemref{g3:item:hr-geodesic-complete}。测地完备使每条测地线在时间一有定义，所以\itemref{g3:item:hr-geodesic-complete}推出\itemref{g3:item:hr-basepoint-complete}。由\cref{g3:prop:complete-basepoint-proper}，\itemref{g3:item:hr-basepoint-complete}推出\itemref{g3:item:hr-closed-bounded-compact}。最后\cref{g3:lem:proper-metric-complete}给出\itemref{g3:item:hr-closed-bounded-compact}推出\itemref{g3:item:hr-metric-complete}，形成闭环。
+
+	当这些条件成立时，测地完备使每个基点的指数映射都在整个切空间上有定义。将任意一个待连接的点用作\cref{g3:prop:complete-basepoint-minimizers}中的基点，即得最后一条结论。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:compact-riemannian-complete}
+	每个连通、紧、无边界的光滑黎曼流形都度量完备且测地完备，并且任意两点之间存在极小测地线。
+\end{corollary}
+\begin{proof}
+	紧流形中的每个闭集都紧，因而满足\cref{g3:thm:hopf-rinow}的闭有界集紧性条件。
+\end{proof}
+
+定理最后的极小测地线存在性是这些等价条件的共同后果。单独知道任意两点能由极小测地线连接，并不能反推出完备性；这一差别在开球中就能看见。
 
 \subsection{非完备和一般长度空间的对照}
 \label{g3:subsec:0203:05}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+\begin{example}\label{g3:exm:convex-open-ball-incomplete}
+	开单位球 \(M=\{x\in\mathbb R^n:|x|<1\}\) 取 Euclid 度量。任意两点的线段仍在球内，故内在距离就是 \(|x-y|\)，并由该线段实现。但沿单位向量 \(e\) 的序列 \((1-1/j)e\) 是 Cauchy 序列，其 Euclid 极限 \(e\) 不在 \(M\) 内。测地线 \(\gamma(t)=te\)、\(-1<t<1\) 也不能在 \(M\) 中继续延长。因此，所有点对都有最短测地线，与所有测地线都能无限延伸，是不同的条件。
+\end{example}
+
+\begin{example}\label{g3:exm:punctured-plane-no-minimizer}
+	在穿孔平面 \(M=\mathbb R^2\setminus\{0\}\) 上取 Euclid 度量，令 \(p=(-1,0)\)、\(q=(1,0)\)。任何连接曲线长度至少为 \(|p-q|=2\)。先沿水平线走到 \((-\varepsilon,0)\)，再沿半径 \(\varepsilon\) 的上半圆绕过原点，最后沿水平线走到 \(q\)，其长度为
+	\[
+		2-2\varepsilon+\pi\varepsilon=2+(\pi-2)\varepsilon.
+	\]
+	令 \(\varepsilon\downarrow0\)，可得 \(d(p,q)=2\)。若某条分片光滑曲线实现长度二，记其速度为 \((\dot x,\dot y)\)，则
+	\[
+		2=\int\sqrt{\dot x^2+\dot y^2}\,\mathrm dt
+		\ge\int\dot x\,\mathrm dt=2.
+	\]
+	等号迫使每个光滑片段上 \(\dot y=0\)、\(\dot x\ge0\)，故整条曲线沿水平线从 \(-1\) 走到 \(1\)，必经过被删去的原点，矛盾。因此两点间没有极小曲线。非完备性在这里既能表现为测地线撞上缺口，也能表现为长度下确界无法取得。
+\end{example}
+
+将黎曼距离与一般度量比较时，首先要保留“距离来自曲线长度”这一信息。对度量空间 \((X,d)\) 中连续曲线 \(c:[a,b]\rightarrow X\)，定义其度量长度为
+\[
+	L_d(c)=\sup_{a=t_0<\cdots<t_N=b}
+	\sum_{i=1}^N d(c(t_{i-1}),c(t_i)).
+\]
+若任意两点的距离等于连接它们的连续曲线长度的下确界，就称 \((X,d)\) 为\term[changdukongjian]{长度空间}[length space]。黎曼流形的内在距离具有这个性质：三角不等式保证每条连接曲线的度量长度至少为端点距离；另一方面，分片光滑曲线的度量长度不超过其黎曼长度，而后者的下确界已经是 \(d_g\)。
+
+\ProseParagraphBreak
+
+有限维黎曼流形还具有局部紧性和局部测地线结构。在本节的证明中，前者用于小球面取极限，有限维切空间的紧闭球则用于获得整体闭球紧性。以下两个度量模型分别说明，保留长度空间结构后，删除局部紧性或允许边界仍会改变结论。
+
+\begin{example}\label{g3:exm:hilbert-length-space}
+	取平方可和实序列空间
+	\[
+		\ell^2=\left\{x=(x_j)_{j\ge1}:\sum_{j=1}^{\infty}x_j^2<\infty\right\},
+		\qquad\|x\|_2=\left(\sum_{j=1}^{\infty}x_j^2\right)^{1/2},
+	\]
+	并赋予距离 \(d(x,y)=\|x-y\|_2\)。先核对其完备性。若 \((x^{(k)})\) 为 Cauchy 序列，则每个坐标收敛于某个 \(x_j\)，且范数有共同上界 \(C\)。对每个 \(N\)，令 \(k\rightarrow\infty\) 得 \(\sum_{j=1}^N x_j^2\le C^2\)，故 \(x\in\ell^2\)。给定 \(\varepsilon>0\)，取 \(K\) 使 \(k,l\ge K\) 时 \(\|x^{(k)}-x^{(l)}\|_2<\varepsilon\)。先在前 \(N\) 个坐标上令 \(l\rightarrow\infty\)，再令 \(N\rightarrow\infty\)，便得 \(\|x^{(k)}-x\|_2\le\varepsilon\) 对 \(k\ge K\) 成立。因此该空间完备。
+
+	线段 \(c(t)=(1-t)x+ty\)、\(0\le t\le1\) 满足
+	\[
+		d(c(s),c(t))=|t-s|\,d(x,y),
+	\]
+	所以它是长度空间，每对点之间都存在实现距离的线段。但标准正交向量 \(e_j\) 都在闭单位球内，且 \(\|e_j-e_k\|_2=\sqrt2\) 对 \(j\ne k\) 成立，故没有收敛子列，闭单位球不紧。任意小球中也可放入缩放后的同类序列，因此空间不局部紧。可见，长度空间的完备性本身不足以推出闭有界集紧性。
+\end{example}
+
+\begin{example}\label{g3:exm:closed-interval-boundary}
+	闭区间 \([0,1]\) 取通常距离。它紧且完备，任意两点之间的线段实现距离。然而，将它视为带边界的一维黎曼流形时，方程 \(\ddot x=0\) 的解 \(x(t)=t\) 到达右端点后无法保持原速度继续留在区间内。因此无边界条件参与了 Hopf--Rinow 定理中“度量完备推出测地完备”的论证：极限点必须仍有可以继续求解常微分方程的开坐标邻域。沿边界反射或停下都会改变运动规律，不是原测地线方程的延拓。
+\end{example}

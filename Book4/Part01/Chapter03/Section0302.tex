@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 3.2 层上同调的曲面模型
 % 纲要位置：几何学计划纲要.md，第 3556 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,458 @@
 \section{层上同调的曲面模型}
 \label{g4:sec:0302}
 
-待撰写
+给定若干局部主部，可以先在每个小圆盘内写出具有这些主部的亚纯表达式。要得到整体截面，还须消去交叠上的全纯差。另一种做法是用光滑截断把局部表达式相加；这时粘合已经完成，代价是出现一个 \(\bar\partial\) 误差。本节将证明，这两种误差记录同一个上同调类：交叠上的全纯余圈，可以等价地表示为一个整体光滑 \((0,1)\) 形式模去 \(\bar\partial\) 像。这使下一节能够用积分与微分方程研究局部问题的整体障碍。
 
 \subsection{预层、层和茎的最低工具}
 \label{g4:subsec:0302:01}
-待撰写
+
+前一节把线丛截面写在不同开集上，并用过渡函数比较。层的语言把这种记录方法固定下来。以下定义适用于任意拓扑空间；在解析应用中，\(X\) 是黎曼曲面，\(L\) 是其上的全纯线丛。第二卷第7.1节定义7.1.1、7.1.2及命题7.1.4给出了一般模层版本；这里恢复复向量空间层所需的内容。
+
+\begin{definition}
+\label{g4:def:0302:sheaf}
+设 \(X\) 为拓扑空间。给每个开集 \(U\subseteq X\) 指定复向量空间 \(\mathcal F(U)\)，并给每个包含 \(V\subseteq U\) 指定线性限制映射 \(s\mapsto s|_V\)，满足
+\[
+ s|_U=s,\qquad (s|_V)|_W=s|_W\quad(W\subseteq V\subseteq U),
+\]
+所得资料称为一个\term[yuceng]{预层}[presheaf]。若对每个开覆盖 \(U=\bigcup_i U_i\)，在交叠处相等的截面 \(s_i\in\mathcal F(U_i)\) 都唯一地来自一个 \(s\in\mathcal F(U)\)，便称 \(\mathcal F\) 为\term[ceng]{层}[sheaf]。空覆盖给出 \(\mathcal F(\varnothing)=0\)。与限制交换的一族线性映射称为层态射，\(\mathcal F(X)\) 也记为 \(\Gamma(X,\mathcal F)\)，称为整体截面空间。
+\end{definition}
+
+全纯函数组成层 \(\mathcal O_X\)，全纯线丛 \(L\) 的全纯截面组成层 \(\mathcal O(L)\)。验证时，在标架内按函数值粘合；全纯性是局部条件，过渡函数又保证不同标架中的表达相容。光滑函数及光滑截面同样组成层。相反，“有界全纯函数”只构成预层：平面上的函数 \(z\) 在每个有界圆盘上有界，而这些限制不能粘成一个有界整函数。层公理保留的是局部可核对的条件。
+
+\begin{definition}
+\label{g4:def:0302:stalk}
+设 \(p\in X\)。把含 \(p\) 的开邻域上的截面对 \((U,s)\) 作如下识别：\((U,s)\sim(V,t)\) 当且仅当存在开邻域 \(p\in W\subseteq U\cap V\)，使 \(s|_W=t|_W\)。所得复向量空间
+\[
+ \mathcal F_p=\varinjlim_{p\in U}\mathcal F(U)
+\]
+称为 \(\mathcal F\) 在 \(p\) 的\term[jing]{茎}[stalk]，其中 \(s\) 的类称为它的芽，记为 \(s_p\)。加法与数乘在共同的小邻域上进行。
+\end{definition}
+
+芽保留某个邻域上的信息，而不只保留点值。局部坐标 \(z\) 满足 \(z(p)=0\)，但 \(z_p\ne0\)。若 \(e\) 是 \(L\) 的局部全纯标架，则 \(\mathcal O(L)_p=\mathcal O_{X,p}e\) 是全纯函数芽环上的自由秩一模；纤维 \(L_p\) 则是把所有在 \(p\) 为零的系数芽商掉后所得的一维复向量空间。两条层截面相等，当且仅当它们在每点有相同的芽：芽相同给出局部相等的覆盖，再用层的唯一粘合性。
+
+\begin{proposition}
+\label{g4:prop:0302:stalk-exactness}
+设 \(\mathcal F\xrightarrow{a}\mathcal G\xrightarrow{b}\mathcal H\) 为复向量空间层的复形，即 \(b\circ a=0\)。它在每点的茎上正合，当且仅当每个满足 \(b(s)=0\) 的局部截面 \(s\) 在其定义域的每一点附近都可以写成 \(a(t)\)。特别地，层态射满射表示局部可提升；层态射单射则保证每个开集上的截面映射都单射。
+\end{proposition}
+\begin{proof}
+若 \(s_p\) 属于 \(a_p\) 的像，选取一个原像芽的代表 \(t\)。等式 \(a_p(t_p)=s_p\) 的含义正是：缩小到 \(p\) 的某个共同邻域后，\(a(t)=s\)。反之，局部原像取芽即给出茎上的原像。若 \(b_p(s_p)=0\)，也可先缩小邻域，使 \(b(s)=0\) 作为截面等式成立，所以这两种表述完全等价。
+
+若层态射在茎上单射，而一个截面被映为零，那么它的每个芽均为零。该截面局部恒零，故由层公理整体为零。这证明最后的单射陈述；满射只给出逐点附近的原像，这些原像未必在交叠处相等。
+\end{proof}
+
+层的核可逐开集取核；像与商则按局部代表解释。例如 \(\mathcal G/a\mathcal F\) 的一个截面，是一族局部商类，它们在每点附近由 \(\mathcal G\) 的截面代表，且代表之差局部属于 \(a\mathcal F\)。这样的资料可以唯一粘合，构成商层，其茎为 \(\mathcal G_p/a_p\mathcal F_p\)。前一节的主部层正是用亚纯截面模去全纯截面所得的这种商层。
+
+\ProseParagraphBreak
+
+局部可提升与整体可提升的差别已经出现在 \(\mathbb C^*\) 上：求导映射 \(h\mapsto h'\) 在每个函数芽处满射，因为小圆盘上存在全纯原函数；但 \(1/z\) 没有 \(\mathbb C^*\) 上的全纯原函数。否则沿单位圆积分便同时等于 \(0\) 和 \(2\pi\mathrm{i}\)。不同小圆盘中的原函数在交叠处相差常数，这些差构成了下一小节要研究的资料。
 
 \subsection{Čech 余圈及细化}
 \label{g4:subsec:0302:02}
-待撰写
 
+设 \(\mathfrak U=\{U_i\}_{i\in I}\) 是 \(X\) 的开覆盖。记 \(U_{i_0\cdots i_q}=U_{i_0}\cap\cdots\cap U_{i_q}\)，并给指标集选一个全序。交叠上的截面要记录两件事：各个差来自哪里，以及三重、四重交叠上的相容关系。交替求和同时处理了这两件事。
+
+\begin{definition}
+\label{g4:def:0302:cech}
+对复向量空间层 \(\mathcal F\)，定义 \(q\) 次\term[cechshanglian]{Čech 上链}[Čech cochain]空间
+\[
+ \check C^q(\mathfrak U,\mathcal F)
+ =\prod_{i_0<\cdots<i_q}\mathcal F(U_{i_0\cdots i_q}),\qquad q\geq0.
+\]
+把分量交替延拓到任意指标列；有重复指标时取零。定义余边界
+\begin{equation}
+\label{g4:eq:0302:cech-differential}
+ (\delta c)_{i_0\cdots i_{q+1}}
+ =\sum_{a=0}^{q+1}(-1)^a
+ c_{i_0\cdots\widehat{i_a}\cdots i_{q+1}}\big|_{U_{i_0\cdots i_{q+1}}}.
+\end{equation}
+满足 \(\delta c=0\) 的上链称为余圈；形如 \(\delta b\) 的上链称为余边界。覆盖上的 Čech 上同调为
+\[
+ \check H^q(\mathfrak U,\mathcal F)
+ =\ker\delta\big/\operatorname{im}\delta,
+\]
+其中零次的余边界空间取零。
+\end{definition}
+
+连续删去两个不同指标时，两种删除次序的符号相反，其余限制相同，所以 \(\delta^2=0\)。在低次数，公式成为
+\[
+ (\delta b)_{ij}=b_j-b_i,\qquad
+ (\delta c)_{ijk}=c_{jk}-c_{ik}+c_{ij}.
+\]
+因而一个 \(1\) 余圈满足 \(c_{ik}=c_{ij}+c_{jk}\)。若局部提升为 \(s_i\)，它们的差 \(c_{ij}=s_j-s_i\) 自动满足这一关系。将提升改为 \(s_i-b_i\)，差便改为 \(c-\delta b\)；所以余圈类为零，恰好表示可以用局部全纯修正把提升粘起来。零次余圈则已经是一族相容截面，层公理给出 \(\check H^0(\mathfrak U,\mathcal F)=\mathcal F(X)\)。
+
+\ProseParagraphBreak
+
+局部解可能需要在比原覆盖更小的开集上选取。因此整体障碍应允许细化覆盖。若 \(\mathfrak V=\{V_j\}\) 细化 \(\mathfrak U\)，选 \(r(j)\) 使 \(V_j\subseteq U_{r(j)}\)，定义
+\[
+ (r^*c)_{j_0\cdots j_q}
+ =c_{r(j_0)\cdots r(j_q)}|_{V_{j_0\cdots j_q}}.
+\]
+限制与删指标交换，故 \(r^*\delta=\delta r^*\)。指标选择虽非唯一，其在上同调上的作用却相同。这里恢复第二卷第7.2节命题7.2.8的上链同伦：若另一选择为 \(s\)，在递增指标上令
+\[
+ (Kc)_{j_0\cdots j_{q-1}}
+ =\sum_{a=0}^{q-1}(-1)^a
+ c_{r(j_0)\cdots r(j_a)s(j_a)\cdots s(j_{q-1})}\big|_{V_{j_0\cdots j_{q-1}}},
+\]
+再交替延拓，零次取 \(K=0\)。每项都有定义，因为所限制的交集包含于列出的全部旧开集。展开时，\(r\) 段内部和 \(s\) 段内部的删项各自成对抵消，交界处仅留下两个端项，得到
+\[
+ \delta K+K\delta=s^*-r^*.
+\]
+零次的式子是 \((K\delta b)_j=b_{s(j)}-b_{r(j)}\)，也确定了符号。故闭上链的两个限制之差是余边界。
+
+\begin{definition}
+\label{g4:def:0302:sheaf-cohomology}
+设 \(X\) 为黎曼曲面，\(\mathcal F\) 为其上的复向量空间层。本节以覆盖细化的直极限定义
+\[
+ H^q(X,\mathcal F)\coloneqq
+ \varinjlim_{\mathfrak U}\check H^q(\mathfrak U,\mathcal F).
+\]
+具体地，一个类由某覆盖上的余圈表示；两个代表相同，是指它们限制到某个共同细化后相差一个余边界。加法先移到共同细化上进行。特别地，\(H^0(X,\mathcal F)=\mathcal F(X)\)。
+\end{definition}
+
+任意两个覆盖都有由两两交组成的共同细化，细化诱导映射又满足复合律，因此这个识别与运算良定义。\(X\) 紧时，每个覆盖有有限子覆盖，而有限子覆盖也是细化，所以只用有限覆盖即得到同一空间。第二卷第7.2节定理7.2.10证明：在 Hausdorff、第二可数、局部紧空间上，这个覆盖极限与该卷用消解定义的层上同调自然同构。黎曼曲面满足这些条件。本节下面直接在覆盖与形式上证明所需结论。
+
+\ProseParagraphBreak
+
+我们将反复使用光滑单位分解。第一卷第12.3节定理12.3.5说明：Hausdorff、第二可数光滑流形的任意开覆盖都有非负光滑函数 \(\rho_i\)，使 \(\sum_i\rho_i=1\)、\(\operatorname{supp}\rho_i\subseteq U_i\)，且支集族局部有限；紧流形上可只用有限项。其构造先在内外两层坐标球之间选截断函数，再把这些函数除以处处为正的总和。因支集留在 \(U_i\) 内，\(\rho_i\) 乘一个仅在 \(U_i\) 上定义的光滑截面后，可在外面光滑补零。这里既需要总和为 \(1\)，也需要支集包含关系。
+
+\begin{lemma}
+\label{g4:lem:0302:cochain-lifting}
+设 \(X\) 是紧光滑流形，\(\mu:\mathcal F\to\mathcal G\) 是在茎上满射的复向量空间层态射。给定有限开覆盖 \(\mathfrak U\)、整数 \(q\geq0\) 及上链 \(c\in\check C^q(\mathfrak U,\mathcal G)\)，存在有限细化 \(\mathfrak V\)，使 \(c\) 的限制有一个上链提升 \(a\in\check C^q(\mathfrak V,\mathcal F)\)，即 \(\mu a=c|_{\mathfrak V}\)。这里不要求提升与 \(\delta\) 交换。
+\end{lemma}
+\begin{proof}
+先取从属于 \(\mathfrak U\) 的有限光滑单位分解，令 \(V_i=\{\rho_i>0\}\)。这些开集仍覆盖 \(X\)，且 \(\overline V_i\subseteq U_i\)。对 \(x\in X\)，令
+\[
+ I_x=\{i:x\in\overline V_i\}.
+\]
+它是有限集。取邻域 \(N_x\)，使其包含于所有 \(i\in I_x\) 的 \(U_i\)，并避开所有 \(i\notin I_x\) 的 \(\overline V_i\)。从 \(I_x\) 选出的 \(q+1\) 个指标只有有限多种。每个相应 \(c_{i_0\cdots i_q}\) 在 \(x\) 附近有提升，故进一步缩小 \(N_x\)，可使这些有限多个截面同时在 \(N_x\) 上有提升。
+
+还须选择新覆盖，使一组相交成员共同落在某个 \(N_x\) 中。紧光滑流形可以赋予相容距离；在此可直接从有限坐标覆盖及从属单位分解 \(\lambda_a\) 构造：把各 \(\lambda_a\) 及 \(\lambda_a\) 乘各坐标函数在图外补零，合成一个到有限维 Euclid 空间的映射。若两点的全部分量相同，选一个在第一点为正的 \(\lambda_a\)，便知第二点也在同一图中且各坐标相同。因此此映射单射；紧性使其为到像的同胚，拉回 Euclid 距离即可。
+
+从 \(\{N_x\}\) 取有限子覆盖。存在 \(\varepsilon>0\)，使每个半径 \(\varepsilon\) 的度量球包含于某个 \(N_x\)。否则可取球心序列及趋于零的半径，利用紧性取收敛子列；极限点所在的一个 \(N_x\) 最终会包含这些小球，矛盾。选 \(0<r<\varepsilon/3\)，用有限个半径 \(r\) 的球覆盖 \(X\)，再把这些球分别与各 \(V_i\) 相交，得到有限细化 \(\mathfrak V\)，并把交集成员指派给相应的旧指标 \(i\)。
+
+若若干新成员有共同点 \(y\)，则它们的并包含于 \(B(y,2r)\)，因而包含于某个 \(N_x\)。每个旧指标 \(i\) 的 \(V_i\) 都遇到这个 \(N_x\)，所以 \(i\in I_x\)。相应旧截面已在 \(N_x\) 上有提升，把该提升限制到新成员的交集即可。逐个递增指标列作此选择，再交替延拓；重复的旧指标对应零截面，可取零提升。这就构造了所需上链。
+\end{proof}
+
+这条引理只把一组局部可解的方程放到共同细化上，并没有断言原来的每个交集都可整体求解。这个区别在高次余圈的消去中有实际作用。
 \subsection{\texorpdfstring{局部 \(\bar{\partial}\) 可解性}{局部 \={∂} 可解性}}
 \label{g4:subsec:0302:03}
-待撰写
 
+全纯性是一个一阶微分方程。对 \(z=x+\mathrm{i} y\)，规定
+\[
+ \frac{\partial u}{\partial\overline z}
+ =\frac12\left(\frac{\partial u}{\partial x}
+       +\mathrm{i}\frac{\partial u}{\partial y}\right),\qquad
+ \bar\partial u=\frac{\partial u}{\partial\overline z}\,\mathrm{d}\overline z.
+\]
+光滑函数全纯，当且仅当 \(\bar\partial u=0\)。现在要求解非齐次方程 \(\partial u/\partial\overline z=f\)。Cauchy 公式中的核 \(1/z\) 在原点之外全纯，却能在原点集中出一个单位质量；这正是求解所需的性质。
+
+\ProseParagraphBreak
+
+为准确处理核的奇点，先说明所用的弱导数。开集 \(\Omega\subseteq\mathbb C\) 上的\term[fenbu]{分布}[distribution]是作用于紧支光滑测试函数 \(\varphi\in C_c^\infty(\Omega)\) 的复线性泛函 \(u\)，且对每个紧集 \(K\Subset\Omega\)，存在整数 \(m\) 与常数 \(C_K\)，使
+\[
+ |\langle u,\varphi\rangle|
+ \leq C_K\max_{|\alpha|\leq m}\sup_K|\partial^\alpha\varphi|
+ \quad\bigl(\operatorname{supp}\varphi\subseteq K\bigr).
+\]
+这里 \(\alpha\) 是实坐标的多重指标，配对不作复共轭。局部可积函数 \(u\) 给出 \(\langle u,\varphi\rangle=\int u\varphi\,\mathrm{d}A\)，其中 \(\mathrm{d}A=\mathrm{d}x\,\mathrm{d}y\)。定义分布导数为
+\[
+ \left\langle\frac{\partial u}{\partial\overline z},\varphi\right\rangle
+ =-\left\langle u,\frac{\partial\varphi}{\partial\overline z}\right\rangle.
+\]
+这与光滑函数的导数相容，因为测试函数紧支，分部积分没有外边界项。点质量 \(\delta_0\) 则由 \(\langle\delta_0,\varphi\rangle=\varphi(0)\) 定义。
+
+\begin{theorem}[局部 \(\bar\partial\) 可解性]
+\label{g4:thm:0302:local-dbar}
+设 \(f\in C_c^\infty(\mathbb C)\)。积分
+\begin{equation}
+\label{g4:eq:0302:cauchy-transform}
+ Tf(z)\coloneqq\frac1\pi\int_{\mathbb C}
+             \frac{f(\zeta)}{z-\zeta}\,\mathrm{d}A(\zeta)
+\end{equation}
+给出 \(\mathbb C\) 上的光滑函数，满足
+\[
+ \frac{\partial Tf}{\partial\overline z}=f.
+\]
+因此，若 \(f\) 在平面开集 \(\Omega\) 上光滑，每个点附近都有光滑函数 \(u\) 满足 \(\bar\partial u=f\,\mathrm{d}\overline z\)。同样，全纯线丛值的光滑 \((0,1)\) 形式在每一点附近均为某个光滑截面的 \(\bar\partial\)。
+\end{theorem}
+\begin{proof}
+令 \(K(z)=1/(\pi z)\)。它局部可积，因为
+\[
+ \int_{|z|<r}\frac1{|z|}\,\mathrm{d}A=2\pi r<\infty.
+\]
+先证明分布恒等式 \(\partial K/\partial\overline z=\delta_0\)。给定测试函数 \(\varphi\)，选大圆使其支集包含于圆内，并挖去半径 \(\varepsilon\) 的小圆。对光滑函数 \(g\)，平面 Green 公式写成
+\[
+ \int_D\frac{\partial g}{\partial\overline z}\,\mathrm{d}A
+ =\frac1{2\mathrm{i}}\int_{\partial D}g\,\mathrm{d}z;
+\]
+这也直接由 \(\mathrm{d}(g\,\mathrm{d}z)=2\mathrm{i}(\partial g/\partial\overline z)\,\mathrm{d}A\) 得到，与\cref{g4:prop:0101:cauchy-domain}证明中的定向相同。取 \(g=\varphi/z\)。外圆边界项为零，内圆作为挖孔边界反向，故
+\[
+ -\frac1\pi\int_{|z|>\varepsilon}
+       \frac1z\frac{\partial\varphi}{\partial\overline z}\,\mathrm{d}A
+ =\frac1{2\pi\mathrm{i}}\int_{|z|=\varepsilon}
+       \frac{\varphi(z)}z\,\mathrm{d}z,
+\]
+右边圆周按逆时针定向。左边由局部可积性趋于 \(\langle\partial K/\partial\overline z,\varphi\rangle\)，右边改用角参数后为
+\[
+	\frac1{2\pi}\int_0^{2\pi}\varphi(\varepsilon e^{\mathrm{i}t})\,\mathrm{d}t
+	\longrightarrow\varphi(0).
+\]
+这就证明了基本核恒等式。
+
+现在 \(Tf=K*f\)。作变量替换 \(w=z-\zeta\)，写为
+\[
+ Tf(z)=\int_{\mathbb C}K(w)f(z-w)\,\mathrm{d}A(w).
+\]
+当 \(z\) 限于一个固定紧集时，非零被积项的 \(w\) 都落在另一个固定紧集内。\(K\) 在该集可积，而 \(f\) 的任意阶导数有界，所以支配收敛定理允许把所有实坐标导数移到 \(f\) 上。这证明 \(Tf\) 光滑，且
+\[
+ \frac{\partial Tf}{\partial\overline z}(z)
+ =\int K(w)\frac{\partial f}{\partial\overline z}(z-w)\,\mathrm{d}A(w)
+ =-\left\langle K,\frac{\partial}{\partial\overline w}f(z-w)\right\rangle
+ =f(z).
+\]
+最后一个等式把已证核恒等式用于紧支测试函数 \(w\mapsto f(z-w)\)。这里把导数移到光滑函数，避免了把不可积的高阶奇核当作普通积分。
+
+对一般 \(f\in C^\infty(\Omega)\)，取点附近的小圆盘 \(D\Subset\Omega\)，再取 \(\chi\in C_c^\infty(\Omega)\)，使其在 \(D\) 附近为 \(1\)。将 \(\chi f\) 在 \(\Omega\) 外补零，得到平面上的紧支光滑函数。\(u=T(\chi f)\) 在 \(D\) 上满足所需方程。
+
+对于线丛 \(L\)，在全纯标架 \(e\) 及坐标 \(z\) 中写给定形式为 \(f\,\mathrm{d}\overline z\otimes e\)，对系数使用刚才的构造即可。若另一标架为 \(e'=g e\)，其中 \(g\) 全纯且非零，则 \(\bar\partial(gv)=g\bar\partial v\)；坐标变换也遵守微分的链式法则。因此所得局部解确实解线丛值方程。
+\end{proof}
+
+例如 \(f=1\) 时可取 \(u=\overline z\)。两个局部解的差满足齐次方程，因而是全纯函数；局部可解性所留下的自由度，恰好是层 \(\mathcal O_X\) 的截面。下一节还会先得到弱解，再证明其光滑。下面证明这一正则化所需的齐次结论。
+
+\begin{lemma}[弱全纯函数的正则性]
+\label{g4:lem:0302:weak-weyl}
+设 \(\Omega\subseteq\mathbb C\) 开，分布 \(u\) 满足 \(\partial u/\partial\overline z=0\)。则存在唯一全纯函数 \(h\in\mathcal O(\Omega)\)，使 \(u\) 是由 \(h\) 给出的分布。特别地，局部可积函数满足这一弱方程时，几乎处处等于一个全纯函数。若 \(\partial u/\partial\overline z=f\) 且 \(f\) 光滑，则 \(u\) 由一个光滑函数给出；同样的结论逐标架适用于全纯线丛。
+\end{lemma}
+\begin{proof}
+取非负、径向、支集包含于单位圆盘的 \(\rho\in C_c^\infty(\mathbb C)\)，使 \(\int\rho\,\mathrm{d}A=1\)，并令 \(\rho_\varepsilon(z)=\varepsilon^{-2}\rho(z/\varepsilon)\)。在距 \(\Omega\) 的边界超过 \(\varepsilon\) 的点定义
+\[
+ u_\varepsilon(z)=\langle u,\rho_\varepsilon(z-\cdot)\rangle.
+\]
+它光滑：差商及任意阶导数可以在测试函数的全部导数一致收敛的意义下移入配对，再用分布的连续性。分部积分给出
+\[
+ \frac{\partial u_\varepsilon}{\partial\overline z}
+ =\left(\frac{\partial u}{\partial\overline z}\right)*\rho_\varepsilon=0,
+\]
+故 \(u_\varepsilon\) 全纯。
+
+径向性把这些光滑化联系得更紧。若 \(h\) 在 \(\overline{D(z,r)}\) 的邻域全纯，Cauchy 公式的圆周均值性质给出
+\[
+ \int h(z-w)\rho_r(w)\,\mathrm{d}A(w)=h(z).
+\]
+确实，改用极坐标后，每个圆周上的平均都等于 \(h(z)\)，再对半径积分，总权重为 \(1\)。于是当 \(\varepsilon+\delta<\operatorname{dist}(z,\mathbb C\setminus\Omega)\) 时，
+\[
+ u_\varepsilon(z)
+ =(u_\varepsilon*\rho_\delta)(z)
+ =\langle u,(\rho_\varepsilon*\rho_\delta)(z-\cdot)\rangle
+ =(u_\delta*\rho_\varepsilon)(z)
+ =u_\delta(z).
+\]
+中间的等式只涉及一个固定紧集上的光滑测试函数；积分可用有限和逼近后移入连续泛函，卷积的交换律则由普通积分换序得到。所有测试函数的支集都留在 \(\Omega\) 内。
+
+取任意相对紧开集 \(V\Subset\Omega\)。当两个半径都充分小时，刚才的式子说明所有 \(u_\varepsilon|_V\) 完全相同，给出一个全纯函数 \(h_V\)。另一方面，\(u_\varepsilon\to u\) 在分布意义下成立：对 \(\varphi\in C_c^\infty(V)\)，
+\[
+ \langle u_\varepsilon,\varphi\rangle
+ =\langle u,\rho_\varepsilon*\varphi\rangle\longrightarrow\langle u,\varphi\rangle,
+\]
+因为径向核为偶函数，而 \(\rho_\varepsilon*\varphi\to\varphi\) 的每阶导数一致收敛，支集又包含于同一个紧集。因此 \(u|_V=h_V\) 作为分布相等。两个连续函数若确定相同分布，必逐点相等：若在某点差非零，在足够小的邻域内乘以一个固定复数后其实部保持同号，配一个非负测试函数就会得到非零配对。故各 \(h_V\) 在重叠处相同，并唯一粘成 \(h\)。
+
+局部可积函数若给出零分布，其径向卷积全为零，而卷积在 \(L^1_{\mathrm{loc}}\) 中趋于原函数，所以它几乎处处为零。这也得到陈述中的几乎处处结论。
+
+最后，对非齐次方程，由\cref{g4:thm:0302:local-dbar}在每点附近取光滑解 \(v\)，则 \(u-v\) 满足齐次弱方程，故全纯。于是 \(u\) 局部光滑，进而在 \(\Omega\) 上光滑。线丛情形在全纯标架中对系数应用这一论证即可。
+\end{proof}
 \subsection{Dolbeault 消解和细层无上同调}
 \label{g4:subsec:0302:04}
-待撰写
+
+设 \(L\) 是黎曼曲面 \(X\) 上的全纯线丛。记 \(\mathcal A^0(L)\) 为光滑截面层，\(\mathcal A^{0,1}(L)\) 为光滑 \(L\) 值 \((0,1)\) 形式层；在全纯标架 \(e\) 与坐标 \(z\) 中，二者分别写为 \(u e\) 与 \(a\,\mathrm{d}\overline z\otimes e\)。定义
+\[
+ \bar\partial(u e)
+ =\frac{\partial u}{\partial\overline z}\,\mathrm{d}\overline z\otimes e.
+\]
+全纯过渡函数的 \(\bar\partial\) 为零，故这个定义与坐标和标架无关。复维数为 \(1\) 时，\(\mathrm{d}\overline z\wedge\mathrm{d}\overline z=0\)，所以 \((0,2)\) 形式层为零。记整体截面空间为
+\[
+ A^0(L)=\Gamma(X,\mathcal A^0(L)),\qquad
+ A^{0,1}(L)=\Gamma(X,\mathcal A^{0,1}(L)).
+\]
+
+\begin{proposition}
+\label{g4:prop:0302:dolbeault-resolution}
+对黎曼曲面 \(X\) 上的全纯线丛 \(L\)，层的序列
+\begin{equation}
+\label{g4:eq:0302:dolbeault-resolution}
+ 0\longrightarrow\mathcal O(L)
+ \longrightarrow\mathcal A^0(L)
+ \xrightarrow{\ \bar\partial\ }\mathcal A^{0,1}(L)
+ \longrightarrow0
+\end{equation}
+在每个茎上正合。
+\end{proposition}
+\begin{proof}
+第一个箭头是包含映射。全纯标架内，光滑截面满足 \(\bar\partial u=0\) 当且仅当系数全纯，所以中间的核恰是 \(\mathcal O(L)\)。最后一箭在茎上满射，正是\cref{g4:thm:0302:local-dbar}的线丛值局部可解性。
+\end{proof}
+
+式\eqref{g4:eq:0302:dolbeault-resolution}称为曲面上线丛的\term[dolbeaultxiaojie]{Dolbeault 消解}[Dolbeault resolution]。它用可以乘光滑权重的两个层表达全纯层。先说明这些权重如何消去它们本身的高次上同调。
+
+\begin{definition}
+\label{g4:def:0302:fine-sheaf}
+设 \(X\) 为紧光滑流形。若对每个有限开覆盖 \(\{U_i\}\)，层 \(\mathcal F\) 都有端同态 \(\theta_i:\mathcal F\to\mathcal F\) 及闭集 \(K_i\subseteq U_i\)，满足 \(\theta_i\) 在 \(X\setminus K_i\) 上为零，且 \(\sum_i\theta_i=\operatorname{id}\)，则称 \(\mathcal F\) 为\term[xiceng]{细层}[fine sheaf]。
+\end{definition}
+
+这是紧空间上通常细层定义的有限覆盖表述；一般流形中用局部有限覆盖和局部有限和。每个光滑函数层的模层都是细层：取光滑单位分解 \(\rho_i\)，令 \(\theta_i(s)=\rho_i s\)、\(K_i=\operatorname{supp}\rho_i\) 即可。特别地，\(\mathcal A^0(L)\) 与 \(\mathcal A^{0,1}(L)\) 都是细层。全纯截面乘任意光滑权重通常不再全纯，因此同一构造不能直接用于 \(\mathcal O(L)\)。
+
+\begin{proposition}
+\label{g4:prop:0302:fine-acyclic}
+设 \(X\) 为紧光滑流形，\(\mathcal F\) 为其上的细复向量空间层。则对每个有限开覆盖 \(\mathfrak U\) 及每个 \(q>0\)，均有
+\[
+ \check H^q(\mathfrak U,\mathcal F)=0,
+ \qquad H^q(X,\mathcal F)=0.
+\]
+\end{proposition}
+\begin{proof}
+取细性给出的 \(\theta_j,K_j\)。对 \(q\geq1\)，定义降低一次次数的算子
+\begin{equation}
+\label{g4:eq:0302:fine-homotopy}
+ (hc)_{i_0\cdots i_{q-1}}
+ =\sum_j\theta_j\bigl(c_{j i_0\cdots i_{q-1}}\bigr).
+\end{equation}
+右边每项原在 \(U_j\cap U_{i_0\cdots i_{q-1}}\) 上定义。在其与 \(X\setminus K_j\) 的交集中，该项为零；由于 \(K_j\subseteq U_j\)，可以把它与零截面粘合成整个 \(U_{i_0\cdots i_{q-1}}\) 上的截面。有限求和因此合法。
+
+直接展开得
+\[
+ \begin{aligned}
+ (\delta hc)_{i_0\cdots i_q}
+ &=\sum_j\theta_j\sum_{a=0}^{q}(-1)^a
+      c_{j i_0\cdots\widehat{i_a}\cdots i_q},\\
+ (h\delta c)_{i_0\cdots i_q}
+ &=\sum_j\theta_j\left(c_{i_0\cdots i_q}
+      +\sum_{a=0}^{q}(-1)^{a+1}
+       c_{j i_0\cdots\widehat{i_a}\cdots i_q}\right).
+ \end{aligned}
+\]
+两行相加，含 \(j\) 的交替项消去，剩下 \(\sum_j\theta_jc=c\)。所以
+\[
+ \delta h+h\delta=\operatorname{id}\qquad(q>0).
+\]
+若 \(\delta c=0\)，则 \(c=\delta(hc)\)，证明覆盖上的正次上同调为零。有限覆盖在紧空间的所有覆盖中共尾，取细化直极限便得第二个结论。
+\end{proof}
+
+这里的收缩只使用限制映射与层端同态。对形式层，\(\bar\partial(\rho_i u)=\bar\partial\rho_i\cdot u+\rho_i\bar\partial u\)，所以 \(h\) 一般不与 \(\bar\partial\) 交换。下面保留这一误差，正是它产生了全纯层的 \(H^1\)。
+
+\begin{theorem}[曲面上的 Dolbeault 同构]
+\label{g4:thm:0302:dolbeault}
+设 \(X\) 为紧黎曼曲面，\(L\) 为 \(X\) 上的全纯线丛。则
+\begin{equation}
+\label{g4:eq:0302:dolbeault-cohomology}
+ \begin{aligned}
+ H^0(X,\mathcal O(L))&=\ker\bigl(\bar\partial:A^0(L)\to A^{0,1}(L)\bigr),\\
+ H^1(X,\mathcal O(L))&\cong A^{0,1}(L)/\bar\partial A^0(L),\\
+ H^q(X,\mathcal O(L))&=0\qquad(q\geq2).
+ \end{aligned}
+\end{equation}
+这些识别与全纯线丛同态相容。本书记 \(H^q(X,L)=H^q(X,\mathcal O(L))\)，以后以第二行的整体光滑形式类表示 \(H^1(X,L)\)。在约定 \((\delta b)_{ij}=b_j-b_i\) 下，比较映射取为
+\begin{equation}
+\label{g4:eq:0302:cech-dolbeault-sign}
+ \Phi([c])=[-\bar\partial b_i],\qquad
+ b_i=\sum_k\rho_k c_{ki},\qquad \delta b=c,
+\end{equation}
+其中 \(\{\rho_k\}\) 为从属于表示 \(c\) 的有限覆盖的光滑单位分解。
+\end{theorem}
+\begin{proof}
+零次的陈述来自层公理和 \(\bar\partial\) 的核。一次的构造要同时核对选择无关与两个方向互逆。
+
+给定全纯 \(1\) 余圈 \(c\)，把它看成光滑上链，并令 \(b=hc\)。式\eqref{g4:eq:0302:fine-homotopy}给出 \(\delta b=c\)。也可直接用三重交叠上的关系算出
+\[
+ b_j-b_i=\sum_k\rho_k(c_{kj}-c_{ki})
+         =\sum_k\rho_k c_{ij}=c_{ij}.
+\]
+由于 \(c_{ij}\) 全纯，\(-\bar\partial b_i\) 在交叠处相等，遂粘成整体 \(\alpha\in A^{0,1}(L)\)。若更换单位分解，得到另一个 \(\widetilde b\) 且 \(\delta\widetilde b=c\)；差 \(\widetilde b-b\) 是光滑零余圈，粘成整体截面 \(v\)，于是代表改变为 \(\alpha-\bar\partial v\)。若 \(c\) 改为 \(c+\delta a\)，其中 \(a_i\) 全纯，则 \(b+a\) 是新余圈的一个光滑原像，产生同一个 \(\alpha\)。这也说明只须选择任何满足 \(\delta b=c\) 的光滑上链，所得类不变。细化后可限制这样的 \(b\)，所以 \(\Phi\) 在覆盖直极限上良定义。
+
+反过来，给定 \(\alpha\in A^{0,1}(L)\)，由局部可解性取有限覆盖及光滑截面 \(u_i\)，使 \(\bar\partial u_i=\alpha|_{U_i}\)。令
+\begin{equation}
+\label{g4:eq:0302:dolbeault-cech-inverse}
+ c_{ij}=u_i-u_j.
+\end{equation}
+它全纯，且满足余圈关系。若另取 \(\widetilde u_i\)，则 \(a_i=\widetilde u_i-u_i\) 全纯，新余圈与旧余圈之差为 \(a_i-a_j=-(\delta a)_{ij}\)。两种覆盖先移到共同细化即可作同样比较。若 \(\alpha\) 改为 \(\alpha+\bar\partial v\)，把全部局部解改为 \(u_i+v\)，则余圈保持不变。这定义了反向映射 \(\Psi\)。
+
+从 \(c\) 出发，\(\Phi\) 给出 \(\alpha=-\bar\partial b_i\)，所以反向时可选 \(u_i=-b_i\)。于是 \(u_i-u_j=b_j-b_i=c_{ij}\)，即 \(\Psi\Phi\) 为恒等。从 \(\alpha\) 出发，令
+\[
+ v=\sum_k\rho_k u_k\in A^0(L).
+\]
+乘权重后的各项可补零，故 \(v\) 是整体光滑截面。由 \(c_{ki}=u_k-u_i\) 得 \(b_i=v-u_i\)，从而
+\[
+ -\bar\partial b_i=\alpha-\bar\partial v.
+\]
+这与 \(\alpha\) 表示同一个商类，证明 \(\Phi\Psi\) 也为恒等。式\eqref{g4:eq:0302:cech-dolbeault-sign}中的负号与式\eqref{g4:eq:0302:dolbeault-cech-inverse}的差的次序相配。
+
+最后处理 \(q\geq2\)。设 \(c\in\check C^q(\mathfrak U,\mathcal O(L))\) 为有限覆盖上的余圈。用光滑收缩先取
+\[
+ b=hc\in\check C^{q-1}(\mathfrak U,\mathcal A^0(L)),
+ \qquad \delta b=c.
+\]
+则 \(\delta(\bar\partial b)=\bar\partial c=0\)。在形式层再次应用收缩，得到
+\[
+ a=h(\bar\partial b)\in\check C^{q-2}(\mathfrak U,\mathcal A^{0,1}(L)),
+ \qquad \delta a=\bar\partial b.
+\]
+这时 \(q-2\geq0\)，且 \(\bar\partial:\mathcal A^0(L)\to\mathcal A^{0,1}(L)\) 在茎上满射。\cref{g4:lem:0302:cochain-lifting}给出有限细化，使 \(a\) 有一个光滑上链原像 \(v\)，满足 \(\bar\partial v=a\)。把前面的 \(b,c\) 同时限制到该细化，并令 \(b'=b-\delta v\)。于是
+\[
+ \bar\partial b'=\bar\partial b-\delta a=0,
+ \qquad \delta b'=\delta b-\delta^2v=c.
+\]
+因此 \(b'\) 已是全纯上链，\(c\) 在细化后成为全纯余边界。这证明所有 \(q\geq2\) 的覆盖极限均为零。消去只用到了两个光滑层，正是曲面上消解长度为 \(1\) 的作用。
+
+若 \(L\to L'\) 为全纯线丛同态，局部由全纯系数相乘给出，所以它与限制、\(\bar\partial\) 及单位分解相乘都交换。上述两种构造因而与该同态诱导的映射相容。
+\end{proof}
+
+\begin{corollary}
+\label{g4:cor:0302:skyscraper-acyclic}
+设 \(X\) 为紧黎曼曲面，\(p_1,\ldots,p_r\) 为不同点，\(V_1,\ldots,V_r\) 为复向量空间。令点支撑层 \(\mathcal Q\) 在开集 \(U\) 上的截面为 \(\bigoplus_{p_j\in U}V_j\)，限制映射删去不在较小开集中的分量。则
+\[
+ H^0(X,\mathcal Q)=\bigoplus_{j=1}^r V_j,\qquad
+ H^q(X,\mathcal Q)=0\quad(q>0).
+\]
+\end{corollary}
+\begin{proof}
+让光滑函数 \(\rho\) 在第 \(j\) 个分量上按数 \(\rho(p_j)\) 相乘，便使 \(\mathcal Q\) 成为光滑函数层的模层。它是细层，正次消失由\cref{g4:prop:0302:fine-acyclic}得到；零次则按定义计算。单点情形就是前一节点修改中的摩天层。
+\end{proof}
+
+\begin{example}
+\label{g4:exm:0302:torus-obstruction}
+在方格复环面 \(X=\mathbb C/(\mathbb Z+\mathrm{i}\mathbb Z)\) 上，\(\mathrm{d}\overline z\) 由平移不变性下降为整体光滑 \((0,1)\) 形式。若它等于 \(\bar\partial u\)，把 \(u\) 拉回平面便得到双周期光滑函数 \(v\)，满足 \(\partial v/\partial\overline z=1\)。在单位正方形上积分却给出
+\[
+ \int_0^1\!\int_0^1\frac{\partial v}{\partial\overline z}\,\mathrm{d}x\,\mathrm{d}y
+ =\frac12\int_0^1\bigl(v(1,y)-v(0,y)\bigr)\,\mathrm{d}y
+  +\frac{\mathrm{i}}2\int_0^1\bigl(v(x,1)-v(x,0)\bigr)\,\mathrm{d}x=0,
+\]
+而左边按方程等于 \(1\)，矛盾。因此 \([\mathrm{d}\overline z]\ne0\in H^1(X,\mathcal O_X)\)。局部解 \(\overline z\) 存在，但不能成为环面上的单值函数；这个非零类记录了它的周期障碍。
+\end{example}
+
+最后把比较公式用于主部问题，并固定后文连接同态的符号。取两两不交的坐标圆盘 \(D_\nu\) 及其中心 \(p_\nu\)，在每个圆盘上给定亚纯 \(L\) 截面 \(s_\nu\)，其唯一可能的极点为中心。选择光滑截断 \(\chi_\nu\)，使其在中心附近为 \(1\)、支集包含于 \(D_\nu\)，并在删去这些点的曲面上令
+\[
+ s=\sum_\nu\chi_\nu s_\nu.
+\]
+近 \(p_\nu\) 时 \(s=s_\nu\) 全纯于去心圆盘，故 \(\bar\partial s\) 在中心附近恒零。于是它可以在各中心补零，成为整体光滑 \((0,1)\) 形式。
+
+\begin{proposition}
+\label{g4:prop:0302:principal-parts-class}
+设 \(X\) 为紧黎曼曲面，\(L\) 为全纯线丛，并在有限个点给定 \(L\) 值主部。按上述截断构造得到的
+\[
+ [\alpha]=[\bar\partial s]\in
+ A^{0,1}(L)/\bar\partial A^0(L)=H^1(X,L)
+\]
+只依赖给定主部。它是局部提升之差 \(c_{ij}=s_j-s_i\) 在\cref{g4:thm:0302:dolbeault}下的像，并且 \([\alpha]=0\) 当且仅当存在具有这些主部、在其余各点全纯的整体亚纯 \(L\) 截面。
+\end{proposition}
+\begin{proof}
+若更换局部代表而保持主部，差在各指定点全纯；更换截断也不会改变指定点附近的主部。因此两次构造的 \(s\) 之差延拓为整体光滑截面，所得 \(\alpha\) 之差是其 \(\bar\partial\)。这证明选择无关。
+
+在覆盖 \(\{D_\nu,\,X\setminus\{p_1,\ldots,p_r\}\}\) 上，取局部提升 \(s_\nu\) 和 \(s_0=0\)。它们在交叠处的差全纯。可令 \(\rho_\nu=\chi_\nu\)、\(\rho_0=1-\sum_\nu\chi_\nu\)，得到从属单位分解；圆盘两两不交保证 \(\rho_0\geq0\)，截断在各中心附近为 \(1\) 保证 \(\operatorname{supp}\rho_0\subseteq X\setminus\{p_1,\ldots,p_r\}\)。对 \(c_{ij}=s_j-s_i\)，比较构造给出
+\[
+ b_i=\sum_k\rho_k(s_i-s_k)=s_i-s,
+ \qquad -\bar\partial b_i=\bar\partial s=\alpha.
+\]
+虽然 \(s_i,s\) 可在中心有极点，它们的主部相同，故 \(b_i\) 在中心附近为零或全纯，实际是合法的光滑上链。这也核定了所用正号。
+
+若 \([\alpha]=0\)，取 \(u\in A^0(L)\) 满足 \(\bar\partial u=\alpha\)。则 \(m=s-u\) 在指定点之外全纯。中心附近 \(\alpha=0\)，所以 \(u\) 全纯，\(m\) 在那里亚纯且具有与 \(s_\nu\) 相同的主部。反过来，若这样的整体亚纯截面 \(m\) 存在，则 \(s-m\) 在每个指定点附近全纯，因而延拓为整体光滑截面，并有 \(\alpha=\bar\partial(s-m)\)。故其类为零。
+\end{proof}
+
+主部问题由此成为一个整体 \(\bar\partial\) 方程的可解性问题。下一节将证明 \(H^1(X,L)\) 有限维，并用与全纯微分的积分配对检验这个障碍类；零类判据与有限维性分别来自本节的粘合构造和下一节的分析估计。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

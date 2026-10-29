@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 1.3 射影空间与典型嵌入
 % 纲要位置：几何学计划纲要.md，第 5047 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,242 @@
 \section{射影空间与典型嵌入}
 \label{g5:sec:0103}
 
-待撰写
+在仿射平面中，双曲线 \(xy=1\) 的投影漏掉原点；一条直线的斜率也不能记录竖直方向。把坐标改成比例，可以把这些遗漏的方向作为点保存。新的问题随即出现：比例坐标满足什么方程，如何与仿射计算衔接，又怎样用一个点记录一对子空间或一个高次表达式？本节仍取代数闭域 \(k\)，从齐次方程建立射影模型，再把乘积、子空间和曲线参数写成可恢复的坐标。
 
 \subsection{齐次方程和仿射图}
 \label{g5:subsec:0103:01}
-待撰写
+
+\begin{definition}
+\label{g5:def:projective-space}
+	设 \(k\) 为代数闭域，\(n\geq0\)。非零向量 \(k^{n+1}\setminus\{0\}\) 在关系 \(x\sim\lambda x\)（\(\lambda\in k^\times\)）下的商集称为 \(k\) 上的 \(n\) 维\term[sheyingkongjian]{射影空间}[projective space]，记为 \(\mathbb P^n_k\)。点写作 \([x_0:\cdots:x_n]\)，其中的 \(x_i\) 称为\term[qicizuobiao]{齐次坐标}[homogeneous coordinates]。
+	\symidx{\(\mathbb P^n_k\)：域 \(k\) 上的射影空间}
+\end{definition}
+
+一个射影点等价地是一条通过原点的向量直线。这里共同倍数可以改变，单独一个坐标的值没有不依赖代表的意义。若 \(F\in k[x_0,\ldots,x_n]\) 是 \(d\) 次齐次多项式，则 \(F(\lambda x)=\lambda^dF(x)\)，所以条件 \(F(x)=0\) 却与代表无关。对一族齐次多项式 \(\mathcal F\)，定义
+\[
+	V_+(\mathcal F)=\{[x]\in\mathbb P^n_k:F(x)=0\text{ 对所有 }F\in\mathcal F\}.
+\]
+这些集合满足闭集公理：任意交对应合并方程，两个零点集的并对应两族方程的所有乘积；空集由 \(x_0=\cdots=x_n=0\) 给出，全集由零多项式给出。由此得到射影空间的 Zariski 拓扑。其闭集称为\term[sheyingdaishuji]{射影代数集}[projective algebraic set]；非空不可约的射影代数集称为\term[sheyingcu]{射影簇}[projective variety]。
+
+把多项式按总次数分解成齐次部分，就有 \(k[x_0,\ldots,x_n]=\bigoplus_{d\geq0}S_d\)。由齐次多项式生成的理想称为\term[qicilixiang]{齐次理想}[homogeneous ideal]。每个元素的齐次部分仍在这个理想中，因为把生成式中的系数也逐次分解即可。射影方程因此可记为 \(V_+(J)\)，其中 \(J\) 是齐次理想。Hilbert 基定理保证方程可取有限个齐次生成元：先取有限生成元，再取它们的全部齐次部分。
+
+\begin{proposition}
+\label{g5:prop:projective-affine-charts}
+	设 \(k\) 为代数闭域，\(n\geq1\)。开集 \(U_i=\{x_i\ne0\}\subseteq\mathbb P^n_k\) 覆盖 \(\mathbb P^n_k\)，而映射
+	\[
+		\phi_i:U_i\longrightarrow\mathbb A^n_k,\qquad
+		[x_0:\cdots:x_n]\longmapsto(x_0/x_i,\ldots,\widehat{x_i/x_i},\ldots,x_n/x_i)
+	\]
+	是同胚。在两张图的交上，坐标变换及其逆都由分母不为零的多项式商给出。
+\end{proposition}
+\begin{proof}
+	至少有一个坐标非零，所以这些开集覆盖全部点。\(\phi_i\) 的逆在第 \(i\) 个位置插入 \(1\)，故它是双射。齐次方程 \(F(x)=0\) 在 \(U_i\) 中成为令 \(x_i=1\) 得到的多项式方程。反过来，仿射坐标中的多项式 \(f\) 若次数为 \(d\)，则
+	\[
+		F(x)=x_i^d f(x_0/x_i,\ldots,\widehat{x_i/x_i},\ldots,x_n/x_i)
+	\]
+	是齐次多项式，且其在 \(U_i\) 上的零点恰对应 \(V(f)\)。这证明双向连续性。在 \(U_i\cap U_j\) 上写 \(u_\ell=x_\ell/x_i\)，补记 \(u_i=1\)，则第 \(j\) 张图中的坐标为 \(u_\ell/u_j\)，而 \(u_j\ne0\)。交换 \(i,j\) 即得逆变换。
+\end{proof}
+
+\(U_i\) 称为一张\term[fangshetu]{仿射图}[affine chart]。这使\secref{g5:sec:0102}的正则函数定义可以用于射影代数集：函数在每张仿射图中局部为多项式商，且分母在所讨论点不为零。图间变换正则，因而此定义不依赖图的选择。射影簇的开子集称为\term[zhunsheyingcu]{准射影簇}[quasi-projective variety]；允许可约时，同样讨论射影代数集的开子集及其正则函数。映射在源、靶的仿射图中为正则映射时，称为正则映射；有正则逆的双射称为同构。
+
+例如，\(\mathbb P^1_k=\mathbb A^1_k\cup\{[0:1]\}\)：在 \(x_0\ne0\) 的图中用 \(t=x_1/x_0\)，另一图用 \(s=x_0/x_1\)，交上的关系是 \(s=1/t\)。每张 \(U_i\) 都在 \(\mathbb P^n_k\) 中稠密。事实上，若一个齐次多项式在 \(U_i\) 上为零，其去齐次化在 \(k^n\) 上恒为零；无限域上的多项式恒等原理表明该多项式为零，再齐次化就得到原式为零。仿射空间不可约，因此其稠密闭包 \(\mathbb P^n_k\) 也不可约。
+
+若 \(F_0,\ldots,F_m\) 是同次齐次多项式，则
+\[
+	[x]\longmapsto[F_0(x):\cdots:F_m(x)]
+\]
+在这些多项式不同时为零的开集上定义正则映射：在 \(F_j\ne0\) 的靶图中，坐标恰是 \(F_i/F_j\)。共同零点处的公式不能直接赋值；能否换用别的局部表达来延拓，要另行检查。本节末的曲线会给出一个可以延拓的例子。
+
+上述齐次方程与仿射图的构造可对照\cite[第I章，第2节，命题2.1--2.2]{Hartshorne1977}。
 
 \subsection{Segre、Veronese 及其方程}
 \label{g5:subsec:0103:02}
-待撰写
+
+考虑一对射影点 \([x]\in\mathbb P^m_k\)、\([y]\in\mathbb P^n_k\)。把两组坐标直接并排，不能消去它们各自独立的缩放；取乘积 \(x_i y_j\) 则使两次缩放合成一个共同倍数。乘积 \(\mathbb P^m_k\times\mathbb P^n_k\) 用图 \(U_a\times U_b\cong\mathbb A^{m+n}_k\) 赋予代数几何结构，正则性按这些图检验。两组坐标分别换图，所以转换公式仍为分母非零的多项式商。这里的 Zariski 拓扑由仿射图中的多项式方程确定。
+
+\begin{proposition}
+\label{g5:prop:segre-embedding}
+	设 \(k\) 为代数闭域，\(m,n\geq0\)。\term[Segreqianru]{Segre 嵌入}[Segre embedding]
+	\[
+		\sigma:\mathbb P^m_k\times\mathbb P^n_k\longrightarrow\mathbb P^{(m+1)(n+1)-1}_k,
+		\qquad([x],[y])\longmapsto[x_i y_j]_{i,j}
+	\]
+	将其定义域同构到由全部方程
+	\[
+		z_{ij}z_{ab}-z_{ib}z_{aj}=0
+		\qquad(0\leq i,a\leq m,\ 0\leq j,b\leq n)
+	\]
+	定义的射影代数集。
+\end{proposition}
+
+这里嵌入指与一个闭代数子集的同构，因而同时要求像的闭性与逆映射的正则性。Segre 的乘积坐标把这两项要求化为秩一矩阵的恢复。\footnote{Corrado Segre（1863--1924），意大利数学家，研究高维射影几何与代数曲面。}
+
+\begin{proof}
+	分别缩放 \(x,y\) 只会共同缩放全部乘积，且至少一个乘积非零，所以 \(\sigma\) 良定义。像矩阵 \((x_i y_j)\) 的所有二阶子式为零。反过来，设 \(Z=(z_{ij})\ne0\) 满足这些方程，选 \(z_{ab}\ne0\)，则
+	\[
+		\frac{z_{ij}}{z_{ab}}
+		=\frac{z_{ib}}{z_{ab}}\frac{z_{aj}}{z_{ab}}.
+	\]
+	令 \(x_a=y_b=1\)、\(x_i=z_{ib}/z_{ab}\)、\(y_j=z_{aj}/z_{ab}\)，就恢复了原来的两个射影点。这些比值还说明恢复唯一。源图 \(x_a y_b\ne0\) 到靶图 \(z_{ab}\ne0\) 的坐标是多项式，逆坐标是上述比值，故双向正则。
+\end{proof}
+
+对 \(m=n=1\)，得到二次曲面
+\[
+	Q=V_+(z_{00}z_{11}-z_{01}z_{10})\subseteq\mathbb P^3_k.
+\]
+固定 \([x]\) 让 \([y]\) 变化，或固定 \([y]\) 让 \([x]\) 变化，分别得到一族直线。每族内不同直线不交，两族各取一条恰交于一个点，因为原像中这正是固定一个坐标因子的两个条件。\(Q\) 上的对角线像 \(\sigma(\{([x],[x])\})\) 又由 \(z_{01}=z_{10}\) 切出。乘积的代数几何 Zariski 拓扑因而不同于两个 Zariski 拓扑的普通积拓扑：\(\mathbb P^1_k\) 的每个非空开集都是有限点的补集，任意两个非空开集相交，所以对角线在普通积拓扑中稠密，却在这里是一个真闭集。
+
+另一种构造只用一个点，却同时记录它的全部 \(d\) 次单项式。它称为\term[Veroneseqianru]{Veronese 嵌入}[Veronese embedding]。\footnote{Giuseppe Veronese（1854--1917），意大利数学家，研究高维射影几何与几何基础。}记 \(e_0,\ldots,e_n\) 为标准多重指标，\(\alpha=(\alpha_0,\ldots,\alpha_n)\) 的各分量非负，\(|\alpha|=\sum\alpha_i\)，\(x^\alpha=\prod x_i^{\alpha_i}\)。
+
+\begin{proposition}
+\label{g5:prop:veronese-embedding}
+	设 \(k\) 为代数闭域，\(n\geq1\)、\(d\geq1\)，\(N=\binom{n+d}{d}-1\)。映射
+	\[
+		\nu_d:\mathbb P^n_k\longrightarrow\mathbb P^N_k,
+		\qquad[x]\longmapsto[x^\alpha]_{|\alpha|=d}
+	\]
+	是到闭代数子集的同构。用 \(z_\alpha\) 表示靶坐标，其像可由以下有限族齐次方程刻画：
+	\begin{align*}
+		z_\alpha^d&=\prod_{j=0}^n z_{de_j}^{\alpha_j},\\
+		z_\alpha z_{de_i}^{d-1}
+		&=\prod_{j=0}^n z_{(d-1)e_i+e_j}^{\alpha_j}
+		\qquad(0\leq i\leq n,\ |\alpha|=d).
+	\end{align*}
+\end{proposition}
+\begin{proof}
+	坐标中包括每个 \(x_i^d\)，所以它们不会同时为零；所有坐标同次，故映射良定义且正则。代入 \(z_\alpha=x^\alpha\) 直接验证所列方程。
+
+	设一个射影点 \([z]\) 满足这些方程。选 \(z_\alpha\ne0\)，第一族方程保证至少一个纯幂坐标 \(z_{de_i}\ne0\)。将全部坐标除以它，令
+	\[
+		x_j=\frac{z_{(d-1)e_i+e_j}}{z_{de_i}},\qquad x_i=1.
+	\]
+	第二族方程给出 \(z_\alpha/z_{de_i}=\prod_j x_j^{\alpha_j}\)，因而 \([z]=\nu_d([x])\)。在这张图上，\(x_j=x_j/x_i\) 的恢复公式唯一且正则；各图覆盖整个像，证明了同构。
+\end{proof}
+
+这些方程给出的是像的零点集描述。就计算而言，二次情形还有更简洁的方程：把坐标 \(z_{ij}\)（\(i\leq j\)）对称地补成矩阵 \(Z\)，则 \(\nu_2\) 的像恰由 \(Z\) 的全部二阶子式为零定义。若 \(Z\ne0\) 且全部二阶子式为零，某个 \(z_{aa}\) 必非零，否则 \(z_{ij}^2=z_{ii}z_{jj}=0\) 强迫 \(Z=0\)。随后
+\[
+	\frac{z_{ij}}{z_{aa}}
+	=\frac{z_{ia}}{z_{aa}}\frac{z_{ja}}{z_{aa}}
+\]
+恢复 \(x_i/x_a=z_{ia}/z_{aa}\)。这个证明在特征 \(2\) 也成立，不需要取平方根。
+
+Veronese 嵌入把高次方程变为线性截面：若 \(F(x)=\sum_{|\alpha|=d}c_\alpha x^\alpha\)，则 \(F(x)=0\) 等价于像点满足超平面方程 \(\sum c_\alpha z_\alpha=0\)。Segre 嵌入则把双线性方程变为超平面截面。这些构造可对照\cite[第I章，第2节，习题2.12--2.15]{Hartshorne1977}；Veronese 的二次关系式还可参看\cite[第1章，第4节，例1.28]{Shafarevich2013Basic1}。
 
 \subsection{Grassmann 与 Plücker 关系}
 \label{g5:subsec:0103:03}
-待撰写
+
+射影空间以一维向量子空间为点。若希望把一个 \(r\) 维子空间也当作一个几何点，直接记录一组基会多记一次任意换基。全部最大子式会在换基时乘以同一个行列式，恰好可以作为射影坐标。
+
+\begin{definition}
+\label{g5:def:grassmannian}
+	设 \(k\) 为代数闭域，\(V=k^n\)，\(1\leq r\leq n\)。所有 \(r\) 维向量子空间组成的集合称为\term[Grassmannkongjian]{Grassmann 空间}[Grassmannian]，记为 \(\operatorname{Gr}(r,V)\) 或 \(\operatorname{Gr}(r,n)\)。
+	\symidx{\(\operatorname{Gr}(r,V)\)：\(V\) 的 \(r\) 维子空间的参数空间}
+\end{definition}
+
+Grassmann 空间将“一个子空间怎样变化”变成了点的坐标问题。\footnote{Hermann Günter Grassmann（1809--1877），德国数学家，发展了向量运算与外代数。}选子空间的一组基作为 \(r\times n\) 矩阵 \(A\) 的行，令 \(p_{i_1\cdots i_r}\) 为第 \(i_1,\ldots,i_r\) 列组成的子式。先对递增指标记录坐标；一般指标按交替规则延伸，有重复指标时规定为零。换基将所有子式乘以同一个非零行列式，且矩阵满秩保证它们不全为零。这些\term[Pluckerzuobiao]{Plücker 坐标}[Plücker coordinates]给出映射
+\[
+	\iota:\operatorname{Gr}(r,n)\longrightarrow\mathbb P^{\binom nr-1}_k,
+	\qquad W\longmapsto[p_{i_1\cdots i_r}].
+\]
+Plücker 坐标特别适于描述直线族。\footnote{Julius Plücker（1801--1868），德国数学家、物理学家，研究解析几何、直线几何与光谱。}
+
+\begin{theorem}[Plücker 关系]
+\label{g5:thm:plucker-relations}
+	设 \(k\) 为代数闭域，\(1\leq r\leq n\)。由基矩阵的全部 \(r\) 阶子式定义的映射 \(\iota:\operatorname{Gr}(r,n)\rightarrow\mathbb P^{\binom nr-1}_k\) 为单射，其像恰由齐次二次方程
+	\begin{equation}
+	\label{g5:eq:plucker-relations}
+		\sum_{t=1}^{r+1}(-1)^{t-1}
+		p_{i_1\cdots i_{r-1}j_t}
+		p_{j_1\cdots\widehat{j_t}\cdots j_{r+1}}=0
+	\end{equation}
+	给出，其中指标取自 \(\{1,\ldots,n\}\)，并采用交替约定。像中每个开集 \(p_{i_1\cdots i_r}\ne0\) 同构于 \(\mathbb A^{r(n-r)}_k\)，同构由将相应 \(r\) 列化为单位矩阵给出。
+\end{theorem}
+
+\begin{proof}
+	必要性来自一个行列式恒等式。对 \(r\) 维空间中的任意 \(r+1\) 个列向量 \(v_{j_t}\)，按余子式展开得到
+	\[
+		\sum_{t=1}^{r+1}(-1)^{t-1}
+		\det(v_{j_1},\ldots,\widehat{v_{j_t}},\ldots,v_{j_{r+1}})v_{j_t}=0.
+	\]
+	可逐个分量检验：每个分量都是一个含两行相同的 \((r+1)\) 阶行列式的展开。对这个向量等式作用线性函数 \(v\mapsto\det(v_{i_1},\ldots,v_{i_{r-1}},v)\)，便得到\eqref{g5:eq:plucker-relations}。
+
+	为证明充分性，需要从满足方程的 \([p]\) 恢复矩阵，并证明它的所有子式都等于给定坐标。重排列后可设 \(p_{1\cdots r}\ne0\)，再共同缩放使 \(p_{1\cdots r}=1\)。定义矩阵 \(A\) 的前 \(r\) 列为单位矩阵，其余元素为
+	\[
+		A_{aj}=p_{1\cdots(a-1)j(a+1)\cdots r}
+		\qquad(1\leq a\leq r,\ j>r).
+	\]
+	设 \(q_J\) 是这个矩阵的子式。对仅含基指标 \(1,\ldots,r\) 的 \(r\) 元组，交替性给出 \(q_J=p_J\)。一般情形按 \(J\) 中基指标的缺失数归纳。取缺失的 \(a\in\{1,\ldots,r\}\)，在\eqref{g5:eq:plucker-relations}中代入
+	\[
+		(i_1,\ldots,i_{r-1})=(1,\ldots,\widehat a,\ldots,r),
+		\qquad(j_1',\ldots,j_{r+1}')=(a,j_1,\ldots,j_r).
+	\]
+	利用 \(p_{1\cdots\widehat a\cdots r a}=(-1)^{r-a}\)，得到
+	\[
+		p_{j_1\cdots j_r}
+		=\sum_{t=1}^r(-1)^{t-1}A_{a j_t}\,
+		p_{a j_1\cdots\widehat{j_t}\cdots j_r}.
+	\]
+	若 \(j_t\) 是基指标，则 \(j_t\ne a\)，从而 \(A_{a j_t}=0\)。其余非零项中的子式少缺一个基指标，故可用归纳假设把 \(p\) 换成 \(q\)。换后右边恰是 \(\det A_J\) 沿第 \(a\) 行的展开：\(q_{a,J\setminus j_t}\) 的首列是 \(e_a\)，其展开再贡献符号 \((-1)^{a+1}\)。所以右边等于 \(q_J\)，充分性得证。
+
+	矩阵 \((I_r\ B)\) 的 \(r(n-r)\) 个自由元素可以任取，全部子式是它们的多项式；反向恢复则是 Plücker 坐标除以选定的非零子式。这既证明每张图与仿射空间的同构，也证明行空间由 \([p]\) 唯一确定。换用别的非零子式时，恢复的是同一行空间，图间变换因而相容。
+\end{proof}
+
+由这些方程及仿射图，\(\operatorname{Gr}(r,n)\) 获得射影代数集的结构，\(\iota\) 称为\term[Pluckerqianru]{Plücker 嵌入}[Plücker embedding]。它的不可约性也可直接检查：满秩矩阵构成 \(\mathbb A^{rn}_k\) 的非空开集，故不可约；取全部子式给出到 Grassmann 空间的连续满射，而不可约空间的连续像不可约。此处满射来自每个子空间都能选基，连续性则由齐次方程的多项式代入给出。因此这个参数空间是一射影簇。上述构造与关系式可对照\cite[第1章，第4节，例1.24，公式(1.24)]{Shafarevich2013Basic1}。
+
+\begin{example}
+\label{g5:exm:grassmann-24}
+	设 \(k\) 为代数闭域。\(\operatorname{Gr}(2,4)\) 的六个坐标满足
+	\[
+		p_{12}p_{34}-p_{13}p_{24}+p_{14}p_{23}=0.
+	\]
+	这一个方程已经足够。在 \(p_{12}\ne0\) 的图中归一化 \(p_{12}=1\)，恢复矩阵
+	\[
+		A=\begin{pmatrix}
+			1&0&-p_{23}&-p_{24}\\
+			0&1&p_{13}&p_{14}
+		\end{pmatrix}.
+	\]
+	前五个子式就是给定坐标，最后一个是 \(p_{13}p_{24}-p_{14}p_{23}=p_{34}\)。任意非零子式都可通过重排列移到 \(p_{12}\)，所以这些图覆盖全部方程解。这个二次超曲面参数化 \(\mathbb P^3_k\) 中的射影直线；图中的四个自由参数就是上述矩阵右侧四个元素。整个计算在任意特征下成立。
+\end{example}
 
 \subsection{射影曲线及有理参数}
 \label{g5:subsec:0103:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+仿射曲线参数常在某个参数值出现分母为零。射影参数把这个值放到另一张仿射图中，因而可以检查那里究竟是遗漏了一个点，还是映射存在真实的延拓障碍。不可约准射影簇上的有理映射仍按稠密开集上正则映射的等价类定义；函数域可在任一非空仿射开集中计算，因为交上的正则函数给出相同的分式域。若其函数域的超越次数为 \(1\)，我们称它为曲线；这一描述把本节的参数计算与后续维数理论联系起来。
+
+\begin{example}
+\label{g5:exm:projective-conic-parameter}
+	设 \(k\) 为代数闭域。二次曲线
+	\[
+		C=V_+(XZ-Y^2)\subseteq\mathbb P^2_k
+	\]
+	具有处处定义的参数化
+	\[
+		\nu:\mathbb P^1_k\longrightarrow C,\qquad[s:t]\longmapsto[s^2:st:t^2].
+	\]
+	它是二次 Veronese 嵌入，其逆还可直接写成
+	\[
+		\rho([X:Y:Z])=
+		\begin{cases}
+			[X:Y],&X\ne0,\\
+			[Y:Z],&Z\ne0.
+		\end{cases}
+	\]
+	这两个开集覆盖 \(C\)，因为 \(X=Z=0\) 会由曲线方程推出 \(Y=0\)。在交上，\([X:Y]=[Y:Z]\) 正是 \(XZ=Y^2\)，所以局部公式相容。代入可知 \(\rho\nu\) 和 \(\nu\rho\) 均为恒等映射，且各局部表达正则。这证明 \(C\cong\mathbb P^1_k\)，并给出 \(k(C)=k(t/s)\)。
+\end{example}
+
+从点 \(Q=[0:0:1]\) 作投影，可把这个参数化看成线与二次曲线的相交。经过 \(Q\) 的直线由比例 \([X:Y]=[s:t]\) 标记；在 \(s\ne0\) 时，除去固定交点 \(Q\)，另一个交点为 \([s^2:st:t^2]\)。当 \(s=0\) 时，这个交点也移到 \(Q\)。下面的图记录投影公式与其延拓的关系：
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		C\setminus\{Q\}\arrow[r,"{[X:Y]}"]\arrow[d,hook]
+		&\mathbb P^1_k\arrow[d,equal]\\
+		C\arrow[r,"\rho"']&\mathbb P^1_k.
+	\end{tikzcd}
+\]
+上边的公式在 \(Q\) 处同时为零，下边的局部公式 \([Y:Z]\) 却在 \(Q\) 附近有定义，并给出 \(\rho(Q)=[0:1]\)。同一个有理映射的某组齐次表达式有共同零点，并不决定该点一定无法延拓；应检查映射在所研究簇上的其他局部表达。
+
+更一般地，\(\nu_d(\mathbb P^1_k)\subseteq\mathbb P^d_k\) 写作
+\[
+	[s:t]\longmapsto[s^d:s^{d-1}t:\cdots:st^{d-1}:t^d],
+\]
+称为\term[youlizhengguiquxian]{有理正规曲线}[rational normal curve]。\cref{g5:prop:veronese-embedding}给出的逆图表明它同构于 \(\mathbb P^1_k\)，所以其函数域都是 \(k(t/s)\)；嵌入坐标和所处射影空间则随 \(d\) 改变。函数域记录双有理信息，而具体嵌入还记录方程如何放在周围空间中。下一节的消去运算将从参数式计算像的方程，并说明哪些方程只确定了像的闭包。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 1.2 Levi-Civita 定理
 % 纲要位置：几何学计划纲要.md，第 2135 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,234 @@
 \section{Levi-Civita 定理}
 \label{g3:sec:0102}
 
-待撰写
+度量使同一切空间中的向量可以比较长度和夹角。要对向量场求导，还须比较不同点的切空间。坐标分量的普通导数会随坐标改变，因为坐标基向量本身也在变化；联络给导数补上这部分变化。现在的问题是：给定度量以后，能否选出一种与长度相容、又保留普通微分交换规则的联络？
 
 \subsection{度量相容与无挠的独立要求}
 \label{g3:subsec:0102:01}
-待撰写
+
+先恢复第一卷第15.1节的联络定义。在光滑流形 \(M\) 上，一个切丛联络是实双线性运算 \((X,Y)\mapsto\nabla_XY\)，并满足
+\begin{equation}\label{g3:eq:connection-rules}
+	\nabla_{fX}Y=f\nabla_XY,\qquad
+	\nabla_X(fY)=X(f)Y+f\nabla_XY,
+	\qquad f\in C^\infty(M).
+\end{equation}
+第一个输入是求导方向，所以只依赖该方向在当前点的值；第二个输入是待微分的向量场，所以必须保留其分量的导数。第一卷命题15.1.2“联络的局部性”说明，对有限维、Hausdorff、第二可数光滑流形上的有限秩光滑丛，联络可唯一限制到任意开集，且在方向输入上只依赖点值。切丛满足这些条件；下文使用局部向量场时均取这种限制。
+% 跨卷依赖：g1:def:bundle-connection，g1:prop:connection-locality。
+
+\begin{definition}\label{g3:def:metric-torsion-conditions}
+	设 \((M,g)\) 为光滑黎曼流形，\(\nabla\) 为其切丛联络。若对任意光滑向量场 \(X,Y,Z\)，有
+	\begin{equation}\label{g3:eq:metric-compatibility}
+		X\bigl(g(Y,Z)\bigr)=g(\nabla_XY,Z)+g(Y,\nabla_XZ),
+	\end{equation}
+	则称 \(\nabla\) 与 \(g\) \term[duliangxiangrong]{度量相容}[metric compatible]。联络的\term[naolv]{挠率}[torsion]是
+	\begin{equation}\label{g3:eq:torsion-definition}
+		T^\nabla(X,Y)=\nabla_XY-\nabla_YX-[X,Y].
+	\end{equation}
+	若 \(T^\nabla=0\)，则称 \(\nabla\) \term[wunao]{无挠}[torsion free]。
+\end{definition}
+
+相容条件把内积的求导写成乘积规则。第一卷命题15.2.9“度量相容与平行移动”说明，对带光滑正定丛度量的有限秩实向量丛，这等价于沿每条有限分片光滑路径的平行移动保持内积。应用于切丛时，沿光滑曲线的平行向量场满足 \(\mathrm{D}_tV=\mathrm{D}_tW=0\)，于是 \(\frac{\mathrm{d}}{\mathrm{d}t}g(V,W)=g(\mathrm{D}_tV,W)+g(V,\mathrm{D}_tW)=0\)。无挠条件则比较交换两个向量场后的导数：Euclid 空间的普通导数满足 \(\mathrm{D}_XY-\mathrm{D}_YX=[X,Y]\)，式\eqref{g3:eq:torsion-definition}度量的正是对这条恒等式的偏离。这里的挠率是向量值二形式，与空间曲线的标量挠率不同。
+% 跨卷依赖：g1:prop:metric-parallel-transport。
+
+\begin{proposition}\label{g3:prop:connection-difference-conditions}
+	设 \((M,g)\) 为光滑黎曼流形，\(\nabla,\widehat\nabla\) 为光滑切丛联络，令
+	\[
+		A(X,Y)=\widehat\nabla_XY-\nabla_XY.
+	\]
+	则 \(A\) 对两个输入都为 \(C^\infty(M)\) 线性，挠率 \(T^\nabla\) 也对两个输入都为 \(C^\infty(M)\) 线性。若 \(\nabla\) 已与 \(g\) 相容，则 \(\widehat\nabla\) 与 \(g\) 相容当且仅当
+	\[
+		g(A(X,Y),Z)+g(Y,A(X,Z))=0.
+	\]
+	若 \(\nabla\) 无挠，则 \(\widehat\nabla\) 无挠当且仅当 \(A(X,Y)=A(Y,X)\)。
+\end{proposition}
+\begin{proof}
+	两联络的乘积规则相减时，含 \(X(f)Y\) 的项相消，故 \(A(X,fY)=fA(X,Y)\)；第一个输入的函数线性直接由定义得到。对挠率，利用 \([fX,Y]=f[X,Y]-Y(f)X\)，有
+	\[
+		T^\nabla(fX,Y)
+		=f\nabla_XY-Y(f)X-f\nabla_YX-f[X,Y]+Y(f)X
+		=fT^\nabla(X,Y).
+	\]
+	第二个输入的函数线性再由反对称性得到。最后，将 \(\widehat\nabla=\nabla+A\) 代入相容条件和挠率定义，分别作差，即得后两项。
+\end{proof}
+
+\begin{example}\label{g3:exm:compatibility-torsion-independent}
+	在 Euclid 平面上，记 \(g_0=\mathrm{d}x^2+\mathrm{d}y^2\)，\(\mathrm{D}\) 为通常导数，\(J\partial_x=\partial_y\)、\(J\partial_y=-\partial_x\)。定义
+	\[
+		\nabla^a_XY=\mathrm{D}_XY+\mathrm{d}x(X)JY.
+	\]
+	由于 \(J\) 关于 \(g_0\) 反对称，上一个命题说明 \(\nabla^a\) 与 \(g_0\) 相容；但
+	\[
+		T^{\nabla^a}(\partial_x,\partial_y)=J\partial_y=-\partial_x\ne0.
+	\]
+	再定义
+	\[
+		\nabla^b_XY=\mathrm{D}_XY+\mathrm{d}x(X)\mathrm{d}x(Y)\partial_x.
+	\]
+	新增项关于 \(X,Y\) 对称，故 \(\nabla^b\) 无挠。然而 \(\nabla^b_{\partial_x}\partial_x=\partial_x\)，所以
+	\[
+		\partial_xg_0(\partial_x,\partial_x)=0,
+		\qquad
+		2g_0(\nabla^b_{\partial_x}\partial_x,\partial_x)=2.
+	\]
+	它不与 \(g_0\) 相容。两项要求分别约束联络，必须同时使用才能选出本节所求的联络。
+\end{example}
 
 \subsection{Koszul 公式的推导}
 \label{g3:subsec:0102:02}
-待撰写
+
+假设相容且无挠的联络已经存在，先求出它必定满足的公式。对 \(X,Y,Z\) 循环使用度量相容性，得到
+\begin{align*}
+	Xg(Y,Z)&=g(\nabla_XY,Z)+g(Y,\nabla_XZ),\\
+	Yg(Z,X)&=g(\nabla_YZ,X)+g(Z,\nabla_YX),\\
+	Zg(X,Y)&=g(\nabla_ZX,Y)+g(X,\nabla_ZY).
+\end{align*}
+将前两式相加再减去第三式。无挠性给出
+\[
+	\nabla_YX=\nabla_XY-[X,Y],\qquad
+	\nabla_XZ-\nabla_ZX=[X,Z],\qquad
+	\nabla_YZ-\nabla_ZY=[Y,Z].
+\]
+代入后，所有未知导数合成 \(2g(\nabla_XY,Z)\)，得到\term[koszulgongshi]{Koszul 公式}[Koszul formula]：\footnote{Jean-Louis Koszul（1921--2018），法国数学家，研究 Lie 代数上同调、齐性空间和微分几何，其工作也产生了同调代数中的 Koszul 复形。}
+\begin{equation}\label{g3:eq:koszul-formula}
+	\begin{aligned}
+		2g(\nabla_XY,Z)
+		={}&Xg(Y,Z)+Yg(Z,X)-Zg(X,Y)\\
+		&-g(X,[Y,Z])+g(Y,[Z,X])+g(Z,[X,Y]).
+	\end{aligned}
+\end{equation}
+右侧只含给定的度量、向量场及其括号。固定 \(X,Y\) 后，若知道 \(g(\nabla_XY,Z)\) 对所有 \(Z\) 的值，正定内积便唯一确定 \(\nabla_XY\)。因此唯一性已经蕴含在此公式中；存在性还须确认右侧确实定义联络。
 
 \subsection{由公式构造联络并验证性质}
 \label{g3:subsec:0102:03}
-待撰写
+
+把式\eqref{g3:eq:koszul-formula}右侧的一半记为 \(B(X,Y,Z)\)。其中单项含有 \(Z\) 的导数，但这些导数必须相消，才能使 \(Z\mapsto B(X,Y,Z)\) 是一点处的线性泛函。这是从公式恢复向量的关键。
+
+\begin{lemma}\label{g3:lem:koszul-construction}
+	设 \((M,g)\) 为有限维、Hausdorff、第二可数、无边界的光滑黎曼流形，将式\eqref{g3:eq:koszul-formula}右侧的一半记为 \(B(X,Y,Z)\)。则对光滑函数 \(f\) 有
+	\begin{align*}
+		B(fX,Y,Z)&=fB(X,Y,Z),\\
+		B(X,fY,Z)&=fB(X,Y,Z)+X(f)g(Y,Z),\\
+		B(X,Y,fZ)&=fB(X,Y,Z).
+	\end{align*}
+	由 \(g(\nabla_XY,Z)=B(X,Y,Z)\) 唯一确定的 \(\nabla\) 是光滑切丛联络，并且与 \(g\) 相容且无挠。
+\end{lemma}
+\begin{proof}
+	三个等式均由乘积规则和括号的乘法公式得到。为说明导数如何消去，先把第三个输入换成 \(fZ\)。在 \(2B(X,Y,fZ)\) 中，除共同因子 \(f\) 外，多出的四项是
+	\[
+		X(f)g(Y,Z)+Y(f)g(Z,X)-Y(f)g(X,Z)-X(f)g(Y,Z)=0.
+	\]
+	换第一个输入为 \(fX\) 时，多出的四项是
+	\[
+		Y(f)g(Z,X)-Z(f)g(X,Y)+Z(f)g(Y,X)-Y(f)g(Z,X)=0.
+	\]
+	换第二个输入为 \(fY\) 时，多出
+	\[
+		X(f)g(Y,Z)-Z(f)g(X,Y)+Z(f)g(X,Y)+X(f)g(Z,Y)
+		=2X(f)g(Y,Z).
+	\]
+	这证明了三条规则。
+
+	在任一坐标区域写 \(Z=Z^i\partial_i\)。第三条规则说明
+	\[
+		B(X,Y,Z)=Z^iB(X,Y,\partial_i),
+	\]
+	所以它是光滑一形式对 \(Z\) 的求值。利用度量的音乐同构，定义
+	\[
+		\nabla_XY
+		=g^{ij}B(X,Y,\partial_i)\partial_j.
+	\]
+	它光滑且满足规定的内积等式。不同坐标给出的向量与任意 \(Z\) 都有同一内积，因而相同，故各局部定义粘合为整体运算。第一、第二条规则以及正定性分别给出式\eqref{g3:eq:connection-rules}中的两个等式；实双线性直接来自 \(B\) 的表达式。
+
+	还须验证原来要求的两个几何性质。把 \(B\) 的六项表达式分别交换第二、第三个输入后相加，可得
+	\[
+		B(X,Y,Z)+B(X,Z,Y)=Xg(Y,Z).
+	\]
+	其中括号项成对相消，度量导数只留下右侧。因此所得联络与度量相容。交换第一、第二个输入再相减，则得
+	\[
+		B(X,Y,Z)-B(Y,X,Z)=g([X,Y],Z).
+	\]
+	这说明 \(g(\nabla_XY-\nabla_YX-[X,Y],Z)=0\) 对所有 \(Z\) 成立，故挠率为零。
+\end{proof}
+
+这一构造无需先选一个背景联络再作修正。度量把右侧的一形式变成向量，而公式的函数线性保证局部定义彼此相容。它也说明，联络取决于度量的一阶变化，单独知道一个点上的内积还不足以算出附近向量场的协变导数。
 
 \subsection{存在唯一性及 Christoffel 表达}
 \label{g3:subsec:0102:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+现在可以将上述推导与构造合为黎曼几何的基本存在唯一性定理。所得联络称为\term[levicivitalianluo]{Levi-Civita 联络}[Levi-Civita connection]。\footnote{Tullio Levi-Civita（1873--1941），意大利数学家，对绝对微分学、张量分析及微分几何作出重要贡献。}
+
+\begin{theorem}[Levi-Civita 定理]\label{g3:thm:levi-civita}
+	设 \(M\) 为有限维、Hausdorff、第二可数、无边界的光滑流形，\(g\) 为其光滑黎曼度量。则 \(\mathrm{T}M\) 上存在唯一与 \(g\) 相容且无挠的光滑联络。它由 Koszul 公式\eqref{g3:eq:koszul-formula}确定。
+\end{theorem}
+\begin{proof}
+	\cref{g3:lem:koszul-construction}给出存在性。任一相容且无挠的联络均满足式\eqref{g3:eq:koszul-formula}，而非退化内积唯一确定左侧的 \(\nabla_XY\)，所以联络唯一。
+\end{proof}
+
+在局部坐标 \((x^1,\ldots,x^n)\) 中，以
+\[
+	\nabla_{\partial_i}\partial_j=\Gamma^k_{ij}\partial_k
+\]
+定义\term[christoffelfuhao]{Christoffel 符号}[Christoffel symbols]。\footnote{Elwin Bruno Christoffel（1829--1900），德国数学家，研究微分形式的变换、不变量和复分析，其工作推动了协变微分与张量分析的发展。}由于坐标向量场两两交换，Koszul 公式简化为
+\[
+	2g_{k\ell}\Gamma^k_{ij}=\partial_i g_{j\ell}+\partial_jg_{i\ell}-\partial_\ell g_{ij}.
+\]
+用逆矩阵升起指标，得到
+\begin{equation}\label{g3:eq:christoffel-metric}
+	\Gamma^k_{ij}
+	=\frac12g^{k\ell}
+	\bigl(\partial_i g_{j\ell}+\partial_jg_{i\ell}-\partial_\ell g_{ij}\bigr).
+\end{equation}
+因此任意向量场的协变导数为
+\begin{equation}\label{g3:eq:coordinate-covariant-derivative}
+	\nabla_XY
+	=\left(X^i\partial_iY^k+\Gamma^k_{ij}X^iY^j\right)\partial_k.
+\end{equation}
+下指标 \(i,j\) 的对称性表达无挠条件；相容性则等价于
+\[
+	\partial_i g_{jk}=\Gamma^\ell_{ij}g_{\ell k}+\Gamma^\ell_{ik}g_{j\ell}.
+\]
+
+\begin{example}\label{g3:exm:polar-christoffel}
+	在 Euclid 平面的极坐标局部区域 \(r>0\) 中，\(g=\mathrm{d}r^2+r^2\mathrm{d}\varphi^2\)。度量矩阵为 \(\operatorname{diag}(1,r^2)\)，只有 \(\partial_rg_{\varphi\varphi}=2r\) 非零。由式\eqref{g3:eq:christoffel-metric}，非零系数恰为
+	\[
+		\Gamma^r_{\varphi\varphi}=-r,\qquad
+		\Gamma^\varphi_{r\varphi}=\Gamma^\varphi_{\varphi r}=\frac1r.
+	\]
+	于是 \(\nabla_{\partial_\varphi}\partial_\varphi=-r\partial_r\)。沿半径固定的圆周，坐标向量 \(\partial_\varphi\) 的方向不断改变，这个导数正好指向圆心。在笛卡儿坐标中，同一联络的全部系数为零；非零系数可以来自坐标基的变化。
+\end{example}
+
+Christoffel 符号不按张量规律变换。若改用坐标 \(y^a\)，将 \(\partial_{y^b}=(\partial x^i/\partial y^b)\partial_{x^i}\) 代入式\eqref{g3:eq:coordinate-covariant-derivative}，可得
+\[
+	\widetilde\Gamma^a_{bc}
+	=\frac{\partial y^a}{\partial x^k}
+	\left(
+		\Gamma^k_{ij}\frac{\partial x^i}{\partial y^b}\frac{\partial x^j}{\partial y^c}
+		+\frac{\partial^2x^k}{\partial y^b\partial y^c}
+	\right).
+\]
+第二阶坐标导数来自对基向量变化的求导。两个联络作差时该项抵消，与\cref{g3:prop:connection-difference-conditions}中的张量性一致。
+
+\begin{proposition}\label{g3:prop:divergence-connection-trace}
+	设 \((M,g)\) 为有限维、无边界的光滑黎曼流形，\(\nabla\) 为 Levi-Civita 联络，\(X\) 为光滑向量场。由黎曼密度 \(\mu_g\) 定义的散度满足
+	\[
+		\operatorname{div}_gX
+		=\operatorname{tr}\bigl(v\mapsto\nabla_vX\bigr)
+		=\sum_{a=1}^n g(\nabla_{e_a}X,e_a),
+	\]
+	其中 \((e_a)\) 是任一局部正交单位标架。
+\end{proposition}
+\begin{proof}
+	在坐标标架中，这个线性映射的迹为 \(\partial_iX^i+\Gamma^i_{ij}X^j\)。将式\eqref{g3:eq:christoffel-metric}中的指标收缩，交换求和哑指标，第一项与第三项抵消，得到
+	\[
+		\Gamma^i_{ij}=\frac12g^{i\ell}\partial_jg_{i\ell}
+		=\partial_j\log\sqrt{\det(g_{ab})}.
+	\]
+	最后一个等式来自行列式求导公式 \(\partial_j\det G=(\det G)\operatorname{tr}(G^{-1}\partial_jG)\)。故令 \(\rho=\sqrt{\det(g_{ab})}\)，有
+	\[
+		\partial_iX^i+\Gamma^i_{ij}X^j
+		=\rho^{-1}\partial_i(\rho X^i),
+	\]
+	这正是\secref{g3:sec:0101}中由 \(\mathcal L_X\mu_g\) 得到的散度。迹与所选基无关，在正交单位标架中便成为所写的内积之和。
+\end{proof}
+
+于是梯度再作协变微分后取迹，得到 \(\operatorname{div}_g\operatorname{grad}_g f\)。本书采用的非负 Laplace 算子是它的相反数，即 \(\Delta_g f=-\operatorname{tr}(v\mapsto\nabla_v\operatorname{grad}_g f)\)。密度给出的积分公式与联络给出的微分公式由此接合。

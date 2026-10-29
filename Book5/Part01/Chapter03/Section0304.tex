@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 3.4 维数的局部模型
 % 纲要位置：几何学计划纲要.md，第 5138 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,376 @@
 \section{维数的局部模型}
 \label{g5:sec:0304}
 
-待撰写
+一条曲线在一个点附近需要几个参数，可能与描述这个点附近的一阶变化所需的坐标数不同。例如尖点的函数域只有一个超越方向，但原点处的两个坐标都不能从极大理想的极小生成元组中删去。维数、生成元数和方程数因此需要分别计算。本节先用参数系测量局部维数，再用长度记录零维部分的厚度，最后把这些量放进超曲面、完全交与变纤维的具体模型中。
 
 \subsection{参数系及嵌入维数}
 \label{g5:subsec:0304:01}
-待撰写
+
+设 \((R,\mathfrak m,\kappa)\) 为非零 Noether 局部环。\(\mathfrak m\) 有限生成，由广义高度定理，它的高度 \(d=\dim R\) 有限。寻找参数的目标是选出尽量少的 \(x_i\in\mathfrak m\)，使商环 \(R/(x_1,\ldots,x_r)\) 的素谱只剩下闭点。这个条件等价于 \(\sqrt{(x_1,\ldots,x_r)}=\mathfrak m\)，因而允许商环仍有幂零元。
+
+\begin{definition}
+\label{g5:def:system-of-parameters}
+	设 \((R,\mathfrak m,\kappa)\) 为非零 Noether 局部环，\(d=\dim R\)。若 \(x_1,\ldots,x_d\in\mathfrak m\) 满足
+	\[
+		\sqrt{(x_1,\ldots,x_d)}=\mathfrak m,
+	\]
+	就称它们为 \(R\) 的一组\term[canshuxi]{参数系}[system of parameters]。当 \(d=0\) 时允许空参数系。数
+	\[
+		\operatorname{edim}R\coloneqq
+		\dim_\kappa(\mathfrak m/\mathfrak m^2)
+	\]
+	称为 \(R\) 的\term[qianruweishu]{嵌入维数}[embedding dimension]。
+	\symidx{\(\operatorname{edim}R\)：局部环的嵌入维数}
+\end{definition}
+
+Nakayama 引理说明，嵌入维数是生成极大理想本身所需的最少元素数。参数系则只要求生成理想的根式等于极大理想。证明参数系存在时，我们需要选一个元素，同时避开有限多个不可约分支所对应的素理想。下面的\term[youxiansulixiangbikaiyinli]{有限素理想避开引理}[finite prime avoidance lemma]提供这一选择。
+
+\begin{lemma}[有限素理想避开引理]
+\label{g5:lem:finite-prime-avoidance}
+	设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想，\(\mathfrak p_1,\ldots,\mathfrak p_s\) 为有限多个素理想。若 \(I\) 不包含在任何一个 \(\mathfrak p_i\) 中，则存在
+	\[
+		a\in I\setminus\bigcup_{i=1}^s\mathfrak p_i.
+	\]
+\end{lemma}
+\begin{proof}
+	删去包含在其他 \(\mathfrak p_j\) 中的素理想，不改变它们的并，所以可设所余素理想两两互不包含。对每个 \(i\)，选 \(a_i\in I\setminus\mathfrak p_i\)；对每个 \(j\ne i\)，选 \(b_{ij}\in\mathfrak p_j\setminus\mathfrak p_i\)。令
+	\[
+		c_i=a_i\prod_{j\ne i}b_{ij}.
+	\]
+	则 \(c_i\in I\)，且 \(c_i\notin\mathfrak p_i\)，因为 \(\mathfrak p_i\) 为素理想；对 \(j\ne i\)，又有 \(c_i\in\mathfrak p_j\)。所以 \(a=\sum_i c_i\) 在模 \(\mathfrak p_i\) 后等于非零的 \(c_i\)，从而避开全部 \(\mathfrak p_i\)。空集合情形任取 \(a\in I\) 即可。
+\end{proof}
+
+\begin{theorem}
+\label{g5:thm:system-of-parameters}
+	设 \((R,\mathfrak m)\) 为非零 Noether 局部环，\(d=\dim R\)。则参数系存在，并且
+	\[
+		d=\min\{r:\text{存在 }x_1,\ldots,x_r\in\mathfrak m,\quad
+		\sqrt{(x_1,\ldots,x_r)}=\mathfrak m\}.
+	\]
+\end{theorem}
+\begin{proof}
+	先证明下界。若 \(r\) 个元素生成的理想根式为 \(\mathfrak m\)，则 \(\mathfrak m\) 是该理想的唯一极小素理想。\cref{g5:thm:height-theorem}给出
+	\(\dim R=\operatorname{ht}\mathfrak m\leq r\)。
+
+	下面对 \(d\) 归纳构造至多 \(d\) 个这样的元素。若 \(d=0\)，局部环的每个素理想都等于 \(\mathfrak m\)，故由根式等于所有包含它的素理想之交，得到 \(\sqrt{(0)}=\mathfrak m\)，空参数系满足要求。
+
+	设 \(d>0\)。Noether 环只有有限多个极小素理想；这也可直接从\cref{g5:thm:prime-filtration}用于 \(R\) 时的有限支集并公式看出：每个极小素理想必须等于其中某个滤过素理想。取其中满足
+	\(\dim R/\mathfrak p_i=d\)
+	的那些。这样的素理想确实存在：取一条长度为 \(d\) 的素链，其最小端必为极小素理想，否则可在前面再添一项，违背 \(d\) 的定义。每个所选 \(\mathfrak p_i\) 都严格包含于 \(\mathfrak m\)，因为 \(\dim R/\mathfrak m=0\)。
+
+	由\cref{g5:lem:finite-prime-avoidance}，可选 \(x\in\mathfrak m\) 避开这些 \(\mathfrak p_i\)。我们断言 \(\dim R/(x)\leq d-1\)。否则有一条长度为 \(d\) 的素链，其每项都包含 \(x\)。这条链的最小端 \(\mathfrak q\) 同样必为极小素理想，且 \(\dim R/\mathfrak q=d\)，于是 \(\mathfrak q\) 属于被避开的那一组；但 \(x\in\mathfrak q\)，矛盾。
+
+	商环 \(R/(x)\) 仍为非零 Noether 局部环，设其维数为 \(d'\leq d-1\)。由归纳假设，在商环中可以选 \(d'\) 个元素生成以 \(\mathfrak m/(x)\) 为根式的理想。将它们提升回 \(R\)，连同 \(x\) 一共得到 \(1+d'\leq d\) 个元素，其生成理想的根式为 \(\mathfrak m\)。前面的下界又要求元素数至少为 \(d\)，故恰好为 \(d\)，得到参数系。
+\end{proof}
+
+参数系把素链定义的维数转换成了“切到只剩一个点所需的最少方程数”。这里保留商环的幂零结构，因此“只剩一个点”与“商环是域”并不相同。上述结论可与\cite[第13节，定理13.4--13.6；第14节开头]{Matsumura1989}对照；这里由已经证明的高度定理得到下界，存在性则使用有限素理想避开和归纳。
+
+\begin{proposition}
+\label{g5:prop:dimension-embedding-bound}
+	设 \((R,\mathfrak m,\kappa)\) 为非零 Noether 局部环。则
+	\[
+		\dim R\leq\operatorname{edim}R<\infty.
+	\]
+\end{proposition}
+\begin{proof}
+	\(\mathfrak m\) 是有限生成模，所以 \(\mathfrak m/\mathfrak m^2\) 有有限维数 \(e\)。提升其一组基，由\cref{g5:cor:nakayama-generators}得到 \(\mathfrak m\) 的 \(e\) 个生成元。它们生成的理想根式当然为 \(\mathfrak m\)，故\cref{g5:thm:system-of-parameters}给出 \(\dim R\leq e\)。
+\end{proof}
+
+例如，设 \(k\) 为域，
+\[
+	R=\bigl(k[x,y]/(y^2-x^3)\bigr)_{(x,y)}.
+\]
+由\cref{g5:exm:cusp-birational}，这个环的分式域是 \(k(t)\)，其中 \(x=t^2,y=t^3\)。仿射维数定理给出整条尖点曲线维数为 \(1\)；局部环中有严格素链 \((0)\subsetneq(x,y)R\)，所以 \(\dim R=1\)。另一方面，关系 \(y^2-x^3\) 没有一次项，\(x,y\) 的像在 \(\mathfrak m/\mathfrak m^2\) 中线性无关：若有线性关系，清去常数项非零的局部分母后比较一次项，就会使两个系数都为零。因此 \(\operatorname{edim}R=2\)。单个 \(x\) 已是一组参数，因为 \(y^2=x^3\) 使 \(y\in\sqrt{(x)}\)。参数数目与极大理想生成元数的差别，在这里由同一个方程明确呈现。
 
 \subsection{零维 Noether 环和有限长度}
 \label{g5:subsec:0304:02}
-待撰写
+
+参数切片虽然只剩一个点，仍可能保留不同厚度。例如 \(k[t]/(t^2)\) 与 \(k[t]/(t^3)\) 都只有一个素理想，维数都是零，但它们作为 \(k\) 向量空间的维数分别为 \(2,3\)。在不预先指定基域的一般环上，长度以简单模为单位记录这种差别。
+
+\begin{definition}
+\label{g5:def:module-length}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模。所有有限严格子模链
+	\[
+		0=M_0\subsetneq M_1\subsetneq\cdots\subsetneq M_r=M
+	\]
+	的长度 \(r\) 的上确界，记为 \(\ell_A(M)\)，称为 \(M\) 的长度。若这个上确界有限，就称 \(M\) 为有限长度模；约定 \(\ell_A(0)=0\)。非零且没有非零真子模的模称为\term[jiandanmo]{简单模}[simple module]。
+	\symidx{\(\ell_A(M)\)：模的长度}
+\end{definition}
+
+这延续\subsecref{g5:subsec:0104:05}中有限商代数的长度。有限长度模中，一条达到最大长度的链不能再插入子模，所以它的每个相邻商都是简单模；这种链称为\term[zuchenglie]{组成列}[composition series]。反过来，存在有限组成列会给出有限长度，这可由下面的加性逐段证明。
+
+\begin{proposition}
+\label{g5:prop:length-additivity}
+	设 \(A\) 为交换含幺环，且 \(0\rightarrow L\rightarrow M\rightarrow N\rightarrow0\) 为短正合列。则 \(M\) 有限长度，当且仅当 \(L,N\) 都有限长度；在此情形，
+	\[
+		\ell_A(M)=\ell_A(L)+\ell_A(N).
+	\]
+\end{proposition}
+\begin{proof}
+	将 \(L\) 看成 \(M\) 的子模。对 \(U\subseteq V\subseteq M\)，若 \(U\cap L=V\cap L\)，且 \(U,V\) 在 \(N\) 中的像相同，则 \(U=V\)：对 \(v\in V\)，取 \(u\in U\) 具有相同的像，便有 \(v-u\in V\cap L=U\cap L\)。
+
+	因此，\(M\) 的严格子模链每前进一步，或者与 \(L\) 的交严格增大，或者在 \(N\) 中的像严格增大。如果 \(L,N\) 长度有限，链长至多为 \(\ell_A(L)+\ell_A(N)\)，所以 \(M\) 长度有限。反过来，\(L\) 的子模链可看成 \(M\) 中的链，\(N\) 的链可拉回 \(M\)，所以 \(M\) 长度有限时二者都有限。最后，将 \(L\) 中的一条最长链与 \(N\) 中一条最长链的逆像拼接，得到长度恰为两者之和的链，证明等式。
+\end{proof}
+
+简单 \(A\) 模都是 \(A/\mathfrak m\) 的形式，其中 \(\mathfrak m\) 极大：任取一个非零元素，它生成整个简单模，核便是极大理想。因此，在局部环上，每个组成因子都同构于剩余域。若局部环还是剩余域为 \(k\) 的有限维 \(k\) 代数，则每个组成因子恰有一维，故长度等于 \(k\) 维数。长度有限也立即使子模升链和降链都终止。加性与链条件的关系可对照\cite[第3节，定理3.1及其后的讨论]{Matsumura1989}。
+
+\ProseParagraphBreak
+
+满足理想降链条件的环称为\term[Artinhuan]{Artin 环}[Artinian ring]。\footnote{Emil Artin（1898--1962），奥地利裔美国数学家，研究域论、代数数论与具有降链条件的环。}Noether 条件控制升链；对交换环，零维性恰好补足降链条件。
+
+\begin{theorem}
+\label{g5:thm:artinian-zero-dimension}
+	设 \(A\ne0\) 为交换含幺环。以下条件等价：
+	\begin{equivalences}
+		\item \(A\) 为 Noether 环且 \(\dim A=0\)；
+		\item \(A\) 为 Artin 环；
+		\item \(A\) 作为自身的模具有有限长度。
+	\end{equivalences}
+	在这些条件下，\(\operatorname{Spec}A\) 是有限集，所有素理想均极大。零环同样为 Noether 环、Artin 环且长度为零，其空素谱按前文的空集约定处理。
+\end{theorem}
+\begin{proof}
+	先设 \(A\) Noether 且维数为零。对 \(A\) 使用\cref{g5:thm:prime-filtration}，得到有限个相邻商 \(A/\mathfrak p_i\)。每个 \(\mathfrak p_i\) 都极大，所以这些商都是简单模。长度加性使 \(\ell_A(A)\) 有限。有限长度又立即蕴含理想降链条件。
+
+	现在设 \(A\) Artin。对任意素理想 \(\mathfrak p\)，整环 \(D=A/\mathfrak p\) 仍满足降链条件。若 \(0\ne a\in D\)，链 \((a)\supseteq(a^2)\supseteq\cdots\) 终止，故某个 \(n\) 满足 \(a^n=a^{n+1}b\)。在整环中约去 \(a^n\) 得 \(ab=1\)。所以 \(D\) 是域，全部素理想均极大。
+
+	极大理想也只能有有限多个。否则可取两两不同的 \(\mathfrak m_1,\mathfrak m_2,\ldots\)。链
+	\(\mathfrak m_1\supseteq\mathfrak m_1\cap\mathfrak m_2\supseteq\cdots\)
+	每一步都严格：对第 \(r+1\) 个极大理想，从每个 \(\mathfrak m_i\setminus\mathfrak m_{r+1}\) 中取元素，乘积属于前 \(r\) 个的交，却不属于素理想 \(\mathfrak m_{r+1}\)。这违背降链条件。记全部极大理想为 \(\mathfrak m_1,\ldots,\mathfrak m_s\)，并记
+	\(\mathfrak n=\bigcap_i\mathfrak m_i=\sqrt{(0)}\)。
+
+	我们证明 \(\mathfrak n\) 幂零，而不预先假设它有限生成。降链条件使某个 \(q\geq1\) 满足 \(\mathfrak n^q=\mathfrak n^{q+1}\)。令 \(I=\mathfrak n^q\)，则 \(I^2=I\)。若 \(I\ne0\)，在满足 \(IJ\ne0\) 的理想 \(J\) 中选一个极小者。存在 \(x\in J\) 使 \(Ix\ne0\)，故极小性使 \(J=Ax\)。另一方面，\(I(IJ)=IJ\ne0\)，极小性还给出 \(IJ=J\)。于是有限生成模 \(J\) 满足 \(IJ=J\)。由\cref{g5:prop:nakayama-ideal}，存在 \(a\in I\subseteq\mathfrak n\) 使 \((1-a)J=0\)。\(a\) 幂零，故 \(1-a\) 可逆，迫使 \(J=0\)，矛盾。因此 \(I=0\)。
+
+	不同极大理想两两互素，中国剩余定理给出
+	\[
+		A/\mathfrak n\cong\prod_{i=1}^s A/\mathfrak m_i.
+	\]
+	每层 \(\mathfrak n^j/\mathfrak n^{j+1}\) 都是这个有限个域的乘积环上的模，并且继承降链条件。用乘积环的坐标幂等元分解它，得到有限个域上的向量空间。每个向量空间都必须有限维：无限基可以不断删去一个基向量，构造严格的下降子空间链。因此各层都是有限长度 \(A\) 模。由于 \(\mathfrak n^q=0\)，有限层的长度加性给出 \(\ell_A(A)<\infty\)。
+
+	最后，有限长度使理想升链终止，所以 \(A\) Noether；又由刚才对 Artin 环素商的论证得 \(\dim A=0\)。全部等价关系得证。
+\end{proof}
+
+Artin 环推出有限长度的证明可对照\cite[第3节，定理3.2]{Matsumura1989}。在 Noether 局部环 \((R,\mathfrak m)\) 中，对真理想 \(J\) 因而有
+\[
+	\sqrt J=\mathfrak m
+	\quad\Longleftrightarrow\quad
+	\dim R/J=0
+	\quad\Longleftrightarrow\quad
+	\ell_R(R/J)<\infty.
+\]
+第一个等价来自局部环中的素理想对应，第二个来自上个定理；商环的子模就是它的理想，因此作为 \(R\) 模与作为 \(R/J\) 模计算的长度相同。特别地，参数系切出的局部商环总有有限长度。
+
+\begin{example}
+\label{g5:exm:parameter-lengths}
+	设 \(k\) 为域，\(R=(k[x,y]/(y^2-x^3))_{(x,y)}\)。参数 \(x\) 与参数 \(y\) 分别给出
+	\[
+		R/(x)\cong k[y]/(y^2),\qquad
+		R/(y)\cong k[x]/(x^3).
+	\]
+	这里局部化没有再改变右侧的环，因为它们已经是仅有一个极大理想的局部环。两个商的长度分别为 \(2,3\)。所以参数系的元素数只由维数决定，而参数切片的长度还取决于具体选择。
+
+	另取任意域扩张 \(K/k\)。域 \(K\) 作为自身的模长度为 \(1\)，但 \(\dim_k K\) 可以无限。这说明有限长度不等于对任意外部基域都有限维；第一章有限点模型中的等同还使用了有限型及剩余域条件。
+\end{example}
 
 \subsection{超曲面与完全交的预告}
 \label{g5:subsec:0304:03}
-待撰写
+
+一个非零方程通常被期待削去一个维数。高度定理给出了一方面的控制：由 \(r\) 个元素生成的理想，其极小素理想高度至多为 \(r\)。要得到精确维数，还须核对方程所处的环及方程之间的关系。多项式环中的单个非恒定方程可以通过首一化得到一个完整模型。
+
+\begin{proposition}
+\label{g5:prop:polynomial-hypersurface-dimension}
+	设 \(k\) 为任意域，\(n\geq1\)，\(f\in k[x_1,\ldots,x_n]\) 为非恒定多项式。则
+	\[
+		\dim k[x_1,\ldots,x_n]/(f)=n-1.
+	\]
+	更具体地，经过多项式坐标的可逆变换及乘以非零常数，可以使 \(f\) 关于最后一个变量首一；此时商环是其余 \(n-1\) 个变量组成的多项式子环上的有限自由模。
+\end{proposition}
+\begin{proof}
+	由\cref{g5:lem:weighted-monic-change}，可以作一个对任意基域都有效的三角代换，使最后一个变量 \(T\) 的最高次系数为非零常数。除以该常数，写成
+	\[
+		f=T^e+a_1(Y)T^{e-1}+\cdots+a_e(Y),
+		\qquad e\geq1,
+	\]
+	其中 \(Y=(Y_1,\ldots,Y_{n-1})\)。令 \(C=k[Y_1,\ldots,Y_{n-1}]\)。关于首一多项式作除法，每个剩余类都有唯一表达
+	\[
+		b_0(Y)+b_1(Y)T+\cdots+b_{e-1}(Y)T^{e-1}.
+	\]
+	唯一性来自非零首一多项式的倍式不可能有小于 \(e\) 的 \(T\) 次数。因此 \(C\) 单射到商环，且 \(1,T,\ldots,T^{e-1}\) 为其自由基。特别地，这是有限整扩张。由\cref{g5:thm:integral-dimension}及多项式环维数，商环维数为 \(n-1\)。
+\end{proof}
+
+在代数闭域上，由单个非恒定多项式定义的 \(V(f)\subseteq\mathbb A_k^n\) 称为\term[chaoqumian]{超曲面}[hypersurface]。取根式不会改变素谱的包含关系，所以 \(V(f)\) 的约化坐标环也有维数 \(n-1\)。商环 \(k[x_1,\ldots,x_n]/(f)\) 还保存方程的重数；例如 \(f=x_1^a\) 与 \(f=x_1\) 给出相同的点集，却一般给出不同的商环。
+
+\ProseParagraphBreak
+
+对多个方程，必须要求新方程在前面方程切出的商环中仍有独立作用。设 \(S\) 为交换含幺环，\(f_1,\ldots,f_r\in S\) 生成真理想。若对每个 \(i\)，乘以 \(f_i\) 在
+\(S/(f_1,\ldots,f_{i-1})\)
+上是单射，则称它们为一个\term[zhengzexulie]{正则序列}[regular sequence]。在给定的多项式环中，由正则序列生成的理想所定义的商代数是\term[wanquanjiao]{完全交}[complete intersection]的基本形式。后续将从局部方程研究其内在判别；这里先计算一类可以逐项验证的模型。
+
+\begin{example}
+\label{g5:exm:coordinate-complete-intersection}
+	设 \(k\) 为域，\(S=k[x_1,\ldots,x_n]\)，\(0\leq r\leq n\)，并取整数 \(a_1,\ldots,a_r\geq1\)。序列
+	\[
+		x_1^{a_1},\ldots,x_r^{a_r}
+	\]
+	是正则序列。事实上，商去前 \(i-1\) 项后，所得环作为 \(k[x_i,\ldots,x_n]\) 模，有自由基
+	\[
+		x_1^{b_1}\cdots x_{i-1}^{b_{i-1}},
+		\qquad 0\leq b_j<a_j.
+	\]
+	在这个自由模上乘以 \(x_i^{a_i}\) 单射，因为系数环是整环。最终商环
+	\[
+		B=S/(x_1^{a_1},\ldots,x_r^{a_r})
+	\]
+	是 \(k[x_{r+1},\ldots,x_n]\) 上的有限自由模，基为所有 \(0\leq b_i<a_i\) 的单项式 \(\prod_{i=1}^r x_i^{b_i}\)。该多项式子环单射到 \(B\)，所以整扩张保持维数给出
+	\[
+		\dim B=n-r.
+	\]
+	当 \(r=n\) 时，\(B\) 只支撑在原点，且
+	\(\ell_B(B)=\dim_k B=\prod_i a_i\)。
+	于是余维由被控制的坐标方向数决定，长度则还记住各方向的幂次。
+\end{example}
+
+两个最小生成方程也可能未使每个分支的余维都等于二。在代数闭域 \(k\) 上取
+\[
+	I=(xy,xz)\subseteq S=k[x,y,z].
+\]
+有
+\[
+	I=(x)\cap(y,z):
+\]
+若 \(xg\in(y,z)\)，模去 \((y,z)\) 后得到 \(x\overline g=0\) 于整环 \(k[x]\)，故 \(g\in(y,z)\)，证明了反向包含。因此零点集是平面 \(x=0\) 与直线 \(y=z=0\) 的并，两个分支的维数分别为 \(2,1\)，整个商环维数为 \(2\)。在原点的局部环中，\(xy,xz\) 仍是这个理想的极小生成元：其像在 \(I/\mathfrak mI\) 中线性无关，因为 \(\mathfrak mI\) 中没有非零二次齐次项。方程个数为二，并非因为多写了一个可删去的生成元。
+
+\ProseParagraphBreak
+
+这个序列失败在第二步。\(xy\) 在整环 \(S\) 中是非零因子，但 \(xz\) 在 \(S/(xy)\) 中被非零类 \(y\) 杀掉：
+\(y(xz)=z(xy)=0\)。
+新方程在某个已有分支上恒等于零，因而不能把那个分支再切掉一个维数。高度定理控制的是最小可能的方程数与素理想高度；具体商的维数还需要检查这些消失关系。
 
 \subsection{纤维维数问题的代数准备}
 \label{g5:subsec:0304:04}
-待撰写
+
+在映射 \(A\rightarrow B\) 中，把基点固定在 \(\mathfrak p\in\operatorname{Spec}A\)，应当使 \(\mathfrak p\) 中的元素变为零，并使 \(A\setminus\mathfrak p\) 中的元素可逆。两个要求合起来给出\term[xianweihuan]{纤维环}[fibre ring]
+\[
+	B(\mathfrak p)\coloneqq B\otimes_A\kappa(\mathfrak p)
+	\cong (A\setminus\mathfrak p)^{-1}(B/\mathfrak pB).
+\]
+
+\symidx{\(B(\mathfrak p)=B\otimes_A\kappa(\mathfrak p)\)：素点处的纤维环}
+其素理想恰对应 \(B\) 中收缩为 \(\mathfrak p\) 的素理想：在商环中要求包含 \(\mathfrak pB\)，在局部化中要求避开 \(A\setminus\mathfrak p\)，所以收缩既包含又不大于 \(\mathfrak p\)。这只是商环及局部化的素理想对应，适用于任意环同态，纤维环也可能为零环。
+
+\ProseParagraphBreak
+
+若 \(A\) 是整环，零素理想的剩余域为 \(K=\operatorname{Frac}A\)。相应的 \(B\otimes_AK\) 称为\term[fanxianweihuan]{泛纤维环}[generic fibre ring]。它把所有非零基底函数都反演，因而适合测量映射在基底的泛点处还剩多少独立方向。纤维环与泛纤维的记法可对照\cite[第15节，Fibres，第116页]{Matsumura1989}。
+
+\begin{proposition}
+\label{g5:prop:generic-fiber-dimension}
+	设 \(A\subseteq B\) 为整环的单射，且 \(B\) 是有限型 \(A\) 代数。令 \(K=\operatorname{Frac}A\)、\(L=\operatorname{Frac}B\)。则
+	\[
+		\dim(B\otimes_AK)=\operatorname{trdeg}_K L.
+	\]
+	若 \(A,B\) 还是某个域 \(k\) 上的有限型代数，则
+	\[
+		\dim(B\otimes_AK)=\dim B-\dim A.
+	\]
+\end{proposition}
+\begin{proof}
+	因为 \(A\subseteq B\) 单射且二者为整环，
+	\[
+		B\otimes_AK=(A\setminus\{0\})^{-1}B
+	\]
+	是非零有限型 \(K\) 整代数，其分式域仍为 \(L\)。对这个 \(K\) 代数应用\cref{g5:thm:affine-dimension}，得到第一个等式。
+
+	在第二个情形，超越次数具有塔式加性
+	\(\operatorname{trdeg}_kL=\operatorname{trdeg}_kK+\operatorname{trdeg}_K L\)。
+	确实，取 \(K/k\) 的超越基和 \(L/K\) 的超越基，它们的并在 \(k\) 上代数独立；而 \(L\) 对它们生成的域代数，因为两段剩余扩张都代数。再将 \(A,B\) 的维数分别写成其分式域的超越次数，便得结论。
+\end{proof}
+
+这个等式计算泛纤维，不能直接把其中的 \(K\) 换成任意点的剩余域。有限映射则对全部纤维有统一的零维结论，且保留了点集以外的有限代数。
+
+\begin{proposition}
+\label{g5:prop:finite-fiber-algebra}
+	设 \(A\rightarrow B\) 为交换含幺环同态，且 \(B\) 是有限 \(A\) 模。对每个 \(\mathfrak p\in\operatorname{Spec}A\)，纤维环 \(B(\mathfrak p)\) 是有限维 \(\kappa(\mathfrak p)\) 代数。若它非零，则为零维 Artin 环，只有有限多个素理想，且各剩余域都是 \(\kappa(\mathfrak p)\) 的有限扩张。若 \(A\subseteq B\) 单射，则每个纤维环均非零。
+\end{proposition}
+\begin{proof}
+	取 \(B\) 的有限组 \(A\) 模生成元。张量 \(\kappa(\mathfrak p)\) 后，它们的像张成 \(B(\mathfrak p)\)，所以这是有限维向量空间。它的每个理想都是向量子空间，故理想降链终止。\cref{g5:thm:artinian-zero-dimension}说明非零纤维环维数为零且素理想只有有限多个；每个剩余域还是原有限维向量空间的商，因此为有限域扩张。
+
+	若 \(A\subseteq B\) 单射，模有限性使扩张整。由\cref{g5:thm:lying-over}，存在收缩为 \(\mathfrak p\) 的素理想 \(\mathfrak q\subset B\)。商环与局部化的素理想对应使它给出 \(B(\mathfrak p)\) 的一个素理想，故纤维环不能是零环。
+\end{proof}
+
+这把\cref{g5:prop:finite-affine-closed-fibres}的闭点结论推广到了任意素点。例如 \(k[t]\rightarrow k[z]\)、\(t\mapsto z^2\) 是秩二的有限自由扩张。在 \(t=0\) 处的纤维环是 \(k[z]/(z^2)\)，只有一个点、维数为零，但长度为二。有限性限制纤维的维数和点数，并不要求纤维约化。
+
+\begin{example}
+\label{g5:exm:fiber-dimension-jump}
+	设 \(k\) 为代数闭域，考虑
+	\[
+		\pi:\mathbb A_k^2\longrightarrow\mathbb A_k^2,\qquad
+		(x,y)\longmapsto(u,v)=(x,xy).
+	\]
+	坐标同态 \(A=k[u,v]\rightarrow B=k[x,y]\) 单射，因为不同单项式 \(u^iv^j\) 的像 \(x^{i+j}y^j\) 仍有不同指数。分式域却相同，因为 \(y=v/u\)，所以泛纤维环是 \(k(u,v)\)，维数为零。
+
+	在闭点 \((a,b)\) 处，纤维环为
+	\[
+		k[x,y]/(x-a,xy-b).
+	\]
+	代入 \(x=a\) 后，第二个方程成为 \(ay=b\)，得到\cref{g5:tab:fiber-dimension-jump}中的三种情形。
+\end{example}
+
+\begin{table}[htbp]
+	\centering
+	\caption{映射 \(\pi(x,y)=(x,xy)\) 的闭点纤维}
+	\label{g5:tab:fiber-dimension-jump}
+	\begin{tabular}{lll}
+		\toprule
+		基点条件 & 纤维环 & 纤维的形状与维数 \\
+		\midrule
+		\(a\ne0\) & \(k\) & 一个点，维数 \(0\) \\
+		\(a=0,\ b=0\) & \(k[y]\) & 一条直线，维数 \(1\) \\
+		\(a=0,\ b\ne0\) & 零环 & 空纤维 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+在 \(u\ne0\) 的开集上，逆公式为 \(x=u,y=v/u\)；而整条直线 \(x=0\) 被送到原点。这里 \(A,B\) 都是维数二的整环，泛纤维维数为零，指定点的纤维却可能是一维或为空。这说明维数差公式的泛纤维结论与逐点结论必须区分。
+
+\ProseParagraphBreak
+
+还可以直接检测这个例子不平坦。取理想 \(J=(u,v)\subset A\)。它有呈示
+\[
+	A\xrightarrow{\,(-v,u)\,}A^2\longrightarrow J\longrightarrow0:
+\]
+若 \(au+bv=0\)，模去 \(u\) 后由 \(k[v]\) 为整环得 \(u\mid b\)，写 \(b=uc\) 后便有 \(a=-vc\)。张量 \(B\) 得到
+\[
+	J\otimes_A B\cong B^2/B(-xy,x).
+\]
+由包含 \(J\hookrightarrow A\) 诱导的映射把 \((a,b)\) 的类送到 \(ax+bxy\)。类 \((-y,1)\) 在核中，但它非零：若它等于 \(c(-xy,x)\)，第二坐标就要求 \(1=cx\)，这在 \(k[x,y]\) 中不可能。因此 \(J\otimes_A B\rightarrow B\) 不是单射，\(B\) 不是平坦 \(A\) 模。这个判断使用了张量关系，未把纤维维数变化本身当作平坦性判据。
+
+\ProseParagraphBreak
+
+参数系还给出一个适用于指定点的局部维数估计。它的等号条件可直接用素链能否向下提升来表达，因而与\secref{g5:sec:0301}的 going-down 性质相接。
+
+\begin{proposition}
+\label{g5:prop:local-fiber-dimension-inequality}
+	设 \((A,\mathfrak m)\rightarrow(B,\mathfrak n)\) 为非零 Noether 局部环之间的局部同态，即 \(\mathfrak mB\subseteq\mathfrak n\)。则
+	\[
+		\dim B\leq\dim A+\dim(B/\mathfrak mB).
+	\]
+	若该同态具有 going-down 性质，即对 \(\mathfrak p_1\subseteq\mathfrak p_2\) 及收缩为 \(\mathfrak p_2\) 的 \(\mathfrak q_2\in\operatorname{Spec}B\)，总有 \(\mathfrak q_1\subseteq\mathfrak q_2\) 收缩为 \(\mathfrak p_1\)，则上式取等号。
+\end{proposition}
+\begin{proof}
+	记 \(d=\dim A\)、\(r=\dim(B/\mathfrak mB)\)。选 \(A\) 的参数系 \(x_1,\ldots,x_d\)，再选 \(B/\mathfrak mB\) 的参数系，并将其提升为 \(y_1,\ldots,y_r\in\mathfrak n\)。因 \(\sqrt{(x_1,\ldots,x_d)A}=\mathfrak m\)，每个 \(\mathfrak m\) 中元素的某个幂属于 \((x_1,\ldots,x_d)\)。因此
+	\[
+		\mathfrak mB\subseteq\sqrt{(x_1,\ldots,x_d)B}.
+	\]
+	而商环中参数系的条件给出
+	\(\sqrt{\mathfrak mB+(y_1,\ldots,y_r)B}=\mathfrak n\)。
+	两者结合说明 \(x_i,y_j\) 这 \(d+r\) 个元素在 \(B\) 中生成的理想根式为 \(\mathfrak n\)。由\cref{g5:thm:system-of-parameters}的最小性，得到 \(\dim B\leq d+r\)。
+
+	若 going-down 成立，取 \(B/\mathfrak mB\) 中长度为 \(r\) 的素链，提升为
+	\[
+		\mathfrak q_0\subsetneq\cdots\subsetneq\mathfrak q_r=\mathfrak n.
+	\]
+	这些素理想都收缩为 \(\mathfrak m\)。再取 \(A\) 中长度为 \(d\)、终点为 \(\mathfrak m\) 的素链，从 \(\mathfrak q_0\) 开始反复使用 going-down，便在 \(\mathfrak q_0\) 下方添上 \(d\) 次严格包含；严格性由收缩理想严格不同保证。这样得到 \(B\) 中长度为 \(d+r\) 的素链，给出相反不等式。
+\end{proof}
+
+这正是\cite[第15节，定理15.1]{Matsumura1989}中局部维数估计及 going-down 等号的证明内容。对于一般有限型映射，哪些开集上纤维维数稳定、平坦性怎样控制维数及重数，还需要相对结构定理；本节已经把这些问题分成可计算的泛纤维环、指定点的纤维环及其局部关系。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

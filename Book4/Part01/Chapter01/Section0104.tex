@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 1.4 正规族与共形构造
 % 纲要位置：几何学计划纲要.md，第 3502 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,246 @@
 \section{正规族与共形构造}
 \label{g4:sec:0104}
 
-待撰写
+把一个平面域变成圆盘，通常找不到可以直接写出的公式。一个可行的办法是先收集所有满足某种归一化条件的单叶映射，再从中选取在指定点放大最多的映射。这立即带来两个问题：趋近最大值的一列映射能否收敛，极限是否还保留单叶性？Cauchy 估计提供前一个问题所需的紧性，零点数的稳定性处理后一个问题。两者合起来便能把一个极值问题变成共形映射的存在证明。
 
 \subsection{局部有界和 Montel 紧性}
 \label{g4:subsec:0104:01}
-待撰写
+
+全纯函数在一点附近的变化速度受较大邻域上的函数值控制。因此，对一族全纯函数，统一的局部大小估计还会给出统一的局部连续性估计；这是一般连续函数族没有的性质。
+
+\begin{definition}\label{g4:def:0104:normal-family}
+	设 \(\Omega\subset\mathbb C\) 为域。函数列 \(f_j:\Omega\to\mathbb C\) 在每个紧集 \(K\subset\Omega\) 上一致收敛于 \(f\) 时，称其\term[ju bu yi zhi shou lian]{局部一致收敛}[locally uniform convergence]于 \(f\)。对于全纯函数族 \(\mathcal F\subset\mathcal O(\Omega)\)，若每个紧集 \(K\subset\Omega\) 都有常数 \(M_K<\infty\)，使
+	\[
+		|f(z)|\le M_K\qquad(f\in\mathcal F,\ z\in K),
+	\]
+	则称 \(\mathcal F\)\term[ju bu you jie]{局部有界}[locally bounded]。若 \(\mathcal F\) 中每个函数列都有一个局部一致收敛于 \(\Omega\) 上全纯函数的子列，则称它在全纯函数空间中为\term[zheng gui zu]{正规族}[normal family]。这里采用有限复值极限；亚纯函数族还可以使用球面距离定义另一种容许无穷远值的正规性。
+\end{definition}
+
+局部一致收敛允许靠近边界时失去统一控制。例如 \(f_j(z)=z^j\) 在单位圆盘 \(\mathbb D\) 上局部一致收敛于 \(0\)，因为每个紧集都包含在某个 \(|z|\le r<1\) 中，且 \(|z|^j\le r^j\)。但 \(\sup_{z\in\mathbb D}|z^j|=1\)，所以它们不在整个圆盘上一致收敛。
+
+\begin{proposition}\label{g4:prop:0104:holomorphic-limit}
+	设 \(\Omega\subset\mathbb C\) 为域，全纯函数列 \(f_j\) 在 \(\Omega\) 上局部一致收敛于 \(f\)。则 \(f\) 全纯，而且对每个整数 \(k\ge1\)，\(f_j^{(k)}\) 局部一致收敛于 \(f^{(k)}\)。
+\end{proposition}
+\begin{proof}
+	局部一致极限首先是连续函数。取闭圆盘 \(\overline{D(a,R)}\subset\Omega\)。在 \(|z-a|<R\) 上，\cref{g4:thm:0101:cauchy-formula}给出
+	\[
+		f_j(z)=\frac1{2\pi\mathrm i}\int_{|\zeta-a|=R}
+		\frac{f_j(\zeta)}{\zeta-z}\,\mathrm d\zeta.
+	\]
+	在积分圆周上的一致收敛允许取极限，得到同一公式中的 \(f_j\) 全部换成 \(f\)。对任意 \(0<r<R\)，当 \(|z-a|\le r\) 时，分母的模至少为 \(R-r\)；核函数对 \(z\) 的各阶导数因此都能在积分号下求出。这证明 \(f\) 在圆盘内全纯，并给出
+	\[
+		\sup_{|z-a|\le r}|f_j^{(k)}(z)-f^{(k)}(z)|
+		\le \frac{k!R}{(R-r)^{k+1}}
+		\sup_{|\zeta-a|=R}|f_j(\zeta)-f(\zeta)|.
+	\]
+	右端趋于零。任意紧集可用有限个这样的较小圆盘覆盖，故各阶导数也局部一致收敛。
+\end{proof}
+
+要抽取收敛子列，还需要一个紧空间上的基本论证。设 \(K\) 为紧度量空间，连续函数列在 \(K\) 上一致有界且等度连续。取可数稠密集 \(\{x_1,x_2,\ldots\}\subset K\)，依次抽取在 \(x_1,x_2,\ldots\) 处收敛的子列，再取对角子列。它在每个 \(x_\nu\) 处收敛。给定 \(\varepsilon>0\)，等度连续性给出统一的 \(\delta>0\)，使距离小于 \(\delta\) 时函数值相差小于 \(\varepsilon/3\)。用稠密集中的有限多个点组成 \(\delta\)-网；子列在这些点处同时成为 Cauchy 列后，在整个 \(K\) 上的差就小于 \(\varepsilon\)。因此该子列一致收敛。可数稠密集本身可由半径 \(1,1/2,1/3,\ldots\) 的有限网的并得到。
+
+\ProseParagraphBreak
+
+把这个紧性论证与 Cauchy 估计结合，得到\term[Montel ding li]{Montel 定理}[Montel's theorem]。Montel\footnote{Paul Antoine Aristide Montel（1876—1975），法国数学家，发展了全纯函数族与正规族理论。}的结论在这里承担的任务，是把一族函数的大小控制转化为一个极限函数的存在。
+
+\begin{theorem}[Montel]\label{g4:thm:0104:montel}
+	设 \(\Omega\subset\mathbb C\) 为域。每个局部有界的全纯函数族 \(\mathcal F\subset\mathcal O(\Omega)\) 都是正规族。
+\end{theorem}
+\begin{proof}
+	先证明任意紧集 \(K\subset\Omega\) 上的等度连续性。取 \(\delta>0\)，使
+	\[
+		L=\{z\in\mathbb C:\operatorname{dist}(z,K)\le2\delta\}
+		\subset\Omega.
+	\]
+	集合 \(L\) 紧，因而存在对全部 \(f\in\mathcal F\) 通用的上界 \(M_L\)。在距 \(K\) 不超过 \(\delta\) 的点处，半径 \(\delta\) 的圆盘包含在 \(L\) 中，\cref{g4:prop:0101:cauchy-estimate}给出 \(|f'|\le M_L/\delta\)。若 \(z,w\in K\) 且 \(|z-w|<\delta\)，连接二者的线段仍在这个邻域内，故
+	\[
+		|f(z)-f(w)|
+		\le\frac{M_L}{\delta}|z-w|.
+	\]
+	这就是在 \(K\) 上与 \(f\) 无关的连续性估计。
+
+	现在选择一列紧集穷竭 \(\Omega\)。当 \(\Omega\ne\mathbb C\) 时，可取
+	\[
+		K_m=\left\{z\in\Omega:|z|\le m,\
+		\operatorname{dist}(z,\mathbb C\setminus\Omega)\ge\frac1m\right\},
+		\qquad m\ge1;
+	\]
+	当 \(\Omega=\mathbb C\) 时，取 \(K_m=\{|z|\le m\}\)。这些紧集递增，其内部覆盖 \(\Omega\)，每个 \(\Omega\) 内的紧集都包含在某个 \(K_m\) 中。
+
+	给定 \(\mathcal F\) 中的函数列，利用前述紧空间论证，先抽取在 \(K_1\) 上一致收敛的子列，再从中抽取在 \(K_2\) 上一致收敛的子列，如此继续；空的 \(K_m\) 可略过。取这些嵌套子列的对角子列，它在每个 \(K_m\) 上一致收敛。各个极限在交集上一致，因而定义 \(\Omega\) 上的函数 \(f\)，且所得收敛是局部一致的。由\cref{g4:prop:0104:holomorphic-limit}，\(f\) 全纯。
+\end{proof}
+
+局部有界条件必须对函数族统一成立。每个 \(f_j(z)=jz\) 都在紧集上有界，但这列函数在任意含非零点的邻域上没有统一上界，也不可能有局部一致收敛的子列。
 
 \subsection{Hurwitz 定理与单叶极限}
 \label{g4:subsec:0104:02}
-待撰写
+
+收敛的全纯函数列仍可能失去某些几何性质。例如 \(f_j(z)=z/j\) 都是单叶函数，极限却是常值。真正需要排除的是这种整体塌缩；一旦极限不恒定，Rouché 定理对零点的控制就会保住单叶性。
+
+\begin{theorem}[Hurwitz]\label{g4:thm:0104:hurwitz}
+	设 \(\Omega\subset\mathbb C\) 为域，\(f_j\in\mathcal O(\Omega)\) 局部一致收敛于 \(f\)。若 \(f\) 不恒为零，且 \(a\in\Omega\) 是它的 \(m\) 阶零点，取 \(r>0\)，使 \(\overline{D(a,r)}\subset\Omega\) 且该闭圆盘内没有 \(f\) 的其他零点，则对充分大的 \(j\)，\(f_j\) 在 \(D(a,r)\) 中恰有 \(m\) 个零点，按重数计数。特别地，若每个 \(f_j\) 都无零点，则极限 \(f\) 或者处处非零，或者恒为零。
+\end{theorem}
+\begin{proof}
+	圆周 \(|z-a|=r\) 紧，且其上 \(f\ne0\)，所以
+	\[
+		\eta=\min_{|z-a|=r}|f(z)|>0.
+	\]
+	当 \(j\) 足够大时，圆周上有 \(|f_j-f|<\eta\le|f|\)。\cref{g4:thm:0102:rouche}说明 \(f_j\) 与 \(f\) 在圆盘中的零点总数相同，恰为 \(m\)。若所有 \(f_j\) 无零点而非零函数 \(f\) 在一点为零，这个结论就产生矛盾，故得到最后的二择一结论。
+\end{proof}
+
+上述结果称为\term[Hurwitz ding li]{Hurwitz 定理}[Hurwitz's theorem]。Hurwitz\footnote{Adolf Hurwitz（1859—1919），德国数学家，研究复函数、代数曲线与数论。}的零点稳定性允许多个零点在极限中合并，但总重数保持不变；例如 \(z^2-j^{-2}\) 的两个简单零点趋向 \(z^2\) 的二重零点。常数列 \(f_j=1/j\) 则说明，处处非零的函数列确实可以趋于恒零函数。
+
+\begin{corollary}\label{g4:cor:0104:univalent-limit}
+	设 \(\Omega\subset\mathbb C\) 为域，单叶全纯函数列 \(f_j:\Omega\to\mathbb C\) 局部一致收敛于 \(f\)。则 \(f\) 或为常值函数，或仍为单叶全纯函数。
+\end{corollary}
+\begin{proof}
+	由\cref{g4:prop:0104:holomorphic-limit}，\(f\) 全纯。设 \(f\) 不恒定，固定任意 \(a\in\Omega\)，定义
+	\[
+		g_j(z)=
+		\begin{cases}
+			\dfrac{f_j(z)-f_j(a)}{z-a},&z\ne a,\\[6pt]
+			f_j'(a),&z=a.
+		\end{cases}
+	\]
+	幂级数说明 \(g_j\) 在 \(a\) 处全纯。由于 \(f_j\) 单叶，\cref{g4:thm:0101:local-power}中局部幂模型的次数只能是 \(1\)，故 \(f_j'(a)\ne0\)；在其他点，单叶性也给出 \(g_j(z)\ne0\)。因此每个 \(g_j\) 在整个 \(\Omega\) 上无零点。
+
+	这些函数局部一致收敛于同样由 \(f\) 定义的差商 \(g\)。在离开 \(a\) 的紧集上，这直接来自 \(f_j\to f\)；在一个以 \(a\) 为中心的较小圆盘上，可用
+	\[
+		g_j(z)=\int_0^1 f_j'\bigl(a+t(z-a)\bigr)\,\mathrm dt
+	\]
+	及导数的局部一致收敛验证。由于 \(f\) 不恒定，\(g\) 不恒为零，\cref{g4:thm:0104:hurwitz}于是给出 \(g\) 处处非零。因此 \(z\ne a\) 时 \(f(z)\ne f(a)\)。点 \(a\) 任意，故 \(f\) 单叶。
+\end{proof}
+
+在构造映射时，固定一个点处的导数下界就能排除常值极限。这正是下面归一化极值问题的作用。
 
 \subsection{平面 Riemann 映照定理的极值证明}
 \label{g4:subsec:0104:03}
-待撰写
+
+圆盘的自同构已经说明：即使一个域与圆盘双全纯，对应也有选择余地。指定一点的像为 \(0\)，再要求该点的导数为正实数，就消除了平移基点和旋转的自由度。以下 \(\mathbb D=\{w\in\mathbb C:|w|<1\}\)，并沿用圆盘自同构
+\[
+	\phi_b(w)=\frac{w-b}{1-\overline b w},
+	\qquad b\in\mathbb D.
+\]
+
+\begin{theorem}[平面 Riemann 映照定理]\label{g4:thm:0104:riemann-mapping}
+	设 \(\Omega\subsetneq\mathbb C\) 为非空单连通域，\(a\in\Omega\)。则存在唯一的双全纯映射 \(F:\Omega\to\mathbb D\)，满足
+	\[
+		F(a)=0,\qquad F'(a)>0.
+	\]
+\end{theorem}
+
+这个结果称为\term[Riemann ying zhao ding li]{Riemann 映照定理}[Riemann mapping theorem]。证明分为三个相互衔接的构造：先找出至少一个从 \(\Omega\) 到圆盘的单叶映射；再在归一化映射中使 \(F'(a)\) 达到上确界；最后证明只要还遗漏圆盘内一点，就能构造导数更大的映射，与极值性矛盾。这一极值方法可与 Ahlfors 的论证对照\cite[第6章第1.1节, 第230--231页]{Ahlfors1979Complex}。
+
+\begin{proof}
+	先构造一个有界单叶函数。取 \(b\in\mathbb C\setminus\Omega\)。函数 \(z-b\) 在单连通域 \(\Omega\) 上全纯且处处非零，\cref{g4:prop:0102:logarithm}给出全纯平方根 \(h\)，使
+	\[
+		h(z)^2=z-b.
+	\]
+	若 \(h(z_1)=h(z_2)\)，平方后得到 \(z_1=z_2\)，故 \(h\) 单叶。而 \(h(\Omega)\) 与 \(-h(\Omega)\) 不交：若 \(h(z_1)=-h(z_2)\)，平方后仍有 \(z_1=z_2\)，从而 \(h(z_1)=0\)，与 \(z_1\ne b\) 矛盾。
+
+	令 \(c=h(a)\)。由\cref{g4:thm:0101:open-mapping}，存在 \(\rho>0\) 使 \(D(c,\rho)\subset h(\Omega)\)。于是 \(D(-c,\rho)\subset-h(\Omega)\) 完全避开 \(h(\Omega)\)，并且
+	\[
+		|h(z)+c|\ge\rho\qquad(z\in\Omega).
+	\]
+	故
+	\[
+		q(z)=\frac{\rho}{2(h(z)+c)}
+	\]
+	是模不超过 \(1/2\) 的单叶全纯函数。将 \(q\) 与 \(\phi_{q(a)}\) 复合，再乘一个模为 \(1\) 的常数，就得到一个 \(f:\Omega\to\mathbb D\)，满足 \(f(a)=0\)、\(f'(a)>0\)。这里导数不为零，因为单叶全纯函数的局部幂模型次数为 \(1\)。
+
+	考虑所有满足这些条件的函数组成的集合
+	\begin{gather*}
+		\mathcal S=\{f:\Omega\to\mathbb D:
+		f\text{ 全纯且单叶},\ f(a)=0,\ f'(a)>0\},\\
+		M=\sup_{f\in\mathcal S}f'(a).
+	\end{gather*}
+	刚才的构造说明 \(M>0\)。取 \(r>0\) 使 \(\overline{D(a,r)}\subset\Omega\)，由\cref{g4:prop:0101:cauchy-estimate}有 \(f'(a)\le1/r\)，所以 \(M<\infty\)。选取 \(f_j\in\mathcal S\)，使 \(f_j'(a)\to M\)。函数族一致有界于 \(1\)，\cref{g4:thm:0104:montel}给出局部一致收敛的子列，仍记作 \(f_j\)，其全纯极限记作 \(F\)。
+
+	由\cref{g4:prop:0104:holomorphic-limit}，
+	\[
+		F(a)=0,\qquad F'(a)=M>0,\qquad |F(z)|\le1.
+	\]
+	因 \(F\) 不恒定，\cref{g4:thm:0103:maximum-modulus}保证 \(|F(z)|<1\)。再由\cref{g4:cor:0104:univalent-limit}，\(F\) 单叶。因此 \(F\in\mathcal S\)，上确界确实由一个映射达到。
+
+	下面证明 \(F\) 满射。若有 \(\beta\in\mathbb D\setminus F(\Omega)\)，则 \(\beta\ne0\)。将遗漏点移到原点，令
+	\[
+		H=\phi_\beta\circ F.
+	\]
+	这是 \(\Omega\) 上处处非零的单叶全纯函数，值域包含于 \(\mathbb D\)。再次使用单连通性和\cref{g4:prop:0102:logarithm}，取全纯函数 \(Q\) 满足 \(Q^2=H\)。于是 \(|Q|<1\)，且 \(Q\) 单叶，因为相等的 \(Q\) 值必给出相等的 \(H\) 值。记 \(\gamma=Q(a)\)，则
+	\[
+		\gamma^2=-\beta,\qquad 0<|\gamma|<1.
+	\]
+	映射 \(G=\phi_\gamma\circ Q\) 仍将 \(\Omega\) 单叶地映入 \(\mathbb D\)，且 \(G(a)=0\)。为比较导数，利用
+	\[
+		|\phi_\beta'(0)|=1-|\beta|^2,
+		\qquad |\phi_\gamma'(\gamma)|=\frac1{1-|\gamma|^2},
+		\qquad 2\gamma Q'(a)=H'(a),
+	\]
+	得到
+	\begin{align*}
+		|G'(a)|
+		&=\frac{1-|\beta|^2}{2|\gamma|(1-|\gamma|^2)}F'(a)\\
+		&=\frac{1+|\gamma|^2}{2|\gamma|}M
+		>M.
+	\end{align*}
+	最后一个不等式来自 \((1-|\gamma|)^2>0\)。再旋转 \(G\) 的值域，使导数成为正实数，就得到 \(\mathcal S\) 中导数大于 \(M\) 的函数，矛盾。因此 \(F(\Omega)=\mathbb D\)。单叶性使 \(F'\) 处处非零，\cref{g4:thm:0101:inverse}保证其逆映射全纯。
+
+	最后，若 \(F_1,F_2\) 都满足结论，则 \(A=F_2\circ F_1^{-1}\) 是固定 \(0\) 的圆盘自同构。由\cref{g4:thm:0103:disk-aut}，\(A(w)=e^{\mathrm i\theta}w\)。而
+	\[
+		A'(0)=\frac{F_2'(a)}{F_1'(a)}>0,
+	\]
+	故 \(e^{\mathrm i\theta}=1\)，从而 \(F_1=F_2\)。
+\end{proof}
+
+平方根在证明中出现两次，解决的是两个具体问题。第一次利用域外点，把原域映到一个避开整块圆盘的区域，随后取倒数得到有界函数。第二次利用像域内的遗漏点，在保持单叶性的同时扩大基点处的导数。单连通性保证这两次平方根都能在整个 \(\Omega\) 上选成单值全纯函数；正规族紧性则保证最大化过程不会失去极限。
 
 \subsection{边界行为和非单连通域的限制}
 \label{g4:subsec:0104:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+Riemann 映照定理给出开域之间的双全纯对应。若一个点列在源域中不断逼近边界，它在圆盘中的像也必须离开每个内部紧集。这个结论只需逆映射的连续性，已经能够说明许多边界现象。
+
+\begin{proposition}\label{g4:prop:0104:boundary-escape}
+	设 \(\Omega\subset\mathbb C\) 为域，\(F:\Omega\to\mathbb D\) 为双全纯映射，\(z_j\in\Omega\)。则以下两件事等价：点列 \(z_j\) 最终离开 \(\Omega\) 的每个紧集；\(|F(z_j)|\to1\)。特别地，若 \(z_j\to p\in\partial\Omega\)，或 \(|z_j|\to\infty\)，则 \(|F(z_j)|\to1\)。
+\end{proposition}
+\begin{proof}
+	若 \(|F(z_j)|\) 不趋于 \(1\)，则存在 \(r<1\) 和一个子列，其像都位于 \(\overline{D(0,r)}\)。逆映射连续，故
+	\[
+		F^{-1}\bigl(\overline{D(0,r)}\bigr)
+	\]
+	是 \(\Omega\) 中的紧集，与点列最终离开每个紧集矛盾。反过来，对任意紧集 \(K\subset\Omega\)，\(F(K)\) 紧且包含在 \(\mathbb D\) 中，故 \(\max_K|F|<1\)。若 \(|F(z_j)|\to1\)，则充分大的 \(j\) 都有 \(z_j\notin K\)。最后两种点列都最终离开 \(\Omega\) 的每个紧集，因而满足结论。
+\end{proof}
+
+上式控制的是像点到圆周的径向距离。若要在每个边界点赋予唯一的圆周像，还需要研究从不同方向逼近同一点时的行为。狭缝域给出一个具体区别。
+
+\begin{example}\label{g4:exm:0104:slit-boundary}
+	考虑
+	\[
+		\Omega=\mathbb D\setminus[0,1).
+	\]
+	每个点有唯一表示 \(z=re^{\mathrm i\theta}\)，其中 \(0<r<1\)、\(0<\theta<2\pi\)。映射 \(z\mapsto(\log r,\theta)\) 把 \(\Omega\) 同胚到凸集 \((-\infty,0)\times(0,2\pi)\)，所以 \(\Omega\) 单连通；\cref{g4:thm:0104:riemann-mapping}给出它到圆盘的双全纯映射。
+
+	然而，这个映射不可能延拓为 Euclid 闭包之间的同胚。因为
+	\[
+		\overline\Omega=\overline{\mathbb D},
+		\qquad
+		\overline\Omega\setminus\Omega=\partial\mathbb D\cup[0,1).
+	\]
+	若存在延拓同胚，它须把 \(\partial\mathbb D\cup[0,1)\) 同胚地映到 \(\partial\mathbb D\)。从源边界删去狭缝上的一点 \(p\in(0,1)\) 后，该集合分成包含 \(0\) 的一段和其余部分；圆周删去一点却仍然连通，故这样的边界同胚不存在。
+
+	局部公式 \(\sqrt z=\sqrt r\,e^{\mathrm i\theta/2}\) 更直观地显示了狭缝的两侧：从上侧逼近 \(p>0\) 时，它趋向 \(\sqrt p\)；从下侧逼近时，它趋向 \(-\sqrt p\)。源域边界中的同一个 Euclid 点携带着两种不同的内部逼近方向。处理边界对应时，必须记录这种区别。
+\end{example}
+
+单连通假设也有可计算的作用。设 \(0<r<1\)，圆环
+\[
+	A_r=\{z\in\mathbb C:r<|z|<1\}
+\]
+上的坐标函数 \(z\) 没有全纯对数：若 \(e^{L(z)}=z\)，求导得 \(L'(z)=1/z\)，但沿 \(|z|=\rho\)、\(r<\rho<1\) 积分会同时给出
+\[
+	\int_{|z|=\rho}L'(z)\,\mathrm dz=0,
+	\qquad
+	\int_{|z|=\rho}\frac{\mathrm dz}{z}=2\pi\mathrm i.
+\]
+若有双全纯映射 \(F:A_r\to\mathbb D\)，其逆映射 \(G:\mathbb D\to A_r\) 是处处非零的全纯函数。由\cref{g4:prop:0102:logarithm}，\(G\) 有全纯对数 \(H\)，于是 \(H\circ F\) 就是 \(A_r\) 上坐标函数的全纯对数，产生矛盾。因此圆环不能双全纯地变成圆盘。
+
+\ProseParagraphBreak
+
+另一个被排除的域是整个 \(\mathbb C\)。若 \(F:\mathbb C\to\mathbb D\) 全纯，则在任意 \(a\in\mathbb C\) 处，半径 \(R\) 的 Cauchy 估计给出 \(|F'(a)|\le1/R\)。令 \(R\to\infty\) 得 \(F'(a)=0\)，所以 \(F\) 恒定。这说明定理中的“单连通真子域”同时包含两个作用不同的条件：单连通性消除选取全纯根时的环路障碍，域外点则启动有界单叶函数的构造。

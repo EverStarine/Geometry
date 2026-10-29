@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 3.3 法坐标中的二阶几何
 % 纲要位置：几何学计划纲要.md，第 2210 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,376 @@
 \section{法坐标中的二阶几何}
 \label{g3:sec:0303}
 
-待撰写
+在法坐标中心，度量矩阵是单位矩阵，一阶偏导也全部为零。因而仅看一点处的长度和一阶变化，还分辨不出它附近是否弯曲。现在要找的是二阶变化中无法通过这种坐标选择消去的部分。曲率将决定度量的二次项；取矩阵行列式后，这些方向性信息收缩为 Ricci 曲率，再对整个小球积分，就出现标量曲率。
+
+\ProseParagraphBreak
+
+本节的度量始终光滑。固定无边界黎曼流形 \((M^n,g)\) 中一点 \(p\)，在 \(\mathrm T_pM\) 选正交单位基 \((E_1,\ldots,E_n)\)，并用
+\[
+	q=\exp_p(x^iE_i)
+\]
+定义足够小邻域内的法坐标。记 \(|x|^2=\sum_i(x^i)^2\)，原点对应 \(p\)。曲率分量沿用本章约定
+\[
+	R(\partial_i,\partial_j)\partial_b
+	=R^a{}_{b i j}\partial_a,\qquad
+	R_{ijkl}=g(R(\partial_i,\partial_j)\partial_l,\partial_k).
+\]
+在原点，因 \(g_{ij}=\delta_{ij}\)，有 \(R^a{}_{b i j}=R_{ijab}\)。下文展开式右侧未注明位置的曲率分量均在 \(p\) 取值；\(O(|x|^m)\) 表示各分量在原点附近的绝对值不超过某个常数乘以 \(|x|^m\)。
 
 \subsection{联络的一阶展开}
 \label{g3:subsec:0303:01}
-待撰写
+
+\cref{g3:prop:normal-coordinate-first-order}已经给出 \(\Gamma^a_{ij}(0)=0\)。要确定其一阶项，需要同时使用两类关系：曲率给出联络偏导的反对称部分，径向直线是测地线则给出其完全对称部分。两者合起来恰好确定所有一阶系数。
+
+\begin{proposition}\label{g3:prop:normal-connection-expansion}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(x\) 为在 \(p\) 处由正交单位基产生的法坐标。则
+	\begin{equation}\label{g3:eq:normal-connection-derivative}
+		\partial_k\Gamma^a_{ij}(0)
+		=-\frac13\bigl(R^a{}_{i j k}+R^a{}_{j i k}\bigr),
+	\end{equation}
+	因而
+	\begin{equation}\label{g3:eq:normal-connection-expansion}
+		\Gamma^a_{ij}(x)
+		=-\frac13\bigl(R^a{}_{i j k}+R^a{}_{j i k}\bigr)x^k
+		+O(|x|^2).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	在法坐标中，\(t\mapsto tx\) 表示径向测地线。其坐标加速度为零，在时间一代入测地线方程，得到原点附近的恒等式
+	\[
+		\Gamma^a_{ij}(x)x^ix^j=0.
+	\]
+	令 \(C^a{}_{ij k}=\partial_k\Gamma^a_{ij}(0)\)。无挠性给出 \(C^a{}_{ij k}=C^a{}_{ji k}\)。把 \(\Gamma\) 的一阶 Taylor 展开代入上式，比较三次齐次项，得到
+	\[
+		C^a{}_{ij k}x^ix^jx^k=0\qquad\text{对所有 }x.
+	\]
+	对这个三次多项式取三次偏导，或对其作极化，得
+	\begin{equation}\label{g3:eq:normal-connection-symmetric-part}
+		C^a{}_{ij k}+C^a{}_{jk i}+C^a{}_{ki j}=0.
+	\end{equation}
+	这里三项已经包含了完全对称化，因为前两个下指标对称。
+
+	另一方面，原点处 \(\Gamma=0\)，所以\eqref{g3:eq:curvature-coordinate-components}中的二次联络项消失，留下
+	\[
+		R^a{}_{b i j}=C^a{}_{jb i}-C^a{}_{ib j}.
+	\]
+	特别地，
+	\[
+		\begin{aligned}
+			R^a{}_{i j k}+R^a{}_{j i k}
+			&=C^a{}_{ki j}-C^a{}_{ji k}
+			+C^a{}_{kj i}-C^a{}_{ij k}\\
+			&=C^a{}_{ki j}+C^a{}_{jk i}-2C^a{}_{ij k}
+			=-3C^a{}_{ij k}.
+		\end{aligned}
+	\]
+	最后一步使用\eqref{g3:eq:normal-connection-symmetric-part}。这证明了偏导公式，再对光滑函数 \(\Gamma^a_{ij}\) 使用一阶 Taylor 公式，得到所述展开。
+\end{proof}
+
+联络的一阶系数本身依赖坐标，但法坐标的径向条件已经固定了其中可以自由改变的部分。因此在这种坐标中，一阶联络变化可以全部由原点的曲率写出。
 
 \subsection{度量的二阶展开}
 \label{g3:subsec:0303:02}
-待撰写
+
+联络与度量之间的联系是度量相容性。它将度量的一阶偏导写成联络系数；再求一次导数，刚得到的一阶联络公式便转化为二阶度量公式。
+
+\begin{theorem}\label{g3:thm:normal-metric-expansion}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(x\) 为在 \(p\) 处由正交单位基产生的法坐标。则
+	\begin{equation}\label{g3:eq:normal-metric-second-derivative}
+		\partial_k\partial_lg_{ij}(0)
+		=-\frac13\bigl(R_{ikjl}+R_{iljk}\bigr),
+	\end{equation}
+	并且
+	\begin{equation}\label{g3:eq:normal-metric-expansion}
+		g_{ij}(x)=\delta_{ij}-\frac13R_{ikjl}x^kx^l+O(|x|^3).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	度量相容性给出
+	\[
+		\partial_lg_{ij}=\Gamma^a_{li}g_{aj}+\Gamma^a_{lj}g_{ia}.
+	\]
+	再对 \(x^k\) 求导，并利用原点处 \(\Gamma=0\)、\(g_{ij}=\delta_{ij}\)，得到
+	\[
+		\partial_k\partial_lg_{ij}(0)
+		=\partial_k\Gamma^j_{li}(0)+\partial_k\Gamma^i_{lj}(0).
+	\]
+	代入\eqref{g3:eq:normal-connection-derivative}，再将 \(R^a{}_{b i j}\) 改写成四阶分量，右侧变为
+	\[
+		-\frac13\bigl(R_{ikjl}+R_{lkji}+R_{jkil}+R_{lkij}\bigr).
+	\]
+	中间的 \(R_{lkji}\) 与最后的 \(R_{lkij}\) 因末两个指标反对称而抵消。成对交换对称性又给出 \(R_{jkil}=R_{iljk}\)，所以得到\eqref{g3:eq:normal-metric-second-derivative}。
+
+	度量的一阶偏导在原点为零，Taylor 公式于是给出
+	\[
+		g_{ij}(x)=\delta_{ij}
+		-\frac16\bigl(R_{ikjl}+R_{iljk}\bigr)x^kx^l+O(|x|^3).
+	\]
+	第二项中的两个求和式在交换哑指标 \(k,l\) 后相同，便得到\eqref{g3:eq:normal-metric-expansion}。
+\end{proof}
+
+这个二次项具有直接的长度含义。在 \(p\) 的切空间中把 \(a=(a^i)\)、\(x=(x^i)\) 看成向量，并在坐标点 \(x\) 考察具有相同分量 \(a^i\) 的坐标切向量，则
+\[
+	g_{ij}(x)a^ia^j
+	=|a|^2-\frac13\mathrm{Rm}_p(a,x,a,x)
+	+O(|x|^3)|a|^2.
+\]
+若 \(a\) 与 \(x\) 垂直，二次修正由它们张成平面的截面曲率决定。若 \(a\) 与 \(x\) 平行，这个曲率项因反对称性消失，与 Gauss 引理所给的径向长度保持相符。
+
+\begin{example}\label{g3:exm:constant-curvature-normal-quadratic}
+	设 \(n\ge2\)。若 \(p\) 处所有截面曲率等于常数 \(\kappa\)，由\cref{g3:cor:pointwise-isotropic-curvature}有
+	\[
+		R_{ikjl}=\kappa(\delta_{ij}\delta_{kl}-\delta_{il}\delta_{kj}),
+	\]
+	故二阶度量展开为
+	\[
+		g_{ij}(x)=\delta_{ij}
+		-\frac{\kappa}{3}\bigl(|x|^2\delta_{ij}-x^ix^j\bigr)+O(|x|^3).
+	\]
+	对垂直于 \(x\) 的单位向量 \(a\)，其在坐标点 \(x\) 的长度平方为 \(1-\kappa|x|^2/3+O(|x|^3)\)。正曲率使这一横向长度在二阶上小于平坦模型，负曲率则使它大于平坦模型。径向与横向表现不同，因此不能把二阶修正理解为对所有方向的统一缩放。
+\end{example}
+
+固定一个二维切平面，再把其中的小圆盘经指数映射送到流形，可以直接观测这个截面的曲率。得到的是嵌入二维圆盘及其诱导度量；其边界是参数圆周的像。
+
+\begin{proposition}\label{g3:prop:normal-plane-disk-geometry}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(n\ge2\)，\(\sigma\subset\mathrm T_pM\) 为二维线性子空间。对足够小的 \(r>0\)，令
+	\[
+		D_r=\exp_p\{v\in\sigma:|v|_g\le r\},\qquad
+		\partial D_r=\exp_p\{v\in\sigma:|v|_g=r\}.
+	\]
+	这里 \(\partial D_r\) 表示这个二维圆盘的边界。其诱导面积与边界长度满足
+	\begin{equation}\label{g3:eq:normal-plane-disk-geometry}
+		\begin{aligned}
+			\operatorname{Area}_g(D_r)
+			&=\pi r^2\left(1-\frac{K_p(\sigma)}{12}r^2+O(r^4)\right),\\
+			\operatorname{Length}_g(\partial D_r)
+			&=2\pi r\left(1-\frac{K_p(\sigma)}6r^2+O(r^4)\right).
+		\end{aligned}
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	选取正交单位基，使 \(\sigma\) 由 \(E_1,E_2\) 张成。令 \(z=(x^1,x^2)\)，其余坐标为零。指数映射在一个较大的切球上为微分同胚，所以限制后得到嵌入圆盘；其诱导度量矩阵为 \(h_{ab}(z)=g_{ab}(z,0)\)，\(1\le a,b\le2\)。记 \(K=K_p(\sigma)\)。曲率限制到这个二维空间后，只有 \(R_{1212}=K\) 一个独立分量，故\eqref{g3:eq:normal-metric-expansion}给出
+	\[
+		h_{ab}(z)=\delta_{ab}
+		-\frac K3\bigl(|z|^2\delta_{ab}-z^az^b\bigr)
+		+P_{ab,3}(z)+O(|z|^4),
+	\]
+	其中 \(P_{ab,3}\) 为光滑系数的三次齐次 Taylor 项。对单位矩阵附近的矩阵 \(I+H\)，有 \(\sqrt{\det(I+H)}=1+\tfrac12\operatorname{tr}H+O(\|H\|^2)\)。这里 \(H=O(|z|^2)\)，所以诱导面积密度为
+	\[
+		J_\sigma(z)=\sqrt{\det h(z)}
+		=1-\frac K6|z|^2+P_3(z)+O(|z|^4),
+	\]
+	其中 \(P_3\) 仍为三次齐次多项式。在半径 \(r\) 的平面圆盘上积分，奇函数 \(P_3\) 的积分为零，而 \(\int_{|z|\le r}|z|^2\,\mathrm dz=\pi r^4/2\)。四阶余项积分为 \(O(r^6)\)，得到面积公式。
+
+	对边界令 \(u(\theta)=(\cos\theta,\sin\theta)\)、\(v(\theta)=(-\sin\theta,\cos\theta)\)。其坐标速度为 \(rv(\theta)\)，由 \(u,v\) 为正交单位向量，有
+	\[
+		|\dot c_r(\theta)|_g^2
+		=r^2\left(1-\frac K3r^2+O(r^3)\right).
+	\]
+	为同时控制积分余项，使用 Gauss 引理：圆盘上的径向方向长度为一，并与角向方向正交。因此极坐标中的面积密度既等于 \(|\dot c_r(\theta)|_g\,\mathrm dr\,\mathrm d\theta\)，也等于 \(rJ_\sigma(ru(\theta))\,\mathrm dr\,\mathrm d\theta\)，从而
+	\[
+		\operatorname{Length}_g(\partial D_r)
+		=r\int_0^{2\pi}J_\sigma(ru(\theta))\,\mathrm d\theta.
+	\]
+	在 \(\theta\mapsto\theta+\pi\) 下，三次项变号，积分为零；余下四阶项贡献 \(O(r^5)\)。代入二次项便得长度公式。
+\end{proof}
+
+这些圆盘由同一个点的径向测地线组成；盘内其余方向的内在测地线未必是环境测地线，因此不能据此把圆盘视为全测地子流形。面积和长度是对这个指定二维指数像作出的测量。当 \(n>2\) 时，它也不同于环境中的 \(n\) 维测地球。截面曲率正是这类二维测量的首个非平坦系数。
+
+\ProseParagraphBreak
+二阶公式还有一个反向用途。前两节讨论的代数曲率张量是否真能出现在某个度量的一点处，可以通过直接指定度量的二次项来回答。
+
+\begin{proposition}\label{g3:prop:curvature-local-realization}
+	设 \(A\) 为 \(n\) 维实 Euclid 空间上的代数曲率张量，即满足\cref{g3:def:algebraic-curvature-tensor}中的两对反对称性、成对交换对称性和第一 Bianchi 恒等式。则存在原点的一个邻域及其上的光滑黎曼度量，使原点处度量为 Euclid 内积，曲率张量为 \(A\)。具体可取
+	\begin{equation}\label{g3:eq:curvature-local-realization-metric}
+		g_{ij}(x)=\delta_{ij}-\frac13A_{ikjl}x^kx^l
+	\end{equation}
+	并将定义域限制在足够小的开球内。
+\end{proposition}
+\begin{proof}
+	先核对它确实是度量。由成对交换对称性和哑指标互换，
+	\[
+		A_{jkil}x^kx^l=A_{iljk}x^kx^l=A_{ikjl}x^kx^l,
+	\]
+	故 \(g_{ij}=g_{ji}\)。因为 \(A\) 固定，存在常数 \(C\ge0\)，使任意 \(v\in\mathbb R^n\) 满足
+	\[
+		\left|\frac13A_{ikjl}v^iv^jx^kx^l\right|
+		\le C|x|^2|v|^2.
+	\]
+	在 \(C|x|^2<1/2\) 的小球内，\(g(v,v)\ge|v|^2/2\)，所以正定。系数是多项式，因而光滑。原点处 \(g_{ij}=\delta_{ij}\)、\(\partial_kg_{ij}=0\)，故 \(\Gamma^a_{ij}(0)=0\)，且
+	\[
+		\partial_k\partial_lg_{ij}(0)
+		=-\frac13\bigl(A_{ikjl}+A_{iljk}\bigr).
+	\]
+	此处的 \(g(0)=I\)、\(\partial g(0)=0\) 正好满足\eqref{g3:eq:curvature-normal-second-derivatives}推导时所用的点处条件。将二阶偏导代入该曲率公式，整理两对反对称性与成对交换对称性，得到
+	\[
+		R^g_{ijkl}(0)
+		=\frac13\bigl(2A_{ijkl}+A_{ikjl}-A_{iljk}\bigr).
+	\]
+	第一 Bianchi 恒等式为
+	\[
+		A_{ijkl}+A_{jkil}+A_{kijl}=0.
+	\]
+	其中 \(A_{jkil}=A_{iljk}\)、\(A_{kijl}=-A_{ikjl}\)，所以 \(A_{ikjl}-A_{iljk}=A_{ijkl}\)。代回即得 \(R^g_{ijkl}(0)=A_{ijkl}\)，完成构造。
+\end{proof}
+
+这个构造实现的是指定点的曲率数据。若某个曲率不等式在 \(A\) 处严格成立，则由曲率的连续性，将邻域再缩小后，该严格不等式仍成立；涉及所有单位向量或单位二维截面时，所需的统一余量来自相应单位参数空间的紧性。因此，严格的代数正性反例也能给出局部黎曼度量的反例。
 
 \subsection{体积密度和小球体积}
 \label{g3:subsec:0303:03}
-待撰写
+
+度量矩阵决定每个方向的长度，体积密度则把这些方向的伸缩合成为一个标量。在法坐标中，令
+\[
+	J_p(x)=\sqrt{\det(g_{ij}(x))},\qquad
+	\mu_g=J_p(x)|\mathrm dx^1\cdots\mathrm dx^n|.
+\]
+这里的密度定义不需要流形可定向。
+
+\begin{proposition}\label{g3:prop:normal-volume-density}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，在 \(p\) 处采用正交单位基产生的法坐标。则
+	\begin{equation}\label{g3:eq:normal-volume-density}
+		J_p(x)=1-\frac16\operatorname{Ric}_{kl}(p)x^kx^l+O(|x|^3).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	写 \(G=I+H\)。由\eqref{g3:eq:normal-metric-expansion}，有
+	\[
+		H_{ij}=-\frac13R_{ikjl}x^kx^l+O(|x|^3),
+		\qquad H=O(|x|^2).
+	\]
+	行列式是矩阵元的多项式，故在单位矩阵附近，
+	\[
+		\det(I+H)=1+\operatorname{tr}H+O(\|H\|^2),
+		\qquad
+		\sqrt{\det(I+H)}=1+\tfrac12\operatorname{tr}H+O(\|H\|^2).
+	\]
+	另一方面，按本章的 Ricci 收缩约定，
+	\[
+		\operatorname{tr}H
+		=-\frac13\sum_iR_{ikil}x^kx^l+O(|x|^3)
+		=-\frac13\operatorname{Ric}_{kl}(p)x^kx^l+O(|x|^3).
+	\]
+	因为 \(\|H\|^2=O(|x|^4)\)，代回便得所述展开。
+\end{proof}
+
+沿固定单位方向 \(u\) 取 \(x=ru\)，则密度的二阶项为 \(-\operatorname{Ric}_p(u,u)r^2/6\)。这说明 Ricci 曲率测量的是沿该方向向外展开时，横向体积相对于 Euclid 模型的二阶变化。将所有方向平均，才得到标量曲率的作用。
+
+\begin{theorem}\label{g3:thm:small-ball-volume}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(p\in M\)，\(d\) 为 \(p\) 所在连通分支的内在距离，\(\omega_n\) 表示 \(\mathbb R^n\) 中单位球的 Euclid 体积。则当 \(r\downarrow0\) 时，内在距离球的体积满足
+	\begin{equation}\label{g3:eq:small-ball-volume}
+		\operatorname{Vol}_g(B_d(p,r))
+		=\omega_n r^n\left(1-\frac{\operatorname{Scal}(p)}{6(n+2)}r^2+O(r^4)\right).
+	\end{equation}
+	若 \(n\ge2\)，足够小的距离球边界是光滑超曲面，其面积满足
+	\begin{equation}\label{g3:eq:small-sphere-area}
+		\operatorname{Area}_g(\partial B_d(p,r))
+		=n\omega_n r^{n-1}\left(1-\frac{\operatorname{Scal}(p)}{6n}r^2+O(r^4)\right).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	由\cref{g3:lem:uniform-normal-neighborhood}，对足够小的 \(r\)，\(B_d(p,r)=\exp_p B_p(0,r)\)，且指数映射在更大的切球上为微分同胚。因此体积可以在普通 Euclid 球上积分：
+	\[
+		\operatorname{Vol}_g(B_d(p,r))=\int_{|x|<r}J_p(x)\,\mathrm dx.
+	\]
+	为了确定积分后的余项阶数，需把密度再展开一阶。\(J_p\) 光滑，一次项为零，二次项已经由\cref{g3:prop:normal-volume-density}确定，所以存在三次齐次多项式 \(P_{3,p}\)，使
+	\begin{equation}\label{g3:eq:normal-density-cubic-remainder}
+		J_p(x)=1-\frac16\operatorname{Ric}_{kl}(p)x^kx^l
+		+P_{3,p}(x)+O(|x|^4).
+	\end{equation}
+	三次齐次项满足 \(P_{3,p}(-x)=-P_{3,p}(x)\)，在中心对称的球上积分为零。对二次项，由反射和坐标置换对称性，非对角积分为零，各对角积分相等；再把它们相加，得到
+	\[
+		\int_{|x|<r}x^kx^l\,\mathrm dx
+		=\delta_{kl}\frac{\omega_n}{n+2}r^{n+2}.
+	\]
+	故二次项的积分为 \(-\omega_n\operatorname{Scal}(p)r^{n+2}/(6(n+2))\)。四阶余项的绝对值积分至多为常数乘以 \(r^{n+4}\)，除去主项 \(\omega_n r^n\) 后即得\eqref{g3:eq:small-ball-volume}。
+
+	再求球面面积。令 \(x=ru\)、\(u\in S^{n-1}\)，并以 \(\mathrm d\sigma(u)\) 表示单位 Euclid 球面的面积密度。Gauss 引理给出径向单位向量与距离球面正交，因而在这些极坐标中，体积密度等于 \(\mathrm dr\) 与各距离球面面积密度的乘积。同时 Euclid 极坐标变换给出 \(\mathrm dx=r^{n-1}\mathrm dr\,\mathrm d\sigma\)，所以
+	\[
+		\operatorname{Area}_g(\partial B_d(p,r))
+		=r^{n-1}\int_{S^{n-1}}J_p(ru)\,\mathrm d\sigma(u).
+	\]
+	将\eqref{g3:eq:normal-density-cubic-remainder}代入，三次项仍因 \(u\mapsto-u\) 对称而积分为零；又有
+	\[
+		\int_{S^{n-1}}1\,\mathrm d\sigma=n\omega_n,
+		\qquad
+		\int_{S^{n-1}}u^ku^l\,\mathrm d\sigma=\delta_{kl}\omega_n.
+	\]
+	这便给出\eqref{g3:eq:small-sphere-area}。面积公式直接来自极坐标密度积分，所需的余项估计也在该积分中取得。
+\end{proof}
+
+若 \(\operatorname{Scal}(p)>0\)，足够小的测地球体积小于同半径 Euclid 球；若 \(\operatorname{Scal}(p)<0\)，则大于它。标量曲率为零时，二次修正消失，体积差异由更高阶项决定。这个平均结果并不决定每个方向的 Ricci 曲率符号。
+
+\begin{example}\label{g3:exm:surface-small-ball-check}
+	二维时，\(\operatorname{Scal}=2K\)、\(\omega_2=\pi\)，所以
+	\[
+		\begin{aligned}
+			\operatorname{Area}_g(B_d(p,r))
+			&=\pi r^2\left(1-\frac{K(p)}{12}r^2+O(r^4)\right),\\
+			\operatorname{Length}_g(\partial B_d(p,r))
+			&=2\pi r\left(1-\frac{K(p)}6r^2+O(r^4)\right).
+		\end{aligned}
+	\]
+	可以用刚构造的二次度量作具体核验。对实常数 \(\kappa\)，在原点附近令
+	\[
+		g_{ij}(x)=\delta_{ij}-\frac{\kappa}{3}
+		\bigl(|x|^2\delta_{ij}-x^ix^j\bigr).
+	\]
+	它是\cref{g3:prop:curvature-local-realization}中的二维模型，故 \(K(0)=\kappa\)。改写成极坐标得
+	\[
+		g=\mathrm dr^2+r^2\left(1-\frac{\kappa r^2}{3}\right)\mathrm d\theta^2.
+	\]
+	在足够小的范围内括号内为正。翘曲积联络公式说明径向曲线以 \(r\) 为单位速参数是测地线；原来的直角坐标系数在原点光滑，故这些径向线与原点的测地线初值相接，\((x^1,x^2)\) 就是原点的法坐标。此时
+	\[
+		J_0(x)=\sqrt{1-\frac{\kappa|x|^2}{3}}
+		=1-\frac{\kappa}{6}|x|^2-\frac{\kappa^2}{72}|x|^4+O(|x|^6).
+	\]
+	沿半径积分或沿圆周积分，分别得到
+	\[
+		\begin{aligned}
+			\operatorname{Area}_g(B_d(0,r))
+			&=\pi r^2\left(1-\frac{\kappa}{12}r^2
+			-\frac{\kappa^2}{216}r^4+O(r^6)\right),\\
+			\operatorname{Length}_g(\partial B_d(0,r))
+			&=2\pi r\left(1-\frac{\kappa}{6}r^2
+			-\frac{\kappa^2}{72}r^4+O(r^6)\right).
+		\end{aligned}
+	\]
+	两式的二阶相对修正只用 \(K(0)=\kappa\) 即已确定。球的面积与边界长度采用不同系数，因为前者还对径向变量作了一次积分；再高阶的系数则取决于这个具体度量。
+\end{example}
 
 \subsection{展开余项及正则性}
 \label{g3:subsec:0303:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+上述公式同时记录了系数和误差，两者承担不同职责。曲率决定二阶系数；误差界还依赖附近度量系数的更高阶导数，不能只由 \(R(p)\) 的值控制。
+
+\ProseParagraphBreak
+
+在一个固定法坐标图中，令
+\[
+	E_{ij}(x)=g_{ij}(x)-\delta_{ij}+\frac13R_{ikjl}(p)x^kx^l.
+\]
+它在原点的零阶、一阶和二阶导数全部为零。对每个满足 \(|\alpha|\le2\) 的多重指标，分别对 \(\partial^\alpha E_{ij}\) 使用 Taylor 公式，得到
+\begin{equation}\label{g3:eq:normal-metric-remainder-derivatives}
+	\partial^\alpha E_{ij}(x)=O(|x|^{3-|\alpha|}).
+\end{equation}
+这些导数估计来自光滑函数的 Taylor 余项，而非对一个任意 \(O\) 记号形式求导。同样，若要在小球体积公式中保留相对 \(O(r^4)\)，就应使用\eqref{g3:eq:normal-density-cubic-remainder}的三次项和四阶余项；仅对密度中的 \(O(|x|^3)\) 作绝对值估计，只能得到相对 \(O(r^3)\)。
+
+\begin{proposition}\label{g3:prop:normal-expansion-uniform-remainders}
+	设 \((M,g)\) 为光滑无边界黎曼流形，\(K\subset M\) 紧。则存在共同半径 \(r_0>0\)，使本节的联络、度量、密度、小球体积展开，以及在 \(n\ge2\) 时的小球面面积展开，对所有中心 \(p\in K\)、\(0<r<r_0\) 都成立，且各余项中的常数可与 \(p\) 无关。
+\end{proposition}
+\begin{proof}
+	由\cref{g3:lem:uniform-normal-neighborhood}，\(K\) 上存在统一可用的法坐标半径。取有限个较小的坐标邻域覆盖 \(K\)，使各自闭包紧含于一个有光滑正交单位标架 \((E_1(p),\ldots,E_n(p))\) 的较大邻域。在每个这样的邻域中，
+	\[
+		F(p,x)=\exp_p(x^iE_i(p))
+	\]
+	在共同的小 \(x\) 球上光滑依赖 \((p,x)\)。这由\cref{g3:prop:exponential-local}的指数映射联合光滑性和标架光滑性得到。拉回度量系数
+	\[
+		G_{ij}(p,x)=g_{F(p,x)}
+		\bigl(\mathrm d_xF(p,x)e_i,\mathrm d_xF(p,x)e_j\bigr)
+	\]
+	因此也联合光滑。将 \(x\) 球再缩小一层后，各底邻域的闭包与闭 \(x\) 球的乘积紧，所以证明中使用的有限阶导数均有统一上界，度量正定性也有统一下界。Taylor 公式、行列式及平方根的导数估计便给出统一余项界。
+
+	有限个邻域取最小半径、最大误差常数，即得对 \(K\) 一致的结论。改用同一点处的其他正交单位基，只对 \(x\) 作正交线性变换，故不改变 \(|x|\) 的大小；相应张量范数也保持不变。体积和面积的积分估计由这些统一界直接得到。
+\end{proof}
+
+这里始终假设原度量光滑，从而指数映射与法坐标中的度量系数也光滑。若降低原度量的正则性，需要分别核对测地线方程、指数映射和换坐标后的系数具有多少阶导数。就 Taylor 估计本身而言，已给定坐标中的 \(C^2\) 系数只能直接保证二阶展开的 \(o(|x|^2)\) 余项；三阶导数有界给出 \(O(|x|^3)\)，而密度展开至三次项后控制 \(O(|x|^4)\) 需要相应的四阶导数界。原坐标中的可微阶数不能未经检查就沿用到法坐标中。

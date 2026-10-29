@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 1.1 度量与几何量
 % 纲要位置：几何学计划纲要.md，第 2128 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,347 @@
 \section{度量与几何量}
 \label{g3:sec:0101}
 
-待撰写
+一张坐标图能把曲线写成若干实函数，却没有规定哪个方向长、哪个方向短。即使在同一个平面上，\(\mathrm{d}x^2+\mathrm{d}y^2\) 与 \(4\,\mathrm{d}x^2+\mathrm{d}y^2\) 也给同一水平线段不同的长度。度量把这种测量规则放在每个切空间中，并要求它随点光滑变化。本节先说明度量怎样产生长度、梯度和体积，再由体积的变化定义散度；这些构造只需切丛、微分和积分，尚不需要比较不同点的向量。
 
 \subsection{度量的存在及局部矩阵}
 \label{g3:subsec:0101:01}
-待撰写
+
+\begin{definition}
+	\label{g3:def:riemannian-metric}
+	设 \(M\) 是有限维、Hausdorff、第二可数的光滑流形。若光滑对称二阶协变张量场 \(g\) 在每个 \(p\in M\) 上给出正定双线性型 \(g_p\)，则称 \(g\) 为 \(M\) 上的\term[limanduliang]{黎曼度量}[Riemannian metric]，称 \((M,g)\) 为\term[limanliuxing]{黎曼流形}[Riemannian manifold]。向量的长度与非零向量之间的角度由
+	\[
+		|v|_g=\sqrt{g_p(v,v)},\qquad
+		\cos\angle_g(v,w)=\frac{g_p(v,w)}{|v|_g|w|_g}
+	\]
+	确定。
+\end{definition}
+
+这个名称纪念 Riemann。\footnote{Riemann，德文全名 Georg Friedrich Bernhard Riemann（1826--1866），德国数学家，在复分析、几何及分析学中作出基础性贡献。}本章讨论 \(n\geq1\) 维光滑流形，通常无边界；涉及边界时另行说明。取局部坐标 \((x^1,\ldots,x^n)\)，写 \(\partial_i=\partial/\partial x^i\)。度量具有表达
+\begin{equation}
+	\label{g3:eq:metric-local-matrix}
+	g=g_{ij}\,\mathrm{d}x^i\otimes\mathrm{d}x^j,\qquad
+	g_{ij}=g(\partial_i,\partial_j).
+\end{equation}
+这里及后文对重复的一上一下指标求和；完整求和有时仍写出以便辨认。矩阵 \(G=(g_{ij})\) 对称正定，各分量光滑。反之，一组这样的局部矩阵，只要在交叠处遵守张量变换规律，就确定一个度量。\(\mathrm{d}x^i\mathrm{d}x^j\) 等常见的线元简写在本章均按相应对称双线性型理解；特别地，\(2g_{12}\,\mathrm{d}x^1\mathrm{d}x^2\) 包含两个对称交叉项。
+
+\begin{proposition}
+	\label{g3:prop:metric-existence}
+	每个有限维、Hausdorff、第二可数的光滑流形都存在黎曼度量，允许流形有边界。若 \(g_0,g_1\) 是两个这样的度量，则 \((1-t)g_0+tg_1\) 在 \(0\leq t\leq1\) 时仍是黎曼度量。
+\end{proposition}
+\begin{proof}
+	第一卷第12.3节的光滑单位分解定理（定理 12.3.5）说明：对任意坐标覆盖 \(\{U_\alpha\}\)，可取非负光滑函数 \(\rho_\alpha\)，使支集族局部有限、\(\operatorname{supp}\rho_\alpha\subset U_\alpha\)，且 \(\sum_\alpha\rho_\alpha=1\)。在 \(U_\alpha\) 上把坐标标架规定为正交单位标架，得到局部度量 \(h_\alpha\)。令
+	\[
+		g=\sum_\alpha\rho_\alpha h_\alpha,
+	\]
+	其中每项在 \(U_\alpha\) 外补零。支集包含关系使补零光滑，局部有限性使和在每点附近只有有限项。对非零 \(v\in\mathrm{T}_pM\)，各非零权重对应的 \(h_\alpha(v,v)\) 都为正，又至少有一个权重为正，故 \(g_p(v,v)>0\)。这正是第一卷丛度量构造在切丛上的应用。最后，两个正数的非负凸组合仍正，直接给出度量族的正定性。
+\end{proof}
+
+存在性依靠正定型的凸性，并没有给流形指定一个首选度量。度量一旦选定，曲线的长度便有确定含义。
+
+\begin{definition}
+	\label{g3:def:riemannian-length}
+	设 \((M,g)\) 为黎曼流形，\(\gamma:[a,b]\to M\) 是分片 \(C^1\) 曲线。其\term[quxianchangdu]{长度}[length]定义为
+	\[
+		L_g(\gamma)=\int_a^b|\dot\gamma(t)|_g\,\mathrm{d}t
+		=\int_a^b\sqrt{g_{ij}(\gamma(t))\dot x^i(t)\dot x^j(t)}\,\mathrm{d}t,
+	\]
+	右侧坐标表达在曲线的各个坐标片上分别计算并相加。
+\end{definition}
+
+被积量是切向量的内在长度，因而换坐标不改变结果。若 \(t=\phi(s)\) 是区间之间的 \(C^1\) 微分同胚，则链式法则给出 \(|(\gamma\circ\phi)'(s)|_g=|\phi'(s)|\,|\dot\gamma(\phi(s))|_g\)，换元后得到长度不变；递增与递减参数均可。正定性保证非零速度的长度为正。用所有连接两点的曲线长度取下确界会得到内在距离，其正定性与距离拓扑将在\chapref{g3:ch:02}证明。
+
+\begin{proposition}
+	\label{g3:prop:metric-coordinate-bounds}
+	设 \(g\) 为光滑流形上的黎曼度量，\(K\) 是包含于一张坐标图 \(U\) 的非空紧集。存在常数 \(0<c\leq C<\infty\)，使对 \(p\in K\) 和 \(v=v^i\partial_i\in\mathrm{T}_pM\)，有
+	\[
+		c\sum_i(v^i)^2\leq g_p(v,v)\leq C\sum_i(v^i)^2.
+	\]
+\end{proposition}
+\begin{proof}
+	函数 \((p,a)\mapsto g_{ij}(p)a^ia^j\) 在紧集 \(K\times S^{n-1}\) 上连续且处处为正，故取得正的最小值 \(c\) 和有限最大值 \(C\)。对非零坐标向量先除以其 Euclid 长度，再利用二次齐次性；零向量时两式均成立。\footnote{Euclid（\OriginalName{Εὐκλείδης}，拉丁转写 Eukleidēs，约公元前300年活动，确切生卒年不详），古希腊数学家，活动于 Alexandria，以《几何原本》对几何与数论的系统论述著称。}
+\end{proof}
+
+这个估计把几何长度与坐标长度联系起来：曲线留在 \(K\) 时，两种长度分别相差至多因子 \(\sqrt c\) 与 \(\sqrt C\)。紧性使常数能够统一选择；在整个非紧坐标域上，未必存在同一对常数。例如 \(\mathbb R\) 上的 \(g=e^{2x}\mathrm{d}x^2\) 处处正定，但相对于 \(\mathrm{d}x^2\) 既没有全局正下界，也没有全局有限上界。
 
 \subsection{音乐同构、梯度和对偶度量}
 \label{g3:subsec:0101:02}
-待撰写
+
+微分 \(\mathrm{d}f_p\) 接受方向并返回函数的变化率，是协变向量；描述“增长最快的方向”却需要一个向量。度量通过内积配对把这两类对象联系起来。
+
+\begin{definition}
+	\label{g3:def:musical-isomorphisms}
+	黎曼流形 \((M,g)\) 的\term[yinyuetonggou]{音乐同构}[musical isomorphisms]是互逆的光滑丛同构
+	\[
+		\flat_g:\mathrm{T}M\longrightarrow\mathrm{T}^*M,
+		\quad v^{\flat_g}=g(v,\mathord\cdot),
+		\qquad
+		\sharp_g:\mathrm{T}^*M\longrightarrow\mathrm{T}M.
+	\]
+	\(\sharp_g\) 由 \(g(\alpha^{\sharp_g},v)=\alpha(v)\) 刻画。度量明确时省略符号中的下标 \(g\)。
+\end{definition}
+
+正定性使 \(v\mapsto g(v,\mathord\cdot)\) 单射，有限维且两边维数相同，所以它可逆。记 \((g^{ij})=G^{-1}\)，则
+\begin{equation}
+	\label{g3:eq:musical-coordinates}
+	(v^\flat)_i=g_{ij}v^j,\qquad
+	(\alpha^\sharp)^i=g^{ij}\alpha_j.
+\end{equation}
+逆矩阵可由余子式除以 \(\det G>0\) 表示，所以逆映射也光滑。名称中的两个符号分别来自降号与升号，恰好对应把分量的指标降低和升高；它们依赖 \(g\)，并非切空间与余切空间原有的识别。
+
+\begin{definition}
+	\label{g3:def:dual-metric-gradient}
+	黎曼流形 \((M,g)\) 的\term[duiouduliang]{对偶度量}[dual metric]是余切丛上的内积
+	\[
+		g^{-1}(\alpha,\beta)=g(\alpha^\sharp,\beta^\sharp)
+		=g^{ij}\alpha_i\beta_j.
+	\]
+	对光滑实函数 \(f\)，其\term[tidu]{梯度}[gradient]为 \(\operatorname{grad}_g f=(\mathrm{d}f)^\sharp\)，即满足
+	\begin{equation}
+		\label{g3:eq:gradient-definition}
+		g(\operatorname{grad}_g f,X)=Xf,\qquad
+		\operatorname{grad}_g f=g^{ij}(\partial_jf)\partial_i
+	\end{equation}
+	的唯一光滑向量场。
+\end{definition}
+
+\symidx{\(\flat_g,\sharp_g\)}
+\symidx{\(\operatorname{grad}_g f\)}
+
+在 \(\mathrm{d}f_p\ne0\) 处，对所有单位向量 \(v\) 有
+\[
+	\mathrm{d}f_p(v)=g_p(\operatorname{grad}_g f,v)
+	\leq|\operatorname{grad}_g f|_g,
+\]
+等号恰在 \(v=\operatorname{grad}_g f/|\operatorname{grad}_g f|_g\) 时成立。这来自内积不等式及其等号条件，也说明“最快”是以 \(g\) 的单位长度为尺度。若 \(M\) 无边界，且 \(\mathrm{d}f\) 在非空水平集 \(S=f^{-1}(c)\) 上处处非零，则第一卷第11.4节的正则水平集定理（定理 11.4.4）给出 \(\mathrm{T}_pS=\ker\mathrm{d}f_p\)，故梯度与水平集正交；在临界点，梯度为零，不再给出一个单位法向。
+
+\begin{example}
+	\label{g3:exm:gradient-metric-dependence}
+	在 \(\mathbb R^2\) 上取 \(g=4\,\mathrm{d}x^2+\mathrm{d}y^2\) 与 \(f=x+y\)。则
+	\[
+		\mathrm{d}f=\mathrm{d}x+\mathrm{d}y,\qquad
+		\operatorname{grad}_g f=\tfrac14\partial_x+\partial_y,
+		\qquad |\mathrm{d}f|_{g^{-1}}^2=\tfrac54.
+	\]
+	水平线 \(x+y=c\) 的切向量 \(\partial_x-\partial_y\) 与这个梯度的 \(g\) 配对为 \(4\cdot\tfrac14-1=0\)。若换成 Euclid 度量，梯度变为 \(\partial_x+\partial_y\)，而 \(\mathrm{d}f\) 本身不变。逆矩阵出现在梯度公式中，正是为了补偿各方向长度尺度的不同。
+\end{example}
+
+同一个度量还在各阶张量丛上给出内积。例如对二阶协变张量 \(A\)，有 \(|A|_g^2=g^{ik}g^{j\ell}A_{ij}A_{k\ell}\)；对微分 \(k\) 形式，若写成 \(\alpha=\frac1{k!}\alpha_{i_1\cdots i_k}\mathrm{d}x^{i_1}\wedge\cdots\wedge\mathrm{d}x^{i_k}\)，则
+\[
+	|\alpha|_g^2=\frac1{k!}
+	g^{i_1j_1}\cdots g^{i_kj_k}
+	\alpha_{i_1\cdots i_k}\alpha_{j_1\cdots j_k}.
+\]
+因子 \(1/k!\) 消去同一有序指标组的排列重复，使正交余标架中递增指标的楔积成为正交单位基。
 
 \subsection{体积密度、散度及分部积分}
 \label{g3:subsec:0101:03}
-待撰写
+
+切空间中的内积还确定平行多面体的体积。对切向量组 \((v_1,\ldots,v_n)\)，其体积为内积矩阵 \((g(v_i,v_j))\) 行列式的非负平方根。换基矩阵若为 \(A\)，内积矩阵变为 \(A^{\mathsf T}GA\)，体积就乘以 \(|\det A|\)。这提示应使用绝对行列式变换的密度，而不必先选择定向。
+
+\begin{definition}
+	\label{g3:def:metric-volume-density}
+	\(n\) 维黎曼流形 \((M,g)\) 的\term[tijimidu]{体积密度}[volume density]记为 \(\mu_g\)，在坐标中写为
+	\begin{equation}
+		\label{g3:eq:volume-density}
+		\mu_g=\sqrt{\det G}\,|\mathrm{d}x^1\cdots\mathrm{d}x^n|.
+	\end{equation}
+	若另外给定定向，则在正向坐标中
+	\[
+		\operatorname{vol}_g=\sqrt{\det G}\,\mathrm{d}x^1\wedge\cdots\wedge\mathrm{d}x^n
+	\]
+	定义相应的\term[tijixingshi]{体积形式}[volume form]。
+\end{definition}
+
+\symidx{\(\mu_g\)}
+
+密度符号中的竖线表示换坐标时取绝对行列式，不是对微分符号求绝对值。第一卷第14.3节的积分良定义定理（定理 14.3.4）已证明：将紧支光滑密度用单位分解拆到坐标片后，按通常多元积分求和，结果与坐标和分解无关。因此 \(\int_M f\mu_g\) 对紧支光滑 \(f\) 有定义，不要求 \(M\) 可定向。一般非负可测函数的体积积分可由这一光滑正密度所给的局部测度定义；本章的分部积分只用紧支光滑情形。定向反转会改变 \(\operatorname{vol}_g\) 的符号，却不改变 \(\mu_g\)。
+
+\ProseParagraphBreak
+
+散度测量向量场的流对体积的一阶改变。设 \(X\) 是无边界流形上的光滑向量场。第一卷第13.1节的最大局部流定理（定理 13.1.7）给出随 \((t,p)\) 光滑变化的局部微分同胚 \(\Phi_t\)，满足 \(\Phi_0=\operatorname{id}\) 与 \(\partial_t\Phi_t=X\circ\Phi_t\)。密度的\term[liedaoshu]{Lie 导数}[Lie derivative]定义为 \(\mathcal L_X\mu_g=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{t=0}\Phi_t^*\mu_g\)。\footnote{Lie，Marius Sophus Lie（1842--1899），挪威数学家，创立连续变换群理论，并研究其与微分方程的联系。}这里只需在每一点附近对足够小的 \(t\) 定义流，无需假设流对所有时间存在。由于 \(\mu_g\) 处处正，存在唯一光滑函数满足
+\begin{equation}
+	\label{g3:eq:divergence-definition}
+	\mathcal L_X\mu_g=(\operatorname{div}_gX)\mu_g.
+\end{equation}
+这个函数称为 \(X\) 的\term[sandu]{散度}[divergence]。
+
+\begin{proposition}
+	\label{g3:prop:divergence-coordinate}
+	在无边界黎曼流形 \((M,g)\) 的任一坐标图中，对光滑向量场 \(X=X^i\partial_i\)，有
+	\begin{equation}
+		\label{g3:eq:divergence-coordinate}
+		\operatorname{div}_gX
+		=\frac1{\sqrt{\det G}}\partial_i\bigl(\sqrt{\det G}\,X^i\bigr).
+	\end{equation}
+	因此，对光滑实函数 \(f\)，有
+	\begin{equation}
+		\label{g3:eq:divergence-product}
+		\operatorname{div}_g(fX)=\mathrm{d}f(X)+f\operatorname{div}_gX.
+	\end{equation}
+	公式也唯一地延伸到带边界流形上光滑至边界的向量场。
+\end{proposition}
+\begin{proof}
+	记 \(m=\sqrt{\det G}\)。局部流拉回密度的系数为 \(m(\Phi_t(x))|\det\mathrm{D}\Phi_t(x)|\)。在 \(t=0\) 时，\(\Phi_0=\operatorname{id}\)，且 \(\left.\partial_t\Phi_t\right|_0=X\)。行列式在单位矩阵处的一阶项是迹，故
+	\[
+		\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_0
+		\bigl(m(\Phi_t(x))|\det\mathrm{D}\Phi_t(x)|\bigr)
+		=X^i\partial_i m+m\partial_iX^i=\partial_i(mX^i).
+	\]
+	除以 \(m>0\) 即得坐标公式；对 \(fX\) 展开偏导数得到乘积公式。若流形有边界，坐标系数在半空间边界处仍光滑；不同边界图中的表达在稠密的内部相同，连续性使它们在边界也相同。这样定义边界处的散度，无须要求 \(X\) 的双侧流保留流形。
+\end{proof}
+
+在定向坐标片中，直接将 \(\iota_X\operatorname{vol}_g\) 写成缺少一个坐标微分的各项可得
+\begin{equation}
+	\label{g3:eq:divergence-exterior}
+	\mathrm{d}(\iota_X\operatorname{vol}_g)
+	=(\operatorname{div}_gX)\operatorname{vol}_g.
+\end{equation}
+这里 \(\iota_X\) 将 \(X\) 插入形式的第一个位置；各项的排列符号恰好使外微分的系数成为 \(\partial_i(mX^i)\)。由此可以把散度积分转成边界通量。
+
+\ProseParagraphBreak
+
+若 \(M\) 有光滑边界，限制 \(g\) 到 \(\mathrm{T}\partial M\) 就给出边界度量，记它的体积密度为 \(\mu_{\partial g}\)。在边界坐标中取定义函数 \(r\)，使 \(M\) 对应 \(r\geq0\)、边界对应 \(r=0\)，且边界上 \(\mathrm{d}r\ne0\)。于是 \(\nu=-\operatorname{grad}_g r/|\operatorname{grad}_g r|_g\) 是外单位法向。它由正交、单位长度和向外这三个条件唯一确定，所以不同边界图中的选择相容。
+
+\begin{theorem}[散度定理]
+	\label{g3:thm:divergence-theorem}
+	设 \((M^n,g)\) 为有限维、Hausdorff、第二可数的光滑黎曼流形，\(n\geq1\)，允许有光滑边界，无须可定向。若 \(X\) 是光滑至边界的紧支向量场，\(\nu\) 是边界的外单位法向，\(\mu_{\partial g}\) 是边界诱导度量的体积密度，则
+	\begin{equation}
+		\label{g3:eq:divergence-theorem}
+		\int_M\operatorname{div}_gX\,\mu_g
+		=\int_{\partial M}g(X,\nu)\,\mu_{\partial g}.
+	\end{equation}
+	无边界时右侧为零；\(n=1\) 时边界积分按各端点的计数密度求和。
+\end{theorem}
+\begin{proof}
+	先假设 \(X\) 的支集位于一张坐标片 \(U\) 内并紧含于该片。给 \(U\) 任选定向，对紧支形式 \(\iota_X\operatorname{vol}_g\) 使用第一卷第14.4节的 Stokes 定理（定理 14.4.3）：外微分的积分等于在外法向优先定向下的边界积分。由\eqref{g3:eq:divergence-exterior}，左边就是散度乘以正体积密度的积分。
+
+	当 \(n\geq2\) 时，在边界点取正交单位基 \((\nu,e_1,\ldots,e_{n-1})\)，使它符合 \(U\) 的定向。把 \(X\) 分成法向部分 \(g(X,\nu)\nu\) 和切向部分，切向部分与其余 \(n-1\) 个切向量线性相关，因而在顶次形式中贡献为零。故
+	\[
+		(\iota_X\operatorname{vol}_g)(e_1,\ldots,e_{n-1})=g(X,\nu).
+	\]
+	所以边界项正是 \(g(X,\nu)\mu_{\partial g}\) 的积分。\(n=1\) 时，在正向单位切向量为 \(e\) 的记号下，若 \(\nu=\varepsilon e\)，边界点的诱导定向符号就是 \(\varepsilon\)；其贡献为 \(\varepsilon\operatorname{vol}_g(X)=g(X,\nu)\)，结论相同。反转所选定向会同时反转体积形式与边界定向，两个密度积分都不变，所得局部公式不依赖这次选择。
+
+	一般情形取从属于坐标覆盖的光滑单位分解 \(\{\rho_\alpha\}\)。紧支性及局部有限性保证只有有限个 \(\rho_\alpha X\) 非零，且各项支集紧含于相应坐标片。逐项应用局部公式并相加。乘积公式给出
+	\[
+		\sum_\alpha\operatorname{div}_g(\rho_\alpha X)
+		=\Bigl(\sum_\alpha\rho_\alpha\Bigr)\operatorname{div}_gX
+		+X\Bigl(\sum_\alpha\rho_\alpha\Bigr)
+		=\operatorname{div}_gX,
+	\]
+	边界通量的和也等于 \(g(X,\nu)\)。这证明全局公式，包括不可定向情形。
+\end{proof}
+
+把定理应用于 \(fX\)，得到分部积分的基本形式。若 \(f\) 光滑、\(X\) 光滑，且其中至少一个紧支，则
+\begin{equation}
+	\label{g3:eq:integration-by-parts}
+	\int_M f\operatorname{div}_gX\,\mu_g
+	=-\int_M g(\operatorname{grad}_g f,X)\,\mu_g
+	+\int_{\partial M}f g(X,\nu)\,\mu_{\partial g}.
+\end{equation}
+在带边界情形，所有数据都要求光滑至边界。无边界、\(f\) 在边界为零，或 \(X\) 沿边界切向时，边界项消失。非紧流形上的支集条件则控制无穷远的通量，不能从公式中直接删除。
+
+\begin{definition}
+	\label{g3:def:laplace-beltrami}
+	对黎曼流形上的光滑实函数 \(f\)，采用\term[laplacebeltramisuanzi]{Laplace--Beltrami 算子}[Laplace--Beltrami operator]的非负号约定
+	\begin{equation}
+		\label{g3:eq:laplace-beltrami}
+		\Delta_g f\coloneqq-\operatorname{div}_g(\operatorname{grad}_g f)
+		=-\frac1{\sqrt{\det G}}
+		\partial_i\bigl(\sqrt{\det G}\,g^{ij}\partial_jf\bigr).
+	\end{equation}
+\end{definition}
+
+\symidx{\(\operatorname{div}_g X\)}
+\symidx{\(\Delta_g\)}
+
+这个名称沿用 Laplace 和 Beltrami 的姓氏。\footnote{Laplace，法文全名 Pierre-Simon Laplace（1749--1827），法国数学家和天文学家，研究概率、势函数与天体力学。Beltrami，意大利文名 Eugenio Beltrami（1835--1900），意大利数学家，研究微分几何、非 Euclid 几何模型及微分算子。}具体说，无边界时，对 \(u,v\in C_c^\infty(M)\)，分部积分给出
+\begin{equation}
+	\label{g3:eq:laplace-energy}
+	\int_M u\Delta_gv\,\mu_g
+	=\int_M g(\operatorname{grad}_g u,\operatorname{grad}_g v)\,\mu_g
+	=\int_M v\Delta_gu\,\mu_g.
+\end{equation}
+令 \(u=v\)，便有 \(\int_Mu\Delta_gu\,\mu_g\geq0\)。这说明本书的非负号约定指积分二次型非负，不是说每个非负函数的 \(\Delta_g\) 仍逐点非负。带边界时，对光滑至边界的紧支函数 \(u,v\)，相应公式为
+\[
+	\int_Mu\Delta_gv\,\mu_g
+	=\int_M g(\operatorname{grad}_g u,\operatorname{grad}_g v)\,\mu_g
+	-\int_{\partial M}u\partial_\nu v\,\mu_{\partial g},
+\]
+其中 \(\partial_\nu v=\mathrm{d}v(\nu)\)。例如两函数都在边界为零时，仍得到\eqref{g3:eq:laplace-energy}的对称关系。
+
+\begin{example}
+	\label{g3:exm:polar-metric-operators}
+	在平面去掉原点后的一个角度坐标片上，Euclid 度量写为
+	\[
+		g=\mathrm{d}r^2+r^2\mathrm{d}\theta^2,\qquad
+		\mu_g=r|\mathrm{d}r\,\mathrm{d}\theta|.
+	\]
+	因此
+	\[
+		\begin{aligned}
+			\operatorname{grad}_g f
+			&=f_r\partial_r+r^{-2}f_\theta\partial_\theta,\\
+			\operatorname{div}_g X
+			&=r^{-1}\partial_r(rX^r)+\partial_\theta X^\theta,\\
+			\Delta_g f
+			&=-f_{rr}-r^{-1}f_r-r^{-2}f_{\theta\theta}.
+		\end{aligned}
+	\]
+	这里 \(X^\theta\) 是相对于 \(\partial_\theta\) 的系数；若改用单位向量 \(r^{-1}\partial_\theta\) 的系数，散度的角向项也必须相应改写。例如 \(X=\partial_r\) 满足 \(\operatorname{div}_gX=1/r\)：向外移动厚度相同的小扇环，其周长随半径增长。原点不属于这张坐标图，公式中的 \(1/r\) 不表示原平面的度量在原点有奇性。
+\end{example}
 
 \subsection{坐标变化下的自然性}
 \label{g3:subsec:0101:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+前面的公式都含矩阵逆、行列式和偏导数。它们能否给出同一个几何对象，取决于这些变化是否彼此抵消。先直接核对换坐标，再把结论表述为局部等距下的相容性。
+
+\ProseParagraphBreak
+
+在交叠坐标 \(x=x(y)\) 中，记 \(J^i{}_a=\partial x^i/\partial y^a\)。由 \(\partial/\partial y^a=J^i{}_a\partial_i\)，新矩阵满足
+\begin{equation}
+	\label{g3:eq:metric-coordinate-transformation}
+	G_y=J^{\mathsf T}G_xJ,\qquad
+	G_y^{-1}=J^{-1}G_x^{-1}(J^{\mathsf T})^{-1},\qquad
+	\sqrt{\det G_y}=|\det J|\sqrt{\det G_x}.
+\end{equation}
+第一式是双线性型的换基，第二式保证升指标后得到向量的变换规律，第三式恰是密度的变换规律。因此 \(g^{-1}\)、梯度和 \(\mu_g\) 的局部表达在交叠处相容；散度由局部流定义，也与坐标选择无关。
+
+\begin{definition}
+	\label{g3:def:local-isometry}
+	设 \((M,g)\)、\((N,h)\) 是黎曼流形。若光滑映射 \(F:M\to N\) 是局部微分同胚且 \(F^*h=g\)，即
+	\[
+		h_{F(p)}(\mathrm{d}F_pv,\mathrm{d}F_pw)=g_p(v,w),
+	\]
+	则称 \(F\) 为\term[jubudengju]{局部等距}[local isometry]。若它还是微分同胚，则称为\term[dengju]{等距}[isometry]。
+\end{definition}
+
+\begin{proposition}
+	\label{g3:prop:metric-naturality}
+	设 \(F:(M,g)\to(N,h)\) 是无边界黎曼流形间的局部等距，\(f\in C^\infty(N)\)。则
+	\[
+		F^*\mu_h=\mu_g,\qquad
+		\mathrm{d}F\bigl(\operatorname{grad}_g(f\circ F)\bigr)
+		=(\operatorname{grad}_h f)\circ F,
+	\]
+	且对任意分片 \(C^1\) 曲线 \(\gamma\)，有 \(L_h(F\circ\gamma)=L_g(\gamma)\)。若向量场 \(X\) 与 \(Y\) 满足 \(\mathrm{d}F(X)=Y\circ F\)，则
+	\[
+		\operatorname{div}_gX=(\operatorname{div}_hY)\circ F,
+		\qquad \Delta_g(f\circ F)=(\Delta_h f)\circ F.
+	\]
+\end{proposition}
+\begin{proof}
+	密度等式由\eqref{g3:eq:metric-coordinate-transformation}的行列式关系得出，长度等式由 \(\mathrm{d}F\) 逐点保持速度的内积得出。对任意 \(v\in\mathrm{T}_pM\)，有
+	\[
+		\begin{aligned}
+			h\bigl(\mathrm{d}F\operatorname{grad}_g(f\circ F),\mathrm{d}Fv\bigr)
+			&=\mathrm{d}(f\circ F)(v)\\
+			&=\mathrm{d}f(\mathrm{d}Fv)
+			=h\bigl(\operatorname{grad}_h f,\mathrm{d}Fv\bigr).
+		\end{aligned}
+	\]
+	因 \(\mathrm{d}F_p\) 满射且 \(h\) 非退化，得到梯度关系。
+
+	最后把 \(F\) 限制在可逆的邻域中，在目标选择坐标 \(y\)，源上取 \(x=y\circ F\)。相关向量场在这两套对应坐标中的分量相同，\(G(x)=H(y)\) 也对应相同。因此\eqref{g3:eq:divergence-coordinate}在对应点给出同一实数，证明散度关系。将它用于刚得到的梯度关系，再带入 \(\Delta=-\operatorname{div}\operatorname{grad}\)，便得到最后一个等式。
+\end{proof}
+
+局部等距可以重复覆盖同一个区域。例如 \(\mathbb R\to S^1\)、\(t\mapsto(\cos t,\sin t)\)，对 \(\mathrm{d}t^2\) 与单位圆的诱导度量是局部等距，它保持每条参数曲线的长度，却不保持整个空间的总体积。积分换元还需整体条件：若 \(F\) 是等距、\(f\in C_c^\infty(N)\)，则第一卷定理 14.3.6 的密度换元给出 \(\int_M(f\circ F)\mu_g=\int_Nf\mu_h\)；若仅有局部等距，重叠覆盖的次数可能改变积分。矩阵变换、局部几何量和整体积分因而各自有清楚的适用范围。

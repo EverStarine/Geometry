@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 1.4 消去与有效计算
 % 纲要位置：几何学计划纲要.md，第 5054 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,339 @@
 \section{消去与有效计算}
 \label{g5:sec:0104}
 
-待撰写
+方程组给定以后，怎样判定另一个方程是否由它推出？怎样从参数式得到隐式方程，又怎样保留相交时的重数？这些问题需要在理想中实际运算。单变量多项式的除法提供了起点：选出最高项，逐次消去。多变量中首先要决定什么叫“最高”，其次要处理不同消去路线之间的抵消。本节先建立 Gröbner 基方法，再把它用于投影、射影闭包和有限点集。\footnote{Wolfgang Gröbner（1899--1980），奥地利数学家，研究代数几何及 Lie 级数；Gröbner 基以其姓氏命名。}
+
+多项式计算部分适用于任意域；讨论零点与闭包时仍取代数闭域 \(k\)。实际执行算法还要求能够精确完成系数的四则运算和判零，例如在有理数域或明确给定的代数数域中计算。单项式序、除法和 Gröbner 基算法的进一步材料见\cite[第2章第2--7节]{CoxLittleOShea2015}。
 
 \subsection{全局单项式序和多元除法}
 \label{g5:subsec:0104:01}
-待撰写
+在 \(k[x_1,\ldots,x_n]\) 中，\(x_1^2\) 与 \(x_2^3\) 哪一个应先消去，并没有由总次数之外的结构自动决定的答案。为了使一次消去不会重新产生更高的项，我们需要与乘法相容的次序；为了使消去最终结束，还需要良序性。
+
+\begin{definition}\label{g5:def:monomial-order}
+	设 \(k\) 为域。多项式环 \(R=k[x_1,\ldots,x_n]\) 的单项式 \(x^\alpha=x_1^{\alpha_1}\cdots x_n^{\alpha_n}\) 上的全序 \(\prec\)，若满足每个非空单项式集合都有最小元，且
+	\[
+		x^\alpha\prec x^\beta\quad\Longrightarrow\quad x^{\alpha+\gamma}\prec x^{\beta+\gamma},
+	\]
+	就称为\term[quanjudangxiangshixu]{全局单项式序}[global monomial order]。其中 \(1\) 必为最小单项式：否则某个 \(m\prec1\) 会给出无限下降链 \(1\succ m\succ m^2\succ\cdots\)。
+\end{definition}
+
+最常用的两个例子是字典序与分次字典序。固定变量优先次序 \(x_1\succ\cdots\succ x_n\)。\term[zidianxu]{字典序}[lexicographic order]从左到右比较指数，在第一个不同的位置上指数较大者为大；\term[fencizidianxu]{分次字典序}[graded lexicographic order]先比较总次数，总次数相同时再比较字典序。两者都与乘法相容。字典序的良序性可用依次选择最小的第一、第二、……坐标证明；分次字典序则先选最小总次数，再在有限集合中取最小元。例如在 \(k[x,y]\) 中取 \(x\succ y\)，字典序有 \(x\succ y^{100}\)，分次字典序却有 \(y^{100}\succ x\)。这个差别将在消去变量时发挥作用。
+
+对非零多项式 \(f\)，记最大的单项式为 \(\operatorname{LM}(f)\)，其系数为 \(\operatorname{LC}(f)\)，并记
+\[
+	\operatorname{LT}(f)=\operatorname{LC}(f)\operatorname{LM}(f).
+\]
+它们分别是\term[shouxiangdanshi]{首单项式}[leading monomial]、\term[shouxiangxishu]{首项系数}[leading coefficient]和\term[shouxiang]{首项}[leading term]。\symidx{\(\operatorname{LM}(f),\operatorname{LT}(f)\)：首单项式、首项}乘法相容性给出 \(\operatorname{LM}(fg)=\operatorname{LM}(f)\operatorname{LM}(g)\)：其他乘积项都严格小于两个首单项式之积，因而不能抵消它。
+
+\begin{algorithm}[htbp]
+	\caption{多元除法}\label{g5:alg:polynomial-division}
+	\begin{algorithmsteps}{域 \(k\) 上的 \(f\in R\)、非零多项式的有序表 \(g_1,\ldots,g_s\) 及全局单项式序。}{多项式 \(q_1,\ldots,q_s,r\)，使 \(f=\sum_iq_ig_i+r\)，且 \(r\) 的任何单项式都不被任一 \(\operatorname{LM}(g_i)\) 整除。}
+		\State 置 \(p=f\)，\(q_1=\cdots=q_s=r=0\)。
+		\While{\(p\ne0\)}
+			\If{存在 \(i\) 使 \(\operatorname{LM}(g_i)\mid\operatorname{LM}(p)\)}
+				\State 取最小的这种 \(i\)，置 \(a=\operatorname{LT}(p)/\operatorname{LT}(g_i)\)。
+				\State 以 \(q_i+a\) 替换 \(q_i\)，以 \(p-ag_i\) 替换 \(p\)。
+			\Else
+				\State 把 \(\operatorname{LT}(p)\) 加入 \(r\)，并从 \(p\) 中减去此项。
+			\EndIf
+		\EndWhile
+		\State 返回 \(q_1,\ldots,q_s,r\)。
+	\end{algorithmsteps}
+\end{algorithm}
+
+每次循环都消去了 \(p\) 的首项，且只留下更小的单项式，因此良序性保证算法终止。等式 \(f=\sum_iq_ig_i+p+r\) 在每一步保持成立，终止时就是所需分解。若 \(f\ne0\)，计算还保证每个非零 \(q_ig_i\) 的首单项式不超过 \(\operatorname{LM}(f)\)。这个上界将用来控制后面的抵消。
+
+余式通常依赖除式的排列。例如在字典序 \(x\succ y\) 下，用 \(xy-1,y^2-1\) 除 \(xy^2\)，先用前者得到余式 \(y\)，先用后者则得到余式 \(x\)。两者之差 \(x-y\) 属于同一个理想，却不能再被这两个首单项式整除。因此，一般的生成元表还不能用非零余式判定理想成员关系。
 
 \subsection{Buchberger 判据及终止性}
 \label{g5:subsec:0104:02}
-待撰写
+上面的障碍来自最高项的抵消：两个生成元的倍式相减后，可能产生新的首单项式，而旧的首单项式都除不尽它。Gröbner 基要求把这些新信息也纳入生成元。
+
+\begin{definition}\label{g5:def:groebner-basis}
+	设 \(I\subseteq R=k[x_1,\ldots,x_n]\) 为理想，并固定全局单项式序。由所有非零 \(f\in I\) 的 \(\operatorname{LM}(f)\) 生成的理想
+	\[
+		\operatorname{in}(I)=\bigl(\operatorname{LM}(f):0\ne f\in I\bigr)
+	\]
+	称为 \(I\) 的\term[chushilixiang]{初始理想}[initial ideal]。\symidx{\(\operatorname{in}(I)\)：初始理想}若有限集合 \(G=\{g_1,\ldots,g_s\}\subseteq I\setminus\{0\}\) 满足
+	\[
+		\operatorname{in}(I)=\bigl(\operatorname{LM}(g_1),\ldots,\operatorname{LM}(g_s)\bigr),
+	\]
+	则称 \(G\) 为 \(I\) 的\term[Groebnerji]{Gröbner 基}[Gröbner basis]。零理想允许取空基。
+\end{definition}
+
+由单项式生成的理想有一个直接判据：一个多项式属于它，当且仅当该多项式的每个单项式都被某个生成单项式整除。一个方向由展开乘积得到，另一个方向逐项写成生成元的倍式即可。因此，Gröbner 基条件等价于每个非零 \(f\in I\) 的首单项式都能被某个 \(\operatorname{LM}(g_i)\) 整除。
+
+\begin{proposition}\label{g5:prop:groebner-remainder}
+	设 \(k\) 为域，\(G\) 是 \(I\subseteq k[x_1,\ldots,x_n]\) 关于一个全局单项式序的 Gröbner 基。则 \(G\) 生成 \(I\)，每个多项式除以 \(G\) 的余式唯一，且 \(f\in I\) 当且仅当其余式为零。
+\end{proposition}
+\begin{proof}
+	对 \(f\in I\) 作多元除法，所得余式 \(r=f-\sum_iq_ig_i\) 仍在 \(I\) 中。若 \(r\ne0\)，Gröbner 基条件要求它的首单项式被某个 \(\operatorname{LM}(g_i)\) 整除，这与余式的定义矛盾。故 \(r=0\)，同时得到生成性与成员判据。
+
+	若同一个 \(f\) 有两个余式 \(r,r'\)，则 \(r-r'\in I\)。这个差中的每个单项式仍都不能被 \(G\) 的首单项式整除，所以刚才的论证给出 \(r-r'=0\)。
+\end{proof}
+
+要得到有限的判定条件，只需考察每对生成元的首项怎样相消。对非零 \(g,h\)，设 \(L\) 是 \(\operatorname{LM}(g)\) 与 \(\operatorname{LM}(h)\) 的最小公倍单项式，即每个变量的指数取两者中的较大值。定义其\term[Sduoxiangshi]{\(S\) 多项式}[S-polynomial]为
+\[
+	S(g,h)=\frac{L}{\operatorname{LT}(g)}g-\frac{L}{\operatorname{LT}(h)}h.
+\]
+两个最高项都是 \(L\)，因而被消去；若结果非零，它的首单项式严格小于 \(L\)。下面的 Buchberger 判据把所有可能的抵消归结为这些成对的抵消。\footnote{Bruno Buchberger（1942--），奥地利数学家，建立了 Gröbner 基的算法理论，并推动符号计算与自动推理的发展。}
+
+\begin{theorem}[Buchberger 判据]\label{g5:thm:buchberger-criterion}
+	\termidx[Buchbergerpanju]{Buchberger 判据}\foreignidx{Buchberger's criterion}设 \(k\) 为域，\(G=\{g_1,\ldots,g_s\}\) 为非零多项式的有限集合，并固定全局单项式序及除法时的排列。则 \(G\) 是 \((G)\) 的 Gröbner 基，当且仅当每个 \(S(g_i,g_j)\) 除以 \(G\) 的余式都是零。
+\end{theorem}
+\begin{proof}
+	若 \(G\) 是 Gröbner 基，则 \(S(g_i,g_j)\in(G)\)，由\cref{g5:prop:groebner-remainder}，余式为零。
+
+	反过来，把各 \(g_i\) 除以其首项系数，可设它们都首一；这不影响条件与结论。取 \(0\ne f\in(G)\)。把任意一个表达式 \(f=\sum_iq_ig_i\) 中的 \(q_i\) 展开成单项式之和，得到
+	\[
+		f=\sum_{\nu=1}^t c_\nu x^{\alpha_\nu}g_{i_\nu},\qquad c_\nu\in k\setminus\{0\}.
+	\]
+	在全部这种表示中，选取使最大单项式
+	\[
+		M=\max_\nu\bigl(x^{\alpha_\nu}\operatorname{LM}(g_{i_\nu})\bigr)
+	\]
+	最小的一种；良序性保证这种选择存在。若 \(M=\operatorname{LM}(f)\)，则某个 \(\operatorname{LM}(g_{i_\nu})\) 整除 \(\operatorname{LM}(f)\)，已得结论。我们证明 \(M\succ\operatorname{LM}(f)\) 不可能。
+
+	把首单项式等于 \(M\) 的那些项写成
+	\[
+		H=\sum_{\nu=1}^r a_\nu\frac{M}{m_\nu}g_{j_\nu},
+		\qquad m_\nu=\operatorname{LM}(g_{j_\nu}).
+	\]
+	由于 \(f\) 中没有单项式 \(M\)，而其他项都小于 \(M\)，有 \(\sum_\nu a_\nu=0\)。固定最后一个指标，将此等式用于消去 \(a_r\)，得到
+	\[
+		H=\sum_{\nu=1}^{r-1}a_\nu
+		\left(\frac{M}{m_\nu}g_{j_\nu}-\frac{M}{m_r}g_{j_r}\right)
+		=\sum_{\nu=1}^{r-1}a_\nu\frac{M}{L_\nu}S(g_{j_\nu},g_{j_r}),
+	\]
+	其中 \(L_\nu=\operatorname{lcm}(m_\nu,m_r)\)；相同生成元对应的差为零。由假设，每个非零 \(S(g_{j_\nu},g_{j_r})\) 经除法写成 \(\sum_i b_{\nu i}g_i\)，且除法的首单项式控制给出
+	\[
+		\operatorname{LM}(b_{\nu i}g_i)
+		\preceq\operatorname{LM}\bigl(S(g_{j_\nu},g_{j_r})\bigr)\prec L_\nu
+	\]
+	（只对非零项写此式）。乘以 \(M/L_\nu\) 后，所有首单项式都严格小于 \(M\)。把这些表达式代回 \(H\)，就将原表示中全部最高项替换成了更低的项，从而得到最大单项式小于 \(M\) 的 \(f\) 的表示，违背最小选择。故 \(M=\operatorname{LM}(f)\)，判据得证。
+\end{proof}
+
+这个证明中特别需要“由除法得到的表示”：仅知道 \(S(g_i,g_j)\in(G)\) 毫无额外信息，因为它本来就是两个生成元倍式之差。除法保证表示中每个乘积的首单项式低于已经相消的最小公倍单项式，才使整个证明能够下降。
+
+\begin{algorithm}[htbp]
+	\caption{Buchberger 算法}\label{g5:alg:buchberger}
+	\begin{algorithmsteps}{域 \(k\) 上的有限生成元表 \(f_1,\ldots,f_s\)，以及全局单项式序。}{理想 \((f_1,\ldots,f_s)\) 的一个 Gröbner 基。}
+		\State 删去零生成元，将其余生成元首一化，组成 \(G\)；把 \(G\) 中全部不同元素对放入待处理表 \(P\)。
+		\While{\(P\ne\varnothing\)}
+			\State 从 \(P\) 取出并删除一对 \((g,h)\)，计算 \(S(g,h)\) 除以当前 \(G\) 的余式 \(r\)。
+			\If{\(r\ne0\)}
+				\State 将 \(r\) 首一化，把 \((r,g')\)（\(g'\in G\)）加入 \(P\)，再把 \(r\) 加入 \(G\)。
+			\EndIf
+		\EndWhile
+		\State 返回 \(G\)。
+	\end{algorithmsteps}
+\end{algorithm}
+
+\begin{proposition}\label{g5:prop:buchberger-termination}
+	设 \(k\) 为域，并使用精确的域运算及判零。\cref{g5:alg:buchberger}在有限步后终止，返回输入理想关于指定单项式序的 Gröbner 基。
+\end{proposition}
+\begin{proof}
+	加入的余式始终属于当前生成的理想，故生成理想不变。每次加入非零 \(r\)，它的首单项式都不属于旧的首单项式理想，因此后者严格增大。\cref{g5:thm:hilbert-basis}保证 \(k[x_1,\ldots,x_n]\) 的理想升链最终稳定，故只可能加入有限多个新元素。每次加入只增添有限多个待处理对，因而全部计算有限步结束。
+
+	对任一已处理的对，当时的除法给出其 \(S\) 多项式关于当时生成元的表示；若余式非零，加入该余式后也得到表示。所有表示项的首单项式都低于相应最小公倍单项式。此后增添生成元不会破坏这个表示。因此最终 \(G\) 的每对元素都具有 Buchberger 判据证明所需的这种较低表示，该证明直接给出最终 \(G\) 为 Gröbner 基。
+\end{proof}
+
+终止性给出有限算法，却没有给出一个小的运行次数上界。变量次序和输入形式会显著影响中间多项式的大小；这里先保留可以逐步核验的基本算法。
+
+\begin{example}\label{g5:exm:buchberger-three-points}
+	在任意域 \(k\) 上取 \(I=(xy-1,x-y^2)\subseteq k[x,y]\)，使用字典序 \(x\succ y\)。令 \(g_1=xy-1\)、\(g_2=x-y^2\)，则
+	\[
+		S(g_1,g_2)=g_1-yg_2=y^3-1.
+	\]
+	这个余式不能被 \(xy\) 或 \(x\) 除尽，须加入 \(g_3=y^3-1\)。由于 \(g_1=yg_2+g_3\)，理想也由 \(g_2,g_3\) 生成。对这两个生成元，
+	\[
+		S(g_2,g_3)=y^3g_2-xg_3=x-y^5
+		\xrightarrow{-g_2}y^2-y^5
+		\xrightarrow{+y^2g_3}0.
+	\]
+	所以 \(\{x-y^2,y^3-1\}\) 是 \(I\) 的 Gröbner 基。这里多出的单变量方程已经把求解次序显露出来：先求 \(y^3=1\)，再令 \(x=y^2\)。
+\end{example}
 
 \subsection{消去定理与投影闭包}
 \label{g5:subsec:0104:03}
-待撰写
+若想消去 \(x_1,\ldots,x_r\)，应该让含这些变量的单项式大于所有其余单项式。字典序 \(x_1\succ\cdots\succ x_n\) 正好做到这一点。对理想 \(I\subseteq k[x_1,\ldots,x_n]\)，其\term[xiaoqulixiang]{消去理想}[elimination ideal]是
+\[
+	I_r=I\cap k[x_{r+1},\ldots,x_n].
+\]
+它收集原方程的全部多项式后果中已经没有前 \(r\) 个变量的那些方程。
+
+\begin{theorem}[消去定理]\label{g5:thm:elimination}
+	\termidx[xiaoqudingli]{消去定理}\foreignidx{elimination theorem}设 \(k\) 为域，\(I\subseteq k[x_1,\ldots,x_n]\)，\(0\le r<n\)。若 \(G\) 为 \(I\) 关于字典序 \(x_1\succ\cdots\succ x_n\) 的 Gröbner 基，则
+	\[
+		G_r=G\cap k[x_{r+1},\ldots,x_n]
+	\]
+	是 \(I_r\) 关于限制次序的 Gröbner 基。
+\end{theorem}
+\begin{proof}
+	取 \(0\ne f\in I_r\)。存在 \(g\in G\) 使 \(\operatorname{LM}(g)\mid\operatorname{LM}(f)\)，因此 \(\operatorname{LM}(g)\) 不含 \(x_1,\ldots,x_r\)。若 \(g\) 的其他项含其中某个变量，按字典序它会大于所有只含后面变量的单项式，特别是大于 \(\operatorname{LM}(g)\)，矛盾。因此 \(g\in G_r\)，这正是 Gröbner 基判据。
+\end{proof}
+
+从几何上说，消去得到的方程必在投影像上成立。它们究竟刻画实际像还是闭包，需要另外论证。对 \(k^{r}\times k^{n-r}\) 的坐标投影记作 \(\pi\)。
+
+\begin{theorem}\label{g5:thm:projection-closure}
+	设 \(k\) 为代数闭域，\(I\subseteq k[x_1,\ldots,x_n]\) 为任意理想，\(I_r=I\cap k[x_{r+1},\ldots,x_n]\)。则
+	\[
+		\overline{\pi(V(I))}=V(I_r),
+	\]
+	其中闭包取在 \(\mathbb A_k^{n-r}\) 的 Zariski 拓扑中。
+\end{theorem}
+\begin{proof}
+	关键是计算投影像上所有消失的多项式。一个 \(h\in k[x_{r+1},\ldots,x_n]\) 在 \(\pi(V(I))\) 上恒为零，当且仅当把它视为 \(n\) 元多项式时在 \(V(I)\) 上恒为零。强零点定理\cref{g5:thm:nullstellensatz}因而给出
+	\[
+		I\bigl(\pi(V(I))\bigr)
+		=\sqrt I\cap k[x_{r+1},\ldots,x_n]
+		=\sqrt{I_r}.
+	\]
+	最后一个等号是因为 \(h^N\in I\) 且 \(h\) 只含后面变量，等价于 \(h^N\in I_r\)。任意集合 \(S\) 的闭包都是 \(V(I(S))\)，取零点即得结论。
+\end{proof}
+
+\begin{example}\label{g5:exm:projection-not-closed}
+	设 \(k\) 代数闭，取双曲线 \(X=V(xy-1)\subseteq\mathbb A_k^2\)，向 \(y\) 轴投影。实际像是 \(k\setminus\{0\}\)，因为 \(y\ne0\) 时才能取 \(x=y^{-1}\)。而字典序 \(x\succ y\) 下 \(\{xy-1\}\) 已是 Gröbner 基，消去理想为零，故投影闭包为整条 \(y\) 轴。新增的原点满足全部消去方程，却没有原方程组的解位于它上方。
+\end{example}
+
+参数式的隐式化可以统一按图像处理。例如参数式 \((x,y)=(t^2,t^3)\) 对应图像理想 \((x-t^2,y-t^3)\subseteq k[t,x,y]\)。消去 \(t\) 就得到参数像闭包的方程。先取图像再投影，使“求出关系式”与“关系式的每个解是否都来自参数”成为两个可以分别检查的问题。消去的几何说明见\cite[第3章第1--2节]{CoxLittleOShea2015}。
 
 \subsection{饱和和射影分量}
 \label{g5:subsec:0104:04}
-待撰写
+把方程限制在 \(h\ne0\) 的区域时，\(hf=0\) 与 \(f=0\) 具有相同意义。返回原多项式环时，必须记录所有通过消去 \(h\) 的幂才能得到的后果。
+
+\begin{definition}\label{g5:def:saturation}
+	设 \(R=k[x_1,\ldots,x_n]\)、\(I\subseteq R\)，并取 \(h\in R\)。理想
+	\[
+		I:h^\infty=\{f\in R:\text{存在 }N\ge0\text{ 使 }h^Nf\in I\}
+	\]
+	称为 \(I\) 关于 \(h\) 的\term[baohe]{饱和}[saturation]。\symidx{\(I:h^\infty\)：关于 \(h\) 的饱和}它是升链 \(I:h^N\) 的并，因而是理想；多项式环的 Noether 性保证这个并等于某个 \(I:h^N\)。
+\end{definition}
+
+\begin{proposition}\label{g5:prop:saturation-elimination}
+	设 \(k\) 为域，\(I\subseteq R=k[x_1,\ldots,x_n]\)，\(h\in R\)，并引入新变量 \(u\)。则
+	\[
+		I:h^\infty=(I,1-uh)\cap R.
+	\]
+	若 \(k\) 代数闭，则还有
+	\[
+		V(I:h^\infty)=\overline{V(I)\setminus V(h)}.
+	\]
+\end{proposition}
+\begin{proof}
+	若 \(h^Nf\in I\)，则 \((uh)^Nf\in I R[u]\)，而 \(f-(uh)^Nf\) 是 \(1-uh\) 的倍式，故 \(f\in(I,1-uh)\cap R\)。反之，若 \(h\ne0\)，将 \(f\in(I,1-uh)\cap R\) 的理想表达式代入 \(u=1/h\)，在有理函数域 \(k(x_1,\ldots,x_n)\) 中得到 \(f=\sum_i a_i(x,1/h)f_i\)，其中 \(f_i\in I\)。乘以足够高的 \(h\) 的幂即得 \(h^Nf\in I\)。若 \(h=0\)，两边都等于 \(R\)，结论同样成立。
+
+	在代数闭情形，\(V(I,1-uh)\) 向原坐标空间的投影恰为 \(V(I)\setminus V(h)\)：每个这样的点都有唯一的 \(u=1/h\)。对这个投影应用\cref{g5:thm:projection-closure}，即得第二个等式。
+\end{proof}
+
+因此，只要采用先消去 \(u\) 的次序，就能用 Gröbner 基计算饱和。几何上它保留 \(h\ne0\) 部分的闭包；例如 \((xy):x^\infty=(y)\)，从两条坐标轴中去除了完全位于 \(x=0\) 上的那一支。关于饱和的进一步讨论见\cite[第4章第4节]{CoxLittleOShea2015}。
+
+射影闭包需要同一种操作。以 \([x_0:x_1:\cdots:x_n]\) 为射影坐标，把仿射空间识别为 \(x_0\ne0\) 的标准图。对次数为 \(d\) 的非零多项式 \(f\)，记
+\[
+	 f^{\mathrm h}(x_0,\ldots,x_n)=x_0^d f(x_1/x_0,\ldots,x_n/x_0)
+\]
+为其齐次化，且规定 \(0^{\mathrm h}=0\)。对理想 \(I\)，以全部 \(f^{\mathrm h}\)（\(f\in I\)）生成的齐次理想记为 \(I^{\mathrm h}\)。\symidx{\(I^{\mathrm h}\)：理想的齐次化}关键在于“全部”：对一份任意生成元逐个齐次化，所得理想还可能缺少由最高次抵消产生的方程。
+
+\begin{proposition}\label{g5:prop:projective-homogenization}
+	设 \(k\) 为域，\(I=(f_1,\ldots,f_s)\subseteq k[x_1,\ldots,x_n]\)，且
+	\[
+		J=(f_1^{\mathrm h},\ldots,f_s^{\mathrm h})\subseteq k[x_0,\ldots,x_n].
+	\]
+	则 \(I^{\mathrm h}=J:x_0^\infty\)。若 \(k\) 代数闭、\(X\subseteq\mathbb A_k^n\) 为代数集并取 \(I=I(X)\)，则 \(X\) 在 \(\mathbb P_k^n\) 中的闭包是 \(V_+(I^{\mathrm h})\)。
+\end{proposition}
+\begin{proof}
+	先说明 \(I^{\mathrm h}\subseteq J:x_0^\infty\)。对 \(f=\sum_i a_if_i\in I\)，取 \(D\) 不小于 \(\deg f\) 及各非零 \(a_if_i\) 的次数，将等式各项齐次化到同一次数 \(D\)，便得
+	\[
+		x_0^{D-\deg f}f^{\mathrm h}
+		=\sum_i x_0^{D-\deg a_i-\deg f_i}a_i^{\mathrm h}f_i^{\mathrm h}\in J.
+	\]
+	故每个 \(f^{\mathrm h}\) 都属于该饱和。
+
+	反向包含只需检查齐次多项式，因为 \(J\) 的齐次性保证 \(J:x_0^\infty\) 也齐次。若次数为 \(q\) 的非零齐次多项式 \(F\) 满足 \(x_0^NF\in J\)，令 \(x_0=1\) 得到 \(f=F(1,x_1,\ldots,x_n)\in I\)。又有 \(F=x_0^{q-\deg f}f^{\mathrm h}\)，故 \(F\in I^{\mathrm h}\)。
+
+	最后设 \(I=I(X)\)。任意齐次多项式 \(F\) 在嵌入的 \(X\) 上消失，当且仅当 \(F(1,x)\in I(X)\)，这又等价于 \(F\in I^{\mathrm h}\)。因此 \(V_+(I^{\mathrm h})\) 是包含 \(X\) 的全部射影闭集的交，也就是射影闭包。
+\end{proof}
+
+\begin{example}\label{g5:exm:spurious-infinity-component}
+	在代数闭域 \(k\) 上，曲线 \((x,y,z)=(t,t^2,t^3)\) 的仿射理想为 \(I=(y-x^2,z-x^3)\)：商环中的 \(y,z\) 分别由 \(x^2,x^3\) 代替，商环就是 \(k[x]\)。在射影坐标 \([w:x:y:z]\) 中，逐个齐次化得到
+	\[
+		J=(wy-x^2,w^2z-x^3).
+	\]
+	令 \(w=0\)，两式只要求 \(x=0\)，因而 \(V_+(J)\) 包含整条直线 \([0:0:y:z]\)。但仿射理想中还有
+	\[
+		xy-z=x(y-x^2)-(z-x^3),\qquad
+		y^2-xz=(y+x^2)(y-x^2)-x(z-x^3).
+	\]
+	它们的齐次化要求 \(xy-wz=0\)、\(y^2-xz=0\)。三个二次式
+	\[
+		wy-x^2=0,\qquad wz-xy=0,\qquad xz-y^2=0
+	\]
+	在 \(w\ne0\) 上恢复原曲线；在 \(w=0\) 上则迫使 \(x=y=0\)，只留下 \([0:0:0:1]\)。这个点确实在闭包中：参数式
+	\[
+		[s:t]\longmapsto[s^3:s^2t:st^2:t^3]
+	\]
+	在 \(s\ne0\) 上给出原曲线，且在 \(t\ne0\) 的图中变为 \(u\mapsto[u^3:u^2:u:1]\)，\(u=s/t\)，原点是 \(u\ne0\) 部分的 Zariski 闭包中的点。于是上述三个二次式在集合意义上恰好刻画射影闭包。逐个齐次化产生的无穷远直线，是缺少饱和造成的多余分量。
+\end{example}
+
+这里的饱和是关于所选仿射图的坐标 \(x_0\)；它专门去掉完全落在 \(x_0=0\) 上的多余部分。有关射影闭包的更多计算见\cite[第8章第4节]{CoxLittleOShea2015}。
 
 \subsection{零维商代数与重数核验}
 \label{g5:subsec:0104:05}
-待撰写
+求出零点以后，商代数还保留了不同方程在同一点处相遇的次数。最简单的例子是 \(k[t]/(t^2)\)：它只有原点这一个零点，但 \(1,t\) 是两个线性无关的剩余类。Gröbner 基把这种维数变成可以直接数出的单项式个数。
+
+\begin{proposition}\label{g5:prop:standard-monomials}
+	设 \(k\) 为域，\(I\subseteq R=k[x_1,\ldots,x_n]\)，并固定一个全局单项式序。所有不属于 \(\operatorname{in}(I)\) 的单项式称为\term[biaozhundanxiangshi]{标准单项式}[standard monomial]，它们在 \(R/I\) 中的剩余类构成一个 \(k\) 向量空间基。特别地，\(\dim_k(R/I)<\infty\) 当且仅当对每个 \(i\) 都有某个 \(N_i\ge0\) 使 \(x_i^{N_i}\in\operatorname{in}(I)\)。
+\end{proposition}
+\begin{proof}
+	由 Buchberger 算法取得一个 Gröbner 基。多元除法把每个多项式模 \(I\) 化为标准单项式的线性组合，故这些类张成商空间。若一个非零的这种线性组合属于 \(I\)，其首单项式就必须属于 \(\operatorname{in}(I)\)，矛盾，因此这些类线性无关。
+
+	若某个变量的所有纯幂都是标准单项式，商空间就有无限多个基向量。反之，若各 \(x_i^{N_i}\in\operatorname{in}(I)\)，则每个标准单项式的第 \(i\) 个指数小于 \(N_i\)，只有有限种可能。\(I=R\) 时标准单项式集合为空，商空间维数为零。
+\end{proof}
+
+当 \(k\) 代数闭时，这个有限维条件恰好等价于 \(V(I)\) 为有限集合。为核对两种有限性的关系，若 \(V(I)=\{a^{(1)},\ldots,a^{(s)}\}\) 非空，则对每个坐标 \(i\)，多项式 \(p_i(T)=\prod_{j=1}^s(T-a_i^{(j)})\) 满足 \(p_i(x_i)\in\sqrt I\)。由零点定理，某个幂 \(p_i(x_i)^{N_i}\) 属于 \(I\)；它是关于 \(x_i\) 的首一多项式，故每个坐标的高次幂都能约为较低次幂，商代数有限维。空集情形由弱零点定理给出 \(I=R\)。反过来，若商代数有限维，则 \(1,x_i,x_i^2,\ldots\) 的类线性相关，给出非零单变量关系 \(q_i(x_i)\in I\)。每个零点的第 \(i\) 个坐标只能是 \(q_i\) 的有限多个根之一，故零点总数有限。
+
+本节将这种非零有限维商代数称为零维商代数。它的\term[changdu]{长度}[length]在代数闭基域上等于 \(\dim_k(R/I)\)；下面把这个数分配到各个点，说明它为什么是重数之和。
+
+\begin{proposition}\label{g5:prop:finite-algebra-multiplicities}
+	设 \(k\) 代数闭，\(A=k[x_1,\ldots,x_n]/I\) 是非零有限维 \(k\) 代数，\(V(I)=\{a^{(1)},\ldots,a^{(s)}\}\)。记 \(\mathfrak m_j\subseteq A\) 为在 \(a^{(j)}\) 处取值为零的剩余类组成的极大理想。则对充分大的整数 \(N\)，自然映射给出分解
+	\[
+		A\cong\prod_{j=1}^s A_j,\qquad A_j=A/\mathfrak m_j^N,
+		\qquad \dim_kA=\sum_{j=1}^s\dim_kA_j.
+	\]
+	每个 \(A_j\) 只有一个极大理想，剩余域为 \(k\)。数 \(\dim_kA_j\) 是方程组 \(I\) 在点 \(a^{(j)}\) 处的\term[jubuzhongshu]{局部重数}[local multiplicity]。\(I\) 为根式理想，当且仅当每个局部重数均为 \(1\)。
+\end{proposition}
+\begin{proof}
+	先把各点分开。不同点的求值理想两两互素：若第 \(i\) 个坐标不同，则 \(x_i-a_i^{(j)}\) 与 \(x_i-a_i^{(\ell)}\) 之差为非零常数，故 \(\mathfrak m_j+\mathfrak m_\ell=A\)。由零点定理，\(\mathfrak n=\bigcap_j\mathfrak m_j\) 恰是 \(A\) 中全部幂零元素的理想。它由有限多个元素生成，例如取它的一个 \(k\) 向量空间基 \(b_1,\ldots,b_q\)。若 \(b_i^{e_i}=0\)，则任意 \(N>\sum_i(e_i-1)\) 个生成元的乘积总包含某个 \(b_i^{e_i}\)，所以 \(\mathfrak n^N=0\)。
+
+	互素理想 \(J,K\) 满足 \(J\cap K=JK\)：若 \(u+v=1\)，\(u\in J,v\in K\)，则对 \(a\in J\cap K\)，有 \(a=au+av\in JK\)。它们的 \(N\) 次幂也互素，因为展开 \((u+v)^{2N-1}=1\)，每项至少属于 \(J^N\) 或 \(K^N\)。对有限族反复应用，得到
+	\[
+		\bigcap_j\mathfrak m_j^N
+		=\prod_j\mathfrak m_j^N
+		=\left(\prod_j\mathfrak m_j\right)^N
+		=\mathfrak n^N=0.
+	\]
+	\term[zhongguoshengyudingli]{中国剩余定理}[Chinese remainder theorem]于是给出所述分解。这里所用的定理也可直接核对：对两个互素理想，映射 \(A\to A/J\times A/K\) 的核为交，而 \(va+ub\) 同时代表指定的模 \(J\) 类 \(a\) 和模 \(K\) 类 \(b\)；有限多个理想逐次处理即可。
+
+	在 \(A_j\) 中，\(\mathfrak m_j/\mathfrak m_j^N\) 是幂零理想，商去它得到 \(k\)。任何极大理想都包含幂零元素，因此这是 \(A_j\) 的唯一极大理想。若 \(I\) 根式，则 \(\mathfrak n=0\)，直接对 \(\mathfrak m_j\) 应用同一分解得到 \(A\cong k^s\)，各因子都是 \(k\)。反之，若各因子维数为 \(1\)，它们都等于 \(k\)，乘积没有非零幂零元素，故 \(I\) 根式。
+\end{proof}
+
+上述分解与充分大的 \(N\) 无关：在第 \(j\) 个因子中，\(\mathfrak m_j\) 的高次幂为零，在其他因子中它等于整个环；后一点由互素性及这些因子的幂零极大理想可见。因此继续增大 \(N\) 得到同一求值点对应的因子。其作为自身模的任何简单商都是 \(k\)，每一步下降都使向量空间维数至少减一，故有限维性保证存在组成列，而组成因子个数等于 \(k\) 维数。这也解释了这里“长度”与通常模长度术语的一致性。
+
+\begin{example}\label{g5:exm:length-three-points}
+	对\cref{g5:exm:buchberger-three-points}中的理想，标准单项式为 \(1,y,y^2\)，故商代数长度为 \(3\)，并有
+	\[
+		k[x,y]/(xy-1,x-y^2)\cong k[y]/(y^3-1).
+	\]
+	若 \(k\) 代数闭且特征不为 \(3\)，\(y^3-1\) 的导数 \(3y^2\) 在其根处不为零，故三个根不同，每点重数为 \(1\)。若特征为 \(3\)，则 \(y^3-1=(y-1)^3\)，唯一零点为 \((1,1)\)，局部重数为 \(3\)。同一份标准单项式计数在两种特征下都给出 \(3\)，但这 \(3\) 的几何分配不同。
+\end{example}
+
+\begin{example}\label{g5:exm:tangent-intersection-length}
+	在任意代数闭域 \(k\) 上，抛物线 \(y=x^2\) 与直线 \(y=0\) 的共同零点只有原点，而
+	\[
+		k[x,y]/(y-x^2,y)=k[x,y]/(x^2,y)\cong k[x]/(x^2)
+	\]
+	的基为 \(1,x\)，长度为 \(2\)。若换成直线 \(x=0\)，商环变为 \(k\)，长度为 \(1\)。前一个商中的 \(x\) 非零而平方为零，它记录了取根式后丢掉的相切信息。这给出有限相交点的代数计数；一般相交理论将在后文讨论其在族中的行为。
+\end{example}
+
+商代数中的加法、乘法也可以用余式完成。选定标准单项式基后，逐个把 \(x_i\) 乘上基向量，再除以 Gröbner 基，就得到“乘以 \(x_i\)”的矩阵。这样，方程组的有限商代数可以作为一套具体的有限维线性运算保存，而不必只保存零点列表。商环算法的进一步例子见\cite[第5章第3节]{CoxLittleOShea2015}。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

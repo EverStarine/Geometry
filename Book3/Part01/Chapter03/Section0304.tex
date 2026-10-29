@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 3.4 模型与代数分解
 % 纲要位置：几何学计划纲要.md，第 2217 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,383 @@
 \section{模型与代数分解}
 \label{g3:sec:0304}
 
-待撰写
+曲率的代数恒等式压缩了分量数目，具体度量则说明这些分量怎样出现。我们先把第一章已求出的乘积、翘曲积和共形联络代入曲率定义，再将曲率分成标量部分、无迹 Ricci 部分与其余的 Weyl 部分。这样，同一组公式既能用于计算模型，也能检查收缩过程中保留或丢失了哪些信息。
 
 \subsection{空间形式、乘积和翘曲积}
 \label{g3:subsec:0304:01}
-待撰写
+
+在一个内积空间上，若所有二维截面具有同一个曲率 \(k\)，由截面曲率决定代数曲率张量的结论，有
+\begin{equation}\label{g3:eq:constant-curvature-tensor}
+	R(X,Y)Z=k\bigl(g(Y,Z)X-g(X,Z)Y\bigr),\qquad
+	R_{ijkl}=k(g_{ik}g_{jl}-g_{il}g_{jk}).
+\end{equation}
+确实，右式具有曲率的全部代数对称性，并在每个正交单位向量对上取值 \(k\)，故由\cref{g3:prop:sectional-determines-curvature}与原张量相同。连通、完备且截面曲率为同一常数的黎曼流形称为\term[kongjianxingshi]{空间形式}[space form]。这个名称包含整体完备条件；下面的曲率计算本身只需要局部度量。
+
+\begin{example}\label{g3:exm:space-form-curvature}
+	Euclid 度量的坐标联络系数恒为零，所以曲率恒为零。半径 \(a\) 的圆球面则满足
+	\[
+		R(X,Y)Z=a^{-2}\bigl(g(Y,Z)X-g(X,Z)Y\bigr).
+	\]
+	为直接检验符号，使用\cref{g3:exm:round-sphere-connection}中的 \(\nabla_XY=D_XY+a^{-2}g(X,Y)p\)。将这个表达代入曲率定义，环境平直联络的二阶导数相消；对位置向量求导给出 \(D_Xp=X\)，留下切向部分
+	\[
+		a^{-2}\bigl(g(Y,Z)X-g(X,Z)Y\bigr).
+	\]
+	径向部分也为零：其系数除去 \(a^{-2}\) 后为
+	\[
+		Xg(Y,Z)-Yg(X,Z)+g(X,\nabla_YZ)
+		-g(Y,\nabla_XZ)-g([X,Y],Z),
+	\]
+	由度量相容和无挠性恰好抵消。因此球面的截面曲率为 \(a^{-2}\)，Ricci 曲率为 \((n-1)a^{-2}g\)，标量曲率为 \(n(n-1)a^{-2}\)。第二章已证明球面完备，所以它确为正曲率空间形式。
+\end{example}
+
+\begin{proposition}[乘积的曲率]\label{g3:prop:product-curvature}
+	设 \((M_1,g_1)\)、\((M_2,g_2)\) 为光滑黎曼流形，乘积取度量 \(g=g_1\oplus g_2\)。则
+	\[
+		R^g((X_1,X_2),(Y_1,Y_2))(Z_1,Z_2)
+		=\bigl(R^{g_1}(X_1,Y_1)Z_1,R^{g_2}(X_2,Y_2)Z_2\bigr).
+	\]
+	两个因子中的向量张成的混合截面曲率为零，而且
+	\[
+		\operatorname{Ric}_g=\pi_1^*\operatorname{Ric}_{g_1}
+		+\pi_2^*\operatorname{Ric}_{g_2},\qquad
+		\operatorname{Scal}_g=\operatorname{Scal}_{g_1}\circ\pi_1
+		+\operatorname{Scal}_{g_2}\circ\pi_2.
+	\]
+\end{proposition}
+\begin{proof}
+	曲率具有张量性，所以在一点处计算时，可将输入向量延拓为来自两个因子的提升场。\cref{g3:prop:product-connection}给出同因子的协变导数及混合导数为零；两个因子的提升场之间括号也为零。因此曲率定义的三项分别留在各自因子中，所有混合项为零，得到第一式。选择由两个因子的正交单位基组成的乘积基作收缩，就得到 Ricci 及标量曲率公式。混合截面以一个第一因子向量和一个第二因子向量张成，其曲率分子为零。
+\end{proof}
+
+乘积中两个因子的尺度互不影响。翘曲积让纤维的尺度随径向变量改变；相应曲率同时包含纤维自身的弯曲和尺度变化产生的项。
+
+\begin{proposition}[一维底翘曲积的曲率]\label{g3:prop:warped-product-curvature}
+	设 \(I\subset\mathbb R\) 为开区间，\((F^m,h)\) 为光滑黎曼流形，\(m\ge1\)，\(f:I\to(0,\infty)\) 光滑。在 \(I\times F\) 上取 \(g=\mathrm dr^2+f^2h\)，记 \(T=\partial_r\)，\(U,V,W\) 为纤维场的提升，则
+	\begin{equation}\label{g3:eq:warped-product-curvature}
+		\begin{aligned}
+			R(T,U)T&=\frac{f''}{f}U,&
+			R(T,U)V&=-ff''h(U,V)T,\\
+			R(U,V)T&=0,&
+			R(U,V)W&=R^h(U,V)W\\
+			&&&\quad-(f')^2\bigl(h(V,W)U-h(U,W)V\bigr).
+		\end{aligned}
+	\end{equation}
+	故含径向的截面与纯纤维截面分别满足
+	\begin{equation}\label{g3:eq:warped-sectional-curvatures}
+		K_g(T\wedge U)=-\frac{f''}{f},\qquad
+		K_g(U\wedge V)=\frac{K_h(U\wedge V)-(f')^2}{f^2},
+	\end{equation}
+	其中第二式要求 \(U,V\) 线性无关。收缩后的表达是
+	\begin{equation}\label{g3:eq:warped-ricci-scalar}
+		\begin{aligned}
+			\operatorname{Ric}_g(T,T)&=-m\frac{f''}{f},&
+			\operatorname{Ric}_g(T,U)&=0,\\
+			\operatorname{Ric}_g(U,V)&=\operatorname{Ric}_h(U,V)
+			-\bigl(ff''+(m-1)(f')^2\bigr)h(U,V),\\
+			\operatorname{Scal}_g&=f^{-2}\operatorname{Scal}_h
+			-2m\frac{f''}{f}-m(m-1)\left(\frac{f'}f\right)^2.
+		\end{aligned}
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	使用\cref{g3:prop:warped-product-connection}，令 \(D\) 为 \(h\) 的联络。由于提升场与 \(T\) 对易，
+	\[
+		R(T,U)T=\nabla_T\left(\frac{f'}fU\right)
+		=\left(\left(\frac{f'}f\right)'+\frac{(f')^2}{f^2}\right)U
+		=\frac{f''}fU.
+	\]
+	对另一个纤维场 \(V\)，两项为
+	\[
+		\begin{aligned}
+		\nabla_T\nabla_UV&=\frac{f'}fD_UV-
+		\bigl((f')^2+ff''\bigr)h(U,V)T,\\
+		\nabla_U\nabla_TV&=\frac{f'}fD_UV-(f')^2h(U,V)T.
+		\end{aligned}
+	\]
+	相减得到 \(R(T,U)V\)。又因 \(U(f'/f)=V(f'/f)=0\)，有
+	\[
+		R(U,V)T=\frac{f'}f
+		\bigl(\nabla_UV-\nabla_VU-[U,V]\bigr)=0.
+	\]
+
+	最后计算三个纤维输入。利用张量性，可在所考察纤维点取 \(h\) 的法坐标，并把 \(U,V,W\) 取为坐标场的常系数线性组合。该点的一阶纤维联络系数和度量的一阶导数均为零，但二阶协变导数的差仍保留 \(R^h\)。由
+	\[
+		\nabla_U\nabla_VW
+		=\nabla_U(D_VW)-ff'\nabla_U(h(V,W)T),
+	\]
+	第二项在该点的切向部分为 \(-(f')^2h(V,W)U\)，径向部分为零；第一项与交换 \(U,V\) 后的差为纤维曲率。于是得到式\eqref{g3:eq:warped-product-curvature}的最后一行。
+
+	取 \(h\) 正交单位基 \(E_1,\ldots,E_m\)，则 \(T,f^{-1}E_1,\ldots,f^{-1}E_m\) 为 \(g\) 正交单位基。对每个截面作单位化，得到式\eqref{g3:eq:warped-sectional-curvatures}。在此基中收缩时，径向与某个纤维方向的截面贡献 \(-f''/f\)，另 \(m-1\) 个纤维方向贡献纤维曲率减去 \((f'/f)^2\)。双线性化后得到 Ricci 公式，再对这个正交单位基求迹即得标量曲率。
+\end{proof}
+
+\begin{example}\label{g3:exm:hyperbolic-warped-halfspace}
+	取平坦纤维 \(F=\mathbb R^{n-1}\)、\(f(r)=e^r\)。上述全部曲率分量符合式\eqref{g3:eq:constant-curvature-tensor}中 \(k=-1\) 的表达，故所有截面曲率均为 \(-1\)。令 \(y=e^{-r}>0\)，便得到上半空间度量
+	\[
+		g_{\mathbb H}=\frac{\mathrm dy^2+\sum_{\alpha=1}^{n-1}(\mathrm dx^\alpha)^2}{y^2}.
+	\]
+	这个度量完备。为核对这一整体条件，设一条从 \((x_0,y_0)\) 出发的曲线长为 \(L\)。沿任意初段都有
+	\[
+		|\log y-\log y_0|\le L,\qquad
+		|x-x_0|\le y_0e^L L.
+	\]
+	第一式来自 \(|(\log y)'|\le|\dot\gamma|_g\)，第二式来自 \(|\dot x|\le y|\dot\gamma|_g\) 和第一式对整条曲线的控制。对位于固定距离球中的点，选长度至多比端点距离大一的连接曲线，这两个估计把它们限制在某个 Euclid 紧盒内，且 \(y\) 有正下界。于是每个关于 \(d_g\) 的 Cauchy 序列都有流形拓扑收敛子列；由距离拓扑一致性和 Cauchy 性，整个序列收敛。因此 \(\mathbb H^n\) 是曲率 \(-1\) 的空间形式。常数缩放为 \(a^2g_{\mathbb H}\) 后曲率为 \(-a^{-2}\)。
+\end{example}
 
 \subsection{共形变化和标量曲率}
 \label{g3:subsec:0304:02}
-待撰写
+
+共形变化 \(\widetilde g=e^{2u}g\) 改变各点的长度单位。联络只出现 \(u\) 的一阶导数，曲率再求一次导数，因而需要 \(u\) 的协变二阶导数。我们记
+\[
+	H_u(X,Y)=(\nabla\mathrm du)(X,Y)
+	=X(Yu)-(\nabla_XY)u
+	=g(\nabla_X\operatorname{grad}_g u,Y).
+\]
+这称为函数 \(u\) 的\term[Hessian]{Hessian 张量}[Hessian tensor]。\footnote{Ludwig Otto Hesse（1811--1874），德国数学家，研究代数、分析与解析几何。}无挠性使它对称；在坐标中 \((H_u)_{ij}=\partial_i\partial_j u-\Gamma^k_{ij}\partial_ku\)，且按本书的 Laplace 符号，\(\operatorname{tr}_gH_u=-\Delta_gu\)。
+
+\ProseParagraphBreak
+
+为了组织四阶修正项，对两个对称二阶张量 \(h,k\) 定义四阶乘积 \(h\wedge k\)
+\begin{equation}\label{g3:eq:symmetric-tensor-product}
+	\begin{aligned}
+	(h\wedge k)(X,Y,Z,W)
+	={}&h(X,Z)k(Y,W)+h(Y,W)k(X,Z)\\
+	&-h(X,W)k(Y,Z)-h(Y,Z)k(X,W).
+	\end{aligned}
+\end{equation}
+它对 \(h,k\) 对称，且直接交换槽位及作循环和可验证，它具有代数曲率张量的对称性。例如 \(\tfrac12g\wedge g\) 的截面曲率恒为一。在 \(g\) 正交单位基中收缩可得
+\begin{equation}\label{g3:eq:metric-wedge-contraction}
+	\operatorname{Ric}(g\wedge h)=(n-2)h+(\operatorname{tr}_gh)g.
+\end{equation}
+这里 \(\operatorname{Ric}\) 表示对这个四阶张量的第一、第三槽求迹；四个乘积项分别贡献 \(nh\)、\((\operatorname{tr}h)g\)、\(-h\)、\(-h\)。
+
+\begin{theorem}[共形曲率公式]\label{g3:thm:conformal-curvature}
+	设 \((M^n,g)\) 为光滑黎曼流形，\(n\ge2\)，\(u\in C^\infty(M)\)，\(\widetilde g=e^{2u}g\)。令
+	\[
+		B_u=H_u-\mathrm du\otimes\mathrm du+\tfrac12|\mathrm du|_g^2g.
+	\]
+	两种度量的四阶曲率张量、Ricci 与标量曲率满足
+	\begin{align}
+		\widetilde{\mathrm{Rm}}&=e^{2u}(\mathrm{Rm}-g\wedge B_u),\label{g3:eq:conformal-full-curvature}\\
+		\widetilde{\operatorname{Ric}}
+		&=\operatorname{Ric}-(n-2)(H_u-\mathrm du\otimes\mathrm du)
+		+\bigl(\Delta_gu-(n-2)|\mathrm du|_g^2\bigr)g,\label{g3:eq:conformal-ricci}\\
+		\widetilde{\operatorname{Scal}}
+		&=e^{-2u}\bigl(\operatorname{Scal}+2(n-1)\Delta_gu
+		-(n-1)(n-2)|\mathrm du|_g^2\bigr).\label{g3:eq:conformal-scalar}
+	\end{align}
+\end{theorem}
+\begin{proof}
+	由式\eqref{g3:eq:conformal-connection}，联络之差为
+	\[
+		C(X,Y)=\alpha(X)Y+\alpha(Y)X-g(X,Y)U,
+		\qquad \alpha=\mathrm du,\quad U=\operatorname{grad}_gu.
+	\]
+	把 \(\widetilde\nabla=\nabla+C\) 代入曲率定义，乘积法则给出
+	\[
+		\begin{aligned}
+		\widetilde R(X,Y)Z-R(X,Y)Z
+		={}&(\nabla_XC)(Y,Z)-(\nabla_YC)(X,Z)\\
+		&+C(X,C(Y,Z))-C(Y,C(X,Z)).
+		\end{aligned}
+	\]
+	这是张量等式，可在一点处取 \(\nabla\) 导数为零的延拓场计算。含导数的部分为
+	\[
+		H_u(X,Z)Y-H_u(Y,Z)X
+		-g(Y,Z)H_u^\sharp(X)+g(X,Z)H_u^\sharp(Y),
+	\]
+	其中 \(H_u^\sharp(X)=\nabla_XU\)。将 \(C\) 的表达逐次代入二次项，并合并同一向量的系数，得到
+	\[
+		\begin{aligned}
+		&-\alpha(X)\alpha(Z)Y+\alpha(Y)\alpha(Z)X\\
+		&\quad+g(Y,Z)\alpha(X)U-g(X,Z)\alpha(Y)U\\
+		&\quad+|U|^2\bigl(g(X,Z)Y-g(Y,Z)X\bigr).
+		\end{aligned}
+	\]
+	二者之和恰好是
+	\[
+		B_u(X,Z)Y-B_u(Y,Z)X
+		-g(Y,Z)B_u^\sharp(X)+g(X,Z)B_u^\sharp(Y).
+	\]
+	将这里的第三输入改记为 \(W\)，再用 \(\widetilde g=e^{2u}g\) 与 \(Z\) 配对，得到 \(-e^{2u}(g\wedge B_u)(X,Y,Z,W)\)，即四阶公式。
+
+	Ricci 收缩要使用 \(\widetilde g^{-1}=e^{-2u}g^{-1}\)，恰好抵消四阶公式外面的 \(e^{2u}\)。由式\eqref{g3:eq:metric-wedge-contraction}，
+	\[
+		\widetilde{\operatorname{Ric}}
+		=\operatorname{Ric}-(n-2)B_u-(\operatorname{tr}_gB_u)g,
+	\]
+	而 \(\operatorname{tr}_gB_u=-\Delta_gu+\tfrac{n-2}{2}|\mathrm du|_g^2\)。代入得到 Ricci 公式。最后再用 \(\widetilde g^{-1}\) 求迹，出现整体因子 \(e^{-2u}\)，其余项合并为式\eqref{g3:eq:conformal-scalar}。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:conformal-scalar-power}
+	在二维光滑黎曼流形上，共形变换满足
+	\[
+		\widetilde K=e^{-2u}(K+\Delta_gu).
+	\]
+	若 \(n\ge3\)，\(v>0\) 光滑，且 \(\widetilde g=v^{4/(n-2)}g\)，则
+	\begin{equation}\label{g3:eq:conformal-scalar-power}
+		\widetilde{\operatorname{Scal}}
+		=v^{-(n+2)/(n-2)}
+		\left(\frac{4(n-1)}{n-2}\Delta_gv+\operatorname{Scal}_g\,v\right).
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	二维时 \(\operatorname{Scal}=2K\)，把 \(n=2\) 代入标量曲率公式即可。对 \(n\ge3\)，取 \(u=\tfrac2{n-2}\log v\)。由散度的乘积法则，
+	\[
+		\Delta_g\log v=v^{-1}\Delta_gv+v^{-2}|\mathrm dv|_g^2.
+	\]
+	代入式\eqref{g3:eq:conformal-scalar}，所有 \(|\mathrm dv|^2\) 项抵消；将剩下的 \(v\) 的幂次合并即得结论。
+\end{proof}
+
+在 Euclid 上半空间取 \(u=-\log y\)，有 \(H_u=y^{-2}\mathrm dy^2\)、\(\mathrm du\otimes\mathrm du=y^{-2}\mathrm dy^2\)，所以 \(B_u=(2y^2)^{-1}g_{\mathrm{Euc}}\)。四阶公式给出 \(\widetilde{\mathrm{Rm}}=-\tfrac12\widetilde g\wedge\widetilde g\)，再次得到截面曲率 \(-1\)。这个计算也核定了标量公式中 \(\Delta_gu\) 前的正号。
 
 \subsection{Weyl 张量及低维特例}
 \label{g3:subsec:0304:03}
-待撰写
+
+Ricci 曲率由四阶曲率收缩得到，但通常不能把被收缩掉的信息全部恢复。式\eqref{g3:eq:metric-wedge-contraction}提供了一种分离方法：先用 Ricci 构造一个 \(g\wedge A\)，使它具有同样的收缩，再把剩余部分保留下来。
+
+\begin{definition}\label{g3:def:weyl-tensor}
+	设 \((M^n,g)\) 为光滑黎曼流形，\(n\ge3\)，定义
+	\[
+		A=\frac1{n-2}\left(\operatorname{Ric}-
+		\frac{\operatorname{Scal}}{2(n-1)}g\right),\qquad
+		W=\mathrm{Rm}-g\wedge A.
+	\]
+	四阶张量 \(W\) 称为\term[Weylzhangliang]{Weyl 张量}[Weyl tensor]。\footnote{Hermann Weyl（1885--1955），德国数学家，研究群表示与微分几何。}这里的 \(A\) 是从 Ricci 收缩重建曲率所需的对称二阶张量。
+\end{definition}
+\symidx{\(W\)}
+
+\begin{theorem}[曲率的正交分解]\label{g3:thm:weyl-decomposition}
+	设 \((M^n,g)\) 为光滑黎曼流形，\(n\ge3\)，令 \(s=\operatorname{Scal}\)、\(E=\operatorname{Ric}-\tfrac{s}{n}g\)。则 \(W\) 具有代数曲率对称性，全部收缩为零，并且
+	\begin{equation}\label{g3:eq:weyl-decomposition}
+		\mathrm{Rm}
+		=W+\frac1{n-2}g\wedge E
+		+\frac{s}{2n(n-1)}g\wedge g.
+	\end{equation}
+	这个分解在“第一项无迹、第二项来自无迹对称二阶张量、第三项为 \(g\wedge g\) 的倍数”的条件下唯一。以四槽全部分量平方和定义范数，则三项互相正交，且
+	\begin{equation}\label{g3:eq:curvature-norm-decomposition}
+		|\mathrm{Rm}|^2=|W|^2+\frac4{n-2}|E|^2
+		+\frac{2s^2}{n(n-1)}.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	\(g\wedge A\) 具有代数曲率对称性，所以 \(W\) 也有。由 \(\operatorname{tr}A=s/(2(n-1))\) 和收缩公式，
+	\[
+		\operatorname{Ric}(g\wedge A)
+		=(n-2)A+(\operatorname{tr}A)g=\operatorname{Ric},
+	\]
+	故 \(\operatorname{Ric}(W)=0\)。同一反对称槽对内的收缩本就为零，其他交叉槽的收缩由代数对称性等于此收缩或其相反数，所以全部为零。将 \(\operatorname{Ric}=E+sg/n\) 代入 \(A\) 的定义，就得到式\eqref{g3:eq:weyl-decomposition}。反过来，从任一满足题述条件的分解先求总迹，就能确定第三项系数；再取无迹 Ricci 部分，因 \(n-2\ne0\) 确定第二项，余项随之确定。
+
+	对任一代数曲率张量 \(T\) 和对称二阶张量 \(h\)，在正交单位基中展开四项并利用反对称性，得到
+	\[
+		\langle T,g\wedge h\rangle
+		=4\langle\operatorname{Ric}(T),h\rangle.
+	\]
+	例如首项 \(\sum_{i,j,k,l}T_{ijkl}\delta_{ik}h_{jl}\) 就是 \(\langle\operatorname{Ric}(T),h\rangle\)，其余三项经槽位交换各给同一结果。于是无迹的 \(W\) 与后两项正交，\(\operatorname{tr}E=0\) 又使后两项互相正交。将 \(T=g\wedge h\) 代入，得到
+	\[
+		|g\wedge h|^2=4(n-2)|h|^2+4(\operatorname{tr}h)^2.
+	\]
+	分别取 \(h=E\) 和 \(h=g\)，有 \(|g\wedge E|^2=4(n-2)|E|^2\)、\(|g\wedge g|^2=8n(n-1)\)。带入三个系数的平方，即得范数等式。
+\end{proof}
+
+\begin{proposition}[低维曲率的确定性]\label{g3:prop:low-dimensional-curvature}
+	二维光滑黎曼流形满足
+	\[
+		\mathrm{Rm}=\tfrac K2g\wedge g,\qquad
+		\operatorname{Ric}=Kg,\qquad \operatorname{Scal}=2K.
+	\]
+	三维光滑黎曼流形的 \(W\) 恒为零，因而
+	\[
+		\mathrm{Rm}=g\wedge\operatorname{Ric}
+		-\tfrac{\operatorname{Scal}}4g\wedge g.
+	\]
+	特别地，三维中一点处若 \(\operatorname{Ric}=\lambda g\)，则该点每个截面的曲率为 \(\lambda/2\)。
+\end{proposition}
+\begin{proof}
+	二维切空间只有一个二维截面，代数曲率张量的唯一独立分量为 \(R_{1212}=K\)，得到所列公式。三维时考察任一 Ricci 收缩为零的代数曲率张量 \(T\)。记
+	\[
+		a=T_{1212},\qquad b=T_{1313},\qquad c=T_{2323}.
+	\]
+	三个对角 Ricci 分量分别为 \(a+b,a+c,b+c\)，都为零，故 \(a=b=c=0\)。三个非对角 Ricci 分量分别为 \(T_{3132},T_{2123},T_{1213}\)，也都为零。曲率算子在基 \(e_1\wedge e_2,e_1\wedge e_3,e_2\wedge e_3\) 中的三个对角项及三个非对角项因此全部为零，故 \(T=0\)。将此结论用于 \(W\)，再取 \(n=3\) 的分解式即可。最后代入 \(\operatorname{Ric}=\lambda g\)、\(\operatorname{Scal}=3\lambda\)，得到 \(\mathrm{Rm}=(\lambda/4)g\wedge g\)。
+\end{proof}
+
+\begin{proposition}[Weyl 张量的共形变化]\label{g3:prop:conformal-weyl}
+	设 \(n\ge3\)，\(\widetilde g=e^{2u}g\) 为光滑黎曼度量的共形变化。作为四阶协变张量，有
+	\[
+		\widetilde W=e^{2u}W.
+	\]
+	因此 \(W\) 是否为零是共形不变的性质。特别地，若 \(n\ge4\) 且度量在每点附近共形于 Euclid 度量，则 \(W=0\)。
+\end{proposition}
+\begin{proof}
+	由 Ricci 与标量的共形公式，将它们代入 \(A\) 的定义可得 \(\widetilde A=A-B_u\)：其中标量的 \(e^{-2u}\) 与 \(\widetilde g\) 的 \(e^{2u}\) 抵消。于是
+	\[
+		\begin{aligned}
+		\widetilde W
+		&=e^{2u}(\mathrm{Rm}-g\wedge B_u)
+		-e^{2u}g\wedge(A-B_u)\\
+		&=e^{2u}(\mathrm{Rm}-g\wedge A)=e^{2u}W.
+		\end{aligned}
+	\]
+	Euclid 度量的曲率为零，故其 \(W\) 也为零，得到最后一句。
+\end{proof}
+
+三维中 \(W\) 恒为零，因此这个张量不能区分三维度量的共形类型。四维起，它记录 Ricci 收缩没有保留的曲率成分。与此相应，\(W=0\) 本身也不要求所有截面曲率相等。
 
 \subsection{由模型检验符号与等号}
 \label{g3:subsec:0304:04}
-待撰写
+
+考虑相同半径的乘积 \(S_a^2\times S_a^2\)。每个因子内的截面曲率为 \(a^{-2}\)，混合截面为零，而
+\[
+	\operatorname{Ric}=a^{-2}g,\qquad \operatorname{Scal}=4a^{-2}.
+\]
+此时 \(E=0\)。若 \(W\) 也为零，分解式将迫使所有截面曲率都等于 \(\operatorname{Scal}/12=1/(3a^2)\)，与混合截面为零矛盾。更具体地，取 \(e_1,e_2\) 在第一因子，\(e_3,e_4\) 在第二因子，便有
+\[
+	W_{1212}=W_{3434}=\frac{2}{3a^2},\qquad
+	W_{1313}=W_{1414}=W_{2323}=W_{2424}=-\frac1{3a^2}.
+\]
+这些分量的 Ricci 收缩确实为零。这说明高维中 \(\operatorname{Ric}\) 是度量的常数倍，仍不足以恢复全部截面曲率。
+
+\ProseParagraphBreak
+
+另一方向的例子是 \(\mathbb R\times S_a^{n-1}\)、\(n\ge3\)，取乘积度量。径向截面为零，纯球面截面为 \(a^{-2}\)，所以它不是常截面曲率度量。令 \(\rho=e^{r/a}\)，却有
+\[
+	\mathrm dr^2+a^2g_{S^{n-1}}
+	=\frac{a^2}{\rho^2}\bigl(\mathrm d\rho^2+\rho^2g_{S^{n-1}}\bigr).
+\]
+括号内是穿孔 Euclid 空间的极坐标度量。因此 \(W=0\)，变化的截面曲率完全来自无迹 Ricci 部分。两个例子分别展示了分解中不同部分的独立作用。
+
+\begin{table}[htbp]
+	\centering
+	\caption[标准模型的曲率收缩]{标准模型的曲率收缩。表中均使用各自的度量作单位化；乘积行的两种截面分别位于因子内和横跨两个因子。}
+	\label{g3:tab:curvature-model-checks}
+	\begin{tabularx}{\textwidth}{@{}lXXX@{}}
+		\toprule
+		模型 & 截面曲率 & Ricci 曲率 & 标量曲率\\
+		\midrule
+		\(\mathbb R^n\) & \(0\) & \(0\) & \(0\)\\
+		\(S_a^n\) & \(a^{-2}\) & \((n-1)a^{-2}g\) & \(n(n-1)a^{-2}\)\\
+		\((\mathbb H^n,a^2g_{\mathbb H})\) & \(-a^{-2}\) & \(-(n-1)a^{-2}g\) & \(-n(n-1)a^{-2}\)\\
+		\(S_a^2\times S_a^2\) & 因子内 \(a^{-2}\)，混合 \(0\) & \(a^{-2}g\) & \(4a^{-2}\)\\
+		\(S_a^2\times\mathbb H_a^2\) & 因子内 \(\pm a^{-2}\)，混合 \(0\) & 两因子分别为 \(\pm a^{-2}g_i\) & \(0\)\\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\cref{g3:tab:curvature-model-checks}最后一行的标量曲率为零，但曲率张量不为零。由\cref{g3:thm:small-ball-volume}，该模型的小球体积相对于 Euclid 球的二阶修正为零；不同方向的体积密度修正却分别具有正负号。这正是先作方向收缩、再作球面平均所产生的信息损失。
+
+\ProseParagraphBreak
+
+最后核对长度和面积。半径 \(a\) 的二维球面在极坐标中为 \(\mathrm dr^2+a^2\sin^2(r/a)\mathrm d\theta^2\)，所以足够小的测地圆周长与圆盘面积分别是
+\[
+	\begin{aligned}
+	\ell(r)&=2\pi a\sin(r/a)
+	=2\pi r\left(1-\frac{r^2}{6a^2}+O(r^4)\right),\\
+	\operatorname{Vol}(B(p,r))&=2\pi a^2(1-\cos(r/a))
+	=\pi r^2\left(1-\frac{r^2}{12a^2}+O(r^4)\right).
+	\end{aligned}
+\]
+面积公式中的系数与 \(\operatorname{Scal}=2/a^2\)、\(n=2\) 的小球体积展开一致。一般维数下，同一极坐标计算给出球面的法坐标体积密度系数
+\[
+	\left(\frac{a\sin(r/a)}r\right)^{n-1}
+	=1-\frac{n-1}{6a^2}r^2+O(r^4),
+\]
+也与 \(\operatorname{Ric}(u,u)=(n-1)/a^2\) 的方向展开相符。正曲率使这些足够小的圆周、球面及球体积小于同半径的 Euclid 模型；这些精确的低阶项将在后面的曲率比较中继续发挥作用。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
