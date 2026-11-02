@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 26.4 长期存在的先验控制
 % 纲要位置：几何学计划纲要.md，第 3223 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,270 @@
 \section{长期存在的先验控制}
 \label{g3:sec:2604}
 
-待撰写
+能量不增给出空间积分控制，Bochner 演化给出逐点微分不等式。把两者通过源流形上的热核联系起来，便能得到与经过时间无关的一阶界。随后对空间导数作带时间权重的估计，将一阶界提升为全部高阶界，最后应用短时理论越过任何有限的时间端点。
+
+本节始终设 \((M^m,g)\) 为闭连通光滑黎曼流形，\((N^n,h)\) 为紧无边界光滑黎曼流形，\(m,n\ge1\)，且 \(\operatorname{Sect}_N\le0\)。令 \(u:[0,T)\times M\to N\) 是光滑初值 \(u_0\) 的光滑调和映射热流。取 \(K\ge0\)，使 \(\operatorname{Ric}_M\ge-Kg\)，并记 \(P=\partial_t+\Delta_g\)。估计先在任意已有的光滑存在区间上建立，因此不会预先假定长期存在。
 
 \subsection{闭源上的最大值估计}
 \label{g3:subsec:2604:01}
-待撰写
+由最大值原理直接得到的 \(\sup_M e(t)\le e^{2Kt}\sup_M e(0)\) 足以控制有限区间，却不能给出 \(t\to\infty\) 时的统一界。改从稍早的时刻重新比较，可以使用能量的 \(L^1\) 界。
+
+\begin{proposition}\label{g3:prop:harmonic-heat-uniform-gradient}
+	设 \((M,g)\) 闭连通，\((N,h)\) 紧、无边界且截面曲率非正，\(u:[0,T)\times M\to N\) 是光滑调和映射热流，\(\operatorname{Ric}_M\ge-Kg\)，\(K\ge0\)。记 \(T_s=e^{-s\Delta_g}\)，并以 \(K_M(s,x,y)\) 表示源流形的标量热核。则对 \(0\le a<t<T\)，有
+	\begin{equation}\label{g3:eq:harmonic-heat-kernel-comparison}
+		e(t,x)\le e^{2K(t-a)}T_{t-a}(e(a,\cdot))(x).
+	\end{equation}
+	特别地，令 \(H_1=\max_{M\times M}K_M(1,x,y)\)，则
+	\begin{equation}\label{g3:eq:harmonic-heat-gradient-uniform}
+		\sup_{0\le t<T}\|\mathrm du(t)\|_{L^\infty}^2
+		\le 2e^{2K}\max\{\|e(u_0)\|_{L^\infty},\ H_1E(u_0)\}.
+	\end{equation}
+	这里右端不依赖 \(T\)。
+\end{proposition}
+
+\begin{proof}
+	固定 \(a\)。由式\eqref{g3:eq:harmonic-heat-energy-subsolution}，函数 \(w(t)=e^{-2K(t-a)}e(t)\) 满足 \(Pw\le0\)。另一方面，\(z(t)=T_{t-a}e(a)\) 满足 \(Pz=0\)，且 \(w(a)=z(a)\)。\cref{g3:cor:parabolic-gronwall}中的比较原理给出 \(w\le z\)，即式\eqref{g3:eq:harmonic-heat-kernel-comparison}。
+
+	第16.1节证明热核在正时间光滑、非负。因此 \(H_1\) 有限，且对非负函数 \(f\) 有
+	\[
+		0\le T_1f(x)=\int_MK_M(1,x,y)f(y)\,\mu_g(y)
+		\le H_1\|f\|_{L^1}.
+	\]
+	当 \(1\le t<T\) 时，取 \(a=t-1\)，利用 \(\int_M e(a)\,\mu_g=E(u(a))\le E(u_0)\)，得到
+	\[
+		e(t,x)\le e^{2K}H_1E(u_0).
+	\]
+	当 \(0\le t<\min\{1,T\}\) 时，直接的最大值估计给出 \(e(t,x)\le e^{2K}\|e(u_0)\|_{L^\infty}\)。由于 \(|\mathrm du|^2=2e\)，合并两段便得结论。
+\end{proof}
+
+这里的时间长度 \(1\) 没有特殊意义。任何固定 \(\theta>0\) 都给出
+\[
+	\|e(t)\|_{L^\infty}\le e^{2K\theta}
+	\max_{x,y}K_M(\theta,x,y)\,E(u_0),\qquad t\ge\theta.
+\]
+所需事实只是固定正时间的热算子将 \(L^1\) 送入 \(L^\infty\)。这种重新从 \(t-\theta\) 出发的比较避免了把 \(e^{2Kt}\) 一直累积到很大的时间。
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch26-FixedTimeWindow}
+	\caption[固定时间窗内的热核比较]{每次只在长度为一的时间窗内传播能量密度。窗左端的积分始终受初始能量控制，因此右端的逐点上界不随 \(t\) 增长。图中 \(H_1=\max_{x,y}K_M(1,x,y)\)。}
+	\label{g3:fig:harmonic-heat-fixed-window}
+\end{figure}
+
+以下用 \(L\) 表示式\eqref{g3:eq:harmonic-heat-gradient-uniform}右端的平方根。再由\cref{g3:prop:harmonic-heat-speed}，记
+\begin{equation}\label{g3:eq:harmonic-heat-first-space-time-bounds}
+	|\mathrm du|\le L,\qquad |\partial_tu|\le W,
+	\qquad W=\|\tau(u_0)\|_{L^\infty}.
+\end{equation}
+两个常数都只由固定几何与初值决定。
 
 \subsection{紧目标下的局部坐标控制}
 \label{g3:subsec:2604:02}
-待撰写
+映射值落在紧目标中，并不表示整个像都包含在一张坐标图里。需要控制的是每个小的时空柱中所用坐标的大小和系数界。
+
+\begin{lemma}\label{g3:lem:harmonic-heat-uniform-charts}
+	设 \((M,g)\)、\((N,h)\) 为闭光滑黎曼流形，\(u:[0,T)\times M\to N\) 光滑，并满足 \(|\mathrm du|\le L\)、\(|\partial_tu|\le W\)。存在只依赖两流形、\(L,W\) 的 \(r>0\)，使每个柱
+	\[
+		B_{2r}(x_0)\times[\max\{0,t_0-4r^2\},t_0],\qquad 0\le t_0<T,
+	\]
+	的像都落在以 \(u(x_0,t_0)\) 为中心的同一大小的目标正规坐标球内。在相应源、目标坐标中，度量、逆度量及任意给定阶的系数导数均有与 \((x_0,t_0)\) 无关的界；映射坐标 \(v\) 的 \(|v|,|\partial_xv|,|\partial_tv|\) 也一致有界。
+\end{lemma}
+
+\begin{proof}
+	沿最短源测地线，再沿时间方向积分，得
+	\begin{equation}\label{g3:eq:harmonic-heat-space-time-distance}
+		d_N(u(x,t),u(x_0,t_0))
+		\le Ld_M(x,x_0)+W|t-t_0|.
+	\end{equation}
+	由\cref{g3:lem:uniform-normal-neighborhood}及紧性，可取统一的目标正规坐标半径 \(\rho>0\)，并使半径 \(\rho/2\) 的闭球仍在坐标定义域内。取小于源正规坐标半径一半的 \(r>0\)，并要求
+	\[
+		2Lr+4Wr^2<\rho/2.
+	\]
+	式\eqref{g3:eq:harmonic-heat-space-time-distance}便保证整个柱的像落在所需目标球内。
+
+	正规坐标由底点及一个正交标架确定。指数映射对这些参数光滑，紧流形的正交标架丛也紧。因此在固定较小半径上，坐标度量、逆度量及任意固定阶导数统一有界；这与\cref{g3:prop:normal-expansion-uniform-remainders}中的一致性论证相同。坐标映射的一阶导数有界，再结合 \(|\mathrm du|\le L\)、\(|\partial_tu|\le W\)，即得 \(v\) 的三个界。
+\end{proof}
+
+在这样的柱内，热流方程是
+\[
+	\partial_tv^\alpha-g^{ij}\partial_i\partial_jv^\alpha
+	=-g^{ij}\Gamma^k_{ij}(g)\partial_kv^\alpha
+	+g^{ij}\Gamma^\alpha_{\beta\gamma}(h)(v)
+	\partial_iv^\beta\partial_jv^\gamma.
+\]
+主部由固定源度量给出，统一强抛物；右端的系数在这些图中具有统一界。柱的位置和目标中心可以改变，上述常数却不改变。下一小节在内在张量上估计高阶导数，然后用这些坐标把张量界转成普通导数界。
 
 \subsection{高阶抛物估计}
 \label{g3:subsec:2604:03}
-待撰写
+一阶界之所以足够，是因为热流的协变微分方程具有受控的最高阶项。先把这种结构写清楚。置
+\[
+	A_j=\nabla^j\mathrm du,\qquad F_j=|A_j|^2,\qquad j=0,1,\ldots,
+\]
+其中 \(A_j\) 取值于 \((\mathrm T^*M)^{\otimes(j+1)}\otimes u^*\mathrm TN\)，联络同时使用源 Levi--Civita 联络和目标拉回联络。
+
+\begin{lemma}\label{g3:lem:harmonic-heat-derivative-evolution}
+	设 \((M,g)\)、\((N,h)\) 闭且光滑，\(u\) 为光滑调和映射热流。给定整数 \(j\ge1\)，若 \(|A_0|,\ldots,|A_{j-1}|\) 在某个时间区间上一致有界，则存在由这些界和固定几何决定的 \(C_j\)，使该区间上
+	\begin{equation}\label{g3:eq:harmonic-heat-higher-evolution}
+		PF_j\le-2F_{j+1}+C_j(1+F_j).
+	\end{equation}
+	若另有 \(\operatorname{Sect}_N\le0\)、\(\operatorname{Ric}_M\ge-Kg\)，则最低阶满足
+	\begin{equation}\label{g3:eq:harmonic-heat-base-derivative-evolution}
+		PF_0\le-2F_1+2KF_0.
+	\end{equation}
+\end{lemma}
+
+\begin{proof}
+	第二式就是式\eqref{g3:eq:harmonic-heat-energy-subsolution}的两倍。为证明第一式，先考察张量方程。第18.3节的微分交换计算给出
+	\begin{equation}\label{g3:eq:harmonic-heat-one-form-evolution}
+		(D_t+\nabla^*\nabla)\mathrm du(e_i)
+		=\sum_aR^N(u_i,u_a)u_a
+		-\mathrm du(\operatorname{Ric}_M^\sharp e_i).
+	\end{equation}
+	确实，空间二阶迹为
+	\[
+		\operatorname{tr}_g\nabla^2\mathrm du(e_i)
+		=\nabla_i\tau(u)+\sum_aR^N(u_a,u_i)u_a
+		+\mathrm du(\operatorname{Ric}_M^\sharp e_i),
+	\]
+	而 \(D_t\mathrm du(e_i)=\nabla_i\tau(u)\)、\(\nabla^*\nabla=-\operatorname{tr}_g\nabla^2\)，两式相减即得\eqref{g3:eq:harmonic-heat-one-form-evolution}。
+
+	说明反复求导会产生哪些项。以下用星号表示由度量完成的有限次张量积与缩并；它只隐藏排列和整数系数，每一项的范数都不超过各因子范数的乘积乘一个由阶数决定的常数。对有目标向量指标及若干源协变指标的张量 \(A\)，空间交换子由
+	\[
+		R^N(\mathrm du,\mathrm du)*A\quad\text{及}\quad R^M*A
+	\]
+	组成；源曲率分别作用在各个源指标上。时间交换子为
+	\[
+		[D_t,\nabla_i]A=R^N(\tau(u),u_i)A,
+	\]
+	其中曲率只作用在目标指标上。把空间交换子再求一次导数，可知 \([\nabla^*\nabla,\nabla]A\) 中的项具有以下形式：
+	\begin{align*}
+		&R^M*\nabla A,\quad \nabla R^M*A,
+		\quad R^N*A_0*A_0*\nabla A,\\
+		&(\nabla^NR^N)*A_0*A_0*A_0*A,
+		\quad R^N*A_1*A_0*A.
+	\end{align*}
+	这里列出的是项的类型，因而无需借星号规定曲率项的符号。
+
+	令 \(\mathcal R_j=(D_t+\nabla^*\nabla)A_j\)。由式\eqref{g3:eq:harmonic-heat-one-form-evolution}起步，归纳可知 \(\mathcal R_j\) 的每一项都是源曲率或其导数、目标曲率或其协变导数与若干 \(A_{r_1},\ldots,A_{r_q}\) 的缩并，且
+	\begin{equation}\label{g3:eq:harmonic-heat-derivative-count}
+		r_1+\cdots+r_q\le j.
+	\end{equation}
+	这个导数计数可直接核验。\(j=0\) 时右端只含 \(A_0\)。对 \(\mathcal R_{j-1}\) 求一次空间导数，若导数落在 \(A_r\) 上，便把 \(r\) 增加 \(1\)；若落在目标曲率上，则增加一个 \(A_0\) 因子；若落在源曲率上，则不增加任何 \(A_r\) 的指标。新增的交换项作用于 \(A_{j-1}\)。其中时间项为
+	\[
+		R^N*(\operatorname{tr}_gA_1)*A_0*A_{j-1},
+	\]
+	指标之和恰为 \(j\)；上述空间交换项的指标之和分别至多为 \(j\)。这证明了归纳步骤。
+
+	尤其在 \(j=1\) 时，所有含 \(A_1\) 的反应项都对 \(A_1\) 线性。再求一次导数时，时间交换项中出现的是
+	\[
+		R^N*A_2*A_0*A_0,\qquad
+		R^N*A_1*A_1*A_0,\qquad
+		(\nabla^NR^N)*A_1*A_0*A_0*A_0,
+	\]
+	以及这些类型的排列。\(A_2\) 只线性出现，\(A_1\) 的平方则由上一阶界控制。这也具体说明为何时间联络的变化没有引入更高的导数损失。
+
+	对于一般 \(j\ge1\)，式\eqref{g3:eq:harmonic-heat-derivative-count}保证：若某项包含 \(A_j\)，则该项只包含一个 \(A_j\)，其余 \(A_r\) 都是 \(A_0\)。没有 \(A_j\) 的项由假设中的低阶界控制。两流形紧，曲率各阶导数有界，因此
+	\[
+		|\mathcal R_j|\le C_j(1+|A_j|).
+	\]
+	联络保持度量，源度量又不随时间改变，故
+	\[
+		PF_j=2\langle\mathcal R_j,A_j\rangle-2|\nabla A_j|^2
+		\le-2F_{j+1}+C_j(1+F_j),
+	\]
+	最后用 \(2|A_j|\le1+|A_j|^2\) 并调整常数。这就完成了证明。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:harmonic-heat-uniform-derivatives}
+	设 \((M,g)\) 闭连通，\((N,h)\) 紧、无边界且截面曲率非正，\(u:[0,T)\times M\to N\) 是光滑初值 \(u_0\) 的光滑调和映射热流。对每个 \(\varepsilon>0\) 及整数 \(j\ge0\)，存在只依赖固定几何、\(u_0,\varepsilon,j\) 的常数 \(C_{j,\varepsilon}\)，使
+	\begin{equation}\label{g3:eq:harmonic-heat-uniform-spatial-derivatives}
+		\sup_{\varepsilon\le t<T}\|\nabla^j\mathrm du(t)\|_{L^\infty}
+		\le C_{j,\varepsilon}.
+	\end{equation}
+	在\cref{g3:lem:harmonic-heat-uniform-charts}给出的各个固定坐标柱中，以 \(v\) 表示映射的目标坐标。对任意整数 \(a,b\ge0\)，在柱内满足 \(t\ge\varepsilon\) 的部分还有
+	\begin{equation}\label{g3:eq:harmonic-heat-uniform-space-time-derivatives}
+		\bigl|\partial_t^a\partial_x^\beta v\bigr|
+		\le C_{a,b,\varepsilon}.
+	\end{equation}
+	这里 \(|\beta|=b\)，所有常数均不依赖柱的位置及 \(T\)。
+\end{theorem}
+
+\begin{proof}
+	\cref{g3:prop:harmonic-heat-uniform-gradient}已给出 \(F_0\) 在整个存在区间的界。固定所要估计的阶数 \(j\ge1\)，取
+	\[
+		\delta=\min\{1,\varepsilon/(j+1)\}.
+	\]
+	逐次证明 \(F_p\) 在 \(t\ge p\delta\) 时一致有界，\(p=1,\ldots,j\)。假设已处理所有低于 \(p\) 的阶数。任取 \(p\delta\le t<T\)，置 \(a=t-\delta\)。在 \([a,t]\) 上低阶界均已成立，因此\cref{g3:lem:harmonic-heat-derivative-evolution}给出
+	\[
+		PF_p\le-2F_{p+1}+C(1+F_p),\qquad
+		PF_{p-1}\le-2F_p+C'.
+	\]
+	第二式在 \(p=1\) 时使用式\eqref{g3:eq:harmonic-heat-base-derivative-evolution}，在 \(p>1\) 时把已经有界的 \(F_{p-1}\) 吸收进 \(C'\)。常数与所选的 \(t\) 无关。
+
+	令 \(s\in[a,t]\)，考虑带时间权重的函数
+	\[
+		Z(s,x)=(s-a)F_p(s,x)+A F_{p-1}(s,x),
+		\qquad A=1+C\delta.
+	\]
+	于是
+	\[
+		PZ\le(1+C\delta-2A)F_p+C\delta+AC'
+		\le C\delta+AC'.
+	\]
+	在 \(s=a\) 时，\(Z(a)=AF_{p-1}(a)\) 已有统一界，最高阶项的系数正好为零。\cref{g3:thm:parabolic-maximum}给出
+	\[
+		\delta F_p(t,x)\le Z(t,x)
+		\le A\sup_MF_{p-1}(a)+\delta(C\delta+AC').
+	\]
+	右端只涉及已经控制的量。这证明归纳步骤。因为 \(j\delta<\varepsilon\)，便得到式\eqref{g3:eq:harmonic-heat-uniform-spatial-derivatives}。这个论证同时说明正时间的高阶控制怎样从低阶控制产生，而不需要先假定任意长区间上的高阶范数有界。
+
+	将内在界换成坐标导数界。在上述柱的固定源、目标坐标中，先有
+	\[
+		\partial_i\partial_kv^\alpha
+		=(\nabla\mathrm du)_{ik}^\alpha
+		+\Gamma^\ell_{ik}(g)\partial_\ell v^\alpha
+		-\Gamma^\alpha_{\beta\gamma}(h)(v)
+		\partial_iv^\beta\partial_kv^\gamma.
+	\]
+	度量与逆度量的统一界把张量范数界换成分量界，上式于是控制二阶坐标导数。继续求空间导数，每次只增加一个映射导数，或对联络系数求导；归纳得到所有坐标导数的界。各图中联络系数的任意固定阶导数均一致有界，故所得常数与柱的位置无关。这证明式\eqref{g3:eq:harmonic-heat-uniform-space-time-derivatives}的 \(a=0\) 情形。
+
+	坐标中的方程可简写为
+	\begin{equation}\label{g3:eq:harmonic-heat-coordinate-time-recursion}
+		\partial_tv=g^{ij}\partial_i\partial_jv+Q(x,v,\partial_xv),
+	\end{equation}
+	其中 \(Q\) 由前一小节的两个一阶项组成，对 \(\partial_xv\) 至多二次，系数光滑且具有所需各阶统一界。该式先控制 \(\partial_t\partial_x^\beta v\)。再对时间求导，每出现一次 \(\partial_tv\) 或其空间导数，就用同一方程代入。归纳得到 \(\partial_t^a\partial_x^\beta v\) 是至多 \(2a+b\) 阶空间导数和固定光滑系数的有限次乘积之和。前面已经控制所有空间阶数，故得到任意混合阶数的界。
+\end{proof}
+
+上述坐标计算也适用于任何像始终留在同一较小目标正规坐标球内的固定源坐标邻域。
 
 \subsection{由延拓判据排除有限时奇点}
 \label{g3:subsec:2604:04}
-待撰写
+\begin{theorem}\label{g3:thm:harmonic-heat-global-existence}
+	设 \((M^m,g)\) 为闭连通光滑黎曼流形，\((N^n,h)\) 为紧无边界光滑黎曼流形，\(m,n\ge1\)，且 \(\operatorname{Sect}_N\le0\)。则每个光滑映射 \(u_0:M\to N\) 都确定唯一的光滑调和映射热流
+	\[
+		u:[0,\infty)\times M\longrightarrow N,\qquad u(0)=u_0.
+	\]
+	其能量满足\cref{g3:thm:harmonic-heat-energy}的耗散恒等式，一阶导数满足式\eqref{g3:eq:harmonic-heat-first-space-time-bounds}，每个正时间之后的全部高阶导数满足\cref{g3:thm:harmonic-heat-uniform-derivatives}的统一界。
+\end{theorem}
+
+\begin{proof}
+	\cref{g3:cor:harmonic-heat-short-time}把从 \(u_0\) 出发的解延伸到一个最大光滑存在区间 \([0,T_{\max})\)。短时唯一性保证这些延伸彼此相容。设 \(T_{\max}<\infty\)。首先，由速度界 \(|\partial_tu|\le W\)，有
+	\[
+		\sup_{x\in M}d_N(u(t,x),u(s,x))\le W|t-s|.
+	\]
+	因此 \(u(t)\) 在完备目标中一致收敛到连续映射 \(u_*:M\to N\)。围绕每个 \(x\in M\) 选源坐标邻域 \(U_x\)，使 \(u_*(\overline{U_x})\) 落在某个目标正规坐标球的较小闭球内。由一致收敛，充分接近 \(T_{\max}\) 时，\(u(t,\overline{U_x})\) 都留在同一个目标图中。紧性允许只选有限个 \(U_x\)，并选一个共同的起始时刻 \(a<T_{\max}\)。
+
+	在这些固定图中，取 \(\varepsilon=T_{\max}/2\)，由前一定理的内在导数界及其坐标转换得到全部空间导数界；式\eqref{g3:eq:harmonic-heat-coordinate-time-recursion}又给出全部混合导数界。若 \(v\) 表示映射坐标，则对每个整数 \(k\ge0\)，在较小的源坐标闭包上有
+	\[
+		\|v(t)-v(s)\|_{C^k}\le C_k|t-s|,
+		\qquad \max\{a,T_{\max}/2\}\le s,t<T_{\max}.
+	\]
+	这是对 \(\partial_t\partial_x^\beta v\) 积分、再对 \(|\beta|\le k\) 取上确界的结果。所以坐标函数及各阶导数都有一致极限；沿坐标线段积分可逐阶验证，导数极限正是函数极限的导数。各图中极限与已经得到的 \(u_*\) 相同，故相互相容，并说明 \(u_*\) 光滑。
+
+	现在从 \(u_*\) 重新应用短时存在定理。旧解的全部空间导数收敛，而式\eqref{g3:eq:harmonic-heat-coordinate-time-recursion}及其逐次时间导数又给出全部时间导数在端点的极限；这些极限正是由初值 \(u_*\) 和同一方程确定的导数。故把新解接在 \(T_{\max}\) 后面，得到一个跨过该时刻的光滑解。这也是\cref{g3:thm:quasilinear-parabolic-continuation}在此处的具体实施：目标及一阶微分保持在紧集内，主部始终为固定的强抛物算子，所有高阶范数均受控制。延伸与最大性矛盾，故 \(T_{\max}=\infty\)。
+
+	任意两个具有同一初值的光滑解在短时内相等；从每个已相等的时刻重新使用短时唯一性，便在任意有限时间区间上相等。各项先验界原已在任意光滑存在区间上成立，因此适用于所得全局解。
+\end{proof}
+
+这一证明把有限时间端点的问题化为一个具体的光滑极限问题。下一节则讨论另一种极限：沿 \(t\to\infty\) 取时刻，并借能量耗散判断所得映射为何调和。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

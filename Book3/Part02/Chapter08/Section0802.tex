@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 8.2 Bishop–Gromov 体积比较
 % 纲要位置：几何学计划纲要.md，第 2404 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,211 @@
 \section{Bishop–Gromov 体积比较}
 \label{g3:sec:0802}
 
-待撰写
+上一章的密度比较沿每条测地射线成立。要计算一个球的体积，还须知道射线走到哪里停止计数：超过割点以后，指数映射可能重复覆盖已经到达的区域。把径向密度在割时截断，再沿初始方向积分，便能把一维的单调性变成球体积的单调性。这就是 Bishop–Gromov 体积比较的基本机制。\footnote{Richard L. Bishop（1931--2019），美国微分几何学家，研究黎曼比较几何与测地度量空间。Mikhail Leonidovich Gromov（1943--），俄裔法国数学家，研究度量几何、整体几何及几何群论。}
 
 \subsection{极坐标 Jacobian 和割点截断}
 \label{g3:subsec:0802:01}
-待撰写
+
+设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)，固定 \(p\in M\)。记 \(S_pM\) 为 \(\mathrm T_pM\) 中的单位球面，\(\mathrm d\sigma\) 为它的标准面积密度。为区分单位球与单位球面，记
+\[
+	\omega_n=\operatorname{Vol}_{\mathbb R^n}(B(0,1)),\qquad
+	\sigma_{n-1}=\operatorname{Vol}(S^{n-1})=n\omega_n.
+\]
+沿方向 \(u\in S_pM\) 令 \(\gamma_u(t)=\exp_p(tu)\)，以 \(c_p(u)\in(0,\infty]\) 表示割时。记 \(m=n-1\)，\(A_u\) 为法向径向 Jacobi 张量，\(\theta_p(t,u)=\det A_u(t)\)。在 \(0<t<c_p(u)\) 上无共轭点，因而 \(\theta_p(t,u)>0\)。
+
+\ProseParagraphBreak
+
+\cref{g3:prop:cut-time-continuous}说明 \(c_p\) 连续；\cref{g3:prop:cut-locus-zero-volume}说明割迹零测，并给出式\eqref{g3:eq:polar-cut-integration}的极坐标积分。为把积分写在固定的乘积区域上，定义\term[geshi jieduan midu]{割时截断密度}[cut-off radial density]
+\begin{equation}\label{g3:eq:cut-truncated-radial-density}
+	\overline\theta_p(t,u)=
+	\begin{cases}
+		\theta_p(t,u),&0<t<c_p(u),\\
+		0,&t\ge c_p(u).
+	\end{cases}
+\end{equation}
+在 \(t=c_p(u)\) 处取零，是为了将下文的单调性写成每个时刻都成立的命题；改变这一个端点值不影响径向积分。这个函数可测，因为未截断的 Jacobi 张量光滑依赖 \((t,u)\)，而集合 \(\{(t,u):t<c_p(u)\}\) 开。
+
+\begin{proposition}\label{g3:prop:ball-volume-radial-density}
+	设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)，\(p\in M\)。定义
+	\[
+		V_p(r)=\operatorname{Vol}_g(B(p,r)),\qquad
+		a_p(t)=\int_{S_pM}\overline\theta_p(t,u)\,\mathrm d\sigma(u).
+	\]
+	则每个有限半径的球体积有限，且
+	\begin{equation}\label{g3:eq:ball-volume-radial-integral}
+		V_p(r)=\int_0^r a_p(t)\,\mathrm dt\qquad(r>0).
+	\end{equation}
+	特别地，\(V_p\) 在有界半径区间上绝对连续，几乎处处有 \(V_p'(r)=a_p(r)\)。每个距离球面 \(\{x:d(p,x)=r\}\) 的 \(n\) 维体积为零，所以开球与闭球具有相同体积。
+\end{proposition}
+\begin{proof}
+	完备性与\cref{g3:thm:hopf-rinow}使闭有界球紧，光滑体积密度在有限坐标覆盖下可积，故体积有限。将非负函数 \(\mathbf1_{B(p,r)}\) 代入式\eqref{g3:eq:polar-cut-integration}。割时以前有 \(d(p,\exp_p(tu))=t\)，所以
+	\[
+		V_p(r)=\int_{S_pM}\int_0^{\min\{r,c_p(u)\}}\theta_p(t,u)\,\mathrm dt\,\mathrm d\sigma(u).
+	\]
+	按式\eqref{g3:eq:cut-truncated-radial-density}补零，再交换非负积分，得到式\eqref{g3:eq:ball-volume-radial-integral}。有限体积说明 \(a_p\) 在有界区间上可积，由积分的基本性质得到绝对连续性及几乎处处的导数公式。对距离球面示性函数使用相同极坐标公式，每条射线的有效参数集至多为单点 \(t=r\)，其一维测度为零，因此距离球面的体积为零。
+\end{proof}
+
+\(a_p(t)\) 是由球体积导数确定的球面密度；在没有割点的半径上，它就是光滑测地球面的面积。一般半径处允许它跳变，所以后面的论证直接使用积分，不预先假定所有距离球面光滑。
+
+\ProseParagraphBreak
+
+沿用第七章的 \(s_k\) 与模型首零点 \(b_k\)。定义常曲率 \(k\) 的模型球体积
+\begin{equation}\label{g3:eq:model-ball-volume}
+	V_{k,n}(r)=\sigma_{n-1}\int_0^r s_k(t)^{n-1}\,\mathrm dt,
+	\qquad 0\le r<b_k.
+\end{equation}
+\symidx{\(V_{k,n}(r)\)：常曲率模型球体积}
+\symidx{\(\omega_n,\sigma_{n-1}\)：Euclid 单位球体积与单位球面面积}
+当 \(k\le0\) 时，\(b_k=\infty\)；当 \(k>0\) 时，\(b_k=\pi/\sqrt{k}\)。这个公式来自模型中的极坐标密度 \(s_k^{n-1}\)，并有
+\[
+	V_{0,n}(r)=\omega_n r^n,\qquad
+	V_{k,n}(r)=\omega_n r^n(1+O(r^2))\quad(r\downarrow0).
+\]
 
 \subsection{径向密度单调性}
 \label{g3:subsec:0802:02}
-待撰写
+
+从现在起假设 \(\operatorname{Ric}\ge(n-1)kg\)。在割时以前，\cref{g3:prop:radial-density-comparison}说明 \(\theta_p(t,u)/s_k(t)^m\) 不增。割时以后的补零操作只可能使它向下跳，不会破坏这个方向。
+
+\begin{proposition}\label{g3:prop:cut-density-monotonicity}
+	设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)，\(\operatorname{Ric}\ge(n-1)kg\)，\(p\in M\)，\(m=n-1\)。对每个 \(u\in S_pM\)，函数
+	\[
+		\beta_p(t,u)=\frac{\overline\theta_p(t,u)}{s_k(t)^m},\qquad0<t<b_k,
+	\]
+	不增，满足 \(0\le\beta_p\le1\)，且 \(\beta_p(t,u)\to1\) 当 \(t\downarrow0\)。因此
+	\begin{equation}\label{g3:eq:spherical-density-ratio}
+		f_p(t)=\frac{a_p(t)}{\sigma_{n-1}s_k(t)^m}
+		=\frac1{\sigma_{n-1}}\int_{S_pM}\beta_p(t,u)\,\mathrm d\sigma(u)
+	\end{equation}
+	也在 \((0,b_k)\) 上不增，满足 \(0\le f_p\le1\)，并在零处趋于一。
+\end{proposition}
+\begin{proof}
+	若 \(0<t_1<t_2<c_p(u)\) 且 \(t_2<b_k\)，径向密度比较给出 \(\beta_p(t_2,u)\le\beta_p(t_1,u)\)。若 \(t_1<c_p(u)\le t_2\)，后者非负而前者为零；若 \(c_p(u)\le t_1\)，两者都为零。三种情形覆盖所有参数位置，故截断后仍不增。
+
+	每个方向的割时严格为正，而 \(A_u(t)=t\operatorname{id}+O(t^3)\)、\(s_k(t)=t+O(t^3)\)，因此 \(\beta_p(t,u)\to1\)。不增性随即给出它在 \([0,1]\) 中取值。对方向积分保留不等式，故 \(f_p\) 不增。单位切球面面积有限，\(\beta_p\) 又由可积常数一控制，支配收敛定理给出 \(f_p(t)\to1\)。
+\end{proof}
+
+这个证明中，局部曲率和整体割点分别起作用。曲率下界控制割时以前的密度衰减，割点截断控制不同射线竞争同一区域造成的体积损失。即使曲率恒为零，后者也可能使比较严格；平坦圆柱和环面便是这样的例子。
 
 \subsection{球体积比及球壳比较}
 \label{g3:subsec:0802:03}
-待撰写
+
+球体积比是球面密度比的一个加权平均。设
+\[
+	w_k(t)=\sigma_{n-1}s_k(t)^m>0\qquad(0<t<b_k),
+\]
+则式\eqref{g3:eq:ball-volume-radial-integral}化为
+\[
+	\frac{V_p(r)}{V_{k,n}(r)}
+	=\frac{\int_0^r f_p(t)w_k(t)\,\mathrm dt}{\int_0^r w_k(t)\,\mathrm dt}.
+\]
+扩大积分区间时，新加入部分的 \(f_p\) 不超过先前部分，因此平均值下降。下面把这句话写成可直接使用的不等式。
+
+\begin{theorem}[Bishop–Gromov 体积比较]\label{g3:thm:bishop-gromov}
+	设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)，\(k\in\mathbb R\)，并满足 \(\operatorname{Ric}\ge(n-1)kg\)。对任意 \(p\in M\)，函数
+	\[
+		r\longmapsto\frac{\operatorname{Vol}_g(B(p,r))}{V_{k,n}(r)}
+	\]
+	在 \((0,b_k)\) 上不增，且当 \(r\downarrow0\) 时趋于一。特别地，对 \(0<r<R<b_k\)，
+	\begin{equation}\label{g3:eq:bishop-gromov-ratio}
+		\frac{V_p(r)}{V_p(R)}\ge\frac{V_{k,n}(r)}{V_{k,n}(R)},
+		\qquad V_p(R)\le V_{k,n}(R).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	对 \(s\in(0,r)\)、\(t\in(r,R)\)，有 \(f_p(s)\ge f_p(t)\)。乘以正权 \(w_k(s)w_k(t)\) 后积分，得到
+	\[
+		\left(\int_0^r f_pw_k\right)\left(\int_r^R w_k\right)
+		\ge\left(\int_r^R f_pw_k\right)\left(\int_0^r w_k\right).
+	\]
+	将右侧区间的加权平均记为 \(Q_{r,R}\)，左侧的记为 \(Q_{0,r}\)，这说明 \(Q_{r,R}\le Q_{0,r}\)。而 \(Q_{0,R}\) 是这两个平均值以各自权重积分为权的凸组合，所以 \(Q_{0,R}\le Q_{0,r}\)。按球体积积分式辨认这些平均值，就得到比值单调性。
+
+	由 \(f_p(t)\to1\)，给定 \(\varepsilon>0\)，充分小的 \(r\) 使 \(1-\varepsilon\le f_p(t)\le1\) 对 \(0<t<r\) 成立。加权平均也落在同一区间，故体积比趋于一。单调性给出比值不超过一，再交叉相乘得到式\eqref{g3:eq:bishop-gromov-ratio}。球体积均严格为正，分母合法。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:relative-annulus-volume}
+	设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)、\(k\in\mathbb R\)，\(\operatorname{Ric}\ge(n-1)kg\)，\(p\in M\)。记
+	\(\mathcal A_p(a,b)=\{x:a<d(p,x)<b\}\)，其中 \(0\le a<b<b_k\)。若
+	\(0\le a<b<b_k\)、\(0\le c<d<b_k\)，且 \(a\le c\)、\(b\le d\)，则
+	\begin{equation}\label{g3:eq:relative-annulus-comparison}
+		\frac{\operatorname{Vol}_g(\mathcal A_p(c,d))}{V_{k,n}(d)-V_{k,n}(c)}
+		\le
+		\frac{\operatorname{Vol}_g(\mathcal A_p(a,b))}{V_{k,n}(b)-V_{k,n}(a)}.
+	\end{equation}
+	此外，对 \(0\le r<R<b_k\)，有
+	\begin{equation}\label{g3:eq:relative-annulus-upper}
+		\operatorname{Vol}_g(\mathcal A_p(r,R))
+		\le\left(1-\frac{V_{k,n}(r)}{V_{k,n}(R)}\right)V_p(R).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	距离球面零测，所以壳体积为 \(V_p(b)-V_p(a)=\int_a^b f_pw_k\)，归一壳体积就是 \(f_p\) 在该区间的加权平均。若 \(b\le c\)，前一区间的每个函数值都不小于后一区间的每个函数值，对两个区间作双重积分即得式\eqref{g3:eq:relative-annulus-comparison}。若 \(c<b\)，先从 \((a,b)\) 删除左端 \((a,c)\)：被删去的值不小于留下的值，所以平均值不增。再给 \((c,b)\) 添上右端 \((b,d)\)：新添的值不大于原有的值，所以平均值仍不增。端点重合时省略相应操作，即覆盖所有情形。
+
+	当 \(r>0\) 时，式\eqref{g3:eq:bishop-gromov-ratio}给出
+	\(V_p(r)\ge V_p(R)V_{k,n}(r)/V_{k,n}(R)\)。从 \(V_p(R)\) 中减去这一项，得到式\eqref{g3:eq:relative-annulus-upper}。\(r=0\) 时两侧都等于 \(V_p(R)\)，因为单点的体积为零。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:ricci-nonnegative-doubling}
+	设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)，\(\operatorname{Ric}\ge0\)。则任意 \(p\in M\)、\(r>0\)、\(\lambda\ge1\) 满足
+	\[
+		V_p(\lambda r)\le\lambda^nV_p(r).
+	\]
+	特别地，\(V_p(2r)\le2^nV_p(r)\)。
+\end{corollary}
+\begin{proof}
+	在\cref{g3:thm:bishop-gromov}中取 \(k=0\)，此时 \(b_0=\infty\)、\(V_{0,n}(r)=\omega_n r^n\)，直接代入比值比较即可。
+\end{proof}
+
+这里的\term[tiji beizeng]{体积倍增}[volume doubling]控制扩大半径后的相对增长，并不给出与流形无关的正体积下界。一个方向很短的平坦环面仍满足相同倍增常数。
+
+\ProseParagraphBreak
+
+当 \(k>0\) 时，以上公式首先在 \(r<b_k\) 使用。在 \(b_k\) 处可以取极限，将模型体积定义为整个半径 \(1/\sqrt{k}\) 圆球面的体积；再对 \(r\ge b_k\) 将它保持为常数。\cref{g3:thm:bonnet-myers}给出 \(\operatorname{diam}M\le b_k\)，而距离球面零测，所以此时 \(V_p(r)=\operatorname{Vol}_g(M)\) 对 \(r\ge b_k\) 成立。采用这两个饱和值，体积比在端点及以后连续延伸为常数。首零点以后的模型球已经覆盖整个球面，此后的球壳体积为零。
 
 \subsection{等号与刚性}
 \label{g3:subsec:0802:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+若一个球的体积达到模型上界，积分中就没有留下任何密度损失。但积分等号最初只排除了几乎处处的损失；为了恢复整个球，还要利用方向连续性，把一个方向上的异常放大成正测度方向上的严格缺口。
+
+\begin{theorem}\label{g3:thm:volume-equality-rigidity}
+	设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)、\(k\in\mathbb R\)，\(\operatorname{Ric}\ge(n-1)kg\)，\(p\in M\)。若 \(0<R<b_k\) 且
+	\[
+		\operatorname{Vol}_g(B(p,R))=V_{k,n}(R),
+	\]
+	则所有方向的割时均满足 \(c_p(u)\ge R\)，并且开球 \(B(p,R)\) 与常截面曲率 \(k\) 的单连通标准模型中半径 \(R\) 的开球黎曼等距。任意指定的起点切空间线性等距，都诱导一个这样的指数坐标对应。
+\end{theorem}
+\begin{proof}
+	整个证明分两步：先用积分等号排除内割点和严格密度缺口，再用径向等号恢复度量。由极坐标积分及模型体积公式，假设等价于
+	\begin{equation}\label{g3:eq:volume-equality-defect-integral}
+		0=V_{k,n}(R)-V_p(R)
+		=\int_{S_pM}\int_0^R
+		s_k(t)^m\bigl(1-\beta_p(t,u)\bigr)\,\mathrm dt\,\mathrm d\sigma(u).
+	\end{equation}
+	被积函数非负。
+
+	假如某方向 \(u_0\) 满足 \(c_p(u_0)<R\)，选择 \(c_p(u_0)<a<b<R\)。割时连续性给出 \(u_0\) 的非空开邻域 \(U\subset S_pM\)，使 \(c_p(u)<a\) 对所有 \(u\in U\) 成立。因此在 \(U\times(a,b)\) 上 \(\beta_p=0\)。球面上的非空开集面积严格为正，而 \(s_k(t)^m>0\)，所以式\eqref{g3:eq:volume-equality-defect-integral}右端至少为
+	\[
+		\operatorname{Vol}(U)\int_a^b s_k(t)^m\,\mathrm dt>0,
+	\]
+	矛盾。故每个 \(c_p(u)\ge R\)。
+
+	于是 \((0,R)\times S_pM\) 完全位于割时以前，\(\beta_p=\theta_p/s_k^m\) 在这里联合光滑。若存在 \(t_0\in(0,R)\)、\(u_0\in S_pM\) 使 \(\beta_p(t_0,u_0)<1\)，连续性给出一个乘积小邻域及 \(\varepsilon>0\)，使 \(1-\beta_p\ge\varepsilon\) 在该邻域内成立。再次积分得到严格正的缺口，矛盾。因此
+	\[
+		\theta_p(t,u)=s_k(t)^m
+		\qquad(0<t<R,\ u\in S_pM).
+	\]
+	对每个方向及每个 \(r<R\)，\cref{g3:prop:radial-density-comparison}的等号结论给出 \(A_u(t)=s_k(t)\operatorname{id}\) 于 \(0<t\le r\)，其中使用平行识别。于是所有 \(0<t<R\) 上，角向度量都是 \(s_k(t)^2g_{S_pM}\)，径向与角向正交，得到
+	\[
+		\Phi^*g=\mathrm dt^2+s_k(t)^2g_{S_pM}.
+	\]
+
+	还须检查这个坐标描述覆盖整个球且没有多值。由 \(c_p(u)\ge R\)，切空间开球 \(B(0,R)\) 包含于割前域 \(\mathcal D_p\)。\cref{g3:prop:distance-smooth-regular}说明指数映射在此域为微分同胚；完备性保证每个 \(q\in B(p,R)\) 都可由长度 \(d(p,q)<R\) 的最短线到达，所以其限制恰是 \(B(0,R)\to B(p,R)\) 的微分同胚。
+
+	在标准模型中，\(R<b_k\) 保证同样的指数坐标覆盖半径 \(R\) 的球，模型极坐标度量也为 \(\mathrm dt^2+s_k(t)^2g_{S^{n-1}}\)。任选起点切空间的线性等距 \(L:\mathrm T_oM_k^n\to\mathrm T_pM\)，则
+	\[
+		F=\exp_p\circ L\circ(\exp_o^{M_k^n})^{-1}
+	\]
+	是两个开球之间的微分同胚，并由上述度量公式在穿孔球上保持度量。指数映射在零处的微分为恒等，故 \(F\) 在中心也光滑，\(\mathrm dF_o=L\)；连续性保证中心处同样保持度量。这完成整个开球的黎曼等距。
+\end{proof}
+
+这条定理没有预先要求 \(R<\operatorname{inj}_g(p)\)：体积等号本身已经排除了所有半径小于 \(R\) 的割点。半径恰为 \(R\) 的边界仍可能出现割点，例如平坦商在首次出现不同最短线的半径上；结论因此自然表述为开球的等距。这里比较的是开球上的黎曼度量及其内在长度度量；若允许连接两点的曲线离开这个球，环境距离还可能受到球外的捷径影响。

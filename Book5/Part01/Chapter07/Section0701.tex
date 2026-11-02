@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 7.1 滤过及伴随分次
 % 纲要位置：几何学计划纲要.md，第 5262 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,384 @@
 \section{滤过及伴随分次}
 \label{g5:sec:0701}
 
-待撰写
+第五章在局部环中逐层考察 \(\mathfrak m^n/\mathfrak m^{n+1}\)，用最低次项描述切锥。这些层也可以组成一种逼近方式：两个元素模 \(\mathfrak m^n\) 相同，就表示在前 \(n-1\) 阶无法区别它们。本节把这个想法推广到任意理想 \(I\)，先说明“越来越高阶”给出的拓扑，再把全部理想幂放进一个分次环。这样既能利用 Noether 性同时控制无限多层，也能把有限阶邻域的长度组织成最终稳定的多项式规律。
 
 \subsection{理想进拓扑和分离性}
 \label{g5:subsec:0701:01}
-待撰写
+
+设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想，\(M\) 为 \(A\) 模。子模链
+\[
+	M=I^0M\supseteq IM\supseteq I^2M\supseteq\cdots
+\]
+把模元素按能被多少个 \(I\) 中的系数乘出来进行分层。若 \(m-m'\in I^nM\)，则它们在截断 \(M/I^nM\) 中相同；随着 \(n\) 增大，允许忽略的误差越来越小。
+
+\begin{definition}\label{g5:def:adic-topology}
+	设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想，\(M\) 为 \(A\) 模。将
+	\[
+		M=F^0M\supseteq F^1M\supseteq F^2M\supseteq\cdots
+	\]
+	这样的递降子模链称为 \(M\) 的一个递降\term[lvguo]{滤过}[filtration]。若还满足 \(IF^nM\subseteq F^{n+1}M\)，称它为 \(I\) 滤过。特别地，\(F^nM=I^nM\) 称为 \(I\) 进滤过。
+
+	以全部陪集 \(m+I^nM\)、\(m\in M,\ n\geq0\)，为开集基所定义的拓扑，称为 \(M\) 的 \(I\) 进拓扑，也称\term[lixiangjintuopu]{理想进拓扑}[adic topology]。若任意两个不同元素都有不相交的开邻域，就称这个拓扑为分离的。
+\end{definition}
+
+这些陪集确实构成拓扑基：它们覆盖 \(M\)；若某点同时落在两个陪集中，取两个指数中较大者，对应的更小陪集便包含在二者交中。每个 \(I^nM\) 既开又闭，因为它的补集是其余陪集的并。加法和取负连续；若同时给 \(A\) 配置 \(I\) 进拓扑，则标量乘法也连续。事实上，当 \(a-a_0\in I^n\)、\(m-m_0\in I^nM\) 时，
+\[
+	am-a_0m_0=a(m-m_0)+(a-a_0)m_0\in I^nM.
+\]
+这里表达的只是误差落在给定理想幂中，没有使用数值意义的距离。
+
+\begin{proposition}\label{g5:prop:adic-closure}
+	设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想，\(M\) 为 \(A\) 模，\(N\subseteq M\) 为子模。则：
+	\begin{enumerate}
+		\item \(M\) 的 \(I\) 进拓扑分离，当且仅当 \(\bigcap_{n\geq0}I^nM=0\)；
+		\item \(N\) 在 \(M\) 中的闭包为
+		\[
+			\overline N=\bigcap_{n\geq0}(N+I^nM);
+		\]
+		\item 商拓扑是 \(M/N\) 自身的 \(I\) 进拓扑；它分离，当且仅当 \(N\) 在 \(M\) 中闭。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	若 \(m-m'\notin I^nM\)，两个陪集 \(m+I^nM\) 与 \(m'+I^nM\) 不相交，因为相交会使其差属于 \(I^nM\)。因此交为零时，任意两个不同点都能由某个指数区别。反过来，若 \(0\ne x\in\bigcap_nI^nM\)，则 \(0\) 与 \(x\) 在每一层都属于相同陪集，任意开邻域都无法把它们分开。这证明第一项。
+
+	一个 \(m\in M\) 属于 \(\overline N\)，恰好表示每个基本邻域 \(m+I^nM\) 都与 \(N\) 相交。这又等价于 \(m\in N+I^nM\) 对每个 \(n\) 成立，得到第二项。
+
+	商映射把 \(I^nM\) 送到
+	\[
+		(I^nM+N)/N=I^n(M/N).
+	\]
+	它把开陪集送到这些子模的陪集，而且这些陪集的逆像也开，故商拓扑正是所述理想进拓扑。根据第一项，商分离等价于
+	\(\bigcap_n(N+I^nM)/N=0\)，再由第二项等价于 \(\overline N=N\)。
+\end{proof}
+
+例如 \(A=k[x]\)、\(I=(x)\) 时，非零多项式不可能被任意高次的 \(x\) 整除，所以 \(A\) 分离。但若改取 \(M=k[x,x^{-1}]\)，则 \(x\) 在 \(M\) 上可逆，所有 \(I^nM\) 都等于 \(M\)，其拓扑不分离。另一个有限模例子是 \(A=k\times k\)、\(I=k\times0\)、\(M=A\)：因 \(I^2=I\ne0\)，所有高次截断都忽略了第一因子。分离性因此需要实际检查幂的交，不能仅由环 Noether 或模有限生成单独推出。
+
+\ProseParagraphBreak
+
+任意 \(A\) 线性映射 \(f:M\to M'\) 满足 \(f(I^nM)\subseteq I^nM'\)，所以关于理想进拓扑连续。对子模 \(N\subseteq M\)，则要区分两种滤过：自身的 \(I^nN\) 与从 \(M\) 诱导的 \(N\cap I^nM\)。总有
+\[
+	I^nN\subseteq N\cap I^nM,
+\]
+所以自身的理想进拓扑至少与诱导拓扑同样精细。下一节将分析何时两种滤过可以相互控制。上述拓扑、闭包及商拓扑的讨论可对照\cite[第8节，第55--56页]{Matsumura1989}。
+
+\begin{proposition}\label{g5:prop:adic-equivalent-powers}
+	设 \(A\) 为交换含幺环，\(I,J\subseteq A\) 为有限生成理想，且 \(\sqrt I=\sqrt J\)。则存在正整数 \(a,b\)，使
+	\[
+		I^a\subseteq J,\qquad J^b\subseteq I.
+	\]
+	因此对每个 \(A\) 模 \(M\)，其 \(I\) 进拓扑与 \(J\) 进拓扑相同。
+\end{proposition}
+\begin{proof}
+	写 \(I=(x_1,\ldots,x_r)\)。对每个 \(i\)，由 \(x_i\in\sqrt J\) 选 \(e_i\geq1\)，使 \(x_i^{e_i}\in J\)。若 \(r>0\)，取
+	\(a=1+\sum_i(e_i-1)\)。任意总次数为 \(a\) 的生成元乘积中，必有某个 \(x_i\) 出现至少 \(e_i\) 次，所以 \(I^a\subseteq J\)；\(I=0\) 时直接取 \(a=1\)。交换 \(I,J\) 得到另一个包含。
+
+	于是对每个 \(n\)，有 \(I^{an}M\subseteq J^nM\) 及 \(J^{bn}M\subseteq I^nM\)。每一族基本邻域都包含另一族中的某个基本邻域，故所定义的拓扑相同。
+\end{proof}
+
+特别地，在 Noether 局部环 \((A,\mathfrak m)\) 中，根式为 \(\mathfrak m\) 的真理想 \(I\) 与 \(\mathfrak m\) 给出同一拓扑。不过，它们在固定指数处的截断长度可以不同，因为相互包含通常需要改变指数。
 
 \subsection{Rees 环及有限生成}
 \label{g5:subsec:0701:02}
-待撰写
+
+理想幂形成无限链，但每个 \(I^n\) 都由 \(I\) 中元素的 \(n\) 重乘积生成。要同时使用这些乘法关系，可以给第 \(n\) 层加上一个记录次数的符号 \(t^n\)，再将各层放在同一个环内。这样，关于所有高次幂的问题便能利用一个环的有限生成性处理。
+
+\begin{definition}\label{g5:def:rees-algebra}
+	设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想，\(t\) 为不定元。子环
+	\[
+		\mathcal R_I(A)\coloneqq\bigoplus_{n\geq0}I^nt^n
+		\subseteq A[t]
+	\]
+	称为 \(I\) 的\term[Reeshuan]{Rees 环}[Rees algebra]。\footnote{David Rees（1918--2013），英国数学家，研究半群与交换代数，在理想约化和理想的渐近理论中作出重要贡献。}其中 \(I^nt^n\) 为次数 \(n\) 的齐次部分。
+\end{definition}
+\symidx{\(\mathcal R_I(A)\)：理想 \(I\) 的 Rees 环}
+
+这里用的是直和，每个元素只有有限多个非零齐次部分。它确实是子环，因为
+\[
+	(I^it^i)(I^jt^j)\subseteq I^{i+j}t^{i+j},
+\]
+且次数零部分为含单位的 \(A\)。次数只由 \(t\) 的幂记录；即使 \(A\) 本身是多项式环，\(A\) 中的元素在这份分次中也都位于次数零。
+
+\begin{proposition}\label{g5:prop:rees-noetherian}
+	设 \(A\) 为交换含幺环，\(I=(a_1,\ldots,a_r)\) 为有限生成理想。则
+	\[
+		\mathcal R_I(A)=A[a_1t,\ldots,a_rt],
+	\]
+	从而它是有限型 \(A\) 代数。若 \(A\) 为 Noether 环，则 \(\mathcal R_I(A)\) 为 Noether 环。
+\end{proposition}
+\begin{proof}
+	右侧的每个生成元属于 \(\mathcal R_I(A)\)，所以右侧包含于左侧。反过来，\(I^n\) 由所有
+	\(a_1^{\alpha_1}\cdots a_r^{\alpha_r}\)、\(\sum_i\alpha_i=n\)，生成。因此每个 \(ct^n\)、\(c\in I^n\)，都是相应乘积
+	\((a_1t)^{\alpha_1}\cdots(a_rt)^{\alpha_r}\)
+	的 \(A\) 线性组合，得到另一包含。于是同态
+	\[
+		A[T_1,\ldots,T_r]\longrightarrow\mathcal R_I(A),
+		\qquad T_i\longmapsto a_it
+	\]
+	满射。若 \(A\) Noether，Hilbert 基定理使左侧 Noether，其商环也 Noether。
+\end{proof}
+
+例如 \(A=k[x,y]\)、\(I=(x,y)\) 时，Rees 环由次数一元素 \(xt,yt\) 在 \(A\) 上生成。这两个元素满足
+\[
+	y(xt)-x(yt)=0,
+\]
+所以有限型并不表示它们在 \(A\) 上代数独立。若 \(I=(a)\) 且 \(a\) 不是零因子，则 \(\mathcal R_I(A)\cong A[T]\)，同构将 \(T\) 送到 \(at\)：一个关系
+\(\sum_nc_n(at)^n=0\) 逐次给出 \(c_na^n=0\)，因此全部 \(c_n=0\)。零因子情形则会保留额外关系，例如 \(A=k[\varepsilon]/(\varepsilon^2)\)、\(I=(\varepsilon)\) 中有 \(\varepsilon(\varepsilon t)=0\) 及 \((\varepsilon t)^2=0\)。
+
+\ProseParagraphBreak
+
+上述非负分次环在\cite[第15节，第4部分，第120页]{Matsumura1989}中记为 \(R_+\)。该书还把包含负次数的扩充构造称为 Rees 环；本章的 \(\mathcal R_I(A)\) 始终采用定义中的非负次数约定。它的有限生成性将使下一节能够同时控制子模与各次 \(I^nM\) 的交。
 
 \subsection{伴随分次与切锥}
 \label{g5:subsec:0701:03}
-待撰写
+
+Rees 环保留了每个 \(I^n\) 的全部元素。若只保留第 \(n\) 层相对于下一层的差别，就得到伴随分次。第五章已经在局部环的极大理想处定义了这一构造；现在把同一乘法推广到一般理想及模。
+
+\begin{definition}\label{g5:def:ideal-associated-graded}
+	设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想，\(M\) 为 \(A\) 模。定义
+	\[
+		\operatorname{gr}_I(A)=\bigoplus_{n\geq0}I^n/I^{n+1},
+		\qquad
+		\operatorname{gr}_I(M)=\bigoplus_{n\geq0}I^nM/I^{n+1}M.
+	\]
+	第一项称为 \(A\) 关于 \(I\) 的伴随分次环，第二项称为 \(M\) 关于 \(I\) 的\term[bansuifencimo]{伴随分次模}[associated graded module]。其乘法与作用由
+	\[
+		[a]_i[b]_j=[ab]_{i+j},\qquad
+		[a]_i[m]_j=[am]_{i+j}
+	\]
+	给出，其中方括号下标表示所处次数。
+\end{definition}
+\symidx{\(\operatorname{gr}_I(A),\operatorname{gr}_I(M)\)：理想进伴随分次环与模}
+
+若改变 \(a\in I^i\) 的代表，变化属于 \(I^{i+1}\)，乘 \(I^j\) 或 \(I^jM\) 后便落入应除去的下一层；改变另一代表时同理。于是乘法与模作用良定义。零次部分为 \(A/I\) 及 \(M/IM\)，每个齐次部分都是 \(A/I\) 模。这一说明也表明，计算各层不需要在 \(A\) 内选出一个与 \(A/I\) 同构的子环。
+
+\begin{proposition}\label{g5:prop:rees-associated-graded}
+	设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想。则有自然的分次环同构
+	\[
+		\mathcal R_I(A)/I\mathcal R_I(A)
+		\cong\operatorname{gr}_I(A),\qquad
+		at^n\longmapsto a+I^{n+1}.
+	\]
+	若 \(I=(a_1,\ldots,a_r)\) 有限生成，则 \(\operatorname{gr}_I(A)\) 是由 \(a_i+I^2\) 这些次数一元素生成的有限型 \(A/I\) 代数。若再设 \(A\) Noether，则 \(\operatorname{gr}_I(A)\) Noether。若 \(M\) 是有限生成 \(A\) 模，则 \(\operatorname{gr}_I(M)\) 是有限生成 \(\operatorname{gr}_I(A)\) 模，由 \(M/IM\) 中有限个次数零元素生成。
+\end{proposition}
+\begin{proof}
+	逐次取商的映射保持乘法并满射。其次数 \(n\) 的核是 \(I^{n+1}t^n\)，而
+	\[
+		I\mathcal R_I(A)
+		=\bigoplus_{n\geq0}I^{n+1}t^n.
+	\]
+	所以核正是这个理想，得到第一断言。次数一生成的结论既可由 Rees 环的生成元取商得到，也可直接由 \(I^n\) 的生成乘积看出；具体地，有分次满射
+	\[
+		(A/I)[X_1,\ldots,X_r]\twoheadrightarrow\operatorname{gr}_I(A),
+		\qquad X_i\longmapsto a_i+I^2.
+	\]
+	若 \(A\) Noether，左侧 Noether，故其商也 Noether。
+
+	最后写 \(M=Am_1+\cdots+Am_s\)。每个 \(I^nM\) 元素可写成
+	\(\sum_j c_jm_j\)、\(c_j\in I^n\)，其在第 \(n\) 层中的类就是
+	\(\sum_j[c_j]_n[m_j]_0\)。因此有限个 \([m_j]_0\) 生成整个伴随分次模。
+\end{proof}
+
+本命题中的环与模构造可对照\cite[第13节，第93--94、97页]{Matsumura1989}。它没有假设理想进拓扑分离；若一个元素属于所有 \(I^nM\)，它在全部截断中都不可见，这与伴随分次只记录相邻层的差别相符。
+
+\ProseParagraphBreak
+
+取非零 Noether 局部环 \((A,\mathfrak m,\kappa)\)，便恢复第五章的切锥
+\[
+	\mathrm C(A)=\operatorname{Spec}\bigl(\operatorname{gr}_{\mathfrak m}A\bigr).
+\]
+由\cref{g5:prop:tangent-cone-in-tangent-space}，次数一元素诱导满射
+\[
+	\operatorname{Sym}_\kappa(\mathfrak m/\mathfrak m^2)
+	\twoheadrightarrow\operatorname{gr}_{\mathfrak m}A.
+\]
+因此切锥位于切空间内，且其坐标环保留全部次数的乘法关系。当前的推广还容许把 \(I\) 取成一个子空间的方程理想，此时零次环为 \(A/I\)，相邻理想幂描述围绕这个子空间的各层信息。
+
+\ProseParagraphBreak
+
+伴随分次也把截断长度拆成各层长度。在各项长度有限时，由\cref{g5:prop:length-additivity}逐次应用
+\[
+	0\longrightarrow I^nM/I^{n+1}M
+	\longrightarrow M/I^{n+1}M
+	\longrightarrow M/I^nM\longrightarrow0
+\]
+得到
+\begin{equation}\label{g5:eq:truncation-graded-length}
+	\ell_A(M/I^{n+1}M)
+	=\sum_{j=0}^n\ell_A(I^jM/I^{j+1}M).
+\end{equation}
+右边的每一项可以由分次环的方法计算，累加后便得到有限阶邻域的厚度。
 
 \subsection{Hilbert–Samuel 函数的所需增长工具}
 \label{g5:subsec:0701:04}
-待撰写
+
+有限生成的分次模虽然有无限多个齐次部分，新的部分却由有限个生成元及固定的乘法规则产生。为了同时记录它们的长度，先把长度作为形式幂级数的系数。这里不讨论级数在数值处收敛，等式的含义是每个系数分别相等。
+
+\begin{definition}\label{g5:def:hilbert-series}
+	设 \(R\) 为交换 Artin 环，\(S=R[X_1,\ldots,X_r]\)，其中每个 \(X_i\) 的次数为 \(1\)。设
+	\(E=\bigoplus_{n\geq0}E_n\) 为有限生成分次 \(S\) 模，即 \(S_iE_j\subseteq E_{i+j}\)。它的\term[Hilberthanshu]{Hilbert 函数}[Hilbert function]与\term[Hilbertjishu]{Hilbert 级数}[Hilbert series]分别为
+	\[
+		h_E(n)=\ell_R(E_n),\qquad
+		P_E(z)=\sum_{n\geq0}h_E(n)z^n\in\mathbb Z[[z]].
+	\]
+\end{definition}
+
+上述长度是有限的。确实，将有限组模生成元分解为各自有限多个齐次部分，所得齐次元素仍生成 \(E\)。若它们的次数为 \(d_1,\ldots,d_s\)，则 \(E_n\) 由有限个
+\[
+	X^\alpha e_j,\qquad |\alpha|=n-d_j,
+\]
+在 \(R\) 上生成。Artin 环作为自身的模有有限长度，所以这些有限生成 \(R\) 模也有有限长度。
+
+\ProseParagraphBreak
+
+下面是次数一分次情形的\term[HilbertSerredingli]{Hilbert–Serre 定理}[Hilbert--Serre theorem]。它用变量的乘法映射，把 \(r\) 个变量的问题归约为 \(r-1\) 个变量的问题。\footnote{Jean-Pierre Serre（1926--），法国数学家，在代数拓扑、代数几何和代数数论中作出重要贡献。}
+
+\begin{theorem}[Hilbert–Serre]\label{g5:thm:hilbert-serre}
+	设 \(R\) 为交换 Artin 环，\(S=R[X_1,\ldots,X_r]\)，每个变量的次数为 \(1\)，\(E=\bigoplus_{n\geq0}E_n\) 为有限生成分次 \(S\) 模。则存在 \(Q(z)\in\mathbb Z[z]\)，使
+	\[
+		P_E(z)=\frac{Q(z)}{(1-z)^r}.
+	\]
+	当 \(r\geq1\) 时，\(h_E(n)\) 对充分大的 \(n\) 等于一个次数至多为 \(r-1\) 的有理系数多项式；允许该多项式为零。当 \(r=0\) 时，\(h_E(n)\) 最终为零。对任意 \(r\geq0\)，累积函数
+	\[
+		H_E(n)=\sum_{j=0}^n h_E(j)
+	\]
+	最终等于一个次数至多为 \(r\) 的有理系数多项式，同样允许零多项式。
+\end{theorem}
+\begin{proof}
+	先对 \(r\) 归纳证明级数公式。若 \(r=0\)，则 \(S=R\) 全部位于次数零；有限个齐次生成元只能生成有限多个非零齐次部分，所以 \(P_E(z)\) 本身是多项式。
+
+	设 \(r>0\)，令
+	\[
+		K=(0:_E X_r),\qquad C=E/X_rE.
+	\]
+	\(S\) Noether，因而 \(K\) 与 \(C\) 都为有限生成分次 \(S\) 模。又 \(X_rK=X_rC=0\)，所以它们实际上是
+	\(S'=R[X_1,\ldots,X_{r-1}]\) 上的有限生成分次模。对每个 \(n\geq0\)，乘以 \(X_r\) 给出正合列
+	\[
+		0\longrightarrow K_{n-1}\longrightarrow E_{n-1}
+		\xrightarrow{\,X_r\,}E_n\longrightarrow C_n\longrightarrow0,
+	\]
+	其中负次数部分约定为零。长度加性得到
+	\[
+		h_E(n)-h_E(n-1)=h_C(n)-h_K(n-1).
+	\]
+	逐次乘以 \(z^n\) 并求和，得
+	\[
+		(1-z)P_E(z)=P_C(z)-zP_K(z).
+	\]
+	归纳假设使右边具有分母 \((1-z)^{r-1}\)，于是 \(P_E\) 具有所需形式。这里保留核 \(K\) 十分必要，乘以变量未必单射。
+
+	当 \(r\geq1\) 时，形式恒等式
+	\[
+		(1-z)^{-r}
+		=\sum_{n\geq0}\binom{n+r-1}{r-1}z^n
+	\]
+	来自 \(r\) 份几何级数的乘积：系数计算的是 \(n\) 分成 \(r\) 个非负整数之和的方法数。写 \(Q(z)=\sum_{j=0}^q c_jz^j\)，则对 \(n\geq q\)，有
+	\[
+		h_E(n)=\sum_{j=0}^q c_j
+		\binom{n-j+r-1}{r-1}.
+	\]
+	每个二项式系数在这里都是关于 \(n\) 的次数 \(r-1\) 多项式，所以右侧为次数至多 \(r-1\) 的多项式。若 \(Q=0\)，结论直接成立。
+
+	最后，逐项累加等价于再乘以 \((1-z)^{-1}\)，即
+	\[
+		\sum_{n\geq0}H_E(n)z^n
+		=\frac{P_E(z)}{1-z}
+		=\frac{Q(z)}{(1-z)^{r+1}}.
+	\]
+	相同的系数计算给出
+	\[
+		H_E(n)=\sum_{j=0}^q c_j\binom{n-j+r}{r}
+		\qquad(n\geq q),
+	\]
+	其次数至多为 \(r\)。这个公式也包含 \(r=0\) 的最终常数情形。
+\end{proof}
+
+最终与 \(h_E(n)\) 相等的多项式称为分次模的\term[Hilbertduoxiangshi]{Hilbert 多项式}[Hilbert polynomial]；它唯一，因为两个多项式若在所有充分大的整数上相同，其差有无限多个根，必为零。定理及系数展开可对照\cite[第13节，定理13.2及其推论，第94--96页]{Matsumura1989}。
+
+\ProseParagraphBreak
+
+变量次数为 \(1\) 是最终单个多项式描述的关键条件。若给 \(k[u]\) 配置 \(\deg u=2\)，则其齐次部分维数在偶数次为 \(1\)、奇数次为 \(0\)，级数为 \((1-z^2)^{-1}\)。这个函数不能最终等于一个多项式：这样的多项式会在无限多个奇数处为零，因而恒为零，却又必须在充分大的偶数处等于 \(1\)。理想进伴随分次由次数一生成，恰好适用上述定理。
+
+\begin{definition}\label{g5:def:hilbert-samuel-function}
+	设 \((A,\mathfrak m)\) 为非零 Noether 局部环，\(I\subseteq A\) 为满足 \(\sqrt I=\mathfrak m\) 的真理想，\(M\) 为有限生成 \(A\) 模。定义其关于 \(I\) 的\term[HilbertSamuelhanshu]{Hilbert–Samuel 函数}[Hilbert--Samuel function]为
+	\[
+		H_{I,M}(n)\coloneqq\ell_A(M/I^{n+1}M),\qquad n\geq0.
+	\]
+	当 \(M=A\) 时简写为 \(H_{I,A}\)；当 \(I=\mathfrak m\) 时，它记录闭点各阶截断的长度。\footnote{Pierre Samuel（1921--2009），法国数学家，研究交换代数及其在代数几何中的应用，特别是局部环与重数理论。}
+\end{definition}
+\symidx{\(H_{I,M}(n)\)：长度 \(\ell_A(M/I^{n+1}M)\)}
+
+由第三章的零维与有限长度结论，\(A/I^{n+1}\) 是 Artin 局部环，因为其根式仍为 \(\mathfrak m\)。所以有限生成模 \(M/I^{n+1}M\) 确有有限长度。这里用 \(n+1\) 次幂，是为了让 \(n=0\) 正好对应零次分次部分 \(M/IM\)。
+
+\begin{proposition}\label{g5:prop:hilbert-samuel-polynomial}
+	设 \((A,\mathfrak m)\) 为非零 Noether 局部环，\(I=(a_1,\ldots,a_r)\) 为根式等于 \(\mathfrak m\) 的真理想，\(M\) 为有限生成 \(A\) 模。则 \(H_{I,M}(n)\) 最终等于一个有理系数多项式 \(P_{I,M}(n)\)，其次数至多为 \(r\)。若 \(M\ne0\)，则这个多项式非零且首项系数为正。若 \(M\) 可由 \(s\) 个元素生成，则对每个 \(n\geq0\)，都有
+	\begin{equation}\label{g5:eq:ideal-generators-growth-bound}
+		H_{I,M}(n)\leq
+		\ell_A(M/IM)\binom{n+r}{r}
+		\leq s\,\ell_A(A/I)\binom{n+r}{r}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	取 \(R=A/I\)，它是 Artin 环。由\cref{g5:prop:rees-associated-graded}，\(\operatorname{gr}_I(M)\) 是次数一多项式环
+	\(R[X_1,\ldots,X_r]\) 上的有限生成分次模。每个齐次部分的 \(R\) 子模与 \(A\) 子模相同，故两种长度一致。根据\eqref{g5:eq:truncation-graded-length}，其累积 Hilbert 函数就是 \(H_{I,M}\)。应用\cref{g5:thm:hilbert-serre}，得到最终多项式性与次数界。
+
+	若 \(M\ne0\)，Nakayama 引理与 \(I\subseteq\mathfrak m\) 保证 \(M/IM\ne0\)，故 \(H_{I,M}(n)\geq1\) 对所有 \(n\) 成立。因此最终多项式不为零，且在充分大的正整数上取正值，其首项系数必为正。
+
+	对每个总次数为 \(j\) 的单项式 \(a^\alpha\)，乘法诱导
+	\[
+		M/IM\longrightarrow I^jM/I^{j+1}M,\qquad
+		m+IM\longmapsto a^\alpha m+I^{j+1}M.
+	\]
+	这与代表无关，因为 \(a^\alpha IM\subseteq I^{j+1}M\)。合并全部这样的映射得到满射。若 \(r\geq1\)，总共有 \(\binom{j+r-1}{r-1}\) 个单项式，故
+	\[
+		\ell_A(I^jM/I^{j+1}M)
+		\leq\ell_A(M/IM)\binom{j+r-1}{r-1}.
+	\]
+	从 \(j=0\) 加到 \(n\)，用
+	\(\sum_{j=0}^n\binom{j+r-1}{r-1}=\binom{n+r}{r}\)
+	得到第一条上界。若 \(r=0\)，则 \(I=0\)，函数恒为 \(\ell_A(M)\)，同一上界仍成立。第二条上界来自满射
+	\((A/I)^s\to M/IM\) 及长度加性。
+\end{proof}
+
+唯一的最终多项式 \(P_{I,M}\) 称为相应的\term[HilbertSamuelduoxiangshi]{Hilbert–Samuel 多项式}[Hilbert--Samuel polynomial]。累积长度函数与伴随分次的联系见\cite[第13节，第97--98页]{Matsumura1989}。上界中出现的是给定理想的生成元数；借助第三章的参数系，还能把局部环维数放进一个更小的增长上界。
+
+\begin{proposition}\label{g5:prop:parameter-growth-bound}
+	设 \((A,\mathfrak m)\) 为非零 Noether 局部环，\(d=\dim A\)，\(I\subseteq A\) 为根式等于 \(\mathfrak m\) 的真理想，\(M\) 为由 \(s\) 个元素生成的有限 \(A\) 模。则存在参数理想
+	\[
+		\mathfrak q=(z_1,\ldots,z_d)\subseteq I
+	\]
+	以及有限常数 \(C=s\,\ell_A(A/\mathfrak q)\)，使对每个 \(n\geq0\) 都有
+	\[
+		H_{I,M}(n)\leq H_{\mathfrak q,M}(n)
+		\leq C\binom{n+d}{d}.
+	\]
+	因此当 \(M\ne0\) 时，\(\deg P_{I,M}\leq d\)。
+\end{proposition}
+\begin{proof}
+	由\cref{g5:thm:system-of-parameters}，先选参数系 \(x_1,\ldots,x_d\)。每个 \(x_i\in\mathfrak m=\sqrt I\)，可取 \(e_i\geq1\) 使 \(z_i=x_i^{e_i}\in I\)。取幂不改变所生成理想的根式，所以 \(\mathfrak q=(z_1,\ldots,z_d)\) 仍为参数理想。若 \(d=0\)，取空参数系，即 \(\mathfrak q=0\)；此时 \(A\) 为 Artin 环。
+
+	由 \(\mathfrak q\subseteq I\)，有 \(\mathfrak q^{n+1}M\subseteq I^{n+1}M\)，于是
+	\(M/\mathfrak q^{n+1}M\to M/I^{n+1}M\) 满射，长度给出第一条不等式。把\eqref{g5:eq:ideal-generators-growth-bound}用于由 \(d\) 个元素生成的 \(\mathfrak q\)，便得到第二条不等式。右端为次数 \(d\) 的多项式；\(M\ne0\) 时 \(P_{I,M}\) 的首项系数为正，因此它的次数不可能超过 \(d\)。
+\end{proof}
+
+\begin{example}\label{g5:exm:hilbert-samuel-basic-models}
+	设 \(k\) 为域。对 \(A=k[x_1,\ldots,x_d]_{(x_1,\ldots,x_d)}\) 及其极大理想 \(\mathfrak m\)，第五章的初始理想计算给出
+	\(\operatorname{gr}_{\mathfrak m}A\cong k[X_1,\ldots,X_d]\)。截断中次数至多 \(n\) 的单项式构成基，所以
+	\[
+		H_{\mathfrak m,A}(n)=\binom{n+d}{d}.
+	\]
+	当 \(d=0\) 时 \(A=k\)，函数恒为 \(1\)。对任意 DVR \(R\) 及其极大理想 \((\pi)\)，\cref{g5:prop:dvr-length}则给出
+	\[
+		H_{(\pi),R}(n)=\ell_R(R/\pi^{n+1}R)=n+1.
+	\]
+	这个长度计算也适用于剩余域不等于某个预先指定基域的情形。
+
+	第五章的尖点与结点模型具有相同的齐次层维数 \(1,2,2,\ldots\)，因此二者都满足
+	\[
+		H_{\mathfrak m,A}(n)=1+2n.
+	\]
+	这里结点取\cref{g5:exm:node-tangent-cone}中的特征不为二情形。它们的长度函数相同，切锥环却分别具有二重直线与两个不同方向的结构。相比之下，加厚点 \(k[x,y]/(x,y)^2\) 的长度函数在 \(n=0\) 时为 \(1\)，在 \(n\geq1\) 时恒为 \(3\)。这也说明多项式公式可能只在若干初始层之后才稳定。
+\end{example}
+
+最终多项式性使无限多个截断长度具有有限的描述，而参数系给出它们增长速度的上界。长度只计算各层的大小，不能恢复层与层之间的乘法；切锥中的幂零元和不同分支，仍需由伴随分次环本身辨认。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 11.2 Liouville–Arnold 定理
 % 纲要位置：几何学计划纲要.md，第 3892 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,344 @@
 \section{Liouville–Arnold 定理}
 \label{g4:sec:1102}
 
-待撰写
+本节证明\term[liouvillearnolddingli]{Liouville--Arnold 定理}[Liouville--Arnold theorem]。\footnote{\OriginalName{Владимир Игоревич Арнольд}（Vladimir Igorevich Arnold，1937--2010），苏联、俄罗斯数学家，参与建立 Hamilton 动力学的 KAM 理论，并研究奇点理论。}一个紧正则共同水平集给出不变环面，但邻近轨道怎样分布、每个环面的周期怎样变化，还需要在环面以外选择坐标。作用角定理将这些问题合在一起：先把紧环面扩展为一个光滑环面族，再把周期归一化为 \(2\pi\)，最后选择与这些角变量配对的作用变量。作用变量由沿闭路的一形式积分得到，通常不是最初给定的第一积分本身。
 
 \subsection{周期格和局部基底}
 \label{g4:subsec:1102:01}
-待撰写
+
+本节只研究一个指定紧组件附近的几何。它允许同一共同水平集在远处还有其他组件，也不要求第一积分组成的映射在整个流形上固有。首先构造一个足够小的开邻域，使所选组件及其邻近纤维都完整地包含在其中。
+
+\begin{lemma}\label{g4:lem:1102:compact-fibration}
+	设 \((M^{2n},\omega)\)、\(n\ge1\)，为无边界、Hausdorff 且第二可数的辛流形，\(F=(f_1,\ldots,f_n):M\to\mathbb R^n\) 光滑，且 \(\{f_i,f_j\}=0\)。设 \(L\) 为 \(F^{-1}(b_0)\) 的非空紧连通分支，\(\operatorname{rank}\mathrm{d}F=n\) 在 \(L\) 上处处成立。则存在 \(b_0\) 的开球邻域 \(B\)、\(L\) 的开邻域 \(U\subset M\)，以及微分同胚
+	\[
+		\chi:L\times B\longrightarrow U,\qquad
+		F(\chi(q,b))=b,\qquad \chi(q,b_0)=q.
+	\]
+	每个 \(L_b=\chi(L\times\{b\})\) 都是 \(F^{-1}(b)\) 的紧连通分支，并为 Lagrange 环面；\(F|_U:U\to B\) 是固有淹没。此外，存在 \(\lambda\in\Omega^1(U)\)，使 \(\omega|_U=-\mathrm{d}\lambda\) 且 \(\lambda|_{\mathrm{T}L}=0\)。
+\end{lemma}
+\begin{proof}
+	由\cref{g4:thm:1101:liouville-torus}，\(L\) 是嵌入的 Lagrange 环面。它紧，因而在 Hausdorff 流形 \(M\) 中闭。\cref{g4:thm:0803:lagrangian-neighborhood}给出零截面附近的辛同胚
+	\[
+		\Psi:V\subset\mathrm{T}^*L\longrightarrow W\subset M,\qquad
+		\Psi(q,0)=q,\quad \Psi^*\omega=-\mathrm{d}\theta_L.
+	\]
+	记 \(\widetilde F=F\Psi\)。它沿零截面恒为 \(b_0\)，所以其微分在零截面的切向上为零。总秩为 \(n\)，故竖直微分
+	\[
+		A_q=\mathrm{d}_p\widetilde F(q,0):
+		\mathrm{T}_q^*L\longrightarrow\mathbb R^n
+	\]
+	是线性同构，且依赖 \(q\) 光滑。
+
+	用 \(v=A_qp\) 作纤维变量，定义
+	\(G(q,v)=\widetilde F(q,A_q^{-1}v)-b_0\)。有
+	\(G(q,0)=0\)、\(\mathrm{D}_vG(q,0)=I\)。紧性使我们能选同一个 \(r>0\)，使所有 \((q,A_q^{-1}v)\)、\(|v|\le r\)，均属于 \(V\)，并且
+	\[
+		\sup_{q\in L,\ |v|\le r}\|\mathrm{D}_vG(q,v)-I\|\le\frac12.
+	\]
+	第一卷定理11.3.2的定量局部逆说明，对每个 \(q\) 和 \(|b-b_0|<r/2\)，方程 \(G(q,v)=b-b_0\) 在 \(|v|<r\) 内有唯一解。第一卷定理11.3.5的参数隐函数定理说明该解联合依赖 \((q,b)\) 光滑：在任一 \(q\) 坐标域中应用该定理，所得局部解由刚才的唯一性相容。因此可写成 \(p=P(q,b)\)。
+
+	取 \(B=B_{r/2}(b_0)\)，令 \(\chi(q,b)=\Psi(q,P(q,b))\)。映射
+	\((q,p)\mapsto(q,\widetilde F(q,p))\) 的竖直导数可逆，所以 \(\chi\) 是局部微分同胚；它的全局单射性来自保留 \(q\) 及上述纤维解的唯一性。于是其像 \(U\) 开，\(\chi:L\times B\to U\) 是微分同胚。
+
+	在 \(U\) 中，\(F\) 是投影，故满秩，且 \(L_b=F^{-1}(b)\cap U\) 紧连通。这个集合在整个 \(F^{-1}(b)\) 中开；它在 \(M\) 中紧且闭，故在该水平集中也闭。因此它确为一个完整连通分支。每个 \(L_b\) 再由\cref{g4:thm:1101:liouville-torus}成为 Lagrange 环面。对紧集 \(K\subset B\)，\((F|_U)^{-1}(K)=\chi(L\times K)\) 紧，所以这里的限制映射固有。最后在 \(U\) 上取
+	\(\lambda=(\Psi^{-1})^*\theta_L\)，便有所需的原始形式，并且它在原环面的切向上为零。
+\end{proof}
+
+这个引理中的 \(U\) 是由完整纤维组件组成的邻域，不必等于整个 \(F^{-1}(B)\)。它已经足以使各个 \(X_{f_j}\) 在 \(U\) 上完备：从任一点出发的积分曲线始终留在一个紧 \(L_b\) 中，有限时间不能逃出。这些完备场的光滑流依次复合，利用流的交换性给出光滑作用
+\[
+	\Phi:\mathbb R^n\times U\longrightarrow U,\qquad
+	\Phi(t,x)=\Phi^{X_{f_1}}_{t_1}\cdots\Phi^{X_{f_n}}_{t_n}(x).
+\]
+由\cref{g4:prop:1101:complete-action}在各纤维上的结论，每个 \(L_b\) 都是一条轨道。取光滑截面 \(s(b)=\chi(q_0,b)\)，并令
+\begin{equation}\label{g4:eq:1102:period-lattice}
+	\Gamma_b=\{t\in\mathbb R^n:\Phi(t,s(b))=s(b)\}.
+\end{equation}
+因为作用交换且传递，这个稳定子不依赖纤维中的起点。上一节说明 \(\Gamma_b\) 为满格；现在还要控制它随 \(b\) 的变化。
+
+\begin{lemma}\label{g4:lem:1102:smooth-period-basis}
+	在\cref{g4:lem:1102:compact-fibration}构造的环面族中，任取 \(\Gamma_{b_0}\) 的一个整数基底 \(\ell_1,\ldots,\ell_n\)。缩小 \(B\) 后，存在光滑函数
+	\(\lambda_i:B\to\mathbb R^n\)，使
+	\[
+		\lambda_i(b_0)=\ell_i,\qquad
+		\Gamma_b=\Lambda(b)\mathbb Z^n,\qquad
+		\Lambda(b)=\bigl(\lambda_1(b)\ \cdots\ \lambda_n(b)\bigr).
+	\]
+	特别地，延拓出的 \(n\) 个周期构成完整周期格的基底。
+\end{lemma}
+\begin{proof}
+	令 \(E(t,b)=\Phi(t,s(b))\)。在任意 \((t,b)\) 处，\(t\) 方向的微分由 \(n\) 个独立场 \(X_{f_j}\) 给出，张成纤维切空间；而 \(F(E(t,b))=b\)，故 \(b\) 方向的微分投影为恒等映射。因此 \(E\) 处处为局部微分同胚。
+
+	在 \((\ell_i,b_0)\) 附近使用其局部逆，并把目标取成 \(s(b)\)，就得到唯一光滑的 \(\lambda_i(b)\)，满足 \(E(\lambda_i(b),b)=s(b)\)。由于 \(\Lambda(b_0)\) 可逆，缩小 \(B\) 后 \(\Lambda(b)\) 仍可逆。于是
+	\(\Gamma'_b=\Lambda(b)\mathbb Z^n\) 是 \(\Gamma_b\) 的子格。还需证明没有遗漏其他周期。
+
+	先在 \((0,b_0)\) 处应用同一个局部逆。存在 \(\varepsilon>0\) 和共同的参数邻域，使
+	\[
+		|t|<\varepsilon,\quad E(t,b)=s(b)
+		\quad\Longrightarrow\quad t=0.
+	\]
+	这是对邻近所有纤维都成立的无短周期估计。若任意小参数邻域内都有 \(\Gamma'_b\ne\Gamma_b\)，可取 \(b_\nu\to b_0\) 及
+	\(t_\nu\in\Gamma_{b_\nu}\setminus\Gamma'_{b_\nu}\)。从 \(t_\nu\) 减去适当的 \(\Lambda(b_\nu)\mathbb Z^n\) 元素，得到
+	\[
+		r_\nu=\Lambda(b_\nu)a_\nu\in\Gamma_{b_\nu},
+		\qquad a_\nu\in[-1/2,1/2]^n,\qquad r_\nu\ne0.
+	\]
+	取子列使 \(a_\nu\to a\)。由 \(E\) 连续，
+	\(\Lambda(b_0)a\in\Gamma_{b_0}=\Lambda(b_0)\mathbb Z^n\)。
+	故 \(a\in\mathbb Z^n\cap[-1/2,1/2]^n=\{0\}\)，从而 \(r_\nu\to0\)。这与统一无短周期估计矛盾。因此缩小参数邻域后 \(\Gamma'_b=\Gamma_b\)。
+\end{proof}
+
+由一个周期向量 \(\lambda_i(b)\) 得到的闭路写成
+\begin{equation}\label{g4:eq:1102:period-cycle}
+	\gamma_i(t,b)=\Phi(t\lambda_i(b),s(b)),\qquad t\in\mathbb R/\mathbb Z.
+\end{equation}
+这里参数走一周的时间是 \(1\)，真正的原 Hamilton 多时间增量是列向量 \(\lambda_i(b)\)。这一区分将决定作用积分中的 \(2\pi\) 因子。
 
 \subsection{作用积分的定义}
 \label{g4:subsec:1102:02}
-待撰写
+
+前面的邻域已经有 \(\omega=-\mathrm{d}\lambda\)。在每个纤维上，\(\lambda\) 的限制闭，因为纤维是 Lagrange 子流形。因此它沿闭路的积分只取决于闭路的整数绕行类：同伦移动闭路时，微分为零；闭路拼接使积分相加，反向使积分变号。
+
+\begin{definition}\label{g4:def:1102:action-variables}
+	在上述邻域中，固定光滑周期基底及相应闭路族 \(\gamma_i\)。定义\term[zuoyongjifen]{作用积分}[action integral]与相应的\term[zuoyongbianliang]{作用变量}[action variable]为
+	\begin{equation}\label{g4:eq:1102:action-integral}
+		I_i(b)=\frac1{2\pi}\int_{\gamma_i(\cdot,b)}\lambda,
+		\qquad i=1,\ldots,n.
+	\end{equation}
+	以下也用 \(I_i\) 表示 \(I_i\circ F\) 在 \(U\) 上的拉回。
+\end{definition}
+
+这个定义把闭路扫过的有向辛面积转成参数函数。关键在于它们是否独立；答案由周期矩阵给出。
+
+\begin{proposition}\label{g4:prop:1102:action-derivative}
+	对\eqref{g4:eq:1102:action-integral}定义的函数，有
+	\begin{equation}\label{g4:eq:1102:action-derivative}
+		\mathrm{d}I_i=\frac1{2\pi}\sum_{j=1}^n\lambda_{ji}(b)\,\mathrm{d}b_j,
+		\qquad
+		\mathrm{D}I(b)=\frac1{2\pi}\Lambda(b)^{\mathsf T}.
+	\end{equation}
+	因此 \(I=(I_1,\ldots,I_n)\) 在 \(b_0\) 附近是一组光滑坐标。
+\end{proposition}
+\begin{proof}
+	闭路族及 \(\lambda\) 光滑，紧参数区间上的积分说明 \(I_i\) 光滑。取参数曲线 \(b(u)\)，令
+	\(\Gamma(u,t)=\gamma_i(t,b(u))\)，并记
+	\(V=\partial_u\Gamma\)、\(T=\partial_t\Gamma\)。
+	将拉回一形式写成
+	\(\Gamma^*\lambda=a(u,t)\,\mathrm{d}t+c(u,t)\,\mathrm{d}u\)。
+	外微分的坐标公式给出
+	\[
+		\partial_u a-\partial_t c
+		=\mathrm{d}\lambda(V,T).
+	\]
+	因为 \(t\) 是圆周参数，\(c(u,1)=c(u,0)\)，积分时边界项消失。所以
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}u}\int_{\gamma_i(\cdot,b(u))}\lambda
+		=\int_0^1\mathrm{d}\lambda(V,T)\,\mathrm{d}t
+		=\int_0^1\omega(T,V)\,\mathrm{d}t.
+	\]
+	这里最后的正号同时使用了 \(\mathrm{d}\lambda=-\omega\) 与二形式的反对称性。
+
+	沿所取闭路，
+	\[
+		T=\sum_j\lambda_{ji}(b(u))X_{f_j},\qquad
+		\mathrm{d}f_j(V)=b'_j(u).
+	\]
+	由 \(\iota_{X_{f_j}}\omega=\mathrm{d}f_j\)，被积式于是恒等于
+	\(\sum_j\lambda_{ji}(b(u))b'_j(u)\)，与 \(t\) 无关。除以 \(2\pi\) 得到微分公式。\(\Lambda(b_0)\) 可逆，第一卷定理11.3.3的逆函数定理给出作用坐标。
+\end{proof}
+
+现在进一步缩小 \(B\)，使 \(I:B\to A\) 为微分同胚，其中 \(A\subset\mathbb R^n\) 是开球。仍用 \(U\) 表示相应较小邻域。以原参数 \(b\) 表示的周期一形式
+\(\sum_j\lambda_{ji}\,\mathrm{d}b_j\) 因而都是闭的；这不是任意变化的格基自动满足的条件，而是辛形式闭性经作用积分体现出的约束。取前面由余切模型得到的 \(\lambda\) 时，\(I(b_0)=0\)；采用其他原始形式则可能得到不同的常数。
 
 \subsection{角坐标的构造}
 \label{g4:subsec:1102:03}
-待撰写
+
+原场 \(X_{f_j}\) 的周期随 \(b\) 改变。作用积分的微分恰好给出把它们归一化为 \(2\pi\) 周期的组合。定义
+\begin{equation}\label{g4:eq:1102:normalized-fields}
+	Y_i=\frac1{2\pi}\sum_{j=1}^n\lambda_{ji}(F)\,X_{f_j}.
+\end{equation}
+由\eqref{g4:eq:1102:action-derivative}，
+\[
+	\iota_{Y_i}\omega
+	=\frac1{2\pi}\sum_j\lambda_{ji}(F)\,\mathrm{d}f_j
+	=\mathrm{d}I_i,
+	\qquad Y_i=X_{I_i}.
+\]
+系数在每个共同水平集上恒定，故 \(Y_i\) 的流在该纤维上就是原作用的多时间平移 \(t\lambda_i(b)/(2\pi)\)。它的周期为 \(2\pi\)，而全部 \(Y_i\) 合起来给出自由、传递的
+\(\mathbb T^n=(\mathbb R/2\pi\mathbb Z)^n\) 作用；自由性正是完整周期格等式 \(\Gamma_b=\Lambda(b)\mathbb Z^n\) 的用途。
+
+\ProseParagraphBreak
+
+保留初始截面 \(s\)，定义
+\begin{equation}\label{g4:eq:1102:initial-angle-map}
+	\Psi_0:\mathbb T^n\times A\longrightarrow U,\qquad
+	\Psi_0(\vartheta,I)
+	=\Phi\left(\frac1{2\pi}\Lambda(b(I))\vartheta,\ s(b(I))\right).
+\end{equation}
+改变 \(\vartheta\) 的代表只增加一个周期向量，所以定义良好。它在每个纤维上是自由传递作用的轨道参数化，故双射；其角方向微分为 \(Y_i\)，横向微分投影为 \(I\) 方向的恒等映射，所以是局部微分同胚。由此 \(\Psi_0\) 是整体微分同胚，给出了圆周值的\term[jiaobianliang]{角变量}[angle variable] \(\vartheta\)。
+
+\begin{proposition}\label{g4:prop:1102:angle-form}
+	在\eqref{g4:eq:1102:initial-angle-map}给出的坐标中，存在 \(A\) 上的光滑闭二形式 \(\beta\)，使
+	\begin{equation}\label{g4:eq:1102:angle-base-form}
+		\Psi_0^*\omega
+		=\sum_{i=1}^n\mathrm{d}\vartheta_i\wedge\mathrm{d}I_i
+		+\operatorname{pr}_A^*\beta.
+	\end{equation}
+	其中 \(\beta\) 正是初始截面在 \(I\) 参数下对 \(\omega\) 的拉回。
+\end{proposition}
+\begin{proof}
+	记 \(\Omega=\Psi_0^*\omega\)。由于 \((\Psi_0)_*\partial_{\vartheta_i}=Y_i=X_{I_i}\)，有
+	\(\iota_{\partial_{\vartheta_i}}\Omega=\mathrm{d}I_i\)。
+	因此
+	\(\Omega-\sum_i\mathrm{d}\vartheta_i\wedge\mathrm{d}I_i\)
+	插入任一角方向都为零，只含 \(\mathrm{d}I_j\wedge\mathrm{d}I_k\) 项。
+
+	每个 \(Y_i\) 是 Hamilton 场，其流保持 \(\omega\)，所以 \(\Omega\) 对全部角平移不变。刚才那些系数遂不依赖 \(\vartheta\)，得到来自 \(A\) 的二形式 \(\beta\)。两边取外微分，或直接拉回到截面 \(\vartheta=0\)，即得 \(\mathrm{d}\beta=0\)。在该截面上角微分项消失，因此 \(\beta=s^*\omega\)，这里已把 \(s\) 的参数由 \(b\) 改成 \(I\)。
+\end{proof}
+
+所以角变量的起点选择会影响剩余的横向配对。若截面本来是 Lagrange，\(\beta\) 已经为零；一般截面则需要再作一次随作用变量变化的角平移。
 
 \subsection{辛形式的标准表达}
 \label{g4:subsec:1102:04}
-待撰写
+
+闭二形式 \(\beta\) 定义在开球 \(A\) 上，因而能写成一个一形式的外微分。把这个一形式的系数直接加入角变量，就能消去\eqref{g4:eq:1102:angle-base-form}中的附加项。
+
+\begin{theorem}[Liouville--Arnold 邻域作用角定理]\label{g4:thm:1102:action-angle}
+	设 \((M^{2n},\omega)\)、\(n\ge1\)，为无边界、Hausdorff 且第二可数的辛流形，\(F=(f_1,\ldots,f_n):M\to\mathbb R^n\) 光滑，且 \(\{f_i,f_j\}=0\)。设 \(L\) 是 \(F^{-1}(b_0)\) 的非空紧连通分支，\(\operatorname{rank}\mathrm{d}F=n\) 在 \(L\) 上成立。则存在 \(L\) 的开邻域 \(U\)、开球 \(A\subset\mathbb R^n\)，以及辛同胚
+	\begin{equation}\label{g4:eq:1102:action-angle-map}
+		\Psi:\left(\mathbb T^n\times A,\
+		\sum_{i=1}^n\mathrm{d}\theta_i\wedge\mathrm{d}I_i\right)
+		\longrightarrow(U,\omega),\qquad
+		\mathbb T^n=(\mathbb R/2\pi\mathbb Z)^n,
+	\end{equation}
+	使每个 \(\mathbb T^n\times\{I\}\) 映到一个完整紧连通共同水平组件，且 \(F\Psi=b(I)\)，其中 \(b:A\to B\subset\mathbb R^n\) 为微分同胚。
+
+	邻域上可选 \(\lambda\) 满足 \(\omega=-\mathrm{d}\lambda\)，作用变量由\eqref{g4:eq:1102:action-integral}给出，并满足\eqref{g4:eq:1102:action-derivative}。对任意 \(H=h(F)\)，方程在这些坐标中为
+	\begin{equation}\label{g4:eq:1102:linear-hamilton-flow}
+		\dot I_i=0,\qquad
+		\dot\theta_i=\frac{\partial H}{\partial I_i}(I).
+	\end{equation}
+	因此每个纤维上的运动是速度恒定的环面平移。
+\end{theorem}
+\begin{proof}
+	\Cref{g4:lem:1102:compact-fibration,g4:lem:1102:smooth-period-basis}已经构造完整环面邻域及光滑周期基底；\cref{g4:prop:1102:action-derivative}给出作用坐标。\Cref{g4:prop:1102:angle-form}把尚需处理的部分归结为 \(A\) 上的闭二形式 \(\beta\)。
+
+	取球心 \(I^0\)，令
+	\[
+		\alpha_I(v)=\int_0^1t\,
+		\beta_{I^0+t(I-I^0)}(I-I^0,v)\,\mathrm{d}t,
+		\qquad
+		\alpha=\sum_i a_i(I)\,\mathrm{d}I_i.
+	\]
+	这是\cref{g4:lem:0803:relative-poincare}对以点为底的向量丛所给的径向同伦公式。该点上二形式的拉回为零，所以 \(\mathrm{d}\alpha=\beta\)；这里不需要 \(\beta\) 在球心作为环境二形式为零。各 \(a_i\) 光滑。
+
+	现在令
+	\[
+		\theta_i=\vartheta_i+a_i(I)\pmod{2\pi}.
+	\]
+	这是 \(\mathbb T^n\times A\) 的微分同胚，逆变换为
+	\(\vartheta_i=\theta_i-a_i(I)\)。并且
+	\[
+		\sum_i\mathrm{d}\theta_i\wedge\mathrm{d}I_i
+		=\sum_i\mathrm{d}\vartheta_i\wedge\mathrm{d}I_i
+		 +\sum_i\mathrm{d}a_i\wedge\mathrm{d}I_i
+		=\sum_i\mathrm{d}\vartheta_i\wedge\mathrm{d}I_i+\beta.
+	\]
+	因此 \(\Psi(\theta,I)=\Psi_0(\theta-a(I),I)\) 满足所需的辛拉回等式。角平移不改变纤维中的闭路绕行类，故前面定义的作用积分仍对应新的坐标基本圈。
+
+	最后写
+	\(X_H=\sum_i(u_i\partial_{\theta_i}+v_i\partial_{I_i})\)。
+	由 \(H\) 只依赖 \(I\)，矩形坐标中的收缩方程为
+	\[
+		\sum_i(u_i\,\mathrm{d}I_i-v_i\,\mathrm{d}\theta_i)
+		=\sum_i\frac{\partial H}{\partial I_i}\,\mathrm{d}I_i.
+	\]
+	所以 \(v_i=0\)、\(u_i=\partial H/\partial I_i\)，得到运动方程。其解为
+	\(I(t)=I(0)\)、\(\theta(t)=\theta(0)+t\nabla_IH(I(0))\) 模 \(2\pi\)，对全部实时间有定义。
+\end{proof}
+
+这样的 \((\theta,I)\) 称为\term[zuoyongjiaozuobiao]{作用角坐标}[action-angle coordinates]。定理给出的是角变量取值于环面的邻域坐标；把每个角限制在一个普通区间内，才得到 Euclid 意义下的 Darboux 坐标图。整个环面不能被一张单值实角坐标覆盖，但圆周值角变量在这里的整个邻域上有定义。Cannas da Silva 的定理5.14陈述作用角结论，并将邻域坐标的证明指向进一步文献；上述证明则从指定紧组件出发完成了邻域、周期和角平移的构造。\cite[第5.5节，定理5.14，第152--153页]{Cannas2006Symplectic}
+
+\begin{example}\label{g4:exm:1102:base-form-correction}
+	在 \(\mathbb T^2\times A\) 上考虑
+	\[
+		\omega=\mathrm{d}\vartheta_1\wedge\mathrm{d}I_1
+		+\mathrm{d}\vartheta_2\wedge\mathrm{d}I_2
+		+\kappa\,\mathrm{d}I_1\wedge\mathrm{d}I_2,
+		\qquad \kappa\in\mathbb R.
+	\]
+	它的 Hamilton 场 \(X_{I_i}\) 已经是 \(\partial_{\vartheta_i}\)，但截面 \(\vartheta=0\) 的拉回形式为
+	\(\kappa\,\mathrm{d}I_1\wedge\mathrm{d}I_2\)。取
+	\(\alpha=\kappa I_1\,\mathrm{d}I_2\)，便得到修正角
+	\[
+		\theta_1=\vartheta_1,\qquad
+		\theta_2=\vartheta_2+\kappa I_1.
+	\]
+	直接求微分可见 \(\omega=\mathrm{d}\theta_1\wedge\mathrm{d}I_1+
+	\mathrm{d}\theta_2\wedge\mathrm{d}I_2\)。这个例子说明，仅把场的周期归一化还不足以完成作用角坐标，截面的横向配对也必须处理。
+\end{example}
 
 \subsection{参数及格基变化}
 \label{g4:subsec:1102:05}
-待撰写
+
+作用变量记录的是纤维中的整数闭路与原始形式的配对；最初用哪些函数标记纤维，是另一项选择。下面分别考察重新标记参数、改选格基和改变角起点。
+
+\begin{proposition}\label{g4:prop:1102:action-angle-changes}
+	在上述作用角邻域内，有以下变换规则。
+	\begin{enumerate}
+		\item 若用 \(b'=h(b)\) 重新参数化，其中 \(h\) 是参数邻域之间的微分同胚，并用 \(F'=h(F)\) 的 Hamilton 场表示同一组周期闭路，则其周期矩阵为
+		\begin{equation}\label{g4:eq:1102:parameter-period-change}
+			\Lambda'(b')=\mathrm{D}h(b)^{-\mathsf T}\Lambda(b).
+		\end{equation}
+		作用积分本身不变。
+		\item 在连通参数邻域内，改选光滑整数周期基底并改选满足 \(-\mathrm{d}\lambda=\omega\) 的原始形式，只会把作用变量改成
+		\begin{equation}\label{g4:eq:1102:integral-affine-change}
+			I'=AI+c,\qquad A\in\operatorname{GL}(n,\mathbb Z),\
+			c\in\mathbb R^n,
+		\end{equation}
+		其中 \(A,c\) 为常量。
+		\item 两组适配同一环面纤维族的作用角坐标，在缩小的连通重叠域内满足
+		\begin{equation}\label{g4:eq:1102:angle-change}
+			I'=AI+c,\qquad
+			\theta'=A^{-\mathsf T}\theta+f(I')\pmod{2\pi}.
+		\end{equation}
+		对 \(f\) 的任一局部实值提升，辛条件等价于
+		\[
+			\mathrm{d}\left(\sum_i f_i(I')\,\mathrm{d}I'_i\right)=0.
+		\]
+		特别地，在足够小的开球上可写 \(f_i=\partial S/\partial I'_i\)，其中 \(S\) 为光滑函数。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	链式法则和 Hamilton 场的定义给出
+	\(X_{f'_a}=\sum_j(\partial h_a/\partial b_j)X_{f_j}\)。
+	因此新多时间 \(t'\) 对应旧多时间 \(\mathrm{D}h(b)^{\mathsf T}t'\)。同一闭路的周期列必须满足
+	\(\Lambda=\mathrm{D}h^{\mathsf T}\Lambda'\)，得到第一式。并且
+	\[
+		\Lambda'^{\mathsf T}\mathrm{d}b'
+		=\Lambda^{\mathsf T}\mathrm{D}h^{-1}\mathrm{D}h\,\mathrm{d}b
+		=\Lambda^{\mathsf T}\mathrm{d}b,
+	\]
+	与作用积分的微分公式相容。
+
+	若另一组周期基底为 \(\Lambda'=\Lambda C\)，则 \(C(b)\) 的每一列为整数向量，且 \(C(b)\in\operatorname{GL}(n,\mathbb Z)\)。它光滑而取值于离散集，所以在连通参数域上为常量。相应闭路的绕行类按列 \(C\) 组合；\(\lambda\) 在纤维上的限制闭，故其积分按同样整数系数组合，得到 \(I'=C^{\mathsf T}I\)。令 \(A=C^{\mathsf T}\) 即可。
+
+	再设原始形式从 \(\lambda\) 换成 \(\lambda+\eta\)，则 \(\mathrm{d}\eta=0\)。沿参数变化的闭路族作与\cref{g4:prop:1102:action-derivative}相同的积分求导，右端变成 \(\int\mathrm{d}\eta(V,T)=0\)。因此各个周期积分的改变量都是常数，给出 \(c\)。改变闭路的起点只产生同一纤维中的同伦，对积分没有影响。
+
+	两组作用角坐标各自的基本圈给出完整整数基底，各自的典范原始形式 \(\sum_i I_i\,\mathrm{d}\theta_i\)、\(\sum_i I'_i\,\mathrm{d}\theta'_i\) 的基本圈积分恰为 \(2\pi I_i\)、\(2\pi I'_i\)，故第二项给出 \(I'=AI+c\)。由
+	\[
+		X_{I'_i}=\sum_j A_{ij}X_{I_j},\qquad
+		X_{I_j}=\partial_{\theta_j},\qquad
+		X_{I'_i}=\partial_{\theta'_i},
+	\]
+	得到 \(\partial\theta'/\partial\theta=A^{-\mathsf T}\)。所以
+	\(\theta'-A^{-\mathsf T}\theta\) 沿每个连通纤维恒定，是参数的圆周值函数 \(f(I')\)。局部选其实值提升后，代入二形式等式有
+	\[
+		\sum_i\mathrm{d}\theta'_i\wedge\mathrm{d}I'_i
+		=\sum_i\mathrm{d}\theta_i\wedge\mathrm{d}I_i
+		 +\sum_i\mathrm{d}f_i\wedge\mathrm{d}I'_i.
+	\]
+	因此辛条件就是所列闭性。不同提升相差 \(2\pi\) 的整数常向量，不改变这个条件。在小开球上，闭一形式由径向同伦得到原始函数 \(S\)，遂有 \(f_i=\partial S/\partial I'_i\)。
+\end{proof}
+
+格基变化只能使用整数可逆矩阵。任意实线性变换虽然能重新组合微分独立的第一积分，却未必把基本闭路变成整数基底；若只取某个真子格，得到的角参数会覆盖同一环面多次。作用角坐标同时保留了辛配对和闭路的整周期信息。下一节将考察这些局部格基沿较大参数空间移动时，为什么可能无法整体相容。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

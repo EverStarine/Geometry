@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 27.1 Ricci 流的几何退化
 % 纲要位置：几何学计划纲要.md，第 3244 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,125 @@
 \section{Ricci 流的几何退化}
 \label{g3:sec:2701}
 
-待撰写
+沿曲率调整度量，希望同时改变各个方向的长度。Ricci 张量与度量都是对称二张量，因此可以直接把前者作为后者的时间导数。不过，坐标变换也会改变度量分量，曲率方程的最高阶项必须容纳这种自由。本节先明确方程的缩放，再利用第25章的线性化找出退化，最后加入一个由背景联络确定的 Lie 导数，使方程能够使用第26章的强抛物理论。
 
 \subsection{方程、缩放和微分同胚不变性}
 \label{g3:subsec:2701:01}
-待撰写
+\begin{definition}\label{g3:def:ricci-flow}
+	设 \(M^n\) 为光滑无边界流形，\(n\ge2\)，\(I\) 为时间区间。联合光滑的黎曼度量族 \(g(t)\)、\(t\in I\)，若满足
+	\begin{equation}\label{g3:eq:ricci-flow}
+		\partial_tg=-2\operatorname{Ric}_{g(t)},
+	\end{equation}
+	则称为 \(M\) 上的\term[Ricci liu]{Ricci 流}[Ricci flow]。求导时固定流形上的点和切向量，右侧使用当前度量的 Ricci 协变二张量。
+\end{definition}
+
+在正交特征方向 \(v\) 上，\(\partial_tg(v,v)=-2\operatorname{Ric}(v,v)\)：正 Ricci 方向缩短，负 Ricci 方向增长。这里调整的是内在度量，并未把 \(M\) 放入一个环境空间。常数 \(-2\) 使消除坐标退化后的最高阶项具有通常热方程的系数。
+
+\begin{proposition}\label{g3:prop:ricci-flow-invariance}
+	设 \(g(t)\) 是 \(M\) 上的光滑 Ricci 流，\(c>0\)，\(\psi:M\to M\) 为时间不变的微分同胚。则 \(\psi^*g(t)\) 与 \(g_c(t)=c\,g(t/c)\) 在各自定义的时间区间上也满足 Ricci 流。对每个光滑度量 \(g\)，有
+	\begin{equation}\label{g3:eq:ricci-flow-scaling}
+		\operatorname{Ric}_{cg}=\operatorname{Ric}_g,\quad
+		s_{cg}=c^{-1}s_g,\quad
+		|\mathrm{Rm}_{cg}|_{cg}=c^{-1}|\mathrm{Rm}_g|_g,\quad
+		\mu_{cg}=c^{n/2}\mu_g.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	Levi--Civita 联络由度量自然确定，所以拉回联络的曲率收缩给 \(\operatorname{Ric}_{\psi^*g}=\psi^*\operatorname{Ric}_g\)。时间求导与固定拉回交换，得到第一种不变性。
+	常数缩放使 Koszul 公式的两边同乘 \(c\)，故联络以及 \((1,3)\) 型曲率不变。Ricci 是这种曲率的自然迹，因而也不变。标量曲率再用逆度量取迹，所以乘 \(c^{-1}\)。协变四阶曲率张量乘 \(c\)，其平方范数中的四个逆度量共乘 \(c^{-4}\)，故范数乘 \(c^{-1}\)。体积密度由行列式平方根给出最后一式。最后
+	\(\partial_t(cg(t/c))=-2\operatorname{Ric}_{g(t/c)}=-2\operatorname{Ric}_{g_c(t)}\)，证明时间与度量的联合缩放。
+\end{proof}
+
+\begin{example}\label{g3:exm:ricci-flow-einstein-scaling}
+	若 \(\operatorname{Ric}_{g_0}=\lambda g_0\)，其中 \(\lambda\) 为常数，则
+	\[
+		g(t)=(1-2\lambda t)g_0
+	\]
+	在 \(1-2\lambda t>0\) 的区间上求解。直接验证时必须保留 \(\operatorname{Ric}_{g(t)}=\lambda g_0\)，而相对于当前度量的 Einstein 常数是 \(\lambda/(1-2\lambda t)\)。正、零、负 \(\lambda\) 分别给出收缩、静止与膨胀。特别地，单位圆球的解为 \((1-2(n-1)t)g_{S^n}\)，其截面曲率为 \((1-2(n-1)t)^{-1}\)。
+\end{example}
+
+时间依赖的微分同胚会产生额外项。若 \(\phi_t\) 是光滑微分同胚族，\(X_t=\partial_t\phi_t\circ\phi_t^{-1}\)，则
+\begin{equation}\label{g3:eq:ricci-flow-time-pullback}
+	\partial_t(\phi_t^*g(t))
+	=\phi_t^*\bigl(\partial_tg+\mathcal L_{X_t}g\bigr).
+\end{equation}
+确实，在坐标式 \((\phi_t^*g)_{ij}=g_{ab}(\phi_t,t)\partial_i\phi_t^a\partial_j\phi_t^b\) 中求导，移动取值点与两个 Jacobian 因子的导数恰给 Lie 导数的三项。这一公式将把加入的规范项与参数运动相互转换。
 
 \subsection{线性化中的非抛物方向}
 \label{g3:subsec:2701:02}
-待撰写
+固定一个光滑度量 \(g\)，把 \(h\) 看作度量的变分。\Cref{g3:thm:ricci-scalar-linearization}已经在任意维局部计算中证明
+\[
+	\mathrm D(-2\operatorname{Ric})_g(h)
+	=-\Delta_Lh+2\delta_g^*\beta_gh,
+	\qquad \beta_gh=\delta_gh+\tfrac12\mathrm d\operatorname{tr}_gh.
+\]
+这里 \((\delta h)_j=-\nabla^ih_{ij}\)，\(2\delta^*\omega=\nabla_i\omega_j+\nabla_j\omega_i\)，而 \(\Delta_L\) 的主部是非负粗 Laplace 算子。该公式的推导不使用第25章讨论 Einstein 模空间时的 \(n\ge3\) 限制，所以也适用于曲面。
+
+\begin{proposition}\label{g3:prop:ricci-flow-symbol-degeneracy}
+	设 \(g\) 为光滑黎曼度量。对非零实余向量 \(\xi\)，按 \(\partial_j\mapsto i\xi_j\) 取主符号，则
+	\begin{equation}\label{g3:eq:ricci-flow-degenerate-symbol}
+		\bigl[\sigma_2(\mathrm D(-2\operatorname{Ric})_g)(\xi)h\bigr]_{ij}
+		=-|\xi|^2h_{ij}+\xi_i\xi^ah_{aj}+\xi_j\xi^ah_{ai}
+		-\xi_i\xi_j\operatorname{tr}_gh.
+	\end{equation}
+	对任意余向量 \(\eta\)，张量 \(h=\xi\otimes\eta+\eta\otimes\xi\) 都属于此符号的核。因此 Ricci 参数方程不是对全部度量分量的强抛物系统。
+\end{proposition}
+\begin{proof}
+	在一点取正交坐标。\(-\Delta_L\) 的符号为 \(-|\xi|^2h\)，而 \(\beta h\) 的符号为 \(-i\xi^ah_{aj}+\tfrac i2\xi_j\operatorname{tr}h\)。再作用 \(2\delta^*\) 就得到所示三项。
+	对给定 \(h\)，有 \(\xi^ah_{aj}=|\xi|^2\eta_j+\xi_j\langle\xi,\eta\rangle\) 以及 \(\operatorname{tr}h=2\langle\xi,\eta\rangle\)。代入后全部抵消。非零 \(\eta\) 给出非零 \(h\)，所以不存在强抛物性要求的严格符号下界。
+\end{proof}
+
+核中的张量正是 \(\mathcal L_Xg\) 的一阶符号形式。这种退化也可从自然性看出：若 \(g_0\) 为 Ricci 平坦度量，任意固定微分同胚拉回的度量仍 Ricci 平坦；直接以度量分量衡量变化，就包含大量只改变点的标记的方向。规范的任务是给这些方向补上确定的演化。
 
 \subsection{DeTurck 向量场与严格抛物方程}
 \label{g3:subsec:2701:03}
-待撰写
+固定一个光滑背景度量 \(\bar g\)，令 \(\bar\nabla\) 为其 Levi--Civita 联络。两条联络之差
+\[
+	C^k_{ij}=\Gamma(g)^k_{ij}-\Gamma(\bar g)^k_{ij}
+	=\frac12g^{ka}\bigl(\bar\nabla_i g_{ja}+\bar\nabla_j g_{ia}-\bar\nabla_a g_{ij}\bigr)
+\]
+是张量。于是可以定义全局向量场
+\begin{equation}\label{g3:eq:deturck-vector-field}
+	W(g,\bar g)^k\coloneqq g^{ij}C^k_{ij}.
+\end{equation}
+它称为\term[DeTurck xiangliangchang]{DeTurck 向量场}[DeTurck vector field]。\footnote{Dennis M. DeTurck（1954年生），美国数学家，研究偏微分方程、黎曼几何及给定 Ricci 曲率问题；其规范方法用于把 Ricci 流化为强抛物方程。}相应的\term[Ricci DeTurck liu]{Ricci--DeTurck 流}[Ricci--DeTurck flow]为
+\begin{equation}\label{g3:eq:ricci-deturck-flow}
+	\partial_tg=-2\operatorname{Ric}_g+\mathcal L_{W(g,\bar g)}g.
+\end{equation}
+
+\begin{proposition}\label{g3:prop:ricci-deturck-parabolic}
+	设 \(M\) 为光滑流形，\(\bar g\) 为固定光滑度量。在正定对称二张量的开集上，式\eqref{g3:eq:ricci-deturck-flow}可写为
+	\begin{equation}\label{g3:eq:ricci-deturck-principal}
+		\partial_tg_{ij}
+		=g^{ab}\bar\nabla_a\bar\nabla_b g_{ij}
+		+\mathcal Q_{ij}(x,g,\bar\nabla g),
+	\end{equation}
+	其中 \(\mathcal Q\) 对所示变量光滑。其主部在 \(\operatorname{Sym}^2\mathrm T^*M\) 上为标量系数乘恒等算子；在 \(c^{-1}\bar g\le g\le c\bar g\) 的区域上一致强抛物。
+\end{proposition}
+\begin{proof}
+	先只保留局部坐标中的二阶度量导数，记所有至多一阶的项为 \(Q\)。从联络曲率公式得到
+	\[
+		2\operatorname{Ric}_{ij}
+		=g^{ab}\bigl(\partial_a\partial_i g_{bj}
+		+\partial_a\partial_j g_{bi}-\partial_a\partial_b g_{ij}
+		-\partial_i\partial_j g_{ab}\bigr)+Q_{ij}.
+	\]
+	降低 \(W\) 的指标后，含度量一阶导数的部分为
+	\(W_j=g^{ab}(\partial_a g_{bj}-\tfrac12\partial_jg_{ab})\)；背景联络项只依赖 \(x,g\)。因此 Lie 导数的二阶部分为
+	\[
+		(\mathcal L_Wg)_{ij}
+		=g^{ab}\bigl(\partial_i\partial_a g_{bj}
+		+\partial_j\partial_a g_{bi}-\partial_i\partial_jg_{ab}\bigr)+Q'_{ij}.
+	\]
+	将两式按 \(-2\operatorname{Ric}+\mathcal L_Wg\) 相加，混合二阶导数相消，只留下 \(g^{ab}\partial_a\partial_b g_{ij}\)。将普通导数换成固定背景的协变导数，只改变光滑低阶项，得到式\eqref{g3:eq:ricci-deturck-principal}。
+	若 \(\xi\) 为余向量、\(v\) 为对称二张量，主二次型是 \(g^{ab}\xi_a\xi_b|v|_{\bar g}^2\)，在所给区域至少为 \(c^{-1}|\xi|_{\bar g}^2|v|_{\bar g}^2\)。这符合\cref{g3:def:quasilinear-strong-parabolicity}的定义。
+\end{proof}
+
+还可在线性层面核对所选符号。在 \(g=\bar g\) 处，\(W=0\)，联络变分公式给
+\[
+	\bigl(\mathrm DW_{\bar g}(h)\bigr)^\flat
+	=\nabla^ih_{ij}-\tfrac12\nabla_j\operatorname{tr}h
+	=-\beta_{\bar g}h.
+\]
+所以 \(\mathrm D(\mathcal L_Wg)=-2\delta^*\beta h\)，恰好消去 Ricci 线性化中的退化项，剩下 \(-\Delta_Lh\)。这个计算也固定了下一节拉回微分同胚必须采用 \(-W\) 作为速度的符号。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

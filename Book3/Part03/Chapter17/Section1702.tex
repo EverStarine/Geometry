@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 17.2 球丛上的转移证明
+% 纲要标题：### 17.2 Gauss–Bonnet–陈定理的转移证明
 % 纲要位置：几何学计划纲要.md，第 2792 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -13,28 +13,315 @@
 % 
 % 纲要内容结束
 
-\section{球丛上的转移证明}
+\section{Gauss–Bonnet–陈定理的转移证明}
 \label{g3:sec:1702}
 
-待撰写
+Euler 形式已经由曲率构造出来，但其积分为什么是一个拓扑整数，还需要把曲率与可计数的对象联系起来。第二卷第22.3.3小节曾通过 Euler 类的曲率代表给出这一比较。本节给出另一种完整证明：把 Euler 形式拉到单位球丛，利用那里的典范非零截面构造原形式；再用一个向量场把原形式拉回穿孔流形，孔洞的边界积分便读出零点指标。球丛转移与零点计数相结合的思路来自陈省身的内蕴证明\cite[第2--3节，第749--752页]{Chern1944GaussBonnet}。这里以两联络之间的转移公式组织计算，并逐项核对纤维上的常数与边界方向。
 
 \subsection{拉回丛的典范截面}
 \label{g3:subsec:1702:01}
-待撰写
+先把切丛暂时换成一般的定向 Euclid 丛。设 \(E\to B\) 为光滑无边界流形上的定向实秩 \(2m\) 丛，\(m\ge1\)，带光滑纤维内积及相容联络 \(\nabla\)。其单位球丛是
+\[
+	S(E)=\{(x,v):x\in B,\ v\in E_x,\ |v|=1\},
+	\qquad \pi:S(E)\longrightarrow B.
+\]
+正向正交平凡化把它写成 \(U\times S^{2m-1}\)；换架属于 \(\operatorname{SO}(2m)\)，因而保持球面方向。每根纤维 \(S(E_x)\) 都采用有向空间 \(E_x\) 中单位球的外法向优先边界取向。
+
+\ProseParagraphBreak
+
+拉回丛 \(\pi^*E\to S(E)\) 的纤维在 \((x,v)\) 处是 \(E_x\)，所以它有一个无须选择的单位截面
+\begin{equation}\label{g3:eq:sphere-tautological-section}
+	u(x,v)=v.
+\end{equation}
+这就是球丛上的\term[qiuceng dianfan danwei jiemian]{典范单位截面}[tautological unit section]。它不等于底丛 \(E\) 上的非零截面：每个底点上所有可能方向都仍保留在球丛中。记
+\[
+	D=\pi^*\nabla,\qquad w=Du\in\Omega^1(S(E);\pi^*E).
+\]
+度量相容性给出 \(\langle u,w\rangle=\frac12\mathrm d|u|^2=0\)。在正交标架中，\(u\) 是列向量，\(w=\mathrm du+\omega u\)；转置只作用于纤维指标。
+
+\begin{lemma}\label{g3:lem:tautological-parallel-connection}
+	设 \(E\to B\) 为光滑无边界流形上的定向实秩 \(2m\ge2\) Euclid 丛，\(\nabla\) 为相容联络。在其单位球丛上取式\eqref{g3:eq:sphere-tautological-section}的截面 \(u\)，令 \(D=\pi^*\nabla\)、\(w=Du\)。则
+	\begin{equation}\label{g3:eq:tautological-parallel-connection}
+		D^0=D+C,\qquad C=uw^{\mathsf T}-wu^{\mathsf T}
+	\end{equation}
+	是 \(\pi^*E\) 上的相容联络，满足 \(D^0u=0\)。它的 Euler 形式恒为零。
+\end{lemma}
+\begin{proof}
+	这里的表达式内在地指
+	\[
+		C(Z)v=u\langle w(Z),v\rangle-w(Z)\langle u,v\rangle,
+		\qquad Z\in\mathrm T S(E),\ v\in\pi^*E.
+	\]
+	所以 \(C\) 是全局定义的丛自同态值一形式。交换 \(v\) 与另一个纤维向量，可直接验证 \(C(Z)\) 斜对称；因此给相容联络 \(D\) 加上 \(C\) 后仍相容。又因 \(|u|=1\)、\(\langle u,w\rangle=0\)，有 \(Cu=-w\)，从而 \(D^0u=Du+Cu=0\)。
+
+	记 \(D^0\) 的曲率为 \(\Omega^0\)。由 \((D^0)^2u=0\)，得到 \(\Omega^0u=0\)。在任一点附近，将 \(u\) 补成正向正交标架，其曲率矩阵的第一列为零，斜对称性使第一行也为零。Pfaffian 展开中的每个乘积都含指标 \(1\)，因而每项为零。故 \(e(D^0)=0\)。
+\end{proof}
+
+这个修改保留了正交结构，同时使一条单位方向平行。Pfaffian 必须使用全部 \(2m\) 个纤维方向；当曲率在其中一条方向上消失时，Euler 形式也就消失。这正是选择球丛的作用。
 
 \subsection{转移形式及其外微分}
 \label{g3:subsec:1702:02}
-待撰写
+将上一节的联络转移公式用于 \(D^0\) 与 \(D\)。记
+\[
+	A=D-D^0=-C,\qquad D^t=D^0+tA,\qquad 0\le t\le1,
+\]
+并以 \(\Omega^t\) 表示 \(D^t\) 的曲率。定义 \(S(E)\) 上的 \(2m-1\) 形式
+\begin{equation}\label{g3:eq:sphere-euler-transgression}
+	\Psi_\nabla=-\frac{m}{(2\pi)^m}
+	\int_0^1\operatorname{Pf}
+	\bigl(A,\underbrace{\Omega^t,\ldots,\Omega^t}_{m-1\text{ 个}}\bigr)\,\mathrm dt.
+\end{equation}
+\symidx{\(\Psi_\nabla\)：单位球丛上的归一化 Euler 转移形式}
+当 \(m=1\) 时没有曲率因子，积分式就是 \(-A_{12}/(2\pi)\)。一般情形中，一个一形式与 \(m-1\) 个二形式给出次数 \(2m-1\)。对称极化 \(\operatorname{Pf}(A,\Omega^t,\ldots,\Omega^t)\) 采用上一节的归一化。
+
+\begin{proposition}\label{g3:prop:sphere-euler-transgression-differential}
+	设 \(E\to B\) 为光滑无边界流形上的定向实秩 \(2m\ge2\) Euclid 丛，\(\nabla\) 为相容联络。式\eqref{g3:eq:sphere-euler-transgression}定义一个全局光滑实形式，并满足
+	\begin{equation}\label{g3:eq:sphere-euler-transgression-differential}
+		\mathrm d\Psi_\nabla=-\pi^*e(\nabla).
+	\end{equation}
+	此构造在保向等距丛同构及联络拉回下自然。
+\end{proposition}
+\begin{proof}
+	\(D,D^0\) 都是同一 Euclid 丛上的全局相容联络，其差 \(A\) 是张量。换正交标架时，\(A\) 与 \(\Omega^t\) 同时共轭；Pfaffian 极化的不变性说明积分中的局部表达粘合成全局形式。对光滑被积形式在紧参数区间积分，也保持光滑性。
+
+	由\cref{g3:thm:euler-chern-weil}及式\eqref{g3:eq:euler-transgression}，
+	\[
+		\mathrm d\Psi_\nabla
+		=-\bigl(e(D)-e(D^0)\bigr)
+		=-\pi^*e(\nabla).
+	\]
+	最后一步用了前一引理及曲率对拉回的自然性。所有构造只使用单位截面、联络、内积、外积和保向不变多项式；逐项拉回便得到自然性。
+\end{proof}
+
+等式前面的负号是有意选择的。稍后从底流形挖去小球时，新边界的外法向指向被挖去的球内；这会再产生一个负号。两者相消之后，正的局部指标才给 Euler 积分贡献正数。不过，仅有外微分等式还不能决定常数：还须证明 \(\Psi_\nabla\) 沿每根有向球面纤维的积分恰为 \(1\)。
 
 \subsection{纤维积分的归一化}
 \label{g3:subsec:1702:03}
-待撰写
+固定 \(x\in B\)。沿纤维 \(S(E_x)\)，拉回联络 \(D\) 没有底方向的联络项；选 \(E_x\) 的一个正向正交基，就把它识别成固定向量空间 \(\mathbb R^{2m}\) 上的平凡联络 \(\mathrm d\)。因此这一限制上的全部计算只涉及单位球面的坐标 \(u_1,\ldots,u_{2m}\)，与底空间曲率无关。
+
+\begin{theorem}\label{g3:thm:sphere-euler-angular-form}
+	设 \(E\to B\) 为光滑无边界流形上的定向实秩 \(2m\ge2\) Euclid 丛，\(\nabla\) 为相容联络。式\eqref{g3:eq:sphere-euler-transgression}的形式满足
+	\[
+		\mathrm d\Psi_\nabla=-\pi^*e(\nabla),\qquad
+		\int_{S(E_x)}\Psi_\nabla=1\quad(x\in B).
+	\]
+	更具体地，在每根纤维的正向正交坐标中，
+	\begin{equation}\label{g3:eq:sphere-angular-normalization}
+		\left.\Psi_\nabla\right|_{S(E_x)}
+		=\frac{(m-1)!}{2\pi^m}\,\sigma_{2m-1},
+		\qquad
+		\sigma_{2m-1}=
+		\sum_{i=1}^{2m}(-1)^{i-1}u_i\,
+		\mathrm du_1\wedge\cdots\wedge\widehat{\mathrm du_i}
+		\wedge\cdots\wedge\mathrm du_{2m}.
+	\end{equation}
+	这里 \(\sigma_{2m-1}\) 是外法向优先的标准球面体积形式。
+\end{theorem}
+\begin{proof}
+	外微分公式已经证明。以下限制在一根纤维上；这时 \(w=\mathrm du\)，于是
+	\[
+		C=u\,\mathrm du^{\mathsf T}-\mathrm du\,u^{\mathsf T},
+		\quad A=-C,\quad D^t=\mathrm d+(1-t)C,
+		\quad \Omega^t=(1-t)\mathrm dC+(1-t)^2C\wedge C.
+	\]
+	整个表达在 \(\operatorname{SO}(2m)\) 的常值换架下不变。该群在球面上传递，所以只需在 \(u=e_1\) 处计算。在这里 \(\mathrm du_1=0\) 于球面的切空间，记 \(\theta_a=\mathrm du_a\)、\(2\le a\le2m\)。有
+	\[
+		C_{1a}=\theta_a,\quad C_{a1}=-\theta_a,\quad
+		A_{1a}=-\theta_a,\quad A_{a1}=\theta_a.
+	\]
+	其余 \(C_{ab}\) 在此点为零，但它们的外微分不能省略。由完整公式求导，
+	\[
+		\mathrm dC=2\,\mathrm du\wedge\mathrm du^{\mathsf T},
+		\qquad
+		(\mathrm dC)_{ab}=2\theta_a\wedge\theta_b,
+		\qquad
+		(C\wedge C)_{ab}=-\theta_a\wedge\theta_b.
+	\]
+	因此
+	\begin{equation}\label{g3:eq:angular-fiber-path-curvature}
+		\Omega^t_{ab}=(1-t^2)\theta_a\wedge\theta_b
+		\quad(a,b\ge2),\qquad
+		\Omega^t_{1a}=\Omega^t_{a1}=0.
+	\end{equation}
+
+	现在展开极化 Pfaffian。因为只有一个奇次因子 \(A\)，将它越过二次曲率因子不产生符号，所以对称极化可写成
+	\[
+		\operatorname{Pf}(A,\Omega^t,\ldots,\Omega^t)
+		=\frac1{2^m m!}\sum_{\tau\in S_{2m}}\operatorname{sgn}(\tau)
+		A_{\tau(1)\tau(2)}
+		\wedge\Omega^t_{\tau(3)\tau(4)}
+		\wedge\cdots\wedge\Omega^t_{\tau(2m-1)\tau(2m)}.
+	\]
+	非零项必须让指标 \(1\) 出现在第一对中：有两种位置、\(2m-1\) 种配对指标，以及余下 \((2m-2)!\) 种排列，总计 \(2(2m-1)!\) 项。每项均等于
+	\(- (1-t^2)^{m-1}\theta_2\wedge\cdots\wedge\theta_{2m}\)：
+	若 \(1\) 在第一位，负号来自 \(A_{1a}=-\theta_a\)；若它在第二位，置换符号再反转一次。其余排列的符号与把楔积重排为 \(2,\ldots,2m\) 的符号相消。因此
+	\[
+		\operatorname{Pf}(A,\Omega^t,\ldots,\Omega^t)
+		=-\frac{(2m-1)!}{2^{m-1}m!}(1-t^2)^{m-1}
+		\theta_2\wedge\cdots\wedge\theta_{2m}.
+	\]
+	当 \(m=1\) 时，曲率因子为空积，计数公式仍给出 \(-\theta_2\)。
+
+	设 \(I_m=\int_0^1(1-t^2)^{m-1}\,\mathrm dt\)。有 \(I_1=1\)，对 \(m\ge2\) 将 \(t(1-t^2)^{m-1}\) 的导数积分，得到
+	\[
+		(2m-1)I_m=2(m-1)I_{m-1},\qquad
+		I_m=\frac{2^{2m-2}((m-1)!)^2}{(2m-1)!}.
+	\]
+	代入式\eqref{g3:eq:sphere-euler-transgression}，其负号与刚才的负号相消，得到
+	\[
+		\Psi_\nabla
+		=\frac{m}{(2\pi)^m}\,
+		\frac{(2m-1)!}{2^{m-1}m!}\,I_m\,
+		\theta_2\wedge\cdots\wedge\theta_{2m}
+		=\frac{(m-1)!}{2\pi^m}
+		\theta_2\wedge\cdots\wedge\theta_{2m}.
+	\]
+	在 \(u=e_1\) 处，外法向是 \(e_1\)，因此 \((e_2,\ldots,e_{2m})\) 正是球面的正向基，\(\sigma_{2m-1}=\theta_2\wedge\cdots\wedge\theta_{2m}\)。旋转不变性遂给出整根纤维上的式\eqref{g3:eq:sphere-angular-normalization}。
+
+	最后直接核算球面积。逐坐标 Gaussian 积分和极坐标分别给出
+	\[
+		\pi^m=\int_{\mathbb R^{2m}}e^{-|z|^2}\,\mathrm dz
+		=\operatorname{Vol}(S^{2m-1})
+		\int_0^\infty e^{-r^2}r^{2m-1}\,\mathrm dr.
+	\]
+	令 \(s=r^2\)，再分部积分 \(m-1\) 次，径向积分为 \((m-1)!/2\)。所以球面积为 \(2\pi^m/(m-1)!\)，与前面的系数相乘恰为一。
+\end{proof}
+
+这说明 \(\Psi_\nabla\) 的纤维限制就是总积分为一的角形式。它在整个球丛上一般不闭，外微分恰好记录底丛的 Euler 形式。若底丛有全局单位截面 \(s:B\to S(E)\)，则拉回后得到
+\[
+	e(\nabla)=-\mathrm d(s^*\Psi_\nabla).
+\]
+因而非零截面使 Euler 形式恰当；零点存在时，缺少的原形式将由零点周围的边界积分补足。
 
 \subsection{孤立零点附近的边界积分}
 \label{g3:subsec:1702:04}
-待撰写
+下面把底空间与丛的秩都取为 \(n=2m\)。设 \(M^n\) 定向，\(E\to M\) 也定向，并有光滑截面 \(s\)，它在点 \(p\) 有孤立零点。在以 \(p\) 为中心的正向坐标球 \(B_\varepsilon\) 上选择正向正交丛标架，写截面系数为 \(F(x)\in\mathbb R^n\)。在 \(\partial B_\varepsilon\) 上归一化，得到
+\[
+	f_\varepsilon:S^{n-1}\longrightarrow S^{n-1},
+	\qquad f_\varepsilon(\theta)
+	=\frac{F(\varepsilon\theta)}{|F(\varepsilon\theta)|}.
+\]
+其映射度称为截面的\term[jiemian jubu zhibiao]{局部指标}[local index]，记为 \(\operatorname{ind}_p(s)\)。源球面和目标球面均取外法向优先方向。改变小半径给出球壳中的归一化同伦；改变正向丛标架时，变换矩阵在球上可沿径向缩到中心的常值正交矩阵，后者的球面度为 \(+1\)。改变正向底坐标，则由第二卷第16.3.1小节中局部度的坐标不变性保持同一个整数。因此指标与这些选择无关。
+
+\ProseParagraphBreak
+
+当 \(E=\mathrm TM\) 并使用与 \(M\) 一致的方向时，这就是第二卷第16.3.1小节的向量场局部指标。那里使用坐标切标架；将它正交化得到正向标架，两个分量映射相差一个处处正行列式的矩阵函数。将矩阵函数缩到中心，再用正行列式线性映射的度为 \(+1\)，可知两种定义相同。第二卷第16.1.2小节的映射度比较定理还给出：对光滑 \(f:S^{n-1}\to S^{n-1}\)，
+\begin{equation}\label{g3:eq:angular-degree-integral}
+	\int_{S^{n-1}}f^*\left(\frac{\sigma_{n-1}}{\operatorname{Vol}(S^{n-1})}\right)
+	=\deg f.
+\end{equation}
+这里 \(n-1\ge1\)，所以正好适用该处连通闭定向流形的积分公式。
+
+\begin{proposition}\label{g3:prop:angular-local-index-integral}
+	设 \(M^{2m}\) 为定向光滑无边界流形，\(m\ge1\)，\(E\to M\) 为定向实秩 \(2m\) Euclid 丛，\(\nabla\) 为相容联络。设光滑截面 \(s\) 在闭坐标球 \(\overline B_\varepsilon\) 内恰有一个零点 \(p\)，且该零点在球内。令 \(\widehat s=s/|s|\)，并用上述构造定义 \(\Psi_\nabla\)。给 \(\partial B_\varepsilon\) 取球的外法向优先方向，则
+	\begin{equation}\label{g3:eq:angular-local-index-integral}
+		\int_{\partial B_\varepsilon}\widehat s^*\Psi_\nabla
+		=\operatorname{ind}_p(s)-\int_{B_\varepsilon}e(\nabla).
+	\end{equation}
+	特别地，若这些坐标球以 \(p\) 为中心、半径趋零，左边趋于 \(\operatorname{ind}_p(s)\)。零点不要求非退化。
+\end{proposition}
+\begin{proof}
+	先把坐标球写成以 \(p\) 为零点的 \(\{|x|\le\varepsilon\}\)，并在其中取正向正交平凡化。考虑从边界上的单位截面到中心纤维的同伦，写成从中心向边界的参数方向：
+	\[
+		H:[0,1]\times S^{2m-1}\longrightarrow S(E),\qquad
+		H(t,\theta)=(t\varepsilon\theta,f_\varepsilon(\theta)).
+	\]
+	第二分量表示所选正交标架中的单位向量。即使 \(s\) 在零点非常退化，这个同伦也光滑，因为对固定的 \(\varepsilon\)，只使用非零的边界值。它在 \(t=1\) 等于 \(\widehat s\) 的边界参数化，在 \(t=0\) 则是目标纤维中的 \(f_\varepsilon\)。
+
+	给圆柱取 \(\mathrm dt\) 在前、球面方向在后的乘积取向。其边界在 \(t=1\) 取正号、在 \(t=0\) 取负号，故 Stokes 定理和式\eqref{g3:eq:sphere-euler-transgression-differential}给出
+	\[
+		\int_{\partial B_\varepsilon}\widehat s^*\Psi_\nabla
+		-\int_{S^{2m-1}}f_\varepsilon^*
+		\left(\left.\Psi_\nabla\right|_{S(E_p)}\right)
+		=-\int_{[0,1]\times S^{2m-1}}(\pi\circ H)^*e(\nabla).
+	\]
+	第二项由纤维归一化及式\eqref{g3:eq:angular-degree-integral}等于 \(\operatorname{ind}_p(s)\)。底映射 \(\pi\circ H(t,\theta)=t\varepsilon\theta\) 是通常的径向极坐标参数化。\(t>0\) 时，它按 \(\mathrm dt\) 在前的方向正向覆盖穿孔球一次；\(t=0\) 的退化集合不影响顶次积分。因此右边恰为 \(-\int_{B_\varepsilon}e(\nabla)\)，得到所述等式。
+
+	若原球的中心未取在 \(p\)，可用保持边界方向的球内坐标调整将 \(p\) 移到中心；或者先取以 \(p\) 为中心的更小球，再在两球之间对 \(\widehat s^*\Psi_\nabla\) 应用 Stokes 定理，得到相同公式。最后，Euler 形式光滑，在固定坐标中系数有界，因此 \(\int_{B_\varepsilon}e(\nabla)=O(\varepsilon^{2m})\)，极限成立。
+\end{proof}
+
+证明中的同伦只移动底点，不改变记录下来的边界方向。这使误差完全由光滑的 Euler 形式在小球内的积分控制，无须对 \(\widehat s\) 的高阶导数作任何估计。因而具有较高绕转数的退化零点，与非退化零点一样适用。
 
 \subsection{Poincaré–Hopf 与整体 Euler 公式}
 \label{g3:subsec:1702:05}
-待撰写
+现在令 \(M\) 闭。有限个零点给出有限个孔洞，把前一命题的边界贡献相加，就能恢复整个 Euler 积分。
+
+\begin{theorem}\label{g3:thm:euler-form-index-sum}
+	设 \(M^{2m}\) 为闭定向光滑流形，\(m\ge1\)，\(E\to M\) 为定向实秩 \(2m\) Euclid 丛，\(\nabla\) 为相容联络。若光滑截面 \(s\) 只有孤立零点，则零点有限，并且
+	\begin{equation}\label{g3:eq:euler-form-index-sum}
+		\int_Me(\nabla)=\sum_{s(p)=0}\operatorname{ind}_p(s).
+	\end{equation}
+	允许 \(s\) 处处非零，此时右边为空和。
+\end{theorem}
+\begin{proof}
+	零点集是紧空间中的闭离散集，故有限，记为 \(p_1,\ldots,p_k\)。在各点周围取两两不交的正向坐标球 \(B_i\)，闭球内无其他零点，令
+	\[
+		M_0=M\setminus\bigcup_{i=1}^k\operatorname{Int}B_i.
+	\]
+	这里 \(M_0\) 保留了各小球边界，是紧带边界流形。在其上 \(\widehat s\) 全局有定义，且
+	\(\mathrm d(\widehat s^*\Psi_\nabla)=-e(\nabla)\)。
+
+	必须区分同一个小球面的两个方向。作为 \(\partial B_i\)，外法向从球内指向外面；作为 \(\partial M_0\)，外法向从保留部分指向孔洞，如\cref{g3:fig:puncture-orientation}所示。这两条法向相反，故
+	\[
+		\partial M_0=-\coprod_{i=1}^k\partial B_i.
+	\]
+	因此 Stokes 定理给出
+	\[
+		-\int_{M_0}e(\nabla)
+		=\int_{\partial M_0}\widehat s^*\Psi_\nabla
+		=-\sum_{i=1}^k\int_{\partial B_i}\widehat s^*\Psi_\nabla.
+	\]
+	代入式\eqref{g3:eq:angular-local-index-integral}并移项，得到
+	\[
+		\int_{M_0}e(\nabla)+\sum_i\int_{B_i}e(\nabla)
+		=\sum_i\operatorname{ind}_{p_i}(s).
+	\]
+	左边就是 \(\int_Me(\nabla)\)，所以甚至无须再令球半径趋零。若没有零点，直接在闭流形上积分恰当形式
+	\(e(\nabla)=-\mathrm d(\widehat s^*\Psi_\nabla)\)，也得到零。
+\end{proof}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch17-PunctureOrientation.tex}
+	\caption{同一小球面的两种边界方向。右图只画孔洞附近的坐标区域，灰色表示保留部分，并非给闭流形添加一个外边界。}
+	\label{g3:fig:puncture-orientation}
+\end{figure}
+
+切丛的局部指标和已由第二卷第17.4.3小节的 Poincaré--Hopf 定理确定：在任意正维光滑闭流形上，只有孤立零点的光滑向量场满足
+\[
+	\sum_{X(p)=0}\operatorname{ind}_p(X)=\chi(M).
+\]
+该处先用 Morse 梯度场的局部指标 \((-1)^\lambda\) 和把手的 Euler 等式得到结论，再用总指标的同伦不变性推广到任意孤立零点场。这里需要的正是闭流形版本。第二卷第17.1.3小节还证明了光滑 Morse 函数的存在；在闭流形上，其梯度场只有有限个非退化零点，因而总能提供满足要求的向量场。
+
+\begin{theorem}[Gauss--Bonnet--陈定理]\label{g3:thm:gauss-bonnet-chern}
+	设 \((M^{2m},g)\) 为闭定向光滑黎曼流形，\(m\ge1\)，\(\nabla^g\) 为 Levi--Civita 联络。在正向正交标架中写
+	\(\nabla^ge_j=\sum_i e_i\omega_{ij}\)，并记
+	\(\Omega=\mathrm d\omega+\omega\wedge\omega\)。则
+	\begin{equation}\label{g3:eq:gauss-bonnet-chern}
+		\frac1{(2\pi)^m}\int_M\operatorname{Pf}(\Omega)=\chi(M).
+	\end{equation}
+	同一公式也适用于 \(\mathrm TM\) 上任意保持 \(g\) 的联络，不要求该联络无挠。
+\end{theorem}
+\begin{proof}
+	选取上述 Morse 梯度场 \(X\)，将\cref{g3:thm:euler-form-index-sum}用于 \(E=\mathrm TM\) 及给定的相容联络。切丛的方向与 \(M\) 的方向一致，所以局部指标正是 Poincaré--Hopf 定理所用的指标。于是
+	\[
+		\frac1{(2\pi)^m}\int_M\operatorname{Pf}(\Omega)
+		=\int_Me(\nabla)
+		=\sum_{X(p)=0}\operatorname{ind}_p(X)
+		=\chi(M).
+	\]
+	证明只用了度量相容性，没有使用无挠性，因此最后一条断言同时成立。不连通时，在有限个连通分支上分别应用并相加即可。
+\end{proof}
+
+式\eqref{g3:eq:gauss-bonnet-chern}称为\term[Gauss Bonnet Chen dingli]{Gauss--Bonnet--陈定理}[Gauss--Bonnet--Chern theorem]。其整数值来自球面映射度，纤维积分的归一化则把这个整数与具体曲率多项式连接起来。若反转 \(M\) 的方向，切丛的方向及 Pfaffian 同时反转，积分所用方向也反转一次，所以最终数值不变。
+
+\begin{example}\label{g3:exm:euler-surface-and-flat}
+	二维时 \(\Omega_{12}=K\,\mathrm dA\)，所以公式恢复
+	\[
+		\frac1{2\pi}\int_MK\,\mathrm dA=\chi(M).
+	\]
+	在任意偶维，若闭定向黎曼流形的 Levi--Civita 曲率恒为零，Pfaffian 也恒为零，故其 Euler 示性数为零。更一般地，只要定向切丛允许某个平坦的度量联络，同一结论就成立；此处的联络可以不同于 Levi--Civita 联络。
+\end{example}
+
+闭性在 Stokes 步骤中有明确作用。对于带边界流形，原有外边界不会与零点小球相消，会留下单位向量场沿边界的转移积分；习题将推导这个版本。不可定向时，局部 Euler 形式要与局部体积方向同时处理，才能拼成可积分密度；其定向双覆盖版本也在习题中给出。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,11 +1,11 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 13.2 闭值域与 Fredholm 选择
 % 纲要位置：几何学计划纲要.md，第 2619 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
-% * 闭值域的矛盾紧性证明
+% * 值域的闭性
 % * 形式伴随的正则性
 % * 余核与伴随核
 % * 可解条件和 Fredholm 指数
@@ -16,25 +16,195 @@
 \section{闭值域与 Fredholm 选择}
 \label{g3:sec:1302}
 
-待撰写
+有了核上的投影与补空间估计，方程能否求解就转化为右端是否落在值域中。闭值域保证近似可解的右端确实可解；形式伴随把所有障碍写成有限个积分条件。这是本节的 Fredholm 选择。\footnote{Erik Ivar Fredholm（1866--1927），瑞典数学家，研究积分方程、谱理论与数学物理。}它把矩阵方程中“右端与转置核正交”的条件推广到闭流形上的椭圆方程。
 
-\subsection{闭值域的矛盾紧性证明}
+\subsection{值域的闭性}
 \label{g3:subsec:1302:01}
-待撰写
+若 \(Pu_j\) 收敛，\(u_j\) 未必收敛，因为可以给它任意加上核元素。先减去核投影，上一节的估计就把右端的 Cauchy 性传给解。
+
+\begin{proposition}\label{g3:prop:elliptic-closed-range}
+	设 \(M^n\) 为非空闭光滑流形，\(n\ge1\)，\(E,F\) 为同秩光滑有限秩度量丛，\(P:C^\infty(E)\to C^\infty(F)\) 是光滑椭圆算子，阶 \(d\ge1\)。则 \(P:H^d(E)\to L^2(F)\) 的值域 \(\mathcal R_P\) 闭，且
+	\[
+		P:\{u\in H^d(E):\Pi_Pu=0\}\longrightarrow\mathcal R_P
+	\]
+	为双射，其逆有界。
+\end{proposition}
+\begin{proof}
+	设 \(f_j=Pu_j\to f\) 于 \(L^2\)，令 \(v_j=u_j-\Pi_Pu_j\)。\Cref{g3:thm:kernel-orthogonal-estimate}给出
+	\[
+		\|v_j-v_\ell\|_{H^d}\le C\|f_j-f_\ell\|_2.
+	\]
+	故 \(v_j\) 在完备空间 \(H^d\) 中收敛到 \(v\)。算子的有界性给出 \(Pv=f\)，投影的连续性给出 \(\Pi_Pv=0\)，所以 \(f\in\mathcal R_P\)。核正交截面中的齐次解为零，故所述映射单射；减去核投影又不改变右端，故它满射。逆的范数界正是上一节的估计。
+\end{proof}
+
+证明中的关键下界来自上一节的矛盾紧性论证。闭值域使残差趋零具有求解意义：只要右端 \(f\) 可以被某列 \(Pu_j\) 在 \(L^2\) 中逼近，就能在去掉核以后得到一个真正满足 \(Pu=f\) 的极限。
+
+\begin{example}\label{g3:exm:dense-nonclosed-range}
+	在 \(\ell^2\) 中令 \(T(x_j)=(x_j/j)\)。它有界且单射，值域包含所有有限支序列，因而稠密。令 \(y=(1/j)_{j\ge1}\in\ell^2\)，其有限截断均在值域中，且收敛到 \(y\)；但 \(Tx=y\) 要求 \(x_j=1\)，不属于 \(\ell^2\)，故值域不闭。这里伴随核为零，却仍有不可解右端，说明正交条件要成为充分条件，闭值域不能缺少。
+\end{example}
 
 \subsection{形式伴随的正则性}
 \label{g3:subsec:1302:02}
-待撰写
+第十二章的形式伴随 \(P^*\) 由积分恒等式确定：
+\[
+	(Pu,v)_2=(u,P^*v)_2,\qquad u\in C^\infty(E),\quad v\in C^\infty(F).
+\]
+闭流形没有边界项。按\cref{g3:prop:symbol-calculus}，其主符号为 \(\sigma_d(P^*)(x,\xi)=\sigma_d(P)(x,\xi)^*\)，故 \(P^*\) 同样椭圆，阶数仍为 \(d\)。于是 \(P^*v=0\) 的分布解也是光滑的，且 \(\mathcal N_{P^*}\) 有限维。
+
+\ProseParagraphBreak
+
+形式伴随是微分表达式。若把 \(P\) 看成从 \(H^d\) 到 \(L^2\) 的有界映射，它关于这两个 Hilbert 范数的有界伴随取值于 \(H^d\)，并不是同一个表达式。谱论需要的是把 \(P\) 看成 \(L^2\) 上定义域为 \(H^d\) 的算子，下面把这一点准确落实。
+
+\begin{proposition}\label{g3:prop:elliptic-adjoint-domain}
+	设 \(M^n\) 为非空闭光滑流形，\(n\ge1\)，\(E,F\) 为同秩有限秩光滑 Hermitian 丛，\(P:C^\infty(E)\to C^\infty(F)\) 为光滑椭圆 \(d\) 阶算子，\(d\ge1\)。把 \(\mathsf P\) 定义为 \(L^2(E)\to L^2(F)\) 的算子，域为 \(H^d(E)\)，作用为 \(P\)。则 \(\mathsf P\) 稠定且闭。其 Hilbert 伴随的域恰为 \(H^d(F)\)，在此域上作用为 \(P^*\)。
+\end{proposition}
+\begin{proof}
+	光滑截面在 \(L^2\) 中稠密，故定义域稠密。若 \(u_j\to u\) 于 \(L^2(E)\)、\(Pu_j\to f\) 于 \(L^2(F)\)，全局估计给出
+	\[
+		\|u_j-u_\ell\|_{H^d}
+		\le C\bigl(\|Pu_j-Pu_\ell\|_2+\|u_j-u_\ell\|_2\bigr).
+	\]
+	因此 \(u_j\) 在 \(H^d\) 中收敛，极限在 \(L^2\) 中只能是 \(u\)，且 \(Pu=f\)。这正是图闭的含义。
+
+	按定义，\(v\in L^2(F)\) 属于 Hilbert 伴随的域，等价于存在 \(w\in L^2(E)\)，使
+	\((Pu,v)_2=(u,w)_2\) 对全部 \(u\in H^d(E)\) 成立。对光滑 \(u\) 作测试，得 \(P^*v=w\) 分布成立。伴随的椭圆正则性使 \(v\in H^d(F)\)。反之，若 \(v\in H^d(F)\)，先对光滑 \(u,v\) 分部积分，再由 \(H^d\) 光滑逼近取极限，得到上述恒等式，其中 \(w=P^*v\in L^2\)。故两种定义域恰好相同。
+\end{proof}
 
 \subsection{余核与伴随核}
 \label{g3:subsec:1302:03}
-待撰写
+对右端空间中的闭子空间 \(\mathcal R_P\)，正交补中的向量记录了全部线性阻碍。形式伴随的正则性把这些原本只有 \(L^2\) 意义的向量变成光滑截面。
+
+\begin{theorem}[椭圆 Fredholm 选择]\label{g3:thm:elliptic-fredholm}
+	设 \(M^n\) 为非空闭光滑流形，\(n\ge1\)，\(E,F\) 为同秩光滑有限秩度量丛，\(P:C^\infty(E)\to C^\infty(F)\) 为光滑椭圆算子，阶 \(d\ge1\)。则
+	\begin{equation}\label{g3:eq:elliptic-range-orthogonal}
+		\operatorname{ran}(P:H^d(E)\to L^2(F))
+		=\mathcal N_{P^*}^{\perp}.
+	\end{equation}
+	因此 \(L^2(F)/\operatorname{ran}P\) 自然同构于 \(\mathcal N_{P^*}\)，特别地余维有限。对 \(f\in L^2(F)\)，方程 \(Pu=f\) 可解当且仅当
+	\[
+		(f,h)_2=0\qquad\text{对全部 }h\in\mathcal N_{P^*}.
+	\]
+	可解时有唯一满足 \(\Pi_Pu=0\) 的 \(H^d\) 解，其余解为它加上任意核元素。
+\end{theorem}
+\begin{proof}
+	若 \(v\in\mathcal R_P^\perp\)，则 \((Pu,v)_2=0\) 对全部光滑 \(u\) 成立，所以 \(P^*v=0\) 分布成立。正则性给出 \(v\in\mathcal N_{P^*}\)。反向由分部积分和光滑稠密性立得，故
+	\(\mathcal R_P^\perp=\mathcal N_{P^*}\)。\Cref{g3:prop:elliptic-closed-range}保证值域闭；Hilbert 投影定理\cref{g3:thm:hilbert-projection}因而给出
+	\(\mathcal R_P=(\mathcal R_P^\perp)^\perp\)，得到式\eqref{g3:eq:elliptic-range-orthogonal}。
+
+	余核的具体同构把类 \([f]\) 送到 \(\Pi_{P^*}f\)：给 \(f\) 加上值域元素不改变投影，投影为零又恰好意味着 \(f\) 在值域中，故它良定义且双射。存在性随值域等式成立；减去 \(\Pi_Pu\) 给出归一化解，两个这样的解之差同时属于核和核正交补，只能为零。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:elliptic-range-hk}
+	在\cref{g3:thm:elliptic-fredholm}的闭流形、光滑丛及光滑椭圆 \(d\) 阶算子条件下，对每个整数 \(k\ge0\)，有
+	\[
+		P(H^{k+d}(E))=\{f\in H^k(F):(f,h)_2=0\text{ 对所有 }h\in\mathcal N_{P^*}\}.
+	\]
+	相容右端的核正交解满足 \(\|u\|_{H^{k+d}}\le C_k\|f\|_{H^k}\)。特别地，光滑右端的解光滑。
+\end{corollary}
+\begin{proof}
+	必要性由分部积分。相容的 \(H^k\) 右端先由上一结果得到 \(H^d\) 解，再由\cref{g3:thm:global-elliptic-hk}提升到 \(H^{k+d}\)。归一化与估计来自\cref{g3:thm:kernel-orthogonal-estimate}；光滑性可由逐阶提升或直接由分布椭圆光滑性得到。
+\end{proof}
+
+这里的余核用光滑 \(\mathcal N_{P^*}\) 表示，与 Sobolev 阶数的选择相容。不过在 \(H^k\) 中，所写条件仍是 \(L^2\) 配对，不能自行替换为 \(H^k\) 正交条件。
 
 \subsection{可解条件和 Fredholm 指数}
 \label{g3:subsec:1302:04}
-待撰写
+\begin{definition}\label{g3:def:fredholm-operator}
+	设 \(X,Y\) 为实或复 Banach 空间。若有界线性映射 \(T:X\to Y\) 的核有限维、值域闭且余核 \(Y/\operatorname{ran}T\) 有限维，则称它为\term[Fredholm suanzi]{Fredholm 算子}[Fredholm operator]，定义其\term[Fredholm zhishu]{Fredholm 指数}[Fredholm index]为
+	\[
+		\operatorname{ind}T=\dim\ker T-\dim(Y/\operatorname{ran}T).
+	\]
+\end{definition}
+\symidx{\(\operatorname{ind}P\)：核维数减余核维数的 Fredholm 指数}
+
+椭圆算子的上述实现因而是 Fredholm 的，指数为
+\(\dim\mathcal N_P-\dim\mathcal N_{P^*}\)。这是一个有限整数；它不要求 \(P\) 自伴，也不要求指数为零。若 \(E=F\)、\(P=P^*\)，指数才立即为零。抽象紧算子的 Fredholm 选择及定义可对照 Brezis 第6.2节和第6章评注第1项\cite[第6.2节，第6章评注第1项]{Brezis2011}。
+
+\begin{theorem}\label{g3:thm:elliptic-fredholm-wkp}
+	设 \(M^n\) 为非空闭光滑流形，\(n\ge1\)，\(E,F\) 为同秩光滑有限秩度量丛，\(P:C^\infty(E)\to C^\infty(F)\) 为光滑椭圆 \(d\) 阶算子，\(d\ge1\)。对整数 \(k\ge0\)、\(1<p<\infty\)，有界映射
+	\[
+		P:W^{k+d,p}(E)\longrightarrow W^{k,p}(F)
+	\]
+	为 Fredholm 算子，核为 \(\mathcal N_P\)，值域为
+	\[
+		\{f\in W^{k,p}(F):\textstyle\int_M\langle f,h\rangle\mu_g=0
+		\text{ 对全部 }h\in\mathcal N_{P^*}\}.
+	\]
+	余核由 \(\mathcal N_{P^*}\) 表示，指数独立于 \(k,p\)。相容右端有唯一的 \(\Pi_Pu=0\) 解，并满足 \(\|u\|_{W^{k+d,p}}\le C_{k,p}\|Pu\|_{W^{k,p}}\)。
+\end{theorem}
+\begin{proof}
+	先取 \(k=0\)。上一节的 \(L^p\) 核正交估计使值域闭：对收敛列 \(Pu_j\) 减去核投影后，\(u_j-\Pi_Pu_j\) 在 \(W^{d,p}\) 中为 Cauchy 列，与闭值域命题的证明完全相同。
+
+	令 \(p'=p/(p-1)\)。由积分对偶\cref{g3:lem:lp-duality-reflexivity}及纤维度量，每个 \(L^p(F)\) 上的连续线性泛函都写成
+	\(f\mapsto\int_M\langle f,h\rangle\mu_g\)，其中 \(h\in L^{p'}(F)\)。它消灭值域，当且仅当 \(P^*h=0\) 分布成立；于是 \(h\) 光滑且属于 \(\mathcal N_{P^*}\)。反之每个这样的 \(h\) 都消灭值域。若 \(f\) 不在闭值域中，Hahn--Banach 分离\cref{g3:lem:bounded-functional-extension}给出一个在值域上为零而在 \(f\) 上非零的泛函，故必有上述某个积分不为零。这就证明了 \(k=0\) 的值域等式。
+
+	取 \(\mathcal N_{P^*}\) 的 \(L^2\) 正交归一基，积分配对构成满射 \(L^p(F)\to\mathbb K^{\dim\mathcal N_{P^*}}\)：将右端取为该光滑基的线性组合即可得到任意坐标。因此值域的余维恰为这个维数。
+
+	对于 \(k>0\)，相容的 \(W^{k,p}\) 右端先有 \(W^{d,p}\) 解，再由\cref{g3:thm:global-elliptic-wkp}提升正则性。上述有限个积分在 \(W^{k,p}\) 中仍连续且联合满射，所以值域闭、余维相同。核光滑且不随空间改变，唯一性、归一化和估计均由上一节得到。
+\end{proof}
+
+\begin{example}\label{g3:exm:circle-fredholm-compatibility}
+	在 \(S^1=\mathbb R/(2\pi\mathbb Z)\) 上，\(P=\partial_x\) 的形式伴随为 \(-\partial_x\)，两者的核都由常数生成，指数为零。方程 \(u'=f\) 有周期解当且仅当 \(\int_0^{2\pi}f=0\)；取
+	\[
+		u(x)=\int_0^x f(t)\,\mathrm dt-
+		\frac1{2\pi}\int_0^{2\pi}\int_0^y f(t)\,\mathrm dt\,\mathrm dy
+	\]
+	即得唯一零均值解。这里可解性并不要求算子自伴。对 \(\Delta_g\) 而言，核在每个连通分支上由常数构成，因此相容条件是逐个分支的积分为零，不能只检查总积分。
+\end{example}
 
 \subsection{指数对连续扰动的稳定性}
 \label{g3:subsec:1302:05}
-待撰写
+核与余核的维数可能同时变化，差却保持不变。把无限维可逆部分先消去，会留下一个有限维映射；它的秩怎样变化都不改变“核维数减余维数”。
+
+\begin{theorem}\label{g3:thm:index-local-constancy}
+	设 \(M^n\) 为非空闭光滑流形，\(n\ge1\)，\(E,F\) 为同秩光滑有限秩度量丛，\(P:C^\infty(E)\to C^\infty(F)\) 为光滑椭圆 \(d\) 阶算子，\(d\ge1\)。把它看成 \(X=H^d(E)\to Y=L^2(F)\) 的有界映射。则存在 \(\delta>0\)，使每个有界线性映射 \(Q:X\to Y\) 满足 \(\|Q-P\|<\delta\) 时，\(Q\) 为 Fredholm 算子且
+	\[
+		\operatorname{ind}Q=\operatorname{ind}P.
+	\]
+	特别地，在固定 \(M,E,F\) 上，阶数为 \(d\) 的光滑椭圆算子组成的算子范数连续道路 \(P_t:H^d(E)\to L^2(F)\)、\(0\le t\le1\)，具有恒定指数。
+\end{theorem}
+\begin{proof}
+	记 \(K=\mathcal N_P\)、\(C=\mathcal N_{P^*}\)、\(R=\mathcal R_P\)，并令 \(X_0=\ker\Pi_P\cap H^d(E)\)。我们已经证明有连续直和
+	\[
+		X=X_0\oplus K,\qquad Y=R\oplus C,
+	\]
+	以及有界可逆映射 \(A=P|_{X_0}:X_0\to R\)。按这些分解把 \(Q\) 写成
+	\[
+		Q=\begin{pmatrix}A_Q&B_Q\\ C_Q&D_Q\end{pmatrix}.
+	\]
+	投影均有界，所以 \(Q\) 充分接近 \(P\) 时，\(\|A^{-1}(A_Q-A)\|<1\)。Neumann 级数给出 \(A_Q\) 的有界逆。作有界可逆的行、列消元，得到
+	\begin{equation}\label{g3:eq:fredholm-block-reduction}
+		\begin{pmatrix}I&0\\-C_QA_Q^{-1}&I\end{pmatrix}
+		Q
+		\begin{pmatrix}I&-A_Q^{-1}B_Q\\0&I\end{pmatrix}
+		=\begin{pmatrix}A_Q&0\\0&S_Q\end{pmatrix},
+		\quad S_Q=D_Q-C_QA_Q^{-1}B_Q:K\to C.
+	\end{equation}
+	右端的第一块可逆，第二块作用在有限维空间之间，故值域为闭空间 \(R\oplus\operatorname{ran}S_Q\)，核与余核均有限维。可逆行、列变换保持这些性质和维数，因而
+	\[
+		\operatorname{ind}Q
+		=\dim\ker S_Q-\bigl(\dim C-\operatorname{rank}S_Q\bigr)
+		=\dim K-\dim C.
+	\]
+	这就是 \(\operatorname{ind}P\)。沿连续道路，每一点附近都可应用同一论证，故指数局部常值；区间连通使它处处相同。
+\end{proof}
+
+分块消元把所有无限维求解集中到同构 \(A_Q\)，剩下的有限维映射 \(S_Q\) 决定核与余核怎样跳跃，如图\cref{g3:fig:fredholm-reduction}。其秩同时从源维数与靶维数中扣除，因此在指数里抵消。
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch13-FredholmReduction}
+	\caption[可逆部分与有限维剩余方程]{可逆坐标变换后，两块独立作用。上方是闭补空间之间的同构，下方保留有限维核与余核的变化。}
+	\label{g3:fig:fredholm-reduction}
+\end{figure}
+
+\begin{corollary}\label{g3:cor:lower-order-index-invariance}
+	设 \(M\) 为闭光滑流形，\(E,F\) 为同秩光滑有限秩度量丛，\(P:C^\infty(E)\to C^\infty(F)\) 是光滑椭圆 \(d\) 阶算子，\(d\ge1\)。若 \(B\) 为光滑系数、阶数至多 \(d-1\) 的算子，则 \(\operatorname{ind}(P+B)=\operatorname{ind}P\)。
+\end{corollary}
+\begin{proof}
+	\(P_t=P+tB\) 的主符号与 \(P\) 相同，所以整条道路椭圆；又有 \(\|P_t-P_s\|_{H^d\to L^2}\le |t-s|\|B\|\)。应用上一结果即可。
+\end{proof}
+
+\begin{example}\label{g3:exm:kernel-jump-circle}
+	在复值周期函数上取 \(P_t=-\mathrm i\partial_x+t\)，\(|t|<1/2\)。齐次解为 \(u(x)=a e^{-\mathrm itx}\)，它周期当且仅当 \(t=0\) 或 \(a=0\)。算子形式自伴，故核与余核在 \(t=0\) 同时从零维跳到一维，指数始终为零。\(t\ne0\) 时对常数右端一有 \(P_t(1/t)=1\)，因此逆算子的范数至少按 \(1/|t|\) 增长。这解释了为什么指数稳定并不保证解对参数一致有界。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

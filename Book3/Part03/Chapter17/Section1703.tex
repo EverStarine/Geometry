@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 17.3* Dirac 型算子与自旋
 % 纲要位置：几何学计划纲要.md，第 2800 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,21 +14,296 @@
 
 \OptionalSection{Dirac 型算子与自旋}{g3:sec:1703}
 
-待撰写
+Laplace 算子的主符号是 \(|\xi|^2\) 乘以恒等映射。如果希望找到一个一阶算子，使它的平方具有这个主符号，就需要把切向量表示成满足特定反交换关系的线性映射。Clifford 代数记录这一关系，自旋结构则解决这些局部表示能否沿流形一致粘合的问题。本节把代数构造、联络和椭圆算子接在一起，最后从一个点态恒等式推出正标量曲率的障碍。
+
+\ProseParagraphBreak
+
+本节的黎曼流形均光滑、无边界，维数 \(n\ge2\)；需要紧性时另行说明。曲率沿用
+\(R(X,Y)=[\nabla_X,\nabla_Y]-\nabla_{[X,Y]}\)，Clifford 乘法采用负号约定，Hermitian 内积对第一变量线性。第二卷已建立 spin 提升的拓扑判据；这里还要具体构造提升后的表示和微分算子。
 
 \subsection{Clifford 代数和 Clifford 丛}
 \label{g3:subsec:1703:01}
-待撰写
+设 \((V,g)\) 是 \(n\) 维实内积空间。其\term[Clifford daishu]{Clifford 代数}[Clifford algebra]定义为张量代数的商
+\[
+	\operatorname{Cl}(V,g)=T(V)\big/\langle v\otimes v+g(v,v)1:v\in V\rangle.
+\]
+由极化，商中的基本关系为
+\begin{equation}\label{g3:eq:clifford-negative-relation}
+	vw+wv=-2g(v,w)1.
+\end{equation}
+因此，给定含幺代数 \(A\) 以及满足同一关系的线性映射 \(c:V\to A\)，就存在唯一含幺代数同态 \(\operatorname{Cl}(V,g)\to A\) 延拓 \(c\)。这种把二次关系放入乘法的办法源自 Clifford 的工作。\footnote{William Kingdon Clifford（1845--1879），英国数学家，研究非欧几何以及几何与代数的联系，提出了后来以他命名的代数。}
+
+\begin{proposition}\label{g3:prop:clifford-basis}
+	设 \(e_1,\ldots,e_n\) 是实内积空间 \(V\) 的正交归一基。记 \(e_\varnothing=1\)，并对 \(I=\{i_1<\cdots<i_r\}\) 记 \(e_I=e_{i_1}\cdots e_{i_r}\)。则这些 \(2^n\) 个元素构成 \(\operatorname{Cl}(V,g)\) 的一组实基。奇、偶长度单项式分别张成其 \(\mathbb Z/2\mathbb Z\) 分次的奇、偶部分。
+\end{proposition}
+\begin{proof}
+	关系 \(e_i^2=-1\) 和 \(e_ie_j=-e_je_i\)（\(i\ne j\)）把每个单项式整理成某个 \(e_I\) 的带符号倍数，所以这些元素张成商代数。
+	为证线性无关，在 \(\Lambda^*V^*\) 上令
+	\[
+		c(v)=\varepsilon(v^\flat)-\iota_v,
+	\]
+	其中 \(\varepsilon\) 表示外乘。恒等式
+	\(\iota_v\varepsilon(w^\flat)+\varepsilon(w^\flat)\iota_v=g(v,w)\)
+	和楔乘、收缩各自的反交换关系给出
+	\(c(v)c(w)+c(w)c(v)=-2g(v,w)\)。于是得到商代数的表示。将 \(c(e_{i_1})\cdots c(e_{i_r})\) 作用于常数 \(1\)，由于各指标不同，收缩项全为零，结果是 \(e^{i_1}\wedge\cdots\wedge e^{i_r}\)。这些外形式线性无关，故 \(e_I\) 也线性无关。定义关系只改变偶数个因子，因而乘积保留长度的奇偶性，给出所述分次。
+\end{proof}
+
+在实 Clifford 代数上有反自同构 \(a\mapsto a^*\)，由 \(v^*=-v\) 和 \((ab)^*=b^*a^*\) 确定；在复化 \(\operatorname{Cl}^{\mathbb C}(V)=\operatorname{Cl}(V)\otimes_{\mathbb R}\mathbb C\) 上再令它对标量共轭。正交映射保留定义关系，故自然作用于 Clifford 代数。把这个作用用于切丛的正交标架转移函数，便得到光滑代数丛 \(\operatorname{Cl}(TM)\)。其存在不要求流形定向，也不要求自旋结构。Levi--Civita 联络按乘积法则延拓到此丛；由于 \(\nabla g=0\)，它保留商关系。
+
+\ProseParagraphBreak
+
+自旋子所用的表示比 \(\Lambda^*V^*\) 小。在偶数维 \(n=2m\) 中，取
+\(\Sigma_{2m}=\Lambda^*\mathbb C^m\)，并令 \(\varepsilon_a\) 为第 \(a\) 个标准基向量的外乘，\(\iota_a=\varepsilon_a^*\) 为对应收缩。定义
+\begin{equation}\label{g3:eq:spin-module-explicit}
+	c(e_{2a-1})=\varepsilon_a-\iota_a,
+	\qquad c(e_{2a})=\mathrm i(\varepsilon_a+\iota_a),
+	\qquad 1\le a\le m.
+\end{equation}
+每个 \(c(e_j)\) 都是斜 Hermitian 映射；直接使用楔乘与收缩关系可得 \(c(e_j)^2=-1\)，不同指标的映射反交换。因此它给出 \(\operatorname{Cl}_{2m}^{\mathbb C}\) 的表示。
+
+\begin{proposition}\label{g3:prop:complex-spin-module}
+	当 \(n=2m\ge2\) 时，式\eqref{g3:eq:spin-module-explicit}诱导代数同构
+	\[
+		\operatorname{Cl}_{2m}^{\mathbb C}\simeq\operatorname{End}_{\mathbb C}(\Sigma_{2m}),
+		\qquad \dim_{\mathbb C}\Sigma_{2m}=2^m.
+	\]
+	定义
+	\begin{equation}\label{g3:eq:spin-chirality}
+		\Gamma=\mathrm i^m c(e_1)\cdots c(e_{2m}).
+	\end{equation}
+	则 \(\Gamma^*=\Gamma\)、\(\Gamma^2=1\)，它在 \(\Lambda^r\mathbb C^m\) 上等于 \((-1)^r\)。它与每个 \(c(v)\) 反交换，与偶 Clifford 元素的作用交换。两特征空间 \(\Sigma_{2m}^{\pm}\) 的维数均为 \(2^{m-1}\)。
+\end{proposition}
+\begin{proof}
+	由式\eqref{g3:eq:spin-module-explicit}可以线性解出所有 \(\varepsilon_a,\iota_a\)。算子
+	\(P_0=\prod_{a=1}^m\iota_a\varepsilon_a\)
+	是到 \(\Lambda^0\mathbb C^m\) 的投影。若 \(I=\{i_1<\cdots<i_r\}\)、\(J=\{j_1<\cdots<j_s\}\)，算子
+	\(\varepsilon_{i_1}\cdots\varepsilon_{i_r}P_0\iota_{j_s}\cdots\iota_{j_1}\)
+	把基向量 \(e_J\) 送到 \(e_I\)，把其余外代数基向量送到零。因此表示的像含有全部矩阵单位，即全部端同态代数。两边复维数均为 \(2^{2m}\)，故它是同构，特别地这个表示不可约。
+	记 \(N_a=\varepsilon_a\iota_a\)，则
+	\(\mathrm i c(e_{2a-1})c(e_{2a})=1-2N_a\)。不同 \(a\) 的这些偶算子交换，故 \(\Gamma=\prod_a(1-2N_a)\)，这正是外次数的奇偶算子。其余性质随即成立；\(c(e_1)\) 在两个特征空间间给出同构，所以二者维数相等。
+\end{proof}
+
+若 \(n=2m+1\ge3\)，仍取 \(\Sigma_n=\Lambda^*\mathbb C^m\)，保留前 \(2m\) 个作用，再定义 \(c(e_{2m+1})=\mathrm i\Gamma\)。这个新作用平方为 \(-1\)，并与其余作用反交换，故同样得到不可约复 Clifford 模，维数为 \(2^m\)。也可选择相反号，以下固定上述选择。奇数维中，前 \(2m\) 个方向产生的 \(\Gamma\) 依赖这个方向的选取；它不是流形上的自然手性分次。本节只在偶数维中使用 \(S^+\oplus S^-\)。
 
 \subsection{spin 提升与自旋子丛}
 \label{g3:subsec:1703:02}
-待撰写
+记 \(\operatorname{Cl}_n=\operatorname{Cl}(\mathbb R^n)\)。定义 \(\operatorname{Spin}(n)\) 为其中所有偶数个单位向量的乘积所成的群，空乘积等于 \(1\)。单位向量 \(u\) 的逆为 \(-u\)，所以这确实是群，且包含于偶部分。它通过共轭作用于 \(\mathbb R^n\)：
+\[
+	\rho(s)v=svs^{-1}.
+\]
+下面同时核对这一作用的值域和它的覆盖性质。
+
+\begin{theorem}\label{g3:thm:spin-double-cover}
+	对每个 \(n\ge2\)，\(\operatorname{Spin}(n)\) 是连通 Lie 群，\(\rho:\operatorname{Spin}(n)\to\operatorname{SO}(n)\) 是满的二重覆盖，其核为 \(\{1,-1\}\)。当 \(n=2\) 时，
+	\[
+		\operatorname{Spin}(2)=\{\cos t+\sin t\,e_1e_2:t\in\mathbb R\},
+	\]
+	且 \(\rho\) 把参数 \(t\) 送到平面上角度 \(2t\) 的旋转。
+\end{theorem}
+\begin{proof}
+	设 \(r_u(v)=v-2g(u,v)u\) 是单位向量 \(u\) 的正交超平面反射。Clifford 关系给出 \(uvu^{-1}=-r_u(v)\)。于是偶数个单位向量的共轭作用是偶数个反射的乘积，属于 \(\operatorname{SO}(n)\)。每个正交映射都是反射的乘积：若 \(Ae_1\ne e_1\)，以 \(Ae_1-e_1\) 为法向的反射将 \(Ae_1\) 送到 \(e_1\)；在 \(e_1^\perp\) 上继续归纳，至多用 \(n\) 次反射就把 \(A\) 化为恒等映射。若 \(Ae_1=e_1\)，直接在正交补上归纳。行列式等于 \(1\) 时反射的个数必为偶数。因此 \(\rho\) 满。
+	若偶元素 \(s\) 与所有 \(e_j\) 交换，把它写成有序单项式的线性组合。共轭 \(e_j(\cdot)e_j^{-1}\) 在偶单项式 \(e_I\) 上的作用，当 \(j\notin I\) 时为 \(+1\)，当 \(j\in I\) 时为 \(-1\)。所以同时与全部 \(e_j\) 交换的偶元素只能是标量。又因单位向量的乘积满足 \(s^*s=1\)，标量只能为 \(\pm1\)。两者确实都在群中，因为 \(e_1e_1=-1\)。这证明核的断言。
+	还需证明它在单位元附近确实是光滑覆盖。对斜对称映射 \(A:\mathbb R^n\to\mathbb R^n\)，令
+	\begin{equation}\label{g3:eq:spin-lie-algebra-lift}
+		b(A)=\frac14\sum_{i,j=1}^n g(Ae_i,e_j)e_ie_j.
+	\end{equation}
+	从
+	\([e_ie_j,e_k]=2(\delta_{ik}e_j-\delta_{jk}e_i)\)
+	可得 \([b(A),v]=Av\)。在正交二维旋转块中，\(b(A)\) 是若干彼此交换的 \((\theta/2)e_ie_j\) 之和；而
+	\[
+		\exp(te_ie_j)=\cos t+\sin t\,e_ie_j
+		=e_i(-\cos t\,e_i+\sin t\,e_j)
+	\]
+	是两个单位向量的乘积。因此 \(\exp b(A)\in\operatorname{Spin}(n)\)。对共轭作用求导并使用 \([b(A),v]=Av\)，得到 \(\rho(\exp b(A))=\exp A\)。在 \(\operatorname{SO}(n)\) 单位元的充分小邻域 \(U\) 内，矩阵对数光滑，故
+	\[
+		h(Q)=\exp b(\log Q),\qquad Q\in U,
+	\]
+	是光滑截面。核的计算说明 \(\rho^{-1}(U)=h(U)\sqcup(-h(U))\)。缩小 \(U\)，两个分支分别位于 Clifford 代数中 \(1\) 与 \(-1\) 的不交邻域；它们在 \(\rho^{-1}(U)\) 中都是开集，且 \(\rho\) 分别与 \(h\)、\(-h\) 互逆。这些局部图经群平移给出 Lie 群结构和二重覆盖；乘法与求逆在这些图中光滑，因为它们来自有限维 Clifford 代数的乘法及 \(s^{-1}=s^*\)。
+	最后，\(S^{n-1}\) 在 \(n\ge2\) 时连通。任一单位向量乘积 \(uv\) 都可沿 \(v\) 到 \(-u\) 的路径连接到 \(u(-u)=1\)；把一个偶乘积分成这样的二因子组，即知群连通。二维时偶代数由 \(1,e_1e_2\) 张成，且 \((e_1e_2)^2=-1\)，上面的指数公式给出整个群。共轭在 \(e_1\) 上的值为 \(\cos(2t)e_1+\sin(2t)e_2\)，故旋转角确为 \(2t\)。
+\end{proof}
+
+二维的覆盖是圆周的平方映射，并非普适覆盖；在 \(n\ge3\) 时，第二卷第8.4.3小节的“经典群的一、二次同伦群”命题给出 \(\pi_1(\operatorname{SO}(n))=\mathbb Z/2\mathbb Z\)，所以连通二重覆盖就是普适覆盖。这一区别不影响下面的提升定义。
+
+\begin{definition}\label{g3:def:riemannian-spin-structure}
+	设 \((M^n,g)\) 是定向黎曼流形，\(n\ge2\)，\(P_{\operatorname{SO}}(TM)\) 是其定向正交标架主丛。一个\term[spin-jiegou]{spin 结构}[spin structure]（也称自旋结构）由主 \(\operatorname{Spin}(n)\) 丛 \(Q\to M\) 和覆盖恒等映射的光滑映射 \(\eta:Q\to P_{\operatorname{SO}}(TM)\) 组成，满足
+	\[
+		\eta(qs)=\eta(q)\rho(s),
+	\]
+	且 \(\eta\) 在每个纤维上是上述二重覆盖。等价结构的丛同构还须与 \(\eta\) 相容。
+\end{definition}
+
+第二卷第21.4.4小节的“spin 提升准则”已证明：对紧光滑流形上的定向实向量丛 \(E\)（秩至少为 \(2\)），这样的提升存在当且仅当 \(w_2(E)=0\)；存在时，等价类集合是 \(H^1(M;\mathbb F_2)\) 的挠子。其具体含义也可以从转移函数看出：把 \(\operatorname{SO}(n)\) 的转移函数逐个提升到 \(\operatorname{Spin}(n)\) 后，三重交叠上的乘积可能为 \(-1\)；这些符号构成代表 \(w_2\) 的二上闭链。提升存在后，改变粘合的符号得到一上闭链，等价改变对应一上边界。因此自旋结构是一项额外的整体选择。
+
+\ProseParagraphBreak
+
+例如，第二卷第21.4.2小节“球丛和低维切丛”中的闭定向曲面例已算出：\(w_2(TM)\) 是 Euler 类模 \(2\) 的约化，而 Euler 数 \(2-2g\) 为偶数，所以 \(w_2(TM)=0\)。结合第21.4.4小节的提升及分类准则，亏格 \(g\) 的闭连通定向曲面便有 \(2^{2g}\) 个自旋结构等价类。相反，第21.4.4小节的复射影空间例给出 \(w_2(T\mathbb{CP}^2)\ne0\)，所以 \(\mathbb{CP}^2\) 没有自旋结构。前述 \(\operatorname{Cl}(TM)\) 在这两个情形中却都存在。
+
+\ProseParagraphBreak
+
+把第一小节的表示限制到 \(\operatorname{Spin}(n)\)，记为 \(\kappa\)。由于每个单位向量的 Clifford 作用都是酉映射，\(\kappa\) 是酉表示。给定自旋结构，定义其复\term[zixuanzi cong]{自旋子丛}[spinor bundle]
+\[
+	S=Q\times_\kappa\Sigma_n,
+	\qquad (qs,z)\sim(q,\kappa(s)z).
+\]
+它的复秩是 \(2^{\lfloor n/2\rfloor}\)。若 \(v\in T_xM\)，\(q\in Q_x\) 对应标架 \(\eta(q):\mathbb R^n\to T_xM\)，令
+\[
+	c(v)[q,z]=[q,c(\eta(q)^{-1}v)z].
+\]
+恒等式 \(\kappa(s)c(a)\kappa(s)^{-1}=c(\rho(s)a)\) 保证这一定义与代表无关。偶数维时，定向体积元素及 \(\Gamma\) 在 \(\operatorname{Spin}(n)\) 下不变，因此得到全局正交分解
+\(S=S^+\oplus S^-\)，两丛的秩均为 \(2^{n/2-1}\)。
+
+\begin{proposition}\label{g3:prop:spin-connection-curvature}
+	设 \((M^n,g)\) 是定向黎曼自旋流形，\(n\ge2\)。Levi--Civita 联络唯一提升为 \(Q\) 上的主联络，并在 \(S\) 上诱导 Hermitian 联络 \(\nabla^S\)，满足
+	\begin{equation}\label{g3:eq:spin-connection-compatibility}
+		\nabla^S_X(c(v)\psi)=c(\nabla_Xv)\psi+c(v)\nabla^S_X\psi.
+	\end{equation}
+	在一个可提升的定向正交标架 \(e_1,\ldots,e_n\) 中，令 \(c_a=c(e_a)\)，则其局部公式和曲率公式为
+	\begin{align}
+		\nabla^S_X\psi
+		&=X\psi+\frac14\sum_{a,b}g(\nabla_Xe_a,e_b)c_ac_b\psi,
+		\label{g3:eq:spin-connection-local}\\
+		R^S(X,Y)
+		&=\frac14\sum_{a,b}g(R(X,Y)e_a,e_b)c_ac_b.
+		\label{g3:eq:spin-curvature-local}
+	\end{align}
+	在偶数维中，此联络保留 \(S^+\) 和 \(S^-\)。
+\end{proposition}
+\begin{proof}
+	由二重覆盖可知 \(\rho_*:\mathfrak{spin}(n)\to\mathfrak{so}(n)\) 是同构，其逆恰是式\eqref{g3:eq:spin-lie-algebra-lift}的 \(b\)。若 \(\omega\) 是正交标架丛的 Levi--Civita 主联络形式，则 \(b(\eta^*\omega)\) 满足主联络的等变条件和在竖直向量上的归一化条件，所以给出提升。任何提升都必须经 \(\rho_*\) 送到 \(\eta^*\omega\)，故唯一。代入表示即得式\eqref{g3:eq:spin-connection-local}。
+	对实斜对称系数，\(c_ac_b\)（\(a\ne b\)）是斜 Hermitian 映射，所以该联络保留内积。已证的交换子关系 \([b(A),v]=Av\) 在表示中变为 \([c(b(A)),c(v)]=c(Av)\)；加上对 \(v\) 的系数求导，恰好给出式\eqref{g3:eq:spin-connection-compatibility}。偶 Clifford 作用与 \(\Gamma\) 交换，故分次也被保留。
+	最后，Lie 群同态的微分保留括号，故提升联络的曲率为 \(b\) 作用于原联络曲率。也可直接把式\eqref{g3:eq:spin-connection-local}代入两个协变导数的交换子：一阶项相消，零阶项就是 \(c(b(R(X,Y)))\)。由 \(b\) 的公式即得式\eqref{g3:eq:spin-curvature-local}。
+\end{proof}
+
+按本章的列指标记号 \(\nabla e_b=\sum_a e_a\omega_{ab}\)，有 \(\omega_{ab}(X)=g(\nabla_Xe_b,e_a)\)，所以式\eqref{g3:eq:spin-connection-local}中的联络项也可写为 \(-\tfrac14\sum_{a,b}\omega_{ab}(X)c_ac_b\)。曲率公式在相同列指标约定下具有同样的负号。
 
 \subsection{Dirac 算子及符号}
 \label{g3:subsec:1703:03}
-待撰写
+设 \(E\to M\) 是 Hermitian 丛，带有满足式\eqref{g3:eq:clifford-negative-relation}的斜 Hermitian 作用 \(c:TM\to\operatorname{End}(E)\)，并带有满足式\eqref{g3:eq:spin-connection-compatibility}同类乘积法则的 Hermitian 联络 \(\nabla^E\)。这种资料称为带相容联络的 Clifford 模丛。其\term[Dirac suanzi]{Dirac 算子}[Dirac operator]定义为
+\begin{equation}\label{g3:eq:clifford-dirac-definition}
+	D_E\psi=\sum_{j=1}^n c(e_j)\nabla^E_{e_j}\psi.
+\end{equation}
+这是把协变导数与 Clifford 乘法作收缩，所以不依赖正交标架。取 \(E=S\) 及其自旋联络时，称为自旋 Dirac 算子，以下简记为 \(D\)。它的名称来自 Dirac 对相对论性波动方程的一阶化。\footnote{Paul Adrien Maurice Dirac（1902--1984），英国理论物理学家，参与建立量子力学的数学形式，并于1928年提出描述相对论性自旋 \(1/2\) 粒子的 Dirac 方程。}
+
+\begin{theorem}\label{g3:thm:spin-dirac-elliptic}
+	设 \((M^n,g)\) 是光滑无边界黎曼流形，\(n\ge2\)，\(E\) 是上述带相容 Hermitian 联络的 Clifford 模丛。则 \(D_E\) 的主符号及其平方为
+	\begin{equation}\label{g3:eq:dirac-principal-symbol}
+		\sigma_1(D_E)(x,\xi)=\mathrm i c(\xi^\sharp),
+		\qquad \sigma_1(D_E)(x,\xi)^2=|\xi|^2\operatorname{Id}_{E_x}.
+	\end{equation}
+	因此 \(D_E\) 椭圆且形式自伴。若 \(M\) 闭，则它在 \(L^2(E)\) 上以 \(H^1(E)\) 为定义域是自伴算子，核有限维且由光滑截面组成；其 \(H^1(E)\to L^2(E)\) 实现是 Fredholm 算子。
+\end{theorem}
+\begin{proof}
+	由乘积法则，\(D_E(f\psi)-fD_E\psi=c((\mathrm df)^\sharp)\psi\)。本卷的符号约定把一阶导数替换为 \(\mathrm i\xi\)，故得到第一式。再用 Clifford 关系，\((\mathrm i c(\xi^\sharp))^2=|\xi|^2\)，这同时证明非零余切向量处的可逆性。
+	为证形式自伴，取紧支光滑截面 \(\psi,\varphi\)，定义复向量场
+	\(Z=\sum_j\langle c(e_j)\psi,\varphi\rangle e_j\)。在任一点选取正规正交标架，利用联络相容性和 \(c(e_j)^*=-c(e_j)\)，得到
+	\[
+		\operatorname{div}Z
+		=\sum_j\bigl(\langle c(e_j)\nabla^E_{e_j}\psi,\varphi\rangle
+		+\langle c(e_j)\psi,\nabla^E_{e_j}\varphi\rangle\bigr)
+		=\langle D_E\psi,\varphi\rangle-\langle\psi,D_E\varphi\rangle.
+	\]
+	对实部、虚部分别应用紧支散度公式，即得 \((D_E\psi,\varphi)_{L^2}=(\psi,D_E\varphi)_{L^2}\)。闭流形上的定义域和自伴性由\cref{g3:prop:elliptic-adjoint-domain}推出；有限维光滑核与 Fredholm 性由\cref{g3:thm:elliptic-fredholm}推出。
+\end{proof}
+
+自旋 Dirac 算子的平方是非负的二阶算子：闭流形上
+\((D^2\psi,\psi)=\|D\psi\|_2^2\)。在偶数维 \(n=2m\) 中，\(\Gamma\) 平行且与 Clifford 向量作用反交换，所以
+\[
+	D\Gamma=-\Gamma D,\qquad
+	D=\begin{pmatrix}0&D^-\\D^+&0\end{pmatrix}
+	\quad\text{于 }S^+\oplus S^-.
+\]
+\(\mathrm i c(\xi^\sharp)\) 在 \(S^+\) 与 \(S^-\) 之间互为同构，故 \(D^+:H^1(S^+)\to L^2(S^-)\) 也椭圆。其形式伴随为 \(D^-\)，因此在闭流形上
+\begin{equation}\label{g3:eq:spin-analytic-index}
+	\operatorname{ind}D^+=\dim\ker D^+-\dim\ker D^-.
+\end{equation}
+这里全算子 \(D\) 的自伴性与分次算子 \(D^+\) 的指标是两个相容的事实：前者的指标总为零，后者比较的是两个不同手性中的零模数。
+
+\ProseParagraphBreak
+
+在欧氏空间及其平坦自旋标架中，\(D=\sum_jc(e_j)\partial_j\)，反交换关系立即给出 \(D^2=-\sum_j\partial_j^2\)。曲率非零时，协变导数彼此不交换。下一小节将计算这个交换子产生的全部零阶项。
 
 \subsection{Lichnerowicz 公式与正标量曲率障碍}
 \label{g3:subsec:1703:04}
-待撰写
+先在任意带相容联络的 Clifford 模丛上计算。于一点选取满足 \(\nabla e_j=0\) 的正规正交标架，展开式\eqref{g3:eq:clifford-dirac-definition}并把不同指标配对，得到
+\[
+	D_E^2=-\sum_i\nabla^E_{e_i}\nabla^E_{e_i}
+	+\sum_{i<j}c(e_i)c(e_j)R^E(e_i,e_j).
+\]
+恢复粗 Laplace 算子的坐标不变表达式，即为
+\begin{equation}\label{g3:eq:dirac-square-general-curvature}
+	D_E^2=(\nabla^E)^*\nabla^E
+	+\frac12\sum_{i,j}c(e_i)c(e_j)R^E(e_i,e_j).
+\end{equation}
+联络曲率在这一步尚未化成标量。对自旋子丛，式\eqref{g3:eq:spin-curvature-local}使这一收缩特别简单。
+
+\begin{theorem}[Lichnerowicz 公式]\label{g3:thm:spin-lichnerowicz}
+	设 \((M^n,g)\) 是光滑无边界定向黎曼自旋流形，\(n\ge2\)，\(S\) 配备 Levi--Civita 联络诱导的自旋联络。则其自旋 Dirac 算子满足
+	\begin{equation}\label{g3:eq:spin-lichnerowicz}
+		D^2=(\nabla^S)^*\nabla^S+\frac{\operatorname{Scal}_g}{4}\operatorname{Id}_S.
+	\end{equation}
+	这是局部微分算子恒等式，不要求 \(M\) 紧。
+\end{theorem}
+\begin{proof}
+	为把本卷的曲率符号和 Clifford 乘法同时保留，记
+	\[
+		C_{ijab}=g(R(e_i,e_j)e_a,e_b),\qquad c_j=c(e_j).
+	\]
+	它在 \((i,j)\)、\((a,b)\) 内分别反对称，且 \(C_{ijab}=C_{abij}\)。注意这里最后两个指标的顺序与第三章的 \(\operatorname{Rm}(e_i,e_j,e_a,e_b)\) 相反。由式\eqref{g3:eq:dirac-square-general-curvature}和式\eqref{g3:eq:spin-curvature-local}，待计算的零阶项为
+	\[
+		\mathcal K=\frac18\sum_{i,j,a,b}C_{ijab}c_ic_jc_ac_b.
+	\]
+	在每一对指标相同的项本来就是零，因此非零项的指标集只有两、三或四个不同元素。下面分别归并。
+	若有四个不同指标，固定 \(i<j<a<b\)，把它们按次序移到 \(c_ic_jc_ac_b\) 后，系数为
+	\[
+		8\bigl(C_{ijab}-C_{iajb}+C_{ibja}\bigr).
+	\]
+	因子 \(8\) 来自每一对内部的两种次序和两对的交换。第一 Bianchi 恒等式给出
+	\(C_{ijab}+C_{jaib}+C_{aijb}=0\)；再用对称性将后两项分别写成 \(C_{ibja}\) 与 \(-C_{iajb}\)，故这一系数为零。
+	若恰有三个不同指标，两对指标共有一个。交换两对不改变 \(C_{ijab}\)，而相应的两个 Clifford 二重积反交换。例如在三个指标互异时，
+	\[
+		(c_ic_j)(c_ic_b)+(c_ic_b)(c_ic_j)=0.
+	\]
+	其余共有指标的位置通过两对内的反对称性化到这一式。因此这些项也成对抵消。
+	最后，若只有两个不同指标，则对每个有序对 \(i\ne j\)，只有 \((a,b)=(i,j)\) 或 \((j,i)\) 两项。由 \(c_ic_jc_ic_j=-1\) 和 \(c_ic_jc_jc_i=1\)，它们的和为
+	\[
+		-2C_{ijij}\operatorname{Id}_S
+		=2g(R(e_i,e_j)e_j,e_i)\operatorname{Id}_S.
+	\]
+	而 \(\sum_{i,j}g(R(e_i,e_j)e_j,e_i)=\operatorname{Scal}_g\)。故总和为 \(2\operatorname{Scal}_g\operatorname{Id}_S\)，再乘 \(1/8\) 即得 \(\mathcal K=\operatorname{Scal}_g/4\)，证明公式。
+\end{proof}
+
+这个计算解释了为什么自旋子最终只看到标量曲率：四个不同指标由 Bianchi 恒等式消去，三个不同指标由 Clifford 反交换消去，留下的两指标收缩正是截面曲率之和。一般 Clifford 模丛仍应使用式\eqref{g3:eq:dirac-square-general-curvature}；其联络曲率未必具有自旋曲率公式。
+
+\begin{corollary}\label{g3:cor:spin-positive-scalar-vanishing}
+	设 \((M^n,g)\) 是非空闭连通定向黎曼自旋流形，\(n\ge2\)。若 \(\operatorname{Scal}_g\ge0\)，则每个满足 \(D\psi=0\) 的自旋子都是平行的。若标量曲率还在某一点严格为正，则 \(\ker D=0\)。特别地，若 \(\operatorname{Scal}_g\ge s_0>0\)，则对一切光滑自旋子有
+	\[
+		\|D\psi\|_2^2\ge\frac{s_0}{4}\|\psi\|_2^2.
+	\]
+	在偶数维中，只要 \(g\) 的标量曲率处处为正，就有 \(\operatorname{ind}D^+=0\)。
+\end{corollary}
+\begin{proof}
+	积分式\eqref{g3:eq:spin-lichnerowicz}并分部积分，得到
+	\begin{equation}\label{g3:eq:spin-integrated-lichnerowicz}
+		\|D\psi\|_2^2=\|\nabla^S\psi\|_2^2
+		+\frac14\int_M\operatorname{Scal}_g|\psi|^2\,\mu_g.
+	\end{equation}
+	当 \(D\psi=0\) 且标量曲率非负时，两项都为零，故 \(\psi\) 平行。平行截面的长度在连通流形上为常数；如果标量曲率在一点为正，其与 \(|\psi|^2\) 的乘积在那里为零，就迫使这个常数为零。下界估计也直接来自积分公式。偶数维时 \(\ker D=\ker D^+\oplus\ker D^-\)，所以两个核均为零，式\eqref{g3:eq:spin-analytic-index}给出指标为零。
+\end{proof}
+
+为了把“给定度量的核消失”变成“流形不允许某种度量”，还要证明所用的指标不会随度量改变。这里需要识别不同度量的自旋子丛，而不能直接把它们当成同一个丛。
+
+\begin{proposition}\label{g3:prop:spin-index-metric-independent}
+	设 \(M^{2m}\) 是闭定向光滑流形，\(m\ge1\)，固定其一个自旋结构。按下面的标架识别沿度量变化运输此结构，则 \(\operatorname{ind}D_g^+\) 与黎曼度量 \(g\) 无关。因此，如果这个指标非零，\(M\) 不存在处处正标量曲率的黎曼度量。
+\end{proposition}
+\begin{proof}
+	给定两度量 \(g_0,g_1\)，取 \(g_t=(1-t)g_0+tg_1\)。定义正定 \(g_0\) 对称端同态 \(A_t\)，使
+	\(g_t(v,w)=g_0(A_tv,w)\)，并令 \(B_t=A_t^{-1/2}\)。正定矩阵的正平方根光滑依赖其系数：例如线性化方程 \(C^2=A\) 得 \(CH+HC=K\)，在正定 \(C\) 的特征基中以正数 \(\lambda_i+\lambda_j\) 相除即可解出 \(H\)，有限维隐函数定理遂给出光滑性。因此 \(B_t\) 光滑，且
+	\(g_t(B_tv,B_tw)=g_0(v,w)\)。它把 \(g_0\) 的定向正交标架送到 \(g_t\) 的定向正交标架。
+	若 \(Q,\eta_0\) 表示原自旋结构，令 \(\eta_t=B_t\circ\eta_0\)，便在同一个主丛 \(Q\) 上得到了运输后的自旋结构。于是所有关联丛可统一写成 \(Q\times_\kappa\Sigma_{2m}\)，手性分次也固定。其 Clifford 作用满足 \(c_t(v)=c_0(B_t^{-1}v)\)，提升联络由式\eqref{g3:eq:spin-connection-local}光滑依赖于 \(t\)。
+	用 \(g_0\) 固定 \(H^1(S^+)\) 与 \(L^2(S^-)\) 的范数。紧性保证其他 \(g_t\) 定义的范数与它们一致等价。局部表示中 \(D_{g_t}^+\) 的一阶及零阶系数连续依赖 \(t\)，故
+	\(t\mapsto D_{g_t}^+\) 在 \(\mathcal L(H^1(S^+),L^2(S^-))\) 中连续。每个算子都椭圆，\cref{g3:thm:index-local-constancy}遂说明其指标恒定。若某个度量具有正标量曲率，上一推论使它的指标为零，与非零恒定指标矛盾。
+\end{proof}
+
+\Cref{g3:thm:spin-ahat-index}将把这个解析指标识别为
+\(\langle\widehat A(TM),[M]\rangle\)。在接受那里明确引入的指标定理后，就得到拓扑表述：非零 \(\widehat A\) 数阻碍闭自旋流形上的正标量曲率。奇数维的自旋 Dirac 算子仍满足核消失结论，但本节的手性指标只定义在偶数维中。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

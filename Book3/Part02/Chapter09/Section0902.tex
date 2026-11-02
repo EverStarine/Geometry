@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 9.2 常曲率的局部与整体分类
 % 纲要位置：几何学计划纲要.md，第 2437 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,313 @@
 \section{常曲率的局部与整体分类}
 \label{g3:sec:0902}
 
-待撰写
+常截面曲率把 Jacobi 方程中的曲率算子化为一个标量。因此，从一点发出的测地线怎样彼此分离，可以精确求解；这些分离量又决定极坐标中的角向度量。局部分类由此得到。整体分类还须处理两个不同的问题：正曲率下极坐标在对径点失效，非单连通情形下不同点会被覆盖变换识别。下面分别完成这两步。
 
 \subsection{Jacobi 方程确定局部度量}
 \label{g3:subsec:0902:01}
-待撰写
+
+沿用\eqref{g3:eq:model-jacobi-functions}的 \(s_k\)，并记 \(b_k=\pi/\sqrt{k}\) 当 \(k>0\)，而 \(b_k=\infty\) 当 \(k\le0\)。记标准模型为
+\begin{equation}\label{g3:eq:standard-space-form-models}
+	M_k^n=
+	\begin{cases}
+		S^n(1/\sqrt{k}),&k>0,\\
+		\mathbb R^n,&k=0,\\
+		\bigl(\mathbb H^n,(-k)^{-1}g_{\mathbb H}\bigr),&k<0.
+	\end{cases}
+\end{equation}
+这里 \(\mathbb H^n=\{(x,y):x\in\mathbb R^{n-1},\,y>0\}\)，且
+\(g_{\mathbb H}=y^{-2}(|\mathrm dx|^2+\mathrm dy^2)\)。
+\Cref{g3:exm:space-form-curvature,g3:exm:hyperbolic-warped-halfspace}已核算这些模型的曲率和完备性；后一个例子还用坐标估计证明了双曲度量的完备性。它们都连通，且当 \(n\ge2\) 时单连通：Euclid 空间和上半空间可缩，球面的情形是第一卷第5章第2节“高维球面的单连通性”命题。
+% 跨卷依赖：g1:prop:sphere-simply-connected，已核读陈述及两开集 van Kampen 证明。
+\symidx{\(M_k^n\)：单连通完备常曲率模型}
+
+\begin{proposition}\label{g3:prop:space-form-local-model}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(n\ge2\)，在 \(p\) 的某邻域中具有常截面曲率 \(k\)。在充分小的正常球中，极坐标映射
+	\[
+		F_p(r,u)=\exp_p(ru),\qquad u\in S_pM,
+	\]
+	满足
+	\begin{equation}\label{g3:eq:space-form-polar-metric}
+		F_p^*g=\mathrm dr^2+s_k(r)^2g_{S_pM}.
+	\end{equation}
+	因此，若另一 \(n\) 维光滑无边界黎曼流形 \((N,h)\) 在 \(q\) 附近也具有常截面曲率 \(k\)，则任意线性等距
+	\(I:\mathrm T_pM\to\mathrm T_qN\) 都确定一个局部等距
+	\[
+		\Phi=\exp_q\circ I\circ\exp_p^{-1},
+		\qquad \Phi(p)=q,\quad \mathrm d\Phi_p=I.
+	\]
+	在充分小的连通邻域上，具有这些初始数据的局部等距唯一。
+\end{proposition}
+\begin{proof}
+	取 \(\rho>0\)，使 \(\exp_p\) 在 \(B(0,\rho)\) 上为微分同胚，像位于所给常曲率邻域，且 \(\rho<b_k\)。固定单位向量 \(u\)，记 \(\gamma_u(r)=\exp_p(ru)\)、\(T=\dot\gamma_u\)，沿它的平行移动记为 \(P_r\)。对 \(w\in\mathrm T_uS_pM=u^\perp\)，取单位向量曲线 \(u(s)\)，使 \(u(0)=u\)、\(u'(0)=w\)。变分 \(\exp_p(ru(s))\) 的变分场满足
+	\[
+		J_w(0)=0,\qquad J_w'(0)=w,\qquad
+		J_w''+R(J_w,T)T=0.
+	\]
+	常曲率给出 \(R(V,T)T=k(V-\langle V,T\rangle T)\)。由\cref{g3:exm:constant-curvature-jacobi}，或者直接在平行标架中解方程，得到
+	\begin{equation}\label{g3:eq:space-form-angular-jacobi}
+		J_w(r)=s_k(r)P_rw.
+	\end{equation}
+	因此角向内积为
+	\(\langle J_w(r),J_z(r)\rangle=s_k(r)^2\langle w,z\rangle\)。
+	径向速度为单位长度，又与每个 \(J_w\) 正交；后一事实也由 Gauss 引理给出。这就证明\eqref{g3:eq:space-form-polar-metric}。
+
+	对 \(q\) 作同样计算，并进一步缩小 \(\rho\)。线性等距 \(I\) 保持单位切球面的度量，两边的极坐标公式完全相同，所以 \(\Phi\) 在去心邻域保持度量。它本身由光滑指数映射及其光滑局部逆组成，在中心也光滑，微分为 \(I\)，故中心处同样保持度量。
+
+	最后，局部等距保持 Levi-Civita 联络，从而保持测地线及其仿射参数。任何具有所给初始数据的局部等距 \(\Psi\)，都满足
+	\[
+		\Psi(\exp_p v)=\exp_q(Iv)
+	\]
+	于充分小的切球上，因此与 \(\Phi\) 相同。这证明局部唯一性。
+\end{proof}
+
+极坐标公式的推导只需所考察径向测地线存在，并且沿线曲率为 \(k\)。所以当 \(M\) 完备且全局常曲率时，公式\eqref{g3:eq:space-form-angular-jacobi}在所有实参数上成立；当 \(0<r<b_k\) 时，径向与角向微分构成可逆的线性映射，\(\exp_p\) 因而局部可逆。不过，局部可逆尚未排除不同方向到达同一点。
 
 \subsection{单连通完备模型}
 \label{g3:subsec:0902:02}
-待撰写
+
+当 \(k\le0\) 时，上一节的 Cartan--Hadamard 定理已经排除这种全局重复。正曲率情形恰好相反：所有角向 Jacobi 场在 \(b_k\) 处同时归零。我们需要证明，这种退化与标准球面南极的退化完全相同。
+
+\begin{lemma}\label{g3:lem:round-unit-sphere-isometry}
+	设 \(E,F\) 为维数相同的实内积空间，\(\dim E=\dim F=n\ge2\)。若光滑映射 \(v:S(E)\to S(F)\) 是单位球面之间的局部黎曼等距，则存在唯一线性等距 \(A:E\to F\)，使 \(v(u)=Au\) 对所有 \(u\in S(E)\) 成立。
+\end{lemma}
+\begin{proof}
+	固定 \(u_0\in S(E)\)。定义
+	\[
+		Au_0=v(u_0),\qquad
+		A|_{u_0^\perp}=\mathrm dv_{u_0}.
+	\]
+	右侧将 \(u_0^\perp\) 等距映到 \(v(u_0)^\perp\)，因此 \(A\) 是线性等距。对任意单位向量 \(w\perp u_0\)，曲线
+	\(c(t)=\cos t\,u_0+\sin t\,w\)
+	是单位球面上的单位速大圆。局部等距保持测地线，所以 \(v\circ c\) 是初值
+	\((v(u_0),\mathrm dv_{u_0}w)\)
+	的球面测地线。球面测地线的显式解及初值唯一性给出
+	\[
+		v(c(t))=\cos t\,v(u_0)+\sin t\,\mathrm dv_{u_0}w=Ac(t).
+	\]
+	每个不同于 \(-u_0\) 的球面点都能如此表示；在 \(-u_0\) 处由连续性仍成立。因此 \(v=A|_{S(E)}\)。单位向量张成 \(E\)，又保证线性延拓唯一。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:simply-connected-space-form}
+	设 \((M^n,g)\) 为连通、单连通、完备、光滑无边界黎曼流形，\(n\ge2\)，且截面曲率处处等于常数 \(k\)。则 \(M\) 等距于\eqref{g3:eq:standard-space-form-models}中的 \(M_k^n\)。更准确地，给定 \(o\in M_k^n\)、\(p\in M\) 及线性等距 \(I:\mathrm T_oM_k^n\to\mathrm T_pM\)，存在唯一整体等距 \(F:M_k^n\to M\)，满足 \(F(o)=p\)、\(\mathrm dF_o=I\)。
+\end{theorem}
+\begin{proof}
+	先设 \(k\le0\)。\Cref{g3:thm:cartan-hadamard}分别应用于 \(M\) 和 \(M_k^n\)，说明两个基点的指数映射都是全局微分同胚。因此
+	\[
+		F=\exp_p\circ I\circ(\exp_o)^{-1}
+	\]
+	全局有定义。两边在所有 \(r>0\) 上都有\eqref{g3:eq:space-form-polar-metric}，而 \(I\) 保持角向单位球度量，所以 \(F\) 处处保持度量；在中心的光滑性由正常坐标直接给出。这就得到所需整体等距。
+
+	以下设 \(k>0\)，记 \(a=1/\sqrt{k}\)、\(L=\pi a\)，模型为 \(S^n(a)\)。取 \(o\) 的对径点 \(o_-\)。在模型去掉 \(o_-\) 后，每点唯一写成 \(\exp_o(ru)\)，其中 \(0\le r<L\)、\(|u|=1\)。定义
+	\[
+		F(\exp_o(ru))=\gamma_{Iu}(r),
+		\qquad \gamma_\xi(r)=\exp_p(r\xi).
+	\]
+	完备性使右侧的测地线全时存在。局部极坐标公式说明 \(F\) 在这一去点球面上为局部等距，包括北极 \(o\)。
+
+	先找出南极应当映到哪里。映射
+	\[
+		Q:S_pM\to M,\qquad Q(\xi)=\exp_p(L\xi)
+	\]
+	光滑，且对 \(\eta\perp\xi\)，其微分为
+	\(\mathrm dQ_\xi(\eta)=J_\eta(L)=s_k(L)P_L\eta=0\)。
+	因为 \(n\ge2\)，单位球面 \(S_pM\) 道路连通；沿球面中的每条光滑道路，\(Q\) 的导数恒为零，所以 \(Q\) 是常映射。记其值为 \(q\)。这说明所有从 \(p\) 出发的单位速径向线在时刻 \(L\) 都到达同一点 \(q\)。
+
+	还须检查在 \(q\) 附近怎样离开这个公共终点。定义反向末速度映射
+	\[
+		v:S_pM\to S_qM,\qquad
+		v(\xi)=-\dot\gamma_\xi(L).
+	\]
+	它是光滑的，且值为单位向量。对初方向变分 \(\xi(s)\)，因为终点恒为 \(q\)，对 \(v\) 的普通纤维微分就是相应的协变导数。无挠性给出混合导数交换，从而
+	\[
+		\mathrm dv_\xi(\eta)
+		=-J_\eta'(L)
+		=-c_k(L)P_L\eta
+		=P_L\eta.
+	\]
+	这里 \(c_k(L)=\cos\pi=-1\)。该式保持内积，且其像垂直于 \(v(\xi)\)，所以 \(v\) 是单位球面之间的局部等距。由上一引理，存在一个线性等距
+	\(A:\mathrm T_pM\to\mathrm T_qM\)，使 \(v(\xi)=A\xi\)。
+
+	在标准球面上同样记
+	\[
+		v_0(u)=-\left.\frac{\mathrm d}{\mathrm dr}\exp_o(ru)\right|_{r=L}
+		\in S_{o_-}S^n(a).
+	\]
+	大圆公式表明 \(v_0\) 是某个线性等距
+	\(A_0:\mathrm T_oS^n(a)\to\mathrm T_{o_-}S^n(a)\)
+	在单位球面上的限制。对充分小的 \(s>0\)，反向测地线的初值唯一性给出
+	\[
+		\exp_o((L-s)u)=\exp_{o_-}(sA_0u),
+		\qquad
+		\gamma_{Iu}(L-s)=\exp_q(sAIu).
+	\]
+	于是原来的 \(F\) 在 \(o_-\) 的去心正常邻域内恰等于
+	\begin{equation}\label{g3:eq:space-form-antipodal-extension}
+		\exp_q\circ(AIA_0^{-1})\circ(\exp_{o_-})^{-1}.
+	\end{equation}
+	右侧在中心也光滑，且由\cref{g3:prop:space-form-local-model}是局部等距。令 \(F(o_-)=q\)，便把 \(F\) 延拓为整个 \(S^n(a)\) 上的光滑局部等距。这里不仅证明了径向像收敛，还确定了中心处的微分 \(AIA_0^{-1}\)。
+
+	圆球面完备，而 \(M\) 连通、单连通，故\cref{g3:lem:complete-local-isometry-covering}使这个全域局部等距成为整体等距同构。最后，对任意符号的 \(k\)，具有初始数据 \((p,I)\) 的等距都满足
+	\(F(\exp_o z)=\exp_p(Iz)\)。
+	模型完备，Hopf--Rinow 定理保证 \(\exp_o\) 满射，所以这条等式唯一确定 \(F\)。
+\end{proof}
+
+在正曲率证明中，完备性首先保证测地线能走到共同终点，并在该点反向延伸；南极附近的光滑性则由末速度映射保证。这个区分很重要：仅知道所有角向微分在某个时刻归零，还不足以直接断言已经得到了一个光滑球面。
 
 \subsection{离散自由等距群商}
 \label{g3:subsec:0902:03}
-待撰写
+
+单连通模型确定以后，一般空间形式的差异由哪些模型点被识别来记录。先明确群作用的条件。在第一卷第5章第5节中，作用“适当不连续”采用局部覆盖片的约定：每个点有一个开邻域 \(U\)，满足
+\[
+	\gamma U\cap U=\varnothing\qquad(\gamma\ne e).
+\]
+它已经包含自由性。对于完备黎曼流形的等距作用，这一条件等价于“作用自由，且对每个紧集 \(C\)，满足 \(\gamma C\cap C\ne\varnothing\) 的群元素只有有限个”。下面同时验证这两种实际使用的形式。
+
+\begin{lemma}\label{g3:lem:space-form-quotient-action}
+	设 \((X,g)\) 为连通、完备、光滑无边界黎曼流形，\(\Gamma\) 为其等距变换群的一个子群。则以下条件等价：
+	\begin{equivalences}
+		\item 每个 \(x\in X\) 都有开邻域 \(U\)，其不同 \(\Gamma\) 平移两两不交。
+		\item \(\Gamma\) 自由作用，且每个紧集 \(C\subset X\) 都满足
+		\[
+			\#\{\gamma\in\Gamma:\gamma C\cap C\ne\varnothing\}<\infty.
+		\]
+	\end{equivalences}
+	在这些条件下，\(\Gamma\) 在等距群的紧开拓扑中是离散子群，商空间 \(X/\Gamma\) 有唯一使投影局部等距的光滑黎曼结构，而且此商连通、完备且无边界。
+\end{lemma}
+\begin{proof}
+	设第一条成立。若 \(\gamma x=x\)，局部不交性立即给出 \(\gamma=e\)，所以作用自由。固定 \(x_0\)，在一个这样的邻域内取 \(B(x_0,\varepsilon)\)。其不同平移不交；由测地线中点可知，不同轨道点之间的距离至少为 \(2\varepsilon\)。设 \(C\) 包含于 \(\overline B(x_0,R)\)。若 \(\gamma C\cap C\ne\varnothing\)，选 \(z\in C\) 使 \(\gamma z\in C\)，则
+	\[
+		d(x_0,\gamma x_0)
+		\le d(x_0,\gamma z)+d(\gamma z,\gamma x_0)
+		\le2R.
+	\]
+	闭球 \(\overline B(x_0,2R)\) 紧，其中的 \(2\varepsilon\) 分离点集有限；自由性使轨道点与群元素一一对应。这就得到第二条。
+
+	反过来，固定 \(x\)，取紧闭球 \(C=\overline B(x,1)\)。只有有限个非恒等元素可能满足 \(\gamma C\cap C\ne\varnothing\)。由自由性，这些元素的 \(d(x,\gamma x)\) 都正。取 \(\delta<1\)，使 \(2\delta\) 小于这些有限个正数的最小值；若集合为空，只需取 \(\delta<1\)。那么 \(U=B(x,\delta)\) 与所有非恒等平移不交：若有交点，先知 \(\gamma C\cap C\ne\varnothing\)，再由三角不等式得到 \(d(x,\gamma x)<2\delta\)，矛盾。
+
+	局部不交性还给出一个仅含恒等元的群邻域：选上述 \(x,\delta\)，则
+	\(\{\gamma:d(x,\gamma x)<2\delta\}\)
+	在紧开拓扑中开，并与 \(\Gamma\) 只交于 \(e\)。故 \(\Gamma\) 离散。第一卷第5章第5节“作用的商是覆盖”命题说明，商投影 \(\pi:X\to X/\Gamma\) 为覆盖，其覆盖片就是这些 \(U\) 及其平移。
+	% 跨卷依赖：g1:prop:action-quotient-cover，已核读局部片构造及覆盖变换群识别。
+
+	还须核对商的流形分离条件。若 \(x,y\) 不在同一轨道，取紧集 \(C=\overline B(x,1)\cup\{y\}\)。满足 \(d(x,\gamma y)\le1\) 的 \(\gamma\) 只有有限个，且每个距离都正，所以
+	\(\inf_{\gamma\in\Gamma}d(x,\gamma y)>0\)。
+	取半径小于这个下界三分之一的两球，其投影为不交的开邻域，故商 Hausdorff。投影是开映射，\(X\) 的一个可数拓扑基的像便给出商的可数拓扑基。将每张片的光滑坐标搬到商上，换片映射局部等于某个 \(\gamma\)，因而光滑；它们又是等距，故各片的度量相容。这构造出唯一使 \(\pi\) 局部等距的光滑度量。连通性和无边界性直接由投影及局部片得到。最后，源完备且 \(\pi\) 是黎曼覆盖，\cref{g3:prop:riemannian-cover-complete}给出商完备。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:space-form-quotient}
+	设 \(n\ge2\)、\(k\in\mathbb R\)。连通、完备、光滑无边界的 \(n\) 维常截面曲率 \(k\) 黎曼流形，恰好是
+	\[
+		M_k^n/\Gamma,
+	\]
+	其中 \(\Gamma\subset\operatorname{Isom}(M_k^n)\) 自由且适当不连续地作用；这样的 \(\Gamma\) 自动离散，并满足上一引理的紧集有限性条件。商的万有覆盖为 \(M_k^n\)，基本群同构于 \(\Gamma\)。
+\end{theorem}
+\begin{proof}
+	给定空间形式 \(M\)，由\cref{g3:prop:riemannian-universal-cover}取带拉回度量的万有覆盖 \(\widetilde M\)。它连通、单连通、完备，且局部等距保持曲率，所以截面曲率仍为 \(k\)。由\cref{g3:thm:simply-connected-space-form}，存在等距 \(F:M_k^n\to\widetilde M\)。
+
+	将 \(\widetilde M\to M\) 的覆盖变换群经 \(F\) 搬到模型上，得到等距子群 \(\Gamma\)。均匀覆盖邻域的一张连通片与其不同覆盖变换的像不交：若两片相交，它们相同，而片上投影单射，迫使该变换在片上恒等；覆盖变换由一点决定，所以它全局恒等。因此 \(\Gamma\) 满足上一引理的局部条件。万有覆盖的变换群在每个纤维上自由传递，故投影的纤维恰为这些轨道。于是 \(\pi\circ F\) 诱导从 \(M_k^n/\Gamma\) 到 \(M\) 的双射局部等距，因而是整体等距。其基本群与 \(\Gamma\) 的同构同样来自万有覆盖。
+
+	反过来，给定这样的 \(\Gamma\)，上一引理已经构造出连通、完备、光滑无边界的商度量。商投影局部等距，所以商具有常曲率 \(k\)。模型单连通，因此该覆盖是万有覆盖；第一卷的商覆盖命题还说明它的全部覆盖变换恰是给定的 \(\Gamma\)，由此得到基本群。
+\end{proof}
+
+群的抽象同构类型不能单独决定商度量；同一个群可以通过不同尺度、不同平移向量作用。等距分类中需要保留它作为模型等距群子群的位置。
+
+\begin{proposition}\label{g3:prop:space-form-isometry-conjugacy}
+	设 \(n\ge2\)、\(k\in\mathbb R\)，且 \(\Gamma_1,\Gamma_2\subset\operatorname{Isom}(M_k^n)\) 都自由、适当不连续地作用。则两个黎曼商 \(M_k^n/\Gamma_1\) 与 \(M_k^n/\Gamma_2\) 等距，当且仅当存在 \(A\in\operatorname{Isom}(M_k^n)\)，使
+	\[
+		A\Gamma_1A^{-1}=\Gamma_2.
+	\]
+\end{proposition}
+\begin{proof}
+	若有这样的 \(A\)，定义 \([x]_{\Gamma_1}\mapsto[Ax]_{\Gamma_2}\)。共轭关系保证它良定义，\(A^{-1}\) 给出逆映射，而在覆盖片上它就是 \(A\)，故为等距。
+
+	反过来，设 \(f:M_k^n/\Gamma_1\to M_k^n/\Gamma_2\) 为黎曼等距，商投影记为 \(\pi_1,\pi_2\)。固定 \(x_0\in M_k^n\)，再取 \(y_0\in\pi_2^{-1}(f(\pi_1(x_0)))\)。第一卷第5章第3节“映射的提升判据”应用于 \(f\circ\pi_1\) 和覆盖 \(\pi_2\)：定义域单连通，子群包含条件自动满足，故存在唯一提升 \(A\)，满足
+	\[
+		\pi_2\circ A=f\circ\pi_1,\qquad A(x_0)=y_0.
+	\]
+	% 跨卷依赖：g1:thm:lifting-criterion，已核读存在性、唯一性及覆盖片内的局部表达。
+	在覆盖片上，\(A\) 是两个局部覆盖逆及 \(f\) 的复合，所以光滑且局部等距。用同一判据提升 \(f^{-1}\circ\pi_2\)，指定 \(B(y_0)=x_0\)。于是 \(BA\) 与恒等映射都是 \(\pi_1\) 的提升，且在 \(x_0\) 处相同，故 \(BA=\mathrm{id}\)；同理 \(AB=\mathrm{id}\)。因此 \(A\) 是整体等距。
+
+	对每个 \(\gamma\in\Gamma_1\)，有
+	\[
+		\pi_2\circ A\gamma A^{-1}
+		=f\circ\pi_1\circ\gamma A^{-1}
+		=f\circ\pi_1\circ A^{-1}=\pi_2.
+	\]
+	所以 \(A\gamma A^{-1}\) 是 \(\pi_2\) 的覆盖变换，属于 \(\Gamma_2\)。将同样论证用于 \(A^{-1}\)，得到反向包含，因而两群共轭。
+\end{proof}
 
 \subsection{球面、平坦与双曲空间形式}
 \label{g3:subsec:0902:04}
-待撰写
+
+分类定理把局部度量确定以后剩余的自由度集中到离散群作用上。下面的模型既给出不同拓扑，也显示正曲率与非正曲率的商有不同的整体规模。
+
+\begin{example}\label{g3:exm:spherical-space-form-quotients}
+	当 \(k>0\) 时，模型 \(S^n(a)\)、\(a=1/\sqrt{k}\) 紧。将紧集有限性用于整个球面，便知允许的 \(\Gamma\) 必有限。因此每个正曲率空间形式都是紧流形，且基本群有限，这与 Bonnet--Myers 定理一致。
+
+	最简单的非平凡作用由对径映射 \(x\mapsto-x\) 生成。它是等距且没有不动点，有限性保证紧集条件，所以
+	\[
+		S^n(a)/\{I,-I\}=\mathbb {RP}^n
+	\]
+	带有常曲率 \(a^{-2}\) 的完备度量。由球面距离公式及覆盖距离公式，对两条实直线的单位代表 \(u,v\)，有
+	\[
+		d_{\mathbb {RP}^n}([au],[av])
+		=\min\{a\arccos\langle u,v\rangle,\,
+		a\arccos(-\langle u,v\rangle)\}
+		=a\arccos|\langle u,v\rangle|.
+	\]
+	故其直径为 \(\pi a/2\)，小于覆盖球面的 \(\pi a\)。球面模型与商空间曲率相同，最远点的距离却已改变。
+\end{example}
+
+\begin{example}\label{g3:exm:flat-torus-klein-spaceforms}
+	在 \(\mathbb R^n\) 中取线性无关向量 \(v_1,\ldots,v_n\)，它们的整数线性组合构成满秩格
+	\(\Lambda=\sum_i\mathbb Zv_i\)。
+	平移作用自由。给定紧集 \(C\)，若 \((C+\lambda)\cap C\ne\varnothing\)，则 \(\lambda\in C-C\)，而有界集只含有限个格点，因此作用适当不连续。商
+	\[
+		T_\Lambda^n=\mathbb R^n/\Lambda
+	\]
+	是完备平坦环面。闭平行多面体
+	\(\{\sum_it_iv_i:0\le t_i\le1\}\)
+	投影覆盖整个商，所以该商紧。
+
+	自由等距作用还可以包含线性反射部分。在 \(\mathbb R^2\) 中取 \(a,b>0\)，令
+	\[
+		A(x,y)=(x+a,y),\qquad
+		B(x,y)=(-x,y+b).
+	\]
+	有 \(BAB^{-1}=A^{-1}\)，所以每个群元素都可写成 \(A^mB^j\)，其作用为
+	\[
+		A^mB^j(x,y)=((-1)^jx+ma,y+jb).
+	\]
+	这些表达互不相同。若有不动点，先由第二坐标得到 \(j=0\)，再由第一坐标得到 \(m=0\)，故作用自由。若某个固定紧集与其像相交，第二坐标限制 \(j\) 只能取有限个值，第一坐标再限制 \(m\) 只能取有限个值，故作用适当不连续。所得商是完备平坦 Klein 瓶：可先用 \(B\) 把 \(y\) 移入 \([0,b]\)，再用 \(A\) 把 \(x\) 移入 \([0,a]\)，由矩形边界识别得到其通常模型。它与平坦环面具有相同的局部度量，但 \(B\) 反转定向，而格平移均保持定向。
+\end{example}
+
+\begin{example}\label{g3:exm:hyperbolic-cyclic-spaceform}
+	在曲率 \(-1\) 的上半平面
+	\[
+		\mathbb H^2=\{(x,y):y>0\},\qquad
+		g=\frac{\mathrm dx^2+\mathrm dy^2}{y^2}
+	\]
+	中，固定 \(\ell>0\)，令
+	\(D_\ell(x,y)=(e^\ell x,e^\ell y)\)。
+	分子、分母同时乘以 \(e^{2\ell}\)，所以 \(D_\ell\) 等距。它的非零次幂没有不动点。若紧集 \(C\) 的 \(y\) 坐标介于 \(c>0\) 与 \(C_0<\infty\) 之间，则
+	\(D_\ell^jC\cap C\ne\varnothing\)
+	迫使
+	\[
+		\frac c{C_0}\le e^{j\ell}\le\frac{C_0}c,
+	\]
+	所以只有有限个整数 \(j\) 可能出现。分类定理因此给出完备双曲曲面
+	\(\mathbb H^2/\langle D_\ell\rangle\)。
+
+	全局坐标 \(s=x/y\)、\(t=\log y\) 将 \(D_\ell\) 写成
+	\((s,t)\mapsto(s,t+\ell)\)，所以商同胚于
+	\(\mathbb R\times(\mathbb R/\ell\mathbb Z)\)，是一个圆柱。竖直曲线
+	\(\gamma(t)=(0,e^t)\) 是单位速测地线，其长度最短性也可直接看出：任意曲线的速度满足
+	\(|(\log y)'|\le|\dot\gamma|_g\)，连接两个竖直点的曲线长度至少为它们的 \(\log y\) 差，而竖直线达到下界。该轴在商中成为长度为 \(\ell\) 的闭测地线。
+
+	任意代表 \(j\) 次生成元的闭曲线提升后，从某个 \((x,y)\) 到达
+	\(D_\ell^j(x,y)\)，长度至少为 \(|j|\ell\)。因此这个商中最短非平凡闭曲线的长度为 \(\ell\)。改变 \(\ell\) 保持基本群同构于 \(\mathbb Z\)，却改变这一等距不变量，得到彼此不等距的完备双曲空间形式。
+\end{example}
+
+这些例子中的自由性保证商仍是无边界光滑流形；若去掉自由性，反射等距可能产生边界，旋转等距可能产生锥点。空间形式分类所讨论的是光滑黎曼流形，因此群作用的条件属于分类结论的一部分。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：## 第5章　完整群、平行结构与黎曼分解
 % 纲要位置：几何学计划纲要.md，第 2260 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,14 +14,32 @@
 \BookChapterNumber{g3:ch:05}
 
 \begin{chapterabstract}
-待撰写
+	沿闭路平行运输的返回变换组成完整群。其连续部分由沿路径搬回基点的曲率算子决定，整体分支则还记录环路的拓扑。本章建立完整群的浸入 Lie 群结构，证明 Ambrose--Singer 定理，再把不变张量和不变子空间分别转化为平行张量和正交平行分布。局部乘积在单连通与完备条件下延拓为整体 de Rham 分解。随后从不变度量、点反射与对称 Lie 代数构造齐性及对称空间，计算球面、双曲空间和特殊线性群商的曲率、秩与限制根。特殊完整群及对称空间的分类给出明确的适用条件和外部来源。
 \end{chapterabstract}
 
 \begin{learninggoals}
-待撰写
+	\begin{itemize}
+		\item 区分整体与受限完整群、浸入子群与闭子群，并用小矩形及路径变分恢复完整代数。
+		\item 由完整群不变量构造平行张量和分布，证明局部乘积并追踪它的整体延拓条件。
+		\item 使用 de Rham 分解识别 Euclid 因子、不可约因子及商空间中的离散扭曲。
+		\item 从对称分解计算模型曲率、最大平坦与秩，核验紧型和非紧型对偶。
+		\item 通过平行形式理解特殊完整群，并计算 \(\operatorname{SL}(n,\mathbb R)/\operatorname{SO}(n)\) 的限制根及重数，辨明分类表中的局部与整体信息。
+	\end{itemize}
 \end{learninggoals}
 
-待撰写
+一个向量沿闭路回到起点以后，长度没有改变，方向却可能已经改变。球面上的小环路产生与曲率相联系的转动；平坦流形则可能在绕过一个不可缩环路后翻转某些方向。例如，在 Euclid 平面上用平移和滑移反射构造平坦 Klein 瓶\footnote{Felix Christian Klein（1849--1925），德国数学家，以变换群组织几何的 Erlangen 纲领及函数论研究著称。}，局部的联络系数与曲率都可以为零，但穿过滑移反射所对应环路的运输仍会改变一个坐标方向。要说明哪些向量、张量或方向分解能够在整个流形上保持平行，就必须同时记录这两种返回现象。
+
+\ProseParagraphBreak
+
+记录全部返回变换，得到基点切空间上的完整群。把小环路连续缩小，会把群的问题变成 Lie 代数的问题；曲率恰好给出面积阶的首个变化。一个点的曲率值还不够，因为环路可以先走到别处，再绕小圈，最后返回。因此需要把各点的曲率沿路径搬回同一个切空间。这将导出完整代数的生成定理，也解释为什么平行张量可以从一个切空间中的不变量恢复。
+
+\ProseParagraphBreak
+
+不变子空间进一步给出平行分布。Levi-Civita 联络的无挠性使这些分布可积，正交性则把局部度量分成乘积。由局部坐标盒走到整体乘积，需要防止路径延拓在有限长度处中断，并消除沿不同路径继续时的单值障碍；完备性和单连通性正是在这两处发挥作用。以后研究曲率比较和几何方程时，这一分解会把问题归结到不可约因子。
+
+\ProseParagraphBreak
+
+本章以第一章的 Levi-Civita 联络、第二章的完备性及 Hopf--Rinow 定理、第三章的曲率恒等式为直接基础。第一卷第13.4节的 Frobenius 定理、第16.3节的 Lie 子代数积分、第17章的齐性商和第18章的主丛联络在使用处恢复所需结论；涉及整体提升时就近说明覆盖的构造。主干的完整群与分解论证在本章展开。对称空间的标准齐性结构以及穷尽分类分别按 Loos 第一卷第II章、第IV章和第二卷第VII章引用\cite[第II章，第1--2节；第IV章，第1节]{Loos1969SymmetricI}\cite[第VII章，第2--3节]{Loos1969SymmetricII}；特殊完整群的名单及例外群模型依据 Joyce 第2节\cite[第2.1--2.5节，第111--115页]{Joyce2006ExceptionalHolonomy}。
 
 \input{Part01/Chapter05/Section0501}
 \input{Part01/Chapter05/Section0502}
@@ -31,8 +49,326 @@
 \input{Part01/Chapter05/Section0506}
 
 \begin{chaptersummary}
-待撰写
+	完整群把沿闭路的平行运输汇集为基点纤维上的变换群。受限完整群是其单位元连通分支；一般度量向量丛的完整群可以不是正交群中的闭子群，因而构造时须保留浸入 Lie 群的自身拓扑。Ambrose--Singer 定理把它的 Lie 代数写成所有搬运曲率算子的线性张成：局部曲率沿不同路径进入同一个基点切空间，才共同决定连续的返回方向。
+
+	\ProseParagraphBreak
+
+	整体完整群固定的张量唯一延拓为整体平行张量。不变正交子空间给出平行分布，而无挠性与度量相容性使互补分布形成局部黎曼乘积。完备性保证沿叶和道路矩形继续构造，单连通性消除最后的覆盖歧义，于是得到整体 de Rham 分解。非平坦不可约因子由度量决定，平坦方向合并为一个 Euclid 因子；一般流形还要保留覆盖变换对这些因子的作用。
+
+	\ProseParagraphBreak
+
+	对称空间的点反射把切空间与稳定子方向分成 \(\mathfrak p\) 和 \(\mathfrak k\)，曲率由双重 Lie 括号表达，平坦方向由 \(\mathfrak p\) 内的交换子空间描述。最大平坦的维数是秩，紧非紧对偶改变 \([\mathfrak p,\mathfrak p]\) 的符号。特殊线性群商把这些概念化为对称矩阵、对角化和矩阵单位的计算；限制根的重数则进一步记录各根方向的维数。特殊完整群与对称空间的分类处理不同的条件，两者都须区分模型的局部结构、单连通实现以及离散商。
 \end{chaptersummary}
 
 \BookExercises
-待撰写
+
+\begin{exercise}\label{g3:ex:surface-holonomy}
+	设 \((M,g)\) 为连通无边界的二维光滑黎曼流形，\(K\) 为其截面曲率。
+	\begin{enumerate}
+		\item 证明：若 \(K\not\equiv0\)，则在任意基点选正交标架后，受限完整群是 \(\mathrm{SO}(2)\)。若 \(K\equiv0\)，受限完整群是什么？
+		\item 在 \(K\not\equiv0\) 的条件下，证明整体完整群在 \(M\) 可定向时是 \(\mathrm{SO}(2)\)，在 \(M\) 不可定向时是 \(\mathrm O(2)\)。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	1. 二维中，\(\mathfrak{so}(\mathrm T_pM)\) 是一维实向量空间。若某点 \(q\) 的 \(K(q)\ne0\)，则对 \(q\) 处的正交基 \(e_1,e_2\)，算子 \(R_q(e_1,e_2)\ne0\)。取路径 \(\gamma:p\to q\)，其共轭 \(P_\gamma^{-1}R_q(e_1,e_2)P_\gamma\) 仍非零。由\cref{g3:thm:ambrose-singer}，完整代数是整个 \(\mathfrak{so}(2)\)。受限完整群是对应的连通浸入子群，所以等于 \(\mathrm{SO}(2)\)。若 \(K\equiv0\)，二维曲率张量为零，由\cref{g3:cor:flat-restricted-holonomy}得受限完整群为 \(\{I\}\)。
+
+	2. 若 \(M\) 已定向，沿路径选取与该定向一致的局部正交标架。每一小段运输矩阵连续地从单位矩阵出发，行列式为 \(+1\)；相邻正定向标架的过渡也在 \(\mathrm{SO}(2)\) 中。因此环路运输都保定向，\(\operatorname{Hol}_p\subseteq\mathrm{SO}(2)\)。结合第一问的反向包含，得到相等。
+
+	若 \(M\) 不可定向，必有一个环路的运输反定向。否则，在 \(\mathrm T_pM\) 选定一个定向，沿任意路径把它送到各点；两条路径所得定向的差由一个环路运输给出，因而假设保证定义无关路径。在小坐标球内，用一条固定引路加上随终点光滑变化的径向路径，这些定向连续变化，于是得到整个 \(M\) 的定向，矛盾。因此整体完整群包含一个行列式为 \(-1\) 的元素 \(h\)。它已包含 \(\mathrm{SO}(2)\)，故也包含另一个陪集 \(h\mathrm{SO}(2)\)，两者之并是 \(\mathrm O(2)\)。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:smooth-flat-curvature-jet}
+	在 \(\mathbb R^2\) 的平凡秩二正交丛上，令
+	\[
+		f(x)=\begin{cases}e^{-1/x^2},&x>0,\\0,&x\leq0,\end{cases}
+		\qquad J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},
+		\qquad \nabla^E=\mathrm d+Jf(x)\,\mathrm dy.
+	\]
+	证明该联络光滑，且曲率在原点的全部阶坐标偏导都为零，但其整体与受限完整群都等于 \(\mathrm{SO}(2)\)。进一步证明：把联络限制到以原点为中心的任意开圆盘，所得完整群仍为 \(\mathrm{SO}(2)\)。这个例子对“只用基点曲率的全部阶导数计算光滑联络的完整代数”说明了什么？
+\end{exercise}
+\begin{solution}
+	对 \(x>0\)，\(f\) 的任意阶导数都是 \(x^{-1}\) 的一个多项式乘以 \(e^{-1/x^2}\)。对任意 \(N\geq0\)，令 \(u=1/x\) 即得
+	\[
+		\lim_{x\downarrow0}x^{-N}e^{-1/x^2}
+		=\lim_{u\to\infty}u^Ne^{-u^2}=0.
+	\]
+	逐阶求导并比较左右极限，得到 \(f\in C^\infty(\mathbb R)\) 且 \(f^{(j)}(0)=0\) 对所有 \(j\) 成立。因此联络光滑。联络矩阵只有 \(\mathrm dy\) 分量，故
+	\[
+		R^E=Jf'(x)\,\mathrm dx\wedge\mathrm dy.
+	\]
+	它的全部阶坐标偏导在原点都为零。若还在底流形上使用通常的平直联络来定义曲率的迭代协变导数，结论也不变：丛上的交换子项为 \([Jf(x),Jf'(x)]=0\)，以后各阶同样为零，故这些协变导数在原点仍全为零。
+
+	另一方面，\(x>0\) 时 \(f'(x)=2x^{-3}e^{-1/x^2}>0\)，所以任何以原点为中心的开圆盘中都有非零曲率。所有曲率值及其平行共轭均为 \(J\) 的实倍数；至少有一个非零倍数，故由\cref{g3:thm:ambrose-singer}完整代数为 \(\mathbb RJ=\mathfrak{so}(2)\)。平面和开圆盘都单连通，整体完整群等于受限完整群，也就都等于 \(\mathrm{SO}(2)\)。因此在光滑范畴内，即使基点的曲率全部阶导数已知，也不能一般地把它们的 Lie 代数张成代替沿实际路径搬运的曲率；本例中前者为零，后者是一维。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:constant-connection-full-so3}
+	在 \(\mathbb R^2\times\mathbb R^3\) 上取标准纤维内积，令
+	\[
+		A=\begin{pmatrix}0&-1&0\\1&0&0\\0&0&0\end{pmatrix},
+		\qquad B=\begin{pmatrix}0&0&0\\0&0&-1\\0&1&0\end{pmatrix},
+		\qquad\nabla^E=\mathrm d+A\,\mathrm dx+B\,\mathrm dy.
+	\]
+	计算曲率，并证明完整群是 \(\mathrm{SO}(3)\)。解答中应具体给出三个线性无关的搬回曲率算子，说明为什么每一点的曲率算子只张成一维，仍可能产生三维的完整代数。
+\end{exercise}
+\begin{solution}
+	\(A,B\) 均斜对称，所以联络保持内积。系数为常矩阵，曲率来自交换子项：
+	\[
+		R^E=C\,\mathrm dx\wedge\mathrm dy,
+		\qquad C=[A,B]
+		=\begin{pmatrix}0&0&1\\0&0&0\\-1&0&0\end{pmatrix}.
+	\]
+	直接相乘可核对 \([A,C]=-B\)、\([B,C]=A\)。因此
+	\[
+		\exp(sA)C\exp(-sA)=C\cos s-B\sin s,
+		\qquad
+		\exp(tB)C\exp(-tB)=C\cos t+A\sin t.
+	\]
+	例如第一式的左端对 \(s\) 求导等于与 \(A\) 的交换子，右端满足同一线性方程和同一初值，故两边相等；第二式同理。
+
+	从原点沿 \(x\) 轴到 \((s,0)\) 的运输为 \(\exp(-sA)\)，所以在那里取 \(R^E(\partial_x,\partial_y)=C\) 并搬回，得到 \(C\cos s-B\sin s\)。沿 \(y\) 轴到 \((0,t)\) 则得到 \(C\cos t+A\sin t\)。取常值路径、\(s=\pi/2\) 和 \(t=\pi/2\)，分别得到 \(C,-B,A\)。这三个矩阵线性无关并张成 \(\mathfrak{so}(3)\)，所以由\cref{g3:thm:ambrose-singer}完整代数为 \(\mathfrak{so}(3)\)。
+
+	底流形单连通，整体完整群连通。联络矩阵斜对称且迹为零，在全局正交标架中每条运输从 \(I\) 连续出发，故所有运输都在 \(\mathrm{SO}(3)\) 内。对应 \(\mathfrak{so}(3)\) 的连通浸入子群是整个 \(\mathrm{SO}(3)\)，于是完整群确为 \(\mathrm{SO}(3)\)。每一点的二形式 \(R^E\) 只有矩阵方向 \(C\)，但运输会把这个方向共轭成其他方向；完整代数正是同时记录这些比较后的方向。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:parallel-symmetric-tensors-de-rham}
+	设连通、单连通、完备黎曼流形具有 de Rham 分解
+	\[
+		M=\mathbb R^k\times M_1\times\cdots\times M_s,
+		\qquad
+		g=g_0\oplus g_1\oplus\cdots\oplus g_s,
+	\]
+	其中 \(M_i\) 非平坦且完整群不可约。证明每个平行对称协变二阶张量都唯一写成
+	\[
+		h=h_0+\sum_{i=1}^s c_i g_i,
+	\]
+	这里各项均通过因子投影拉回，\(h_0\) 是 \(\mathbb R^k\) 上的常系数对称双线性形式，\(c_i\in\mathbb R\)。求这些张量构成的向量空间的维数，并说明何时 \(h\) 是黎曼度量；在这种情形证明它与 \(g\) 有同一个 Levi-Civita 联络，且仍完备。
+\end{exercise}
+\begin{solution}
+	用 \(g\) 将 \(h\) 写成 \(h(X,Y)=g(AX,Y)\)。对称性等价于 \(A\) 自伴，由 \(\nabla g=0\) 知 \(\nabla h=0\) 等价于 \(\nabla A=0\)。在基点切空间分解
+	\(V=V_0\oplus V_1\oplus\cdots\oplus V_s\) 上，\(A\) 与完整群的每个元素交换。由\cref{g3:thm:de-rham-decomposition}证明中的\eqref{g3:eq:product-holonomy}，第 \(i\) 个完整群 \(G_i\) 可独立作用于 \(V_i\)，并对其余因子恒等。
+
+	固定 \(i\ge1\)。对 \(v\in V_i^\perp\)，其 \(V_i\) 分量 \(P_iAv\) 被 \(G_i\) 固定，因为
+	\[
+		b(P_iAv)=P_iA(bv)=P_iAv\qquad(b\in G_i).
+	\]
+	\(V_i\) 上的不可约非平凡表示没有非零固定向量，故 \(P_iAv=0\)。再用 \(A\) 自伴可得反方向的混合块也为零。因此 \(A\) 按上述正交分解成为块对角自同态。每个自伴块 \(A|_{V_i}\) 的特征空间为 \(G_i\) 不变子空间，不可约性迫使它只有一个特征值，即 \(A|_{V_i}=c_iI\)。而 \(V_0\) 上群作用平凡，自伴块任意。
+
+	平行张量由一个点的值唯一决定，所以这些块给出题中的整体公式；反过来，公式中的每一项都平行。由此空间维数为
+	\[
+		\frac{k(k+1)}2+s.
+	\]
+	\(h\) 正定当且仅当 \(h_0\) 正定且所有 \(c_i>0\)，零维 Euclid 块不附加条件。此时原联络无挠且满足 \(\nabla h=0\)，由 Levi-Civita 联络的唯一性，它也是 \(h\) 的联络。因此两度量有相同的仿射参数测地线；\(g\) 测地完备使 \(h\) 测地完备，再由 Hopf--Rinow 定理，\(h\) 完备。也可取各有限维块的最小、最大特征值，得到常数 \(0<c\le C\) 使 \(cg\le h\le Cg\)，直接比较两种距离。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:incomplete-disk-parallel-product}
+	设 \(D=\{(x,y)\in\mathbb R^2:x^2+y^2<1\}\) 取 Euclid 度量。证明 \(D\) 单连通，且两条坐标直线分布为正交平行分布，但 \(D\) 不是两个正维黎曼流形的整体黎曼乘积。具体取 \(1/\sqrt2<a<1\)，考察从原点出发的道路
+	\[
+		\alpha(s)=(as,0),\qquad \beta(t)=(0,at),
+		\qquad 0\le s,t\le1,
+	\]
+	说明平行矩形的整体延拓在何处失败。
+\end{exercise}
+\begin{solution}
+	收缩 \((u,z)\mapsto(1-u)z\) 保持在凸集 \(D\) 中，故 \(D\) 单连通。Euclid 联络在直角坐标下的系数为零，两条常值直线分布显然正交且平行。
+
+	若 \(\alpha,\beta\) 存在平行矩形 \(Q(s,t)=(q_1(s,t),q_2(s,t))\)，适应分布的条件给出
+	\[
+		\partial_tq_1=0,\qquad \partial_sq_2=0.
+	\]
+	结合两条给定边，必有 \(Q(s,t)=(as,at)\)。但
+	\(|Q(1,1)|=\sqrt2a>1\)，不属于 \(D\)，所以完整矩形不存在。沿参数对角线 \(s=t\) 填充时，在 \(s=t=1/(\sqrt2a)\) 已到达被删去的圆周。
+
+	若 \(D\) 是尊重这两个分布的整体乘积，则分别在两因子中行走 \(\alpha,\beta\)，其配对必给出整个平行矩形，与上面矛盾。实际上任一非平凡黎曼乘积在二维都给出两条正交平行直线分布；Euclid 平行移动保持常向量，所以这种平行分布必须由一对固定正交方向给出。绕原点旋转坐标后，仍可用完全相同的两条道路得到矛盾，故不存在任何非平凡的整体黎曼乘积分解。
+
+	最后，径向单位速测地线在有限时间到达圆周而不能继续留在 \(D\)，故 \(D\) 不完备。在\cref{g3:lem:parallel-rectangle-extension}的证明中，包含这些道路的闭有界集不再保证紧，靠近圆周时可用乘积盒的统一大小趋于零，这正是本例缺失的条件。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:irrational-flat-torus-parallel-leaf}
+	固定无理数 \(\alpha\)，令
+	\[
+		\Lambda=\mathbb Z(1,0)+\mathbb Z(\alpha,1),
+		\qquad T=\mathbb R^2/\Lambda,
+	\]
+	赋予由 Euclid 度量下降的平坦度量。证明 \(T\) 紧且完备，整体完整群平凡，水平与竖直分布都是平行分布。证明每条竖直积分叶在 \(T\) 中稠密，因而这两个指定分布不能成为整体黎曼乘积的两个因子方向。解释它与完整群不变子空间对应定理并不矛盾。
+\end{exercise}
+\begin{solution}
+	格点平移自由且适当不连续，故商是光滑黎曼曲面，投影为局部等距覆盖。闭平行四边形
+	\[
+		\{u(1,0)+v(\alpha,1):0\le u,v\le1\}
+	\]
+	紧且映满 \(T\)，所以 \(T\) 紧，因而完备。常场 \(\partial_x,\partial_y\) 在所有格点平移下保持不变，下降为整体平行标准正交标架；完整群固定这组基，故平凡。它们各自张成的分布也平行。
+
+	用商坐标
+	\[
+		[u,v]=[x-\alpha y,y]\in\mathbb R^2/\mathbb Z^2
+	\]
+	识别底层环面。经过原点的竖直线变为
+	\[
+		t\longmapsto[-\alpha t,t].
+	\]
+	固定目标第二坐标 \(b\)，令 \(t=m+b\)、\(m\in\mathbb Z\)，第二坐标便恰为 \([b]\)，第一坐标为 \([-\alpha m-\alpha b]\)。无理旋转的整数轨道在圆周上稠密：给定 \(\varepsilon>0\)，将足够多个 \([j\alpha]\) 放入长度小于 \(\varepsilon\) 的有限分箱中，抽屉原理给出非零整数 \(q\) 和整数 \(l\)，使 \(0<|q\alpha-l|<\varepsilon\)。换 \(q\) 的符号后可令 \(\delta=q\alpha-l>0\)。点 \(0,\delta,\ldots,\lfloor1/\delta\rfloor\delta\) 与圆周任一点的距离都小于 \(\varepsilon\)，且这些点属于同一个整数旋转轨道。这证明所需稠密性。因此竖直线可任意逼近每个 \([u,b]\)，其像在整个环面稠密；平移给出其他竖直叶同样稠密。
+
+	这条叶并非整个环面。例如在固定第二坐标 \([b]\) 的圆周上，它只取可数多个第一坐标值，而该圆周不可数。若两个指定分布来自整体乘积，竖直叶应是 \(\{x\}\times N\) 的像，因而是闭嵌入子流形，不可能是一条真且稠密的叶。
+
+	完整群不变子空间对应的结论确实给出了整体平行分布，也给出了局部乘积；整体 de Rham 定理还要求单连通。这里每条竖直叶以自身的叶拓扑是一条完备直线，其到 \(T\) 的浸入不为嵌入。这同时说明不能在全局乘积证明开始时就把积分叶视为闭子流形。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:parallel-one-form-ricci}
+	设 \((M,g)\) 为连通、无边界的光滑黎曼流形，\(\alpha\) 为平行实一形式，\(V=\alpha^\sharp\)。证明 \(V\) 平行、\(\mathrm d\alpha=0\)，且 \(R(X,Y)V=0\)、\(\operatorname{Ric}(V,W)=0\) 对所有切向量成立。由此证明：若某点 Ricci 二次型正定，则 \(\alpha=0\)。若 \(M\) 完备且单连通而 \(\alpha\ne0\)，说明 \(M\) 有一个等距的实直线乘积因子。最后证明在紧 \(M\) 上，一个恰当的平行一形式必为零。
+\end{exercise}
+\begin{solution}
+	音乐同构与度量联络相容，故 \(\nabla V=0\)。无挠性给出
+	\[
+		\mathrm d\alpha(X,Y)=(\nabla_X\alpha)(Y)-(\nabla_Y\alpha)(X)=0.
+	\]
+	把平行场代入曲率定义得到 \(R(X,Y)V=0\)。由\cref{g3:prop:curvature-symmetries}的两对交换律及末两槽斜对称性，
+	\[
+		g(R(X,V)Y,Z)=g(R(Z,Y)V,X)=0,
+	\]
+	于是 \(R(X,V)=0\)。取正交基收缩即得 \(\operatorname{Ric}(V,W)=0\)。在 Ricci 正定点，\(\operatorname{Ric}(V,V)=0\) 迫使 \(V=0\)；平行场长度恒定，因此 \(V\) 处处为零。
+
+	若 \(V\ne0\)，其单位化生成一个平行直线丛，正交补也平行。由\cref{g3:thm:global-parallel-product}，完备单连通的 \(M\) 分裂出一个完备单连通的一维因子。沿其单位平行场取弧长坐标，该因子就是 \(\mathbb R\)。若 \(M\) 紧且 \(\alpha=\mathrm df\)，实函数 \(f\) 在最大值点满足 \(\mathrm df=0\)。\(\alpha\) 的长度恒定，故 \(\alpha=0\)。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:spd-distance-formula}
+	在 \(\mathcal P_n^1\) 上使用式\eqref{g3:eq:spd-trace-metric}的度量。证明任意 \(P,Q\in\mathcal P_n^1\) 之间存在唯一的极小测地线段（固定仿射参数），并求出距离
+	\[
+		d(P,Q)=\frac12\left\lVert\log(P^{-1/2}QP^{-1/2})\right\rVert_{\mathrm F}.
+	\]
+	若 \(P,Q\) 可交换，把答案写成它们在共同正交特征基中的特征值表达式。
+\end{exercise}
+\begin{solution}
+	合同变换 \(S\mapsto P^{-1/2}SP^{-1/2}\) 是等距，故只需连接 \(I\) 与 \(Q_0=P^{-1/2}QP^{-1/2}\)。从 \(I\) 出发的测地线全为 \(t\mapsto\exp(tU)\)，其中 \(U\) 为无迹实对称矩阵。正定矩阵有唯一的实对称对数，因此在 \([0,1]\) 上到达 \(Q_0\) 的唯一测地线是 \(\exp(t\log Q_0)\)。本模型完备，Hopf--Rinow 定理保证存在极小段，故它必是这一段。还原到原基点，得到
+	\[
+		\gamma(t)=P^{1/2}\exp\bigl(t\log Q_0\bigr)P^{1/2}.
+	\]
+	它常速，初始速度在 \(I\) 处的范数为 \(\tfrac12\lVert\log Q_0\rVert_{\mathrm F}\)，因此长度及距离正是题设表达式。若 \(P,Q\) 交换，选取共同正交特征基，分别记其特征值为 \(p_i,q_i>0\)，则
+	\[
+		d(P,Q)^2=\frac14\sum_{i=1}^n\left(\log\frac{q_i}{p_i}\right)^2.
+	\]
+	此时测地线一直位于共同对角最大平坦中，其第 \(i\) 个对角元为 \(p_i^{1-t}q_i^t\)。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:sl-sectional-sharp-range}
+	在 \(\operatorname{SL}(n,\mathbb R)/\operatorname{SO}(n)\) 上采用 \(\mathfrak p=\operatorname{Sym}_0(n,\mathbb R)\) 中的迹内积。证明所有截面曲率均在 \([-2,0]\) 中；当 \(n\ge3\) 时，这个区间的每个值都出现。说明 \(n=2\) 时的情形，并换算到 Killing 型度量。
+\end{exercise}
+\begin{solution}
+	对所求平面取迹内积下的正交单位基 \(X,Y\)，再正交对角化 \(X=\operatorname{diag}(h_i)\)。此时 \(\sum_i h_i^2=1\)，且
+	\[
+		\lVert[X,Y]\rVert_{\mathrm F}^2
+		=\sum_{i,j}(h_i-h_j)^2y_{ij}^2.
+	\]
+	由 \((h_i-h_j)^2\le2(h_i^2+h_j^2)\le2\) 及 \(\sum_{i,j}y_{ij}^2=1\)，得到 \(\lVert[X,Y]\rVert_{\mathrm F}^2\le2\)。式\eqref{g3:eq:sl-trace-sectional}遂给出 \(-2\le K\le0\)。
+
+	当 \(n\ge3\)，在左上角三阶块中取
+	\[
+		X=\frac1{\sqrt2}\operatorname{diag}(1,-1,0),\qquad
+		Y_0=\frac{E_{12}+E_{21}}{\sqrt2},\qquad
+		Y_1=\frac1{\sqrt6}\operatorname{diag}(1,1,-2),
+	\]
+	其余分量取零。三个矩阵迹为零且两两正交单位，\([X,Y_1]=0\)、\(\lVert[X,Y_0]\rVert_{\mathrm F}^2=2\)。因此 \(Y_t=\cos t\,Y_0+\sin t\,Y_1\) 与 \(X\) 正交单位，并有
+	\[
+		K(X\wedge Y_t)=-2\cos^2t.
+	\]
+	令 \(0\le t\le\pi/2\) 即得到整个区间。当 \(n=2\) 时，\(\mathfrak p\) 只有二维，正文给出的基已计算出唯一切平面的曲率 \(-2\)，因此没有零曲率平面。Killing 型度量为迹度量的 \(2n\) 倍，故 \(n\ge3\) 时的区间变成 \([-1/n,0]\)，\(n=2\) 时为常数 \(-1/2\)。
+\end{solution}
+
+\begin{optionalexercise}\label{g3:ex:varying-hyperkahler-sphere}
+	设连通流形 \(M\) 带超 Kähler 结构 \((g,I,J,K)\)，并设光滑实函数 \(a,b,c\) 满足 \(a^2+b^2+c^2=1\)。令 \(L=aI+bJ+cK\)。证明 \(L\) 是正交几乎复结构，且它平行当且仅当 \(a,b,c\) 都为常数。再在 Euclid \(\mathbb R^4\) 上使用
+	\[
+		\omega_I=\mathrm dx^{12}+\mathrm dx^{34},\quad
+		\omega_J=\mathrm dx^{13}-\mathrm dx^{24},\quad
+		\omega_K=\mathrm dx^{14}+\mathrm dx^{23},
+	\]
+	其中 \(\mathrm dx^{ij}=\mathrm dx^i\wedge\mathrm dx^j\)，取 \(L=\cos x^1 I+\sin x^1 J\)。计算其基本二形式的外微分，判断该结构是否 Kähler。
+\end{optionalexercise}
+\begin{solution}
+	由四元数关系，交叉项相消，故 \(L^2=-(a^2+b^2+c^2)I_{TM}=-I_{TM}\)。三个算子均斜自伴，故 \(L^*=-L\)，从而 \(L^*L=I_{TM}\)。又有
+	\[
+		\nabla_XL=X(a)I+X(b)J+X(c)K.
+	\]
+	若实数 \(u,v,w\) 满足 \(uI+vJ+wK=0\)，平方后可得 \(u^2+v^2+w^2=0\)，所以这三个算子线性无关。因此 \(\nabla L=0\) 当且仅当 \(\mathrm da=\mathrm db=\mathrm dc=0\)，在连通 \(M\) 上等价于三者为常数。
+
+	给定的三个常系数二形式通过 \(\omega_A(X,Y)=g(AX,Y)\) 确定满足四元数关系的 \(I,J,K\)。变量组合的基本形式为
+	\[
+		\omega_L=\cos x^1(\mathrm dx^{12}+\mathrm dx^{34})
+		+\sin x^1(\mathrm dx^{13}-\mathrm dx^{24}),
+	\]
+	因此
+	\[
+		\mathrm d\omega_L=-\sin x^1\,\mathrm dx^{134}-\cos x^1\,\mathrm dx^{124}.
+	\]
+	两个系数不同时为零，故它处处不闭，不能成为 Kähler 结构。每点的代数关系与沿流形的平行性在这个例子中分别可检验。
+\end{solution}
+
+\begin{optionalexercise}\label{g3:ex:flat-g2-quotient}
+	在平坦环面 \(T^7=\mathbb R^7/\mathbb Z^7\) 上取\eqref{g3:eq:standard-g2-three-form}中的常系数三形式。考虑
+	\[
+		\sigma[x^1,\ldots,x^7]
+		=[x^1+\tfrac12,x^2,x^3,-x^4,-x^5,-x^6,-x^7].
+	\]
+	证明 \(\sigma\) 是无不动点的二阶等距变换，并保持 \(\varphi_0\)。说明商 \(M=T^7/\langle\sigma\rangle\) 是紧完备光滑平坦流形，带平行正三形式。计算它的整体和受限完整群，以及平行一形式空间的维数。
+\end{optionalexercise}
+\begin{solution}
+	变换保持整格，且平方仅把第一坐标加1，所以在环面上平方为恒等。若有不动点，则第一坐标要求 \(1/2\in\mathbb Z\)，矛盾。其微分为
+	\[
+		A=\operatorname{diag}(1,1,1,-1,-1,-1,-1),
+	\]
+	故是等距。三形式中每个三元组含零个或两个被反号的指标，因此七项都保持。自由有限群作用给出光滑覆盖，度量和三形式由局部等距图下降；商紧且无边界，故完备，局部平坦性与平行性也随之下降。
+
+	把 \(\sigma\) 提升到 \(\mathbb R^7\)，商的覆盖变换群由整平移和此仿射映射生成。Euclid 平行运输保持常向量，沿商中一条闭路提升后，端点通过某个覆盖变换与起点相对应；回到同一纤维时出现其线性部分的逆。因此所有返回变换属于 \(\{I,A\}\)。整平移给出 \(I\)，连接一点与其 \(\sigma\) 提升像的路径给出 \(A^{-1}=A\)，故
+	\[
+		\operatorname{Hol}_p(M)=\{I,A\},\qquad
+		\operatorname{Hol}_p^0(M)=\{I\}.
+	\]
+	平行一形式对应于 \(A^*\) 的不变量，恰为 \(\mathrm dx^1,\mathrm dx^2,\mathrm dx^3\) 的线性张成，维数为3。这个非平凡整体完整群包含于 \(G_2\)，但远小于 \(G_2\)。
+\end{solution}
+
+\begin{optionalexercise}\label{g3:ex:complex-hyperbolic-restricted-roots}
+	设 \(m\ge1\)，取对称空间 \(\operatorname{SU}(1,m)/\operatorname S(\operatorname U(1)\times\operatorname U(m))\)。其切向矩阵为
+	\[
+		X_z=\begin{pmatrix}0&z^*\\z&0\end{pmatrix},\qquad z\in\mathbb C^m,
+	\]
+	采用内积 \(\langle X_z,X_w\rangle=\operatorname{Re}(z^*w)\)。证明秩为一。取 \(H=X_{e_1}\)，计算全部限制根与重数，并由此求出曲率算子 \(V\mapsto R(V,H)H\) 在 \(H^\perp\) 上的特征值与重数。特别说明 \(m=1\) 与 \(m\ge2\) 的区别。
+\end{optionalexercise}
+\begin{solution}
+	直接相乘可得
+	\[
+		[X_z,X_w]=\begin{pmatrix}z^*w-w^*z&0\\0&zw^*-wz^*\end{pmatrix}.
+	\]
+	若 \(z\ne0\)，先用酉坐标令 \(z=te_1\)、\(t>0\)。右下块为零迫使 \(w_j=0\) 对所有 \(j>1\) 成立，并迫使 \(w_1\) 为实数；因此 \(w\) 是 \(z\) 的实数倍。反向蕴含直接成立，故交换切向子空间至多一维，\(\mathfrak a=\mathbb RH\) 极大，秩为一。
+
+	为算特征空间，先把实 Lie 代数复化为 \(\mathfrak{sl}(m+1,\mathbb C)\)。这一步不改变实特征值对应的重数：\(H\) 在实代数中，故其复化特征空间是原实特征空间的复化。具体地，令 \(J=\operatorname{diag}(-1,1,\ldots,1)\)，反线性对合 \(Z\mapsto-J\overline Z^{\mathsf T}J\) 的不动点是 \(\mathfrak{su}(1,m)\)，每个无迹复矩阵都由这个对合分成 \(Z_1+\mathrm iZ_2\)，\(Z_i\in\mathfrak{su}(1,m)\)。
+
+	\(H\) 在 \(\mathbb C^{m+1}\) 上的特征值为 \(1,-1,0,\ldots,0\)，其中零的重数为 \(m-1\)。伴随作用的特征值是两个这样的数之差。于是 \(2\) 与 \(-2\) 的重数各为 \(1\)；\(1\) 与 \(-1\) 的重数各为 \(2(m-1)\)。令 \(\alpha(H)=1\)，则 \(m\ge2\) 时
+	\[
+		\Sigma=\{\pm\alpha,\pm2\alpha\},\qquad
+		m_\alpha=2(m-1),\quad m_{2\alpha}=1.
+	\]
+	维数核验为 \(1+2(m-1)+1=2m\)。当 \(m=1\) 时，\(\pm\alpha\) 根空间消失，只剩 \(\pm2\alpha\)，所以根系是约化的 \(A_1\)，不是仍含零重数根的 \(BC_1\)。
+
+	题设 \(H\) 为单位向量。由式\eqref{g3:eq:restricted-root-curvature}，\(H^\perp\) 上的曲率算子有特征值 \(-1\)，重数 \(2m-2\)，以及特征值 \(-4\)，重数 \(1\)。当 \(m=1\)，只剩常曲率 \(-4\) 的二维模型；当 \(m\ge2\)，在两个正交特征空间之间取单位线性组合可得到 \([-4,-1]\) 中每个径向截面曲率。稳定子在单位切向量上等价于酉群的传递作用，故这也是所有截面曲率的范围。这个归一化由题设内积决定，改变内积的常数倍后须相应缩放曲率。
+\end{solution}
+
+\begin{optionalexercise}\label{g3:ex:same-rank-dimension-distinct-symmetric}
+	比较两个非紧型不可约对称空间
+	\[
+		M_1=\operatorname{SL}(3,\mathbb C)/\operatorname{SU}(3),\qquad
+		M_2=G_{2(2)}/K,
+	\]
+	其中 \(K\) 的 Lie 代数为 \(\mathfrak{so}(4)\)，模型均取单连通形式。由分类表及限制根计算，证明二者维数与秩相同，却不能通过常数缩放变成等距空间。要求用沿最大平坦的曲率算子核说明区别，而不仅比较名称。
+\end{optionalexercise}
+\begin{solution}
+	\(M_1\) 的限制根系为 \(A_2\)，每个根重数为 \(2\)；它有三个正根，所以秩为 \(2\)，维数为 \(2+3\cdot2=8\)。\(M_2\) 的限制根系为 \(G_2\)，所有根重数为 \(1\)，共有六个正根，故秩也是 \(2\)，维数为 \(2+6=8\)。这些数据分别来自群型表及例外表的 G 行。
+
+	固定最大平坦切空间 \(\mathfrak a\)。对非零 \(H\in\mathfrak a\)，记 \(J_H(V)=R(V,H)H\)。由根空间分解，
+	\[
+		\ker J_H=\mathfrak a\oplus
+		\bigoplus_{\substack{\alpha\in\Sigma^+\\\alpha(H)=0}}\mathfrak p_\alpha,
+	\qquad
+		\dim\ker J_H=2+\sum_{\substack{\alpha\in\Sigma^+\\\alpha(H)=0}}m_\alpha.
+	\]
+	一般方向的核维数为 \(2\)。在 \(A_2\) 平面中，有三条不同的根核直线；非零 \(H\) 落在其中一条时，核维数增为 \(4\)。在 \(G_2\) 平面中，则有六条根核直线，非零点上的核维数增为 \(3\)。因为两者都约化，每条直线只对应一对正负根，故这里没有漏计同一直线上的倍根。
+
+	等距变换保持最大平坦及曲率算子核；常数缩放度量也不改变 \(R(V,H)H=0\) 这一条件。因此它们必须保持上述奇异直线与核维数。两模型的直线数及核维数跳跃均不同，故任何常数缩放后也不等距。这说明维数与秩不足以识别不可约对称空间。
+\end{solution}

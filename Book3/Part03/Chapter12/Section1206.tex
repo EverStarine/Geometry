@@ -1,30 +1,132 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 12.6 一阶 Cauchy–Riemann 型算子
 % 纲要位置：几何学计划纲要.md，第 2592 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
-% * 通过椭圆主符号获得局部 W¹ᵖ 估计
+% * 椭圆主符号与局部 W¹ᵖ 估计
 % * p>2 时的连续性及非线性复合
-% * 后续闭曲面与条带的不同全局条件
+% * 闭曲面与条带上的全局条件
 % 
 % 纲要内容结束
 
 \section{一阶 Cauchy–Riemann 型算子}
 \label{g3:sec:1206}
 
-待撰写
+在二维区域中，一阶方程已经可以是椭圆的。复值函数的方程 \(\partial_su+\mathrm i\partial_tu=f\) 同时控制两个方向的变化；其齐次解是全纯函数。几何中把乘以 \(\mathrm i\) 换成纤维上的复结构矩阵，就得到 Cauchy--Riemann 型算子。\footnote{Augustin Louis Cauchy（1789--1857），法国数学家，在实与复分析、微分方程及数学物理中作出基础性贡献。}本节用主符号直接核对椭圆性，再把上一节的估计转为后续曲面方程可以使用的局部结论。
 
-\subsection{\texorpdfstring{通过椭圆主符号获得局部 \(W^{1,p}\) 估计}{通过椭圆主符号获得局部 W¹ᵖ 估计}}
+\subsection{\texorpdfstring{椭圆主符号与局部 \(W^{1,p}\) 估计}{椭圆主符号与局部 W¹ᵖ 估计}}
 \label{g3:subsec:1206:01}
-待撰写
+设 \(J_0\) 是 \(\mathbb R^{2r}\) 上的线性复结构，即 \(J_0^2=-I\)。对
+\[
+	D_{J_0}u=\partial_su+J_0\partial_tu
+\]
+及非零实余向量 \(\xi=(\sigma,\tau)\)，有
+\[
+	(\sigma I-\tau J_0)(\sigma I+\tau J_0)=(\sigma^2+\tau^2)I.
+\]
+按 \(\mathrm D=-\mathrm i\partial\) 的约定，主符号是 \(\mathrm i(\sigma I+\tau J_0)\)，其逆为 \(-\mathrm i(\sigma I-\tau J_0)/|\xi|^2\)。取相容的实标架可把 \(J_0\) 写成 \(r\) 个标准二维复结构块，但上述计算已经给出不依赖这一换基的可逆性验证。
+
+\begin{theorem}\label{g3:thm:cr-local-w1p}
+	设 \(\Omega\subset\mathbb R^2\) 开，\(J:\Omega\to\operatorname{End}(\mathbb R^{2r})\) 光滑且 \(J^2=-I\)，\(A:\Omega\to\operatorname{End}(\mathbb R^{2r})\) 光滑。定义
+	\[
+		D_Ju=\partial_su+J(s,t)\partial_tu+A(s,t)u.
+	\]
+	若 \(1<p<\infty\)、\(U\Subset V\Subset\Omega\)，则
+	\[
+		\|u\|_{W^{1,p}(U)}\le C\bigl(\|D_Ju\|_{L^p(V)}+\|u\|_{L^p(V)}\bigr)
+	\]
+	对 \(u\in W^{1,p}(V;\mathbb R^{2r})\) 成立。若 \(u\) 仅为分布且 \(D_Ju\in W^{k,p}_{\mathrm{loc}}\)，则 \(u\in W^{k+1,p}_{\mathrm{loc}}\)，其中 \(k\ge0\) 为整数。
+\end{theorem}
+\begin{proof}
+	把上面的逆矩阵公式逐点用于 \(J(s,t)\)。在固定紧集上，\(\|J\|\) 有界，故单位余球上的主符号逆有统一界。零阶项 \(A\) 不改变主符号。将实系统复化，直接应用\cref{g3:thm:local-elliptic-lp-apriori}及\cref{g3:thm:elliptic-distribution-lp}，再限制回实截面，便得全部结论。对于已有 \(W^{1,p}\) 正则性的先验不等式，证明实际上只需 \(J\) 连续、\(A\) 局部有界；从任意分布恢复正则性的陈述保留光滑系数条件。
+\end{proof}
+
+\begin{example}\label{g3:exm:cr-factorization}
+	当 \(J_0\) 常值且 \(A=0\) 时，
+	\[
+		(\partial_s-J_0\partial_t)D_{J_0}
+		=\partial_s^2+\partial_t^2.
+	\]
+	若 \(J_0\) 还对 Euclid 内积正交，则 \(J_0^*=-J_0\)，形式伴随为 \(D_{J_0}^*=-\partial_s+J_0\partial_t\)，从而
+	\(D_{J_0}^*D_{J_0}=-\partial_s^2-\partial_t^2\)，符号与本卷非负 Laplace 约定一致。若 \(J\) 随点变化，展开乘积会产生 \(\partial_sJ\)、\(\partial_tJ\) 乘一阶导数的项，主部仍是同一个二阶标量 Laplace 主部。
+\end{example}
+
+在光滑曲面上，Cauchy--Riemann 型算子的局部表达可以再乘一个光滑可逆的目标丛矩阵；将它移到右端不会改变局部估计。在重叠平凡化中，换标架的导数只增加零阶项。因而上述结论可以用于曲面上有限秩丛的截面，无需把丛整体平凡化。
 
 \subsection{\texorpdfstring{\(p>2\) 时的连续性及非线性复合}{p>2 时的连续性及非线性复合}}
 \label{g3:subsec:1206:02}
-待撰写
+曲面维数为二，故 \(p>2\) 时 \(\alpha=1-2/p>0\)。由\cref{g3:thm:local-morrey}，在内部小球上每个 \(W^{1,p}\) 函数都有唯一连续代表，且
+\[
+	\|u\|_{C^{0,\alpha}(B_r)}\le C\|u\|_{W^{1,p}(B_{2r})}.
+\]
+这里的唯一性来自两个连续代表若几乎处处相等，就处处相等。这使得条件“\(u\) 的像包含于目标坐标图”成为稳定的条件，而不只是对某个可测代表的选择。
 
-\subsection{后续闭曲面与条带的不同全局条件}
+\begin{proposition}\label{g3:prop:surface-w1p-composition}
+	设 \(\Omega\subset\mathbb R^2\) 为有界光滑域，\(p>2\)，\(u\in W^{1,p}(\Omega;\mathbb R^a)\)，其连续代表的像位于某个紧集 \(K\) 中。若 \(F\) 在 \(K\) 的开邻域为 \(C^2\)，则 \(F(u)\in W^{1,p}\)，且
+	\[
+		\partial_j(F(u))=\mathrm DF(u)\partial_j u.
+	\]
+	在满足像位于同一 \(K\)、\(W^{1,p}\) 范数至多为 \(R\) 的函数中，复合映射局部 Lipschitz：对充分接近的 \(u,v\)，
+	\[
+		\|F(u)-F(v)\|_{W^{1,p}}\le C_{K,F,R,\Omega,p}\|u-v\|_{W^{1,p}}.
+	\]
+\end{proposition}
+\begin{proof}
+	在 \(K\) 的邻域取一个紧支截断，将 \(F\) 延拓为全空间 \(C^2\) 函数，使它在 \(K\) 附近不变，且前两阶导数有界。\Cref{g3:prop:sobolev-product-chain}给出弱链式法则。对差值，积分中值公式和链式法则分别给出
+	\[
+		|F(u)-F(v)|\le C|u-v|,
+	\]
+	\[
+		\partial_j(F(u)-F(v))
+		=\mathrm DF(u)\partial_j(u-v)
+		+[\mathrm DF(u)-\mathrm DF(v)]\partial_jv.
+	\]
+	第二项的 \(L^p\) 范数至多为 \(C\|u-v\|_\infty\|\partial_jv\|_p\)。在有界光滑域上，延拓与 Morrey 估计给出 \(\|u-v\|_\infty\le C\|u-v\|_{W^{1,p}}\)，从而得到所需界。若仅在给定开邻域中工作，一致范数足够小就保证连接线段仍落在这一邻域，得到同样的局部结论。
+\end{proof}
+
+作为具体应用，若目标坐标中的光滑复结构写为 \(J(z)\)，则
+\[
+	\mathcal N(u)=\partial_su+J(u)\partial_tu
+\]
+在像位于固定坐标紧集的 \(W^{1,p}\) 映射上取值于 \(L^p\)，并在有界小邻域内局部 Lipschitz。事实上，差值中的新项为 \([J(u)-J(v)]\partial_tv\)，由上一证明的同一估计控制。线性化沿一个光滑映射 \(u\) 的表达为
+\[
+	\xi\longmapsto\partial_s\xi+J(u)\partial_t\xi
+	+\bigl(\mathrm DJ(u)[\xi]\bigr)\partial_tu,
+\]
+主符号仍是 Cauchy--Riemann 型，最后一项为零阶项。这一计算说明 \(p>2\) 如何使复合与乘法进入方程；映射空间中的连续微分及高阶光滑性将在下一章按明确的范数和目标空间证明。
+
+\subsection{闭曲面与条带上的全局条件}
 \label{g3:subsec:1206:03}
-待撰写
+在闭曲面上，有限覆盖可以把局部估计拼成全局估计。边界及无穷远端则引入新的条件，不能由内部小球的估计消除。
+
+\begin{proposition}\label{g3:prop:cr-closed-estimate}
+	设 \(\Sigma\) 为紧、光滑、无边界曲面，\(E,F\) 为等秩光滑实或复度量向量丛，\(D:C^\infty(E)\to C^\infty(F)\) 为光滑 Cauchy--Riemann 型一阶算子。对 \(1<p<\infty\)，
+	\[
+		\|u\|_{W^{1,p}(\Sigma;E)}\le C\bigl(\|Du\|_{L^p(\Sigma;F)}+\|u\|_{L^p(\Sigma;E)}\bigr).
+	\]
+\end{proposition}
+\begin{proof}
+	取有限个相对紧平凡化坐标片，并选从属的光滑单位分解 \(\chi_i\)。对 \(\chi_i u\) 使用局部估计。由于 \(D\) 是一阶算子，\([D,\chi_i]u\) 仅含 \(\mathrm d\chi_i\) 乘 \(u\)，因而受全局零阶范数控制。有限求和与局部 Sobolev 范数等价性给出不等式。先对光滑截面证明，再由\cref{g3:thm:sobolev-smooth-density}延伸到 \(W^{1,p}\)。
+\end{proof}
+
+零阶范数在这里有实际作用。例如平坦复环面上常数函数满足 \(\bar\partial u=0\)，所以不能无条件删去 \(\|u\|_p\)。核、余核和可解条件须结合全局论证确定。
+
+\ProseParagraphBreak
+
+带边界区域的内部估计不能控制全部边界附近的变化。在单位圆盘取 \(u_k(z)=z^k\)，则 \(\bar\partial u_k=0\)，而极坐标积分给出
+\[
+	\|u_k\|_p^p=\frac{2\pi}{kp+2},\qquad
+	\|\mathrm Du_k\|_p^p=(\sqrt2k)^p\frac{2\pi}{(k-1)p+2}.
+\]
+所以梯度与函数范数之比随 \(k\) 线性增大。这排除了没有边界条件的整圆盘 \(W^{1,p}\) 估计；在任何严格内部的小圆盘上，上一局部定理仍成立。
+
+\ProseParagraphBreak
+
+在无限条带 \(\mathbb R\times(0,1)\) 上，除两侧边界条件外，还要规定无穷远端的函数空间。以 \(D=\partial_s+\mathrm i\partial_t\) 为例，取非零 \(\eta\in C_c^\infty(\mathbb R;\mathbb R)\)，令
+\[
+	u_R(s,t)=R^{-1/p}\eta(s/R).
+\]
+则 \(\|u_R\|_p=\|\eta\|_p\)，而 \(\|Du_R\|_p=R^{-1}\|\eta'\|_p\to0\)。这些函数在两边界都取实值，说明即使给出这种实边界条件，也仍可能在长尺度上出现近零模式。加权空间、两端渐近算子与相应谱条件会改变全局可解性；本节的内部估计负责局部正则性，并不替代这些全局条件。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

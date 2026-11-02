@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 18.3 曲面源上的小能量正则性
 % 纲要位置：几何学计划纲要.md，第 2836 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,7 +15,7 @@
 % 
 % * 内域高阶估计及光滑解族的紧性
 % * 能量集中点、重缩放及奇点形成
-% * 一般弱解与高维部分正则性的独立范围
+% * 弱调和映射的正则性
 % 
 %   二维一般弱调和映射的正则性及高维极小、平稳映射的部分正则性分别列出外部定理的准确对象和假设；单调性公式仅用于已经验证相应驻值条件的映射。
 % 
@@ -24,29 +24,338 @@
 \section{曲面源上的小能量正则性}
 \label{g3:sec:1803}
 
-待撰写
+能量是一个积分量，而正则性要求控制每一点的导数。调和映射方程把这两种控制联系起来：能量密度满足一个含二次项的标量微分不等式，\term[xiaonengliang zhengzexing]{小能量正则性}[small-energy regularity]说明，这个二次项在能量足够小时不能形成过高的尖峰。本节先对光滑解建立这一估计，再说明它如何控制解族的极限。
+
+\ProseParagraphBreak
+
+以下目标 \((N,h)\) 固定为光滑紧无边界黎曼流形。源维数记为 \(m\)，能量密度及能量沿用 \(e(u)=\tfrac12|\mathrm du|^2\)、\(E(u;U)=\int_U e(u)\mu_g\)。为便于写微分不等式，本节另记
+\[
+	L_g=\operatorname{div}_g\nabla=-\Delta_g.
+\]
+因此 \(L_g f\ge0\) 表示次调和不等式；本卷非负 Laplace 算子 \(\Delta_g\) 的约定保持不变。
 
 \subsection{二维能量缩放与临界性}
 \label{g3:subsec:1803:01}
-待撰写
+先看 Euclid 球中的缩放。给定 \(u:B_r(a)\subset\mathbb R^m\to N\)，令 \(v(y)=u(a+ry)\)，则
+\begin{equation}\label{g3:eq:harmonic-map-energy-scaling}
+	|\mathrm dv(y)|^2=r^2|\mathrm du(a+ry)|^2,
+	\qquad E(v;B_1)=r^{2-m}E(u;B_r(a)).
+\end{equation}
+张力场也满足 \(\tau(v)(y)=r^2\tau(u)(a+ry)\)。这些等式分别来自链式法则、体积元 \(\mathrm dx=r^m\mathrm dy\) 以及张力场局部公式。因此调和方程在缩放下不变，具有尺度不变性的能量量是 \(r^{2-m}E(u;B_r)\)。二维的特殊性在于它就是未经额外归一化的能量。
+
+\ProseParagraphBreak
+
+固定曲面坐标 \(x\) 后，若 \(x=a+ry\)，把拉回度量除以 \(r^2\)，得到系数为
+\[
+	g_r(y)=(g_{ij}(a+ry))
+\]
+的度量。对于 \(v(y)=u(a+ry)\)，有
+\(e_{g_r}(v)=r^2e_g(u)\)、\(E_{g_r}(v;B_1)=E_g(u;B_r(a))\)。若在原坐标中
+\begin{equation}\label{g3:eq:surface-coordinate-controls}
+	\lambda I\le(g_{ij})\le\Lambda I,
+	\qquad r^2\sup_{B_r(a)}|\operatorname{Ric}_g|_g\le K,
+\end{equation}
+则缩放后的椭圆性界仍为 \(\lambda,\Lambda\)，而 Ricci 曲率的下界受 \(K\) 控制。高阶估计还使用 \(g_r\) 的有限阶导数界，即 \(r^{|\alpha|}\|\partial^\alpha g\|_\infty\)。在固定光滑曲面的有限个相对紧坐标图中，取有统一上界的小半径，这些常数均可统一选择。
+
+\ProseParagraphBreak
+
+临界性不意味着能量自动控制导数。把一个非恒定映射集中到半径 \(r\) 的区域，二维能量可以保持原量级，而导数增加到 \(r^{-1}\) 的量级。以下估计说明：对于光滑调和映射，这种集中必须消耗至少一份固定大小的能量。
 
 \subsection{光滑调和映射的 Bochner 微分不等式}
 \label{g3:subsec:1803:02}
-待撰写
+记 \(B=\nabla\mathrm du\)，其定义使用源的 Levi--Civita 联络与拉回丛 \(u^*\mathrm TN\) 的联络。\Cref{g3:prop:map-covariant-identities}说明 \(B\) 对称，且 \(\tau(u)=\operatorname{tr}_gB\)。我们先保留张力场，计算适用于任意光滑映射的恒等式。
+
+\begin{proposition}\label{g3:prop:harmonic-map-bochner}
+	设 \(u:(M^m,g)\to(N,h)\) 是光滑黎曼流形间的光滑映射，\(m\ge1\)，两流形均无边界。对源的局部正交归一标架 \(e_1,\ldots,e_m\)，记 \(u_i=\mathrm du(e_i)\)，则
+	\begin{align}
+		L_g e(u)
+		={}&|\nabla\mathrm du|^2+\sum_i\langle\nabla^{u^*\mathrm TN}_{e_i}\tau(u),u_i\rangle
+		+\sum_i\langle\mathrm du(\operatorname{Ric}_g^{\sharp}e_i),u_i\rangle\notag\\
+		&-\sum_{i,j}\langle R^N(u_i,u_j)u_j,u_i\rangle.
+		\label{g3:eq:harmonic-map-bochner}
+	\end{align}
+	特别地，若 \(u\) 调和、\(\operatorname{Ric}_g\ge-k g\)，且目标的截面曲率至多为 \(K_N\ge0\)，则
+	\begin{equation}\label{g3:eq:harmonic-map-energy-inequality}
+		L_g e(u)\ge-2k e(u)-4K_N e(u)^2.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	计算可在任一点 \(p\) 的正规正交标架中完成。对 \(\mathrm T^*M\otimes u^*\mathrm TN\) 上的诱导联络，曲率作用为
+	\[
+		\bigl(R^{\mathrm T^*M\otimes u^*\mathrm TN}(e_j,e_i)\mathrm du\bigr)(e_j)
+		=R^N(u_j,u_i)u_j-\mathrm du(R^M(e_j,e_i)e_j).
+	\]
+	利用 \(\nabla_j u_i=\nabla_i u_j\) 交换一次协变导数，得到迹恒等式
+	\[
+		\sum_j(\nabla_j\nabla_j\mathrm du)_i
+		=\nabla_i\tau(u)+\sum_jR^N(u_j,u_i)u_j
+		-\sum_j\mathrm du(R^M(e_j,e_i)e_j).
+	\]
+	这里二次协变导数包括源指标上的联络；正规标架只使点 \(p\) 的一次联络系数消失，交换子中的曲率仍须保留。按本卷曲率约定，
+	\(\sum_jR^M(e_j,e_i)e_j=-\operatorname{Ric}_g^{\sharp}e_i\)。另一方面，对内积求两次导数给出
+	\[
+		L_g\frac12|\mathrm du|^2
+		=|\nabla\mathrm du|^2+\sum_i\left\langle
+		\sum_j(\nabla_j\nabla_j\mathrm du)_i,u_i\right\rangle.
+	\]
+	代入迹恒等式，并用 \(R^N(u_j,u_i)=-R^N(u_i,u_j)\)，即得式\eqref{g3:eq:harmonic-map-bochner}。
+	调和性消去张力项。Ricci 项至少为 \(-k|\mathrm du|^2=-2ke\)，目标曲率项满足
+	\[
+		\sum_{i,j}\langle R^N(u_i,u_j)u_j,u_i\rangle
+		\le K_N\sum_{i,j}\bigl(|u_i|^2|u_j|^2-\langle u_i,u_j\rangle^2\bigr)
+		\le K_N|\mathrm du|^4.
+	\]
+	舍去非负项 \(|\nabla\mathrm du|^2\)，便得到式\eqref{g3:eq:harmonic-map-energy-inequality}。
+\end{proof}
+
+在 Euclid 圆盘上，源的 Ricci 项为零，所以 \(Le\ge-4K_Ne^2\)。紧目标保证可以选定有限的 \(K_N\)。若目标截面曲率非正，则可取 \(K_N=0\)，此时 \(e\) 本身次调和；需要小能量的原因正是一般目标所产生的二次项。
 
 \subsection{小能量阈值、均值估计和梯度界}
 \label{g3:subsec:1803:03}
-待撰写
+先建立一个线性均值估计。它与\cref{g3:lem:moser-power-estimates}中的 Moser 正幂估计使用同一能量方法，这里还要把有界零阶项带入计算。
+
+\begin{lemma}\label{g3:lem:surface-subsolution-mean}
+	设 \(g\) 是 \(B_r(a)\subset\mathbb R^2\) 上的光滑黎曼度量，\(\lambda I\le(g_{ij})\le\Lambda I\)。若 \(f\ge0\) 光滑，且
+	\[
+		L_gf\ge-qf,\qquad 0\le q\le A r^{-2},
+	\]
+	则有
+	\[
+		\sup_{B_{r/2}(a)}f\le C r^{-2}\int_{B_r(a)}f\,\mu_g,
+	\]
+	其中 \(C\) 只依赖 \(\lambda,\Lambda,A\)。
+\end{lemma}
+\begin{proof}
+	缩放到单位球；度量仍有相同的椭圆性界，零阶系数的上界变成 \(A\)。令 \(w=f+\delta\)，\(\delta>0\)，则 \(L_gw\ge-qw\)。写 \(a^{ij}=\sqrt{\det g}\,g^{ij}\)，它在 Euclid 意义下具有只依赖 \(\lambda,\Lambda\) 的椭圆性界。对非负紧支测试函数 \(\varphi\)，不等式为
+	\[
+		\int a^{ij}\partial_iw\partial_j\varphi\,\mathrm dx
+		\le\int q w\varphi\,\mu_g.
+	\]
+	取 \(p\ge2\) 和截断 \(\eta\)，令 \(\varphi=\eta^2w^{p-1}\)。因 \(w\) 光滑且在截断支集上有界，测试合法。展开后，交叉项用 Young 不等式吸收一半主项，得到
+	\[
+		\int|\mathrm D(\eta w^{p/2})|^2\,\mathrm dx
+		\le Cp^2\int\bigl(|\mathrm D\eta|^2+A\eta^2\bigr)w^p\,\mathrm dx.
+	\]
+	密度上下界已并入 \(C\)。\cref{g3:thm:euclidean-sobolev}在二维给出紧支于 \(B_1\) 的 \(z\) 满足 \(\|z\|_4^2\le C\|\mathrm Dz\|_2^2\)：先用 \(W^{1,4/3}\to L^4\)，再在固定支集上用 Hölder 不等式即可。对 \(1/2\le\rho<R\le3/4\) 选 \(\eta=1\) 于 \(B_\rho\)、支于 \(B_R\)、\(|\mathrm D\eta|\le C/(R-\rho)\)，从而
+	\[
+		\|w\|_{L^{2p}(B_\rho)}
+		\le\left(\frac{C_Ap^2}{(R-\rho)^2}\right)^{1/p}\|w\|_{L^p(B_R)}.
+	\]
+	用 \(p_j=2^{j+1}\) 和从 \(R\) 递减到 \(\rho\) 的半径迭代。由于 \(\sum_j1/p_j=1\) 且 \(\sum_jj/p_j<\infty\)，得到
+	\[
+		M(\rho):=\sup_{B_\rho}w
+		\le C_A(R-\rho)^{-2}\|w\|_{L^2(B_R)}.
+	\]
+	把 \(L^2\) 换成 \(L^1\) 是保留能量一次方的关键。记 \(I=\int_{B_1}w\,\mathrm dx\)，则 \(\|w\|_{L^2(B_R)}\le M(R)^{1/2}I^{1/2}\)。再用 Young 不等式，对任意 \(\theta>0\) 有
+	\[
+		M(\rho)\le\theta M(R)+C_{A,\theta}(R-\rho)^{-4}I.
+	\]
+	取 \(\rho_j=3/4-2^{-j-2}\)，从 \(\rho_0=1/2\) 向 \(3/4\) 迭代，并固定 \(\theta<2^{-4}\)。几何级数收敛，余项 \(\theta^jM(\rho_j)\) 因 \(w\) 在 \(\overline B_{3/4}\) 上有界而趋零，故 \(M(1/2)\le CI\)。令 \(\delta\downarrow0\)，恢复密度和尺度，即得结论。
+\end{proof}
+
+下一步选择一个兼顾函数高度与边界距离的点。这个选择使尖峰附近的上界由尖峰本身控制，因而可将二次不等式局部视为线性不等式。
+
+\begin{lemma}\label{g3:lem:heinz-small-integral}
+	设 \(g\) 是 \(B_1\subset\mathbb R^2\) 上满足 \(\lambda I\le(g_{ij})\le\Lambda I\) 的光滑度量，\(f\ge0\) 光滑，并满足
+	\[
+		L_gf\ge-af-bf^2,\qquad 0\le a\le A,\quad b\ge0.
+	\]
+	存在只依赖 \(\lambda,\Lambda,A,b\) 的 \(\varepsilon_*,C>0\)，使
+	\[
+		\int_{B_1}f\,\mu_g<\varepsilon_*
+		\quad\Longrightarrow\quad
+		\sup_{B_{1/2}}f\le C\int_{B_1}f\,\mu_g.
+	\]
+\end{lemma}
+\begin{proof}
+	先假定 \(f\) 在 \(\overline B_1\) 上光滑。令
+	\[
+		\Phi(t)=(1-t)^2\max_{\overline B_t}f,\qquad0\le t\le1.
+	\]
+	这是连续函数，\(\Phi(1)=0\)。若其最大值为零，则结论成立。否则取最大点 \(t_0<1\)，再取 \(x_0\in\overline B_{t_0}\) 使 \(M=f(x_0)=\max_{\overline B_{t_0}}f>0\)，并令 \(d=(1-t_0)/2\)。对于 \(x\in B_d(x_0)\)，最大值的选择给出
+	\[
+		f(x)\le4M,
+		\qquad L_gf\ge-(a+4bM)f.
+	\]
+	如果 \(Md^2\ge1\)，令 \(s=M^{-1/2}\le d\)。则
+	\((a+4bM)s^2\le A+4b\)。上一均值引理用于 \(B_s(x_0)\) 给出
+	\[
+		M\le C_0s^{-2}\int_{B_s(x_0)}f\,\mu_g
+		\le C_0M\int_{B_1}f\,\mu_g,
+	\]
+	其中 \(C_0\) 只依赖题述参数。选 \(\varepsilon_*<(2C_0)^{-1}\) 即排除这一情形。因此 \(Md^2<1\)。现在在整个 \(B_d(x_0)\) 上仍有 \((a+4bM)d^2\le A+4b\)，再用均值引理，得到
+	\[
+		d^2M\le C_0\int_{B_1}f\,\mu_g.
+	\]
+	于是 \(\max\Phi=4d^2M\le4C_0\int f\)。对 \(|x|\le1/2\)，利用 \(\Phi(1/2)\le\max\Phi\)，便得 \(f(x)\le16C_0\int f\)。
+	若 \(f\) 只在开球光滑，对 \(0<R<1\) 令
+	\[
+		f_R(y)=R^2f(Ry),\qquad g_R(y)=(g_{ij}(Ry)),\qquad a_R=R^2a.
+	\]
+	它们在闭单位球附近光滑，且
+	\[
+		L_{g_R}f_R\ge-a_Rf_R-bf_R^2,\qquad a_R\le A,
+		\qquad
+		\int_{B_1}f_R\,\mu_{g_R}=\int_{B_R}f\,\mu_g.
+	\]
+	这里二次项的系数 \(b\) 不变，二维积分等式来自 \(f_R\) 中的 \(R^2\) 与面积换元因子的抵消。因椭圆性界也不变，刚才的闭球论证以相同常数给出
+	\(\sup_{B_{R/2}}f\le CR^{-2}\int_{B_R}f\,\mu_g\)。令 \(R\uparrow1\)，即得开球上的结论。
+\end{proof}
+
+\begin{theorem}[二维小能量梯度估计]\label{g3:thm:harmonic-map-epsilon-regularity}
+	设 \((N,h)\) 是固定光滑紧无边界黎曼流形。存在 \(\varepsilon_0,C>0\)，使任意光滑调和映射 \(u:B_r(a)\subset\mathbb R^2\to N\) 满足
+	\begin{equation}\label{g3:eq:harmonic-map-epsilon-gradient}
+		E(u;B_r(a))<\varepsilon_0
+		\quad\Longrightarrow\quad
+		\sup_{B_{r/2}(a)}|\mathrm du|^2\le C r^{-2}E(u;B_r(a)).
+	\end{equation}
+	这里 \(\varepsilon_0,C\) 只依赖目标的截面曲率上界。在曲面坐标球 \((B_r(a),g)\) 上，同一结论对 \(g\)-调和映射成立，其中范数和能量均用 \(g\) 计算；若有式\eqref{g3:eq:surface-coordinate-controls}，常数还只需依赖 \(\lambda,\Lambda,K\)。
+\end{theorem}
+\begin{proof}
+	Euclid 情形先缩放至 \(r=1,a=0\)。对 \(f=e(u)\) 使用式\eqref{g3:eq:harmonic-map-energy-inequality}，其中 \(a=0\)、\(b=4K_N\)。上一引理给出 \(\sup e\le CE\)，而 \(|\mathrm du|^2=2e\)。式\eqref{g3:eq:harmonic-map-energy-scaling}恢复一般半径。
+	曲面情形使用第一小节的 \(g_r\) 和 \(v\)。其 Ricci 下界为 \(-K g_r\)，故 \(f=e_{g_r}(v)\) 满足 \(L_{g_r}f\ge-2Kf-4K_Nf^2\)。度量椭圆性仍由 \(\lambda,\Lambda\) 控制，且二维能量不变。应用上一引理，再用 \(e_{g_r}(v)=r^2e_g(u)\) 即得结论。
+\end{proof}
+
+目标紧性在这里提供统一曲率界；梯度估计本身只使用这个曲率上界。下一步还要选择目标坐标并控制其各阶系数，届时将使用紧目标的完整光滑几何。
 
 \subsection{内域高阶估计及光滑解族的紧性}
 \label{g3:subsec:1803:04}
-待撰写
+梯度有界以后，映射在一个充分小的源球内落入单张目标坐标图。调和方程在这张图中具有固定的标量椭圆主部，非线性只含一阶导数，因此可以使用\cref{g3:ch:12}的内估计逐阶提升。
+
+\begin{theorem}\label{g3:thm:harmonic-map-interior-derivatives}
+	设 \((N,h)\) 为光滑紧无边界黎曼流形，\(g\) 为 \(B_1\subset\mathbb R^2\) 上的光滑度量，并有统一椭圆性及各阶系数界。对每个 \(L<\infty\)、整数 \(k\ge1\) 和 \(0<\theta<1\)，光滑 \(g\)-调和映射满足
+	\[
+		\sup_{B_1}|\mathrm du|_g\le L
+		\quad\Longrightarrow\quad
+		\sup_{B_\theta}|\nabla^k\mathrm du|\le C_{k,\theta,L}.
+	\]
+	常数只使用 \(g\) 的有限阶系数界及 \(N\) 的有限阶几何界。进一步，可缩小前一定理的 \(\varepsilon_0\)，使在 Euclid 圆盘上
+	\begin{equation}\label{g3:eq:harmonic-map-higher-energy-estimate}
+		\sup_{B_{r/2}(a)}|\nabla^k\mathrm du|
+		\le C_k r^{-k-1}E(u;B_r(a))^{1/2},\qquad k\ge0,
+	\end{equation}
+	对 \(E(u;B_r(a))<\varepsilon_0\) 的光滑调和映射成立。曲面坐标中的版本另依赖缩放度量 \(g_r\) 的相应有限阶系数界。
+\end{theorem}
+\begin{proof}
+	由\cref{g3:lem:uniform-normal-neighborhood}及目标紧性，存在统一的目标正规坐标半径 \(\iota>0\)。这些坐标中的度量、逆度量及每个固定阶导数都有统一界；这是\cref{g3:prop:normal-expansion-uniform-remainders}证明中指数映射与底点联合光滑、再在有限个紧坐标闭包上取界的结论。给定源内点 \(x\)，选 \(\delta>0\)，使 \(B_{2\delta}(x)\subset B_1\)，并使 \(2\delta\sqrt\Lambda L<\iota/2\)。沿源坐标直线积分 \(|\mathrm du|_g\)，可知 \(u(B_{2\delta}(x))\) 落在以 \(u(x)\) 为中心的目标正规坐标球内。令 \(v\) 为其坐标分量，则 \(|v|+|\mathrm Dv|\) 有统一界，且
+	\begin{equation}\label{g3:eq:harmonic-map-coordinate-bootstrap}
+		L_gv^\alpha=-g^{ij}\Gamma^\alpha_{\beta\gamma}(v)
+		\partial_iv^\beta\partial_jv^\gamma.
+	\end{equation}
+	右端先有一致的 \(L^p\) 界，可固定 \(p=4\)。对每个分量用\cref{g3:thm:local-elliptic-lp-apriori}，在较小球得到 \(W^{2,4}\) 界；其冻结系数证明表明，统一椭圆性与主系数连续模使这些常数统一。\cref{g3:cor:higher-sobolev-embedding}给出 \(C^{1,1/2}\) 界。由乘积法则和光滑复合，式\eqref{g3:eq:harmonic-map-coordinate-bootstrap}右端于是有 \(C^{0,1/2}\) 界，\cref{g3:thm:interior-schauder}给出再小球上的 \(C^{2,1/2}\) 界。
+	如果已有 \(C^{j,1/2}\) 界，\(j\ge2\)，右端的 \(C^{j-1,1/2}\) 界由有限次链式法则和乘积法则控制。\Cref{g3:cor:schauder-higher-bootstrap}遂给出 \(C^{j+1,1/2}\) 界。为获得一个指定阶数，只需在有限层内球上重复这个过程；以有限个统一半径的小球覆盖 \(B_\theta\)，便得坐标导数的一致界。协变导数由这些导数及两边联络的光滑系数构成，故得到第一项断言。
+	再证明带能量因子的估计。先缩放至单位球，记 \(\eta=E(u;B_1)^{1/2}\)。用前一定理覆盖 \(B_{7/8}\)，可得其上 \(|\mathrm du|\le C\eta\)；覆盖所用的球半径固定，且各小球能量均不超过 \(\eta^2\)。将 \(\varepsilon_0\) 缩小，使 \(C\eta\) 足够小，就能把整个 \(u(B_{7/8})\) 放入以 \(u(0)\) 为中心的统一正规坐标球，且
+	\[
+		\|v\|_{L^\infty(B_{7/8})}+\|\mathrm Dv\|_{L^\infty(B_{7/8})}\le C\eta.
+	\]
+	令 \(\varepsilon_0\le1\)。方程右端的 \(L^4\) 范数至多为 \(C\eta^2\)，故内估计给出 \(\|v\|_{W^{2,4}}\le C(\eta+\eta^2)\le C\eta\)，继而 \(\|v\|_{C^{1,1/2}}\le C\eta\)。右端的 \(C^{0,1/2}\) 范数也至多为 \(C\eta^2\)，因而 \(C^{2,1/2}\) 范数受 \(C\eta\) 控制。
+	归纳时，右端每项仍含至少两个 \(v\) 的正阶导数因子；目标 Christoffel 符号及其复合的系数有统一界。因此若截至 \(j\) 阶的范数受 \(C_j\eta\) 控制，右端截至 \(j-1\) 阶的 Hölder 范数便受 \(C_j\eta^2\) 控制，下一次 Schauder 估计保留 \(C_{j+1}\eta\) 界。转换为协变导数仍保留 \(\eta\) 因子。缩放恢复 \(r^{-k-1}\)，得到式\eqref{g3:eq:harmonic-map-higher-energy-estimate}。变系数源的论证相同，所用常数增加 \(g_r\) 的有限阶系数界。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:harmonic-map-local-smooth-compactness}
+	设 \(\Omega\) 为光滑曲面中的开集，\(g_j\) 为其光滑度量，\(g_j\to g\) 在紧子集上按 \(C^\infty\) 收敛，且 \(g\) 正定。设 \(N\) 为固定光滑紧无边界黎曼流形，\(u_j:(\Omega,g_j)\to N\) 光滑调和。如果每个 \(K\Subset\Omega\) 都有 \(\sup_K|\mathrm du_j|_{g_j}\le C_K\)，则存在子列在 \(\Omega\) 的紧子集上按 \(C^\infty\) 收敛到光滑 \(g\)-调和映射。
+\end{corollary}
+\begin{proof}
+	固定稍大的紧子集，上一定理给出各阶导数的一致界。把 \(N\) 通过上一节的固定光滑嵌入看成 Euclid 空间的紧子流形，其嵌入分量及各阶导数也一致有界。Arzelà--Ascoli 定理逐阶给出收敛子列；沿坐标线段积分识别极限导数，再对可数紧集穷尽作对角选择，就得到一个共同的 \(C^\infty_{\mathrm{loc}}\) 子列。目标的闭性保证极限仍取值于 \(N\)。在单张目标坐标内通过式\eqref{g3:eq:harmonic-map-coordinate-bootstrap}取极限，得到 \(\tau_g(u_\infty)=0\)。
+\end{proof}
 
 \subsection{能量集中点、重缩放及奇点形成}
 \label{g3:subsec:1803:05}
-待撰写
+总能量有界不保证每个小球都满足小能量条件，但不满足条件的点只能有有限多个。下面直接用可数坐标球选取子列，使这一计数不依赖预先引入能量极限测度。
 
-\subsection{一般弱解与高维部分正则性的独立范围}
+\begin{theorem}\label{g3:thm:harmonic-map-concentration-compactness}
+	设 \((M^2,g)\) 为闭光滑黎曼曲面，\((N,h)\) 为光滑紧无边界黎曼流形。若 \(u_j:M\to N\) 是光滑调和映射，且 \(E(u_j;M)\le\mathcal E<\infty\)，则存在子列、有限集合 \(S\subset M\) 和光滑调和映射 \(u_\infty:M\setminus S\to N\)，使
+	\[
+		u_j\longrightarrow u_\infty\quad\text{于 }C^\infty_{\mathrm{loc}}(M\setminus S),
+		\qquad E(u_\infty;M\setminus S)\le\mathcal E.
+	\]
+	可选统一常数 \(\varepsilon_0>0\)，使 \(\#S\le\mathcal E/\varepsilon_0\)。对每个 \(x\in S\) 及其任意邻域 \(U\)，还有
+	\[
+		\liminf_{j\to\infty}E(u_j;U)\ge\varepsilon_0.
+	\]
+\end{theorem}
+\begin{proof}
+	在有限个相对紧坐标图中统一选择小能量定理及高阶估计的常数，并缩小统一阈值 \(\varepsilon_0\)。选取图内中心、半径均为有理数且闭包留在图内的坐标球，合成一个可数拓扑基 \(\{B_\ell\}_{\ell\ge1}\)。每列实数 \(E(u_j;B_\ell)\) 都在 \([0,\mathcal E]\) 中；逐列选子列并作对角选择，可使所有这些能量同时收敛，记极限为 \(a_\ell\)。
+	定义
+	\[
+		S=M\setminus\bigcup_{a_\ell<\varepsilon_0}B_\ell.
+	\]
+	它是闭集。如果 \(x_1,\ldots,x_q\) 是其中不同的点，可从上述基中选取两两不交且分别包含它们的球。每个球的极限能量至少为 \(\varepsilon_0\)，故
+	\(q\varepsilon_0\le\lim_j\sum_{i=1}^qE(u_j;B_{\ell_i})\le\mathcal E\)。因此 \(S\) 有限且满足所述计数。对 \(x\in S\) 和任意邻域 \(U\)，选一个 \(x\in B_\ell\subset U\)，便有 \(\liminf_jE(u_j;U)\ge a_\ell\ge\varepsilon_0\)。
+	若 \(x\notin S\)，它位于某个 \(a_\ell<\varepsilon_0\) 的球内，故充分大的 \(j\) 在此球上均有小能量。即使 \(x\) 不在该球的同心半球内，也可选取以 \(x\) 为中心、闭包留在 \(B_\ell\) 内的小球，能量仍小于阈值。梯度及高阶估计于是给出 \(x\) 邻域的一致界。在 \(M\setminus S\) 的紧集穷尽上应用上一推论并作对角选择，得到所述光滑收敛。每个紧子集上的能量收敛到极限能量；令紧集递增穷尽，便得 \(E(u_\infty;M\setminus S)\le\mathcal E\)。
+\end{proof}
+
+集合 \(S\) 记录解族的能量集中位置。即使极限映射后来能够延拓到这些点，原序列也仍可能在那里失去光滑紧性。要观察集中区域内的形状，可以把最大梯度重新归一化为一。
+
+\begin{proposition}\label{g3:prop:harmonic-map-blowup-plane}
+	设 \((M^2,g)\) 为闭光滑黎曼曲面，\((N,h)\) 为光滑紧无边界黎曼流形，\(u_j:M\to N\) 为光滑调和映射，\(E(u_j;M)\le\mathcal E\)。若
+	\(L_j=\max_M|\mathrm du_j|_g\to\infty\)，则选取子列、点 \(p_j\in M\) 和尺度 \(\rho_j=L_j^{-1}\to0\) 后，重缩放映射
+	\[
+		v_j(y)=u_j\bigl(\exp_{p_j}(\rho_j y)\bigr)
+	\]
+	在逐渐扩大的 Euclid 圆盘上定义，并于紧子集上光滑收敛到非恒定调和映射 \(v_\infty:\mathbb R^2\to N\)。其能量满足
+	\[
+		0<\varepsilon_0\le E(v_\infty;\mathbb R^2)\le\mathcal E,
+	\]
+	其中 \(\varepsilon_0\) 可取 Euclid 小能量定理的阈值。
+\end{proposition}
+\begin{proof}
+	选 \(p_j\) 使 \(|\mathrm du_j(p_j)|=L_j\)，并在 \(\mathrm T_{p_j}M\) 选正交归一基。由\cref{g3:prop:compact-injectivity-lower-bound}，紧源有正的统一注入半径，故 \(v_j\) 定义在半径趋于无穷的圆盘上。再选子列，使这些标架在正交标架丛中收敛。令
+	\[
+		g_j=\rho_j^{-2}(\exp_{p_j}\circ(\rho_j\operatorname{Id}))^*g.
+	\]
+	法坐标的光滑依赖与 \(\rho_j\to0\) 给出 \(g_j\to g_{\mathrm{Euclid}}\) 于每个固定圆盘的 \(C^\infty\) 中。常数倍改变源度量只把张力场乘以一个正数，所以 \(v_j\) 是 \(g_j\)-调和映射，且
+	\[
+		|\mathrm dv_j|_{g_j}\le1,\qquad |\mathrm dv_j(0)|_{g_j}=1.
+	\]
+	局部光滑紧性推论在每个固定圆盘上适用，再作对角选择，得到 \(v_\infty\)。导数在中心收敛，故 \(|\mathrm dv_\infty(0)|=1\)，极限非恒定。
+	二维能量缩放不变，所以每个固定 \(R\) 上有 \(E_{g_j}(v_j;B_R)\le\mathcal E\)。光滑收敛后 \(E(v_\infty;B_R)\le\mathcal E\)，令 \(R\to\infty\) 得有限总能量。若此总能量小于 \(\varepsilon_0\)，则在任意 \(B_R\) 上应用小能量定理，可得
+	\[
+		|\mathrm dv_\infty(0)|^2\le C R^{-2}E(v_\infty;B_R)
+		\le C R^{-2}\mathcal E\longrightarrow0,
+	\]
+	与中心归一化矛盾。因此总能量至少为 \(\varepsilon_0\)。
+\end{proof}
+
+这里得到的放大极限定义在整个平面上。把它补成球面映射需要无穷远处的可去奇点定理；把原序列损失的全部能量分解成若干这种极限的能量，还需要分析不同尺度之间的区域。\secref{g3:sec:1804}将先给出一个可以逐项计算的球面集中模型。
+
+\subsection{弱调和映射的正则性}
 \label{g3:subsec:1803:06}
-待撰写
+前面证明从光滑调和方程出发，因而可以逐点求导能量密度。对于仅有 \(H^1\) 正则性的映射，\(|\mathrm du|^2\) 最初只有 \(L^1\) 控制，Bochner 公式中的二阶导数还没有定义。要跨过这一正则性门槛，需要使用弱方程的额外结构。下面列出的三项结果均作为外部定理使用。二维情形由 Hélein 的定理解决。\footnote{Frédéric Hélein（1963--），法国数学家，研究几何变分、调和映射以及守恒律与活动标架方法。}
+
+\begin{theorem}[Hélein]\label{g3:thm:helein-weak-regularity}
+	设 \((M^2,g)\) 为光滑黎曼曲面，\((N,h)\) 为光滑紧无边界黎曼流形。若 \(u\in H^1_{\mathrm{loc}}(M,N)\) 满足\cref{g3:def:weak-minimizing-stationary-map}中的弱调和方程，则 \(u\) 的等价类在 \(M\) 内部有光滑调和代表。
+	这一结论是 Hélein 的二维弱正则性定理，原刊的英文陈述见\cite[第591页，未编号定理]{Helein1991WeakHarmonicRegularity}，法文陈述见同文第593页。对局部 \(H^1\) 映射，在每个相对紧圆盘上应用原定理即可。
+\end{theorem}
+
+该定理使用二维方程中的补偿结构。它允许先把弱解换成光滑代表，再应用本节的小能量估计。于是二维弱解也有同样的内域结论：在一个圆盘上的能量小于阈值时，光滑代表满足式\eqref{g3:eq:harmonic-map-epsilon-gradient}及各阶内估计。这里从弱解到光滑代表的步骤由上述外部定理承担。
+
+\ProseParagraphBreak
+
+高维情形应同时注明变分类型与奇集大小。记 \(\operatorname{Reg}(u)\) 为存在光滑代表的邻域中所有点的集合，并记
+\[
+	\operatorname{Sing}(u)=M\setminus\operatorname{Reg}(u).
+\]
+前者是开集，故奇集相对闭。以下用 \(\mathcal H^s\) 表示 \(s\) 维 Hausdorff 测度：它由直径不超过 \(\delta\) 的可数覆盖中 \(\sum_j(\operatorname{diam}U_j)^s\) 的下确界，再令 \(\delta\downarrow0\) 得到；固定的标准归一化因子不影响零测度结论。Hausdorff 维数是使该测度为零的指数的下确界。极小映射的结论来自 Schoen 与 Uhlenbeck 的正则性理论。\footnote{Richard Melvin Schoen（1950--），美国数学家，研究微分几何与几何分析，工作包括调和映射和极小曲面的正则性。Karen Keskulla Uhlenbeck（1942--），美国数学家，研究几何偏微分方程、调和映射及规范场理论。}
+
+\begin{theorem}[Schoen--Uhlenbeck]\label{g3:thm:minimizing-map-partial-regularity}
+	设 \(\Omega\subset\mathbb R^m\) 为开集，\(m\ge3\)，\((N,h)\) 为光滑紧无边界黎曼流形。若 \(u\in H^1_{\mathrm{loc}}(\Omega,N)\) 在每个相对紧光滑域上都相对于同迹 \(H^1\) 竞争映射使能量最小，则 \(u\) 在 \(\Omega\setminus\operatorname{Sing}(u)\) 上有光滑调和代表，且
+	\[
+		\dim_{\mathrm H}\operatorname{Sing}(u)\le m-3.
+	\]
+	当 \(m=3\) 时，奇集在 \(\Omega\) 内离散，因而与每个紧子集的交有限。该结论取自\cite[第310页，定理II]{SchoenUhlenbeck1982Regularity}；原定理允许黎曼源，并假定映射像落在目标的固定紧子集中，紧目标保证了后一条件。
+\end{theorem}
+
+极小性给出对任意竞争映射的能量比较，比两类一阶变分为零更强。只要求平稳时，Bethuel 的定理给出另一种奇集估计。\footnote{Fabrice Bethuel（1963--），法国数学家，研究流形值 Sobolev 映射、调和映射的奇点以及非线性变分问题。}
+
+\begin{theorem}[Bethuel]\label{g3:thm:stationary-map-partial-regularity}
+	设 \(\Omega\subset\mathbb R^m\) 为开集，\(m\ge3\)，\((N,h)\) 为光滑紧无边界黎曼流形。若 \(u\in H^1_{\mathrm{loc}}(\Omega,N)\) 弱调和，并且对所有紧支光滑源向量场的内变分驻值，则存在相对闭集 \(\Sigma\subset\Omega\)，使 \(u\) 的等价类有满足下列条件的代表：
+	\[
+		\mathcal H^{m-2}(\Sigma)=0,
+		\qquad u\in C^\infty(\Omega\setminus\Sigma,N)
+	\]
+	因此 \(\operatorname{Sing}(u)\subset\Sigma\)，也满足 \(\mathcal H^{m-2}(\operatorname{Sing}(u))=0\)。这是\cite[第418页，定理I.1]{Bethuel1993StationarySingularSet}的内域局部形式；其第417--419页说明了弱调和方程、内变分驻值和 Euclid 局部化的约定。
+\end{theorem}
+
+由 \(\mathcal H^{m-2}(\Sigma)=0\) 可以推出 \(\dim_{\mathrm H}\Sigma\le m-2\)，不能把这一推论写成严格小于 \(m-2\)。极小情形的 \(m-3\) 界则来自更强的比较性质和降维论证。上一节的单调性公式可用于这两类映射，因为极小性蕴含平稳性；对于只满足目标弱方程的高维映射，还需另行验证内变分驻值。本节光滑解族的集中集定理、这里的单个弱解正则性以及高维奇集估计，分别处理不同的极限与正则性问题。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

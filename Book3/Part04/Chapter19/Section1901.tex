@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 19.1 面积的一阶与二阶变分
 % 纲要位置：几何学计划纲要.md，第 2865 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,195 @@
 \section{面积的一阶与二阶变分}
 \label{g3:sec:1901}
 
-待撰写
+面积由浸入诱导的度量决定；变分时，度量本身也在变化。这一点与上一章在固定源度量上变分映射能量不同。本节接续\cref{g3:thm:first-variation-submanifold-area}，先说明边界允许怎样移动，再计算法向速度对应的二阶项。平均曲率检测驻值，Jacobi 二次型检测稳定性，两者都需要指定竞争变分。
 
 \subsection{法向变分与平均曲率}
 \label{g3:subsec:1901:01}
-待撰写
+设 \(F:M^m\to(\bar M^{m+q},\bar g)\) 为光滑浸入，\(m,q\ge1\)，环境无边界，\(g=F^*\bar g\)。把切向量与其像识别，沿用\cref{g3:def:second-fundamental-form,g3:def:mean-curvature-vector}：
+\[
+	B(X,Y)=(\bar\nabla_X\mathrm dF(Y))^\perp,
+	\qquad H=\frac1m\sum_{i=1}^mB(e_i,e_i).
+\]
+这里 \(H\) 是法向量场。若余维为一并选定全局单位法向 \(\nu\)，记
+\(h_\nu=\langle H,\nu\rangle=m^{-1}\operatorname{tr}A_\nu\)，则 \(H=h_\nu\nu\)。球面外向法向给出 \(h_\nu=-1/R\)，这与\cref{g3:exm:sphere-extrinsic-sign}一致。
+
+\ProseParagraphBreak
+
+对光滑浸入变分 \(F_t\)，写初速度 \(V=\mathrm dF(W)+V^\perp\)。若 \(M\) 紧，允许光滑边界，面积定义为
+\(\mathcal A(F)=\int_M\mu_g\)；非单射浸入仍在 \(M\) 上积分，因而保留覆盖重数。第4章的一阶公式在当前记号下为
+\begin{equation}\label{g3:eq:submanifold-area-first-variation}
+	\mathcal A'(0)=\int_{\partial M}\langle W,\eta\rangle\,\mu_{\partial M}
+	-m\int_M\langle H,V^\perp\rangle\,\mu_g,
+\end{equation}
+其中 \(\eta\) 是边界在 \(M\) 内的外单位余法向。其点态来源是
+\(\dot g_{ij}=\langle\bar\nabla_iV,e_j\rangle+\langle e_i,\bar\nabla_jV\rangle\) 与
+\(\dot\mu=\frac12\operatorname{tr}_g(\dot g)\mu\)。特别地，对超曲面上的法向初速度 \(V=f\nu\)，有
+\begin{equation}\label{g3:eq:normal-area-density-variation}
+	\dot g_{ij}=-2f\langle B(e_i,e_j),\nu\rangle,
+	\qquad \dot\mu=-m h_\nu f\mu_g.
+\end{equation}
+例如外向移动单位速度的半径 \(R\) 球面满足 \(\dot\mu=m\mu/R\)，面积随半径增大。
+
+\ProseParagraphBreak
+
+任意光滑紧支法向场都可实现为变分初速度：取
+\(F_t(x)=\exp_{F(x)}^{\bar g}(tV(x))\)。支集紧且浸入性是开条件，所以有共同的小时间使所有 \(F_t\) 仍为浸入。若面积对所有内域紧支变分驻值，在 \(H\ne0\) 的小区域取 \(V=\chi H\)、\(\chi\ge0\)，式\eqref{g3:eq:submanifold-area-first-variation}给出严格负的一阶导数，矛盾。这恢复了\cref{g3:cor:minimal-area-stationarity}：极小条件 \(H=0\) 等价于内域面积驻值。
+
+\begin{definition}\label{g3:def:minimal-area-stability}
+	设 \(F:M^m\to\bar M\) 为光滑极小浸入，\(m\ge1\)，允许光滑边界。若对所有内域紧支光滑变分都有 \(\mathcal A''(0)\ge0\)，称 \(F\) 为\term[wending jixiao jinru]{稳定极小浸入}[stable minimal immersion]；非紧时面积变化在包含变分支集的紧域上计算。紧带边界情形也可规定全部固定边界变分。面积在指定竞争类中取最小值，则其一、二阶必要条件分别是驻值与稳定。
+\end{definition}
 
 \subsection{边界项和固定边界}
 \label{g3:subsec:1901:02}
-待撰写
+固定边界指 \(F_t|_{\partial M}=F|_{\partial M}\)，因而初速度以及沿时间的加速度在边界都为零。此时式\eqref{g3:eq:submanifold-area-first-variation}的边界项消失。单有 \(V^\perp=0\) 不够：边界的切向速度若沿余法向 \(\eta\) 移动，仍会改变面积。
+
+\begin{example}\label{g3:exm:plane-disk-moving-boundary}
+	在 \(\mathbb R^{m+1}\) 中取单位平盘 \(F(x)=(x,0)\)、\(|x|\le1\)，并令 \(F_t(x)=((1+t)x,0)\)。初速度完全切向，平均曲率为零，但
+	\[
+		\mathcal A(F_t)=(1+t)^m\omega_m,
+		\qquad \mathcal A'(0)=m\omega_m.
+	\]
+	边界上 \(W=\eta\)，其通量正是 \(|S^{m-1}|=m\omega_m\)。这说明平盘的内域驻值不包括任意边界移动。
+\end{example}
+
+若边界允许在一个给定的光滑支撑超曲面 \(S\subset\bar M\) 内移动，则边界速度须属于 \(\mathrm TS\)。在内部 \(H=0\) 之后，一阶驻值还要求 \(\eta\perp\mathrm TS\)。确实，在边界任一点都可用 \(S\) 内的局部坐标及截断函数实现任意这样的边界速度，边界积分对全部速度为零恰迫使其切向分量消失。这是通常自由边界问题的正交接触条件。后面给出的二阶公式采用固定边界或紧支条件；自由边界二阶问题还包含支撑面的曲率项。
+
+\ProseParagraphBreak
+
+内域切向速度的作用可以由重新参数化消去。若 \(V=\mathrm dF(W)+V^\perp\)，用源上由 \(-W\) 生成的局部流 \(\psi_t\)，则 \(F_t\circ\psi_t\) 的初速度为 \(V^\perp\)，而面积不变。紧支或零边界条件保证这个流保持相应区域和边界。在驻值浸入处，二阶变化只取决于初速度：改变加速度造成的差是一阶变分，因而为零。下面的显式公式也将验证这一点。所以检验几何稳定性时，考察法向初速度已经足够。
 
 \subsection{Jacobi 稳定算子}
 \label{g3:subsec:1901:03}
-待撰写
+超曲面的法丛是一维的，选定单位法向后，变分场由一个标量函数表示。先求平均曲率的导数，这也为本章两个选读主题提供共同输入。
+
+\begin{proposition}\label{g3:prop:hypersurface-mean-variation}
+	设 \(F:M^m\to\bar M^{m+1}\) 为光滑双侧浸入，\(m\ge1\)，\(\nu\) 为选定光滑单位法向。沿光滑浸入变分延拓该法向，若初速度为 \(f\nu\)，则在每个内点
+	\begin{equation}\label{g3:eq:hypersurface-mean-variation}
+		\left.\frac{\mathrm d}{\mathrm dt}\right|_0 h_{\nu_t}
+		=\frac1m\left[-\Delta_g f+
+		\bigl(|A_\nu|^2+\overline{\operatorname{Ric}}(\nu,\nu)\bigr)f\right].
+	\end{equation}
+	这里 \(\Delta_g=-\operatorname{div}_g\nabla\)，不要求原浸入极小。
+\end{proposition}
+\begin{proof}
+	在一点选 \(g_{ij}=\delta_{ij}\)、\(\nabla_{\partial_i}\partial_j=0\) 的源坐标，记 \(E_i=\mathrm dF(\partial_i)\)、\(b_{ij}=\langle\bar\nabla_iE_j,\nu\rangle\)。对 \(\langle\nu_t,E_i(t)\rangle=0\) 与 \(|\nu_t|^2=1\) 求导，得
+	\[
+		\bar\nabla_t\nu_t|_0=-\nabla f,
+		\qquad (g^{ij})'=2f b_{ij}.
+	\]
+	用式\eqref{g3:eq:map-variation-commutation}交换时间与空间导数，并用 \(\bar\nabla_j\nu=-A_\nu E_j\)，得到
+	\[
+		b'_{ij}=(\nabla^2 f)_{ij}
+		-f\langle A_\nu E_i,A_\nu E_j\rangle
+		+f\langle\bar R(\nu,E_i)E_j,\nu\rangle.
+	\]
+	其中 Hessian 的联络修正来自 \(\langle\bar\nabla_iE_j,-\nabla f\rangle\)；在选定点它为零，一般坐标下则恰补成协变 Hessian。对 \(m h_{\nu_t}=g^{ij}(t)b_{ij}(t)\) 求导，逆度量贡献 \(2f|A_\nu|^2\)，\(b'\) 贡献
+	\(-\Delta_g f-f|A_\nu|^2+f\overline{\operatorname{Ric}}(\nu,\nu)\)。相加即得所求。曲率迹的正号与本卷正曲率球面的约定一致。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:minimal-hypersurface-second-variation}
+	设 \(F:M^m\to\bar M^{m+1}\) 为光滑双侧极小浸入，\(m\ge1\)。在闭源、紧源固定光滑边界，或非紧源内域紧支变分下，法向初速度 \(f\nu\) 的面积二阶导数为
+	\begin{equation}\label{g3:eq:minimal-hypersurface-index-form}
+		Q(f,f)=\int_M\left(|\nabla f|^2-
+		\bigl(|A_\nu|^2+\overline{\operatorname{Ric}}(\nu,\nu)\bigr)f^2\right)\mu_g.
+	\end{equation}
+	相应的\term[jacobi wending suanzi]{Jacobi 稳定算子}[Jacobi stability operator]为
+	\begin{equation}\label{g3:eq:minimal-hypersurface-jacobi}
+		Jf=\Delta_g f-
+		\bigl(|A_\nu|^2+\overline{\operatorname{Ric}}(\nu,\nu)\bigr)f.
+	\end{equation}
+	稳定性等价于上述允许的全部 \(f\) 满足 \(Q(f,f)\ge0\)。
+\end{theorem}
+\begin{proof}
+	对变分的每个时刻应用一阶公式。切向散度的积分在闭源或固定边界下为零；非紧情形在紧支集外保持不动。令法向速度系数为 \(f_t\)，则
+	\(\mathcal A'(t)=-m\int_Mh_{\nu_t}f_t\mu_{g_t}\)。因为 \(h_{\nu_0}=0\)，再求导时，含 \(f'_0\) 或 \(\dot\mu\) 的项都消失，留下
+	\[
+		\mathcal A''(0)=-m\int_M h'_{\nu_0}f\mu_g
+		=\int_M\left(f\Delta_g f-
+		\bigl(|A_\nu|^2+\overline{\operatorname{Ric}}(\nu,\nu)\bigr)f^2\right)\mu_g.
+	\]
+	由散度定理，\(\int f\Delta f=\int|\nabla f|^2-\int_{\partial M}f\partial_\eta f\)；允许的条件使边界项为零。这证明公式，也显示加速度没有参与二阶值。任意允许的 \(f\) 都能由前面的指数变分实现，因此非负性恰为稳定性。
+\end{proof}
+
+一般两个函数满足
+\[
+	Q(f,k)=\int_M kJf\,\mu_g+\int_{\partial M}k\partial_\eta f\,\mu_{\partial M}.
+\]
+所以写成算子以后，仍要保留所选的边界条件。\(Jf=0\) 的解称为 Jacobi 函数；它表示线性化极小方程的解。一个实际极小浸入族的法向速度必满足此方程，但从线性方程的解构造非线性浸入族还需要额外论证。
+
+\begin{example}\label{g3:exm:plane-stability-equator-instability}
+	Euclid 超平面上 \(A=0\)、环境 Ricci 曲率为零，故 \(Q(f,f)=\int|\nabla f|^2\ge0\)。相反，单位球面 \(S^{m+1}\) 内的大赤道 \(S^m\) 虽然全测地，仍有
+	\(Q(f,f)=\int(|\nabla f|^2-mf^2)\)。取 \(f=1\) 得负值。对应的平行纬面面积为 \(|S^m|\cos^m t\)，在赤道达到局部最大值，二阶导数正是 \(-m|S^m|\)。
+\end{example}
 
 \subsection{高余维法联络和曲率项}
 \label{g3:subsec:1901:04}
-待撰写
+余维较高时，法向场会在法空间中旋转，单个标量算子不再记录全部变化。令
+\[
+	\mathcal R^\perp V=\sum_i(\bar R(V,e_i)e_i)^\perp,
+	\qquad \mathcal B V=\sum_{i,j}\langle B(e_i,e_j),V\rangle B(e_i,e_j).
+\]
+正交换基不改变这两次收缩。曲率对称性使 \(\mathcal R^\perp\) 自伴，\(\mathcal B\) 则是非负自伴丛自同态。
+
+\begin{theorem}[极小浸入的第二变分]\label{g3:thm:minimal-area-second-variation}
+	设 \(F:M^m\to(\bar M^{m+q},\bar g)\) 为光滑极小浸入，\(m,q\ge1\)。取闭源、紧源固定光滑边界，或非紧源内域紧支条件。对光滑法向初速度 \(V\)，有 \(\mathcal A''(0)=Q(V,V)\)，其中极化形式为
+	\begin{equation}\label{g3:eq:minimal-normal-index-form}
+	\begin{aligned}
+		Q(V,W)=\int_M\bigg(&\langle\nabla^\perp V,\nabla^\perp W\rangle
+		-\sum_i\langle\bar R(V,e_i)e_i,W\rangle\\
+		&-\sum_{i,j}\langle B(e_i,e_j),V\rangle
+		\langle B(e_i,e_j),W\rangle\bigg)\mu_g.
+	\end{aligned}
+	\end{equation}
+	无需假设源或法丛可定向。法丛上的 Jacobi 算子为
+	\(J^\perp=(\nabla^\perp)^*\nabla^\perp-\mathcal R^\perp-\mathcal B\)，对允许的边界条件有 \(Q(V,W)=\int\langle J^\perp V,W\rangle\mu_g\)。
+\end{theorem}
+\begin{proof}
+	本次直接对行列式求两次导数，以显示高余维的附加项。记时间加速度 \(Z=\bar\nabla_t\partial_tF_t|_0\)。在一点取 \(g_{ij}=\delta_{ij}\) 的源坐标，令 \(a_{ij}=\langle B(e_i,e_j),V\rangle\)，则 \(g'_{ij}=-2a_{ij}\)。对面积密度求导得到
+	\[
+		\frac{\mu''}{\mu}
+		=\frac12\operatorname{tr}g''-
+		\frac12\operatorname{tr}((g')^2)
+		+\frac14(\operatorname{tr}g')^2.
+	\]
+	时间与空间交换公式给出
+	\[
+		\frac12\operatorname{tr}g''
+		=\sum_i|\bar\nabla_iV|^2+
+		\sum_i\langle\bar\nabla_iZ,e_i\rangle
+		-\sum_i\langle\bar R(V,e_i)e_i,V\rangle.
+	\]
+	负曲率项来自 \(\langle\bar R(V,e_i)V,e_i\rangle=-\langle\bar R(V,e_i)e_i,V\rangle\)。由 Weingarten 分解，
+	\[
+		\sum_i|\bar\nabla_iV|^2=|\nabla^\perp V|^2+\sum_{i,j}a_{ij}^2,
+		\qquad
+		\sum_i\langle\bar\nabla_iZ,e_i\rangle
+		=\operatorname{div}Z^\top-m\langle H,Z^\perp\rangle.
+	\]
+	而 \(\frac12\operatorname{tr}((g')^2)=2\sum a_{ij}^2\)，\(\frac14(\operatorname{tr}g')^2=m^2\langle H,V\rangle^2\)。代入后，在 \(H=0\) 处只剩目标二次型与 \(\operatorname{div}Z^\top\)。散度项积分为边界加速度通量；固定边界使 \(Z|_{\partial M}=0\)，其余两种条件也使通量消失。于是得到 \(Q(V,V)\)，再用极化给出式\eqref{g3:eq:minimal-normal-index-form}。
+	最后定义
+	\[
+		(\nabla^\perp)^*\nabla^\perp V
+		=-\sum_i\left(\nabla^\perp_{e_i}\nabla^\perp_{e_i}V
+		-\nabla^\perp_{\nabla_{e_i}e_i}V\right).
+	\]
+	法联络的度量相容性把积分分部化为标量散度定理，给出
+	\(Q(V,W)=\int\langle J^\perp V,W\rangle+\int_{\partial M}\langle\nabla^\perp_\eta V,W\rangle\)。边界或支集条件消去最后一项。所有运算都在法丛内，证明不需要选择全局法标架。
+\end{proof}
+
+高余维也不能把环境非正曲率直接当作稳定性：曲率项此时有利，但 \(-\langle\mathcal BV,V\rangle\) 仍可能为负。下一节的悬链面将在平坦环境中给出这种现象。
+
+\begin{example}\label{g3:exm:rotating-normal-frame-energy}
+	在平面 \(F(x,y)=(x,y,0,0)\subset\mathbb R^4\) 上，取法标架
+	\[
+		\nu_1=\cos x\,e_3+\sin x\,e_4,
+		\qquad \nu_2=-\sin x\,e_3+\cos x\,e_4.
+	\]
+	它满足 \(\nabla^\perp\nu_1=\mathrm dx\,\nu_2\)、\(\nabla^\perp\nu_2=-\mathrm dx\,\nu_1\)。对紧支函数 \(\phi\)，同一个场 \(V=\phi e_3\) 的分量为 \((\phi\cos x,-\phi\sin x)\)。将系数导数与标架导数相加，含 \(\phi\mathrm dx\) 的项抵消，故
+	\[
+		\nabla^\perp V=\mathrm d\phi\otimes e_3,
+		\qquad Q(V,V)=\int_{\mathbb R^2}|\nabla\phi|^2\,\mathrm dx\mathrm dy.
+	\]
+	若只对两个分量求普通导数，会多出 \(\int\phi^2\)，错误地把标架旋转当成了几何变形。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

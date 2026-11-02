@@ -1,35 +1,364 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 7.3 Hessian 和 Laplace 比较
 % 纲要位置：几何学计划纲要.md，第 2377 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 距离函数的径向 Hessian
 % * 截面界与 Hessian 比较
 % * Ricci 界与迹比较
-% * 本书非负 Laplace 符号的换算
+% * 径向函数的 Hessian 与 Laplace 比较
 % 
 % 纲要内容结束
 
 \section{Hessian 和 Laplace 比较}
 \label{g3:sec:0703}
 
-待撰写
+从一点发出的径向测地线相互分开，形成距离球面。它们的横向伸缩由 Jacobi 场描述；把这些伸缩对半径求导，便得到距离函数的 Hessian。截面曲率控制每个横向方向，Ricci 曲率控制这些方向的总和。本节先确定距离函数的光滑范围，再把前两节的比较结论转成函数的二阶导数估计。
 
 \subsection{距离函数的径向 Hessian}
 \label{g3:subsec:0703:01}
-待撰写
+
+沿用第三章的记号，对光滑实函数 \(f\)，令
+\[
+	\operatorname{Hess}f(X,Y)=H_f(X,Y)
+	=(\nabla\mathrm df)(X,Y)
+	=X(Yf)-(\nabla_XY)f
+	=\langle\nabla_X\operatorname{grad}f,Y\rangle.
+\]
+Levi-Civita 联络无挠，故这个二阶协变张量对称。在坐标中它为
+\(\partial_i\partial_jf-\Gamma^a_{ij}\partial_af\)。
+距离函数 \(r(x)=d(p,x)\) 处处连续，但只有在其光滑范围内才能直接使用这些公式。
+
+\begin{proposition}\label{g3:prop:distance-smooth-regular}
+	设 \((M,g)\) 为连通、完备、无边界的光滑黎曼流形，\(p\in M\)，并令
+	\[
+		\mathcal D_p=\{0\}\cup
+		\{tu:u\in\mathrm T_pM,\ |u|=1,\ 0<t<c_p(u)\}.
+	\]
+	则 \(\mathcal D_p\) 在 \(\mathrm T_pM\) 中开，而且
+	\[
+		\exp_p:\mathcal D_p\longrightarrow M\setminus\operatorname{Cut}(p)
+	\]
+	是微分同胚。函数 \(r=d(p,\cdot)\) 在开集
+	\[
+		\Omega_p=M\setminus\bigl(\operatorname{Cut}(p)\cup\{p\}\bigr)
+	\]
+	上光滑。若 \(q=\exp_p(bu)\)、\(0<b<c_p(u)\)，则
+	\begin{equation}\label{g3:eq:distance-gradient}
+		\operatorname{grad}r(q)=\dot\gamma_u(b),
+		\qquad |\operatorname{grad}r|=1
+		\quad\text{于 }\Omega_p.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	第二章的\cref{g3:prop:precut-injectivity}已经给出所写指数映射的集合双射，以及割点前最短线的唯一性。还须证明这个参数域是开集，逆映射在每点附近光滑。
+
+	固定 \(q=\exp_p(v)\in\Omega_p\)，写 \(v=bu\)。由\cref{g3:thm:cut-point-alternative}，第一个共轭时刻不早于割时，所以 \(b\) 不是共轭时刻。\cref{g3:prop:conjugate-exp-singularity}使 \((\mathrm d\exp_p)_v\) 可逆。逆函数定理给出 \(v\) 的开邻域 \(U\) 和 \(q\) 的开邻域 \(O\)，使 \(\exp_p|_U:U\to O\) 为微分同胚；可缩小它们以避开零向量和点 \(p\)。
+
+	在进一步缩小的 \(O\) 中，每条从 \(p\) 出发的最短线的初向量都落在 \(U\)。否则有 \(q_j\to q\) 及 \(v_j\notin U\)，满足
+	\[
+		\exp_p(v_j)=q_j,\qquad |v_j|=d(p,q_j).
+	\]
+	Hopf--Rinow 定理保证这样的最短初向量存在，距离连续性使其长度趋于 \(b\)。在有限维切空间内取收敛子列 \(v_j\to v_*\)，有
+	\(\exp_p(v_*)=q\)、\(|v_*|=b\)，故它也给出到 \(q\) 的最短线。唯一性迫使 \(v_*=v\)，于是子列最终落在开集 \(U\)，矛盾。
+
+	因此在这个 \(O\) 上，所有最短初向量都等于同一个光滑逆分支 \(\log_p x=(\exp_p|_U)^{-1}(x)\)。它们唯一且指数映射微分可逆，有限割时二择又说明 \(O\) 内没有割点：若某个 \(x\) 是割点，它的唯一最短初向量就必须是指数映射的奇异点。因此 \(\log_p(O)\subset\mathcal D_p\)，它是 \(v\) 的开邻域。零向量附近则由第二章的法球与径向最短性得到同样结论，包含零的一个切球属于 \(\mathcal D_p\)。这证明 \(\mathcal D_p\) 开，且其集合逆在每点附近都光滑。特别地，\(\Omega_p\) 开，且
+	\[
+		r(x)=|\log_p x|
+	\]
+	在其中光滑。
+
+	最后取 \(q\) 附近的光滑曲线 \(x(s)\)，令 \(x(0)=q\)、\(x'(0)=V\)，并在固定区间 \([0,b]\) 上连接径向测地线
+	\[
+		F(s,t)=\exp_p\left(\frac t b\log_p x(s)\right).
+	\]
+	每条曲线长为 \(r(x(s))\)，中心曲线为单位速 \(\gamma_u\)。长度第一变分式\eqref{g3:eq:length-first-variation}中起点固定、内部项为零，因此
+	\[
+		\mathrm dr_q(V)=\langle\dot\gamma_u(b),V\rangle.
+	\]
+	这正是梯度公式。
+\end{proof}
+
+下文均在 \(\Omega_p\) 内计算，记 \(T=\operatorname{grad}r\)。由 \(|T|=1\) 和 Hessian 的对称性，
+\[
+	\operatorname{Hess}r(X,T)=\frac12X|T|^2=0,
+	\qquad \operatorname{Hess}r(T,X)=0.
+\]
+所以只须研究垂直于径向的二阶导数。这里垂直方向也是距离球面的切向方向。
+
+\begin{proposition}\label{g3:prop:distance-hessian-jacobi}
+	设 \((M,g)\) 为连通、完备、光滑无边界黎曼流形，\(q=\gamma(b)=\exp_p(bu)\)，其中 \(|u|=1\)、\(0<b<c_p(u)\)。对 \(v,w\perp T(b)\)，令 \(J_v,J_w\) 为沿 \(\gamma|_{[0,b]}\) 的 Jacobi 场，满足
+	\[
+		J_v(0)=0,\quad J_v(b)=v,\qquad
+		J_w(0)=0,\quad J_w(b)=w.
+	\]
+	则
+	\begin{equation}\label{g3:eq:distance-hessian-index}
+		\operatorname{Hess}r_q(v,w)
+		=\langle J_v'(b),w\rangle
+		=I_\gamma(J_v,J_w).
+	\end{equation}
+	若 \(A\) 是平行标架中满足 \(A(0)=0\)、\(A'(0)=I\) 的法向 Jacobi 张量，且 \(S=A'A^{-1}\)，则
+	\[
+		\operatorname{Hess}r_q(v,w)=\langle S(b)v,w\rangle.
+	\]
+	此处利用平行移动识别法向空间。\symidx{\(\operatorname{Hess}r\)}
+\end{proposition}
+\begin{proof}
+	割时之前没有共轭时刻，故上述 Jacobi 边值问题由\cref{g3:cor:jacobi-boundary-value}唯一可解。取上一命题中的端点曲线 \(x(s)\)，使 \(x'(0)=v\)，其径向测地线变分场为 \(J_v\)。两端的切向分量为零，该分量沿参数仿射，故 \(J_v\) 始终法向。
+
+	在终点，径向梯度与变分曲线的末速度满足
+	\[
+		T(x(s))=\frac b{r(x(s))}\,\partial_tF(s,b).
+	\]
+	因为 \(\mathrm dr(v)=0\)，在 \(s=0\) 处求协变导数，比例因子的导数为零。无挠性给出
+	\[
+		\nabla_vT
+		=\left.\mathrm D_s\partial_tF\right|_{(0,b)}
+		=\left.\mathrm D_t\partial_sF\right|_{(0,b)}
+		=J_v'(b).
+	\]
+	与 \(w\) 配对得到第一式。对 Jacobi 方程分部积分，起端场为零，得
+	\[
+		I_\gamma(J_v,J_w)
+		=\langle J_v'(b),J_w(b)\rangle.
+	\]
+	最后，在平行标架中 \(J_v(t)=A(t)A(b)^{-1}v\)，所以
+	\(J_v'(b)=A'(b)A(b)^{-1}v=S(b)v\)。
+\end{proof}
+
+公式\eqref{g3:eq:distance-hessian-index}也直接解释了第二变分的作用。若选端点曲线 \(x(s)\) 在 \(s=0\) 处协变加速度为零，则上述径向变分的能量为 \(r(x(s))^2/(2b)\)。当 \(v\perp T\) 时，其二阶导数恰为 \(\operatorname{Hess}r(v,v)\)，而能量第二变分给出 \(I(J_v,J_v)\)。因此 Hessian 比较所比较的，正是具有相同终点值的 Jacobi 指标形式。
+
+\ProseParagraphBreak
+
+径向算子 \(S(X)=\nabla_XT\) 与第四章的形算子有一个负号差别：若距离球面取外法向 \(T\)，则 Weingarten 公式给出 \(A_TX=-\nabla_XT\)，所以 \(S=-A_T\)。例如 Euclid 球面的 \(S=r^{-1}I\)，而第四章约定的外法向形算子为 \(-r^{-1}I\)。
+
+\begin{proposition}\label{g3:prop:distance-square-hessian}
+	设 \((M,g)\) 为连通、完备、光滑无边界黎曼流形，固定 \(p\in M\)。距离平方 \(r^2=d(p,\cdot)^2\) 在 \(M\setminus\operatorname{Cut}(p)\) 上光滑，包括点 \(p\)，并且
+	\begin{equation}\label{g3:eq:distance-square-hessian}
+		\operatorname{Hess}\frac{r^2}{2}
+		=\mathrm dr\otimes\mathrm dr+r\operatorname{Hess}r
+		\quad\text{于 }\Omega_p,\qquad
+		\left.\operatorname{Hess}\frac{r^2}{2}\right|_p=g_p.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	在 \(\Omega_p\) 中对 \(\mathrm d(r^2/2)=r\,\mathrm dr\) 作协变微分，便得第一式。在 \(p\) 的法坐标 \(x^i\) 中，径向最短性给出
+	\(r^2=\sum_i(x^i)^2\)，因此它在中心光滑。一阶导数在 \(p\) 为零，二阶坐标导数为 \(2\delta_{ij}\)，故 Hessian 的联络修正项为零，得到中心值。维数为正时，\(r\) 本身在中心不光滑，因为沿一条穿过中心的测地线，它等于 \(|t|\)。
+\end{proof}
 
 \subsection{截面界与 Hessian 比较}
 \label{g3:subsec:0703:02}
-待撰写
+
+沿用前两节的模型函数 \(s_k\)、\(c_k=s_k'\) 和模型首零半径 \(b_k\)。在 \(0<t<b_k\) 上，
+\[
+	\operatorname{ct}_k(t)=\frac{c_k(t)}{s_k(t)}
+	=
+	\begin{cases}
+		\sqrt{k}\cot(\sqrt{k}t),&k>0,\\
+		t^{-1},&k=0,\\
+		\sqrt{-k}\coth(\sqrt{-k}t),&k<0.
+	\end{cases}
+\]
+这里 \(b_k=\pi/\sqrt{k}\) 当 \(k>0\)，否则为 \(\infty\)。模型函数的定义见式\eqref{g3:eq:model-first-zero}和\eqref{g3:eq:model-cotangent}；限制 \(t<b_k\) 保证模型 Jacobi 场尚未回到零。
+
+把端点配对比较应用于距离函数，便得到\term[Hessian bijiao dingli]{Hessian 比较定理}[Hessian comparison theorem]。
+
+\begin{theorem}\label{g3:thm:hessian-comparison}
+	设 \((M^n,g)\) 为连通、完备、光滑无边界黎曼流形，\(n\ge2\)。固定 \(p\)、单位向量 \(u\in\mathrm T_pM\)，令 \(\gamma(t)=\exp_p(tu)\)、\(q=\gamma(b)\)，且
+	\[
+		0<b<\min\{c_p(u),b_k\}.
+	\]
+	假设所述曲率界沿 \(\gamma|_{[0,b]}\) 的每个含 \(\dot\gamma\) 的二维平面成立。则：
+	\begin{enumerate}
+		\item 若这些截面曲率均不大于 \(k\)，则在 \(q\) 处
+		\begin{equation}\label{g3:eq:hessian-comparison-lower}
+			\operatorname{Hess}r
+			\ge\operatorname{ct}_k(b)
+			\bigl(g-\mathrm dr\otimes\mathrm dr\bigr).
+		\end{equation}
+		\item 若这些截面曲率均不小于 \(k\)，则在 \(q\) 处
+		\begin{equation}\label{g3:eq:hessian-comparison-upper}
+			\operatorname{Hess}r
+			\le\operatorname{ct}_k(b)
+			\bigl(g-\mathrm dr\otimes\mathrm dr\bigr).
+		\end{equation}
+	\end{enumerate}
+	二阶张量之间的不等式指对每个向量的平方值成立。在任一项的假设下，对非零 \(v\perp T(b)\) 取等号，当且仅当平行场 \(E(t)=P_{b\to t}v\) 满足
+	\begin{equation}\label{g3:eq:hessian-direction-equality}
+		R(E(t),T(t))T(t)=kE(t)\qquad(0\le t\le b).
+	\end{equation}
+	此时 \(J_v(t)=s_k(t)E(t)/s_k(b)\)。
+\end{theorem}
+\begin{proof}
+	给定 \(v\perp T(b)\)，\cref{g3:prop:distance-hessian-jacobi}将待比较的量写成
+	\(\langle J_v'(b),v\rangle\)。前一段位于割点之前，因而没有共轭点；模型半径又满足 \(b<b_k\)。所以\cref{g3:prop:index-endpoint-comparison}的端点条件、无共轭条件和模型范围全部满足。该命题在截面上界时给出
+	\[
+		\langle J_v'(b),v\rangle
+		\ge\operatorname{ct}_k(b)|v|^2,
+	\]
+	在截面下界时给出反向不等式，并给出式\eqref{g3:eq:hessian-direction-equality}的等号条件。
+
+	对任意 \(X\in\mathrm T_qM\)，分解
+	\(X=\mathrm dr(X)T+X^\perp\)。Hessian 的径向及混合项均为零，而
+	\[
+		|X^\perp|^2
+		=|X|^2-\mathrm dr(X)^2.
+	\]
+	将法向不等式应用于 \(X^\perp\)，即得两个张量不等式。纯径向向量在两式中总取等号，不提供曲率信息；非零法向向量的等号则由已经核实的端点比较刻画。
+\end{proof}
+
+证明中的两条方向有同一个变分含义。曲率下界使模型试探场的指标形式变小，Jacobi 极小性质给出 Hessian 上界；曲率上界使实际指标形式不小于模型指标形式，从而给出 Hessian 下界。若在一个终点的全部法向方向上取等号，沿这条射线便有 \(R(\,\cdot\,,T)T=kI\)；这是单条射线的结论，邻域中的其他方向须另行控制。
+
+\begin{example}\label{g3:exm:model-distance-hessian}
+	在常曲率 \(k\) 的模型空间内，在光滑距离范围及 \(r<b_k\) 上，
+	\[
+		\operatorname{Hess}r
+		=\operatorname{ct}_k(r)
+		\bigl(g-\mathrm dr\otimes\mathrm dr\bigr).
+	\]
+	Euclid 情形的横向系数为 \(1/r\)；常曲率 \(-a^2<0\) 时为 \(a\coth(ar)\)。半径 \(a\) 的圆球面上，该系数为 \(a^{-1}\cot(r/a)\)：半球内为正，赤道处为零，越过赤道而未到对径点时为负。因此即使距离仍光滑，其横向 Hessian 也未必为正。
+\end{example}
+
+\begin{example}\label{g3:exm:flat-quotient-distance-hessian}
+	令 \(M=\mathbb R^2/(a\mathbb Z\times b\mathbb Z)\)，\(a,b>0\)，取平坦商度量及原点的像 \(p\)。在中心矩形
+	\[
+		|x|<a/2,\qquad |y|<b/2
+	\]
+	内，最近的格点是原点，因此 \(r=\sqrt{x^2+y^2}\)，在去掉原点后有
+	\[
+		\operatorname{Hess}r
+		=\frac1r\bigl(g-\mathrm dr\otimes\mathrm dr\bigr).
+	\]
+	曲率比较处处取 Euclid 等号，但距离在矩形边上出现不同最短线之间的切换。例如沿 \(y=0\)，在点 \(([a/2],[0])\) 附近以 \(u\) 表示水平位移，有
+	\[
+		r=a/2-|u|.
+	\]
+	此处 \(r\) 和 \(r^2\) 都不光滑，虽然指数映射的微分处处可逆。这说明距离平方在初点的光滑延拓，不会消除割迹上的另一类奇性；也说明比较等号的局部形式可以存在于非平凡平坦商上。
+\end{example}
 
 \subsection{Ricci 界与迹比较}
 \label{g3:subsec:0703:03}
-待撰写
 
-\subsection{本书非负 Laplace 符号的换算}
+对完整的 Hessian 作比较需要逐个径向截面的曲率界。取迹以后，曲率只以 Ricci 收缩出现。为清楚区分迹与本书的 Laplace 符号，暂记
+\[
+	Lf=\operatorname{div}(\operatorname{grad}f)
+	=\operatorname{tr}_g\operatorname{Hess}f,
+	\qquad \Delta f=-Lf.
+\]
+迹公式来自\cref{g3:prop:divergence-connection-trace}；这里的 \(L\) 只是负号换算的辅助记号，\(\Delta\) 仍沿用第一章的约定。
+
+\begin{theorem}\label{g3:thm:laplacian-comparison}
+	设 \((M^n,g)\) 为连通、完备、光滑无边界黎曼流形，\(n\ge2\)，并令
+	\(q=\gamma(b)=\exp_p(bu)\)，其中 \(|u|=1\)、
+	\(0<b<\min\{c_p(u),b_k\}\)。若沿 \(\gamma|_{[0,b]}\) 有
+	\[
+		\operatorname{Ric}(T,T)\ge(n-1)k,
+	\]
+	则在 \(q\) 处
+	\begin{equation}\label{g3:eq:laplacian-comparison-sign}
+		Lr\le(n-1)\operatorname{ct}_k(b),
+		\qquad
+		\Delta r\ge-(n-1)\operatorname{ct}_k(b).
+	\end{equation}
+	若在该终点取等号，则沿整段的法向空间，在平行识别下有
+	\[
+		S(t)=\operatorname{ct}_k(t)I,\qquad
+		R(\,\cdot\,,T(t))T(t)=kI,\qquad
+		A(t)=s_k(t)I
+		\quad(0<t\le b).
+	\]
+	反过来，若径向曲率算子沿该段恒为 \(kI\)，则比较取等号。
+\end{theorem}
+\begin{proof}
+	在终点取正交单位基 \(T,e_1,\ldots,e_{n-1}\)。径向 Hessian 为零，横向部分由 \(S\) 给出，所以
+	\[
+		Lr=\sum_{\alpha=1}^{n-1}
+		\operatorname{Hess}r(e_\alpha,e_\alpha)
+		=\operatorname{tr}S.
+	\]
+	令 \(m=n-1\)、\(h=\operatorname{tr}S\)。径向 Riccati 方程取迹得到
+	\[
+		h'+\operatorname{tr}(S^2)+\operatorname{Ric}(T,T)=0,
+		\qquad
+		\operatorname{tr}(S^2)\ge\frac{h^2}{m}.
+	\]
+	因此假设正好给出
+	\(h'+h^2/m+mk\le0\)。径向 Jacobi 初值还给出
+	\(h(t)=m/t+O(t)\)。\cref{g3:thm:riccati-trace-comparison}针对这个奇异初值问题证明了
+	\(h\le m\operatorname{ct}_k\)，有效区间是第一个共轭时刻与 \(b_k\) 之前；割时不晚于第一个共轭时刻，故此处可以应用。乘以负号便得到 \(\Delta\) 的不等式。
+
+	若在 \(b\) 处取等号，\cref{g3:prop:riccati-trace-rigidity}使迹比较中的非负余项沿此前区间全部消失，得到所列的 \(S\)、径向曲率与 \(A\) 的表达式。反向由 Jacobi 初值方程
+	\(A''+kA=0\)、\(A(0)=0\)、\(A'(0)=I\) 得到 \(A=s_kI\)，取迹即可。
+\end{proof}
+
+这称为距离函数的\term[Laplace bijiao dingli]{Laplace 比较定理}[Laplacian comparison theorem]。Ricci 下界给出的是 Hessian 的迹上界；它并不逐项控制各个横向特征值。上述证明中的
+\(\operatorname{tr}(S^2)\ge h^2/(n-1)\)
+恰好把横向特征值之间的差异并入一个非负余项。要恢复整个 Hessian 的等号，必须同时消去这个余项，这也是等号结论比单纯的迹等式更强的原因。
+
+\subsection{径向函数的 Hessian 与 Laplace 比较}
 \label{g3:subsec:0703:04}
-待撰写
+
+本书从第一章起采用
+\(\Delta=-\operatorname{div}\operatorname{grad}\)，其非负性指紧支函数的积分二次型非负。距离的点态比较应按式\eqref{g3:eq:laplacian-comparison-sign}使用：Ricci 下界对应 \(\Delta r\) 的下界。对径向复合函数，还须同时保留一阶导数的符号。
+
+\begin{proposition}\label{g3:prop:radial-function-laplacian}
+	设 \((M^n,g)\) 为连通、完备、光滑无边界黎曼流形，固定 \(p\in M\)，令 \(r=d(p,\cdot)\)。设 \(I\subset(0,\infty)\) 为开区间，\(f\in C^\infty(I)\)。则在 \(\Omega_p\cap r^{-1}(I)\) 上
+	\begin{align}
+		\operatorname{Hess}(f(r))
+		&=f''(r)\,\mathrm dr\otimes\mathrm dr
+			+f'(r)\operatorname{Hess}r,\label{g3:eq:radial-function-hessian}\\
+		\Delta(f(r))
+		&=-f''(r)-f'(r)Lr.\label{g3:eq:radial-function-laplacian}
+	\end{align}
+	进一步设 \(n\ge2\)、\(k\in\mathbb R\)、\(q=\exp_p(bu)\)，其中 \(|u|=1\)、\(b\in I\) 且 \(0<b<\min\{c_p(u),b_k\}\)。若沿 \(\gamma(t)=\exp_p(tu)\)、\(0\le t\le b\)，有 \(\operatorname{Ric}(\dot\gamma,\dot\gamma)\ge(n-1)k\)，则在 \(q\) 处：
+	\begin{enumerate}
+		\item 若 \(f'(b)\ge0\)，则
+		\[
+			\Delta(f(r))(q)\ge
+			-f''(b)-(n-1)\operatorname{ct}_k(b)f'(b).
+		\]
+		\item 若 \(f'(b)\le0\)，则上式中的不等号反向。
+	\end{enumerate}
+	当 \(f'(b)=0\) 时，两式都成为精确等式 \(\Delta(f(r))(q)=-f''(b)\)。
+\end{proposition}
+\begin{proof}
+	对 \(\mathrm d(f(r))=f'(r)\,\mathrm dr\) 作协变微分，得到第一式。由于 \(|\mathrm dr|=1\)，取迹得
+	\(L(f(r))=f''(r)+f'(r)Lr\)，再乘以负号便得第二式。最后将
+	\(Lr\le(n-1)\operatorname{ct}_k(r)\)
+	乘以 \(-f'(r)\)；其符号正是两个不等号方向不同的原因。
+\end{proof}
+
+例如，取 \(f(r)=r^2\)，得到
+\begin{equation}\label{g3:eq:distance-square-laplacian}
+	\Delta(r^2)=-2-2rLr
+	\ge-2-2(n-1)r\operatorname{ct}_k(r)
+\end{equation}
+其中不等式使用径向 Ricci 下界。当 \(k=0\) 时，这化为 \(\Delta(r^2)\ge-2n\)。在初点，两边的极限相容：距离平方的中心 Hessian 为 \(2g_p\)，故 \(\Delta(r^2)(p)=-2n\)。
+
+\ProseParagraphBreak
+
+若有更强的径向截面上界 \(K\le0\)，则 Hessian 比较给出
+\[
+	\operatorname{Hess}\frac{r^2}{2}
+	\ge\mathrm dr\otimes\mathrm dr+
+	\bigl(g-\mathrm dr\otimes\mathrm dr\bigr)=g
+\]
+于光滑距离范围，并在初点以等号延拓。于是对整段留在此范围内的仿射参数测地线 \(\sigma\)，函数
+\(r(\sigma(t))^2/2\) 的二阶导数至少为 \(|\dot\sigma|^2\)。这比取迹后的估计包含更多方向信息。
+
+\begin{example}\label{g3:exm:euclidean-radial-laplacian}
+	在 \(\mathbb R^n\setminus\{0\}\) 中，\(Lr=(n-1)/r\)，因此
+	\[
+		\Delta(r^\alpha)
+		=-\alpha(\alpha+n-2)r^{\alpha-2},
+		\qquad
+		\Delta\log r=-\frac{n-2}{r^2}.
+	\]
+	特别地，\(n\ge3\) 时 \(r^{2-n}\) 在原点外调和，二维时 \(\log r\) 在原点外调和。它们在原点的奇性与 \(\Delta\) 的点态公式是不同问题。在一般具有径向 Ricci 下界的流形上，把这些函数用于比较时，\(r^{2-n}\) 的导数为负，而 \(\log r\) 的导数为正，必须分别使用上一命题的两个方向。
+\end{example}
+
+所有这些经典二阶导数公式都在距离的光滑区域成立。到达割迹时，最短线可能切换或指数映射可能退化；下一节将用支撑函数和分布意义说明哪些比较仍可延续。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

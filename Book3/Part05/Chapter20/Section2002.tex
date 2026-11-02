@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 20.2 Lipschitz 可微与线性化
+% 纲要标题：### 20.2 Lipschitz 映射的可微性与线性化
 % 纲要位置：几何学计划纲要.md，第 2933 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -12,24 +12,306 @@
 % 
 % 纲要内容结束
 
-\section{Lipschitz 可微与线性化}
+\section{Lipschitz 映射的可微性与线性化}
 \label{g3:sec:2002}
 
-待撰写
+Lipschitz 条件同时控制两件事：沿直线的变化可以积分，邻近方向的差商不会相差太远。前一件事产生几乎处处的方向导数，后一件事才使这些导数组成真正的线性近似。本节把这两步分开证明，再把逐点近似整理成可数个具有统一误差的可测片。
+
+\ProseParagraphBreak
+以下 \(|\cdot|\) 表示 Euclid 范数，线性映射的算子范数记为 \(\|\cdot\|\)，\(\mathcal L^m\) 表示 \(m\) 维 Lebesgue 测度。维数 \(m,n\) 均为正整数。本节的微分结果不要求二者之间有大小关系；满秩单射分片时才加上 \(m\le n\)。
 
 \subsection{一维绝对连续函数}
 \label{g3:subsec:2002:01}
-待撰写
+\begin{definition}\label{g3:def:absolute-continuity-interval}
+	设 \(a<b\)。函数 \(u:[a,b]\to\mathbb R^n\) 称为\term[juedui lianxu]{绝对连续}[absolutely continuous]，若对每个 \(\varepsilon>0\)，存在 \(\delta>0\)，使任意有限族内部两两不交的子区间 \([a_j,b_j]\subset[a,b]\) 满足
+	\[
+		\sum_j(b_j-a_j)<\delta
+		\quad\Longrightarrow\quad
+		\sum_j|u(b_j)-u(a_j)|<\varepsilon.
+	\]
+	这个函数类记为 \(AC([a,b];\mathbb R^n)\)。
+\end{definition}
+
+取一个区间便知绝对连续蕴含连续。若 \(u\) 为 \(L\)-Lipschitz，则左边的增量和至多为 \(L\sum_j(b_j-a_j)\)，所以 Lipschitz 蕴含绝对连续。下面的定理说明，这种对许多短区间的共同控制恰好排除了不能由积分恢复的变化。
+
+\begin{theorem}[绝对连续函数的微积分基本定理]\label{g3:thm:ac-fundamental-calculus}
+	设 \(a<b\)，\(u:[a,b]\to\mathbb R^n\)。下列两件事等价：
+	\begin{enumerate}
+		\item \(u\) 绝对连续；
+		\item 存在 \(g\in L^1((a,b);\mathbb R^n)\)，使每个 \(t\in[a,b]\) 都满足
+		\begin{equation}\label{g3:eq:ac-integral-representation}
+			u(t)=u(a)+\int_a^t g(s)\,\mathrm ds.
+		\end{equation}
+	\end{enumerate}
+	在此情形，\(u\) 几乎处处可微，且 \(u'=g\) 几乎处处。特别地，\(u\) 为 \(L\)-Lipschitz 当且仅当它绝对连续且 \(|u'|\le L\) 几乎处处。
+\end{theorem}
+\begin{proof}
+	先证实值情形。设 \(u\) 绝对连续。选取对应于 \(\varepsilon=1\) 的 \(\delta\)，把 \([a,b]\) 分成有限个长度小于 \(\delta\) 的区间。任一分割再插入这些固定分点后，在每一个小区间内的增量绝对值之和至多为一。因此总变差
+	\[
+		V(t)=\sup_{a=t_0<\cdots<t_k=t}
+		\sum_{i=1}^k|u(t_i)-u(t_{i-1})|
+	\]
+	有限。细分分割并取上确界可得
+	\(V(t)-V(s)=\operatorname{Var}(u;[s,t])\)。对任意有限族内部不交的小区间，分别用有限分割逼近其中的变差；这些分割的区间总长度仍等于原来的总长度。绝对连续性于是给出
+	\[
+		\sum_j\bigl(V(b_j)-V(a_j)\bigr)<\varepsilon
+	\]
+	（必要时先对 \(\varepsilon/2\) 选择 \(\delta\)，再取上确界）。故 \(V\) 也绝对连续。
+
+	函数
+	\[
+		v_\pm(t)=\frac{V(t)\pm(u(t)-u(a))}{2}
+	\]
+	均单调不减且绝对连续，并且 \(u-u(a)=v_+-v_-\)。对连续单调函数 \(v\)，区间增量
+	\(\nu((s,t])=v(t)-v(s)\) 定义一个有限正 Borel 测度。这里可直接使用区间测度的延拓构造：增量的有限可加性来自相消求和；可数区间覆盖的次可加性，先把左端略向右移、把覆盖区间略放大，再对所得紧区间取有限子覆盖，最后用 \(v\) 的连续性取极限。因而该区间函数是预测度，其外测度延拓具有所给区间值；另置 \(\nu(\{a\})=0\)。
+
+	当 \(v\) 绝对连续时，这个测度满足 \(\nu\ll\mathcal L^1\)。事实上，把任意 Lebesgue 零测集盖在总长度小于 \(\delta\) 的开集中，将开集写成两两不交的开区间；对有限部分使用绝对连续性，再取单调极限，即得其 \(\nu\)-测度至多为任意给定的 \(\varepsilon\)。端点没有原子，因为 \(v\) 连续。应用本章沿用的绝对连续有限测度的积分密度表示，得到 \(g_\pm\in L^1\)，使
+	\[
+		v_\pm(t)-v_\pm(a)=\int_a^t g_\pm(s)\,\mathrm ds.
+	\]
+	相减便得 \eqref{g3:eq:ac-integral-representation}。
+
+	反之，若有该积分表示，则
+	\[
+		\sum_j|u(b_j)-u(a_j)|
+		\le\int_{\bigcup_j(a_j,b_j)}|g(s)|\,\mathrm ds.
+	\]
+	\(L^1\) 积分对小测度集的绝对连续性给出所需结论。由\cref{g3:thm:lebesgue-differentiation}，几乎处处的 \(t\) 满足
+	\[
+		\frac1{2r}\int_{t-r}^{t+r}|g(s)-g(t)|\,\mathrm ds\longrightarrow0.
+	\]
+	单侧区间上的平均误差至多为相应对称区间平均误差的两倍，故
+	\[
+		\frac{u(t+h)-u(t)}h-g(t)
+		=\frac1h\int_t^{t+h}(g(s)-g(t))\,\mathrm ds\longrightarrow0.
+	\]
+	这证明了几乎处处的导数公式。
+
+	向量值情形逐分量应用刚才的证明；有限个分量的绝对连续性与向量形式等价。若 \(u\) 为 \(L\)-Lipschitz，其存在的导数必有模长至多 \(L\)。反之，由积分表示和 \(|g|\le L\)，立即得到 \(|u(t)-u(s)|\le L|t-s|\)。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:ac-integration-parts}
+	设 \(u\in AC([a,b];\mathbb R^n)\)，\(\varphi\in C^1([a,b];\mathbb R)\)。则
+	\[
+		\int_a^b u'(t)\varphi(t)\,\mathrm dt
+		=[u\varphi]_a^b-\int_a^b u(t)\varphi'(t)\,\mathrm dt.
+	\]
+\end{corollary}
+\begin{proof}
+	\(u\) 与 \(\varphi\) 在紧区间上有界，乘积增量的估计说明 \(u\varphi\) 绝对连续。在 \(u\) 可微的满测集上使用乘积求导法则，再对 \(u\varphi\) 应用\cref{g3:thm:ac-fundamental-calculus}即可。
+\end{proof}
+
+\begin{example}\label{g3:exm:ac-lipschitz-distinction}
+	\(|t|\) 在 \([-1,1]\) 上 Lipschitz，却在原点不可微。\(\sqrt t\) 在 \([0,1]\) 上绝对连续，因为它是可积函数 \(1/(2\sqrt t)\) 的原函数，却不是 Lipschitz。这两个例子分别说明：Lipschitz 条件允许零测集上的尖点，绝对连续性则还允许无界但可积的导数。
+\end{example}
 
 \subsection{逐方向导数和 Rademacher 定理}
 \label{g3:subsec:2002:02}
-待撰写
+对一个固定方向，上一小节已经给出几乎处处的导数。困难在于：每一个方向原先都带着自己的例外集，而即使所有方向导数同时存在，它们也未必组成线性映射。Rademacher 定理\footnote{Hans Rademacher（1892--1969），德国出生的数学家，后在美国任教，研究实变函数与解析数论，建立了 Lipschitz 映射的几乎处处可微性定理。}的下述证明先用分布的线性性解决后一问题，再只取可数个方向来控制例外集。这个证明可与 \cite[第5节，定理5.2，第30--32页]{Simon1983} 对照。
+
+\begin{theorem}[Rademacher 定理]\label{g3:thm:rademacher}
+	设 \(m,n\ge1\)，\(f:\mathbb R^m\to\mathbb R^n\) 为 \(L\)-Lipschitz 映射。则几乎每个 \(x\) 都存在一个线性映射 \(\mathrm Df(x):\mathbb R^m\to\mathbb R^n\)，使
+	\begin{equation}\label{g3:eq:rademacher-total-differential}
+		\lim_{h\to0}\frac{|f(x+h)-f(x)-\mathrm Df(x)h|}{|h|}=0.
+	\end{equation}
+	并且 \(\|\mathrm Df(x)\|\le L\)。在可微的满测集上，\(\mathrm Df\) 的各列就是 \(f\) 的弱偏导数。
+\end{theorem}
+\begin{proof}
+	固定单位向量 \(v\)。每条平行于 \(v\) 的直线上，函数 \(t\mapsto f(z+tv)\) 都是 \(L\)-Lipschitz，因此在每个有界区间上绝对连续。由\cref{g3:thm:ac-fundamental-calculus} 和 Fubini 定理，方向导数
+	\[
+		g_v(x)=\lim_{t\to0}\frac{f(x+tv)-f(x)}t
+	\]
+	对几乎每个 \(x\) 存在，且 \(|g_v|\le L\)。其存在集可测：因差商关于非零 \(t\) 连续，极限的 Cauchy 条件只须在有理 \(t\) 上检验。把 \(g_v\) 在例外集上置为零，得到有界可测函数。
+
+	沿平行直线应用\cref{g3:cor:ac-integration-parts}，再用 Fubini 定理，可得每个 \(\varphi\in C_c^\infty(\mathbb R^m)\) 满足
+	\begin{equation}\label{g3:eq:directional-weak-linearity}
+		\int_{\mathbb R^m}g_v\varphi\,\mathrm dx
+		=-\int_{\mathbb R^m}f\,\partial_v\varphi\,\mathrm dx
+		=\sum_{i=1}^m v_i\int_{\mathbb R^m}g_{e_i}\varphi\,\mathrm dx.
+	\end{equation}
+	因此
+	\(g_v=\sum_i v_i g_{e_i}\) 几乎处处。这里使用的是局部可积函数所定义分布的唯一性：若 \(w\in L^1_{\mathrm{loc}}\) 对所有测试函数的积分为零，则在任意内缩开集上 \(w\) 与光滑磨光核的卷积为零；卷积在 \(L^1_{\mathrm{loc}}\) 中趋向 \(w\)，故 \(w=0\) 几乎处处。这与第十一章弱导数的唯一性论证相同。
+
+	取单位球面上的可数稠密集 \(\mathcal V\)，使它包含 \(e_1,\ldots,e_m\)。去掉各 \(v\in\mathcal V\) 的导数不存在集和 \eqref{g3:eq:directional-weak-linearity} 所得等式的例外集；其并仍为零测集。对剩下的每个 \(x\)，定义
+	\[
+		A_x h=\sum_{i=1}^m h_i g_{e_i}(x).
+	\]
+	于是所有 \(v\in\mathcal V\) 同时满足 \(g_v(x)=A_xv\)。又因 \(|g_v(x)|\le L\)，稠密性给出 \(\|A_x\|\le L\)。
+
+	固定这样的 \(x\) 和 \(\varepsilon>0\)。若 \(L=0\)，结论显然；以下设 \(L>0\)。从 \(\mathcal V\) 取有限个向量 \(v_1,\ldots,v_q\)，构成单位球面的 \(\varepsilon/(4L)\)-网。有限个方向导数的存在性给出 \(r_0>0\)，使
+	\[
+		|f(x+rv_j)-f(x)-rA_xv_j|\le\frac\varepsilon2r
+		\qquad(0<r<r_0,\ 1\le j\le q).
+	\]
+	若 \(h=r\theta\)，\(|\theta|=1\)，选取 \(|\theta-v_j|<\varepsilon/(4L)\)，则
+	\begin{align*}
+		|f(x+h)-f(x)-A_xh|
+		&\le |f(x+r\theta)-f(x+rv_j)|
+		 +|f(x+rv_j)-f(x)-rA_xv_j|\\
+		&\qquad+r|A_x(v_j-\theta)|\\
+		&\le 2Lr|\theta-v_j|+\frac\varepsilon2r
+		\le\varepsilon r.
+	\end{align*}
+	这就是全微分，而不仅是逐方向极限。最后，取 \(v=e_i\) 的积分恒等式说明这些导数是弱偏导数。
+\end{proof}
+
+Rademacher 定理也适用于开集上的局部 Lipschitz 映射：用可数个 Lipschitz 常数有限的球覆盖开集，在每个球内作同样的直线分部积分和有限方向网论证即可。所用测试函数紧含于球，差商也只取足够小的增量。
+
+\ProseParagraphBreak
+证明中的顺序值得保留：先得到弱导数，再让可数个方向导数与同一个矩阵相合，最后才得到任意方向上的统一余项。如果删去中间的线性关系，“每个方向都可微”本身不足以推出全微分。
 
 \subsection{近似微分与密度点}
 \label{g3:subsec:2002:03}
-待撰写
+光滑几何常在开集上求微分；可测几何却需要在只占据局部几乎全部体积的集合上识别线性近似。密度点提供了这样的比较位置。
+
+\begin{definition}\label{g3:def:approximate-differential}
+	设 \(E\subset\mathbb R^m\) 为 Lebesgue 可测集，\(f:E\to\mathbb R^n\) 可测，\(x\in E\) 是 \(E\) 的密度为一的点。若线性映射 \(A:\mathbb R^m\to\mathbb R^n\) 对每个 \(\varepsilon>0\) 都满足
+	\begin{equation}\label{g3:eq:approximate-differential}
+		\lim_{r\downarrow0}
+		\frac{\mathcal L^m\{y\in E\cap B(x,r):
+		 |f(y)-f(x)-A(y-x)|>\varepsilon|y-x|\}}
+		 {\omega_m r^m}=0,
+	\end{equation}
+	就称 \(f\) 在 \(x\) \term[jinsi weifen]{近似可微}[approximately differentiable]，并把 \(A\) 称为其近似微分，记为 \(\operatorname{ap}\mathrm Df(x)\)。
+\end{definition}
+\symidx{\(\operatorname{ap}\mathrm Df(x)\)：可测映射在密度点的近似微分}
+
+\begin{lemma}\label{g3:lem:density-no-large-holes}
+	设 \(E\subset\mathbb R^m\) 可测，\(x\) 是其密度为一的点。则
+	\begin{equation}\label{g3:eq:density-no-large-holes}
+		\sup_{|z-x|\le r}\operatorname{dist}(z,E)=o(r)
+		\qquad(r\downarrow0).
+	\end{equation}
+	若可测映射 \(f:E\to\mathbb R^n\) 在 \(x\in E\) 存在近似微分，则它唯一。
+\end{lemma}
+\begin{proof}
+	若第一式不成立，则存在 \(\eta>0\)、\(r_j\downarrow0\) 和 \(z_j\in\overline B(x,r_j)\)，使 \(\operatorname{dist}(z_j,E)>\eta r_j\)。可设 \(\eta<1\)。于是 \(B(z_j,\eta r_j)\subset B(x,2r_j)\setminus E\)，后者占 \(B(x,2r_j)\) 的比例至少为 \((\eta/2)^m\)，与密度为一矛盾。
+
+	设 \(A,B\) 都是近似微分，而 \(A-B\ne0\)。存在单位向量 \(v\)、\(c>0\) 和 \(v\) 的一个球面邻域，使其中的 \(\theta\) 均满足 \(|(A-B)\theta|>c\)。该方向锥在每个 \(B(x,r)\) 内占一个固定的正体积比例。取 \(\varepsilon<c/3\)。在 \(E\) 中除去两个近似展开的坏集后，三角不等式却给出 \(|(A-B)(y-x)|\le2\varepsilon|y-x|\)。两个坏集与 \(E\) 的补集在 \(x\) 的密度都为零，无法覆盖上述方向锥，矛盾。
+\end{proof}
+
+\begin{proposition}[可测域上的延拓与微分]\label{g3:prop:lipschitz-extension-density}
+	设 \(E\subset\mathbb R^m\) 非空，\(f:E\to\mathbb R^n\) 为 \(L\)-Lipschitz 映射。则存在全空间上的 Lipschitz 延拓 \(F:\mathbb R^m\to\mathbb R^n\)，其 Lipschitz 常数至多为 \(\sqrt nL\)。若 \(E\) 可测，则有以下结论。
+	\begin{enumerate}
+		\item 在 \(E\) 的密度为一的点 \(x\in E\)，只要一个 Lipschitz 延拓可微，所有 Lipschitz 延拓都可微，且导数相同。
+		\item 若 \(f\) 在这样的点近似可微，则任一 Lipschitz 延拓都在该点可微，导数等于 \(\operatorname{ap}\mathrm Df(x)\)。反之，延拓的可微性蕴含 \(f\) 的近似可微性。
+		\item 因而在 \(E\) 的几乎每一点，存在不依赖延拓的微分，且它等于近似微分，其算子范数至多为原映射的 Lipschitz 常数 \(L\)。特别地，两个 Lipschitz 映射若在 \(E\) 上相等，它们的微分在 \(E\) 上几乎处处相等。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	对每个分量定义
+	\[
+		F_i(z)=\inf_{a\in E}\{f_i(a)+L|z-a|\}.
+	\]
+	固定 \(a_0\in E\)，由 Lipschitz 条件和三角不等式，下确界中的每一项均不小于 \(f_i(a_0)-L|z-a_0|\)，而取 \(a=a_0\) 给出有限上界；所以此下确界有限。对 \(z\in E\) 它等于 \(f_i(z)\)，且三角不等式给出 \(|F_i(z)-F_i(w)|\le L|z-w|\)。合并分量便得所述延拓。这一标量延拓构造也见 \cite[第5节，定理5.1，第29--30页]{Simon1983}。
+
+	若 \(F,G\) 是两个 Lipschitz 延拓，常数分别为 \(L_F,L_G\)，则
+	\[
+		|F(z)-G(z)|\le(L_F+L_G)\operatorname{dist}(z,E).
+	\]
+	由\cref{g3:lem:density-no-large-holes}，在密度为一的 \(x\in E\) 处，右边为 \(o(|z-x|)\)。而 \(F(x)=G(x)\)，所以其中一个的一阶展开也适用于另一个。
+
+	若 \(A=\operatorname{ap}\mathrm Df(x)\)，固定 \(\varepsilon>0\)，令
+	\[
+		E_\varepsilon=\{y\in E:
+		 |f(y)-f(x)-A(y-x)|\le\varepsilon|y-x|\}.
+	\]
+	这是在 \(x\) 密度为一的集合。对 \(z\to x\)，由无大空洞估计可选 \(y\in E_\varepsilon\)，使 \(|z-y|=o(|z-x|)\)。于是
+	\[
+		|F(z)-F(x)-A(z-x)|
+		\le(L_F+\|A\|)|z-y|+\varepsilon|y-x|.
+	\]
+	除以 \(|z-x|\) 后取上极限，所得上界至多为 \(\varepsilon\)。再令 \(\varepsilon\downarrow0\)，便得 \(\mathrm DF(x)=A\)。反向蕴含由定义直接得到。
+
+	最后，\cref{g3:cor:lebesgue-density,g3:thm:rademacher} 分别排除非密度点和延拓的不可微点；这些集合都为零测集。在其余的点 \(x\)，对任意 \(v\) 用无大空洞估计选取 \(y_t\in E\)，使 \(y_t=x+tv+o(|t|)\)。把 \(|f(y_t)-f(x)|\le L|y_t-x|\) 除以 \(|t|\) 并令 \(t\to0\)，得到 \(|\mathrm DF(x)v|\le L|v|\)；所以导数界保留了原片上的常数。对两个相等的映射，使用同一限制的延拓独立性即可。
+\end{proof}
+
+\begin{example}\label{g3:exm:approximate-not-classical}
+	函数 \(f=\mathbf1_{\mathbb Q}:\mathbb R\to\mathbb R\) 在每个无理点的近似微分为零：取 \(A=0\)，坏集包含在零测集 \(\mathbb Q\) 中。但它在每一点都不连续，因而处处没有通常微分。在有理点，所给点值为一，反而不存在近似微分。这也说明改变零测集上的点值不影响“几乎处处近似可微”，却可能改变被修改点本身的结论。
+\end{example}
+
+由上述命题，一个 Lipschitz 映射在可测集上恒定时，其微分在该集合上几乎处处为零。这里集合可以没有内点；起作用的是密度为一，而不是开邻域。
 
 \subsection{Lipschitz 映射的局部分解}
 \label{g3:subsec:2002:04}
-待撰写
+下一步不再扩大可微点集，而是把不同点各自拥有的“小尺度”整理为共同尺度。下面的分片同时冻结导数矩阵和 Taylor 余项；面积与余面积公式正是在这些片上与线性映射比较。
+
+\begin{theorem}[可数片上的一致线性化]\label{g3:thm:lipschitz-linearization-pieces}
+	设 \(f:\mathbb R^m\to\mathbb R^n\) 为 Lipschitz 映射，\(D\) 为其全体可微点。则 \(D\) 是 Borel 集，\(x\mapsto\mathrm Df(x)\) 在 \(D\) 上 Borel 可测。对每个 \(\varepsilon>0\)，存在两两不交的可数族 Borel 集 \(E_j\)，以及线性映射 \(A_j:\mathbb R^m\to\mathbb R^n\)，使 \(D=\bigcup_jE_j\)，且
+	\begin{align}
+		\|\mathrm Df(x)-A_j\|&\le\varepsilon
+		&& (x\in E_j),\label{g3:eq:piece-derivative-close}\\
+		|f(y)-f(x)-A_j(y-x)|&\le\varepsilon|y-x|
+		&& (x,y\in E_j).\label{g3:eq:piece-uniform-linearization}
+	\end{align}
+\end{theorem}
+\begin{proof}
+	首先把可测性具体写出。令 \(D_0\) 为每列差商
+	\(k(f(x+e_i/k)-f(x))\) 都收敛的点集；Cauchy 条件说明 \(D_0\) 是 Borel 集。在其上把这些极限组成矩阵 \(A(x)\)，在其外置 \(A(x)=0\)，得到 Borel 矩阵函数。对正整数 \(p,q\)，条件
+	\[
+		|f(x+h)-f(x)-A(x)h|\le p^{-1}|h|
+		\quad\text{对所有 }h\in\mathbb Q^m,\quad0<|h|<q^{-1}
+	\]
+	定义一个 Borel 点集 \(D_{pq}\)。关于 \(h\) 的连续性使同一不等式对所有实增量成立。于是
+	\[
+		D=D_0\cap\bigcap_{p=1}^\infty\bigcup_{q=1}^\infty D_{pq},
+		\qquad \mathrm Df=A\ \text{于 }D,
+	\]
+	证明了第一部分。
+
+	取矩阵空间中的可数稠密族 \(\{A_j\}\)。给定 \(\varepsilon>0\)，把 \(D\) 按以下两个条件分组：
+	\[
+		\|\mathrm Df(x)-A_j\|\le\varepsilon/2,
+	\]
+	以及
+	\[
+		|f(x+h)-f(x)-\mathrm Df(x)h|
+		\le(\varepsilon/2)|h|
+		\quad(0<|h|<q^{-1}).
+	\]
+	后一个条件同样只须在有理增量上检验，故各组均为 Borel 集；可微性说明这些组覆盖 \(D\)。再将每组与直径严格小于 \(q^{-1}\) 的可数网格小方块相交。若 \(x,y\) 在同一交片中，把 Taylor 估计用于以 \(x\) 为基点的增量 \(y-x\)，便得
+	\[
+		|f(y)-f(x)-A_j(y-x)|
+		\le\frac\varepsilon2|y-x|
+		 +\|\mathrm Df(x)-A_j\|\,|y-x|
+		\le\varepsilon|y-x|.
+	\]
+	最后把所得可数覆盖列成一列，并从每片扣除此前各片，就得到两两不交的 Borel 分解；两个估计在子集上仍成立。
+\end{proof}
+
+\begin{corollary}[满秩双 Lipschitz 分片]\label{g3:cor:full-rank-bilipschitz-pieces}
+	设 \(1\le m\le n\)，\(f:\mathbb R^m\to\mathbb R^n\) 为 \(L\)-Lipschitz 映射。其可微且 \(\operatorname{rank}\mathrm Df=m\) 的点集可分成可数个两两不交的 Borel 片。在每一片 \(E\) 上，存在 \(c_E>0\)，使
+	\[
+		c_E|x-y|\le|f(x)-f(y)|\le L|x-y|
+		\qquad(x,y\in E).
+	\]
+	特别地，\(f|_E\) 单射，其到像集的逆映射也是 Lipschitz。
+\end{corollary}
+\begin{proof}
+	令 \(\sigma_{\min}(A)=\min_{|v|=1}|Av|\)。它对矩阵连续，且 \(\operatorname{rank}A=m\) 当且仅当 \(\sigma_{\min}(A)>0\)。把满秩集写成 Borel 集
+	\(D_k=\{x\in D:\sigma_{\min}(\mathrm Df(x))\ge1/k\}\) 的并。对每个 \(k\)，以 \(\varepsilon=1/(4k)\) 应用\cref{g3:thm:lipschitz-linearization-pieces}，再与 \(D_k\) 相交。在这样的片上，
+	\[
+		\sigma_{\min}(A_j)\ge\frac1k-\varepsilon,
+		\qquad
+		|f(y)-f(x)|\ge\left(\frac1k-2\varepsilon\right)|y-x|
+		=\frac1{2k}|y-x|.
+	\]
+	上界来自原映射的 Lipschitz 条件。对全部片再作逐次去重即可。
+\end{proof}
+
+\begin{corollary}[紧片与零测余集]\label{g3:cor:compact-linearization-pieces}
+	在\cref{g3:thm:lipschitz-linearization-pieces} 或\cref{g3:cor:full-rank-bilipschitz-pieces} 的任一分解中，各片可用可数个紧子集覆盖，至多剩下一个 \(\mathcal L^m\)-零测集。因而可以得到两两不交的 \(\sigma\)-紧片 \(P_j\)，覆盖原来的点集至零测余集，每片仍满足原来的估计，并且 \(f(P_j)\) 是 Borel 集。
+\end{corollary}
+\begin{proof}
+	对每片先与有界球相交，再由 Lebesgue 测度的内正则性选出紧子集，使被遗漏测度依次趋于零。对所有片和球取并，得到紧集列 \(K_1,K_2,\ldots\)，未覆盖部分为零测集。令
+	\[
+		P_j=K_j\setminus\bigcup_{i<j}K_i.
+	\]
+	有限个紧集的并是闭集，故 \(P_j\) 是紧集 \(K_j\) 的相对开子集；用到该闭集距离至少为 \(1/r\) 的紧集穷尽它，可知它是 \(\sigma\)-紧的。\(j=1\) 时直接取 \(P_1=K_1\)。每个 \(P_j\) 含于其原来的片，且不同 \(P_j\) 不交。连续映射把紧集变成紧集，因此 \(f(P_j)\) 也是可数个紧集的并，特别是 Borel 集。
+\end{proof}
+
+当映射起初只定义在一个可测集上时，先使用\cref{g3:prop:lipschitz-extension-density} 延拓，再把这些片与原集合相交。若需要紧片，就直接对交集使用内正则性。由密度点处的延拓独立性，所得到的几乎处处微分是原映射自身的数据。
+
+\ProseParagraphBreak
+满秩假设在这里承担明确的作用：线性化矩阵的最小奇异值给出反向距离估计。若 \(m\ge n\) 且 \(\mathrm Df\) 的秩为 \(n\)，则选择适当的 \(m-n\) 个源坐标 \(z\)，可使 \(G=(f,z):\mathbb R^m\to\mathbb R^m\) 的微分可逆；有限种坐标选择和上述分片就把这部分变成等维双 Lipschitz 坐标。这将是余面积公式中沿纤维积分的出发点。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

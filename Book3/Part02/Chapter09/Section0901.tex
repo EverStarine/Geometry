@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 9.1 非正曲率与 Cartan–Hadamard
+% 纲要标题：### 9.1 非正曲率与 Cartan–Hadamard 定理
 % 纲要位置：几何学计划纲要.md，第 2430 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -12,24 +12,264 @@
 % 
 % 纲要内容结束
 
-\section{非正曲率与 Cartan–Hadamard}
+\section{非正曲率与 Cartan–Hadamard 定理}
 \label{g3:sec:0901}
 
-待撰写
+第七章的比较定理说明，非正截面曲率使同一点发出的径向 Jacobi 场至少按 Euclid 模型的速度分离，因而指数映射没有奇异点。然而，平坦环面上不同的初速度仍可能到达同一点：微分可逆性控制局部，单连通性才排除绕行造成的重复。本节把这两方面结合起来，证明 Cartan--Hadamard 定理，并把局部的 Hessian 比较延伸为全局凸性。\footnote{Jacques Salomon Hadamard（1865--1963），法国数学家，研究解析数论、偏微分方程及负曲率曲面上的测地线等问题；他于1896年证明了素数定理。}
 
 \subsection{无共轭点和指数映射的局部微分性质}
 \label{g3:subsec:0901:01}
-待撰写
+
+先把曲率条件能够直接给出的结论分离出来。这里尚不假定单连通；即使指数映射最终不是单射，下面的微分估计仍然成立。
+
+\begin{proposition}\label{g3:prop:nonpositive-exponential-differential}
+	设 \((M^n,g)\) 是连通、完备、光滑无边界黎曼流形，\(n\ge1\)，且所有截面曲率满足 \(K\le0\)；当 \(n=1\) 时，截面条件为空。则任意测地线上都没有共轭点。对每个 \(p\in M\)，指数映射定义在整个 \(\mathrm{T}_pM\) 上，并且
+	\begin{equation}\label{g3:eq:nonpositive-exponential-expansion}
+		|(\mathrm d\exp_p)_v(\xi)|_g\ge|\xi|_{g_p},
+		\qquad v,\xi\in\mathrm{T}_pM.
+	\end{equation}
+	这里用向量空间的平移识别 \(\mathrm{T}_v(\mathrm{T}_pM)\) 与 \(\mathrm{T}_pM\)。特别地，\(\exp_p\) 在每点都是局部微分同胚。
+\end{proposition}
+\begin{proof}
+	沿任意非恒定测地线 \(\gamma\)，记 \(T=\dot\gamma\)。若 Jacobi 场 \(J\) 在两个参数值 \(a<b\) 消失，则 Jacobi 方程给出
+	\[
+		\frac{\mathrm d^2}{\mathrm dt^2}|J|^2
+		=2|J'|^2-2\langle R(J,T)T,J\rangle\ge0.
+	\]
+	最后一步来自 \(K\le0\)：只有 \(J\) 垂直于 \(T\) 的分量参与曲率项，且本书约定下正曲率对应非负的 \(\langle R(J,T)T,J\rangle\)。一维时曲率张量为零，同一不等式成立。非负函数 \(|J|^2\) 凸且在 \(a,b\) 处为零，故在整个 \([a,b]\) 上为零；Jacobi 初值唯一性随后使 \(J\) 恒为零。这排除了共轭点。
+
+	完备性与 \cref{g3:thm:hopf-rinow}保证 \(\exp_p\) 在整个切空间上有定义。对 \(v\ne0\)，写 \(v=ru\)、\(|u|=1\)，并把 \(\xi\) 分解为
+	\[
+		\xi=\alpha u+w,\qquad w\perp u.
+	\]
+	沿单位速径向线 \(\gamma(t)=\exp_p(tu)\)，令 \(J_w(0)=0\)、\(J_w'(0)=w\)。指数映射的 Jacobi 表达和径向、横向的正交性给出
+	\[
+		(\mathrm d\exp_p)_{ru}(u)=T(r),\qquad
+		(\mathrm d\exp_p)_{ru}(w)=\frac{J_w(r)}r,\qquad
+		|(\mathrm d\exp_p)_{ru}\xi|^2
+		=\alpha^2+\frac{|J_w(r)|^2}{r^2}.
+	\]
+	当 \(n\ge2\) 时，\cref{g3:thm:rauch-model-comparison}取 \(k=0\)，模型函数为 \(s_0(t)=t\)，且模型没有正零点，所以 \(|J_w(r)|\ge r|w|\) 对所有 \(r>0\) 成立。这给出式\eqref{g3:eq:nonpositive-exponential-expansion}。一维时 \(w=0\)，结论直接由径向等式得到。在 \(v=0\) 处，\((\mathrm d\exp_p)_0=\operatorname{id}\)。
+
+	该不等式使指数映射的微分为单射，源与靶同维，因而微分可逆；逆函数定理给出局部微分同胚性。
+\end{proof}
+
+从无共轭点也可利用 \cref{g3:prop:conjugate-exp-singularity}直接得到微分可逆性。上面的长度估计还多提供了一个整体论证所需的信息：在切空间上拉回度量以后，向量的长度不会小于原来的 Euclid 长度。
 
 \subsection{覆盖论证及单连通条件}
 \label{g3:subsec:0901:02}
-待撰写
+
+固定 \(p\in M\)，在向量空间 \(V=\mathrm{T}_pM\) 上定义
+\begin{equation}\label{g3:eq:exponential-pullback-metric}
+	h_v(\xi,\eta)
+	=g_{\exp_p(v)}\bigl((\mathrm d\exp_p)_v\xi,
+		(\mathrm d\exp_p)_v\eta\bigr).
+\end{equation}
+微分处处可逆，所以 \(h=\exp_p^*g\) 是光滑正定的黎曼度量。按定义，\(\exp_p:(V,h)\to(M,g)\) 是局部等距映射；而式\eqref{g3:eq:nonpositive-exponential-expansion}表明
+\[
+	h_v(\xi,\xi)\ge g_p(\xi,\xi).
+\]
+记 \(g_0\) 为 \(V\) 上由内积 \(g_p\) 给出的常系数 Euclid 度量。下面证明 \(h\ge g_0\) 在这里确实保证完备。
+
+\begin{lemma}\label{g3:lem:euclidean-dominated-metric-complete}
+	设 \(V\) 是有限维实内积空间，\(g_0\) 为其 Euclid 度量，\(h\) 是定义在整个 \(V\) 上的光滑黎曼度量。若 \(h\ge g_0\)，则 \((V,h)\) 度量完备。
+\end{lemma}
+\begin{proof}
+	对任意分片光滑曲线 \(c\)，有 \(L_h(c)\ge L_{g_0}(c)\)，取下确界得到
+	\[
+		d_h(v,w)\ge |v-w|_{g_0}.
+	\]
+	因此每个 \(d_h\)-Cauchy 序列 \((v_j)\) 都是 Euclid 距离的 Cauchy 序列，收敛于某个 \(v_\infty\in V\)。
+
+	还须验证它在 \(d_h\) 中也收敛。取以 \(v_\infty\) 为中心的 Euclid 闭球 \(K\)，半径为某个 \(\rho>0\)。由于 \(h\) 光滑且 \(K\) 紧，存在 \(C>0\)，使 \(h\le Cg_0\) 于 \(K\)。当 \(j\) 充分大时，从 \(v_j\) 到 \(v_\infty\) 的直线段含于 \(K\)，于是
+	\[
+		d_h(v_j,v_\infty)
+		\le\sqrt C\,|v_j-v_\infty|_{g_0}\longrightarrow0.
+	\]
+	这就证明了完备性。
+\end{proof}
+
+\begin{theorem}[Cartan--Hadamard]\label{g3:thm:cartan-hadamard}
+	设 \((M^n,g)\) 是连通、完备、光滑无边界黎曼流形，\(n\ge1\)，且截面曲率 \(K\le0\)，其中一维时曲率条件为空。则对每个 \(p\in M\)，
+	\[
+		\exp_p:\mathrm{T}_pM\longrightarrow M
+	\]
+	是光滑万有覆盖。若 \(M\) 还单连通，则 \(\exp_p\) 是全局微分同胚，故 \(M\) 微分同胚于 \(\mathbb R^n\)。
+\end{theorem}
+\begin{proof}
+	\Cref{g3:prop:nonpositive-exponential-differential}使式\eqref{g3:eq:exponential-pullback-metric}定义了整个 \(\mathrm{T}_pM\) 上的黎曼度量 \(h\)，并且 \(h\ge g_0\)。前一引理证明 \((\mathrm{T}_pM,h)\) 完备。于是第五章的 \cref{g3:lem:complete-local-isometry-covering}适用于局部等距映射
+	\[
+		\exp_p:(\mathrm{T}_pM,h)\longrightarrow(M,g),
+	\]
+	得到它满射且为覆盖映射。该引理的关键条件是源流形完备：目标中的短径向测地线可以从每个原像点完整提升，从而构成互不相交的覆盖片。
+
+	向量空间 \(\mathrm{T}_pM\) 单连通，因此这个覆盖是万有覆盖。若 \(M\) 也单连通，同一引理的最后一项说明连通覆盖只有一层，于是 \(\exp_p\) 是全局微分同胚。选择 \(\mathrm{T}_pM\) 的线性坐标即可得到它与 \(\mathbb R^n\) 的微分同胚。
+\end{proof}
+
+\begin{definition}\label{g3:def:hadamard-manifold}
+	连通、完备、单连通、光滑无边界且截面曲率非正的黎曼流形称为 \term[Hadamard liuxing]{Hadamard 流形}[Hadamard manifold]。一维时包括通常的 Euclid 直线。
+\end{definition}
+
+拉回度量 \(h\) 通常并非常系数度量 \(g_0\)。定理给出的全局微分同胚允许用一个切空间为整个流形作坐标；它与 \(h\) 一起才是等距映射。非正曲率使这些坐标中的长度至少与 Euclid 长度一样大。
+
+\begin{example}\label{g3:exm:hadamard-hypotheses}
+	完备性和单连通性分别承担不同任务。Euclid 开单位球单连通且平坦，但测地线会在有限时间到达缺失的边界，指数映射不能定义在整个切空间上。平坦圆柱 \(S^1\times\mathbb R\) 完备且 \(K=0\)，它的指数映射则是从 \(\mathbb R^2\) 到圆柱的覆盖；相差圆周整倍长度的初速度有相同终点。这个例子说明，没有共轭点仍可有非空割迹。
+\end{example}
 
 \subsection{全局唯一测地线}
 \label{g3:subsec:0901:03}
-待撰写
+
+在 Hadamard 流形中，可把指数映射的逆记为
+\[
+	\log_p:M\longrightarrow\mathrm{T}_pM.
+\]
+它为每个终点记录唯一的测地初速度。为了以后对两个端点同时作变分，还需确认这条线随端点一起光滑变化。
+\symidx{\(\log_p\)：指数映射在割前域上的逆，Hadamard 流形上为全局逆}
+
+\begin{proposition}\label{g3:prop:hadamard-geodesic-uniqueness}
+	设 \((M^n,g)\) 为 \(n\ge1\) 维 Hadamard 流形。对任意 \(x,y\in M\)，恰有一条定义于 \([0,1]\)、具有仿射参数且端点为 \(x,y\) 的测地线，公式为
+	\begin{equation}\label{g3:eq:hadamard-geodesic}
+		\gamma_{x,y}(t)=\exp_x(t\log_x y).
+	\end{equation}
+	它实现距离，且
+	\[
+		d(x,y)=|\log_x y|,\qquad
+		d(\gamma_{x,y}(s),\gamma_{x,y}(t))
+		=|s-t|\,d(x,y)\quad(s,t\in\mathbb R),
+	\]
+	其中测地线已按完备性延长到整个 \(\mathbb R\)。映射 \((x,y,t)\mapsto\gamma_{x,y}(t)\) 在 \(M\times M\times\mathbb R\) 上光滑。每个点的割迹均为空。
+\end{proposition}
+\begin{proof}
+	由 Cartan--Hadamard 定理，\(\exp_x\) 是全局微分同胚，所以式\eqref{g3:eq:hadamard-geodesic}有定义。任意同端点、同参数区间的测地线都由某个初速度 \(v\) 决定，而其终点要求 \(\exp_x(v)=y\)。因此 \(v=\log_x y\)，得到唯一性。Hopf--Rinow 定理提供一条连接 \(x,y\) 的最短测地线，将它常速参数化到 \([0,1]\)，必与所写曲线一致。长度等于初速度的模，故 \(d(x,y)=|\log_x y|\)。
+
+	这段论证可用于延长测地线上的任意两个点。因此它的每个有限子段都实现距离，且常速性给出 \(s,t\) 的距离等式。径向测地线始终最短，于是每个方向的割时都为无穷大，割迹为空。
+
+	最后考虑
+	\[
+		\mathcal E:\mathrm{T}M\longrightarrow M\times M,\qquad
+		(x,v)\longmapsto(x,\exp_xv).
+	\]
+	测地初值问题的光滑依赖性保证 \(\mathcal E\) 光滑；每个纤维上的指数映射双射保证它是集合双射。若 \(\mathrm d\mathcal E\) 的某个核向量投影到 \(\mathrm{T}_xM\)，第一分量说明该投影为零，所以这个核向量是竖直向量。第二分量此时就是 \((\mathrm d\exp_x)_v\) 作用于它，微分可逆性迫使它为零。因此 \(\mathcal E\) 的微分可逆，它的各局部光滑逆拼成全局光滑逆
+	\[
+		(x,y)\longmapsto(x,\log_x y).
+	\]
+	再与纤维内的标量乘法及全域指数映射复合，便得到 \(\gamma_{x,y}(t)\) 的联合光滑性。
+\end{proof}
+
+这里的唯一性包括所有具有指定仿射参数区间的测地线。若只把最短道路视为带任意速度的曲线，则还可作保持方向的重参数化。
+
+\begin{proposition}\label{g3:prop:hadamard-exponential-expansion}
+	设 \((M^n,g)\) 为 \(n\ge1\) 维 Hadamard 流形，\(p\in M\)。对 \(\mathrm{T}_pM\) 中任意分片光滑曲线 \(c\)，有
+	\[
+		L_g(\exp_p\circ c)\ge L_{g_p}(c).
+	\]
+	而且对任意 \(v,w\in\mathrm{T}_pM\)，
+	\begin{equation}\label{g3:eq:hadamard-distance-expansion}
+		d(\exp_pv,\exp_pw)\ge|v-w|_{g_p}.
+	\end{equation}
+	等价地，\(\log_p\) 是从 \((M,d_g)\) 到 \((\mathrm{T}_pM,|\cdot|_{g_p})\) 的1-Lipschitz 映射。对径向点对，总有 \(d(p,\exp_pv)=|v|\)。
+\end{proposition}
+\begin{proof}
+	沿曲线积分式\eqref{g3:eq:nonpositive-exponential-expansion}，得到长度不等式。为证明距离不等式，任取从 \(\exp_pv\) 到 \(\exp_pw\) 的分片光滑曲线 \(\alpha\)。全局光滑逆使 \(c=\log_p\circ\alpha\) 成为从 \(v\) 到 \(w\) 的曲线，故
+	\[
+		L_g(\alpha)\ge L_{g_p}(c)\ge|v-w|.
+	\]
+	对所有这样的 \(\alpha\) 取下确界，即得式\eqref{g3:eq:hadamard-distance-expansion}。最后一项已由径向线的最短性证明。
+\end{proof}
+
+此处全局逆保证了每一条竞争道路都能拉回到指定的两个初向量之间。仅考察切空间直线段的像，只能得到一条具体道路的长度，尚不足以控制目标流形中的距离下界。双曲空间中横向伸缩随半径增大；全局扩张估计也不意味着指数映射存在统一的 Lipschitz 上界。
 
 \subsection{距离函数凸性和拓扑后果}
 \label{g3:subsec:0901:04}
-待撰写
+
+割迹为空以后，第七章的 Hessian 比较可以用于任意正半径。距离 \(r_p=d(p,\cdot)\) 仍在中心 \(p\) 不可微，但
+\[
+	F_p=\frac12r_p^2
+\]
+把这个尖点消去。其 Hessian 下界比通常的凸性更强。
+
+\begin{proposition}\label{g3:prop:hadamard-squared-distance-convex}
+	设 \((M^n,g)\) 为 \(n\ge1\) 维 Hadamard 流形，\(p\in M\)。函数 \(F_p(q)=\frac12d(p,q)^2\) 在整个 \(M\) 上光滑，满足
+	\begin{equation}\label{g3:eq:hadamard-squared-distance-gradient}
+		\operatorname{grad}F_p(q)=-\log_qp,\qquad
+		\operatorname{Hess}F_p\ge g.
+	\end{equation}
+	在 \(M\setminus\{p\}\) 上，\(r_p\) 光滑且
+	\begin{equation}\label{g3:eq:hadamard-distance-hessian}
+		\operatorname{Hess}r_p
+		\ge\frac1{r_p}\bigl(g-\mathrm dr_p\otimes\mathrm dr_p\bigr)
+		\ge0.
+	\end{equation}
+	特别地，沿任意仿射参数测地线 \(\gamma\)，
+	\[
+		(F_p\circ\gamma)''\ge|\dot\gamma|^2.
+	\]
+\end{proposition}
+\begin{proof}
+	全局公式
+	\[
+		F_p(q)=\frac12|\log_pq|^2
+	\]
+	证明 \(F_p\) 光滑；范数在非零向量处光滑，故 \(r_p\) 在中心外光滑。由 \cref{g3:prop:hadamard-geodesic-uniqueness}，割迹为空，且径向线在所有半径上都最短。若 \(n\ge2\)，\cref{g3:thm:hessian-comparison}中的 \(k=0\) 情形因而适用于每个 \(q\ne p\)，给出式\eqref{g3:eq:hadamard-distance-hessian}的第一项。距离梯度为单位向量，所以右端非负。一维时，每段避开 \(p\) 的弧长坐标中 \(r_p\) 为仿射函数，且 \(g=\mathrm dr_p\otimes\mathrm dr_p\)，于是同式仍然成立。
+
+	在中心外使用乘积法则，得到
+	\[
+		\operatorname{Hess}F_p
+		=\mathrm dr_p\otimes\mathrm dr_p
+			+r_p\operatorname{Hess}r_p\ge g.
+	\]
+	在 \(p\) 的法坐标中，\(F_p=\frac12\sum_i(x^i)^2\)，其微分在中心为零，二阶坐标导数为 \(\delta_{ij}\)，所以 \((\operatorname{Hess}F_p)_p=g_p\)。这也证明不等式包含中心。
+
+	若 \(q\ne p\)，令 \(r=d(p,q)\)，并令 \(\eta:[0,r]\to M\) 为从 \(p\) 到 \(q\) 的单位速测地线。距离梯度公式给出
+	\(\operatorname{grad}F_p(q)=r\dot\eta(r)\)。反向线段从 \(q\) 到 \(p\) 的时间一区间初速度为 \(-r\dot\eta(r)\)，因此
+	\[
+		\log_qp=-r\dot\eta(r).
+	\]
+	在 \(q=p\) 时，两边都为零，梯度公式仍成立。最后，沿仿射参数测地线有
+	\[
+		(F_p\circ\gamma)''
+		=\operatorname{Hess}F_p(\dot\gamma,\dot\gamma)
+			+\mathrm dF_p(\nabla_{\dot\gamma}\dot\gamma)
+		=\operatorname{Hess}F_p(\dot\gamma,\dot\gamma),
+	\]
+	故得最后的估计。
+\end{proof}
+
+称 Hadamard 流形上的函数 \(f\) 为\term[ceditu hanshu]{测地凸函数}[geodesically convex function]，如果对任意 \(x,y\in M\)，沿式\eqref{g3:eq:hadamard-geodesic}中的线段都有
+\[
+	f(\gamma_{x,y}(t))\le(1-t)f(x)+tf(y),\qquad 0\le t\le1.
+\]
+对光滑函数，Hessian 非负保证这一性质：沿线段的二阶导数非负，而区间上的凸函数不超过其两端值的线性插值。称集合为测地凸的，是指它包含任意两点之间的这条测地线段。
+
+\begin{corollary}\label{g3:cor:hadamard-distance-balls-convex}
+	设 \((M^n,g)\) 为 \(n\ge1\) 维 Hadamard 流形，\(p\in M\)。距离函数 \(r_p\) 与距离平方的一半 \(F_p\) 都是测地凸函数。对每个 \(R>0\)，开球 \(B(p,R)\) 和闭球 \(\overline B(p,R)\) 都测地凸，且闭球紧。
+\end{corollary}
+\begin{proof}
+	上一命题已证明 \(F_p\) 的凸性。对 \(r_p\)，一条不经过 \(p\) 的测地线段上有 \((r_p\circ\gamma)''\ge0\)。若非恒定的仿射参数测地线在参数 \(t_0\) 经过 \(p\)，设其常速为 \(c>0\)。每个子段都最短，所以沿整条线有
+	\[
+		r_p(\gamma(t))=c|t-t_0|,
+	\]
+	这同样是凸函数。恒定线的结论直接成立，因此中心的不可微性没有破坏测地凸性。
+
+	若两个端点的距离都小于 \(R\)，其线性插值也小于 \(R\)，凸性便使整个连接线段留在开球中。把严格不等式改为非严格不等式，得到闭球的结论。闭球紧性来自完备性和 Hopf--Rinow 定理。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:hadamard-contractible}
+	每个 \(n\ge1\) 维 Hadamard 流形 \(M\) 都可缩且非紧。对固定 \(p\in M\)，映射
+	\[
+		H:M\times[0,1]\longrightarrow M,\qquad
+		H(q,s)=\exp_p\bigl((1-s)\log_pq\bigr)
+	\]
+	把 \(M\) 强形变收缩到 \(p\)。同一映射将每个以 \(p\) 为中心的开球或闭球收缩到 \(p\)。
+\end{corollary}
+\begin{proof}
+	全局指数映射及其逆光滑，所以 \(H\) 光滑；它满足
+	\(H(q,0)=q\)、\(H(q,1)=p\) 及 \(H(p,s)=p\)。此外，径向距离等式给出
+	\[
+		d(p,H(q,s))=(1-s)d(p,q),
+	\]
+	因而收缩始终保留各个开球或闭球。非紧性可由 \(M\) 微分同胚于 \(\mathbb R^n\) 得到，也可由任意单位径向线满足 \(d(p,\exp_p(tu))=t\) 看出。
+\end{proof}
+
+因此，正维、紧、单连通的流形不能携带截面曲率处处非正的黎曼度量。一般完备非正曲率流形的拓扑则集中在万有覆盖的不同覆盖片如何识别：其万有覆盖微分同胚于 Euclid 空间，而平坦环面已经给出紧的非单连通例子。距离平方的全局 Hessian 下界将在本章最后一节用来研究闭凸集的最近点及三角形比较。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

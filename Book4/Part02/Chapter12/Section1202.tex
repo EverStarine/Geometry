@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 12.2 凸性定理
 % 纲要位置：几何学计划纲要.md，第 3933 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,180 @@
 \section{凸性定理}
 \label{g4:sec:1202}
 
-待撰写
+本节证明紧连通 Hamilton 环面流形的全部矩纤维连通，并证明矩像是固定点像的凸包。两个步骤各有职责：环面秩的归纳在极值分支中找到共同固定点；轨道局部模型则把纤维连通分支组成的商变成局部凸空间。这个紧商上的最短路将同时给出纤维连通与像的凸性。
 
 \subsection{圆方向的极值和连通水平集}
 \label{g4:subsec:1202:01}
-待撰写
+
+以下 \(M\) 为紧连通无边界辛流形，\(T\) 为紧环面，\(\mu:M\to\mathfrak t^*\) 为等变矩映射。对任意 \(\xi\in\mathfrak t\)，\cref{g4:thm:1201:component-connected-levels}说明
+\[
+	\{x\in M:\langle\mu(x),\xi\rangle=c\}
+\]
+非空时连通。特别地，\(\mu^\xi\) 的最小值集与最大值集各为一个连通辛子流形。若 \(T=S^1\)，矩映射只有一个分量，这已经证明了所有矩纤维连通；其像由紧性与连通性成为闭区间。
+
+\ProseParagraphBreak
+
+当 \(\dim T>1\) 时，固定一个线性分量得到的是矩像中一个超平面的原像，而完整矩纤维要求所有分量同时固定。后面的论证将保留这些交集的信息。仅仅知道所有线性投影的像都是区间，甚至不能排除一个平面圆周作为候选像；因此投影区间性质本身不能证明高维凸性。
 
 \subsection{环面秩的归纳}
 \label{g4:subsec:1202:02}
-待撰写
+
+\begin{proposition}\label{g4:prop:1202:fixed-point-induction}
+	任意紧连通无边界 Hamilton 环面流形都有共同固定点。更具体地，若 \(S\subset T\) 是正维子环面，则 \(M^S\) 的每个非空连通分支都包含 \(T\) 固定点。因此任意矩映射分量的每个极值分支都包含 \(T\) 固定点。
+\end{proposition}
+\begin{proof}
+	先按 \(k=\dim T\) 归纳证明共同固定点存在。\(k=0\) 时每一点都固定。设结论已对更低维环面成立，在 \(T\) 中取一个圆子群 \(S\)，令 \(\xi\) 为它的非零生成元。函数 \(\mu^\xi\) 在紧空间上达到最大值，取最大值集中的一个连通分支 \(C\)。上一节说明 \(C\) 是紧连通辛子流形，且 \(S\) 逐点固定它。\(T\) 保持 \(C\)：作用保持高度，又因 \(T\) 连通，不能把一个点连续移到固定集的另一个连通分支。
+
+	\(T/S\) 在 \(C\) 上的作用仍是 Hamilton 的。对每个 \(\zeta\in\mathfrak s\)，有 \(\zeta_M|_C=0\)，所以 \(\mu^\zeta|_C\) 为常数。选 \(a\in\mathfrak t^*\) 与 \(\mu|_C\) 在 \(\mathfrak s\) 上相同，则
+	\[
+		\nu=\mu|_C-a:C\longrightarrow
+		\mathfrak s^\circ\cong(\mathfrak t/\mathfrak s)^*
+	\]
+	满足商环面所需的收缩方程及不变性。\(\dim(T/S)=k-1\)，归纳假设给出它在 \(C\) 上的固定点，而该点也被 \(S\) 固定，故被整个 \(T\) 固定。
+
+	现在令 \(S\) 为任意正维子环面，\(C\) 为 \(M^S\) 的一个连通分支。固定集的辛性、紧性和 \(T\) 不变性仍成立，同样构造商环面的矩映射。刚刚完成的归纳结果用于 \(T/S\) 作用于 \(C\)，便得到 \(T\) 固定点。对任意非零 \(\xi\)，\(\mu^\xi\) 的极值分支是 \(M^{\overline{\exp(\mathbb R\xi)}}\) 的分支，由此得到最后结论；\(\xi=0\) 时极值集为整个 \(M\)，使用第一部分即可。
+\end{proof}
+
+这一归纳没有要求作用有效。即使某个圆子群在整个流形上作用恒等，商环面的维数仍降低，归纳仍然有效。对任意 \(\xi\)，我们已经得到
+\begin{equation}\label{g4:eq:1202:fixed-support-extreme}
+	\max_{x\in M}\langle\mu(x),\xi\rangle
+	=\max_{x\in M^T}\langle\mu(x),\xi\rangle.
+\end{equation}
+它将在凸性成立后确定整个多面体。
 
 \subsection{矩映射像的凸性}
 \label{g4:subsec:1202:03}
-待撰写
+
+先从轨道模型提取精确的局部信息。一个由有限向量 \(v_1,\ldots,v_N\) 的非负线性组合组成的集合称为有限生成凸锥。这里允许锥含直线，也允许其维数小于环境空间维数；所有“相对开”都指在该像自身的子空间拓扑中开。
+
+\begin{lemma}\label{g4:lem:1202:linear-cone-openness}
+	设 \(C=\mathbb R^d\times[0,\infty)^m\)，\(A:\mathbb R^{d+m}\to E\) 为线性映射。则 \(A(C)\) 是闭的有限生成凸锥，且 \(A:C\to A(C)\) 是开映射。
+\end{lemma}
+\begin{proof}
+	\(C\) 由有限个向量生成：自由方向取正、负标准基，非负方向只取正标准基。其像因此有限生成。对任何非负表示 \(y=\sum c_jv_j\)，若正系数所对应的 \(v_j\) 线性相关，取一个非零关系 \(\sum a_jv_j=0\)，改变符号使某个 \(a_j>0\)，再减去 \((\min_{a_j>0}c_j/a_j)(a_j)\)。所有新系数仍非负，至少一个正系数变为零。有限步后得到线性无关的生成子集。每个这种子集上的逆线性映射有有界算子范数；子集只有有限种，所以可统一控制系数范数为 \(K\|y\|\)。这说明有界像点列可选有界系数表示，取子列即可证明锥闭。
+
+	固定 \(x\in C\)。令 \(D_x\) 为如下方向锥：在 \(x_j=0\) 的非负坐标上只许非负增量，在 \(x_j>0\) 的坐标及自由坐标上允许正负增量。它也有限生成。对 \(y\in A(C)\)，任取 \(z\in C\) 使 \(Az=y\)，则 \(z-x\in D_x\)，故 \(y-Ax\in A(D_x)\)。把第一段的有界系数论证用于 \(A(D_x)\)，可选 \(u\in D_x\)，满足
+	\[
+		Au=y-Ax,\qquad \|u\|\leq K_x\|y-Ax\|.
+	\]
+	当右边足够小时，\(x\) 的正坐标不会因加上 \(u\) 而变成负数；原来的零坐标也保持非负。因此 \(x+u\in C\)，且可落在 \(x\) 的任意给定相对邻域内。这正说明该邻域的像包含 \(Ax\) 在 \(A(C)\) 中的一个邻域，故映射开。
+\end{proof}
+
+\begin{lemma}\label{g4:lem:1202:local-convex-fibres}
+	每条 \(T\) 轨道 \(Tx\) 都有任意小的 \(T\) 不变邻域 \(U\)，使 \(\mu(U)\) 凸，\(\mu|_U\) 对其像为开映射，且 \(U\cap\mu^{-1}(b)\) 非空时道路连通。还可使
+	\begin{equation}\label{g4:eq:1202:local-moment-cone}
+		\mu(U)=\bigl(\mu(x)+C_x\bigr)\cap B_\varepsilon(\mu(x)),
+		\qquad
+		C_x=\mathfrak h^\circ+
+		\operatorname{cone}(-\alpha_1,\ldots,-\alpha_m),
+	\end{equation}
+	其中 \(H=T_x\)，\(\alpha_j\) 是轨道模型中的切片微分权。
+\end{lemma}
+\begin{proof}
+	在\cref{g4:thm:1201:orbit-normal-form}中先取 \(\eta\) 的小凸球和 \(V\) 的小球，得到 \(U=T\times_H(B\times B_V)\)。令 \(r_j=|z_j|^2/2\)，其像写成
+	\[
+		\mu(x)+B-\left\{\sum_jr_j\alpha_j:
+		r_j\geq0,\ \sum_jr_j<\delta\right\},
+	\]
+	是凸集。映射 \(z\mapsto(r_j)\) 对非负正交象限开：非零复坐标的半径可以在开区间内变化，零坐标的小圆盘则给出相对区间 \([0,\epsilon)\)。上一引理再说明 \((\eta,r)\mapsto\eta-\sum r_j\alpha_j\) 对其锥像开。结合商映射的开性，得到 \(\mu|_U\) 的相对开性。
+
+	取同一纤维中的两点，选代表 \((t_0,\eta_0,z^0)\)、\((t_1,\eta_1,z^1)\)。在 \(T\) 中连接 \(t_0,t_1\)；对 \(\eta,r\) 作线性插值。约束 \(\eta-\sum r_j\alpha_j=b-\mu(x)\) 及所选球、单纯形限制都保持。再写 \(z_j^a=\sqrt{2r_j^a}e^{\mathrm i\phi_j^a}\)，零坐标的相位任取，令
+	\[
+		z_j(s)=\sqrt{2((1-s)r_j^0+sr_j^1)}
+		e^{\mathrm i((1-s)\phi_j^0+s\phi_j^1)}.
+	\]
+	这给出一条连续纤维内道路，下降到 \(H\) 商后仍连接原两点。
+
+	上一引理的有界表示还说明，\(C_x\) 中充分小的向量都可用充分小的 \(\eta,r\) 表示。因此该凸像在 \(\mu(x)\) 附近与 \(\mu(x)+C_x\) 相同。进一步把 \(U\) 与 \(\mu^{-1}(B_\varepsilon(\mu(x)))\) 相交，就得到式\eqref{g4:eq:1202:local-moment-cone}；每条纤维的原片没有变化，相对开性也保持。
+\end{proof}
+
+把同一矩纤维的每个连通分支压成一点，记所得商空间为 \(Q\)，商映射为 \(q:M\to Q\)。矩映射分解为 \(\mu=\overline\mu\circ q\)。这时尚未知道一条矩纤维有几个分支，所以 \(\overline\mu\) 暂时可能多对一。下面先在商上构造局部图。
+
+\begin{lemma}\label{g4:lem:1202:fibre-component-quotient}
+	\(Q\) 是紧连通 Hausdorff 空间。每个 \(z\in Q\) 都有开邻域 \(W\)，使 \(\overline\mu|_W\) 为到一个闭有限生成凸锥与开球之交的同胚；锥的顶点为 \(\overline\mu(z)\)。
+\end{lemma}
+\begin{proof}
+	固定 \(a\in\mu(M)\)。上一引理给出 \(\mu^{-1}(a)\) 的一个有限开覆盖，每个局部纤维片连通，所以该纤维只有有限个连通分支 \(C_1,\ldots,C_s\)。它们紧且彼此不交，可放入彼此不交的开邻域中。对每个 \(C_j\)，在该开邻域内选有限个轨道模型 \(U_{ji}\) 覆盖它，且每个模型的中心在 \(C_j\)。
+
+	对同一个 \(j\)，以 \(U_{ji}\cap C_j\) 为顶点、以在 \(C_j\) 中相交为边，所得有限交图连通，否则这些开片会把 \(C_j\) 分开。若两片在纤维上相交，\(\mu(U_{ji}\cap U_{j\ell})\) 包含 \(a\)，并且在两片的矩像中都相对开。因此两片的像在 \(a\) 附近具有相同的锥胚：在足够小的球内，每个像都包含于这个共同开像，故两者相等。沿交图传播，全部 \(U_{ji}\) 具有同一个锥胚 \(a+C_j'\)。有限性允许统一缩小球半径，使每片的像及交图每条边的交像都包含 \((a+C_j')\cap B_\varepsilon(a)\)，并使每片的像在此球内恰为这个集合。
+
+	还可缩小 \(\varepsilon\)，使
+	\[
+		\mu^{-1}(B_\varepsilon(a))\subset\bigcup_{j,i}U_{ji}.
+	\]
+	否则可在右边补集内取矩值趋于 \(a\) 的点列，紧性给出落在 \(\mu^{-1}(a)\) 中的聚点，与覆盖矛盾。令 \(V_j=(\bigcup_iU_{ji})\cap\mu^{-1}(B_\varepsilon(a))\)。各 \(V_j\) 彼此不交，并在这个整原像中同时开闭。对每个 \(b\in(a+C_j')\cap B_\varepsilon(a)\)，各片的 \(b\) 纤维连通，且交图的每条边仍有非空纤维交。因此 \(V_j\cap\mu^{-1}(b)\) 连通，恰为整条矩纤维的一个连通分支。
+
+	所以 \(V_j\) 是由完整等价类组成的开集，\(q(V_j)\) 在 \(Q\) 中开。局部相对开性还说明 \(\overline\mu:q(V_j)\to(a+C_j')\cap B_\varepsilon(a)\) 是开连续双射，故是同胚。由此得到所需图。若 \(Q\) 中两点矩值不同，用不交的矩值球分开；若矩值相同但对应分支不同，用上述不交的 \(q(V_j)\) 分开。因此 \(Q\) Hausdorff。紧性与连通性则来自它是紧连通空间 \(M\) 的连续商。
+\end{proof}
+
+\begin{theorem}\label{g4:thm:1202:connected-fibres}
+	紧连通无边界辛流形上 Hamilton 环面作用的每条非空矩纤维 \(\mu^{-1}(a)\) 都连通，而且 \(\mu(M)\) 是凸集。
+\end{theorem}
+\begin{proof}
+	利用上一引理的凸图，在 \(Q\) 上定义路径的长度为其 \(\overline\mu\) 像的 Euclid 长度，并令
+	\[
+		d(z,w)=\inf_\gamma\operatorname{length}(\overline\mu\circ\gamma),
+	\]
+	其中 \(\gamma\) 连接 \(z,w\)。可只取有限条凸图内直线段的拼接。这样的路径连接全部点：从任一点可达的集合开，其补集也开，\(Q\) 连通使可达集为整个 \(Q\)。所以 \(d\) 有限，且满足对称性及三角不等式。
+
+	需要证明 \(d\) 真正分开点。取以 \(z\) 为中心的一个锥图 \(W_R\)，像为 \((a+C)\cap B_R(a)\)，其中 \(a=\overline\mu(z)\)。若 \(0<r<R\)，较小闭锥球的逆像紧，因 \(Q\) Hausdorff，它在 \(Q\) 中闭且包含于 \(W_R\)。因此一条从 \(z\) 出发、离开较小开锥球 \(W_r\) 的道路必须先达到 \(\|\overline\mu-a\|=r\)，长度至少为 \(r\)。对 \(w\in W_r\)，凸图中的直线段给出
+	\[
+		d(z,w)=\|\overline\mu(z)-\overline\mu(w)\|,
+	\]
+	因为任意像道路的长度都不小于端点距离。因此图内不同点被分开，图外点也与 \(z\) 至少相距 \(r\)。这证明 \(d\) 为度量，并且小度量球恰是小锥球的逆像，故度量拓扑与原拓扑一致。\(Q\) 因而是紧度量空间。在任一凸图内，两点间的 \(d\) 距离都等于其像点的 Euclid 距离。
+
+	再证最短路存在。取连接 \(z,w\) 的折线路径 \(\gamma_j\)，长度 \(L_j\downarrow d(z,w)\)，按弧长在 \([0,1]\) 上重新参数化。它们关于 \(d\) 的 Lipschitz 常数可统一控制。紧度量空间中，先在可数稠密时间集上逐次取收敛子列，再用统一 Lipschitz 界，就得到一个在整个区间上一致收敛的子列及极限道路 \(\gamma\)。对每个有限时间分割，距离和连续地取极限，因此极限长度不大于 \(\lim L_j\)。局部图是 Euclid 等距图，故用 \(d\) 计算的曲线长度与像曲线长度相同。于是 \(\gamma\) 的长度恰为 \(d(z,w)\)，是最短路。
+
+	记 \(D=d(z,w)\)。极限道路为 \(D\)-Lipschitz；由端点距离和三角不等式，对任意 \(s<t\) 还有
+	\[
+		D\leq Ds+d(\gamma(s),\gamma(t))+D(1-t),
+	\]
+	所以 \(d(\gamma(s),\gamma(t))=D(t-s)\)。在足够小的时间段内，道路落在一个凸图中；Euclid 三角不等式取等说明其像是一条匀速直线段。相邻时间段在开区间上重叠，速度向量因而相同。故整个像是直线段
+	\[
+		\overline\mu(\gamma(t))
+		=(1-t)\overline\mu(z)+t\overline\mu(w),
+		\qquad
+		D=\|\overline\mu(z)-\overline\mu(w)\|.
+	\]
+	若两端矩值相同，就有 \(D=0\)，从而 \(z=w\)。因此 \(\overline\mu\) 单射，每条矩纤维只有一个连通分支，证明纤维连通。对任意两个矩值，上述最短路的像包含它们之间的整条线段，证明凸性。
+\end{proof}
+
+这个证明也解释了紧性与局部模型各自的作用。紧性使纤维只有有限个局部分支，并保证长度最小值可达到；局部凸锥及局部连通纤维使最短路的像不能在一个角处折返。最后得到的是完整矩纤维的连通性，包含秩下降的点。
 
 \subsection{固定点像及凸包描述}
 \label{g4:subsec:1202:04}
-待撰写
+
+固定点集 \(M^T\) 是紧子流形并具有有限个连通分支。在每个分支上，全部 \(\xi_M\) 为零，故全部 \(\mathrm d\mu^\xi\) 为零；因此矩映射在该分支上常值。记这些有限个像为 \(a_1,\ldots,a_N\)。
+
+下面的结论称为 Atiyah–Guillemin–Sternberg 凸性定理。\footnote{Michael Francis Atiyah（1929--2019），英国数学家，研究拓扑 K 理论与椭圆算子指标。Victor William Guillemin（1937年生），美国数学家，研究微局部分析与辛几何。Shlomo Zvi Sternberg（1936--2024），美国数学家，研究微分几何、辛几何与 Lie 理论。}
+
+\begin{theorem}[Atiyah–Guillemin–Sternberg 凸性定理]\label{g4:thm:1202:convexity}
+	设紧环面 \(T\) Hamilton 作用于紧连通无边界辛流形 \((M,\omega)\)，等变矩映射为 \(\mu\)。则所有非空矩纤维连通，且
+	\begin{equation}\label{g4:eq:1202:fixed-convex-hull}
+		\mu(M)=\operatorname{conv}\mu(M^T)
+		=\operatorname{conv}\{a_1,\ldots,a_N\}.
+	\end{equation}
+	特别地，矩像是紧凸多面体，每个顶点都是固定点的矩像；作用不必有效，多面体也可以处于 \(\mathfrak t^*\) 的真仿射子空间中。
+\end{theorem}
+\begin{proof}
+	纤维连通与凸性已经由\cref{g4:thm:1202:connected-fibres}证明。令 \(P=\operatorname{conv}\{a_1,\ldots,a_N\}\)。它是紧单纯形的连续仿射像，故紧；\(a_i\in\mu(M)\) 与矩像凸性给出 \(P\subset\mu(M)\)。
+
+	若有 \(b\in\mu(M)\setminus P\)，在 \(P\) 中选一个距 \(b\) 最近的点 \(p\)，令 \(\xi=b-p\)，用 Euclid 内积将它视为 \(\mathfrak t\) 的元素。对任意 \(y\in P\)，线段 \(p+t(y-p)\) 位于 \(P\) 中。最小距离在 \(t=0\) 的单侧导数非负，故
+	\[
+		\langle\xi,y-p\rangle\leq0,
+		\qquad
+		\langle\xi,b\rangle
+		=\langle\xi,p\rangle+\|b-p\|^2
+		>\max_{y\in P}\langle\xi,y\rangle.
+	\]
+	这与式\eqref{g4:eq:1202:fixed-support-extreme}矛盾。因此 \(\mu(M)=P\)。有限集合的凸包中，一个极端点只能是生成点之一，否则它的凸组合表达会把它写成不同两点的真凸组合。所以每个顶点来自固定点。\cite[第5.7节，定理5.21，第158页]{Cannas2006Symplectic}
+\end{proof}
+
+式\eqref{g4:eq:1202:fixed-convex-hull}中的集合称为\term[juduomianti]{矩多面体}[moment polytope]。一个固定分支的像可以位于多面体内部，因而不能把所有固定点都与顶点一一对应。
+
+\begin{example}\label{g4:exm:1202:diagonal-spheres}
+	在两个单位球面上分别取面积形式 \(\omega_j=\mathrm d\theta_j\wedge\mathrm dz_j\)，其中 \(z_j\) 为高度；该表达在极点外成立，并光滑延拓为球面面积形式。对绕竖轴的正旋转，\(\iota_{\partial_{\theta_j}}\omega_j=\mathrm dz_j\)，所以高度就是矩函数。乘积环面作用于 \(S^2\times S^2\) 的矩像为正方形 \([-1,1]^2\)。限制到对角圆后，矩函数变为 \(z_1+z_2\)，像为 \([-2,2]\)。四个固定点的矩值依次为 \(-2,0,0,2\)，中间两个固定点都映到区间内部。凸包公式同时正确描述这两种不同秩的作用。
+\end{example}
+
+从局部权模型到有限凸包，我们已经得到一般紧 Hamilton 环面作用的整体约束。后面再加上有效性及半维条件，切片中的权数与稳定子维数相等，局部锥才会进一步满足 Delzant 的整数格条件。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

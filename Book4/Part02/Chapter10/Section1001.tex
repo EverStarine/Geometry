@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 10.1 群作用和矩映射
 % 纲要位置：几何学计划纲要.md，第 3850 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,218 @@
 \section{群作用和矩映射}
 \label{g4:sec:1001}
 
-待撰写
+平移与旋转都能同时作用于许多轨迹。若每个群方向都由一个 Hamilton 函数产生，把这些函数按方向排列，就得到取值于 Lie 代数对偶的映射。困难在于两次选择：闭一形式未必有全局原函数，而已有的原函数也未必能同时按群的乘法规律变换。本节把这两件事分别检验。流形均取有限维、无边界、Hausdorff、第二可数；在讨论常数与障碍时另明确连通性。
 
 \subsection{基本向量场及作用侧别}
 \label{g4:subsec:1001:01}
-待撰写
+
+设 Lie 群 \(G\) 光滑左作用于 \(M\)，记 \(a_g(x)=g\cdot x\)，于是 \(a_{gh}=a_g\circ a_h\)。其 Lie 代数记为 \(\mathfrak g\)。对 \(\xi\in\mathfrak g\)，沿正向单参数子群运动，定义\term[jibenxiangliangchang]{基本向量场}[fundamental vector field]
+\begin{equation}\label{g4:eq:1001:fundamental-field}
+	\xi_M(x)=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{t=0}\exp(t\xi)\cdot x.
+\end{equation}
+这里的流对一切实时间都有定义，就是 \(a_{\exp(t\xi)}\)。基本场来自一个已经给定的群作用，因而自动完备。
+
+\begin{proposition}\label{g4:prop:1001:fundamental-fields}
+	设有限维实 Lie 群 \(G\) 光滑左作用于光滑流形 \(M\)，并采用式\eqref{g4:eq:1001:fundamental-field}。则 \(\xi\mapsto\xi_M\) 线性，且
+	\begin{equation}\label{g4:eq:1001:fundamental-bracket}
+		(a_g)_*\xi_M=(\operatorname{Ad}_g\xi)_M,
+		\qquad [\xi_M,\eta_M]=-[\xi,\eta]_M.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	第一卷命题17.1.2给出这些公式。这里恢复决定符号的两步。轨道映射 \(g\mapsto g\cdot x\) 在单位元的微分就是 \(\xi\mapsto\xi_M(x)\)，故它线性。恒等式
+	\[
+		g\exp(t\xi)\cdot x=\exp(t\operatorname{Ad}_g\xi)\cdot(g\cdot x)
+	\]
+	给出推前公式。沿 \(\xi_M\) 的流拉回 \(\eta_M\)，得到 \((\operatorname{Ad}_{\exp(-t\xi)}\eta)_M\)。第一卷命题16.1.7说明 \(\operatorname{ad}_\xi\eta=[\xi,\eta]\)，所以对 \(t\) 在零点求导便得负号。
+\end{proof}
+
+例如 \(\operatorname{GL}(m,\mathbb R)\) 左作用于 \(\mathbb R^m\) 时，矩阵 \(A\) 的基本场为 \(x\mapsto Ax\)。按向量场括号的坐标公式，\([Ax,Bx]=(BA-AB)x\)，确实是 \(-[A,B]x\)。若从一个右作用改写成左作用，应使用 \(g\cdot x=x\cdot g^{-1}\)，相应基本场也改变符号。
+
+\begin{definition}\label{g4:def:1001:symplectic-action}
+	设 \((M,\omega)\) 为辛流形。若光滑左作用 \(a:G\times M\to M\) 满足 \(a_g^*\omega=\omega\) 对每个 \(g\in G\) 成立，则称它为\term[xinqunzuoyong]{辛作用}[symplectic action]。
+\end{definition}
+
+辛作用的每个基本场都是辛向量场，因此 \(\iota_{\xi_M}\omega\) 是闭一形式。反过来，若全部基本场都保辛，只能先推出单位连通分支 \(G^0\) 保辛：每个指数元保辛，第一卷命题16.2.5再说明有限个指数元生成 \(G^0\)。其他连通分支中的元素仍须逐一满足作用保持辛形式的要求。
 
 \subsection{Hamilton 作用与矩映射分量}
 \label{g4:subsec:1001:02}
-待撰写
+
+对固定方向 \(\xi\)，求生成函数就是解 \(\mathrm{d}H_\xi=\iota_{\xi_M}\omega\)。由于右边对 \(\xi\) 线性，希望左边也由一份线性的函数族给出。选一组基并对基方向选择原函数，就能把逐个方向的解组织起来。
+
+\begin{definition}\label{g4:def:1001:moment-map}
+	设 \(G\) 辛作用于 \((M,\omega)\)。若光滑映射 \(\mu:M\to\mathfrak g^*\) 的每个分量 \(\mu^\xi(x)=\langle\mu(x),\xi\rangle\) 满足
+	\begin{equation}\label{g4:eq:1001:moment-equation}
+		\mathrm{d}\mu^\xi=\iota_{\xi_M}\omega
+		\qquad(\xi\in\mathfrak g),
+	\end{equation}
+	则称 \(\mu\) 为该作用的\term[juyingshe]{矩映射}[moment map]。本节先把分量方程与下文的等变条件分开；有些文献将等变性一并纳入矩映射的定义。
+\end{definition}
+
+\begin{proposition}\label{g4:prop:1001:component-existence}
+	设 \(G\) 辛作用于非空连通辛流形 \((M,\omega)\)。满足分量方程的矩映射存在，当且仅当每个 \(\iota_{\xi_M}\omega\) 恰当；只检查 \(\mathfrak g\) 的一组基就足够。任意两个这样的映射之差是 \(\mathfrak g^*\) 中的一个常向量。
+\end{proposition}
+\begin{proof}
+	必要性直接来自分量方程。反之，取基 \(e_1,\ldots,e_k\) 与对偶基 \(e^1,\ldots,e^k\)，选择 \(\mathrm{d}H_j=\iota_{(e_j)_M}\omega\)，定义 \(\mu=\sum_jH_je^j\)。它光滑；对 \(\xi=\sum_j\xi^je_j\)，分量为 \(\mu^\xi=\sum_j\xi^jH_j\)，满足所需方程。若 \(\nu\) 也是解，则每个 \(\nu^{e_j}-\mu^{e_j}\) 的微分为零，在连通 \(M\) 上为常数。这些常数合成一个固定的 \(b\in\mathfrak g^*\)。
+\end{proof}
+
+\begin{example}\label{g4:exm:1001:linear-angular}
+	在 \(\mathrm{T}^*\mathbb R^n\) 上，\(\omega=\sum_j\mathrm{d}q^j\wedge\mathrm{d}p_j\)。平移 \(a\cdot(q,p)=(q+a,p)\) 的基本场为 \(\sum_ja^j\partial_{q^j}\)，故 \(\mu(q,p)=p\)。在三维情形，旋转 \(R\cdot(q,p)=(Rq,Rp)\) 的基本场为 \((a\times q,a\times p)\)，其中将 \(\mathfrak{so}(3)\) 识别为带叉积括号的 \(\mathbb R^3\)。直接求微分得
+	\[
+		\mathrm{d}\bigl(a\cdot(q\times p)\bigr)
+		=(a\times q)\cdot\mathrm{d}p-(a\times p)\cdot\mathrm{d}q.
+	\]
+	所以矩映射为 \(\mu(q,p)=q\times p\)。前者收集线动量，后者收集角动量；矩映射把这些随方向线性变化的量写成一个对象。
+\end{example}
+
+\begin{example}\label{g4:exm:1001:circle-sign}
+	在 \(\mathbb C\) 上写 \(z=x+\mathrm{i}y\)、\(\omega=\mathrm{d}x\wedge\mathrm{d}y\)，圆周参数取 \(\mathbb R/(2\pi\mathbb Z)\)。正旋转 \(e^{\mathrm{i}t}z\) 的基本场为 \(-y\partial_x+x\partial_y\)，收缩得到 \(-\mathrm{d}(|z|^2/2)\)，故矩映射是 \(-|z|^2/2\)。负旋转 \(e^{-\mathrm{i}t}z\) 的矩映射则是 \(|z|^2/2\)。后面用球面构造射影空间时采用后一种作用。
+\end{example}
+
+矩映射分量还说明对称性为什么产生守恒量。若 \(H\) 在群作用下不变，则沿任一基本场的导数为零，于是
+\[
+	X_H\mu^\xi=\{\mu^\xi,H\}=-\xi_MH=0.
+\]
+因而 \(\mu\) 沿 \(H\) 的每条轨迹保持常值。反过来，若全部分量沿 \(H\) 的轨迹不变，则 \(\xi_MH=0\) 对每个 \(\xi\) 成立，故 \(H\) 被 \(G^0\) 保持；当 \(G\) 连通时，它被整个群保持。这个对应称为 Hamilton 形式的\term[noetherdingli]{Noether 定理}[Noether's theorem]。\footnote{Emmy Amalie Noether（1882--1935），德国数学家，研究抽象代数，并建立连续对称性与守恒律之间的关系。}上述计算就是此处所需版本的完整证明；流只在实际存在的时间区间内使用。\cite[第5.6节，定理5.18，第155--156页]{Cannas2006Symplectic}
 
 \subsection{等变性和加常数的自由}
 \label{g4:subsec:1001:03}
-待撰写
+
+群作用不仅移动点，也改变所观察的 Lie 代数方向。由第一卷的伴随表示，在对偶上取
+\begin{equation}\label{g4:eq:1001:coadjoint}
+	\langle\operatorname{Ad}_g^*\lambda,\xi\rangle
+	=\langle\lambda,\operatorname{Ad}_{g^{-1}}\xi\rangle.
+\end{equation}
+这就是余伴随作用\termidx[yubansuizuoyong]{余伴随作用}；公式中的逆元保证 \(\operatorname{Ad}_{gh}^*=\operatorname{Ad}_g^*\operatorname{Ad}_h^*\)。它也恢复了\secref{g4:sec:0904}所用的约定。
+
+\begin{definition}\label{g4:def:1001:equivariant}
+	设 \(G\) 辛作用于 \((M,\omega)\)。若矩映射 \(\mu\) 还满足
+	\begin{equation}\label{g4:eq:1001:equivariance}
+		\mu(g\cdot x)=\operatorname{Ad}_g^*\mu(x)
+		\qquad(g\in G,\ x\in M),
+	\end{equation}
+	则称它为\term[dengbianjuyingshe]{等变矩映射}[equivariant moment map]。存在等变矩映射的作用称为\term[Hamiltonzuoyong]{Hamilton 作用}[Hamiltonian action]，相应数据 \((M,\omega,G,\mu)\) 称为 Hamilton \(G\) 空间。
+\end{definition}
+
+线动量与角动量都满足等变性：平移群交换，所以其余伴随作用平凡，而 \(p\) 在平移下不变；旋转保持叉积，所以 \((Rq)\times(Rp)=R(q\times p)\)。交换群的等变条件总是矩映射的不变性。\cite[定义5.16及其例，第154--155页]{Cannas2006Symplectic}
+
+\begin{proposition}\label{g4:prop:1001:equivariance-bracket}
+	设 \(G\) 辛作用于辛流形 \((M,\omega)\)，\(\mu\) 满足分量方程。若 \(\mu\) 等变，则
+	\begin{equation}\label{g4:eq:1001:infinitesimal-equivariance}
+		\{\mu^\xi,\mu^\eta\}=\mu^{[\xi,\eta]}
+		\qquad(\xi,\eta\in\mathfrak g).
+	\end{equation}
+	若 \(G\) 连通，则反过来也成立。
+\end{proposition}
+\begin{proof}
+	在等变式中取 \(g=\exp(t\eta)\)，与 \(\xi\) 配对后在零点求导。左边是 \(\eta_M\mu^\xi=\{\mu^\xi,\mu^\eta\}\)，右边由 \(\operatorname{Ad}_{\exp(-t\eta)}\xi\) 的导数得到 \(\mu^{[\xi,\eta]}\)，证明必要性。
+
+	反之，固定 \(\eta\) 与 \(x\)，令 \(u(t)=\mu(\exp(t\eta)\cdot x)\)。括号等式给出
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}\langle u(t),\xi\rangle
+		=\langle u(t),[\xi,\eta]\rangle.
+	\]
+	这是 \(\mathfrak g^*\) 上的常系数线性方程；\(\operatorname{Ad}_{\exp(t\eta)}^*\mu(x)\) 满足相同方程及初值，故二者相等。第一卷命题16.2.5保证连通 \(G\) 中每个元素都是有限个指数元的乘积，逐次使用此等式便得到整个群的等变性。
+\end{proof}
+
+\begin{proposition}\label{g4:prop:1001:constant-freedom}
+	设 \(G\) Hamilton 作用于非空连通辛流形 \((M,\omega)\)，\(\mu\) 为等变矩映射。则全部等变矩映射恰为
+	\[
+		\mu+b,\qquad b\in(\mathfrak g^*)^G
+		=\{b:\operatorname{Ad}_g^*b=b\text{ 对每个 }g\in G\}.
+	\]
+	若 \(G\) 连通，则 \((\mathfrak g^*)^G\) 是消灭 \([\mathfrak g,\mathfrak g]\) 的协向量空间。
+\end{proposition}
+\begin{proof}
+	分量方程的全部解已经由\cref{g4:prop:1001:component-existence}确定为 \(\mu+b\)。将其代入等变式，恰好剩下 \(b=\operatorname{Ad}_g^*b\)。在单位元求导，得到 \(b([\xi,\eta])=0\)。反之，此条件使 \(b\) 沿每个余伴随指数曲线不变，连通性与指数生成性给出整个群的不变性。
+\end{proof}
+
+因此交换群可任意平移矩映射的常数，而连通且 \([\mathfrak g,\mathfrak g]=\mathfrak g\) 的群至多有一个等变矩映射。常数平移会改变哪一张水平集被称为零水平集；在约化问题中，必须把所选矩映射和约化值一起说明。
+
+\begin{proposition}\label{g4:prop:1001:normalization}
+	设 \(G\) 辛作用于非空连通辛流形 \((M,\omega)\)，且分量方程有解。以下任一归一化都给出等变矩映射：若 \(G\) 有共同不动点 \(x_0\)，要求 \(\mu(x_0)=0\)；若 \(M\) 闭，要求 \(\int_M\mu\,\omega^n=0\)，其中 \(2n=\dim M\)，积分逐分量定义。
+\end{proposition}
+\begin{proof}
+	对任意 \(g\)，推前公式及保辛性给出
+	\[
+		\mathrm{d}(\mu^\xi\circ a_g)
+		=\iota_{(\operatorname{Ad}_{g^{-1}}\xi)_M}\omega
+		=\mathrm{d}\mu^{\operatorname{Ad}_{g^{-1}}\xi}.
+	\]
+	故 \(\mu\circ a_g-\operatorname{Ad}_g^*\mu\) 在连通 \(M\) 上为常向量。在不动点处，两项都为零；在闭流形情形，两项的积分都为零，因为 \(a_g\) 保持辛体积。于是此常向量为零。归一化可分别通过减去 \(\mu(x_0)\) 或 \(\int_M\mu\omega^n/\int_M\omega^n\) 达到。
+\end{proof}
 
 \subsection{Lie 代数余循环与存在障碍}
 \label{g4:subsec:1001:04}
-待撰写
+
+先把求原函数的障碍写成一个线性映射：
+\begin{equation}\label{g4:eq:1001:first-obstruction}
+	\mathcal O:\mathfrak g\longrightarrow H^1_{\mathrm{dR}}(M),
+	\qquad \xi\longmapsto[\iota_{\xi_M}\omega].
+\end{equation}
+\cref{g4:prop:0903:infinitesimal-obstruction}及基本场的括号公式表明，\(\mathcal O([\xi,\eta])=0\)。所以它只依赖于交换化空间 \(\mathfrak g/[\mathfrak g,\mathfrak g]\)。\(\mathcal O=0\) 恰好保证分量方程有解；例如 \(H^1_{\mathrm{dR}}(M)=0\) 或 \(\mathfrak g=[\mathfrak g,\mathfrak g]\) 时，这一障碍自动消失。
+
+\begin{example}\label{g4:exm:1001:torus-obstruction}
+	在 \(\mathbb T^2=\mathbb R^2/\mathbb Z^2\) 上取 \(\omega=\mathrm{d}q\wedge\mathrm{d}p\)。圆周群 \(\mathbb R/\mathbb Z\) 沿 \(q\) 方向平移，基本场为 \(\partial_q\)，对应闭一形式 \(\mathrm{d}p\)。它在 \(p\) 方向的圆周上积分为 \(1\)，故不恰当。这个辛作用没有满足分量方程的矩映射，正是前章通量障碍的无穷小表现。
+\end{example}
+
+即使 \(\mathcal O=0\)，已选函数的 Poisson 括号还可能差一个常数。设 \(M\) 连通，选择分量方程的解 \(\mu\)，定义
+\begin{equation}\label{g4:eq:1001:cocycle}
+	c(\xi,\eta)=\{\mu^\xi,\mu^\eta\}-\mu^{[\xi,\eta]}.
+\end{equation}
+
+\begin{proposition}\label{g4:prop:1001:lie-cocycle}
+	设 \(G\) 辛作用于非空连通辛流形 \((M,\omega)\)，\(\mu\) 满足分量方程。式\eqref{g4:eq:1001:cocycle}为与点无关的交替双线性实函数，并满足
+	\begin{equation}\label{g4:eq:1001:cocycle-identity}
+		c([\xi,\eta],\zeta)+c([\eta,\zeta],\xi)+c([\zeta,\xi],\eta)=0.
+	\end{equation}
+	将 \(\mu\) 改成 \(\mu+b\) 后，\(c\) 改成 \(c-b([\ ,\ ])\)。若 \(G\) 连通，则存在等变矩映射，当且仅当 \(\mathcal O=0\)，且由任一分量解所得的 \(c\) 可以写成 \(b([\xi,\eta])\)。
+\end{proposition}
+\begin{proof}
+	由\cref{g4:prop:0902:hamiltonian-bracket}，
+	\[
+		X_{\{\mu^\xi,\mu^\eta\}}
+		=-[\xi_M,\eta_M]=[\xi,\eta]_M
+		=X_{\mu^{[\xi,\eta]}}.
+	\]
+	因此 \(\mathrm{d}c(\xi,\eta)=0\)，连通性使其为常数。双线性与交替性直接来自两个括号。
+
+	在函数括号的 Jacobi 恒等式中代入 \(\mu^\xi,\mu^\eta,\mu^\zeta\)。每个内层括号等于 \(\mu^{[\xi,\eta]}+c(\xi,\eta)\)；常数与函数的括号为零，外层括号再用同一分解。含 \(\mu\) 的三项由 \(\mathfrak g\) 的 Jacobi 恒等式相消，余下正是式\eqref{g4:eq:1001:cocycle-identity}。
+
+	加常数不改变 Poisson 括号，却使 \(\mu^{[\xi,\eta]}\) 增加 \(b([\xi,\eta])\)，所以得到变换公式。最后，\(\mathcal O=0\) 给出初始分量解；能选 \(b\) 消去 \(c\) 恰好使其保持 Lie 括号，再用\cref{g4:prop:1001:equivariance-bracket}得到等变性。反向取等变矩映射时，两个障碍都为零。
+\end{proof}
+
+满足式\eqref{g4:eq:1001:cocycle-identity}的交替双线性函数称为取平凡实系数的\term[liedaishuerciyuxunhuan]{Lie 代数二次余循环}[Lie algebra 2-cocycle]。它们构成的空间记为 \(Z^2(\mathfrak g;\mathbb R)\)；形如 \(b([\xi,\eta])\) 的余循环构成子空间 \(B^2(\mathfrak g;\mathbb R)\)。Jacobi 恒等式直接保证这确是子空间包含。商空间
+\[
+	H^2(\mathfrak g;\mathbb R)=Z^2(\mathfrak g;\mathbb R)/B^2(\mathfrak g;\mathbb R)
+\]
+称为二次\term[liedaishushangtongdiao]{Lie 代数上同调}[Lie algebra cohomology]；只把 \(c\) 改为另一代表，不改变障碍类 \([c]\)。通常上链微分写作 \((\delta b)(\xi,\eta)=-b([\xi,\eta])\)，它给出的余边界子空间相同。这里的上同调属于 Lie 代数，与第一重障碍所在的流形 de Rham 上同调是不同对象。\cite[第5.6节，第156--157页]{Cannas2006Symplectic}
+
+\begin{example}\label{g4:exm:1001:translation-cocycle}
+	令交换群 \(\mathbb R^2\) 平移辛平面 \((\mathbb R^2_{q,p},\mathrm{d}q\wedge\mathrm{d}p)\)。对基方向 \(e_1,e_2\)，可取 \(\mu^{e_1}=p\)、\(\mu^{e_2}=-q\)。每个基本场都是 Hamilton 场，但
+	\[
+		c(e_1,e_2)=\{p,-q\}=1.
+	\]
+	Lie 代数交换，所以 \(b([e_1,e_2])=0\) 对每个 \(b\) 成立；任何常数调整都不能消去 \(c\)。因此此作用没有等变矩映射。这与单方向平移有矩映射并不冲突：同时组织两个方向时，新增了它们的括号相容条件。
+\end{example}
+
+\begin{example}\label{g4:exm:1001:so3-existence}
+	设连通群 \(\operatorname{SO}(3)\) 辛作用于连通辛流形。\(\mathfrak{so}(3)\cong\mathbb R^3\) 的括号为叉积，故 \([\mathfrak g,\mathfrak g]=\mathfrak g\)，第一重障碍为零。任意交替双线性函数 \(c\) 都可唯一写成 \(b(\xi\times\eta)\)：只需按 \(e_1\times e_2=e_3\) 及其循环式指定 \(b\) 在基上的值。这直接消去第二重障碍。所以每个这样的辛作用都是 Hamilton 作用，且等变矩映射唯一。这个三维计算不需要调用一般半单 Lie 代数的上同调定理。
+\end{example}
+
+还可以直接看到不连通群带来的额外条件。对分量解 \(\mu\)，令
+\[
+	\sigma(g)=\mu(g\cdot x)-\operatorname{Ad}_g^*\mu(x).
+\]
+归一化命题中的微分计算说明它与 \(x\) 无关，且光滑。逐次作用给出
+\begin{equation}\label{g4:eq:1001:group-cocycle}
+	\sigma(gh)=\sigma(g)+\operatorname{Ad}_g^*\sigma(h),\qquad
+	\sigma_{\mu+b}(g)=\sigma(g)+b-\operatorname{Ad}_g^*b.
+\end{equation}
+这样的变换律称为群的\term[qunyiciyuxunhuan]{一次余循环}[group 1-cocycle]。等变性恰好是 \(\sigma=0\)，而
+\[
+	\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{0}
+	\langle\sigma(\exp(t\eta)),\xi\rangle=c(\xi,\eta).
+\]
+所以 \(c=0\) 只控制单位分支。具体地，\(G=\mathbb R\times\mathbb Z\) 在辛平面上作用为 \((s,k)\cdot(q,p)=(q+s,p+k)\)。它的 Lie 代数只有 \(q\) 平移方向，分量解 \(\mu=p\) 的二次余循环为零；但 \(\sigma(s,k)=k\)，而交换群下加常数不能改变 \(\sigma\)。这个例子说明，完整的 Hamilton 作用还须满足离散分支的等变条件。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

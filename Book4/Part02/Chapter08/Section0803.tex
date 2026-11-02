@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 8.3 沿子流形的相对方法
 % 纲要位置：几何学计划纲要.md，第 3793 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,297 @@
 \section{沿子流形的相对方法}
 \label{g4:sec:0803}
 
-待撰写
+Darboux 坐标把一个点附近的辛形式化为标准形式。若要同时保留一整条子流形，坐标改变便受到约束：不仅要把形式变对，还要知道子流形上的点及横向的一阶数据如何变化。本节把这两项任务分开。先用管状坐标匹配沿子流形的线性数据，再用一个沿子流形消失的向量场修正邻域中的形式。辛子流形由自身的辛形式与辛法丛控制邻域；Lagrange 子流形则以余切丛为统一模型。
 
 \subsection{相对 Poincaré 引理}
 \label{g4:subsec:0803:01}
-待撰写
+
+设 \(i:S\hookrightarrow M\) 为嵌入。对二形式 \(\beta\)，条件 \(i^*\beta=0\) 只表示 \(\beta_x(u,v)=0\) 对 \(u,v\in\mathrm{T}_xS\) 成立；更强的条件 \(\beta_x=0\) 表示它在整个 \(\mathrm{T}_xM\times\mathrm{T}_xM\) 上为零。前者使邻域中的闭形式有相对原始，后者还将使原始的一阶导数消失。下面逐项证明这两个结论。
+
+\ProseParagraphBreak
+
+第二卷定理15.3.5给出子流形的\term[guanzhuanglinyu]{管状邻域}[tubular neighborhood]：可将 \(S\) 的一个邻域识别为某向量丛 \(\pi:E\to S\) 的变半径圆盘丛
+\[
+	W=\{e\in E:|e|<\varepsilon(\pi(e))\},\qquad \varepsilon(x)>0.
+\]
+零截面记为 \(s:S\to W\)。这样的邻域在纤维缩放 \(H_t(e)=te\)、\(0\le t\le1\) 下保持不变；\(H_1=\operatorname{id}\)，\(H_0=s\circ\pi\)。半径随基点变化不影响这一性质。
+
+\begin{lemma}[相对 Poincaré 引理]\label{g4:lem:0803:relative-poincare}
+	设 \(\pi:E\to S\) 是无边界光滑流形上的实光滑向量丛，\(W\subset E\) 是包含零截面、在 \(e\mapsto te\)、\(0\le t\le1\) 下不变的开集。对 \(k\ge1\) 及 \(\gamma\in\Omega^k(W)\)，令
+	\begin{equation}\label{g4:eq:0803:fiber-homotopy}
+		\begin{aligned}
+			&(K\gamma)_e(v_1,\ldots,v_{k-1})\\
+			&\quad=\int_0^1\gamma_{te}\bigl(\partial_tH(t,e),\mathrm{d}H_t(v_1),\ldots,\mathrm{d}H_t(v_{k-1})\bigr)\,\mathrm{d}t.
+		\end{aligned}
+	\end{equation}
+	其中 \(H(t,e)=te\)。则 \(K\gamma\) 光滑，并满足
+	\begin{equation}\label{g4:eq:0803:homotopy-identity}
+		\mathrm{d}K\gamma+K\mathrm{d}\gamma=\gamma-\pi^*s^*\gamma.
+	\end{equation}
+	特别地，若 \(\beta\in\Omega^2(W)\) 闭且 \(s^*\beta=0\)，则 \(\alpha=K\beta\) 满足 \(\mathrm{d}\alpha=\beta\)，且 \(\alpha_{0_x}=0\) 作为整个 \(\mathrm{T}_{0_x}^*E\) 中的协向量成立。若进一步有 \(\beta_{0_x}=0\) 作为整个环境切空间上的二形式成立，则 \(\alpha\) 的所有局部系数及其全部一阶偏导数沿零截面都为零。
+\end{lemma}
+\begin{proof}
+	映射 \(H:[0,1]\times W\to W\) 光滑，式\eqref{g4:eq:0803:fiber-homotopy}的被积函数在 \(t=0\) 也光滑，故对紧参数区间积分仍得到光滑形式。将拉回分解为
+	\[
+		H^*\gamma=\mathrm{d}t\wedge\eta_t+\zeta_t,
+		\qquad \zeta_t=H_t^*\gamma,
+	\]
+	其中 \(\eta_t\) 与 \(\zeta_t\) 都只含 \(W\) 方向的微分，且 \(K\gamma=\int_0^1\eta_t\,\mathrm{d}t\)。外微分给出
+	\[
+		H^*\mathrm{d}\gamma
+		=\mathrm{d}t\wedge\bigl(\partial_t\zeta_t-\mathrm{d}\eta_t\bigr)+\mathrm{d}\zeta_t.
+	\]
+	因此
+	\[
+		K\mathrm{d}\gamma
+		=\zeta_1-\zeta_0-\mathrm{d}\int_0^1\eta_t\,\mathrm{d}t
+		=\gamma-\pi^*s^*\gamma-\mathrm{d}K\gamma,
+	\]
+	证明同伦恒等式。若 \(\mathrm{d}\beta=0\) 且 \(s^*\beta=0\)，立即得到 \(\mathrm{d}K\beta=\beta\)。
+
+	在零向量 \(e=0_x\) 处，路径 \(H(t,0_x)\) 恒定，故 \(\partial_tH(t,0_x)=0\)。式\eqref{g4:eq:0803:fiber-homotopy}于是对任意环境切向量都取零，证明 \(\alpha_{0_x}=0\)。这比仅有 \(s^*\alpha=0\) 强，因为后者只检验切于零截面的向量。
+
+	最后取局部丛坐标 \((x,y)\)，其中 \(y=0\) 为零截面。若 \(\beta_{(x,0)}=0\)，则它相对于 \(\mathrm{d}x^i,\mathrm{d}y^a\) 的所有系数 \(b(x,y)\) 均满足 \(b(x,0)=0\)，并可写成
+	\[
+		b(x,y)=\sum_a y^a\int_0^1\partial_{y^a}b(x,sy)\,\mathrm{d}s.
+	\]
+	在 \(K\beta\) 的公式中，\(\partial_tH=(0,y)\) 再贡献一个纤维坐标因子，而 \(\mathrm{d}H_t(u,v)=(u,tv)\)。因此 \(\alpha\) 的每个系数都是若干 \(y^ay^b\) 乘光滑函数的和。其值及所有一阶偏导数在 \(y=0\) 时均为零。由于系数本身已为零，这一阶消失性质在换坐标后仍成立。
+\end{proof}
+
+\begin{example}\label{g4:exm:0803:relative-vanishing}
+	在 \(\mathbb R^2_{x,y}\) 中取 \(S=\{y=0\}\)、\(\beta=\mathrm{d}x\wedge\mathrm{d}y\)，并沿 \(y\) 方向缩放。虽然 \(i^*\beta=0\)，\(\beta\) 沿 \(S\) 作为环境二形式并不为零。公式给出 \(K\beta=-y\,\mathrm{d}x\)：它作为整个协向量沿 \(S\) 为零，但一阶导数并不为零，且 \(\mathrm{d}(K\beta)=\beta\)。这一算例分别展示了引理中两种消失条件的作用。
+\end{example}
+
+把引理通过管状邻域映射送回 \(M\)，便得到沿闭嵌入子流形的相对原始。对 Moser 方程，原始的消失使向量场固定子流形；原始的一阶消失还使流的微分在那里保持恒等。
+
+\begin{theorem}[相对 Moser 定理]\label{g4:thm:0803:relative-moser}
+	设 \(M\) 为无边界光滑流形，\(S\subset M\) 为闭的无边界嵌入子流形，\(\omega_0,\omega_1\) 为 \(S\) 的某共同开邻域上的辛形式。假设对每个 \(x\in S\)，有
+	\begin{equation}\label{g4:eq:0803:ambient-agreement}
+		(\omega_0)_x(u,v)=(\omega_1)_x(u,v)
+		\qquad\bigl(u,v\in\mathrm{T}_xM\bigr).
+	\end{equation}
+	则存在含 \(S\) 的开邻域 \(U\) 及光滑族 \(\varphi_t:U\to M\)、\(0\le t\le1\)，每个 \(\varphi_t\) 都是到其开像的微分同胚，且
+	\[
+		\varphi_0=\operatorname{id},\qquad
+		\varphi_t|_S=\operatorname{id}_S,\qquad
+		\mathrm{d}\varphi_t|_{\mathrm{T}M|_S}=\operatorname{id},\qquad
+		\varphi_t^*((1-t)\omega_0+t\omega_1)=\omega_0.
+	\]
+	特别地，\(\varphi_1\) 是固定 \(S\) 且保持上述一阶数据的邻域辛同胚。不要求 \(S\) 紧致。
+\end{theorem}
+\begin{proof}
+	令 \(\beta=\omega_1-\omega_0\)、\(\omega_t=\omega_0+t\beta\)。两形式闭，故 \(\beta\) 闭；式\eqref{g4:eq:0803:ambient-agreement}说明 \(\beta\) 沿 \(S\) 作为整个二张量为零。在 \([0,1]\times S\) 上，\(\omega_t\) 始终等于非退化的 \(\omega_0\)。对每个 \(x\in S\)，用非退化性的开性及参数区间的有限覆盖，可选一个点邻域 \(V_x\)，使所有 \(\omega_t\) 在 \(V_x\) 上都非退化。取这些邻域的并，再在其中选一张变半径管状邻域，便得到所有 \(t\) 共用的非退化区间与空间定义域 \(V\)。
+
+	由\cref{g4:lem:0803:relative-poincare}，在缩小后的 \(V\) 上有光滑一形式 \(\alpha\)，满足 \(\mathrm{d}\alpha=\beta\)，且 \(\alpha\) 的值与一阶导数沿 \(S\) 为零。逐点求解
+	\[
+		\iota_{X_t}\omega_t=-\alpha.
+	\]
+	非退化性给出唯一光滑的时间依赖向量场。由 \(\alpha|_S=0\) 得 \(X_t|_S=0\)。在坐标中对这个线性方程求一阶导数，含 \(X_t\) 的系数导数项在 \(S\) 上为零，右边的导数也为零；再次由非退化性，得到 \(\mathrm{D}X_t|_S=0\)。向量场在该点为零，所以这个导数不依赖坐标选择。
+
+	现在处理流的存在时间。对每个 \(x\in S\)，常值曲线 \(t\mapsto x\) 是存在于整个 \([0,1]\) 的解。由\cref{g4:prop:0801:relative-flow}中的演化域开性，存在 \(x\) 的一个开邻域 \(U_x\)，其初值解都能在 \(V\) 内存在到时间1。具体地，可沿常值轨道对紧时间区间作有限次局部存在与初值连续依赖的接续。取 \(U=\bigcup_{x\in S}U_x\)，这些局部解由唯一性相容，给出同一光滑流 \(\varphi_t\)。每张映射的逆由反向演化给出，故是到开像的微分同胚。非紧时这里只逐点选择 \(U_x\)，没有使用统一正半径。
+
+	\cref{g4:prop:0801:pullback-derivative}及闭性给出
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}\varphi_t^*\omega_t
+		=\varphi_t^*\bigl(\mathrm{d}\alpha+\mathrm{d}\iota_{X_t}\omega_t\bigr)=0.
+	\]
+	初值为 \(\omega_0\)，故所需拉回恒等式成立。常值解给出 \(\varphi_t|_S=\operatorname{id}_S\)；沿这些解的变分方程为
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}\mathrm{d}\varphi_t|_x
+		=\mathrm{D}X_t|_x\circ\mathrm{d}\varphi_t|_x=0,
+	\]
+	结合初值恒等，得到整个环境切空间上的微分恒等。
+\end{proof}
+
+若只知道 \(i^*\omega_0=i^*\omega_1\)，直线路径未必可用。例如在平面中沿 \(x\) 轴，两形式 \(\mathrm{d}x\wedge\mathrm{d}y\) 与 \(-\mathrm{d}x\wedge\mathrm{d}y\) 的拉回都为零，而其中点为零形式。接下来先匹配横向线性数据，正是为了把这种较弱的信息变成式\eqref{g4:eq:0803:ambient-agreement}。相对 Moser 的紧子流形版本见\cite[定理1.8，第90页]{Cannas2006Symplectic}；上面的变半径与流的定义域论证同时处理闭的非紧子流形。
 
 \subsection{匹配法向线性数据}
 \label{g4:subsec:0803:02}
-待撰写
+
+两个子流形的邻域可能位于不同流形中。为了比较二形式，先要有一张普通微分同胚把它们放到同一空间里。只规定子流形上的映射还不够；我们希望同时实现一份预先指定的环境切丛同构。
+
+\begin{lemma}\label{g4:lem:0803:realize-first-jet}
+	设 \(M_0,M_1\) 是同维的无边界光滑流形，\(S_i\subset M_i\) 是闭的无边界嵌入子流形，\(f:S_0\to S_1\) 为微分同胚。设有覆盖 \(f\) 的光滑实向量丛同构
+	\[
+		F:\mathrm{T}M_0|_{S_0}\longrightarrow\mathrm{T}M_1|_{S_1},
+		\qquad F|_{\mathrm{T}S_0}=\mathrm{d}f.
+	\]
+	则存在邻域微分同胚 \(\Phi:U_0\to U_1\)，其中 \(S_i\subset U_i\subset M_i\)，满足 \(\Phi|_{S_0}=f\) 及 \(\mathrm{d}\Phi|_{\mathrm{T}M_0|_{S_0}}=F\)。
+\end{lemma}
+\begin{proof}
+	由第一卷定理12.3.11取一个光滑丛度量，再由该卷命题12.3.12在 \(\mathrm{T}M_0|_{S_0}\) 中取 \(\mathrm{T}S_0\) 的光滑正交补丛 \(E_0\)，并令 \(E_1=F(E_0)\)。由 \(F|_{\mathrm{T}S_0}=\mathrm{d}f\)，有
+	\[
+		\mathrm{T}M_i|_{S_i}=\mathrm{T}S_i\oplus E_i,
+	\]
+	且 \(F_E=F|_{E_0}:E_0\to E_1\) 是覆盖 \(f\) 的丛同构。
+
+	第二卷命题15.3.1在证明管状邻域定理时计算了局部指数映射的零截面微分：若 \(\tau_i(e)=\exp_{\pi(e)}(e)\)，其中使用任意光滑联络，则
+	\[
+		\tau_i(0_x)=x,\qquad
+		\mathrm{d}(\tau_i)_{0_x}(u,e)=u+e
+		\quad\bigl(u\in\mathrm{T}_xS_i,\ e\in(E_i)_x\bigr).
+	\]
+	该计算只用初速度的一阶变分，因而也适用于这里选定的补丛，并不要求它是某个预定度量的法丛。右边为同构。第二卷引理15.3.3的零截面缩小论证遂给出变半径邻域 \(W_i\subset E_i\)，使 \(\tau_i:W_i\to M_i\) 都是到开像的微分同胚。
+
+	将 \(W_0\) 换成 \(W_0\cap F_E^{-1}(W_1)\)，定义
+	\begin{equation}\label{g4:eq:0803:tubular-matching}
+		\Phi=\tau_1\circ F_E\circ\tau_0^{-1}.
+	\end{equation}
+	下面的交换图显示了这一步：上方只匹配线性纤维，下方得到实际邻域映射。
+	\[
+		\begin{tikzcd}[column sep=large,row sep=large]
+			W_0 \arrow[r,"F_E"] \arrow[d,"\tau_0"'] & F_E(W_0) \arrow[d,"\tau_1"] \\
+			U_0 \arrow[r,"\Phi"'] & U_1
+		\end{tikzcd}
+	\]
+	零截面处 \(\mathrm{d}F_E(u,e)=(\mathrm{d}f(u),F_E(e))\)。结合两张 \(\tau_i\) 的微分公式，式\eqref{g4:eq:0803:tubular-matching}的微分把 \(u+e\) 送到 \(\mathrm{d}f(u)+F_E(e)=F(u+e)\)。因此基点映射和全部一阶数据都得到实现。
+\end{proof}
+
+这一构造也解释了法丛为何出现：选择补丛，是给商丛 \(\mathrm{T}M|_S/\mathrm{T}S\) 的每个类选择一个光滑代表；指数映射再把短代表向量变成实际的邻域点。不同选择改变初始的 \(\Phi\)，但只要它的一阶数据使辛形式匹配，相对方法就能完成修正。
+
+\begin{corollary}\label{g4:cor:0803:symplectic-first-jet}
+	设 \((M_i,\omega_i)\) 是同维无边界辛流形，\(S_i\subset M_i\) 是闭的无边界嵌入子流形。若微分同胚 \(f:S_0\to S_1\) 有覆盖它的光滑丛同构 \(F:\mathrm{T}M_0|_{S_0}\to\mathrm{T}M_1|_{S_1}\)，满足
+	\[
+		F|_{\mathrm{T}S_0}=\mathrm{d}f,
+		\qquad (\omega_1)_{f(x)}(F_xu,F_xv)=(\omega_0)_x(u,v),
+	\]
+	则有邻域辛同胚 \(\Psi:U_0\to U_1\)，使 \(\Psi|_{S_0}=f\) 且 \(\mathrm{d}\Psi|_{\mathrm{T}M_0|_{S_0}}=F\)。
+\end{corollary}
+\begin{proof}
+	由\cref{g4:lem:0803:realize-first-jet}取得 \(\Phi\)。两辛形式 \(\omega_0\) 与 \(\widetilde\omega_1=\Phi^*\omega_1\) 在 \(S_0\) 上作为整个环境二张量相等，因为 \(\mathrm{d}\Phi=F\)。\cref{g4:thm:0803:relative-moser}给出缩小邻域后的 \(\varphi\)，满足 \(\varphi^*\widetilde\omega_1=\omega_0\)、\(\varphi|_{S_0}=\operatorname{id}\)、\(\mathrm{d}\varphi|_{S_0}=I\)。取 \(\Psi=\Phi\circ\varphi\)，则
+	\[
+		\Psi^*\omega_1=\omega_0,\qquad
+		\Psi|_{S_0}=f,\qquad
+		\mathrm{d}\Psi|_{S_0}=F\circ I=F.
+	\]
+	令目标邻域为 \(\Psi(U_0)\) 即可。
+\end{proof}
 
 \subsection{辛子流形邻域定理}
 \label{g4:subsec:0803:03}
-待撰写
+
+若 \(S\subset(M,\omega)\) 本身是辛子流形，切空间的辛正交补就是一个自然的横向选择。它不需要辅助度量，而且仍带有非退化辛配对。
+
+\begin{definition}\label{g4:def:0803:symplectic-normal}
+	带有光滑纤维非退化交替型 \(\Omega\) 的实光滑向量丛 \((E,\Omega)\)，称为\term[xinxiangliangcong]{辛向量丛}[symplectic vector bundle]。辛向量丛同构是逐纤维保持这些配对的光滑实丛同构。
+
+	设 \(S\) 为辛流形 \((M,\omega)\) 的辛子流形。子丛
+	\[
+		\nu_\omega S=(\mathrm{T}S)^\omega
+		=\{v\in\mathrm{T}M|_S:\omega(v,u)=0\text{ 对所有 }u\in\mathrm{T}S\}
+	\]
+	连同限制配对 \(\omega|_{\nu_\omega S}\)，称为 \(S\) 的\term[xinfacong]{辛法丛}[symplectic normal bundle]。
+\end{definition}
+
+为核对定义中的“丛”和“辛”，考察光滑丛映射 \(v\mapsto\omega(v,\cdot)|_{\mathrm{T}S}\)。它在 \(\mathrm{T}S\) 上已为同构，因而核具有常秩，并给出光滑分裂
+\begin{equation}\label{g4:eq:0803:symplectic-normal-splitting}
+	\mathrm{T}M|_S=\mathrm{T}S\oplus\nu_\omega S.
+\end{equation}
+若 \(v\in\nu_\omega S\) 与该补空间也处处配对为零，它便与整个 \(\mathrm{T}M|_S\) 配对为零，故 \(v=0\)。因此限制形式非退化。商映射把 \(\nu_\omega S\) 同构地送到通常的法丛 \(\mathrm{T}M|_S/\mathrm{T}S\)，并在这个商上给出辛向量丛结构。
+
+\begin{theorem}[辛子流形邻域定理]\label{g4:thm:0803:symplectic-neighborhood}
+	设 \((M_i,\omega_i)\) 为无边界辛流形，\(S_i\subset M_i\) 为闭的无边界辛子流形，\(i=0,1\)。假设有辛同胚
+	\[
+		f:(S_0,\omega_0|_{S_0})\longrightarrow(S_1,\omega_1|_{S_1})
+	\]
+	以及覆盖 \(f\) 的光滑辛向量丛同构 \(A:\nu_{\omega_0}S_0\to\nu_{\omega_1}S_1\)。则存在邻域辛同胚 \(\Psi:U_0\to U_1\)，满足
+	\[
+		\Psi|_{S_0}=f,\qquad
+		\mathrm{d}\Psi|_{\nu_{\omega_0}S_0}=A.
+	\]
+	这里 \(S_i\subset U_i\subset M_i\)，且子流形不必紧致。
+\end{theorem}
+\begin{proof}
+	在式\eqref{g4:eq:0803:symplectic-normal-splitting}的两组分裂下定义
+	\[
+		F=\mathrm{d}f\oplus A.
+	\]
+	\(f\) 与 \(A\) 都保持各自的辛配对，而切向与辛法向之间的混合配对为零。因此对 \(u,v\in\mathrm{T}_xS_0\)、\(a,b\in(\nu_{\omega_0}S_0)_x\)，有
+	\begin{align*}
+		\omega_1\bigl(F(u+a),F(v+b)\bigr)
+		&=\omega_1(\mathrm{d}f(u),\mathrm{d}f(v))+\omega_1(Aa,Ab)\\
+		&=\omega_0(u,v)+\omega_0(a,b)
+		=\omega_0(u+a,v+b).
+	\end{align*}
+	所以 \(F\) 在整个环境切丛上为辛同构，并限制为 \(\mathrm{d}f\)。\cref{g4:cor:0803:symplectic-first-jet}给出 \(\Psi\)，而其微分等于 \(F\)，特别在辛法丛上等于指定的 \(A\)。
+\end{proof}
+
+因此，辛子流形的邻域除了自身的辛几何，还记录辛法丛的拼接；若这两份数据匹配，便没有额外的邻域差别。定理的紧版本及这种法丛表述可对照\cite[定理1.11，第91--92页]{Cannas2006Symplectic}。
+
+\begin{example}\label{g4:exm:0803:product-neighborhood}
+	设 \((S,\sigma)\) 为无边界辛流形，\((N,\eta)\) 为 \(2r\) 维无边界辛流形，\(p\in N\)。乘积中的 \(S\times\{p\}\) 是辛子流形，其辛法丛为平凡丛 \(S\times\mathrm{T}_pN\)，纤维配对为固定的 \(\eta_p\)。选一个辛线性同构 \((\mathbb R^{2r},\omega_{\mathrm{std}})\to(\mathrm{T}_pN,\eta_p)\)，定理即把它的邻域与 \(S\times\{0\}\subset(S\times\mathbb R^{2r},\sigma+\omega_{\mathrm{std}})\) 的邻域辛同胚地识别。若使用 \(p\) 附近的 Darboux 图，便能直接取这张图与 \(\operatorname{id}_S\) 的乘积；这也展示了法丛平凡时最简单的模型。
+\end{example}
 
 \subsection{Lagrange 邻域定理}
 \label{g4:subsec:0803:04}
-待撰写
+
+对 Lagrange 子流形 \(L\subset(M,\omega)\)，有 \((\mathrm{T}L)^\omega=\mathrm{T}L\)，辛正交补不再提供横向方向。取代它的是切向与法向之间的非退化配对。按本书的余切辛形式符号，法商与余切丛的识别写成
+\begin{equation}\label{g4:eq:0803:lagrangian-normal-pairing}
+	\mathrm{T}M|_L/\mathrm{T}L\longrightarrow\mathrm{T}^*L,
+	\qquad [v]\longmapsto\bigl(u\mapsto\omega(u,v)\bigr).
+\end{equation}
+若更换 \(v\) 的切向代表，配对不变；若右边为零，则 \(v\in(\mathrm{T}L)^\omega=\mathrm{T}L\)。维数相同，所以它是光滑丛同构。这里配对把切向量放在第一个变量，符号将与 \(\omega_{\mathrm{can}}=-\mathrm{d}\theta\) 一致。
+
+\begin{lemma}\label{g4:lem:0803:lagrangian-linear-model}
+	设 \(L^n\subset(M^{2n},\omega)\) 为无边界 Lagrange 子流形，\(J\) 为 \(\omega\)-相容几乎复结构，\(g=\omega(\cdot,J\cdot)\)，\(h=g|_{\mathrm{T}L}\)。将度量同构记为 \(h^\sharp:\mathrm{T}^*L\to\mathrm{T}L\)。则
+	\begin{equation}\label{g4:eq:0803:lagrangian-linear-isomorphism}
+		F:\mathrm{T}L\oplus\mathrm{T}^*L\longrightarrow\mathrm{T}M|_L,
+		\qquad F(u,p)=u+Jh^\sharp p
+	\end{equation}
+	是光滑辛丛同构，其中源上的形式为
+	\[
+		\omega_{\mathrm{can}}\bigl((u,p),(v,r)\bigr)=r(u)-p(v).
+	\]
+	它在 \(\mathrm{T}L\) 上为恒等，并实现式\eqref{g4:eq:0803:lagrangian-normal-pairing}的逆向法丛识别。
+\end{lemma}
+\begin{proof}
+	先说明 \(J\mathrm{T}L\) 为补丛。若 \(Jw\in\mathrm{T}L\) 且 \(w\in\mathrm{T}L\)，则 Lagrange 条件给出 \(\omega(w,Jw)=0\)；相容正性迫使 \(w=0\)。所以 \(\mathrm{T}L\cap J\mathrm{T}L=0\)，维数相加得到 \(\mathrm{T}M|_L=\mathrm{T}L\oplus J\mathrm{T}L\)。此外 \(\omega(Ju,Jv)=\omega(u,v)=0\) 对切于 \(L\) 的 \(u,v\) 成立，故补丛也是 Lagrange 的。
+
+	因此式\eqref{g4:eq:0803:lagrangian-linear-isomorphism}为光滑线性同构。计算四项配对，两个同类项为零，而混合项为
+	\[
+		\omega(u,Jh^\sharp r)=h(u,h^\sharp r)=r(u),\qquad
+		\omega(Jh^\sharp p,v)=-p(v).
+	\]
+	故 \(F^*\omega=\omega_{\mathrm{can}}\)。同一计算说明 \([Jh^\sharp p]\) 在式\eqref{g4:eq:0803:lagrangian-normal-pairing}下恰映为 \(p\)。
+\end{proof}
+
+\begin{theorem}[Lagrange 邻域定理]\label{g4:thm:0803:lagrangian-neighborhood}
+	设 \((M^{2n},\omega)\) 为无边界辛流形，\(i:L^n\hookrightarrow M\) 为闭的无边界 Lagrange 嵌入，\(s:L\to\mathrm{T}^*L\) 为零截面。则存在零截面的开邻域 \(U\subset\mathrm{T}^*L\)、\(L\) 的开邻域 \(V\subset M\)，以及微分同胚 \(\Psi:U\to V\)，使
+	\[
+		\Psi\circ s=i,\qquad \Psi^*\omega=\omega_{\mathrm{can}}=-\mathrm{d}\theta.
+	\]
+	若先选定一个相容 \(J\)，还可令 \(\mathrm{d}\Psi\) 沿零截面等于式\eqref{g4:eq:0803:lagrangian-linear-isomorphism}的 \(F\)。不要求 \(L\) 紧致。
+\end{theorem}
+\begin{proof}
+	由\cref{g4:thm:0703:bundle-existence}选取相容几乎复结构 \(J\)。沿零截面有规范分裂
+	\[
+		s^*\mathrm{T}(\mathrm{T}^*L)=\mathrm{T}L\oplus\mathrm{T}^*L,
+	\]
+	分别来自零截面的切向量与竖直纤维向量。在余切坐标中，\(\omega_{\mathrm{can}}=\sum_j\mathrm{d}q^j\wedge\mathrm{d}p_j\)，故该分裂中的配对正是 \(r(u)-p(v)\)。\cref{g4:lem:0803:lagrangian-linear-model}于是给出覆盖 \(i\) 的整个环境切丛辛同构 \(F\)，在切向上等于 \(\mathrm{d}i\)。
+
+	由\cref{g4:lem:0803:realize-first-jet}，先取得邻域微分同胚 \(\Phi\)，使 \(\Phi\circ s=i\)、\(\mathrm{d}\Phi|_{s(L)}=F\)。于是 \(\Phi^*\omega\) 与 \(\omega_{\mathrm{can}}\) 沿零截面在整个环境切空间上相等。\cref{g4:thm:0803:relative-moser}给出一个固定零截面并保持一阶恒等的 \(\varphi\)，满足
+	\[
+		\varphi^*(\Phi^*\omega)=\omega_{\mathrm{can}}.
+	\]
+	令 \(\Psi=\Phi\circ\varphi\)，便有 \(\Psi^*\omega=\omega_{\mathrm{can}}\)、\(\Psi\circ s=i\) 及 \(\mathrm{d}\Psi|_{s(L)}=F\)。这条证明中的管状邻域与流均允许沿非紧零截面改变宽度，故同样适用于非紧 \(L\)。
+\end{proof}
+
+原流形中的 Lagrange 子流形至此被化为余切丛的零截面。辅助 \(J\) 用来选取一张具体的一阶识别，邻域模型的存在则只取决于 Lagrange 条件。文献中通常将这一结论称为\term[Weinsteinguanzhuanglinyudingli]{Weinstein 管状邻域定理}[Weinstein tubular neighborhood theorem]。\footnote{Alan David Weinstein（1943年生），美国数学家，研究辛几何、Poisson 几何与几何力学。}\cite[第2.2--2.3节，定理2.8、2.10，第95--97页]{Cannas2006Symplectic}
+
+\begin{example}\label{g4:exm:0803:circle-neighborhood}
+	在 \((\mathbb R^2,\mathrm{d}x\wedge\mathrm{d}y)\) 中取半径 \(R>0\) 的圆周 \(L\)。一维子流形自动为 Lagrange。令 \(\theta\in\mathbb R/2\pi\mathbb Z\) 为圆周坐标，\(p\) 为 \(\mathrm{T}^*L\) 中相对于 \(\mathrm{d}\theta\) 的纤维坐标。对 \(|p|<R^2/4\)，定义
+	\[
+		\Psi(\theta,p)=\bigl(\sqrt{R^2-2p}\cos\theta,\sqrt{R^2-2p}\sin\theta\bigr).
+	\]
+	其像为一个圆环，\(p=0\) 映到原圆周。写 \(r=\sqrt{R^2-2p}\)，则 \(r\,\mathrm{d}r=-\mathrm{d}p\)，所以
+	\[
+		\Psi^*(\mathrm{d}x\wedge\mathrm{d}y)
+		=r\,\mathrm{d}r\wedge\mathrm{d}\theta
+		=\mathrm{d}\theta\wedge\mathrm{d}p
+		=\omega_{\mathrm{can}}.
+	\]
+	这是一张显式的 Lagrange 邻域同胚。正的 \(p\) 指向圆周内侧，来自本书的辛形式符号；\(p=(R^2-r^2)/2\) 则说明余切变量记录的是径向扫过的有向面积尺度，而不是径向距离本身。
+\end{example}
+
+本节的两类邻域定理有相同的证明机制：先实现整个环境切空间上的辛线性同构，再用相对原始与流修正邻域中的形式，并保留已匹配的一阶数据。辛子流形的横向数据仍是一份辛向量丛；Lagrange 子流形的横向数据由切向配对确定为余切丛。这一区别决定了两个模型的形式。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 12.5 Schauder 方法
 % 纲要位置：几何学计划纲要.md，第 2585 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,243 @@
 \section{Schauder 方法}
 \label{g3:sec:1205}
 
-待撰写
+积分估计控制导数的平均大小，Hölder 估计则追踪两个邻近点的导数怎样变化。若方程右端在尺度 \(r\) 上的振荡为 \(r^\alpha\)，椭圆方程通常把同一指数传给解的最高阶导数；奇异核的平均抵消使这个传递成为可能。\term[Schauder fangfa]{Schauder 方法}[Schauder method]\footnote{Juliusz Paweł Schauder（1899--1943），波兰数学家，研究泛函分析、偏微分方程与非线性分析。}在常系数估计之后，通过缩小坐标球使最高阶系数的变化可以吸收。本节的主部取实标量正定矩阵，允许它逐分量作用于有限维向量值函数。
 
 \subsection{Hölder 半范数及尺度}
 \label{g3:subsec:1205:01}
-待撰写
+固定 \(0<\alpha<1\)。对 \(B_r(x_0)\subset\mathbb R^n\)，采用带尺度的范数
+\[
+	\|u\|_{k,\alpha;r}
+	=\sum_{j=0}^k r^j\|\mathrm D^ju\|_{L^\infty(B_r)}
+	+r^{k+\alpha}[\mathrm D^ku]_{\alpha;B_r},
+	\qquad
+	[v]_{\alpha;A}=\sup_{x\ne y\in A}\frac{|v(x)-v(y)|}{|x-y|^\alpha}.
+\]
+\symidx{\(\lVert u\rVert_{k,\alpha;r}\)：带尺度的 Hölder 范数}
+这里各阶导数取有限个分量的 Euclid 范数；复值函数按实分量处理。换元 \(x=x_0+ry\) 后，这恰与单位球上的范数一致。对二阶方程，右端 \(f\) 应乘 \(r^2\)，一阶与零阶系数则分别乘 \(r\) 与 \(r^2\)。
+
+\begin{lemma}\label{g3:lem:holder-product-scale}
+	设 \(0<\alpha<1\)，\(a,v\) 为同一集合上的有界 \(\alpha\)-Hölder 函数，取值允许为相容大小的矩阵与向量。则
+	\[
+		[av]_\alpha\le\|a\|_\infty[v]_\alpha+[a]_\alpha\|v\|_\infty.
+	\]
+	因此带尺度的零阶 Hölder 范数满足乘法估计。若 \(a\in C^{0,\alpha}(B_r(x_0))\)，则
+	\[
+		\|a-a(x_0)\|_\infty+r^\alpha[a]_\alpha
+		\le2r^\alpha[a]_\alpha.
+	\]
+\end{lemma}
+\begin{proof}
+	把 \(a(x)v(x)-a(y)v(y)\) 写成
+	\(a(x)(v(x)-v(y))+(a(x)-a(y))v(y)\)，除以 \(|x-y|^\alpha\) 后取上确界，即得第一式。第二式由 \(|x-x_0|\le r\) 直接得到。
+\end{proof}
+
+冻结系数时，要小的是 \(a-a(x_0)\) 的带尺度 Hölder 范数。仅有 \(\|a-a(x_0)\|_\infty\) 小，并不能直接删去乘积估计中的第二项。后面会把该项放到二阶导数的上确界范数中，再用插值处理。
 
 \subsection{常系数的振荡控制}
 \label{g3:subsec:1205:02}
-待撰写
+为保持最大值原理中常用的符号，暂记
+\[
+	\mathcal L_0=\sum_{i=1}^n\partial_i^2=-\Delta_{\mathrm{Eucl}}.
+\]
+\(n\ge2\) 时，令 \(\sigma_{n-1}\) 为单位球面面积，取上一节非负 Laplace 算子基本解的相反数，记为
+\[
+	\Phi(x)=
+	\begin{cases}
+		\displaystyle\frac{|x|^{2-n}}{(2-n)\sigma_{n-1}},&n\ge3,\\[4pt]
+		\displaystyle\frac1{2\pi}\log|x|,&n=2.
+	\end{cases}
+\]
+这里 \(\mathcal L_0\Phi=\delta_0\)。确实，零点以外 \(\mathcal L_0\Phi=0\)，而 \(\partial_r\Phi=\sigma_{n-1}^{-1}r^{1-n}\) 的球面通量恒为一；在穿孔球上对测试函数分部积分，再令内半径趋零，就得到这个分布恒等式。
+
+\begin{lemma}\label{g3:lem:newton-holder-estimate}
+	设 \(n\ge2\)、\(0<\alpha<1\)，\(f\in C_c^{0,\alpha}(\mathbb R^n)\) 支于 \(B_2\)。则 \(w=\Phi*f\) 属于 \(C^{2,\alpha}_{\mathrm{loc}}(\mathbb R^n)\)，满足 \(\mathcal L_0w=f\)，且
+	\[
+		\|w\|_{C^{2,\alpha}(B_3)}
+		\le C(n,\alpha)\|f\|_{C^{0,\alpha}(\mathbb R^n)}.
+	\]
+\end{lemma}
+\begin{proof}
+	真正需要估计的是二阶导数。对 \(z\ne0\)，写
+	\[
+		K_{ij}(z)=\partial_i\partial_j\Phi(z)
+		=\frac1{\sigma_{n-1}}\left(\frac{\delta_{ij}}{|z|^n}
+		-\frac{n z_i z_j}{|z|^{n+2}}\right).
+	\]
+	它满足 \(|K(z)|\le C|z|^{-n}\)、\(|\mathrm DK(z)|\le C|z|^{-n-1}\)，并且在每个以零为中心的球面、因而每个同心球壳上的积分为零。对穿孔区域再次分部积分，内球面上的 \(z_i z_j\) 平均为 \(\delta_{ij}/n\)，于是
+	\begin{equation}\label{g3:eq:newton-second-derivative}
+		\partial_i\partial_jw(x)
+		=\frac{\delta_{ij}}n f(x)
+		+\operatorname{pv}\int K_{ij}(x-y)f(y)\,\mathrm dy.
+	\end{equation}
+	在 \(|x-y|<1\) 中把 \(f(y)\) 换成 \(f(y)-f(x)\)，不改变主值；此时绝对值积分不超过
+	\(C[f]_\alpha\int_0^1 t^{\alpha-1}\,\mathrm dt\)。外部积分在 \(x\in B_3\) 上由固定支集和 \(\|f\|_\infty\) 控制。这已给出二阶导数的上确界估计。
+
+	说明 Hölder 估计中怎样避免一个多余的对数。令 \(h=|x-x'|>0\)，把积分分成距两点至多 \(3h\) 的部分和其余部分。在近区分别减去 \(f(x)\)、\(f(x')\)，其积分大小不超过
+	\[
+		C[f]_\alpha\int_0^{4h}t^{\alpha-1}\,\mathrm dt
+		\le C\alpha^{-1}[f]_\alpha h^\alpha.
+	\]
+	在公共远区，差核满足
+	\(|K(x-y)-K(x'-y)|\le Ch|x-y|^{-n-1}\)。将它乘以 \(f(y)-f(x)\) 后，积分不超过
+	\[
+		Ch[f]_\alpha\int_{2h}^{\infty}t^{\alpha-2}\,\mathrm dt
+		\le C(1-\alpha)^{-1}[f]_\alpha h^\alpha.
+	\]
+	还会出现 \((f(x)-f(x'))\) 乘以远区核积分。这个核积分有与 \(h\) 无关的界：以 \(x'\) 为中心的完整球壳积分为零，而被另一近球切掉的部分位于半径在 \(2h\) 与 \(4h\) 之间的球壳，其绝对值积分至多为 \(C\log2\)。外截断半径趋于无穷时的两球壳差趋零。因而这一项同样至多为 \(C[f]_\alpha h^\alpha\)。式\eqref{g3:eq:newton-second-derivative}中的局部项也有同样估计。
+
+	上述公式先对光滑 \(f\) 成立。对一般 \(f\)，卷积得到 \(f_\varepsilon\)，其 \(C^{0,\alpha}\) 范数一致有界，且对每个 \(0<\beta<\alpha\) 在 \(C^{0,\beta}\) 中趋于 \(f\)：近点用统一的 \(\alpha\)-半范数，远点用一致收敛即可证明。用刚证的 \(\beta\) 估计知 \(\mathrm D^2(\Phi*f_\varepsilon)\) 局部一致收敛；\(\Phi\) 及其一阶导数局部可积，所以函数与一阶导数也局部一致收敛。沿线段积分导数关系，极限确为 \(w\) 的经典二阶导数。最后对任意两点取极限保留 \(\alpha\)-半范数界。函数及一阶导数的上确界由可积核直接估计，证明完成。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:constant-schauder}
+	设 \(n\ge1\)、\(0<\alpha<1\)，实对称常矩阵 \(A=(a^{ij})\) 满足 \(\lambda I\le A\le\Lambda I\)，其中 \(0<\lambda\le\Lambda\)。若 \(u\in C^2(B_{2r}(x_0);\mathbb R^N)\) 且
+	\(a^{ij}\partial_i\partial_j u=f\in C^{0,\alpha}(B_{2r})\)，则 \(u\in C^{2,\alpha}(B_r)\)，并有
+	\begin{equation}\label{g3:eq:constant-schauder}
+		\|u\|_{2,\alpha;r}
+		\le C\bigl(\|u\|_{L^\infty(B_{2r})}
+		+r^2\|f\|_{L^\infty(B_{2r})}
+		+r^{2+\alpha}[f]_{\alpha;B_{2r}}\bigr),
+	\end{equation}
+	其中 \(C\) 只依赖 \(n,N,\alpha,\lambda,\Lambda\)。
+\end{theorem}
+\begin{proof}
+	先令 \(A=I\)、\(r=1\)。取支于 \(B_2\)、在 \(B_{3/2}\) 上为一的光滑截断 \(\eta\)，并令 \(w=\Phi*(\eta f)\)。上一引理给出 \(w\) 的所需估计，\(h=u-w\) 在 \(B_{3/2}\) 上调和。
+
+	调和函数的高阶导数可直接由平均值公式控制。球面平均对半径的导数等于球内 \(\mathcal L_0h\) 的积分除以球面面积，故平均值等于中心值。将球面平均对半径作光滑径向平均，得到 \(h=\rho_\delta*h\)，其中 \(\rho_\delta\) 为支于 \(B_\delta\) 的固定光滑径向核，积分为一。对 \(x\in B_{5/4}\) 取固定小 \(\delta\)，把任意阶导数放到核上，得到
+	\[
+		\|\mathrm D^jh\|_{L^\infty(B_{5/4})}
+		\le C_j\|h\|_{L^\infty(B_{3/2})}.
+	\]
+	\(j=2,3\) 的估计分别处理远点与近点，给出 \([\mathrm D^2h]_{\alpha;B_1}\le C\|h\|_\infty\)。与 \(w\) 相加，得到结论。
+
+	一般常矩阵用 \(x=A^{1/2}y\) 化为上述情形。由特征值界，变换后的椭球包含与外切的球半径之比受 \(\lambda,\Lambda\) 控制；用有限个固定比例的小球覆盖较小椭球，近点用同一球内的估计，远点用二阶导数上确界，便得到相同形式的 Hölder 界。缩放恢复 \(r\)，向量值情况逐分量处理。\(n=1\) 时，\(u''=f/a^{11}\) 直接给出二阶半范数，沿区间积分并用函数上确界控制一次积分常数，得到同一估计。
+\end{proof}
+
+核的抵消把不可积的 \(|x-y|^{-n}\) 与增量 \(f(y)-f(x)\) 配对。条件 \(\alpha>0\) 保证近区积分收敛，\(\alpha<1\) 保证差核的远区积分具有 \(h^\alpha\) 大小；两个端点需要不同的连续性尺度。
 
 \subsection{局部插值不等式}
 \label{g3:subsec:1205:03}
-待撰写
+截断会引入 \(\mathrm Du\) 与 \(u\)，冻结系数的乘积还会产生 \(\|\mathrm D^2u\|_\infty\)。这些量虽低于最高的 Hölder 半范数，却必须带上可任意缩小的系数。下面用有限差分给出这种插值，而不预先假定更高阶导数。
+
+\begin{lemma}\label{g3:lem:weighted-holder-interpolation}
+	设 \(\Omega\subset\mathbb R^n\) 为有界开集，\(0<\alpha<1\)，\(u\in C^{2,\alpha}(\overline\Omega)\)。记 \(d(x)=\operatorname{dist}(x,\partial\Omega)\)、\(d_{xy}=\min\{d(x),d(y)\}\)，并令
+	\[
+		M_j=\sup_{x\in\Omega}d(x)^j|\mathrm D^ju(x)|\quad(0\le j\le2),
+		\qquad
+		H_2=\sup_{x\ne y}d_{xy}^{2+\alpha}
+		\frac{|\mathrm D^2u(x)-\mathrm D^2u(y)|}{|x-y|^\alpha}.
+	\]
+	则对每个 \(\varepsilon>0\)，存在 \(C_\varepsilon=C(n,\alpha,\varepsilon)\)，使
+	\begin{equation}\label{g3:eq:weighted-holder-interpolation}
+		M_1+M_2\le\varepsilon H_2+C_\varepsilon M_0.
+	\end{equation}
+	此外，按同样权重定义的 \(H_1,H_0\) 满足
+	\(H_1\le C(M_1+M_2)\)、\(H_0\le C(M_0+M_1)\)。
+\end{lemma}
+\begin{proof}
+	取 \(0<\tau<1/4\)，\(h=\tau d(x)\)。沿单位向量 \(e\) 作二阶中心差分，Taylor 公式的积分余项给出
+	\[
+		\left|\partial_e^2u(x)-
+		\frac{u(x+he)-2u(x)+u(x-he)}{h^2}\right|
+		\le C h^\alpha[\mathrm D^2u]_{\alpha;B_h(x)}.
+	\]
+	球内的边界距离至少为 \((1-\tau)d(x)\)，故乘以 \(d(x)^2\) 后取上确界，得到
+	\(M_2\le C\tau^\alpha H_2+C\tau^{-2}M_0\)。这里先取坐标方向，再取 \((e_i+e_j)/\sqrt2\)，用极化恒等式恢复混合导数。
+
+	一阶差分同理给出 \(M_1\le C\tau M_2+C\tau^{-1}M_0\)。先选 \(\tau\) 使 \(H_2\) 的系数足够小，再吸收固定有限维常数，即得式\eqref{g3:eq:weighted-holder-interpolation}。
+
+	为估计 \(H_1\)，若 \(|x-y|\ge d_{xy}/2\)，用两个一阶导数的上确界；若 \(|x-y|<d_{xy}/2\)，连接线段位于 \(\Omega\)，沿线段积分二阶导数，且其边界距离与 \(d_{xy}\) 可比。两种估计分别给出 \(CM_1\) 与 \(CM_2\)。对 \(H_0\) 用同样的零阶、一阶论证即可。
+\end{proof}
+
+在两个严格嵌套的球上，这给出通常的局部插值形式。例如固定 \(B_r\Subset B_R\) 后，\(\|\mathrm Du\|_\infty\)、\(\|\mathrm D^2u\|_\infty\) 及所需低阶 Hölder 半范数，都由较大球上最高阶半范数的任意小倍数与 \(\|u\|_\infty\) 控制；常数同时记录两球之间的距离。边界距离权重把全部内球的估计装进一个有限量中，便于随后一次完成吸收。
 
 \subsection{变系数估计与高阶自举}
 \label{g3:subsec:1205:04}
-待撰写
+现在考虑
+\begin{equation}\label{g3:eq:schauder-operator}
+	Lu=a^{ij}(x)\partial_i\partial_ju+b^i(x)\partial_i u+c(x)u.
+\end{equation}
+主系数 \(a^{ij}\) 为实标量，对称且一致正定；\(b^i,c\) 可为 \(N\times N\) 实矩阵。因而这一估计适用于主符号为正定标量乘恒等的二阶系统，低阶耦合保留在右侧进行估计。
+
+\begin{theorem}[内部 Schauder 估计]\label{g3:thm:interior-schauder}
+	设 \(n,N\ge1\)、\(0<\alpha<1\)，式\eqref{g3:eq:schauder-operator}的系数在 \(B_2\) 上属于 \(C^{0,\alpha}\)，其范数至多为 \(K\)，且
+	\(\lambda I\le(a^{ij})\le\Lambda I\)，\(\lambda>0\)。若 \(u\in C^{2,\alpha}(\overline B_2;\mathbb R^N)\)，则
+	\begin{equation}\label{g3:eq:interior-schauder}
+		\|u\|_{C^{2,\alpha}(B_1)}
+		\le C\bigl(\|Lu\|_{C^{0,\alpha}(B_2)}+\|u\|_{L^\infty(B_2)}\bigr),
+	\end{equation}
+	其中 \(C=C(n,N,\alpha,\lambda,\Lambda,K)\)。同一结论也适用于 \(u\in C^2(B_2)\)、\(Lu\in C^{0,\alpha}(B_2)\)：这时结论还包括 \(u\in C^{2,\alpha}_{\mathrm{loc}}(B_2)\)。
+\end{theorem}
+\begin{proof}
+	先作已知 \(C^{2,\alpha}\) 的先验估计。在 \(B_2\) 上用上一引理的 \(M_j,H_2\)。固定 \(x\)，令 \(r=\theta d(x)\)，其中 \(0<\theta<1/8\) 待定。把主系数冻结在 \(x\)，有
+	\[
+		a^{ij}(x)\partial_i\partial_j u
+		=f+(a^{ij}(x)-a^{ij})\partial_i\partial_j u
+		-b^i\partial_i u-cu,\qquad f=Lu.
+	\]
+	对 \(B_r(x)\) 使用常系数估计，以 \(B_{r/2}(x)\) 为内球。冻结误差对二阶半范数产生两项：
+	\[
+		Cr^{2+\alpha}[a]_\alpha\|\mathrm D^2u\|_{0;B_r(x)}
+		+Cr^{2+2\alpha}[a]_\alpha[\mathrm D^2u]_{\alpha;B_r(x)}.
+	\]
+	第一项来自系数自身的 Hölder 增量，第二项来自 \(\|a-a(x)\|_\infty\le r^\alpha[a]_\alpha\)。这一区别决定了两者的吸收方式。
+
+	取任意两点，令较小边界距离对应点为 \(x\)。若 \(|x-y|<\theta d(x)/4\)，它们位于上述内球。将半范数估计乘以 \((d(x)/r)^{2+\alpha}\)，冻结误差分别不超过 \(CKM_2\) 与 \(CK\theta^\alpha H_2\)，因为 \(d\le2\) 且球内边界距离一致可比。若两点距离较大，直接由 \(M_2\) 得到 \(C\theta^{-\alpha}M_2\)。低阶项利用乘法公式与 \(H_1\le C(M_1+M_2)\)、\(H_0\le C(M_0+M_1)\) 控制。取所有两点的上确界，遂有
+	\[
+		H_2\le C_\theta\bigl(\|f\|_{C^{0,\alpha}(B_2)}+M_0\bigr)
+		+C_{\theta,K}(M_1+M_2)+CK\theta^\alpha H_2.
+	\]
+	先选 \(\theta\) 使最后一项系数不超过 \(1/4\)，再在插值式\eqref{g3:eq:weighted-holder-interpolation}中选 \(\varepsilon\)，使中间项贡献的 \(H_2\) 系数也不超过 \(1/4\)。移项后，\(M_1+M_2+H_2\) 均受 \(C(\|f\|_{C^{0,\alpha}}+M_0)\) 控制。\(B_1\) 内边界距离至少为一，便得到所述内估计。
+
+	还须把经典 \(C^2\) 解提升到 \(C^{2,\alpha}\)，才能取消预设的半范数。固定 \(B_R\Subset B_2\)，在稍大的球内卷积 \(u_\varepsilon=\rho_\varepsilon*u\)。其方程右端等于 \(f_\varepsilon\) 加有限个形如
+	\[
+		R_\varepsilon(x)=\int\rho_\varepsilon(x-z)
+		\bigl(a(x)-a(z)\bigr)v(z)\,\mathrm dz
+	\]
+	的项，其中 \(v\) 是 \(u\) 的至多二阶导数，在该较大球上有界。它们满足
+	\begin{equation}\label{g3:eq:holder-mollifier-commutator}
+		\|R_\varepsilon\|_{C^{0,\alpha}(B_R)}
+		\le C\|a\|_{C^{0,\alpha}}\|v\|_\infty,
+	\end{equation}
+	且常数不依赖小 \(\varepsilon\)。证明这一点时，上确界由 \(C[a]_\alpha\varepsilon^\alpha\|v\|_\infty\) 控制；对于两点差 \(h\le\varepsilon\)，先分离 \(a(x)-a(x')\)，剩余差放到平滑核上，其 \(L^1\) 范数至多为 \(Ch/\varepsilon\)，而系数差至多为 \(C[a]_\alpha\varepsilon^\alpha\)。于是增量不超过 \(C[a]_\alpha\|v\|_\infty(h^\alpha+h\varepsilon^{\alpha-1})\le Ch^\alpha[a]_\alpha\|v\|_\infty\)。\(h>\varepsilon\) 时用上确界即可。
+
+	对光滑 \(u_\varepsilon\) 使用已证估计，得到更小球上一致的 \(C^{2,\alpha}\) 界。又因 \(u\in C^2\)，这些卷积在 \(C^2\) 中局部收敛，故极限保留 \(\alpha\)-半范数界。先这样得到局部 Hölder 正则性，再在逐渐增大的内球上应用先验估计；其半径可保持在固定正下界以上，令外球趋于 \(B_2\)，得到式\eqref{g3:eq:interior-schauder}。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:schauder-higher-bootstrap}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(L\) 为式\eqref{g3:eq:schauder-operator}的算子，主部在紧子集上一致正定。若 \(a,b,c,f\in C^{k,\alpha}_{\mathrm{loc}}(\Omega)\)，\(k\ge0\) 为整数、\(0<\alpha<1\)，且 \(u\in C^2(\Omega;\mathbb R^N)\) 满足 \(Lu=f\)，则 \(u\in C^{k+2,\alpha}_{\mathrm{loc}}(\Omega)\)。任意 \(\Omega'\Subset\Omega''\Subset\Omega\) 上有
+	\[
+		\|u\|_{C^{k+2,\alpha}(\Omega')}
+		\le C\bigl(\|f\|_{C^{k,\alpha}(\Omega'')}+\|u\|_{L^\infty(\Omega'')}\bigr),
+	\]
+	常数依赖这些集合、椭圆性及所列有限阶系数界。
+\end{corollary}
+\begin{proof}
+	\(k=0\) 已证。假定系数与 \(f\) 多一阶 Hölder 导数，并已知 \(u\in C^{2,\alpha}\)。令 \(\delta_hu(x)=(u(x+he_l)-u(x))/h\)。它满足
+	\[
+		L(\delta_hu)=\delta_hf
+		-(\delta_ha^{ij})\partial_i\partial_j u(x+he_l)
+		-(\delta_hb^i)\partial_i u(x+he_l)
+		-(\delta_hc)u(x+he_l).
+	\]
+	\(\delta_ha=\int_0^1\partial_la(x+the_l)\,\mathrm dt\)，故右端在固定内球的 \(C^{0,\alpha}\) 中一致有界；\(\|\delta_hu\|_\infty\le\|\partial_lu\|_\infty\)。对差商应用先验估计，得到一致的 \(C^{2,\alpha}\) 界。有限网与等度连续性给出各阶导数一致收敛的子列，函数极限是 \(\partial_lu\)，沿线段积分识别其导数，且极限保留 \(\alpha\)-半范数界。因此 \(u\in C^{3,\alpha}\)。继续对方程求导，最高阶项仍为 \(L\) 作用于该导数，其余项由乘积公式和已经获得的阶数控制；有限次归纳给出结论与范数估计。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:schauder-distribution-smooth-coefficients}
+	设 \(L\) 的主部如上，全部系数在开集 \(\Omega\) 上光滑，\(u\) 为 \(\mathbb R^N\) 值分布。若 \(Lu=f\in C^{k,\alpha}_{\mathrm{loc}}(\Omega)\)，其中整数 \(k\ge0\)、\(0<\alpha<1\)，则 \(u\in C^{k+2,\alpha}_{\mathrm{loc}}(\Omega)\)。
+\end{corollary}
+\begin{proof}
+	由\cref{g3:thm:elliptic-distribution-lp}，\(u\in W^{2,p}_{\mathrm{loc}}\) 对每个有限 \(p>1\) 成立。取 \(p\) 足够大，使 \(1-n/p>\alpha\)；\cref{g3:cor:higher-sobolev-embedding}的局部版本给出 \(u\in C^{1,\alpha}_{\mathrm{loc}}\)。这时卷积交换子中的 \(\mathrm D^2u\) 尚未有界，但可以把一个导数移到核和系数上。具体地，若 \(v=\partial_ju\)，则
+	\[
+	\begin{aligned}
+		[a,\rho_\varepsilon*]\partial_i v(x)
+		={}&\int\partial_i\rho_\varepsilon(y)\,y_l
+		\int_0^1\partial_la(x-ty)v(x-y)\,\mathrm dt\,\mathrm dy\\
+		&+\int\rho_\varepsilon(y)\partial_i a(x-y)v(x-y)\,\mathrm dy.
+	\end{aligned}
+	\]
+	此式由分部积分及 \(a(x)-a(x-y)=\int_0^1\partial_la(x-ty)y_l\,\mathrm dt\) 得到。核 \(y_l\partial_i\rho_\varepsilon\) 的 \(L^1\) 范数一致有界；乘法估计因此把上式的 \(C^{0,\alpha}\) 范数控制在 \(C\|a\|_{C^{1,\alpha}}\|u\|_{C^{1,\alpha}}\) 内。低阶交换子更直接。于是 \(Lu_\varepsilon\) 在 \(C^{0,\alpha}\) 中局部一致有界，先验估计给出 \(u_\varepsilon\) 的局部 \(C^{2,\alpha}\) 界。取子列、识别分布极限得到 \(u\in C^{2,\alpha}\)，再用上一推论完成高阶提升。
+\end{proof}
+
+对光滑度量及光滑丛联络，Laplace 型算子在局部标架中具有这样的标量主部，故上述估计可逐图使用。一般椭圆系统的 \(L^p\) 理论已经在前节建立；本节的 Hölder 证明则使用了正定实标量基本解，主部若为任意矩阵系统，应另核其对应核的 Hölder 估计。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

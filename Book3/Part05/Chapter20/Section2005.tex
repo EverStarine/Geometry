@@ -1,14 +1,14 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 20.5 可整流集的切向结构
 % 纲要位置：几何学计划纲要.md，第 2955 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 可数 Lipschitz 参数片
 % * 近似切平面的存在唯一性
 % * 密度和重数
-% * 纯不可整流部分的意义
+% * 可整流分解与纯不可整流集
 % 
 % ---
 % 
@@ -17,21 +17,300 @@
 \section{可整流集的切向结构}
 \label{g3:sec:2005}
 
-待撰写
+面积公式让我们能够按参数计算一个 Lipschitz 片的测度，但一个几何集合可以由许多相互交叠的片组成。本节研究去掉参数之后还留下什么：在几乎每一点，把集合放大，其面积分布趋向一个重数为一的平面。为证明这一点，还要控制其他参数片在该点附近贡献的面积。
+
+\ProseParagraphBreak
+以下固定 \(1\le m\le n\)。集合的测度均取 \(\mathcal H^m\)，其中的“几乎处处”也以此测度为准；参数域中的零测集则以 \(\mathcal L^m\) 为准。两者通过面积公式相联系。
 
 \subsection{可数 Lipschitz 参数片}
 \label{g3:subsec:2005:01}
-待撰写
+\begin{definition}\label{g3:def:countably-rectifiable-set}
+	一个 \(\mathcal H^m\)-可测集 \(E\subset\mathbb R^n\) 称为\term[keshu kezhengliu ji]{可数 \(m\)-可整流集}[countably \(m\)-rectifiable set]，若存在可数个 Lipschitz 映射 \(f_i:A_i\subset\mathbb R^m\to\mathbb R^n\)，使
+	\[
+		\mathcal H^m\left(E\setminus\bigcup_{i=1}^{\infty}f_i(A_i)\right)=0.
+	\]
+	利用\cref{g3:prop:lipschitz-extension-density}，可以等价地要求 \(A_i=\mathbb R^m\)。本节简称这种集合为可整流集；若需要总测度有限或测度局部有限，将另行写明。
+\end{definition}
+
+光滑子流形、Lipschitz 图像、可数条线段的并都是可整流集。可整流性容许尖点、折痕以及片之间的相交；它要求的是由低维参数覆盖，而不是整个集合拥有一个光滑坐标系。
+
+\begin{proposition}[双 Lipschitz 片表示]\label{g3:prop:rectifiable-bilipschitz-cover}
+	每个可数 \(m\)-可整流集都有 \(\sigma\)-有限的 \(\mathcal H^m\) 测度。并且除去一个 \(\mathcal H^m\)-零测集后，它可写成两两不交的可数个 Borel 集 \(S_j\) 的并，其中每个 \(S_j\) 都是一个有界 Borel 参数集上的双 Lipschitz 映射的像。
+\end{proposition}
+\begin{proof}
+	先把每个参数域分成有界部分。由\cref{g3:prop:hausdorff-lipschitz,g3:thm:hausdorff-lebesgue}，其像的 \(\mathcal H^m\) 测度有限，故 \(E\) 的测度 \(\sigma\)-有限。
+
+	把参数映射延拓到全空间。不可微点集为 \(\mathcal L^m\)-零测集，其像为 \(\mathcal H^m\)-零测集；可微但秩小于 \(m\) 的点集，其像也由面积公式得到零测度。因此只须保留满秩部分。应用\cref{g3:cor:full-rank-bilipschitz-pieces,g3:cor:compact-linearization-pieces}，它的像除去零测集后由可数个紧的双 Lipschitz 片覆盖。
+
+	对这些紧像逐片与 \(E\) 相交。在每个有限测度片上，\(\mathcal H^m\) 的 Borel 正则性与完备性给出包含于这个交集的 Borel 子集，遗漏的测度为零：具体地，先取交集的 Borel 外包，再在该紧像内对差集取 Borel 外包并作差。有限测度保证两个外包都可取成同测度。于是可用 Borel 子片替换这些交集。按顺序扣除此前的片，使像集两两不交；其在紧参数片中的原像仍为 Borel 集。限制不会破坏双 Lipschitz 性。
+\end{proof}
+
+这里的 \(\sigma\)-有限不能换成局部有限。例如，平面内所有水平直线 \(\{y=q\}\)、\(q\in\mathbb Q\) 的并是可数 \(1\)-可整流集，但每个非空开球内的长度都是无穷。另一方面，给一条线段添上平面内一个可数稠密集，所得集合仍可整流，并且长度测度没有改变；它的闭包却是整个平面。这说明测度意义的局部形状不能从集合闭包单独读出。
+
+\ProseParagraphBreak
+后面研究的局部有限条件是
+\[
+	\mathcal H^m(E\cap K)<\infty
+	\qquad\text{对每个紧集 }K\subset\mathbb R^n.
+\]
+它使 \(\mu=\mathcal H^m\llcorner E\) 成为 Radon 测度，其中 \(\llcorner\) 表示测度的限制。对 \(\mathcal H^m\)-可测的 \(E\)，这里取限制测度在 Borel 集上的值；取其完备化不改变下述结论。
+\symidx{\(\mathcal H^m\llcorner E\)：Hausdorff 测度在集合 \(E\) 上的限制}
 
 \subsection{近似切平面的存在唯一性}
 \label{g3:subsec:2005:02}
-待撰写
+\begin{definition}\label{g3:def:approximate-tangent-plane}
+	设 \(\mu=\mathcal H^m\llcorner E\) 局部有限，\(x\in\mathbb R^n\)，\(P\subset\mathbb R^n\) 为过原点的 \(m\) 维线性子空间。如果对每个连续紧支撑函数 \(\varphi\in C_c(\mathbb R^n)\)，都有
+	\begin{equation}\label{g3:eq:rectifiable-blowup}
+		\lim_{r\downarrow0}r^{-m}\int_E
+		\varphi\!\left(\frac{y-x}{r}\right)\,\mathrm d\mathcal H^m(y)
+		=\int_P\varphi(z)\,\mathrm d\mathcal H^m(z),
+	\end{equation}
+	就称 \(P\) 为 \(E\) 在 \(x\) 的\term[jinsi qiepingmian]{近似切平面}[approximate tangent plane]，记为 \(\operatorname{Tan}^m(E,x)\)。位于原空间中的仿射切平面是 \(x+P\)。
+\end{definition}
+\symidx{\(\operatorname{Tan}^m(E,x)\)：以原点为基点的近似切平面}
+
+定义比较的是缩放后的面积分布：左边把 \(x\) 移到原点、把长度放大 \(1/r\)，同时把面积除以 \(r^m\)。采用测试函数，既能记录形状，也能记录单位面积的质量。这个定义与下面的密度、方向锥描述见 \cite[第11节，定义11.2及定理11.6，第59--63页]{Simon1983}。
+
+\begin{proposition}\label{g3:prop:approximate-tangent-consequences}
+	近似切平面一旦存在就唯一，并且
+	\begin{equation}\label{g3:eq:rectifiable-density-one}
+		\lim_{r\downarrow0}
+		\frac{\mathcal H^m(E\cap B(x,r))}{\omega_mr^m}=1.
+	\end{equation}
+	对每个 \(\alpha>0\)，还有
+	\begin{equation}\label{g3:eq:rectifiable-cone-concentration}
+		\lim_{r\downarrow0}r^{-m}\mathcal H^m
+		\{y\in E\cap B(x,r):\operatorname{dist}(y-x,P)\ge\alpha|y-x|\}=0.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	若两个不同的 \(m\) 平面 \(P,Q\) 都满足定义，取 \(z\in P\setminus Q\)，以及支撑在一个与 \(Q\) 不交的小球内、在 \(z\) 附近为正的非负连续函数。它在 \(P\) 上的积分为正，在 \(Q\) 上的积分为零，与同一个极限矛盾。
+
+	用连续函数从内外逼近单位球的示性函数。\(P\) 上的单位球边界是 \(\mathcal H^m\)-零测集，内外球的测度分别趋向 \(\omega_m\)，故得到密度公式。对于锥结论，令
+	\[
+		F=\{z:|z|\le1,\ \operatorname{dist}(z,P)\ge\alpha|z|\}.
+	\]
+	这是紧集，且 \(F\cap P\subset\{0\}\)，所以 \(\mathcal H^m(F\cap P)=0\)。取等于一于 \(F\)、支撑在其逐渐缩小邻域内的连续截断函数。先使用测试函数极限，再缩小邻域，得到左边的上极限为零。
+\end{proof}
+
+证明存在性时，先研究一个片，然后排除别的片在该点的质量。后一步所需的估计如下。
+
+\begin{lemma}[其他片的质量密度]\label{g3:lem:off-sheet-density-zero}
+	设 \(S\) 是有界参数集的双 Lipschitz 像，且为 Borel 集。若 \(\nu\) 为 Radon 测度，\(\nu(S)=0\)，则
+	\[
+		\lim_{r\downarrow0}\frac{\nu(B(x,r))}{r^m}=0
+		\quad\text{对 }\mathcal H^m\text{-几乎每个 }x\in S.
+	\]
+\end{lemma}
+\begin{proof}
+	记参数映射及其逆的 Lipschitz 常数为 \(L,L'\)。对任意球 \(B(z,r)\)，若它与 \(S\) 相交，选一个交点作为比较点，其余交点的参数均落在半径 \(2L'r\) 的球内。因此
+	\[
+		\mathcal H^m(S\cap B(z,r))\le C r^m,
+		\qquad C=L^m\omega_m(2L')^m.
+	\]
+	同一估计也适用于闭球。
+
+	固定紧集 \(K\subset S\)、\(t>0\) 和 \(\varepsilon>0\)。因 \(\nu(K)=0\)，可取开邻域 \(O\supset K\)，使 \(\nu(O)<\varepsilon\)。对于满足
+	\(\limsup_{r\downarrow0}\nu(B(x,r))/r^m>t\) 的 \(x\in K\)，有任意小的闭球 \(\overline B(x,r)\subset O\) 满足 \(\nu(\overline B(x,r))>tr^m\)。对这些球应用五倍球覆盖引理，取两两不交的 \(B_i=\overline B(x_i,r_i)\)，其五倍球覆盖全部这样的点。于是该坏集的 \(\mathcal H^m\) 外测度至多为
+	\[
+		\sum_i C(5r_i)^m
+		\le\frac{C5^m}{t}\sum_i\nu(B_i)
+		\le\frac{C5^m}{t}\nu(O)
+		<\frac{C5^m}{t}\varepsilon.
+	\]
+	令 \(\varepsilon\downarrow0\)，再取可数个正有理数 \(t\)。最后用紧子集把有限测度的 \(S\) 穷尽至零测集，即得结论。
+\end{proof}
+
+\begin{theorem}[可整流集的切平面]\label{g3:thm:rectifiable-tangent-plane}
+	设 \(E\subset\mathbb R^n\) 可数 \(m\)-可整流，且 \(\mathcal H^m\llcorner E\) 局部有限。则对 \(\mathcal H^m\)-几乎每个 \(x\in E\)，存在唯一的近似切平面，并且该点的 \(m\) 维密度等于一。
+
+	更具体地，若 \(A\subset\mathbb R^m\) 为 Lebesgue 可测集，\(f:A\to S\subset E\) 是双 Lipschitz 参数片，则对几乎每个 \(a\in A\)，
+	\begin{equation}\label{g3:eq:tangent-parametric-image}
+		\operatorname{Tan}^m(E,f(a))=\mathrm Df(a)(\mathbb R^m).
+	\end{equation}
+	这里 \(\mathrm Df\) 由可测参数域上的延拓独立性确定。
+\end{theorem}
+\begin{proof}
+	先只考虑一个有界的双 Lipschitz 片 \(S=f(A)\)。把 \(f\) 延拓到全空间。在几乎每个 \(a\in A\)，\(a\) 是 \(A\) 的密度为一的点，延拓可微，\(T=\mathrm Df(a)\) 的秩为 \(m\)，且
+	\(J(z)=J_mf(z)\mathbf1_A(z)\) 在 \(a\) 是 Lebesgue 点，取值 \(J(a)=J_m(T)\)。满秩性来自片上的反向 Lipschitz 估计和密度点处的无大空洞估计。
+
+	固定这样的 \(a\)，令 \(x=f(a)\)。对 \(\varphi\in C_c(\mathbb R^n)\)，单射面积公式和代换 \(u=a+rz\) 给出
+	\[
+		r^{-m}\int_S\varphi\!\left(\frac{y-x}{r}\right)\,\mathrm d\mathcal H^m(y)
+		=\int_{(A-a)/r}
+		\varphi\!\left(\frac{f(a+rz)-f(a)}r\right)J_mf(a+rz)\,\mathrm dz.
+	\]
+	若 \(\operatorname{supp}\varphi\subset B(0,R)\)，片的逆 Lipschitz 常数 \(L'\) 使右端的非零部分包含在固定球 \(|z|\le L'R\) 中。在这个球上，可微性给出
+	\[
+		\frac{f(a+rz)-f(a)}r\longrightarrow Tz
+		\quad\text{一致成立}.
+	\]
+	而 Lebesgue 点性质给出 \(J(a+r\,\cdot)\to J_m(T)\) 在该球上的 \(L^1\) 收敛。于是右端趋向
+	\[
+		J_m(T)\int_{\mathbb R^m}\varphi(Tz)\,\mathrm dz
+		=\int_{T(\mathbb R^m)}\varphi\,\mathrm d\mathcal H^m.
+	\]
+	最后一个等式是线性面积公式；积分可写为全空间，因为 \(|Tz|\ge |z|/L'\)。参数中的例外零测集经 Lipschitz 映射仍为 \(\mathcal H^m\)-零测集。
+
+	现在用\cref{g3:prop:rectifiable-bilipschitz-cover} 把 \(E\) 分为两两不交的片 \(S_j\)，余下零测集不贡献测度。对固定的 \(j\)，令
+	\(\nu_j=\mathcal H^m\llcorner(E\setminus S_j)\)。它局部有限，且 \(\nu_j(S_j)=0\)。由\cref{g3:lem:off-sheet-density-zero}，在 \(S_j\) 的几乎每一点，
+	\[
+		r^{-m}\left|\int_{E\setminus S_j}
+		\varphi\!\left(\frac{y-x}{r}\right)\,\mathrm d\mathcal H^m(y)\right|
+		\le \|\varphi\|_\infty r^{-m}\nu_j(B(x,Rr))
+		\longrightarrow0.
+	\]
+	所以整个 \(E\) 与该片有相同的放大极限。对可数个片取并，得到存在性；唯一性和密度结论由\cref{g3:prop:approximate-tangent-consequences} 给出。对任意另给的双 Lipschitz 子片，同一论证也适用，因而公式不依赖最初选用的分解。
+\end{proof}
+
+切平面条件还能够反过来识别可整流性。下面给出方向锥转化为图像的具体步骤。
+
+\begin{theorem}[切平面判别]\label{g3:thm:tangent-rectifiability-criterion}
+	设 \(\mathcal H^m\llcorner E\) 局部有限。如果 \(E\) 在 \(\mathcal H^m\)-几乎每一点都存在\cref{g3:def:approximate-tangent-plane} 意义下的近似切平面，则 \(E\) 可数 \(m\)-可整流。
+\end{theorem}
+\begin{proof}
+	在切平面 \(P_x\) 存在的点，由密度和锥集中结论，可选整数 \(k\)，使每个 \(0<r<1/k\) 都满足
+	\begin{align*}
+		\mathcal H^m(E\cap B(x,r))&\ge(\omega_m/2)r^m,\\
+		\mathcal H^m\{z\in E\cap B(x,r):
+		\operatorname{dist}(z-x,P_x)\ge |z-x|/4\}&\le\varepsilon_0r^m,
+	\end{align*}
+	其中固定 \(\varepsilon_0=\omega_m/(4\cdot32^m)\)。
+
+	用正交投影矩阵表示 \(m\) 平面。这些矩阵组成紧集，因为它们恰是满足
+	\(\Pi^T=\Pi\)、\(\Pi^2=\Pi\)、\(\operatorname{tr}\Pi=m\) 的矩阵，且范数有界。因此可取有限个平面 \(P_j\)，使每个 \(P_x\) 都满足
+	\(\|\Pi_{P_x}-\Pi_{P_j}\|<1/16\)。按 \(k,j\) 分组，再与直径小于 \(1/(2k)\) 的可数个小方块相交。
+
+	设 \(x,y\) 属于同一组，\(d=|x-y|>0\)。若
+	\(\operatorname{dist}(y-x,P_j)\ge d/2\)，则
+	\(\operatorname{dist}(y-x,P_x)\ge7d/16\)。对每个 \(z\in B(y,d/16)\)，有
+	\[
+		\operatorname{dist}(z-x,P_x)>6d/16,\qquad
+		|z-x|<17d/16.
+	\]
+	所以该球包含于以 \(x\) 为顶点的上述坏锥区域，且包含于 \(B(x,2d)\)。在 \(y\) 处用下密度界，在 \(x\) 处用锥误差界，得到
+	\[
+		\frac{\omega_m}{2}\left(\frac d{16}\right)^m
+		\le\varepsilon_0(2d)^m
+		=\frac{\omega_m}{4}\left(\frac d{16}\right)^m,
+	\]
+	矛盾。因此同一组内总有
+	\[
+		|\Pi_{P_j^\perp}(y-x)|<\frac12|y-x|,
+		\qquad
+		|\Pi_{P_j}(y-x)|>\frac{\sqrt3}{2}|y-x|.
+	\]
+	投影到 \(P_j\) 在这一组上单射，其逆为 Lipschitz；垂直分量因而是投影像上的 Lipschitz 函数。用分量延拓把它延拓到整个 \(P_j\)，这组点便包含在一个 Lipschitz 图像中。组的总数可数，并覆盖所有具有切平面的点，故得到所需参数覆盖。
+\end{proof}
 
 \subsection{密度和重数}
 \label{g3:subsec:2005:03}
-待撰写
+上一小节的密度一描述的是几何集合本身。若还要记录曲面经过了几次，或在不同位置分配不同质量，就应把重数写进测度。
 
-\subsection{纯不可整流部分的意义}
+\begin{theorem}[带重数的放大极限]\label{g3:thm:weighted-rectifiable-density}
+	设 \(E\) 可数 \(m\)-可整流，且 \(\mathcal H^m\llcorner E\) 局部有限。设 \(\theta:E\to(0,\infty)\) 可测、几乎处处有限，并且
+	\(\theta\in L^1_{\mathrm{loc}}(\mathcal H^m\llcorner E)\)。令
+	\(\mu_\theta=\theta\,\mathcal H^m\llcorner E\)。则对 \(\mathcal H^m\)-几乎每个 \(x\in E\)，
+	\begin{equation}\label{g3:eq:weighted-rectifiable-blowup}
+		\lim_{r\downarrow0}r^{-m}\int_E
+		\varphi\!\left(\frac{y-x}{r}\right)\theta(y)\,\mathrm d\mathcal H^m(y)
+		=\theta(x)\int_{\operatorname{Tan}^m(E,x)}
+		\varphi\,\mathrm d\mathcal H^m
+	\end{equation}
+	对每个 \(\varphi\in C_c(\mathbb R^n)\) 成立。特别地，
+	\begin{equation}\label{g3:eq:weighted-density-value}
+		\Theta^m(\mu_\theta,x)
+		=\lim_{r\downarrow0}\frac{\mu_\theta(B(x,r))}{\omega_mr^m}
+		=\theta(x)
+	\end{equation}
+	几乎处处成立。
+\end{theorem}
+\begin{proof}
+	在有界双 Lipschitz 片 \(S=f(A)\) 上，带权面积公式把左端化为参数积分，其中的密度变为
+	\[
+		h(a)=\theta(f(a))J_mf(a)\mathbf1_A(a).
+	\]
+	该函数可积，因为 \(S\) 有界而 \(\mu_\theta\) 局部有限。在 \(h\) 的 Lebesgue 点，上一小节的放大论证原样给出
+	\(\theta(f(a))\mathcal H^m\llcorner\mathrm Df(a)(\mathbb R^m)\) 这一极限。片外的加权测度
+	\(\nu=\mu_\theta\llcorner(E\setminus S)\) 是 Radon 测度，且 \(\nu(S)=0\)，由\cref{g3:lem:off-sheet-density-zero}，它在该片的几乎每点贡献零极限。可数分片后即得结论。用连续函数从内外逼近球的示性函数，得到密度值。
+\end{proof}
+
+当 \(\theta\) 取正整数值时，称它为整数重数。最简单的例子是同一个平面片被参数映射覆盖两次：像集自身的测度为 \(\mathcal H^m\llcorner E\)，参数面积对应的测度却为 \(2\mathcal H^m\llcorner E\)，其密度为二。面积公式中的计数函数正是这种重数的来源。若不同片在同一几何点汇合，先把各片的重数相加，再计算所得测度。
+
+\ProseParagraphBreak
+交叉点可能没有单一切平面。例如，两条不同直线的并在交点的放大极限仍是两条直线，其一维密度为二；在其余点，切线存在且密度为一。交点构成长度零测集，所以与几乎处处的结论相容。这个例子也说明，密度为整数和存在单一切平面是不同的信息。
+
+\subsection{可整流分解与纯不可整流集}
 \label{g3:subsec:2005:04}
-待撰写
+\begin{definition}\label{g3:def:purely-unrectifiable-set}
+	一个 \(\mathcal H^m\)-可测集 \(P\subset\mathbb R^n\) 称为\term[chun bukezhengliu ji]{纯 \(m\)-不可整流集}[purely \(m\)-unrectifiable set]，若对每个 Lipschitz 映射 \(f:\mathbb R^m\to\mathbb R^n\)，都有
+	\[
+		\mathcal H^m(P\cap f(\mathbb R^m))=0.
+	\]
+	等价地，\(P\) 与每个可数 \(m\)-可整流集的交集均为 \(\mathcal H^m\)-零测集。
+\end{definition}
+
+这比“整个集合不可整流”强得多：一个直线段与一个坏集合的并可以不可整流，但直线段部分仍携带可整流的正长度。纯不可整流性要求这种部分完全不存在。
+
+\begin{theorem}[可整流与纯不可整流分解]\label{g3:thm:rectifiable-pure-decomposition}
+	设 \(E\subset\mathbb R^n\) 为 \(\mathcal H^m\)-可测集，且 \(\mathcal H^m(E)\) 为 \(\sigma\)-有限。则可写成不交并
+	\[
+		E=R\mathbin{\dot\cup}P,
+	\]
+	其中 \(R\) 可数 \(m\)-可整流，\(P\) 纯 \(m\)-不可整流。两部分在相差 \(\mathcal H^m\)-零测集的意义下唯一。
+\end{theorem}
+\begin{proof}
+	先设 \(\mathcal H^m(E)<\infty\)。令 \(s\) 为 \(E\) 的全部可测可整流子集的测度上确界。选取这样的子集 \(R_j\)，使其测度趋向 \(s\)，并令 \(R=\bigcup_jR_j\)。可数个可整流集的并仍可整流，故 \(\mathcal H^m(R)=s\)。若 \(P=E\setminus R\) 与某个 Lipschitz 像的交集测度为正，则把该交集加入 \(R\) 得到更大的可整流子集，与上确界矛盾。该交集可测，因为全空间的连续像是紧像的可数并。
+
+	一般情形先把 \(E\) 分成两两不交的可测有限测度部分，逐个分解，再分别取并。纯不可整流部分的可数并仍纯不可整流。
+
+	若 \(E=R'\mathbin{\dot\cup}P'\) 是另一个分解，则 \(R\setminus R'\subset R\cap P'\)，右边为零测集；反向差集同理。两部分于是都唯一至零测集。
+\end{proof}
+
+一个显式的纯不可整流例子有助于说明，有限的整数维 Hausdorff 测度并不保证存在切平面。
+
+\begin{example}[四角 Cantor 集]\label{g3:exm:four-corner-cantor}
+	令
+	\[
+		C=\left\{\sum_{j=1}^{\infty}3\varepsilon_j4^{-j}:
+		\varepsilon_j\in\{0,1\}\right\},\qquad K=C\times C\subset[0,1]^2.
+	\]
+	每一步只保留正方形四角处、边长为原来四分之一的小正方形。\cref{g3:fig:four-corner-cantor} 画出前两步。这个紧集满足
+	\[
+		0<\mathcal H^1(K)<\infty,
+	\]
+	但它是纯 \(1\)-不可整流集。
+
+	先证测度断言。第 \(j\) 层有 \(4^j\) 个边长 \(\ell=4^{-j}\) 的小正方形，它们的直径之和为 \(\sqrt2\)，故 \(\mathcal H^1(K)\le\sqrt2\)。在每个第 \(j\) 层小正方形上赋予质量 \(4^{-j}\)，得到 \(K\) 上的概率测度 \(\lambda\)；具体地，把 \([0,1)\) 上一个点的四进位数字 \(0,1,2,3\) 依次对应四种角位，得到映到 \(K\) 的可测映射，再推前 Lebesgue 测度即可。四进位表示不唯一的可数个点任意选定一种表示；前 \(j\) 位固定的数字柱区间长度为 \(4^{-j}\)，给出所需质量。
+
+	若 \(\ell\le r<4\ell\)，一个半径 \(r\) 的球只与数目有统一上界的第 \(j\) 层小正方形相交。事实上，各方形中心至少相距 \(3\ell\)，围绕这些中心的半径 \(\ell\) 开圆盘不交，并包含在半径 \(r+2\ell\) 的圆盘内；比较面积可取数目上界 \(36\)。因此
+	\(\lambda(B(x,r))\le36\ell\le36r\)；对 \(r\ge1\) 也成立。任意直径 \(d>0\) 的集合可包含于一个半径略大于 \(d\) 的球，故其 \(\lambda\)-外测度至多为 \(36d\)。对 \(K\) 的任意覆盖求和，得到
+	\(1\le36\sum_i\operatorname{diam}U_i\)，从而 \(\mathcal H^1(K)\ge1/36\)。
+
+	接着证明方向锥集中在 \(K\) 的每一点都失败。固定 \(x\in K\) 和任一直线 \(P\)（过原点）。设第 \(j\) 层包含 \(x\) 的正方形边长为 \(\ell\)。对过 \(x\) 的直线 \(x+P\)，四个顶点中至少有一个到该直线的距离不小于 \(\ell/2\)：正方形沿任一单位法向量的投影宽度至少为 \(\ell\)，两个极端投影不可能都距零小于 \(\ell/2\)。
+
+	取这个顶点处再迭代两次所得的小正方形，其边长为 \(\ell/16\)。其中的 \(K\) 的每一点到 \(x+P\) 的距离至少为
+	\[
+		\frac{\ell}{2}-\frac{\sqrt2\,\ell}{16}>\frac{\ell}{4},
+	\]
+	而到 \(x\) 的距离小于 \(2\ell\)。由相似性，该小片的长度测度为 \((\ell/16)\mathcal H^1(K)\)。令 \(r=2\ell\)，于是
+	\[
+		\frac1r\mathcal H^1
+		\{y\in K\cap B(x,r):\operatorname{dist}(y-x,P)\ge |y-x|/8\}
+		\ge\frac{\mathcal H^1(K)}{32}.
+	\]
+	沿 \(j\to\infty\)，这个下界不趋于零。因此 \(K\) 处处没有近似切线。
+
+	最后，若 \(K\) 与某个可整流集相交于正长度的集合，则其中有一个正长度的 Borel 双 Lipschitz 子片 \(S\)。在 \(S\) 的几乎每点，\(S\) 有近似切线；由\cref{g3:lem:off-sheet-density-zero}，测度
+	\(\mathcal H^1\llcorner(K\setminus S)\) 在这些点的密度为零。所以 \(K\) 在其中几乎每点也有相同的近似切线，与刚才的结论矛盾。故 \(K\) 纯不可整流。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch20-FourCornerSet}
+	\caption{四角 Cantor 集的前两步。每层的正方形数量乘以四、边长除以四，所以覆盖直径的总和保持有界；不同角位却在每个尺度上阻止质量集中到一条直线。}
+	\label{g3:fig:four-corner-cantor}
+\end{figure}
+
+分解定理见 \cite[第13节，定理13.1，第70页]{Simon1983}。它说明弱曲面理论为什么需要指定可整流性：面积有限提供质量控制，可整流性进一步提供几乎处处的切向线性空间；重数则在此基础上记录质量。下一章研究函数变差与周长时，这三项将分别承担不同的作用。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

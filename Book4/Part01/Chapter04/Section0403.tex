@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 4.3 Abel 定理的证明
 % 纲要位置：几何学计划纲要.md，第 3606 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,360 @@
 \section{Abel 定理的证明}
 \label{g4:sec:0403}
 
-待撰写
+给定度零除子 \(D=\sum_p n_p[p]\)，要构造满足 \(\operatorname{div}(f)=D\) 的亚纯函数，可以先寻找它的对数微分。若 \(f\) 在 \(p\) 的阶数为 \(n_p\)，则 \(\mathrm{d}f/f\) 在那里只留下留数为 \(n_p\) 的单极点。第三章的主部判据能构造具有这些留数的微分；真正的全局问题是它的积分能否取指数后成为单值函数。Abel 定理说明，这个问题恰由 \(D\) 在 Jacobi 簇中的积分像决定。
 
 \subsection{主除子的必要周期条件}
 \label{g4:subsec:0403:01}
-待撰写
+先固定前两节的约定。设 \(X\) 为亏格 \(g\) 的紧连通黎曼曲面，取 \(a_i\cdot b_j=\delta_{ij}\) 的同调辛基及归一化全纯微分列向量
+\[
+	\boldsymbol\omega=(\omega_1,\ldots,\omega_g)^{\mathsf T},\qquad
+	\int_{a_i}\omega_j=\delta_{ij},\qquad
+	\tau_{ij}=\int_{b_i}\omega_j.
+\]
+当 \(g\ge1\) 时，由\cref{g4:thm:0401:normalized-periods,g4:prop:0401:period-lattice}，\(\tau=\tau^{\mathsf T}\)，且 \(\Lambda=\mathbb Z^g+\tau\mathbb Z^g\) 是周期格。\(g=0\) 时沿用 \(\mathbb C^0=\{0\}\)、\(\Lambda=\{0\}\) 的约定。度零除子的积分像记为
+\[
+	\operatorname{AJ}(D)
+	=\left[\sum_p n_p\int_{q_0}^{p}\boldsymbol\omega\right]
+	\in J(X)=\mathbb C^g/\Lambda.
+\]
+\cref{g4:prop:0402:divisor-integral}已经证明这个类与积分道路及基点 \(q_0\) 的选择无关；方括号内的复向量本身仍依赖道路。
+
+\begin{proposition}
+	\label{g4:prop:0403:logarithmic-differential}
+	设 \(f\) 是紧连通黎曼曲面 \(X\) 上不恒为零的亚纯函数。其\term[duishuweifen]{对数微分}[logarithmic differential] \(\eta_f=\mathrm{d}f/f\) 在零极点之外全纯，在每个点至多有单极点，并满足
+	\[
+		\operatorname{Res}_p\eta_f=\operatorname{ord}_p(f).
+	\]
+	若闭路 \(\gamma\) 避开 \(f\) 的零极点，则
+	\[
+		\int_\gamma\eta_f\in2\pi\mathrm{i}\mathbb Z.
+	\]
+\end{proposition}
+\begin{proof}
+	在 \(p\) 的中心坐标中写 \(f=z^n u(z)\)，其中 \(n=\operatorname{ord}_p(f)\in\mathbb Z\)，且 \(u\) 全纯、\(u(0)\ne0\)。直接求微分得
+	\[
+		\frac{\mathrm{d}f}{f}
+		=n\frac{\mathrm{d}z}{z}+\frac{u'(z)}{u(z)}\,\mathrm{d}z.
+	\]
+	第二项全纯，故得到局部极点与留数的结论。
+
+	沿 \(\gamma\) 取有限个小邻域，在每个邻域选择非消失函数 \(f\) 的全纯对数，并在相邻段交接时加上 \(2\pi\mathrm{i}\) 的整数倍，使对数沿整条参数区间连续。各段上对数的微分都是 \(\mathrm{d}f/f\)，所以积分是终点对数值减去起点对数值。由于 \(f(\gamma(1))=f(\gamma(0))\)，这两个值的指数相同，其差属于 \(2\pi\mathrm{i}\mathbb Z\)。局部对数的存在使用\cref{g4:prop:0102:logarithm}在坐标圆盘上的结论。
+\end{proof}
+
+要把这些整数周期与除子的积分联系起来，需要在带极点的情形重新检查双线性公式。设有限点集 \(S\) 包含所考虑微分的全部极点。由\cref{g4:prop:0401:symplectic-basis}，可选几何辛基的环路代表，使它们避开 \(S\)，仍只在共同顶点相交，并沿这些环路把曲面切开成多边形 \(P\)。其正向边字为
+\[
+	a_1b_1a_1^{-1}b_1^{-1}\cdots
+	a_gb_ga_g^{-1}b_g^{-1}.
+\]
+所有 \(p\in S\) 都位于 \(P\) 的内部。这里亚纯微分的 \(a,b\) 周期按这些实际环路取值：跨过极点改变环路时，周期可以改变一个小圆周积分；只说它们在 \(H_1(X,\mathbb Z)\) 中的类，还不足以确定亚纯微分的周期。
+
+\ProseParagraphBreak
+
+在 \(P\) 的内部、\(S\) 之外选基点 \(q_0\)。对全纯微分 \(\omega\)，令 \(F(p)=\int_{q_0}^{p}\omega\)，道路始终在切开后的多边形内。因为 \(P\) 是圆盘，\(F\) 是单值原函数，并在每条边的相应一侧延拓。特别地，它在各 \(p\in S\) 附近仍全纯。以下等式使用这一组确定的道路值。
+
+\begin{proposition}
+	\label{g4:prop:0403:reciprocity}
+	设 \(X\) 为亏格 \(g\ge1\) 的紧连通黎曼曲面，\(\omega\) 为全纯微分，\(\eta\) 为至多在有限点集 \(S\) 有单极点的亚纯微分，记 \(\rho_p=\operatorname{Res}_p\eta\)。按上述方式选取避开 \(S\) 的切割多边形、其几何辛基及原函数 \(F\)。则
+	\begin{equation}
+		\label{g4:eq:0403:reciprocity}
+		\sum_{i=1}^g
+		\left(
+			\int_{a_i}\omega\int_{b_i}\eta
+			-\int_{b_i}\omega\int_{a_i}\eta
+		\right)
+		=2\pi\mathrm{i}\sum_{p\in S}\rho_pF(p).
+	\end{equation}
+	右边取实际复数值，不取商；改变 \(F\) 的加法常数不改变右边。
+\end{proposition}
+\begin{proof}
+	在 \(P\) 内各 \(p\) 周围删去两两不交的小坐标圆盘，得到 \(P_\varepsilon\)。微分 \(F\eta\) 在这个带边界的区域全纯，且
+	\[
+		\mathrm{d}(F\eta)=\mathrm{d}F\wedge\eta+F\,\mathrm{d}\eta
+		=\omega\wedge\eta=0.
+	\]
+	最后一个等式用到两条微分的局部表达都只有 \(\mathrm{d}z\) 项。Stokes 公式把外边界与各孔口联系起来。孔口作为 \(P_\varepsilon\) 的边界按顺时针定向，所以
+	\[
+		\int_{\partial P}F\eta
+		=\sum_{p\in S}\int_{|z_p|=\varepsilon}^{\text{逆时针}}F\eta
+		=2\pi\mathrm{i}\sum_{p\in S}\rho_pF(p).
+	\]
+	这里 \(\operatorname{Res}_p(F\eta)=F(p)\rho_p\)，因为 \(\eta\) 至多有单极点。多边形顶点处可先圆滑边角再取极限；\(F\) 与 \(\eta\) 在每个顶点副本附近有界，新增小弧上的积分趋于零，因此不产生额外项。
+
+	再按配对边计算左边。简记 \(A_i=\int_{a_i}\omega\)、\(B_i=\int_{b_i}\omega\)。式\eqref{g4:eq:0401:edge-jumps}给出的原函数跳跃为：在同一 \(a_i\) 的两个匹配点上，负向边一侧的 \(F\) 比正向边一侧多 \(B_i\)；在同一 \(b_i\) 的两个匹配点上，正向边一侧的 \(F\) 比负向边一侧多 \(A_i\)。这些跳跃也可从一个四边块的边界行进直接读出。设块起点值为 \(C_i\)，沿 \(a_i,b_i\) 的部分积分分别为 \(f_a(t),f_b(t)\)，则匹配边上的值为
+	\[
+		\begin{array}{c|cc}
+			&\text{正向边一侧}&\text{负向边一侧}\\ \hline
+			a_i&C_i+f_a(t)&C_i+B_i+f_a(t)\\
+			b_i&C_i+A_i+f_b(t)&C_i+f_b(t).
+		\end{array}
+	\]
+	两侧的 \(\eta\) 来自同一条曲线上的同一个微分，而边界行进方向相反。于是这一对 \(a_i\) 边贡献 \(-B_i\int_{a_i}\eta\)，这一对 \(b_i\) 边贡献 \(A_i\int_{b_i}\eta\)。对全部边求和，便得到式\eqref{g4:eq:0403:reciprocity}的左边。
+
+	最后，整体留数定理给出 \(\sum_p\rho_p=0\)。若 \(F\) 增加常数 \(C\)，右边只增加 \(2\pi\mathrm{i}C\sum_p\rho_p=0\)，所以不变。
+\end{proof}
+
+称式\eqref{g4:eq:0403:reciprocity}为这里的带极点互反公式。若所有留数都是整数 \(n_p\)，把 \(\omega\) 依次取为 \(\omega_1,\ldots,\omega_g\)，并记切盘内部道路所给出的列向量为
+\[
+	U(D)\coloneqq\sum_p n_p\int_{q_0}^{p}\boldsymbol\omega,
+	\qquad D=\sum_p n_p[p],
+\]
+则互反公式写成
+\begin{equation}
+	\label{g4:eq:0403:vector-reciprocity}
+	B(\eta)-\tau A(\eta)=2\pi\mathrm{i}U(D),
+	\qquad
+	A(\eta)=\left(\int_{a_i}\eta\right)_i,\quad
+	B(\eta)=\left(\int_{b_i}\eta\right)_i.
+\end{equation}
+逐分量计算原本出现的是 \(\tau^{\mathsf T}\)，这里已使用其对称性。若重新任意选择到各点的道路，新的 \(U(D)\) 与原向量相差 \(\Lambda\) 中的元素；与固定环路周期之间的复向量等式则应继续使用切盘内确定的这一提升。
+
+\begin{proposition}
+	\label{g4:prop:0403:principal-periods}
+	设 \(X\) 是紧连通黎曼曲面，\(f\) 是不恒为零的亚纯函数，则
+	\[
+		\operatorname{AJ}(\operatorname{div}(f))=0.
+	\]
+\end{proposition}
+\begin{proof}
+	由\cref{g4:prop:0203:principal-degree}，\(D=\operatorname{div}(f)\) 的次数为零。若 \(g=0\)，Jacobi 簇是零维的单点空间，结论成立。若 \(g\ge1\)，取 \(\eta=\mathrm{d}f/f\)，并选避开零极点的几何辛基。\cref{g4:prop:0403:logarithmic-differential}给出整数列向量 \(m,n\)，使
+	\[
+		A(\eta)=2\pi\mathrm{i}m,\qquad
+		B(\eta)=2\pi\mathrm{i}n.
+	\]
+	式\eqref{g4:eq:0403:vector-reciprocity}于是给出
+	\[
+		U(D)=n-\tau m\in\mathbb Z^g+\tau\mathbb Z^g.
+	\]
+	它在商空间中的类正是 \(\operatorname{AJ}(D)\)，因此为零。若 \(f\) 为非零常数，则 \(D=0\)，亦有同样结论。
+\end{proof}
 
 \subsection{第三类微分的构造}
 \label{g4:subsec:0403:02}
-待撰写
+反方向先只处理极点附近的数据。设要在 \(p\) 取得留数 \(\rho\)，局部应取 \(\rho\,\mathrm{d}z/z\)。更换中心坐标 \(z=\zeta v(\zeta)\)、\(v(0)\ne0\)，则
+\[
+	\rho\frac{\mathrm{d}z}{z}
+	=\rho\frac{\mathrm{d}\zeta}{\zeta}
+	+\rho\frac{v'(\zeta)}{v(\zeta)}\,\mathrm{d}\zeta.
+\]
+后一项全纯，所以这一微分主部只依赖 \(p\) 与 \(\rho\)，不依赖中心坐标。只允许单极点的亚纯微分称为本节的\term[disanleiweifen]{第三类微分}[differential of the third kind]；若指定点的留数为零，则相应主部为零，微分在那里全纯。以下也允许全部主部为零的情形。
+
+\begin{proposition}
+	\label{g4:prop:0403:third-kind}
+	设 \(X\) 是亏格 \(g\) 的紧连通黎曼曲面，\(S\subset X\) 有限，并指定复数 \(\rho_p\)、\(p\in S\)。存在只可能在 \(S\) 有单极点且留数为 \(\rho_p\) 的亚纯微分，当且仅当
+	\[
+		\sum_{p\in S}\rho_p=0.
+	\]
+	存在时，所有这样的微分组成 \(\eta_0+H^0(X,K_X)\)。若另外固定避开 \(S\) 的几何辛基，则恰有一条这样的微分 \(\eta_\rho\) 满足
+	\[
+		\int_{a_i}\eta_\rho=0\qquad(1\le i\le g).
+	\]
+	对由同一切割多边形确定的路径，归一化微分满足
+	\begin{equation}
+		\label{g4:eq:0403:third-kind-b-periods}
+		\int_{b_j}\eta_\rho
+		=2\pi\mathrm{i}\sum_{p\in S}\rho_p
+		\int_{q_0}^{p}\omega_j
+		\qquad(1\le j\le g).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	必要性是\cref{g4:thm:0203:global-residue}。对充分性，在每个 \(p\) 指定 \(K_X\) 值主部 \(\rho_p\,\mathrm{d}z_p/z_p\)，并应用\cref{g4:cor:0303:principal-parts-criterion}。这里取 \(L=K_X\)，对偶测试空间为
+	\[
+		H^0(X,K_X\otimes K_X^{-1})
+		=H^0(X,\mathcal O_X)=\mathbb C.
+	\]
+	因此全部障碍条件就是：对每个常数 \(c\)，有
+	\[
+		\sum_{p\in S}\operatorname{Res}_p
+		\left(c\rho_p\frac{\mathrm{d}z_p}{z_p}\right)
+		=c\sum_{p\in S}\rho_p=0.
+	\]
+	所给条件恰好使它们全部成立，所以存在全局亚纯微分 \(\eta_0\)，具有指定主部，并在其余点全纯。因此总留数为零正是这一主部问题的全部障碍。
+
+	两条这样的微分相减后，各单极点主部相消，差为全纯微分；反过来，加上全纯微分不改变主部。因此所有解确为所述仿射空间。令
+	\[
+		\eta_\rho=\eta_0-
+		\sum_{i=1}^g\left(\int_{a_i}\eta_0\right)\omega_i.
+	\]
+	归一化条件 \(\int_{a_i}\omega_j=\delta_{ij}\) 使它的全部 \(a\) 周期为零。若另一条解也有零 \(a\) 周期，则差是一条全部 \(a\) 周期为零的全纯微分；由\cref{g4:thm:0401:normalized-periods}，这个差为零，故归一化解唯一。当 \(g=0\) 时，归一化条件为空，而 \(H^0(X,K_X)=0\)，同样得到唯一性。
+
+	当 \(g\ge1\) 时，在\cref{g4:prop:0403:reciprocity}中依次取 \(\omega=\omega_j\)、\(\eta=\eta_\rho\)。全部 \(a\) 周期为零，左边只剩 \(\int_{b_j}\eta_\rho\)，从而得到式\eqref{g4:eq:0403:third-kind-b-periods}。\(g=0\) 时没有这样的周期等式。
+\end{proof}
+
+例如在 \(\mathbb P^1\) 上，给两个不同有限点 \(p,q\) 留数 \(1,-1\)，所得唯一微分为
+\[
+	\eta_{p,q}
+	=\left(\frac1{z-p}-\frac1{z-q}\right)\mathrm{d}z
+	=\frac{\mathrm{d}\bigl((z-p)/(z-q)\bigr)}{(z-p)/(z-q)}.
+\]
+它在无穷远全纯，因为两个单极点项的 \(z^{-1}\) 系数相消。若 \(q=\infty\)，则取 \(\mathrm{d}z/(z-p)\)，其无穷远留数为 \(-1\)。正亏格时，相同局部留数数据还允许加上 \(g\) 维的全纯微分；零 \(a\) 周期选定其中的一条，但它的 \(b\) 周期通常不在 \(2\pi\mathrm{i}\mathbb Z\) 中。
+
+\ProseParagraphBreak
+
+对度零整数除子 \(D=\sum_p n_p[p]\)，将这条归一化微分记为 \(\eta_D\)。式\eqref{g4:eq:0403:third-kind-b-periods}说明
+\[
+	A(\eta_D)=0,\qquad
+	B(\eta_D)=2\pi\mathrm{i}U(D),
+\]
+其中 \(U(D)\) 是所选切割域中的实际积分向量。要使它成为某个函数的对数微分，还需要把这组 \(b\) 周期变为整数周期；允许的调整正是减去全纯微分。
 
 \subsection{整数周期与指数积分}
 \label{g4:subsec:0403:03}
-待撰写
+在单连通区域，取原函数再取指数总能产生非消失全纯函数。去掉极点后的曲面通常不单连通；沿闭路继续原函数时会增加一个周期。指数函数恰好消去 \(2\pi\mathrm{i}\mathbb Z\) 中的增量，因此要检查的是全部闭路的周期。
+
+\begin{lemma}
+	\label{g4:lem:0403:punctured-periods}
+	设 \(X\) 是亏格 \(g\) 的紧连通黎曼曲面，\(S=\{p_1,\ldots,p_r\}\) 为非空有限集。取避开 \(S\) 的几何辛基 \(a_i,b_i\)，并在每个 \(p_j\) 周围取逆时针小圆周 \(c_j\)。若 \(\xi\) 是 \(X\setminus S\) 上的闭复值光滑一形式，则任一闭路的 \(\xi\) 积分都是
+	\[
+		\int_{a_i}\xi,\qquad\int_{b_i}\xi,\qquad\int_{c_j}\xi
+	\]
+	的整数线性组合。
+\end{lemma}
+\begin{proof}
+	先删去各点周围的小开圆盘。去心圆盘沿半径向外收缩到其边界，给出 \(X\setminus S\) 到所得带边界曲面的形变收缩，所以闭路可移到小圆盘之外。
+
+	当 \(g\ge1\) 时，沿几何辛基切开，得到一个有 \(r\) 个孔口的多边形。在这个平面区域内，从各孔口向外边界依次选互不交叉的连接弧；每次切开一条弧，就把一个孔口接到外边界，孔的数目减少一个。全部切开后得到圆盘。当 \(g=0\) 时，底层曲面是球面，将一个孔口作为外边界，剩余区域是有 \(r-1\) 个孔的圆盘，按同样方式连接并切开即可；这时没有 \(a,b\) 环路。
+
+	令 \(G\) 为切口图、各孔口圆周及连接弧在原带边界曲面中的并，细分弧的端点后它是有限连通图。收缩连接各部分的树状路径后，图的环路由 \(a_i,b_i\) 以及“走向孔口、绕孔一周、再返回”的环路生成。这是第一卷命题5.2.6的有限图计算：生成树之外每条边贡献一条生成环路。剩余的圆盘附着到 \(G\) 就恢复原曲面；第一卷命题5.2.7说明，附着圆盘只增加关系，图的基本群到所得空间基本群的同态满射。因此任意闭路的类均可用上述环路的有限乘积表示。
+
+	\secref{g4:sec:0401}中闭形式积分的同调不变性论证也适用于无边界的 \(X\setminus S\)：每条光滑奇异链只有有限个单形，链上 Stokes 公式并不要求底空间紧。所以同伦替换保持积分，拼接时积分相加，反向时变号。连接孔口的路径在去程与回程上的积分相消，其贡献就是 \(\int_{c_j}\xi\)。这便给出所需整数线性组合。
+\end{proof}
+
+对具有整数留数 \(n_p\) 的第三类微分，小圆周积分已经自动等于 \(2\pi\mathrm{i}n_p\)。因此只需再把 \(a,b\) 周期调整到同一整数格中。没有极点时，前两节的同调辛基已生成全部周期，结论相同。
+
+\begin{proposition}
+	\label{g4:prop:0403:exponential-integral}
+	设 \(X\) 是紧连通黎曼曲面，\(\eta\) 是至多有单极点、且所有留数均为整数的亚纯微分。则存在不恒为零的亚纯函数 \(f\)，使
+	\[
+		\frac{\mathrm{d}f}{f}=\eta,
+	\]
+	当且仅当 \(\eta\) 在其极点补集上沿每条闭路的积分均属于 \(2\pi\mathrm{i}\mathbb Z\)。这个条件等价于在一组避开极点的几何辛基上有
+	\[
+		\int_{a_i}\eta,\ \int_{b_i}\eta\in2\pi\mathrm{i}\mathbb Z
+		\qquad(1\le i\le g).
+	\]
+	存在时，\(f\) 由 \(\eta\) 唯一确定到非零常数倍，且
+	\[
+		\operatorname{div}(f)
+		=\sum_p\operatorname{Res}_p(\eta)[p].
+	\]
+\end{proposition}
+\begin{proof}
+	必要性由\cref{g4:prop:0403:logarithmic-differential}给出。小圆周积分由留数公式确定，故全部闭路与几何辛基上的条件等价，正是前一引理的结论。若没有极点，则用 \(H_1(X,\mathbb Z)\) 的辛基得到相同结论。
+
+	现在设全部闭路满足整数周期条件，令 \(S\) 为极点集。在连通的 \(X\setminus S\) 中固定 \(q_0\)，定义
+	\begin{equation}
+		\label{g4:eq:0403:exponential-integral}
+		f(p)\coloneqq
+		\exp\left(\int_{q_0}^{p}\eta\right).
+	\end{equation}
+	删去有限点仍保持道路连通，因为经过某个删去点的道路可在小坐标盘内绕开它。两条从 \(q_0\) 到 \(p\) 的道路之差是闭路，积分差在 \(2\pi\mathrm{i}\mathbb Z\) 中，所以式\eqref{g4:eq:0403:exponential-integral}与道路选择无关。在不含极点的小盘中，\(\eta\) 有全纯原函数，因此 \(f\) 局部是某个全纯函数的指数乘以非零常数，故全纯、处处非零，并满足 \(\mathrm{d}f/f=\eta\)。
+
+	只需检查它在 \(p\in S\) 的延拓。取中心坐标 \(z\)，写
+	\[
+		\eta=n_p\frac{\mathrm{d}z}{z}+h(z)\,\mathrm{d}z,
+		\qquad n_p=\operatorname{Res}_p\eta\in\mathbb Z,
+	\]
+	并取全纯函数 \(H\)，使 \(H'=h\)。在去心盘上，
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}z}
+		\left(f(z)z^{-n_p}e^{-H(z)}\right)=0.
+	\]
+	去心盘连通，所以括号内等于某个非零常数 \(C_p\)。于是
+	\begin{equation}
+		\label{g4:eq:0403:local-exponential}
+		f(z)=C_p z^{n_p}e^{H(z)}.
+	\end{equation}
+	整数幂在原点是单值亚纯的，而指数因子全纯且非零，因此 \(f\) 亚纯延拓，阶数恰为 \(n_p\)。这也给出所述除子。
+
+	若 \(f_1,f_2\) 具有相同的对数微分，则它们的比值在极点补集上导数为零，因连通而为非零常数；等式再跨过有限点延拓。所以解唯一到非零常数倍。
+\end{proof}
+
+局部留数的整数性与全局周期条件各有作用。若留数为非整数 \(\rho\)，局部指数积分含 \(z^\rho\)，绕点一周会乘以 \(e^{2\pi\mathrm{i}\rho}\)。即使所有留数都为整数，沿把手环路继续积分仍可能产生非整数周期；这正是下一步要用全纯微分修正的部分。
 
 \subsection{由周期条件恢复亚纯函数}
 \label{g4:subsec:0403:04}
-待撰写
+归一化第三类微分已经解决了全部局部主部条件。剩下的 \(g\) 个复周期恰由 \(U(D)\) 记录；当这个向量落在周期格中时，格的两组整数系数分别告诉我们应减去哪条全纯微分，以及修正后的另一组周期是多少。
+
+\begin{theorem}[Abel 定理]
+	\label{g4:thm:0403:abel}
+	设 \(X\) 为紧连通黎曼曲面，\(D\) 是 \(X\) 上次数为零的整数除子。则下列两项等价：
+	\begin{enumerate}
+		\item 存在不恒为零的亚纯函数 \(f\)，使 \(\operatorname{div}(f)=D\)；
+		\item \(\operatorname{AJ}(D)=0\in J(X)\)。
+	\end{enumerate}
+	在存在时，具有指定除子的函数唯一到非零常数倍。因此，对任意同次数除子 \(D_1,D_2\)，二者线性等价当且仅当 \(\operatorname{AJ}(D_1-D_2)=0\)。
+\end{theorem}
+\begin{proof}
+	主除子的必要条件已由\cref{g4:prop:0403:principal-periods}证明。下面设 \(D=\sum_p n_p[p]\)、\(\sum_p n_p=0\)，并且 \(\operatorname{AJ}(D)=0\)。
+
+	若 \(D=0\)，取 \(f=1\)。若 \(D\ne0\)，由\cref{g4:prop:0403:third-kind}构造只具有留数 \(n_p\) 的单极点、且全部 \(a\) 周期为零的微分 \(\eta_D\)。先设 \(g\ge1\)，在避开这些点的切割多边形内，选择前述确定的道路，得到 \(U(D)\in\mathbb C^g\)。其商类为零，意味着存在整数列向量 \(m,\ell\in\mathbb Z^g\)，使
+	\[
+		U(D)=m+\tau\ell.
+	\]
+	定义
+	\begin{equation}
+		\label{g4:eq:0403:integer-period-correction}
+		\eta=\eta_D-2\pi\mathrm{i}
+		\sum_{j=1}^g\ell_j\omega_j.
+	\end{equation}
+	所减微分全纯，所以 \(\eta\) 的极点及留数与 \(\eta_D\) 相同。其周期为
+	\[
+		A(\eta)=-2\pi\mathrm{i}\ell,\qquad
+		B(\eta)
+		=2\pi\mathrm{i}U(D)-2\pi\mathrm{i}\tau\ell
+		=2\pi\mathrm{i}m.
+	\]
+	二者均在 \(2\pi\mathrm{i}\mathbb Z^g\) 中，孔口周期又为 \(2\pi\mathrm{i}n_p\)。于是\cref{g4:prop:0403:exponential-integral}适用，指数积分给出全局亚纯函数 \(f\)，并有 \(\operatorname{ord}_p(f)=n_p\)，所以 \(\operatorname{div}(f)=D\)。
+
+	若 \(g=0\)，没有 \(a,b\) 周期，也没有需要减去的全纯微分。直接取 \(\eta=\eta_D\)；小圆周周期已为整数周期，\cref{g4:lem:0403:punctured-periods}使全部闭路满足条件，同样得到 \(f\)。这与 \(J(X)\) 为单点、每个度零除子的积分像都为零相符。
+
+	若 \(f_1,f_2\) 具有相同除子，则 \(f_1/f_2\) 的所有零极点都相消，成为紧曲面上处处非零的全纯函数，故为非零常数。最后，\(D_1,D_2\) 线性等价按定义恰好表示 \(D_1-D_2\) 为主除子，再应用刚证得的等价关系即可。
+\end{proof}
+
+证明中的路径选择有两个层次。切割域提供一个确定的复向量 \(U(D)\)，使它与 \(\eta_D\) 的周期之间有精确等式；Abel--Jacobi 映射只保留其模 \(\Lambda\) 的类。零类保证这个特定提升也可写成 \(m+\tau\ell\)，从而允许上述周期修正。最终得到的函数虽然用到了这些选择，其除子只由 \(D\) 决定，而唯一性使不同选择所得函数只差非零常数。
+
+\ProseParagraphBreak
+
+Abel 定理使积分真正下降到除子类群，并给出单射
+\[
+	\operatorname{Div}^0(X)/\operatorname{Prin}(X)
+	\hookrightarrow J(X).
+\]
+它还可以用于检验一条曲线本身在 Jacobi 簇中的积分像。
+
+\begin{corollary}
+	\label{g4:cor:0403:abel-embedding}
+	设 \(X\) 为亏格 \(g\ge1\) 的紧连通黎曼曲面，固定 \(q_0\in X\)。则
+	\[
+		A_{q_0}:X\longrightarrow J(X),\qquad
+		p\longmapsto\left[\int_{q_0}^{p}\boldsymbol\omega\right]
+	\]
+	是全纯嵌入。若 \(g=1\)，它是将 \(q_0\) 送到原点的双全纯同构
+	\[
+		X\cong\mathbb C/(\mathbb Z+\tau\mathbb Z).
+	\]
+\end{corollary}
+\begin{proof}
+	若 \(A_{q_0}(p)=A_{q_0}(q)\)，则 \(\operatorname{AJ}([p]-[q])=0\)。Abel 定理给出具有除子 \([p]-[q]\) 的函数。若 \(p\ne q\)，这个函数恰有一个简单极点，到球面的次数为 \(1\)，由\cref{g4:cor:0202:degree-one}是双全纯同构。这会使 \(g=0\)，与假设矛盾。因此 \(p=q\)，映射单射。
+
+	由\cref{g4:prop:0402:abel-jacobi}，其微分为
+	\[
+		\mathrm{d}(A_{q_0})_p(v)
+		=(\omega_1(v),\ldots,\omega_g(v))^{\mathsf T}.
+	\]
+	当 \(g\ge2\) 时，\cref{g4:thm:0305:canonical-map}的典范系无基点性保证每个 \(p\) 至少有一条全纯微分不消失，所以这个微分在一维切空间上单射。当 \(g=1\) 时，取任一非零全纯微分；它的有效零除子次数为 \(\deg K_X=0\)，故处处非零，得到同样结论。
+
+	于是 \(A_{q_0}\) 是单射全纯浸入。紧性使它成为到其像的同胚；局部取一个导数非零的目标坐标，一元逆函数定理使其余目标坐标成为这个坐标的全纯函数，所以像是复子流形，映射为全纯嵌入。若 \(g=1\)，源、靶维数同为 \(1\)，映射局部双全纯，像开；紧性又使像闭。\(J(X)\) 连通，因此像等于整个 Jacobi 簇。基点的积分为零，故 \(q_0\) 对应原点。
+\end{proof}
+
+在球面上，结论可由有理函数直接核验。若 \(D=\sum_{j=1}^r n_j[a_j]+n_\infty[\infty]\)，且 \(n_\infty=-\sum_jn_j\)，则
+\[
+	f(z)=\prod_{j=1}^r(z-a_j)^{n_j}
+\]
+恰有除子 \(D\)。在亏格一时，将曲面写成上述复环面，度零除子 \(\sum_j n_j[p_j]\) 为主除子当且仅当代表点满足
+\[
+	\sum_j n_j z_j\in\mathbb Z+\tau\mathbb Z.
+\]
+例如任取环面上的 \(u,v\)，除子 \([u]+[v]-[0]-[u+v]\) 的积分像为零，因而可由一个亚纯函数实现。周期格在这里直接规定了零点与极点在环面群法中的平衡条件。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

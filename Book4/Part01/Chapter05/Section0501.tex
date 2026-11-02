@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 5.1 曲面上的势论工具
 % 纲要位置：几何学计划纲要.md，第 3633 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -9,32 +9,325 @@
 % * 光滑相对紧区域的 Dirichlet 问题
 % * Green 函数及对数奇点
 % * 调和共轭、周期和能量
-% * 最大值及 Harnack 紧性
+% * 最大值原理与 Harnack 紧性
 % 
 % 纲要内容结束
 
 \section{曲面上的势论工具}
 \label{g4:sec:0501}
 
-待撰写
+要把一张曲面映到圆盘，可以先寻找一个实函数：它在边界取零，在一个指定内点像 \(-\log|z|\) 那样趋于正无穷。如果这个函数在其余地方调和，配上局部调和共轭再取指数，便有机会得到所需全纯映射。本节先建立这个实函数的存在性。所有局部计算都在全纯坐标中进行；度量用于组织能量与法向量，调和性本身只依赖复结构。
 
 \subsection{辅助共形度量和调和性}
 \label{g4:subsec:0501:01}
-待撰写
+
+设 \(X\) 为黎曼曲面。全纯坐标变换 \(w=w(z)\) 满足 \(|\mathrm{d}w|^2=|w'(z)|^2|\mathrm{d}z|^2\)，所以这些局部 Euclid 度量彼此共形。第一卷第12.3节定理12.3.5给出从属于坐标覆盖的光滑单位分解：支集族局部有限、各支集留在对应图内、权重非负且总和为 \(1\)。把各图中的 \(|\mathrm{d}z|^2\) 乘权重后补零并求和，便得到全局光滑正定度量，在每张全纯图中形如
+\[
+	g=\rho(z)^2(\mathrm{d}x^2+\mathrm{d}y^2),\qquad \rho>0.
+\]
+局部有限性保证总和光滑，正性来自至少一个正权重。这称为与复结构相容的\term[gongxingduliang]{共形度量}[conformal metric]。
+
+\begin{proposition}
+	\label{g4:prop:0501:conformal-harmonicity}
+	设 \(X\) 为黎曼曲面，\(g=\rho^2|\mathrm{d}z|^2\) 为光滑共形度量。按非负 Laplace 算子的约定，对实 \(C^2\) 函数有
+	\begin{equation}
+		\label{g4:eq:0501:laplacian}
+		\Delta_g u=-\rho^{-2}(u_{xx}+u_{yy}).
+	\end{equation}
+	因此条件 \(\Delta_g u=0\) 与所选共形度量无关，并在全纯换坐标下不变。这样的函数局部为全纯函数的实部，且光滑。
+\end{proposition}
+\begin{proof}
+	度量矩阵为 \(\rho^2I\)，面积密度为 \(\rho^2\)。散度的坐标表达给出
+	\[
+		-\operatorname{div}_g\nabla_g u
+		=-\frac1{\rho^2}\sum_{j=1}^2
+		\partial_j\bigl(\rho^2\rho^{-2}\partial_j u\bigr)
+		=-\rho^{-2}(u_{xx}+u_{yy}).
+	\]
+	若 \(w=w(z)\) 全纯且导数非零，链式法则及 Cauchy--Riemann 方程给出
+	\[
+		(\partial_x^2+\partial_y^2)(v\circ w)
+		=|w'(z)|^2(v_{ss}+v_{tt})\circ w,
+		\qquad w=s+\mathrm{i}t.
+	\]
+	因而零解在坐标间相容。在每个小坐标矩形中，\cref{g4:prop:0103:harmonic-conjugate}沿两条坐标线的积分构造出共轭函数；实部来自全纯函数，故由局部幂级数具有任意阶导数。
+\end{proof}
+
+曲面的复结构还在实一形式上给出旋转算子
+\[
+	*\mathrm{d}x=\mathrm{d}y,\qquad *\mathrm{d}y=-\mathrm{d}x.
+\]
+全纯坐标变换的实微分是正伸缩与旋转的复合，所以它与此算子交换；\(*\) 在不同图中定义同一个全局算子，也不受共形因子 \(\rho\) 影响。于是
+\begin{equation}
+	\label{g4:eq:0501:star-laplacian}
+	*\mathrm{d}u=-u_y\,\mathrm{d}x+u_x\,\mathrm{d}y,
+	\qquad \mathrm{d}(*\mathrm{d}u)=-(\Delta_g u)\,\mathrm{d}A_g.
+\end{equation}
+调和函数的共轭问题因此成为闭一形式 \(*\mathrm{d}u\) 是否恰当的问题。以下只用调和方程的零解；需要判断次调和性时，采用的局部不等式是 \(u_{xx}+u_{yy}\ge0\)，即本书记号中的 \(\Delta_g u\le0\)。
 
 \subsection{光滑相对紧区域的 Dirichlet 问题}
 \label{g4:subsec:0501:02}
-待撰写
+
+称 \(\Omega\Subset X\) 为光滑相对紧区域，是指 \(\Omega\) 开且连通，\(\overline\Omega\) 为嵌入 \(X\) 的紧光滑带边界曲面，并且 \(\partial\Omega\ne\varnothing\)。边界在每张小坐标图中是一条光滑曲线，\(\Omega\) 位于其一侧。\term[dirichletwenti]{Dirichlet 问题}[Dirichlet problem]\footnote{Johann Peter Gustav Lejeune Dirichlet（1805--1859），德国数学家，研究数论、Fourier 级数与势论。}要求对给定连续边值 \(f\in C(\partial\Omega,\mathbb R)\)，构造内部调和、连续到闭包且边值为 \(f\) 的函数。唯一性来自最大值原理，存在性则由下面的圆盘求解与上包络构造完成。圆盘上的显式解称为 Poisson 积分。\footnote{Siméon Denis Poisson（1781--1840），法国数学家，研究积分、级数与数学物理。}
+
+\begin{lemma}
+	\label{g4:lem:0501:poisson}
+	设 \(f\) 为圆周 \(|z|=R\) 上的连续实函数。则
+	\begin{equation}
+		\label{g4:eq:0501:poisson}
+		P[f](z)=\frac1{2\pi}\int_0^{2\pi}
+		\frac{R^2-|z|^2}{|Re^{\mathrm{i}t}-z|^2}
+		f(Re^{\mathrm{i}t})\,\mathrm{d}t,
+		\qquad |z|<R,
+	\end{equation}
+	调和并连续延拓到闭圆盘，其边值为 \(f\)，且这样的延拓唯一。若 \(h\ge0\) 在 \(D(0,R)\) 上调和，则对 \(|z|\le r<R\) 有
+	\begin{equation}
+		\label{g4:eq:0501:harnack-disk}
+		\frac{R-r}{R+r}h(0)\le h(z)
+		\le\frac{R+r}{R-r}h(0).
+	\end{equation}
+	在每个较小闭圆盘上，调和函数的各阶导数由稍大圆盘上的函数一致界控制。
+\end{lemma}
+\begin{proof}
+	核是全纯函数 \((Re^{\mathrm{i}t}+z)/(Re^{\mathrm{i}t}-z)\) 的实部，所以在紧子盘上可逐项求导，所得积分调和。核非负，且对 \(t\) 的平均为 \(1\)：将上述分式展开为 \(1+2\sum_{n\ge1}(z/R)^ne^{-\mathrm{i}nt}\)，非零频率积分为零。故 \(|P[f]|\le\max|f|\)。
+
+	固定边界点 \(\zeta\)，把积分分为靠近 \(\zeta\) 的小弧及其补集。在小弧上，\(f-f(\zeta)\) 由一致连续性任意小；在补集上，\(z\to\zeta\) 时分母一致离零，分子趋零，所以该部分积分趋零。核的总积分为 \(2\pi\)，因而 \(P[f](z)\to f(\zeta)\)。唯一性是\cref{g4:cor:0103:harmonic-maximum}的应用。
+
+	对 \(h\) 先在任一半径 \(R'<R\) 的闭盘上用唯一性得到 Poisson 表达。核在 \(|z|\le r\) 上介于 \((R'-r)/(R'+r)\) 与其倒数之间，而边值的平均为 \(h(0)\)。令 \(R'\uparrow R\)，便得式\eqref{g4:eq:0501:harnack-disk}。对 Poisson 核求任意阶实偏导，在固定内盘和固定较大积分圆周之间，分母有统一正下界，遂得到相应的导数估计。
+\end{proof}
+
+为作上包络，我们暂时允许尚未调和的连续函数。称连续实函数 \(v\) 为\term[citiaohehanshu]{次调和函数}[subharmonic function]，是指每个闭包位于定义域内的坐标圆盘 \(B\) 及每个 \(H\in C(\overline B)\)、内部调和的函数都满足：若 \(v\le H\) 于 \(\partial B\)，则 \(v\le H\) 于 \(B\)。这等价于每个小坐标圆周上的次平均不等式。一个方向用 \(P[v|_{\partial B}]\)；另一个方向注意，若 \(v-H\) 在盘内有正最大值，次平均不等式迫使最大值点附近恒定，再由连通性把最大值传到边界，产生矛盾。因此定义可由局部次平均性质检验。相同的最大值论证使比较性质对任意相对紧的小区域成立；全纯换坐标保持调和函数，故定义也与选图无关。\(-v\) 次调和时，称 \(v\) 为超调和函数。
+
+\begin{lemma}
+	\label{g4:lem:0501:perron-operations}
+	连续次调和函数的和及有限最大值仍次调和。在一个坐标圆盘 \(B\Subset\Omega\) 内，把连续次调和函数 \(v\) 换成其边值的 Poisson 延拓，在盘外保留 \(v\)，所得函数记为 \(v^B\)。则 \(v^B\) 连续、次调和且 \(v^B\ge v\)。连续次调和函数在连通区域中若取得最大值，就恒为该常数；特别地，闭包紧且边界非空时，其上界由边界控制。
+\end{lemma}
+\begin{proof}
+	次平均不等式可相加，故和仍次调和；有限最大值的比较性质逐项成立。次平均不等式也证明强最大值原则：在最大值点，圆周平均不小于中心值而又不大于全域最大值，故整圆周都等于最大值；让半径变化，最大值集合为开集，它又是闭集，连通性给出结论。对于只有局部最大值的情况，先在小盘中得到局部常值；全域边界比较时只需使用全域最大值。
+
+	Poisson 延拓连续至边界，故 \(v^B\) 连续；次调和比较给出 \(v^B\ge v\)。检验接缝处的局部次平均性质，设 \(p\in\partial B\)。有 \(v^B(p)=v(p)\) 且邻域内 \(v^B\ge v\)，所以
+	\[
+		v^B(p)=v(p)\le\frac1{2\pi}\int_0^{2\pi}v(p+re^{\mathrm{i}t})\,\mathrm{d}t
+		\le\frac1{2\pi}\int_0^{2\pi}v^B(p+re^{\mathrm{i}t})\,\mathrm{d}t
+	\]
+	对充分小的坐标圆周成立。在盘内 \(v^B\) 调和，在盘外它等于 \(v\)，因此局部次平均检验覆盖全部点。最后，若闭包上的最大值大于边界最大值，它在内点取得，由强最大值原则与边界连续性矛盾。
+\end{proof}
+
+\begin{theorem}
+	\label{g4:thm:0501:dirichlet}
+	设 \(X\) 为黎曼曲面，\(\Omega\Subset X\) 为边界非空的光滑相对紧区域。对每个 \(f\in C(\partial\Omega,\mathbb R)\)，存在唯一
+	\[
+		u\in C(\overline\Omega,\mathbb R)\cap C^\infty(\Omega,\mathbb R),
+		\qquad \Delta_g u=0,\quad u|_{\partial\Omega}=f.
+	\]
+	并且 \(\min_{\partial\Omega}f\le u\le\max_{\partial\Omega}f\)。
+\end{theorem}
+\begin{proof}
+	设 \(m=\min f\)、\(M=\max f\)，令 \(\mathcal F\) 是所有在 \(\overline\Omega\) 上连续、在 \(\Omega\) 内次调和且边值不超过 \(f\) 的函数组成的族。常数 \(m\) 属于此族，而最大值原则使每个成员都不超过 \(M\)。定义
+	\[
+		u(x)=\sup_{v\in\mathcal F}v(x),\qquad x\in\Omega.
+	\]
+	该族对有限最大值及内盘 Poisson 替换封闭。构造的关键是证明上确界本身调和，并让它取到所需边值。
+
+	固定坐标圆盘 \(B\Subset\Omega\) 及中心 \(a\)。选 \(v_n\in\mathcal F\) 使 \(v_n(a)\to u(a)\)，将它们依次替换为 \(\max(m,v_1,\ldots,v_n)\)，再作 \(B\) 内的 Poisson 替换，记所得调和部分为 \(h_n\)。它们单调增加且介于 \(m,M\) 之间。\cref{g4:lem:0501:poisson}的导数估计与\cref{g4:thm:0104:montel}证明中的紧空间选列论证，在内盘穷竭上逐次选子列，得到局部各阶一致收敛的子列；单调性使整个序列有同一个调和极限 \(h\)。这里按各阶导数再作对角选取，微分与极限相容，故极限满足调和方程。并有 \(h(a)=u(a)\)、\(h\le u\)。
+
+	对任意 \(v\in\mathcal F\)，把 \(\max(v,m,v_1,\ldots,v_n)\) 作同样替换，得调和函数 \(k_n\ge h_n\)。在中心，\(0\le k_n(a)-h_n(a)\le u(a)-h_n(a)\to0\)。对非负调和函数 \(k_n-h_n\) 使用式\eqref{g4:eq:0501:harnack-disk}，知其在任一内盘上一致趋零。由于 \(v\le k_n\)，得到 \(v\le h\)。取所有 \(v\) 的上确界便有 \(u=h\)，所以 \(u\) 在 \(B\) 内调和。中心任意，故整个 \(\Omega\) 上调和。
+
+	接着在每个边界点 \(p\) 构造障碍。取 \(z(p)=0\) 的全纯坐标，旋转实坐标，使边界为 \(y=\psi(x)\)，\(\Omega\) 在上侧，且 \(\psi(0)=\psi'(0)=0\)。光滑性给出 \(|\psi(x)|\le Cx^2\)。在下侧取圆心 \(a=-\mathrm{i}r\)、半径 \(r\) 的足够小圆，令 \(1/(2r)>C\)；其上半圆满足 \(y\le-x^2/(2r)\)，故除 \(p\) 外严格位于区域外。缩小坐标邻域后，
+	\[
+		b(z)=\log\frac{|z-a|}{r}
+	\]
+	在 \(\overline\Omega\) 的该邻域中非负、只在 \(p\) 为零，并在区域内调和。取围住 \(p\) 的较小坐标邻域，其人工边界与 \(\overline\Omega\) 的交集上有 \(b\ge c>0\)。在这个邻域内取 \(\min(b,c/2)\)，邻域外取常数 \(c/2\)，便得到全局连续超调和函数 \(\beta_p\)。两部分在人工边界附近已经相等；最小值保持超调和性。它在 \(p\) 为零，在 \(\overline\Omega\setminus\{p\}\) 上严格为正。
+
+	给定 \(\varepsilon>0\)，由 \(f\) 连续，\(p\) 附近的边界上有 \(|f-f(p)|<\varepsilon\)。其余边界紧且 \(\beta_p\) 有正下界，因此可取 \(A>0\) 使
+	\[
+		f(p)-\varepsilon-A\beta_p\le f
+		\le f(p)+\varepsilon+A\beta_p
+		\quad\text{于 }\partial\Omega.
+	\]
+	左边是 \(\mathcal F\) 的成员。右边超调和；每个 \(v\in\mathcal F\) 与它作差为次调和函数，边界非正，所以内部也非正。取上确界得到相同的双侧夹估。令 \(x\to p\) 再令 \(\varepsilon\downarrow0\)，便有 \(u(x)\to f(p)\)。按这些值延拓，\(u\) 在闭包连续。唯一性及上下界由最大值原则得到。
+\end{proof}
+
+这就是\term[perronfangfa]{Perron 方法}[Perron method]\footnote{Oskar Perron（1880--1975），德国数学家，研究分析、连分数与代数。}：在所有满足边界不等式的次调和函数中取最大的候选，圆盘内的调和替换使候选达到调和性，边界障碍再保证它取到给定数据。光滑边界在此用于外切圆障碍；内部构造只需要局部坐标圆盘。
 
 \subsection{Green 函数及对数奇点}
 \label{g4:subsec:0501:03}
-待撰写
+
+指定一个点 \(p\in\Omega\)，我们要将边界值为零的条件与 \(p\) 处的对数奇点同时满足。局部的 \(-\log|z|\) 不一定在整个曲面上有意义，因而不能直接拿它减去一个全局调和函数。下面先挖去一个小圆盘，在余下的光滑带边界区域上求解，再使小圆盘收缩。
+
+\begin{theorem}
+	\label{g4:thm:0501:green}
+	设 \(\Omega\Subset X\) 为黎曼曲面中的光滑相对紧区域，\(\partial\Omega\ne\varnothing\)，且 \(p\in\Omega\)。存在唯一函数 \(G_\Omega(\cdot,p)\)，在 \(\overline\Omega\setminus\{p\}\) 上连续、在 \(\Omega\setminus\{p\}\) 上调和，边界值为零，并且在任一中心全纯坐标中有
+	\begin{equation}
+		\label{g4:eq:0501:green-local}
+		G_\Omega(z,p)=-\log|z|+H(z),
+	\end{equation}
+	其中 \(H\) 在包含 \(z=0\) 的邻域内调和。它在 \(\Omega\setminus\{p\}\) 上严格为正，称为区域的\term[greenhanshu]{Green 函数}[Green function]。
+\end{theorem}
+\begin{proof}
+	取中心坐标，使 \(\overline{D(0,2R)}\Subset\Omega\)。先为挖孔问题构造一个独立于孔半径的上界。在 \(\Omega\setminus\overline{D(0,R)}\) 上用\cref{g4:thm:0501:dirichlet}求解 \(h\)，其内圆周边值为 \(1\)，外边界值为 \(0\)。这个区域连通：原区域中的路径若穿过所删圆盘，可在圆盘外的一条薄圆环中把相应段绕行。强最大值原则给出 \(0<h<1\)。设 \(m_1=\max_{|z|=2R}h<1\)，比较圆环 \(R<|z|<2R\) 上的边值，得到
+	\[
+		h(z)\le1-a\log(|z|/R),\qquad
+		a=\frac{1-m_1}{\log2}>0.
+	\]
+	此外 \(h\) 可光滑延拓过内圆周。确实，局部 Möbius 坐标把圆弧变为直线段，\(h-1\) 在该段连续取零；在一个小半盘中，把其半圆边值奇延拓到整圆周，Poisson 延拓也为奇函数。它在上半盘与原函数具有相同边值，由唯一性相等，故给出越过直径的调和延拓。搬回坐标即得所需光滑性。由上述圆环比较取右导数，有 \(\partial_rh|_{r=R}\le-a/R\)。
+
+	取常数 \(A>1/a\)，并增大到 \(A+\log R\ge0\)，定义
+	\[
+		W(z)=
+		\begin{cases}
+			-\log(|z|/R)+A,&0<|z|\le R,\\
+			Ah(z),&z\in\Omega\setminus D(0,R).
+		\end{cases}
+	\]
+	它连续、非负、在外边界为零，并在接缝两侧调和。沿半径由内向外的导数跳跃满足
+	\[
+		\partial_rW|_{R+}-\partial_rW|_{R-}
+		=A\partial_rh|_R+\frac1R<0.
+	\]
+	这保证 \(W\) 超调和。可以直接用比较来检验：从 \(W\) 减去一条调和比较函数，若出现负的内部最小值，落在某一光滑侧时，调和最小值原则会把它传到接缝或比较区域边界；落在接缝时，内侧径向导数应非正、外侧应非负，使导数跳跃非负，与上式矛盾。因此边界比较成立。
+
+	对 \(0<\varepsilon<\min(R,1)\)，在 \(\Omega_\varepsilon=\Omega\setminus\overline{D(0,\varepsilon)}\) 上求 Dirichlet 解 \(G_\varepsilon\)，取内边值 \(-\log\varepsilon\)、外边值 \(0\)。最大值原则与 \(W\) 的比较给出
+	\[
+		0\le G_\varepsilon\le W.
+	\]
+	在任何避开 \(p\) 的紧子集附近，右端一致有界，Poisson 导数估计因而使任意趋零的 \(\varepsilon_n\) 都有一个子列，在各紧子集上连同各阶导数收敛到调和函数 \(G\)。这里用可数坐标盘穷竭与对角选取；\(X\) 的第二可数性保证可数化。
+
+	在 \(\varepsilon<|z|<R\) 中，\(G_\varepsilon+\log|z|\) 调和，内边值为零，外边值介于 \(\log R\) 与 \(A+\log R\) 之间。最大值原则给出一个与 \(\varepsilon\) 无关的绝对值界。因此 \(G+\log|z|\) 在穿孔盘上有界且调和。说明其奇点可去：对一般有界穿孔盘调和函数 \(v\)，在某个半径 \(R_0\) 的圆周上作 Poisson 延拓 \(V\)。在 \(\delta<|z|<R_0\) 上，差 \(v-V\) 的外边值为零、内边值绝对值至多为常数 \(C\)，故
+	\[
+		|v(z)-V(z)|\le C\frac{\log(R_0/|z|)}{\log(R_0/\delta)}.
+	\]
+	固定 \(z\ne0\) 后令 \(\delta\downarrow0\)，得到 \(v=V\)。所以该有界函数在中心可去，延拓为调和函数，式\eqref{g4:eq:0501:green-local}成立。
+
+	由于 \(0\le G\le W\)，而 \(W\) 连续至外边界且取零，\(G\) 也连续取零边值。奇点附近 \(G\to+\infty\)；若它在其他内点为零，强最小值原则使它在连通穿孔区域恒为零，与奇点矛盾，故严格为正。两个候选之差在 \(p\) 处可去，在闭包上连续，且边值为零，由最大值原则恒为零。这同时证明唯一性，说明选子列和辅助坐标没有改变所得函数。
+
+	最后若 \(w=cz+O(z^2)\)、\(c\ne0\)，则 \(\log|w/z|\) 在中心附近为调和函数，因此改变中心坐标只把式\eqref{g4:eq:0501:green-local}中的正则部分改动一个调和项，奇点系数始终为 \(1\)。
+\end{proof}
+
+\begin{example}
+	\label{g4:exm:0501:disk-green}
+	在单位圆盘中，直接核对得到
+	\[
+		G_{\mathbb D}(z,a)=\log\left|\frac{1-\overline a z}{z-a}\right|,
+		\qquad a\in\mathbb D.
+	\]
+	分子在圆盘中无零点，边界上分子与分母模相等；在 \(a\) 附近只有 \(-\log|z-a|\) 的奇点，故唯一性识别出此式。特别地 \(G_{\mathbb D}(z,0)=-\log|z|\)。若 \(\Omega_1\Subset\Omega_2\) 为两个上述区域且 \(p\in\Omega_1\)，则
+	\[
+		G_{\Omega_1}(x,p)\le G_{\Omega_2}(x,p),\qquad x\in\Omega_1\setminus\{p\}.
+	\]
+	两函数之差在 \(p\) 处可去，在 \(\partial\Omega_1\) 上右侧非负，应用最小值原则即得。扩大区域使接地边界远离极点，Green 函数随之增大。
+\end{example}
 
 \subsection{调和共轭、周期和能量}
 \label{g4:subsec:0501:04}
-待撰写
 
-\subsection{最大值及 Harnack 紧性}
+\cref{g4:eq:0501:star-laplacian}把局部共轭的微分写成了全局闭形式。局部共轭不必能粘成单值函数；绕过洞或对数奇点时，其常数差可能累积为非零周期。这些周期将决定指数映射能否单值。
+
+\begin{lemma}
+	\label{g4:lem:0501:closed-form-periods}
+	设 \(U\) 为光滑曲面区域，\(\alpha\) 为闭的光滑实一形式。\(\alpha\) 沿分片光滑道路的积分在定端点连续同伦下不变，沿闭路的积分给出 \(\pi_1(U,p)\to(\mathbb R,+)\) 的群同态。特别地，单连通区域上的闭一形式为恰当形式。
+\end{lemma}
+\begin{proof}
+	先在坐标矩形中写 \(\alpha=a\,\mathrm{d}x+b\,\mathrm{d}y\)，闭性为 \(b_x=a_y\)。固定 \((x_0,y_0)\)，函数
+	\[
+		F(x,y)=\int_{x_0}^x a(s,y_0)\,\mathrm{d}s
+		+\int_{y_0}^y b(x,t)\,\mathrm{d}t
+	\]
+	满足 \(F_x=a\)、\(F_y=b\)，故每点附近有原函数。两个原函数在交叠的每个连通分支上相差常数。
+
+	对一条连续道路，按紧性作有限细分，使每段落在一个这样的原函数邻域内，以各段原函数的终值减初值之和定义积分。细分不改变总和；若同一段用了另一个原函数，其路径像是交叠中的连通集，差为常数，所以总和也不变。与通常的分片光滑积分比较，逐段基本积分公式说明两者相同。
+
+	给定连续同伦 \(H:[0,1]^2\to U\)，原函数邻域的逆像覆盖参数方形。紧性使方形可分成有限小矩形，使每个小矩形的像位于一个原函数邻域内。每个小矩形边界的积分为零；对所有小矩形相加，内部公共边方向相反而相消。定端点同伦的两侧边为常值，故上下两条道路的积分相等。拼接使积分相加，反向使积分变号，于是得到所述群同态。单连通时所有闭路周期为零，沿基点到终点积分便定义全局原函数。
+\end{proof}
+
+\begin{proposition}
+	\label{g4:prop:0501:conjugate-periods}
+	设 \(u\) 是连通黎曼曲面区域 \(U\) 上的实调和函数。局部存在实函数 \(v\)，使 \(u+\mathrm{i}v\) 全纯。全局存在这样的单值 \(v\)，当且仅当
+	\[
+		\int_\gamma*\mathrm{d}u=0
+	\]
+	对 \(U\) 中所有分片光滑闭路成立；存在时 \(v\) 唯一到实常数。若所有周期只要求属于 \(2\pi\mathbb Z\)，则局部表达 \(\exp(u+\mathrm{i}v)\) 可选常数后粘成全局处处非零的全纯函数。
+\end{proposition}
+\begin{proof}
+	局部构造已由\cref{g4:prop:0501:conformal-harmonicity}得到，且 Cauchy--Riemann 方程等价于 \(\mathrm{d}v=*\mathrm{d}u\)。若全局 \(v\) 存在，则闭路积分为零。反过来，固定基点，沿从基点到 \(x\) 的道路积分 \(*\mathrm{d}u\)。任意两条道路之差构成闭路，零周期使积分独立于道路；在局部坐标中改变终点，基本积分公式给出 \(\mathrm{d}v=*\mathrm{d}u\)。局部共轭之差为常数，故所得函数确为共轭，唯一性由连通性得出。
+
+	若周期属于 \(2\pi\mathbb Z\)，道路积分的实值只确定到 \(2\pi\mathbb Z\)，但其指数 \(e^{\mathrm{i}v}\) 唯一。以局部原函数计算便知 \(e^{u+\mathrm{i}v}\) 全纯且不为零。这里整数周期允许共轭本身多值，同时让指数成为单值。
+\end{proof}
+
+对 \(u=\log|z|\)，有 \(*\mathrm{d}u=\mathrm{d}\arg z\)，逆时针小圆周上的周期为 \(2\pi\)。因而 \(e^{u+\mathrm{i}v}\) 可延拓为一个一阶零点。对 \(u=-G_\Omega(\cdot,p)\)，式\eqref{g4:eq:0501:green-local}也给出同样的局部周期 \(2\pi\)；区别只在正则的调和项。这正是下一节把 Green 函数转成圆盘映射时需要的奇点行为。
+
+\begin{proposition}
+	\label{g4:prop:0501:energy}
+	设 \(\Omega\Subset X\) 为光滑相对紧区域，\(g\) 为光滑共形度量，\(u,v\) 为 \(\overline\Omega\) 上的实光滑函数。则
+	\begin{equation}
+		\label{g4:eq:0501:green-identity}
+		\int_\Omega\langle\mathrm{d}u,\mathrm{d}v\rangle_g\,\mathrm{d}A_g
+		=\int_\Omega u\Delta_gv\,\mathrm{d}A_g
+		+\int_{\partial\Omega}u\,\partial_\nu v\,\mathrm{d}s_g,
+	\end{equation}
+	其中 \(\nu\) 为外单位法向量。能量
+	\[
+		E_\Omega(u)=\int_\Omega|\mathrm{d}u|_g^2\,\mathrm{d}A_g
+	\]
+	不受共形度量的选择影响。若 \(u\) 调和，则它在所有与自己有相同边值的光滑函数中唯一使能量最小。
+\end{proposition}
+\begin{proof}
+	坐标计算给出
+	\[
+		\mathrm{d}u\wedge*\mathrm{d}v
+		=(u_xv_x+u_yv_y)\,\mathrm{d}x\wedge\mathrm{d}y
+		=\langle\mathrm{d}u,\mathrm{d}v\rangle_g\,\mathrm{d}A_g.
+	\]
+	共形因子的倒平方与面积的平方因子相消，得到能量不变性。再由乘积法则及式\eqref{g4:eq:0501:star-laplacian}，
+	\[
+		\mathrm{d}(u*\mathrm{d}v)
+		=\mathrm{d}u\wedge*\mathrm{d}v-u\Delta_gv\,\mathrm{d}A_g.
+	\]
+	第一卷第14.4节定理14.4.3的 Stokes 公式采用外法向优先的边界定向。在正向边界单位切向量 \(T\) 上，\((*\mathrm{d}v)(T)=\partial_\nu v\)，所以积分得到式\eqref{g4:eq:0501:green-identity}。
+
+	若 \(w=u+\phi\) 与 \(u\) 边值相同，则 \(\phi|_{\partial\Omega}=0\)。将式\eqref{g4:eq:0501:green-identity}用于 \((\phi,u)\)，由 \(\Delta_gu=0\) 知交叉项为零，于是
+	\[
+		E_\Omega(w)=E_\Omega(u)+E_\Omega(\phi)\ge E_\Omega(u).
+	\]
+	等号迫使 \(\mathrm{d}\phi=0\)，连通性使 \(\phi\) 为常数，零边值又使该常数为零。这里极小性质是在已经构造出调和解后证明的，边值只有连续性时并未预设能量有限。
+\end{proof}
+
+\begin{example}
+	\label{g4:exm:0501:annulus-energy}
+	在 \(A(r,R)=\{r<|z|<R\}\) 上，把内边界值取为 \(0\)、外边界值取为 \(1\)，解为
+	\[
+		u(z)=\frac{\log(|z|/r)}{\log(R/r)}.
+	\]
+	其共轭微分沿正向同心圆的周期是 \(2\pi/\log(R/r)\)，能量为
+	\[
+		E_{A(r,R)}(u)
+		=\int_r^R\int_0^{2\pi}
+		\frac{1}{s^2\log(R/r)^2}s\,\mathrm{d}\theta\,\mathrm{d}s
+		=\frac{2\pi}{\log(R/r)}.
+	\]
+	因此环越长，连接两条边界的单位电势差所需能量越小；同一个对数比值还将在极值长度中出现。
+\end{example}
+
+\subsection{最大值原理与 Harnack 紧性}
 \label{g4:subsec:0501:05}
-待撰写
+
+圆盘内的平均值与核估计可以沿曲面传播，形成 Harnack 不等式。\footnote{Karl Gustav Axel Harnack（1851--1888），德国数学家，研究势论与实代数曲线。}关键是用有限条相交坐标盘连接一个基点和所考察的紧集：每经过一张图，就把一个点的控制传给下一个点。这个过程只耗费有限个常数，所以保留了适于极限的统一估计。
+
+\begin{proposition}
+	\label{g4:prop:0501:harnack-compactness}
+	设 \(U\) 为连通黎曼曲面区域，\(p\in U\)。实调和函数若在 \(U\) 内取得局部最大值或局部最小值，则为常数。对每个紧集 \(K\Subset U\)，存在 \(C_K\ge1\)，使所有非负调和函数满足
+	\[
+		C_K^{-1}h(p)\le h(x)\le C_Kh(p),\qquad x\in K.
+	\]
+	若非负调和函数列 \(h_n\) 的 \(h_n(p)\) 有界，则有子列在所有紧子集上连同各阶导数收敛到非负调和函数。若在 \(p\) 的值趋于正无穷，则 \(h_n\) 在每个紧子集上一致趋于正无穷。实调和函数列若在各紧子集上绝对值一致有界，也具有上述各阶局部收敛子列。
+\end{proposition}
+\begin{proof}
+	局部极值先在一张坐标图中由\cref{g4:cor:0103:harmonic-maximum}使函数局部为常数。任意道路都可由有限个相交坐标盘覆盖；在相邻交叠中已有一个开集取常值，全纯导数的恒等定理使常值传遍下一盘。因此它在整个连通区域为常数。
+
+	对每个 \(x\in K\)，选一条连接 \(p,x\) 的道路，用有限个相交坐标圆盘覆盖，并把道路上的连接点放在各圆盘的较小同心盘内。式\eqref{g4:eq:0501:harnack-disk}在相邻连接点间给出双侧常数比较，有限次相乘，得到 \(h(p)\) 与 \(x\) 附近各点值的比较。由紧性取有限个这样的终点邻域覆盖 \(K\)，再取各常数的最大值，便得到 \(C_K\)。这称为\term[harnackbudengshi]{Harnack 不等式}[Harnack inequality]在曲面上的形式。
+
+	若 \(h_n(p)\) 有界，前一结论给出每个紧集上的函数一致界。对包含 \(K\) 的有限组稍大坐标盘使用 Poisson 导数估计，得到各阶导数的一致界及等度连续性。对紧集穷竭、有限图册和导数阶数作对角选取，\cref{g4:thm:0104:montel}证明中的紧空间选列论证给出一个各阶局部一致收敛的子列。二阶导数收敛使极限满足调和方程，函数值收敛保留非负性。若 \(h_n(p)\to\infty\)，则 \(h_n(x)\ge C_K^{-1}h_n(p)\) 给出紧集上一致发散。最后，实调和函数列已有局部绝对值界时，可直接从导数估计开始作同一紧性论证。
+\end{proof}
+
+特别地，一个单调增加的非负调和函数列要么在所有紧子集上收敛到调和函数，要么处处并局部一致地趋于正无穷：只须观察它在一个基点的值有界还是无界。有限分支中的唯一逐点极限使全部收敛子列相同，导数估计继而保证整列局部收敛。统一化证明将对不断增大的曲面区域使用这类控制；正性、一个基点的归一化及紧集上的局部估计，分别承担传播上界、阻止退化与提取极限的作用。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

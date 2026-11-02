@@ -1,35 +1,440 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 14.3 系统与补条件
 % 纲要位置：几何学计划纲要.md，第 2688 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 半空间常系数边界模型
 % * 椭圆补条件的含义
 % * Hodge 的绝对与相对边界条件
-% * Fredholm 边值问题的所选版本
+% * Laplace 型算子的混合边值问题
 % 
 % 纲要内容结束
 
 \section{系统与补条件}
 \label{g3:sec:1403}
 
-待撰写
+对一个丛值方程，边界上应规定哪些分量的值，哪些分量的法向导数？仅按分量数配齐条件还不够：边界条件可能恰好消去不了某些向内部衰减的高频解。本节先在半空间把这个现象化为有限维线性代数，再证明一类具有光滑纤维分裂的边值问题。微分形式的绝对与相对边界条件属于这一类；它们的能量恒等式同时说明了边界曲率怎样进入一阶估计。
 
 \subsection{半空间常系数边界模型}
 \label{g3:subsec:1403:01}
-待撰写
+在半空间 \(\mathbb R^{n-1}\times(0,\infty)\) 中，记坐标为 \((y,t)\)，其中 \(t\) 指向内部，所以外法向为 \(-\partial_t\)。考虑取值于 \(\mathbb C^r\) 的非负 Laplace 算子
+\[
+	P_0=-\partial_t^2-\sum_{a=1}^{n-1}\partial_{y_a}^2.
+\]
+把一个切向振荡写成 \(u(y,t)=\mathrm e^{\mathrm i y\cdot\xi}v(t)\)，其中 \(\xi\ne0\)，方程 \(P_0u=0\) 化为
+\[
+	-v''+|\xi|^2v=0.
+\]
+每个解都是 \(\mathrm e^{-|\xi|t}c+\mathrm e^{|\xi|t}d\)。要求它沿法向趋零，就剩下 \(r\) 维的解空间
+\begin{equation}\label{g3:eq:decaying-boundary-model}
+	v(t)=\mathrm e^{-|\xi|t}c,\qquad c\in\mathbb C^r.
+\end{equation}
+高切向频率对应厚度约为 \(|\xi|^{-1}\) 的边界层。能否从边界数据确定这个层内的振幅 \(c\)，是边界正则性的一个局部检验。
+
+\begin{example}\label{g3:exm:boundary-dirichlet-robin-symbol}
+	取正交分解 \(\mathbb C^r=E_{\mathrm D}\oplus E_{\mathrm N}\)，相应投影记为 \(\Pi_{\mathrm D},\Pi_{\mathrm N}\)。对 Dirichlet 与 Robin\footnote{Victor Gustave Robin（1855--1897），法国数学家，曾在 Paris 科学学院任教，研究数学分析与数学物理。} 型条件
+	\[
+		\Pi_{\mathrm D}v(0)=h_{\mathrm D},\qquad
+		-\Pi_{\mathrm N}v'(0)+S\Pi_{\mathrm N}v(0)=h_{\mathrm N},
+	\]
+	其中 \(S:E_{\mathrm N}\to E_{\mathrm N}\) 是零阶项，取最高阶边界部分后，式\eqref{g3:eq:decaying-boundary-model}给出的映射是
+	\[
+		c\longmapsto\bigl(\Pi_{\mathrm D}c,\ |\xi|\Pi_{\mathrm N}c\bigr).
+	\]
+	它对每个 \(\xi\ne0\) 都可逆。纯 Dirichlet 与纯 Neumann 是两个端点；零阶矩阵 \(S\) 不改变这个最高阶检验，但会改变全局的核与特征值。
+\end{example}
+
+对标量实系数斜导数 \(b_\nu\partial_\nu+b_T\cdot\partial_y\)，相应振幅为
+\[
+	\bigl(b_\nu|\xi|+\mathrm i b_T\cdot\xi\bigr)c.
+\]
+若 \(b_\nu\ne0\)，实部已经排除非零核。若只保留切向导数，则需要重新检查：例如当 \(n\ge3\) 时，条件 \(\partial_{y_1}u=0\) 无法排除 \(\xi_1=0\) 方向的非零边界层。这里起作用的是方向，而不只是条件的条数。
 
 \subsection{椭圆补条件的含义}
 \label{g3:subsec:1403:02}
-待撰写
+一般二阶系统也可在边界点冻结最高阶系数，沿切向作 Fourier 变换。它给出一个常系数法向常微分方程；内部椭圆性保证其特征根不落在实的法向频率轴上，但边界条件还必须控制向内部衰减的那一半解。
+
+\begin{definition}\label{g3:def:complementing-boundary-condition}
+	设 \(P\) 是作用于秩为 \(r\) 的复向量丛的光滑二阶椭圆算子。在一个边界点展平边界，并将 \(t>0\) 取为内部。对每个非零切向余向量 \(\xi\)，设冻结的主部方程
+	\[
+		p_2(y,0;\xi,-\mathrm i\partial_t)v=0
+	\]
+	的指数衰减解空间为 \(\mathcal E^+(y,\xi)\)，并假定它的维数为 \(r\)。设所取边界算子的主部在该空间上定义了总计 \(r\) 个标量条件。若其边界数据映射
+	\[
+		\mathcal E^+(y,\xi)\longrightarrow\mathbb C^r
+	\]
+	对每个边界点及每个 \(\xi\ne0\) 都为同构，就说这些边界条件满足\term[tuoyuan butiaojian]{椭圆补条件}[elliptic complementing condition]。各行分别按该边界算子的阶数取主部；在等维假设下，只需检验齐次边界条件没有非零衰减解。
+\end{definition}
+
+上一定义只检验非零切向频率。在一维区间上没有这样的方向，端点问题直接由常微分方程处理。在高维情形，补条件也不消除全局低频障碍：Neumann 问题仍可有常数核。\cref{g3:exm:boundary-dirichlet-robin-symbol}中的系统具有标量主符号 \(|\zeta|^2I\)，其衰减空间与维数已经直接算出，因而没有额外的根数假设需要验证。
+
+\begin{example}\label{g3:exm:elliptic-bad-boundary-disk}
+	在单位圆盘 \(D\subset\mathbb C\) 上，令 \(P=-\partial_x^2-\partial_y^2\)，并对复值函数施加
+	\[
+		Bu=(\partial_\nu+\mathrm i\partial_\theta)u=0
+		\quad\text{于 }\partial D.
+	\]
+	这里 \(\theta\) 是圆周的弧长参数。每个 \(u_k(z)=z^k\) 都满足 \(Pu_k=0\)，且
+	\[
+		Bu_k=(k+\mathrm i\cdot\mathrm i k)\mathrm e^{\mathrm i k\theta}=0.
+	\]
+	因此齐次问题有无限维光滑核。展平边界后，最高阶边界算子为 \(-\partial_t+\mathrm i\partial_y\)，它对衰减模态的作用是 \((|\xi|-\xi)c\)，在 \(\xi>0\) 时恰好为零。这把全局失败与局部补条件的失败对应起来；内部算子仍是最简单的椭圆算子。
+\end{example}
+
+下一步采用一类可由能量和差商直接证明的系统：主符号为度量的平方范数乘恒等映射，边界条件由光滑的正交丛分裂给出。这个分裂发生在每个边界纤维内，允许不同分量承担不同条件；它不包含在边界的相邻区域之间突然切换条件的交界点。
 
 \subsection{Hodge 的绝对与相对边界条件}
 \label{g3:subsec:1403:03}
-待撰写
+设 \((M,g)\) 为紧的光滑 \(n\) 维带边界黎曼流形，\(\nu\) 为外单位法向，\(j:\partial M\hookrightarrow M\) 为包含映射。可以使用实形式，也可以将形式复化；以下配对均在第一变量线性。对一个 \(q\) 次形式，在边界有正交分解
+\begin{equation}\label{g3:eq:form-tangential-normal-traces}
+	\omega|_{\partial M}=\tau+\nu^\flat\wedge\beta,
+	\qquad \tau=\mathrm t\omega:=j^*\omega,
+	\qquad \beta=\mathrm n\omega:=j^*(\iota_\nu\omega).
+\end{equation}
+右侧把边界上的形式视作其切向延拓。这里的 \(\mathrm n\omega\) 是 \(q-1\) 次形式；\(q=0\) 时规定它为零，\(q=n\) 时 \(\mathrm t\omega\) 自动为零。定义与积分均使用黎曼密度，不要求 \(M\) 可定向。
 
-\subsection{Fredholm 边值问题的所选版本}
+\begin{lemma}[形式的 Green 边界配对]\label{g3:lem:hodge-boundary-green}
+	设 \(M\) 为紧的光滑带边界黎曼流形，\(\delta\) 为 \(\mathrm d\) 的内部形式伴随，\(\Delta=\mathrm d\delta+\delta\mathrm d\)。对直到边界都光滑的形式，有
+	\begin{equation}\label{g3:eq:d-boundary-green}
+		(\mathrm d\alpha,\eta)_M-(\alpha,\delta\eta)_M
+		=(\mathrm t\alpha,\mathrm n\eta)_{\partial M}.
+	\end{equation}
+	若 \(\omega,\eta\) 同为 \(q\) 次形式，记
+	\[
+		Q(\omega,\eta)=(\mathrm d\omega,\mathrm d\eta)_M
+		+(\delta\omega,\delta\eta)_M.
+	\]
+	则
+	\begin{equation}\label{g3:eq:hodge-energy-green}
+		Q(\omega,\eta)=(\Delta\omega,\eta)_M
+		+(\mathrm n\mathrm d\omega,\mathrm t\eta)_{\partial M}
+		-(\mathrm t\delta\omega,\mathrm n\eta)_{\partial M}.
+	\end{equation}
+	相应的二阶边界配对为
+	\begin{align}\label{g3:eq:hodge-second-green}
+		(\Delta\omega,\eta)_M-(\omega,\Delta\eta)_M
+		={}&(\mathrm t\omega,\mathrm n\mathrm d\eta)_{\partial M}
+		-(\mathrm n\mathrm d\omega,\mathrm t\eta)_{\partial M}\notag\\
+		&+(\mathrm t\delta\omega,\mathrm n\eta)_{\partial M}
+		-(\mathrm n\omega,\mathrm t\delta\eta)_{\partial M}.
+	\end{align}
+\end{lemma}
+\begin{proof}
+	在局部正交标架 \((e_i)\) 及其对偶标架 \((e^i)\) 中，无挠性给出
+	\[
+		\mathrm d=\sum_i e^i\wedge\nabla_{e_i},\qquad
+		\delta=-\sum_i\iota_{e_i}\nabla_{e_i}.
+	\]
+	第二式可由第一式逐项分部积分得到；\(e^i\wedge\) 的纤维伴随是 \(\iota_{e_i}\)，相容联络及体积密度的导数合成散度项。对散度积分，边界项就是 \(\langle\nu^\flat\wedge\alpha,\eta\rangle=\langle\mathrm t\alpha,\mathrm n\eta\rangle\)，从而得到式\eqref{g3:eq:d-boundary-green}。将它分别用于 \((\omega,\mathrm d\eta)\) 与 \((\delta\omega,\eta)\)，并在需要时取复共轭，便得到式\eqref{g3:eq:hodge-energy-green}。再交换 \(\omega,\eta\) 并取共轭相减，得到式\eqref{g3:eq:hodge-second-green}。
+\end{proof}
+
+\begin{definition}\label{g3:def:absolute-relative-boundary}
+	对紧光滑带边界黎曼流形上的光滑 \(q\) 次形式，下列两组条件分别称为 \term[juedui bianjie tiaojian]{绝对边界条件}[absolute boundary conditions]与\term[xiangdui bianjie tiaojian]{相对边界条件}[relative boundary conditions]：
+	\begin{equation}\label{g3:eq:absolute-relative-boundary}
+		\begin{array}{c|cc}
+		 &\text{零阶条件}&\text{一阶条件}\\ \hline
+		\mathrm A&\mathrm n\omega=0&\mathrm n\mathrm d\omega=0\\
+		\mathrm R&\mathrm t\omega=0&\mathrm t\delta\omega=0.
+		\end{array}
+	\end{equation}
+	它们的能量空间分别为
+	\[
+		V_{\mathrm A}^q=\{\omega\in H^1(M;\Lambda^q):\mathrm n\omega=0\},\qquad
+		V_{\mathrm R}^q=\{\omega\in H^1(M;\Lambda^q):\mathrm t\omega=0\}.
+	\]
+	这里零阶条件按有界迹解释；一阶条件不放进 \(H^1\) 能量空间，而将由弱方程产生。
+\end{definition}
+
+对函数，绝对条件就是 Neumann 条件，相对条件就是 Dirichlet 条件。对一般次数的形式，两类条件使式\eqref{g3:eq:hodge-energy-green}的边界项消失，因此在相应光滑定义域上有 \((\Delta\omega,\omega)=Q(\omega,\omega)\ge0\)。但是，要从这个能量构造弱解，还必须证明它控制整个一阶 Sobolev 范数。
+
+\begin{lemma}[边界形算子与一阶能量]\label{g3:lem:hodge-boundary-energy-estimate}
+	设 \(M\) 为紧的光滑带边界黎曼流形，\(0\le q\le n\)。则存在 \(C\)，使 \(V_{\mathrm A}^q\) 或 \(V_{\mathrm R}^q\) 中的每个形式满足
+	\begin{equation}\label{g3:eq:hodge-gaffney-estimate}
+		\|\omega\|_{H^1}^2
+		\le C\bigl(\|\mathrm d\omega\|_{L^2}^2
+		+\|\delta\omega\|_{L^2}^2+\|\omega\|_{L^2}^2\bigr).
+	\end{equation}
+	更具体地，令 \(S(X)=\nabla_X\nu\) 作用于边界切向量，并定义它在切向 \(p\) 次形式上的作用
+	\[
+		S^{[p]}=\sum_{a=1}^{n-1}e^a\wedge\iota_{S e_a},
+		\qquad S^{[0]}=0.
+	\]
+	存在光滑自伴零阶丛映射 \(\mathcal R_q\)，使光滑形式分别满足
+	\begin{align}
+		Q(\omega,\omega)
+		&=\|\nabla\omega\|_{L^2}^2+(\mathcal R_q\omega,\omega)_M
+		+(S^{[q]}\mathrm t\omega,\mathrm t\omega)_{\partial M},
+		&&\mathrm n\omega=0,\label{g3:eq:hodge-energy-absolute}\\
+		Q(\omega,\omega)
+		&=\|\nabla\omega\|_{L^2}^2+(\mathcal R_q\omega,\omega)_M
+		+\bigl(((\operatorname{tr}S)I-S^{[q-1]})\mathrm n\omega,
+		\mathrm n\omega\bigr)_{\partial M},
+		&&\mathrm t\omega=0.\label{g3:eq:hodge-energy-relative}
+	\end{align}
+	在没有相应分量的端点次数，忽略该边界项。这里 \(S=\nabla\nu\) 的符号约定与本卷采用的形算子 \(A_\nu=-\nabla\nu\) 相反。
+\end{lemma}
+\begin{proof}
+	先说明内部二阶项怎样合并。写 \(\varepsilon_i\omega=e^i\wedge\omega\)、\(\iota_i=\iota_{e_i}\)。外乘与收缩满足
+	\(\varepsilon_i\iota_j+\iota_j\varepsilon_i=\delta_{ij}I\)。在一点选取协变导数为零的正交标架，将前一引理中的 \(\mathrm d,\delta\) 展开，得到
+	\begin{equation}\label{g3:eq:hodge-rough-laplacian}
+		\Delta=\nabla^*\nabla+\mathcal R_q,
+		\qquad
+		\mathcal R_q=-\sum_{i,j}\varepsilon_i\iota_j R^\Lambda(e_i,e_j).
+	\end{equation}
+	这里 \(R^\Lambda(X,Y)=[\nabla_X,\nabla_Y]-\nabla_{[X,Y]}\) 是形式丛上的曲率。确切地说，两种二阶导数之和先成为 \(-\sum_i\nabla_{e_i}\nabla_{e_i}\)，剩余的反对称部分正是所写交换子；恢复非正规标架时，迹联络项组成 \(\nabla^*\nabla\)。因此剩余项是光滑零阶映射。\(\Delta\) 与 \(\nabla^*\nabla\) 在内部紧支截面上均形式自伴，故其零阶差逐点自伴。紧性使 \(\mathcal R_q\) 的范数有界。
+
+	现在计算边界。沿法向测地线延拓 \(\nu\) 及边界切向正交标架，使 \(\nabla_\nu\nu=0\)、\(\nabla_\nu e_a=0\)。\(S\) 自伴，因为对切向 \(X,Y\)，无挠性给出
+	\(\langle SX,Y\rangle-\langle X,SY\rangle=-\langle\nu,[X,Y]\rangle=0\)。当 \(\mathrm n\omega=0\) 时，沿边界求导得到
+	\[
+		\iota_\nu\nabla_{e_a}\omega=-\iota_{S e_a}\omega,
+	\]
+	因而
+	\begin{equation}\label{g3:eq:absolute-robin-form}
+		\mathrm n\mathrm d\omega
+		=(\nabla_\nu\omega)_{\mathrm T}+S^{[q]}\mathrm t\omega.
+	\end{equation}
+	这里下标 \(\mathrm T\) 表示切向分量。确实，展开 \(\iota_\nu\mathrm d\omega\)，法向项给出 \((\nabla_\nu\omega)_{\mathrm T}\)，切向项为
+	\(-\sum_a e^a\wedge\iota_\nu\nabla_{e_a}\omega\)，代入上一式即得结论。
+
+	当 \(\mathrm t\omega=0\) 时，边界上写 \(\omega=\nu^\flat\wedge\beta\)。\(\delta\) 的法向项给出 \(-\nabla_\nu\beta\)。切向项的切向部分为
+	\[
+		-\sum_a\iota_{e_a}\bigl((S e_a)^\flat\wedge\beta\bigr)
+		=-(\operatorname{tr}S)\beta+S^{[q-1]}\beta.
+	\]
+	含有 \(\nu^\flat\) 的其他项取切向分量后为零。因此
+	\begin{equation}\label{g3:eq:relative-robin-form}
+		\mathrm t\delta\omega
+		=-\bigl(\mathrm n\nabla_\nu\omega
+		+((\operatorname{tr}S)I-S^{[q-1]})\mathrm n\omega\bigr).
+	\end{equation}
+	这两式也说明绝对、相对条件分别是一个分量的 Dirichlet 条件，加上互补分量的 Robin 条件。
+
+	粗 Laplace 算子的分部积分为
+	\[
+		(\nabla^*\nabla\omega,\omega)_M
+		=\|\nabla\omega\|_{L^2}^2-(\nabla_\nu\omega,\omega)_{\partial M}.
+	\]
+	把它与式\eqref{g3:eq:hodge-energy-green}、\eqref{g3:eq:hodge-rough-laplacian}合并。在绝对零阶条件下，用式\eqref{g3:eq:absolute-robin-form}，法向导数项相消，留下式\eqref{g3:eq:hodge-energy-absolute}；相对情形用式\eqref{g3:eq:relative-robin-form}，同样得到式\eqref{g3:eq:hodge-energy-relative}。\(S^{[p]}\) 自伴：在 \(S\) 的正交特征标架中，基形式 \(e^{a_1}\wedge\cdots\wedge e^{a_p}\) 的特征值是对应 \(p\) 个特征值之和。因此两种边界零阶项均为实数且绝对值不超过 \(C\|\operatorname{Tr}\omega\|_{L^2(\partial M)}^2\)。
+
+	由丛值迹估计\cref{g3:prop:sobolev-boundary-bundles}，对每个 \(\varepsilon>0\)，
+	\[
+		\|\operatorname{Tr}\omega\|_{L^2(\partial M)}^2
+		\le\varepsilon\|\nabla\omega\|_{L^2}^2+C_\varepsilon\|\omega\|_{L^2}^2.
+	\]
+	先取 \(\varepsilon\) 足够小，吸收梯度项，便得到光滑形式的式\eqref{g3:eq:hodge-gaffney-estimate}。为延拓到所述能量空间，在边界适配标架中把要求零迹的分量作奇反射，其他分量作偶反射，再用关于法向偶对称的光滑核卷积。奇分量仍在边界为零；局部截断、单位分解及内部卷积使这些光滑截面在 \(H^1\) 中逼近原截面。所有项对 \(H^1\) 连续，故估计以及相应能量恒等式都延续到 \(V_{\mathrm A}^q,V_{\mathrm R}^q\)。
+\end{proof}
+
+式\eqref{g3:eq:hodge-gaffney-estimate}保留 \(L^2\) 项，是因为存在的调和形式可能有零能量。它已足以使 \(Q+(\cdot,\cdot)_{L^2}\) 在两种能量空间上强制。剩下的问题是：这样得到的弱解是否具有二阶乃至更高的正则性，以及它的一阶边界条件是否真正成立。下面把这一步放在统一的丛值问题中证明。
+
+\subsection{Laplace 型算子的混合边值问题}
 \label{g3:subsec:1403:04}
-待撰写
+设 \(E\to M\) 为光滑 Hermitian 向量丛，\(\nabla\) 为相容联络。称
+\[
+	P=\nabla^*\nabla+R
+\]
+为这里使用的 Laplace 型算子，其中 \(R=R^*\) 是光滑丛映射。它的主符号是 \(|\xi|_g^2I\)。在边界给定光滑正交分解
+\[
+	E|_{\partial M}=E_{\mathrm D}\oplus E_{\mathrm N},
+\]
+其秩在每个边界连通分支上固定，并给定 \(E_{\mathrm N}\) 上光滑自伴映射 \(S\)。本小节的 \(S\) 表示任意 Robin 系数；应用于形式时再取上一小节计算出的相应映射。定义
+\begin{align}
+	V&=\{u\in H^1(M;E):\Pi_{\mathrm D}\operatorname{Tr}u=0\},\label{g3:eq:mixed-bundle-energy-space}\\
+	a(u,v)&=(\nabla u,\nabla v)_M+(Ru,v)_M
+	+(S\Pi_{\mathrm N}u,\Pi_{\mathrm N}v)_{\partial M}.
+	\label{g3:eq:mixed-bundle-energy-form}
+\end{align}
+边界积分中的截面均取迹。对光滑 \(u\)，分部积分表明 \(a(u,v)=(Pu,v)\) 对所有 \(v\in V\) 成立的条件是
+\begin{equation}\label{g3:eq:mixed-bundle-boundary}
+	\Pi_{\mathrm D}u=0,\qquad
+	\Pi_{\mathrm N}\nabla_\nu u+S\Pi_{\mathrm N}u=0.
+\end{equation}
+在边界适配标架中，两个投影成为常数矩阵；沿法向平行延拓标架后，法向联络导数就是普通分量导数。主符号及边界主部因此正好是\cref{g3:exm:boundary-dirichlet-robin-symbol}。
+
+\begin{lemma}[固定分量分裂的边界正则性]\label{g3:lem:mixed-bundle-local-regularity}
+	设 \(Q_R^+=(-R,R)^{n-1}\times(0,R)\)，\(\Gamma_R=\{t=0\}\cap\partial Q_R^+\)，\(\mathbb C^r=E_{\mathrm D}\oplus E_{\mathrm N}\) 为固定正交分解。设 \(a^{ij}\) 为实对称光滑一致正定矩阵，\(S\) 为 \(E_{\mathrm N}\) 上的光滑矩阵。若 \(u\in H^1(Q_R^+;\mathbb C^r)\)、\(\Pi_{\mathrm D}\operatorname{Tr}u=0\)，且对侧面及顶面附近消失、满足相同零阶边界条件的全部 \(v\in H^1\)，有
+	\begin{equation}\label{g3:eq:mixed-flat-weak-equation}
+		\int_{Q_R^+}a^{ij}\langle\partial_j u,\partial_i v\rangle
+		+\int_{\Gamma_R}\langle Su_{\mathrm N},v_{\mathrm N}\rangle
+		=\int_{Q_R^+}\langle F,v\rangle
+		+\int_{Q_R^+}\langle G^i,\partial_i v\rangle
+		+\int_{\Gamma_R}\langle g,v_{\mathrm N}\rangle,
+	\end{equation}
+	其中 \(F\in L^2\)、\(G\in H^1\)、\(g\in H^{1/2}(\Gamma_R;E_{\mathrm N})\)，则对 \(0<r_0<R\)，有 \(u\in H^2(Q_{r_0}^+)\) 及
+	\begin{equation}\label{g3:eq:mixed-flat-h2-estimate}
+		\|u\|_{H^2(Q_{r_0}^+)}
+		\le C\bigl(\|F\|_{L^2}+\|G\|_{H^1}
+		+\|g\|_{H^{1/2}}+\|u\|_{H^1}\bigr).
+	\end{equation}
+	局部边界范数以图中的半整数 Sobolev 范数解释。向弱形式加入光滑矩阵系数的内部一阶或零阶项，结论仍成立，常数还依赖这些系数的有界范数。
+\end{lemma}
+\begin{proof}
+	先消去独立的边界源项 \(g\)。在稍大的边界片上乘以切向截断，使 \(g\) 在所需较小片上不变。由\cref{g3:thm:half-integer-boundary-trace}的联合迹右逆，存在 \(w\in H^2\)，满足全分量的 \(\operatorname{Tr}w=0\) 及
+	\[
+		-a^{nn}\partial_t w=g\quad\text{于边界},
+	\]
+	右端视为 \(E_{\mathrm N}\) 中的数据，且 \(\|w\|_{H^2}\le C\|g\|_{H^{1/2}}\)。这是因为 \(a^{nn}\) 有正下界，而零迹保证所有切向导数迹为零，故外共法向导数正是 \(-a^{nn}\partial_t w\)。把 \(u-w\) 代入弱式，并对 \(w\) 分部积分，消去 \(g\)；新增内部源项是 \(L^2\) 函数，由 \(\|w\|_{H^2}\) 控制。局部截断只需在严格较大的片中进行，故不影响欲证的较小半柱估计。以下取 \(g=0\)。
+
+	沿一个切向方向取差商 \(\delta_h\)，令 \(z=\delta_hu\)，并以
+	\[
+		v=-\delta_{-h}(\eta^2z)
+	\]
+	测试，其中 \(\eta\) 在较小半柱上等于一，在人工侧面及顶面附近消失。由于 \(\Pi_{\mathrm D}\) 是常数矩阵，切向平移保持其零迹，所以这个测试函数可用。主部、截断、\(F\) 和 \(G\) 的计算逐分量同\cref{g3:lem:boundary-tangential-differences}，并对有限个分量求和：主项至少为 \(c\|\eta\mathrm Dz\|_2^2\)，其余内部项至多为
+	\[
+		\varepsilon\|\eta\mathrm Dz\|_2^2
+		+C_\varepsilon(\|F\|_2+\|G\|_{H^1}+\|u\|_{H^1})^2.
+	\]
+	在此仍把 \(F\) 上的差商留在测试函数，利用
+	\(\|\delta_{-h}(\eta^2z)\|_2\le C(\|\eta\mathrm Dz\|_2+\|z\|_2)\)，所以没有要求 \(F\) 的导数。
+
+	新增的边界项经切向差商分部积分成为
+	\[
+		\int_{\Gamma_R}
+		\left\langle
+		S(y+he_a)z_{\mathrm N}+(\delta_hS)u_{\mathrm N},
+		\eta^2z_{\mathrm N}\right\rangle.
+	\]
+	其绝对值由
+	\[
+		C\|\operatorname{Tr}(\eta z)\|_2^2
+		+C\|\operatorname{Tr}u\|_2^2
+	\]
+	控制。对 \(\eta z\) 使用带任意小系数的迹估计，再用
+	\(\|z\|_2\le C\|u\|_{H^1}\)，可将第一项界为
+	\(\varepsilon\|\eta\mathrm Dz\|_2^2+C_\varepsilon\|u\|_{H^1}^2\)。第二项直接由有界迹控制。选取 \(\varepsilon\) 后吸收，得到与 \(h\) 无关的 \(\|\eta\mathrm D\delta_hu\|_2\) 界。差商弱收敛判据遂给出所有含切向指标的二阶导数。
+
+	对内部紧支测试函数，边界项消失，弱式给出
+	\[
+		\partial_n(a^{nn}\partial_nu)
+		=-F+\partial_iG^i
+		-\sum_{(i,j)\ne(n,n)}\partial_i(a^{ij}\partial_ju).
+	\]
+	右侧各分量均在 \(L^2\)，因此先求通量的弱导数，再乘 \((a^{nn})^{-1}\)，便得 \(\partial_n^2u\in L^2\) 及所列估计。一维情形直接使用这一步。最后，内部低阶项
+	\(\langle B^j\partial_ju+Eu,v\rangle+\langle C^iu,\partial_iv\rangle\)
+	可分别移入 \(F\) 与 \(G\)；光滑系数使 \(B^j\partial_ju+Eu\in L^2\)、\(C^iu\in H^1\)，其范数都由 \(\|u\|_{H^1}\) 控制。这证明了矩阵低阶项的版本。
+\end{proof}
+
+\begin{theorem}[光滑丛分裂下的 Fredholm 边值问题]\label{g3:thm:mixed-bundle-fredholm}
+	设 \(M\) 为紧的光滑 \(n\ge1\) 维带边界黎曼流形，\(E\to M\) 为有限正秩光滑 Hermitian 向量丛，\(\nabla\) 为相容联络，\(R=R^*\) 为光滑丛映射。设边界上的光滑正交分解 \(E_{\mathrm D}\oplus E_{\mathrm N}\) 及光滑自伴 \(S:E_{\mathrm N}\to E_{\mathrm N}\) 如上，令 \(P=\nabla^*\nabla+R\)。对整数 \(k\ge0\)，定义闭子空间
+	\[
+		H_B^{k+2}=
+		\{u\in H^{k+2}(M;E):
+		\Pi_{\mathrm D}u=0,\quad
+		\Pi_{\mathrm N}\nabla_\nu u+S\Pi_{\mathrm N}u=0\}.
+	\]
+	边界条件按 \(H^{k+3/2}\) 与 \(H^{k+1/2}\) 迹解释。则有以下结论。
+	\begin{enumerate}
+		\item 若 \(u\in V\) 满足 \(a(u,v)=(f,v)\) 对所有 \(v\in V\) 成立，且 \(f\in H^k(M;E)\)，则 \(u\in H_B^{k+2}\)，并有
+		\begin{equation}\label{g3:eq:mixed-bundle-global-estimate}
+			\|u\|_{H^{k+2}}
+			\le C_k(\|f\|_{H^k}+\|u\|_{L^2}).
+		\end{equation}
+		\item 在 \(L^2(M;E)\) 上取定义域 \(\mathcal D(A_B)=H_B^2\)，令 \(A_Bu=Pu\)。则 \(A_B\) 自伴且下有界；充分大的 \(\lambda>0\) 使 \((A_B+\lambda I)^{-1}\) 存在且紧。其特征截面可取为直到边界光滑的正交归一基，特征值为实数，重数有限，按重数排列后趋于 \(+\infty\)。
+		\item \(P:H_B^{k+2}\to H^k(M;E)\) 是指标为零的 Fredholm 算子。其核 \(\mathcal H_B\) 是同一个有限维光滑截面空间，而
+		\begin{equation}\label{g3:eq:mixed-bundle-fredholm-range}
+			\operatorname{ran}P
+			=\{f\in H^k:(f,h)_{L^2}=0\text{ 对所有 }h\in\mathcal H_B\}.
+		\end{equation}
+		对上述右端存在唯一的 \(u\in H_B^{k+2}\cap\mathcal H_B^\perp\)，且
+		\(\|u\|_{H^{k+2}}\le C_k\|f\|_{H^k}\)。
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	证明先从能量得到一个可逆平移，再用边界正则性辨认其定义域，最后由紧谱定理除去平移。由于 \(R,S\) 有界，迹的小系数估计给出
+	\[
+		a(u,u)\ge\tfrac12\|\nabla u\|_2^2-C\|u\|_2^2,
+		\qquad u\in V.
+	\]
+	型 \(a\) 在 \(V\times V\) 上连续且 Hermitian。\(V\) 是 \(H^1\) 的闭子空间；取 \(\lambda\) 足够大后，\(a_\lambda=a+\lambda(\cdot,\cdot)\) 强制。由\cref{g3:thm:lax-milgram}，每个 \(f\in L^2\) 对应唯一 \(u\in V\)，满足
+	\(a_\lambda(u,v)=(f,v)\)，且 \(\|u\|_{H^1}\le C\|f\|_2\)。
+
+	对任一满足 \(a(u,v)=(f,v)\) 的弱解，取边界法向坐标与适配丛标架。由相容联络，主部能量逐分量为 \(a^{ij}\partial_j u\,\overline{\partial_i v}\)，其中 \(a^{ij}=\rho g^{ij}\) 为实对称正定标量矩阵；\(\rho\) 是体积密度。联络系数只产生前一引理允许的矩阵低阶项，边界密度并入 \(S\)。两个边界投影为常数矩阵。因此该引理给出局部 \(H^2\) 正则性。内部同样逐分量使用差商，矩阵低阶项移入源项，得到内部 \(H^2\) 界。有限覆盖得到
+	\[
+		\|u\|_{H^2}\le C(\|f\|_2+\|u\|_{H^1}).
+	\]
+	此时对 \(u\) 分部积分合法，比较弱等式得
+	\[
+		(\Pi_{\mathrm N}\nabla_\nu u+S\Pi_{\mathrm N}u,
+		\Pi_{\mathrm N}\operatorname{Tr}v)_{\partial M}=0
+		\quad(v\in V).
+	\]
+	每个光滑 \(E_{\mathrm N}\) 边界截面都有沿领圈延拓再截断得到的 \(V\) 中截面；这些边界截面稠密。因此一阶边界迹为零，弱解确实属于 \(H_B^2\)。自然边界条件在这一步由方程得出。
+
+	下面求高阶导数。假定已知 \(f\in H^k\)、\(u\in H^{k+1}\)，其中 \(k\ge1\)。在稍小边界片内，对弱形式求 \(k\) 次切向导数，令 \(w=\partial_{y'}^\beta u\)、\(|\beta|=k\)。常数 Dirichlet 投影使 \(\Pi_{\mathrm D}\operatorname{Tr}w=0\)。主部交换子在右端产生
+	\[
+		G_\beta^i=-\sum_{\gamma<\beta}\binom\beta\gamma
+		(\partial_{y'}^{\beta-\gamma}a^{ij})
+		\partial_j\partial_{y'}^\gamma u,
+	\]
+	其中 \(\gamma<\beta\) 表示逐分量不超过 \(\beta\) 且不等于 \(\beta\)。每项属于 \(H^1\)，因为 \(|\gamma|\le k-1\) 且已知 \(u\in H^{k+1}\)。内部低阶交换子或归入 \(L^2\) 的 \(F_\beta\)，或归入同样的 \(H^1\) 向量源项；对 \(f\) 最多求 \(k\) 次导数。边界项则给出
+	\[
+		g_\beta=-\sum_{\gamma<\beta}\binom\beta\gamma
+		(\partial_{y'}^{\beta-\gamma}S)
+		\partial_{y'}^\gamma u_{\mathrm N}\in H^{1/2}.
+	\]
+	最后的包含由半整数迹定理及光滑乘法得到：\(\partial_{y'}^\gamma u\) 至少属于 \(H^2\)，其边界迹甚至属于 \(H^{3/2}\)。这些等式可先在分布意义下对测试函数求导，再用已有 \(H^{k+1}\) 正则性解释各项。局部截断带来的项具有相同的低阶形式。
+
+	对 \(w\) 使用\cref{g3:lem:mixed-bundle-local-regularity}，获得所有含至少 \(k\) 个切向指标的 \(k+2\) 阶导数。为取得其余导数，把内部方程写成
+	\[
+		-a^{nn}\partial_n^2u
+		=f_0+\sum_{(i,j)\ne(n,n)}a^{ij}\partial_i\partial_ju
+		+\sum_j B^j\partial_ju+Cu,
+	\]
+	其中 \(f_0\) 与原来的 \(f\) 相差光滑密度因子。对总阶数为 \(k+2\) 的导数按法向指标数递增归纳。已知法向指标数至多二的情形；若目标有 \(r\ge3\) 个法向指标，就对上式求相应的 \(k\) 阶导数。右侧的最高阶导数至多有 \(r-1\) 个法向指标，已在此前得到；落在系数上的导数使 \(u\) 的阶数降至 \(k+1\) 以下。除以正的标量 \(a^{nn}\)，便恢复目标导数。内部图用各方向的同类差商与求导。有限覆盖给出
+	\[
+		\|u\|_{H^{k+2}}\le C_k(\|f\|_{H^k}+\|u\|_{H^{k+1}}).
+	\]
+	一维情形全部由法向方程递推。\(H^m\) 的延拓、Fourier 插值及有限分解给出
+	\(\|u\|_{H^{k+1}}\le\varepsilon\|u\|_{H^{k+2}}+C_\varepsilon\|u\|_2\)。取小 \(\varepsilon\) 吸收；\(k=0\) 时同样处理 \(H^1\) 项，得到式\eqref{g3:eq:mixed-bundle-global-estimate}。这也证明光滑右端的弱解直到边界光滑。
+
+	回到强制型得到的平移方程。上述正则性对 \(P+\lambda I\) 同样适用，所以其弱解属于 \(H_B^2\)。反过来，\(H_B^2\) 中的截面由分部积分满足相同弱等式。因此
+	\[
+		K=(A_B+\lambda I)^{-1}:L^2\longrightarrow H_B^2
+	\]
+	是有界映射，并且由 \(H^2\hookrightarrow L^2\) 的紧嵌入成为紧算子。若 \(u=Kf,v=Kg\)，则
+	\[
+		(f,Kg)=a_\lambda(Kf,Kg)=(Kf,g),\qquad
+		(Kf,f)=a_\lambda(Kf,Kf)>0\quad(f\ne0).
+	\]
+	所以 \(K\) 自伴、非负且单射。对称性已经由边界配对保证；为核对无界算子的真正自伴性，若 \(v\in\mathcal D(A_B^*)\)、\(A_B^*v=w\)，则对全部 \(u\in H_B^2\)，
+	\[
+		((A_B+\lambda I)u,v)=(u,w+\lambda v)
+		=((A_B+\lambda I)u,K(w+\lambda v)).
+	\]
+	平移算子满射，故 \(v=K(w+\lambda v)\in H_B^2\)，证明伴随定义域没有扩大。定义域稠密则来自内部紧支光滑截面包含在其中。
+
+	\cref{g3:thm:compact-positive-spectrum}给出 \(Ke_j=\mu_je_j\)，其中 \((e_j)\) 为 \(L^2\) 正交归一基，\(\mu_j>0\)、\(\mu_j\to0\)。于是
+	\[
+		A_Be_j=\lambda_je_j,\qquad
+		\lambda_j=\mu_j^{-1}-\lambda\longrightarrow+\infty.
+	\]
+	正则性递推使每个 \(e_j\) 光滑；有限重数来自 \(K\) 的紧性。由于 \(H_B^2=\operatorname{ran}K\)，一个展开 \(u=\sum_j u_je_j\) 属于定义域当且仅当
+	\(\sum_j\mu_j^{-2}|u_j|^2<\infty\)。这给出该实现的全部谱，并说明零特征值只有有限重数。
+
+	记 \(\mathcal H_B=\ker A_B\)。对 \(f\perp\mathcal H_B\)，级数
+	\[
+		u=\sum_{\lambda_j\ne0}\frac{(f,e_j)}{\lambda_j}e_j
+	\]
+	属于 \(H_B^2\)：非零 \(\lambda_j\) 离零有正距离，而且 \(\mu_j^{-1}/|\lambda_j|\) 一致有界。它是唯一正交于核的解，并有 \(\|u\|_2\le C\|f\|_2\)。若 \(f\in H^k\)，第一部分再给出 \(u\in H_B^{k+2}\) 及加强估计。必要的正交条件由自伴性得到，故式\eqref{g3:eq:mixed-bundle-fredholm-range}成立。其右侧是 \(H^k\) 中的闭子空间，余维恰为 \(\dim\mathcal H_B\)：核中的光滑正交基可直接检验这些泛函线性独立。核与余核同维，指标为零。
+\end{proof}
+
+\begin{corollary}[形式的绝对与相对实现]\label{g3:cor:hodge-boundary-fredholm}
+	设 \(M\) 为紧的光滑 \(n\ge1\) 维带边界黎曼流形，\(0\le q\le n\)。\(\Delta_q=\mathrm d\delta+\delta\mathrm d\) 在 \(L^2(M;\Lambda^q)\) 上分别取绝对或相对 \(H^2\) 定义域，得到非负自伴算子 \(\Delta_{q,\mathrm A}\)、\(\Delta_{q,\mathrm R}\)。二者都有紧预解式、光滑特征形式与有限维核，而且
+	\[
+		\mathcal H_{\mathrm A}^q
+		=\{\omega\in V_{\mathrm A}^q:\mathrm d\omega=0,\ \delta\omega=0\},
+		\qquad
+		\mathcal H_{\mathrm R}^q
+		=\{\omega\in V_{\mathrm R}^q:\mathrm d\omega=0,\ \delta\omega=0\}.
+	\]
+	右侧最初按弱导数解释，其中每个元素实际上直到边界光滑。对整数 \(k\ge0\)，右端 \(f\in H^k\) 可解相应齐次边值问题，当且仅当 \(f\) 正交于相应调和核；正交于核的解唯一且满足 \(\|\omega\|_{H^{k+2}}\le C_k\|f\|_{H^k}\)。
+\end{corollary}
+\begin{proof}
+	由式\eqref{g3:eq:hodge-rough-laplacian}，取 \(E=\Lambda^q\)、\(R=\mathcal R_q\)。绝对情形令法向形式为 Dirichlet 分量、切向形式为互补分量，并取 \(S=S^{[q]}\)；相对情形交换这两个分量，在 \(\nu^\flat\wedge\Lambda^{q-1}T^*\partial M\) 上取 \(S=(\operatorname{tr}S_0)I-S_0^{[q-1]}\)，其中 \(S_0(X)=\nabla_X\nu\)。式\eqref{g3:eq:absolute-robin-form}、\eqref{g3:eq:relative-robin-form}说明两种丛边界条件正是所定义的绝对与相对条件，所需系数光滑自伴。
+
+	两种能量恒等式及极化表明相应的 \(a\) 等于 \(Q\)，故非负性成立；式\eqref{g3:eq:hodge-gaffney-estimate}还保证 \(Q+(\cdot,\cdot)\) 强制，可以直接取平移 \(\lambda=1\)。其余正则性、谱与 Fredholm 结论来自上一定理。若 \(\omega\) 属于算子核，能量为零，故 \(\mathrm d\omega=\delta\omega=0\)。反之，若 \(\omega\in V_{\mathrm A}^q\) 或 \(V_{\mathrm R}^q\) 且两个弱导数均为零，则 \(Q(\omega,v)=0\) 对相应全部测试形式成立。上一定理将它提升为光滑齐次边值问题的解，故它属于算子核。
+\end{proof}
+
+这里的证明用到了三项具体结构：标量的正定主符号、边界上光滑的纤维分裂，以及边界项只有零阶的 Robin 矩阵。一般系统的补条件理论还允许矩阵主符号、不同阶数的边界算子及非局部边界条件；其证明需要构造与衰减空间相容的边界参数解算子。若引入谱参数，还须对参数与切向频率共同趋大的情形检验相应条件。半空间检验给出这类理论的局部问题，不能单凭一次冻结计算就代替全局正则性与 Fredholm 证明。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

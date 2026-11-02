@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：## 第20章　Hausdorff 测度、可整流性与面积公式
 % 纲要位置：几何学计划纲要.md，第 2922 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,14 +14,33 @@
 \BookChapterNumber{g3:ch:20}
 
 \begin{chapterabstract}
-待撰写
+	光滑曲面的面积来自切向量；当曲面出现折痕、重叠或细碎的可测部分时，需要先建立不依赖光滑坐标的测度。本章从 Hausdorff 外测度与覆盖引理出发，证明它在 Euclid 平面及光滑子流形上与通常面积一致。绝对连续函数的积分表示引出 Rademacher 定理，可数一致线性化随后把一般 Lipschitz 映射分解为可计算的片。面积公式记录像点的重数，余面积公式沿纤维积分，两者分别完成证明。最后用参数片的放大极限建立可整流集的近似切平面、密度和重数，并构造具有正有限长度的纯不可整流集。
 \end{chapterabstract}
 
 \begin{learninggoals}
-待撰写
+	\begin{itemize}
+		\item 解释 Hausdorff 测度的归一化，使用五倍球与 Vitali 覆盖，证明密度定理及光滑面积的一致性。
+		\item 从一维绝对连续性证明 Lipschitz 映射几乎处处可微，区分方向导数、全微分与近似微分。
+		\item 把逐点微分整理为可数一致线性化片，说明满秩如何产生双 Lipschitz 参数。
+		\item 证明带权面积公式，核对重数可测性，并区分几何面积、参数面积与推前质量。
+		\item 证明余面积公式，掌握零测集、秩亏集与满秩片各自的切片处理方法。
+		\item 建立可整流集的近似切平面与密度结论，识别整数重数和纯不可整流部分。
+	\end{itemize}
 \end{learninggoals}
 
-待撰写
+把一张纸沿直线折起，面积仍然可以计算，但折痕上的切平面已经不再唯一。若把一条曲线描画两遍，参数长度加倍，像集本身却没有变大。若再把许多小片拼在一起，集合甚至可能在每个尺度上都向不同方向散开。这些现象提示我们分别回答三个问题：怎样直接测量一个集合，怎样由参数计算其测度，以及什么条件能使几乎每一点仍具有切向线性模型。
+
+\ProseParagraphBreak
+
+对光滑单射参数 \(F:\Omega\subset\mathbb R^m\to\mathbb R^n\)，已有的面积表达式是
+\[
+	\int_\Omega\sqrt{\det\bigl((\mathrm DF)^{\mathsf T}\mathrm DF\bigr)}\,\mathrm dx.
+\]
+本章将逐步去掉光滑性和单射性。Lipschitz 条件保证微分几乎处处存在；当像点对应多个原像时，把这些原像数加起来，就得到参数面积。源维数大于目标维数时，原像通常不再是离散点，而是低维切片，于是计数要换成纤维上的 Hausdorff 测度。这两种积分公式需要不同的秩亏估计，不能只凭光滑换元公式直接推出。
+
+\ProseParagraphBreak
+
+证明顺序从覆盖出发：先获得测度微分工具，再证明可微性，继而在近似线性的片上计算面积与切片。近似切平面的存在放在这些公式之后，因为它的证明要把参数中的线性近似转化为像上的测度收敛。全章沿用\chapref{g3:ch:11}的基本 Lebesgue 积分、测度正则性、Fubini 定理、收敛定理和绝对连续测度的积分密度表示；分布只用于识别方向导数的线性关系，并会重述所需唯一性论证。线性代数使用正交分解与对称矩阵对角化。光滑面积与\chapref{g3:ch:19}衔接，但本章的主要测度与微分结果各有证明。以下五节均属主线。
 
 \input{Part05/Chapter20/Section2001}
 \input{Part05/Chapter20/Section2002}
@@ -30,8 +49,446 @@
 \input{Part05/Chapter20/Section2005}
 
 \begin{chaptersummary}
-待撰写
+	Hausdorff 测度由小直径覆盖定义。标准归一化使它在 \(m\) 维平面上恰等于 Lebesgue 测度；等直径不等式给出一侧比较，Vitali 覆盖给出另一侧。五倍球估计还产生最大函数控制，进而得到 Lebesgue 点、密度点和奇异测度的零密度结论。光滑参数的局部线性比较把这种测度与 Riemann 面积联系起来。
+
+	\ProseParagraphBreak
+
+	绝对连续函数可以由其几乎处处导数积分恢复。对 Lipschitz 映射，先沿可数个方向求导，再用弱导数的线性性与有限方向网，把方向极限提升为全微分。密度点保证可测参数域上的微分不依赖延拓；固定误差和尺度后，可微集分为可数个一致线性化片，满秩片进一步具有反向距离控制。
+
+	\ProseParagraphBreak
+
+	面积公式将源域中的 \(J_mf\) 积分写成像上的重数积分。其证明分别处理降秩像的零面积、近线性单射片的面积比较，以及多片的重数求和。余面积公式则把 \(J_nf\) 积分写成沿 \((m-n)\) 维纤维的积分：覆盖估计先处理源零测集，薄盒估计处理秩亏点，补充坐标后的双 Lipschitz 换元处理满秩部分。
+
+	\ProseParagraphBreak
+
+	可整流性提供可数参数片，局部有限的面积测度使放大极限可以在紧支撑测试函数上比较。在几乎每一点，一个片的微分给出单位密度的近似切平面，其他片的质量具有零密度；正权重则把该极限乘以其几乎处处值。纯不可整流部分与所有 Lipschitz 片都只有零测交集。四角 Cantor 集表明，正且有限的整数维 Hausdorff 测度本身仍不足以产生切平面。
 \end{chaptersummary}
 
 \BookExercises
-待撰写
+
+\begin{exercise}\label{g3:ex:holder-hausdorff-dimension}
+	设 \(f:(X,d_X)\to(Y,d_Y)\) 满足
+	\(d_Y(f(x),f(y))\le Ld_X(x,y)^\alpha\)，其中 \(L>0\)、\(0<\alpha\le1\)。对 \(s>0\)，用本章的归一化证明
+	\[
+		\mathcal H^{s/\alpha}(f(E))
+		\le \frac{\omega_{s/\alpha}}{\omega_s}
+		2^{s-s/\alpha}L^{s/\alpha}\mathcal H^s(E),
+	\]
+	并推出 \(\dim_H f(E)\le\alpha^{-1}\dim_HE\)。
+	再证明 \(d^\alpha\) 是一个度量，并计算同一集合在 \(d\) 与 \(d^\alpha\) 下的 Hausdorff 维数关系。
+\end{exercise}
+\begin{solution}
+	若 \(\{U_i\}\) 是 \(E\) 的一个直径不超过 \(\delta\) 的覆盖，则 \(\{f(U_i)\}\) 覆盖 \(f(E)\)，且
+	\(\operatorname{diam}f(U_i)\le L(\operatorname{diam}U_i)^\alpha\)。
+	令 \(t=s/\alpha\)。逐项计算覆盖代价，
+	\[
+		\omega_t\left(\frac{\operatorname{diam}f(U_i)}2\right)^t
+		\le\frac{\omega_t}{\omega_s}2^{s-t}L^t
+		\omega_s\left(\frac{\operatorname{diam}U_i}2\right)^s.
+	\]
+	取所有覆盖的下确界，再令 \(\delta\downarrow0\)，便得测度不等式。若 \(s>\dim_HE\)，则 \(\mathcal H^s(E)=0\)，故
+	\(\mathcal H^{s/\alpha}(f(E))=0\)。令 \(s\downarrow\dim_HE\) 即得维数界；维数无穷时该界自然成立。
+
+	对 \(a,b\ge0\)，有 \((a+b)^\alpha\le a^\alpha+b^\alpha\)。当 \(a>0\) 时，可把它归结为
+	\((1+t)^\alpha-1\le t^\alpha\)，其导数比较在 \(t>0\) 上成立；\(a=0\) 时直接成立。结合 \(d\) 的三角不等式，得到 \(d^\alpha\) 的三角不等式，其余度量公理显然满足。
+
+	同一个覆盖集在新度量下的直径是旧直径的 \(\alpha\) 次方。因此对 \(t>0\)，实际上有精确关系
+	\[
+		\mathcal H^t_{d^\alpha,\delta^\alpha}(E)
+		=\frac{\omega_t}{\omega_{\alpha t}}2^{\alpha t-t}
+		\mathcal H^{\alpha t}_{d,\delta}(E).
+	\]
+	令 \(\delta\downarrow0\)，得到
+	\(\dim_{H,d^\alpha}E=\alpha^{-1}\dim_{H,d}E\)。
+	这说明同一拓扑下的度量尺度改变仍可能改变 Hausdorff 维数。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:fat-cantor-density}
+	从 \([0,1]\) 开始，在第 \(j\) 步从每个剩余闭区间的中央删去一个长度为 \(4^{-j}\) 的开区间，令 \(F\) 为全部剩余集合的交。证明构造可以一直进行，且 \(F\) 是无内点的闭集，\(\mathcal H^1(F)=1/2\)。证明 \(F\) 的几乎每一点既是拓扑边界点，又是测度密度为一的点，并解释二者为何相容。
+\end{exercise}
+\begin{solution}
+	第 \(j\) 步删去 \(2^{j-1}\) 个开区间，删去的总长度为
+	\(2^{j-1}4^{-j}=2^{-j-1}\)。第 \(j\) 步之后总剩余长度为
+	\[
+		1-\sum_{i=1}^j2^{-i-1}=\frac12+2^{-j-1}.
+	\]
+	对称性保证剩余的 \(2^j\) 个闭区间等长，每个长度为
+	\(2^{-j-1}+2^{-2j-1}\)。在下一步这个长度大于 \(4^{-(j+1)}\)，所以总能继续删去中间开区间。
+
+	这些集合是递减的非空紧集，因而交集 \(F\) 紧。剩余分支区间的最大长度趋于零；若 \(F\) 包含一个非退化区间，该区间在每一级都必须落在单个分支区间中，这与长度趋零矛盾。因此 \(F\) 无内点。由有限测度的上连续性及 \(\mathcal H^1=\mathcal L^1\)，
+	\[
+		\mathcal H^1(F)=\lim_{j\to\infty}\left(\frac12+2^{-j-1}\right)=\frac12.
+	\]
+	闭且无内点说明每个 \(F\) 中的点都是其拓扑边界点。Lebesgue 密度定理则说明，对几乎每个 \(x\in F\)，
+	\[
+		\lim_{r\downarrow0}\frac{\mathcal L^1(F\cap(x-r,x+r))}{2r}=1.
+	\]
+	边界点要求每个邻域都遇到补集；密度一只要求补集在缩小邻域中的长度比例趋于零。补集可以始终非空而比例越来越小，故两个结论相容。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:oscillating-graph-length}
+	令 \(\Gamma=\{(x,\sin(1/x)):0<x\le1\}\)。求其闭包，证明
+	\(\mathcal H^1(\Gamma)=\infty\)，但 \(\dim_H\overline\Gamma=1\)。
+\end{exercise}
+\begin{solution}
+	若图上点列的横坐标趋于正数，极限仍在图上；若横坐标趋于零，纵坐标的任何极限都在 \([-1,1]\) 内。反之，对每个 \(a\in[-1,1]\)，可选 \(t_j\to\infty\) 使 \(\sin t_j=a\)，于是 \((1/t_j,a)\to(0,a)\)。故
+	\[
+		\overline\Gamma=\Gamma\cup(\{0\}\times[-1,1]).
+	\]
+	对 \(\delta>0\)，图在 \([\delta,1]\) 上光滑且单射参数化，长度为
+	\[
+		\int_\delta^1\sqrt{1+x^{-4}\cos^2(1/x)}\,\mathrm dx
+		\ge\int_\delta^1x^{-2}|\cos(1/x)|\,\mathrm dx
+		=\int_1^{1/\delta}|\cos t|\,\mathrm dt.
+	\]
+	最后一个积分随 \(\delta\downarrow0\) 发散，因为每个周期上的积分为一个固定正数。故 \(\mathcal H^1(\Gamma)=\infty\)。
+
+	另一方面，\(\Gamma\) 是图在 \([1/k,1]\) 上各部分的可数并，每一部分都是一个有界区间的 Lipschitz 像。因此对每个 \(s>1\)，这些部分以及竖直线段的 \(\mathcal H^s\) 都为零；可数次可加性给出 \(\mathcal H^s(\overline\Gamma)=0\)。所以维数至多为一。闭包包含一个非退化线段，维数又至少为一，故恰为一。临界维数为一，并不要求一维测度有限。
+\end{solution}
+
+% 第20章20.2习题片；由章整合者收入练习区。
+
+\begin{exercise}\label{g3:ex:singular-continuous-not-ac}
+	从 \(C_0=[0,1]\) 出发，每次删除现有各闭区间的开中间三分之一，所得集合记为 \(C_k\)，令 \(C=\bigcap_kC_k\)。\(C_k\) 有 \(2^k\) 个基本区间，按从左至右的顺序编号为 \(I_{k,j}\)，\(0\le j<2^k\)。定义连续单调函数 \(c_k:[0,1]\to[0,1]\)：它在 \(I_{k,j}\) 上线性地从 \(j2^{-k}\) 增长到 \((j+1)2^{-k}\)，在各间隙上为常数。
+	\begin{enumerate}
+		\item 证明 \(c_k\) 一致收敛到连续单调函数 \(c\)，且 \(c(0)=0\)、\(c(1)=1\)。
+		\item 证明 \(c'=0\) 几乎处处，但 \(c\) 不绝对连续。给出直接违反绝对连续定义的区间族。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	构造保持每个已经删除的开区间上的常值，也保持各级基本区间的端点值。若 \(\ell\ge k\)，则在 \(C_k\) 外有 \(c_\ell=c_k\)，而在每个 \(I_{k,j}\) 内，两者都落在长度为 \(2^{-k}\) 的同一值域区间中。因此
+	\[
+		\|c_\ell-c_k\|_\infty\le2^{-k}.
+	\]
+	故 \(c_k\) 一致收敛。连续性、单调性及端点值都传给极限。
+
+	\(C_k\) 的总长度为 \((2/3)^k\)，故 \(\mathcal L^1(C)=0\)。若 \(x\notin C\)，它位于某一级删除的开区间中；\(c\) 在这个开邻域上恒定，所以 \(c'(x)=0\)。因而导数几乎处处为零，却有 \(c(1)-c(0)=1\)，已经与绝对连续函数的积分恢复公式不相容。
+
+	也可直接看定义。在 \(C_k\) 的 \(2^k\) 个基本区间上，区间总长度为 \((2/3)^k\to0\)，而每个区间的端点增量恰为 \(2^{-k}\)。于是
+	\[
+		\sum_{j=0}^{2^k-1}
+		|c(\sup I_{k,j})-c(\inf I_{k,j})|=1.
+	\]
+	取绝对连续定义中的 \(\varepsilon=1/2\)，无论 \(\delta\) 多小，总能取 \(k\) 使这族区间违反相应要求。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:directional-not-total-differential}
+	在 \(\mathbb R^2\) 上定义
+	\[
+		f(x,y)=
+		\begin{cases}
+			\dfrac{x^3}{x^2+y^2},&(x,y)\ne(0,0),\\[4pt]
+			0,&(x,y)=(0,0).
+		\end{cases}
+	\]
+	证明 \(f\) 为全局 Lipschitz 函数，在原点的每个双侧方向导数都存在，但在原点没有全微分。说明这个例子与 Rademacher 定理的证明有什么关系。
+\end{exercise}
+\begin{solution}
+	由 \(|f(x,y)|\le\sqrt{x^2+y^2}\)，函数在原点连续。在原点外记 \(r^2=x^2+y^2\)，则
+	\[
+		\nabla f=\frac{3x^2}{r^2}(1,0)
+		-\frac{2x^3}{r^4}(x,y),
+		\qquad |\nabla f|\le3+2=5.
+	\]
+	若连接两点的线段不经过原点，沿线段积分即可得 Lipschitz 常数五。若线段经过原点，就在原点处分成两段，先在避开原点的部分积分，再由连续性取极限；两段长度之和仍等于原线段长度。因此全局估计仍为 \(|f(p)-f(q)|\le5|p-q|\)。
+
+	对任意非零 \(v=(v_1,v_2)\)，有
+	\[
+		\frac{f(tv)-f(0)}t=\frac{v_1^3}{v_1^2+v_2^2}
+		\qquad(t\ne0).
+	\]
+	故每个双侧方向导数都存在，但这个方向函数不是线性的：在 \(e_1,e_2\) 处的值分别为一和零，在 \(e_1+e_2\) 处却为 \(1/2\)。若全微分存在，由两个偏导数它只能是 \(A(h_1,h_2)=h_1\)，与第三个方向不符。
+
+	因此方向导数存在性的交集本身还不够。Rademacher 定理还利用分布恒等式，排除方向导数不满足 \(g_v=\sum_i v_i g_{e_i}\) 的零测集；本例的原点正属于必须排除的点。在线性关系已经成立后，有限方向网才能给出全微分。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:lipschitz-dense-corners}
+	设 \(q_1,q_2,\ldots\) 是有理数的无重复枚举，定义
+	\[
+		f(x)=\sum_{j=1}^\infty2^{-j}\bigl(|x-q_j|-|q_j|\bigr),
+		\qquad x\in\mathbb R.
+	\]
+	证明该级数在每个有界区间上一致收敛，且 \(f\) 为全局 \(1\)-Lipschitz 函数。求出它在每个无理点的导数，以及在每个 \(q_k\) 的左右导数，并说明其不可微集恰好是稠密零测集 \(\mathbb Q\)。
+\end{exercise}
+\begin{solution}
+	反三角不等式给出
+	\[
+		\bigl||x-q_j|-|q_j|\bigr|\le|x|.
+	\]
+	所以在 \([-R,R]\) 上，级数尾项由 \(R\sum_{j>N}2^{-j}\) 一致控制。每一项的 Lipschitz 常数为 \(2^{-j}\)，故求和后
+	\[
+		|f(x)-f(y)|\le\sum_j2^{-j}|x-y|=|x-y|.
+	\]
+
+	若 \(x\notin\mathbb Q\)，每一项都在 \(x\) 可微，其导数为 \(2^{-j}\operatorname{sgn}(x-q_j)\)。为了合法交换极限与级数，注意每一项的差商绝对值都不超过 \(2^{-j}\)，与增量大小无关。因此先截取前 \(N\) 项并对它们取极限，再以 \(\sum_{j>N}2^{-j}\) 控制余下的差商；令 \(N\to\infty\)，即得
+	\[
+		f'(x)=\sum_{j=1}^\infty2^{-j}\operatorname{sgn}(x-q_j)
+		\qquad(x\notin\mathbb Q).
+	\]
+
+	固定 \(k\)，把第 \(k\) 项单独拿出。余下级数中的每一项均在 \(q_k\) 可微，同一个尾项估计说明其和在 \(q_k\) 可微，导数为
+	\[
+		b_k=\sum_{j\ne k}2^{-j}\operatorname{sgn}(q_k-q_j).
+	\]
+	第 \(k\) 项的左右导数分别为 \(-2^{-k}\) 和 \(2^{-k}\)，所以
+	\[
+		f'_-(q_k)=b_k-2^{-k},\qquad
+		f'_+(q_k)=b_k+2^{-k}.
+	\]
+	两者相差 \(2^{1-k}>0\)，故每个 \(q_k\) 都不可微。结合无理点上的导数公式，不可微集正是 \(\mathbb Q\)。这说明几乎处处可微并不保证存在一个非空开区间，使函数在其中处处可微。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:polar-area-multiplicity}
+	设整数 \(k\ge1\)，在 \(E=[0,1]\times[0,2\pi k]\) 上定义 \(F(r,\theta)=(r\cos\theta,r\sin\theta)\)。求 \(J_2F\)、\(N(F,E,y)\) 在单位圆盘中的几乎处处值以及原点处的值，比较参数面积与像面积。对 \(\alpha\in\mathbb R\)，在 \(r>0\) 处取权 \(a(r,\theta)=r^\alpha\)，在 \(r=0\) 处补零，求其带权参数面积，并说明何时有限。
+\end{exercise}
+\begin{solution}
+	\(F\) 在这个紧长方形上为 Lipschitz 映射，其两个偏导数为 \((\cos\theta,\sin\theta)\) 与 \((-r\sin\theta,r\cos\theta)\)，故 \(\det\mathrm DF=r\)，\(J_2F=r\)。若 \(0<|y|<1\) 且 \(y\) 不在正实轴上，令其辐角 \(\vartheta\in(0,2\pi)\)，原像恰为
+	\[
+		(|y|,\vartheta+2\pi j),\qquad j=0,\ldots,k-1.
+	\]
+	所以重数为 \(k\)。正实轴的非零点还由两个角端点共同表示，重数为 \(k+1\)；这一线段的二维测度为零。原点的原像是整个 \(\{0\}\times[0,2\pi k]\)，故其重数为无穷。单位圆周上的端点约定同样不影响二维积分。因此
+	\[
+		\int_EJ_2F\,\mathrm d\mathcal L^2
+		=\int_0^{2\pi k}\int_0^1r\,\mathrm dr\mathrm d\theta
+		=\pi k,
+		\qquad\mathcal H^2(F(E))=\pi.
+	\]
+	带权公式在几乎每个非零像点给出纤维和 \(k|y|^\alpha\)，而直接在参数域计算得
+	\[
+		\int_EaJ_2F\,\mathrm d\mathcal L^2
+		=2\pi k\int_0^1r^{\alpha+1}\,\mathrm dr
+		=\begin{cases}
+			\dfrac{2\pi k}{\alpha+2},&\alpha>-2,\\[3pt]
+			+\infty,&\alpha\le-2.
+		\end{cases}
+	\]
+	原点处的无穷重数位于目标零测集，不贡献无权积分；这里所选权在该纤维全为零，其带权和也为零。\(\alpha\le-2\) 时的发散来自原点附近一整族正半径圆周，而非原点本身。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:piecewise-linear-graph-area}
+	在正方形 \(Q=[-1,1]^2\) 上令 \(u(x,y)=\max\{0,x,y\}\)，并令 \(G(x,y)=(x,y,u(x,y))\)。求图面的 \(\mathcal H^2\) 测度。再令 \(S=[0,2]\times[0,1]\)、\(\phi(s,t)=(s-1,2t-1)\)，直接计算 \(G\circ\phi\) 的参数面积，核验它与前一个答案一致，并说明折线上的不可微点为何不造成遗漏。
+\end{exercise}
+\begin{solution}
+	三个函数 \(0,x,y\) 都是 Lipschitz 函数，其最大值仍为 Lipschitz 函数。在 \(Q\) 中除去有限条分界线后，可分成
+	\[
+		Q_0=\{x<0,y<0\},\qquad
+		Q_x=\{x>0,x>y\},\qquad
+		Q_y=\{y>0,y>x\}.
+	\]
+	相应梯度依次为 \((0,0),(1,0),(0,1)\)。\(Q_0\) 面积为 \(1\)，而
+	\[
+		\mathcal L^2(Q_x)=\int_0^1(x+1)\,\mathrm dx=\frac32,
+		\qquad\mathcal L^2(Q_y)=\frac32.
+	\]
+	由图面积公式，
+	\[
+		\mathcal H^2(G(Q))=1+\frac32\sqrt2+\frac32\sqrt2=1+3\sqrt2.
+	\]
+	映射 \(\phi\) 为双射仿射变换，\(\mathrm D\phi=\operatorname{diag}(1,2)\)。在 \(\phi^{-1}(Q_0)\) 上，\(G\circ\phi\) 的两个切向量为 \((1,0,0),(0,2,0)\)，面积因子为 \(2\)；在 \(\phi^{-1}(Q_x)\) 上为 \((1,0,1),(0,2,0)\)，面积因子为 \(2\sqrt2\)；在 \(\phi^{-1}(Q_y)\) 上为 \((1,0,0),(0,2,2)\)，面积因子也为 \(2\sqrt2\)。这三个参数集的面积依次为 \(1/2,3/4,3/4\)，因而参数积分为
+	\[
+		2\cdot\frac12+2\sqrt2\cdot\frac34+2\sqrt2\cdot\frac34=1+3\sqrt2.
+	\]
+	分界线在参数域中为二维零测集，其在 Lipschitz 图映射下的像也为 \(\mathcal H^2\) 零测集。因此逐片计算没有遗漏正面积部分；仿射重参数化的行列式恰好补偿了参数集面积的改变。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:complex-power-area-pushforward}
+	把复平面视为 \(\mathbb R^2\)，设 \(k\ge2\)，\(D=\{z:|z|<1\}\)，\(F(z)=z^k\)。证明其参数面积为 \(k\pi\)，并求有限测度
+	\[
+		\nu(B)\coloneqq\mathcal L^2(\{z\in D:z^k\in B\}),\qquad B\subset\mathbb C\text{ 为 Borel 集},
+	\]
+	相对于 \(\mathcal L^2\) 的密度。核验该密度在原点附近虽无界但可积，并计算 \(\nu(\{|w|<r\})\)、\(0<r<1\)。
+\end{exercise}
+\begin{solution}
+	\(F\) 在闭单位圆盘上 Lipschitz，其实微分是复数乘法 \(v\mapsto kz^{k-1}v\)。若 \(z\ne0\)，两个奇异值都等于 \(k|z|^{k-1}\)，故
+	\[
+		J_2F(z)=k^2|z|^{2k-2}.
+	\]
+	原点的微分为零。每个 \(0<|w|<1\) 恰有 \(k\) 个不同的 \(k\) 次根，所以面积公式给出 \(\int_DJ_2F\,\mathrm d\mathcal L^2=k\pi\)。也可直接积分 \(2\pi k^2\int_0^1r^{2k-1}\,\mathrm dr=k\pi\)。
+
+	给定非负 Borel 函数 \(h\)，在 \(z\ne0\) 处对面积公式取权
+	\[
+		a(z)=\frac{h(z^k)}{k^2|z|^{2k-2}},
+	\]
+	并令 \(a(0)=0\)。每个非零 \(w\) 的全部原像有相同模长 \(|w|^{1/k}\)，因此
+	\[
+		\int_Dh(z^k)\,\mathrm d\mathcal L^2(z)
+		=\int_Dh(w)\,\frac1k|w|^{2/k-2}\,\mathrm d\mathcal L^2(w).
+	\]
+	故所求密度可取
+	\[
+		\frac{\mathrm d\nu}{\mathrm d\mathcal L^2}(w)
+		=\frac1k|w|^{2/k-2}\mathbf1_{\{0<|w|<1\}}.
+	\]
+	它在原点的取值任意。指数 \(2/k-2<0\) 说明密度无界，但极坐标积分中的径向幂为 \(2/k-1>-1\)，所以可积。更具体地，
+	\[
+		\nu(\{|w|<r\})
+		=\frac{2\pi}{k}\int_0^r s^{2/k-1}\,\mathrm ds
+		=\pi r^{2/k}.
+	\]
+	这也等于原像圆盘 \(\{|z|<r^{1/k}\}\) 的面积。令 \(r\uparrow1\)，总质量为 \(\pi\)，与源圆盘的面积一致；它与 \(k\pi\) 的参数面积分别对应权 \(1\) 和权 \(J_2F\)，含义不同。
+\end{solution}
+
+% 第20章第4节习题，由章入口统一整合。
+
+\begin{exercise}\label{g3:ex:coarea-oblique-projection}
+	令 \(f:\mathbb R^3\to\mathbb R^2\)、\(f(x_1,x_2,x_3)=(x_1+x_2,x_3)\)。计算 \(J_2f\)，用一个等距参数写出每根纤维，并对单位球 \(B\subset\mathbb R^3\) 直接验证
+	\[
+		\int_{\mathbb R^2}\mathcal H^1(B\cap f^{-1}(u,v))\,\mathrm du\,\mathrm dv
+		=\int_BJ_2f\,\mathrm dx.
+	\]
+	说明若把纤维的某个非等距参数直接当作弧长，会漏掉哪个因子。
+\end{exercise}
+\begin{solution}
+	有
+	\[
+		\mathrm Df=\begin{pmatrix}1&1&0\\0&0&1\end{pmatrix},
+		\qquad \mathrm Df(\mathrm Df)^{\mathsf T}=\begin{pmatrix}2&0\\0&1\end{pmatrix},
+	\]
+	所以 \(J_2f=\sqrt2\)。纤维的等距参数化为
+	\[
+		\gamma_{u,v}(s)=\left(\frac u2+\frac s{\sqrt2},
+		\frac u2-\frac s{\sqrt2},v\right),\qquad s\in\mathbb R.
+	\]
+	确有 \(|\gamma'|=1\)，且 \(|\gamma_{u,v}(s)|^2=u^2/2+v^2+s^2\)。因此
+	\[
+		\mathcal H^1(B\cap f^{-1}(u,v))
+		=\begin{cases}
+		2\sqrt{1-u^2/2-v^2},&u^2/2+v^2<1,\\
+		0,&u^2/2+v^2\ge1.
+		\end{cases}
+	\]
+	作 \(a=u/\sqrt2\)、\(b=v\)，再在 \((a,b)\) 平面使用极坐标，便得左端为
+	\[
+		\sqrt2\int_{a^2+b^2<1}2\sqrt{1-a^2-b^2}\,\mathrm da\,\mathrm db
+		=4\pi\sqrt2\int_0^1\rho\sqrt{1-\rho^2}\,\mathrm d\rho
+		=\frac{4\pi\sqrt2}{3}.
+	\]
+	右端则是 \(\sqrt2\mathcal L^3(B)=4\pi\sqrt2/3\)，相符。若改用 \(t=x_1-x_2\)，纤维参数成为 \(((u+t)/2,(u-t)/2,v)\)，其速度为 \(1/\sqrt2\)。所以弧长元是 \(\mathrm dt/\sqrt2\)，而不是 \(\mathrm dt\)。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:coarea-distance-neighborhood}
+	设 \(m\ge2\)，\(K\subset\mathbb R^m\) 非空且紧，令 \(d_K(x)=\operatorname{dist}(x,K)\)。证明 \(d_K\) 是 \(1\)-Lipschitz，且在 \(\mathbb R^m\setminus K\) 的几乎所有点有 \(|\nabla d_K|=1\)。定义
+	\[
+		V(0)=\mathcal L^m(K),\qquad
+		V(r)=\mathcal L^m\{x:d_K(x)<r\}\quad(r>0).
+	\]
+	证明对每个 \(r>0\)，
+	\[
+		V(r)-V(0)=\int_0^r\mathcal H^{m-1}\{x:d_K(x)=t\}\,\mathrm dt.
+	\]
+	由此说明 \(V\) 在每个有界半径区间上绝对连续，并确定其几乎处处导数。
+\end{exercise}
+\begin{solution}
+	对任意 \(p\in K\)，三角不等式给出 \(|x-p|\le|x-y|+|y-p|\)。对 \(p\) 取下确界并交换 \(x,y\)，得到 \(|d_K(x)-d_K(y)|\le|x-y|\)。因此由 Rademacher 定理，\(d_K\) 几乎处处可微，且在可微点有 \(|\nabla d_K|\le1\)。
+	设 \(x\notin K\) 是可微点，记 \(d=d_K(x)>0\)。紧性给出 \(p\in K\) 使 \(|x-p|=d\)，令 \(v=(x-p)/d\)。对 \(0<h<d\)，一方面以 \(p\) 作比较得到 \(d_K(x-hv)\le d-h\)，另一方面由 Lipschitz 性得到 \(d_K(x-hv)\ge d-h\)。故
+	\[
+		d_K(x-hv)=d-h,
+		\qquad\nabla d_K(x)\cdot v=1.
+	\]
+	结合 \(|v|=1\) 和上界，即有 \(|\nabla d_K(x)|=1\)。
+	现在把余面积公式用于 \(f=d_K\) 和 \(g=\mathbf1_{\{0<d_K<r\}}\)。源中的被积函数几乎处处等于这个示性函数；在目标值 \(0<t<r\) 处，纤维上的示性函数恒为一，在其他目标值处为零。因此
+	\[
+		\mathcal L^m\{0<d_K<r\}
+		=\int_0^r\mathcal H^{m-1}\{d_K=t\}\,\mathrm dt.
+	\]
+	左端就是 \(V(r)-V(0)\)。由于 \(K\) 紧，固定 \(R>0\) 时 \(\{d_K<R\}\) 有界，故右端在 \((0,R)\) 上可积。一个可积函数的不定积分在 \([0,R]\) 上绝对连续，于是
+	\[
+		V'(r)=\mathcal H^{m-1}\{d_K=r\}
+	\]
+	对几乎所有 \(r>0\) 成立。这里不要求每个距离水平集都光滑；可测性和几乎处处的有限面积由余面积公式提供。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:coarea-square-pushforward}
+	设 \(m\ge2\)、\(Q=(0,1)^{m-1}\)、\(E=(-1,1)\times Q\)，并令 \(f(s,z)=s^2\)。对任意非负 Lebesgue 可测函数 \(u:E\to[0,\infty]\)，证明
+	\[
+		\int_Eu(s,z)\,\mathrm ds\,\mathrm dz
+		=\int_0^1\frac1{2\sqrt t}
+		\left(\int_Q\bigl[u(\sqrt t,z)+u(-\sqrt t,z)\bigr]\,\mathrm dz\right)\mathrm dt.
+	\]
+	解释 \(t=0\) 处的因子如何处理，并计算 \(E\) 上归一化 Lebesgue 测度经 \(f\) 推前后的密度。
+\end{exercise}
+\begin{solution}
+	可把 \(f\) 延拓为全空间 Lipschitz 函数 \(\widetilde f(s,z)=\min\{s^2,1\}\)，其 Lipschitz 常数至多为二。在 \(E\) 内，\(J_1\widetilde f=2|s|\)，除去超平面 \(s=0\) 后严格为正；这个超平面的 \(\mathcal L^m\) 测度为零。
+	将 \(u\) 在 \(E\) 外补零，并在 \(E\cap\{s\ne0\}\) 上取权 \(g=u/(2|s|)\)，其余地方取零。则 \(gJ_1\widetilde f=u\) 几乎处处于 \(E\)。对 \(0<t<1\)，与权函数支集相交的纤维由两片平行平面 \(\{\sqrt t\}\times Q\) 和 \(\{-\sqrt t\}\times Q\) 组成，二者的 \(\mathcal H^{m-1}\) 测度都由 \(\mathrm dz\) 给出。在这两片上，分母均为 \(2\sqrt t\)。代入余面积公式即得所需等式。
+	等式的外层积分按 Lebesgue 意义进行，单个值 \(t=0\) 上如何补定义不影响结果。因子 \(t^{-1/2}\) 在 \((0,1)\) 上可积，反映的是靠近临界值时横向变化变慢，并不造成总质量无穷。
+	因为 \(\mathcal L^m(E)=2\)，归一化源测度为 \(\tfrac12\mathbf1_E\mathcal L^m\)。对非负可测测试函数 \(\varphi\)，取 \(u(s,z)=\tfrac12\varphi(s^2)\)，上式给出
+	\[
+		\frac12\int_E\varphi(f(s,z))\,\mathrm ds\,\mathrm dz
+		=\int_0^1\varphi(t)\frac1{2\sqrt t}\,\mathrm dt.
+	\]
+	故推前测度的密度是 \(\mathbf1_{(0,1)}(t)/(2\sqrt t)\)，其积分为一，且在零处没有原子。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:circles-zero-density-point}
+	在平面中令 \(S_j\) 为圆心 \((2^{-j},0)\)、半径 \(2^{-3j-3}\) 的圆周，\(j\ge1\)，并令
+	\(E=\{0\}\cup\bigcup_{j\ge1}S_j\)。
+	证明 \(E\) 紧、可数 \(1\)-可整流且长度有限。证明原点属于长度测度的支撑，却有 \(\Theta^1(\mathcal H^1\llcorner E,0)=0\)，因而在原点没有本章定义的近似切线。
+\end{exercise}
+\begin{solution}
+	各圆周紧，其圆心与半径均趋于零。任意取自这些圆周的收敛点列，如果圆周指标有有界子列，极限属于其中某个圆周；否则极限为原点。所以加入原点后的 \(E\) 闭且有界，因而紧。各圆周由光滑参数覆盖，原点为长度零测集，故 \(E\) 可整流。
+
+	这些圆周两两不交。例如相邻圆心的距离为 \(2^{-j-1}\)，两个半径的和小于 \(2^{-j-1}\)；更远圆心的距离更大而后一个半径更小。因此
+	\[
+		\mathcal H^1(E)=2\pi\sum_{j=1}^{\infty}2^{-3j-3}<\infty.
+	\]
+	任意原点邻域都包含指标充分大的整个圆周，故原点属于该测度的支撑。
+
+	写 \(c_j=2^{-j}\)、\(\rho_j=2^{-3j-3}\)。因 \(\rho_j\le c_j/4\)，若 \(S_j\cap B(0,r)\ne\varnothing\)，必有 \(c_j-\rho_j<r\)，从而 \(c_j<4r/3\)。于是
+	\[
+		\mathcal H^1(E\cap B(0,r))
+		\le2\pi\sum_{\{j:2^{-j}<4r/3\}}2^{-3j-3}
+		\le Cr^3.
+	\]
+	最后一步是公比 \(1/8\) 的几何级数估计，常数与小半径 \(r\) 无关。除以 \(\omega_1r=2r\) 后趋于零。近似切线要求密度为一，所以在原点不存在。可整流集的切平面定理只在长度几乎处处断言存在性，而原点的长度为零。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:crossing-weighted-lines}
+	设 \(L_1,L_2\subset\mathbb R^2\) 为两条不同的过原点直线，\(a,b>0\)，令
+	\(\mu=a\mathcal H^1\llcorner L_1+b\mathcal H^1\llcorner L_2\)。
+	求 \(\Theta^1(\mu,x)\) 在两条直线上的值，以及在原点的所有尺度放大结果。证明即使允许任意正重数，原点的放大结果也不能写成单一直线上的常数倍长度测度。
+\end{exercise}
+\begin{solution}
+	若 \(x\in L_1\setminus\{0\}\)，则它到 \(L_2\) 的距离为正，小球只遇到 \(L_1\)，因而
+	\(\mu(B(x,r))=2ar\)，密度为 \(a\)。同理在 \(L_2\setminus\{0\}\) 上密度为 \(b\)。原点处则
+	\(\mu(B(0,r))=2(a+b)r\)，密度为 \(a+b\)。
+
+	直线在以原点为中心的伸缩下不变，因此对任意 \(r>0\) 和 \(\varphi\in C_c(\mathbb R^2)\)，
+	\[
+		r^{-1}\int\varphi(y/r)\,\mathrm d\mu(y)
+		=a\int_{L_1}\varphi\,\mathrm d\mathcal H^1
+		+b\int_{L_2}\varphi\,\mathrm d\mathcal H^1.
+	\]
+	所以每个尺度的放大测度都恰为 \(\mu\) 本身。如果它等于 \(c\mathcal H^1\llcorner L\)，则 \(L\) 必须同时包含 \(L_1,L_2\)：否则在某条直线上选择一个不属于 \(L\) 的点，用支撑在与 \(L\) 不交的小球内的非负测试函数，就得到左侧正、右侧零。两条不同直线不能同时包含于一条直线，故这样的表示不存在。密度只给出总质量的尺度系数，不能替代切向方向的信息。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:rectifiable-product}
+	设 \(E\subset\mathbb R^n\)、\(F\subset\mathbb R^q\) 分别是可数个有界 Borel 双 Lipschitz \(m\) 维片和 \(k\) 维片的并，其中 \(m,k\ge1\)，且相应 Hausdorff 测度局部有限。证明 \(E\times F\) 可数 \((m+k)\)-可整流，并且作为 \(\mathbb R^{n+q}\) 上的 Borel 测度，
+	\[
+		\mathcal H^{m+k}\llcorner(E\times F)
+		=(\mathcal H^m\llcorner E)\otimes(\mathcal H^k\llcorner F).
+	\]
+	证明在乘积测度几乎处处的 \((x,y)\) 上，其近似切平面为
+	\(\operatorname{Tan}^m(E,x)\times\operatorname{Tan}^k(F,y)\)。说明为何对一般可整流集合，应先取双 Lipschitz 分片给出的满测度代表来使用本题。
+\end{exercise}
+\begin{solution}
+	先处理两个双 Lipschitz 片 \(S=f(A)\subset E\)、\(T=g(B)\subset F\)。乘积映射
+	\(h(a,b)=(f(a),g(b))\) 仍为双 Lipschitz 映射。它的微分和 Gram 矩阵均按两个因子分块，因此
+	\[
+		J_{m+k}h(a,b)=J_mf(a)J_kg(b)
+	\]
+	对几乎每个 \((a,b)\in A\times B\) 成立。对任意非负 Borel 函数 \(\psi\)，带权面积公式、Fubini 定理和两个因子的单射面积公式给出
+	\[
+		\int_{S\times T}\psi\,\mathrm d\mathcal H^{m+k}
+		=\int_S\int_T\psi(x,y)\,\mathrm d\mathcal H^k(y)\,\mathrm d\mathcal H^m(x).
+	\]
+
+	按次序从各片扣除之前的片，便可把 \(E,F\) 写成两两不交的 Borel 双 Lipschitz 片的并。相应的乘积片也不交，且覆盖整个 \(E\times F\)。对它们使用上式，再由非负函数的单调收敛交换求和与积分，就得到所需测度恒等式。同时这些乘积参数映射构成可数 Lipschitz 覆盖，所以乘积可整流。
+
+	对 \(\mathbb R^{n+q}\) 中任意紧集，其在两个因子中的投影都紧。所得乘积测度在它上面的质量不超过两个投影测度的乘积，因而局部有限。于是可以应用可整流切平面定理。在几乎处处的参数点，\(h\) 的微分是 \(\mathrm Df\) 与 \(\mathrm Dg\) 的分块直和，其像为
+	\[
+		\mathrm Df(a)(\mathbb R^m)\times\mathrm Dg(b)(\mathbb R^k).
+	\]
+	对因子和乘积各使用\cref{g3:thm:rectifiable-tangent-plane}，并用 Fubini 定理排除两个因子的零测例外集，得到所述切平面公式。
+
+	一般可整流集合由\cref{g3:prop:rectifiable-bilipschitz-cover} 给出这样的满测度代表 \(E_0,F_0\)。本题直接适用于 \(E_0\times F_0\)。原定义允许在 \(E,F\) 上添加任意相应维数的零测集，而题中的参数片论证不覆盖这些额外集合的乘积；因此使用本题时应保留明确的代表条件，不能仅凭因子中的零测性就删去任意乘积余集。
+\end{solution}

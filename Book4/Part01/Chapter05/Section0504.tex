@@ -1,12 +1,12 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 5.4 共形度量与双曲收缩
 % 纲要位置：几何学计划纲要.md，第 3663 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 曲率的共形变换
-% * Schwarz–Pick 和 Ahlfors–Schwarz
+% * Schwarz–Pick 定理与 Ahlfors–Schwarz 引理
 % * Poincaré 度量及完备性
 % * 尖点、环域与漏斗
 % 
@@ -15,21 +15,222 @@
 \section{共形度量与双曲收缩}
 \label{g4:sec:0504}
 
-待撰写
+统一化给出圆盘、平面和球面三种全纯模型，但坐标分类还没有说明如何量长度。圆盘上的 Schwarz--Pick 不等式已经指出一个特别的长度密度：全纯映射对于它总是收缩的。本节从曲率计算解释这一选择，再把圆盘度量下降到双曲型曲面。尖点和漏斗则显示，同样的局部负曲率可以产生不同的整体端部。
 
 \subsection{曲率的共形变换}
 \label{g4:subsec:0504:01}
-待撰写
 
-\subsection{Schwarz–Pick 和 Ahlfors–Schwarz}
+在全纯坐标 \(z=x+\mathrm{i}y\) 中，共形度量写成 \(g=\rho^2|\mathrm{d}z|^2\)，其中 \(\rho>0\) 光滑。记 \(\Delta_{\mathrm e}=\partial_x^2+\partial_y^2\)，本书的非负 Laplace 算子则是 \(\Delta_g=-\rho^{-2}\Delta_{\mathrm e}\)。\(\rho\) 是长度的缩放因子，面积的缩放因子为 \(\rho^2\)。若另一个全纯坐标为 \(w=w(z)\)，长度密度满足 \(\rho_z=\rho_w|w'|\)，因此这些局部表达拼成同一个度量。
+
+\begin{proposition}
+	\label{g4:prop:0504:conformal-curvature}
+	设 \(X\) 为黎曼曲面，\(g\) 为光滑正定共形度量，\(\varphi\in C^\infty(X,\mathbb R)\)。采用标准球面曲率为正及非负 Laplace 的约定，有
+	\begin{equation}
+		\label{g4:eq:0504:curvature-change}
+		K_g=-\rho^{-2}\Delta_{\mathrm e}\log\rho,
+		\qquad K_{e^{2\varphi}g}=e^{-2\varphi}(K_g+\Delta_g\varphi).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	第一卷第8.3节例8.3.10由度量的联络计算了第一个公式。为固定这里的符号，令 \(u=\log\rho\)，恢复计算中所需的系数：
+	\[
+		\begin{array}{lll}
+			\Gamma^1_{11}=u_x,&\Gamma^1_{12}=u_y,&\Gamma^1_{22}=-u_x,\\
+			\Gamma^2_{11}=-u_y,&\Gamma^2_{12}=u_x,&\Gamma^2_{22}=u_y.
+		\end{array}
+	\]
+	在 \(R(\partial_x,\partial_y)\partial_y\) 的 \(\partial_x\) 分量中，一阶导数乘积相消，剩下 \(-u_{xx}-u_{yy}\)。与 \(\partial_x\) 作内积后除以坐标平行四边形面积的平方 \(e^{4u}\)，即得 \(K_g=-e^{-2u}\Delta_{\mathrm e}u\)。将 \(u\) 换成 \(u+\varphi\)，再用 \(\Delta_g\varphi=-e^{-2u}\Delta_{\mathrm e}\varphi\)，便得到第二式。换全纯坐标时，\(\log|w'|\) 调和，所以公式与坐标变换相容。
+\end{proof}
+
+\begin{example}
+	\label{g4:exm:0504:three-curvatures}
+	平面上的密度 \(\rho=1\) 给出 \(K=0\)。球极坐标中的密度 \(\rho=2/(1+|z|^2)\) 给出 \(K=1\)，并在无穷远换坐标 \(w=1/z\) 后保持同一形式。单位圆盘上的密度 \(\lambda_{\mathbb D}=2/(1-|z|^2)\) 则满足
+	\[
+		\Delta_{\mathrm e}\log\lambda_{\mathbb D}
+		=\frac4{(1-|z|^2)^2}=\lambda_{\mathbb D}^2,
+	\]
+	所以曲率为 \(-1\)。由 \(C(z)=(z-\mathrm{i})/(z+\mathrm{i})\) 将上半平面映到圆盘，直接计算
+	\[
+		\lambda_{\mathbb D}(C(z))|C'(z)|=\frac1{\operatorname{Im}z}.
+	\]
+	因而上半平面的对应度量是 \(|\mathrm{d}z|^2/y^2\)，也有曲率 \(-1\)。
+\end{example}
+
+若在固定共形类内寻找曲率 \(-1\) 的度量，上式把问题写成 \(\Delta_g\varphi+K_g=-e^{2\varphi}\)。统一化在双曲型曲面上给出了一个全局解的几何来源。下面的比较则说明，负曲率条件本身已经限制了长度密度能够有多大。
+
+\subsection{Schwarz–Pick 定理与 Ahlfors–Schwarz 引理}
 \label{g4:subsec:0504:02}
-待撰写
+
+\cref{g4:thm:0103:schwarz-pick}已从 Schwarz 引理证明，对全纯映射 \(f:\mathbb D\to\mathbb D\)，有
+\[
+	\lambda_{\mathbb D}(f(z))|f'(z)|\le\lambda_{\mathbb D}(z).
+\]
+左边是目标双曲度量拉回后的长度密度；分歧点处它可以为零。要把圆盘目标换成任意具有负曲率上界的曲面，需要一个允许这种零点的比较结论，即 Ahlfors\footnote{Lars Valerian Ahlfors（1907—1996），芬兰数学家，研究复分析与黎曼曲面。}--Schwarz 引理。
+
+\begin{theorem}[Ahlfors--Schwarz 引理]
+	\label{g4:thm:0504:ahlfors-schwarz}
+	设 \(\mu:\mathbb D\to[0,\infty)\) 连续，在开集 \(\{\mu>0\}\) 上属于 \(C^2\)，并在该开集上满足
+	\[
+		\Delta_{\mathrm e}\log\mu\ge\mu^2.
+	\]
+	则对每个 \(z\in\mathbb D\)，有
+	\[
+		\mu(z)\le\frac2{1-|z|^2}.
+	\]
+	特别地，若 \(Y\) 为具有光滑正定共形度量 \(h\) 的黎曼曲面，\(K_h\le-1\)，则任意全纯映射 \(f:\mathbb D\to Y\) 满足 \(f^*h\le g_{\mathbb D}\)。
+\end{theorem}
+\begin{proof}
+	先在较小圆盘 \(|z|<R<1\) 上比较，取
+	\[
+		\lambda_R(z)=\frac{2R}{R^2-|z|^2}.
+	\]
+	直接求导有 \(\Delta_{\mathrm e}\log\lambda_R=\lambda_R^2\)，且 \(\lambda_R\) 在圆周 \(|z|=R\) 趋于无穷大。\(\mu\) 在闭圆盘 \(|z|\le R\) 有界，所以 \(\mu/\lambda_R\) 连续延拓到边界，边界值为零。
+
+	如果这个比值在某处大于 \(1\)，其最大值就在内部某点 \(z_0\) 取得，且 \(\mu(z_0)>0\)。故 \(\log(\mu/\lambda_R)\) 在那里可以二次求导，并满足
+	\[
+		0\ge\Delta_{\mathrm e}\log\frac\mu{\lambda_R}(z_0)
+		\ge\mu(z_0)^2-\lambda_R(z_0)^2>0,
+	\]
+	矛盾。因此 \(\mu\le\lambda_R\)；固定 \(z\) 并让 \(R\uparrow1\)，即得所求界。允许 \(\mu\) 消失并不妨碍证明，因为假设的正最大值一定出现在 \(\mu>0\) 的区域。
+
+	对最后的断言，常值映射显然满足结论。非常值全纯映射在目标坐标中给出密度 \(\mu(z)=\rho_Y(f(z))|f'(z)|\)，它连续，且在 \(f'\ne0\) 处光滑。由于 \(\log|f'|\) 在这里调和，链式法则给出
+	\[
+		\Delta_{\mathrm e}\log\mu
+		=(\Delta_{\mathrm e,w}\log\rho_Y)(f(z))|f'(z)|^2
+		=-K_h(f(z))\mu^2\ge\mu^2.
+	\]
+	这些表达在目标坐标交叠处相容。应用前半部分，得到 \(\mu\le\lambda_{\mathbb D}\)，平方后就是度量比较。
+\end{proof}
+
+目标度量的完备性没有出现在这个证明中；比较利用的是曲率不等式和源圆盘的边界发散。若目标曲率满足 \(K_h\le-\kappa\)、\(\kappa>0\)，将 \(h\) 乘以 \(\kappa\) 后曲率至多为 \(-1\)，所以结论相应变为 \(f^*h\le\kappa^{-1}g_{\mathbb D}\)。这个尺度因子在比较不同曲率归一化时不可省略。
+
+\begin{corollary}
+	\label{g4:cor:0504:entire-negative-curvature}
+	设 \(Y\) 为具有光滑正定共形度量 \(h\) 的黎曼曲面，且 \(K_h\le-\kappa<0\)。则每个全纯映射 \(F:\mathbb C\to Y\) 都是常值。
+\end{corollary}
+\begin{proof}
+	固定 \(z_0\in\mathbb C\)，将上一定理用于 \(\zeta\mapsto F(z_0+R\zeta)\)。在 \(\zeta=0\) 得到
+	\[
+		R\rho_Y(F(z_0))|F'(z_0)|\le\frac2{\sqrt\kappa}.
+	\]
+	令 \(R\to\infty\)，知 \(F'(z_0)=0\)。每点如此，连通性使 \(F\) 为常值。
+\end{proof}
 
 \subsection{Poincaré 度量及完备性}
 \label{g4:subsec:0504:03}
-待撰写
+
+称黎曼曲面为双曲型，是指其万有覆盖双全纯于 \(\mathbb D\)。由\cref{g4:thm:0503:quotient}，取全纯覆盖 \(\pi:\mathbb D\to X\)，各覆盖变换都是圆盘自同构。对自同构及其逆分别应用 Schwarz--Pick，得到长度密度的变换等式，因此圆盘度量能够沿 \(\pi\) 下降。
+
+\begin{definition}
+	\label{g4:def:0504:poincare}
+	设 \(X\) 为双曲型连通黎曼曲面。唯一满足
+	\[
+		\pi^*g_X=g_{\mathbb D}
+	\]
+	的光滑共形度量 \(g_X\) 称为它的\term[Poincareduliang]{Poincaré 度量}[Poincaré metric]\footnote{Jules Henri Poincaré（1854—1912），法国数学家，研究微分方程、拓扑与天体力学。}。其长度距离记为 \(d_X\)。
+\end{definition}
+
+这里的唯一性是相对于覆盖拉回等式而言。局部取 \(\pi\) 的逆分支便能定义度量，换逆分支只相差圆盘自同构，故与选择无关。换用另一张万有覆盖时，两张覆盖之间也有圆盘自同构，所得度量仍相同。局部拉回保持曲率，所以 \(K_{g_X}=-1\)。
+
+\begin{theorem}
+	\label{g4:thm:0504:poincare-complete}
+	每个双曲型连通黎曼曲面的 Poincaré 长度距离完备。任意全纯映射 \(F:X\to Y\)，其中 \(X,Y\) 均为双曲型连通黎曼曲面，都满足
+	\[
+		F^*g_Y\le g_X,
+		\qquad d_Y(F(p),F(q))\le d_X(p,q).
+	\]
+	若第一式在某点的一个非零切向量上取等号，则 \(F\) 是全纯覆盖；反之每个全纯覆盖都是上述度量的局部等距。
+\end{theorem}
+\begin{proof}
+	先证明 \(\mathbb D\) 完备。\cref{g4:prop:0103:hyperbolic-distance-formula}给出
+	\[
+		d_{\mathbb D}(0,z)=\log\frac{1+|z|}{1-|z|}.
+	\]
+	一个双曲 Cauchy 列距原点的距离有界，因而留在某个闭子圆盘 \(|z|\le r<1\) 内。双曲距离又至少为两倍 Euclid 距离，所以该列有 Euclid 极限 \(z\)，仍在这个闭子圆盘中。密度在稍大的闭子圆盘上有界，连接 \(z_n,z\) 的直线段便说明它也按双曲距离收敛。
+
+	再设 \((p_n)\) 为 \(X\) 中的 Cauchy 列。取子列，使相邻项可由长度小于 \(2^{-k}\) 的分片光滑曲线 \(\gamma_k\) 连接；这是长度距离的定义与 Cauchy 条件共同保证的。在 \(\mathbb D\) 中选定第一项的原像，由第一卷第5.3节定理5.3.5的道路提升依次提升 \(\gamma_k\)。由于 \(\pi\) 是局部等距，提升曲线长度不变，其端点列 \((z_k)\) 满足
+	\[
+		d_{\mathbb D}(z_k,z_j)\le\sum_{m=k}^{j-1}2^{-m}\quad(j>k).
+	\]
+	于是 \(z_k\) 收敛于某个 \(z\in\mathbb D\)，投影后原子列收敛于 \(\pi(z)\)。原列 Cauchy，故整列也收敛。这里长度距离给出原流形拓扑：在相对紧坐标小片上，光滑正密度与 Euclid 密度双边可比，而离开较小片的曲线有一个固定的正长度下界。
+
+	对全纯映射 \(F\)，第一卷第5.3节定理5.3.10的提升判据适用于道路连通、局部道路连通且单连通的圆盘，基本群像包含条件自动成立。因此组合 \(F\circ\pi_X:\mathbb D\to Y\) 提升为全纯映射 \(f:\mathbb D\to\mathbb D\)，满足 \(\pi_Yf=F\pi_X\)。提升的全纯性由覆盖的局部全纯逆得到。对 \(f\) 用 Schwarz--Pick，再用两边覆盖的局部等距性质，得到 \(F^*g_Y\le g_X\)。沿连接 \(p,q\) 的任意曲线积分并取下确界，便得距离不增加。
+
+	若某点某非零方向取等号，对应的 \(f\) 在一点满足 Schwarz--Pick 的导数等号，故 \(f\) 为圆盘自同构。把 \(X\) 的覆盖变换群经 \(f\) 共轭后，\(F\) 就是某个子群商到 \(Y\) 的群商的自然映射，因此为全纯覆盖。具体地，覆盖的局部均匀覆盖邻域在中间子群商中仍分解成互不相交的同构副本，这正给出覆盖条件。反过来，若 \(F\) 为全纯覆盖，\(F\pi_X\) 也是 \(Y\) 的万有覆盖，所以它与 \(\pi_Y\) 相差圆盘自同构，局部等距性随即成立。
+\end{proof}
+
+对于一般曲面，局部等号只推出覆盖，未必推出双射。例如 \(z\mapsto z^n\) 是穿孔圆盘的 \(n\) 重全纯覆盖，\(n\ge2\) 时并不单射。相应度量将在下一小节显式写出。
+
+\begin{proposition}
+	\label{g4:prop:0504:poincare-maximal}
+	设 \(X\) 为双曲型连通黎曼曲面，\(h\) 是其任一光滑正定共形度量，且 \(K_h\le-1\)。则 \(h\le g_X\)。
+\end{proposition}
+\begin{proof}
+	把 \(h\) 拉回到万有覆盖圆盘，应用\cref{g4:thm:0504:ahlfors-schwarz}，得到 \(\pi^*h\le g_{\mathbb D}=\pi^*g_X\)。覆盖在每点为局部微分同胚，故比较下降为 \(h\le g_X\)。
+\end{proof}
 
 \subsection{尖点、环域与漏斗}
 \label{g4:subsec:0504:04}
-待撰写
+
+第一卷第10.2节例10.2.10和命题10.2.11已计算抛物平移与双曲缩放产生的尖点、漏斗。本节保留同样的曲率和长度归一化，并补出它们的全纯坐标。指数映射使无限条带变成环域，因而也把端部的度量行为转化为一个可计算的共形参数。
+
+\begin{example}
+	\label{g4:exm:0504:cusp}
+	在上半平面 \(\mathbb H\) 上令 \(T(z)=z+1\)。函数 \(q=e^{2\pi\mathrm{i}z}\) 给出
+	\[
+		\mathbb H/\langle T\rangle\cong\{0<|q|<1\}.
+	\]
+	指数的相等恰表示参数相差整数，且任意 \(0<|q|<1\) 都有虚部为正的对数原像，所以这是双全纯同构。由 \(|q|=e^{-2\pi y}\)、\(|\mathrm{d}q|=2\pi|q||\mathrm{d}z|\)，得到穿孔圆盘的 Poincaré 度量
+	\begin{equation}
+		\label{g4:eq:0504:punctured-disk-metric}
+		\mathrm{d}s^2=\frac{|\mathrm{d}q|^2}{|q|^2\bigl(\log(1/|q|)\bigr)^2}.
+	\end{equation}
+	固定 \(Y>0\)，商中 \(y\ge Y\) 的部分称为一个\term[jiandian]{尖点}[cusp]端。写 \(r=\log(y/Y)\)，则
+	\[
+		\mathrm{d}s^2=\mathrm{d}r^2+Y^{-2}e^{-2r}\,\mathrm{d}x^2,
+		\qquad r\ge0,\quad x\in\mathbb R/\mathbb Z.
+	\]
+	截圈长为 \(Y^{-1}e^{-r}\)，端部面积为 \(1/Y\)，而走向 \(r\to\infty\) 的曲线长度至少为 \(r\) 的总变化，所以尖端在无限距离处。整个穿孔圆盘的另一端 \(|q|\to1\) 也在无限距离处，但其面积无限。
+\end{example}
+
+\begin{proposition}
+	\label{g4:prop:0504:hyperbolic-cylinder}
+	设 \(\ell>0\)。商 \(\mathbb H/\langle z\mapsto e^\ell z\rangle\) 是完备双曲圆柱，双全纯于环域
+	\[
+		A_\ell=\{e^{-2\pi^2/\ell}<|q|<1\}.
+	\]
+	它具有坐标 \(r\in\mathbb R\)、\(t\in\mathbb R/\ell\mathbb Z\)，使
+	\begin{equation}
+		\label{g4:eq:0504:cylinder-metric}
+		\mathrm{d}s^2=\mathrm{d}r^2+\cosh^2r\,\mathrm{d}t^2.
+	\end{equation}
+	其中 \(r=0\) 是长为 \(\ell\) 的闭测地线，每个半圆柱 \(r\ge0\) 或 \(r\le0\) 为一个\term[loudou]{漏斗}[funnel]。
+\end{proposition}
+\begin{proof}
+	在上半平面取单值对数 \(w=\log z=t+\mathrm{i}\theta\)，其中 \(0<\theta<\pi\)。缩放对应 \(w\mapsto w+\ell\)，而 \(q=e^{2\pi\mathrm{i}w/\ell}\) 恰把条带模此平移识别为所示环域。两个生成元均无内点不动点；对数坐标中的平移还直接说明作用局部有限，所以它们确实给出全纯覆盖的商。
+
+	度量变成
+	\[
+		\mathrm{d}s^2=\frac{\mathrm{d}t^2+\mathrm{d}\theta^2}{\sin^2\theta}.
+	\]
+	令 \(r=\operatorname{arsinh}(\cot\theta)\)，则 \(\sin\theta=\operatorname{sech}r\)、\(\mathrm{d}\theta=-\operatorname{sech}r\,\mathrm{d}r\)，代入即得式\eqref{g4:eq:0504:cylinder-metric}。这也恢复了第一卷中的参数式 \(x=e^t\tanh r\)、\(y=e^t\operatorname{sech}r\)。曲线 \(r=0\) 的测地方程由 \(\partial_r\cosh^2r|_{r=0}=0\) 直接满足，其长度为 \(t\) 的周期 \(\ell\)。任何绕圆柱一周的曲线都有长度至少 \(\int|\mathrm{d}t|\ge\ell\)，所以这条核心圈实现该自由同伦类的最小长度。
+
+	到核心圈的距离为 \(|r|\)：任一连接曲线的长度至少为 \(r\) 的变化，固定 \(t\) 的径向段达到下界。漏斗截圈的长度为 \(\ell\cosh r\)，而半圆柱 \(0\le r\le R\) 的面积为 \(\ell\sinh R\)，随 \(R\to\infty\) 发散。整个商的完备性已由\cref{g4:thm:0504:poincare-complete}保证，也可直接从 \(|r|\) 的距离下界与紧的有界 \(r\) 区域得到。
+\end{proof}
+
+\begin{corollary}
+	\label{g4:cor:0504:annulus-metric}
+	设 \(0<a<b<\infty\)，\(L=\log(b/a)\)。环域 \(A(a,b)=\{a<|z|<b\}\) 的 Poincaré 长度密度为
+	\begin{equation}
+		\label{g4:eq:0504:annulus-density}
+		\lambda_{A(a,b)}(z)
+		=\frac{\pi}{L|z|\sin\bigl(\pi\log(|z|/a)/L\bigr)}.
+	\end{equation}
+	中间圆周 \(|z|=\sqrt{ab}\) 是长为 \(2\pi^2/L\) 的闭测地线；环域的两条边界均在无限距离处。
+\end{corollary}
+\begin{proof}
+	在对数覆盖上取 \(w=s+\mathrm{i}t=\log(z/a)\)，其中 \(0<s<L\)、\(t\) 以 \(2\pi\) 为周期。映射 \(w\mapsto\exp(\pi\mathrm{i}w/L)\) 把这一条带双全纯地送到上半平面。拉回密度 \(1/y\)，得到 \((\pi/L)/\sin(\pi s/L)\)；再用 \(|\mathrm{d}w|=|\mathrm{d}z|/|z|\)，便得公式。平移 \(t\mapsto t+2\pi\) 在上半平面中对应缩放因子 \(e^{-2\pi^2/L}\)，所生成的群与正指数缩放生成的群相同。于是上一命题给出核心圈的测地性和长度 \(\ell=2\pi^2/L\)。靠近任一边界，密度与边界法向距离的倒数同阶，其径向积分发散；或者直接应用整个圆柱的完备性。
+\end{proof}
+
+尖点和漏斗都由圆盘型覆盖产生，而其共形边界不同：尖点对应一个删去的点，有限模环域的两个漏斗端则对应两个边界圆。环域中的 Euclid 圆周半径不能直接衡量这一区别。下一节以曲线族的最短长度和面积之比，提取不依赖所选共形度量的数值。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

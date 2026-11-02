@@ -1,13 +1,13 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 11.2 Sobolev 截面的构造
 % 纲要位置：几何学计划纲要.md，第 2512 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 整数阶范数和等价性
 % * 卷积、截断与光滑稠密性
-% * 乘法、复合及所需链式法则
+% * 乘法、复合与链式法则
 % * 弱拓扑、反射性和弱紧性
 % 
 % 纲要内容结束
@@ -15,21 +15,204 @@
 \section{Sobolev 截面的构造}
 \label{g3:sec:1102}
 
-待撰写
+能量估计通常同时控制截面与若干阶导数的积分。把这些量放进同一个范数，就能讨论近似、完备性及极限。几何对象通过联络定义导数，局部计算则使用普通偏导；两种描述之间的等价性决定了欧氏估计能否拼接到流形上。
 
 \subsection{整数阶范数和等价性}
 \label{g3:subsec:1102:01}
-待撰写
+\begin{definition}\label{g3:def:sobolev-sections}
+	设 \((M,g)\) 为光滑黎曼流形，\(E\to M\) 为有限秩实或复度量向量丛，固定光滑联络 \(\nabla\)。对整数 \(k\ge0\)、\(1\le p\le\infty\)，所有至 \(k\) 阶弱协变导数均属于相应 \(L^p\) 空间的截面构成\term[Sobolev kongjian]{Sobolev 空间}[Sobolev space] \(W^{k,p}(M;E)\)，范数为
+	\begin{equation}\label{g3:eq:sobolev-norm}
+		\|s\|_{W^{k,p}}=
+		\left(\sum_{j=0}^k\|\nabla^j s\|_p^p\right)^{1/p}\quad(p<\infty),
+		\qquad \|s\|_{W^{k,\infty}}=\max_{0\le j\le k}\|\nabla^js\|_\infty.
+	\end{equation}
+	局部版本记为 \(W^{k,p}_{\mathrm{loc}}\)。\(C_c^\infty(M^\circ;E)\) 在该范数下的闭包记为 \(W^{k,p}_0(M;E)\)。记 \(H^k=W^{k,2}\)。在 Euclid 开集及平凡丛中，用所有 \(|\alpha|\le k\) 的 \(\partial^\alpha u\) 定义等价范数。
+\end{definition}
+\symidx{\(W^{k,p}(M;E),H^k(M;E)\)：整数阶 Sobolev 截面空间}
+\symidx{\(W^{k,p}_0\)：内部紧支光滑截面的 Sobolev 闭包}
+
+这里 \(\nabla^0s=s\)，高阶导数取诱导张量积联络；未要求 \(\nabla^ks\) 对称。\(W^{k,p}_0\) 的零下标是一项逼近条件，边界值的解释将在本章最后建立。\(W^{0,p}=L^p\)。
+
+\begin{proposition}\label{g3:prop:sobolev-norm-equivalence}
+	设 \(E\to(M,g)\) 为光滑有限秩度量丛，\(\nabla\) 光滑，\(k\ge0\)、\(1\le p\le\infty\)。在一张相对紧平凡化内，对支集位于固定紧子集的截面，联络范数与分量的 Euclid \(W^{k,p}\) 范数等价。若 \(M\) 紧且无边界，则任何有限光滑平凡化及其从属单位分解定义的范数
+	\[
+		\left(\sum_a\|(\chi_as)_a\|_{W^{k,p}(\mathbb R^n)}^p\right)^{1/p}
+	\]
+	与式\eqref{g3:eq:sobolev-norm}等价；\(p=\infty\) 时取最大值。更换光滑度量、纤维度量和联络也只改变等价常数。
+\end{proposition}
+\begin{proof}
+	在局部分量中，\(\nabla s\) 的首阶部分是 \(\partial u\)，其余是光滑矩阵乘 \(u\)。归纳得到
+	\[
+		(\nabla^j s)_a=\partial^j u+\sum_{|\alpha|<j}B_{j,\alpha}\partial^\alpha u,
+	\]
+	其中张量指标按固定次序排列。反向逐阶解出 \(\partial^j u\)，仍是至 \(j\) 阶协变导数的光滑线性组合。紧集上的系数、正密度、度量及其逆一致有界，给出双向估计。将 \(s=\sum_a\chi_as\) 代入，并用有限项三角不等式得到全局等价。两个联络的差是一个光滑 \(\operatorname{End}(E)\) 值一形式，故更换联络仍只增加低阶项；其余选择按相同紧集估计处理。
+\end{proof}
+
+非紧空间上只能逐个紧集作这个比较。比如在平凡实线丛上，把纤维度量乘以 \(e^{2x^2}\) 会改变哪些截面属于全局 \(L^p(\mathbb R)\)；一个无界权重不能被吸收到统一常数中。
+
+\begin{theorem}\label{g3:thm:sobolev-completeness}
+	设 \((M,g)\) 为光滑黎曼流形，\(E\) 为有限秩光滑度量丛，\(\nabla\) 光滑，\(k\ge0\)、\(1\le p\le\infty\)。则 \(W^{k,p}(M;E)\) 与 \(W^{k,p}_0(M;E)\) 是 Banach 空间；\(p=2\) 时，内积
+	\[
+		(s,t)_{H^k}=\sum_{j=0}^k\int_M\langle\nabla^js,\nabla^jt\rangle\,\mu_g
+	\]
+	使它们成为 Hilbert 空间。
+\end{theorem}
+\begin{proof}
+	若 \(s_m\) 在该范数下为 Cauchy 列，则\cref{g3:prop:lp-basic}给出各 \(\nabla^j s_m\) 的 \(L^p\) 极限 \(a_j\)。对任意紧支测试截面，局部 \(L^p\) 收敛蕴含局部 \(L^1\) 收敛，因此弱分部积分恒等式可逐阶取极限，得到 \(a_j=\nabla^j a_0\)。于是 \(a_0\in W^{k,p}\)，且原列按所定范数趋于它。零边界空间是定义所得闭子空间，故也完备。\(p=2\) 时所写内积产生该范数，完备内积空间就是 Hilbert 空间。
+\end{proof}
 
 \subsection{卷积、截断与光滑稠密性}
 \label{g3:subsec:1102:02}
-待撰写
+平滑有两个不同任务：在内部用卷积消除粗糙性，在无穷远或坐标边缘用截断控制支集。截断的导数会产生低阶项，所以不能只检验函数本身的收敛。
 
-\subsection{乘法、复合及所需链式法则}
+\begin{lemma}\label{g3:lem:mollifier-approximation}
+	设 \(1\le p<\infty\)、\(k\ge0\)。对 \(u\in W^{k,p}(\mathbb R^n)\)，取\cref{g3:lem:local-weak-smoothing}中的核，则
+	\[
+		\|\partial^\alpha(\rho_\varepsilon*u)\|_p\le\|\partial^\alpha u\|_p,
+		\qquad\rho_\varepsilon*u\longrightarrow u\quad\text{于 }W^{k,p}(\mathbb R^n).
+	\]
+	若 \(\chi\in C_c^\infty(\mathbb R^n)\) 在单位球上为一，令 \(\chi_R(x)=\chi(x/R)\)，则 \(\chi_Ru\to u\) 于同一空间。因而 \(C_c^\infty(\mathbb R^n)\) 在其中稠密。
+\end{lemma}
+\begin{proof}
+	卷积与弱导数交换；对核的积分应用三角不等式，得到范数估计，而平移连续性给出收敛，正如\cref{g3:lem:local-weak-smoothing}的证明。对截断，乘积法则给出
+	\[
+		\partial^\alpha(\chi_Ru-u)
+		=(\chi_R-1)\partial^\alpha u
+		+\sum_{0<\beta\le\alpha}\binom\alpha\beta
+		R^{-|\beta|}(\partial^\beta\chi)(x/R)\partial^{\alpha-\beta}u.
+	\]
+	第一项由可积性及逐点收敛趋零；其余项的范数至多为固定常数乘 \(R^{-|\beta|}\|\partial^{\alpha-\beta}u\|_p\)，也趋零。先取大 \(R\)，再对紧支的 \(\chi_Ru\) 取足够小的卷积半径，就得到紧支光滑逼近。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:sobolev-smooth-density}
+	设 \(M\) 为光滑无边界流形，\(E\to M\) 为光滑有限秩度量丛，固定光滑底度量及联络，\(k\ge0\)、\(1\le p<\infty\)。则光滑截面中属于 \(W^{k,p}(M;E)\) 的部分在 \(W^{k,p}(M;E)\) 中稠密。特别地，在任意 Euclid 开集 \(\Omega\) 上，\(C^\infty(\Omega)\cap W^{k,p}(\Omega)\) 稠密；紧无边界流形上 \(W^{k,p}_0=W^{k,p}\)。
+\end{theorem}
+\begin{proof}
+	取可数局部有限的相对紧平凡化及光滑单位分解 \(\chi_a\)，其支集紧含于相应坐标片。对每一项 \(\chi_as\)，在坐标中零延拓后作卷积，再回拉为光滑截面 \(v_a\)。可预先选定稍大的局部有限坐标邻域，使小半径卷积的支集仍包含于其中。由上一引理与\cref{g3:prop:sobolev-norm-equivalence}，半径可分别选到使
+	\(\|v_a-\chi_as\|_{W^{k,p}}<\varepsilon2^{-a}\)。
+	和 \(v=\sum_av_a\) 局部有限，故光滑；误差级数在 \(W^{k,p}\) 中绝对收敛，范数小于 \(\varepsilon\)。其局部和等于 \(v-s\)，因而 \(v\in W^{k,p}\) 且逼近 \(s\)。紧流形只需有限项，所得光滑截面本身紧支。
+\end{proof}
+
+开域上的内部光滑逼近可以一直延伸到边界附近，却未必在边界外有光滑延拓；例如无界的边界奇性不会由内部光滑性排除。\(W^{k,p}_0\) 要求支集离开边界，其含义更强。\(p=\infty\) 也不同：\(|x|\in W^{1,\infty}(-1,1)\)，但任何光滑函数的导数若同时在两侧以本质上确界误差小于一逼近 \(\operatorname{sgn}x\)，其在零点的连续性便产生矛盾。因此这里的强光滑稠密性保留 \(p<\infty\) 条件。
+
+\subsection{乘法、复合与链式法则}
 \label{g3:subsec:1102:03}
-待撰写
+弱方程中经常要使用 \(\chi u\)、\(u^+\) 或 \(F(u)\) 作新的函数。光滑乘数与一般非线性复合需要不同的条件：前者仅增加可控的低阶项，后者还要控制函数值所经过区域上的导数。
+
+\begin{proposition}\label{g3:prop:sobolev-product-chain}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(1\le p\le\infty\)。下列结论成立。
+	\begin{enumerate}
+		\item 若 \(a\in C^k(\Omega)\) 至 \(k\) 阶的导数有界，则乘法 \(u\mapsto au\) 是 \(W^{k,p}(\Omega)\) 上的有界算子，并满足逐阶乘积公式。
+		\item 若 \(u,v\in W^{1,p}(\Omega)\cap L^\infty(\Omega)\)，则 \(uv\in W^{1,p}(\Omega)\)，且 \(\mathrm D(uv)=u\mathrm Dv+v\mathrm Du\)。
+		\item 若 \(u\in W^{1,p}(\Omega;\mathbb R^r)\)、\(F\in C^1(\mathbb R^r;\mathbb R^s)\)，且 \(\|\mathrm DF\|_\infty<\infty\)，则只要 \(F(u)\in L^p\)，便有 \(F(u)\in W^{1,p}\) 及
+		\[
+			\mathrm D(F(u))=\mathrm DF(u)\mathrm Du.
+		\]
+		当 \(F(0)=0\)，或 \(|\Omega|<\infty\) 时，所需零阶可积性自动成立。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	第一项先把 \(a\varphi\) 代入弱恒等式得到一阶公式，再逐阶归纳；\(C^k\) 系数可在测试函数的紧支附近用光滑系数作 \(C^k\) 逼近。有限项的范数估计给出有界性。
+
+	其余两项使用\cref{g3:prop:weak-line-slices}。在几乎每条坐标线上，所给函数有绝对连续代表。有界绝对连续函数的乘积仍绝对连续，导数满足普通乘积规则；\(F\) 的导数有界使它为 Lipschitz 映射，故与绝对连续向量函数的复合也绝对连续，并满足一元链式法则。右侧导数由假设属于 \(L^p\)，再按切片命题返回弱导数。最后，\(|F(u)|\le|F(0)|+\|\mathrm DF\|_\infty|u|\) 证明零阶断言。局部应用时只需控制 \(u\) 实际值域邻域内的 \(\mathrm DF\)。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:sobolev-truncation}
+	设实函数 \(u\in W^{1,p}(\Omega)\)，\(1\le p\le\infty\)。则 \(u^+=\max\{u,0\}\)、\(|u|\) 和 \(T_a(u)=\max\{-a,\min\{u,a\}\}\) 属于 \(W^{1,p}\)，且
+	\[
+		\mathrm D u^+=\mathbf1_{\{u>0\}}\mathrm Du,\qquad
+		\mathrm D|u|=\operatorname{sgn}(u)\mathrm Du,\qquad
+		\mathrm DT_a(u)=\mathbf1_{\{|u|<a\}}\mathrm Du.
+	\]
+	其中 \(a>0\)。当 \(p<\infty\) 时，\(T_a(u)\to u\) 于 \(W^{1,p}\)，当 \(a\to\infty\)。
+\end{proposition}
+\begin{proof}
+	一元绝对连续函数在任一固定水平集上导数几乎处处为零：除去导数不存在的零测集，在水平集的非孤立点可取同值点趋近，用差商得零；孤立点至多可数。于是分段线性截断在拐点处的导数选择不影响几乎处处公式。逐坐标切片得到所写等式。各函数的绝对值不超过 \(|u|\)，导数长度不超过 \(|\mathrm Du|\)，所以具有所需可积性。\(p<\infty\) 时对函数差和导数差应用控制收敛，即得最后的强收敛。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:weak-kato}
+	设 \(E\to(M,g)\) 为光滑有限秩度量丛，联络 \(\nabla\) 与纤维度量相容，\(1\le p\le\infty\)，\(s\in W^{1,p}(M;E)\)。则 \(|s|\in W^{1,p}(M)\)，且
+	\[
+		|\mathrm d|s||_g\le|\nabla s|\quad\text{几乎处处}.
+	\]
+\end{proposition}
+\begin{proof}
+	在局部正交标架中，考察 \(f_\delta=(|s|^2+\delta^2)^{1/2}-\delta\)。分量链式法则与度量相容性给出
+	\[
+		\mathrm df_\delta=\frac{\operatorname{Re}\langle\nabla s,s\rangle}{\sqrt{|s|^2+\delta^2}},\qquad
+		|\mathrm df_\delta|\le|\nabla s|.
+	\]
+	此处复丛取配对的实部。\(s=0\) 的集合上，各实分量的弱导数由上一证明的水平集论证为零，故 \(\nabla s=0\) 几乎处处。在 \(s\ne0\) 处可逐点取极限，得到导数候选 \(\operatorname{Re}\langle\nabla s,s\rangle/|s|\)，在零集上取零。\(0\le f_\delta\le|s|\)，且导数由 \(|\nabla s|\) 控制，所以在每个紧集的 \(L^1\) 中可取极限，验证该候选正是 \(|s|\) 的弱导数。全局范数界随之成立。
+\end{proof}
+
+这条估计把许多标量一阶不等式转给丛值截面。高阶情形中 \(|s|\) 在零点可能失去二阶正则性，因此高阶丛值估计将逐分量处理。
 
 \subsection{弱拓扑、反射性和弱紧性}
 \label{g3:subsec:1102:04}
-待撰写
+范数收敛要求函数和导数的误差都趋零；变分问题中的有界序列通常只能先得到较弱的收敛。设 \(X\) 为赋范空间，\(X^*\) 表示其有界线性泛函空间。若对每个 \(\ell\in X^*\) 有 \(\ell(x_j)\to\ell(x)\)，就称 \(x_j\) \term[ruo shoulian]{弱收敛}[weak convergence]于 \(x\)，记 \(x_j\rightharpoonup x\)。使全部 \(\ell\) 连续的最弱拓扑称为弱拓扑。下列延拓工具说明，有足够多的泛函能够检测范数和闭子空间。
+
+\begin{lemma}[Hahn--Banach 延拓]\label{g3:lem:bounded-functional-extension}
+	设 \(Y\) 是实或复赋范空间 \(X\) 的线性子空间。任意 \(f\in Y^*\) 都可延拓为 \(\widetilde f\in X^*\)，且 \(\|\widetilde f\|=\|f\|\)。特别地，\(\|x\|=\sup_{\|\ell\|\le1}|\ell(x)|\)，而闭线性子空间在弱拓扑下仍闭。
+\end{lemma}
+\begin{proof}
+	先处理实数域，令 \(C=\|f\|\)。对 \(x_0\notin Y\)，希望定义 \(\widetilde f(y+tx_0)=f(y)+ta\)。范数界等价于
+	\[
+		\sup_{y\in Y}\{f(y)-C\|y-x_0\|\}\le a
+		\le\inf_{z\in Y}\{C\|z+x_0\|-f(z)\}.
+	\]
+	任意左端候选不超过任意右端候选，因为
+	\(f(y)+f(z)\le C\|y+z\|\le C(\|y-x_0\|+\|z+x_0\|)\)。故可选 \(a\)，将泛函延拓一维。对保持同一范数界的延拓按包含排序，链的并仍是延拓；极大延拓若未定义在整个 \(X\)，便还能增加一维，矛盾。
+
+	复数域先延拓 \(\operatorname{Re}f\) 为实线性泛函 \(g\)，再令 \(\widetilde f(x)=g(x)-\mathrm i g(\mathrm ix)\)。这是复线性的；选择使 \(\widetilde f(e^{\mathrm i\theta}x)\) 为非负实数的相位，得 \(|\widetilde f(x)|=g(e^{\mathrm i\theta}x)\le C\|x\|\)。范数恢复公式由 \(\operatorname{span}\{x\}\) 上取值 \(f(x)=\|x\|\) 的泛函延拓得到。
+
+	最后，若 \(Y\) 闭且 \(x\notin Y\)，则 \(d=\operatorname{dist}(x,Y)>0\)。在 \(Y+\operatorname{span}\{x\}\) 上令 \(f(y+tx)=t\)，有 \(|t|\le\|y+tx\|/d\)，故可延拓。它在 \(Y\) 上为零而在 \(x\) 上为一，给出排除 \(x\) 的弱开邻域。因此 \(Y\) 弱闭。
+\end{proof}
+
+Hans Hahn\footnote{Hans Hahn（1879--1934），奥地利数学家，研究实分析、泛函分析与变分法。}与 Banach 的这一延拓结论在这里承担两个具体任务：把子空间上的弱测试延拓到环境空间，以及从所有标量配对恢复范数界。
+
+\begin{lemma}\label{g3:lem:lp-duality-reflexivity}
+	设 \((M,g)\) 为光滑黎曼流形，\(E\to M\) 为有限秩度量丛，\(1<p<\infty\)、\(p'=p/(p-1)\)。则积分配对给出等距同构
+	\[
+		L^{p'}(M;E^*)\simeq L^p(M;E)^*.
+	\]
+	这些 \(L^p\) 空间可分且反射，即自然映射 \(J:X\to X^{**}\)、\(J(x)(\ell)=\ell(x)\) 为满射。
+\end{lemma}
+\begin{proof}
+	先作标量实值情形。积分配对有界来自 Hölder 不等式；用 \(\operatorname{sgn}(v)|v|^{p'-1}\) 的归一化版本作测试，得到范数恰为 \(\|v\|_{p'}\)。为证明每个 \(\ell\in(L^p)^*\) 都有这种形式，先在有限测度集 \(A\) 上令 \(\nu(B)=\ell(\mathbf1_B)\)，\(B\subset A\)。示性函数的可数可加性在 \(L^p\) 中成立，所以 \(\nu\) 是有符号测度。对任意有限分割 \(\{B_i\}\)，选择各项的符号可得
+	\(\sum_i|\nu(B_i)|\le\|\ell\|\mu_g(A)^{1/p}\)，故总变差有限；\(\mu_g(B)=0\) 时 \(\nu(B)=0\)。
+
+	此处使用实分析中的绝对连续测度表示：有限有符号测度若对有限正测度绝对连续，就唯一写成 \(v\mu_g\)，其中 \(v\) 可积。于是 \(\ell(f)=\int vf\) 先对简单函数、再对有界函数成立。取
+	\(f=\operatorname{sgn}(v)|v|^{p'-1}\mathbf1_{\{|v|\le N\}}\)，得
+	\[
+		\left(\int_{A\cap\{|v|\le N\}}|v|^{p'}\,\mu_g\right)^{1/p'}\le\|\ell\|.
+	\]
+	令 \(N\to\infty\)，得到 \(v\in L^{p'}(A)\)。对递增的有限测度穷尽取此表示，唯一性使密度在重叠处一致；同一估计给出全局 \(L^{p'}\) 界，再由简单函数稠密性将配对延拓到全部 \(L^p\)。复值情形分别处理实部和虚部，再由复线性确定配对；丛值情形在可数互不相交的可测坐标分块上选正交标架，对有限个分量作同一构造，范数等式仍由点态对偶向量的归一化测试得到。
+
+	再次交换 \(p,p'\) 使用积分表示，\((L^p)^{**}\simeq L^p\)，且这个识别就是自然映射 \(J\)，所以反射。可分性可在可数坐标分块上用有理立方体的简单函数及有理分量逼近得到；平滑的正密度在相对紧坐标片上与普通体积等价，先截去尾部即可回到这些有限模型。
+\end{proof}
+
+积分对偶结论与另一种以反射性为起点的证明可对照 Brezis\cite[第4.3节，定理4.11]{Brezis2011}。
+
+\begin{theorem}\label{g3:thm:sobolev-weak-compactness}
+	设 \((M,g)\) 为光滑黎曼流形，\(E\to M\) 为有限秩光滑度量丛，\(\nabla\) 光滑，\(k\ge0\)、\(1<p<\infty\)。则 \(W^{k,p}(M;E)\) 及 \(W^{k,p}_0(M;E)\) 可分、反射，每个有界序列都有弱收敛子列。若 \(s_j\rightharpoonup s\)，则
+	\[
+		\|s\|_{W^{k,p}}\le\liminf_j\|s_j\|_{W^{k,p}}.
+	\]
+	有界闭球在弱拓扑下紧。
+\end{theorem}
+\begin{proof}
+	映射 \(s\mapsto(s,\nabla s,\ldots,\nabla^ks)\) 将 \(W^{k,p}\) 等距嵌入有限个丛值 \(L^p\) 空间的乘积 \(Z\)。完备性证明表明像是闭线性子空间 \(Y\)。\(Z\) 反射且可分；有限乘积的反射性由逐分量对偶直接得到。
+
+	说明反射性传给闭子空间。给定 \(\Phi\in Y^{**}\)，将 \(\ell\in Z^*\) 映到 \(\Phi(\ell|_Y)\)，得到 \(Z^{**}\) 中的元素，所以由某个 \(z\in Z\) 表示。它对所有在 \(Y\) 上消失的泛函均为零；上一延拓引理的分离结论使 \(z\in Y\)。任意 \(Y^*\) 泛函都可延拓到 \(Z^*\)，故 \(z\) 表示原来的 \(\Phi\)。于是 \(Y\) 反射。可分度量空间的子空间仍可分：从环境的可数小球基中，在每个与子空间相交的球内选一点即可。
+
+	现在实际选取弱子列。\(Z^*\) 是有限个 \(L^{p'}\) 空间的乘积，故可分；它到 \(Y^*\) 的限制是满射，因为有同范数延拓，因而 \(Y^*\) 也可分。取 \(Y^*\) 单位球中的可数稠密集 \(\{\ell_m\}\)。对有界序列 \(y_j\in Y\)，逐个令标量 \(\ell_m(y_j)\) 收敛，并取对角子列。统一范数界使收敛延伸到每个 \(\ell\in Y^*\)，极限定义 \(\Phi\in Y^{**}\)；反射性将它表示为 \(y\in Y\)。这就是 \(y_j\rightharpoonup y\)。\(W^{k,p}_0\) 作为闭线性子空间也适用同一证明。
+
+	由范数的对偶表示，对每个 \(\|\ell\|\le1\) 有 \(|\ell(y)|=\lim_j|\ell(y_j)|\le\liminf_j\|y_j\|\)，再取上确界即得下半连续性。在任意固定有界闭球上，
+	\[
+		d_w(x,y)=\sum_{m=1}^\infty2^{-m}\frac{|\ell_m(x-y)|}{1+|\ell_m(x-y)|}
+	\]
+	给出其弱拓扑：一方面每个有限部分弱连续，尾和统一小；另一方面用稠密性及球的统一范数界逼近任意泛函。上述子列论证及下半连续性说明该球在 \(d_w\) 下序列紧，度量空间的序列紧性即紧性，故也是弱紧的。
+\end{proof}
+
+\(p=1\) 的端点不能沿用这一步。例如 \(f_j=j\mathbf1_{(0,1/j)}\) 的 \(L^1(0,1)\) 范数恒为一。若有弱 \(L^1\) 极限 \(f\)，对每个 \(\varepsilon>0\) 测试 \((\varepsilon,1)\) 中任意有界函数，便得 \(f=0\) 在该区间几乎处处，故 \(f=0\)；但测试常数一又要求 \(\int f=1\)，矛盾。反射性所给的弱紧性与下一节以后将证明的强紧性，也有不同的指数与几何条件。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

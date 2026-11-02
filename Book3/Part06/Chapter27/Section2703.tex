@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 27.3 曲率演化和保持性质
 % 纲要位置：几何学计划纲要.md，第 3258 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,356 @@
 \section{曲率演化和保持性质}
 \label{g3:sec:2703}
 
-待撰写
+Ricci 流首先改变度量，而曲率是度量的二阶量。把曲率自身的演化写出来，可以直接观察扩散与二次反应的竞争，并检验一个曲率条件是否随时间保持。标量曲率只记录曲率张量的一个收缩；讨论所有二维方向的曲率，还须保留完整的四阶张量。本节先计算这些量，再用标量最大值估计曲率导数，最后对曲率算子的非负锥证明一个真正的张量保持结论。
 
 \subsection{体积、标量及 Ricci 演化}
 \label{g3:subsec:2703:01}
-待撰写
+本节令 \(g(t)\) 为光滑 Ricci 流，\(\partial_tg=-2\operatorname{Ric}\)，并写 \(s=\operatorname{Scal}_{g(t)}\)。所有协变导数、内积和收缩都采用当前度量。曲率槽位沿用\cref{g3:def:curvature-four-tensor}：
+\[
+	R_{ijkl}=g(R(e_i,e_j)e_l,e_k),
+	\qquad \operatorname{Ric}_{jl}=g^{ik}R_{ijkl}.
+\]
+所以球面的 \(R_{1212}\) 为正。对任意张量，\(\Delta=\nabla^*\nabla=-\operatorname{tr}_g\nabla^2\) 为非负粗 Laplace 算子；对函数它就是此前的非负 Laplace 算子。
+
+\begin{proposition}\label{g3:prop:ricci-flow-basic-evolution}
+	设 \(g(t)\) 是 \(n\) 维光滑流形上的光滑 Ricci 流，\(n\ge2\)。则
+	\begin{align}
+		\partial_t\mu_g&=-s\mu_g,\label{g3:eq:ricci-flow-volume-evolution}\\
+		(\partial_t+\Delta)\operatorname{Ric}_{ij}
+		&=2\mathring R(\operatorname{Ric})_{ij}
+		-2\operatorname{Ric}_i{}^a\operatorname{Ric}_{aj},\label{g3:eq:ricci-flow-ricci-evolution}\\
+		(\partial_t+\Delta)s&=2|\operatorname{Ric}|^2.\label{g3:eq:ricci-flow-scalar-evolution}
+	\end{align}
+	其中曲率作用采用式\eqref{g3:eq:curvature-action-symmetric-tensors}，在正交标架中为
+	\[
+		\mathring R(\operatorname{Ric})_{ij}
+		=\sum_{a,b}R_{a i b j}\operatorname{Ric}_{ab}.
+	\]
+	若流形闭，则
+	\[
+		\frac{\mathrm d}{\mathrm dt}\operatorname{Vol}_{g(t)}M
+		=-\int_M s\,\mu_g.
+	\]
+\end{proposition}
+\begin{proof}
+	由式\eqref{g3:eq:inverse-volume-variation}，体积密度的导数是 \(\tfrac12\operatorname{tr}_g(\partial_tg)\mu_g\)，即第一式。收缩 Bianchi 恒等式给出 \(\delta\operatorname{Ric}+\tfrac12\mathrm ds=0\)，所以 \(\beta_g\operatorname{Ric}=0\)。在\cref{g3:thm:ricci-scalar-linearization}中令 \(h=-2\operatorname{Ric}\)，便有
+	\[
+		\partial_t\operatorname{Ric}
+		=-\Delta_L\operatorname{Ric}
+		=-\Delta\operatorname{Ric}
+		-2\operatorname{Ric}\circ\operatorname{Ric}
+		+2\mathring R(\operatorname{Ric}).
+	\]
+	这证明第二式。求 \(s=g^{ij}\operatorname{Ric}_{ij}\) 的导数时，\(\partial_tg^{ij}=2\operatorname{Ric}^{ij}\) 额外贡献 \(2|\operatorname{Ric}|^2\)。另一方面，\(\operatorname{tr}\mathring R(\operatorname{Ric})=|\operatorname{Ric}|^2\)，故第二式右端取迹为零。因此得到第三式。闭性允许在体积积分中交换求导与积分，给出末项。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:ricci-flow-scalar-lower-bound}
+	设 \(M^n\) 闭，\(n\ge2\)，\(g(t)\)、\(0\le t<T\)，为光滑 Ricci 流。若 \(s(0)\ge a\)，则在分母为正的共同时间内
+	\begin{equation}\label{g3:eq:ricci-flow-scalar-lower-bound}
+		s(t)\ge\frac{a}{1-2at/n}.
+	\end{equation}
+	特别地，非负标量曲率保持；若 \(a>0\)，光滑存在时间满足 \(T\le n/(2a)\)。
+\end{proposition}
+\begin{proof}
+	Cauchy 不等式给 \(|\operatorname{Ric}|^2\ge s^2/n\)。令 \(b(t)=a/(1-2at/n)\)，则 \(b'=2b^2/n\)。对 \(w=b-s\)，式\eqref{g3:eq:ricci-flow-scalar-evolution}给出
+	\[
+		(\partial_t+\Delta)w
+		\le\frac2n(b^2-s^2)=\frac2n(b+s)w,
+		\qquad w(0)\le0.
+	\]
+	在任意所述范围内的紧时间区间上，系数有界，\(g(t)\) 一致正定。将其 Laplace 算子用一个固定背景联络表达，便符合\cref{g3:thm:parabolic-maximum}的时间依赖系数条件，因此 \(w\le0\)。若 \(a>0\) 且流光滑存在超过 \(n/(2a)\)，右端在一个内时刻前发散，与光滑曲率有界矛盾。
+\end{proof}
+
+标量曲率非负时，总体积非增；若标量曲率有负区域，体积的变化取决于它的积分。即使 \(s\) 已经有下界，曲率在不同方向间的抵消仍可能使完整张量很大，因而延拓时需要进一步控制 \(\mathrm{Rm}\)。
 
 \subsection{完整曲率张量的反应项}
 \label{g3:subsec:2703:02}
-待撰写
+四阶张量的演化包含两类二次项。一类来自交换协变导数，另一类来自度量和指标长度的变化。先在固定坐标中写出全部项，再使用随时间保持正交的标架消去后一类项。
+
+\begin{proposition}\label{g3:prop:ricci-flow-full-curvature}
+	设 \(g(t)\) 是 \(n\) 维光滑 Ricci 流，\(n\ge2\)。定义二次曲率张量
+	\begin{equation}\label{g3:eq:ricci-flow-quadratic-curvature}
+		Q_{ijkl}
+		=\sum_{p,q}R_{ijpq}R_{klpq}
+		+2\sum_{p,q}\bigl(R_{ipkq}R_{jplq}-R_{iplq}R_{jpkq}\bigr),
+	\end{equation}
+	其中在当前正交标架中求和；一般坐标下在每对求和指标间插入逆度量。固定源坐标中的协变四阶张量满足
+	\begin{equation}\label{g3:eq:ricci-flow-curvature-coordinate-evolution}
+		\begin{split}
+		(\partial_t+\Delta)R_{ijkl}={}&Q_{ijkl}
+		-\operatorname{Ric}_i{}^pR_{pjkl}
+		-\operatorname{Ric}_j{}^pR_{ipkl}\\
+		&-\operatorname{Ric}_k{}^pR_{ijpl}
+		-\operatorname{Ric}_l{}^pR_{ijkp}.
+		\end{split}
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	记 \(r_{ij}=\operatorname{Ric}_{ij}\)。联络变分公式\eqref{g3:eq:connection-variation}给
+	\[
+		C^a_{ij}=\partial_t\Gamma^a_{ij}
+		=-g^{ab}(\nabla_i r_{jb}+\nabla_j r_{ib}-\nabla_b r_{ij}).
+	\]
+	在曲率坐标式中微分，得到
+	\(\partial_tR^a{}_{l i j}=\nabla_i C^a_{jl}-\nabla_j C^a_{il}\)。再微分降指标所用的 \(g_{ka}\)，并交换作用于 \(r_{kl}\) 的两次导数，可得
+	\begin{equation}\label{g3:eq:ricci-flow-curvature-uncommuted}
+		\partial_tR_{ijkl}
+		=D_{ijkl}-r_k{}^pR_{ijpl}-r_l{}^pR_{ijkp},
+	\end{equation}
+	其中
+	\[
+		D_{ijkl}=\nabla_i\nabla_k r_{jl}-\nabla_i\nabla_l r_{jk}
+		-\nabla_j\nabla_k r_{il}+\nabla_j\nabla_l r_{ik}.
+	\]
+	为核对这次交换，尚未交换时另有
+	\((\nabla_j\nabla_i-\nabla_i\nabla_j)r_{lk}-2r_k{}^pR_{ijpl}\)。前一项等于 \(r_k{}^pR_{ijpl}-r_l{}^pR_{ijkp}\)，故其和恰为式\eqref{g3:eq:ricci-flow-curvature-uncommuted}中的两项。
+
+	下面把 \(D\) 改写成 Laplace 项。第二 Bianchi 恒等式及其收缩给出
+	\[
+		\nabla_pR_{ijkl}=\nabla_iR_{pjkl}-\nabla_jR_{pikl},
+		\qquad \nabla^pR_{pjkl}=\nabla_k r_{jl}-\nabla_l r_{jk}.
+	\]
+	在所算点取正交法标架，再求一次导数，便有
+	\begin{equation}\label{g3:eq:ricci-flow-curvature-laplace-commutator}
+		-\Delta R_{ijkl}=D_{ijkl}
+		+\sum_p\bigl([\nabla_p,\nabla_i]R\bigr)_{pjkl}
+		-\sum_p\bigl([\nabla_p,\nabla_j]R\bigr)_{pikl}.
+	\end{equation}
+	四个协变槽位的交换公式是
+	\[
+		([\nabla_p,\nabla_i]R)_{abcd}
+		=-R_{piua}R_{ubcd}-R_{piub}R_{aucd}
+		-R_{piuc}R_{abud}-R_{piud}R_{abcu}.
+	\]
+	在式\eqref{g3:eq:ricci-flow-curvature-laplace-commutator}中，作用于第一个槽位的两项收缩为
+	\(r_i{}^pR_{pjkl}+r_j{}^pR_{ipkl}\)。作用于第二个槽位的两项，由第一 Bianchi 恒等式
+	\(R_{pjui}-R_{piuj}=-R_{ijpu}\)，合为
+	\(-\sum_{p,u}R_{ijpu}R_{klpu}\)。余下两个槽位的四项，利用成对反对称性合为
+	\[
+		-2\sum_{p,u}R_{ipku}R_{jplu}
+		+2\sum_{p,u}R_{iplu}R_{jpku}.
+	\]
+	因此全部交换项为 \(r_i{}^pR_{pjkl}+r_j{}^pR_{ipkl}-Q_{ijkl}\)。解出 \(D\) 并代回式\eqref{g3:eq:ricci-flow-curvature-uncommuted}，即得所求完整演化。
+\end{proof}
+
+为了比较特征值，把变化的内积搬到一个固定的欧氏向量丛上。令 \(E=\mathrm TM\)，但固定其内积为 \(h=g(0)\)。逐点解线性常微分方程
+\begin{equation}\label{g3:eq:ricci-flow-orthonormal-bundle-ode}
+	\partial_tP_t=\operatorname{Ric}_{g(t)}^\sharp\circ P_t,
+	\qquad P_0=\operatorname{Id},
+\end{equation}
+得到丛同构 \(P_t:E\to\mathrm TM\)。对固定截面 \(v,w\)，直接求导得
+\[
+	\partial_t\bigl(g(t)(P_tv,P_tw)\bigr)
+	=-2\operatorname{Ric}(P_tv,P_tw)
+	+2\operatorname{Ric}(P_tv,P_tw)=0.
+\]
+所以 \(P_t\) 是从 \((E,h)\) 到 \((\mathrm TM,g(t))\) 的等距同构。定义拉回联络
+\(D^t_Xv=P_t^{-1}\nabla^{g(t)}_X(P_tv)\)，它保持固定内积 \(h\)。以下 \(\widehat\Delta\) 是此联络与基底度量 \(g(t)\) 所定义的非负粗 Laplace 算子。
+
+\ProseParagraphBreak
+将四阶曲率沿四个输入都用 \(P_t\) 拉回，得到 \(\widehat R\)，并以固定 \(h\) 把它看成 \(\Lambda^2E\) 上的自伴算子 \(\widehat{\mathcal R}\)。对 \(\widehat R\) 求时间导数时，四个输入的导数恰抵消式\eqref{g3:eq:ricci-flow-curvature-coordinate-evolution}中的四个 Ricci 项。因此
+\[
+	(\partial_t+\widehat\Delta)\widehat R=Q(\widehat R).
+\]
+这个等式的二次项还可用二向量的代数表示，非负性由此变得可见。
+
+\begin{definition}\label{g3:def:ricci-flow-lie-square}
+	设 \((V,h)\) 为有限维欧氏空间。通过
+	\[
+		\iota(u\wedge v)z=h(v,z)u-h(u,z)v
+	\]
+	把 \(\Lambda^2V\) 与反对称自同态空间 \(\mathfrak{so}(V)\) 等距识别，后者内积为 \(-\tfrac12\operatorname{tr}(AB)\)。在 \(\Lambda^2V\) 上用矩阵交换子定义括号。取任意正交单位基 \((E_\alpha)\)，记
+	\(c_{\alpha\beta\gamma}=\langle[E_\alpha,E_\beta],E_\gamma\rangle\)。对自伴算子 \(\mathcal R\)，定义自伴算子 \(\mathcal R^\#\) 的分量为
+	\begin{equation}\label{g3:eq:ricci-flow-lie-square}
+		(\mathcal R^\#)_{\alpha\beta}
+		=\frac12\sum_{\gamma,\delta,\eta,\theta}
+		c_{\alpha\gamma\delta}c_{\beta\eta\theta}
+		\mathcal R_{\gamma\eta}\mathcal R_{\delta\theta}.
+	\end{equation}
+	所有指标都是同一欧氏空间上的完全收缩，故此定义与正交基的选择无关。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:ricci-flow-operator-evolution}
+	上述固定欧氏丛上的曲率算子满足
+	\begin{equation}\label{g3:eq:ricci-flow-operator-evolution}
+		(\partial_t+\widehat\Delta)\widehat{\mathcal R}
+		=2\bigl(\widehat{\mathcal R}^{2}
+		+\widehat{\mathcal R}^{\#}\bigr).
+	\end{equation}
+	归一化采用 \(e_i\wedge e_j\)、\(i<j\)，为正交单位基；在这一约定下常截面曲率 \(\kappa\) 对应 \(\mathcal R=\kappa\operatorname{Id}\)。
+\end{proposition}
+\begin{proof}
+	暂略去帽号。在 \(E_{ij}=e_i\wedge e_j\) 中允许任意指标顺序，并规定 \(E_{ji}=-E_{ij}\)、\(E_{ii}=0\)。矩阵乘法直接给出
+	\[
+		[E_{ij},E_{kl}]
+		=\delta_{jk}E_{il}-\delta_{ik}E_{jl}
+		-\delta_{jl}E_{ik}+\delta_{il}E_{jk}.
+	\]
+	将这个括号代入式\eqref{g3:eq:ricci-flow-lie-square}，并把有序二指标求和改成对全部指标求和，得到
+	\[
+		\langle\mathcal R^\# E_{ij},E_{kl}\rangle
+		=\sum_{p,q}\bigl(R_{ipkq}R_{jplq}-R_{iplq}R_{jpkq}\bigr).
+	\]
+	这里括号中的四个 Kronecker 项依次收缩公共指标；同一反对称二向量的两个次序给出相同乘积，正由定义中的 \(1/2\) 消去重复。另一方面，算子平方为
+	\[
+		\langle\mathcal R^2 E_{ij},E_{kl}\rangle
+		=\sum_{p<q}R_{ijpq}R_{klpq}
+		=\frac12\sum_{p,q}R_{ijpq}R_{klpq}.
+	\]
+	比较式\eqref{g3:eq:ricci-flow-quadratic-curvature}，可见 \(Q=2(\mathcal R^2+\mathcal R^\#)\)。结合拉回张量的演化即得结论。
+\end{proof}
+
+\begin{example}\label{g3:exm:ricci-flow-curvature-factor-check}
+	若初始度量的常截面曲率为 \(\kappa_0\)，则 \(g(t)=(1-2(n-1)\kappa_0t)g(0)\)，而
+	\(\kappa(t)=\kappa_0/(1-2(n-1)\kappa_0t)\)。对 \(\mathcal R=\kappa\operatorname{Id}\)，前述括号公式给
+	\[
+		\mathcal R^2=\kappa^2\operatorname{Id},\qquad
+		\mathcal R^\#=(n-2)\kappa^2\operatorname{Id}.
+	\]
+	例如 \(E_{12}\) 可由每个 \(p\ne1,2\) 对应的一对 \(E_{1p},E_{p2}\) 的括号得到；交换这两个输入再给一次相同的平方，\(1/2\) 留下 \(n-2\) 个贡献。因此式\eqref{g3:eq:ricci-flow-operator-evolution}给出 \(\kappa'=2(n-1)\kappa^2\)，与显式度量完全一致。在二维 \(\mathfrak{so}(2)\) 的括号为零，\(\mathcal R^\#=0\)，但三维及以上通常必须保留这一项。
+\end{example}
 
 \subsection{标量最大值与张量最大值的区别}
 \label{g3:subsec:2703:03}
-待撰写
+标量函数在极小点具有非负 Hessian，因而有\cref{g3:thm:parabolic-maximum}的比较原理。张量的某个坐标分量为负却没有坐标不变的含义；曲率算子非负，要求它对每个二向量的二次型都非负。证明这种保持性，必须检验二次反应项在锥的边界朝哪个方向。此前可先把张量转为长度平方，用标量比较得到延拓需要的导数界。
+
+\ProseParagraphBreak
+以下用 \(U*V\) 表示由 \(g\)、\(g^{-1}\) 对 \(U\otimes V\) 作有限次缩并并线性组合。星号不指定符号，但每一项的范数有 \(|U*V|\le C|U||V|\)，常数只依赖维数、张量阶数和所列组合。涉及保持性的精确反应项仍使用式\eqref{g3:eq:ricci-flow-quadratic-curvature}；下面的星号只用于导数的长度估计。
+
+\begin{lemma}\label{g3:lem:ricci-flow-derivative-evolution}
+	设 \(g(t)\) 是光滑 \(n\) 维 Ricci 流，\(n\ge2\)。对整数 \(k\ge0\)，记
+	\(F_k=|\nabla^k\mathrm{Rm}|^2\)、\(P=\partial_t+\Delta\)。则张量方程中的反应项具有形式
+	\begin{equation}\label{g3:eq:ricci-flow-derivative-types}
+		(\partial_t+\Delta)\nabla^k\mathrm{Rm}
+		=\sum_{a+b=k}\nabla^a\mathrm{Rm}*\nabla^b\mathrm{Rm},
+	\end{equation}
+	其中每个星号为一个确定的有限线性组合。因而
+	\begin{equation}\label{g3:eq:ricci-flow-derivative-norm}
+		PF_k\le-2F_{k+1}
+		+C_{n,k}\sum_{a=0}^k
+		|\nabla^a\mathrm{Rm}|\,
+		|\nabla^{k-a}\mathrm{Rm}|\,|\nabla^k\mathrm{Rm}|.
+	\end{equation}
+	特别地，\(PF_0\le-2F_1+C_n|\mathrm{Rm}|^3\)。若 \(|\mathrm{Rm}|\) 及所有低于 \(k\) 阶的曲率导数有给定上界，则
+	\begin{equation}\label{g3:eq:ricci-flow-derivative-inductive-bound}
+		PF_k\le-2F_{k+1}+C_k(1+F_k),
+	\end{equation}
+	其中 \(C_k\) 只依赖维数、阶数及这些低阶界。
+\end{lemma}
+\begin{proof}
+	\(k=0\) 的张量等式是\cref{g3:prop:ricci-flow-full-curvature}；其所有零阶项都为 \(\mathrm{Rm}*\mathrm{Rm}\)。说明求导时没有遗漏更高阶项：对任意协变张量 \(A\)，联络变分给出
+	\[
+		[\partial_t,\nabla]A=\nabla\operatorname{Ric}*A,
+	\]
+	因为每个协变槽位只产生一个 \(\partial_t\Gamma\) 项，而 \(\partial_t\Gamma=g^{-1}*\nabla\operatorname{Ric}\)。将两次空间导数交换再求一次导数，得到
+	\[
+		[\Delta,\nabla]A
+		=\mathrm{Rm}*\nabla A+\nabla\mathrm{Rm}*A.
+	\]
+	这来自每个槽位的曲率作用及其一次协变导数；\(\nabla g=0\) 保证迹的系数不另生空间导数。假定式\eqref{g3:eq:ricci-flow-derivative-types}在 \(k-1\) 阶成立，对它求一次协变导数，乘积中的总导数阶增加一。新增交换项为
+	\(\mathrm{Rm}*\nabla^k\mathrm{Rm}\) 或
+	\(\nabla\mathrm{Rm}*\nabla^{k-1}\mathrm{Rm}\)，总阶同样为 \(k\)。这证明归纳公式。
+
+	对 \(A=\nabla^k\mathrm{Rm}\) 求范数平方的时间导数。范数中的每个逆度量都贡献一个 \(\operatorname{Ric}*A*A\) 项，故其总绝对值至多为 \(C_{n,k}|\mathrm{Rm}||A|^2\)。空间乘积法则则给
+	\[
+		\Delta|A|^2=2\langle\Delta A,A\rangle-2|\nabla A|^2.
+	\]
+	结合张量方程，便得式\eqref{g3:eq:ricci-flow-derivative-norm}，度量变化项可并入 \(a=0\) 或 \(a=k\) 的项。对中间的 \(1\le a\le k-1\)，两个曲率因子都由低阶界控制；乘以 \(|A|\) 后用 \(|A|\le(1+|A|^2)/2\)。两端项直接为有界常数乘 \(|A|^2\)。这就得到最后的不等式。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:ricci-flow-curvature-derivatives}
+	设 \(M^n\) 闭，\(n\ge2\)，\(g(t)\)、\(0\le t<T\)，为光滑 Ricci 流，\(T\le\infty\)，并满足
+	\[
+		\sup_{M\times[0,T)}|\mathrm{Rm}|\le K<\infty.
+	\]
+	对每个整数 \(k\ge1\) 及 \(0<\varepsilon<T\)，存在只依赖 \(n,k,K,\varepsilon\) 的常数，使
+	\begin{equation}\label{g3:eq:ricci-flow-positive-time-derivative-bound}
+		\sup_{\varepsilon\le t<T}|\nabla^k\mathrm{Rm}|\le C(n,k,K,\varepsilon).
+	\end{equation}
+	常数不依赖初始曲率的高阶导数或终止时间 \(T\)。
+\end{theorem}
+\begin{proof}
+	固定 \(k,\varepsilon\)，令 \(\delta=\varepsilon/k\)。逐阶证明 \(F_j\) 在 \(t\ge j\delta\) 上有统一界，\(0\le j\le k\)。\(j=0\) 是假设。设 \(F_0,\ldots,F_{j-1}\) 已在 \(t\ge(j-1)\delta\) 上有界，记其中 \(F_{j-1}\le B\)。任取 \(t\ge j\delta\)，令 \(a=t-\delta\)，在时间窗 \([a,t]\) 上考虑
+	\[
+		Z(x,\sigma)=(\sigma-a)F_j(x,\sigma)+A F_{j-1}(x,\sigma),
+		\qquad a\le\sigma\le t.
+	\]
+	上一引理给出与窗口位置无关的常数 \(C,C'\)，使
+	\[
+		PF_j\le-2F_{j+1}+C(1+F_j),\qquad
+		PF_{j-1}\le-2F_j+C'.
+	\]
+	后一式在 \(j=1\) 时用 \(PF_0\le-2F_1+C_nK^3\)；在 \(j>1\) 时使用已知的低阶界。因此
+	\[
+		PZ\le(1+\delta C-2A)F_j+\delta C+AC'.
+	\]
+	取 \(2A\ge2+\delta C\)，便有 \(PZ\le C''\)，其中常数依赖已列数据而与 \(a\) 无关。初值 \(Z(\cdot,a)=AF_{j-1}(\cdot,a)\le AB\) 不涉及 \(F_j(a)\)。标量最大值原理给出
+	\[
+		\delta F_j(x,t)\le Z(x,t)\le AB+C''\delta.
+	\]
+	因为 \(t\) 任意，这完成归纳。对 \(j=k\)，开始时间正是 \(\varepsilon\)。每个窗口上的度量虽在变化，但光滑正定性保证可用最大值原理；所得上界只使用右端和初值，并不引入随窗口位置变化的坐标椭圆常数。
+\end{proof}
+
+这个证明每次用低一阶量的负耗散项控制高一阶量。乘上窗口内的时间长度，使最高阶的初始值从 \(Z(a)\) 中消失；因此只要离初时刻一段正时间，就不需要初始高阶曲率界。\secref{g3:sec:2702}的有限时延拓正使用这一结论，把曲率控制提升为能够重新求解的光滑数据。
 
 \subsection{所选曲率锥的保持}
 \label{g3:subsec:2703:04}
-待撰写
+现在取一个在所有维数都明确的条件：曲率算子作为 \(\Lambda^2\mathrm TM\) 上的自伴算子非负。它比只在可分解二向量上测试的非负截面曲率更直接地适配式\eqref{g3:eq:ricci-flow-operator-evolution}。在固定欧氏丛上，这些非负算子组成闭凸锥。
+
+\begin{lemma}\label{g3:lem:ricci-flow-lie-square-positive}
+	设 \(V\) 为有限维欧氏空间，\(\mathcal S:\Lambda^2V\to\Lambda^2V\) 自伴且非负。则 \(\mathcal S^2\) 与 \(\mathcal S^\#\) 都非负。特别地，若 \(\mathcal S\xi=0\)，则
+	\[
+		\left\langle2(\mathcal S^2+\mathcal S^\#)\xi,\xi\right\rangle\ge0.
+	\]
+\end{lemma}
+\begin{proof}
+	取 \(\mathcal S\) 的正交特征基 \((E_\gamma)\)，特征值 \(\lambda_\gamma\ge0\)。对任意 \(\xi\)，式\eqref{g3:eq:ricci-flow-lie-square}成为
+	\[
+		\langle\mathcal S^\#\xi,\xi\rangle
+		=\frac12\sum_{\gamma,\delta}
+		\lambda_\gamma\lambda_\delta
+		\langle[\xi,E_\gamma],E_\delta\rangle^2\ge0.
+	\]
+	而 \(\langle\mathcal S^2\xi,\xi\rangle=|\mathcal S\xi|^2\ge0\)。这同时证明全部结论。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:ricci-flow-nonnegative-curvature-operator}
+	设 \(M^n\) 闭，\(n\ge2\)，\(g(t)\)、\(0\le t<T\)，为光滑 Ricci 流。若 \(g(0)\) 的曲率算子非负，则每个 \(g(t)\) 的曲率算子都非负。若初始曲率算子正定，则它在全部光滑存在时间内保持正定。
+\end{theorem}
+\begin{proof}
+	在式\eqref{g3:eq:ricci-flow-orthonormal-bundle-ode}给出的固定内积丛上工作，略去帽号，并写
+	\(\mathcal Q(\mathcal R)=2(\mathcal R^2+\mathcal R^\#)\)、\(L=-\widehat\Delta\)。固定 \(T_1<T\)，令 \(K_1=\sup_{M\times[0,T_1]}|\mathcal R|\)。由于 \(\mathcal Q\) 是有限维二次多项式，存在只依赖 \(n\) 的 \(C_n\)，使 \(0\le b\le1\) 时
+	\[
+		|\mathcal Q(\mathcal R+bI)-\mathcal Q(\mathcal R)|
+		\le C_n b(K_1+1).
+	\]
+	选 \(C>C_n(K_1+1)\)，再取足够小的 \(\eta>0\)，使 \(b(t)=\eta e^{Ct}\le1\) 于 \([0,T_1]\)。令 \(\mathcal S=\mathcal R+bI\)。初始 \(\mathcal S\) 正定。
+
+	若 \(\mathcal S\) 第一次在 \((x_*,t_*)\) 出现零特征值，取单位零向量 \(\xi\)。此时 \(\mathcal S\ge0\)，所以 \(\mathcal S\xi=0\)。在该点附近把 \(\xi\) 延拓成局部截面，使其一阶空间协变导数在所算点为零。标量 \(\langle\mathcal S\xi,\xi\rangle\) 此前为正、此时有零的空间最小值；其时间导数非正、\(L\) 非负。计算中的额外导数项含 \(D\xi\) 或 \(\mathcal S\xi\)，都在该点消失。故
+	\[
+		0\ge\langle(\partial_t-L)\mathcal S\xi,\xi\rangle
+		=\langle\mathcal Q(\mathcal R)\xi,\xi\rangle+Cb.
+	\]
+	另一方面，上一引理给 \(\langle\mathcal Q(\mathcal S)\xi,\xi\rangle\ge0\)，从而右端至少为
+	\(b\bigl(C-C_n(K_1+1)\bigr)>0\)，矛盾。因此 \(\mathcal R+\eta e^{Ct}I\) 始终正定；令 \(\eta\downarrow0\)，得到非负性。
+
+	若初值正定，紧性允许取 \(b_0>0\)，使 \(\mathcal R(0)>b_0I\)。这次令 \(b(t)=b_0e^{-t}\)、\(\mathcal S=\mathcal R-bI\)。在假设的第一个零方向上，\(\mathcal R\ge bI\ge0\)，所以 \(\langle\mathcal Q(\mathcal R)\xi,\xi\rangle\ge0\)。相同的最小值论证却给出
+	\[
+		0\ge\langle(\partial_t-L)\mathcal S\xi,\xi\rangle
+		=\langle\mathcal Q(\mathcal R)\xi,\xi\rangle-b'
+		\ge b>0.
+	\]
+	故 \(\mathcal R>b_0e^{-t}I\)，特别地始终正定。\(T_1<T\) 任意，证明完成。
+\end{proof}
+
+这里真正决定保持性的，是 \(\mathcal Q\) 在非负锥边界的方向以及连接保持纤维内积。证明没有把曲率分量逐个套入标量最大值原理。所得条件还立即蕴含非负截面曲率、非负 Ricci 曲率及非负标量曲率：依次在可分解单位二向量上取值，再沿正交方向求和即可。
+
+\begin{example}\label{g3:exm:ricci-flow-product-curvature-cone}
+	取 \(p\ge2\)、\(q\ge1\)，在 \(S^p\times\mathbb T^q\) 上使用单位圆球与平坦环面的乘积度量。乘积联络不混合两个因子，曲率算子在 \(\Lambda^2\mathrm TS^p\) 上为恒等算子，在混合二向量和 \(\Lambda^2\mathrm T\mathbb T^q\) 上为零。Ricci 流为
+	\[
+		g(t)=(1-2(p-1)t)g_{S^p}\oplus g_{\mathbb T^q},
+		\qquad 0\le t<\frac1{2(p-1)}.
+	\]
+	其正特征值为 \((1-2(p-1)t)^{-1}\)，其余特征值始终为零。因此非负锥保持，并不表示边界上的所有零特征值立即变为正值。这个例子也保留了高维混合方向，不能由标量曲率的一个方程单独描述。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

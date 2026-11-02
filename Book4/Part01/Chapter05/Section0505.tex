@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 5.5 极值长度和模量
 % 纲要位置：几何学计划纲要.md，第 3670 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,256 @@
 \section{极值长度和模量}
 \label{g4:sec:0505}
 
-待撰写
+同一共形类中的度量可以任意乘上正函数，单条曲线的长度因而不是共形不变量。不过，把一族曲线中最短的长度平方除以总面积，会消去常数缩放；再对全部共形密度取上确界，就得到只依赖复结构的量。环域上这个量可以完整计算，所得模量把“长而细的颈部”变成明确的数值条件。
 
 \subsection{曲线族的极值长度}
 \label{g4:subsec:0505:01}
-待撰写
+
+设 \(X\) 为黎曼曲面，先选一个辅助光滑共形度量 \(g_0\)。本节的曲线取局部可求长的连续参数曲线，允许开参数区间的端点趋于 \(X\) 的边界或端部。长度用各紧参数子区间上的线积分之上确界定义，因而也允许无穷长。重新单调参数化不改变积分。
+
+\begin{definition}
+	\label{g4:def:0505:extremal-length}
+	设 \(\Gamma\) 为黎曼曲面 \(X\) 上的一族上述曲线。对非负 Borel 函数 \(\rho\)，定义
+	\[
+		A_\rho=\int_X\rho^2\,\mathrm{d}A_0,
+		\qquad L_\rho(\Gamma)=\inf_{\gamma\in\Gamma}\int_\gamma\rho\,\mathrm{d}s_0.
+	\]
+	只取满足 \(0<A_\rho<\infty\) 的密度作为可容许密度。曲线族的\term[jizhichangdu]{极值长度}[extremal length]为
+	\begin{equation}
+		\label{g4:eq:0505:extremal-length}
+		\operatorname{EL}_X(\Gamma)
+		=\sup_{0<A_\rho<\infty}\frac{L_\rho(\Gamma)^2}{A_\rho}
+		\in[0,\infty].
+	\end{equation}
+	密度可在面积零集上取 \(+\infty\)；积分使用非负函数的通常约定。若 \(\Gamma=\varnothing\)，置 \(L_\rho(\Gamma)=+\infty\)，故极值长度为 \(+\infty\)。
+\end{definition}
+
+可容许密度总是存在。取相对紧穷竭 \(U_n\)，置 \(U_0=\varnothing\)，在各个互不相交的集合 \(U_n\setminus U_{n-1}\) 上取正常数 \(c_n\)，使 \(c_n^2\operatorname{Area}_{g_0}(U_n)\le2^{-n}\)，即可得到一个处处为正且平方可积的 Borel 密度。度量乘以常数 \(c^2\) 时，长度乘以 \(c\)、面积乘以 \(c^2\)，所以式\eqref{g4:eq:0505:extremal-length}的商不变。定义允许密度在部分区域为零，这使我们能够只给待考察的颈部赋予长度，而不把远处面积计入成本。
+
+\ProseParagraphBreak
+
+采用 Borel 密度还需留意面积与曲线积分的区别：在面积零集上改变密度，可能改变位于该集合内的某条曲线的长度。这里取点态密度及其线积分，不把密度仅视为 \(L^2\) 等价类。下面的 Fubini 与 Cauchy--Schwarz 估计只要求几乎处处的横截曲线满足积分界，恰好适用于这一范围。
+
+\begin{example}
+	\label{g4:exm:0505:rectangle}
+	在矩形 \(Q=(0,a)\times(0,b)\) 中，令 \(\Gamma\) 为连接两条竖边的曲线族。则
+	\[
+		\operatorname{EL}_Q(\Gamma)=\frac ab.
+	\]
+	确实，对任一可容许 Euclid 密度 \(\rho\)，水平线段均在该族中，因此对几乎处处的 \(y\)，
+	\[
+		L_\rho(\Gamma)^2\le
+		\left(\int_0^a\rho(x,y)\,\mathrm{d}x\right)^2
+		\le a\int_0^a\rho(x,y)^2\,\mathrm{d}x.
+	\]
+	对 \(y\) 积分，得到 \(bL_\rho(\Gamma)^2\le aA_\rho\)。取常密度 \(\rho=1\) 时，每条连接曲线的长度至少为横坐标总变化 \(a\)，水平线段达到下界，而面积为 \(ab\)。上下界相合。交换横竖方向，连接横边的曲线族极值长度为 \(b/a\)。
+\end{example}
+
+这个计算显示极值过程的两面：选一族明确的测试曲线，可以给任何密度一个上界；找到达到上界的密度，才完成极值长度的计算。
 
 \subsection{共形不变性与单调性}
 \label{g4:subsec:0505:02}
-待撰写
+
+\begin{proposition}
+	\label{g4:prop:0505:conformal-invariance}
+	极值长度不依赖辅助共形度量的选择。若 \(F:X\to Y\) 是黎曼曲面之间的双全纯映射，则
+	\[
+		\operatorname{EL}_Y(F\Gamma)=\operatorname{EL}_X(\Gamma).
+	\]
+\end{proposition}
+\begin{proof}
+	若换为 \(g_1=\sigma^2g_0\)、\(\sigma>0\) 光滑，则密度 \(\rho_1\) 对应旧度量下的 \(\rho_0=\sigma\rho_1\)。两者的曲线长度和面积分别相同，这个对应又是双射，所以极值相同。
+
+	对双全纯 \(F\)，在局部坐标中，将目标密度 \(\eta\) 拉回为 \(\rho(z)=\eta(F(z))|F'(z)|\)。曲线积分的换元给出长度相同；实 Jacobian 为 \(|F'|^2\)，面积换元给出 \(A_\rho=A_\eta\)。逆映射使可容许密度一一对应，故对相等的商取上确界得到结论。一般辅助度量由前半部分归到同样的局部计算。
+\end{proof}
+
+\begin{proposition}
+	\label{g4:prop:0505:monotonicity}
+	设 \(\Gamma_1,\Gamma_2\) 为同一黎曼曲面上的曲线族。
+	\begin{enumerate}
+		\item 若 \(\Gamma_1\subseteq\Gamma_2\)，则 \(\operatorname{EL}(\Gamma_1)\ge\operatorname{EL}(\Gamma_2)\)。
+		\item 若 \(\Gamma_1\) 中每条曲线都含有 \(\Gamma_2\) 中某条曲线作为子弧，则仍有 \(\operatorname{EL}(\Gamma_1)\ge\operatorname{EL}(\Gamma_2)\)。
+		\item 若族 \(\Gamma\) 的所有曲线都位于开子域 \(U\subseteq X\)，则 \(\operatorname{EL}_U(\Gamma)=\operatorname{EL}_X(\Gamma)\)。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	前两项都由对每个密度成立的 \(L_\rho(\Gamma_1)\ge L_\rho(\Gamma_2)\) 得到。第一项因下确界在较小集合上取值较大；第二项因非负长度在取子弧时不增加。
+
+	第三项中，把 \(U\) 上的密度在外部补零，长度和面积均不变，所以 \(\operatorname{EL}_X\ge\operatorname{EL}_U\)。反过来，将 \(X\) 上的密度限制到 \(U\)，曲线长度不变而面积不增加，故当限制面积为正时，相应商不减。若限制面积为零而长度为正，可在限制密度上加 \(\varepsilon\) 倍一个正的有限面积密度；面积趋于零，长度仍有原来的正下界，于是 \(\operatorname{EL}_U=\infty\)，比较仍成立。若长度也是零，原商为零，不影响上确界。因此得到相等。
+\end{proof}
+
+曲线族增大使极值长度减小，因为较多的候选使“最短一条”更难拉长。比较嵌套区域时，应先辨认具体哪一族包含哪一族，或每条曲线必须穿过哪些子弧；单说“区域变大”并不能确定不等式方向。
+
+\begin{proposition}
+	\label{g4:prop:0505:series-parallel}
+	设 \(U_1,\ldots,U_k\) 是黎曼曲面 \(X\) 中互不相交的开集，\(\Gamma_i\) 是完全位于 \(U_i\) 的曲线族，并设 \(e_i=\operatorname{EL}_{U_i}(\Gamma_i)\in(0,\infty)\)。
+	\begin{enumerate}
+		\item 若曲线族 \(\Gamma\) 的每条曲线都含有各族 \(\Gamma_i\) 中的一条子弧，则
+		\[
+			\operatorname{EL}_X(\Gamma)\ge\sum_{i=1}^k e_i.
+		\]
+		\item 对可任选其中一族的并集 \(\Gamma=\bigcup_i\Gamma_i\)，有
+		\[
+			\frac1{\operatorname{EL}_X(\Gamma)}=\sum_{i=1}^k\frac1{e_i}.
+		\]
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	对第一项，在每个 \(U_i\) 选择可容许密度 \(\rho_i\)，使其长度下确界 \(L_i>0\)、面积为 \(A_i\)，且 \(L_i^2/A_i\) 任意接近 \(e_i\)。将 \((L_i/A_i)\rho_i\) 定义在 \(U_i\)，其余处取零，得到一个全局密度。任一 \(\gamma\in\Gamma\) 至少贡献 \(\sum_i L_i^2/A_i\) 的长度；各子弧在互不相交区域中，长度可以相加。总面积也恰为 \(\sum_i L_i^2/A_i\)，故所得比值至少为这个和。让各个比值趋于 \(e_i\)，便得串联不等式。
+
+	第二项可以只在并集 \(\bigcup U_i\) 上讨论。任一全局密度在各部分的面积记为 \(A_i\)，长度下确界记为 \(L_i\)，而整个并集族的下确界为 \(L=\min_iL_i\)。定义给出 \(L_i^2\le e_iA_i\)；当 \(A_i=0\) 时，由上一命题证明中的小正密度扰动及 \(e_i<\infty\) 可知 \(L_i=0\)，所以这个不等式也成立。因此
+	\[
+		\sum_iA_i\ge\sum_i\frac{L^2}{e_i},
+	\]
+	得到 \(\operatorname{EL}(\Gamma)\le(\sum_i e_i^{-1})^{-1}\)。为得反向，仍选取近于极值的 \(\rho_i\)，并各自缩放到 \(L_i=1\)。此时面积任意接近 \(1/e_i\)。拼合密度后 \(L=1\)，面积趋于 \(\sum_i1/e_i\)，从而达到所求下界。
+\end{proof}
+
+第一项描述每条曲线必须依次穿越多个区域时的长度障碍；第二项描述可以任选通道时的结果。这两个计算仅在题设明确的分离区域和曲线条件下使用。
 
 \subsection{环域模量的计算}
 \label{g4:subsec:0505:03}
-待撰写
+
+设 \(A(a,b)=\{a<|z|<b\}\)，\(0<a<b<\infty\)。记 \(\Gamma_{\mathrm{join}}\) 为从一个边界圆趋向另一个边界圆的曲线族，\(\Gamma_{\mathrm{core}}\) 为绕原点次数非零的闭曲线族。后者包括简单核心圆及其多重绕行；为求最短长度，一次绕行已经给出测试曲线。对数坐标 \(w=\log(z/a)=s+\mathrm{i}t\) 把环域变成圆柱
+\[
+	0<s<L=\log(b/a),\qquad t\in\mathbb R/2\pi\mathbb Z.
+\]
+\cref{g4:fig:0505:annulus-cylinder}显示两族曲线在这个坐标中的方向。
+
+\input{Figures/Ch05-AnnulusCylinder}
+
+\begin{theorem}
+	\label{g4:thm:0505:annulus-modulus}
+	对有限圆环域 \(A(a,b)\)，上述两族曲线满足
+	\begin{equation}
+		\label{g4:eq:0505:annulus-extremal-length}
+		\operatorname{EL}(\Gamma_{\mathrm{join}})
+		=\frac1{2\pi}\log\frac ba,
+		\qquad
+		\operatorname{EL}(\Gamma_{\mathrm{core}})
+		=\frac{2\pi}{\log(b/a)}.
+	\end{equation}
+	两者都由长度密度 \(1/|z|\) 达到极值。定义环域的\term[moliang]{模量}[modulus]为
+	\[
+		\operatorname{Mod}A(a,b)\coloneqq\frac1{2\pi}\log\frac ba.
+	\]
+\end{theorem}
+\begin{proof}
+	在对数圆柱上用平坦辅助度量 \(|\mathrm{d}w|^2\)。对任一可容许密度 \(\rho(s,t)\)，固定 \(t\) 的水平弧属于连接族，所以 Cauchy--Schwarz 与 Fubini 给出
+	\[
+		2\pi L_\rho(\Gamma_{\mathrm{join}})^2
+		\le L\int_0^{2\pi}\int_0^L\rho(s,t)^2\,\mathrm{d}s\,\mathrm{d}t
+		=LA_\rho.
+	\]
+	所用线积分对几乎处处的 \(t\) 有限；这已足以给全族长度下确界一个有限上界。取 \(\rho=1\) 时，每条连接曲线的长度至少为 \(s\) 的总变化 \(L\)，水平弧达到它，面积为 \(2\pi L\)。所以第一式成立。
+
+	对核心闭路族，固定 \(s\) 的圆圈都在族中，于是
+	\[
+		L L_\rho(\Gamma_{\mathrm{core}})^2
+		\le2\pi\int_0^L\int_0^{2\pi}\rho(s,t)^2\,\mathrm{d}t\,\mathrm{d}s
+		=2\pi A_\rho.
+	\]
+	反过来，在常密度 \(1\) 下，一条绕行次数为 \(n\ne0\) 的闭曲线提升到条带后，两端的 \(t\) 相差 \(2\pi n\)，所以其长度至少为 \(2\pi|n|\ge2\pi\)。固定 \(s\) 的一次圆圈实现 \(2\pi\)，得到第二式。平坦长度 \(|\mathrm{d}w|\) 拉回原环域即为 \(|\mathrm{d}z|/|z|\)，所以所述密度同时实现两个极值。
+\end{proof}
+
+由共形不变性，两个有限圆环域双全纯同构时模量相等，因为双全纯映射诱导基本群同构，将非零绕行族一一对应。反过来，模量相等就是半径比相等，缩放 \(z\mapsto(a'/a)z\) 已给出同构。因此模量完整分类这些圆环域。更一般地，已给定一个与圆环域共形同构的抽象环域时，其模量可由任一这种坐标计算，结果与坐标无关。
+
+\begin{example}
+	\label{g4:exm:0505:punctured-modulus}
+	在穿孔圆盘 \(0<|z|<1\) 中，核心闭路族的极值长度为 \(0\)，从穿孔端到外边界的连接族极值长度为 \(\infty\)。对前者，任意 \(\varepsilon<|z|<1\) 中的核心族都是整个族的子族，所以
+	\[
+		0\le\operatorname{EL}(\Gamma_{\mathrm{core}})
+		\le\frac{2\pi}{\log(1/\varepsilon)}\longrightarrow0.
+	\]
+	对后者，取密度 \(\rho_\varepsilon(z)=|z|^{-1}\) 于 \(\varepsilon<|z|<1\)，其余处取零。每条连接曲线都穿过该有限环带，长度至少为 \(\log(1/\varepsilon)\)，而面积为 \(2\pi\log(1/\varepsilon)\)。相应商趋于无穷大。这使穿孔圆盘自然具有无穷模量，并与任一有限模环域区别开来。
+\end{example}
+
+\begin{proposition}
+	\label{g4:prop:0505:modulus-core-length}
+	设 \(A(a,b)\) 为有限圆环域，\(M\) 为其模量，\(\ell\) 为其 Poincaré 度量中核心闭测地线的长度。则
+	\[
+		\ell=\frac\pi M,\qquad
+		\operatorname{EL}(\Gamma_{\mathrm{core}})=\frac\ell\pi.
+	\]
+\end{proposition}
+\begin{proof}
+	\cref{g4:cor:0504:annulus-metric}给出 \(\ell=2\pi^2/\log(b/a)\)，而 \(M=\log(b/a)/(2\pi)\)。代入并结合式\eqref{g4:eq:0505:annulus-extremal-length}即得。
+\end{proof}
+
+这里的双曲度量是环域自身的完整 Poincaré 度量。如果环域嵌入另一个双曲曲面，后者度量在环域上的限制一般更小，由\cref{g4:thm:0504:poincare-complete}的收缩不等式得到这一比较。因此上式中的 \(\ell\) 不能未经比较就换成环境曲面中的某条测地线长度。
 
 \subsection{退化曲面的长颈模型}
 \label{g4:subsec:0505:04}
-待撰写
+
+一个环域的模量很大，表示其连接两端的方向相对于绕行方向很长。先将对数圆柱按周长归一化为 \(1\)，便得到
+\[
+	C_M=(0,M)\times(\mathbb R/\mathbb Z).
+\]
+它与 \(\{e^{-2\pi M}<|z|<1\}\) 共形同构。平坦密度为 \(1\) 时，连接方向的最短长度为 \(M\)，核心长度为 \(1\)；若将面积归一化为 \(1\)，两者分别为 \(\sqrt M\) 与 \(1/\sqrt M\)。这些是同一共形结构在不同面积归一化下的长度，极值长度始终为 \(M\) 与 \(1/M\)。
+
+\ProseParagraphBreak
+
+也可以从全纯粘合看见同一个参数。固定 \(0<c<1\)，给定 \(0<|t|<c^2\)，将两张坐标圆盘中的环带
+\[
+	|t|/c<|z|<c,\qquad |t|/c<|w|<c
+\]
+按 \(zw=t\) 识别。换坐标 \(w=t/z\) 全纯且导数非零，因此它们形成一段环形颈部，模量为
+\begin{equation}
+	\label{g4:eq:0505:plumbing-modulus}
+	M(t)=\frac1{2\pi}\log\frac{c^2}{|t|}.
+\end{equation}
+当 \(t\to0\) 时，连接族的极值长度趋于无穷大，核心族的极值长度趋于零。参数的辐角改变两端的相对角度；其模决定这里算出的颈部长宽比。形式上的中心方程 \(zw=0\) 由两张相交坐标盘组成，提示结点处的两条分支；对每个 \(t\ne0\)，上述构造和模量计算均发生在光滑环带上。
+
+\begin{proposition}
+	\label{g4:prop:0505:truncated-cylinder}
+	设 \(\ell,R>0\)，考虑双曲圆柱中的对称开环带
+	\[
+		N_{\ell,R}=\{(r,t):-R<r<R,\ t\in\mathbb R/\ell\mathbb Z\},
+		\qquad g=\mathrm{d}r^2+\cosh^2r\,\mathrm{d}t^2.
+	\]
+	其共形模量为
+	\begin{equation}
+		\label{g4:eq:0505:truncated-modulus}
+		\operatorname{Mod}N_{\ell,R}
+		=\frac2\ell\int_0^R\frac{\mathrm{d}u}{\cosh u}
+		=\frac2\ell\arctan(\sinh R).
+	\end{equation}
+	固定 \(c>0\)，取 \(0<\ell<c\) 及 \(R_\ell=\operatorname{arcosh}(c/\ell)\)，使两条截口的长度均为 \(c\)。则
+	\[
+		\operatorname{Mod}N_{\ell,R_\ell}
+		=\frac2\ell\arccos(\ell/c)
+		=\frac\pi\ell-\frac2c+O(\ell^2)
+		\qquad(\ell\downarrow0).
+	\]
+	以任一截口为起点的每个固定宽度区域，其度量光滑趋于一个尖点端的相应区域。
+\end{proposition}
+\begin{proof}
+	令
+	\[
+		v(r)=\int_0^r\operatorname{sech}u\,\mathrm{d}u
+		=\arctan(\sinh r).
+	\]
+	则 \(g=\cosh^2r\,(\mathrm{d}v^2+\mathrm{d}t^2)\)，所以这个环带共形于周长 \(\ell\)、高度 \(2v(R)\) 的平坦圆柱。由环域模量公式，其模量就是高度除以周长，得到式\eqref{g4:eq:0505:truncated-modulus}。特别地 \(R\to\infty\) 时，模量趋于 \(\pi/\ell\)，与整个完备圆柱的计算一致。
+
+	截圈的长度为 \(\ell\cosh R\)，故所取 \(R_\ell\) 确实对应固定截口长 \(c\)。因为
+	\[
+		\sinh R_\ell=\sqrt{c^2/\ell^2-1},
+		\qquad \arctan\sqrt{c^2/\ell^2-1}=\arccos(\ell/c),
+	\]
+	精确公式成立；在零点展开 \(\arccos x=\pi/2-x+O(x^3)\)，便得渐近式。
+
+	在正半边从截口向核心取距离 \(s=R_\ell-r\)，并令 \(x=t/\ell\in\mathbb R/\mathbb Z\)。度量成为
+	\[
+		g=\mathrm{d}s^2+f_\ell(s)^2\,\mathrm{d}x^2,
+		\qquad
+		f_\ell(s)=\ell\cosh(R_\ell-s)
+		=c\cosh s-\sqrt{c^2-\ell^2}\sinh s.
+	\]
+	对任意固定 \(S<\infty\)，当 \(\ell\) 足够小时有 \(R_\ell>S\)，且在 \(0\le s\le S\) 上 \(f_\ell\) 连同所有阶导数一致趋于 \(ce^{-s}\)。因此度量光滑趋于
+	\[
+		\mathrm{d}s^2+c^2e^{-2s}\,\mathrm{d}x^2,
+	\]
+	这正是\cref{g4:exm:0504:cusp}中 \(Y=1/c\) 的尖点端。负半边由 \(r\mapsto-r\) 对称得到。与此同时 \(R_\ell\to\infty\)，所以从任一截口到核心的距离趋于无穷。
+\end{proof}
+
+这一模型同时解释两个观察：缩短中间的闭测地线，会使环域模量发散；从两侧固定截口看进去，颈部越来越像两个无限长的尖点。若一个曲面上实际给定了这样的嵌入环带，模量与长度的上述计算就适用于这段环带。证明任意短测地线都拥有某个统一宽度的嵌入领圈，还需要控制不同提升之间的相交；那是全局双曲几何的另一项任务。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

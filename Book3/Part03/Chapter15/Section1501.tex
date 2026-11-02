@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 15.1 形式上的椭圆结构
+% 纲要标题：### 15.1 微分形式上的椭圆结构
 % 纲要位置：几何学计划纲要.md，第 2708 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -12,24 +12,193 @@
 % 
 % 纲要内容结束
 
-\section{形式上的椭圆结构}
+\section{微分形式上的椭圆结构}
 \label{g3:sec:1501}
 
-待撰写
+外微分记录形式的局部变化，却没有使用度量。度量提供第二个方向的算子：把外微分在积分配对中移到另一边，得到余微分。二者合成的 Laplace 算子既保留上同调的信息，又具有椭圆正则性。本节先把这些运算在形式上的含义、符号和定向条件写清楚，使后续的调和分解能够直接用于几何计算。
 
 \subsection{Hodge 星和形式伴随}
 \label{g3:subsec:1501:01}
-待撰写
+设 \(M\) 为 \(n\) 维光滑黎曼流形，记 \(\Omega^k(M;\mathbb C)\) 为光滑复值 \(k\) 形式空间；实值空间记为 \(\Omega^k(M;\mathbb R)\)。在实正交余标架 \(e^1,\ldots,e^n\) 下，严格递增指标的 \(e^{i_1}\wedge\cdots\wedge e^{i_k}\) 构成形式丛的正交归一标架。诱导的 Hermitian 内积对第一变量线性，积分内积写成
+\[
+	(\alpha,\beta)=\int_M\langle\alpha,\beta\rangle_g\,\mu_g.
+\]
+这个定义只需要正体积密度。暂且给 \(M\) 选择定向，用 \(\operatorname{vol}_g\) 表示相应的体积形式。
+
+\begin{definition}\label{g3:def:form-hodge-star}
+	设 \(M\) 为定向光滑 \(n\) 维黎曼流形。满足
+	\begin{equation}\label{g3:eq:hodge-star-pairing}
+		\alpha\wedge *\overline\beta
+		=\langle\alpha,\beta\rangle_g\operatorname{vol}_g
+		\qquad(\alpha,\beta\in\Lambda^k\mathrm T_x^*M\otimes\mathbb C)
+	\end{equation}
+	的复线性丛映射
+	\[
+		*:\Lambda^k\mathrm T^*M\otimes\mathbb C
+		\longrightarrow\Lambda^{n-k}\mathrm T^*M\otimes\mathbb C
+	\]
+	称为 \term[Hodge xing]{Hodge 星算子}[Hodge star operator]。它是实形式上的星算子的复线性延拓，共轭显式写在式\eqref{g3:eq:hodge-star-pairing}中。
+\end{definition}
+
+这里确实存在唯一这样的映射。对正向正交余标架及递增指标 \(I\)，令 \(I^c\) 为补指标，并以 \(\epsilon(I,I^c)\) 表示排列 \((I,I^c)\) 的符号，则
+\[
+	*e^I=\epsilon(I,I^c)e^{I^c}.
+\]
+将这一公式与每个基向量外乘，正好得到定义中的配对，且外乘的非退化性保证唯一。定义本身与所选正向正交标架无关，因而局部公式拼成光滑丛映射。
+
+\begin{proposition}\label{g3:prop:hodge-star-identities}
+	在定向光滑 \(n\) 维黎曼流形上，星算子保持逐点范数与内积，并满足
+	\begin{equation}\label{g3:eq:hodge-star-square}
+		**\alpha=(-1)^{k(n-k)}\alpha,\qquad
+		\nabla_X(*\alpha)=*(\nabla_X\alpha)
+		\quad(\alpha\in\Omega^k).
+	\end{equation}
+	若改变定向，星算子变为原来的负号。
+\end{proposition}
+\begin{proof}
+	在正交外代数基中，星算子只把基向量带符号地换成补指标基，所以保持内积。再次取补指标，需要将长度为 \(k\) 与 \(n-k\) 的两组指标交换，符号为 \((-1)^{k(n-k)}\)。Levi--Civita 联络保持度量与定向体积形式；对定义等式求协变导数，用内积和外乘的乘积法则，再由配对的非退化性，得到与联络交换。反转定向使体积形式变号，定义中的星也随之变号。
+\end{proof}
+
+例如在标准定向的 \(\mathbb R^3\) 中，\(*\mathrm dx=\mathrm dy\wedge\mathrm dz\)、\(*(\mathrm dx\wedge\mathrm dy)=\mathrm dz\)。在定向曲面上，\(*e^1=e^2\)、\(*e^2=-e^1\)，因此一形式上的星平方为 \(-I\)。后一公式把一个余切方向转成与它正交的方向。
+
+\ProseParagraphBreak
+
+现在用积分定义反向的一阶算子。对内部紧支光滑形式，要求
+\[
+	(\mathrm d\alpha,\beta)=(\alpha,\delta\beta),
+	\qquad \alpha\in\Omega_c^{k-1},\quad\beta\in\Omega_c^k.
+\]
+这里的 \(\delta=\mathrm d^*\) 称为\term[yuweifen]{余微分}[codifferential]。紧支条件消除了边界通量；在闭流形上可以直接对任意光滑形式使用这个配对。
+
+\begin{proposition}\label{g3:prop:codifferential-star}
+	设 \(M\) 为光滑 \(n\ge1\) 维黎曼流形，\(\delta\) 为外微分相对于诱导形式内积及正体积密度的形式伴随。在局部正交标架中，
+	\begin{equation}\label{g3:eq:form-covariant-d-delta}
+		\mathrm d=\sum_i e^i\wedge\nabla_{e_i},
+		\qquad
+		\delta=-\sum_i\iota_{e_i}\nabla_{e_i}.
+	\end{equation}
+	若 \(M\) 定向，则在 \(k\) 形式上
+	\begin{equation}\label{g3:eq:codifferential-star}
+		\delta=(-1)^{n(k+1)+1}*\mathrm d*.
+	\end{equation}
+	在零形式上取 \(\delta=0\)，在最高次形式上取 \(\mathrm d=0\)；各次数均有 \(\delta^2=0\)。
+\end{proposition}
+\begin{proof}
+	无挠性使外微分等于协变导数的交替化，给出第一式。外乘 \(e^i\) 的逐点伴随是收缩 \(\iota_{e_i}\)。在任一点取该点协变导数为零的正交标架，将导数分部积分，形式伴随在该点就是 \(-\sum_i\iota_{e_i}\nabla_{e_i}\)。所写表达式是协变导数的张量收缩，与正交标架无关，因此在整个流形上成立。
+
+	定向情形还可直接看出星公式的符号。对紧支的 \((k-1)\) 形式 \(\alpha\) 与 \(k\) 形式 \(\beta\)，Stokes 公式及乘积法则给出
+	\[
+		\int_M\mathrm d\alpha\wedge *\overline\beta
+		=(-1)^k\int_M\alpha\wedge\mathrm d*\overline\beta.
+	\]
+	所以 \(*\delta\beta=(-1)^k\mathrm d*\beta\)。用式\eqref{g3:eq:hodge-star-square}消去左边的星，所得指数与 \(n(k+1)+1\) 相差偶数，得到式\eqref{g3:eq:codifferential-star}。最后对任意紧支测试形式 \(\eta\)，有
+	\((\delta^2\beta,\eta)=(\beta,\mathrm d^2\eta)=0\)，故 \(\delta^2\beta=0\)。这一局部结论不需要紧性或定向。
+\end{proof}
+
+把一形式写为 \(\alpha=X^\flat\)，协变表达式给出 \(\delta\alpha=-\operatorname{div}X\)。在 Euclid 平面上，若 \(\alpha=a\,\mathrm dx+b\,\mathrm dy\)，则
+\[
+	\delta\alpha=-(\partial_xa+\partial_yb),\qquad
+	\delta(f\,\mathrm dx\wedge\mathrm dy)
+	=\partial_yf\,\mathrm dx-\partial_xf\,\mathrm dy.
+\]
+这些计算同时核对了余微分和本书非负 Laplace 算子的符号。
 
 \subsection{Hodge Laplace 的主符号}
 \label{g3:subsec:1501:02}
-待撰写
+闭形式的条件是 \(\mathrm d\omega=0\)，而与所有正合形式正交的条件是 \(\delta\omega=0\)。把这两个方程的平方能量合在一起，定义 \(k\) 形式上的\term[Hodge Laplace suanzi]{Hodge Laplace 算子}[Hodge Laplacian]
+\[
+	\Delta_k=\mathrm d\delta+\delta\mathrm d.
+\]
+次数下标在对象清楚时省略。对函数，\(\Delta_0=\delta\mathrm d=-\operatorname{div}\operatorname{grad}\)，与前文约定一致。
+
+\begin{proposition}\label{g3:prop:hodge-laplacian-symbol}
+	设 \(M\) 为光滑 \(n\ge1\) 维黎曼流形，\(0\le k\le n\)。则 \(\Delta_k\) 为光滑二阶椭圆算子，且沿用 \(\mathrm D_j=-\mathrm i\partial_j\) 的主符号约定时，
+	\begin{equation}\label{g3:eq:hodge-symbol}
+		\sigma_1(\mathrm d)(x,\xi)=\mathrm i\,\varepsilon_\xi,\qquad
+		\sigma_1(\delta)(x,\xi)=-\mathrm i\,\iota_{\xi^\sharp},\qquad
+		\sigma_2(\Delta_k)(x,\xi)=|\xi|_g^2I.
+	\end{equation}
+	这里 \(\xi\) 是实余切向量，\(\varepsilon_\xi\alpha=\xi\wedge\alpha\)。
+\end{proposition}
+\begin{proof}
+	在一点取正交标架，式\eqref{g3:eq:form-covariant-d-delta}的最高阶项给出前两个符号。对任意形式，收缩乘积法则为
+	\[
+		\iota_{\xi^\sharp}(\xi\wedge\alpha)
+		=|\xi|^2\alpha-\xi\wedge\iota_{\xi^\sharp}\alpha.
+	\]
+	因此两种复合符号之和等于 \(|\xi|^2I\)，非零 \(\xi\) 时可逆。这也直接恢复了\cref{g3:lem:wedge-contraction-symbol}在实余切方向的计算；联络和度量的导数只进入较低阶项。
+\end{proof}
+
+同一个外乘收缩恒等式还说明 de Rham 符号序列正合：若 \(\xi\wedge\alpha=0\)，则
+\[
+	\alpha=\xi\wedge\bigl(|\xi|^{-2}\iota_{\xi^\sharp}\alpha\bigr).
+\]
+所以第十三章的一般椭圆复形理论确实适用于形式。这里的椭圆性是局部性质，在非紧流形上同样成立；有限维核和整体分解还需要下一节所列的紧性。
 
 \subsection{能量恒等式及调和条件}
 \label{g3:subsec:1501:03}
-待撰写
+\begin{proposition}\label{g3:prop:form-hodge-energy}
+	设 \(M\) 为无边界光滑黎曼流形，\(\omega,\eta\) 为光滑 \(k\) 形式。若 \(M\) 紧，或两形式至少有一个紧支，则
+	\begin{equation}\label{g3:eq:form-hodge-energy}
+		(\Delta_k\omega,\eta)
+		=(\mathrm d\omega,\mathrm d\eta)+(\delta\omega,\delta\eta)
+		=(\omega,\Delta_k\eta).
+	\end{equation}
+	特别地，在闭黎曼流形上，
+	\[
+		\Delta_k\omega=0
+		\quad\Longleftrightarrow\quad
+		\mathrm d\omega=0,\quad\delta\omega=0.
+	\]
+	此结论对实值与复值形式都成立，且不要求定向。
+\end{proposition}
+\begin{proof}
+	对 \(\mathrm d\delta\) 与 \(\delta\mathrm d\) 分别用形式伴随定义，即得两项能量及对称性。取 \(\eta=\omega\)，在紧流形上有
+	\[
+		(\Delta_k\omega,\omega)=\|\mathrm d\omega\|_2^2+\|\delta\omega\|_2^2.
+	\]
+	左侧为零时，两个非负项都为零；光滑性将几乎处处为零提升为处处为零。反方向直接代入 \(\Delta_k\) 的定义。
+\end{proof}
+
+满足 \(\Delta_k\omega=0\) 的光滑形式称为\term[tiaohe xingshi]{调和形式}[harmonic form]，其空间记为 \(\mathcal H_g^k(M)\)。在闭流形上，命题把这个二阶方程换成闭合与余闭合两个一阶条件。非紧情形则需保留积分条件：在 \(\mathbb R\) 上，函数 \(x\) 满足 \(\Delta x=0\)，但 \(\mathrm dx\ne0\)；它不能直接代入一个要求紧支或有限能量的整体积分论证。
+
+\begin{proposition}\label{g3:prop:hodge-star-commutes}
+	设 \(M\) 为定向光滑 \(n\) 维黎曼流形。对 \(k\) 形式 \(\alpha\)，有
+	\begin{align*}
+		\mathrm d*\alpha&=(-1)^k*\delta\alpha,&
+		\delta*\alpha&=(-1)^{k+1}*\mathrm d\alpha,\\
+		\Delta_{n-k}*\alpha&=*\Delta_k\alpha.
+	\end{align*}
+	此外，在任意光滑黎曼流形上有 \(\mathrm d\Delta=\Delta\mathrm d\)、\(\delta\Delta=\Delta\delta\)，各式按相应次数解释。
+\end{proposition}
+\begin{proof}
+	前两个等式由式\eqref{g3:eq:codifferential-star}及星的平方公式得到。分别将它们用于 \(\mathrm d\delta*\alpha\) 与 \(\delta\mathrm d*\alpha\)，两次出现的次数符号抵消，得到星与 Laplace 的交换。余下两式只需展开并使用 \(\mathrm d^2=\delta^2=0\)；例如 \(\mathrm d\Delta=\mathrm d\delta\mathrm d=\Delta\mathrm d\)。
+\end{proof}
+
+因而在定向闭流形上，星将 \(k\) 次调和形式同构地送到 \(n-k\) 次调和形式。这个算子将成为下一节积分配对非退化的具体见证。
 
 \subsection{定向与密度约定}
 \label{g3:subsec:1501:04}
-待撰写
+星算子使用定向体积形式，而 \((\cdot,\cdot)\)、\(\delta\) 和 \(\Delta\) 使用正体积密度。反转定向时，式\eqref{g3:eq:codifferential-star}中的两个星同时变号，\(\delta\) 不变。因此在不可定向流形上，可以在每个坐标邻域选择定向并计算 \(\delta,\Delta\)，重叠处所得算子相同。式\eqref{g3:eq:form-covariant-d-delta}则直接给出了不依赖定向的整体表达式。
+
+\ProseParagraphBreak
+
+若仍要保留星，需记录局部定向的符号。记 \(o_M\) 为\term[dingxiang xiancong]{定向线丛}[orientation line bundle]：在每个有定向的坐标邻域取一个单位生成元，换向的重叠处以 \(-1\) 为过渡函数，同向处以 \(1\) 为过渡函数。这些局部常值过渡函数定义平坦度量实线丛，且 \(o_M\otimes o_M\) 有自然的平凡化。记 \(\Omega^k(M;o_M)\) 为取值于它的形式；局部对系数作外微分得到全局算子 \(\mathrm d_o\)，因为过渡函数的导数为零。
+
+\begin{proposition}\label{g3:prop:twisted-hodge-star}
+	设 \(M\) 为任意光滑 \(n\) 维黎曼流形。局部星算子定义整体映射
+	\[
+		*:\Omega^k(M;\mathbb R)\longrightarrow\Omega^{n-k}(M;o_M),
+		\qquad
+		*:\Omega^k(M;o_M)\longrightarrow\Omega^{n-k}(M;\mathbb R).
+	\]
+	它们的复合仍满足式\eqref{g3:eq:hodge-star-square}，并将普通与定向线丛值的 Laplace 算子交织。普通形式与互补次数的定向线丛值形式的外积是可积分的顶次密度。
+\end{proposition}
+\begin{proof}
+	换向时，局部星与 \(o_M\) 的单位生成元都变号，故两者的乘积不变。反方向使用 \(o_M^{\otimes2}\) 的自然平凡化，得到第二个映射。所有平方、伴随和交换公式都是局部恒等式，而线丛过渡函数局部常值，所以前面的计算逐图适用并相容。
+
+	最后，顶次形式在反向坐标变换下的符号由定向线丛因子抵消；局部表达式因而按 Jacobian 的绝对值变换。这正是密度的变换规则。用单位分解积分，结果与图册及局部定向选择无关；紧支的定向线丛值 \((n-1)\) 形式也满足 Stokes 公式，逐图积分后单位分解的导数项相消。
+\end{proof}
+
+当 \(M\) 可定向并选定定向时，\(o_M\) 获得一个平行单位截面，以上两种形式便可识别。没有这种选择时，普通顶次形式与顶次密度仍是不同对象；下一节的对偶结论将相应地使用定向线丛系数。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

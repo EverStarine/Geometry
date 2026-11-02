@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 10.5* 合成曲率的基本模型
 % 纲要位置：几何学计划纲要.md，第 2491 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,17 +15,179 @@
 
 \OptionalSection{合成曲率的基本模型}{g3:sec:1005}
 
-待撰写
+第九章把截面曲率转成了三角形距离的不等式。这些不等式只比较有限个点，因而在没有切空间的树、凸集或度量极限上仍能提出。本节用可直接计算的模型说明上、下比较的差异，再回到光滑情形，证明小三角形比较确实能够恢复截面曲率的界。
 
 \subsection{CAT 空间的比较定义}
 \label{g3:subsec:1005:01}
-待撰写
+沿用\cref{g3:def:cat-comparison}：测地空间 \(X\) 为 \(\mathrm{CAT}(k)\)，是指每个周长小于 \(2b_k\) 的最短三角形，与常曲率 \(k\) 模型中同边长的三角形相比，任意两个对应边点的距离都不增大。这里
+\[
+	b_k=\begin{cases}\pi/\sqrt{k},&k>0,\\\infty,&k\le0.\end{cases}
+\]
+每一种最短边的选择都要检验。局部 \(\mathrm{CAT}(k)\) 的意思是每点有一个邻域，其内在度量使之成为 \(\mathrm{CAT}(k)\) 空间；邻域内在距离与全空间距离的关系须在具体使用时核对。
+
+\begin{proposition}\label{g3:prop:cat-zero-midpoint-criterion}
+	设 \((X,d)\) 为测地空间。它为 \(\mathrm{CAT}(0)\)，当且仅当对每条测地线段 \([x,y]\) 的中点 \(m\) 和每个 \(z\in X\)，都有
+	\begin{equation}\label{g3:eq:cat-midpoint-inequality}
+		d(z,m)^2\le\frac{d(z,x)^2+d(z,y)^2}{2}-\frac{d(x,y)^2}{4}.
+	\end{equation}
+	此时测地线段唯一，而且对其常速参数化 \(\gamma:[0,1]\to X\)，有
+	\begin{equation}\label{g3:eq:metric-cn-inequality}
+		d(z,\gamma(t))^2\le(1-t)d(z,x)^2+td(z,y)^2-t(1-t)d(x,y)^2.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	在 Euclid 比较三角形中，中线平方满足式\eqref{g3:eq:cat-midpoint-inequality}右端的等式，CAT 上比较便给出必要性。
+
+	反过来，沿给定线段令 \(D=d(x,y)\)、\(F(t)=d(z,\gamma(t))^2\)。将中点条件用于任意子段，说明连续函数 \(F(t)-D^2t^2\) 满足中点凸性。反复二等分得到二进分数处的凸性不等式，再由连续性延拓到所有参数，便得式\eqref{g3:eq:metric-cn-inequality}。这首先给出顶点到对边的上比较。
+
+	还需得到两个边点间的比较。对三角形 \(pqr\)，取 \(u\in[p,q]\)、\(v=\gamma_{p,r}(t)\)。先对顶点 \(r\) 与边点 \(u\) 使用上式，得 \(d(r,u)^2\le|\bar r-\bar u|^2\)。再以 \(u\) 为固定点，对边 \([p,r]\) 使用上式，得到
+	\[
+	\begin{aligned}
+		d(u,v)^2
+		&\le(1-t)d(u,p)^2+t d(u,r)^2-t(1-t)d(p,r)^2\\
+		&\le(1-t)|\bar u-\bar p|^2+t|\bar u-\bar r|^2
+		-t(1-t)|\bar p-\bar r|^2
+		=|\bar u-\bar v|^2.
+	\end{aligned}
+	\]
+	不同两边总有共同顶点，同一边上的对应距离相等，故全部 CAT 条件成立。
+
+	若 \(m,m'\) 是同端点两条线段的中点，在式\eqref{g3:eq:cat-midpoint-inequality}中取 \(z=m'\)，右侧为零，所以 \(m=m'\)。再对两半段依次应用同一论证，两条线段在所有二进参数处相同，连续性使它们处处相同。
+\end{proof}
+
+\begin{example}\label{g3:exm:real-tree-cat-zero}
+	测地空间中若任意两点之间只有一条简单弧，且这条弧就是连接它们的测地线段，就称它为\term[shi shu]{实树}[real tree]，也记作 \(\mathbb R\)-树。有限树图赋予正边长及道路距离便是例子。三个点的连接线段组成三脚架，允许某条支腿长度为零。
+
+	每棵实树都是 \(\mathrm{CAT}(0)\)。为验证中点判据，把 \([x,y]\) 按弧长记为 \(\gamma:[0,L]\to X\)。从 \(z\) 到该段的分支汇合点为 \(b=\gamma(a)\)，设 \(h=d(z,b)\)。由树的唯一弧性质，
+	\[
+		d(z,\gamma(t))=h+|t-a|.
+	\]
+	于是
+	\[
+		d(z,\gamma(t))^2-t^2=h^2+a^2-2at+2h|t-a|
+	\]
+	为凸函数。这正给出式\eqref{g3:eq:metric-cn-inequality}，从而给出中点判据。树上的分叉与 CAT 上界完全相容。
+\end{example}
+
+闭凸 Euclid 子集也是 \(\mathrm{CAT}(0)\)：最短段为直线段，任意三个点及其边位于一个至多二维的仿射平面中，模型比较处处取等号。它可能有边界或角点。另一方面，带长度度量的圆周不是 \(\mathrm{CAT}(0)\)，因为对径点有两条最短半圆；这与刚证明的唯一性矛盾，但每段足够小的弧都是 \(\mathrm{CAT}(0)\)。
+
+\begin{proposition}\label{g3:prop:compact-cat-zero-limit}
+	若非空紧 \(\mathrm{CAT}(0)\) 测地空间 \(X_j\) 在 GH 意义下收敛到非空紧度量空间 \(X\)，则 \(X\) 也是 \(\mathrm{CAT}(0)\)。
+\end{proposition}
+\begin{proof}
+	\Cref{g3:prop:gh-geodesic-limit}保证 \(X\) 测地。取 \(x,y,z\in X\) 和任意选定的中点 \(m\)。用畸变趋零的对应取 \(x_j,y_j,z_j,m'_j\)，使四点间距离趋于相应极限距离。在 \(X_j\) 中另取 \(x_j,y_j\) 的真正中点 \(m_j\)。将中点不等式用于顶点 \(m'_j\)，得到
+	\[
+		d_j(m'_j,m_j)^2\le\frac{d_j(m'_j,x_j)^2+d_j(m'_j,y_j)^2}{2}
+		-\frac{d_j(x_j,y_j)^2}{4}\longrightarrow0.
+	\]
+	因此 \(d_j(z_j,m_j)\to d(z,m)\)。再将 \(X_j\) 的中点不等式用于 \(z_j\) 并取极限，就得到 \(X\) 的中点不等式。上一判据适用，结论成立。
+\end{proof}
 
 \subsection{Alexandrov 下界及三角条件}
 \label{g3:subsec:1005:02}
-待撰写
+下界使用相反的距离方向，但不要求最短线唯一。继续采用同边长模型，对边上的对应点按相同弧长比例选取。
+
+\begin{definition}\label{g3:def:cbb-triangle-condition}
+	设 \((X,d)\) 为测地空间，\(k\in\mathbb R\)。若对任意选定的最短三角形 \(pqr\)，只要周长小于 \(2b_k\)，每个顶点 \(p\) 与对边上的点 \(z\) 就满足
+	\begin{equation}\label{g3:eq:cbb-triangle-condition}
+		d(p,z)\ge d_k(\bar p,\bar z),
+	\end{equation}
+	则称它满足 \(\mathrm{CBB}(k)\) 三角条件，即具有\term[Alexandrov xia qulv jie]{Alexandrov 下曲率界}[Alexandrov lower curvature bound] \(k\)。这里 CBB 为 curvature bounded below 的缩写。本节采用顶点到对边的表述，并明确允许退化三角形；完备性、局部紧性等要求在各个结果中另行列出。
+\end{definition}
+
+当 \(k=0\) 时，式\eqref{g3:eq:cbb-triangle-condition}等价于沿每条常速最短段的平方距离下比较
+\begin{equation}\label{g3:eq:cbb-zero-distance}
+	d(p,\gamma_{q,r}(t))^2
+	\ge(1-t)d(p,q)^2+td(p,r)^2-t(1-t)d(q,r)^2.
+\end{equation}
+这是 Euclid 模型中平方距离的精确公式。在 \(k\ne0\) 时，可用第九章的 \(m_k\) 将模型距离换成满足 \(h''+kh=1\) 的函数。它将三角条件与一维比较方程联系起来。
+
+\begin{example}\label{g3:exm:tripod-no-lower-bound}
+	三条长 \(\varepsilon\) 的线段共用一个端点 \(o\)，另三个端点记为 \(p,q,r\)。它们的三边长都是 \(2\varepsilon\)，而 \(o\) 是边 \([q,r]\) 的中点。实际距离为 \(d(p,o)=\varepsilon\)，Euclid 模型中线长为 \(\sqrt3\varepsilon\)，所以三脚架不满足 \(\mathrm{CBB}(0)\)。
+
+	更强地，在一个真正分叉点附近，实树不满足任何固定有限 \(k\) 的局部下曲率界。取足够小的 \(\varepsilon\)，三条支腿仍可等长截取，且周长 \(6\varepsilon<2b_k\)。模型函数 \(s_k(t)=t+O(t^3)\)、\(c_k(t)=1-kt^2/2+O(t^4)\) 代入余弦公式，说明模型中线为 \(\sqrt3\varepsilon+O(\varepsilon^3)\)，仍严格大于 \(\varepsilon\)。当 \(k=0\) 时为上面的精确值。因此局部 CAT 上比较并不排除分叉，下比较则会检测它。
+\end{example}
+
+闭凸 Euclid 子集同时满足上、下零曲率比较。正曲率球面在周长小于首个共轭尺度两倍的范围内与球面模型完全相同；它的对径点有多条最短线，也不妨碍下比较。第九章还已证明每个连通完备、光滑无边界且 \(K\ge k\) 的黎曼流形满足式\eqref{g3:eq:cbb-triangle-condition}。这包括平坦环面，虽然它不是全局 \(\mathrm{CAT}(0)\)。
+
+\begin{table}[htbp]
+	\centering
+	\caption{三个零曲率比较模型；下比较取本节的顶点到对边形式。}
+	\label{g3:tab:synthetic-models}
+	\begin{tabularx}{\textwidth}{@{}lXX@{}}
+		\toprule
+		空间 & CAT(0) 上比较 & CBB(0) 下比较\\
+		\midrule
+		闭凸 Euclid 子集 & 成立，模型等号 & 成立，模型等号\\
+		有分叉的实树 & 成立 & 分叉点任意小尺度失败\\
+		二维及以上平坦环面 & 局部成立，整体失败 & 整体成立\\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+表中所有判断都由已经给出的距离公式、最短线唯一性或第九章的比较定理得到。它们说明，合成曲率条件能够区别具有同样局部平坦部分的不同粘合方式。
 
 \subsection{光滑曲率与合成条件的连接}
 \label{g3:subsec:1005:03}
-待撰写
+光滑流形上的比较可以双向解释：Hessian 比较给出有限三角形的不等式，而将对边缩到一个点，再将径向距离缩到零，能够从这些不等式恢复截面曲率。下面把这个过程写出。
+
+\begin{theorem}\label{g3:thm:smooth-synthetic-curvature}
+	设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)、\(k\in\mathbb R\)。则：
+	\begin{enumerate}
+		\item \(K\le k\) 当且仅当每点都有强凸邻域，使其内在度量为 \(\mathrm{CAT}(k)\)。
+		\item \(K\ge k\) 当且仅当每点都有强凸邻域，使其中每个足够小的最短三角形满足 \(\mathrm{CBB}(k)\) 条件。此时整个 \(M\) 满足周长小于 \(2b_k\) 的下比较。
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	先证明曲率上界给局部上比较。由\cref{g3:thm:strongly-convex-neighborhood}，可选足够小的强凸邻域 \(U\)，其两点间距离平方光滑，且在 \(k>0\) 时使 \(\operatorname{diam}U<b_k/3\)。强凸性保证邻域内在距离就是环境距离，所用径向线均处于相应起点的割点之前。
+
+	若 \(K\le k\)，\cref{g3:thm:hessian-comparison}给出
+	\[
+		\operatorname{Hess}(m_k\circ d(p,\cdot))
+		\ge c_k(d(p,\cdot))g.
+	\]
+	在中心这个复合函数仍光滑，其 Hessian 等于 \(g\)。沿任意单位速对边，令 \(h=m_k(d(p,\sigma(t)))\)，便有 \(h''+kh\ge1\)。同边长模型中的 \(\bar h\) 满足等式且端点值相同。\Cref{g3:lem:one-dimensional-support-gluing}证明中的正权最小值论证应用于 \(\bar h-h\)，给出 \(h\le\bar h\)。这里边长小于 \(b_k\)，所有实际和模型距离也小于 \(b_k\)，所以 \(m_k\) 递增，得到顶点到对边的上比较。
+
+	为了从顶点比较得到所有边点比较，记 \(H_{A,B}\) 为区间 \([0,L]\) 上满足 \(H''+kH=1\)、端点为 \(A,B\) 的解。两个这样的解之差满足齐次方程，因而
+	\[
+		H_{A',B'}(t)-H_{A,B}(t)
+		=\frac{s_k(L-t)}{s_k(L)}(A'-A)
+		+\frac{s_k(t)}{s_k(L)}(B'-B).
+	\]
+	当 \(L<b_k\) 时，两个系数非负，所以边值解随端点值增加。现在取三角形 \(pqr\) 中的 \(u\in[p,q]\)、\(v\in[p,r]\)。先比较 \(r\) 到 \(u\)，得
+	\(m_k(d(r,u))\le m_k(d_k(\bar r,\bar u))\)；再以 \(u\) 为基点沿 \([p,r]\) 比较，并使用刚证明的端点单调性。端点 \(p\) 处的距离相等，端点 \(r\) 处为上述上界，故
+	\[
+		m_k(d(u,v))\le m_k(d_k(\bar u,\bar v)).
+	\]
+	再由单调性得到完整的 CAT 上比较。两次模型边值解确有同一几何解释：原比较三角形中的 \(\bar u,\bar p,\bar r\) 仍在同一模型内，子三角形周长不超过原周长。
+
+	若 \(K\ge k\)，则\cref{g3:thm:toponogov-triangle}直接给出整个 \(M\) 的下比较，也给出任意强凸小邻域的相同条件。这证明两个正向结论。
+
+	现在从局部三角比较恢复曲率。固定 \(p\)，沿单位速径向线取很近的 \(q=\exp_p(rv)\)，再取过 \(q\) 的单位速测地线 \(\sigma(t)\)。令 \(h(t)=m_k(d(p,\sigma(t)))\)。对充分小的 \(\varepsilon>0\)，三角形的对边取 \(\sigma|_{[-\varepsilon,\varepsilon]}\)。模型距离函数 \(\bar h\) 满足 \(\bar h''+k\bar h=1\)，由偶、奇基本解可得
+	\[
+		\bar h(0)=\frac{h(-\varepsilon)+h(\varepsilon)-2m_k(\varepsilon)}{2c_k(\varepsilon)}.
+	\]
+	局部上比较说 \(h(0)\le\bar h(0)\)，下比较则反向。用
+	\(c_k(\varepsilon)=1-k\varepsilon^2/2+O(\varepsilon^4)\)、
+	\(m_k(\varepsilon)=\varepsilon^2/2+O(\varepsilon^4)\)
+	展开并除以 \(\varepsilon^2\)，得到上比较时 \(h''(0)+kh(0)\ge1\)，下比较时 \(\le1\)。
+
+	令 \(\dot\sigma(0)\perp\dot\gamma(r)\)。此时一阶径向导数为零，故上述不等式分别成为
+	\[
+		\operatorname{Hess}d(p,\cdot)(\dot\sigma(0),\dot\sigma(0))
+		\ge\operatorname{ct}_k(r),\qquad\text{或}\qquad\le\operatorname{ct}_k(r).
+	\]
+	在平行识别下，\cref{g3:prop:radial-riccati,g3:prop:distance-hessian-jacobi}给出
+	\[
+		\operatorname{Hess}d(p,\cdot)(w_r,w_r)
+		=\frac1r-\frac r3\langle R(w,v)v,w\rangle+O(r^2),
+		\qquad\operatorname{ct}_k(r)=\frac1r-\frac{kr}{3}+O(r^3),
+	\]
+	其中 \(v,w\in\mathrm T_pM\) 正交且单位，\(w_r\) 为平行移动。减去 \(1/r\)，除以 \(r\) 后令 \(r\downarrow0\)，上比较推出 \(K(v,w)\le k\)，下比较推出 \(K(v,w)\ge k\)。任取点与二维平面即得两个逆向结论。
+\end{proof}
+
+当 \(k=0\) 时，\cref{g3:thm:hadamard-cat-zero}进一步说明：完备、单连通的非正截面曲率流形是全局 \(\mathrm{CAT}(0)\)。若去掉单连通性，平坦环面表明只能从局部上比较出发。下界的全局化则已由 Toponogov 完成，不需要单连通条件。
+
+\ProseParagraphBreak
+
+这些模型也解释了为什么曲率比较适合研究极限。紧 CAT(0) 空间的极限仍满足中点不等式，却可以失去光滑坐标；实树甚至可以在一个点附近有不同尺度的支枝。对后续几何分析而言，度量极限先提供一个可比较的底空间。要在极限上保留微分方程、体积或光滑结构，还需要对应的额外控制与收敛概念。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

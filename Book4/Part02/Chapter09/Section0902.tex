@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 9.2 Poisson 括号与无穷小对称
 % 纲要位置：几何学计划纲要.md，第 3823 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,342 @@
 \section{Poisson 括号与无穷小对称}
 \label{g4:sec:0902}
 
-待撰写
+一个 Hamilton 函数规定运动，另一个函数则可以记录运动中的某个量。沿 \(X_H\) 的轨线观察 \(f\)，其变化率是 \(\mathrm{d}f(X_H)\)。辛形式还把 \(f\) 本身变成向量场 \(X_f\)，于是这个变化率可以写成两个 Hamilton 向量场的配对。由此得到的函数运算既检验守恒量，也描述无穷小运动之间的交换关系。本节始终在无边界辛流形上讨论光滑实函数，所有流的等式都在相应解存在的时间内解释。
 
 \subsection{括号的定义与 Jacobi 恒等式}
 \label{g4:subsec:0902:01}
-待撰写
+
+沿用 \(\iota_{X_f}\omega=\mathrm{d}f\)。把 \(X_g\) 代入这一等式，就得到
+\[
+	\mathrm{d}f(X_g)=\omega(X_f,X_g).
+\]
+左边是在 \(g\) 所产生的运动中观测 \(f\) 的变化率，右边则不需要选择坐标。
+
+\begin{definition}\label{g4:def:0902:poisson-bracket}
+	设 \((M,\omega)\) 为辛流形，\(f,g\in C^\infty(M,\mathbb R)\)。函数
+	\begin{equation}\label{g4:eq:0902:poisson-definition}
+		\{f,g\}\coloneqq\omega(X_f,X_g)=X_g(f)=-X_f(g)
+	\end{equation}
+	称为 \(f,g\) 的\term[poissonkuohao]{Poisson 括号}[Poisson bracket]。若 \(\{f,g\}=0\)，则称两函数\term[poissonduihe]{Poisson 对合}[in involution]。
+\end{definition}
+
+在 Darboux 坐标中，\(\omega=\sum_i\mathrm{d}q^i\wedge\mathrm{d}p_i\)，收缩方程给出
+\[
+	X_f=\sum_i\left(
+		\frac{\partial f}{\partial p_i}\partial_{q^i}
+		-\frac{\partial f}{\partial q^i}\partial_{p_i}
+	\right).
+\]
+因此
+\begin{equation}\label{g4:eq:0902:coordinate-bracket}
+	\{f,g\}
+	=\sum_i\left(
+		\frac{\partial f}{\partial q^i}\frac{\partial g}{\partial p_i}
+		-\frac{\partial f}{\partial p_i}\frac{\partial g}{\partial q^i}
+	\right),
+	\qquad
+	\{q^i,p_j\}=\delta^i_j,\quad
+	\{q^i,q^j\}=\{p_i,p_j\}=0.
+\end{equation}
+这也核对了括号中两个位置的次序：\(H\) 放在第二个位置时，\(\{f,H\}\) 才是沿实际 Hamilton 运动的导数。所取符号与 Cannas da Silva 的定义5.4一致。\cite[第5.1节，第140--141页]{Cannas2006Symplectic}
+
+\begin{lemma}\label{g4:lem:0902:bracket-naturality}
+	设 \(\Phi:(M,\omega_M)\to(N,\omega_N)\) 是辛同胚，\(f,g\in C^\infty(N,\mathbb R)\)。则
+	\begin{equation}\label{g4:eq:0902:bracket-naturality}
+		X_{f\circ\Phi}(x)
+		=(\mathrm{d}\Phi_x)^{-1}X_f(\Phi(x)),
+		\qquad
+		\{f\circ\Phi,g\circ\Phi\}_M=\{f,g\}_N\circ\Phi.
+	\end{equation}
+	同一结论适用于开集之间的局部辛同胚。
+\end{lemma}
+\begin{proof}
+	对任意 \(v\in\mathrm{T}_xM\)，链式法则和 \(\Phi^*\omega_N=\omega_M\) 给出
+	\[
+		\begin{aligned}
+			\mathrm{d}(f\circ\Phi)_x(v)
+			&=\mathrm{d}f_{\Phi(x)}(\mathrm{d}\Phi_xv)\\
+			&=\omega_{N,\Phi(x)}(X_f(\Phi(x)),\mathrm{d}\Phi_xv)\\
+			&=\omega_{M,x}((\mathrm{d}\Phi_x)^{-1}X_f(\Phi(x)),v).
+		\end{aligned}
+	\]
+	非退化性确定了第一式。再对 \(f,g\) 的两个向量场应用保持配对的等式，即得第二式。
+\end{proof}
+
+\begin{theorem}\label{g4:thm:0902:poisson-identities}
+	在无边界辛流形 \((M,\omega)\) 上，Poisson 括号是实双线性运算，并对任意光滑实函数 \(f,g,h\) 满足
+	\begin{align}
+		\{f,g\}&=-\{g,f\},\label{g4:eq:0902:antisymmetry}\\
+		\{f,gh\}&=\{f,g\}h+g\{f,h\},\label{g4:eq:0902:leibniz}\\
+		\{f,\{g,h\}\}+\{g,\{h,f\}\}+\{h,\{f,g\}\}&=0.
+		\label{g4:eq:0902:jacobi}
+	\end{align}
+	最后一式称为\term[jacobihengdengshi]{Jacobi 恒等式}[Jacobi identity]。
+\end{theorem}
+\begin{proof}
+	收缩方程线性且解唯一，所以 \(X_{af+bg}=aX_f+bX_g\)，这给出实双线性。反对称性来自 \(\omega\) 的交替性。又因为 \(\{f,gh\}=-X_f(gh)\)，对函数的乘积求导即得 Leibniz 法则\footnote{Gottfried Wilhelm von Leibniz（1646--1716），德国数学家与哲学家，研究微积分与逻辑。}；结合反对称性也得到第一个变量中的乘积法则。
+
+	为证明 Jacobi 恒等式，先看 \(h\) 的局部流 \(\Phi_t\)。第一卷定理14.1.5的 Cartan 公式在式\eqref{g4:eq:0801:cartan}中已恢复；它给出
+	\[
+		\mathcal L_{X_h}\omega
+		=\mathrm{d}(\iota_{X_h}\omega)+\iota_{X_h}\mathrm{d}\omega
+		=\mathrm{d}^2h=0.
+	\]
+	由\cref{g4:prop:0801:pullback-derivative}，\(\Phi_t^*\omega=\omega\) 在流的局部定义域内成立。于是\cref{g4:lem:0902:bracket-naturality}给出
+	\[
+		\{f,g\}\circ\Phi_t=\{f\circ\Phi_t,g\circ\Phi_t\}.
+	\]
+	对 \(t\) 在零处求导。式\eqref{g4:eq:0902:coordinate-bracket}说明括号只由函数的一阶导数逐点双线性组成，故参数求导按通常乘积法则进行，得到
+	\[
+		X_h\{f,g\}=\{X_hf,g\}+\{f,X_hg\}.
+	\]
+	用 \(X_hu=\{u,h\}\) 改写，即
+	\[
+		\{\{f,g\},h\}=\{\{f,h\},g\}+\{f,\{g,h\}\}.
+	\]
+	最后使用反对称性移项，恰为式\eqref{g4:eq:0902:jacobi}。每个点附近都有上述小时间流，所以恒等式在整个 \(M\) 上成立。这里比较的是函数本身的导数，因而直接得到函数恒等式。
+\end{proof}
+
+带有上述 Lie 括号、且括号对交换乘法满足 Leibniz 法则的交换结合实代数，称为\term[poissondaishu]{Poisson 代数}[Poisson algebra]。因此 \(C^\infty(M,\mathbb R)\) 不仅能逐点相乘，还带有由辛运动确定的 Poisson 代数结构。非退化性负责把函数微分变成唯一向量场，闭性则通过 Hamilton 流保持 \(\omega\) 进入 Jacobi 恒等式的证明。
 
 \subsection{向量场括号的符号核验}
 \label{g4:subsec:0902:02}
-待撰写
+
+函数的括号与向量场的 Lie 括号都描述交换，但本书的 Hamilton 约定使它们之间带有负号。直接对收缩方程求 Lie 导数，可以确定这个符号，而不必从某个例子猜测。
+
+\begin{proposition}\label{g4:prop:0902:hamiltonian-bracket}
+	设 \((M,\omega)\) 为无边界辛流形，\(f,g\in C^\infty(M,\mathbb R)\)。则
+	\begin{equation}\label{g4:eq:0902:hamiltonian-bracket}
+		[X_f,X_g]=-X_{\{f,g\}}.
+	\end{equation}
+	因此 \(f\mapsto X_f\) 为 Lie 代数反同态，而 \(f\mapsto-X_f\) 为 Lie 代数同态。
+\end{proposition}
+\begin{proof}
+	第一卷命题13.3.11的插入恒等式为
+	\[
+		\iota_{[X,Y]}=\mathcal L_X\iota_Y-\iota_Y\mathcal L_X.
+	\]
+	其中插入固定第一个输入，Lie 导数沿正向流拉回定义。取 \(X=X_f\)、\(Y=X_g\)，并使用已证明的 \(\mathcal L_{X_f}\omega=0\)，得到
+	\[
+		\begin{aligned}
+			\iota_{[X_f,X_g]}\omega
+			&=\mathcal L_{X_f}(\mathrm{d}g)\\
+			&=\mathrm{d}(X_fg)
+			=-\mathrm{d}\{f,g\}
+			=\iota_{-X_{\{f,g\}}}\omega.
+		\end{aligned}
+	\]
+	第二步也可直接由 Cartan 公式作用于 \(\mathrm{d}g\) 得到。非退化性给出向量场相等。最后，
+	\([{-X_f},{-X_g}]=[X_f,X_g]=-X_{\{f,g\}}\)，所以加负号后的映射为同态。
+\end{proof}
+
+例如在 \(\mathbb R^2_{q,p}\) 上取 \(f=q^2/2\)、\(g=p^2/2\)，则
+\[
+	X_f=-q\partial_p,\qquad X_g=p\partial_q,\qquad
+	\{f,g\}=qp,
+\]
+而
+\[
+	[X_f,X_g]=-q\partial_q+p\partial_p
+	=-X_{qp}.
+\]
+这个非零括号同时核验了函数次序和向量场交换子的次序。
+
+\begin{proposition}\label{g4:prop:0902:central-extension}
+	设 \((M,\omega)\) 为非空连通无边界辛流形。记
+	\[
+		\mathfrak{ham}(M,\omega)
+		=\{X_f:f\in C^\infty(M,\mathbb R)\}.
+	\]
+	它在向量场 Lie 括号下为 Lie 代数，且有 Lie 代数正合列
+	\begin{equation}\label{g4:eq:0902:central-extension}
+		0\longrightarrow\mathbb R
+		\xrightarrow{\;c\mapsto c\;}
+		(C^\infty(M,\mathbb R),\{\ ,\ \})
+		\xrightarrow{\;f\mapsto-X_f\;}
+		\mathfrak{ham}(M,\omega)
+		\longrightarrow0.
+	\end{equation}
+	左端的像包含于中间 Lie 代数的中心；这样的正合列称为\term[zhongxinkuozhang]{中心扩张}[central extension]。
+\end{proposition}
+\begin{proof}
+	线性封闭性和括号封闭性由前一命题得到，右端映射按定义满射。又
+	\[
+		X_f=0\quad\Longleftrightarrow\quad \mathrm{d}f=0.
+	\]
+	微分为零的函数在坐标球上为常数，连通性使这些局部常数相同。因此核恰是常函数。常函数的 Hamilton 向量场为零，所以它与每个函数的 Poisson 括号都为零，证明了中心性和各处正合性。
+\end{proof}
+
+若 \(M\) 不连通，核应换成在各连通分支上分别取常值的光滑函数。即使在连通情形，保留常数也有实质作用：在 \(\mathbb R^2\) 上，\(\{q,p\}=1\)，但 \(X_q=-\partial_p\) 与 \(X_p=\partial_q\) 交换。故向量场交换只要求函数括号为常数，并不要求它为零。更具体地，把式\eqref{g4:eq:0902:central-extension}限制到 \(-X_q,-X_p\) 张成的交换 Lie 代数，这个有序基的任何一对提升都只能把 \(q,p\) 改成 \(q+a,p+b\)，它们的括号仍为 \(1\)。所以此受限扩张没有保持 Lie 括号的右逆。
+
+\ProseParagraphBreak
+
+第一卷定理13.3.4说明，两个向量场的括号为零，当且仅当它们的局部流在每点附近、充分小的共同时间范围内交换。因此 Poisson 对合函数产生局部交换的 Hamilton 流；在连通辛流形上，两个 Hamilton 流局部交换的精确条件是 \(\{f,g\}\) 为常数。这里不预设向量场完备，也不据此把小时间结论延伸到任意时间。
 
 \subsection{第一积分和约束}
 \label{g4:subsec:0902:03}
-待撰写
+
+固定一个不随时间变化的 Hamilton 函数 \(H\)。若函数 \(f\) 沿 \(X_H\) 的每条积分曲线保持常值，按上一节的定义，\(f\) 就是该系统的第一积分\termidx[diyijifen]{第一积分}。这一条件要求对全部初值成立；某个函数在一条特殊轨线上偶然不变，还不足以成为第一积分。
+
+\begin{proposition}\label{g4:prop:0902:first-integral}
+	设 \((M,\omega)\) 为无边界辛流形，\(H,f\in C^\infty(M,\mathbb R)\)。则 \(f\) 为 \(H\) 的第一积分，当且仅当 \(\{f,H\}=0\)。在这个条件下，\(X_f\) 的局部流保持 \(H\)，并与 \(X_H\) 的局部流交换。若 \(f,g\) 都是第一积分，则其线性组合、乘积和 Poisson 括号仍是第一积分。
+\end{proposition}
+\begin{proof}
+	沿任意积分曲线 \(\gamma\)，链式法则给出
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}f(\gamma(t))
+		=X_Hf(\gamma(t))=\{f,H\}(\gamma(t)).
+	\]
+	括号为零时函数沿曲线不变；反过来，以任意点为初值，在初始时刻求导即得该点的括号为零。这就是所述等价关系。\cite[第5.5节，命题5.12，第150--151页]{Cannas2006Symplectic}
+
+	由反对称性，\(X_fH=\{H,f\}=0\)，所以 \(f\) 的流也保持 \(H\)。\cref{g4:prop:0902:hamiltonian-bracket}给出 \([X_f,X_H]=0\)，再由前述局部流交换定理得到交换性。线性组合与乘积的结论来自导子法则；对于括号，Jacobi 恒等式给出
+	\[
+		\{\{f,g\},H\}
+		=\{\{f,H\},g\}+\{f,\{g,H\}\}=0.
+	\]
+\end{proof}
+
+这说明第一积分同时产生保持原 Hamilton 函数的无穷小运动。特别地，守恒量的集合是 Poisson 子代数，但其中两个守恒量不必彼此对合。对于时间依赖的 \(H_t,f_t\)，相应条件则是
+\[
+	\partial_tf_t+\{f_t,H_t\}=0,
+\]
+因为沿曲线求导还包括函数自身对时间的显式依赖。
+
+\ProseParagraphBreak
+
+一组方程 \(F_1=c_1,\ldots,F_k=c_k\) 可以选出允许运动的状态。若这些方程在一阶上独立，就能把“运动始终满足约束”化为逐点切向条件。以下把子流形 \(S\) 称为余各向同性的，是指每点均有 \((\mathrm{T}_xS)^\omega\subset\mathrm{T}_xS\)，与第七章的线性定义一致。
+
+\begin{proposition}\label{g4:prop:0902:regular-constraints}
+	设 \((M^{2n},\omega)\) 为无边界辛流形，\(F=(F_1,\ldots,F_k):M\to\mathbb R^k\) 光滑，\(c\) 为正则值，且 \(S=F^{-1}(c)\ne\varnothing\)。则 \(S\) 为余维 \(k\) 的嵌入子流形，并有
+	\begin{equation}\label{g4:eq:0902:constraint-tangents}
+		\mathrm{T}_xS=\bigcap_i\ker\mathrm{d}F_i(x),
+		\qquad
+		(\mathrm{T}_xS)^\omega
+		=\operatorname{span}\{X_{F_1}(x),\ldots,X_{F_k}(x)\}.
+	\end{equation}
+	此外：
+	\begin{enumerate}
+		\item 对光滑 Hamilton 函数 \(H\)，\(X_H\) 沿 \(S\) 切于 \(S\) 当且仅当 \(\{F_i,H\}|_S=0\) 对每个 \(i\) 成立。在这个条件下，从 \(S\) 出发的积分曲线在其整个存在时间内留在 \(S\)。
+		\item \(S\) 余各向同性，当且仅当 \(\{F_i,F_j\}|_S=0\) 对所有 \(i,j\) 成立。此时 \(k\le n\)；若 \(k=n\)，则 \(S\) 为 Lagrange 子流形。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	第一卷定理11.4.4的正则水平集定理给出嵌入结构与第一条切空间等式：在 \(S\) 上微分 \(\mathrm{d}F\) 满射，局部坐标可把这些方程写成固定 \(k\) 个坐标。又因
+	\[
+		\omega(X_{F_i},v)=\mathrm{d}F_i(v)=0
+		\qquad(v\in\mathrm{T}_xS),
+	\]
+	右端张成空间包含于辛正交补。各 \(\mathrm{d}F_i(x)\) 线性无关，非退化性说明各 \(X_{F_i}(x)\) 也线性无关。由\cref{g4:prop:0701:orthogonal-dimensions}，辛正交补的维数恰是 \(k\)，于是得到第二条等式。
+
+	切向性要求 \(\mathrm{d}F_i(X_H)=0\)，这就是 \(\{F_i,H\}=0\) 沿 \(S\) 成立。若切向，\(X_H|_S\) 为 \(S\) 上的光滑向量场；其局部解包含到 \(M\) 后仍满足同一常微分方程。唯一性使环境解在每个经过 \(S\) 的时刻附近留在 \(S\)。而 \(S=F^{-1}(c)\) 在 \(M\) 中闭，所以一条环境积分曲线落在 \(S\) 中的时刻集合，在其连通存在区间内既开又闭。初值属于 \(S\) 时，这个集合就是整个区间。
+
+	由式\eqref{g4:eq:0902:constraint-tangents}，余各向同性等价于每个 \(X_{F_i}(x)\) 都切于 \(S\)。再用第一项，其条件正是所有 \(\{F_j,F_i\}\) 沿 \(S\) 为零。此时辛正交补是一个 \(k\) 维各向同性子空间，第七章的维数界给出 \(k\le n\)。若 \(k=n\)，它与 \(\mathrm{T}_xS\) 同维，包含关系成为相等，故 \(S\) 为 Lagrange 子流形。
+\end{proof}
+
+只要求约束面上的括号消失就足够保证余各向同性，不必要求它们在整个 \(M\) 上消失。例如
+\[
+	F_1=p_1,\qquad F_2=q^1p_1+p_2
+\]
+在标准 \(\mathbb R^4\) 上处处微分独立，且 \(\{F_1,F_2\}=-p_1\)。共同零集恰为 \(\{p_1=p_2=0\}\)，仍是 Lagrange 子流形；两个约束函数却不在整个环境中对合。
+
+\ProseParagraphBreak
+
+另一方面，正则性不能省略。对标准 \(\mathbb R^2\) 上的约束 \(F=q^2=0\)，取 \(H=p\)，则 \(\{F,H\}=2q\) 在约束集合上为零，但 \(X_H=\partial_q\) 立即离开直线 \(\{q=0\}\)。这里 \(\mathrm{d}F\) 在整条直线上为零，\(\ker\mathrm{d}F\) 已经不能描述该直线的切空间。
 
 \subsection{典型动力系统}
 \label{g4:subsec:0902:04}
-待撰写
+
+Poisson 括号把显式微分方程与守恒量的代数联系起来。下面两个系统分别展示：一组对合积分可以把轨线限制在较小的光滑水平集上；额外的对称性则可能产生彼此不对合的守恒量。
+
+\begin{example}\label{g4:exm:0902:two-oscillators}
+	在标准 \(\mathbb R^4_{q^1,q^2,p_1,p_2}\) 上，令
+	\[
+		I_j=\tfrac12\bigl((q^j)^2+p_j^2\bigr),\qquad
+		H=\nu_1I_1+\nu_2I_2,\qquad \nu_1,\nu_2>0.
+	\]
+	两个自由度的变量彼此分离，故
+	\[
+		\{I_1,I_2\}=0,\qquad \{I_j,H\}=0.
+	\]
+	因此 \(I_1,I_2\) 均为第一积分。其微分分别为
+	\(\mathrm{d}I_j=q^j\mathrm{d}q^j+p_j\mathrm{d}p_j\)，在两对坐标都不为零的开集上线性无关。对 \(c_1,c_2>0\)，共同水平集
+	\[
+		I_1=c_1,\qquad I_2=c_2
+	\]
+	是两个圆的乘积，并由\cref{g4:prop:0902:regular-constraints}成为 Lagrange 环面。Hamilton 方程逐对为
+	\(\dot q^j=\nu_jp_j\)、\(\dot p_j=-\nu_jq^j\)。这些线性方程的解全时间存在，轨道保持在相应环面上。若某个 \(c_j=0\)，对应的一对坐标必须为零，该处 \(\mathrm{d}I_j=0\)，共同水平集便不能再按两个独立约束使用正则水平集结论。
+
+	当频率相等时，还能找到不由 \(I_1,I_2\) 决定的第一积分。令
+	\[
+		A=q^1q^2+p_1p_2,\qquad
+		B=q^1p_2-q^2p_1.
+	\]
+	例如 \(A\) 的 \(q\) 导数为 \((q^2,q^1)\)，\(p\) 导数为 \((p_2,p_1)\)；\(B\) 的两组导数分别为 \((p_2,-p_1)\)、\((-q^2,q^1)\)。代入坐标括号公式，得到
+	\begin{equation}\label{g4:eq:0902:oscillator-brackets}
+		\begin{aligned}
+			\{I_1,A\}&=B,& \{I_2,A\}&=-B,\\
+			\{I_1,B\}&=-A,& \{I_2,B\}&=A,\\
+			\{A,B\}&=2(I_1-I_2).
+		\end{aligned}
+	\end{equation}
+	所以
+	\[
+		\{A,H\}=(\nu_2-\nu_1)B,\qquad
+		\{B,H\}=(\nu_1-\nu_2)A.
+	\]
+	当 \(\nu_1=\nu_2\) 时，\(A,B\) 都守恒，却通常不彼此对合。在固定 \(I_1,I_2>0\) 的环面上，改变两圆的相对角度会改变 \(A,B\)，所以它们记录了额外信息。它们也不是全部独立，因为直接展开给出
+	\[
+		A^2+B^2=4I_1I_2.
+	\]
+	若 \(\nu_1\ne\nu_2\)，上述 \(A,B\) 不再是整个系统的第一积分；括号公式精确记录了这个变化。
+\end{example}
+
+\begin{example}\label{g4:exm:0902:free-angular-momentum}
+	取 \(\mathrm{T}^*\mathbb R^3\cong\mathbb R^6\) 上的典范辛形式和自由粒子 Hamilton 函数
+	\[
+		H(q,p)=\frac{|p|^2}{2m},\qquad m>0.
+	\]
+	其全时间流为 \((q,p)\mapsto(q+tp/m,p)\)，故三个动量分量 \(p_i\) 守恒。定义角动量
+	\[
+		L=q\times p,\qquad
+		L_1=q^2p_3-q^3p_2,\quad
+		L_2=q^3p_1-q^1p_3,\quad
+		L_3=q^1p_2-q^2p_1.
+	\]
+	沿运动求导得到
+	\[
+		\dot L=(p/m)\times p=0,
+	\]
+	所以 \(L_i\) 也是第一积分。但这些积分之间有非零括号。若 \(\varepsilon_{ijk}\) 是由 \(\varepsilon_{123}=1\) 确定的完全反对称符号，则
+	\begin{equation}\label{g4:eq:0902:angular-brackets}
+		\{p_i,p_j\}=0,\qquad
+		\{L_i,p_j\}=\sum_k\varepsilon_{ijk}p_k,\qquad
+		\{L_i,L_j\}=\sum_k\varepsilon_{ijk}L_k.
+	\end{equation}
+	前两式分别来自变量独立性及
+	\(\{L_i,p_j\}=\partial_{q^j}L_i\)。为核验第三式，直接计算一组：
+	\[
+		\begin{aligned}
+			\{L_1,L_2\}
+			&=(0,p_3,-p_2)\cdot(q^3,0,-q^1)
+			 -(0,-q^3,q^2)\cdot(-p_3,0,p_1)\\
+			&=q^1p_2-q^2p_1=L_3.
+		\end{aligned}
+	\]
+	循环置换指标给出另外两式，再由反对称性得到全部关系。
+
+	这些函数对应的运动也可直接辨认。对固定 \(a\in\mathbb R^3\)，令 \(L_a=a\cdot(q\times p)\)。则
+	\[
+		\partial_pL_a=a\times q,\qquad
+		\partial_qL_a=p\times a,\qquad
+		X_{L_a}(q,p)=(a\times q,a\times p).
+	\]
+	它同时旋转位置与动量，保持 \(|p|^2\)，因而是自由粒子系统的无穷小对称。\(\{L_a,L_b\}=L_{a\times b}\) 与\cref{g4:prop:0902:hamiltonian-bracket}相容：
+	\[
+		[X_{L_a},X_{L_b}]=-X_{L_{a\times b}}.
+	\]
+	在向量场层面也能检查这个负号：若 \(A_a(v)=a\times v\)，则线性场的 Lie 括号系数是 \(A_bA_a-A_aA_b=-A_{a\times b}\)。
+
+	所有这些计算都在非退化的六维辛空间中进行。动量与角动量虽共有六个分量，却满足 \(p\cdot L=0\)，而且角动量分量通常彼此不对合。寻找许多守恒量、判断其微分独立性和判断其两两对合，是三个需要分别检验的问题。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

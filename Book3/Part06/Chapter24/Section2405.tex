@@ -1,37 +1,200 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 24.5 一般存在性的剩余输入
+% 纲要标题：### 24.5 Yamabe 问题的一般存在性
 % 纲要位置：几何学计划纲要.md，第 3156 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿，尚未正式审核。
 
 % 纲要内容开始
 % 
-% * Aubin 型测试函数的几何意义
-% * 低维或局部共形平坦情形的额外困难
-% * 正质量定理与 Schoen 方法的精确引用
+% * Aubin 型测试函数
+% * 低维与局部共形平坦情形
+% * 正质量定理与 Schoen 方法
 % * 局部极小、全局极小和非唯一解
 % 
 % ---
 % 
 % 纲要内容结束
 
-\section{一般存在性的剩余输入}
+\section{Yamabe 问题的一般存在性}
 \label{g3:sec:2405}
 
-待撰写
+严格阈值定理把一般存在性归结为一个具体问题：当共形类不是圆球面的共形类时，怎样找出一个满足 \(Q_g(v)<Y_S\) 的测试函数？截断气泡只给出趋近球面常数的函数列。要使商严格下降，还须读出气泡所处几何对能量的下一阶贡献。局部曲率足以处理一部分情形，剩下的情形则需要把测试函数延伸到整个流形。
 
-\subsection{Aubin 型测试函数的几何意义}
+\subsection{Aubin 型测试函数}
 \label{g3:subsec:2405:01}
-待撰写
+第3章的\cref{g3:prop:conformal-weyl}说明，四阶协变 Weyl 张量在 \(\widehat g=e^{2f}g\) 下变为 \(e^{2f}W_g\)。因此 \(W_g(q)\ne0\) 不能靠改变共形代表消去。Aubin 的测试函数利用这一点：先选择共形代表，使法坐标中的低阶体积误差尽量消失，再把径向气泡放在 \(W_g\ne0\) 的点附近。下面所引定理包括这一共形规范的构造和曲率项的符号计算。
 
-\subsection{低维或局部共形平坦情形的额外困难}
+\begin{theorem}[Aubin 的严格不等式，外部输入]\label{g3:thm:yamabe-aubin-strict}
+	设 \((M^n,g)\) 是闭连通光滑黎曼流形，\(n\ge6\)。若 \((M,g)\) 不是局部共形平坦的，则
+	\[
+		Y(M,[g])<Y_S.
+	\]
+	这里局部共形平坦是指每点都有邻域，在该邻域内 \(g\) 是某个 Euclid 度量的正光滑函数倍数。
+\end{theorem}
+这一结果及其与 Weyl 张量的关系见\cite[定理B，第39页；第5、11节]{LeeParker1987Yamabe}。所用的局部共形平坦判别是 \(n\ge4\) 时 \(W\equiv0\) 当且仅当局部共形平坦；本卷第3章已经证明其中由局部共形平坦推出 \(W=0\) 的方向，反方向及测试函数的高阶规范在这里随外部结果调用。
+
+\ProseParagraphBreak
+维数 \(6\) 的分界可以从一个径向积分看出。取
+\[
+	U_\varepsilon(r)=\left(\frac{\varepsilon}{\varepsilon^2+r^2}\right)^{(n-2)/2},
+	\qquad 0<\varepsilon<\rho,
+\]
+其中 \(\rho\) 固定。记 \(\sigma_{n-1}=\operatorname{Vol}(S^{n-1})\)。计算局部曲率修正时会遇到
+\begin{equation}\label{g3:eq:yamabe-curvature-moment}
+	\int_{B_\rho}|x|^2U_\varepsilon^2\,\mathrm dx
+	=\sigma_{n-1}\varepsilon^4
+	\int_0^{\rho/\varepsilon}\frac{t^{n+1}}{(1+t^2)^{n-2}}\,\mathrm dt.
+\end{equation}
+等式由极坐标和 \(r=\varepsilon t\) 直接得到。被积函数在无穷远与 \(t^{5-n}\) 同阶，所以 \(n\ge7\) 时右侧与 \(\varepsilon^4\) 同阶，\(n=6\) 时则与 \(\varepsilon^4\log(1/\varepsilon)\) 同阶。另一方面，固定环带内截断气泡的梯度误差是 \(O(\varepsilon^{n-2})\)。前两种曲率修正都能支配截断误差；外引定理的关键计算进一步说明，经过共形规范后，非零 Weyl 曲率贡献所需的下降方向。尺度比较解释了这个计算为何可能成功，下降的符号则来自完整的曲率展开。
+
+\subsection{低维与局部共形平坦情形}
 \label{g3:subsec:2405:02}
-待撰写
+对 \(n=3,4,5\)，式\eqref{g3:eq:yamabe-curvature-moment}分别与 \(\varepsilon\)、\(\varepsilon^2\)、\(\varepsilon^3\) 同阶，恰与 \(\varepsilon^{n-2}\) 的截断误差处于同一尺度。缩小气泡便不能单凭阶数把误差压到主项以下。在局部共形平坦情形，困难更直接：可以选取在一个小球内完全平坦的共形代表，这时只支于该球内的测试函数受到 Euclid 最佳 Sobolev 不等式的约束。
 
-\subsection{正质量定理与 Schoen 方法的精确引用}
+\begin{proposition}\label{g3:prop:yamabe-flat-local-tests}
+	设 \((M^n,g)\) 为光滑黎曼流形，\(n\ge3\)，且某开集 \(V\) 在坐标下的度量恰为 Euclid 度量。对每个非零 \(v\in C_c^\infty(V)\)，有
+	\[
+		Q_g(v)\ge Y_S.
+	\]
+	若在同一个坐标开集 \(V\) 上有 \(g=\phi^{4/(n-2)}g_{\mathrm E}\)、\(\phi>0\) 光滑，同一结论仍适用于支于 \(V\) 的测试函数。
+\end{proposition}
+\begin{proof}
+	平坦情形下 \(s_g=0\)，把 \(v\) 经坐标送到 Euclid 空间并补零，\cref{g3:thm:yamabe-sharp-euclidean}给出
+	\[
+		Q_g(v)=\frac{a_n\int_{\mathbb R^n}|\mathrm dv|^2\,\mathrm dx}
+		{(\int_{\mathbb R^n}|v|^p\,\mathrm dx)^{2/p}}
+		\ge Y_S.
+	\]
+	一般情形写 \(g=\phi^{4/(n-2)}g_0\)，其中 \(g_0\) 在 \(V\) 上平坦，\(\phi>0\)。由\cref{g3:prop:conformal-laplacian-covariance}，对支于 \(V\) 的函数有 \(Q_g(v)=Q_{g_0}(\phi v)\)。函数 \(\phi v\) 仍紧支于 \(V\)，故归结为第一种情形。
+\end{proof}
+这解释了为何局部共形平坦流形的严格不等式必须看到小球之外的几何。一个非平凡球面空间形式在小邻域内与圆球面没有共形区别，整体的覆盖结构却会降低 Yamabe 常数，章末习题给出这个计算。
+
+\ProseParagraphBreak
+延伸测试函数时，希望其在气泡之外的能量尽可能小。那里函数的值很小，方程中的 \(u^{p-1}\) 比 \(u\) 衰减更快，因此先求线性方程 \(L_gu=0\) 是自然的选择。带一个极点的正 Green 函数正好同时满足这个方程，并具有与气泡远场相匹配的 \(r^{2-n}\) 奇性。
+
+\subsection{正质量定理与 Schoen 方法}
 \label{g3:subsec:2405:03}
-待撰写
+设 \(Y(M,[g])>0\)。固定 \(q\in M\)，将共形 Laplace 的 Green 函数归一化为
+\begin{equation}\label{g3:eq:yamabe-green-normalization}
+	L_gG_q=a_n(n-2)\sigma_{n-1}\delta_q,
+	\qquad G_q(x)\sim d_g(x,q)^{2-n}.
+\end{equation}
+这里 Dirac 分布以 \(g\) 的体积密度解释。正性条件使 \(L_g\) 可逆；Green 函数的存在、严格正性及所需局部展开见\cite[引理6.1、6.4，定理6.5]{LeeParker1987Yamabe}。先看 \(g\) 在 \(q\) 附近平坦的情形，此时
+\[
+	G_q(x)=|x|^{2-n}+A_q+O(|x|).
+\]
+减去基本解后留下的是光滑调和函数，所以这里的余项也可逐次微分。定义穿孔流形上的度量
+\begin{equation}\label{g3:eq:yamabe-green-blowup}
+	g_\infty=G_q^{4/(n-2)}g
+	\quad\text{于 }M\setminus\{q\}.
+\end{equation}
+由标量曲率变换公式，\(s_{g_\infty}=0\)。在 \(q\) 附近，径向长度与 \(r^{-2}\,\mathrm dr\) 可比，到 \(q\) 的距离无穷大；其余部分来自紧流形。故 \(g_\infty\) 完备，原来的点变成一个无穷远端。
+
+\ProseParagraphBreak
+作反演 \(y=x/|x|^2\)，记 \(R=|y|\)。Euclid 度量在反演下贡献 \(R^{-4}\)，它与 Green 函数主项的共形倍数抵消，得到
+\begin{equation}\label{g3:eq:yamabe-green-af}
+	(g_\infty)_{ij}(y)
+	=\bigl(1+A_qR^{2-n}+O(R^{1-n})\bigr)^{4/(n-2)}\delta_{ij}.
+\end{equation}
+这类在无穷远趋于 Euclid 度量，并且一、二阶导数有相应衰减的度量称为\term[jianjinpingtanduoliang]{渐近平坦度量}[asymptotically flat metric]。在坐标满足
+\(h_{ij}-\delta_{ij}=O(R^{-\tau})\)、其一、二阶导数分别为 \(O(R^{-\tau-1})\)、\(O(R^{-\tau-2})\)，其中 \(\tau>(n-2)/2\)，且标量曲率可积时，所用质量归一化为
+\begin{equation}\label{g3:eq:yamabe-adm-mass}
+	m(h)=\frac1{2(n-1)\sigma_{n-1}}
+	\lim_{R\to\infty}\int_{|y|=R}
+	\sum_{i,j}(\partial_jh_{ij}-\partial_ih_{jj})\nu^i\,\mathrm dS.
+\end{equation}
+法向和面积元在此按 Euclid 度量计算。在这组衰减与可积条件下，极限的存在及坐标不变性可由\cite[第9节，定理9.6]{LeeParker1987Yamabe}核对；该文的质量比式\eqref{g3:eq:yamabe-adm-mass}大 \(2(n-1)\) 倍。对式\eqref{g3:eq:yamabe-green-af}，令括号的 \(4/(n-2)\) 次幂为 \(f\)，便有
+\[
+	\sum_j(\partial_jh_{ij}-\partial_ih_{jj})
+	=-(n-1)\partial_if,
+	\qquad
+	\partial_R f=-4A_qR^{1-n}+O(R^{-n}),
+\]
+从而直接算得
+\begin{equation}\label{g3:eq:yamabe-mass-green-coefficient}
+	m(g_\infty)=2A_q.
+\end{equation}
+Green 函数的常数项因此记录了整个穿孔流形的几何，而不只是极点处有限阶的曲率。
+
+\begin{theorem}[Green 函数吹起的正质量，所用外部版本]\label{g3:thm:yamabe-green-positive-mass}
+	设 \((M^n,g)\) 为闭连通光滑黎曼流形，\(Y(M,[g])>0\)，并满足以下条件之一：\(3\le n\le5\)；或 \((M,g)\) 局部共形平坦。任取 \(q\in M\)，在 \(q\) 附近先选择共形法坐标代表，局部共形平坦时可选为平坦代表，再按式\eqref{g3:eq:yamabe-green-normalization}归一化 Green 函数。则 \((M\setminus\{q\},g_\infty)\) 是完备、标量曲率为零的渐近平坦流形，其质量满足
+	\[
+		m(g_\infty)\ge0.
+	\]
+	质量为零当且仅当 \((M,[g])\) 与标准圆球面的共形类共形微分同胚；此时吹起度量等距于 Euclid 空间。
+\end{theorem}
+这里的共形法坐标可使体积密度在任意预先指定的有限阶上等于 Euclid 密度。低维时这一步保证渐近衰减足够快，并把质量与 Green 函数的常数项联系起来。对应的展开、质量联系与零质量刚性见\cite[引理6.4、9.7，第10节]{LeeParker1987Yamabe}及\cite[第2节，引理3、命题2]{Schoen1984Yamabe}。局部共形平坦的高维情形使用闭流形 Green 函数的特殊正质量结论，见\cite[命题3.3(i)、4.4，第62、65页]{SchoenYau1988ConformallyFlat}：先以第一特征函数选取正标量曲率代表，其覆盖空间上的标量曲率有正下界，四维所需的 Ricci 有界性也由紧性得到。这个版本只涉及上述 Green 函数吹起，不增加一般高维渐近平坦流形的假设范围。
+
+\ProseParagraphBreak
+若原流形不共形于球面，质量的严格正性提供了局部气泡没有的下降量。Schoen 把气泡的核心与小倍数 \(G_q\) 的远场接合，在环带中匹配两者。局部平坦时，分部积分把远场能量化为球面边界项，\(A_q>0\) 使关键边界项为负；先把接合半径取得足够小，再缩小气泡尺度，就能使接合误差小于这个负项。三维的一般 Green 展开仍能支持同样的构造；四、五维还需控制度量不平坦所产生的误差。精确的存在结论如下。
+
+\begin{theorem}[Schoen 的严格不等式，外部输入]\label{g3:thm:yamabe-schoen-strict}
+	设 \((M^n,g)\) 为闭连通光滑黎曼流形，\(n\ge3\)。若 \(3\le n\le5\)，或 \((M,g)\) 局部共形平坦，并且 \((M,[g])\) 不共形微分同胚于标准圆球面的共形类，则
+	\[
+		Y(M,[g])<Y_S.
+	\]
+\end{theorem}
+局部平坦附近的接合及三维情形见\cite[第1节，定理1、命题1，第481--484页]{Schoen1984Yamabe}；低维剩余估计及严格不等式见该文第2节、定理2（第493页）。其中作者把泛函除以了本章的 \(a_n\)，这个正因子不改变严格不等式。上述测试函数估计和正质量定理是本节外引的深层内容；下面的存在性结论只需把它们与已经证明的紧性相接。
+
+\begin{corollary}[Yamabe 问题的一般存在性]\label{g3:cor:yamabe-general-existence}
+	每个闭连通光滑黎曼流形 \((M^n,g)\)、\(n\ge3\)，都存在 \(u\in C^\infty(M)\)、\(u>0\)，使
+	\[
+		\int_Mu^p\,\mu_g=1,
+		\qquad L_gu=Y(M,[g])u^{p-1}.
+	\]
+	因此 \(u^{4/(n-2)}g\) 是该共形类内体积为一、标量曲率恒等于 \(Y(M,[g])\) 的度量。
+\end{corollary}
+\begin{proof}
+	若 \((M,[g])\) 是圆球面的共形类，取圆度量的拉回并作常数缩放，体积归一后即得结论。否则，在 \(n\ge6\) 且非局部共形平坦时应用\cref{g3:thm:yamabe-aubin-strict}，其余情形应用\cref{g3:thm:yamabe-schoen-strict}，均有 \(Y(M,[g])<Y_S\)。由\cref{g3:thm:yamabe-below-sphere}，存在归一化非负极小函数；\cref{g3:thm:yamabe-weak-regularity}将它提升为光滑正解。标量曲率与体积公式给出最后结论。
+\end{proof}
 
 \subsection{局部极小、全局极小和非唯一解}
 \label{g3:subsec:2405:04}
-待撰写
+上述存在性得到的是 Yamabe 泛函的全局极小值。一个任意的常标量曲率度量只保证泛函一阶变分为零，其二阶行为还要另行判断。为了把二阶条件写成普通 Laplace 谱，直接把待考察的常标量曲率度量作为背景度量。
+
+\begin{proposition}[常标量曲率度量的稳定性判据]\label{g3:prop:yamabe-csc-stability}
+	设 \((M^n,g)\) 为闭连通光滑黎曼流形，\(n\ge3\)，\(\operatorname{Vol}_g(M)=1\)，且 \(s_g=s\) 为常数。令 \(\lambda_1(\Delta_g)\) 为标量 Laplace 的第一正特征值。函数 \(1\) 是约束 \(\int_M|v|^p\,\mu_g=1\) 上 \(E_g\) 的临界点，并有以下结论。
+	\begin{enumerate}
+		\item 若 \(1\) 是局部极小点，则 \(\lambda_1(\Delta_g)\ge s/(n-1)\)。
+		\item 若 \(\lambda_1(\Delta_g)>s/(n-1)\)，则 \(1\) 是该约束集上相对于 \(H^1\) 拓扑的严格局部极小点。
+		\item 若 \(\lambda_1(\Delta_g)<s/(n-1)\)，则存在保持体积的光滑正共形变化，使泛函在 \(g\) 附近严格下降。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	体积约束的切空间是 \(\int_Mh\,\mu_g=0\)。把 \(u=1\)、\(\lambda=s\) 代入\cref{g3:prop:yamabe-second-variation}，约束 Hessian 为
+	\begin{equation}\label{g3:eq:yamabe-csc-hessian}
+		2a_n\left(\int_M|\mathrm dh|^2\,\mu_g
+		-\frac{s}{n-1}\int_Mh^2\,\mu_g\right),
+	\end{equation}
+	因为 \((p-2)/a_n=1/(n-1)\)。式\eqref{g3:eq:first-eigenvalue-mean-zero}正是平均值为零函数的 Rayleigh 商表述，故局部极小时 Hessian 非负给出第一项。若出现严格反向不等式，取第一特征函数 \(h\)，沿
+	\[
+		v_t=\frac{1+th}{\|1+th\|_p}
+	\]
+	变化。\(h\) 光滑有界，所以 \(|t|\) 足够小时 \(v_t>0\)；一阶导数为零而二阶导数为负，得到第三项。
+
+	设谱隙为严格正。Poincar\'e 不等式使式\eqref{g3:eq:yamabe-csc-hessian}在平均值为零的子空间上至少为 \(c\|h\|_{H^1}^2\)，其中 \(c>0\)。映射 \(v\mapsto\int_M|v|^p\,\mu_g\) 在 \(H^1\) 上为 \(C^2\)，且在 \(1\) 处的导数是 \(h\mapsto p\int_Mh\,\mu_g\)，在常数方向可逆。\cref{g3:cor:banach-implicit-parameters}因此把约束集在 \(1\) 附近写成平均值为零子空间上的 \(C^2\) 图。把 \(E_g\) 限制到这个图，Taylor 公式给出
+	\[
+		E_g(v)-E_g(1)\ge\frac c4\|h\|_{H^1}^2>0
+	\]
+	对足够小的非零参数 \(h\) 成立，证明第二项。
+\end{proof}
+等号 \(\lambda_1=s/(n-1)\) 只说明存在二阶零方向。它可能来自共形对称，判断局部极小还需使用高阶信息或已知的全局极小性质。另一方面，严格局部极小控制的是一个邻域；全局极小还须比较远离该邻域的共形因子。
+
+\begin{example}[球面上的非唯一极小函数]\label{g3:exm:yamabe-sphere-nonuniqueness}
+	令 \(\bar g\) 是体积为一的圆球面度量。以立体投影坐标 \(x\in\mathbb R^n\) 表示球面去掉一点，Euclid 伸缩 \(x\mapsto tx\)、\(t>0\)，延伸为球面的共形微分同胚 \(F_t\)，且
+	\[
+		F_t^*\bar g=v_t^{4/(n-2)}\bar g,
+		\qquad
+		v_t(x)=\left(\frac{t(1+|x|^2)}{1+t^2|x|^2}\right)^{(n-2)/2}.
+	\]
+	在被删去的点使用反演坐标，上式仍为光滑正函数。由于拉回保持总体积和标量曲率，\(\|v_t\|_p=1\)、\(Q_{\bar g}(v_t)=Y_S\)。\(t\ne1\) 时 \(v_t\) 非常数，故同一个正 Yamabe 共形类内，体积为一的极小函数和作为固定流形上张量的极小度量都不唯一。这些度量彼此等距；若再模去共形微分同胚，它们属于同一类。
+\end{example}
+
+\begin{example}[常标量曲率的乘积度量可以不极小]\label{g3:exm:yamabe-long-cylinder}
+	在 \(S_L^1\times S^{n-1}\) 上取乘积度量，圆周长度为 \(L\)，球面半径为一。其标量曲率为 \((n-1)(n-2)\)。函数 \(h(t,\theta)=\cos(2\pi t/L)\) 的平均值为零，Rayleigh 商为 \((2\pi/L)^2\)。若
+	\[
+		L>\frac{2\pi}{\sqrt{n-2}},
+	\]
+	式\eqref{g3:eq:yamabe-csc-hessian}在这个方向为负。把度量缩放到体积一时，标量曲率和 Laplace 特征值乘以相同因子，负号保持不变。因此该乘积度量虽是常标量曲率度量，却不是所在共形类的局部极小度量。一般存在性推论保证该共形类另有一个全局极小度量。
+\end{example}
+正情形的三个问题由此分开：Euler--Lagrange 方程决定临界点，约束 Hessian 检验局部稳定性，而严格球面阈值和极小化序列的紧性给出全局极小值。体积约束只消去常数缩放，不能消去球面的非平凡共形对称。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

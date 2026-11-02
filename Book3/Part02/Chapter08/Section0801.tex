@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 8.1 Bonnet–Myers 定理
 % 纲要位置：几何学计划纲要.md，第 2397 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,175 @@
 \section{Bonnet–Myers 定理}
 \label{g3:sec:0801}
 
-待撰写
+上一章的逐方向比较使用截面曲率界。若只有 Ricci 曲率下界，单个法向 Jacobi 场未必服从相同的长度比较，但所有正交法向方向的指标形式之和仍受到控制。沿一条很长的最短测地线，同时向这些方向作正弦形变分，导数项的代价会随长度减小，而统一的正 Ricci 曲率持续提供负项。\term[BonnetMyersdingli]{Bonnet--Myers 定理}[Bonnet--Myers theorem]正是利用这两项的不相容来限制最短线的长度。
+\footnote{Pierre Ossian Bonnet（1819--1892），法国数学家，研究曲面微分几何、测地曲率与曲率积分公式。Sumner Byron Myers（1910--1955），美国数学家，研究微分几何与拓扑，建立了 Ricci 曲率正下界对直径和基本群的限制。}
 
 \subsection{测试变分场与指标估计}
 \label{g3:subsec:0801:01}
-待撰写
+
+先固定一条单位速最短测地线 \(\gamma:[0,\ell]\to M\)，其中 \(\ell>0\)，记 \(T=\dot\gamma\)。沿线的场导数写作 \(V'=\mathrm{D}_tV\)。对任意固定端点的分段光滑曲线 \(c:[0,\ell]\to M\)，长度与能量的关系给出
+\[
+	E(c)=\frac12\int_0^\ell|\dot c|^2\,\mathrm{d}t
+	\ge\frac{\operatorname{Len}(c)^2}{2\ell}
+	\ge\frac{\ell}{2}=E(\gamma).
+\]
+因此 \(\gamma\) 在固定端点变分下的能量第二导数非负。由\cref{g3:thm:energy-second-variation}，对两端为零的光滑场 \(V\) 有
+\[
+	I_\gamma(V)=\int_0^\ell
+	\bigl(|V'|^2-\langle R(V,T)T,V\rangle\bigr)\,\mathrm{d}t\ge0.
+\]
+这里任意这样的场均可由式\eqref{g3:eq:exponential-field-variation}实现为固定端点变分。最短性给出的是半正定性，终点可以恰为首个共轭点。
+
+\begin{lemma}\label{g3:lem:myers-index-test}
+	设 \(\gamma:[0,\ell]\to M\) 是 \(n\ge2\) 维光滑无边界黎曼流形中的单位速最短测地线，\(\ell>0\)。对任意光滑实函数 \(f:[0,\ell]\to\mathbb R\)，若 \(f(0)=f(\ell)=0\)，则
+	\begin{equation}\label{g3:eq:myers-weighted-index-inequality}
+		\int_0^\ell f(t)^2\operatorname{Ric}(T,T)\,\mathrm{d}t
+		\le(n-1)\int_0^\ell f'(t)^2\,\mathrm{d}t.
+	\end{equation}
+	特别地，若沿此线 \(\operatorname{Ric}(T,T)\ge(n-1)k\)，其中 \(k>0\)，则 \(\ell\le\pi/\sqrt{k}\)。
+\end{lemma}
+\begin{proof}
+	在 \(T(0)^\perp\) 中选正交单位基，沿 \(\gamma\) 平行移动，得到平行正交单位法向场 \(E_1,\ldots,E_{n-1}\)。它们存在于整个参数区间，且始终垂直于平行场 \(T\)。对 \(V_i=fE_i\)，两端均为零，前面的第二变分论证说明 \(I_\gamma(V_i)\ge0\)。于是
+	\begin{align}
+		0\le\sum_{i=1}^{n-1}I_\gamma(V_i)
+		&=\int_0^\ell\left((n-1)(f')^2
+		-f^2\sum_{i=1}^{n-1}\langle R(E_i,T)T,E_i\rangle\right)\,\mathrm{d}t\notag\\
+		&=\int_0^\ell\bigl((n-1)(f')^2
+		-f^2\operatorname{Ric}(T,T)\bigr)\,\mathrm{d}t.
+		\label{g3:eq:myers-index-trace}
+	\end{align}
+	最后一步使用 Ricci 曲率的正交迹定义；把 \(T\) 加入正交基时，新增项 \(\langle R(T,T)T,T\rangle\) 为零。由此得到第一式。
+
+	若有给定的正下界，取
+	\[
+		f(t)=\sin\frac{\pi t}{\ell}.
+	\]
+	直接计算得
+	\[
+		\int_0^\ell f^2\,\mathrm{d}t=\frac\ell2,
+		\qquad
+		\int_0^\ell(f')^2\,\mathrm{d}t=\frac{\pi^2}{2\ell}.
+	\]
+	代入式\eqref{g3:eq:myers-index-trace}，得到
+	\begin{equation}\label{g3:eq:myers-sine-estimate}
+		0\le\sum_{i=1}^{n-1}I_\gamma(V_i)
+		\le\frac{n-1}{2}\left(\frac{\pi^2}{\ell}-k\ell\right).
+	\end{equation}
+	因为 \(n-1>0\)、\(\ell>0\)，必有 \(k\ell^2\le\pi^2\)，即所求长度界。
+\end{proof}
+
+试探函数在两端为零，所以变分不移动端点；它在中间展开，恰好使两个积分都能明确计算。证明不要求每个 \(\langle R(E_i,T)T,E_i\rangle\) 分别为正，只要求它们的和有统一正下界。这是 Ricci 条件可以替代截面条件的具体位置。
 
 \subsection{直径界和紧性}
 \label{g3:subsec:0801:02}
-待撰写
+
+局部的曲率条件已经限制了每一条已有最短测地线的长度。要限制所有点之间的距离，还需要最短测地线存在；要从距离有界得到紧性，还需要闭有界集紧。这两步都由完备性和 Hopf--Rinow 定理提供。
+
+\begin{theorem}[Bonnet--Myers]\label{g3:thm:bonnet-myers}
+	设 \((M,g)\) 为连通、完备、无边界的 \(n\ge2\) 维光滑黎曼流形。若存在常数 \(k>0\)，使
+	\begin{equation}\label{g3:eq:myers-ricci-lower-bound}
+		\operatorname{Ric}_g(v,v)\ge(n-1)k\,g(v,v)
+		\qquad(p\in M,\ v\in\mathrm{T}_pM),
+	\end{equation}
+	则 \(M\) 紧，且其\term[zhijing]{直径}[diameter]满足
+	\begin{equation}\label{g3:eq:bonnet-myers-diameter}
+		\operatorname{diam}(M,g)
+		=\sup_{p,q\in M}d_g(p,q)\le\frac\pi{\sqrt{k}}.
+	\end{equation}
+\end{theorem}
+\symidx{\(\operatorname{diam}(M,g)\)：黎曼流形的直径}
+\begin{proof}
+	任取不同的 \(p,q\in M\)。由\cref{g3:thm:hopf-rinow}，存在从 \(p\) 到 \(q\) 的最短测地线；将其按单位速度参数化，定义域为 \([0,\ell]\)，其中 \(\ell=d_g(p,q)\)。沿线 \(|T|=1\)，所以式\eqref{g3:eq:myers-ricci-lower-bound}给出 \(\operatorname{Ric}(T,T)\ge(n-1)k\)。\cref{g3:lem:myers-index-test}于是说明 \(d_g(p,q)\le\pi/\sqrt{k}\)。对所有点对取上确界，得到直径界。
+
+	固定 \(p\in M\)，令 \(D=\pi/\sqrt{k}\)。直径界说明 \(M=\overline B(p,D)\)。完备性再由 Hopf--Rinow 定理给出该闭有界球紧，因此 \(M\) 紧。
+\end{proof}
+
+\begin{example}\label{g3:exm:myers-sharp-sphere}
+	半径 \(a\) 的圆球面 \(S_a^n\)、\(n\ge2\)，满足
+	\[
+		\operatorname{Ric}=(n-1)a^{-2}g,
+		\qquad\operatorname{diam}(S_a^n)=\pi a.
+	\]
+	曲率公式见\cref{g3:exm:space-form-curvature}，直径由\cref{g3:exm:sphere-multiple-minimizers}的球面距离公式得到。因此取 \(k=a^{-2}\) 时达到定理的上界，常数 \(\pi\) 不能减小。这里展示的是达到等号的模型；证明一般流形达到最大直径时必须是什么空间，还需要额外的刚性论证。
+\end{example}
+
+完备性不能删去。例如单位球面的开半球仍满足 \(\operatorname{Ric}=(n-1)g\)，却非紧；一条走向赤道的单位速大圆在有限时间内离开这个流形。正数 \(k\) 也不能换成零：Euclid 空间完备且 \(\operatorname{Ric}=0\)，但非紧、直径无限。维数限制同样参与证明；在一维，\(n-1=0\)，题设变成 \(\operatorname{Ric}\ge0\)，实直线就满足它，而法向试探场的求和已经没有任何项。
+
+\ProseParagraphBreak
+
+全部论证只沿一条区间选平行正交标架，没有使用流形的定向。因而结论同样适用于不可定向流形。例如带标准商度量的 \(\mathbb{RP}^2\) 满足正 Ricci 下界；其覆盖和距离已在\cref{g3:exm:projective-cut-locus}中计算。接下来正是通过这样的覆盖，把紧性转化为对基本群的限制。
 
 \subsection{万有覆盖上的应用}
 \label{g3:subsec:0801:03}
-待撰写
+
+给光滑覆盖 \(\pi:\widetilde M\to M\) 赋予拉回度量 \(\widetilde g=\pi^*g\)，就是令
+\[
+	\widetilde g_{\widetilde p}(v,w)
+	=g_{\pi(\widetilde p)}\bigl(\mathrm{d}\pi_{\widetilde p}v,
+	\mathrm{d}\pi_{\widetilde p}w\bigr).
+\]
+这里光滑覆盖指局部微分同胚的覆盖映射；微分可逆保证拉回张量正定。这样 \(\pi\) 在每张覆盖片上成为局部等距。称具有这一性质的覆盖为\term[liman fugai]{黎曼覆盖}[Riemannian covering]。第二章已证明覆盖空间完备能够推出基空间完备；当前还要把基空间的完备性提升到覆盖空间。
+
+\begin{proposition}[黎曼覆盖的完备性]\label{g3:prop:riemannian-cover-complete}
+	设 \(\pi:(\widetilde M,\widetilde g)\to(M,g)\) 为连通光滑无边界黎曼流形之间的覆盖映射，且处处局部等距。则 \(M\) 完备当且仅当 \(\widetilde M\) 完备。局部等距还保持曲率及其收缩，特别有
+	\begin{equation}\label{g3:eq:covering-ricci-pullback}
+		\operatorname{Ric}_{\widetilde g}=\pi^*\operatorname{Ric}_g.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	先说明测地线方程怎样通过 \(\pi\) 传递。在一张覆盖片上，把基空间的 Levi-Civita 联络通过局部等距拉回，所得联络仍度量相容且无挠。由 Levi-Civita 联络的唯一性，它就是 \(\widetilde g\) 的联络。因此局部等距及其局部逆都保持测地线方程。将联络用于曲率定义的三项，再用 \(\mathrm{d}\pi\) 识别切空间，得到两侧曲率算子相同；对对应的正交基取迹即得式\eqref{g3:eq:covering-ricci-pullback}。
+
+	设 \(M\) 完备。给定 \(\widetilde M\) 上的初值 \((\widetilde p,\widetilde v)\)，将它投影到 \((p,v)=(\pi(\widetilde p),\mathrm{d}\pi_{\widetilde p}\widetilde v)\)。Hopf--Rinow 定理给出定义于整个 \(\mathbb R\) 的基空间测地线 \(\gamma\)。第一卷第5章第3节的道路提升定理适用于覆盖 \(\pi\)：在每个紧区间 \([-N,N]\) 上，分别从 \(0\) 向正、负方向提升 \(\gamma\)，起点指定为 \(\widetilde p\)。提升唯一性使不同 \(N\) 得到的曲线在公共区间一致，故它们粘合成全时曲线 \(\widetilde\gamma:\mathbb R\to\widetilde M\)。
+
+	在每张覆盖片内，\(\widetilde\gamma\) 等于光滑局部逆与 \(\gamma\) 的复合，所以光滑，且由第一段满足测地线方程。投影等式在 \(0\) 处求导，给出初速度 \(\widetilde v\)。这样每组初值都具有全时测地线解，\(\widetilde M\) 测地完备，再由 Hopf--Rinow 定理得到度量完备。
+
+	反过来，设 \(\widetilde M\) 完备。对 \(M\) 中任意初值 \((p,v)\)，选 \(\widetilde p\in\pi^{-1}(p)\)，并以 \((\mathrm{d}\pi_{\widetilde p})^{-1}v\) 为初速度。在 \(\widetilde M\) 中求全时测地线，再投影到 \(M\)，便得到所给初值的全时解。因此 \(M\) 测地完备，也就度量完备。这也恢复了\cref{g3:prop:riemannian-covering-distance}中的完备性方向。
+\end{proof}
+
+从基空间向上提升时，覆盖条件保证整条道路都能提升。仅有局部等距并不够，例如通常度量下的包含映射 \((0,1)\to\mathbb R\) 局部等距，目标完备而源不完备。
+
+\begin{proposition}\label{g3:prop:riemannian-universal-cover}
+	设 \((M,g)\) 为连通光滑无边界黎曼流形。它有连通单连通的光滑万有覆盖 \(\pi:\widetilde M\to M\)，且拉回度量使 \(\pi\) 成为黎曼覆盖。每个覆盖变换都是 \((\widetilde M,\pi^*g)\) 的等距变换。若 \(M\) 完备，则这个万有覆盖也完备。
+\end{proposition}
+\begin{proof}
+	流形有可缩的坐标球，因此局部道路连通、半局部单连通；连通性又推出道路连通性。第一卷第5章第4节“道路类构造万有覆盖”定理给出拓扑万有覆盖。对基空间的坐标图 \((U,x)\)，限制到均匀覆盖邻域，并在每张覆盖片上使用 \(x\circ\pi\) 作坐标。换坐标就是基空间的光滑换坐标，因此这些图确定光滑结构，使 \(\pi\) 为局部微分同胚。
+
+	还须核对这个覆盖属于本书使用的 Hausdorff、第二可数流形。不同投影的两点可用基空间的分离邻域区分；投影相同的不同点则落在同一均匀覆盖邻域的不同片中，故也可分离。第二可数性可由道路类模型说明：连通第二可数流形的基本群至多可数，所需可数道路分段论证已经在\cref{g3:thm:holonomy-lie-group}的证明中给出。其做法是选可数坐标球、每对球的交集分支中的代表点与连接路径，再把任意环路同伦为这些已选路径的有限拼接。交集分支至多可数，有限字也只有可数个，所以基本群可数。固定一条从基点到 \(x\) 的道路，前置基点环路便把 \(\pi_1(M)\) 与道路类覆盖的纤维 \(\pi^{-1}(x)\) 双射。因此，每个坐标球上方只有可数张片。取基空间的可数坐标球覆盖，再取各片的可数坐标基，就得到总空间的可数基。
+
+	拉回度量正定光滑，且按定义使 \(\pi\) 局部等距。若 \(h\) 是覆盖变换，则它在覆盖片内由局部逆与 \(\pi\) 复合表示，因而光滑，逆也光滑；又有
+	\[
+		h^*(\pi^*g)=(\pi\circ h)^*g=\pi^*g.
+	\]
+	所以 \(h\) 是等距变换。
+
+	第一卷第5章第4节“正规化子与覆盖变换”定理在平凡子群 \(H=\{1\}\) 的情形给出 \(\operatorname{Deck}(\widetilde M/M)\cong\pi_1(M,p)\)，且覆盖变换群在每个纤维上传递。自由性也可直接由提升唯一性看出：两个覆盖变换若在一个点相等，沿从该点出发的任意道路都相等，故在连通覆盖上相等。最后的完备性断言由\cref{g3:prop:riemannian-cover-complete}得到。
+\end{proof}
+
+现在若 \(M\) 满足 Bonnet--Myers 的假设，其万有覆盖也连通、完备、无边界，且由式\eqref{g3:eq:covering-ricci-pullback}满足同一个常数的 Ricci 下界。再次应用\cref{g3:thm:bonnet-myers}，得到
+\begin{equation}\label{g3:eq:myers-universal-cover-compact}
+	\widetilde M\text{ 紧},\qquad
+	\operatorname{diam}(\widetilde M,\pi^*g)\le\frac\pi{\sqrt{k}}.
+\end{equation}
+这一步来自覆盖度量的完备性与曲率下界；基空间紧本身并不能推出无限叶覆盖紧，圆周的覆盖 \(\mathbb R\to S^1\) 就说明了这一点。
 
 \subsection{基本群有限性}
 \label{g3:subsec:0801:04}
-待撰写
+
+万有覆盖的一个纤维记录了基于同一点的不同环路类。上面的紧性使这个离散集合不能再有无限多个点，因此 Ricci 曲率的正下界同时限制了基本群。
+
+\begin{corollary}\label{g3:cor:myers-finite-fundamental-group}
+	设 \((M,g)\) 是连通、完备、无边界的 \(n\ge2\) 维光滑黎曼流形，并存在 \(k>0\)，使 \(\operatorname{Ric}_g\ge(n-1)k g\)。则对任意基点 \(p\in M\)，基本群 \(\pi_1(M,p)\) 有限；其万有覆盖为有限叶紧黎曼覆盖。
+\end{corollary}
+\begin{proof}
+	取\cref{g3:prop:riemannian-universal-cover}给出的万有覆盖。式\eqref{g3:eq:myers-universal-cover-compact}说明 \(\widetilde M\) 紧。纤维 \(F=\pi^{-1}(p)\) 是紧空间中的闭子集，因为 \(M\) Hausdorff、\(\{p\}\) 闭而 \(\pi\) 连续，所以 \(F\) 紧。另一方面，均匀覆盖邻域的每张片与 \(F\) 恰交于一点，这说明 \(F\) 的子空间拓扑离散。由各单点组成的开覆盖只有在 \(F\) 有限时才有有限子覆盖，因此 \(F\) 有限。
+
+	由\cref{g3:prop:riemannian-universal-cover}，覆盖变换群同构于 \(\pi_1(M,p)\)，并在 \(F\) 上自由传递。固定 \(\widetilde p\in F\)，求值映射
+	\[
+		\operatorname{Deck}(\widetilde M/M)\longrightarrow F,
+		\qquad h\longmapsto h(\widetilde p)
+	\]
+	于是为双射。因此 \(|\pi_1(M,p)|=|F|<\infty\)。覆盖的各个纤维由道路提升一一对应，故叶数就是这个有限数目。
+\end{proof}
+
+有限性不等于平凡性：\(\mathbb{RP}^2\) 的标准度量满足定理，万有覆盖却是二叶球面覆盖，基本群有两个元素。另一方面，紧流形上的处处正 Ricci 曲率自动具有统一正下界：在紧单位切球丛上取连续函数 \(v\mapsto\operatorname{Ric}(v,v)\) 的正最小值即可。因而任何基本群无限的紧连通无边界流形，都不能承载处处正 Ricci 曲率的度量；这一限制约束的是所有可能度量，而不只是某一个已选度量。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

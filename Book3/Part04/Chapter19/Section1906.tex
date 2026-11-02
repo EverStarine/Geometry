@@ -8,36 +8,237 @@
 % 
 % * 闭曲面的曲率能量与缩放
 % * 法向变分与 Willmore 方程
-% * 球面模型与球面拓扑下的能量下界
+% * 球面拓扑下的 Willmore 能量下界
 % * 等号条件与全脐曲面
-% * 一般拓扑、弱极限与存在性的外部输入
+% * 一般拓扑下的 Willmore 变分问题
 % 
 % ---
 % 
 % 纲要内容结束
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 % 规划任务：以欧氏三空间中的闭光滑浸入曲面为主范围，明确 W 为平均曲率平方的面积积分，并与第一卷第8章的法向、平均曲率和非负 Laplace 约定逐项核对。完整推导法向一阶变分与临界方程，计算球面，并用 Gauss–Bonnet 证明球面拓扑下的能量下界及等号。一般拓扑的下界、弱紧性、极小化存在、Willmore 流与环面定理的深层证明外引，不把球面模型扩称一般结论。
 
 \OptionalSection{曲率能量与 Willmore 曲面}{g3:sec:1906}
 
-待撰写
+面积随整体放大而增长，但曲率同时减小。对二维曲面，把平均曲率的平方与面积元相乘，两个缩放因子恰好抵消。这给出一种比较曲面弯曲程度、又不指定长度尺度的能量。本节研究它的一阶变分，并先在球面拓扑中把能量下界和等号完全确定。
+
+\ProseParagraphBreak
+
+以下主要考虑光滑浸入 \(F:\Sigma\to\mathbb R^3\)，其中 \(\Sigma\) 为闭连通定向曲面，诱导度量记为 \(g\)，面积密度记为 \(\mu\)。选定单位法向 \(\nu\)，令 \(A=-\mathrm d\nu\)、\(b(X,Y)=g(AX,Y)\)。本节沿用曲面文献的标量记号
+\[
+	H=\frac12\operatorname{tr}A,\qquad K=\det A,
+\]
+即 \(H\) 等于\cref{g3:prop:hypersurface-mean-variation}中的 \(h_\nu\)，而平均曲率向量是 \(H\nu\)。这些约定与第一卷第8.2.3小节“平均曲率、Gauss 曲率及脐点”一致；\cref{g3:thm:gauss-equation}保证这里的 \(K\) 也是诱导度量的 Gauss 曲率。外法向半径 \(R\) 球面的 \(A=-R^{-1}\operatorname{Id}\)、\(H=-R^{-1}\)。Laplace 算子仍取 \(\Delta=-\operatorname{div}\nabla\)。
 
 \subsection{闭曲面的曲率能量与缩放}
 \label{g3:subsec:1906:01}
-待撰写
+曲面的两个主曲率可以互相抵消，所以平均曲率平方并不逐点控制全部第二基本形式。对于固定拓扑的闭曲面，Gauss--Bonnet 公式会补上所缺的部分。
+
+\begin{definition}\label{g3:def:willmore-functional}
+	设 \(F:\Sigma\to\mathbb R^3\) 为闭光滑曲面的光滑浸入。其\term[Willmore nengliang]{Willmore 能量}[Willmore energy]定义为
+	\begin{equation}\label{g3:eq:willmore-functional}
+		W(F)=\int_\Sigma H^2\,\mu.
+	\end{equation}
+	即使 \(\Sigma\) 不可定向，也可在各坐标片选择单位法向；法向翻转只使 \(H\) 变号，因此 \(H^2\mu\) 是整体定义的密度。积分按参数曲面进行，保留浸入的重数。
+\end{definition}
+
+这一能量以 Willmore 命名。\footnote{Thomas James Willmore（1919--2005），英国数学家，研究黎曼几何与曲面的总平均曲率，并提出了环面曲率能量的下界问题。}若把平均曲率定义成两个主曲率之和，则同一泛函应写成该曲率平方积分的四分之一；比较不同文献时，必须保留这个归一化。
+
+\begin{proposition}\label{g3:prop:willmore-similarity-invariance}
+	设 \(F:\Sigma\to\mathbb R^3\) 为闭光滑曲面的光滑浸入，\(a\in\mathbb R^3\)、\(Q\in\operatorname{O}(3)\)、\(\lambda>0\)。则
+	\[
+		W(a+\lambda QF)=W(F).
+	\]
+	若 \(\varphi:\widetilde\Sigma\to\Sigma\) 为微分同胚，则还有 \(W(F\circ\varphi)=W(F)\)。
+\end{proposition}
+\begin{proof}
+	平移不改变任何导数。对 \(\widetilde F=a+\lambda QF\)，在每张法向坐标片选择 \(\widetilde\nu=Q\nu\)，则
+	\[
+		\widetilde g=\lambda^2g,\qquad
+		\widetilde b=\lambda b,\qquad
+		\widetilde A=\lambda^{-1}A,\qquad
+		\widetilde H=\lambda^{-1}H,\qquad
+		\widetilde\mu=\lambda^2\mu.
+	\]
+	第二式来自 \(\langle\partial_i\partial_j\widetilde F,\widetilde\nu\rangle=\lambda\langle\partial_i\partial_jF,\nu\rangle\)，第三式再升起一个指标。于是 \(\widetilde H^2\widetilde\mu=H^2\mu\)。对重参数化，各诱导量都是原量的拉回，密度的换元公式给出后一断言，不要求 \(\varphi\) 保定向。
+\end{proof}
+
+令 \(A^\circ=A-H\operatorname{Id}\) 为形算子的无迹部分。在正交主方向中直接计算，得到
+\begin{equation}\label{g3:eq:willmore-curvature-algebra}
+	|A|^2=4H^2-2K,\qquad
+	|A^\circ|^2=2(H^2-K)=\frac12(k_1-k_2)^2.
+\end{equation}
+第一卷第9.4节“整体 Gauss--Bonnet 公式”对任意闭光滑度量曲面给出 \(\int_\Sigma K\mu=2\pi\chi(\Sigma)\)。因此
+\begin{equation}\label{g3:eq:willmore-gauss-bonnet-decomposition}
+	W(F)=\frac14\int_\Sigma|A|^2\mu+\pi\chi(\Sigma)
+	=\frac12\int_\Sigma|A^\circ|^2\mu+2\pi\chi(\Sigma).
+\end{equation}
+固定拓扑以后，控制 \(W\) 就等价于控制第二基本形式的平方积分；但这里的度量也随浸入改变，这还不是固定坐标中的 \(W^{2,2}\) 紧性估计。
 
 \subsection{法向变分与 Willmore 方程}
 \label{g3:subsec:1906:02}
-待撰写
+考虑光滑浸入族 \(F_t\)，其中 \(F_0=F\)，初速度为 \(\partial_tF_t|_0=f\nu\)。\Cref{g3:prop:hypersurface-mean-variation}在二维 Euclid 环境中给出
+\begin{equation}\label{g3:eq:willmore-normal-variation-data}
+	\left.\partial_t\mu_t\right|_0=-2Hf\mu,
+	\qquad
+	\left.\partial_tH_t\right|_0=\frac12\bigl(-\Delta f+|A|^2f\bigr).
+\end{equation}
+其中第二式同时使用第二基本形式与逆度量的导数；只对 \(b_{ij}\) 求迹会漏掉逆度量变化。球面向外等速移动时 \(H_t=-(R+t)^{-1}\)，故 \(H'_0=R^{-2}\)，与 \(f=1\)、\(|A|^2=2R^{-2}\) 代入上式的结果一致。
 
-\subsection{球面模型与球面拓扑下的能量下界}
+\begin{theorem}\label{g3:thm:willmore-first-variation}
+	设 \(\Sigma\) 为闭定向光滑曲面，\(F_t:\Sigma\to\mathbb R^3\) 为光滑浸入族，初速度为 \(f\nu\)，其中 \(\nu\) 为 \(F_0\) 的单位法向。则
+	\begin{equation}\label{g3:eq:willmore-first-variation}
+		\left.\frac{\mathrm d}{\mathrm dt}\right|_0W(F_t)
+		=\int_\Sigma\bigl[-\Delta H+2H(H^2-K)\bigr]f\,\mu.
+	\end{equation}
+	因此 \(F_0\) 对所有光滑变分驻定，当且仅当
+	\begin{equation}\label{g3:eq:willmore-equation}
+		\Delta H-2H(H^2-K)=0.
+	\end{equation}
+	这样的浸入称为\term[Willmore qumian]{Willmore 曲面}[Willmore surface]。
+\end{theorem}
+\begin{proof}
+	对能量在积分号下求导，并代入式\eqref{g3:eq:willmore-normal-variation-data}，有
+	\[
+		\begin{aligned}
+		W'(0)
+		&=\int_\Sigma\bigl(2HH'-2H^3f\bigr)\mu\\
+		&=\int_\Sigma\bigl[-H\Delta f+H|A|^2f-2H^3f\bigr]\mu.
+		\end{aligned}
+	\]
+	闭性使分部积分没有边界项，且非负 Laplace 算子满足 \(\int H\Delta f\,\mu=\int f\Delta H\,\mu\)。再用 \(|A|^2=4H^2-2K\)，即得式\eqref{g3:eq:willmore-first-variation}。
+	任意光滑 \(f\) 都可以由 \(F_t=F+tf\nu\) 实现为初速度；由于 \(\Sigma\) 紧，浸入性在充分小的共同时间区间内保持。故对所有法向变分驻定，等价于式\eqref{g3:eq:willmore-equation}逐点成立。
+	最后考虑任意初速度 \(V=\mathrm dF(X)+f\nu\)。令 \(\varphi_t\) 是 \(-X\) 的流，则 \(F_t\circ\varphi_t\) 的初速度恰为 \(f\nu\)。重参数化不改变能量，所以一般变分的一阶导数与这个法向变分相同。于是法向驻定与全部变分驻定等价。
+\end{proof}
+
+这个方程对浸入是四阶的：\(H\) 已含二阶导数，\(\Delta H\) 再增加两阶。例如在平面上取小图像 \(F(x)=(x^1,x^2,v(x))\)，向上法向给出线性主项 \(H=\tfrac12\operatorname{div}\mathrm Dv=-\tfrac12\Delta v\)。所以能量梯度的线性主部是 \(\tfrac12\Delta^2v\)，这与面积方程的二阶主部有本质区别。
+
+\subsection{球面拓扑下的 Willmore 能量下界}
 \label{g3:subsec:1906:03}
-待撰写
+在半径 \(R\) 的圆球面上，\(H^2=K=R^{-2}\)，面积为 \(4\pi R^2\)，所以
+\[
+	W(S^2(R))=4\pi.
+\]
+球面的 \(H\) 恒定，且 \(H^2-K=0\)，故它满足 Willmore 方程。半径没有出现在能量中，与相似变换不变性一致。
+
+\begin{theorem}\label{g3:thm:willmore-sphere-bound}
+	设 \(\Sigma\) 为微分同胚于 \(S^2\) 的闭光滑曲面，\(F:\Sigma\to\mathbb R^3\) 为光滑浸入。则
+	\begin{equation}\label{g3:eq:willmore-sphere-defect}
+		W(F)-4\pi
+		=\frac14\int_\Sigma(k_1-k_2)^2\mu
+		=\frac12\int_\Sigma|A^\circ|^2\mu\ge0.
+	\end{equation}
+	等号成立当且仅当 \(F\) 处处全脐。
+\end{theorem}
+\begin{proof}
+	球面拓扑给出 \(\chi(\Sigma)=2\)。将这一数值代入式\eqref{g3:eq:willmore-gauss-bonnet-decomposition}，再用式\eqref{g3:eq:willmore-curvature-algebra}，便得全部等式和下界。因 \(|A^\circ|^2\) 连续非负，其积分为零当且仅当它处处为零；这正是 \(A=H\operatorname{Id}\)，即全脐条件。
+\end{proof}
+
+该证明只使用曲率代数与 Gauss--Bonnet，因此允许自交浸入。若 \(\Sigma\) 是亏格 \(g\) 的闭定向曲面，同一计算给出的拓扑项是 \(4\pi(1-g)\)。当 \(g\ge1\) 时，这个数不再给出所期待的正下界；一般拓扑的正下界需要另一个论证。
 
 \subsection{等号条件与全脐曲面}
 \label{g3:subsec:1906:04}
-待撰写
+全脐先是一个逐点条件。要把它变成圆球面的整体描述，需要先用 Codazzi 方程证明平均曲率恒定，再利用闭性排除平面，并检查浸入没有把圆球面覆盖多次。
 
-\subsection{一般拓扑、弱极限与存在性的外部输入}
+\begin{proposition}\label{g3:prop:closed-umbilical-sphere}
+	设 \(\Sigma\) 为闭连通定向光滑曲面，\(F:\Sigma\to\mathbb R^3\) 为光滑浸入。若 \(F\) 处处全脐，则存在 \(c\in\mathbb R^3\)、\(R>0\)，使 \(F\) 是 \(\Sigma\) 到圆球面 \(S^2(c,R)\) 的微分同胚。因此在\cref{g3:thm:willmore-sphere-bound}中，等号恰对应圆球面的重参数化。
+\end{proposition}
+\begin{proof}
+	全脐条件为 \(b=Hg\)。Euclid 环境中的\cref{g3:thm:codazzi-equation}给出
+	\[
+		X(H)g(Y,Z)=Y(H)g(X,Z).
+	\]
+	在任一点取正交单位向量 \(e_1,e_2\)。先取 \((X,Y,Z)=(e_1,e_2,e_2)\)，得到 \(e_1(H)=0\)；交换 \(e_1,e_2\) 得 \(e_2(H)=0\)。所以 \(H\) 在连通曲面上为常数。
+	若 \(H=0\)，则 \(A=0\)，Weingarten 公式给出 \(\mathrm d\nu=0\)，所以 \(\nu\) 是常向量，\(\langle F,\nu\rangle\) 也恒定。像落在一个平面内。作为到这个平面的映射，\(F\) 的微分处处为同维线性同构，故像为开集；紧性又使像为闭且紧的集合。非空平面连通，像只能是整个平面，与紧性矛盾。
+	因此 \(H\ne0\)。此时
+	\[
+		\mathrm d\bigl(F+H^{-1}\nu\bigr)
+		=\mathrm dF+H^{-1}\mathrm d\nu
+		=\mathrm dF-H^{-1}\mathrm dF\circ A=0.
+	\]
+	故 \(c=F+H^{-1}\nu\) 为常向量，且 \(|F-c|=|H|^{-1}=:R\)。映射 \(F:\Sigma\to S^2(c,R)\) 是局部微分同胚。其像非空、开且闭，因而是整个球面。
+	下面排除多重覆盖。每个纤维因局部单射而离散，又因 \(\Sigma\) 紧而有限。给定球面点 \(y\)，在纤维各点选两两不交的局部逆邻域。把共同像邻域缩小后，外部不再有原像：否则存在趋于 \(y\) 的点列及落在这些邻域之外的原像，紧性给出的收敛子列将产生一个遗漏的 \(y\) 的原像。因此 \(F\) 是有限层覆盖。
+	第一卷第5.2节中的“高维球面的单连通性”命题与第5.3节中的“映射的提升判据”定理说明，\(S^2\) 的连通覆盖只有一层。这里也可直接说明如何使用提升：固定一个原像点，球面的恒等映射有唯一提升 \(s:S^2\to\Sigma\)，满足 \(F\circ s=\operatorname{Id}\)。在各覆盖片上 \(s\) 为局部逆；\(s\circ F\) 与 \(\operatorname{Id}_\Sigma\) 是同一映射 \(F\) 的两个提升，并在基点相等，故由提升唯一性在连通的 \(\Sigma\) 上相等。于是 \(s\) 是 \(F\) 的光滑逆，证明了结论。
+\end{proof}
+
+紧性与连通性都参与了这个结论。非紧全脐曲面可以只是平面或圆球面的一部分；若允许不连通，若干圆球面的不交并仍处处全脐，而能量是每个分支的 \(4\pi\) 之和。
+
+\subsection{一般拓扑下的 Willmore 变分问题}
 \label{g3:subsec:1906:05}
-待撰写
+从球面拓扑走向一般曲面，需要控制自交、拓扑退化以及曲率集中。这些问题涉及共形几何与几何测度论。下面把本节所用的外部结论分清，并说明每个结论解决什么问题。
+
+\ProseParagraphBreak
+
+首先，任意拓扑的闭曲面都有同一个基本下界，而且像点的重数会提高下界。以下结果采用\cite[定理6，第286页]{LiYau1982ConformalInvariant}在 \(\mathbb R^3\) 中的情形，其证明依赖该文的共形面积方法。
+
+\begin{theorem}\label{g3:thm:willmore-multiplicity-bound}
+	设 \(\Sigma\) 为闭光滑曲面，\(F:\Sigma\to\mathbb R^3\) 为光滑浸入。若 \(a\in F(\Sigma)\) 有 \(q\) 个不同原像，则
+	\[
+		W(F)\ge4\pi q.
+	\]
+	特别地，每个这样的浸入均满足 \(W(F)\ge4\pi\)；若 \(W(F)<8\pi\)，则 \(F\) 为嵌入。
+\end{theorem}
+
+最后一个推论的拓扑步骤很短：能量小于 \(8\pi\) 排除了任何双重点，所以 \(F\) 单射；紧空间到 Hausdorff 空间的连续单射是到其像的同胚，再结合浸入性，就得到光滑嵌入。这里的 \(4\pi\) 下界不含 \(\chi(\Sigma)\)，因此确实补充了 Gauss--Bonnet 所给的拓扑项。
+
+\ProseParagraphBreak
+
+对正亏格曲面，更强且最优的下界来自 Marques 和 Neves 的工作。\footnote{Fernando Codá Marques（1979--），巴西数学家，研究几何分析与极小超曲面的极大极小理论；André Arroja Neves（1975--），葡萄牙数学家，研究微分几何、几何流和极小曲面。}下面引用\cite[定理A，第685页；式(1)，第684页]{MarquesNeves2014Willmore}的 Euclid 空间表述。
+
+\begin{theorem}[Marques--Neves]\label{g3:thm:willmore-positive-genus-bound}
+	设 \(\Sigma\) 为亏格 \(g\ge1\) 的闭连通定向光滑曲面，\(F:\Sigma\to\mathbb R^3\) 为光滑浸入。则
+	\[
+		W(F)\ge2\pi^2.
+	\]
+	等号成立当且仅当 \(F\) 为嵌入，且其像是 Clifford 环面经 \(S^3\) 的共形微分同胚变换后，再作立体投影所得的曲面；投影极点不在该曲面上，且允许重参数化。
+\end{theorem}
+
+这里的 Clifford 环面是
+\[
+	T_C=\{(z_1,z_2)\in\mathbb C^2:|z_1|=|z_2|=2^{-1/2}\}\subset S^3.
+\]
+说明原定理与上述表述的联系也有助于辨认其中的外部输入。原文先证明 \(S^3\) 中嵌入曲面的结论，球面中的能量是 \(\int(1+H_{S^3}^2)\mu\)；同文式(1)给出的共形变换公式，把它等同于立体投影后在 \(\mathbb R^3\) 中的 \(W\)。对非嵌入的浸入，\cref{g3:thm:willmore-multiplicity-bound}已给出 \(W\ge8\pi>2\pi^2\)。所以等号必为嵌入，恰由原定理的等号分类给出。这里关于球面能量和共形变换的公式也作为该文的外部输入使用。
+
+\ProseParagraphBreak
+
+下面说明极小化存在中的紧性困难。即使曲面拓扑不变，取 \(F_j=\varepsilon_jF\)、\(\varepsilon_j\downarrow0\)，也有 \(W(F_j)=W(F)\)，而 \(F_j\) 一致收敛到常映射。因而必须先选择位置和尺度的归一化。固定亏格也不自动阻止细颈收缩或曲率集中；能量的尺度不变性恰使这些小尺度现象可能保持有限代价。
+
+\ProseParagraphBreak
+
+一个精确的存在定理可用来说明如何排除拓扑分裂。令 \(\beta_g\) 为所有嵌入 \(\mathbb R^3\) 的闭连通定向光滑亏格 \(g\) 曲面的 \(W\) 的下确界。文献\cite[第282页的主要结果；第4节，第320--323页]{Simon1993WillmoreMinimizers}证明：\(\beta_1\) 由一张嵌入的实解析环面达到；当 \(g\ge2\) 时，只要
+\begin{equation}\label{g3:eq:willmore-genus-strict-gap}
+	\beta_g<8\pi,
+	\qquad
+	\beta_g<4\pi+\sum_{j=1}^q(\beta_{g_j}-4\pi)
+	\quad
+	\left(q\ge2,\ g_j\ge1,\ \sum_{j=1}^qg_j=g\right)
+\end{equation}
+对每一种这样的亏格分拆成立，就存在达到 \(\beta_g\) 的闭嵌入实解析亏格 \(g\) 曲面。右端表达若干低亏格部分经细颈拼接所对应的比较能量，严格不等式使这种分裂不能达到原下确界。该结果的证明包括弱极限的正则性、亏格损失的控制，以及必要的反演和归一化；仅有 \(W\) 的下半连续性还不能保留极小化问题的拓扑条件。
+
+\ProseParagraphBreak
+
+对于已经满足 Willmore 方程的曲面族，有一个适合与本节方程对照的弱极限结果。先说清所用的弱收敛：令 \(\operatorname{Gr}_2(\mathbb R^3)\) 为无定向二维线性平面的集合，把光滑嵌入曲面 \(S\) 看作 \(\mathbb R^3\times\operatorname{Gr}_2(\mathbb R^3)\) 上的测度
+\[
+	V_S(\varphi)=\int_S\varphi(x,\mathrm T_xS)\,\mu_S,
+	\qquad \varphi\in C_c\bigl(\mathbb R^3\times\operatorname{Gr}_2(\mathbb R^3)\bigr).
+\]
+这里把每个切平面平移到原点后视为 \(\operatorname{Gr}_2(\mathbb R^3)\) 的元素。对这些测试函数的测度弱收敛称为此处的变分流形（varifold）弱收敛，它同时记录面积与无定向切平面。文献\cite[定理5.1，第343--344页]{KuwertSchaetzle2004WillmoreSingularities}给出如下外部结论：若 \(S_j\subset\mathbb R^3\) 为光滑闭嵌入 Willmore 曲面，满足
+\[
+	\operatorname{Area}(S_j)=1,
+	\qquad \int_{S_j}|A_j|^2\mu_j\le C,
+	\qquad W(S_j)\le8\pi-\delta
+\]
+其中 \(C<\infty\)、\(\delta>0\) 与 \(j\) 无关，且 \(V_{S_j}\) 弱收敛到一个非零测度 \(V\)，则 \(V\) 正是一张光滑闭 Willmore 曲面的面积与切平面测度。非零条件排除了整体逃向无穷远；驻定方程与严格能量阈值则参与曲率集中点的可去性证明。这是关于特定解族的正则极限结论。
+
+\ProseParagraphBreak
+
+最后，从下降能量的方向可以定义\term[Willmore liu]{Willmore 流}[Willmore flow]。在本节归一化下，取
+\begin{equation}\label{g3:eq:willmore-gradient-flow}
+	\partial_tF=\bigl[\Delta H-2H(H^2-K)\bigr]\nu.
+\end{equation}
+只要光滑浸入解存在，\cref{g3:thm:willmore-first-variation}就在每个时刻给出
+\begin{equation}\label{g3:eq:willmore-flow-dissipation}
+	\frac{\mathrm d}{\mathrm dt}W(F_t)
+	=-\int_\Sigma\bigl|\Delta H-2H(H^2-K)\bigr|^2\mu_t.
+\end{equation}
+因此能量递减，并且在任意光滑存在区间 \([0,T]\) 上，时间积分的耗散恰为 \(W(F_0)-W(F_T)\)。至于能否保持光滑，需要四阶流的估计。一个明确的外部版本是：若 \(F_0:S^2\to\mathbb R^3\) 为光滑浸入且 \(W(F_0)<8\pi\)，则从它出发的 Willmore 流对所有正时间光滑存在，并在重参数化后光滑收敛到圆球面，见\cite[定理5.2及其证明，第347--350页]{KuwertSchaetzle2004WillmoreSingularities}。该文以两个主曲率之和定义平均曲率向量，流速是式\eqref{g3:eq:willmore-gradient-flow}的两倍；一个固定的时间重标度便得到这里的表述。这个结果把能量下降、奇性排除与极限分类连接起来，也说明初始拓扑和能量阈值在流问题中各有作用。

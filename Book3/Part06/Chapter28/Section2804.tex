@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 28.4 弱演化的不同对象
 % 纲要位置：几何学计划纲要.md，第 3306 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,209 @@
 \section{弱演化的不同对象}
 \label{g3:sec:2804}
 
-待撰写
+圆球面缩到一点时，浸入及其诱导度量同时退化。继续研究演化，需要先决定保留哪些信息：水平集方法保留区域及其边界的位置，变分流形方法还保留面积和重数。这两种选择产生不同的解空间，也使“唯一”具有不同含义。本节分别给出方程与定义，证明它们在光滑区域中的相容性，再陈述所用的整体存在结果。
 
 \subsection{水平集方程及粘性解}
 \label{g3:subsec:2804:01}
-待撰写
+设 \(u=u(x,t)\) 是 \(\mathbb R^n\times(0,T)\) 上的光滑函数，\(n\ge2\)，并在所考察的零水平集上满足 \(\mathrm Du\ne0\)。选择法向 \(\nu=\mathrm Du/|\mathrm Du|\)，则该水平集的迹平均曲率向量为
+\[
+\mathcal H=-\operatorname{div}\left(\frac{\mathrm Du}{|\mathrm Du|}\right)\nu.
+\]
+如果 \(x(t)\) 沿水平集以速度 \(\mathcal H\) 移动，对 \(u(x(t),t)=0\) 求导得到
+\begin{equation}\label{g3:eq:mcf-level-set}
+	u_t=|\mathrm Du|\operatorname{div}\left(\frac{\mathrm Du}{|\mathrm Du|}\right)
+	=\left(\delta_{ij}-\frac{u_i u_j}{|\mathrm Du|^2}\right)u_{ij}.
+\end{equation}
+这里使用环境坐标的一阶、二阶导数；右端是水平集切方向上的 Hessian 迹。它在法向方向没有二阶扩散，且在 \(\mathrm Du=0\) 时没有单一的经典取值。因而\cref{g3:thm:quasilinear-parabolic-short-time}的强抛物假设在这里不成立。
+
+\ProseParagraphBreak
+粘性解用从上、从下接触的光滑函数测试方程。先写出零梯度处应采用的两个极限。对 \(p\ne0\) 和实对称 \(n\times n\) 矩阵 \(X\)，记
+\[
+\mathcal F(p,X)=\operatorname{tr}X-\frac{\langle Xp,p\rangle}{|p|^2}.
+\]
+令 \(\mathcal F^*\)、\(\mathcal F_*\) 分别为当 \((q,Y)\to(p,X)\)、\(q\ne0\) 时的上极限与下极限。在 \(p\ne0\) 处它们都等于 \(\mathcal F\)；在 \(p=0\) 处，Rayleigh 商的极值给出
+\begin{equation}\label{g3:eq:mcf-level-set-envelopes}
+	\mathcal F^*(0,X)=\operatorname{tr}X-\lambda_{\min}(X),
+	\qquad
+	\mathcal F_*(0,X)=\operatorname{tr}X-\lambda_{\max}(X).
+\end{equation}
+事实上，任意非零 \(q\) 的方向都在单位球面上；取趋于最小或最大特征向量的方向，就分别达到上述两端。
+
+\begin{definition}\label{g3:def:mcf-viscosity-solution}
+	设 \(Q\subset\mathbb R^n\times(0,\infty)\) 开，\(u:Q\to\mathbb R\) 连续。如果对每个 \(\varphi\in C^{2,1}(Q)\) 及每个使 \(u-\varphi\) 取得局部最大值的 \((x_0,t_0)\in Q\)，都有
+	\[
+	\varphi_t(x_0,t_0)
+	\le\mathcal F^*\bigl(\mathrm D\varphi(x_0,t_0),\mathrm D^2\varphi(x_0,t_0)\bigr),
+	\]
+	则称 \(u\) 为式\eqref{g3:eq:mcf-level-set}的\term[nianxing cixie]{粘性次解}[viscosity subsolution]。若在局部最小值点满足反向不等式，且右端使用 \(\mathcal F_*\)，就称为\term[nianxing chaoxie]{粘性超解}[viscosity supersolution]。同时满足两种条件的连续函数称为\term[nianxing jie]{粘性解}[viscosity solution]。初值 \(u_0\) 通过 \(u(\cdot,t)\to u_0\) 的连续延拓施加。
+\end{definition}
+
+上述定义按 \(u_t-\mathcal F=0\) 的符号写出；次解使用右端的上包络，超解使用下包络。它是文献\cite[定义2.1，第753--754页]{ChenGigaGoto1991MeanCurvature}对奇异算子的定义在本方程中的具体形式。条件测试的是所有接触函数，并非要求 \(u\) 本身处处可微。
+
+\begin{proposition}\label{g3:prop:mcf-level-set-smooth-consistency}
+	设 \(u\in C^{2,1}(Q)\)，其中 \(Q\subset\mathbb R^n\times(0,T)\) 开，且 \(\mathrm Du\ne0\) 在 \(Q\) 上成立。则 \(u\) 是式\eqref{g3:eq:mcf-level-set}的粘性解，当且仅当它是经典解；此时每个非空水平集的法向速度都是其迹平均曲率向量。
+\end{proposition}
+\begin{proof}
+	若 \(u\) 是粘性解，直接取测试函数 \(\varphi=u\)，次解与超解条件给出等式。反之，在 \(u-\varphi\) 的局部最大值点，\(u_t=\varphi_t\)、\(\mathrm Du=\mathrm D\varphi\)，且 \(\mathrm D^2u\le\mathrm D^2\varphi\)。矩阵 \(I-p\otimes p/|p|^2\) 半正定，所以 \(\mathcal F(p,\mathrm D^2u)\le\mathcal F(p,\mathrm D^2\varphi)\)，得到次解条件；局部最小值处同理。
+
+	对水平集上一条运动曲线，有 \(u_t+\mathrm Du\cdot x'=0\)，故其法向速度是 \(-u_t\nu/|\mathrm Du|\)。代入方程恰为 \(\mathcal H\)。也可直接求解 \(x'=\mathcal H(x,t)\) 的局部常微分方程；沿解 \(u\) 保持常值，从而得到以纯法向速度移动的局部参数。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:mcf-level-set-relabel}
+	设 \(u\) 是开时空区域 \(Q\) 上的连续粘性解，\(\chi\in C^2(\mathbb R)\) 且 \(\chi'>0\)。则 \(v=\chi(u)\) 也是粘性解。
+\end{proposition}
+\begin{proof}
+	设 \(v-\varphi\) 在 \((x_0,t_0)\) 取得局部最大值，平移测试函数使两者在该点相等。\(\chi\) 在该值附近可逆，\(\psi=\chi^{-1}\circ\varphi\) 从上接触 \(u\)。记该点 \(a=\chi'(u)>0\)、\(b=\chi''(u)\)，则
+	\[
+	\varphi_t=a\psi_t,\qquad
+	\mathrm D\varphi=a\mathrm D\psi,\qquad
+	\mathrm D^2\varphi=a\mathrm D^2\psi+b\,\mathrm D\psi\otimes\mathrm D\psi.
+	\]
+	对 \(p\ne0\)，\(\mathcal F(ap,aX+bp\otimes p)=a\mathcal F(p,X)\)，因为切向投影消去 \(p\otimes p\)。对 \(p=0\)，由式\eqref{g3:eq:mcf-level-set-envelopes}，两个包络也满足相应的正齐次恒等式。因此 \(u\) 的次解条件给出 \(v\) 的次解条件。从下接触时相同计算给出超解条件。
+\end{proof}
+
+若 \(\chi(0)=0\)，这一变换保持零水平集以及两侧符号；因此描述函数的数值标记具有自由度。任意连续定义函数之间的独立性还需要比较原理，将在本节末准确引用。
 
 \subsection{Brakke 不等式及测度族}
 \label{g3:subsec:2804:02}
-待撰写
+接着保留面积信息。按\cref{g3:def:rectifiable-varifold}，整变分流形可写成 \(V=\mathbf v(S,\theta)\)，权测度为 \(\mu=\theta\mathcal H^m\llcorner S\)，其中 \(\theta\) 几乎处处取正整数。若第一变分没有奇异部分，则\eqref{g3:eq:varifold-mean-curvature-decomposition}成为
+\begin{equation}\label{g3:eq:brakke-mean-curvature}
+	\delta V(X)=-\int\mathcal H_V\cdot X\,\mathrm d\mu,
+	\qquad X\in C_c^1(\mathbb R^n;\mathbb R^n).
+\end{equation}
+这里的 \(\mathcal H_V\) 就是前章记作 \(H_V\) 的广义平均曲率；对光滑 \(m\) 维子流形，它等于 \(mH=\mathcal H\)，这一换算已由\cref{g3:prop:smooth-varifold-boundary-variation}证明。
+
+\begin{proposition}\label{g3:prop:mcf-weighted-area-transport}
+	设 \(F:M^m\times[a,b]\to\mathbb R^n\) 是闭光滑流形上的光滑平均曲率流，速度为 \(F_t=\mathcal H\)。对 \(\varphi\in C^{2,1}(\mathbb R^n\times[a,b])\)，有
+	\begin{equation}\label{g3:eq:mcf-weighted-area-transport}
+		\frac{\mathrm d}{\mathrm dt}\int_M\varphi(F,t)\,\mu_{g(t)}
+		=\int_M\bigl(\varphi_t+\mathrm D\varphi\cdot\mathcal H
+		-\varphi|\mathcal H|^2\bigr)(F,t)\,\mu_{g(t)}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	沿运动点的函数导数为 \(\varphi_t+\mathrm D\varphi\cdot F_t\)。面积元导数为 \(-|\mathcal H|^2\mu_{g(t)}\)。将两项相加，并利用 \(M\) 紧以交换求导与积分，即得结论。
+\end{proof}
+
+弱极限中，面积可能丢失，而曲率平方积分具有下半连续性。将上式等号改成只允许额外下降的不等号，便得到 Brakke 演化。\footnote{Kenneth A. Brakke，美国数学家，研究几何测度论与曲面的平均曲率演化，并开发了 Surface Evolver 曲面计算软件；人物与软件资料见其\href{https://kenbrakke.com/}{个人主页}。}下面采用带时间测试函数的积分形式，固定端点测度的取值，从而把跳跃下降也纳入定义。
+
+\begin{definition}\label{g3:def:integral-brakke-flow}
+	设 \(1\le m<n\)、\(I=[0,T)\)，其中 \(T\le\infty\)。一族 \(\mathbb R^n\) 上的非负 Radon 测度 \(\{\mu_t\}_{t\in I}\) 称为无边界的 \(m\) 维\term[Brakke liu]{整 Brakke 流}[integral Brakke flow]，若满足下列条件：
+	\begin{enumerate}
+		\item 对每个紧集 \(K\subset\mathbb R^n\) 和 \(S<T\)，有 \(\sup_{0\le t\le S}\mu_t(K)<\infty\)；对每个 \(f\in C_c(\mathbb R^n)\)，\(t\mapsto\mu_t(f)\) 可测。
+		\item 对几乎每个 \(t\)，\(\mu_t\) 是整变分流形 \(V_t\) 的权测度，\(V_t\) 的第一变分满足式\eqref{g3:eq:brakke-mean-curvature}。其广义平均曲率 \(\mathcal H_t\) 垂直于近似切平面，并可选成关于 \(\mathrm d\mu_t\,\mathrm dt\) 可测的向量场，满足
+		\[
+		\int_0^S\int_K|\mathcal H_t|^2\,\mathrm d\mu_t\,\mathrm dt<\infty
+		\quad(K\text{ 紧},\ S<T).
+		\]
+		\item 对每个 \(0\le a<b<T\) 和每个空间支集一致紧的非负 \(\varphi\in C^{2,1}(\mathbb R^n\times[a,b])\)，都有
+		\begin{equation}\label{g3:eq:brakke-integrated-inequality}
+			\mu_b(\varphi(\cdot,b))-\mu_a(\varphi(\cdot,a))
+			\le\int_a^b\int_{\mathbb R^n}
+			\bigl(\varphi_t+\mathrm D\varphi\cdot\mathcal H_t
+			-\varphi|\mathcal H_t|^2\bigr)\,\mathrm d\mu_t\,\mathrm dt.
+		\end{equation}
+	\end{enumerate}
+	称式\eqref{g3:eq:brakke-integrated-inequality}为\term[Brakke budengshi]{Brakke 不等式}[Brakke inequality]。说该流连续地取初值 \(\mu_0\)，另指 \(\mu_t\rightharpoonup\mu_0\) 当 \(t\downarrow0\)，即所有紧支连续函数上的积分收敛。
+\end{definition}
+
+这里 \(C^{2,1}\) 指空间二阶、时间一阶连续可微。局部质量界及平方曲率的时空可积性使右端各项可积；例如 \(\mathrm D\varphi\cdot\mathcal H_t\) 可由 Cauchy--Schwarz 控制。在异常的零测时间集上无需定义曲率，端点测度却仍有明确取值。不等式要求每对端点都成立，因而在某个单独时刻任意增加质量通常会破坏定义。原始的上导数形式见\cite[第3.2--3.3节，第20--22页]{Brakke1978Motion}，其构造所满足的积分不等式见该书第4.29节，式(1)。
+
+\begin{corollary}\label{g3:cor:smooth-flow-is-brakke}
+	闭光滑嵌入子流形的光滑平均曲率流，其面积测度构成整 Brakke 流，并在式\eqref{g3:eq:brakke-integrated-inequality}中取等号。若一整 Brakke 流在 \([a,b]\) 的全部支集包含于同一紧集，则
+	\begin{equation}\label{g3:eq:brakke-total-dissipation}
+		\mu_b(\mathbb R^n)+\int_a^b\int|\mathcal H_t|^2\,\mathrm d\mu_t\,\mathrm dt
+		\le\mu_a(\mathbb R^n).
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	光滑情形的第一变分和曲率均由前述公式给出，其余条件由紧性成立。对式\eqref{g3:eq:mcf-weighted-area-transport}在时间上积分即得等号。第二个结论中，取一个在所给紧集的邻域等于一的非负紧支空间函数作为 \(\varphi\)，则其时间导数及支集上的空间梯度都为零，故得到所示不等式。
+\end{proof}
 
 \subsection{质量丢失、重数和肥化}
 \label{g3:subsec:2804:03}
-待撰写
+Brakke 不等式保留光滑流的耗散方向，但允许更多的质量下降。下面的例子在曲率仍然有界时就能显示这一自由度。
+
+\begin{example}\label{g3:exm:brakke-premature-extinction}
+	取半径 \(R_0>0\) 的 \(m\) 维圆球面，令
+	\[
+	R(t)=\sqrt{R_0^2-2mt},\qquad T_*=\frac{R_0^2}{2m}.
+	\]
+	固定 \(0<c<T_*\)，定义
+	\[
+	\mu_t^{(c)}=
+	\begin{cases}
+		\mathcal H^m\llcorner S^m_{R(t)},&0\le t<c,\\
+		0,&t\ge c.
+	\end{cases}
+	\]
+	这是一个连续地取同一初值的整 Brakke 流。确实，\(t<c\) 时它满足光滑等式；\(t\ge c\) 时各项都为零。若 \(a<c\le b\)，把光滑等式积分到 \(c\) 的左侧，右端等于
+	\[
+	\int_{S^m_{R(c)}}\varphi(x,c)\,\mathrm d\mathcal H^m(x)
+	-\mu_a^{(c)}(\varphi(\cdot,a)),
+	\]
+	它不小于左端 \(-\mu_a^{(c)}(\varphi(\cdot,a))\)。因为 \(\varphi\ge0\)，跳跃恰好沿允许的方向发生。曲率在 \([0,c]\) 有界，故平方曲率可积条件也满足。不同的 \(c\) 给出同一初始球面的不同弱流；这一差别来自定义允许的\term[zhiliang diushi]{质量丢失}[mass drop]。
+\end{example}
+
+\begin{example}\label{g3:exm:brakke-multiplicity}
+	设 \(\mu_t\) 是整 Brakke 流，\(q\) 是固定正整数。则 \(q\mu_t\) 也是整 Brakke 流，并有相同的广义平均曲率。因为第一变分和权测度同时乘以 \(q\)，式\eqref{g3:eq:brakke-mean-curvature}中的曲率向量不变；不等式两端也同时乘以 \(q\)。两者有相同支集，却有不同面积和重数。例如重数一与重数二的收缩球面具有同样的几何位置。这是在比较不同初始测度，不能据此说固定初始测度已经不唯一；上一例才提供了后一种现象。
+\end{example}
+
+水平集方法中的另一种退化是零水平集变厚。设连续解 \(u\) 的初始零水平集没有内点。如果某个 \(t>0\) 满足
+\[
+\operatorname{int}\{x:u(x,t)=0\}\ne\varnothing,
+\]
+就称该零水平集在时刻 \(t\) 发生\term[feihua]{肥化}[fattening]。此时零水平集含有开区域，不能作为通常的余维一界面理解。若记
+\[
+\Omega_t^- =\{u(\cdot,t)<0\},\qquad K_t=\{u(\cdot,t)\le0\},
+\]
+则 \(K_t\setminus\Omega_t^-=\{u=0\}\) 可以含有开集；由严格负相和非正相提取界面时，需要说明采用哪种边界。
+
+\ProseParagraphBreak
+肥化描述的是一个确定的函数解的水平集几何。即使函数解唯一，集合 \(\{u=0\}\) 仍可能变厚；这两个断言并不矛盾。相反，若解在零水平集附近光滑且梯度不为零，隐函数定理保证该水平集局部是超曲面，从而没有内点。质量丢失、整数重数与肥化分别涉及测度随时间的跳跃、面积的计数和零集的空间结构，判断它们所需的信息各不相同。
 
 \subsection{存在、唯一性及正则性的不同结论范围}
 \label{g3:subsec:2804:04}
-待撰写
+水平集方程的比较原理必须处理零梯度处的不连续算子；Brakke 流的构造则要同时保持测度紧性、整数重数和平方曲率控制。本节外引这两项整体理论，给出便于应用的具体版本。
+
+\begin{theorem}\label{g3:thm:level-set-global-external}
+	设 \(n\ge2\)，\(u_0:\mathbb R^n\to\mathbb R\) 连续，且在某个紧集外等于常数 \(c\)。则式\eqref{g3:eq:mcf-level-set}存在唯一连续粘性解 \(u\) 于 \(\mathbb R^n\times[0,\infty)\)，取初值 \(u_0\)，并具有如下性质：对每个有限 \(S>0\)，有 \(R_S<\infty\) 使 \(u(x,t)=c\) 当 \(|x|>R_S\)、\(0\le t\le S\)。唯一性在这一解类中成立。
+
+	若 \(u_0\le v_0\)，且两者分别在紧集外为常数，则相应解满足 \(u\le v\)。若 \(c>0\)，则集合对
+	\[
+	\bigl(\{u(\cdot,t)=0\},\ \{u(\cdot,t)<0\}\bigr)
+	\]
+	只由初始的这一集合对决定，与所用的连续定义函数无关。
+\end{theorem}
+
+这一结果取自\cite[定理6.7、6.8及注6.9，第780--781页；定理7.1，第782--783页]{ChenGigaGoto1991MeanCurvature}，证明分别使用奇异算子的比较原理、上下解构造以及保持水平集的函数变换。原文把正相作为有界区域；对本书的负相约定，将 \(u\) 换成 \(-u\) 即可。方程在此变换下不变，因为 \(\mathcal F(-p,-X)=-\mathcal F(p,X)\)，零梯度处的两个包络随之互换。初值在紧集外为常数还保证它有界且一致连续，本定理并未把结论的解类扩大到任意无穷远增长。
+
+\begin{corollary}\label{g3:cor:level-set-contraction}
+	在\cref{g3:thm:level-set-global-external}的解类中，对任意两个初值 \(u_0,v_0\) 及任意 \(t\ge0\)，有
+	\[
+	\|u(\cdot,t)-v(\cdot,t)\|_{L^\infty(\mathbb R^n)}
+	\le\|u_0-v_0\|_{L^\infty(\mathbb R^n)}.
+	\]
+\end{corollary}
+\begin{proof}
+	令右端为 \(d\)。方程不含函数值本身，故 \(v+d\) 和 \(v-d\) 仍在指定类中求解。初值满足 \(v_0-d\le u_0\le v_0+d\)，两次应用比较原理即可。
+\end{proof}
+
+测度演化有如下存在结论，其证明属于变分流形的逼近理论，见\cite[第4.26节，第106--108页；第4.29节，第116--120页]{Brakke1978Motion}。这里只取光滑紧初始超曲面的版本。
+
+\begin{theorem}\label{g3:thm:brakke-existence-external}
+	设 \(\Sigma_0^m\subset\mathbb R^{m+1}\) 是非空、闭、光滑嵌入超曲面，\(m\ge1\)。存在定义于全部 \(t\ge0\) 的 \(m\) 维整 Brakke 流 \(\{\mu_t\}\)，使
+	\[
+	\mu_0=\mathcal H^m\llcorner\Sigma_0,
+	\qquad \mu_t\rightharpoonup\mu_0\quad(t\downarrow0).
+	\]
+\end{theorem}
+
+原构造先平滑第一变分，再以小时间步推进，并在每步加入不增加所测试面积的局部变形；局部质量界给出弱极限，曲率控制和整性紧性使几乎每个时间片恢复整变分流形。所述定理选出了一个连续地取给定初值的整体弱演化。若要比较该构造与经典解在整个光滑区间内的一致性，还需要所选逼近的相容性质；仅满足 Brakke 不等式的任意流可以像\cref{g3:exm:brakke-premature-extinction}那样提前丢失质量。
+
+\ProseParagraphBreak
+两个存在结论都允许越过经典浸入的奇点，但输出不同。水平集定理确定连续函数解及相应的集合演化，描述中没有整数重数；Brakke 定理输出带面积与重数的测度族，定义允许质量下降，因而没有一般唯一性结论。在二者的光滑重合区域，\cref{g3:prop:mcf-level-set-smooth-consistency,g3:cor:smooth-flow-is-brakke}给出了同一个法向速度与面积演化。
+
+\ProseParagraphBreak
+正则性则要求从弱对象重新得到光滑参数、切平面和曲率控制。单调公式中的非负平方项提供尺度间的耗散信息，零耗散给出自相似约束；要将小耗散或密度信息提升为光滑性，仍须另有相应的正则性定理及其密度、重数或非肥化假设。本章的整体外引结论是上述水平集比较与存在、以及指定初值的整 Brakke 流存在；有关所有奇点的光滑性或奇点后经典解的唯一延续，均不包含在这些结论之中。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

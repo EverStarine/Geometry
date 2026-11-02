@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 27.5 曲面与齐性算例
 % 纲要位置：几何学计划纲要.md，第 3272 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 % 后续写作任务：本节只处理所列曲面与齐性流模型，并准确声明熵、非塌缩、三维手术与几何化所用的外部结果；拓扑分解和几何化陈述与第二卷附录A第4节分工，双曲商与 Mostow–Prasad 刚性另见本卷附录D的规划，不把尚未写成的目标当作本节已证输入。
 
 % 纲要内容开始
@@ -18,21 +18,191 @@
 \section{曲面与齐性算例}
 \label{g3:sec:2705}
 
-待撰写
+方程的一般理论说明何时能求解、何时可以延拓；对称模型则把这些条件转成可以计算的长度与曲率。本节先求曲面上的尺度变化，再用体积归一化比较不同时间的几何。齐性条件把空间偏微分方程约化为有限维常微分方程，但保留了各向异性：不同方向可能同时增长和缩短。最后说明从这些光滑模型走向三维手术与几何化还需要哪些整体结果。
 
 \subsection{常曲率曲面的显式演化}
 \label{g3:subsec:2705:01}
-待撰写
+在二维，Ricci 张量由 Gauss 曲率完全确定：\(\operatorname{Ric}=Kg\)、\(s=2K\)。因此 Ricci 流保持初始度量的点态共形类。这个简化来自维数二，而不是一般 Ricci 流的性质。
+
+\begin{proposition}\label{g3:prop:ricci-flow-surface-conformal}
+	设 \(M^2\) 为闭光滑曲面，\(g_0\) 为光滑度量，\(g(t)\) 是以 \(g_0\) 为初值的光滑 Ricci 流。则存在实值光滑函数 \(u(x,t)\)，使 \(g(t)=e^{2u(x,t)}g_0\)、\(u(x,0)=0\)，并且
+	\begin{equation}\label{g3:eq:ricci-flow-surface-conformal}
+		u_t=-e^{-2u}(K_0+\Delta_{g_0}u).
+	\end{equation}
+	若 \(K_0=k\) 为常数，则在 \(1-2kt>0\) 的区间上
+	\begin{equation}\label{g3:eq:ricci-flow-constant-surface}
+		g(t)=(1-2kt)g_0,\qquad K(t)=\frac{k}{1-2kt}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	对固定 \(x\)，方程 \(g_t=-2K(x,t)g\) 是矩阵各分量乘同一标量的常微分方程，故 \(g=e^{2u}g_0\)，其中 \(u(x,t)=-\int_0^tK(x,a)\,\mathrm da\)。\Cref{g3:cor:conformal-scalar-power}在维数二给
+	\(K_{e^{2u}g_0}=e^{-2u}(K_0+\Delta_{g_0}u)\)，代回 \(u_t=-K\) 即得第一式。常曲率时，\(u(t)=\tfrac12\log(1-2kt)\) 满足该方程；也可直接由\cref{g3:exm:ricci-flow-einstein-scaling}验证。\Cref{g3:thm:ricci-flow-short-time}的唯一性使它等于给定初值的流。
+\end{proof}
+
+当 \(k>0\) 时，面积线性减小，曲率在 \(t=1/(2k)\) 发散；当 \(k=0\) 时度量静止；当 \(k<0\) 时度量对所有正时间膨胀，而曲率从负侧趋于零。后一个极限只说明未归一化曲率变小，长度尺度却趋于无穷，因而不能直接把度量极限称为一个固定的平坦度量。
+
+\begin{proposition}\label{g3:prop:ricci-flow-surface-area}
+	设 \(M\) 为闭定向光滑曲面，\(g(t)\) 是其光滑 Ricci 流，\(A(t)=\operatorname{Vol}_{g(t)}(M)\)。则在光滑存在期间
+	\[
+		A(t)=A(0)-4\pi\chi(M)t.
+	\]
+	特别地，若 \(\chi(M)>0\)，光滑流的最大正存在时间 \(T_{\max}\) 满足 \(T_{\max}\le A(0)/(4\pi\chi(M))\)。
+\end{proposition}
+\begin{proof}
+	由体积变分 \(\partial_t\mu_g=-s\mu_g=-2K\mu_g\)，有 \(A'=-2\int_MK\mu_g\)。\Cref{g3:thm:gauss-bonnet-chern}的二维情形给 \(\int_MK\mu_g=2\pi\chi(M)\)，所以导数为上述常数。积分得到结论。若流在给定上界之后仍光滑，公式将产生非正面积，与正定度量矛盾。
+\end{proof}
+
+面积公式适用于非恒定初始曲率，但它本身没有证明在这个上界之前不会出现曲率奇点。一般曲面的长期归一化行为还需要针对其共形方程的估计。
 
 \subsection{归一化和非归一化流}
 \label{g3:subsec:2705:02}
-待撰写
+整体缩放可以遮住形状变化。例如正曲率球面的体积趋于零，但除去尺度后它的形状始终不变。固定体积提供了比较形状的一种统一方式。
+
+\begin{definition}\label{g3:def:normalized-ricci-flow}
+	设 \(M^n\) 闭，\(n\ge2\)，置
+	\[
+		r(g)=\frac{1}{\operatorname{Vol}_g(M)}\int_Ms_g\,\mu_g.
+	\]
+	度量族若满足
+	\begin{equation}\label{g3:eq:normalized-ricci-flow}
+		\partial_\tau g=-2\operatorname{Ric}_g+\frac2n r(g)g,
+	\end{equation}
+	则称为保持体积的\term[guiyihua Ricci liu]{归一化 Ricci 流}[normalized Ricci flow]。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:ricci-flow-normalization}
+	式\eqref{g3:eq:normalized-ricci-flow}保持总体积。若 \(g(t)\) 是闭 \(n\) 维流形上的光滑未归一化 Ricci 流，记 \(V(t)=\operatorname{Vol}_{g(t)}(M)\)，令
+	\begin{equation}\label{g3:eq:ricci-flow-normalizing-change}
+		a(t)=\left(\frac{V(0)}{V(t)}\right)^{2/n},\qquad
+		\tau(t)=\int_0^t a(s)\,\mathrm ds,\qquad
+		\widehat g(\tau(t))=a(t)g(t).
+	\end{equation}
+	则 \(\widehat g\) 满足归一化流，体积恒为 \(V(0)\)。闭流形上的 Einstein 度量是归一化方程的静止解。
+\end{proposition}
+\begin{proof}
+	取归一化方程的一半迹，得到 \(\partial_\tau\mu_g=(-s+r)\mu_g\)，积分为零。对未归一化流，\(V'=-r(g)V\)，所以 \(a'/a=2r(g)/n\)。因 \(\tau'=a>0\)，可把 \(t\) 作为 \(\tau\) 的函数，并计算
+	\[
+		\partial_\tau\widehat g
+		=\frac{a'}{a^2}\widehat g-2\operatorname{Ric}_{g(t)}
+		=\frac2n r(\widehat g)\widehat g-2\operatorname{Ric}_{\widehat g}.
+	\]
+	第二步用了常数缩放下 \(r(ag)=a^{-1}r(g)\) 以及 Ricci 协变二张量不变。体积为 \(a^{n/2}V=V(0)\)。若 \(\operatorname{Ric}=\lambda g\)，则 \(r=n\lambda\)，方程右侧为零。
+\end{proof}
+
+\begin{example}\label{g3:exm:ricci-normalized-time}
+	对 \(g(t)=(1-2\lambda t)g_0\)，有 \(a(t)=(1-2\lambda t)^{-1}\)，故 \(\widehat g=g_0\)。当 \(\lambda\ne0\) 时
+	\[
+		\tau(t)=-\frac{1}{2\lambda}\log(1-2\lambda t).
+	\]
+	正 \(\lambda\) 的有限消失时间被变为 \(\tau\to\infty\)；负 \(\lambda\) 的 \(t\to\infty\) 也对应 \(\tau\to\infty\)。所以“有限时奇点”必须说明使用哪一种时间和归一化。
+\end{example}
+
+在曲面上，固定面积 \(A_0\) 时 \(r=4\pi\chi(M)/A_0\) 为常数。若 \(g=e^{2u}g_0\)，归一化方程相应变成
+\[
+	 u_\tau=-e^{-2u}(K_0+\Delta_{g_0}u)+\frac{2\pi\chi(M)}{A_0}.
+\]
+常曲率度量是这个方程的平衡点。是否由任意初始度量收敛到平衡点，是一个另需先验估计与紧性的动力学问题。
 
 \subsection{齐性度量的常微分方程}
 \label{g3:subsec:2705:03}
-待撰写
+若一组固定的微分同胚在初时刻保持度量，自然性与唯一性会使这组对称性沿流保存。对传递群作用，整个度量便由一个点处的有限个数决定。
+
+\begin{proposition}\label{g3:prop:ricci-flow-homogeneous-reduction}
+	设闭光滑流形 \(M\) 上有 Lie 群 \(G\) 的光滑传递作用，\(g_0\) 是 \(G\) 不变度量。则其光滑 Ricci 流始终 \(G\) 不变。固定 \(p\in M\)，令 \(H\) 为其稳定子，\(\mathcal P\) 为 \(\mathrm T_pM\) 上 \(H\) 不变正定内积组成的开锥。流方程在这个有限维锥上化为
+	\[
+		b'(t)=-2\operatorname{Ric}_{g_{b(t)}}|_p,
+	\]
+	其中 \(g_b\) 是由 \(b\) 沿群作用延拓的唯一 \(G\) 不变度量，右端是 \(b\) 的光滑函数。
+\end{proposition}
+\begin{proof}
+	对每个固定群元素 \(a\)，\(a^*g(t)\) 与 \(g(t)\) 解同一个初值问题，由\cref{g3:thm:ricci-flow-short-time}相同，故对称性保持。\(H\) 不变性恰保证把 \(b\) 从 \(p\) 送到 \(ap\) 时不依赖代表 \(a\)；这构成上述一一对应。
+	取有限个固定局部截面来表达群作用，所得 \(g_b\) 的坐标分量对 \(b\) 线性，空间导数也光滑依赖 \(b\)。联络与曲率由分量、其导数和逆矩阵构成，因此 Ricci 对 \(b\) 光滑。其自然性保证它仍是 \(G\) 不变张量。于是正定性保留期间，有限维方程与原 Ricci 方程等价。
+\end{proof}
+
+下面直接在三维幂零 Lie 群上计算。它展示各向异性的增长，而不只是在 Einstein 度量上整体缩放。取 \(\mathbb R^3\) 上的左不变余标架
+\[
+	\alpha=\mathrm dx,\quad\beta=\mathrm dy,\quad
+	\gamma=\mathrm dz-x\,\mathrm dy,
+	\qquad g=A\alpha^2+B\beta^2+C\gamma^2,
+\]
+其中 \(A,B,C>0\) 在空间中为常数。对应群乘法为
+\((x,y,z)(x',y',z')=(x+x',y+y',z+z'+xy')\)。对偶场
+\(X=\partial_x\)、\(Y=\partial_y+x\partial_z\)、\(Z=\partial_z\) 满足 \([X,Y]=Z\)，其余括号为零。
+
+\begin{proposition}\label{g3:prop:ricci-flow-nil-model}
+	上述度量族满足 Ricci 流，当且仅当
+	\begin{equation}\label{g3:eq:ricci-flow-nil-ode}
+		A'=\frac CB,\qquad B'=\frac CA,\qquad
+		C'=-\frac{C^2}{AB}.
+	\end{equation}
+	对任意正初值，置 \(q_0=C_0/(A_0B_0)\)、\(L(t)=1+3q_0t\)，其解为
+	\begin{equation}\label{g3:eq:ricci-flow-nil-solution}
+		A=A_0L^{1/3},\qquad B=B_0L^{1/3},\qquad
+		C=C_0L^{-1/3},\qquad t\ge0.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	取正交标架 \(e_1=X/\sqrt A\)、\(e_2=Y/\sqrt B\)、\(e_3=Z/\sqrt C\)，令 \(c=\sqrt{C/(AB)}\)，则 \([e_1,e_2]=ce_3\)。左不变场的 Koszul 公式为
+	\[
+		2\langle\nabla_{e_i}e_j,e_k\rangle
+		=\langle[e_i,e_j],e_k\rangle
+		-\langle[e_j,e_k],e_i\rangle+\langle[e_k,e_i],e_j\rangle.
+	\]
+	故非零联络系数为
+	\[
+	\begin{aligned}
+		\nabla_1e_2&=\tfrac c2e_3,&\nabla_2e_1&=-\tfrac c2e_3,\\
+		\nabla_1e_3=\nabla_3e_1&=-\tfrac c2e_2,&
+		\nabla_2e_3=\nabla_3e_2&=\tfrac c2e_1.
+	\end{aligned}
+	\]
+	各个 \(\nabla_ie_i\) 为零。代入曲率定义得到
+	\[
+		K_{12}=-\frac{3c^2}{4},\quad K_{13}=K_{23}=\frac{c^2}{4},
+		\qquad (\operatorname{Ric}_{ij})=
+		\operatorname{diag}(-c^2/2,-c^2/2,c^2/2).
+	\]
+	例如 \(R(e_1,e_2)e_2=-\nabla_2(c e_3/2)-c\nabla_3e_2=-3c^2e_1/4\)；另两平面直接给 \(c^2/4\)。由所列联络也可核得混合 Ricci 分量为零。回到固定的 \(X,Y,Z\) 标架，三个分量分别乘 \(A,B,C\)，代入 \(g_t=-2\operatorname{Ric}\) 即得方程。
+	令 \(q=C/(AB)\)，则 \((\log A)'=(\log B)'=q\)、\((\log C)'=-q\)，从而 \(q'=-3q^2\)。因此 \(q=q_0/L\)，分别积分得到式\eqref{g3:eq:ricci-flow-nil-solution}。
+\end{proof}
+
+整数坐标组成此群的离散子群 \(\Gamma\)。先用整数左平移把 \(x,y\) 调到 \([0,1]\)，再用中心的整数平移把 \(z\) 调到 \([0,1]\)，可见 \(\Gamma\backslash\mathbb R^3\) 紧。左不变度量对 \(\Gamma\) 不变，所算流因此下降到这个紧商。商在局部保留齐性公式；不必要求左平移群整体作用在左陪集商上。
+
+\ProseParagraphBreak
+在该紧商上，两水平长度按 \(L^{1/6}\) 增长，中心圆纤维的长度按 \(L^{-1/6}\) 缩短；体积按 \(L^{1/6}\) 增长，曲率按 \(L^{-1}\) 衰减。它对全部正时间光滑存在，却始终不是各方向同一比例的膨胀。这也说明有限时间、有限尺度的非塌缩结论不会自动提供跨越所有大时间的统一长度下界。
 
 \subsection{几何化和手术理论的明确边界}
 \label{g3:subsec:2705:04}
-待撰写
+光滑 Ricci 流在固定流形上改变度量。当曲率在有限时刻发散时，\cref{g3:thm:ricci-flow-curvature-continuation}说明继续光滑求解的障碍已经出现。三维手术方法在受控的高曲率颈部切开，并粘入标准帽，随后在新的时间片上重新开始 Ricci 流。这里的颈部拓扑为 \(S^2\times(-1,1)\)，切割与补帽沿二球面进行；第二卷附录 A.3 的 Dehn 填充沿环面边界进行，是另一种拓扑操作。
+
+\ProseParagraphBreak
+\term[dai shoushu de Ricci liu]{带手术的 Ricci 流}[Ricci flow with surgery]由一系列光滑 Ricci 流区间、奇异时刻的保留区域、两侧保留区域之间的等距识别，以及新添或移除的部分组成。可精确对照文献\cite[定义68.1，第2746--2747页；第73节]{KleinerLott2008Perelman}。为执行三维几何化中的手术，任意这样的拼接还不够：须规定颈部在缩放后接近标准圆柱的程度、切断尺度、标准帽的几何，并验证手术后曲率夹挤与非塌缩估计仍然有效。
+
+\begin{theorem}\label{g3:thm:ricci-surgery-existence-external}
+	设 \(M^3\) 是闭、连通、可定向光滑三维流形，\(g_0\) 为光滑黎曼度量。适当常数缩放初值后，可以选择手术参数，按文献的 \((r,\delta)\) 截断构造得到定义于全部正时间的带手术 Ricci 流。每个光滑时间区间上满足 \(g_t=-2\operatorname{Ric}\)，手术按规定的圆柱颈部切开并补帽，允许移去规定类型的连通分支；若所有分支已经消失，此后时间片取为空集。
+\end{theorem}
+
+该存在性取自\cite[定义77.1、命题77.2，第2770--2771页；证明见第78--80节]{KleinerLott2008Perelman}。其中标准化初值要求 \(|\mathrm{Rm}|\le1\)，且每个单位球的体积至少为 Euclid 单位球体积的一半。闭光滑初值可以通过放大度量达到这两个条件：曲率范数按缩放因子的逆数变化，而紧性使小测地球的体积比一致趋于 Euclid 值。命题给出随时间变化的颈部与手术精度参数，使构造能够继续；它是本节采用的外部深层结果。
+
+\ProseParagraphBreak
+从手术存在到几何化，还要控制无穷时间的厚部与薄部：厚部的适当缩放极限具有双曲几何，薄部的塌缩须转化为图流形的拓扑结构，并证明用于分解的环面具有所需的不可压缩性。这些步骤分别见所引文献第89--92节。第二卷附录 A.4.4 已准确陈述并外引紧可定向三维流形的几何化及球面化版本；本节说明该结论中 Ricci 流所承担的分析工作，不重新把这些整体结论作为本章已证定理。
+
+\begin{table}[htbp]
+	\centering
+	\small
+	\caption{本章几种延续与比较的对象}
+	\label{g3:tab:ricci-flow-scope}
+	\begin{tabularx}{\textwidth}{@{}l X X@{}}
+		\toprule
+		情形 & 保留的对象 & 所得结论 \\
+		\midrule
+		闭光滑初值 & 固定流形上的度量 & 短时存在、唯一性；有限时曲率有界则光滑延拓 \\
+		体积归一化 & 同一度量流的尺度与时间变换 & 保持总体积；终止时间随重参数改变 \\
+		三维规定手术 & 光滑区间及手术处的保留区域 & 可选择参数作全时构造，允许时间片消失 \\
+		几何化分解 & 三维流形的拓扑块及其模型几何 & 还使用长期厚薄分析、塌缩及不可压缩性 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\cref{g3:tab:ricci-flow-scope}中的光滑唯一性固定初始度量与参数化流形；手术构造还包含切断与补帽的选择。本章所引手术存在定理不提供这些选择之间的唯一性，也不由球面或齐性模型的计算推出一般三维流形的长期行为。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

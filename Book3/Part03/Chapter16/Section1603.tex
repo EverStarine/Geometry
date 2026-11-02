@@ -1,35 +1,344 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 16.3 热迹和谱渐近
 % 纲要位置：几何学计划纲要.md，第 2766 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 对角系数与体积、标量曲率
 % * 积分余项与热迹展开
-% * 从热迹到 Weyl 律的所需 Tauber 引理
-% * 特征值增长的归一化
+% * 正测度的 Tauber 引理
+% * Weyl 律与特征值增长
 % 
 % 纲要内容结束
 
 \section{热迹和谱渐近}
 \label{g3:sec:1603}
 
-待撰写
+短时间内，热核主要集中在距离约为 \(\sqrt t\) 的邻域。上一节把这种集中写成 Gaussian 因子与光滑系数的乘积；现在沿对角积分，就能把局部度量信息转成全体特征值的共同约束。体积决定热迹的首项，标量曲率的积分决定下一项。要进一步知道某个阈值以下有多少特征值，还须从指数加权的和中恢复没有平滑的计数函数。
+
+\ProseParagraphBreak
+
+本节设 \((M,g)\) 是非空的 \(n\) 维光滑闭黎曼流形，\(n\ge1\)，不要求连通或定向。沿用 \(\Delta=-\operatorname{div}\nabla\)、黎曼体积密度 \(\mu_g\)，以及式\eqref{g3:eq:heat-spectrum-enumeration}中从 \(j=0\) 开始、按重数排列且包含全部零模的特征值 \(\lambda_j\)。局部系数仍记为 \(u_j(x,y)\)，其中 Laplace 算子作用于第一个变量。
 
 \subsection{对角系数与体积、标量曲率}
 \label{g3:subsec:1603:01}
-待撰写
+固定 \(y\in M\)，在以 \(y\) 为中心的正交法坐标中写
+\[
+	x=\exp_y(v),\qquad r=|v|,\qquad
+	\exp_y^*\mu_g=J_y(v)\,\mathrm dv.
+\]
+这里 \(J_y(0)=1\)。体积密度 \(J_y\) 描述指数映射对体积的改变，而热核的主振幅正好补偿其中一半的改变。
+
+\begin{proposition}\label{g3:prop:heat-diagonal-first-coefficients}
+	设 \((M,g)\) 是非空的 \(n\ge1\) 维光滑闭黎曼流形，\(\Delta=-\operatorname{div}\nabla\)，\(u_j(x,y)\) 是由上一节运输方程构造的标量热核局部系数。在对角的充分小邻域内，首系数为
+	\begin{equation}\label{g3:eq:heat-leading-density}
+		u_0(\exp_y(v),y)=J_y(v)^{-1/2}.
+	\end{equation}
+	前两个对角系数满足
+	\begin{equation}\label{g3:eq:heat-first-diagonal-values}
+		u_0(y,y)=1,\qquad
+		u_1(y,y)=\frac16\operatorname{Scal}_g(y).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	上一节的运输方程为
+	\[
+		\left(r\partial_r+\frac r2\partial_r\log J_y\right)u_0=0,
+		\qquad u_0(y,y)=1,
+	\]
+	以及对 \(j\ge1\)，
+	\[
+		\left(r\partial_r+j+\frac r2\partial_r\log J_y\right)u_j
+		=-\Delta_xu_{j-1}.
+	\]
+	在每条径向测地线上，第一个方程等价于
+	\(\partial_r(J_y^{1/2}u_0)=0\)。用 \(r=0\) 时的值确定常数，得到式\eqref{g3:eq:heat-leading-density}。
+
+	由\cref{g3:prop:normal-volume-density}的法坐标展开，
+	\[
+		J_y(v)=1-\frac16\operatorname{Ric}_{ab}(y)v^av^b+O(|v|^3),
+	\]
+	所以
+	\[
+		u_0(\exp_y(v),y)
+		=1+\frac1{12}\operatorname{Ric}_{ab}(y)v^av^b+O(|v|^3).
+	\]
+	这些是光滑函数的 Taylor 展开；余项的二阶导数在原点为零，因此二阶导数由显示出的二次项确定。在法坐标中心 \(g_{ab}=\delta_{ab}\)、\(\partial_cg_{ab}=0\)，故
+	\[
+		\left.\Delta_xu_0(x,y)\right|_{x=y}
+		=-\left.\sum_a\partial_{v^a}^2
+		\left(1+\frac1{12}\operatorname{Ric}_{bc}(y)v^bv^c\right)
+		\right|_{v=0}
+		=-\frac16\sum_a\operatorname{Ric}_{aa}(y).
+	\]
+	最后在 \(j=1\) 的运输方程中令 \(v=0\)。径向向量场
+	\(r\partial_r=\sum_av^a\partial_{v^a}\) 在原点消失，且
+	\(r\partial_r\log J_y\) 也在那里为零，得到
+	\(u_1(y,y)=-\Delta_xu_0(y,y)=\operatorname{Scal}_g(y)/6\)。
+\end{proof}
+
+这一计算同时检查了符号与常数：正标量曲率使 \(u_1(x,x)\) 为正。其来源是法坐标体积密度中的负二次项，经负半次幂变号，再经非负号约定的 Laplace 算子变号，最后运输方程右侧还带一个负号。局部递推与对角系数的标准处理可参见 \cite[第2章，2.5--2.6节]{BerlineGetzlerVergne2004}。
+
+\begin{example}\label{g3:exm:constant-curvature-heat-coefficient}
+	若度量的截面曲率恒为 \(\kappa\)，则
+	\(\operatorname{Ric}=(n-1)\kappa g\)，从而
+	\(u_1(x,x)=n(n-1)\kappa/6\)。半径为 \(R\) 的圆球面上这个值为 \(n(n-1)/(6R^2)\)。平坦度量则有更强的局部结论：在充分小的平坦坐标中 \(J_y=1\)，故 \(u_0=1\)；由运输方程及其光滑解的唯一性，逐次得到 \(u_j=0\)（\(j\ge1\)）。这说明平坦闭流形上所有更高的局部幂次系数均为零，尽管热核仍受到全局几何的影响。
+\end{example}
 
 \subsection{积分余项与热迹展开}
 \label{g3:subsec:1603:02}
-待撰写
+由\cref{g3:prop:heat-kernel-trace}，\term[reji]{热迹}[heat trace]有两个相等的表达式：
+\[
+	Z(t)=\operatorname{Tr}(e^{-t\Delta})
+	=\sum_{j=0}^{\infty}e^{-t\lambda_j}
+	=\int_M K(t,x,x)\,\mu_g(x).
+\]
+谱表达式只含特征值；积分表达式允许使用局部构造。连接两者时，关键是上一节的余项对整个对角一致。
 
-\subsection{从热迹到 Weyl 律的所需 Tauber 引理}
+\begin{theorem}\label{g3:thm:heat-trace-expansion}
+	设 \((M,g)\) 为非空的 \(n\ge1\) 维光滑闭黎曼流形。定义
+	\[
+		a_\ell(g)=\int_Mu_\ell(x,x)\,\mu_g(x),\qquad \ell=0,1,\ldots.
+	\]
+	对每个整数 \(N\ge0\)，当 \(t\downarrow0\) 时有
+	\begin{equation}\label{g3:eq:heat-trace-full-expansion}
+		Z(t)=(4\pi t)^{-n/2}
+		\left(\sum_{\ell=0}^{N}a_\ell(g)t^\ell+O(t^{N+1})\right).
+	\end{equation}
+	其中
+	\begin{equation}\label{g3:eq:heat-trace-first-two}
+		a_0(g)=\operatorname{Vol}_g(M),\qquad
+		a_1(g)=\frac16\int_M\operatorname{Scal}_g\,\mu_g.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	\Cref{g3:thm:heat-parametrix-expansion}的截断函数在对角附近恒为一，Gaussian 因子在 \(x=y\) 时也为一。因此存在 \(C_N,t_N>0\)，使对所有 \(x\in M\) 和 \(0<t\le t_N\)，
+	\[
+		\left|K(t,x,x)-(4\pi t)^{-n/2}
+		\sum_{\ell=0}^{N}t^\ell u_\ell(x,x)\right|
+		\le C_Nt^{N+1-n/2}.
+	\]
+	在 \(M\) 上积分，误差的绝对值不超过
+	\(C_N\operatorname{Vol}_g(M)t^{N+1-n/2}\)。
+	再用热核迹公式，即得式\eqref{g3:eq:heat-trace-full-expansion}。前两个系数由\cref{g3:prop:heat-diagonal-first-coefficients}直接积分得到。
+\end{proof}
+
+式\eqref{g3:eq:heat-trace-full-expansion}是一项一项提高精度的渐近展开。它表示每次固定 \(N\) 后都有相应的误差估计，并不要求无穷级数 \(\sum_\ell a_\ell t^\ell\) 收敛。若 \(M\) 有多个连通分支，热迹及每个 \(a_\ell\) 都按分支相加。
+
+\ProseParagraphBreak
+
+全展开使用包含零特征值的热迹 \(Z(t)\)。设零特征值重数为 \(m_0\)，则仅对正特征值求和得到 \(Z(t)-m_0\)。这个有界差不影响 \(t^{-n/2}\) 的首项，却不能在讨论完整展开时省略；当 \(n\) 为偶数时，它正好改变常数次幂的系数。
+
+\ProseParagraphBreak
+
+为了从热迹读出计数，定义正离散测度和\term[pujishu hanshu]{谱计数函数}[spectral counting function]
+\begin{equation}\label{g3:eq:spectral-counting-measure}
+	\nu=\sum_{j=0}^{\infty}\delta_{\lambda_j},\qquad
+	N(\Lambda)=\nu([0,\Lambda])
+	=\#\{j\ge0:\lambda_j\le\Lambda\},\qquad \Lambda\ge0.
+\end{equation}
+每个特征值的重数由重复的点质量体现；在每个有界区间内只有有限个这样的点质量。于是
+\[
+	Z(t)=\int_{[0,\infty)}e^{-t\lambda}\,\mathrm d\nu(\lambda).
+\]
+指数权把不连续的阶梯函数平滑为 \(Z(t)\)。下面证明，正性足以把热迹的首项转换成计数函数的首项。
+\symidx{\(N(\Lambda)\)：包含零模并按重数计算的谱计数函数}
+
+\subsection{正测度的 Tauber 引理}
 \label{g3:subsec:1603:03}
-待撰写
+从变换的渐近行为恢复原对象的渐近行为，称为 Tauber 型问题。\footnote{Alfred Tauber（1866--1942），长期在维也纳任教的数学家，研究分析学、级数与函数论。}下面的\term[Tauber yinli]{Tauber 引理}[Tauberian lemma]只要求测度非负，适用于刚才的离散谱测度。证明中将正半轴缩放后变成紧区间，再用多项式逼近恢复一个区间的质量；所需逼近也在证明中给出。
 
-\subsection{特征值增长的归一化}
+\begin{lemma}\label{g3:lem:laplace-tauber-counting}
+	设 \(\nu\) 是 \([0,\infty)\) 上的非负局部有限 Borel 测度，并且
+	\[
+		F(t)=\int_{[0,\infty)}e^{-t\lambda}\,\mathrm d\nu(\lambda)<\infty
+		\qquad(t>0).
+	\]
+	若存在 \(A>0,\alpha>0\)，使 \(t^\alpha F(t)\to A\)（\(t\downarrow0\)），则
+	\begin{equation}\label{g3:eq:laplace-tauber-limit}
+		\lim_{R\to\infty}R^{-\alpha}\nu([0,R])
+		=\frac{A}{\Gamma(\alpha+1)}.
+	\end{equation}
+	这里
+	\(\Gamma(s)=\int_0^\infty e^{-x}x^{s-1}\,\mathrm dx\)（\(s>0\)）。
+\end{lemma}
+\begin{proof}
+	先说明极限测度应是什么。定义缩放测度
+	\[
+		\nu_R(B)=R^{-\alpha}\nu(RB)
+		\quad(B\subset[0,\infty)\text{ 为 Borel 集}).
+	\]
+	对每个固定 \(s>0\)，有
+	\begin{equation}\label{g3:eq:tauber-scaled-laplace}
+		\int e^{-sx}\,\mathrm d\nu_R(x)
+		=R^{-\alpha}F(s/R)\longrightarrow As^{-\alpha}.
+	\end{equation}
+	而密度测度
+	\[
+		\mathrm d\nu_\infty(x)
+		=\frac{A}{\Gamma(\alpha)}x^{\alpha-1}\,\mathrm dx
+	\]
+	具有同一 Laplace 变换 \(As^{-\alpha}\)：在积分中作代换 \(z=sx\) 即得。Gamma 积分在零点因 \(\alpha>0\) 可积，在无穷远因指数衰减可积。分部积分还给出
+	\(\Gamma(\alpha+1)=\alpha\Gamma(\alpha)\)。
+
+	这些测度在整个正半轴上的总质量可能无穷，所以先乘一个指数权。对 \(f\in C([0,1])\)，用
+	\begin{equation}\label{g3:eq:tauber-compact-measures}
+		\int_{[0,1]}f(y)\,\mathrm d\rho_R(y)
+		=\int_{[0,\infty)}f(e^{-x})e^{-x}\,\mathrm d\nu_R(x)
+	\end{equation}
+	定义有限正测度 \(\rho_R\)；这是测度 \(e^{-x}\mathrm d\nu_R\) 在映射 \(x\mapsto e^{-x}\) 下的推前，在 \(y=0\) 处赋质量零。用 \(\nu_\infty\) 同样定义 \(\rho_\infty\)。式\eqref{g3:eq:tauber-scaled-laplace}说明，对每个整数 \(k\ge0\)，
+	\[
+		\int y^k\,\mathrm d\rho_R
+		\longrightarrow A(k+1)^{-\alpha}
+		=\int y^k\,\mathrm d\rho_\infty.
+	\]
+	尤其 \(\rho_R([0,1])\to A\)，这些总质量在 \(R\) 充分大时一致有界。有限线性组合立即给出任意多项式的积分收敛。
+
+	现在把多项式换成连续函数。对实连续函数 \(f\)，令
+	\[
+		P_mf(y)=\sum_{k=0}^{m}f(k/m)\binom{m}{k}y^k(1-y)^{m-k}.
+	\]
+	权 \(p_{m,k}(y)=\binom{m}{k}y^k(1-y)^{m-k}\) 非负，和为一。由二项式恒等式及其一、二阶导数，
+	\[
+		\sum_k(k/m)p_{m,k}=y,\qquad
+		\sum_k(k/m-y)^2p_{m,k}
+		=\frac{y(1-y)}m\le\frac1{4m}.
+	\]
+	设 \(\omega_f(\delta)=\sup_{|z-y|\le\delta}|f(z)-f(y)|\)。把和分成
+	\(|k/m-y|\le\delta\) 与其补集，第二部分的权之和不超过
+	\(1/(4m\delta^2)\)，于是
+	\[
+		\lVert P_mf-f\rVert_\infty
+		\le\omega_f(\delta)+\frac{2\lVert f\rVert_\infty}{4m\delta^2}.
+	\]
+	先令 \(m\to\infty\)，再令 \(\delta\downarrow0\)，一致连续性给出一致逼近。若 \(f\) 为复值，对实部、虚部分别应用即可。利用总质量的一致有界性，对任意逼近多项式 \(p\) 有
+	\[
+		\left|\int f\,\mathrm d\rho_R-\int f\,\mathrm d\rho_\infty\right|
+		\le\left|\int p\,\mathrm d\rho_R-\int p\,\mathrm d\rho_\infty\right|
+		+\lVert f-p\rVert_\infty
+		\bigl(\rho_R([0,1])+\rho_\infty([0,1])\bigr).
+	\]
+	先令 \(R\to\infty\)，再提高逼近精度，得到对所有 \(f\in C([0,1])\) 的积分收敛。
+
+	最后恢复需要的区间质量。记 \(a=e^{-1}\)，并定义
+	\[
+		h(y)=
+		\begin{cases}
+			0,&0\le y<a,\\
+			y^{-1},&a\le y\le1.
+		\end{cases}
+	\]
+	由式\eqref{g3:eq:tauber-compact-measures}，
+	\(\int h\,\mathrm d\rho_R=\nu_R([0,1])\)。函数 \(h\) 在 \(a\) 处不连续，因此再做一次上下逼近。取 \(0<\delta<a/2\)，令 \(\chi_-\) 在 \([0,a]\) 为零，在 \([a,a+\delta]\) 线性上升到一，此后恒为一；令 \(\chi_+\) 在 \([0,a-\delta]\) 为零，在 \([a-\delta,a]\) 线性上升到一，此后恒为一。定义连续函数 \(h_\pm(y)=\chi_\pm(y)/y\)，并令其在 \(y=0\) 为零。于是
+	\[
+		h_-\le h\le h_+,\qquad
+		0\le h_+-h_-\le
+		\frac{\mathbf 1_{[a-\delta,a+\delta]}}{a-\delta}.
+	\]
+	正测度允许保留这个积分不等式。对两端先令 \(R\to\infty\)，再令 \(\delta\downarrow0\)。\(\rho_\infty\) 在 \(a\) 处没有原子，因为 \(\nu_\infty\) 有密度且 \(a\) 的原像仅为 \(x=1\)。故上下极限相同，得到
+	\[
+		\nu_R([0,1])\longrightarrow\nu_\infty([0,1])
+		=\frac{A}{\Gamma(\alpha)}\int_0^1x^{\alpha-1}\,\mathrm dx
+		=\frac{A}{\Gamma(\alpha+1)}.
+	\]
+	这就是式\eqref{g3:eq:laplace-tauber-limit}。
+\end{proof}
+
+这里的正性有两个具体用途：总质量控制连续函数的逼近误差，函数的上下界控制区间质量。该证明只给出首项极限，没有从热迹余项中自动产生计数函数的余项。特别是，计数函数在重特征值处会跳跃，这些跳跃在热迹中已被指数权平滑。
+
+\subsection{Weyl 律与特征值增长}
 \label{g3:subsec:1603:04}
-待撰写
+记 \(\omega_n\) 为 \(\mathbb R^n\) 中单位球的欧氏体积。热迹首项与刚才的引理给出\term[Weyl lv]{Weyl 律}[Weyl law]，其常数取决于我们对 Laplace 算子、频率及计数重数的约定。
+
+\begin{theorem}\label{g3:thm:weyl-leading-law}
+	设 \((M,g)\) 为非空的 \(n\ge1\) 维光滑闭黎曼流形，\(\lambda_j\) 是非负函数 Laplace 算子的特征值，按重数排列并包含零模。则
+	\begin{equation}\label{g3:eq:weyl-leading-law}
+		N(\Lambda)\sim
+		\frac{\omega_n\operatorname{Vol}_g(M)}{(2\pi)^n}
+		\Lambda^{n/2}
+		\qquad(\Lambda\to\infty).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	由热迹展开，
+	\[
+		t^{n/2}Z(t)\longrightarrow
+		(4\pi)^{-n/2}\operatorname{Vol}_g(M).
+	\]
+	对式\eqref{g3:eq:spectral-counting-measure}的正测度应用\cref{g3:lem:laplace-tauber-counting}，取
+	\(\alpha=n/2\)、\(A=(4\pi)^{-n/2}\operatorname{Vol}_g(M)\)，得到
+	\[
+		N(\Lambda)\sim
+		\frac{\operatorname{Vol}_g(M)}
+		{(4\pi)^{n/2}\Gamma(n/2+1)}\Lambda^{n/2}.
+	\]
+	为核对另一种常数写法，欧氏 Gaussian 积分先由二维极坐标算得
+	\((\int_{\mathbb R}e^{-s^2}\,\mathrm ds)^2=\pi\)，再逐坐标积分得
+	\(\int_{\mathbb R^n}e^{-|x|^2}\,\mathrm dx=\pi^{n/2}\)。
+	另一方面，径向积分给出
+	\[
+		\pi^{n/2}
+		=n\omega_n\int_0^\infty e^{-r^2}r^{n-1}\,\mathrm dr
+		=\omega_n\Gamma(n/2+1).
+	\]
+	因此两个常数确实相等，得到式\eqref{g3:eq:weyl-leading-law}。
+\end{proof}
+
+若改为计算频率 \(\sqrt{\lambda_j}\le R\) 的个数，就应把 \(\Lambda=R^2\) 代入，增长次幂成为 \(R^n\)。若删去全部零模，计数只减少有限的 \(m_0\)，首项保持不变。两种改变应分别处理，不能把特征值与其平方根的增长率混在一起。
+
+\begin{corollary}\label{g3:cor:eigenvalue-weyl-growth}
+	在\cref{g3:thm:weyl-leading-law}的假设下，按本章的编号约定，
+	\begin{equation}\label{g3:eq:eigenvalue-weyl-growth}
+		\lambda_j\sim
+		4\pi^2\left(\frac{j}{\omega_n\operatorname{Vol}_g(M)}\right)^{2/n}
+		\qquad(j\to\infty).
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	写 \(C=\omega_n\operatorname{Vol}_g(M)/(2\pi)^n>0\)，
+	\(\alpha=n/2\)。给定 \(0<\varepsilon<C\)，充分大的 \(\Lambda\) 满足
+	\[
+		(C-\varepsilon)\Lambda^\alpha
+		\le N(\Lambda)\le(C+\varepsilon)\Lambda^\alpha.
+	\]
+	因为 \(\lambda_j\to\infty\)，对充分大的 \(j\) 可在 \(\Lambda=\lambda_j\) 使用右侧不等式。即使 \(\lambda_j\) 有重数，仍有
+	\(j+1\le N(\lambda_j)\)，从而
+	\[
+		\lambda_j\ge\left(\frac{j+1}{C+\varepsilon}\right)^{1/\alpha}.
+	\]
+	再取 \(\Lambda=((j+1)/(C-\varepsilon))^{1/\alpha}\)，左侧不等式给出
+	\(N(\Lambda)\ge j+1\)，所以 \(\lambda_j\le\Lambda\)。合起来，
+	\[
+		\left(\frac{j+1}{C+\varepsilon}\right)^{1/\alpha}
+		\le\lambda_j\le
+		\left(\frac{j+1}{C-\varepsilon}\right)^{1/\alpha}.
+	\]
+	先令 \(j\to\infty\)，再令 \(\varepsilon\downarrow0\)，便有
+	\(\lambda_j\sim(j/C)^{1/\alpha}\)。代入 \(C,\alpha\) 即得结论。
+\end{proof}
+
+\begin{example}\label{g3:exm:circle-counting-oscillation}
+	在周长 \(L>0\) 的圆周 \(\mathbb R/L\mathbb Z\) 上，
+	\(\Delta=-\mathrm d^2/\mathrm dx^2\)。周期常微分方程
+	\(-f''=\lambda f\) 表明，零特征值只有常数函数，正特征值为
+	\[
+		\lambda_{2m-1}=\lambda_{2m}
+		=(2\pi m/L)^2,\qquad m=1,2,\ldots,
+	\]
+	对应正弦和余弦。正交特征基的完备性保证这些就是全部谱。因此
+	\[
+		N(\Lambda)=1+2\left\lfloor\frac{L\sqrt\Lambda}{2\pi}\right\rfloor
+		=\frac L\pi\sqrt\Lambda+O(1).
+	\]
+	因 \(\omega_1=2\)，这与 Weyl 常数完全一致。圆周是平坦的，故其热迹在首项之后的全部幂次系数为零。但是
+	\[
+		N(\Lambda)-\frac L\pi\sqrt\Lambda
+		=1-2\left\{\frac{L\sqrt\Lambda}{2\pi}\right\}
+	\]
+	并不趋于一个常数：在
+	\(\Lambda_m=(2\pi m/L)^2\) 上其值为一，在
+	\(\Lambda'_m=(2\pi(m+1/2)/L)^2\) 上其值为零。
+	这里 \(\{s\}=s-\lfloor s\rfloor\) 为小数部分。这个例子说明，即使热迹拥有每一阶展开，也不能据此直接给 \(N(\Lambda)\) 写出逐项对应的后续展开。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

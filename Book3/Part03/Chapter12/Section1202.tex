@@ -1,13 +1,13 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 12.2 主符号和常系数估计
 % 纲要位置：几何学计划纲要.md，第 2561 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 微分算子、形式伴随与主符号
 % * 椭圆性、强椭圆性及 Laplace 型系统
-% * Fourier 变换的最低工具
+% * Fourier 变换与 Sobolev 空间
 % * 常系数 L² 估计和微分阶数
 % 
 % 纲要内容结束
@@ -15,21 +15,249 @@
 \section{主符号和常系数估计}
 \label{g3:sec:1202}
 
-待撰写
+一个二阶方程为什么能够控制全部二阶导数？对常系数算子，振荡函数 \(e^{\mathrm ix\cdot\xi}v\) 把求导变成乘以频率 \(\xi\)，于是这个问题化为一个矩阵在每个非零频率处是否可逆。主符号记录最高阶的这部分矩阵；Fourier 变换把逐频率的代数估计转回函数范数。
 
 \subsection{微分算子、形式伴随与主符号}
 \label{g3:subsec:1202:01}
-待撰写
+令 \(E,F\) 为光滑流形 \(M\) 上的有限秩实或复向量丛。阶数不超过整数 \(m\) 的线性微分算子 \(P:C^\infty(E)\to C^\infty(F)\)，在坐标与标架中写为
+\[
+	P=\sum_{|\alpha|\le m}A_\alpha(x)\mathrm D^\alpha,
+	\qquad \mathrm D_j=-\mathrm i\partial_j,
+	\qquad \mathrm D^\alpha=\prod_j\mathrm D_j^{\alpha_j}.
+\]
+这里 \(\alpha=(\alpha_1,\ldots,\alpha_n)\) 是非负整数多重指标，\(|\alpha|=\sum\alpha_j\)。实算子作复化后也采用此写法，因而某些 \(A_\alpha\) 可含 \(\mathrm i\)。本节中带下标或多重指标的 \(\mathrm D_j,\mathrm D^\alpha\) 固定表示这种 Fourier 归一化；\(\mathrm Du\) 作为完整梯度时仍指普通 Euclid 导数，两个版本的逐分量模长相同。
+
+\begin{definition}\label{g3:def:principal-symbol}
+	设 \(P:E\to F\) 为光滑系数、阶数不超过 \(m\) 的微分算子。其\term[zhufuhao]{主符号}[principal symbol]为余切向量 \(\xi\in\mathrm T_x^*M\) 上的齐次丛映射
+	\[
+		\sigma_m(P)(x,\xi)=\sum_{|\alpha|=m}A_\alpha(x)\xi^\alpha:E_x\longrightarrow F_x.
+	\]
+	它在 \(\xi\) 上为 \(m\) 次齐次；若实际阶数低于 \(m\)，此符号为零。
+\end{definition}
+\symidx{\(\sigma_m(P)(x,\xi)\)：\(m\) 阶微分算子的主符号}
+
+\begin{proposition}\label{g3:prop:symbol-calculus}
+	上述主符号不依赖坐标和标架。对阶数分别不超过 \(m,l\) 的光滑微分算子 \(P,Q\)，有
+	\[
+		\sigma_{m+l}(QP)=\sigma_l(Q)\sigma_m(P).
+	\]
+	固定光滑正密度和两丛的纤维度量后，唯一的\term[xingshi bansui]{形式伴随}[formal adjoint] \(P^*\) 满足
+	\[
+		\int_M\langle Pu,v\rangle\,\mu
+		=\int_M\langle u,P^*v\rangle\,\mu
+	\]
+	对紧支光滑 \(u,v\) 成立，且 \(\sigma_m(P^*)=\sigma_m(P)^*\)。对标量光滑函数 \(\chi\)，交换子 \([P,\chi]=P\chi-\chi P\) 的阶数至多为 \(m-1\)。
+\end{proposition}
+\begin{proof}
+	在 \(x\) 附近取实函数 \(\phi\) 满足 \(\mathrm d\phi_x=\xi\)，截面 \(s\) 满足 \(s(x)=v\)。逐次求导给出
+	\[
+		\lim_{t\to+\infty}t^{-m}e^{-\mathrm it\phi(x)}P(e^{\mathrm it\phi}s)(x)
+		=\sigma_m(P)(x,\xi)v.
+	\]
+	只有每次导数都落在指数上的项保留 \(t^m\)；其他项至多含 \(t^{m-1}\)。左侧有坐标无关的意义，右侧只依赖 \(\mathrm d\phi_x,s(x)\)，因此得到内在的丛映射。复合时同样只保留全部最高阶导数，给出符号乘法。
+
+	在一张坐标图中令 \(\mu=\rho|\mathrm dx|\)，以正定 Hermitian 矩阵 \(h_E,h_F\) 写纤维度量。由于 \(\mathrm D_j=-\mathrm i\partial_j\) 对普通 \(L^2\) 配对形式自伴，分部积分得到
+	\[
+		P^*v=\rho^{-1}h_E^{-1}\sum_{|\alpha|\le m}
+		\mathrm D^\alpha\bigl(\rho A_\alpha^*h_Fv\bigr).
+	\]
+	最高阶项的系数是 \(h_E^{-1}A_\alpha^*h_F\)，正是纤维伴随；导数落在系数或密度上的项都降阶。配对恒等式保证这些局部表达式相容。唯一性由紧支测试截面的任意性得到。有边界时这里只测试内部紧支截面，故尚未引入伴随算子的边界定义域。
+
+	最后，由多重指标乘积公式，\(P(\chi u)\) 中所有导数都落在 \(u\) 上的项恰等于 \(\chi Pu\)，剩余项至少有一次导数落在 \(\chi\)，所以对 \(u\) 的阶数至多为 \(m-1\)。
+\end{proof}
+
+\begin{example}\label{g3:exm:symbol-laplace}
+	函数上的非负 Laplace 算子为
+	\[
+		\Delta_g=-\rho^{-1}\partial_i(\rho g^{ij}\partial_j),
+		\qquad \sigma_2(\Delta_g)(x,\xi)=g^{ij}\xi_i\xi_j=|\xi|_g^2.
+	\]
+	联络只在协变导数中增加零阶矩阵，因此度量联络的 \(\nabla^*\nabla\) 在任意有限秩丛上具有主符号 \(|\xi|_g^2I_E\)。两者的低阶系数不同，却具有相同的最高阶正性。
+\end{example}
 
 \subsection{椭圆性、强椭圆性及 Laplace 型系统}
 \label{g3:subsec:1202:02}
-待撰写
+符号可逆使每个非零频率都能由方程右端恢复；能量正性还要比较符号与纤维内积。这是两个相关而不同的要求。
 
-\subsection{Fourier 变换的最低工具}
+\begin{definition}\label{g3:def:elliptic-system}
+	设 \(P:E\to F\) 是光滑系数、阶数为 \(m\ge1\) 的微分算子，\(E,F\) 秩相同。若每个 \(x\) 和每个实非零余切向量 \(\xi\) 都使 \(\sigma_m(P)(x,\xi)\) 可逆，就称 \(P\) 为\term[tuoyuan suanzi]{椭圆算子}[elliptic operator]。在固定紧坐标区域上，这等价于存在 \(c>0\)，使
+	\[
+		|\sigma_m(P)(x,\xi)v|\ge c|\xi|^m|v|.
+	\]
+	若 \(E=F\)、\(m=2k\) 为偶数，且存在 \(\lambda>0\) 满足
+	\[
+		\operatorname{Re}\langle\sigma_{2k}(P)(x,\xi)v,v\rangle
+		\ge\lambda|\xi|^{2k}|v|^2,
+	\]
+	就称它在此区域上\term[qiang tuoyuan]{强椭圆}[strongly elliptic]。若二阶算子的符号恰为 \(|\xi|_g^2I_E\)，称其为\term[Laplace xing suanzi]{Laplace 型算子}[Laplace-type operator]。
+\end{definition}
+
+紧集上的等价性来自 \((x,\xi,v)\) 在两个单位球面上的紧性。强椭圆性蕴含椭圆性；符号可逆也允许不定号。例如 \(\operatorname{diag}(-\sum\partial_i^2,\sum\partial_i^2)\) 的符号为 \(\operatorname{diag}(|\xi|^2,-|\xi|^2)\)，可逆却不正定。标量算子 \(\partial_1^2-\partial_2^2\) 则在 \(\xi_1=\xi_2\ne0\) 时符号为零，连椭圆性也不成立。
+
+\ProseParagraphBreak
+
+对一阶矩形系统，也常研究符号为单射的情形。此时 \(P^*P\) 的符号为 \(\sigma_1(P)^*\sigma_1(P)\)，在紧集上满足二阶强椭圆估计。以下将“椭圆系统”的主证明用于等秩可逆符号；矩形算子的结论须通过所写的单射条件或相应的椭圆复形另行判断。
+
+\begin{proposition}\label{g3:prop:constant-strong-energy}
+	设 \(P_0=\sum_{|\alpha|=2k}A_\alpha\mathrm D^\alpha\) 为 \(\mathbb R^n\) 上的齐次常系数系统，满足上述强椭圆条件。则对 \(u\in C_c^\infty(\mathbb R^n;\mathbb C^r)\)，
+	\[
+		\operatorname{Re}\int\langle P_0u,u\rangle\,\mathrm dx
+		\ge\lambda\int|\xi|^{2k}|\widehat u(\xi)|^2\,\mathrm d\xi.
+	\]
+	右侧与全部 \(k\) 阶导数的 \(L^2\) 范数平方之和等价。
+\end{proposition}
+证明将在下一小节建立 Fourier 等距性后直接给出。二阶情形中，这个条件只检验梯度矩阵 \(Z=\xi\otimes v\) 的特殊形状；上一节对整个 \(Z\) 的点态正性更强。可用能量方法构造弱解的系统，仍须按其实际积分型检查强制性。
+
+\subsection{Fourier 变换与 Sobolev 空间}
 \label{g3:subsec:1202:03}
-待撰写
+\term[Fourier bianhuan]{Fourier 变换}[Fourier transform]把平移不变的求导运算变为频率乘法。\footnote{Jean Baptiste Joseph Fourier（1768--1830），法国数学家，研究热传导与三角级数，发展了以频率分解研究函数的方法。}我们采用保持 \(L^2\) 范数的归一化
+\begin{equation}\label{g3:eq:fourier-normalization}
+	\widehat u(\xi)=\mathcal Fu(\xi)
+	=(2\pi)^{-n/2}\int_{\mathbb R^n}e^{-\mathrm ix\cdot\xi}u(x)\,\mathrm dx.
+\end{equation}
+
+\begin{definition}\label{g3:def:schwartz-tempered}
+	\(\mathcal S(\mathbb R^n)\) 由满足
+	\(\sup_x|x^\alpha\partial^\beta u(x)|<\infty\) 对所有多重指标 \(\alpha,\beta\) 成立的光滑函数组成，称为 Schwartz 空间。\footnote{Laurent Schwartz（1915--2002），法国数学家，建立分布理论，并将其用于偏微分方程与 Fourier 分析。}在这些半范数下连续的线性泛函称为\term[huanzeng fenbu]{缓增分布}[tempered distribution]，其空间记为 \(\mathcal S'\)。连续性等价于存在有限个上述半范数，其和乘常数控制泛函的绝对值。
+\end{definition}
+
+紧支光滑函数属于 \(\mathcal S\)；高斯函数及其各阶导数也属于其中。若 \(u\in\mathcal S\)，积分求导和分部积分给出
+\[
+	\widehat{\mathrm D_j u}=\xi_j\widehat u,
+	\qquad \widehat{x_ju}=\mathrm i\partial_{\xi_j}\widehat u,
+	\qquad \widehat{u*v}=(2\pi)^{n/2}\widehat u\,\widehat v.
+\]
+各式的绝对可积性由快速衰减保证。将这两个求导恒等式迭代，所得 Fourier 半范数均由原函数有限个半范数控制，所以 \(\mathcal F:\mathcal S\to\mathcal S\) 连续。
+
+\begin{theorem}\label{g3:thm:fourier-plancherel}
+	在 \(\mathbb R^n\)、\(n\ge1\) 上，若 \(u\in\mathcal S\)，则
+	\[
+		u(x)=(2\pi)^{-n/2}\int e^{\mathrm ix\cdot\xi}\widehat u(\xi)\,\mathrm d\xi,
+		\qquad \|\widehat u\|_2=\|u\|_2.
+	\]
+	Fourier 变换唯一延拓为 \(L^2(\mathbb R^n;\mathbb C^r)\) 上的满射等距映射，保持内积；它及其逆也在 \(\mathcal S'\) 上连续定义，并与分布微分相容。
+\end{theorem}
+\begin{proof}
+	先证明反演，而不预先使用 \(L^2\) 等距性。对 \(\varepsilon>0\) 插入因子 \(e^{-\varepsilon|\xi|^2}\)。一维高斯积分给出
+	\[
+		(2\pi)^{-n}\int e^{\mathrm iz\cdot\xi-\varepsilon|\xi|^2}\,\mathrm d\xi
+		=(4\pi\varepsilon)^{-n/2}e^{-|z|^2/(4\varepsilon)}=:G_\varepsilon(z).
+	\]
+	这一公式可逐坐标验证：积分对 \(z\) 求导并对 \(\xi\) 分部积分，得到 \(I'(z)=-zI(z)/(2\varepsilon)\)；初值 \(I(0)=\sqrt{\pi/\varepsilon}\) 由将高斯积分平方后作平面极坐标积分得到。于是交换绝对收敛的积分可知
+	\[
+		(2\pi)^{-n/2}\int e^{\mathrm ix\cdot\xi-\varepsilon|\xi|^2}\widehat u(\xi)\,\mathrm d\xi
+		=G_\varepsilon*u(x).
+	\]
+	右侧趋于 \(u(x)\)：\(G_\varepsilon\ge0\)、积分为一，任何固定小球外的质量趋零；在球内使用 \(u\) 的连续性，球外使用有界性。左侧由 \(\widehat u\in L^1\) 及支配收敛趋于反演积分。
+
+	对 \(u,v\in\mathcal S\)，反演与积分换序给出
+	\(\int\widehat u\,\overline{\widehat v}=\int u\overline v\)。例如先在 \(\int u\overline v\) 中以 \(\widehat v\) 的反演表示 \(v\)，被积绝对值由 \(|u(x)||\widehat v(\xi)|\) 控制，所得等式正是所求。取 \(u=v\) 即得等距性。\Cref{g3:lem:lp-smooth-density}保证 \(\mathcal S\) 在 \(L^2\) 中稠密，故有唯一等距延拓；其像闭，且由 \(\mathcal S\) 上的反演包含稠密的 \(\mathcal S\)，所以满射。有限维向量值情形逐分量相加。
+
+	对 \(T\in\mathcal S'\) 定义 \(\widehat T(\phi)=T(\widehat\phi)\)。这采用双线性的分布测试配对，与函数的变换一致。\(\mathcal F\) 及反向变换在 \(\mathcal S\) 上连续互逆，转置后也互逆；对测试函数的分部积分给出 \(\widehat{\mathrm D_jT}=\xi_j\widehat T\)。
+\end{proof}
+
+等距性通常称为 Plancherel 定理。\footnote{Michel Plancherel（1885--1967），瑞士数学家，研究分析、数学物理与代数；Fourier 变换的平方可积等距定理以其命名。}
+
+\begin{proof}[\cref{g3:prop:constant-strong-energy}的证明]
+	由等距性和微分公式，左侧等于
+	\(\int\operatorname{Re}\langle\sigma_{2k}(P_0)(\xi)\widehat u,\widehat u\rangle\,\mathrm d\xi\)。逐频率使用强椭圆条件，便得到所列下界。多项式 \(\sum_{|\alpha|=k}\xi^{2\alpha}\) 在单位球面上严格为正，且为 \(2k\) 次齐次，故与 \(|\xi|^{2k}\) 双向可比；再次用等距性即得导数范数比较。
+\end{proof}
+
+\begin{definition}\label{g3:def:fourier-sobolev}
+	对实数 \(s\)，记 \(\langle\xi\rangle=(1+|\xi|^2)^{1/2}\)。所有满足 \(\langle\xi\rangle^s\widehat u\in L^2\) 的缓增分布构成 \(H^s(\mathbb R^n;\mathbb C^r)\)，范数为
+	\[
+		\|u\|_{H^s}^2=\int\langle\xi\rangle^{2s}|\widehat u(\xi)|^2\,\mathrm d\xi.
+	\]
+	这里要求 \(\widehat u\) 由相应加权平方可积函数表示。对开集 \(U\)，\(H^s_{\mathrm{loc}}(U)\) 表示每个 \(\chi\in C_c^\infty(U)\) 都有 \(\chi u\in H^s(\mathbb R^n)\)。
+\end{definition}
+
+\begin{lemma}\label{g3:lem:fourier-sobolev-tools}
+	上述空间完备，\(\mathcal S\) 在其中稠密。整数 \(s=k\ge0\) 时，它与第十一章的 \(H^k=W^{k,2}\) 相同，范数等价。另有以下性质。
+	\begin{enumerate}
+		\item 对 \(a\in C_c^\infty(\mathbb R^n)\)、实数 \(s\)，乘法 \(u\mapsto au\) 在 \(H^s\) 上有界。若 \(a\) 支于固定紧集，存在整数 \(N=N(n,s)\) 使乘子范数至多为 \(C\|a\|_{C^N}\)。矩阵值系数亦然。
+		\item \(\mathrm D^\alpha:H^s\to H^{s-|\alpha|}\) 有界。若 \(m\ge1\)、\(\varepsilon>0\)，则
+		\[
+			\|u\|_{H^{s+m-1}}\le\varepsilon\|u\|_{H^{s+m}}+C_\varepsilon\|u\|_{H^s}.
+		\]
+		\item 每个紧支分布属于某个 \(H^{-N}\)。每个开集上的分布在相对紧子区域中因而具有某个有限的负 Sobolev 阶数。
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	乘以 \(\langle\xi\rangle^s\) 后作 Fourier 变换，将 \(H^s\) 等距对应到 \(L^2\)；逆向得到的多项式增长加权 \(L^2\) 函数定义缓增分布。完备性随之成立。先用光滑紧支函数在频率空间逼近加权 \(L^2\) 函数，乘 \(\langle\xi\rangle^{-s}\) 后仍光滑紧支，逆变换属于 \(\mathcal S\)，这给出稠密性。整数阶比较来自
+	\(\sum_{|\alpha|\le k}|\xi^\alpha|^2\asymp\langle\xi\rangle^{2k}\) 与分布微分公式。
+
+	对乘法先取 \(u\in\mathcal S\)。由乘积的 Fourier 卷积公式和初等权重不等式
+	\[
+		\langle\xi\rangle^s\le C_s\langle\xi-\eta\rangle^{|s|}\langle\eta\rangle^s,
+	\]
+	得到
+	\[
+		\|au\|_{H^s}\le C_s\left\|\langle\zeta\rangle^{|s|}\widehat a(\zeta)\right\|_{L^1_\zeta}\|u\|_{H^s}.
+	\]
+	这里卷积的 \(L^1*L^2\to L^2\) 界由积分三角不等式和 \(L^2\) 的平移不变性给出。为估计 \(a\)，取整数 \(q\) 满足 \(2q>|s|+n\)，将 \((1-\sum\partial_j^2)^q\) 移到 \(a\) 上，便有
+	\(|\widehat a(\zeta)|\le C\langle\zeta\rangle^{-2q}\|a\|_{C^{2q}}\)，常数只另依赖其固定支集体积。于是上述 \(L^1\) 范数有限，并有明确的有限阶系数界。由稠密性延拓到 \(H^s\)，同时在分布意义下仍为真实乘积。
+
+	微分估计直接来自 \(|\xi^\alpha|\le\langle\xi\rangle^{|\alpha|}\)。插值估计将频率分成 \(\langle\xi\rangle\ge R\) 与其余部分：高频项用 \(R^{-1}\|u\|_{H^{s+m}}\) 控制，低频项用 \(R^{m-1}\|u\|_{H^s}\) 控制；选 \(R\ge\varepsilon^{-1}\) 即可。
+
+	最后，设 \(T\) 支于紧集 \(K\)，取 \(\eta\in C_c^\infty\) 在其邻域为一。分布的有限阶估计使
+	\[
+		\widehat T(\xi)=(2\pi)^{-n/2}T\bigl(\eta(x)e^{-\mathrm ix\cdot\xi}\bigr),
+		\qquad |\widehat T(\xi)|\le C\langle\xi\rangle^q
+	\]
+	对某个有限整数 \(q\) 成立。求 \(\xi\) 导数可移入测试函数，故它是光滑函数；把 \(T\) 与 Schwartz 测试函数的 Fourier 积分交换，可核对这确为分布变换。取 \(N>q+n/2\)，便有 \(\langle\xi\rangle^{-N}\widehat T\in L^2\)。局部情形先乘紧支截断，便归约于此。
+\end{proof}
+
+负阶空间在这里用来容纳尚未具有函数代表的分布。全空间的 \(H^{-1}\) 可由 \(H^1\) 的有界共轭线性对偶等距识别：Fourier 配对和加权 Cauchy--Schwarz 给出双向范数表示。这与上一节能量对偶的记法相容；在有界域上仍按 \((H_0^1)^\dagger\) 定义，不能直接把它等同于全空间中任意补零的分布。
 
 \subsection{\texorpdfstring{常系数 \(L^2\) 估计和微分阶数}{常系数 L² 估计和微分阶数}}
 \label{g3:subsec:1202:04}
-待撰写
+现在逐频率解最高阶矩阵方程。非零频率处可逆，零频率则需要另一个低阶范数控制；这个区别也解释了局部估计中为什么常常出现 \(\|u\|\)。
+
+\begin{theorem}\label{g3:thm:constant-elliptic-l2}
+	设 \(P=\sum_{|\alpha|\le m}A_\alpha\mathrm D^\alpha\) 为 \(\mathbb R^n\) 上的 \(r\times r\) 常系数椭圆系统，\(m\ge1\)、\(n\ge1\)。则对每个实数 \(s\)，存在 \(C\) 使
+	\begin{equation}\label{g3:eq:constant-elliptic-l2}
+		\|u\|_{H^{s+m}}\le C\bigl(\|Pu\|_{H^s}+\|u\|_{H^s}\bigr).
+	\end{equation}
+	若分布 \(u\in H^s\) 且 \(Pu\in H^s\)，则 \(u\in H^{s+m}\)，并满足同一估计。齐次主部 \(P_m\) 还满足
+	\[
+		\sum_{|\alpha|=m}\|\partial^\alpha u\|_2^2\le C\|P_mu\|_2^2
+		\qquad(u\in\mathcal S).
+	\]
+\end{theorem}
+\begin{proof}
+	写完整符号 \(p(\xi)=\sum A_\alpha\xi^\alpha=p_m(\xi)+p_{<m}(\xi)\)。由单位球面上的最小奇异值正下界，\(|p_m(\xi)v|\ge c|\xi|^m|v|\)。而低阶部分满足 \(|p_{<m}(\xi)v|\le C_0\langle\xi\rangle^{m-1}|v|\)，所以当 \(|\xi|\) 大于某个 \(R\) 时，\(|p(\xi)v|\ge(c/2)|\xi|^m|v|\)。小频率部分直接用 \(v\) 控制，两者合并得到
+	\[
+		\langle\xi\rangle^m|v|\le C\bigl(|p(\xi)v|+|v|\bigr).
+	\]
+	代入 \(v=\widehat u(\xi)\)，乘 \(\langle\xi\rangle^s\)，取 \(L^2\) 范数，即得第一式。对分布假设，\(\widehat u\) 及 \(p\widehat u\) 已具有加权 \(L^2\) 代表；同一逐点估计直接证明更高加权可积性，无须预设 \(u\) 的额外导数。齐次结论由 \(|p_m(\xi)v|\ge c|\xi|^m|v|\) 在全部非零频率处成立而得到。
+\end{proof}
+
+\begin{lemma}\label{g3:lem:constant-high-frequency-inverse}
+	设 \(P_0\) 为上述齐次 \(m\) 阶常系数椭圆系统，主符号为 \(p_m(\xi)\)。固定 \(\chi\in C_c^\infty(\mathbb R^n)\)，在零的邻域为一。令
+	\[
+		q(\xi)=(1-\chi(\xi))p_m(\xi)^{-1},\qquad
+		Q_0=\mathcal F^{-1}q\mathcal F,\qquad S_0=\mathcal F^{-1}\chi\mathcal F.
+	\]
+	则 \(q\) 在零附近按零延拓后光滑，且
+	\[
+		|\partial_\xi^\alpha q(\xi)|\le C_\alpha\langle\xi\rangle^{-m-|\alpha|},
+		\qquad Q_0P_0=P_0Q_0=I-S_0.
+	\]
+	对每个实数 \(s\)，\(Q_0:H^s\to H^{s+m}\) 有界；对任意实数 \(s,t\)，\(S_0:H^s\to H^t\) 有界。\(S_0\) 还把任意缓增分布映成光滑函数。
+\end{lemma}
+\begin{proof}
+	在单位球面上，逆矩阵光滑，求导公式为 \(\partial(p_m^{-1})=-p_m^{-1}(\partial p_m)p_m^{-1}\)。其齐次次数为 \(-m\)，每次求导再降低一次齐次次数，故远离零点有相应导数界；截断附近是固定紧环带，零附近恒为零，得到全空间估计。两个乘积恒等式直接在频率空间相乘即可验证。
+
+	范数映射由 \(\langle\xi\rangle^m|q(\xi)|\le C\) 和 \(\chi\) 的紧支性给出。对一般缓增分布，\(\chi\widehat T\) 为紧支分布。其逆变换由它作用于 \(e^{\mathrm ix\cdot\xi}\) 乘一个固定紧支截断来表示，对 \(x\) 的任意次求导可移入这个测试函数，所以结果光滑。
+\end{proof}
+
+\begin{example}\label{g3:exm:laplace-frequency-gain}
+	对 \(P=1-\sum_j\partial_j^2\)，完整符号就是 \(1+|\xi|^2\)。因此对每个实数 \(s\) 和 \(f\in H^s\)，
+	\[
+		\widehat u(\xi)=\frac{\widehat f(\xi)}{1+|\xi|^2}
+	\]
+	给出唯一的 \(u\in H^{s+2}\)，且 \(\|u\|_{H^{s+2}}=\|f\|_{H^s}\)。删掉常数一后，高频仍增益两阶，零频率处却没有同样的可逆界。
+\end{example}
+
+阶数 \(m\) 决定恢复多少导数，而不由方程分量数决定。下一节将固定一点的主系数，用这个常系数逆控制小球上的变系数误差；交换子降一阶，使截断引入的误差能够留在较低的 Sobolev 范数中。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

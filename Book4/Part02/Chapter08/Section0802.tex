@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 8.2 Darboux 定理
 % 纲要位置：几何学计划纲要.md，第 3786 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,274 @@
 \section{Darboux 定理}
 \label{g4:sec:0802}
 
-待撰写
+辛基把一个切空间上的交替型化成标准形。能否找到一组实际坐标，使整个邻域中的辛形式都成为同一个常系数形式？本节用 Moser 方程完成这一步：先在一点匹配线性数据，再用径向同伦求出一个在该点二阶消失的原始一形式，最后控制由它产生的局部运动。原始形式的消失阶数还会保证，修正坐标时保留最初指定的辛标架。Darboux 定理及这种证明方法可参见 \cite[第1.4--1.5节，特别是第90--91页的定理1.8、1.9]{Cannas2006Symplectic}。
 
 \subsection{局部线性化和直线路径}
 \label{g4:subsec:0802:01}
-待撰写
+
+设 \((M^{2n},\omega)\) 为光滑辛流形，\(m\in M\)。由\cref{g4:thm:0701:symplectic-basis}，可以在 \(\mathrm{T}_mM\) 选取辛基
+\[
+	e_1,\ldots,e_n,f_1,\ldots,f_n,\qquad
+	\omega_m(e_i,f_j)=\delta_{ij}.
+\]
+更具体地，记
+\[
+	\omega_0=\sum_{i=1}^n\mathrm{d}q^i\wedge\mathrm{d}p_i
+\]
+为 \(\mathbb R^{2n}\) 上的标准形式，并以 \(A:\mathbb R^{2n}\to\mathrm{T}_mM\) 表示将标准坐标基送到上述辛基的线性同构。因此 \(A^*\omega_m=(\omega_0)_0\)。
+
+\ProseParagraphBreak
+
+这个指定的一阶数据可以由一个普通坐标参数化实现。任取 \(\kappa_0:U_0\subset\mathbb R^{2n}\to M\)，使 \(\kappa_0(0)=m\)，并令
+\[
+	L=(\mathrm{d}\kappa_0|_0)^{-1}A,\qquad
+	\kappa=\kappa_0\circ L.
+\]
+缩小定义域后，\(\kappa\) 是到 \(m\) 的一个邻域的微分同胚，而且 \(\mathrm{d}\kappa|_0=A\)。把辛形式拉回到 Euclid 空间，记
+\[
+	\widetilde\omega=\kappa^*\omega,\qquad
+	\beta=\widetilde\omega-\omega_0.
+\]
+则 \(\beta\) 是光滑闭二形式，并且 \(\beta_0=0\)。这里的等号指两个二形式在原点的完整交替配对相等。它暂时只匹配原点处的值；附近各点的系数仍然可能变化。
+
+\ProseParagraphBreak
+
+在一个以原点为中心的坐标球上取直线路径
+\begin{equation}
+	\label{g4:eq:0802:straight-path}
+	\omega_t=\omega_0+t\beta,\qquad 0\le t\le1.
+\end{equation}
+每个 \(\omega_t\) 都闭，而且 \((\omega_t)_0=(\omega_0)_0\)。我们将寻找在更小球上定义、到其像的微分同胚 \(\phi_t\)，满足
+\[
+	\phi_0=\operatorname{id},\qquad
+	\phi_t^*\omega_t=\omega_0,\qquad
+	\phi_t(0)=0,\qquad \mathrm{d}\phi_t|_0=I.
+\]
+这样 \(\Psi=\kappa\circ\phi_1\) 就把标准形式送到原流形的辛形式，并且 \(\mathrm{d}\Psi|_0=A\)。首先要保证，式\eqref{g4:eq:0802:straight-path}的全部中间形式在同一个邻域内都非退化。
 
 \subsection{非退化性的小邻域控制}
 \label{g4:subsec:0802:02}
-待撰写
+
+两个辛形式之间的直线段一般会经过退化形式。例如 \(\omega_0\) 与 \(-\omega_0\) 都非退化，而它们的中点是零。当前路径的有利条件是：原点处的全部形式已经等于同一个 \(\omega_0\)，所以可以在原点附近同时控制它们。
+
+\begin{lemma}
+	\label{g4:lem:0802:uniform-nondegeneracy}
+	设 \(\beta\) 是 \(\mathbb R^{2n}\) 中原点附近的光滑二形式，\(\beta_0=0\)，并令 \(\omega_t=\omega_0+t\beta\)。则存在 \(R>0\)，使对所有 \(x\in B_R(0)\) 和 \(0\le t\le1\)，收缩映射
+	\[
+		b_t(x):\mathbb R^{2n}\longrightarrow(\mathbb R^{2n})^*,
+		\qquad b_t(x)v=(\omega_t)_x(v,\cdot)
+	\]
+	可逆。采用标准 Euclid 范数时，还可使
+	\[
+		\|b_t(x)^{-1}\|\le2.
+	\]
+	逆映射依赖 \((t,x)\) 光滑，并在包含 \([0,1]\) 的开时间区间上仍有定义。
+\end{lemma}
+\begin{proof}
+	用 Euclid 度量给向量空间及其对偶赋范数，记 \(b_0v=\omega_0(v,\cdot)\)。标准坐标中的计算给出 \(\|b_0v\|=\|v\|\)。因 \(\beta_0=0\)，可以取闭球 \(\overline B_R\) 留在原定义域内，并使
+	\[
+		\sup_{x\in B_R}\|\beta_x(\,\cdot\,,\,\cdot\,)\|<\frac14,
+	\]
+	其中二形式的范数也就是相应收缩映射的算子范数。对 \(-1\le t\le2\)，有
+	\[
+		\|b_t(x)v\|
+		\ge\|b_0v\|-|t|\,\|\beta_x(v,\cdot)\|
+		\ge\frac12\|v\|.
+	\]
+	因此 \(b_t(x)\) 单射；源和目标同维，所以它是同构，且逆的范数至多为 \(2\)。矩阵求逆在可逆矩阵开集上光滑，故逆映射依赖 \((t,x)\) 光滑。估计覆盖了比 \([0,1]\) 更大的时间区间，也保证了端点附近的时间延拓。
+\end{proof}
+
+这个证明同时给出了两个用途不同的结论：同一个球适用于整条路径，收缩方程的逆在这条路径上有统一界。后一个界会把原始一形式的消失阶数传给 Moser 向量场，并使我们能够估计轨道移动的距离。
 
 \subsection{原始形式和径向同伦}
 \label{g4:subsec:0802:03}
-待撰写
+
+为了使用上一节的方程，需要一个满足 \(\mathrm{d}\alpha=\beta\) 的一形式。任取一个原始形式可能在原点不为零，那样得到的流就会移动原点。径向同伦利用从 \(0\) 到 \(x\) 的线段作积分，同时提供原始形式与原点处的控制。
+
+\begin{lemma}
+	\label{g4:lem:0802:radial-primitive}
+	设 \(\beta\) 是球 \(B_R(0)\subset\mathbb R^{2n}\) 上的光滑闭二形式，且 \(\beta_0=0\)。定义
+	\begin{equation}
+		\label{g4:eq:0802:radial-primitive}
+		\alpha_x(v)=\int_0^1 s\,\beta_{sx}(x,v)\,\mathrm{d}s,
+		\qquad x\in B_R,\quad v\in\mathbb R^{2n}.
+	\end{equation}
+	则 \(\alpha\) 光滑，满足 \(\mathrm{d}\alpha=\beta\)。缩小 \(R\) 后，存在常数 \(C_0\)，使
+	\[
+		\|\alpha_x\|\le C_0|x|^2.
+	\]
+	特别地，\(\alpha\) 的全部坐标系数及其一阶导数在原点都为零。
+\end{lemma}
+\begin{proof}
+	式\eqref{g4:eq:0802:radial-primitive}是第一卷定理14.2.2中径向同伦算子在二形式上的公式。其因子 \(s\) 来自一个切向量被缩放映射 \(x\mapsto sx\) 送成 \(sv\)，另一个输入 \(x\) 则是径向运动的速度。被积式在 \([0,1]\times B_R\) 上光滑，因此参数积分给出光滑一形式。
+
+	为核对 \(\mathrm{d}\alpha=\beta\) 的符号，合写坐标为 \(x^1,\ldots,x^{2n}\)，并置
+	\[
+		\beta=\frac12\sum_{i,j}b_{ij}(x)\,\mathrm{d}x^i\wedge\mathrm{d}x^j,
+		\qquad b_{ij}=-b_{ji}.
+	\]
+	式\eqref{g4:eq:0802:radial-primitive}给出
+	\[
+		\alpha=\sum_j a_j(x)\,\mathrm{d}x^j,\qquad
+		a_j(x)=\sum_i x^i\int_0^1s\,b_{ij}(sx)\,\mathrm{d}s.
+	\]
+	闭性 \(\mathrm{d}\beta=0\) 在分量上等价于
+	\(\partial_kb_{ij}-\partial_jb_{ik}=\partial_i b_{kj}\)。于是
+	\[
+		\begin{aligned}
+			\partial_k a_j-\partial_j a_k
+			&=\int_0^1\left(2s\,b_{kj}(sx)
+				+s^2\sum_i x^i\partial_i b_{kj}(sx)\right)\mathrm{d}s\\
+			&=\int_0^1\frac{\mathrm{d}}{\mathrm{d}s}
+				\left(s^2b_{kj}(sx)\right)\mathrm{d}s=b_{kj}(x).
+		\end{aligned}
+	\]
+	这证明了 \(\mathrm{d}\alpha=\beta\)。
+
+	最后，\(\beta_0=0\) 且 \(\beta\) 光滑，故在一个较小闭球上可取常数 \(C\) 使 \(\|\beta_y\|\le C|y|\)。从径向公式直接得到
+	\[
+		|\alpha_x(v)|
+		\le\int_0^1s\,C|sx|\,|x|\,|v|\,\mathrm{d}s
+		=\frac C3|x|^2|v|.
+	\]
+	令 \(C_0=C/3\) 即得估计。因为 \(\alpha\) 光滑且其系数为 \(O(|x|^2)\)，这些系数及其一阶导数在原点全部为零。
+\end{proof}
+
+现在在\cref{g4:lem:0802:uniform-nondegeneracy}的共同球上，按 Moser 方程定义
+\begin{equation}
+	\label{g4:eq:0802:moser-field}
+	\iota_{X_t}\omega_t=-\alpha,
+	\qquad
+	X_t(x)=-b_t(x)^{-1}\alpha_x.
+\end{equation}
+光滑性与唯一性来自收缩映射的可逆性，逆的统一界则给出
+\begin{equation}
+	\label{g4:eq:0802:field-estimate}
+	|X_t(x)|\le C_1|x|^2,\qquad
+	X_t(0)=0,\qquad
+	\mathrm{D}_xX_t(0)=0,
+	\qquad 0\le t\le1.
+\end{equation}
+其中可取 \(C_1=2C_0\)。最后一式由光滑乘积 \(b_t^{-1}\alpha\) 的求导及 \(\alpha\) 的一阶消失得到。这比只知道 \(\mathrm{d}\alpha|_0=0\) 更强：外微分为零只消去导数的交替部分，而这里全部一阶系数都消失。
 
 \subsection{局部坐标的构造及无局部曲率不变量}
 \label{g4:subsec:0802:04}
-待撰写
+
+\term[Darbouxdingli]{Darboux 定理}[Darboux theorem]\footnote{Jean Gaston Darboux（1842--1917），法国数学家，研究微分几何与分析。}把上述构造汇集为局部坐标的存在性，并允许预先指定原点处的辛标架。
+
+\begin{theorem}[Darboux 定理]
+	\label{g4:thm:0802:darboux}
+	设 \((M^{2n},\omega)\) 为光滑无边界辛流形，\(m\in M\)，并给定辛线性同构
+	\[
+		A:(\mathbb R^{2n},\omega_0)\longrightarrow
+		(\mathrm{T}_mM,\omega_m).
+	\]
+	则存在 \(0\) 的开邻域 \(V\subset\mathbb R^{2n}\)、\(m\) 的开邻域 \(U\subset M\)，以及微分同胚 \(\Psi:V\to U\)，满足
+	\[
+		\Psi(0)=m,\qquad \mathrm{d}\Psi|_0=A,\qquad
+		\Psi^*\omega=\omega_0.
+	\]
+	等价地，\(U\) 上存在以 \(m\) 为原点的坐标 \((q^1,\ldots,q^n,p_1,\ldots,p_n)\)，使
+	\[
+		\omega=\sum_{i=1}^n\mathrm{d}q^i\wedge\mathrm{d}p_i,
+	\]
+	且原点处的坐标切向量实现指定的辛标架。这些坐标称为\term[Darbouxzuobiao]{Darboux 坐标}[Darboux coordinates]。
+\end{theorem}
+\begin{proof}
+	按第一个小节选取 \(\kappa\)，使 \(\kappa(0)=m\)、\(\mathrm{d}\kappa|_0=A\)，并在坐标球上令 \(\widetilde\omega=\kappa^*\omega\)、\(\beta=\widetilde\omega-\omega_0\)。前两个引理给出 \(\omega_t=\omega_0+t\beta\) 的共同非退化球 \(B_R\)，以及 \(\mathrm{d}\alpha=\beta\)、\(\alpha=O(|x|^2)\)。由式\eqref{g4:eq:0802:moser-field}定义 \(X_t\)，它满足式\eqref{g4:eq:0802:field-estimate}。
+
+	先控制流的存在时间。第一卷命题13.1.9给出光滑时间依赖场的局部演化映射。由于 \(X_t\) 只在 \(B_R\) 中定义，我们在其中选两个更小的球：取 \(r>0\)，使
+	\[
+		2r<R,\qquad 4C_1r<\frac12.
+	\]
+	若 \(C_1=0\)，第二个条件自动满足。令 \(x(t)\) 从 \(x_0\in B_r\) 出发，满足 \(\dot x=X_t(x)\)。只要 \(0\le t\le1\) 且轨道尚在 \(B_{2r}\) 中，就有
+	\[
+		|x(t)-x_0|
+		\le\int_0^t C_1|x(s)|^2\,\mathrm{d}s
+		\le4C_1r^2t<\frac r2,
+	\]
+	从而 \(|x(t)|<3r/2\)。因此轨道不能在 \(t\le1\) 首次到达 \(\partial B_{2r}\)。
+
+	还要排除在到达时间 \(1\) 之前终止的可能。如果最大解有这样的有限端点，将时间并入状态，考虑增维向量场 \(\partial_t+X_t\)。上述估计使相应轨道留在固定紧集 \([0,1]\times\overline B_{3r/2}\) 中；这个紧集位于增维场的开定义域内，因为 \(X_t\) 在 \([0,1]\) 两端附近仍光滑。第一卷定理13.2.2的有限端点逃逸判据便允许继续延拓，与最大性矛盾。所以每个 \(x_0\in B_r\) 的解均在全部 \(0\le t\le1\) 上存在。记其演化为 \(\phi_t(x_0)\)。第一卷命题13.1.9还说明，\(\phi_t\) 光滑，并由反向演化给出到其开像的光滑逆。
+
+	因为 \(X_t(0)=0\)，唯一性给出 \(\phi_t(0)=0\)。第一卷定理13.1.6及其变分方程说明 \(B_t=\mathrm{d}\phi_t|_0\) 满足
+	\[
+		\dot B_t=\mathrm{D}_xX_t(\phi_t(0))B_t=0,
+		\qquad B_0=I.
+	\]
+	因此 \(\mathrm{d}\phi_t|_0=I\)，初始辛标架得到保留。
+
+	现在应用\cref{g4:prop:0801:pullback-derivative}。它只要求当前演化在所考察的开集和时间区间上存在，这一条件已经验证。由于 \(\dot\omega_t=\beta=\mathrm{d}\alpha\)、\(\mathrm{d}\omega_t=0\)，有
+	\[
+		\begin{aligned}
+			\frac{\mathrm{d}}{\mathrm{d}t}(\phi_t^*\omega_t)
+			&=\phi_t^*\bigl(\dot\omega_t+\mathcal L_{X_t}\omega_t\bigr)\\
+			&=\phi_t^*\mathrm{d}\bigl(\alpha+\iota_{X_t}\omega_t\bigr)=0.
+		\end{aligned}
+	\]
+	初值为 \(\omega_0\)，所以 \(\phi_1^*\widetilde\omega=\omega_0\)。取 \(V=B_r\)、\(U=\kappa(\phi_1(B_r))\)、\(\Psi=\kappa\circ\phi_1\)，便得到
+	\[
+		\Psi^*\omega=\phi_1^*(\kappa^*\omega)=\omega_0,\qquad
+		\mathrm{d}\Psi|_0=\mathrm{d}\kappa|_0\,\mathrm{d}\phi_1|_0=A.
+	\]
+	逆映射 \(\Psi^{-1}\) 的分量就是所需坐标。
+\end{proof}
+
+\input{Figures/Ch08-DarbouxPath}
+
+\cref{g4:fig:0802:flow-domains}表示证明中三层邻域的作用。原始形式和向量场在 \(B_R\) 上构造，实际坐标从 \(B_r\) 中的初值产生，中间的 \(B_{2r}\) 则用来验证轨道不会在时间 \(1\) 以前离开构造区域。这个大小控制把局部常微分方程接到了 Moser 拉回恒等式上。
+
+\begin{example}
+	\label{g4:exm:0802:surface-coordinates}
+	在平面点 \((x_0,y_0)\) 附近，设
+	\[
+		\omega=f(x,y)\,\mathrm{d}x\wedge\mathrm{d}y,\qquad
+		f(x_0,y_0)\ne0.
+	\]
+	缩小为一个 \(f\) 不为零的矩形，取
+	\[
+		Q=x-x_0,\qquad
+		P(x,y)=\int_{y_0}^{y}f(x,s)\,\mathrm{d}s.
+	\]
+	则
+	\[
+		\mathrm{d}Q\wedge\mathrm{d}P
+		=\mathrm{d}x\wedge
+		\left(\partial_xP\,\mathrm{d}x+f(x,y)\,\mathrm{d}y\right)
+		=f(x,y)\,\mathrm{d}x\wedge\mathrm{d}y.
+	\]
+	坐标变换的 Jacobian 行列式为 \(f(x,y)\ne0\)，所以第一卷定理11.3.3的逆函数定理给出以该点为中心的 Darboux 坐标。例如 \(f=1+x^2+y^2\)、\((x_0,y_0)=(0,0)\) 时，
+	\[
+		Q=x,\qquad P=(1+x^2)y+\frac{y^3}{3}.
+	\]
+	非恒定的面积系数被吸收到新坐标 \(P\) 中。
+\end{example}
+
+\begin{example}
+	\label{g4:exm:0802:separated-four-dimensional}
+	在 \(\mathbb R^4\) 的坐标 \((x_1,y_1,x_2,y_2)\) 中，考虑
+	\[
+		\omega=(1+x_1^2+y_1^2)\,\mathrm{d}x_1\wedge\mathrm{d}y_1
+		+e^{x_2}\,\mathrm{d}x_2\wedge\mathrm{d}y_2.
+	\]
+	每项的系数只依赖本项涉及的两个坐标，所以求外微分时产生重复的一形式，\(\mathrm{d}\omega=0\)。两个系数都为正，因此逐对配对也显示其非退化。分别取
+	\[
+		Q_1=x_1,\quad P_1=(1+x_1^2)y_1+\frac{y_1^3}{3},
+		\qquad
+		Q_2=x_2,\quad P_2=e^{x_2}y_2.
+	\]
+	直接求导即得
+	\[
+		\omega=\mathrm{d}Q_1\wedge\mathrm{d}P_1
+		+\mathrm{d}Q_2\wedge\mathrm{d}P_2.
+	\]
+	按配对次序排列坐标，变换的 Jacobian 行列式为
+	\((1+x_1^2+y_1^2)e^{x_2}>0\)，故这些函数在每一点附近都是坐标。这个可分计算在四维中同时整理了两对方向；一般辛形式具有混合项时，定理的局部流构造统一完成同样的任务。
+\end{example}
+
+Darboux 定理说明，同一维数的辛形式在每一点附近都与同一个标准形式等价。若一个点态量只由辛形式的局部数据决定，并且在局部辛同胚下保持不变，那么它在所有同维辛流形的各点都必须取相同的值。因此，辛形式本身没有像黎曼曲率那样随点变化、阻碍局部标准化的曲率不变量。这里的结论允许任意局部坐标变化；具体坐标中出现变化的系数，并不因此成为几何不变量。
+
+\ProseParagraphBreak
+
+附加结构仍然可以保留局部信息。若另给一个黎曼度量，度量的曲率属于额外数据，Darboux 坐标并不同时使它成为常系数。若另给一个相容几乎复结构 \(J\)，可积性也要另外检验：\cref{g4:exm:0704:nonintegrable-compatible}中的辛形式已经是常系数形式，但所给 \(J\) 处处不可积。局部标准形整理的是辛形式；同时保持度量或几乎复结构，会提出更强的等价要求。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

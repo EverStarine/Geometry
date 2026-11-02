@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
-% 纲要标题：### 5.3 切空间和 Jacobian
+% 纲要标题：### 5.3 切空间与 Jacobian 矩阵
 % 纲要位置：几何学计划纲要.md，第 5203 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -9,32 +9,337 @@
 % * 极大理想模平方
 % * Jacobian 矩阵的秩计算
 % * 正则局部环的维数定义
-% * 非完美域上正则与光滑的区别
+% * 非完美域上的正则性与几何正则性
 % 
 % 纲要内容结束
 
-\section{切空间和 Jacobian}
+\section{切空间与 Jacobian 矩阵}
 \label{g5:sec:0503}
 
-待撰写
+在方程 \(f(x_1,\ldots,x_n)=0\) 上选定一点以后，把坐标改为 \(x_i+\varepsilon v_i\)，并只保留 \(\varepsilon\) 的一次项，就得到切向量满足的线性条件。双数环把“只保留一次项”变成一个准确的环运算；微分模则把这个运算写成与坐标无关的形式。由此可以比较两种局部信息：素链测量的 Krull 维数，以及一阶函数所需的独立坐标数。二者相等时，局部环称为正则。基域与点的剩余域不同时，还须区分局部环自身的余切空间和相对于基域的微分；这一差别在非完美域上尤为明显。
 
 \subsection{双数点及切向量}
 \label{g5:subsec:0503:01}
-待撰写
+
+设 \(K\) 为域。环
+\[
+	K[\varepsilon]/(\varepsilon^2)
+	=\{a+\varepsilon b:a,b\in K\}
+\]
+称为 \(K\) 上的\term[shuangshuhuan]{双数环}[ring of dual numbers]，其中 \(\varepsilon\) 非零而 \(\varepsilon^2=0\)。投影 \(a+\varepsilon b\mapsto a\) 留下原来的点，系数 \(b\) 记录一次变化。这里没有极限过程，因而同样适用于正特征。
+
+\begin{definition}\label{g5:def:dual-number-tangent}
+	设 \(k\) 为域，\(A\) 为 \(k\) 代数，\(K/k\) 为域扩张，\(x:A\to K\) 为固定的 \(k\) 代数同态。\(x\) 处相对于 \(k\) 的双数切向量，是一个 \(k\) 代数同态
+	\[
+		\widetilde x:A\longrightarrow K[\varepsilon]/(\varepsilon^2)
+	\]
+	使模去 \(\varepsilon\) 后得到 \(x\)。全部这样的提升构成的集合记为 \(\mathrm{T}_x(A/k)\)。
+\end{definition}
+
+每个提升都唯一写成 \(\widetilde x(a)=x(a)+\varepsilon D(a)\)。同态保持乘法，正好要求 \(D\) 满足导子的乘法法则；这使上述集合自然成为向量空间。
+
+\begin{proposition}\label{g5:prop:tangent-derivations}
+	设 \(k\) 为域，\(A\) 为 \(k\) 代数，\(K/k\) 为域扩张，\(x:A\to K\) 为 \(k\) 代数同态，并用 \(x\) 将 \(K\) 看作 \(A\) 模。取 \(\varepsilon\) 的系数给出自然对应
+	\[
+		\mathrm{T}_x(A/k)\cong\operatorname{Der}_k(A,K)
+		\cong\operatorname{Hom}_K
+		\bigl(\Omega_{A/k}\otimes_{A,x}K,K\bigr).
+	\]
+	由此赋予 \(\mathrm{T}_x(A/k)\) 一个 \(K\) 向量空间结构，其零向量是复合 \(A\xrightarrow{x}K\hookrightarrow K[\varepsilon]/(\varepsilon^2)\)。
+\end{proposition}
+\begin{proof}
+	保持加法和 \(k\) 中的常数，分别等价于 \(D\) 可加且在 \(k\) 上为零。比较
+	\[
+		\widetilde x(a)\widetilde x(b)
+		=x(a)x(b)+\varepsilon\bigl(x(a)D(b)+x(b)D(a)\bigr)
+	\]
+	与 \(\widetilde x(ab)\)，便知保持乘法等价于
+	\[
+		D(ab)=x(a)D(b)+x(b)D(a).
+	\]
+	反过来，每个这样的导子给出环同态；导子满足 \(D(1)=0\)，所以它也保持单位。第一项对应因而成立。
+
+	由微分模的泛性质，\(\operatorname{Der}_k(A,K)\cong\operatorname{Hom}_A(\Omega_{A/k},K)\)。一个 \(A\) 线性映射 \(h:\Omega_{A/k}\to K\) 唯一延伸为 \(\omega\otimes c\mapsto c h(\omega)\) 的 \(K\) 线性映射，得到第二项对应。最后通过导子的加法和数乘定义切向量的线性运算；这里并不是把两个环同态直接相加。
+\end{proof}
+
+若 \(\varphi:A\to B\) 为 \(k\) 代数同态，\(y:B\to K\)，\(x=y\varphi\)，则复合给出
+\[
+	\mathrm{T}_y(B/k)\longrightarrow \mathrm{T}_x(A/k),\qquad
+	D\longmapsto D\circ\varphi.
+\]
+这就是相应几何映射的切映射。它与复合相容，也是自然微分映射在点上取值后所得线性映射的对偶。因而“函数反向拉回，切向量正向映出”的方向已经包含在导子的复合公式中。
 
 \subsection{极大理想模平方}
 \label{g5:subsec:0503:02}
-待撰写
+
+设 \((R,\mathfrak m,\kappa)\) 为局部环。\(\mathfrak m\) 中的函数在该点为零，\(\mathfrak m^2\) 则由两项这样的函数的乘积组成。因此 \(\mathfrak m/\mathfrak m^2\) 保留消失函数的一阶部分，称为该局部环的\term[yuqiekongjian]{余切空间}[cotangent space]。它自然是 \(\kappa=R/\mathfrak m\) 向量空间，因为 \(\mathfrak m\) 乘上任意元素都变为零。若点为 \(k\) 有理点，这个局部定义正好给出上一小节相对切空间的对偶。
+
+\begin{theorem}\label{g5:thm:rational-cotangent-space}
+	设 \(k\) 为域，\(A\) 为 \(k\) 代数，\(x:A\to k\) 为 \(k\) 代数同态。令 \(\mathfrak p=\ker x\)、\(R=A_{\mathfrak p}\)、\(\mathfrak m=\mathfrak pR\)，则剩余域由 \(x\) 识别为 \(k\)，并有自然同构
+	\[
+		\mathfrak p/\mathfrak p^2
+		\cong\mathfrak m/\mathfrak m^2
+		\xrightarrow{\ \sim\ }\Omega_{A/k}\otimes_A k.
+	\]
+	最后一张映射把消失函数的类送到它的微分在该点的值。特别地，
+	\[
+		\mathrm{T}_x(A/k)\cong
+		\operatorname{Hom}_k(\mathfrak m/\mathfrak m^2,k).
+	\]
+\end{theorem}
+\begin{proof}
+	\(\mathfrak p/\mathfrak p^2\) 被 \(\mathfrak p\) 零化，故为 \(k\) 向量空间；每个 \(s\notin\mathfrak p\) 的作用是乘非零标量 \(x(s)\)。局部化因而不改变这个模，结合局部化的正合性得到第一项同构。由\cref{g5:prop:localized-differentials}，又有
+	\[
+		\Omega_{A/k}\otimes_A k
+		\cong\Omega_{R/k}\otimes_R k.
+	\]
+	我们在局部环 \(R\) 上构造所需同构。
+
+	映射 \(u\mapsto\mathrm{d}u\otimes1\)、\(u\in\mathfrak m\)，在 \(\mathfrak m^2\) 上为零，因为
+	\(\mathrm{d}(uv)=u\,\mathrm{d}v+v\,\mathrm{d}u\)。它因此给出 \(k\) 线性映射
+	\[
+		\alpha:\mathfrak m/\mathfrak m^2
+		\longrightarrow\Omega_{R/k}\otimes_R k.
+	\]
+	反向映射利用有理点条件：每个 \(r\in R\) 唯一写成 \(c+u\)，其中 \(c\in k\)、\(u\in\mathfrak m\)。令
+	\[
+		\Delta(r)=[r-\bar r]=[u]\in\mathfrak m/\mathfrak m^2,
+	\]
+	这里把剩余类 \(\bar r\in k\) 当作 \(R\) 中的常数。若 \(r=c+u\)、\(s=d+v\)，则 \(uv\) 的类为零，故
+	\[
+		\Delta(rs)=c[v]+d[u]
+		=\bar r\,\Delta(s)+\bar s\,\Delta(r).
+	\]
+	所以 \(\Delta\) 是值于 \(\mathfrak m/\mathfrak m^2\) 的 \(k\) 导子，诱导反向映射 \(\beta\)。对 \(u\in\mathfrak m\)，有 \(\beta\alpha([u])=[u]\)；对任意 \(r\in R\)，有
+	\[
+		\alpha\beta(\mathrm{d}r\otimes1)
+		=\mathrm{d}(r-\bar r)\otimes1
+		=\mathrm{d}r\otimes1.
+	\]
+	这些元素生成相应空间，故两映射互逆。最后应用\cref{g5:prop:tangent-derivations}即得切空间的对偶描述。
+\end{proof}
+
+上述同构不需要选择局部坐标，但用到了剩余域就是基域。一般点没有从剩余域到局部环的指定截面，\(r-\bar r\) 便不能按同样方式理解。此时应保留完整的余切正合尾。
+
+\begin{proposition}\label{g5:prop:residue-cotangent-tail}
+	设 \(k\) 为域，\(A\) 为 \(k\) 代数，\(\mathfrak p\in\operatorname{Spec}A\)。记 \(R=A_{\mathfrak p}\)、\(\mathfrak m=\mathfrak pR\)、\(\kappa=R/\mathfrak m\)，并令 \(x:A\to\kappa\) 为自然同态。则有 \(\kappa\) 向量空间正合列
+	\[
+		\mathfrak m/\mathfrak m^2
+		\xrightarrow{\alpha}\Omega_{A/k}\otimes_A\kappa
+		\longrightarrow\Omega_{\kappa/k}\longrightarrow0,
+	\]
+	其中 \(\alpha([u])=\mathrm{d}u\otimes1\)，右侧使用微分与局部化的自然识别。对偶后有正合列
+	\[
+		0\longrightarrow\operatorname{Der}_k(\kappa,\kappa)
+		\longrightarrow \mathrm{T}_x(A/k)
+		\longrightarrow
+		\operatorname{Hom}_\kappa(\mathfrak m/\mathfrak m^2,\kappa).
+	\]
+	第一行的 \(\alpha\) 未必单射，第二行最右侧的映射未必满射。
+\end{proposition}
+\begin{proof}
+	对商同态 \(R\to\kappa=R/\mathfrak m\) 应用\cref{g5:thm:conormal-sequence}，再以\cref{g5:prop:localized-differentials}识别中间微分模，便得到第一行。向量空间的线性泛函可以从子空间延伸到全空间，因此取 \(\kappa\) 线性对偶保持正合。结合导子的泛性质得到第二行；它的第一张映射是与 \(A\to\kappa\) 复合，最后一张映射则是把导子唯一延伸到 \(R\)，再限制于 \(\mathfrak m\) 并模去 \(\mathfrak m^2\)。
+\end{proof}
+
+例如取 \(A=k[t]\) 及素理想 \((0)\)。此时 \(R=\kappa=k(t)\)、\(\mathfrak m=0\)，局部余切空间为零；但
+\[
+	\Omega_{A/k}\otimes_A\kappa
+	=\kappa\,\mathrm{d}t=\Omega_{\kappa/k}.
+\]
+相对于 \(k\) 的切向量仍有一维，它来自剩余域中 \(t\) 的变化。这已经说明，离开有理点后不能把两种余切空间直接等同。最后一小节还会给出闭点处 \(\alpha\) 为零而源非零的例子。
 
 \subsection{Jacobian 矩阵的秩计算}
 \label{g5:subsec:0503:03}
-待撰写
+
+现在用方程计算切空间。设 \(A=k[X_1,\ldots,X_n]/(f_1,\ldots,f_r)\)，选定 \(K\) 值点 \(x:A\to K\)，记 \(a_j=x(\bar X_j)\)。由偏导数组成的矩阵
+\[
+	J_x=\left(\frac{\partial f_i}{\partial X_j}(a_1,\ldots,a_n)\right)
+	_{\substack{1\leq i\leq r\\1\leq j\leq n}}
+\]
+称为这组方程在 \(x\) 处的\term[Jacobianjuzhen]{Jacobian 矩阵}[Jacobian matrix]。
+\footnote{Carl Gustav Jacob Jacobi（1804--1851），德国数学家，研究椭圆函数、偏微分方程及函数行列式。}它把坐标的一次变化送到方程的一次变化，所以保留全部方程的切向量应当位于它的核。
+
+\begin{theorem}\label{g5:thm:jacobian-tangent-space}
+	设 \(k\) 为域，\(A=k[X_1,\ldots,X_n]/(f_1,\ldots,f_r)\)，\(K/k\) 为域扩张，\(x:A\to K\) 为 \(k\) 代数同态。按上述记号，取各坐标的导数值给出同构
+	\[
+		\mathrm{T}_x(A/k)\xrightarrow{\ \sim\ }
+		\ker(J_x:K^n\to K^r),\qquad
+		D\longmapsto\bigl(D(\bar X_1),\ldots,D(\bar X_n)\bigr).
+	\]
+	特别地，
+	\[
+		\dim_K \mathrm{T}_x(A/k)=n-\operatorname{rank}_K J_x.
+	\]
+\end{theorem}
+\begin{proof}
+	给定 \(v=(v_1,\ldots,v_n)\in K^n\)，存在唯一 \(k\) 代数同态
+	\[
+		k[X_1,\ldots,X_n]\longrightarrow K[\varepsilon]/(\varepsilon^2),
+		\qquad X_j\longmapsto a_j+\varepsilon v_j.
+	\]
+	在单项式上展开乘积，所有含两个或更多 \(\varepsilon\) 的项均为零，得到对任意多项式 \(f\) 都成立的等式
+	\[
+		f(a+\varepsilon v)
+		=f(a)+\varepsilon\sum_{j=1}^n
+		\frac{\partial f}{\partial X_j}(a)v_j.
+	\]
+	这个展开只使用整数系数的二项式公式，在任意特征下都成立。由于 \(f_i(a)=0\)，该同态能通过商环 \(A\)，当且仅当每个 \(f_i\) 的一次项为零，即 \(J_xv=0\)。由切向量与导子的对应得到所需同构，维数公式再由秩零度定理得到。
+\end{proof}
+
+同一计算也可以从微分呈示读出。把\cref{g5:cor:differentials-presentation}张量到 \(K\)，得到
+\[
+	K^r\xrightarrow{J_x^{\mathsf T}}K^n
+	\longrightarrow\Omega_{A/k}\otimes_AK\longrightarrow0.
+\]
+取对偶后，核中的矩阵便是 \(J_x\)。这说明 Jacobian 核与微分模对偶描述的是同一个空间。若 \(g=\sum_i h_if_i\)，则
+\[
+	\mathrm{d}g(a)=\sum_i h_i(a)\,\mathrm{d}f_i(a),
+\]
+因为含 \(f_i(a)\) 的项均为零。因此更换同一理想的生成元不会改变这些微分的行空间；更换整个多项式呈示时，内在定义 \(\operatorname{Der}_k(A,K)\) 仍给出各个核之间的自然同构。
+
+\begin{example}\label{g5:exm:parabola-tangent}
+	设 \(k\) 为任意域，\(A=k[x,y]/(y-x^2)\)。在有理点 \((a,a^2)\)，Jacobian 行为 \((-2a,1)\)，所以切向量恰为
+	\[
+		(v,2av),\qquad v\in k.
+	\]
+	参数 \(t\mapsto(t,t^2)\) 的切映射也把 \(v\) 送到这个向量。在特征二时，第二个分量恒为零，但切空间仍为一维；秩始终为一，因为对 \(y\) 的偏导等于 \(1\)。
+\end{example}
+
+\begin{example}\label{g5:exm:double-point-tangent}
+	设 \(A=k[z]/(z^2)\)，在唯一的有理点 \(z=0\) 计算。方程的偏导 \(2z\) 在点上为零，所以 \(\mathrm{T}_0(A/k)\cong k\)，与特征无关。每个 \(v\in k\) 都给出提升 \(z\mapsto\varepsilon v\)。约化商 \(A/(z)=k\) 的相对切空间却为零。因而切空间能检测一些在底层点集中看不见的幂零结构。
+\end{example}
 
 \subsection{正则局部环的维数定义}
 \label{g5:subsec:0503:04}
-待撰写
 
-\subsection{非完美域上正则与光滑的区别}
+对非零 Noether 局部环 \((R,\mathfrak m,\kappa)\)，第三章已经定义嵌入维数
+\[
+	\operatorname{edim}R=\dim_\kappa\mathfrak m/\mathfrak m^2
+\]
+并证明 \(\dim R\leq\operatorname{edim}R<\infty\)，见\cref{g5:prop:dimension-embedding-bound}。Nakayama 引理把右端解释为生成 \(\mathfrak m\) 所需的最少元素数；高度定理说明它不能小于 Krull 维数。正则性要求这个下界达到。
+
+\begin{definition}\label{g5:def:regular-local-ring}
+	设 \((R,\mathfrak m,\kappa)\) 为非零 Noether 局部环。若
+	\[
+		\operatorname{edim}R=\dim R,
+	\]
+	则称 \(R\) 为\term[zhengzejubuhuan]{正则局部环}[regular local ring]。对 Noether 环 \(A\)，若每个素理想 \(\mathfrak p\) 处的局部环 \(A_{\mathfrak p}\) 都正则，则称 \(A\) 为\term[zhengzehuan]{正则环}[regular ring]。
+\end{definition}
+
+等价地，\(d\) 维 Noether 局部环正则，当且仅当它的极大理想能由 \(d\) 个元素生成。事实上，若余切空间有 \(d\) 维，提升一组基后由\cref{g5:cor:nakayama-generators}生成极大理想；反过来，\(d\) 个生成元使嵌入维数至多为 \(d\)，再与维数下界合用便得等号。这个定义和生成元解释可对照\cite[第14节开头，第105页]{Matsumura1989}。
+
+\begin{example}\label{g5:exm:basic-regular-local-rings}
+	每个域都是零维正则局部环。反过来，零维 Noether 局部环若正则，就有 \(\mathfrak m/\mathfrak m^2=0\)；对有限模 \(\mathfrak m\) 用 Nakayama 引理得到 \(\mathfrak m=0\)，故它是域。因此双数环 \(k[z]/(z^2)\) 虽为零维局部环，却不正则。
+
+	离散赋值环的维数为一，极大理想由一个非零元素生成，所以也是正则局部环。另取 \(k\) 有理点 \(a=(a_1,\ldots,a_n)\)，多项式局部环
+	\[
+		S=k[X_1,\ldots,X_n]_{(X_1-a_1,\ldots,X_n-a_n)}
+	\]
+	的维数为 \(n\)：依次添加 \(X_j-a_j\) 给出长度为 \(n\) 的严格素链，而\cref{g5:cor:polynomial-dimension}给出上界。它的极大理想恰可由这 \(n\) 个元素生成，故 \(S\) 正则。
+\end{example}
+
+\begin{corollary}[有理点处的 Jacobian 正则性判别]\label{g5:cor:rational-jacobian-regularity}
+	设 \(k\) 为域，\(A=k[X_1,\ldots,X_n]/(f_1,\ldots,f_r)\)，\(a\in k^n\) 为方程的公共零点。令 \(\mathfrak m\) 为该点的极大理想，\(d=\dim A_{\mathfrak m}\)。则
+	\[
+		A_{\mathfrak m}\text{ 正则}
+		\quad\Longleftrightarrow\quad
+		\operatorname{rank}_kJ_a=n-d.
+	\]
+\end{corollary}
+\begin{proof}
+	\(A\) 是有限型 \(k\) 代数，故 \(A_{\mathfrak m}\) 为 Noether 局部环。由\cref{g5:thm:rational-cotangent-space,g5:thm:jacobian-tangent-space}，
+	\[
+		\operatorname{edim}A_{\mathfrak m}
+		=\dim_k \mathrm{T}_a(A/k)=n-\operatorname{rank}_kJ_a.
+	\]
+	把它代入正则局部环的定义即得结论。
+\end{proof}
+
+这里的 \(d\) 是该点的局部维数。这个判别不要求 \(k\) 代数闭，也不要求 \(A\) 约化或等维。经典仿射代数集的对应叙述及局部余切空间计算，见\cite[第I章第5节，定理5.1，第31—32页]{Hartshorne1977}。
+
+\begin{example}\label{g5:exm:hypersurface-rational-regularity}
+	设 \(f\in k[X_1,\ldots,X_n]\) 非恒定，\(a\in k^n\) 满足 \(f(a)=0\)。则 \(A=k[X_1,\ldots,X_n]/(f)\) 在该点的局部维数为 \(n-1\)。为说明这一步，令 \(S\) 为上例中的多项式局部环。因为 \(f\in\mathfrak m_S\)，\cref{g5:lem:principal-dimension-drop}给出
+	\[
+		\dim S/(f)\geq\dim S-1=n-1.
+	\]
+	另一方面，\cref{g5:prop:polynomial-hypersurface-dimension}给出 \(\dim A=n-1\)，局部化后维数不增，故得到等号。于是该点正则，当且仅当
+	\[
+		\left(\frac{\partial f}{\partial X_1}(a),\ldots,
+		\frac{\partial f}{\partial X_n}(a)\right)\ne0.
+	\]
+	例如尖点 \(y^2-x^3=0\) 在原点的两项偏导都为零，因此局部维数为一而嵌入维数为二。结点 \(y^2-x^2(x+1)=0\)、\(\operatorname{char}k\ne2\)，在原点也有同样的两种维数。二者都不正则；仅靠切空间维数还不能区别这两种曲线奇点，下一节的切锥将保留更细的信息。
+\end{example}
+
+\begin{example}\label{g5:exm:jacobian-local-dimension}
+	考虑\cref{g5:exm:mixed-dimensional-components}中的
+	\[
+		A=k[x,y,z]/(xy,xz).
+	\]
+	它有一个二维平面分支和一个一维直线分支，故 \(\dim A=2\)。在有理点 \(a=(1,0,0)\)，Jacobian 矩阵为
+	\[
+		J_a=\begin{pmatrix}0&1&0\\0&0&1\end{pmatrix},
+	\]
+	切空间维数为一。在该点附近反演 \(x\)，两个方程强迫 \(y=z=0\)，所以局部环为 \(k[x]_{(x-1)}\)，维数为一且正则。若把判别中的局部维数误换为全环维数二，就会得到错误判断。
+\end{example}
+
+\subsection{非完美域上的正则性与几何正则性}
 \label{g5:subsec:0503:05}
-待撰写
+
+正则性只检查给定环的局部环。若环带有 \(k\) 代数结构，还可以把系数扩张到更大的域，再检查正则性；这提出了额外要求。我们先记录这个要求，再用一个可直接计算的例子说明其作用。
+
+\begin{definition}\label{g5:def:geometrically-regular-algebra}
+	设 \(k\) 为域，\(A\) 为 Noether \(k\) 代数。若对每个有限域扩张 \(K/k\)，环 \(A\otimes_kK\) 都正则，则称 \(A\) 在 \(k\) 上\term[jihezhengze]{几何正则}[geometrically regular]。
+\end{definition}
+
+有限域扩张下 \(A\otimes_kK\) 是有限 \(A\) 模，因此仍为 Noether 环。定义中的检验确有意义；取 \(K=k\) 又可知几何正则必蕴含正则。这一有限域扩张版本的定义见\cite[第28节，第219页]{Matsumura1989}。
+
+\begin{example}\label{g5:exm:inseparable-regular-point}
+	设 \(p\) 为素数，\(k=\mathbb F_p(s)\)，其中 \(s\) 是超越元，并令
+	\[
+		L=k[\alpha]=k[T]/(T^p-s),\qquad\alpha^p=s.
+	\]
+	这是一个次数为 \(p\) 的域扩张。可以直接把它实现为 \(\mathbb F_p(u^p)\subset\mathbb F_p(u)\)，令 \(s=u^p\)、\(\alpha=u\)：\(1,u,\ldots,u^{p-1}\) 在 \(\mathbb F_p(u^p)\) 上线性无关，因为清去分母后不同项的指数模 \(p\) 不同；它们也张成整个域，因为对非零多项式 \(q(u)\)，有
+	\[
+		\frac1{q(u)}=\frac{q(u)^{p-1}}{q(u)^p},
+		\qquad q(u)^p\in\mathbb F_p(u^p).
+	\]
+	先将任意多项式按指数模 \(p\) 分组，便得到张成性。由此既证明该商是域，也说明 \(s\) 在 \(k\) 中没有 \(p\) 次根，所以 \(k\) 不是完美域。
+
+	作为域，\(L\) 是零维正则局部环，其极大理想为零。但由微分呈示，
+	\[
+		\Omega_{L/k}=L\,\mathrm{d}\alpha,
+	\]
+	因为关系的微分 \(\mathrm{d}(T^p-s)\) 为零。因此在恒等点 \(L\to L\) 处，相对于 \(k\) 的双数切空间有一维，而局部环的余切空间为零。这里\cref{g5:prop:residue-cotangent-tail}的全部非零信息都来自剩余域的微分。
+
+	现在作有限基扩张 \(k\subset L\)。以第二个 \(L\) 为系数域，有
+	\[
+		L\otimes_kL
+		\cong L[T]/(T^p-s)
+		\cong L[\eta]/(\eta^p),\qquad\eta=T-\alpha.
+	\]
+	右端只有一个素理想 \((\eta)\)，因而维数为零；其极大理想模平方却有一维，由 \(\eta\) 的类生成。因此它不正则。原来的域 \(L\) 正则，却不在 \(k\) 上几何正则。
+\end{example}
+
+这个例子还可以放回一条正则曲线上的非有理闭点。取 \(A=k[z]\)、\(\mathfrak p=(z^p-s)\)，则剩余域为 \(L\)，\(R=A_{\mathfrak p}\) 是主理想整环在非零素理想处的局部化，极大理想由 \(f=z^p-s\) 生成。它的素理想只有 \((0)\) 和 \(fR\)，故 \(\dim R=1\)，且 \(R\) 正则。类 \([f]\) 生成一维 \(L\) 空间 \(\mathfrak m/\mathfrak m^2\)：它非零，因为若 \(f\in f^2R\)，在整环中约去 \(f\) 会使 \(f\) 成为单位。但余切正合尾为
+\[
+	L\cdot[f]\xrightarrow{\ 0\ }L\,\mathrm{d}z
+	\xrightarrow{\ \sim\ }L\,\mathrm{d}\alpha\longrightarrow0.
+\]
+第一张映射为零正是因为 \(\mathrm{d}f=0\)。所以即使局部环本身正则，也不能省掉剩余域微分，并把余法映射默认成单射。
+
+\ProseParagraphBreak
+
+还可以直接检验这个域扩张的一次提升障碍。仍令 \(f=T^p-s\)，取
+\[
+	C=k[T]/(f^2),\qquad N=(f)/(f^2)\subset C.
+\]
+则 \(N^2=0\) 且 \(C/N=L\)。恒等同态 \(L\to C/N\) 不能提升为 \(k\) 代数同态 \(L\to C\)。事实上，任何提升都必须把 \(\alpha\) 送到某个 \(T+fh\)，其中 \(h\in C\)。在特征 \(p\) 下，
+\[
+	(T+fh)^p-s=f+f^ph^p=f\quad\text{在 }C\text{ 中},
+\]
+因为 \(p\geq2\) 且 \(f^2=0\)。但 \(f\) 在 \(C\) 中非零，这与 \(\alpha^p=s\) 矛盾。因而 \(L\) 本身的正则性并不保证这种平方零理想上的提升能够完成。
+
+\ProseParagraphBreak
+
+后文将在\secref{g5:sec:1501}用提升问题定义形式光滑等相对性质，并在\secref{g5:sec:1502}建立光滑态射的结构和相对 Jacobian 判据。本节已经证明的有理点判别针对局部环的正则性；对一般剩余域以及基域扩张，还必须保留相对微分与几何正则性的条件。上面的纯不可分计算给出了这一区别的具体原因。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

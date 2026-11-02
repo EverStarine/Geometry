@@ -1,35 +1,275 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 19.3 单调性和稳定不等式
 % 纲要位置：几何学计划纲要.md，第 2879 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 径向变分及面积比
 % * 环境曲率修正
 % * 稳定性与测试函数
-% * 切锥和密度的几何动机
+% * 面积密度与放大极限
 % 
 % 纲要内容结束
 
 \section{单调性和稳定不等式}
 \label{g3:sec:1903}
 
-待撰写
+在半径为 \(r\) 的 Euclid 球中，过球心的 \(m\) 维平面面积为 \(\omega_m r^m\)，其中 \(\omega_m\) 是 \(\mathbb R^m\) 单位球体积。因此面积除以 \(r^m\) 后，平面给出一个常数。极小子流形的径向驻值公式表明，这个比值向外只能增加；增加量恰好检测径向方向偏离切空间的程度。稳定性则来自另一种信息：对每个紧支法向速度，面积的二阶变化非负。两种工具分别控制尺度和测试函数，不能相互替代。
 
 \subsection{径向变分及面积比}
 \label{g3:subsec:1903:01}
-待撰写
+面积始终在参数流形上计算。若浸入有重叠，相同像点的不同原像分别贡献面积。以下“适当浸入”指紧集原像紧；在有界环境球中使用这一条件，是为了保证面积和紧支积分均有明确意义。
+
+\begin{lemma}\label{g3:lem:smooth-radial-layer-integration}
+	设 \((M^m,g)\) 为光滑无边界黎曼流形，\(m\ge1\)，\(r:M\to[0,R)\) 连续，在 \(r>0\) 处光滑。假设每个 \(\{r\le t\}\)、\(t<R\)，均紧，\(r^{-1}(0)\) 为有限集，且 \(\{r>0,\nabla r=0\}\) 的 \(m\) 维体积为零。记
+	\[
+		\Gamma_t=\{r=t,\ |\nabla r|>0\},\qquad
+		A(t)=\operatorname{Vol}_g\{r<t\}.
+	\]
+	则对非负可测函数 \(f\) 和 \(0<a<b<R\)，有
+	\begin{equation}\label{g3:eq:smooth-radial-layer-formula}
+		\int_{a<r<b}f\,\mu_g
+		=\int_a^b\left(\int_{\Gamma_t}\frac{f}{|\nabla r|}\,\mu_{\Gamma_t}\right)\mathrm dt.
+	\end{equation}
+	其中 \(\Gamma_t\) 是可能不紧的光滑超曲面；\(m=1\) 时内层密度是计数密度。特别地，\(A\) 在每个紧半径区间绝对连续，且几乎处处有
+	\begin{equation}\label{g3:eq:radial-area-derivative}
+		A'(t)=\int_{\Gamma_t}|\nabla r|^{-1}\,\mu_{\Gamma_t}.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	只需在 \(\nabla r\ne0\) 的开集建立公式，因为余集体积为零。在其中取局部坐标 \((t,y^2,\ldots,y^m)\)，第一坐标为 \(t=r\)。把度量矩阵写成分块形式
+	\[
+		G=\begin{pmatrix}g_{tt}&b^{\mathsf T}\\b&C\end{pmatrix}.
+	\]
+	等值面的度量矩阵为 \(C\)，而逆矩阵的 \(tt\) 元为
+	\(|\nabla r|^2=(g_{tt}-b^{\mathsf T}C^{-1}b)^{-1}\)。行列式消元给出
+	\[
+		\sqrt{\det G}=\frac{\sqrt{\det C}}{|\nabla r|}.
+	\]
+	\(m=1\) 时把空矩阵行列式取为 \(1\)，同一公式仍成立。局部积分换元与 Fubini 定理于是给出所需等式。取这一开集上的可数局部有限坐标覆盖及非负单位分解，对非负函数逐项求和，用单调收敛即可得到全局公式。
+	以 \(f=1\) 代入，右侧是一个局部可积函数对半径的积分，故 \(A(b)-A(a)\) 等于该积分。这给出绝对连续性与几乎处处的导数公式。任一正半径等值集在正则点附近是超曲面，在临界点部分体积为零，故整个等值集体积为零；因此开球与闭球的面积相同。
+\end{proof}
+
+这里仅证明了当前光滑距离函数所需的层积分公式。关键假设是临界集体积为零，下面用极小方程直接验证，而不预先使用第五编的一般余面积公式。
+
+\begin{theorem}[Euclid 极小子流形的面积单调性]\label{g3:thm:euclidean-minimal-monotonicity}
+	设 \(m,q\ge1\)，\(F:M^m\to B_R(p)\subset\mathbb R^{m+q}\) 是光滑适当极小浸入，\(M\) 无边界，取诱导度量。令
+	\[
+		r=|F-p|,\qquad A(t)=\int_{\{r<t\}}\mu_g,\qquad 0<t<R.
+	\]
+	则对任意 \(0<s<t<R\)，
+	\begin{equation}\label{g3:eq:minimal-area-monotonicity}
+		\frac{A(t)}{t^m}-\frac{A(s)}{s^m}
+		=\int_{s<r<t}\frac{|(F-p)^\perp|^2}{r^{m+2}}\,\mu_g\ge0.
+	\end{equation}
+	上标 \(\perp\) 表示在每个原像点投影到该支的法空间。等号当且仅当环带 \(s<r<t\) 上的径向向量 \(F-p\) 处处切向。带边界浸入若其边界像避开 \(B_R(p)\)，也有同一结论。
+\end{theorem}
+\begin{proof}
+	记 \(X=F-p\)。\Cref{g3:prop:immersion-position-laplacian}给出
+	\[
+		\operatorname{div}_M X^\top=m,\qquad
+		\nabla_M(r^2/2)=X^\top,\qquad
+		|\nabla_Mr|^2=1-\frac{|X^\perp|^2}{r^2}\le1.
+	\]
+	第一式也可直接由 \(\sum_i\langle\overline\nabla_{e_i}X,e_i\rangle=m\) 及平均曲率为零得到。
+	适当性使 \(F^{-1}(p)\) 紧，浸入的局部单射性使它离散，故为有限集。考察 \(h=r^2/2\) 的临界点。在该点 \(\operatorname{tr}\operatorname{Hess}h=m\)，所以至少有一个二阶坐标偏导不为零。于是某个一阶偏导 \(\partial_i h\) 的零集在该点附近是光滑超曲面，临界集包含于其中。用可数覆盖可知整个临界集体积为零。对 \(r>0\)，\(\nabla r=0\) 与 \(\nabla h=0\) 等价，故上一引理适用。
+	为了不要求所选半径都是正则值，使用径向截断。设 \(\eta\ge0\) 光滑、在零附近为常数、支于 \([0,R)\)。\(\eta(r)X^\top\) 是紧支光滑切向场，在 \(r=0\) 处也光滑。散度定理给出
+	\begin{equation}\label{g3:eq:minimal-radial-cutoff}
+		0=\int_M\left(m\eta(r)+r\eta'(r)|\nabla r|^2\right)\mu_g.
+	\end{equation}
+	令 \(B(t)=\int_{\Gamma_t}|\nabla r|\,\mu_{\Gamma_t}\)。层积分公式使 \(tB(t)\) 在远离零的紧区间可积。取 \(\eta\) 在 \([0,t]\) 为 \(1\)，在长度趋零的外侧过渡区降为 \(0\)，并使用一维可积函数的 Lebesgue 微分定理。对几乎每个 \(t\)，式\eqref{g3:eq:minimal-radial-cutoff}成为
+	\begin{equation}\label{g3:eq:minimal-radial-flux}
+		mA(t)=t\int_{\Gamma_t}|\nabla r|\,\mu_{\Gamma_t}.
+	\end{equation}
+	将它与式\eqref{g3:eq:radial-area-derivative}相减，得到几乎处处的恒等式
+	\[
+		\frac{\mathrm d}{\mathrm dt}\left(t^{-m}A(t)\right)
+		=t^{-m}\int_{\Gamma_t}
+		\frac{1-|\nabla r|^2}{|\nabla r|}\,\mu_{\Gamma_t}.
+	\]
+	面积函数绝对连续，故在 \([s,t]\) 上积分合法；再次使用层积分公式，将右侧变成
+	\(\int_{s<r<t}(1-|\nabla r|^2)r^{-m}\mu_g\)，即为式\eqref{g3:eq:minimal-area-monotonicity}。
+	被积函数连续且非负。若积分为零，它在开环带内处处为零，所以径向向量切向；反方向直接代入即可。若有边界但其像避开球，所用紧支场的支集仍在内部，整个证明不变。
+\end{proof}
+
+若径向向量切向，在环带中可令 \(Y\) 为满足 \(\mathrm dF(Y)=F-p\) 的切向场。其局部流满足
+\[
+	\frac{\mathrm d}{\mathrm d\tau}(F\circ\Phi_\tau-p)
+	=F\circ\Phi_\tau-p,
+	\qquad F\circ\Phi_\tau-p=e^\tau(F-p).
+\]
+因而等号表示各支在允许的半径范围内沿射线延伸。较小闭环带的原像紧，保证该流可以延续到给定的内外半径；这就是面积比常数与局部锥形结构之间的准确联系。
 
 \subsection{环境曲率修正}
 \label{g3:subsec:1903:02}
-待撰写
+环境弯曲时，\(\operatorname{Hess}(r^2/2)\) 不再等于度量。截面曲率上界给出它的下界，足以控制面积比可能出现的下降。以下保留一个明确且便于核对的修正因子。
+
+\begin{theorem}\label{g3:thm:curvature-corrected-area-monotonicity}
+	设 \((\overline M^{m+q},\overline g)\) 为完备光滑无边界黎曼流形，\(m,q\ge1\)。固定 \(p\in\overline M\)，取 \(0<R<\operatorname{inj}_{\overline g}(p)\)。假设从 \(p\) 出发、长度小于 \(R\) 的径向测地线沿途每个含径向的二维平面均满足截面曲率 \(K\le\kappa\)，其中 \(\kappa\ge0\)，并且 \(\kappa R^2\le1/2\)。若 \(F:M^m\to B_R^{\overline g}(p)\) 是光滑适当极小浸入、\(M\) 无边界，则
+	\begin{equation}\label{g3:eq:curved-minimal-area-ratio}
+		r\longmapsto
+		e^{m\kappa r^2/2}\frac{\operatorname{Vol}_g(F^{-1}(B_r^{\overline g}(p)))}{r^m}
+	\end{equation}
+	在 \(0<r<R\) 上单调不减。边界像避开 \(B_R(p)\) 时同样成立。
+\end{theorem}
+\begin{proof}
+	先在环境中记 \(r=d_{\overline g}(p,\cdot)\)。单射半径条件使 \(r\) 在球内除中心外光滑，\(r^2\) 则在中心也光滑。由\cref{g3:thm:hessian-comparison}，
+	\[
+		\overline{\operatorname{Hess}}r
+		\ge\operatorname{ct}_\kappa(r)
+		(\overline g-\mathrm dr\otimes\mathrm dr).
+	\]
+	这里 \(\operatorname{ct}_0(r)=1/r\)，\(\kappa>0\) 时为
+	\(\sqrt\kappa\cot(\sqrt\kappa r)\)。令 \(a(r)=r\operatorname{ct}_\kappa(r)\)。在 \(0\le x\le1\) 上有
+	\[
+		0\le1-x\cot x
+		=\frac{\sin x-x\cos x}{\sin x}
+		\le x^2.
+	\]
+	事实上分子为 \(\int_0^x t\sin t\,\mathrm dt\)，介于 \(0\) 与 \(x^3/3\) 之间，而 \(\sin x\ge x-x^3/6\ge5x/6\)；这甚至给出上界 \(2x^2/5\)。因此 \(1-\kappa r^2\le a(r)\le1\)。乘积法则给出
+	\[
+		\overline{\operatorname{Hess}}(r^2/2)
+		\ge a(r)\overline g+(1-a(r))\mathrm dr\otimes\mathrm dr
+		\ge(1-\kappa r^2)\overline g.
+	\]
+	现把 \(r\) 拉回 \(M\)。沿浸入的 Hessian 链式法则为
+	\[
+		\operatorname{Hess}_M(\psi\circ F)(X,Y)
+		=\overline{\operatorname{Hess}}\psi(\mathrm dF X,\mathrm dF Y)
+		+\langle\overline\nabla\psi,B(X,Y)\rangle.
+	\]
+	它由 Gauss 分解直接得到；取迹时后一项为 \(m\langle\overline\nabla\psi,H\rangle=0\)。于是对 \(h=r^2/2\)，
+	\begin{equation}\label{g3:eq:curved-radial-divergence}
+		\operatorname{div}_M\nabla h\ge m(1-\kappa r^2)\ge m/2,
+		\qquad |\nabla_Mr|\le1.
+	\end{equation}
+	中心原像有限。临界点处 Hessian 的迹严格为正，所以与前一定理相同的一阶偏导零集论证表明临界集体积为零。\Cref{g3:lem:smooth-radial-layer-integration}因而适用。
+	对非负径向截断 \(\eta\)，积分 \(\operatorname{div}(\eta(r)\nabla h)\)，用式\eqref{g3:eq:curved-radial-divergence}，得到
+	\[
+		0\ge m\int\eta(r)(1-\kappa r^2)\mu_g
+		+\int\eta'(r)r|\nabla r|^2\mu_g.
+	\]
+	令截断逼近半径 \(t\) 的球示性函数，得到几乎处处
+	\[
+		t\int_{\Gamma_t}|\nabla r|\,\mu_{\Gamma_t}
+		\ge m\int_{r<t}(1-\kappa r^2)\mu_g
+		\ge m(1-\kappa t^2)A(t).
+	\]
+	因 \(|\nabla r|\le1\)，层积分导数满足
+	\(tA'(t)\ge t\int_{\Gamma_t}|\nabla r|\)。故
+	\[
+		\frac{\mathrm d}{\mathrm dt}\left(e^{m\kappa t^2/2}t^{-m}A(t)\right)
+		=e^{m\kappa t^2/2}t^{-m}
+		\left(A'(t)-\frac m t A(t)+m\kappa t A(t)\right)\ge0
+	\]
+	几乎处处成立。局部绝对连续性把它提升为全部半径间的单调性。全部截断支于球内，边界版本也随之成立。
+\end{proof}
+
+这个版本只用径向截面曲率的上界；非正截面曲率时可取 \(\kappa=0\)，在割点以前无需指数修正。正曲率下，无修正的面积比确实可能下降。例如单位圆球中的全测地 \(S^2\subset S^3\)，以曲面上一点为中心，充分小的环境球截得的曲面面积是 \(2\pi(1-\cos r)\)。其面积比为
+\[
+	\frac{2\pi(1-\cos r)}{r^2}
+	=\pi\left(1-\frac{r^2}{12}+O(r^4)\right).
+\]
+它在小半径处向外下降，而上述修正因子补偿了这一曲率误差。若球已越过割迹，光滑距离及 Hessian 比较的用法也须改变，不能只保留同一个积分式。
 
 \subsection{稳定性与测试函数}
 \label{g3:subsec:1903:03}
-待撰写
+面积驻值使第一变分为零，稳定性进一步要求所有允许的二阶变化非负。在双侧超曲面上，可以固定全局单位法向 \(\nu\)，把法向速度写成 \(f\nu\)。这时稳定性成为一个直接可代入测试函数的积分不等式。
 
-\subsection{切锥和密度的几何动机}
+\begin{proposition}\label{g3:prop:stable-minimal-test}
+	设 \(F:M^m\to(\overline M^{m+1},\overline g)\)、\(m\ge1\)，为光滑双侧极小超曲面浸入，\(M\) 可有光滑边界。固定光滑单位法向 \(\nu\)，令
+	\(V_0=|A|^2+\overline{\operatorname{Ric}}(\nu,\nu)\)。则 \(F\) 对全部内部紧支法向变分稳定，当且仅当
+	\begin{equation}\label{g3:eq:minimal-stability-test}
+		\int_M V_0 f^2\mu_g\le\int_M|\nabla f|^2\mu_g
+		\quad\text{对所有 }f\in C_c^\infty(\operatorname{int}M).
+	\end{equation}
+	若稳定且在所测区域上 \(\overline{\operatorname{Ric}}(\nu,\nu)\ge-K\)，\(K\ge0\)，则每个相应紧支光滑截断 \(\eta\) 满足
+	\[
+		\int |A|^2\eta^2\mu_g
+		\le\int|\nabla\eta|^2\mu_g+K\int\eta^2\mu_g.
+	\]
+\end{proposition}
+\begin{proof}
+	每个内部紧支法向场都唯一写成 \(f\nu\)。因为一维法丛的单位截面满足 \(\nabla^\perp\nu=0\)，式\eqref{g3:eq:minimal-normal-index-form}化为
+	\[
+		Q(f\nu,f\nu)=\int_M\bigl(|\nabla f|^2-V_0f^2\bigr)\mu_g.
+	\]
+	其中环境曲率项的求和是 \(\overline{\operatorname{Ric}}(\nu,\nu)\)，第二基本形式项的求和是 \(|A|^2\)。每个这样的场由法向指数变分实现，所以稳定性的量词恰为所述全部测试函数。最后把 Ricci 下界移项即可。
+\end{proof}
+
+例如取 \(0\le\eta\le1\)，使其在内域 \(U\) 上为 \(1\)、在宽度 \(d\) 的过渡层 \(E\) 中降为 \(0\)，且 \(|\nabla\eta|\le C/d\)，就得到
+\[
+	\int_U|A|^2\mu_g
+	\le\frac{C^2}{d^2}\operatorname{Vol}(E)
+	+K\operatorname{Vol}(\operatorname{supp}\eta).
+\]
+梯度项只需过渡层的体积，曲率下界中的 \(K\) 项则涉及整个支集。这样的结论是积分估计；要得到逐点曲率界，还需第二基本形式本身满足的微分不等式与迭代论证。
+
+\begin{proposition}\label{g3:prop:positive-jacobi-stability}
+	设 \((M,g)\) 为光滑黎曼流形，允许边界，\(V_0\) 为光滑实函数。若内部存在光滑正函数 \(w>0\) 满足
+	\(\Delta_gw-V_0w=0\)，其中 \(\Delta_g=-\operatorname{div}\nabla\)，则对每个 \(f\in C_c^\infty(\operatorname{int}M)\)，
+	\begin{equation}\label{g3:eq:positive-jacobi-square-identity}
+		\int_M(|\nabla f|^2-V_0f^2)\mu_g
+		=\int_M w^2\left|\nabla\left(\frac f w\right)\right|^2\mu_g\ge0.
+	\end{equation}
+	特别地，光滑 Euclid 极小超曲面上若某个固定方向 \(a\) 满足 \(\langle\nu,a\rangle>0\)，则该超曲面稳定；每个光滑标量极小图都满足此条件。
+\end{proposition}
+\begin{proof}
+	写 \(f=w\psi\)。展开平方，并把混合项与 \(\psi^2|\nabla w|^2\) 合并，得到
+	\[
+		|\nabla f|^2=w^2|\nabla\psi|^2
+		+\langle\nabla w,\nabla(w\psi^2)\rangle.
+	\]
+	在紧支集上积分分部，第二项成为 \(\int(\Delta w)w\psi^2\mu_g=\int V_0f^2\mu_g\)，即得平方恒等式。正性保证除以 \(w\) 在每个紧支集上光滑，并不要求它在整个非紧流形上有统一正下界。
+	为处理法向分量，取 Euclid 超曲面的局部正交标架，在一点令源联络系数为零。写 \(h_{ij}=\langle B(e_i,e_j),\nu\rangle\)，则 \(\overline\nabla_{e_i}\nu=-\sum_jh_{ij}e_j\)。再求一次导数并取迹，得到环境向量恒等式
+	\[
+		\sum_i\left(\overline\nabla_{e_i}\overline\nabla_{e_i}\nu
+		-\overline\nabla_{\nabla_{e_i}e_i}\nu\right)
+		=-\sum_j\left(\sum_i\nabla_i h_{ij}\right)e_j-|A|^2\nu.
+	\]
+	\Cref{g3:thm:codazzi-equation}在平坦环境给出
+	\(\sum_i\nabla_i h_{ij}=\nabla_j\sum_i h_{ii}=0\)，最后一步用极小性。因此逐个环境坐标有 \(\Delta\nu=|A|^2\nu\)。与常向量 \(a\) 配对，\(w=\langle\nu,a\rangle\) 就满足 \((\Delta-|A|^2)w=0\)。平方恒等式与上一命题给出稳定性。对向上极小图，\(a=e_{m+1}\)、\(w=(1+|\mathrm Du|^2)^{-1/2}>0\)，故条件成立。
+\end{proof}
+
+一个整体极小曲面可以由稳定图小片覆盖而本身不稳定。悬链面就是这种情形：\cref{g3:ex:catenoid-unstable-test}将用一个跨越颈圈的紧支函数给出负二阶变化。局部正的法向分量未必能够拼成全局正 Jacobi 函数。高余维时法向场还具有多个耦合分量，稳定性应直接使用式\eqref{g3:eq:minimal-normal-index-form}，不能无条件压缩成上述单个标量势。
+
+\subsection{面积密度与放大极限}
 \label{g3:subsec:1903:04}
-待撰写
+将面积比再除以单位球体积，定义
+\[
+	\Theta_p(r)=\frac{A(r)}{\omega_mr^m}.
+\]
+Euclid 情形中它单调不减且非负，故 \(r\downarrow0\) 时存在有限极限：对任意固定 \(r_0\)，\(0\le\Theta_p(r)\le\Theta_p(r_0)<\infty\)。记这一极限为 \(\Theta_p(0)\)，称它为中心处的面积密度。曲率修正版本也给出同一极限的存在，因为指数因子趋于 \(1\)。
+
+\begin{proposition}\label{g3:prop:smooth-immersion-density}
+	设 \(F:M^m\to\mathbb R^{m+q}\)、\(m,q\ge1\)，为光滑适当浸入，\(M\) 无边界，取诱导度量，不要求极小。则对任意 \(p\in\mathbb R^{m+q}\)，中心原像数 \(k=\#F^{-1}(p)\) 有限，且
+	\begin{equation}\label{g3:eq:smooth-immersion-density}
+		\lim_{r\downarrow0}\frac{\operatorname{Vol}_g\{|F-p|<r\}}{\omega_mr^m}=k.
+	\end{equation}
+	在每个原像点附近，将像平移并放大 \(r^{-1}\)，所得单支以光滑图的方式在紧集上趋于其切平面。各支分别计数，即使某些切平面相同，也不合并重数。
+\end{proposition}
+\begin{proof}
+	浸入局部为嵌入，故 \(F^{-1}(p)\) 离散；适当性使其紧，所以有限。设原像为 \(x_1,\ldots,x_k\)，取互不相交的源邻域。存在足够小的环境球，其全部原像都落在这些邻域中：否则有球心趋于 \(p\) 的像点而原像在邻域之外，适当性使这些原像在某个固定闭球的原像中取收敛子列，极限既映到 \(p\) 又不在所选邻域，矛盾。\(k=0\) 时同一论证表明充分小球原像为空。
+	把每一支旋转为其切平面上的图，可写
+	\[
+		F(x)=p+(x,v(x)),\qquad v(0)=0,\quad\mathrm Dv(0)=0.
+	\]
+	在足够小邻域，\(|v(x)|\le C|x|^2\)、\(|\mathrm Dv(x)|\le C|x|\)。若 \(|x|<r(1-C_1r^2)\)，取固定足够大的 \(C_1\) 后便有 \(|(x,v(x))|<r\)；反方向 \(|(x,v(x))|<r\) 必有 \(|x|<r\)。图面积密度
+	\(\sqrt{\det(I+(\mathrm Dv)^{\mathsf T}\mathrm Dv)}=1+O(|x|^2)\)。因此该支的球内面积为 \(\omega_mr^m(1+O(r^2))\)。有限支相加得到式\eqref{g3:eq:smooth-immersion-density}。
+	放大后的图函数为 \(v_r(y)=r^{-1}v(ry)\)。在固定紧集上，零阶和一阶范数均为 \(O(r)\)；对 \(j\ge2\)，
+	\(\mathrm D^jv_r(y)=r^{j-1}(\mathrm D^jv)(ry)\to0\)。这就证明各阶导数都趋于切平面图函数零。
+\end{proof}
+
+因此在光滑适当嵌入点，密度为 \(1\)，放大极限就是唯一切平面；在浸入自交点，多个平面及其重数来自多个源点。面积单调性于是还给出极小浸入的下界 \(A(r)\ge k\omega_mr^m\)，只要球不遇边界。
+\ProseParagraphBreak
+把集合 \(C\subset\mathbb R^{m+q}\) 称为以原点为顶点的锥，是指 \(tC=C\) 对所有 \(t>0\) 成立。若去掉顶点后它是光滑子流形，则径向向量处处切向；反过来，径向场的流把每个局部片沿射线延伸。面积单调性的等号正是在检测这个条件。
+\ProseParagraphBreak
+对一个已经给定的极小浸入，在尺度 \(r_j\downarrow0\) 放大，面积比满足
+\[
+	\Theta^{(j)}_0(R)=\Theta_p(r_jR).
+\]
+所以任意固定 \(0<a<b\)，两端面积比之差趋于零。由式\eqref{g3:eq:minimal-area-monotonicity}，放大后在该环带的径向法向分量平方的加权积分也趋于零。若另外已知这些放大曲面在环带内以固定有限重数局部光滑收敛到光滑极小极限，那么任一极限小片上的该非负积分也是零，径向向量在极限上处处切向。这是“放大极限应当是锥”的一个严格的条件性推论。
+\ProseParagraphBreak
+面积上界本身尚未提供刚才所假设的光滑收敛。在可能产生奇点的极小曲面列中，须先定义适合的弱对象、证明相应紧性并说明重数如何保留，才谈得上一般切锥的存在或结构。第五编将建立这些工具。当前证明已经给出光滑点的密度与切平面、精确的面积比误差，以及光滑放大极限的径向性；它们说明了弱理论需要保留哪些量。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

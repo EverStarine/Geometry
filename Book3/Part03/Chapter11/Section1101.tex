@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 11.1 积分、分布和弱微分
 % 纲要位置：几何学计划纲要.md，第 2505 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,171 @@
 \section{积分、分布和弱微分}
 \label{g3:sec:1101}
 
-待撰写
+一列光滑函数可以有收敛的能量，而极限在个别点没有经典导数。例如 \(u_\varepsilon(x)=\sqrt{x^2+\varepsilon^2}\) 在有界区间上趋向 \(|x|\)，其一阶导数有一致界。若把导数移到紧支测试函数上，极限仍满足同一个积分恒等式。弱微分正是用这种稳定的恒等式记录导数；在向量丛上，还要让测试对象与换标架相容。
 
 \subsection{\texorpdfstring{体积密度及 \(L^p\) 截面}{体积密度及 Lᵖ 截面}}
 \label{g3:subsec:1101:01}
-待撰写
+第一章的体积密度\cref{g3:def:metric-volume-density}在坐标中为 \(\mu_g=m(x)|\mathrm dx|\)，其中 \(m=\sqrt{\det(g_{ij})}>0\)。对非负可测函数，取局部有限单位分解 \(\{\chi_a\}\)，定义
+\[
+	\int_M f\,\mu_g=\sum_a\int_{x_a(U_a)}(\chi_af)\circ x_a^{-1}\,m_a\,\mathrm dx.
+\]
+这里右边采用 Lebesgue 积分。\footnote{Henri Léon Lebesgue（1875--1941），法国数学家，建立了现代测度与积分理论，并研究实变函数与三角级数。}在两套分解之间插入 \(\sum_b\widetilde\chi_b=1\)，再用非负积分的求和交换和坐标换元，得到相同数值。对可积的有符号函数按正负部分定义。这个构造不要求定向；第二可数性使流形可由可数个相对紧坐标片覆盖，因而所得测度是 \(\sigma\)-有限的。
+
+\begin{definition}\label{g3:def:lp-sections}
+	设 \((M,g)\) 为光滑黎曼流形，\(E\to M\) 为有限秩实或复光滑向量丛，配有光滑正定纤维度量 \(h\)。若截面的局部分量可测，就称截面可测。将几乎处处相等的截面识别，定义
+	\[
+		\|s\|_{L^p(E)}=\left(\int_M|s|_h^p\,\mu_g\right)^{1/p}
+		\quad(1\le p<\infty),\qquad
+		\|s\|_{L^\infty(E)}=\mathop{\mathrm{ess\,sup}}_M|s|_h.
+	\]
+	范数有限的空间记为 \(L^p(M;E)\)；在每个相对紧坐标片上可积的版本记为 \(L^p_{\mathrm{loc}}(M;E)\)。平凡线丛时省略 \(E\)。
+\end{definition}
+\symidx{\(L^p(M;E)\)：有限秩向量丛的可积截面空间}
+
+光滑可逆过渡矩阵保持可测性，并在紧集上连同其逆一致有界。因此上述可测性与局部可积性不依赖标架。\(L^p\) 的元素是等价类：单个点上的取值一般尚无定义。
+
+\begin{proposition}\label{g3:prop:lp-basic}
+	设 \(E\to(M,g)\) 为上述有限秩度量丛，\(1\le p\le\infty\)，\(1/p+1/p'=1\)。则 \(L^p(M;E)\) 是完备赋范空间。对 \(s\in L^p(E)\)、\(\eta\in L^{p'}(E^*)\)，有
+	\[
+		\int_M|\eta(s)|\,\mu_g\le\|\eta\|_{p'}\|s\|_p.
+	\]
+	若 \(A\subset M\) 可测、\(0<\mu_g(A)<\infty\)，且 \(1\le q\le p\le\infty\)，则
+	\[
+		\|s\|_{L^q(A)}\le\mu_g(A)^{1/q-1/p}\|s\|_{L^p(A)}.
+	\]
+\end{proposition}
+\begin{proof}
+	当 \(1<p<\infty\) 时，凸函数的切线不等式给出 \(ab\le a^p/p+b^{p'}/p'\)。先把两个函数各除以自己的范数，再积分，便得 Hölder 不等式；端点由本质上界直接得到。最后一个结论是将它用于 \(|s|^q\) 与常数一。三角不等式在 \(p=1,\infty\) 时直接成立；其余情形将 \(|s+t|^{p-1}\) 与 \(|s|+|t|\) 配对，得到 \(\|s+t\|_p^p\le(\|s\|_p+\|t\|_p)\|s+t\|_p^{p-1}\)，再除去公共因子。\footnote{Otto Ludwig Hölder（1859--1937），德国数学家，研究分析中的不等式与连续性，也对群论作出重要贡献。}
+
+	证明完备性时，先从任意 Cauchy 列选出子列，使相邻差的范数不超过 \(2^{-j}\)。当 \(p<\infty\) 时，部分和 \(\sum_{j\le N}|s_{j+1}-s_j|\) 的 \(L^p\) 范数至多为一；单调收敛说明其极限几乎处处有限。故在这些点上，纤维中的向量级数绝对收敛，得到可测截面 \(s\)。余项的 \(L^p\) 范数至多为 \(\sum_{j\ge N}2^{-j}\)，所以子列强收敛；原列的 Cauchy 性给出整列强收敛。\(p=\infty\) 时去掉可数个零测集后，各相邻差都满足同一逐点上界，故级数一致收敛，结论相同。
+\end{proof}
+
+完备赋范空间称为\term[Banach kongjian]{Banach 空间}[Banach space]。\footnote{Stefan Banach（1892--1945），波兰数学家，奠定现代泛函分析的重要基础，研究赋范空间、线性算子及积分。}完备性保证范数意义下的近似不会跑出所选空间。有限测度上的最后一个估计还表明，提高可积指数会加强控制，但其常数带有体积因子。
+
+\begin{lemma}\label{g3:lem:lp-smooth-density}
+	在 \(\mathbb R^n\) 的开集 \(\Omega\) 上，\(C_c^\infty(\Omega)\) 在 \(L^p(\Omega)\) 中稠密，\(1\le p<\infty\)。同样的结论对光滑流形上的有限秩度量丛成立。
+\end{lemma}
+\begin{proof}
+	先截去函数的大值和固定紧集外的部分，误差由可积性趋零；再把有界函数的值域分成小区间，得到有限线性组合的示性函数。前一步所得的可测集 \(A\) 都含于 \(\Omega\) 的固定紧集。测度的内外正则性给出紧集 \(K\) 与相对紧开集 \(V\)，使 \(K\subset A\subset V\Subset\Omega\)，且 \(|V\setminus K|\) 任意小。取光滑函数 \(0\le\chi\le1\)，在 \(K\) 上为一、支集紧含于 \(V\)；这样的函数可用有限个球上的光滑鼓包函数相加，再作光滑截断构造。于是 \(\|\chi-\mathbf1_A\|_p^p\le|V\setminus K|\)。依次逼近简单函数的有限项，便得结论。流形上先用可数相对紧坐标片截取有限部分，再逐分量使用上述论证；紧集上的正密度和纤维范数与 Euclid 版本一致等价。
+\end{proof}
 
 \subsection{测试截面和分布}
 \label{g3:subsec:1101:02}
-待撰写
+弱方程要和足够丰富的测试对象配对。若待求对象是 \(E\) 的截面，自然的测试对象是对偶丛 \(E^*\) 的截面再乘一个密度；这样两者配对后可以直接积分。记密度线丛为 \(|\Lambda|^n\mathrm T^*M\)。
+
+\begin{definition}\label{g3:def:bundle-distribution}
+	设 \(E\to M\) 为光滑有限秩向量丛。一个 \(E\) 值\term[fenbu]{分布}[distribution]是测试空间 \(C_c^\infty(M;E^*\otimes|\Lambda|^n\mathrm T^*M)\) 上的线性泛函 \(T\)，满足：对每个紧集 \(K\) 都存在整数 \(m\) 和常数 \(C_K\)，使支集位于 \(K\) 的测试截面 \(\phi\) 满足
+	\[
+		|T(\phi)|\le C_K\sum_{|\alpha|\le m}\sup_K|\partial^\alpha\phi|.
+	\]
+	右端用覆盖 \(K\) 的有限个坐标与标架中的分量计算。由有限阶链式法则，该条件不依赖这些选择。分布空间记为 \(\mathcal D'(M;E)\)。
+\end{definition}
+
+密度 \(\mu_g\) 固定后，可将测试截面写成 \(\eta\mu_g\)，\(\eta\in C_c^\infty(E^*)\)。对 \(s\in L^1_{\mathrm{loc}}(E)\)，
+\[
+	T_s(\eta\mu_g)=\int_M\eta(s)\,\mu_g
+\]
+定义一个分布：紧集上的 \(L^1\) 范数乘测试截面的上界就是连续性估计。对复丛仍用复线性对偶配对；若改用 Hermitian 内积，则约定第一槽线性，测试槽相应取共轭。
+
+\begin{example}\label{g3:exm:point-distribution}
+	在 \(\mathbb R\) 的通常密度下，\(\delta_0(\varphi\,|\mathrm dx|)=\varphi(0)\) 是分布。它不是局部可积函数产生的分布：取 \(0\le\varphi_\varepsilon\le1\)、\(\varphi_\varepsilon(0)=1\)、支集在 \((-\varepsilon,\varepsilon)\)，若 \(\delta_0=T_f\)，则 \(1\le\int_{-\varepsilon}^{\varepsilon}|f|\to0\)，矛盾。
+\end{example}
+
+分布收敛 \(T_j\to T\) 指对每个固定测试截面都有 \(T_j(\phi)\to T(\phi)\)。局部 \(L^1\) 收敛足以推出这种收敛；分布可以记住集中到一点的质量，因此分布极限未必仍由函数表示。
 
 \subsection{弱导数与分部积分}
 \label{g3:subsec:1101:03}
-待撰写
+在 Euclid 开集 \(\Omega\) 上，分部积分将经典偏导数写成 \(\int (\partial_i u)\varphi=-\int u\partial_i\varphi\)。右端只要求 \(u\) 局部可积，因而可用它定义弱导数。
+
+\begin{definition}\label{g3:def:weak-derivative}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(u,v_i\in L^1_{\mathrm{loc}}(\Omega)\)。若对所有 \(\varphi\in C_c^\infty(\Omega)\) 有
+	\[
+		\int_\Omega v_i\varphi\,\mathrm dx=-\int_\Omega u\partial_i\varphi\,\mathrm dx,
+	\]
+	则称 \(v_i\) 为 \(u\) 的第 \(i\) 个\term[ruo daoshu]{弱导数}[weak derivative]，记为 \(\partial_i u\)。一般分布的导数定义为 \((\partial_i T)(\varphi)= -T(\partial_i\varphi)\)，高阶偏导按同一规则迭代。
+\end{definition}
+
+这种定义中的导数总作为分布存在；称它为可积弱导数时，额外要求该分布由一个局部可积函数表示。弱导数几乎处处唯一：若局部可积函数 \(f\) 对所有光滑紧支测试函数的积分为零，以紧支连续函数逼近有界可测函数，可得 \(\int_K|f|=0\) 对每个紧集成立，故 \(f=0\) 几乎处处。也可由下面的局部平滑论证直接得到唯一性。
+
+\begin{example}\label{g3:exm:corner-and-jump}
+	在 \(\mathbb R\) 上，分别在零点两侧积分，得到
+	\[
+		\partial_x|x|=\operatorname{sgn}x,\qquad
+		\partial_x\operatorname{sgn}x=2\delta_0
+	\]
+	作为分布恒等式。第一式中的边界贡献因 \(|x|\) 在零点连续而抵消；第二式的两个单侧值相差二，恰留下点质量。折角与跳跃对弱微分产生不同影响。
+\end{example}
+
+\begin{lemma}\label{g3:lem:local-weak-smoothing}
+	设 \(u\in L^p_{\mathrm{loc}}(\Omega)\)，\(1\le p<\infty\)，且所有 \(|\alpha|\le k\) 的弱导数局部属于 \(L^p\)。取非负光滑函数 \(\rho\)，支集在单位球、积分为一，令 \(\rho_\varepsilon(x)=\varepsilon^{-n}\rho(x/\varepsilon)\)。在距边界大于 \(\varepsilon\) 的点定义 \(u_\varepsilon=\rho_\varepsilon*u\)。则它光滑，且
+	\[
+		\partial^\alpha u_\varepsilon=\rho_\varepsilon*\partial^\alpha u,
+		\qquad \partial^\alpha u_\varepsilon\longrightarrow\partial^\alpha u
+		\quad\text{于 }L^p_{\mathrm{loc}}.
+	\]
+\end{lemma}
+\begin{proof}
+	核的支集紧含于积分区域，故可将对 \(x\) 的微分移到核上，再按弱导数定义移给 \(u\)，得到交换公式。证明收敛只需零阶情形。先乘一个在所考察紧集附近为一的光滑截断，将问题化到 \(L^p(\mathbb R^n)\)。由\cref{g3:lem:lp-smooth-density}先逼近紧支连续函数；后者的平移在 \(L^p\) 中趋于自身，而平移保持范数，所以一般 \(f\in L^p\) 也满足 \(\|f(\cdot-z)-f\|_p\to0\)。积分三角不等式于是给出
+	\[
+		\|\rho_\varepsilon*f-f\|_p
+		\le\int\rho_\varepsilon(z)\|f(\cdot-z)-f\|_p\,\mathrm dz\longrightarrow0.
+	\]
+\end{proof}
+
+\begin{proposition}\label{g3:prop:weak-line-slices}
+	设 \(Q=I_1\times\cdots\times I_n\) 为有界开矩形，\(u,v_i\in L^1(Q)\)。则 \(\partial_i u=v_i\) 弱成立，当且仅当对几乎每条平行于第 \(i\) 轴的直线，\(u\) 的限制有一个绝对连续代表，且其一元导数等于该直线上的 \(v_i\)。
+\end{proposition}
+\begin{proof}
+	先固定 \(i\)，把其他坐标记为 \(x'\)。弱恒等式用于乘积测试函数 \(\psi(x')\eta(t)\)，交换积分后说明
+	\(\int u(x',t)\eta'(t)\,\mathrm dt=-\int v_i(x',t)\eta(t)\,\mathrm dt\)
+	对几乎处处 \(x'\) 成立。先对一组在各个紧子区间的 \(C^1\) 范数下稠密的可数测试函数取共同零测例外集，再由积分估计延拓到所有 \(\eta\)。在一维中令 \(V(t)=\int_{t_0}^tv_i(x',\tau)\,\mathrm d\tau\)，则 \(u-V\) 的分布导数为零。任意积分为零的紧支测试函数都是另一个紧支测试函数的导数，因此 \(u-V\) 对测试函数的作用仅依赖其积分；减去一个常数后它为零。这说明 \(u=V+c\) 几乎处处，即有绝对连续代表。反向对每条合格直线作一元分部积分，再交换积分，即得弱恒等式。
+\end{proof}
+
+局部 Lipschitz 函数沿这些直线绝对连续，故具有局部本质有界的弱梯度。在 Euclid 坐标中若 Lipschitz 常数为 \(L\)，对可数个稠密单位方向重复上述论证，得到 \(|\mathrm Du|\le L\) 几乎处处。这样取得的是整个梯度的长度界，而不只是各坐标分量分别不超过 \(L\)。
+
+\begin{definition}\label{g3:def:weak-covariant-derivative}
+	设 \(E\to(M,g)\) 为光滑有限秩向量丛，配有光滑联络 \(\nabla\)。对 \(s\in L^1_{\mathrm{loc}}(E)\)，若 \(A\in L^1_{\mathrm{loc}}(\mathrm T^*M\otimes E)\) 对所有光滑向量场 \(X\) 及紧支光滑对偶截面 \(\eta\) 满足
+	\begin{equation}\label{g3:eq:weak-covariant-parts}
+		\int_M\eta(A(X))\,\mu_g
+		=-\int_M(\nabla_X^{E^*}\eta)(s)\,\mu_g
+		-\int_M\eta(s)\operatorname{div}_gX\,\mu_g,
+	\end{equation}
+	则称 \(A\) 为 \(s\) 的弱协变导数，记作 \(\nabla s\)。有边界时，测试截面的支集要求位于内部。
+\end{definition}
+
+光滑情形中，\(X(\eta(s))=(\nabla_X^{E^*}\eta)(s)+\eta(\nabla_Xs)\)，故\cref{g3:eq:integration-by-parts}给出同一恒等式。标量情形的弱微分为一形式 \(\mathrm du\)，弱梯度由度量升指标。沿用非负 Laplace 约定，对局部可积弱梯度有
+\[
+	(\Delta_g u)(\varphi\mu_g)=\int_M g(\operatorname{grad}_gu,\operatorname{grad}_g\varphi)\,\mu_g
+\]
+对实紧支测试函数成立。这与第七章距离比较中的分布符号一致。
 
 \subsection{局部平凡化和坐标变换}
 \label{g3:subsec:1101:04}
-待撰写
+在局部行标架 \(e\) 中写 \(s=eu\)、\(\nabla e=eA\)。把对偶标架乘任意测试函数代入式\eqref{g3:eq:weak-covariant-parts}，再用 \(\operatorname{div}_gX=m^{-1}\partial_i(mX^i)\)，得到
+\begin{equation}\label{g3:eq:weak-connection-components}
+	\nabla s=e(\mathrm du+Au).
+\end{equation}
+具体地，以 \(X=\partial_i\) 为例，分部积分中的 \(\partial_i m\) 与散度项恰好抵消，余下 \(\partial_i u+A_i u\)。这说明几何定义等价于局部分量的分布导数；对光滑函数乘法的弱规则直接来自把乘积代入测试恒等式。
+
+\begin{proposition}\label{g3:prop:weak-coordinate-change}
+	设 \(F:V\to U\) 是 \(\mathbb R^n\) 开集间的 \(C^1\) 微分同胚，且 \(u\) 与其一阶弱导数局部可积。则
+	\[
+		\partial_j(u\circ F)=\sum_i(\partial_i u)\circ F\,\partial_jF^i
+	\]
+	弱成立。若 \(\mathrm DF,\mathrm DF^{-1}\) 及相应 Jacobian 行列式在所考察区域有统一上界，则一阶 \(L^p\) 范数由这些界控制，\(1\le p\le\infty\)。对 \(C^k\) 微分同胚，若正逆映射至 \(k\) 阶导数有界，同样得到整数阶 \(k\) 的范数控制。
+\end{proposition}
+\begin{proof}
+	先限制在 \(V\) 的相对紧子集，在其像附近使用\cref{g3:lem:local-weak-smoothing}。光滑 \(u_\varepsilon\) 满足普通链式法则。坐标换元及紧集上 \(|\det\mathrm DF^{-1}|\) 的界，使 \(u_\varepsilon\circ F\) 与各个导数候选在 \(L^1\) 中收敛；测试恒等式取极限得到所写公式。\(C^1\) 函数的经典分部积分已经足以用于此步。若原函数与导数属于 \(L^p\)，同一换元估计给出
+	\[
+		\|u\circ F\|_{L^p(V)}\le C\|u\|_{L^p(U)},\qquad
+		\|\mathrm D(u\circ F)\|_{L^p(V)}\le C\|\mathrm Du\|_{L^p(U)}.
+	\]
+	\(p=\infty\) 时先作局部 \(L^1\) 论证，再用公式中的本质上界。高阶情形对一阶公式归纳：每次求导产生一个更高阶弱导数乘以 \(F\) 的导数组合，有限项的次数均不超过 \(k\)。
+\end{proof}
+
+换标架为 \(e'=eQ\) 时，\(u'=Q^{-1}u\)、\(A'=Q^{-1}AQ+Q^{-1}\mathrm dQ\)。弱乘积法则给出
+\[
+	\mathrm du'+A'u'=Q^{-1}(\mathrm du+Au),
+\]
+故式\eqref{g3:eq:weak-connection-components}在重叠处表示同一个 \(\mathrm T^*M\otimes E\) 截面。高阶协变导数使用 \(E\) 的联络和黎曼联络诱导的张量积联络；因此它们也能逐阶用分布定义。局部平凡化由此成为计算弱导数的办法，而不是额外选择的一种函数空间。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

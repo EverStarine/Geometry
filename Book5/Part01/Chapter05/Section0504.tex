@@ -1,11 +1,11 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 5.4 切锥与高阶局部信息
 % 纲要位置：几何学计划纲要.md，第 5211 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
-% * 伴随分次和最低次初始理想
+% * 伴随分次环与最低次初始理想
 % * 切锥与切空间
 % * 尖点、结点和加厚点
 % * 形式同构与有限阶截断的差异
@@ -17,21 +17,402 @@
 \section{切锥与高阶局部信息}
 \label{g5:sec:0504}
 
-待撰写
+尖点与结点在原点的一阶方程都为零，所以它们的切空间都是整个平面；但尖点只有一个切线方向，结点在特征不为二时有两个。这些差别藏在一阶之后。把局部函数按消失阶逐层排列，可以得到切锥；再保留所有阶之间相容的关系，就进入形式方程。本节分别建立这两种构造，并说明它们各自保存什么信息。
 
-\subsection{伴随分次和最低次初始理想}
+\subsection{伴随分次环与最低次初始理想}
 \label{g5:subsec:0504:01}
-待撰写
+
+设 \((R,\mathfrak m,\kappa)\) 为非零 Noether 局部环。商 \(\mathfrak m/\mathfrak m^2\) 保留一次变化，下一层 \(\mathfrak m^2/\mathfrak m^3\) 保留无法由更高阶项改变的二次信息。理想幂满足 \(\mathfrak m^i\mathfrak m^j\subseteq\mathfrak m^{i+j}\)，所以这些相邻商还可以彼此相乘。
+
+\begin{definition}
+\label{g5:def:associated-graded}
+	设 \((R,\mathfrak m,\kappa)\) 为非零 Noether 局部环。约定 \(\mathfrak m^0=R\)，定义其关于极大理想的\term[bansuifencihuan]{伴随分次环}[associated graded ring]为
+	\[
+		\operatorname{gr}_{\mathfrak m}R
+		=\bigoplus_{d\geq0}\mathfrak m^d/\mathfrak m^{d+1},
+	\]
+	其中乘法由
+	\[
+		(a+\mathfrak m^{i+1})(b+\mathfrak m^{j+1})
+		=ab+\mathfrak m^{i+j+1}
+	\]
+	给出。第 \(d\) 项称为次数 \(d\) 的齐次部分。
+\end{definition}
+\symidx{\(\operatorname{gr}_{\mathfrak m}R\)：局部环的伴随分次环}
+
+若把 \(a\) 改为 \(a+a'\)、\(a'\in\mathfrak m^{i+1}\)，乘积的变化属于 \(\mathfrak m^{i+j+1}\)；改变 \(b\) 时同理，所以乘法良定义。零次部分是 \(\kappa=R/\mathfrak m\)，它使每个齐次部分成为 \(\kappa\) 向量空间。这里不需要在 \(R\) 中选出一个与 \(\kappa\) 同构的子域：标量在 \(R\) 中的两个提升相差 \(\mathfrak m\)，作用在第 \(d\) 层上相差的项自然落入 \(\mathfrak m^{d+1}\)。这一构造可对照\cite[第13节，第93页]{Matsumura1989}。
+
+\ProseParagraphBreak
+
+要从局部方程算出这个环，应当取多项式的最低次部分。设 \(P=k[x_1,\ldots,x_n]\)，\(\mathfrak n=(x_1,\ldots,x_n)\)。将非零多项式写成
+\[
+	f=f_d+f_{d+1}+\cdots,\qquad f_d\ne0,
+\]
+其中 \(f_j\) 为 \(j\) 次齐次多项式。记 \(\operatorname{ord}_0(f)=d\)，并称 \(f^\ast=f_d\) 为它在原点的\term[chushixingshi]{初始形式}[initial form]。对理想 \(I\subseteq\mathfrak n\)，定义
+\[
+	\operatorname{in}_0(I)
+	=\bigl(f^\ast:0\ne f\in I\bigr)\subseteq k[X_1,\ldots,X_n],
+\]
+其中把初始形式中的 \(x_i\) 写成 \(X_i\)，强调它是分次环中的变量。这称为最低次初始理想；其生成元取自整个理想 \(I\)。第一章单项式序的初始理想取排序后的首项，这里取的是按消失阶排列的最低次齐次部分，两种构造的排序方式不同。
+\symidx{\(\operatorname{in}_0(I)\)：原点处的最低次初始理想}
+
+\begin{proposition}
+\label{g5:prop:initial-ideal-tangent-cone}
+	设 \(k\) 为域，\(P=k[x_1,\ldots,x_n]\)，\(\mathfrak n=(x_1,\ldots,x_n)\)，且 \(I\subseteq\mathfrak n\) 为理想。令
+	\[
+		R=(P/I)_{\mathfrak n/I},\qquad
+		\mathfrak m=(\mathfrak n/I)R.
+	\]
+	则映射 \(X_i\mapsto[x_i]\in\mathfrak m/\mathfrak m^2\) 给出分次 \(k\) 代数同构
+	\[
+		\operatorname{gr}_{\mathfrak m}R
+		\cong k[X_1,\ldots,X_n]/\operatorname{in}_0(I).
+	\]
+\end{proposition}
+\begin{proof}
+	先看满射性。极大理想 \(\mathfrak m\) 由 \(x_i\) 的像生成，所以 \(\mathfrak m^d\) 由总次数为 \(d\) 的单项式生成。模去 \(\mathfrak m^{d+1}\) 后，它们的系数只需取在 \(R/\mathfrak m=k\) 中。因此这些单项式张成第 \(d\) 层，所述分次映射满射。
+
+	若 \(f\in I\) 的最低次数为 \(d\)，则 \(f=f^\ast+h\)、\(h\in\mathfrak n^{d+1}\)。在 \(R\) 中有 \(f=0\)，所以 \(f^\ast\) 的像属于 \(\mathfrak m^{d+1}\)，在第 \(d\) 层中为零。因此 \(\operatorname{in}_0(I)\) 包含于核。
+
+	核是齐次理想，反向只须考察非零齐次多项式 \(F\)，设其次数为 \(d\)。若 \(F\) 在第 \(d\) 层的像为零，则
+	\[
+		F\in IP_{\mathfrak n}+\mathfrak n^{d+1}P_{\mathfrak n}.
+	\]
+	清去局部分母，可取 \(s\in P\)、\(s(0)\ne0\)，使
+	\[
+		sF=g+h,\qquad g\in I,\quad h\in\mathfrak n^{d+1}.
+	\]
+	由于 \(F\) 齐次，\(g=sF-h\) 的最低次项恰为 \(s(0)F\)。故 \(F=s(0)^{-1}g^\ast\in\operatorname{in}_0(I)\)，证明核等于该理想。
+\end{proof}
+
+对一个主理想 \(I=(f)\)，有
+\[
+	\operatorname{in}_0((f))=(f^\ast).
+\]
+这是因为多项式环为整环，非零乘积满足
+\[
+	\operatorname{ord}_0(hf)=\operatorname{ord}_0(h)+\operatorname{ord}_0(f),
+	\qquad (hf)^\ast=h^\ast f^\ast.
+\]
+多个生成元之间则可能发生最低次项的抵消。
+
+\begin{example}
+\label{g5:exm:initial-generators-fail}
+	设 \(k\) 为域，在 \(k[x,y]\) 中取
+	\[
+		I=(x,x+y^2)=(x,y^2).
+	\]
+	给定两个生成元的初始形式都是 \(X\)，它们只生成 \((X)\)。但两生成元相减得到 \(y^2\in I\)，所以 \(Y^2\in\operatorname{in}_0(I)\)。事实上，\(I=(x,y^2)\) 已是齐次理想，每个元素的齐次部分仍在 \(I\) 中，故
+	\[
+		\operatorname{in}_0(I)=(X,Y^2).
+	\]
+	只取给定生成元的初始形式，会把一个长度为二的加厚点误算成一整条直线。
+\end{example}
 
 \subsection{切锥与切空间}
 \label{g5:subsec:0504:02}
-待撰写
+
+最低次初始理想描述了一个齐次方程组。为了使它与坐标选择无关，应当把伴随分次环本身作为定义；幂零元也保留在这个环中。第一章对平面曲线所说的切锥，正是这一构造的主理想情形。
+
+\begin{definition}
+\label{g5:def:tangent-cone}
+	设 \((R,\mathfrak m,\kappa)\) 为非零 Noether 局部环。以分次 \(\kappa\) 代数 \(\operatorname{gr}_{\mathfrak m}R\) 为坐标环的仿射锥，称为 \(R\) 在其闭点处的切锥，记为
+	\[
+		\mathrm C(R)=\operatorname{Spec}\bigl(\operatorname{gr}_{\mathfrak m}R\bigr).
+	\]
+	若 \(R=\mathcal O_{X,p}\)，也记为 \(\mathrm C_pX\)。这里的切锥包括指定坐标环的结构；只考察其约化支集时，会明确说明取根式。
+\end{definition}
+\symidx{\(\mathrm C_pX\)：点 \(p\) 处的切锥}
+
+这个定义中的“锥”可由分次看出：若 \(\lambda\in\kappa\)，在次数 \(d\) 部分乘以 \(\lambda^d\) 与环乘法相容，给出标量伸缩。取局部环同构会把各次极大理想幂及其商一起对应，所以切锥不依赖仿射坐标的选择。方程式解释与平面曲线的切线方向可对照\cite[第2章，第1.5节，第94--95页]{Shafarevich2013Basic1}。
+
+\ProseParagraphBreak
+
+记 \(V=\mathfrak m/\mathfrak m^2\)，这是有限维 \(\kappa\) 向量空间。它的\term[duichengdaishu]{对称代数}[symmetric algebra] \(\operatorname{Sym}_\kappa(V)\) 是由 \(V\) 自由生成的交换 \(\kappa\) 代数：任一 \(\kappa\) 线性映射 \(V\to D\)，其中 \(D\) 为交换 \(\kappa\) 代数，都唯一延伸为代数同态 \(\operatorname{Sym}_\kappa(V)\to D\)。具体构造时，选 \(V\) 的一组基就得到以这些基向量为一次变量的多项式环；换基按同一个线性代换延伸，因而所得代数及泛性质与选基无关。对偶向量空间
+\[
+	\mathrm T(R)=\operatorname{Hom}_\kappa(V,\kappa)
+\]
+所对应的仿射空间，以 \(\operatorname{Sym}_\kappa(V)\) 为坐标环。对 \(k\) 有理点，这就是\cref{g5:thm:rational-cotangent-space}建立的切空间；一般剩余域情形，此处采用局部环自身的余切空间及其对偶。
+
+\begin{proposition}
+\label{g5:prop:tangent-cone-in-tangent-space}
+	设 \((R,\mathfrak m,\kappa)\) 为非零 Noether 局部环。次数一部分的恒等映射唯一诱导满同态
+	\[
+		\operatorname{Sym}_\kappa(\mathfrak m/\mathfrak m^2)
+		\twoheadrightarrow \operatorname{gr}_{\mathfrak m}R.
+	\]
+	其核为齐次理想，且零次、一次部分均为零。因此切锥由切空间中的齐次方程给出，其中没有非零一次方程。
+\end{proposition}
+\begin{proof}
+	把 \(V=\mathfrak m/\mathfrak m^2\) 放入伴随分次环的次数一部分，由对称代数的泛性质得到所述映射。每个 \(\mathfrak m^d\) 中的元素都是有限多个 \(d\) 个极大理想元素乘积之和；模去 \(\mathfrak m^{d+1}\) 后，便由 \(V\) 中元素的 \(d\) 次乘积生成。所以该映射在每个次数都满射。
+
+	映射保持次数，因而核齐次；在次数零它是 \(\kappa\) 的恒等，在次数一它是 \(V\) 的恒等，所以这两个次数的核均为零。商环的素谱对应给出切锥在切空间中的闭嵌入及所述方程。
+\end{proof}
+
+这里的结论保留了坐标环。若将切锥的方程理想取根式，可能出现新的线性方程；尖点的二重切线就是如此。另一方面，若 \(\mathfrak q\) 为分次环所有正次数部分的直和，则
+\[
+	\mathfrak q/\mathfrak q^2\cong\mathfrak m/\mathfrak m^2,
+\]
+因为分次环由次数一生成，所有次数至少二的项恰组成 \(\mathfrak q^2\)。所以切锥顶点的一阶切空间仍然是原来的切空间。
 
 \subsection{尖点、结点和加厚点}
 \label{g5:subsec:0504:03}
-待撰写
+
+下面的三个模型在闭点处都有二维切空间。它们的区别来自伴随分次环中的二次及更高次关系，而不只是点集所包含的方向。
+
+\begin{example}[尖点的二重切线]
+\label{g5:exm:cusp-tangent-cone}
+	设 \(k\) 为域，令
+	\[
+		R=\bigl(k[x,y]/(y^2-x^3)\bigr)_{(x,y)}.
+	\]
+	最低次项为 \(y^2\)，故
+	\[
+		\operatorname{gr}_{\mathfrak m}R
+		\cong k[X,Y]/(Y^2).
+	\]
+	其约化支集是直线 \(Y=0\)，但 \([Y]\ne0\)、\([Y]^2=0\)。在这条直线的泛点处，局部化得到
+	\[
+		k(X)[Y]/(Y^2),
+	\]
+	这是长度为二的局部环；“二重切线”指的正是保留了这一厚度。它不是两条不同直线。
+
+	次数零部分为 \(k\)。对每个 \(d\geq1\)，次数 \(d\) 部分的一组基为
+	\[
+		X^d,\quad X^{d-1}Y,
+	\]
+	所以其维数恒为二。虽然原局部环是整环，伴随分次环已经出现非零幂零元。
+\end{example}
+
+\begin{example}[结点的两个切线方向]
+\label{g5:exm:node-tangent-cone}
+	设 \(k\) 为特征不等于二的域，令
+	\[
+		R=\bigl(k[x,y]/(y^2-x^2-x^3)\bigr)_{(x,y)}.
+	\]
+	则
+	\[
+		\operatorname{gr}_{\mathfrak m}R
+		\cong k[X,Y]/(Y^2-X^2)
+		=k[X,Y]/\bigl((Y-X)(Y+X)\bigr).
+	\]
+	两个线性因子不相伴，故理想是两个素理想 \((Y-X)\)、\((Y+X)\) 的交：同时被这两个互素多项式整除的多项式，被它们的乘积整除。因此这个分次环约化，切锥是两条不同直线的并。
+
+	关于首一的 \(Y\) 二次式作除法，每个次数 \(d\geq1\) 的齐次部分仍以 \(X^d,X^{d-1}Y\) 为基。它与尖点的各层维数相同，但环结构不同：一个约化，另一个不约化。特征为二时，这个最低次方程成为 \((Y-X)^2\)，不能再作两条不同直线的解释。
+\end{example}
+
+\begin{example}[只支撑在一个点的切锥]
+\label{g5:exm:thick-point-tangent-cone}
+	设 \(k\) 为域，取
+	\[
+		R=k[x,y]/(x,y)^2,\qquad \mathfrak m=(x,y).
+	\]
+	这个环已经是局部环，\(\mathfrak m^2=0\)，并以 \(1,x,y\) 为 \(k\) 基。其伴随分次环为
+	\[
+		\operatorname{gr}_{\mathfrak m}R
+		=k\oplus(kX\oplus kY)
+		\cong k[X,Y]/(X,Y)^2.
+	\]
+	切空间为二维平面；切锥的约化支集却只有原点。整个切锥环的长度为三，次数零、一次、二次以后的维数分别为 \(1,2,0\)。这三个组成因子与一条二重直线的正维支集是不同的信息。
+\end{example}
+
+\begin{table}[htbp]
+	\centering
+	\caption{三个二维切空间模型的切锥}
+	\label{g5:tab:tangent-cone-models}
+	\begin{tabular}{llll}
+		\toprule
+		模型 & 切锥坐标环 & 约化支集 & 各层维数 \(d=0,1,2,\ldots\) \\
+		\midrule
+		尖点 & \(k[X,Y]/(Y^2)\) & 一条直线 & \(1,2,2,2,\ldots\) \\
+		结点（\(\operatorname{char}k\ne2\)） & \(k[X,Y]/(Y^2-X^2)\) & 两条直线 & \(1,2,2,2,\ldots\) \\
+		加厚点 & \(k[X,Y]/(X,Y)^2\) & 一个点 & \(1,2,0,0,\ldots\) \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\cref{g5:tab:tangent-cone-models}也区分了三个比较层次：切空间只读取一次层，各层维数只计数齐次向量空间，切锥则还保留这些层之间的乘法。即使切锥相同，高阶项仍可能改变形式方程；要研究这些项，需要把各阶截断相容地放在一起。
 
 \subsection{形式同构与有限阶截断的差异}
 \label{g5:subsec:0504:04}
-待撰写
+
+伴随分次保留各层及其乘法，但把一个元素属于哪一层的高阶修正分开了。要把这些修正也记录下来，可以同时考察
+\[
+	R/\mathfrak m,\quad R/\mathfrak m^2,\quad R/\mathfrak m^3,\quad\ldots
+\]
+及它们之间的取商映射。一个有限截断只保留有限多阶；整个相容系统则允许逐阶确定一个形式表达式。
+
+\begin{definition}
+\label{g5:def:formal-series-and-completion}
+	设 \(k\) 为域。变量 \(x=(x_1,\ldots,x_n)\) 的\term[xingshimijishuhuan]{形式幂级数环}[formal power series ring] \(k[[x]]\) 由所有表达式
+	\[
+		F=\sum_{\alpha\in\mathbb N^n}c_\alpha x^\alpha,\qquad c_\alpha\in k
+	\]
+	组成。加法逐项进行，乘法中 \(x^\alpha\) 的系数为有限和
+	\[
+		\sum_{\beta+\gamma=\alpha}c_\beta d_\gamma.
+	\]
+	设 \((R,\mathfrak m)\) 为局部环。各商环及自然映射的\term[nijixian]{逆极限}[inverse limit]在此具体指环
+	\[
+		\widehat R
+		=\varprojlim_{q\geq1}R/\mathfrak m^q
+		=\left\{(a_q)_{q\geq1}:
+		\begin{array}{l}
+			a_q\in R/\mathfrak m^q,\\
+			a_{q+1}\bmod\mathfrak m^q=a_q
+		\end{array}
+		\right\},
+	\]
+	其运算逐个分量进行。它称为 \(R\) 的极大理想进\term[wanbeihua]{完备化}[completion]，自然同态为 \(r\mapsto(r\bmod\mathfrak m^q)_q\)。
+\end{definition}
+\symidx{\(k[[x_1,\ldots,x_n]]\)：形式幂级数环}
+\symidx{\(\widehat R=\varprojlim_q R/\mathfrak m^q\)：局部环的完备化}
+
+形式级数的每个齐次部分都是有限项多项式，非零级数仍以最低非零齐次次数定义 \(\operatorname{ord}_0\)。若记 \(\mathfrak n=(x_1,\ldots,x_n)\subseteq k[[x]]\)，则 \(\mathfrak n^q\) 恰由最低总次数至少为 \(q\) 的级数组成：将每个这样的单项式分配给它的一个 \(q\) 次单项式因子，再按有限多个可能的因子分组即可。因此一个相容截断序列唯一确定全部系数，给出
+\[
+	k[[x]]\cong\varprojlim_q k[x]/(x_1,\ldots,x_n)^q.
+\]
+这里的逐阶收敛指每个固定次数的系数最终稳定，不涉及数值意义下的级数收敛。若 \(F\) 的常数项为 \(c\ne0\)，写 \(F=c(1-H)\)、\(H\in\mathfrak n\)，则
+\[
+	F^{-1}=c^{-1}\sum_{j\geq0}H^j
+\]
+按上述规则有意义；反之常数项为零的元素不可能可逆。所以 \(k[[x]]\) 是极大理想为 \(\mathfrak n\) 的局部环。定义及逐阶展开可对照\cite[第2章，第2.2节，定义2.4，第101页]{Shafarevich2013Basic1}；逆极限定义可对照\cite[第8节，第55页]{Matsumura1989}。
+
+\ProseParagraphBreak
+
+在 \(\widehat R\) 上，把
+\[
+	F^q\widehat R=\ker(\widehat R\longrightarrow R/\mathfrak m^q)
+\]
+及其平移作为开邻域，便得到由截断规定的拓扑。对局部 \(k\) 代数 \(R,S\)，若存在两侧都连续的 \(k\) 代数同构 \(\widehat R\cong\widehat S\)，就称它们\term[xingshitonggou]{形式同构}[formally isomorphic]。当它们是点的局部环时，也称这两个点的形式局部类型相同。下面先把平面方程的完备化写成可计算的形式商环。
+
+\begin{proposition}
+\label{g5:prop:principal-formal-completion}
+	设 \(k\) 为域，\(P=k[x_1,\ldots,x_n]\)，\(\mathfrak n=(x_1,\ldots,x_n)\)，且 \(0\ne f\in\mathfrak n\)。令
+	\[
+		R=(P/(f))_{\mathfrak n/(f)}.
+	\]
+	则逐阶取系数给出同构
+	\[
+		\widehat R\cong k[[x_1,\ldots,x_n]]/(f).
+	\]
+	右侧采用极大理想幂的拓扑时，这也是拓扑环同构。
+\end{proposition}
+\begin{proof}
+	记 \(S=k[[x_1,\ldots,x_n]]\)、\(\mathfrak n_S=(x_1,\ldots,x_n)S\)。常数项非零的多项式在模 \(\mathfrak n^q\) 后可用有限几何级数求逆，故局部化不再改变这一截断：
+	\[
+		R/\mathfrak m^q\cong P/\bigl((f)+\mathfrak n^q\bigr).
+	\]
+	于是有自然同态
+	\[
+		S\longrightarrow\varprojlim_q P/\bigl((f)+\mathfrak n^q\bigr).
+	\]
+	我们直接证明它满射且核为 \((f)\)。
+
+	给定一个相容序列，归纳选择代表多项式 \(p_q\)。若 \(p_q\) 已选好，任取下一项的代表 \(b\)，相容性给出
+	\[
+		b-p_q=fh+u,\qquad h\in P,\quad u\in\mathfrak n^q.
+	\]
+	取 \(p_{q+1}=b-fh\)，它仍代表下一项，而且 \(p_{q+1}-p_q\in\mathfrak n^q\)。因此各固定次数的系数稳定，确定一个 \(F\in S\)，其像就是所给序列，证明满射。
+
+	再设 \(F\) 落在核中。对每个 \(q\)，可取 \(g_q\in P\) 使
+	\[
+		F-fg_q\in\mathfrak n_S^q.
+	\]
+	令 \(d=\operatorname{ord}_0(f)\)。在形式幂级数环中，两个非零级数的最低次齐次部分之积仍非零，所以
+	\[
+		\operatorname{ord}_0(fG)=d+\operatorname{ord}_0(G)
+	\]
+	对非零 \(G\in S\) 成立。因而，当 \(r\geq q>d\) 时，由
+	\(f(g_r-g_q)\in\mathfrak n_S^q\)
+	可得 \(g_r-g_q\in\mathfrak n_S^{q-d}\)。这使 \(g_q\) 的各固定次数系数最终稳定，确定级数 \(G\in S\)。逐阶取系数得到 \(F=fG\)。反向包含显然成立，因此核恰为 \((f)\)。
+
+	所构造的同构把投影到 \(R/\mathfrak m^q\) 的核对应到
+	\((\mathfrak n_S^q+(f))/(f)\)，即右侧极大理想的 \(q\) 次幂。因此它及其逆都连续。
+\end{proof}
+
+这项证明只使用代表元的逐阶调整和主理想的闭合性计算。在这里，后一个计算实际上只用到乘以非零 \(f\) 会使最低次数恰好增加固定的 \(d\)。以下形式坐标变换也按同样的逐阶规则理解：把常数项为零的级数代入另一个级数，每个指定次数仍只涉及有限项。
+
+\begin{example}[结点的形式分支]
+\label{g5:exm:formal-node}
+	设 \(k\) 为特征不等于二的域。结点
+	\[
+		y^2-x^2(1+x)=0
+	\]
+	在原点的形式局部环同构于 \(k[[u,v]]/(uv)\)。
+
+	为构造这个同构，先求常数项为一的级数
+	\[
+		h(x)=1+\sum_{n\geq1}a_nx^n,\qquad h(x)^2=1+x.
+	\]
+	比较系数得到
+	\[
+		2a_1=1,\qquad
+		2a_n=-\sum_{i=1}^{n-1}a_i a_{n-i}\quad(n\geq2).
+	\]
+	因为只需除以 \(2\)，这个递推在所有特征不为二的域上都有唯一解。令
+	\[
+		u=y-xh(x),\qquad v=y+xh(x).
+	\]
+	则
+	\[
+		uv=y^2-x^2h(x)^2=y^2-x^2(1+x).
+	\]
+
+	还须验证它确实是可逆的形式坐标变换。记 \(q(x)=xh(x)=x+\) 高次项。逐阶构造
+	\(\phi(z)=z+\sum_{n\geq2}b_nz^n\)
+	使 \(q(\phi(z))=z\)：当 \(b_2,\ldots,b_{n-1}\) 已知时，次数 \(n\) 的系数是 \(b_n\) 加上已知项，因而唯一确定 \(b_n\)。又 \(q(U)-q(V)\) 可写成 \((U-V)\) 乘以常数项为一的级数，所以 \(q(U)=q(V)\) 必有 \(U=V\)。将 \(U=\phi(q(x))\)、\(V=x\) 代入，得到 \(\phi(q(x))=x\)。因此逆变换为
+	\[
+		y=\frac{u+v}{2},\qquad
+		x=\phi\left(\frac{v-u}{2}\right).
+	\]
+	这给出形式幂级数环的互逆同构，并把方程理想对应起来，故由上个命题得到
+	\[
+		\widehat{\bigl(k[x,y]/(y^2-x^2-x^3)\bigr)_{(x,y)}}
+		\cong k[[u,v]]/(uv).
+	\]
+	右侧有两个极小素理想 \((u)\)、\((v)\)，因为任何包含 \(uv\) 的素理想都包含其中一个因子，而相应商环均为一元形式幂级数整环。这就是结点的两个形式分支。
+\end{example}
+
+第四章已经证明原结点的局部环是整环；形式局部环却有两个分支。形式展开改变了可使用的函数，所以这里的分支分解与原局部环中的素理想分解不同。此例可对照\cite[第I章，第5节，例5.6.3，第34--35页]{Hartshorne1977}；上述递推把平方根与坐标逆变换都明确写出。
+
+\begin{example}[任意指定有限阶都可能遗漏信息]
+\label{g5:exm:finite-truncation-not-formal-type}
+	设 \(k\) 为域，给定任意整数 \(N\geq1\)，取
+	\[
+		R=k[x]_{(x)},\qquad S=k[x]/(x^{N+1}).
+	\]
+	对每个 \(1\leq q\leq N+1\)，两侧的截断都为 \(k[x]/(x^q)\)，这些有限个同构还与取商映射相容。但
+	\[
+		\widehat R=k[[x]],\qquad \widehat S=S,
+	\]
+	因为前者由全部系数构成，后者的截断系统从 \(q=N+1\) 起已稳定。第一个环为整环，第二个环中 \(x\ne0\) 且 \(x^{N+1}=0\)，所以它们不形式同构。已知一个指定的有限阶截断，不能对所有局部环决定其形式局部类型。
+\end{example}
+
+若已知的是全部截断及其相容关系，则情况不同。关键条件是同构能够在各阶之间组成一个系统，而不仅是每一阶分别存在某个同构。
+
+\begin{proposition}
+\label{g5:prop:compatible-truncation-isomorphisms}
+	设 \((R,\mathfrak m)\)、\((S,\mathfrak n)\) 为局部 \(k\) 代数。假设对每个 \(q\geq1\)，都有 \(k\) 代数同构
+	\[
+		\varphi_q:R/\mathfrak m^q\xrightarrow{\ \sim\ }S/\mathfrak n^q,
+	\]
+	并且以下方块交换：
+	\[
+		\begin{tikzcd}
+			R/\mathfrak m^{q+1} \arrow[r,"\varphi_{q+1}"] \arrow[d]
+			& S/\mathfrak n^{q+1} \arrow[d] \\
+			R/\mathfrak m^q \arrow[r,"\varphi_q"]
+			& S/\mathfrak n^q.
+		\end{tikzcd}
+	\]
+	则它们唯一诱导一个与这些投影相容的拓扑 \(k\) 代数同构
+	\(\widehat R\cong\widehat S\)。
+\end{proposition}
+\begin{proof}
+	对 \((a_q)_q\in\widehat R\)，定义其像为 \((\varphi_q(a_q))_q\)。方块交换保证这些分量相容，故像属于 \(\widehat S\)。逐分量运算说明这是 \(k\) 代数同态。各 \(\varphi_q^{-1}\) 也组成相容系统，按同样规则给出逆同态。两侧投影核逐一对应，所以两个方向都连续。任一与投影相容的同态在第 \(q\) 个分量上都必须等于 \(\varphi_q\)，因而唯一。
+\end{proof}
+
+切空间、切锥、有限阶截断和形式局部环由此形成不同层次的数据。切空间只有一次信息；切锥保留各次初始形式及其乘法；有限截断保留有限阶内的高阶修正；完备化则把所有相容截断同时保留下来。它们之间的比较需要检验具体环结构，不能只比较各层的维数。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

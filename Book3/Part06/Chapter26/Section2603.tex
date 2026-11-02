@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 26.3 调和映射热流的基本演化
 % 纲要位置：几何学计划纲要.md，第 3216 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,194 @@
 \section{调和映射热流的基本演化}
 \label{g3:sec:2603}
 
-待撰写
+调和映射的张力场给出能量下降最快的方向。把这个方向作为速度，就得到一个随时间改变映射的方程。短时理论首先提供光滑解；为了继续演化，还要找出哪些量不会失控。本节分别计算总能量、空间微分和时间速度的变化。目标的非正截面曲率将在后两项中给出有利的符号。
+
+固定闭连通光滑黎曼流形 \((M^m,g)\)，\(m\ge1\)，以及紧无边界光滑黎曼流形 \((N^n,h)\)，\(n\ge1\)。源度量 \(g\) 不随时间变化，\(\Delta_g=-\operatorname{div}_g\nabla\)。在解的光滑存在区间 \([0,T)\) 上，记 \(u_i=\mathrm du(e_i)\)、\(V=\partial_tu\)，其中 \((e_i)\) 是与时间无关的源正交标架；拉回联络的时间和空间微分分别记为 \(D_t,D_i\)。
 
 \subsection{张力场热方程及几何不变性}
 \label{g3:subsec:2603:01}
-待撰写
+第18.1节定义了 \(\tau(u)=\operatorname{tr}_g\nabla\mathrm du\)，并证明能量第一变分为 \(-\int_M\langle\tau(u),V\rangle\mu_g\)。因此负梯度方向正是 \(\tau(u)\)，而不是它的相反数。
+
+\begin{definition}\label{g3:def:harmonic-map-heat-flow}
+	设 \((M,g)\) 为闭光滑黎曼流形，\((N,h)\) 为无边界光滑黎曼流形，\(u_0:M\to N\) 光滑。满足
+	\begin{equation}\label{g3:eq:harmonic-map-heat-flow}
+		\partial_tu=\tau(u),\qquad u(0,x)=u_0(x)
+	\end{equation}
+	的光滑映射 \(u:[0,T)\times M\to N\) 称为从 \(u_0\) 出发的\term[tiaohe yingshe reliu]{调和映射热流}[harmonic map heat flow]。
+\end{definition}
+
+在一张目标坐标图中，式\eqref{g3:eq:tension-coordinates}把方程写成
+\begin{equation}\label{g3:eq:harmonic-heat-local-equation}
+	\partial_tu^\alpha+\Delta_g u^\alpha
+	=g^{ij}\Gamma^\alpha_{\beta\gamma}(h)(u)
+	\partial_i u^\beta\partial_j u^\gamma.
+\end{equation}
+最高阶的空间部分是各分量共同的 \(\Delta_g\)，因而是强抛物的；目标的几何进入一阶导数的二次项。这个坐标表达只在像落入该图时使用，方程本身由张力场内在定义。
+
+\begin{corollary}\label{g3:cor:harmonic-heat-short-time}
+	设 \((M,g)\) 为闭光滑黎曼流形，\((N,h)\) 为紧无边界光滑黎曼流形，\(u_0:M\to N\) 光滑。则存在 \(T>0\) 及唯一的光滑调和映射热流 \(u:[0,T)\times M\to N\)，满足 \(u(0)=u_0\)。此结论不要求目标曲率具有特定符号。
+\end{corollary}
+\begin{proof}
+	在固定向量丛 \(E=u_0^*\mathrm TN\) 中取小截面 \(v\)，以
+	\[
+		F(x,v(x))=\exp_{u_0(x)}v(x)
+	\]
+	表示邻近 \(u_0\) 的映射。目标紧，故可取统一的正半径，使纤维微分 \(J(x,v)=\mathrm D_vF(x,v)\) 可逆。对 \(u(t,x)=F(x,v(t,x))\)，有 \(\partial_tu=J(x,v)\partial_tv\)。使用 \(E\) 上固定的拉回联络，空间二阶微分的最高阶项为
+	\[
+		\nabla_i\mathrm du(e_j)=J(x,v)\nabla_i\nabla_jv
+		+\text{只依赖于 }x,v,\nabla v\text{ 的光滑项}.
+	\]
+	这里对 \(F\) 求导两次，只有两次导数都落在 \(v\) 上时才含 \(\nabla^2v\)；其余项至多使用 \(v\) 的一阶导数。取源迹并乘 \(J^{-1}\)，得到固定丛上的方程
+	\[
+		\partial_tv=g^{ij}\nabla_i\nabla_jv+\mathcal B(x,v,\nabla v),
+		\qquad v(0)=0,
+	\]
+	其中 \(\mathcal B\) 光滑，主部符号为 \(|\xi|_g^2\operatorname{Id}_E\)。\cref{g3:thm:quasilinear-parabolic-short-time}给出光滑短时解。缩短时间使 \(\|v\|_{C^0}\) 留在上述半径内，便得到取值于 \(N\) 的解。任何另一条从 \(u_0\) 出发的光滑解，在足够短的时间内也可写成这样的指数图截面，故由固定丛方程的唯一性与之相同；再从相同时刻重新使用此结论，得到整个共同存在区间上的唯一性。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:harmonic-heat-naturality}
+	设 \(u:[0,T)\times(M,g)\to(N,h)\) 为光滑调和映射热流。若 \(a:M'\to M\) 为光滑微分同胚，\(b:(N,h)\to(N',h')\) 为等距微分同胚，则 \(b\circ u\circ a\) 是从 \(b\circ u_0\circ a\) 出发、源度量为 \(a^*g\) 的调和映射热流。对常数 \(c>0\)，\(\widetilde u(t,x)=u(t/c,x)\) 是源度量为 \(cg\)、存在于 \([0,cT)\) 的热流。
+\end{proposition}
+\begin{proof}
+	拉回源联络和等距映射推前的目标联络都保持无挠性与度量相容性，故由 Levi--Civita 联络的唯一性，与相应度量的联络相同。因此二阶协变微分按这两个映射变换，取迹得
+	\[
+		\tau_{a^*g,h'}(b\circ u\circ a)
+		=\mathrm db\bigl(\tau_{g,h}(u)\bigr)\circ a.
+	\]
+	右端也是 \(b\circ u\circ a\) 的时间导数。常数缩放不改变源联络，但逆度量变为 \(c^{-1}g^{-1}\)，所以 \(\tau_{cg,h}(u)=c^{-1}\tau_{g,h}(u)\)，与 \(u(t/c,x)\) 的时间导数一致。
+\end{proof}
+
+时间无关是上述重参数化的条件。若 \(a_t\) 随时间变化，\(u(t,a_t(x))\) 的速度还包含 \(\mathrm du(\partial_ta_t)\)，一般不再满足原来的方程。这也说明调和映射热流对固定源度量演化时，不能任意重新选择随时间变化的源参数。
+
+\begin{example}\label{g3:exm:circle-map-heat-flow}
+	令源和目标都是 \(\mathbb R/(2\pi\mathbb Z)\)，取标准度量。对整数 \(d\) 和实数 \(a,b\)，
+	\[
+		u(t,x)=[dx+b+a e^{-t}\sin x]
+	\]
+	是一条光滑热流。方括号表示模 \(2\pi\) 的类：\(x\) 增加 \(2\pi\) 时，括号内增加 \(2\pi d\)，所以映射良定义。在局部提升中，目标联络为零，方程就是 \(u_t=u_{xx}\)。周期振荡衰减，次数为 \(d\) 的线性部分保持不变。这条流在任意阶都收敛到调和映射 \([dx+b]\)。
+\end{example}
 
 \subsection{能量下降和时间导数的积分控制}
 \label{g3:subsec:2603:02}
-待撰写
+总能量下降同时控制了速度在全部时间上的平方积分。这个控制不依赖映射是否已经接近某个调和解；它由方程和闭源上的分部积分直接给出。
+
+\begin{theorem}\label{g3:thm:harmonic-heat-energy}
+	设 \((M,g)\) 为闭光滑黎曼流形，\((N,h)\) 为无边界光滑黎曼流形，\(u:[0,T)\times M\to N\) 为光滑调和映射热流。定义
+	\[
+		E(t)=\frac12\int_M|\mathrm du(t)|^2\,\mu_g,
+		\qquad Q(t)=\int_M|\partial_tu(t)|^2\,\mu_g.
+	\]
+	则对 \(0\le a<b<T\)，
+	\begin{equation}\label{g3:eq:harmonic-heat-energy-dissipation}
+		E'(t)=-Q(t),\qquad E(b)+\int_a^bQ(t)\,\mathrm dt=E(a).
+	\end{equation}
+	特别地，\(E(t)\) 非增，极限 \(E_* =\lim_{t\uparrow T}E(t)\ge0\) 存在，并且
+	\[
+		\int_0^T\!\int_M|\partial_tu|^2\,\mu_g\,\mathrm dt
+		=E(0)-E_*\le E(0).
+	\]
+	这里允许 \(T=\infty\)。
+\end{theorem}
+\begin{proof}
+	由\cref{g3:prop:map-covariant-identities}的时间交换式，\(D_tu_i=D_iV\)。源度量固定，故
+	\[
+		\partial_t\frac12|\mathrm du|^2=\sum_i\langle D_iV,u_i\rangle.
+	\]
+	在闭源上积分，按照\cref{g3:thm:harmonic-map-first-variation}的散度计算，右端积分等于 \(-\int_M\langle V,\tau(u)\rangle\mu_g\)。代入 \(V=\tau(u)\) 得第一式；按时间积分得到第二式。能量非负且非增，因而存在所述极限；非负积分的单调收敛给出全时间恒等式。
+\end{proof}
+
+在\cref{g3:exm:circle-map-heat-flow}中，直接计算可得
+\[
+	E(t)=\pi d^2+\frac\pi2a^2e^{-2t},\qquad Q(t)=\pi a^2e^{-2t}.
+\]
+能量损失恰好等于周期振荡的能量，次数所确定的部分没有下降。一般目标上未必有这样的显式分解，但式\eqref{g3:eq:harmonic-heat-energy-dissipation}始终把能量损失与速度联系起来。
+
+若某个时间区间上的能量恒定，则其上 \(Q=0\)，由光滑性得到 \(\partial_tu=0\)。所以能量恒定的光滑热流正是驻定的调和映射。能量只是趋于一个极限时，时间速度的平方可积；将这项积分信息转成点态控制，还需要下面的演化方程。
 
 \subsection{梯度 Bochner 演化}
 \label{g3:subsec:2603:03}
-待撰写
+能量密度 \(e=|\mathrm du|^2/2\) 是一个标量函数，可以应用最大值原理。它的演化包含源和目标两种曲率：源曲率来自对空间协变导数换序，目标曲率来自拉回丛的联络。
+
+\begin{proposition}\label{g3:prop:harmonic-heat-bochner}
+	设 \(u:[0,T)\times(M^m,g)\to(N,h)\) 为光滑调和映射热流，两流形均光滑且无边界。令 \(e=|\mathrm du|^2/2\)，\((e_i)\) 为源的局部正交标架，\(u_i=\mathrm du(e_i)\)。则
+	\begin{align}
+		(\partial_t+\Delta_g)e
+		={}&-|\nabla\mathrm du|^2
+		-\sum_i\langle\mathrm du(\operatorname{Ric}_g^\sharp e_i),u_i\rangle\notag\\
+		&+\sum_{i,j}\langle R^N(u_i,u_j)u_j,u_i\rangle.
+		\label{g3:eq:harmonic-heat-bochner}
+	\end{align}
+	若 \(\operatorname{Ric}_g\ge-Kg\)、\(K\ge0\)，且 \(N\) 的截面曲率非正，则
+	\begin{equation}\label{g3:eq:harmonic-heat-energy-subsolution}
+		(\partial_t+\Delta_g)e\le-|\nabla\mathrm du|^2+2Ke.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	空间 Bochner 恒等式\cref{g3:prop:harmonic-map-bochner}在 \(L_g=-\Delta_g\) 的记号下为
+	\[
+		-\Delta_ge=|\nabla\mathrm du|^2
+		+\sum_i\langle D_i\tau(u),u_i\rangle
+		+\sum_i\langle\mathrm du(\operatorname{Ric}_g^\sharp e_i),u_i\rangle
+		-\sum_{i,j}\langle R^N(u_i,u_j)u_j,u_i\rangle.
+	\]
+	上一小节已算出 \(\partial_te=\sum_i\langle D_iV,u_i\rangle\)。代入 \(V=\tau(u)\)，两项相消，得到式\eqref{g3:eq:harmonic-heat-bochner}。
+
+	在一点将源 Ricci 张量对角化。每个特征值至少为 \(-K\)，所以源曲率和至少为 \(-K|\mathrm du|^2=-2Ke\)。按照本书约定，
+	\[
+		\langle R^N(A,B)B,A\rangle
+		=\operatorname{Sect}_N(A\wedge B)
+		\bigl(|A|^2|B|^2-\langle A,B\rangle^2\bigr)
+	\]
+	对线性无关的 \(A,B\) 成立，线性相关时左侧为零。非正截面曲率使式\eqref{g3:eq:harmonic-heat-bochner}中每个目标曲率项非正，得到所列不等式。
+\end{proof}
+
+粗略地舍去负的导数项，\cref{g3:cor:parabolic-gronwall}给出
+\[
+	\sup_M e(t)\le e^{2Kt}\sup_M e(0).
+\]
+它已经排除了任意预先固定的有限时间区间内梯度无界的可能；当 \(K>0\) 时，这个表达式还随时间增长。下一节将把能量积分界与固定时间的热传播结合，得到不随终止时间增长的上界。
 
 \subsection{非正目标曲率的符号作用}
 \label{g3:subsec:2603:04}
-待撰写
+空间微分的演化中保留了源 Ricci 曲率，时间速度的演化则没有这一项。后者是沿同一源点的目标向量场，空间上不携带额外的源余切指标。这个差别使非正目标曲率直接控制最大速度。
+
+\begin{proposition}\label{g3:prop:harmonic-heat-speed}
+	设 \((M,g)\) 为闭光滑黎曼流形，\((N,h)\) 为无边界光滑黎曼流形，\(u:[0,T)\times M\to N\) 为光滑调和映射热流，\(V=\partial_tu\)，\(Q(t)=\int_M|V|^2\mu_g\)。令 \(D^*D\) 是 \(u(t)^*\mathrm TN\) 上的非负联络 Laplace 算子，则
+	\begin{equation}\label{g3:eq:harmonic-heat-jacobi-velocity}
+		D_tV+D^*DV=\sum_iR^N(V,u_i)u_i.
+	\end{equation}
+	若 \(\operatorname{Sect}_N\le0\)，则
+	\begin{equation}\label{g3:eq:harmonic-heat-speed-subsolution}
+		(\partial_t+\Delta_g)|V|^2
+		=-2|DV|^2+2\sum_i\langle R^N(V,u_i)u_i,V\rangle
+		\le-2|DV|^2.
+	\end{equation}
+	因而
+	\[
+		\sup_M|\partial_tu(t)|\le\sup_M|\tau(u_0)|,
+		\qquad Q'(t)\le-2\int_M|DV|^2\,\mu_g\le0.
+	\]
+\end{proposition}
+\begin{proof}
+	将源标架按与时间无关的方式延拓。由式\eqref{g3:eq:map-variation-commutation}，
+	\[
+		D_tD_i u_i=D_iD_tu_i+R^N(V,u_i)u_i
+		=D_iD_iV+R^N(V,u_i)u_i.
+	\]
+	在张力场中还要减去 \(\mathrm du(\nabla^M_{e_i}e_i)\)；它的时间导数是 \(D_{\nabla^M_{e_i}e_i}V\)。对 \(i\) 求和，便得
+	\[
+		D_t\tau(u)=-D^*DV+\sum_iR^N(V,u_i)u_i.
+	\]
+	再用 \(\tau(u)=V\)，得到式\eqref{g3:eq:harmonic-heat-jacobi-velocity}。
+
+	联络的度量相容性给出
+	\[
+		\partial_t\frac{|V|^2}{2}=\langle D_tV,V\rangle,
+		\qquad
+		\Delta_g\frac{|V|^2}{2}=\langle D^*DV,V\rangle-|DV|^2.
+	\]
+	相加并使用非正截面曲率的符号，得到速度不等式。最大值原理给出 \(\sup|V|^2\) 非增，初速度是 \(\tau(u_0)\)。在闭源上积分，\(\int_M\Delta_g|V|^2\mu_g=0\)，遂得 \(Q'\) 的估计。
+\end{proof}
+
+这里空间梯度与时间速度受控的原因不同：前者需要源 Ricci 下界与总能量，后者的最大值仅利用目标曲率符号。若目标曲率有正的部分，式\eqref{g3:eq:harmonic-heat-bochner}会出现正的四次梯度项，式\eqref{g3:eq:harmonic-heat-speed-subsolution}也不再给出无条件的速度单调性。非正曲率将在长期存在证明中同时保留这两种控制。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

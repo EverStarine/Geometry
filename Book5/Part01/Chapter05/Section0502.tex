@@ -1,35 +1,228 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 5.2 余切正合列
 % 纲要位置：几何学计划纲要.md，第 5196 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 商环的余法序列
 % * 复合映射的传递序列
-% * 基变换相容
-% * 左端未必单射的含义
+% * 微分模与余法模的基变换
+% * 余法映射的核
 % 
 % 纲要内容结束
 
 \section{余切正合列}
 \label{g5:sec:0502}
 
-待撰写
+设一条曲线由方程 \(f(x,y)=0\) 给出。沿曲线求导应当满足
+\[
+	\frac{\partial f}{\partial x}\,\mathrm{d}x+
+	\frac{\partial f}{\partial y}\,\mathrm{d}y=0.
+\]
+这里的系数属于曲线的坐标环，因而还要模去 \(f\)。要把这个计算用于多个方程、一般基环或复合映射，需要同时回答两个问题：这些微分关系是否已给出全部关系，关系之间又是否可能存在依赖。余切正合列回答前一个问题；它的左端核保留后一种依赖。以下两个正合列可对照 \cite[第25节，定理25.1、25.2，第193—195页]{Matsumura1989}。
 
 \subsection{商环的余法序列}
 \label{g5:subsec:0502:01}
-待撰写
+
+设 \(A\to P\) 为环同态，\(I\) 为 \(P\) 的理想，\(B=P/I\)。微分从 \(P\) 降到 \(B\) 时，\(I\) 中的函数都变成零，其微分也必须消失。另一方面，对 \(f,g\in I\)，乘法公式给出
+\(\mathrm{d}(fg)=f\,\mathrm{d}g+g\,\mathrm{d}f\)，张量到 \(B\) 后已自动为零。因此记录方程的一阶变化时，应先把 \(I^2\) 除掉。
+
+\begin{definition}\label{g5:def:conormal-module}
+	设 \(I\) 为环 \(P\) 的理想，\(B=P/I\)。\(B\) 模 \(I/I^2\) 称为这个商呈示的\term[yufa-mo]{余法模}[conormal module]。它的 \(B\) 模结构由
+	\[
+		(p+I)(f+I^2)=pf+I^2
+	\]
+	给出；改变 \(p\) 的代表只改变一个 \(I^2\) 中的元素。
+\end{definition}
+
+\begin{theorem}[余法正合列]\label{g5:thm:conormal-sequence}
+	设 \(A\to P\) 为交换环同态，\(I\subseteq P\) 为理想，\(B=P/I\)。存在自然的 \(B\) 模正合列
+	\[
+		I/I^2\xrightarrow{\delta}
+		\Omega_{P/A}\otimes_P B\xrightarrow{\beta}
+		\Omega_{B/A}\longrightarrow0,
+	\]
+	其中
+	\[
+		\delta(f+I^2)=\mathrm{d}_{P/A}f\otimes1,\qquad
+		\beta(\mathrm{d}_{P/A}p\otimes b)=b\,\mathrm{d}_{B/A}\bar p.
+	\]
+\end{theorem}
+\begin{proof}
+	先检验第一张映射。上面的乘积公式说明它在 \(I^2\) 上为零；对 \(p\in P,f\in I\)，有
+	\[
+		\mathrm{d}(pf)\otimes1
+		=\bar p\,(\mathrm{d}f\otimes1),
+	\]
+	所以它确为 \(B\) 线性映射。第二张映射由导子 \(p\mapsto\mathrm{d}\bar p\) 的泛性质得到；\(\Omega_{B/A}\) 由全部 \(\mathrm{d}\bar p\) 生成，故 \(\beta\) 满射。显然 \(\beta\delta=0\)。
+
+	为了证没有遗漏任何关系，令
+	\[
+		Q=(\Omega_{P/A}\otimes_P B)/\operatorname{im}\delta.
+	\]
+	把 \(\bar p\in B\) 送到 \(\mathrm{d}p\otimes1\) 在 \(Q\) 中的类。改变代表 \(p\) 所增加的是某个 \(\mathrm{d}f\otimes1\)、\(f\in I\)，已经被除去，所以这是良定义的 \(A\) 导子 \(B\to Q\)。泛性质给出 \(\Omega_{B/A}\to Q\)，而 \(\beta\) 给出反向映射。两复合分别固定生成元 \(\mathrm{d}\bar p\) 与 \(\mathrm{d}p\otimes1\) 的类，故互逆。这证明 \(\ker\beta=\operatorname{im}\delta\)。
+\end{proof}
+
+\begin{corollary}[方程给出的微分呈示]\label{g5:cor:differentials-presentation}
+	设 \(A\) 为交换环，\(P=A[x_1,\ldots,x_n]\)，\(I=(f_1,\ldots,f_r)\)，\(B=P/I\)。则
+	\[
+		B^r\xrightarrow{J^{\mathsf T}}B^n
+		\longrightarrow\Omega_{B/A}\longrightarrow0
+	\]
+	正合，其中第 \(i\) 个标准基向量送到
+	\[
+		\left(\overline{\frac{\partial f_i}{\partial x_1}},
+		\ldots,\overline{\frac{\partial f_i}{\partial x_n}}\right).
+	\]
+	右端映射把 \(B^n\) 的第 \(j\) 个标准基向量送到 \(\mathrm{d}\bar x_j\)。
+\end{corollary}
+\begin{proof}
+	由\cref{g5:prop:polynomial-differentials}，\(\Omega_{P/A}\) 自由于 \(\mathrm{d}x_1,\ldots,\mathrm{d}x_n\)。若 \(f=\sum_i a_if_i\in I\)，则
+	\[
+		\mathrm{d}f\otimes1=\sum_i\bar a_i(\mathrm{d}f_i\otimes1).
+	\]
+	因此余法映射的像由所列向量生成，定理即给出该呈示。
+\end{proof}
+
+这个公式适用于非约化环，也适用于正特征。它使用整个微分模，而非只在某一点把系数代成数。若换用另一组生成方程，得到的矩阵可能不同，但它们都给出由泛性质唯一确定的 \(\Omega_{B/A}\)。
+
+\begin{example}\label{g5:exm:cusp-differential-torsion}
+	设 \(k\) 为特征零的域，\(B=k[x,y]/(y^2-x^3)\)。用 \(x,y\) 同时表示商环中的坐标，则
+	\[
+		\Omega_{B/k}
+		=\frac{B\,\mathrm{d}x\oplus B\,\mathrm{d}y}
+		{B(-3x^2\,\mathrm{d}x+2y\,\mathrm{d}y)}.
+	\]
+	在正规化 \(B\subset k[t]\)、\(x=t^2,y=t^3\) 下，
+	\(\mathrm{d}x\mapsto2t\,\mathrm{d}t\)，
+	\(\mathrm{d}y\mapsto3t^2\,\mathrm{d}t\)。于是
+	\(\tau=2x\,\mathrm{d}y-3y\,\mathrm{d}x\) 映到零，却在 \(\Omega_{B/k}\) 中非零。事实上，若
+	\((-3y,2x)=c(-3x^2,2y)\)，则在分式域中
+	\(c=y/x^2=t^{-1}\)，它不属于 \(B=k[t^2,t^3]\)。另一方面，利用微分关系可得
+	\[
+		y\tau=2xy\,\mathrm{d}y-3y^2\,\mathrm{d}x
+		=3x^3\,\mathrm{d}x-3x^3\,\mathrm{d}x=0.
+	\]
+	所以整环的微分模也可能含有非零挠元。正规化映射在函数环上单射，并不迫使微分模上的映射单射。
+\end{example}
 
 \subsection{复合映射的传递序列}
 \label{g5:subsec:0502:02}
-待撰写
 
-\subsection{基变换相容}
+现在设 \(A\to B\to C\)。把 \(C\) 中的函数对 \(A\) 求导时，\(B\) 中的元素也可以发生变化；改为对 \(B\) 求导，正好把这部分变化设为零。因而两种微分之间的商，由 \(B\) 相对于 \(A\) 的微分控制。
+
+\begin{theorem}[传递正合列]\label{g5:thm:transitivity-sequence}
+	设 \(A\to B\xrightarrow{u}C\) 为交换环同态。以下 \(C\) 模序列正合：
+	\[
+		C\otimes_B\Omega_{B/A}\xrightarrow{\alpha}
+		\Omega_{C/A}\xrightarrow{\gamma}
+		\Omega_{C/B}\longrightarrow0,
+	\]
+	其中
+	\[
+		\alpha(c\otimes\mathrm{d}_{B/A}b)=c\,\mathrm{d}_{C/A}u(b),
+		\qquad
+		\gamma(\mathrm{d}_{C/A}c)=\mathrm{d}_{C/B}c.
+	\]
+\end{theorem}
+\begin{proof}
+	\(b\mapsto\mathrm{d}_{C/A}u(b)\) 是值于 \(C\) 模的 \(A\) 导子，故先给出 \(B\) 线性映射，再延拓为 \(\alpha\)。\(\mathrm{d}_{C/B}\) 也为 \(A\) 导子，故给出 \(\gamma\)，并且 \(\gamma\) 满射、\(\gamma\alpha=0\)。
+
+	令 \(Q=\Omega_{C/A}/\operatorname{im}\alpha\)。复合 \(C\to\Omega_{C/A}\to Q\) 在 \(u(B)\) 上为零，所以是 \(B\) 导子。它诱导 \(\Omega_{C/B}\to Q\)，与 \(\gamma\) 诱导的 \(Q\to\Omega_{C/B}\) 在全部微分生成元上互逆。于是中间正合。
+\end{proof}
+
+例如 \(C=B[t]\) 时，先把 \(\Omega_{B/A}\) 的系数扩到 \(C\)，再加上自由生成元 \(\mathrm{d}t\)，得到
+\[
+	\Omega_{B[t]/A}\cong
+	(B[t]\otimes_B\Omega_{B/A})\oplus B[t]\,\mathrm{d}t.
+\]
+检验方法是给定一个 \(A\) 导子在 \(B\) 上的限制和在 \(t\) 上的任意值，用多项式乘法公式唯一延拓；因此上述直和满足微分模的泛性质。在这一例中传递序列左端单射，并且存在由多项式变量给出的分裂。
+
+\begin{example}\label{g5:exm:inseparable-transitivity}
+	设 \(k\) 为特征 \(p>0\) 的域，\(B=k[u]\)，\(C=k[t]\)，同态 \(B\to C\) 把 \(u\) 送到 \(t^p\)。这张环同态单射，而传递序列的第一张映射为
+	\[
+		C\,\mathrm{d}u\longrightarrow C\,\mathrm{d}t,
+		\qquad \mathrm{d}u\longmapsto p t^{p-1}\mathrm{d}t=0.
+	\]
+	故 \(\Omega_{C/B}\cong C\,\mathrm{d}t\)。与之比较，若 \(u\mapsto t^n\) 其中 \(n\geq1\) 且 \(n\) 在 \(k\) 中非零，第一张映射为乘 \(nt^{n-1}\)，它在整环 \(C\) 上单射，而
+	\(\Omega_{C/B}\cong C/(t^{n-1})\,\mathrm{d}t\)。当 \(n=1\) 时该商为零。
+\end{example}
+
+\subsection{微分模与余法模的基变换}
 \label{g5:subsec:0502:03}
-待撰写
 
-\subsection{左端未必单射的含义}
+基变换使原来的系数环 \(A\) 变成 \(A'\)。在新环中，对 \(A'\) 求导时所有新系数都作为常数，因此只有原来 \(B\) 中相对于 \(A\) 的变化留下来。这个观察给出不需要平坦性假设的同构。
+
+\begin{proposition}\label{g5:prop:differentials-base-change}
+	设 \(A\to B\)、\(A\to A'\) 为交换环同态，\(B'=B\otimes_A A'\)。存在自然的 \(B'\) 模同构
+	\[
+		\Omega_{B/A}\otimes_B B'\xrightarrow{\ \sim\ }\Omega_{B'/A'},
+		\qquad
+		\mathrm{d}b\otimes(b_1\otimes a')
+		\longmapsto (b_1\otimes a')\,\mathrm{d}(b\otimes1).
+	\]
+\end{proposition}
+\begin{proof}
+	记左端为 \(N\)。公式
+	\[
+		D(b\otimes a')=\mathrm{d}b\otimes(1\otimes a')
+	\]
+	对 \(A\) 平衡，因为 \(\mathrm{d}(ab)=a\,\mathrm{d}b\)。它由此给出加法映射 \(B'\to N\)。在纯张量乘积上直接应用 乘法公式可见 \(D\) 为 \(A'\) 导子；它在 \(1\otimes A'\) 上为零。因此得到 \(\Omega_{B'/A'}\to N\)。
+
+	反向映射由 \(A\) 导子 \(b\mapsto\mathrm{d}(b\otimes1)\) 给出，再作标量扩张。两张映射的复合固定 \(\mathrm{d}b\otimes1\)，并且
+	\[
+		\mathrm{d}(b\otimes a')=(1\otimes a')\,\mathrm{d}(b\otimes1),
+	\]
+	说明也固定右端的全部生成元。因此互逆。
+\end{proof}
+
+在多项式商呈示中，这个同构就是把方程和偏导数矩阵的系数一同送到新基环。张量保持右正合，所以微分模的生成元与关系直接随基环改变。例如令
+\[
+	B=\mathbb Z[x]/(x^2-a),\qquad a\in\mathbb Z.
+\]
+则 \(\Omega_{B/\mathbb Z}=B/(2x)\,\mathrm{d}x\)。模二以后，
+\[
+	\Omega_{(B\otimes_{\mathbb Z}\mathbb F_2)/\mathbb F_2}
+	=(B\otimes_{\mathbb Z}\mathbb F_2)\,\mathrm{d}x.
+\]
+导数关系消失，是系数 \(2\) 在新基环中变成零的结果。
+
+\ProseParagraphBreak
+
+余法模需要另作判断。若 \(B=P/I\)，记 \(P'=P\otimes_A A'\)，\(J=\operatorname{im}(I\otimes_A A'\to P')\)，则 \(B'=P'/J\)。有自然满射
+\[
+	(I/I^2)\otimes_B B'\longrightarrow J/J^2.
+\]
+其满射性来自 \(J\) 由 \(I\) 的像生成，乘积在两边都被除去；它未必单射。取 \(A=\mathbb Z\)、\(P=\mathbb Z[x]\)、\(I=(2x)\)、\(A'=\mathbb F_2\)。由于 \(2x\) 在 \(P\) 中不是零因子，映射 \(B\to I/I^2\)、\(b\mapsto2xb\) 为同构，故左端为 \(\mathbb F_2[x]\)；但 \(J=0\)，右端为零。这与微分模的基变换同构没有冲突：微分模由导子的泛性质控制，余法模还记录所选闭嵌入的方程。
+
+\subsection{余法映射的核}
 \label{g5:subsec:0502:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+两个正合列的终点都为零，保证目标微分能由前面的生成元得到。起点没有写零，意味着方程的一阶变化之间可能还有核。这个核在一个方程的情形就已经出现。
+
+\begin{example}\label{g5:exm:conormal-dual-number-kernel}
+	设 \(k\) 为特征不为二的域，\(P=k[x]\)、\(I=(x^2)\)、\(B=k[x]/(x^2)\)。乘 \(x^2\) 给出 \(B\cong I/I^2\)，余法映射化为
+	\[
+		B\longrightarrow B\,\mathrm{d}x,\qquad
+		b\longmapsto2bx\,\mathrm{d}x.
+	\]
+	它的核为 \((x)\)，其元素 \(x\) 对应 \(I/I^2\) 中非零的 \(x^3\) 类。因此
+	\[
+		\Omega_{B/k}\cong k\,\mathrm{d}x.
+	\]
+	若 \(\operatorname{char}k=2\)，这张余法映射处处为零，微分模则为自由 \(B\) 模 \(B\,\mathrm{d}x\)。两种情形中 \(x^2\) 都是多项式环中的非零因子，故方程在环境环中没有零因子，并不能保证其微分在商环上给出单射。
+\end{example}
+
+从导子的角度也能读出余法映射。对任意 \(B\) 模 \(M\)，由泛性质和商环下降条件得到正合列
+\[
+	0\longrightarrow\operatorname{Der}_A(B,M)
+	\longrightarrow\operatorname{Der}_A(P,M)
+	\longrightarrow\operatorname{Hom}_B(I/I^2,M),
+\]
+最后一张映射把 \(D\) 送到 \(f+I^2\mapsto D(f)\)。因为 \(I\) 在 \(M\) 上作用为零，乘法公式保证这确实是 \(B\) 线性映射；它的核恰为能降到 \(B\) 的导子。因此环境空间中的一阶运动保留商环方程，当且仅当它在余法模上的取值为零。
+
+\ProseParagraphBreak
+
+最后的映射也未必满射。例如上例取 \(M=k=B/(x)\)，每个导子都满足 \(D(x^2)=2xD(x)=0\)，而
+\(\operatorname{Hom}_B(I/I^2,k)\cong k\) 非零。把方程的一阶变化任意指定为一个数，不一定能由环境坐标的一阶变化实现。下一节把 \(M\) 取为点的剩余域，将这一条件转成线性方程组，从而得到切空间的矩阵表示。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 7.3 相容三元组
 % 纲要位置：几何学计划纲要.md，第 3759 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,268 @@
 \section{相容三元组}
 \label{g4:sec:0703}
 
-待撰写
+辛形式测量有向面积，内积测量长度，二者起初是不同的数据。在标准平面上，把一个向量旋转四分之一周后，面积配对却变成了内积：\(\omega_0(u,J_0v)=\langle u,v\rangle\)。本节在任意辛空间中构造这种联系，并说明辅助选择可以连续地消去。构造只涉及实向量空间上的正定型和线性算子，随后逐点用于流形，不需要预先给出复坐标。
 
 \subsection{\texorpdfstring{由 \(\omega\) 与辅助内积构造 J}{由 \GeometryPdfSmallOmega{} 与辅助内积构造 J}}
 \label{g4:subsec:0703:01}
-待撰写
+
+先明确“四分之一周旋转”在没有坐标时的含义。在实向量空间上，连续作用两次后变号的线性算子，可以用来定义乘以 \(\mathrm{i}\)；它不要求已有一张复坐标图。
+
+\begin{definition}\label{g4:def:0703:almost-complex}
+	设 \(V\) 为有限维实向量空间。满足 \(J^2=-I\) 的实线性算子 \(J:V\to V\) 称为 \(V\) 上的复结构。规定 \((a+\mathrm{i}b)v=av+bJv\)，便使 \(V\) 成为复向量空间。
+
+	光滑实流形 \(M\) 上满足 \(J^2=-I\) 的光滑丛自同态 \(J:\mathrm{T}M\to\mathrm{T}M\) 称为\term[jihufujiegou]{几乎复结构}[almost complex structure]。若 \((V,\omega)\) 是辛空间，复结构 \(J\) 满足
+	\begin{equation}\label{g4:eq:0703:compatibility}
+		\omega(Ju,Jv)=\omega(u,v),\qquad
+		\omega(u,Ju)>0\quad(u\ne0),
+	\end{equation}
+	则称它与 \(\omega\)\term[xiangrongfujiegou]{相容}[compatible]。流形上逐点满足这些条件的 \(J\)，称为与给定非退化二形式 \(\omega\) 相容的几乎复结构。
+\end{definition}
+
+几乎复结构的定义规定了每个切空间中的复数乘法；是否能找到使它成为标准乘法的局部复坐标，是另一个问题。当前先构造满足上述代数条件的光滑场。
+
+\ProseParagraphBreak
+
+固定辛空间 \((V,\omega)\)，任取一个辅助内积 \(h\)。由 \(h\) 把 \(V\) 与 \(V^*\) 识别，存在唯一算子 \(A\) 满足
+\begin{equation}\label{g4:eq:0703:skew-operator}
+	h(Au,v)=\omega(u,v)\qquad(u,v\in V).
+\end{equation}
+这里 \(h\) 对称而 \(\omega\) 反对称，故 \(A\) 应是反自伴算子。它已经具有旋转的性质，但不同方向上的尺度未必相同。下面用一个正定算子消去尺度。
+
+\begin{theorem}\label{g4:thm:0703:polar-construction}
+	设 \((V,\omega)\) 是有限维实辛空间，\(h\) 是 \(V\) 上的正定内积，\(A\) 由式\eqref{g4:eq:0703:skew-operator}定义。则 \(-A^2\) 是 \(h\)-自伴正定算子，令
+	\begin{equation}\label{g4:eq:0703:normalization}
+		P=(-A^2)^{1/2},\qquad
+		\mathcal N_\omega(h)=J=P^{-1}A,
+	\end{equation}
+	其中取唯一的 \(h\)-自伴正定平方根。则 \(J\) 与 \(\omega\) 相容，且
+	\begin{equation}\label{g4:eq:0703:normalized-metric}
+		g(u,v)=\omega(u,Jv)=h(Pu,v)
+	\end{equation}
+	是正定内积。\(J\) 关于 \(h\) 正交，\(A=PJ=JP\)。
+\end{theorem}
+\begin{proof}
+	内积的非退化性使 \(A\) 存在且唯一；\(\omega\) 非退化使 \(A\) 可逆。记 \(A^*\) 为 \(h\)-伴随，由反对称性有
+	\[
+		h(Au,v)=\omega(u,v)=-\omega(v,u)=-h(u,Av),
+	\]
+	所以 \(A^*=-A\)。从而 \(-A^2=A^*A\) 自伴，并且对 \(u\ne0\)，
+	\[
+		h(-A^2u,u)=h(Au,Au)>0.
+	\]
+	\cref{g4:lem:0701:positive-powers}给出所需的正定平方根 \(P\)。因为 \(A\) 与 \(-A^2\) 交换，它保持后者的每个特征子空间；\(P\) 在这些子空间上作用为正的标量，故 \(AP=PA\)，也有 \(AP^{-1}=P^{-1}A\)。于是
+	\[
+		J^2=P^{-2}A^2=-I,
+		\qquad J^*=A^*P^{-1}=-P^{-1}A=-J.
+	\]
+	两式合起来给出 \(J^*J=I\)，即 \(h(Ju,Jv)=h(u,v)\)。又因 \(A\) 与 \(J\) 交换，
+	\[
+		\omega(Ju,Jv)=h(AJu,Jv)=h(JAu,Jv)=h(Au,v)=\omega(u,v).
+	\]
+	最后，把 \(J\) 从内积的第二个变量移到第一个变量，得到
+	\[
+		\omega(u,Jv)=h(Au,Jv)=h(-JAu,v)=h(Pu,v),
+	\]
+	其中 \(-JA=-P^{-1}A^2=P\)。\(P\) 自伴正定，故这个配对对称正定，特别地 \(\omega(u,Ju)>0\)。这证明全部相容条件与所列恒等式。
+\end{proof}
+
+分解 \(A=PJ\) 把正定尺度 \(P\) 与正交旋转 \(J\) 分开，是这里使用的极分解。构造由 \((\omega,h)\) 唯一确定；它没有为 \(\omega\) 单独指定一个优先的内积。该线性构造可对照 Cannas da Silva 的命题3.1。\cite[第3.1节，第108--109页]{Cannas2006Symplectic}
+
+\begin{example}\label{g4:exm:0703:anisotropic-metric}
+	在 \(V=\mathbb R^2\) 上取 \(\omega=\mathrm{d}q\wedge\mathrm{d}p\) 和
+	\[
+		h=a\,\mathrm{d}q^2+b\,\mathrm{d}p^2,\qquad a,b>0.
+	\]
+	在有序基 \((\partial_q,\partial_p)\) 中，直接代入定义得到
+	\[
+		A=\begin{pmatrix}0&-a^{-1}\\b^{-1}&0\end{pmatrix},\qquad
+		P=\frac1{\sqrt{ab}}I,\qquad
+		J=\begin{pmatrix}0&-\sqrt{b/a}\\\sqrt{a/b}&0\end{pmatrix}.
+	\]
+	因此
+	\[
+		g=\sqrt{a/b}\,\mathrm{d}q^2+\sqrt{b/a}\,\mathrm{d}p^2.
+	\]
+	当 \(a=b\) 时，\(J\partial_q=\partial_p\)、\(J\partial_p=-\partial_q\)，与本书 \(\omega\) 的正号一致；此时 \(g\) 恰为标准内积，即使辅助内积 \(h\) 是它的另一正倍数也如此。\(a/b\) 改变时，所得 \(J\) 随之改变，说明辅助内积的各向异性确实影响选择。
+\end{example}
 
 \subsection{\texorpdfstring{正定配对 \(g(u,v)=\omega(u,Jv)\)}{正定配对 g(u,v)=\GeometryPdfSmallOmega{}(u,Jv)}}
 \label{g4:subsec:0703:02}
-待撰写
+
+刚才构造的 \(g\) 一般不同于输入的 \(h\)。\(h\) 负责进行规范化，而 \(g\) 与输出的 \(J\) 精确满足相容恒等式。下面从这条恒等式重新辨认三个对象的关系。
+
+\begin{proposition}\label{g4:prop:0703:compatible-triple}
+	设 \((V,\omega)\) 为有限维实辛空间，\(J:V\to V\) 满足 \(J^2=-I\)。则 \(J\) 与 \(\omega\) 相容，当且仅当 \(g(u,v)=\omega(u,Jv)\) 是正定对称内积。此时
+	\begin{equation}\label{g4:eq:0703:triple-identities}
+		\omega(u,v)=g(Ju,v),\qquad
+		g(Ju,Jv)=g(u,v),\qquad
+		g(Ju,v)=-g(u,Jv).
+	\end{equation}
+	这样的 \((\omega,J,g)\) 称为\term[xiangrongsanyuanzu]{相容三元组}[compatible triple]。
+\end{proposition}
+\begin{proof}
+	若 \(J\) 相容，则
+	\[
+		g(v,u)=\omega(v,Ju)
+		=\omega(Jv,J^2u)=-\omega(Jv,u)=\omega(u,Jv)=g(u,v),
+	\]
+	且 \(g(u,u)>0\) 对非零 \(u\) 成立。反过来，若 \(g\) 对称正定，则正性直接给出 \(\omega(u,Ju)>0\)，而将对称性用于 \(u,Jv\) 得到
+	\[
+		-\omega(u,v)=g(u,Jv)=g(Jv,u)=\omega(Jv,Ju)=-\omega(Ju,Jv).
+	\]
+	所以 \(J\) 保持 \(\omega\)。相容性随后给出 \(g(Ju,v)=\omega(Ju,Jv)=\omega(u,v)\)，再由 \(J^2=-I\) 与反对称性得到其余两式。
+\end{proof}
+
+在相容三元组中，任意两项决定第三项：给 \(\omega,J\) 时用 \(g=\omega(\cdot,J\cdot)\)；给 \(g,J\) 时用 \(\omega=g(J\cdot,\cdot)\)；给 \(\omega,g\) 时由 \(g(Ju,v)=\omega(u,v)\) 唯一求 \(J\)。最后一种恢复的前提是这两项确实属于相容三元组；对任意辅助内积求出的算子只是 \(A\)，它还须经过式\eqref{g4:eq:0703:normalization}的规范化。
+
+\begin{proposition}\label{g4:prop:0703:orthogonal-complex}
+	设 \(V\) 为有限维实向量空间，\(g\) 是正定内积，\(J^2=-I\) 且 \(g(Ju,Jv)=g(u,v)\)。则 \(\omega(u,v)=g(Ju,v)\) 是非退化交替型，并使 \((\omega,J,g)\) 成为相容三元组。任意复结构 \(J\) 都有这样的 \(J\)-不变内积：由任意正定内积 \(h\) 可取
+	\[
+		g(u,v)=\tfrac12\bigl(h(u,v)+h(Ju,Jv)\bigr).
+	\]
+\end{proposition}
+\begin{proof}
+	\(J\) 的正交性与 \(J^{-1}=-J\) 给出 \(g(Ju,v)=-g(u,Jv)\)，所以 \(\omega\) 反对称。若 \(\omega(u,v)=0\) 对所有 \(v\) 成立，则 \(Ju=0\)，故 \(u=0\)。并且 \(\omega(u,Jv)=g(Ju,Jv)=g(u,v)\)，从而相容。最后所给平均显然对称正定；把 \(u,v\) 同时换成 \(Ju,Jv\)，两个加数互换，证明 \(J\)-不变性。
+\end{proof}
+
+在对应的复向量空间上，\(H(u,v)=g(u,v)-\mathrm{i}\omega(u,v)\) 是第一变量线性的 Hermitian 内积。例如 \(H(Ju,v)=\mathrm{i}H(u,v)\)，共轭对称性来自 \(g\) 对称、\(\omega\) 反对称，而 \(H(u,u)=g(u,u)>0\)。这说明三元组把同一个复内积的实部 \(g\)、负虚部 \(\omega\) 和复数乘法同时记录下来。
+
+\begin{corollary}\label{g4:cor:0703:normalization-retraction}
+	设 \((V,\omega)\) 为有限维实辛空间，\(J\) 与 \(\omega\) 相容，\(g_J(u,v)=\omega(u,Jv)\)。若用 \(h=g_J\) 作为\cref{g4:thm:0703:polar-construction}的输入，则 \(A=J\)、\(P=I\)，因而
+	\[
+		\mathcal N_\omega(g_J)=J.
+	\]
+\end{corollary}
+\begin{proof}
+	由式\eqref{g4:eq:0703:triple-identities}，\(g_J(Ju,v)=\omega(u,v)\)。定义 \(A\) 的唯一性给出 \(A=J\)，所以 \(-A^2=I\)，其正定平方根为 \(I\)，规范化保持 \(J\) 不变。
+\end{proof}
 
 \subsection{相容结构空间的可缩性}
 \label{g4:subsec:0703:03}
-待撰写
+
+记 \(\mathcal J(V,\omega)\) 为全部 \(\omega\)-相容复结构组成的集合，取它在有限维算子空间 \(\operatorname{End}_{\mathbb R}(V)\) 中的子空间拓扑。存在性已解决，接下来要比较不同选择。直接平均两个算子通常不保留平方等于 \(-I\)；正定内积却组成凸集，因此可以先平均相应内积，再恢复相容结构。
+
+\begin{example}\label{g4:exm:0703:nonconvex-structures}
+	在标准辛平面上取
+	\[
+		J_0=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad
+		J_1=\begin{pmatrix}0&-1/2\\2&0\end{pmatrix}.
+	\]
+	二者均与 \(\mathrm{d}q\wedge\mathrm{d}p\) 相容，后者可由\cref{g4:exm:0703:anisotropic-metric}中 \(a=4,b=1\) 得到。但
+	\[
+		\left(\frac{J_0+J_1}{2}\right)^2=-\frac98 I,
+	\]
+	故其中点甚至不是复结构。相应内积为 \(g_0=\mathrm{d}q^2+\mathrm{d}p^2\)、\(g_1=2\mathrm{d}q^2+\tfrac12\mathrm{d}p^2\)，它们的任意凸组合仍正定。
+\end{example}
+
+\begin{lemma}\label{g4:lem:0703:smooth-natural-normalization}
+	在一个固定有限维实向量空间 \(V\) 上，映射 \((\omega,h)\mapsto\mathcal N_\omega(h)\) 对非退化交替型 \(\omega\) 和正定内积 \(h\) 光滑。若 \(F:V\to W\) 是实线性同构，则对 \(W\) 上的此类数据 \((\omega',h')\)，有
+	\[
+		\mathcal N_{F^*\omega'}(F^*h')
+		=F^{-1}\mathcal N_{\omega'}(h')F.
+	\]
+\end{lemma}
+\begin{proof}
+	在一个固定实基中写 \(h(u,v)=u^{\mathsf T}Hv\)、\(\omega(u,v)=u^{\mathsf T}\Omega v\)。式\eqref{g4:eq:0703:skew-operator}成为 \(A^{\mathsf T}H=\Omega\)，所以
+	\[
+		A=-H^{-1}\Omega.
+	\]
+	矩阵求逆在可逆矩阵集合上光滑，因此 \(A\) 光滑依赖 \((\Omega,H)\)。\(-A^2\) 关于变化的内积 \(h\) 自伴正定，\cref{g4:lem:0701:positive-powers}的参数版本说明 \(P=(-A^2)^{1/2}\) 也光滑；再求逆相乘即得 \(J\) 的光滑性。
+
+	对于同构 \(F\)，定义等式直接给出源上的 \(A=F^{-1}A'F\)。\(F^{-1}P'F\) 关于 \(F^*h'\) 自伴正定，且平方为 \(-A^2\)，由正定平方根的唯一性，它就是源上的 \(P\)。于是 \(P^{-1}A=F^{-1}(P'^{-1}A')F\)，证明自然性。
+\end{proof}
+
+\begin{theorem}\label{g4:thm:0703:linear-contractibility}
+	设 \((V,\omega)\) 为有限维实辛空间，固定 \(J_*\in\mathcal J(V,\omega)\)，令 \(g_*(u,v)=\omega(u,J_*v)\)。则
+	\begin{equation}\label{g4:eq:0703:linear-contraction}
+		\mathcal H_t(J)
+		=\mathcal N_\omega\bigl((1-t)g_J+t g_*\bigr),
+		\qquad 0\le t\le1,
+	\end{equation}
+	是 \(\mathcal J(V,\omega)\) 到 \(J_*\) 的强收缩：它连续并满足
+	\[
+		\mathcal H_0(J)=J,\qquad
+		\mathcal H_1(J)=J_*,\qquad
+		\mathcal H_t(J_*)=J_*.
+	\]
+	特别地，\(\mathcal J(V,\omega)\) 非空且可缩。
+\end{theorem}
+\begin{proof}
+	对 \(u\ne0\)，\((1-t)g_J(u,u)+t g_*(u,u)>0\)，所以括号内始终是正定内积，规范化的输出始终属于 \(\mathcal J(V,\omega)\)。\(J\mapsto g_J\) 为线性公式，而规范化光滑，因此 \((t,J)\mapsto\mathcal H_t(J)\) 连续。
+
+	在 \(t=0\) 时，\cref{g4:cor:0703:normalization-retraction}给出 \(\mathcal N_\omega(g_J)=J\)；在 \(t=1\) 时同样给出 \(\mathcal N_\omega(g_*)=J_*\)。若起点已经是 \(J_*\)，则整个度量路径恒为 \(g_*\)，故输出也一直为 \(J_*\)。这同时验证了两个端点和基点固定条件。
+\end{proof}
+
+因此任意两种相容选择都可由一条相容路径连接，且整个选择空间能连续缩到指定的一种选择。文献中的线性可缩性也可由 Lagrange 补空间和内积的参数化证明；这里采用的度量平均公式将直接用于流形。\cite[命题3.2及第3.2节，第110--112页]{Cannas2006Symplectic}
 
 \subsection{光滑参数族与流形上的整体构造}
 \label{g4:subsec:0703:04}
-待撰写
+
+逐点选择相容结构，未必自动产生光滑场。上面的规范化则由同一光滑公式给出，并且与换基相容；我们只需先找到整体光滑的辅助内积。
+
+\begin{theorem}\label{g4:thm:0703:bundle-existence}
+	设 \(M\) 是有限维、Hausdorff、第二可数的光滑流形，允许有边界，\(E\to M\) 是秩为 \(2n\) 的实光滑向量丛。设 \(\omega\in\Gamma^\infty(\Lambda^2E^*)\) 在每条纤维上非退化，则存在光滑丛自同态 \(J:E\to E\)，使 \(J^2=-I\)，且 \(J\) 逐纤维与 \(\omega\) 相容。具体地，对任意光滑丛度量 \(h\)，逐纤维应用 \(J=\mathcal N_\omega(h)\) 即得这样的结构，\(g=\omega(\cdot,J\cdot)\) 也是光滑丛度量。
+\end{theorem}
+\begin{proof}
+	第一卷第12.3节定理12.3.11保证 \(E\) 存在光滑丛度量。恢复此处需要的构造：取局部标架及从属的局部有限光滑单位分解 \(\{\chi_i\}\)，在每张标架中取标准内积 \(h_i\)，令
+	\[
+		h=\sum_i\chi_i h_i.
+	\]
+	每个加权局部张量在其定义域外补零，支集条件保证光滑；局部有限性保证每点附近只有有限项。每个非零向量的平方长度是正数的非负加权和，且至少一项权重为正，所以 \(h\) 正定。
+
+	在任意光滑局部标架中，\(\omega,h\) 是光滑矩阵函数，\cref{g4:lem:0703:smooth-natural-normalization}给出光滑的 \(J\)。在两张标架交叠处，其自然性说明两个矩阵恰按丛自同态的规则共轭，因而表示同一个全局 \(J\)。\cref{g4:thm:0703:polar-construction}逐纤维给出 \(J^2=-I\)、相容性和正定 \(g\)，而 \(g\) 的光滑性来自张量收缩的局部公式。
+\end{proof}
+
+特别地，取 \(E=\mathrm{T}M\)，每个带有非退化光滑二形式的流形都存在与之相容的几乎复结构；辛流形当然满足这个假设。这里没有使用 \(\mathrm{d}\omega=0\)：非退化性负责逐点的构造，闭性是辛形式另外满足的微分条件。
+
+\begin{proposition}\label{g4:prop:0703:smooth-families}
+	设 \(M\) 为有限维、Hausdorff、第二可数的光滑流形，\(E\to M\) 为秩 \(2n\) 的实光滑向量丛，\(B\) 为有限维光滑参数流形；\(M,B\) 均允许有边界。若 \(\omega_b,h_b\) 是关于 \((b,x)\in B\times M\) 光滑的纤维非退化交替型与正定丛度量族，则
+	\[
+		J_b=\mathcal N_{\omega_b}(h_b),\qquad
+		g_b=\omega_b(\cdot,J_b\cdot)
+	\]
+	也是关于 \((b,x)\) 光滑的相容结构与丛度量族。可以取 \(h_b\) 为一个与参数无关的固定丛度量。
+
+	若给定 \(t\in[0,1]\) 的光滑非退化族 \(\omega_t\)，以及分别与 \(\omega_0,\omega_1\) 相容的光滑结构 \(J_0,J_1\)，则存在光滑相容族 \(J_t\)，在两个端点取得这两个指定值。
+\end{proposition}
+\begin{proof}
+	第一部分在每个参数坐标和丛标架中直接应用\cref{g4:lem:0703:smooth-natural-normalization}，自然性保证交叠处粘合。固定辅助度量的存在性已由前一定理给出，故不需要另外作随参数的选择。
+
+	对端点问题，令 \(g_i=\omega_i(\cdot,J_i\cdot)\)，取
+	\[
+		h_t=(1-t)g_0+t g_1,\qquad
+		J_t=\mathcal N_{\omega_t}(h_t).
+	\]
+	\(h_t\) 始终正定，\(\omega_t\) 按假设始终非退化，故第一部分给出光滑族。在 \(t=i\) 处，\(h_i=g_i\)，由\cref{g4:cor:0703:normalization-retraction}，输出就是指定的 \(J_i\)。
+\end{proof}
+
+如果 \(E=\mathrm{T}M\) 且每个 \(\omega_b\) 都闭，上述结果就给出了辛形式族的相容几乎复结构族。端点构造平均的是度量；非退化的形式路径 \(\omega_t\) 是已给定的数据，并没有要求两端辛形式的任意凸组合仍非退化。
+
+\ProseParagraphBreak
+
+最后把可缩性提升到整个光滑截面空间。记 \(\mathcal J(E,\omega)\) 为所有光滑相容 \(J\) 的集合，在光滑自同态截面空间中取 \(C^\infty\) 紧开拓扑：局部标架中的矩阵分量及其任意有限阶导数，都在每个紧集上一致比较。这一定义不要求底流形紧致。
+
+\begin{theorem}\label{g4:thm:0703:global-contractibility}
+	设 \(M\) 为有限维、Hausdorff、第二可数的光滑流形，允许有边界，\(E\to M\) 为有限偶数秩实光滑向量丛，\(\omega\) 为光滑纤维非退化交替型。则 \(\mathcal J(E,\omega)\) 在 \(C^\infty\) 紧开拓扑下非空且可缩。固定任意 \(J_*\in\mathcal J(E,\omega)\)，令 \(g_* =\omega(\cdot,J_*\cdot)\)，一个强收缩为逐点公式
+	\begin{equation}\label{g4:eq:0703:global-contraction}
+		\mathcal H_t(J)(x)
+		=\mathcal N_{\omega_x}\bigl((1-t)g_{J,x}+t g_{*,x}\bigr).
+	\end{equation}
+	对每个固定的 \(J\)，它关于 \((t,x)\) 光滑；若 \(J\) 本来随另一个有限维参数光滑变化，则所得收缩也联合光滑。若 \(J\) 与 \(J_*\) 在某个集合上相等，收缩在该集合上逐点保持 \(J_*\)。
+\end{theorem}
+\begin{proof}
+	非空性由\cref{g4:thm:0703:bundle-existence}得到。度量的凸组合正定，规范化自然且光滑，所以式\eqref{g4:eq:0703:global-contraction}给出全局光滑相容截面及所述有限维参数光滑性。\cref{g4:cor:0703:normalization-retraction}逐点验证
+	\[
+		\mathcal H_0(J)=J,\qquad
+		\mathcal H_1(J)=J_*,\qquad
+		\mathcal H_t(J_*)=J_*.
+	\]
+	若在某个 \(x\) 已有 \(J_x=J_{*,x}\)，则该点的度量路径恒定，输出也恒定，证明最后的相对断言。
+
+	还须证明在截面空间中的联合连续性，逐点连续并不足够。固定一个局部标架内的紧集 \(K\)、导数阶数 \(r\)，以及一个输入截面 \(J\)。\((1-t)g_J+t g_*\) 在紧集 \(K\times[0,1]\) 上的最小特征值有正下界。因此当另一个相容截面在 \(K\) 上充分接近 \(J\) 时，相关度量矩阵仍处在正定锥内一个与退化边界有正距离的有界区域中。固定的 \(\omega_x\) 在 \(K\) 上也有一致的非退化界。
+
+	矩阵规范化在这些数据的邻域内是光滑函数。对式\eqref{g4:eq:0703:global-contraction}逐次求至 \(r\) 阶空间导数，链式法则把每项写为规范化映射的有限阶导数乘以输入矩阵的至 \(r\) 阶导数。所需的矩阵函数导数在上述紧数据范围内一致有界且一致连续。因此输入截面的这些导数在 \(K\) 上一致接近、参数 \(t\) 接近时，输出的至 \(r\) 阶导数也一致接近。一般紧集用有限张标架覆盖并相加估计即可。这正是 \(C^\infty\) 紧开拓扑要求的联合连续性；所需正下界只在每个紧集上选择，故论证同样适用于非紧 \(M\)。
+\end{proof}
+
+取切丛后，任意两个与同一辛形式相容的几乎复结构都有光滑相容路径相连，而全部这类选择还具有统一的连续收缩。后面用相容 \(J\) 定义依赖同伦类的对象时，选择无关性正由这个结果提供。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 15.2 Hodge 定理的证明
 % 纲要位置：几何学计划纲要.md，第 2715 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,238 @@
 \section{Hodge 定理的证明}
 \label{g3:sec:1502}
 
-待撰写
+一个闭形式有许多相差正合形式的代表。要从中作出有几何意义的选择，可以要求代表正交于所有正合方向，也就是同时满足余闭条件。上一节把这两个一阶条件合成了椭圆方程；现在借助第十三章已经建立的 Green 算子，证明这样的代表总能选出，并说明它与积分配对的关系。以下“闭流形”指紧致、无边界的光滑流形。
 
 \subsection{正合、余正合及调和分解}
 \label{g3:subsec:1502:01}
-待撰写
+固定闭黎曼流形 \(M\)，暂取复值形式。由\cref{g3:prop:hodge-laplacian-symbol,g3:prop:form-hodge-energy}，\(\Delta_k\) 是形式自伴、非负的二阶椭圆算子。因此\cref{g3:thm:elliptic-fredholm,g3:thm:elliptic-green-general}适用：其核 \(\mathcal H_g^k\) 有限维且光滑，存在 \(L^2\) 正交投影 \(\Pi_k\) 及 Green 算子 \(G_k\)，满足
+\begin{equation}\label{g3:eq:form-green-identities}
+	\Delta_kG_k=I-\Pi_k,\qquad
+	G_k\Delta_k=I-\Pi_k,\qquad
+	G_k\Pi_k=\Pi_kG_k=0.
+\end{equation}
+第二式的定义域为 \(H^2\)，而 \(G_k:H^s\to H^{s+2}\) 对整数 \(s\ge0\) 有界；特别地，它把光滑形式送到光滑形式。
+
+\begin{theorem}[闭流形上的 Hodge 分解]\label{g3:thm:closed-hodge-decomposition}
+	设 \(M\) 为闭的 \(n\ge1\) 维黎曼流形，\(0\le k\le n\)。则有 \(L^2\) 正交直和
+	\begin{equation}\label{g3:eq:closed-form-hodge-decomposition}
+		\Omega^k(M;\mathbb C)
+		=\mathcal H_g^k
+		\oplus\mathrm d\Omega^{k-1}(M;\mathbb C)
+		\oplus\delta\Omega^{k+1}(M;\mathbb C).
+	\end{equation}
+	端点处不存在的形式空间取零。任意 \(\omega\) 的三个分量为
+	\begin{equation}\label{g3:eq:form-hodge-components}
+		\omega=\Pi_k\omega
+		+\mathrm d(\delta G_k\omega)
+		+\delta(\mathrm dG_k\omega).
+	\end{equation}
+	在 \(L^2\) 中还成立闭子空间的正交直和
+	\[
+		L^2(\Lambda^k)
+		=\mathcal H_g^k
+		\oplus\mathrm dH^1(\Lambda^{k-1})
+		\oplus\delta H^1(\Lambda^{k+1}).
+	\]
+	同样结论适用于实值形式。
+\end{theorem}
+\begin{proof}
+	由式\eqref{g3:eq:form-green-identities}，展开 \(\Delta_kG_k\) 便得到式\eqref{g3:eq:form-hodge-components}。若 \(\alpha,\beta,h\) 光滑且 \(h\) 调和，则
+	\[
+		(\mathrm d\alpha,\delta\beta)
+		=(\mathrm d^2\alpha,\beta)=0,\qquad
+		(\mathrm d\alpha,h)=(\alpha,\delta h)=0,\qquad
+		(\delta\beta,h)=(\beta,\mathrm dh)=0.
+	\]
+	所以所得分量两两正交，因而唯一。分量的原像 \(\alpha,\beta\) 可以改变；唯一性说的是 \(\mathrm d\alpha,\delta\beta,h\)。
+
+	为取得 \(L^2\) 结论，记 \(E_k=\mathrm d\delta G_k\)、\(C_k=\delta\mathrm dG_k\)。Green 算子的两阶增益使二者在 \(L^2\) 上有界。光滑分解证明了 \(\Pi_k,E_k,C_k\) 在稠密的光滑子空间上是互相正交的投影；取极限后在全 \(L^2\) 上仍然如此，故其像闭。
+
+	由 \(\delta G_k:L^2\to H^1\)，有 \(\operatorname{ran}E_k\subset\mathrm dH^1\)。反过来，若 \(\alpha\in H^1\)，以光滑 \(\alpha_j\) 在 \(H^1\) 中逼近，则
+	\(E_k\mathrm d\alpha_j=\mathrm d\alpha_j\) 收敛为 \(E_k\mathrm d\alpha=\mathrm d\alpha\)，故两像相等。余正合像同理。这也是\cref{g3:thm:elliptic-complex-hodge-decomposition}在外微分复形上的具体实现。最后，\(\Delta_k\) 具有实系数；共轭保持核与正交补，规范解的唯一性使 \(G_k\)、\(\Pi_k\) 与共轭交换。因此对实形式得到的全部分量仍为实形式。
+\end{proof}
+
+正合部分测量能够由低一次形式的外微分产生的变化，余正合部分则与闭形式正交。这个分解还给出求解条件：
+\[
+	\Delta_k u=f\text{ 可解}
+	\quad\Longleftrightarrow\quad
+	(f,h)=0\quad\text{对所有 }h\in\mathcal H_g^k.
+\]
+满足正交条件时，\(G_kf\) 是唯一正交于调和核的解。于是调和空间同时承担上同调代表与椭圆方程可解障碍两种职责。
 
 \subsection{每个 de Rham 类的调和代表}
 \label{g3:subsec:1502:02}
-待撰写
+对 \(\mathbb F=\mathbb R\) 或 \(\mathbb C\)，回忆光滑 de Rham 上同调的定义：
+\[
+	H_{\mathrm{dR}}^k(M;\mathbb F)
+	=\frac{\ker(\mathrm d:\Omega^k\to\Omega^{k+1})}
+	{\mathrm d\Omega^{k-1}}.
+\]
+分子中的形式闭合，等价关系要求差为一个光滑形式的外微分。这个定义没有使用黎曼度量。
+
+\begin{theorem}[Hodge 定理]\label{g3:thm:hodge-de-rham}
+	设 \(M\) 为闭的 \(n\ge1\) 维黎曼流形，\(0\le k\le n\)，\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)。映射
+	\[
+		\mathcal H_g^k(M;\mathbb F)\longrightarrow
+		H_{\mathrm{dR}}^k(M;\mathbb F),\qquad h\longmapsto[h]
+	\]
+	为线性同构。具体地，若 \(\mathrm d\omega=0\)，则
+	\begin{equation}\label{g3:eq:hodge-closed-representative}
+		\omega=\Pi_k\omega+\mathrm d(\delta G_k\omega).
+	\end{equation}
+	因此每个上同调类有唯一调和代表，且上同调有限维；这里不要求 \(M\) 定向。
+\end{theorem}
+\begin{proof}
+	调和形式闭合，故映射有定义。设 \(\omega=h+\mathrm d\alpha+\delta\beta\) 为上一分解，且 \(\mathrm d\omega=0\)。用伴随公式与正交性，
+	\[
+		\|\delta\beta\|_2^2
+		=(\omega,\delta\beta)=(\mathrm d\omega,\beta)=0.
+	\]
+	于是余正合部分为零，\(\omega\) 与 \(h=\Pi_k\omega\) 相差正合形式，给出存在性及式\eqref{g3:eq:hodge-closed-representative}。若两个调和代表之差为 \(h=\mathrm d\alpha\)，则
+	\(\|h\|_2^2=(h,\mathrm d\alpha)=(\delta h,\alpha)=0\)，故二者相同。核的有限维性随即给出上同调的有限维性。全部步骤在实形式空间内也成立。
+\end{proof}
+
+同一个证明说明如何为正合形式选择原像。若 \(k\ge1\)、\(\omega\) 光滑且正合，则
+\[
+	\alpha_0=\delta G_k\omega,\qquad
+	\mathrm d\alpha_0=\omega,\qquad
+	\delta\alpha_0=0,\qquad \Pi_{k-1}\alpha_0=0.
+\]
+最后一式来自 \(\alpha_0\) 是余正合形式。任意其他原像为 \(\alpha_0+\zeta\)，其中 \(\mathrm d\zeta=0\)；而
+\((\alpha_0,\zeta)=(G_k\omega,\mathrm d\zeta)=0\)。
+所以 \(\alpha_0\) 是唯一范数最小的光滑原像，且
+\[
+	\|\alpha_0\|_{H^{s+1}}\le C_s\|\omega\|_{H^s}
+	\qquad(s=0,1,\ldots).
+\]
+这把“存在原像”加强成了带有规范与估计的求解。
+
+\begin{example}\label{g3:exm:hodge-variable-circle}
+	在 \(\mathbb R/2\pi\mathbb Z\) 上取 \(g=a(\theta)^2\mathrm d\theta^2\)，其中 \(a>0\) 光滑且周期。令 \(L=\int_0^{2\pi}a(\theta)\,\mathrm d\theta\)。每个一形式 \(f(\theta)\,\mathrm d\theta\) 都闭合，而
+	\[
+		*\bigl(f\,\mathrm d\theta\bigr)=\frac f a,\qquad
+		\delta(f\,\mathrm d\theta)
+		=-\frac1a\,\frac{\mathrm d}{\mathrm d\theta}\left(\frac f a\right).
+	\]
+	故调和一形式恰为 \(c\,a(\theta)\,\mathrm d\theta\)。给定 \(\omega=f\,\mathrm d\theta\)，取
+	\[
+		c=\frac1L\int_0^{2\pi}f(\theta)\,\mathrm d\theta,\qquad
+		F(\theta)=\int_0^\theta(f(s)-c\,a(s))\,\mathrm ds.
+	\]
+	被积函数在一周期的积分为零，故 \(F\) 是周期光滑函数，且
+	\(\omega=c\,a\,\mathrm d\theta+\mathrm dF\)。
+	上同调类由周期积分决定，调和代表的具体系数却随度量改变。
+\end{example}
 
 \subsection{唯一性、有限维性和自然配对}
 \label{g3:subsec:1502:03}
-待撰写
+设 \(c\) 是一个 de Rham 类，\(h_c\) 为其调和代表。任何光滑代表都可写成 \(h_c+\mathrm d\alpha\)，因而
+\[
+	\|h_c+\mathrm d\alpha\|_2^2
+	=\|h_c\|_2^2+\|\mathrm d\alpha\|_2^2.
+\]
+所以调和代表是给定上同调类中唯一的最小 \(L^2\) 范数代表。另一方面，沿正合方向作一阶变分，最小值条件就是 \((h_c,\mathrm d\alpha)=0\)，即 \(\delta h_c=0\)。这解释了余闭条件为何能消除代表选择中的自由度。
+
+\ProseParagraphBreak
+
+由此在上同调上得到正定配对
+\begin{equation}\label{g3:eq:hodge-inner-product-cohomology}
+	\langle c_1,c_2\rangle_g=(h_{c_1},h_{c_2})_{L^2}.
+\end{equation}
+实系数时它是实内积，复系数时是第一变量线性的 Hermitian 内积。定义不依赖代表元，但依赖度量；上同调本身和维数 \(b_k=\dim H_{\mathrm{dR}}^k(M;\mathbb R)\) 则不依赖度量。
+
+\begin{proposition}\label{g3:prop:hodge-naturality}
+	设 \(M,N\) 为闭黎曼流形，\(F:N\to M\) 光滑。以两端的 Hodge 同构识别上同调后，拉回映射由
+	\[
+		\mathcal H_g^k(M)\longrightarrow\mathcal H_h^k(N),
+		\qquad\omega\longmapsto\Pi_{N,k}F^*\omega
+	\]
+	表示。这些映射与恒等及复合相容。若 \(F\) 为黎曼等距微分同胚，则 \(F^*\omega\) 本身调和，无需再次投影。
+	同一闭流形上的两个度量 \(g_0,g_1\) 给出同构
+	\[
+		\mathcal H_{g_0}^k\longrightarrow\mathcal H_{g_1}^k,
+		\qquad h\longmapsto\Pi_{g_1,k}h,
+	\]
+	其逆为另一方向的调和投影。
+\end{proposition}
+\begin{proof}
+	拉回与外微分交换，故保持闭形式与正合形式。Hodge 定理说明投影后的形式仍代表同一拉回类，且这个类的调和代表唯一。对复合映射，任何中途投影只使闭形式改变一个正合项；再次拉回仍是正合项，最终投影消去它。这证明复合相容，恒等情形直接成立。
+
+	等距微分同胚保持诱导形式内积与体积密度。将形式伴随等式拉回，得到 \(F^*\delta_M=\delta_NF^*\)，于是它也与 Laplace 交换。度量改变的两张映射则都保持原上同调类；先后应用两次，得到与原形式同类的调和形式，由唯一性即为原形式。
+\end{proof}
+
+调和代表还可用于计算上同调乘积，但取外积后通常需要再次投影。若 \(h_1,h_2\) 调和，它们闭合，所以
+\[
+	h_1\mathbin{\smile_g}h_2=\Pi(h_1\wedge h_2)
+\]
+代表原来两类的外积。这个乘法在调和空间上结合、分次交换，因为对应的 de Rham 类具有这些性质，调和代表又唯一。
+
+\begin{example}\label{g3:exm:harmonic-wedge-not-harmonic}
+	在二维环面 \((\mathbb R/2\pi\mathbb Z)^2\) 上取
+	\(g=e^{2\varphi(x,y)}(\mathrm dx^2+\mathrm dy^2)\)，其中 \(\varphi\) 光滑、周期且非常数。正交余标架为 \(e^\varphi\mathrm dx,e^\varphi\mathrm dy\)，故
+	\[
+		*\mathrm dx=\mathrm dy,\qquad *\mathrm dy=-\mathrm dx,\qquad
+		*(\mathrm dx\wedge\mathrm dy)=e^{-2\varphi}.
+	\]
+	一形式 \(\mathrm dx,\mathrm dy\) 均闭且余闭，所以调和；它们的外积却不余闭，因为
+	\(\mathrm d(e^{-2\varphi})\not\equiv0\)。
+	调和顶次形式为体积形式的常数倍，故这个外积的调和代表是
+	\[
+		\Pi_2(\mathrm dx\wedge\mathrm dy)
+		=\frac{4\pi^2}{\operatorname{Vol}_g(M)}\operatorname{vol}_g.
+	\]
+	系数由积分相等确定，也可直接用顶次调和空间上的正交投影计算。调和条件选出了每个类的代表，却不使这些代表在普通外积下封闭。
+\end{example}
 
 \subsection{Poincaré 对偶的解析再解释}
 \label{g3:subsec:1502:04}
-待撰写
+Hodge 内积依赖度量。另一个配对来自互补次数形式的外积积分：
+\[
+	\mathcal I([\alpha],[\beta])=\int_M\alpha\wedge\beta.
+\]
+它只需要闭流形的定向。若用 \(\alpha+\mathrm d\eta\) 替换闭形式 \(\alpha\)，增加的积分是 \(\int_M\mathrm d(\eta\wedge\beta)=0\)；替换 \(\beta\) 同理。因此它确实定义在上同调类上。
+
+\begin{theorem}\label{g3:thm:hodge-poincare-duality}
+	设 \(M\) 为闭、定向的 \(n\ge1\) 维光滑流形，\(\mathbb F=\mathbb R\) 或 \(\mathbb C\)。对每个 \(k\)，双线性配对
+	\begin{equation}\label{g3:eq:de-rham-duality-pairing}
+		H_{\mathrm{dR}}^k(M;\mathbb F)
+		\times H_{\mathrm{dR}}^{n-k}(M;\mathbb F)
+		\longrightarrow\mathbb F,\qquad
+		([\alpha],[\beta])\longmapsto\int_M\alpha\wedge\beta
+	\end{equation}
+	非退化，因而给出
+	\[
+		H_{\mathrm{dR}}^k(M;\mathbb F)
+		\cong \bigl(H_{\mathrm{dR}}^{n-k}(M;\mathbb F)\bigr)^*.
+	\]
+	配对与所选黎曼度量无关；任取一个度量，星算子在调和形式间给出依赖这个度量的同构 \(\mathcal H_g^k\cong\mathcal H_g^{n-k}\)。
+\end{theorem}
+\begin{proof}
+	良定义已经由 Stokes 公式得到。选择一个黎曼度量，并取一个非零类的调和代表 \(h\)。\cref{g3:prop:hodge-star-commutes}说明 \(*\overline h\) 调和，特别地闭合；实系数时共轭可以省略。于是
+	\[
+		\int_M h\wedge *\overline h
+		=\|h\|_2^2>0.
+	\]
+	所以左核为零。交换两个次数，用同一论证得到右核也为零；Hodge 定理已给出两空间有限维，双边非退化于是给出到线性对偶的同构。积分配对的定义没有用度量；星所给的具体代表和同构则使用了度量。
+\end{proof}
+
+这就是 de Rham 形式的 Poincaré 对偶。它的解析证明把一个非零类变成调和形式，再用星构造一个与它积分不为零的互补次数类。尤其 \(b_k=b_{n-k}\)。若 \(M\) 连通，则调和函数为常数，故 \(b_0=b_n=1\)；若 \(n\) 为奇数，交替和 \(\sum_k(-1)^k b_k\) 中互补次数两两抵消。若 \(n=2m\)，中间次数的配对满足
+\[
+	\mathcal I(c_2,c_1)=(-1)^m\mathcal I(c_1,c_2).
+\]
+当 \(m\) 为奇数时，它是非退化交替型，所以 \(b_m\) 为偶数：在实基中交替矩阵 \(A\) 满足 \(A^{\mathsf T}=-A\)，奇数阶时其行列式必为零。
+
+\ProseParagraphBreak
+
+不可定向流形使用上一节的定向线丛。其平坦微分 \(\mathrm d_o\) 的主符号仍为 \(\mathrm i\varepsilon_\xi\)，形式内积与正密度给出伴随 \(\delta_o\)。因此第十三章的椭圆复形分解适用于这个秩一系数复形，证明每个 \(H_{\mathrm{dR}}^j(M;o_M)\) 类也有唯一调和代表。由\cref{g3:prop:twisted-hodge-star}，普通与定向线丛值调和形式被星互相对应，重复前面的正范数论证便得到非退化配对
+\begin{equation}\label{g3:eq:twisted-poincare-pairing}
+	H_{\mathrm{dR}}^k(M;\mathbb R)
+	\times H_{\mathrm{dR}}^{n-k}(M;o_M)
+	\longrightarrow\mathbb R.
+\end{equation}
+这里顶次定向线丛值形式作为密度积分，因而不需选择整体定向。
+
+\ProseParagraphBreak
+
+例如，连通闭流形上 \(H_{\mathrm{dR}}^n(M;o_M)\cong\mathbb R\)，对应常数函数。若流形不可定向，则普通的 \(H_{\mathrm{dR}}^n(M;\mathbb R)=0\)：经星，这个空间对应定向线丛上的调和零形式；能量恒等式使这样的截面平行。非零平行截面处处不为零，归一化以后会选择一个整体定向，矛盾。于是定向条件在最高次上同调中留下了可直接检测的差别。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

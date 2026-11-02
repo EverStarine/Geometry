@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 7.3 有限模的完备化
 % 纲要位置：几何学计划纲要.md，第 5276 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,334 @@
 \section{有限模的完备化}
 \label{g5:sec:0703}
 
-待撰写
+形式级数由全部相容截断确定，这一点在\secref{g5:sec:0504}已经用于计算局部方程。对一般有限模，同样可以把 \(M/I^nM\) 拼成一个完整对象。眼前的问题是：短正合列中的元素在每一阶都有原像，能否把这些原像选得彼此相容？逐阶满射本身不足以保证这一点，必须控制不同提升之间的差。
+
+\ProseParagraphBreak
+
+本节先在可数逆系统中建立所需的提升引理，再用 Artin–Rees 比较子模上的两种滤过。由此得到有限模完备化的正合性，并将完备化写成与 \(\widehat A\) 的张量积。最后通过截断商和伴随分次环，证明 \(\widehat A\) 本身仍为 Noether 环。逆极限的基本构造可对照\cite[附录A，第271—273页]{Matsumura1989}，有限模完备化的主要性质见该书第8节。
 
 \subsection{逆系统和 Mittag–Leffler 的最低引理}
 \label{g5:subsec:0703:01}
-待撰写
+
+\begin{definition}\label{g5:def:inverse-system}
+	设 \(A\) 为交换含幺环。一个以正整数为指标的 \(A\) 模\term[nixitong]{逆系统}[inverse system]由模 \(E_n\) 及转移同态
+	\[
+		\rho_n:E_{n+1}\longrightarrow E_n\qquad(n\geq1)
+	\]
+	组成。对 \(m>n\)，记复合为 \(\rho_{m,n}:E_m\to E_n\)，并令 \(\rho_{n,n}=1\)。其逆极限是
+	\[
+		\varprojlim_n E_n
+		=\left\{(e_n)\in\prod_{n\geq1}E_n:
+		\rho_n(e_{n+1})=e_n\text{ 对每个 }n\text{ 成立}\right\}.
+	\]
+	逆系统之间的同态是一族与转移同态交换的同态；它逐个分量诱导逆极限上的同态。
+\end{definition}
+
+逆极限中的元素保存了所有层上的数据，以及这些数据之间的相容性。给定同态 \(f_n:T\to E_n\)，若 \(\rho_n f_{n+1}=f_n\)，就有唯一的同态 \(T\to\varprojlim E_n\)，把 \(t\) 送到 \((f_n(t))_n\)。这个逐项描述也证明了逆极限的泛性质：
+\[
+	\begin{tikzcd}[column sep=large]
+		& T \arrow[dl,"f_{n+1}"'] \arrow[d,dashed,"\exists!"] \arrow[dr,"f_n"] & \\
+		E_{n+1} & \varprojlim E_j \arrow[l,"\pi_{n+1}"] \arrow[r,"\pi_n"'] & E_n
+	\end{tikzcd}
+\]
+图中的投影另满足 \(\rho_n\pi_{n+1}=\pi_n\)。环的逆极限也用同样的相容族构造，运算逐项进行。
+
+\begin{definition}\label{g5:def:mittag-leffler}
+	设 \((E_n,\rho_n)\) 为可数逆系统。若对每个固定的 \(n\)，下降链
+	\[
+		E_n\supseteq\operatorname{im}(E_{n+1}\to E_n)
+		\supseteq\operatorname{im}(E_{n+2}\to E_n)\supseteq\cdots
+	\]
+	最终稳定，就称该系统满足\term[MittagLefflertiaojian]{Mittag–Leffler 条件}[Mittag–Leffler condition]，简称 ML 条件。
+\end{definition}
+
+这里稳定的阶数可以随 \(n\) 改变。每个转移同态都满射的系统满足 ML 条件；若每个 \(E_n\) 都有有限长度，其子模下降链稳定，也满足这一条件。它控制的是从更高阶能够传下来的像，正好适于调整提升。\footnote{Magnus Gustaf（Gösta）Mittag-Leffler（1846--1927），瑞典数学家，研究解析函数论，并创办 Acta Mathematica。}
+
+\begin{lemma}\label{g5:lem:inverse-limit-exact}
+	设 \(A\) 为交换含幺环，且有可数 \(A\) 模逆系统之间的逐项短正合列
+	\[
+		0\longrightarrow L_n\xrightarrow{\iota_n}E_n
+		\xrightarrow{p_n}Q_n\longrightarrow0,
+	\]
+	其中各转移同态与这两族映射交换。则
+	\[
+		0\longrightarrow\varprojlim L_n
+		\longrightarrow\varprojlim E_n
+		\longrightarrow\varprojlim Q_n
+	\]
+	正合。若核系统 \((L_n)\) 满足 ML 条件，最后一张映射还满射。特别地，核系统的全部转移同态满射时，可对短正合列取逆极限而保持短正合。
+\end{lemma}
+\begin{proof}
+	第一张映射的单射性逐个分量可见。若相容族 \((e_n)\) 的像为零，则各 \(e_n\) 唯一来自 \(l_n\in L_n\)。转移相容性及 \(\iota_n\) 的单射性保证 \((l_n)\) 相容，所以中间正合。
+
+	为证附加的满射性，固定 \(q=(q_n)\in\varprojlim Q_n\)。令
+	\[
+		T_n=\{e\in E_n:p_n(e)=q_n\}.
+	\]
+	每个 \(T_n\) 都非空，并且任取其中一点后，整个 \(T_n\) 就是它加上 \(\iota_n(L_n)\) 得到的陪集。转移同态把 \(T_m\) 映入 \(T_n\)。固定 \(n\)，当 \(m\) 增大时，像 \(T_{m,n}\subseteq T_n\) 依次缩小；它是子群 \(\operatorname{im}(L_m\to L_n)\) 的一个非空陪集，这里将 \(L_n\) 与其在 \(E_n\) 中的像等同。
+
+	由 ML 条件，这些子群在某阶以后相同。相同子群的两个非空陪集若一个包含另一个，它们必相等。因此 \(T_{m,n}\) 也最终稳定，记稳定的非空集合为 \(T_n'\)。我们证明 \(T_{n+1}'\to T_n'\) 满射。给定 \(e\in T_n'\)，取充分大的 \(m\)，使从 \(T_m\) 到第 \(n\)、\(n+1\) 层的像都已稳定。因为 \(T_{m,n}=T_n'\)，可选 \(\widetilde e\in T_m\) 映到 \(e\)；它在第 \(n+1\) 层的像属于 \(T_{n+1}'\)，并继续映到 \(e\)。反过来，\(T_{n+1}'\) 中任一点也来自这样一个充分高的 \(T_m\)，故其在第 \(n\) 层的像必落在 \(T_n'\)。
+
+	先取 \(e_1\in T_1'\)，再利用这些满射逐次选取 \(e_{n+1}\in T_{n+1}'\)，使它映到已选的 \(e_n\)。由此得到 \((e_n)\in\varprojlim E_n\)，其像恰为 \(q\)。
+\end{proof}
+
+若核系统的转移同态已经满射，上述选择也可以直接理解：下一阶的任意提升与已选提升之差属于当前核，将这个差从上一阶的核提上去，再减掉它即可。ML 条件把同样的调整限制在最终稳定的像中。
+
+\begin{example}\label{g5:exm:inverse-limit-not-right-exact}
+	取逐项短正合列
+	\[
+		0\longrightarrow2^n\mathbb Z\longrightarrow\mathbb Z
+		\longrightarrow\mathbb Z/2^n\mathbb Z\longrightarrow0.
+	\]
+	左侧转移同态为包含，中间为恒等，右侧为模较低次幂的映射。左侧逆极限是 \(\bigcap_n2^n\mathbb Z=0\)，中间逆极限是 \(\mathbb Z\)。一般地，对素数 \(p\)，环
+	\[
+		\mathbb Z_p=\varprojlim_n\mathbb Z/p^n\mathbb Z
+	\]
+	称为\term[pjinzhengshuhuan]{\(p\) 进整数环}[ring of p-adic integers]。在本例中，极限列的最后一张映射是 \(\mathbb Z\to\mathbb Z_2\)。
+
+	为看出它不满射，令 \(\alpha_n\in\mathbb Z/2^n\mathbb Z\) 为有限和
+	\[
+		\sum_{\substack{j\geq0\\2j<n}}2^{2j}
+	\]
+	的剩余类。\((\alpha_n)\) 相容，确定 \(\alpha\in\mathbb Z_2\)。有限几何级数公式给出 \(3\alpha_n=-1\pmod{2^n}\)，故 \(3\alpha=-1\)。若它来自整数 \(a\)，则整数 \(3a+1\) 被每个 \(2^n\) 整除，因而为零；但不存在满足 \(3a=-1\) 的整数。因此这张极限映射不满射。核系统在第 \(n\) 层的像是持续严格下降的 \(2^m\mathbb Z\)、\(m\geq n\)，正好不满足 ML 条件。
+\end{example}
 
 \subsection{完备化的正合性}
 \label{g5:subsec:0703:02}
-待撰写
+
+设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想。对 \(A\) 模 \(M\)，记其 \(I\) 进完备化为
+\[
+	\widehat M=\varprojlim_{n\geq1}M/I^nM,
+	\qquad
+	\eta_M:M\longrightarrow\widehat M,
+	\quad m\longmapsto(m+I^nM)_n.
+\]
+本节所有带帽号都取同一个理想 \(I\)。\(\widehat A\) 是环，且 \(\widehat M\) 自然为 \(\widehat A\) 模：在第 \(n\) 层用 \(A/I^n\) 作用于 \(M/I^nM\)，再逐项相乘。\(A\) 线性映射 \(f:M\to M'\) 保持各 \(I^n\) 子模，因而诱导 \(\widehat A\) 线性映射 \(\widehat f\)。有限直和与完备化相容，因为相容条件可逐个分量检查。
+
+\ProseParagraphBreak
+
+投影到第 \(n\) 层的核记为
+\[
+	F^n\widehat M=\ker(\widehat M\to M/I^nM).
+\]
+这些子模规定完备化的拓扑。\(\eta_M\) 的核为 \(\bigcap_n I^nM\)，所以原模是否嵌入其完备化取决于原拓扑是否分离。\(F^n\widehat M\) 与 \(I^n\widehat M\) 的相等性将在有限模情形得到，当前暂用投影核描述拓扑。
+
+\begin{definition}\label{g5:def:adic-completeness}
+	设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想，\(M\) 为 \(A\) 模。若序列 \((m_j)_{j\geq1}\) 满足：对每个 \(n\)，存在 \(j_0\)，使
+	\[
+		j,k\geq j_0\quad\Longrightarrow\quad m_j-m_k\in I^nM,
+	\]
+	则称它为 \(I\) 进拓扑中的\term[Cauchylie]{Cauchy 列}[Cauchy sequence]。\footnote{Augustin-Louis Cauchy（1789--1857），法国数学家，在分析的严格化和复函数理论方面作出重要贡献。}若自然映射 \(\eta_M:M\to\widehat M\) 是同构，则称 \(M\) 对 \(I\) 进拓扑完备且分离。
+\end{definition}
+
+后一条件等价于拓扑分离且每个 Cauchy 列都有极限。事实上，Cauchy 列在每个 \(M/I^nM\) 中最终稳定；这些稳定值相容，若 \(\eta_M\) 为同构，就确定唯一极限。反过来，给定相容族 \((\overline m_n)\)，任取代表 \(m_n\in M\)，便有 \(m_{n+1}-m_n\in I^nM\)，因而形成 Cauchy 列；它的极限在每个商中等于指定的 \(\overline m_n\)，给出 \(\eta_M\) 的满射性，而分离性给出单射性。同一解释适用于由任意子模降链规定的拓扑。
+
+\begin{theorem}\label{g5:thm:completion-exact}
+	设 \(A\) 为 Noether 环，\(I\subseteq A\) 为任意理想。对有限生成 \(A\) 模的短正合列
+	\[
+		0\longrightarrow N\longrightarrow M\longrightarrow Q\longrightarrow0,
+	\]
+	取 \(I\) 进完备化后得到短正合列
+	\[
+		0\longrightarrow\widehat N\longrightarrow\widehat M
+		\longrightarrow\widehat Q\longrightarrow0.
+	\]
+\end{theorem}
+\begin{proof}
+	将 \(N\) 看作 \(M\) 的子模。对每个 \(n\geq1\)，真正保持左端单射的商列是
+	\[
+		0\longrightarrow N/(N\cap I^nM)
+		\longrightarrow M/I^nM
+		\longrightarrow Q/I^nQ\longrightarrow0.
+	\]
+	其中最后一个商等于 \(M/(N+I^nM)\)。左侧核系统的转移同态全部满射，所以\cref{g5:lem:inverse-limit-exact}给出
+	\[
+		0\longrightarrow\varprojlim_n N/(N\cap I^nM)
+		\longrightarrow\widehat M\longrightarrow\widehat Q\longrightarrow0.
+	\]
+
+	剩下的任务是将左端识别为 \(\widehat N\)。由 Artin–Rees 的拓扑推论 \cref{g5:cor:induced-adic-topology}，存在 \(c\geq0\)，使对每个 \(n\geq1\) 有
+	\[
+		N\cap I^{n+c}M\subseteq I^nN\subseteq N\cap I^nM.
+	\]
+	右侧包含诱导映射
+	\(\widehat N\to\varprojlim N/(N\cap I^nM)\)。反向映射在第 \(n\) 层，取相容族的第 \(n+c\) 项，再按左侧包含映到 \(N/I^nN\)。改变代表元不影响结果，相邻层的相容性来自原族的相容性。
+
+	两张映射复合后，在第 \(n\) 层都是把第 \(n+c\) 项降到第 \(n\) 层；这就是原族的第 \(n\) 项。因此它们互逆，且所得识别与 \(N\to M\) 相容。代入前面的极限短正合列，便得到结论。
+\end{proof}
+
+这里 Artin–Rees 解决的是左端所用拓扑的问题：\(N/I^nN\to M/I^nM\) 可能不单射，但诱导滤过 \(N\cap I^nM\) 与本来的 \(I^nN\) 互相共尾，从而具有同一个完备化。可数核系统的提升引理则负责右端满射。这两项作用在证明中分别出现；对应结果可对照\cite[第8节，定理8.1、8.6，第56—60页]{Matsumura1989}。
 
 \subsection{有限模的张量表示}
 \label{g5:subsec:0703:03}
-待撰写
+
+\(\widehat M\) 已有 \(\widehat A\) 模结构，因而存在自然映射
+\[
+	\theta_M:\widehat A\otimes_A M\longrightarrow\widehat M,
+	\qquad a\otimes m\longmapsto a\eta_M(m).
+\]
+右侧的表达式对 \(A\) 平衡，故确实定义了张量积上的同态。有限呈示将它的同构性归结为有限自由模的情形。
+
+\begin{theorem}\label{g5:thm:completion-tensor}
+	设 \(A\) 为 Noether 环，\(I\subseteq A\) 为理想，\(M\) 为有限生成 \(A\) 模。则自然映射
+	\[
+		\theta_M:\widehat A\otimes_A M\xrightarrow{\ \cong\ }\widehat M
+	\]
+	是 \(\widehat A\) 模同构，并与 \(A\) 线性映射相容。特别地，\(\widehat M\) 是有限生成 \(\widehat A\) 模。
+\end{theorem}
+\begin{proof}
+	由\cref{g5:prop:noetherian-finite-modules}，\(M\) 有有限呈示
+	\[
+		A^u\xrightarrow{D}A^v\longrightarrow M\longrightarrow0.
+	\]
+	把这列在 \(\operatorname{im}D\) 处分成两条短正合列；其中涉及的核与像仍有限生成。由\cref{g5:thm:completion-exact}，其完备化列右正合。另一方面，\cref{g5:prop:tensor-right-exact}给出张量积行的右正合性，得到交换图
+	\[
+		\begin{tikzcd}[column sep=large]
+			\widehat A\otimes_A A^u \arrow[r] \arrow[d,"\cong"'] &
+			\widehat A\otimes_A A^v \arrow[r] \arrow[d,"\cong"'] &
+			\widehat A\otimes_A M \arrow[r] \arrow[d,"\theta_M"] & 0 \\
+			\widehat{A^u} \arrow[r] & \widehat{A^v} \arrow[r] & \widehat M \arrow[r] & 0.
+		\end{tikzcd}
+	\]
+	有限直和与完备化相容，使左侧两张竖箭头分别成为 \(\widehat A^u\)、\(\widehat A^v\) 的自然识别。两行的第一张箭头也都由矩阵 \(D\) 在 \(\widehat A\) 中的像给出，所以最右侧两个模是同一映射的余核，\(\theta_M\) 必为同构。
+
+	若 \(f:M\to M'\) 为 \(A\) 线性映射，则在纯张量上有
+	\(\widehat f(a\eta_M(m))=a\eta_{M'}(f(m))\)，证明自然性。有限个 \(M\) 生成元在 \(\theta_M\) 下的像生成 \(\widehat M\)，得到最后的有限性。
+\end{proof}
+
+这项表示把“所有相容截断”变成一次基环扩张，见\cite[第8节，定理8.7，第60页]{Matsumura1989}。若 \(A\) 本身 \(I\) 进完备，即 \(A\to\widehat A\) 是同构，则每个有限生成 \(A\) 模也完备，因为上述自然同构此时就是 \(M\to\widehat M\)。
+
+\begin{example}\label{g5:exm:completion-infinite-direct-sum}
+	设 \(k\) 为域，\(A=k[t]\)，\(I=(t)\)，并令
+	\[
+		M=\bigoplus_{j\geq0}Ae_j.
+	\]
+	此时 \(\widehat A=k[[t]]\)。对每个 \(n\)，有限和
+	\[
+		x_n=\sum_{j=0}^{n-1}t^je_j\pmod{t^nM}
+	\]
+	形成相容族，故确定 \(x\in\widehat M\)。但
+	\[
+		\widehat A\otimes_A M\cong\bigoplus_{j\geq0}k[[t]]e_j
+	\]
+	中的元素只有有限多个非零坐标。将 \(\widehat M\) 投影到第 \(j\) 个坐标的完备化，\(x\) 的像为非零级数 \(t^j\)。因此 \(x\) 不在 \(\theta_M\) 的像中。这说明对无限生成模，张量表示可能失效；无限直和也不能直接与完备化交换。
+\end{example}
 
 \subsection{完备化环的 Noether 性}
 \label{g5:subsec:0703:04}
-待撰写
+
+先确定 \(\widehat A\) 上的理想幂究竟给出哪些截断。这一步也把逆极限的拓扑识别为通常的理想进拓扑，供随后逐阶逼近时使用。
+
+\begin{proposition}\label{g5:prop:completion-quotient}
+	设 \(A\) 为 Noether 环，\(I\subseteq A\) 为理想，\(M\) 为有限生成 \(A\) 模，所有完备化均取 \(I\) 进完备化。对任意理想 \(H\subseteq A\)，有自然同构
+	\[
+		\widehat{M/HM}\cong\widehat M/H\widehat M.
+	\]
+	特别地，对每个 \(n\geq1\)，自然投影诱导
+	\[
+		\widehat M/I^n\widehat M\cong M/I^nM,
+		\qquad
+		\widehat A/I^n\widehat A\cong A/I^n.
+	\]
+	令 \(J=I\widehat A\)。则 \(F^n\widehat M=J^n\widehat M\)，并且 \(\widehat M\) 对 \(J\) 进拓扑完备且分离。
+\end{proposition}
+\begin{proof}
+	对 \(0\to HM\to M\to M/HM\to0\) 使用完备化正合性。通过\cref{g5:thm:completion-tensor}及其自然性，\(\widehat{HM}\to\widehat M\) 的像等于
+	\[
+		\widehat A\cdot\eta_M(HM)=H\widehat M.
+	\]
+	具体地，\(HM\) 的元素是有限和 \(\sum_i h_im_i\)，其任意 \(\widehat A\) 倍数均落在 \(H\widehat M\) 中；反过来，\(\widehat M\) 由所有 \(\eta_M(m)\) 在 \(\widehat A\) 上生成，所以 \(H\widehat M\) 的每个元素也在该像中。取余核就得到第一个同构。
+
+	令 \(H=I^n\)。模 \(M/I^nM\) 被 \(I^n\) 零化，其 \(I\) 进商系统从第 \(n\) 层以后为常值系统，故其完备化就是它自身。于是第一个同构化为
+	\(\widehat M/I^n\widehat M\cong M/I^nM\)，而相应映射正是第 \(n\) 个投影。又因
+	\(J^n\widehat M=I^n\widehat M\)，这证明了投影核的描述。
+
+	一个相容族若每个投影都为零，它本身就为零，因此
+	\[
+		\bigcap_{n\geq1}J^n\widehat M=0.
+	\]
+	上面的商同构与各转移映射相容，故自然映射
+	\[
+		\widehat M\longrightarrow
+		\varprojlim_n\widehat M/J^n\widehat M
+		\cong\varprojlim_n M/I^nM=\widehat M
+	\]
+	是恒等识别。这同时证明完备性及分离性，也保证每个 \(J\) 进 Cauchy 列收敛到唯一极限。取 \(M=A\) 就得到环的全部结论。
+\end{proof}
+
+这些商同构及拓扑识别对应于\cite[第8节，定理8.11、8.13，第61页]{Matsumura1989}。其中并未使用 \(\widehat A\) 的 Noether 性；它们说明有限阶方程及理想幂在完备化后保持原有形式。
+
+\begin{proposition}\label{g5:prop:completion-associated-graded}
+	设 \(A\) 为 Noether 环，\(I\subseteq A\) 为理想，并令 \(J=I\widehat A\)。自然同态 \(A\to\widehat A\) 诱导分次环同构
+	\[
+		\operatorname{gr}_I A
+		=\bigoplus_{n\geq0}I^n/I^{n+1}
+		\xrightarrow{\ \cong\ }
+		\bigoplus_{n\geq0}J^n/J^{n+1}
+		=\operatorname{gr}_J\widehat A.
+	\]
+\end{proposition}
+\begin{proof}
+	次数零的同构为 \(A/I\cong\widehat A/J\)。对 \(n\geq1\)，\cref{g5:prop:completion-quotient}给出与自然满射相容的两层同构
+	\[
+		\begin{tikzcd}
+			A/I^{n+1} \arrow[r] \arrow[d,"\cong"'] & A/I^n \arrow[d,"\cong"] \\
+			\widehat A/J^{n+1} \arrow[r] & \widehat A/J^n.
+		\end{tikzcd}
+	\]
+	取水平映射的核，就得到 \(I^n/I^{n+1}\cong J^n/J^{n+1}\)。它们全由同一环同态诱导，故与各次数间的乘法相容。
+\end{proof}
+
+\begin{theorem}\label{g5:thm:completion-noetherian}
+	设 \(A\) 为 Noether 环，\(I\subseteq A\) 为任意理想。则其 \(I\) 进完备化 \(\widehat A\) 也是 Noether 环。
+\end{theorem}
+\begin{proof}
+	记 \(R=\widehat A\)、\(J=IR\)。由\cref{g5:prop:completion-quotient}，\(R\) 对 \(J\) 进拓扑完备且分离。由\cref{g5:prop:rees-associated-graded,g5:prop:completion-associated-graded}，\(\operatorname{gr}_J R\) 为 Noether 环：若 \(I=(a_1,\ldots,a_r)\)，则 \(\operatorname{gr}_I A\) 由这些元素的次数一初始类在 Noether 环 \(A/I\) 上生成，是有限变量多项式环的商。
+
+	固定 \(R\) 的任意理想 \(\mathfrak a\)。我们先为它选择有限个元素，使其初始类生成全部初始关系，再把逐阶消去所得的系数收敛起来。定义分次理想
+	\[
+		\mathfrak a^*
+		=\bigoplus_{d\geq0}
+		\frac{(\mathfrak a\cap J^d)+J^{d+1}}{J^{d+1}}
+		\subseteq\operatorname{gr}_J R.
+	\]
+	它在次数 \(d\) 的元素，正是 \(\mathfrak a\cap J^d\) 中元素的初始类。乘以次数 \(e\) 的元素后，仍来自 \(\mathfrak a\cap J^{d+e}\)，所以它确为分次理想。
+
+	由于 \(\operatorname{gr}_J R\) Noether，\(\mathfrak a^*\) 有有限个齐次生成元。这里可以先取任意有限生成元，再取其全部非零齐次分量；分次理想包含这些分量，因此仍得到有限生成元。选取对应的
+	\[
+		f_1,\ldots,f_q\in\mathfrak a,
+		\qquad
+		f_i\in J^{d_i}\setminus J^{d_i+1},
+	\]
+	使它们的初始类生成 \(\mathfrak a^*\)。若 \(\mathfrak a^*=0\)，分离性使 \(\mathfrak a=0\)，此时结论成立。以下设 \(q>0\)。
+
+	任取非零 \(f\in\mathfrak a\)。因为 \(\bigcap_dJ^d=0\)，存在有限的 \(d\)，使 \(f\in J^d\setminus J^{d+1}\)。在分次环的次数 \(d\) 部分，可以将其初始类写成
+	\[
+		f^*=\sum_{d_i\leq d} b_i^* f_i^*,
+		\qquad
+		b_i^*\in J^{d-d_i}/J^{d-d_i+1}.
+	\]
+	这是把一个生成元表示式取次数 \(d\) 的齐次部分。选择提升 \(b_i\in J^{d-d_i}\)，并对 \(d_i>d\) 取 \(b_i=0\)，就有
+	\[
+		f-\sum_i b_i f_i\in\mathfrak a\cap J^{d+1}.
+	\]
+	若余项非零，就继续对它作同样的消去。
+
+	若过程在有限步结束，已得 \(f\in(f_1,\ldots,f_q)\)。否则，设各步非零余项的阶为严格递增的 \(d_0,d_1,\ldots\)，第 \(\nu\) 步的修正系数为 \(b_{i,\nu}\)。当 \(d_\nu\geq d_i\) 时，
+	\[
+		b_{i,\nu}\in J^{d_\nu-d_i}.
+	\]
+	因此对每个 \(i\)，部分和 \(\sum_{\nu<k}b_{i,\nu}\) 是 \(J\) 进 Cauchy 列：任意指定的 \(J^N\)，最终都包含每一个后续修正系数及其有限和。由 \(R\) 的完备性，它收敛到某个 \(b_i\in R\)。逐次消去还给出
+	\[
+		f-\sum_i\left(\sum_{\nu<k}b_{i,\nu}\right)f_i
+		\in J^{d_k}.
+	\]
+	对任意 \(N\)，取充分大的 \(k\)，两边按模 \(J^N\) 稳定，得到 \(f-\sum_i b_i f_i\in J^N\)。分离性于是给出
+	\[
+		f=\sum_{i=1}^q b_i f_i.
+	\]
+	最终表达式仍只用有限个 \(f_i\)，故 \(\mathfrak a=(f_1,\ldots,f_q)\)。任意理想均有限生成，证明 \(R\) 为 Noether 环。
+\end{proof}
+
+上述结论亦见\cite[第8节，定理8.12，第61页]{Matsumura1989}。本证明中的收敛发生在有限组系数上：初始理想的有限生成控制每一阶需要使用的元素，而完备性允许把所有阶的修正合成为同一组系数。由此，形式级数所容纳的无限展开与 Noether 性所要求的有限生成并不冲突。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

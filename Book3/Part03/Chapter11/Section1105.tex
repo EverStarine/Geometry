@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 11.5 Rellich 紧性
 % 纲要位置：几何学计划纲要.md，第 2534 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,193 @@
 \section{Rellich 紧性}
 \label{g3:sec:1105}
 
-待撰写
+Sobolev 嵌入给出一列函数在较弱范数中的一致有界性，紧嵌入还要求能够抽出强收敛子列。关键是排除越来越细的振荡，并限制质量逃到远处。导数控制前一种行为，底空间的有界性或统一的尾部控制处理后一种行为。本节把这两点化为可构造有限网的估计，进而证明\term[Rellich jin xing]{Rellich 紧性}[Rellich compactness]。\footnote{Franz Rellich（1906--1955），奥地利、德国数学家，研究偏微分方程、谱理论及算子扰动，相关工作与数学物理密切相连。}
 
 \subsection{平移控制与紧性判据}
 \label{g3:subsec:1105:01}
-待撰写
+设 \(X,Y\) 为赋范空间，线性包含 \(X\hookrightarrow Y\) 连续。若 \(X\) 中每个有界序列在 \(Y\) 中都有范数收敛子列，就称这个包含为\term[jin qianru]{紧嵌入}[compact embedding]，记为 \(X\Subset Y\)。与弱收敛相比，强收敛直接控制目标范数中的误差；为了取得它，需要同时控制所有函数在小尺度上的变化。
+\symidx{\(X\Subset Y\)：从 \(X\) 到 \(Y\) 的紧嵌入}
+
+\begin{lemma}\label{g3:lem:sobolev-translation-bound}
+	设 \(n\ge1\)、\(1\le p<\infty\)，且 \(u\in W^{1,p}(\mathbb R^n;\mathbb R^m)\)，其中 \(m\) 有限。对 \(h\in\mathbb R^n\) 令 \(\tau_hu(x)=u(x+h)\)，则
+	\begin{equation}\label{g3:eq:sobolev-translation-bound}
+		\|\tau_hu-u\|_{L^p(\mathbb R^n)}\le|h|\,\|\mathrm D u\|_{L^p(\mathbb R^n)}.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	对光滑函数，
+	\[
+		u(x+h)-u(x)=\int_0^1\mathrm D u(x+th)h\,\mathrm dt.
+	\]
+	取长度后，由积分平均的凸性有
+	\[
+		|u(x+h)-u(x)|^p\le|h|^p\int_0^1|\mathrm D u(x+th)|^p\,\mathrm dt.
+	\]
+	对 \(x\) 积分，并用平移不改变体积，得到所需估计。再用\cref{g3:thm:sobolev-smooth-density}在全空间中作 \(W^{1,p}\) 光滑逼近。由于平移是 \(L^p\) 等距算子，两侧都可传到极限。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:lp-translation-compactness}
+	设 \(n,m\ge1\)、\(1\le p<\infty\)，且 \(\mathcal F\subset L^p(\mathbb R^n;\mathbb R^m)\)。其闭包在 \(L^p\) 中紧，当且仅当以下三项成立：
+	\begin{enumerate}
+		\item \(\sup_{f\in\mathcal F}\|f\|_{L^p}<\infty\)；
+		\item \(\displaystyle\lim_{R\to\infty}\sup_{f\in\mathcal F}\|f\|_{L^p(\{|x|>R\})}=0\)；
+		\item \(\displaystyle\lim_{\delta\downarrow0}\sup_{f\in\mathcal F,\ |h|\le\delta}\|\tau_hf-f\|_{L^p}=0\)。
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	充分性的思路是先把函数换成小立方体上的平均值，再只保留有限范围内的立方体。这样得到有限维数据，两个替换的误差分别由第三项和第二项控制。
+
+	用边长 \(\delta\) 的半开立方体 \(Q\) 分割 \(\mathbb R^n\)，在每个 \(Q\) 上定义 \(A_\delta f=f_Q\)。由凸性与 \(|Q|=\delta^n\)，
+	\[
+	\begin{aligned}
+		\|f-A_\delta f\|_{L^p}^p
+		&\le\delta^{-n}\sum_Q\int_{Q\times Q}|f(x)-f(y)|^p\,\mathrm dx\,\mathrm dy\\
+		&\le\delta^{-n}\int_{[-\delta,\delta]^n}\|\tau_hf-f\|_{L^p}^p\,\mathrm dh\\
+		&\le2^n\sup_{|h|\le\sqrt n\delta}\|\tau_hf-f\|_{L^p}^p.
+	\end{aligned}
+	\]
+	第二步令 \(h=y-x\)，再把“\(x,y\) 在同一立方体”这一限制去掉，故不等号方向如上。由第三项，这个误差对 \(f\in\mathcal F\) 一致趋零。
+
+	只保留与闭球 \(\overline B(0,R)\) 相交的有限个立方体上的平均值，其余改为零，所得函数记为 \(A_{\delta,R}f\)。凸性还给出 \(\|A_\delta f\|_p\le\|f\|_p\)，且被删掉的立方体全在球外，因此
+	\[
+		\|A_\delta f-A_{\delta,R}f\|_p
+		\le\|f\|_{L^p(\{|x|>R\})}.
+	\]
+	固定 \(\delta,R\) 后，\(A_{\delta,R}\mathcal F\) 是有限维分块常值空间中的有界集；把各块平均值所在的有界坐标盒分成足够细的小盒，就得到任意精度的有限网。给定 \(\varepsilon>0\)，先选 \(R\) 使尾项小于 \(\varepsilon/3\)，再选 \(\delta\) 使平均化误差小于 \(\varepsilon/3\)，最后对有限维像取 \(\varepsilon/3\)-网。于是 \(\mathcal F\) 全有界。\(L^p\) 完备，由\cref{g3:lem:complete-totally-bounded}，其闭包紧。
+
+	必要性也可用有限网证明。紧闭包首先有界。对固定 \(f\in L^p\)，积分尾部随 \(R\to\infty\) 趋零，而 \(\|\tau_hf-f\|_p\to0\) 是\cref{g3:lem:mollifier-approximation}中的平移连续性。给紧闭包取有限 \(\varepsilon\)-网，对有限个网心统一选择 \(R\) 和 \(\delta\)。尾部范数的误差至多为 \(\varepsilon\)，平移差的误差至多为 \(2\varepsilon\)，遂得到第二、三项。
+\end{proof}
+
+这个证明说明，仅有 \(L^p\) 范数界还缺少哪些信息：有限维近似必须能同时选定网格精度和截断半径。式\eqref{g3:eq:sobolev-translation-bound}正好为有界的 \(W^{1,p}\) 集提供统一网格精度。
 
 \subsection{有界域上的紧嵌入}
 \label{g3:subsec:1105:02}
-待撰写
+先区分两种把函数放到全空间的方法。对 \(W^{1,p}_0(\Omega)\)，紧支光滑逼近的补零函数在 \(W^{1,p}(\mathbb R^n)\) 中为 Cauchy 列；其极限就是 \(u\) 的补零函数，弱导数也为原弱导数的补零。这只使用定义，不要求 \(\partial\Omega\) 正则。对一般 \(W^{1,p}(\Omega)\)，则把能否有界延拓作为明确的条件。
+
+\begin{definition}\label{g3:def:sobolev-extension-domain}
+	设 \(\Omega\subset\mathbb R^n\) 为有界开集，\(1\le p<\infty\)。若存在有界线性算子
+	\[
+		E:W^{1,p}(\Omega)\longrightarrow W^{1,p}(\mathbb R^n),
+		\qquad(Eu)|_\Omega=u,
+	\]
+	则称 \(\Omega\) 为 \(W^{1,p}\) \term[yan tuo yu]{延拓域}[extension domain]。给定这样的算子后，可再乘一个在 \(\overline\Omega\) 附近恒等于一的紧支光滑函数，使全部 \(Eu\) 的支集位于同一个紧集内，同时保持有界性与线性。
+\end{definition}
+
+\begin{theorem}[Rellich 紧性]\label{g3:thm:rellich-domain}
+	设 \(\Omega\subset\mathbb R^n\) 为有界开集，\(n\ge1\)、\(1\le p<\infty\)。取 \(X=W^{1,p}_0(\Omega)\)，或在 \(\Omega\) 为 \(W^{1,p}\) 延拓域时取 \(X=W^{1,p}(\Omega)\)。则：
+	\begin{enumerate}
+		\item 若 \(p<n\)，则 \(X\Subset L^q(\Omega)\) 对每个 \(1\le q<p^*=np/(n-p)\) 成立。
+		\item 若 \(p=n\)，则 \(X\Subset L^q(\Omega)\) 对每个 \(1\le q<\infty\) 成立，包括 \(n=p=1\) 的情形。
+		\item 若 \(p>n\)，令 \(\alpha=1-n/p\)。每个 \(u\in X\) 在 \(\overline\Omega\) 上有唯一连续代表，且 \(X\Subset C^{0,\beta}(\overline\Omega)\) 对每个 \(0\le\beta<\alpha\) 成立，其中 \(C^{0,0}\) 表示一致范数空间 \(C^0\)。因而也有到每个有限 \(L^q(\Omega)\) 的紧嵌入。
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	对 \(X\) 中有界序列 \(u_j\)，使用补零或定义中的延拓，得到支集位于固定紧集 \(K\) 内、在 \(W^{1,p}(\mathbb R^n)\) 中有界的序列 \(v_j\)。由\cref{g3:lem:sobolev-translation-bound,g3:thm:lp-translation-compactness}，可取子列使 \(v_j\) 在 \(L^p(\mathbb R^n)\) 中收敛；以下均沿此子列讨论。
+
+	若 \(q\le p\)，有限测度支集上的 Hölder 不等式已给出 \(L^q\) 收敛。若 \(p<q<r\)，令 \(1/q=\theta/p+(1-\theta)/r\)，其中 \(0<\theta<1\)。将 \(|f|^q\) 写成 \(|f|^{\theta q}|f|^{(1-\theta)q}\) 并应用 Hölder 不等式，得到
+	\begin{equation}\label{g3:eq:rellich-interpolation}
+		\|f\|_{L^q}\le\|f\|_{L^p}^{\theta}\|f\|_{L^r}^{1-\theta}.
+	\end{equation}
+	\(r=\infty\) 时直接提出 \(\|f\|_\infty^{(1-\theta)q}\)，公式仍成立。当 \(p<n\) 时，由\cref{g3:thm:euclidean-sobolev}取 \(r=p^*\)，\(v_j\) 在 \(L^r\) 中一致有界。把式\eqref{g3:eq:rellich-interpolation}用于 \(v_j-v_k\)，便得每个严格低于 \(p^*\) 的 \(L^q\) 范数中的 Cauchy 性。
+
+	当 \(p=n\ge2\) 时，\cref{g3:prop:critical-sobolev}使有固定紧支集的 \(v_j\) 在任意有限 \(L^r\) 中有界，给定 \(q\) 后选 \(r>\max\{p,q\}\) 即可。当 \(p=n=1\) 时，对全直线的紧支光滑函数有 \(\|v\|_\infty\le\|v'\|_1\)，光滑逼近使这个估计延拓到固定紧支集的 \(W^{1,1}\) 函数。于是取 \(r=\infty\) 得到全部有限 \(q\) 的紧性。
+
+	当 \(p>n\) 时，\cref{g3:thm:local-morrey}给出 \(v_j\) 的一致上界和统一的 \(\alpha\)-Hölder 常数。可直接构造一致收敛子列：在包含 \(K\) 的紧立方体上取可数稠密点集，逐点选收敛子列再取对角列；有限细网和统一 Hölder 模量使对角列在整个立方体上一致 Cauchy。其外所有函数均为零，因此得到全空间的一致收敛。极限也具有相同的 Hölder 常数。
+
+	最后若 \(0<\beta<\alpha\)，对任意有界 \(\alpha\)-Hölder 函数 \(f\)，从
+	\[
+		|f(x)-f(y)|\le\min\{2\|f\|_\infty,[f]_{\alpha}|x-y|^\alpha\}
+	\]
+	分短距离、长距离估计，得到
+	\[
+		[f]_\beta\le(2\|f\|_\infty)^{1-\beta/\alpha}[f]_\alpha^{\beta/\alpha}.
+	\]
+	将它用于 \(v_j-v_k\)，右侧趋零，故在 \(C^{0,\beta}\) 中收敛。限制到 \(\overline\Omega\) 后得到第三项；连续代表的唯一性来自两个连续函数若几乎处处相等，则在开集 \(\Omega\) 上处处相等，再由连续性延至闭包。
+\end{proof}
+
+这里的指数损失出现在插值系数 \(\theta>0\) 中：已有的强 \(L^p\) 收敛必须在目标范数中保留一个正幂，才能使误差趋零。对一般有界域，延拓条件也有实际作用。\secref{g3:sec:1106}将通过边界展平证明有界 \(C^1\) 域具有这种延拓算子，并给出边界值的精确定义。
 
 \subsection{紧流形上的全局紧性}
 \label{g3:subsec:1105:03}
-待撰写
+闭流形的有限坐标覆盖使每个局部问题都有固定的紧支集。有限秩向量丛则只增加有限个分量，因而前面的抽子列过程可以同时进行。
+
+\begin{theorem}\label{g3:thm:compact-bundle-rellich}
+	设 \((M^n,g)\) 为非空、紧且无边界的光滑黎曼流形，\(n\ge1\)，\(E\to M\) 为有限秩实或复光滑向量丛，固定光滑纤维度量及光滑联络。对 \(1\le p<\infty\)，\(W^{1,p}(E)\) 到 \(L^q(E)\) 的紧嵌入范围与\cref{g3:thm:rellich-domain}相同；\(p>n\) 时还有
+	\[
+		W^{1,p}(E)\Subset C^{0,\beta}(E),\qquad0\le\beta<1-n/p.
+	\]
+	这里 \(C^{0,\beta}\) 范数按固定有限平凡化定义。对每个整数 \(k\ge1\)，还有
+	\begin{equation}\label{g3:eq:rellich-lower-order}
+		W^{k,p}(E)\Subset W^{k-1,p}(E).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	选有限个相对紧的丛平凡化及从属于它们的光滑单位分解 \(\chi_i\)。由范数等价\cref{g3:prop:sobolev-norm-equivalence}及乘法估计\cref{g3:prop:sobolev-product-chain}，若 \(s_j\) 在 \(W^{1,p}(E)\) 中有界，则每个 \(\chi_i s_j\) 的坐标分量补零后，在 \(W^{1,p}(\mathbb R^n)\) 中有界，支集落在固定紧集内。
+
+	对有限个坐标片及有限个分量依次抽子列，\cref{g3:thm:rellich-domain}的证明给出它们在相应 \(L^q\) 或 \(C^{0,\beta}\) 范数中的共同 Cauchy 子列。把这些局部截面相加即可恢复 \(s_j\)。局部范数的等价性和三角不等式使 \(s_j\) 在全局目标范数中 Cauchy，目标空间的完备性给出全局极限。不同平凡化中所得极限由同一列截面的过渡关系相容，因此确为 \(E\) 的截面。
+
+	对式\eqref{g3:eq:rellich-lower-order}，\(W^{k,p}\) 有界性使每个局部分量的全部 \(|\alpha|\le k-1\) 阶弱偏导数在 \(W^{1,p}\) 中有界。对有限个这样的导数再取共同子列，使它们在 \(L^p\) 中强收敛。把弱微分恒等式对测试函数取极限，证明所得各极限确为零阶极限的相应弱导数。于是各局部分量在 \(W^{k-1,p}\) 中收敛，拼合后得到全局结论。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:bundle-poincare-kernel}
+	设 \((M,g)\) 为非空、连通、紧且无边界的光滑黎曼流形，\(E\to M\) 为有限秩实或复度量向量丛，\(\nabla\) 为光滑联络。令
+	\[
+		\mathcal P=\{s\in C^\infty(E):\nabla s=0\}.
+	\]
+	则 \(\mathcal P\) 为有限维空间，且存在 \(C\)，使每个 \(s\in W^{1,2}(E)\) 满足
+	\[
+		\|s-\Pi_{\mathcal P}s\|_{L^2}\le C\|\nabla s\|_{L^2},
+	\]
+	其中 \(\Pi_{\mathcal P}\) 为到 \(\mathcal P\) 的 \(L^2\) 正交投影。
+\end{corollary}
+\begin{proof}
+	先说明弱平行截面仍光滑。在局部标架中，方程为 \(\partial_i s=-A_i s\)，其中 \(A_i\) 光滑。若 \(s\in W^{1,2}\)，在相对紧小片上用光滑乘法公式可知右侧属于 \(W^{1,2}\)，从而 \(s\in W^{2,2}_{\mathrm{loc}}\)；如此反复得到所有整数阶局部正则性。由\cref{g3:cor:higher-sobolev-embedding}的局部版本，\(s\) 具有任意阶连续导数，因而光滑。平行截面沿道路满足线性常微分方程，其值由一个点的取值唯一决定，故 \(\dim\mathcal P\le\operatorname{rank}E\)。有限维内积空间的正交化给出 \(L^2\) 投影。
+
+	若所述估计失败，取 \(s_j\perp\mathcal P\)，归一化使 \(\|s_j\|_2=1\)、\(\|\nabla s_j\|_2\to0\)。这是 \(W^{1,2}\) 有界列，\cref{g3:thm:compact-bundle-rellich}给出 \(L^2\) 强收敛子列 \(s_j\to s\)。把联络弱微分恒等式取极限，得 \(\nabla s=0\)，所以 \(s\in\mathcal P\)。而强收敛保留 \(\|s\|_2=1\) 及 \(s\perp\mathcal P\)，矛盾。最后对一般 \(s\) 应用于 \(s-\Pi_{\mathcal P}s\)，注意平行部分的协变导数为零，即得结论。
+\end{proof}
+
+这个推论把标量函数的常数核换成了联络所决定的有限维核。后续能量估计中，去掉核与取得强收敛往往分别承担唯一性和极限过程中的不同步骤。
 
 \subsection{临界指数及非紧空间中的失效}
 \label{g3:subsec:1105:04}
-待撰写
+紧嵌入中的严格指数和空间范围都可由明确序列检验。以下例子把固定函数的尺度与位置分别改变。
+
+\begin{example}\label{g3:exm:critical-sobolev-concentration}
+	设 \(n\ge2\)、\(1\le p<n\)，取非零 \(\varphi\in C_c^\infty(B(0,1))\)，并令
+	\[
+		u_\varepsilon(x)=\varepsilon^{1-n/p}\varphi(x/\varepsilon),\qquad0<\varepsilon<1.
+	\]
+	它们都在 \(W^{1,p}_0(B(0,1))\) 中。换元 \(x=\varepsilon y\) 得
+	\[
+		\|\mathrm D u_\varepsilon\|_p=\|\mathrm D\varphi\|_p,\qquad
+		\|u_\varepsilon\|_p=\varepsilon\|\varphi\|_p,\qquad
+		\|u_\varepsilon\|_{p^*}=\|\varphi\|_{p^*}>0.
+	\]
+	对每个 \(x\ne0\)，\(u_\varepsilon(x)\) 最终为零。因此任何 \(L^{p^*}\) 强收敛子列的极限都必须为零：强收敛可再取几乎处处收敛子列，与这里的点态极限相同。但其范数保持固定正值，矛盾。质量集中到越来越小的球上，说明连续的临界嵌入通常不是紧嵌入。
+\end{example}
+
+\begin{example}\label{g3:exm:morrey-endpoint-noncompact}
+	设 \(n\ge1\)、\(n<p<\infty\)、\(\alpha=1-n/p\)。仍取上述 \(\varphi\)，令 \(v_\varepsilon(x)=\varepsilon^\alpha\varphi(x/\varepsilon)\)。其 \(W^{1,p}\) 范数一致有界，且 \(\|v_\varepsilon\|_\infty\to0\)，但 \(\alpha\)-Hölder 半范数不趋零。事实上，选定 \(a,b\) 使 \(\varphi(a)\ne\varphi(b)\)，则
+	\[
+		\frac{|v_\varepsilon(\varepsilon a)-v_\varepsilon(\varepsilon b)|}
+		{|\varepsilon a-\varepsilon b|^\alpha}
+		=\frac{|\varphi(a)-\varphi(b)|}{|a-b|^\alpha}>0.
+	\]
+	因此不能把紧嵌入中的 \(\beta<\alpha\) 改成 \(\beta=\alpha\)。当 \(n=p=1\) 时，不带振幅因子的 \(\varphi(x/\varepsilon)\) 已给出 \(W^{1,1}\) 有界、所有有限 \(L^q\) 范数趋零而一致范数不趋零的例子。
+\end{example}
+
+\begin{example}\label{g3:exm:sobolev-escape-infinity}
+	取非零 \(\varphi\in C_c^\infty(B(0,1))\)，令 \(u_j(x)=\varphi(x-3je_1)\)。对任意固定 \(1\le p<\infty\)，各 \(W^{1,p}(\mathbb R^n)\) 范数相同，支集却两两不交。因此对 \(j\ne k\)，
+	\[
+		\|u_j-u_k\|_{L^p}^p=2\|\varphi\|_{L^p}^p.
+	\]
+	不存在 \(L^p\) 强收敛子列。这里平移控制完全一致，失效的是\cref{g3:thm:lp-translation-compactness}中的统一尾部条件。在每个固定紧集上它们最终都为零，所以局部紧性仍成立。
+\end{example}
+
+\begin{example}\label{g3:exm:bounded-disconnected-rellich-failure}
+	有界性若不配合边界或延拓条件，也不能保证整个 \(W^{1,p}\) 空间的紧嵌入。取球
+	\(B_j=B(2^{-j}e_1,2^{-j-3})\)，这些球两两不交，且它们的并 \(\Omega\) 有界。令 \(f_j\) 在 \(B_j\) 上恒等于 \(|B_j|^{-1/p}\)，在其他分支上为零。它在 \(\Omega\) 上局部常值，弱梯度为零，且 \(\|f_j\|_p=1\)。不同函数间的 \(L^p\) 距离为 \(2^{1/p}\)，故 \(W^{1,p}(\Omega)\hookrightarrow L^p(\Omega)\) 不紧。
+
+	这些函数不满足统一的全空间延拓估计；若满足，就会与\cref{g3:thm:rellich-domain}矛盾。它们也不属于 \(W^{1,p}_0(\Omega)\)，因为\cref{g3:thm:poincare-zero-boundary}会迫使其为零。这样，有界域上的边界条件与全空间的尾部条件都体现为对函数族的实际限制。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

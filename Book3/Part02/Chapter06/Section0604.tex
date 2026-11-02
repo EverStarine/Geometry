@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 6.4 Morse 指标定理
 % 纲要位置：几何学计划纲要.md，第 2349 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -18,25 +18,280 @@
 \section{Morse 指标定理}
 \label{g3:sec:0604}
 
-待撰写
+一个共轭点给出一个两端为零的 Jacobi 场，越过它以后又会出现负的第二变分。若测地线依次经过多个共轭点，这些负方向怎样累积？Morse 指标定理\footnote{Marston Morse（1892--1977），美国数学家，发展了临界点理论与大范围变分法。}把答案写成一个计数公式：每个内部共轭时刻贡献其重数个负方向，末端的共轭只贡献零空间。证明的核心是先把指标形式约化到有限个节点，再计算终点移动时有限维对称矩阵怎样穿过零。
 
 \subsection{有限维分段测地线约化}
 \label{g3:subsec:0604:01}
-待撰写
+
+固定光滑无边界黎曼流形 \((M,g)\) 中一条单位速测地线 \(\gamma:[0,L]\to M\)，其中 \(L>0\)。记 \(T=\dot\gamma\)、\(V'=\nabla_TV\)，以 \(\mathcal V_0[0,L]\) 表示连续、分段光滑且满足 \(V(0)=V(L)=0\) 的沿线向量场。所有场的分段数均有限；比较两个场时取它们的共同细分。沿用上一节的指标形式
+\[
+	I_L(V,W)=\int_0^L\bigl(\langle V',W'\rangle-\langle R(V,T)T,W\rangle\bigr)\,\mathrm dt.
+\]
+其\term[Morse zhibiao]{Morse 指标}[Morse index] \(\operatorname{ind}I_L\) 是使 \(I_L\) 负定的线性子空间维数的上确界。零空间及零度分别为
+\[
+	\ker I_L=\{V:I_L(V,W)=0\text{ 对所有 }W\in\mathcal V_0[0,L]\},
+	\qquad \operatorname{nul}I_L=\dim\ker I_L.
+\]
+这里零空间要求与所有测试场的配对都为零，只要求 \(I_L(V,V)=0\) 得到的集合一般不是线性空间。
+
+\begin{proposition}\label{g3:prop:morse-finite-reduction}
+	设 \(\gamma:[0,L]\to(M^n,g)\) 为光滑无边界黎曼流形中的单位速测地线，\(L>0\)。存在细分
+	\(0=s_0<s_1<\cdots<s_N=L\)，使连续分段 Jacobi 场空间
+	\[
+		\mathcal J_{\mathcal P}=
+		\{J\in\mathcal V_0[0,L]:J\text{ 在每个 }[s_{i-1},s_i]\text{ 上是 Jacobi 场}\}
+	\]
+	由内部节点值 \((J(s_1),\ldots,J(s_{N-1}))\) 唯一确定，维数为 \(n(N-1)\)。令 \(B_{\mathcal P}\) 为 \(I_L\) 在该空间上的限制，则
+	\[
+		\operatorname{ind}I_L=\operatorname{ind}B_{\mathcal P},\qquad
+		\operatorname{nul}I_L=\operatorname{nul}B_{\mathcal P}.
+	\]
+	若把相邻节点用短测地线连接，则 \(B_{\mathcal P}\) 正是这些节点所定义的有限维能量函数在 \(\gamma\) 处的 Hessian。
+\end{proposition}
+\begin{proof}
+	沿紧区间取充分细的划分，使\cref{g3:lem:short-interval-index-positive}在每个子段成立，并使相邻端点的短测地线光滑依赖于端点；后一条件由\cref{g3:lem:uniform-normal-neighborhood}保证。短段两端为零的 Jacobi 场由分部积分满足 \(I(J,J)=0\)，于是短段正定性迫使它为零。Jacobi 初值空间维数为 \(2n\)，两端取值映射到 \(2n\) 维空间既单射就双射。因此每组节点值恰有一个分段 Jacobi 插值。
+
+	记 \(\mathcal Z_{\mathcal P}\) 为所有节点都取零值的场。\cref{g3:prop:piecewise-jacobi-decomposition}给出
+	\[
+		\mathcal V_0[0,L]=\mathcal J_{\mathcal P}\oplus\mathcal Z_{\mathcal P},\qquad
+		I_L(J,Z)=0,\qquad I_L(Z,Z)>0\quad(Z\ne0).
+	\]
+	在每个子段分部积分即可看出正交性：Jacobi 方程使内部积分为零，节点上的 \(Z\) 又为零。任意负定子空间向 \(\mathcal J_{\mathcal P}\) 的投影单射；若 \(V=J+Z\ne0\) 来自这个子空间，则
+	\(B_{\mathcal P}(J,J)=I_L(V,V)-I_L(Z,Z)<0\)。故投影所得仍是负定子空间，维数不变，指标至多为有限维指标。反向包含直接给出等号。若 \(V=J+Z\) 属于 \(\ker I_L\)，用 \(Z\) 作测试场即得 \(Z=0\)，余下条件恰为 \(J\in\ker B_{\mathcal P}\)，零度也相等。
+
+	令 \(h_i=s_i-s_{i-1}\)，在内部节点 \(q_i=\gamma(s_i)\) 的乘积邻域中定义
+	\[
+		\mathcal E_{\mathcal P}(q_1,\ldots,q_{N-1})
+		=\frac12\sum_{i=1}^N\frac{d(q_{i-1},q_i)^2}{h_i},
+		\qquad q_0=\gamma(0),\quad q_N=\gamma(L).
+	\]
+	每项是相应短测地线在时间 \(h_i\) 内的能量，且由短测地线随端点光滑变化而光滑。第一变分在内部节点的项为左右速度之差；在原测地线上它为零。因此原节点是临界点。节点变分产生的沿线变分场分段满足 Jacobi 方程，具有给定节点值，故就是上述插值。由\cref{g3:thm:energy-second-variation}，第二变分的端点加速度项在内部节点因左右速度相等而相消，外端点固定，遂得到 \(\operatorname{Hess}\mathcal E_{\mathcal P}=B_{\mathcal P}\)。
+\end{proof}
+
+约化中的正定补空间包含所有保持节点不动的弯曲方式。因此负方向的数目由节点的移动完全记录。继续加密节点会扩大有限维空间，但只增加正定方向，指标与零度不变。
 
 \subsection{共轭时刻的指标跳跃}
 \label{g3:subsec:0604:02}
-待撰写
+
+现在固定起点，只让终点沿 \(\gamma\) 前进。不同长度的向量场空间不是同一个空间；有限节点约化提供了比较它们的共同坐标。下面先说明有限维二次型在一个退化时刻附近的变化。
+
+\begin{lemma}\label{g3:lem:negative-crossing-inertia}
+	设 \(B(t)\) 是一个固定有限维实向量空间上光滑依赖 \(t\) 的对称双线性型，\(t_0\) 为参数区间的内点。若 \(K=\ker B(t_0)\) 且 \(\dot B(t_0)|_K\) 负定，令 \(m=\dim K\)、\(q=\operatorname{ind}B(t_0)\)，则对充分小的 \(\varepsilon>0\)，
+	\[
+		\operatorname{ind}B(t)=
+		\begin{cases}
+		q,&t_0-\varepsilon<t\le t_0,\\
+		q+m,&t_0<t<t_0+\varepsilon.
+		\end{cases}
+	\]
+	在该邻域中，\(t\ne t_0\) 时 \(B(t)\) 非退化；若 \(K=0\)，指标在 \(t_0\) 附近恒定。
+\end{lemma}
+\begin{proof}
+	给空间选一个辅助内积，并按 \(K\oplus K^\perp\) 写矩阵
+	\[
+		B(t)=\begin{pmatrix}A(t)&C(t)\\C(t)^{\mathsf T}&D(t)\end{pmatrix}.
+	\]
+	在 \(t_0\) 处，\(A=C=0\)，而 \(D\) 非退化。连续性保证附近的 \(D(t)\) 可逆，且其正、负惯性数不变：可在 \(D(t_0)\) 的正负特征子空间上分别保留严格的正、负界。配方给出与 \(B(t)\) 合同的块对角矩阵
+	\[
+		\begin{pmatrix}S(t)&0\\0&D(t)\end{pmatrix},\qquad
+		S(t)=A(t)-C(t)D(t)^{-1}C(t)^{\mathsf T}.
+	\]
+	有 \(S(t_0)=0\)、\(\dot S(t_0)=\dot A(t_0)=\dot B(t_0)|_K\)。有限维单位球紧，所以负定性给出统一常数 \(c>0\)，使 \(\dot S(t_0)\le-c\operatorname{id}\)。Taylor 展开
+	\(S(t)=(t-t_0)\dot S(t_0)+o(|t-t_0|)\)
+	说明它在左侧正定、右侧负定，而 \(D(t)\) 始终贡献 \(q\) 个负方向。合同变换保留惯性数，结论随之得到。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:morse-crossing-form}
+	设 \(\gamma\) 是光滑无边界黎曼流形 \((M,g)\) 中的单位速测地线，在包含 \([0,t_0]\) 的开区间上有定义，\(t_0>0\)。可在 \(t_0\) 附近用同一个有限维节点空间表示 \(I_t\) 的约化 \(B(t)\)。在核与两端为零的 Jacobi 场的自然对应下，
+	\begin{equation}\label{g3:eq:morse-crossing-form}
+		\dot B(t_0)(J,K)=-\langle J'(t_0),K'(t_0)\rangle,
+		\qquad J,K\in\ker I_{t_0}.
+	\end{equation}
+	特别地，若 \(t_0\) 是重数为 \(m\) 的共轭时刻，指标从左侧到右侧增加 \(m\)，而在 \(t_0\) 本身仍取左侧的值。
+\end{proposition}
+\begin{proof}
+	选取固定节点 \(0=s_0<\cdots<s_{N-1}<t_0\)，把末节点改为变量 \(t\)。令所有子段充分短，并把 \(t\) 限制在 \(t_0\) 的小邻域，使末段长度仍为正且短段正定性一致成立。内部节点空间
+	\(F=\bigoplus_{i=1}^{N-1}\mathrm T_{\gamma(s_i)}M\)
+	与 \(t\) 无关。对 \(u\in F\)，令 \(V_t(u)\) 是节点为 \(u\)、两端为零的分段 Jacobi 插值。Jacobi 方程的初值解光滑依赖参数，而短段两端取值映射可逆，故插值与
+	\(B(t)(u,w)=I_t(V_t(u),V_t(w))\)
+	均光滑依赖 \(t\)。
+
+	若 \(u\in\ker B(t_0)\)，由\cref{g3:prop:index-form-kernel}，\(J=V_{t_0}(u)\) 是整个区间上的 Jacobi 场。沿移动末段使用平行标架，记固定内部参数时的导数为 \(\dot V=\partial_tV_t(u)|_{t=t_0}\)。所有固定节点处 \(\dot V=0\)。由恒等式 \(V_t(u)(t)=0\) 求导，得到
+	\[
+		\dot V(t_0)+J'(t_0)=0.
+	\]
+	这一步同时计入了场的变化与终点的移动。对积分求导，末端的曲率项因 \(J(t_0)=0\) 消失，故
+	\[
+		\left.\frac{\mathrm d}{\mathrm dt}B(t)(u,u)\right|_{t=t_0}
+		=|J'(t_0)|^2+2I_{t_0}(J,\dot V).
+	\]
+	这里 \(\dot V\) 虽然末端不为零，仍可代入同一积分表达式。对每段分部积分，内部积分由 Jacobi 方程为零；各内部节点的边界项因 \(J'\) 连续而相消，于是
+	\[
+		I_{t_0}(J,\dot V)=\langle J'(t_0),\dot V(t_0)\rangle=-|J'(t_0)|^2.
+	\]
+	两式合起来给出二次型版本，再经极化得到式\eqref{g3:eq:morse-crossing-form}。若 \(J(t_0)=J'(t_0)=0\)，Jacobi 初值唯一性推出 \(J=0\)，所以穿越形式在核上严格负定。最后应用\cref{g3:lem:negative-crossing-inertia}。
+\end{proof}
+
+末端的积分上限变化贡献了 \(+|J'|^2\)，边界条件的变化贡献了 \(-2|J'|^2\)。只有把两者合并，才得到指标增加所需的负号。
 
 \subsection{指标等于共轭点重数之和}
 \label{g3:subsec:0604:03}
-待撰写
+
+记 \(m(s)\) 为 \(\gamma(s)\) 相对于起点 \(\gamma(0)\) 的共轭重数；非共轭时令 \(m(s)=0\)。初值唯一性还说明，两端为零的 Jacobi 场必垂直于 \(T\)：\(\langle J,T\rangle\) 是关于参数的仿射函数，两端为零就恒为零。因此共轭计数来自横向场，切向重参数化不会额外贡献负方向。
+
+\begin{theorem}[Morse 指标定理]\label{g3:thm:morse-index}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(\gamma:[0,L]\to M\) 为单位速测地线，\(L>0\)。在连续分段光滑、两端为零的沿线向量场空间上，指标形式满足
+	\begin{equation}\label{g3:eq:morse-index-count}
+		\operatorname{ind}I_L=\sum_{0<s<L}m(s),\qquad
+		\operatorname{nul}I_L=m(L).
+	\end{equation}
+	该和有限，且无需假设 \(M\) 完备。
+\end{theorem}
+\begin{proof}
+	由\cref{g3:prop:conjugate-times-isolated}，起点附近没有共轭时刻，正的共轭时刻孤立，因而 \((0,L]\) 中只有有限个。对充分小的 \(t>0\)，\cref{g3:lem:short-interval-index-positive}给出 \(I_t\) 正定，所以指标初值为零。
+
+	在一个非共轭时刻附近作\cref{g3:prop:morse-finite-reduction}的局部约化。其核为两端零的 Jacobi 场，因而约化矩阵非退化；有限维惯性数局部不变。每越过一个内部共轭时刻 \(s\)，\cref{g3:prop:morse-crossing-form}说明指标恰增加 \(m(s)\)。沿区间从左到右累加这些有限次跳跃，就得到第一式。若 \(L\) 恰为共轭时刻，穿越引理说明在该时刻新方向还处于核中，负指标仍取左极限，所以求和条件为严格的 \(s<L\)。第二式由\cref{g3:prop:index-form-kernel}直接得到。
+
+	以上步骤只使用给定测地线的紧参数段及其局部延拓。即使流形不完备，端点处的测地线初值定理仍提供一个稍长的定义区间，以便作局部参数比较。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:index-nonpositive-curvature}
+	在截面曲率非正的光滑无边界黎曼流形中，任意非平凡测地线段的固定端点指标形式正定，指标与零度均为零。
+\end{corollary}
+\begin{proof}
+	把场分为 \(V=fT+V^\perp\)。曲率对称性给出
+	\(\langle R(V,T)T,V\rangle=\langle R(V^\perp,T)T,V^\perp\rangle\le0\)，故
+	\(I_L(V,V)\ge\int_0^L|V'|^2\,\mathrm dt\)。若右侧为零，场平行，而固定端点条件迫使它恒为零。
+\end{proof}
+
+这一推论只控制第二变分。全局上两点之间是否存在其他同样短的测地线，还取决于覆盖与拓扑；平坦环面的不同绕行已经显示这两类信息的区别。
 
 \subsection{端点退化与零空间}
 \label{g3:subsec:0604:04}
-待撰写
+
+在第一个共轭点，指标尚未变为正，但零度已经非零。将指标和零度分开记录，正是为了保留这种临界情形。
+
+\begin{proposition}\label{g3:prop:index-endpoint-nullity}
+	设 \(\gamma:[0,L]\to M\) 为光滑无边界黎曼流形中的单位速测地线，\(L>0\)。对其固定端点指标形式，令 \(\mathcal N\) 遍历使 \(I_L\) 非正的线性子空间，则
+	\[
+		\max\dim\mathcal N=\operatorname{ind}I_L+\operatorname{nul}I_L
+		=\sum_{0<s\le L}m(s).
+	\]
+	特别地，\(I_L\) 半正定当且仅当 \((0,L)\) 内没有共轭时刻；它正定当且仅当 \((0,L]\) 内没有共轭时刻。
+\end{proposition}
+\begin{proof}
+	作有限节点正交分解 \(V=J+Z\)。若 \(I_L\) 在 \(\mathcal N\) 上非正，向分段 Jacobi 空间的投影仍单射，因为非零 \(Z\) 的平方值严格为正。投影后的二次型非正，其维数至多为有限维 \(B_{\mathcal P}\) 的负惯性数与零度之和。取 \(B_{\mathcal P}\) 的负特征子空间与核的直和即达到此界，故最大值存在。代入指标定理即得求和式。若没有负方向，有限维约化半正定；再排除核便正定，正定补空间不会改变这些结论。
+\end{proof}
+
+在半径 \(a\) 的圆球面上，长度恰为 \(\pi a\) 的大圆弧有指标零、零度 \(n-1\)。旋转经过一对对径点的大圆，给出一族等长极小段，其变分场恰形成这个零空间；末端稍越过对径点时，这 \(n-1\) 个方向全部转为负方向。一般情形中的退化只说明 Hessian 出现核，是否存在真正的等能量曲线族还需要更高阶信息。
 
 \subsection{焦点和子流形边界条件}
 \label{g3:subsec:0604:05}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+把起点限制在子流形 \(P\) 上移动，第一变分的起端项就要求测地线垂直于 \(P\)。第二变分还会记录 \(P\) 本身的弯曲。以下令 \(P^k\subset(M^n,g)\) 为无边界光滑嵌入子流形，\(k<n\)，\(p\in P\)，\(v\in N_pP\) 为单位向量，\(\gamma(t)=\exp_p(tv)\)。记 \(B^P\) 为 \(P\) 在 \(M\) 中的第二基本形式，按\cref{g3:def:shape-operator}约定
+\[
+	\langle A_vx,y\rangle=\langle B^P(x,y),v\rangle.
+\]
+允许的场空间为
+\[
+	\mathcal V_P[0,L]=\{V:V\text{ 连续分段光滑},\ V(0)\in\mathrm T_pP,\ V(L)=0\}.
+\]
+
+\begin{proposition}\label{g3:prop:submanifold-index-boundary}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(P^k\subset M\) 为无边界光滑嵌入子流形，\(k<n\)，\(p\in P\)，\(v\in N_pP\) 为单位向量。设 \(L>0\)，且 \(\gamma(t)=\exp_p(tv)\) 在 \([0,L]\) 上有定义。从 \(P\) 到固定点 \(\gamma(L)\) 的能量在 \(\gamma\) 处为临界，其 Hessian 为
+	\begin{equation}\label{g3:eq:submanifold-index-form}
+		I_{P,L}(V,W)=I_L(V,W)-\langle A_vV(0),W(0)\rangle.
+	\end{equation}
+	其零空间恰由满足下列边界条件的 Jacobi 场组成：
+	\begin{equation}\label{g3:eq:p-jacobi-boundary}
+		J(0)\in\mathrm T_pP,\qquad
+		(J'(0))^\top=-A_vJ(0),\qquad J(L)=0,
+	\end{equation}
+	其中 \({}^\top\) 为向 \(\mathrm T_pP\) 的正交投影。
+\end{proposition}
+\begin{proof}
+	这是\cref{g3:prop:submanifold-endpoint-variation}在终端子流形为一个点时的情形。第一变分为 \(-\langle V(0),v\rangle=0\)。对起点曲线 \(p(s)\in P\)，令 \(a=p'(0)=V(0)\)。第二变分的起端加速度项是
+	\[
+		-\langle\nabla_s p'(0),v\rangle
+		=-\langle B^P(a,a),v\rangle=-\langle A_va,a\rangle.
+	\]
+	末端固定，所以没有末端加速度项；于是得到式\eqref{g3:eq:submanifold-index-form}的平方版本，极化后得到双线性版本。每个允许的分段光滑场都能由这类变分实现：使用\cref{g3:prop:submanifold-endpoint-variation}之前给出的端点修正构造，在起点选取具有所需初速度的 \(P\) 内曲线；修正量为变分参数的二阶项，因此既保持变分场，又使端点准确落在 \(P\) 上。
+
+	若 \(V\) 属于核，以支集在一个光滑段内部的场作测试并分部积分，得到 \(V''+R(V,T)T=0\)。在节点附近取任意节点值的连续测试场，边界配对迫使左右导数相等。故 \(V=J\) 是整个区间上的光滑 Jacobi 场。对任意允许的 \(W\)，分部积分给出
+	\[
+		I_{P,L}(J,W)
+		=-\langle J'(0)+A_vJ(0),W(0)\rangle,
+	\]
+	因为末端 \(W(L)=0\)。\(W(0)\) 可遍历 \(\mathrm T_pP\)，故核条件正是式\eqref{g3:eq:p-jacobi-boundary}；反向也由这条等式立即成立。
+\end{proof}
+
+\begin{definition}\label{g3:def:focal-point}
+	设 \((M,g)\) 为光滑无边界黎曼流形，\(P\subset M\) 为无边界光滑嵌入子流形，\(\gamma\) 为从 \(p\in P\) 垂直出发的单位速测地线。满足 Jacobi 方程和初端条件
+	\(J(0)\in\mathrm T_pP\)、\((J'(0))^\top=-A_{\dot\gamma(0)}J(0)\)
+	的场称为 \(P\)-Jacobi 场。若存在非零的 \(P\)-Jacobi 场在 \(s>0\) 处为零，则称 \(\gamma(s)\) 为沿 \(\gamma\) 的 \(P\) 的\term[jiaodian]{焦点}[focal point]，\(s\) 为焦时，其重数 \(f_P(s)\) 是此类场构成的空间的维数。非焦时的重数记为零。
+\end{definition}
+
+初值可以任意选择 \(J(0)=a\in\mathrm T_pP\) 和 \((J'(0))^\perp\in N_pP\)，切向部分已经由 \(-A_va\) 决定，因此 \(P\)-Jacobi 场空间的维数是 \(k+(n-k)=n\)。当 \(P=\{p\}\) 时，初端条件就是 \(J(0)=0\)，焦点定义回到共轭点定义。
+
+\begin{proposition}\label{g3:prop:focal-normal-exponential}
+	设 \((M,g)\) 为光滑无边界黎曼流形，\(P\subset M\) 为无边界光滑嵌入子流形，定义其法指数映射
+	\[
+		\exp^\perp:\mathcal E\cap NP\longrightarrow M,\qquad(q,w)\longmapsto\exp_qw.
+	\]
+	若 \(v\in N_pP\) 为单位向量且 \(s>0\) 满足 \((p,sv)\in\mathcal E\)，则
+	\[
+		\dim\ker(\mathrm d\exp^\perp)_{(p,sv)}=f_P(s).
+	\]
+	特别地，焦点对应法指数映射微分奇异的时刻。
+\end{proposition}
+\begin{proof}
+	用环境联络把 \(\mathrm T_{(p,sv)}NP\) 中一个向量写成 \((a,b)\)：取代表曲线 \((q(u),w(u))\in NP\)，令 \(a=q'(0)\)、\(b=\nabla_u w(0)\)。由于 \(w(u)\) 始终垂直于 \(P\)，式\eqref{g3:eq:weingarten-formula}给出
+	\[
+		a\in\mathrm T_pP,\qquad b^\top=-sA_va.
+	\]
+	反过来，\(a\) 与 \(b^\perp\) 可由法丛的局部标架任意指定，所以这是该切空间的完整描述。
+
+	对测地线变分
+	\(F(u,r)=\exp_{q(u)}(r w(u)/s)\)，\(0\le r\le s\)，其变分场满足
+	\[
+		J(0)=a,\qquad J'(0)=b/s,\qquad
+		(\mathrm d\exp^\perp)_{(p,sv)}(a,b)=J(s).
+	\]
+	前两个等式恰给出全部 \(P\)-Jacobi 初值，而且对应关系是线性同构。因此微分的核与末端为零的 \(P\)-Jacobi 场同构。法丛总空间与 \(M\) 都是 \(n\) 维，故非零核等价于微分奇异。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:submanifold-morse-index}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(P^k\subset M\) 为无边界光滑嵌入子流形，\(k<n\)，\(\gamma:[0,L]\to M\) 为从 \(P\) 垂直出发的单位速测地线，\(L>0\)。则 \((0,L]\) 中只有有限个焦时，并且在 \(\mathcal V_P[0,L]\) 上
+	\begin{equation}\label{g3:eq:submanifold-morse-count}
+		\operatorname{ind}I_{P,L}=\sum_{0<s<L}f_P(s),\qquad
+		\operatorname{nul}I_{P,L}=f_P(L).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先控制很短的区间，随后给出有限维约化并计算跳跃。沿 \([0,L]\) 取平行正交标架，令 \(C\) 为 \(W\mapsto R(W,T)T\) 的算子范数的上界，\(a=\lVert A_v\rVert\)。当 \(V(t)=0\) 时，Cauchy--Schwarz 不等式给出
+	\[
+		|V(r)|^2\le(t-r)\int_r^t|V'(u)|^2\,\mathrm du,
+	\]
+	所以
+	\[
+		|V(0)|^2\le t\int_0^t|V'|^2,\qquad
+		\int_0^t|V|^2\le\frac{t^2}{2}\int_0^t|V'|^2.
+	\]
+	代入指标形式，得到
+	\begin{equation}\label{g3:eq:submanifold-short-index-bound}
+		I_{P,t}(V,V)\ge\left(1-at-\frac{Ct^2}{2}\right)\int_0^t|V'|^2.
+	\end{equation}
+	充分小的 \(t>0\) 使括号严格为正；积分为零又迫使 \(V\) 平行且恒为零。因此初始指标、零度都为零，起点附近无焦时。
+
+	对一般 \(t\) 选择短段细分。给定首节点 \(u_0\in\mathrm T_pP\)、内部节点 \(u_i\in\mathrm T_{\gamma(s_i)}M\) 和末节点零，仍用普通 Jacobi 方程在各子段插值。首节点不附加导数条件；这个条件将在求核时自动出现。由短段两端问题的唯一可解性，分段 Jacobi 空间维数为 \(k+n(N-1)\)。节点全为零的补空间仍严格正定，并与插值空间正交：积分边界项中的节点值为零，额外的形算子项也因首节点为零而消失。因此与\cref{g3:prop:morse-finite-reduction}完全相同的投影论证给出指标、零度的有限维约化。约化矩阵的核由\cref{g3:prop:submanifold-index-boundary}识别为末端零的 \(P\)-Jacobi 场。
+
+	在任意 \(t_0>0\) 附近固定所有非末端节点，包括首节点空间 \(\mathrm T_pP\)，只移动末节点 \(t\)。所得矩阵 \(B_P(t)\) 光滑。对 \(u\in\ker B_P(t_0)\)，令 \(J=V_{t_0}(u)\)；仍有 \(\dot V(t_0)=-J'(t_0)\)，且固定首节点使 \(\dot V(0)=0\)。边界形算子项的参数导数于是为零。逐项求导及分部积分与式\eqref{g3:eq:morse-crossing-form}相同，给出
+	\[
+		\dot B_P(t_0)(u,u)=-|J'(t_0)|^2.
+	\]
+	也可直接使用自然初端条件消去初端配对。初值唯一性说明这个穿越形式在核上负定。因此每个焦时都孤立，且越过重数为 \(f_P(t_0)\) 的焦时恰增加该数目的负方向；在焦时本身仍取左侧指标。
+
+	还须排除孤立焦时在有限区间内聚集。每个 \(t_0>0\) 附近都有上述固定维数的矩阵表示；若焦时序列趋于 \(t_0\)，行列式连续性迫使 \(B_P(t_0)\) 奇异，但负定穿越已保证它附近除 \(t_0\) 外没有其他奇异时刻，产生矛盾。结合起点附近无焦时，紧区间内的焦时数目有限。最后从短时的零指标开始累加跳跃，得到第一式；末端核的刻画给出第二式。
+\end{proof}
+
+对 Euclid 空间中半径 \(a\) 的球面取内向单位法向，则本书的形算子为 \(A_v=a^{-1}\operatorname{id}\)。沿内法线，切向初值 \(x\) 给出 \(P\)-Jacobi 场 \(J(t)=(1-t/a)x\)。它们在球心同时为零，形成重数 \(n-1\) 的焦点；越过球心以后，从球面到该终点的这条法线段便有 \(n-1\) 个负方向。这里环境曲率处处为零，焦点来自初始子流形的弯曲。这个算例也核验了式\eqref{g3:eq:submanifold-index-form}中形算子前的负号。

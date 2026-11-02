@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 7.4 辛流形的整体约束
 % 纲要位置：几何学计划纲要.md，第 3766 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,211 @@
 \section{辛流形的整体约束}
 \label{g4:sec:0704}
 
-待撰写
+余切丛说明许多非紧流形自然带有辛形式，相容结构的构造则把每根切空间变成复向量空间。整体问题还要考虑这些点态资料如何与积分、上同调和坐标变化相处。首先，闭辛流形的总体积会阻止辛形式成为恰当形式；其次，相容结构的可缩性使切丛的陈类成为辛结构的不变量。最后用一个显式例子说明：切空间中的复乘法即使与辛形式相容，也未必来自复坐标。
 
 \subsection{闭辛流形的体积和上同调}
 \label{g4:subsec:0704:01}
-待撰写
+
+设 \((M^{2n},\omega)\) 为辛流形。逐点取辛基 \((e_1,f_1,\ldots,e_n,f_n)\)，其对偶基记为 \((e^1,f^1,\ldots,e^n,f^n)\)。则
+\[
+	\frac{\omega^n}{n!}=e^1\wedge f^1\wedge\cdots\wedge e^n\wedge f^n.
+\]
+因此 \(\omega^n/n!\) 是处处非零的最高次形式，定义一个定向，称为\term[xindingxiang]{辛定向}[symplectic orientation]；在这个方向下它是正体积形式，称为\term[xintiji]{辛体积形式}[symplectic volume form]。任意保持 \(\omega\) 的微分同胚也保持这个定向和体积。
+
+\begin{theorem}\label{g4:thm:0704:cohomology-obstruction}
+	设 \(M\) 为非空闭连通光滑流形，实维数 \(2n\)，\(n\ge1\)，且 \(\omega\) 是其辛形式。按辛定向积分，则
+	\[
+		\operatorname{Vol}_\omega(M)=\frac1{n!}\int_M\omega^n>0,
+		\qquad [\omega]^k\ne0\quad(1\le k\le n)
+	\]
+	于 \(H^{2k}_{\mathrm{dR}}(M)\) 中。特别地，\(M\) 的每个偶次 Betti 数\footnote{Enrico Betti（1823--1892），意大利数学家，研究代数、拓扑及数学物理。} \(b_{2k}\)、\(0\le k\le n\)，至少为 \(1\)，且 \(\omega\) 不恰当。
+\end{theorem}
+\begin{proof}
+	“闭”在这里指紧且无边界。正体积形式在每张正向坐标图中是严格正函数乘坐标体积元；在一个相对紧的小图上积分已经严格为正，紧性又保证总积分有限，因此 \(\int_M\omega^n>0\)。
+
+	因 \(\mathrm{d}\omega=0\)，每个 \(\omega^k\) 都闭，其类就是上同调乘积 \([\omega]^k\)。若某个 \(1\le k\le n\) 满足 \(\omega^k=\mathrm{d}\alpha\)，则
+	\[
+		\omega^n=\mathrm{d}\bigl(\alpha\wedge\omega^{n-k}\bigr).
+	\]
+	第一卷定理14.4.3的 Stokes 公式适用于闭定向的 \(M\)，且这里的光滑形式因紧性自动紧支，故右边在 \(M\) 上的积分为零，与正体积矛盾。于是各 \([\omega]^k\) 非零；其所在实向量空间至少一维。\(k=1\) 同时排除了 \(\omega\) 恰当的可能。
+\end{proof}
+
+这个障碍能在寻找辛形式之前使用。第二卷第7.4.2小节已由球面同调和 de Rham 积分比较算出 \(H^2_{\mathrm{dR}}(S^{2n})=0\)、\(n\ge2\)。因此四维及更高偶维球面都没有辛形式。二维球面则不同：它的面积形式就是辛形式。
+
+\begin{example}\label{g4:exm:0704:boundary-exact}
+	紧性与无边界在上一定理中各有作用。在 \(\mathbb R^{2n}\) 上，
+	\[
+		\omega_0=\sum_{j=1}^n\mathrm{d}q^j\wedge\mathrm{d}p_j
+		=\mathrm{d}\left(\sum_{j=1}^nq^j\,\mathrm{d}p_j\right)
+	\]
+	是恰当辛形式。限制到一个闭球，仍是非退化闭形式；此时球虽然紧，却有边界。Stokes 公式把体积分变成边界积分，并不要求其为零。余切丛的 \(\omega=-\mathrm{d}\theta\) 是同类现象：正维底流形的全部余切纤维不紧，所以它与闭流形的障碍相容。
+\end{example}
 
 \subsection{乘积、曲面和余切丛}
 \label{g4:subsec:0704:02}
-待撰写
+
+在二维，任何二形式的外微分都因次数成为零。于是非退化二形式恰是面积形式；给定一个定向，任意正面积形式都提供该方向的辛结构。具体地，取一个黎曼度量并使用其定向面积形式即可。因此光滑曲面可定向，当且仅当它允许辛形式。
+
+\begin{example}\label{g4:exm:0704:sphere-area}
+	在单位球面 \(S^2\subset\mathbb R^3\) 上定义
+	\[
+		\omega_p(u,v)=\langle p,u\times v\rangle,
+		\qquad u,v\in\mathrm{T}_pS^2.
+	\]
+	对非零切向量 \(u\)，向量 \(p\times u\) 也切于球面，且 \(\omega_p(u,p\times u)=|u|^2>0\)，所以 \(\omega\) 非退化。它正是外向定向的标准面积形式。在去掉两极的坐标 \((\varphi,z)\) 中，可直接求导得 \(\omega=\mathrm{d}\varphi\wedge\mathrm{d}z\)，其中 \(0\le\varphi<2\pi\)、\(-1<z<1\)。两极处的光滑性由原来的叉积公式保证，故
+	\[
+		\int_{S^2}\omega=\int_0^{2\pi}\int_{-1}^1\mathrm{d}\varphi\,\mathrm{d}z=4\pi.
+	\]
+\end{example}
+
+\begin{proposition}\label{g4:prop:0704:products}
+	设 \((M^{2m},\omega_M)\)、\((N^{2n},\omega_N)\) 是辛流形，\(\pi_M,\pi_N\) 为乘积投影。则
+	\[
+		\omega=\pi_M^*\omega_M+\pi_N^*\omega_N
+	\]
+	是 \(M\times N\) 上的辛形式，且其体积形式为
+	\[
+		\frac{\omega^{m+n}}{(m+n)!}
+		=\pi_M^*\frac{\omega_M^m}{m!}\wedge
+		\pi_N^*\frac{\omega_N^n}{n!}.
+	\]
+	若两因子均闭，则辛总体积为两因子辛总体积的乘积。
+\end{proposition}
+\begin{proof}
+	拉回与外微分交换，所以 \(\omega\) 闭。在切空间分解 \(\mathrm{T}_{(x,y)}(M\times N)=\mathrm{T}_xM\oplus\mathrm{T}_yN\) 下，两因子分别配对而没有混合项。若 \((u,v)\) 与全部切向量配对为零，先用 \((u',0)\) 检验得到 \(u=0\)，再用 \((0,v')\) 检验得到 \(v=0\)，故非退化。
+
+	二项式展开中，第一因子至多贡献 \(m\) 个二形式，第二因子至多贡献 \(n\) 个二形式，故只有包含 \(m\) 个第一项及 \(n\) 个第二项的项非零。二形式互换没有符号，留下的系数为 \(\binom{m+n}{m}\)，除以 \((m+n)!\) 即得公式。乘积定向与辛定向因此相同，分片积分与 Fubini 定理给出总体积公式。
+\end{proof}
+
+在环面 \(\mathbb R^{2n}/\mathbb Z^{2n}\) 上，坐标函数本身不全局单值，但 \(\mathrm{d}q^j,\mathrm{d}p_j\) 在整数平移下不变，因此 \(\omega_0\) 下降为辛形式。取每个坐标周期为 \(1\)，一个基本区域的辛体积为 \(1\)。任何两个闭定向曲面的乘积也给出四维闭辛流形，其二形式按上面的求和公式写出。
+
+\ProseParagraphBreak
+
+余切丛提供另一类普遍构造：底流形 \(Q\) 可以不可定向，\(\mathrm{T}^*Q\) 仍由典范辛形式获得定向。纤维内的动量坐标在换图时与底坐标作互相抵消的变换，正是这种定向得以成立的原因。其辛结构由底空间的光滑结构决定，构造时不需要先选度量、联络或复结构。
 
 \subsection{相容几乎复结构与陈类}
 \label{g4:subsec:0704:03}
-待撰写
+
+设 \(J\) 与 \(\omega\) 相容。在实切丛上定义复数作用
+\[
+	(a+\mathrm{i}b)v=av+bJv,
+\]
+就得到复秩 \(n\) 的光滑向量丛 \((\mathrm{T}M,J)\)。它的局部标架只须对这个复数作用线性，并不要求底空间已有全纯坐标。由第二卷第21.3节的陈类构造，复秩 \(n\) 丛有自然类 \(c_k\in H^{2k}(M;\mathbb Z)\)，对丛同构不变；总类在线丛分裂后是 \(\prod_j(1+c_1(L_j))\)。下面要检查：将这些类用于切丛时，是否依赖辅助选择 \(J\)。
+
+\begin{lemma}\label{g4:lem:0704:complex-path-isomorphism}
+	设 \(E\to M\) 是光滑实向量丛，\(J_t\)、\(0\le t\le1\)，是其上光滑的复结构族。则复向量丛 \((E,J_0)\) 与 \((E,J_1)\) 同构。
+\end{lemma}
+\begin{proof}
+	要构造一族实丛自同构 \(U_t\)，使 \(J_tU_t=U_tJ_0\)。记
+	\[
+		B_t=\tfrac12J_t\dot J_t.
+	\]
+	对 \(J_t^2=-I\) 求导，得到 \(J_t\dot J_t+\dot J_tJ_t=0\)，继而
+	\[
+		[B_t,J_t]=\dot J_t.
+	\]
+	在每根纤维上求解线性常微分方程 \(\dot U_t=B_tU_t\)、\(U_0=I\)。连续系数在有限时间区间上有界，逐次积分或线性方程的基本估计给出全区间的解；局部丛标架中的参数依赖说明解随底点光滑。不同标架中的方程按共轭转换，唯一性保证局部解粘合。逆方程 \(\dot V_t=-V_tB_t\)、\(V_0=I\)，给出 \(V_tU_t=I\)，故 \(U_t\) 处处可逆。最后
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}(U_t^{-1}J_tU_t)
+		=U_t^{-1}\bigl(\dot J_t+J_tB_t-B_tJ_t\bigr)U_t=0.
+	\]
+	其初值为 \(J_0\)，所以 \(U_1\) 正是所需的复线性丛同构。
+\end{proof}
+
+\cref{g4:thm:0703:global-contractibility}已经给出任意两个相容 \(J\) 之间的光滑道路。因此上引理及陈类的同构不变性证明下面的定义不依赖选择：
+\begin{definition}\label{g4:def:0704:symplectic-chern}
+	辛流形 \((M^{2n},\omega)\) 的第 \(k\) 阶陈类定义为
+	\[
+		c_k(M,\omega)=c_k(\mathrm{T}M,J)\in H^{2k}(M;\mathbb Z),
+		\qquad 0\le k\le n,
+	\]
+	其中 \(J\) 是任一 \(\omega\)-相容几乎复结构。
+\end{definition}
+
+\begin{proposition}\label{g4:prop:0704:chern-invariance}
+	辛同胚 \(F:(M,\omega_M)\to(N,\omega_N)\) 满足
+	\[
+		c_k(M,\omega_M)=F^*c_k(N,\omega_N).
+	\]
+	若固定流形 \(M\) 上的 \(\omega_t\)、\(0\le t\le1\)，是一族光滑辛形式，则 \(c_k(M,\omega_t)\) 不随 \(t\) 改变。
+\end{proposition}
+\begin{proof}
+	在 \(N\) 上选相容 \(J_N\)。用 \(\mathrm{d}F\) 拉回得到 \(J_M=(\mathrm{d}F)^{-1}J_N\mathrm{d}F\)，它与 \(\omega_M\) 相容，因为相应正定配对恰为 \(F^*g_N\)。微分给出复切丛同构，再由第二卷定理21.3.2的自然性得到所述等式。
+
+	对形式族，固定一个辅助度量，\cref{g4:prop:0703:smooth-families}的参数构造给出光滑的相容族 \(J_t\)。由\cref{g4:lem:0704:complex-path-isomorphism}，各复切丛同构，故全部陈类相同。
+\end{proof}
+
+复自然定向与辛定向一致。事实上，用相容度量逐次选单位向量及其 \(J\) 像，得到正交标架 \((e_1,Je_1,\ldots,e_n,Je_n)\)；它同时是上述两种定义中的正向标架。第二卷定理21.3.6的顶陈类与 Euler 类比较因而给出
+\[
+	c_n(M,\omega)=e(\mathrm{T}M)
+\]
+于这个共同方向下。复线丛 \(K_J=\det_{\mathbb C}(\mathrm{T}M,J)^*\) 称为该几乎复结构的\termidx[dianfanxiancong]{典范线丛}，它把第二章的典范线丛推广到了光滑几乎复情形。第二卷命题21.3.5与21.3.10的行列式及对偶公式给出
+\[
+	c_1(K_J)=-c_1(M,\omega).
+\]
+这是一条光滑复线丛；在可积情形，它才同时具有由全纯顶次形式给出的全纯线丛结构。
+
+\begin{example}\label{g4:exm:0704:chern-models}
+	标准辛环面的常向量场与标准 \(J_0\) 给出全局复标架，故所有正次陈类都为零。对于闭定向曲面 \(\Sigma_g\)，相容复切丛的秩为一。由第二卷例21.4.2的曲面切丛计算，若 \(u\) 是与面积方向一致的整数二次生成元，则
+	\[
+		c_1(\Sigma_g,\omega)=(2-2g)u.
+	\]
+	因此正面积球面的第一陈类为 \(2u\)，环面为零，亏格至少二时为负倍数；选择不同正面积形式不会改变这些值。
+\end{example}
 
 \subsection{不预设 J 的可积性}
 \label{g4:subsec:0704:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+在复坐标 \(z^j=x^j+\mathrm{i}y^j\) 中，复数乘 \(\mathrm{i}\) 对应
+\[
+	J\partial_{x^j}=\partial_{y^j},\qquad
+	J\partial_{y^j}=-\partial_{x^j}.
+\]
+若某个几乎复结构在每点附近都能写成这种坐标形式，便称它\term[kejifujiegou]{可积}[integrable]。坐标之间的转移微分与 \(J\) 交换，正是多变量的 Cauchy--Riemann 条件，故这些坐标给出复流形结构。可积性要求在邻域内找坐标，相容性则只对每根切空间中的配对提出条件。
+
+\begin{lemma}\label{g4:lem:0704:integrable-brackets}
+	若光滑几乎复结构 \(J\) 来自复坐标，则任意两个复向量场 \(Z,W\) 满足 \(JZ=\mathrm{i}Z\)、\(JW=\mathrm{i}W\) 时，也有 \(J[Z,W]=\mathrm{i}[Z,W]\)。这里将 \(J\) 与 Lie 括号\footnote{Marius Sophus Lie（1842--1899），挪威数学家，创立连续变换群理论，并研究其与微分方程的联系。}复线性延拓到复化切丛。
+\end{lemma}
+\begin{proof}
+	在复坐标中，这类向量场分别写为 \(Z=\sum a_j\partial_{z^j}\)、\(W=\sum b_j\partial_{z^j}\)，系数只须光滑。坐标向量场彼此交换，故
+	\[
+		[Z,W]=\sum_k\left(\sum_j a_j\partial_{z^j}b_k-b_j\partial_{z^j}a_k\right)\partial_{z^k},
+	\]
+	仍属于 \(\mathrm{i}\) 特征方向。此条件用内在的向量场括号表述，因而不随坐标改变。
+\end{proof}
+
+\begin{example}\label{g4:exm:0704:nonintegrable-compatible}
+	在 \(\mathbb R^4\) 的坐标 \((x_1,y_1,x_2,y_2)\) 中，取
+	\[
+		\omega=\mathrm{d}x_1\wedge\mathrm{d}y_1+\mathrm{d}x_2\wedge\mathrm{d}y_2,
+		\qquad a=e^{x_2},
+	\]
+	并定义
+	\[
+		J\partial_{x_1}=a\partial_{y_1},\quad
+		J\partial_{y_1}=-a^{-1}\partial_{x_1},\quad
+		J\partial_{x_2}=\partial_{y_2},\quad
+		J\partial_{y_2}=-\partial_{x_2}.
+	\]
+	直接作用两次可得 \(J^2=-I\)。配对 \(\omega(u,Jv)\) 的矩阵为 \(\operatorname{diag}(a,a^{-1},1,1)\)，对称正定，故 \(J\) 与这个闭辛形式相容。令
+	\[
+		Z_1=\partial_{x_1}-\mathrm{i}a\partial_{y_1},\qquad
+		Z_2=\partial_{x_2}-\mathrm{i}\partial_{y_2}.
+	\]
+	二者均满足 \(JZ_j=\mathrm{i}Z_j\)，然而坐标括号的乘法法则给出
+	\[
+		[Z_1,Z_2]=\mathrm{i}a\partial_{y_1}
+		=\tfrac12(\overline Z_1-Z_1).
+	\]
+	右边有非零的 \(-\mathrm{i}\) 特征分量，违反\cref{g4:lem:0704:integrable-brackets}。所以这个相容 \(J\) 在任何点附近都不能由复坐标产生。
+\end{example}
+
+闭性也有独立内容。例如同一 \(\mathbb R^4\) 上的二形式
+\[
+	\eta=\mathrm{d}x_1\wedge\mathrm{d}y_1+e^{x_1}\,\mathrm{d}x_2\wedge\mathrm{d}y_2
+\]
+处处非退化，并与标准、可积的 \(J_0\) 相容，但
+\[
+	\mathrm{d}\eta=e^{x_1}\,\mathrm{d}x_1\wedge\mathrm{d}x_2\wedge\mathrm{d}y_2\ne0.
+\]
+反过来，\(\mathrm{d}x_1\wedge\mathrm{d}y_1\) 在四维空间上闭，却有二维核。这些计算分别检验了闭性、非退化性及可积性。相容的辛形式与可积复结构同时存在时，所得三元组属于 Kähler 几何\footnote{Erich Kähler（1906--2000），德国数学家，研究复几何、微分形式与外微分方程。}；第15章将系统研究可积性，第17章将展开 Kähler 结构的微分性质。当前的辛线性代数、余切构造与相容结构定理都已在光滑范畴内成立。

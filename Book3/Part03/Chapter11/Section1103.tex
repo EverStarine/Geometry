@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 11.3 Sobolev 与 Morrey 嵌入
 % 纲要位置：几何学计划纲要.md，第 2519 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -9,32 +9,354 @@
 % * Sobolev 指数及尺度
 % * Morrey 连续性及 Hölder 指数
 % * 临界指数的端点限制
-% * 紧流形和丛值截面的粘合
+% * 紧流形上的丛值 Sobolev 嵌入
 % 
 % 纲要内容结束
 
 \section{Sobolev 与 Morrey 嵌入}
 \label{g3:sec:1103}
 
-待撰写
+弱导数的可积性会限制函数集中在小区域中的程度。若一个高为 \(A\)、宽为 \(r\) 的峰占据 \(n\) 维小球，它的梯度约为 \(A/r\)，所以梯度的 \(L^p\) 大小约为 \(Ar^{n/p-1}\)。当 \(p<n\) 时，这种控制提高函数的可积指数；当 \(p>n\) 时，越来越窄的峰必须越来越低，函数因而获得连续代表。本节把这两种尺度现象分别证明为积分不等式与振荡估计。
 
 \subsection{欧氏基本积分不等式}
 \label{g3:subsec:1103:01}
-待撰写
+先从 \(p=1\) 出发。单独沿一条直线积分导数，只控制一个方向；把全部坐标方向的估计相乘，再反复使用 Hölder 不等式，就会出现维数所决定的指数。下面先把这一步单独证明。
+
+\begin{lemma}\label{g3:lem:coordinate-product-integral}
+	设 \(n\ge2\)，\(F_i\ge0\) 是 \(\mathbb R^{n-1}\) 上的可积函数，\(\widehat x_i\) 表示删去 \(x_i\) 的其余坐标。则
+	\[
+		\int_{\mathbb R^n}\prod_{i=1}^nF_i(\widehat x_i)^{1/(n-1)}\,\mathrm dx
+		\le\prod_{i=1}^n\left(\int_{\mathbb R^{n-1}}F_i\right)^{1/(n-1)}.
+	\]
+\end{lemma}
+\begin{proof}
+	\(n=2\) 时两个因子各只依赖一个变量，结论就是分离积分。设结论对 \(n-1\) 成立。先对 \(x_n\) 积分，对前 \(n-1\) 个因子使用指数均为 \(n-1\) 的 Hölder 不等式。记 \(x'=(x_1,\ldots,x_{n-1})\)，并令
+	\[
+		G_i(\widehat x'_i)=\int_{\mathbb R}F_i(\widehat x_i)\,\mathrm dx_n,
+		\qquad 1\le i<n.
+	\]
+	原积分不超过
+	\[
+		\int_{\mathbb R^{n-1}}F_n(x')^{1/(n-1)}
+		\left(\prod_{i<n}G_i(\widehat x'_i)^{1/(n-2)}\right)^{(n-2)/(n-1)}\mathrm dx'.
+	\]
+	再用一对指数 \(n-1\)、\((n-1)/(n-2)\) 的 Hölder 不等式，将 \(F_n\) 分离；对剩下的乘积用归纳假设，得到
+	\[
+		\left(\int F_n\right)^{1/(n-1)}
+		\prod_{i<n}\left(\int G_i\right)^{1/(n-1)}.
+	\]
+	逐次积分给出 \(\int G_i=\int F_i\)，归纳完成。非负积分允许逐次换序；某个范数为零的情形直接成立。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:sobolev-one-gradient}
+	设 \(n\ge2\)。存在仅依赖 \(n\) 的常数 \(C_n\)，使每个实值 \(u\in C_c^1(\mathbb R^n)\) 满足
+	\begin{equation}\label{g3:eq:sobolev-one-gradient}
+		\|u\|_{L^{n/(n-1)}(\mathbb R^n)}\le C_n\|\mathrm Du\|_{L^1(\mathbb R^n)}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	固定其余坐标，沿第 \(i\) 个坐标方向从支集之外积分，得
+	\[
+		|u(x)|\le F_i(\widehat x_i),\qquad
+		F_i(\widehat x_i)=\int_{\mathbb R}|\partial_i u(\widehat x_i,t)|\,\mathrm dt.
+	\]
+	这里 \(F_i\) 的积分变量放回第 \(i\) 个坐标位置。将 \(n\) 个不等式相乘后取 \(1/(n-1)\) 次幂，用上一引理积分，便有
+	\[
+		\int |u|^{n/(n-1)}\le\prod_i\|\partial_i u\|_1^{1/(n-1)}.
+	\]
+	两侧取 \((n-1)/n\) 次幂，再用几何平均不超过算术平均，得到
+	\[
+		\|u\|_{n/(n-1)}\le\prod_i\|\partial_i u\|_1^{1/n}
+		\le\frac1n\sum_i\|\partial_i u\|_1\le C_n\|\mathrm Du\|_1.
+	\]
+	这里最后的常数只来自有限维向量范数的比较。
+\end{proof}
+
+紧支假设在沿直线积分时消去了起始值。若在紧流形上直接删去这个条件，常值函数就说明右端还需要一个零阶项，或者需要排除常数的条件。
 
 \subsection{Sobolev 指数及尺度}
 \label{g3:subsec:1103:02}
-待撰写
+对 \(1\le p<n\)，定义 \(p\) 的\term[Sobolev gong'e zhishu]{Sobolev 共轭指数}[Sobolev conjugate exponent]
+\begin{equation}\label{g3:eq:sobolev-conjugate}
+	p^*=\frac{np}{n-p},\qquad \frac1{p^*}=\frac1p-\frac1n.
+\end{equation}
+\symidx{\(p^*=np/(n-p)\)：一阶 Sobolev 共轭指数}
+提高积分指数的方法是把上一不等式用于 \(|u|\) 的适当幂，使右端的 Hölder 指数恰与左端一致。
+
+\begin{theorem}[Sobolev 不等式]\label{g3:thm:euclidean-sobolev}
+	设 \(n\ge2\)、\(1\le p<n\)。存在 \(C=C(n,p)\)，使每个实值或复值 \(u\in W^{1,p}(\mathbb R^n)\) 满足
+	\begin{equation}\label{g3:eq:euclidean-sobolev}
+		\|u\|_{L^{p^*}(\mathbb R^n)}\le C\|\mathrm Du\|_{L^p(\mathbb R^n)}.
+	\end{equation}
+	对任意开集 \(\Omega\subset\mathbb R^n\)，同一估计也对 \(W_0^{1,p}(\Omega)\) 成立，两个范数改在 \(\Omega\) 上计算。对固定有限维向量值函数，结论按分量成立。
+\end{theorem}
+\begin{proof}
+	先取实值 \(u\in C_c^\infty\)。\(p=1\) 已证；设 \(1<p<n\)，取
+	\[
+		\beta=\frac{p(n-1)}{n-p}>1,\qquad p'=\frac p{p-1}.
+	\]
+	函数 \(|u|^\beta\) 为紧支 \(C^1\) 函数。将式\eqref{g3:eq:sobolev-one-gradient}用于它，得到
+	\[
+		\left(\int|u|^{\beta n/(n-1)}\right)^{(n-1)/n}
+		\le C_n\beta\int |u|^{\beta-1}|\mathrm Du|
+		\le C_n\beta\|\mathrm Du\|_p
+		\left(\int|u|^{(\beta-1)p'}\right)^{1/p'}.
+	\]
+	选择 \(\beta\) 的作用正在于
+	\(\beta n/(n-1)=(\beta-1)p'=p^*\)。因此
+	\(\|u\|_{p^*}^{\beta}\le C_n\beta\|\mathrm Du\|_p\|u\|_{p^*}^{\beta-1}\)。\(u\ne0\) 时约去公共因子；\(u=0\) 时结论直接成立。
+
+	由\cref{g3:thm:sobolev-smooth-density}，任意 \(u\in W^{1,p}(\mathbb R^n)\) 可由 \(u_j\in C_c^\infty\) 在该范数下逼近。对 \(u_j-u_l\) 使用已证估计，知 \(u_j\) 在 \(L^{p^*}\) 中为 Cauchy 列。其极限与原 \(L^p\) 极限在每个有界集上依测度相同，故就是 \(u\)；取极限即得结论。复值及有限维向量值情形对实分量分别使用，再用有限维范数比较。
+
+	若 \(u\in W_0^{1,p}(\Omega)\)，按定义取 \(u_j\in C_c^\infty(\Omega)\) 逼近。把 \(u_j\) 及其一阶导数在外面补零，所得序列在 \(W^{1,p}(\mathbb R^n)\) 中为 Cauchy 列；其极限正是 \(u\) 的零延拓。这同时证明零延拓没有额外的弱导数项，并把全空间估计限制回 \(\Omega\)。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:local-sobolev}
+	设 \(n\ge2\)、\(1\le p<n\)、\(R>0\)，且 \(u\in W^{1,p}(B_{2R}(a))\)。则
+	\[
+		\|u\|_{L^{p^*}(B_R(a))}
+		\le C(n,p)\bigl(\|\mathrm Du\|_{L^p(B_{2R}(a))}+R^{-1}\|u\|_{L^p(B_{2R}(a))}\bigr).
+	\]
+\end{corollary}
+\begin{proof}
+	选光滑截断 \(\chi\)，在 \(B_R(a)\) 上等于一、支于 \(B_{2R}(a)\)，且 \(|\mathrm D\chi|\le C/R\)。\(\chi u\) 的零延拓属于全空间 \(W^{1,p}\)，乘法公式为 \(\mathrm D(\chi u)=\chi \mathrm Du+u\mathrm D\chi\)。对它应用\cref{g3:thm:euclidean-sobolev}即得。
+\end{proof}
+
+令 \(u_R(x)=u(x/R)\)，换元给出
+\[
+	\|u_R\|_q=R^{n/q}\|u\|_q,\qquad
+	\|\mathrm Du_R\|_p=R^{n/p-1}\|\mathrm Du\|_p.
+\]
+若全空间上存在对所有 \(R\) 使用同一常数的齐次不等式 \(\|u\|_q\le C\|\mathrm Du\|_p\)，对一个固定非零紧支函数放大与缩小，就迫使 \(n/q=n/p-1\)。这说明 \(p^*\) 由尺度确定。对 \(p\le q\le p^*\)，再由 Hölder 插值
+\[
+	\|u\|_q\le\|u\|_p^{\theta}\|u\|_{p^*}^{1-\theta},\qquad
+	\frac1q=\frac\theta p+\frac{1-\theta}{p^*},
+\]
+得到含零阶项的全空间连续嵌入。有限体积区域中，可由 \(\|u\|_q\le|\Omega|^{1/q-1/p^*}\|u\|_{p^*}\) 继续降到 \(1\le q<p\)，体积因子须保留。
 
 \subsection{Morrey 连续性及 Hölder 指数}
 \label{g3:subsec:1103:03}
-待撰写
+连续性的定量形式记录两点值相差多快。若 \(0<\alpha\le1\)，定义
+\[
+	[u]_{C^{0,\alpha}(A)}=\sup_{x\ne y\in A}\frac{|u(x)-u(y)|}{|x-y|^\alpha},
+	\qquad \|u\|_{C^{0,\alpha}(A)}=\sup_A|u|+[u]_{C^{0,\alpha}(A)}.
+\]
+半范数有限时称 \(u\) 在 \(A\) 上\term[Holder lianxu]{Hölder 连续}[Hölder continuity]，\(\alpha=1\) 就是 Lipschitz 连续。弱函数的取值原本只确定到零测集；下面的 Morrey 估计\footnote{Charles Bradfield Morrey Jr.（1907—1984），美国数学家，研究多重积分变分问题与椭圆偏微分方程。}同时构造连续代表，并给出其模连续性。
+
+\begin{lemma}\label{g3:lem:ball-oscillation-potential}
+	设 \(B=B_R(a)\subset\mathbb R^n\)、\(n\ge1\)，\(u\) 在 \(\overline B\) 的邻域为 \(C^1\)，记 \(u_B=|B|^{-1}\int_Bu\)。对每个 \(x\in\overline B\)，有
+	\begin{equation}\label{g3:eq:ball-oscillation-potential}
+		|u(x)-u_B|\le C_n\int_B\frac{|\mathrm Du(z)|}{|x-z|^{n-1}}\,\mathrm dz.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	球的凸性使连接 \(x\) 与 \(y\in B\) 的线段留在 \(\overline B\)。沿以 \(x\) 为中心的射线写 \(y=x+r\omega\)，该方向在球内的长度记为 \(\rho(\omega)\le2R\)。一维积分给出
+	\[
+		|u(x)-u(x+r\omega)|\le\int_0^r|\mathrm Du(x+t\omega)|\,\mathrm dt.
+	\]
+	对 \(0<r<\rho(\omega)\) 乘 \(r^{n-1}\) 并积分，再换序，内层权重满足
+	\(\int_t^{\rho(\omega)}r^{n-1}\,\mathrm dr\le(2R)^n/n\)。最后除以 \(|B|=\omega_nR^n\)，并把 \(\mathrm dt\,\mathrm d\omega\) 写为 \(|x-z|^{1-n}\mathrm dz\)，即得右端。左端由平均值的三角不等式控制。\(n=1\) 时相同论证就是从左右两个方向积分。
+\end{proof}
+
+\begin{theorem}[Morrey 估计]\label{g3:thm:local-morrey}
+	设 \(n\ge1\)、\(n<p<\infty\)，置 \(\alpha=1-n/p\)。每个 \(u\in W^{1,p}(B_{2R}(a))\) 有唯一的连续代表，且其在 \(B_R(a)\) 上满足
+	\begin{align}
+		[u]_{C^{0,\alpha}(B_R(a))}&\le C(n,p)\|\mathrm Du\|_{L^p(B_{2R}(a))},\label{g3:eq:local-morrey-seminorm}\\
+		\|u\|_{L^\infty(B_R(a))}&\le C(n,p)\bigl(R^{-n/p}\|u\|_{L^p(B_{2R}(a))}\notag\\
+		&\qquad+R^{1-n/p}\|\mathrm Du\|_{L^p(B_{2R}(a))}\bigr).\label{g3:eq:local-morrey-sup}
+	\end{align}
+	在 \(\mathbb R^n\) 上有 \([u]_{C^{0,\alpha}}\le C\|\mathrm Du\|_p\) 及 \(\|u\|_{C^{0,\alpha}}\le C\|u\|_{W^{1,p}}\)。
+\end{theorem}
+\begin{proof}
+	先对光滑函数证明。对式\eqref{g3:eq:ball-oscillation-potential}用 Hölder 不等式，关键积分是
+	\[
+		\int_{|z-x|<2r}|z-x|^{-(n-1)p'}\,\mathrm dz
+		=C_n\int_0^{2r}t^{n-1-(n-1)p'}\,\mathrm dt.
+	\]
+	它有限恰因为 \((n-1)p'<n\)，即 \(p>n\)，取 \(1/p'\) 次幂后为常数乘 \(r^{1-n/p}\)。所以任一半径 \(r\) 球 \(B\) 及 \(x\in\overline B\) 满足
+	\[
+		|u(x)-u_B|\le C(n,p)r^\alpha\|\mathrm Du\|_{L^p(B)}.
+	\]
+
+	取 \(x,y\in B_R(a)\)，令 \(d=|x-y|\)。若 \(d<R/2\)，半径 \(d\)、中心为 \((x+y)/2\) 的球包含二点，并位于 \(B_{2R}(a)\) 中；分别减去这个球的同一平均值，便得 \(|u(x)-u(y)|\le Cd^\alpha\|\mathrm Du\|_{L^p(B_{2R}(a))}\)。若 \(d\ge R/2\)，改用共同球 \(B_R(a)\)，并用 \(R^\alpha\le2^\alpha d^\alpha\)。这证明半范数估计。再取 \(B_R(a)\) 的平均值，利用 \(|u_B|\le |B|^{-1/p}\|u\|_{L^p(B)}\)，得到上确界估计。
+
+	一般 \(u\) 用\cref{g3:thm:sobolev-smooth-density}在 \(B_{2R}(a)\) 内作 \(W^{1,p}\) 光滑逼近。将上确界估计用于两逼近函数之差，得它们在 \(B_R(a)\) 上一致收敛。极限连续，且由 \(L^p\) 收敛知它代表原等价类。对每对点取极限，半范数估计保留；不同内球上的代表在交集几乎处处相同，连续性使其处处相同，因而给出全域连续代表。唯一性同样由任一非空开球有正测度得到。
+
+	全空间时，每对点都可放入上述半径与距离可比的球，故半范数由全空间梯度范数控制。上确界对以任意点为中心的单位球使用式\eqref{g3:eq:local-morrey-sup}，常数不依赖球心，取上确界即可。
+\end{proof}
+
+\(W^{1,\infty}\) 的局部结论是 Lipschitz 连续。事实上，先在一个较大球上把它视为有限 \(p>n\) 的函数，得到连续代表；局部卷积的梯度上界不超过原梯度的本性上确界。沿较小凸球内的线段积分，再令卷积尺度趋零，就得 \(|u(x)-u(y)|\le\|\mathrm Du\|_\infty|x-y|\)。这一步不需要 \(C^\infty\) 在 \(W^{1,\infty}\) 范数下稠密。
+
+\ProseParagraphBreak
+
+一阶估计改善的是连续性，不一定产生经典可微性。例如 \(u(x)=|x|\) 在一维局部属于 \(W^{1,\infty}\)，却在零点不可微。更高阶 Sobolev 控制则可先作用于弱导数，再确定这些导数的连续代表。
 
 \subsection{临界指数的端点限制}
 \label{g3:subsec:1103:04}
-待撰写
+\(p=n\) 时，尺度公式形式上给出 \(p^*=\infty\)，但 Morrey 证明中的核积分也恰好发生对数发散。这个端点必须单独处理。
 
-\subsection{紧流形和丛值截面的粘合}
+\begin{proposition}\label{g3:prop:critical-sobolev}
+	设 \(n\ge2\)。对任意固定有界集合 \(K\subset\mathbb R^n\)、任意 \(1\le q<\infty\)，存在 \(C=C(K,n,q)\)，使支于 \(K\) 的 \(u\in W^{1,n}(\mathbb R^n)\) 满足
+	\[
+		\|u\|_q\le C\|u\|_{W^{1,n}}.
+	\]
+	局部也有 \(W^{1,n}(B_{2R})\to L^q(B_R)\) 的有界包含。在整个 \(\mathbb R^n\) 上，不加支集限制时仍有 \(W^{1,n}\to L^q\) 对每个 \(n\le q<\infty\) 成立。上述 \(q=\infty\) 的结论一般不成立。
+\end{proposition}
+\begin{proof}
+	先设 \(q\ge n/(n-1)\)，取 \(s=nq/(n+q)\)，则 \(1\le s<n\) 且 \(s^*=q\)。有限体积支集上的 Hölder 不等式把 \(W^{1,n}\) 范数控制到 \(W^{1,s}\) 范数；再用\cref{g3:thm:euclidean-sobolev}得到结论。较小的 \(q\) 可由有限体积上的 \(L^n\) 范数直接控制。局部情形先乘支于 \(B_{2R}\)、在 \(B_R\) 等于一的截断函数。
+
+	全空间取一族半径固定的小球覆盖，使加倍球的重数有统一上界。记 \(A_i=\|u\|_{W^{1,n}(2B_i)}\)，局部结果给出 \(\|u\|_{L^q(B_i)}\le C_qA_i\)。当 \(q\ge n\) 时，
+	\[
+		\|u\|_q^q\le C_q^q\sum_iA_i^q
+		\le C_q^q\left(\sum_iA_i^n\right)^{q/n}
+		\le C\|u\|_{W^{1,n}}^q.
+	\]
+	这里中间不等式来自 \(\ell^n\subset\ell^q\)，可先将数列除以其 \(\ell^n\) 范数，使每项不超过一后逐项比较幂次。
+
+	构造失败端点时，取在零附近等于一、支于 \(B_{1/2}(0)\) 的光滑截断 \(\eta\)，令
+	\[
+		u(x)=\eta(x)\log\log\frac{\mathrm e}{|x|},\qquad 0<|x|<1.
+	\]
+	在 \(B_1\) 外令 \(u=0\)，原点的值任取。它在零附近无界，而径向导数大小为 \((r\log(\mathrm e/r))^{-1}\)。因此
+	\[
+		\int_0^{1/4}|u'(r)|^n r^{n-1}\,\mathrm dr
+		=\int_0^{1/4}\frac{\mathrm dr}{r(\log(\mathrm e/r))^n}<\infty,
+	\]
+	\(u\) 本身的 \(n\) 次幂也可积。穿孔球上的分部积分在内边界产生的项不超过常数乘 \(\varepsilon^{n-1}\log\log(\mathrm e/\varepsilon)\)，趋于零，所以这些经典导数确实给出全球弱导数。故 \(u\in W^{1,n}\)，但无有界代表。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:one-dimensional-critical-embedding}
+	设 \(I=(a,b)\) 为有界区间，\(u\in W^{1,1}(I)\)。则它有唯一的绝对连续代表，满足
+	\[
+		u(y)-u(x)=\int_x^yu'(t)\,\mathrm dt,\qquad
+		\|u\|_{L^\infty(I)}\le |I|^{-1}\|u\|_{L^1(I)}+\|u'\|_{L^1(I)}.
+	\]
+\end{proposition}
+\begin{proof}
+	将\cref{g3:prop:weak-line-slices}用于一维区间，便知 \(u\) 的等价类有绝对连续代表，其一元导数为弱导数 \(u'\)；该命题的证明已将它写成 \(u'\) 的积分加常数，故有这里的积分公式。对任意 \(x,y\in I\)，由此得到
+	\[
+		|u(y)|\le |u(x)|+\int_I|u'(t)|\,\mathrm dt.
+	\]
+	对 \(x\) 平均，再对 \(y\) 取上确界，得到所需估计。两个连续代表若几乎处处相同，就处处相同，故唯一。
+\end{proof}
+
+因此 \(n=p=1\) 是一阶临界情形的例外，具有连续性，但一般没有统一的正 Hölder 指数。以 \(u(x)=1/\log(\mathrm e/x)\) 定义在 \((0,1/2)\)，并令 \(u(0)=0\)，有 \(u'\in L^1\)，而 \(u(x)/x^\alpha\to\infty\) 对每个 \(\alpha>0\) 成立。
+
+\ProseParagraphBreak
+
+高阶的 \(p=1\) 也有一个有用端点：对 \(u\in C_c^\infty(\mathbb R^n)\)，沿全部坐标积分给出
+\[
+	u(x)=\int_{-\infty}^{x_1}\cdots\int_{-\infty}^{x_n}
+	\partial_1\cdots\partial_nu(t)\,\mathrm dt_n\cdots\mathrm dt_1,
+	\qquad \|u\|_\infty\le\|\partial_1\cdots\partial_nu\|_1.
+\]
+由紧支光滑稠密性，\(W^{n,1}(\mathbb R^n)\) 中的逼近在上确界范数下也为 Cauchy 列，所以其元素有在无穷远趋零的连续代表。不能把 \(n\ge2\) 时 \(W^{1,n}\) 的反例机械移植到这个不同的端点。
+
+\subsection{紧流形上的丛值 Sobolev 嵌入}
 \label{g3:subsec:1103:05}
-待撰写
+在有限个坐标图上，度量、体积密度及丛标架与 Euclid 模型可作一致比较。局部截断所产生的低阶项，正是闭流形上需要保留整个 Sobolev 范数的原因。
+
+\begin{theorem}\label{g3:thm:compact-bundle-sobolev}
+	设 \((M^n,g)\) 为紧、光滑、无边界黎曼流形，\(n\ge1\)，\(E\to M\) 为带光滑纤维度量与度量联络的有限秩实或复向量丛。固定这些几何数据。
+	\begin{enumerate}
+		\item 若 \(1\le p<n\)，则 \(W^{1,p}(M;E)\) 连续嵌入 \(L^q(M;E)\)，其中 \(1\le q\le np/(n-p)\)。
+		\item 若 \(p=n\ge2\)，则它连续嵌入每个有限指数的 \(L^q(M;E)\)。
+		\item 若 \(n<p<\infty\)，则它连续嵌入 \(C^{0,\alpha}(M;E)\)，其中 \(\alpha=1-n/p\)。若 \(p=\infty\)，则得到局部 Lipschitz 截面；若 \(n=p=1\)，则得到连续截面。
+	\end{enumerate}
+	每个包含均有相应范数不等式，其常数依赖于固定有限坐标覆盖、标架、截断函数、度量与联络的比较界，以及维数、秩和所用指数。\(C^{m,\alpha}\) 范数可用这个有限覆盖中分量的导数与 Hölder 半范数之和定义，不同选择给出等价范数。
+\end{theorem}
+\begin{proof}
+	取有限个丛平凡化坐标图 \(U_i\)，以及从属于它们、支集紧含于图内的光滑单位分解 \(\chi_i\)。将 \(\chi_i s\) 写成有限个分量并在坐标图之外补零。\Cref{g3:prop:sobolev-norm-equivalence}与乘法公式给出
+	\[
+		\sum_i\|(\chi_i s)_{\mathrm{coord}}\|_{W^{1,p}(\mathbb R^n)}
+		\le C\|s\|_{W^{1,p}(M;E)}.
+	\]
+	这里坐标导数与协变导数之差为有界联络矩阵乘以分量，\(\mathrm D\chi_i\) 也只产生零阶项。对每个分量应用本节已证的 Euclid 估计，再把有限个局部截面相加，就得到各个 \(L^q\) 或连续性估计。\(p=n\) 使用固定有界支集的版本；\(n=p=1\) 使用区间上的绝对连续代表。
+
+	还要核对所得连续代表确实粘合。在重叠图上，两个代表满足原来的光滑线性过渡关系几乎处处；两边都连续，故关系处处成立。Hölder 范数的等价性来自坐标变换在所用紧集上具有有界一阶导数，以及光滑标架变换的乘法估计。高阶 \(C^{m,\alpha}\) 范数用同样的多次求导论证，系数的有限阶导数都有界。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:higher-sobolev-embedding}
+	在\cref{g3:thm:compact-bundle-sobolev}的几何条件下，设整数 \(k\ge1\)、\(1\le p<\infty\)、\(0\le l<k\)，记 \(r=k-l\)。
+	\begin{enumerate}
+		\item 若 \(rp<n\)，则 \(W^{k,p}(M;E)\) 连续嵌入 \(W^{l,q}(M;E)\)，其中 \(1\le q\le np/(n-rp)\)。
+		\item 若 \(rp=n\)，则上述包含对每个 \(1\le q<\infty\) 成立。
+		\item 若整数 \(m\ge0\)、\(0<\alpha<1\) 满足 \(m+\alpha\le k-n/p\)，则 \(W^{k,p}(M;E)\) 连续嵌入 \(C^{m,\alpha}(M;E)\)。
+	\end{enumerate}
+	此外，当整数 \(k\ge n\) 时，\(W^{k,1}(M;E)\) 连续嵌入 \(C^{k-n}(M;E)\)。各结论在较小坐标区域中也有局部版本。
+\end{corollary}
+\begin{proof}
+	先对一个带紧支截断的坐标分量证明。对所有阶数不超过 \(k-1\) 的弱导数使用一阶嵌入，将 \(W^{k,p}\) 变成 \(W^{k-1,p_1}\)，其中 \(1/p_1=1/p-1/n\)。在尚未到达临界指数时重复此步，得到
+	\[
+		\frac1{p_j}=\frac1p-\frac jn.
+	\]
+	若 \(rp<n\)，前 \(r\) 步均合法，得第一项的最大 \(q=p_r\)；较小指数由有限体积上的包含得到。若 \(rp=n\)，进行 \(r-1\) 步后指数为 \(n\)，最后用临界情形得到每个有限 \(q\)。当 \(n=p=1\) 时，最后一步使用一维连续性，再降到任意有限指数，仍然成立。
+
+	为证第三项，考察阶数不超过 \(m\) 的弱导数。若 \((k-m-1)p<n\)，先按第一项得到 \(W^{m+1,q}\)，其中
+	\(1/q=1/p-(k-m-1)/n\)。由 \(k-n/p>m\) 知 \(q>n\)，故一阶 Morrey 估计使这些导数为 \(\beta\)-Hölder 连续，\(\beta=1-n/q=k-m-n/p\ge\alpha\)。这里 \(k=m+1\) 时直接取 \(q=p\)，无需先迭代。若 \((k-m-1)p\ge n\)，继续逐阶降低导数阶数：当前积分指数到达 \(n\) 时，下一步可选任意有限指数；若先超过 \(n\)，下一步由 Morrey 估计把低一阶导数放入 \(L^\infty\)，再由有限体积降到任意有限指数。条件保证在降至阶数 \(m+1\) 之前或恰在该阶可以完成这一过程。因此可取 \(q>n\) 使 \(1-n/q\ge\alpha\)，得到所需估计。
+
+	这些连续弱导数就是经典导数：在较小球上卷积，函数及直到 \(m\) 阶的弱导数都一致逼近各自的连续代表；沿坐标线积分卷积的导数关系并取极限，逐阶得到经典可微性。最后用有限坐标覆盖与标架变换粘合，即得全局结论。\(p=1\) 的连续端点则把前一小节的混合导数估计用于每个截断分量的所有不超过 \(k-n\) 阶导数，再用刚说明的连续弱导数识别。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:sobolev-multiplication-algebra}
+	设 \((M^n,g)\) 为紧、光滑、无边界黎曼流形，\(k\ge1\) 为整数，\(1\le p<\infty\)，且 \(kp>n\)。则实值或复值函数的逐点乘法满足
+	\[
+		\|uv\|_{W^{k,p}(M)}\le C\|u\|_{W^{k,p}(M)}\|v\|_{W^{k,p}(M)}.
+	\]
+	因此 \(W^{k,p}(M)\) 的乘法为连续双线性运算；把范数乘以足够大的固定常数，就使它成为范数满足次乘法不等式的\term[Banach daishu]{Banach 代数}[Banach algebra]。同样的估计适用于固定大小的矩阵值函数及矩阵乘法。
+\end{corollary}
+\begin{proof}
+	先取光滑函数。使用固定有限坐标覆盖，对每个单位分解函数 \(\chi\) 另取在其支集附近为一的截断 \(\psi\)，便有 \(\chi uv=(\chi u)(\psi v)\)。所以只需估计两个紧支坐标分量的乘积；以下仍记这两个分量为 \(u,v\)。各局部 Sobolev 范数已由全局范数控制。
+
+	Leibniz 公式将任意 \(|\alpha|\le k\) 阶导数写成有限项
+	\[
+		\mathrm D^\alpha(uv)
+		=\sum_{\beta+\gamma=\alpha}\frac{\alpha!}{\beta!\gamma!}
+		(\mathrm D^\beta u)(\mathrm D^\gamma v).
+	\]
+	若 \(|\beta|=0\) 或 \(|\gamma|=0\)，由 \(k-n/p>0\) 与上一推论可知无导数的因子受 \(L^\infty\) 控制，另一个因子受 \(L^p\) 控制。因此只剩 \(j=|\beta|\ge1\)、\(l=|\gamma|\ge1\)、\(j+l\le k\) 的项。
+
+	说明这些项怎样选择 Hölder 指数。令
+	\[
+		a_j=\max\left\{\frac1p-\frac{k-j}{n},0\right\},\qquad
+		a_l=\max\left\{\frac1p-\frac{k-l}{n},0\right\}.
+	\]
+	因为 \(j,l<k\)，若只有一个数为正，它严格小于 \(1/p\)；若两者都为正，则
+	\[
+		a_j+a_l=\frac2p-\frac{2k-j-l}{n}
+		\le\frac2p-\frac kn<\frac1p.
+	\]
+	两者都为零时也有同样的严格不等式。取
+	\[
+		\delta=\frac12\left(\frac1p-a_j-a_l\right)>0,
+		\qquad \frac1{q_j}=a_j+\delta,\quad \frac1{q_l}=a_l+\delta.
+	\]
+	则 \(p\le q_j,q_l<\infty\)，且 \(1/q_j+1/q_l=1/p\)。高阶嵌入给出
+	\[
+		\|\mathrm D^\beta u\|_{q_j}\le C\|u\|_{W^{k,p}},\qquad
+		\|\mathrm D^\gamma v\|_{q_l}\le C\|v\|_{W^{k,p}}.
+	\]
+	具体地，若 \((k-j)p<n\)，所选 \(q_j\) 低于其临界指数；若等于 \(n\)，临界嵌入允许任意有限指数；若大于 \(n\)，连续性估计先给出 \(L^\infty\)，再用固定有限支集降到 \(L^{q_j}\)。对 \(l\) 相同。因此 Hölder 不等式恰给出所需乘积的 \(L^p\) 界。将有限个导数项及坐标片相加，得到光滑情形的估计。
+
+	对一般 \(u,v\)，取光滑逼近 \(u_i,v_i\)。已证的双线性估计使 \(u_iv_i\) 在 \(W^{k,p}\) 中为 Cauchy 列，因为
+	\(u_iv_i-u_jv_j=(u_i-u_j)v_i+u_j(v_i-v_j)\)。完备性给出极限；嵌入 \(W^{k,p}\to C^0\) 又使两个因子一致收敛，所以极限正是逐点乘积 \(uv\)。取极限保留范数估计，也保留其弱 Leibniz 公式。矩阵乘法只是在有限个分量乘积后求和，证明完全适用。
+\end{proof}
+
+以 \(n\ge2\) 的闭流形上的一阶情形为例，指数关系可归纳为\cref{g3:tab:first-sobolev-embeddings}。表中全部为连续嵌入；是否能从有界列提取强收敛子列，还需要紧性论证。
+\begin{table}[htbp]
+	\centering
+	\caption{闭紧 \(n\) 维流形上一阶 Sobolev 控制，\(n\ge2\)。}
+	\label{g3:tab:first-sobolev-embeddings}
+	\begin{tabularx}{\textwidth}{@{}lXX@{}}
+		\toprule
+		导数指数 & 得到的控制 & 端点说明\\
+		\midrule
+		\(1\le p<n\) & \(L^q\)，\(1\le q\le p^*\) & 包含 \(q=p^*\)\\
+		\(p=n\) & 每个有限 \(L^q\) & 常数可依赖 \(q\)，一般无 \(L^\infty\) 控制\\
+		\(n<p<\infty\) & \(C^{0,1-n/p}\) & 控制连续代表，不保证经典一阶可微\\
+		\(p=\infty\) & 局部 Lipschitz 连续 & 用弱梯度的本性上确界估计\\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+同样的有限覆盖方法用于一族不同几何数据时，只有覆盖尺度、重叠数、度量比较、标架及截断的相关导数都受统一控制，才会给出统一常数。单个紧流形上的常数存在，并不自动给出退化空间族上的统一估计。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

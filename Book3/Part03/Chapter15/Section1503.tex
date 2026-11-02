@@ -1,40 +1,435 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 15.3 Weitzenböck 与 Bochner
+% 纲要标题：### 15.3 Weitzenböck 公式与 Bochner 方法
 % 纲要位置：几何学计划纲要.md，第 2722 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 联络 Laplace 和曲率作用
 % * 一形式上的 Ricci 项
 % * 正 Ricci 下的消失
-% * 非负曲率下的平行性
-% * 高阶形式中不同曲率算子的要求
+% * 调和形式的平行性与维数界
+% * 高阶形式的曲率项与曲率算子
 % 
 % 纲要内容结束
 
-\section{Weitzenböck 与 Bochner}
+\section{Weitzenböck 公式与 Bochner 方法}
 \label{g3:sec:1503}
 
-待撰写
+Hodge 定理把上同调类交给调和形式来表示；曲率条件若能限制这些形式，就能限制流形的拓扑。关键是把形式 Laplace 算子与联络产生的二阶算子比较。两者具有相同主部，其差是曲率的零阶作用，这就是\term[Weitzenbock gongshi]{Weitzenböck 公式}[Weitzenböck formula]。\footnote{Roland Weitzenböck（1885--1955），奥地利数学家，长期任教于荷兰，研究不变量理论与微分几何。}
+
+\ProseParagraphBreak
+
+将这个恒等式与形式自身配对，得到范数的微分公式或积分公式。\term[Bochner fangfa]{Bochner 方法}[Bochner method]利用其中非负项之和为零，推出平行性或消失。\footnote{Salomon Bochner（1899--1982），美国数学家，出生于今波兰，研究调和分析、概率论与几何分析。}本节始终使用非负号约定
+\(\Delta f=-\operatorname{div}\nabla f\)，并沿用
+\(\mathrm{Rm}(X,Y,Z,W)=g(R(X,Y)W,Z)\)。固定度量后简记
+\(\mathcal H^q(M)=\mathcal H_g^q(M)\)，并记
+\(b_q(M)=\dim_{\mathbb R}H_{\mathrm{dR}}^q(M;\mathbb R)\)。
+局部恒等式不要求紧性；将它积分为消失结论时，才明确假设流形是闭流形。
 
 \subsection{联络 Laplace 和曲率作用}
 \label{g3:subsec:1503:01}
-待撰写
+设 \(E\to M\) 为带度量及相容联络的实或复向量丛。联络
+\(\nabla:\Gamma(E)\to\Gamma(\mathrm T^*M\otimes E)\)
+有形式伴随 \(\nabla^*\)，相应的\term[lianluo laplace suanzi]{联络 Laplace 算子}[connection Laplacian]为
+\(\nabla^*\nabla\)。在正交单位标架中，
+\begin{equation}\label{g3:eq:rough-laplacian-local}
+	\nabla^*\nabla s
+	=-\sum_i\bigl(\nabla_{e_i}\nabla_{e_i}s
+	                  -\nabla_{\nabla_{e_i}e_i}s\bigr).
+\end{equation}
+第二项扣除了求导方向自身的变化，因而右侧是协变 Hessian 的负迹，与标架无关。对紧支截面 \(s,t\)，度量相容性和散度定理给出
+\[
+	(\nabla^*\nabla s,t)_{L^2}=(\nabla s,\nabla t)_{L^2}.
+\]
+这里及以下的复内积均对第一变量线性，积分使用黎曼体积密度，因而不需要定向。
+
+\begin{lemma}\label{g3:lem:connection-norm-laplacian}
+	设 \(M\) 为光滑无边界黎曼流形，\(E\) 带相容联络，\(s\) 为光滑截面。则逐点有
+	\[
+		\frac12\Delta|s|^2
+		=\operatorname{Re}\langle\nabla^*\nabla s,s\rangle-|\nabla s|^2.
+	\]
+\end{lemma}
+\begin{proof}
+	在给定点取 \(\nabla_{e_i}e_j=0\) 的局部正交标架。度量相容性给出
+	\(e_i|s|^2=2\operatorname{Re}\langle\nabla_{e_i}s,s\rangle\)，再求一次导数得
+	\[
+		e_i e_i|s|^2
+		=2\operatorname{Re}\langle\nabla_{e_i}\nabla_{e_i}s,s\rangle
+		 +2|\nabla_{e_i}s|^2.
+	\]
+	取负迹并用式\eqref{g3:eq:rough-laplacian-local}即可。一般标架中的联络修正项恰好恢复 Hessian 的迹。
+\end{proof}
+
+现在令 \(E=\Lambda^q\mathrm T^*M\)，联络由 Levi-Civita 联络诱导。记
+\[
+	\varepsilon_i\omega=e^i\wedge\omega,\qquad
+	\iota_i\omega=\iota_{e_i}\omega,\qquad
+	R^\Lambda(X,Y)=[\nabla_X,\nabla_Y]-\nabla_{[X,Y]}.
+\]
+诱导曲率对协变槽的作用为
+\begin{equation}\label{g3:eq:curvature-action-on-forms}
+	(R^\Lambda(X,Y)\omega)(Z_1,\ldots,Z_q)
+	=-\sum_{a=1}^q
+	\omega(Z_1,\ldots,R(X,Y)Z_a,\ldots,Z_q).
+\end{equation}
+此式可由协变导数的乘法法则求两次交换子得到：对标量配对的交换子扣除 Lie 括号后为零，故输入向量上的曲率作用移到形式一侧时带负号。
+
+\begin{theorem}[Weitzenböck 公式]\label{g3:thm:weitzenbock-forms}
+	设 \(M^n\) 为光滑无边界黎曼流形，\(0\le q\le n\)，
+	\(\Delta_q=\mathrm d\delta+\delta\mathrm d\) 作用于实或复 \(q\) 形式。则
+	\begin{equation}\label{g3:eq:weitzenbock-forms}
+		\Delta_q=\nabla^*\nabla+\mathcal R_q,\qquad
+		\mathcal R_q=-\sum_{i,j}\varepsilon_i\iota_jR^\Lambda(e_i,e_j).
+	\end{equation}
+	其中 \(\mathcal R_q\) 是光滑、自伴的零阶丛映射，与正交标架无关。每个光滑 \(q\) 形式满足
+	\begin{equation}\label{g3:eq:bochner-form-pointwise}
+		\frac12\Delta|\omega|^2
+		=\operatorname{Re}\langle\Delta_q\omega,\omega\rangle
+		  -|\nabla\omega|^2-\langle\mathcal R_q\omega,\omega\rangle.
+	\end{equation}
+	若 \(M\) 闭合，或 \(\omega\) 具有紧支集，则
+	\begin{equation}\label{g3:eq:bochner-form-integrated}
+		\|\mathrm d\omega\|_2^2+\|\delta\omega\|_2^2
+		=\|\nabla\omega\|_2^2
+		  +\int_M\langle\mathcal R_q\omega,\omega\rangle\,\mu_g.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	这与式\eqref{g3:eq:hodge-rough-laplacian}中的曲率项相同。为计算它的符号，在一点取正规正交标架。由
+	\(\mathrm d=\sum_i\varepsilon_i\nabla_{e_i}\)、
+	\(\delta=-\sum_j\iota_j\nabla_{e_j}\)，并利用
+	\(\iota_j\varepsilon_i+\varepsilon_i\iota_j=\delta_{ij}I\)，二阶项合并为
+	\[
+		\begin{split}
+		\mathrm d\delta+\delta\mathrm d
+		&=-\sum_{i,j}\varepsilon_i\iota_j\nabla_{e_i}\nabla_{e_j}
+		  -\sum_{i,j}\iota_j\varepsilon_i\nabla_{e_j}\nabla_{e_i}\\
+		&=-\sum_i\nabla_{e_i}\nabla_{e_i}
+		  -\sum_{i,j}\varepsilon_i\iota_j
+		     [\nabla_{e_i},\nabla_{e_j}].
+		\end{split}
+	\]
+	该点有 \([e_i,e_j]=0\)，故交换子就是 \(R^\Lambda(e_i,e_j)\)。恢复一般标架的迹联络项便得到第一式。左侧和 \(\nabla^*\nabla\) 均为内蕴算子，故其零阶差也与标架无关。它们对紧支截面均形式自伴；对任意局部截面乘紧支函数测试，得到
+	\(\langle\mathcal R_q v,w\rangle=\langle v,\mathcal R_qw\rangle\)
+	逐点成立，所以该零阶差自伴。
+
+	把第一式代入前一引理，得到点态等式；自伴性保证最后一项为实数。在闭流形上或紧支情形积分，散度项的积分为零，再用\cref{g3:prop:form-hodge-energy}的能量恒等式，便得积分式。
+\end{proof}
+
+在这两种 Laplace 算子之间，\(\Delta_q\) 记录外微分复形，\(\nabla^*\nabla\) 记录各方向的协变变化。曲率项描述两种结构的差别。即使 \(\Delta_q\omega=0\)，也不能单凭非负的 \(\nabla^*\nabla\) 就断定 \(\nabla\omega=0\)：还需要判断 \(\mathcal R_q\) 的符号。
 
 \subsection{一形式上的 Ricci 项}
 \label{g3:subsec:1503:02}
-待撰写
+一形式只有一个协变槽，曲率作用的收缩恰好成为 Ricci 张量。这使 Ricci 下界直接进入一阶上同调的分析，而不必控制曲率张量的全部分量。
+
+\begin{theorem}\label{g3:thm:weitzenbock-one-form}
+	设 \(M^n\) 为光滑无边界黎曼流形。定义自伴映射
+	\(\operatorname{Ric}^{\sharp}:\mathrm TM\to\mathrm TM\)，使
+	\(g(\operatorname{Ric}^{\sharp}X,Y)=\operatorname{Ric}(X,Y)\)，并定义其对一形式的作用
+	\((\operatorname{Ric}^{[1]}\alpha)(X)=\alpha(\operatorname{Ric}^{\sharp}X)\)。
+	则
+	\begin{equation}\label{g3:eq:weitzenbock-one-form}
+		\Delta_1\alpha=\nabla^*\nabla\alpha+\operatorname{Ric}^{[1]}\alpha.
+	\end{equation}
+	特别地，实一形式满足
+	\(\langle\mathcal R_1\alpha,\alpha\rangle
+	=\operatorname{Ric}(\alpha^\sharp,\alpha^\sharp)\)。
+\end{theorem}
+\begin{proof}
+	对一形式，先收缩再外乘只留下一个分量。因此在正交标架中，对任意 \(X\) 有
+	\[
+		\begin{split}
+		(\mathcal R_1\alpha)(X)
+		&=-\sum_j(R^\Lambda(X,e_j)\alpha)(e_j)\\
+		&=\sum_j\alpha(R(X,e_j)e_j).
+		\end{split}
+	\]
+	用本卷的曲率槽位核对这个向量收缩：对任意 \(Y\)，
+	\[
+		\begin{split}
+		g\left(\sum_jR(X,e_j)e_j,Y\right)
+		&=\sum_j\mathrm{Rm}(X,e_j,Y,e_j)\\
+		&=\sum_j\mathrm{Rm}(e_j,X,e_j,Y)
+		=\operatorname{Ric}(X,Y).
+		\end{split}
+	\]
+	第二个等号在两对槽位各交换一次，两个负号相消。因此
+	\(\sum_jR(X,e_j)e_j=\operatorname{Ric}^{\sharp}X\)，得到所求公式。
+
+	也可直接检查二阶交换子。在正规标架中心写
+	\(\alpha_i=\alpha(e_i)\)，有
+	\[
+		(\mathrm d\alpha)_{ij}=\nabla_i\alpha_j-\nabla_j\alpha_i,
+		\qquad \delta\alpha=-\sum_i\nabla_i\alpha_i.
+	\]
+	故
+	\[
+		(\Delta_1\alpha)_j
+		=-\sum_i\nabla_i\nabla_i\alpha_j
+		  +\sum_i\bigl((\nabla_i\nabla_j-\nabla_j\nabla_i)\alpha\bigr)_i.
+	\]
+	这里二阶导数指含求导方向修正的协变二阶导数，在所选点修正的一级系数为零。第二个和式为
+	\(-\sum_i\alpha(R(e_i,e_j)e_i)
+	 =\alpha(\operatorname{Ric}^{\sharp}e_j)\)，与上面的内蕴计算一致。
+\end{proof}
+
+对复一形式 \(\alpha=\beta+\mathrm i\gamma\)，曲率二次型为
+\(\operatorname{Ric}(\beta^\sharp,\beta^\sharp)
+ +\operatorname{Ric}(\gamma^\sharp,\gamma^\sharp)\)。
+后面的正性结论因而同时适用于实、复系数。
+
+\begin{theorem}[函数的 Bochner 公式]\label{g3:thm:bochner-function}
+	设 \(M\) 为光滑无边界黎曼流形，\(f\in C^\infty(M;\mathbb R)\)，并取
+	\(\Delta=-\operatorname{div}\nabla\)。则逐点有
+	\begin{equation}\label{g3:eq:bochner-function}
+		\frac12\Delta|\nabla f|^2
+		=\langle\nabla\Delta f,\nabla f\rangle
+		  -|\operatorname{Hess}f|^2
+		  -\operatorname{Ric}(\nabla f,\nabla f).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	外微分的平方为零，故
+	\[
+		\Delta_1\mathrm df
+		=\mathrm d\delta\mathrm df
+		=\mathrm d\Delta_0f.
+	\]
+	对 \(\omega=\mathrm df\) 使用式\eqref{g3:eq:bochner-form-pointwise}；
+	\(\nabla\mathrm df=\operatorname{Hess}f\)，而前一定理将曲率项化为 Ricci 项，立即得到公式。整个推导逐点进行，不需要积分或完备性。
+\end{proof}
+
+例如在 Euclid 空间取 \(f(x)=|x|^2/2\)，有
+\(\Delta f=-n\)、\(\operatorname{Hess}f=I\)，等式两边都为 \(-n\)。这核对了本书非负 Laplace 约定下 Hessian 平方项的负号。
+
+\begin{corollary}\label{g3:cor:harmonic-unit-gradient-parallel}
+	设 \(M\) 为连通光滑无边界黎曼流形，\(\operatorname{Ric}\ge0\)。若实光滑函数 \(f\) 满足
+	\(\Delta f=0\)，且 \(|\nabla f|\) 为常数，则
+	\(\operatorname{Hess}f=0\)，所以 \(\nabla f\) 是平行向量场。若该常数为一，它是平行单位场。
+\end{corollary}
+\begin{proof}
+	式\eqref{g3:eq:bochner-function}的左侧与第一项均为零，故
+	\(0=|\operatorname{Hess}f|^2+\operatorname{Ric}(\nabla f,\nabla f)\)。
+	两个非负量逐点为零。又
+	\(g(\nabla_X\nabla f,Y)=\operatorname{Hess}f(X,Y)\)，故梯度平行。
+\end{proof}
 
 \subsection{正 Ricci 下的消失}
 \label{g3:subsec:1503:03}
-待撰写
+闭流形上的调和一形式满足一个没有边界项的能量等式。Ricci 非负时，其中两个积分都非负；某一点的严格正性还会排除非零平行形式。下面先把这一推理写成适用于各个次数的形式。
 
-\subsection{非负曲率下的平行性}
+\begin{theorem}\label{g3:thm:bochner-vanishing}
+	设 \(M^n\) 为连通闭黎曼流形，\(0\le q\le n\)。假设式\eqref{g3:eq:weitzenbock-forms}中的
+	\(\mathcal R_q\) 在每一点非负。则每个实或复调和 \(q\) 形式都平行，并满足
+	\(\mathcal R_q\omega=0\)。若还存在一点 \(p\) 使
+	\(\mathcal R_q(p)\) 正定，则
+	\(\mathcal H^q(M)=0\)，从而
+	\(H_{\mathrm{dR}}^q(M;\mathbb R)=H_{\mathrm{dR}}^q(M;\mathbb C)=0\)。
+\end{theorem}
+\begin{proof}
+	调和形式光滑，并由式\eqref{g3:eq:bochner-form-integrated}满足
+	\[
+		0=\int_M|\nabla\omega|^2\,\mu_g
+		  +\int_M\langle\mathcal R_q\omega,\omega\rangle\,\mu_g.
+	\]
+	两个被积函数连续、非负，所以各自处处为零，特别是
+	\(\nabla\omega=0\)。再代回 Weitzenböck 公式便得
+	\(\mathcal R_q\omega=0\)。平行形式的范数沿任意曲线恒定，因为
+	\(X|\omega|^2=2\operatorname{Re}\langle\nabla_X\omega,\omega\rangle=0\)。
+	若 \(\mathcal R_q(p)\) 正定，则 \(\omega(p)=0\)；连通性和范数恒定给出 \(\omega=0\)。最后由\cref{g3:thm:hodge-de-rham}的调和代表同构得到上同调消失。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:positive-ricci-first-cohomology}
+	设 \(M\) 为连通闭黎曼流形。若 \(\operatorname{Ric}\ge0\)，且在某点正定，则
+	\[
+		\mathcal H^1(M)=0,\qquad b_1(M)=0.
+	\]
+	特别地，处处正 Ricci 的闭流形没有非零调和一形式，每个光滑闭一形式都正合。
+\end{corollary}
+\begin{proof}
+	由\cref{g3:thm:weitzenbock-one-form}，
+	\(\mathcal R_1=\operatorname{Ric}^{[1]}\)，所以前一定理在 \(q=1\) 时适用。
+	若 \(\alpha\) 闭，其 de Rham 类的调和代表为零，因此 \(\alpha=\mathrm df\)。
+\end{proof}
+
+圆球 \(S^n\)、\(n\ge2\)，满足 \(\operatorname{Ric}=(n-1)g\)，所以一阶上同调消失。这里得到的是实或复上同调的结论。例如\cref{g3:exm:spherical-space-form-quotients}中的标准实射影空间
+\(\mathbb{RP}^n=S^n/\{I,-I\}\)、\(n\ge2\)，由圆球的局部等距商得到同样的正 Ricci 曲率。对径作用自由，且由有限群给出；\cref{g3:thm:space-form-quotient}因此识别其基本群为
+\(\{I,-I\}\cong\mathbb Z/2\mathbb Z\)。一阶实上同调的消失并不排除基本群中的有限信息。
+
+\subsection{调和形式的平行性与维数界}
 \label{g3:subsec:1503:04}
-待撰写
+非负条件通常留下平行形式。这些形式由任意一点的值决定，因而其维数受单个纤维的维数控制。这个有限维事实给出了不需要估计特征值的上同调维数界。
 
-\subsection{高阶形式中不同曲率算子的要求}
+\begin{proposition}\label{g3:prop:nonnegative-curvature-betti-bound}
+	设 \(M^n\) 为连通闭黎曼流形。若 \(\mathcal R_q\ge0\)，则
+	\[
+		\mathcal H^q(M)=\{\omega:\nabla\omega=0\},\qquad
+		b_q(M)\le\binom nq.
+	\]
+	特别地，若 \(\operatorname{Ric}\ge0\)，则 \(b_1(M)\le n\)。
+	若后一个等号成立，则该度量平坦。
+\end{proposition}
+\begin{proof}
+	调和形式平行已由前一定理证明。反过来，平行形式满足
+	\(\mathrm d\omega=\sum_i\varepsilon_i\nabla_{e_i}\omega=0\)、
+	\(\delta\omega=-\sum_i\iota_i\nabla_{e_i}\omega=0\)，故调和。
+	固定 \(p\in M\)，求值映射
+	\[
+		\operatorname{ev}_p:\mathcal H^q(M)\longrightarrow\Lambda^q\mathrm T_p^*M
+	\]
+	为单射：平行形式若在 \(p\) 为零，其恒定范数处处为零。于是维数至多为 \(\binom nq\)，再用 Hodge 定理得到上同调维数界。
+
+	在一形式情形，若 \(b_1=n\)，可选 \(n\) 个实平行形式，使它们在 \(p\) 构成余切空间的一组基。其内积矩阵平行且恒定，故它们在每点均为基。对任意向量场 \(X,Y\)，诱导曲率 \(R^\Lambda(X,Y)\) 消灭这组平行形式。由式\eqref{g3:eq:curvature-action-on-forms}，它们同时消灭向量 \(R(X,Y)Z\)，对全部 \(Z\) 成立；基的分离性给出 \(R(X,Y)Z=0\)。因此度量平坦。
+\end{proof}
+
+\begin{example}\label{g3:exm:flat-torus-parallel-forms}
+	在平坦环面 \(T^n=\mathbb R^n/\mathbb Z^n\) 上，形式
+	\(\mathrm dx^{i_1}\wedge\cdots\wedge\mathrm dx^{i_q}\)
+	从平行常系数形式下降，给出 \(\binom nq\) 个线性无关的平行形式。曲率项为零，上一命题说明它们已经组成全部调和 \(q\) 形式的一组基，所以
+	\(b_q(T^n)=\binom nq\)。非负条件允许这些非零形式；严格正性才会在相应次数消灭它们。
+\end{example}
+
+平行性还保留了环路平行移动的信息：沿闭路移动一个平行形式，它回到同一个值。反过来，若一点处的形式被所有闭路平行移动固定，就可沿路径把它平行移动到其他点；两条路径的差组成闭路，因而结果与路径无关。局部平行移动的光滑依赖使其成为光滑形式；沿任意短曲线的取值恰由平行移动给出，故它的协变导数为零。因此曲率非负时的调和空间可理解为这些被环路平行移动固定的纤维向量，而不只是一个抽象的维数上界。
+
+\subsection{高阶形式的曲率项与曲率算子}
 \label{g3:subsec:1503:05}
-待撰写
+一形式的曲率项只用 Ricci 收缩；高阶形式还保留不同协变槽之间的相互作用。为把正性条件写准确，区分第三章定义的
+\(\mathcal R:\Lambda^2\mathrm TM\to\Lambda^2\mathrm TM\)
+与作用在 \(q\) 形式上的 \(\mathcal R_q\)。前者作用于二向量，后者依赖形式的次数。
+
+\begin{proposition}\label{g3:prop:curvature-operator-bochner}
+	设 \(M^n\) 为光滑无边界黎曼流形。在一点选正交基，令
+	\[
+		L_{ij}=\varepsilon_i\iota_j-\varepsilon_j\iota_i\quad(i<j).
+	\]
+	将 \(L\) 对二向量线性延拓。若
+	\(\{\eta_a\}\) 是曲率算子 \(\mathcal R\) 的正交单位特征基，
+	\(\mathcal R\eta_a=\lambda_a\eta_a\)，则
+	\begin{equation}\label{g3:eq:curvature-operator-bochner-squares}
+		\mathcal R_q=-\sum_a\lambda_a L_{\eta_a}^2,\qquad
+		\langle\mathcal R_q\omega,\omega\rangle
+		   =\sum_a\lambda_a|L_{\eta_a}\omega|^2.
+	\end{equation}
+	并且
+	\begin{equation}\label{g3:eq:forms-casimir-count}
+		\sum_a|L_{\eta_a}\omega|^2=q(n-q)|\omega|^2.
+	\end{equation}
+	故若 \(\mathcal R\ge\kappa I\)，则
+	\(\mathcal R_q\ge\kappa q(n-q)I\)。
+\end{proposition}
+\begin{proof}
+	把二向量 \(e_i\wedge e_j\) 对应于切空间上的反对称映射
+	\[
+		K_{ij}X=g(e_j,X)e_i-g(e_i,X)e_j.
+	\]
+	它在协变形式上的诱导作用为
+	\(-\sum_r\omega(\ldots,K_{ij}X_r,\ldots)\)，恰等于 \(L_{ij}\omega\)：在一形式基上两者均把 \(e^i\) 送到 \(-e^j\)、把 \(e^j\) 送到 \(e^i\)，并按外积的求导法则作用。又由曲率槽位约定，
+	\[
+		R(e_i,e_j)=\sum_{k<l}R_{ijkl}K_{kl},
+		\qquad
+		R^\Lambda(e_i,e_j)=\sum_{k<l}R_{ijkl}L_{kl}.
+	\]
+	代入式\eqref{g3:eq:weitzenbock-forms}，将 \(i,j\) 与 \(j,i\) 合并，得到
+	\[
+		\mathcal R_q
+		=-\sum_{i<j,\ k<l}R_{ijkl}L_{ij}L_{kl}.
+	\]
+	曲率算子是实自伴的，正交换基将矩阵 \((R_{ijkl})\) 对角化，便得平方和公式的第一式。因为
+	\(\varepsilon_i^*=\iota_i\)，有 \(L_{ij}^*=-L_{ij}\)，故
+	\(\langle-L_\eta^2\omega,\omega\rangle=|L_\eta\omega|^2\)，得到第二式。
+
+	为计算平方和，取单位基形式
+	\(e^I=e^{i_1}\wedge\cdots\wedge e^{i_q}\)。
+	若 \(i,j\) 同在 \(I\) 中或都不在其中，则 \(L_{ij}e^I=0\)；
+	若恰有一个在 \(I\) 中，则 \(L_{ij}\) 把它换成另一个指标，并带一个符号，再作用一次得到
+	\(L_{ij}^2e^I=-e^I\)。这样的无序指标对恰有 \(q(n-q)\) 个。因此在每个基向量上，
+	\[
+		-\sum_{i<j}L_{ij}^2=q(n-q)I.
+	\]
+	正交换基保持该和式，配对后得到式\eqref{g3:eq:forms-casimir-count}。最后在平方和中逐项使用
+	\(\lambda_a\ge\kappa\) 即得下界，\(\kappa\) 可为任意实数。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:nonnegative-curvature-operator-forms}
+	设 \(M^n\) 为连通闭黎曼流形，曲率算子 \(\mathcal R\ge0\)。则各阶调和形式都平行。若曲率算子在某一点正定，则
+	\[
+		H_{\mathrm{dR}}^q(M;\mathbb R)=0\qquad(1\le q\le n-1).
+	\]
+	若截面曲率恒为 \(\kappa\)，则逐点有
+	\(\mathcal R_q=\kappa q(n-q)I\)。
+\end{corollary}
+\begin{proof}
+	非负曲率算子给出每个 \(\mathcal R_q\ge0\)，所以可用\cref{g3:thm:bochner-vanishing}。在严格正的点取曲率算子的最小特征值 \(\kappa_p>0\)，对 \(1\le q\le n-1\) 有
+	\(\mathcal R_q(p)\ge\kappa_pq(n-q)I>0\)，得到消失。常截面曲率时
+	\(\mathcal R=\kappa I\)，平方和公式即给出最后的等式。
+\end{proof}
+
+端点次数 \(q=0,n\) 的系数 \(q(n-q)\) 为零。常函数总是平行；在定向流形上，体积形式也平行。这与闭连通定向流形的零阶、顶阶上同调各为一维相容。
+
+\begin{example}\label{g3:exm:positive-ricci-higher-form}
+	单位圆球的乘积 \(S^2\times S^2\) 具有正 Ricci 曲率，却有非零调和二形式。乘积联络在两个因子上分别作用，混合方向的曲率为零；两个单位圆球的 Ricci 张量均等于各自度量，所以乘积上
+	\(\operatorname{Ric}=g\)。令 \(\omega=\pi_1^*\operatorname{vol}_{S^2}\)。面积形式由 Levi-Civita 联络保持，故 \(\omega\) 平行，从而调和。它不是正合形式，因为
+	\[
+		\int_{S^2\times\{p\}}\omega=\operatorname{Area}(S^2)>0,
+	\]
+	而正合形式在此闭曲面上的积分为零。因此正 Ricci 的一阶消失结论不能推广到所有次数。此例的曲率算子为非负，但在混合二向量上为零。
+\end{example}
+
+二形式还允许把差别写成一个明确的算子公式。把 \(\mathcal R\) 通过度量视为二形式上的算子，则
+\begin{equation}\label{g3:eq:two-form-weitzenbock-curvature}
+	(\mathcal R_2\omega)(X,Y)
+	=\omega(\operatorname{Ric}^{\sharp}X,Y)
+	 +\omega(X,\operatorname{Ric}^{\sharp}Y)
+	 -2(\mathcal R\omega)(X,Y).
+\end{equation}
+为验证它，将式\eqref{g3:eq:curvature-action-on-forms}代入曲率项。两个作用在被收缩槽上的部分分别给出上述两个 Ricci 项；余下部分在正交基中为
+\[
+	\sum_{a,b}(R_{ajbi}-R_{aibj})\omega_{ab}
+	=-\sum_{a,b}R_{ijab}\omega_{ab}
+	=-2(\mathcal R\omega)_{ij}.
+\]
+中间等号是第一 Bianchi 恒等式及两对槽位反对称性的结果，最后一步用第三章二形式算子中的 \(1/2\) 归一化。
+
+\begin{example}\label{g3:exm:positive-sectional-negative-bochner}
+	正截面曲率甚至不能逐点保证 \(\mathcal R_2\ge0\)。在定向四维 Euclid 空间取正交单位二向量
+	\[
+		\begin{array}{lll}
+		\sigma_1=(e_{12}+e_{34})/\sqrt2,&
+		\sigma_2=(e_{13}-e_{24})/\sqrt2,&
+		\sigma_3=(e_{14}+e_{23})/\sqrt2,\\
+		\tau_1=(e_{12}-e_{34})/\sqrt2,&
+		\tau_2=(e_{13}+e_{24})/\sqrt2,&
+		\tau_3=(e_{14}-e_{23})/\sqrt2.
+		\end{array}
+	\]
+	令自伴曲率候选算子在三个 \(\sigma_i\) 上的特征值为
+	\(-1,-1,6\)，在三个 \(\tau_i\) 上均为 \(4/3\)。其三个交叉分量为
+	\[
+		R_{1234}=-\frac76,\qquad R_{1324}=\frac76,\qquad
+		R_{1423}=\frac73.
+	\]
+	故 \(R_{1234}-R_{1324}+R_{1423}=0\)；按式\eqref{g3:eq:operator-bianchi-test}，这确实满足第一 Bianchi 恒等式，是代数曲率张量。
+
+	写单位可分解二向量为
+	\(\xi=\sum a_i\sigma_i+\sum b_i\tau_i\)。由
+	\(\xi\wedge\xi=0\)、\(|\xi|=1\)，有
+	\(\sum a_i^2=\sum b_i^2=1/2\)，于是
+	\[
+		\langle\mathcal R\xi,\xi\rangle
+		\ge-\frac12+\frac43\cdot\frac12=\frac16>0.
+	\]
+	另一方面，直接收缩得到 \(\operatorname{Ric}=4g\)。
+	具体地，坐标截面 \(12,34,13,24\) 的曲率均为 \(1/6\)，
+	截面 \(14,23\) 的曲率为 \(11/3\)，每一行的三个截面之和为四；非对角 Ricci 分量为零，因为算子的非对角项仅联系互补指标对。
+	由式\eqref{g3:eq:two-form-weitzenbock-curvature}，
+	\[
+		\mathcal R_2\sigma_3^\flat
+		=(8-12)\sigma_3^\flat=-4\sigma_3^\flat.
+	\]
+	\Cref{g3:prop:curvature-local-realization}将这个张量实现为一个光滑度量在一点的曲率。由于单位可分解二向量构成紧集，严格截面下界在一个小邻域中仍为正，而所示负方向也由连续性保留。因此这不仅是形式上的矩阵区别，也是实际局部度量中的区别。
+\end{example}
+
+对给定次数，Bochner 积分需要的是 \(\mathcal R_q\) 的非负性；非负曲率算子提供一个同时覆盖全部次数的充分条件。一形式只需 Ricci，而截面曲率逐个平面为正并不能代替高阶曲率项的检验。有关这些曲率作用及 Bochner 方法的一般背景，可参阅\cite[第9章，9.2--9.4节]{Petersen2016}。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

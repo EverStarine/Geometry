@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 12.6*　等变局部化与约化体积
 % 纲要位置：几何学计划纲要.md，第 3963 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 % 写作范围、先修与边界：先修为 IV.10 的正则辛约化、IV.12.1 的固定点权和局部标准形，以及 II.附录 C 的等变上同调；本节保持选读，不反向成为凸性或 Delzant 分类的前提。固定紧连通辛流形上的 Hamilton 环面作用，以实或有理系数并对非零权局部化；完整计算孤立固定点的球面和复射影空间模型，证明圆作用自由正则水平集上约化类及体积的变化。一般固定子流形的局部化和一般分段多项式结论按精确版本外引，局部自由、轨形与奇异约化不混同于自由商。
 
 % 纲要内容开始
@@ -20,26 +20,414 @@
 
 \OptionalSection{等变局部化与约化体积}{g4:sec:1206}
 
-待撰写
+一个 Hamilton 环面作用同时提供两种积分方法。把积分推到矩映射的像上，可以用约化空间的体积作密度；把积分限制到固定点，则会出现切表示的权。两种方法在球面和射影空间中给出同一个答案，但其中的角周期、权与面积单位必须一致。本节恢复第二卷附录 C 所需的等变上同调约定，证明孤立固定点的积分公式及自由圆作用正则层的体积变化，并计算这些模型。一般固定分支公式与一般分段多项式定理在相应位置明确引用。
 
 \subsection{Cartan 模型与等变积分的归一化}
 \label{g4:subsec:1206:01}
-待撰写
+设 \(T=\mathbb R^k/(2\pi\mathbb Z)^k\) 光滑作用于紧连通无边界辛流形 \((M^{2n},\omega)\)。记第 \(j\) 个角方向的基本场为 \(V_j\)，其流的参数周期为 \(2\pi\)。一个整数权 \(\alpha=(\alpha_1,\ldots,\alpha_k)\in\mathbb Z^k\) 所对应的特征标为
+\[
+	\chi_\alpha(\theta)=e^{\mathrm{i}\langle\alpha,\theta\rangle}.
+\]
+若用周期为 \(1\) 的生成元作 Lie 代数基，则基本场变成 \(2\pi V_j\)。第二卷附录 C 的整数权变量 \(u_j\) 正是这一基的对偶变量：其上同调次数为 \(2\)，拓扑上代表权 \(1\) 关联线的一阶陈类。
+
+\ProseParagraphBreak
+
+因此本节的\term[cartanmoxing]{Cartan 模型}[Cartan model]写为
+\begin{equation}\label{g4:eq:1206:cartan-normalization}
+	\Omega_T(M)=\bigl(\mathbb R[u_1,\ldots,u_k]\otimes\Omega(M)\bigr)^T,
+	\qquad
+	\mathrm{d}_T=\mathrm{d}-2\pi\sum_{j=1}^k u_j\iota_{V_j}.
+\end{equation}
+这里的 Cartan 指 Henri Cartan。\footnote{Henri Paul Cartan（1904--2008），法国数学家，研究多复变、代数拓扑与同调代数。}多项式次数按两倍计入总次数，形式次数按通常方式计入。第二卷定义 C.1.6、命题 C.1.7采用同一周期为 \(1\) 的变量约定；特别地，在不变形式上
+\[
+	\mathrm{d}_T^2=-2\pi\sum_j u_j\mathcal L_{V_j}=0.
+\]
+第二卷定理 C.1.10的紧群等变 de Rham 比较把这个复形的上同调识别为 Borel 等变上同调 \(H_T^*(M;\mathbb R)\)。\footnote{Armand Borel（1923--2003），瑞士数学家，研究代数拓扑与线性代数群；他与测度论中 Borel 集的 Félix Édouard Justin Émile Borel 是不同人物。}比较定理是本节的外部理论输入之一，其紧连通版本见 Meinrenken 的作者稿第6节定理6.1；这里 \(T\) 确为紧连通群。\cite[作者稿第6节，定理6.1]{Meinrenken2006EquivariantCartan}
+% 跨卷实读：g2:def:cartan-complex(C.1.6)、g2:prop:cartan-is-complex(C.1.7)、g2:thm:equivariant-de-rham(C.1.10)及所列外引范围；AppendixC.tex第275—445行。
+
+\begin{definition}\label{g4:def:1206:equivariant-symplectic-form}
+	设上述作用为 Hamilton 作用，\(\mu=(\mu_1,\ldots,\mu_k)\) 为矩映射，满足 \(\mathrm{d}\mu_j=\iota_{V_j}\omega\)。定义归一化的\term[dengbianxinxingshi]{等变辛形式}[equivariant symplectic form]为
+	\begin{equation}\label{g4:eq:1206:equivariant-omega}
+		\Omega_T=\frac{\omega}{2\pi}+\sum_j\mu_j u_j.
+	\end{equation}
+	它是总次数为 \(2\) 的等变闭形式，因为
+	\[
+		\mathrm{d}_T\Omega_T
+		=\sum_j u_j\bigl(\mathrm{d}\mu_j-\iota_{V_j}\omega\bigr)=0.
+	\]
+	令 \(u=0\) 得到普通类 \([\omega/(2\pi)]\)。这个实上同调类是否为整类是另一项条件，定义本身不要求它整。
+\end{definition}
+
+等变积分逐个多项式系数取普通积分，并且只积分形式次数为 \(2n\) 的部分：
+\[
+	\int_M\sum_\nu u^\nu\eta_\nu
+	=\sum_\nu u^\nu\int_M(\eta_\nu)_{[2n]}.
+\]
+它使总次数降低 \(2n\)。若被积形式是 \(\mathrm{d}_T\)-恰当的，最高形式次数的贡献只来自普通外微分，因为插入运算需要一个不存在的 \(2n+1\) 次形式；Stokes 公式遂说明其积分为零。因此积分下降到等变上同调。
+
+\ProseParagraphBreak
+
+在计算中还会用到指数 \(e^{\Omega_T}\)。可以先按总次数展开，逐项使用积分公式；由于 \(M\) 紧，也可以在给定实参数 \(u\) 后把它解释为通常的指数积分。所得到的表达式是
+\begin{equation}\label{g4:eq:1206:normalized-laplace}
+	\int_M e^{\Omega_T}
+	=\int_M e^{\langle\mu,u\rangle}
+	\frac{\omega^n}{(2\pi)^n n!}.
+\end{equation}
+归一化因子 \((2\pi)^{-n}\) 与式\eqref{g4:eq:1206:cartan-normalization}中的 \(2\pi\) 配套，使后面的 Euler 类直接由整数权给出。
+
+\begin{remark}\label{g4:rem:1206:curvature-sign}
+	对主右圆丛 \(P\to B\)，若实连接形式 \(\alpha\) 在周期为 \(2\pi\) 的正向生成场 \(X\) 上满足 \(\alpha(X)=1\)，写 \(\mathrm{d}\alpha=\pi^*\beta\)。则第二卷式(C.10)—(C.11)的连接计算在此变成
+	\[
+		u\longmapsto-\frac{\beta}{2\pi},
+		\qquad
+		c_1(P\times_{S^1}\mathbb C)_{\mathbb R}
+		=\left[-\frac{\beta}{2\pi}\right],
+	\]
+	其中关联线采用权 \(1\) 表示，等价关系为 \((p,z)\sim(p\cdot g,g^{-1}z)\)。理由是周期为 \(1\) 的连接为 \(\alpha/(2\pi)\)，故第二卷的 \(-\mathrm{d}a\) 恰是这里的 \(-\mathrm{d}\alpha/(2\pi)\)。这也固定了约化类变化公式中的符号。
+\end{remark}
 
 \subsection{固定点权、等变 Euler 类与局部化公式}
 \label{g4:subsec:1206:02}
-待撰写
+在固定点 \(p\) 处，选取与 \(\omega_p\) 相容且 \(T\) 不变的复结构。切表示分解成复一维权空间；若 \(p\) 孤立，所有权 \(\alpha_{p,1},\ldots,\alpha_{p,n}\) 均非零。\cref{g4:thm:1201:fixed-weight-model}把这些权实现为实际坐标中的作用
+\[
+	\theta\cdot(z_1,\ldots,z_n)
+	=\bigl(e^{\mathrm{i}\langle\alpha_{p,1},\theta\rangle}z_1,\ldots,
+	e^{\mathrm{i}\langle\alpha_{p,n},\theta\rangle}z_n\bigr),
+	\qquad \omega=\sum_j\mathrm{d}x_j\wedge\mathrm{d}y_j.
+\]
+按第十章的正向基本场约定，局部矩映射是
+\begin{equation}\label{g4:eq:1206:weight-moment}
+	\mu(z)=\mu(p)-\frac12\sum_j\alpha_{p,j}|z_j|^2.
+\end{equation}
+权的正负由实际特征标决定；矩映射的二次项带着另一个已固定的负号。
+
+\ProseParagraphBreak
+
+固定点切表示的\term[dengbianeulerlei]{等变 Euler 类}[equivariant Euler class]为
+\begin{equation}\label{g4:eq:1206:euler-weights}
+	e_T(\mathrm{T}_pM)=\prod_{j=1}^n\langle\alpha_{p,j},u\rangle.
+\end{equation}
+相容复结构给出的定向与辛定向一致，所以这里不用另添定向符号。下面的局部构造同时验证这个权乘积，并给出积分公式需要的归一化。
+
+\begin{lemma}\label{g4:lem:1206:equivariant-thom-point}
+	在权为 \(\alpha\ne0\) 的复直线 \(\mathbb C\) 上，可以构造紧支等变闭形式 \(\tau_\alpha\)，使
+	\[
+		\int_{\mathbb C}\tau_\alpha=1,\qquad
+		\tau_\alpha|_0=\langle\alpha,u\rangle.
+	\]
+	在 \(n\) 条权直线的直和上，存在相应的乘积形式，其积分为 \(1\)，原点限制为式\eqref{g4:eq:1206:euler-weights}。
+\end{lemma}
+\begin{proof}
+	在 \(\mathbb C\setminus\{0\}\) 上写 \(z=re^{\mathrm{i}\vartheta}\)，令 \(\gamma=\mathrm{d}\vartheta/(2\pi)\)。各基本场在这一平面上为 \(\alpha_j\partial_\vartheta\)，故
+	\[
+		\mathrm{d}_T\gamma=-\langle\alpha,u\rangle.
+	\]
+	选光滑径向函数 \(\chi\)，在原点附近为 \(1\)，在一个圆盘之外为 \(0\)，定义
+	\[
+		\tau_\alpha
+		=\langle\alpha,u\rangle\chi-\mathrm{d}\chi\wedge\gamma.
+	\]
+	第二项的支集避开原点，所以它延拓为全平面的光滑形式；第一项在原点附近为常多项式。用分次乘积法则，
+	\[
+		\mathrm{d}_T\tau_\alpha
+		=\langle\alpha,u\rangle\,\mathrm{d}\chi
+		+\mathrm{d}\chi\wedge\mathrm{d}_T\gamma=0.
+	\]
+	按复定向积分最高形式项，得到
+	\[
+		\int_{\mathbb C}\tau_\alpha
+		=-\int_0^\infty\chi'(r)\,\mathrm{d}r
+		\int_0^{2\pi}\frac{\mathrm{d}\vartheta}{2\pi}=1.
+	\]
+	原点限制则是 \(\langle\alpha,u\rangle\)。在直和中将各条直线上的形式拉回相乘，等变闭性由乘积法则保证；支集位于有界多圆盘中，积分由逐次积分等于 \(1\)，原点限制是各权的乘积。由等变 Thom 类沿零截面的限制定义，\footnote{René Thom（1923--2002），法国数学家，发展了配边理论，并研究奇点与突变理论。}这正是切表示的等变 Euler 类。
+\end{proof}
+
+允许非零权作分母后，记
+\[
+	R=\mathbb R[u_1,\ldots,u_k],\qquad
+	S=\left\{\text{有限个非零整数权线性多项式的乘积}\right\}.
+\]
+第二卷定理 C.1.12给出局部化后的限制同构
+\begin{equation}\label{g4:eq:1206:localized-restriction}
+	S^{-1}H_T^*(M;\mathbb R)
+	\ \xrightarrow{\ \cong\ }\ 
+	S^{-1}H_T^*(M^T;\mathbb R).
+\end{equation}
+该定理的有限 \(T\)-胞腔情形已在第二卷证明；这里使用其紧光滑流形版本，原始证明见 Atiyah--Bott 第3节定理3.5。\cite[第8页，定理3.5]{AtiyahBott1984MomentMap}
+
+\begin{theorem}[孤立固定点的等变积分]\label{g4:thm:1206:isolated-localization}
+	设紧环面 \(T\) Hamilton 作用于紧无边界辛流形 \((M^{2n},\omega)\)，固定点集有限。若 \(\eta\in\Omega_T(M)\) 等变闭，则在局部化系数环中
+	\begin{equation}\label{g4:eq:1206:isolated-localization}
+		\int_M\eta
+		=\sum_{p\in M^T}
+		\frac{\eta|_p}{\prod_{j=1}^n\langle\alpha_{p,j},u\rangle}.
+	\end{equation}
+	特别地，在所有分母非零的实参数处，
+	\begin{equation}\label{g4:eq:1206:exponential-localization}
+		\int_M e^{\langle\mu,u\rangle}\frac{\omega^n}{(2\pi)^n n!}
+		=\sum_{p\in M^T}
+		\frac{e^{\langle\mu(p),u\rangle}}
+		{\prod_{j=1}^n\langle\alpha_{p,j},u\rangle}.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	在每个固定点选取互不相交的等变坐标邻域。把上一引理的乘积形式支集取得足够小，并在邻域之外延拓为零，得到 \(M\) 上的等变闭形式 \(\tau_p\)。它在 \(p\) 的限制是 \(e_T(\mathrm{T}_pM)\)，在其他固定点限制为零，且 \(\int_M\tau_p=1\)。
+
+	在局部化系数下，两个类
+	\[
+		[\eta],\qquad
+		\sum_{p\in M^T}\frac{\eta|_p}{e_T(\mathrm{T}_pM)}[\tau_p]
+	\]
+	限制到每个固定点都相同。式\eqref{g4:eq:1206:localized-restriction}的单射性使它们相等。对两边积分，并使用 \(\int_M\tau_p=1\)，得到第一式。
+
+	将第一式用于 \(\Omega_T^\ell/\ell!\)，再对 \(\ell\ge0\) 求和。左边只有普通形式次数为 \(2n\) 的项参与积分，恰为式\eqref{g4:eq:1206:normalized-laplace}；右边在固定点处只有零次形式，求和成为指数。对固定且避开分母零点的实参数，指数级数在紧 \(M\) 上一致收敛，右边只有有限个固定点，故求和与积分均可交换。
+\end{proof}
+
+当固定点不是孤立点时，法方向的 Euler 类仍可逆。设 \(F\) 为一个固定分支，其相容复法丛分解成权子丛
+\(\nu_F=\bigoplus_{\alpha\ne0}E_\alpha\)，其中 \(r_\alpha=\operatorname{rank}_{\mathbb C}E_\alpha\)。在 \(F\) 的普通上同调与多项式环的张量积中，
+\begin{equation}\label{g4:eq:1206:normal-euler}
+	e_T(\nu_F)=
+	\prod_{\alpha\ne0}
+	\sum_{j=0}^{r_\alpha}c_j(E_\alpha)\langle\alpha,u\rangle^{r_\alpha-j},
+	\qquad c_0(E_\alpha)=1.
+\end{equation}
+这个表达式由第二卷定理21.3.6和命题21.3.10给出：复丛的 Euler 类等于最高陈类，而在 \(F\times BT\) 上，权子丛对应于 \(E_\alpha\) 与权线丛的张量积；后者的第一陈类为 \(\langle\alpha,u\rangle\)。在线丛扭转公式中取最高陈类，即得到各个因子的表达式。零次普通上同调部分是非零权的乘积。除去这一可逆部分后，其余项含正次普通上同调类，因维数有限而幂零；所以有限几何级数就能写出逆元。
+% 跨卷实读：g2:thm:top-class-euler(21.3.6)、g2:prop:chern-operations(21.3.10)及其完整证明，后者取线丛扭转最高陈类。
+
+\begin{theorem}[等变积分局部化，引用版本]\label{g4:thm:1206:fixed-component-localization}
+	设紧环面 \(T\) 光滑作用于紧定向无边界流形 \(M\)。对每个固定连通分支 \(F\) 选择不变法丛定向，并由 \(\mathrm{T}M|_F=\mathrm{T}F\oplus\nu_F\) 规定 \(F\) 的定向。则对任意等变上同调类 \(\eta\)，在非零权局部化后有
+	\begin{equation}\label{g4:eq:1206:fixed-component-localization}
+		\int_M\eta=\sum_{F\subset M^T}\int_F\frac{\eta|_F}{e_T(\nu_F)}.
+	\end{equation}
+	在 Hamilton 辛流形情形，可使用固定分支及相容复法丛的辛定向。
+\end{theorem}
+
+这是 Atiyah--Bott 第3节式(3.8)的积分公式，其证明在局部化同构之外使用一般等变 Thom 推前及自交公式；第二卷式(C.12)已按同一范围引用。原文第3节采用复系数，本式的实系数版本由实类复化后同一等式及复化的单射性得到。本节上面的显式构造证明了孤立固定点这一特殊情形；一般法丛的推前构造取自该文第2—3节。\cite[第5、8--9页，式(2.19)、(3.7)--(3.8)]{AtiyahBott1984MomentMap}
 
 \subsection{正则值上的约化形式与上同调类变化}
 \label{g4:subsec:1206:03}
-待撰写
+固定矩映射的一个值以后，正则辛约化给出一个较低维的辛流形。现在让这个值变化。流形可以沿正则区间保持同一微分同胚类型，而辛形式的上同调类会记录主圆丛的曲率。
+
+\begin{theorem}\label{g4:thm:1206:reduced-class-variation}
+	设 \(S^1=\mathbb R/(2\pi\mathbb Z)\) Hamilton 作用于紧无边界辛流形 \((M^{2n},\omega)\)，矩映射为 \(\mu:M\to\mathbb R\)。设 \(a\) 为正则值，且作用在非空水平集 \(P=\mu^{-1}(a)\) 上自由。记 \(B=P/S^1\)、约化形式为 \(\omega_a\)。则在充分小的 \(|t|<\varepsilon\) 内，各水平集上的作用仍自由，约化空间可光滑识别为同一个 \(B\)。把 \(P\) 的右作用定义为 \(p\cdot e^{\mathrm{i}\theta}=e^{\mathrm{i}\theta}\cdot p\)，并令
+	\[
+		e=c_1(P\times_{S^1}\mathbb C)_{\mathbb R}\in H^2(B;\mathbb R).
+	\]
+	在上述识别下有
+	\begin{equation}\label{g4:eq:1206:dh-class}
+		\left[\frac{\omega_{a+t}}{2\pi}\right]
+		=\left[\frac{\omega_a}{2\pi}\right]+t e.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先构造保持圆作用的水平集识别。取圆作用不变的黎曼度量；其存在由第一卷定理17.3.4的平均度量构造保证。因 \(P\) 紧且 \(\mathrm{d}\mu\) 在其上非零，紧性使我们能选 \(\varepsilon>0\)，使 \(\mu^{-1}([a-2\varepsilon,a+2\varepsilon])\) 内没有临界点。在此带状区域定义不变向量场
+	\[
+		Y=\frac{\nabla\mu}{|\nabla\mu|^2},
+		\qquad \mathrm{d}\mu(Y)=1.
+	\]
+	其积分曲线满足 \(\mu(\Phi_t^Yp)=\mu(p)+t\)。当起点在 \(P\)、\(|t|\le\varepsilon\) 时，轨道始终留在上述紧区域内。第一卷定理13.2.2的有限端点逃逸判据因而保证所需的流全部存在。逆流把邻近水平集送回 \(P\)，得到等变微分同胚
+	\[
+		\Phi:P\times(-\varepsilon,\varepsilon)
+		\longrightarrow\mu^{-1}((a-\varepsilon,a+\varepsilon)),
+		\qquad \mu\Phi=a+t.
+	\]
+	等变微分同胚保持稳定子，所以邻近层也自由。第十章的正则辛约化定理遂在所有这些层适用。
+
+	记拉回的辛形式为 \(\Omega=\Phi^*\omega\)，圆作用生成场仍记为 \(X\)。于是
+	\[
+		\iota_X\Omega=\mathrm{d}t.
+	\]
+	在 \(P\) 上取不变连接形式 \(\alpha\)，满足 \(\alpha(X)=1\)；例如对不变度量可取 \(\alpha=g(X,\cdot)/g(X,X)\)。将其拉回到乘积上。由不变性和 Cartan 公式，\(\mathrm{d}\alpha\) 水平且不变，因此有唯一闭形式 \(\beta\in\Omega^2(B)\) 满足 \(\mathrm{d}\alpha=\pi^*\beta\)。\cref{g4:rem:1206:curvature-sign}给出 \(e=[-\beta/(2\pi)]\)。
+
+	考虑
+	\[
+		\Omega+\mathrm{d}(t\alpha).
+	\]
+	它闭且不变，而
+	\(\iota_X\mathrm{d}(t\alpha)=-\mathrm{d}t\)，所以也水平。\cref{g4:prop:1002:basic-descent}所证明的基本形式下降使它来自 \(B\times(-\varepsilon,\varepsilon)\) 上的一个闭二形式 \(\eta\)。写
+	\[
+		\eta=\eta_t+\mathrm{d}t\wedge\gamma_t,
+		\qquad
+		\eta_t=\omega_{a+t}+t\beta.
+	\]
+	闭性给出 \(\mathrm{d}_B\eta_t=0\)、\(\partial_t\eta_t=\mathrm{d}_B\gamma_t\)。对 \(t\) 积分可知
+	\[
+		\eta_t-\eta_0
+		=\mathrm{d}_B\int_0^t\gamma_s\,\mathrm{d}s,
+	\]
+	故 \([\omega_{a+t}]+t[\beta]=[\omega_a]\)。除以 \(2\pi\) 并代入 \(e\) 即得结论。
+\end{proof}
+
+这个证明直接控制上同调类，不要求所选流把每个约化形式本身变成线性函数。更换连接使 \(\beta\) 只改变一个恰当形式，更换由不变横向流给出的识别则产生同伦的识别；式\eqref{g4:eq:1206:dh-class}因此记录了正则区间上同一族约化空间的类变化。此处的曲率计算与 Cannas da Silva 的命题6.14、定理6.15相应；其圆群在连接计算中采用周期 \(1\)，本节已按周期 \(2\pi\) 写出全部因子。\cite[第6.6节，第179--180页]{Cannas2006Symplectic}
+
+\begin{corollary}\label{g4:cor:1206:reduced-volume-polynomial}
+	在上一条定理的条件下，令 \(v=[\omega_a/(2\pi)]\)。约化空间的归一化体积为
+	\begin{equation}\label{g4:eq:1206:reduced-volume-polynomial}
+		V(a+t)\coloneqq
+		\int_B\frac{\omega_{a+t}^{n-1}}{(2\pi)^{n-1}(n-1)!}
+		=\sum_{j=0}^{n-1}
+		\frac{t^j}{j!(n-1-j)!}\int_B v^{n-1-j}e^j.
+	\end{equation}
+	所以它在这个自由正则区间内为次数至多 \(n-1\) 的多项式。
+\end{corollary}
+\begin{proof}
+	积分只依赖闭形式的上同调类：将一个因子改变为恰当形式，与其余闭因子的乘积仍恰当，在紧无边界 \(B\) 上积分为零。故可用 \((v+te)^{n-1}\) 计算，再用二项式展开得到公式。
+\end{proof}
 
 \subsection{Duistermaat–Heckman 测度的分段多项式性}
 \label{g4:subsec:1206:04}
-待撰写
+矩映射把 \(M\) 上的辛体积送到底空间上的测度。对 Borel 集 \(A\subset\mathbb R^k\)，定义\term[duistermaatheckmancesu]{Duistermaat--Heckman 测度}[Duistermaat--Heckman measure]，\footnote{Johannes Jisse Duistermaat（1942--2010），荷兰数学家，研究微局部分析与辛几何。Gerrit Jacobus Heckman（1953年生），荷兰数学家，研究表示论、辛几何与超几何函数。}记为
+\begin{equation}\label{g4:eq:1206:dh-measure}
+	m_{\mathrm{DH}}(A)=\int_{\mu^{-1}(A)}\frac{\omega^n}{n!}.
+\end{equation}
+也记归一化测度 \(\nu_{\mathrm{DH}}=(2\pi)^{-n}m_{\mathrm{DH}}\)。对连续函数 \(f\)，推前的含义是
+\[
+	\int_{\mathbb R^k}f(x)\,\mathrm{d}\nu_{\mathrm{DH}}(x)
+	=\int_M f(\mu)\frac{\omega^n}{(2\pi)^n n!}.
+\]
+因此式\eqref{g4:eq:1206:exponential-localization}正给出这个归一化测度的指数积分。
+
+\begin{proposition}\label{g4:prop:1206:free-circle-density}
+	在\cref{g4:thm:1206:reduced-class-variation}的自由正则区间上，归一化测度的密度正是约化空间的归一化体积：
+	\begin{equation}\label{g4:eq:1206:free-circle-density}
+		\mathrm{d}\nu_{\mathrm{DH}}(a+t)=V(a+t)\,\mathrm{d}t.
+	\end{equation}
+	等价地，未归一化测度的密度为
+	\(2\pi\int_B\omega_{a+t}^{n-1}/(n-1)!\)。
+\end{proposition}
+\begin{proof}
+	沿用上一证明的乘积坐标与连接。由 \(\eta=\Omega+\mathrm{d}(t\alpha)\) 的分解，
+	\[
+		\Omega
+		=\pi^*\omega_{a+t}+\alpha\wedge\mathrm{d}t
+		+\mathrm{d}t\wedge\pi^*\gamma_t.
+	\]
+	底流形 \(B\) 的维数为 \(2n-2\)。展开最高次幂时，纯水平 \(2n\) 次项为零，含两次 \(\mathrm{d}t\) 的项也为零；含 \(\gamma_t\) 而不含 \(\alpha\) 的项在 \(B\) 方向超过维数。因此
+	\[
+		\frac{\Omega^n}{n!}
+		=\pi^*\!\left(\frac{\omega_{a+t}^{n-1}}{(n-1)!}\right)
+		\wedge\alpha\wedge\mathrm{d}t.
+	\]
+	正向圆轨道上 \(\int\alpha=2\pi\)。在主丛局部平凡化中逐次积分，再用底空间单位分解相加，得到
+	\[
+		\int_{\mu^{-1}(a+E)}\frac{\omega^n}{n!}
+		=2\pi\int_E
+		\left(\int_B\frac{\omega_{a+t}^{n-1}}{(n-1)!}\right)\mathrm{d}t
+	\]
+	对区间内的每个 Borel 集 \(E\) 成立。除以 \((2\pi)^n\) 即得所述密度。
+\end{proof}
+
+上述密度计算与类变化结合，已经完整证明自由圆作用正则层附近的多项式性。在一个全部水平集都自由的连通正则区间内，各个局部多项式在重叠开区间相等，故是同一个多项式的限制。
+
+\begin{theorem}[Duistermaat--Heckman 定理，引用版本]\label{g4:thm:1206:dh-general}
+	设紧环面 \(T^k\) 有效地 Hamilton 作用于紧连通无边界辛流形 \((M^{2n},\omega)\)，矩映射为 \(\mu:M\to\mathbb R^k\)。则 \(m_{\mathrm{DH}}\) 关于 \(\mathbb R^k\) 上的 Lebesgue 测度绝对连续，并且存在一个密度，其限制到每个正则值连通区域上为多项式。对临界值集合上密度代表的取值不作规定。
+\end{theorem}
+
+此处引用 Cannas da Silva 第6.6节定理6.17；该节在第178页假定矩映射固有，紧 \(M\) 自动满足这一条件。定理在第181页陈述，第182—183页给出圆群证明概述并把一般环面情形指向原始论文及进一步文献。本节已补齐自由圆群情形的证明，一般环面及非自由正则层的结论按上述定理外引。\cite[第6.6节，定理6.17，第178、181--183页]{Cannas2006Symplectic}
+
+\ProseParagraphBreak
+
+有效性使矩映射所用的目标空间与实际作用方向一致。如果存在正维子环面处处平凡作用，则其矩映射分量为常数，测度集中在一个真仿射子空间中，不能相对于原来整个 \(\mathbb R^k\) 的 Lebesgue 测度保持绝对连续。另一方面，即使作用有效，正则水平集上的稳定子也可能是非平凡有限群。此时轨道商按第十章的讨论应作为轨形处理；式\eqref{g4:eq:1206:free-circle-density}中按普通自由主丛积分得到的常数，不能直接移植到这样的层。
 
 \subsection{球面与复射影空间的局部化及体积计算}
 \label{g4:subsec:1206:05}
-待撰写
+先计算面积为 \(2\pi\lambda\)、\(\lambda>0\) 的射影直线。由\cref{g4:thm:1003:projective-reduction}，其形式为
+\[
+	\omega_\lambda=2\lambda\,\omega_{\mathrm{FS}},
+	\qquad \int_{\mathbb CP^1}\omega_\lambda=2\pi\lambda.
+\]
+令圆群按
+\[
+	e^{\mathrm{i}\theta}\cdot[z_0:z_1]=[z_0:e^{-\mathrm{i}\theta}z_1]
+\]
+作用。其矩映射与像为
+\[
+	x=\lambda\frac{|z_1|^2}{|z_0|^2+|z_1|^2},\qquad 0\le x\le\lambda.
+\]
+在两极之间取 \(\vartheta=-\arg(z_1/z_0)\)，则正向圆作用使 \(\vartheta\) 增加，且 \(\omega_\lambda=\mathrm{d}\vartheta\wedge\mathrm{d}x\)。这同时给出 \(\iota_{\partial_\vartheta}\omega_\lambda=\mathrm{d}x\) 及归一化推前测度 \(\mathrm{d}x\)。
+
+\begin{example}\label{g4:exm:1206:sphere-localization}
+	固定点 \(p_0=[1:0]\) 的局部坐标 \(z_1/z_0\) 按 \(e^{-\mathrm{i}\theta}\) 变化，所以其权为 \(-1\)；\(p_1=[0:1]\) 的局部坐标 \(z_0/z_1\) 按 \(e^{\mathrm{i}\theta}\) 变化，权为 \(1\)。两点的矩映射值分别为 \(0,\lambda\)。因此
+	\[
+		\int_{\mathbb CP^1}e^{xu}\frac{\omega_\lambda}{2\pi}
+		=\frac1{-u}+\frac{e^{\lambda u}}u
+		=\frac{e^{\lambda u}-1}{u}.
+	\]
+	直接积分也给出 \(\int_0^\lambda e^{xu}\,\mathrm{d}x\)，与局部化完全一致。右端在 \(u=0\) 的奇性可去，极限为 \(\lambda\)，恢复面积 \(2\pi\lambda\)。展开幂级数还得到全部矩：
+	\[
+		\int_{\mathbb CP^1}x^r\frac{\omega_\lambda}{2\pi}
+		=\frac{\lambda^{r+1}}{r+1},\qquad r=0,1,2,\ldots.
+	\]
+	每个内点的约化空间为一点，归一化零维体积为 \(1\)，所以自由圆群密度公式也给出同一个常密度。
+\end{example}
+
+在 \(\mathbb CP^n\) 上继续取 \(\omega_\lambda=2\lambda\omega_{\mathrm{FS}}\)，其中 \(\omega_{\mathrm{FS}}\) 严格采用第十章式\eqref{g4:eq:1003:projective-form}的归一化。令
+\[
+	(\theta_1,\ldots,\theta_n)\cdot[z_0:z_1:\cdots:z_n]
+	=[z_0:e^{-\mathrm{i}\theta_1}z_1:\cdots:e^{-\mathrm{i}\theta_n}z_n].
+\]
+由球面约化中的坐标函数 \(|z_j|^2/2\) 下降，矩映射为
+\begin{equation}\label{g4:eq:1206:projective-moment}
+	x_j=\lambda\frac{|z_j|^2}{\sum_{\ell=0}^n|z_\ell|^2},
+	\qquad
+	\Delta_\lambda=\left\{x_j\ge0,\ \sum_{j=1}^n x_j\le\lambda\right\}.
+\end{equation}
+每个满足这些不等式的点都可由 \(|z_j|^2/( \sum|z_\ell|^2)=x_j/\lambda\) 及剩余比例 \(1-\sum_jx_j/\lambda\) 实现，故像恰为该单纯形。
+
+\begin{proposition}\label{g4:prop:1206:projective-localization}
+	设 \(n\ge1\)、\(\lambda>0\)，并采用上述作用和形式。记 \(u_0=0\)。在 \(u_0,u_1,\ldots,u_n\) 两两不同的实参数处，
+	\begin{equation}\label{g4:eq:1206:simplex-laplace}
+		\int_{\Delta_\lambda}e^{\sum_{j=1}^n x_ju_j}\,
+		\mathrm{d}x_1\cdots\mathrm{d}x_n
+		=\sum_{i=0}^n
+		\frac{e^{\lambda u_i}}{\prod_{j\ne i}(u_i-u_j)}.
+	\end{equation}
+	归一化测度 \(\nu_{\mathrm{DH}}\) 是 \(\Delta_\lambda\) 上的 Lebesgue 测度，且
+	\begin{equation}\label{g4:eq:1206:projective-volume}
+		\int_{\mathbb CP^n}\frac{\omega_\lambda^n}{n!}
+		=(2\pi)^n\frac{\lambda^n}{n!}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	固定点是 \(n+1\) 个坐标点 \(p_i=[0:\cdots:1:\cdots:0]\)。令 \(\varepsilon_j\) 为 \(\mathbb Z^n\) 的标准基，并约定 \(\varepsilon_0=0\)。在 \(p_i\) 处用 \(z_j/z_i\)、\(j\ne i\)，作局部坐标；分子和分母的字符相除，得到实际权
+	\[
+		\alpha_{i,j}=\varepsilon_i-\varepsilon_j,\qquad j\ne i.
+	\]
+	因此
+	\[
+		e_T(\mathrm{T}_{p_i}\mathbb CP^n)=\prod_{j\ne i}(u_i-u_j),
+		\qquad \langle\mu(p_i),u\rangle=\lambda u_i.
+	\]
+	代入\cref{g4:thm:1206:isolated-localization}即得到指数积分的右端。
+
+	再从约化形式直接计算推前测度。在所有齐次坐标均非零的稠密开集，选球面代表
+	\[
+		z_0=\sqrt{2\left(\lambda-\sum_jx_j\right)},\qquad
+		z_j=\sqrt{2x_j}\,e^{-\mathrm{i}\vartheta_j}\quad(j\ge1).
+	\]
+	这里 \(x\in\operatorname{int}\Delta_\lambda\)，\(\vartheta_j\) 周期为 \(2\pi\)。第十章计算约化形式时使用的环境原始形式
+	\(\lambda_0=\frac12\sum_\ell(x_\ell^{\mathrm{amb}}\,\mathrm{d}y_\ell^{\mathrm{amb}}-y_\ell^{\mathrm{amb}}\,\mathrm{d}x_\ell^{\mathrm{amb}})\)
+	在这个截面上拉回为 \(-\sum_jx_j\,\mathrm{d}\vartheta_j\)。因 \(\mathrm{d}\lambda_0=\omega_0\)，得到
+	\[
+		\omega_\lambda=\sum_j\mathrm{d}\vartheta_j\wedge\mathrm{d}x_j.
+	\]
+	积分角变量后，每个角圆贡献 \(2\pi\)，恰好消去归一化因子。被排除的坐标超平面是有限个实余维二子流形，对光滑体积测度为零。因此 \(\nu_{\mathrm{DH}}\) 在整个像上就是单纯形 Lebesgue 测度，证明式\eqref{g4:eq:1206:simplex-laplace}的左端及其与右端的相等。
+
+	单纯形的 Euclid 体积为 \(\lambda^n/n!\)：逐次对最后一个坐标积分，维数归纳给出
+	\[
+		\operatorname{Vol}(\Delta_\lambda)
+		=\int_0^\lambda\frac{(\lambda-s)^{n-1}}{(n-1)!}\,\mathrm{d}s
+		=\frac{\lambda^n}{n!}.
+	\]
+	乘回 \((2\pi)^n\) 得到辛体积。
+\end{proof}
+
+局部化右端各项单独在参数相等时有极点，整体却代表一个光滑积分。最低阶的消去也可以纯代数地核验：对 \(r<n\)，多项式 \(X^r\) 的插值公式中 \(X^n\) 的系数为零；对 \(r=n\) 则为 \(1\)。因此
+\[
+	\sum_{i=0}^n\frac{u_i^r}{\prod_{j\ne i}(u_i-u_j)}
+	=\begin{cases}0,&0\le r<n,\\1,&r=n.\end{cases}
+\]
+这里插值公式是
+\(X^r=\sum_i u_i^r\prod_{j\ne i}(X-u_j)/(u_i-u_j)\)，两边次数至多 \(n\) 且在 \(n+1\) 个不同点取值相同，所以相等。将其用于 \(\Omega_T^n\)，便独立读出 \(\int_{\mathbb CP^n}(\omega_\lambda/(2\pi))^n=\lambda^n\)。固定点权、作用角体积和单纯形体积由此给出了三种相容的计算。
 
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

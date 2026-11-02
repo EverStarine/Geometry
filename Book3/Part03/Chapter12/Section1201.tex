@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 12.1 能量极小化与弱解
 % 纲要位置：几何学计划纲要.md，第 2554 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,192 @@
 \section{能量极小化与弱解}
 \label{g3:sec:1201}
 
-待撰写
+求解 \(\Delta_g u=f\) 时，直接寻找二阶可微函数往往过早要求了正则性。能量方法先在 \(H^1\) 中求一个满足积分恒等式的函数，再研究它是否有更多导数。存在性依赖能量的正性及允许变化的空间；这两个条件可以先在抽象 Hilbert 空间中看清。
 
 \subsection{Hilbert 投影和 Riesz 表示}
 \label{g3:subsec:1201:01}
-待撰写
+在完备内积空间中，最短距离问题给出投影，投影又把一个有界线性泛函表示为内积。以下实、复空间都可使用；复内积 \(\langle u,v\rangle\) 对第一变量线性、第二变量共轭线性，范数为 \(\|u\|^2=\langle u,u\rangle\)。
+
+\begin{theorem}\label{g3:thm:hilbert-projection}
+	设 \(H\) 为实或复 Hilbert 空间，\(K\subset H\) 为非空闭凸集。对每个 \(x\in H\)，存在唯一 \(y=P_Kx\in K\) 使 \(\|x-y\|=\inf_{z\in K}\|x-z\|\)。它由条件
+	\[
+		\operatorname{Re}\langle x-y,z-y\rangle\le0\qquad(z\in K)
+	\]
+	刻画。投影满足 \(\|P_Kx-P_Kx'\|\le\|x-x'\|\)。若 \(K=V\) 是闭线性子空间，则 \(H=V\oplus V^\perp\)，\(P_V\) 线性且范数不超过一。
+\end{theorem}
+\begin{proof}
+	令 \(d=\inf_K\|x-z\|\)，取极小化列 \(z_j\)。中点仍在 \(K\)，平行四边形恒等式给出
+	\[
+		\|z_j-z_k\|^2
+		=2\|x-z_j\|^2+2\|x-z_k\|^2
+		-4\left\|x-\frac{z_j+z_k}{2}\right\|^2
+		\le2\|x-z_j\|^2+2\|x-z_k\|^2-4d^2.
+	\]
+	右侧趋零，故该列在完备空间中收敛；闭性使极限 \(y\) 属于 \(K\)，且达到距离 \(d\)。同一恒等式用于两个极小点，给出唯一性。
+
+	对 \(z\in K\)，把 \(y+t(z-y)\)、\(0\le t\le1\) 代入最短距离条件，展开平方、除以 \(t>0\)，再令 \(t\downarrow0\)，得到所列不等式。反之，由
+	\[
+		\|x-z\|^2=\|x-y\|^2+\|z-y\|^2
+		-2\operatorname{Re}\langle x-y,z-y\rangle
+	\]
+	即可恢复最短性。分别对 \(x,x'\) 的投影使用该条件，相加得到
+	\(\|y-y'\|^2\le\operatorname{Re}\langle x-x',y-y'\rangle\)，再用 Cauchy--Schwarz 不等式便得非扩张性。
+
+	若 \(K=V\) 线性，取 \(z=y+tv\) 的正、负实数 \(t\)，复情形再取 \(tv\) 的纯虚倍数，得到 \(x-y\perp V\)。正交分解的唯一性说明投影保持加法和数乘；范数估计已包含在非扩张性中。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:hilbert-riesz}
+	设 \(H\) 为实或复 Hilbert 空间。每个有界线性泛函 \(\ell:H\to\mathbb K\) 都唯一写成
+	\(\ell(v)=\langle v,f\rangle\)，其中 \(f\in H\)、\(\|f\|=\|\ell\|\)。相应地，每个有界共轭线性泛函 \(F\) 都唯一写成 \(F(v)=\langle f,v\rangle\)。实空间中两种表述相同。
+\end{theorem}
+\begin{proof}
+	若 \(\ell=0\)，取 \(f=0\)。否则 \(V=\ker\ell\) 为真闭子空间。选 \(x\notin V\)，令 \(e=x-P_Vx\ne0\)。对任意 \(v\)，
+	\(v-\ell(v)e/\ell(e)\in V\)，因此
+	\[
+		\langle v,e\rangle=\frac{\ell(v)}{\ell(e)}\|e\|^2.
+	\]
+	取 \(f=\overline{\ell(e)}e/\|e\|^2\)，便有 \(\ell(v)=\langle v,f\rangle\)。Cauchy--Schwarz 给出 \(\|\ell\|\le\|f\|\)，以 \(v=f/\|f\|\) 测试给出反向不等式。两个表示之差对所有 \(v\) 配对为零，取 \(v\) 为该差即得唯一性。对共轭线性 \(F\)，将前述结论用于 \(\overline F\) 后取共轭即可。
+\end{proof}
+
+这个结论称为 Riesz 表示定理。\footnote{Frigyes Riesz（1880--1956），匈牙利数学家，是泛函分析的奠基者之一，研究函数空间、积分表示与算子。}在复空间中区分线性对偶 \(H^*\) 和共轭线性对偶 \(H^\dagger\)，可以使弱方程的右端与测试变量的共轭线性一致；这只是配对的记法，范数与可解性不受影响。
+\symidx{\(H^\dagger\)：复 Hilbert 空间的有界共轭线性对偶}
+
+\begin{example}\label{g3:exm:hilbert-mean-projection}
+	在体积为 \(V>0\) 的紧黎曼流形上，常数函数构成 \(L^2\) 的一维闭子空间，其正交投影是 \(u\mapsto u_M=V^{-1}\int_Mu\,\mu_g\)。因为 \(\int_M(u-u_M)\,\mu_g=0\)，零均值空间正是常数的正交补。第十一章零均值 Poincaré 不等式中的归一化因而也是一个正交投影。
+\end{example}
 
 \subsection{Lax–Milgram 的证明}
 \label{g3:subsec:1201:02}
-待撰写
+积分型方程一般写成 \(a(u,v)=F(v)\)。即使 \(a\) 不对称，只要它在同一向量的配对上控制范数，也可以求解。对称性只在把解解释为二次能量的极小点时才需要。
+
+\begin{theorem}\label{g3:thm:lax-milgram}
+	设 \(H\) 为实或复 Hilbert 空间，\(a:H\times H\to\mathbb K\) 对第一变量线性、第二变量共轭线性，且存在 \(C<\infty\)、\(\alpha>0\) 满足
+	\[
+		|a(u,v)|\le C\|u\|\|v\|,\qquad
+		\operatorname{Re}a(u,u)\ge\alpha\|u\|^2.
+	\]
+	则对每个 \(F\in H^\dagger\)，存在唯一 \(u\in H\) 使
+	\[
+		a(u,v)=F(v)\quad(v\in H),\qquad
+		\|u\|\le\alpha^{-1}\|F\|.
+	\]
+	若另有 \(a(u,v)=\overline{a(v,u)}\)，此解是
+	\(J(v)=\tfrac12a(v,v)-\operatorname{Re}F(v)\) 的唯一极小点。
+\end{theorem}
+\begin{proof}
+	由\cref{g3:thm:hilbert-riesz}，定义有界线性算子 \(A:H\to H\) 及 \(f\in H\)，使
+	\(a(u,v)=\langle Au,v\rangle\)、\(F(v)=\langle f,v\rangle\)。强制性与 Cauchy--Schwarz 给出 \(\|Au\|\ge\alpha\|u\|\)。所以 \(A\) 单射，且像闭：若 \(Au_j\) 收敛，该估计使 \(u_j\) 为 Cauchy 列，连续性使其极限仍映到指定极限。
+
+	若 \(z\perp\operatorname{Ran}A\)，则 \(a(v,z)=0\) 对所有 \(v\) 成立；取 \(v=z\)，强制性给出 \(z=0\)。由闭子空间的正交分解，像既闭又具有零正交补，只能等于 \(H\)。因此 \(Au=f\) 唯一可解，范数界也由同一强制估计得到。
+
+	在 Hermitian 情形，对任意 \(h\in H\)，利用方程展开可得
+	\[
+		J(u+h)-J(u)=\tfrac12a(h,h)\ge\tfrac\alpha2\|h\|^2.
+	\]
+	这给出唯一极小性。反之，极小点沿 \(th\) 的实方向导数为零，给出 \(\operatorname{Re}(a(u,h)-F(h))=0\)；复情形再取 \(\mathrm ih\) 即得到整个复数等式。
+\end{proof}
+
+第一条估计称为连续性，第二条称为\term[qiangzhixing]{强制性}[coercivity]。上述结果是 Lax--Milgram 定理。\footnote{Peter Lax（1926--2025），匈牙利出生的美国数学家，研究偏微分方程、计算数学与积分系统；Arthur N. Milgram（1912--1961），美国数学家，研究拓扑与分析。两人共同建立了这一弱方程可解性结果。}强制性是一个带统一正下界的条件，不能仅用 \(a(u,u)>0\)（\(u\ne0\)）代替。
+
+\begin{example}\label{g3:exm:positive-not-coercive}
+	在 \(\ell^2\) 上令 \(Ae_j=j^{-1}e_j\)。则 \(a(u,v)=\langle Au,v\rangle\) 连续、Hermitian 且对每个非零 \(u\) 有 \(a(u,u)>0\)，但其强制常数只能为零。向量 \(f=(1/j)_{j\ge1}\) 属于 \(\ell^2\)，方程 \(Au=f\) 却要求每个 \(u_j=1\)，所以没有 \(\ell^2\) 解。高频方向的能量越来越弱，使正性不足以保证满射。
+\end{example}
+
+若 \(a\) 含反 Hermitian 部分，\(\operatorname{Re}a(v,v)\) 只看见其 Hermitian 部分。直接极小化这个实能量一般会丢掉方程中的反对称项；Lax--Milgram 的存在性证明保留了整个算子。Hilbert 投影与上述可解性可对照 Brezis 的第5.1—5.3节。\cite[定理5.2、5.5，推论5.8]{Brezis2011}
 
 \subsection{约束最小化与弱下半连续}
 \label{g3:subsec:1201:03}
-待撰写
+约束可能是均值为零、取值在一个凸集内，或满足指定的线性条件。弱收敛能保留哪一种约束，决定了极小化列的极限是否仍可使用。
+
+\begin{lemma}\label{g3:lem:hilbert-weak-minimization-tools}
+	设 \(H\) 为实或复 Hilbert 空间。每个有界序列都有弱收敛子列；每个范数闭凸集在弱拓扑下也闭。若 \(J:H\to(-\infty,+\infty]\) 为凸且范数下半连续的泛函，则它弱下半连续。
+\end{lemma}
+\begin{proof}
+	对给定有界序列，取它所张成的闭线性子空间 \(V\)。有理系数有限组合（复情形同时取有理实、虚部）给出可数稠密集。Riesz 表示说明 \(V^*\) 也可分。对其单位球的可数稠密集逐次选取标量配对收敛的子列，再取对角列；统一范数界使配对极限延伸为 \(V^*\) 上的有界线性泛函。Riesz 表示使用两次说明 \(V\) 反射，即该极限由某个 \(v\in V\) 的求值给出。在 \(H\) 中测试时，可先将表示测试泛函的向量投影到 \(V\)，故所得子列也弱收敛于 \(H\)。这与\cref{g3:thm:sobolev-weak-compactness}中可分对偶的对角论证相同。
+
+	若 \(K\) 非空、闭且凸，\(x\notin K\)，令 \(y=P_Kx\)。投影不等式给出
+	\[
+		\operatorname{Re}\langle x-y,z-y\rangle\le0\quad(z\in K),
+		\qquad \operatorname{Re}\langle x-y,x-y\rangle>0.
+	\]
+	一个连续实线性泛函于是将 \(x\) 与 \(K\) 分开，其严格半空间是弱开邻域。这证明 \(K\) 弱闭；空集无须另证。\(J\) 的每个下水平集 \(\{J\le c\}\) 都范数闭且凸，故弱闭，这正是弱下半连续性。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:direct-method-hilbert}
+	设 \(H\) 为实或复 Hilbert 空间，\(K\subset H\) 非空且弱序列闭，\(J:K\to(-\infty,+\infty]\) 弱序列下半连续。假定 \(-\infty<\inf_KJ<\infty\)，并且至少有一个极小化列在 \(H\) 中有界。则 \(J\) 在 \(K\) 上达到下确界。若 \(K\) 凸且 \(J\) 严格凸，则极小点唯一。
+\end{theorem}
+\begin{proof}
+	从有界极小化列提取弱收敛子列 \(u_j\rightharpoonup u\)。约束的弱序列闭性给出 \(u\in K\)，而
+	\[
+		\inf_KJ\le J(u)\le\liminf_jJ(u_j)=\inf_KJ.
+	\]
+	所以 \(u\) 为极小点。若有两个不同极小点，严格凸性使其中点的能量严格小于下确界，矛盾。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:quadratic-convex-constraint}
+	在\cref{g3:thm:lax-milgram}的 Hermitian 条件下，若 \(K\subset H\) 非空、范数闭且凸，则 \(J(v)=\tfrac12a(v,v)-\operatorname{Re}F(v)\) 在 \(K\) 上有唯一极小点。它由变分不等式
+	\[
+		\operatorname{Re}\bigl(a(u,v-u)-F(v-u)\bigr)\ge0\qquad(v\in K)
+	\]
+	刻画。
+\end{corollary}
+\begin{proof}
+	强制性给出 \(J(v)\ge\alpha\|v\|^2/2-\|F\|\|v\|\)，故下确界有限且极小化列有界。\(J\) 为连续严格凸泛函，上一引理与定理给出存在唯一性。沿线段 \(u+t(v-u)\) 求右导数，得到必要的变分不等式。反之，展开
+	\(J(v)-J(u)=\operatorname{Re}(a(u,v-u)-F(v-u))+a(v-u,v-u)/2\)，即知其非负。
+\end{proof}
+
+在障碍条件 \(u\ge\psi\) 下，可行集合通常是凸集，极小点满足变分不等式；只有允许向两个方向变化的测试才产生等式。另一类约束如 \(\|u\|_{L^2}=1\) 并非凸集。闭流形上若极小化列在 \(H^1\) 中有界，\cref{g3:thm:compact-bundle-rellich}给出强 \(L^2\) 子列，才可保证这一归一化在极限中保持。无限维 Hilbert 空间的正交单位向量列弱趋零，已经表明仅凭弱收敛不能保住单位长度。
 
 \subsection{Poisson 方程的存在与唯一性}
 \label{g3:subsec:1201:04}
-待撰写
+先给出两个可解性模型：有界区域上的零边界问题，以及闭流形上去掉常数核后的问题。这里的 Laplace 算子始终采用 \(\Delta=-\operatorname{div}\operatorname{grad}\)。Poisson 方程的右端因而与非负 Dirichlet 能量配对。\footnote{Siméon Denis Poisson（1781--1840），法国数学家，研究势论、力学与概率；带源项的 Laplace 方程以其命名。}
+
+\begin{definition}\label{g3:def:energy-dual}
+	设 \(\Omega\subset\mathbb R^n\) 为有界开集。记
+	\[
+		H^{-1}(\Omega)=\bigl(H_0^1(\Omega)\bigr)^\dagger,
+		\qquad \|F\|_{H^{-1}}=\sup_{\|v\|_{H^1}\le1}|F(v)|.
+	\]
+	实空间取通常的线性对偶。若 \(F\in H^{-1}\)，函数 \(u\in H_0^1(\Omega)\) 满足
+	\(\int_\Omega\langle\mathrm Du,\mathrm Dv\rangle\,\mathrm dx=F(v)\) 对每个 \(v\in H_0^1\) 成立，就称它是零边界 Poisson 方程的弱解。\(f\in L^2\) 所确定的右端是 \(F(v)=\int f\overline v\)。
+\end{definition}
+\symidx{\(H^{-1}(\Omega)\)：零边界 \(H^1\) 空间的能量对偶}
+
+\begin{theorem}\label{g3:thm:weak-poisson-dirichlet}
+	设 \(\Omega\subset\mathbb R^n\) 为非空有界开集，\(n\ge1\)，\(F\in H^{-1}(\Omega)\)。则零边界 Poisson 方程有唯一弱解 \(u\in H_0^1(\Omega)\)，且
+	\[
+		\|u\|_{H^1}\le C_\Omega\|F\|_{H^{-1}}.
+	\]
+	它也是 \(J(v)=\tfrac12\int_\Omega|\mathrm Dv|^2-\operatorname{Re}F(v)\) 在 \(H_0^1\) 上的唯一极小点。
+\end{theorem}
+\begin{proof}
+	第十一章定义的 \(H_0^1\) 是 \(H^1\) 的闭子空间，因而完备。\Cref{g3:thm:poincare-zero-boundary}给出 \(\|v\|_2\le C_P\|\mathrm Dv\|_2\)，从而
+	\[
+		\int_\Omega|\mathrm Dv|^2\ge(1+C_P^2)^{-1}\|v\|_{H^1}^2.
+	\]
+	能量型连续且 Hermitian，故\cref{g3:thm:lax-milgram}直接给出全部结论。这里零边界由闭包定义，对任意有界开集都有意义；当边界为 \(C^1\) 时，\cref{g3:thm:zero-trace-characterization}进一步将它识别为迹为零。
+\end{proof}
+
+若指定一个已给定的延拓 \(w\in H^1(\Omega)\)，则令 \(u=w+z\)、\(z\in H_0^1\)，把右端改为 \(F(v)-\int\langle\mathrm Dw,\mathrm Dv\rangle\) 即得到唯一的仿射边界类解。若 \(w\) 换成同一模 \(H_0^1\) 类中的另一个代表，所得仿射空间相同，解也相同。
+
+\begin{theorem}\label{g3:thm:weak-poisson-closed}
+	设 \((M,g)\) 为非空、连通、紧且无边界的光滑黎曼流形，\(F\in(H^1(M))^\dagger\)。方程
+	\[
+		\int_M\langle\mathrm du,\mathrm dv\rangle\,\mu_g=F(v)
+		\qquad(v\in H^1(M))
+	\]
+	有弱解当且仅当 \(F(1)=0\)。满足 \(\int_Mu\,\mu_g=0\) 的解唯一，且
+	\(\|u\|_{H^1}\le C\|F\|_{(H^1)^\dagger}\)；所有其他解与它相差常数。
+\end{theorem}
+\begin{proof}
+	测试常数一立即给出必要条件。反过来，在闭子空间
+	\(V=\{v\in H^1(M):\int_Mv\,\mu_g=0\}\) 上，\cref{g3:thm:poincare-compact-connected}使梯度能量强制，Lax--Milgram 给出唯一的 \(u\in V\)。每个测试函数分解为零均值部分与常数；\(F(1)=0\) 使这两部分都满足方程。若两解之差为 \(h\)，以 \(h\) 测试得到 \(\mathrm dh=0\)，\cref{g3:prop:weak-gradient-constant}及连通性说明 \(h\) 为常数。
+\end{proof}
+
+\begin{example}\label{g3:exm:circle-poisson}
+	在标准圆周 \(\mathbb R/(2\pi\mathbb Z)\) 上，\(f(x)=\sin x\) 的平均为零，解为 \(u(x)=\sin x+C\)，因为 \(-u''=\sin x\)。若 \(f\equiv1\)，对常数测试便得到 \(0=2\pi\)，故无解。同一微分表达式是否可解，已经取决于整体的常数核及右端的配对。
+\end{example}
+
+更一般地，在 \(H_0^1(\Omega;\mathbb C^r)\) 上若积分型
+\(a(u,v)=\int\langle A(x)\mathrm Du,\mathrm Dv\rangle\) 的矩阵 \(A\) 有界，且对所有 \(Z\in\mathbb C^{nr}\) 满足 \(\operatorname{Re}\langle A(x)Z,Z\rangle\ge\lambda|Z|^2\)，同一证明给出系统的弱可解性。这里要求的是整个梯度矩阵上的正性。下一节将说明主符号的椭圆性是一种不同的条件，而之后的局部估计负责把这些弱解提升到更高正则性。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

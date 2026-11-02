@@ -1,13 +1,13 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 19.4 校准及全局极小性
 % 纲要位置：几何学计划纲要.md，第 2886 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 余范数和校准平面
 % * 闭性与同调竞争类
-% * 校准对象的体积极小证明
+% * 校准原理与体积极小性
 % * 复子流形与 Kähler 校准
 % * 特殊 Lagrange 模型及非唯一性
 % 
@@ -18,25 +18,162 @@
 \section{校准及全局极小性}
 \label{g3:sec:1904}
 
-待撰写
+第二变分比较无穷小的邻近曲面。若要与同一个竞争类中的所有曲面比较，需要一个可以在整个类中保持不变的量。闭微分形式的积分正具有这种性质；再使它在每个切平面上的值不超过体积，就得到全局下界。本节完整证明这一校准原理及两个基本代数模型，经典论述见\cite[第II.4节，第59页，定理4.2；第III.1--III.2节，第86--93页]{HarveyLawson1982Calibrated}。
 
 \subsection{余范数和校准平面}
 \label{g3:subsec:1904:01}
-待撰写
+在 Euclid 空间中，\(\mathrm dx^1\wedge\cdots\wedge\mathrm dx^m\) 测量一个定向 \(m\) 维平行多面体在前 \(m\) 个坐标方向上的带符号投影体积。投影不能增加体积，所以该形式的值始终受原体积控制；在正向水平平面上恰好取等。下面抽出这个性质。
+
+\begin{definition}\label{g3:def:calibration-comass}
+	设 \((X^n,g)\) 为光滑无边界黎曼流形，\(1\le m\le n\)，\(\phi\in\Omega^m(X)\)。其在 \(x\) 处的\term[yufanshu]{余范数}[comass]为
+	\[
+		\|\phi_x\|_*=\sup\{|\phi_x(e_1,\ldots,e_m)|:
+		 e_1,\ldots,e_m\text{ 为正交单位向量}\}.
+	\]
+	若 \(\mathrm d\phi=0\) 且 \(\|\phi_x\|_*\le1\) 对所有 \(x\) 成立，称 \(\phi\) 为一个 \(m\) 次\term[jiaozhun]{校准}[calibration]。有向 \(m\) 平面 \(P\subset\mathrm T_xX\) 若满足 \(\phi_x|_P=\operatorname{vol}_P\)，称为被 \(\phi\) 校准的平面。定向光滑浸入 \(F:M^m\to X\) 若满足 \(F^*\phi=\operatorname{vol}_{F^*g}\)，称为被 \(\phi\) 校准的浸入。
+\end{definition}
+
+正交标架的集合紧，所以这个上确界能达到。反转定向使形式值变号，故条件 \(\phi(P)=1\) 同时指定了取等平面与它的方向。本书允许某些点的余范数严格小于一；这些点没有被校准的平面，故被校准浸入的像只能经过能取等的点。
+
+\ProseParagraphBreak
+
+余范数与外代数上的 Euclid 范数不同。比如 \(\mathbb R^4\) 上
+\(\omega=\mathrm dx^1\wedge\mathrm dy^1+\mathrm dx^2\wedge\mathrm dy^2\) 的外代数范数是 \(\sqrt2\)。但对正交单位 \(u,v\)，有 \(\omega(u,v)=\langle Ju,v\rangle\le1\)，并可取 \(v=Ju\) 达到一，所以余范数为一。余范数只测试代表真实切平面的简单单位多向量。
 
 \subsection{闭性与同调竞争类}
 \label{g3:subsec:1904:02}
-待撰写
+先说明积分比较中的同调条件。对紧定向光滑 \(m\) 维流形上的映射 \(F\)，用 \([F]\) 表示其带重数的积分区域，即 \([F](\alpha)=\int_MF^*\alpha\)。有限条这样的带系数区域可以相加。若
+\begin{equation}\label{g3:eq:calibration-homology-competitors}
+	[F_1]-[F_0]=\partial C,
+\end{equation}
+其中 \(C=\sum_a c_a[G_a:P_a^{m+1}\to X]\) 是有限条紧定向分片光滑区域组成的链，边界按外法向优先取向并将公共面抵消，就称这两个区域在此竞争中同调。允许各 \(P_a\) 有角；光滑奇异单形是其中的基本模型。等式表示对每个 \(m\) 次形式，左右的有向积分相同。
 
-\subsection{校准对象的体积极小证明}
+\ProseParagraphBreak
+
+第一卷第14.4.4小节的带角 Stokes 定理给出
+\begin{equation}\label{g3:eq:calibration-period-invariance}
+	\int_{M_1}F_1^*\phi-\int_{M_0}F_0^*\phi
+	=\sum_a c_a\int_{P_a}\mathrm d(G_a^*\phi)=0
+\end{equation}
+只要 \(\mathrm d\phi=0\)。每条参数区域紧，故即使 \(X\) 非紧也没有无穷远边界项。用光滑奇异链表达时，这就是第二卷第7.3.2小节的积分链映射公式。闭流形上普通同调类的积分不变量正由同一公式给出；这里把可实际用于比较的填充链写明。
+
+\ProseParagraphBreak
+
+固定边界的光滑同伦自动给出所需链：将 \([0,1]\times M\) 映到 \(X\)，其两端是 \(F_1\) 与 \(-F_0\)；侧边 \([0,1]\times\partial M\) 上映射与时间无关，微分秩至多 \(m-1\)，所以任意 \(m\) 次形式在侧边的积分为零。另一方面，仅有相同边界未必能在给定环境中找到式\eqref{g3:eq:calibration-homology-competitors}的填充，比较时要保留这一拓扑条件。
+
+\begin{example}\label{g3:exm:nonclosed-unit-form-circles}
+	在穿孔平面上取
+	\[
+		\alpha=\frac{-y\,\mathrm dx+x\,\mathrm dy}{\sqrt{x^2+y^2}}
+		=r\,\mathrm d\theta.
+	\]
+	它的余范数处处为一，且在每条逆时针圆周上等于弧长形式。然而 \(\mathrm d\alpha=\mathrm dr\wedge\mathrm d\theta\ne0\)，不同半径的圆周虽围成环带，长度仍为 \(2\pi r\) 而不同。逐点取等本身没有提供同调极小性，闭性承担了保持积分的作用。
+\end{example}
+
+\subsection{校准原理与体积极小性}
 \label{g3:subsec:1904:03}
-待撰写
+\begin{theorem}[校准原理]\label{g3:thm:calibrated-volume-minimizing}
+	设 \((X^n,g)\) 为光滑无边界黎曼流形，\(1\le m\le n\)，\(\phi\) 为 \(m\) 次校准。设 \(F_i:M_i^m\to X\) 为紧定向光滑流形的光滑浸入，允许光滑边界，且满足式\eqref{g3:eq:calibration-homology-competitors}的有限填充条件。若 \(F_0\) 被 \(\phi\) 校准，则
+	\[
+		\mathcal A(F_0)\le\mathcal A(F_1).
+	\]
+	等号当且仅当 \(F_1\) 也以给定定向被 \(\phi\) 校准。
+\end{theorem}
+\begin{proof}
+	对 \(F_1\) 在每点选择有向正交单位切标架，余范数条件给出
+	\(F_1^*\phi=a\operatorname{vol}_{F_1^*g}\)、\(a\le1\)。于是
+	\[
+		\mathcal A(F_0)=\int_{M_0}F_0^*\phi
+		=\int_{M_1}F_1^*\phi
+		\le\int_{M_1}\operatorname{vol}_{F_1^*g}
+		=\mathcal A(F_1).
+	\]
+	第一个等号是 \(F_0\) 的校准性，第二个来自闭性与填充链。若最终取等，连续非负函数 \(1-a\) 的积分为零，故 \(a=1\) 处处；这恰为 \(F_1\) 的校准性。反向直接由同一个等式链得到。
+\end{proof}
+
+同一证明适用于光滑带重数的有限竞争链：若以 \(\sum_j|c_j|\operatorname{Vol}(F_j)\) 计算参数体积，就有 \(\int\phi\le\sum_j|c_j|\operatorname{Vol}(F_j)\)。广义弱曲面的质量与紧性将在下一编建立；这里的光滑结论已经能提供不依赖竞争映射接近程度的下界。
+
+\begin{corollary}\label{g3:cor:calibrated-minimal-stable}
+	无边界光滑浸入若被校准，则它极小，并且对内域紧支变分稳定。紧源带边界时，对固定边界变分也有相同结论；非紧带边界源还要求变分具有紧支集。
+\end{corollary}
+\begin{proof}
+	在包含变分支集的紧区域上，变分扫出的带角圆柱给出填充链。因此每个充分小的正、负参数都满足 \(\mathcal A(F_t)\ge\mathcal A(F_0)\)。一阶导数为零，二阶导数非负；再用\cref{g3:cor:minimal-area-stationarity}得到 \(H=0\)。
+\end{proof}
+
+水平平面提供最直接的应用。取 \(\phi=\mathrm dx^1\wedge\cdots\wedge\mathrm dx^m\)，它闭且余范数为一，任何正向水平域都被校准。在 Euclid 环境中，这个形式还恰当：
+\(\phi=\mathrm d(x^1\mathrm dx^2\wedge\cdots\wedge\mathrm dx^m)\)，\(m=1\) 时括号中就是函数 \(x^1\)。所以只要两个紧竞争浸入具有相同的有向边界积分区域，它们的 \(\phi\) 积分就相等；平面域在这些竞争者中面积最小。
 
 \subsection{复子流形与 Kähler 校准}
 \label{g3:subsec:1904:04}
-待撰写
+令 \(J\) 为实内积空间 \(V^{2n}\) 上的正交复结构，\(\omega(u,v)=\langle Ju,v\rangle\)。复 \(k\) 平面的定向规定为
+\((e_1,Je_1,\ldots,e_k,Je_k)\)。以下 Wirtinger 不等式\footnote{Wilhelm Wirtinger（1865--1945），奥地利数学家，研究复分析、几何与代数函数。}把复方向转成体积下界。
+
+\begin{proposition}[Wirtinger 不等式]\label{g3:prop:wirtinger-calibration}
+	设 \((V^{2n},g,J)\) 为 Hermite 实向量空间，\(1\le k\le n\)。则 \(\omega^k/k!\) 的余范数为一；一个有向实 \(2k\) 平面取正等号，当且仅当它由 \(J\) 保持且取复定向。
+\end{proposition}
+\begin{proof}
+	对实平面 \(P\subset V\)，令 \(T=\pi_PJ|_P\)。这是 \(P\) 上的斜自伴算子，范数至多一。说明其正交块形式：\(-T^2\) 自伴非负，若 \(u\) 为单位特征向量、特征值 \(\lambda^2>0\)，则令 \(v=Tu/\lambda\)，得到 \(Tu=\lambda v\)、\(Tv=-\lambda u\)；这个二维空间的正交补仍由 \(T\) 保持，归纳处理即可，核中的方向再两两配对。因此可取正交基，使
+	\[
+		\omega|_P=\sum_{a=1}^k\lambda_a u^a\wedge v^a,
+		\qquad 0\le\lambda_a\le1.
+	\]
+	故 \(\omega^k/k!\) 在这组基上的值为 \(\prod_a\lambda_a\)，对任意定向的绝对值都至多一。复平面取 \(v_a=Ju_a\) 时全为一，所以余范数确为一。
+	绝对值取等迫使所有 \(\lambda_a=1\)。此时每个 \(u\in P\) 都满足 \(|\pi_PJu|=|Ju|\)，所以 \(Ju\in P\)，即 \(P\) 复不变。反过来，复不变平面上总可选 \(u_a,Ju_a\)；它们给出正等号，反定向则给负等号。
+\end{proof}
+
+流形上的应用只需要一个光滑正交 \(J\) 及闭的基本二形式 \(\omega\)：外微分乘积公式使 \(\mathrm d(\omega^k)=0\)，上面逐点证明的余范数控制遂说明 \(\omega^k/k!\) 是校准。若 \(J\) 平行，则 \(\omega\) 平行，无挠性给出 \(\mathrm d\omega=0\)；这恢复\cref{g3:def:parallel-kahler-structure}采用的 Kähler 条件，无须借助特殊完整群的分类。
+
+\begin{corollary}\label{g3:cor:complex-submanifold-calibrated}
+	设 \((X^{2n},g,J)\) 为光滑 Kähler 流形，\(1\le k\le n\)。若光滑浸入 \(F:M^{2k}\to X\) 的切空间由 \(J\) 保持，则按复定向，它被 \(\omega^k/k!\) 校准，因而极小且局部稳定；其每个紧片在上述同调竞争类中体积最小。特别地，这适用于 Kähler 流形的光滑复子流形。
+\end{corollary}
+\begin{proof}
+	切空间的复定向在光滑换架下相容，因为复可逆矩阵的实行列式为复行列式模平方，严格为正。Wirtinger 不等式的取等条件逐点给出所需校准等式，再应用校准原理和前一推论。
+\end{proof}
+
+例如 \(z\mapsto(z,z^2)\) 把复平面嵌入 \(\mathbb C^2\)。导数复线性且第一分量恒为一，故它是光滑复曲线，参数域上的度量为 \((1+4|z|^2)|\mathrm dz|^2\)。每个紧片都被标准 \(\omega\) 校准。其面积最小性允许竞争面失去复结构，只要求保留相应的边界及同调条件。
 
 \subsection{特殊 Lagrange 模型及非唯一性}
 \label{g3:subsec:1904:05}
-待撰写
+在 \(\mathbb C^n\) 上取标准度量、\(\omega=\sum_j\mathrm dx^j\wedge\mathrm dy^j\) 及复体积形式
+\(\Omega=\mathrm dz^1\wedge\cdots\wedge\mathrm dz^n\)。实 \(n\) 平面 \(P\) 若满足 \(\omega|_P=0\)，称为 Lagrange 平面；等价地 \(JP=P^\perp\)。这一等价由 \(\omega(u,v)=\langle Ju,v\rangle\) 和维数立即得到。流形的切平面满足同一条件时，也称为 Lagrange 子流形。
+
+\begin{proposition}\label{g3:prop:special-lagrangian-calibration}
+	给定 \(n\ge1\)、\(\theta\in\mathbb R\)，常系数形式
+	\(\phi_\theta=\operatorname{Re}(e^{-\mathrm i\theta}\Omega)\) 是 \(\mathbb C^n\) 上的校准。它校准的平面恰是具有相位 \(\theta\) 的有向 Lagrange 平面，即对正向实正交单位基有 \(\Omega(e_1,\ldots,e_n)=e^{\mathrm i\theta}\)。相应浸入称为\term[teshu lagrange ziliuxing]{特殊 Lagrange 子流形}[special Lagrangian submanifold]。
+\end{proposition}
+\begin{proof}
+	将实正交单位向量 \(e_1,\ldots,e_n\) 视作 \(\mathbb C^n\) 中的列，组成复矩阵 \(Z\)。每列 Hermite 长度为一，Gram--Schmidt 正交化给出 \(|\det_{\mathbb C}Z|\le1\)：行列式的模等于逐次正交投影后各列长度之积，每个长度至多一。取等当且仅当各列复正交，即它们的 Hermite 内积都是 \(\delta_{ij}\)。实部已由实正交性保证，虚部为 \(\omega(e_i,e_j)\) 的正号或负号，故取等恰要求 \(P\) 为 Lagrange。
+	又 \(\Omega(e_1,\ldots,e_n)=\det_{\mathbb C}Z\)，从而
+	\[
+		\phi_\theta(e_1,\ldots,e_n)
+		\le |\Omega(e_1,\ldots,e_n)|\le1.
+	\]
+	正等号同时要求模为一、相位为 \(\theta\)。实轴平面的一次酉旋转可实现任意相位，故余范数为一；常系数使 \(\mathrm d\phi_\theta=0\)。
+\end{proof}
+
+对于梯度图 \(F(x)=x+\mathrm i\nabla v(x)\)、\(v\in C^\infty(U)\)、\(U\subset\mathbb R^n\) 开，Hessian 对称性给出 \(F^*\omega=0\)，且
+\begin{equation}\label{g3:eq:special-lagrangian-graph}
+	F^*\Omega=\det(I+\mathrm iD^2v)\,\mathrm dx^1\wedge\cdots\wedge\mathrm dx^n,
+	\qquad \mu_{F^*g}=\sqrt{\det(I+(D^2v)^2)}\,\mathrm dx.
+\end{equation}
+因此按 \(x\) 的标准定向，特殊相位 \(\theta\) 的方程为
+\[
+	\operatorname{Im}\bigl(e^{-\mathrm i\theta}\det(I+\mathrm iD^2v)\bigr)=0,
+	\qquad \operatorname{Re}\bigl(e^{-\mathrm i\theta}\det(I+\mathrm iD^2v)\bigr)>0.
+\]
+第二个条件固定取等方向。若 \(\lambda_j\) 是 Hessian 的实特征值，可连续选取相位
+\(\Theta(D^2v)=\sum_j\arctan\lambda_j\)，方程也就是 \(\Theta=\theta\pmod{2\pi}\)。在连通的选定分支上它是一个常数方程。对任意实对称增量 \(T\)，行列式求导给出
+\[
+	\mathrm d\Theta_S(T)=\operatorname{Im}\operatorname{tr}((I+\mathrm iS)^{-1}\mathrm iT)
+	=\operatorname{tr}((I+S^2)^{-1}T).
+\]
+所以线性化的主系数正定；当 \(\|D^2v\|\le L\) 时，其特征值位于 \([(1+L^2)^{-1},1]\)，得到统一椭圆性。
+
+\begin{example}\label{g3:exm:harmonic-gradient-calibration}
+	在 \(\mathbb R^2\) 上取调和函数 \(v\)。其 Hessian 特征值为 \(\lambda,-\lambda\)，故 \(\det(I+\mathrm iD^2v)=1+\lambda^2>0\)。因此 \(x+\mathrm i\nabla v(x)\) 是零相位特殊 Lagrange 图，其每个紧片有校准给出的面积下界。取
+	\(v(x,y)=x^3/3-xy^2\)，则 \(D^2v=\left(\begin{smallmatrix}2x&-2y\\-2y&-2x\end{smallmatrix}\right)\)，相应因子为 \(1+4(x^2+y^2)\)，得到一个非平面显式模型。
+\end{example}
+
+校准也解释极小者可能不唯一。在平坦复环面 \(\mathbb R^{2n}/\mathbb Z^{2n}\) 上，\(\omega,\Omega\) 都下降为全局形式。对每个 \(b\in\mathbb R^n/\mathbb Z^n\)，水平环面
+\(L_b=\{[x+\mathrm ib]:x\in\mathbb R^n\}\) 都被 \(\operatorname{Re}\Omega\) 校准，体积为一。连接两个 \(b\) 的路径扫出填充链，故这些环面同调并具有相同的最小体积，而作为子集通常不同。取等条件要求竞争者继续被同一形式校准，并不要求它等于原来的子流形。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

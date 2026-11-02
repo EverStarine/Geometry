@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 22.1 流及其几何运算
 % 纲要位置：几何学计划纲要.md，第 3011 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,263 @@
 \section{流及其几何运算}
 \label{g3:sec:2201}
 
-待撰写
+一条定向曲线对一形式的积分，同时记录曲线的位置、方向和重数。曲线发生自交时，积分仍有意义；两段重合但方向相反的曲线则相互抵消。流把这种积分配对作为基本对象。以下先在开集 \(U\subset\mathbb R^n\) 上工作；微分形式的外微分和拉回沿用光滑几何中的约定。基本构造可对照\cite[第25--26节，第129--144页]{Simon1983}；本节质量采用余质量的对偶范数，与该书第26节采用的外代数 Euclid 范数有所区别，两者在简单向量上相同。
 
 \subsection{测试形式、连续性和边界}
 \label{g3:subsec:2201:01}
-待撰写
+记 \(\mathcal D^k(U)=C_c^\infty(U;\Lambda^k(\mathbb R^n)^*)\)。若
+\(\omega_j=\sum_I\omega_{j,I}\,\mathrm dx^I\)，则测试形式收敛 \(\omega_j\to0\) 的含义是：全部支集包含于同一个紧集 \(K\Subset U\)，并且每个系数的每阶导数都一致趋于零。这里 \(I\) 遍历严格递增的 \(k\) 重指标。
+
+\begin{definition}\label{g3:def:current}
+	设 \(U\subset\mathbb R^n\) 开，\(0\le k\le n\)。\term[liu]{流}[current]是测试形式空间 \(\mathcal D^k(U)\) 上的连续线性泛函，称为 \(k\) 维流，记其空间为 \(\mathcal D_k(U)\)。等价地，对每个紧集 \(K\Subset U\)，存在整数 \(r\ge0\) 与常数 \(C\)，使
+	\[
+		|T(\omega)|\le C\max_{I,\,|\alpha|\le r}\|\partial^\alpha\omega_I\|_\infty
+		\quad(\operatorname{supp}\omega\subset K).
+	\]
+	若 \(k\ge1\)，定义\term[liu de bianjie]{流的边界}[boundary of a current]为
+	\[
+		\partial T(\eta)=T(\mathrm d\eta),\qquad \eta\in\mathcal D^{k-1}(U).
+	\]
+	零维流的边界规定为零；当 \(k<0\) 或 \(k>n\) 时，规定 \(\mathcal D_k(U)=\{0\}\)。流列的弱收敛 \(T_j\rightharpoonup T\) 指对每个测试形式都有 \(T_j(\omega)\to T(\omega)\)。
+\end{definition}
+
+上述半范数判别可以直接从连续性得到。若在某个 \(K\) 上不存在这样的 \(r,C\)，逐个选取支于 \(K\) 的形式，使前 \(j\) 阶导数均不超过 \(1/j\)，而泛函值绝对值大于一，就与测试形式连续性矛盾；反向由所给估计立即得到。外微分连续，故 \(\partial T\) 仍是流。由 \(\mathrm d^2=0\)，
+\[
+	\partial^2T=0,\qquad
+	T_j\rightharpoonup T\ \Longrightarrow\ \partial T_j\rightharpoonup\partial T.
+\]
+边界运算因而把几何边界与代数上的链复形联系起来。
+
+零维流正是分布。例如点流 \(\delta_a(\varphi)=\varphi(a)\)，以及 \(\partial_{x_i}\delta_a(\varphi)=-\partial_i\varphi(a)\)，都是零维流。它们的流边界均为零；这里的分布偏导与流边界是不同运算。后者降低流的维数。
+
+\begin{example}\label{g3:exm:oriented-segment-current}
+	设 \(a,b\in\mathbb R^n\)，令 \(\gamma(t)=a+t(b-a)\)。线段流定义为
+	\[
+		\lBrack a,b\rBrack(\omega)=\int_0^1\langle\omega(\gamma(t)),b-a\rangle\,\mathrm dt.
+	\]
+	微积分基本定理给出
+	\[
+		\partial\lBrack a,b\rBrack=\delta_b-\delta_a.
+	\]
+	交换端点改变整个流的符号。相邻线段相加时，公共端点在边界中抵消；曲线是否自交并不影响这项计算。
+\end{example}
 
 \subsection{质量、局部质量与支集}
 \label{g3:subsec:2201:02}
-待撰写
+外积 \(v_1\wedge\cdots\wedge v_k\) 称为简单 \(k\) 向量，其 Euclid 长度等于这些向量张成的平行多面体体积。对一个 \(k\) 余向量 \(\omega\)，定义\term[yu zhiliang]{余质量}[comass]
+\[
+	\|\omega\|_*=\sup\{|\langle\omega,\xi\rangle|:\xi\text{ 简单},\ |\xi|=1\}.
+\]
+其对偶是 \(k\) 向量的质量范数
+\[
+	|v|_{\mathrm m}=\sup_{\|\omega\|_*\le1}|\langle\omega,v\rangle|.
+\]
+简单向量满足 \(|v|_{\mathrm m}=|v|\)：上界来自余质量定义，下界由其定向平面上的单位体积形式取得。一般向量不必简单；例如在 \(\mathbb R^4\) 中，\(|e_1\wedge e_2+e_3\wedge e_4|_{\mathrm m}=2\)，而 Euclid 范数为 \(\sqrt2\)。上界由三角不等式得到，下界用余质量为一的 \(\mathrm dx^1\wedge\mathrm dx^2+\mathrm dx^3\wedge\mathrm dx^4\) 检验。
+
+\begin{definition}\label{g3:def:current-mass}
+	设 \(T\in\mathcal D_k(U)\)。对开集 \(V\subset U\)，定义\term[liu de zhiliang]{流的质量}[mass of a current]
+	\[
+		\mathbf M_V(T)=\sup\{T(\omega):\omega\in\mathcal D^k(V),\ \sup_x\|\omega(x)\|_*\le1\}.
+	\]
+	记 \(\mathbf M(T)=\mathbf M_U(T)\)。若每个 \(V\Subset U\) 上此数有限，称 \(T\) 具有局部有限质量。\(T\) 的支集 \(\operatorname{spt}T\) 是所有使 \(T\) 消失的开集之并的补集，其中在开集上消失指其内每个测试形式的配对均为零。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:current-mass-representation}
+	设 \(U\subset\mathbb R^n\) 开，\(T\in\mathcal D_k(U)\) 具有局部有限质量。则存在唯一的 \(\Lambda_k\mathbb R^n\) 值 Radon 测度，代表 \(T\)。它可写成
+	\begin{equation}\label{g3:eq:current-polar-representation}
+		T(\omega)=\int_U\langle\omega(x),\vec T(x)\rangle\,\mathrm d\|T\|(x),
+		\qquad |\vec T(x)|_{\mathrm m}=1\quad\|T\|\text{-几乎处处},
+	\end{equation}
+	其中正 Radon 测度 \(\|T\|\) 满足 \(\|T\|(V)=\mathbf M_V(T)\)，且 \(\operatorname{spt}T=\operatorname{spt}\|T\|\)。对 Borel 集 \(A\subset U\)，可定义限制流 \(T\llcorner A\)，其配对是在 \(A\) 上的积分，并有 \(\|T\llcorner A\|=\|T\|\llcorner A\)。
+\end{proposition}
+\begin{proof}
+	对每个坐标形式 \(\varphi\,\mathrm dx^I\) 应用\cref{g3:prop:bv-dual-variation}证明中使用的连续函数泛函测度表示：局部质量界使 \(\varphi\mapsto T(\varphi\,\mathrm dx^I)\) 关于一致范数连续，因而由带符号 Radon 测度 \(\mu_I\) 表示。相对紧开集上的表示由测试函数唯一性相容，得到全域的向量测度 \(\mu=\sum_I e_I\mu_I\)。
+
+	令 \(\lambda=\sum_I|\mu_I|\)，写 \(\mu=h\lambda\)。以质量范数计算向量测度的全变差，得到 \(\|T\|=|h|_{\mathrm m}\lambda\)，并在 \(|h|_{\mathrm m}>0\) 处取 \(\vec T=h/|h|_{\mathrm m}\)。这一等式的证明与\cref{g3:lem:vector-measure-polar}相同：先对简单向量函数使用有限分割，再作 \(L^1(\lambda)\) 逼近。对偶上界
+	\[
+		|T(\omega)|\le\int\|\omega(x)\|_*\,\mathrm d\|T\|(x)
+	\]
+	直接成立。反向在有限维余质量单位球中取一个可数稠密族，逐点选择使配对逼近 \(|h|_{\mathrm m}\) 的元素；截成有限个取值，再由 Radon 正则性以紧支连续形式、继而以光滑形式逼近。投影到闭凸单位球或先将范数误差缩回一以内，保持测试界。故每个开集的对偶上确界正是 \(\|T\|\) 的质量。支集及限制的结论随之得到。
+\end{proof}
+
+这里 \(\vec T\) 只是一单位质量范数的向量场，还没有切平面或简单性保证。几何切向结构将在可整流流的定义及闭包证明中出现。对于 \(\partial_i\delta_a\)，取在 \(a\) 附近等于 \(\sin(j(x_i-a_i))\) 的单位模长紧支函数，配对绝对值为 \(j\)；因此一般流甚至不具有局部有限质量。
+
+\begin{proposition}\label{g3:prop:current-mass-lsc}
+	若 \(T_j\rightharpoonup T\) 于开集 \(U\)，则对每个开集 \(V\subset U\)，
+	\[
+		\mathbf M_V(T)\le\liminf_j\mathbf M_V(T_j).
+	\]
+	若各流局部质量有限，则对任意非负紧支连续函数 \(\eta\)，也有
+	\[
+		\int\eta\,\mathrm d\|T\|\le\liminf_j\int\eta\,\mathrm d\|T_j\|.
+	\]
+\end{proposition}
+\begin{proof}
+	对任意支于 \(V\) 且余质量至多为一的测试形式 \(\omega\)，都有
+	\[
+		T(\omega)=\lim_jT_j(\omega)\le\liminf_j\mathbf M_V(T_j).
+	\]
+	对 \(\omega\) 取上确界即可。加权结论将 \(\eta\) 写成开集 \(\{\eta>t\}\) 的层蛋糕积分，并使用 Fatou 引理。这个证明还表明：如果流列在每个相对紧开集上的质量一致有界，其弱极限自动具有局部有限质量。
+\end{proof}
+
+\begin{definition}\label{g3:def:normal-current}
+	设 \(T\in\mathcal D_k(U)\)。若 \(T\) 与 \(\partial T\) 均有局部有限质量，称 \(T\) 为局部\term[zhenggui liu]{正规流}[normal current]；若
+	\[
+		\mathbf N(T):=\mathbf M(T)+\mathbf M(\partial T)<\infty,
+	\]
+	称 \(T\) 为正规流，记 \(T\in\mathcal N_k(U)\)。
+\end{definition}
+
+有限质量只控制流与形式的值配对，边界质量还控制它对外微分的作用。后一项正是下述连续变形估计的来源。对光滑函数 \(a\)，把乘法记作 \(T\llcorner a\)。若收缩约定为
+\[
+	(T\llcorner\mathrm da)(\eta)=T(\mathrm da\wedge\eta),
+\]
+则直接展开 \(\mathrm d(a\eta)\) 得到
+\begin{equation}\label{g3:eq:current-product-rule}
+	\partial(T\llcorner a)=(\partial T)\llcorner a-T\llcorner\mathrm da.
+\end{equation}
+光滑乘法因而保持局部正规性；任意 Borel 限制则未必保持边界质量。
 
 \subsection{推前、乘积和同伦公式}
 \label{g3:subsec:2201:03}
-待撰写
+设 \(f:U\to V\) 光滑，且在 \(\operatorname{spt}T\) 上固有，即目标中每个紧集的原像与支集之交是 \(U\) 中的紧集。定义\term[liu de tuiqian]{流的推前}[pushforward of a current]
+\[
+	f_\#T(\omega)=T(\zeta f^*\omega),
+\]
+其中 \(\zeta\in C_c^\infty(U)\) 在 \(\operatorname{spt}T\cap f^{-1}(\operatorname{supp}\omega)\) 的邻域内为一。两个这样的截断之差在流的支集附近消失，故定义不依赖截断。紧支流的推前不需要另加固有性条件。由拉回与外微分相容，
+\begin{equation}\label{g3:eq:current-pushforward-boundary}
+	\partial(f_\#T)=f_\#(\partial T),\qquad
+	(g\circ f)_\#T=g_\#(f_\#T).
+\end{equation}
+若 \(T\) 有有限质量且 \(\|\mathrm Df\|\le L\) 于支集邻域，则
+\begin{equation}\label{g3:eq:current-pushforward-mass}
+	\mathbf M(f_\#T)\le L^k\mathbf M(T).
+\end{equation}
+这是因为 \(\|f^*\omega\|_*\le L^k\|\omega\|_*\)。这里一般只有不等式，多个原像的取向可能相消。
+
+乘积流沿用“第一因子的方向在前”的约定。若 \(T\) 为 \(r\) 维流，\(S\) 为 \(s\) 维流，则对测试形式的坐标分量定义
+\[
+	(T\times S)(a(x,y)\,\mathrm dx^I\wedge\mathrm dy^J)
+	=T\bigl(x\mapsto S(a(x,\cdot)\,\mathrm dy^J)\,\mathrm dx^I\bigr)
+\]
+当 \(|I|=r,|J|=s\)；其他双次数的分量取零。有限质量时，这就是两个向量测度的乘积与外积配对，因而可由 Fubini 定理计算。一般流的公式也成立：支集局部截断后，内层配对对外参数光滑，逐阶求导可由测试形式拓扑传入配对。
+
+\begin{proposition}\label{g3:prop:current-homotopy}
+	设 \(T\) 为 \(U\subset\mathbb R^n\) 中的紧支 \(k\) 维流，\(H:[0,1]\times U\to\mathbb R^q\) 光滑，记 \(H_t(x)=H(t,x)\)。则
+	\begin{equation}\label{g3:eq:current-homotopy}
+		H_{1\#}T-H_{0\#}T
+		=\partial H_\#(\lBrack0,1\rBrack\times T)
+		+H_\#(\lBrack0,1\rBrack\times\partial T).
+	\end{equation}
+	若 \(T\) 正规，且在相关支集上 \(|\partial_tH|\le a\)、\(\|\mathrm D_xH\|\le L\)，则
+	\[
+		\mathbf M\bigl(H_\#(\lBrack0,1\rBrack\times T)\bigr)
+		\le aL^k\mathbf M(T).
+	\]
+	对 \(k\ge1\)，将 \(T\) 换为 \(\partial T\) 的相应上界为 \(aL^{k-1}\mathbf M(\partial T)\)；零维时该项为零。
+\end{proposition}
+\begin{proof}
+	先在分量上展开外微分。\(x\) 方向的导数给出 \(\partial T\times S\)，\(y\) 方向的导数越过前面的 \(r\) 个微分，给出符号 \((-1)^r\)，所以
+	\[
+		\partial(T\times S)=\partial T\times S+(-1)^rT\times\partial S.
+	\]
+	对第一因子取区间，有
+	\[
+		\partial(\lBrack0,1\rBrack\times T)
+		=\delta_1\times T-\delta_0\times T
+		-\lBrack0,1\rBrack\times\partial T.
+	\]
+	推前并用式\eqref{g3:eq:current-pushforward-boundary}即得同伦公式。质量估计先在简单单位向量上计算：\(\partial_t\wedge\xi\) 的像是
+	\(\partial_tH\wedge(\Lambda^k\mathrm D_xH)\xi\)，长度至多 \(aL^k\)。一般向量的质量范数可写为简单向量分解的长度和的下确界；这由余质量单位球的极集刻画得到，亦可用有限维分离定理验证。因此同一估计适用于一般向量测度。最后对 \(t\) 和 \(\|T\|\) 积分。
+\end{proof}
+
+对两个光滑 \(L\)-Lipschitz 映射 \(f,g\)，采用直线同伦。若在支集邻域内 \(|f-g|\le\delta\)，则对测试形式 \(\omega\)，
+\begin{equation}\label{g3:eq:current-uniform-map-estimate}
+\begin{aligned}
+	|(f_\#T-g_\#T)(\omega)|
+	&\le\delta L^k\mathbf M(T)\|\mathrm d\omega\|_{*,\infty}\\
+	&\quad+\delta L^{k-1}\mathbf M(\partial T)\|\omega\|_{*,\infty}.
+\end{aligned}
+\end{equation}
+这里及以下若 \(k=0\)，删除含 \(\partial T\) 的第二项。只控制映射的一致误差并不足以控制导数；正规流的边界质量通过同伦公式弥补了这一点。
+
+\begin{theorem}\label{g3:thm:normal-lipschitz-pushforward}
+	设 \(T\in\mathcal N_k(\mathbb R^n)\) 紧支，\(f:\mathbb R^n\to\mathbb R^q\) 为 Lipschitz 映射。则光滑卷积逼近 \(f_j\) 定义唯一的极限 \(f_\#T=\lim_jf_{j\#}T\)。任意在支集邻域一致趋于 \(f\)、Lipschitz 常数一致有界的光滑逼近给出同一流。推前与边界、复合相容，支集包含于 \(f(\operatorname{spt}T)\)，且
+	\[
+		\mathbf M(f_\#T)\le\operatorname{Lip}(f)^k\mathbf M(T).
+	\]
+	Lipschitz 同伦也满足式\eqref{g3:eq:current-homotopy}及相应质量估计。
+\end{theorem}
+\begin{proof}
+	卷积 \(f_j=f*\rho_{\varepsilon_j}\) 保持 Lipschitz 常数，并在紧集上一致收敛。式\eqref{g3:eq:current-uniform-map-estimate}说明每个测试配对为 Cauchy 列。式\eqref{g3:eq:current-pushforward-mass}又使极限关于测试形式的一致范数有界，故定义一个有限质量流。对 \(\partial T\) 同样操作；因 \(\partial^2T=0\)，其配对同样收敛。对光滑推前的边界等式取极限，得到边界相容及正规性。支集结论由目标中与 \(f(\operatorname{spt}T)\) 不交的紧支测试形式检验得到。
+
+	质量下半连续给出精确的 \(\operatorname{Lip}(f)^k\) 界。对于另一列光滑一致逼近，将它与卷积逼近代入同伦估计即可证明极限相同。复合相容可先固定一个光滑外映射，在内映射逼近中取极限，再逼近外映射；所有中间流的质量及边界质量由上述估计一致控制，故误差估计允许交换两个极限。同理，在 \([0,1]\times\operatorname{spt}T\) 的邻域内逼近 \(H\)，对区间乘积流应用刚建立的推前与边界相容，便把光滑同伦公式传到 Lipschitz 同伦。局部定义可先对支集附近作 Lipschitz 延拓；不同延拓在该邻域的推前一致。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:normal-pushforward-finite}
+	\cref{g3:thm:normal-lipschitz-pushforward}的推前及边界相容可推广到任意 \(T\in\mathcal N_k(\mathbb R^n)\)，不要求紧支；支集包含于 \(\overline{f(\operatorname{spt}T)}\)。若 \(T\) 仅局部正规，而 \(f\) 在其支集上固有，则推前在目标中局部定义，保持局部正规性。
+\end{corollary}
+\begin{proof}
+	取 \(0\le\chi_R\le1\)，在 \(B_R\) 上为一、支于 \(B_{2R}\)，且 \(|\nabla\chi_R|\le C/R\)。乘积公式说明
+	\[
+		\mathbf M(T\llcorner\chi_R-T)\to0,
+		\mathbf M\bigl(\partial(T\llcorner\chi_R)-\partial T\bigr)\to0.
+	\]
+	对每个截断流使用紧支推前定理。质量估计应用于两个截断之差，使所得推前及其边界均为质量范数 Cauchy 列；其极限与截断选择无关，且继承质量界及边界公式。对局部正规且固有的情形，每个目标测试形式的相关原像只涉及源中的一个紧集，取在该集邻域为一的截断即可，交叠处由局部唯一性一致。
+\end{proof}
+
+还会用到局部版本的质量估计。设紧支正规流 \(T\) 的支集邻域中，映射的局部 Lipschitz 常数不超过一个连续函数 \(l(x)\)，则
+\begin{equation}\label{g3:eq:current-weighted-pushforward}
+	\mathbf M(f_\#T)\le\int l(x)^k\,\mathrm d\|T\|(x).
+\end{equation}
+若同伦在空间变量中的局部 Lipschitz 常数统一受 \(l(x)\) 控制，且时间方向速度受连续函数 \(a(x)\) 控制，则
+\begin{equation}\label{g3:eq:current-weighted-homotopy}
+	\mathbf M\bigl(H_\#(\lBrack0,1\rBrack\times T)\bigr)
+	\le\int a(x)l(x)^k\,\mathrm d\|T\|(x).
+\end{equation}
+为证明这两式，对光滑映射先在每一点用外积估计，再对质量测度积分。对 Lipschitz 映射作卷积，小球内的导数界由该球上的 \(\sup l\) 控制；同伦的两个方向分别由 \(\sup a\)、\(\sup l\) 控制。在固定紧支邻域中这些函数有界，连续性及控制收敛使光滑估计传到上述积分界。后文的径向投影先删去奇点邻域，再应用这些连续局部控制。
+
+\begin{proposition}\label{g3:prop:current-regularization-homotopy}
+	设 \(T\) 为 \(\mathbb R^n\) 中紧支正规流，\(\rho_\varepsilon\) 为支于 \(B_\varepsilon\) 的非负单位积分光滑核。存在光滑系数流 \(\sigma_\varepsilon T\) 与正规 \((k+1)\) 维流 \(A_\varepsilon T\)，满足
+	\[
+		\sigma_\varepsilon T-T=\partial A_\varepsilon T+A_\varepsilon\partial T,
+		\quad \mathbf M(\sigma_\varepsilon T)\le\mathbf M(T),
+		\quad \mathbf M(A_\varepsilon T)\le\varepsilon\mathbf M(T).
+	\]
+	两者支集均包含于 \(\operatorname{spt}T+\overline B_\varepsilon\)，且 \(\partial\sigma_\varepsilon T=\sigma_\varepsilon\partial T\)。
+\end{proposition}
+\begin{proof}
+	令 \(\tau_z(x)=x+z\)、\(H_z(t,x)=x+tz\)。对测试形式逐项定义
+	\[
+		\sigma_\varepsilon T=\int\rho_\varepsilon(z)\tau_{z\#}T\,\mathrm dz,
+		\qquad A_\varepsilon T=\int\rho_\varepsilon(z)
+		H_{z\#}(\lBrack0,1\rBrack\times T)\,\mathrm dz.
+	\]
+	前者的系数是向量测度与光滑核的卷积。后者由同伦质量界定义有限质量流。把同伦公式对 \(z\) 积分得到所述恒等式，并得到质量及支集估计。该恒等式使 \(\partial A_\varepsilon T\) 有有限质量，故 \(A_\varepsilon T\) 正规；边界相容由卷积与外微分相容得到。
+\end{proof}
 
 \subsection{光滑定向子流形及抵消现象}
 \label{g3:subsec:2201:04}
-待撰写
+设 \(M\subset\mathbb R^n\) 为 \(k\) 维光滑定向嵌入子流形，体积局部有限，取向由单位简单切向量 \(\tau_M\) 表示。它诱导积分流
+\[
+	\lBrack M\rBrack(\omega)
+	=\int_M\langle\omega,\tau_M\rangle\,\mathrm d\mathcal H^k.
+\]
+局部面积公式保证这与坐标中的微分形式积分一致。其质量测度是 \(\mathcal H^k\llcorner M\)。若 \(M\) 紧且带光滑边界，由光滑 Stokes 公式，
+\[
+	\partial\lBrack M\rBrack=\lBrack\partial M\rBrack.
+\]
+这里边界采用外法向优先的取向；例如标准定向圆盘的边界圆周为逆时针。Stokes 的局部坐标及单位分解证明见第一卷第14.4节，当前使用的是紧光滑带边界情形。
+
+\begin{example}\label{g3:exm:current-parallel-cancellation}
+	在 \(\mathbb R^2\) 中令 \(Q_\varepsilon=(0,1)\times(0,\varepsilon)\)，取标准取向。边界流 \(T_\varepsilon=\partial\lBrack Q_\varepsilon\rBrack\) 的质量为 \(2+2\varepsilon\)。但对每个紧支光滑一形式，
+	\[
+		|T_\varepsilon(\omega)|
+		=|\lBrack Q_\varepsilon\rBrack(\mathrm d\omega)|
+		\le\varepsilon\|\mathrm d\omega\|_{*,\infty}\longrightarrow0.
+	\]
+	两条长边距离趋零、取向相反，最终抵消；两条短边的质量趋零。极限流为零，其质量严格小于质量极限。若只记录各条边上的无向长度，则两条长边会叠成重数二的线段。两种极限回答的几何问题不同。
+\end{example}
+
+对于同一光滑流形，反转取向使流乘以 \(-1\)，取整数份数使流乘以该整数。下一节把切平面、取向和重数推广到可数可整流集合，并以边界的相同结构选出整数流。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

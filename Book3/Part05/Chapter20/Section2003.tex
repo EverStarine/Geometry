@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 20.3 面积公式
 % 纲要位置：几何学计划纲要.md，第 2940 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,288 @@
 \section{面积公式}
 \label{g3:sec:2003}
 
-待撰写
+一个参数片可以把同一段曲面描画多次。参数域上的面积积分会保留这些重复，而像集的 Hausdorff 测度只计算每个像点一次。面积公式把二者联系起来：微分给出每个参数点的面积放大率，重数则记录同一像点有多少个原像。光滑情形及其带重数、带权形式可参看\cite[第8节，式(8.1)--(8.5)]{Simon1983}。本节从线性映射和上一节的 Lipschitz 分片出发，证明任意可测参数集上的公式。
 
 \subsection{单射 Lipschitz 片的 Jacobian}
 \label{g3:subsec:2003:01}
-待撰写
+以下 \(1\le m\le n\)，\(\mathcal L^m\) 表示 \(\mathbb R^m\) 上的 Lebesgue 测度，\(\mathcal H^m\) 采用\subsecref{g3:subsec:2001:01}的 \(\omega_m/2^m\) 归一化。测度记号用于尚未证明可测的集合时，先指相应外测度。\Cref{g3:thm:hausdorff-lebesgue}保证一个 \(m\) 维 Euclid 平面上的 \(\mathcal H^m\) 就是它的通常体积。
+
+\begin{definition}\label{g3:def:area-jacobian}
+	对线性映射 \(T:\mathbb R^m\to\mathbb R^n\)，定义其 \(m\) 维\term[Jacobian mianjiyinzi]{Jacobian 面积因子}[area Jacobian]为
+	\[
+		J_m(T)\coloneqq\sqrt{\det(T^{\mathsf T}T)}.
+	\]
+	对 Lipschitz 映射 \(f:\mathbb R^m\to\mathbb R^n\)，在可微点定义 \(J_m f(x)=J_m(\mathrm Df(x))\)，在不可微点令其为零。不可微集为 \(\mathcal L^m\) 零测集，故这一补充值不影响积分。
+\end{definition}
+
+矩阵 \(T^{\mathsf T}T\) 的元素是 \(\langle Te_i,Te_j\rangle\)，所以 \(J_m(T)\) 是这 \(m\) 个向量所张平行多面体的体积。若奇异值为 \(s_1,\ldots,s_m\ge0\)，则 \(J_m(T)=s_1\cdots s_m\)；它为零当且仅当 \(\operatorname{rank}T<m\)。特别地，\(J_1(T)=|Te_1|\)，而 \(m=n\) 时 \(J_m(T)=|\det T|\)。上一节证明微分矩阵在可微集上可测，故 \(J_mf\) 可测，且 \(0\le J_mf\le(\operatorname{Lip}f)^m\)。
+
+\begin{lemma}\label{g3:lem:linear-area-formula}
+	设 \(1\le m\le n\)，\(T:\mathbb R^m\to\mathbb R^n\) 为线性映射。对任意集合 \(A\subset\mathbb R^m\)，有外测度恒等式
+	\begin{equation}\label{g3:eq:linear-area-formula}
+		\mathcal H^m(T(A))=J_m(T)\mathcal L^m(A),
+	\end{equation}
+	其中 \(0\cdot\infty\) 按零解释。
+\end{lemma}
+\begin{proof}
+	先设 \(T\) 满秩。对称矩阵 \(T^{\mathsf T}T\) 可由正交基对角化；相应的 \(Te_i/s_i\) 是像平面的正交归一基。因此在源、靶各作一次等距变换后，\(T\) 化为
+	\[
+		(x_1,\ldots,x_m)\longmapsto(s_1x_1,\ldots,s_mx_m,0,\ldots,0),\qquad s_i>0.
+	\]
+	Hausdorff 外测度在等距变换下不变。坐标伸缩使轴平行长方体的体积乘以 \(s_1\cdots s_m\)；用可数长方体覆盖计算 Lebesgue 外测度，得到伸缩后的外测度至多为这一倍。再对逆伸缩使用相同不等式，便得到等号。结合平面上 \(\mathcal H^m=\mathcal L^m\)，即得所述公式。
+
+	若 \(\operatorname{rank}T=k<m\)，其像包含在一个 \(k\) 维平面中。该平面的任一有界部分可由至多 \(C\delta^{-k}\) 个直径不超过 \(C\delta\) 的小立方体覆盖，覆盖的 \(m\) 维代价不超过 \(C\delta^{m-k}\)，随 \(\delta\downarrow0\) 趋零。对有界部分作可数并，得整个像平面的 \(\mathcal H^m\) 为零；同时 \(J_m(T)=0\)。
+\end{proof}
+
+线性公式说明面积因子应取什么值。下面的比较说明，若在一个片上控制了两个点之间的误差，那么面积也随之受到控制。这比只固定一个点写 Taylor 展开更适于分片求和。
+
+\begin{lemma}\label{g3:lem:near-linear-area-comparison}
+	设 \(1\le m\le n\)，\(T:\mathbb R^m\to\mathbb R^n\) 为满秩线性映射，且 \(|Tv|\ge\alpha|v|\)、\(\alpha>0\)。设 \(E\subset\mathbb R^m\)，\(f:E\to\mathbb R^n\) 满足
+	\[
+		|f(y)-f(x)-T(y-x)|\le\varepsilon|y-x|\quad(x,y\in E),\qquad 0\le\varepsilon<\alpha.
+	\]
+	记 \(\rho=\varepsilon/\alpha\)。则 \(f\) 单射，而且对任意 \(A\subset E\)，
+	\begin{equation}\label{g3:eq:near-linear-area-comparison}
+		(1-\rho)^mJ_m(T)\mathcal L^m(A)
+		\le\mathcal H^m(f(A))
+		\le(1+\rho)^mJ_m(T)\mathcal L^m(A).
+	\end{equation}
+	此外，若线性映射 \(B:\mathbb R^m\to\mathbb R^n\) 满足 \(\lVert B-T\rVert\le\varepsilon\)，则
+	\begin{equation}\label{g3:eq:near-linear-jacobian-comparison}
+		(1-\rho)^mJ_m(T)\le J_m(B)\le(1+\rho)^mJ_m(T).
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	把 \(f\) 看作定义在 \(T(E)\) 上的映射 \(h=f\circ(T|_E)^{-1}\)。由假设，
+	\[
+		(1-\rho)|Tx-Ty|\le|f(x)-f(y)|\le(1+\rho)|Tx-Ty|.
+	\]
+	所以 \(h\) 的 Lipschitz 常数不超过 \(1+\rho\)，其逆的常数不超过 \((1-\rho)^{-1}\)。对这两个映射分别使用\cref{g3:prop:hausdorff-lipschitz}，再代入\cref{g3:lem:linear-area-formula}，即得式\eqref{g3:eq:near-linear-area-comparison}。
+
+	对线性映射 \(B\)，同样有 \((1-\rho)|Tv|\le|Bv|\le(1+\rho)|Tv|\)。令 \(S=(T^{\mathsf T}T)^{1/2}\)，则 \(|Tv|=|Sv|\)。在 \(v=S^{-1}w\) 上应用不等式，说明对称矩阵 \(S^{-1}B^{\mathsf T}BS^{-1}\) 的全部特征值位于 \([(1-\rho)^2,(1+\rho)^2]\)。取行列式再开平方，并用 \(\det S=J_m(T)\)，得到式\eqref{g3:eq:near-linear-jacobian-comparison}。
+\end{proof}
 
 \subsection{重数函数和可测性}
 \label{g3:subsec:2003:02}
-待撰写
+设 \(f:\mathbb R^m\to\mathbb R^n\) 为 Lipschitz 映射，\(A\subset\mathbb R^m\) 可测。定义像点 \(y\) 的\term[chongshu hanshu]{重数函数}[multiplicity function]为
+\[
+	N(f,A,y)\coloneqq\mathcal H^0\bigl(A\cap f^{-1}(y)\bigr).
+\]
+这里 \(\mathcal H^0\) 是计数测度：有限纤维取其点数，任意无限纤维取 \(+\infty\)。即使 \(A\) 紧，重数也未必有限，例如常值映射把整个参数集压到一点。
+
+\begin{proposition}\label{g3:prop:area-multiplicity-measurable}
+	设 \(1\le m\le n\)，\(f:\mathbb R^m\to\mathbb R^n\) 为 Lipschitz 映射，\(A\subset\mathbb R^m\) 为 Lebesgue 可测集。则 \(f(A)\) 为 \(\mathcal H^m\) 可测集，\(N(f,A,\cdot)\) 为非负 \(\mathcal H^m\) 可测函数。更一般地，对任意非负可测函数 \(a:A\to[0,\infty]\)，函数
+	\[
+		S_a(y)\coloneqq\sum_{x\in A\cap f^{-1}(y)}a(x)
+	\]
+	也是 \(\mathcal H^m\) 可测的；任意指标集上的非负和均解释为所有有限子和的上确界。
+\end{proposition}
+\begin{proof}
+	先设 \(A=K\) 紧。对正整数 \(q,l\)，考虑 \(K^q\) 的闭子集
+	\[
+		C_{q,l}=\{(x_1,\ldots,x_q):f(x_1)=\cdots=f(x_q),\ |x_i-x_j|\ge l^{-1}\ (i\ne j)\}.
+	\]
+	它是紧集，故其在连续映射 \((x_1,\ldots,x_q)\mapsto f(x_1)\) 下的像 \(Y_{q,l}\) 紧。有限个不同的原像点之间有正的最小距离，因此
+	\[
+		\{y:N(f,K,y)\ge q\}=\bigcup_{l=1}^{\infty}Y_{q,l}.
+	\]
+	这证明紧集上的重数为 Borel 函数。
+
+	由 Lebesgue 测度的内正则性，可取递增紧集 \(K_j\subset A\)，使 \(Z=A\setminus\bigcup_jK_j\) 为零测集。对于无界 \(A\)，先在 \(A\cap[-r,r]^m\) 中用紧集作任意精度的内逼近，再将得到的可数个紧集合并为递增列，即可得到同样结论。由\cref{g3:prop:hausdorff-lipschitz,g3:thm:hausdorff-lebesgue}，\(\mathcal H^m(f(Z))=0\)。而
+	\[
+		f(A)=\bigcup_jf(K_j)\ \cup\ f(Z),
+	\]
+	右端是一个 Borel 集与零测集的并，因而可测。对 \(y\notin f(Z)\)，任意有限组原像点均包含于某个 \(K_j\)，所以
+	\[
+		N(f,A,y)=\lim_{j\to\infty}N(f,K_j,y).
+	\]
+	Hausdorff 测度完备，故在零测集 \(f(Z)\) 上取实际重数仍得到可测函数。
+
+	若 \(a\) 是非负简单函数，把它写成有限个互不交可测集的示性函数的线性组合，\(S_a\) 就是相应重数函数的同一线性组合。一般情形取非负简单函数 \(a_j\uparrow a\)。有限子和与递增极限可交换：一方面 \(S_{a_j}\le S_a\)，另一方面任意有限原像集合上的和都是这些递增和的极限。取所有有限集合的上确界，得 \(S_{a_j}\uparrow S_a\)。于是 \(S_a\) 可测。
+\end{proof}
+
+这项可测性论证只用了紧集、零测集的像和非负极限。尤其在 \(m<n\) 时，无须假设整个 \(\mathbb R^n\) 上的 \(\mathcal H^m\) 为 \(\sigma\) 有限测度。后面在目标空间所作的是可测函数列的单调收敛。
 
 \subsection{由线性模型到一般映射}
 \label{g3:subsec:2003:03}
-待撰写
+微分满秩时，上一节已把映射分成可数个近似线性的片；微分降秩时，则必须证明像的 \(m\) 维面积确实消失。后一步是连接线性公式与一般公式的另一半。
+
+\begin{lemma}\label{g3:lem:rank-deficient-image-null}
+	设 \(1\le m\le n\)，\(f:\mathbb R^m\to\mathbb R^n\) 为 Lipschitz 映射，令
+	\[
+		C=\{x:f\text{ 在 }x\text{ 可微，且 }\operatorname{rank}\mathrm Df(x)<m\}.
+	\]
+	则 \(\mathcal H^m(f(C))=0\)。
+\end{lemma}
+\begin{proof}
+	记 \(L=\operatorname{Lip}f\)，先固定 \(R>0\)，只处理 \(C_R=C\cap B_R(0)\)。取 \(0<\varepsilon<1\)。对每个 \(x\in C_R\)，可微性给出任意小的半径 \(r>0\)，使
+	\[
+		|f(x+h)-f(x)-T_xh|\le\varepsilon|h|\quad(|h|\le5r),\qquad T_x=\mathrm Df(x).
+	\]
+	还要求 \(r<1/5\)，以及 \(r\) 小于一个稍后趋零的统一上界。由于 \(\lVert T_x\rVert\le L\)，\(f(B_{5r}(x))\) 包含在仿射平面 \(f(x)+\operatorname{im}T_x\) 中半径 \(5Lr\) 的圆盘的 \(5\varepsilon r\) 邻域内。
+
+	设 \(k=\operatorname{rank}T_x\le m-1\)。在这个 \(k\) 维平面内取边长 \(\varepsilon r\) 的立方体网格，半径 \(5Lr\) 的圆盘只遇到至多
+	\[
+		C_{m,n}(1+L)^k\varepsilon^{-k}
+	\]
+	个网格块。每个网格块的 \(5\varepsilon r\) 邻域可放入一个直径至多 \(C_{m,n}\varepsilon r\) 的 \(n\) 维球中。因此该像集有一个覆盖，其 \(m\) 维代价至多为
+	\[
+		C_{m,n}(1+L)^k\varepsilon^{m-k}r^m
+		\le C_{m,n}(1+L)^m\varepsilon r^m.
+	\]
+	当 \(k=0\) 时只需一个球，同一估计仍成立。这正是降秩的作用：至少有一个方向提供额外的 \(\varepsilon\) 因子。
+
+	对所有满足上述条件、以 \(C_R\) 中的点为中心的闭球应用\cref{g3:lem:five-ball-covering}，选出两两不交的闭球 \(\overline B_{r_i}(x_i)\)，使 \(C_R\subset\bigcup_i\overline B_{5r_i}(x_i)\)。前面的可微性估计同样控制这些五倍闭球的像。这些原球均位于 \(B_{R+1}(0)\)，所以
+	\[
+		\sum_i\omega_m r_i^m\le\mathcal L^m(B_{R+1}(0)).
+	\]
+	给定任意 \(\delta>0\)，预先把半径上界取得足够小，使前述覆盖球的直径都不超过 \(\delta\)。将各球像的细长盒覆盖合并，便得
+	\[
+		\mathcal H^m_\delta(f(C_R))
+		\le C_{m,n,L}\varepsilon(R+1)^m.
+	\]
+	常数与 \(\delta,\varepsilon\) 无关。先令 \(\delta\downarrow0\)，再令 \(\varepsilon\downarrow0\)，得到 \(\mathcal H^m(f(C_R))=0\)。最后令整数 \(R\uparrow\infty\)，用可数次可加性完成证明。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:injective-lipschitz-area}
+	设 \(1\le m\le n\)，\(f:\mathbb R^m\to\mathbb R^n\) 为 Lipschitz 映射，\(A\subset\mathbb R^m\) 为 Lebesgue 可测集。若 \(f|_A\) 单射，则
+	\begin{equation}\label{g3:eq:injective-lipschitz-area}
+		\mathcal H^m(f(A))=\int_AJ_mf(x)\,\mathrm d\mathcal L^m(x).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	设 \(D\) 为 \(f\) 的可微集。由上一节的可微性定理，\(A\setminus D\) 为零测集，其像也为 \(\mathcal H^m\) 零测集。由\cref{g3:lem:rank-deficient-image-null}，\(A\cap C\) 的像同样为零测集，而 \(J_mf\) 在这里等于零。因此只需处理满秩部分。
+
+	对整数 \(s\ge1\)，令
+	\[
+		A_s=\{x\in A\cap D:\ |\mathrm Df(x)v|\ge s^{-1}|v|\text{ 对所有 }v\in\mathbb R^m\}.
+	\]
+	这些集可测，随 \(s\) 递增，且并集恰为 \(A\) 中的满秩可微点。固定 \(s\)，再取 \(0<\varepsilon<(4s)^{-1}\)。用\cref{g3:thm:lipschitz-linearization-pieces}把 \(A_s\) 分成可数个互不交可测片 \(E_i\)。每片有固定矩阵 \(T_i\)，满足
+	\[
+		\lVert\mathrm Df(x)-T_i\rVert\le\varepsilon,\qquad
+		|f(y)-f(x)-T_i(y-x)|\le\varepsilon|y-x|\quad(x,y\in E_i).
+	\]
+	删除空片。由 \(E_i\subset A_s\)，\(|T_iv|\ge(s^{-1}-\varepsilon)|v|\ge(2s)^{-1}|v|\)。记 \(\rho=2s\varepsilon<1/2\)。\Cref{g3:lem:near-linear-area-comparison}给出
+	\[
+		(1-\rho)^mJ_m(T_i)\mathcal L^m(E_i)
+		\le\mathcal H^m(f(E_i))
+		\le(1+\rho)^mJ_m(T_i)\mathcal L^m(E_i),
+	\]
+	并且对 \(x\in E_i\)，\((1-\rho)^mJ_m(T_i)\le J_mf(x)\le(1+\rho)^mJ_m(T_i)\)。合并得到
+	\[
+		\left(\frac{1-\rho}{1+\rho}\right)^m\int_{E_i}J_mf\,\mathrm d\mathcal L^m
+		\le\mathcal H^m(f(E_i))
+		\le\left(\frac{1+\rho}{1-\rho}\right)^m\int_{E_i}J_mf\,\mathrm d\mathcal L^m.
+	\]
+	由\cref{g3:prop:area-multiplicity-measurable}，这些像均可测；由于 \(f|_A\) 单射，它们还两两不交。因此可对 \(i\) 求和，以 \(A_s\) 代替上式中的 \(E_i\)。再令 \(\varepsilon\downarrow0\)，两侧常数趋于一，得到 \(A_s\) 上的等式。此论证同样适用于积分为无穷的情形，因为下界已迫使像测度为无穷。
+
+	最后令 \(s\uparrow\infty\)，对参数域上的积分及递增像集的测度分别使用单调收敛，再加回前述两个像零测的部分，得到式\eqref{g3:eq:injective-lipschitz-area}。
+\end{proof}
 
 \subsection{非单射情形的分片求和}
 \label{g3:subsec:2003:04}
-待撰写
+现在允许不同的参数点具有相同像。各单射片的面积仍能分别计算；它们在目标中相遇时，示性函数相加，恰好产生重数。
+
+\begin{theorem}[面积公式]\label{g3:thm:lipschitz-area-formula}
+	设 \(1\le m\le n\)，\(f:\mathbb R^m\to\mathbb R^n\) 为 Lipschitz 映射，\(A\subset\mathbb R^m\) 为 Lebesgue 可测集。则
+	\begin{equation}\label{g3:eq:lipschitz-area-formula}
+		\int_AJ_mf\,\mathrm d\mathcal L^m
+		=\int_{\mathbb R^n}N(f,A,y)\,\mathrm d\mathcal H^m(y).
+	\end{equation}
+	更一般地，对非负 Lebesgue 可测函数 \(a:A\to[0,\infty]\)，
+	\begin{equation}\label{g3:eq:weighted-lipschitz-area-formula}
+		\int_Aa(x)J_mf(x)\,\mathrm d\mathcal L^m(x)
+		=\int_{\mathbb R^n}\left(\sum_{x\in A\cap f^{-1}(y)}a(x)\right)\mathrm d\mathcal H^m(y).
+	\end{equation}
+	两边允许取 \(+\infty\)，非负积分中的 \(0\cdot\infty\) 取零。
+\end{theorem}
+\begin{proof}
+	把 \(A\) 写成 \(Z\cup C_A\cup\bigcup_iA_i\)：其中 \(Z\) 是不可微点，\(C_A\) 是可微但降秩的点，\(A_i\) 是满秩部分的互不交可测双 Lipschitz 片。这一分解由\cref{g3:cor:full-rank-bilipschitz-pieces}给出；若原覆盖有重叠，依次从第 \(i\) 片扣除前面的片即可。前述证明表明
+	\[
+		\mathcal H^m(f(Z\cup C_A))=0,
+		\qquad \int_{Z\cup C_A}J_mf\,\mathrm d\mathcal L^m=0.
+	\]
+	每个 \(A_i\) 上 \(f\) 单射。对 \(y\notin f(Z\cup C_A)\)，每个原像点落在唯一一片中，所以
+	\[
+		N(f,A,y)=\sum_i\mathbf1_{f(A_i)}(y).
+	\]
+	因此，由可测性、单射面积公式和单调收敛，
+	\[
+		\int_{\mathbb R^n}N(f,A,y)\,\mathrm d\mathcal H^m(y)
+		=\sum_i\mathcal H^m(f(A_i))
+		=\sum_i\int_{A_i}J_mf\,\mathrm d\mathcal L^m
+		=\int_AJ_mf\,\mathrm d\mathcal L^m.
+	\]
+	这证明无权公式。对简单函数 \(a\)，在其各个可测水平集上使用该公式并相加，就得到带权公式。一般非负 \(a\) 取简单函数 \(a_j\uparrow a\)，由\cref{g3:prop:area-multiplicity-measurable}的最后一步，纤维上的和也递增到所需函数。两侧再次使用单调收敛即可。
+\end{proof}
+
+当函数有符号或取复值时，只要 \(\int_A|a|J_mf\,\mathrm d\mathcal L^m<\infty\)，就可分别对正负部或实虚部应用公式。带绝对值的公式同时保证目标中纤维和几乎处处绝对收敛。
+
+\begin{corollary}\label{g3:cor:area-formula-subsets}
+	设 \(1\le m\le n\)，\(E\subset\mathbb R^m\) 为 Lebesgue 可测集，\(f:E\to\mathbb R^n\) 为 Lipschitz 映射。在 \(E\) 的密度一点，以任意全空间 Lipschitz 延拓的微分定义 \(\mathrm D_Ef\)，在其余零测例外点任意补零。则 \(\mathrm D_Ef\) 在 \(E\) 上几乎处处存在并且与延拓无关。以 \(J_mf=\sqrt{\det((\mathrm D_Ef)^{\mathsf T}\mathrm D_Ef)}\) 记面积因子，式\eqref{g3:eq:lipschitz-area-formula}和\eqref{g3:eq:weighted-lipschitz-area-formula}对任意可测 \(A\subset E\) 及非负可测权仍成立。
+\end{corollary}
+\begin{proof}
+	若 \(E\) 为空，结论直接成立。否则由\cref{g3:prop:lipschitz-extension-density}，对每个坐标作全空间 Lipschitz 延拓即可得到 \(F:\mathbb R^m\to\mathbb R^n\)。该命题还证明，在 \(E\) 的密度一点，只要一个延拓可微，所有延拓就有同一微分；密度定理和可微性定理说明这排除的只是 \(E\) 中的零测集。对 \(F\) 和参数集 \(A\) 应用面积公式，其在 \(A\) 上的值及微分恰是所需的值与微分。
+\end{proof}
+
+上述陈述也解释了零维端点：\(\mathbb R^0\) 是一个点，令 \(J_0=1\)，源、靶所用 \(\mathcal H^0\) 均为计数测度，则一个零维参数片的带权面积公式就是有限单点和的恒等式。
+
+\begin{corollary}\label{g3:cor:bilipschitz-change-variables}
+	设 \(m\ge1\)，\(E\subset\mathbb R^m\) 为 Lebesgue 可测集，\(f:E\to\mathbb R^m\) 为到其像的双 Lipschitz 映射。则 \(f(E)\) 可测，双方的零测集在 \(f\) 与 \(f^{-1}\) 下仍为零测集；对几乎处处的 \(x\in E\)，双方的微分均存在，且
+	\begin{equation}\label{g3:eq:bilipschitz-inverse-differential}
+		\mathrm D_{f(E)}f^{-1}(f(x))\,\mathrm D_Ef(x)=I_m.
+	\end{equation}
+	特别地，\(J_mf(x)=|\det\mathrm D_Ef(x)|>0\) 几乎处处。对可测 \(A\subset E\) 及非负可测 \(h:f(E)\to[0,\infty]\)，有
+	\begin{equation}\label{g3:eq:bilipschitz-change-variables}
+		\int_{f(A)}h(y)\,\mathrm d\mathcal L^m(y)
+		=\int_Ah(f(x))\,|\det\mathrm D_Ef(x)|\,\mathrm d\mathcal L^m(x).
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	像的可测性由延拓及\cref{g3:prop:area-multiplicity-measurable}得到。零测集的像为零测，直接来自双向 Lipschitz 控制与 \(\mathcal H^m=\mathcal L^m\)；同理，任意可测集的原像也可测。于是 \(h\circ f\) 是可测函数。
+
+	分别延拓 \(f\) 与 \(f^{-1}\) 为全空间 Lipschitz 映射 \(F,G\)。除去源中的非密度点、\(F\) 的不可微点，以及目标中非密度点和 \(G\) 不可微点的原像后，仅损失一个零测集。在其余 \(x\) 上，\(G\circ F\) 可微，并在 \(E\) 上等于恒等映射。由密度点上延拓微分的唯一性，\(\mathrm D(G\circ F)(x)=I_m\)。通常的可微映射链式法则给出式\eqref{g3:eq:bilipschitz-inverse-differential}，故两个方阵均可逆。最后对单射映射 \(f\) 使用带权面积公式，并取权 \(h\circ f\)，即可得到换元公式。
+\end{proof}
 
 \subsection{几何面积与参数面积的区别}
 \label{g3:subsec:2003:05}
-待撰写
+面积公式给出两个不同量的精确关系：
+\[
+	\underbrace{\mathcal H^m(f(A))}_{\text{像集的几何面积}}
+	\le
+	\underbrace{\int_AJ_mf\,\mathrm d\mathcal L^m}_{\text{参数面积}}
+	=\int_{f(A)}N(f,A,y)\,\mathrm d\mathcal H^m(y).
+\]
+当参数面积有限时，两者相等当且仅当 \(N(f,A,y)=1\) 对 \(\mathcal H^m\) 几乎处处的 \(y\in f(A)\) 成立。这由 \(N\ge1\) 及非负函数 \(N-1\) 的积分为零直接得到。若两边均为无穷，相等本身不能推出重数为一。
+
+\begin{example}\label{g3:exm:area-fold-and-repetition}
+	取 \(f:[-1,1]\to\mathbb R\)、\(f(t)=|t|\)。除 \(t=0\) 外，\(J_1f=1\)，故参数长度为 \(2\)。像是 \([0,1]\)，几何长度为 \(1\)，而每个 \(y\in(0,1)\) 有两个原像。这里是折叠造成重复。另取 \(\gamma:[0,4\pi]\to\mathbb R^2\)、\(\gamma(t)=(\cos t,\sin t)\)。它处处有速度一，参数长度为 \(4\pi\)，像圆的长度为 \(2\pi\)；除端点所对应的一个像点外，重数为二。这里即使每处微分满秩，整体重复仍然存在。
+\end{example}
+
+\begin{proposition}\label{g3:prop:lipschitz-graph-area}
+	设 \(m,q\ge1\)，\(E\subset\mathbb R^m\) 为 Lebesgue 可测集，\(u:E\to\mathbb R^q\) 为 Lipschitz 映射，\(G(x)=(x,u(x))\)。则对每个可测 \(A\subset E\)，
+	\begin{equation}\label{g3:eq:lipschitz-graph-area}
+		\mathcal H^m(G(A))
+		=\int_A\sqrt{\det\bigl(I_m+(\mathrm D_Eu)^{\mathsf T}\mathrm D_Eu\bigr)}\,\mathrm d\mathcal L^m.
+	\end{equation}
+	当 \(q=1\) 时，被积函数为 \(\sqrt{1+|\mathrm D_Eu|^2}\)。
+\end{proposition}
+\begin{proof}
+	图映射单射，逆为第一分量投影。几乎处处有
+	\[
+		\mathrm D_EG=\begin{pmatrix}I_m\\\mathrm D_Eu\end{pmatrix},\qquad
+		(\mathrm D_EG)^{\mathsf T}\mathrm D_EG=I_m+(\mathrm D_Eu)^{\mathsf T}\mathrm D_Eu.
+	\]
+	代入单射面积公式即可。若 \(q=1\)，矩阵 \((\mathrm D_Eu)^{\mathsf T}\mathrm D_Eu\) 在梯度方向的特征值为 \(|\mathrm D_Eu|^2\)，在其正交补上为零，故行列式为 \(1+|\mathrm D_Eu|^2\)。
+\end{proof}
+
+光滑参数曲面的面积元 \(\sqrt{\det(\langle\partial_iF,\partial_jF\rangle)}\,\mathrm dx\) 是同一公式的特例；图公式则把第十九章的光滑图面积延伸到 Lipschitz 图。参数域换成双 Lipschitz 坐标也不改变面积积分：若 \(\phi:E'\to E\subset\mathbb R^m\) 为双 Lipschitz 映射，\(F:E\to\mathbb R^n\) 为 Lipschitz 映射，则在双方密度点用延拓和链式法则，有
+\[
+	J_m(F\circ\phi)(x)
+	=J_mF(\phi(x))\,|\det\mathrm D_{E'}\phi(x)|.
+\]
+这里的线性恒等式来自
+\(\det(B^{\mathsf T}A^{\mathsf T}AB)=(\det B)^2\det(A^{\mathsf T}A)\)。异常点在双 Lipschitz 换元下仍为零测，再用式\eqref{g3:eq:bilipschitz-change-variables}即可比较两个参数积分。
+\ProseParagraphBreak
+因而“重参数化”与“重复覆盖”有不同的面积后果：前者以双射改变坐标，后者使像点的原像数增加。接下来讨论切片时，面积公式会用于每一张低维单射参数片；讨论可整流集时，则用它把可数参数片上的微分与像集上的几何测度联系起来。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

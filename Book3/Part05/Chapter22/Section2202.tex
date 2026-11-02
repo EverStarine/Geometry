@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 22.2 可整流流与整数流
 % 纲要位置：几何学计划纲要.md，第 3018 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,196 @@
 \section{可整流流与整数流}
 \label{g3:sec:2202}
 
-待撰写
+质量有限的流可以由弥散在整个空间中的向量测度表示，因而未必像一张曲面。要得到有向几何对象，还须规定质量集中于可整流集、向量沿切平面、重数属于指定的系数类。另一方面，一个有几何切向结构的流仍可能有无限边界质量。本节把这两种条件分开，再将它们结合为整数流。可整流表示的基础是\chapref{g3:ch:20}的 Lipschitz 分片与面积公式。
 
 \subsection{切平面、取向与整数重数}
 \label{g3:subsec:2202:01}
-待撰写
+在一个可数 \(k\)-可整流 Borel 集上，可以先分成测度有限的 Lipschitz 片，在各片的几乎处处点取切平面。两个片的交叠处，切平面几乎处处相同：在参数域取交叠部分的密度一点，其微分决定相同的切向像空间。这使按片确定的切平面不依赖分片。当整个集合局部 \(\mathcal H^k\) 有限时，它正是第20章的近似切平面。
+
+\begin{definition}\label{g3:def:rectifiable-current}
+	设 \(U\subset\mathbb R^n\) 开，\(1\le k\le n\)。若 \(k\) 维流具有表示
+	\begin{equation}\label{g3:eq:rectifiable-current-representation}
+		T(\omega)=\int_M\theta(x)\langle\omega(x),\tau(x)\rangle\,
+		\mathrm d\mathcal H^k(x),
+	\end{equation}
+	其中 \(M\subset U\) 为可数 \(k\)-可整流 Borel 集，\(\tau(x)\) 为其切平面的可测单位简单取向向量，\(\theta\) 为实值可测函数，且 \(\int_{M\cap K}|\theta|\,\mathrm d\mathcal H^k<\infty\) 对每个 \(K\Subset U\) 成立，则称 \(T\) 为实系数局部\term[kezhengliu liu]{可整流流}[rectifiable current]，记 \(T=\lBrack M,\tau,\theta\rBrack\)。若 \(\theta\) 几乎处处取整数值，称为整数重数可整流流。其有限质量全域类记为 \(\mathcal R_k(U)\)，局部类记为 \(\mathcal R_{k,\mathrm{loc}}(U)\)；本书的符号 \(\mathcal R_k\) 始终指整数重数类。
+\end{definition}
+
+可以删去 \(\theta=0\) 的点，把负号吸收到 \(\tau\) 中，从而令 \(\theta>0\)。整数重数时 \(\theta\ge1\)，所以局部有限质量自动使有效承载集局部 \(\mathcal H^k\) 有限。取向反转与重数变号给出同一流；只有它们的乘积有确定意义。由质量测度表示，
+\begin{equation}\label{g3:eq:rectifiable-current-mass}
+	\|T\|=|\theta|\,\mathcal H^k\llcorner M.
+\end{equation}
+
+零维时，定义实系数可整流流为可数点流之和 \(\sum_i a_i\delta_{x_i}\)，要求每个紧集内 \(\sum|a_i|<\infty\)。整数重数时 \(a_i\in\mathbb Z\)，合并相同位置并删去零系数后，紧集中只有有限个点；若总质量有限，整个和式只有有限项。一般零维有限质量流却可以是非原子的 Radon 测度。
+
+\begin{proposition}\label{g3:prop:rectifiable-lipschitz-pushforward}
+	设 \(T=\lBrack M,\tau,\theta\rBrack\) 为 \(\mathbb R^n\) 中有限质量的实系数可整流 \(k\) 维流，\(f:\mathbb R^n\to\mathbb R^q\) 为 Lipschitz 映射。则
+	\begin{equation}\label{g3:eq:rectifiable-pushforward-formula}
+		f_\#T(\omega)=\int_M\theta(x)
+		\big\langle\omega(f(x)),(\Lambda^k\mathrm D^Mf(x))\tau(x)\big\rangle
+		\mathrm d\mathcal H^k(x)
+	\end{equation}
+	定义一个实系数可整流流。若 \(T\) 为整数重数，则 \(f_\#T\) 也为整数重数。质量满足
+	\[
+		\mathbf M(f_\#T)\le\int_M|\theta|J_k^Mf\,\mathrm d\mathcal H^k
+		\le\operatorname{Lip}(f)^k\mathbf M(T).
+	\]
+	若 \(T\) 还正规，上式与\cref{g3:thm:normal-lipschitz-pushforward,g3:cor:normal-pushforward-finite}的定义一致。
+\end{proposition}
+\begin{proof}
+	可整流集上的微分 \(\mathrm D^Mf\) 是各 Lipschitz 参数片上的微分，经参数的单射微分识别到切平面所得；交叠处由密度一点的链式法则一致。将满秩部分分成可数双 Lipschitz 片，秩不足部分的像由面积公式具有零 \(\mathcal H^k\) 测度。像的各片也可整流，在交叠处取一个共同的可测单位取向 \(\tau'\)。对满秩原像，
+	\[
+		(\Lambda^k\mathrm D^Mf(x))\tau(x)
+		=\varepsilon(x)J_k^Mf(x)\tau'(f(x)),\qquad \varepsilon(x)\in\{-1,1\}.
+	\]
+	第20章带权面积公式将式\eqref{g3:eq:rectifiable-pushforward-formula}改写为像上的积分，重数为
+	\[
+		\theta'(y)=\sum_{x\in M\cap f^{-1}(y),\,J_k^Mf(x)>0}
+		\varepsilon(x)\theta(x).
+	\]
+	该级数几乎处处绝对收敛，因为绝对值之和的积分不超过 \(\operatorname{Lip}(f)^k\int_M|\theta|\)。整数输入时，非零整数项的绝对可和迫使几乎每根纤维只有有限个非零贡献，所以和仍为整数。三角不等式给出质量估计。
+
+	还须比较这个切向公式与光滑逼近定义。所需解析事实是：若 \(D\subset\mathbb R^k\) 开，\(g_j:D\to\mathbb R^q\) 一致 Lipschitz，并在紧集上一致趋于 \(g\)，则每个 \(k\) 阶微分子式在局部 \(L^\infty\) 的弱星意义下趋于相应极限。证明对阶数归纳。对一个紧支光滑函数 \(\eta\)，积分分部给出
+	\[
+		\int\eta\,\mathrm dg_j^{i_1}\wedge\cdots\wedge\mathrm dg_j^{i_\ell}
+		\wedge\mathrm dx^J
+		=-\int g_j^{i_1}\,\mathrm d\eta\wedge\mathrm dg_j^{i_2}
+		\wedge\cdots\wedge\mathrm dg_j^{i_\ell}\wedge\mathrm dx^J,
+	\]
+	其中 \(J\) 补足总次数。\(\ell=1\) 是弱导数定义；一般情形用 \(g_j^{i_1}\) 的一致收敛及归纳假设，先把连续系数一致逼近为光滑系数，得到配对收敛。一致的子式界再把测试系数从光滑函数扩大到 \(L^1\)。Lipschitz 函数的积分分部可先卷积后取极限，按相同归纳成立。
+
+	现在取 \(M\) 的一个双 Lipschitz 参数片 \(\psi:A\subset\mathbb R^k\to M\)，将 \(\psi\) 按坐标延拓到 \(\mathbb R^k\)，再取 \(g_j=f_j\circ\psi\)。双 Lipschitz 性给出参数 Jacobian 的正下界，所以面积换元后 \(\theta\circ\psi\) 在 \(A\) 上可积。当前配对化成参数域中带 \(L^1\) 系数的子式积分；系数 \(\omega(f_j\circ\psi)\) 一致趋于极限，\(\mathbf1_A\) 及可积重数保留在 \(L^1\) 系数中。故每个片上的积分趋于切向公式。先保留有限个有界片，使其余片的 \(|\theta|\) 积分任意小，再利用统一 Lipschitz 质量界处理尾项，即得整体收敛。正规紧支情形由唯一性得到一致；一般有限质量正规流再作\cref{g3:cor:normal-pushforward-finite}中的截断，利用质量范数收敛得到相同结论。
+\end{proof}
+
+特别地，Lipschitz 图嵌入 \(F(x)=(x,f(x))\) 将可整流流送到其图上，取向是 \((\Lambda^k\mathrm D^MF)\tau\) 的归一化。因第一坐标保留 \(x\)，不存在不同原像抵消。这个构造使下一节能够把一般 Lipschitz 函数的切片化为图上的光滑高度切片。
+
+\begin{lemma}\label{g3:lem:integer-rectifiable-mass-closure}
+	设 \(T_j\in\mathcal R_k(\mathbb R^n)\)，\(T\) 为有限质量流，且 \(\mathbf M(T_j-T)\to0\)。则 \(T\in\mathcal R_k(\mathbb R^n)\)。
+\end{lemma}
+\begin{proof}
+	设 \(M_j\) 承载 \(T_j\)，则 \(M=\bigcup_jM_j\) 为可数可整流集，且质量范数收敛说明 \(\|T\|(\mathbb R^n\setminus M)=0\)。把 \(M\) 分成互不交的有限测度参数片；片间交叠的切平面几乎处处相容，故可在并集上选择一个共同的可测取向 \(\tau\)。每个 \(T_j\) 在此取向下的系数 \(\theta_j\) 为整数，片外补零，并且
+	\[
+		\mathbf M(T_i-T_j)=\int_M|\theta_i-\theta_j|\,\mathrm d\mathcal H^k.
+	\]
+	因此 \(\theta_j\) 是 \(L^1(M,\mathcal H^k)\) 中的 Cauchy 列。其极限 \(\theta\) 沿子列几乎处处为整数，且 \(\int|\theta|<\infty\)。测试配对确定 \(T=\lBrack M,\tau,\theta\rBrack\)。删去 \(\theta=0\) 的部分后，有效承载集的测度不超过 \(\int|\theta|\)。零维时同样是可数点集上的整数 \(\ell^1\) 极限。
+\end{proof}
 
 \subsection{边界质量和正规流}
 \label{g3:subsec:2202:02}
-待撰写
+\cref{g3:def:normal-current}要求流及其边界的质量都有限。这个条件并不规定重数为整数，也不规定质量集中于与流同维的集合。例如取 \(k<n\)、非零 \(a\in C_c^\infty(\mathbb R^n)\)，令
+\[
+	T(\omega)=\int_{\mathbb R^n}a(x)\langle\omega(x),e_1\wedge\cdots\wedge e_k\rangle\,\mathrm dx.
+\]
+对各坐标积分分部，\(\partial T\) 的系数是 \(a\) 的一阶导数，故 \(T\) 正规。但其质量对 \(n\) 维 Lebesgue 测度绝对连续，任何可数 \(k\)-可整流集均为 \(n\) 维零测集，所以这个非零流不是 \(k\) 维可整流流。
+
+正规性仍强制一些切向约束。下面两条结果将用于立方网格的面上。
+
+\begin{lemma}\label{g3:lem:normal-current-no-lower-skeleton}
+	设 \(T\) 为开集 \(U\subset\mathbb R^n\) 中局部正规的 \(k\) 维流，\(k\ge1\)。对任意仿射超平面 \(H\)，限制向量测度 \(T\llcorner H\) 只含沿 \(H\) 的 \(k\) 向量。特别地，若仿射平面 \(P\) 的维数小于 \(k\)，则 \(\|T\|(P\cap U)=0\)；有限个这样的平面之并也不承载质量。
+\end{lemma}
+\begin{proof}
+	旋转、平移后令 \(H=\{x_j=0\}\)。取 \(\rho\in C_c^\infty(\mathbb R)\)，在零附近为一，令 \(a_\varepsilon(s)=s\rho(s/\varepsilon)\)。则 \(\|a_\varepsilon\|_\infty\le C\varepsilon\)，导数一致有界，且逐点趋于 \(\mathbf1_{\{0\}}\)。若多重指标 \(I\) 含 \(j\)，以
+	\(a_\varepsilon(x_j)\eta(x)\,\mathrm dx^{I\setminus j}\)
+	测试边界。除去含 \(a'_\varepsilon\) 的一项，其余两项分别由 \(C\varepsilon\|\partial T\|(\operatorname{supp}\eta)\) 和 \(C\varepsilon\|T\|(\operatorname{supp}\eta)\) 控制。由向量测度表示与控制收敛，令 \(\varepsilon\downarrow0\)，得到 \(\int_H\eta\,\mathrm d\mu_I=0\)。因此所有含法向指标的系数测度在 \(H\) 上消失。
+
+	若 \(P\) 的维数为 \(d<k\)，取适配坐标使 \(P\subset\{x_{d+1}=\cdots=x_n=0\}\)。每个 \(k\) 重指标都含某个法向指标，刚才的结论使相应测度在 \(P\) 上为零。所有分量均为零，因而质量也为零。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:normal-plane-bv}
+	设 \(P\subset\mathbb R^n\) 为定向 \(k\) 维仿射平面，\(1\le k\le n\)，\(W\subset\mathbb R^n\) 开。若局部正规流 \(T\in\mathcal D_k(W)\) 支于 \(P\cap W\)，则存在唯一 \(u\in BV_{\mathrm{loc}}(P\cap W)\)，使
+	\[
+		T=u\lBrack P\rBrack,
+		\qquad \|T\|=|u|\mathcal H^k\llcorner(P\cap W),
+		\qquad \|\partial T\|=|D_Pu|.
+	\]
+	最后一个等式以 \(P\) 的等距坐标将 BV 变差测度视为环境中的测度。\(k=0\) 时，支于单点的有限质量流是该点流的实倍数。
+\end{proposition}
+\begin{proof}
+	先取适配坐标 \(P=\mathbb R^k\times\{0\}\)。上一引理排除了所有带法向指标的系数，所以 \(T=e_1\wedge\cdots\wedge e_k\,\mu\)，其中 \(\mu\) 是 \(P\) 上的带符号局部有限测度。对切向测试形式计算边界，说明每个分布偏导 \(D_i\mu\) 都是局部有限测度；它们正是 \(\partial T\) 的各切向分量，符号由删去第 \(i\) 个基向量决定。
+
+	说明 \(\mu\) 实际具有 BV 密度。在一个相对紧切向区域附近先乘紧支光滑截断，把 \(\mu\) 及其偏导变成有限测度。卷积 \(u_\varepsilon=\rho_\varepsilon*\mu\) 的 \(L^1\) 范数和梯度 \(L^1\) 范数由这些测度的质量一致控制。\cref{g3:thm:bv-local-compactness}给出子列局部 \(L^1\) 趋于 \(u\in BV_{\mathrm{loc}}\)。另一方面卷积在分布意义下趋于 \(\mu\)，所以 \(\mu=u\mathcal L^k\)。在交叠区域中由测度唯一性粘合。
+
+	最后，把向量 \(D_Pu\) 通过定向的切向 Hodge 对偶识别为 \((k-1)\) 向量；这个识别保持长度，且在 \(k\) 维空间中的 \((k-1)\) 向量均简单。因此边界质量恰为 BV 全变差，流质量则为 \(|u|\mathcal H^k\)。唯一性由测试顶次形式立即得到。
+\end{proof}
+
+\begin{theorem}[常数定理]\label{g3:thm:current-constancy}
+	设 \(V\) 为定向 \(k\) 维仿射平面中的连通开集，\(k\ge1\)。若 \(T\) 为其中的局部正规顶维流且 \(\partial T=0\)，则 \(T=c\lBrack V\rBrack\)，其中 \(c\in\mathbb R\) 为常数。若 \(T\) 为整数重数可整流流，则 \(c\in\mathbb Z\)。
+\end{theorem}
+\begin{proof}
+	上一命题给出 \(T=u\lBrack V\rBrack\)，且 \(Du=0\)。在任意较小球内卷积，所得光滑函数梯度为零，故为常数。令卷积尺度趋零，得到 \(u\) 在该球中几乎处处为常数。连通开集中的任意两点可用有限条相交小球连接，所以这些常数相同。整数重数情形，\(u\) 几乎处处为整数，故常数为整数。
+\end{proof}
 
 \subsection{整数流的定义}
 \label{g3:subsec:2202:03}
-待撰写
+一张定向多面体的每个面带有整数份数，其边界仍由整数份数的低维面组成。一般可整流对象也需要边界具有这一性质。
+
+\begin{definition}\label{g3:def:integer-current}
+	设 \(U\subset\mathbb R^n\) 开。若 \(T\in\mathcal R_k(U)\) 且 \(\partial T\in\mathcal R_{k-1}(U)\)，称 \(T\) 为\term[zhengshu liu]{整数流}[integral current]，记为 \(\mathcal I_k(U)\)。零维时取 \(\mathcal I_0(U)=\mathcal R_0(U)\)，因为其边界为零。将两处质量有限改为局部质量有限，得到局部整数流类 \(\mathcal I_{k,\mathrm{loc}}(U)\)。
+\end{definition}
+
+每个整数流都正规，而一般正规流的重数可以是实数，甚至没有可整流承载集。上述定义同时规定 \(T\) 与 \(\partial T\) 的整数可整流性；后面的闭包定理会分别恢复极限与极限边界的这两项结构。
+
+\begin{proposition}\label{g3:prop:integer-current-operations}
+	整数流对加法、相反数、整数倍数、边界运算封闭。若 \(T\) 为紧支整数流，\(f\) 为 Lipschitz 映射，则 \(f_\#T\) 为整数流。若 \(T\in\mathcal I_k(\mathbb R^n)\)、\(a<b\)，则 \(\lBrack a,b\rBrack\times T\) 为整数流。
+\end{proposition}
+\begin{proof}
+	将有限个可整流承载集取并，交叠处采用共同取向，重数按带符号整数相加；质量由三角不等式控制。边界同样满足这些性质，且 \(\partial^2T=0\)，所以前四项成立。推前由\cref{g3:prop:rectifiable-lipschitz-pushforward}保持整数可整流表示，对边界再用式\eqref{g3:eq:current-pushforward-boundary}。
+
+	区间乘积的承载集是 \((a,b)\times M\)。各参数片乘以区间仍为 Lipschitz 片，切向量为 \(e_t\wedge\tau\)，重数仍为 \(\theta\)，且质量为 \((b-a)\mathbf M(T)\)。乘积边界公式给出
+	\[
+		\partial(\lBrack a,b\rBrack\times T)
+		=\delta_b\times T-\delta_a\times T-\lBrack a,b\rBrack\times\partial T.
+	\]
+	右侧均为有限质量整数可整流流，故乘积为整数流。
+\end{proof}
+
+\begin{example}\label{g3:exm:finite-perimeter-integral-current}
+	设 \(E\subset\mathbb R^n\) 可测，\(|E|<\infty\)、\(P(E)<\infty\)。用标准取向定义 \(T_E=\lBrack E,e_1\wedge\cdots\wedge e_n,1\rBrack\)。令 \(\mathrm{vol}=\mathrm dx^1\wedge\cdots\wedge\mathrm dx^n\)，每个紧支 \((n-1)\) 形式唯一写成 \(\iota_X\mathrm{vol}\)，且
+	\[
+		\partial T_E(\iota_X\mathrm{vol})
+		=\int_E\operatorname{div}X\,\mathrm dx
+		=\int_{\partial^*E}X\cdot\nu_E\,\mathrm d\mathcal H^{n-1}.
+	\]
+	末式是\cref{g3:thm:finite-perimeter-gauss-green}。在 \(\partial^*E\) 上选单位切向量 \(\tau_{\partial E}\)，使
+	\(\nu_E\wedge\tau_{\partial E}=e_1\wedge\cdots\wedge e_n\)。约化边界结构定理给出
+	\[
+		\partial T_E=\lBrack\partial^*E,\tau_{\partial E},1\rBrack,
+		\qquad \mathbf M(T_E)=|E|,\qquad \mathbf M(\partial T_E)=P(E).
+	\]
+	因此 \(T_E\) 是整数流。向量测度 \(D\chi_E=-\nu_E|D\chi_E|\) 的负号与此处外法向优先的边界取向相容：二者分别通过 \(-\int_E\operatorname{div}X\) 和 \(\int_E\operatorname{div}X\) 定义。
+\end{example}
+
+在最高维，前节的 BV 表示给出更一般的字典：\(T=u\lBrack\mathbb R^n\rBrack\) 正规当且仅当 \(u\in BV(\mathbb R^n)\)，且
+\[
+	\mathbf M(T)=\|u\|_{L^1},\qquad \mathbf M(\partial T)=|Du|(\mathbb R^n).
+\]
+若 \(u\) 为整数值，层蛋糕分解把正负部分写成整数层集的和。具体地，令
+\[
+	E_j^+=\{u\ge j\},\qquad E_j^-=\{u\le-j\},\qquad j=1,2,\ldots.
+\]
+BV 余面积公式及 \(u\) 的整数值性质给出
+\[
+	u=\sum_{j\ge1}(\chi_{E_j^+}-\chi_{E_j^-}),\qquad
+	\sum_{j\ge1}\bigl(P(E_j^+)+P(E_j^-)\bigr)=|Du|(\mathbb R^n).
+\]
+每个集合体积有限且周长有限。上述例子的边界流按质量范数可求和，\cref{g3:lem:integer-rectifiable-mass-closure}说明和的边界仍为整数可整流流。故整数值 BV 函数产生顶维整数流。这里 BV 余面积公式使用的是整段水平区间的积分，而不是假定每个指定实水平都为良水平。
+
+反过来，整数可整流性本身不控制边界。例如在 \((0,1)\) 内取两两不交的区间 \((a_j,b_j)\)，总长度有限，所有端点不同且趋于同一个内点。流 \(T=\sum_j\lBrack a_j,b_j\rBrack\) 质量有限，是整数重数可整流流。对任意有限组端点，可选模长不超过一的光滑测试函数分别取对应的正负号，且避开其余端点。因此 \(\mathbf M(\partial T)\ge2N\) 对每个 \(N\) 成立，其边界质量无穷。
 
 \subsection{取向与非定向模型的区别}
 \label{g3:subsec:2202:04}
-待撰写
+整数重数可整流流允许选取可测取向，不要求全局连续。这个自由并不消除定向障碍：取向跳变通常会在边界流中留下内部项。
+
+\begin{proposition}\label{g3:prop:current-orientation-obstruction}
+	设 \(M\subset\mathbb R^n\) 为连通光滑 \(k\) 维嵌入流形，可带边界。若一个局部正规流 \(T\) 在 \(M\) 上具有模长为一的整数重数表示，并且 \(\operatorname{spt}\partial T\subset\partial M\)，则 \(M\) 可定向。因而非定向光滑流形不能以单位整数重数表示成只有几何边界的流。
+\end{proposition}
+\begin{proof}
+	在 \(M\) 的任意内点附近取光滑坐标，把一小片展平为 \(\mathbb R^k\) 中的连通开集；可将图坐标扩为环境中的局部光滑坐标变化。推前保持边界等式。因为此邻域没有边界流，\cref{g3:thm:current-constancy}说明表示密度为常数。单位重数条件使常数为 \(+1\) 或 \(-1\)。因此流在每个坐标片上确定一个连续取向。
+
+	在两片交叠处，它们给出同一个非零流；若取向不相容，同一正体积小片上的测试配对将相反，矛盾。故局部取向相容，粘成整个内部的取向。带边界坐标的内侧为连通半球，这个取向唯一连续延伸到边界。因此 \(M\) 可定向。
+\end{proof}
+
+以 Möbius 带为例，把它沿一条横截线切开，得到一个可定向矩形。将矩形的积分流推回带上，矩形两条被识别的边因粘合反转了横向坐标，在流边界中产生同向的两份横截线。这个内部边界正记录了无法连续选取向的障碍。只用面积而不记录取向的模型，或把系数改成模二，会有不同的相消规则；本章固定使用实数配对中的整数重数。
+
+同样，一个几何集合不自动确定流。重合的两张同向片产生重数二，反向片产生零；相同的支集也可以配不同整数重数。质量、取向和边界必须同时保留，才能在后面讨论固定边界的极小化问题。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

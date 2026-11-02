@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 7.1 指标形式的比较方法
 % 纲要位置：几何学计划纲要.md，第 2363 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,297 @@
 \section{指标形式的比较方法}
 \label{g3:sec:0701}
 
-待撰写
+第六章把相邻测地线的分离写成 Jacobi 方程。常曲率时，方程有正弦、线性和双曲正弦三类显式解；一般流形上的曲率随位置与方向变化，很少能直接求解。比较方法保留相同初值，用曲率界代替完整的曲率函数，进而把未知解的长度夹在模型解之间。本节证明 Rauch\footnote{Harry Ernest Rauch（1925--1979），美国数学家，研究黎曼几何与复分析，在曲率夹逼、黎曼曲面及 theta 函数理论方面作出贡献。} 比较定理与常曲率模型比较的版本。关键工具是上一章的指标极小性质：在没有共轭点的区间内，Jacobi 场使给定端点值的指标形式最小。
 
 \subsection{模型 Jacobi 场}
 \label{g3:subsec:0701:01}
-待撰写
+
+本节设黎曼流形光滑、无边界，测地线均用单位速度参数，沿线的导数记为 \(V'=D_tV\)。所谓沿测地线的径向截面，是含速度 \(T=\dot\gamma\) 的二维切平面；其余生成向量可取为 \(T^\perp\) 中的单位向量。因此径向截面曲率下界 \(K\ge k\) 等价于
+\[
+	\langle R(V,T)T,V\rangle\ge k|V|^2
+	\qquad(V\perp T),
+\]
+上界的表达式则反向。比较证明只用这些沿线的截面，不要求把曲率界扩大到一个尚未使用的区域。
+
+\ProseParagraphBreak
+
+沿用式\eqref{g3:eq:model-jacobi-functions}定义的 \(s_k,c_k\)。它们满足
+\begin{equation}\label{g3:eq:model-jacobi-identities}
+	s_k''+ks_k=0,\qquad s_k(0)=0,\qquad s_k'(0)=1,
+	\qquad c_k=s_k',\qquad c_k^2+ks_k^2=1.
+\end{equation}
+最后一个恒等式可直接求导证明：其导数为 \(2c_k(c_k'+ks_k)=0\)，初值为 \(1\)。记模型的第一个正零点为
+\begin{equation}\label{g3:eq:model-first-zero}
+	b_k=
+	\begin{cases}
+		\pi/\sqrt{k},&k>0,\\
+		\infty,&k\le0.
+	\end{cases}
+\end{equation}
+在 \(0<t<b_k\) 上，\(s_k(t)>0\)，定义
+\begin{equation}\label{g3:eq:model-cotangent}
+	\operatorname{ct}_k(t)=\frac{c_k(t)}{s_k(t)}
+	=
+	\begin{cases}
+		\sqrt{k}\cot(\sqrt{k}\,t),&k>0,\\
+		1/t,&k=0,\\
+		\sqrt{-k}\coth(\sqrt{-k}\,t),&k<0.
+	\end{cases}
+\end{equation}
+\symidx{\(b_k\)：常曲率模型的第一个正共轭时刻}
+\symidx{\(\operatorname{ct}_k\)：模型函数 \(c_k/s_k\)}
+由式\eqref{g3:eq:model-jacobi-identities}，
+\begin{equation}\label{g3:eq:model-cotangent-derivative}
+	\operatorname{ct}_k'=-\frac1{s_k^2}
+	=-k-\operatorname{ct}_k^2.
+\end{equation}
+在起点附近，显式解的 Taylor 展开给出
+\begin{equation}\label{g3:eq:model-small-radius-expansion}
+	s_k(t)=t-\frac{k}{6}t^3+O(t^5),
+	\qquad \operatorname{ct}_k(t)=\frac1t-\frac{k}{3}t+O(t^3).
+\end{equation}
+这些式子既说明各模型在一阶上都像 Euclid 空间，也记录了曲率开始影响长度变化的阶数。
+
+\ProseParagraphBreak
+
+在常曲率 \(k\) 的流形中，沿单位速测地线取平行法向场 \(E\)。初值 \(J(0)=0\)、\(J'(0)=E(0)\) 对应的 Jacobi 场为 \(J(t)=s_k(t)E(t)\)。另一种更适合指标比较的归一化是固定终点值：若 \(0<b<b_k\)、\(v\perp T(b)\)，则
+\begin{equation}\label{g3:eq:model-endpoint-field}
+	H_v(t)=\frac{s_k(t)}{s_k(b)}P_{t\leftarrow b}v,
+	\qquad 0\le t\le b,
+\end{equation}
+满足 \(H_v(0)=0\)、\(H_v(b)=v\)，并且
+\[
+	\langle H_v'(b),v\rangle=\operatorname{ct}_k(b)|v|^2.
+\]
+这里 \(P_{t\leftarrow b}\) 表示沿所给测地线的平行移动。式\eqref{g3:eq:model-endpoint-field}也可沿一般流形中的测地线定义，只是此时它未必满足实际的 Jacobi 方程；我们将把它作为试探场。
 
 \subsection{相同端点条件与变分极小性}
 \label{g3:subsec:0701:02}
-待撰写
+
+沿单位速测地线 \(\gamma:[0,b]\to M\)，对连续分段光滑法向场记
+\[
+	I_\gamma(V)=\int_0^b\bigl(|V'|^2-\langle R(V,T)T,V\rangle\bigr)\,\mathrm dt,
+	\qquad
+	I_k(V)=\int_0^b\bigl(|V'|^2-k|V|^2\bigr)\,\mathrm dt.
+\]
+第一个是\cref{g3:def:index-form}的指标形式，第二个把实际径向曲率换成常数 \(k\)。在平行正交标架中，\(I_k\) 就是作用于 \(\mathbb R^{n-1}\) 值函数的模型二次式。因而径向曲率界立即给出
+\begin{equation}\label{g3:eq:curvature-index-order}
+	K\ge k\ \Longrightarrow\ I_\gamma(V)\le I_k(V),
+	\qquad
+	K\le k\ \Longrightarrow\ I_\gamma(V)\ge I_k(V).
+\end{equation}
+注意指标形式中曲率项前面的负号：曲率增加，给定场的指标值反而减小。
+
+\begin{lemma}[模型指标形式的极小值]\label{g3:lem:model-index-minimum}
+	设 \(\gamma:[0,b]\to M\) 是光滑无边界黎曼流形中的单位速测地线，\(k\in\mathbb R\)、\(0<b<b_k\)。在满足 \(V(0)=0\)、\(V(b)=v\perp T(b)\) 的连续分段光滑法向场中，式\eqref{g3:eq:model-endpoint-field}的场 \(H_v\) 唯一使 \(I_k\) 最小，且
+	\begin{equation}\label{g3:eq:model-index-minimum}
+		I_k(V)=\operatorname{ct}_k(b)|v|^2
+		+\int_0^b|V'-\operatorname{ct}_kV|^2\,\mathrm dt
+		\ge\operatorname{ct}_k(b)|v|^2=I_k(H_v).
+	\end{equation}
+	特别地，\(I_k\) 在两端为零的非零场上严格为正。
+\end{lemma}
+\begin{proof}
+	由式\eqref{g3:eq:model-cotangent-derivative}，在 \(t>0\) 处展开平方可得
+	\[
+		|V'|^2-k|V|^2
+		=|V'-\operatorname{ct}_kV|^2
+		+\frac{\mathrm d}{\mathrm dt}
+		\bigl(\operatorname{ct}_k|V|^2\bigr).
+	\]
+	先从 \(\varepsilon\) 积分到 \(b\)，内部各分段端点的边界项因 \(V\) 连续而相消。由 \(V(0)=0\) 及端点处的分段光滑性，\(V(t)=O(t)\)；又有 \(\operatorname{ct}_k(t)=t^{-1}+O(t)\)，所以起点的边界项趋于零。令 \(\varepsilon\downarrow0\)，即得所列恒等式。
+
+	等号成立当且仅当 \(V'=\operatorname{ct}_kV\) 在各片上成立。在平行标架中，这等价于 \((V/s_k)'=0\)；连续性使各片的常向量相同，再由终点值确定 \(V=H_v\)。若 \(v=0\)，唯一的极小场就是零场，从而得到严格正性。
+\end{proof}
+
+实际指标形式的对应结论是\cref{g3:thm:jacobi-index-lemma}：当 \((0,b]\) 无相对起点的共轭时刻时，具有相同端点值的唯一 Jacobi 场 \(J_v\) 满足 \(I_\gamma(J_v)\le I_\gamma(V)\)，等号仅在 \(V=J_v\) 时成立。由于 \(J_v(0)=0\)、\(J_v(b)=v\perp T(b)\)，其切向分量是两端为零的一次函数，故 \(J_v\) 法向。分部积分\eqref{g3:eq:index-form-parts}还给出
+\begin{equation}\label{g3:eq:jacobi-index-endpoint-value}
+	I_\gamma(J_v)=\langle J_v'(b),v\rangle.
+\end{equation}
+所以比较指标极小值，就能比较终点的增长率。
+
+\begin{proposition}[端点配对的模型比较]\label{g3:prop:index-endpoint-comparison}
+	设 \(\gamma:[0,b]\to M\) 是 \(n\ge2\) 维光滑无边界黎曼流形中的单位速测地线，光滑延拓到端点邻域，\(k\in\mathbb R\)、\(0<b<b_k\)，\(v\perp T(b)\)。
+	\begin{enumerate}
+		\item 若沿 \(\gamma\) 的每个径向截面满足 \(K\ge k\)，且 \((0,b]\) 没有相对起点的共轭时刻，则唯一满足 \(J_v(0)=0\)、\(J_v(b)=v\) 的 Jacobi 场满足
+		\begin{equation}\label{g3:eq:index-endpoint-upper}
+			\langle J_v'(b),v\rangle\le\operatorname{ct}_k(b)|v|^2.
+		\end{equation}
+		\item 若沿 \(\gamma\) 的每个径向截面满足 \(K\le k\)，则 \((0,b]\) 自动没有相对起点的共轭时刻，且相同边值的唯一 Jacobi 场满足
+		\begin{equation}\label{g3:eq:index-endpoint-lower}
+			\langle J_v'(b),v\rangle\ge\operatorname{ct}_k(b)|v|^2.
+		\end{equation}
+	\end{enumerate}
+	在任一情形中，若 \(v\ne0\)，相应不等式取等号，当且仅当平行场 \(E(t)=P_{t\leftarrow b}v\) 满足
+	\begin{equation}\label{g3:eq:index-endpoint-equality-curvature}
+		R(E(t),T(t))T(t)=kE(t)\qquad(0\le t\le b).
+	\end{equation}
+	此时 \(J_v(t)=s_k(t)E(t)/s_k(b)\)。
+\end{proposition}
+\begin{proof}
+	在第一种情形，先在实际流形上使用 Jacobi 指标引理，再比较同一个模型场的两种指标值，得到
+	\[
+		\langle J_v'(b),v\rangle
+		=I_\gamma(J_v)\le I_\gamma(H_v)
+		\le I_k(H_v)=\operatorname{ct}_k(b)|v|^2.
+	\]
+	这里 \(J_v,H_v\) 的端点完全相同，故第一步正是固定端点值的极小性。
+
+	第二种情形先排除共轭点。若 \(t_0\in(0,b]\) 共轭，存在非零 Jacobi 场 \(J\) 在 \(0,t_0\) 消失；由\cref{g3:prop:jacobi-tangential-normal}，它法向。分部积分使 \(I_{\gamma|_{[0,t_0]}}(J)=0\)，但曲率上界和\cref{g3:lem:model-index-minimum}给出
+	\[
+		0=I_{\gamma|_{[0,t_0]}}(J)\ge I_{k,[0,t_0]}(J)>0,
+	\]
+	矛盾。因而 Jacobi 边值场存在唯一。现在先比较同一个实际 Jacobi 场的指标值，再在模型二次式中取极小值：
+	\[
+		\langle J_v'(b),v\rangle
+		=I_\gamma(J_v)\ge I_k(J_v)
+		\ge I_k(H_v)=\operatorname{ct}_k(b)|v|^2.
+	\]
+
+	若第一种情形最终取等号，则实际指标极小性的严格性给出 \(J_v=H_v\)；若第二种情形取等号，则模型指标极小性的严格性同样给出 \(J_v=H_v\)。将这个表达式代入实际 Jacobi 方程，在 \(0<t\le b\) 上用 \(s_k(t)>0\) 除去系数，得到式\eqref{g3:eq:index-endpoint-equality-curvature}，在 \(t=0\) 由连续性成立。反过来，若该曲率算子关系成立，\(H_v\) 就满足实际 Jacobi 方程及给定端点条件，故 \(J_v=H_v\)，其端点配对恰为模型值。
+\end{proof}
+
+这两个证明中的极小化顺序不同。曲率下界让模型场在实际指标形式中成为试探场；曲率上界则让实际 Jacobi 场在模型指标形式中成为试探场。始终先确认端点相同，便能确定每一步的不等式方向。
 
 \subsection{Rauch 比较的证明}
 \label{g3:subsec:0701:03}
-待撰写
+
+端点配对 \(\langle J',J\rangle\) 是 \(|J|^2/2\) 的导数。因此上面的端点比较可以积分成场长度的比较。为了让起点的归一化一致，实际场与模型场都取零初始值，并使初始导数长度相同。下面给出\term[Rauch bijiao dingli]{Rauch 比较定理}[Rauch comparison theorem]的常曲率模型版本。
+
+\begin{theorem}[Rauch 模型比较]\label{g3:thm:rauch-model-comparison}
+	设 \(\gamma:[0,L]\to M\) 是 \(n\ge2\) 维光滑无边界黎曼流形中的单位速测地线，光滑延拓到端点邻域，\(k\in\mathbb R\)、\(0<L<b_k\)。设 \(J\) 是沿 \(\gamma\) 的 Jacobi 场，满足
+	\[
+		J(0)=0,\qquad J'(0)=w\perp T(0),\qquad w\ne0.
+	\]
+	则有以下结论。
+	\begin{enumerate}
+		\item 若沿 \(\gamma\) 的每个径向截面满足 \(K\ge k\)，且 \((0,L]\) 没有相对起点的共轭时刻，则 \(|J(t)|/s_k(t)\) 在 \((0,L]\) 上非增，并且
+		\begin{equation}\label{g3:eq:rauch-model-upper}
+			|J(t)|\le s_k(t)|w|\qquad(0\le t\le L).
+		\end{equation}
+		\item 若沿 \(\gamma\) 的每个径向截面满足 \(K\le k\)，则 \((0,L]\) 自动没有相对起点的共轭时刻，\(|J(t)|/s_k(t)\) 在 \((0,L]\) 上非减，并且
+		\begin{equation}\label{g3:eq:rauch-model-lower}
+			|J(t)|\ge s_k(t)|w|\qquad(0\le t\le L).
+		\end{equation}
+	\end{enumerate}
+	在任一情形，对给定 \(t_0\in(0,L]\)，相应长度不等式在 \(t_0\) 取等号，当且仅当 \(E(t)=P_{t\leftarrow0}w\) 满足
+	\begin{equation}\label{g3:eq:rauch-directional-equality}
+		R(E(t),T(t))T(t)=kE(t)\qquad(0\le t\le t_0).
+	\end{equation}
+	此时在整个 \([0,t_0]\) 上都有 \(J(t)=s_k(t)E(t)\)。
+\end{theorem}
+\begin{proof}
+	由初值及\cref{g3:prop:jacobi-tangential-normal}，\(J\) 始终法向。第一种情形的无共轭假设及第二种情形的\cref{g3:prop:index-endpoint-comparison}保证：对 \(t>0\)，\(J(t)\ne0\)。于是 \(|J(t)|\) 为正的光滑函数。
+
+	把 \(J|_{[0,t]}\) 看作终点值为 \(J(t)\) 的边值场。第一种情形由端点比较得到
+	\[
+		\frac{\mathrm d}{\mathrm dt}
+		\log\frac{|J(t)|}{s_k(t)}
+		=\frac{\langle J'(t),J(t)\rangle}{|J(t)|^2}
+		-\operatorname{ct}_k(t)\le0;
+	\]
+	第二种情形的不等式反向。因此所得比值分别非增或非减。在沿线的平行标架中，Jacobi 方程及 \(J(0)=0\) 给出
+	\[
+		J(t)=tP_{t\leftarrow0}w+O(t^3).
+	\]
+	结合 \(s_k(t)=t+O(t^3)\)，可得
+	\[
+		\lim_{t\downarrow0}\frac{|J(t)|}{s_k(t)}=|w|.
+	\]
+	从 \(\varepsilon\) 积分上述对数导数不等式，再令 \(\varepsilon\downarrow0\)，便得到两种长度比较。
+
+	若在某个 \(t_0>0\) 取等号，单调性和起点极限说明该比值在 \((0,t_0]\) 恒等于 \(|w|\)。故在 \(t_0\) 的端点配对比较中也取等号。\cref{g3:prop:index-endpoint-comparison}给出
+	\[
+		J(t)=\frac{s_k(t)}{s_k(t_0)}P_{t\leftarrow t_0}J(t_0).
+	\]
+	在 \(0\) 处求导，得到 \(P_{0\leftarrow t_0}J(t_0)=s_k(t_0)w\)，所以 \(J=s_kE\)。代入 Jacobi 方程即得式\eqref{g3:eq:rauch-directional-equality}。反过来，该式使 \(s_kE\) 满足实际 Jacobi 方程及初值 \((0,w)\)，初值唯一性遂给出 \(J=s_kE\)，从而各时刻均取等号。
+\end{proof}
+
+若 \(w=0\)，初值唯一性使 \(J=0\)，长度比较当然成立。非零初始导数的假设用于讨论长度比及有内容的等号条件。实际使用时，可以在测地线定义域内任取上述紧区间：曲率下界比较须同时停在实际的首个共轭时刻和模型首零 \(b_k\) 之前；曲率上界比较则由证明本身保证模型首零之前无共轭时刻。上界比较并不要求该测地线段已经实现两端之间的距离。
+
+\begin{example}[比较方向与有效区间]\label{g3:exm:rauch-model-directions}
+	在单位球面上，初始导数长度为 \(1\) 的法向 Jacobi 场、且初始值为零时，长度在 \(0\le t\le\pi\) 为 \(\sin t\)。相对于平坦模型，\(K=1\ge0\) 给出 \(\sin t\le t\)，有效的共同区间须在球面首共轭时刻 \(\pi\) 之前。曲率为 \(-1\) 的双曲模型则满足 \(K\le0\)，对应长度 \(\sinh t\ge t\)，且没有正共轭时刻。这两个显式解确认了曲率下界对应长度上界、曲率上界对应长度下界的方向。
+\end{example}
 
 \subsection{共轭半径和微分长度估计}
 \label{g3:subsec:0701:04}
-待撰写
+
+先把沿线结论写成共轭时刻的界。对定义在整个正半轴上的单位速测地线 \(\gamma\)，记 \(\tau_\gamma\) 为相对 \(\gamma(0)\) 的第一个正共轭时刻；没有正共轭时刻时取 \(\tau_\gamma=\infty\)。第一个时刻若存在，确实可以取到：第六章已经证明共轭时刻在起点附近不存在，并在紧参数区间内只有有限个。
+
+\begin{proposition}[共轭半径比较]\label{g3:prop:conjugate-radius-comparison}
+	设 \(\gamma:[0,\infty)\to M\) 是 \(n\ge2\) 维光滑无边界黎曼流形中的单位速测地线。
+	\begin{enumerate}
+		\item 若沿线的每个径向截面满足 \(K\le k\)，则 \(\tau_\gamma\ge b_k\)。特别地，\(k\le0\) 时没有正共轭时刻。
+		\item 若 \(k>0\)，且在 \(0\le t\le b_k\) 上每个径向截面满足 \(K\ge k\)，则 \(\tau_\gamma\le b_k\)。
+	\end{enumerate}
+	这些结论对测地线已有的参数区间同样适用：第一项排除所有小于 \(b_k\) 的已有正时刻处的共轭，第二项只要求测地线存在到 \(b_k\) 及其端点邻域。
+\end{proposition}
+\begin{proof}
+	第一项直接来自\cref{g3:prop:index-endpoint-comparison}：每个 \(0<L<b_k\) 的闭区间 \([0,L]\) 都没有共轭时刻。
+
+	对第二项，假设 \(\tau_\gamma>b_k\)。取非零 \(w\perp T(0)\)，令 \(J\) 的初值为 \((0,w)\)。对每个 \(0<t<b_k\)，\cref{g3:thm:rauch-model-comparison}给出 \(|J(t)|\le s_k(t)|w|\)。令 \(t\uparrow b_k\)，由于 \(s_k(b_k)=0\) 以及 \(J\) 的连续性，有 \(J(b_k)=0\)。这使 \(b_k\) 成为共轭时刻，与假设矛盾。
+\end{proof}
+
+\begin{definition}[共轭半径]\label{g3:def:conjugate-radius}
+	设 \((M,g)\) 是完备、无边界的黎曼流形，\(p\in M\)。对 \(u\in \mathrm{T}_pM\)、\(|u|=1\)，令 \(\gamma_u(t)=\exp_p(tu)\)。点 \(p\) 的\term[gonge banjing]{共轭半径}[conjugate radius]及流形的共轭半径分别为
+	\[
+		\operatorname{conj}(p)=\inf_{|u|=1}\tau_{\gamma_u},
+		\qquad \operatorname{conj}(M)=\inf_{p\in M}\operatorname{conj}(p).
+	\]
+	所有方向都没有共轭点时，\(\operatorname{conj}(p)=\infty\)。
+\end{definition}
+\symidx{\(\operatorname{conj}(p),\operatorname{conj}(M)\)：点与流形的共轭半径}
+
+完备性在此保证所有方向的测地线都能一直延拓；沿有限测地线段的比较并不需要它。在完备的 \(n\ge2\) 维流形上，全局截面曲率上界 \(K\le k\) 给出 \(\operatorname{conj}(M)\ge b_k\)；全局下界 \(K\ge k>0\) 则给出每个 \(p\) 的 \(\operatorname{conj}(p)\le b_k\)。如果 \(0<k_-\le K\le k_+\)，就有
+\[
+	\frac{\pi}{\sqrt{k_+}}
+	\le\operatorname{conj}(p)
+	\le\frac{\pi}{\sqrt{k_-}}.
+\]
+
+\ProseParagraphBreak
+
+再将 Jacobi 长度比较转为指数映射微分的估计。写 \(v=ru\)，其中 \(|u|=1\)、\(r>0\)。切空间中的任意方向可正交分解为 \(\xi=au+w\)、\(w\perp u\)：径向部分的微分长度保持不变，横向部分则由 Jacobi 场控制。
+
+\begin{proposition}[指数映射的微分长度比较]\label{g3:prop:exponential-length-comparison}
+	设 \((M,g)\) 为 \(n\ge2\) 维光滑无边界黎曼流形，\(p\in M\)、\(u\in \mathrm{T}_pM\)、\(|u|=1\)，\(\gamma(t)=\exp_p(tu)\) 存在于 \([0,r]\) 及其端点邻域。设 \(k\in\mathbb R\)、\(0<r<b_k\)，并取 \(\xi=au+w\in \mathrm{T}_pM\)、\(w\perp u\)。
+	\begin{enumerate}
+		\item 若沿 \(\gamma\) 的每个径向截面满足 \(K\ge k\)，且 \((0,r]\) 无相对起点的共轭时刻，则
+		\begin{equation}\label{g3:eq:exponential-length-upper}
+			| (\mathrm d\exp_p)_{ru}\xi |^2
+			\le a^2+\left(\frac{s_k(r)}r\right)^2|w|^2.
+		\end{equation}
+		\item 若沿 \(\gamma\) 的每个径向截面满足 \(K\le k\)，则该微分可逆，且
+		\begin{equation}\label{g3:eq:exponential-length-lower}
+			| (\mathrm d\exp_p)_{ru}\xi |^2
+			\ge a^2+\left(\frac{s_k(r)}r\right)^2|w|^2.
+		\end{equation}
+	\end{enumerate}
+	当 \(w=0\) 时恒取等号；当 \(w\ne0\) 时，相应等号当且仅当平行场 \(E(t)=P_{t\leftarrow0}w\) 满足 \(R(E,T)T=kE\) 于整个 \([0,r]\)。
+\end{proposition}
+\begin{proof}
+	由\cref{g3:prop:exponential-differential-jacobi}，若 \(J_w(0)=0\)、\(J_w'(0)=w\)，则
+	\[
+		(\mathrm d\exp_p)_{ru}(w)=\frac1rJ_w(r),
+		\qquad (\mathrm d\exp_p)_{ru}(u)=T(r).
+	\]
+	\(J_w(r)\perp T(r)\)，所以径向与横向分量的像正交，且
+	\[
+		| (\mathrm d\exp_p)_{ru}(au+w) |^2
+		=a^2+\frac{|J_w(r)|^2}{r^2}.
+	\]
+	代入\cref{g3:thm:rauch-model-comparison}便得到两种不等式及等号条件。在第二种情形，\(s_k(r)/r>0\)，故非零 \(\xi\) 的像非零；源、靶同维，微分因而可逆。
+\end{proof}
+
+例如沿线有 \(k_-\le K\le k_+\)，且 \(0<r<b_{k_+}\)，曲率上界先排除共轭点，再允许同时使用两个方向，得到
+\begin{equation}\label{g3:eq:exponential-length-two-sided}
+	a^2+\left(\frac{s_{k_+}(r)}r\right)^2|w|^2
+	\le |(\mathrm d\exp_p)_{ru}(au+w)|^2
+	\le a^2+\left(\frac{s_{k_-}(r)}r\right)^2|w|^2.
+\end{equation}
+当 \(r\downarrow0\) 时，两端都趋于 \(|au+w|^2\)，与 \((\mathrm d\exp_p)_0=I\) 一致。
+
+\ProseParagraphBreak
+
+共轭半径控制的是指数映射何时可能失去微分可逆性，割时控制的则是径向测地线何时失去整体最短性。\cref{g3:thm:cut-point-alternative}给出割时不超过首共轭时刻，两者却可以严格不等。第六章的平坦圆柱就没有共轭点，指数映射在每一点的微分都保持长度，但绕圆周方向走过半圈以后已不再最短。因而上述微分估计可以在割时之后继续成立；要把它们解释为单值距离函数的估计，还须在后续各节另行限定割迹之外的区域。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

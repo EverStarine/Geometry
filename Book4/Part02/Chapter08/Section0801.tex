@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 8.1 时间依赖流与 Moser 方程
 % 纲要位置：几何学计划纲要.md，第 3779 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,296 @@
 \section{时间依赖流与 Moser 方程}
 \label{g4:sec:0801}
 
-待撰写
+设一族辛形式 \(\omega_t\) 随时间变化。我们希望同时移动流形上的点，使移动后的配对不再变化，即找到 \(\phi_t\) 满足 \(\phi_t^*\omega_t=\omega_0\)。直接求这样一族微分同胚并不容易，但对时间求导后，问题会变成逐点的线性方程。这个思路需要分别解决三个问题：形式自身的变化怎样与点的移动相加，恰当形式的原始形式怎样随参数光滑选择，以及所得向量场能否流动到指定时间。
 
 \subsection{Lie 导数和拉回求导}
 \label{g4:subsec:0801:01}
-待撰写
+
+本节的流形均为有限维、Hausdorff、第二可数的无边界光滑流形。区间 \([0,1]\) 上的光滑族是指系数对时间和空间变量联合光滑，在时间端点按局部光滑延拓理解。记 \(\dot\eta_t=\partial_t\eta_t\)，而 \(\mathrm{d}\eta_t\) 始终表示对空间变量作外微分。
+
+\begin{definition}\label{g4:def:0801:time-dependent-flow}
+	光滑映射 \(X:[0,1]\times M\to\mathrm{T}M\)，满足 \(X_t(p)=X(t,p)\in\mathrm{T}_pM\)，称为\term[shijianyilaixiangliangchang]{时间依赖向量场}[time-dependent vector field]。其\term[yanhuayingshe]{演化映射}[evolution map] \(\Phi_{t,s}\) 由初值问题
+	\[
+		\partial_t\Phi_{t,s}(p)=X_t(\Phi_{t,s}(p)),
+		\qquad \Phi_{s,s}(p)=p
+	\]
+	确定，并只在相应解存在时定义。若 \(\phi_t:M\to M\) 是光滑微分同胚族且 \(\phi_0=\operatorname{id}\)，则称它为从恒等映射出发的同位\termidx[tongwei]{同位}。这沿用第6章对微分同胚之间同位的定义。
+\end{definition}
+
+第一卷命题13.1.9证明了演化映射的存在、唯一、联合光滑性和定义域开放性。其证明将方程化为乘积流形上的自主向量场 \(\partial_t+X_t\)，因而时间端点的局部延拓也能用同一方法处理。演化映射满足
+\begin{equation}\label{g4:eq:0801:evolution-law}
+	\Phi_{t,r}\circ\Phi_{r,s}=\Phi_{t,s},\qquad
+	\Phi_{t,s}^{-1}=\Phi_{s,t},
+\end{equation}
+其中等式在相应开定义域上成立。以下常写 \(\phi_t=\Phi_{t,0}\)。在非紧流形上，\(\phi_t\) 可能只在某个开集 \(U\subset M\) 上存在；此时它仍是 \(U\) 到其开像的微分同胚。
+
+\ProseParagraphBreak
+
+对一个不随时间变化的向量场 \(Y\)，沿其正向流拉回求导定义 Lie 导数 \(\mathcal L_Y\)。第一卷定理14.1.5给出的 Cartan 公式\footnote{Élie Joseph Cartan（1869--1951），法国数学家，研究 Lie 群、微分几何与外微分系统。}为
+\begin{equation}\label{g4:eq:0801:cartan}
+	\mathcal L_Y\eta=\mathrm{d}(\iota_Y\eta)+\iota_Y(\mathrm{d}\eta).
+\end{equation}
+这里插入放在第一个变量，即 \((\iota_Y\eta)(v_1,\ldots)=\eta(Y,v_1,\ldots)\)。对 \(X_t\) 使用 \(\mathcal L_{X_t}\) 时，先固定时刻 \(t\)，再把 \(X_t\) 作为一个普通向量场。
+
+\begin{proposition}[随流拉回的求导公式]\label{g4:prop:0801:pullback-derivative}
+	设 \(M\) 为无边界光滑流形，\(X_t\) 是光滑时间依赖向量场，\(\eta_t\) 是光滑 \(k\) 形式族。若其从时刻 \(0\) 出发的流 \(\phi_t\) 在 \([0,1]\times U\) 上存在，其中 \(U\subset M\) 开，则
+	\begin{equation}\label{g4:eq:0801:pullback-derivative}
+		\frac{\mathrm{d}}{\mathrm{d}t}(\phi_t^*\eta_t)
+		=\phi_t^*\bigl(\dot\eta_t+\mathcal L_{X_t}\eta_t\bigr).
+	\end{equation}
+	同一公式也适用于任意光滑微分同胚族，只需令 \(X_t=\dot\phi_t\circ\phi_t^{-1}\)，并在其像上解释右端。
+\end{proposition}
+\begin{proof}
+	固定时刻 \(t\)，令 \(\psi_h=\Phi_{t+h,t}\)。由演化复合律，局部有 \(\phi_{t+h}=\psi_h\circ\phi_t\)，所以
+	\[
+		\phi_{t+h}^*\eta_{t+h}=\phi_t^*(\psi_h^*\eta_{t+h}).
+	\]
+	\(\psi_0\) 为恒等映射，且 \(\partial_h\psi_h|_{h=0}=X_t\)。因此对固定函数 \(f\)，有 \(\partial_h(\psi_h^*f)|_0=X_tf\)；对函数微分有
+	\[
+		\left.\partial_h\right|_0\psi_h^*(\mathrm{d}f)
+		=\mathrm{d}(X_tf).
+	\]
+	后一式使用第一卷命题14.1.8的拉回与外微分相容性，以及光滑系数的时间微分与空间微分可交换。任意形式局部是函数系数与坐标微分的楔积之和，由乘积求导法则，\(\partial_h(\psi_h^*\eta)|_0=\mathcal L_{X_t}\eta\)。形式本身的时间变化再贡献 \(\dot\eta_t\)，故
+	\[
+		\left.\partial_h\right|_0(\psi_h^*\eta_{t+h})
+		=\dot\eta_t+\mathcal L_{X_t}\eta_t.
+	\]
+	拉回到 \(U\) 即得结论。对一般微分同胚族，改取 \(\psi_h=\phi_{t+h}\circ\phi_t^{-1}\)，同一论证成立。上述局部等式在各坐标域相容，并由光滑性延至时间端点。
+\end{proof}
+
+公式中的两项分别来自形式的变化和输入点的移动，二者都不可省略。特别地，若 \(\mathrm{d}\omega_t=0\)，则
+\begin{equation}\label{g4:eq:0801:closed-pullback-derivative}
+	\frac{\mathrm{d}}{\mathrm{d}t}(\phi_t^*\omega_t)
+	=\phi_t^*\bigl(\dot\omega_t+\mathrm{d}(\iota_{X_t}\omega_t)\bigr).
+\end{equation}
+我们将让括号内的两个二形式彼此抵消。
 
 \subsection{同上同调类的形式族}
 \label{g4:subsec:0801:02}
-待撰写
+
+先明确上同调条件的含义。对闭二形式，\([\omega_t]=[\omega_0]\) 在 \(H^2_{\mathrm{dR}}(M)\) 中成立，按定义等价于 \(\omega_t-\omega_0\) 恰当。第二卷定理7.3.11把这一群与实奇异上同调自然识别，所以也可用拓扑上同调表达同一条件。逐个时刻选择一个原始一形式还不能直接用于微分方程，因为这些选择可能彼此无关。下面将局部到整体的构造固定下来，使原始形式随数据光滑变化。
+
+\begin{lemma}[光滑原始形式的选择]\label{g4:lem:0801:smooth-primitives}
+	设 \(M\) 是紧无边界光滑流形。可以为其所有恰当二形式选择一个实线性算子
+	\[
+		T:\mathrm{d}\Omega^1(M)\longrightarrow\Omega^1(M),
+		\qquad \mathrm{d}(T\eta)=\eta,
+	\]
+	使得任意光滑参数族 \(\eta_t\in\mathrm{d}\Omega^1(M)\) 都给出光滑族 \(T\eta_t\)。构造与参数的任意阶微分交换，也适用于有限个光滑参数。
+\end{lemma}
+\begin{proof}
+	我们先在有限覆盖的各片取原始形式，再修正交叠上的差。唯一需要整体求解的部分将落在一个有限维线性方程中；固定它的一个线性右逆，就能避免逐个时刻作不相容的选择。
+
+	先固定一个有限光滑好覆盖 \((U_i)_{i=1}^N\)，即每个非空有限交都能在自身内光滑收缩到一点。这里说明其存在，以便后面的收缩算子确有光滑性。第一卷定理12.3.11给出一个辅助黎曼度量；第三卷定理2.2.6给出每点附近的强凸开邻域，其中任意两点由唯一最短测地线连接，且该线光滑依赖端点并留在邻域中。由紧性选有限个这样的邻域覆盖 \(M\)。若有限交非空，其中两点在各邻域里的最短线由整个流形中的唯一性而相同，故整条线留在交集中。固定交集中的一点，沿这些最短线就得到光滑收缩。这正是第二卷定义7.3.9所用的光滑好覆盖；不连通的 \(M\) 可逐个分支作上述构造。
+
+	对每个需要使用的非空交集 \(U_I\)，固定基点 \(a_I\) 及光滑同伦 \(H_I:[0,1]\times U_I\to U_I\)，使 \(H_I(0,x)=a_I\)、\(H_I(1,x)=x\)。第一卷定理14.2.1的同伦算子给出固定线性算子 \(K_I\)，满足
+	\[
+		\mathrm{d}K_I\xi+K_I\mathrm{d}\xi=\xi
+		\quad\text{对正次数形式 }\xi.
+	\]
+	其具体定义为沿 \([0,1]\) 积分 \(H_I^*\xi\) 的时间插入分量，因而将光滑参数族送到光滑参数族。任意阶参数微分都可移入该紧区间积分。
+
+	现在取一个恰当二形式 \(\eta\)。令
+	\[
+		\beta_i=K_i(\eta|_{U_i}),\qquad \mathrm{d}\beta_i=\eta|_{U_i}.
+	\]
+	在非空 \(U_{ij}\) 上，\(\beta_j-\beta_i\) 闭。对 \(i<j\) 令
+	\[
+		f_{ij}=K_{ij}(\beta_j-\beta_i),\qquad
+		\mathrm{d}f_{ij}=\beta_j-\beta_i,
+	\]
+	再规定 \(f_{ji}=-f_{ij}\)、\(f_{ii}=0\)。在三重交上，函数
+	\[
+		c_{ijk}=f_{jk}-f_{ik}+f_{ij}
+	\]
+	的外微分为零。交集连通，所以它是一个实常数；可以通过在已固定的基点取值来确定这个常数。
+
+	把每个非空 \((r+1)\) 重交对应的一份 \(\mathbb R\) 相乘，得到有限维常系数 \term[cechshanglian]{Čech 上链}[Čech cochain]空间 \(C^r\)。指标按交替规则排列，其微分为
+	\[
+		(\delta a)_{i_0\cdots i_{r+1}}
+		=\sum_{\nu=0}^{r+1}(-1)^\nu
+		a_{i_0\cdots\widehat{i_\nu}\cdots i_{r+1}}.
+	\]
+	刚才的常数构成 \(c\in C^2\)，且 \(\delta c=0\)。我们还需要它为余边界，这里直接使用 \(\eta\) 的恰当性验证。暂取任意一个整体原始形式 \(\zeta\)，满足 \(\mathrm{d}\zeta=\eta\)。在 \(U_i\) 上，\(\beta_i-\zeta\) 闭，故可写成 \(\mathrm{d}h_i\)。于是
+	\[
+		b_{ij}=f_{ij}-h_j+h_i
+	\]
+	在 \(U_{ij}\) 上为常数，且 \(\delta b=c\)。因此 \(c\in\operatorname{im}(\delta:C^1\to C^2)\)。这个临时的 \(\zeta\) 只用于证明可解性，不参与最终选择。
+
+	有限维线性代数允许预先固定一个右逆
+	\[
+		R:\operatorname{im}(\delta:C^1\to C^2)\longrightarrow C^1,
+		\qquad \delta R=\operatorname{id}.
+	\]
+	例如选 \(\ker\delta\) 的线性补空间，限制 \(\delta\) 后取逆即可。令 \(a=Rc\)、\(\widetilde f_{ij}=f_{ij}-a_{ij}\)，则
+	\[
+		\widetilde f_{jk}-\widetilde f_{ik}+\widetilde f_{ij}=0,
+		\qquad \mathrm{d}\widetilde f_{ij}=\beta_j-\beta_i.
+	\]
+	取从属于 \((U_i)\) 的固定光滑单位分解 \((\rho_i)\)，其存在由第一卷定理12.3.5保证。定义 \(U_i\) 上的函数
+	\[
+		g_i=\sum_k\rho_k\widetilde f_{ki}.
+	\]
+	每项先在 \(U_k\cap U_i\) 定义，再向 \(U_i\) 的其余部分补零。因为 \(\operatorname{supp}\rho_k\subset U_k\)，补零在每点附近光滑；这里总和有限。三重交上的等式给出
+	\[
+		g_j-g_i=\sum_k\rho_k(\widetilde f_{kj}-\widetilde f_{ki})
+		=\sum_k\rho_k\widetilde f_{ij}=\widetilde f_{ij}.
+	\]
+	因此 \(\beta_i-\mathrm{d}g_i\) 在交集上相等，粘成一个整体一形式，定义为 \(T\eta\)。它满足 \(\mathrm{d}(T\eta)=\eta\)。这也是第二卷引理7.3.10中单位分解收缩在当前次数的具体形式。
+
+	所有实际操作都是固定收缩下的参数积分、限制、在固定点取值、固定有限维线性映射、乘固定光滑函数、有限求和以及外微分。这些操作都线性，并将光滑族送到光滑族，与任意阶参数微分交换。求 \(R\) 时使用的有限维子空间是闭子空间，故 \(c_t\) 的各阶参数导数仍在其定义域中。对 \(\mathrm{d}(T\eta_t)=\eta_t\) 求导还表明这些参数导数仍为恰当形式，所以与 \(T\) 交换的表述也有定义。于是 \(T\) 具有所述全部性质。
+\end{proof}
+
+\begin{corollary}\label{g4:cor:0801:constant-class-derivative}
+	设 \(M\) 紧且无边界，\(\omega_t\) 为光滑闭二形式族，且 \([\omega_t]=[\omega_0]\) 对 \(0\le t\le1\) 成立。则存在光滑一形式族 \(\alpha_t\)，满足
+	\begin{equation}\label{g4:eq:0801:primitive-derivative}
+		\dot\omega_t=\mathrm{d}\alpha_t.
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	差值 \(\eta_t=\omega_t-\omega_0\) 是光滑恰当族。用上一引理令 \(\kappa_t=T\eta_t\)，则 \(\mathrm{d}\kappa_t=\omega_t-\omega_0\)，且 \(\kappa_t\) 联合光滑。现在取 \(\alpha_t=\partial_t\kappa_t\)，交换系数的时间与空间微分，就得到 \(\mathrm{d}\alpha_t=\dot\omega_t\)。
+\end{proof}
+
+这说明上同调假设如何转化为一个可用于常微分方程的光滑右端。若一开始已有 \(\omega_t=\omega_0+\mathrm{d}\sigma_t\)，其中 \(\sigma_t\) 光滑，就直接取 \(\alpha_t=\dot\sigma_t\)。尤其对直线路径 \(\omega_t=\omega_0+t\,\mathrm{d}\sigma\)，可取不随时间变化的 \(\alpha_t=\sigma\)。
 
 \subsection{求解收缩方程}
 \label{g4:subsec:0801:03}
-待撰写
+
+设 \(\omega_t\) 是辛形式族，并已找到满足式\eqref{g4:eq:0801:primitive-derivative}的 \(\alpha_t\)。式\eqref{g4:eq:0801:closed-pullback-derivative}提示我们逐点求解
+\begin{equation}\label{g4:eq:0801:moser-equation}
+	\iota_{X_t}\omega_t=-\alpha_t.
+\end{equation}
+这个等式称为\term[moserfangcheng]{Moser 方程}[Moser equation]。\footnote{Jürgen Kurt Moser（1928--1999），德国出生的美籍数学家，研究 Hamilton 动力系统与偏微分方程。}负号使 \(\mathrm{d}(\iota_{X_t}\omega_t)\) 与 \(\dot\omega_t\) 抵消。
+
+\begin{lemma}\label{g4:lem:0801:contraction-solution}
+	设 \(M\) 为光滑流形，\(\omega_t\) 为光滑非退化二形式族，\(\alpha_t\) 为光滑一形式族。方程\eqref{g4:eq:0801:moser-equation}有唯一光滑时间依赖向量场解。对任意 \((t,p)\)，有 \(X_t(p)=0\) 当且仅当 \(\alpha_t(p)=0\) 作为 \(\mathrm{T}_p^*M\) 中的整个协向量成立。
+\end{lemma}
+\begin{proof}
+	非退化性说明 \(\omega_t^\flat:\mathrm{T}_pM\to\mathrm{T}_p^*M\)，\(v\mapsto\omega_t(v,\cdot)\)，是线性同构，所以唯一解为 \(X_t=-(\omega_t^\flat)^{-1}\alpha_t\)。在任一局部标架中，这个逆的矩阵由伴随矩阵除以非零行列式给出，因此随 \((t,p)\) 光滑。各坐标解由唯一性一致，构成整体光滑场。线性同构把零与零对应，给出最后的断言。
+\end{proof}
+
+例如，在 \(\omega=\sum_i\mathrm{d}q^i\wedge\mathrm{d}p_i\) 的坐标中，若 \(\alpha=\sum_i(a_i\,\mathrm{d}q^i+b_i\,\mathrm{d}p_i)\)，则方程的解为
+\[
+	X=\sum_i\left(-b_i\partial_{q^i}+a_i\partial_{p_i}\right).
+\]
+这直接核对了收缩所用的符号。原始形式的选择一般不唯一；若把 \(\alpha_t\) 改为 \(\alpha_t+\lambda_t\)，其中 \(\lambda_t\) 闭，所得速度场也会改变，但仍使式\eqref{g4:eq:0801:closed-pullback-derivative}的右端为零。
+
+\begin{theorem}[Moser 稳定性定理]\label{g4:thm:0801:moser}
+	设 \(M\) 为紧无边界光滑流形，\(\omega_t\)、\(0\le t\le1\)，为光滑辛形式族。若其 de Rham 上同调类 \([\omega_t]\) 与 \(t\) 无关，则存在从恒等映射出发的光滑同位 \(\phi_t:M\to M\)，使
+	\begin{equation}\label{g4:eq:0801:moser-pullback}
+		\phi_t^*\omega_t=\omega_0\qquad(0\le t\le1).
+	\end{equation}
+	反过来，满足该等式的同位必使 \([\omega_t]\) 与 \(t\) 无关。
+\end{theorem}
+\begin{proof}
+	由\cref{g4:cor:0801:constant-class-derivative}选择光滑 \(\alpha_t\) 使 \(\dot\omega_t=\mathrm{d}\alpha_t\)，再由\cref{g4:lem:0801:contraction-solution}解出 \(X_t\)。紧性在这里保证流能够走完整个时间区间。具体而言，第一卷命题13.2.10证明共同紧支的时间依赖场有整体演化映射；现在可取共同紧集为整个 \(M\)。该命题的延拓论证应用于增广场 \(\partial_t+X_t\)：若解在有限时刻终止，轨道却一直位于紧的时间段与 \(M\) 的乘积中，就与有限端点逃逸判据矛盾。端点处用局部光滑延拓即可。
+
+	于是 \(\phi_t=\Phi_{t,0}\) 对所有初值及 \(0\le t\le1\) 存在。反向演化给出光滑逆，故它是从恒等映射出发的同位。由拉回求导公式及 \(\mathrm{d}\omega_t=0\)，
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}(\phi_t^*\omega_t)
+		=\phi_t^*\mathrm{d}(\alpha_t+\iota_{X_t}\omega_t)=0.
+	\]
+	初值为 \(\omega_0\)，得到式\eqref{g4:eq:0801:moser-pullback}。
+
+	反过来，设这样的同位已经存在，令 \(X_t=\dot\phi_t\circ\phi_t^{-1}\)。对等式求导并利用拉回的可逆性，得到
+	\[
+		\dot\omega_t=-\mathrm{d}(\iota_{X_t}\omega_t).
+	\]
+	对时间积分便有
+	\[
+		\omega_t-\omega_0
+		=-\mathrm{d}\left(\int_0^t\iota_{X_s}\omega_s\,\mathrm{d}s\right),
+	\]
+	所以差值恰当，上同调类恒定。
+\end{proof}
+
+\term[Moserwendingxingdingli]{Moser 稳定性定理}[Moser stability theorem]比较的是一整条处处非退化且同上同调类的路径。给定两个端点后，直接连接的形式 \((1-t)\omega_0+t\omega_1\) 虽然总闭，却未必始终非退化；例如在四维辛空间中，\(\omega\) 与 \(-\omega\) 都非退化且给出相同定向，其直线路径仍在中点成为零。Moser 论证使用的逐点逆算子正是在退化处失去定义。整体方法及其原始形式条件可对照 Cannas da Silva 的定理1.7及证明。\cite[第1.4节，第88--90页]{Cannas2006Symplectic}
+
+\begin{example}[环面面积密度的显式输运]\label{g4:exm:0801:torus-density}
+	在 \(M=(\mathbb R/\mathbb Z)^2\) 上用周期坐标 \(q,p\)，固定 \(|\varepsilon|<1\)，令
+	\[
+		\omega_t=(1+t\varepsilon\cos(2\pi q))\,\mathrm{d}q\wedge\mathrm{d}p,
+		\qquad
+		\alpha_t=\frac{\varepsilon}{2\pi}\sin(2\pi q)\,\mathrm{d}p.
+	\]
+	系数始终为正，且 \(\dot\omega_t=\mathrm{d}\alpha_t\)。Moser 方程给出
+	\[
+		X_t=-\frac{\varepsilon\sin(2\pi q)}{2\pi(1+t\varepsilon\cos(2\pi q))}\,\partial_q.
+	\]
+	令 \(F_t(q)=q+t\varepsilon\sin(2\pi q)/(2\pi)\)。因为 \(F_t'(q)>0\) 且 \(F_t(q+1)=F_t(q)+1\)，它诱导圆周微分同胚。对 \(F_t(q_t)=q\) 求导可知 \(q_t\) 恰满足上述速度方程，所以
+	\[
+		\phi_t(q,p)=(F_t^{-1}(q),p).
+	\]
+	直接求拉回也能验证：\(\omega_t\) 的密度因子是 \(F_t'\)，而逆映射的导数给出其倒数，两者相消，故 \(\phi_t^*\omega_t=\mathrm{d}q\wedge\mathrm{d}p\)。这里移动横坐标，恰好补偿了随位置变化的面积密度。
+\end{example}
 
 \subsection{紧性、紧支和相对保持}
 \label{g4:subsec:0801:04}
-待撰写
+
+上一证明中，拉回求导和收缩方程都是局部的；紧性负责把它们产生的速度场积分为全时段的整体同位。若原始形式及流的存在范围已经给定，相同计算可以用于非紧流形或子流形的邻域。
+
+\begin{proposition}[有定义域控制的相对 Moser 方法]\label{g4:prop:0801:relative-flow}
+	设 \(N\) 为无边界光滑流形，\(\omega_t\) 为光滑辛形式族，\(\alpha_t\) 为光滑一形式族，满足 \(\dot\omega_t=\mathrm{d}\alpha_t\)。令 \(X_t\) 由 \(\iota_{X_t}\omega_t=-\alpha_t\) 确定。
+	\begin{enumerate}
+		\item 若从时刻 \(0\) 出发的流 \(\phi_t\) 对开集 \(U\subset N\) 的所有初值及 \(0\le t\le1\) 都存在，则 \(\phi_t:U\to\phi_t(U)\) 是微分同胚，且 \(\phi_t^*\omega_t=\omega_0|_U\)。
+		\item 若 \(S\subset N\) 是嵌入子流形，且每个 \(p\in S\) 都满足 \(\alpha_t(p)=0\in\mathrm{T}_p^*N\)，则存在含 \(S\) 的开集 \(U\)，使上述流在 \([0,1]\times U\) 上存在，并逐点固定 \(S\)。这里不要求 \(S\) 紧。
+		\item 在第二项的条件下，若再有 \(\mathrm{D}X_t(p)=0\) 对所有 \(p\in S\) 成立，则 \(\mathrm{d}(\phi_t)_p\) 在整个 \(\mathrm{T}_pN\) 上为恒等映射。因为 \(X_t(p)=0\)，这里的线性化 \(\mathrm{D}X_t(p)\) 不依赖坐标选择。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	第一项的微分同胚结论来自演化映射的逆；拉回等式由\cref{g4:prop:0801:pullback-derivative}和收缩方程直接得到，其求导结果为零，初值为 \(\omega_0|_U\)。
+
+	对第二项，\cref{g4:lem:0801:contraction-solution}给出 \(X_t(p)=0\)，所以每个 \(p\in S\) 的常值曲线都是定义在整个 \([0,1]\) 上的解。唯一性说明该点被所有时间映射固定。演化映射定义域的开放性说明，每个 \((t,p)\in[0,1]\times S\) 附近有一个时间与初值的乘积邻域，所有相应解在那里存在。固定 \(p\)，用有限个这样的时间邻域覆盖紧区间 \([0,1]\)，再交其初值邻域，得到 \(p\) 的开邻域 \(U_p\)，使从 \(0\) 出发的所有这些初值都能求解到每个 \(t\in[0,1]\)。令 \(U=\bigcup_{p\in S}U_p\)，即可同时包含整个 \(S\)。这个论证允许不同点采用不同大小的邻域，不要求给非紧 \(S\) 一个统一半径。
+
+	第三项可在固定点 \(p\) 附近选坐标验证。对流方程的初值求导，令 \(A_t=\mathrm{d}(\phi_t)_p\)，由于 \(\phi_t(p)=p\)，得到
+	\[
+		\dot A_t=\mathrm{D}X_t(p)\,A_t,\qquad A_0=I.
+	\]
+	在所给条件下 \(\dot A_t=0\)，所以 \(A_t=I\)。换坐标时，向量场一阶导数的额外项带有 \(X_t(p)\) 作为因子，因此在该零点处消失，线性化的定义也就与坐标无关。
+\end{proof}
+
+相对条件必须读作整个协向量为零。若只要求包含映射 \(i:S\hookrightarrow N\) 满足 \(i^*\alpha_t=0\)，便只知道 \(\alpha_t\) 在 \(\mathrm{T}S\) 上为零，因而 \(X_t\in(\mathrm{T}S)^{\omega_t}\)；这不保证 \(X_t=0\)。例如 \(N=\mathbb R^2\)、\(\omega=\mathrm{d}q\wedge\mathrm{d}p\)、\(S=\{p=0\}\)，取常值闭一形式 \(\alpha=\mathrm{d}p\)。虽然 \(i^*\alpha=0\)，收缩方程却给出 \(X=-\partial_q\)，其流沿 \(S\) 平移，并不逐点固定 \(S\)。
+
+\ProseParagraphBreak
+
+在邻域问题中，通常先构造沿 \(S\) 消失的原始形式，再用上述命题缩小初值邻域。这个顺序使“固定子流形”成为微分方程的初值事实。Cannas da Silva 的相对定理1.8采用同一思路；沿子流形构造原始形式的细节将在\cref{g4:sec:0803}展开。\cite[第1.5节，第90页]{Cannas2006Symplectic}
+
+\begin{corollary}[共同紧支的版本]\label{g4:cor:0801:compact-support}
+	设 \(M\) 为无边界光滑流形，\(\omega_t\) 为光滑辛形式族。如果存在光滑一形式族 \(\alpha_t\) 和固定紧集 \(K\subset M\)，满足
+	\[
+		\dot\omega_t=\mathrm{d}\alpha_t,\qquad
+		\operatorname{supp}\alpha_t\subset K\quad(0\le t\le1),
+	\]
+	则存在从恒等映射出发的同位 \(\phi_t:M\to M\)，满足 \(\phi_t^*\omega_t=\omega_0\)，且 \(\phi_t\) 在 \(M\setminus K\) 上恒等。
+\end{corollary}
+\begin{proof}
+	逐点求逆给出的 \(X_t\) 在 \(K\) 外为零，故各 \(X_t\) 具有共同紧支。第一卷命题13.2.10的延拓论证保证其演化映射在整个时间区间及所有初值上存在；\(K\) 外的点由唯一性保持不动。再用\cref{g4:prop:0801:relative-flow}第一项即可。
+\end{proof}
+
+这里要求的是原始一形式具有共同紧支，而非仅仅每个固定时刻的速度场分别紧支。若没有这样的控制或其他完备性保证，非紧流形上的全局结论确实可能失败。
+
+\begin{example}[同上同调类不能消除无穷远处的面积障碍]\label{g4:exm:0801:noncompact-area}
+	在 \(\mathbb R^2\) 上令
+	\[
+		\omega_t=\bigl(1-t+t e^{-(q^2+p^2)}\bigr)\,\mathrm{d}q\wedge\mathrm{d}p,
+		\qquad 0\le t\le1.
+	\]
+	每个系数都严格为正，所以这是一条光滑辛路径。令
+	\[
+		\sigma(q,p)=\left(\int_0^q(e^{-(s^2+p^2)}-1)\,\mathrm{d}s\right)\mathrm{d}p,
+	\]
+	则 \(\omega_t-\omega_0=t\,\mathrm{d}\sigma\)。因此整个族同上同调类，而且所需的光滑原始一形式已经显式给出。
+
+	然而 \(\omega_0\) 的总面积无限，\(\omega_1\) 的总面积为
+	\[
+		\int_{\mathbb R^2}\omega_1
+		=2\pi\int_0^\infty e^{-r^2}r\,\mathrm{d}r=\pi.
+	\]
+	若有微分同胚 \(\phi\) 满足 \(\phi^*\omega_1=\omega_0\)，则它保持这两个形式给出的定向。对半径为 \(R\) 的圆盘 \(B_R\)，换元公式给出
+	\[
+		\pi R^2=\int_{B_R}\omega_0
+		=\int_{\phi(B_R)}\omega_1\le\pi,
+	\]
+	当 \(R>1\) 时矛盾。因此两个端点之间根本不存在这样的整体辛同胚。失败并非某一次原始形式选择不佳，而是非紧流形上无穷远处的面积无法被整体微分同胚压入有限总面积。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

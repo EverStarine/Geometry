@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 25.4 模型和几何限制
 % 纲要位置：几何学计划纲要.md，第 3190 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,17 +16,212 @@
 \section{模型和几何限制}
 \label{g3:sec:2504}
 
-待撰写
+局部障碍模型以一个已经存在的 Einstein 度量为中心。具体模型可以进一步回答三个问题：核中的方向是否真正产生邻近度量，取微分同胚商时是否还有有限对称需要识别，以及一族解离开局部邻域后可能怎样退化。本节从常数缩放、乘积和环面出发，把这些现象分别算出；最后说明附加复结构怎样提供一种整体存在性结果。
 
 \subsection{空间形式、乘积及 Ricci 平坦模型}
 \label{g3:subsec:2504:01}
-待撰写
+同一个度量的整体尺度会改变 Einstein 常数，却不改变它的 Levi--Civita 联络。先把这个区别写清楚，才能比较不同归一化下的解。
+
+\begin{proposition}\label{g3:prop:einstein-scaling-product}
+	设 \((M^n,g)\) 为光滑黎曼流形，\(n\ge3\)，且 \(\operatorname{Ric}_g=\lambda g\)。对常数 \(c>0\)，有
+	\[
+		\operatorname{Ric}_{cg}=\operatorname{Ric}_g
+		=\frac\lambda c(cg),\qquad
+		s_{cg}=c^{-1}s_g,\qquad
+		\mu_{cg}=c^{n/2}\mu_g.
+	\]
+	再设 \((M_i^{n_i},g_i)\) 为光滑 Einstein 流形，\(\operatorname{Ric}_{g_i}=\lambda_i g_i\)、\(n_i\ge1\)，且 \(n_1+n_2\ge3\)。对 \(a,b>0\)，乘积度量 \(g=a g_1\oplus b g_2\) 为 Einstein 度量，当且仅当
+	\begin{equation}\label{g3:eq:einstein-product-scales}
+		\frac{\lambda_1}{a}=\frac{\lambda_2}{b}.
+	\end{equation}
+	此时两边的公共值就是 \(g\) 的 Einstein 常数。
+\end{proposition}
+\begin{proof}
+	Christoffel 公式中的逆度量贡献 \(c^{-1}\)，度量的一阶导数贡献 \(c\)，故常数缩放不改变联络及其 \((1,3)\) 型曲率。Ricci 张量由这一曲率作一上一下的收缩，因而作为 \((0,2)\) 型张量也不变。标量曲率还须用逆度量缩并一次，于是乘以 \(c^{-1}\)；体积密度的变化由 \(\det(cg)=c^n\det g\) 得到。
+
+	乘积度量的联络分别作用在两个因子上，混合方向的协变导数及曲率为零。因此
+	\[
+		\operatorname{Ric}_{a g_1\oplus b g_2}
+		=\lambda_1g_1\oplus\lambda_2g_2.
+	\]
+	将 Einstein 方程分别限制到两个非零切空间，恰好得到式\eqref{g3:eq:einstein-product-scales}。
+\end{proof}
+
+若两个因子的 Einstein 常数同号且非零，可以调节相对尺度使式\eqref{g3:eq:einstein-product-scales}成立；异号时不能如此。一项为零、另一项非零也不能得到 Einstein 乘积。两个因子都 Ricci 平坦时，任意正相对尺度都给出解。这说明相对缩放有时是真实的形变参数，有时则被方程固定。
+
+\begin{example}\label{g3:exm:einstein-sphere-product}
+	设 \(p,q\ge2\)，\(g_{S^p}\)、\(g_{S^q}\) 为截面曲率一的圆球度量。给定 \(\lambda>0\)，
+	\[
+		g=\frac{p-1}{\lambda}g_{S^p}
+		\oplus\frac{q-1}{\lambda}g_{S^q}
+	\]
+	满足 \(\operatorname{Ric}_g=\lambda g\)。两个因子内部的截面曲率分别为 \(\lambda/(p-1)\)、\(\lambda/(q-1)\)，混合二维平面的截面曲率为零。因此 Einstein 条件并不要求每个二维方向具有相同曲率。
+\end{example}
+
+对于截面曲率恒为 \(\kappa\) 的空间形式，式\eqref{g3:eq:constant-curvature-tensor}给出
+\[
+	\operatorname{Ric}=(n-1)\kappa g,
+	\qquad
+	\mathring R(h)=\kappa\bigl((\operatorname{tr}_g h)g-h\bigr).
+\]
+第二式是把该曲率张量与对称二张量 \(h\) 缩并。它让正曲率空间形式的局部问题化为一个带正零阶项的能量恒等式。
+
+\begin{corollary}\label{g3:cor:positive-space-form-einstein-rigid}
+	设 \((M^n,g_0)\) 为闭连通光滑黎曼流形，\(n\ge3\)，截面曲率恒为 \(\kappa>0\)。固定 \(\lambda=(n-1)\kappa\)。则 \(g_0\) 在 Einstein 常数为 \(\lambda\) 的度量中模微分同胚局部刚性。
+\end{corollary}
+\begin{proof}
+	由\cref{g3:prop:einstein-kernel-tt}，规范线性化的核由满足 \(\delta_{g_0}h=0\)、\(\operatorname{tr}_{g_0}h=0\) 的张量组成，且每个核元素满足
+	\[
+		0=(\nabla^*\nabla-2\mathring R)h
+		=\nabla^*\nabla h+2\kappa h.
+	\]
+	与 \(h\) 作 \(L^2\) 内积得到 \(\|\nabla h\|_2^2+2\kappa\|h\|_2^2=0\)，故 \(h=0\)。应用\cref{g3:cor:einstein-infinitesimal-rigidity}便得结论。
+\end{proof}
+
+这里固定 Einstein 常数消除了整体缩放。若 \(\kappa<0\)，同一算式中的零阶项改变符号，刚性需要另作论证，不能由上面的非负积分直接读出。
+
+\ProseParagraphBreak
+
+Ricci 平坦环面给出相反的情形：核的每个方向都能积分成一族精确解。取 \(T^n=\mathbb R^n/\mathbb Z^n\)，\(n\ge3\)，对每个正定实对称矩阵 \(Q\) 定义
+\begin{equation}\label{g3:eq:flat-torus-matrix-metric}
+	g_Q=\sum_{i,j=1}^nQ_{ij}\,\mathrm dx^i\otimes\mathrm dx^j,
+	\qquad \mathcal P_n=\{Q=Q^{\mathsf T}>0\}.
+\end{equation}
+系数为常数，故联络系数及曲率都为零；基本立方体的体积为 \(\sqrt{\det Q}\)。因此单位体积子族为
+\[
+	\mathcal P_n^1=\{Q\in\mathcal P_n:\det Q=1\},
+	\qquad \dim\mathcal P_n^1=\frac{n(n+1)}2-1.
+\]
+行列式的一阶变分为 \(D(\det)_QH=\det Q\operatorname{tr}(Q^{-1}H)\)，所以最后一个维数公式也说明固定体积如何去掉一个缩放方向。
+
+\begin{proposition}\label{g3:prop:flat-torus-einstein-kernel}
+	设 \(n\ge3\)，\(Q\in\mathcal P_n\)，在闭环面 \((T^n,g_Q)\) 上取 Einstein 常数 \(\lambda=0\) 及本章的散度规范。规范线性化的核恰为常系数对称二张量，维数为 \(n(n+1)/2\)。每个核方向均由常系数 Ricci 平坦度量族实现；局部障碍映射在这一模型中恒为零。固定体积后的切空间再满足 \(\operatorname{tr}(Q^{-1}H)=0\)。
+\end{proposition}
+\begin{proof}
+	由\cref{g3:prop:einstein-kernel-tt}，核元素的迹为常数，去掉其常数倍 \(g_Q\) 后得到满足 \(\nabla^*\nabla h=0\) 的无迹张量。闭流形上的分部积分给出 \(\nabla h=0\)。平坦坐标中的平行张量正是常系数张量。反过来，常系数张量的所有导数为零，而曲率及 \(\lambda\) 也为零，代入线性化便知它属于核。
+
+	任意对称常矩阵 \(H\) 在充分小的 \(|t|\) 下给出正定矩阵 \(Q+tH\)，相应度量都是 Ricci 平坦的，并满足相对于 \(g_Q\) 的散度规范。更一般地，充分小的核元素本身就给出一个精确解；在\cref{g3:thm:einstein-local-obstruction}的核与正交补分解中，这些解的正交补分量为零。该分量的隐函数唯一性遂说明约化图的正交补函数和障碍映射都恒为零。
+
+	若 \(\det Q=1\) 且 \(\operatorname{tr}(Q^{-1}H)=0\)，可用
+	\[
+		Q(t)=Q^{1/2}\exp\bigl(tQ^{-1/2}HQ^{-1/2}\bigr)Q^{1/2}
+	\]
+	实现给定切方向。矩阵指数保持正定性，\(Q'(0)=H\)，且 \(\det Q(t)=\det Q\exp(t\operatorname{tr}(Q^{-1}H))=1\)。
+\end{proof}
+
+矩阵 \(Q\) 记录的是选定整数坐标后的度量。要得到几何对象的参数，还必须识别改换整数坐标所产生的相同环面。
+
+\begin{proposition}\label{g3:prop:flat-torus-matrix-moduli}
+	设 \(n\ge3\)、\(Q,Q'\in\mathcal P_n\)。常系数平坦环面 \((T^n,g_Q)\) 与 \((T^n,g_{Q'})\) 等距，当且仅当存在 \(A\in\operatorname{GL}(n,\mathbb Z)\) 使
+	\[
+		Q'=A^{\mathsf T}QA.
+	\]
+	因此单位体积的常系数平坦环面等距类由 \(\mathcal P_n^1\) 在上述整数矩阵作用下的轨道表示。
+\end{proposition}
+\begin{proof}
+	若有这样的 \(A\)，映射 \([x]\mapsto[Ax]\) 为环面微分同胚，其拉回度量为 \(g_{Q'}\)。反过来，一个环面等距映射可以提升为两个万有覆盖间的等距映射 \(F:\mathbb R^n\to\mathbb R^n\)。等距映射保持 Levi--Civita 联络，而两边的坐标联络系数都为零，因此 \(\partial_i\partial_jF=0\)，即 \(F(x)=Ax+b\)。它与覆盖变换相容，故 \(A\mathbb Z^n=\mathbb Z^n\)；其逆也满足同一条件，所以 \(A\in\operatorname{GL}(n,\mathbb Z)\)。等距等式正是 \(Q'=A^{\mathsf T}QA\)。平移 \(b\) 不改变常系数度量。
+\end{proof}
 
 \subsection{自同构导致的模空间奇点}
 \label{g3:subsec:2504:02}
-待撰写
+前一命题中的平移已经显示：一个度量可以有连续的等距群，而该群在某些形变参数上作用平凡。判断商是否出现奇性，需要检查稳定子在参数空间上的实际表示。
+
+先固定 \(Q\in\mathcal P_n^1\)。其整数稳定子为
+\[
+	\Gamma_Q=\{A\in\operatorname{GL}(n,\mathbb Z):A^{\mathsf T}QA=Q\}.
+\]
+它是有限群。事实上，若 \(mI\le Q\le MI\)，则其任一元素的第 \(i\) 列满足 \(m|Ae_i|^2\le Q_{ii}\le M\)，整数列向量只有有限种。类似地，对于 \(Q,Q'\) 同时落在 \(\mathcal P_n^1\) 的一个紧集内，只可能有有限多个整数矩阵满足 \(Q'=A^{\mathsf T}QA\)。这证明作用在紧集上的有限性。缩小 \(Q\) 的邻域，可以排除不属于 \(\Gamma_Q\) 的这些矩阵，局部商于是由有限稳定子决定。
+
+令
+\[
+	V_Q=\{H=H^{\mathsf T}:\operatorname{tr}(Q^{-1}H)=0\}.
+\]
+稳定子在此空间上的作用为 \(H\mapsto A^{\mathsf T}HA\)。这个线性表示给出实际的局部商坐标：对充分小的 \(H\in V_Q\)，令
+\[
+	\chi(H)=\frac{Q+H}{\det(Q+H)^{1/n}}.
+\]
+有 \(\chi(0)=Q\)、\(D\chi_0=I\)，故有限维逆函数定理使 \(\chi\) 成为局部坐标。行列式在整数合同变换下不变，因而 \(\chi\) 对 \(\Gamma_Q\) 等变。局部等距类空间就是这一坐标球的有限群商。特别地，\(-I\) 对全部对称矩阵作用恒等；它作为等距映射仍是非平凡的，但在这里属于表示的核。
+
+\begin{example}\label{g3:exm:flat-torus-stabilizer-cone}
+	在 \(n=3\) 时，选实数 \(a,b,c\)，使 \(b>a^2\)、\(c>0\)，且 \(1,a,b,c\) 在 \(\mathbb Q\) 上线性无关。这样的选择存在于相应开集内，因为所有非零有理线性关系只给出可数个真超平面。令
+	\[
+		Q_0=\begin{pmatrix}1&a&0\\a&b&0\\0&0&c\end{pmatrix},
+		\qquad Q=(\det Q_0)^{-1/3}Q_0.
+	\]
+	若整数矩阵 \(A\) 保持 \(Q_0\)，将其三行分别记为 \(r_1,r_2,r_3\)，则
+	\[
+		A^{\mathsf T}Q_0A
+		=r_1^{\mathsf T}r_1
+		+a(r_1^{\mathsf T}r_2+r_2^{\mathsf T}r_1)
+		+b r_2^{\mathsf T}r_2+c r_3^{\mathsf T}r_3.
+	\]
+	逐项比较 \(1,b,c\) 的有理系数可知 \(r_i=\varepsilon_i e_i^{\mathsf T}\)，\(\varepsilon_i\in\{1,-1\}\)；再比较 \(a\) 的系数得 \(\varepsilon_1\varepsilon_2=1\)。所以
+	\[
+		\Gamma_Q=\{\operatorname{diag}(\varepsilon,\varepsilon,\eta):
+		\varepsilon,\eta\in\{1,-1\}\}.
+	\]
+	除去作用平凡的 \(\{I,-I\}\) 后，有效稳定子由 \(D=\operatorname{diag}(-1,-1,1)\) 生成。把切向量写成
+	\[
+		H=\begin{pmatrix}B&v\\v^{\mathsf T}&t\end{pmatrix},
+		\qquad B=B^{\mathsf T}\in\mathbb R^{2\times2},\quad v\in\mathbb R^2,
+	\]
+	则 \(D^{\mathsf T}HD\) 保持 \(B,t\)，把 \(v\) 变为 \(-v\)。迹约束只限制 \(B,t\)，故不变方向有三维，变号方向有二维。单位体积模族在 \([Q]\) 附近具有局部模型
+	\begin{equation}\label{g3:eq:flat-torus-local-cone}
+		\mathbb R^3\times\bigl(\mathbb R^2/\{v\sim-v\}\bigr).
+	\end{equation}
+	给切空间取不变内积，二维变号因子的商度量是总角为 \(\pi\) 的平锥。在原点的小圆周上，周长与半径之比为 \(\pi\)，而非 Euclid 平面的 \(2\pi\)。因此稳定子在自然局部商结构中留下锥角。其底层拓扑空间仍同胚于 \(\mathbb R^5\)：二维商的同胚可由 \(z\mapsto z^2\) 给出。保留稳定子与商度量，比只问底层集合是否像一个开球记录了更多几何信息。
+\end{example}
+
+在一般 Einstein 局部模型中还可能出现另一种奇性：障碍映射的零集本身就不光滑。\Cref{g3:thm:einstein-local-obstruction}先得到有限维零集，再识别剩余等距群作用。核维数、零集的局部形状和稳定子表示分别属于三个层次；平坦环面中障碍消失，式\eqref{g3:eq:flat-torus-local-cone}的现象完全来自最后一层。
 
 \subsection{紧性、退化及更深存在定理}
 \label{g3:subsec:2504:03}
-待撰写
+有限维局部模型只描述某个解的邻域。即使方程和体积归一化都固定，解族仍可能在距离尺度上逃出所有这样的邻域。
+
+\begin{example}\label{g3:exm:unit-volume-flat-torus-degeneration}
+	设 \(n\ge3\)、\(0<\varepsilon<1\)，在 \(T^n=\mathbb R^n/\mathbb Z^n\) 上取
+	\[
+		g_\varepsilon=\varepsilon^2(\mathrm dx^1)^2
+		+\varepsilon^{-2}(\mathrm dx^2)^2
+		+\sum_{i=3}^n(\mathrm dx^i)^2.
+	\]
+	这是单位体积的平坦 Einstein 度量，且
+	\[
+		\operatorname{inj}(g_\varepsilon)=\frac\varepsilon2,
+		\qquad
+		\operatorname{diam}(g_\varepsilon)
+		=\frac12\sqrt{\varepsilon^2+\varepsilon^{-2}+n-2}.
+	\]
+	第一个等式来自最短非零格向量的长度为 \(\varepsilon\)；没有共轭点时，注入半径是这一长度的一半。第二个等式来自乘积圆周的距离平方为各因子距离平方之和，每个因子的最大距离恰为其周长的一半。于是曲率恒为零、体积恒为一，直径却趋于无穷。任意拉回都保持直径，因此这列度量不能在模微分同胚后光滑收敛到一个闭流形上的黎曼度量。它也不能有紧度量空间的 GH 收敛子列：若对应的畸变趋零，则两空间的直径之差也趋零。
+\end{example}
+
+若保持其余圆周长度为一，只压缩第一个方向，则得到
+\[
+	\widetilde g_\varepsilon
+	=\varepsilon^2(\mathrm dx^1)^2+\sum_{i=2}^n(\mathrm dx^i)^2.
+\]
+此时直径有界、体积趋零。到单位平坦 \(T^{n-1}\) 的投影是满射，任意一对点的距离损失不超过 \(\varepsilon/2\)，故由\cref{g3:thm:gh-correspondence}有
+\[
+	d_{\mathrm{GH}}\bigl((T^n,\widetilde g_\varepsilon),T^{n-1}\bigr)
+	\le\frac\varepsilon4.
+\]
+这是\cref{g3:prop:flat-torus-collapse}的高维乘积版本。前一族用长方向补偿短方向，后一族允许总体积消失；体积归一化与直径控制在紧性问题中承担不同作用。
+
+\ProseParagraphBreak
+
+整体存在性还可能来自额外的几何结构。这里给出一个精确的外部结果，说明 Ricci 平坦度量的来源远不止常系数环面。回顾\cref{g3:def:parallel-kahler-structure}，Kähler 结构使正交复结构 \(J\) 平行，基本二形式 \(\omega(X,Y)=g(JX,Y)\) 闭。在复流形表述中，固定复结构后，正的实闭 \((1,1)\) 形式给出这样的度量；\([\omega]\in H^2(X;\mathbb R)\) 称为其 Kähler 类。
+
+复切丛的\emph{实第一陈类}是第一陈类在 \(H^2(X;\mathbb R)\) 中的像。对于 Kähler 度量，它由 Ricci 形式的 \(1/(2\pi)\) 倍表示。在全纯坐标中，若 \(\omega=\mathrm i\sum g_{\alpha\bar\beta}\,\mathrm dz^\alpha\wedge\mathrm d\bar z^\beta\)，则 Ricci 形式为
+\[
+	\rho_g=-\mathrm i\,\partial\bar\partial\log\det(g_{\alpha\bar\beta}),
+	\qquad \rho_g(X,Y)=\operatorname{Ric}_g(JX,Y).
+\]
+这里 \(\partial\)、\(\bar\partial\) 分别取外微分中提高全纯次数、反全纯次数的部分。更换同一复结构上的 Kähler 度量时，两式之差是对整体体积密度比的对数作用 \(-\mathrm i\partial\bar\partial\)，因而为恰当形式。这解释了上述上同调类为何不随度量改变；它也说明 Ricci 平坦时实第一陈类必须为零。
+
+\begin{theorem}[零实第一陈类的 Ricci 平坦度量]\label{g3:thm:kahler-ricci-flat-existence-input}
+	设 \(X\) 为紧连通复流形，复维数 \(m\ge2\)，并设 \(X\) 有 Kähler 度量且实第一陈类 \(c_1(X)_{\mathbb R}=0\)。则每个 Kähler 类中恰有一个 Ricci 平坦的 Kähler 度量。
+\end{theorem}
+该定理作为外部输入，采用\cite[定理1，第1798页]{Yau1977Calabi}中固定 Kähler 类、指定 Ricci 形式的结论，并把所指定形式取为零。所引文章是该存在性结果的原始公告；其全局分析依赖复 Monge--Ampère 方程的先验估计，不能由已知解附近的隐函数定理单独推出。唯一性固定了复结构和 Kähler 类：改变这些数据，仍可产生不同的 Ricci 平坦度量。文献\cite[定理2，第1798页]{Yau1977Calabi}还给出紧单连通、Ricci 平坦而完整曲率不恒为零的 Kähler 流形，因而 Ricci 平坦也不等同于平坦。
+
+这些模型把本章局部结论放在了具体的位置：正曲率空间形式的核消失，平坦环面的核全部可积，有限稳定子使光滑参数仍需取商，退化族则说明局部参数不能直接组成一个紧的整体分类空间。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

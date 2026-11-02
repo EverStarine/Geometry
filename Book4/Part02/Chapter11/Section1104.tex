@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 11.4 典型可积系统
 % 纲要位置：几何学计划纲要.md，第 3907 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,17 +16,301 @@
 \section{典型可积系统}
 \label{g4:sec:1104}
 
-待撰写
+作用角坐标把正则紧纤维附近的运动化为环面平移。具体系统仍有三件事需要计算：哪些函数构成独立的交换积分，哪些共同水平集满足紧性与正则性，以及频率怎样由作用变量决定。振子可以把坐标与频率完全写出；测地流显示对称性怎样提供积分；球摆则让正则环面与奇异纤维出现在同一个能量图景中。本节沿用角变量周期为 \(2\pi\)、\(\omega=\sum_j\mathrm{d}\theta_j\wedge\mathrm{d}I_j\) 的约定。
 
 \subsection{振子与环面平移}
 \label{g4:subsec:1104:01}
-待撰写
+\cref{g4:exm:0902:two-oscillators}已经证明，两个振子的能量分量彼此对合，并在两分量都非零处独立。现在计算它们的作用积分，并辨认环面上的轨道。
+
+\begin{example}\label{g4:exm:1104:oscillator-actions}
+	在 \(\mathbb R^{2n}\) 上取
+	\[
+		\omega=\sum_{j=1}^n\mathrm{d}q_j\wedge\mathrm{d}p_j,
+		\qquad I_j=\frac{q_j^2+p_j^2}{2},
+		\qquad H=\sum_{j=1}^n\nu_jI_j,
+		\quad \nu_j>0.
+	\]
+	在每个 \(I_j>0\) 的区域定义
+	\begin{equation}\label{g4:eq:1104:oscillator-angles}
+		q_j=\sqrt{2I_j}\cos\theta_j,
+		\qquad p_j=-\sqrt{2I_j}\sin\theta_j,
+		\qquad \theta_j\in\mathbb R/(2\pi\mathbb Z).
+	\end{equation}
+	对单个分量求微分，得到
+	\[
+		p_j\,\mathrm{d}q_j
+		=2I_j\sin^2\theta_j\,\mathrm{d}\theta_j
+		-\sin\theta_j\cos\theta_j\,\mathrm{d}I_j
+		=I_j\,\mathrm{d}\theta_j
+		-\mathrm{d}(I_j\sin\theta_j\cos\theta_j).
+	\]
+	因此典范一形式 \(\lambda=\sum_jp_j\,\mathrm{d}q_j\) 满足
+	\begin{equation}\label{g4:eq:1104:oscillator-action-integral}
+		\omega=-\mathrm{d}\lambda
+		=\sum_j\mathrm{d}\theta_j\wedge\mathrm{d}I_j,
+		\qquad
+		\frac1{2\pi}\int_{\gamma_j}\lambda=I_j,
+	\end{equation}
+	其中 \(\gamma_j\) 固定所有作用及其余角变量，只让 \(\theta_j\) 增加 \(2\pi\)。这核对了角变量中负号的作用：沿实际运动，\(\theta_j\) 递增，作用积分为正。
+
+	Hamilton 方程为 \(\dot I_j=0\)、\(\dot\theta_j=\nu_j\)。故能量分量 \(E_j=\nu_jI_j\)，对应频率为 \(\partial H/\partial I_j=\nu_j\)，周期为 \(2\pi/\nu_j\)。若从质量为 \(m\)、频率为 \(\nu\) 的物理振子
+	\[
+		H(q,p)=\frac{p^2}{2m}+\frac{m\nu^2q^2}{2}
+	\]
+	出发，先作辛缩放 \(Q=\sqrt{m\nu}\,q\)、\(P=p/\sqrt{m\nu}\)，便有 \(H=\nu(Q^2+P^2)/2\)。所以它的作用为 \(I=E/\nu\)，同样等于能量椭圆内部面积除以 \(2\pi\)。
+\end{example}
+
+更一般地，在作用角区域中取光滑函数 \(H=h(I)\)。收缩方程直接给出
+\begin{equation}\label{g4:eq:1104:torus-translation}
+	I(t)=I(0),\qquad
+	\theta(t)=\theta(0)+t\,\nu(I(0)),
+	\qquad \nu(I)=\nabla h(I).
+\end{equation}
+给定环面上的频率向量 \(\nu\ne0\)，轨道闭合当且仅当存在 \(T>0\) 使 \(T\nu\in2\pi\mathbb Z^n\)。必要性来自返回时各角的增量，充分性则由显式解得到。若存在非零整数向量 \(k\) 使 \(k\cdot\nu=0\)，称这些频率满足一个\term[gongzhen]{共振}[resonance]关系；此时 \(k\cdot\theta\) 模 \(2\pi\) 沿运动不变。
+
+\begin{proposition}\label{g4:prop:1104:two-torus-orbits}
+	设 \(\nu_1\nu_2\ne0\)。在二维环面 \((\mathbb R/2\pi\mathbb Z)^2\) 上，平移流 \(\theta(t)=\theta(0)+t(\nu_1,\nu_2)\) 的轨道在 \(\nu_2/\nu_1\in\mathbb Q\) 时均闭合，在 \(\nu_2/\nu_1\notin\mathbb Q\) 时均稠密。
+\end{proposition}
+\begin{proof}
+	闭合条件等价于 \(T\nu_j=2\pi m_j\)，其中 \(m_j\) 为整数。因此闭合蕴含有理比；反过来，若 \(\nu_2/\nu_1=m_2/m_1\)，可以选取正的 \(T\) 使两式同时成立。
+
+	设 \(\alpha\notin\mathbb Q\)。先证明 \(\{n\alpha\bmod1:n\in\mathbb Z\}\) 在圆上稠密。将 \(0,\alpha,\ldots,N\alpha\) 的小数部分放入 \(N\) 个长度为 \(1/N\) 的区间。两个落在同一区间，故存在非零整数 \(m\) 及整数 \(\ell\)，使 \(0<|m\alpha-\ell|<1/N\)。把符号调整后，记此正数为 \(\delta\)。圆上从 \(0\) 到 \(\lfloor1/\delta\rfloor\delta\) 的这些点都是整数倍 \(\alpha\) 的剩余类，连续间隙及最后回到 \(0\) 的间隙都不大于 \(\delta\)。令 \(N\) 任意增大，即得稠密性。
+
+	现在指定目标角 \((a,b)\)。在时刻
+	\[
+		t_n=\frac{a-\theta_1(0)+2\pi n}{\nu_1},\qquad n\in\mathbb Z,
+	\]
+	第一角恰为 \(a\)，第二角模 \(2\pi\) 等于一个固定常数加 \(2\pi n\nu_2/\nu_1\)。上述圆上稠密性说明它可以任意接近 \(b\)。因此轨道与每个非空开矩形相交，从而在整个环面中稠密。
+\end{proof}
+
+二维的一个非零整数共振关系已经迫使频率比有理；在更高维，一个共振只把轨道限制在较低维的子环面中。例如频率 \((1,\sqrt2,1)\) 满足第一与第三分量相等，轨道仍因前两分量而不闭合。频率的算术性质与共同水平集的拓扑也应区分：同一个光滑环面既可以承载闭轨道流，也可以承载稠密轨道流。
 
 \subsection{测地流的对称性}
 \label{g4:subsec:1104:02}
-待撰写
+设 \((Q,g)\) 为无边界光滑黎曼流形。在 \(\mathrm{T}^*Q\) 上取典范辛形式，并定义动能
+\[
+	H(x,p)=\frac12g^{ij}(x)p_ip_j.
+\]
+这个 Hamilton 系统在底空间上的投影就是带仿射参数的测地线。为将两种描述接起来，写出方程
+\[
+	\dot x^i=g^{ij}p_j,
+	\qquad \dot p_i=-\frac12\partial_i g^{jk}\,p_jp_k
+	=\frac12\partial_i g_{ab}\,\dot x^a\dot x^b.
+\]
+最后一个等式由对 \(g^{ja}g_{ak}=\delta^j_k\) 求导得到。再对 \(p_i=g_{ij}\dot x^j\) 求时间导数，便有
+\[
+	g_{ij}\ddot x^j+\partial_k g_{ij}\,\dot x^k\dot x^j
+	-\frac12\partial_i g_{ab}\,\dot x^a\dot x^b=0.
+\]
+将中间项按 \(k,j\) 对称化并乘以逆度量，得到
+\begin{equation}\label{g4:eq:1104:geodesic-hamilton-equivalence}
+	\ddot x^\ell+
+	\frac12g^{\ell i}
+	\bigl(\partial_jg_{ki}+\partial_kg_{ji}-\partial_ig_{jk}\bigr)
+	\dot x^j\dot x^k=0.
+\end{equation}
+括号中的系数正是第三卷第1.2节式(1.18)的度量联络系数，故这就是第三卷定义2.1.1中的测地线方程。反过来，由满足此方程的曲线取 \(p_i=g_{ij}\dot x^j\)，上述计算倒推给出 Hamilton 方程。因而两种动力学经度量同构对应；余切丛上的这种流也称为\term[cediliu]{测地流}[geodesic flow]。
+% 跨卷实读：g3:thm:levi-civita（定理1.2.5）及其Koszul推导、构造证明；g3:eq:christoffel-metric（式1.18）；g3:def:geodesic（定义2.1.1）和g3:eq:geodesic-equation（式2.2）。
+
+\begin{example}\label{g4:exm:1104:flat-torus}
+	在平坦环面 \(Q=(\mathbb R/2\pi\mathbb Z)^2\)、\(g=\mathrm{d}x_1^2+\mathrm{d}x_2^2\) 上，余切丛全局写为 \(Q\times\mathbb R^2\)，且
+	\[
+		H=\frac{p_1^2+p_2^2}{2},\qquad
+		\dot x_j=p_j,\qquad \dot p_j=0.
+	\]
+	平移对称性提供两个处处独立的交换积分 \(p_1,p_2\)。共同水平集 \(p=c\) 是紧环面，\(x_j\) 本身就是角变量，作用为 \(I_j=p_j\)，频率为 \(c_j\)。当 \(c_1c_2\ne0\) 时，前一命题给出测地线闭合或稠密的准确判据；一个分量为零而另一个非零时轨道闭合，两者都为零时轨道为一点。这里 \(H\) 是交换积分的函数；若改用 \((H,p_2)\)，其微分只在 \(p_1\ne0\) 处独立。
+\end{example}
+
+\begin{example}\label{g4:exm:1104:surface-revolution}
+	旋转曲面在避开旋转轴的区域可以写成
+	\[
+		(s,\theta)\longmapsto
+		\bigl(r(s)\cos\theta,r(s)\sin\theta,z(s)\bigr),
+		\qquad r(s)>0,\quad r'(s)^2+z'(s)^2=1,
+	\]
+	其中 \(s\) 是母线的弧长。诱导度量为 \(\mathrm{d}s^2+r(s)^2\mathrm{d}\theta^2\)。在余切坐标 \((s,\theta,p_s,j)\) 中，动能及旋转的矩为
+	\begin{equation}\label{g4:eq:1104:revolution-hamiltonian}
+		H=\frac12\left(p_s^2+\frac{j^2}{r(s)^2}\right),
+		\qquad J=j,
+		\qquad \{H,J\}=\partial_\theta H=0.
+	\end{equation}
+	方程具体为
+	\[
+		\dot s=p_s,\qquad
+		\dot\theta=\frac{j}{r(s)^2},\qquad
+		\dot p_s=\frac{j^2r'(s)}{r(s)^3},\qquad
+		\dot j=0.
+	\]
+	由于
+	\[
+		\mathrm{d}H
+		=p_s\,\mathrm{d}p_s-\frac{j^2r'(s)}{r(s)^3}\,\mathrm{d}s
+		+\frac{j}{r(s)^2}\,\mathrm{d}j,
+	\]
+	在 \(H>0\) 上，\(\mathrm{d}H,\mathrm{d}J\) 线性相关当且仅当 \(p_s=0\)、\(r'(s)=0\)。特别地，它们在稠密开集 \(p_s\ne0\) 上独立。这证明了该旋转区域中的完全可积性，并具体指出了独立性可能失效的位置。
+
+	对单位速测地线，令 \(\beta\) 表示速度与正向母线的夹角，正向纬线的单位切向为 \(r^{-1}\partial_\theta\)。于是 \(\sin\beta=r\dot\theta\)，角动量守恒写成
+	\begin{equation}\label{g4:eq:1104:revolution-conservation}
+		r(s)\sin\beta=j.
+	\end{equation}
+	这称为\term[clairautguanxi]{Clairaut 关系}[Clairaut's relation]。\footnote{Alexis Claude Clairaut（1713--1765），法国数学家，研究微分方程与天体力学。}它说明轨道只有在 \(r(s)\ge|j|\) 的区域内运动；非零角动量阻止单位速轨道到达旋转轴。
+
+	固定 \(J=j\)，剩余的子午运动由一维有效势 \(V_j(s)=j^2/(2r(s)^2)\) 控制。设在 \([a,b]\) 的邻域内 \(r>0\)，函数
+	\[
+		f(s)=2E-\frac{j^2}{r(s)^2}
+	\]
+	在 \((a,b)\) 为正，在 \(a,b\) 有简单零点。曲线 \(p_s^2=f(s)\)、\(a\le s\le b\) 是一条光滑闭曲线：内部是上下两支图像，在端点用 \(p_s\) 作坐标，简单零点条件使 \(s\) 可由 \(p_s^2=f(s)\) 光滑解出。它与角圆的乘积就是一个紧正则共同水平集。取沿角圆的闭路和固定 \(\theta\) 沿子午闭曲线的闭路，作用分别为
+	\begin{equation}\label{g4:eq:1104:revolution-actions}
+		I_\theta=j,
+		\qquad I_s(E,j)=\frac1\pi\int_a^b
+		\sqrt{2E-\frac{j^2}{r(s)^2}}\,\mathrm{d}s.
+	\end{equation}
+	两支子午曲线对 \(\int p_s\,\mathrm{d}s\) 的贡献相等，所以出现因子 \(1/\pi\)。一个子午往返的时间与经度增量为
+	\begin{equation}\label{g4:eq:1104:revolution-return}
+		T_s=2\int_a^b\frac{\mathrm{d}s}{\sqrt{2E-j^2/r(s)^2}},
+		\qquad
+		\Delta\theta=2\int_a^b
+		\frac{j\,\mathrm{d}s}{r(s)^2\sqrt{2E-j^2/r(s)^2}}.
+	\end{equation}
+	简单转点使两个积分的端点奇性至多为 \(|s-a|^{-1/2}\) 或 \(|b-s|^{-1/2}\)，因而有限。实际轨道闭合当且仅当 \(\Delta\theta/(2\pi)\) 为有理数：返回原状态必须经过整数次子午往返，而此时角增量是相应整数倍的 \(\Delta\theta\)。
+\end{example}
+
+平坦环面的两个平移与旋转曲面的一个旋转，都给出了可以直接计算的交换积分。对于一个 \(n\) 维黎曼流形，其测地流位于 \(2n\) 维余切丛；应用本章定理需要 \(n\) 个在稠密集上独立的对合积分。上述旋转曲面的计算完成了 \(n=2\) 时的独立性核验，更多维的对称性须逐一检查积分数目与交换关系。
 
 \subsection{球摆及奇异纤维的入口}
 \label{g4:subsec:1104:03}
-待撰写
+球摆的摆杆长、质量和重力加速度均取为 \(1\)，竖直向上为第三坐标正向。位置 \(q\) 在单位球面上，利用球面的诱导度量把余切向量表示成满足 \(q\cdot p=0\) 的环境向量 \(p\)。于是相空间为
+\[
+	M=\{(q,p)\in\mathbb R^3\times\mathbb R^3:|q|=1,\ q\cdot p=0\}
+	\cong\mathrm{T}^*S^2,
+	\qquad \lambda=p\cdot\mathrm{d}q,\quad \omega=-\mathrm{d}\lambda.
+\]
+这个识别保持典范一形式：\(p\) 对底空间切向量的求值就是 Euclid 内积。因此 \(\omega\) 也等于环境二形式 \(\sum_i\mathrm{d}q_i\wedge\mathrm{d}p_i\) 在 \(M\) 上的限制。能量与竖直角动量为
+\begin{equation}\label{g4:eq:1104:spherical-pendulum}
+	H(q,p)=\frac{|p|^2}{2}+q_3,
+	\qquad J(q,p)=(q\times p)_3,
+	\qquad F=(H,J):M\longrightarrow\mathbb R^2.
+\end{equation}
+球摆及其积分的这一描述见 Cannas da Silva 第5.5节；下面把交换性、临界点和紧纤维逐项算出。\cite[第151--152页]{Cannas2006Symplectic}
+
+\begin{proposition}\label{g4:prop:1104:pendulum-critical}
+	式\eqref{g4:eq:1104:spherical-pendulum}中的 \(H,J\) Poisson 对合，其微分在稠密开集上线性无关。\(F\) 的秩零点恰为 \((q,p)=(e_3,0),(-e_3,0)\)，其值分别为 \((1,0),(-1,0)\)。其余临界点的底位置均在南半球的非极点处；写 \(q_3=c\in(-1,0)\)，每个这样的底位置恰有两个临界余切向量，且它们的值满足
+	\begin{equation}\label{g4:eq:1104:pendulum-critical-values}
+		j=\pm\frac{1-c^2}{\sqrt{-c}},
+		\qquad h=\frac{3c}{2}-\frac1{2c}.
+	\end{equation}
+	每个非空正则共同水平集都是紧的，其每个连通分支具有\cref{g4:thm:1102:action-angle}给出的作用角邻域。
+\end{proposition}
+\begin{proof}
+	先在不依赖球坐标的表示中计算向量场。点 \((q,p)\) 处的切向量 \((a,b)\) 满足 \(q\cdot a=0\)、\(q\cdot b+p\cdot a=0\)。直接代入约束导数可见下列两个向量场均沿 \(M\) 切向：
+	\begin{equation}\label{g4:eq:1104:pendulum-fields}
+		X_H=\bigl(p,-e_3+(q_3-|p|^2)q\bigr),
+		\qquad X_J=(e_3\times q,e_3\times p).
+	\end{equation}
+	它们与 \((a,b)\) 的辛配对分别为
+	\[
+		p\cdot b+e_3\cdot a=\mathrm{d}H(a,b),\qquad
+		(e_3\times q)\cdot b-(e_3\times p)\cdot a
+		=e_3\cdot(q\times b+a\times p)=\mathrm{d}J(a,b).
+	\]
+	这证明了向量场公式。特别地，\(X_J\) 同时旋转 \(q,p\)，并且
+	\[
+		\{H,J\}=X_JH=p\cdot(e_3\times p)+e_3\cdot(e_3\times q)=0.
+	\]
+
+	离开两极，取余纬 \(\varphi\in(0,\pi)\) 与经度 \(\theta\)，使
+	\[
+		q=(\sin\varphi\cos\theta,\sin\varphi\sin\theta,\cos\varphi),
+		\qquad \lambda=\eta\,\mathrm{d}\varphi+j\,\mathrm{d}\theta.
+	\]
+	度量为 \(\mathrm{d}\varphi^2+\sin^2\varphi\,\mathrm{d}\theta^2\)，从而
+	\begin{equation}\label{g4:eq:1104:pendulum-spherical-coordinates}
+		H=\frac12\left(\eta^2+\frac{j^2}{\sin^2\varphi}\right)+\cos\varphi,
+		\qquad J=j.
+	\end{equation}
+	由于 \(\mathrm{d}J=\mathrm{d}j\ne0\)，秩下降恰好要求 \(H\) 对 \(\eta,\varphi\) 的两个导数都为零，即
+	\[
+		\eta=0,
+		\qquad -\frac{j^2\cos\varphi}{\sin^3\varphi}-\sin\varphi=0.
+	\]
+	后一等式等价于 \(j^2\cos\varphi=-\sin^4\varphi\)，故 \(c=\cos\varphi<0\)，并给出式\eqref{g4:eq:1104:pendulum-critical-values}。每个底位置的两个符号对应反向的两个纬线运动，其角速度为
+	\[
+		\dot\theta=\frac{j}{\sin^2\varphi}=\pm\frac1{\sqrt{-c}}.
+	\]
+	这些点的秩为一。在非极点区域，\(\eta\ne0\) 已保证秩为二，因此正则点稠密。
+
+	在两极，若 \(p\ne0\)，则 \(X_H\) 的底分量为非零向量 \(p\)，而 \(X_J=(0,e_3\times p)\ne0\)，两向量线性无关，故 \(\mathrm{d}H,\mathrm{d}J\) 仍独立。若 \(p=0\)，两个向量场都为零，得到所列两个秩零点。每个极点邻域也包含非极点的稠密正则点，所以整个相空间的正则集稠密。
+
+	最后，\(H\ge |p|^2/2-1\)。对每个有限 \(E\)，次水平集 \(H\le E\) 是 \(\mathbb R^6\) 中的闭有界集，因而紧。于是任意纤维 \(F^{-1}(h,j)\) 都是紧集。正则纤维是无边界二维子流形，每个连通分支仍紧；两 Hamilton 场因 Poisson 对合而沿纤维切向。\cref{g4:thm:1102:action-angle}的独立性和紧连通性条件全部满足，故每个分支是 Lagrange 环面，并有该定理所述的邻域坐标。
+\end{proof}
+
+南半球的临界纬线是重力与绕轴转动共同形成的相对平衡。两个极点则是相空间中的真实平衡，它们的二次近似具有不同性质。
+
+\begin{proposition}\label{g4:prop:1104:pendulum-linear-types}
+	球摆北极平衡处，二次矩 \((H-1,J)\) 经实辛线性变换成为
+	\begin{equation}\label{g4:eq:1104:pendulum-focus-pair}
+		Q_1=u_1v_1+u_2v_2,
+		\qquad Q_2=u_1v_2-u_2v_1,
+		\qquad \omega_0=\mathrm{d}u_1\wedge\mathrm{d}v_1+\mathrm{d}u_2\wedge\mathrm{d}v_2.
+	\end{equation}
+	这是\secref{g4:sec:1103}中的焦点型二次矩。南极平衡处，二次矩经辛线性变换成为 \((I_++I_-,I_+-I_-)\)，其中 \(I_\pm=(Q_\pm^2+P_\pm^2)/2\)，即两个椭圆振子分量。
+\end{proposition}
+\begin{proof}
+	在北极或南极附近用 \(x=q_1,y=q_2\) 作底坐标，写 \(q_3=\varepsilon\sqrt{1-x^2-y^2}\)，其中 \(\varepsilon=1\) 或 \(-1\)。以 \((\xi,\eta)\) 表示对应的典范余切坐标，记 \(x_0=(x,y)\)、\(\pi=(\xi,\eta)\)。这里 \(\pi\) 是 \(\lambda=\xi\,\mathrm{d}x+\eta\,\mathrm{d}y\) 的系数，须与环境三维向量 \(p\) 区分。局部度量矩阵及其逆为
+	\[
+		g=\operatorname{Id}+\frac{x_0x_0^{\mathsf T}}{1-|x_0|^2},
+		\qquad g^{-1}=\operatorname{Id}-x_0x_0^{\mathsf T}.
+	\]
+	直接相乘可以核验逆矩阵。旋转的底向量场为 \(-y\partial_x+x\partial_y\)，故角动量精确等于 \(J=x\eta-y\xi\)。能量则为
+	\[
+		H=\frac12\bigl(|\pi|^2-(x_0\cdot\pi)^2\bigr)
+		+\varepsilon\sqrt{1-|x_0|^2}
+		=\varepsilon+\frac12\bigl(|\pi|^2-\varepsilon|x_0|^2\bigr)+O(|(x_0,\pi)|^4).
+	\]
+	在北极取
+	\[
+		u=\frac{x_0+\pi}{\sqrt2},\qquad
+		v=\frac{\pi-x_0}{\sqrt2}.
+	\]
+	逐分量计算得到 \(\mathrm{d}u_j\wedge\mathrm{d}v_j=\mathrm{d}(x_0)_j\wedge\mathrm{d}\pi_j\)，并有
+	\[
+		\frac{|\pi|^2-|x_0|^2}{2}=u\cdot v,
+		\qquad x\eta-y\xi=u_1v_2-u_2v_1.
+	\]
+	因此得到所述焦点型二次矩。若 \(R=\left(\begin{smallmatrix}0&-1\\1&0\end{smallmatrix}\right)\)，则
+	\[
+		X_{aQ_1+bQ_2}(u,v)=(au+bRu,-av+bRv).
+	\]
+	当 \(ab\ne0\) 时，其复特征值为 \(a\pm\mathrm{i}b,-a\pm\mathrm{i}b\)。特别地，原能量的二次部分 \(Q_1\) 自身给出实指数伸缩；焦点型描述的是两个交换二次 Hamilton 函数组成的矩。
+
+	在南极，能量二次部分为 \(H_2=(x^2+y^2+\xi^2+\eta^2)/2\)。令
+	\[
+		Q_+=\frac{x+\eta}{\sqrt2},\quad
+		P_+=\frac{\xi-y}{\sqrt2},\qquad
+		Q_-=\frac{x-\eta}{\sqrt2},\quad
+		P_-=\frac{\xi+y}{\sqrt2}.
+	\]
+	相加外积得到 \(\mathrm{d}Q_+\wedge\mathrm{d}P_++\mathrm{d}Q_-\wedge\mathrm{d}P_-=\mathrm{d}x\wedge\mathrm{d}\xi+\mathrm{d}y\wedge\mathrm{d}\eta\)。展开平方又得 \(H_2=I_++I_-\)、\(J=I_+-I_-\)，故是两个独立椭圆分量。此外，完整能量满足 \(H+1=|p|^2/2+(q_3+1)\ge0\)，等号只在南极零动量成立，这也直接显示了该点的严格能量极小性质。
+\end{proof}
+
+球摆的上方平衡所在纤维还可以整体参数化，无需从二次近似推断它的拓扑。
+
+\begin{example}\label{g4:exm:1104:pendulum-pinched-torus}
+	考虑奇异纤维 \(F^{-1}(1,0)\)。在闭圆柱 \([0,2\pi]\times(\mathbb R/2\pi\mathbb Z)\) 上令
+	\begin{equation}\label{g4:eq:1104:pendulum-singular-parametrization}
+		\begin{aligned}
+			q(\tau,\alpha)&=(\sin\tau\cos\alpha,\sin\tau\sin\alpha,\cos\tau),\\
+			p(\tau,\alpha)&=2\sin(\tau/2)\,\partial_\tau q(\tau,\alpha).
+		\end{aligned}
+	\end{equation}
+	因为 \(|\partial_\tau q|=1\) 且它与 \(q\) 正交，这些点属于 \(M\)，并满足
+	\[
+		H=2\sin^2(\tau/2)+\cos\tau=1,\qquad J=0.
+	\]
+	圆柱两条边界均映到同一个点 \((e_3,0)\)。内部则与其余纤维双射。事实上，非极点处 \(J=0\) 使 \(p\) 沿子午方向，能量决定 \(|p|=\sqrt{2(1-q_3)}\)；在给定 \(q\) 时，参数 \(\tau\) 与 \(2\pi-\tau\)、经度相差 \(\pi\) 的两种写法给出相反的 \(p\)，所以动量方向唯一确定所用写法。在南极 \(\tau=\pi\)，\(p=-2(\cos\alpha,\sin\alpha,0)\)，也恰好一次遍历允许的动量圆。在北极，能量方程强制 \(p=0\)。
+
+	把圆柱的两条边界圆全部压成同一个点，所得紧商空间因而连续双射到 \(F^{-1}(1,0)\)。后者是 Hausdorff 空间中的闭子集，所以这是一张同胚。这个商也可以先把圆柱两边对应粘合成环面，再把粘合圆压成一点；因此球摆的这条实际纤维是针缩环面。其余点都是秩二点，奇异性集中在北极平衡处。沿式\eqref{g4:eq:1104:pendulum-singular-parametrization}中固定 \(\alpha\) 的运动，\(\dot\tau=2\sin(\tau/2)\)；到达任一端点所需时间是发散的积分 \(\int\mathrm{d}\tau/(2\sin(\tau/2))\)，所以这些非平衡轨道在两个时间方向上都渐近北极。
+\end{example}
+
+由此，球摆在正则值处给出有作用角邻域的紧环面，在 \((1,0)\) 处给出实际的针缩纤维，并在其奇点具有与前节代表模型一致的焦点型二次矩。作用角坐标的局部构造、临界纤维的拓扑及沿基空间闭路的周期格变化，是三个可以分别计算的层次；前节的代表模型已展示最后一种变化怎样产生整体单值障碍。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

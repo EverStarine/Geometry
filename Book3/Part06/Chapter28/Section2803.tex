@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 28.3 Huisken 单调公式
 % 纲要位置：几何学计划纲要.md，第 3299 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿，尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,189 @@
 \section{Huisken 单调公式}
 \label{g3:sec:2803}
 
-待撰写
+总面积下降记录整个子流形的变化。若曲率只在很小的区域集中，总面积却可能变化不大。为观察指定时空点附近的形状，需要随时间缩小观察范围，同时消去面积在缩放中的量纲。高斯权同时完成这两件事。本节固定 Euclid 环境 \(\mathbb R^N\)，流速为 \(\mathcal H=\operatorname{tr}_gB\)；闭流的积分均在参数流形上计算，因此也适用于有自交的浸入。
 
 \subsection{后向热核及加权面积}
 \label{g3:subsec:2803:01}
-待撰写
+给定 \(x_0\in\mathbb R^N\) 与时间 \(t_0\)，置 \(\tau=t_0-t>0\)，定义
+\begin{equation}\label{g3:eq:mcf-backward-gaussian}
+	\rho_{x_0,t_0}(x,t)
+	\coloneqq(4\pi\tau)^{-m/2}
+	\exp\!\left(-\frac{|x-x_0|^2}{4\tau}\right).
+\end{equation}
+这里 \(m\) 是移动子流形的维数。此函数在经过 \(x_0\) 的任意 \(m\) 维仿射平面上积分为一；在整个 \(\mathbb R^N\) 上则通常不是归一化的 \(N\) 维热核。取 \(m/2\) 为指数，是为了使权与 \(m\) 维面积的缩放相抵消。
+
+\begin{definition}\label{g3:def:mcf-gaussian-area}
+	设 \(F:M^m\times[0,T)\to\mathbb R^N\) 是闭光滑流形的光滑平均曲率流。对 \(t<\min(T,t_0)\)，定义其\term[gaosi jiaquan mianji]{高斯加权面积}[Gaussian weighted area]为
+	\[
+		\Phi_{x_0,t_0}(t)
+		\coloneqq\int_M\rho_{x_0,t_0}(F(p,t),t)\,\mu_{g(t)}(p).
+	\]
+\end{definition}
+
+观察半径是 \(\sqrt\tau\)：当 \(|x-x_0|\) 远大于这个长度时，高斯权迅速衰减；当时间接近 \(t_0\) 时，同一积分转而关注越来越小的区域。为比较不同尺度，取 \(\lambda>0\)，令
+\begin{equation}\label{g3:eq:mcf-parabolic-rescaling}
+	F^{(\lambda)}(p,s)
+	=\lambda\bigl(F(p,t_0+s/\lambda^2)-x_0\bigr),\qquad s<0.
+\end{equation}
+度量变为 \(\lambda^2g\)，面积元变为 \(\lambda^m\mu_g\)，迹平均曲率向量变为 \(\lambda^{-1}\mathcal H\)。时间导数也乘 \(\lambda^{-1}\)，故它仍满足平均曲率流，且
+\begin{equation}\label{g3:eq:mcf-gaussian-scale-invariance}
+	\Phi^{(\lambda)}_{0,0}(s)
+	=\Phi_{x_0,t_0}(t_0+s/\lambda^2).
+\end{equation}
 
 \subsection{微分和分部积分}
 \label{g3:subsec:2803:02}
-待撰写
+计算中须区分固定空间点的偏导数与沿移动子流形的导数。以下简记 \(y=F-x_0\)、\(\rho=\rho_{x_0,t_0}(F,t)\)，并以 \(y^\top,y^\perp\) 表示相对于当前切空间的分解。
+
+\begin{lemma}\label{g3:lem:mcf-gaussian-identity}
+	设 \(F:M^m\times I\to\mathbb R^N\) 为光滑平均曲率流，\(I\subset(-\infty,t_0)\)。则逐点有
+	\begin{equation}\label{g3:eq:mcf-gaussian-divergence}
+		\frac{\mathrm d}{\mathrm dt}\rho-|\mathcal H|^2\rho
+		=\operatorname{div}_{g(t)}\!\left(\frac{\rho y^\top}{2\tau}\right)
+		-\rho\left|\mathcal H+\frac{y^\perp}{2\tau}\right|^2.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	在固定环境坐标点求导，得到
+	\[
+		\partial_t\rho_{x_0,t_0}
+		=\left(\frac m{2\tau}-\frac{|y|^2}{4\tau^2}\right)\rho,
+		\qquad D\rho_{x_0,t_0}=-\frac{y}{2\tau}\rho.
+	\]
+	沿 \(F_t=\mathcal H\) 加入空间运动，故
+	\[
+		\frac{\mathrm d}{\mathrm dt}\rho
+		=\left(\frac m{2\tau}-\frac{|y|^2}{4\tau^2}
+		-\frac{\langle y,\mathcal H\rangle}{2\tau}\right)\rho.
+	\]
+	在一点取正交切标架 \(e_1,\dots,e_m\)。因为 \(D_{e_i}y=e_i\)，而微分 \(\langle y^\perp,e_i\rangle=0\) 给
+	\(\sum_i\langle D_{e_i}y^\perp,e_i\rangle=-\langle y,\mathcal H\rangle\)，所以
+	\[
+		\operatorname{div}_M y^\top=m+\langle y,\mathcal H\rangle,
+		\qquad \nabla_M\rho=-\frac{\rho y^\top}{2\tau}.
+	\]
+	乘积法则于是给出
+	\[
+		\operatorname{div}_M\left(\frac{\rho y^\top}{2\tau}\right)
+		=\rho\left(\frac m{2\tau}
+		+\frac{\langle y,\mathcal H\rangle}{2\tau}
+		-\frac{|y^\top|^2}{4\tau^2}\right).
+	\]
+	从沿流导数减去此式及 \(|\mathcal H|^2\rho\)，利用 \(\mathcal H\) 法向以及 \(|y|^2-|y^\top|^2=|y^\perp|^2\)，所得三项正好合成所示负平方。
+\end{proof}
+
+这里采用通常的正散度，与本书 \(\Delta=-\operatorname{div}\nabla\) 的约定相容。分部积分消去切向项，剩余平方只含法向速度与径向收缩速度的差。
+
+\begin{theorem}[Huisken 单调公式]\label{g3:thm:huisken-monotonicity}
+	设 \(M^m\) 是闭光滑流形，\(m\ge1\)，\(F:M\times[0,T)\to\mathbb R^N\) 是光滑平均曲率流。对任何 \(x_0\in\mathbb R^N\)、\(t_0>0\) 及 \(0\le t<\min(T,t_0)\)，有
+	\begin{equation}\label{g3:eq:huisken-monotonicity}
+		\frac{\mathrm d}{\mathrm dt}\Phi_{x_0,t_0}(t)
+		=-\int_M\rho_{x_0,t_0}(F,t)
+		\left|\mathcal H+\frac{(F-x_0)^\perp}{2(t_0-t)}\right|^2\mu_{g(t)}.
+	\end{equation}
+	特别地，\(\Phi_{x_0,t_0}\) 非增。
+\end{theorem}
+\begin{proof}
+	闭性保证积分可微。由\cref{g3:prop:mcf-area-dissipation}的面积元公式，导数是
+	\(\int_M(\mathrm d\rho/\mathrm dt-|\mathcal H|^2\rho)\mu_g\)。代入\cref{g3:lem:mcf-gaussian-identity}，闭流形上的散度积分为零。该计算只用面积密度与散度定理，无须给 \(M\) 选择定向。
+\end{proof}
+
+\term[Huisken dandiao gongshi]{Huisken 单调公式}[Huisken monotonicity formula]将积分量的变化写成几何误差的平方。带边界时，式\eqref{g3:eq:mcf-gaussian-divergence}还留下
+\[
+	\int_{\partial M}\frac{\rho\langle F-x_0,\mathrm dF(\eta)\rangle}{2\tau}\,\mu_{\partial g},
+\]
+其中 \(\eta\) 是源内的外单位余法向。即使未加权面积的边界通量为零，这个新边界项也未必消失。非紧流则须控制无穷远通量。本节随后使用的非紧圆柱与平面模型，可以直接计算其积分。
 
 \subsection{平方项与等号条件}
 \label{g3:subsec:2803:03}
-待撰写
+单调公式还指出在什么形状上停止下降。
+
+\begin{proposition}\label{g3:prop:mcf-monotonicity-equality}
+	在\cref{g3:thm:huisken-monotonicity}的条件下，\(\Phi_{x_0,t_0}\) 在非退化时间区间 \([a,b]\subset[0,\min(T,t_0))\) 上恒定，当且仅当在该区间上
+	\begin{equation}\label{g3:eq:mcf-shrinking-condition}
+		\mathcal H=-\frac{(F-x_0)^\perp}{2(t_0-t)}.
+	\end{equation}
+	这时经过随时间变化的重参数化，各时间片是某一固定浸入以 \(x_0\) 为中心的同心缩放，缩放比为 \(\sqrt{(t_0-t)/(t_0-a)}\)。
+\end{proposition}
+\begin{proof}
+	积分式\eqref{g3:eq:huisken-monotonicity}表明，恒定性等价于时空中的非负连续被积函数处处为零；因 \(\rho>0\)，即得条件。反向直接代入。
+	设 \(\widehat F=(F-x_0)/\sqrt\tau\)。利用该条件，
+	\[
+		\partial_t\widehat F
+		=\frac{\mathcal H}{\sqrt\tau}+\frac{F-x_0}{2\tau^{3/2}}
+		=\frac{(F-x_0)^\top}{2\tau^{3/2}}.
+	\]
+	右端是 \(\widehat F\) 的切向场，可唯一写成 \(\mathrm d\widehat F(Z_t)\)。在闭参数流形上解 \(\dot\psi_t=-Z_t\circ\psi_t\)、\(\psi_a=\operatorname{id}\)，便有 \(\partial_t(\widehat F_t\circ\psi_t)=0\)。恢复尺度即得结论。
+\end{proof}
+
+在单个时刻导数为零，只先得到该时间片满足式\eqref{g3:eq:mcf-shrinking-condition}；区间上的几何描述使用区间中的等号。
+
+\begin{definition}\label{g3:def:mcf-self-shrinker}
+	光滑浸入 \(X:\Sigma^m\to\mathbb R^N\) 若满足
+	\[
+		\mathcal H_X+\frac{X^\perp}{2}=0,
+	\]
+	则称为以原点为中心、尺度归一化的\term[zi shousuo zi]{自收缩子}[self-shrinker]。族 \(\sqrt{-t}\,X\)、\(t<0\)，具有平均曲率法向速度；在能够解相应切向重参数化方程的区间上，它给出纯法向参数化的平均曲率流。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:mcf-gaussian-critical}
+	设 \(X:\Sigma^m\to\mathbb R^N\) 是闭光滑浸入。它是自收缩子，当且仅当它对高斯面积
+	\[
+		\mathcal F(X)=(4\pi)^{-m/2}\int_\Sigma e^{-|X|^2/4}\,\mu_g
+	\]
+	的全部光滑法向变分驻值。
+\end{proposition}
+\begin{proof}
+	对法向初速度 \(V\)，权函数变分为 \(-\tfrac12\langle X,V\rangle e^{-|X|^2/4}\)，面积元变分为 \(-\langle\mathcal H,V\rangle\mu_g\)。因此
+	\[
+		\delta\mathcal F_X(V)
+		=-(4\pi)^{-m/2}\int_\Sigma e^{-|X|^2/4}
+		\left\langle\mathcal H+\frac{X^\perp}{2},V\right\rangle\mu_g.
+	\]
+	任意性给出结论；具体取 \(V=\mathcal H+X^\perp/2\)，驻值就迫使它为零。
+\end{proof}
 
 \subsection{自收缩子和奇点放大}
 \label{g3:subsec:2803:04}
-待撰写
+\begin{example}\label{g3:exm:mcf-shrinker-models}
+	经过原点的 \(m\) 维平面有 \(\mathcal H=X^\perp=0\)，是静止自收缩子。对 \(1\le k\le m\)，圆柱
+	\[
+		S^k(\sqrt{2k})\times\mathbb R^{m-k}\subset\mathbb R^{m+1}
+	\]
+	也满足自收缩方程：写 \(X=(z,w)\)，则 \(X^\perp=(z,0)\)，球面部分给 \(\mathcal H=(-kz/|z|^2,0)=-(z,0)/2\)。相应流为 \(S^k(\sqrt{-2kt})\times\mathbb R^{m-k}\)。\(k=m\) 时得到闭球面，\(k<m\) 时是非紧模型，轴向高斯积分仍有限。上述球面及非平坦圆柱模型的曲率平方为 \(1/[2(-t)]\)。
+\end{example}
+
+设闭光滑流的存在区间为 \([0,T)\)，\(T<\infty\)。由单调性与非负性，对每个 \(x_0\) 都存在有限极限
+\begin{equation}\label{g3:eq:mcf-gaussian-density}
+	\Theta(x_0,T)\coloneqq\lim_{t\uparrow T}\Phi_{x_0,T}(t).
+\end{equation}
+它称为该时空点的\term[gaosi midu]{高斯密度}[Gaussian density]。极限存在只需要标量单调性；要从放大的流得到光滑几何极限，还需控制导数及局部面积。下面先把已有光滑极限必须满足的方程证出。
+
+\begin{proposition}\label{g3:prop:mcf-smooth-blowup-shrinker}
+	设 \(F:M^m\times[0,T)\to\mathbb R^N\) 是闭光滑平均曲率流，\(T<\infty\)。固定 \(x_0\)，取 \(\lambda_j\to\infty\)，按式\eqref{g3:eq:mcf-parabolic-rescaling}以 \(t_0=T\) 放大。若这些流在某开时空区域中经过局部重参数化光滑收敛，且局部片的重数为有限正整数，则每个光滑极限片在 \(s<0\) 上满足
+	\[
+		\mathcal H_\infty+\frac{X^\perp}{2(-s)}=0.
+	\]
+\end{proposition}
+\begin{proof}
+	固定 \(a<b<0\)，取 \(j\) 充分大使相应原时间为正。由尺度不变性与单调公式，
+	\begin{align*}
+		&\int_a^b\int_M\rho_{0,0}(F^{(\lambda_j)},s)
+		\left|\mathcal H_j+\frac{(F^{(\lambda_j)})^\perp}{2(-s)}\right|^2
+		\mu_{g_j(s)}\,\mathrm ds\\
+		&\qquad=\Phi_{x_0,T}(T+a/\lambda_j^2)
+		-\Phi_{x_0,T}(T+b/\lambda_j^2)\longrightarrow0.
+	\end{align*}
+	右边两个值都趋于 \(\Theta(x_0,T)\)。任意相对紧的光滑极限参数片、紧时间子区间上的非负积分不超过左边。光滑收敛允许在该局部积分中取极限，有限正重数保留其零值。高斯权严格为正，故连续平方项在每个这样的片上为零，任意性给出结论。此处没有交换整个非紧极限上的积分与极限。
+\end{proof}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch28-ParabolicRescaling}
+	\caption{以 \((x_0,T)\) 为中心的抛物放大。空间长度量级 \(\lambda^{-1}\)、时间长度量级 \(\lambda^{-2}\) 的观察区域变为固定尺度；图示只记录尺度关系。}
+	\label{g3:fig:mcf-parabolic-rescaling}
+\end{figure}
+
+若有限奇异时刻满足 \(\sup_M|B(t)|^2\le C/(T-t)\)，称其满足\term[I xing qidian]{I 型奇点}[type I singularity]的曲率增长界；不满足此界的有限时奇点称为\term[II xing qidian]{II 型奇点}[type II singularity]。取 \(\lambda_j=(T-t_j)^{-1/2}\)，I 型界使放大后 \(s=-1\) 时间片的曲率一致有界。\cref{g3:fig:mcf-parabolic-rescaling}说明时间平方尺度的来源。光滑极限的存在需要进一步紧性论证；一旦有这种极限，前一命题确定其自收缩方程。球面与圆柱展示 I 型尺度，弱极限的重数及奇点后的延续则由下一节分别讨论。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

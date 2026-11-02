@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 22.5 整数流闭包与紧性的证明
+% 纲要标题：### 22.5 整数流的闭包与紧性
 % 纲要位置：几何学计划纲要.md，第 3039 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -29,7 +29,7 @@
 % 
 %   证明极限边界正确，并核验质量下半连续。
 % 
-% * 紧性定理及非紧推广的边界
+% * 整数流的整体与局部紧性
 % 
 %   先完成固定紧支版本，再说明局部质量界与质量逃逸的区别。
 % 
@@ -37,36 +37,562 @@
 % 
 % 纲要内容结束
 
-\section{整数流闭包与紧性的证明}
+\section{整数流的闭包与紧性}
 \label{g3:sec:2205}
 
-待撰写
+一列定向曲面可以发生折叠与抵消。质量界允许我们对测试形式取极限，变形定理又把这种收敛加强为平坦收敛；要使极限仍能作为整数 Plateau 问题的竞争者，还须恢复它的切平面和整数重数。本节从零维切片入手：切片中的点带整数权，正规性控制这些点随切片参数的移动，进而把它们组织成可数个 Lipschitz 图像。
+
+\ProseParagraphBreak
+以下先在 \(\mathbb R^n\) 中处理共同紧支的流，并记
+\[
+	\mathbf N(T)=\mathbf M(T)+\mathbf M(\partial T).
+\]
+切片与 BV 相结合的证明方法可参看 \cite[第7节，引理7.3、定理7.4；第8节，定理8.1与8.5，第42--49页]{AmbrosioKirchheim2000Currents}。这里把所需论证写成 Euclid 空间中的坐标测度与 Lipschitz 图像构造；所用测度、BV 和面积公式均已在前两章建立。
 
 \subsection{正规流的弱紧性}
 \label{g3:subsec:2205:01}
-待撰写
+先保留能够直接从对偶性得到的结论。它适用于实系数正规流，因此尚未涉及整数重数。
+
+\begin{theorem}\label{g3:thm:normal-current-weak-compactness}
+	设 \(0\le k\le n\)，\(K\subset\mathbb R^n\) 紧，\(T_j\) 为正规 \(k\) 流，且
+	\[
+		\operatorname{spt}T_j\subset K,\qquad
+		\sup_j\mathbf N(T_j)\le A<\infty.
+	\]
+	则存在子列及支于 \(K\) 的正规 \(k\) 流 \(T\)，使 \(T_j\rightharpoonup T\)、\(\partial T_j\rightharpoonup\partial T\)。对每个开集 \(U\subset\mathbb R^n\)，有
+	\begin{equation}\label{g3:eq:normal-current-limit-mass}
+		\|T\|(U)\le\liminf_j\|T_j\|(U),\qquad
+		\|\partial T\|(U)\le\liminf_j\|\partial T_j\|(U).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	由\cref{g3:prop:current-mass-representation}，每个 \(T_j\) 是有限维空间 \(\Lambda_k\mathbb R^n\) 值的测度，其全变差按质量范数计量。取一个包含 \(K\) 的紧球，球上连续 \(k\) 形式的一致范数空间可分：在有限个坐标系数中用网格上的分片仿射函数逼近，再把网格与函数值取为有理数，就得到可数稠密族。各 \(T_j\) 在每个族中元素上的值一致有界。逐个取收敛子列再取对角线，所得子列在这一可数族上全部收敛。
+
+	对任意连续形式 \(\omega\)，以该族中的 \(\omega_\ell\) 一致逼近。估计
+	\[
+		|T_j(\omega)-T_j(\omega_\ell)|
+		\le A\|\omega-\omega_\ell\|_\infty
+	\]
+	与 \(j\) 无关，因此极限延拓为连续线性泛函。有限维分量上的 Radon 测度表示给出质量有限的流 \(T\)。若 \(\omega\) 支于 \(K\) 外，则全部 \(T_j(\omega)=0\)，所以 \(T(\omega)=0\)，即 \(\operatorname{spt}T\subset K\)。
+
+	对光滑紧支 \((k-1)\) 形式 \(\eta\)，有
+	\[
+		\partial T(\eta)=T(\mathrm d\eta)
+		=\lim_jT_j(\mathrm d\eta)=\lim_j\partial T_j(\eta),
+		\qquad |\partial T(\eta)|\le A\|\eta\|_\infty.
+	\]
+	故 \(\partial T\) 也有有限质量，且边界沿同一子列收敛。最后对支于任意开集 \(U\) 的单位余质量测试形式取上确界，得到式\eqref{g3:eq:normal-current-limit-mass}；这也正是\cref{g3:prop:current-mass-lsc}的应用。\(k=0\) 时边界按约定为零，证明中的边界部分省去。
+\end{proof}
+
+这里的收敛允许质量损失。即使每个 \(T_j\) 的质量都等于一，极限质量也可以更小；几何上，相反取向的部分可以在靠近时相消。
 
 \subsection{变形估计与统一平坦控制}
 \label{g3:subsec:2205:02}
-待撰写
+变形定理的作用，是把无限维的流族压缩到固定网格上的有限维系数空间。网格的径向中心可以随流改变，最终使用的立方骨架则保持不变。
+
+\begin{proposition}\label{g3:prop:normal-bounded-flat-precompactness}
+	设 \(K\subset\mathbb R^n\) 紧，\(0\le k\le n\)，并令
+	\[
+		\mathcal A_{K,A}
+		=\{T:\ T\text{ 是正规 }k\text{ 流},\
+		\operatorname{spt}T\subset K,\ \mathbf N(T)\le A\}.
+	\]
+	这个集合在平坦范数下序列紧。若 \(T_j,T\in\mathcal A_{K,A}\)，则
+	\[
+		T_j\rightharpoonup T
+		\quad\Longleftrightarrow\quad
+		\mathcal F(T_j-T)\longrightarrow0.
+	\]
+\end{proposition}
+\begin{proof}
+	固定 \(0<h<1\)。\cref{g3:thm:federer-fleming-deformation}给出
+	\[
+		T_j-P_j=\partial R_j+S_j,
+		\quad
+		\mathbf M(P_j)+\mathbf M(\partial P_j)\le C A,
+		\quad
+		\mathbf M(R_j)+\mathbf M(S_j)\le ChA,
+	\]
+	其中 \(P_j\) 是固定 \(h\) 网格上的多面体流，\(P_j,R_j,S_j\) 支于 \(K\) 的同一个 \(C_nh\) 邻域。只有有限个网格面与这个邻域相交。写
+	\[
+		P_j=\sum_{F}a_{j,F}\lBrack F\rBrack.
+	\]
+	互不相交的面内域各有体积 \(h^k\)，故
+	\(\sum_F|a_{j,F}|h^k=\mathbf M(P_j)\le CA\)。系数落在有限维有界集内，因而可取子列，使 \(P_j\) 在质量范数中收敛于某个多面体流 \(P\)。
+
+	现在假设 \(T_j\rightharpoonup T\)。除了上述质量界，还有
+	\[
+		\partial R_j=T_j-P_j-S_j,\qquad
+		\partial S_j=\partial T_j-\partial P_j.
+	\]
+	因此 \(R_j,S_j\) 的边界质量也一致有界。对它们应用\cref{g3:thm:normal-current-weak-compactness}，再取子列得到 \(R_j\rightharpoonup R\)、\(S_j\rightharpoonup S\)，且
+	\[
+		T-P=\partial R+S,\qquad
+		\mathbf M(R)+\mathbf M(S)\le ChA.
+	\]
+	利用这两个分解，得到
+	\[
+		\mathcal F(T_j-T)
+		\le\mathbf M(P_j-P)
+		+\mathbf M(R_j)+\mathbf M(S_j)+\mathbf M(R)+\mathbf M(S),
+	\]
+	所以沿所取子列有 \(\limsup_j\mathcal F(T_j-T)\le2ChA\)。
+
+	若原序列不平坦收敛于 \(T\)，可先取一个满足 \(\mathcal F(T_j-T)\ge\varepsilon\) 的子列，再选 \(h\) 使 \(2ChA<\varepsilon\)。刚才的论证又从它抽出一个违反此下界的子列，矛盾。因此整个序列平坦收敛。反向由
+	\[
+		|(T_j-T)(\omega)|
+		\le\max\{\|\omega\|_\infty,\|\mathrm d\omega\|_\infty\}
+		\mathcal F(T_j-T)
+	\]
+	立即得到。任取 \(\mathcal A_{K,A}\) 中的序列，先用弱紧性取子列，再使用已经证明的等价性，就得到平坦序列紧性。
+\end{proof}
+
+当输入是整数流时，多面体系数也是整数，质量界甚至使固定网格上的可能系数组合只有有限个。不过上面的证明容许实系数，这一点使我们能够先控制极限，再判断它的整数性。
 
 \subsection{切片及维数归纳}
 \label{g3:subsec:2205:03}
-待撰写
+零维整数流只有有限个点和有限个整数权，这是维数归纳的起点。
+
+\begin{lemma}\label{g3:lem:integer-zero-current-closure}
+	设 \(K\subset\mathbb R^n\) 紧，\(A_j\) 是支于 \(K\) 的整数零流，\(\sup_j\mathbf M(A_j)<\infty\)。若 \(A_j\rightharpoonup A\)，则 \(A\) 仍是整数零流。
+\end{lemma}
+\begin{proof}
+	把每个非零整数系数拆成若干个 \(+1\) 或 \(-1\)，可写成
+	\[
+		A_j=\sum_{\ell=1}^{N_j}\varepsilon_{j,\ell}\delta_{x_{j,\ell}},
+		\qquad \varepsilon_{j,\ell}\in\{-1,1\},\quad
+		N_j=\mathbf M(A_j)\le C.
+	\]
+	先取子列固定 \(N_j=N\) 和有限个符号，再由 \(K^N\) 的紧性取子列，使 \(x_{j,\ell}\to x_\ell\)。于是
+	\(A=\sum_{\ell=1}^N\varepsilon_\ell\delta_{x_\ell}\)。
+	重合点的整数系数相加，系数为零的点删去，就得到整数零流的表示。这里使用子列只为识别已经给定的弱极限。
+\end{proof}
+
+\begin{lemma}\label{g3:lem:slice-closure-subsequence}
+	设 \(1\le k\le n\)，\(T_j,T\) 为支于同一紧集 \(K\) 的正规 \(k\) 流，
+	\[
+		T_j\rightharpoonup T,\qquad \sup_j\mathbf N(T_j)<\infty.
+	\]
+	对任意固定 Lipschitz 函数 \(f:\mathbb R^n\to\mathbb R\)，几乎每个 \(t\) 都有一个可依赖于 \(t\) 的子列，使
+	\[
+		\langle T_j,f,t\rangle\rightharpoonup\langle T,f,t\rangle,
+		\qquad
+		\sup_j\mathbf N(\langle T_j,f,t\rangle)<\infty.
+	\]
+	若这些 \(T_j\) 为整数流，且整数流闭包结论已对维数 \(k-1\) 成立，则几乎所有 \(\langle T,f,t\rangle\) 都是整数流。
+\end{lemma}
+\begin{proof}
+	由\cref{g3:prop:normal-bounded-flat-precompactness}，先取子列使
+	\(\sum_j\mathcal F(T_j-T)<\infty\)。\cref{g3:prop:flat-slicing-estimate}给出
+	\[
+		\int_{\mathbb R}\sum_j
+		\mathcal F\bigl(\langle T_j,f,t\rangle-\langle T,f,t\rangle\bigr)\,\mathrm dt
+		\le\operatorname{Lip}(f)\sum_j\mathcal F(T_j-T)<\infty.
+	\]
+	故几乎每个 \(t\) 上切片平坦收敛，因而弱收敛。另一方面，切片的质量界与边界公式给出
+	\[
+		\int_{\mathbb R}
+		\mathbf N(\langle T_j,f,t\rangle)\,\mathrm dt
+		\le\operatorname{Lip}(f)\mathbf N(T_j).
+	\]
+	Fatou 引理说明几乎每个 \(t\) 都满足
+	\(\liminf_j\mathbf N(\langle T_j,f,t\rangle)<\infty\)。
+	固定这样的 \(t\)，再选一个正规总量有界的子列。所有切片仍支于 \(K\)，得到第一项结论。若 \(T_j\) 是整数流，\cref{g3:thm:integer-current-slicing}保证其切片为整数流；再用维数 \(k-1\) 的闭包结论即可。
+\end{proof}
+
+这一步的两个子列用途不同：第一个使几乎所有参数上的切片同时收敛，第二个在某个已固定的参数处恢复质量与边界质量界。可积性只保证下极限有限，不能把它直接写成整列的逐点一致上界。
+
+\ProseParagraphBreak
+设 \(p_\alpha(x)=(x_{i_1},\ldots,x_{i_k})\)，其中 \(i_1<\cdots<i_k\)，是一个坐标 \(k\) 维投影。若前述归纳假设成立，先沿 \(x_{i_1}\) 切一次，再对所得整数 \((k-1)\) 流沿剩余坐标切片。\cref{g3:prop:iterated-current-slicing}与 Fubini 定理便给出
+\[
+	\langle T,p_\alpha,y\rangle\ \text{在几乎每个 }y\in\mathbb R^k
+	\text{ 上是整数零流}.
+\]
+接下来的两个小节说明，有限个坐标投影中的这些整数点如何决定原流的几何结构。
 
 \subsection{极限的可整流性}
 \label{g3:subsec:2205:04}
-待撰写
+知道每个切片是有限个点，还需要控制这些点随参数的移动。正规性给出的控制恰好是 BV 型的。先把所需的标量估计写出。
+
+\begin{lemma}\label{g3:lem:slice-bv-pointwise}
+	设 \(\nu\) 是 \(\mathbb R^k\) 上的有限正 Radon 测度，\(v\in BV_{\mathrm{loc}}(\mathbb R^k)\)，且 \(|Dv|\le\nu\)。定义
+	\[
+		\mathcal M\nu(y)=\sup_{r>0}\frac{\nu(B(y,r))}{\omega_kr^k}.
+	\]
+	则 \(\mathcal M\nu<\infty\) 在 Lebesgue 几乎处处成立，并且在 \(v\) 的任意两个 Lebesgue 点 \(y,z\) 有
+	\begin{equation}\label{g3:eq:slice-bv-pointwise}
+		|v(y)-v(z)|
+		\le C_k|y-z|\bigl(\mathcal M\nu(y)+\mathcal M\nu(z)\bigr).
+	\end{equation}
+	如果一列函数 \(v_\ell\) 都满足 \(|Dv_\ell|\le\nu\)，则可删去同一个 Lebesgue 零测集，使式\eqref{g3:eq:slice-bv-pointwise}对所有 \(\ell\) 同时成立。
+\end{lemma}
+\begin{proof}
+	对 \(\{\mathcal M\nu>a\}\) 中每一点选取一个满足
+	\(\nu(B)>a\mathcal L^k(B)\) 的中心球。在有界部分上应用五倍球覆盖引理，得到互不相交的 \(B_i\)，其五倍球覆盖这些点。因此
+	\[
+		\mathcal L^k\{\mathcal M\nu>a\}
+		\le 5^k\sum_i\mathcal L^k(B_i)
+		\le \frac{5^k}{a}\nu(\mathbb R^k).
+	\]
+	先穷尽有界部分，再令 \(a\to\infty\)，得到几乎处处有限性。
+
+	我们使用球上的 \(L^1\) Poincaré 估计
+	\[
+		\frac{1}{|B(y,r)|}\int_{B(y,r)}|v-v_{B(y,r)}|\,\mathrm dx
+		\le C_kr\,\frac{|Dv|(B(y,2r))}{r^k}.
+	\]
+	它可以直接从线段积分得到：光滑情形先以
+	\(|v(x)-v(w)|\le |x-w|\int_0^1|\nabla v((1-t)x+tw)|\,\mathrm dt\)
+	估计球上的双重积分。将 \(t\) 的积分在 \(1/2\) 处分开，后半段交换 \(x,w\)，前半段对 \(x\) 换元时 Jacobian 不超过 \(2^k\)，得到所示估计。局部卷积并令核半径趋零，得到 BV 版本；扩大为二倍球吸收卷积半径，避免球面上的测度原子问题。
+
+	在 Lebesgue 点 \(y\)，把均值按半径 \(r, r/2,r/4,\ldots\) 逐级相减，使用 Poincaré 估计，得到
+	\[
+		|v(y)-v_{B(y,r)}|
+		\le C_k\sum_{j=0}^{\infty}2^{-j}r\,\mathcal M\nu(y)
+		\le C_kr\,\mathcal M\nu(y).
+	\]
+	若 \(d=|y-z|>0\)，则 \(B(z,2d)\subset B(y,4d)\)。先把 \(v(y)\) 与 \(B(y,4d)\) 的均值比较，再把 \(v(z)\) 与 \(B(z,2d)\) 的均值比较；两个均值之差由大球上的 Poincaré 估计控制，至多为 \(C_kd\,\mathcal M\nu(y)\)。三项相加即得式\eqref{g3:eq:slice-bv-pointwise}。最后对可数个函数取 Lebesgue 零测例外集的并。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:atomic-slice-graph-cover}
+	设 \(1\le k\le n\)，\(T\) 为 \(\mathbb R^n\) 中紧支正规 \(k\) 流。假设对每个坐标 \(k\) 维投影 \(p_\alpha\)，几乎所有
+	\(\langle T,p_\alpha,y\rangle\) 都是整数零流。则存在可数个 Lipschitz \(k\) 维图像的并 \(\Gamma\)，使
+	\[
+		\|T\|(\mathbb R^n\setminus\Gamma)=0,\qquad
+		\|T\|\ll\mathcal H^k\llcorner\Gamma.
+	\]
+\end{proposition}
+\begin{proof}
+	固定一个坐标投影，重新排列坐标后写作
+	\(p(x)=(x_1,\ldots,x_k)\)，记 \(Q_y=\langle T,p,y\rangle\)。
+	取紧集 \(K\) 包含 \(\operatorname{spt}T\)。切片质量可积，且几乎处处支于 \(K\cap p^{-1}(y)\)。
+
+	第一步控制切片对标量函数的作用。对
+	\(\varphi\in C_c^\infty(\mathbb R^n)\)，满足
+	\(\|\varphi\|_\infty\le1\)、\(\|\nabla\varphi\|_\infty\le1\)，令
+	\[
+		v_\varphi(y)=Q_y(\varphi).
+	\]
+	由切片积分公式，\(v_\varphi\in L^1(\mathbb R^k)\)。设
+	\[
+		\beta_i=(-1)^{i-1}\mathrm dx_1\wedge\cdots
+		\wedge\widehat{\mathrm dx_i}\wedge\cdots\wedge\mathrm dx_k,
+		\qquad
+		\mathrm dx_i\wedge\beta_i=\mathrm dx_1\wedge\cdots\wedge\mathrm dx_k.
+	\]
+	对 \(\eta\in C_c^\infty(\mathbb R^k)\)，展开
+	\(\mathrm d(\varphi(\eta\circ p)\beta_i)\)，得到
+	\begin{align*}
+		\int_{\mathbb R^k}v_\varphi\,\partial_i\eta\,\mathrm dy
+		&=T\bigl(\varphi(\partial_i\eta\circ p)\,
+		\mathrm dx_1\wedge\cdots\wedge\mathrm dx_k\bigr)\\
+		&=\partial T\bigl(\varphi(\eta\circ p)\beta_i\bigr)
+		-T\bigl((\eta\circ p)\mathrm d\varphi\wedge\beta_i\bigr).
+	\end{align*}
+	由于各坐标形式的余质量为一，右侧绝对值至多为
+	\[
+		\int_{\mathbb R^n}|\eta\circ p|\,\mathrm d(\|T\|+\|\partial T\|).
+	\]
+	故每个方向导数都由同一个推前测度控制，特别地
+	\begin{equation}\label{g3:eq:slice-testing-bv-bound}
+		|Dv_\varphi|\le\nu,\qquad
+		\nu:=k\,p_\#(\|T\|+\|\partial T\|).
+	\end{equation}
+
+	第二步把这个标量估计同时用于全部切片。对支于 \(K\) 的有限有符号测度定义
+	\[
+		d_{\mathrm{BL}}(A,B)
+		=\sup\{|A(\varphi)-B(\varphi)|:
+		\|\varphi\|_\infty\le1,\ \operatorname{Lip}(\varphi)\le1\}.
+	\]
+	这个上确界可以只对可数个光滑函数取。理由是上述函数限制到 \(K\) 后一致有界、等度连续，因而在一致范数中可分；逐个作光滑逼近并以趋于一的因子缩放，可同时保持两个界。测度在 \(K\) 上有限，所以一致逼近不改变上确界。
+
+	对这一可数族应用\cref{g3:lem:slice-bv-pointwise}。删去同一个零测集后，所有 \(y,z\) 均满足
+	\begin{equation}\label{g3:eq:slice-configuration-lipschitz}
+		d_{\mathrm{BL}}(Q_y,Q_z)
+		\le C_k|y-z|\bigl(\mathcal M\nu(y)+\mathcal M\nu(z)\bigr).
+	\end{equation}
+	因而在每个集合 \(\{\mathcal M\nu\le L\}\) 上，切片配置关于这个距离是 Lipschitz 的。这里的 \(d_{\mathrm{BL}}\) 只是有限测度上的测试函数距离，所需估计已经由式\eqref{g3:eq:slice-testing-bv-bound}证明。
+
+	第三步从配置中取出各个原子的位置。非零整数零流可以写成有限和
+	\[
+		Q_y=\sum_{\ell=1}^{q}m_\ell\delta_{a_\ell(y)},
+		\qquad m_\ell\in\mathbb Z\setminus\{0\},
+		\quad a_\ell(y)\ne a_{\ell'}(y)\ (\ell\ne\ell').
+	\]
+	按以下数据分组：整数 \(L,q\)，有序整数系数 \(m_1,\ldots,m_q\)，以及有理中心、正有理半径的球 \(B_\ell=B(c_\ell,r_\ell)\)，要求二倍球两两不交，每个 \(B_\ell\) 中恰有指定原子，所有原子均在这些球中，并且 \(\mathcal M\nu(y)\le L\)。任意有限个互异原子都可被这样一族球分开，故总共可数个组覆盖了几乎所有非零 \(Q_y\)。
+
+	固定一组以及一个指标 \(\ell\)。取光滑截断 \(\chi_\ell\)，在 \(\overline B_\ell\) 上为一，支于 \(2B_\ell\)。对每个环境坐标 \(s\)，函数
+	\[
+		\varphi_{\ell,s}(x)=\chi_\ell(x)(x_s-c_{\ell,s})
+	\]
+	的上确界及 Lipschitz 常数均由所选球控制。因为其支集不遇到其余原子，
+	\[
+		Q_y(\varphi_{\ell,s})=m_\ell(a_{\ell,s}(y)-c_{\ell,s}).
+	\]
+	于是对同组的 \(y,z\)，式\eqref{g3:eq:slice-configuration-lipschitz}给出
+	\[
+		|a_{\ell,s}(y)-a_{\ell,s}(z)|
+		\le C\,|y-z|.
+	\]
+	常数可以依赖于这组数据，但与 \(y,z\) 无关；非零整数保证 \(|m_\ell|\ge1\)。又 \(p(a_\ell(y))=y\)，所以这些点构成参数集合上的 Lipschitz 图。将其余 \(n-k\) 个坐标逐个作 Lipschitz 延拓到整个 \(\mathbb R^k\)，保持前 \(k\) 个坐标等于 \(y\)，得到一个完整的闭 Lipschitz 图像。对全部组和全部原子求并，得到 Borel 集 \(\Gamma_\alpha\)，使几乎每个 \(Q_y\) 都支于 \(\Gamma_\alpha\)。
+
+	最后恢复原流的质量。记 \(\mu_\alpha\) 为 \(T\) 对坐标形式
+	\(\mathrm dx_{i_1}\wedge\cdots\wedge\mathrm dx_{i_k}\) 的有符号系数测度。切片积分公式给出
+	\begin{equation}\label{g3:eq:coordinate-current-measure-disintegration}
+		\mu_\alpha(B)=\int_{\mathbb R^k}Q_y(B)\,\mathrm dy
+		\quad(B\subset\mathbb R^n\text{ 为 Borel 集}).
+	\end{equation}
+	事实上，公式先对连续紧支函数成立；由
+	\(\int\mathbf M(Q_y)\,\mathrm dy<\infty\)，单调类与测度唯一性将它推广到 Borel 集。故 \(|\mu_\alpha|\) 集中于 \(\Gamma_\alpha\)。
+
+	若 \(\mathcal H^k(B)=0\)，投影 \(p_\alpha(B)\) 也是 \(k\) 维零测集。对 \(y\notin p_\alpha(B)\)，纤维支集性质给出 \(Q_y(B)=0\)，故 \(|\mu_\alpha|(B)=0\)。有限维向量测度的质量满足
+	\(\|T\|\le C_{n,k}\sum_\alpha|\mu_\alpha|\)，反向的每个分量也受 \(\|T\|\) 控制。于是令
+	\(\Gamma=\bigcup_\alpha\Gamma_\alpha\)，便得到所述集中性及绝对连续性。
+\end{proof}
+
+图覆盖给出了几何集合，还要证明测度中的 \(k\) 向量确实沿着这些图像。这里再次需要边界质量有限。
+
+\begin{lemma}\label{g3:lem:normal-current-tangent-orientation}
+	设 \(T\) 为 \(\mathbb R^n\) 中正规 \(k\) 流，\(1\le k\le n\)。若 \(\|T\|\) 集中于可数 Lipschitz \(k\) 图像的并 \(\Gamma\)，且
+	\(\|T\|\ll\mathcal H^k\llcorner\Gamma\)，则 \(T\) 具有按 Lipschitz 片定向的实重数表示
+	\[
+		T(\omega)=\int_E\langle\omega(x),\tau(x)\rangle\theta(x)\,
+		\mathrm d\mathcal H^k(x),
+	\]
+	其中 \(E\subset\Gamma\) 可数 \(k\)-可整流，\(\theta>0\)，而 \(\tau(x)\) 是所在 Lipschitz 片切平面的单位简单取向向量；相交片在交集的几乎处处给出相同切平面。
+\end{lemma}
+\begin{proof}
+	各个完整 Lipschitz 图在有界部分有有限的 \(\mathcal H^k\) 测度，故 \(\mathcal H^k\llcorner\Gamma\) 是 \(\sigma\)-有限测度。Radon--Nikodym 表示与向量测度的极分解给出
+	\[
+		\|T\|=\theta\,\mathcal H^k\llcorner\Gamma,\qquad
+		T=\xi\,\theta\,\mathcal H^k\llcorner\Gamma,\qquad
+		|\xi(x)|_{\mathrm m}=1
+	\]
+	在 \(\theta>0\) 的点几乎处处成立。删去 \(\theta=0\) 的点，记所得集合为 \(E\)。当前只知道 \(\xi\) 是单位质量范数的 \(k\) 向量，还没有它的简单性。
+
+	将图像逐个减去前面图像，得到不交可测片 \(E_i\)，每片包含于一个 Lipschitz 图。对每片使用\cref{g3:thm:rectifiable-tangent-plane,g3:thm:weighted-rectifiable-density}的参数化证明，分别用于 \(\theta\) 和有限个分量 \(\theta\xi_\alpha\)。片外测度在该片的几乎每点具有零 \(k\) 维密度，这是\cref{g3:lem:off-sheet-density-zero}的结论。在交集的密度点，相交图像的切平面相同；可由交集的双 Lipschitz 参数片和式\eqref{g3:eq:tangent-parametric-image}核验。因而对 \(\mathcal H^k\)-几乎每个 \(x\in E_i\)，令 \(P_x\) 为包含该片的图像的切平面，缩放
+	\(\eta_{x,r}(z)=(z-x)/r\) 满足
+	\begin{equation}\label{g3:eq:current-vector-plane-blowup}
+		(\eta_{x,r})_\#T\rightharpoonup S_x,\qquad
+		S_x(\omega)=\theta(x)\int_{P_x}\langle\omega(z),\xi(x)\rangle\,
+		\mathrm d\mathcal H^k(z).
+	\end{equation}
+	这些应用逐片进行，故不要求整个并集 \(\Gamma\) 在有界区域内有有限的 \(\mathcal H^k\) 测度。
+
+	令 \(\lambda=\|\partial T\|\)。有限测度的覆盖估计给出
+	\begin{equation}\label{g3:eq:boundary-mass-vanishing-at-k-points}
+		\lim_{r\downarrow0}\frac{\lambda(B(x,r))}{r^{k-1}}=0
+		\quad\text{在 }\mathcal H^k\text{-几乎每个 }x\text{ 成立}.
+	\end{equation}
+	说明如下：当 \(k=1\) 时，非零极限只能出现在 \(\lambda\) 的原子上，原子至多可数。当 \(k>1\) 时，对
+	\(\{\limsup_{r\downarrow0}\lambda(B(x,r))/r^{k-1}>1/a\}\)
+	的有界部分，在任意小尺度选满足该下界的球并作五倍球覆盖，得到其 \(\mathcal H^{k-1}\) 测度至多为 \(C_ka\,\lambda(\mathbb R^n)\)。因此坏集合是 \(\mathcal H^{k-1}\)-有限集的可数并，其 \(\mathcal H^k\) 测度为零。
+
+	取同时满足式\eqref{g3:eq:current-vector-plane-blowup}与式\eqref{g3:eq:boundary-mass-vanishing-at-k-points}的 \(x\)。对支于 \(B_R\) 的测试 \((k-1)\) 形式 \(\zeta\)，有
+	\[
+		|\partial((\eta_{x,r})_\#T)(\zeta)|
+		\le \|\zeta\|_\infty r^{1-k}\lambda(B(x,Rr))
+		\longrightarrow0.
+	\]
+	所以 \(\partial S_x=0\)。
+
+	在正交坐标中把 \(P_x\) 写成 \(\mathbb R^k\times\{0\}\)。若 \(\ell>k\)，对任意不含 \(\ell\) 的 \((k-1)\) 元多重指标 \(J\)，取
+	\(\zeta(z)=z_\ell\psi(z)\,\mathrm dz_J\)，其中 \(\psi\in C_c^\infty(\mathbb R^n)\)。在 \(P_x\) 上有
+	\(\mathrm d\zeta=\psi\,\mathrm dz_\ell\wedge\mathrm dz_J\)，于是
+	\[
+		0=\partial S_x(\zeta)
+		=\theta(x)\langle\mathrm dz_\ell\wedge\mathrm dz_J,\xi(x)\rangle
+		\int_{P_x}\psi\,\mathrm d\mathcal H^k.
+	\]
+	选择平面积分非零的 \(\psi\)，便知 \(\xi(x)\) 中每个含法向指标的系数为零。因此
+	\(\xi(x)\in\Lambda_kP_x\)，而这个空间是一维的。单位质量范数遂给出
+	\(\xi(x)=\pm e_1\wedge\cdots\wedge e_k\)。这就是所需的简单切向取向 \(\tau(x)\)，并完成按片的定向表示。
+\end{proof}
 
 \subsection{整数重数的保持}
 \label{g3:subsec:2205:05}
-待撰写
+现在已有定向片状表示。投影的 Jacobian 把每片上的面积密度换算为纤维中的原子系数，因而可以逐点读出重数。
+
+\begin{theorem}[原子切片判别]\label{g3:thm:atomic-slice-rectifiability}
+	设 \(1\le k\le n\)，\(T\) 为 \(\mathbb R^n\) 中紧支正规 \(k\) 流。如果对每个坐标 \(k\) 维投影 \(p_\alpha\)，几乎所有零维切片
+	\(\langle T,p_\alpha,y\rangle\) 都是整数零流，则 \(T\) 是整数可整流流。
+\end{theorem}
+\begin{proof}
+	\cref{g3:prop:atomic-slice-graph-cover,g3:lem:normal-current-tangent-orientation}已给出
+	\[
+		T=\tau\theta\,\mathcal H^k\llcorner E,\qquad \theta>0,
+	\]
+	其中 \(E\) 是可数 Lipschitz 片的并，\(\tau\) 是片上的单位简单切向向量。固定坐标投影 \(p=p_\alpha\)，令
+	\[
+		a_\alpha(x)=\langle\mathrm dx_{i_1}\wedge\cdots
+		\wedge\mathrm dx_{i_k},\tau(x)\rangle,\qquad
+		J_\alpha(x)=|a_\alpha(x)|.
+	\]
+	对可数个不交参数片使用面积公式，得到
+	\begin{align*}
+		T(\varphi\,\mathrm dx_\alpha)
+		&=\int_E\varphi(x)\theta(x)a_\alpha(x)\,\mathrm d\mathcal H^k(x)\\
+		&=\int_{\mathbb R^k}
+		\sum_{\substack{x\in E\cap p^{-1}(y)\\J_\alpha(x)>0}}
+		\varphi(x)\theta(x)\operatorname{sgn}(a_\alpha(x))\,\mathrm dy.
+	\end{align*}
+	其中 \(J_\alpha=0\) 的部分不贡献第一行积分。取绝对值并再用面积公式，知右侧各原子系数的绝对值之和对 \(y\) 可积。将测试函数换成 \((g\circ p_\alpha)\varphi\)，其中 \(g\in C_c^\infty(\mathbb R^k)\)，再与式\eqref{g3:eq:coordinate-current-measure-disintegration}比较。对每个固定 \(\varphi\)，两个纤维配对作为 \(y\) 的可积函数在所有 \(g\) 上积分相同，因而几乎处处相等。对可数稠密的 \(\varphi\) 族删去同一个零测集，有限测度的唯一性便给出
+	\begin{equation}\label{g3:eq:slice-reads-integer-multiplicity}
+		\langle T,p_\alpha,y\rangle
+		=\sum_{\substack{x\in E\cap p_\alpha^{-1}(y)\\J_\alpha(x)>0}}
+		\theta(x)\operatorname{sgn}(a_\alpha(x))\,\delta_x
+		\quad\text{对几乎所有 }y.
+	\end{equation}
+	不同的 \(x\) 是不同原子，故不能彼此抵消。左侧为整数零流，因而右侧每个非零系数都是整数。
+
+	记 \(B=\{x\in E:\theta(x)\notin\mathbb N\}\)。由刚才的结论与面积公式，
+	\[
+		\int_BJ_\alpha\,\mathrm d\mathcal H^k=0
+		\qquad\text{对每个 }\alpha.
+	\]
+	单位简单向量的坐标系数满足
+	\(\sum_\alpha a_\alpha^2=1\)，所以有限个 \(J_\alpha\) 不会同时为零。于是 \(\mathcal H^k(B)=0\)，即重数为正整数。特别地，
+	\[
+		\mathcal H^k(E\cap U)
+		\le\int_{E\cap U}\theta\,\mathrm d\mathcal H^k
+		=\|T\|(U)
+	\]
+	对每个开集 \(U\) 成立。此时 \(E\) 的 Hausdorff 测度局部有限，前章的近似切平面定理直接适用于整个 \(E\)，并与各片的切平面一致。因此得到整数可整流流的完整表示。
+\end{proof}
+
+这也完成了维数归纳所缺的一步：零维切片的整数信息先产生图覆盖，再决定图上的取向与重数。
+
+\begin{theorem}[整数流闭包]\label{g3:thm:integer-current-closure}
+	设 \(K\subset\mathbb R^n\) 紧，\(0\le k\le n\)，\(T_j\in\mathcal I_k(\mathbb R^n)\)，并且
+	\[
+		\operatorname{spt}T_j\subset K,\qquad
+		\sup_j\bigl(\mathbf M(T_j)+\mathbf M(\partial T_j)\bigr)<\infty.
+	\]
+	如果 \(T_j\rightharpoonup T\)，则 \(T\in\mathcal I_k(\mathbb R^n)\)。
+\end{theorem}
+\begin{proof}
+	按 \(k\) 归纳。\(k=0\) 正是\cref{g3:lem:integer-zero-current-closure}。设结论已对维数 \(k-1\) 成立。质量下半连续性与测试形式的边界公式先保证 \(T\) 正规、支于 \(K\)。
+
+	对每个坐标 \(k\) 维投影 \(p_\alpha\)，先沿它的第一个坐标切片。\cref{g3:lem:slice-closure-subsequence}和归纳假设说明，几乎所有这些切片是整数 \((k-1)\) 流。对它们再沿其余坐标作迭代切片，得到几乎所有 \(\langle T,p_\alpha,y\rangle\) 都是整数零流。这里的零测例外集由切片公式和可数测试函数选取，Fubini 定理可把逐次的“几乎处处”合并为 \(\mathbb R^k\) 中的“几乎处处”。坐标投影只有有限个，故可以分别完成此论证。\cref{g3:thm:atomic-slice-rectifiability}于是说明 \(T\) 整数可整流。
+
+	还须处理边界。各 \(\partial T_j\) 是整数 \((k-1)\) 流，支于 \(K\)，质量一致有界，而二次边界均为零。又
+	\(\partial T_j\rightharpoonup\partial T\)。再次使用维数 \(k-1\) 的归纳假设，得到 \(\partial T\) 也是整数流，特别地是整数可整流流。因此 \(T\) 满足整数流定义中的两项要求，归纳完成。
+\end{proof}
 
 \subsection{边界相容及下半连续}
 \label{g3:subsec:2205:06}
-待撰写
+闭包定理保留了竞争者的种类。对于极小化，还需要极限保留指定边界，并使目标质量不增加。
 
-\subsection{紧性定理及非紧推广的边界}
+\begin{corollary}\label{g3:cor:integral-limit-boundary-lsc}
+	在\cref{g3:thm:integer-current-closure}的条件下，如果
+	\(\partial T_j=B_j\rightharpoonup B\)，则 \(\partial T=B\)。对任意非负连续紧支函数 \(\phi\)，有
+	\[
+		\int\phi\,\mathrm d\|T\|
+		\le\liminf_j\int\phi\,\mathrm d\|T_j\|,\qquad
+		\int\phi\,\mathrm d\|\partial T\|
+		\le\liminf_j\int\phi\,\mathrm d\|\partial T_j\|.
+	\]
+	特别地，固定整数边界 \(\partial T_j=B\) 的条件在这种极限下保持。
+\end{corollary}
+\begin{proof}
+	对每个紧支光滑 \((k-1)\) 形式 \(\eta\)，有
+	\[
+		\partial T(\eta)
+		=T(\mathrm d\eta)
+		=\lim_jT_j(\mathrm d\eta)
+		=\lim_j B_j(\eta)=B(\eta).
+	\]
+	这说明边界相容不需要额外选取子列。对质量，开集版本的下半连续性已在式\eqref{g3:eq:normal-current-limit-mass}证明。由于 \(\{\phi>t\}\) 为开集，层蛋糕表示与 Fatou 引理给出
+	\[
+		\int\phi\,\mathrm d\|T\|
+		=\int_0^\infty\|T\|(\{\phi>t\})\,\mathrm dt
+		\le\liminf_j\int_0^\infty\|T_j\|(\{\phi>t\})\,\mathrm dt.
+	\]
+	边界质量同理。取在共同紧支集邻域等于一的 \(\phi\)，便恢复总质量与边界总质量的下半连续性。
+\end{proof}
+
+固定边界与质量下半连续性具有不同来源：前者来自 \(\partial T(\eta)=T(\mathrm d\eta)\)，后者来自单位测试形式的上确界。整数闭包则用到了切片、BV 估计和切向结构；三者合在一起，才得到可用于面积极小化的极限。
+
+\subsection{整数流的整体与局部紧性}
 \label{g3:subsec:2205:07}
-待撰写
+把弱紧性、平坦控制与整数闭包合并，就得到本章的主要紧性定理。
+
+\begin{theorem}[Federer--Fleming 紧性定理]\label{g3:thm:federer-fleming-compactness}
+	设 \(0\le k\le n\)，\(K\subset\mathbb R^n\) 紧。若整数流 \(T_j\in\mathcal I_k(\mathbb R^n)\) 满足
+	\[
+		\operatorname{spt}T_j\subset K,\qquad
+		\sup_j\bigl(\mathbf M(T_j)+\mathbf M(\partial T_j)\bigr)<\infty,
+	\]
+	则存在子列与 \(T\in\mathcal I_k(\mathbb R^n)\)，使
+	\[
+		\operatorname{spt}T\subset K,\qquad
+		\mathcal F(T_j-T)\longrightarrow0,\qquad
+		T_j\rightharpoonup T,\quad
+		\partial T_j\rightharpoonup\partial T.
+	\]
+	极限的质量及边界质量满足局部与整体的下半连续性。
+\end{theorem}
+\begin{proof}
+	\cref{g3:thm:normal-current-weak-compactness}先给出支于 \(K\) 的正规弱极限。\cref{g3:thm:integer-current-closure}保证它属于 \(\mathcal I_k\)。\cref{g3:prop:normal-bounded-flat-precompactness}把同一子列的弱收敛加强为平坦收敛；边界相容及下半连续性由\cref{g3:cor:integral-limit-boundary-lsc}给出。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:local-integral-current-compactness}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(T_j\) 是 \(\Omega\) 中局部整数 \(k\) 流，即它们及其边界在每个相对紧开集上都具有局部有限质量的整数可整流表示。若对每个 \(V\Subset\Omega\) 都有
+	\[
+		\sup_j\bigl(\|T_j\|(V)+\|\partial T_j\|(V)\bigr)<\infty,
+	\]
+	则可取子列，使 \(T_j\rightharpoonup T\)，其中 \(T\) 为局部整数流。对每个 \(V\Subset\Omega\)，取任意 \(\eta\in C_c^\infty(\Omega)\) 在 \(V\) 的邻域等于一，则还有
+	\[
+		\mathcal F\bigl(\eta T_j-\eta T\bigr)\longrightarrow0.
+	\]
+	这里把紧支流补零到 \(\mathbb R^n\) 后计算平坦范数。
+\end{theorem}
+\begin{proof}
+	先用可数个相对紧开集穷尽 \(\Omega\)，在每个紧支测试形式空间上重复弱紧性的可数稠密族论证，再取对角子列。得到局部正规流 \(T\)，且 \(T_j\rightharpoonup T\)，局部质量与边界质量下半连续。
+
+	为证明整数性，取 \(\overline{B_R(x)}\subset\Omega\)。在一个略大的紧集上，各正测度
+	\(\mu_j=\|T_j\|+\|\partial T_j\|\) 的质量一致有界。取子列使它们在该紧集上弱星收敛于有限正测度 \(\mu\)。由局部下半连续性，\(\|T\|+\|\partial T\|\le\mu\) 在球内成立。除至多可数个半径外，\(\mu(\partial B_r(x))=0\)。
+
+	对这样的 \(r<R\)，用光滑径向函数从两侧逼近 \(\mathbf1_{B_r(x)}\)，得到
+	\[
+		T_j\llcorner B_r(x)\rightharpoonup T\llcorner B_r(x),\qquad
+		(\partial T_j)\llcorner B_r(x)\rightharpoonup
+		(\partial T)\llcorner B_r(x).
+	\]
+	具体地，逼近误差支于厚度为 \(\delta\) 的球面邻域，其绝对值由测试形式的一致范数乘该邻域的 \(\mu_j\) 质量控制。先令 \(j\to\infty\)，再令 \(\delta\downarrow0\)，误差因 \(\mu(\partial B_r(x))=0\) 而消失。
+
+	如果 \(k=0\)，这些限制流已经是共同紧支、质量有界的整数零流，直接用\cref{g3:lem:integer-zero-current-closure}即可。以下设 \(k\ge1\)。对距离函数 \(d_x(z)=|z-x|\) 使用切片质量估计和 Fatou 引理，有
+	\[
+		\int_{R/2}^{R}\liminf_j
+		\mathbf M(\langle T_j,d_x,r\rangle)\,\mathrm dr
+		\le\sup_j\|T_j\|(B_R(x))<\infty.
+	\]
+	因而可以选 \(r\in(R/2,R)\)，同时使上述限制收敛成立、每个 \(T_j\llcorner B_r(x)\) 是整数流，并使切片质量的下极限有限。再取一个可依赖于 \(r\) 的子列，使该切片质量一致有界。由
+	\[
+		\partial(T_j\llcorner B_r(x))
+		=(\partial T_j)\llcorner B_r(x)+\langle T_j,d_x,r\rangle
+	\]
+	可知这些限制流的正规总量一致有界，且共同支于 \(\overline{B_r(x)}\)。固定紧支的整数闭包定理于是给出 \(T\llcorner B_r(x)\) 为整数流。在 \(B_r(x)\) 内，它及其边界与 \(T,\partial T\) 分别一致。用可数个这样的内球覆盖 \(\Omega\)，便得到 \(T\) 的局部整数性；不同球中使用的子列只用于识别同一个已经得到的弱极限。
+
+	最后，\(\eta T_j\) 一般为实系数流，但仍是共同紧支的正规流。由乘积公式，其正规总量受
+	\[
+		\|\eta\|_\infty
+		\bigl(\|T_j\|(\operatorname{spt}\eta)+\|\partial T_j\|(\operatorname{spt}\eta)\bigr)
+		+\|\mathrm d\eta\|_\infty\|T_j\|(\operatorname{spt}\eta)
+	\]
+	一致控制。又 \(\eta T_j\rightharpoonup\eta T\)，故\cref{g3:prop:normal-bounded-flat-precompactness}给出所述平坦收敛。
+\end{proof}
+
+局部结论容许质量逃向无穷远。例如在 \(\mathbb R^2\) 中，把逆时针单位圆流 \(C\) 平移到圆心 \((j,0)\)，得到 \(C_j\)。始终有
+\[
+	\mathbf M(C_j)=2\pi,\qquad \partial C_j=0,
+\]
+但每个紧支测试形式最终都遇不到 \(C_j\)，故 \(C_j\rightharpoonup0\)。它们却不在全空间平坦范数中趋于零：取在单位圆附近等于
+\(\tfrac12(-x_2\,\mathrm dx_1+x_1\,\mathrm dx_2)\) 的紧支光滑形式 \(\omega\)，则 \(C(\omega)=\pi\)；平移得到的 \(\omega_j\) 具有与 \(j\) 无关的余质量和外微分余质量上界，所以
+\[
+	\mathcal F(C_j)\ge
+	\frac{\pi}{\max\{\|\omega\|_\infty,\|\mathrm d\omega\|_\infty\}}>0.
+\]
+共同紧支条件排除了这种逃逸。下一章在选择极小化序列时，还需要给出把竞争者留在一个共同有界区域中的几何理由。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

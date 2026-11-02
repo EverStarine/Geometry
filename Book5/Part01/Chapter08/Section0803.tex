@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 8.3 深度的不同刻画
 % 纲要位置：几何学计划纲要.md，第 5319 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,311 @@
 \section{深度的不同刻画}
 \label{g5:sec:0803}
 
-待撰写
+在一个局部环上，选择正则元相当于用一个方程取商，同时要求乘法保持单射。连续这样做，能够进行多少次？支集的维数给出上界，但嵌入素理想可能使过程提前停止。我们要把这个停止位置变成模的不变量，并证明它与选择哪些正则元无关。
+
+\ProseParagraphBreak
+
+本节先证明每一步都使支集维数下降，保证正则序列能延长到某个终点。随后用 \(\operatorname{Ext}^i_A(k,M)\) 检测这个终点：它们起初连续消失的项数，恰好等于正则序列能够达到的长度。长正合列于是把深度转化为短正合列中的可比较数据，逐素局部化又给出 Serre 条件。正则序列与 Ext 刻画可对照\cite[第16节，定理16.6—16.7，第129—131页]{Matsumura1989}。
 
 \subsection{极大正则序列长度}
 \label{g5:subsec:0803:01}
-待撰写
+
+\begin{definition}\label{g5:def:module-dimension}
+	设 \(A\) 为 Noether 环，\(M\) 为有限生成 \(A\) 模。\term[moweishu]{模的维数}[dimension of a module]定义为其支集的维数：
+	\[
+		\dim_A M=\dim\operatorname{Supp}_A(M)
+		=\dim\bigl(A/\operatorname{Ann}_A(M)\bigr).
+	\]
+	这里支集维数按支集中严格素链的长度定义；第二个等号由\cref{g5:prop:support-annihilator}及商环的素理想对应得到。约定 \(\dim_A0=-\infty\)。
+\end{definition}
+
+若 \((A,\mathfrak m)\) 为 Noether 局部环，\(M\ne0\) 有限生成，则 \(\operatorname{Ann}_A(M)\subseteq\mathfrak m\)，且 \(\dim_A M\) 是有限的非负整数。事实上，\(\mathfrak m\) 有有限个生成元，高度定理 \cref{g5:thm:height-theorem}便使 \(\dim A=\operatorname{ht}_A\mathfrak m\) 有限，商环的维数不会更大。
+
+\begin{lemma}\label{g5:lem:regular-element-support-drop}
+	设 \((A,\mathfrak m)\) 为 Noether 局部环，\(M\ne0\) 为有限生成 \(A\) 模，且 \(x\in\mathfrak m\) 是 \(M\) 正则元。则 \(M/xM\ne0\)，并且
+	\[
+		\operatorname{Supp}_A(M/xM)
+		=\operatorname{Supp}_A(M)\cap V(x),
+		\qquad
+		\dim_A(M/xM)\leq\dim_A M-1.
+	\]
+\end{lemma}
+\begin{proof}
+	因为 \(x\in\mathfrak m\)，Nakayama 引理 \cref{g5:thm:nakayama-local}说明 \(M/xM\ne0\)。对任意素理想 \(\mathfrak p\)，局部化与取商相容，给出
+	\[
+		(M/xM)_{\mathfrak p}
+		=M_{\mathfrak p}/xM_{\mathfrak p}.
+	\]
+	若 \(M_{\mathfrak p}=0\)，或者 \(x\notin\mathfrak p\) 而在 \(A_{\mathfrak p}\) 中成为单位，这个商为零。若 \(M_{\mathfrak p}\ne0\) 且 \(x\in\mathfrak p\)，则再次在局部环 \(A_{\mathfrak p}\) 上用 Nakayama 引理，得到这个商非零。这证明支集等式；这一等式本身并不需要 \(x\) 正则。
+
+	由\cref{g5:cor:minimal-support-associated}，支集的极小素理想都是 \(M\) 的关联素理想。\cref{g5:thm:zero-divisors-associated}又说明，正则元 \(x\) 不属于其中任何一个。现在取商模支集中的任意严格素链
+	\[
+		\mathfrak q_0\subsetneq\mathfrak q_1
+		\subsetneq\cdots\subsetneq\mathfrak q_l.
+	\]
+	在 \(\mathfrak q_0\) 下方选择 \(\operatorname{Supp}_A(M)\) 的一个极小元 \(\mathfrak p\)。由于 \(x\in\mathfrak q_0\) 而 \(x\notin\mathfrak p\)，有 \(\mathfrak p\subsetneq\mathfrak q_0\)。将它接在链的最前面，就得到 \(\operatorname{Supp}_A(M)\) 中长度为 \(l+1\) 的链。因此 \(l+1\leq\dim_A M\)，对所有这样的链取上界即得结论。
+\end{proof}
+
+回顾\cref{g5:def:module-regular-sequence}，位于 \(\mathfrak m\) 中的 \(M\) 正则序列 \(x_1,\ldots,x_t\) 要求每个 \(x_i\) 在
+\(M/(x_1,\ldots,x_{i-1})M\) 上的乘法为单射，且最终商非零。对这里的局部有限模，各中间商的非零性也由 Nakayama 引理保证。逐次应用上面的引理，序列长度必满足 \(t\leq\dim_A M\)。所以从空序列出发，只要还能追加一个正则元就继续，至多经过有限步便会停止。
+
+\begin{definition}\label{g5:def:module-depth}
+	设 \((A,\mathfrak m)\) 为 Noether 局部环，\(M\ne0\) 为有限生成 \(A\) 模。若 \(\mathfrak m\) 中的 \(M\) 正则序列不能再在末尾追加一个 \(\mathfrak m\) 中的元素而仍保持正则，就称它为极大正则序列。所有 \(\mathfrak m\) 中的 \(M\) 正则序列长度的最大值，称为 \(M\) 的\term[shendu]{深度}[depth]，记为 \(\operatorname{depth}_A M\)。空序列的长度为零，并另约定
+	\[
+		\operatorname{depth}_A0=\infty.
+	\]
+\end{definition}
+\symidx{\(\operatorname{depth}_A M\)：有限模的深度}
+
+最大长度存在，来自刚才证明的整数上界。“极大”目前只表示不能继续追加；下一小节将证明，任意极大正则序列都达到这个最大长度。首先确定过程一步也不能开始的情形。以下 \(k=A/\mathfrak m\) 表示剩余域。
+
+\begin{lemma}\label{g5:lem:depth-zero}
+	设 \((A,\mathfrak m,k)\) 为 Noether 局部环，\(M\ne0\) 为有限生成 \(A\) 模。以下条件等价：
+	\begin{equivalences}
+		\item \(\operatorname{depth}_A M=0\)；
+		\item \(\mathfrak m\in\operatorname{Ass}_A(M)\)；
+		\item \(\operatorname{Hom}_A(k,M)\ne0\)。
+	\end{equivalences}
+\end{lemma}
+\begin{proof}
+	第一个条件表示 \(\mathfrak m\) 中每个元素都是 \(M\) 零因子。由\cref{g5:thm:prime-filtration,g5:thm:zero-divisors-associated}，关联素理想有限，且这些零因子恰为它们的并。有限素理想避开引理 \cref{g5:lem:finite-prime-avoidance}表明，\(\mathfrak m\) 包含在某个关联素理想中。局部环的所有真素理想又都包含在 \(\mathfrak m\) 中，故该关联素理想只能是 \(\mathfrak m\)。反过来，若 \(\mathfrak m\) 本身关联，它的每个元素都是零因子，所以没有长度一的正则序列。
+
+	同态 \(k\to M\) 由 \(1\) 的像 \(m\) 唯一确定，而这个像必须满足 \(\mathfrak m m=0\)。非零同态的像 \(m\ne0\) 的零化子是真理想，包含极大理想 \(\mathfrak m\)，故恰等于 \(\mathfrak m\)。这与第二个条件等价。
+\end{proof}
 
 \subsection{Ext 检测与等价证明}
 \label{g5:subsec:0803:02}
-待撰写
+
+固定局部环 \((A,\mathfrak m,k)\)，暂记
+\[
+	E^i(M)=\operatorname{Ext}^i_A(k,M)\qquad(i\geq0).
+\]
+\cref{g5:prop:ext-annihilator}说明，\(\mathfrak m\) 零化每个 \(E^i(M)\)：第一变量 \(k\) 上的标量作用，与第二变量上的标量作用诱导同一作用。因此对于 \(x\in\mathfrak m\)，由第二变量乘以 \(x\) 诱导的全部 \(E^i(M)\to E^i(M)\) 都为零。这正好把正则元对应的长正合列拆成短正合列。
+
+\begin{lemma}\label{g5:lem:regular-element-ext-sequence}
+	设 \((A,\mathfrak m,k)\) 为 Noether 局部环，\(M\ne0\) 为有限生成 \(A\) 模，\(x\in\mathfrak m\) 为 \(M\) 正则元，并令 \(\overline M=M/xM\)、\(E^i(T)=\operatorname{Ext}^i_A(k,T)\)。则 \(E^0(M)=0\)，且对每个 \(i\geq0\) 有短正合列
+	\begin{equation}\label{g5:eq:regular-ext-short-exact}
+		0\longrightarrow E^i(M)\longrightarrow E^i(\overline M)
+		\longrightarrow E^{i+1}(M)\longrightarrow0.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	正则性给出短正合列
+	\[
+		0\longrightarrow M\xrightarrow{\,x\,}M
+		\longrightarrow\overline M\longrightarrow0.
+	\]
+	由\cref{g5:prop:ext-tor-long-exact}，其 Ext 长正合列包含
+	\[
+		E^i(M)\xrightarrow{\,x\,}E^i(M)
+		\longrightarrow E^i(\overline M)
+		\longrightarrow E^{i+1}(M)\xrightarrow{\,x\,}E^{i+1}(M).
+	\]
+	两张标为 \(x\) 的映射均为零，便得到\eqref{g5:eq:regular-ext-short-exact}。在长正合列最左端，\(E^0(M)\xrightarrow{x}E^0(M)\) 同时为单射和零映射，所以 \(E^0(M)=0\)。
+\end{proof}
+
+\begin{theorem}\label{g5:thm:depth-ext}
+	设 \((A,\mathfrak m,k)\) 为 Noether 局部环，\(M\ne0\) 为有限生成 \(A\) 模。则
+	\[
+		\operatorname{depth}_A M
+		=\min\{i\geq0:\operatorname{Ext}^i_A(k,M)\ne0\}.
+	\]
+	右侧集合非空，而且 \(\mathfrak m\) 中任意极大 \(M\) 正则序列的长度都等于这个整数。对零模，采用 \(\inf\varnothing=\infty\)，同一刻画仍成立。
+\end{theorem}
+\begin{proof}
+	先观察\eqref{g5:eq:regular-ext-short-exact}如何改变首个非零次数。若 \(x\) 正则，且 \(E^i(M/xM)\) 的首个非零次数为 \(r\)，则 \(E^0(M)=0\)。对 \(i<r\)，短正合列中间为零，使两端都为零，所以
+	\[
+		E^0(M)=\cdots=E^r(M)=0.
+	\]
+	在 \(i=r\) 时，同一短正合列给出
+	\[
+		E^{r+1}(M)\cong E^r(M/xM)\ne0.
+	\]
+	因此首个非零次数向上增加一；\(r=0\) 时也由最左端消失及 \(i=0\) 的短正合列得到这一结论。
+
+	现在取任意极大 \(M\) 正则序列 \(x_1,\ldots,x_t\)，并记
+	\[
+		M_j=M/(x_1,\ldots,x_j)M\qquad(0\leq j\leq t).
+	\]
+	这些模均非零且有限生成。极大性说明 \(M_t\) 没有 \(\mathfrak m\) 中的正则元，由\cref{g5:lem:depth-zero}，有 \(E^0(M_t)\ne0\)。从 \(j=t\) 向前逐次使用刚才的观察，得到 \(E^i(M)\) 的首个非零次数恰为 \(t\)。
+
+	右侧由 \(M\) 本身决定，所以每条极大序列的长度都相同。任意正则序列都能在有限步后延长到极大序列，因而这个共同长度就是定义中的最大长度。对于零模，全部 Ext 群为零，所作无穷大约定与之相容。
+\end{proof}
+
+这个证明同时解释了 Ext 为何能够检测正则序列：每次对正则元取商，都会把第一次非零的 Ext 向低一次移动，而终点由 \(\operatorname{Hom}_A(k,-)\) 检出。这与\cite[第16节，定理16.7，第130页]{Matsumura1989}的深度刻画一致。
+
+\begin{corollary}\label{g5:cor:regular-depth-drop}
+	设 \((A,\mathfrak m)\) 为 Noether 局部环，\(M\ne0\) 为有限生成 \(A\) 模，且 \(x_1,\ldots,x_t\in\mathfrak m\) 为 \(M\) 正则序列。则
+	\[
+		\operatorname{depth}_A\bigl(M/(x_1,\ldots,x_t)M\bigr)
+		=\operatorname{depth}_A M-t.
+	\]
+	左侧也等于将该商模看作 \(A/(x_1,\ldots,x_t)\) 模时的深度。
+\end{corollary}
+\begin{proof}
+	对 \(t=1\)，将 \(M/x_1M\) 的极大正则序列接在 \(x_1\) 之后，就得到 \(M\) 的极大正则序列；由定理，它们的长度相差一。逐个取商即得一般结论。若理想 \(H\) 零化一个模，\(A\) 与 \(A/H\) 中对应元素对该模及逐次商模的乘法作用完全相同，故正则序列在取像与提升下对应。这给出最后的环变换说明。
+\end{proof}
 
 \subsection{深度不超过维数}
 \label{g5:subsec:0803:03}
-待撰写
+
+现在可以把正则序列的长度与实际削去的支集维数放在一起比较。极小支集素理想的避开已经给出一个方向；主理想的维数下降不等式补出另一个方向。
+
+\begin{theorem}\label{g5:thm:depth-dimension}
+	设 \((A,\mathfrak m)\) 为 Noether 局部环，\(M\ne0\) 为有限生成 \(A\) 模。则
+	\[
+		0\leq\operatorname{depth}_A M\leq\dim_A M\leq\dim A.
+	\]
+	若 \(x_1,\ldots,x_t\in\mathfrak m\) 为 \(M\) 正则序列，则
+	\[
+		\dim_A\bigl(M/(x_1,\ldots,x_t)M\bigr)=\dim_A M-t.
+	\]
+\end{theorem}
+\begin{proof}
+	第一串不等式来自正则序列长度的支集维数上界，以及 \(\operatorname{Supp}_A(M)\) 是 \(\operatorname{Spec}A\) 的闭子集。
+
+	为证明精确下降公式，先取一个 \(M\) 正则元 \(x\in\mathfrak m\)，并记 \(H=\operatorname{Ann}_A(M)\)。由\cref{g5:lem:regular-element-support-drop}中的支集等式及 \(\operatorname{Supp}_A(M)=V(H)\)，有
+	\[
+		\dim_A(M/xM)=\dim A/(H+(x)).
+	\]
+	环 \(A/H\) 是 Noether 局部环，\(x\) 的像属于其极大理想。对它使用\cref{g5:lem:principal-dimension-drop}，得到
+	\[
+		\dim_A M=\dim A/H
+		\leq\dim A/(H+(x))+1
+		=\dim_A(M/xM)+1.
+	\]
+	再结合\cref{g5:lem:regular-element-support-drop}的相反不等式，得到 \(\dim_A(M/xM)=\dim_A M-1\)。对各非零中间商重复应用，就得到长度 \(t\) 的公式。
+\end{proof}
+
+维数描述支集还能容纳多长的素链，深度则要求每一步取商前的乘法都保持单射。两者相等时，极大正则序列恰好把支集降到零维；若不相等，正则序列会在仍有正维支集时停止。相关维数比较也可对照\cite[第16节，习题16.1，第132页；第17节，定理17.2，第134页]{Matsumura1989}。
+
+\begin{example}\label{g5:exm:depth-support-dimension}
+	设 \(k\) 为域，\(A=k[x,y]_{(x,y)}\)。\(x,y\) 是 \(A\) 正则序列，商为 \(k\)，而 \(\dim A=2\)，故 \(\operatorname{depth}A=2\)。对模 \(M=A/(x)\)，有
+	\[
+		M\cong k[y]_{(y)},\qquad \dim_A M=1.
+	\]
+	\(y\) 在 \(M\) 上正则，且 \(M/yM\cong k\)，所以 \(\operatorname{depth}_A M=1\)。这里与深度相比较的维数是模的支集维数，而非环境环的维数 \(2\)。
+
+	再取 \(N=A/(x^2,xy)\)。其支集仍是 \(V(x)\)，故 \(\dim_A N=1\)。但非零元素 \(\overline x\) 被 \((x,y)\) 零化，于是 \(\operatorname{Hom}_A(k,N)\ne0\)，得到 \(\operatorname{depth}_A N=0\)。\(\overline x\) 在局部化后仍非零：否则存在多项式 \(s\in k[x,y]\setminus(x,y)\)，使 \(sx\in(x^2,xy)\)；在多项式环中约去 \(x\) 会迫使 \(s\in(x,y)\)，矛盾。这个模的关联素理想也已经在\cref{g5:exm:associated-embedded-point}中计算；嵌入于原点的部分使正则取商无法开始。
+\end{example}
+
+零模的约定与上面的不等式分开使用：\(\operatorname{depth}0=\infty\)、\(\dim0=-\infty\)，所以深度不超过维数这一断言只针对非零有限模。
 
 \subsection{深度引理}
 \label{g5:subsec:0803:04}
-待撰写
+
+若一个模由子模和商模拼成，支集只是两者支集的并，而深度还受连接映射影响。Ext 长正合列给出三个方向的估计，并在深度不相等时给出精确等式。
+
+\begin{lemma}[深度引理]\label{g5:lem:depth-lemma}
+	设 \((A,\mathfrak m)\) 为 Noether 局部环，且
+	\[
+		0\longrightarrow L\longrightarrow M\longrightarrow N\longrightarrow0
+	\]
+	是有限生成 \(A\) 模的短正合列。则
+	\begin{align*}
+		\operatorname{depth}M
+		&\geq\min\{\operatorname{depth}L,\operatorname{depth}N\},\\
+		\operatorname{depth}L
+		&\geq\min\{\operatorname{depth}M,\operatorname{depth}N+1\},\\
+		\operatorname{depth}N
+		&\geq\min\{\operatorname{depth}L-1,\operatorname{depth}M\}.
+	\end{align*}
+	其中深度都相对于 \(A\)，并采用 \(\infty+1=\infty-1=\infty\)。
+\end{lemma}
+\begin{proof}
+	记 \(a=\operatorname{depth}L\)、\(b=\operatorname{depth}M\)、\(c=\operatorname{depth}N\)，仍写 \(E^i(T)=\operatorname{Ext}^i_A(k,T)\)，并令 \(E^i(T)=0\) 当 \(i<0\)。对短正合列使用\cref{g5:prop:ext-tor-long-exact}。
+
+	若 \(i<\min(a,c)\)，长正合列的片段
+	\[
+		E^i(L)\longrightarrow E^i(M)\longrightarrow E^i(N)
+	\]
+	两端为零，所以 \(E^i(M)=0\)。由\cref{g5:thm:depth-ext}，\(b\geq\min(a,c)\)。若 \(i<\min(b,c+1)\)，则
+	\[
+		E^{i-1}(N)\longrightarrow E^i(L)\longrightarrow E^i(M)
+	\]
+	两端为零，得到 \(a\geq\min(b,c+1)\)。最后，若 \(i<\min(a-1,b)\)，则
+	\[
+		E^i(M)\longrightarrow E^i(N)\longrightarrow E^{i+1}(L)
+	\]
+	两端为零，得到 \(c\geq\min(a-1,b)\)。这些消失论证也涵盖零模及无穷大约定。
+\end{proof}
+
+这一结果称为\term[shenduyinli]{深度引理}[depth lemma]。三个不等式分别读取长正合列中相邻三项的消失。若其中两个深度严格不等，其余一项的消失范围会受到两侧估计的共同限制，从而得到下面的等式。
+
+\begin{corollary}\label{g5:cor:depth-lemma-equalities}
+	在\cref{g5:lem:depth-lemma}的假设下，记
+	\(a=\operatorname{depth}L\)、\(b=\operatorname{depth}M\)、\(c=\operatorname{depth}N\)。则有
+	\[
+		\begin{array}{c@{\quad\Longrightarrow\quad}c@{\qquad}c@{\quad\Longrightarrow\quad}c}
+			a<b & c=a-1 & a>b & c=b,\\
+			b<c & a=b & b>c & a=c+1.
+		\end{array}
+	\]
+\end{corollary}
+\begin{proof}
+	含零模时，短正合列使其余非零项同构，以上结论按无穷大约定直接成立。以下设三项都非零，所以 \(a,b,c\) 都为有限非负整数。
+
+	若 \(a<b\)，由 \(a\geq\min(b,c+1)\) 得 \(c+1\leq a\)，而第三个不等式给出 \(c\geq a-1\)，所以 \(c=a-1\)。若 \(a>b\)，第一个不等式迫使 \(c\leq b\)，而整数不等式 \(a-1\geq b\) 及第三个不等式给出 \(c\geq b\)，故 \(c=b\)。
+
+	若 \(b<c\)，第一个不等式迫使 \(a\leq b\)，第二个又给出 \(a\geq b\)，故 \(a=b\)。若 \(b>c\)，第二个给出 \(a\geq c+1\)，第三个则迫使 \(a-1\leq c\)，故 \(a=c+1\)。
+\end{proof}
+
+\begin{example}\label{g5:exm:depth-maximal-ideal}
+	取 \(A=k[x,y]_{(x,y)}\)、\(\mathfrak m=(x,y)A\)，其中 \(k\) 为域。短正合列
+	\[
+		0\longrightarrow\mathfrak m\longrightarrow A\longrightarrow k\longrightarrow0
+	\]
+	中，\(\operatorname{depth}A=2\)，而 \(\operatorname{depth}k=0\)。由上个推论的 \(b>c\) 情形，\(\operatorname{depth}_A\mathfrak m=1\)。但 \(A\) 是整环且 \(\mathfrak m\ne0\)，所以 \(\operatorname{Ann}_A(\mathfrak m)=0\)，从而 \(\dim_A\mathfrak m=2\)。同一个正合列既改变生成元，也改变了可连续选取正则元的次数。
+\end{example}
 
 \subsection{\texorpdfstring{Serre \(S_r\) 条件的局部表述}{Serre Sᵣ 条件的局部表述}}
 \label{g5:subsec:0803:05}
-待撰写
+
+在一个指定局部环上计算深度，只检查了一个局部问题。若希望控制模在整个支集上出现的嵌入部分，以及更高维位置上的正则序列，就要在每个素理想处作同样的检测。
+
+\begin{definition}\label{g5:def:serre-module-condition}
+	设 \(A\) 为 Noether 环，\(M\) 为有限生成 \(A\) 模，\(r\geq0\) 为整数。若对每个 \(\mathfrak p\in\operatorname{Supp}_A(M)\) 都有
+	\[
+		\operatorname{depth}_{A_{\mathfrak p}}M_{\mathfrak p}
+		\geq\min\{r,\dim_{A_{\mathfrak p}}M_{\mathfrak p}\},
+	\]
+	则称 \(M\) 满足\term[SerreSr]{Serre \(S_r\) 条件}[Serre's condition \(S_r\)]。对环 \(A\) 本身，就把 \(M\) 取为 \(A\)。零模的支集为空，约定它满足全部 \(S_r\) 条件。
+\end{definition}
+
+每个有限模都满足 \(S_0\)，而 \(S_{r+1}\) 蕴含 \(S_r\)。\(S_1\) 要求正维局部支集上的深度至少为一；\(S_2\) 还要求局部支集维数至少为二时，深度至少为二。环的版本把局部支集维数写成 \(\dim A_{\mathfrak p}=\operatorname{ht}_A\mathfrak p\)，见\cite[第23节，第183页]{Matsumura1989}。对一般模，定义中须保留 \(\dim_{A_{\mathfrak p}}M_{\mathfrak p}\)。
+
+\begin{proposition}\label{g5:prop:serre-localization}
+	设 \(A\) 为 Noether 环，\(M\) 为有限生成 \(A\) 模，\(r\geq0\)。若 \(M\) 满足 \(S_r\)，则对任意乘法集 \(S\subseteq A\)，\(S^{-1}M\) 作为 \(S^{-1}A\) 模也满足 \(S_r\)。反过来，若每个极大理想 \(\mathfrak m\) 处的 \(M_{\mathfrak m}\) 都作为 \(A_{\mathfrak m}\) 模满足 \(S_r\)，则 \(M\) 满足 \(S_r\)。
+\end{proposition}
+\begin{proof}
+	\(S^{-1}A\) 的支集素点对应于 \(\operatorname{Supp}_A(M)\) 中与 \(S\) 不交的素理想 \(\mathfrak p\)。在该点进一步局部化，得到的局部环和模分别自然同构于 \(A_{\mathfrak p}\)、\(M_{\mathfrak p}\)。所以深度与支集维数都相同，原不等式仍成立。
+
+	反过来，对任意 \(\mathfrak p\in\operatorname{Supp}_A(M)\)，取包含它的极大理想 \(\mathfrak m\)。\(M_{\mathfrak p}\) 是 \(M_{\mathfrak m}\) 在素理想 \(\mathfrak pA_{\mathfrak m}\) 处的局部化。将 \(M_{\mathfrak m}\) 的 \(S_r\) 条件用于这一点，就得到所需不等式。
+\end{proof}
+
+\begin{proposition}\label{g5:prop:serre-s1-associated}
+	设 \(A\) 为 Noether 环，\(M\) 为有限生成 \(A\) 模。则 \(M\) 满足 \(S_1\)，当且仅当其全部关联素理想都是支集的极小元，即 \(M\) 没有嵌入关联素理想。
+\end{proposition}
+\begin{proof}
+	零模的两边都成立。设 \(M\ne0\)。若 \(\mathfrak p\in\operatorname{Ass}_A(M)\)，由\cref{g5:thm:associated-localization}，\(\mathfrak pA_{\mathfrak p}\) 是 \(M_{\mathfrak p}\) 的关联素理想，因此\cref{g5:lem:depth-zero}给出 \(\operatorname{depth}_{A_{\mathfrak p}}M_{\mathfrak p}=0\)。若满足 \(S_1\)，必须有 \(\dim_{A_{\mathfrak p}}M_{\mathfrak p}=0\)。局部化的素理想对应表明，这恰表示在 \(\mathfrak p\) 下方没有更小的支集素理想，亦即 \(\mathfrak p\) 为极小支集素理想。
+
+	反过来，若每个关联素理想都极小，取 \(\mathfrak p\in\operatorname{Supp}_A(M)\)。若 \(\dim M_{\mathfrak p}=0\)，\(S_1\) 不等式自动成立。若 \(\dim M_{\mathfrak p}>0\)，\(\mathfrak p\) 不是极小支集素理想，故 \(\mathfrak p\notin\operatorname{Ass}_A(M)\)。再次由关联素理想的局部化公式，\(\mathfrak pA_{\mathfrak p}\notin\operatorname{Ass}_{A_{\mathfrak p}}(M_{\mathfrak p})\)，于是其深度至少为一。这正是所需条件。
+\end{proof}
+
+\begin{example}\label{g5:exm:serre-support-and-closed-point}
+	设 \(A=k[x,y]_{(x,y)}\)，\(M=A/(x)\)，其中 \(k\) 为域。\(M\) 的支集只有 \((x)A\) 和 \((x,y)A\) 两个素点，对应于 \(k[y]_{(y)}\) 的两个素理想。在前一点，局部模的维数和深度均为零；在后一点，两者均为一。因此 \(M\) 满足全部 \(S_r\)。若误用环境局部环的维数 \(\dim A=2\)，就会在极大理想处错误地排除 \(S_2\)。
+
+	再考虑 \(T=A\oplus A/(x)\)。有限直和的 Ext 是各分量 Ext 的直和，这由对第一变量的同一个自由消解取 \(\operatorname{Hom}\) 后逐项分解即可。因此在极大理想处
+	\[
+		\operatorname{depth}_A T=\min\{2,1\}=1,
+		\qquad \dim_A T=2.
+	\]
+	但在 \(\mathfrak p=(x)A\) 处，有
+	\[
+		T_{\mathfrak p}\cong A_{\mathfrak p}\oplus\kappa(\mathfrak p).
+	\]
+	第二个分量使其深度为零，第一个分量使其支集维数为 \(\dim A_{\mathfrak p}=1\)。这里高度为一，是因为 \((x)\) 非零且为素理想，而主理想定理给出其高度至多一。故 \(T\) 不满足 \(S_1\)，尽管极大理想处的单个深度不等式成立。上个局部化命题要求 \(T_{\mathfrak m}\) 在它的全部支集素点满足条件，不能只检查其闭点。
+\end{example}
+
+零维环也说明这些条件不要求约化。例如 \(k[\varepsilon]/(\varepsilon^2)\) 只有一个素点，局部维数和深度均为零，所以满足所有 \(S_r\)。Serre 条件所检测的是局部支集维数与正则序列长度之间的关系；幂零结构、正则性和正规性还需要各自的条件。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

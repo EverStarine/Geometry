@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 12.1 矩映射的局部结构与 Morse–Bott 工具
 % 纲要位置：几何学计划纲要.md，第 3919 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -22,33 +22,245 @@
 \section{矩映射的局部结构与 Morse–Bott 工具}
 \label{g4:sec:1201}
 
-待撰写
+矩映射的线性分量把环面作用转为实值函数。它的临界点正是相应圆方向停止运动的点；这些点往往组成子流形，普通 Morse 引理中的孤立临界点因而需要推广。本节先建立轨道附近的辛模型，再把法向二次型转成负盘丛的附着，最后证明本章所需的连通水平集结论。
 
 \subsection{固定点附近的权模型与相容复法丛}
 \label{g4:subsec:1201:01}
-待撰写
+
+固定 \(T=\mathfrak t/(2\pi\Lambda)\)，其中 \(\Lambda\cong\mathbb Z^k\)。本章的 Hamilton 作用包含一个等变矩映射 \(\mu:M\to\mathfrak t^*\)；因为 \(T\) 交换，等变性就是 \(T\) 不变性。沿用正指数基本场及第十章的符号：
+\[
+	\xi_M(x)=\left.\frac{\mathrm d}{\mathrm dt}\right|_{t=0}
+	\exp(t\xi)x,\qquad
+	\mathrm d\mu^\xi=\iota_{\xi_M}\omega,
+	\qquad \mu^\xi=\langle\mu,\xi\rangle.
+\]
+作用暂不要求有效。一个复直线上的权 \(\alpha\in\Lambda^*\) 按 \(\exp(\theta)z=e^{\mathrm i\langle\alpha,\theta\rangle}z\) 定义。若 \(z=x+\mathrm iy\)、\(\omega=\mathrm dx\wedge\mathrm dy\)，相应基本场为 \(\alpha(\xi)(-y\partial_x+x\partial_y)\)，所以其矩分量为 \(-\alpha(\xi)|z|^2/2\)。这个负号在全章保持不变。
+
+\begin{proposition}\label{g4:prop:1201:invariant-complex-fixed-set}
+	紧 Lie 群的辛作用具有不变的相容几乎复结构。若紧子群 \(K\) 作用于 \((M,\omega)\)，则固定点集 \(M^K\) 的每个连通分支是嵌入辛子流形，切空间为 \((\mathrm T_xM)^K\)。其辛法丛具有 \(K\) 不变的相容复结构。
+\end{proposition}
+\begin{proof}
+	第一卷定理17.3.4用紧群平均给出不变正定度量 \(h\)。对 \((h,\omega)\) 应用\cref{g4:thm:0703:polar-construction}的逐点正规化，得到相容的 \(J\)；构造只用线性方程和正定平方根，与保持 \(h,\omega\) 的映射交换，故 \(J\) 不变。
+
+	在固定点 \(x\) 附近，先取坐标 \(a\)，使 \(a(x)=0\)、\(\mathrm da_x=\operatorname{id}\)，并记 \(\rho(g)=\mathrm d(g\cdot)_x\)。紧性允许取一个共同邻域，使全部 \(a(gy)\) 都有定义。平均映射
+	\[
+		A(y)=\int_K\rho(g)^{-1}a(gy)\,\mathrm dg
+	\]
+	满足 \(A(gy)=\rho(g)A(y)\)、\(\mathrm dA_x=\operatorname{id}\)。逆函数定理给出等变局部坐标；把其像缩为一个不变小球，就得到 \(M^K\) 对应于线性固定子空间的坐标图。这证明嵌入性与切空间公式。固定子空间被 \(J\) 保持，而且 \(\omega(v,Jv)>0\) 对非零固定向量成立，故限制型非退化。其辛正交补也被 \(J\) 与 \(K\) 保持，给出所述复法丛。
+\end{proof}
+
+\begin{theorem}[固定点权模型]\label{g4:thm:1201:fixed-weight-model}
+	设 \(T\) Hamilton 作用于实维数 \(2n\) 的无边界辛流形，\(x\in M^T\)。则存在以 \(x\) 为原点的等变辛坐标 \(z_j=x_j+\mathrm iy_j\) 和权 \(\alpha_1,\ldots,\alpha_n\in\Lambda^*\)，使
+	\begin{equation}\label{g4:eq:1201:fixed-weight-model}
+		\omega=\sum_{j=1}^n\mathrm dx_j\wedge\mathrm dy_j,
+		\qquad
+		\mu(z)=\mu(x)-\frac12\sum_{j=1}^n|z_j|^2\alpha_j.
+	\end{equation}
+	零权方向恰好组成固定子流形的切空间。
+\end{theorem}
+\begin{proof}
+	取上一命题的不变相容复结构。切空间上的作用为交换的酉算子族。把一个非标量算子的特征子空间分开，其余算子保持这些子空间；对子空间维数归纳，便得到共同的酉特征直线。每条直线上的特征为连续字符 \(T\to S^1\)。沿 \(\mathfrak t\) 的一参数群，它写成 \(e^{\mathrm i\alpha(\theta)}\)；\(2\pi\Lambda\) 中的元素作用恒等，故 \(\alpha(\Lambda)\subset\mathbb Z\)。这给出整数权及标准辛线性坐标。
+
+	上一命题的平均坐标将作用线性化，且拉回的辛形式 \(\omega_1\) 在原点等于常系数形式 \(\omega_0\)。用\cref{g4:thm:0803:relative-moser}对单点作相对变形。这里径向同伦与线性群作用交换，所以其原始一形式、收缩方程的解及流都不变或等变；在一个共同的不变小邻域内得到等变辛坐标。等变性与收缩方程说明，原矩映射和式\eqref{g4:eq:1201:fixed-weight-model}右边每个分量的微分相同。邻域连通，二者相差常数；在原点取值相同，便完全相等。零权结论来自线性固定子空间。\cite[第5.7节，定理5.22，第159页]{Cannas2006Symplectic}
+\end{proof}
+
+同一证明适用于任意紧交换群 \(H\) 的固定点，只须将整数权改为 \(H\) 的完整字符 \(\chi_j:H\to S^1\)。若 \(H\) 不连通，字符在有限分支上的取值不能由其微分 \(\alpha_j\in\mathfrak h^*\) 恢复。沿固定子流形移动时，各字符的子空间拼成复子丛：投影算子为 \(v\mapsto\int_H\overline{\chi(h)}\,h v\,\mathrm dh\)，它光滑且秩局部恒定。这也说明相容复法丛上的权分解具有丛意义。
 
 \subsection{正则轨道与局部辛标准形}
 \label{g4:subsec:1201:02}
-待撰写
+
+在非固定轨道附近，还要保留轨道本身以及与轨道配对的横向变量。设 \(x\in M\)、\(H=T_x\)、\(\mathfrak h=\operatorname{Lie}(H)\)。因为矩映射沿轨道不变，\(E=\mathrm T_x(Tx)\) 各向同性。于是
+\[
+	V=E^\omega/E
+\]
+是带有 \(H\) 辛表示的向量空间，称为该轨道的\term[xinqiepian]{辛切片}[symplectic slice]。记 \(\mathfrak h^\circ\subset\mathfrak t^*\) 为消灭 \(\mathfrak h\) 的子空间，并选择分裂 \(\mathfrak t^*=\mathfrak h^\circ\oplus\mathfrak h^*\)。
+
+\begin{theorem}[轨道局部辛标准形]\label{g4:thm:1201:orbit-normal-form}
+	设 \(T\) Hamilton 作用于无边界辛流形 \((M^{2n},\omega)\)。对任意 \(x\in M\)，令 \(H=T_x\)，并取上述辛切片 \(V\)。轨道 \(Tx\) 有一个 \(T\) 等变辛邻域模型
+	\begin{equation}\label{g4:eq:1201:orbit-model}
+		Y=T\times_H(\mathfrak h^\circ\times V),
+		\qquad
+		(t,\eta,v)\sim(th^{-1},\eta,hv).
+	\end{equation}
+	零截面 \(T/H\) 对应于 \(Tx\)。给 \(V\) 取不变酉坐标，设完整字符为 \(\chi_1,\ldots,\chi_m\)，微分权为 \(\alpha_j\in\mathfrak h^*\)。模型的矩映射为
+	\begin{equation}\label{g4:eq:1201:orbit-moment}
+		\mu_Y([t,\eta,z])=\mu(x)+\eta+\nu_V(z),
+		\qquad \nu_V(z)=-\frac12\sum_{j=1}^m|z_j|^2\alpha_j.
+	\end{equation}
+	此处保留整个稳定子 \(H\)，并有 \(\dim_{\mathbb R}V=2n-2\dim(T/H)\)。
+\end{theorem}
+\begin{proof}
+	先构造模型的辛形式。在 \(\mathrm T^*T=T\times\mathfrak t^*\) 上取典范形式 \(\sum\mathrm d\theta_i\wedge\mathrm da_i\)。令 \(H\) 在 \(\mathrm T^*T\times V\) 上作用为
+	\[
+		h\cdot(t,a,v)=(th^{-1},a,hv).
+	\]
+	它的矩映射为 \(\nu_V(v)-a|_{\mathfrak h}\)：第一项来自切片，第二项来自负向平移。其微分在 \(a\) 方向满射，且整个 \(H\) 的作用自由，因为 \(th^{-1}=t\) 迫使 \(h=e\)。紧性给固有性，故\cref{g4:thm:1002:symplectic-reduction}适用，包括 \(H\) 不连通的情形。零水平满足 \(a=\eta+\nu_V(v)\)，所以约化商正是式\eqref{g4:eq:1201:orbit-model}。左 \(T\) 平移与约化相容，其矩映射为 \(a\)，再加常数 \(\mu(x)\) 得式\eqref{g4:eq:1201:orbit-moment}。在零截面处，模型切空间为
+	\[
+		(\mathfrak t/\mathfrak h)\oplus\mathfrak h^\circ\oplus V,
+	\]
+	辛形式在前两项之间为 \(\eta'(u)-\eta(u')\)，在第三项上为 \(\omega_V\)。
+
+	接着把真实轨道的一阶数据与模型匹配。第一卷命题17.1.6给出 \(T/H\to M\) 的单射浸入；其源紧、目标 Hausdorff，故它还是到其像的同胚。因此轨道是紧嵌入子流形，可以使用管状邻域。取 \(H\) 不变相容复结构 \(J\)。\(E\oplus JE\) 为辛子空间，而 \((E\oplus JE)^\omega\) 规范地表示 \(E^\omega/E\)。\(H\) 在 \(E\) 上恒等，因为 \(T\) 交换；它也在 \(JE\) 上恒等。通过配对 \(w\mapsto(u\mapsto\omega(u,w))\)，将 \(JE\) 与 \(\mathfrak h^\circ\) 识别，便得到一个 \(H\) 等变辛线性同构，且在轨道切向为原有识别。用 \(T\) 平移将它延拓到整条轨道，得到两边环境切丛沿轨道的辛同构。
+
+	第二卷定理15.3.5的管状邻域构造可在这里取为等变的。具体地，把构造中使用的度量和联络对 \(T\) 平均；联络的平均在联络这个仿射空间中进行，仍满足 Leibniz 规则。其局部指数由一个 \(T\) 不变微分方程给出，唯一性使指数等变。轨道紧，第二卷引理15.3.3的紧集缩小论证给统一的单射邻域。匹配上述法向映射后，得到固定轨道、且微分为指定辛同构的等变微分同胚 \(\Psi_0\)，从模型邻域映到真实邻域。
+
+	因此 \(\Psi_0^*\omega\) 与模型形式沿轨道作为整个环境二张量相同。再次用\cref{g4:thm:0803:relative-moser}；若所取原始一形式还未不变，先对 \(T\) 平均，外微分及沿轨道的一阶消失条件都保持。收缩方程有唯一解，故变形流等变并逐点固定轨道。复合后得到所需等变辛映射。它保持矩映射的微分，而两矩映射在该轨道上取同一值，故在连通的小邻域上相等。
+\end{proof}
+
+当稳定子平凡时，\(\mathfrak h=0\)，模型成为 \(\mathrm T^*T\times V\)，矩映射只读出余切变量。若稳定子非平凡，横向的二次权项便产生矩像的边界或角。有限稳定子虽然不出现在 \(\mathfrak h\) 中，却仍作用于 \(V\) 并参与式\eqref{g4:eq:1201:orbit-model}的商；将 \(H\) 换成 \(H^0\) 一般会改变邻域。
 
 \subsection{临界子流形、法向 Hessian 与 Morse–Bott 引理}
 \label{g4:subsec:1201:03}
-待撰写
+
+在临界点处，函数的 Hessian 与坐标无关，\footnote{Ludwig Otto Hesse（1811--1874），德国数学家，研究代数、分析与解析几何。}这是第二卷命题17.1.1的结论。若 \(C\) 是临界点组成的子流形，沿 \(C\) 微分恒为零，故再沿 \(C\) 求导得到 \(\mathrm T C\subset\ker\operatorname{Hess}f\)。因此 Hessian 自然下降到法丛 \(N_C=\mathrm TM|_C/\mathrm TC\)。
+
+\begin{definition}\label{g4:def:1201:morse-bott}
+	无边界光滑流形上的函数 \(f\) 称为\term[morsebotthanshu]{Morse–Bott 函数}[Morse--Bott function]，\footnote{Raoul Bott（1923--2005），匈牙利出生的美国数学家，研究拓扑学与微分几何。}若其临界点集是嵌入子流形的不交并，并且每个临界分支 \(C\) 都满足
+	\[
+		\ker\operatorname{Hess}_x f=\mathrm T_xC\qquad(x\in C).
+	\]
+	法向 Hessian 的负、正惯性指数分别称为该分支的指标和余指标，记作 \(\lambda_C,\nu_C\)。相应的负、正法丛记作 \(E_C^-,E_C^+\)。
+\end{definition}
+
+这些指标在连通分支上恒定，因为非退化对称型的惯性指数在小扰动下不变。选法丛度量，把 Hessian 看成可逆自伴算子 \(A\)；算子 \(A(A^2)^{-1/2}\) 的 \(\pm1\) 特征投影光滑，故确实给出两个光滑子丛。与第二卷普通 Morse 理论相比，新增的是临界点之间的切向方向及可能非平凡的 \(E_C^-\)，不能把所有负方向都当作同一个固定 Euclid 空间。
+
+\begin{lemma}[Morse–Bott 引理]\label{g4:lem:1201:morse-bott}
+	设 \(C\) 是 \(f\) 的一个紧连通临界子流形，\(f|_C=c\)，且法向 Hessian 非退化。则其一个邻域可与 \(E_C^-\oplus E_C^+\) 的零截面邻域微分同胚地识别，使
+	\begin{equation}\label{g4:eq:1201:morse-bott-model}
+		f(q,u,v)=c-\|u\|^2+\|v\|^2.
+	\end{equation}
+	范数来自两个丛上的光滑正定度量。
+\end{lemma}
+\begin{proof}
+	用第二卷定理15.3.5取管状坐标 \((q,w)\)。沿每条法纤维作 Taylor 积分，得到
+	\[
+		f(q,w)-c=\langle A(q,w)w,w\rangle,
+		\qquad
+		A(q,w)=\int_0^1(1-t)\,\mathrm D_w^2f(q,tw)\,\mathrm dt.
+	\]
+	这里用一个固定丛度量识别对称型与算子，\(A_0(q)=A(q,0)\) 可逆。第二卷定理17.1.3逐变量配平方得到普通 Morse 坐标；为使坐标沿整个 \(C\) 相容，这里直接作一个丛算子的配平方。
+
+	置 \(D(q,w)=A_0(q)^{-1}A(q,w)\)。紧性允许统一缩小，使 \(\|D-I\|<1\)。幂级数
+	\[
+		B=D^{1/2}=\sum_{m=0}^{\infty}\binom{1/2}{m}(D-I)^m
+	\]
+	在更小邻域上连同各阶导数一致收敛，定义光滑丛算子。它满足 \(B^2=D\)。由于 \(D^*A_0=A_0D\)，同一恒等式对其幂级数成立，故
+	\[
+		B^*A_0B=A_0B^2=A(q,w).
+	\]
+	所以变换 \((q,w)\mapsto(q,B(q,w)w)\) 把函数精确变成 \(c+\langle A_0(q)w,w\rangle\)。该变换沿零截面的微分为恒等，紧零截面上的局部逆与单射缩小论证使它在一个共同邻域内为微分同胚。最后按 \(A_0\) 的负、正子丛分解，并分别以 \(-\langle A_0u,u\rangle\)、\(\langle A_0v,v\rangle\) 为范数平方，即得式\eqref{g4:eq:1201:morse-bott-model}。
+\end{proof}
 
 \subsection{负法丛盘丛与跨临界值的次水平集变化}
 \label{g4:subsec:1201:04}
-待撰写
+
+记 \(M^a=\{f\leq a\}\)。第二卷命题17.2.1证明，在没有临界点的紧高度带上，向量场 \(\operatorname{grad}f/\|\operatorname{grad}f\|^2\) 的流使高度以速度一变化，因而给出乘积领带。跨过临界值时，需要把上一引理的二次模型接入这条流。
+
+\begin{proposition}\label{g4:prop:1201:critical-crossing}
+	设 \(f\) 为紧无边界流形上的 Morse–Bott 函数。若闭带 \(f^{-1}([c-\varepsilon,c+\varepsilon])\) 内的临界点恰为高度 \(c\) 上的连通分支 \(C\)，则充分缩小正则带宽后，\(M^{c+\varepsilon}\) 由 \(M^{c-\varepsilon}\) 附着
+	\begin{equation}\label{g4:eq:1201:bundle-handle}
+		D(E_C^-)\mathbin{\times_C}D(E_C^+)
+		\quad\text{沿}\quad
+		S(E_C^-)\mathbin{\times_C}D(E_C^+)
+	\end{equation}
+	并磨圆接缝得到。它相对旧区域同伦等价于附着负法丛盘丛 \(D(E_C^-)\)，附着边界为 \(S(E_C^-)\)。在正则水平集上，相应变化是把 \(S(E_C^-)\times_C D(E_C^+)\) 的内部换成 \(D(E_C^-)\times_C S(E_C^+)\)。同一临界值上有多个分支时，对互不相交的邻域同时作这些附着。
+\end{proposition}
+\begin{proof}
+	在式\eqref{g4:eq:1201:morse-bott-model}的丛邻域中取 \(0<r^2<\varepsilon\)，使下列闭块仍位于该邻域：
+	\[
+		\mathcal H=\{(q,u,v):\|v\|\leq r,
+		\ \|u\|^2\leq\varepsilon+\|v\|^2\}.
+	\]
+	映射
+	\[
+		(q,a,b)\longmapsto
+		\bigl(q,\sqrt{\varepsilon+r^2\|b\|^2}\,a,rb\bigr)
+	\]
+	将单位盘丛乘积微分同胚地送到 \(\mathcal H\)。其与旧次水平集的交恰为 \(\|a\|=1\)，因为该处 \(f=c-\varepsilon\)；其余点的高度较大。因而已得到式\eqref{g4:eq:1201:bundle-handle}的附着面。
+
+	丛上的竖直向量场 \(X=(2u,-2v)\) 满足
+	\[
+		Xf=-4(\|u\|^2+\|v\|^2),\qquad
+		X(\|v\|^2-r^2)=-4r^2\quad(\|v\|=r).
+	\]
+	这些公式在正交丛过渡下不变，故是沿整个 \(C\) 的构造。把 \(X\) 与外部的负梯度场用单位分解拼接，保持它在 \(\mathcal H\) 附近的表达；拼接后在临界集外仍有 \(Xf<0\)。令 \(A=M^{c-\varepsilon}\)、\(K=A\cup\mathcal H\)。流在旧水平及新块自由面上都严格朝向 \(K\)。
+
+	这里第二卷定理17.2.4的磨圆和流搬运可逐纤维进行，其具体横向函数仍为 \(s=f-c+\varepsilon\)、\(t=\|v\|^2-r^2\)。在接缝处将 \(\min(s,t)\) 替换为
+	\[
+		m_\delta(s,t)=\tfrac12\bigl(s+t-\eta_\delta(s-t)\bigr),
+	\]
+	其中 \(\eta_\delta\geq|\cdot|\)、\(|\eta_\delta'|\leq1\)，且离零足够远时等于绝对值。两偏导非负且和为一，故 \(Xm_\delta<0\)。磨圆后的 \(K_\delta\) 因而有被 \(X\) 严格穿入的光滑边界。剩下的紧带不含临界点，\(-Xf\) 有正下界；每条下降轨道在有限时间进入 \(K_\delta\)，反向则到达上水平。两端横截性使首次到达时间光滑，所以剩余部分是边界的一条领带。把该领带沿流线压入内部领圈，得到 \(M^{c+\varepsilon}\) 与磨圆附着空间的微分同胚。指标或余指标为零时，省去相应空的附着面或自由面即可。
+
+	同伦结论也保留丛的扭转。第二卷引理17.2.5的核心收缩只依赖纤维范数：在单位盘坐标 \((a,b)\) 中置 \(T(a,b)=\min\{\|b\|,-\log\|a\|\}\)，约定 \(T(0,b)=\|b\|\)，并用
+	\[
+		(a,b)\longmapsto
+		\left(e^{sT}a,\left(1-\frac{sT}{\|b\|}\right)b\right),
+		\qquad0\leq s\leq1,
+	\]
+	其中 \(b=0\) 时取恒等。该公式连续，逐点固定 \(\|a\|=1\) 的附着面，最终落入附着面与 \(b=0\) 核心的并。它与正交过渡相容，故在整个盘丛上成立，并与旧区域的恒等映射粘合。最后，盘丛乘积的边界由式\eqref{g4:eq:1201:bundle-handle}的两个面组成；移去附着面，留下的正是 \(D(E_C^-)\times_C S(E_C^+)\)，得到所述水平集变化。多个临界分支的邻域可取互不相交，全部构造遂可同时进行。
+\end{proof}
 
 \subsection{一般圆方向矩映射分量的 Morse–Bott 性}
 \label{g4:subsec:1201:05}
-待撰写
+
+\begin{proposition}\label{g4:prop:1201:moment-morse-bott}
+	设紧环面 \(T\) Hamilton 作用于紧无边界辛流形 \(M\)。对任意 \(\xi\in\mathfrak t\)，函数 \(f=\mu^\xi\) 是 Morse–Bott 函数。若 \(S=\overline{\exp(\mathbb R\xi)}\)，则
+	\[
+		\operatorname{Crit}(f)=M^S.
+	\]
+	沿其每个连通分支 \(C\)，负、正法丛都是复向量丛，因而指标与余指标都是偶数。
+\end{proposition}
+\begin{proof}
+	非退化性给出 \(\mathrm df=0\) 当且仅当 \(\xi_M=0\)，又由流的唯一性，这等价于整个一参数群固定该点；连续性把固定性延伸到闭包 \(S\)。第一卷引理19.2.1及定理19.2.3说明，\(S\) 是紧连通交换 Lie 群，因而是子环面。\cref{g4:prop:1201:invariant-complex-fixed-set}说明其固定集是辛子流形。
+
+	在 \(x\in C\) 处对 \(S\) 使用固定点权模型。零权是 \(\mathrm T_xC\)，其余权记为 \(\beta_j\)。若 \(\beta_j(\xi)=0\)，该字符在稠密的一参数子群上恒等，因而在 \(S\) 上恒等，与它是非零权矛盾。因此
+	\[
+		f=f(x)-\frac12\sum_j\beta_j(\xi)(x_j^2+y_j^2)
+	\]
+	在全部法向上具有非退化 Hessian，核恰为 \(\mathrm T_xC\)。\(\beta_j(\xi)>0\) 的复方向为负方向，\(\beta_j(\xi)<0\) 的复方向为正方向。权子丛的光滑拼接给出复负、正法丛，并有
+	\begin{equation}\label{g4:eq:1201:even-indices}
+		\lambda_C=2\sum_{\beta(\xi)>0}\operatorname{rank}_{\mathbb C}E_\beta,
+		\qquad
+		\nu_C=2\sum_{\beta(\xi)<0}\operatorname{rank}_{\mathbb C}E_\beta.
+	\end{equation}
+	固定集紧，每点有只包含一个局部固定片的坐标邻域；有限覆盖说明它只有有限个连通分支，故也只有有限个临界值。
+\end{proof}
+
+“圆方向”通常指 \(\xi\in\Lambda\)，此时 \(\exp(t\xi)\) 以 \(2\pi\) 为一个周期；上述结论也覆盖非周期的一参数方向。当 \(k\geq1\) 时，还可以选一个整数方向，使它的临界集恰为 \(M^T\)。事实上，轨道模型中出现的稳定子 Lie 代数是 \(\mathfrak h\) 内若干权核的交，故每张模型只有有限种；紧性给有限张模型覆盖，因此全局也只有有限种。选 \(\xi\in\Lambda\) 避开其中所有真子空间即可。这样的整数向量存在：有限个非零线性方程不能消灭全部 \((1,N,\ldots,N^{k-1})\)，每个方程只排除有限多个整数 \(N\)。
+
+\begin{example}\label{g4:exm:1201:opposite-weights}
+	在 \(\mathbb C^2\) 上让圆以权 \((1,-1)\) 作用。矩函数为 \(f=(|z_2|^2-|z_1|^2)/2\)。原点的指标、余指标都是 \(2\)，其零水平集是锥 \(\{|z_1|=|z_2|\}\)，并非光滑超曲面。偶指标控制的是跨临界高度的拓扑变化，并不使临界水平本身变成正则水平。
+\end{example}
 
 \subsection{指标和余指标的偶性及其拓扑后果}
 \label{g4:subsec:1201:06}
-待撰写
+
+对于指标 \(\lambda_C\geq2\) 的连通临界分支，附着面 \(S(E_C^-)\times_C D(E_C^+)\) 连通，因为底空间连通且球面纤维 \(S^{\lambda_C-1}\) 连通。因此这个附着面只能落在旧次水平集的一个连通分支中；附着不能把两个旧分支合并。指标为零的分支则没有附着面，会新生一个连通分支。指标一恰是可能合并分支的情形。
+
+\begin{proposition}\label{g4:prop:1201:unique-extreme-components}
+	设 \(f\) 是紧连通无边界流形上的 Morse–Bott 函数，临界分支有限。若没有指标一的临界分支，则它只有一个指标零的临界分支，该分支正是全局最小值集。若同时没有余指标一的临界分支，则最大值集也只有一个连通分支，且每个非极值临界分支的指标、余指标都至少为二。
+\end{proposition}
+\begin{proof}
+	从低于最小值的空次水平集开始，依次越过有限个临界值。无临界带保持拓扑；\cref{g4:prop:1201:critical-crossing}及前面的连通性说明，指标零分支各新生一个组件，而全部正指标分支都不能合并旧组件。最高次水平集是连通的整个流形，因此总共只能新生一个组件。全局最小值必在指标零的临界分支上，故它就是唯一的这一分支；任何局部极小临界分支也必须等于它。对 \(-f\) 重复论证，得到最大值结论。其余分支既不是指标零也不是余指标零，再排除一，即得最后的断言。若 \(f\) 常值，唯一分支就是整个流形，结论中的非极值部分为空。
+\end{proof}
+
+矩映射分量满足该命题的两组假设。特别地，它不会在一个中间高度新生孤立的局部极小组件；下降和上升两个方向的偶性都在这里发挥作用。
 
 \subsection{无指标一和无余指标一情形的连通水平集论证}
 \label{g4:subsec:1201:07}
-待撰写
+
+\begin{theorem}\label{g4:thm:1201:component-connected-levels}
+	紧连通无边界辛流形上，Hamilton 环面作用的每个矩映射分量 \(\mu^\xi\) 的非空水平集都连通，包括临界水平。更一般地，同样结论适用于紧连通无边界流形上临界分支有限、且既无指标一也无余指标一分支的 Morse–Bott 函数。
+\end{theorem}
+\begin{proof}
+	先证更一般的陈述。常值情形直接成立。否则最小值集是上一命题给出的唯一连通临界分支 \(C_{\min}\)，其余指标 \(\nu\) 至少为二。在最小值上方足够近的正则水平，Morse–Bott 模型给出 \(S(E_{C_{\min}}^+)\)，它连通。
+
+	设已知某个中间临界值下方的正则水平连通。此高度上的每个临界分支都满足 \(\lambda,\nu\geq2\)。由\cref{g4:prop:1201:critical-crossing}，向上穿越时从旧水平移去 \(S(E^-)\times_C D(E^+)\) 的内部，再贴上 \(D(E^-)\times_C S(E^+)\)。旧水平中的核心 \(S(E^-)\) 余维为 \(\nu\geq2\)，移去其盘邻域的内部不会破坏连通性。为说明这一点，在适配坐标中，余维至少二的线性子空间的补集道路连通；因此子流形各点都有补集连通的小邻域。若整个补集分为不同组件，这些邻域会把每个被删点唯一分配到其中一个组件，使原流形也分为不交开集，矛盾。再沿法纤维径向推出盘邻域，就得到所需结论。新贴入的 \(D(E^-)\times_C S(E^+)\) 也连通，且通过非空的 \(S(E^-)\times_C S(E^+)\) 接到剩余部分。因此新正则水平仍连通。对互不相交的全部临界分支同时进行，并在无临界带中搬运，归纳得到所有正则水平连通。
+
+	最后处理一个中间临界值 \(c\)。每个临界分支都有负方向，所以式\eqref{g4:eq:1201:morse-bott-model}表明其每一点都可由高度 \(c-\delta\) 的点逼近，\(\delta\downarrow0\)。水平 \(f=c\) 上的正则点也可用局部高度坐标这样逼近。另一方面，紧性保证高度趋于 \(c\) 的任意点列的聚点都位于 \(f^{-1}(c)\)。若该紧水平集分成两个非空不交闭集，可取它们的不交开邻域；充分接近 \(c\) 的下方正则水平必包含在两邻域的并中，并且分别与二者相交。这与这些正则水平连通矛盾。最小、最大水平已经由上一命题处理。
+
+	对 \(f=\mu^\xi\)，\cref{g4:prop:1201:moment-morse-bott}给出所有假设，特别是正负法丛的偶实秩。因此得到矩映射分量的结论。
+\end{proof}
+
+上述证明同时使用了紧性、连通性和两侧指标限制。普通 Morse–Bott 函数若有指标一或余指标一的临界分支，水平集可以断开，例如标准二维环面的高度函数。下一节将进一步处理若干分量同时固定的纤维；单独知道每个实值分量的水平集连通，还需要额外的局部到整体论证。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,35 +1,172 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 24.3 非正情形的存在与唯一性
 % 纲要位置：几何学计划纲要.md，第 3142 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
-% * 次临界逼近或直接极小化
-% * 非正阈值下的紧性
+% * 极小化序列的有界性
+% * 非正情形的紧性
 % * 最大值原理与正解
-% * 规范体积后的唯一性范围
+% * 单位体积解的唯一性
 % 
 % 纲要内容结束
 
 \section{非正情形的存在与唯一性}
 \label{g3:sec:2403}
 
-待撰写
+当极小能量非正时，损失临界范数反而会与极小性冲突。这个符号性质使我们能够直接在临界指数处取极限。本节先把负值与零值分开处理，再说明所得正解为何在固定体积后唯一。始终设 \((M^n,g)\) 闭且连通，\(n\ge3\)，并沿用 \(p=2n/(n-2)\)、\(a_n=4(n-1)/(n-2)\)、\(E_g\)、\(Q_g\) 与 \(Y=Y(M,[g])\) 的记号。
 
-\subsection{次临界逼近或直接极小化}
+\subsection{极小化序列的有界性}
 \label{g3:subsec:2403:01}
-待撰写
+由\cref{g3:thm:compact-bundle-sobolev,g3:thm:compact-bundle-rellich}，\(H^1(M)\) 连续嵌入 \(L^p(M)\)，紧嵌入 \(L^2(M)\)。这里的第二项只能保留二次零阶能量，不能直接保留约束 \(\|u\|_p=1\)。若先将 \(p\) 换成 \(2<q<p\)，紧嵌入确实可给出次临界极小元；不过令 \(q\uparrow p\) 时仍须解决相同的范数损失问题。我们直接在临界约束上处理这一点。
 
-\subsection{非正阈值下的紧性}
+\begin{lemma}\label{g3:lem:yamabe-minimizing-boundedness}
+	设 \((M^n,g)\) 为闭黎曼流形，\(n\ge3\)，\(V=\operatorname{Vol}_g(M)\)，\(s_- =\max\{-s_g,0\}\)。则 \(Y(M,[g])\) 为有限实数。任意满足 \(\|u_j\|_p=1\)、\(E_g(u_j)\to Y(M,[g])\) 的 \(H^1\) 序列都在 \(H^1(M)\) 中有界。
+\end{lemma}
+\begin{proof}
+	Hölder 不等式给出
+	\[
+		\|u\|_2^2\le V^{1-2/p}\|u\|_p^2
+		=V^{2/n}\|u\|_p^2.
+	\]
+	因此对所有临界范数为一的 \(u\)，
+	\begin{equation}\label{g3:eq:yamabe-minimizing-coercivity}
+		E_g(u)\ge a_n\|\mathrm du\|_2^2
+		-\|s_-\|_\infty V^{2/n}.
+	\end{equation}
+	这给出统一下界；常函数作为竞争者又给出有限上界
+	\[
+		Y(M,[g])\le Q_g(1)
+		=V^{-(n-2)/n}\int_M s_g\,\mu_g.
+	\]
+	对极小化序列，能量有上界，式\eqref{g3:eq:yamabe-minimizing-coercivity}遂控制梯度的 \(L^2\) 范数，前一条 Hölder 估计控制函数的 \(L^2\) 范数。
+\end{proof}
+
+由取绝对值的 Sobolev 链式法则，\(E_g(|u|)=E_g(u)\)、\(\||u|\|_p=\|u\|_p\)，所以可选择非负的极小化序列。这只是一项竞争函数的选择；极限的严格正性要在获得弱方程后证明。
+
+\subsection{非正情形的紧性}
 \label{g3:subsec:2403:02}
-待撰写
+\begin{theorem}\label{g3:thm:yamabe-nonpositive-compactness}
+	设 \((M^n,g)\) 为闭连通光滑黎曼流形，\(n\ge3\)，且 \(Y=Y(M,[g])\le0\)。若 \(u_j\in H^1(M)\)、\(u_j\ge0\)、\(\|u_j\|_p=1\)、\(E_g(u_j)\to Y\)，则存在子列及 \(u\in H^1(M)\)，使
+	\[
+		u_j\longrightarrow u\quad\text{于 }H^1(M),
+		\qquad u\ge0,\quad\|u\|_p=1,\quad E_g(u)=Y.
+	\]
+\end{theorem}
+\begin{proof}
+	先只使用非临界的紧性，再由极小能量的符号恢复临界约束。上一引理及\cref{g3:thm:sobolev-weak-compactness,g3:thm:compact-bundle-rellich}给出子列，使
+	\[
+		u_j\rightharpoonup u\ \text{于 }H^1,
+		\qquad u_j\longrightarrow u\ \text{于 }L^2
+		\quad\text{及几乎处处}.
+	\]
+	因而 \(u\ge0\)，且由 \(H^1\to L^p\) 的连续性与范数的弱下半连续性，\(\|u\|_p\le1\)。零阶能量收敛，因为
+	\[
+		\left|\int_Ms_g(u_j^2-u^2)\,\mu_g\right|
+		\le\|s_g\|_\infty\|u_j-u\|_2
+		\bigl(\|u_j\|_2+\|u\|_2\bigr)\longrightarrow0.
+	\]
+	梯度能量弱下半连续，于是 \(E_g(u)\le Y\)。
+
+	若 \(Y<0\)，这个不等式已保证 \(u\ne0\)。下确界的定义及齐次性给出
+	\[
+		Y\ge E_g(u)\ge Y\|u\|_p^2\ge Y.
+	\]
+	最后一个不等式恰好利用 \(Y<0\)。所以各项相等，\(\|u\|_p=1\)，且 \(E_g(u)=Y\)。若临界范数降到了严格小于一，负的能量除以更小的范数平方便会产生比 \(Y\) 更低的值，这正是矛盾的来源。
+
+	若 \(Y=0\)，先排除 \(u=0\)。否则强 \(L^2\) 收敛使零阶能量趋于零，而 \(E_g(u_j)\to0\) 进一步给出 \(\|\mathrm du_j\|_2\to0\)。于是 \(u_j\to0\) 于 \(H^1\)，由连续 Sobolev 嵌入得到 \(\|u_j\|_p\to0\)，与单位约束矛盾。现在 \(u\ne0\)，且下确界为零使 \(E_g(u)\ge0\)，故 \(E_g(u)=0=Y\)。这一等式还未直接给出 \(\|u\|_p=1\)。
+
+	两种情形现在都满足 \(E_g(u_j)\to E_g(u)\)。减去已知收敛的零阶项，得到
+	\[
+		\|\mathrm du_j\|_2^2\longrightarrow\|\mathrm du\|_2^2.
+	\]
+	结合梯度的弱收敛，Hilbert 空间恒等式给出 \(\mathrm du_j\to\mathrm du\) 于 \(L^2\)。加上函数的强 \(L^2\) 收敛，即得强 \(H^1\) 收敛。连续嵌入遂给出强 \(L^p\) 收敛，也补齐零值情形的 \(\|u\|_p=1\)。
+\end{proof}
+
+负值情形用归一化直接阻止范数下降；零值情形先阻止极限消失，再由二次能量的等号恢复强收敛。两种论证都只使用通常的 Sobolev 常数，无须知道其最佳值。
 
 \subsection{最大值原理与正解}
 \label{g3:subsec:2403:03}
-待撰写
+\begin{theorem}\label{g3:thm:yamabe-nonpositive-existence}
+	设 \((M^n,g)\) 为闭连通光滑黎曼流形，\(n\ge3\)，且 \(Y(M,[g])\le0\)。则存在光滑严格正函数 \(u\)，满足
+	\[
+		\int_Mu^p\,\mu_g=1,
+		\qquad L_gu=Y(M,[g])u^{p-1}.
+	\]
+	度量 \(\widehat g=u^{4/(n-2)}g\) 的体积为一，标量曲率恒等于 \(Y(M,[g])\)，并在该共形类中实现 Yamabe 常数。
+\end{theorem}
+\begin{proof}
+	上一紧性定理给出非负非零的单位范数极小元 \(u\)。对任意实值 \(\phi\in H^1(M)\)，考虑仍满足约束的曲线
+	\[
+		u_t=\frac{u+t\phi}{\|u+t\phi\|_p}.
+	\]
+	当 \(t\) 足够小时分母不为零。前节的泛函微分公式使 \(E_g(u_t)\) 在零处的导数为零，故
+	\[
+		a_n\int_M\langle\mathrm du,\mathrm d\phi\rangle_g\,\mu_g
+		+\int_Ms_gu\phi\,\mu_g
+		=Y(M,[g])\int_Mu^{p-1}\phi\,\mu_g.
+	\]
+	该曲线可以变号，但仍属于定义 \(Y\) 时的实 \(H^1\) 竞争类，因而变分合法。\cref{g3:thm:yamabe-weak-regularity}把此非负非零弱解提升为光滑严格正解。最后，前节的标量曲率变换与体积变换公式分别给出 \(s_{\widehat g}=Y(M,[g])\) 和 \(\operatorname{Vol}_{\widehat g}(M)=1\)。
+\end{proof}
 
-\subsection{规范体积后的唯一性范围}
+这里正性所用的最大值原理作用于一个已有足够正则性的标量解。具体地，令 \(c(x)=s_g-Yu^{p-2}\)，方程写成 \(a_n\Delta_gu+cu=0\)。当解已为 \(C^2\) 时，取常数 \(C\ge\max_M c\) 且 \(C\ge0\)，则 \(a_n\Delta_gu+Cu\ge0\)。函数 \(-u\le0\) 对主部为 \(-a_n\Delta_g\)、零阶系数为 \(-C\) 的算子满足下调和不等式；若 \(u\) 在一点为零，\cref{g3:thm:strong-maximum-classical}使其在该连通分支恒为零。连通性与非零性排除了这种情形。对原来的 \(H^1\) 极限，先做临界正则性提升才有权进行这样的点值比较。
+
+\subsection{单位体积解的唯一性}
 \label{g3:subsec:2403:04}
-待撰写
+先计算一个已有非正常标量曲率的代表。这个计算既说明极小值的几何含义，也让唯一性证明中的两个曲率常数具有相同的归一化。
+
+\begin{proposition}\label{g3:prop:yamabe-nonpositive-constant-metric}
+	设 \((M^n,h)\) 为闭连通黎曼流形，\(n\ge3\)，标量曲率恒为 \(c\le0\)，体积为 \(V\)。则
+	\[
+		Y(M,[h])=cV^{2/n}.
+	\]
+	在所有正函数中，\(Q_h\) 的极小元恰为正常数函数。
+\end{proposition}
+\begin{proof}
+	当 \(c<0\) 时，对任意非零 \(v\in H^1(M)\)，有
+	\[
+		E_h(v)=a_n\|\mathrm dv\|_2^2+c\|v\|_2^2
+		\ge cV^{2/n}\|v\|_p^2.
+	\]
+	其中使用 Hölder 估计时，不等号因 \(c<0\) 而反向。常函数实现等号。若一个正函数实现等号，把两边之差写成
+	\[
+		a_n\|\mathrm dv\|_2^2
+		+c\bigl(\|v\|_2^2-V^{2/n}\|v\|_p^2\bigr)=0;
+	\]
+	两项都非负，所以 \(\mathrm dv=0\)。连通性给出 \(v\) 为常数。若 \(c=0\)，能量就是非负的梯度能量，常函数实现零值，等号同样迫使函数为常数。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:yamabe-nonpositive-uniqueness}
+	设 \(M^n\) 为闭连通光滑流形，\(n\ge3\)，且共形类 \([g]\) 满足 \(Y(M,[g])\le0\)。则 \([g]\) 中体积为一的常标量曲率度量恰有一个。它就是上一存在定理给出的极小度量。因此该共形类内的所有常标量曲率度量互为正常数倍。
+\end{theorem}
+\begin{proof}
+	令 \(h\) 为已构造的单位体积极小度量，其常标量曲率为 \(Y=Y(M,[g])\)。设 \(k=v^{4/(n-2)}h\) 是同共形类中另一单位体积的常标量曲率度量，\(v>0\) 光滑，记其曲率为 \(b\)。曲率变换给出
+	\[
+		a_n\Delta_hv+Yv=bv^{p-1}.
+	\]
+	在闭流形上积分，得到
+	\[
+		Y\int_Mv\,\mu_h=b\int_Mv^{p-1}\,\mu_h.
+	\]
+	两个积分均正，故 \(b\) 与 \(Y\) 同号，零值也对应相同。特别地 \(b\le0\)，上一命题及共形类不变性给出 \(b=Y(M,[k])=Y\)，这里用了 \(k\) 的体积等于一。
+
+	若 \(Y<0\)，方程成为
+	\[
+		a_n\Delta_hv=Y\bigl(v^{p-1}-v\bigr).
+	\]
+	在 \(v\) 的最大值点，非负号约定的 \(\Delta_h\) 满足 \(\Delta_hv\ge0\)。由于 \(Y<0\)，有 \(v^{p-2}\le1\)，所以 \(\max_Mv\le1\)。在最小值点，\(\Delta_hv\le0\)，相同计算给出 \(\min_Mv\ge1\)。因此 \(v\equiv1\)。若 \(Y=0\)，则 \(\Delta_hv=0\)，乘以 \(v\) 积分得到 \(\mathrm dv=0\)；连通性与 \(\int_Mv^p\,\mu_h=1\) 再给出 \(v\equiv1\)。
+
+	任意体积 \(V\) 的度量乘以 \(V^{-2/n}\) 后体积为一，且仍有常标量曲率。对这种归一化使用已证唯一性，即得最后的比例结论。
+\end{proof}
+
+\begin{example}\label{g3:exm:yamabe-flat-negative-models}
+	平坦 \(n\) 维环面的标量曲率为零，所以其平坦共形类的 Yamabe 常数为零；同共形类内的常标量曲率度量只能是原平坦度量的正常数倍。若一个闭 \(n\) 维流形带有截面曲率恒为 \(-1\) 的度量 \(h\)，则 \(s_h=-n(n-1)\)，从而
+	\[
+		Y(M,[h])=-n(n-1)\operatorname{Vol}_h(M)^{2/n}.
+	\]
+	体积为一的代表为 \(\operatorname{Vol}_h(M)^{-2/n}h\)。这里唯一的是这个指定共形类中的规范代表；公式没有比较其他共形类。
+\end{example}
+
+在 \(Y>0\) 的方程中，最大值点给出的不等号方向改变，上述最大、最小值比较不再迫使 \(v=1\)。正情形的存在与唯一性也由此分开：下一节恢复严格球面阈值下的极小元，而正曲率常标量曲率解之间可以存在非唯一性。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

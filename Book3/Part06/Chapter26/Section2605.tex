@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 26.5 调和代表的极限构造
 % 纲要位置：几何学计划纲要.md，第 3230 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -18,25 +18,286 @@
 \section{调和代表的极限构造}
 \label{g3:sec:2605}
 
-待撰写
+热流在有限时间内保持光滑，只保证可以继续演化；要得到调和映射，还须在无穷时间中找到趋于静止的状态。能量恒等式提供时间方向的积分控制，高阶估计提供空间方向的紧性。两者结合，才能把一个演化过程变成同伦类中的调和代表。
+\ProseParagraphBreak
+以下源 \((M^m,g)\) 与目标 \((N^n,h)\) 均为闭连通光滑黎曼流形，\(m,n\ge1\)，且 \(\operatorname{Sect}_N\le0\)；一维目标的曲率条件理解为曲率张量为零。给定光滑 \(u_0:M\to N\)，以 \(u(x,t)\) 表示\cref{g3:thm:harmonic-heat-global-existence}给出的全时光滑热流，满足 \(\partial_tu=\tau(u)\)、\(u(\cdot,0)=u_0\)。空间上的协变导数同时使用固定的源联络与沿 \(u(\cdot,t)\) 的拉回联络，能量仍取 \(E(u)=\frac12\int_M|\mathrm du|^2\mu_g\)。
 
 \subsection{时间子列上的速度衰减}
 \label{g3:subsec:2605:01}
-待撰写
+令
+\[
+	\mathcal E(t)=E(u(\cdot,t)),\qquad
+	Q(t)=\int_M|\partial_tu(x,t)|^2\,\mu_g.
+\]
+\Cref{g3:thm:harmonic-heat-energy}给出 \(\mathcal E'(t)=-Q(t)\)。因此 \(\mathcal E\) 非增且非负，存在极限 \(\mathcal E_\infty\ge0\)，并有
+\begin{equation}\label{g3:eq:harmonic-heat-energy-tail}
+	\int_T^\infty Q(t)\,\mathrm dt
+	=\mathcal E(T)-\mathcal E_\infty
+	\longrightarrow0\qquad(T\to\infty).
+\end{equation}
+这个等式把剩余能量的下降量识别为后续时间中的总平方速度。
+
+\begin{lemma}\label{g3:lem:harmonic-heat-slow-times}
+	设 \((M^m,g)\)、\((N^n,h)\) 为闭连通光滑黎曼流形，\(m,n\ge1\)，\(u:M\times[0,\infty)\to N\) 为光滑调和映射热流，并记 \(Q(t)=\int_M|\partial_tu|^2\mu_g\)。存在 \(t_j\in[j,j+1]\)，使
+	\[
+		\|\partial_tu(\cdot,t_j)\|_{L^2(M)}\longrightarrow0.
+	\]
+	若 \(\operatorname{Sect}_N\le0\)，则进一步有 \(Q(t)\to0\) 及 \(tQ(t)\to0\)。
+\end{lemma}
+\begin{proof}
+	在每个长度为一的区间上，连续非负函数 \(Q\) 至少有一点满足
+	\[
+		Q(t_j)\le\int_j^{j+1}Q(t)\,\mathrm dt.
+	\]
+	式\eqref{g3:eq:harmonic-heat-energy-tail}使右端趋于零，这就选出了所需时间。
+
+	非正目标曲率下，\cref{g3:prop:harmonic-heat-speed}说明
+	\((\partial_t+\Delta_g)|\partial_tu|^2\le0\)。在闭源上积分，\(\int_M\Delta_g f\,\mu_g=0\)，故 \(Q'(t)\le0\)。于是对 \(t>0\)，
+	\[
+		\frac t2Q(t)\le\int_{t/2}^tQ(s)\,\mathrm ds
+		\le\mathcal E(t/2)-\mathcal E_\infty\longrightarrow0.
+	\]
+	这同时给出两项全时衰减。
+\end{proof}
+
+第一项只使用能量下降及下界，因而适用于闭源上任何已知全时存在的光滑热流。非正曲率还使平方速度的空间积分单调，遂将子列上的结论加强到全部充分大的时间。这里控制的是速度的平方积分；它与 \(\int_0^\infty\|\partial_tu\|_{L^2}\,\mathrm dt<\infty\) 是不同条件，后一个条件才直接给出 \(L^2\) 距离意义下的有限轨道长度。
 
 \subsection{统一高阶界及光滑子列}
 \label{g3:subsec:2605:02}
-待撰写
+前节的\cref{g3:thm:harmonic-heat-uniform-derivatives}给出，对每个整数 \(r\ge0\)，存在与时间无关的 \(C_r\)，使
+\begin{equation}\label{g3:eq:harmonic-heat-orbit-derivatives}
+	\sup_{t\ge1}\sup_{x\in M}|\nabla^r\mathrm du(x,t)|\le C_r.
+\end{equation}
+这时源和目标都是固定流形；所需紧性只涉及同一对流形之间的映射。
+
+\begin{lemma}\label{g3:lem:compact-target-map-smooth-precompactness}
+	设 \((M,g)\)、\((N,h)\) 为闭连通光滑黎曼流形，维数均为正。若光滑映射列 \(v_j:M\to N\) 满足
+	\[
+		\sup_j\sup_M|\nabla^r\mathrm dv_j|<\infty
+		\qquad\text{对每个整数 }r\ge0,
+	\]
+	则它有子列在 \(M\) 上按 \(C^\infty\) 收敛到一个光滑映射 \(v_\infty:M\to N\)。这里 \(C^\infty\) 收敛指在包含极限像的固定局部坐标中，各阶导数均一致收敛。
+\end{lemma}
+\begin{proof}
+	先取得一致极限，再把每一阶导数的极限接上去。\(|\mathrm dv_j|\le C_0\) 与源中的最短测地线给出
+	\[
+		d_N(v_j(x),v_j(y))\le C_0d_M(x,y).
+	\]
+	目标紧，因而映射列等度连续且所有取值都留在紧集内。紧度量空间版本的 Arzel\`a--Ascoli 定理给出一致收敛子列，极限 \(v_\infty\) 连续并取值于 \(N\)。这一步也可直接从源的可数稠密点集上逐点选子列、再用上述统一连续模升级为一致收敛得到。
+
+	对每个 \(x\in M\)，先选包含 \(v_\infty(x)\) 的目标坐标图 \(V\)，再选源坐标邻域 \(U\) 并缩小，使 \(v_\infty(\overline U)\) 紧含于 \(V\)。一致收敛保证充分大的 \(j\) 的 \(v_j(\overline U)\) 留在 \(V\) 的同一个紧子集中。源的紧性使这样的 \(U\) 只需有限个。
+
+	在这些固定坐标中，坐标导数与协变导数由联络系数联系。例如
+	\[
+		\partial_i\partial_kv_j^\alpha
+		=(\nabla\mathrm dv_j)_{ik}^{\alpha}
+		+\Gamma^\ell_{ik}\partial_\ell v_j^\alpha
+		-\Gamma^{\alpha}_{\beta\gamma}(v_j)
+		\partial_i v_j^\beta\partial_k v_j^\gamma.
+	\]
+	源、目标坐标均限制在固定紧子集内，度量、逆度量及联络系数的各阶导数有界。上式先给二阶坐标导数界；重复求导，并利用给定的 \(\nabla^r\mathrm dv_j\) 界，归纳得到所有坐标导数的一致界。每个指定阶的导数又因下一阶有界而等度连续。
+
+	依次对有限张坐标图中的零阶、一阶、二阶等坐标导数使用 Arzel\`a--Ascoli 定理，选取嵌套子列，再取对角子列。所得各阶一致极限确为 \(v_\infty\) 的相应导数：在较小坐标球中沿坐标线段使用
+	\[
+		v_j^\alpha(z+se_i)-v_j^\alpha(z)
+		=\int_0^s\partial_i v_j^\alpha(z+re_i)\,\mathrm dr,
+	\]
+	便把一阶导数的极限与函数极限相联系；对高阶导数重复同一论证即可。坐标交叠处的极限由光滑换坐标与原映射的一致性相容，所以它们组成整体光滑映射，并得到 \(C^\infty\) 收敛。
+\end{proof}
+
+对任意 \(s_j\to\infty\)，将 \(v_j=u(\cdot,s_j)\) 代入该引理，就得到光滑收敛子列。特别地，上一小节选出的低速度时间列也有这样的子列；以后仍用 \(t_j\) 表示它。
 
 \subsection{极限满足调和方程}
 \label{g3:subsec:2605:03}
-待撰写
+光滑收敛保留张力场，因为张力只使用映射的二阶导数以及固定源、目标度量的光滑系数。与速度衰减结合，就能判断所得聚点满足什么方程。
+
+\begin{proposition}\label{g3:prop:harmonic-heat-limit-harmonic}
+	设 \(M,N\) 为闭连通光滑黎曼流形，\(\operatorname{Sect}_N\le0\)，\(u\) 为由光滑初值产生的全时调和映射热流。若 \(t_j\to\infty\) 且 \(u(\cdot,t_j)\to v\) 于 \(C^\infty(M,N)\)，则 \(v\) 光滑调和，且
+	\[
+		E(v)=\lim_{t\to\infty}E(u(\cdot,t))=\mathcal E_\infty.
+	\]
+\end{proposition}
+\begin{proof}
+	在上一引理所选的固定坐标中，张力场为
+	\[
+		\tau(u)^\alpha
+		=g^{ik}\left(\partial_i\partial_ku^\alpha
+		-\Gamma^\ell_{ik}\partial_\ell u^\alpha
+		+\Gamma^\alpha_{\beta\gamma}(u)
+		\partial_i u^\beta\partial_k u^\gamma\right).
+	\]
+	映射的 \(C^2\) 收敛及目标系数的光滑性使这些分量一致趋于 \(\tau(v)^\alpha\)。目标内积的系数也一致收敛，因此
+	\[
+		\int_M|\tau(v)|^2\,\mu_g
+		=\lim_{j\to\infty}\int_M|\tau(u(\cdot,t_j))|^2\,\mu_g
+		=\lim_{j\to\infty}Q(t_j)=0.
+	\]
+	最后一步用\cref{g3:lem:harmonic-heat-slow-times}的全时速度衰减；若只取最初选定的时间子列，其子列结论已经足够。连续非负函数 \(|\tau(v)|^2\) 的积分为零，故它处处为零，得到 \(\tau(v)=0\)。同样，\(C^1\) 收敛使能量密度一致收敛；在紧源上积分便得能量等式。
+\end{proof}
+
+这一证明还说明，沿整个热流有
+\begin{equation}\label{g3:eq:harmonic-heat-tension-decay}
+	\sup_M|\nabla^r\tau(u(\cdot,t))|\longrightarrow0
+	\qquad(t\to\infty),\quad r=0,1,2,\ldots.
+\end{equation}
+事实上，若对某个 \(r\) 不成立，就有 \(t_j\to\infty\) 和 \(\varepsilon>0\)，使左侧至少为 \(\varepsilon\)。由光滑预紧性选出 \(u(\cdot,t_j)\to v\) 的光滑子列；上一命题给出 \(\tau(v)=0\)，而张力的 \(r\) 阶协变导数是映射至 \(r+2\) 阶导数的光滑表达，其范数应趋于零，矛盾。
 
 \subsection{同伦类的保持}
 \label{g3:subsec:2605:04}
-待撰写
+每个有限时间截面都与初值同伦，因为 \((x,s)\mapsto u(x,st)\)、\(0\le s\le1\)，就是一个同伦。还须把这一事实传到时间趋于无穷的极限。这里有用的是一致收敛与目标的正注入半径。
+
+\begin{lemma}\label{g3:lem:close-maps-geodesic-homotopy}
+	设 \(M,N\) 为闭光滑黎曼流形，\(N\) 连通，取 \(0<\rho<\operatorname{inj}_h(N)\)。若光滑映射 \(f_0,f_1:M\to N\) 满足
+	\[
+		\sup_{x\in M}d_N(f_0(x),f_1(x))<\rho,
+	\]
+	则二者光滑同伦，且一个同伦为
+	\begin{equation}\label{g3:eq:close-map-geodesic-homotopy}
+		H(x,s)=\exp_{f_0(x)}\bigl(s\log_{f_0(x)}f_1(x)\bigr),
+		\qquad0\le s\le1.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	\Cref{g3:prop:compact-injectivity-lower-bound}保证可选共同的正 \(\rho\)，并说明距离小于 \(\rho\) 的两点由唯一长度小于 \(\rho\) 的最短测地线连接。为核对公式的光滑性，考虑
+	\[
+		\mathcal F:\{(p,w)\in\mathrm TN:|w|<\rho\}\longrightarrow N\times N,
+		\qquad\mathcal F(p,w)=(p,\exp_pw).
+	\]
+	其像正是 \(d_N(p,q)<\rho\) 的点对，且它在各纤维上单射。微分的第一分量先确定底点方向，第二分量中关于 \(w\) 的微分可逆，故整体微分可逆。由逆函数定理，\(\mathcal F\) 的逆在像上光滑，其第二分量就是 \(\log_pq\)。式\eqref{g3:eq:close-map-geodesic-homotopy}于是光滑，且在 \(s=0,1\) 分别等于 \(f_0,f_1\)。
+\end{proof}
+
+同伦调和代表的极限构造与同伦类内能量极小者的存在性，见\cite[第11.A节定理及推论，第156--158页]{EellsSampson1964HarmonicMaps}。本章以能量空间中的短时理论和内在先验估计证明紧目标版本，并通过光滑逼近涵盖连续映射。
+
+\begin{theorem}[Eells--Sampson 型调和代表]\label{g3:thm:harmonic-heat-homotopy-representative}
+	设 \((M^m,g)\)、\((N^n,h)\) 为闭连通光滑黎曼流形，\(m,n\ge1\)，且 \(\operatorname{Sect}_N\le0\)。则每个光滑映射 \(u_0:M\to N\) 的调和映射热流都全时光滑存在，并有时间子列 \(t_j\to\infty\)，使 \(u(\cdot,t_j)\) 在 \(C^\infty\) 中收敛到与 \(u_0\) 同伦的光滑调和映射 \(u_\infty\)。特别地，每个连续映射 \(M\to N\) 都同伦于一个光滑调和映射。
+\end{theorem}
+\begin{proof}
+	全时存在由\cref{g3:thm:harmonic-heat-global-existence}给出。\Cref{g3:lem:harmonic-heat-slow-times}选出 \(L^2\) 速度趋于零的时间，式\eqref{g3:eq:harmonic-heat-orbit-derivatives}与\cref{g3:lem:compact-target-map-smooth-precompactness}再选光滑收敛子列。\Cref{g3:prop:harmonic-heat-limit-harmonic}说明极限 \(u_\infty\) 调和。
+
+	取 \(0<\rho<\operatorname{inj}_h(N)\)。一致收敛使充分大的 \(j\) 满足
+	\(\sup_Md_N(u(x,t_j),u_\infty(x))<\rho\)。前一引理将 \(u(\cdot,t_j)\) 与 \(u_\infty\) 用短测地线同伦连接，再与 \(u_0\) 到 \(u(\cdot,t_j)\) 的热流同伦拼接，就得 \(u_0\simeq u_\infty\)。拼接后的连续同伦已经足够；若要求光滑，可在两个时间段的端点用光滑且在端点附近恒定的参数函数重参数化。
+
+	最后，第二卷第14.1.2小节关于连续映射与光滑同伦的推论已经证明：光滑流形间每个连续映射都同伦于光滑映射，源允许边界，目标无边界。将它用于这里的闭 \(M,N\)，先把给定连续映射换成光滑的 \(u_0\)，再用刚才的构造即可。
+	% 跨卷依赖：g2:cor:continuous-smooth-homotopy。
+\end{proof}
+
+第十八章的球面气泡例子中，弱收敛可以丢失度数。这里的一致收敛使每个点的末段运动都局限在同一个可光滑选取的短测地线内，因而保留了同伦类；高阶界同时保证张力场与能量都能传到极限。
 
 \subsection{全时收敛和唯一性所需的附加假设}
 \label{g3:subsec:2605:05}
-待撰写
+上一定理先得到聚点。若同一轨道的所有可能聚点都被唯一性确定，光滑预紧性就会把子列收敛升级为全时收敛。
+
+\begin{proposition}\label{g3:prop:harmonic-heat-unique-limit}
+	设 \(M,N\) 为闭连通光滑黎曼流形，\(\operatorname{Sect}_N\le0\)。若光滑映射 \(u_0:M\to N\) 的同伦类中恰有一个光滑调和映射 \(v\)，则从 \(u_0\) 出发的调和映射热流满足
+	\[
+		u(\cdot,t)\longrightarrow v\quad\text{于 }C^\infty(M,N),
+		\qquad t\to\infty.
+	\]
+\end{proposition}
+\begin{proof}
+	任取 \(t_j\to\infty\)，光滑预紧性给出一个光滑收敛子列。其极限由\cref{g3:prop:harmonic-heat-limit-harmonic}调和，再由短测地线同伦与 \(u_0\) 同伦，故只能是 \(v\)。
+
+	若全时收敛不成立，就有 \(C^\infty(M,N)\) 中 \(v\) 的一个开邻域 \(\mathcal U\)，以及 \(s_j\to\infty\)，使 \(u(\cdot,s_j)\notin\mathcal U\)。对该时间列再取光滑收敛子列，其极限仍为 \(v\)，因而最终应落入 \(\mathcal U\)，矛盾。这同时证明每个有限阶的收敛。
+\end{proof}
+
+为了给出可核验的唯一性条件，需要比较同伦类中任意两个调和映射。目标本身可能有多条连接同端点的测地线；在它的万有覆盖上，Cartan--Hadamard 定理给出唯一测地线，并使这个比较成为全局构造。
+
+\begin{lemma}\label{g3:lem:nonpositive-target-geodesic-homotopy}
+	设 \((M,g)\) 为闭连通光滑黎曼流形，\((N,h)\) 为连通完备光滑无边界黎曼流形，维数均为正，且 \(\operatorname{Sect}_N\le0\)。任意两个同伦的光滑映射 \(f_0,f_1:M\to N\) 之间存在光滑同伦 \(F(x,s)\)，使每条 \(s\mapsto F(x,s)\) 都是以 \([0,1]\) 为仿射参数区间的测地线。令 \(F_s(x)=F(x,s)\)、\(V=\partial_sF\)，则
+	\begin{equation}\label{g3:eq:harmonic-geodesic-homotopy-convexity}
+		\frac{\mathrm d^2}{\mathrm ds^2}E(F_s)
+		=\int_M\left(|D V|^2
+		-\sum_i\langle R^N(V,\mathrm dF_s(e_i))\mathrm dF_s(e_i),V\rangle\right)\mu_g
+		\ge0.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	取光滑万有覆盖 \(p:\widetilde M\to M\)、\(q:\widetilde N\to N\)，目标覆盖带拉回度量。\Cref{g3:prop:riemannian-universal-cover}保证 \(\widetilde N\) 完备、单连通，覆盖变换等距；曲率仍非正，故它是 Hadamard 流形。
+
+	设 \(H:M\times[0,1]\to N\) 为给定的连续同伦。因为 \(\widetilde M\times[0,1]\) 单连通，覆盖提升判据给出 \(H\circ(p\times\operatorname{id})\) 的一个提升 \(\widetilde H\)。这里使用第一卷第5.3.3小节的提升判据：单连通源的基本群像为平凡群，因而包含于覆盖所对应的子群。记两端为 \(\widetilde f_0,\widetilde f_1\)；原映射光滑且覆盖局部微分同胚，所以这两个提升光滑。
+	% 跨卷依赖：g1:thm:lifting-criterion。
+
+	对源的每个覆盖变换 \(\gamma\)，存在目标覆盖变换 \(\rho(\gamma)\)，使
+	\[
+		\widetilde H(\gamma\widetilde x,s)
+		=\rho(\gamma)\widetilde H(\widetilde x,s).
+	\]
+	确实，在一个指定点先由目标覆盖变换在纤维上的传递性选择 \(\rho(\gamma)\)，两边随后是同一个映射的提升，在连通域中由提升唯一性处处相等。自由性还保证该变换唯一，并由复合可知 \(\rho\) 是群同态。因此两个端点提升具有相同的等变关系。
+
+	由\cref{g3:prop:hadamard-geodesic-uniqueness}，可定义
+	\[
+		\widetilde F(\widetilde x,s)
+		=\exp_{\widetilde f_0(\widetilde x)}
+		\left(s\log_{\widetilde f_0(\widetilde x)}
+		\widetilde f_1(\widetilde x)\right).
+	\]
+	测地线随两端点光滑变化，所以 \(\widetilde F\) 光滑。目标覆盖变换等距，保持测地线及仿射参数；唯一性使 \(\widetilde F\) 具有同一等变关系。故 \(q\circ\widetilde F\) 对源的覆盖变换不变，下降为所求 \(F\)。覆盖局部等距保证下降后的各条参数曲线仍是测地线，因而 \(D_sV=0\)。
+
+	最后用\cref{g3:thm:harmonic-map-first-variation,g3:prop:harmonic-map-jacobi-linearization}对能量连续求两次导数：
+	\[
+		\frac{\mathrm d^2}{\mathrm ds^2}E(F_s)
+		=-\int_M\bigl(\langle D_s\tau(F_s),V\rangle
+		+\langle\tau(F_s),D_sV\rangle\bigr)\mu_g
+		=\int_M\langle J_{F_s}V,V\rangle\,\mu_g.
+	\]
+	这里 \(D_sV=0\)，故无需假设中间的映射 \(F_s\) 调和。闭源上的分部积分式\eqref{g3:eq:harmonic-map-jacobi-green}给出式\eqref{g3:eq:harmonic-geodesic-homotopy-convexity}。截面曲率非正使每个被减去的曲率项非正，因而右端非负。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:nonpositive-harmonic-homotopy-minimum}
+	设 \(M\) 为闭连通光滑黎曼流形，\(N\) 为连通完备光滑无边界黎曼流形，维数均为正，且 \(\operatorname{Sect}_N\le0\)。则光滑调和映射 \(f:M\to N\) 在所有与它同伦的光滑映射中使能量最小。
+\end{corollary}
+\begin{proof}
+	对任意同伦的光滑映射 \(v\)，取前一引理的测地同伦，并令 \(A(s)=E(F_s)\)。调和性给出 \(A'(0)=0\)，凸性给出 \(A'\) 非减，故
+	\(E(v)-E(f)=\int_0^1A'(s)\,\mathrm ds\ge0\)。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:negative-target-harmonic-uniqueness}
+	设 \((M^m,g)\) 为闭连通光滑黎曼流形，\((N^n,h)\) 为连通完备光滑无边界黎曼流形，\(m,n\ge2\)，且 \(\operatorname{Sect}_N<0\)。若光滑调和映射 \(f_0:M\to N\) 在某一点 \(x_0\) 满足 \(\operatorname{rank}(\mathrm df_0)_{x_0}\ge2\)，则其同伦类中只有这一个光滑调和映射。若 \(N\) 还闭，则从该同伦类中任意光滑初值出发的调和映射热流都在 \(C^\infty\) 中全时收敛到 \(f_0\)。
+\end{theorem}
+\begin{proof}
+	设 \(f_1\) 是同伦的另一个调和映射，取上述测地同伦。令 \(A(s)=E(F_s)\)，则 \(A''\ge0\)，而两端的调和性使 \(A'(0)=A'(1)=0\)。非减函数 \(A'\) 因此恒为零，故式\eqref{g3:eq:harmonic-geodesic-homotopy-convexity}的右端对每个 \(s\) 都等于零。
+
+	特别在 \(s=0\)，各项均非负且连续，因而
+	\[
+		DV_0=0,\qquad
+		\langle R^N(V_0,\mathrm df_0(e_i))\mathrm df_0(e_i),V_0\rangle=0
+	\]
+	处处成立。严格负曲率下，第二个等式说明 \(V_0(x)\) 与每个 \(\mathrm df_0(e_i)\) 线性相关，除非 \(V_0(x)=0\)。在 \(x_0\) 有至少两个线性无关的像方向，所以只能有 \(V_0(x_0)=0\)。又因 \(DV_0=0\)，其长度在连通源上恒定，故 \(V_0\equiv0\)。每条 \(s\mapsto F(x,s)\) 的初速度于是为零；测地初值唯一性使该曲线恒定，得到 \(f_1=f_0\)。若 \(N\) 闭，再用\cref{g3:prop:harmonic-heat-unique-limit}即得全时收敛。
+\end{proof}
+
+秩条件排除了常值映射和沿同一闭测地线移动的退化情形。非正曲率允许同伦类中存在整个调和映射族；热流仍可能按初值选定其中的一个。下面可以直接看清这个选择。
+
+\begin{example}\label{g3:exm:flat-circle-harmonic-heat-flow}
+	把源与目标都取为 \(S^1=\mathbb R/(2\pi\mathbb Z)\)，度量为 \(\mathrm d\theta^2\)。一个光滑映射的提升可写成
+	\[
+		\widetilde u_0(\theta)=k\theta+b(\theta),
+		\qquad k\in\mathbb Z,\quad b(\theta+2\pi)=b(\theta).
+	\]
+	这里提升满足 \(\widetilde u_0(\theta+2\pi)-\widetilde u_0(\theta)=2\pi k\)：差除以 \(2\pi\) 是连续整数值函数，故恒定。整数 \(k\) 就是映射的度数。若
+	\[
+		b(\theta)=\sum_{\ell\in\mathbb Z}\widehat b_\ell e^{i\ell\theta},
+		\qquad
+		\widehat b_\ell=\frac1{2\pi}\int_0^{2\pi}b(\theta)e^{-i\ell\theta}\,\mathrm d\theta,
+	\]
+	则热流由下式给出：
+	\begin{equation}\label{g3:eq:circle-harmonic-heat-fourier}
+		u([\theta],t)=\left[k\theta+\widehat b_0
+		+\sum_{\ell\ne0}e^{-\ell^2t}\widehat b_\ell e^{i\ell\theta}\right].
+	\end{equation}
+	因为 \(b\) 光滑，其 Fourier 系数快速衰减，级数及任意指定阶的空间、时间导数均可逐项求导，并在 \(t\ge0\) 一致收敛。目标在角坐标中平坦，张力为 \(\partial_\theta^2\widetilde u\)，故上式满足 \(\partial_tu=\tau(u)\)，在 \(t=0\) 等于初值。提升增加 \(2\pi k\) 的等变关系始终保持，所以它确实定义圆周之间的热流。
+	\[
+		u([\theta],t)\longrightarrow[k\theta+\widehat b_0]
+		\quad\text{于 }C^\infty,\qquad t\to\infty.
+	\]
+	对每个 \(r\)，非零频率部分的 \(C^r\) 范数至多为
+	\(e^{-t}\sum_{\ell\ne0}|\ell|^r|\widehat b_\ell|\)，所以收敛还是指数的。Parseval 等式则给出
+	\[
+		E(u(t))=\pi k^2
+		+\pi\sum_{\ell\ne0}\ell^2|\widehat b_\ell|^2e^{-2\ell^2t},
+		\qquad
+		Q(t)=2\pi\sum_{\ell\ne0}\ell^4|\widehat b_\ell|^2e^{-2\ell^2t},
+	\]
+	可逐项核对 \(E'=-Q\)。
+	同一度数类中的所有 \([\theta]\mapsto[k\theta+c]\) 都调和，且随 \(c\) 连续变化，彼此同伦；当 \(k=0\) 时就是所有常值映射。极限中的 \([\widehat b_0]\) 由初值决定：改换提升只把它增加 \(2\pi\) 的整数倍，不改变圆周值。因而这一模型既有全时收敛，也有同伦类中调和代表的非唯一性。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

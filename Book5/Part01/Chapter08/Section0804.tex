@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 8.4 极小自由消解和投射维数
 % 纲要位置：几何学计划纲要.md，第 5327 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,174 @@
 \section{极小自由消解和投射维数}
 \label{g5:sec:0804}
 
-待撰写
+自由消解的比较定理保证同调结果不依赖选择，但一个随意构造的消解可能含有许多可以消去的项。局部环上的 Nakayama 引理提供了逐层选取最少生成元的方法。这样得到的消解，在剩余域上所有微分都为零，各层自由秩因而成为模本身的不变量。本节最后把消解的长度与上一节的深度连接起来。
 
 \subsection{局部极小生成和极小微分}
 \label{g5:subsec:0804:01}
-待撰写
+
+本节固定 Noether 局部环 \((A,\mathfrak m,k)\) 及非零有限 \(A\) 模 \(M\)。记
+\(\mu_A(M)=\dim_k(M/\mathfrak mM)\)。由 Nakayama 引理，提升 \(M/\mathfrak mM\) 的一组基，便得到恰含 \(\mu_A(M)\) 个元素的生成系。它是极小生成系：少去任何一个元素，模 \(\mathfrak m\) 后便不能张成。
+
+\begin{definition}\label{g5:def:minimal-free-resolution}
+	一个各项有限自由的消解
+	\[
+		\cdots\longrightarrow F_2\xrightarrow{\mathrm d_2}F_1
+		\xrightarrow{\mathrm d_1}F_0\xrightarrow{\epsilon}M\longrightarrow0
+	\]
+	称为\term[jixiaoziyouxiaojie]{极小自由消解}[minimal free resolution]，若
+	\(\mathrm d_i(F_i)\subseteq\mathfrak mF_{i-1}\) 对每个 \(i\geq1\) 成立。选定各项的基后，这等价于全部微分矩阵的元素都在 \(\mathfrak m\) 中。
+\end{definition}
+
+\begin{proposition}\label{g5:prop:minimal-resolution-existence}
+	每个有限 \(A\) 模都有极小自由消解；其中 \(F_0\to M\) 及每个 \(F_i\to\ker d_{i-1}\) 都由目标的极小生成系给出，这里 \(\mathrm d_0=\epsilon\)。
+\end{proposition}
+\begin{proof}
+	取 \(F_0=A^{\mu_A(M)}\)，用一组提升的基定义满射 \(\epsilon\)。它模 \(\mathfrak m\) 后是同构，故 \(K_1=\ker\epsilon\subseteq\mathfrak mF_0\)。Noether 性保证 \(K_1\) 有限，再取由极小生成系给出的满射 \(F_1\to K_1\)，与包含 \(K_1\hookrightarrow F_0\) 复合得到 \(\mathrm d_1\)。
+
+	归纳地，若已取到满射 \(F_i\to K_i\)，令 \(K_{i+1}\) 为其核。模 \(\mathfrak m\) 后的映射 \(F_i/\mathfrak mF_i\to K_i/\mathfrak mK_i\) 为同构，所以 \(K_{i+1}\subseteq\mathfrak mF_i\)。取有限自由模 \(F_{i+1}\) 极小地满射到 \(K_{i+1}\)，继续即可。若某个核为零，后续所有项均取零。
+\end{proof}
+
+这种逐层构造还说明极小性的内容。任意各项有限自由的消解若满足定义中的条件，则 \(F_i\to K_i\) 的核包含于 \(\mathfrak mF_i\)，而张量的右正合性给出
+\(F_i/\mathfrak mF_i\cong K_i/\mathfrak mK_i\)。所以每一层都恰好使用了所需的生成元数。这里的“极小”要求每一层的关系也极小，不能只检查 \(F_0\)。
 
 \subsection{Betti 数及剩余域张量}
 \label{g5:subsec:0804:02}
-待撰写
+
+将极小自由消解与 \(k=A/\mathfrak m\) 张量，所有 \(\mathrm d_i\) 都变成零。消解原来记录的关系在剩余域中全部成为同调类，于是
+\[
+	\operatorname{Tor}_i^A(M,k)\cong F_i/\mathfrak mF_i.
+\]
+这既给出计算方法，也说明自由项的秩与选择无关。
+
+\begin{definition}\label{g5:def:betti-number}
+	模 \(M\) 的第 \(i\) 个 \term[Betti-shu]{Betti 数}[Betti number]\footnote{Enrico Betti（1823—1892），意大利数学家，研究代数方程、拓扑与弹性理论。}定义为
+	\[
+		\beta_i^A(M)=\dim_k\operatorname{Tor}_i^A(M,k).
+	\]
+	对极小自由消解，它等于 \(\operatorname{rank}_A F_i\)；特别地，\(\beta_0^A(M)=\mu_A(M)\)。
+\end{definition}
+\symidx{\(\beta_i^A(M)\)：局部有限模的第 \(i\) 个 Betti 数}
+
+\begin{proposition}\label{g5:prop:minimal-resolution-uniqueness}
+	同一个有限模的两个极小自由消解同构为带增广的复形。这个同构一般不是唯一的，但各层自由秩唯一。
+\end{proposition}
+\begin{proof}
+	设两消解为 \(F_\bullet,G_\bullet\)。比较定理给出提升 \(\mathrm{id}_M\) 的链映射 \(f:F_\bullet\to G_\bullet\)、\(g:G_\bullet\to F_\bullet\)，并给出 \(gf\) 与 \(\mathrm{id}_F\)、\(fg\) 与 \(\mathrm{id}_G\) 之间的链同伦。模去 \(\mathfrak m\) 后，微分为零，同伦等式因而变成
+	\[
+		\overline g_i\overline f_i=\mathrm{id}_{F_i/\mathfrak mF_i},
+		\qquad
+		\overline f_i\overline g_i=\mathrm{id}_{G_i/\mathfrak mG_i}.
+	\]
+	故两边秩相同，\(f_i\) 是同阶方阵，且其行列式模 \(\mathfrak m\) 非零。在局部环中这个行列式是单位，所以 \(f_i\) 可逆。各 \(f_i\) 组成所需的复形同构。
+\end{proof}
+
+\begin{example}\label{g5:exm:dvr-betti}
+	设 \(A\) 是 DVR，极大理想由 \(\pi\) 生成，\(r\geq1\)。模 \(A/(\pi^r)\) 的极小自由消解为
+	\[
+		0\longrightarrow A\xrightarrow{\ \pi^r\ }A
+		\longrightarrow A/(\pi^r)\longrightarrow0.
+	\]
+	因此 \(\beta_0=\beta_1=1\)，其余 Betti 数为零；而其长度为 \(r\)。Betti 数记录各层最少生成元数，并不记录微分中 \(\pi\) 的幂次，也不能单独恢复模的长度。
+\end{example}
 
 \subsection{有限投射维数的检测}
 \label{g5:subsec:0804:03}
-待撰写
+
+\begin{definition}\label{g5:def:projective-dimension}
+	非零 \(A\) 模 \(M\) 的\term[tousheweishu]{投射维数}[projective dimension]记为 \(\operatorname{pd}_A M\)，是使 \(M\) 存在长度为 \(n\) 的投射消解
+	\[
+		0\longrightarrow P_n\longrightarrow\cdots
+		\longrightarrow P_0\longrightarrow M\longrightarrow0
+	\]
+	的最小整数 \(n\geq0\)。若不存在有限长度的投射消解，令其为 \(\infty\)。以下涉及深度公式时始终假设 \(M\ne0\)，不对零模代入数值等式。
+\end{definition}
+\symidx{\(\operatorname{pd}_A M\)：模的投射维数}
+
+\begin{theorem}\label{g5:thm:projective-dimension-detection}
+	设 \(M\) 为 Noether 局部环 \(A\) 上的非零有限模，\(n\geq0\)。以下条件等价：
+	\begin{enumerate}
+		\item \(\operatorname{pd}_A M\leq n\)；
+		\item \(\operatorname{Tor}_{n+1}^A(M,k)=0\)；
+		\item \(M\) 的极小自由消解满足 \(F_{n+1}=0\)；
+		\item 对每个 \(A\) 模 \(N\)，均有 \(\operatorname{Ext}_A^{n+1}(M,N)=0\)。
+	\end{enumerate}
+	因此有限投射维数恰为极小自由消解最后一个非零项的次数，也等于最后一个非零 Betti 数的下标。
+\end{theorem}
+\begin{proof}
+	第一条件给出长度不超过 \(n\) 的投射消解。由第一节的比较定理，投射消解同样可用于计算 Ext、Tor，故第二、第四条件成立。第二与第三条件等价，因为
+	\(\operatorname{Tor}_{n+1}^A(M,k)\cong F_{n+1}/\mathfrak mF_{n+1}\)，而 \(F_{n+1}\) 有限自由。
+
+	第三条件使极小消解在 \(F_n\) 处截断，因而推出第一条件。也可以直接在构造中看见这一点：\(F_{n+1}=0\) 表明第 \(n+1\) 个核为零，所有更高核及自由项都为零。
+
+	最后，第四条件借助维数平移，等价于第 \(n\) 个合冲模 \(K_n\) 满足 \(\operatorname{Ext}_A^1(K_n,N)=0\) 对所有 \(N\) 成立；\(n=0\) 时取 \(K_0=M\)。由\cref{g5:prop:projectivity-ext}，\(K_n\) 投射。它又是有限模，所以由\cref{g5:prop:projective-local-free}知其自由。将前 \(n\) 步消解在 \(K_n\) 处截断，得到第一条件。
+\end{proof}
+
+这里一次正次数 Tor 的消失便迫使全部更高次数消失，关键在于底环局部、模有限，并且第二变量是剩余域。若随意换一个第二变量，便不能从这个证明得出同样的判断。有限性还保证 Nakayama 引理可以检测某一层确实为零。
+
+\begin{example}\label{g5:exm:dual-number-infinite-pd}
+	取 \(A=k[\varepsilon]/(\varepsilon^2)\)、\(M=k\)。第一节给出的每个微分均为乘 \(\varepsilon\) 的无限自由消解是极小的。于是
+	\[
+		\beta_i^A(k)=1\quad(i\geq0),\qquad
+		\operatorname{pd}_A k=\infty.
+	\]
+	尽管 \(A\) 和 \(k\) 都是有限长度模，消解仍不会终止。这里 \(\varepsilon\) 的零化理想为极大理想，所以 \(\operatorname{depth}A=0\)；\(k\) 也有深度零。下一条公式中的有限投射维数假设因此不能省略。
+\end{example}
 
 \subsection{Auslander–Buchsbaum 公式的证明}
 \label{g5:subsec:0804:04}
-待撰写
+
+\term[Auslander-Buchsbaum-gongshi]{Auslander–Buchsbaum 公式}[Auslander--Buchsbaum formula]\footnote{Maurice Auslander（1926—1994），美国数学家，研究同调代数与表示论。David Alvin Buchsbaum（1929—2021），美国数学家，研究交换代数中的自由消解与同调维数。}把有限消解的长度解释为相对于底环损失的深度。证明的关键发生在长度一：极小消解中的矩阵元素属于 \(\mathfrak m\)，而 \(\mathfrak m\) 杀死 \(\operatorname{Ext}_A^i(k,A)\)，这会使一个关键映射等于零。
+
+\begin{theorem}[Auslander–Buchsbaum 公式]\label{g5:thm:auslander-buchsbaum}
+	设 \((A,\mathfrak m,k)\) 为 Noether 局部环，\(M\ne0\) 为有限 \(A\) 模。若 \(\operatorname{pd}_A M<\infty\)，则
+	\[
+		\operatorname{pd}_A M+\operatorname{depth}_A M
+		=\operatorname{depth}A.
+	\]
+\end{theorem}
+\begin{proof}
+	置 \(d=\operatorname{depth}A\)、\(p=\operatorname{pd}_A M\)，对 \(p\) 归纳。若 \(p=0\)，则 \(M\) 有限投射，从而为正秩自由模。有限直和与 \(\operatorname{Ext}_A^i(k,-)\) 相容，所以 \(M\) 与 \(A\) 的首个非零 Ext 次数相同；由\cref{g5:thm:depth-ext}，\(\operatorname{depth}_A M=d\)。
+
+	设 \(p=1\)。极小自由消解给出
+	\[
+		0\longrightarrow K\xrightarrow{u}F\longrightarrow M\longrightarrow0,
+		\qquad K\cong A^a,\ F\cong A^b,\ a>0,
+	\]
+	且 \(u\) 的矩阵元素均在 \(\mathfrak m\) 中。由\cref{g5:prop:ext-annihilator}，\(\mathfrak m\operatorname{Ext}_A^i(k,A)=0\)；Ext 对第二变量的有限直和及标量映射的自然性表明
+	\[
+		\operatorname{Ext}_A^i(k,K)\xrightarrow{u_*}
+		\operatorname{Ext}_A^i(k,F)
+	\]
+	在每个次数都为零。若 \(d=0\)，则 \(\operatorname{Hom}_A(k,K)\ne0\)，但它到 \(\operatorname{Hom}_A(k,F)\) 的映射一方面为零，另一方面因 Hom 左正合而单射，矛盾。因此 \(d\geq1\)。Ext 长正合列给出 \(j<d-1\) 时 \(\operatorname{Ext}_A^j(k,M)=0\)，并在首次可能非零的位置给出
+	\[
+		\operatorname{Ext}_A^{d-1}(k,M)
+		\cong\operatorname{Ext}_A^d(k,K)\ne0.
+	\]
+	这里右端到 \(\operatorname{Ext}_A^d(k,F)\) 的映射为零，左端之前的 \(\operatorname{Ext}_A^{d-1}(k,F)\) 为零。于是 \(\operatorname{depth}_A M=d-1\)。
+
+	现设 \(p\geq2\)。从极小消解取第一步
+	\(0\to K\to F_0\to M\to0\)。它的尾部是 \(K\) 的极小消解，故 \(\operatorname{pd}_A K=p-1\)。归纳假设给出
+	\[
+		t:=\operatorname{depth}_A K=d-p+1<d.
+	\]
+	特别地 \(t\geq0\)，且 \(d\geq p-1\geq1\)。若 \(t=0\)，深度引理却给出
+	\[
+		0=\operatorname{depth}_A K
+		\geq\min\{d,\operatorname{depth}_A M+1\}\geq1,
+	\]
+	矛盾。因此 \(t\geq1\)。对上述短正合列应用 \(\operatorname{Ext}_A^i(k,-)\)，利用 \(F_0\) 的深度为 \(d>t\)，得到
+	\[
+		\operatorname{Ext}_A^j(k,M)=0\quad(0\leq j<t-1),
+		\qquad
+		\operatorname{Ext}_A^{t-1}(k,M)
+		\cong\operatorname{Ext}_A^t(k,K)\ne0.
+	\]
+	故 \(\operatorname{depth}_A M=t-1=d-p\)，归纳完成。
+\end{proof}
+
+公式说明，非零有限模一旦具有有限投射维数，该维数就不超过 \(\operatorname{depth}A\)。例如深度零的 Noether 局部环上，具有有限投射维数的非零有限模必定自由；上面的双数环却有投射维数无穷的剩余域。关于何种局部环能使全部有限模都具有有限投射维数，将在下一章结合正则性继续讨论。
+
+\ProseParagraphBreak
+
+本节的极小消解及公式证明可对照\cite[第19节，第153—155页]{Matsumura1989}。证明只用了本章已经建立的 Ext 长正合列、深度检测和极小性，没有预先调用正则局部环的同调刻画。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,35 +1,254 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 23.3 单调性、切锥与正则点
 % 纲要位置：几何学计划纲要.md，第 3090 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 第一变分和驻值
 % * 密度及放大极限
 % * 平面切锥与正则性问题
-% * 整数流内部及边界正则性定理的具体范围
+% * 极小整数流的内部与边界正则性
 % 
 % 纲要内容结束
 
 \section{单调性、切锥与正则点}
 \label{g3:sec:2303}
-
-待撰写
+极小化给出一个整数流之后，还要辨认它在小尺度上的形状。可以先用光滑微分同胚移动这个流；极小性使质量的一阶变化为零，径向移动进而比较同一中心的不同尺度。缩小观察尺度得到切锥，它保留面积密度与重数。最后需要正则性定理，把足够平坦的弱对象恢复成光滑曲面。本节完整推导第一变分和单调性；极小流的质量收敛以及一般正则性采用下文逐项注明的外部结果。
 
 \subsection{第一变分和驻值}
 \label{g3:subsec:2303:01}
-待撰写
+设 \(U\subset\mathbb R^n\) 开，\(1\le k<n\)。本节的局部质量极小，是指局部整数 \(k\) 流 \(T\) 满足：对每个 \(W\Subset U\) 及支于 \(W\) 内某个紧集的整数 \(k\) 流 \(Z\)，只要 \(\partial Z=0\)，就有
+\[
+	\|T\|(W)\le\|T+Z\|(W).
+\]
+由前节得到的全空间固定边界极小流满足这个条件。下面只在 \(U\cap\operatorname{spt}\partial T=\varnothing\) 的区域讨论内部变分。
+
+\ProseParagraphBreak
+将 \(T\) 写成 \(\lBrack E,\tau,\theta\rBrack\)，其中 \(\theta\) 取正整数，取向的符号吸收到 \(\tau\) 中。记 \(P_x\) 为 \(E\) 在几乎每点的近似切平面，\(\mu=\|T\|=\theta\mathcal H^k\llcorner E\)。对 \(C^1\) 向量场 \(X\)，定义沿 \(P_x\) 的散度
+\[
+	\operatorname{div}_{P_x}X
+	=\sum_{i=1}^k\langle \mathrm DX(x)e_i,e_i\rangle,
+\]
+其中 \(e_1,\ldots,e_k\) 是 \(P_x\) 的任意正交单位基。它是 \(\mathrm DX\) 在该平面上的迹，因而不依赖基的选择。
+
+\begin{theorem}\label{g3:thm:minimizing-current-stationarity}
+	设 \(T\) 是开集 \(U\subset\mathbb R^n\) 中局部质量极小的整数 \(k\) 流，\(\partial T=0\) 于 \(U\)，\(1\le k<n\)。则对每个 \(X\in C_c^1(U;\mathbb R^n)\)，都有
+	\begin{equation}\label{g3:eq:current-stationarity}
+		\delta T(X)\coloneqq\int\operatorname{div}_{P_x}X\,\mathrm d\mu(x)=0.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先取光滑 \(X\)，令 \(\Phi_t\) 为它的小时间流。选 \(W\Subset U\)，使 \(X\) 的支集紧含于 \(W\)。\(\Phi_t\) 在 \(W\) 边界附近为恒等。第22章的推前与同伦公式说明 \(\Phi_{t\#}T-T\) 紧支于 \(W\)，其边界为零，故是允许的局部竞争变化。
+
+	微分同胚单射，推前时没有不同原像之间的取向抵消。\cref{g3:prop:rectifiable-lipschitz-pushforward}的面积公式于是给出
+	\[
+		\|\Phi_{t\#}T\|(W)
+		=\int_{E\cap W}J_k(\mathrm D\Phi_t|_{P_x})\,\theta\,\mathrm d\mathcal H^k.
+	\]
+	在 \(P_x\) 的正交基下，Jacobian 是 Gram 行列式的平方根。由
+	\(\mathrm D\Phi_t=I+t\mathrm DX+o(t)\)，得到
+	\[
+		\left.\frac{\mathrm d}{\mathrm dt}\right|_{t=0}
+		J_k(\mathrm D\Phi_t|_{P_x})
+		=\sum_{i=1}^k\langle\mathrm DXe_i,e_i\rangle.
+	\]
+	余项在包含 \(\operatorname{spt}X\) 的紧集以及全部 \(k\) 平面上均匀；局部质量有限允许在积分号下求导。正负 \(t\) 都是竞争参数，极小性迫使导数为零，得到式\eqref{g3:eq:current-stationarity}。最后用同一紧支集上的光滑 \(C^1\) 逼近推广到 \(C_c^1\) 向量场。
+\end{proof}
+
+我们把满足式\eqref{g3:eq:current-stationarity}的可整流质量分布称为\term[zhuzhi]{驻值}[stationary]的。这个条件只使用 \(P_x\) 与正质量 \(\mu\)，不使用切平面的取向。若 \(E\) 是光滑无边界子流形，它恢复第19章的面积驻值公式：本书光滑平均曲率 \(H\) 是第二基本形式迹的 \(1/k\)，所以
+\(\delta T(X)=-k\int\langle H,X\rangle\,\mathrm d\mu\)
+在重数局部常值的区域成立。驻值是一阶条件；它不自动给出任意竞争流的质量比较。
 
 \subsection{密度及放大极限}
 \label{g3:subsec:2303:02}
-待撰写
+取向消失于第一变分之后，径向计算与光滑情形具有同一形式。所需的是几乎处处的切平面，不需要先知道支集是一张光滑曲面。
+
+\begin{theorem}\label{g3:thm:stationary-current-monotonicity}
+	设 \(T\) 为 \(U\subset\mathbb R^n\) 中局部整数 \(k\) 流，\(1\le k<n\)，其质量分布满足式\eqref{g3:eq:current-stationarity}。若 \(\overline B_R(a)\subset U\)，则
+	\[
+		r\longmapsto\frac{\mu(B_r(a))}{r^k}
+	\]
+	在 \((0,R)\) 上单调不减。对满足
+	\(\mu(\partial B_s(a))=\mu(\partial B_t(a))=0\)
+	的 \(0<s<t<R\)，有精确差值式
+	\begin{equation}\label{g3:eq:current-monotonicity-difference}
+		\frac{\mu(B_t(a))}{t^k}-\frac{\mu(B_s(a))}{s^k}
+		=\int_{B_t(a)\setminus B_s(a)}
+		\frac{|(x-a)^{\perp P_x}|^2}{|x-a|^{k+2}}\,\mathrm d\mu(x).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	平移后取 \(a=0\)。令 \(r=|x|\)，先在径向光滑截断
+	\(X(x)=\gamma(r)x\) 中计算。因为
+	\(\sum_i\langle x,e_i\rangle^2=|x^{P_x}|^2\)，有
+	\[
+		\operatorname{div}_{P_x}X
+		=k\gamma(r)+r\gamma'(r)
+		-\frac{\gamma'(r)}r|x^{\perp P_x}|^2.
+	\]
+	选择如下连续、分段光滑的截断：
+	\[
+		\gamma(r)=
+		\begin{cases}
+			s^{-k}-t^{-k},&0\le r\le s,\\
+			r^{-k}-t^{-k},&s<r<t,\\
+			0,&r\ge t.
+		\end{cases}
+	\]
+	它在原点附近为常数。只在 \(s,t\) 附近作光滑化，函数及其导数保持一致有界；由于两个球面的 \(\mu\) 质量为零，可用控制收敛将它代入驻值等式。\(r<s\) 的散度是 \(k(s^{-k}-t^{-k})\)；\(s<r<t\) 上的散度是
+	\(-kt^{-k}+k|x^{\perp P_x}|^2r^{-k-2}\)。积分相加，再除以 \(k\)，便得到式\eqref{g3:eq:current-monotonicity-difference}。
+
+	右侧非负，故质量比在这些良好半径之间单调。坏半径至多可数，因为不同球面互不相交，而 \(\mu\) 在 \(B_R(a)\) 内有限。对任意 \(s<t\)，分别取良好半径从下方趋于 \(s,t\)；开球递增并覆盖目标开球，测度的下连续性遂把单调性推广到全部半径。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:minimizing-current-density}
+	在上一定理的条件下，每个 \(a\in U\) 都存在有限密度
+	\[
+		\Theta^k(\mu,a)
+		=\lim_{r\downarrow0}\frac{\mu(B_r(a))}{\omega_kr^k}.
+	\]
+	在 \(\mu\)-几乎每点，此密度等于整数重数 \(\theta(a)\)。若 \(a\in\operatorname{spt}T\)，则 \(\Theta^k(\mu,a)\ge1\)。特别地，在球不遇 \(U\) 边界时，
+	\begin{equation}\label{g3:eq:stationary-integer-mass-lower-bound}
+		\mu(B_r(a))\ge\omega_kr^k.
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	单调性使质量比在趋零时有极限，其值不超过任意固定内球的有限质量比。\cref{g3:thm:weighted-rectifiable-density}适用于整数重数表示：\(\theta\ge1\) 使载体在局部具有有限 \(\mathcal H^k\) 测度，所以几乎处处的密度是 \(\theta\)。
+
+	这些密度至少为一的点在支集中稠密。给定 \(a\in\operatorname{spt}T\)，取这样的点 \(a_j\to a\)。对固定 \(r\) 及充分大的 \(j\)，球
+	\(B_{r-|a_j-a|}(a_j)\) 包含于 \(B_r(a)\)。在 \(a_j\) 处使用单调性和密度下界，再令 \(j\to\infty\)，得到式\eqref{g3:eq:stationary-integer-mass-lower-bound}。最后令 \(r\downarrow0\)。
+\end{proof}
+
+现在固定内部点 \(a\in\operatorname{spt}T\)，用
+\[
+	\eta_{a,r}(x)=\frac{x-a}{r},\qquad T_{a,r}=\eta_{a,r\#}T
+\]
+放大。推前本身已含 \(k\) 阶 Jacobian，质量满足
+\(\|T_{a,r}\|(B_R)=r^{-k}\mu(B_{Rr}(a))\)，不再另乘 \(r^{-k}\)。对每个固定 \(R\)，单调性给出这些质量的一致上界，而充分小的 \(r\) 使放大流在 \(B_R\) 中无边界。\cref{g3:thm:local-integral-current-compactness}因此给出局部整数弱极限。
+
+\ProseParagraphBreak
+要把它称作切锥，还需要防止质量在弱极限中抵消。这里调用极小流特有的紧性加强，其证明通过切片粘合小误差，使极限的竞争者能转移回原序列。精确外部输入如下；来源是\cite[定理34.5及注34.6(1)，第198--202页]{Simon1983}。
+
+\begin{theorem}\label{g3:thm:minimizing-current-mass-compactness}
+	设 \(U\subset\mathbb R^n\) 开，\(T_j\) 为 \(U\) 中局部质量极小的整数 \(k\) 流，\(\partial T_j=0\) 于 \(U\)。若它们在每个 \(W\Subset U\) 上质量一致有界，并且 \(T_j\rightharpoonup T\)，则 \(T\) 仍局部质量极小且为整数流，并有
+	\[
+		\|T_j\|\rightharpoonup\|T\|
+	\]
+	作为局部 Radon 测度收敛。
+\end{theorem}
+
+上述定理在此作为外部结果使用。它比第22章的整数流紧性多给出质量测度收敛与极小性的保持；单独的下半连续性没有这些结论。位置与切平面的联合测度将在\secref{g3:sec:2304}中正式定义为变分流形。
+
+\begin{theorem}\label{g3:thm:minimizing-current-tangent-cone}
+	设 \(T\) 是 \(U\subset\mathbb R^n\) 中局部质量极小的整数 \(k\) 流，\(\partial T=0\) 于 \(U\)，\(1\le k<n\)。给定 \(a\in\operatorname{spt}T\) 和任意 \(r_j\downarrow0\)，可取子列使 \(T_{a,r_j}\rightharpoonup C\) 局部收敛，其中 \(C\ne0\) 是 \(\mathbb R^n\) 中局部质量极小、无边界的整数流，满足
+	\begin{equation}\label{g3:eq:current-tangent-cone-homogeneity}
+		D_{\lambda\#}C=C\quad(\lambda>0),\qquad D_\lambda(x)=\lambda x,
+	\end{equation}
+	以及
+	\[
+		\|C\|(B_R)=\omega_kR^k\Theta^k(\|T\|,a)\quad(R>0).
+	\]
+	这样的 \(C\) 称为 \(T\) 在 \(a\) 的\term[qiezhui]{切锥}[tangent cone]。
+\end{theorem}
+\begin{proof}
+	前述局部质量界与整数紧性先给出 \(C\)。每个放大流仍在相应放大开集内质量极小；对任意固定球，充分大的 \(j\) 都满足外部定理的假设。逐球使用\cref{g3:thm:minimizing-current-mass-compactness}，知 \(C\) 极小，且质量测度局部收敛。
+
+	当 \(\|C\|(\partial B_R)=0\) 时，测度收敛给出
+	\[
+		\|C\|(B_R)
+		=\lim_jr_j^{-k}\mu(B_{Rr_j}(a))
+		=\omega_kR^k\Theta^k(\mu,a).
+	\]
+	这样的半径除至多可数个外任意。由良好半径从两侧逼近，知这个等式对全部 \(R>0\) 成立，且所有球面均为 \(\|C\|\) 零测集。密度下界保证 \(C\ne0\)。
+
+	\(C\) 是驻值的，且其质量比恒定。将差值式\eqref{g3:eq:current-monotonicity-difference}用于 \(C\)，得到
+	\(x\in P_x\) 在 \(\|C\|\)-几乎处处成立。这还须转成流本身的齐次性。固定 \(\lambda>0\)，考虑
+	\(F(t,x)=(1-t+t\lambda)x\)，\(0\le t\le1\)。时间方向的导数是 \((\lambda-1)x\)，已在切平面内，因此 \(F\) 作用于 \([0,1]\times C\) 的 \((k+1)\) 维切向 Jacobian 为零。推前流因而为零。又 \(\partial C=0\)，同伦公式给出
+	\[
+		D_{\lambda\#}C-C
+		=\partial F_\#([0,1]\times C)=0.
+	\]
+	这里缩放因子始终处于两个正数之间；对任意紧支测试形式，其逆像支集仍有界，故第22章的局部同伦公式适用。齐次性得证。
+\end{proof}
+
+这个结论保证每个放大序列都有切锥子列，未指定不同子列必有同一极限。切锥保留中心密度，却可能比原流的局部几何简单得多；下一小节的分支曲线正体现这一点。
 
 \subsection{平面切锥与正则性问题}
 \label{g3:subsec:2303:03}
-待撰写
+称内部点 \(a\in\operatorname{spt}T\) 为正则点，是指某个邻域内
+\(T=q\lBrack M\rBrack\)，其中 \(M\) 是光滑嵌入、无边界、定向的 \(k\) 维子流形，\(q\) 为正整数。其余内部支集点组成奇异集 \(\operatorname{Sing}_{\mathrm{int}}T\)。正则性描述支集和重数的局部表示，单独出现一张平面作为切锥还没有提供这种表示。
 
-\subsection{整数流内部及边界正则性定理的具体范围}
+\ProseParagraphBreak
+重数为一时，Allard\footnote{William Kenneth Allard（1941—），在美国工作的数学家，研究几何测度论，建立了变分流形的第一变分与正则性理论。}正则性给出明确结论。下面是其驻值整数流特例，作为外部正则性结果引用\cite[定理24.2，第125--128页；定理36.3，第211--212页]{Simon1983}；含 \(L^p\) 平均曲率的定量输入见\cref{g3:thm:allard-regularity}。
+
+\begin{theorem}\label{g3:thm:unit-density-minimizing-current-regularity}
+	设 \(T\) 是开集 \(U\subset\mathbb R^n\) 中局部质量极小、无边界的整数 \(k\) 流。若 \(a\in\operatorname{spt}T\) 满足
+	\(\Theta^k(\|T\|,a)=1\)，则 \(a\) 是重数为一的正则点。特别地，若某个切锥是重数为一的定向平面流，则 \(a\) 正则。
+\end{theorem}
+
+说明调用条件如何出现：整数重数使几乎处处密度至少为一，驻值性使广义平均曲率为零，而中心密度为一使充分小球上的质量比任意接近一。Allard 定理把这三个条件变成一张 \(C^{1,\alpha}\) 单图；把流沿图投影推到参数平面，无边界条件与\cref{g3:thm:current-constancy}使所得顶维流的整数重数为常数；再沿图嵌入推回，并用中心密度为一确定该常数。在 Euclid 极小图方程下，局部椭圆正则性将它提升为光滑图。若从平面切锥出发，则上一小节的质量测度收敛先保证中心密度确为一。这个质量信息是把弱放大极限用于正则性判断的关键。
+
+\begin{example}\label{g3:exm:complex-cusp-current}
+	在 \(\mathbb C^2\cong\mathbb R^4\) 中取
+	\[
+		F(z)=(z^2,z^3),\qquad T=F_\#\lBrack\overline D\rBrack,
+	\]
+	其中 \(D\subset\mathbb C\) 为单位圆盘，取复定向。\(F\) 光滑，在 \(z\ne0\) 时是单射浸入：若 \(z^2=w^2\) 且 \(z^3=w^3\)，则 \(z=w\)。故 \(T\) 在原点之外的有效重数为一，边界是光滑嵌入曲线 \(F(\partial D)\)。
+
+	标准二形式
+	\(\omega=\mathrm dx_1\wedge\mathrm dy_1+\mathrm dx_2\wedge\mathrm dy_2\)
+	由\cref{g3:prop:wirtinger-calibration}具有余质量一，并在每个正向复直线上取等。\(F\) 的非退化切平面均为复直线，故 \(T(\omega)=\mathbf M(T)\)。这个形式全局光滑、有界且闭，因此\cref{g3:prop:euclidean-current-calibration}适用，说明 \(T\) 在全部有限质量、同整数边界的竞争者中质量最小，特别地局部质量极小。
+
+	令 \(b>0\) 满足 \(r^2=b^4+b^6\)。因为
+	\(J_2F(z)=4|z|^2+9|z|^4\)，对充分小的 \(r\) 有
+	\[
+		\|T\|(B_r(0))
+		=\int_{|z|<b}(4|z|^2+9|z|^4)\,\mathrm d\mathcal L^2(z)
+		=2\pi b^4+3\pi b^6.
+	\]
+	所以 \(\Theta^2(\|T\|,0)=2\)。将参数改写为 \(z=\sqrt r\,w\)，放大后的参数化为
+	\[
+		w\longmapsto(w^2,\sqrt r\,w^3).
+	\]
+	任意固定紧支测试形式的原像位于一致有界的 \(w\) 域；参数化在该域光滑收敛到 \(w\mapsto(w^2,0)\)。于是全部放大流都趋于 \(2\lBrack\mathbb C\times\{0\}\rBrack\)，它是唯一的平面切锥。
+
+	然而原点不是正则点。若支集在原点附近是 \(C^1\) 嵌入曲面，其切平面必为 \(\mathbb C\times\{0\}\)，到第一复坐标的投影将由逆函数定理局部单射。但 \(F(z)\) 与 \(F(-z)\) 在 \(z\ne0\) 时是不同点，却有相同的第一坐标 \(z^2\)，矛盾。这个例子同时具有质量极小性、光滑边界和唯一平面切锥，仍在内部出现分支奇点。
+\end{example}
+
+\subsection{极小整数流的内部与边界正则性}
 \label{g3:subsec:2303:04}
-待撰写
+密度一正则性处理最接近平面的单层情形。一般内部奇异集的大小还取决于维数与余维，尤其不能把超曲面的维数阈值用于高余维流。以下两项是本节采用的外部内部正则性结论。
+
+\begin{theorem}\label{g3:thm:area-minimizing-interior-singular-bounds}
+	设 \(U\subset\mathbb R^n\) 开，\(2\le k<n\)，\(T\) 为 \(U\) 中局部质量极小的整数 \(k\) 流，\(\partial T=0\) 于 \(U\)。
+	\begin{enumerate}
+		\item 在任意余维中，\(\operatorname{Sing}_{\mathrm{int}}T\) 的 Hausdorff 维数至多为 \(k-2\)，即对每个 \(\varepsilon>0\)，
+		\[
+			\mathcal H^{k-2+\varepsilon}(\operatorname{Sing}_{\mathrm{int}}T)=0.
+		\]
+		\item 若 \(n=k+1\)，则 \(k\le6\) 时内部无奇点；\(k=7\) 时内部奇异集局部有限；\(k\ge8\) 时其 Hausdorff 维数至多为 \(k-7\)。
+	\end{enumerate}
+\end{theorem}
+
+第一项是 Almgren\footnote{Frederick Justin Almgren Jr.（1933--1997），美国数学家，主要研究几何测度论。}的一般内部正则性定理，此处采用\cite[第36节，第210--211页]{Simon1983}所陈述的 Euclid 特例，证明依赖多值函数及分支分析。第二项见\cite[第37节，尤其定理37.7及其证明，第215--223页]{Simon1983}；书中先证明局部有限周长集合边界的版本，再通过余维一极小整数流的局部分层分解处理整数重数。高重数分层的最大值原理以及维数降低是这项结论的组成部分，不能只把一般流直接认作一个集合的边界。
+
+\ProseParagraphBreak
+这里 \(k\) 是流的维数。例如二维整数流在 \(\mathbb R^3\) 中内部光滑；在 \(\mathbb R^4\) 中，一般结论只把内部奇异集的 Hausdorff 维数压到零，\cref{g3:exm:complex-cusp-current}确实出现一个奇点。维数为零本身不意味着集合局部有限，后一个更强断言需要另行给出对应定理。
+
+\ProseParagraphBreak
+边界正则性另有假设。我们选用如下余维一版本，外引 Hardt--Simon\footnote{Robert M. Hardt，在美国工作的数学家，研究几何测度论与偏微分方程。Leon Melvyn Simon（1945—），澳大利亚出生的数学家，研究极小曲面、几何测度论与偏微分方程。}的边界正则性定理；正式公告明确陈述于\cite[定理2，第263--264页]{HardtSimon1979BoundaryAnnouncement}。
+
+\begin{theorem}\label{g3:thm:hardt-simon-boundary-regularity}
+	设 \(U\subset\mathbb R^{k+1}\) 开，\(k\ge2\)，\(T\) 是 \(U\) 中局部绝对质量极小的整数 \(k\) 流。设在 \(U\) 中
+	\[
+		\partial T=\lBrack\Gamma\rBrack,
+	\]
+	其中 \(\Gamma\) 为无边界、定向、嵌入的 \(C^2\) \((k-1)\) 维子流形，系数为一。则存在 \(\Gamma\) 的开邻域 \(V\subset U\)，使 \(V\cap\operatorname{spt}T\) 局部为嵌入的 \(C^{1,\alpha}\) 超曲面，对每个 \(0<\alpha<1\) 成立。支集可在 \(\Gamma\) 处终止，也可穿过 \(\Gamma\)；在后一种情形，\(\Gamma\) 两侧的整数重数跳跃一。若 \(\Gamma\) 光滑，则边界处的表示也光滑。
+\end{theorem}
+
+本定理的绝对质量极小，仍按本节开始的紧支整数闭流竞争定义，而非只对光滑微分同胚驻值。它的边界是重数一的嵌入子流形，环境余维为一。穿越情形可从两个同向同心平面圆周看出：相应平面填充在内圆盘上重数为二、外环带上重数为一，内圆是流的边界所在，但支集在那里是一整张平面。因此“边界正则”不要求支集的拓扑边界处处等于 \(\operatorname{spt}\partial T\)。
+
+\ProseParagraphBreak
+高余维的边界即使局部光滑，也可能遇到其他极小片。例如在 \(\mathbb C^2\) 中，把第一复坐标平面上的半圆盘流与第二复坐标平面上的整圆盘流相加，并在原点附近观察。边界在那里只是一条光滑直线，两个复片都由同一个 \(\omega\) 校准，故和流局部质量极小；原点附近支集却是相交的两片，不能表示成一张嵌入带边界曲面。此例说明余维一边界定理的环境条件有实际作用。对于给定 Plateau 解，内部结论应在远离边界处使用，边界结论则逐点核查所选定理的边界重数、嵌入性与环境条件。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

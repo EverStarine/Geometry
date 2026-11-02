@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 6.2 Beltrami 方程与复结构
 % 纲要位置：几何学计划纲要.md，第 3697 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,223 @@
 \section{Beltrami 方程与复结构}
 \label{g4:sec:0602}
 
-待撰写
+在固定光滑曲面上改变复结构，可以理解为改变哪些实切方向的复线性组合应当叫作 \((0,1)\) 方向。这样记录变化后，寻找新全纯坐标就成为一个一阶方程。本节先在光滑小参数范围内直接求解这个方程，并保留解对参数的依赖；下一节将把这些实际复结构中的坐标冗余除去。
 
 \subsection{Beltrami 微分和局部变形}
 \label{g4:subsec:0602:01}
-待撰写
+
+固定一条光滑黎曼曲面 \(X\)，记 \(T_X=\mathrm{T}^{1,0}X=K_X^{-1}\) 为它的全纯切线丛。以下 \(A^{0,1}(T_X)\) 表示光滑 \(T_X\) 值 \((0,1)\) 形式。其元素在坐标 \(z\) 中写成
+\[
+	\mu=\mu_z\,\mathrm{d}\overline z\otimes\partial_z.
+\]
+若 \(\zeta=\zeta(z)\) 是原结构的另一个全纯坐标，则
+\begin{equation}\label{g4:eq:0602:beltrami-transition}
+	\mu_\zeta=\mu_z\frac{\zeta'(z)}{\overline{\zeta'(z)}}.
+\end{equation}
+所以 \(|\mu_z|\) 与坐标无关。满足 \(\|\mu\|_\infty<1\) 的这种张量称为\term[Beltramiweifen]{Beltrami 微分}[Beltrami differential]\footnote{Eugenio Beltrami（1835--1900），意大利数学家，研究微分几何，并用曲面模型解释非 Euclid 几何。}。在局部公式里，常把系数 \(\mu_z\) 也简写为 \(\mu\)。
+
+\begin{proposition}\label{g4:prop:0602:almost-complex}
+	设 \(X\) 是黎曼曲面，\(\mu\in A^{0,1}(T_X)\) 且 \(|\mu|<1\)。局部复直线
+	\[
+		\mathrm{T}^{0,1}_{\mu}X
+		=\mathbb C(\partial_{\overline z}-\mu\partial_z)
+	\]
+	定义与原定向相容的光滑几乎复结构 \(J_\mu\)。相对于原结构足够近的每个几乎复结构都唯一这样表示。函数 \(w\) 是新结构的局部全纯坐标，当且仅当
+	\begin{equation}\label{g4:eq:0602:beltrami-equation}
+		w_{\overline z}=\mu w_z,\qquad w_z\ne0.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	式\eqref{g4:eq:0602:beltrami-transition}使所给直线在坐标交叠处相同。它与共轭直线的两个生成元的行列式为 \(1-|\mu|^2\)，所以二者互补。规定 \(J_\mu\) 在这两条直线上分别作用为 \(-\mathrm{i}\)、\(\mathrm{i}\)，即得到实切丛上的光滑端同态，满足 \(J_\mu^2=-I\)。其 \((1,0)\) 余切线由 \(\mathrm{d}z+\mu\,\mathrm{d}\overline z\) 张成；这个形式的实部、虚部确定的面积是原坐标面积的 \(1-|\mu|^2>0\) 倍，故定向相同。
+
+	足够接近原 \((0,1)\) 线的复直线仍横截于原 \((1,0)\) 线，因而有唯一的图表示 \(\partial_{\overline z}-\mu\partial_z\)。最后，\(\mathrm{d}w\) 消灭新 \((0,1)\) 方向，恰为方程\eqref{g4:eq:0602:beltrami-equation}；实 Jacobian 为
+	\[
+		J_w=|w_z|^2-|w_{\overline z}|^2
+		=(1-|\mu|^2)|w_z|^2.
+	\]
+	因此再加上 \(w_z\ne0\)，实逆函数定理就保证它确为保持定向的局部坐标。
+\end{proof}
+
+方程\eqref{g4:eq:0602:beltrami-equation}称为\term[Beltramifangcheng]{Beltrami 方程}[Beltrami equation]。写出几乎复结构还没有完成局部复图册的构造；必须找到满足方程且 Jacobian 非零的解。下一小节在本章使用的光滑小参数范围内完成这一步。
+
+\begin{example}\label{g4:exm:0602:constant-beltrami}
+	常数 \(c\in\mathbb C\)、\(|c|<1\) 对应显式坐标 \(w=z+c\overline z\)。若 \(c=re^{\mathrm{i}\theta}\)，适当旋转源、靶实坐标后，此实线性映射沿两条垂直方向的伸缩因子分别为 \(1+r\)、\(1-r\)。它把小圆变成椭圆，长短轴之比为 \((1+r)/(1-r)\)。这说明 \(|\mu|\) 衡量偏离共形的程度，而 \(\mu\) 的相位记录伸缩轴的方向。
+\end{example}
 
 \subsection{光滑小参数解的构造}
 \label{g4:subsec:0602:02}
-待撰写
+
+直接对方程作积分时，未知量又出现在右边的一阶导数中。要使迭代收敛，求解 \(\bar\partial\) 的算子必须恰好补回这一个导数。我们在一个辅助平环面上用 Fourier 系数构造这样的算子；环面的常数障碍由一个仿射项吸收，所求坐标只在原来的小圆盘上使用。
+
+\begin{lemma}\label{g4:lem:0602:periodic-right-inverse}
+	在 \(\mathbb T^2=\mathbb R^2/(2\pi\mathbb Z)^2\) 上记 \(H^s=W^{s,2}\)，\(M f=(4\pi^2)^{-1}\int_{\mathbb T^2}f\)。对每个整数 \(s\ge0\)，存在有界复线性算子
+	\[
+		T:H^s\longrightarrow H^{s+1},\qquad
+		\bar\partial T f=f-Mf,\qquad MTf=0.
+	\]
+	这里 \(\bar\partial\) 在公式中指系数算子 \(\partial_{\overline z}\)。
+\end{lemma}
+\begin{proof}
+	对 \(k=(k_1,k_2)\in\mathbb Z^2\) 取 Fourier 基 \(e^{\mathrm{i}(k_1x+k_2y)}\)，定义
+	\[
+		\widehat{Tf}(0)=0,\qquad
+		\widehat{Tf}(k)=\frac{2\widehat f(k)}{\mathrm{i}k_1-k_2}
+		\quad(k\ne0).
+	\]
+	分母的模为 \(|k|\)，所以
+	\[
+		\sum_k(1+|k|^2)^{s+1}|\widehat{Tf}(k)|^2
+		\le8\sum_k(1+|k|^2)^s|\widehat f(k)|^2.
+	\]
+	这给出所需有界性；逐项乘以 \((\mathrm{i}k_1-k_2)/2\) 给出两个恒等式。光滑函数的级数可逐阶求导；一般情形由 Fourier 截断在 Sobolev 范数中的收敛得到。
+\end{proof}
+
+下面只固定一个整数 \(s\ge3\)。第三卷第11.3节推论11.3.10、11.3.11给出
+\begin{equation}\label{g4:eq:0602:sobolev-tools}
+	H^{s+1}\hookrightarrow C^1,
+	\qquad \|fg\|_{H^s}\le C_s\|f\|_{H^s}\|g\|_{H^s}.
+\end{equation}
+这些结论在有限坐标覆盖和固定丛标架中逐分量适用。使用一个固定阶数，是为了先在完备的 Banach 空间\footnote{Stefan Banach（1892--1945），波兰数学家，建立完备赋范空间与线性算子的一般理论。}内求解；光滑性随后由方程提高，而不是在光滑函数的非 Banach 空间上直接使用逆函数定理。
+
+\begin{theorem}\label{g4:thm:0602:small-beltrami}
+	设 \(D\Subset U\subset\mathbb C\) 是圆盘，\(\mu(z,t)\) 在 \(U\) 上关于 \(z\) 光滑，参数 \(t\) 在 \(\mathbb C^N\) 中的原点附近变化，且 \(\mu(z,0)=0\)。假设 \(t\mapsto\mu(\cdot,t)\) 关于每个局部 Sobolev 范数全纯。缩小参数邻域后，\(D\) 上存在满足
+	\[
+		w_{\overline z}(z,t)=\mu(z,t)w_z(z,t),
+		\qquad w(z,0)=z,
+	\]
+	的保持定向的光滑局部坐标。它关于 \(t\) 全纯，并在每个较小圆盘上关于空间变量和参数联合光滑。若参数依赖仅为实光滑，则所得坐标也实光滑地依赖参数。
+\end{theorem}
+\begin{proof}
+	先经固定仿射缩放，使 \(\overline U\) 位于平环面的一个坐标方块内。取光滑截断 \(\chi\)，支于 \(U\) 且在 \(\overline D\) 附近等于 \(1\)，将 \(\chi\mu\) 在方块外补零并周期延拓，记为 \(m\)。这个过程保持参数的全纯性；\(m(0)=0\)，故 \(\|m(t)\|_{H^s}\) 在缩小参数域后任意小。
+
+	寻找形如
+	\[
+		w(z,t)=z+a(t)\overline z+u(z,t),\qquad Mu=0
+	\]
+	的解，其中 \(u\) 周期。令
+	\[
+		A_m u=T(m\partial_z u),\qquad
+		u=T m+A_m u.
+	\]
+	由式\eqref{g4:eq:0602:sobolev-tools}与上一引理，
+	\[
+		\|A_m u\|_{H^{s+1}}
+		\le C\|m\|_{H^s}\|u\|_{H^{s+1}}.
+	\]
+	取 \(C\|m\|_{H^s}<1/2\)，则
+	\begin{equation}\label{g4:eq:0602:neumann-solution}
+		u=\sum_{j=0}^{\infty}A_m^jTm,
+		\qquad a=M\bigl(m(1+\partial_z u)\bigr)
+	\end{equation}
+	在 \(H^{s+1}\) 中收敛，并且 \(\|u\|_{H^{s+1}}+|a|\le C'\|m\|_{H^s}\)。对方程施加 \(\bar\partial\)，得到
+	\[
+		\partial_{\overline z}u=m(1+\partial_z u)-a.
+	\]
+	于是 \(w_{\overline z}=m w_z\)，在 \(D\) 上即为所求方程。Sobolev 嵌入使 \(w\) 在 \(C^1\) 中接近 \(z\)，特别地 \(w_z\ne0\)。必要时再缩小参数域，\(\|\mathrm{d}w-I\|<1/2\) 于圆盘 \(D\)，沿线段积分还给出 \(|w(z)-w(z')|\ge|z-z'|/2\)，因此这里甚至可取单射坐标。
+
+	每个级数项都由 \(m\)、复线性算子及双线性乘法构成，所以对 \(t\) 全纯。收敛在较小参数域上一致，故其和也为 Banach 值全纯函数；例如逐复参数应用 Cauchy 积分公式，并在一致收敛下交换积分与求和，就得到这一结论。实光滑参数的情形可对 \((I-A_m)^{-1}\) 求导，逆算子在这里一致有界，故得到各阶实参数导数。
+
+	还需由有限阶解恢复光滑性。\(\partial_{\overline z}-m\partial_z\) 的实非零余切方向上的主符号不为零，因为两个复一阶符号的模相同而 \(|m|<1\)。它是光滑系数的一阶椭圆算子。第三卷第12.3节定理12.3.9及推论12.3.10的内部正则性用于 \(w\)，给出空间变量的光滑性。对参数微分方程，右端由 \(m\) 的参数导数和较低阶参数导数的 \(w_z\) 组成；在紧参数集上用相同的局部估计逐阶提高 Sobolev 阶数，再用嵌入，得到联合光滑性。参数域中的 Cauchy 公式也可在这些较高阶范数中使用，故全纯依赖与这项提高相容。
+\end{proof}
+
+\begin{corollary}\label{g4:cor:0602:holomorphic-family}
+	设 \(X\) 为紧黎曼曲面，\(\eta_1,\ldots,\eta_N\in A^{0,1}(T_X)\)。对 \(t\in\mathbb C^N\) 足够小，令
+	\[
+		\mu(t)=\sum_{j=1}^N t_j\eta_j.
+	\]
+	则 \(J_{\mu(t)}\) 定义同一光滑曲面上的复结构 \(X_t\)。而且 \(X\times B\to B\) 可赋予复流形结构，使投影全纯、纤维为 \(X_t\)，其中 \(B\) 是足够小的参数球。
+\end{corollary}
+\begin{proof}
+	取有限个内外嵌套坐标圆盘，在每个大盘上使用上一定理，在小盘上得到 \(w_i(z,t)\)。同一纤维上，两套坐标都消灭 \(\partial_{\overline z}-\mu(t)\partial_z\)，故其转移为全纯函数。还要核对参数方向：在 \((z,t)\) 的实光滑乘积上，新 \((0,1)\) 分布由
+	\[
+		\partial_{\overline z}-\mu(z,t)\partial_z,
+		\quad \partial_{\overline t_1},\ldots,\partial_{\overline t_N}
+	\]
+	张成。函数 \(w_i(z,t),t_1,\ldots,t_N\) 全部消灭它，且其实 Jacobian 可逆。因此在坐标 \((w_i,t)\) 中，该分布就是标准 \((0,1)\) 分布；任意另一组坐标 \((w_j,t)\) 也消灭它，故转移满足全部 Cauchy--Riemann 方程而全纯。投影在这些坐标中就是 \((w_i,t)\mapsto t\)。
+\end{proof}
+
+这个构造已经产生实际复结构，不要求 Beltrami 微分满足附加的二阶可积条件。在复维一时，新反全纯方向只有一条复直线；这里用求解方程直接落实了它的局部坐标。
 
 \subsection{可测 Riemann 映照定理的准确引用}
 \label{g4:subsec:0602:03}
-待撰写
+
+对一般可测系数，空间导数的逐阶估计不能使用，小参数的 Sobolev 压缩条件也未必成立。下面单独列出所需的标准外部存在定理。称保持定向的同胚 \(f\) 为 \(K\)-\term[zhungongxingyingshe]{准共形映射}[quasiconformal mapping]，是指它在局部坐标中属于 \(W^{1,2}_{\mathrm{loc}}\)，且几乎处处满足
+\[
+	|f_{\overline z}|\le\frac{K-1}{K+1}|f_z|,
+	\qquad 1\le K<\infty.
+\]
+这与在几乎每条平行坐标轴的线段上绝对连续、并满足同一弱导数不等式的通常解析定义一致；绝对连续代表由一维 Sobolev 截面给出。
+
+以下是\term[keceliemanyingzhaodingli]{可测 Riemann 映照定理}[measurable Riemann mapping theorem]的三点归一化形式。这里采用 Glutsyuk 论文作者稿的定理1.7及注1.8：定理1.7给出平面上固定 \(0,1\) 的解，注1.8保证无穷远处的准共形延拓。\cite[作者稿 arXiv:math/0510071，定理1.7、注1.8，第3页；证明见第3.1--3.4节]{Glutsyuk2008Uniformization}
+\begin{theorem}[可测 Riemann 映照定理]\label{g4:thm:0602:measurable-riemann}
+	设 \(\mu\in L^\infty(\mathbb C)\) 可测，\(\|\mu\|_\infty=k<1\)。则存在唯一保持定向的准共形同胚
+	\[
+		f:\widehat{\mathbb C\mkern0mu}\longrightarrow\widehat{\mathbb C\mkern0mu},
+		\qquad f(0)=0,\quad f(1)=1,\quad f(\infty)=\infty,
+	\]
+	使 \(f_{\overline z}=\mu f_z\) 在 \(\mathbb C\) 上几乎处处成立；它的最大伸缩比至多为 \((1+k)/(1-k)\)。系数按几乎处处相等识别。这里不要求 \(\mu\) 连续或具有紧支集。若 \(\mu\) 在某个开集上光滑，则 \(f\) 在该开集上是光滑局部微分同胚。
+\end{theorem}
+
+三点归一化消除了后复合 Möbius 变换\footnote{August Ferdinand Möbius（1790--1868），德国数学家、天文学家，研究射影几何、仿射几何与拓扑。}的自由度。定理的结论包括全局单射和满射，不能从一个弱方程解的存在直接推出。本章的光滑局部参数由\cref{g4:thm:0602:small-beltrami}与下一节的切片构造证明；一般可测情形用于说明准共形标记所允许的范围。
+
+下面同时记录规范化解的紧性，供比较准共形标记时使用。这是同一作者稿第3.1节的引理3.1、推论3.2及引理3.3；证明分别见第3.2、3.3节。\cite[作者稿第11--15页]{Glutsyuk2008Uniformization}
+
+\begin{theorem}\label{g4:thm:0602:qc-compactness}
+	固定 \(K\ge1\)。所有固定 \(0,1,\infty\) 的 \(K\)-准共形球面同胚及其逆映射，在球面距离下等度连续。因此任意这样的序列 \(f_n\) 都有子列一致收敛到一个球面同胚，逆映射同时一致收敛到其逆。
+
+	更一般地，若平面域 \(U\) 上的 \(K\)-准共形同胚 \(f_n:U\to f_n(U)\) 在紧子集上一致收敛到同胚 \(f\)，且其 Beltrami 系数 \(\mu_n\) 几乎处处趋于 \(\mu\)，则 \(f\) 仍为 \(K\)-准共形并满足 \(f_{\overline z}=\mu f_z\)。特别地，若上述三点归一化球面映射的伸缩比 \(K_n\to1\)，则整个序列一致趋于恒等映射。
+\end{theorem}
+
+最后一句可直接从所引紧性与闭性推出：\(K_n\to1\) 使 \(\|\mu_n\|_\infty\to0\)，每个收敛子列的极限满足弱 Cauchy--Riemann 方程，所以全纯；三点归一化使它只能为恒等。若整个序列不趋于恒等，可取一个始终相距正数的子列，再取其收敛子列，就与这一唯一极限矛盾。一般可测系数的存在、全局单值性与上述紧性均是本节明确采用的外部输入；光滑小参数的构造和下一节的局部参数不依赖这些输入。
 
 \subsection{复结构变化与坐标变化}
 \label{g4:subsec:0602:04}
-待撰写
+
+一个复结构可以用许多不同的标记坐标表示。比较两个 Beltrami 系数时，需要让坐标变换同时作用于源和靶，而不能只把两个系数相减。
+
+\begin{proposition}\label{g4:prop:0602:change-of-structure}
+	在固定光滑曲面上，设 \(J_\mu,J_\nu\) 由光滑 Beltrami 微分给出，\(\phi\) 是保持定向的光滑微分同胚。则 \(\phi:(X,J_\mu)\to(X,J_\nu)\) 全纯，当且仅当各原坐标中
+	\begin{equation}\label{g4:eq:0602:map-equation}
+		\phi_{\overline z}-\mu\phi_z
+		+(\nu\circ\phi)
+		\bigl(\overline{\phi_z}-\mu\overline{\phi_{\overline z}}\bigr)=0.
+	\end{equation}
+	若 \(w\) 是 \(J_{\mu_0}\) 的局部全纯坐标，则 \(J_\mu\) 相对于 \(w\) 的 Beltrami 系数为
+	\begin{equation}\label{g4:eq:0602:relative-beltrami}
+		\kappa
+		=\frac{w_z}{\overline{w_z}}
+		\frac{\mu-\mu_0}{1-\mu\overline{\mu_0}}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	靶的新 \((1,0)\) 形式由 \(\mathrm{d}\zeta+\nu\,\mathrm{d}\overline\zeta\) 张成。它经 \(\phi\) 拉回后，\(\mathrm{d}z\)、\(\mathrm{d}\overline z\) 的系数分别为
+	\[
+		\phi_z+(\nu\circ\phi)\overline{\phi_{\overline z}},
+		\qquad
+		\phi_{\overline z}+(\nu\circ\phi)\overline{\phi_z}.
+	\]
+	全纯性要求后一系数等于前一系数乘 \(\mu\)，整理即得式\eqref{g4:eq:0602:map-equation}。作为符号检查，当 \(\phi=\operatorname{id}\) 时，该式恰给出 \(\mu=\nu\)。
+
+	写 \(A=w_z\)，则 \(\mathrm{d}w=A(\mathrm{d}z+\mu_0\,\mathrm{d}\overline z)\)。解出 \(\mathrm{d}z,\mathrm{d}\overline z\) 并代入 \(\mathrm{d}z+\mu\,\mathrm{d}\overline z\)，得到
+	\[
+		\frac1{1-|\mu_0|^2}
+		\left(
+		\frac{1-\mu\overline{\mu_0}}A\,\mathrm{d}w
+		+\frac{\mu-\mu_0}{\overline A}\,\mathrm{d}\overline w
+		\right).
+	\]
+	两系数之比就是式\eqref{g4:eq:0602:relative-beltrami}；分母不为零，因为 \(|\mu\overline{\mu_0}|<1\)。
+\end{proof}
+
+式\eqref{g4:eq:0602:map-equation}特别适合下一节的局部切片：把源系数 \(\mu\) 视为给定数据，把靶系数 \(\nu\) 限制在一个有限维光滑空间，再求 \(\phi\)。这样只有光滑的有限维系数被复合到未知映射上，避免让任意有限阶数据 \(\mu\) 承担额外的空间导数。
+
+\begin{example}\label{g4:exm:0602:torus-parameter}
+	在 \(X_\tau=\mathbb C/(\mathbb Z+\tau\mathbb Z)\)、\(\operatorname{Im}\tau>0\) 上取常数系数 \(c\)、\(|c|<1\)。坐标 \(w=z+c\overline z\) 将两个周期变成 \(1+c\)、\(\tau+c\overline\tau\)。除以第一个周期后得到带相同有序标记的环面参数
+	\[
+		\tau(c)=\frac{\tau+c\overline\tau}{1+c},\qquad
+		\operatorname{Im}\tau(c)
+		=\frac{(1-|c|^2)\operatorname{Im}\tau}{|1+c|^2}>0.
+	\]
+	并且 \(\tau'(0)=\overline\tau-\tau\ne0\)。所以这个 Beltrami 参数确实改变了环面的复周期；局部坐标中的实线性伸缩，在整个商曲面上留下一个可计算的复模参数。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

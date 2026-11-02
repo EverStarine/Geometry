@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 9.4 三角比较的几何后果
 % 纲要位置：几何学计划纲要.md，第 2452 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,17 +16,193 @@
 \section{三角比较的几何后果}
 \label{g3:sec:0904}
 
-待撰写
+三角比较把曲率条件转成有限个点之间的距离关系。非正曲率配合单连通性，给出稳定的凸性与最近点投影；正曲率下界则使最短线长度受到球面模型的限制。我们先分别推导这些结论，最后用度量三角形的语言比较上下曲率界。前两小节及 CAT(0) 的证明只使用本章常规部分；最后关于下三角比较的结论使用\secref{g3:sec:0903}。
 
 \subsection{凸集、测地三角形和投影}
 \label{g3:subsec:0904:01}
-待撰写
+
+沿用\cref{g3:def:hadamard-manifold}的 Hadamard 流形：它连通、完备、单连通、光滑且无边界，截面曲率非正。任意两点之间的测地线段唯一，因而“包含两点之间的线段”不再涉及最短线的选择。
+
+前面已经用过的\term[cedi tuxing]{测地凸}[geodesically convex]集合 \(C\subset M\)，就是包含其任意两点之间唯一最短线段的集合。对于这样的集合，垂足可以用最小化距离定义，即使集合的边界并不光滑。
+
+距离平方的强凸性有一个方便的有限距离表达。设 \(p,x,y\in M\)，\(\gamma:[0,1]\to M\) 是从 \(x\) 到 \(y\) 的常速最短线，\(a=d(x,y)\)。由\cref{g3:prop:hadamard-squared-distance-convex}，
+\[
+	\frac{\mathrm d^2}{\mathrm dt^2}\frac12d(p,\gamma(t))^2
+	\ge a^2.
+\]
+减去 \(a^2t^2/2\) 后得到凸函数，再用端点连线在其图像上方，便得
+\begin{equation}\label{g3:eq:hadamard-cn}
+	d(p,\gamma(t))^2
+	\le(1-t)d(p,x)^2+td(p,y)^2-t(1-t)d(x,y)^2.
+\end{equation}
+在 Euclid 空间中，展开平方便知这里恒为等式。非正曲率保留的方向是“线段内点的距离平方不超过这个模型值”。
+
+\begin{theorem}[闭凸集的最近点投影]\label{g3:thm:hadamard-projection}
+	设 \(M\) 为有限维 Hadamard 流形，\(C\subset M\) 非空、闭且测地凸。对每个 \(x\in M\)，存在唯一 \(u=P_C(x)\in C\) 使
+	\[
+		d(x,u)=\inf_{q\in C}d(x,q).
+	\]
+	该点由下列条件刻画：
+	\begin{equation}\label{g3:eq:projection-angle}
+		\langle\log_u x,\log_u q\rangle\le0
+		\qquad(q\in C).
+	\end{equation}
+	此外，对所有 \(q\in C\)，
+	\begin{equation}\label{g3:eq:projection-pythagoras}
+		d(x,q)^2\ge d(x,P_Cx)^2+d(P_Cx,q)^2.
+	\end{equation}
+	映射 \(P_C:M\to C\) 为1-Lipschitz。
+\end{theorem}
+\begin{proof}
+	取 \(q_0\in C\)。一列逼近距离下确界的点最终落在闭球 \(\overline B(x,d(x,q_0)+1)\) 内；该球由完备性和 Hopf--Rinow 定理为紧集。取收敛子列，闭性保证极限仍在 \(C\)，距离连续性说明极限达到下确界。若不同的 \(u,v\) 都达到最小值 \(\rho\)，则式\eqref{g3:eq:hadamard-cn}在其中点 \(m\in C\) 处给出
+	\[
+		d(x,m)^2\le\rho^2-\tfrac14d(u,v)^2<\rho^2,
+	\]
+	矛盾，故最近点唯一。
+
+	令 \(\eta(t)=\exp_u(t\log_u q)\)。当 \(u=P_Cx\) 时，函数 \(f(t)=\tfrac12d(x,\eta(t))^2\) 在 \(t=0\) 的右导数非负。梯度公式给出
+	\[
+		f'(0)=-\langle\log_u x,\log_u q\rangle\ge0.
+	\]
+	反过来，若 \(u\in C\) 满足式\eqref{g3:eq:projection-angle}，则 \(f''(t)\ge d(u,q)^2\)，积分两次得到
+	\[
+		\tfrac12d(x,q)^2
+		\ge\tfrac12d(x,u)^2+f'(0)+\tfrac12d(u,q)^2
+		\ge\tfrac12d(x,u)^2+\tfrac12d(u,q)^2.
+	\]
+	因此 \(u\) 就是最近点，并同时得到式\eqref{g3:eq:projection-pythagoras}。对不等于 \(u\) 的 \(x,q\)，条件\eqref{g3:eq:projection-angle}意味着从 \(u\) 指向 \(x\) 与指向 \(q\) 的夹角至少为直角。
+
+	最后证明投影不增加距离。设 \(u=P_Cx\)、\(v=P_Cy\)，先考虑 \(u\ne v\)。取
+	\[
+		\alpha(s)=\exp_u(s\log_u x),\qquad
+		\beta(s)=\exp_v(s\log_v y),\qquad 0\le s\le1,
+	\]
+	并令 \(E(s)=\tfrac12d(\alpha(s),\beta(s))^2\)。\Cref{g3:prop:hadamard-geodesic-uniqueness}已经证明唯一测地线及 \(\log\) 映射光滑依赖两个端点。因此 \(E\) 在两端点相合处仍光滑。
+
+	用 \([0,1]\) 上的常速最短线连接 \(\alpha(s)\) 与 \(\beta(s)\)，得到光滑变分。两条端点轨迹都是测地线，故\cref{g3:thm:energy-second-variation}的端点加速度项为零；又因 \(K\le0\)，其积分项非负。因此 \(E''(s)\ge0\)。这个推导在端点相合时也成立，此时中间测地线为常曲线。若 \(T\) 是 \(s=0\) 时从 \(u\) 到 \(v\) 的常速切向场，第一变分给出
+	\[
+		E'(0)=\langle\log_v y,T(1)\rangle
+		-\langle\log_u x,T(0)\rangle\ge0.
+	\]
+	这里 \(T(0)=\log_u v\)、\(T(1)=-\log_v u\)，两项的符号分别来自 \(v,u\) 的投影角条件。于是 \(E(1)\ge E(0)\)，即 \(d(x,y)\ge d(u,v)\)。若 \(u=v\)，此不等式直接成立。
+\end{proof}
+
+非空闭测地凸集因而具有连续的收缩映射 \(P_C\)，在 \(C\) 上等于恒等。由最短线定义
+\[
+	H(x,t)=\exp_x\bigl(t\log_x(P_Cx)\bigr)
+\]
+还得到从恒等映射到 \(P_C\) 的连续形变，且在 \(C\) 上每点不动。闭性负责取得最小值，凸性负责唯一性及投影角；若删除凸性，Euclid 平面中两个分离点的中垂线上便有两个最近点。
 
 \subsection{球面型直径约束}
 \label{g3:subsec:0904:02}
-待撰写
+
+非正曲率在单连通覆盖中容许测地线无限保持最短，统一的正截面曲率下界产生相反效果。这里可以直接接上第八章的直径估计。
+
+\begin{corollary}\label{g3:cor:positive-sectional-diameter}
+	设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)。若所有截面曲率满足 \(K\ge k>0\)，则
+	\[
+		\operatorname{diam}M\le b_k=\frac{\pi}{\sqrt k},
+	\]
+	且 \(M\) 紧、基本群有限。
+\end{corollary}
+\begin{proof}
+	在任一单位向量 \(T\) 的垂直补中取正交单位基 \(e_1,\ldots,e_{n-1}\)，得到
+	\[
+		\operatorname{Ric}(T,T)=\sum_{i=1}^{n-1}K(T\wedge e_i)\ge(n-1)k.
+	\]
+	\Cref{g3:thm:bonnet-myers,g3:cor:myers-finite-fundamental-group}的条件全部满足，故得到所述结论。
+\end{proof}
+
+半径 \(1/\sqrt k\) 的圆球面达到直径界。相同的局部曲率也可以产生较小的整体直径：在实射影空间的标准商度量中，若 \(x,y\) 为半径 \(a=1/\sqrt k\) 球面上的代表元，则
+\[
+	d([x],[y])=\min\{d_{S^n(a)}(x,y),d_{S^n(a)}(x,-y)\}.
+\]
+这来自覆盖道路的两个可能终点。球面上这两个距离之和为 \(\pi a\)，所以射影空间直径为 \(\pi a/2\)，且当 \(x\perp y\) 时达到。局部曲率不区分这两个空间，整体的最短线则会看到商的识别。
+
+\ProseParagraphBreak
+
+对正曲率模型，直径范围还影响三角比较的陈述。一个球面模型的短边三角形要求周长严格小于 \(2b_k\)；这个条件保证每边短于 \(b_k\)，从而避开对径点处的最短线不唯一。直径上界本身只逐边给出 \(a,b,c\le b_k\)，不能把三边各自的上界相加后就声称已经满足三角比较的严格周长条件。\secref{g3:sec:0903}所证明的版本将该条件明确列在定理中。
+
+边界情形在标准球面上就能看到：取一对对径点，二者之间有无穷多条长度 \(b_k\) 的最短半大圆；再取其中一条的内点，三个距离的总和恰为 \(2b_k\)。因此在这样的端点配置中，单靠三边长无法选定唯一的模型短边三角形。另一方面，曲率上界 \(K\le k\) 不产生上述有限直径结论：Euclid 空间对任何 \(k>0\) 都满足这个上界，却有无限直径。
 
 \subsection{CAT 上界与 Alexandrov 下界的模型对照}
 \label{g3:subsec:0904:03}
-待撰写
+
+若空间中任意两点可以由长度等于其距离的路径连接，并把这样的路径按常速参数化，就称它为测地度量空间。黎曼完备性保证连通流形具有这一性质。三角比较的条件只涉及这些路径上的点与距离，因此可以脱离曲率张量表达。
+
+\begin{definition}\label{g3:def:cat-comparison}
+	设 \(X\) 是测地度量空间，\(k\in\mathbb R\)。对三边均为选定最短线、周长小于 \(2b_k\) 的三角形 \(pqr\)，在常曲率 \(k\) 的标准二维模型中取同边长三角形 \(\bar p\bar q\bar r\)。边上的对应点以距相应端点的比例确定。若任意这样的三角形及其边上任意两点 \(x,y\) 均满足
+	\begin{equation}\label{g3:eq:cat-upper-distance}
+		d_X(x,y)\le d_k(\bar x,\bar y),
+	\end{equation}
+	则称 \(X\) 为 \(\mathrm{CAT}(k)\) 空间。允许退化三角形，并以连续极限理解对应点。这里 \(b_k=\infty\) 当 \(k\le0\)。
+\end{definition}
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch09-TriangleCorrespondence}
+	\caption{三角形与同边长模型的对应关系。底边长为 \(a\)，对应点 \(z,\bar z\) 距左端点都为 \(ta\)；虚线所代表的距离是顶点到对边比较的对象。右图以 Euclid 模型示意。}
+	\label{g3:fig:triangle-correspondence}
+\end{figure}
+如\cref{g3:fig:triangle-correspondence}所示，比较时先固定三条边长，再按边上的距离比例确定对应点。特别地，顶点到对边的比较也包含在式\eqref{g3:eq:cat-upper-distance}中。
+\term[CAT kongjian]{CAT 空间}[CAT space]的名称汇集了 Cartan、Alexandrov 与 Toponogov 的姓氏。Alexandrov 的工作使曲率比较进入了没有光滑坐标的度量空间。这里的 Alexandrov 是 Aleksandr Danilovich Alexandrov。\footnote{Aleksandr Danilovich Alexandrov（1912--1999），苏联、俄罗斯数学家，研究凸曲面、整体几何和度量空间中的曲率比较；与拓扑学家 Pavel Sergeevich Alexandrov 为不同人物。}
+
+\begin{theorem}\label{g3:thm:hadamard-cat-zero}
+	有限维 Hadamard 流形连同其黎曼距离是 \(\mathrm{CAT}(0)\) 空间。
+\end{theorem}
+\begin{proof}
+	由完备性它是测地度量空间。取三角形 \(pqr\)，并令 \(x\in[p,q]\)、\(y\in[p,r]\)，写
+	\[
+		d(p,x)=s\,d(p,q),\qquad d(p,y)=t\,d(p,r),
+		\qquad 0\le s,t\le1.
+	\]
+	在式\eqref{g3:eq:hadamard-cn}中先以 \(r\) 为基点、\([p,q]\) 为线段，得到
+	\[
+		d(r,x)^2
+		\le(1-s)d(r,p)^2+s\,d(r,q)^2-s(1-s)d(p,q)^2
+		=|\bar r-\bar x|^2.
+	\]
+	最后的等号是 Euclid 空间的平方展开。再以 \(x\) 为基点、\([p,r]\) 为线段，得到
+	\[
+	\begin{aligned}
+		d(x,y)^2
+		&\le(1-t)d(x,p)^2+t\,d(x,r)^2-t(1-t)d(p,r)^2\\
+		&\le(1-t)|\bar x-\bar p|^2+t|\bar x-\bar r|^2
+		-t(1-t)|\bar p-\bar r|^2\\
+		&=|\bar x-\bar y|^2.
+	\end{aligned}
+	\]
+	同一条边上的对应点距离直接相等；不同边总有一个公共顶点，重新标记即可应用上述证明。因此所有边点对都满足式\eqref{g3:eq:cat-upper-distance}。
+\end{proof}
+
+这个结果同时解释一个看似相反的比较方向。\cref{g3:prop:hadamard-exponential-expansion}在固定初始夹角与两条径向边长时，使第三边不小于 Euclid 铰链；CAT(0) 则固定全部三边长，比较边内点之间的距离。两者固定的数据不同：在同边长三角形中，非正曲率使顶角不超过 Euclid 模型角，边间距因而满足上述上界。
+
+\ProseParagraphBreak
+
+下曲率界对应另一方向。对同边长模型三角形，要求每个顶点 \(p\) 与对边上的对应点 \(z,\bar z\) 满足
+\begin{equation}\label{g3:eq:alexandrov-lower-distance}
+	d(p,z)\ge d_k(\bar p,\bar z)
+\end{equation}
+是 Alexandrov 下曲率界的三角比较形式。\secref{g3:sec:0903}在连通完备光滑无边界流形的 \(K\ge k\) 条件下，完整证明了周长小于 \(2b_k\) 的这一结论。与 CAT 上比较不同，这个整体下比较不要求流形单连通。
+
+\begin{table}[htbp]
+	\centering
+	\caption{以同边长模型为参照的两种比较。下行采用本章证明的顶点到对边形式。}
+	\label{g3:tab:triangle-comparison-directions}
+	\begin{tabularx}{\textwidth}{@{}lXX@{}}
+		\toprule
+		类型 & 本章已证的光滑情形 & 对应距离的方向\\
+		\midrule
+		CAT(0) 上比较 & 完备、单连通，\(K\le0\) & 边点间距不超过 Euclid 模型\\
+		\(k\) 下三角比较 & 完备，\(K\ge k\)，周长 \(<2b_k\) & 顶点到对边距离不小于模型\\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+局部曲率上界与整体 CAT 条件之间还隔着拓扑。例如平坦二维环面 \((\mathbb R/\ell\mathbb Z)\times(\mathbb R/\ell\mathbb Z)\) 的曲率恒为零。沿第一圆周取三个等间距点 \(p,q,r\)，以三段长 \(\ell/3\) 的短弧为边；令 \(z\) 为不经过 \(p\) 的边 \([q,r]\) 的中点。则
+\[
+	d(p,z)=\ell/2,\qquad
+	|\bar p-\bar z|=\frac{\sqrt3}{2}\frac\ell3
+	=\frac{\ell}{2\sqrt3}.
+\]
+它违反 CAT(0) 不等式，虽然每个足够小的坐标邻域都是 Euclid 的。其万有覆盖是 Euclid 平面，才恢复整体 CAT(0) 比较。曲率的局部条件、最短线的整体选择与覆盖的拓扑，在这个例子中分别可见。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

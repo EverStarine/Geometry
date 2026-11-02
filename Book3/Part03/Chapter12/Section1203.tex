@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 12.3 变系数估计的局部化
 % 纲要位置：几何学计划纲要.md，第 2568 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,340 @@
 \section{变系数估计的局部化}
 \label{g3:sec:1203}
 
-待撰写
+常系数估计控制每一个频率，变系数算子却会把不同频率混合。局部化的做法是在小球上固定最高阶系数，把它们的变化留作可吸收的扰动；截断产生的误差少一个导数，因而可以逐阶处理。还须区分先验估计与正则性：前者先对已有足够导数的函数计算，后者要证明一个弱解或分布确实拥有这些导数。本节先取得局部估计，再分别用差商和可逆的小扰动完成这一步。
 
 \subsection{冻结系数与小球选择}
 \label{g3:subsec:1203:01}
-待撰写
+沿用上一节的记号，在开集 \(\Omega\subset\mathbb R^n\) 上写
+\[
+	P=\sum_{|\alpha|\le m}A_\alpha(x)\mathrm D^\alpha,
+	\qquad \mathrm D_j=-\mathrm i\partial_j,
+	\qquad p_m(x,\xi)=\sum_{|\alpha|=m}A_\alpha(x)\xi^\alpha.
+\]
+这里 \(m\ge1\)，各系数是光滑 \(N\times N\) 矩阵；标量情形取 \(N=1\)。若 \(P\) 椭圆，则在每个固定紧子集 \(K\Subset\Omega\) 上存在 \(c_K>0\)，使
+\[
+	|p_m(x,\xi)z|\ge c_K|\xi|^m|z|,
+	\qquad x\in K,\quad \xi\in\mathbb R^n,\quad z\in\mathbb C^N.
+\]
+这是单位余向量与单位纤维向量上的紧性给出的统一下界。在一点 \(x_0\) 冻结系数，得到齐次常系数算子
+\[
+	P_0=\sum_{|\alpha|=m}A_\alpha(x_0)\mathrm D^\alpha.
+\]
+最高阶部分的差虽然系数小，却仍作用于 \(m\) 阶导数，所以必须先保证这个差能被左侧的同阶范数吸收。
+
+\begin{lemma}\label{g3:lem:scaled-leading-perturbation}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(n,N,m\ge1\)，且 \(P=\sum_{|\alpha|\le m}A_\alpha(x)\mathrm D^\alpha\) 的系数为光滑 \(N\times N\) 矩阵。固定 \(x_0\in\Omega\)，取 \(\rho>0\)，使 \(\overline B_{3\rho}(x_0)\subset\Omega\)，并令 \(y=(x-x_0)/\rho\)。在 \(y\) 坐标中乘以 \(\rho^m\) 后，算子成为
+	\[
+		P_\rho=\sum_{|\alpha|\le m}\rho^{m-|\alpha|}
+		A_\alpha(x_0+\rho y)\mathrm D_y^\alpha.
+	\]
+	固定 \(\zeta\in C_c^\infty(B_3)\)，使 \(\zeta=1\) 于 \(B_2\)。则在 \(B_2\) 上可写
+	\[
+		P_\rho=P_0+V_\rho+L_\rho,\qquad
+		V_\rho=\sum_{|\alpha|=m}a_{\alpha,\rho}(y)\mathrm D_y^\alpha,
+	\]
+	其中 \(a_{\alpha,\rho}=\zeta(y)[A_\alpha(x_0+\rho y)-A_\alpha(x_0)]\) 紧支于 \(B_3\)，而 \(L_\rho\) 是系数也紧支于 \(B_3\) 的至多 \(m-1\) 阶算子。对每个固定实数 \(s\)，有
+	\begin{equation}\label{g3:eq:scaled-leading-smallness}
+		\|V_\rho v\|_{H^s}\le C_s\rho\,\|v\|_{H^{s+m}},
+		\qquad
+		\|L_\rho v\|_{H^s}\le C_s\|v\|_{H^{s+m-1}}
+	\end{equation}
+	对全空间 \(v\in H^{s+m}(\mathbb R^n;\mathbb C^N)\) 成立。这里 \(\rho\) 限于一个固定的小区间，常数由所用系数的有限阶导数界控制。
+\end{lemma}
+\begin{proof}
+	在一个预先固定的小邻域中，对任意固定整数 \(q\ge0\)，乘积求导与微积分基本定理给出
+	\[
+		\max_{|\beta|\le q}\|\partial_y^\beta a_{\alpha,\rho}\|_\infty
+		\le C_q\rho.
+	\]
+	零阶差由 \(A_\alpha(x_0+\rho y)-A_\alpha(x_0)\) 的线段积分估计；至少一次落在 \(A_\alpha\) 上的导数带因子 \(\rho^{|\beta|}\)，落在 \(\zeta\) 上的其余项仍乘以同一个零阶差。取 \(\rho\le1\)，便得到所写上界。低阶系数取
+	\(\zeta(y)\rho^{m-|\alpha|}A_\alpha(x_0+\rho y)\)，它们的每个固定阶导数一致有界。
+
+	由\cref{g3:lem:fourier-sobolev-tools}的光滑乘子估计，固定紧支集上的乘法算子范数受有限个这样的导数上确界控制；同时 \(\mathrm D^\alpha:H^{s+|\alpha|}\to H^s\) 连续。逐项相加就得到式\eqref{g3:eq:scaled-leading-smallness}。缩放把原坐标中未必小的系数导数一并变小，这是只写 \(\|A(x)-A(x_0)\|_\infty\ll1\) 所没有包含的信息。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:frozen-coefficient-apriori}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(P\) 是光滑系数的椭圆 \(N\times N\) 系统，阶数为 \(m\ge1\)，并固定 \(s\in\mathbb R\)、\(x_0\in\Omega\)。存在 \(\rho>0\) 与 \(C>0\)，使对所有 \(v\in C_c^\infty(B_\rho(x_0);\mathbb C^N)\)，
+	\begin{equation}\label{g3:eq:small-ball-elliptic-estimate}
+		\|v\|_{H^{s+m}(\mathbb R^n)}
+		\le C\bigl(\|Pv\|_{H^s(\mathbb R^n)}+\|v\|_{H^s(\mathbb R^n)}\bigr).
+	\end{equation}
+	系数只需在该球附近定义，式中的紧支函数及其算子像均在外部补零。
+\end{proposition}
+\begin{proof}
+	先在上一引理的单位尺度上计算。对 \(P_0\) 应用\cref{g3:thm:constant-elliptic-l2}，得
+	\[
+	\begin{aligned}
+		\|v\|_{H^{s+m}}
+		&\le C_0\bigl(\|P_\rho v\|_{H^s}+\|V_\rho v\|_{H^s}
+		+\|L_\rho v\|_{H^s}+\|v\|_{H^s}\bigr)\\
+		&\le C_0\|P_\rho v\|_{H^s}+C_1\rho\|v\|_{H^{s+m}}
+		+C_2\|v\|_{H^{s+m-1}}+C_0\|v\|_{H^s}.
+	\end{aligned}
+	\]
+	先选 \(\rho\) 使 \(C_1\rho\le1/4\)，再用\cref{g3:lem:fourier-sobolev-tools}中的插值估计选择 \(\varepsilon\)，使
+	\(C_2\|v\|_{H^{s+m-1}}\le\tfrac14\|v\|_{H^{s+m}}+C_\varepsilon\|v\|_{H^s}\)。将两项移到左侧，得到单位尺度上的结论。对已经固定的 \(\rho\)，变量替换在每个所用的 \(H^t\) 范数之间给出有界同构，因而变回 \(x\) 坐标即得式\eqref{g3:eq:small-ball-elliptic-estimate}。该常数允许依赖所选尺度，并未把非齐次范数当成齐次缩放量。
+\end{proof}
 
 \subsection{截断交换子和低阶项吸收}
 \label{g3:subsec:1203:02}
-待撰写
+将任意函数限制到小球，需要乘一个截断函数。由乘积法则，\(m\) 阶算子与截断的交换子只有至多 \(m-1\) 阶：
+\begin{equation}\label{g3:eq:localized-commutator}
+	[P,\eta]u=P(\eta u)-\eta Pu
+	=\sum_{|\alpha|\le m}
+	\sum_{0<\beta\le\alpha}\binom\alpha\beta
+	A_\alpha(\mathrm D^\beta\eta)\mathrm D^{\alpha-\beta}u.
+\end{equation}
+这里 \(\eta\) 是标量光滑函数，因此它与矩阵系数可交换。每一项至少有一次求导落在 \(\eta\) 上，正是少掉一个 \(u\) 的导数的原因。
+
+\begin{lemma}\label{g3:lem:cutoff-elliptic-apriori}
+	设 \(P\) 是开集 \(\Omega\subset\mathbb R^n\) 上的光滑椭圆 \(N\times N\) 系统，阶数 \(m\ge1\)，\(s\in\mathbb R\)。给定 \(\chi,\psi\in C_c^\infty(\Omega)\)，且 \(\psi=1\) 于 \(\operatorname{supp}\chi\) 的某个邻域，则存在常数 \(C\)，使对每个光滑 \(u:\Omega\to\mathbb C^N\)，
+	\begin{equation}\label{g3:eq:cutoff-elliptic-apriori}
+		\|\chi u\|_{H^{s+m}}
+		\le C\bigl(\|\psi Pu\|_{H^s}+\|\psi u\|_{H^{s+m-1}}\bigr).
+	\end{equation}
+	全部范数在局部截断后按全空间定义。
+\end{lemma}
+\begin{proof}
+	用有限个满足\cref{g3:prop:frozen-coefficient-apriori}的小球覆盖 \(\operatorname{supp}\chi\)，在这些球中选光滑函数 \(\theta_a\)，使 \(\sum_a\theta_a=1\) 于该支集附近，且各支集都位于 \(\psi=1\) 的区域。对每个 \(v_a=\theta_a\chi u\) 使用式\eqref{g3:eq:small-ball-elliptic-estimate}。算子像为
+	\[
+		Pv_a=\theta_a\chi\,Pu+[P,\theta_a\chi]u.
+	\]
+	第一项由 \(\|\psi Pu\|_{H^s}\) 控制；第二项由式\eqref{g3:eq:localized-commutator}及光滑乘子估计，受 \(C\|\psi u\|_{H^{s+m-1}}\) 控制。零阶余项也受同一范数控制。最后用 \(\chi u=\sum_av_a\) 和有限项三角不等式即得结论。
+\end{proof}
+
+对二阶算子 \(P=-\sum_{i,j}\partial_i(a^{ij}\partial_j)\)，交换子也可以直接写成
+\[
+	[P,\eta]u
+	=-\sum_{i,j}\partial_i(a^{ij}\partial_j\eta)u
+	-\sum_{i,j}a^{ij}(\partial_j\eta)\partial_i u
+	-\sum_{i,j}a^{ij}(\partial_i\eta)\partial_j u.
+\]
+当 \(a^{ij}=a^{ji}\) 时，最后两项合并。截断的导数支于两个同心球之间的区域；估计内球上的解时，须保留稍大球中的信息，如\cref{g3:fig:elliptic-localization}所示。
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch12-Localization}
+	\caption[椭圆估计中的嵌套截断]{内球上保留原函数，外侧过渡区产生低一阶交换子。再选外层截断，使其在整个内层支集附近等于一，便可继续估计这些误差。}
+	\label{g3:fig:elliptic-localization}
+\end{figure}
+
+吸收低阶项时要区分两种情形。对同一个紧支函数，可以直接用全空间插值，把 \(H^{s+m-1}\) 项分成任意小的 \(H^{s+m}\) 项与 \(H^s\) 项；若这两个范数分别属于 \(\chi u\) 与 \(\psi u\)，则它们位于不同区域，不能直接移项。后面的分布正则性证明将通过有限串嵌套截断逐级提高阶数，并得到只含外层低阶范数的内部估计。
 
 \subsection{差商方法与弱解的二阶正则性}
 \label{g3:subsec:1203:03}
-待撰写
+变分法给出的解通常只有一阶弱导数。如果直接把 \(\partial_k u\) 代入弱方程，测试函数未必具有所需的一阶导数。差商保留了有限平移，在每个非零步长下仍可构造合法的测试函数，再从统一估计恢复二阶导数。
+
+\begin{lemma}\label{g3:lem:difference-quotient-criterion}
+	设 \(B_r\Subset B_R\subset\mathbb R^n\) 为同心球，\(e_k\) 为第 \(k\) 个坐标向量。对足够小的实数 \(h\ne0\)，定义
+	\[
+		\delta_h^ku(x)=\frac{u(x+he_k)-u(x)}h.
+	\]
+	若 \(u\in H^1(B_R;\mathbb C^N)\)，则
+	\(\|\delta_h^ku\|_{L^2(B_r)}\le\|\partial_ku\|_{L^2(B_R)}\) 对 \(|h|<R-r\) 成立。反之，若 \(u\in L^2(B_R;\mathbb C^N)\)，且这些差商在 \(L^2(B_r)\) 中一致有界，则 \(\partial_ku\in L^2(B_r)\)，其范数不超过该统一上界。
+\end{lemma}
+\begin{proof}
+	第一项沿坐标线使用绝对连续代表，写成
+	\[
+		\delta_h^ku(x)=\int_0^1\partial_ku(x+the_k)\,\mathrm dt,
+	\]
+	再用积分平均的凸性与换序；这也正是\cref{g3:lem:sobolev-translation-bound}的局部证明。对第二项，由\cref{g3:thm:sobolev-weak-compactness}的 \(k=0,p=2\) 情形，从 \(h_j\to0\) 中选子列使差商弱收敛于 \(v\in L^2(B_r)\)。对 \(\phi\in C_c^\infty(B_r;\mathbb C^N)\)，平移换元给出
+	\[
+		\int\langle\delta_{h_j}^ku,\phi\rangle\,\mathrm dx
+		=-\int\langle u,\delta_{-h_j}^k\phi\rangle\,\mathrm dx
+		\longrightarrow-\int\langle u,\partial_k\phi\rangle\,\mathrm dx.
+	\]
+	所以 \(v\) 就是弱导数 \(\partial_ku\)，弱下半连续性给出范数界。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:weak-interior-h2}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(u\in H^1_{\mathrm{loc}}(\Omega;\mathbb C^N)\)。设矩阵系数 \(A^{ij}\in W^{1,\infty}_{\mathrm{loc}}(\Omega)\)，\(b^j,c\in L^\infty_{\mathrm{loc}}(\Omega)\)，且在每个紧子区域上存在 \(\lambda>0\)，使
+	\begin{equation}\label{g3:eq:full-gradient-coercivity}
+		\operatorname{Re}\sum_{i,j=1}^n\langle A^{ij}(x)Z_j,Z_i\rangle
+		\ge\lambda\sum_{j=1}^n|Z_j|^2
+	\end{equation}
+	对几乎处处 \(x\) 及任意 \(Z_1,\ldots,Z_n\in\mathbb C^N\) 成立。若 \(f\in L^2_{\mathrm{loc}}(\Omega;\mathbb C^N)\)，且 \(u\) 满足弱方程
+	\begin{equation}\label{g3:eq:weak-system-divergence}
+		-\sum_{i,j}\partial_i(A^{ij}\partial_ju)
+		+\sum_jb^j\partial_ju+cu=f,
+	\end{equation}
+	则 \(u\in H^2_{\mathrm{loc}}(\Omega;\mathbb C^N)\)。对 \(B_r\Subset B_R\Subset\Omega\)，有
+	\begin{equation}\label{g3:eq:interior-h2-estimate}
+		\|u\|_{H^2(B_r)}
+		\le C\bigl(\|f\|_{L^2(B_R)}+\|u\|_{L^2(B_R)}\bigr),
+	\end{equation}
+	其中 \(C\) 依赖于 \(n,N,r,R,\lambda\)、\(A^{ij}\) 的一阶有界导数范数及低阶系数的有界范数。
+\end{theorem}
+\begin{proof}
+	先保留右侧的 \(H^1\) 范数，证明二阶导数存在；再用一次局部能量估计把它换成 \(L^2\) 范数。令
+	\(F=f-\sum_jb^j\partial_ju-cu\)，则 \(F\in L^2\) 于任意相对紧子区域。取 \(0\le\eta\le1\) 的紧支光滑截断，在所求内球上等于一。对足够小的 \(h\)，令 \(z=\delta_h^ku\)，并在弱方程中取
+	\[
+		v=-\delta_{-h}^k(\eta^2z).
+	\]
+	固定 \(h\ne0\) 时，\(z\) 是两个 \(H^1\) 函数的差，故 \(v\in H^1_0\)，且支集仍位于原区域内部。第十一章的内部光滑逼近使弱方程可用于这个测试函数。
+
+	使用上一引理证明中的离散分部积分，以及
+	\[
+		\delta_h^k(A^{ij}\partial_ju)
+		=A^{ij}(x+he_k)\partial_jz+(\delta_h^kA^{ij})\partial_ju,
+	\]
+	得到
+	\[
+		\sum_{i,j}\int\left\langle
+		A^{ij}(x+he_k)\partial_jz+(\delta_h^kA^{ij})\partial_ju,
+		\partial_i(\eta^2z)\right\rangle\,\mathrm dx
+		=\int\langle F,-\delta_{-h}^k(\eta^2z)\rangle\,\mathrm dx.
+	\]
+	令 \(X=\|\eta\partial z\|_2\)，其中 \(\partial z=(\partial_1z,\ldots,\partial_nz)\)。展开 \(\partial_i(\eta^2z)=\eta^2\partial_iz+2\eta(\partial_i\eta)z\)，主项的实部由式\eqref{g3:eq:full-gradient-coercivity}至少为 \(\lambda X^2\)。其余三类项分别含有 \(\delta_h^kA^{ij}\)、\(\partial_i\eta\)，或两者。由于
+	\[
+		\|\delta_h^kA^{ij}\|_\infty\le\|\partial_kA^{ij}\|_\infty,
+		\qquad \|z\|_2\le\|\partial_ku\|_{L^2(\text{稍大区域})},
+	\]
+	这些项的绝对值之和不超过
+	\(C\|u\|_{H^1}X+C\|u\|_{H^1}^2\)。这里所有原函数范数都取在一个固定的稍大区域，因而常数与 \(h\) 无关。
+
+	右侧也无须对 \(F\) 求导。把 \(\eta^2z\) 补零为全空间 \(H^1\) 函数，由平移估计有
+	\[
+	\begin{aligned}
+		\left|\int\langle F,-\delta_{-h}^k(\eta^2z)\rangle\right|
+		&\le\|F\|_2\,\|\partial_k(\eta^2z)\|_2\\
+		&\le C\|F\|_2\bigl(X+\|u\|_{H^1}\bigr).
+	\end{aligned}
+	\]
+	由 \(ab\le\varepsilon a^2+(4\varepsilon)^{-1}b^2\) 逐项吸收 \(X\)，得到
+	\[
+		\|\eta\partial(\delta_h^ku)\|_2
+		\le C\bigl(\|f\|_2+\|u\|_{H^1}\bigr).
+	\]
+	弱导数与平移交换，所以左侧控制每个 \(\delta_h^k\partial_ju\)。对有限个 \(j,k\) 应用差商判据，得到内球中的全部二阶弱导数以及相应估计。
+
+	最后选内、外球之间的中间球，并取另一个截断 \(\theta\)，使其在中间球上为一、支于 \(B_R\)。将 \(v=\theta^2u\) 代入原弱方程，取实部。主项为正，其余项由系数界满足
+	\[
+	\begin{aligned}
+		\lambda\|\theta\partial u\|_2^2
+		\le{}&\|f\|_2\|u\|_2
+		+C\|\theta\partial u\|_2\|u\|_2
+		+C\|u\|_2^2.
+	\end{aligned}
+	\]
+	截断导数的界已吸收到 \(C\) 中。再次吸收，得到中间球上
+	\(\|u\|_{H^1}\le C(\|f\|_{L^2(B_R)}+\|u\|_{L^2(B_R)})\)。将此前的二阶估计应用于内球和中间球，便得式\eqref{g3:eq:interior-h2-estimate}。整个论证都不要求 \(u\) 在 \(\partial\Omega\) 上满足边界条件。
+\end{proof}
+
+当 \(A^{ij}=a^{ij}I_N\)，\(a=(a^{ij})\) 为实对称、一致正定矩阵时，式\eqref{g3:eq:full-gradient-coercivity}直接逐分量成立。这覆盖光滑 Laplace 型系统在坐标中的弱方程。Lipschitz 系数保证差商 \(\delta_hA^{ij}\) 一致有界；若系数跨越界面发生跳跃，解的一阶导数可以相应跳跃，二阶 \(L^2\) 正则性便可能失效。
 
 \subsection{椭圆系统的同阶估计}
 \label{g3:subsec:1203:04}
-待撰写
+系统中的未知量是一个向量，最高阶矩阵可以把不同分量及不同微分方向耦合。冻结系数时应反转整个主符号矩阵，不能只逐个观察它的对角元素。前两小节的证明一直采用矩阵算子范数，因此已适用于同阶的等秩椭圆系统：每个未知分量用同一阶 \(m\)，每个方程也取这个共同的最高阶。
+
+\begin{example}\label{g3:exm:coupled-elliptic-symbol}
+	在 \(\mathbb R^2\) 上考虑两个复值未知函数的系统
+	\[
+		P\binom uv=
+		\binom{-\partial_1^2u-\partial_2^2u+\partial_1\partial_2v}
+		{-\partial_1^2v-\partial_2^2v+\partial_1\partial_2u}.
+	\]
+	其主符号为
+	\[
+		p_2(\xi)=
+		\begin{pmatrix}|\xi|^2&-\xi_1\xi_2\\-\xi_1\xi_2&|\xi|^2\end{pmatrix}.
+	\]
+	在向量 \((1,1)\)、\((1,-1)\) 上的特征值分别为 \( |\xi|^2-\xi_1\xi_2\)、\( |\xi|^2+\xi_1\xi_2\)，均至少为 \( |\xi|^2/2\)。所以冻结估计可以同时控制 \(u,v\) 的所有二阶导数。把未知量换成 \(u+v,u-v\) 可在这个例子中对角化；一般变系数系统未必存在同一个固定的对角化，主符号矩阵的统一逆界仍足以给出局部估计。
+\end{example}
+
+\begin{proposition}\label{g3:prop:uniform-system-localization}
+	设一族光滑 \(N\times N\) 的 \(m\) 阶系统 \(P_\tau\) 定义在同一个开集 \(\Omega\subset\mathbb R^n\) 上，固定实数 \(s\) 及截断 \(\chi,\psi\in C_c^\infty(\Omega)\)，其中 \(\psi=1\) 于 \(\operatorname{supp}\chi\) 附近。若在 \(\operatorname{supp}\psi\) 的固定邻域内，主符号满足统一下界
+	\[
+		|p_{m,\tau}(x,\xi)z|\ge c|\xi|^m|z|,
+	\]
+	且证明所需的有限阶系数导数有统一上界，则式\eqref{g3:eq:cutoff-elliptic-apriori}中的 \(C\) 可与 \(\tau\) 无关。所需导数阶数可只依赖于 \(n,m,s\)。
+\end{proposition}
+\begin{proof}
+	常系数 Fourier 估计中的常数由 \(c^{-1}\) 及系数上界统一控制。\Cref{g3:lem:scaled-leading-perturbation}中 \(C_s\rho\) 的系数由同一组有限阶导数界控制，故所有成员可用同一个充分小的球半径。固定紧支集的有限球覆盖、单位分解和各阶截断导数也可一次选定。将这些统一界代入\cref{g3:lem:cutoff-elliptic-apriori}的证明，即得共同常数。
+\end{proof}
+
+前述差商定理采用了对任意梯度数组的正性条件\eqref{g3:eq:full-gradient-coercivity}。一般强椭圆性只要求主符号在单个实余向量上的正性，两者不能混同。例如在 \(\mathbb R^2\) 的向量场上，取
+\[
+	A^{ij}=\delta_{ij}I_2-\frac34 e_i\otimes e_j,
+	\qquad
+	p_2(\xi)=|\xi|^2I_2-\frac34\xi\otimes\xi.
+\]
+主符号特征值为 \( |\xi|^2\) 与 \( |\xi|^2/4\)，所以算子强椭圆；若梯度数组 \(Z_j=e_j\)，则
+\[
+	\sum_{i,j}\langle A^{ij}Z_j,Z_i\rangle=2-\frac34\,4=-1.
+\]
+因此不能把差商证明中的逐点梯度正性自动套到所有强椭圆系统。光滑同阶系统的内部正则性由主符号的可逆性得到，下面直接按这一条件证明。
+
+\ProseParagraphBreak
+
+在向量丛的平凡化中，联络和标架变化只产生光滑的低阶矩阵项。第十一章的范数等价\cref{g3:prop:sobolev-norm-equivalence}使局部整数阶估计与丛值 Sobolev 范数一致。若各方程和未知量具有不同最高阶，则需要另行指定权重；本节的同阶符号与估计只用于已明确的共同阶数。
 
 \subsection{自举和分布解的光滑性}
 \label{g3:subsec:1203:05}
-待撰写
+光滑函数的先验估计尚不能直接用于一个没有 \(m\) 阶导数的分布。关键是把最高阶扰动移到左侧，并在两个不同的 Sobolev 阶数上反转同一个算子：较低阶空间保证解的识别，较高阶空间提供新增导数。
+
+\begin{lemma}\label{g3:lem:two-scale-inverse}
+	设 \(t_0<t_1\) 为实数，线性算子 \(T\) 在 \(H^{t_0}(\mathbb R^n;\mathbb C^N)\) 与 \(H^{t_1}(\mathbb R^n;\mathbb C^N)\) 上均有界，且两个作用在交集上相同。如果它在这两个空间上的算子范数都不超过 \(1/2\)，那么 \(I+T\) 在两空间上均可逆，逆算子范数均不超过二。若 \(v\in H^{t_0}\) 且 \((I+T)v=g\in H^{t_1}\)，则 \(v\in H^{t_1}\)，并有 \(\|v\|_{H^{t_1}}\le2\|g\|_{H^{t_1}}\)。
+\end{lemma}
+\begin{proof}
+	在每个空间中，算子级数 \(\sum_{j=0}^\infty(-T)^j\) 绝对收敛。有限几何级数恒等式给出
+	\[
+		(I+T)\sum_{j=0}^{J}(-T)^j=I-(-T)^{J+1},
+	\]
+	右端按算子范数趋于 \(I\)，反向乘法也相同，故级数确为双侧逆。对 \(g\in H^{t_1}\)，先在较高阶空间得到解 \(w\)。连续包含 \(H^{t_1}\subset H^{t_0}\) 保证 \(w\) 在较低阶空间也是解；该空间的唯一性使 \(v=w\)。
+\end{proof}
+
+这里使用的几何级数称为\term[Neumann jishu]{Neumann 级数}[Neumann series]。\footnote{Carl Gottfried Neumann（1832--1925），德国数学家，研究位势论、积分方程与数学物理；这里的级数及 Neumann 边值问题以其命名。}两个空间中的逆来自同一列部分和，这一点保证了所构造的较光滑解就是原来的分布。
+
+\begin{theorem}\label{g3:thm:elliptic-distribution-l2}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(P\) 是光滑系数的椭圆 \(N\times N\) 微分系统，阶数 \(m\ge1\)，\(s\in\mathbb R\)。若 \(u\in\mathcal D'(\Omega;\mathbb C^N)\) 且 \(Pu\in H^s_{\mathrm{loc}}(\Omega;\mathbb C^N)\)，则
+	\[
+		u\in H^{s+m}_{\mathrm{loc}}(\Omega;\mathbb C^N).
+	\]
+	此外，给定 \(t\in\mathbb R\)、\(\chi,\psi\in C_c^\infty(\Omega)\)，且 \(\psi=1\) 于 \(\operatorname{supp}\chi\) 的邻域，则对满足 \(\psi u\in H^t\)、\(\psi Pu\in H^s\) 的分布，有
+	\begin{equation}\label{g3:eq:elliptic-distribution-estimate}
+		\|\chi u\|_{H^{s+m}}
+		\le C\bigl(\|\psi Pu\|_{H^s}+\|\psi u\|_{H^t}\bigr).
+	\end{equation}
+	常数依赖于两个截断、\(P,s,t\) 及所用的有限阶系数界。
+\end{theorem}
+\begin{proof}
+	先说明一个小球中怎样增加至多一阶正则性。使用\cref{g3:lem:scaled-leading-perturbation}的单位尺度写法，固定一个当前已知的阶数 \(a\)，并设 \(a<s+m\)。令
+	\(b=\min\{a+1,s+m\}>a\)。取\cref{g3:lem:constant-high-frequency-inverse}中的高频逆 \(Q_0\)，满足
+	\[
+		Q_0P_0=I-S_0,\qquad
+		Q_0:H^q\longrightarrow H^{q+m}\quad(q\in\mathbb R),
+	\]
+	其中 \(S_0\) 为低频截断算子，从任意 \(H^q\) 映到任意 \(H^{q'}\)。由式\eqref{g3:eq:scaled-leading-smallness}，\(T_\rho=Q_0V_\rho\) 在 \(H^a,H^b\) 上的范数均为 \(O(\rho)\)。因此可选同一个 \(\rho\)，使两者都不超过 \(1/2\)。这些算子均由同一个 Fourier 乘子和微分、乘法运算定义，其在不同空间中的作用相容。
+
+	记缩放后的分布为 \(u_\rho(y)=u(x_0+\rho y)\)，右端为 \(f_\rho(y)=\rho^m(Pu)(x_0+\rho y)\)。对分布，这个写法以变量替换定义，即
+	\(\langle u_\rho,\phi\rangle=\rho^{-n}\langle u,\phi((x-x_0)/\rho)\rangle\)；于是 \(P_\rho u_\rho=f_\rho\)。取 \(\eta,\vartheta\in C_c^\infty(B_2)\)，使 \(\vartheta=1\) 于 \(\operatorname{supp}\eta\) 的邻域，令 \(v=\eta u_\rho\)。假设已知 \(\vartheta u_\rho\in H^a\)，则 \(v\in H^a\)。由分布乘积公式及 \(P_\rho=P_0+V_\rho+L_\rho\)，得到真正的分布恒等式
+	\begin{equation}\label{g3:eq:elliptic-neumann-identity}
+		(I+T_\rho)v
+		=Q_0\bigl(\eta f_\rho+[P_\rho,\eta]u_\rho\bigr)
+		-Q_0L_\rho v+S_0v.
+	\end{equation}
+	第一项的右端部分 \(Q_0(\eta f_\rho)\) 属于 \(H^{s+m}\)。交换子至多 \(m-1\) 阶，且其系数支于 \(\vartheta=1\) 的区域，所以
+	\[
+		[P_\rho,\eta]u_\rho=[P_\rho,\eta](\vartheta u_\rho)
+		\in H^{a-m+1}.
+	\]
+	故它经过 \(Q_0\) 后属于 \(H^{a+1}\)。低阶项 \(Q_0L_\rho v\) 也属于 \(H^{a+1}\)，而 \(S_0v\) 属于所有 Sobolev 阶数。右侧因而属于 \(H^b\)，且其范数由
+	\(C(\|\vartheta f_\rho\|_{H^s}+\|\vartheta u_\rho\|_{H^a})\) 控制。\Cref{g3:lem:two-scale-inverse}识别两空间的解，得到 \(v\in H^b\) 以及同样形式的估计。
+
+	现在迭代这一增益。对给定 \(s,t\)，令 \(a_0=t\)、\(a_{j+1}=\min\{a_j+1,s+m\}\)，只要 \(a_j<s+m\) 就继续。至多需要 \(\lceil s+m-t\rceil\) 步。预先把球半径选得足够小，使 \(T_\rho\) 在这有限多个阶数上同时小，再选同样多层截断：每个外层截断在下一内层的支集附近等于一。最外层的 \(u\) 用已知 \(H^t\) 范数控制，每应用一次式\eqref{g3:eq:elliptic-neumann-identity}，就在下一内层增加一阶，最后达到 \(H^{s+m}\)。若 \(t\ge s+m\)，所需估计直接来自光滑乘法与包含 \(H^t\subset H^{s+m}\)。
+
+	为取得一般截断 \(\chi,\psi\) 的估计，在 \(\psi=1\) 的开区域内用有限个这样的球覆盖 \(\operatorname{supp}\chi\)，每个球及全部嵌套截断都留在这一区域。将有限次增益估计代入，再以从属单位分解相加，得到式\eqref{g3:eq:elliptic-distribution-estimate}。所有缩放因子在选定球以后都是固定常数。
+
+	最后处理未给出初始 Sobolev 阶数的任意分布。对每个固定紧支截断，\cref{g3:lem:fourier-sobolev-tools}保证截断后的分布属于某个 \(H^{-q}\)：有限阶分布的 Fourier 变换至多多项式增长，乘以足够高的负次权重就平方可积。取这个负阶作为起点，应用刚证明的有限步论证，即得每个紧子区域上的 \(H^{s+m}\) 正则性。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:elliptic-smoothness}
+	设 \(E,F\to M\) 是光滑无边界流形上的同秩有限秩实或复向量丛，\(P:C^\infty(M;E)\to C^\infty(M;F)\) 为光滑系数、正整数阶的椭圆算子。若分布截面 \(u\) 满足 \(Pu\in C^\infty(M;F)\)，则 \(u\in C^\infty(M;E)\)。在任意开集 \(U\subset M\) 上，\(u\) 光滑当且仅当 \(Pu\) 光滑于 \(U\)。
+\end{corollary}
+\begin{proof}
+	在每张相对紧平凡化中，上一结果使 \(u\) 属于所有整数阶局部 \(H^k\)。对任意整数 \(r\ge0\)，选 \(k>r+n/2\)，由\cref{g3:cor:higher-sobolev-embedding}的局部版本，得到 \(C^r\) 代表。各阶代表在重叠处作为分布相等，连续性使它们逐点相等，所以这些代表相容为光滑截面。反向由光滑微分算子保持光滑性直接得到。实向量丛可先复化并使用同一局部估计。
+\end{proof}
+
+例如光滑度量的 Laplace 型算子作用于 \(L^2_{\mathrm{loc}}\) 截面时，若右端局部属于 \(H^k\)，则截面局部属于 \(H^{k+2}\)。特别地，分布调和截面也是光滑的。形式伴随的主符号是原主符号的纤维伴随，仍可逆，因此伴随方程具有同样的内部正则性。可解性仍由所选全局空间、边界条件及算子的核决定；本节的结论负责从一个已满足方程的分布中恢复局部导数。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

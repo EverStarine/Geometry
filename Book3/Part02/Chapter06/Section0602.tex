@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 6.2 Jacobi 场与指数映射
 % 纲要位置：几何学计划纲要.md，第 2335 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,314 @@
 \section{Jacobi 场与指数映射}
 \label{g3:sec:0602}
 
-待撰写
+从同一点发出的直线，初始方向稍有改变，分离量便随时间线性增长；球面上从北极发出的经线，却会在南极重新相遇。要描述这种差别，可以让测地线的初始点和初速度随一个参数变化，再对这个参数求导。得到的向量场满足一个由曲率控制的线性方程，这就是 Jacobi\footnote{Carl Gustav Jacob Jacobi（1804--1851），德国数学家，研究椭圆函数、偏微分方程和分析力学。} 方程。它既描述测地线族的一阶分离，也计算指数映射的微分。
 
 \subsection{Jacobi 方程的推导}
 \label{g3:subsec:0602:01}
-待撰写
+
+本节设 \((M,g)\) 为 \(n\) 维光滑无边界黎曼流形，\(\gamma:I\to M\) 是仿射参数测地线，\(I\) 为开区间。记 \(T=\dot\gamma\)，对沿 \(\gamma\) 的场简写 \(J'=D_tJ\)、\(J''=D_t^2J\)。特别地，\(T'=0\)。先设 \(F(s,t)\) 是一个光滑测地线变分：\(F(0,t)=\gamma(t)\)，且对每个固定的 \(s\)，曲线 \(t\mapsto F(s,t)\) 都满足测地线方程。令 \(S=\partial_sF\)、\(T_s=\partial_tF\)。由\cref{g3:prop:variation-commutation}，
+\[
+	0=D_sD_tT_s
+	=D_tD_sT_s+R(S,T_s)T_s
+	=D_t^2S+R(S,T_s)T_s.
+\]
+在 \(s=0\) 处取值，变分场 \(J(t)=S(0,t)\) 因而满足
+\begin{equation}\label{g3:eq:jacobi-equation}
+	J''+R(J,T)T=0.
+\end{equation}
+正号由本卷 \(R(X,Y)=\nabla_X\nabla_Y-\nabla_Y\nabla_X-\nabla_{[X,Y]}\) 的约定决定。例如正曲率球面上的法向分离量将满足振子方程，而不是指数增长方程。
+
+\begin{definition}[Jacobi 场]\label{g3:def:jacobi-field}
+	设 \(\gamma:I\to M\) 是光滑黎曼流形中的仿射参数测地线。满足式\eqref{g3:eq:jacobi-equation}的光滑沿曲线向量场 \(J\)，称为沿 \(\gamma\) 的\term[Jacobi chang]{Jacobi 场}[Jacobi field]。全体这样的场构成实向量空间，记为 \(\mathcal J(\gamma)\)。
+\end{definition}
+\symidx{\(\mathcal J(\gamma)\)：沿测地线的 Jacobi 场空间}
+
+刚才已经证明，测地线变分的变分场必为 Jacobi 场。反向命题也成立：给定一个 Jacobi 场，可以改变测地线的初始数据，使它成为所得到测地线族的变分场。这个构造依赖线性方程初值的唯一性，将在下一小节完成。
+
+\ProseParagraphBreak
+
+方程中的线性算子 \(\mathcal R_t:V\mapsto R(V,T)T\) 有两个关键性质。由曲率反对称性，它消去 \(T\)；由\cref{g3:prop:curvature-symmetries}的两对交换对称性，
+\begin{equation}\label{g3:eq:jacobi-curvature-self-adjoint}
+	\langle\mathcal R_tU,V\rangle
+	=\mathrm{Rm}(U,T,V,T)
+	=\mathrm{Rm}(V,T,U,T)
+	=\langle U,\mathcal R_tV\rangle.
+\end{equation}
+因此 \(\mathcal R_t\) 自伴，而且保持 \(T^\perp\)。这使切向变化与法向变化能够分开处理，也将给出两个解之间的一个守恒配对。
 
 \subsection{初值、Wronskian 配对与解空间}
 \label{g3:subsec:0602:02}
-待撰写
+
+二阶方程需要同时指定位置与一阶导数。这里的“位置”是沿测地线的向量 \(J(t_0)\)，一阶导数则是 \(J'(t_0)\)，二者都属于同一个切空间。
+
+\begin{theorem}[Jacobi 场的初值问题]\label{g3:thm:jacobi-initial-data}
+	设 \(\gamma:I\to M\) 为 \(n\) 维光滑黎曼流形中的仿射参数测地线，\(t_0\in I\)。对任意 \(v,w\in T_{\gamma(t_0)}M\)，存在唯一 \(J\in\mathcal J(\gamma)\) 满足
+	\[
+		J(t_0)=v,\qquad J'(t_0)=w.
+	\]
+	该解存在于整个 \(I\)，并线性依赖 \((v,w)\)。特别地，初值映射
+	\begin{equation}\label{g3:eq:jacobi-initial-isomorphism}
+		\mathcal J(\gamma)\longrightarrow
+		T_{\gamma(t_0)}M\oplus T_{\gamma(t_0)}M,
+		\qquad J\longmapsto(J(t_0),J'(t_0))
+	\end{equation}
+	是线性同构，故 \(\dim\mathcal J(\gamma)=2n\)。在光滑参数族中，解在共同的紧时间区间上光滑依赖测地线及初始数据。
+\end{theorem}
+\begin{proof}
+	把 \(T_{\gamma(t_0)}M\) 的一个正交单位基沿 \(\gamma\) 平行移动，得到平行正交标架 \(e_1(t),\ldots,e_n(t)\)。所用存在性和参数依赖是第一卷第15章第2节“沿路径的平行移动”中的平行移动定理；在开区间上，先在包含 \(t_0\) 的紧子区间上构造，再由唯一性粘合。度量相容性保证标架始终正交。若 \(J=\sum_i j^ie_i\)，则 \(J'=\sum_i(j^i)'e_i\)，方程化为
+	\begin{equation}\label{g3:eq:jacobi-matrix-equation}
+		j''+\mathcal R(t)j=0,
+		\qquad \mathcal R_{ij}(t)=\langle R(e_j,T)T,e_i\rangle.
+	\end{equation}
+	矩阵 \(\mathcal R(t)\) 光滑且对称。令 \(z=(j,j')^{\mathsf T}\)，便得到一阶线性系统
+	\[
+		z'=\begin{pmatrix}0&I_n\\-\mathcal R(t)&0\end{pmatrix}z.
+	\]
+	第一卷同节的“线性方程的全区间解”引理适用于这个 \(2n\) 阶系统，给出每个紧子区间上的唯一解、线性初值依赖及光滑参数依赖。用包含 \(t_0\) 的紧子区间穷尽 \(I\)，相邻解由唯一性一致，遂得到整个 \(I\) 上的解。初值映射的双射性和维数结论随即成立。对于参数族，在参数点附近先平滑选择初始正交标架，再作平行移动；上述矩阵系统的系数便光滑依赖参数，同一引理给出最后的断言。
+\end{proof}
+
+\begin{proposition}[Jacobi 场的测地线变分实现]\label{g3:prop:jacobi-geodesic-variation}
+	设 \(J\) 为沿测地线 \(\gamma:I\to M\) 的 Jacobi 场，\([a,b]\subset I\) 为紧区间。则存在 \(\varepsilon>0\) 和光滑测地线变分 \(F:(-\varepsilon,\varepsilon)\times[a,b]\to M\)，其中心曲线为 \(\gamma\)，变分场为 \(J\)。
+\end{proposition}
+\begin{proof}
+	选 \(t_0\in[a,b]\)，记 \(p=\gamma(t_0)\)、\(v=J(t_0)\)、\(w=J'(t_0)\)。取 \(p(s)=\exp_p(sv)\)，并令 \(P_s:T_pM\to T_{p(s)}M\) 为沿这条短曲线从 \(0\) 到 \(s\) 的平行移动。定义初速度
+	\[
+		u(s)=P_s\bigl(T(t_0)+sw\bigr).
+	\]
+	于是 \(p'(0)=v\)，且沿 \(p(s)\) 的协变导数满足 \(D_su(0)=w\)。由\cref{g3:thm:geodesic-ivp}，取初始点 \(p(s)\)、初速度 \(u(s)\)，在时刻 \(t_0\) 出发，得到测地线族 \(F(s,t)\)。测地线流的定义域开，中心解的参数区间 \([a,b]\) 紧，故缩小 \(\varepsilon\) 后，所有这些曲线都在整个 \([a,b]\) 上存在并联合光滑。
+
+	变分场 \(\widetilde J\) 满足 Jacobi 方程，且 \(\widetilde J(t_0)=v\)。交换一次协变导数还给出
+	\[
+		\widetilde J'(t_0)
+		=D_t\partial_sF(0,t_0)
+		=D_s\partial_tF(0,t_0)=D_su(0)=w.
+	\]
+	由\cref{g3:thm:jacobi-initial-data}，\(\widetilde J=J\)。
+\end{proof}
+
+给定 Jacobi 场以后，这个实现只需改变初始点和初速度。若要求变分中的测地线全都具有单位速度，还要额外满足 \(\langle J',T\rangle=0\)；下文的切向分解会说明这个量为何恒定。
+
+\begin{proposition}[Wronskian 配对]\label{g3:prop:jacobi-wronskian}
+	设 \(J,K\) 是沿同一条仿射参数测地线的 Jacobi 场。它们的\term[Wronskian peidui]{Wronskian 配对}[Wronskian pairing]\footnote{Józef Maria Hoëné-Wroński（1776--1853），波兰裔法国数学家、哲学家，其函数展开研究涉及后来称为 Wronskian 的行列式。}定义为
+	\begin{equation}\label{g3:eq:jacobi-wronskian}
+		W(J,K)=\langle J',K\rangle-\langle J,K'\rangle.
+	\end{equation}
+	右端与参数 \(t\) 无关，并在 \(\mathcal J(\gamma)\) 上给出非退化的交替双线性配对。对任一 \(t_0\)，子空间
+	\[
+		\mathcal J_{t_0}(\gamma)=\{J\in\mathcal J(\gamma):J(t_0)=0\}
+	\]
+	维数为 \(n\)，且其中任意两个场的 \(W\) 配对均为零。
+\end{proposition}
+\symidx{\(W(J,K)\)：Jacobi 场的 Wronskian 配对}
+\begin{proof}
+	由 Jacobi 方程及式\eqref{g3:eq:jacobi-curvature-self-adjoint}，
+	\[
+		\frac{\mathrm d}{\mathrm dt}
+		\bigl(\langle J',K\rangle-\langle J,K'\rangle\bigr)
+		=\langle-\mathcal R_tJ,K\rangle+\langle J,\mathcal R_tK\rangle=0.
+	\]
+	交替性和双线性由定义直接得到。在初值同构\eqref{g3:eq:jacobi-initial-isomorphism}下，若 \(J\) 对应 \((v,w)\)、\(K\) 对应 \((u,z)\)，则
+	\[
+		W(J,K)=\langle w,u\rangle-\langle v,z\rangle.
+	\]
+	如果此值对所有 \(K\) 都为零，取 \((u,z)=(w,-v)\)，可得 \(|w|^2+|v|^2=0\)，故 \(J=0\)。最后，\(J(t_0)=0\) 的场由任意 \(J'(t_0)\) 唯一决定，维数为 \(n\)；当 \(J,K\) 都在 \(t_0\) 消失时，在该时刻计算 \(W\) 即得零。
+\end{proof}
+
+\begin{proposition}[切向和法向分解]\label{g3:prop:jacobi-tangential-normal}
+	设 \(\gamma\) 为单位速度测地线。每个 Jacobi 场唯一分解为
+	\begin{equation}\label{g3:eq:jacobi-tangential-normal}
+		J(t)=\bigl(a+b(t-t_0)\bigr)T(t)+J^\perp(t),
+		\qquad J^\perp(t)\perp T(t),
+	\end{equation}
+	其中 \(J^\perp\) 仍为 Jacobi 场，\(a=\langle J(t_0),T(t_0)\rangle\)、\(b=\langle J'(t_0),T(t_0)\rangle\)。特别地，\(J\) 处处垂直于 \(T\)，当且仅当这两个初始内积均为零；若 \(J\) 在两个不同时刻消失，则它处处垂直于 \(T\)。
+\end{proposition}
+\begin{proof}
+	令 \(f=\langle J,T\rangle\)。因为 \(T'=0\)、\(\mathcal R_tT=0\) 且 \(\mathcal R_t\) 自伴，
+	\[
+		f''=\langle J'',T\rangle=-\langle\mathcal R_tJ,T\rangle=0.
+	\]
+	故 \(f(t)=a+b(t-t_0)\)。场 \(fT\) 满足 Jacobi 方程，因而 \(J-fT\) 也满足，并与 \(T\) 正交。其余结论来自一次函数的初值和零点性质。
+\end{proof}
+
+\begin{example}[常曲率中的解]\label{g3:exm:constant-curvature-jacobi}
+	设 \(M\) 具有常截面曲率 \(k\)，\(\gamma\) 为单位速度测地线，且 \(0\in I\)。记从 \(0\) 到 \(t\) 的平行移动为 \(P_t\)，定义
+	\begin{equation}\label{g3:eq:model-jacobi-functions}
+		s_k(t)=
+		\begin{cases}
+			\sin(\sqrt{k}\,t)/\sqrt{k},&k>0,\\
+			t,&k=0,\\
+			\sinh(\sqrt{-k}\,t)/\sqrt{-k},&k<0,
+		\end{cases}
+		\qquad c_k(t)=s_k'(t).
+	\end{equation}
+	若 \(J(0)=aT(0)+u\)、\(J'(0)=bT(0)+v\)，其中 \(u,v\perp T(0)\)，则
+	\begin{equation}\label{g3:eq:constant-curvature-jacobi-solution}
+		J(t)=(a+bt)T(t)+P_t\bigl(c_k(t)u+s_k(t)v\bigr).
+	\end{equation}
+	事实上，常曲率公式\eqref{g3:eq:constant-sectional-algebraic}给出
+	\[
+		R(V,T)T=k\bigl(V-\langle V,T\rangle T\bigr).
+	\]
+	法向部分在平行标架中满足 \(j''+kj=0\)，而 \(c_k,s_k\) 的初值分别为 \((1,0)\)、\((0,1)\)。验证方程与初值后，\cref{g3:thm:jacobi-initial-data}即证明所列公式。由同一起点出发时 \(u=a=0\)，法向分离量由 \(s_k(t)\) 控制：正曲率下可以再次消失，零曲率下线性增长，负曲率下则含双曲正弦因子。
+\end{example}
+\symidx{\(s_k,c_k\)：常曲率 Jacobi 方程的标准解}
 
 \subsection{指数映射的微分}
 \label{g3:subsec:0602:03}
-待撰写
+
+固定 \(p\in M\)。第二章已经定义指数映射 \(\exp_p:\mathcal E_p\to M\)，其中 \(\mathcal E_p\subset T_pM\) 为包含零的开星形集。要对 \(\exp_p\) 在向量 \(v\) 处沿 \(w\) 求导，只须改变初速度为 \(v+sw\)。这一变化恰好属于刚才研究的测地线变分。
+
+\begin{proposition}[指数映射微分的 Jacobi 表达]\label{g3:prop:exponential-differential-jacobi}
+	设 \(p\in M\)、\(v\in\mathcal E_p\)、\(w\in T_pM\)，令 \(\gamma_v(t)=\exp_p(tv)\)，\(0\le t\le1\)。沿此测地线取初值为
+	\[
+		J_w(0)=0,\qquad J_w'(0)=w
+	\]
+	的 Jacobi 场，则
+	\begin{equation}\label{g3:eq:exponential-differential-jacobi}
+		J_w(t)=(\mathrm d\exp_p)_{tv}(tw),
+		\qquad (\mathrm d\exp_p)_v(w)=J_w(1).
+	\end{equation}
+	这里通过向量空间的自然平移，把 \(T_{tv}(T_pM)\) 识别为 \(T_pM\)。更一般地，若 \(\gamma(t)=\exp_p(tu)\) 定义在含 \(0\) 的区间上，\(J_w(0)=0\)、\(J_w'(0)=w\)，则对 \(t\ne0\) 有
+	\begin{equation}\label{g3:eq:exponential-differential-time-scaling}
+		(\mathrm d\exp_p)_{tu}(w)=\frac1tJ_w(t).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	由 \(\mathcal E_p\) 的开性，充分小的 \(s\) 满足 \(v+sw\in\mathcal E_p\)，星形性又保证
+	\[
+		F(s,t)=\exp_p\bigl(t(v+sw)\bigr),\qquad 0\le t\le1,
+	\]
+	有定义。对固定 \(s\)，这是初始速度为 \(v+sw\) 的测地线。其变分场 \(J\) 为 Jacobi 场，且因为 \(F(s,0)=p\)，有 \(J(0)=0\)。在起点交换导数，得到
+	\[
+		J'(0)=D_s\partial_tF(s,0)\big|_{s=0}
+		=\left.\frac{\mathrm d}{\mathrm ds}(v+sw)\right|_{s=0}=w.
+	\]
+	唯一性说明 \(J=J_w\)，而链式法则给出 \(J(t)=(\mathrm d\exp_p)_{tv}(tw)\)。在 \(t=1\) 处即得第二式。对一般固定的 \(t\)，在包含 \(0,t\) 的紧区间上作同样的变分，或用测地线的仿射重参数化，得到 \(J_w(t)=(\mathrm d\exp_p)_{tu}(tw)\)；再用微分的线性性即得式\eqref{g3:eq:exponential-differential-time-scaling}。
+\end{proof}
+
+因子 \(1/t\) 记录了两种参数的区别：\(J_w'(0)=w\) 改变的是初速度，而在 \(tu\) 处取微分改变的是时间 \(t\) 后的指数映射自变量。沿径向取 \(w=u\) 时，唯一的初值解是 \(J_u(t)=t\dot\gamma(t)\)，因而
+\[
+	(\mathrm d\exp_p)_{tu}(u)=\dot\gamma(t).
+\]
+所以非零径向方向始终被映为非零向量。指数映射若发生奇异，原因必来自与径向正交的方向。
+
+\begin{example}[常曲率指数映射的径向与横向伸缩]\label{g3:exm:model-exponential-differential}
+	在常曲率 \(k\) 的流形中，令 \(u\in T_pM\) 为单位向量，\(r>0\)，且测地线 \(\gamma(t)=\exp_p(tu)\) 定义到 \(r\)。对 \(w\perp u\)、\(a\in\mathbb R\)，\cref{g3:exm:constant-curvature-jacobi}及式\eqref{g3:eq:exponential-differential-time-scaling}给出
+	\begin{equation}\label{g3:eq:model-exponential-differential}
+		(\mathrm d\exp_p)_{ru}(au+w)
+		=P_r\left(au+\frac{s_k(r)}r w\right).
+	\end{equation}
+	径向伸缩率为 \(1\)，横向伸缩率为 \(s_k(r)/r\)。当 \(r\to0\) 时，这个比值趋于 \(1\)，与 \((\mathrm d\exp_p)_0=I\) 相符。半径为 \(a_0\) 的圆球面上，它等于 \(a_0\sin(r/a_0)/r\)，在首次到达对径点时为零；平坦情形恒为 \(1\)。
+\end{example}
 
 \subsection{共轭点及其重数}
 \label{g3:subsec:0602:04}
-待撰写
+
+若一个非零 Jacobi 场在测地线段的两端都消失，它描述了端点在一阶上保持不动的测地线变化。这是后面指标型出现零方向的来源。定义必须保留所选的测地线段：同一对点可以由不同测地线连接，它们的线性化行为未必相同。
+
+\begin{definition}[共轭点与重数]\label{g3:def:conjugate-point}
+	设 \(\gamma:I\to M\) 是仿射参数测地线，\(a,b\in I\)、\(a\ne b\)。若存在非零 Jacobi 场 \(J\) 满足 \(J(a)=J(b)=0\)，就称 \(\gamma(a)\) 与 \(\gamma(b)\) 沿该测地线段\term[gonge dian]{共轭}[conjugate]，并把
+	\begin{equation}\label{g3:eq:conjugate-multiplicity}
+		m_\gamma(a,b)
+		=\dim\{J\in\mathcal J(\gamma):J(a)=J(b)=0\}
+	\end{equation}
+	称为该共轭点的\term[gonge dian chongshu]{重数}[multiplicity of a conjugate point]。固定 \(a\) 后，满足此条件的 \(b\) 称为相对 \(a\) 的共轭时刻。
+\end{definition}
+\symidx{\(m_\gamma(a,b)\)：沿指定测地线段的共轭重数}
+
+非恒定测地线可以作常数倍重参数化成为单位速度曲线，而 Jacobi 方程在这种变换下保持形式。由\cref{g3:prop:jacobi-tangential-normal}，两端消失的 Jacobi 场必为法向场；它由起点的法向导数决定，故
+\[
+	0\le m_\gamma(a,b)\le n-1.
+\]
+恒定测地线上曲率项为零，平行标架中的解是一次函数，在两个不同时刻消失就只能为零。因此恒定测地线没有共轭时刻，一维黎曼流形中也没有共轭时刻。
+
+\begin{proposition}[共轭点与指数映射奇异性]\label{g3:prop:conjugate-exp-singularity}
+	设 \(\gamma:I\to M\) 为测地线，\(0\in I\)，\(p=\gamma(0)\)、\(u=\dot\gamma(0)\)。对 \(t_0\in I\setminus\{0\}\)，点 \(\gamma(t_0)\) 与 \(p\) 沿此段共轭，当且仅当 \((\mathrm d\exp_p)_{t_0u}\) 奇异，而且
+	\begin{equation}\label{g3:eq:conjugate-exp-nullity}
+		m_\gamma(0,t_0)=\dim\ker(\mathrm d\exp_p)_{t_0u}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	满足 \(J(0)=0\) 的 Jacobi 场与初始导数 \(w=J'(0)\) 一一对应。由\cref{g3:prop:exponential-differential-jacobi}，
+	\[
+		J_w(t_0)=(\mathrm d\exp_p)_{t_0u}(t_0w).
+	\]
+	乘以非零数 \(t_0\) 是 \(T_pM\) 的同构，所以两边的核同维。定义立即给出结论。
+\end{proof}
+
+在非共轭时刻，逆函数定理保证所选初速度附近的测地线可以由终点光滑参数化。共轭时刻则存在非零的初速度变化，使终点的一阶变化为零。这一结论是线性化的陈述；它本身没有断言存在一族端点严格固定的不同测地线。
+
+\begin{corollary}[非共轭端点的 Jacobi 边值问题]\label{g3:cor:jacobi-boundary-value}
+	设 \(a<b\)，\(\gamma:[a,b]\to M\) 为延拓到端点邻域的测地线，且两端沿此段不共轭。对任意 \(v\in T_{\gamma(a)}M\)、\(w\in T_{\gamma(b)}M\)，存在唯一 Jacobi 场满足 \(J(a)=v\)、\(J(b)=w\)。
+\end{corollary}
+\begin{proof}
+	先取初值为 \((v,0)\) 的 Jacobi 场 \(J_0\)。映射
+	\[
+		T_{\gamma(a)}M\longrightarrow T_{\gamma(b)}M,
+		\qquad z\longmapsto J_z(b),\quad
+		J_z(a)=0,\quad J_z'(a)=z,
+	\]
+	的核由共轭定义为零；源和靶都是 \(n\) 维，所以它是同构。唯一选择 \(z\) 使 \(J_z(b)=w-J_0(b)\)，即可取 \(J=J_0+J_z\)。
+\end{proof}
+
+下一结论保证，在一个有限测地线段上，按重数逐个计数共轭时刻是有限过程。证明只使用光滑系数和初值唯一性，并不要求度量解析。
+
+\begin{proposition}[共轭时刻的孤立性]\label{g3:prop:conjugate-times-isolated}
+	设 \(\gamma:I\to M\) 是光滑黎曼流形中的测地线，\(0\in I\)。相对 \(0\) 的每个共轭时刻在 \(I\) 中孤立；\(0\) 的某个穿孔邻域没有共轭时刻。因此每个紧子区间 \([a,b]\subset I\) 只含有限个相对 \(0\) 的共轭时刻，各自的重数有限。
+\end{proposition}
+\begin{proof}
+	在沿 \(\gamma\) 的平行正交标架中，取矩阵方程
+	\[
+		Y''+\mathcal R(t)Y=0,\qquad Y(0)=0,\qquad Y'(0)=I_n.
+	\]
+	其第 \(i\) 列是初始导数为第 \(i\) 个基向量、初始值为零的 Jacobi 场。于是 \(t\ne0\) 为共轭时刻当且仅当 \(Y(t)\) 奇异，重数为 \(\dim\ker Y(t)\)。由 \(Y(t)=tI_n+O(t^2)\)，矩阵 \(Y(t)/t\) 趋于 \(I_n\)，所以 \(0\) 附近没有非零的共轭时刻。
+
+	固定一个共轭时刻 \(t_0\ne0\)，写
+	\[
+		K=\ker Y(t_0),\qquad L=\operatorname{im}Y(t_0),
+		\qquad C=L^\perp,\qquad m=\dim K=\dim C.
+	\]
+	Wronskian 配对在初始时刻为零，因而对所有 \(t\) 有
+	\begin{equation}\label{g3:eq:jacobi-matrix-wronskian}
+		Y(t)^{\mathsf T}Y'(t)=Y'(t)^{\mathsf T}Y(t).
+	\end{equation}
+	若 \(u\in K\)，则对任意 \(v\in\mathbb R^n\)，此式给出
+	\[
+		\langle Y'(t_0)u,Y(t_0)v\rangle
+		=\langle Y(t_0)u,Y'(t_0)v\rangle=0.
+	\]
+	故 \(Y'(t_0)K\subset C\)。若还满足 \(Y'(t_0)u=0\)，则 Jacobi 场 \(Y(t)u\) 在 \(t_0\) 的值和导数都为零，由初值唯一性它恒为零，再在 \(0\) 处求导便得 \(u=0\)。维数相同于是说明
+	\begin{equation}\label{g3:eq:jacobi-kernel-cokernel-isomorphism}
+		B=Y'(t_0)|_K:K\longrightarrow C
+	\end{equation}
+	是同构。这是控制奇异时刻的关键：在消失的方向上，一阶导数恰好补满值域缺少的方向。
+
+	现在按定义域 \(K^\perp\oplus K\) 和值域 \(L\oplus C\) 分块，令 \(\tau=t-t_0\)，写成
+	\[
+		Y(t)=\begin{pmatrix}A(t)&E(t)\\ F(t)&G(t)\end{pmatrix}.
+	\]
+	在 \(t_0\) 处，\(A(t_0):K^\perp\to L\) 可逆，其他三块均为零。Taylor 展开及式\eqref{g3:eq:jacobi-kernel-cokernel-isomorphism}给出
+	\[
+		E(t)=O(\tau),\qquad F(t)=O(\tau),\qquad
+		G(t)=\tau B+O(\tau^2).
+	\]
+	当 \(t\) 接近 \(t_0\) 时，\(A(t)\) 仍可逆。以可逆块矩阵作消元，\(Y(t)\) 可逆等价于下面的补块可逆：
+	\begin{equation}\label{g3:eq:jacobi-singular-block}
+		G(t)-F(t)A(t)^{-1}E(t)
+		=\tau B+O(\tau^2)=\tau\bigl(B+O(\tau)\bigr).
+	\end{equation}
+	因为 \(B\) 可逆，对充分小的非零 \(\tau\)，此块可逆，故 \(Y(t)\) 可逆。当 \(K^\perp\) 为零空间时，直接使用 \(Y(t)=\tau B+O(\tau^2)\) 即可。于是 \(t_0\) 是孤立共轭时刻。
+
+	最后，假如某个紧子区间含无限多个不同的共轭时刻，就有一个收敛子列，其极限仍在 \(I\) 中。极限不能为 \(0\)，因为 \(0\) 附近已经排除了共轭时刻；若极限非零，则由 \(\det Y\) 的连续性它仍为共轭时刻，与刚证的孤立性矛盾。因此数目有限，重数则由有限维核给出。
+\end{proof}
+
+\begin{example}[球面、非正曲率模型与圆周]\label{g3:exm:model-conjugate-points}
+	在半径 \(a_0\) 的圆球面 \(S^n(a_0)\)、\(n\ge2\) 上，沿单位速度测地线且以 \(0\) 为初时刻，满足 \(J(0)=0\) 且处处法向的 Jacobi 场恰为
+	\[
+		J(t)=a_0\sin(t/a_0)P_tv,\qquad v\perp T(0).
+	\]
+	因此正共轭时刻是 \(\pi a_0,2\pi a_0,3\pi a_0,\ldots\)，每个重数为 \(n-1\)。第一个对应对径点，第二个已经回到初始点；共轭关系记录的是所走的测地线段。
+
+	在常曲率 \(k\le0\) 的模型中，\(s_k(t)\) 对 \(t\ne0\) 不为零，因而没有共轭时刻。圆周 \(S^1(a_0)\) 也没有共轭时刻，因为它没有非零法向方向；但指数映射具有周期 \(2\pi a_0\)，并非单射。这个例子说明，指数映射处处微分可逆，与它在整个切空间上单射，是两个不同的问题。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

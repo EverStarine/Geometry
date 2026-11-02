@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 6.1 标记与等价关系
 % 纲要位置：几何学计划纲要.md，第 3683 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 % 本次扩充的范围、先修与边界：先修为 I.6 的闭曲面分类、II.2 的一阶同调及闭曲面的同调交叉配对，并使用本节已有的标记、同位和群作用。固定闭连通定向曲面，构造 Dehn 扭转并核对方向和交叉数符号，计算其同调作用，将 Torelli 群定义为作用的核。Nielsen–Thurston 三分法限亏格至少二的精确陈述与代表模型；不承担完整分类证明、映射类群的全部生成关系或 Torelli 群的专门结构理论。
 
 % 纲要内容开始
@@ -23,34 +23,368 @@
 \section{标记与等价关系}
 \label{g4:sec:0601}
 
-待撰写
+第四章把亏格一曲面写成格点商，也看到同一条椭圆曲线可以有不同的周期基。要让周期随参数连续变化，必须知道前后两张曲面上的哪条闭路彼此对应。标记提供这种对应；遗忘标记以后，得到的才是只记录双全纯类型的模空间。本节先把这两种等价关系分清，再用环带中的一次扭转说明：改变闭路的对应关系，可以产生同一曲面的不同标记。
 
 \subsection{标记曲面、同位和双全纯}
 \label{g4:subsec:0601:01}
-待撰写
+
+固定一张闭、连通、定向光滑曲面 \(S=S_g\)，其亏格为 \(g\)。它作为比较所有曲面的参考曲面，暂不随参数改变。黎曼曲面的复坐标给出实定向；以下的标记和曲面自微分同胚均保持定向。
+
+\begin{definition}\label{g4:def:0601:marked-surface}
+	一张以 \(S\) 为参考的\term[biaojiqumian]{标记曲面}[marked surface]是二元组 \((X,f)\)，其中 \(X\) 是紧连通黎曼曲面，\(f:S\to X\) 是保向微分同胚，称为\term[biaoji]{标记}[marking]。两个标记 \(f_0,f_1:S\to X\) 若可由光滑族 \(f_t:S\to X\)、\(0\le t\le1\) 连接，且每个 \(f_t\) 都是保向微分同胚，就称它们\term[tongwei]{同位}[isotopic]，记作 \(f_0\simeq_{\mathrm{iso}}f_1\)。
+
+	两个标记曲面 \((X,f)\)、\((Y,h)\) 等价，是指存在双全纯映射 \(F:X\to Y\)，使
+	\begin{equation}\label{g4:eq:0601:marked-equivalence}
+		F\circ f\simeq_{\mathrm{iso}}h.
+	\end{equation}
+\end{definition}
+
+这里的标记是实光滑映射，双全纯条件则加在比较两个复结构的 \(F\) 上。同位过程中的每张映射都要保持可逆；同伦只要求连续映射族，因而条件较弱。例如任意同位都诱导相同的同调同态，但以后会看到，只给定同调同态还不足以记住同位类。
+
+\ProseParagraphBreak
+
+式\eqref{g4:eq:0601:marked-equivalence}确为等价关系。恒等映射给出自反性；将同位逐时取逆并复合 \(F^{-1}\)，得到对称性；把两个双全纯映射复合，并依次连接相应同位，得到传递性。拼接同位时，可先把时间参数光滑重参数化，使其在端点附近恒定，从而保持联合光滑性。
+
+\ProseParagraphBreak
+
+标记会搬运整张曲面上的拓扑资料。若在 \(S\) 上选定辛基 \(a_1,\ldots,a_g,b_1,\ldots,b_g\)，它在 \(X\) 上给出 \(f_*a_i,f_*b_i\)；若还指定了一条简单闭曲线的同位类，标记也把这一同位类搬到 \(X\)。后者比只搬运一个同调类包含更多信息，这一点是引入完整标记的理由。
+
+\ProseParagraphBreak
+
+稍后比较准共形映射、测地线与光滑标记时，会同时遇到连续同伦和光滑同位。下面列出本章采用的曲面拓扑结果，使这些转换有明确依据。
+
+\begin{proposition}\label{g4:prop:0601:surface-isotopy-interface}
+	对紧定向光滑曲面，采用以下同伦与同位结果。
+	\begin{enumerate}
+		\item 每个保向自同胚都拓扑同位于保向微分同胚。两个保向自同胚同伦时可以同位；当二者光滑时，可将同位取为光滑同位。若曲面有边界，且两映射在边界上恒等、给定同伦相对边界，则同位也可相对边界。
+		\item 两条本质简单闭曲线自由同伦，当且仅当它们同位；无向曲线的自由同伦允许反转参数方向。对于端点固定在边界上的简单适当弧，也有相对端点的同伦与同位的对应，其中弧的内部始终位于曲面内部。
+	\end{enumerate}
+\end{proposition}
+
+这些是本章使用的外部曲面拓扑结果：第一项见 \cite[第1.4节，第41--42页，定理1.12、1.13及其后的光滑同位说明；第2.1节，第44--45页]{FarbMargalit2012Primer}；第二项见同书第34页命题1.10及第35--36页的适当弧版本。对光滑曲线，所得嵌入同位再由第二卷定理15.5.3延拓为环境同位。这里同时保留了闭曲线的自由同伦和适当弧的端点条件，后面切割曲面时将分别使用。
 
 \subsection{Teichmüller 空间与模空间的区别}
 \label{g4:subsec:0601:02}
-待撰写
+
+\begin{definition}\label{g4:def:0601:teich-moduli}
+	所有以 \(S\) 为参考的标记曲面，按\eqref{g4:eq:0601:marked-equivalence}取等价类，所得集合称为 \(S\) 的\term[Teichmullerkongjian]{Teichmüller 空间}[Teichmüller space]\footnote{Paul Julius Oswald Teichmüller（1913--1943），德国数学家，研究几何函数论、准共形映射与黎曼曲面的模参数。}，记作 \(\mathcal T(S)\) 或 \(\mathcal T_g\)。所有亏格为 \(g\) 的紧黎曼曲面按双全纯同构取等价类，所得集合称为\term[mokongjian]{模空间}[moduli space]，记作 \(\mathcal M_g\)。遗忘标记给出映射
+	\[
+		\pi:\mathcal T(S)\longrightarrow\mathcal M_g,
+		\qquad [X,f]\longmapsto[X].
+	\]
+\end{definition}
+
+也可把所有复结构放在同一张 \(S\) 上。设 \(\mathcal J(S)\) 为与既定定向相容的光滑复结构集合：每个复图册确定切丛自同态 \(J\)，满足 \(J^2=-I\)，局部复坐标中 \(J\partial_x=\partial_y\)。用这些张量的 \(C^\infty\) 拓扑赋予 \(\mathcal J(S)\) 拓扑。记 \(\operatorname{Diff}_0(S)\) 为与恒等映射光滑同位的保向微分同胚群，则
+\begin{equation}\label{g4:eq:0601:complex-structure-quotient}
+	\mathcal T(S)=\mathcal J(S)/\operatorname{Diff}_0(S).
+\end{equation}
+本章在左侧采用右侧的商拓扑。为核对这个识别，将 \((X,f)\) 送到拉回复结构 \(f^*J_X\)。若 \(Ff\simeq_{\mathrm{iso}}h\)，则 \(\psi=h^{-1}Ff\) 属于 \(\operatorname{Diff}_0(S)\)，且 \(f^*J_X=\psi^*(h^*J_Y)\)。反过来，这样的拉回等式使 \(h\psi f^{-1}:X\to Y\) 的微分复线性，局部 Cauchy--Riemann 方程说明它双全纯，并满足标记等价。后面将用有限维参数描述这个商空间的局部拓扑。
+
+\begin{example}\label{g4:exm:0601:marked-tori}
+	取 \(S=\mathbb R^2/\mathbb Z^2\)，并对 \(\tau\in\mathbb H\) 定义
+	\[
+		E_\tau=\mathbb C/(\mathbb Z+\tau\mathbb Z),\qquad
+		f_\tau([x,y])=[x+\tau y].
+	\]
+	正数 \(\operatorname{Im}\tau\) 保证 \(f_\tau\) 保向。标准两圈经标记后的 \(\mathrm{d}z\) 周期为 \(1,\tau\)。若 \((E_\tau,f_\tau)\) 与 \((E_\sigma,f_\sigma)\) 等价，设比较它们的双全纯映射为 \(F\)。由全纯微分空间的一维性，\(F^*\mathrm{d}w=a\,\mathrm{d}z\)，其中 \(a\ne0\)。同位使对应周期相等，故
+	\[
+		a=1,\qquad a\tau=\sigma.
+	\]
+	于是 \(\tau=\sigma\)。然而 \(\mathbb Z+\tau\mathbb Z=\mathbb Z+(\tau+1)\mathbb Z\)，所以 \(E_\tau\) 与 \(E_{\tau+1}\) 是同一格点商。它们在 \(\mathcal M_1\) 中是同一点，在 \(\mathcal T(S)\) 中的上述标记类却不同：第二条标记闭路增加了第一条闭路。
+\end{example}
+
+因此，一个参数变化如果同时搬运了闭路，就自然落在 \(\mathcal T(S)\) 中；比较所得曲面的双全纯类型时，再遗忘这种搬运资料。下一小节给出这一步遗忘的群作用解释。
 
 \subsection{映射类群作用及稳定子}
 \label{g4:subsec:0601:03}
-待撰写
+
+记 \(\operatorname{Diff}^+(S)\) 为全部保向微分同胚组成的群。若 \(\psi_t\) 是从恒等映射到 \(\psi\) 的同位，则 \(\varphi\psi_t\varphi^{-1}\) 是从恒等映射到 \(\varphi\psi\varphi^{-1}\) 的同位，所以 \(\operatorname{Diff}_0(S)\) 是正规子群。
+
+\begin{definition}\label{g4:def:0601:mapping-class-group}
+	商群
+	\[
+		\operatorname{Mod}(S)=
+		\operatorname{Diff}^+(S)/\operatorname{Diff}_0(S)
+	\]
+	称为 \(S\) 的\term[yingsheleiqun]{映射类群}[mapping class group]。其元素是保向微分同胚的同位类，乘法由映射复合给出。
+\end{definition}
+
+以下固定左作用约定
+\begin{equation}\label{g4:eq:0601:mcg-action}
+	[\varphi]\cdot[X,f]=[X,f\circ\varphi^{-1}].
+\end{equation}
+同位的 \(\varphi\) 给出同位的标记；若更换 \((X,f)\) 的等价代表，将原比较映射与 \(\varphi^{-1}\) 复合后仍满足\eqref{g4:eq:0601:marked-equivalence}。所以作用良定义。逆元保证复合顺序正确：先作用 \([\psi]\)，再作用 \([\varphi]\)，所得标记为 \(f\psi^{-1}\varphi^{-1}=f(\varphi\psi)^{-1}\)。
+
+\begin{proposition}\label{g4:prop:0601:moduli-quotient}
+	遗忘映射的纤维恰是映射类群的轨道，因而作为集合有
+	\[
+		\mathcal M_g=\mathcal T(S)/\operatorname{Mod}(S).
+	\]
+	对 \([X,f]\in\mathcal T(S)\)，记 \(\operatorname{Aut}_0(X)\) 为与恒等映射光滑同位的全纯自同构组成的子群。则有自然同构
+	\begin{equation}\label{g4:eq:0601:stabilizer}
+		\operatorname{Stab}_{\operatorname{Mod}(S)}[X,f]
+		\cong\operatorname{Aut}(X)/\operatorname{Aut}_0(X).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	同一轨道上的点保留同一张 \(X\)，故遗忘映射在轨道上常值。反过来，若 \(F:X\to Y\) 双全纯，给定标记 \(f:S\to X\)、\(h:S\to Y\)，取 \(\varphi=h^{-1}Ff\)，则 \(Ff\varphi^{-1}=h\)。因此 \([X,f]\) 经 \([\varphi]\) 作用后等于 \([Y,h]\)。
+
+	对 \(A\in\operatorname{Aut}(X)\)，定义
+	\[
+		\iota_f(A)=[f^{-1}Af]\in\operatorname{Mod}(S).
+	\]
+	它是群同态。令 \(\varphi=f^{-1}Af\)，则 \(Af\varphi^{-1}=f\)，故它的像包含在稳定子中。若 \([\varphi]\) 稳定 \([X,f]\)，标记等价给出某个 \(A\in\operatorname{Aut}(X)\)，满足 \(Af\varphi^{-1}\simeq_{\mathrm{iso}}f\)；于是 \([f^{-1}Af]=[\varphi]\)，所以像就是稳定子。核由 \(f^{-1}Af\simeq_{\mathrm{iso}}\operatorname{id}_S\) 的自同构组成，等价地 \(A\simeq_{\mathrm{iso}}\operatorname{id}_X\)，即 \(\operatorname{Aut}_0(X)\)。第一同构定理给出\eqref{g4:eq:0601:stabilizer}。
+\end{proof}
+
+\begin{proposition}\label{g4:prop:0601:automorphism-faithful}
+	设 \(X\) 是亏格 \(g\ge2\) 的紧连通黎曼曲面。若全纯自同构 \(A:X\to X\) 与恒等映射同伦，则 \(A=\operatorname{id}_X\)。特别地，\(\iota_f\) 单射，且 \([X,f]\) 的稳定子同构于 \(\operatorname{Aut}(X)\)。
+\end{proposition}
+\begin{proof}
+	假设 \(A\ne\operatorname{id}_X\)。恒等定理说明它的不动点孤立；由于 \(X\) 紧，不动点只有有限多个。在不动点 \(p\) 的正向复坐标中写 \(A(z)=a(z)\)、\(p=0\)。全纯函数 \(z-a(z)\) 不恒为零，其零点阶数 \(m_p\) 为正整数。沿足够小的正向圆周，\(z-a(z)\) 的绕数为 \(m_p\)，故实二维局部不动点指数为 \(m_p>0\)。
+
+	第二卷定理16.4.4的 Lefschetz 公式\footnote{Solomon Lefschetz（1884--1972），俄国出生、后在美国工作的数学家，研究代数拓扑与代数几何，建立同调方法的不动点公式。}适用于这张闭定向光滑曲面，给出
+	\[
+		L(A)=\sum_{p\in\operatorname{Fix}(A)}m_p\ge0.
+	\]
+	另一方面，同伦于恒等映射使 \(A\) 在各阶实上同调上的作用均为恒等，因此
+	\[
+		L(A)=1-\dim H^1(X;\mathbb R)+1=2-2g<0,
+	\]
+	矛盾。这里即使没有不动点，前一个和也只是零，仍然产生矛盾。由同位蕴含同伦，\(\operatorname{Aut}_0(X)\) 平凡，再用\eqref{g4:eq:0601:stabilizer}即可。
+\end{proof}
+
+亏格一恰好显示了假设的作用。在 \(E=\mathbb C/\Lambda\) 上，每个平移 \(T_b([z])=[z+b]\) 都是全纯自同构，且 \(T_{tb}\)、\(0\le t\le1\)，给出到恒等映射的同位，因此全纯自同构到映射类群的同态有非平凡核。事实上，这个核恰为平移群。若 \(A\) 同伦于恒等映射，写 \(A^*\mathrm{d}z=a\,\mathrm{d}z\)，沿任一非零格点周期积分得到 \(a\lambda=\lambda\)，所以 \(a=1\)。于是全纯映射 \(P\mapsto A(P)-P\) 的微分处处为零，在连通的 \(E\) 上为常值，故 \(A\) 是平移。这样，环面标记的稳定子对应于全纯自同构群除去平移后的商群。
 
 \subsection{Dehn 扭转的环带构造与同位类}
 \label{g4:subsec:0601:04}
-待撰写
+
+在 \(S\) 上取一条光滑简单闭曲线 \(c\)。它有一条环带邻域：第二卷定理15.3.5给出法线丛的管状模型，而 \(S\) 的定向和 \(c\) 的暂定方向使实法线丛可定向，因而平凡。取坐标
+\[
+	\iota:(\mathbb R/\mathbb Z)\times[-1,1]\longrightarrow S,
+	\qquad c=\iota((\mathbb R/\mathbb Z)\times\{0\}),
+\]
+使 \((\partial_\theta,\partial_t)\) 按此顺序给出 \(S\) 的正定向，并使 \(c\) 沿 \(\theta\) 增大方向定向。
+
+\begin{definition}\label{g4:def:0601:dehn-twist}
+	选光滑非减函数 \(\chi:[-1,1]\to[0,1]\)，在 \(-1\) 附近恒为 \(0\)，在 \(1\) 附近恒为 \(1\)。环带上的映射
+	\begin{equation}\label{g4:eq:0601:dehn-annulus}
+		T_c(\theta,t)=(\theta+\chi(t),t)
+	\end{equation}
+	在两条边界附近均为恒等，其中 \(\theta\) 按模 \(1\) 计算。把它在环带外延拓为恒等，所得保向微分同胚称为沿 \(c\) 的正\term[Dehnniuzhuan]{Dehn 扭转}[Dehn twist]\footnote{Max Wilhelm Dehn（1878--1952），德国出生、后在美国工作的数学家，研究几何、拓扑与群的判定问题。}。它的逆映射把 \(+\chi(t)\) 换成 \(-\chi(t)\)。
+\end{definition}
+
+Jacobi 矩阵为 \(\bigl(\begin{smallmatrix}1&\chi'(t)\\0&1\end{smallmatrix}\bigr)\)，行列式为 \(1\)，因此保向和可逆性都可直接核验。在环带的带状覆盖 \(\mathbb R\times[-1,1]\) 中，一条从下边到上边的竖弧经 \(T_c\) 后，上端比原来多走一个 \(\theta\) 周期；下降到环带，两端仍是原来的点，中间的弧则绕核心多转一周。\cref{g4:fig:0601:dehn-strip}把这一局部运动画在带状覆盖中。
+
+\input{Figures/Ch06-DehnStrip}
+
+\begin{proposition}\label{g4:prop:0601:twist-isotopy}
+	\(T_c\) 的同位类与函数 \(\chi\)、环带宽度、保向管状坐标及 \(c\) 的暂定方向无关，只依赖 \(c\) 的无向同位类与 \(S\) 的定向。对任意保向微分同胚 \(\varphi\)，有
+	\begin{equation}\label{g4:eq:0601:twist-conjugacy}
+		[\varphi][T_c][\varphi]^{-1}=[T_{\varphi(c)}].
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	两个允许的函数 \(\chi_0,\chi_1\) 的凸组合仍在两端附近分别等于 \(0,1\)。把它代入\eqref{g4:eq:0601:dehn-annulus}，便得到全局微分同胚之间的同位。特别地，可将 \(\chi\) 从 \(0\) 变到 \(1\) 的区域压缩到核心附近任意窄的子环带。因此比较不同管状坐标时，可以先把两个扭转的支撑缩到共同的小邻域。
+
+	将法向微分正规化后，第二卷命题15.3.6给出两张管状坐标间固定核心的光滑同位，且可取共同的正宽度。在每一时刻的管状坐标中使用同一个、在边界附近恒定的 \(\chi\)，再在外部补恒等映射，就得到全局扭转之间的光滑同位。法向坐标的正缩放可先沿正函数的凸组合连接；核心的保向重新参数化也可连接到恒等映射：若其提升为 \(h:\mathbb R\to\mathbb R\)，满足 \(h(x+1)=h(x)+1\)、\(h'>0\)，则 \((1-s)x+sh(x)\) 给出这样的同位。这处理了坐标的各种选择。
+
+	若反转 \(c\) 的方向，保持环境定向的配套坐标变换为 \((\theta,t)\mapsto(-\theta,-t)\)。在旧坐标中，新扭转写成 \((\theta-\chi(-t),t)\)，模 \(1\) 后也就是 \((\theta+1-\chi(-t),t)\)。函数 \(1-\chi(-t)\) 仍满足原来的端点条件，故同位类不变。
+
+	最后，\(\varphi\) 搬运环带坐标，直接把 \(T_c\) 共轭成 \(\varphi(c)\) 附近同方向的扭转，这给出\eqref{g4:eq:0601:twist-conjugacy}。若 \(c\) 经光滑嵌入同位移到 \(c'\)，第二卷定理15.5.3将这个紧圆周的同位延拓为环境同位 \(\varphi_t\)。于是 \([\varphi_1]=1\)，共轭公式给出 \([T_c]=[T_{c'}]\)。
+\end{proof}
+
+这里的“正”由坐标式\eqref{g4:eq:0601:dehn-annulus}和定向次序共同规定。将环境定向反转，会交换正、负扭转。只反转核心曲线的方向则不改变扭转，因为横向坐标也同时反转了。
+
+\begin{lemma}\label{g4:lem:0601:relative-disk-annulus}
+	闭圆盘上逐点固定边界的保向自同胚，相对边界同位于恒等映射。闭环带 \(A=(\mathbb R/\mathbb Z)\times[-1,1]\) 上逐点固定边界的保向自同胚 \(h\)，其相对边界同位类由一个整数 \(n(h)\) 唯一确定：将 \(h\) 提升到带状覆盖，并使提升 \(\widetilde h\) 在下边界恒等，则上边界满足
+	\[
+		\widetilde h(x,1)=(x+n(h),1).
+	\]
+	在本节的方向约定下，\(n(T_c)=1\)，所以每个相对边界同位类唯一写为 \([T_c^n]\)。对光滑自微分同胚，上述同位也可取为光滑同位。
+\end{lemma}
+\begin{proof}
+	先把圆盘识别为 \(\{|x|\le1\}\)。若 \(h\) 固定边界，则对 \(0<t\le1\) 定义
+	\[
+		H_t(x)=
+		\begin{cases}
+			t\,h(x/t),&|x|\le t,\\
+			x,&t\le|x|\le1,
+		\end{cases}
+		\qquad H_0(x)=x.
+	\]
+	两式在 \(|x|=t\) 相同，每个 \(H_t\) 都是固定边界的同胚，其逆用 \(h^{-1}\) 的同一公式给出。又有 \(|H_t(x)-x|\le2t\)，故在 \(t=0\) 联合连续。这样得到恒等映射到 \(h\) 的相对边界同位。光滑情形用\cref{g4:prop:0601:surface-isotopy-interface}的相对版本将同位光滑化。
+
+	对环带，第一卷定理5.3.10应用于单连通的带状覆盖，给出指定一点后的唯一提升；固定下边界使这一提升在整条下边界恒等。上边界的提升是整数平移，整数不可能随 \(x\) 或相对边界同位连续改变。两个映射复合时该整数相加，所以 \(n\) 是同态，且\eqref{g4:eq:0601:dehn-annulus}给出 \(n(T_c^m)=m\)。只须证明 \(n(h)=0\) 时 \(h\) 相对边界同位于恒等映射。
+
+	这时 \(\widetilde h\) 在上下边界都恒等，且
+	\[
+		\widetilde h(x+1,t)=\widetilde h(x,t)+(1,0).
+	\]
+	后一式来自 \(h\) 在 \(\pi_1(A)\) 上为恒等：边界圈是其生成元，而 \(h\) 逐点固定该圈。带状区域凸，故 \((1-s)\widetilde h+s\operatorname{id}\) 给出保持两条边界的同伦，并与整数平移交换。它下降为 \(h\) 到恒等映射的相对边界同伦，再用\cref{g4:prop:0601:surface-isotopy-interface}得到同位。对一般 \(h\)，将其复合 \(T_c^{-n(h)}\) 即归结到这一情形。这个圆盘与环带的计算也见 \cite[第47--48页，引理2.1；第51--52页，命题2.4]{FarbMargalit2012Primer}。
+\end{proof}
 
 \subsection{Dehn 扭转对一阶同调的作用}
 \label{g4:subsec:0601:05}
-待撰写
+
+沿用第四章的交数约定：\(u\cdot v\) 在横截交点处先取 \(u\) 的切向量，再取 \(v\) 的切向量，与曲面的正定向比较。特别地，在刚才的环带中，核心 \(c\) 与沿 \(t\) 增大的横弧按这个次序相交为正。第二卷定理16.2.8及推论16.2.9保证该配对只依赖整数同调类。
+
+\begin{proposition}\label{g4:prop:0601:twist-homology}
+	对任意 \(x\in H_1(S;\mathbb Z)\)，正 Dehn 扭转满足
+	\begin{equation}\label{g4:eq:0601:twist-transvection}
+		(T_c)_*x=x+([c]\cdot x)[c]
+		=x-(x\cdot[c])[c].
+	\end{equation}
+	更一般地，对 \(n\in\mathbb Z\)，有
+	\begin{equation}\label{g4:eq:0601:twist-power}
+		(T_c^n)_*x=x+n([c]\cdot x)[c].
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	一阶同调由闭曲线生成，故先对一条有向光滑闭曲线 \(\gamma\) 核对。作小扰动使它横截于 \(c\)，再把扭转支撑的环带缩窄。此时 \(\gamma\) 在支撑环带内的相关部分，是围绕各交点的有限条横穿弧；其余部分不受扭转影响。
+
+	设一条横穿弧沿 \(t\) 增大方向通过核心。在带状覆盖中，原弧与扭转后的弧的下端可取相同提升，上端提升相差 \(+1\)。将扭转后的弧接上原弧的反路，得到的闭路因而代表 \([c]\)。对应交点的 \(c\cdot\gamma\) 符号也是 \(+1\)。若横穿方向相反，上端与下端的角色交换，差类和交点符号同时变成负号。因此每个交点贡献 \(\varepsilon_p[c]\)，将有限条弧相加便得到
+	\[
+		[T_c(\gamma)]-[\gamma]
+		=\sum_{p\in c\cap\gamma}\varepsilon_p[c]
+		=([c]\cdot[\gamma])[c].
+	\]
+	按整数线性延拓即得\eqref{g4:eq:0601:twist-transvection}。由于 \([c]\cdot[c]=0\)，其中加上的算子 \(N(x)=([c]\cdot x)[c]\) 满足 \(N^2=0\)。故 \((I+N)^n=I+nN\) 对正、零、负整数均成立，得到\eqref{g4:eq:0601:twist-power}。
+\end{proof}
+
+公式的两种写法把符号说明得很清楚：若把交数写成“被作用的类先出现”，前面的号就是负号。反转 \(c\) 的方向使 \([c]\) 和 \([c]\cdot x\) 同时反号，所以右侧保持不变。
+
+\begin{example}\label{g4:exm:0601:twist-matrix}
+	在一个手柄中取 \(a\cdot b=1\)，其余基曲线避开 \(a\) 的支撑环带，则
+	\[
+		(T_a)_*a=a,\qquad (T_a)_*b=b+a.
+	\]
+	在有序基 \((a,b)\) 下，按列记录基向量的像，矩阵为
+	\[
+		\begin{pmatrix}1&1\\0&1\end{pmatrix}.
+	\]
+	这正是\cref{g4:exm:0601:marked-tori}中将第二个周期从 \(\tau\) 改成 \(\tau+1\) 的同调变换。若曲线 \(c\) 不分离 \(S\)，沿 \(c\) 切开后的曲面连通，取一条连接两条新边界、且两端在粘合时互相对应的简单弧，粘回并圆滑后得到与 \(c\) 相交一次的闭曲线 \(b\)。适当定向使 \([c]\cdot[b]=1\)，故 \((T_c^n)_*[b]=[b]+n[c]\)。由于 \([c]\ne0\) 且 \(H_1(S;\mathbb Z)\) 无挠，所有 \([T_c^n]\) 两两不同，\([T_c]\) 在映射类群中有无限阶。
+\end{example}
 
 \subsection{Torelli 群作为同调作用的核}
 \label{g4:subsec:0601:06}
-待撰写
+
+保向微分同胚保持局部相交符号，因而保持同调交数。同位映射又诱导相同的同调同态，所以有群同态
+\begin{equation}\label{g4:eq:0601:homology-representation}
+	\rho:\operatorname{Mod}(S)\longrightarrow
+	\operatorname{Sp}(H_1(S;\mathbb Z),\cdot),
+	\qquad [\varphi]\longmapsto\varphi_*.
+\end{equation}
+右侧是保持该反对称非退化整数配对的自同构群。选辛基 \((a_1,\ldots,a_g,b_1,\ldots,b_g)\) 后，交数矩阵为
+\[
+	J=\begin{pmatrix}0&I_g\\-I_g&0\end{pmatrix},
+\]
+右侧即 \(\operatorname{Sp}(2g,\mathbb Z)=\{A\in\operatorname{GL}(2g,\mathbb Z):A^{\mathsf T}JA=J\}\)。
+
+\begin{definition}\label{g4:def:0601:torelli}
+	同调作用\eqref{g4:eq:0601:homology-representation}的核
+	\[
+		\mathcal I(S)=\ker\rho
+	\]
+	称为 \(S\) 的\term[Torelliqun]{Torelli 群}[Torelli group]。它由在 \(H_1(S;\mathbb Z)\) 上恒等作用的映射类组成，是 \(\operatorname{Mod}(S)\) 的正规子群。
+\end{definition}
+
+\begin{example}\label{g4:exm:0601:torelli-twists}
+	若简单闭曲线 \(c\) 分离 \(S\)，其一侧闭包是一张带边界曲面，边界为 \(c\)。由第一卷定理6.2.10给该曲面作与边界相容的有限三角剖分，所有内部边在定向三角形之和的边界中相消，留下 \(c\)，所以 \([c]=0\)。于是\eqref{g4:eq:0601:twist-transvection}给出 \((T_c)_*=I\)，即
+	\[
+		[T_c]\in\mathcal I(S).
+	\]
+	另设 \(c,d\) 不交，分别定向后满足 \([c]=[d]\)。两个扭转在同调上给出同一个变换，所以
+	\[
+		[T_cT_d^{-1}]\in\mathcal I(S).
+	\]
+	若 \(c,d\) 均不分离、不同位且它们的并围住一张子曲面，通常称这一对为\term[bianjiequxiandui]{边界曲线对}[bounding pair]，上述复合称为边界曲线对映射。等式 \([c]=[d]\) 来自该子曲面的定向边界为 \(c-d\)。这些计算直接检验了它们属于核的原因。
+\end{example}
+
+Torelli 群也说明两种“忘记资料”的层次。先把标记中的每条曲线只记成同调类，相当于允许来自 \(\mathcal I(S)\) 的改变；把整个标记忘掉，则允许全部映射类群。第四章的归一化周期以同调辛基为依据，因此经过 Torelli 群的标记变化，所有基闭路的周期都保持原样。周期能有效记录复结构，而所选闭路的完整同位资料要在 \(\mathcal T(S)\) 中另外保存。
 
 \subsection{Nielsen–Thurston 三分法的陈述与模型}
 \label{g4:subsec:0601:07}
-待撰写
 
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+Nielsen--Thurston 分类把映射类与曲面上可保留的几何结构联系起来。\footnote{Nielsen，Jakob Nielsen（1890--1959），丹麦数学家，研究曲面映射与群自同构。Thurston，William Paul Thurston（1946--2012），美国数学家，研究低维拓扑、双曲几何与几何结构。}以下设 \(g\ge2\)。一条简单闭曲线若不零伦，就称为本质曲线。\term[duochongquxian]{多重曲线}[multicurve]是有限条本质简单闭曲线的不交并，且任意两条不同位。映射类保持多重曲线，是指它把这些无向曲线的同位类作为一个集合置换，允许交换其中的分支。
+
+\begin{definition}\label{g4:def:0601:nt-types}
+	映射类 \(\phi\in\operatorname{Mod}(S)\) 若有有限阶，就称为\term[zhouqixing]{周期型}[periodic]；若保持某个非空多重曲线，就称为\term[keyue]{可约}[reducible]。为定义第三类，先引入曲面上的带测度奇异叶状结构。
+
+	在除去有限集的曲面上，局部坐标中的平行直线 \(y=\text{常数}\) 给出一维叶状结构；横弧带有测度 \(|\mathrm{d}y|\)，并要求不同坐标中的测度相容。允许的奇点为 \(p\) 叉奇点，\(p\ge3\)：从该点伸出 \(p\) 条分离叶，相邻叶扇区按平行叶的标准模型拼合。这类对象称为\term[daiceduqiyiyezhuangjiegou]{带测度奇异叶状结构}[measured singular foliation]。相互横截的两个此类结构在普通点可同时写成水平叶与竖直叶，在共同奇点有相同的叉数。
+
+	若 \(\phi\) 有保向同胚代表 \(h\)，保持这样一对横截的带测度奇异叶状结构 \((\mathcal F_1,\mu_1)\)、\((\mathcal F_2,\mu_2)\)，并存在 \(\lambda>1\)，使对各自的横弧 \(\alpha\) 有
+	\begin{equation}\label{g4:eq:0601:pseudo-anosov-measure}
+		\mu_1(h\alpha)=\lambda\mu_1(\alpha),\qquad
+		\mu_2(h\alpha)=\lambda^{-1}\mu_2(\alpha),
+	\end{equation}
+	就称 \(\phi\) 为\term[weiAnosov]{伪 Anosov 型}[pseudo-Anosov]\footnote{\OriginalName{Дмитрий Викторович Аносов}（Dmitrii Viktorovich Anosov，1936--2014），俄罗斯数学家，研究动力系统与遍历理论。}，\(\lambda\) 称为其伸长因子。
+\end{definition}
+
+叉数的局部解析模型可写得更明确：在复坐标 \(z\) 中，取二次微分 \(z^{p-2}\,\mathrm{d}z^2\)，在避开原点的小扇区上积分其平方根。积分正比于 \(z^{p/2}\)，其实部与虚部的等值线给出相互横截的两族叶，横向测度取相应微分的绝对值。平方根换号只反转坐标，保持叶和测度；沿原点绕行后因此仍能拼合。水平或竖直方向在原点各有 \(p\) 条分离叶。闭曲面没有穿孔，本节的奇点条件采用 \(p\ge3\)。
+
+\ProseParagraphBreak
+
+为了容许这样的奇点模型，伪 Anosov 代表用同胚表述。\cref{g4:prop:0601:surface-isotopy-interface}把闭曲面的拓扑映射类与光滑映射类自然识别，因而定义中的同胚代表仍指定前面定义的同一个映射类。
+
+\begin{theorem}[Nielsen--Thurston 分类]\label{g4:thm:0601:nielsen-thurston}
+	设 \(S\) 是亏格 \(g\ge2\) 的闭连通定向曲面。每个保向映射类恰属于下面三类之一：
+	\begin{enumerate}
+		\item 周期型。
+		\item 非周期的可约型，即该类有无限阶并保持一个非空多重曲线。
+		\item 伪 Anosov 型。
+	\end{enumerate}
+\end{theorem}
+
+本定理采用 \cite[第13.3节，第376页，定理13.2]{FarbMargalit2012Primer} 的分类结果，限制到闭曲面 \(g\ge2\) 的情形。这里把第二项写成“非周期的可约型”，是因为按定义，周期型也可能保持多重曲线；例如恒等映射保持每一条曲线。上述三项的互斥性包含了伪 Anosov 类有无限阶且不保持任何非空多重曲线这一结论。
+
+\begin{example}\label{g4:exm:0601:periodic-reducible-models}
+	取无重根多项式 \(P\)，次数为 \(2g+2\)。\cref{g4:prop:0204:hyperelliptic-completion,g4:cor:0204:hyperelliptic-genus}构造的紧曲面 \(X:y^2=P(z)\) 亏格为 \(g\)，且
+	\[
+		\sigma(z,y)=(z,-y)
+	\]
+	延拓为二阶全纯自同构。它不是恒等映射，由\cref{g4:prop:0601:automorphism-faithful}，其映射类也不是恒等类，因而给出周期型模型。
+
+	若 \(c\) 为不分离的简单闭曲线，\([T_c]\) 保持 \(c\) 的同位类，由\cref{g4:exm:0601:twist-matrix}又有无限阶，所以给出第二类模型。曲面上的其他区域可以完全不动，而环带中的横穿弧不断增加绕行次数。
+\end{example}
+
+伪 Anosov 模型需要同时出现伸长、压缩和有限个叉点。下面从一个完全可计算的环面映射构造亏格二的例子；分歧覆盖把环面上没有奇点的平行叶变成四叉叶。
+
+\begin{example}\label{g4:exm:0601:pseudo-anosov-model}
+	在 \(T=\mathbb R^2/\mathbb Z^2\) 上取整矩阵
+	\[
+		A=\begin{pmatrix}2&1\\1&1\end{pmatrix}.
+	\]
+	它的行列式为 \(1\)，故诱导保向自微分同胚。两个实特征值为
+	\[
+		\lambda=\frac{3+\sqrt5}{2}>1,
+		\qquad\lambda^{-1}=\frac{3-\sqrt5}{2}.
+	\]
+	选保向实线性坐标 \((u,v)\) 使其表达为 \((u,v)\mapsto(\lambda u,\lambda^{-1}v)\)。平面上的 \(u=\text{常数}\)、\(v=\text{常数}\) 两族平行线及横向测度 \(|\mathrm{d}u|,|\mathrm{d}v|\) 对整格点平移不变，因而下降到环面；映射 \(A\) 对这些测度的作用恰为\eqref{g4:eq:0601:pseudo-anosov-measure}。
+
+	要得到亏格二，取 \(P=[0,0]\)、\(Q=[1/2,0]\)。计算
+	\[
+		A^3=\begin{pmatrix}13&8\\8&5\end{pmatrix}\equiv I\pmod2,
+	\]
+	可见 \(B=A^3\) 固定 \(P,Q\)。在两点穿孔的环面 \(T^\circ=T\setminus\{P,Q\}\) 上，选两条手柄闭路 \(a,b\) 及两条穿孔小圈 \(d_P,d_Q\)。切开成多边形再应用第一卷定理5.2.4的 van Kampen 定理，得到展示
+	\[
+		\pi_1(T^\circ)=
+		\langle a,b,d_P,d_Q\mid[a,b]d_Pd_Q=1\rangle.
+	\]
+	将 \(d_P,d_Q\) 都送到 \(\mathbb Z/2\mathbb Z\) 的 \(1\)，而将 \(a,b\) 任意送到 \(0\) 或 \(1\)，恰有四个群同态。关系式在目标中成为 \(1+1=0\)，故这四种选择均成立。每个同态都满射，由第一卷定理5.5.6的单值重建得到连通二叶覆盖 \(E\to T^\circ\)。在每个穿孔周围的单值为交换两叶，故\cref{g4:lem:0202:punctured-disk-cover}的局部模型为 \(w=z^2\)。在两个末端各补一个点，便得到到 \(T\) 的二次分歧覆盖
+	\[
+		\pi:\widehat T\longrightarrow T,
+	\]
+	恰在 \(P,Q\) 上方简单分歧。给 \(T\) 任取一个平坦复结构，覆盖片与这些补点坐标使 \(\pi\) 全纯，且有限叶覆盖与有限个补点圆盘使 \(\widehat T\) 紧。Riemann--Hurwitz 公式给出
+	\[
+		2g(\widehat T)-2=2\bigl(2g(T)-2\bigr)+2=2,
+	\]
+	所以 \(g(\widehat T)=2\)。
+
+	\(B\) 固定两个穿孔，因而通过拉回置换上述四个同态；基点的改变只产生内自同构，对交换目标没有影响。四个对象的任意置换的阶整除 \(12\)，因此可以取 \(k=12\)，使 \(B^k\) 保持所选覆盖的单值同态。覆盖重建的等价性于是给出同胚 \(\widehat B:E\to E\)，满足 \(\pi\widehat B=B^k\pi\)。在每个穿孔的上方只有一个末端，\(\widehat B\) 及其逆将该末端送回自身，因此都连续延拓到补点，得到 \(\widehat T\) 的保向同胚。
+
+	最后拉回两族平行叶及其横向测度。在普通覆盖点，它们仍是相互横截的平行叶；在一个分歧点的坐标 \(w=z^2\) 中，每族穿过 \(w=0\) 的直线的逆像有四条射线，故得到四叉奇点。具体地，原来的两个实线性坐标 \((u,v)\) 组成一个保向实线性局部坐标；在该坐标中，二重分歧模型经保向局部同胚化为平方映射，拉回叶的模型正是 \(p=4\) 的模型。于是两个补点都是共同的四叉奇点，其余点没有奇点。等式 \(\pi\widehat B=B^k\pi\) 使两种横向测度分别乘以 \(\lambda^{3k}\) 和 \(\lambda^{-3k}\)。因此 \(\widehat B\) 是伸长因子为 \(\lambda^{3k}>1\) 的伪 Anosov 代表。
+\end{example}
+
+三类模型分别展示有限次迭代后返回、沿保留曲线持续扭转，以及在全曲面上保持两族相反伸缩的奇异叶。分类定理说明每个映射类都落入这三种情形；映射类群作用于标记空间时，这些拓扑运动也就成为比较复结构的三种基本动力学行为。
+
+% 纲要条目排为编号小节标题，并进入目录与 PDF 书签；说明段仍保留于纲要注释中。

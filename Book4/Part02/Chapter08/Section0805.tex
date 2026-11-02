@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 8.5 局部自由与整体障碍
 % 纲要位置：几何学计划纲要.md，第 3806 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,5 +14,76 @@
 \section{局部自由与整体障碍}
 \label{g4:sec:0805}
 
-待撰写
+Darboux 定理保证每一点附近都有标准辛坐标。它允许我们把足够小的球放进坐标邻域，却没有规定这些坐标能覆盖多大的区域。若给定一个有固定半径的球，要求把整个球放进另一个辛流形，问题便会涉及坐标之外的整体约束。
+
+\ProseParagraphBreak
+
+固定标准辛空间 \((\mathbb R^{2n},\omega_0)\)，坐标按 \((q^1,p_1,\ldots,q^n,p_n)\) 成对排列，\(\omega_0=\sum_j\mathrm{d}q^j\wedge\mathrm{d}p_j\)。对 \(R,r>0\)，定义开球与开辛柱
+\begin{equation}\label{g4:eq:0805:ball-cylinder}
+	\begin{aligned}
+		B^{2n}(R)&=\left\{\sum_{j=1}^n\bigl((q^j)^2+p_j^2\bigr)<R^2\right\},\\
+		Z^{2n}(r)&=\{(q^1)^2+p_1^2<r^2\}
+		=B^2(r)\times\mathbb R^{2n-2}.
+	\end{aligned}
+\end{equation}
+这里柱只约束第一对辛共轭方向，其余方向可以无限延伸。\term[xinqianru]{辛嵌入}[symplectic embedding]是保持辛形式的光滑嵌入；等维时它到其像为辛同胚。球—柱问题问的是：何时存在
+\[
+	\varphi:B^{2n}(R)\hookrightarrow Z^{2n}(r),
+	\qquad \varphi^*\omega_0=\omega_0?
+\]
+
+\begin{theorem}[非挤压定理，第24章证明]\label{g4:thm:0805:nonsqueezing-preview}
+	设 \(n\ge1\)、\(R,r>0\)。标准辛球 \(B^{2n}(R)\) 辛嵌入标准辛柱 \(Z^{2n}(r)\) 的充要条件为 \(R\le r\)。
+\end{theorem}
+
+其中 \(R\le r\) 时，恒等包含已经给出嵌入。反向的结论称为 \term[feijiya]{Gromov 非挤压定理}[Gromov nonsqueezing theorem]\footnote{Mikhael Leonidovich Gromov（1943年生），俄裔法国数学家，研究几何、拓扑及几何分析。}，可参见 Cannas da Silva 在伪全纯曲线应用中的陈述。\cite[第3.6节，第124页]{Cannas2006Symplectic} 二维情形只需面积：辛嵌入保持面积，故 \(\pi R^2\le\pi r^2\)。对于 \(n\ge2\)，\chapref{g4:ch:24}将在 \(S^2\times\mathrm{T}^{2n-2}\) 中使用指定球面类、求值映射的度与局部面积估计，完成必要性的证明。下面先证明线性情形，并具体解释高维结论为什么超出体积比较。
+
+\begin{proposition}\label{g4:prop:0805:linear-nonsqueezing}
+	设 \(A\) 为 \(\mathbb R^{2n}\) 上的线性辛同构，且 \(A(B^{2n}(R))\subset Z^{2n}(r)\)。则 \(R\le r\)。
+\end{proposition}
+\begin{proof}
+	在本节成对排列的坐标中，令 \(\Omega=\operatorname{diag}(J_2,\ldots,J_2)\)，其中 \(J_2=\begin{psmallmatrix}0&1\\-1&0\end{psmallmatrix}\)。把 \(Ax\) 的第一对分量写成 \(a\cdot x\)、\(b\cdot x\)，其中 \(a,b\in\mathbb R^{2n}\) 由矩阵相应两行的系数组成。由 \(A^{\mathsf T}\Omega A=\Omega\) 可得 \(A\Omega A^{\mathsf T}=\Omega\)，所以
+	\[
+		a^{\mathsf T}\Omega b=1.
+	\]
+	标准交替矩阵 \(\Omega\) 正交，故 \(1\le |a||b|\)。另一方面，球像包含于柱，分别取上确界得到
+	\[
+		R|a|=\sup_{|x|<R}|a\cdot x|\le r,
+		\qquad R|b|\le r.
+	\]
+	两式相乘可得 \(R^2\le R^2|a||b|\le r^2\)，所以 \(R\le r\)。
+\end{proof}
+
+一般非线性辛嵌入的微分在每点都满足相同的线性关系，但微分随位置改变，无法直接把这条点态估计积分成固定球像的半径下界。这正是完整非挤压证明需要新方法的地方。
+
+\ProseParagraphBreak
+
+体积能给出另一种约束。辛映射保持 \(\omega_0^n/n!\)，而球的辛体积为 \(\pi^nR^{2n}/n!\)。因此把球嵌入一个给定有限体积区域时，目标的体积必须至少这么大。可是 \(n\ge2\) 时每个 \(Z^{2n}(r)\) 都有无限体积，这个必要条件对任何 \(r>0\) 都成立。即使要求严格保持体积，也确实能把球挤进很细的柱：对 \(0<\varepsilon<1\)，取
+\[
+	A_\varepsilon(q^1,p_1,q^2,p_2,\ldots)
+	=(\varepsilon q^1,\varepsilon p_1,
+	\varepsilon^{-1}q^2,\varepsilon^{-1}p_2,\ldots).
+\]
+它的行列式为 \(1\)，并将 \(B^{2n}(R)\) 送入 \(Z^{2n}(\varepsilon R)\)。但其拉回为
+\[
+	A_\varepsilon^*\omega_0
+	=\varepsilon^2\mathrm{d}q^1\wedge\mathrm{d}p_1
+	+\varepsilon^{-2}\mathrm{d}q^2\wedge\mathrm{d}p_2
+	+\sum_{j=3}^n\mathrm{d}q^j\wedge\mathrm{d}p_j,
+\]
+所以它没有保持每一对方向的辛配对。体积记录全部方向共同产生的乘积，非挤压却还能检测指定辛二维方向上的面积尺度。
+
+\ProseParagraphBreak
+
+柱中受约束的二维平面也必须说明。如果改成同时限制两个位置方向，即
+\[
+	C(r)=\{(q^1)^2+(q^2)^2<r^2\},\qquad n\ge2,
+\]
+则辛线性变换
+\[
+	(q^1,q^2,p_1,p_2)\longmapsto
+	(\varepsilon q^1,\varepsilon q^2,
+	\varepsilon^{-1}p_1,\varepsilon^{-1}p_2)
+\]
+在其他方向上保持恒等，便能把 \(B^{2n}(R)\) 送入 \(C(\varepsilon R)\)。这里两个位置方向构成各向同性平面，缩小它们时可以分别放大各自配对的动量方向。式\eqref{g4:eq:0805:ball-cylinder}同时约束的却是互相配对的 \(q^1,p_1\)。辛几何的局部标准形与这种整体区别相容：局部总能选坐标，给定大小的区域能否整体嵌入，还要保留配对所携带的信息。
 % 本节沿用纲要的连续叙述安排，不另造小节标题。

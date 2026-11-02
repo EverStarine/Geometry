@@ -1,41 +1,285 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 23.4* 变分流形的另一种弱化
+% 纲要标题：### 23.4* 变分流形与第一变分
 % 纲要位置：几何学计划纲要.md，第 3097 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * Grassmann 丛上的测度
 % * 一阶变分和广义平均曲率
 % * 无取向极限及重数
-% * 与流的边界、抵消信息比较
-% * Allard 正则性：精确输入与代表应用
+% * 流与变分流形的边界及抵消
+% * Allard 正则性定理
 % 
 % ---
 % 
 % 纲要内容结束
 
-\OptionalSection{变分流形的另一种弱化}{g3:sec:2304}
+\OptionalSection{变分流形与第一变分}{g3:sec:2304}
 
-待撰写
+取两张彼此靠近、取向相反的平面。它们作为流可以相消，面积却仍是两张平面的面积。如果研究的目标是面积的驻值及其极限，就需要保留位置、面积和切平面，而不让取向改变面积的符号。变分流形用 Grassmann 丛上的正测度实现这一点。这里先建立测度与变分的基本运算，再准确陈述把弱几何对象恢复为图像的 Allard 正则性定理。一般变分流形的定义和第一变分参见\cite[第38--39节，第227--235页]{Simon1983}；其中 Grassmann 丛上的弱收敛有别于该书第15节仅对权测度所用的收敛约定。
 
 \subsection{Grassmann 丛上的测度}
 \label{g3:subsec:2304:01}
-待撰写
+设 \(U\subset\mathbb R^n\) 开，\(1\le k<n\)。记 \(G(n,k)\) 为 \(\mathbb R^n\) 中所有\emph{无取向}的 \(k\) 维线性子空间组成的 Grassmann 流形。把平面 \(P\) 与其正交投影矩阵 \(\pi_P\) 对应，则
+\[
+	G(n,k)=\{A\in\mathbb R^{n\times n}:A^{\mathsf T}=A,\ A^2=A,\ \operatorname{tr}A=k\}.
+\]
+这是矩阵空间中的闭有界集，因而紧。距离可取 \(|\pi_P-\pi_Q|\)。Euclid 情形的 Grassmann 丛是乘积
+\[
+	G_k(U)\coloneqq U\times G(n,k).
+\]
+其一点 \((x,P)\) 同时记录位置和经过该位置的平面方向；仿射切平面对应 \(x+P\)。
+
+\begin{definition}\label{g3:def:varifold}
+	设 \(U\subset\mathbb R^n\) 开，\(1\le k<n\)。\(G_k(U)\) 上的非负 Radon 测度称为 \(U\) 中的 \(k\) 维\term[bianfen liuxing]{变分流形}[varifold]，记为 \(V\)。其\term[quanzhong cedu]{权测度}[weight measure]是位置投影 \(\pi(x,P)=x\) 的推前
+	\[
+		\mu_V(A)\coloneqq V(A\times G(n,k)),\qquad A\subset U\text{ 为 Borel 集}.
+	\]
+	权测度也记为 \(\|V\|\)。总质量为 \(\mu_V(U)\)，在环境中的支集指 \(\operatorname{spt}\mu_V\)。
+\end{definition}
+
+Grassmann 纤维紧，故紧集 \(K\Subset U\) 的逆像 \(K\times G(n,k)\) 也紧，权测度在 \(U\) 上确为 Radon 测度。定义中的“变分”不表示已经满足某个极值条件；任意这样的非负测度都是变分流形。
+
+\begin{definition}\label{g3:def:rectifiable-varifold}
+	设 \(M\subset U\) 是可数 \(k\)-可整流 Borel 集，\(\theta:M\to(0,\infty)\) 可测，并且 \(\int_{M\cap K}\theta\,\mathrm d\mathcal H^k<\infty\) 对每个 \(K\Subset U\) 成立。按 Lipschitz 片取几乎处处一致的切平面 \(\mathrm{T}_xM\)，以
+	\begin{equation}\label{g3:eq:rectifiable-varifold}
+		\mathbf v(M,\theta)(\varphi)
+		=\int_M\varphi(x,\mathrm{T}_xM)\theta(x)\,\mathrm d\mathcal H^k(x),
+		\qquad \varphi\in C_c(G_k(U)),
+	\end{equation}
+	定义的变分流形称为\term[kezhengliu bianfen liuxing]{可整流变分流形}[rectifiable varifold]。如果 \(\theta\) 几乎处处取正整数值，就称为\term[zheng bianfen liuxing]{整变分流形}[integral varifold]。重数为一时简记 \(\mathbf v(M)\)。
+\end{definition}
+
+一般实重数可使整个承载集的局部 \(\mathcal H^k\) 测度无限；此时切平面按可数片确定，沿用\cref{g3:def:rectifiable-current}的约定。整数重数满足 \(\theta\ge1\)，于是有效承载集局部 \(\mathcal H^k\) 有限。式\eqref{g3:eq:rectifiable-varifold}给出
+\[
+	\mu_{\mathbf v(M,\theta)}=\theta\mathcal H^k\llcorner M.
+\]
+可整流流 \(T=\lBrack M,\tau,\theta\rBrack\) 所对应的变分流形记为
+\begin{equation}\label{g3:eq:current-associated-varifold}
+	V_T\coloneqq\mathbf v(M,|\theta|),\qquad \mu_{V_T}=\|T\|.
+\end{equation}
+这一构造忘掉 \(\tau\) 的正负，但保留其张成的平面。一个嵌入的 Möbius 带也直接给出 \(\mathbf v(M)\)，无需选择全局取向。
+
+\begin{example}\label{g3:exm:diffuse-varifold}
+	取 \(k<n\) 和两个不同平面 \(P,Q\in G(n,k)\)。测度
+	\[
+		V_P=\mathcal L^n\llcorner U\otimes\delta_P,\qquad
+		V_Q=\mathcal L^n\llcorner U\otimes\delta_Q
+	\]
+	有相同权测度，却是不同的变分流形，因为可以用只依赖平面方向的连续函数区别它们。两者均非 \(k\) 维可整流：可数 \(k\)-可整流集的 \(n\) 维 Lebesgue 测度为零，无法承载 \(\mathcal L^n\llcorner U\)。所以权测度和维数标记本身不保证切向几何结构。
+\end{example}
+
+为比较变形前后的面积，推前还必须带上切向 Jacobian。设 \(f:U\to W\subset\mathbb R^q\) 为 \(C^1\) 映射，且在 \(\operatorname{spt}\mu_V\) 上对 \(W\) 固有。定义
+\[
+	J_Pf(x)=\sqrt{\det\bigl((\mathrm Df(x)|_P)^*\mathrm Df(x)|_P\bigr)}.
+\]
+这里假设 \(q\ge k\)。当此数非零时，\(\mathrm Df(x)P\) 是 \(k\) 维平面。令
+\begin{equation}\label{g3:eq:varifold-pushforward}
+	(f_\#V)(\varphi)=\int_{G_k(U)}
+	\varphi(f(x),\mathrm Df(x)P)J_Pf(x)\,\mathrm dV(x,P),
+\end{equation}
+其中 \(J_Pf=0\) 的部分贡献定义为零。固有性及紧集上导数有界保证右侧对紧支连续测试函数有限，因此定义 Radon 测度。
+
+\begin{proposition}\label{g3:prop:rectifiable-varifold-pushforward}
+	设 \(V=\mathbf v(M,\theta)\) 是 \(U\subset\mathbb R^n\) 中可整流 \(k\) 维变分流形，\(f:U\to W\subset\mathbb R^q\) 为在 \(\operatorname{spt}\mu_V\) 上固有的 \(C^1\) 映射，\(q\ge k\)。则 \(f_\#V\) 可整流；若 \(V\) 整，则 \(f_\#V\) 也整。在满秩像点，其重数几乎处处为
+	\[
+		\theta_f(y)=\sum_{\substack{x\in M\cap f^{-1}(y)\\J_{\mathrm{T}_xM}f(x)>0}}\theta(x).
+	\]
+\end{proposition}
+\begin{proof}
+	局部把满秩参数域分成可数双 Lipschitz 片。其像为可整流片，重叠部分在几乎处处具有同一切平面。面积公式将式\eqref{g3:eq:varifold-pushforward}按像点重新积分，得到所示正重数之和；秩不足部分的像为 \(\mathcal H^k\) 零测集。每个紧集上的这个和可积，故在几乎每根纤维上有限。若各项为正整数，只有有限个非零项，和仍为整数。与流的推前相比，这里所有重数相加，不出现取向符号。
+\end{proof}
 
 \subsection{一阶变分和广义平均曲率}
 \label{g3:subsec:2304:02}
-待撰写
+令 \(X\in C_c^1(U;\mathbb R^n)\)，以 \(\Phi_t\) 表示它在小时间内生成的微分同胚。取紧集包含变形发生的区域，面积变化完全发生在这个紧集内；即使 \(V\) 总质量无限，也可以对这个局部质量差求导。定义
+\[
+	\operatorname{div}_P X(x)
+	\coloneqq\operatorname{tr}(\pi_P\mathrm DX(x))
+	=\sum_{i=1}^k\langle\mathrm D_{e_i}X,e_i\rangle,
+\]
+其中 \(e_1,\ldots,e_k\) 是 \(P\) 的任意正交单位基。迹的表示说明它与基无关。
+
+\begin{proposition}\label{g3:prop:varifold-first-variation}
+	设 \(V\) 为开集 \(U\subset\mathbb R^n\) 中 \(k\) 维变分流形。其沿 \(X\in C_c^1(U;\mathbb R^n)\) 的面积第一变分为
+	\begin{equation}\label{g3:eq:varifold-first-variation}
+		\delta V(X)=\int_{G_k(U)}\operatorname{div}_P X(x)\,\mathrm dV(x,P).
+	\end{equation}
+	若右侧对所有这样的 \(X\) 为零，称 \(V\) 在 \(U\) 中驻值。
+\end{proposition}
+\begin{proof}
+	固定 \(P\) 的一组正交单位基。\(\Phi_t\) 在 \(P\) 上的 Gram 矩阵为
+	\[
+		G_{ij}(t)=\langle\mathrm D\Phi_t e_i,\mathrm D\Phi_t e_j\rangle.
+	\]
+	在 \(t=0\)，\(G(0)=I\)，且
+	\[
+		G'_{ij}(0)=\langle\mathrm D_{e_i}X,e_j\rangle+
+		\langle e_i,\mathrm D_{e_j}X\rangle.
+	\]
+	因此 \(\left.\frac{\mathrm d}{\mathrm dt}\right|_0J_P\Phi_t
+	=\frac12\operatorname{tr}G'(0)=\operatorname{div}_PX\)。这个导数在变形的紧支集及紧 Grassmann 纤维上一致有界，故可以在式\eqref{g3:eq:varifold-pushforward}中求导。支集外 \(\Phi_t\) 为恒等，局部质量差的导数就是所示积分。
+\end{proof}
+
+第一变分目前由 \(X\) 的一阶导数控制。若对每个 \(K\Subset U\)，还存在常数 \(C_K\) 使
+\[
+	|\delta V(X)|\le C_K\|X\|_\infty
+	\quad\text{当 }\operatorname{supp}X\subset K,
+\]
+就称 \(V\) 具有局部有界第一变分。分量上的 Riesz 表示给出唯一的向量 Radon 测度。相对于 \(\mu_V\) 作 Lebesgue 分解，可以唯一写成
+\begin{equation}\label{g3:eq:varifold-mean-curvature-decomposition}
+	\delta V(X)=-\int_U H_V\cdot X\,\mathrm d\mu_V+\int_U X\cdot\mathrm d\sigma_V,
+	\qquad \sigma_V\perp\mu_V.
+\end{equation}
+这里 \(H_V\in L^1_{\mathrm{loc}}(\mu_V;\mathbb R^n)\) 称为\term[guangyi pingjun qulv]{广义平均曲率}[generalized mean curvature]。\(\sigma_V\) 是第一变分的奇异部分，记录未被面积测度吸收的力项。将其称为广义边界力时，仍应记住它是环境中的向量测度。
+
+\begin{proposition}\label{g3:prop:smooth-varifold-boundary-variation}
+	设 \(M^k\subset U\subset\mathbb R^n\) 为在 \(U\) 中固有的 \(C^2\) 嵌入子流形，可带 \(C^2\) 边界，并且在每个紧集内 \(M\) 与 \(\partial M\) 的相应 Hausdorff 测度有限。对 \(V=\mathbf v(M)\) 及 \(X\in C_c^1(U;\mathbb R^n)\)，有
+	\begin{equation}\label{g3:eq:smooth-varifold-variation}
+		\delta V(X)=-k\int_M H\cdot X\,\mathrm d\mathcal H^k
+		+\int_{\partial M}X\cdot\eta\,\mathrm d\mathcal H^{k-1},
+	\end{equation}
+	其中 \(H=k^{-1}\operatorname{tr}B\) 沿用\chapref{g3:ch:19}的平均曲率约定，\(\eta\) 为 \(M\) 内沿 \(\partial M\) 的外单位余法向。因此 \(H_V=kH\)、\(\sigma_V=\eta\mathcal H^{k-1}\llcorner\partial M\)。
+\end{proposition}
+\begin{proof}
+	沿 \(M\) 分解 \(X=X^\top+X^\perp\)。由 \(\langle X^\perp,e_i\rangle=0\) 求导，
+	\[
+		\sum_i\langle\mathrm D_{e_i}X^\perp,e_i\rangle
+		=-\sum_i\langle X^\perp,B(e_i,e_i)\rangle=-kH\cdot X.
+	\]
+	切向部分给出 \(\operatorname{div}_M X^\top\)。代入式\eqref{g3:eq:varifold-first-variation}，再对切向场应用子流形散度公式，得到边界通量 \(\int_{\partial M}X^\top\cdot\eta\)。因为 \(\eta\in\mathrm{T}M\)，这等于所示的 \(\int_{\partial M}X\cdot\eta\)。该散度公式也可在参数坐标中写成 \(\partial_i(\sqrt{\det g}\,X^i)\) 并用单位分解证明，因而不要求 \(M\) 可定向。边界的 \(k\) 维测度为零，故最后两项分别是相对于 \(\mu_V\) 的绝对连续部分与奇异部分。
+\end{proof}
+
+\begin{example}\label{g3:exm:varifold-sphere-and-segment}
+	半径 \(R\) 的 \(k\) 维球面，沿外法向 \(\nu\) 有 \(H=-\nu/R\)，所以 \(H_V=-k\nu/R\)。取沿球面等于 \(x\) 的紧支向量场，式\eqref{g3:eq:smooth-varifold-variation}给出 \(\delta V(X)=k\mathcal H^k(S_R^k)>0\)，与放大时面积增加相符。
+
+	对线段 \(M=\{te_1:a\le t\le b\}\)，内部曲率为零，而
+	\[
+		\delta\mathbf v(M)(X)=X(be_1)\cdot e_1-X(ae_1)\cdot e_1.
+	\]
+	第一变分全部集中于两端点。它的系数是余法向向量，与有向线段的零维边界流 \(\delta_{be_1}-\delta_{ae_1}\) 属于不同类型的对象。
+\end{example}
+
+对一般实重数变分流形，\(H_V\) 还可能有切向分量。若光滑正函数 \(\theta\) 赋予光滑 \(M\) 重数，积分分部给出
+\[
+	H_{\mathbf v(M,\theta)}=kH+\nabla_M\log\theta
+\]
+于无边界区域。这一切向项来自密度变化。下述 Allard 定理直接把 \(H_V\) 作为向量场控制，不预先删去它的切向部分。
 
 \subsection{无取向极限及重数}
 \label{g3:subsec:2304:03}
-待撰写
+若 \(V_j,V\) 为 \(G_k(U)\) 上的变分流形，约定
+\[
+	V_j\rightharpoonup V
+	\quad\Longleftrightarrow\quad
+	V_j(\varphi)\longrightarrow V(\varphi)
+	\quad\text{对每个 }\varphi\in C_c(G_k(U)).
+\]
+这同时测试位置和方向，立刻蕴含 \(\mu_{V_j}\rightharpoonup\mu_V\)。反向一般不成立，\cref{g3:exm:diffuse-varifold}已给出相同权测度可以对应不同方向分布的例子。
 
-\subsection{与流的边界、抵消信息比较}
+\begin{proposition}\label{g3:prop:varifold-weak-compactness}
+	设 \(U\subset\mathbb R^n\) 开，\(V_j\) 为 \(k\) 维变分流形，并且对每个 \(K\Subset U\) 有 \(\sup_j\mu_{V_j}(K)<\infty\)。则存在子列弱收敛于某个 \(k\) 维变分流形 \(V\)。对每个固定 \(X\in C_c^1(U;\mathbb R^n)\)，
+	\[
+		\delta V_j(X)\longrightarrow\delta V(X).
+	\]
+	因此，若各 \(V_j\) 驻值，极限 \(V\) 也驻值。
+\end{proposition}
+\begin{proof}
+	取 \(U\) 的可数紧耗尽及各 \(K\times G(n,k)\) 上连续函数的可数一致稠密族。局部质量界使每个测试积分有界，对这些积分逐次抽取子列并作对角选择。得到的极限泛函非负，且在各紧支集上由一致范数控制；Riesz 表示把它写成 Radon 测度 \(V\)。一致逼近再把收敛从可数稠密族扩展到所有紧支连续函数。
+
+	函数 \((x,P)\mapsto\operatorname{div}_PX(x)\) 连续，支于 \(\operatorname{supp}X\times G(n,k)\)，故可直接作为弱收敛的测试函数。代入式\eqref{g3:eq:varifold-first-variation}即得第一变分的收敛和驻值性的保持。
+\end{proof}
+
+这条紧性只使用正测度和紧纤维，尚未恢复可整流性。下面的计算说明额外几何控制为什么有用。
+
+\begin{example}\label{g3:exm:varifold-diffuse-limit}
+	在单位方形 \(U=(0,1)^2\) 中，以 \(j\times j\) 方格的中心为中点，各放一条长度 \(j^{-2}\) 的水平线段，令 \(V_j\) 是这些线段的重数一变分流形之和。每条线段距其中心至多 \(1/(2j^2)\)，所以对 \(\varphi\in C_c(G_1(U))\)，一致连续性给出
+	\[
+		V_j(\varphi)-j^{-2}\sum_{a,b=0}^{j-1}
+		\varphi\left(\left(\frac{a+1/2}{j},\frac{b+1/2}{j}\right),\mathbb Re_1\right)
+		\longrightarrow0.
+	\]
+	右侧的 Riemann 和趋于 \(\int_U\varphi(x,\mathbb Re_1)\,\mathrm dx\)。因此各 \(V_j\) 都整、总质量都为一，极限却是弥散的 \(\mathcal L^2\llcorner U\otimes\delta_{\mathbb Re_1}\)。各线段端点的第一变分不能获得统一局部总变差界；它们在紧子方形中以 \(j^2\) 的量级增长。
+\end{example}
+
+\subsection{流与变分流形的边界及抵消}
 \label{g3:subsec:2304:04}
-待撰写
+流把取向写进测试形式的配对，变分流形把面积写成正测度。式\eqref{g3:eq:current-associated-varifold}在每个固定可整流流上连接两者，却不与加法、弱极限普遍相容。
 
-\subsection{Allard 正则性：精确输入与代表应用}
+\begin{example}\label{g3:exm:opposite-sheets-varifold-limit}
+	在 \(\mathbb R^{k+1}=\mathbb R^k\times\mathbb R\) 中，令 \(P_t=\mathbb R^k\times\{t\}\)，各平面取相同的水平取向，考虑局部整数流
+	\[
+		T_j=\lBrack P_{1/j}\rBrack-\lBrack P_{-1/j}\rBrack.
+	\]
+	对任意紧支测试 \(k\) 形式，两个积分因平移趋于同一个值，故 \(T_j\rightharpoonup0\)。但对 \(\varphi\in C_c(G_k(\mathbb R^{k+1}))\)，
+	\[
+		V_{T_j}(\varphi)=\int_{\mathbb R^k}
+		\bigl[\varphi((x,1/j),\mathbb R^k)+\varphi((x,-1/j),\mathbb R^k)\bigr]\,\mathrm dx
+		\longrightarrow2\mathbf v(P_0)(\varphi).
+	\]
+	因此 \(V_{T_j}\rightharpoonup2\mathbf v(P_0)\ne V_0\)。这些变分流形及其极限都驻值，两张片的面积在极限中成为重数二。
+\end{example}
+
+在固定的共同可整流承载集上，加法时取向相反的系数可以抵消，故总有局部质量不等式
+\[
+	\|T_1+T_2\|\le\|T_1\|+\|T_2\|,
+\]
+而变分流形的非负测度直接相加。与之相应，整数流的条件 \(\partial T=S\) 指定了带系数和取向的边界；\(\delta V=0\) 则表示所有紧支环境变形的面积一阶导数为零。一个有边界的平坦圆盘在内部驻值，作为整个环境中的变分流形却有非零边界力。三个夹角均为 \(120^\circ\) 的射线则可以在公共端点平衡，形成整体驻值变分流形；它们的重数一有向链无法在公共端点使三个整数符号相加为零。
+
+\ProseParagraphBreak
+这解释了两个弱模型各自适合记录的数据。给定整数边界的 Plateau 问题使用 \(\partial T\) 的连续性；面积驻值极限和下面的几何极小极大构造使用正质量、切平面与 \(\delta V\) 的连续性。驻值条件只约束第一阶变化，不能替代同边界竞争类中的质量极小性。
+
+\subsection{Allard 正则性定理}
 \label{g3:subsec:2304:05}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+一个对象在小球内的面积接近平面，仍可能带有多张片、弥散质量或边界力。\term[allard zhengzexing dingli]{Allard 正则性定理}[Allard regularity theorem]把这些问题放在可整流结构、密度下界和第一变分的准确条件中。以下采用\cite[第24节，假设24.1与定理24.2，第125--128页]{Simon1983}的球形版本，作为本节的外部正则性输入。
+
+\begin{theorem}[Allard 正则性]\label{g3:thm:allard-regularity}
+	设 \(1\le k<n\)、\(k<p<\infty\)，并令 \(\alpha=1-k/p\)。存在仅依赖 \(n,k,p\) 的常数 \(\varepsilon_0\in(0,1/2)\)、\(\gamma\in(0,1)\)、\(C<\infty\)，满足以下结论。设 \(V=\mathbf v(M,\theta)\) 是开集 \(U\subset\mathbb R^n\) 中的可整流 \(k\) 维变分流形，\(x_0\in\operatorname{spt}\mu_V\)、\(\overline B_R(x_0)\subset U\)，并且
+	\begin{enumerate}
+		\item \(\theta\ge1\) 在 \(B_R(x_0)\) 内 \(\mu_V\)-几乎处处成立；
+		\item 在 \(B_R(x_0)\) 中，\(\delta V(X)=-\int H_V\cdot X\,\mathrm d\mu_V\)，其中 \(H_V\in L^p(\mu_V\llcorner B_R(x_0))\)，没有第一变分的奇异部分；
+		\item 质量与曲率满足
+		\[
+			\frac{\mu_V(B_R(x_0))}{\omega_kR^k}\le1+\varepsilon_0,
+			\qquad
+			R^{1-k/p}\left(\int_{B_R(x_0)}|H_V|^p\,\mathrm d\mu_V\right)^{1/p}\le\varepsilon_0.
+		\]
+	\end{enumerate}
+	则存在正交变换 \(Q\) 及函数 \(u\in C^{1,\alpha}(B_{\gamma R}^k(0);\mathbb R^{n-k})\)，使 \(u(0)=0\)，并且
+	\[
+		\operatorname{spt}\mu_V\cap B_{\gamma R}(x_0)
+		=\bigl(x_0+Q(\operatorname{graph}u)\bigr)\cap B_{\gamma R}(x_0).
+	\]
+	它还满足尺度一致的估计
+	\[
+		R^{-1}\|u\|_\infty+\|\mathrm Du\|_\infty
+		+R^\alpha[\mathrm Du]_{C^{0,\alpha}}
+		\le C\varepsilon_0^{1/(4k)}.
+	\]
+\end{theorem}
+
+这里的结论首先是\emph{支集}的单图表示；陈述允许实重数，因而不能由它把所有密度自动改成一。小质量比排除了重数二平面；\(\theta\ge1\) 排除了以很小权重叠加的额外薄片；\(\sigma_V=0\) 排除了圆盘边缘等内部边界力。指数 \(p>k\) 给出正 Hölder 指数，且使曲率项在缩小尺度时具有良好的衰减。若 \(|H_V|\le L\)，其尺度量至多为
+\[
+	R^{1-k/p}\|H_V\|_{L^p(B_R,\mu_V)}
+	\le LR\left(\frac{\mu_V(B_R)}{R^k}\right)^{1/p}.
+\]
+这些条件都在所考察的球内检验，不能用球外的边界光滑性代替。
+
+\begin{corollary}\label{g3:cor:multiplicity-one-varifold-regularity}
+	设 \(V\) 是 \(U\subset\mathbb R^n\) 中驻值的整 \(k\) 维变分流形，\(1\le k<n\)，\(x\in\operatorname{spt}\mu_V\)。若存在 \(r_j\downarrow0\) 和 \(P\in G(n,k)\)，使
+	\[
+		(\eta_{x,r_j})_\#V\rightharpoonup\mathbf v(P),
+		\qquad \eta_{x,r}(y)=\frac{y-x}{r},
+	\]
+	则对每个 \(0<\alpha<1\)，\(\operatorname{spt}\mu_V\) 在 \(x\) 的某个邻域内为一个 \(C^{1,\alpha}\) 图像。
+\end{corollary}
+\begin{proof}
+	令 \(p=k/(1-\alpha)>k\)。Grassmann 测度收敛蕴含权测度收敛，而平面测度在 \(\partial B_1(0)\) 上为零，所以
+	\[
+		r_j^{-k}\mu_V(B_{r_j}(x))\longrightarrow\omega_k.
+	\]
+	整性给出重数下界一，驻值性给出 \(H_V=0\) 且 \(\sigma_V=0\)。当 \(j\) 充分大时，\(B_{r_j}(x)\Subset U\)，上式使 Allard 的小质量比成立。因此\cref{g3:thm:allard-regularity}在一个正半径的小球内给出所述图像。
+\end{proof}
+
+上述应用需要的是重数一的\emph{变分流形}放大极限。若最初只知道流的弱放大极限是一个平面，还须另外核对质量没有损失，才能得到这里的质量比。前节对极小流所用的质量收敛结论正承担这一步。一般驻值极限则可能保留较高重数，或出现射线交会这样的奇点。下一节的扫掠问题将利用驻值变分流形保存极小极大过程中留下的面积，并逐项说明何种额外理论保证整性、正则性与指标控制。

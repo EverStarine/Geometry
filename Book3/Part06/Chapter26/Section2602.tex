@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 26.2 拟线性短时存在
 % 纲要位置：几何学计划纲要.md，第 3209 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,202 @@
 \section{拟线性短时存在}
 \label{g3:sec:2602}
 
-待撰写
+在线性方程中，系数事先给定；几何流的主系数却常由正在演化的度量或图像决定。例如度量的逆矩阵会出现在二阶导数前，图像方程的主系数还会依赖一阶导数。本节在固定丛上处理这两种情形。先用光滑初值作一个不随时间变化的近似解，利用线性初值同构修正它；短时间的作用，是使近似解的方程误差在时间积分范数中变小。
+
+\ProseParagraphBreak
+固定正维闭光滑黎曼流形 \((M^n,\bar g)\) 和正秩实光滑度量丛 \(E\)，所有范数及协变导数使用这些背景数据。整数 \(s>n/2+3\) 固定；用上一节的 \(X_T^s(E)\) 作为未知量空间，用 \(Y_T^{s-1}=L^2(0,T;H^{s-1}(E))\) 作为方程空间。
 
 \subsection{强抛物性及线性化}
 \label{g3:subsec:2602:01}
-待撰写
+考虑自治方程
+\begin{equation}\label{g3:eq:quasilinear-parabolic-system}
+	\partial_tu=\mathcal Q(u),\qquad
+	\mathcal Q(u)=A^{ij}(x,u,\nabla u)\nabla_i\nabla_j u+B(x,u,\nabla u).
+\end{equation}
+这里 \(A^{ij}\) 取值于 \(\operatorname{End}(E)\)，\(B\) 取值于 \(E\)，均光滑定义在一阶喷射丛的一个开集 \(\mathcal O\) 上。局部表达在丛坐标变换下组成同一个算子。主系数可假定关于 \(i,j\) 对称，因为反对称部分只通过联络曲率产生零阶项。初值为一个光滑截面 \(u_0\)，其一阶喷射图 \(j^1u_0(M)\) 包含在 \(\mathcal O\) 内。
+
+\begin{definition}\label{g3:def:quasilinear-strong-parabolicity}
+	称式\eqref{g3:eq:quasilinear-parabolic-system}沿一个喷射集合一致\term[qiang paowu]{强抛物}[strongly parabolic]，是指存在 \(\theta>0\)，使该集合上所有 \(\xi\in\mathrm T_x^*M\)、\(v\in E_x\) 满足
+	\[
+		\langle A^{ij}(x,z,p)\xi_i\xi_jv,v\rangle
+		\ge\theta|\xi|_{\bar g}^2|v|^2.
+	\]
+	本节的短时条件是此式在 \(j^1u_0(M)\) 上成立。紧性与连续性保证缩小喷射邻域后仍有共同的正下界。
+\end{definition}
+
+定义 \(\mathscr P(u)=u_t-\mathcal Q(u)\)。对光滑 \(u\)，其线性化作用于 \(v\) 为
+\begin{equation}\label{g3:eq:quasilinear-parabolic-linearization}
+	\begin{split}
+	\mathrm D\mathscr P(u)v={}&v_t-A^{ij}(j^1u)\nabla_i\nabla_jv\\
+	&-\bigl(A_z^{ij}(j^1u)v+A_p^{ij}(j^1u)\nabla v\bigr)\nabla_i\nabla_j u
+	-B_z(j^1u)v-B_p(j^1u)\nabla v.
+	\end{split}
+	\end{equation}
+约定 \(j^1u=(x,u,\nabla u)\)。最高阶项仍是 \(v_t-A^{ij}\nabla_i\nabla_jv\)；对一阶喷射求导产生的是关于 \(v\) 的一阶项。因而强抛物性恰给出上一节线性定理所需的主符号条件。
+
+\begin{lemma}\label{g3:lem:quasilinear-parabolic-smooth-map}
+	在 \(X_T^s(E)\) 中喷射图留在 \(\mathcal O\) 的开集上，\(\mathscr P\) 是到 \(Y_T^{s-1}\) 的光滑映射。对固定光滑截面 \(u_0\) 的一个有界小邻域，各阶微分的界可对 \(0<T\le1\) 一致选取。
+\end{lemma}
+\begin{proof}
+	因为 \(s-1>n/2\)，\(H^{s-1}\) 是乘法代数。由\cref{g3:thm:sobolev-composition-smooth}，映射 \(u\mapsto A(j^1u),B(j^1u)\) 从 \(H^s\) 到 \(H^{s-1}\) 光滑；在连续时间空间上逐点应用同一估计，得到到 \(C_tH^{s-1}\) 的光滑映射。另一方面 \(\nabla^2u\in L^2_tH^{s-1}\)，且
+	\[
+		\|av\|_{L^2H^{s-1}}
+		\le C\|a\|_{C_tH^{s-1}}\|v\|_{L^2H^{s-1}}.
+	\]
+	这证明主项的光滑性；\(B\) 项从连续时间范数进入 \(L^2\) 范数只产生 \(\sqrt T\le1\)。微分各次使用相同的乘法，余项由积分形式的 Taylor 公式控制，故不是只有形式导数。喷射像的条件由 \(C_tH^s\to C_tC^1\) 保证为开条件。固定 \(u_0\) 的时间常值延拓在 \(X_T^s\) 中有与 \(T\le1\) 无关的界，所以各次复合与乘法常数均可统一。
+\end{proof}
+
+\begin{example}\label{g3:exm:graph-parabolic-symbol}
+	在平坦环面上，实函数方程
+	\[
+		u_t=\left(\delta^{ij}-\frac{u_i u_j}{1+|\mathrm Du|^2}\right)u_{ij}
+	\]
+	具有图像型主部。对任意 \(\xi\)，主二次型介于 \(|\xi|^2/(1+|\mathrm Du|^2)\) 与 \(|\xi|^2\) 之间。因此梯度有界就保证统一的强抛物常数；解的零阶大小在这个符号计算中没有作用。该方程的几何解释将在平均曲率流一章给出。
+\end{example}
 
 \subsection{迭代或逆函数方法}
 \label{g3:subsec:2602:02}
-待撰写
+把初值约束先放进未知量空间：写 \(u=u_0+v\)，要求 \(v\in X_{T,0}^s\)。这个选择使所有迭代自动具有同一初值。
+
+\begin{theorem}\label{g3:thm:quasilinear-parabolic-short-time}
+	设 \(M,E,\mathcal O,A,B\) 如上，\(u_0\) 光滑且 \(j^1u_0(M)\subset\mathcal O\)，方程在此喷射图上一致强抛物。则存在 \(T>0\) 和唯一的光滑短时解
+	\[
+		u\in C^\infty([0,T]\times M;E),\qquad
+		u_t=\mathcal Q(u),\quad u(0)=u_0.
+	\]
+	唯一性针对具有该初值的光滑解在共同存在区间内成立。若系数与光滑初值依赖有限维光滑参数，则在每个固定参数附近可选共同的 \(T\)，解也联合光滑依赖这些参数。光滑性包括初时刻的单侧时间导数。
+\end{theorem}
+\begin{proof}
+	先求 \(X_T^s\) 解；其光滑性、唯一性及参数结论在下一小节逐项证明。令 \(F_T(v)=\mathscr P(u_0+v)\)。在 \(v=0\) 处，线性化 \(\mathcal A_T=\mathrm DF_T(0)\) 是具有光滑、与时间无关系数的强抛物算子，作用在零初值空间上。\Cref{g3:thm:linear-parabolic-isomorphism}给出其逆 \(G_T:Y_T^{s-1}\to X_{T,0}^s\)，且 \(\|G_T\|\le C_0\) 对 \(0<T\le1\) 一致。
+
+	由上一引理，存在与 \(T\) 无关的小半径 \(\rho>0\)，使 \(\|v\|_{X_T^s}\le\rho\) 时喷射仍在所选邻域，并且
+	\[
+		\|G_T(\mathrm DF_T(v)-\mathcal A_T)\|\le\tfrac12.
+	\]
+	这里先选 \(\rho\) 控制二阶微分界，再缩短 \(T\)，不以“时间短”替代最高阶范数中的小邻域条件。令
+	\[
+		\mathcal T_T(v)=v-G_TF_T(v).
+	\]
+	积分形式的微分中值公式给出 \(\mathcal T_T\) 在此球上的 Lipschitz 常数至多为 \(1/2\)。初始误差为
+	\[
+		\|F_T(0)\|_{Y_T^{s-1}}
+		=\sqrt T\,\|\mathcal Q(u_0)\|_{H^{s-1}}.
+	\]
+	选 \(T\) 使 \(C_0\sqrt T\|\mathcal Q(u_0)\|_{H^{s-1}}\le\rho/2\)，则
+	\(\|\mathcal T_T(v)\|\le\rho/2+\|v\|/2\le\rho\)。\Cref{g3:lem:banach-contraction}遂给出唯一不动点，亦即 \(F_T(v)=0\)。可把误差再缩小一半，使解位于球的内部。上述微分估计还说明 \(\mathrm DF_T(v)\) 是 \(\mathcal A_T\) 的可逆小扰动，因此在所得解处仍可使用带参数隐函数定理。
+\end{proof}
+
+\begin{example}\label{g3:exm:reaction-diffusion-short-time}
+	方程 \(u_t+\Delta_{\bar g}u=u^2\) 的主部始终强抛物，所以每个光滑初值都有短时解。但若 \(u_0\equiv a>0\)，解为 \(u(t)=a/(1-at)\)，在 \(t=a^{-1}\) 发散。固定的正主符号保证局部可解，并不限制零阶反应项造成的增长。
+\end{example}
 
 \subsection{短时唯一性和光滑依赖}
 \label{g3:subsec:2602:03}
-待撰写
+先处理参数和正则性。直接在方程中反复求空间导数，会引入高阶系数；也可以先把空间微分改写成对光滑坐标变化参数的微分，使隐函数定理同时完成正则性证明。
+
+\begin{lemma}\label{g3:lem:parabolic-parameter-regularity}
+	上一小节得到的 \(X_T^s\) 解在 \([0,T]\times M\) 上光滑。有限维光滑数据族在同一个足够短的时间区间上具有联合光滑解族。
+\end{lemma}
+\begin{proof}
+	对有限维参数 \(a\)，把初值的时间常值延拓记为 \(u_{0,a}\)，写成零初值方程 \(F(a,v)=0\)。光滑数据族在每个固定 Sobolev 范数中光滑，故上一光滑映射引理使 \(F\) 为 Banach 空间间的光滑映射。在已得解处 \(v\) 微分可逆，所以\cref{g3:cor:banach-implicit-parameters}给出 \(v=v(a)\) 在 \(X_T^s\) 中的光滑依赖。
+
+	现在让参数描述源上的坐标变化。取一个光滑向量场 \(Z\) 的流 \(\phi_\varepsilon\)。沿流线用固定联络平行移动，将 \(u(\phi_\varepsilon(x),t)\) 搬回 \(E_x\)，记所得线性作用为 \(U_\varepsilon u\)。换元、链式法则及光滑稠密性说明：它在 \(X_T^s\) 上局部一致有界，且对每个固定 \(u\) 强连续。此处尚不假定它对任意 \(u\) 可微。
+
+	变换后的截面满足
+	\[
+		w_t=\mathcal Q_\varepsilon(w),\qquad
+		\mathcal Q_\varepsilon=U_\varepsilon\mathcal Q U_\varepsilon^{-1},\qquad
+		w(0)=U_\varepsilon u_0.
+	\]
+	直接作坐标变换可见 \(\mathcal Q_\varepsilon\) 仍具有式\eqref{g3:eq:quasilinear-parabolic-system}的形式，其系数关于 \((\varepsilon,x,z,p)\) 光滑；主符号由可逆坐标变换及纤维等距共轭得到，故小 \(\varepsilon\) 时保持统一强抛物。由于 \(u_0\) 光滑，初值 \(U_\varepsilon u_0\) 关于 \(\varepsilon\) 在所有所需范数中光滑。前一段遂构造一个在 \(X_T^s\) 中光滑依赖 \(\varepsilon\) 的解。另一方面，强连续性使 \(U_\varepsilon u\) 留在局部唯一性邻域，故它就是这个解。
+
+	因此 \(\varepsilon\mapsto U_\varepsilon u\) 实际上在 \(X_T^s\) 中光滑。对光滑测试截面作换元后求导，识别其在零点的分布导数为 \(\nabla_Zu\)。所以 \(\nabla_Zu\in X_T^s\)。取有限多个全局光滑向量场，使它们在各坐标小片上包含坐标方向；这样的场可用截断延拓构造。再使用这些流的有限多参数复合，任意阶参数导数就给出任意多次协变导数，外加已经控制的低阶光滑系数项。归纳得到
+	\[
+		u\in C([0,T];H^{s+k}(E))\qquad(k=0,1,2,\ldots).
+	\]
+	同一固定时间 \(T\) 适用于所有阶数，因为参数隐函数定理给出的是整个参数邻域内的光滑映射，而不是逐阶重新构造一个解。
+
+	方程于是给出 \(u_t=\mathcal Q(u)\in C_tH^k\) 对每个 \(k\) 成立。反复对方程求时间导数，链式法则依次给出所有混合导数，Sobolev 嵌入把这些结论转为联合光滑性。把数据参数与上述坐标变化参数放在一起，完全相同的论证还证明参数、空间、时间的联合光滑性。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:quasilinear-parabolic-uniqueness}
+	式\eqref{g3:eq:quasilinear-parabolic-system}具有相同初值的两个光滑强抛物解，在共同存在的时间区间上相同。
+\end{proposition}
+\begin{proof}
+	设两个解为 \(u,v\)，\(w=u-v\)。在某个两者相等的时刻后的一小段时间内，它们的一阶喷射位于同一组凸坐标邻域。以 \(A(j^1u)\nabla^2w\) 为主项，用积分中值公式展开系数差，得到
+	\[
+		w_t=A^{ij}(j^1u)\nabla_i\nabla_jw+C^i(t,x)\nabla_iw+D(t,x)w,
+	\]
+	其中 \(C,D\) 光滑；例如 \((A(j^1u)-A(j^1v))\nabla^2v\) 只对 \(w\) 含一阶导数。主部直接取自 \(u\)，故保持强抛物，不必假设整条喷射线段上的主部具有同一符号。上一节的零阶能量估计与零初值给出 \(w=0\)。从 \(t=0\) 开始，若相等的时间区间有一个小于共同终点的右端，连续性使两解在该端仍相等，再由同一论证向后延长，矛盾。
+\end{proof}
+
+这补齐了短时定理的唯一性与光滑性。对几何未知量，可以先选固定背景下的局部图册。例如映射 \(f\) 接近一个光滑 \(f_0:M\to N\) 时，写 \(f(x)=\exp_{f_0(x)}v(x)\)，未知量 \(v\) 是固定丛 \(f_0^*\mathrm TN\) 的截面。若变换后的方程具有上述强抛物主部，短时解便由本节定理给出；在图册交叠处用唯一性识别所得几何解。
 
 \subsection{延拓判据与几何先验界}
 \label{g3:subsec:2602:04}
-待撰写
+延拓时必须区分系数的定义域、主符号的正下界和解的导数界。下面给出一个可直接检验的充分判据：控制二阶空间导数，并保证一阶喷射不离开一个强抛物紧区域。首先补出从低阶界提升高阶能量所需的乘积估计。
+
+\begin{lemma}\label{g3:lem:parabolic-tame-products}
+	在固定闭流形及有限坐标覆盖上，对整数 \(r\ge1\)，光滑有限分量函数满足
+	\begin{align*}
+		\|F(\cdot,z)\|_{H^r}&\le C(1+\|z\|_{H^r}),\\
+		\|[\nabla^r,a]\nabla^2u\|_{L^2}
+		&\le C_r\bigl(\|\nabla a\|_\infty\|u\|_{H^{r+1}}
+		+\|a\|_{H^r}\|u\|_{C^2}\bigr).
+	\end{align*}
+	第一式假定 \(F\) 光滑且 \(z\) 的值在固定紧集内，常数依赖此紧集及 \(F\) 的有限阶导数；第二式的交换子只指 Leibniz 展开中至少一个导数落到 \(a\) 的项。固定联络产生的低阶项可另加 \(C\|a\|_{H^r}\|u\|_{C^2}+C\|a\|_{C^1}\|u\|_{H^{r+1}}\) 吸收。
+\end{lemma}
+\begin{proof}
+	所需插值可以在坐标中直接证明。对紧支光滑 \(f\)，令 \(A_j=\|\mathrm D^jf\|_{L^{2r/j}}\)、\(A_0=\|f\|_\infty\)。在 \(\int|\mathrm D^jf|^{2r/j}\) 中把一个导数分部积分，导数可落到另一高阶因子或其模的幂；Hölder 指数满足
+	\[
+		\frac{j-1}{2r}+\frac{j+1}{2r}
+		+\frac{(2r/j)-2}{2r/j}=1.
+	\]
+	因而 \(A_j^2\le C_rA_{j-1}A_{j+1}\)（\(1\le j<r\)）。零点处用 \((|\mathrm D^jf|^2+\varepsilon)^{1/2}\) 正则化后取极限。令 \(b_j=\log A_j-(1-j/r)\log A_0-(j/r)\log A_r\)，再从 \(b_j\) 减去屏障 \(\tfrac12(\log C_r)j(r-j)\)。所得数列在内部不超过两个相邻值的平均，端点为零，故离散最大值原理给出
+	\[
+		\|\mathrm D^jf\|_{L^{2r/j}}
+		\le C_r\|f\|_\infty^{1-j/r}\|\mathrm D^rf\|_{L^2}^{j/r}.
+	\]
+	零端点范数的情形可先加正数再取极限。乘以固定截断并用有限覆盖，在闭流形上将末项换为 \(\|f\|_{H^r}\)，得到同样的局部估计。
+
+	对 \(F(x,z)\) 用链式法则，每项为有界系数乘以若干 \(\mathrm D^{j_i}z\)，且 \(\sum j_i\le r\)。上式和 Hölder 不等式使其 \(L^2\) 范数至多为 \(C(1+\|z\|_{H^r})\)：最高阶总次数为 \(r\) 时高阶范数的幂恰为一，低于 \(r\) 时再用有限体积及 \(a^\eta\le1+a\)、\(0\le\eta\le1\)。这证明第一式。
+
+	第二式的典型项是 \(\mathrm D^\ell a\,\mathrm D^{r-\ell+2}u\)、\(1\le\ell\le r\)。\(r=1\) 直接估计；\(r>1\) 时，把 \(\mathrm Da\) 与 \(\mathrm D^2u\) 分别作为上述插值中的函数，阶数取 \(r-1\)。所用导数阶为 \(\ell-1\) 与 \(r-\ell\)，两者之和正好为 \(r-1\)。Hölder 后再用加权算术几何平均不等式，得到
+	\[
+		C\bigl(\|\mathrm Da\|_\infty\|\mathrm D^2u\|_{H^{r-1}}
+		+\|\mathrm Da\|_{H^{r-1}}\|\mathrm D^2u\|_\infty\bigr).
+	\]
+	求和并加入固定坐标、联络与截断的低阶项，得到结论。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:quasilinear-parabolic-continuation}
+	设 \(u\) 是式\eqref{g3:eq:quasilinear-parabolic-system}在 \([0,T_*)\) 上的光滑解，\(0<T_*<\infty\)。若存在紧集 \(K\Subset\mathcal O\)，使全部 \(j^1u(x,t)\in K\)，主系数在 \(K\) 上一致强抛物，并且
+	\[
+		\sup_{0\le t<T_*}\|u(t)\|_{C^2}<\infty,
+	\]
+	则解可光滑延拓到某个 \([0,T_*+\varepsilon)\)。
+\end{theorem}
+\begin{proof}
+	记给定的 \(C^2\) 界为 \(R\)。先证明每个高阶 Sobolev 范数在 \([0,T_*)\) 上有界。对方程施以 \(\nabla^r\)，主项为 \(A^{ij}(j^1u)\nabla_i\nabla_j(\nabla^ru)\)。其作用在张量丛 \((\mathrm T^*M)^{\otimes r}\otimes E\) 上仍强抛物。上一节零阶 Gårding 估计的冻结系数证明只需要主系数的统一连续模与一阶导数界；这里二者都由 \(K,R\) 控制。因此分部积分给出负的 \(\|\nabla^{r+1}u\|_{L^2}^2\) 主项，余下低阶项受 \(C_r\|u\|_{H^r}^2\) 控制。
+
+	需要特别检查的是导数落到未知系数的项。前一引理给出
+	\[
+		\|A(j^1u)\|_{H^r}+\|B(j^1u)\|_{H^r}
+		\le C_{r,K}(1+\|u\|_{H^{r+1}}),
+	\]
+	且 \(\|\nabla A(j^1u)\|_\infty\le C_{K,R}\)。故交换子及反应项与 \(\nabla^ru\) 的配对，均至多为
+	\(C_{r,K,R}(1+\|u\|_{H^{r+1}})\|u\|_{H^r}\)。Young 不等式吸收一小部分最高阶项。对从零到 \(r\) 阶的能量相加，得到
+	\begin{equation}\label{g3:eq:quasilinear-high-energy}
+		\frac{\mathrm d}{\mathrm dt}\|u\|_{H^r}^2
+		+c_r\|u\|_{H^{r+1}}^2
+		\le C_{r,K,R}(1+\|u\|_{H^r}^2).
+	\end{equation}
+	固定几何曲率的交换项只涉及更低阶导数，已经包含在右端。Gronwall 不等式与光滑初值使每个 \(H^r\) 范数在有限区间内一致有界。
+
+	方程及这些高阶界又给出 \(\sup_{t<T_*}\|u_t(t)\|_{H^r}<\infty\)，因为此处可用已经控制的 \(H^{r+2}\) 范数。于是 \(u(t)\) 在每个 \(H^r\) 中关于时间一致 Lipschitz，故在 \(t\uparrow T_*\) 时收敛到同一个光滑截面 \(u_*\)。喷射极限仍在 \(K\) 内，强抛物性保留。以 \(u_*\) 为初值重新应用短时存在定理，便得到右侧的光滑解。
+
+	在接合时刻，两侧的全部空间导数趋向相同极限；时间导数由方程确定，反复微分方程得到的所有初始时间喷射也一致。因此接合后的解光滑。若未知量取值于流形或开张量空间，先由零阶与时间导数界取得极限，再用有限组局部坐标或极限对象的指数图表示未知量；上述论证在这些固定图中适用，唯一性保证交叠相容。
+\end{proof}
+
+该判据也指出几何估计应控制什么。张量方程要保持正定性等开放条件；映射方程要防止像逃出可用坐标区域，并控制空间导数。对调和映射热流，下一节的曲率符号给出一阶界，再由协变导数演化取得所有高阶界，恰能用于上述延拓过程。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

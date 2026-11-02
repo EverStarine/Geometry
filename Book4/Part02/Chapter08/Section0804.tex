@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 8.4 图像与生成函数
 % 纲要位置：几何学计划纲要.md，第 3800 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,143 @@
 \section{图像与生成函数}
 \label{g4:sec:0804}
 
-待撰写
+邻域定理把 Lagrange 子流形附近的几何搬到余切丛。在这个模型中，只要某个子流形能投影成一张图，它就由一形式描述；Lagrange 条件使该一形式闭，局部又成为函数的微分。辛映射本身也能通过它的图像进入这个描述。于是，寻找辛映射可以转化为寻找函数，但必须先确认所选投影真的能作为坐标。
 
 \subsection{闭一形式和局部恰当性}
 \label{g4:subsec:0804:01}
-待撰写
+
+设 \(L\) 是 \((\mathrm{T}^*Q,-\mathrm{d}\theta)\) 中的 Lagrange 子流形，\(\pi:\mathrm{T}^*Q\to Q\) 为投影。对一点 \(z\in L\)，若 \(\mathrm{d}(\pi|_L)_z\) 可逆，第一卷定理11.3.3的逆函数定理给出 \(z\) 的一个邻域，使其中的 \(L\) 可以写成某个开集 \(U\subset Q\) 上的一形式图像。这里可逆性等价于
+\[
+	\mathrm{T}_zL\cap\ker\mathrm{d}\pi_z=0.
+\]
+也就是说，切空间不能含有竖直方向。
+
+\begin{proposition}\label{g4:prop:0804:local-graph}
+	设 \(L\subset\mathrm{T}^*Q\) 为嵌入 Lagrange 子流形，且余切投影在 \(z\in L\) 处的限制微分可逆。则缩小邻域后存在光滑实函数 \(S:U\to\mathbb R\)，使
+	\[
+		L=\{(q,\mathrm{d}S_q):q\in U\}
+	\]
+	在该邻域内成立。若 \(U\) 连通，则 \(S\) 在加常数的意义下唯一。
+\end{proposition}
+\begin{proof}
+	先由逆函数定理把 \(L\) 写为一形式 \(\alpha\) 的图。\cref{g4:prop:0702:lagrangian-graph}给出图像上的拉回 \(-\mathrm{d}\alpha\)，所以 \(\mathrm{d}\alpha=0\)。把 \(U\) 再缩为星形坐标球，第七章给出的径向积分
+	\[
+		S(q)=\int_0^1\alpha_{tq}(q)\,\mathrm{d}t
+	\]
+	满足 \(\mathrm{d}S=\alpha\)。若两个函数给出同一图，它们的微分相同，差在连通域上为常数；反过来加常数不改变图像。
+\end{proof}
+
+若 \(L\) 已是整个 \(Q\) 上的闭一形式 \(\alpha\) 的图，局部函数不一定拼成全局函数。沿任意分段光滑闭路 \(\gamma\) 的周期 \(\int_\gamma\alpha\) 必须为零，才可能有 \(\alpha=\mathrm{d}S\)。这个条件也充分：在每个连通分支固定起点，沿道路积分定义 \(S(q)\)；两条道路之差给出闭路，故结果与道路无关。局部用刚才的势函数比较，说明 \(S\) 光滑且微分为 \(\alpha\)。第七章圆周上的 \(c\,\mathrm{d}t\) 图像正好展示了非零周期的障碍。
+
+\begin{example}\label{g4:exm:0804:folded-projection}
+	在 \(\mathbb R^2_{q,p}\) 中，曲线 \((q,p)=(s^2,s)\) 是光滑嵌入，并且因维数为一而是 Lagrange 子流形。其投影导数为 \(2s\)，在 \(s=0\) 处为零，所以原点附近的整条曲线不能写成一个 \(q\) 函数的微分图像。在 \(q>0\) 时，两支分别满足
+	\[
+		p=\sqrt q=\frac{\mathrm{d}}{\mathrm{d}q}\left(\frac23q^{3/2}\right),
+		\qquad
+		p=-\sqrt q=\frac{\mathrm{d}}{\mathrm{d}q}\left(-\frac23q^{3/2}\right).
+	\]
+	曲线本身在原点完全光滑；失效的是选 \(q\) 作参数的方式。换用 \(p\) 时，\(q=p^2\) 又是一张光滑图。
+\end{example}
+
+\input{Figures/Ch08-GraphProjection}
 
 \subsection{辛映射图像的 Lagrange 性}
 \label{g4:subsec:0804:02}
-待撰写
+
+设 \((M,\omega_M)\)、\((N,\omega_N)\) 都有实维数 \(2n\)。在乘积上取
+\begin{equation}\label{g4:eq:0804:twisted-product}
+	\Omega=-\pi_M^*\omega_M+\pi_N^*\omega_N.
+\end{equation}
+它在两个因子上分别非退化，因而是辛形式。记 \(M^-=(M,-\omega_M)\)，这个辛乘积也写成 \(M^-\times N\)。负号的作用是使同一向量在两因子中的配对互相抵消。
+
+\begin{proposition}\label{g4:prop:0804:symplectic-graph}
+	设 \(F:M\to N\) 为同维辛流形间的光滑映射。其图像 \(\Gamma_F\subset M^-\times N\) 为 Lagrange 子流形，当且仅当 \(F^*\omega_N=\omega_M\)。在这个条件下，\(F\) 是局部辛同胚；若 \(F\) 为双射，则是全局辛同胚。
+\end{proposition}
+\begin{proof}
+	映射 \(j_F(x)=(x,F(x))\) 是嵌入，其像的维数为 \(2n\)，即乘积维数的一半。由两张投影的复合关系，
+	\[
+		j_F^*\Omega=-\omega_M+F^*\omega_N.
+	\]
+	因此图像为 Lagrange 子流形恰好等价于所述拉回等式。若 \(\mathrm{d}F_xv=0\)，则对一切 \(w\) 有 \(\omega_M(v,w)=0\)，故 \(v=0\)。同维性使 \(\mathrm{d}F_x\) 可逆，所以 \(F\) 局部为微分同胚。双射时，各局部光滑逆拼成全局光滑逆。
+\end{proof}
+
+特别地，对角线 \(\Delta\subset M^-\times M\) 为 Lagrange 子流形。\cref{g4:thm:0803:lagrangian-neighborhood}把其邻域与 \(\mathrm{T}^*M\) 中零截面的邻域辛同构。选定这样的邻域对应后，靠近恒等映射的辛同胚便可以用靠近零的一形式来描述。下面说明这里为什么采用 \(C^1\) 接近，而不只要求点的位置接近。\cite[第2.4节，第98--99页]{Cannas2006Symplectic}
+
+\begin{proposition}\label{g4:prop:0804:near-identity-forms}
+	设 \((M,\omega)\) 为闭连通辛流形，固定一个把零截面送到对角线的邻域辛同胚
+	\[
+		\Psi:U\subset\mathrm{T}^*M\longrightarrow V\subset M^-\times M,
+		\qquad \Psi(x,0)=(x,x).
+	\]
+	充分 \(C^1\) 接近恒等映射的辛同胚，与充分 \(C^1\) 接近零的光滑闭一形式局部一一对应；对应由 \(\Psi(\operatorname{graph}\alpha)=\Gamma_F\) 给出。该对应下，\(F\) 的固定点恰好对应 \(\alpha\) 的零点。
+\end{proposition}
+\begin{proof}
+	先说明紧性怎样保证投影可逆。在闭流形上，充分 \(C^1\) 接近恒等映射的光滑映射 \(a:M\to M\) 必为微分同胚。取有限组坐标球，其中较小同心球覆盖 \(M\)。对落入同一较小球且足够接近的两个点，连接坐标线段位于较大球中；若坐标表达满足 \(\|\mathrm{D}a-I\|<1/2\)，沿线段积分给出
+	\[
+		|a(x)-a(y)|\ge\tfrac12|x-y|.
+	\]
+	由有限覆盖，可选统一的接近尺度。距离不小于该尺度的点对，则由 \(a\) 与恒等映射充分 \(C^0\) 接近而保持不同。于是 \(a\) 单射，其微分也处处可逆。像既开，又因紧性而闭；连通性给出满射，局部光滑逆遂成为全局光滑逆。
+
+	若 \(F\) 接近恒等映射，紧性保证其图包含在 \(V\) 中。令 \(\sigma=\Psi^{-1}\circ j_F\)、\(a=\pi\circ\sigma\)，则 \(\sigma\) 接近零截面，\(a\) 接近恒等映射，所以 \(a\) 为微分同胚。重参数化 \(\sigma\circ a^{-1}\) 是一个真正的余切截面，记为 \(\alpha\)。图像经辛同胚变成 Lagrange 子流形，因此 \(\alpha\) 闭。
+
+	反过来，对充分小的闭一形式 \(\alpha\)，写 \(\Psi\circ s_\alpha=(a_\alpha,b_\alpha)\)。两张映射都 \(C^1\) 接近恒等映射，故均为微分同胚；取 \(F=b_\alpha\circ a_\alpha^{-1}\)，所得子流形就是 \(F\) 的图。它是 Lagrange 子流形，所以 \(F\) 辛。两次构造都以同一个子流形为中介，彼此互逆。图像与对角线相交，当且仅当 \(\alpha\) 的图与零截面相交；交点 \((x,0)\) 被 \(\Psi\) 送到 \((x,x)\)，恰好保留所述固定点对应。
+\end{proof}
+
+\begin{corollary}\label{g4:cor:0804:near-identity-fixed-points}
+	设 \((M^{2n},\omega)\) 为闭连通辛流形，\(n\ge1\)，且 \(H^1_{\mathrm{dR}}(M)=0\)。则充分 \(C^1\) 接近恒等映射的辛同胚至少有两个固定点。
+\end{corollary}
+\begin{proof}
+	前一命题给出闭一形式 \(\alpha\)。由上同调假设，\(\alpha=\mathrm{d}S\)。若 \(S\) 非常值，它在紧流形上的最大值点与最小值点不同，且两点的微分都为零；若 \(S\) 常值，则 \(\alpha=0\)，对应映射为恒等映射。两种情形均给出至少两个固定点。
+\end{proof}
+
+这条结论把一个局部辛几何问题变成了函数的极值问题。对一般辛同胚，其图可能离开所选对角线邻域；即使仍在邻域内，也要另查向零截面的投影是否可逆。
 
 \subsection{生成函数及不同投影的适用范围}
 \label{g4:subsec:0804:03}
-待撰写
+
+在源、靶余切坐标分别写 \((q,p)\)、\((Q,P)\)。式\eqref{g4:eq:0804:twisted-product}成为
+\[
+	\Omega=-\sum_i\mathrm{d}q^i\wedge\mathrm{d}p_i
+	+\sum_i\mathrm{d}Q^i\wedge\mathrm{d}P_i
+	=\mathrm{d}\lambda,
+	\qquad \lambda=\sum_i p_i\,\mathrm{d}q^i-P_i\,\mathrm{d}Q^i.
+\]
+因此在辛映射的图上，\(\lambda\) 闭。若 \((q,Q)\) 是这张图上的局部坐标，就可以把它的局部原始函数写为 \(S(q,Q)\)。所得方程是
+\begin{equation}\label{g4:eq:0804:position-generating}
+	p_i=\frac{\partial S}{\partial q^i},
+	\qquad P_i=-\frac{\partial S}{\partial Q^i}.
+\end{equation}
+这就是以两组位置为变量的生成函数。关键还在于：给定 \((q,p)\) 后，能否从第一组方程解出 \(Q\)。\cite[第2.5节，第99--100页]{Cannas2006Symplectic}
+
+\begin{proposition}\label{g4:prop:0804:generating-function}
+	设 \(S\) 为 \(\mathbb R_q^n\times\mathbb R_Q^n\) 某开集上的光滑实函数。若在 \((q_0,Q_0)\) 处，混合二阶导数矩阵
+	\[
+		S_{qQ}=\left(\frac{\partial^2S}{\partial q^i\partial Q^j}\right)_{i,j=1}^n
+	\]
+	可逆，则式\eqref{g4:eq:0804:position-generating}在对应点附近确定一个局部辛同胚 \((q,p)\mapsto(Q,P)\)。反过来，若辛同胚的图能以 \((q,Q)\) 为局部坐标，则在充分小的邻域内存在这样的 \(S\)，且 \(S_{qQ}\) 必可逆。
+\end{proposition}
+\begin{proof}
+	对方程 \(p=S_q(q,Q)\)，关于 \(Q\) 的导数是可逆矩阵 \(S_{qQ}\)。第一卷定理11.3.5的带参数隐函数定理给出唯一光滑局部解 \(Q=Q(q,p)\)，再以 \(P=-S_Q(q,Q(q,p))\) 定义输出。相应图上有 \(\lambda=\mathrm{d}S\)，故 \(\Omega\) 的拉回为零；\cref{g4:prop:0804:symplectic-graph}证明所得映射为局部辛同胚。
+
+	反向，\(\lambda\) 在图上闭，以 \((q,Q)\) 为坐标并缩小到球后，存在原始函数 \(S\)。比较 \(\mathrm{d}q\)、\(\mathrm{d}Q\) 系数即得两组方程。图向源空间 \((q,p)\) 的投影本来是局部微分同胚，而在所选参数下它为 \((q,Q)\mapsto(q,S_q)\)，导数的对角块为 \(I,S_{qQ}\)。因此混合矩阵必须可逆。
+\end{proof}
+
+恒等映射的图满足 \(Q=q\)，所以 \((q,Q)\) 只有 \(n\) 个独立变量，不能用于这一描述。换成 \((q,P)\) 则恰好适用。因为
+\[
+	\lambda+\mathrm{d}(Q\cdot P)
+	=\sum_i p_i\,\mathrm{d}q^i+Q^i\,\mathrm{d}P_i,
+\]
+当 \((q,P)\) 是图上的局部坐标时，右侧有局部原始函数 \(F(q,P)\)，满足
+\begin{equation}\label{g4:eq:0804:mixed-generating}
+	p=F_q(q,P),\qquad Q=F_P(q,P).
+\end{equation}
+给定 \(F\) 时，条件 \(\det F_{qP}\ne0\) 同样保证先从第一式解出 \(P=P(q,p)\)，再定义 \(Q\)，得到局部辛同胚。证明与上一个命题相同：隐函数定理负责解方程，微分 \(p\,\mathrm{d}q+Q\,\mathrm{d}P=\mathrm{d}F\) 则负责检验辛条件。在两种参数同时可用的区域里，\(F=S+Q\cdot P\)，其中要先用 \(P=-S_Q\) 把 \(Q\) 写成 \((q,P)\) 的函数。
+
+\begin{example}\label{g4:exm:0804:two-projections}
+	取 \(S(q,Q)=-q\cdot Q\)，便有 \(p=-Q\)、\(P=q\)，得到标准四分之一周旋转 \((q,p)\mapsto(-p,q)\)。它的 \((q,Q)\) 投影可逆，而 \((q,P)=(q,q)\) 投影失去一半秩。
+
+	取 \(F(q,P)=q\cdot P-V(q)\)，其中 \(V\) 为任意光滑函数，则 \(p=P-\mathrm{d}V_q\)、\(Q=q\)，得到 \((q,p)\mapsto(q,p+\mathrm{d}V_q)\)。\(F_{qP}=I\)，故在整个坐标域上都可解。\(V=0\) 时就是恒等映射。两种投影分别适合不同的图像，选错投影会使生成函数的表达失效，而辛映射本身仍可光滑。
+\end{example}
+
+一个局部函数由混合非退化条件产生的是局部辛同胚。把这些公式用于整个开集时，还须检查反解能否单值延拓以及映射是否单射；逐点非零的混合行列式不负责这些整体问题。下一节将把局部坐标的自由与整体嵌入的限制并列比较。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

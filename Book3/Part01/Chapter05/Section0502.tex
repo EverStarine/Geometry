@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 5.2 平行张量与分布
 % 纲要位置：几何学计划纲要.md，第 2273 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,190 @@
 \section{平行张量与分布}
 \label{g3:sec:0502}
 
-待撰写
+完整群把所有闭路的平行移动集中在一个切空间中。若一份张量在闭路运输后保持不变，就可以沿任意道路把它送到其他点，而不必记住所选道路。对一个子空间作同样的运输，则得到随点变化的分布。Levi-Civita 联络的无挠性和度量相容性会把这些线性不变量进一步转化为全测地叶与局部黎曼乘积。
 
 \subsection{不变向量与平行截面}
 \label{g3:subsec:0502:01}
-待撰写
+
+本节的黎曼流形均光滑、有限维且无边界。对分片光滑道路 \(\gamma\)，记其切向平行移动为 \(P_\gamma\)，沿用式\eqref{g3:eq:holonomy-transport-laws}的拼接与逆路约定。在
+\[
+	\mathcal T^a_bM=(\mathrm{T}M)^{\otimes a}
+		\otimes(\mathrm{T}^*M)^{\otimes b}
+\]
+上使用诱导联络；其平行移动在向量槽上使用 \(P_\gamma\)，在协向量槽上使用 \((P_\gamma^{-1})^*\)。这些操作与张量积、配对和收缩相容。满足 \(\nabla S=0\) 的张量场称为\term[pingxingzhangliang]{平行张量}[parallel tensor]。沿道路的张量场平行，当且仅当它的每个值都是初值经过上述运输所得。
+
+\begin{theorem}\label{g3:thm:holonomy-parallel-tensors}
+	设 \((M,g)\) 为连通光滑黎曼流形，\(p\in M\)，\(a,b\) 为非负整数。在张量空间 \(\mathcal T^a_b(\mathrm{T}_pM)\) 上使用整体完整群 \(\operatorname{Hol}_p(M)\) 的自然作用。取值映射
+	\[
+		\{S\in\Gamma(\mathcal T^a_bM):\nabla S=0\}
+		\longrightarrow
+		\mathcal T^a_b(\mathrm{T}_pM)^{\operatorname{Hol}_p(M)},
+		\qquad S\longmapsto S_p
+	\]
+	为线性同构。特别地，整体平行向量场恰与整体完整群固定的切向量对应。
+\end{theorem}
+\begin{proof}
+	若 \(\nabla S=0\)，沿任一道路的限制都是平行场，所以
+	\(S_q=P_\gamma S_p\)。当 \(\gamma\) 是基于 \(p\) 的闭路时，终值又是 \(S_p\)，故 \(S_p\) 为完整群不变量。连通流形上任意两点可由分片光滑道路连接，同一等式还说明 \(S_p\) 决定全部 \(S\)，因此取值映射单射。
+
+	反过来，设 \(s\) 为该群固定的一个张量。对任意 \(q\)，选从 \(p\) 到 \(q\) 的道路 \(\gamma\)，定义
+	\[
+		S_q=P_\gamma s.
+	\]
+	若另选 \(\beta\)，则先走 \(\gamma\) 再走 \(\beta\) 的反路得到一个基于 \(p\) 的闭路，因而
+	\(P_\beta^{-1}P_\gamma s=s\)。所以定义与道路无关。
+
+	还要检验光滑性。固定 \(q_0\) 及一条从 \(p\) 到 \(q_0\) 的道路，在 \(q_0\) 的法坐标小球内，用径向测地线连接 \(q_0\) 与变化的点 \(q\)。平行移动满足线性常微分方程，其系数及初值光滑依赖 \(q\)；上一节的平行移动构造因而给出 \(S_q\) 对 \(q\) 的光滑依赖。最后，对任意从 \(q_0\) 出发的光滑曲线，把原来连接 \(p,q_0\) 的道路与该曲线初段拼接，由道路无关性得到
+	\(S_{\gamma(t)}=P_{\gamma|_{[0,t]}}S_{q_0}\)。它沿每条曲线平行，故 \(\nabla S=0\)。整个构造线性，且是取值映射的逆。
+\end{proof}
+
+这里必须使用所有闭路产生的整体完整群。仅由可缩闭路固定的张量，可能在绕一个不可缩闭路后改变；它首先给出万有覆盖上的平行张量，能否下降还要检查这些额外闭路。
+
+\ProseParagraphBreak
+
+例如 \(g\) 本身平行，故完整群保持内积。对连通的定向黎曼流形，正体积形式也平行：在正交单位标架中，联络矩阵斜对称，其迹为零，所以对顶次外积的联络作用为零。这等价于整体完整群包含在 \(\operatorname{SO}(\mathrm{T}_pM)\) 内。反过来，若完整群保持某个非零顶次交替形式，上述定理给出一个处处非零的平行顶次形式，从而确定 \(M\) 的定向。
+
+\begin{proposition}\label{g3:prop:parallel-tensor-constant-data}
+	设 \((M,g)\) 连通。平行张量的范数为常数；平行自同态场 \(A:\mathrm{T}M\to\mathrm{T}M\) 在不同点的值由平行移动共轭，所以其特征多项式与各特征空间的维数不随点变化。
+\end{proposition}
+\begin{proof}
+	诱导联络与张量内积相容，故
+	\(X|S|^2=2\langle\nabla_XS,S\rangle=0\)。若 \(A\) 平行，沿从 \(p\) 到 \(q\) 的道路有
+	\[
+		A_qP_\gamma=P_\gamma A_p,
+		\qquad A_q=P_\gamma A_pP_\gamma^{-1}.
+	\]
+	共轭保持特征多项式及各特征空间维数，得到结论。
+\end{proof}
 
 \subsection{不变子空间和正交分布}
 \label{g3:subsec:0502:02}
-待撰写
+
+一个完整群不变子空间不要求其中每个向量都固定。运输后保留下来的是整块方向空间，而不是预先选定的基。这对应于平行分布。
+
+\begin{definition}\label{g3:def:parallel-distribution}
+	设 \((M,g)\) 为光滑黎曼流形。常秩光滑子丛 \(E\subset\mathrm{T}M\) 若满足
+	\[
+		\nabla_XY\in\Gamma(E)
+		\qquad
+		\bigl(X\in\Gamma(\mathrm{T}M),\ Y\in\Gamma(E)\bigr),
+	\]
+	则称为\term[pingxingfenbu]{平行分布}[parallel distribution]。求导方向 \(X\) 可以是任意切向方向。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:parallel-invariant-distributions}
+	设 \((M,g)\) 连通，固定 \(p\in M\)。整体完整群不变子空间 \(V\subset\mathrm{T}_pM\) 与 \(M\) 上的平行分布一一对应，映射由
+	\[
+		E_q=P_\gamma V,\qquad \gamma:p\longrightarrow q
+	\]
+	给出。平行分布的正交补也平行；对 \(E\) 的正交投影 \(\Pi_E\) 满足 \(\nabla\Pi_E=0\)。\symidx{\(\Pi_E\)}
+\end{proposition}
+\begin{proof}
+	若 \(V\) 为完整群不变子空间，对两条同端点道路 \(\gamma,\beta\)，
+	\(P_\beta^{-1}P_\gamma V=V\)，所以 \(E_q\) 与道路无关。固定一点附近的径向道路，运输一个 \(V\) 的基，得到光滑且处处线性无关的局部标架，故 \(E\) 是秩 \(\dim V\) 的光滑子丛。
+
+	这个子丛被所有平行移动保持。为把它改写成联络条件，沿一条曲线 \(\gamma\) 将 \(E_{\gamma(t)}\) 运输回起点。若 \(Y(t)\) 始终取值于 \(E_{\gamma(t)}\)，则 \(P_{\gamma|_{[0,t]}}^{-1}Y(t)\) 始终属于同一个线性子空间 \(E_{\gamma(0)}\)，其导数也在该空间内。该导数运输回 \(\gamma(t)\) 正是 \(\mathrm D_tY\)，所以 \(\mathrm D_tY\in E\)。对局部场及任意曲线应用此式，得到平行分布条件。
+
+	反过来，若 \(E\) 平行，在局部标架中沿曲线求平行场时，以 \(E\) 的基作为前几项，求导不会从这些基产生正交补分量。因此在 \(E\) 内解同一线性方程，就得到初值在 \(E\) 内的平行场；由唯一性，它也是整个切丛中的平行场。沿有限段坐标域拼接，平行移动始终保持 \(E\)。特别地，闭路保持 \(E_p\)，而道路运输公式又恢复整个 \(E\)。
+
+	对 \(Z\in\Gamma(E^\perp)\)、\(Y\in\Gamma(E)\)，有
+	\[
+		g(\nabla_XZ,Y)=Xg(Z,Y)-g(Z,\nabla_XY)=0.
+	\]
+	所以 \(E^\perp\) 平行。将任意场写成 \(Y=Y_E+Y_{E^\perp}\)，两个分量的导数仍在各自子丛，故
+	\(\nabla_X(\Pi_EY)=\Pi_E(\nabla_XY)\)，即 \(\nabla\Pi_E=0\)。
+\end{proof}
+
+例如一个自伴平行自同态 \(A\) 的不同特征空间正交。其特征值在连通流形上固定，且由运输共轭，各特征空间组成平行子丛。也可以直接把对应投影写成
+\[
+	\Pi_\lambda
+	=\prod_{\mu\ne\lambda}\frac{A-\mu I}{\lambda-\mu},
+\]
+其中乘积遍历其他不同特征值；这是光滑平行的自同态，像正是所求子丛。
 
 \subsection{平行分布的可积性}
 \label{g3:subsec:0502:03}
-待撰写
+
+分布只指定每点允许的方向。要把这些方向拼成子流形，需要验证沿这些方向行走所得的交换子仍不离开分布。无挠性在这里把协变导数与 Lie 括号联系起来。
+
+\begin{proposition}\label{g3:prop:parallel-distribution-leaves}
+	设 \(E\) 为光滑黎曼流形 \((M,g)\) 上的平行分布。则 \(E\) 可积，具有唯一的最大连通积分叶，各叶以诱导度量为全测地浸入子流形。若 \(M\) 完备，则每条叶对其自身的诱导距离完备。
+\end{proposition}
+\begin{proof}
+	若 \(X,Y\) 取值于 \(E\)，则
+	\[
+		[X,Y]=\nabla_XY-\nabla_YX\in\Gamma(E),
+	\]
+	所以 \(E\) 对合。第一卷第13.4节的\term[frobeniusdingli]{Frobenius 定理}[Frobenius theorem]说明，光滑常秩对合分布在每点附近具有叶状坐标；同节的最大连通积分叶定理将这些叶片拼成唯一的叶，并赋予其 Hausdorff、第二可数的光滑流形结构。\footnote{Ferdinand Georg Frobenius（1849--1917），德国数学家，研究群的表示与特征标以及微分方程。}
+	% 跨卷依赖：g1:thm:frobenius、g1:thm:maximal-connected-leaf，已核读陈述与证明。
+	这里 \(E\) 的光滑性、常秩与刚验证的对合性正好满足这些假设。叶采用这个叶拓扑；它未必是 \(M\) 的嵌入子流形。
+
+	在一条叶上，\(\nabla_XY\) 对切向场 \(X,Y\) 仍在 \(E\)，故叶的第二基本形式为零。由\cref{g3:prop:totally-geodesic-characterization}，叶内测地线也是环境测地线。
+
+	设 \(M\) 完备。在任一叶点取叶切向初值，环境测地线 \(\gamma\) 全时存在。它的速度沿自身平行，初速度在 \(E\)，故全部速度都在 \(E\)。在每个叶状坐标盒内，横向坐标的导数为零，所以曲线的每个小段都落在一张叶片中。沿时间区间拼接，它始终属于起点所在的最大叶，并且作为到该叶的映射光滑。于是任意叶测地线初值都全时可解，\cref{g3:thm:hopf-rinow}给出叶的诱导度量完备性。
+\end{proof}
+
+正交补同时平行，因而同时可积。这比“某一分布的叶全测地”更强：平行性还要求沿横向求导时保留该分布，这正是下一步消去两个因子之间度量变化的条件。
 
 \subsection{局部乘积的构造}
 \label{g3:subsec:0502:04}
-待撰写
+
+先把两族叶片同时变成坐标切片，再检查度量是否真正分离。正交性将消去混合项；平行性则使每个对角块只依赖自己的坐标。
+
+\begin{theorem}\label{g3:thm:parallel-local-product}
+	设 \((M,g)\) 为光滑黎曼流形，且
+	\(\mathrm{T}M=E\oplus F\) 为两个正交平行分布的直和。则每点附近存在乘积坐标
+	\((x^1,\ldots,x^r,y^1,\ldots,y^s)\)，其中 \(r=\operatorname{rank}E\)、\(s=\operatorname{rank}F\)，使
+	\[
+		E=\operatorname{span}\{\partial_{x^i}\},\qquad
+		F=\operatorname{span}\{\partial_{y^\alpha}\},
+	\]
+	并且
+	\begin{equation}\label{g3:eq:parallel-local-product-metric}
+		g=g_{ij}(x)\,\mathrm dx^i\mathrm dx^j
+			+h_{\alpha\beta}(y)\,\mathrm dy^\alpha\mathrm dy^\beta.
+	\end{equation}
+	因此该邻域与两张局部积分叶片的黎曼乘积等距。
+\end{theorem}
+\begin{proof}
+	由两分布的可积性，在共同的小邻域上存在独立函数
+	\(y^1,\ldots,y^s\)，使 \(E=\ker\mathrm dy\)，也存在
+	\(x^1,\ldots,x^r\)，使 \(F=\ker\mathrm dx\)。联合映射
+	\((x,y)\) 的微分若杀掉一个向量，该向量同时属于 \(E,F\)，只能为零；维数相等，微分因而可逆。逆函数定理给出联合坐标，将像缩小为乘积开盒，便得到同时适应两分布的坐标。
+
+	正交性给出 \(g(\partial_{x^i},\partial_{y^\alpha})=0\)。平行性又说明
+	\[
+		\nabla_{\partial_{x^i}}\partial_{y^\alpha}\in F,\qquad
+		\nabla_{\partial_{y^\alpha}}\partial_{x^i}\in E.
+	\]
+	坐标向量场交换，无挠性使这两个导数相等；它们属于正交交集，故均为零。因此
+	\[
+		\begin{aligned}
+			\partial_{y^\alpha}g(\partial_{x^i},\partial_{x^j})
+			&=g(\nabla_{\partial_{y^\alpha}}\partial_{x^i},\partial_{x^j})
+				+g(\partial_{x^i},\nabla_{\partial_{y^\alpha}}\partial_{x^j})
+			=0.
+		\end{aligned}
+	\]
+	同理 \(\partial_{x^i}g(\partial_{y^\alpha},\partial_{y^\beta})=0\)。各块遂只依赖自己的一组坐标，得到式\eqref{g3:eq:parallel-local-product-metric}。固定 \(y\) 或固定 \(x\) 后取得的正是两个因子的诱导度量。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:parallel-mixed-curvature}
+	在上述正交平行分解下，若 \(X\in E\)、\(Y\in F\)，则 \(R(X,Y)=0\)。此外，\(R(E,E)\) 在 \(F\) 上的作用为零，\(R(F,F)\) 在 \(E\) 上的作用为零。
+\end{corollary}
+\begin{proof}
+	局部乘积坐标中的混合协变导数为零，\(E\) 块的联络系数只依赖 \(x\)，\(F\) 块的联络系数只依赖 \(y\)。代入曲率坐标公式，混合求导方向的全部系数为零，同一因子的曲率也不作用到另一因子。张量性使结论对任意所列向量成立。
+\end{proof}
+
+在局部乘积盒中，一条 \(E\) 叶片道路可搬到相邻的 \(E\) 叶片上，保持 \(x\) 坐标而只改变固定的 \(y\) 值；此搬运是局部等距。同样可以搬运 \(F\) 道路。两个操作在共同定义的参数矩形上交换，且相对的边有相同长度。这是把局部乘积推广到整体的基本构造。
+
+\begin{example}\label{g3:exm:orthogonal-foliations-not-parallel}
+	在平面去掉原点后使用极坐标，度量为
+	\[
+		g=\mathrm dr^2+r^2\mathrm d\theta^2.
+	\]
+	径向线与圆周给出两族正交可积的一维分布，但圆周分布不平行，因为
+	\(\nabla_{\partial_\theta}\partial_\theta=-r\partial_r\)。
+	相应对角块 \(r^2\mathrm d\theta^2\) 依赖另一组坐标，故这两族指定分布不能产生黎曼乘积。可积与正交本身不足以替代平行性。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

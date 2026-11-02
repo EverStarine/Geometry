@@ -1,35 +1,369 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 21.1 BV 函数与全变差
 % 纲要位置：几何学计划纲要.md，第 2968 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 分布导数的 Radon 测度表示
 % * 变差的对偶定义
 % * 光滑逼近与变差收敛
-% * 截断、复合及链式公式的范围
+% * 截断与 Lipschitz 复合
 % 
 % 纲要内容结束
 
 \section{BV 函数与全变差}
 \label{g3:sec:2101}
 
-待撰写
+一个区间的示性函数在内部和外部都不变化，变化集中在两个端点。它的分布导数由两个带符号的点质量组成，不能写成通常的可积函数。若仍想用“导数的总量”控制这类函数，就应让导数取值于测度。BV 空间容纳这种集中变化，同时保留积分分部、光滑逼近和复合运算中的有效估计。
+
+\ProseParagraphBreak
+本节讨论实值函数；\(\Omega\subset\mathbb R^n\) 始终为开集，\(n\ge1\)。\(\mathcal L^n\) 是 Lebesgue 测度，积分中的 \(\mathrm dx\) 表示其体积元。向量测度按 Euclid 范数计算大小；这一选择决定了后面周长所使用的各向同性面积。
 
 \subsection{分布导数的 Radon 测度表示}
 \label{g3:subsec:2101:01}
-待撰写
+\begin{definition}\label{g3:def:bv-function}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(u\in L^1_{\mathrm{loc}}(\Omega)\)。若对每个 \(i=1,\ldots,n\)，存在局部有限的有符号 Radon 测度 \(D_i u\)，使
+	\begin{equation}\label{g3:eq:bv-distributional-derivative}
+		\int_\Omega\varphi\,\mathrm dD_i u
+		=-\int_\Omega u\,\partial_i\varphi\,\mathrm dx
+		\qquad\bigl(\varphi\in C_c^\infty(\Omega)\bigr),
+	\end{equation}
+	就称 \(u\) 为\term[jubu youjie biancha hanshu]{局部有界变差函数}[locally bounded variation function]，记为 \(u\in BV_{\mathrm{loc}}(\Omega)\)，并记 \(Du=(D_1u,\ldots,D_nu)\)。
+	若另有 \(u\in L^1(\Omega)\) 和 \(|Du|(\Omega)<\infty\)，则称 \(u\) 为\term[youjie biancha hanshu]{有界变差函数}[function of bounded variation]，记为 \(u\in BV(\Omega)\)。这里 \(|Du|\) 是下面定义的全变差测度，且
+	\[
+		\|u\|_{BV(\Omega)}=\|u\|_{L^1(\Omega)}+|Du|(\Omega).
+	\]
+\end{definition}
+
+这些测度由分布导数唯一确定。因为光滑紧支函数能在一致范数下逼近连续紧支函数，两个 Radon 测度若在全部光滑测试函数上相同，就在全部连续紧支函数上相同，从而在 Borel 集上相同。由同样的光滑逼近，式\eqref{g3:eq:bv-distributional-derivative}也适用于 \(C_c^1(\Omega)\) 测试函数。
+
+\begin{lemma}\label{g3:lem:vector-measure-polar}
+	设 \(\mu=(\mu_1,\ldots,\mu_n)\) 为 \(\Omega\subset\mathbb R^n\) 上的局部有限向量 Radon 测度。对 Borel 集 \(A\) 定义
+	\[
+		|\mu|(A)=
+		\sup\left\{\sum_{\ell=1}^N|\mu(A_\ell)|:
+		A=\mathop{\dot\bigcup}_{\ell=1}^NA_\ell,\ A_\ell\text{ 为 Borel 集}\right\},
+	\]
+	先在相对紧集上作此定义，再以递增穷尽定义一般情形。则 \(|\mu|\) 为正 Radon 测度，称为 \(\mu\) 的\term[quanbiancha cedu]{全变差测度}[total variation measure]。存在 Borel 向量函数 \(\sigma\)，使
+	\begin{equation}\label{g3:eq:vector-measure-polar}
+		\mu=\sigma\,|\mu|,\qquad |\sigma|=1
+		\quad|\mu|\text{-几乎处处}.
+	\end{equation}
+	这个 \(\sigma\) 在 \(|\mu|\)-几乎处处意义下唯一，称为极分解中的方向。
+\end{lemma}
+\begin{proof}
+	令 \(\lambda=\sum_i|\mu_i|\)。对每个分量使用绝对连续测度的积分密度表示，写成 \(\mu_i=h_i\lambda\)，记 \(h=(h_1,\ldots,h_n)\)。对任意有限 Borel 分割，三角不等式给出
+	\[
+		\sum_\ell|\mu(A_\ell)|
+		\le\sum_\ell\int_{A_\ell}|h|\,\mathrm d\lambda
+		=\int_A|h|\,\mathrm d\lambda.
+	\]
+	反向先设 \(A\) 相对紧。取在 \(A\) 上的有限值简单向量函数
+	\(s=\sum_\ell a_\ell\mathbf1_{A_\ell}\)，使
+	\(\int_A|h-s|\,\mathrm d\lambda<\varepsilon\)。则
+	\[
+		\sum_\ell\left|\int_{A_\ell}h\,\mathrm d\lambda\right|
+		\ge\sum_\ell|a_\ell|\lambda(A_\ell)-\varepsilon
+		\ge\int_A|h|\,\mathrm d\lambda-2\varepsilon.
+	\]
+	令 \(\varepsilon\downarrow0\)，得到 \(|\mu|=|h|\lambda\)。这证明其可数可加性和局部有限性；作为局部有限 Borel 测度，它在 Euclid 开集上为 Radon 测度。穷尽使等式适用于一般 Borel 集。取 \(\sigma=h/|h|\) 于 \(|h|>0\)，在其余点任意取零，就得到极分解和单位模长；唯一性来自各分量积分密度的唯一性。
+\end{proof}
+
+因此 \(Du\) 记录变化的方向和符号，\(|Du|\) 则记录不计抵消的大小。若 \(u\in W^{1,1}_{\mathrm{loc}}(\Omega)\)，由弱导数定义和上面的极分解，
+\[
+	Du=\nabla u\,\mathcal L^n,\qquad
+	|Du|=|\nabla u|\,\mathcal L^n.
+\]
+反之，若 \(u\in BV_{\mathrm{loc}}(\Omega)\) 且 \(Du\) 的各分量对 \(\mathcal L^n\) 绝对连续，则其积分密度正是局部可积弱导数，故 \(u\in W^{1,1}_{\mathrm{loc}}(\Omega)\)。一般 BV 函数允许导数中另有奇异部分。
+
+\begin{example}\label{g3:exm:bv-absolutely-continuous-and-atom}
+	在 \((-1,1)\) 上取 \(u(t)=t+\mathbf1_{(0,1)}(t)\)。逐区间积分给出
+	\[
+		Du=\mathcal L^1+\delta_0,\qquad
+		|Du|((-1,1))=3.
+	\]
+	因此 \(u\in BV((-1,1))\)，却不属于 \(W^{1,1}((-1,1))\)：其分布导数含有不能由可积密度表示的原子。零点处的函数值无论怎样修改，都不改变 \(Du\)。BV 同样以几乎处处相等的函数作为同一个元素。
+\end{example}
 
 \subsection{变差的对偶定义}
 \label{g3:subsec:2101:02}
-待撰写
+直接找出导数测度有时困难，但积分分部的右端只涉及 \(u\)。下面的对偶定义既给出判别方法，也使极限中的变差估计成为可能。先说明这里使用的一个实分析事实：在局部紧度量空间上，\(C_0\) 上的有界线性泛函由唯一的有限有符号 Radon 测度表示，其算子范数等于测度的全变差。这是连续函数空间的测度表示定理，所用版本及其证明见\cite[第4节，定理4.1，第18--21页]{Simon1983}；它与\secref{g3:sec:1201}中 Hilbert 空间的内积表示具有不同的定义域。
+
+\begin{proposition}\label{g3:prop:bv-dual-variation}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(u\in L^1_{\mathrm{loc}}(\Omega)\)。对开集 \(U\subset\Omega\) 令
+	\begin{equation}\label{g3:eq:bv-dual-variation}
+		V(u;U)=\sup\left\{
+		\int_Uu\,\operatorname{div}X\,\mathrm dx:
+		X\in C_c^1(U;\mathbb R^n),\ |X|\le1\right\}.
+	\end{equation}
+	则 \(u\in BV_{\mathrm{loc}}(\Omega)\) 当且仅当每个 \(U\Subset\Omega\) 都有 \(V(u;U)<\infty\)。在此情形，对任意开集 \(U\subset\Omega\)，
+	\[
+		V(u;U)=|Du|(U).
+	\]
+	因而当 \(u\in L^1(\Omega)\) 时，\(u\in BV(\Omega)\) 当且仅当 \(V(u;\Omega)<\infty\)。
+\end{proposition}
+\begin{proof}
+	先设每个相对紧开集上的 \(V(u;U)\) 有限。对标量 \(\varphi\in C_c^\infty(U)\) 考虑
+	\[
+		T_i(\varphi)=-\int_Uu\,\partial_i\varphi\,\mathrm dx.
+	\]
+	把 \(\varphi e_i\) 和其相反数代入定义，得
+	\(|T_i(\varphi)|\le V(u;U)\|\varphi\|_\infty\)。
+	由 \(C_c^\infty(U)\) 在 \(C_0(U)\) 中的一致稠密性，\(T_i\) 唯一延拓为 \(C_0(U)\) 上的有界线性泛函。测度表示定理给出有符号 Radon 测度 \(\mu_i^U\)。若两个这样的开集相交，所得测度在交上作用于相同的光滑测试函数，因而相同。用相对紧开集穷尽 \(\Omega\)，就把它们拼成局部有限的 \(D_i u\)，并满足分布导数恒等式。
+
+	反之，设 \(Du\) 已经存在，记其极分解为 \(\sigma|Du|\)。对 \(|X|\le1\) 有
+	\[
+		\int_Uu\,\operatorname{div}X\,\mathrm dx
+		=-\int_UX\cdot\sigma\,\mathrm d|Du|
+		\le|Du|(U).
+	\]
+	要得到等号，需要用连续场逼近可测方向 \(-\sigma\)。这里可直接使用 Radon 正则性：在有限测度区域内，先把一个有界可测向量函数逼近为有限值简单函数，再用紧集内逼近、开集外逼近及连续截断，便可在 \(L^1(|Du|)\) 中逼近为连续紧支向量函数。把这些向量逐点投影到闭单位球，仍连续且误差不增；再用足够小的非负卷积核平滑，支集仍紧含于 \(U\)，范数仍不超过一。
+
+	具体地，给定紧集 \(K\subset U\)，先取相对紧开集 \(W\) 满足 \(K\subset W\Subset U\) 且 \(|Du|(W\setminus K)\) 任意小，再按上面的办法逼近 \(K\) 上的 \(-\sigma\)。得到测试场 \(X\) 使
+	\[
+		-\int_UX\cdot\sigma\,\mathrm d|Du|
+		\ge |Du|(K)-\varepsilon.
+	\]
+	令 \(\varepsilon\downarrow0\)，再对紧集 \(K\subset U\) 取上确界，Radon 内正则性给出 \(V(u;U)\ge|Du|(U)\)，包括右侧为无穷的情形。这也完成局部有限性的等价判别和全局结论。
+\end{proof}
+
+同一个方向逼近论证还给出加权形式：对任意局部有限向量 Radon 测度 \(\mu\) 和非负 \(a\in C_c(\Omega)\)，
+\begin{equation}\label{g3:eq:weighted-vector-measure-duality}
+	\int_\Omega a\,\mathrm d|\mu|
+	=\sup\left\{\int_\Omega X\cdot\mathrm d\mu:
+	X\in C_c(\Omega;\mathbb R^n),\ |X|\le a\right\}.
+\end{equation}
+事实上，写 \(X=aY\)，以连续的单位球值场 \(Y\) 在有限测度 \(a|\mu|\) 下逼近极方向即可。这个等式以后将把向量测度的弱收敛转化为全变差的下界。
+
+\ProseParagraphBreak
+对偶式中的上确界也可对 \(\left|\int u\operatorname{div}X\right|\) 取，因为允许同时使用 \(X\) 与 \(-X\)。若 \(u\) 光滑，它退化为 \(\int_U|\nabla u|\,\mathrm dx\)；对跳跃函数，它仍能检测集中在零测集上的变化。BV 的基础定义与这种对偶形式可对照\cite[第6节，式6.1，第35页]{Simon1983}。
 
 \subsection{光滑逼近与变差收敛}
 \label{g3:subsec:2101:03}
-待撰写
+平滑化把测度导数摊开为通常的梯度，但一般不能使导数在全变差范数中趋近。合适的逼近要求函数在 \(L^1\) 中收敛，并要求导数的总量收敛。
 
-\subsection{截断、复合及链式公式的范围}
+\begin{definition}\label{g3:def:bv-strict-convergence}
+	设 \(u_j,u\in BV(\Omega)\)。若
+	\[
+		\|u_j-u\|_{L^1(\Omega)}\longrightarrow0,\qquad
+		|Du_j|(\Omega)\longrightarrow|Du|(\Omega),
+	\]
+	则称 \(u_j\) 在 \(BV(\Omega)\) 中\term[yange shoulian]{严格收敛}[strict convergence]于 \(u\)。
+\end{definition}
+
+\begin{lemma}\label{g3:lem:bv-local-mollification}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(u\in BV_{\mathrm{loc}}(\Omega)\)。取非负、对称的 \(\rho\in C_c^\infty(B(0,1))\)，使 \(\int\rho=1\)，并令 \(\rho_\varepsilon(x)=\varepsilon^{-n}\rho(x/\varepsilon)\)。在距 \(\partial\Omega\) 大于 \(\varepsilon\) 的点定义 \(u_\varepsilon=\rho_\varepsilon*u\)。则
+	\begin{equation}\label{g3:eq:bv-mollified-derivative}
+		\nabla u_\varepsilon(x)=\int_\Omega\rho_\varepsilon(x-y)\,\mathrm dDu(y),
+		\qquad
+		|\nabla u_\varepsilon(x)|
+		\le\int_\Omega\rho_\varepsilon(x-y)\,\mathrm d|Du|(y).
+	\end{equation}
+	若 \(U_\varepsilon=\{y:\operatorname{dist}(y,U)<\varepsilon\}\Subset\Omega\)，则
+	\begin{equation}\label{g3:eq:bv-local-mollification-bound}
+		\int_U|\nabla u_\varepsilon|\,\mathrm dx
+		\le |Du|(U_\varepsilon).
+	\end{equation}
+	当 \(\varepsilon\downarrow0\) 时，\(u_\varepsilon\to u\) 于 \(L^1_{\mathrm{loc}}\)，且正测度
+	\(|\nabla u_\varepsilon|\mathcal L^n\) 对连续紧支测试函数收敛于 \(|Du|\)。因此若 \(U\Subset\Omega\) 开且 \(|Du|(\partial U)=0\)，则
+	\[
+		\int_U|\nabla u_\varepsilon|\,\mathrm dx\longrightarrow |Du|(U).
+	\]
+	在 \(\Omega=\mathbb R^n\)、\(u\in BV(\mathbb R^n)\) 时，式\eqref{g3:eq:bv-local-mollification-bound}也适用于 \(U=\mathbb R^n\)，并有全局严格收敛。
+\end{lemma}
+\begin{proof}
+	对固定 \(x\)，核 \(\rho_\varepsilon(x-\cdot)\) 紧含于 \(\Omega\)。对 \(x\) 微分，再使用分布导数定义，把核上的导数转移到 \(Du\)，便得到第一式。极分解与积分三角不等式给出第二式。随后用非负积分换序：
+	\[
+		\int_U|\nabla u_\varepsilon(x)|\,\mathrm dx
+		\le\int_\Omega\left(\int_U\rho_\varepsilon(x-y)\,\mathrm dx\right)
+		\,\mathrm d|Du|(y)
+		\le|Du|(U_\varepsilon).
+	\]
+	\(L^1_{\mathrm{loc}}\) 收敛由\cref{g3:lem:local-weak-smoothing}的零阶卷积论证得到。
+
+	令 \(a\in C_c(\Omega)\)、\(a\ge0\)。对充分小的 \(\varepsilon\)，上面的点态估计给出
+	\[
+		\int_\Omega a|\nabla u_\varepsilon|\,\mathrm dx
+		\le\int_\Omega(a*\rho_\varepsilon)\,\mathrm d|Du|
+		\longrightarrow\int_\Omega a\,\mathrm d|Du|.
+	\]
+	这里核的对称性使换序后的卷积仍写成同一个形式，且连续紧支函数的卷积一致收敛，所有支集包含在同一紧集内。另一方面，对连续紧支向量场 \(X\)，
+	\[
+		\int_\Omega X\cdot\nabla u_\varepsilon\,\mathrm dx
+		=\int_\Omega(X*\rho_\varepsilon)\cdot\mathrm dDu
+		\longrightarrow\int_\Omega X\cdot\mathrm dDu.
+	\]
+	若 \(|X|\le a\)，左端不超过 \(\int a|\nabla u_\varepsilon|\)。取下极限，再对 \(X\) 使用式\eqref{g3:eq:weighted-vector-measure-duality}，便得到反向下界。因此非负连续紧支测试函数上的积分收敛；一般连续测试函数分成正负两部分。
+
+	对于 \(|Du|(\partial U)=0\) 的相对紧开集，用连续截断从内外逼近 \(\mathbf1_U\)，其误差由逐渐缩小的边界邻域测度控制，得到所述积分收敛。全空间情形的上界为 \(\int|\nabla u_\varepsilon|\le|Du|(\mathbb R^n)\)；任取 \(X\in C_c^1\)、\(|X|\le1\)，又有
+	\[
+		\int u\,\operatorname{div}X
+		=\lim_{\varepsilon\downarrow0}\int u_\varepsilon\operatorname{div}X
+		\le\liminf_{\varepsilon\downarrow0}\int|\nabla u_\varepsilon|.
+	\]
+	对 \(X\) 取上确界，就得到总量收敛。全局 \(L^1\) 收敛仍由平移连续性得到。
+\end{proof}
+
+这个局部结论见\cite[第6节，引理6.2，第36--37页]{Simon1983}。若 \(\Omega\) 的边界没有正则性，不能把 \(u\) 直接补零后卷积来保证原来的变差收敛，因为补零可能在边界增加变化。下面把卷积半径按位置分别选择。
+
+\begin{theorem}[BV 的严格光滑逼近]\label{g3:thm:bv-strict-approximation}
+	设 \(\Omega\subset\mathbb R^n\) 为任意开集，\(u\in BV(\Omega)\)。则存在
+	\[
+		u_j\in C^\infty(\Omega)\cap W^{1,1}(\Omega)
+	\]
+	在 \(BV(\Omega)\) 中严格收敛于 \(u\)。若常数 \(a\le b\) 满足 \(a\le u\le b\) 几乎处处，则还可要求 \(a\le u_j\le b\) 处处。
+\end{theorem}
+\begin{proof}
+	固定 \(\eta>0\)。取非负光滑单位分解 \(\{\psi_i\}_{i\ge1}\)，每个 \(\psi_i\) 的支集紧含于 \(\Omega\)，且在 \(\Omega\) 中局部有限。这样的分解可具体构造：取紧集 \(K_i\subset\operatorname{int}K_{i+1}\) 穷尽 \(\Omega\)，选取紧支光滑函数 \(0\le\chi_i\le1\)，使其在 \(K_i\) 的邻域上为一；令
+	\[
+		\psi_1=\chi_1,\qquad
+		\psi_i=\chi_i\prod_{\ell<i}(1-\chi_\ell)\quad(i\ge2).
+	\]
+	有限和等于 \(1-\prod_{\ell\le i}(1-\chi_\ell)\)，故极限为一；在每个点的一个邻域内某个 \(\chi_i=1\)，所以后面的项全部为零，这证明局部有限性。
+
+	对每个 \(i\)，选择足够小的 \(\varepsilon_i>0\)，使卷积
+	\(w_i=u*\rho_{\varepsilon_i}\) 在 \(\operatorname{supp}\psi_i\) 的邻域内有定义，并使
+	\begin{align*}
+		\int_{\operatorname{supp}\psi_i}
+		(\psi_i+|\nabla\psi_i|)|w_i-u|\,\mathrm dx
+		&<\eta\,2^{-i},\\
+		\int_\Omega|\psi_i*\rho_{\varepsilon_i}-\psi_i|
+		\,\mathrm d|Du|&<\eta\,2^{-i}.
+	\end{align*}
+	第一项由局部 \(L^1\) 卷积收敛保证；第二项由 \(\psi_i\) 的一致卷积收敛保证，因为它及小半径卷积的支集均在一个固定紧集内，而 \(|Du|\) 在此有限。
+
+	令 \(v=\sum_i\psi_iw_i\)。这个和局部有限，故 \(v\in C^\infty(\Omega)\)，并有
+	\[
+		\|v-u\|_{L^1(\Omega)}
+		\le\sum_i\int\psi_i|w_i-u|<\eta.
+	\]
+	利用 \(\sum_i\nabla\psi_i=0\)，梯度可以写成
+	\[
+		\nabla v=\sum_i\psi_i\nabla w_i
+		+\sum_i\nabla\psi_i(w_i-u).
+	\]
+	后一个和的 \(L^1\) 范数小于 \(\eta\)。对前一个和使用卷积测度估计及非负积分换序，得到
+	\begin{align*}
+		\sum_i\int_\Omega\psi_i|\nabla w_i|\,\mathrm dx
+		&\le\sum_i\int_\Omega
+		(\psi_i*\rho_{\varepsilon_i})\,\mathrm d|Du|\\
+		&\le\sum_i\int_\Omega\psi_i\,\mathrm d|Du|+\eta\\
+		&=|Du|(\Omega)+\eta.
+	\end{align*}
+	所以 \(v\in W^{1,1}(\Omega)\)，且
+	\(\int_\Omega|\nabla v|\le|Du|(\Omega)+2\eta\)。
+
+	令 \(\eta\downarrow0\) 并选取所得 \(v\) 为一列。对任意固定的 \(X\in C_c^1(\Omega;\mathbb R^n)\)、\(|X|\le1\)，由 \(L^1\) 收敛，
+	\[
+		\int_\Omega u\,\operatorname{div}X
+		=\lim_j\int_\Omega u_j\operatorname{div}X
+		\le\liminf_j\int_\Omega|\nabla u_j|.
+	\]
+	取上确界并使用对偶定义，得到总变差的反向下界，故严格收敛成立。若 \(a\le u\le b\)，非负单位积分卷积使 \(a\le w_i\le b\)，而 \(\sum_i\psi_i=1\)，于是 \(v\) 作为这些值的凸组合也在 \([a,b]\) 内。
+\end{proof}
+
+对 \(u\in BV_{\mathrm{loc}}(\Omega)\)，局部卷积已经给出每个相对紧子域上的光滑逼近和变差测度收敛；当子域边界不带 \(|Du|\) 质量时，还给出该子域中的严格收敛。因此后续的局部紧性论证只须在这样的内域上工作。
+
+\subsection{截断与 Lipschitz 复合}
 \label{g3:subsec:2101:04}
-待撰写
+光滑函数的乘法法则仍有测度形式，但复合函数必须谨慎处理跳跃。先把平滑截断所需的乘积公式写清楚。
+
+\begin{proposition}\label{g3:prop:bv-smooth-product}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(u\in BV_{\mathrm{loc}}(\Omega)\)，\(\eta\in C^1(\Omega)\)。则 \(\eta u\in BV_{\mathrm{loc}}(\Omega)\)，并有向量测度恒等式
+	\begin{equation}\label{g3:eq:bv-smooth-product}
+		D(\eta u)=\eta\,Du+u\nabla\eta\,\mathcal L^n.
+	\end{equation}
+	特别地，
+	\[
+		|D(\eta u)|\le|\eta|\,|Du|+|u||\nabla\eta|\,\mathcal L^n.
+	\]
+	若 \(\eta\) 紧支于 \(\Omega\)，则 \(\eta u\) 在 \(\Omega\) 外补零后属于 \(BV(\mathbb R^n)\)，且导数由上式补零给出。
+\end{proposition}
+\begin{proof}
+	对紧支 \(C^1\) 向量场 \(X\)，展开 \(\operatorname{div}(\eta X)\)，得到
+	\[
+		\int_\Omega\eta u\,\operatorname{div}X
+		=\int_\Omega u\,\operatorname{div}(\eta X)
+		-\int_\Omega u\nabla\eta\cdot X
+		=-\int_\Omega\eta X\cdot\mathrm dDu
+		-\int_\Omega u\nabla\eta\cdot X.
+	\]
+	右侧是局部有限向量测度的配对，由唯一性得到公式。对任意 Borel 分割使用三角不等式，得到全变差界。若 \(\eta\) 紧支，则乘积在 \(\partial\Omega\) 的一个内侧邻域为零；任意全空间测试场只须乘一个在 \(\operatorname{supp}\eta\) 附近为一的内域光滑截断，上面的计算仍适用，所以补零不增加边界测度。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:bv-compact-smooth-approximation}
+	设 \(u\in BV(\mathbb R^n)\)。则存在 \(u_j\in C_c^\infty(\mathbb R^n)\) 严格收敛于 \(u\)。若 \(a\le0\le b\) 且 \(a\le u\le b\)，则可保持 \(a\le u_j\le b\)。若 \(u\) 本来就紧支，可以直接取足够小半径的统一卷积。
+\end{corollary}
+\begin{proof}
+	取 \(0\le\eta_R\le1\)，在 \(B_R\) 上为一，支撑于 \(B_{2R}\)，且 \(|\nabla\eta_R|\le C/R\)。令 \(v_R=\eta_Ru\)。有 \(v_R\to u\) 于 \(L^1\)，并由乘积公式，
+	\[
+		|Dv_R|(\mathbb R^n)
+		\le |Du|(\mathbb R^n)
+		+\frac CR\int_{\mathbb R^n\setminus B_R}|u|\,\mathrm dx.
+	\]
+	最后一项趋于零，对偶定义给出反向下极限，故 \(v_R\) 严格趋向 \(u\)。每个 \(v_R\) 紧支，对它作统一卷积；由\cref{g3:lem:bv-local-mollification}，这给出紧支光滑的严格逼近。逐个选择卷积半径，使函数误差和总变差误差各小于 \(1/R\)，便得到所需单列。因为截断和卷积均保持包含零的区间 \([a,b]\)，值域条件也保留。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:bv-lipschitz-composition}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(u\in BV_{\mathrm{loc}}(\Omega)\)，\(\Phi:\mathbb R\to\mathbb R\) 为 \(L\)-Lipschitz 函数。则 \(\Phi\circ u\in BV_{\mathrm{loc}}(\Omega)\)，并且
+	\begin{equation}\label{g3:eq:bv-lipschitz-composition}
+		|D(\Phi\circ u)|\le L\,|Du|
+	\end{equation}
+	作为 Radon 测度成立。若 \(u\in BV(\Omega)\) 且 \(\Phi(u)\in L^1(\Omega)\)，则 \(\Phi(u)\in BV(\Omega)\)。当 \(\Phi(0)=0\) 或 \(\mathcal L^n(\Omega)<\infty\) 时，这个附加可积性自动满足。
+\end{proposition}
+\begin{proof}
+	局部可积性由 \(|\Phi(u)|\le|\Phi(0)|+L|u|\) 得到。对局部卷积 \(u_\varepsilon\)，函数 \(\Phi(u_\varepsilon)\) 局部 Lipschitz；在它可微的点，对任意方向 \(v\) 使用 Lipschitz 不等式并取差商极限，得到
+	\[
+		|D(\Phi(u_\varepsilon))(x)v|
+		\le L|\nabla u_\varepsilon(x)\cdot v|,
+		\qquad
+		|\nabla(\Phi(u_\varepsilon))(x)|\le L|\nabla u_\varepsilon(x)|.
+	\]
+	由 Rademacher 定理和弱导数的直线积分刻画，这些几乎处处导数也是弱导数。对 \(X\in C_c^1(\Omega;\mathbb R^n)\)，充分小的 \(\varepsilon\) 给出
+	\[
+		\left|\int_\Omega\Phi(u_\varepsilon)\operatorname{div}X\,\mathrm dx\right|
+		\le L\int_\Omega|X|\,|\nabla u_\varepsilon|\,\mathrm dx.
+	\]
+	左侧因 Lipschitz 连续性和 \(L^1_{\mathrm{loc}}\) 收敛而趋于相应的 \(\Phi(u)\) 配对；右侧由卷积变差测度收敛趋于 \(L\int|X|\,\mathrm d|Du|\)。特别地，在任意相对紧开集上取 \(|X|\le1\)，对偶判别给出 \(\Phi(u)\in BV_{\mathrm{loc}}\)。再在任意开集 \(U\) 内取上确界，得到
+	\(|D(\Phi(u))|(U)\le L|Du|(U)\)；Radon 正则性把不等式推广到 Borel 集。全局结论随后由可积性和总变差界得到。
+\end{proof}
+
+取 \(\Phi(t)=T_M(t)=\max\{-M,\min\{t,M\}\}\)，得到\term[jieduan hanshu]{截断函数}[truncation]满足
+\[
+	|D(T_Mu)|\le|Du|.
+\]
+若 \(u\in BV(\Omega)\)，则 \(T_Mu\to u\) 于 \(L^1\)，再由对偶定义取得总变差下界，故 \(T_Mu\) 在 \(M\to\infty\) 时严格趋于 \(u\)。取 \(\Phi(t)=|t|\)、\(t_+=\max\{t,0\}\) 等，也得到相同类型的变差控制。
+
+下面重述\cref{g3:prop:sobolev-product-chain}的标量一阶情形，并给出卷积证明。这个证明中的梯度 \(L^1\) 收敛，恰好说明为什么它不能直接用于带奇异导数的 BV 函数。
+
+\begin{proposition}\label{g3:prop:sobolev-c1-chain}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(u\in W^{1,1}_{\mathrm{loc}}(\Omega)\)，\(\Phi\in C^1(\mathbb R)\)，且 \(\Phi'\) 有界。则
+	\[
+		\Phi(u)\in W^{1,1}_{\mathrm{loc}}(\Omega),\qquad
+		\nabla(\Phi(u))=\Phi'(u)\nabla u
+		\quad\mathcal L^n\text{-几乎处处}.
+	\]
+	若 \(u\) 局部本质有界，则只须 \(\Phi'\) 在每个相应有界值域上有界。
+\end{proposition}
+\begin{proof}
+	在相对紧子域上作卷积，取子列使 \(u_\varepsilon\to u\) 几乎处处，同时
+	\(\nabla u_\varepsilon\to\nabla u\) 于 \(L^1\)。光滑链式法则给出
+	\(\nabla\Phi(u_\varepsilon)=\Phi'(u_\varepsilon)\nabla u_\varepsilon\)。右边与 \(\Phi'(u)\nabla u\) 的差分为
+	\[
+		\Phi'(u_\varepsilon)(\nabla u_\varepsilon-\nabla u)
+		+\bigl(\Phi'(u_\varepsilon)-\Phi'(u)\bigr)\nabla u.
+	\]
+	第一项由导数一致有界和梯度的 \(L^1\) 收敛趋零，第二项由控制收敛趋零。又有 \(\Phi(u_\varepsilon)\to\Phi(u)\) 于 \(L^1\)，故在积分分部中取极限，得到所述弱导数。局部本质有界情形，非负卷积保持一个包含原值域的紧区间，故同样证明只用该区间上的导数界。
+\end{proof}
+
+一般 BV 函数的跳跃需要记录两侧值。最简单地，在 \((-1,1)\) 上取 \(u=\mathbf1_{(0,1)}\)，并在 \([0,1]\) 上令 \(\Phi(t)=t^2\)。有
+\[
+	Du=\delta_0,\qquad D(\Phi(u))=\delta_0.
+\]
+若把 Sobolev 公式直接写成 \(\Phi'(u)\,Du\)，零点处把 \(u\) 取零会得到零，取一却得到 \(2\delta_0\)；两者都不是正确答案。若一个分段常值函数从 \(a\) 跳到 \(b\)，复合后的导数原子系数实际为
+\[
+	\Phi(b)-\Phi(a)=\int_a^b\Phi'(s)\,\mathrm ds.
+\]
+因此在当前所需的 BV 运算中，我们使用已经证明的测度不等式\eqref{g3:eq:bv-lipschitz-composition}与光滑乘积公式；当导数有可积密度时，再使用精确的 Sobolev 链式公式。后面的 BV 余面积公式将把函数变化进一步分解为全部水平集的周长。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,35 +1,405 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 5.1 普遍导子与微分模
 % 纲要位置：几何学计划纲要.md，第 5189 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 导子的基环线性
 % * Kähler 微分的构造和泛性质
-% * 多项式、局部化和张量的计算
-% * 域扩张的可分与不可分例子
+% * 多项式环、局部化与张量积的微分
+% * 可分与不可分扩张的微分
 % 
 % 纲要内容结束
 
 \section{普遍导子与微分模}
 \label{g5:sec:0501}
 
-待撰写
+多项式的求导法则只使用加法、乘法和整数系数。例如 \(\mathrm{d}(xy)=x\,\mathrm{d}y+y\,\mathrm{d}x\)，并不需要先给 \(x,y\) 指定实数值。这使我们能够在任意交换环上讨论微分。不过，哪些元素应当看作常数，必须由基环指定；同一个环相对于不同基环可以有完全不同的微分。我们先把求导规则抽象为取值于模的映射，再构造一个模，把所有这样的映射同时表达出来。
 
 \subsection{导子的基环线性}
 \label{g5:subsec:0501:01}
-待撰写
+
+设 \(A\to B\) 是交换含幺环的同态。这里的 \(A\) 不必是域，同态也不必单射；说一个 \(A\) 元素在 \(B\) 中为常数，是指它在这个同态下的像。微分的值可以属于 \(B\) 本身，也可以属于另一个 \(B\) 模 \(M\)。后一个选择容许我们记录只在某个点、某个商模或某个局部化中可见的变化。
+
+\begin{definition}\label{g5:def:derivation}
+	设 \(\varphi:A\to B\) 为交换含幺环同态，\(M\) 为含幺 \(B\) 模。加法映射 \(D:B\to M\) 若满足
+	\[
+		D(bb')=bD(b')+b'D(b),\qquad
+		D(\varphi(a))=0
+		\quad(b,b'\in B,\ a\in A),
+	\]
+	就称为从 \(B\) 到 \(M\) 的一个 \(A\)\term[daozi]{导子}[derivation]。所有这样的导子组成的集合记为 \(\operatorname{Der}_A(B,M)\)。
+\end{definition}
+\symidx{\(\operatorname{Der}_A(B,M)\)：从 \(B\) 到 \(M\) 的 \(A\) 导子}
+
+导子总满足 \(D(1)=0\)：对 \(1=1\cdot1\) 使用乘法法则，得到 \(D(1)=2D(1)\)，再在加法群中消去一项即可，不需要反演 \(2\)。因此 \(D(n\cdot1)=0\) 对所有整数 \(n\) 成立。进一步，由 \(D(\varphi(a))=0\) 得
+\[
+	D(\varphi(a)b)=\varphi(a)D(b),
+\]
+所以每个 \(A\) 导子都是 \(A\) 线性的。反过来，一个满足乘法法则的加法映射若为 \(A\) 线性，则 \(D(\varphi(a))=\varphi(a)D(1)=0\)。定义中的常数条件因而恰好表达了基环线性。
+
+\ProseParagraphBreak
+
+这里的线性针对 \(A\)，乘法法则则针对 \(B\)。如果再要求 \(D\) 为 \(B\) 线性，就会有 \(D(b)=bD(1)=0\)，只剩零导子。例如 \(B=A[t]\) 上的形式求导满足 \(D(t)=1\)，所以在 \(A\ne0\) 时并不是 \(B\) 线性映射。另一方面，导子本身可以乘以 \(B\) 中的系数：逐点定义
+\[
+	(D+E)(b)=D(b)+E(b),\qquad
+	(cD)(b)=cD(b).
+\]
+交换性保证 \(cD\) 仍满足乘法法则，因此 \(\operatorname{Der}_A(B,M)\) 是一个 \(B\) 模。若 \(h:M\to N\) 为 \(B\) 线性映射，则 \(h\circ D\) 仍为 \(A\) 导子。
+
+\begin{example}\label{g5:exm:derivation-coefficients}
+	设 \(k\) 为域，\(B=k[t]\)。形式求导
+	\[
+		\partial_t\!\left(\sum_i a_it^i\right)=\sum_i i a_it^{i-1}
+	\]
+	是一个取值于 \(B\) 的 \(k\) 导子；每个 \(g(t)\partial_t\) 也是。若固定 \(a\in k\)，把 \(k\) 看作由求值 \(B\to k\)、\(f\mapsto f(a)\) 给出的 \(B\) 模，则
+	\[
+		D_a(f)=f'(a)
+	\]
+	是取值于这个模的 \(k\) 导子，因为
+	\[
+		D_a(fg)=f(a)D_a(g)+g(a)D_a(f).
+	\]
+	右边的系数作用是求值后的作用，故同一个形式求导运算能够产生不同目标模中的导子。
+\end{example}
+
+反复应用乘法法则，对任意 \(n\geq1\) 都有
+\[
+	D(b^n)=n b^{n-1}D(b).
+\]
+若 \(b\) 是单位，则对 \(bb^{-1}=1\) 求导得到
+\begin{equation}\label{g5:eq:derivative-inverse}
+	D(b^{-1})=-b^{-2}D(b).
+\end{equation}
+这些式子已经预示了局部化与域扩张的计算。在特征 \(p>0\) 的环上，尤其有 \(D(b^p)=0\)。于是导子可能把许多不属于基环的元素也送到零。例如 \(\mathbb F_p[t]\) 上的 \(\partial_t\) 杀死全部 \(t^p\) 的多项式。反过来，逐项比较系数可知
+\[
+	\ker(\partial_t:\mathbb F_p[t]\to\mathbb F_p[t])
+	=\mathbb F_p[t^p].
+\]
+所以“微分为零”与“属于指定基环”是两个不同的条件。
 
 \subsection{Kähler 微分的构造和泛性质}
 \label{g5:subsec:0501:02}
-待撰写
 
-\subsection{多项式、局部化和张量的计算}
+我们希望先形成一个只由 \(A\to B\) 决定的模，然后把任意 \(D:B\to M\) 改写成这个模到 \(M\) 的线性映射。为此给每个 \(b\in B\) 引入一个形式符号 \(\mathrm{d}b\)，并只施加导子必须满足的关系。这样的构造把非线性的乘法法则放进了源模，取值于各个 \(M\) 的问题便转化为普通模同态。
+
+\begin{definition}\label{g5:def:kahler-differentials}
+	设 \(A\to B\) 为交换含幺环同态。若一个 \(B\) 模 \(\Omega_{B/A}\) 连同 \(A\) 导子
+	\[
+		\mathrm{d}_{B/A}:B\longrightarrow\Omega_{B/A}
+	\]
+	满足：对任意 \(B\) 模 \(M\) 及任意 \(D\in\operatorname{Der}_A(B,M)\)，存在唯一的 \(B\) 线性映射 \(\widetilde D:\Omega_{B/A}\to M\)，使 \(D=\widetilde D\circ\mathrm{d}_{B/A}\)，则称 \(\Omega_{B/A}\) 为 \(B\) 在 \(A\) 上的\term[Kahlerweifenmo]{Kähler 微分模}[module of Kähler differentials]，称 \(\mathrm{d}_{B/A}\) 为\term[pubiandaozi]{普遍导子}[universal derivation]。\footnote{Erich Kähler（1906--2000），德国数学家，研究微分方程、复几何与数学物理，引入了以其姓氏命名的度量结构。}基环明确时，把 \(\mathrm{d}_{B/A}b\) 简写为 \(\mathrm{d}b\)。
+\end{definition}
+\symidx{\(\Omega_{B/A}\)：\(B\) 在 \(A\) 上的 Kähler 微分模}
+\symidx{\(\mathrm{d}_{B/A}\)：相对于基环 \(A\) 的普遍导子}
+
+泛性质由下图表达。斜箭头与横箭头为 \(A\) 导子，虚线箭头为唯一的 \(B\) 线性映射；交换条件要求每个 \(b\) 的像满足 \(\widetilde D(\mathrm{d}b)=D(b)\)。
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		B\arrow[r,"\mathrm{d}_{B/A}"]\arrow[dr,"D"']&
+		\Omega_{B/A}\arrow[d,dashed,"\widetilde D"]\\
+		&M
+	\end{tikzcd}
+\]
+
+\begin{proposition}\label{g5:prop:differentials-existence}
+	对任意交换含幺环同态 \(A\to B\)，Kähler 微分模及普遍导子存在。两个满足泛性质的模连同导子之间，存在唯一与导子相容的 \(B\) 模同构。对任意 \(B\) 模 \(M\)，有自然的 \(B\) 模同构
+	\begin{equation}\label{g5:eq:differentials-represent-derivations}
+		\operatorname{Hom}_B(\Omega_{B/A},M)
+		\xrightarrow{\ \sim\ }\operatorname{Der}_A(B,M),
+		\qquad h\longmapsto h\circ\mathrm{d}_{B/A}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	取以 \(B\) 的底集合为指标的自由 \(B\) 模
+	\[
+		F=\bigoplus_{b\in B}B e_b.
+	\]
+	这里每个元素都是有限个 \(e_b\) 的线性组合。设 \(N\subseteq F\) 为下列元素生成的子模：
+	\[
+		\begin{gathered}
+			e_{b+b'}-e_b-e_{b'},\qquad
+			e_{bb'}-b e_{b'}-b'e_b,\\
+			e_{\varphi(a)}
+			\qquad(b,b'\in B,\ a\in A).
+		\end{gathered}
+	\]
+	令 \(\Omega_{B/A}=F/N\)，定义 \(\mathrm{d}_{B/A}(b)=e_b+N\)。三类关系分别保证加法性、乘法法则及在 \(A\) 上为零，所以这是一个 \(A\) 导子。
+
+	若 \(D:B\to M\) 为 \(A\) 导子，赋值 \(e_b\mapsto D(b)\) 唯一延伸为 \(F\to M\) 的 \(B\) 线性映射。导子的三条性质使它杀死 \(N\)，于是下降为 \(\widetilde D:F/N\to M\)。由于 \(\mathrm{d}b\)、\(b\in B\)，生成整个商模，条件 \(\widetilde D(\mathrm{d}b)=D(b)\) 又唯一决定了这个映射。这就证明存在性与泛性质。
+
+	若 \((P,\delta)\) 也满足同一泛性质，分别以 \(P\) 和 \(\Omega_{B/A}\) 为测试模，得到
+	\[
+		u:\Omega_{B/A}\to P,\qquad v:P\to\Omega_{B/A},
+		\qquad u\circ\mathrm{d}=\delta,\quad v\circ\delta=\mathrm{d}.
+	\]
+	于是 \(vu\circ\mathrm{d}=\mathrm{d}\)。恒等映射也满足这个等式，由唯一性 \(vu=1\)；同理 \(uv=1\)。相容同构因此存在且唯一。
+
+	最后，\eqref{g5:eq:differentials-represent-derivations}的双射就是泛性质，其与加法及 \(B\) 标量相容可逐点检验。若 \(M\to M'\) 为 \(B\) 线性映射，两侧都通过复合得到相应映射，且上述双射保持复合。这就是这里所说的自然性。
+\end{proof}
+
+这个定义并不要求先给 \(B\) 选择有限组生成元，也不要求 \(A\) 或 \(B\) 为 Noether 环。如果 \(A\to B\) 为满射，每个 \(b\in B\) 都来自基环，所以任意 \(A\) 导子均为零，进而 \(\Omega_{B/A}=0\)。特别地，\(\Omega_{A/A}=0\) 以及 \(\Omega_{(\mathbb Z/n\mathbb Z)/\mathbb Z}=0\)。这些结论都直接取决于哪些元素被规定为常数。
+
+\ProseParagraphBreak
+
+环同态也自然地作用在微分上。具体地，给定 \(A\) 代数同态 \(u:B\to C\)，映射 \(b\mapsto\mathrm{d}_{C/A}(u(b))\) 是取值于 \(C\) 模 \(\Omega_{C/A}\) 的 \(A\) 导子。先用泛性质，再用标量扩张，便得到
+\begin{equation}\label{g5:eq:differentials-natural-map}
+	C\otimes_B\Omega_{B/A}\longrightarrow\Omega_{C/A},
+	\qquad c\otimes\mathrm{d}b\longmapsto c\,\mathrm{d}(u(b)).
+\end{equation}
+对复合的环同态，所得映射的复合在每个 \(\mathrm{d}b\) 上仍给出相同的微分，因此与复合相容。形式符号构造及这一泛性质可对照\cite[第25节，第190--193页]{Matsumura1989}；该书采用乘法映射 \(B\otimes_A B\to B\) 的核模平方来给出同一个普遍对象。
+
+\subsection{多项式环、局部化与张量积的微分}
 \label{g5:subsec:0501:03}
-待撰写
 
-\subsection{域扩张的可分与不可分例子}
+多项式环中的变量没有代数关系，因而可以独立指定每个变量的导数。局部化后的分母则由乘法逆元强制决定导数。这两点把许多微分模的计算化为自由模运算与分式运算。
+
+\begin{proposition}\label{g5:prop:polynomial-differentials}
+	设 \(A\) 为交换含幺环，\(B=A[x_i\mid i\in I]\) 为一组独立变量的多项式环，指标集 \(I\) 可以无限。则
+	\[
+		\Omega_{B/A}\cong\bigoplus_{i\in I}B\,\mathrm{d}x_i,
+		\qquad
+		\mathrm{d}f=\sum_{i\in I}\frac{\partial f}{\partial x_i}\,\mathrm{d}x_i.
+	\]
+	对每个具体的 \(f\)，右侧只有有限项非零。对任意 \(B\) 模 \(M\)，赋值 \(D\mapsto(D(x_i))_{i\in I}\) 给出
+	\[
+		\operatorname{Der}_A(B,M)\cong\prod_{i\in I}M.
+	\]
+\end{proposition}
+\begin{proof}
+	首先对单项式反复使用乘法法则。对
+	\(x_1^{a_1}\cdots x_r^{a_r}\)，得到
+	\[
+		D(x_1^{a_1}\cdots x_r^{a_r})
+		=\sum_{j=1}^r a_jx_1^{a_1}\cdots x_j^{a_j-1}
+		\cdots x_r^{a_r}D(x_j),
+	\]
+	其中 \(a_j=0\) 的项省略。再用加法性与在 \(A\) 上为零，便知每个导子都必须满足
+	\[
+		D(f)=\sum_i\frac{\partial f}{\partial x_i}D(x_i).
+	\]
+	所以它由各个 \(D(x_i)\) 唯一决定。
+
+	反过来，任意指定 \(m_i\in M\)，用
+	\(D(f)=\sum_i(\partial f/\partial x_i)m_i\) 定义 \(D\)。多项式的每一项只含有限个变量，整个多项式也只有有限项，所以公式始终是有限和。单项式指数相加给出形式偏导的乘法法则，再按加法展开就得到一般的乘法法则；系数在 \(A\) 中时偏导为零。因此 \(D\) 确为 \(A\) 导子。
+
+	令 \(E=\bigoplus_i B\varepsilon_i\)，并取
+	\(\delta(f)=\sum_i(\partial f/\partial x_i)\varepsilon_i\)。以上两步表明，任意导子都唯一通过发送 \(\varepsilon_i\mapsto m_i\) 的线性映射 \(E\to M\) 分解。所以 \((E,\delta)\) 满足微分模的泛性质，得到所需同构。最后，变量的导数可以同时任意指定，故导子空间对应直积；微分模的每个元素只有有限支集，故微分模本身对应直和。
+\end{proof}
+
+这个计算也说明有限型代数的微分模有限生成。若 \(B=A[b_1,\ldots,b_n]\)，每个元素均写作 \(f(b_1,\ldots,b_n)\)，相同的乘法法则给出
+\[
+	\mathrm{d}\bigl(f(b_1,\ldots,b_n)\bigr)
+	=\sum_i\frac{\partial f}{\partial X_i}(b_1,\ldots,b_n)\,\mathrm{d}b_i.
+\]
+所以 \(\mathrm{d}b_1,\ldots,\mathrm{d}b_n\) 生成 \(\Omega_{B/A}\)。这些生成元是否独立，则取决于 \(b_i\) 满足的关系。
+
+\begin{proposition}\label{g5:prop:localized-differentials}
+	设 \(A\to B\) 为交换含幺环同态，\(S\subseteq B\) 为含 \(1\) 的乘法集，\(R=S^{-1}B\)。对任意 \(R\) 模 \(M\)，限制给出双射
+	\[
+		\operatorname{Der}_A(R,M)
+		\xrightarrow{\ \sim\ }\operatorname{Der}_A(B,M).
+	\]
+	\(D:B\to M\) 的唯一延伸为
+	\[
+		\widetilde D(b/s)=s^{-1}D(b)-bs^{-2}D(s).
+	\]
+	这里 \(b,s\) 在系数位置表示其在 \(R\) 中的像。相应地，存在自然的 \(R\) 模同构
+	\[
+		S^{-1}\Omega_{B/A}
+		\cong R\otimes_B\Omega_{B/A}
+		\xrightarrow{\ \sim\ }\Omega_{R/A},
+		\qquad
+		\frac{\mathrm{d}_{B/A}b}{s}
+		\longmapsto s^{-1}\mathrm{d}_{R/A}(b/1).
+	\]
+	在此识别下，
+	\begin{equation}\label{g5:eq:localized-universal-derivative}
+		\mathrm{d}(b/s)
+		=\frac{\mathrm{d}b}{s}-\frac{b\,\mathrm{d}s}{s^2}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	唯一性来自\eqref{g5:eq:derivative-inverse}：一个延伸在 \(s^{-1}\) 上必须取值 \(-s^{-2}D(s)\)，从而在 \(b/s\) 上也只能取陈述中的值。存在性的关键是分式表示不唯一，尤其 \(S\) 中可能含有零因子。
+
+	若 \(b/s=b'/s'\)，则存在 \(u\in S\) 使
+	\[
+		u(s'b-sb')=0.
+	\]
+	令 \(c=s'b-sb'\)。在 \(R\) 中 \(c=0\)，所以它在 \(M\) 上的作用也为零。将原环中的等式 \(uc=0\) 用 \(D\) 求导，得到
+	\(uD(c)+cD(u)=0\)。由于 \(u\) 在 \(M\) 上可逆，便有
+	\[
+		s'D(b)+bD(s')-sD(b')-b'D(s)=0.
+	\]
+	把这个等式除以 \(ss'\)，再用 \(b/s=b'/s'\)，恰得
+	\[
+		s^{-1}D(b)-bs^{-2}D(s)
+		=(s')^{-1}D(b')-b'(s')^{-2}D(s').
+	\]
+	因此分式公式良定义。把和写成 \((bt+cs)/(st)\) 并使用原导子的乘法法则，便得加法性；把乘积写成 \(bc/(st)\)，则得到
+	\[
+		\widetilde D\!\left(\frac bs\frac ct\right)
+		=\frac bs\,\widetilde D(c/t)+\frac ct\,\widetilde D(b/s).
+	\]
+	对来自 \(A\) 的元素，公式仍给零，所以 \(\widetilde D\) 是 \(A\) 导子，并在分母为 \(1\) 时恢复 \(D\)。若 \(0\in S\)，则 \(R=0\)、\(M=0\)，同一断言仍成立。
+
+	为得到模同构，将 \(b\mapsto1\otimes\mathrm{d}_{B/A}b\) 看作取值于 \(R\otimes_B\Omega_{B/A}\) 的导子。刚证的延伸公式使它唯一延伸到 \(R\)。普遍性质给出
+	\[
+		\Omega_{R/A}\longrightarrow R\otimes_B\Omega_{B/A}.
+	\]
+	反方向由\eqref{g5:eq:differentials-natural-map}给出。两个复合分别在 \(1\otimes\mathrm{d}b\) 和 \(\mathrm{d}(b/s)\) 上为恒等，后一项使用已证分式公式；这些元素生成相应的模，所以两张映射互逆。最后用\cref{g5:prop:localization-tensor}识别张量积与模局部化，即得所述形式。
+\end{proof}
+
+例如，Laurent 多项式环 \(B=A[t,t^{-1}]\) 满足
+\[
+	\Omega_{B/A}=B\,\mathrm{d}t,\qquad
+	\mathrm{d}(t^n)=nt^{n-1}\mathrm{d}t\quad(n\in\mathbb Z).
+\]
+若 \(k\) 为域，局部化进一步给出
+\[
+	\Omega_{k(x_1,\ldots,x_n)/k}
+	=\bigoplus_{i=1}^n k(x_1,\ldots,x_n)\,\mathrm{d}x_i.
+\]
+此外，若先把基环中的一个乘法集 \(T\subseteq A\) 反演，则 \(A\) 导子延伸后自动杀死 \(T^{-1}A\)：它既杀死 \(a\)，也由逆元公式杀死 \(t^{-1}\)。所以
+\[
+	\Omega_{(T^{-1}B)/(T^{-1}A)}
+	\cong T^{-1}\Omega_{B/A}.
+\]
+局部化中的求导公式也见\cite[第25节，习题25.3，第198页]{Matsumura1989}。
+
+\ProseParagraphBreak
+
+最后考虑两个 \(A\) 代数 \(B,C\) 的张量积 \(R=B\otimes_A C\)。其中
+\(b\otimes c=(b\otimes1)(1\otimes c)\)，所以它的导数应当分别包含 \(B\) 方向与 \(C\) 方向的变化。两种变化可以独立指定，而公共基环 \(A\) 在两个方向都被当作常数。
+
+\begin{proposition}\label{g5:prop:tensor-differentials}
+	设 \(A\) 为交换含幺环，\(B,C\) 为交换含幺 \(A\) 代数，\(R=B\otimes_A C\)。存在自然的 \(R\) 模同构
+	\[
+		\Omega_{R/A}
+		\cong
+		\bigl(R\otimes_B\Omega_{B/A}\bigr)
+		\oplus
+		\bigl(R\otimes_C\Omega_{C/A}\bigr).
+	\]
+	在此同构下，
+	\[
+		\mathrm{d}(b\otimes c)
+		\longmapsto
+		\bigl((1\otimes c)\otimes\mathrm{d}b,\,
+		(b\otimes1)\otimes\mathrm{d}c\bigr).
+	\]
+\end{proposition}
+\begin{proof}
+	对任意 \(R\) 模 \(M\)，一个 \(A\) 导子 \(D:R\to M\) 限制到两个自然映射 \(B\to R\) 与 \(C\to R\) 后，给出
+	\[
+		D_B(b)=D(b\otimes1),\qquad D_C(c)=D(1\otimes c).
+	\]
+	乘法法则强制
+	\[
+		D(b\otimes c)
+		=(1\otimes c)D_B(b)+(b\otimes1)D_C(c).
+	\]
+	因此 \(D\) 由这两个限制唯一决定。
+
+	反过来，任意给定 \(D_B\in\operatorname{Der}_A(B,M)\) 及
+	\(D_C\in\operatorname{Der}_A(C,M)\)，用上式定义纯张量的值。右边对 \(b,c\) 都具有加法性，并尊重 \(A\) 的平衡关系：对 \(a\in A\)，导子在 \(a\) 上为零，所以把 \(a\) 乘到 \(b\) 上或乘到 \(c\) 上，都把右边乘以同一个 \(A\) 标量。因此它唯一给出加法映射 \(D:R\to M\)。在两个纯张量的乘积上，将 \(D_B(bb')\) 和 \(D_C(cc')\) 各自展开，所得四项恰为
+	\[
+		(b\otimes c)D(b'\otimes c')
+		+(b'\otimes c')D(b\otimes c).
+	\]
+	加法展开使乘法法则对任意张量和成立。来自 \(A\) 的元素的导数为零，故 \(D\) 是所需的 \(A\) 导子。
+
+	于是，取值于 \(M\) 的导子等价于独立选择上述两个导子。分别用两个微分模的泛性质和标量扩张的泛性质，这又等价于选择两个 \(R\) 线性映射
+	\[
+		R\otimes_B\Omega_{B/A}\longrightarrow M,\qquad
+		R\otimes_C\Omega_{C/A}\longrightarrow M,
+	\]
+	也即从它们的直和到 \(M\) 的一个线性映射。陈述中的公式给出直和值导子，所以这个直和连同该导子满足 \(\Omega_{R/A}\) 的泛性质。唯一性便给出同构及其自然性。
+\end{proof}
+
+例如取 \(B=A[x,x^{-1}]\)、\(C=A[y]\)，张量积为 \(R=A[x,x^{-1},y]\)。两个方向给出
+\[
+	\Omega_{R/A}=R\,\mathrm{d}x\oplus R\,\mathrm{d}y,\qquad
+	\mathrm{d}(x^{-1}y^2)
+	=-x^{-2}y^2\,\mathrm{d}x+2x^{-1}y\,\mathrm{d}y.
+\]
+这个公式在任意特征中成立；若 \(2=0\)，第二项就是零。张量计算依靠的是导子的泛性质，不需要 \(B\) 或 \(C\) 在 \(A\) 上平坦。
+
+\subsection{可分与不可分扩张的微分}
 \label{g5:subsec:0501:04}
-待撰写
+
+域扩张 \(K\subseteq L\) 的微分模是一个 \(L\) 向量空间。超越元可以自由求导，而代数元的导数受到最小多项式的约束。这个约束的强弱由最小多项式的形式导数决定；在正特征中，它可能根本不给出非零关系。
+
+\begin{proposition}\label{g5:prop:simple-field-differentials}
+	设 \(K\) 为域，\(\alpha\) 为 \(K\) 上的代数元，\(L=K(\alpha)\)，\(f(T)\in K[T]\) 为 \(\alpha\) 的首一最小多项式。则
+	\[
+		\Omega_{L/K}\cong
+		L e\big/L\bigl(f'(\alpha)e\bigr),
+		\qquad \mathrm{d}_{L/K}\alpha\longleftrightarrow[e].
+	\]
+	因而当 \(\alpha\) 在 \(K\) 上可分时，\(\Omega_{L/K}=0\)；当 \(\alpha\) 不可分时，\(\Omega_{L/K}=L\,\mathrm{d}\alpha\) 是一维 \(L\) 向量空间。
+\end{proposition}
+\begin{proof}
+	这里 \(K[\alpha]\) 已是域，故 \(L=K[\alpha]\)，每个元素可写成 \(g(\alpha)\)。对任意 \(L\) 模 \(M\) 和 \(K\) 导子 \(D:L\to M\)，令 \(m=D(\alpha)\)。多项式求导法则给出
+	\[
+		D(g(\alpha))=g'(\alpha)m,\qquad
+		0=D(f(\alpha))=f'(\alpha)m.
+	\]
+	所以 \(D\) 唯一由满足 \(f'(\alpha)m=0\) 的元素 \(m\) 决定。
+
+	反过来，若 \(m\in M\) 满足这个等式，就尝试定义
+	\(D(g(\alpha))=g'(\alpha)m\)。若 \(g(\alpha)=h(\alpha)\)，则 \(g-h=qf\) 对某个 \(q\in K[T]\) 成立，于是
+	\[
+		(g'-h')(\alpha)m
+		=\bigl(q'(\alpha)f(\alpha)+q(\alpha)f'(\alpha)\bigr)m=0.
+	\]
+	故定义与多项式代表无关。多项式的加法、乘法求导公式又保证它为 \(K\) 导子。因此，给出一个导子恰等价于给出一个被 \(f'(\alpha)\) 杀死的 \(m\)，也就等价于给出一个线性映射
+	\(Le/L(f'(\alpha)e)\to M\)。这个商模连同 \(g(\alpha)\mapsto g'(\alpha)[e]\) 满足普遍性质，得到公式。
+
+	最后说明可分性为何恰好给出两种结果。不可约多项式 \(f\) 若 \(f'\ne0\)，则 \(\deg f'<\deg f\)，所以 \(\gcd(f,f')=1\)，从而没有重根，且 \(f'(\alpha)\ne0\)。这个非零元素在 \(L\) 中可逆，商模于是为零。若 \(f\) 不可分，则 \(f,f'\) 有公共因子；不可约性及次数比较迫使 \(f'=0\)，因而没有加在 \(e\) 上的非零关系。
+\end{proof}
+
+\begin{corollary}\label{g5:cor:separable-field-differentials}
+	设 \(L/K\) 为可分代数域扩张，允许扩张次数无限。则
+	\[
+		\Omega_{L/K}=0,\qquad
+		\operatorname{Der}_K(L,M)=0
+	\]
+	对每个 \(L\) 模 \(M\) 都成立。特别地，这适用于任意有限可分域扩张。
+\end{corollary}
+\begin{proof}
+	任取 \(\alpha\in L\)，其在 \(K\) 上的最小多项式 \(f\) 可分。任意 \(K\) 导子 \(D:L\to M\) 都满足 \(f'(\alpha)D(\alpha)=0\)，而 \(f'(\alpha)\) 在 \(L\) 中可逆，故 \(D(\alpha)=0\)。每个 \(\alpha\) 都如此，所以 \(D=0\)。特别取普遍导子；其像生成 \(\Omega_{L/K}\)，故这个模也为零。
+\end{proof}
+
+例如 \(\mathbb Q(\sqrt2)/\mathbb Q\) 中，等式
+\[
+	0=\mathrm{d}\bigl((\sqrt2)^2-2\bigr)
+	=2\sqrt2\,\mathrm{d}\sqrt2
+\]
+迫使 \(\mathrm{d}\sqrt2=0\)。正特征下也会出现相同的消失：有限域扩张 \(\mathbb F_p\subseteq\mathbb F_{p^m}\) 中，每个元素都满足 \(T^{p^m}-T=0\)，这个多项式的导数为 \(-1\)，故对该等式求导就给出 \(\mathrm{d}\alpha=0\)。可分代数扩张不产生新的相对微分方向。一般可分代数扩张的更强延拓性质见\cite[第25节，定理25.3，第195--196页]{Matsumura1989}；上面的论证直接得到此处所需的消失结论。
+
+\begin{example}\label{g5:exm:inseparable-field-differentials}
+	设 \(p\) 为素数，\(t\) 为超越元，取
+	\[
+		L=\mathbb F_p(t),\qquad K=\mathbb F_p(t^p)\subseteq L.
+	\]
+	则 \([L:K]=p\)。确实，\(\alpha=t\) 满足 \(T^p-t^p\in K[T]\)，故次数至多为 \(p\)。若
+	\(\sum_{i=0}^{p-1}a_i(t^p)t^i=0\)，把 \(a_i\) 的分母清去后，各项中 \(t\) 的指数分别模 \(p\) 同余于不同的 \(i\)，不可能相消，所以所有 \(a_i=0\)，次数也至少为 \(p\)。
+
+	最小多项式的导数为零，因此
+	\[
+		\Omega_{L/K}=L\,\mathrm{d}t,\qquad
+		\operatorname{Der}_K(L,L)=L\,\partial_t.
+	\]
+	这里 \(\partial_t\) 先在 \(\mathbb F_p[t]\) 上定义，再按局部化公式延伸到 \(L\)；它杀死 \(t^p\)，也杀死 \(t^p\) 的任意有理函数，故确实为 \(K\) 导子。代数扩张的超越次数为零，微分模却有维数一，原因是特征 \(p\) 下的代数关系 \(t^p\in K\) 求导后成为 \(0=0\)。
+
+	把同一个 \(L\) 改看成其自身的代数时，\(\Omega_{L/L}=0\)；把它看成 \(\mathbb F_p\) 的有理函数域时，又有 \(\Omega_{L/\mathbb F_p}=L\,\mathrm{d}t\)。这三种基环说明，微分模记录的是相对于指定常数的变化。
+\end{example}
+
+纯不可分扩张的次数也不能直接当作微分模的维数。例如
+\[
+	K=\mathbb F_p(t^{p^r})\subseteq L=\mathbb F_p(t),\qquad r\geq1.
+\]
+按指数模 \(p^r\) 分类的同一论证给出 \([L:K]=p^r\)，但最小多项式 \(T^{p^r}-t^{p^r}\) 的导数仍为零，所以 \(\Omega_{L/K}\) 始终只有一维。域扩张的次数计算元素的线性自由度，微分模则计算求导关系留下的一阶自由度；在不可分情形中，这两种计数差异尤其明显。微分基与正特征域扩张的系统联系见\cite[第26节，微分基及定理26.5，第201--202页]{Matsumura1989}。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

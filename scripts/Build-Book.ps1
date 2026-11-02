@@ -32,6 +32,17 @@ function Invoke-BuildStep {
         $ErrorActionPreference = 'Continue'
         & $Executable @Arguments *> $stepLog
         $nativeExitCode = $LASTEXITCODE
+    } catch {
+        $startException = $_.Exception
+        while ($null -ne $startException) {
+            if ($Executable -eq 'biber' -and
+                $startException -is [System.ComponentModel.Win32Exception] -and
+                $startException.NativeErrorCode -eq 623) {
+                throw "Biber could not start (Windows error 623: Illegal System DLL Relocation). Run this project's build in a normal Windows session; in Codex use require_escalated. The process failed before reading any bibliography input. See $stepLog"
+            }
+            $startException = $startException.InnerException
+        }
+        throw
     } finally { $ErrorActionPreference = $savedPreference }
     if ($nativeExitCode -ne 0) {
         Get-Content -LiteralPath $stepLog -Tail 20 | Write-Host
@@ -50,6 +61,8 @@ try {
         throw "Missing $bookName.tex"
     }
     New-Item -ItemType Directory -Force -Path $buildDir | Out-Null
+    # Check process startup before spending time on the first typesetting pass.
+    Invoke-BuildStep 'biber' @('--version') 'biber-startup'
     $texArguments = @('-interaction=nonstopmode', '-halt-on-error', '-synctex=1',
         "-output-directory=$relativeOutput", "$bookName.tex")
 

@@ -1,37 +1,151 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 24.1 Yamabe 问题的分析设置与规范化
+% 纲要标题：### 24.1 Yamabe 问题的变分设置
 % 纲要位置：几何学计划纲要.md，第 3126 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % 本章不再首次建立通用非线性工具；它们的证明位置统一前移至第三编。
 % 
-% * 调用第13.5—13.6节的 Banach 微分、Sobolev 复合与约束变分
+% * 函数空间与变分方法
 % * 固定共形类、正因子及体积约束
-% * 弱极小化问题与光滑正解之间的转换
-% * 零阶项符号、核与唯一性的不同规范
+% * 弱极小点与光滑正解
+% * 第一特征值、Yamabe 常数与唯一性
 % 
 % 纲要内容结束
 
-\section{Yamabe 问题的分析设置与规范化}
+\section{Yamabe 问题的变分设置}
 \label{g3:sec:2401}
 
-待撰写
+本章固定一个闭、连通、光滑的黎曼流形 \((M^n,g)\)，其中 \(n\ge3\)。闭表示紧且无边界；积分使用黎曼体积密度，所以不要求可定向。记
+\[
+	s_g=\operatorname{Scal}_g,\qquad
+	a_n=\frac{4(n-1)}{n-2},\qquad p=\frac{2n}{n-2},\qquad
+	\Delta_g=-\operatorname{div}_g\nabla.
+\]
+于是 \(\int_M v\Delta_gv\,\mu_g=\int_M|\mathrm dv|_g^2\,\mu_g\)。以下的曲率方程、极值比较与能量公式都使用这一非负 Laplace 约定。
 
-\subsection{调用第13.5—13.6节的 Banach 微分、Sobolev 复合与约束变分}
+\subsection{函数空间与变分方法}
 \label{g3:subsec:2401:01}
-待撰写
+第13.5节的 Banach 隐函数定理适合研究已知解附近的变化，第13.6节的复合与约束变分则负责把方程放进函数空间。本章先用能量寻找一个解，再在取得解后研究它的正则性与变分性质。这样做所需的空间有两种。
+
+\ProseParagraphBreak
+极小化采用实 Hilbert 空间 \(H^1(M)\)。由\cref{g3:thm:compact-bundle-sobolev,g3:thm:compact-bundle-rellich}，有
+\[
+	H^1(M)\longrightarrow L^p(M),\qquad
+	H^1(M)\lhook\joinrel\longrightarrow L^q(M)\quad(1\le q<p),
+\]
+其中前一嵌入连续，后一嵌入紧。特别地，\(H^1\) 有界列能抽出在 \(L^2\) 中强收敛的子列，但单位 \(L^p\) 范数可能在弱极限中损失。这个端点差别正是临界变分的困难。
+
+\ProseParagraphBreak
+研究光滑正解的局部变化时，可选 \(r>n\) 并使用
+\[
+	\mathcal U_r=\{u\in W^{2,r}(M):\min_Mu>0\}.
+\]
+连续嵌入 \(W^{2,r}\to C^1\) 使它成为开集。由\cref{g3:thm:sobolev-composition-smooth}，在此集合上取实数幂、倒数及对数都是光滑的 Sobolev 复合。相应的曲率方程可作为到 \(L^r(M)\) 的光滑映射处理。\(H^1\) 中的非负锥则不是这样的开集：在一个小球中加入高度固定的负凸起，其 \(H^1\) 范数随球半径趋零，因为 \(n>2\)。因此不能把高正则性空间中的正开集直接搬到能量空间。
 
 \subsection{固定共形类、正因子及体积约束}
 \label{g3:subsec:2401:02}
-待撰写
+\begin{definition}\label{g3:def:yamabe-class-constraint}
+	\(g\) 的光滑共形类是
+	\[
+		[g]=\{u^{4/(n-2)}g:u\in C^\infty(M),\ u>0\}.
+	\]
+	对正因子 \(u\)，记 \(g_u=u^{4/(n-2)}g\)。体积变化为
+	\[
+		\mu_{g_u}=u^p\mu_g,\qquad
+		\operatorname{Vol}(M,g_u)=\int_Mu^p\,\mu_g.
+	\]
+	在 \(H^1(M)\) 中相应采用约束 \(C(u)=\int_M|u|^p\,\mu_g=1\)。
+\end{definition}
 
-\subsection{弱极小化问题与光滑正解之间的转换}
+体积公式来自行列式：度量乘以 \(u^{4/(n-2)}\)，体积密度乘以它的 \(n/2\) 次方。每条正射线 \(\{tu:t>0\}\) 因而恰有一个单位体积代表 \(u/\|u\|_p\)。这只固定常数伸缩；对流形作共形自微分同胚仍可能产生不同的单位体积度量。
+
+\begin{lemma}\label{g3:lem:yamabe-constraint-smoothness}
+	\(C:H^1(M)\to\mathbb R\) 为 \(C^2\) 映射，且
+	\[
+		\mathrm DC(u)h=p\int_M|u|^{p-2}uh\,\mu_g,\qquad
+		\mathrm D^2C(u)[h,k]=p(p-1)\int_M|u|^{p-2}hk\,\mu_g.
+	\]
+	在 \(C(u)=1\) 处，其微分满射，约束切空间为
+	\(\{h:\int_M|u|^{p-2}uh\,\mu_g=0\}\)。
+\end{lemma}
+\begin{proof}
+	由 Hölder 不等式，三个因子 \(|u|^{p-2},h,k\) 的指数分别为 \(p/(p-2),p,p\)，所以第二式定义连续双线性型。映射 \(u\mapsto |u|^{p-2}\) 从 \(L^p\) 连续到 \(L^{p/(p-2)}\)：当 \(p-2\le1\) 时用幂函数的 Hölder 估计，当 \(p-2>1\) 时用中值公式和 Hölder 不等式。沿线段积分这个连续双线性型，先得到一阶微分的余项估计，再得到 \(C\) 的微分公式，故确为 Fréchet 二次连续可微。连续嵌入 \(H^1\to L^p\) 将结论限制到 \(H^1\)。最后 \(\mathrm DC(u)u=p\ne0\)，故微分满射；第13.5节的水平集定理给出所述切空间。
+\end{proof}
+
+这里没有要求 \(C\) 在 \(H^1\) 上无限次可微。临界指数可能不是整数，而约束乘子和二变分只需上述可微性。
+
+\subsection{弱极小点与光滑正解}
 \label{g3:subsec:2401:03}
-待撰写
+先写出后续使用的解析量：
+\begin{equation}\label{g3:eq:yamabe-energy-definition}
+	L_g=a_n\Delta_g+s_g,\qquad
+	E_g(u)=\int_M(a_n|\mathrm du|_g^2+s_gu^2)\,\mu_g,\qquad
+	Q_g(u)=\frac{E_g(u)}{\|u\|_p^2}\quad(u\ne0).
+\end{equation}
+\symidx{\(L_g\)}
+\symidx{\(Q_g\)}
+\(L_g\) 称为\term[gongxing Laplace suanzi]{共形 Laplace 算子}[conformal Laplacian]。下一节将由曲率变化证明：\(Q_g(u)\) 正是 \(g_u\) 的规范化总标量曲率。它对 \(u\) 的常数倍不变，因此可以在 \(C=1\) 上最小化 \(E_g\)。
 
-\subsection{零阶项符号、核与唯一性的不同规范}
+\begin{definition}\label{g3:def:yamabe-constant}
+	固定共形类的\term[Yamabe changshu]{Yamabe 常数}[Yamabe constant]定义为
+	\[
+		Y(M,[g])=\inf_{0\ne u\in H^1(M)}Q_g(u).
+	\]
+	\symidx{\(Y(M,[g])\)}
+	本章简称 \(Y\)。这个量只对给定共形类取下确界；对所有共形类再取上确界是另一个不变量。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:yamabe-admissible-density}
+	\(Y\) 有限，并且其定义中的竞争者可以依次限制为非负 \(H^1\) 函数、光滑正函数，所得下确界不变。
+\end{proposition}
+\begin{proof}
+	令 \(s_g^- =\max\{-s_g,0\}\)，由有限体积上的 Hölder 不等式，
+	\[
+		E_g(u)\ge a_n\|\mathrm du\|_2^2-\|s_g^-\|_\infty
+		\operatorname{Vol}(M,g)^{2/n}\|u\|_p^2.
+	\]
+	所以 \(Y> -\infty\)；用 \(u=1\) 作竞争者又得有限上界。Sobolev 链式法则给出 \(|u|\in H^1\) 以及 \(|\mathrm d|u||=|\mathrm du|\) 几乎处处成立，故 \(Q_g(|u|)=Q_g(u)\)。这个等式在零水平集上使用了弱导数在那里几乎处处为零的性质，已在第11章的截断论证中建立。
+
+	光滑函数在 \(H^1\) 中稠密，连续嵌入又使 \(L^p\) 范数收敛，因而 \(Q_g\) 在非零 \(H^1\) 函数上连续。对每个光滑实函数 \(v\)，取 \(v_\varepsilon=(v^2+\varepsilon^2)^{1/2}>0\)。它在 \(H^1\) 中趋于 \(|v|\)：导数是 \(v\,\mathrm dv/(v^2+\varepsilon^2)^{1/2}\)，由支配收敛及零水平集性质得到导数收敛。依次作光滑逼近和这一正化，就得到所需光滑正竞争者。
+\end{proof}
+
+极小值若在非零 \(H^1\) 函数处取得，先取绝对值、再规范体积，便得到非负的单位极小点。\Cref{g3:prop:constraint-lagrange-banach}随后产生弱 Euler 方程。将这个弱解恢复成光滑正函数，还需处理临界幂的可积性；\cref{g3:thm:yamabe-weak-regularity}将用截断和吸收先提高可积指数，再调用第12—13章的椭圆自举。这样，弱极小值才真正对应共形类中的光滑度量。
+
+\subsection{第一特征值、Yamabe 常数与唯一性}
 \label{g3:subsec:2401:04}
-待撰写
+零阶函数 \(s_g\) 可以变号。决定共形类符号的量是整个二次型，而不只是某一点的标量曲率。考虑它的最低 Rayleigh 商
+\[
+	\lambda_1(L_g)=\inf_{v\ne0}\frac{E_g(v)}{\|v\|_2^2}.
+\]
+\begin{proposition}\label{g3:prop:yamabe-first-eigenvalue-sign}
+	\(L_g\) 有光滑严格正的第一特征函数 \(\phi\)，其特征空间为一维。\(Y\) 与 \(\lambda_1(L_g)\) 同号。特别地，\(Y=0\) 时 \(\ker L_g=\mathbb R\phi\)；\(Y>0\) 时核为零。
+\end{proposition}
+\begin{proof}
+	在 \(\|v\|_2=1\) 上取极小化序列。零阶项有下界，所以导数范数有界；Rellich 紧性保留 \(L^2\) 约束，导数范数弱下半连续，故下确界取得。取绝对值后可设极小点非负，约束变分给出 \(L_g\phi=\lambda_1\phi\)。光滑系数椭圆正则性逐次提高 Sobolev 阶数，得到 \(\phi\) 光滑。写成 \(\Delta_g\phi=V\phi\)，其中 \(V=(\lambda_1-s_g)/a_n\) 有界。取 \(C\ge\max\{0,-\min V\}\)，令 \(w=-\phi\)，则
+	\[
+		(\operatorname{div}_g\nabla-C)w=(V+C)\phi\ge0.
+	\]
+	若 \(\phi\) 在某点为零，\(w\) 就在内部取得非负最大值零；\cref{g3:thm:strong-maximum-classical}及连通性迫使 \(\phi\equiv0\)，矛盾。因此 \(\phi>0\)。
+
+	对光滑 \(v=\phi f\) 展开导数，并把交叉项与 \(|\mathrm d\phi|^2f^2\) 合为 \(\int\mathrm d\phi\cdot\mathrm d(\phi f^2)\)，得到
+	\begin{equation}\label{g3:eq:yamabe-ground-state}
+		E_g(v)=a_n\int_M\phi^2|\mathrm d(v/\phi)|^2\,\mu_g
+		+\lambda_1\int_Mv^2\,\mu_g.
+	\end{equation}
+	\(\phi\) 有正下界，故公式由稠密性延至 \(H^1\)。任一第一特征函数使第一项为零，由连通性其与 \(\phi\) 的比为常数，得到单性。
+
+	若 \(\lambda_1<0\)，以 \(\phi\) 测试即得 \(Y<0\)。若 \(\lambda_1=0\)，上式给出 \(E_g\ge0\) 且 \(E_g(\phi)=0\)，所以 \(Y=0\)，并同时识别核。若 \(\lambda_1>0\)，则 \(\|v\|_2^2\le E_g(v)/\lambda_1\)，而
+	\[
+		a_n\|\mathrm dv\|_2^2\le E_g(v)+\|s_g^-\|_\infty\|v\|_2^2.
+	\]
+	合并 Sobolev 不等式得 \(\|v\|_p^2\le C E_g(v)\)，故 \(Y\ge C^{-1}>0\)。三种情况穷尽全部可能。
+\end{proof}
+
+当 \(Y<0\) 时，零仍可能是 \(L_g\) 的较高特征值；负的最低特征值本身不蕴含算子可逆。另一方面，单位体积的非正 Yamabe 解将在\cref{g3:thm:yamabe-nonpositive-uniqueness}中证明唯一。这是非线性曲率方程的比较结论，与未加约束的线性算子是否有核是不同的问题。
+
+\begin{example}\label{g3:exm:yamabe-flat-normalization}
+	平坦环面上 \(s_g=0\)，所以 \(L_g=a_n\Delta_g\)，其核由常数构成。共形因子 \(u=c>0\) 给出不同体积的平坦度量，而约束 \(c^p\operatorname{Vol}(M,g)=1\) 唯一确定 \(c\)。这里消除的是常数伸缩，连通性保证没有多个独立的常数方向。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

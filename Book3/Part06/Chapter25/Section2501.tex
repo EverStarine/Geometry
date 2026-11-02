@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 25.1 度量空间和曲率变分
 % 纲要位置：几何学计划纲要.md，第 3169 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,297 @@
 \section{度量空间和曲率变分}
 \label{g3:sec:2501}
 
-待撰写
+把度量的各个分量都作为未知函数，Ricci 曲率便成为一个含二阶导数的非线性算子。它和标量曲率方程有一个重要差别：改变坐标会同时改变全部度量分量，却不改变几何。为了看清这种退化，本节先在固定流形上求度量、联络和曲率的一阶变化，再把坐标变化放进同一公式。积分变分随后给出一个具有散度恒等式的 Einstein 方程；这一恒等式将在下一节帮助检验规范固定后的解。
+
+以下积分均使用黎曼体积密度，因而不要求流形定向。除局部计算外，始终考虑闭连通光滑流形 \(M^n\)，\(n\ge3\)。对一个指定的光滑度量 \(g\)，\(\nabla\)、\(\operatorname{Ric}_g\)、\(s_g\) 分别表示其 Levi--Civita 联络、Ricci 张量和标量曲率。
 
 \subsection{对称二张量的切空间}
 \label{g3:subsec:2501:01}
-待撰写
+在每一点，正定对称矩阵组成对称矩阵空间中的开凸锥。因此度量的变化方向不必正定；正定性限制的是变化后的度量，而不是切向量。
+
+\begin{definition}\label{g3:def:einstein-metric-space}
+	设 \(M^n\) 为闭连通光滑流形，\(n\ge3\)，\(g_0\) 为一个光滑黎曼度量，\(s>n/2+2\) 为整数。记
+	\[
+		\mathcal M^s(M)=\{g\in H^s(M;\operatorname{Sym}^2\mathrm T^*M):g(x)>0\text{ 对每个 }x\in M\}.
+	\]
+	其中 Sobolev 范数用 \(g_0\) 及其联络定义；连续代表由 Sobolev 嵌入唯一确定。若一个光滑度量 \(g\) 满足
+	\begin{equation}\label{g3:eq:einstein-equation-fixed-lambda}
+		\operatorname{Ric}_g=\lambda g
+	\end{equation}
+	且 \(\lambda\) 为实常数，就称 \(g\) 为\term[Einstein duliang]{Einstein 度量}[Einstein metric]，称 \(\lambda\) 为其 Einstein 常数。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:metric-sobolev-open}
+	设 \(M^n\) 为闭连通光滑流形，\(n\ge3\)，\(g_0\) 为光滑黎曼度量，\(s>n/2+2\) 为整数。则 \(\mathcal M^s(M)\) 是 \(H^s(M;\operatorname{Sym}^2\mathrm T^*M)\) 的开集，在任意 \(g\in\mathcal M^s(M)\) 处的切空间都是该对称二张量空间。映射
+	\[
+		g\longmapsto g^{-1},\qquad g\longmapsto\mu_g/\mu_{g_0}
+	\]
+	分别是到相应 \(H^s\) 截面空间的光滑映射。Ricci 张量与标量曲率给出光滑映射
+	\[
+		\operatorname{Ric}:\mathcal M^s(M)\longrightarrow H^{s-2}(M;\operatorname{Sym}^2\mathrm T^*M),
+		\qquad
+		\operatorname{Scal}:\mathcal M^s(M)\longrightarrow H^{s-2}(M).
+	\]
+\end{proposition}
+\begin{proof}
+	紧性使连续正定 \(g\) 相对于 \(g_0\) 的最小特征值有正下界 \(c\)。若 \(\|h\|_{C^0,g_0}<c\)，则 \(g+h\) 仍正定。第十一章的 Sobolev 嵌入给出 \(\|h\|_{C^0}\le C\|h\|_{H^s}\)，故正定条件在 \(H^s\) 中开。对每个对称张量 \(h\)，直线 \(g+th\) 在充分小的 \(|t|\) 上属于此开集，因而没有额外的切向限制。
+
+	正定矩阵的求逆与行列式平方根是光滑纤维映射；在 \(g\) 的一个小邻域内，特征值一致远离零。将\cref{g3:thm:sobolev-composition-smooth}用于这些纤维映射，便得前两个光滑性结论。联络系数由 \(g^{-1}\partial g\) 的线性组合给出，曲率由 \(g^{-1}\partial^2g\) 及两个一阶导数的乘积给出，都是二阶喷射的光滑函数。由于 \(s-2>n/2\)，\cref{g3:prop:nonlinear-jet-operator}正好给出到 \(H^{s-2}\) 的光滑性。各图上的公式来自同一个张量，故按有限坐标覆盖粘合。
+\end{proof}
+
+这个开集描述也说明，光滑计算可以直接给出 Sobolev 映射的 Fréchet 导数：先在光滑方向上求导，再用已证的光滑性与稠密性延拓。所需的是固定源上的张量运算；变化坐标产生的复合另有导数计数。
+
+\begin{lemma}\label{g3:lem:metric-inverse-volume-variation}
+	设 \(M^n\) 为闭光滑流形，\(g(t)\) 为一条光滑黎曼度量曲线，\(g(0)=g\)、\(\dot g(0)=h\)，并记 \(H=\operatorname{tr}_g h\)。则
+	\begin{equation}\label{g3:eq:inverse-volume-variation}
+		\left.\frac{\mathrm d}{\mathrm dt}\right|_0g(t)^{ij}=-h^{ij},
+		\qquad
+		\left.\frac{\mathrm d}{\mathrm dt}\right|_0\mu_{g(t)}=\frac12H\mu_g.
+	\end{equation}
+	因此 \(V(g)=\int_M\mu_g\) 满足
+	\[
+		\mathrm DV_g(h)=\frac12\int_MH\,\mu_g.
+	\]
+\end{lemma}
+\begin{proof}
+	微分 \(g(t)^{ia}g(t)_{aj}=\delta^i_j\)，得到逆矩阵公式。体积密度在坐标中是 \(\sqrt{\det g(t)}\,|\mathrm dx^1\cdots\mathrm dx^n|\)。行列式的导数公式给出
+	\[
+		\left.\frac{\mathrm d}{\mathrm dt}\right|_0\log\det g(t)=\operatorname{tr}(g^{-1}h)=H,
+	\]
+	再微分平方根便得第二式。紧性允许在积分号下求导。
+\end{proof}
+
+例如 \(g(t)=(1+t)g\) 的切向量是 \(h=g\)，体积变化率为 \(nV(g)/2\)。固定体积的切向条件则只要求 \(\int H\,\mu_g=0\)，并不要求 \(H\) 在每一点为零；这两个条件将在形变计算中承担不同职责。
 
 \subsection{Ricci 与标量曲率的线性化}
 \label{g3:subsec:2501:02}
-待撰写
+联络变化含一个度量导数，曲率变化再多一个导数。将这两步分开，可以保留协变形式，也能避免把指标升降中的变化混入曲率本身。
+
+\begin{lemma}\label{g3:lem:levi-civita-variation}
+	设 \(g(t)\) 为光滑流形 \(M\) 上的一条光滑黎曼度量曲线，\(g(0)=g\)、\(\dot g(0)=h\)。令
+	\[
+		C(X,Y)=\left.\frac{\mathrm d}{\mathrm dt}\right|_0\nabla^{g(t)}_XY
+	\]
+	其中 \(X,Y\) 固定而不随 \(t\) 变化。则 \(C\) 是对称的 \((1,2)\) 型张量，且
+	\begin{equation}\label{g3:eq:connection-variation}
+		2g(C(X,Y),Z)=(\nabla_Xh)(Y,Z)+(\nabla_Yh)(X,Z)-(\nabla_Zh)(X,Y).
+	\end{equation}
+	在坐标中，
+	\[
+		C^k_{ij}=\frac12g^{ka}\bigl(\nabla_i h_{ja}+\nabla_j h_{ia}-\nabla_a h_{ij}\bigr).
+	\]
+\end{lemma}
+\begin{proof}
+	两条联络之差是张量，微分仍保留张量性；无挠性给出 \(C(X,Y)=C(Y,X)\)。微分度量相容式，整理出
+	\[
+		(\nabla_Xh)(Y,Z)=g(C(X,Y),Z)+g(Y,C(X,Z)).
+	\]
+	将 \((X,Y,Z)\) 分别换成 \((Y,X,Z)\)、\((Z,X,Y)\)，把前两式相加再减去第三式。利用 \(C\) 的对称性，其余项相消，得到所需公式。
+\end{proof}
+
+下面固定所有收缩和伴随的符号。对对称二张量 \(h\) 与一形式 \(\omega\)，定义
+\begin{equation}\label{g3:eq:divergence-bianchi-conventions}
+	(\delta_g h)_j=-\nabla^i h_{ij},\qquad
+	(\delta_g^*\omega)_{ij}=\frac12(\nabla_i\omega_j+\nabla_j\omega_i),\qquad
+	\beta_g h=\delta_g h+\frac12\mathrm d\operatorname{tr}_g h.
+\end{equation}
+在一形式上，\(\delta_g\omega=-\nabla^i\omega_i\)，所以 \(\delta_g\mathrm df=\Delta_g f\)。闭流形上的分部积分说明 \(\delta_g^*\) 正是 \(\delta_g\) 的 \(L^2(g)\) 伴随。\(\beta_g\) 称为 \term[Bianchi suanzi]{Bianchi 算子}[Bianchi operator]；本节先用它组织曲率的导数。
+
+对一点处的正交单位标架 \((e_a)\)，记
+\begin{equation}\label{g3:eq:curvature-action-symmetric-tensors}
+	\begin{aligned}
+		\bigl(\mathring R_g(h)\bigr)_{ij}
+		&=\sum_{a,b}h_{ab}\,g(R(e_a,e_i)e_j,e_b),\\
+		\Delta_Lh&=\nabla^*\nabla h+\operatorname{Ric}_g\circ h+h\circ\operatorname{Ric}_g-2\mathring R_g(h).
+	\end{aligned}
+\end{equation}
+这里 \((\operatorname{Ric}_g\circ h)_{ij}=\operatorname{Ric}_i{}^a h_{aj}\)，\(\nabla^*\nabla\) 使用非负主符号；后一算子称为\term[Lichnerowicz Laplace suanzi]{Lichnerowicz Laplace 算子}[Lichnerowicz Laplacian]。曲率的对称性保证这些定义与正交标架无关，并给出
+\[
+	\mathring R_g(g)=\operatorname{Ric}_g,\qquad
+	\operatorname{tr}_g\mathring R_g(h)=\langle\operatorname{Ric}_g,h\rangle_g,
+	\qquad \operatorname{tr}_g\Delta_Lh=\Delta_g\operatorname{tr}_g h.
+\]
+特别地，\(\Delta_Lg=0\)。这些检验固定了曲率作用中的槽位顺序。
+
+\begin{theorem}\label{g3:thm:ricci-scalar-linearization}
+	设 \(g(t)\) 为光滑流形 \(M\) 上的一条光滑黎曼度量曲线，\(g(0)=g\)、\(\dot g(0)=h\)，\(H=\operatorname{tr}_g h\)。曲率符号采用本书约定，\(\delta_g,\beta_g,\Delta_L\) 由式\eqref{g3:eq:divergence-bianchi-conventions}、\eqref{g3:eq:curvature-action-symmetric-tensors}定义。则
+	\begin{align}
+		\mathrm D\operatorname{Ric}_g(h)&=\frac12\Delta_Lh-\delta_g^*\beta_g h,\label{g3:eq:ricci-linearization}\\
+		\mathrm D\operatorname{Scal}_g(h)&=\Delta_gH+\delta_g\delta_g h-\langle\operatorname{Ric}_g,h\rangle_g.\label{g3:eq:scalar-linearization}
+	\end{align}
+\end{theorem}
+\begin{proof}
+	先保持 Ricci 张量的两个指标都在下方。微分曲率坐标式\eqref{g3:eq:curvature-coordinate-components}，或在一点取 \(g\) 的法坐标，得
+	\[
+		(\mathrm D\operatorname{Ric}_g h)_{ij}=\nabla_k C^k_{ij}-\nabla_i C^k_{kj}.
+	\]
+	由 \(C^k_{kj}=\tfrac12\nabla_jH\)，得到尚未交换协变导数的表达
+	\begin{equation}\label{g3:eq:ricci-linearization-uncommuted}
+		2(\mathrm D\operatorname{Ric}_g h)_{ij}
+		=\nabla_k\nabla_i h_j{}^k+\nabla_k\nabla_j h_i{}^k-\nabla_k\nabla^k h_{ij}-\nabla_i\nabla_jH.
+	\end{equation}
+	这里 \(h_j{}^k=g^{ka}h_{ja}\)，升指标使用固定的 \(g\)。对一个上指标和一个下指标，协变导数的交换分别给出正、负曲率作用，因而
+	\[
+		\nabla_k\nabla_i h_j{}^k
+		=\nabla_i\nabla_k h_j{}^k+\operatorname{Ric}_i{}^a h_{aj}-\bigl(\mathring R_g(h)\bigr)_{ij}.
+	\]
+	另一项交换 \(i,j\) 后相同。将 \(\nabla_kh_j{}^k=-(\delta_gh)_j\) 代回式\eqref{g3:eq:ricci-linearization-uncommuted}，便有
+	\[
+		2\mathrm D\operatorname{Ric}_g(h)
+		=\Delta_Lh-2\delta_g^*\delta_gh-\operatorname{Hess}_gH
+		=\Delta_Lh-2\delta_g^*\beta_gh.
+	\]
+	因为 \(\delta_g^*\mathrm dH=\operatorname{Hess}_gH\)，得到第一式。
+
+	标量曲率是 \(g^{ij}\operatorname{Ric}_{ij}\)，所以还要微分逆度量。由式\eqref{g3:eq:inverse-volume-variation}，
+	\[
+		\mathrm D\operatorname{Scal}_g(h)
+		=-\langle\operatorname{Ric}_g,h\rangle_g+\operatorname{tr}_g\mathrm D\operatorname{Ric}_g(h).
+	\]
+	前面的迹恒等式以及 \(\operatorname{tr}_g\delta_g^*\omega=-\delta_g\omega\) 给出
+	\[
+		\operatorname{tr}_g\mathrm D\operatorname{Ric}_g(h)
+		=\tfrac12\Delta_gH+\delta_g\bigl(\delta_gh+\tfrac12\mathrm dH\bigr)
+		=\Delta_gH+\delta_g\delta_gh.
+	\]
+	这就是第二式。
+\end{proof}
+
+\begin{example}\label{g3:exm:ricci-conformal-linearization}
+	设 \(g\) 为光滑黎曼度量，\(f\) 为光滑实函数，取 \(h=fg\)。此时
+	\[
+		\delta_gh=-\mathrm df,\qquad \beta_gh=\frac{n-2}{2}\mathrm df,\qquad \Delta_L(fg)=(\Delta_gf)g.
+	\]
+	因此
+	\begin{align*}
+		\mathrm D\operatorname{Ric}_g(fg)&=\frac12(\Delta_gf)g-\frac{n-2}{2}\operatorname{Hess}_gf,\\
+		\mathrm D\operatorname{Scal}_g(fg)&=(n-1)\Delta_gf-s_gf.
+	\end{align*}
+	这与第3.4节共形曲率公式在 \(e^{tf}g\) 上的导数一致。若 \(f=c\) 为常数，则 Ricci 的导数为零，而标量曲率的导数为 \(-cs_g\)：常数缩放不改变作为协变二张量的 Ricci，却会改变取迹所用的逆度量。
+\end{example}
 
 \subsection{微分同胚方向的退化}
 \label{g3:subsec:2501:03}
-待撰写
+对一个自微分同胚 \(\phi:M\to M\)，度量 \(g\) 与 \(\phi^*g\) 描述同一个几何结构，只是点的标记发生了变化。对曲线求导后，这种对称性成为 Einstein 线性化的核；在最高阶项中，它也表现为主符号的退化。
+
+\begin{proposition}\label{g3:prop:einstein-diffeomorphism-degeneracy}
+	设 \((M^n,g_0)\) 为闭光滑 Einstein 流形，\(n\ge3\)，\(\operatorname{Ric}_{g_0}=\lambda g_0\)。定义
+	\(\mathcal E_\lambda(g)=\operatorname{Ric}_g-\lambda g\)。若 \(X\) 为光滑向量场，\(\omega=X^\flat\)，则
+	\begin{equation}\label{g3:eq:einstein-gauge-linear-kernel}
+		\mathcal L_Xg_0=2\delta_{g_0}^*\omega,\qquad
+		\mathrm D\mathcal E_\lambda|_{g_0}(\mathcal L_Xg_0)=0.
+	\end{equation}
+	对任意非零实余向量 \(\xi\)，采用 \(\partial_j\mapsto i\xi_j\) 的主符号约定，有
+	\begin{equation}\label{g3:eq:einstein-ungauged-symbol}
+		\begin{aligned}
+			\sigma_2(\mathrm D\mathcal E_\lambda)(\xi)h
+			=\frac12\bigl(&|\xi|^2h+\xi\otimes\xi\operatorname{tr}h\\
+			&-\xi\otimes h(\xi^\sharp,\cdot)-h(\xi^\sharp,\cdot)\otimes\xi\bigr).
+		\end{aligned}
+	\end{equation}
+	其核恰为 \(\{\xi\otimes v+v\otimes\xi:v\in\mathrm T^*_xM\}\)，故未固定规范的 Einstein 方程不是椭圆系统。
+\end{proposition}
+\begin{proof}
+	由 Lie 导数定义及联络的度量相容性，
+	\[
+		(\mathcal L_Xg_0)(Y,Z)=g_0(\nabla_YX,Z)+g_0(Y,\nabla_ZX),
+	\]
+	得到第一式。设 \(\phi_t\) 是 \(X\) 的局部流；闭性保证可以共同选取一个时间区间。拉回联络仍满足无挠与度量相容条件，Levi--Civita 联络的唯一性因此给出曲率的自然性，从而
+	\[
+		\mathcal E_\lambda(\phi_t^*g_0)=\phi_t^*\mathcal E_\lambda(g_0)=0.
+	\]
+	在 \(t=0\) 微分，便得第二式。
+
+	在一点的法坐标中，只保留式\eqref{g3:eq:ricci-linearization-uncommuted}的二阶部分，并把 \(\partial_j\) 换成 \(i\xi_j\)，即得式\eqref{g3:eq:einstein-ungauged-symbol}。令 \(|\xi|=1\)、\(\xi=e^1\)。输出的 \((a,b)\) 分量在 \(a,b\ge2\) 时等于 \(h_{ab}/2\)，故核中的张量必须满足所有这些分量为零。反过来，任意仅有 \(h_{11}\)、\(h_{1a}\) 的对称张量都可写成 \(\xi\otimes v+v\otimes\xi\)，其中 \(v_1=h_{11}/2\)、\(v_a=h_{1a}\)；代入符号公式，其各项相消。一般 \(\xi\) 由齐次性恢复。
+\end{proof}
+
+主符号的核并非来自某个特殊曲率，而是来自任意坐标变化。即使某个 Einstein 度量没有非零 Killing 场，任意向量场仍给出式\eqref{g3:eq:einstein-gauge-linear-kernel}中的核方向；Killing 场只是其中使 \(\mathcal L_Xg_0=0\) 的向量场。下一节将分别处理需要去掉的轨道方向和作用本身的稳定子。
+
+在函数空间中还须分清两个光滑性问题。对固定的光滑 \(\phi\)，\(g\mapsto\phi^*g\) 是 \(H^s\) 上的有界线性同构；若 \(\phi\) 也变化，导数 \(\mathcal L_Xg\) 会出现 \(X^a\partial_ag_{ij}\)，一般只由 \(g\in H^s\) 得到 \(H^{s-1}\) 控制。因而不能把整个微分同胚作用直接当作同一个 \(H^s\) 空间上的光滑作用。规范方程必须按所用源空间、目标空间和导数阶数另行建立。
 
 \subsection{Einstein–Hilbert 泛函和体积约束}
 \label{g3:subsec:2501:04}
-待撰写
+方程 \(\operatorname{Ric}=\lambda g\) 不只来自局部曲率条件，也来自总标量曲率的驻值。与仅改变共形因子的变分不同，现在允许全部对称二张量方向，因而 Euler 方程保留整个 Ricci 张量。
+
+定义\term[Einstein Hilbert fanhan]{Einstein--Hilbert 泛函}[Einstein--Hilbert functional]及其体积归一化形式
+\begin{equation}\label{g3:eq:einstein-hilbert-functionals}
+	\mathcal H(g)=\int_Ms_g\,\mu_g,\qquad
+	\mathcal S(g)=V(g)^{-(n-2)/n}\mathcal H(g).
+\end{equation}
+后一个泛函在常数缩放下不变，因为 \(V(cg)=c^{n/2}V(g)\)、\(s_{cg}=c^{-1}s_g\)。这与第24章在共形类上使用的几何泛函相同，但这里的竞争度量不受共形限制。
+
+\begin{theorem}\label{g3:thm:einstein-hilbert-critical}
+	设 \(M^n\) 为闭连通光滑流形，\(n\ge3\)，\(g\) 为光滑黎曼度量。对任意光滑对称二张量 \(h\)，有
+	\begin{equation}\label{g3:eq:einstein-hilbert-first-variation}
+		\mathrm D\mathcal H_g(h)=-\int_M\left\langle\operatorname{Ric}_g-\frac12s_gg,h\right\rangle_g\,\mu_g.
+	\end{equation}
+	以下三项等价：\(g\) 是 Einstein 度量；\(g\) 是 \(\mathcal H\) 在体积 \(V(g)\) 的度量中关于光滑变分的临界点；\(g\) 是 \(\mathcal S\) 关于全部光滑变分的临界点。
+\end{theorem}
+\begin{proof}
+	将式\eqref{g3:eq:scalar-linearization}与体积变化公式相加，得到
+	\[
+		\mathrm D\mathcal H_g(h)=\int_M\left(\Delta_gH+\delta_g\delta_gh-\langle\operatorname{Ric}_g,h\rangle_g+\frac12s_gH\right)\mu_g.
+	\]
+	前两项都是散度，闭流形上积分为零，故得到第一变分公式。
+
+	体积约束的切向量满足 \(\int_MH\,\mu_g=0\)。每个这样的光滑 \(h\) 都由一条精确保体积的曲线实现：令
+	\[
+		\widetilde g(t)=\left(\frac{V(g)}{V(g+th)}\right)^{2/n}(g+th).
+	\]
+	在充分小的时间区间内它正定，体积恒为 \(V(g)\)，且因为 \(\mathrm DV_g(h)=0\)，有 \(\dot{\widetilde g}(0)=h\)。若 \(g\) 为约束临界点，\(\mathrm D\mathcal H_g\) 在 \(\ker\mathrm DV_g\) 上为零，而 \(\mathrm DV_g(g)=nV(g)/2\ne0\)。将任意 \(h\) 减去适当的常数倍 \(g\)，可知存在一个实常数 \(c\)，使 \(\mathrm D\mathcal H_g=c\,\mathrm DV_g\)。第一变分公式于是给出
+	\[
+		\operatorname{Ric}_g-\frac12s_gg=-\frac c2g.
+	\]
+	两边取迹，得 \((n-2)s_g=nc\)，所以 \(s_g\) 为常数，且 \(\operatorname{Ric}_g=(s_g/n)g\)。反过来，若 \(\operatorname{Ric}_g=\lambda g\)，则第一变分是 \((n-2)\lambda\mathrm DV_g\)，在体积约束切空间上为零。
+
+	最后，\(\mathcal S\) 在缩放方向的导数恒为零；在体积约束切方向上，它的导数等于正数 \(V(g)^{-(n-2)/n}\) 乘以 \(\mathrm D\mathcal H_g\)。每个方向都唯一分成一个体积约束切方向与一个常数倍 \(g\)，故两种临界点条件等价。
+\end{proof}
+
+无体积约束的 \(\mathcal H\) 临界点则满足 \(\operatorname{Ric}-s g/2=0\)。在 \(n\ge3\) 时取迹即得 \(s=0\)，所以它们恰是 Ricci 平坦度量。二维的迹方程失去这一作用；本章的维数条件正是区分这两种情形所必需的。
+
+为研究一个固定 Einstein 常数 \(\lambda\)，把体积乘子保留在泛函中：
+\begin{equation}\label{g3:eq:einstein-action-conserved-tensor}
+	\begin{aligned}
+		\mathcal A_\lambda(g)&=\mathcal H(g)-(n-2)\lambda V(g),\\
+		\mathcal G_\lambda(g)&=\operatorname{Ric}_g-\frac12s_gg+\frac{n-2}{2}\lambda g.
+	\end{aligned}
+\end{equation}
+\(\mathcal G_\lambda\) 是带常数项的 Einstein 张量。它的引入保留了原方程的零点，并使散度恒等式可以直接使用。
+
+\begin{proposition}\label{g3:prop:conserved-einstein-tensor}
+	设 \(M^n\) 为闭连通光滑流形，\(n\ge3\)，\(\lambda\in\mathbb R\) 固定。对任意光滑黎曼度量 \(g\)，有
+	\begin{equation}\label{g3:eq:einstein-tensor-variation-divergence}
+		\mathrm D\mathcal A_\lambda|_g(h)=-\int_M\langle\mathcal G_\lambda(g),h\rangle_g\,\mu_g,
+		\qquad \delta_g\mathcal G_\lambda(g)=0.
+	\end{equation}
+	此外，\(\mathcal G_\lambda(g)=0\) 当且仅当 \(\operatorname{Ric}_g=\lambda g\)。若 \(g_0\) 为这样的 Einstein 度量，记 \(P_0=\mathrm D\mathcal G_\lambda|_{g_0}\)，则
+	\begin{equation}\label{g3:eq:einstein-tensor-linearization}
+		\begin{aligned}
+			P_0h={}&\frac12\Delta_Lh-\delta_{g_0}^*\beta_{g_0}h-\lambda h\\
+			&-\frac12\bigl(\Delta_{g_0}\operatorname{tr}_{g_0}h+\delta_{g_0}\delta_{g_0}h-\lambda\operatorname{tr}_{g_0}h\bigr)g_0.
+		\end{aligned}
+	\end{equation}
+	它在 \(L^2(g_0)\) 中形式自伴。
+\end{proposition}
+\begin{proof}
+	泛函微分由上一变分公式直接得到。第3.2节的缩并 Bianchi 恒等式\cref{g3:prop:contracted-bianchi}在当前符号下写成
+	\[
+		\delta_g\operatorname{Ric}_g=-\frac12\mathrm ds_g.
+	\]
+	另一方面，\(\delta_g(s_gg)=-\mathrm ds_g\)，且常数 \(\lambda\) 与 \(\nabla g=0\) 给出 \(\delta_g(\lambda g)=0\)。三项相加即得守恒式。
+
+	若 \(\mathcal G_\lambda(g)=0\)，取迹得到
+	\[
+		0=\operatorname{tr}_g\mathcal G_\lambda(g)=\frac{n-2}{2}(n\lambda-s_g).
+	\]
+	因为 \(n\ge3\)，故 \(s_g=n\lambda\)；代回即得 \(\operatorname{Ric}_g=\lambda g\)。逆向代入也成立。
+
+	在 Einstein 度量处，微分 \(-s_gg/2+(n-2)\lambda g/2\) 得到 \(-\tfrac12(\mathrm D\operatorname{Scal}_{g_0}h)g_0-\lambda h\)，再代入曲率线性化便得式\eqref{g3:eq:einstein-tensor-linearization}。对两光滑张量 \(h,k\)，在二参数族 \(g_0+th+uk\) 上求 \(\mathcal A_\lambda\) 的混合二阶导数。由于 \(\mathcal G_\lambda(g_0)=0\)，微分积分密度和内积产生的项都为零，所以
+	\[
+		\mathrm D^2\mathcal A_\lambda|_{g_0}(h,k)=-\int_M\langle P_0h,k\rangle_{g_0}\,\mu_{g_0}.
+	\]
+	混合导数对称，故右端也对称，这正是 \(P_0\) 的形式自伴性。
+\end{proof}
+
+至此有了两种等价的非线性写法：\(\mathcal E_\lambda=0\) 直接表达 Ricci 与度量成比例，\(\mathcal G_\lambda=0\) 则把同一方程放进变分与散度守恒的形式。固定 \(\lambda\) 之后，\(\lambda\ne0\) 时常数缩放会改变方程的参数；\(\lambda=0\) 时缩放仍保留解。下一节采用 \(\mathcal G_\lambda\) 构造规范算子，剩余缩放在有限维核中保留。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

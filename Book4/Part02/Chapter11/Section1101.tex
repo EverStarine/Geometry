@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 11.1 可积性与交换流
 % 纲要位置：几何学计划纲要.md，第 3885 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,260 @@
 \section{可积性与交换流}
 \label{g4:sec:1101}
 
-待撰写
+一个第一积分把运动限制在一个水平集上。若在 \(2n\) 维相空间中找到 \(n\) 个独立且彼此 Poisson 对合的第一积分，共同水平集还会带有 \(n\) 个相互交换的运动方向。这些方向恰好铺满正则纤维的切空间。紧性使运动可以持续任意时间，而重复回到原点的时间向量组成一个格；环面结构便从这个格产生。本节逐步建立这条联系，下一节再把一张纤维上的结构延伸到它的邻域。
 
 \subsection{独立第一积分及 Poisson 交换}
 \label{g4:subsec:1101:01}
-待撰写
+
+以下 \((M,\omega)\) 为无边界辛流形，实维数为 \(2n\)，其中 \(n\geq1\)。沿用第九章的约定
+\[
+	\iota_{X_f}\omega=\mathrm{d}f,\qquad
+	\{f,g\}=\omega(X_f,X_g)=X_gf.
+\]
+因此 \(f\) 是自主 Hamilton 系统 \(H\) 的第一积分，当且仅当 \(\{f,H\}=0\)。这使 \(f\) 沿 \(H\) 的轨道保持常值；若要把几个第一积分产生的运动同时组织起来，还要要求它们彼此对合。
+
+\begin{definition}\label{g4:def:1101:integrable-system}
+	设 \(f_1,\ldots,f_n\in C^\infty(M,\mathbb R)\)，记
+	\[
+		F=(f_1,\ldots,f_n):M\longrightarrow\mathbb R^n.
+	\]
+	若 \(\mathrm{d}f_1(x),\ldots,\mathrm{d}f_n(x)\) 线性无关，就说这些函数在 \(x\) 处\term[hanshuduli]{函数独立}[functionally independent]。若
+	\begin{equation}\label{g4:eq:1101:integrability}
+		\{f_i,f_j\}=0\quad(1\leq i,j\leq n),\qquad
+		M_{\mathrm{reg}}\coloneqq\{x\in M:\operatorname{rank}\mathrm{d}F_x=n\}
+		\text{ 在 }M\text{ 中稠密},
+	\end{equation}
+	则称 \((M,\omega,F)\) 为\term[wanquankejixitong]{完全可积系统}[completely integrable system]，也简称可积系统。对一个指定的 Hamilton 函数 \(H\)，若可取这样的积分组并使 \(f_1=H\)，则称 \(H\) 完全可积。
+\end{definition}
+
+函数独立是一阶条件。例如 \(f\) 与 \(f^2\) 即使作为函数不成常数倍，它们的微分仍满足 \(\mathrm{d}(f^2)=2f\,\mathrm{d}f\)，不能提供两个独立约束。满秩条件在小扰动下保持，所以 \(M_{\mathrm{reg}}\) 是开集；稠密性允许系统在较小的集合上出现奇异纤维。定义中的独立性和对合条件与通常的完全可积系统定义一致。\cite[第5.5节，定义5.13，第151页]{Cannas2006Symplectic}
+
+\ProseParagraphBreak
+
+这里为什么恰好取 \(n\) 个函数？在一点 \(x\)，非退化性使
+\[
+	\mathrm{T}_xM\longrightarrow\mathrm{T}_x^*M,
+	\qquad v\longmapsto\iota_v\omega_x
+\]
+为线性同构。因此 \(k\) 个函数的微分独立，当且仅当它们的 Hamilton 向量在该点独立；若函数又两两对合，这些向量的张成空间满足
+\[
+	\omega_x(X_{f_i}(x),X_{f_j}(x))=\{f_i,f_j\}(x)=0.
+\]
+这是一个各向同性子空间。由\cref{g4:prop:0701:lagrangian-characterizations}及其前面的维数结论，它的维数至多为 \(n\)，故 \(k\leq n\)。完全可积性正好达到独立对合函数数目的这一上限。
+
+\ProseParagraphBreak
+
+若 \(h\) 是 \(F(M)\) 的一个开邻域上的光滑函数，复合 Hamilton 函数 \(H=h\circ F\) 也保持全部 \(f_i\)。更具体地，链式法则和辛形式的非退化性给出
+\begin{equation}\label{g4:eq:1101:composite-hamiltonian}
+	\mathrm{d}H=\sum_{i=1}^n
+	\frac{\partial h}{\partial c_i}(F)\,\mathrm{d}f_i,
+	\qquad
+	X_H=\sum_{i=1}^n
+	\frac{\partial h}{\partial c_i}(F)X_{f_i}.
+\end{equation}
+这些系数在每个共同水平集上都是常数。于是同一组积分还可以描述许多不同的 Hamilton 运动；即使某处 \(\mathrm{d}H=0\)，积分映射 \(F\) 仍可能正则。
+
+\begin{example}\label{g4:exm:1101:momentum-fibres}
+	在 \(\mathbb R^{2n}_{q,p}\) 上取 \(\omega=\sum_i\mathrm{d}q_i\wedge\mathrm{d}p_i\) 和 \(f_i=p_i\)。微分 \(\mathrm{d}p_i\) 处处独立，且 \(\{p_i,p_j\}=0\)。相应向量场及流为
+	\[
+		X_{f_i}=\partial_{q_i},\qquad
+		\varphi_i^t(q,p)=(q+t e_i,p).
+	\]
+	每张纤维 \(F^{-1}(c)=\mathbb R^n_q\times\{c\}\) 都由这些平移方向铺满。对 \(H=\frac12\sum_i p_i^2\)，式\eqref{g4:eq:1101:composite-hamiltonian}给出 \(\dot q=c\)、\(\dot p=0\)。当 \(c=0\) 时，\(H\) 的运动静止，但 \(F\) 仍处处满秩；单个 Hamilton 函数的临界性与积分映射的奇异性是两回事。
+\end{example}
 
 \subsection{共同水平集的 Lagrange 性}
 \label{g4:subsec:1101:02}
-待撰写
+
+给定 \(c\in\mathbb R^n\)，我们将考察 \(F^{-1}(c)\) 的一个非空连通分支 \(L\)。若 \(\operatorname{rank}\mathrm{d}F_x=n\) 对每个 \(x\in L\) 成立，就称 \(L\) 为一张\term[zhengzeliantongxianwei]{正则连通纤维}[regular connected fibre]。当 \(c\) 是正则值时，它的每个非空连通纤维都满足这一条件；这个定义也允许同一水平集的其他分支含有临界点。后面所说的紧纤维，都是指选定的 \(L\) 紧。
+
+\begin{proposition}\label{g4:prop:1101:regular-lagrangian-level}
+	设 \((M,\omega)\) 为实维数 \(2n\) 的无边界辛流形，\(F=(f_1,\ldots,f_n):M\to\mathbb R^n\) 的各分量两两 Poisson 对合。设 \(L\) 是 \(F^{-1}(c)\) 的一个非空连通分支，并且 \(\operatorname{rank}\mathrm{d}F_x=n\) 对所有 \(x\in L\) 成立。则 \(L\) 是无边界的嵌入 Lagrange 子流形，且
+	\begin{equation}\label{g4:eq:1101:tangent-frame}
+		\mathrm{T}_xL=\ker\mathrm{d}F_x
+		=\operatorname{span}_{\mathbb R}
+		\{X_{f_1}(x),\ldots,X_{f_n}(x)\}.
+	\end{equation}
+	这些 Hamilton 向量场限制到 \(L\) 后构成处处线性无关、两两交换的光滑向量场。
+\end{proposition}
+\begin{proof}
+	先确认 \(L\) 的流形结构。对 \(x\in L\)，满秩条件在某个开邻域内保持。第一卷定理11.4.4的正则水平集定理应用于该邻域，给出局部坐标，其中 \(F=c\) 固定前 \(n\) 个坐标，其余 \(n\) 个坐标自由变化。把坐标域缩为小盒，可使这个局部水平集连通；它含有 \(x\)，所以全在 \(x\) 所属的分支 \(L\) 内。这些坐标因此给出 \(L\) 的嵌入子流形图，并且
+	\[
+		\dim L=n,\qquad
+		\mathrm{T}_xL=\bigcap_{j=1}^n\ker\mathrm{d}f_j(x).
+	\]
+	这个论证只在 \(L\) 附近使用满秩性。
+
+	对任意 \(i,j\)，有
+	\[
+		\mathrm{d}f_j(X_{f_i})=\{f_j,f_i\}=0,
+	\]
+	所以 \(X_{f_i}\) 切于 \(L\)。若 \(\sum_i a_iX_{f_i}(x)=0\)，与 \(\omega_x\) 收缩后得到 \(\sum_i a_i\mathrm{d}f_i(x)=0\)，故全部 \(a_i=0\)。这 \(n\) 个独立切向量构成 \(\mathrm{T}_xL\) 的基，证明式\eqref{g4:eq:1101:tangent-frame}。它们两两的辛配对都为零，因而 \(\omega|_{\mathrm{T}_xL}=0\)；半维各向同性判别说明 \(L\) 是 Lagrange 子流形。
+
+	最后，\cref{g4:prop:0902:hamiltonian-bracket}给出
+	\[
+		[X_{f_i},X_{f_j}]=-X_{\{f_i,f_j\}}=0.
+	\]
+	切于子流形的光滑向量场可限制成该子流形上的光滑向量场，其括号也限制为原括号。例如在适配坐标中，法向分量在子流形上为零，切向导数仍为零；切向分量的括号公式正是受限向量场的括号。因此受限向量场同样两两交换。
+\end{proof}
+
+共同水平集的维数与其上的运动方向数在这里相等。只有“沿原运动守恒”还不能保证这一点：若第一积分之间的括号不为零，它们产生的运动可能离开彼此的水平集；对合条件正是使全部运动同时切于 \(L\) 的条件。
+
+\begin{example}\label{g4:exm:1101:noncommuting-level}
+	在 \(\mathbb R^4_{q_1,q_2,p_1,p_2}\) 上，函数 \(q_1,p_1\) 处处独立，故共同水平集 \(q_1=a,p_1=b\) 是二维平面。但 \(\{q_1,p_1\}=1\)，而该平面上的限制辛形式为 \(\mathrm{d}q_2\wedge\mathrm{d}p_2\)，所以它是辛平面。相应向量场 \(X_{q_1}=-\partial_{p_1}\)、\(X_{p_1}=\partial_{q_1}\) 虽然交换，却都不切于这个共同水平集。这个例子同时说明，对合条件要求函数括号为零，单独要求 Hamilton 向量场交换还不够。
+\end{example}
 
 \subsection{完备交换流与轨道}
 \label{g4:subsec:1101:03}
-待撰写
+
+现在在正则连通纤维 \(L\) 上记 \(Y_i=X_{f_i}|_L\)。上一命题给出的是一组交换标架。要把任意时间向量 \(t=(t_1,\ldots,t_n)\) 解释为运动，就要使每个 \(Y_i\) 的积分曲线对全部实数时间存在；这正是完备性。这里讨论的向量场定义在 \(L\) 上。
+
+\begin{proposition}\label{g4:prop:1101:complete-action}
+	设 \(L\) 为非空连通的 \(n\) 维无边界光滑流形，\(Y_1,\ldots,Y_n\) 为处处线性无关、两两交换的完备光滑向量场。记它们的全局流为 \(\varphi_i^t\)。则
+	\begin{equation}\label{g4:eq:1101:joint-flow}
+		\Phi:\mathbb R^n\times L\longrightarrow L,
+		\qquad
+		\Phi(t,x)=\varphi_1^{t_1}\circ\cdots\circ\varphi_n^{t_n}(x)
+	\end{equation}
+	是光滑传递的加法群作用。对任意 \(x_0\in L\)，子群
+	\begin{equation}\label{g4:eq:1101:period-subgroup}
+		\Gamma=\{t\in\mathbb R^n:\Phi(t,x_0)=x_0\}
+	\end{equation}
+	闭且离散，与所选 \(x_0\) 无关。轨道映射诱导微分同胚
+	\begin{equation}\label{g4:eq:1101:homogeneous-fibre}
+		\overline P_{x_0}:\mathbb R^n/\Gamma\longrightarrow L,
+		\qquad [t]\longmapsto\Phi(t,x_0).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	第一卷定理13.1.7说明，每个完备场的流是光滑映射 \(\mathbb R\times L\to L\)，且 \(\varphi_i^{-t}\) 为 \(\varphi_i^t\) 的逆。先把两两流的交换性落实到任意实数时间。第一卷命题13.3.3的拉回求导公式与 \([Y_i,Y_j]=0\) 给出
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}s}(\varphi_i^s)^*Y_j=0,
+		\qquad
+		\mathrm{d}\varphi_i^s(Y_j)=Y_j\circ\varphi_i^s.
+	\]
+	固定任意 \(s\in\mathbb R\) 后，曲线 \(t\mapsto\varphi_i^s(\varphi_j^t(x))\) 是 \(Y_j\) 的积分曲线，初值为 \(\varphi_i^s(x)\)。它对全部 \(t\) 有定义，解的唯一性于是给出
+	\[
+		\varphi_i^s\circ\varphi_j^t
+		=\varphi_j^t\circ\varphi_i^s
+		\qquad(s,t\in\mathbb R).
+	\]
+	所以式\eqref{g4:eq:1101:joint-flow}的复合次序无关，并满足 \(\Phi(0,x)=x\) 及 \(\Phi(s,\Phi(t,x))=\Phi(s+t,x)\)，这就是所需群作用。
+
+	对每个 \(x\)，令 \(P_x(t)=\Phi(t,x)\)。在零点求微分，得到
+	\begin{equation}\label{g4:eq:1101:orbit-differential}
+		\mathrm{d}(P_x)_0(a_1,\ldots,a_n)
+		=\sum_{i=1}^n a_iY_i(x).
+	\end{equation}
+	这由标架假设是线性同构。由第一卷定理11.3.3，\(P_x\) 把零点的一个邻域微分同胚地映到 \(x\) 的一个开邻域，所以每条轨道都在其每一点附近包含开邻域，即每条轨道开。轨道彼此相同或不相交；若有两条以上轨道，一条轨道与其余轨道的并就把 \(L\) 分成两个非空开集，违背连通性。因此作用传递。群作用公式还给出
+	\[
+		P_{x_0}(t+a)=P_{P_{x_0}(t)}(a),
+	\]
+	所以 \(P_{x_0}\) 在每个 \(t\) 处都是局部微分同胚。
+
+	子群 \(\Gamma=P_{x_0}^{-1}(\{x_0\})\) 闭；\(P_{x_0}\) 在零点附近单射，所以零点是 \(\Gamma\) 的孤立点，再由平移可知每个点都孤立。若 \(y=\Phi(s,x_0)\)，加法的交换性给出
+	\[
+		\Phi(t,y)=y
+		\quad\Longleftrightarrow\quad
+		\Phi(-s,\Phi(t,\Phi(s,x_0)))=x_0
+		\quad\Longleftrightarrow\quad
+		\Phi(t,x_0)=x_0.
+	\]
+	传递性说明全部点都有同一稳定子。
+
+	第一卷定理17.1.5应用于加法 Lie 群 \(\mathbb R^n\) 的闭子群 \(\Gamma\)，赋予商 \(\mathbb R^n/\Gamma\) 光滑齐性空间结构。这里还可直接看见局部商图：选一个零点邻域 \(V\)，使 \((V-V)\cap\Gamma=\{0\}\)，则商映射在每个 \(t+V\) 上单射，给出局部微分同胚。两点 \(s,t\) 有相同轨道像，当且仅当 \(s-t\in\Gamma\)，故式\eqref{g4:eq:1101:homogeneous-fibre}良定义且为双射。其局部表达由 \(P_{x_0}\) 与上述商图给出，是局部微分同胚。双射的局部光滑逆在交集上一致，便拼成全局光滑逆。
+\end{proof}
+
+选择 \(x_0\) 将 \(L\) 与群 \(\mathbb R^n/\Gamma\) 识别，并把 \(x_0\) 选为单位元；换一个基点会改变这一识别的平移原点。子群 \(\Gamma\) 则由给定的交换标架决定。若 \(\Gamma\neq\{0\}\)，\(\mathbb R^n\) 的作用不是自由作用；除去这些共同周期后，\(\mathbb R^n/\Gamma\) 在 \(L\) 上自由且传递。
+
+\begin{example}\label{g4:exm:1101:incomplete-fibre}
+	取 \(M=(0,1)_q\times\mathbb R_p\)、\(\omega=\mathrm{d}q\wedge\mathrm{d}p\) 和 \(f=p\)。每张纤维 \(L_c=(0,1)\times\{c\}\) 都正则，且 \(X_f=\partial_q\) 在其切空间中处处非零。过 \((q_0,c)\) 的积分曲线为 \((q_0+t,c)\)，最大时间区间是 \((-q_0,1-q_0)\)。局部流因此存在且保持纤维，但不能用全部实数时间定义式\eqref{g4:eq:1101:joint-flow}。完备性所补足的正是从局部运动到群作用的这一步。
+\end{example}
 
 \subsection{紧连通正则纤维的环面识别}
 \label{g4:subsec:1101:04}
-待撰写
+
+离散子群 \(\Gamma\) 决定哪些时间方向会闭合。第一卷引理19.2.2证明：任意 \(\mathbb R^n\) 的离散加法子群都有一组实线性无关的整数基，即存在 \(0\leq r\leq n\) 和实线性无关的 \(\gamma_1,\ldots,\gamma_r\)，使
+\begin{equation}\label{g4:eq:1101:lattice-basis}
+	\Gamma=\mathbb Z\gamma_1\oplus\cdots\oplus\mathbb Z\gamma_r.
+\end{equation}
+其证明先取最短非零群元素，再投影到其正交补并归纳。这里投影仍离散的原因是：沿最短元素减去整数倍后，纵向分量落在一个有界线段内；若非零投影趋于零，就会得到有界区域内无限多个群元素，与离散子群的点间距有正下界矛盾。这一论证保证了整数基的存在，避免把实线性基误当成整数生成元。
+
+\begin{proposition}\label{g4:prop:1101:complete-fibre-cylinder}
+	在\cref{g4:prop:1101:regular-lagrangian-level}的假设下，若 \(X_{f_1}|_L,\ldots,X_{f_n}|_L\) 全部完备，则存在唯一整数 \(r\in\{0,\ldots,n\}\)，使其周期子群的秩为 \(r\)，且有微分同胚
+	\[
+		L\cong\mathbb R^{n-r}\times\mathbb T^r,
+		\qquad \mathbb T^r\coloneqq
+		(\mathbb R/(2\pi\mathbb Z))^r.
+	\]
+	特别地，\(L\) 紧当且仅当 \(r=n\)。
+\end{proposition}
+\begin{proof}
+	由\cref{g4:prop:1101:complete-action}，\(L\cong\mathbb R^n/\Gamma\)。取式\eqref{g4:eq:1101:lattice-basis}的整数基，并补成 \(\mathbb R^n\) 的实线性基 \(\gamma_1,\ldots,\gamma_n\)。若 \(t=\sum_{j=1}^n a_j\gamma_j\)，则
+	\[
+		[t]\longmapsto
+		\bigl(a_{r+1},\ldots,a_n,
+		2\pi a_1\bmod2\pi,\ldots,2\pi a_r\bmod2\pi\bigr)
+	\]
+	是所需微分同胚：加上 \(\Gamma\) 的元素恰好将前 \(r\) 个系数加上整数，后 \(n-r\) 个系数不变，故映射良定义且双射；在线性坐标与商的局部图中，它及其逆都光滑。整数 \(r\) 等于 \(\dim_{\mathbb R}\operatorname{span}_{\mathbb R}\Gamma\)，因而由 \(\Gamma\) 唯一决定。
+
+	当 \(r=n\) 时，紧立方体 \([0,2\pi]^n\) 满射到 \(\mathbb T^n\)，所以 \(L\) 紧。当 \(r<n\) 时，向 \(\mathbb R^{n-r}\) 的投影是连续满射；若 \(L\) 紧，像也应紧，这与正维 Euclid 空间不紧矛盾。因此紧性恰好迫使全部方向都成为周期方向。
+\end{proof}
+
+下面的结论称为\term[liouvillehuanmiandingli]{Liouville 环面定理}[Liouville torus theorem]。它把纤维的紧性转化为完整周期格的满秩性。
+
+\begin{theorem}[Liouville 环面定理]\label{g4:thm:1101:liouville-torus}
+	设 \((M,\omega)\) 为实维数 \(2n\) 的无边界辛流形，\(F=(f_1,\ldots,f_n):M\to\mathbb R^n\) 的各分量两两 Poisson 对合。若 \(L\) 是 \(F^{-1}(c)\) 的一个非空紧连通分支，且 \(\operatorname{rank}\mathrm{d}F_x=n\) 在 \(L\) 上处处成立，则 \(L\) 是 Lagrange 子流形，并微分同胚于 \(\mathbb T^n\)。更具体地，受限 Hamilton 向量场产生传递的 \(\mathbb R^n\) 作用，其共同周期子群是满秩格
+	\[
+		\Gamma=\mathbb Z\gamma_1\oplus\cdots\oplus\mathbb Z\gamma_n.
+	\]
+	选定 \(x_0\in L\) 后，下式给出一个微分同胚：
+	\begin{equation}\label{g4:eq:1101:torus-parametrization}
+		\chi:\mathbb T^n\longrightarrow L,
+		\qquad
+		\chi(\theta)=\Phi\left(\frac1{2\pi}
+		\sum_{j=1}^n\theta_j\gamma_j,x_0\right).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	\cref{g4:prop:1101:regular-lagrangian-level}说明 \(L\) 是无边界的 \(n\) 维 Lagrange 子流形，并给出交换标架 \(Y_i=X_{f_i}|_L\)。第一卷定理13.2.5说明，紧无边界流形上的每个光滑向量场都完备。该结果来自有限时间逃逸判据：若最大积分曲线在有限时间终止，就必须离开每个紧集，而这里整个 \(L\) 已经紧。因此每个 \(Y_i\) 都完备。这些在 \(L\) 上的全局曲线作为 \(M\) 中的曲线也解原方程，唯一性使它们与从 \(L\) 出发的环境积分曲线一致。
+
+	现在可用\cref{g4:prop:1101:complete-action}得到 \(L\cong\mathbb R^n/\Gamma\)，再由\cref{g4:prop:1101:complete-fibre-cylinder}和紧性得 \(\operatorname{rank}\Gamma=n\)。式\eqref{g4:eq:1101:torus-parametrization}是该商同构在格基下的坐标表达。把某个 \(\theta_j\) 加上 \(2\pi\) 恰好使时间向量加上 \(\gamma_j\)，故表达式良定义；格基的整数独立性给出单射性，实线性基性质与作用的传递性给出满射性，局部商图给出双向光滑性。\cite[第5.5节，定理5.14(a)，第152页]{Cannas2006Symplectic}
+\end{proof}
+
+称这样的 \(L\) 为\term[liouvillehuanmian]{Liouville 环面}[Liouville torus]，其满秩格 \(\Gamma\) 称为该积分组在 \(L\) 上的\term[zhouqige]{周期格}[period lattice]。紧性只用于所选分支；证明中没有要求整个水平集紧，也没有要求环境中其他初值的 Hamilton 流完备。
+
+\ProseParagraphBreak
+
+周期格一般不由各个 \(X_{f_i}\) 单独的周期产生：某个 \(X_{f_i}\) 可能没有非零周期，若干流的适当组合却会闭合。写
+\[
+	B=(\gamma_1\ \cdots\ \gamma_n),
+	\qquad
+	\gamma_j=(\gamma_j^1,\ldots,\gamma_j^n)^{\mathsf T},
+\]
+则式\eqref{g4:eq:1101:torus-parametrization}给出
+\begin{equation}\label{g4:eq:1101:normalized-fields}
+	\chi_*\partial_{\theta_j}
+	=\frac1{2\pi}\sum_{i=1}^n\gamma_j^iX_{f_i}|_L,
+	\qquad
+	X_{f_i}|_L
+	=\chi_*\left(2\pi\sum_{j=1}^n
+	(B^{-1})_{ji}\partial_{\theta_j}\right).
+\end{equation}
+第一式中的场以 \(2\pi\) 为最小正周期，因为 \(\gamma_j\) 是整数基中的一个元素。对 \(H=h\circ F\)，结合式\eqref{g4:eq:1101:composite-hamiltonian}便得到在这张环面上的运动
+\begin{equation}\label{g4:eq:1101:torus-frequency}
+	\theta(t)=\theta(0)+t\nu\pmod{2\pi\mathbb Z^n},
+	\qquad \nu=2\pi B^{-1}\nabla h(c).
+\end{equation}
+速度是常向量，所以原来的 Hamilton 运动在这些角参数中成为匀速平移。
+
+\begin{example}\label{g4:exm:1101:cylinder-periods}
+	设 \(Q=\mathbb T^r\times\mathbb R^{n-r}\)，在 \(\mathrm{T}^*Q\) 上用 \((q_1,\ldots,q_n,p_1,\ldots,p_n)\) 表示坐标，前 \(r\) 个 \(q_j\) 按模 \(2\pi\) 理解。形式 \(\omega=\sum_i\mathrm{d}q_i\wedge\mathrm{d}p_i\) 全局有定义，取 \(F=(p_1,\ldots,p_n)\)。在每张纤维上，联合流为 \(q\mapsto q+t\)，周期子群恰为
+	\[
+		\Gamma=(2\pi\mathbb Z)^r\times\{0\}^{n-r}.
+	\]
+	因此 \(r\) 个闭合方向产生圆周，其余方向保持为实直线；所有向量场都完备，而纤维只有在 \(r=n\) 时紧。这给出了上一分类中每一种可能的秩。
+\end{example}
+
+本节构造的角参数定义在一张固定的纤维上，周期格也暂时固定在这张纤维。为了比较相邻环面上的运动，需要让周期基随纤维光滑变化，并找到与这些角参数配对的横向坐标。下一节用作用积分完成这一构造，得到邻域上的辛形式 \(\sum_i\mathrm{d}\theta_i\wedge\mathrm{d}I_i\)。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 9.4* 退化 Poisson 几何
 % 纲要位置：几何学计划纲要.md，第 3837 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,21 +16,359 @@
 
 \OptionalSection{退化 Poisson 几何}{g4:sec:0904}
 
-待撰写
+辛形式把每个协向量唯一地变成一个向量，因此每个函数都产生一个 Hamilton 向量场。如果保留函数之间的 Poisson 括号，却允许这一线性对应退化，就会出现不同维数的运动区域：有的点可以沿若干方向运动，有的点则对所有 Hamilton 系统都静止。本节从双向量场出发，先确定 Jacobi 恒等式的坐标条件，再证明这些运动区域各自带有辛形式。所有流形均为有限维、Hausdorff、第二可数的无边界光滑流形，函数均取实值。
 
 \subsection{Poisson 张量和 Schouten 条件}
 \label{g4:subsec:0904:01}
-待撰写
+\begin{definition}\label{g4:def:0904:poisson-tensor}
+	流形 \(M\) 上的光滑\term[shuangxiangliangchang]{双向量场}[bivector field]是一个截面 \(\pi\in\Gamma(\Lambda^2\mathrm{T}M)\)。它在每一点交替地配对两个协向量，并给出函数运算
+	\begin{equation}\label{g4:eq:0904:bracket-tensor}
+		\{f,g\}=\pi(\mathrm{d}f,\mathrm{d}g).
+	\end{equation}
+	若此运算对所有局部光滑函数满足 Jacobi 恒等式，则称 \(\pi\) 为\term[poissonzhangliang]{Poisson 张量}[Poisson tensor]，称 \((M,\pi)\) 为\term[poissonliuxing]{Poisson 流形}[Poisson manifold]。
+\end{definition}
+
+双线性、反对称性和两位置的 Leibniz 法则直接来自微分的乘积法则。需要检验的条件只有 Jacobi 恒等式。在坐标 \((x^1,\ldots,x^m)\) 中，写成
+\begin{equation}\label{g4:eq:0904:coordinate-tensor}
+	\pi=\frac12\sum_{i,j=1}^m\pi^{ij}\partial_i\wedge\partial_j,
+	\qquad \pi^{ji}=-\pi^{ij},
+	\qquad \{f,g\}=\sum_{i,j}\pi^{ij}(\partial_i f)(\partial_j g).
+\end{equation}
+因而 \(\pi^{ij}=\{x^i,x^j\}\)。系数矩阵的秩称为 \(\pi\) 在该点的秩；坐标变换只改变其矩阵表示，不改变秩。
+
+\begin{definition}\label{g4:def:0904:sharp}
+	本节以
+	\begin{equation}\label{g4:eq:0904:sharp-convention}
+		\alpha(\pi^\sharp\beta)=\pi(\alpha,\beta),
+		\qquad \alpha,\beta\in\mathrm{T}_x^*M,
+	\end{equation}
+	定义丛映射 \(\pi^\sharp:\mathrm{T}^*M\to\mathrm{T}M\)。函数 \(f\) 的 Hamilton 向量场定义为 \(X_f=\pi^\sharp\mathrm{d}f\)。于是
+	\begin{equation}\label{g4:eq:0904:hamiltonian-coordinate}
+		X_f=\sum_{i,j}\pi^{ij}(\partial_j f)\partial_i,
+		\qquad X_f(g)=\{g,f\}.
+	\end{equation}
+\end{definition}
+
+这一位置次序与本章前两节一致。若 \(\omega\) 是辛形式，定义 \(\pi(\alpha,\beta)=\omega((\omega^\flat)^{-1}\alpha,(\omega^\flat)^{-1}\beta)\)，其中 \(\omega^\flat u=\iota_u\omega\)，就有 \(\pi^\sharp=(\omega^\flat)^{-1}\)。在标准坐标中，
+\[
+	\omega=\sum_a\mathrm{d}q^a\wedge\mathrm{d}p_a,
+	\qquad \pi=\sum_a\partial_{q^a}\wedge\partial_{p_a},
+	\qquad \iota_{X_f}\omega=\mathrm{d}f.
+\]
+\cref{g4:thm:0902:poisson-identities}已经证明由辛形式得到的 \(\pi\) 满足 Jacobi 恒等式。
+
+\begin{proposition}\label{g4:prop:0904:jacobi-schouten}
+	对坐标表示\eqref{g4:eq:0904:coordinate-tensor}，令
+	\begin{equation}\label{g4:eq:0904:jacobi-coefficients}
+		C^{ijk}=\sum_{\ell=1}^m\left(
+			\pi^{i\ell}\partial_\ell\pi^{jk}
+			+\pi^{j\ell}\partial_\ell\pi^{ki}
+			+\pi^{k\ell}\partial_\ell\pi^{ij}
+		\right).
+	\end{equation}
+	这些系数交替地依赖 \(i,j,k\)，且
+	\begin{equation}\label{g4:eq:0904:jacobiator}
+		\{f,\{g,h\}\}+\{g,\{h,f\}\}+\{h,\{f,g\}\}
+		=\sum_{i,j,k}C^{ijk}(\partial_i f)(\partial_j g)(\partial_k h).
+	\end{equation}
+	特别地，\(\pi\) 是 Poisson 张量，当且仅当所有 \(C^{ijk}\) 都为零。
+\end{proposition}
+
+\begin{proof}
+	将内层括号代入外层，并对乘积求导。微分落在 \(\pi^{ij}\) 上的项恰好组成右端。其余项含某个函数的二阶导数；例如含 \(\partial_i\partial_j f\) 的两组项，在利用二阶导数对称并交换哑指标后，其总和可写为
+	\[
+		\sum_{i,j,k,\ell}
+		\bigl(\pi^{ki}\pi^{\ell j}+\pi^{\ell j}\pi^{ik}\bigr)
+		(\partial_i\partial_j f)(\partial_k g)(\partial_\ell h)=0.
+	\]
+	含 \(g\) 或 \(h\) 的二阶导数同样抵消。这就证明\eqref{g4:eq:0904:jacobiator}。由 \(\pi^{ij}=-\pi^{ji}\) 直接交换任意两个指标，可见 \(C^{ijk}\) 交替。若所有系数为零，Jacobi 恒等式随即成立；反之取 \(f=x^i,g=x^j,h=x^k\)，就得到 \(C^{ijk}=0\)。
+\end{proof}
+
+公式\eqref{g4:eq:0904:jacobiator}还说明，其右端只依赖三个微分，而不依赖函数的其他高阶数据。左端本来就是坐标无关的运算，因此
+\begin{equation}\label{g4:eq:0904:schouten-self-bracket}
+	[\pi,\pi]
+	=2\sum_{i<j<k}C^{ijk}\partial_i\wedge\partial_j\wedge\partial_k,
+	\qquad
+	\frac12[\pi,\pi](\mathrm{d}f,\mathrm{d}g,\mathrm{d}h)
+	=\{f,\{g,h\}\}+\text{循环项}
+\end{equation}
+定义了一个全局三向量场。这是\term[schoutenkuohao]{Schouten 括号}[Schouten bracket]\footnote{Jan Arnoldus Schouten（1883--1971），荷兰数学家，研究张量分析与微分几何。}在两个相同双向量场上的取值；一般的 Schouten 括号把向量场的 Lie 括号扩展到多向量场，本节只需上述完全明确的情形。Poisson 条件由此简写为 \([\pi,\pi]=0\)。
+
+\begin{example}\label{g4:exm:0904:jacobi-tests}
+	在二维流形上，任意光滑双向量场都是 Poisson 张量，因为三向量场恒为零。局部表达式 \(a(x,y)\partial_x\wedge\partial_y\) 中的函数 \(a\) 可以有零点，也可以改变符号。三维时则已有实质条件：在 \(\mathbb R^3\) 上取
+	\[
+		\pi=\partial_x\wedge\partial_y+y\partial_y\wedge\partial_z.
+	\]
+	此时 \(\{x,y\}=1,\{y,z\}=y,\{z,x\}=0\)，所以
+	\[
+		\{x,\{y,z\}\}+\{y,\{z,x\}\}+\{z,\{x,y\}\}=1.
+	\]
+	该双向量场处处秩为 \(2\)，却不是 Poisson 张量。可见秩的条件不能代替 Jacobi 恒等式。
+\end{example}
+
+\begin{proposition}\label{g4:prop:0904:hamiltonian-invariance}
+	在 Poisson 流形上，有
+	\begin{equation}\label{g4:eq:0904:hamiltonian-identities}
+		[X_f,X_g]=-X_{\{f,g\}},
+		\qquad
+		X_f\{g,h\}=\{X_f g,h\}+\{g,X_f h\}.
+	\end{equation}
+	每个 Hamilton 局部流保持 \(\pi\)，因而保持它的秩及 \(\operatorname{im}\pi^\sharp\)。
+\end{proposition}
+
+\begin{proof}
+	在任意测试函数 \(h\) 上，用\eqref{g4:eq:0904:hamiltonian-coordinate}及 Jacobi 恒等式计算，得到
+	\[
+		[X_f,X_g]h
+		=\{\{h,g\},f\}-\{\{h,f\},g\}
+		=-\{h,\{f,g\}\}.
+	\]
+	第二个等式也是同一 Jacobi 恒等式的重排。由张量 Lie 导数的收缩法则，
+	\[
+		(\mathcal L_{X_f}\pi)(\mathrm{d}g,\mathrm{d}h)
+		=X_f\{g,h\}-\{X_f g,h\}-\{g,X_f h\}=0.
+	\]
+	局部坐标函数的微分张成余切空间，故 \(\mathcal L_{X_f}\pi=0\)。第一卷命题13.3.7的张量拉回求导公式给出 \(\Phi_t^*\pi=\pi\)。特别地，\(\mathrm{d}\Phi_t\) 把 \(\operatorname{im}\pi_x^\sharp\) 同构地映到 \(\operatorname{im}\pi_{\Phi_t(x)}^\sharp\)，从而也保持秩。
+\end{proof}
 
 \subsection{特征分布与辛叶}
 \label{g4:subsec:0904:02}
-待撰写
+\begin{definition}\label{g4:def:0904:characteristic-distribution}
+	Poisson 张量的\term[tezhengfenbu]{特征分布}[characteristic distribution]是逐点给定的子空间族
+	\[
+		\mathcal D_x=\operatorname{im}\pi_x^\sharp\subseteq\mathrm{T}_xM.
+	\]
+	它由所有 Hamilton 向量场的取值张成。其维数是 \(\pi_x\) 的秩，由交替型的标准形可知它总是偶数。
+\end{definition}
+
+这里的“分布”允许维数随点变化，因此不能直接应用第一卷的常秩 Frobenius 定理。我们先构造局部坐标，把非退化方向与剩余方向分开。证明中只用非零向量场的流盒、对易流以及逆函数定理。
+
+\begin{theorem}\label{g4:thm:0904:local-splitting}
+	设 \(\pi\) 在 \(x_0\) 处的秩为 \(2r\)。则 \(x_0\) 附近存在以该点为原点的坐标
+	\[
+		(q^1,\ldots,q^r,p_1,\ldots,p_r,z^1,\ldots,z^k),
+		\qquad 2r+k=\dim M,
+	\]
+	使
+	\begin{equation}\label{g4:eq:0904:local-splitting}
+		\pi=\sum_{a=1}^r\partial_{q^a}\wedge\partial_{p_a}
+		+\frac12\sum_{b,c=1}^k c^{bc}(z)\partial_{z^b}\wedge\partial_{z^c},
+		\qquad c^{bc}(0)=0.
+	\end{equation}
+	横向双向量场 \(\pi_T=\frac12\sum c^{bc}(z)\partial_{z^b}\wedge\partial_{z^c}\) 本身满足 Poisson 条件。
+\end{theorem}
+
+\begin{proof}
+	先设 \(r\geq1\)。可选一个局部函数 \(q\)，使 \(X_q(x_0)\neq0\)，并减去常数令 \(q(x_0)=0\)。第一卷定理13.2.7的流盒给出一个坐标函数 \(s\)，满足 \(X_qs=1\)。令 \(p=-s+s(x_0)\)，便有
+	\[
+		\{q,p\}=1,
+		\qquad p(x_0)=0.
+	\]
+	这一步实际求出了与 \(q\) 配对的函数，而非只在一个切空间中选取标准基。
+
+	记 \(A=X_p\)、\(B=-X_q\)。根据上述等式及\cref{g4:prop:0904:hamiltonian-invariance}，
+	\[
+		Aq=1,\quad Ap=0,\quad Bq=0,\quad Bp=1,
+		\qquad [A,B]=0.
+	\]
+	因此 \(\mathrm{d}q,\mathrm{d}p\) 线性无关，\(T=\{q=p=0\}\) 是局部余维 \(2\) 的子流形。取其参数化 \(\sigma(z)\)，并以两个向量场的局部流定义
+	\[
+		F(a,b,z)=\Phi_A^a\bigl(\Phi_B^b(\sigma(z))\bigr).
+	\]
+	在原点处，\(F\) 的导数把 \(\partial_a,\partial_b\) 分别映为 \(A,B\)，其余方向张成 \(\mathrm{T}_{x_0}T\)，所以导数可逆。缩小定义域后，逆函数定理把 \(F\) 变为坐标图。第一卷定理13.3.4保证两个局部流对易，故这组坐标满足
+	\[
+		q\circ F=a,\qquad p\circ F=b,
+		\qquad A=\partial_q,\qquad B=\partial_p.
+	\]
+	从 \(T\) 延伸而来的 \(z\) 坐标沿这两个流保持不变。
+
+	于是 \(\{q,z^b\}=\{p,z^b\}=0\)，而 \(\{q,p\}=1\)。双向量场的坐标矩阵已分成一个标准二阶块与一个横向块。后者的系数 \(c^{bc}=\{z^b,z^c\}\) 满足
+	\[
+		\partial_q c^{bc}
+		=X_p\{z^b,z^c\}
+		=\{X_pz^b,z^c\}+\{z^b,X_pz^c\}=0,
+	\]
+	并且同样有 \(\partial_pc^{bc}=0\)。故它们只依赖 \(z\)。对只依赖 \(z\) 的三个函数使用 Jacobi 恒等式，就知道横向块也是 Poisson 张量。
+
+	在原点，横向块的秩为 \(2r-2\)。对它重复刚才的构造，每次取出一个标准二阶块；有限次后横向块在原点的秩为零，得到\eqref{g4:eq:0904:local-splitting}。若最初 \(r=0\)，任意以 \(x_0\) 为原点的局部坐标已经满足结论。
+\end{proof}
+
+这个结论称为\term[weinsteinfenliedingli]{Weinstein 分裂定理}[Weinstein splitting theorem]。当 \(\pi\) 非退化时，横向部分消失；秩变化的全部可能性则留在 \(\pi_T\) 中。特别地，在以 \(x_0\) 为中心的分裂坐标内，中央子流形 \(z=0\) 上的秩恒为 \(2r\)，其切空间恰好等于 \(\mathcal D\)。
+
+\begin{theorem}\label{g4:thm:0904:symplectic-leaves}
+	每个 Poisson 流形唯一地分解为互不相交的最大连通、单射浸入的光滑流形 \(L\)，满足 \(\mathrm{T}_xL=\mathcal D_x\)。每片 \(L\) 上有唯一的辛形式 \(\omega_L\)，由
+	\begin{equation}\label{g4:eq:0904:leaf-form}
+		(\omega_L)_x(\pi_x^\sharp\alpha,\pi_x^\sharp\beta)
+		=\pi_x(\alpha,\beta)
+	\end{equation}
+	给出。它们称为 \((M,\pi)\) 的\term[xinye]{辛叶}[symplectic leaf]。叶的维数等于其上 \(\pi\) 的秩，叶自身的拓扑可以比它作为 \(M\) 的子集所得的拓扑更细。
+\end{theorem}
+
+\begin{proof}
+	先把逐点张成 \(\mathcal D\) 的 Hamilton 场选成一个可数族。取可数坐标开集对 \(V_i\Subset U_i\)，使 \(V_i\) 覆盖 \(M\)，且 \(\overline V_i\) 是 \(U_i\) 内的紧集。第一卷推论12.3.6给出支集包含于 \(U_i\)、在 \(\overline V_i\) 附近等于 \(1\) 的光滑截断函数 \(\chi_i\)。把 \(\chi_i x_i^j\) 在 \(U_i\) 外延拓为零，得到全局光滑函数。相应的 Hamilton 场构成一个可数族 \(Z_1,Z_2,\ldots\)，并在每一点张成 \(\mathcal D\)。
+
+	定义 \(O_x\) 为从 \(x\) 出发、经过有限个 \(Z_j\) 的局部流所能到达的点集；每次流动只取实际存在的时间。负时间提供逆操作，有限流的连接提供传递性，故这些点集构成 \(M\) 的一个分割。所有 Hamilton 流保持 \(\pi\)，所以 \(\pi\) 的秩在 \(O_x\) 上恒为某个 \(2r\)。
+
+	在 \(y\in O_x\) 处取\cref{g4:thm:0904:local-splitting}的坐标。其中央子流形 \(P=\{z=0\}\) 的切空间就是 \(\mathcal D\)。每个 Hamilton 场沿 \(P\) 都与 \(P\) 相切；积分曲线的唯一性保证，从 \(P\) 出发的短时间轨线留在 \(P\) 中。选取 \(2r\) 个 \(Z_j\)，使其在 \(y\) 处构成 \(\mathcal D_y\) 的一组基。依次沿它们流动，所得时间参数映射在零点的导数是这组基。逆函数定理表明其像包含 \(P\) 中 \(y\) 的一个开邻域。缩小 \(P\) 后便有 \(P\subseteq O_x\)。称这样的中央小片为一个叶片；若 \(r=0\)，叶片就是单点。
+
+	两个叶片在交点附近可以作为同一流形的坐标图相接。确实，在交点 \(w\) 处再取分裂坐标。任一叶片在该坐标域中的点都属于 \(O_x\)，秩均为 \(2r\)，而分裂式给出
+	\[
+		\operatorname{rank}\pi=2r+\operatorname{rank}\pi_T(z).
+	\]
+	所以在这些点上 \(\pi_T(z)=0\)，\(\mathcal D\) 只有 \((q,p)\) 方向。叶片上 \(z\) 的微分为零；在含 \(w\) 的小连通片上，\(z\) 恒等于 \(0\)。两张叶片因此都局部落在同一个中央子流形内，且维数相同，故各自是其中的开集。其重叠是开集，坐标变换是环境坐标变换的限制，因而光滑。
+
+	用全部叶片作为开坐标邻域，赋予 \(O_x\) 流形拓扑和光滑结构。其到 \(M\) 的包含映射连续且为单射浸入；环境流形的 Hausdorff 性也使两个不同的叶上点可被不相交的开集分开。还须验证第二可数性，因为单射浸入的拓扑不必等于子空间拓扑。
+
+	有限流词 \(w=(j_1,\ldots,j_m)\) 只有可数多个。第一卷命题13.1.9给出流的开定义域及光滑性。固定这样的词，允许的时间参数因此组成 \(\mathbb R^m\) 中的开集 \(D_w\)，端点映射
+	\[
+		E_w(t_1,\ldots,t_m)
+		=\Phi_{Z_{j_m}}^{t_m}\circ\cdots\circ\Phi_{Z_{j_1}}^{t_1}(x)
+	\]
+	是光滑的环境流形值映射。每个参数偏导数都是某个 \(Z_j\) 经后续 Hamilton 流推前所得的向量，故落在 \(\mathcal D\) 中。给定 \(t_0\in D_w\)，在 \(E_w(t_0)\) 处取分裂坐标，再取含 \(t_0\) 的小连通参数球，使其像在该坐标域内。所有像点的秩都是 \(2r\)，故横向块在这些点为零；于是 \(\mathrm{d}(z\circ E_w)=0\)，即整个小参数球的像落在一张中央叶片中。继续缩小参数球，可使像落在上面选取的一张叶坐标图内。
+
+	因此 \(D_w\) 可由这样的参数球覆盖。欧氏开集有可数基，可从这一开覆盖中选出可数子覆盖；相应的可数张叶图覆盖 \(E_w(D_w)\)。再遍历可数多个流词，便得到覆盖 \(O_x\) 的可数叶图册。每张欧氏坐标图有可数基，所以 \(O_x\) 第二可数。刚才对端点映射的局部论证也说明每条流动路径在叶拓扑中连续；所有点均由有限条这类路径与 \(x\) 相连，故 \(O_x\) 连通。
+
+	若连通单射浸入流形 \(N\) 的切空间处处等于 \(\mathcal D\)，则在任一点的分裂坐标中，同样由秩相等得到横向块为零，再由 \(\mathrm{d}z|_{\mathrm{T}N}=0\) 得到其小连通片落在中央叶片内。维数相等使这一映射成为局部微分同胚。于是 \(N\) 的各点按它们所属的 \(O_x\) 分成开集；连通性迫使只出现一片 \(O_x\)，且 \(N\) 是该叶中的开子流形。这证明最大性及唯一性。此论证也说明，可以用任何逐点张成 \(\mathcal D\) 的 Hamilton 场族来描述同一组叶。
+
+	最后构造叶上的二形式。若 \(\pi^\sharp\alpha=0\)，则 \(\pi(\alpha,\beta)=0\) 对每个 \(\beta\) 成立，因此\eqref{g4:eq:0904:leaf-form}与协向量代表的选择无关。若 \(\pi(\alpha,\beta)=0\) 对所有 \(\beta\) 成立，则 \(\pi^\sharp\alpha=0\)，所以该二形式非退化。在每张中央叶片上，分裂式直接给出
+	\[
+		\omega_L=\sum_{a=1}^r\mathrm{d}q^a\wedge\mathrm{d}p_a.
+	\]
+	它因而光滑且闭。逐点公式又保证各叶片上的形式一致，给出所需的全局辛形式及其唯一性。
+\end{proof}
+
+在每张叶上，\eqref{g4:eq:0904:leaf-form}给出 \(\iota_{X_f|_L}\omega_L=\mathrm{d}(f|_L)\)。所以一个 Poisson 流形上的 Hamilton 系统，可以逐叶理解为通常的辛 Hamilton 系统。当 \(\pi\) 处处非退化时，叶就是 \(M\) 的连通分支，上述构造给出一个全局辛形式。这也证明了非退化 Poisson 张量与辛形式之间的双向对应。
 
 \subsection{线性 Lie–Poisson 结构}
 \label{g4:subsec:0904:03}
-待撰写
+Lie 代数给出一类系数为线性函数的 Poisson 张量。设 \(\mathfrak g\) 是有限维实 Lie 代数。由于 \(\mathfrak g^*\) 是向量空间，\(\mathrm{T}_\xi\mathfrak g^*=\mathfrak g^*\)，从而自然有 \(\mathrm{T}_\xi^*\mathfrak g^*=\mathfrak g\)。函数在 \(\xi\) 处的微分便可以看作一个 Lie 代数元素。
+
+\begin{proposition}\label{g4:prop:0904:lie-poisson}
+	对 \(f,g\in C^\infty(\mathfrak g^*)\)，令
+	\begin{equation}\label{g4:eq:0904:lie-poisson}
+		\{f,g\}(\xi)=\langle\xi,[\mathrm{d}f_\xi,\mathrm{d}g_\xi]\rangle.
+	\end{equation}
+	它定义了 \(\mathfrak g^*\) 上的 Poisson 张量，称为\term[xianxingliepoissonjiegou]{线性 Lie--Poisson 结构}[linear Lie--Poisson structure]。若 \(\ell_a(\xi)=\langle\xi,a\rangle\)，则
+	\[
+		\{\ell_a,\ell_b\}=\ell_{[a,b]}.
+	\]
+\end{proposition}
+
+\begin{proof}
+	取 \(\mathfrak g\) 的基 \(e_1,\ldots,e_m\)，写 \([e_i,e_j]=\sum_k c_{ij}^{k}e_k\)，并以 \(x_i(\xi)=\langle\xi,e_i\rangle\) 为 \(\mathfrak g^*\) 的坐标。公式\eqref{g4:eq:0904:lie-poisson}对应于
+	\[
+		\pi^{ij}(x)=\sum_k c_{ij}^{k}x_k,
+		\qquad
+		\pi=\frac12\sum_{i,j,k}c_{ij}^{k}x_k\partial_{x_i}\wedge\partial_{x_j}.
+	\]
+	代入\eqref{g4:eq:0904:jacobi-coefficients}，\(C^{ijk}\) 中 \(x_s\) 的系数为
+	\[
+		\sum_\ell\left(
+			c_{i\ell}^{s}c_{jk}^{\ell}
+			+c_{j\ell}^{s}c_{ki}^{\ell}
+			+c_{k\ell}^{s}c_{ij}^{\ell}
+		\right).
+	\]
+	它正是 \([e_i,[e_j,e_k]]+[e_j,[e_k,e_i]]+[e_k,[e_i,e_j]]\) 在 \(e_s\) 方向的系数，由 Lie 代数的 Jacobi 恒等式为零。\cref{g4:prop:0904:jacobi-schouten}完成证明。
+\end{proof}
+
+若 \(\mathfrak g\) 是某个连通 Lie 群 \(G\) 的 Lie 代数，叶还具有群作用的描述。第一卷命题16.1.6--16.1.7定义了伴随表示 \(\operatorname{Ad}_g\)，并证明其无穷小作用为 \(\operatorname{ad}_a b=[a,b]\)。在对偶空间上，定义\term[yubansuizuoyong]{余伴随作用}[coadjoint action]为
+\begin{equation}\label{g4:eq:0904:coadjoint-action}
+	\langle\operatorname{Ad}_g^*\xi,a\rangle
+	=\langle\xi,\operatorname{Ad}_{g^{-1}}a\rangle.
+\end{equation}
+这里的星号按公式包含了 \(g^{-1}\)，从而 \(\operatorname{Ad}_{gh}^*=\operatorname{Ad}_g^*\operatorname{Ad}_h^*\)，确实给出左作用。
+
+\begin{proposition}\label{g4:prop:0904:coadjoint-leaves}
+	\(\mathfrak g^*\) 的线性 Lie--Poisson 结构的辛叶恰好是连通群 \(G\) 的\term[yubansuiguidao]{余伴随轨道}[coadjoint orbit]。若
+	\[
+		a_\xi^\#=\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_{t=0}
+		\operatorname{Ad}_{\exp(ta)}^*\xi,
+	\]
+	则轨道辛形式满足
+	\begin{equation}\label{g4:eq:0904:orbit-form}
+		\omega_\xi(a_\xi^\#,b_\xi^\#)=\langle\xi,[a,b]\rangle.
+	\end{equation}
+\end{proposition}
+
+\begin{proof}
+	对任意 \(b\in\mathfrak g\)，由伴随表示的微分得到
+	\[
+		a_\xi^\#(\ell_b)
+		=\langle\xi,-[a,b]\rangle
+		=\langle\xi,[b,a]\rangle
+		=\{\ell_b,\ell_a\}(\xi).
+	\]
+	故 \(a^\#=X_{\ell_a}\)，它的流是 \(\xi\mapsto\operatorname{Ad}_{\exp(ta)}^*\xi\)。基元素 \(e_i\) 所给出的这些 Hamilton 场在每一点张成 \(\mathcal D\)。依照辛叶定理证明中的最后一个最大性论证，它们的有限流词可达集就是辛叶。
+
+	另一方面，基方向的指数元生成整个连通群 \(G\)。为看清这一点，考虑
+	\[
+		(t_1,\ldots,t_m)\longmapsto
+		\exp(t_1e_1)\cdots\exp(t_me_m).
+	\]
+	由第一卷定理16.2.2及命题16.2.4，指数映射在零点的导数为恒等映射，故上式的导数把标准基映到 \(e_1,\ldots,e_m\)。逆函数定理说明其像包含单位元的一个开邻域。因此由这些指数元生成的子群是开子群；其余陪集也开，连通性迫使该子群等于 \(G\)。于是有限 Hamilton 流词的可达集就是余伴随轨道。其光滑浸入结构已由辛叶定理给出，毋须预先假定该轨道在 \(\mathfrak g^*\) 中嵌入。
+
+	最后，在叶形式\eqref{g4:eq:0904:leaf-form}中取 \(\alpha=\mathrm{d}\ell_a\)、\(\beta=\mathrm{d}\ell_b\)，即得\eqref{g4:eq:0904:orbit-form}。其良定义性、非退化性和闭性均已包含在辛叶定理中。
+\end{proof}
+
+这里自然出现的是余伴随轨道。当 Lie 代数带有适当的不变内积，可以把它与对偶空间识别，余伴随轨道才随之变为伴随轨道；对于矩阵群，后者又是矩阵共轭轨道。线性 Lie--Poisson 括号及其轨道形式也见 Cannas da Silva 的讨论。\cite[第5.1节，第141--142页]{Cannas2006Symplectic}
+
+\begin{example}\label{g4:exm:0904:so3}
+	把 \(a\in\mathbb R^3\) 对应到反对称矩阵 \(\widehat a\)，其中 \(\widehat a(v)=a\times v\)。向量三重积公式给出 \([\widehat a,\widehat b]=\widehat{a\times b}\)。内积 \(-\frac12\operatorname{tr}(AB)\) 对应于 \(\mathbb R^3\) 的点积，并在旋转共轭下不变。由 \(R\widehat aR^{-1}=\widehat{Ra}\)，\(\mathfrak{so}(3)^*\) 因而可识别为带旋转作用的 \(\mathbb R^3\)。其 Poisson 张量为
+	\begin{equation}\label{g4:eq:0904:so3-tensor}
+		\pi=x\partial_y\wedge\partial_z
+		+y\partial_z\wedge\partial_x
+		+z\partial_x\wedge\partial_y.
+	\end{equation}
+	直接代入括号与 \(\pi^\sharp\) 的定义可得
+	\[
+		\{f,g\}(\xi)=\xi\cdot(\nabla f\times\nabla g),
+		\qquad X_f(\xi)=\nabla f(\xi)\times\xi.
+	\]
+	当 \(\xi\neq0\) 时，\(\mathcal D_\xi=\xi^\perp\)，秩为 \(2\)；原点处的秩为零。旋转在每个球面 \(S_R^2\) 上传递，故所有 \(R>0\) 的球面以及原点分别是辛叶。经上述矩阵识别，球面也就是 \(\mathfrak{so}(3)\) 中固定非零特征值的共轭轨道。
+
+	求球面上的辛形式时，记 \(\sigma_R\) 为外法向定向的欧氏面积形式。对切向量 \(u,v\in\xi^\perp\)，有
+	\begin{equation}\label{g4:eq:0904:so3-sphere-form}
+		\omega_\xi(u,v)=\frac{\xi\cdot(u\times v)}{R^2}
+		=\frac1R\sigma_R(u,v),
+		\qquad \int_{S_R^2}\omega=4\pi R.
+	\end{equation}
+	确实，取 \(u=a\times\xi\)、\(v=b\times\xi\)，向量三重积给出 \(\xi\cdot(u\times v)=R^2\xi\cdot(a\times b)\)，恰与\eqref{g4:eq:0904:orbit-form}相符。因而叶的辛面积随 \(R\) 线性变化，而欧氏面积随 \(R^2\) 变化。函数 \(C(\xi)=|\xi|^2\) 满足 \(X_C=2\xi\times\xi=0\)，它在每张叶上为常数。
+\end{example}
 
 \subsection{秩跳跃与奇异叶}
 \label{g4:subsec:0904:04}
-待撰写
+分裂定理只把 \(\pi\) 在所选点处非退化的方向化为标准形式。横向块在原点为零，却可能在任意近的点重新出现非零秩。这样得到的辛叶分解，允许不同维数的叶彼此靠近。
+
+\begin{definition}\label{g4:def:0904:casimir}
+	若 \(C\in C^\infty(M)\) 满足 \(\{C,f\}=0\) 对所有局部光滑函数 \(f\) 成立，则称 \(C\) 为\term[casimirhanshu]{Casimir 函数}[Casimir function]。\footnote{Hendrik Brugt Gerhard Casimir（1909--2000），荷兰理论物理学家，研究量子力学、群表示与超导。}
+\end{definition}
+
+等价地，\(\pi^\sharp\mathrm{d}C=0\)，也就是 \(\mathrm{d}C\) 消灭整个特征分布。因此 Casimir 函数恰好是在每张连通辛叶上为常数的光滑函数。它对任意 Hamilton 系统都是第一积分。反过来，辛叶未必能由光滑 Casimir 函数的取值彼此区分。
+
+\begin{example}\label{g4:exm:0904:rank-jump-plane}
+	在 \(\mathbb R^2\) 上取
+	\[
+		\pi=y\partial_x\wedge\partial_y,
+		\qquad
+		\{f,g\}=y(f_xg_y-f_yg_x),
+		\qquad
+		X_f=y(f_y\partial_x-f_x\partial_y).
+	\]
+	由二维情形的判别，\(\pi\) 是 Poisson 张量。它在 \(y\neq0\) 处秩为 \(2\)，在横轴上秩为零。上半平面和下半平面各是一张二维辛叶，横轴上的每一个点则单独构成一张零维辛叶，见\cref{g4:fig:0904:rank-jump}。
+
+	这个分解也可直接从运动看出。\(X_x=-y\partial_y\) 的流为 \((x,y)\mapsto(x,e^{-t}y)\)，可以在同号的非零高度之间移动；\(X_y=y\partial_x\) 的流为 \((x,y)\mapsto(x+ty,y)\)，可以在固定非零高度任意改变横坐标。因此同一个半平面内的任意两点相互可达。横轴上所有 Hamilton 场都为零，所以其上不同点不能借 Hamilton 流相互到达。
+
+	两个开叶上的辛形式都是
+	\[
+		\omega=\frac1y\,\mathrm{d}x\wedge\mathrm{d}y.
+	\]
+	在二维开叶上它自动闭，而且直接收缩可检验 \(\iota_{X_f}\omega=\mathrm{d}f\)。其系数在接近横轴时无界，这不妨碍它在各自的叶上光滑；辛叶定理并不声称各叶的辛形式能拼成环境流形上的非退化二形式。
+
+	若 \(C\) 是全平面上的光滑 Casimir 函数，它在两个半平面上分别为常数 \(c_+\)、\(c_-\)。在任一横轴点处使用连续性，得到该点的函数值同时等于 \(c_+\) 与 \(c_-\)。所以 \(c_+=c_-\)，且 \(C\) 在整个平面上为常数。这里虽有无穷多张零维叶，全局光滑 Casimir 函数却不能把其中任意两张分开。
+\end{example}
+
+\input{Figures/Ch09-PoissonLeaves}
+
+在秩局部恒定的开集上，分裂式中的横向块处处为零，得到通常的正则叶状结构。秩变化处则须保留横向 Poisson 张量；不同秩的点集也不必各自构成光滑子流形。例如 \(\pi=xy\partial_x\wedge\partial_y\) 仍是平面 Poisson 张量，其秩零点集是两坐标轴之并，在原点不是子流形。最退化的例子是 \(\pi=0\)，此时每一点都是辛叶，每个函数都是 Casimir 函数。由此可见，退化 Poisson 几何同时记录两类信息：每张叶内部的辛运动，以及这些运动区域在整个流形中的排列方式。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

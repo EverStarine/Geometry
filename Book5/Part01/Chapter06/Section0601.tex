@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 6.1 平坦性的代数判据
 % 纲要位置：几何学计划纲要.md，第 5224 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,355 @@
 \section{平坦性的代数判据}
 \label{g5:sec:0601}
 
-待撰写
+把一个线性方程组的系数送到另一个环后，原来的解之间可能出现新的关系。张量积精确地实施这一系数变换，而平坦性要求其中原有的单射仍能保留下来。第二章已经给出平坦模的定义及其与有限投射模的联系；现在需要把“检验所有单射”变成可以实际使用的代数条件。关键在于：一个张量元素及其所涉及的关系总是有限的，因此可以先研究有限个系数构成的方程，再把结论用于任意模。
 
 \subsection{张量右正合与左端障碍}
 \label{g5:subsec:0601:01}
-待撰写
+
+以下环均为交换含幺环，模均为含幺模。由\cref{g5:prop:tensor-right-exact}，任意短正合列
+\[
+	0\longrightarrow U\longrightarrow V\longrightarrow W\longrightarrow0
+\]
+与一个 \(A\) 模 \(M\) 张量后，总得到右正合列
+\[
+	U\otimes_A M\longrightarrow V\otimes_A M
+	\longrightarrow W\otimes_A M\longrightarrow0.
+\]
+按照\cref{g5:def:flat-module}，\(M\) 平坦恰好表示第一张映射也总为单射。特别地，平坦性保持任意正合列：把相邻同态经各自的像分解，便可逐段应用短正合列的保持性质。
+
+\ProseParagraphBreak
+
+这个左端条件测量的是具体关系。例如\cref{g5:exm:tensor-loses-injection}中，\(A=k[t]\) 上乘以 \(t\) 的单射，张量 \(A/(t)\) 后变成了零映射。作为系数作用的 \(t\) 消失了，原来的嵌入也随之消失。与此相对，自由模、有限投射模以及局部化 \(S^{-1}A\) 都平坦。对任意指标集 \(J\)，公式
+\[
+	N\otimes_A\Bigl(\bigoplus_{j\in J}A\Bigr)
+	\cong\bigoplus_{j\in J}N
+\]
+把张量的有限和逐坐标展开，说明任意秩的自由模都保持单射；投射直和分量也保持单射。局部化的结论则来自\cref{g5:thm:localization-exact,g5:prop:localization-tensor}。
+
+\begin{definition}\label{g5:def:flat-homomorphism}
+	设 \(\varphi:A\to B\) 为交换含幺环同态。若 \(B\) 经 \(\varphi\) 成为平坦 \(A\) 模，就称 \(\varphi\) 为\term[pingtantongtai]{平坦同态}[flat homomorphism]，也称 \(B\) 为平坦 \(A\) 代数。
+\end{definition}
+
+平坦同态不必单射。例如环的投影 \(k\times k\to k\) 是平坦同态，因为目标是源环作为模的一个直和分量。这与平坦模定义中的“保持单射”不矛盾：定义要求保持的是与该模张量的任意模同态，并没有要求结构同态 \(A\to B\) 自身单射。
+
+\ProseParagraphBreak
+
+为了处理所有模中的包含关系，可以先把较大的模写成自由模的商。下面的归约说明，即使检验对象限制为有限秩自由模中的子模，仍足以检测平坦性。子模本身无需有限生成。
+
+\begin{lemma}\label{g5:lem:flat-submodule-free-test}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模。则 \(M\) 平坦，当且仅当对每个有限整数 \(r\geq0\) 及每个子模 \(H\subseteq A^r\)，自然映射
+	\[
+		H\otimes_A M\longrightarrow A^r\otimes_A M
+	\]
+	都是单射。
+\end{lemma}
+\begin{proof}
+	必要性就是平坦性的定义。为证充分性，先把假设扩展到任意自由模 \(F=\bigoplus_{j\in J}Ae_j\) 的子模 \(H\)。若
+	\[
+		z=\sum_{i=1}^n h_i\otimes m_i\in H\otimes_A M
+	\]
+	在 \(F\otimes_A M\) 中为零，所有 \(h_i\) 只涉及有限多个基向量。取这些基向量张成的有限自由直和分量 \(F_0\subseteq F\)，并令 \(H_0=H\cap F_0\)。同一个表达式给出 \(z_0\in H_0\otimes_A M\)。因 \(F_0\) 是直和分量，\(F_0\otimes_A M\to F\otimes_A M\) 仍单射，故 \(z_0\) 在 \(F_0\otimes_A M\) 中为零。假设使 \(z_0=0\)，从而 \(z=0\)。这证明了任意自由模中的子模检验。
+
+	现在取任意包含 \(U\subseteq V\)。选自由模满射 \(\pi:F\to V\)，令
+	\[
+		K=\ker\pi,\qquad H=\pi^{-1}(U).
+	\]
+	则 \(H/K\cong U\)、\(F/K\cong V\)。张量右正合性给出交换图
+	\[
+		\begin{tikzcd}[column sep=small]
+			K\otimes_A M\arrow[r]\arrow[d,equal]&
+			H\otimes_A M\arrow[r]\arrow[d]&
+			U\otimes_A M\arrow[r]\arrow[d]&0\\
+			K\otimes_A M\arrow[r]&
+			F\otimes_A M\arrow[r]&
+			V\otimes_A M\arrow[r]&0 .
+		\end{tikzcd}
+	\]
+	两行正合，中间竖箭头由刚证的自由模情形为单射。
+
+	若 \(z\in U\otimes_A M\) 在下行中变成零，先把它提升为 \(w\in H\otimes_A M\)。\(w\) 在 \(F\otimes_A M\) 中的像属于 \(K\otimes_A M\) 的像，故可选 \(q\in K\otimes_A M\) 给出这个像。从 \(w\) 减去 \(q\) 在上行中的像后，所得元素在 \(F\otimes_A M\) 中为零，由中间竖箭头单射可知它为零。因此 \(w\) 本来就在上行左箭头的像中，进而 \(z=0\)。于是任意 \(U\subseteq V\) 张量后仍单射，\(M\) 平坦。
+\end{proof}
+
+这个证明把任意单射中的一个待检验元素，逐步放到了有限个自由坐标中。下一步便是把“在自由模中映为零”写成有限线性方程组。
 
 \subsection{有限关系判据}
 \label{g5:subsec:0601:02}
-待撰写
+
+给定 \(a_1,\ldots,a_n\in A\)，标量解
+\[
+	(a_1,\ldots,a_n)
+	\begin{pmatrix}b_1\\ \vdots\\ b_n\end{pmatrix}=0
+\]
+可以与任意 \(y\in M\) 相乘，得到模中的解 \((b_1y,\ldots,b_ny)\)。把有限多个这样的解相加，仍得到模中的解。平坦性的有限关系判据断言：平坦模中的每一个有限关系，都能由这种方式获得。
+
+\begin{theorem}\label{g5:thm:flat-equational-criterion}
+	设 \(A\) 为交换含幺环，\(M\) 为任意 \(A\) 模。下列条件等价：
+	\begin{equivalences}
+		\item \(M\) 为平坦 \(A\) 模。
+		\item 对任意 \(n\geq1\)、\(a_1,\ldots,a_n\in A\) 及 \(x_1,\ldots,x_n\in M\)，若
+		\[
+			\sum_{j=1}^n a_jx_j=0,
+		\]
+		则存在有限个 \(y_1,\ldots,y_s\in M\) 和 \(b_{j\ell}\in A\)，使
+		\[
+			x_j=\sum_{\ell=1}^s b_{j\ell}y_\ell,\qquad
+			\sum_{j=1}^n a_jb_{j\ell}=0
+			\quad(1\leq\ell\leq s).
+		\]
+		\item 对任意有限矩阵 \(C=(a_{ij})\in\operatorname{Mat}_{r\times n}(A)\)，若列向量 \(x=(x_j)\in M^n\) 满足 \(Cx=0\)，则存在有限矩阵 \(E=(b_{j\ell})\in\operatorname{Mat}_{n\times s}(A)\) 和 \(y=(y_\ell)\in M^s\)，使
+		\begin{equation}\label{g5:eq:flat-relation-factorization}
+			x=Ey,\qquad CE=0.
+		\end{equation}
+	\end{equivalences}
+	这里允许 \(s=0\)，此时相应的和为零。
+\end{theorem}
+\begin{proof}
+	先设 \(M\) 平坦。把矩阵 \(C\) 看作同态 \(A^n\to A^r\)，令 \(K=\ker C\)。平坦性保持
+	\[
+		K\longrightarrow A^n\xrightarrow{C}A^r
+	\]
+	在中间的正合性，故 \(x\in\ker(C\otimes1_M)\) 来自某个 \(K\otimes_A M\) 的元素。张量元素可写成有限和
+	\[
+		\sum_{\ell=1}^s v_\ell\otimes y_\ell,\qquad
+		v_\ell=(b_{1\ell},\ldots,b_{n\ell})^{\mathsf T}\in K.
+	\]
+	以 \(v_\ell\) 为列组成矩阵 \(E\)，就得到 \(x=Ey\) 及 \(CE=0\)。因此第一条件蕴含第三条件；取 \(r=1\)，又得到第二条件。
+
+	接下来证明，第二条件中的一个方程已经足以处理任意有限个方程。对方程数 \(r\) 归纳。\(r=1\) 正是第二条件。若 \(r>1\)，先对第一行方程应用该条件，把 \(x\) 写成 \(x=E_1y\)，并使 \(C\) 的第一行乘 \(E_1\) 为零。把这个表达代入其余 \(r-1\) 行，得到关于 \(y\) 的新方程组
+	\[
+		C' E_1y=0,
+	\]
+	其中 \(C'\) 由 \(C\) 的后 \(r-1\) 行组成。归纳假设给出 \(y=E_2z\)、\(C'E_1E_2=0\)。于是 \(E=E_1E_2\) 同时满足 \(x=Ez\) 和 \(CE=0\)。若某一步已经得到 \(x=0\)，取空矩阵即可。因此第二条件蕴含第三条件。
+
+	最后设第三条件成立。按\cref{g5:lem:flat-submodule-free-test}，只需检验任意子模 \(H\subseteq A^r\) 张量后仍嵌入。设
+	\[
+		z=\sum_{j=1}^n h_j\otimes x_j\in H\otimes_A M
+	\]
+	在 \(A^r\otimes_A M=M^r\) 中为零。写 \(h_j\) 的第 \(i\) 个坐标为 \(a_{ij}\)，组成矩阵 \(C=(a_{ij})\)。映为零恰好是 \(Cx=0\)。由第三条件选 \(x=Ey\)、\(CE=0\)，便有
+	\[
+		z=\sum_{\ell=1}^s
+		\left(\sum_{j=1}^n b_{j\ell}h_j\right)\otimes y_\ell.
+	\]
+	每个括号中的元素，其全部坐标由 \(CE=0\) 为零；它在子模 \(H\) 中也为零。因此 \(z=0\)，所需单射成立，\(M\) 平坦。
+\end{proof}
+
+有限关系判据中的“有限”约束的是每次被检验的关系，而不是整个模的生成元数。它也没有要求 \(\ker C\) 有限生成：每个具体的张量只取用了其中有限多个向量。这个区别使判据能够用于非 Noether 环和无限生成模。\cref{g5:thm:flat-equational-criterion}对应\cite[第7节，定理7.6，第49--50页]{Matsumura1989}。
+
+\ProseParagraphBreak
+
+以一个系数为例，若 \(ax=0\)，判据要求
+\[
+	x=\sum_\ell b_\ell y_\ell,\qquad ab_\ell=0.
+\]
+因此平坦模中被 \(a\) 杀死的元素，只能由环中本来被 \(a\) 杀死的系数生成。多系数关系则同时约束这些元素如何组合，这比逐个检验一个标量的乘法要强。
 
 \subsection{有限生成理想张量判据}
 \label{g5:subsec:0601:03}
-待撰写
+
+给定理想 \(I\subseteq A\)，自然映射
+\[
+	\mu_I:I\otimes_A M\longrightarrow M,\qquad
+	a\otimes m\longmapsto am
+\]
+的像总是 \(IM\)。所以这张映射是否单射，等价于：乘积之间的零关系是否已经由张量的平衡关系解释。若 \(I=(a_1,\ldots,a_n)\)，它恰好集中检验带这些系数的有限关系。
+
+\begin{theorem}\label{g5:thm:flat-ideal-criterion}
+	设 \(A\) 为交换含幺环，\(M\) 为任意 \(A\) 模。下列条件等价：
+	\begin{equivalences}
+		\item \(M\) 为平坦 \(A\) 模；
+		\item 对每个有限生成理想 \(I\subseteq A\)，乘法映射
+		\[
+			\mu_I:I\otimes_A M\longrightarrow M
+		\]
+		为单射；
+		\item 对每个理想 \(I\subseteq A\)，\(\mu_I\) 都为单射。
+	\end{equivalences}
+	这些条件成立时，\(\mu_I\) 自然识别 \(I\otimes_A M\) 与 \(IM\)。
+\end{theorem}
+\begin{proof}
+	平坦性把包含 \(I\hookrightarrow A\) 变成单射
+	\(I\otimes_A M\to A\otimes_A M=M\)，所以第一条件蕴含第三条件，第三条件也蕴含第二条件。
+
+	设第二条件成立。任取有限关系 \(\sum_{j=1}^n a_jx_j=0\)，令
+	\[
+		I=(a_1,\ldots,a_n),\qquad
+		q:A^n\longrightarrow I,\quad e_j\longmapsto a_j,\qquad
+		K=\ker q.
+	\]
+	元素 \(z=\sum_j a_j\otimes x_j\in I\otimes_A M\) 满足 \(\mu_I(z)=0\)，由假设 \(z=0\)。张量右正合性使
+	\[
+		K\otimes_A M\longrightarrow M^n
+		\xrightarrow{q\otimes1} I\otimes_A M\longrightarrow0
+	\]
+	正合。因此列向量 \((x_j)\) 是某个有限和
+	\(\sum_\ell v_\ell\otimes y_\ell\)、\(v_\ell\in K\)，的像。写
+	\(v_\ell=(b_{1\ell},\ldots,b_{n\ell})^{\mathsf T}\)，便有
+	\[
+		x_j=\sum_\ell b_{j\ell}y_\ell,\qquad
+		\sum_j a_jb_{j\ell}=0.
+	\]
+	这正是有限关系判据，故 \(M\) 平坦。最后，\(\mu_I\) 的像本来就是 \(IM\)，其单射性给出所述识别。
+\end{proof}
+
+这里足够检验的是有限生成理想，而不是要求环的全部理想都有限生成。这一判据见\cite[第7节，定理7.7，第50--51页]{Matsumura1989}。实际使用时，发现某个 \(I\otimes_A M\to M\) 有非零核就能否定平坦性；反方向则必须处理所有有限生成理想。
+
+\ProseParagraphBreak
+
+当 \(I=(a)\) 时，取一个系数的有限关系判据还给出如下等式：
+\begin{equation}\label{g5:eq:flat-annihilator}
+	(0:_M a)=\operatorname{Ann}_A(a)\,M
+	\qquad\text{若 \(M\) 为平坦 \(A\) 模}.
+\end{equation}
+左端表示被 \(a\) 杀死的模元素，右端表示由被 \(a\) 杀死的环元素作用于 \(M\) 后生成的子模。右端包含于左端对任何模都成立；另一包含由上一小节对 \(ax=0\) 的分解得到。对于没有零因子的 \(a\)，右端为零，因而乘以 \(a\) 在平坦模上也没有核。
 
 \subsection{局部化及局部检测}
 \label{g5:subsec:0601:04}
-待撰写
+
+第二章的\cref{g5:prop:flat-local-detection}已经证明：一个 \(A\) 模 \(M\) 平坦，当且仅当全部 \(M_{\mathfrak p}\) 在 \(A_{\mathfrak p}\) 上平坦，而且只查极大理想便足够。其证明先取任意张量映射的核，再用局部化的正合性和模消失的局部检测。为了研究一个 \(A\) 代数 \(B\) 上的模，还需要允许在 \(\operatorname{Spec}B\) 上逐点检验相对于 \(A\) 的平坦性。先记录改变系数环时所用的基本同构。
+
+\begin{proposition}\label{g5:prop:flat-base-change}
+	设 \(A\to B\) 为交换含幺环同态。
+	\begin{enumerate}
+		\item 若 \(M\) 为平坦 \(A\) 模，则 \(B\otimes_A M\) 为平坦 \(B\) 模。
+		\item 若 \(B\) 为平坦 \(A\) 模，且 \(N\) 为平坦 \(B\) 模，则 \(N\) 经标量限制成为平坦 \(A\) 模。
+	\end{enumerate}
+	因此平坦同态在任意基变换及复合下保持平坦。
+\end{proposition}
+\begin{proof}
+	对任意 \(B\) 模 \(U\)，有自然同构
+	\[
+		U\otimes_B(B\otimes_A M)\cong U\otimes_A M,\qquad
+		u\otimes(b\otimes m)\longmapsto bu\otimes m,
+	\]
+	逆映射为 \(u\otimes m\mapsto u\otimes(1\otimes m)\)。一个 \(B\) 模单射也为 \(A\) 模单射，故右侧由 \(M\) 的平坦性保持单射，得到第一断言。这里不要求 \(B\) 平坦于 \(A\)。
+
+	对任意 \(A\) 模 \(U\)，又有
+	\[
+		U\otimes_A N\cong(U\otimes_A B)\otimes_B N,
+	\]
+	同构把 \((u\otimes b)\otimes n\) 送到 \(u\otimes bn\)。若 \(B\) 平坦于 \(A\)，第一步张量保持单射；若 \(N\) 平坦于 \(B\)，第二步也保持单射，故得到第二断言。将第一断言用于一个平坦代数的系数变换，将第二断言用于两步平坦环同态，便得到最后的结论。
+\end{proof}
+
+特别地，\(S^{-1}M\cong S^{-1}A\otimes_A M\) 在 \(M\) 平坦时为平坦 \(S^{-1}A\) 模。它同时也是平坦 \(A\) 模，因为 \(S^{-1}A\) 在 \(A\) 上平坦，再用第二断言即可。基变换及复合性质可对照\cite[第7节，第46页]{Matsumura1989}。
+
+\begin{proposition}\label{g5:prop:relative-flat-localization}
+	设 \(A\to B\) 为交换含幺环同态，\(M\) 为 \(B\) 模且作为 \(A\) 模平坦，\(T\subseteq B\) 为含 \(1\) 的乘法集。则 \(T^{-1}M\) 作为 \(A\) 模仍平坦。
+\end{proposition}
+\begin{proof}
+	对任意 \(A\) 模 \(U\)，\(U\otimes_A M\) 通过第二因子成为 \(B\) 模，并有自然同构
+	\[
+		T^{-1}(U\otimes_A M)\cong U\otimes_A T^{-1}M,\qquad
+		\frac{u\otimes m}{t}\longmapsto u\otimes\frac mt.
+	\]
+	它也可由
+	\(T^{-1}B\otimes_B(U\otimes_A M)\) 的张量结合律得到。对任意 \(A\) 模单射 \(U\to V\)，先与 \(M\) 张量得到 \(B\) 模单射，再按 \(T\) 局部化仍为单射。用上述同构识别结果，就证明 \(T^{-1}M\) 平坦于 \(A\)。
+\end{proof}
+
+\begin{proposition}\label{g5:prop:flat-local-test}
+	设 \(\varphi:A\to B\) 为交换含幺环同态，\(M\) 为任意 \(B\) 模。对 \(\mathfrak q\in\operatorname{Spec}B\)，令
+	\(\mathfrak p=\varphi^{-1}(\mathfrak q)\)，并通过 \(A_{\mathfrak p}\to B_{\mathfrak q}\) 把 \(M_{\mathfrak q}\) 看作 \(A_{\mathfrak p}\) 模。下列条件等价：
+	\begin{equivalences}
+		\item \(M\) 作为 \(A\) 模平坦；
+		\item 对每个 \(\mathfrak q\in\operatorname{Spec}B\)，\(M_{\mathfrak q}\) 为平坦 \(A_{\mathfrak p}\) 模；
+		\item 对每个极大理想 \(\mathfrak q\subseteq B\)，\(M_{\mathfrak q}\) 为平坦 \(A_{\mathfrak p}\) 模。
+	\end{equivalences}
+\end{proposition}
+\begin{proof}
+	若 \(M\) 为平坦 \(A\) 模，由\cref{g5:prop:relative-flat-localization}，\(M_{\mathfrak q}\) 仍平坦于 \(A\)。对任意 \(A_{\mathfrak p}\) 模 \(U\)，有
+	\[
+		U\otimes_A M_{\mathfrak q}
+		\cong U\otimes_{A_{\mathfrak p}}M_{\mathfrak q}.
+	\]
+	确实，分母 \(s\in A\setminus\mathfrak p\) 已在两因子上可逆，张量中的关系
+	\((s^{-1}u)\otimes m=u\otimes(s^{-1}m)\)
+	可通过把原有的 \(A\) 平衡关系应用于 \(s^{-1}u,s^{-1}m\) 得到。因此一个 \(A_{\mathfrak p}\) 模单射与 \(M_{\mathfrak q}\) 张量后仍单射，得到第二条件。第二条件当然蕴含第三条件。
+
+	反过来，设第三条件成立。给定任意 \(A\) 模单射 \(U\hookrightarrow V\)，记
+	\[
+		K=\ker\bigl(U\otimes_A M\longrightarrow V\otimes_A M\bigr).
+	\]
+	这是一个 \(B\) 模。在任意极大理想 \(\mathfrak q\subseteq B\) 处局部化，局部化正合性及张量同构给出
+	\[
+		K_{\mathfrak q}
+		\cong\ker\left(
+		U_{\mathfrak p}\otimes_{A_{\mathfrak p}}M_{\mathfrak q}
+		\longrightarrow
+		V_{\mathfrak p}\otimes_{A_{\mathfrak p}}M_{\mathfrak q}
+		\right).
+	\]
+	这里先将 \(B\) 的分母移到 \(M\) 一侧，再将 \(A\setminus\mathfrak p\) 的分母移到第一因子，便得到所用同构。原单射局部化为 \(U_{\mathfrak p}\hookrightarrow V_{\mathfrak p}\)，而 \(M_{\mathfrak q}\) 按假设平坦，所以 \(K_{\mathfrak q}=0\)。将\cref{g5:prop:local-detection}用于 \(B\) 模 \(K\)，得 \(K=0\)。于是 \(M\) 平坦于 \(A\)。
+\end{proof}
+
+这就是\cite[第7节，定理7.1，第46--47页]{Matsumura1989}的相对局部检测。它检验的是 \(M_{\mathfrak q}\) 在 \(A_{\mathfrak p}\) 上的平坦性，并非在 \(B_{\mathfrak q}\) 上的平坦性；后一个性质属于另一组系数关系。此外，\(B\) 的极大理想收缩到 \(A\) 后未必极大，例如 \(\mathbb Z\to\mathbb Q\) 中的 \((0)\) 收缩仍为 \((0)\)。陈述中的 \(A_{\mathfrak p}\) 因而必须保留实际的收缩素理想。
+
+\ProseParagraphBreak
+
+若主开集 \(D(f_i)\) 覆盖 \(\operatorname{Spec}A\)，则 \(M\) 平坦当且仅当每个 \(M_{f_i}\) 平坦于 \(A_{f_i}\)。必要性来自局部化；充分性是在任意 \(\mathfrak p\) 处选 \(f_i\notin\mathfrak p\)，再局部化得到平坦 \(A_{\mathfrak p}\) 模，最后应用第二章的局部检测。这一叙述无需模有限生成，也不要求给定覆盖为有限覆盖。
 
 \subsection{无挠和平坦的不同范围}
 \label{g5:subsec:0601:05}
-待撰写
+
+平坦性首先排除了某些标量产生的新零关系。若基环为整环，每个非零标量在环上都给出单射，所以它在平坦模上也必须给出单射。这就是无挠性。但在多个系数同时出现时，还可能发生一个标量看不出的障碍。
+
+\begin{definition}\label{g5:def:torsion-free-module}
+	设 \(A\) 为整环，\(M\) 为 \(A\) 模。若对任意 \(0\ne a\in A\) 和 \(m\in M\)，等式 \(am=0\) 都蕴含 \(m=0\)，则称 \(M\) 为\term[wuniaomo]{无挠模}[torsion-free module]。
+\end{definition}
+
+\begin{proposition}\label{g5:prop:flat-torsion-free}
+	设 \(A\) 为整环，\(M\) 为平坦 \(A\) 模。则 \(M\) 无挠。
+\end{proposition}
+\begin{proof}
+	对任意 \(0\ne a\in A\)，乘法映射 \(A\xrightarrow{a}A\) 为单射。与 \(M\) 张量后得到 \(M\xrightarrow{a}M\)，由平坦性仍为单射。
+\end{proof}
+
+\begin{example}\label{g5:exm:torsion-free-nonflat-ideal}
+	设 \(k\) 为任意域，\(A=k[x,y]\)，\(I=(x,y)\subseteq A\)。作为整环的子模，\(I\) 无挠；但 \(I\) 不是平坦 \(A\) 模。
+
+	为证明不平坦，考察
+	\[
+		\mu_I:I\otimes_A I\longrightarrow I,\qquad
+		f\otimes g\longmapsto fg.
+	\]
+	元素
+	\[
+		z=x\otimes y-y\otimes x
+	\]
+	映到 \(xy-yx=0\)。我们还必须确认 \(z\) 在张量积中非零。令 \(\mathfrak m=(x,y)\)，有自然映射
+	\[
+		I\otimes_A I\longrightarrow
+		(I/\mathfrak mI)\otimes_k(I/\mathfrak mI).
+	\]
+	由于 \(\mathfrak mI=(x,y)^2\)，商模 \(I/\mathfrak mI\) 以 \(\bar x,\bar y\) 为 \(k\) 基。\(z\) 的像为
+	\[
+		\bar x\otimes\bar y-\bar y\otimes\bar x,
+	\]
+	它是两个不同的张量基向量之差，在任意特征下都非零。所以 \(z\ne0\)，\(\mu_I\) 不单射，由\cref{g5:thm:flat-ideal-criterion}知 \(I\) 不平坦。这个障碍由两个生成元之间的关系 \(yx-xy=0\) 产生，逐个检验非零标量的单射性看不到它。
+\end{example}
+
+若所有理想都由一个元素生成，理想判据就把平坦性完全归约到一个标量的单射性。
+
+\begin{proposition}\label{g5:prop:torsion-free-pid-flat}
+	设 \(A\) 为主理想整环，\(M\) 为任意 \(A\) 模。则 \(M\) 平坦当且仅当 \(M\) 无挠。特别地，该结论对任意离散赋值环成立，且不要求 \(M\) 有限生成。
+\end{proposition}
+\begin{proof}
+	平坦蕴含无挠已经证明。反过来，设 \(M\) 无挠。任意理想 \(I\subseteq A\) 都为主理想。若 \(I=0\)，\(I\otimes_A M\to M\) 自然单射；若 \(I=aA\)、\(a\ne0\)，则
+	\[
+		A\xrightarrow{\ \sim\ }I,\qquad r\longmapsto ar
+	\]
+	是模同构。在由此得到的识别 \(I\otimes_A M\cong M\) 下，乘法映射 \(\mu_I\) 正是 \(M\xrightarrow{a}M\)。无挠性使它单射，因此理想判据给出平坦性。DVR 为主理想整环，已由\cref{g5:thm:dvr-characterizations}证明，故适用同一结论。
+\end{proof}
+
+例如 \(\mathbb Q\) 作为 \(\mathbb Z\) 模无挠，因而平坦；它不是自由 \(\mathbb Z\) 模。确实，乘以 \(2\) 在 \(\mathbb Q\) 上为满射，而在非零自由 \(\mathbb Z\) 模上不满。更一般地，DVR \(R\) 的分式域 \(K\) 平坦于 \(R\)，却不是自由 \(R\) 模：若 \(\pi\) 为统一化元，则 \(K/\pi K=0\)，而任何非零自由 \(R\) 模模去 \(\pi\) 后都有非零剩余向量空间。无限生成的平坦模因而仍有别于自由模。
+
+\begin{corollary}\label{g5:cor:dedekind-torsion-free-flat}
+	设 \(A\) 为 Dedekind 整环，允许 \(A\) 为域，\(M\) 为任意 \(A\) 模。则 \(M\) 平坦当且仅当 \(M\) 无挠。
+\end{corollary}
+\begin{proof}
+	只需证明无挠蕴含平坦。无挠性在整环的局部化下保持：若
+	\((a/s)(m/t)=0\) 且 \(a/s\ne0\)，则某个被反演的非零元素 \(u\) 满足 \(uam=0\)；\(ua\ne0\)，故 \(m=0\)。因此每个 \(M_{\mathfrak p}\) 都无挠于 \(A_{\mathfrak p}\)。
+
+	由\cref{g5:thm:dedekind-local}，非零素理想处的 \(A_{\mathfrak p}\) 为 DVR，故上一命题说明 \(M_{\mathfrak p}\) 平坦。零素理想处的局部环是分式域，其上所有模都是自由向量空间，也平坦。最后用\cref{g5:prop:flat-local-detection}得到 \(M\) 平坦。若 \(A\) 本来是域，直接使用向量空间的自由性即可。
+\end{proof}
+
+Dedekind 整环上的这一结论也见\cite[第11节，习题11.8，第86页]{Matsumura1989}。第四章的局部 DVR 刻画由此把无挠性与平坦性联系起来，而二维多项式环上的理想 \((x,y)\) 已显示这种联系不能延伸到任意整环。一般情况下，主理想只检验单个标量；完整的平坦性需要保留有限生成理想所编码的全部系数关系。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 10.3 可计算的约化模型
 % 纲要位置：几何学计划纲要.md，第 3865 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,353 @@
 \section{可计算的约化模型}
 \label{g4:sec:1003}
 
-待撰写
+约化定理用限制和下降确定商上的辛形式。真正计算时，可以寻找商坐标，也可以选择水平集的局部截面，把环境辛形式拉回到这些坐标中。本节依次采用这两种办法：零动量的余切约化仍是余切丛，圆周约化给出射影空间上的辛形式，群自身的余切丛则产生余伴随轨道。最后讨论分两次施加约束、分两次取商何时得到同一个辛流形。
 
 \subsection{余切丛约化}
 \label{g4:subsec:1003:01}
-待撰写
+
+设有限维实 Lie 群 \(G\) 光滑作用于无边界流形 \(Q\)。记 \(\pi_Q:\mathrm{T}^*Q\to Q\) 为投影，\(\theta_Q\) 为典范一形式，\(\omega_Q=-\mathrm{d}\theta_Q\)。由\cref{g4:prop:0702:cotangent-lift}，作用有余切提升
+\[
+	g\cdot(q,p)=\bigl(gq,(\mathrm{d}(g^{-1})_{gq})^*p\bigr),
+\]
+并且整个 \(G\) 保持 \(\theta_Q\) 和 \(\omega_Q\)。这里 \(p\in\mathrm{T}_q^*Q\)，右边的新协向量作用在 \(v\in\mathrm{T}_{gq}Q\) 上的值是 \(p(\mathrm{d}(g^{-1})_{gq}v)\)。
+
+\begin{proposition}\label{g4:prop:1003:cotangent-moment}
+	设有限维实 Lie 群 \(G\) 光滑左作用于无边界光滑流形 \(Q\)。其在 \((\mathrm{T}^*Q,-\mathrm{d}\theta_Q)\) 上的余切提升是 Hamilton 作用，等变矩映射为
+	\begin{equation}\label{g4:eq:1003:cotangent-moment}
+		\langle\mu(q,p),\xi\rangle=p\bigl(\xi_Q(q)\bigr),
+		\qquad \xi\in\mathfrak g.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	提升作用与 \(\pi_Q\) 交换，所以
+	\[
+		\iota_{\xi_{\mathrm{T}^*Q}}\theta_Q
+		=p\bigl(\mathrm{d}\pi_Q(\xi_{\mathrm{T}^*Q})\bigr)
+		=p(\xi_Q)=\mu^\xi.
+	\]
+	由于 \(\mathcal L_{\xi_{\mathrm{T}^*Q}}\theta_Q=0\)，第一卷定理14.1.5的 Cartan 公式给出
+	\[
+		\iota_{\xi_{\mathrm{T}^*Q}}\omega_Q
+		=-\iota_{\xi_{\mathrm{T}^*Q}}\mathrm{d}\theta_Q
+		=\mathrm{d}\bigl(\iota_{\xi_{\mathrm{T}^*Q}}\theta_Q\bigr)
+		=\mathrm{d}\mu^\xi.
+	\]
+	这也核定了矩映射前的正号。
+
+	对等变性，基本场满足
+	\(\xi_Q(gq)=\mathrm{d}g_q((\operatorname{Ad}_{g^{-1}}\xi)_Q(q))\)。
+	代入余切提升的定义，得到
+	\[
+		\mu^\xi(g\cdot(q,p))
+		=p\bigl((\operatorname{Ad}_{g^{-1}}\xi)_Q(q)\bigr)
+		=\langle\operatorname{Ad}_g^*\mu(q,p),\xi\rangle.
+	\]
+	故 \(\mu\) 对整个群等变。
+\end{proof}
+
+矩映射把协向量沿群运动方向的分量收集起来。特别地，零水平由消灭全部轨道切向量的协向量组成。这使它能直接与底空间商的余切丛比较。
+
+\begin{theorem}\label{g4:thm:1003:cotangent-reduction}
+	设有限维实 Lie 群 \(G\) 在无边界光滑流形 \(Q\) 上自由且固有地作用，二者均为 Hausdorff、第二可数，且 \(Q\ne\varnothing\)。令 \(B=Q/G\)，商映射为 \(r:Q\to B\)。对余切提升的矩映射 \(\mu\)，零是正则值，提升作用在 \(Z=\mu^{-1}(0)\) 上自由且固有。存在自然辛同胚
+	\begin{equation}\label{g4:eq:1003:cotangent-reduction}
+		\Phi:Z/G\longrightarrow\mathrm{T}^*B,
+		\qquad
+		\Phi([q,p])=\beta,\quad p=(\mathrm{d}r_q)^*\beta.
+	\end{equation}
+	右端取典范辛形式 \(-\mathrm{d}\theta_B\)。
+\end{theorem}
+\begin{proof}
+	第一卷定理17.2.6保证 \(B\) 是光滑流形，\(r\) 是满射淹没，且有光滑局部截面和局部乘积。其微分的核正是轨道切空间。因此
+	\[
+		Z_q=\{p\in\mathrm{T}_q^*Q:p|_{\ker\mathrm{d}r_q}=0\}
+		=\operatorname{im}(\mathrm{d}r_q)^*.
+	\]
+	淹没性使 \((\mathrm{d}r_q)^*\) 单射，所以这里的 \(\beta\) 存在且唯一。
+
+	自由性使 \(\xi\mapsto\xi_Q(q)\) 单射。其转置
+	\(p\mapsto\langle\mu(q,p),\cdot\rangle\) 因而满射；只变化纤维变量，已经使 \(\mathrm{d}\mu\) 满射，故零是正则值。提升作用自由，因为任何固定 \((q,p)\) 的元素都固定 \(q\)。它也固有：若 \(\alpha_j\to\alpha\) 且 \(g_j\alpha_j\to\alpha'\)，投影到 \(Q\) 后有 \(q_j\to q\)、\(g_jq_j\to q'\)；第一卷命题17.2.2的序列判据使 \(g_j\) 有收敛子列。这在闭水平集 \(Z\) 上仍成立。
+
+	令 \(F:Z\to\mathrm{T}^*B\) 把 \((q,p)\) 送到刚才的 \(\beta\)。等式 \(r(gq)=r(q)\) 说明 \(F\) 沿群轨道不变，故诱导 \(\Phi\)。在 \(r^{-1}(U)\cong G\times U\) 的局部乘积中，每个 \(p\in Z\) 唯一写成从 \(U\) 拉回的协向量。于是 \(Z|_U\cong G\times\mathrm{T}^*U\)，而 \(F\) 忘掉 \(G\) 因子。这证明 \(\Phi\) 是微分同胚，也证明其定义不依赖局部截面。
+
+	记 \(i:Z\hookrightarrow\mathrm{T}^*Q\)。对 \(\Xi\in\mathrm{T}_{(q,p)}Z\)，利用 \(\pi_BF=r\pi_Qi\)，有
+	\[
+		(F^*\theta_B)(\Xi)
+		=\beta\bigl(\mathrm{d}r_q\,\mathrm{d}\pi_Q\,\mathrm{d}i(\Xi)\bigr)
+		=p\bigl(\mathrm{d}\pi_Q\,\mathrm{d}i(\Xi)\bigr)
+		=(i^*\theta_Q)(\Xi).
+	\]
+	由第一卷命题14.1.8的拉回与外微分相容性，\(F^*(-\mathrm{d}\theta_B)=i^*\omega_Q\)。若 \(\pi:Z\to Z/G\) 为商映射，则 \(F=\Phi\pi\)，而\cref{g4:thm:1002:symplectic-reduction}给出 \(\pi^*\omega_{\mathrm{red}}=i^*\omega_Q\)。满射淹没的拉回单射，遂得 \(\Phi^*(-\mathrm{d}\theta_B)=\omega_{\mathrm{red}}\)。
+\end{proof}
+
+这个同构同时保持底空间投影：约化后的协向量位于原位置轨道 \([q]\in B\) 上。零水平条件的作用尤其明确：它恰好保证 \(p\) 能作用于底空间商的切向量，而不依赖所选提升。非零水平通常会在商上的二形式中留下额外项，章末的磁项计算给出一个具体例子。
 
 \subsection{射影空间和 Fubini–Study 形式}
 \label{g4:subsec:1003:02}
-待撰写
+
+在 \(\mathbb C^{n+1}\)、\(n\ge1\) 上取
+\[
+	\omega_0=\sum_{j=0}^n\mathrm{d}x_j\wedge\mathrm{d}y_j
+	=\frac{i}{2}\sum_{j=0}^n\mathrm{d}z_j\wedge\mathrm{d}\overline z_j,
+	\qquad z_j=x_j+iy_j.
+\]
+把圆周写成 \(\mathbb R/(2\pi\mathbb Z)\)，令它按
+\[
+	t\cdot z=e^{-it}z
+\]
+作用。基本场为 \(\sum_j(y_j\partial_{x_j}-x_j\partial_{y_j})\)，插入 \(\omega_0\) 得到 \(\sum_j(x_j\mathrm{d}x_j+y_j\mathrm{d}y_j)\)。因此矩映射可取
+\begin{equation}\label{g4:eq:1003:projective-moment}
+	\mu(z)=\frac12|z|^2.
+\end{equation}
+圆群的余伴随作用平凡，这个矩映射等变。
+
+\begin{theorem}\label{g4:thm:1003:projective-reduction}
+	设 \(n\ge1\)，圆群以 \(e^{it}\cdot z=e^{-it}z\) 作用于带标准辛形式的 \(\mathbb C^{n+1}\)，矩映射取 \(\mu(z)=|z|^2/2\)。对每个 \(c>0\)，\(\mu^{-1}(c)\) 为半径 \(\sqrt{2c}\) 的球面，圆作用在其上自由且固有，商自然微分同胚于 \(\mathbb{CP}^n\)。在仿射图
+	\([1:w_1:\cdots:w_n]\) 中，令 \(D=1+\sum_j|w_j|^2\)，则约化辛形式为
+	\begin{equation}\label{g4:eq:1003:projective-form}
+		\omega_c=2c\,\omega_{\mathrm{FS}},
+		\qquad
+		\omega_{\mathrm{FS}}
+		=\frac{i}{2}\sum_{j,k=1}^n
+		\frac{D\delta_{jk}-\overline w_jw_k}{D^2}
+		\,\mathrm{d}w_j\wedge\mathrm{d}\overline w_k.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	\(\mathrm{d}\mu_z\ne0\) 当 \(z\ne0\)，所以 \(c>0\) 为正则值。非零向量被某个 \(e^{-it}\) 固定，当且仅当 \(t=0\) 模 \(2\pi\)；圆群紧，作用也固有。每条复直线与这个球面的交集恰为一个圆轨道，故商的点就是复射影空间的点。在 \(z_0\ne0\) 处，商坐标为 \(w_j=z_j/z_0\)，其光滑局部截面是
+	\[
+		s_c(w)=\frac{\sqrt{2c}}{\sqrt D}(1,w_1,\ldots,w_n).
+	\]
+	它选取 \(z_0\) 为正实数的代表。其余图类似，因而这与第一卷命题17.3.9附近构造的射影光滑结构一致。
+
+	为计算形式，先在环境空间取一形式
+	\[
+		\lambda_0=\frac12\sum_{j=0}^n
+		(x_j\,\mathrm{d}y_j-y_j\,\mathrm{d}x_j)
+		=\frac1{4i}\sum_{j=0}^n
+		(\overline z_j\,\mathrm{d}z_j-z_j\,\mathrm{d}\overline z_j),
+		\qquad \mathrm{d}\lambda_0=\omega_0.
+	\]
+	设 \(R=\sqrt{2c}/\sqrt D\)。代入 \(z_0=R\)、\(z_j=Rw_j\) 时，含 \(\mathrm{d}R\) 的项两两抵消，于是
+	\[
+		s_c^*\lambda_0
+		=\frac{c}{2iD}\sum_{j=1}^n
+		(\overline w_j\,\mathrm{d}w_j-w_j\,\mathrm{d}\overline w_j).
+	\]
+	记 \(A=\sum_j\overline w_j\,\mathrm{d}w_j\)、
+	\(B=\sum_jw_j\,\mathrm{d}\overline w_j\)，则
+	\(\mathrm{d}D=A+B\)、
+	\(\mathrm{d}(A-B)=-2\sum_j\mathrm{d}w_j\wedge\mathrm{d}\overline w_j\)。
+	因此
+	\[
+		\begin{aligned}
+			\mathrm{d}\bigl(D^{-1}(A-B)\bigr)
+			&=2D^{-2}A\wedge B
+				-2D^{-1}\sum_j\mathrm{d}w_j\wedge\mathrm{d}\overline w_j,\\
+			s_c^*\omega_0
+			&=ic\sum_{j,k}
+			\frac{D\delta_{jk}-\overline w_jw_k}{D^2}
+			\,\mathrm{d}w_j\wedge\mathrm{d}\overline w_k.
+		\end{aligned}
+	\]
+	约化形式在商图中的表达正是 \(s_c^*\omega_0\)，得到所列公式。不同图中的形式自动相容，因为它们都是同一个约化形式的局部表达。
+\end{proof}
+
+称这里的 \(\omega_{\mathrm{FS}}\) 为\term[FubiniStudyxingshi]{Fubini--Study 形式}[Fubini--Study form]。\footnote{Christian Hugo Eduard Study（1862--1930），德国数学家，研究几何学与不变量理论。}用复坐标微分简写，它是
+\[
+	\omega_{\mathrm{FS}}=\frac{i}{2}\,\partial\overline\partial\log(1+|w|^2).
+\]
+这里 \(\partial\overline\partial u\) 表示
+\(\sum_{j,k}(\partial^2u/\partial w_j\partial\overline w_k)
+\,\mathrm{d}w_j\wedge\mathrm{d}\overline w_k\)；上面的实坐标拉回计算已经独立证明该式给出整体闭二形式。这个归一化与 Cannas da Silva 在射影空间例子中采用的归一化一致。\cite[第3.4节，第119--120页]{Cannas2006Symplectic}
+
+\ProseParagraphBreak
+
+它也与第一卷的射影不变度量一致。令 \(Jv=iv\)，则
+\[
+	g_{\mathrm{FS}}(u,v)=\omega_{\mathrm{FS}}(u,Jv)
+	=\operatorname{Re}
+	\frac{D\,u^*v-(u^*w)(w^*v)}{D^2},
+\]
+正是第一卷式(17.10)。Cauchy--Schwarz 不等式给出
+\(D|v|^2-|w^*v|^2\ge |v|^2>0\)，故它正定。于是这里既核定了二形式的方向，也核定了它与已有度量之间的比例。
+
+\begin{example}\label{g4:exm:1003:projective-line-area}
+	当 \(n=1\)、\(w=x+iy\) 时，
+	\[
+		\omega_{\mathrm{FS}}
+		=\frac{\mathrm{d}x\wedge\mathrm{d}y}{(1+x^2+y^2)^2},
+		\qquad
+		\int_{\mathbb{CP}^1}\omega_{\mathrm{FS}}
+		=2\pi\int_0^\infty\frac{r}{(1+r^2)^2}\,\mathrm{d}r=\pi.
+	\]
+	缺少的无穷远点在另一张光滑图中面积为零，所以可以在这个仿射图上求积分。因此 \(\omega_c\) 的总面积为 \(2\pi c\)。单位球面对应 \(c=1/2\)，其商上的形式正是 \(\omega_{\mathrm{FS}}\)；改变约化水平会按比例改变辛面积。
+\end{example}
 
 \subsection{余伴随轨道}
 \label{g4:subsec:1003:03}
-待撰写
+
+设 \(G\) 为连通有限维实 Lie 群。对 \(a\in\mathfrak g^*\)，其余伴随轨道为
+\[
+	\mathcal O_a=\{\operatorname{Ad}_h^*a:h\in G\}.
+\]
+轨道的光滑结构取自齐性空间 \(G/G_a\)：第一卷定理17.1.5及命题17.1.6说明，轨道映射诱导从这个商到 \(\mathfrak g^*\) 的单射浸入。以下在这个内在流形结构上构造辛形式；对一般非紧群，不把轨道预先视为对偶空间中的嵌入子流形。
+
+\ProseParagraphBreak
+
+在 \(\mathrm{T}^*G\) 上使用左平凡化
+\[
+	\alpha_h\longleftrightarrow(h,\lambda),\qquad
+	\lambda=\alpha_h\circ\mathrm{d}L_h|_e.
+\]
+若 \(\vartheta_h=\mathrm{d}L_{h^{-1}}|_h\) 是取值于 \(\mathfrak g\) 的左不变一形式，则典范形式为
+\[
+	\theta_G=\langle\lambda,\vartheta\rangle,\qquad
+	\omega_G=-\mathrm{d}\langle\lambda,\vartheta\rangle.
+\]
+这里有两个交换的左作用：左平移，以及由右平移取逆得到的作用。其余切提升和矩映射分别是
+\begin{equation}\label{g4:eq:1003:two-cotangent-actions}
+	\begin{aligned}
+		g\cdot_L(h,\lambda)&=(gh,\lambda),
+		&\mu_L(h,\lambda)&=\operatorname{Ad}_h^*\lambda,\\
+		g\cdot_R(h,\lambda)&=(hg^{-1},\operatorname{Ad}_g^*\lambda),
+		&\mu_R(h,\lambda)&=-\lambda.
+	\end{aligned}
+\end{equation}
+确实，底空间中这两个作用的基本场分别为
+\(\mathrm{d}R_h(\xi)\) 与 \(-\mathrm{d}L_h(\xi)\)。代入\eqref{g4:eq:1003:cotangent-moment}，前者与 \(\lambda\) 的配对为
+\(\langle\lambda,\operatorname{Ad}_{h^{-1}}\xi\rangle\)，后者为
+\(-\langle\lambda,\xi\rangle\)，从而得到所列矩映射。右侧作用在 \(\lambda\) 上的变化也由余切提升公式直接给出。
+
+\begin{theorem}\label{g4:thm:1003:coadjoint-reduction}
+	设 \(G\) 为连通、Hausdorff、第二可数的有限维实 Lie 群，\(a\in\mathfrak g^*\)。在上述约定下，\(\mathrm{T}^*G\) 对 \(\cdot_R\) 在值 \(-a\) 处的约化自然辛同胚于 \(\mathcal O_a\)。其辛形式由
+	\begin{equation}\label{g4:eq:1003:coadjoint-form}
+		(\omega_{\mathcal O})_\lambda
+		(\xi_{\mathcal O}(\lambda),\eta_{\mathcal O}(\lambda))
+		=\langle\lambda,[\xi,\eta]\rangle
+	\end{equation}
+	确定，其中
+	\(\xi_{\mathcal O}(\lambda)=
+	\left.\frac{\mathrm{d}}{\mathrm{d}t}\right|_0
+	\operatorname{Ad}_{\exp(t\xi)}^*\lambda\)。
+	余伴随作用为 Hamilton 作用，包含映射
+	\(\mathcal O_a\to\mathfrak g^*\) 是其等变矩映射。
+\end{theorem}
+\begin{proof}
+	\(\mu_R(h,\lambda)=-\lambda\) 是淹没，其 \(-a\) 水平集为 \(G\times\{a\}\)。该值的稳定子是 \(G_a\)，限制作用为 \(h\mapsto hg^{-1}\)。它自由，且因 \(G_a\) 闭而固有：若 \(h_j\to h\)、\(h_jg_j^{-1}\to k\)，则 \(g_j=(h_jg_j^{-1})^{-1}h_j\to k^{-1}h\)，极限仍在 \(G_a\) 中。因此\cref{g4:thm:1002:nonzero-reduction}适用，商是 \(G/G_a\)，由
+	\[
+		hG_a\longmapsto\operatorname{Ad}_h^*a
+	\]
+	识别为 \(\mathcal O_a\)。
+
+	在水平集上，\(\theta_G\) 限制为 \(\langle a,\vartheta\rangle\)。设 \(\xi^L,\eta^L\) 为左不变场，则这两个场与该一形式的配对分别为常数 \(\langle a,\xi\rangle,\langle a,\eta\rangle\)。第一卷命题14.1.6的一形式外微分求值公式给出
+	\[
+		-\mathrm{d}\langle a,\vartheta\rangle(\xi^L,\eta^L)
+		=\langle a,[\xi,\eta]\rangle.
+	\]
+	在 \(h\) 处，轨道映射把 \(\mathrm{d}L_h(\xi)\) 送到
+	\((\operatorname{Ad}_h\xi)_{\mathcal O}(\lambda)\)，其中
+	\(\lambda=\operatorname{Ad}_h^*a\)。同时
+	\[
+		\langle\lambda,[\operatorname{Ad}_h\xi,\operatorname{Ad}_h\eta]\rangle
+		=\langle a,[\xi,\eta]\rangle.
+	\]
+	这证明约化形式恰为\eqref{g4:eq:1003:coadjoint-form}。其代表无关性、光滑性、闭性及非退化性都已由约化定理保证；也可直接看出，若该配对对每个 \(\eta\) 为零，则 \(\xi\in\mathfrak g_\lambda\)，因而 \(\xi_{\mathcal O}(\lambda)=0\)。
+
+	左侧作用 \(\cdot_L\) 与 \(\cdot_R\) 交换并保持其水平集，在商上成为余伴随作用。其矩映射 \(\mu_L\) 在水平集上正是轨道映射。直接核对矩映射方程：令 \(f_\xi(\lambda)=\langle\lambda,\xi\rangle\)，则
+	\[
+		(\mathrm{d}f_\xi)_\lambda(\eta_{\mathcal O})
+		=-\langle\lambda,[\eta,\xi]\rangle
+		=\langle\lambda,[\xi,\eta]\rangle
+		=(\iota_{\xi_{\mathcal O}}\omega_{\mathcal O})(\eta_{\mathcal O}).
+	\]
+	基本场的值张成轨道切空间，所以等式对所有切向量成立。包含映射的等变性由定义得到。
+\end{proof}
+
+余伴随轨道的形式由 Lie 括号直接算出，却同时具有来自约化的整体构造。特别地，式中的正号与两个选择配套：采用 \(\omega_G=-\mathrm{d}\theta_G\)，并把右侧作用写成 \(h\mapsto hg^{-1}\)，在矩映射值 \(-a\) 处取商。余伴随轨道形式及包含矩映射也可参看 Cannas da Silva 的讨论。\cite[第5.1节，第141--142页；第5.6节，第154页]{Cannas2006Symplectic}
 
 \subsection{分阶段约化及相容条件}
 \label{g4:subsec:1003:04}
-待撰写
+
+若对称群中有一个正规子群，可以先消去这部分对称性，再处理剩余群。要使两步确实对应同一个约束，第一步的水平必须被整个群保持，第二步的矩映射也必须与第一步取商相容。零值约化把这些条件写得最清楚。
+
+\begin{theorem}\label{g4:thm:1003:reduction-stages}
+	设有限维实 Lie 群 \(G\) 在无边界辛流形 \((M,\omega)\) 上固有地 Hamilton 作用，矩映射 \(\mu:M\to\mathfrak g^*\) 等变。所有流形均为 Hausdorff、第二可数。设 \(N\subseteq G\) 为闭正规子群，Lie 代数为 \(\mathfrak n\)，并记
+	\[
+		\mu_N(x)=\mu(x)|_{\mathfrak n},\qquad
+		Z_N=\mu_N^{-1}(0),\qquad Z=\mu^{-1}(0).
+	\]
+	假设 \(Z\ne\varnothing\)，\(N\) 在 \(Z_N\) 上自由，且 \(G\) 在 \(Z\) 上自由。则第一步约化
+	\[
+		M_N=Z_N/N,\qquad q_N:Z_N\to M_N
+	\]
+	是辛流形。剩余群 \(K=G/N\) 在 \(M_N\) 上有固有 Hamilton 作用，其等变矩映射为
+	\begin{equation}\label{g4:eq:1003:residual-moment}
+		\langle\overline\mu([x]_N),\xi+\mathfrak n\rangle
+		=\langle\mu(x),\xi\rangle.
+	\end{equation}
+	该作用在 \(\overline Z=\overline\mu^{-1}(0)=Z/N\) 上自由，零为 \(\mu_N,\mu,\overline\mu\) 的正则值，并且
+	\begin{equation}\label{g4:eq:1003:stages-map}
+		\Theta:Z/G\longrightarrow\overline Z/K,
+		\qquad [x]_G\longmapsto[[x]_N]_K
+	\end{equation}
+	是自然辛同胚。两个约化空间的实维数均为 \(\dim M-2\dim G\)。
+\end{theorem}
+\begin{proof}
+	闭子群 \(N\) 的限制作用固有；它在 \(Z_N\) 上自由，所以\cref{g4:prop:1002:moment-differential}保证零是 \(\mu_N\) 的正则值。\(\mu_N\) 是 \(N\) 作用的等变矩映射，因而\cref{g4:thm:1002:symplectic-reduction}给出 \(M_N\) 及辛形式 \(\omega_N\)，满足
+	\[
+		q_N^*\omega_N=i_N^*\omega,\qquad i_N:Z_N\hookrightarrow M.
+	\]
+
+	正规性保证 \(\operatorname{Ad}_g\mathfrak n=\mathfrak n\)，所以 \(G\) 保持 \(Z_N\)。它也把 \(N\) 轨道送到 \(N\) 轨道，因此有良定义的剩余作用
+	\[
+		(gN)\cdot[x]_N=[gx]_N.
+	\]
+	第一卷定理17.1.5使 \(G/N\) 成为光滑齐性空间；正规性使乘法和逆映射在商上有定义。借商投影的光滑局部截面，这两个运算及上述作用都是光滑的，故 \(K\) 是 Lie 群，其 Lie 代数自然为 \(\mathfrak g/\mathfrak n\)。由 \(q_N^*\omega_N=i_N^*\omega\) 与 \(G\) 的保辛性，剩余作用也保持 \(\omega_N\)。
+
+	对 \(x\in Z_N\)，\(\mu(x)\) 消灭 \(\mathfrak n\)，所以\eqref{g4:eq:1003:residual-moment}不依赖 \(\xi\) 的提升。它也不依赖 \(x\) 的 \(N\) 轨道代表。确实，若 \(n\in N\)，则 \(n\) 在商群中的像是单位元，从而 \(\operatorname{Ad}_n\xi-\xi\in\mathfrak n\)；因此 \(\operatorname{Ad}_n^*\mu(x)=\mu(x)\)。等变性于是给出 \(\mu(nx)=\mu(x)\)。局部截面说明 \(\overline\mu\) 光滑，而 \(\mu\) 的 \(G\) 等变性给出它的 \(K\) 等变性。
+
+	若 \(\overline\xi=\xi+\mathfrak n\)，则 \(\xi_M|_{Z_N}\) 与 \(\overline\xi_{M_N}\) 关于 \(q_N\) 相关。因此
+	\[
+		\begin{aligned}
+			q_N^*\mathrm{d}\overline\mu^{\,\overline\xi}
+			&=\mathrm{d}(\mu^\xi|_{Z_N})
+			=i_N^*(\iota_{\xi_M}\omega)\\
+			&=\iota_{\xi_M|_{Z_N}}q_N^*\omega_N
+			=q_N^*(\iota_{\overline\xi_{M_N}}\omega_N).
+		\end{aligned}
+	\]
+	淹没拉回单射，故 \(\overline\mu\) 满足矩映射方程。
+
+	接着检查剩余作用的固有性。设 \(y_j\to y\)、\(k_jy_j\to y'\) 于 \(M_N\)。在 \(y,y'\) 附近取 \(q_N\) 的局部截面，得到 \(x_j\to x\)、\(x'_j\to x'\)，且 \([x'_j]_N=k_j[x_j]_N\)。任选 \(g_j\in G\) 代表 \(k_j\)，存在 \(n_j\in N\) 使 \(x'_j=n_jg_jx_j\)。原作用固有，第一卷命题17.2.2的序列判据使 \(n_jg_j\) 有收敛子列，投影到 \(G/N\) 后便得到 \(k_j\) 的收敛子列。这证明 \(K\) 的作用固有。
+
+	式\eqref{g4:eq:1003:residual-moment}说明
+	\(q_N^{-1}(\overline Z)=Z\)。若 \(k=gN\) 固定 \([x]_N\in\overline Z\)，则 \(gx=nx\) 对某个 \(n\in N\) 成立。于是 \(n^{-1}g\) 固定 \(x\in Z\)，自由性迫使 \(g=n\)，即 \(k\) 为单位元。因此 \(K\) 在 \(\overline Z\) 上自由。\cref{g4:prop:1002:moment-differential}分别应用于 \(G\) 在 \(Z\) 和 \(K\) 在 \(\overline Z\) 的作用，得到另外两个正则值结论。两次约化和直接约化均已满足定理条件。
+
+	现在考虑 \(\Theta\)。它显然满射；若两个点在第二步商中相同，则相应的 \(x,x'\in Z\) 满足 \(x'=ngx\)，其中 \(g\in G,n\in N\)，故已在同一个 \(G\) 轨道中，证明单射。限制映射 \(q_N|_Z:Z\to\overline Z\) 是满射淹没：在 \(q_N\) 的局部乘积中，\(Z=q_N^{-1}(\overline Z)\) 仍是群因子与 \(\overline Z\) 的乘积。它与其后的商投影都有光滑局部截面。第一卷命题17.2.8的商映射光滑判据遂说明 \(\Theta\) 与逆映射都光滑。
+
+	最后记 \(\pi_G:Z\to Z/G\)、\(\pi_K:\overline Z\to\overline Z/K\)，两种约化形式分别记作 \(\omega_G^{\mathrm{red}},\omega_K^{\mathrm{red}}\)。由
+	\(\Theta\pi_G=\pi_K(q_N|_Z)\)，有
+	\[
+		\begin{aligned}
+			\pi_G^*\Theta^*\omega_K^{\mathrm{red}}
+			&=(q_N|_Z)^*\pi_K^*\omega_K^{\mathrm{red}}\\
+			&=(q_N|_Z)^*(\omega_N|_{\overline Z})
+			=\omega|_Z
+			=\pi_G^*\omega_G^{\mathrm{red}}.
+		\end{aligned}
+	\]
+	再次由淹没拉回单射，\(\Theta^*\omega_K^{\mathrm{red}}=\omega_G^{\mathrm{red}}\)。维数计算为
+	\[
+		\dim M_N-2\dim K
+		=\dim M-2\dim N-2(\dim G-\dim N)
+		=\dim M-2\dim G.
+	\]
+\end{proof}
+
+这称为\term[fenjieduanyuehua]{分阶段约化}[reduction in stages]。正规性让第一步水平及轨道关系对整个群相容；零值使矩映射落在消灭 \(\mathfrak n\) 的子空间中，从而定义剩余矩映射。自由性保证各次商的光滑性，固有性则保证商拓扑与局部截面具有所需性质。直积群的两个因子是最直接的例子，但定理也适用于不是直积的正规扩张。关于直积版本及正规子群的推广，可参看 Cannas da Silva 的分阶段约化讨论。\cite[第6.2节，第163--164页]{Cannas2006Symplectic}
+
+\ProseParagraphBreak
+
+非零约化还须逐层选择保持相应值的稳定子，不能只把上式中的零换成任意常数。对于环面作用，余伴随作用平凡，给矩映射减去常向量仍保持等变性，因而常能先平移到零值，再用本定理。章末的对角圆约化将把这个相容条件算成具体的半径关系。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

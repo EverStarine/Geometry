@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 6.3 切空间、余切空间与维数
 % 纲要位置：几何学计划纲要.md，第 3704 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,280 @@
 \section{切空间、余切空间与维数}
 \label{g4:sec:0603}
 
-待撰写
+上一节把一个小 Beltrami 微分变成了实际复结构，但不同微分可能只是同一曲面的不同坐标表达。我们先计算这种冗余的一阶形式，借助第三章的对偶找出不能由坐标变化消去的方向；随后求解一个非线性方程，证明这些方向确实形成局部参数。这样，维数计算所数的是附近曲面的参数，而不只是一个形式上的商空间。
 
 \subsection{平凡形变和向量场}
 \label{g4:subsec:0603:01}
-待撰写
+
+仍固定紧连通黎曼曲面 \(X\)，记 \(T_X=K_X^{-1}\)。实向量场在全纯坐标中唯一写成
+\[
+	V=v\partial_z+\overline v\partial_{\overline z}.
+\]
+其 \((1,0)\) 分量 \(v\partial_z\) 是 \(T_X\) 的光滑截面；这给出实向量场与 \(A^0(T_X)\) 的实线性对应。令 \(\phi_t\) 是 \(V\) 的流，\(t\) 为实参数。紧性保证小时间内流在整个曲面上存在，且与恒等映射同位。
+
+\begin{proposition}\label{g4:prop:0603:trivial-deformation}
+	将固定复结构沿 \(\phi_t\) 拉回，并以原结构写其 Beltrami 系数 \(\mu(t)\)。则
+	\[
+		\mu(0)=0,\qquad
+		\dot\mu(0)=\bar\partial_{T_X}(v\partial_z).
+	\]
+	因此由改变光滑标记产生的无穷小形变恰组成
+	\(\bar\partial A^0(T_X)\subset A^{0,1}(T_X)\)。
+\end{proposition}
+\begin{proof}
+	\(\phi_t:(X,\phi_t^*J)\to(X,J)\) 全纯。式\eqref{g4:eq:0602:map-equation}中取靶系数为零，得到
+	\[
+		\mu(t)=\frac{(\phi_t)_{\overline z}}{(\phi_t)_z}.
+	\]
+	局部 \(\phi_t(z)=z+t v(z)+O(t^2)\)，故分子为 \(t v_{\overline z}+O(t^2)\)，分母为 \(1+t v_z+O(t^2)\)，从而 \(\dot\mu(0)=v_{\overline z}\)。\(T_X\) 的标架 \(\partial_z\) 全纯，所以这正是 \(\bar\partial_{T_X}(v\partial_z)\) 的系数。任意光滑 \((1,0)\) 向量场均来自一个实向量场，故每个这样的像元素都由流实现。
+\end{proof}
+
+这里的“平凡”指一阶上由重标记产生，并非说系数函数为零。若一族复结构在一阶上满足 \(\dot\mu=\bar\partial v\)，只能立即断定它的一阶类为零；整族是否与常族等价，还需要非线性的坐标变化。
+
+\begin{example}\label{g4:exm:0603:local-triviality}
+	在一个坐标圆盘内取光滑紧支函数 \(v\)，将 \(v\partial_z\) 补零到整个曲面。非零的 \(v_{\overline z}\) 往往改变许多点上的复切方向，但它由上一命题的流产生，所以没有给出新的一阶模参数。另一方面，局部 \(\bar\partial\) 可解性说明每个 Beltrami 微分都能在一个小圆盘内这样消去；真正留下的信息在于这些局部消去能否粘成全局向量场。
+\end{example}
 
 \subsection{Beltrami 类与上同调}
 \label{g4:subsec:0603:02}
-待撰写
+
+定义无穷小形变空间
+\begin{equation}\label{g4:eq:0603:infinitesimal-quotient}
+	\mathcal V_X
+	=\frac{A^{0,1}(T_X)}{\bar\partial A^0(T_X)}.
+\end{equation}
+分子记录所有一阶复结构变化，分母记录刚才算出的坐标变化。此时尚未由这个定义断言它是某个流形的切空间；这一点将在局部参数定理中得到证明。
+
+\begin{proposition}\label{g4:prop:0603:dolbeault-class}
+	对紧黎曼曲面 \(X\)，有自然同构
+	\[
+		\mathcal V_X\cong H^1(X,\mathcal O(T_X)).
+	\]
+	给定 \(\eta\in A^{0,1}(T_X)\)，在坐标覆盖上取 \(\bar\partial v_i=\eta\)。则它对应的全纯 Čech 余圈为 \(c_{ij}=v_i-v_j\)，其中差在同一切线丛内计算。其上同调类为零，当且仅当 \(\eta=\bar\partial v\) 有全局光滑解。
+\end{proposition}
+\begin{proof}
+	\(T_X\) 是全纯线丛，故可直接将\cref{g4:thm:0302:dolbeault}用于 \(L=T_X\)。恢复该同构的局部意义：交叠处 \(\bar\partial(v_i-v_j)=0\)，所以 \(c_{ij}\) 是全纯向量场；三重交叠上差的相加等于零。改变局部解只增加全纯零上链的差，改变 \(\eta\) 为 \(\eta+\bar\partial v\) 则可同时把每个 \(v_i\) 改为 \(v_i+v\)，不改变余圈。
+
+	若 \(\eta=\bar\partial v\)，则 \(v_i-v\) 全纯，故 \(c_{ij}\) 为余边界。反之，若 \(c_{ij}=a_i-a_j\)，其中 \(a_i\) 全纯，则 \(v_i-a_i\) 在交叠处相等，粘成所需的全局解。一般类的满射性与选择无关性已由第三章的单位分解构造证明。
+\end{proof}
+
+对于光滑参数族 \(\mu(t)\)，基点为 \(\mu(0)=0\)，把参数切向量 \(a\) 送到
+\[
+	\mathrm{KS}_0(a)=[\mathrm{d}\mu_0(a)]\in H^1(X,T_X)
+\]
+的映射称为该族在基点的\term[KodairaSpenceryingshe]{Kodaira--Spencer 映射}[Kodaira--Spencer map]\footnote{Kodaira，\OriginalHanName{小平邦彦}（\OriginalHanName{こだいら くにひこ}，Kunihiko Kodaira，1915--1997），日本数学家，研究复流形、代数曲面与形变理论。Spencer，Donald Clayton Spencer（1912--2001），美国数学家，研究复结构形变及微分方程的几何理论。}。改变族的光滑标记时，上一命题与\cref{g4:prop:0603:trivial-deformation}说明导数只增加 \(\bar\partial\) 向量场，故类不变。若纤维上的同构在基点不为恒等，则先用这个固定同构拉回比较，两边的类由它诱导的上同调同构对应。
+
+\ProseParagraphBreak
+
+在非零基点 \(\mu_0\) 处，须先把 \(X_{\mu_0}\) 当作新的基准曲面。由式\eqref{g4:eq:0602:relative-beltrami}，一阶变化 \(\eta\) 在它的全纯坐标 \(w\) 中变成
+\begin{equation}\label{g4:eq:0603:relative-tangent}
+	R_{\mu_0}\eta
+	=\frac{w_z}{\overline{w_z}}
+	\frac{\eta_z}{1-|\mu_0|^2}\,
+	\mathrm{d}\overline w\otimes\partial_w.
+\end{equation}
+这是关于 \(\eta\) 的复线性变换。因而此处的 Kodaira--Spencer 类是 \([R_{\mu_0}\eta]\)。该公式也解释了为何不能在不同基点都把原来的系数差直接当作同一个上同调类。
 
 \subsection{二次微分及 Serre 对偶}
 \label{g4:subsec:0603:03}
-待撰写
+
+与 Beltrami 类配对的对象应当抵消它的坐标变化因子。\(\eta\) 含有一个反全纯余切因子和一个全纯切因子；用两个全纯余切因子与它收缩后，恰剩一个可积分的 \((1,1)\) 形式。
+
+\begin{definition}\label{g4:def:0603:quadratic-differential}
+	黎曼曲面 \(X\) 上典范线丛的平方 \(K_X^{\otimes2}\) 的全纯截面称为\term[erciweifen]{全纯二次微分}[holomorphic quadratic differential]。其空间记为
+	\[
+		Q(X)=H^0(X,K_X^{\otimes2}).
+	\]
+	局部写作 \(q=q_z(\mathrm{d}z)^2\)，坐标变化满足 \(q_\zeta=q_z/(\zeta')^2\)。
+\end{definition}
+
+\begin{theorem}\label{g4:thm:0603:serre-duality}
+	设 \(X\) 为紧黎曼曲面。积分
+	\begin{equation}\label{g4:eq:0603:quadratic-pairing}
+		\langle[\eta],q\rangle
+		=\frac{\mathrm{i}}2\int_X q\mathbin{\lrcorner}\eta
+		=\int_Xq_z\eta_z\,\mathrm{d}x\,\mathrm{d}y
+	\end{equation}
+	给出 \(\mathcal V_X\times Q(X)\) 上非退化的复双线性配对。第一处积分中，收缩后的形式按 \(\mathrm{d}z\wedge\mathrm{d}\overline z\) 排列；末式按坐标分片相加理解。因此有自然复线性同构
+	\[
+		\mathcal V_X^\vee\cong Q(X).
+	\]
+	若固定共形度量 \(g_0=\rho^2|\mathrm{d}z|^2\)，并在 \(T_X\) 上取局部标架 \(\partial_z\) 的平方范数为 \(\rho^2\)，则每个 Beltrami 类具有唯一形如
+	\begin{equation}\label{g4:eq:0603:harmonic-beltrami}
+		\eta=\rho^{-2}\overline{q_z}\,
+		\mathrm{d}\overline z\otimes\partial_z,
+		\qquad q\in Q(X),
+	\end{equation}
+	的调和代表。
+\end{theorem}
+\begin{proof}
+	坐标变换时，\(q_z\eta_z\) 乘以 \(|\zeta'|^{-2}\)，而面积元乘以 \(|\zeta'|^2\)，所以被积二形式全局有定义。将\cref{g4:thm:0303:serre-duality}用于 \(L=T_X=K_X^{-1}\)，其对偶线丛为
+	\[
+		K_X\otimes T_X^{-1}=K_X^{\otimes2}.
+	\]
+	第三章的配对常数为 \(1/(2\pi\mathrm{i})\)，式\eqref{g4:eq:0603:quadratic-pairing}等于它乘以 \(-\pi\)。非零常数不改变非退化性与自然同构。也可直接看出代表无关：若 \(\eta=\bar\partial v\)，则 \(q\mathbin{\lrcorner}\bar\partial v\) 是全局一形式外微分的负值，紧无边界曲面上的 Stokes 公式使其积分为零。
+
+	再恢复调和代表的公式。\cref{g4:prop:0303:formal-adjoint}在所取切线丛度量下给出
+	\[
+		\bar\partial_{T_X}^*\eta=0
+		\quad\Longleftrightarrow\quad
+		\partial_z(\rho^2\eta_z)=0.
+	\]
+	所以 \(\rho^2\overline{\eta_z}\) 是全纯函数，并且按二次微分的系数变换，得到式\eqref{g4:eq:0603:harmonic-beltrami}。反过来，该式的每个截面均满足伴随方程。\cref{g4:thm:0303:fredholm}的正交分解保证每个类中这样的代表存在且唯一。若 \(\eta\ne0\) 调和，取 \(q_z=\rho^2\overline{\eta_z}\)，则
+	\[
+		\langle[\eta],q\rangle
+		=\int_X\rho^2|\eta_z|^2\,\mathrm{d}x\,\mathrm{d}y>0.
+	\]
+	这也直接显示了配对如何检测非零类。式\eqref{g4:eq:0603:harmonic-beltrami}的对应为反线性，配对给出的余切识别则为复线性，二者的类型应予区别。
+\end{proof}
+
+记上述有限维调和空间为 \(\mathscr H_X\)。于是
+\begin{equation}\label{g4:eq:0603:hodge-splitting}
+	A^{0,1}(T_X)=\bar\partial A^0(T_X)\oplus\mathscr H_X.
+\end{equation}
+选择度量只选择了每个类的一个方便代表；\(H^1(X,T_X)\)、\(Q(X)\) 及积分配对本身不依赖这个选择。下一小节将把 \(\mathscr H_X\) 作为实际复结构族的参数方向。
 
 \subsection{稳定亏格情形的维数计算}
 \label{g4:subsec:0603:04}
-待撰写
+
+现在假设 \(g=g(X)\ge2\)。这一条件同时带来两项简化：全纯向量场为零，故近恒等的重标记没有无穷小稳定子；二次微分的次数足够高，Riemann--Roch 中的对偶项消失。
+
+\begin{corollary}\label{g4:cor:0603:dimension}
+	设 \(X\) 是亏格 \(g\ge2\) 的紧连通黎曼曲面。则
+	\[
+		H^0(X,T_X)=0,\qquad
+		\dim_{\mathbb C}Q(X)
+		=\dim_{\mathbb C}\mathcal V_X=3g-3.
+	\]
+\end{corollary}
+\begin{proof}
+	由\cref{g4:cor:0304:canonical-degree,g4:thm:0304:genus-comparison}，
+	\[
+		\deg T_X=2-2g<0,
+		\qquad \deg K_X^{\otimes2}=4g-4.
+	\]
+	负次数线丛没有非零全纯截面，因为非零全纯截面的零除子有效，次数不能为负。这证明第一项。将 Riemann--Roch 用于 \(L=K_X^{\otimes2}\)，其对偶项是 \(H^0(X,K_X^{-1})=0\)，所以
+	\[
+		h^0(K_X^{\otimes2})=4g-4+1-g=3g-3.
+	\]
+	再用\cref{g4:thm:0603:serre-duality}得到 \(\mathcal V_X\) 的维数。
+\end{proof}
+
+下面证明这些方向真能作局部参数。为让无限维求解中每一步都有确定的空间，固定整数 \(s\ge3\)，所有 Sobolev 范数使用 \(X\) 上固定的有限图册、丛标架和光滑度量。
+
+\begin{lemma}\label{g4:lem:0603:split-inverse}
+	在上述 \(g\ge2\) 条件下，算子
+	\[
+		\mathcal L:H^{s+1}(T_X)\oplus\mathscr H_X
+		\longrightarrow H^s(\Lambda^{0,1}\otimes T_X),
+		\qquad \mathcal L(v,h)=\bar\partial v+h
+	\]
+	是有界复线性同构。
+\end{lemma}
+\begin{proof}
+	\(\bar\partial_{T_X}\) 是两个复线丛间的一阶椭圆算子。第三章的 \(L^2\) 分解给出右端 \(b\) 的唯一调和分量 \(h\)；剩余部分与伴随核正交。第三卷第13.2节推论13.2.5将其解提高到 \(H^{s+1}\)，并给出
+	\[
+		\|v\|_{H^{s+1}}\le C_s\|b-h\|_{H^s}.
+	\]
+	这里无需再规定核正交归一化，因为 \(\ker\bar\partial=H^0(X,T_X)=0\)。调和投影是由有限个光滑基向量给出的有界有限秩算子，所以 \(h\) 的范数也受 \(\|b\|_{H^s}\) 控制。存在性、唯一性和有界逆因此全部成立。
+\end{proof}
+
+我们将用一次 Banach 空间隐函数定理，其求解机制可简述如下。若光滑映射 \(F(x,p)\) 满足 \(F(0,0)=0\)，且 \(A=D_xF(0,0)\) 有有界逆，则
+\[
+	x\longmapsto x-A^{-1}F(x,p)
+\]
+在一个足够小的闭球上具有小于 \(1/2\) 的 Lipschitz 常数\footnote{Rudolf Otto Sigismund Lipschitz（1832--1903），德国数学家，研究微分方程、微分几何与数论。}；缩小 \(p\) 的邻域使它还将此球送入自身。逐次迭代为 Cauchy 列，给出唯一零点。两参数的方程相减先得解连续；再用差商和 \(D_xF\) 的可逆性得到
+\(D_px=-(D_xF)^{-1}D_pF\)，逐阶微分得到光滑依赖。以下会明确写出 \(F\)、空间和可逆的导数，而不在光滑微分同胚群上直接使用这一结论。
+
+\begin{theorem}[局部参数定理]\label{g4:thm:0603:local-parameters}
+	设 \(S\) 为闭连通定向光滑曲面，亏格 \(g\ge2\)，\((X,f)\) 为其一个光滑标记的黎曼曲面。取 \(\mathscr H_X\) 的复基 \(\eta_1,\ldots,\eta_{3g-3}\)，令
+	\[
+		\nu(t)=\sum_{j=1}^{3g-3}t_j\eta_j.
+	\]
+	存在 \(0\in B\subset\mathbb C^{3g-3}\) 的开邻域，使
+	\begin{equation}\label{g4:eq:0603:teich-chart}
+		B\longrightarrow\mathcal T(S),\qquad
+		t\longmapsto[X_{\nu(t)},f]
+	\end{equation}
+	是到 \([X,f]\) 的一个开邻域的同胚，其中 \(\mathcal T(S)\) 采用光滑复结构模同位于恒等的微分同胚之商拓扑。不同基准曲面及调和基给出的这些图的转移映射全纯。因此 \(\mathcal T(S)\) 是局部复维数 \(3g-3\) 的复流形，并且
+	\[
+		\mathrm T_{[X,f]}\mathcal T(S)\cong H^1(X,T_X),
+		\qquad
+		\mathrm T^*_{[X,f]}\mathcal T(S)\cong Q(X).
+	\]
+\end{theorem}
+\begin{proof}
+	先求一个近恒等的规范化。把 \(X\) 的底层光滑曲面固定，给它取辅助光滑黎曼度量。对小的 \(v\in H^{s+1}(T_X)\)，将其与共轭相加看成实向量场，令 \(\phi_v(x)=\exp_x(V(x))\)。由 \(H^{s+1}\hookrightarrow C^1\)，\(v\) 小时 \(\phi_v\) 是 \(H^{s+1}\) 类的 \(C^1\) 微分同胚，且 \(r\mapsto\phi_{rv}\) 给出到恒等的 \(C^1\) 同位。为证明全局单射，可先由 \(C^1\) 接近恒等得到局部微分同胚；它在紧曲面上是覆盖，而这条同伦使其度数为 \(1\)，故为一层覆盖。
+
+	给定小的源系数 \(\mu\in H^s(\Lambda^{0,1}\otimes T_X)\)，寻找 \(v\) 和 \(h\in\mathscr H_X\)，使 \(\phi_v:(X,J_\mu)\to(X,J_h)\) 全纯。局部残差正是
+	\begin{equation}\label{g4:eq:0603:slice-equation}
+		E(v,h,\mu)
+		=(\phi_v)_{\overline z}-\mu(\phi_v)_z
+		+(h\circ\phi_v)
+		\bigl(\overline{(\phi_v)_z}
+		-\mu\overline{(\phi_v)_{\overline z}}\bigr).
+	\end{equation}
+	它本来取值于沿 \(\phi_v\) 的靶切线丛；用固定联络沿短的指数曲线平行移动，将它识别为固定丛 \(\Lambda^{0,1}\otimes T_X\) 的截面。这个识别在 \(v=0\) 为恒等，且光滑依赖 \(x,v(x)\)，故不改变下面的零点条件和线性化。
+
+	核对函数空间是这一构造的关键。未知 \(v\) 在 \(H^{s+1}\)，它的一阶导数在 \(H^s\)；\(\mu\) 仅与这些导数相乘。被复合的 \(h\) 则始终在有限维的光滑空间 \(\mathscr H_X\) 内。固定光滑函数的代入 \(v\mapsto a(x,v(x))\) 在这里光滑：对 \(a\) 用带积分余项的 Taylor 公式，再逐阶求空间导数，各项由式\eqref{g4:eq:0602:sobolev-tools}的乘法估计控制；其各阶微分就是相应的偏导数乘以增量。有限个坐标片求和给出相同结论。因此
+	\[
+		E:H^{s+1}(T_X)\times\mathscr H_X\times H^s(\Lambda^{0,1}\otimes T_X)
+		\longrightarrow H^s(\Lambda^{0,1}\otimes T_X)
+	\]
+	在原点附近是实光滑映射。这里没有出现 \(\mu\circ\phi_v\)：如果直接对任意 \(H^s\) 系数作这种复合再对 \(v\) 求导，便会出现未受控的 \(\mathrm{d}\mu\)，不能得到同一阶空间中的上述结论。
+
+	在原点微分，得到
+	\[
+		D E_{(0,0,0)}(v,h,\eta)=\bar\partial v+h-\eta.
+	\]
+	\cref{g4:lem:0603:split-inverse}说明关于 \((v,h)\) 的导数可逆。刚才说明的隐函数论证于是给出唯一的小解 \((v(\mu),P(\mu))\)，实光滑地依赖 \(\mu\)。若 \(\mu\) 光滑，则源、靶由\cref{g4:thm:0602:small-beltrami}具有光滑局部复坐标；\(\phi_v\) 在这些坐标中是满足 Cauchy--Riemann 方程的 \(C^1\) 映射，故全纯并光滑。于是每个足够接近 \(X\) 的光滑复结构，均经一个同位于恒等的光滑微分同胚，成为唯一的小调和系数候选。
+
+	接着把“近恒等规范化唯一”加强为标记等价类中的唯一。对此需要排除两个趋近原点的调和系数之间存在离恒等很远的同位映射。先说明有限维族 \(X_h\) 的双曲度量随 \(h\) 光滑变化。设 \(g_0\) 为 \(X\) 的 Poincaré 度量，取
+	\[
+		b_h(U,W)=\tfrac12\bigl(g_0(U,W)+g_0(J_hU,J_hW)\bigr).
+	\]
+	它是 \(J_h\) 的光滑共形度量，\(b_0=g_0\)。由式\eqref{g4:eq:0504:curvature-change}，求曲率 \(-1\) 的 \(e^{2u}b_h\) 等价于
+	\[
+		F(u,h)=\Delta_{b_h}u+K_{b_h}+e^{2u}=0.
+	\]
+	这里 \(F:H^{s+2}(X,\mathbb R)\times\mathscr H_X\to H^s(X,\mathbb R)\) 实光滑，关于 \(u\) 的原点导数为 \(\Delta_{g_0}+2\)。它的核为零，因为与 \(u\) 配对得到 \(\|\mathrm{d}u\|_2^2+2\|u\|_2^2\)；第三卷第13.2节定理13.2.4及推论13.2.5给出满射和有界逆。隐函数论证得到 \(u(h)\)。方程的椭圆估计逐阶提高正则性，对参数求导后也同样成立，故 \(g_h=e^{2u(h)}b_h\) 关于空间与 \(h\) 光滑，且 \(g_h\to g_0\) 于每个固定 \(C^k\) 范数。
+
+	同一紧共形类的曲率 \(-1\) 度量唯一。事实上，若另一个为 \(e^{2a}g_h\)，则 \(\Delta_{g_h}a=1-e^{2a}\)。正的最大值处，非负 Laplace 的左边非负，右边负，矛盾；负的最小值同样不可能。因此 \(a=0\)。特别地，任何双全纯映射 \(\psi:X_h\to X_{h'}\) 都是 \(g_h,g_{h'}\) 之间的等距映射。
+
+	若任意小邻域中仍有不同 \(h_n,h'_n\to0\) 由同位于恒等的双全纯映射 \(\psi_n\) 联系，等距等式和 \(g_{h_n},g_{h'_n}\to g_0\) 给出 \(\mathrm{d}\psi_n\) 与逆映射微分的一致界。等距映射将靶的 Levi-Civita 联络拉回为源的度量相容无挠联络，由该联络的唯一性知它保持联络，因此坐标中
+	\[
+		\partial_i\partial_j\psi_n^a
+		=\Gamma^k_{ij}(g_{h_n})\partial_k\psi_n^a
+		-\Gamma^a_{bc}(g_{h'_n})(\psi_n)
+		\partial_i\psi_n^b\partial_j\psi_n^c.
+	\]
+	有限图册内先由此控制二阶导数，再反复求导控制全部高阶导数。对映射及逆映射用紧性和对角选子列，得到 \(C^\infty\) 收敛到 \(X\) 的全纯自同构 \(\psi\)。足够一致接近的两个映射可沿短测地线连接成同伦，所以 \(\psi\) 同伦于恒等。\cref{g4:prop:0601:automorphism-faithful}给出 \(\psi=\operatorname{id}\)。因而最终 \(\psi_n\) 属于刚才隐函数论证的近恒等邻域。对于源系数 \(h_n\)，一组解是 \((v,h)=(0,h_n)\)，另一组是 \((\exp^{-1}\psi_n,h'_n)\)，唯一性强迫 \(h'_n=h_n\)，矛盾。这就得到所需的局部单射性。
+
+	实光滑的映射 \(P\) 在光滑系数的 \(C^\infty\) 拓扑中连续，而 \(P(h)=h\) 对小调和系数成立。它在刚才的小邻域内恰按标记等价类取相同值。因此 \(h\mapsto[X_h,f]\) 与 \(P\) 互为连续的局部逆。这个像是开邻域：一个小的系数开集在全部同位重标记下的饱和仍开，因为每个固定光滑微分同胚的拉回都是 \(C^\infty\) 拓扑的同胚；在任意饱和点附近，先用该固定拉回移回小系数邻域，再用 \(P\)。缩小调和参数球即可得到式\eqref{g4:eq:0603:teich-chart}的拓扑结论。
+
+	最后证明参数转移全纯，这一步不能由实隐函数定理自动得到。由\cref{g4:cor:0602:holomorphic-family}，\(h(t)=\sum t_j\eta_j\) 给出的族本身是全纯曲面族。在任意小参数 \(t_0\) 处，其 Kodaira--Spencer 映射为
+	\[
+		\mathbb C^{3g-3}\longrightarrow H^1(X_{h(t_0)},T_{X_{h(t_0)}}),
+		\qquad a\longmapsto[R_{h(t_0)}h(a)].
+	\]
+	它复线性，并且在缩小参数域后处处可逆。具体地，在 \((v,h,\mu)=(0,h_0,h_0)\) 处，\(D_{(v,h)}E\) 是原点同构的算子范数小扰动，故仍可逆；其逆由 \((I+A^{-1}\delta A)^{-1}A^{-1}\) 的 算子几何级数给出。改用 \(X_{h_0}\) 的全纯坐标和相应的 \((1,0)\) 向量场变量后，该导数的零点与
+	\[
+		\bar\partial_{X_{h_0}}V+R_{h_0}h(a)=0
+	\]
+	的零点相同。可逆性说明这些参数方向与 \(\bar\partial\) 的像互补；取商后恰得到上述 Kodaira--Spencer 同构。
+
+	设另一组这样的参数记为 \(s\)，重叠图的转移为 \(s=s(t)\)。固定重叠点处的标记同构后，隐函数构造给出局部实光滑的比较映射及 \(s(t)\)。沿任意 \(\partial/\partial\overline t_j\) 微分两族的标记等价关系。源族的 Beltrami 系数关于 \(t\) 全纯，因此在此方向的 Kodaira--Spencer 类为零。靶族的类为
+	\[
+		\mathrm{KS}_{s(t)}\left(\frac{\partial s}{\partial\overline t_j}\right).
+	\]
+	比较映射的变化只增加 \(\bar\partial\) 向量场；这是\cref{g4:prop:0603:trivial-deformation}在当前纤维的坐标中求导后，再对实参数方向复线性延拓的结论。故上式也为零。刚证的 Kodaira--Spencer 可逆性给出 \(\partial s/\partial\overline t_j=0\)。实光滑转移满足 Cauchy--Riemann 方程，因而全纯；反向转移同理。
+
+	这些局部图在每个标记曲面处都可构造。局部 Hausdorff 性由参数球得到；不同标记等价类若不能分离，取两个基准曲面的系数邻域中相互等价的序列，同样的双曲等距紧性给出它们之间的极限全纯同构，而在 \(C^1\) 意义下足够接近的微分同胚，可沿短测地线插值成一条仍为微分同胚的路径，所以极限保留标记的同位类，产生矛盾。因此商空间 Hausdorff。光滑张量空间有可数拓扑基，商映射开，所以商也第二可数。这些图遂构成复流形图册。其基点导数正是调和代表到 \(H^1(X,T_X)\) 的同构，余切识别再由\cref{g4:thm:0603:serre-duality}得到。
+\end{proof}
+
+这一定理的证明分开了三个问题：椭圆分解给出可逆线性化，非线性映射方程产生实际参数，参数族的全纯性保证复图册。
+
+\begin{example}\label{g4:exm:0603:low-genus}
+	亏格 \(0\) 时 \(T_{\mathbb P^1}\) 次数为 \(2\)，全纯向量场三维，\(Q(\mathbb P^1)=0\)。亏格 \(1\) 时 \(T_X\) 平凡，两个空间 \(H^0(X,T_X)\)、\(Q(X)\) 均为一维；\cref{g4:exm:0602:torus-parameter}已给出其实际一维复参数。低亏格中的全纯向量场使\cref{g4:lem:0603:split-inverse}的核不再为零，须先固定适当的点或平移归一化。对 \(g\ge2\)，这个无穷小核消失，但仍可能存在离散的全纯自同构；它们改变标记，在忘掉标记的模空间中还要另取有限商。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 9.3* Toponogov 三角比较
 % 纲要位置：几何学计划纲要.md，第 2444 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,25 +15,367 @@
 
 \OptionalSection{Toponogov 三角比较}{g3:sec:0903}
 
-待撰写
+固定两条边及其夹角时，正曲率会使两条径向测地线的端点更接近；固定三条边时，同一现象则表现为角更大、顶点到对边的距离更大。第七章已经在距离光滑处给出了相应的 Hessian 比较。本节要处理的是长三角形：对边可能经过割迹，距离不再可微，局部公式不能直接沿整条边积分。
+
+这里采用一维支撑函数的方法。先把距离换成一个适合模型方程的函数，再证明局部上支撑不等式能够在整段区间上拼合。这个证明允许对边与割迹任意相交，不要求把它划成有限个光滑段。所得结果是 Toponogov 三角比较。\footnote{\OriginalName{Виктор Андреевич Топоногов}（Victor Andreevich Toponogov，1930--2004），俄罗斯数学家，研究整体黎曼几何，建立了曲率下界的三角比较及非负曲率分裂结果。}
 
 \subsection{铰链比较与模型角}
 \label{g3:subsec:0903:01}
-待撰写
+
+以 \(M_k^2\) 表示常截面曲率 \(k\) 的单连通完备二维模型：\(k>0\) 时为半径 \(1/\sqrt{k}\) 的球面，\(k=0\) 时为平面，\(k<0\) 时为双曲平面。继续使用第七章的 \(s_k,c_k\) 与 \(b_k\)，特别是
+\[
+ s_k'=c_k,\qquad c_k'=-ks_k,\qquad c_k^2+ks_k^2=1,
+ \qquad b_k=\begin{cases}\pi/\sqrt{k},&k>0,\\ \infty,&k\le0.\end{cases}
+\]
+为了同时处理三个模型，引入函数
+\begin{equation}\label{g3:eq:modified-model-distance}
+ m_k(r)=\int_0^r s_k(t)\,\mathrm dt
+ =\begin{cases}
+ (1-c_k(r))/k,&k\ne0,\\ r^2/2,&k=0.
+ \end{cases}
+ \qquad m_k'=s_k,\quad m_k''=c_k=1-km_k.
+\end{equation}
+它在 \([0,b_k)\) 上严格递增，在零处有展开 \(m_k(r)=r^2/2+O(r^4)\)。将它延拓到负参数时，\(m_k\) 是偶函数；下文的 \(m_k(a-b)\) 因而也有意义。
+\symidx{\(m_k(r)\)：模型修改距离函数，等于 \(\int_0^r s_k(t)\,\mathrm dt\)}
+
+\begin{definition}\label{g3:def:comparison-triangle}
+ 设 \(p,q,r\) 为黎曼流形中三个不同的点，并分别选定连接它们的最短测地线段。这三个线段组成一个\term[ce di sanjiao xing]{测地三角形}[geodesic triangle]。记
+ \[
+ a=d(q,r),\qquad b=d(p,r),\qquad c=d(p,q),\qquad P=a+b+c.
+ \]
+ 若 \(P<2b_k\)，则在 \(M_k^2\) 中具有相同三边长的三角形称为它的 \(k\)-\term[bijiao sanjiao xing]{比较三角形}[comparison triangle]，顶点记为 \(\bar p,\bar q,\bar r\)。其在 \(\bar p\) 处的角记为 \(\widetilde\angle_k(qpr)\)，称为相应的\term[moxing jiao]{模型角}[comparison angle]。允许三角不等式取等号，此时模型三角形退化为线段。
+
+ 两条从同一点出发的最短测地线段及其初始夹角组成一个\term[jiaolian]{铰链}[hinge]。同腿长、同夹角的模型铰链称为其比较铰链。
+\end{definition}
+
+比较三角形的存在与唯一性可以直接从余弦公式看出。在模型中，两条长度为 \(b,c\) 的腿形成角 \(\alpha\)，其端点距离 \(a\) 满足
+\begin{equation}\label{g3:eq:model-hinge-cosine}
+ m_k(a)=m_k(b-c)+s_k(b)s_k(c)(1-\cos\alpha).
+\end{equation}
+当 \(k=0\) 时，这就是 \(a^2=b^2+c^2-2bc\cos\alpha\)。当 \(k\ne0\) 时，它等价于
+\[
+ c_k(a)=c_k(b)c_k(c)+k s_k(b)s_k(c)\cos\alpha.
+\]
+在球面嵌入模型中取两条子午线，端点的 Euclid 内积给出这个等式；在双曲面模型中用 Lorentz 内积作同一计算，空间分量的系数变为 \(k<0\)，得到双曲余弦公式。这也给出统一公式\eqref{g3:eq:model-hinge-cosine}。
+
+\ProseParagraphBreak
+
+若 \(0<b,c<b_k\)，模型第三边随 \(\alpha\in[0,\pi]\) 连续增加。\(k\le0\) 时，其范围是 \([|b-c|,b+c]\)；\(k>0\) 时，球面的最短距离使范围成为
+\[
+ [\,|b-c|,\ \min\{b+c,2b_k-b-c\}\,].
+\]
+三角不等式与 \(P<2b_k\) 正好保证给定的 \(a\) 位于这个范围内。因此比较三角形存在，在模型等距意义下唯一；非退化时三个模型角都在 \((0,\pi)\) 内。
+
+\ProseParagraphBreak
+
+需要区分两种固定数据。固定三边长时，曲率下界将给出“实际角不小于模型角”；固定两腿与夹角时，它将给出“实际第三边不大于模型第三边”。两句话由式\eqref{g3:eq:model-hinge-cosine}的单调性相互对应。以下先证明三边形式，因为它自然成为一个端点值已知的一维比较问题。
 
 \subsection{局部比较及拼接引理}
 \label{g3:subsec:0903:02}
-待撰写
+
+设 \(r_p=d(p,\cdot)\) 在某点光滑，并且 \(0<r_p<b_k\)。若 \(K\ge k\)，\cref{g3:thm:hessian-comparison}给出
+\[
+ \operatorname{Hess}r_p\le\frac{c_k(r_p)}{s_k(r_p)}
+ (g-\mathrm dr_p\otimes\mathrm dr_p).
+\]
+对复合函数 \(m_k\circ r_p\) 求 Hessian，径向项和横向项恰好合在一起：
+\begin{equation}\label{g3:eq:modified-distance-hessian-smooth}
+ \begin{split}
+ \operatorname{Hess}(m_k\circ r_p)
+ &=c_k(r_p)\,\mathrm dr_p\otimes\mathrm dr_p
+   +s_k(r_p)\operatorname{Hess}r_p\\
+ &\le c_k(r_p)g=(1-km_k(r_p))g.
+ \end{split}
+\end{equation}
+因而沿单位速测地线 \(\sigma\)，函数 \(h=m_k\circ r_p\circ\sigma\) 满足 \(h''+kh\le1\)。模型中的对应函数满足等式。
+
+\ProseParagraphBreak
+
+在割迹上使用这个不等式，需要给“\(h''\)”一个不要求可微的准确含义。若连续函数 \(h\) 在内点 \(t_0\) 满足：对每个 \(\varepsilon>0\)，都有 \(t_0\) 邻域上的 \(C^2\) 函数 \(H\)，使
+\begin{equation}\label{g3:eq:one-dimensional-upper-support}
+ H\ge h,\qquad H(t_0)=h(t_0),\qquad
+ H''(t_0)+kh(t_0)\le1+\varepsilon,
+\end{equation}
+就说 \(h''+kh\le1\) 在 \(t_0\) 以\term[shang zhicheng]{上支撑}[upper support]的意义成立。支撑只须在这个点的一个邻域内定义；邻域及支撑函数可以随点和 \(\varepsilon\) 改变。
+
+\begin{lemma}[一维支撑拼接]\label{g3:lem:one-dimensional-support-gluing}
+ 设 \(k\in\mathbb R\)、\(0<L<b_k\)，\(h\in C([0,L])\) 在每个内点以上支撑意义满足 \(h''+kh\le1\)。设 \(\bar h\in C^2([0,L])\) 满足
+ \[
+ \bar h''+k\bar h=1,\qquad \bar h(0)=h(0),\quad \bar h(L)=h(L).
+ \]
+ 则 \(h\ge\bar h\) 于整个 \([0,L]\)。更一般地，端点只满足 \(h\ge\bar h\) 时，结论仍成立。
+
+ 若 \(h\) 连续且分段 \(C^2\)，各段上满足相同微分不等式，且每个拼接点的单侧导数满足
+ \begin{equation}\label{g3:eq:gluing-slope-condition}
+ h'_+(t_j)\le h'_-(t_j),
+ \end{equation}
+ 则它满足上述支撑条件，因而也满足全区间比较。
+\end{lemma}
+\begin{proof}
+ 先证明支撑条件足以给出全局结论。令 \(w=h-\bar h\)。它的上支撑满足 \(W''(t_0)+kw(t_0)\le\varepsilon\)。选择常数 \(\lambda>0\)，使
+ \[
+ \max\{k,0\}<\lambda^2<(\pi/L)^2,
+ \qquad \psi(t)=\cos\bigl(\lambda(t-L/2)\bigr)>0.
+ \]
+ 这样的 \(\lambda\) 存在，正是因为 \(L<b_k\)。若 \(w\) 有负值，则 \(w/\psi\) 在某内点 \(t_0\) 取负最小值 \(A<0\)：端点值非负，故最小点不能在端点。于是
+ \(w-A\psi\ge0\)，且在 \(t_0\) 取零。
+
+ 取 \(w\) 在 \(t_0\) 的一个上支撑 \(W\)。由于 \(W\ge w\)，函数 \(W-A\psi\) 也在 \(t_0\) 取局部最小值，所以
+ \[
+ 0\le W''(t_0)-A\psi''(t_0)
+ \le\varepsilon+A(\lambda^2-k)\psi(t_0).
+ \]
+ 右侧的第二项严格为负，选取足够小的 \(\varepsilon\) 即得矛盾。这证明 \(w\ge0\)。它同时说明：每一点的局部支撑，即使来自不同的构造，也足以比较整条区间；无须先选择一个共同的光滑分解。
+
+ 最后核对分段拼接条件。若某点满足严格跳跃 \(h'_+<h'_-\)，选择斜率 \(v\) 严格夹在两者之间。对任意固定实数 \(C\)，二次函数
+ \[
+ H(t_j+s)=h(t_j)+vs+\tfrac12Cs^2
+ \]
+ 在充分小的双侧邻域内高于 \(h\)：右侧的正线性差来自 \(v>h'_+\)，左侧来自 \(v<h'_-\)。因此可取 \(C=1-kh(t_j)\)。若两侧导数相等，则两侧的二阶导数都不大于 \(1-kh(t_j)\)；Taylor 公式说明取
+ \(C=1-kh(t_j)+\varepsilon\) 得到局部上支撑。这里分段 \(C^2\) 指各段连同端点具有单侧二阶连续延拓。在其余点直接取 \(H=h\)。故拼接后的函数满足式\eqref{g3:eq:one-dimensional-upper-support}。
+\end{proof}
+
+\(k=0\) 时，这个引理说：二阶导数不大于一的函数位于具有同样端点的模型抛物线之上。式\eqref{g3:eq:gluing-slope-condition}允许斜率向下跳；向上跳则会产生一个不能由光滑函数从上方接触的尖点。距离在割迹处切换最短分支，恰好适合前一种支撑结构。
+
+\begin{proposition}[割前的局部三角比较]\label{g3:prop:local-toponogov}
+ 设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)、\(K\ge k\)。取最短测地三角形 \(pqr\)，周长小于 \(2b_k\)，令 \(\sigma:[0,a]\to M\) 为从 \(q\) 到 \(r\) 的单位速边。若 \(\sigma([0,a])\) 不交 \(p\) 的割迹，则对相应的模型边 \(\bar\sigma\)，有
+ \[
+ d(p,\sigma(t))\ge d_k(\bar p,\bar\sigma(t))\qquad(0\le t\le a).
+ \]
+ 若整个三角形处于各顶点的割前邻域中，则三个实际角不小于相应模型角；等价地，其中的最短铰链第三边不大于同腿同角模型的第三边。
+\end{proposition}
+\begin{proof}
+ 设三边长为 \(a,b,c\)。三角不等式给出
+ \begin{equation}\label{g3:eq:triangle-radius-perimeter-bound}
+ d(p,\sigma(t))\le\min\{c+t,b+a-t\}\le\frac{a+b+c}{2}<b_k.
+ \end{equation}
+ 模型中同样成立。令 \(h(t)=m_k(d(p,\sigma(t)))\)，\(\bar h(t)=m_k(d_k(\bar p,\bar\sigma(t)))\)。式\eqref{g3:eq:modified-distance-hessian-smooth}给出 \(h''+kh\le1\)，模型给出 \(\bar h''+k\bar h=1\)。若边通过 \(p\)，\(m_k(d(p,\cdot))\) 在法坐标中是 \(m_k(|x|)\)，其偶次幂展开说明它在中心仍光滑，且 Hessian 为 \(g_p\)。故这不产生额外奇点。两函数的端点值相同，\(a<b_k\)，由\cref{g3:lem:one-dimensional-support-gluing}得到 \(h\ge\bar h\)。\(m_k\) 严格递增，给出距离比较。
+
+ 在顶点 \(q\) 处，两侧的距离相同，比较不等式的右导数给出
+ \[
+ -\cos\angle pqr
+ =\left.\frac{\mathrm d}{\mathrm dt}d(p,\sigma(t))\right|_{0}
+ \ge-\cos\widetilde\angle_k(pqr).
+ \]
+ 这里使用距离第一变分公式。余弦在 \([0,\pi]\) 上递减，故实际角较大；交换三个顶点得到全部角比较。固定两腿后，式\eqref{g3:eq:model-hinge-cosine}把角比较转换为铰链第三边比较。
+\end{proof}
 
 \subsection{全局三角比较的证明}
 \label{g3:subsec:0903:03}
-待撰写
+
+全局化的关键是在距离不光滑的点仍构造式\eqref{g3:eq:one-dimensional-upper-support}中的支撑。取到该点的一条最短线，把起点向前移动一小段，再补上这段长度；三角不等式保证新函数在原距离上方。第七章的\cref{g3:lem:shifted-distance-smooth}已经证明这个新距离在接触点光滑。
+
+\begin{proposition}\label{g3:prop:global-modified-distance-hessian}
+ 设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)、\(k\in\mathbb R\)、\(K\ge k\)，并固定 \(p\in M\)。若单位速测地线 \(\sigma\) 的像位于 \(B(p,b_k)\)，则
+ \[
+ h(t)=m_k(d(p,\sigma(t)))
+ \]
+ 在每个内点以上支撑意义满足 \(h''+kh\le1\)。
+\end{proposition}
+\begin{proof}
+ 固定参数 \(t_0\)，记 \(x=\sigma(t_0)\)、\(\rho=d(p,x)\)。若 \(x=p\)，前面法坐标中的偶函数计算给出 \(h''(t_0)=1\)，可以直接以 \(h\) 为局部支撑。
+
+ 若 \(\rho>0\)，由完备性取从 \(p\) 到 \(x\) 的单位速最短线 \(\eta:[0,\rho]\to M\)。对 \(0<\delta<\rho\)，令
+ \[
+ p_\delta=\eta(\delta),\qquad r_\delta(y)=\delta+d(p_\delta,y).
+ \]
+ 则 \(r_\delta\ge d(p,\cdot)\)，且 \(r_\delta(x)=\rho\)。移基点引理保证它在 \(x\) 附近光滑。缩小邻域使 \(r_\delta<b_k\)，于是 \(H_\delta=m_k\circ r_\delta\circ\sigma\) 是 \(h\) 在 \(t_0\) 的光滑上支撑。
+
+ 记 \(z=\langle\dot\eta(\rho),\dot\sigma(t_0)\rangle\)，则 \(|z|\le1\)。从 \(p_\delta\) 到 \(x\) 的段长是 \(\rho-\delta<b_k\)，在割点以前；Hessian 比较给出
+ \[
+ \begin{split}
+ H_\delta''(t_0)
+ &\le c_k(\rho)z^2+s_k(\rho)
+       \frac{c_k(\rho-\delta)}{s_k(\rho-\delta)}(1-z^2)\\
+ &=c_k(\rho)+
+   \frac{s_k(\delta)}{s_k(\rho-\delta)}(1-z^2).
+ \end{split}
+ \]
+ 最后一步使用 \(s_k(\rho)c_k(\rho-\delta)-c_k(\rho)s_k(\rho-\delta)=s_k(\delta)\)，可由正弦、双曲正弦的差角公式核验，\(k=0\) 时就是 \(\rho-(\rho-\delta)=\delta\)。因 \(0<\rho<b_k\)，末项随 \(\delta\downarrow0\) 趋于零。给定任意 \(\varepsilon>0\)，取足够小的 \(\delta\)，便有
+ \[
+ H_\delta''(t_0)+kh(t_0)\le1+\varepsilon.
+ \]
+ 这正是所需的上支撑条件。
+\end{proof}
+
+这个构造只使用接触点处的一条最短线。不同参数处可以选择不同的最短线；即使这些选择不连续，上支撑拼接引理仍然适用，因为它的反证只在一个负最小点使用一个局部支撑。
+
+\begin{theorem}[Toponogov 三角比较]\label{g3:thm:toponogov-triangle}
+ 设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)、\(k\in\mathbb R\)，并且每个截面曲率满足 \(K\ge k\)。给定由三条选定最短测地线构成的三角形 \(pqr\)，设其三边长为 \(a=d(q,r)\)、\(b=d(p,r)\)、\(c=d(p,q)\)，并满足
+ \[
+ P=a+b+c<2b_k.
+ \]
+ 令 \(\bar p\bar q\bar r\subset M_k^2\) 为比较三角形，\(\sigma:[0,a]\to M\) 及 \(\bar\sigma:[0,a]\to M_k^2\) 为对应的单位速边 \(qr\) 与 \(\bar q\bar r\)。则
+ \begin{equation}\label{g3:eq:toponogov-vertex-side}
+ d(p,\sigma(t))\ge d_k(\bar p,\bar\sigma(t))\qquad(0\le t\le a).
+ \end{equation}
+ 三个实际角也分别不小于相应模型角。结论对所选的任意最短边成立，不要求这些最短边唯一，也不要求三角形位于某个法邻域中。
+\end{theorem}
+\begin{proof}
+ 由式\eqref{g3:eq:triangle-radius-perimeter-bound}，整条 \(\sigma\) 位于 \(B(p,b_k)\)，且 \(a<b_k\)。因此\cref{g3:prop:global-modified-distance-hessian}给出
+ \[
+ h=m_k\circ d(p,\cdot)\circ\sigma,
+ \qquad h''+kh\le1
+ \]
+ 的逐点上支撑不等式。模型函数 \(\bar h=m_k\circ d_k(\bar p,\cdot)\circ\bar\sigma\) 满足 \(\bar h''+k\bar h=1\)，两端分别取 \(m_k(c),m_k(b)\)。\cref{g3:lem:one-dimensional-support-gluing}遂给出 \(h\ge\bar h\)。在 \([0,b_k)\) 上用 \(m_k\) 的严格单调性，就得到式\eqref{g3:eq:toponogov-vertex-side}。这一步把局部 Hessian 控制拼成全局距离控制，已经包括 \(\sigma\) 经过割迹的情形。
+
+ 为比较 \(q\) 处的角，沿三角形中选定的边 \(pq\)，将起点 \(p\) 向前移动 \(\delta\)，构造上一命题中的 \(r_\delta\)。在 \(q\) 附近有
+ \[
+ r_\delta(\sigma(t))\ge d(p,\sigma(t))
+ \ge d_k(\bar p,\bar\sigma(t)),
+ \]
+ 且 \(t=0\) 时取等号。左端光滑，故其右导数不小于模型右导数。移基点没有改变所选边在 \(q\) 的终向量，距离第一变分给出
+ \[
+ -\cos\angle pqr\ge-\cos\widetilde\angle_k(pqr).
+ \]
+ 因而 \(\angle pqr\ge\widetilde\angle_k(pqr)\)。模型边若通过 \(\bar p\)，模型距离在其内部会有尖点，但在端点 \(\bar q\ne\bar p\) 仍可求上述导数。循环交换顶点，得到三个角的结论。
+\end{proof}
+
+\begin{corollary}[最短铰链比较]\label{g3:cor:toponogov-hinge}
+ 设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)、\(K\ge k\)。从 \(p\) 出发取两条最短段到 \(q,r\)，腿长为 \(c,b>0\)，夹角为 \(\alpha\)。若
+ \(b+c+d(q,r)<2b_k\)，则同腿长、同夹角的模型铰链端点 \(\hat q,\hat r\) 满足
+ \begin{equation}\label{g3:eq:toponogov-hinge}
+ d(q,r)\le d_k(\hat q,\hat r).
+ \end{equation}
+ 特别地，当 \(k=0\) 时，
+ \[
+ d(q,r)^2\le b^2+c^2-2bc\cos\alpha.
+ \]
+\end{corollary}
+\begin{proof}
+ 若 \(q=r\)，结论直接成立。否则由完备性选取 \(qr\) 的一条最短段，应用\cref{g3:thm:toponogov-triangle}得到 \(\alpha\ge\widetilde\angle_k(qpr)\)。固定腿长时，模型第三边随夹角增加，故得到式\eqref{g3:eq:toponogov-hinge}。在正曲率情形，两腿都小于 \(b_k\)，比较铰链存在；即使其端点在特殊情形成为对径点，距离单调性仍由连续性成立。
+\end{proof}
 
 \subsection{正曲率模型中的周长限制}
 \label{g3:subsec:0903:04}
-待撰写
+
+当 \(k\le0\) 时，\(b_k=\infty\)，上述全局结果没有周长限制。当 \(k>0\) 时，条件 \(P<2b_k\) 同时完成三个任务：它使球面比较三角形由边长确定；使每条边长小于 \(b_k\)，从而一维边值比较中的正权函数存在；还使顶点到整条对边的距离严格小于 \(b_k\)，从而 \(m_k\) 严格递增，移基点误差中的分母 \(s_k(\rho-\delta)\) 不会在极限中消失。
+
+\ProseParagraphBreak
+
+这些限制可以在单位球面上直接看见。若三点把一条大圆分成三条长度都小于 \(\pi\) 的弧，则三条最短边的周长为 \(2\pi\)。在一条对边上，可能出现另一顶点的对径点；此时该距离等于 \(\pi\)，\(s_1(\pi)=0\)。若一条边的长度已经等于 \(\pi\)，连接其端点的最短半大圆也不唯一。边长与角的光滑对应、支撑估计和边值方程都不能在这些位置照搬严格范围内的除法。
+
+\begin{example}\label{g3:exm:spherical-perimeter-threshold}
+ 在曲率 \(k>0\) 的模型球面上，取三条边都为 \(a\) 的非退化三角形。令 \(x=\sqrt{k}a\)，余弦公式给出
+ \[
+ \cos\alpha=\frac{\cos x}{1+\cos x}.
+ \]
+ 右侧属于 \((-1,1)\) 的范围恰为 \(0<x<2\pi/3\)，即 \(3a<2b_k\)。当 \(x\uparrow2\pi/3\) 时，\(\alpha\uparrow\pi\)，三角形趋向把一条大圆三等分的退化构形。若取 \(x=3\pi/4\)，三边都小于 \(\pi\)，并满足普通三角不等式，但右侧小于 \(-1\)，因而不存在这样的球面比较三角形。这说明仅列每边小于 \(b_k\)，还不足以保证给定三边有模型。
+\end{example}
+
+在 \(K\ge k>0\) 的完备流形上，\cref{g3:thm:bonnet-myers}另外给出直径不超过 \(b_k\)。直径界是关于每一对点的结论，不能在选取比较三角形时替代所写的严格周长条件。本节所证明的版本始终在 \(P<2b_k\) 内使用；涉及临界周长时，应重新处理退化模型及对径点。
 
 \subsection{等号和刚性情形}
 \label{g3:subsec:0903:05}
-待撰写
+
+在模型空间中当然处处取等号。反过来，等号首先控制三角形所扫过的方向。下面先证明一维等号的传播，再在径向扇形没有割点的条件下恢复它的二维度量。
+
+\begin{proposition}\label{g3:prop:toponogov-profile-rigidity}
+ 设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)、\(K\ge k\)，\(pqr\) 为周长小于 \(2b_k\) 的最短测地三角形。沿对应的单位速边 \(\sigma:[0,a]\to M\)、\(\bar\sigma:[0,a]\to M_k^2\)，若存在 \(t_0\in(0,a)\) 使
+ \[
+ d(p,\sigma(t_0))=d_k(\bar p,\bar\sigma(t_0)),
+ \]
+ 则同一等式对所有 \(t\in[0,a]\) 成立。
+\end{proposition}
+\begin{proof}
+ 令 \(w=m_k(d(p,\sigma))-m_k(d_k(\bar p,\bar\sigma))\)。全局比较说明 \(w\ge0\)，而支撑构造说明 \(w''+kw\le0\) 以上支撑意义成立。固定任意 \(s<t_0<t\)，在 \([s,t]\) 上定义
+ \[
+ y(x)=\frac{s_k(t-x)}{s_k(t-s)}w(s)
+      +\frac{s_k(x-s)}{s_k(t-s)}w(t).
+ \]
+ 则 \(y''+ky=0\)，且与 \(w\) 有相同端点。因为 \(t-s<a<b_k\)，分母及内点的两个系数均为正。一维支撑拼接引理的齐次形式给出 \(w\ge y\)：其证明只需将常数一换成零，或直接对 \(w-y\) 使用该引理证明中的正权最小值论证。在 \(t_0\) 处有
+ \(0=w(t_0)\ge y(t_0)\ge0\)，故 \(w(s)=w(t)=0\)。任意选择 \(s,t\) 即得 \(w\equiv0\)，再由 \(m_k\) 的单调性回到距离。
+\end{proof}
+
+\begin{proposition}[无割点扇形中的等号刚性]\label{g3:prop:toponogov-fan-rigidity}
+ 设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)、\(K\ge k\)。设 \(pqr\) 是周长小于 \(2b_k\) 的非退化最短三角形，\(\sigma:[0,a]\to M\) 为边 \(qr\)，且
+ \[
+ \sigma([0,a])\cap\bigl(\operatorname{Cut}(p)\cup\{p\}\bigr)=\varnothing.
+ \]
+ 若顶点到对边的比较在某个内点取等号，则从 \(p\) 到 \(\sigma(t)\) 的唯一最短段扫出的闭三角域，与 \(M_k^2\) 中的闭比较三角域具有相同的诱导黎曼度量。对应保持顶点及边上的弧长参数；三角域内部是一张全测地曲面。
+\end{proposition}
+\begin{proof}
+ 由\cref{g3:prop:toponogov-profile-rigidity}，记
+ \[
+ \rho(t)=d(p,\sigma(t))=d_k(\bar p,\bar\sigma(t)),\qquad
+ u(t)=\frac{\log_p\sigma(t)}{\rho(t)},
+ \]
+ 则 \(\rho,u\) 都光滑。这里 \(\log_p\) 是割前域上的指数映射逆。考虑径向参数化
+ \[
+ F(r,t)=\exp_p(ru(t)),\qquad 0<r\le\rho(t).
+ \]
+ 我们先证明其诱导度量与模型相同，再排除扇形自交并证明全测地性。
+
+ 令 \(T\) 为径向单位向量，并在外边 \(\sigma(t)\) 上分解
+ \[
+ \dot\sigma(t)=\rho'(t)T+v(t),\qquad v(t)\perp T,
+ \qquad |v(t)|^2=1-\rho'(t)^2.
+ \]
+ 非退化模型中，边 \(\bar q\bar r\) 不可能在某点与来自 \(\bar p\) 的径向线相切；否则测地线初值唯一性会使这条边落在同一条过 \(\bar p\) 的测地线上。因此 \(|v(t)|>0\)。由于整个距离轮廓等于模型，沿 \(\sigma\) 对 \(m_k(\rho)\) 求二阶导数得到
+ \[
+ c_k(\rho)
+ =c_k(\rho)\rho'^2+s_k(\rho)
+       \operatorname{Hess}r_p(v,v).
+ \]
+ 从而
+ \[
+ \operatorname{Hess}r_p(v,v)=\operatorname{ct}_k(\rho)|v|^2.
+ \]
+ 距离仍在割前，\cref{g3:thm:hessian-comparison}的方向等号结论可用。沿固定 \(t\) 的径向线，角向 Jacobi 场 \(J=\partial_tF\) 满足
+ \begin{equation}\label{g3:eq:triangle-equality-jacobi}
+ J(r)=\frac{s_k(r)}{s_k(\rho(t))}P_{\rho(t)\to r}v(t).
+ \end{equation}
+ 这里 \(J(0)=0\)，而由 \(\sigma(t)=F(\rho(t),t)\) 有 \(J(\rho(t))=v(t)\)，所以正是该方向等号中的边值场。
+
+ 在模型中选极角 \(\vartheta\)，使 \(\bar\sigma\) 的极角随 \(t\) 增加。它从零增至模型顶角 \(\bar\alpha\in(0,\pi)\)，并满足
+ \[
+ \vartheta'(t)=\frac{\sqrt{1-\rho'(t)^2}}{s_k(\rho(t))}>0.
+ \]
+ 可在球面或双曲面线性模型中核对这一选择：模型边点是两个端点的正线性组合，系数为
+ \(s_k(a-t)/s_k(a)\) 与 \(s_k(t)/s_k(a)\)，其径向方向扫过夹角小于 \(\pi\) 的扇形；平面中则是普通线段插值。以 \(\vartheta\) 代替 \(t\)，Gauss 引理及式\eqref{g3:eq:triangle-equality-jacobi}给出
+ \begin{equation}\label{g3:eq:triangle-equality-polar-metric}
+ F^*g=\mathrm dr^2+s_k(r)^2\,\mathrm d\vartheta^2.
+ \end{equation}
+ 因为角向场非零，这在 \(r>0\) 处已经是一张浸入曲面的度量。
+
+ 以下说明该曲面没有额外的弯曲。记
+ \(X=\partial_r\)、\(Y=s_k(r)^{-1}\partial_\vartheta\)，它们是诱导度量的正交单位标架。径向线是环境测地线，而式\eqref{g3:eq:triangle-equality-jacobi}说明 \(Y\) 沿径向平行，故曲面的第二基本形式满足
+ \[
+ B(X,X)=B(X,Y)=0.
+ \]
+ Hessian 等号同时给出环境径向截面曲率 \(K(X,Y)=k\)。若 \(N\) 是单位法向量，考虑二维平面
+ \(\operatorname{span}\{\cos s\,X+\sin s\,N,Y\}\)。它的截面曲率在 \(s=0\) 达到下界 \(k\)，对 \(s\) 求导得到
+ \[
+ 0=2\langle R(X,Y)Y,N\rangle.
+ \]
+ 因此 \((R(X,Y)Y)^\perp=0\)。余维为零时这一结论直接成立。
+
+ 由式\eqref{g3:eq:triangle-equality-polar-metric}，曲面自身的联络满足
+ \[
+ \nabla_XY=0,\qquad \nabla_YX=\operatorname{ct}_k(r)Y,
+ \qquad \nabla_YY=-\operatorname{ct}_k(r)X.
+ \]
+ 将这些关系代入\cref{g3:thm:codazzi-equation}，令 \(C=B(Y,Y)\)，得到
+ \[
+ 0=(\nabla B)(X;Y,Y)-(\nabla B)(Y;X,Y)
+   =\nabla_X^\perp C+\operatorname{ct}_k(r)C.
+ \]
+ 即 \(\nabla_X^\perp(s_k(r)C)=0\)。在外边上，\(\sigma\) 是环境测地线，故 \(B(\dot\sigma,\dot\sigma)=0\)。其角向分量非零，而另外两项 \(B(X,X),B(X,Y)\) 已为零，所以 \(C=0\) 于外边。沿每条径向线解上述线性方程，得 \(C=0\) 于全扇形。因此其内部全测地。
+
+ 最后检验参数化的单射性和中心的光滑性。将 \(u\) 也用 \(\vartheta\) 参数化，式\eqref{g3:eq:triangle-equality-jacobi}在 \(r\downarrow0\) 的极限给出 \(|u'|=1\)。由于第二基本形式为零，环境中有
+ \[
+ \overline\nabla_{\partial_\vartheta}\partial_\vartheta F
+   =-s_k(r)c_k(r)\,\partial_rF.
+ \]
+ 在 \(p\) 的法坐标中 \(F(r,\vartheta)=ru(\vartheta)\)，且 \(\Gamma(x)=O(|x|)\)。故上式的坐标形式为
+ \[
+ r u''(\vartheta)+O(r^3)
+   =-s_k(r)c_k(r)u(\vartheta)=-r u(\vartheta)+O(r^3).
+ \]
+ 除以 \(r\) 并令 \(r\downarrow0\)，得到 \(u''=-u\)。于是 \(u\) 是 \(S_pM\) 上的一段单位速大圆，且其参数长度 \(\bar\alpha<\pi\)，所以没有重复方向。整个径向扇形位于 \(p\) 的割前域，指数映射在那里单射。因此 \(F\) 在三角域上没有自交。
+
+ 取把模型起点切平面映到 \(\operatorname{span}\{u(0),u'(0)\}\) 的线性等距，模型三角域到所得扇形的映射就是这个线性等距与两边指数坐标的复合。它在中心光滑，微分保持度量；在其余点保持度量由式\eqref{g3:eq:triangle-equality-polar-metric}给出。它也把三条模型边映到给定三角形的三条边，完成所述刚性。
+\end{proof}
+
+这里得到的是三角域的诱导度量及其全测地性。环境中未被扇形扫过的二维平面仍可具有其他曲率。例如 \(\mathbb R^2\times S^2\) 的平面因子内，每个三角形都达到 \(k=0\) 的比较等号，而球面因子的截面曲率为正。若只知某一点对的距离等号而没有上述条件，也不能把它扩大解释为一个环境开集的常曲率性。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

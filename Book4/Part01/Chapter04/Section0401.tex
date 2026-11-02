@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 4.1 微分的周期
 % 纲要位置：几何学计划纲要.md，第 3592 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,272 @@
 \section{微分的周期}
 \label{g4:sec:0401}
 
-待撰写
+全纯微分局部可以积分成全纯函数，但沿闭路积分未必为零。例如在复环面上，\(\mathrm{d}z\) 是全局微分，沿格向量对应的闭路积分正好得到该格向量。要把这种现象推广到任意紧黎曼曲面，需要同时记录曲面的闭路和微分的积分。第三章已证明全纯微分空间的复维数等于拓扑亏格；本节进一步说明，这些积分组成的矩阵满足对称性与正性，并由此产生一个离散的周期格。
 
 \subsection{同调辛基与周期矩阵}
 \label{g4:subsec:0401:01}
-待撰写
+
+在有向曲面上，两条横截的有向闭曲线在每个交点给出一个符号：若先取第一条、再取第二条的正向切向量得到曲面的正定向，记为 \(+1\)，否则记为 \(-1\)。符号之和称为它们的相交数。第二卷定理16.2.8及推论16.2.9证明，对于闭有向光滑曲面，这个数只依赖整数同调类，且给出反对称双线性配对。分片光滑曲线可先在有限个折点附近光滑化；小扰动不改变其同调类。因此以下把相交数写成 \(a\cdot b\)，并固定顺序为先 \(a\) 后 \(b\)。
+
+\begin{proposition}
+	\label{g4:prop:0401:symplectic-basis}
+	设 \(X\) 是亏格为 \(g\) 的紧连通黎曼曲面。则 \(H_1(X;\mathbb Z)\) 是秩为 \(2g\) 的自由阿贝尔群，并存在一组基
+	\[
+		a_1,\ldots,a_g,b_1,\ldots,b_g
+	\]
+	满足
+	\begin{equation}\label{g4:eq:0401:symplectic-pairing}
+		a_i\cdot a_j=b_i\cdot b_j=0,
+		\qquad a_i\cdot b_j=\delta_{ij}.
+	\end{equation}
+	当 \(g\ge1\) 时，可取这些类的分片光滑闭路代表，使沿它们切开 \(X\) 后得到一张闭多边形 \(P\)，其正向边界字为
+	\begin{equation}\label{g4:eq:0401:polygon-word}
+		a_1b_1a_1^{-1}b_1^{-1}\cdots
+		a_gb_ga_g^{-1}b_g^{-1}.
+	\end{equation}
+	多边形内部映到曲面的切口补集，各配对边按相同字母识别，所有顶点映到同一点。切口还可避开预先指定的有限个点。
+\end{proposition}
+\begin{proof}
+	黎曼曲面的坐标变换保持实定向，故 \(X\) 是闭有向光滑曲面。第一卷命题6.4.5的可定向标准字构造给出式\eqref{g4:eq:0401:polygon-word}的拓扑切割模型；亏格的唯一性来自该卷定理6.5.4。这个模型有一个顶点、\(2g\) 条边和一个二维胞腔。胞腔边界 \(\partial_1\) 为零；\(\partial_2\) 的每个系数也为零，因为每条边在面边界中正、反各出现一次。第二卷定理3.1.6将胞腔同调自然识别为奇异同调，因而
+	\[
+		H_1(X;\mathbb Z)=\mathbb Z a_1\oplus\cdots\oplus\mathbb Z a_g
+		\oplus\mathbb Z b_1\oplus\cdots\oplus\mathbb Z b_g.
+	\]
+	在每个手柄中取经线与纬线，安排先经线、后纬线的切向量为正向，则它们相交一次且符号为正；不同手柄中的核心曲线不交。同一条曲线可向旁边平移成与自己不交的代表。它们与上述边类对应，故得到式\eqref{g4:eq:0401:symplectic-pairing}。\(g=0\) 时用球面的一个零胞腔和一个二胞腔即可得到 \(H_1=0\)。
+
+	这里的拓扑切口还须变成可积分的曲线。第一卷引理6.2.6及其后的有限图邻域构造，为切口图提供互不相交的顶点小盘和截短边的窄带。沿每条窄带中的核心弧取有限条光滑坐标小盘链，在相邻小盘的交集中选连接点，以坐标线段相接。各段在黎曼曲面上实解析，稍移连接点以避开共同子弧后，紧的有限段只有有限次交叉；删去回路，便得到仍在该带内、端点相同的简单分片光滑弧。顶点附近先在光滑坐标中画出具有原循环次序的有限条短射线，再在各扇区内连接到这些边弧。不同边使用不交的窄带，故没有引入新的相交。
+
+	这个替换保持切割类型。其理由与第一卷引理6.2.12的证明相同：在顶点盘的各扇区及边带内，适当简单弧的延拓定理把旧弧送到新弧，并固定支撑盘的边界；各盘内的同胚再延拓为环境同痕。因而补集仍是一张盘，边字不变。可在顶点处令相邻射线不共线，边的其余折点再作局部圆滑，使切开的区域能分成有限个光滑带角块。若有有限个指定点，先在各点的小坐标盘内把经过该点的有限条弧绕开，再实施同样的替换即可。
+\end{proof}
+
+满足式\eqref{g4:eq:0401:symplectic-pairing}的整数基称为同调的\term[tongdiaoxinji]{辛基}[symplectic basis]。一个辛基首先是同调类的基；为了进行边界积分，我们另外选择了具有式\eqref{g4:eq:0401:polygon-word}的切口代表。之后的积分结论只依赖这些同调类。
+
+\ProseParagraphBreak
+
+若 \(\alpha\) 是 \(X\) 上光滑的复值闭一形式，沿闭路的积分只依赖整数同调类。这里所需的桥梁是第二卷定理7.3.5：在无边界光滑流形上，光滑奇异链计算与连续奇异链相同的同调；相同同调类的光滑圈之差因而是光滑二维链的边界。再用第一卷定理14.5.5的链上 Stokes 公式，对实部与虚部分别计算，得到
+\[
+	\int_{\partial c}\alpha=\int_c\mathrm{d}\alpha=0.
+\]
+于是可定义 \(\alpha\) 的 \(a\)-周期、\(b\)-周期
+\[
+	A_i(\alpha)=\int_{a_i}\alpha,
+	\qquad B_i(\alpha)=\int_{b_i}\alpha.
+\]
+它们合起来确定同态 \(H_1(X;\mathbb Z)\to\mathbb C\)，称为 \(\alpha\) 的\term[zhouqi]{周期}[period]同态。
+
+\ProseParagraphBreak
+
+全纯微分 \(\omega=f(z)\,\mathrm{d}z\) 是闭形式，因为
+\[
+	\mathrm{d}(f\,\mathrm{d}z)
+	=\frac{\partial f}{\partial\bar z}\,\mathrm{d}\bar z\wedge\mathrm{d}z=0.
+\]
+由\cref{g4:thm:0304:genus-comparison}，\(H^0(X,K_X)\) 的复维数为 \(g\)。暂取任意一组全纯微分基 \(\eta_1,\ldots,\eta_g\)，写
+\[
+	A_{ij}=\int_{a_i}\eta_j,
+	\qquad B_{ij}=\int_{b_i}\eta_j.
+\]
+矩阵 \(A,B\) 的行对应闭路，列对应微分；这一约定决定后面归一化时矩阵相乘的次序。
 
 \subsection{Riemann 双线性关系}
 \label{g4:subsec:0401:02}
-待撰写
+
+两组周期之间的关系来自一个二维积分。把曲面切成盘后，闭形式有单值原函数，可以对“原函数乘另一闭形式”使用 Stokes 公式。重新粘合时，原函数在配对边上的跳跃正好是周期。
+
+\begin{theorem}[周期的双线性公式]
+	\label{g4:thm:0401:bilinear-periods}
+	设 \(X\) 是紧连通黎曼曲面，取\cref{g4:prop:0401:symplectic-basis}中的同调辛基。对于任意光滑复值闭一形式 \(\alpha,\beta\)，有
+	\begin{equation}\label{g4:eq:0401:bilinear-periods}
+		\int_X\alpha\wedge\beta
+		=\sum_{i=1}^g
+		\bigl(A_i(\alpha)B_i(\beta)-B_i(\alpha)A_i(\beta)\bigr).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先设 \(g\ge1\)，沿式\eqref{g4:eq:0401:polygon-word}切开。闭形式 \(\alpha\) 在盘 \(P\) 上有原函数 \(F\)。具体地，先在内部固定一点并按道路积分定义 \(F\)；任意两条道路之差在开盘中零同调，前述链上 Stokes 公式说明积分相同。局部原函数又说明 \(F\) 光滑，并可按各边和角的局部片延拓到边界。最后减去常数，使一个选定顶点副本处的值为零。因此
+	\[
+		\mathrm{d}(F\beta)=\mathrm{d}F\wedge\beta+F\,\mathrm{d}\beta
+		=\alpha\wedge\beta.
+	\]
+	切口是一维有限曲线网，面积为零。第一卷定理14.4.5的带角 Stokes 公式遂给出
+	\[
+		\int_X\alpha\wedge\beta=\int_P\mathrm{d}(F\beta)
+		=\int_{\partial P}F\beta.
+	\]
+	也可将 \(P\) 分成有限个带角块应用该公式，内部公共边的积分两两抵消。
+
+	下面逐对计算边界项，同时固定其符号。记第 \(i\) 个四边块起点的原函数值为 \(C_i\)，并沿 \(a_i,b_i\) 的正向参数记
+	\[
+		f_a(t)=\int_{a_i|_{[0,t]}}\alpha,
+		\qquad f_b(t)=\int_{b_i|_{[0,t]}}\alpha.
+	\]
+	用 \(a_i^+,b_i^+\) 表示在边界中正向出现的边，用 \(a_i^-,b_i^-\) 表示其配对边；表中负边的点仍按对应正边的参数 \(t\) 标记。沿正向边界累加积分，得到
+	\begin{equation}\label{g4:eq:0401:edge-jumps}
+		\begin{array}{c|cc}
+		 & \text{正边上的值} & \text{负边匹配点的值}\\ \hline
+		a_i & C_i+f_a(t) & C_i+B_i(\alpha)+f_a(t)\\
+		b_i & C_i+A_i(\alpha)+f_b(t) & C_i+f_b(t).
+		\end{array}
+	\end{equation}
+	例如沿 \(a_i b_i\) 走完时值为 \(C_i+A_i(\alpha)+B_i(\alpha)\)；再沿 \(a_i^{-1}\) 走到与参数 \(t\) 对应的点，须减去 \(A_i(\alpha)-f_a(t)\)，即得表中第一行右项。第二行同样得到。每个四边块的总增量为零，故下一个 \(C_{i+1}\) 与 \(C_i\) 相同。
+
+	配对边上 \(\beta\) 是同一个形式，而边界方向相反。因此 \(a_i\) 这对边贡献
+	\[
+		\int_{a_i}\bigl(F|_{a_i^+}-F|_{a_i^-}\bigr)\beta
+		=-B_i(\alpha)A_i(\beta),
+	\]
+	\(b_i\) 这对边贡献 \(A_i(\alpha)B_i(\beta)\)。求和就是式\eqref{g4:eq:0401:bilinear-periods}。
+
+	当 \(g=0\) 时，\(H_1(X;\mathbb Z)=0\)。闭形式的道路积分给出全局原函数 \(F\)，于是 \(\alpha\wedge\beta=\mathrm{d}(F\beta)\)。无边界 Stokes 公式说明积分为零，与右边的空和一致。
+\end{proof}
+
+公式也适用于任意同调辛基。确实，按先 \(a\)、后 \(b\) 排列，令
+\(J=\left(\begin{smallmatrix}0&I_g\\-I_g&0\end{smallmatrix}\right)\)。
+若新基由整数矩阵 \(M\) 给出，保持相交数就是 \(MJM^{\mathsf T}=J\)，它等价于 \(M^{\mathsf T}JM=J\)。周期列向量同时乘以 \(M\)，而式\eqref{g4:eq:0401:bilinear-periods}的右侧是 \(v_\alpha^{\mathsf T}Jv_\beta\)，故其数值不变。
+
+\begin{theorem}[Riemann 双线性关系]
+	\label{g4:thm:0401:riemann-relations}
+	设 \(X\) 是紧连通黎曼曲面，\(a_i,b_i\) 是上述同调辛基。任意全纯微分 \(\omega,\eta\) 满足
+	\begin{equation}\label{g4:eq:0401:first-riemann}
+		\sum_{i=1}^g
+		\bigl(A_i(\omega)B_i(\eta)-B_i(\omega)A_i(\eta)\bigr)=0.
+	\end{equation}
+	若 \(\omega\ne0\)，则
+	\begin{equation}\label{g4:eq:0401:second-riemann}
+		\frac{\mathrm{i}}2\int_X\omega\wedge\overline\omega
+		=\operatorname{Im}\sum_{i=1}^g
+		\overline{A_i(\omega)}B_i(\omega)>0.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	在局部坐标中，\(\omega\wedge\eta=f(z)h(z)\,\mathrm{d}z\wedge\mathrm{d}z=0\)，故第一式由\cref{g4:thm:0401:bilinear-periods}得到。第二式使用 \(\beta=\overline\omega\)。因为沿实参数道路积分与复共轭交换，右边为
+	\[
+		\frac{\mathrm{i}}2\sum_i
+		\left(A_i(\omega)\overline{B_i(\omega)}
+		-B_i(\omega)\overline{A_i(\omega)}\right)
+		=\operatorname{Im}\sum_i\overline{A_i(\omega)}B_i(\omega).
+	\]
+	另一方面，写 \(z=x+\mathrm{i}y\) 及 \(\omega=f(z)\,\mathrm{d}z\)，则
+	\[
+		\frac{\mathrm{i}}2\omega\wedge\overline\omega
+		=|f(z)|^2\,\mathrm{d}x\wedge\mathrm{d}y.
+	\]
+	它处处非负，并在 \(\omega\) 非零的一点附近严格为正。紧性保证积分有限，非零性保证积分严格为正。
+\end{proof}
+
+第一关系来自两个 \((1,0)\) 形式的楔积为零，第二关系来自 \((1,0)\) 形式与其共轭的楔积给出正面积。这两种局部计算经过切割积分，分别变成周期的代数约束。
 
 \subsection{归一化全纯微分}
 \label{g4:subsec:0401:03}
-待撰写
+
+第二双线性关系首先排除一种可能：非零全纯微分不能让全部 \(a\)-周期同时为零。因此，\(a\)-周期可以用作全纯微分空间的坐标。
+
+\begin{theorem}
+	\label{g4:thm:0401:normalized-periods}
+	设 \(X\) 是亏格 \(g\ge1\) 的紧连通黎曼曲面，并固定同调辛基 \(a_i,b_i\)。存在唯一的全纯微分基 \(\omega_1,\ldots,\omega_g\)，满足
+	\begin{equation}\label{g4:eq:0401:normalized-a}
+		\int_{a_i}\omega_j=\delta_{ij}.
+	\end{equation}
+	称它为相对于所取 \(a\)-周期的\term[guiyihuaquanchunweifen]{归一化全纯微分}[normalized holomorphic differentials]。其周期矩阵
+	\begin{equation}\label{g4:eq:0401:tau-definition}
+		\tau_{ij}\coloneqq\int_{b_i}\omega_j
+	\end{equation}
+	满足
+	\begin{equation}\label{g4:eq:0401:tau-properties}
+		\tau^{\mathsf T}=\tau,
+		\qquad Y\coloneqq\operatorname{Im}\tau>0.
+	\end{equation}
+	这里 \(Y>0\) 指实对称矩阵 \(Y\) 正定。
+\end{theorem}
+\begin{proof}
+	考虑线性映射
+	\[
+		H^0(X,K_X)\longrightarrow\mathbb C^g,
+		\qquad\omega\longmapsto(A_1(\omega),\ldots,A_g(\omega))^{\mathsf T}.
+	\]
+	若其像为零，式\eqref{g4:eq:0401:second-riemann}迫使 \(\omega=0\)，所以它单射。由\cref{g4:thm:0304:genus-comparison}，源与靶的复维数同为 \(g\)，故它是同构。各标准基向量的唯一原像就是 \(\omega_j\)。
+
+	在第一关系中取 \(\omega_j,\omega_k\)，得到 \(\tau_{jk}-\tau_{kj}=0\)。若 \(c=(c_1,\ldots,c_g)^{\mathsf T}\ne0\)，令 \(\omega=\sum_jc_j\omega_j\)，则其周期列向量为
+	\[
+		A(\omega)=c,\qquad B(\omega)=\tau c.
+	\]
+	所以第二关系给出
+	\[
+		0<\frac{\mathrm{i}}2\int_X\omega\wedge\overline\omega
+		=\operatorname{Im}(\overline c^{\mathsf T}\tau c)
+		=\overline c^{\mathsf T}Yc.
+	\]
+	最后一个等式使用 \(\operatorname{Re}\tau\) 与 \(Y\) 都是实对称矩阵，故 \(\overline c^{\mathsf T}(\operatorname{Re}\tau)c\) 及 \(\overline c^{\mathsf T}Yc\) 均为实数。尤其对非零实向量成立，证明 \(Y\) 正定。
+\end{proof}
+
+对于前面任取的微分基 \(\eta_j\)，矩阵 \(A\) 因而可逆，归一化明确写成
+\[
+	\omega_j=\sum_k\eta_k(A^{-1})_{kj},
+	\qquad \tau=BA^{-1}.
+\]
+归一化改变了微分的坐标，没有改变全纯微分空间。\(\tau\) 仍依赖所选同调辛基；下一节将用一个不依赖坐标的商空间解释这种依赖。
+
+\begin{example}
+	\label{g4:exm:0401:torus-periods}
+	设 \(X=\mathbb C/(\mathbb Z\lambda_1+\mathbb Z\lambda_2)\)，其中 \(\lambda_1,\lambda_2\) 实线性无关，并按 \(\operatorname{Im}(\lambda_2/\lambda_1)>0\) 排列。沿 \(\lambda_1,\lambda_2\) 的线段在商中给出 \(a,b\)，且 \(a\cdot b=1\)。由\cref{g4:prop:0201:torus}的构造，\(\mathrm{d}z\) 在格平移下不变，故下降到 \(X\)。归一化微分与周期矩阵为
+	\[
+		\omega=\frac{\mathrm{d}z}{\lambda_1},
+		\qquad \tau=\frac{\lambda_2}{\lambda_1}.
+	\]
+	第二关系在此就是正向基本平行四边形的面积为正。交换 \(a,b\) 而不改变其中一条的方向，会使相交数变成 \(-1\)，因而不能保留原来的辛基约定。
+\end{example}
 
 \subsection{周期格的离散性与正性}
 \label{g4:subsec:0401:04}
-待撰写
+
+把同一闭路上全部归一化微分的积分排成一个列向量，得到
+\[
+	\operatorname{Per}:H_1(X;\mathbb Z)\longrightarrow\mathbb C^g,
+	\qquad \gamma\longmapsto
+	\left(\int_\gamma\omega_1,\ldots,\int_\gamma\omega_g\right)^{\mathsf T}.
+\]
+\(a_i\) 的像是第 \(i\) 个标准基向量；\(b_i\) 的像是 \(\tau\) 的第 \(i\) 行转置。因为 \(\tau\) 对称，这个转置正好是 \(\tau\) 的第 \(i\) 列。于是周期群为
+\begin{equation}\label{g4:eq:0401:period-lattice}
+	\Lambda\coloneqq\operatorname{Per}\bigl(H_1(X;\mathbb Z)\bigr)
+	=\mathbb Z^g+\tau\mathbb Z^g.
+\end{equation}
+
+\begin{proposition}
+	\label{g4:prop:0401:period-lattice}
+	设 \(X\) 是亏格 \(g\ge1\) 的紧连通黎曼曲面，\(\tau\) 是其归一化周期矩阵。群 \(\Lambda=\mathbb Z^g+\tau\mathbb Z^g\) 是 \(\mathbb C^g\) 中秩 \(2g\) 的离散子群，其实线性张成空间为 \(\mathbb C^g\)，且 \(\mathbb C^g/\Lambda\) 紧。特别地，\(\operatorname{Per}\) 为单射。
+\end{proposition}
+\begin{proof}
+	写 \(\tau=U+\mathrm{i}Y\)。正定性保证 \(Y\) 可逆，所以实线性映射
+	\[
+		\Phi:\mathbb R^g\oplus\mathbb R^g\longrightarrow\mathbb C^g,
+		\qquad(s,t)\longmapsto s+\tau t
+	\]
+	是同构：给定 \(z\)，其逆明确为
+	\[
+		t=Y^{-1}\operatorname{Im}z,
+		\qquad s=\operatorname{Re}z-UY^{-1}\operatorname{Im}z.
+	\]
+	因此存在 \(c>0\)，使所有实向量满足
+	\[
+		\|s+\tau t\|\ge c\sqrt{\|s\|^2+\|t\|^2}.
+	\]
+	非零整数向量的右端至少为 \(c\)，故不同格点的距离至少为 \(c\)。这证明离散性，同时说明 \(2g\) 个生成向量实线性无关，且整数表示唯一。
+
+	任意 \((s,t)\) 减去一个整数向量后落在 \([0,1]^{2g}\) 中，所以紧平行多面体 \(\Phi([0,1]^{2g})\) 的像覆盖整个商空间，商因而紧。最后，\(a_i,b_i\) 是整数同调基，且它们的周期像整数线性无关，故周期同态单射。
+\end{proof}
+
+实向量空间中由一组实基的整数线性组合构成的子群称为满秩\term[ge]{格}[lattice]。这里正性既保证其离散，又提供一个以后有用的正 Hermitian 形式。沿用第三章对第一变量线性的约定，令
+\begin{equation}\label{g4:eq:0401:polarization-form}
+	H(z,w)=z^{\mathsf T}Y^{-1}\overline w,
+	\qquad E(z,w)=-\operatorname{Im}H(z,w).
+\end{equation}
+\(H\) 对第一变量线性、对第二变量共轭线性且正定，并有 \(E(v,\mathrm{i}v)=H(v,v)>0\)（\(v\ne0\)）。若 \(z=m+\tau n\)、\(w=m'+\tau n'\)，其中 \(m,n,m',n'\in\mathbb Z^g\)，直接展开并用 \(U^{\mathsf T}=U\) 得
+\begin{equation}\label{g4:eq:0401:integral-alternating-form}
+	E(z,w)=m^{\mathsf T}n'-n^{\mathsf T}m'.
+\end{equation}
+因此 \(E\) 在格上取整数值，其矩阵为 \(\left(\begin{smallmatrix}0&I_g\\-I_g&0\end{smallmatrix}\right)\)，行列式为 \(1\)。它正好保留了原曲面的相交配对；第4节讨论主极化时将回到这个形式。
+
+\ProseParagraphBreak
+
+当 \(g=0\) 时，全纯微分空间为零，约定 \(\mathbb C^0=\{0\}\)、\(\Lambda=\{0\}\)，相应商空间只有一点。对于正亏格曲面，周期则把全部整数一维同调嵌入一个复 \(g\) 维空间。这是下一节构造 Jacobi 环面的基础。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 7.1 线性辛空间
 % 纲要位置：几何学计划纲要.md，第 3745 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,371 @@
 \section{线性辛空间}
 \label{g4:sec:0701}
 
-待撰写
+在平面上，行列式 \(qp'-pq'\) 测量两个向量张成的平行四边形的有向面积。辛形式把这种配对推广到任意偶数维空间：它仍然交换两个变量就变号，而且每个非零向量都能与某个向量配出非零面积。本节从这一线性结构出发，说明标准坐标、特殊子空间和约化的含义，最后研究保持这种配对的线性变换群。流形上的辛几何将逐点使用这些结论。
 
 \subsection{辛基与交替型标准形}
 \label{g4:subsec:0701:01}
-待撰写
+
+以下向量空间均为有限维实向量空间。双线性型 \(\omega:V\times V\to\mathbb R\) 称为交替型，是指 \(\omega(v,v)=0\) 对所有 \(v\) 成立；在实数域上，这等价于 \(\omega(u,v)=-\omega(v,u)\)。其根空间为
+\[
+	\operatorname{rad}\omega=\{v\in V:\omega(v,w)=0\text{ 对所有 }w\in V\}.
+\]
+这里的“根”记录了配对无法检测的方向。
+
+\begin{definition}\label{g4:def:0701:symplectic-space}
+	若交替型 \(\omega\) 的根空间为零，就称 \(\omega\) 非退化，并称 \((V,\omega)\) 为\term[xinxianxingkongjian]{辛线性空间}[symplectic vector space]，简称辛空间。等价地，线性映射
+	\[
+		\omega^\flat:V\longrightarrow V^*,\qquad
+		\omega^\flat(v)(w)=\omega(v,w)
+	\]
+	是同构。
+\end{definition}
+
+内积也给出 \(V\to V^*\) 的同构，但内积满足 \(\langle v,v\rangle>0\)，而交替型总有 \(\omega(v,v)=0\)。因此，辛形式的非退化性要通过向量与其他方向的配对来判断。
+
+\begin{theorem}[交替型的标准形]\label{g4:thm:0701:symplectic-basis}
+	设 \(\omega\) 是 \(V\) 上的交替型。存在一组基
+	\[
+		e_1,\ldots,e_r,f_1,\ldots,f_r,z_1,\ldots,z_k
+	\]
+	使得
+	\[
+		\omega(e_i,e_j)=\omega(f_i,f_j)=0,\qquad
+		\omega(e_i,f_j)=\delta_{ij},
+	\]
+	且 \(z_1,\ldots,z_k\) 张成 \(\operatorname{rad}\omega\)。特别地，交替型的秩为偶数 \(2r\)。若 \(\omega\) 非退化，则 \(\dim V=2n\) 为偶数，上述基中没有 \(z_j\)，并称 \((e_1,\ldots,e_n,f_1,\ldots,f_n)\) 为\term[xinji]{辛基}[symplectic basis]。
+\end{theorem}
+\begin{proof}
+	对 \(\dim V\) 归纳。若 \(\omega=0\)，任一组基都是根空间的基，结论成立。否则可以选取 \(e,f\) 使 \(\omega(e,f)\ne0\)，将 \(f\) 乘以适当常数后有 \(\omega(e,f)=1\)。令 \(H=\operatorname{span}(e,f)\)，并定义
+	\[
+		P(v)=\omega(v,f)e-\omega(v,e)f.
+	\]
+	直接计算得 \(P(e)=e\)、\(P(f)=f\)，而 \(v-P(v)\) 与 \(e,f\) 的配对均为零。于是
+	\[
+		V=H\oplus H',\qquad
+		H'=\{v:\omega(v,e)=\omega(v,f)=0\},
+	\]
+	且两个直和分量之间没有交叉配对。对 \(H'\) 上的限制型应用归纳假设，连同 \(e,f\) 就得到所需的基。
+
+	在这组基中，每个 \(e_i,f_i\) 产生一个可逆的 \(2\times2\) 交替块；其余 \(z_j\) 与所有基向量的配对为零。故根空间恰由 \(z_j\) 张成，秩为 \(2r\)。非退化时 \(k=0\)，于是维数为 \(2r\)。
+\end{proof}
+
+给定辛基，以 \(q^i,p_i\) 表示对应的线性坐标。坐标函数的微分在每个点都可视为同一对偶向量，因而标准形写成
+\begin{equation}\label{g4:eq:0701:standard-form}
+	\omega_0=\sum_{i=1}^n\mathrm{d}q^i\wedge\mathrm{d}p_i,
+	\qquad
+	\omega_0(u,v)=u^{\mathsf T}\Omega v,
+	\qquad
+	\Omega=\begin{pmatrix}0&I_n\\-I_n&0\end{pmatrix}.
+\end{equation}
+向量的分量始终按全部 \(q\) 分量在前、全部 \(p\) 分量在后排列。两个辛空间之间的线性同构 \(F:(V,\omega)\to(W,\eta)\) 若满足 \(F^*\eta=\omega\)，就称为线性辛同构。标准形说明，同维数的实辛空间总是辛同构的。
+
+\begin{corollary}\label{g4:cor:0701:top-power}
+	在 \(2n\) 维空间上，交替型 \(\omega\) 非退化当且仅当 \(\omega^n\ne0\)。非退化时
+	\begin{equation}\label{g4:eq:0701:symplectic-volume}
+		\frac{\omega^n}{n!}
+		=\mathrm{d}q^1\wedge\mathrm{d}p_1\wedge\cdots\wedge
+		\mathrm{d}q^n\wedge\mathrm{d}p_n
+	\end{equation}
+	给出 \(V\) 的一个定向。
+\end{corollary}
+\begin{proof}
+	在标准形中写 \(\omega=\sum_{i=1}^r e^i\wedge f^i\)。若 \(r<n\)，每个 \(n\) 次乘积都有重复的对偶向量，故 \(\omega^n=0\)。若 \(r=n\)，只有恰好各取一个二形式的乘积不消失；二形式彼此交换，故这 \(n!\) 项相同，得到式\eqref{g4:eq:0701:symplectic-volume}。
+\end{proof}
+
+上式中的正向基是交错排列的 \((e_1,f_1,\ldots,e_n,f_n)\)。若将体积形式改写成全部 \(\mathrm{d}q^i\) 在前、全部 \(\mathrm{d}p_i\) 在后的次序，就会出现因子 \((-1)^{n(n-1)/2}\)。区分坐标排列与辛定向，可以避免高维计算中的符号混淆。
+
+\begin{example}\label{g4:exm:0701:degenerate-form}
+	在 \(\mathbb R^3\) 上，\(\mathrm{d}x\wedge\mathrm{d}y\) 的根空间是 \(z\) 轴，秩为 \(2\)。在 \(\mathbb R^4\) 上，\(\mathrm{d}q^1\wedge\mathrm{d}p_1\) 的根空间由 \(\partial_{q^2},\partial_{p_2}\) 张成。后一例的环境维数为偶数，却仍然退化；必须使所有方向都进入配对，才得到辛形式。
+\end{example}
 
 \subsection{各向同性、余各向同性和 Lagrange}
 \label{g4:subsec:0701:02}
-待撰写
+
+固定 \(2n\) 维辛空间 \((V,\omega)\)。给定子空间 \(W\subset V\)，定义其\term[xinzhengjiaobu]{辛正交补}[symplectic orthogonal]为
+\[
+	W^\omega=\{v\in V:\omega(v,w)=0\text{ 对所有 }w\in W\}.
+\]
+它的维数与内积正交补相同，但它可能与 \(W\) 相交，甚至包含 \(W\)。
+
+\begin{proposition}\label{g4:prop:0701:orthogonal-dimensions}
+	对任意子空间 \(W\subset V\)，有
+	\begin{equation}\label{g4:eq:0701:orthogonal-dimensions}
+		\dim W^\omega=2n-\dim W,
+		\qquad (W^\omega)^\omega=W.
+	\end{equation}
+	并且 \(\operatorname{rad}(\omega|_W)=W\cap W^\omega\)。因此，\(\omega|_W\) 非退化当且仅当 \(V=W\oplus W^\omega\)；此时 \(W^\omega\) 上的限制型也非退化。
+\end{proposition}
+\begin{proof}
+	考虑线性映射 \(V\to W^*\)，它将 \(v\) 送到 \(\omega(v,\cdot)|_W\)。任一 \(W\) 上的线性泛函都可延拓为 \(V\) 上的线性泛函，而 \(\omega^\flat\) 是同构，所以该映射满射。它的核就是 \(W^\omega\)，秩与零度公式给出维数等式。
+
+	反对称性给出 \(W\subset(W^\omega)^\omega\)，再比较维数便得双重正交补公式。限制型的根空间等于 \(W\cap W^\omega\)，这直接来自定义。它为零当且仅当 \(W,W^\omega\) 相交为零，而二者维数之和恰为 \(2n\)，故等价于直和分解。此时 \(\omega|_{W^\omega}\) 的根空间为 \(W^\omega\cap(W^\omega)^\omega=W^\omega\cap W=0\)。
+\end{proof}
+
+\begin{definition}\label{g4:def:0701:subspace-types}
+	辛空间 \((V,\omega)\) 的子空间 \(W\) 称为
+	\begin{enumerate}
+		\item \term[gexiangtongxing]{各向同性}[isotropic]的，若 \(W\subset W^\omega\)，等价地 \(\omega|_W=0\)；
+		\item \term[yugexiangtongxing]{余各向同性}[coisotropic]的，若 \(W^\omega\subset W\)；
+		\item \term[lagrangezikongjian]{Lagrange 子空间}[Lagrangian subspace]\footnote{Joseph-Louis Lagrange（原名 Giuseppe Lodovico Lagrangia，1736--1813），意大利出生、后在法国工作的数学家，研究变分法、分析力学与数论。}，若 \(W=W^\omega\)；
+		\item 辛子空间，若 \(\omega|_W\) 非退化。
+	\end{enumerate}
+\end{definition}
+
+各向同性子空间的维数至多为 \(n\)，余各向同性子空间的维数至少为 \(n\)。正交补交换这两类子空间：\(W\) 各向同性当且仅当 \(W^\omega\) 余各向同性。Lagrange 子空间恰好同时属于这两类。
+
+\begin{proposition}[Lagrange 子空间的判别]\label{g4:prop:0701:lagrangian-characterizations}
+	对 \(W\subset V\)，下列条件等价：
+	\begin{enumerate}
+		\item \(W\) 是 Lagrange 子空间；
+		\item \(\omega|_W=0\)，且 \(\dim W=n\)；
+		\item \(W\) 是极大的各向同性子空间，即没有严格包含它的各向同性子空间。
+	\end{enumerate}
+	每个各向同性子空间都包含于某个 Lagrange 子空间。
+\end{proposition}
+\begin{proof}
+	由\cref{g4:prop:0701:orthogonal-dimensions}，\(W=W^\omega\) 等价于 \(W\subset W^\omega\) 且 \(\dim W=n\)，故前两个条件等价。半维的各向同性子空间不能再扩大为各向同性子空间，因为后者的维数至多为 \(n\)。反过来，若 \(W\) 各向同性而 \(\dim W<n\)，则 \(\dim W^\omega>\dim W\)。取 \(v\in W^\omega\setminus W\)，反对称性及 \(\omega(v,v)=0\) 说明 \(W+\mathbb Rv\) 仍各向同性，所以 \(W\) 不极大。重复这一过程，有限步后便得到包含原子空间的 \(n\) 维各向同性子空间。
+\end{proof}
+
+\begin{proposition}[适配于各向同性子空间的辛基]\label{g4:prop:0701:adapted-basis}
+	设 \(I\subset V\) 各向同性，\(e_1,\ldots,e_k\) 是 \(I\) 的一组基。可以将它补成一组辛基 \((e_1,\ldots,e_n,f_1,\ldots,f_n)\)。
+\end{proposition}
+\begin{proof}
+	先将 \(I\) 扩大为 Lagrange 子空间 \(L\)，再把给定的基补成 \(L\) 的基 \(e_1,\ldots,e_n\)。由 \(V\to L^*\) 的满射性，可以选取 \(f_j\) 使 \(\omega(e_i,f_j)=\delta_{ij}\)。这些 \(f_j\) 彼此的配对还未必为零。令
+	\[
+		C_{ij}=\omega(f_i,f_j),\qquad
+		\widehat f_j=f_j+\frac12\sum_{i=1}^n C_{ij}e_i.
+	\]
+	因为 \(L\) 各向同性，\(\omega(e_i,\widehat f_j)=\delta_{ij}\)；又因 \(C_{ji}=-C_{ij}\)，有
+	\[
+		\omega(\widehat f_i,\widehat f_j)
+		=C_{ij}-\frac12C_{ij}+\frac12C_{ji}=0.
+	\]
+	这 \(2n\) 个向量线性无关：对它们的线性关系依次与 \(e_j\)、\(\widehat f_j\) 配对，即知所有系数为零。因此将 \(\widehat f_j\) 改记为 \(f_j\)，就得到所需辛基。
+\end{proof}
+
+\begin{example}[同为半维的两类平面]\label{g4:exm:0701:planes}
+	在四维标准辛空间中，\(\operatorname{span}(e_1,e_2)\) 是 Lagrange 平面，而 \(\operatorname{span}(e_1,f_1)\) 是辛平面。两者都为半维，区别在于限制型分别为零和非退化。直线 \(\mathbb Re_1\) 各向同性，它的辛正交补 \(\operatorname{span}(e_1,e_2,f_2)\) 余各向同性；这个三维子空间上的限制型恰以 \(\mathbb Re_1\) 为根空间。
+\end{example}
+
+\begin{example}[对偶空间与对称算子的图]\label{g4:exm:0701:lagrangian-graphs}
+	任意实向量空间 \(Q\) 都给出一个典范的辛空间 \(Q\oplus Q^*\)，其配对为
+	\[
+		\omega\bigl((q,p),(q',p')\bigr)=p'(q)-p(q').
+	\]
+	若一个向量与所有 \((q',0)\) 及 \((0,p')\) 的配对均为零，便依次得到 \(p=0\)、\(q=0\)，故配对非退化。\(Q\oplus0\) 和 \(0\oplus Q^*\) 都是 Lagrange 子空间。
+
+	设 \(A:Q\to Q^*\) 线性，图空间 \(\Gamma_A=\{(q,Aq):q\in Q\}\) 已有半维。其限制配对为
+	\[
+		\omega\bigl((q,Aq),(q',Aq')\bigr)=(Aq')(q)-(Aq)(q').
+	\]
+	所以 \(\Gamma_A\) 为 Lagrange 子空间，当且仅当双线性型 \(B_A(q,q')=(Aq)(q')\) 对称。选定 \(Q\) 的基及 \(Q^*\) 的对偶基后，这等价于 \(A\) 的矩阵对称。于是，与竖直子空间 \(0\oplus Q^*\) 互补的 Lagrange 子空间，可以用全体对称矩阵来参数化。
+\end{example}
+
+上述标准形、辛正交补和图空间的描述，也可对照 Cannas da Silva 的线性辛代数综述。\cite[第1.1节，第82--84页]{Cannas2006Symplectic}
 
 \subsection{辛约化的线性模型}
 \label{g4:subsec:0701:03}
-待撰写
+
+对子空间限制一个辛形式，可能产生退化方向。把这些方向商掉，就能恢复非退化性。这是辛约化的线性原型；首先说明它对任意子空间都成立。
+
+\begin{theorem}[限制型的非退化商]\label{g4:thm:0701:linear-reduction}
+	设 \(W\subset(V,\omega)\)，令 \(K=W\cap W^\omega\)，\(\pi:W\to W/K\) 为商映射。存在唯一辛形式 \(\overline\omega\) 使
+	\begin{equation}\label{g4:eq:0701:reduced-form}
+		\overline\omega([u],[v])=\omega(u,v),
+		\qquad \pi^*\overline\omega=\omega|_W.
+	\end{equation}
+	特别地，若 \(C\) 余各向同性，则 \(C/C^\omega\) 是辛空间，其维数为 \(2(n-\operatorname{codim}C)\)。若 \(I\) 各向同性，则 \(I^\omega/I\) 是辛空间，其维数为 \(2(n-\dim I)\)。
+\end{theorem}
+\begin{proof}
+	若把 \(u,v\in W\) 分别换成 \(u+k,v+\ell\)，其中 \(k,\ell\in K\)，新增的三个配对均为零。因此式\eqref{g4:eq:0701:reduced-form}不依赖代表元，并定义了交替双线性型。若 \([u]\) 与商空间中所有向量的配对为零，则 \(u\in W\) 且 \(\omega(u,v)=0\) 对所有 \(v\in W\) 成立，故 \(u\in K\)，即 \([u]=0\)。这证明非退化性。商映射满射也说明满足拉回等式的形式唯一。
+
+	当 \(C^\omega\subset C\) 时，\(K=C^\omega\)，因此
+	\[
+		\dim(C/C^\omega)=\dim C-(2n-\dim C)
+		=2(n-\operatorname{codim}C).
+	\]
+	若 \(I\subset I^\omega\)，则 \(C=I^\omega\) 余各向同性，且 \(C^\omega=I\)，代入前式即可。
+\end{proof}
+
+商空间 \((C/C^\omega,\overline\omega)\) 称为沿余各向同性子空间 \(C\) 的\term[xinyuehua]{辛约化}[symplectic reduction]。这里有两个步骤：先限制到 \(C\)，再除去限制型的根空间 \(C^\omega\)。不能直接从整个 \(V\) 商去一个非零各向同性子空间 \(I\) 并期待 \(\omega\) 自然下降，因为改变代表元 \(u\mapsto u+i\) 会使配对增加 \(\omega(i,v)\)，它对一般 \(v\in V\) 并不为零。
+
+\ProseParagraphBreak
+
+这个过程有明确的坐标模型。设 \(C\) 的余维为 \(k\)，则 \(I=C^\omega\) 是 \(k\) 维各向同性子空间。用\cref{g4:prop:0701:adapted-basis}选择 \(I=\operatorname{span}(e_1,\ldots,e_k)\) 的适配辛基，便有
+\begin{equation}\label{g4:eq:0701:reduction-coordinates}
+	C=I^\omega=\{p_1=\cdots=p_k=0\},
+	\qquad
+	\overline\omega=\sum_{i=k+1}^n\mathrm{d}q^i\wedge\mathrm{d}p_i.
+\end{equation}
+约束去掉 \(k\) 个 \(p\) 方向，取商再去掉与之配对的 \(k\) 个 \(q\) 方向。剩余的坐标成对出现，正好解释约化空间的偶数维数。
+
+\begin{example}\label{g4:exm:0701:one-constraint}
+	在 \(\mathbb R^4\) 上取 \(C=\{p_2=0\}\)。它是三维的，且 \(C^\omega=\mathbb R\partial_{q^2}\)。商映射可写为
+	\[
+		(q^1,q^2,p_1,0)\longmapsto(q^1,p_1),
+	\]
+	约化形式为 \(\mathrm{d}q^1\wedge\mathrm{d}p_1\)。在 \(C\) 内移动 \(q^2\) 不改变任何限制配对，因此这些直线应成为商空间中的单个点。若直接在整个 \(\mathbb R^4\) 中除去 \(\partial_{q^2}\)，则 \(\omega(\partial_{q^2},\partial_{p_2})=1\) 表明形式不能下降。
+\end{example}
+
+\input{Figures/Ch07-LinearReduction}
+
+\begin{proposition}\label{g4:prop:0701:lagrangian-reduction}
+	设 \(I\subset V\) 各向同性。包含 \(I\) 的 Lagrange 子空间 \(L\subset V\)，与约化辛空间 \(I^\omega/I\) 中的 Lagrange 子空间一一对应，对应为 \(L\mapsto L/I\)。
+\end{proposition}
+\begin{proof}
+	若 \(L\) 包含 \(I\) 且各向同性，则 \(L\subset I^\omega\)。设 \(\dim I=k\)。当 \(L\) 为 Lagrange 子空间时，\(L/I\) 上的约化形式为零，且其维数为 \(n-k\)，恰为约化空间维数的一半，所以它为 Lagrange 子空间。
+
+	反过来，若 \(\overline L\subset I^\omega/I\) 为 Lagrange 子空间，令 \(L=\pi^{-1}(\overline L)\)。拉回公式说明 \(\omega|_L=0\)，而 \(\dim L=\dim\overline L+k=n\)，所以 \(L\) 是包含 \(I\) 的 Lagrange 子空间。取像与取原像互为逆过程。
+\end{proof}
 
 \subsection{辛群及其基本拓扑}
 \label{g4:subsec:0701:04}
-待撰写
+
+\begin{definition}\label{g4:def:0701:symplectic-group}
+	\((V,\omega)\) 的全体线性辛自同构构成\term[xinqun]{辛群}[symplectic group]，记为 \(\operatorname{Sp}(V,\omega)\)。选择辛基后，它写为
+	\[
+		\operatorname{Sp}(2n,\mathbb R)
+		=\{S\in\operatorname{GL}(2n,\mathbb R):S^{\mathsf T}\Omega S=\Omega\}.
+	\]
+\end{definition}
+
+矩阵等式直接说明，乘积和逆仍保持 \(\omega\)。以下采用矩阵空间的通常拓扑研究此群。这里的 \(\operatorname{Sp}(2n,\mathbb R)\) 是实辛群；第二卷讨论经典紧群时出现的四元数酉群 \(\operatorname{Sp}(n)\) 是另一个群，二者的拓扑不同。
+
+\begin{proposition}\label{g4:prop:0701:symplectic-matrices}
+	每个 \(S\in\operatorname{Sp}(2n,\mathbb R)\) 都有 \(\det S=1\)。若按 \((q,p)\) 分块写
+	\[
+		S=\begin{pmatrix}A&B\\C&D\end{pmatrix},
+	\]
+	则辛条件等价于
+	\begin{equation}\label{g4:eq:0701:symplectic-blocks}
+		A^{\mathsf T}C=C^{\mathsf T}A,\qquad
+		B^{\mathsf T}D=D^{\mathsf T}B,\qquad
+		A^{\mathsf T}D-C^{\mathsf T}B=I_n.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	辛变换保持 \(\omega\)，故也保持非零顶次形式 \(\omega^n/n!\)。在线性变换对顶次外幂的作用中，乘数恰为行列式，因此 \(\det S=1\)。分块等式则来自直接相乘：
+	\[
+		S^{\mathsf T}\Omega S=
+		\begin{pmatrix}
+			A^{\mathsf T}C-C^{\mathsf T}A&A^{\mathsf T}D-C^{\mathsf T}B\\
+			B^{\mathsf T}C-D^{\mathsf T}A&B^{\mathsf T}D-D^{\mathsf T}B
+		\end{pmatrix}.
+	\]
+	左下块是右上块的负转置，所以所列三个条件已包含全部要求。
+\end{proof}
+
+\begin{example}\label{g4:exm:0701:symplectic-matrices}
+	在二维，任意 \(2\times2\) 矩阵都有 \(S^{\mathsf T}\Omega S=(\det S)\Omega\)，故 \(\operatorname{Sp}(2,\mathbb R)=\operatorname{SL}(2,\mathbb R)\)。在四维，按 \((q^1,q^2,p_1,p_2)\) 排列的矩阵 \(\operatorname{diag}(2,1,1,1/2)\) 虽然行列式为 \(1\)，却把标准辛形式拉回为
+	\[
+		2\,\mathrm{d}q^1\wedge\mathrm{d}p_1
+		+\frac12\,\mathrm{d}q^2\wedge\mathrm{d}p_2,
+	\]
+	所以高维中的保体积条件弱于保辛条件。
+
+	若 \(B\) 为对称矩阵，则剪切 \((q,p)\mapsto(q,p+Bq)\) 为辛变换；它将水平 Lagrange 子空间送到 \(B\) 的图。另一个辛变换族是 \((q,p)\mapsto(aq,a^{-1}p)\)，其中 \(a>0\)。当 \(a\to\infty\) 时矩阵无界，所以 \(n\ge1\) 时实辛群非紧。
+\end{example}
+
+为了把一般辛矩阵连续变为正交辛矩阵，需要对正定矩阵取实数次幂。谱定理可以逐个定义这些幂；参数依赖还需单独说明，因为不能假定重特征值附近存在光滑的特征向量基。
+
+\begin{lemma}[正定算子的实幂及光滑依赖]\label{g4:lem:0701:positive-powers}
+	设 \((E,h)\) 是有限维实内积空间，\(P:E\to E\) 自伴且正定。对每个 \(s\in\mathbb R\)，存在由谱分解确定的正定自伴算子 \(P^s\)，它在 \(P\) 的 \(\lambda\)-特征子空间上乘以 \(\lambda^s\)，并满足
+	\[
+		P^0=I,\qquad P^1=P,\qquad P^sP^t=P^{s+t}.
+	\]
+	\(P^{1/2}\) 是唯一的正定自伴平方根。任何与 \(P\) 交换的线性算子都与所有 \(P^s\) 交换；实幂与等距同构下的共轭相容。
+
+	在正定自伴算子的开锥上，映射 \((P,s)\mapsto P^s\) 联合光滑。更一般地，若光滑向量丛上给定光滑正定内积及关于该内积自伴正定的光滑算子场，则其实幂对底点与指数联合光滑。因此此结论也适用于内积随参数变化的光滑族。
+\end{lemma}
+\begin{proof}
+	有限维谱定理给出互相正交的特征子空间，且正定性保证所有特征值为正。在每个特征子空间上乘以 \(\lambda^s\)，就定义了不依赖基选择的 \(P^s\)。指数法则与等距共轭相容性可在各特征子空间上验证。与 \(P\) 交换的算子保持每个特征子空间，因而也与 \(P^s\) 交换。若正定自伴算子 \(B\) 满足 \(B^2=P\)，则 \(B\) 与 \(P\) 交换，且 \(B\) 在 \(P\) 的 \(\lambda\)-特征子空间上仍正定自伴，其特征值只能是 \(\sqrt\lambda\)。所以 \(B=P^{1/2}\)，证明唯一性。
+
+	下面证明光滑性。取一组正交规范基，将算子视为对称矩阵。正定矩阵构成开集：若 \(P_0\) 的最小特征值为 \(m>0\)，则 \(\|P-P_0\|<m\) 保证 \(u^{\mathsf T}Pu>0\) 对所有非零 \(u\) 成立。固定 \(P_0\)，可选取常数 \(c>0\) 使 \(\|I-P_0/c\|<1\)，例如取 \(c\) 为 \(P_0\) 的最大特征值。在 \(P_0\) 的足够小邻域内，有统一估计 \(\|I-P/c\|\le r<1\)。于是矩阵级数
+	\begin{equation}\label{g4:eq:0701:matrix-log-series}
+		L(P)=(\log c)I-\sum_{k=1}^\infty\frac{(I-P/c)^k}{k}
+	\end{equation}
+	收敛。对矩阵变量取 \(j\) 阶导数时，乘积法则给出的项数至多为 \(k^j\)，各项在单位方向上的范数至多为 \(c^{-j}r^{k-j}\)；当 \(k<j\) 时该导数为零。因此每阶导数级数都在这个邻域内一致收敛，式\eqref{g4:eq:0701:matrix-log-series}定义光滑矩阵函数。
+
+	逐个固定 \(P\) 再用谱定理，可以看出 \(L(P)\) 在特征值为 \(\lambda\) 的子空间上乘以 \(\log\lambda\)。所以
+	\[
+		P^s=\exp\bigl(sL(P)\bigr).
+	\]
+	矩阵指数由 \(\exp X=\sum_{k\ge0}X^k/k!\) 定义；在任意有界矩阵集上，该级数及其任意阶导数级数一致收敛，因为分母中的阶乘控制乘积求导产生的多项式因子。因此矩阵指数光滑，进而 \((P,s)\mapsto P^s\) 在 \(P_0\) 附近联合光滑。\(P_0\) 任意，得到全局结论。
+
+	最后，在带光滑内积的向量丛上，任一局部光滑标架都可逐次正交化、再除以正长度，得到局部光滑正交规范标架。此时算子场的矩阵光滑、对称且正定，故可应用刚才的结论。在两个这样的标架之间，过渡矩阵为正交矩阵，实幂与共轭相容保证局部构造一致，从而得到全局光滑算子场。零维纤维的结论按唯一线性映射的约定成立。
+\end{proof}
+
+在标准实空间上令
+\begin{equation}\label{g4:eq:0701:standard-complex-matrix}
+	J_0=\begin{pmatrix}0&-I_n\\I_n&0\end{pmatrix}=-\Omega.
+\end{equation}
+它满足 \(J_0^2=-I\)，并且 \(\omega_0(u,J_0v)=u^{\mathsf T}v\)。将 \((q,p)\) 识别为 \(q+\mathrm{i}p\)，\(J_0\) 就是乘以 \(\mathrm{i}\)。实矩阵与 \(J_0\) 交换当且仅当它来自复线性映射；其中保持欧氏内积的矩阵恰为酉矩阵。这是三种线性结构之间最基本的联系。\cite[第3.1节，第108页]{Cannas2006Symplectic}
+
+\begin{theorem}\label{g4:thm:0701:symplectic-retraction}
+	将 \(\operatorname{U}(n)\) 通过 \(\mathbb C^n\cong\mathbb R^{2n}\) 视为实矩阵群，则
+	\[
+		\operatorname{Sp}(2n,\mathbb R)\cap\operatorname{O}(2n)=\operatorname{U}(n).
+	\]
+	而且
+	\begin{equation}\label{g4:eq:0701:symplectic-retraction}
+		H(S,t)=S(S^{\mathsf T}S)^{-t/2},\qquad 0\le t\le1,
+	\end{equation}
+	给出 \(\operatorname{Sp}(2n,\mathbb R)\) 到 \(\operatorname{U}(n)\) 的强形变收缩，即 \(H(S,0)=S\)、\(H(S,1)\in\operatorname{U}(n)\)，且对每个 \(S\in\operatorname{U}(n)\) 及每个 \(t\) 都有 \(H(S,t)=S\)。
+\end{theorem}
+\begin{proof}
+	若 \(S\) 正交，则 \(S^{\mathsf T}\Omega S=\Omega\) 等价于 \(\Omega S=S\Omega\)，也等价于 \(J_0S=SJ_0\)。所以正交辛矩阵恰是保持欧氏内积的复线性矩阵，也就是 \(\operatorname{U}(n)\)。
+
+	固定辛矩阵 \(S\)，令 \(P=S^{\mathsf T}S\)。首先需要证明 \(P\) 的全部实幂仍为辛矩阵。由 \(S^{\mathsf T}\Omega S=\Omega\) 取逆并整理可得
+	\[
+		S\Omega^{-1}S^{\mathsf T}=\Omega^{-1}.
+	\]
+	因为 \(\Omega^{-1}=-\Omega\)，这说明 \(S^{\mathsf T}\) 也为辛矩阵，所以 \(P=S^{\mathsf T}S\) 为正定对称辛矩阵。它满足
+	\[
+		P\Omega P=\Omega,
+		\qquad \Omega^{-1}P\Omega=P^{-1}.
+	\]
+	\(\Omega\) 本身正交，故由\cref{g4:lem:0701:positive-powers}的共轭相容性，对任意实数 \(s\) 都有
+	\[
+		\Omega^{-1}P^s\Omega=(P^{-1})^s=P^{-s}.
+	\]
+	这等价于 \(P^s\Omega P^s=\Omega\)。又因 \(P^s\) 对称，所得等式正是 \(P^s\) 的辛条件。
+
+	因此式\eqref{g4:eq:0701:symplectic-retraction}中的两个因子均为辛矩阵，\(H(S,t)\) 始终在辛群中。正定实幂的联合光滑性保证 \(H\) 连续，事实上关于矩阵和参数光滑。在 \(t=1\) 时令 \(Q=SP^{-1/2}\)，则
+	\[
+		Q^{\mathsf T}Q=P^{-1/2}S^{\mathsf T}SP^{-1/2}=I,
+	\]
+	所以 \(Q\) 属于 \(\operatorname{U}(n)\)。\(t=0\) 时为 \(S\)；若 \(S\) 原已属于 \(\operatorname{U}(n)\)，则 \(P=I\)，整个同伦都固定 \(S\)。这证明强形变收缩的全部性质。
+\end{proof}
+
+分解 \(S=QP^{1/2}\) 称为\term[jifenjie]{极分解}[polar decomposition]。其中 \(Q\) 保存欧氏长度，\(P^{1/2}\) 为正定对称算子；上述同伦把正定因子逐渐变成恒等算子。关键在于，辛条件保证正定因子的所有中间次幂也保持辛形式。
+
+\begin{corollary}\label{g4:cor:0701:symplectic-topology}
+	对 \(n\ge1\)，\(\operatorname{Sp}(2n,\mathbb R)\) 道路连通，且以恒等矩阵为基点有
+	\[
+		\pi_1\bigl(\operatorname{Sp}(2n,\mathbb R)\bigr)\cong\mathbb Z,
+		\qquad
+		\pi_2\bigl(\operatorname{Sp}(2n,\mathbb R)\bigr)=0.
+	\]
+	基本群的一个生成元是在最后一个 \((q^n,p_n)\) 平面上作一次正向整周旋转、在其余坐标方向上恒等的环路。
+\end{corollary}
+\begin{proof}
+	第二卷命题8.4.2通过 \(\operatorname{U}(n-1)\to\operatorname{U}(n)\to S^{2n-1}\) 的局部平凡化与道路提升证明酉群道路连通。结合\cref{g4:thm:0701:symplectic-retraction}，任一辛矩阵先沿 \(H\) 连到酉群，再在酉群中连到单位矩阵，所以实辛群道路连通。
+
+	强形变收缩诱导所有同伦群的同构。第二卷命题8.4.5已经由上述球面丛的长正合列证明 \(\pi_1(\operatorname{U}(n))\cong\mathbb Z\)、\(\pi_2(\operatorname{U}(n))=0\)，并证明复行列式在基本群上给出同构。其生成元为
+	\[
+		t\longmapsto\operatorname{diag}(1,\ldots,1,e^{2\pi\mathrm{i}t}),
+		\qquad 0\le t\le1.
+	\]
+	把最后一个复坐标写成 \(q^n+\mathrm{i}p_n\)，这正是在最后一个实二维平面上作用为
+	\[
+		\begin{pmatrix}
+			\cos(2\pi t)&-\sin(2\pi t)\\
+			\sin(2\pi t)&\cos(2\pi t)
+		\end{pmatrix}
+	\]
+	的环路。因此所列同伦群与生成元均由收缩得到。
+\end{proof}
+
+这个整数可以从任意辛矩阵环路 \(S(t)\) 直接读出：先取其正交因子 \(Q(t)=S(t)(S(t)^{\mathsf T}S(t))^{-1/2}\)，再计算圆周值函数 \(\det_{\mathbb C}Q(t)\) 的绕数。实行列式始终等于 \(1\)，而复行列式记录了这个环路中无法由同伦消去的整周旋转。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

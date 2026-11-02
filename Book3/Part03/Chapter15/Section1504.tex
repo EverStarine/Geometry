@@ -1,35 +1,313 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 15.4 非紧分析中的截断
 % 纲要位置：几何学计划纲要.md，第 2730 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 完备度量上的截断函数
 % * 积分边界项的控制
 % * L² 调和形式与额外增长条件
-% * 弱次调和函数的正则化
+% * 弱次调和函数与强最大值原理
 % 
 % 纲要内容结束
 
 \section{非紧分析中的截断}
 \label{g3:sec:1504}
 
-待撰写
+在闭流形上，积分分部没有边界项。非紧流形即使没有几何边界，积分时仍要处理无穷远：把方程乘以紧支截断以后，截断的导数会留下误差。完备性提供一族梯度趋于零的截断，而平方可积性或适当的增长条件决定误差是否消失。本节把这些条件逐一写出，并建立下一节处理 Busemann 函数所需的弱最大值工具。
 
 \subsection{完备度量上的截断函数}
 \label{g3:subsec:1504:01}
-待撰写
+距离函数适合构造截断，因为其斜率有全局控制；它在割迹上不光滑，却仍有足够的弱导数。这里保留 Lipschitz 截断，不额外要求其二阶导数受控。
+
+\begin{proposition}\label{g3:prop:complete-lipschitz-cutoffs}
+	设 \((M^n,g)\) 为非空、连通、完备的光滑无边界黎曼流形，\(n\ge1\)，固定 \(o\in M\)。对每个 \(R>0\)，存在紧支 Lipschitz 函数 \(\chi_R\)，满足
+	\[
+		0\le\chi_R\le1,\qquad
+		\chi_R=1\text{ 于 }B_R(o),\qquad
+		\operatorname{supp}\chi_R\subset\overline B_{2R}(o),
+		\qquad |\mathrm d\chi_R|_g\le R^{-1}\quad\text{几乎处处}.
+	\]
+	其弱导数只可能支于环带 \(A_R=B_{2R}(o)\setminus B_R(o)\)，且 \(\chi_R\to1\) 在每个紧集上最终恒等成立。
+\end{proposition}
+\begin{proof}
+	记 \(r(x)=d(o,x)\)，取分段线性函数
+	\[
+		\eta(s)=
+		\begin{cases}
+		1,&0\le s\le1,\\
+		2-s,&1<s<2,\\
+		0,&s\ge2,
+		\end{cases}
+		\qquad \chi_R(x)=\eta(r(x)/R).
+	\]
+	三角不等式给出 \(|r(x)-r(y)|\le d(x,y)\)。第七章的距离正则性与割迹零测性，以及\cref{g3:lem:lipschitz-weak-gradient}，说明 \(r\) 的弱微分满足 \(|\mathrm dr|=1\) 几乎处处；一维时在每个距离正则区间直接得到同一结论。分段线性链式法则由\cref{g3:prop:sobolev-truncation}给出，故
+	\[
+		\mathrm d\chi_R=-R^{-1}\mathbf1_{\{R<r<2R\}}\mathrm dr
+		\quad\text{几乎处处}.
+	\]
+	在两个拐点对应的水平集上，弱梯度为零的水平集论证保证链式公式仍成立。完备性通过\cref{g3:thm:hopf-rinow}使 \(\overline B_{2R}(o)\) 紧，所以截断确实紧支。每个紧集上的 \(r\) 有界，最后一项随之成立。
+\end{proof}
+
+上面的梯度界对所有半径使用同一个常数，没有曲率或单射半径下界的假设。完备性用于支集的紧性。在开区间或开球上，同样的距离公式可能给出一个触及缺失边界的支集，因而不能直接作为紧支测试函数。
+
+\begin{lemma}\label{g3:lem:lipschitz-cutoff-testing}
+	设 \(M\) 为光滑无边界黎曼流形，\(E\) 为光滑度量丛并配光滑联络，\(u\in H^1_{\mathrm{loc}}(M;E)\)，\(\chi\) 为紧支 Lipschitz 实函数。则 \(\chi u\in H^1(M;E)\) 且紧支，并有
+	\[
+		\nabla(\chi u)=\mathrm d\chi\otimes u+\chi\nabla u.
+	\]
+	它可由支集留在同一个相对紧邻域内的光滑紧支截面按 \(H^1\) 范数逼近。因此对测试截面的 \(H^1\) 范数连续的一阶弱恒等式，可以用 \(\chi u\) 或 \(\chi^2u\) 测试。
+\end{lemma}
+\begin{proof}
+	在包含支集的有限个坐标片内，\(\chi\in W^{1,\infty}\)。沿几乎每条坐标线，\(u\) 的分量绝对连续，故乘积的导数为通常的两项；两项均属于 \(L^2\)。\Cref{g3:prop:weak-line-slices}将它还原成弱乘积公式，加入光滑联络系数就得到所列协变公式。取有限单位分解，把各个局部紧支分量零延拓后卷积；卷积半径足够小时，支集仍在预先选定的相对紧邻域内。\Cref{g3:lem:local-weak-smoothing}给出函数及一阶弱导数的 \(L^2\) 收敛。将各项相加，便得到所需逼近；弱恒等式由连续性传到极限。
+\end{proof}
+
+例如，若 \(M\) 完备且 \(u\in H^1(M;E)\)，则
+\[
+	\|(1-\chi_R)u\|_2\longrightarrow0,\qquad
+	\|\nabla((1-\chi_R)u)\|_2
+	\le\|\nabla u\|_{L^2(M\setminus B_R)}+R^{-1}\|u\|_2
+	\longrightarrow0.
+\]
+再对每个 \(\chi_Ru\) 使用上一引理，就证明 \(C_c^\infty(M;E)\) 在 \(H^1(M;E)\) 中稠密。这一论证同时说明，为当前的积分分部准备测试函数，并不需要把所有 \(\chi_R\) 平滑化后再维持同一个全局梯度界。
 
 \subsection{积分边界项的控制}
 \label{g3:subsec:1504:02}
-待撰写
+截断把“无穷远的边界项”写成一个普通的环带积分。以下两种形式分别对应散度恒等式与能量估计。
+
+\begin{proposition}\label{g3:prop:complete-integrable-divergence}
+	设 \((M,g)\) 非空、连通、完备、光滑且无边界。若 \(X\) 为 \(C^1\) 向量场，且 \(|X|,\operatorname{div}X\in L^1(M)\)，则
+	\[
+		\int_M\operatorname{div}X\,\mu_g=0.
+	\]
+	更一般地，可将 \(|X|\in L^1\) 换成：存在 \(R_j\to\infty\)，使
+	\(R_j^{-1}\int_{A_{R_j}}|X|\,\mu_g\to0\)，其中仍要求 \(\operatorname{div}X\in L^1\)。
+\end{proposition}
+\begin{proof}
+	用上一小节的紧支 Lipschitz 截断积分分部，得到
+	\[
+		\int_M\chi_R\operatorname{div}X\,\mu_g
+		=-\int_M\mathrm d\chi_R(X)\,\mu_g,
+		\qquad
+		\left|\int_M\mathrm d\chi_R(X)\,\mu_g\right|
+		\le R^{-1}\int_{A_R}|X|\,\mu_g.
+	\]
+	这里可先用光滑紧支函数逼近 \(\chi_R\)；固定紧集上 \(X\) 及其散度有界，故两侧都可取极限。若 \(|X|\in L^1\)，右侧至多为 \(R^{-1}\|X\|_1\)，趋于零；一般增长假设则使它沿所给子列趋零。左侧由 \(\operatorname{div}X\) 的绝对可积性和控制收敛趋于全积分，得到结论。
+\end{proof}
+
+在 \(\mathbb R\) 上，\(X=\tanh x\,\partial_x\) 的散度为 \(1/\cosh^2x\)，可积且积分等于二；但 \(|X|\) 不可积，环带中的量 \(R^{-1}\int_{R<|x|<2R}|X|\) 趋于二。因而即使向量场有界、散度可积，也不能无条件丢掉截断项。
+
+\begin{proposition}\label{g3:prop:complete-harmonic-caccioppoli}
+	设 \((M,g)\) 为光滑无边界黎曼流形，\(u\in H^1_{\mathrm{loc}}(M;\mathbb C)\) 弱调和，即
+	\(\int_M\langle\mathrm du,\mathrm d\varphi\rangle\mu_g=0\) 对全部 \(\varphi\in C_c^\infty(M;\mathbb C)\) 成立。则对任意紧支 Lipschitz 实函数 \(\chi\) 和常数 \(a\in\mathbb C\)，有
+	\begin{equation}\label{g3:eq:noncompact-caccioppoli}
+		\int_M\chi^2|\mathrm du|^2\,\mu_g
+		\le4\int_M|u-a|^2|\mathrm d\chi|^2\,\mu_g.
+	\end{equation}
+	若 \(M\) 连通且完备，并存在 \(R_j\to\infty\) 及一个固定常数 \(a\)，使
+	\[
+		R_j^{-2}\int_{A_{R_j}}|u-a|^2\,\mu_g\longrightarrow0,
+	\]
+	则 \(u\) 几乎处处为常数。
+\end{proposition}
+\begin{proof}
+	取合法的测试函数 \(\varphi=\chi^2(u-a)\)。乘积公式及配对第一变量线性给出
+	\[
+		0=\int_M\chi^2|\mathrm du|^2\,\mu_g
+		+2\operatorname{Re}\int_M
+		\chi\langle\mathrm du,(u-a)\mathrm d\chi\rangle\,\mu_g.
+	\]
+	将第一个积分记为 \(E\)，右侧交叉项的绝对值至多为
+	\(2E^{1/2}(\int|u-a|^2|\mathrm d\chi|^2)^{1/2}\)。若 \(E=0\) 已有结论；否则除以 \(E^{1/2}\) 再平方，得到式\eqref{g3:eq:noncompact-caccioppoli}。
+
+	在完备情形取 \(\chi=\chi_{R_j}\)。任意固定球 \(B_s(o)\) 在充分大的 \(j\) 时包含于 \(\chi_{R_j}=1\) 的区域，故
+	\[
+		\int_{B_s(o)}|\mathrm du|^2\,\mu_g
+		\le4R_j^{-2}\int_{A_{R_j}}|u-a|^2\,\mu_g\longrightarrow0.
+	\]
+	于是 \(\mathrm du=0\) 几乎处处；\cref{g3:prop:weak-gradient-constant}及连通性说明 \(u\) 为常数。
+\end{proof}
+
+这里真正消失的是带 \(R^{-2}\) 的平方质量。平方可积性是使它消失的一种充分条件；如果质量增长虽无界，但仍是 \(o(R^2)\)，同一论证也能成立。反过来，在 Euclid 空间中，坐标函数 \(u=x_1\) 调和且不恒定，其环带平方积分按 \(R^{n+2}\) 增长，恰好不满足上述要求。
 
 \subsection{\texorpdfstring{\(L^2\) 调和形式与额外增长条件}{L² 调和形式与额外增长条件}}
 \label{g3:subsec:1504:03}
-待撰写
+记 \(\Delta_q=\mathrm d\delta+\delta\mathrm d\)，其中 \(\delta\) 为外微分关于固定度量和密度的形式伴随。定义
+\[
+	\mathcal H_{(2)}^q(M)=
+	\{\omega\in L^2(M;\Lambda^q\mathrm T^*M):
+	\Delta_q\omega=0\text{ 于分布意义下}\}.
+\]
+实形式或复化形式均可使用；复配对取第一变量线性。这一定义只先要求 \(\omega\) 平方可积，没有预先假设 \(\mathrm d\omega\)、\(\delta\omega\) 全局平方可积。
+\symidx{\(\mathcal H_{(2)}^q(M)\)：平方可积的分布调和 \(q\) 次形式空间}
 
-\subsection{弱次调和函数的正则化}
+\begin{theorem}\label{g3:thm:complete-l2-harmonic-forms}
+	设 \((M^n,g)\) 非空、连通、完备、光滑且无边界，\(n\ge1\)，\(0\le q\le n\)。若 \(\omega\in\mathcal H_{(2)}^q(M)\)，则 \(\omega\) 光滑，并且
+	\[
+		\mathrm d\omega=0,\qquad\delta\omega=0.
+	\]
+	反之，平方可积的形式若在分布意义下满足这两个一阶方程，则属于 \(\mathcal H_{(2)}^q(M)\) 并且光滑。更一般地，对光滑的 \(\Delta_q\omega=0\) 形式，只要存在 \(R_j\to\infty\) 满足
+	\begin{equation}\label{g3:eq:harmonic-form-annular-growth}
+		R_j^{-2}\int_{A_{R_j}}|\omega|^2\,\mu_g\longrightarrow0,
+	\end{equation}
+	也有 \(\mathrm d\omega=\delta\omega=0\)。
+\end{theorem}
+\begin{proof}
+	\(\Delta_q\) 是光滑系数的方形椭圆系统，故\cref{g3:cor:elliptic-smoothness}先使分布解光滑。这一步是局部的，不使用完备性。对一个紧支 Lipschitz 实函数 \(\chi\)，\(\chi^2\omega\) 是合法的 \(H^1\) 测试形式。紧支积分分部给出
+	\[
+		0=(\mathrm d\omega,\mathrm d(\chi^2\omega))
+		+(\delta\omega,\delta(\chi^2\omega)).
+	\]
+	各积分都只涉及一个紧集。乘积公式为
+	\[
+		\mathrm d(\chi^2\omega)=\chi^2\mathrm d\omega
+		+2\chi\mathrm d\chi\wedge\omega,\qquad
+		\delta(\chi^2\omega)=\chi^2\delta\omega
+		-2\chi\iota_{\operatorname{grad}\chi}\omega.
+	\]
+	第二式由局部表达 \(\delta=-\sum_i\iota_{e_i}\nabla_{e_i}\) 得到，对 Lipschitz 乘数仍由弱乘积公式成立。
+
+	对任意实余向量 \(\zeta\)，有纤维恒等式
+	\[
+		|\zeta\wedge\omega|^2+|\iota_{\zeta^\sharp}\omega|^2
+		=|\zeta|^2|\omega|^2.
+	\]
+	当 \(|\zeta|=1\) 时，把 \(\omega\) 正交分成含 \(\zeta\) 的分量与不含它的分量，即可逐项验证；一般情形由齐次性得到。于是将能量记为
+	\(E=\int\chi^2(|\mathrm d\omega|^2+|\delta\omega|^2)\)，取前式实部并用 Cauchy--Schwarz，得
+	\[
+		E\le2E^{1/2}
+		\left(\int_M|\mathrm d\chi|^2|\omega|^2\,\mu_g\right)^{1/2}.
+	\]
+	因此
+	\begin{equation}\label{g3:eq:harmonic-form-cutoff-energy}
+		\int_M\chi^2(|\mathrm d\omega|^2+|\delta\omega|^2)\,\mu_g
+		\le4\int_M|\mathrm d\chi|^2|\omega|^2\,\mu_g.
+	\end{equation}
+	取 \(\chi=\chi_R\)，右侧不超过 \(4R^{-2}\|\omega\|_2^2\)，趋于零。固定任意内球，再令 \(R\to\infty\)，得到该球上两个一阶导数均为零，因而处处为零。在增长条件下，同样沿 \(R_j\) 使用环带积分即可。
+
+	反向中，分布微分可以复合，所以两个一阶方程推出 \(\Delta_q\omega=0\)；再由同一个内部正则性结果得到光滑性。
+\end{proof}
+
+这个结论不需要曲率假设。曲率的作用出现在进一步要求调和形式平行时。
+
+\begin{corollary}\label{g3:cor:complete-l2-bochner-vanishing}
+	设 \((M^n,g)\) 非空、连通、完备、光滑且无边界，\(0\le q\le n\)。假设 Weitzenböck 公式中的自伴曲率项 \(\mathcal R_q\) 在每一点非负，即
+	\(\langle\mathcal R_q\xi,\xi\rangle\ge0\) 对全部 \(q\) 次形式 \(\xi\) 成立。则每个 \(\omega\in\mathcal H_{(2)}^q(M)\) 都平行，并满足 \(\mathcal R_q\omega=0\)。若进一步有 \(\operatorname{Vol}_g(M)=\infty\)，则 \(\mathcal H_{(2)}^q(M)=0\)。若某一点的 \(\mathcal R_q\) 正定，也有同一消失结论。以上平行性还适用于满足式\eqref{g3:eq:harmonic-form-annular-growth}的光滑调和形式。
+\end{corollary}
+\begin{proof}
+	由\cref{g3:thm:weitzenbock-forms}，
+	\(0=\Delta_q\omega=\nabla^*\nabla\omega+\mathcal R_q\omega\)。以 \(\chi_R^2\omega\) 测试并取实部，得到
+	\[
+		\int\chi_R^2\bigl(|\nabla\omega|^2
+		+\langle\mathcal R_q\omega,\omega\rangle\bigr)
+		=-2\operatorname{Re}\int
+		\chi_R\langle\nabla\omega,\mathrm d\chi_R\otimes\omega\rangle.
+	\]
+	省略的积分密度均为 \(\mu_g\)。用 \(2ab\le a^2/2+2b^2\) 吸收梯度项，得
+	\[
+		\frac12\int\chi_R^2|\nabla\omega|^2
+		+\int\chi_R^2\langle\mathcal R_q\omega,\omega\rangle
+		\le2R^{-2}\int_{A_R}|\omega|^2.
+	\]
+	左侧两项非负，右侧在平方可积情形趋零，在增长假设下沿相应子列趋零。固定内球后取极限，得到 \(\nabla\omega=0\) 及 \(\langle\mathcal R_q\omega,\omega\rangle=0\)。非负自伴矩阵在向量上的二次型为零，等价于该向量属于其核，故 \(\mathcal R_q\omega=0\)。
+
+	平行性使 \(|\omega|\) 在连通的 \(M\) 上为常数。如果体积无限且 \(\omega\in L^2\)，该常数只能为零。若曲率项在一点正定，\(\mathcal R_q\omega=0\) 先使 \(\omega\) 在该点为零，平行性再使它处处为零。
+\end{proof}
+
+对一形式，\(\mathcal R_1\) 就是 Ricci 作用，因而非负 Ricci 曲率足以用于这个推论。一般次数须检查相应的 \(\mathcal R_q\)，不能用 Ricci 的符号替代它。非紧也不自动意味着体积无限：例如
+\[
+	M=\mathbb R\times S^1,\qquad
+	g=\mathrm dt^2+e^{-2\sqrt{1+t^2}}\mathrm d\theta^2
+\]
+是完备的，因为任何有界距离球都落在一个紧的 \(t\) 坐标带中；该带上光滑度量与乘积度量等价，所以闭球紧。其体积为 \(2\pi\int_{\mathbb R}e^{-\sqrt{1+t^2}}\,\mathrm dt<\infty\)。常数函数一是非零的平方可积调和函数，与推论的平行性完全相容。
+
+\ProseParagraphBreak
+
+普通 de Rham 上同调与 \(L^2\) 条件记录不同的信息。在平坦圆柱 \(S^1\times\mathbb R\) 上，全部曲率项为零、体积无限，所以上一推论给出各次 \(\mathcal H_{(2)}^q=0\)。但闭形式 \(\mathrm d\theta\) 沿圆周的积分为 \(2\pi\)，故不是正合形式，给出非零的普通 de Rham 类。闭流形上的调和代表定理因而不能直接改写成非紧流形上每个普通类都有一个 \(L^2\) 调和代表。
+
+\subsection{弱次调和函数与强最大值原理}
 \label{g3:subsec:1504:04}
-待撰写
+距离函数及其极限通常只有 Lipschitz 正则性。对实值 \(u\in H^1_{\mathrm{loc}}(M)\)，在本书的非负 Laplace 约定下，称它为\term[ruo citiaohe hanshu]{弱次调和函数}[weakly subharmonic function]，是指
+\begin{equation}\label{g3:eq:weak-subharmonic-convention}
+	\Delta u\le0,
+	\qquad\text{即}\qquad
+	\int_M\langle\mathrm du,\mathrm d\varphi\rangle\,\mu_g\le0
+	\quad(0\le\varphi\in C_c^\infty(M)).
+\end{equation}
+这里也可在任意开子域上定义。由于 \(\Delta=-\operatorname{div}\operatorname{grad}\)，它正好对应 Euclid 空间中 \(\sum_i\partial_i^2u\ge0\) 的通常次调和方向。弱次调和函数不必光滑；需要将光滑化和保留不等式分别证明。
+
+\begin{lemma}\label{g3:lem:positive-tests-and-traces}
+	设 \(\Omega\) 为光滑黎曼流形中相对紧的光滑域。非负的 \(H^1_0(\Omega)\) 函数可在 \(H^1\) 中由非负 \(C_c^\infty(\Omega)\) 函数逼近。对实值 \(v\in H^1(\Omega)\)，有
+	\[
+		\gamma(v^+)=(\gamma v)^+.
+	\]
+	特别地，若 \(\gamma v\le0\)，则 \(v^+\in H^1_0(\Omega)\)。因此式\eqref{g3:eq:weak-subharmonic-convention}在 \(u\in H^1(\Omega)\) 时，也可用任意非负 \(H^1_0(\Omega)\) 函数测试。
+\end{lemma}
+\begin{proof}
+	先说明取正部在 \(H^1\) 中连续。若 \(v_j\to v\) 于 \(H^1\)，零阶项由 \(|v_j^+-v^+|\le|v_j-v|\) 控制。取一个逐点几乎处处收敛的子列；由截断链式法则，导数差满足
+	\[
+		|\mathrm d(v_j^+)-\mathrm d(v^+)|
+		\le|\mathrm d(v_j-v)|
+		+|\mathbf1_{\{v_j>0\}}-\mathbf1_{\{v>0\}}|\,|\mathrm dv|.
+	\]
+	在 \(v\ne0\) 处，第二项逐点趋零；在 \(v=0\) 的水平集上，\(\mathrm dv=0\) 几乎处处，见\cref{g3:prop:sobolev-truncation}的证明。控制收敛给出第二项的 \(L^2\) 收敛。对任意子列都可这样再抽子列，故原序列的正部在 \(H^1\) 中收敛。
+
+	若 \(v\ge0\) 且 \(v\in H^1_0\)，先取 \(v_j\in C_c^\infty\) 逼近它，再取 \(v_j^+\)。后者非负、紧支且属 \(H^1\)。在有限个坐标片中用非负单位分解及非负卷积核逼近，每次保持支集离边界有正距离，便得到所需非负光滑逼近。
+
+	对一般 \(v\)，用光滑到边界的 \(v_j\) 在 \(H^1\) 中逼近。每个 \(v_j^+\) 连续到边界，\cref{g3:thm:sobolev-trace}使其迹等于通常的限制，因此 \(\gamma(v_j^+)=(\gamma v_j)^+\)。迹的有界性、刚证的正部连续性及边界 \(L^2\) 中的正部连续性，允许两侧取极限，给出所述恒等式。迹的核为 \(H^1_0\)，所以非正迹推出 \(v^+\in H^1_0\)。最后，\(\varphi\mapsto\int\langle\mathrm du,\mathrm d\varphi\rangle\) 在 \(H^1_0\) 上连续，非负逼近使不等式延续到全部非负测试。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:weak-harmonic-smoothing}
+	设 \((M,g)\) 为光滑无边界黎曼流形，\(\Omega\subset M\) 开。若分布 \(u\in\mathcal D'(\Omega)\) 满足 \(\Delta u=0\)，则它由唯一的光滑调和函数表示。特别地，\(H^1_{\mathrm{loc}}\) 弱调和函数具有这样的代表；若原来还给定连续代表，两者处处相等。
+\end{proposition}
+\begin{proof}
+	局部坐标中的 \(\Delta\) 是光滑系数的标量二阶椭圆算子。\Cref{g3:cor:elliptic-smoothness}给出光滑代表，其分布方程随即是经典方程。两个光滑代表作为分布相等，故几乎处处相等；连续性使它们处处相等。同样的论证也适用于原先的连续代表。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:weak-harmonic-replacement}
+	设 \(\Omega\) 为光滑黎曼流形中的非空、连通、相对紧光滑域，\(\partial\Omega\ne\varnothing\)。若实值 \(u\in H^1(\Omega)\) 弱次调和，则存在唯一的实值 \(h\in H^1(\Omega)\)，满足
+	\[
+		\Delta h=0,\qquad \gamma h=\gamma u.
+	\]
+	它在 \(\Omega\) 内光滑，且 \(u\le h\) 几乎处处。若进一步 \(u\le M\) 几乎处处且 \(\gamma u\le M\)，则 \(h\le M\) 于 \(\Omega\)。特别地，若 \(u\in C(\overline\Omega)\)，这些比较在内部逐点成立，并可取 \(M=\max_{\overline\Omega}u\)。
+\end{proposition}
+\begin{proof}
+	\Cref{g3:thm:weak-general-dirichlet}用于 \(P=\Delta\)、零右端及边界迹 \(\gamma u\)，给出唯一的 \(h\)。系数和数据均为实，复共轭后仍为同一个弱问题，所以 \(h\) 为实值。上一命题给出内部光滑性。
+
+	令 \(v=u-h\)。其迹为零，且 \(\Delta v\le0\)。由上一引理可用 \(v^+\in H^1_0\) 测试，得到
+	\[
+		0\ge\int_\Omega\langle\mathrm dv,\mathrm d(v^+)\rangle\,\mu_g
+		=\int_\Omega|\mathrm d(v^+)|^2\,\mu_g.
+	\]
+	零边界 Poincaré 不等式使 \(v^+=0\)，故 \(u\le h\)。对调和函数 \(h-M\) 同样用其正部测试；由于 \(\gamma(h-M)\le0\)，得到 \(h\le M\)。若 \(u\) 连续，迹等于其边界值，且两个内部连续函数间的几乎处处比较就是逐点比较。
+\end{proof}
+
+\(h\) 称为 \(u\) 在 \(\Omega\) 上的调和替换。它在内部给出光滑的上控制，并保持全部边界数据；一般并不等于 \(u\)。下面只对替换使用经典强最大值原理，从而把正则性要求与次调和不等式分开。
+
+\begin{theorem}\label{g3:thm:weak-subharmonic-strong-maximum}
+	设 \((M,g)\) 为光滑无边界黎曼流形，\(\Omega\subset M\) 为非空连通开集，\(u\in C^0(\Omega;\mathbb R)\cap H^1_{\mathrm{loc}}(\Omega)\)。若 \(\Delta u\le0\) 分布成立，并存在 \(p\in\Omega\) 使 \(u(p)=\sup_\Omega u=m_0<\infty\)，则 \(u\equiv m_0\)。本结论不要求流形 \(M\) 完备。
+\end{theorem}
+\begin{proof}
+	最大值集合 \(Z=\{x\in\Omega:u(x)=m_0\}\) 非空且相对闭。固定任意 \(p\in Z\)，取 \(r_0>0\)，使每个 \(0<r<r_0\) 的测地球 \(B_r(p)\) 都有光滑球面，且闭包紧含于 \(\Omega\) 并位于一张正规坐标图中。
+
+	对每个这样的 \(r\)，用上一命题构造调和替换 \(h_r\)。有 \(u\le h_r\le m_0\) 于球内，所以 \(h_r(p)=m_0\)。坐标中的 \(-\Delta\) 具有光滑实系数、正定主部且无零阶项；\cref{g3:thm:strong-maximum-classical}于是给出 \(h_r\equiv m_0\) 于 \(B_r(p)\)。取边界迹，得到 \(\gamma u=\gamma h_r=m_0\)。因为 \(u\) 连续，迹等于球面限制；球面每个非空开片都有正的边界测度，所以 \(u=m_0\) 在整个 \(\partial B_r(p)\) 上成立。一维时球面是两个端点，迹结论直接给出两个值。
+
+	这一论证对所有 \(0<r<r_0\) 成立，而这些球面覆盖 \(B_{r_0}(p)\setminus\{p\}\)。故整个 \(B_{r_0}(p)\) 包含于 \(Z\)，证明 \(Z\) 相对开。连通性使这个非空开闭集等于 \(\Omega\)。
+\end{proof}
+
+最后给出一个保留次调和方向的具体正则化。若实值 \(h\) 光滑且调和，令
+\[
+	u_\varepsilon=\sqrt{h^2+\varepsilon^2}.
+\]
+链式法则直接给出
+\[
+	\Delta u_\varepsilon
+	=-\frac{\varepsilon^2}{(h^2+\varepsilon^2)^{3/2}}|\mathrm dh|^2\le0.
+\]
+它在紧集上一致趋于 \(|h|\)，并且在 \(H^1_{\mathrm{loc}}\) 中收敛：梯度为 \(h\mathrm dh/\sqrt{h^2+\varepsilon^2}\)，由 \(|\mathrm dh|\) 控制；零水平集上的弱导数为零，所以控制收敛给出梯度极限。将不等式对固定的非负测试函数积分，再令 \(\varepsilon\downarrow0\)，便知 \(|h|\) 弱次调和。例如 \(h(x)=x\) 给出 \(|x|\)，它在原点不光滑。
+
+\ProseParagraphBreak
+
+对一般变系数 Laplace 算子，坐标卷积可以逼近 \(H^1\) 函数，却不与算子交换，因此不能仅凭卷积的正性宣称它保留 \(\Delta u\le0\)。本节的调和替换通过解一个固定的弱 Dirichlet 问题取得光滑比较函数；一旦两个相反方向的不等式进一步合成 \(\Delta u=0\)，\cref{g3:prop:weak-harmonic-smoothing}就给出函数本身的光滑性。这正是下一节使用弱 Busemann 函数时所需的两步。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

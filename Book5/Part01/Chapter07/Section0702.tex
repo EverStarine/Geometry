@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 7.2 Artin–Rees 与交定理
 % 纲要位置：几何学计划纲要.md，第 5269 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,252 @@
 \section{Artin–Rees 与交定理}
 \label{g5:sec:0702}
 
-待撰写
+设 \(N\) 是模 \(M\) 的子模。若把 \(I^nM\) 看作精度为 \(n\) 时可以忽略的误差，那么 \(N\) 中被忽略的部分是 \(N\cap I^nM\)。但从 \(N\) 自身出发，其 \(I\) 进误差应当是 \(I^nN\)。这两个子模一般不相等，因此在模去 \(I^n\) 后，原来的包含 \(N\hookrightarrow M\) 未必仍为单射。Artin–Rees 引理说明，在 Noether 环的有限模上，两种精度之间至多相差一个固定的整数。将这一结论用于所有阶误差的交，又会得到有限模的分离性及子模的闭性。
 
 \subsection{诱导滤过与本来滤过}
 \label{g5:subsec:0702:01}
-待撰写
+
+设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想，\(M\) 为 \(A\) 模，\(N\subseteq M\) 为子模。对 \(n\geq0\)，记
+\[
+	F_n=N\cap I^nM,\qquad G_n=I^nN.
+\]
+它们都是从 \(N\) 开始的降滤过，并满足
+\[
+	IF_n\subseteq F_{n+1},\qquad IG_n=G_{n+1},\qquad
+	G_n\subseteq F_n.
+\]
+其中 \((F_n)\) 是从 \(M\) 的 \(I\) 进滤过得到的\term[youdaolvguo]{诱导滤过}[induced filtration]；\((G_n)\) 是 \(N\) 自身的 \(I\) 进滤过，本节也称它为本来滤过。以 \(F_n\) 为零点邻域得到的拓扑正是 \(N\subseteq M\) 的子空间拓扑，而以 \(G_n\) 为零点邻域得到的是 \(N\) 自身的 \(I\) 进拓扑。由于 \(G_n\subseteq F_n\)，本来拓扑至少和诱导拓扑一样细。
+
+\begin{example}\label{g5:exm:shifted-induced-filtration}
+	设 \(A=k[x]\)、\(I=(x)\)、\(M=A\)，取 \(N=x^aA\)，其中 \(a\geq1\)。则
+	\[
+		I^nM\cap N=x^{\max(n,a)}A,
+		\qquad I^nN=x^{n+a}A.
+	\]
+	例如 \(n\geq a\) 时，前者为 \(x^nA\)，后者为 \(x^{n+a}A\)，并不相等。但把第一种滤过的下标再增加 \(a\)，就有
+	\[
+		I^{n+a}M\cap N=I^nN\qquad(n\geq0).
+	\]
+	因此它们给出相同的零点邻域系统，只是对同一精度使用了不同下标。
+\end{example}
+
+一般地，两个降滤过 \((F_n)\)、\((G_n)\) 给出同一拓扑，当且仅当它们的零点邻域互相包含到任意深处：对每个 \(n\)，分别存在 \(a,b\) 使 \(F_a\subseteq G_n\)、\(G_b\subseteq F_n\)。这一条件也称两个滤过互相共尾。它不要求 \(F_n=G_n\)，甚至不要求通过固定平移得到相等。
+
+\ProseParagraphBreak
+
+诱导滤过是有限阶商中自然出现的对象。对任意 \(n\geq0\)，有正合列
+\begin{equation}\label{g5:eq:induced-filtration-quotients}
+	0\longrightarrow N/(N\cap I^nM)
+	\longrightarrow M/I^nM
+	\longrightarrow (M/N)/I^n(M/N)\longrightarrow0.
+\end{equation}
+第一张映射由包含诱导，其核已被除去。最后一项等于 \(M/(N+I^nM)\)，故中间项的核正是 \((N+I^nM)/I^nM\)，也就是第一项的像，最后一张映射显然满射。若把第一项直接换成 \(N/I^nN\)，则其到中间项的映射有核
+\[
+	\frac{N\cap I^nM}{I^nN}.
+\]
+这个核正好测量两种滤过在第 \(n\) 阶的差别。要让连续提高精度的过程兼容子模，就需要同时控制所有这些核。
 
 \subsection{Rees 模的 Noether 论证}
 \label{g5:subsec:0702:02}
-待撰写
+
+上一节用一个分次环同时保存 \(I\) 的所有幂。对模也作同样的构造，就可以把无限多个交 \(N\cap I^nM\) 放进一个模中，转而使用 Noether 条件提供的有限生成性。
+
+\begin{definition}\label{g5:def:rees-module}
+	设 \(A\) 为交换含幺环，\(I\subseteq A\) 为理想，\(M\) 为 \(A\) 模。把
+	\[
+		M[t]=\bigoplus_{n\geq0}Mt^n
+	\]
+	看作具有通常多项式乘法作用的 \(A[t]\) 模。其中的分次 \(A\) 子模
+	\[
+		\mathcal R_I(M)=\bigoplus_{n\geq0}I^nM\,t^n
+	\]
+	称为 \(M\) 的\term[Reesmo]{Rees 模}[Rees module]。它是上一节的 Rees 环
+	\(\mathcal R_I(A)=\bigoplus_{n\geq0}I^nt^n\) 上的模，作用由
+	\[
+		(at^r)(mt^s)=(am)t^{r+s}
+		\qquad(a\in I^r,\ m\in I^sM)
+	\]
+	给出。
+\end{definition}
+
+这里 \(t\) 用来记录次数，每个元素仍只有有限个非零齐次分量。若 \(N\subseteq M\)，则
+\[
+	\mathcal E(N,M)=\bigoplus_{n\geq0}(I^nM\cap N)t^n
+\]
+是 \(\mathcal R_I(M)\) 的分次 \(\mathcal R_I(A)\) 子模：乘以 \(I^r\) 中的元素，既不会离开 \(N\)，也会把 \(I^nM\) 送入 \(I^{n+r}M\)。它通常大于 \(\mathcal R_I(N)\)，这与刚才两种滤过的差别对应。
+
+\begin{proposition}\label{g5:prop:rees-module-noetherian}
+	设 \(A\) 为交换含幺 Noether 环，\(I\subseteq A\) 为理想，\(M\) 为有限生成 \(A\) 模，\(N\subseteq M\) 为子模。则：
+	\begin{enumerate}
+		\item \(\mathcal R_I(M)\) 是由有限个零次元素生成的 \(\mathcal R_I(A)\) 模，因而是 Noether 模；
+		\item \(\mathcal E(N,M)\) 可由有限个齐次元素
+		\[
+			u_1t^{d_1},\ldots,u_st^{d_s},
+			\qquad u_j\in I^{d_j}M\cap N,
+		\]
+		作为 \(\mathcal R_I(A)\) 模生成。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	取 \(M\) 的有限生成元 \(m_1,\ldots,m_r\)。每个 \(v\in I^nM\) 都能写成
+	\[
+		v=\sum_{j=1}^r a_jm_j,\qquad a_j\in I^n,
+	\]
+	因为在 \(I^nM\) 的有限和表达式中，再把各模元素用 \(m_j\) 展开即可。因此
+	\[
+		vt^n=\sum_{j=1}^r(a_jt^n)m_j,
+	\]
+	说明零次元素 \(m_j\) 生成整个 Rees 模。由\cref{g5:prop:rees-noetherian}，\(\mathcal R_I(A)\) 为 Noether 环；再用\cref{g5:prop:noetherian-finite-modules}，得到 \(\mathcal R_I(M)\) 为 Noether 模。
+
+	已经验证 \(\mathcal E(N,M)\) 是其子模，故它有限生成。取一组有限生成元，将每个生成元拆成有限个齐次分量。因为 \(\mathcal E(N,M)\) 是直和定义的分次子模，这些分量仍属于 \(\mathcal E(N,M)\)。把所有分量合在一起，仍为有限组；它们生成的子模包含原生成元，故生成整个 \(\mathcal E(N,M)\)。这便得到陈述中的齐次生成组。\(N=0\) 时允许空生成组。
+\end{proof}
+
+Noether 条件在这里控制的不是某一个固定的交，而是所有阶的交组成的分次子模。只分别知道每个 \(I^nM\cap N\) 有限生成，还不能保证生成元出现的次数有统一上界；上面的命题正好给出这个上界。
 
 \subsection{Artin–Rees 引理}
 \label{g5:subsec:0702:03}
-待撰写
+
+设上一命题中齐次生成元的次数不超过 \(c\)。当 \(n\geq c\) 时，一个 \(n\) 次元素只能由这些较低次数的生成元乘上相应次数的系数得到。把系数中共同的 \(I^{n-c}\) 部分提出，就能把全部高阶交统一表示为第 \(c\) 阶交的倍数。
+
+\begin{theorem}[Artin–Rees 引理]\label{g5:thm:artin-rees}
+	设 \(A\) 为交换含幺 Noether 环，\(I\subseteq A\) 为理想，\(M\) 为有限生成 \(A\) 模，\(N\subseteq M\) 为子模。存在整数 \(c\geq0\)，使对每个 \(n\geq c\) 都有
+	\begin{equation}\label{g5:eq:artin-rees}
+		I^nM\cap N=I^{n-c}(I^cM\cap N).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	若 \(N=0\)，取 \(c=0\) 即可。否则由\cref{g5:prop:rees-module-noetherian}，选定 \(\mathcal E(N,M)\) 的有限齐次生成元 \(u_jt^{d_j}\)，并令 \(c=\max_jd_j\)。对 \(v\in I^nM\cap N\)，存在 \(b_j(t)\in\mathcal R_I(A)\) 使
+	\[
+		vt^n=\sum_{j=1}^s b_j(t)u_jt^{d_j}.
+	\]
+	等式两边取 \(n\) 次齐次分量，只有 \(b_j(t)\) 的 \(n-d_j\) 次部分能够留下。若 \(n\geq c\)，便得到
+	\[
+		I^nM\cap N=\sum_{j=1}^s I^{n-d_j}u_j.
+	\]
+	这里从右到左的包含也直接成立，因为 \(u_j\in I^{d_j}M\cap N\)。特别地，在 \(n=c\) 时有
+	\[
+		I^cM\cap N=\sum_{j=1}^s I^{c-d_j}u_j.
+	\]
+	对 \(n\geq c\)，利用理想幂的乘法，
+	\[
+		\begin{aligned}
+			I^nM\cap N
+			&=\sum_{j=1}^s I^{n-c}I^{c-d_j}u_j\\
+			&=I^{n-c}\left(\sum_{j=1}^s I^{c-d_j}u_j\right)
+			=I^{n-c}(I^cM\cap N).
+		\end{aligned}
+	\]
+	这就是所需等式。
+\end{proof}
+
+这一结论称为\term[ArtinReesyinli]{Artin–Rees 引理}[Artin–Rees lemma]。证明把无限多阶的关系归结为有限齐次生成元的次数；同一 Noether 论证也见\cite[第8节，定理8.5，第59页]{Matsumura1989}。常数 \(c\) 可以依赖于 \(I,M,N\)，并不是只由底环决定的统一常数。
+
+\begin{example}\label{g5:exm:artin-rees-shift}
+	在\cref{g5:exm:shifted-induced-filtration}中，取 \(c=a\) 就有
+	\[
+		I^nM\cap N=x^nA
+		=I^{n-a}(I^aM\cap N)\qquad(n\geq a).
+	\]
+	而 \(c<a\) 不可能满足引理的全部等式：在 \(n=a\) 时，左侧为 \(x^aA\)，右侧却为 \(x^{2a-c}A\)，严格更小。因此即使固定 \(A=k[x]\)、\(I=(x)\)、\(M=A\)，当子模 \(x^aA\) 改变时，所需的 \(c\) 仍可任意增大。
+\end{example}
+
+\begin{corollary}\label{g5:cor:induced-adic-topology}
+	设 \(A\) 为交换含幺 Noether 环，\(I\subseteq A\) 为理想，\(M\) 为有限生成 \(A\) 模，\(N\subseteq M\) 为子模。存在 \(c\geq0\)，使对所有 \(n\geq0\) 都有
+	\[
+		I^{n+c}M\cap N\subseteq I^nN\subseteq I^nM\cap N.
+	\]
+	所以 \(N\) 的本来 \(I\) 进滤过与从 \(M\) 诱导的滤过互相共尾，给出同一拓扑。
+\end{corollary}
+\begin{proof}
+	取 Artin–Rees 引理中的 \(c\)。对 \(n+c\geq c\) 使用等式，得到
+	\[
+		I^{n+c}M\cap N
+		=I^n(I^cM\cap N)\subseteq I^nN.
+	\]
+	另一包含由 \(N\subseteq M\) 直接得到。这两侧包含说明，两种零点邻域系统中的每个邻域，都包含另一系统中足够深的一个邻域，因而拓扑相同。
+\end{proof}
+
+这正是\cite[第8节，定理8.6，第59—60页]{Matsumura1989}中的拓扑结论。它保证有限阶正合列\eqref{g5:eq:induced-filtration-quotients}左端所用的诱导精度，最终能与 \(N\) 自身的精度比较。拓扑相同并不自动意味着 \(N\) 是 \(M\) 中的闭集；闭性还要检查商模是否分离。
 
 \subsection{Krull 交定理的局部形式}
 \label{g5:subsec:0702:04}
-待撰写
+
+一个元素若属于每个 \(I^nM\)，就在所有有限阶商 \(M/I^nM\) 中都看不见。令
+\[
+	L=\bigcap_{n\geq0}I^nM.
+\]
+要证明 \(I\) 进拓扑分离，就要证明 \(L=0\)。Artin–Rees 先给出对任意理想都成立的关系 \(IL=L\)，再由 Nakayama 的行列式形式决定这个交何时必须消失。
+
+\begin{proposition}\label{g5:prop:krull-intersection-annihilator}
+	设 \(A\) 为交换含幺 Noether 环，\(I\subseteq A\) 为理想，\(M\) 为有限生成 \(A\) 模，\(L=\bigcap_{n\geq0}I^nM\)。则
+	\[
+		IL=L,
+	\]
+	并且存在 \(a\in I\)，使 \((1-a)L=0\)。
+\end{proposition}
+\begin{proof}
+	\(L\) 是有限模 \(M\) 的子模，由 Noether 条件知它有限生成。对包含 \(L\subseteq M\) 应用 Artin–Rees 引理，取相应常数 \(c\)。因为 \(L\) 包含于每个 \(I^nM\)，在 \(n=c+1\) 时得到
+	\[
+		L=I^{c+1}M\cap L
+		=I(I^cM\cap L)=IL.
+	\]
+	对有限模 \(L\) 应用\cref{g5:prop:nakayama-ideal}，便存在 \(a\in I\) 使 \((1-a)L=0\)。这一证明没有把降链 \(I^nM\) 当作最终稳定的链；稳定关系来自 Artin–Rees，而不是 Noether 环的升链条件本身。
+\end{proof}
+
+为保证这里的 \(1-a\) 可逆，记
+\[
+	\operatorname{Jac}(A)=
+	\bigcap_{\mathfrak m\text{ 为 }A\text{ 的极大理想}}\mathfrak m,
+\]
+称为 \(A\) 的\term[Jacobsongen]{Jacobson 根}[Jacobson radical]。
+\footnote{Nathan Jacobson（1910--1999），美国数学家，研究环论，并撰写多部代数学著作。}零环中按空交约定取 \(\operatorname{Jac}(0)=0\)。若 \(a\in\operatorname{Jac}(A)\)，则 \(1-a\) 是单位：否则它属于某个极大理想 \(\mathfrak m\)，而 \(a\in\mathfrak m\)，便会得到 \(1\in\mathfrak m\)，矛盾。在局部环 \((A,\mathfrak m)\) 中，\(\operatorname{Jac}(A)=\mathfrak m\)。
+
+\begin{theorem}[Krull 交定理]\label{g5:thm:krull-intersection}
+	设 \(A\) 为交换含幺 Noether 环，\(M\) 为有限生成 \(A\) 模，\(I\subseteq\operatorname{Jac}(A)\) 为理想。则
+	\[
+		\bigcap_{n\geq0}I^nM=0.
+	\]
+	特别地，若 \((A,\mathfrak m)\) 为 Noether 局部环，\(I\subseteq\mathfrak m\)，则每个有限生成 \(A\) 模的 \(I\) 进拓扑都分离；取 \(I=\mathfrak m\) 得到极大理想进拓扑的分离性。
+\end{theorem}
+\begin{proof}
+	由上个命题，存在 \(a\in I\) 使 \((1-a)L=0\)。因为 \(a\in\operatorname{Jac}(A)\)，\(1-a\) 是单位，故 \(L=0\)。局部情形由 \(\operatorname{Jac}(A)=\mathfrak m\) 立即得到。
+\end{proof}
+
+这就是\term[Krulljiaodingli]{Krull 交定理}[Krull intersection theorem]的有限模形式；一般的零化关系及分离性结论，可对照\cite[第8节，定理8.9—8.10，第60页]{Matsumura1989}。若 \(A\) 是 Noether 整环、\(I\ne A\)，即使 \(I\) 未必包含于 Jacobson 根，也有 \(\bigcap_n I^n=0\)：对 \(M=A\) 使用零化关系，因 \(a\in I\) 而有 \(1-a\ne0\)，整环中非零元素不能零化非零元素。
+
+\begin{corollary}\label{g5:cor:adic-submodule-closed}
+	设 \(A\) 为交换含幺 Noether 环，\(I\subseteq\operatorname{Jac}(A)\) 为理想，\(M\) 为有限生成 \(A\) 模。则 \(M\) 的每个子模 \(N\) 都在 \(I\) 进拓扑中闭，并且
+	\[
+		N=\bigcap_{n\geq0}(N+I^nM).
+	\]
+\end{corollary}
+\begin{proof}
+	先说明闭包公式。对任意 \(x\in M\)，它属于 \(N\) 的闭包，当且仅当每个邻域 \(x+I^nM\) 都与 \(N\) 相交。这又等价于 \(x\in N+I^nM\) 对每个 \(n\) 成立。因此，对任何模和理想都有
+	\[
+		\overline N=\bigcap_{n\geq0}(N+I^nM),
+		\qquad
+		\overline N/N=\bigcap_{n\geq0}I^n(M/N).
+	\]
+	商模 \(M/N\) 仍有限生成，故 Krull 交定理使右侧为零，得到 \(\overline N=N\)。这也说明，子模闭性准确地对应于商模 \(M/N\) 的 \(I\) 进分离性。
+\end{proof}
+
+\begin{example}\label{g5:exm:idempotent-adic-nonseparated}
+	设 \(k\) 为域，\(A=k\times k\)，\(I=k\times0\)。这是 Noether 环中的真理想，但 \(I^2=I\)，所以
+	\[
+		\bigcap_{n\geq0}I^n=I\ne0.
+	\]
+	其两个极大理想为 \(k\times0\) 和 \(0\times k\)，故 \(\operatorname{Jac}(A)=0\)，本例不满足 \(I\subseteq\operatorname{Jac}(A)\)。所有有限阶商都只留下第二个 \(k\) 分量，第一分量在每一阶已经消失。因而一般 Noether 环上的真理想，并不足以保证其进拓扑分离。
+\end{example}
+
+\begin{example}\label{g5:exm:separated-module-dense-submodule}
+	设 \(A=k[x]\)、\(I=(x)\)、\(M=A\)、\(N=(x-1)A\)。多项式不可能被任意高次的 \(x\) 整除，故 \(M\) 的 \(I\) 进拓扑分离。然而对每个 \(n\geq1\)，等式
+	\[
+		1=(1-x)(1+x+\cdots+x^{n-1})+x^n
+	\]
+	给出 \(N+I^nM=M\)。因此 \(\overline N=M\ne N\)，\(N\) 是一个稠密的真子模。商模 \(M/N\cong k\) 上的 \(x\) 作用为恒等，故其 \(I\) 进滤过每一项都是整个商模，并不分离。
+
+	本例甚至有 \(I^nM\cap N=I^nN\)：若 \(x^nf(x)\) 在 \(x=1\) 处为零，则 \(f(1)=0\)，故 \(f\in(x-1)A\)。所以诱导拓扑与本来拓扑相同，不能代替子模闭性的检验；即使环境模已经分离，也仍须检查商模。
+\end{example}
+
+有限生成性同样有实际作用。令 \(A=k[x]_{(x)}\)、\(I=(x)\)，取无限生成的 \(A\) 模 \(M=k(x)\)。因为乘以 \(x\) 在 \(M\) 上可逆，所有 \(I^nM\) 都等于 \(M\)，交非零。这里底环 Noether 且局部，失效的是有限生成条件；\subsecref{g5:subsec:0203:04}中对 Nakayama 引理的反例已经说明这个模不能有限生成。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

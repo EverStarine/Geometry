@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 6.4 忠实平坦与几何族
 % 纲要位置：几何学计划纲要.md，第 5248 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -18,25 +18,238 @@
 \section{忠实平坦与几何族}
 \label{g5:sec:0604}
 
-待撰写
+平坦的系数扩张保持正合列，却可能把非零对象整个消去。例如把整数扩张到有理数后，每个有限阿贝尔群都变为零。若希望在新系数下验证一个结论，再把结论传回原环，就需要保证这种消失不会发生。忠实平坦性正是平坦性与检测能力的结合。先建立这一代数条件，再将它用于纤维、泛型开集和可显式计算的退化。
 
 \subsection{消失和正合性的反映}
 \label{g5:subsec:0604:01}
-待撰写
+
+\begin{definition}\label{g5:def:faithfully-flat-algebra}
+	设 \(A\to B\) 为交换含幺环同态。若 \(B\) 是平坦 \(A\) 模，且对任意 \(A\) 模 \(N\) 都有
+	\[
+		B\otimes_A N=0\quad\Longrightarrow\quad N=0,
+	\]
+	则称 \(A\to B\) 为\term[zhongshipingtan]{忠实平坦}[faithfully flat]同态，也称 \(B\) 为忠实平坦 \(A\) 代数。
+\end{definition}
+
+这里的“忠实”要求张量函子不丢掉任何非零模。它强于环同态单射：\(\mathbb Z\hookrightarrow\mathbb Q\) 虽然单射且平坦，却把 \(\mathbb Z/2\mathbb Z\) 张量成零。
+
+\begin{proposition}\label{g5:prop:faithful-flat-reflects-exactness}
+	设 \(A\to B\) 为忠实平坦同态。一个 \(A\) 模序列
+	\[
+		L\xrightarrow{u}M\xrightarrow{v}N
+	\]
+	在中间项正合，当且仅当张量 \(B\) 后在中间项正合。对任意 \(A\) 模同态，单射、满射、同构以及零映射也都可在张量 \(B\) 后检测。
+\end{proposition}
+\begin{proof}
+	平坦性保持短正合列，因此保持任意同态的核与像：把同态分解为到其像的满射和像的包含，分别应用短正合列即可。它也保持余核，这是张量的右正合性。
+
+	若张量后的序列正合，则 \((vu)\otimes1=0\)，故
+	\[
+		B\otimes_A\operatorname{im}(vu)
+		\cong\operatorname{im}\bigl((vu)\otimes1\bigr)=0.
+	\]
+	忠实性使 \(\operatorname{im}(vu)=0\)，即 \(vu=0\)。于是 \(\operatorname{im}u\subseteq\ker v\)，可以形成商模
+	\(H=\ker v/\operatorname{im}u\)。平坦性给出
+	\[
+		B\otimes_A H
+		\cong\ker(v\otimes1)/\operatorname{im}(u\otimes1)=0.
+	\]
+	再次用忠实性得 \(H=0\)，所求正合性成立。反方向只用平坦性。把同样的消失检测分别用于核、余核、像，就得到其余断言。
+\end{proof}
+
+因此，在忠实平坦扩张后核验一个矩阵关系或一列模的正合性，可以传回原环；平坦性负责正确运送核与像，忠实性负责从运送后的消失恢复原来的消失。这个等价刻画可对照 \cite[第7节，定理7.2，第47页]{Matsumura1989}。
+
+\begin{proposition}\label{g5:prop:faithful-flat-base-change}
+	忠实平坦同态在复合及任意基变换下保持成立。具体地，若 \(A\to B\) 忠实平坦、\(A'\) 为任意 \(A\) 代数，则 \(A'\to B\otimes_A A'\) 忠实平坦；若 \(A\to B\to C\) 的两步都忠实平坦，则 \(A\to C\) 忠实平坦。
+\end{proposition}
+\begin{proof}
+	对任意 \(A'\) 模 \(N\)，有自然同构
+	\[
+		(B\otimes_A A')\otimes_{A'}N\cong B\otimes_A N.
+	\]
+	一个 \(A'\) 模的单射也是 \(A\) 模单射，一个非零 \(A'\) 模作为 \(A\) 模仍非零。因此右侧既保持单射，又不消去非零模，给出基变换断言。对复合使用
+	\(C\otimes_A N\cong C\otimes_B(B\otimes_A N)\)：保持单射逐次成立，消失也可逐次反映。
+\end{proof}
 
 \subsection{谱映射满射的判据}
 \label{g5:subsec:0604:02}
-待撰写
+
+能否检测所有模，可以先从最简单的循环模 \(A/I\) 检查。它张量后变为 \(B/IB\)；若某个真理想扩张成整个 \(B\)，相应商模就已经消失。只需检查极大理想，就能排除全部这种情况。
+
+\begin{theorem}\label{g5:thm:faithful-flat-spectrum}
+	设 \(A\to B\) 为平坦的交换含幺环同态。以下条件等价：
+	\begin{equivalences}
+		\item \(A\to B\) 忠实平坦；
+		\item 每个极大理想 \(\mathfrak m\subset A\) 都满足 \(\mathfrak mB\ne B\)；
+		\item 每个真理想 \(I\subset A\) 都满足 \(IB\ne B\)；
+		\item 取收缩的谱映射 \(\operatorname{Spec}B\to\operatorname{Spec}A\) 满射。
+	\end{equivalences}
+\end{theorem}
+\begin{proof}
+	忠实性用于非零模 \(A/\mathfrak m\)，立即给出第二条件。每个真理想都包含在某个极大理想内，故第二条件蕴含第三条件。
+
+	设第三条件成立，取非零 \(A\) 模 \(N\) 中的非零元素 \(n\)。循环子模
+	\(An\cong A/\operatorname{Ann}_A(n)\)，其零化子为真理想，所以
+	\(B\otimes_A An\ne0\)。平坦性使 \(B\otimes_A An\to B\otimes_A N\) 单射，故后者也非零。这就恢复了忠实性。
+
+	若忠实平坦，对每个 \(\mathfrak p\in\operatorname{Spec}A\)，非零 \(A\) 模 \(\kappa(\mathfrak p)\) 给出非零环
+	\[
+		B\otimes_A\kappa(\mathfrak p)
+		\cong (A\setminus\mathfrak p)^{-1}(B/\mathfrak pB).
+	\]
+	非零含幺环存在素理想，商环与局部化的素理想对应将它送回某个 \(\mathfrak q\subset B\)，满足 \(\mathfrak q\cap A=\mathfrak p\)。这证明谱映射满射。反过来，若谱映射满射，对任意极大理想 \(\mathfrak m\) 取其上方素理想 \(\mathfrak q\)，则 \(\mathfrak mB\subseteq\mathfrak q\ne B\)，得到第二条件。零环情形各条件也按空谱约定成立。
+\end{proof}
+
+谱纤维在这里是纤维环的素谱，点可以具有扩大的剩余域。满射要求每个基底素点有某个上方素点，并不要求上方存在具有相同剩余域的有理点。上述判据及纤维环说明见 \cite[第7节，定理7.2—7.3，第47—48页]{Matsumura1989}。
+
+\begin{corollary}\label{g5:cor:flat-local-faithful}
+	设 \((A,\mathfrak m)\to(B,\mathfrak n)\) 为非零局部环之间的局部同态。若 \(B\) 对 \(A\) 平坦，则它忠实平坦。
+\end{corollary}
+\begin{proof}
+	局部同态给出 \(\mathfrak mB\subseteq\mathfrak n\ne B\)，而 \(A\) 只有一个极大理想，故可用定理。
+\end{proof}
+
+一个局部化 \(A\to S^{-1}A\) 总是平坦，但通常不忠实。其谱像是与 \(S\) 不相交的素理想。这个像为整个谱，当且仅当 \(S\) 的每个元素都是单位：非单位属于某个极大理想，而单位不属于任何素理想。所以一个真正删去点的局部化也会失去对某些模的检测。
+
+\begin{example}\label{g5:exm:faithful-principal-cover}
+	若 \(f_1,\ldots,f_r\in A\)、\(r\geq1\)，且 \(D(f_i)\) 覆盖 \(\operatorname{Spec}A\)，则
+	\[
+		A\longrightarrow\prod_{i=1}^r A_{f_i}
+	\]
+	忠实平坦。有限乘积作为模就是有限直和，故平坦。每个极大理想 \(\mathfrak m\) 都有某个 \(f_i\notin\mathfrak m\)，于是
+	\((A/\mathfrak m)_{f_i}\cong A/\mathfrak m\ne0\)，说明乘积模不被 \(\mathfrak m\) 全部生成。由定理得忠实性。这里把一组局部检查合并成了一次忠实平坦扩张。
+\end{example}
 
 \subsection{泛平坦性及开放条件}
 \label{g5:subsec:0604:03}
-待撰写
+
+泛自由性给出的 \(s\ne0\) 把坏行为限制在 \(V(s)\) 中。在 Noether 整基环上，\(D(s)\) 是包含泛型点的稠密开集：两个非空主开集的交仍含泛型点，故都与它相交。在这个开集上，自由性立即给出平坦性。
+
+\begin{corollary}[泛平坦性]\label{g5:cor:generic-flatness}
+	设 \(A\) 为 Noether 整环，\(B\) 为有限型 \(A\) 代数，\(M_1,\ldots,M_r\) 为有限生成 \(B\) 模。存在 \(0\ne s\in A\)，使 \(B_s\) 及所有 \((M_i)_s\) 都是平坦 \(A_s\) 模。可以进一步使它们都自由，允许无限秩和零模。
+\end{corollary}
+\begin{proof}
+	对有限多个 \(B\) 模 \(B,M_1,\ldots,M_r\) 应用\cref{g5:cor:simultaneous-generic-freeness}，得到同一个 \(s\ne0\)，使各模在 \(A_s\) 上自由。任意秩的自由模都平坦，因而得到全部断言。
+\end{proof}
+
+“有限生成 \(B\) 模”与“有限呈示 \(A\) 模”在这里承担不同任务。前者允许 \(M\) 在 \(A\) 上有无限秩，只保证能找到一块泛型开集。对后者，则可以证明其全部平坦位置组成开集。
+
+\begin{proposition}\label{g5:prop:finite-module-flat-locus}
+	设 \(A\) 为交换含幺环，\(M\) 为有限呈示 \(A\) 模。集合
+	\[
+		U=\{\mathfrak p\in\operatorname{Spec}A:
+		M_{\mathfrak p}\text{ 在 }A_{\mathfrak p}\text{ 上平坦}\}
+	\]
+	为开集。在 \(U\) 内，纤维维数局部常值。
+\end{proposition}
+\begin{proof}
+	若 \(\mathfrak p\in U\)，则 \(M_{\mathfrak p}\) 仍有限呈示，由\cref{g5:thm:finite-presented-flat}在局部环上自由，设秩为 \(r\)。第二章的局部基延伸引理\cref{g5:lem:local-basis-extension}把这组基延伸到某个 \(D(f)\)、\(f\notin\mathfrak p\)，使 \(M_f\cong A_f^r\)。该主开集上的每个局部化都自由，因而平坦，所以 \(D(f)\subseteq U\)。在这个邻域上纤维维数也恒为 \(r\)。
+\end{proof}
+
+Fitting 理想把这个判定变成方程。对于固定的秩 \(r\)，在一点附近自由要求
+\[
+	\operatorname{Fitt}_r(M)_{\mathfrak p}=A_{\mathfrak p},
+	\qquad
+	\operatorname{Fitt}_{r-1}(M)_{\mathfrak p}=0.
+\]
+前一个条件要求某个子式在该点可逆，后一个条件要求另一组子式在整个局部环中为零，见\cref{g5:thm:fitting-locally-free}。只把后一组子式代入剩余域，得到的仅是它们属于 \(\mathfrak p\)，尚不足以让局部环中的关系消失。有限呈示保证这些理想有限生成，因此局部的消失也能在某个主开邻域保持：逐个生成元清去分母，再取共同乘积即可。
 
 \subsection{平坦退化的显式方程}
 \label{g5:subsec:0604:04}
-待撰写
+
+下面把参数 \(t\) 看作基底坐标。要证明一个方程族对 \(k[t]\) 平坦，可以直接寻找一组在所有参数值下共用的模基。这个基不必有限，也不要求所有纤维有相同的分支数。
+
+\begin{example}\label{g5:exm:flat-node-family}
+	设 \(k\) 为域，\(A=k[t]\)，
+	\[
+		B=k[t,x,y]/(xy-t).
+	\]
+	则 \(B\) 为忠实平坦 \(A\) 代数，且作为 \(A\) 模有无限基
+	\[
+		1,\quad x,x^2,x^3,\ldots,\quad y,y^2,y^3,\ldots.
+	\]
+	把每个混合单项式中的 \(xy\) 换成 \(t\)，就证明这组元素张成。为了证明独立，先由消去 \(t\) 得到 \(B\cong k[x,y]\)，其中 \(t\) 作用为乘 \(xy\)。一个有限的 \(A\) 线性关系展开后，来自 \(t^j x^m\)、\(m\geq1\)，的项具有指数差 \(m>0\)，来自 \(t^j y^n\)、\(n\geq1\)，的项具有指数差 \(-n<0\)，来自 \(t^j\) 的项具有指数差零。每一类内部的指数对也彼此不同，故所有系数为零。这证明自由性；基非空使与任何非零模张量后仍非零，所以忠实平坦。
+
+	在参数 \(a\in k\) 处，
+	\[
+		B\otimes_A k[t]/(t-a)\cong k[x,y]/(xy-a).
+	\]
+	当 \(a\ne0\) 时，\(x\) 为单位，纤维环为 \(k[x,x^{-1}]\)；当 \(a=0\) 时，纤维是两条坐标轴的并。它们都是一维，但零纤维在原点的切空间为二维，而非零纤维在有理点处的局部环正则。平坦性容许这样的奇点与分支变化。
+\end{example}
+
+\begin{example}\label{g5:exm:flat-two-points-collision}
+	设 \(k\) 为特征不等于二的域，\(A=k[t]\)，取
+	\[
+		C=A[z]/(z^2-t).
+	\]
+	除以首一多项式给出唯一余式 \(a(t)+b(t)z\)，故 \(C\) 为秩二的自由 \(A\) 模。若 \(a\ne0\)，纤维 \(k[z]/(z^2-a)\) 在代数闭包上分成两个不同点；在 \(a=0\) 时，纤维为一个带幂零元的加厚点 \(k[z]/(z^2)\)。每个纤维作为 \(k\) 向量空间仍有维数二。在特征二时自由性不变，但非零参数纤维在代数闭包上也为二重根，所以不能沿用“两点碰合”的解释。
+\end{example}
+
+与这两个例子比较，取
+\[
+	D=k[t,z]/(z^2,tz).
+\]
+它作为 \(k[t]\) 模分解为 \(k[t]\oplus k z\)，其中 \(t z=0\)、\(z\ne0\)。非零 \(t\) 是整基环中的非零因子，却杀死了非零模元素，故 \(D\) 不平坦。非零参数的纤维为 \(k\)，零参数的纤维为 \(k[z]/(z^2)\)。所有纤维的 Krull 维数均为零，改变的是长度和参数方向上的关系。只比较纤维维数，会遗漏这项障碍。
 
 \subsection{为下降准备的双重基变换}
 \label{g5:subsec:0604:05}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+一次基变换把 \(M\) 变为 \(B\otimes_A M\)。若一个元素确实来自 \(M\)，把它再沿两张映射
+\[
+	p_1,p_2:B\longrightarrow B\otimes_A B,\qquad
+	p_1(b)=b\otimes1,\quad p_2(b)=1\otimes b
+\]
+分别拉回，所得元素应相同。忠实平坦性保证这个相容条件也足以识别来自原模的元素。
+
+\begin{theorem}\label{g5:thm:faithful-flat-equalizer}
+	设 \(A\to B\) 为忠实平坦的交换含幺环同态，\(M\) 为任意 \(A\) 模。以下 \(A\) 模序列正合：
+	\[
+		0\longrightarrow M\xrightarrow{\eta}
+		B\otimes_A M\xrightarrow{\delta}
+		B\otimes_A B\otimes_A M,
+	\]
+	其中
+	\[
+		\eta(m)=1\otimes m,\qquad
+		\delta(b\otimes m)=1\otimes b\otimes m-b\otimes1\otimes m.
+	\]
+	因此两种拉回相等的元素，都唯一来自 \(M\)。
+\end{theorem}
+\begin{proof}
+	由\cref{g5:prop:faithful-flat-reflects-exactness}，只需在左边再张量一个 \(B\)，验证所得序列正合。它的前两张映射为
+	\[
+		\begin{aligned}
+			\eta'(b\otimes m)&=b\otimes1\otimes m,\\
+			\delta'(b\otimes c\otimes m)
+			&=b\otimes1\otimes c\otimes m
+			-b\otimes c\otimes1\otimes m.
+		\end{aligned}
+	\]
+	乘法映射 \(\mu(b\otimes c\otimes m)=bc\otimes m\) 满足 \(\mu\eta'=1\)，所以 \(\eta'\) 单射。又 \(\delta'\eta'=0\)。
+
+	若 \(z\in\ker\delta'\)，对等式 \(\delta'(z)=0\) 应用“乘起前两个 \(B\) 因子”的映射
+	\[
+		h:B\otimes_A B\otimes_A B\otimes_A M
+		\longrightarrow B\otimes_A B\otimes_A M,
+		\quad
+		h(b\otimes c\otimes d\otimes m)=bc\otimes d\otimes m,
+	\]
+	就得到 \(z-\eta'(\mu z)=0\)。故 \(z\in\operatorname{im}\eta'\)，证明张量后的中间正合性。忠实平坦性将单射与正合性传回原序列。
+\end{proof}
+
+\begin{corollary}\label{g5:cor:faithful-flat-contraction}
+	若 \(A\to B\) 忠实平坦，则 \(A\to B\) 单射，且每个理想 \(I\subseteq A\) 都满足
+	\[
+		\{a\in A:a\text{ 在 }B\text{ 中的像属于 }IB\}=I.
+	\]
+\end{corollary}
+\begin{proof}
+	在定理中取 \(M=A\) 得单射；取 \(M=A/I\) 得
+	\(A/I\hookrightarrow B/IB\)，其零元判据就是所述收缩公式。
+\end{proof}
+
+最后的单射与收缩公式也见 \cite[第7节，定理7.5，第49页]{Matsumura1989}。平坦局部化未必满足收缩等于原理想，因为它可能删去理想所支撑的部分；忠实性在这里确保了检测不丢失。
+
+\ProseParagraphBreak
+
+两张 \(p_i\) 都是 \(A\to B\) 的基变换，故都忠实平坦。在三重张量 \(B\otimes_A B\otimes_A B\) 上，还可以比较从第一份到第二份、第二份到第三份以及直接从第一份到第三份的识别。以后为一个 \(B\) 模指定下降资料时，便要求这些识别的复合相容。本章的等化子序列已经证明了元素层面的识别：先扩张系数，再在双重基变换中检查两种像相等，就能恢复原模中的唯一元素。

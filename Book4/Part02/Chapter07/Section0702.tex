@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 7.2 余切丛与典范构造
 % 纲要位置：几何学计划纲要.md，第 3752 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,333 @@
 \section{余切丛与典范构造}
 \label{g4:sec:0702}
 
-待撰写
+线性辛形式把两个方向配成一个数。要在流形上获得这样的配对，需要让它随点光滑变化，并使局部表达彼此相容。余切丛提供了一个直接的构造：余切丛的点本身就是一个线性函数，可以对投影到底流形的速度求值。由此得到的典范一形式及其外微分，把坐标变换、微分同胚和闭一形式组织到同一套几何中。这些构造也可参见 \cite[第1.3节，第85--88页；第2.1节，第93--94页]{Cannas2006Symplectic}。
 
 \subsection{典范一形式和坐标无关性}
 \label{g4:subsec:0702:01}
-待撰写
+
+设 \(Q\) 为有限维、Hausdorff、第二可数的光滑无边界流形，\(\dim Q=n\)。第一卷定义11.2.9把余切空间定义为 \(\mathrm{T}_q^*Q=(\mathrm{T}_qQ)^*\)。先取这些空间的集合不交并，再用下面的坐标赋予它余切丛的光滑结构：
+\[
+	\mathrm{T}^*Q=\coprod_{q\in Q}\mathrm{T}_q^*Q,
+	\qquad \pi_Q:\mathrm{T}^*Q\longrightarrow Q.
+\]
+余切丛的一点记为 \(z=(q,p)\)，其中 \(p\in\mathrm{T}_q^*Q\)。在底空间坐标 \((q^1,\ldots,q^n)\) 中，把 \(p\) 唯一写成
+\[
+	p=\sum_{i=1}^n p_i\,\mathrm{d}q^i|_q.
+\]
+这给出总空间的坐标 \((q^1,\ldots,q^n,p_1,\ldots,p_n)\)。若换用底坐标 \(Q^a=Q^a(q)\)，并写 \(p=\sum_aP_a\,\mathrm{d}Q^a|_q\)，则
+\begin{equation}
+	\label{g4:eq:0702:cotangent-transition}
+	p_i=\sum_{a=1}^nP_a\frac{\partial Q^a}{\partial q^i},
+	\qquad
+	P_a=\sum_{i=1}^np_i\frac{\partial q^i}{\partial Q^a}.
+\end{equation}
+式\eqref{g4:eq:0702:cotangent-transition}正是第一卷命题11.2.10中余切拉回的转置变换律。过渡函数光滑，逆变换由反向换坐标给出，链式法则保证三张图上的相容性，所以这些坐标构成 \(\mathrm{T}^*Q\) 的光滑图册，其维数为 \(2n\)。不同底点上方的点由底空间的分离邻域分开，同一纤维上的不同点则由同一余切坐标图分开，故总空间 Hausdorff；从 \(Q\) 的可数坐标覆盖及各余切坐标域的可数基，也得到总空间的第二可数性。
+
+\ProseParagraphBreak
+
+现在取总空间的切向量 \(\Xi\in\mathrm{T}_z(\mathrm{T}^*Q)\)。它可以同时改变底点和协变向量，而 \(\mathrm{d}\pi_Q|_z(\Xi)\in\mathrm{T}_qQ\) 只保留底点的速度。恰好可以让当前的协变向量 \(p\) 对这个速度求值。
+
+\begin{definition}
+	\label{g4:def:0702:tautological-form}
+	设 \(Q\) 为光滑无边界流形，\(\pi_Q:\mathrm{T}^*Q\to Q\) 为余切丛投影。其\term[dianfanyixingshi]{典范一形式}[tautological 1-form]是由
+	\begin{equation}
+		\label{g4:eq:0702:tautological-evaluation}
+		(\theta_Q)_{(q,p)}(\Xi)
+		=p\bigl(\mathrm{d}\pi_Q|_{(q,p)}\Xi\bigr),
+		\qquad \Xi\in\mathrm{T}_{(q,p)}(\mathrm{T}^*Q),
+	\end{equation}
+	定义的一形式。
+\end{definition}
+
+下面的交换图表示的正是式\eqref{g4:eq:0702:tautological-evaluation}的求值过程；右侧箭头 \(p\) 是当前余切丛点所携带的线性函数：
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		\mathrm{T}_{(q,p)}(\mathrm{T}^*Q)
+		\arrow[r,"\mathrm{d}\pi_Q|_{(q,p)}"]
+		\arrow[dr,swap,"(\theta_Q)_{(q,p)}"]
+		& \mathrm{T}_qQ \arrow[d,"p"]\\
+		& \mathbb R .
+	\end{tikzcd}
+\]
+虽然 \(\theta_Q\) 的定义是在每一点给出的，还须核对它光滑。将切向量写成
+\[
+	\Xi=\sum_i a^i\frac{\partial}{\partial q^i}
+	+\sum_i b_i\frac{\partial}{\partial p_i},
+\]
+则 \(\mathrm{d}\pi_Q(\Xi)=\sum_i a^i\partial_{q^i}\)，从而
+\begin{equation}
+	\label{g4:eq:0702:tautological-coordinates}
+	\theta_Q=\sum_i p_i\,\mathrm{d}q^i.
+\end{equation}
+式\eqref{g4:eq:0702:tautological-coordinates}中的 \(\mathrm{d}q^i\) 是底坐标函数 \(q^i\circ\pi_Q\) 在总空间上的微分。这一坐标表达有光滑系数，证明了光滑性。它也直接检验了换图相容：
+\[
+	\sum_aP_a\,\mathrm{d}Q^a
+	=\sum_i\left(\sum_aP_a\frac{\partial Q^a}{\partial q^i}\right)\mathrm{d}q^i
+	=\sum_i p_i\,\mathrm{d}q^i.
+\]
+因此“典范”在这里有具体含义：构造只用了投影及余切向量的求值，没有选定底流形上的度量或联络。
 
 \subsection{\texorpdfstring{\(\omega=-\mathrm{d}\theta\) 的符号}{\GeometryPdfSmallOmega{}=−d\GeometryPdfTheta{} 的符号}}
 \label{g4:subsec:0702:02}
-待撰写
+
+先把上一节的逐点线性条件放到流形上。以下的非退化性要求在每一点成立，闭性则涉及形式随点变化的导数。
+
+\begin{definition}
+	\label{g4:def:0702:symplectic-manifold}
+	设 \(M\) 为光滑无边界流形。若光滑二形式 \(\omega\in\Omega^2(M)\) 满足 \(\mathrm{d}\omega=0\)，且在每个 \(x\in M\) 上，由
+	\[
+		\omega_x(v,w)=0\quad\text{对所有 }w\in\mathrm{T}_xM
+	\]
+	能够推出 \(v=0\)，则称 \(\omega\) 为\term[xinxingshi]{辛形式}[symplectic form]，称 \((M,\omega)\) 为\term[xinliuxing]{辛流形}[symplectic manifold]。
+
+	给定两个辛流形 \((M,\omega_M)\)、\((N,\omega_N)\)，若光滑映射 \(F:M\to N\) 满足 \(F^*\omega_N=\omega_M\)，则称 \(F\) 为\term[xinyingshe]{辛映射}[symplectic map]；若它还是微分同胚，则称为\term[xintongpei]{辛同胚}[symplectomorphism]。
+\end{definition}
+
+上一节的交替型标准形说明辛流形的维数必为偶数。辛映射的微分一定单射：若 \(\mathrm{d}F_xv=0\)，则
+\[
+	\omega_M(v,w)=\omega_N(\mathrm{d}F_xv,\mathrm{d}F_xw)=0
+	\quad\text{对所有 }w,
+\]
+故 \(v=0\)。在等维情形下，它因而是局部微分同胚；全局辛同胚的定义还包含全局可逆性。复合保持辛形式，因为 \((GF)^*=F^*G^*\)；若 \(F\) 为辛同胚，对 \(F^*\omega_N=\omega_M\) 再用 \((F^{-1})^*\)，也得到其逆保持辛形式。
+
+\begin{theorem}
+	\label{g4:thm:0702:cotangent-symplectic}
+	设 \(Q\) 为光滑无边界 \(n\) 维流形。余切丛上的二形式
+	\begin{equation}
+		\label{g4:eq:0702:canonical-symplectic}
+		\omega_Q\coloneqq-\mathrm{d}\theta_Q
+		=\sum_{i=1}^n\mathrm{d}q^i\wedge\mathrm{d}p_i
+	\end{equation}
+	是一个辛形式，称为余切丛的\term[dianfanxinxingshi]{典范辛形式}[canonical symplectic form]。
+\end{theorem}
+\begin{proof}
+	\(\theta_Q\) 已是全局光滑一形式。第一卷定理14.1.2给出的外微分运算与坐标无关，且 \(\mathrm{d}^2=0\)，所以 \(\omega_Q\) 全局光滑并满足 \(\mathrm{d}\omega_Q=0\)。在余切坐标中，
+	\[
+		-\mathrm{d}\left(\sum_i p_i\,\mathrm{d}q^i\right)
+		=-\sum_i\mathrm{d}p_i\wedge\mathrm{d}q^i
+		=\sum_i\mathrm{d}q^i\wedge\mathrm{d}p_i.
+	\]
+	若 \(\Xi=\sum_i a^i\partial_{q^i}+\sum_i b_i\partial_{p_i}\)，则
+	\[
+		\iota_\Xi\omega_Q=\sum_i\bigl(a^i\,\mathrm{d}p_i-b_i\,\mathrm{d}q^i\bigr).
+	\]
+	坐标一形式线性无关，因此这个收缩为零当且仅当全部 \(a^i,b_i\) 为零，得到非退化性。
+\end{proof}
+
+负号固定了底方向与纤维方向的配对次序：
+\[
+	\omega_Q(\partial_{q^i},\partial_{p_j})=\delta^i_j.
+\]
+这与上一节使用的矩阵
+\(\begin{psmallmatrix}0&I\\-I&0\end{psmallmatrix}\)
+一致。沿用 \(\theta_Q=\sum_i p_i\,\mathrm{d}q^i\) 时，取 \(\mathrm{d}\theta_Q\) 会把这个配对整体反号；本书统一采用式\eqref{g4:eq:0702:canonical-symplectic}。
+
+\begin{example}
+	\label{g4:exm:0702:fiber-reflection}
+	余切反射 \(R(q,p)=(q,-p)\) 满足 \(R^*\theta_Q=-\theta_Q\)，因而 \(R^*\omega_Q=-\omega_Q\)。这种使辛形式反号的微分同胚称为\term[fanxintongpei]{反辛同胚}[anti-symplectomorphism]。当 \(\dim Q>0\) 时，\(R\) 是反辛的，不能同时保持 \(\omega_Q\)。例如在 \(\mathrm{T}^*\mathbb R\) 中，它把 \((q,p)\) 平面的有向面积反号。
+\end{example}
 
 \subsection{余切提升与辛不变性}
 \label{g4:subsec:0702:03}
-待撰写
+
+设 \(f:Q\to Q'\) 为微分同胚。为了把 \((q,p)\) 送到 \(f(q)\) 上方，须把 \(p\) 搬成 \(f(q)\) 处的协变向量。第一卷命题11.2.10说明，微分的对偶本来沿反方向拉回；现在利用 \(f\) 的可逆性，定义其\term[yuqietisheng]{余切提升}[cotangent lift]
+\begin{equation}
+	\label{g4:eq:0702:cotangent-lift}
+	\widehat f:\mathrm{T}^*Q\longrightarrow\mathrm{T}^*Q',
+	\qquad
+	\widehat f(q,p)
+	=\bigl(f(q),(\mathrm{d}f_q^{-1})^*p\bigr).
+\end{equation}
+这里 \(\mathrm{d}f_q^{-1}=(\mathrm{d}f_q)^{-1}
+=\mathrm{d}(f^{-1})_{f(q)}\)；它从 \(\mathrm{T}_{f(q)}Q'\) 到 \(\mathrm{T}_qQ\)。等价地，像协变向量 \(p'\) 由
+\[
+	p'(\mathrm{d}f_qv)=p(v)\qquad(v\in\mathrm{T}_qQ)
+\]
+唯一确定。底映射与提升之间满足交换关系
+\[
+	\begin{tikzcd}[column sep=large,row sep=large]
+		\mathrm{T}^*Q \arrow[r,"\widehat f"] \arrow[d,swap,"\pi_Q"]
+		& \mathrm{T}^*Q' \arrow[d,"\pi_{Q'}"]\\
+		Q \arrow[r,"f"] & Q'.
+	\end{tikzcd}
+\]
+
+\begin{proposition}
+	\label{g4:prop:0702:cotangent-lift}
+	设 \(Q,Q',Q''\) 为光滑无边界流形，\(f:Q\to Q'\)、\(g:Q'\to Q''\) 为微分同胚。余切提升是光滑微分同胚，并满足
+	\[
+		\widehat{\operatorname{id}_Q}=\operatorname{id}_{\mathrm{T}^*Q},
+		\qquad
+		\widehat{g\circ f}=\widehat g\circ\widehat f,
+		\qquad
+		(\widehat f)^{-1}=\widehat{f^{-1}}.
+	\]
+	它保持典范一形式和典范辛形式：
+	\[
+		\widehat f^{\,*}\theta_{Q'}=\theta_Q,
+		\qquad
+		\widehat f^{\,*}\omega_{Q'}=\omega_Q.
+	\]
+\end{proposition}
+\begin{proof}
+	局部令 \(A(q)\) 为 \(f\) 的 Jacobian 矩阵，协变向量采用列分量，则提升的坐标式为 \((q,p)\mapsto(f(q),A(q)^{-\mathsf T}p)\)，故它光滑。恒等映射的结论直接成立。对复合，用
+	\[
+		\bigl(\mathrm{d}(g\circ f)_q\bigr)^{-1}
+		=(\mathrm{d}f_q)^{-1}\circ(\mathrm{d}g_{f(q)})^{-1}
+	\]
+	并取对偶，便得到 \(\widehat{g\circ f}=\widehat g\circ\widehat f\)。令 \(g=f^{-1}\) 即得逆映射公式，也证明提升是微分同胚。
+
+	再取 \(z=(q,p)\)、\(\Xi\in\mathrm{T}_z(\mathrm{T}^*Q)\)，记 \(\widehat f(z)=(f(q),p')\)。由交换图的微分和 \(p'\circ\mathrm{d}f_q=p\)，有
+	\[
+		\begin{aligned}
+			(\widehat f^{\,*}\theta_{Q'})_z(\Xi)
+			&=p'\bigl(\mathrm{d}\pi_{Q'}|_{\widehat f(z)}
+				\,\mathrm{d}\widehat f_z\Xi\bigr)\\
+			&=p'\bigl(\mathrm{d}f_q\,\mathrm{d}\pi_Q|_z\Xi\bigr)\\
+			&=p\bigl(\mathrm{d}\pi_Q|_z\Xi\bigr)
+			=(\theta_Q)_z(\Xi).
+		\end{aligned}
+	\]
+	最后，第一卷命题14.1.8说明外微分与任意光滑映射的拉回交换。因此
+	\[
+		\widehat f^{\,*}\omega_{Q'}
+		=-\widehat f^{\,*}\mathrm{d}\theta_{Q'}
+		=-\mathrm{d}(\widehat f^{\,*}\theta_{Q'})
+		=-\mathrm{d}\theta_Q=\omega_Q.
+	\]
+\end{proof}
+
+式\eqref{g4:eq:0702:cotangent-lift}还表明，对于固定的 \(Q\)，上述函子性使 \(f\mapsto\widehat f\) 成为微分同胚群到余切丛辛同胚群的同态。它还是单射，因为 \(\pi_Q\widehat f=f\pi_Q\) 会恢复 \(f\)。这里能沿底映射的同方向提升，关键在于 \(\mathrm{d}f_q\) 可逆；对一般光滑映射，余切向量的自然运算仍是反方向的拉回。
+
+\begin{example}
+	\label{g4:exm:0702:exponential-lift}
+	取 \(f:\mathbb R\to(0,\infty)\)、\(f(q)=e^q\)。在两边余切丛分别用坐标 \((q,p)\)、\((Q,P)\)，则
+	\[
+		\widehat f(q,p)=(e^q,e^{-q}p).
+	\]
+	底坐标伸长 \(e^q\) 倍，协变向量分量就缩小相同倍数，因而
+	\[
+		P\,\mathrm{d}Q=e^{-q}p\,e^q\mathrm{d}q=p\,\mathrm{d}q.
+	\]
+	进一步计算 \(\mathrm{d}Q\wedge\mathrm{d}P
+	=e^q\mathrm{d}q\wedge(e^{-q}\mathrm{d}p-e^{-q}p\,\mathrm{d}q)
+	=\mathrm{d}q\wedge\mathrm{d}p\)。其中由 \(p\) 的位置依赖产生的附加项，因 \(\mathrm{d}q\wedge\mathrm{d}q=0\) 消失。
+\end{example}
 
 \subsection{闭一形式的 Lagrange 图}
 \label{g4:subsec:0702:04}
-待撰写
+
+上一节定义了辛向量空间中的 Lagrange 子空间。对辛流形逐点使用这个定义，就得到相应的子流形概念。
+
+\begin{definition}
+	\label{g4:def:0702:lagrangian-submanifold}
+	设 \((M^{2n},\omega)\) 为辛流形，\(i:L\hookrightarrow M\) 为光滑嵌入子流形。若每个 \(x\in L\) 的 \(\mathrm{T}_xL\) 都是 \((\mathrm{T}_xM,\omega_x)\) 的 Lagrange 子空间，则称 \(L\) 为\term[Lagrangeziliuxing]{Lagrange 子流形}[Lagrangian submanifold]。由\cref{g4:prop:0701:lagrangian-characterizations}，这等价于
+	\[
+		\dim L=n,\qquad i^*\omega=0.
+	\]
+\end{definition}
+
+一个光滑一形式 \(\alpha\in\Omega^1(Q)\) 同时也是余切丛的截面。为区别它作为形式与映射的用法，记
+\[
+	s_\alpha:Q\longrightarrow\mathrm{T}^*Q,\qquad
+	s_\alpha(q)=(q,\alpha_q),\qquad
+	L_\alpha=s_\alpha(Q).
+\]
+等式 \(\pi_Qs_\alpha=\operatorname{id}_Q\) 说明 \(\mathrm{d}s_\alpha\) 单射，也说明 \(s_\alpha\) 到其像的逆是连续的 \(\pi_Q|_{L_\alpha}\)；所以 \(s_\alpha\) 是嵌入，\(L_\alpha\) 是一个 \(n\) 维子流形。
+
+\begin{proposition}
+	\label{g4:prop:0702:lagrangian-graph}
+	设 \(Q\) 为光滑无边界 \(n\) 维流形，\(\alpha\in\Omega^1(Q)\)。则
+	\begin{equation}
+		\label{g4:eq:0702:section-pullback}
+		s_\alpha^*\theta_Q=\alpha,\qquad
+		s_\alpha^*\omega_Q=-\mathrm{d}\alpha.
+	\end{equation}
+	特别地，\(L_\alpha\subset(\mathrm{T}^*Q,\omega_Q)\) 为 Lagrange 子流形当且仅当 \(\alpha\) 闭。
+\end{proposition}
+\begin{proof}
+	对 \(v\in\mathrm{T}_qQ\)，由典范一形式的定义，
+	\[
+		(s_\alpha^*\theta_Q)_q(v)
+		=\alpha_q\bigl(\mathrm{d}\pi_Q|_{s_\alpha(q)}
+			\,\mathrm{d}s_\alpha|_qv\bigr)
+		=\alpha_q(v).
+	\]
+	外微分与拉回交换，给出第二式。图的维数已经等于 \(n\)，故其 Lagrange 条件恰为 \(s_\alpha^*\omega_Q=0\)，也就是 \(\mathrm{d}\alpha=0\)。
+\end{proof}
+
+坐标中的判别同样清楚。写 \(\alpha=\sum_i a_i(q)\,\mathrm{d}q^i\)，图由 \(p_i=a_i(q)\) 给出，则
+\[
+	s_\alpha^*\omega_Q
+	=\sum_{i<j}
+	\left(\frac{\partial a_i}{\partial q^j}
+	-\frac{\partial a_j}{\partial q^i}\right)
+	\mathrm{d}q^i\wedge\mathrm{d}q^j.
+\]
+所以图为 Lagrange 当且仅当导数矩阵 \((\partial_j a_i)\) 对称。这把上一节对线性图像的对称性判别应用到了每一点的切空间。
+
+\ProseParagraphBreak
+
+闭一形式在每个足够小的坐标球中都有势函数。具体地，在以 \(0\) 为中心的星形坐标域，第一卷定理14.2.2的径向公式给出
+\[
+	S(q)=\int_0^1\sum_i a_i(tq)q^i\,\mathrm{d}t.
+\]
+若 \(\partial_j a_i=\partial_i a_j\)，则
+\[
+	\begin{aligned}
+		\partial_jS(q)
+		&=\int_0^1\left(a_j(tq)+t\sum_iq^i\partial_j a_i(tq)\right)\mathrm{d}t\\
+		&=\int_0^1\frac{\mathrm{d}}{\mathrm{d}t}
+			\bigl(t\,a_j(tq)\bigr)\,\mathrm{d}t=a_j(q).
+	\end{aligned}
+\]
+因此 \(L_\alpha\) 局部写成 \(p_i=\partial_iS\)。这样的 \(S\) 称为该图的\term[shengchenghanshu]{生成函数}[generating function]；两个生成函数给出同一图，当且仅当它们之差局部常值。这个结论也说明，局部生成函数可以在交叠处相差常数，而这些常数未必能通过逐片调整全部消去。
+
+\ProseParagraphBreak
+
+若 \(L\subset\mathrm{T}^*Q\) 为 Lagrange 子流形，并且 \(\theta_Q|_L\) 是 \(L\) 上的恰当一形式，就称它相对于 \(\theta_Q\) 为\term[qiadangLagrangeziliuxing]{恰当 Lagrange 子流形}[exact Lagrangian submanifold]。因为 \(-\theta_Q\) 是 \(\omega_Q\) 的原形式，用 \(-\theta_Q\) 作此定义得到同一个恰当性条件。对截面图，式\eqref{g4:eq:0702:section-pullback}立即给出
+\[
+	L_\alpha\text{ 恰当}
+	\quad\Longleftrightarrow\quad
+	\alpha=\mathrm{d}S\text{，其中 }S\in C^\infty(Q).
+\]
+这里要求的是整个 \(Q\) 上的单值函数，强于每一点附近存在势函数。
+
+\begin{example}
+	\label{g4:exm:0702:zero-fiber}
+	零截面是 \(\alpha=0\) 的图，所以是恰当 Lagrange 子流形。每条余切纤维 \(\mathrm{T}_{q_0}^*Q\) 也是恰当 Lagrange 子流形：其切向量被 \(\mathrm{d}\pi_Q\) 送到零，故 \(\theta_Q\) 在纤维上为零，\(\omega_Q\) 的限制也为零；纤维的维数为 \(n\)。当 \(n>0\) 时，纤维在底空间上的投影只有一个点，因而它不可能是一形式在整个 \(Q\) 上的图。
+\end{example}
+
+\begin{example}
+	\label{g4:exm:0702:circle-nonexact-graph}
+	写 \(S^1=\mathbb R/(2\pi\mathbb Z)\)，令 \(\eta\) 为由 \(\mathbb R\) 上的 \(\mathrm{d}t\) 下降的一形式；平移 \(t\mapsto t+2\pi\) 保持 \(\mathrm{d}t\)，所以它确实在圆周上有定义。令 \(\pi:\mathrm{T}^*S^1\to S^1\) 为投影。用 \(p\eta_q\) 表示余切向量，便得到
+	\[
+		\mathrm{T}^*S^1\simeq S^1\times\mathbb R,\qquad
+		\theta=p\,\pi^*\eta,\qquad \omega=\pi^*\eta\wedge\mathrm{d}p.
+	\]
+	对任意常数 \(c\ne0\)，\(\alpha=c\eta\) 闭，其图是圆柱上的水平圆 \(p=c\)。但沿正向圆周，
+	\[
+		\int_{S^1}\alpha=2\pi c\ne0.
+	\]
+	第一卷引理14.2.5说明恰当一形式沿闭路积分为零，所以这个 Lagrange 图不恰当。在一个角坐标小区间中仍可取 \(S=ct\)；沿圆周绕一圈以后，它增加 \(2\pi c\)，故没有下降为圆周上的单值函数。
+\end{example}
+
+闭形式图还可用纤维平移产生。给定任意 \(\alpha\in\Omega^1(Q)\)，定义
+\[
+	T_\alpha(q,p)=(q,p+\alpha_q).
+\]
+其逆为 \(T_{-\alpha}\)，因此它总是微分同胚。对 \(\Xi\in\mathrm{T}_{(q,p)}(\mathrm{T}^*Q)\)，利用 \(\pi_QT_\alpha=\pi_Q\)，直接求值得到
+\[
+	(T_\alpha^*\theta_Q)_{(q,p)}(\Xi)
+	=(p+\alpha_q)(\mathrm{d}\pi_Q\Xi)
+	=(\theta_Q+\pi_Q^*\alpha)_{(q,p)}(\Xi).
+\]
+于是
+\begin{equation}
+	\label{g4:eq:0702:fiber-translation}
+	T_\alpha^*\theta_Q=\theta_Q+\pi_Q^*\alpha,\qquad
+	T_\alpha^*\omega_Q=\omega_Q-\pi_Q^*(\mathrm{d}\alpha).
+\end{equation}
+为从式\eqref{g4:eq:0702:fiber-translation}读出充要条件，注意零截面 \(s_0\) 满足 \(s_0^*\pi_Q^*=\operatorname{id}\)，所以 \(\pi_Q^*\) 在形式上单射。因此 \(T_\alpha\) 为辛同胚当且仅当 \(\alpha\) 闭；它保持 \(\theta_Q\) 当且仅当 \(\alpha=0\)。平移把零截面送到 \(L_\alpha\)，从而再次说明闭形式的图具有 Lagrange 性。圆周例中的 \(T_{c\eta}\) 也给出一个保持辛形式、却不保持典范一形式的具体辛同胚。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

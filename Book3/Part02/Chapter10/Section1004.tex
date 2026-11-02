@@ -1,35 +1,285 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 10.4 非紧极限与切锥
 % 纲要位置：几何学计划纲要.md，第 2484 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 带基点收敛和球的控制
 % * 重缩放及切锥
-% * 扁平环面塌缩
-% * 切锥不唯一的概念与反例范围
+% * 平坦环面的塌缩
+% * 切锥不唯一的反例
 % 
 % 纲要内容结束
 
 \section{非紧极限与切锥}
 \label{g3:sec:1004}
 
-待撰写
+紧空间的 GH 距离同时比较整个空间。把越来越大的圆周从一个固定点附近观察，所见极限却是一条直线；远处的闭合部分逐渐离开每个有界观察范围。处理这样的极限，需要指定基点，并在每个固定半径内比较。放大一个点附近的几何也属于同一问题：原来半径趋零的球，在重缩放后成为固定半径的球。
 
 \subsection{带基点收敛和球的控制}
 \label{g3:subsec:1004:01}
-待撰写
+先在紧空间上把基点也列为需要匹配的数据。对非空紧度量空间 \((A,p)\)、\((B,q)\)，定义
+\begin{equation}\label{g3:eq:pointed-compact-gh}
+	d_{\mathrm{GH}}^\bullet((A,p),(B,q))
+	=\frac12\inf\{\operatorname{dis}\mathcal R:
+	\mathcal R\subset A\times B\text{ 为对应},\ (p,q)\in\mathcal R\}.
+\end{equation}
+它也等于在公共度量空间中对
+\(\max\{d_H(A,B),d(p,q)\}\) 取下确界。事实上，公共空间中距离小于 \(\varepsilon\) 的配对给出畸变至多为 \(2\varepsilon\) 的对应，并可包含基点对；反向使用\cref{g3:thm:gh-correspondence}证明中的桥接度量，每个配对点间的距离不超过所选桥长，基点也不例外。对应的复合保持基点对，所以三角不等式照常成立。在零距离的证明中，把基点放在稠密点列的第一位，所得等距必将 \(p\) 映到 \(q\)。因此式\eqref{g3:eq:pointed-compact-gh}在紧带基点空间的等距类上是度量。
+\symidx{\(d_{\mathrm{GH}}^\bullet\)：紧带基点度量空间的 Gromov--Hausdorff 距离}
+
+\begin{definition}\label{g3:def:pointed-gh-convergence}
+	设 \((X_j,d_j,p_j)\) 与 \((X,d,p)\) 为非空、闭球紧的测地度量空间。若对每个 \(R>0\)，都有
+	\begin{equation}\label{g3:eq:pointed-gh-balls}
+		d_{\mathrm{GH}}^\bullet
+		\bigl((\overline B_{X_j}(p_j,R),p_j),
+		(\overline B_X(p,R),p)\bigr)\longrightarrow0,
+	\end{equation}
+	就称 \((X_j,p_j)\) \term[dai jidian GH shoulian]{带基点 GH 收敛}[pointed Gromov--Hausdorff convergence]于 \((X,p)\)，记为
+	\((X_j,d_j,p_j)\xrightarrow{\mathrm{pGH}}(X,d,p)\)。所有闭球均取原空间距离的限制，不改取球内道路的内在距离。
+\end{definition}
+
+这里“闭球紧”采用\cref{g3:def:proper-metric-space}的约定。测地条件使半径略有偏差的点可以沿径向线移回球内；它正是下面球控制的依据。
+
+\begin{lemma}\label{g3:lem:pointed-gh-ball-restriction}
+	设 \((X,p)\)、\((Y,q)\) 为非空、闭球紧的测地度量空间。对 \(0<R\le S\)，有
+	\[
+		d_{\mathrm{GH}}^\bullet
+		\bigl((\overline B_X(p,R),p),(\overline B_Y(q,R),q)\bigr)
+		\le3d_{\mathrm{GH}}^\bullet
+		\bigl((\overline B_X(p,S),p),(\overline B_Y(q,S),q)\bigr).
+	\]
+	因而在\cref{g3:def:pointed-gh-convergence}中，只检验正整数半径已经足够；也可检验一列趋于无穷的半径 \(R_j\)，要求相应两球的带基点 GH 距离趋于零。
+\end{lemma}
+\begin{proof}
+	取半径 \(S\) 两球间的对应 \(\mathcal R\)，使 \((p,q)\in\mathcal R\) 且 \(\operatorname{dis}\mathcal R<\eta\)。若 \((x,y)\in\mathcal R\)，则
+	\[
+		|d_X(p,x)-d_Y(q,y)|<\eta.
+	\]
+	保留其中至少一个点属于半径 \(R\) 球的配对。将另一个点若超出半径 \(R\)，便沿从基点到它的一条最短线截到半径 \(R\)。每个配对至多移动一个点，移动量小于 \(\eta\)。所得关系仍覆盖两个小球，并包含基点对。比较两个新配对时，原距离误差小于 \(\eta\)，两次移动又至多增加 \(2\eta\)，故新畸变小于 \(3\eta\)。对 \(\eta\) 取下确界得到估计。
+
+	整数半径的结论直接由此推出。若在半径 \(R_j\to\infty\) 上的误差趋零，固定任意 \(R\)，最终有 \(R<R_j\)，再用同一估计即可。反过来，若每个整数半径都收敛，选递增的整数 \(J_m\)，使 \(j\ge J_m\) 时半径 \(m\) 上的误差小于 \(1/m\)；在 \(J_m\le j<J_{m+1}\) 时取 \(R_j=m\)，便得到扩张球上的描述。
+\end{proof}
+
+对一般闭球紧空间，固定半径球可能在边界处跳变。例如 \(\{0,1+1/j\}\subset\mathbb R\) 收敛到 \(\{0,1\}\)，但以零为基点的半径一闭球始终只有一个点。一般版本的带基点收敛须允许半径误差或只使用适当的连续半径；本节的测地假设使式\eqref{g3:eq:pointed-gh-balls}成为可直接使用的描述。
+
+\begin{proposition}\label{g3:prop:pointed-gh-unique}
+	闭球紧测地空间的带基点 GH 极限在保持基点的等距意义下唯一。
+\end{proposition}
+\begin{proof}
+	若同一序列收敛到 \((X,p)\)、\((Y,q)\)，紧带基点距离的三角不等式使每个整数 \(m\) 上的两球距离为零。因此存在保持基点的满等距
+	\(F_m:\overline B_X(p,m)\to\overline B_Y(q,m)\)。这些映射未必彼此相容，下面用对角选择取得相容极限。
+
+	闭球紧使 \(X\) 可分：对每个整数半径和每个正整数 \(l\)，选该球的有限 \(1/l\)-网，取这些网的并即可。取含 \(p\) 的可数稠密集 \(\{x_i\}\)。对固定 \(i\)，充分大的 \(m\) 都使 \(F_m(x_i)\) 有定义，并落在 \(Y\) 中半径 \(d_X(p,x_i)\) 的紧球内。逐点选子列，得到同一子列上全部 \(F_m(x_i)\) 收敛。极限保持所有距离，故由完备性唯一延拓为等距嵌入 \(F:X\to Y\)，且 \(F(p)=q\)。稠密点逼近及等距性还说明，沿所选子列，每个固定 \(x\in X\) 都满足 \(F_m(x)\to F(x)\)。
+
+	给定 \(y\in Y\)，令 \(x_m=F_m^{-1}(y)\)，其中 \(m\) 充分大。它们位于 \(X\) 的同一个紧球中，取子列使 \(x_m\to x\)。于是
+	\[
+		d_Y(F(x),y)
+		\le d_Y(F(x),F_m(x))+d_X(x,x_m)\longrightarrow0.
+	\]
+	因此 \(F(x)=y\)，得到满射性。
+\end{proof}
+
+非紧空间没有统一的整体直径界，但每个固定观察球仍可以有统一的有限网。上一节的距离矩阵方法可以同时记录全部整数半径上的点，从而构造一个共同的极限空间。
+
+\begin{theorem}[带基点预紧性]\label{g3:thm:pointed-gh-precompactness}
+	设 \((X_j,d_j,p_j)\) 是一列非空、闭球紧的测地度量空间。假设对每个 \(R>0\)、\(\varepsilon>0\)，存在与 \(j\) 无关的整数 \(N(R,\varepsilon)\)，使 \(\overline B_{X_j}(p_j,R)\) 有至多 \(N(R,\varepsilon)\) 个点的 \(\varepsilon\)-网。则存在带基点 GH 收敛子列，其极限也是闭球紧的测地度量空间。
+\end{theorem}
+\begin{proof}
+	构造的关键是给所有半径中的网点统一编号，再一次性取所有点对距离的极限；不能把每个球独立得到的极限直接当成已有嵌套关系。
+
+	对正整数 \(m,l\)，在每个 \(\overline B_{X_j}(p_j,m)\) 中选一个 \(2^{-l}\)-网，以重复基点的方式补足到固定的 \(N(m,2^{-l})\) 项。另把基点本身作为固定标签零。这样得到一个共同的可数标签集 \(I\)，标签 \(a\) 在 \(X_j\) 中所指的点记为 \(x_a^j\)，且每个标签都有与 \(j\) 无关的基点距离上界。每个点对的距离序列因而有界。按\cref{g3:prop:uniform-nets-subsequence}的对角方法选同一子列，使
+	\[
+		d_\infty(a,b)=\lim_j d_j(x_a^j,x_b^j)
+	\]
+	对全部 \(a,b\in I\) 存在。这个函数是伪度量；先把零距离标签合并，再按\cref{g3:lem:metric-completion}取完备化，得到 \((X,d)\)。基点零的像为 \(p\)，标签像构成稠密集 \(D\)。
+
+	先证明闭球紧。固定 \(R\)，选整数 \(m>R+1\)。设 \(E_{m,l}\subset D\) 是半径 \(m\)、精度 \(2^{-l}\) 那组标签的极限像。若 \(x_a\in D\) 且 \(d(p,x_a)<m\)，则充分大的 \(j\) 有 \(x_a^j\in\overline B_{X_j}(p_j,m)\)。原网性质给出
+	\[
+		\min_{b\in I_{m,l}}d_j(x_a^j,x_b^j)\le2^{-l}.
+	\]
+	这里 \(I_{m,l}\) 是固定有限标签组，所以可以让有限个距离同时取极限，得到 \(d(x_a,E_{m,l})\le2^{-l}\)。再由 \(D\) 稠密，将此估计延拓到 \(\overline B_X(p,R)\)。这些覆盖球的中心未必属于所覆盖的闭球；从每个与 \(\overline B_X(p,R)\) 相交的覆盖球中选一个交点作为新中心，半径至多增至原来的两倍，就得到中心属于该闭球的有限网。因此每个闭球全有界；它又是完备空间中的闭集，由\cref{g3:lem:complete-totally-bounded}为紧集。
+
+	再证明极限有测地线。先取 \(x_a,x_b\in D\)。在 \(X_j\) 中取 \(x_a^j,x_b^j\) 的最短线中点 \(z_j\)。这些中点距基点一致有界，故落在同一个整数半径 \(m\) 的球内。对每个 \(l\)，从该球的有限网选一点距 \(z_j\) 不超过 \(2^{-l}\)。有限性使某个标签 \(c_l\) 在无穷多个 \(j\) 上被选中，因此
+	\[
+		\left|d(x_a,x_{c_l})-\tfrac12d(x_a,x_b)\right|\le2^{-l},
+		\qquad
+		\left|d(x_b,x_{c_l})-\tfrac12d(x_a,x_b)\right|\le2^{-l}.
+	\]
+	全部距离的极限已固定，这里为确定一个标签而再取子列不会改变它们。点 \(x_{c_l}\) 落在同一个紧球内，取收敛子列就得到 \(x_a,x_b\) 的精确中点。一般 \(x,y\in X\) 可由 \(D\) 中点列逼近；相应中点仍在同一紧球中，取极限得到 \(x,y\) 的中点。由\cref{g3:prop:midpoint-geodesic}，完备性与精确中点保证 \(X\) 为测地空间。
+
+	最后核对每个半径的收敛。固定 \(R>0\)，令 \(\delta=2^{-l}<1/4\)，仍取整数 \(m>R+1\)。在有限标签组 \(I_{m,l}\) 中保留满足 \(d(p,x_b)\le R+2\delta\) 的标签，并加入基点。对充分大的 \(j\)，它们的原像 \(x_b^j\) 距 \(p_j\) 不超过 \(R+3\delta\)。将这些点分别沿径向最短线截到半径 \(R\) 球，得到中心 \(y_b^j\)；在极限空间中作同样截断得到 \(y_b\)。相应移动量分别不超过 \(3\delta\)、\(2\delta\)。
+
+	原空间的每个半径 \(R\) 球点都在某个原网点的 \(\delta\) 邻域内；该网点的基点距离不超过 \(R+\delta\)，故充分大的 \(j\) 时其标签属于所保留的组。因此 \(\{y_b^j\}\) 是 \(4\delta\)-网。前面已证 \(E_{m,l}\) 覆盖极限球，故 \(\{y_b\}\) 是 \(3\delta\)-网。有限距离矩阵收敛并计入截断移动量，给出
+	\[
+		\bigl|d_j(y_b^j,y_c^j)-d(y_b,y_c)\bigr|
+		\le10\delta+o_j(1).
+	\]
+	把两球中靠近同标号中心的点配对，得到包含基点对的对应；其畸变至多
+	\(2(4\delta)+2(3\delta)+10\delta+o_j(1)=24\delta+o_j(1)\)。因此两球的带基点 GH 距离上极限至多 \(12\delta\)。令 \(l\to\infty\)，便得到式\eqref{g3:eq:pointed-gh-balls}。
+\end{proof}
+
+基点固定以后，控制的是每个有界范围里的几何复杂程度。空间可以在更远处出现新的长枝、闭合或其他形状；只要这些特征不断远离基点，它们就不会出现在固定半径的极限球中。
 
 \subsection{重缩放及切锥}
 \label{g3:subsec:1004:02}
-待撰写
+把一个长度为 \(r\) 的小物体放大到长度一，需要将距离乘以 \(r^{-1}\)。若原空间来自黎曼度量 \(g\)，相应的张量是 \(r^{-2}g\)，因为长度是度量平方值的平方根。
 
-\subsection{扁平环面塌缩}
+\begin{definition}\label{g3:def:metric-tangent-limit}
+	设 \((X,d,p)\) 为非空、闭球紧的测地度量空间。若 \(r_j>0\)、\(r_j\to0\)，且
+	\begin{equation}\label{g3:eq:metric-tangent-limit}
+		(X,r_j^{-1}d,p)\xrightarrow{\mathrm{pGH}}(Y,d_Y,o),
+	\end{equation}
+	则称 \((Y,o)\) 为 \(X\) 在 \(p\) 处的一个\term[duliang qiejixian]{度量切极限}[metric tangent]，也称 GH 意义的\term[qiezhui]{切锥}[tangent cone]。这里的名称指重缩放极限；它是否具有真正的锥度量结构，以及是否与序列 \(r_j\) 无关，需要分别证明。
+\end{definition}
+
+由\cref{g3:thm:pointed-gh-precompactness}，若重缩放族的每个固定半径球具有统一的各尺度覆盖数，就能选出切极限。这个条件等价于在原空间中，对球 \(\overline B(p,Rr_j)\) 用半径 \(\varepsilon r_j\) 的有限网，并要求网点数只依赖 \(R,\varepsilon\)。因此切极限的存在控制的是相对尺度上的覆盖复杂度。
+
+\begin{theorem}\label{g3:thm:smooth-riemannian-tangent}
+	设 \((M^n,g)\) 为连通、完备、光滑无边界黎曼流形，\(n\ge1\)，\(p\in M\)。则
+	\[
+		(M,r^{-1}d_g,p)\xrightarrow[r\downarrow0]{\mathrm{pGH}}
+		(\mathrm T_pM,|\cdot|_{g_p},0).
+	\]
+	特别地，光滑点的度量切极限唯一，且为 \(n\) 维 Euclid 空间。
+\end{theorem}
+\begin{proof}
+	完备性和 Hopf--Rinow 定理使 \(M\) 的闭球紧。固定 \(R>0\)，在 \(p\) 处用正交单位基取法坐标。\Cref{g3:lem:uniform-normal-neighborhood}保证，当 \(r\) 足够小时，半径 \(3Rr\) 的闭距离球恰为相同半径闭切球的指数像，且该坐标在更大的邻域中光滑。定义
+	\[
+		F_r:\overline B_{g_p}(0,R)\longrightarrow
+		\overline B_{r^{-1}d_g}(p,R),\qquad F_r(v)=\exp_p(rv).
+	\]
+	径向距离公式说明它是保持基点的双射。
+
+	由\cref{g3:thm:normal-metric-expansion}，存在 \(\eta_r\to0\)，使在 \(|z|\le3Rr\) 上
+	\[
+		(1-\eta_r)|\xi|^2\le g_z(\xi,\xi)
+		\le(1+\eta_r)|\xi|^2.
+	\]
+	设 \(|v|,|w|\le R\)。坐标直线段从 \(rv\) 到 \(rw\)，始终位于半径 \(Rr\) 的坐标球内，给出
+	\[
+		d_g(F_r(v),F_r(w))\le r\sqrt{1+\eta_r}\,|v-w|.
+	\]
+	下界必须兼顾离开坐标球的竞争道路。若道路始终留在半径 \(3Rr\) 的球中，逐段积分度量下界得到长度至少为 \(r\sqrt{1-\eta_r}|v-w|\)。若它离开该球，从初点到首次到达球面所付出的长度至少为
+	\(3Rr-d_g(p,F_r(v))\ge2Rr\)，也不小于同一下界，因为 \(|v-w|\le2R\)。对全部道路取下确界，得到
+	\[
+		\sqrt{1-\eta_r}\,|v-w|
+		\le r^{-1}d_g(F_r(v),F_r(w))
+		\le\sqrt{1+\eta_r}\,|v-w|.
+	\]
+	故 \(F_r\) 的畸变一致趋于零。它的图是包含基点对的对应，式\eqref{g3:eq:pointed-compact-gh}说明每个半径 \(R\) 的两球收敛。由于这对所有 \(r\downarrow0\) 成立，所有趋零尺度序列都给出相同极限。
+\end{proof}
+
+另一类直接可算的切锥来自真正的度量锥。例如\cref{g3:exm:flat-metric-cone}中的圆锥 \(C_\theta\)，在顶点 \(o\) 的径向伸缩满足
+\[
+	d(\lambda x,\lambda y)=\lambda d(x,y)\qquad(\lambda>0).
+\]
+所以 \((C_\theta,r^{-1}d,o)\) 对每个 \(r>0\) 都与原锥保持基点等距，其顶点切锥就是自身。光滑点的极限是 Euclid 空间，锥顶的极限则可以保留角缺陷。
+
+\subsection{平坦环面的塌缩}
 \label{g3:subsec:1004:03}
-待撰写
+令 \(S^1_L=\mathbb R/L\mathbb Z\) 为周长 \(L>0\) 的圆周，取弧长距离。考虑矩形平坦环面
+\[
+	T_{L,h}=S^1_L\times S^1_h,\qquad L,h>0,
+\]
+及乘积度量。第九章的平移群商把它实现为
+\(\mathbb R^2/(L\mathbb Z\times h\mathbb Z)\)。两坐标分别选最近的格点代表，便得到
+\begin{equation}\label{g3:eq:thin-torus-distance}
+	d_{T_{L,h}}((x,y),(x',y'))^2
+	=d_{S^1_L}(x,x')^2+d_{S^1_h}(y,y')^2.
+\end{equation}
 
-\subsection{切锥不唯一的概念与反例范围}
+\begin{proposition}\label{g3:prop:flat-torus-collapse}
+	固定 \(L>0\)。对于任意 \(h>0\)，投影 \(\pi:T_{L,h}\to S^1_L\) 为满射，且
+	\[
+		\operatorname{dis}\pi\le\frac h2,
+		\qquad d_{\mathrm{GH}}(T_{L,h},S^1_L)\le\frac h4.
+	\]
+	因此当 \(h\downarrow0\) 时，二维平坦环面 GH 收敛到周长 \(L\) 的圆周。
+\end{proposition}
+\begin{proof}
+	若两个圆周分量的距离分别为 \(a,b\)，则 \(0\le b\le h/2\)，并且
+	\[
+		0\le\sqrt{a^2+b^2}-a\le b\le h/2.
+	\]
+	这正是投影的畸变估计。投影图为对应，由\cref{g3:thm:gh-correspondence}得到 GH 上界。
+\end{proof}
+
+整个过程中截面曲率恒为零，而环面的面积为 \(Lh\)，趋于零。一个圆周方向的直径被压到零，极限中只剩另一个方向。这是可直接计算的\term[tasuo]{塌缩}[collapse]：距离收敛允许维数下降，环面的两条独立绕行也不会都保留为极限圆周的环路。
+
+\ProseParagraphBreak
+
+若一边塌缩、一边同时放大，结果取决于两个尺度的比值。这个现象可以完全由格的周期长度判断。
+
+\begin{proposition}\label{g3:prop:torus-collapse-rescale}
+	设 \(L>0\) 固定，\(h_j\downarrow0\)、\(r_j\downarrow0\)，基点均取 \(([0],[0])\)。则环面 \(T_{L,h_j}\) 的距离乘以 \(r_j^{-1}\) 后，有下列带基点极限：
+	\[
+	\begin{array}{c|c}
+	 h_j/r_j\text{ 的极限}&\text{带基点极限}\\ \hline
+	 0&\mathbb R\\
+	 b\in(0,\infty)&\mathbb R\times S^1_b\\
+	 +\infty&\mathbb R^2
+	\end{array}
+	\]
+	右侧分别取标准距离、标准平坦乘积距离及原点基点。
+\end{proposition}
+\begin{proof}
+	重缩放后的两个周期长度为
+	\(A_j=L/r_j\to\infty\)、\(B_j=h_j/r_j\)。固定 \(R>0\)。当 \(A_j>4R\) 时，半径 \(R\) 球的水平坐标可唯一展开到 \([-R,R]\)，其中任意两点的水平差小于半周长；故该球连同限制距离与平坦圆柱 \(\mathbb R\times S^1_{B_j}\) 中的同半径球等距。
+
+	若 \(B_j\to0\)，圆柱球投影到 \([-R,R]\) 为满射，畸变不超过 \(B_j/2\)，所以极限是直线的同半径球。若 \(B_j\to\infty\)，最终两个周期都大于 \(4R\)，两坐标均可展开，所得球与 Euclid 半径 \(R\) 闭圆盘等距。
+
+	若 \(B_j\to b>0\)，用同一水平坐标和同一归一化圆周坐标 \(t\in\mathbb R/\mathbb Z\) 配对两圆柱。圆周距离分别为 \(B_j\min_{m\in\mathbb Z}|t-t'+m|\) 与 \(b\min_{m\in\mathbb Z}|t-t'+m|\)，差不超过 \(|B_j-b|/2\)。由乘积距离公式，全部配对的距离误差也不超过该数。选取至少一端在半径 \(R\) 球内的配对，将另一端沿径向最短线截回球内；与\cref{g3:lem:pointed-gh-ball-restriction}的证明相同，所得对应的畸变不超过 \(3|B_j-b|/2\)，且保留基点对。这证明了圆柱极限。
+\end{proof}
+
+对每个固定 \(h>0\)，先在环面的一点放大，得到 \(\mathbb R^2\)；先令 \(h\to0\) 得到圆周，再在圆周的一点放大，则得到 \(\mathbb R\)。因此改变取极限的次序会改变所观察的几何。上一命题的圆柱情形进一步记录了两个尺度相当时仍可见的闭合方向。
+
+\subsection{切锥不唯一的反例}
 \label{g3:subsec:1004:04}
-待撰写
+光滑点的唯一切极限来自法坐标中度量系数的一致趋近。一般长度空间在越来越小的尺度中可以出现不同的几何构形。下面给出一个闭球紧测地空间，直接核算其两个不同切极限。
+
+\begin{example}\label{g3:exm:nonunique-tangent-tree}
+	令
+	\[
+		a_j=2^{-2^j}\qquad(j=1,2,\ldots).
+	\]
+	以半直线 \([0,\infty)\) 为主干，在主干点 \(a_j\) 处粘上一条长度 \(a_j\) 的闭线段。线段的一端与 \(a_j\) 识别，另一端自由；赋予所得空间 \(T\) 以沿树枝计算的道路距离，基点为主干原点 \(o=0\)。令 \(T_*\) 表示在半直线的点一处粘一条长度一闭线段的树，仍以主干原点为基点。那么
+	\begin{equation}\label{g3:eq:nonunique-tree-tangents}
+		(T,a_j^{-1}d,o)\xrightarrow{\mathrm{pGH}}(T_*,o),
+		\qquad
+		\bigl(T,(a_ja_{j+1})^{-1/2}d,o\bigr)
+		\xrightarrow{\mathrm{pGH}}([0,\infty),0).
+	\end{equation}
+\end{example}
+\begin{proof}
+	任意两点之间都有唯一的简单道路：同一支段上的两点直接沿支段连接；不同支段上的点先回到各自附着点，再沿主干连接。这些道路的长度定义正定距离，并由相应道路实现，所以 \(T\) 是测地空间。它的闭球紧：对球中任意点列，若有子列位于主干及有限条支段的并中，则在一个有限紧图中有收敛子列；否则可选支段指标趋于无穷的子列，该子列上的点距 \(o\) 不超过 \(2a_j\to0\)，故收敛于 \(o\)。这也说明无限条支段在原点附近积聚，并没有造成缺失的极限点。
+
+	先按 \(a_j\) 放大。第 \(j\) 条支段的附着距离及长度恰好都是一。比它更大的支段中，最近一条的附着距离为
+	\[
+		\frac{a_{j-1}}{a_j}\longrightarrow\infty;
+	\]
+	所以它们最终离开每个固定半径球。所有更小支段的长度至多
+	\(\varepsilon_j=a_{j+1}/a_j\to0\)。把这些小支段收缩到其附着点，保留主干及第 \(j\) 条支段，得到到 \(T_*\) 的映射。在固定半径球上，当大支段已经离开时，该映射为满射并保持基点。每个点至多沿自己的支段移动 \(\varepsilon_j\)，所以任意一对点的距离误差不超过 \(2\varepsilon_j\)。式\eqref{g3:eq:pointed-compact-gh}给出第一个极限。
+
+	再令 \(s_j=\sqrt{a_ja_{j+1}}\)。此时
+	\[
+		\frac{a_j}{s_j}=\sqrt{\frac{a_j}{a_{j+1}}}\longrightarrow\infty,
+		\qquad
+		\frac{a_{j+1}}{s_j}=\sqrt{\frac{a_{j+1}}{a_j}}\longrightarrow0.
+	\]
+	因此每个固定半径球内，较大的支段全部消失于远处，留下的支段长度一致趋零。将全部剩余支段投影到主干，在该球上为满射，畸变至多为剩余最大支长的两倍，得到第二个极限。
+\end{proof}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch10-TangentScales}
+	\caption{同一棵树的两种切极限。左图的支段位置与长度仅作示意；按 \(a_j\) 放大时保留距离一处的单位支段，按相邻尺度的几何均值放大时只剩半直线。}
+	\label{g3:fig:tangent-scales}
+\end{figure}
+如\cref{g3:fig:tangent-scales}所示，放大时被保留的支段取决于所选尺度。两个极限不等距：\(T_*\) 在距基点一处有分枝点，删除该点后出现三个连通分支；半直线上的任何点删除后至多出现两个。\(T_*\) 也不是以 \(o\) 为顶点的度量锥，因为真正的度量锥有任意正比例的径向相似变换；这会把距离一处的分枝点变成任意距离处的分枝点，而 \(T_*\) 只有一个分枝点。
+
+\ProseParagraphBreak
+
+这个例子区分了三个问题：重缩放族是否存在收敛子列，各子列是否给出同一个带基点空间，以及所得空间是否具有锥结构。它发生在明确给出的测地树上。关于某一类带曲率界流形的奇异极限，还须另外利用该类的曲率、维数与非塌缩条件；光滑点的唯一 Euclid 切极限则已经由\cref{g3:thm:smooth-riemannian-tangent}证明。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

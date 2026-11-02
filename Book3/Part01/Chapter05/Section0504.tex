@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 5.4 齐性与对称空间
 % 纲要位置：几何学计划纲要.md，第 2287 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 % 规划任务：保留现有齐性度量、点反射、对称分解与曲率模型，补充最大平坦、秩及紧非紧对偶的构造。完整核验球面、双曲空间与一个经典矩阵商的相应几何；局部 Lie 代数对偶与整体覆盖、离散商分别处理，不据局部对应推断任意整体商相同。
 
 % 纲要内容开始
@@ -11,7 +11,7 @@
 % * 齐性度量及不变联络
 % * 对称空间的点反射
 % * Lie 代数分解与曲率
-% * 紧型、非紧型和欧氏模型
+% * 紧型、非紧型和 Euclid 模型
 % 
 % * 极大交换子空间与最大平坦
 % * 对称空间的秩及乘积结构
@@ -23,34 +23,374 @@
 \section{齐性与对称空间}
 \label{g3:sec:0504}
 
-待撰写
+平行结构约束了一个流形上不同点的比较方式。若流形还有足够多的等距变换，许多计算可以集中在一个切空间里进行：群作用负责移动基点，稳定子负责变换切向方向。球面和双曲空间是秩一的例子；正定矩阵构成的空间还会出现维数大于一的全测地平坦子空间。为了看见这些差别，本节先把联络和曲率写成 Lie 括号，再追踪交换方向所产生的平坦。
 
 \subsection{齐性度量及不变联络}
 \label{g3:subsec:0504:01}
-待撰写
+
+设有限维 Lie 群 \(G\) 光滑地、传递地作用在流形 \(M\) 上，固定 \(o\in M\)，令 \(K\) 为其稳定子。第一卷第17.1节的闭子群商定理给出 \(M\simeq G/K\)，其中 \(K\) 闭，\(o=eK\)，且
+\[
+	\mathrm T_o(G/K)\simeq\mathfrak g/\mathfrak k,
+	\qquad \mathfrak g=\operatorname{Lie}(G),\quad
+	\mathfrak k=\operatorname{Lie}(K).
+\]
+这里用到的具体结论是：商映射为光滑淹没，具有局部截面；稳定子在上述切空间上的作用由 \(\operatorname{Ad}(K)\) 诱导。它不要求 \(K\) 正规，\(G/K\) 通常不是群。
+
+\begin{proposition}\label{g3:prop:homogeneous-metric-isotropy}
+	设 \(G\) 为 Lie 群，\(K\) 为闭子群。\(G/K\) 上的 \(G\) 不变黎曼度量，与 \(\mathfrak g/\mathfrak k\) 上的 \(K\) 不变正定内积一一对应。若存在 \(\operatorname{Ad}(K)\) 不变分解
+	\[
+		\mathfrak g=\mathfrak k\oplus\mathfrak m,
+	\]
+	便可把这样的内积写在 \(\mathfrak m\) 上；当 \(K\) 紧时，总能选到这种分解和正定内积。
+\end{proposition}
+\begin{proof}
+	不变度量在 \(o\) 的值必须被稳定子保持。反过来，给定这一内积，在 \(gK\) 处用左平移 \(L_g\) 搬运它。换代表 \(g\mapsto gk\) 时，差别正是稳定子 \(k\) 的切作用，所以定义不变。利用商映射的局部截面可见所得度量光滑，且构造与取基点值互逆。
+
+	若 \(K\) 紧，将 \(\mathfrak g\) 上任意正定内积按其归一化不变测度平均，得到 \(\operatorname{Ad}(K)\) 不变内积，再取 \(\mathfrak m=\mathfrak k^\perp\)。这就是第一卷第19.1节的表示平均构造：积分保持正定性，变量替换保证不变性。
+\end{proof}
+
+带上述不变度量的空间称为\term[qixing liman kongjian]{齐性黎曼空间}[homogeneous Riemannian space]。在分解 \(\mathfrak g=\mathfrak k\oplus\mathfrak m\) 下，记括号的两个分量为 \([X,Y]_{\mathfrak k}\)、\([X,Y]_{\mathfrak m}\)。下面的公式同时说明怎样构造不变联络，以及度量怎样选出 Levi-Civita 联络。
+
+\begin{proposition}\label{g3:prop:homogeneous-connection-formula}
+	设 \(G/K\) 有上述不变分解与 \(\operatorname{Ad}(K)\) 不变正定内积。定义 \(\Lambda(X)Y\in\mathfrak m\) 为
+	\begin{equation}\label{g3:eq:homogeneous-levi-civita}
+		\begin{aligned}
+		2\langle\Lambda(X)Y,Z\rangle
+		={}&\langle[X,Y]_{\mathfrak m},Z\rangle
+		-\langle[Y,Z]_{\mathfrak m},X\rangle
+		+\langle[Z,X]_{\mathfrak m},Y\rangle.
+		\end{aligned}
+	\end{equation}
+	它给出不变度量的 Levi-Civita 联络。其基点曲率为
+	\begin{equation}\label{g3:eq:homogeneous-curvature}
+		R_o(X,Y)
+		=[\Lambda(X),\Lambda(Y)]-\Lambda([X,Y]_{\mathfrak m})
+		-\operatorname{ad}([X,Y]_{\mathfrak k})|_{\mathfrak m}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	把 \(G\) 上的左 Maurer--Cartan 形式按分解写成 \(\omega+\vartheta\)，其中 \(\omega\) 取值于 \(\mathfrak k\)，\(\vartheta\) 取值于 \(\mathfrak m\)。在商的局部截面上，\(\vartheta\) 把切向量表示为 \(\mathfrak m\) 中的列分量；改变截面时，\(\omega\) 按联络的规则变化，\(\vartheta\) 按稳定子表示变化。式\eqref{g3:eq:homogeneous-levi-civita}由不变内积与括号构成，故 \(\Lambda\) 也等变。因此
+	\[
+		\beta=\operatorname{ad}(\omega)|_{\mathfrak m}+\Lambda(\vartheta)
+	\]
+	是商切丛上良定义的不变联络矩阵。
+
+	交换式\eqref{g3:eq:homogeneous-levi-civita}中的 \(Y,Z\)，两式相加，得到 \(\Lambda(X)\) 反对称。\(\operatorname{ad}(\mathfrak k)\) 也反对称，故该联络保持度量。再交换 \(X,Y\)，得
+	\[
+		\Lambda(X)Y-\Lambda(Y)X=[X,Y]_{\mathfrak m}.
+	\]
+	Maurer--Cartan 方程的 \(\mathfrak m\) 分量说明，联络的挠率在基点正是左边再减 \([X,Y]_{\mathfrak m}\)，所以为零。由 Levi-Civita 联络的唯一性，构造就是所求联络。
+
+	最后计算 \(\mathrm d\beta+\beta\wedge\beta\)。在基点取水平输入 \(X,Y\in\mathfrak m\)，Maurer--Cartan 方程给出
+	\[
+		\mathrm d\omega(X,Y)=-[X,Y]_{\mathfrak k},\qquad
+		\mathrm d\vartheta(X,Y)=-[X,Y]_{\mathfrak m}.
+	\]
+	于是外微分贡献式\eqref{g3:eq:homogeneous-curvature}的后两项，\(\beta\wedge\beta\) 贡献第一项。它与第一章采用的曲率矩阵约定一致。
+\end{proof}
 
 \subsection{对称空间的点反射}
 \label{g3:subsec:0504:02}
-待撰写
+
+球面上，把一点固定并同时反转所有切向方向，是一个全局等距变换。一般齐性空间只保证能移动点；能够在每一点实现这种反转，是更强的要求。
+
+\begin{definition}\label{g3:def:riemannian-symmetric-space}
+	设 \(M\) 为连通黎曼流形。若对每个 \(p\in M\)，存在全局等距变换 \(s_p\)，满足
+	\[
+		s_p(p)=p,\qquad (\mathrm ds_p)_p=-\mathrm{Id}.
+	\]
+	则称 \(M\) 为\term[liman duicheng kongjian]{黎曼对称空间}[Riemannian symmetric space]。此等距变换称为 \(p\) 处的\term[dian fanshe]{点反射}[geodesic symmetry]。
+\end{definition}
+
+一个连通黎曼流形上的等距变换，由一点的像及该点的微分唯一确定。事实上，它保持联络和测地线，在法邻域内满足 \(f(\exp_pv)=\exp_{f(p)}(\mathrm df_pv)\)；两个映射若初值一致，便在一个邻域相同。把“一阶数据相同”的点集看成既开又闭的集合，就能沿连通流形延伸这一相同性。因此 \(s_p\) 唯一，且 \(s_p^2=\mathrm{Id}\)。
+
+\begin{proposition}\label{g3:prop:symmetric-complete-parallel-curvature}
+	每个连通黎曼对称空间都测地完备，其等距变换群在点集上传递，并且 \(\nabla\mathrm{Rm}=0\)。
+\end{proposition}
+\begin{proof}
+	若一条测地线 \(\gamma\) 只定义到有限正时间 \(b\)，取已定义的 \(a\) 满足 \(b/2<a<b\)。公式
+	\[
+		\widetilde\gamma(t)=s_{\gamma(a)}(\gamma(2a-t))
+	\]
+	把它经过 \(a\) 的部分反射到 \(a\) 之后，并延伸到 \(2a>b\)。在 \(a\) 处的位置和速度相同，测地线唯一性保证两段光滑接合。这与最大区间的有限右端点矛盾；左端点同理。
+
+	由 Hopf--Rinow 定理，任意两点 \(p,q\) 可由一条极小测地线连接，其中点的反射把 \(p\) 送到 \(q\)，故等距群传递。最后，等距变换保持 \(\nabla\mathrm{Rm}\)。它是五阶协变张量，在 \(p\) 处被 \(\mathrm ds_p=-\mathrm{Id}\) 作用后变号，故只能为零。
+\end{proof}
+
+对称性也可由群直接构造。设 \(G\) 连通，\(\sigma:G\to G\) 是满足 \(\sigma^2=\mathrm{Id}\) 的光滑群自同构，并令闭子群 \(K\) 满足
+\[
+	(G^\sigma)_0\subseteq K\subseteq G^\sigma,
+	\qquad G^\sigma=\{g:\sigma(g)=g\}.
+\]
+这样的数据称为\term[duicheng dui]{对称对}[symmetric pair]。微分 \(\theta=\mathrm d\sigma_e\) 的特征空间分解为
+\begin{equation}\label{g3:eq:symmetric-lie-algebra-splitting}
+	\mathfrak g=\mathfrak k\oplus\mathfrak p,
+	\qquad \theta|_{\mathfrak k}=1,\quad \theta|_{\mathfrak p}=-1.
+\end{equation}
+若在 \(\mathfrak p\) 上给定 \(\operatorname{Ad}(K)\) 不变正定内积，则 \(s_o(gK)=\sigma(g)K\) 良定义，在 \(o\) 固定点的微分为负恒等。由 \(s_oL_g=L_{\sigma(g)}s_o\) 和度量不变性，它是等距；其共轭 \(L_gs_oL_g^{-1}\) 给出其他点的反射。
+
+\ProseParagraphBreak
+
+一般黎曼对称空间也有这种 Lie 齐性描述：由成对点反射生成的连通变换群给出有效的对称对；单连通情形可在相应覆盖群中选取连通不动子群。这里使用这一标准结构结果，详见 \cite[第II章第1--2节、第IV章第1节]{Loos1969SymmetricI}。其作用是把一般对称空间纳入上述构造，以下联络、曲率和具体模型的计算都将展开。改变作用群的有限中心核，并不改变有效作用，也不应被误认为改变了空间的度量。
 
 \subsection{Lie 代数分解与曲率}
 \label{g3:subsec:0504:03}
-待撰写
 
-\subsection{紧型、非紧型和欧氏模型}
+由于 \(\theta\) 保持括号，两个特征空间满足
+\begin{equation}\label{g3:eq:symmetric-bracket-relations}
+	[\mathfrak k,\mathfrak k]\subseteq\mathfrak k,
+	\qquad[\mathfrak k,\mathfrak p]\subseteq\mathfrak p,
+	\qquad[\mathfrak p,\mathfrak p]\subseteq\mathfrak k.
+\end{equation}
+例如最后一式来自 \(\theta[X,Y]=[-X,-Y]=[X,Y]\)。因此取 \(\mathfrak m=\mathfrak p\) 时，式\eqref{g3:eq:homogeneous-levi-civita}的三项全部为零，\(\Lambda=0\)。这不是说曲率为零；\([\mathfrak p,\mathfrak p]\) 仍能通过稳定子的作用旋转切空间。
+
+\begin{proposition}\label{g3:prop:symmetric-curvature-bracket}
+	设 \(G/K\) 为上述带不变黎曼度量的对称对，\(o=eK\)。对 \(X,Y,Z\in\mathfrak p\)，有
+	\begin{equation}\label{g3:eq:symmetric-curvature-bracket}
+		R_o(X,Y)Z=-[[X,Y],Z].
+	\end{equation}
+	从 \(o\) 出发、初速度为 \(X\) 的测地线为
+	\begin{equation}\label{g3:eq:symmetric-geodesic}
+		\gamma_X(t)=\exp_G(tX)K.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	曲率式直接由 \(\Lambda=0\) 和 \eqref{g3:eq:homogeneous-curvature} 得到。沿群中的曲线 \(\exp(tX)\)，左 Maurer--Cartan 形式等于 \(X\,\mathrm dt\)，其 \(\mathfrak k\) 分量为零。所以由左平移得到的 \(\mathfrak p\) 标架沿投影曲线平行；曲线速度在此标架中是常向量 \(X\)，协变加速度为零。
+\end{proof}
+
+为判断曲率符号，使用伴随表示的迹型
+\[
+	\mathcal B(X,Y)=\operatorname{tr}(\operatorname{ad}X\circ\operatorname{ad}Y),
+\]
+即\term[Killing xing]{Killing 型}[Killing form]。\footnote{Wilhelm Karl Joseph Killing（1847--1923），德国数学家，研究非 Euclid 几何及简单 Lie 代数的结构与分类。}
+迹的循环性给出 \(\mathcal B([X,Y],Z)=\mathcal B(X,[Y,Z])\)。在紧半单情形，\(-\mathcal B\) 正定；在非紧型的 Cartan 分解中，\(\mathcal B\) 在 \(\mathfrak p\) 上正定，在 \(\mathfrak k\) 上负定，且两者正交。等价地，\(\mathcal B_\theta(X,Y)=-\mathcal B(X,\theta Y)\) 在整个 \(\mathfrak g\) 上正定。后者可作为半单 Lie 代数上\term[Cartan duihe]{Cartan 对合}[Cartan involution]的定义。
+
+\ProseParagraphBreak
+
+分别在 \(\mathfrak p\) 上选取 \(-\mathcal B\) 和 \(\mathcal B\) 为度量，由 \eqref{g3:eq:symmetric-curvature-bracket} 得到
+\begin{equation}\label{g3:eq:symmetric-sectional-sign}
+	\begin{aligned}
+	\langle R(X,Y)Y,X\rangle
+	&=-\mathcal B([X,Y],[X,Y])\ge0&&\text{（紧型）},\\
+	\langle R(X,Y)Y,X\rangle
+	&=\mathcal B([X,Y],[X,Y])\le0&&\text{（非紧型）}.
+	\end{aligned}
+\end{equation}
+两式取零都当且仅当 \([X,Y]=0\)。乘以正常数改变度量时，截面曲率按该常数的倒数变化。对于多个不可约因子的乘积，应分别给各因子选尺度，再用乘积曲率；各因子的尺度需要分别约定。
+
+\subsection{紧型、非紧型和 Euclid 模型}
 \label{g3:subsec:0504:04}
-待撰写
+
+\(\mathbb R^m\) 上的 \(s_p(x)=2p-x\) 给出欧氏对称空间。其平移方向全部交换，曲率为零。紧型与非紧型则是去掉欧氏因子后的两种半单情形。一般单连通黎曼对称空间分成欧氏、紧型和非紧型因子，这是上述结构定理与本章 de Rham 分解相结合的结果；“紧型”在这里不包括平坦环面，“非紧型”也不只是底空间非紧的意思。
+
+\begin{example}\label{g3:ex:sphere-hyperbolic-symmetric-models}
+	设 \(n\ge2\)。半径 \(a>0\) 的球面为 \(\operatorname{SO}(n+1)/\operatorname{SO}(n)\)：旋转群传递作用，基点 \(ae_0\) 的稳定子恰为作用在后 \(n\) 个坐标上的 \(\operatorname{SO}(n)\)。相应的 \(\mathfrak p\) 由矩阵
+	\[
+		X_v=\begin{pmatrix}0&-v^{\mathsf T}\\v&0\end{pmatrix},\qquad v\in\mathbb R^n,
+	\]
+	组成，基点度量是 \(\langle X_v,X_w\rangle=a^2v\cdot w\)。计算两次交换子可得
+	\[
+		-[[X_v,X_w],X_z]
+		=X_{\,v(w\cdot z)-w(v\cdot z)}.
+	\]
+	因此 \(K=1/a^2\)。点反射是线性映射在球面上的限制：
+	\[
+		s_p(x)=\frac{2\langle x,p\rangle}{a^2}p-x.
+	\]
+	它固定 \(p\)，在 \(p^\perp=\mathrm T_pS^n(a)\) 上为负恒等。
+
+	双曲模型取 Minkowski 内积 \(\langle(t,u),(s,v)\rangle_-=-ts+u\cdot v\)，以及双曲面的上片
+	\[
+		\mathbb H^n_{-1/a^2}
+		=\{(t,u):t^2-|u|^2=a^2,\ t>0\}.
+	\]
+	空间旋转与平面内的双曲旋转可把 \((a,0)\) 送到任意点，稳定子仍为 \(\operatorname{SO}(n)\)，故它是 \(\operatorname{SO}_0(1,n)/\operatorname{SO}(n)\)。此时
+	\[
+		X_v=\begin{pmatrix}0&v^{\mathsf T}\\v&0\end{pmatrix},\qquad
+		-[[X_v,X_w],X_z]=X_{-v(w\cdot z)+w(v\cdot z)}.
+	\]
+	诱导度量仍在基点给出 \(a^2v\cdot w\)，所以 \(K=-1/a^2\)。点反射为
+	\[
+		s_p(x)=-\frac{2\langle x,p\rangle_-}{a^2}p-x.
+	\]
+	在基点它是 \((t,u)\mapsto(t,-u)\)，保持上片；一般点的情形由共轭得到。两模型因而都是全局对称空间，完备性也由 \cref{g3:prop:symmetric-complete-parallel-curvature} 得到。
+
+	这里的半径 \(a\) 是几何尺度。若改用上述半单迹型的标准度量，由 \(\mathcal B_{\mathfrak{so}(n+1)}(X,Y)=(n-1)\operatorname{tr}(XY)\) 及相应实型的同一公式，得到基点内积 \(2(n-1)v\cdot w\)。因此 Killing 型归一化对应 \(a^2=2(n-1)\)，其曲率是 \(\pm1/(2(n-1))\)，并非自动等于 \(\pm1\)。
+\end{example}
+
+\begin{example}\label{g3:ex:sl-symmetric-positive-matrices}
+	令 \(n\ge2\)，并设
+	\[
+		\mathcal P_n^1=\{P=P^{\mathsf T}>0:\det P=1\}.
+	\]
+	\(G=\operatorname{SL}(n,\mathbb R)\) 通过 \(P\mapsto gPg^{\mathsf T}\) 作用。任意 \(P\) 的正定平方根行列式为一，故作用传递；\(I\) 的稳定子为 \(\operatorname{SO}(n)\)。于是
+	\begin{equation}\label{g3:eq:sl-spd-identification}
+		\operatorname{SL}(n,\mathbb R)/\operatorname{SO}(n)
+		\longrightarrow\mathcal P_n^1,
+		\qquad gK\longmapsto gg^{\mathsf T}
+	\end{equation}
+	是微分同胚。其逆由 \(P\mapsto P^{1/2}K\) 给出。
+
+	在正定矩阵模型中取度量
+	\begin{equation}\label{g3:eq:spd-trace-metric}
+		g_P(U,V)=\frac14\operatorname{tr}(P^{-1}UP^{-1}V),
+		\qquad \operatorname{tr}(P^{-1}U)=\operatorname{tr}(P^{-1}V)=0.
+	\end{equation}
+	共轭变换和迹的循环性保证它不变。对合 \(\sigma(g)=(g^{\mathsf T})^{-1}\) 给出
+	\[
+		\mathfrak k=\mathfrak{so}(n),\qquad
+		\mathfrak p=\{X=X^{\mathsf T}:\operatorname{tr}X=0\}.
+	\]
+	商映射在单位元的微分为 \(X\mapsto2X\)，故式\eqref{g3:eq:spd-trace-metric}在 \(\mathfrak p\) 上恰对应 \(\operatorname{tr}(XY)\)。系数 \(1/4\) 正是为保持这一个识别。
+
+	还可直接验证联络：若 \(V\) 为矩阵值切向量场，则
+	\begin{equation}\label{g3:eq:spd-connection}
+		(\nabla_UV)_P=(\mathrm dV)_P[U]
+		-\frac12\bigl(UP^{-1}V+VP^{-1}U\bigr).
+	\end{equation}
+	由 \(\mathrm d(P^{-1})[U]=-P^{-1}UP^{-1}\) 对度量求导，两个逆矩阵的导数分别被上式的两个修正项分担，因而它保持度量；修正项对 \(U,V\) 对称，所以无挠。对切向条件求导又得到
+	\[
+		\operatorname{tr}(P^{-1}\mathrm dV[U])
+		=\operatorname{tr}(P^{-1}UP^{-1}V),
+	\]
+	故 \(\nabla_UV\) 仍切于 \(\det P=1\)，证明它就是 Levi-Civita 联络。代入可核验所有初值的测地线：
+	\begin{equation}\label{g3:eq:spd-geodesic}
+		P(t)=P_0^{1/2}\exp\bigl(tP_0^{-1/2}UP_0^{-1/2}\bigr)P_0^{1/2}.
+	\end{equation}
+	它对所有实数 \(t\) 有定义。矩阵对数把 \(\mathcal P_n^1\) 与无迹对称矩阵空间微分同胚，因此本模型单连通且完备。平方根、指数及对数的光滑性可在正交对角化后由光滑函数演算得到；重复特征值不影响这些矩阵函数。
+
+	点反射是 \(s_Q(P)=QP^{-1}Q\)。在 \(Q=I\) 处，它由矩阵求逆给出，微分为 \(-\mathrm{Id}\)，且直接保持式\eqref{g3:eq:spd-trace-metric}；一般 \(Q\) 由不变作用得到。曲率在 \(\mathfrak p\) 中为
+	\begin{equation}\label{g3:eq:sl-trace-sectional}
+		K(X\wedge Y)
+		=-\frac{\lVert[X,Y]\rVert_{\mathrm F}^2}
+		{\operatorname{tr}(X^2)\operatorname{tr}(Y^2)-\operatorname{tr}(XY)^2},
+	\end{equation}
+	其中 \(\lVert A\rVert_{\mathrm F}^2=\operatorname{tr}(A^{\mathsf T}A)\)。若用正定矩阵的实际切向量 \(U,V,W\) 表示，则在 \(I\) 处同一个公式写为 \(R(U,V)W=-\tfrac14[[U,V],W]\)。这两个系数的差来自 \(U=2X\)。
+
+	当 \(n=2\) 时，\(\mathfrak p\) 是二维空间，取正交单位基
+	\[
+		X=\frac1{\sqrt2}\begin{pmatrix}1&0\\0&-1\end{pmatrix},\qquad
+		Y=\frac1{\sqrt2}\begin{pmatrix}0&1\\1&0\end{pmatrix},
+	\]
+	便得 \(\lVert[X,Y]\rVert_{\mathrm F}^2=2\)，故曲率恒为 \(-2\)。更具体地，映射
+	\[
+		(x,y)\longmapsto\frac1y\begin{pmatrix}x^2+y^2&x\\x&1\end{pmatrix},\qquad y>0,
+	\]
+	把度量拉回为 \((\mathrm dx^2+\mathrm dy^2)/(2y^2)\)。对任意 \(n\)，在矩阵代数上展开 \(\operatorname{ad}X=L_X-R_X\) 可得
+	\(\mathcal B(X,Y)=2n\operatorname{tr}(XY)\)（无迹时）；恒等矩阵方向的伴随作用为零，因此取 \(\mathfrak{sl}(n,\mathbb R)\) 的迹仍是此式。Killing 型度量是当前度量的 \(2n\) 倍，所有截面曲率相应再除以 \(2n\)。
+\end{example}
 
 \subsection{极大交换子空间与最大平坦}
 \label{g3:subsec:0504:05}
-待撰写
+
+在球面上，两个独立切向方向不交换；在 \(\mathcal P_n^1\) 中，所有无迹对角矩阵却彼此交换。由曲率式可见，后一组方向在内部没有曲率。关键还在于这些方向能够积分为全测地子空间。
+
+\begin{definition}\label{g3:def:flat-and-maximal-abelian}
+	黎曼流形中的\term[pingtan ziliuxing]{平坦子流形}[flat]指带诱导度量的连通、完备、全测地平坦浸入子流形。若它不真包含于更大的此类子流形，则称为\term[zuidapingtan]{最大平坦}[maximal flat]。对称分解中的交换子空间是满足 \([\mathfrak a,\mathfrak a]=0\) 的线性子空间 \(\mathfrak a\subseteq\mathfrak p\)；不能再扩大者称为极大交换子空间。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:symmetric-flats-abelian}
+	在紧型或非紧型对称空间的标准度量中，经过基点的平坦子流形，其切空间是 \(\mathfrak p\) 的交换子空间。反过来，交换子空间 \(\mathfrak a\) 的像
+	\[
+		F_{\mathfrak a}=\{\exp_G(H)K:H\in\mathfrak a\}
+	\]
+	带有自然的完备全测地平坦浸入结构；极大交换子空间对应最大平坦。在非紧型中它是 Euclid 空间；在紧型中最大平坦是平坦环面。
+\end{proposition}
+\begin{proof}
+	若 \(F\) 全测地且平坦，则它的截面曲率就是环境在其切平面上的截面曲率。式\eqref{g3:eq:symmetric-sectional-sign}因而给出 \([X,Y]=0\) 对 \(X,Y\in\mathrm T_oF\) 成立。
+
+	反过来，\(\mathfrak a\) 交换时，\(\exp(H+X)=\exp(H)\exp(X)\)。因此映射 \(H\mapsto\exp(H)K\) 在每点的微分由左平移识别为 \(\mathfrak a\) 的包含，拉回度量恒定。其直线映为式\eqref{g3:eq:symmetric-geodesic}的左平移，所以像全测地且平坦。令 \(\Gamma=\{H\in\mathfrak a:\exp H\in K\}\)，局部单射性说明 \(\Gamma\) 离散；两个参数有相同像当且仅当其差属于 \(\Gamma\)。故 \(\mathfrak a/\Gamma\) 给出所述完备浸入结构。任何更大的全测地平坦在基点有更大的交换切空间，反向构造亦成立。
+
+	非紧型中，\(\operatorname{ad}H\) 对正定内积 \(\mathcal B_\theta\) 自伴。若 \(\exp H\in K\)，则 \(\exp(\operatorname{ad}H)\) 同时为正定自伴和正交算子，故等于恒等；实特征值进而给出 \(\operatorname{ad}H=0\)。半单性使中心为零，所以 \(H=0\)，即 \(\Gamma=0\)。
+
+	紧型中取 \(A=\exp\mathfrak a\) 在紧群 \(G\) 内的闭包 \(T\)。它是紧连通交换群，且被 \(\sigma\) 保持。其 Lie 代数的 \(-1\) 特征空间仍与 \(\mathfrak a\) 交换；若 \(\mathfrak a\) 极大，该空间便等于 \(\mathfrak a\)。因此 \(A\) 在紧轨道 \(T\cdot o\) 上的轨道维数等于 \(T\cdot o\) 的维数，每条 \(A\) 轨道都是开的。后者连通，故 \(A\cdot o=T\cdot o\)。于是 \(\mathfrak a/\Gamma\) 紧，\(\Gamma\) 为满格，所得平坦是环面。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:maximal-abelian-conjugacy}
+	在紧型或非紧型的有效对称对中，\(\mathfrak p\) 的极大交换子空间都由 \(\operatorname{Ad}(K)\) 共轭，因而维数相同。每个 \(Y\in\mathfrak p\) 都可被共轭到任一预先选定的极大交换子空间 \(\mathfrak a\) 中。
+\end{proposition}
+\begin{proof}
+	先选 \(H\in\mathfrak a\)，使 \(Z_{\mathfrak p}(H)=\mathfrak a\)。这样的 \(H\) 存在：交换算子族 \(\operatorname{ad}(\mathfrak a)\) 在非紧型中自伴，在紧型中斜自伴，复化后都可同时对角化。其共同零空间与 \(\mathfrak p\) 的交是 \(Z_{\mathfrak p}(\mathfrak a)=\mathfrak a\)，最后的等号来自极大性。避开有限个非零特征线性函数的核，就得到所需 \(H\)。
+
+	对给定 \(Y\in\mathfrak p\)，在紧的稳定子作用群上取函数 \(k\mapsto\mathcal B(\operatorname{Ad}(k)Y,H)\) 的极值。记极值处的向量为 \(Y_0\)。对任意 \(Z\in\mathfrak k\) 求导，有
+	\[
+		0=\mathcal B([Z,Y_0],H)=\mathcal B(Z,[Y_0,H]).
+	\]
+	\([Y_0,H]\in\mathfrak k\)，而 \(\mathcal B\) 在 \(\mathfrak k\) 上负定，故 \([Y_0,H]=0\)，即 \(Y_0\in\mathfrak a\)。这里若所用覆盖群中的 \(K\) 不紧，只须在其紧的有效伴随像上取极值。
+
+	再给定另一个极大交换子空间 \(\mathfrak a'\)，取其相应正则元素 \(Y\)，使 \(Z_{\mathfrak p}(Y)=\mathfrak a'\)。把 \(Y\) 共轭到 \(\mathfrak a\) 后，有 \(\mathfrak a\subseteq\operatorname{Ad}(k)\mathfrak a'\)。交换两者再作一次，得到维数相等，于是这一包含为等号。
+\end{proof}
 
 \subsection{对称空间的秩及乘积结构}
 \label{g3:subsec:0504:06}
-待撰写
+
+最大平坦的公共维数称为对称空间的\term[duicheng kongjian de zhi]{秩}[rank]，记为 \(\operatorname{rank}M\)。\symidx{\(\operatorname{rank}M\)}在纯紧型或纯非紧型中，刚才的命题使它也等于 \(\dim\mathfrak a\)。经过任何点、包含任何给定切向方向，都能找到一个最大平坦；这来自先将该方向扩充为极大交换子空间，再用群作用移动基点。
+
+\ProseParagraphBreak
+
+球面与双曲空间的秩均为 \(1\)：其非零截面曲率排除了二维平坦，而每条完整测地线已是一维平坦。\(\mathcal P_n^1\) 的秩为 \(n-1\)，因为对角无迹矩阵构成 \((n-1)\) 维交换子空间，而任意一族交换实对称矩阵可同时正交对角化。若对角化矩阵行列式为负，只须反转一个特征向量的符号，就可令它属于 \(\operatorname{SO}(n)\)。对应最大平坦为
+\[
+	\{\operatorname{diag}(e^{2h_1},\ldots,e^{2h_n}):\textstyle\sum_i h_i=0\},
+\]
+其度量是超平面 \(\sum_i h_i=0\) 上的 \(\sum_i\mathrm dh_i^2\)。它的维数远小于 \(\dim\mathcal P_n^1=n(n+1)/2-1\)。
+
+\begin{proposition}\label{g3:prop:symmetric-rank-product}
+	若单连通黎曼对称空间按 de Rham 分解写成
+	\[
+		M=\mathbb R^d\times M_1\times\cdots\times M_s,
+	\]
+	其中 \(M_i\) 为非平坦不可约因子，则
+	\[
+		\operatorname{rank}M=d+\sum_i\operatorname{rank}M_i.
+	\]
+\end{proposition}
+\begin{proof}
+	每个因子的最大平坦与 \(\mathbb R^d\) 的乘积给出右端维数的平坦。反过来，设 \(F\) 是经过基点的全测地平坦，\(V=\mathrm T_oF\)。对 \(X,Y\in V\)，全测地性和平坦性给出 \(R(X,Y)X=0\)。投影到第 \(i\) 个因子，得到 \(R_i(X_i,Y_i)X_i=0\)；再与 \(Y_i\) 配对，利用该因子的定号公式，便知 \([X_i,Y_i]=0\)。所以 \(V\) 在每个因子上的投影都是交换子空间，维数不超过该因子的秩；欧氏投影维数不超过 \(d\)。\(V\) 嵌入这些投影的直和，故有反向维数不等式。
+\end{proof}
+
+这里使用的整体分解是 \cref{g3:thm:de-rham-decomposition}。平坦因子使秩增加，但秩大于一并不意味着空间可约：\(\operatorname{SL}(n,\mathbb R)/\operatorname{SO}(n)\) 在 \(n\ge3\) 时正是不可约而有高维最大平坦的模型。这里也能直接核验不可约性。若无迹对称矩阵的非零子空间对 \(\operatorname{SO}(n)\) 共轭不变，先对角化其中一个非零矩阵，再对平面旋转求导，就能得到某个 \(E_{ij}+E_{ji}\)；换坐标得到全部非对角对称矩阵，再对旋转求导得到所有对角差，因而该子空间就是整个 \(\mathfrak p\)。稳定子表示不可约，而连通稳定子必须保持 de Rham 的每个非平坦因子，故本模型不可约。
 
 \subsection{紧型与非紧型的对偶}
 \label{g3:subsec:0504:07}
-待撰写
+
+把一个对称分解复化，在复 Lie 代数中令
+\begin{equation}\label{g3:eq:symmetric-dual-lie-algebra}
+	\mathfrak g^d=\mathfrak k\oplus\mathrm i\mathfrak p.
+\end{equation}
+由括号关系可知它仍是一个实 Lie 代数：\([\mathrm iX,\mathrm iY]=-[X,Y]\)，而 \([Z,\mathrm iX]=\mathrm i[Z,X]\)。保留稳定子方向，把 \(X\mapsto\mathrm iX\) 作为切空间的等距识别，这就是\term[jin feijin duious]{紧非紧对偶}[compact--noncompact duality]。
+
+\begin{proposition}\label{g3:prop:symmetric-duality-curvature}
+	设 \((\mathfrak g,\mathfrak k)\) 为紧型或非紧型半单对称对。式\eqref{g3:eq:symmetric-dual-lie-algebra}把它变成相反类型的对称对；以相应 Killing 型度量及切空间等距 \(X\mapsto\mathrm iX\) 比较时，
+	\[
+		R^d(\mathrm iX,\mathrm iY)\mathrm iZ=-\mathrm iR(X,Y)Z.
+	\]
+	因此对应切平面的截面曲率互为相反数，两空间的秩相同。
+\end{proposition}
+\begin{proof}
+	对偶实型的 Killing 型是复化迹型的限制，故在 \(\mathrm i\mathfrak p\) 上有 \(\mathcal B^d(\mathrm iX,\mathrm iY)=-\mathcal B(X,Y)\)，在 \(\mathfrak k\) 上不变。它恰把正、负两种切向限制交换。曲率公式给出
+	\[
+		R^d(\mathrm iX,\mathrm iY)\mathrm iZ
+		=-[-[X,Y],\mathrm iZ]=\mathrm i[[X,Y],Z].
+	\]
+	度量识别保持分母，故截面曲率变号。又 \([X,Y]=0\) 当且仅当 \([\mathrm iX,\mathrm iY]=0\)，极大交换子空间对应，秩不变。
+\end{proof}
+
+球面与双曲空间的矩阵块之间的符号变化，正是这一对偶。\(\mathfrak{sl}(n,\mathbb R)=\mathfrak{so}(n)\oplus\operatorname{Sym}_0(n,\mathbb R)\) 的紧对偶是
+\[
+	\mathfrak{su}(n)=\mathfrak{so}(n)\oplus\mathrm i\operatorname{Sym}_0(n,\mathbb R),
+\]
+所以 \(\operatorname{SU}(n)/\operatorname{SO}(n)\) 与 \(\operatorname{SL}(n,\mathbb R)/\operatorname{SO}(n)\) 对偶。在 \(\operatorname{SU}(n)\) 中，复共轭的固定子群为 \(\operatorname{SO}(n)\)，从而这是实际的紧对称模型，其秩也为 \(n-1\)。
+
+\ProseParagraphBreak
+
+另一个重要来源是紧单群 \(L\) 的双不变度量。它作为对称空间写为 \((L\times L)/\operatorname{diag}L\)，对合交换两因子，点反射在单位元为 \(x\mapsto x^{-1}\)。若直接在 \(\mathfrak l\) 上采用双不变内积，则 \(\nabla_XY=\tfrac12[X,Y]\)，从定义计算得
+\[
+	R(X,Y)Z=-\tfrac14[[X,Y],Z].
+\]
+这里 \(\mathfrak p=\{(X,-X)\}\) 在商映射 \((a,b)\mapsto ab^{-1}\) 下对应 \(2X\)，所以这个 \(1/4\) 与式\eqref{g3:eq:symmetric-curvature-bracket}一致。其非紧对偶是复群商 \(L_{\mathbb C}/L\)。分类时不能漏掉这一族，也不能把 Lie 群的秩与任意商空间的秩混为一谈。
+
+\ProseParagraphBreak
+
+对偶首先是 Lie 代数对和局部度量的对应。取各自的单连通对称模型，才能得到无额外选择的整体对应；任意离散商还带有覆盖群与周期数据。例如 \(S^n\) 与 \(\mathbb{RP}^n\) 局部等距，却不是同一个整体空间；双曲空间的离散商通常只局部对称。两边的基本群和商作用并不由乘上 \(\mathrm i\) 的局部公式决定。\secref{g3:sec:0506}的分类表将始终区分单连通模型与这些整体商。
 
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

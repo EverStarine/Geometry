@@ -1,13 +1,13 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 5.5* 特殊完整群的几何内容
 % 纲要位置：几何学计划纲要.md，第 2301 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * Kähler、超 Kähler 与平行形式
 % * G₂、Spin(7) 的代数模型
-% * 分类结论的条件与外部输入
+% * Berger 完整群分类
 % 
 % ---
 % 
@@ -15,17 +15,177 @@
 
 \OptionalSection{特殊完整群的几何内容}{g3:sec:0505}
 
-待撰写
+一个正交变换群越小，它能够共同保持的张量通常越多。例如，保持一个正交复结构的正交变换组成酉群；同时保持三个满足四元数关系的复结构，群还会进一步缩小。\cref{g3:thm:holonomy-parallel-tensors}使这种切空间中的线性代数成为流形上的几何：被整体完整群固定的张量，恰好延拓为整体平行张量。本节先具体识别这些张量，再说明不可约情形的分类范围。
 
 \subsection{Kähler、超 Kähler 与平行形式}
 \label{g3:subsec:0505:01}
-待撰写
+
+设 \(M\) 为实 \(2m\) 维光滑流形。一个丛自同态 \(J:TM\to TM\) 若满足 \(J^2=-I\)，便称为\term[jifujiegou]{几乎复结构}[almost complex structure]；它把每个切空间变成复向量空间，复数单位 \(\mathrm i\) 的作用就是 \(J\)。若黎曼度量还满足 \(g(JX,JY)=g(X,Y)\)，则 \((g,J)\) 为几乎 Hermite 结构\footnote{Charles Hermite（1822--1901），法国数学家，研究椭圆函数与代数方程，并证明 \(e\) 的超越性。}，其基本二形式为
+\[
+	\omega(X,Y)=g(JX,Y).
+\]
+由 \(J^{-1}=-J\) 与正交性可得 \(g(JX,Y)=-g(X,JY)\)，所以 \(\omega\) 确为交替形式。相容的实正交基可以写成 \(e_1,Je_1,\ldots,e_m,Je_m\)；此时 \(\omega=\sum_a e^a\wedge(Je_a)^\flat\)，并且 \(\omega^m/m!\) 给出复方向对应的体积形式。
+
+\begin{definition}\label{g3:def:parallel-kahler-structure}
+	设 \((M,g)\) 为实 \(2m\) 维光滑黎曼流形。若正交几乎复结构 \(J\) 对 Levi-Civita 联络满足 \(\nabla J=0\)，则称 \((M,g,J)\) 为 \term[kahlerjiegou]{Kähler 结构}[Kähler structure]。本节采用这一联络表述。\footnote{Erich Kähler（1906--2000），德国数学家，研究复几何、微分形式与外微分方程。}
+\end{definition}
+
+这一条件同时控制长度、角度及复方向。它与常见的复流形表述相联系，首先是因为 \(\nabla\omega=0\) 蕴含 \(\mathrm d\omega=0\)：无挠联络下，外微分是协变导数的交替化。其次，复结构的可积性障碍
+\[
+	N_J(X,Y)=[JX,JY]-J[JX,Y]-J[X,JY]-[X,Y]
+\]
+也为零。确实，将每个括号换成 \(\nabla_XY-\nabla_YX\)，再用 \(\nabla_X(JY)=J\nabla_XY\)，全部项两两抵消。这个计算说明平行性怎样消除可积性障碍；以下关于完整群的论证直接使用 \(\nabla J=0\)。
+
+\begin{proposition}\label{g3:prop:unitary-holonomy-parallel-complex}
+	设 \((M,g)\) 为连通、无边界的实 \(2m\) 维光滑黎曼流形，\(p\in M\)。存在 Kähler 结构 \(J\)，当且仅当某个正交识别 \(T_pM\cong\mathbb C^m\) 下有 \(\operatorname{Hol}_p(g)\subseteq\operatorname U(m)\)。指定 \(J_p\) 后，相应平行结构唯一。
+\end{proposition}
+\begin{proof}
+	在实内积空间 \(V\) 上，正交变换 \(A\) 保持 \(J\) 的条件是 \(AJA^{-1}=J\)，也就是 \(AJ=JA\)。把 \(J\) 当作乘以 \(\mathrm i\)，这正说 \(A\) 是复线性的；同时保持实内积便等价于保持对应 Hermite 内积。因此 \(J\) 在正交群中的稳定子为 \(\operatorname U(m)\)。若 \(J\) 平行，完整群固定 \(J_p\)，于是得到包含关系。反之，完整群固定标准的 \(J_p\)，由\cref{g3:thm:holonomy-parallel-tensors}得到唯一平行延拓。平行运输保持 \(g\)，且与张量乘积、收缩相容，故 \(J_p^2=-I\) 和正交性在所有点成立。
+\end{proof}
+
+\ProseParagraphBreak
+
+在 \(\mathbb C^m\) 上再给定非零复体积形式 \(\Theta_0=\mathrm dz^1\wedge\cdots\wedge\mathrm dz^m\)，酉变换对它的作用由复行列式决定。因此，保持 \(g,J,\Theta_0\) 的群是 \(\operatorname{SU}(m)\)。这里的复 \(m\) 形式指复值实交替形式，并要求在每个槽放入 \(JX\) 等于将原值乘以 \(\mathrm i\)。这种类型条件与非零性都由平行运输保持。
+
+\begin{corollary}\label{g3:cor:special-unitary-parallel-volume}
+	设 \((M,g,J)\) 为连通的 Kähler 流形，复维数为 \(m\)。整体完整群包含在 \(\operatorname{SU}(m)\) 中，当且仅当存在处处非零的平行复 \((m,0)\) 形式。对标准体积形式的一次定长选择可以沿运输保持；其常数相位不影响完整群的包含关系。
+\end{corollary}
+\begin{proof}
+	对上一段的稳定子计算应用\cref{g3:thm:holonomy-parallel-tensors}，分别延拓复形式的实部和虚部。反向则由平行形式在每条闭路运输下保持不变得到。
+\end{proof}
+
+\ProseParagraphBreak
+
+四元数向量空间 \(\mathbb H^r\) 还提供一组互相关联的复结构。约定在右四元数模上取 \(I(v)=v\mathrm i\)、\(J(v)=v\mathrm j\)，并取 \(K=IJ\)；由于算子复合次序，\(K(v)=-v\mathrm k\)。这样始终有
+\[
+	I^2=J^2=K^2=-I_{TM},\qquad IJ=K=-JI.
+\]
+采用左四元数作用也能得到同一组算子关系；真正需要固定的是这里写出的复合式。
+
+\begin{definition}\label{g3:def:hyperkahler-structure}
+	在实 \(4r\) 维光滑黎曼流形上，三个正交平行丛自同态 \(I,J,K\) 若满足 \(I^2=J^2=K^2=-I_{TM}\)、\(IJ=K=-JI\)，就称 \((g,I,J,K)\) 为\term[chaokahlerjiegou]{超 Kähler 结构}[hyperkähler structure]。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:hyperkahler-holonomy}
+	设 \((M,g)\) 为连通、无边界的实 \(4r\) 维光滑黎曼流形，\(r\ge1\)。存在超 Kähler 结构，当且仅当整体完整群在适当正交识别下包含于 \(\operatorname{Sp}(r)\subset\operatorname{SO}(4r)\)。每个超 Kähler 结构给出三个平行闭二形式 \(\omega_I,\omega_J,\omega_K\)。相对于复结构 \(I\)，形式 \(\Psi=\omega_J+\mathrm i\omega_K\) 是处处非退化的平行复 \((2,0)\) 形式。
+\end{proposition}
+\begin{proof}
+	与 \(I,J,K\) 同时交换的实线性映射，正是四元数线性映射；其中保持实内积的群定义为紧辛群 \(\operatorname{Sp}(r)\)。这给出稳定子的识别，再用\cref{g3:thm:holonomy-parallel-tensors}得到前两个条件的等价。算子关系与正交性都是张量恒等式，沿运输保持。三个二形式平行，因此闭。
+
+	验证 \(\Psi\) 的类型只需代入关系 \(JI=-K\)、\(KI=J\)：
+	\[
+		\Psi(IX,Y)=-\omega_K(X,Y)+\mathrm i\omega_J(X,Y)
+		=\mathrm i\Psi(X,Y).
+	\]
+	另一槽由交替性得到相同结果。若 \(\Psi(X,Y)=0\) 对所有实向量 \(Y\) 成立，取实部可得 \(g(JX,Y)=0\)，因而 \(X=0\)。将实切空间以 \(I\) 看成复空间，这便是复二形式的非退化性。在四元数正交基中，它也可写成 \(r\) 对复坐标的标准辛形式。于是 \(\Psi^r\) 是非零平行复体积形式，特别有 \(\operatorname{Sp}(r)\subset\operatorname{SU}(2r)\)。
+\end{proof}
+
+对任意常数 \((a,b,c)\in S^2\)，算子 \(aI+bJ+cK\) 仍然平方为 \(-I_{TM}\)，并且正交、平行；超 Kähler 结构因而给出一个球面族的 Kähler 结构。另一方面，群
+\[
+	\operatorname{Sp}(r)\operatorname{Sp}(1)
+	=\bigl(\operatorname{Sp}(r)\times\operatorname{Sp}(1)\bigr)/\{(1,1),(-1,-1)\}
+\]
+通过 \(v\mapsto Avq^{-1}\) 作用在 \(\mathbb H^r\) 上。它保持三维空间 \(\operatorname{span}\{I,J,K\}\)，却允许旋转其中的基。实维数 \(4r\ge8\) 时，相应的完整群包含关系给出\term[siyuanshukahlerjiegou]{四元数 Kähler 结构}[quaternionic Kähler structure]；所得平行对象是一整个三维子丛。保持一个子空间与固定它的每个向量，在这里产生了不同的几何。
 
 \subsection{\texorpdfstring{\(G_2\)、Spin(7) 的代数模型}{G₂、Spin(7) 的代数模型}}
 \label{g3:subsec:0505:02}
-待撰写
 
-\subsection{分类结论的条件与外部输入}
+有些小群保持的基本张量是三形式或四形式。先在定向 Euclid 空间 \(\mathbb R^7\) 中取标准正交余标架 \(e^1,\ldots,e^7\)，并简记 \(e^{ijk}=e^i\wedge e^j\wedge e^k\)。定义
+\begin{align}
+	\varphi_0&=e^{123}+e^{145}+e^{167}+e^{246}-e^{257}-e^{347}-e^{356},\label{g3:eq:standard-g2-three-form}\\
+	\psi_0=*\varphi_0&=e^{4567}+e^{2367}+e^{2345}+e^{1357}-e^{1346}-e^{1256}-e^{1247}.\label{g3:eq:standard-g2-four-form}
+\end{align}
+星号取标准度量和方向 \(e^{1234567}\)。例如 \(*e^{123}=e^{4567}\)，而 \(*e^{246}=e^{1357}\)；其余项按同样的排列符号规则确定。
+
+\begin{proposition}\label{g3:prop:g2-form-recovers-metric}
+	上述三形式与 Euclid 内积满足
+	\begin{equation}\label{g3:eq:g2-metric-recovery}
+		(\iota_u\varphi_0)\wedge(\iota_v\varphi_0)\wedge\varphi_0
+		=6\langle u,v\rangle e^{1234567}
+	\end{equation}
+	对所有 \(u,v\in\mathbb R^7\) 成立。因此 \(\varphi_0\) 的每个实线性稳定变换都保持 Euclid 度量及定向。
+\end{proposition}
+\begin{proof}
+	两边对 \(u,v\) 都是对称双线性的，故只需在标准基上计算。由\eqref{g3:eq:standard-g2-three-form}收缩得到
+	\[
+	\begin{array}{c|l}
+		a&\iota_{e_a}\varphi_0\\\hline
+		1&e^{23}+e^{45}+e^{67}\\
+		2&-e^{13}+e^{46}-e^{57}\\
+		3&e^{12}-e^{47}-e^{56}\\
+		4&-e^{15}-e^{26}+e^{37}\\
+		5&e^{14}+e^{27}+e^{36}\\
+		6&-e^{17}+e^{24}-e^{35}\\
+		7&e^{16}-e^{25}-e^{34}
+	\end{array}
+	\]
+	每行自乘产生三个不同四元指标项，各出现两次；再乘 \(\varphi_0\) 后，三个非零项都为 \(2e^{1234567}\)。两行不同时，把表中两个二元指标与\eqref{g3:eq:standard-g2-three-form}的三元指标合并，每次或者重复指标，或者缺少所需的互补三元组，所得七形式为零。因此系数矩阵为 \(6I_7\)，得到\eqref{g3:eq:g2-metric-recovery}。
+
+	若 \(A^*\varphi_0=\varphi_0\)，将恒等式应用于 \(Au,Av\) 并拉回，可得
+	\[
+		\langle Au,Av\rangle\det A=\langle u,v\rangle.
+	\]
+	正定性先给出 \(\det A>0\)。对矩阵等式 \((\det A)A^{\mathsf T}A=I\) 取行列式，得到 \((\det A)^9=1\)，所以 \(\det A=1\)、\(A^{\mathsf T}A=I\)。
+\end{proof}
+
+这个稳定子是紧例外 Lie 群 \(G_2\)，维数为14。八维的对应模型是在 \(\mathbb R e_0\oplus\mathbb R^7\) 上取\term[cayley sixingshi]{Cayley 四形式}[Cayley four-form]\footnote{Arthur Cayley（1821--1895），英国数学家，研究矩阵代数、不变量与高维几何。}
+\begin{equation}\label{g3:eq:standard-spin7-cayley-form}
+	\Phi_0=e^0\wedge\varphi_0+\psi_0.
+\end{equation}
+其稳定子是 \(\operatorname{Spin}(7)\) 的八维实旋量表示像，是 \(\operatorname{SO}(8)\) 中维数21的紧群。这两个稳定子的群识别属于例外群的代数输入；模型、维数及识别可见 Joyce 的正式综述第2.2--2.3节\cite[第2.2--2.3节，第112--113页]{Joyce2006ExceptionalHolonomy}。式\eqref{g3:eq:standard-spin7-cayley-form}按 \(e^0,e^1,\ldots,e^7\) 排列，与该文八维模型只差指标起点。
+
+\ProseParagraphBreak
+
+在七维流形上，一个处处可由线性同构化成 \(\varphi_0\) 的三形式称为\term[zhengsanxingshi]{正三形式}[positive three-form]。上一命题说明它确定度量和方向：在每点选这样的标架，两种选择之间的变换保持标准内积，故所得度量与选择无关。若此度量的 Levi-Civita 联络还满足 \(\nabla\varphi=0\)，便得到无挠 \(G_2\) 结构。类似地，点点等价于 \(\Phi_0\) 的四形式称为 \(\operatorname{Spin}(7)\) 型四形式；要求它对诱导度量平行，得到无挠 \(\operatorname{Spin}(7)\) 结构。
+
+\begin{proposition}\label{g3:prop:exceptional-parallel-forms}
+	设 \((M,g)\) 为连通光滑黎曼流形。在七维情形，存在与 \(g\) 相容的平行正三形式，当且仅当整体完整群包含在标准 \(G_2\) 中；在八维情形，存在相容的平行 \(\operatorname{Spin}(7)\) 型四形式，当且仅当整体完整群包含在上述 \(\operatorname{Spin}(7)\) 中。平行的 \(\varphi\)、\(*\varphi\) 和 \(\Phi\) 均为闭形式。
+\end{proposition}
+\begin{proof}
+	对稳定子中的模型形式应用\cref{g3:thm:holonomy-parallel-tensors}。运输是线性等距，故标准型及相容度量沿路径保持。反向由每条环路都固定平行形式得到。Levi-Civita 联络保持度量和方向，因而与 Hodge 星算子交换；外微分又是无挠协变导数的交替化，所以这些形式都闭。
+\end{proof}
+
+一个可直接核验的例子来自三复维 Kähler 流形 \((N,h,J)\) 及定长平行复体积形式 \(\Theta\)，将其长度归一化为标准酉余标架中 \(\mathrm dz^1\wedge\mathrm dz^2\wedge\mathrm dz^3\) 的长度。在 \(\mathbb R\times N\) 上取乘积度量，并令
+\[
+	\varphi=\mathrm dt\wedge\omega+\operatorname{Re}\Theta.
+\]
+在 \(e^1=\mathrm dt\)、\(z^1=x^2+\mathrm ix^3\)、\(z^2=x^4+\mathrm ix^5\)、\(z^3=x^6+\mathrm ix^7\) 对应的酉余标架中展开，正好得到\eqref{g3:eq:standard-g2-three-form}。三个因子均平行，所以 \(\varphi\) 平行。但 \(\partial_t\) 也是平行向量场，完整群实际包含于固定这一方向的 \(\operatorname{SU}(3)\)，而不会等于 \(G_2\)。这把“包含于某群”和“恰好等于某群”的区别落实到一个平行方向上。
+
+\subsection{Berger 完整群分类}
 \label{g3:subsec:0505:03}
-待撰写
+
+de Rham 分解先把单连通完备流形分为 Euclid 因子与不可约因子；局部对称的不可约因子由下一节讨论的对称空间分类处理。余下的非局部对称不可约情形，具有一个有限的完整群名单。以下引用 \term[bergerfenlei]{Berger 分类}[Berger classification] 的黎曼版本。\footnote{Marcel Berger（1927--2016），法国数学家，研究黎曼完整群、曲率与整体几何。}其陈述可核对 Joyce 第2.1节定理2.3\cite[第2.1节，定理2.3，第111--112页]{Joyce2006ExceptionalHolonomy}；一般分类的证明作为本节外部输入。
+
+\begin{theorem}[Berger 分类]\label{g3:thm:berger-classification}
+	设 \((M,g)\) 为连通、单连通、无边界的光滑黎曼流形，维数 \(n\ge2\)，其 Levi-Civita 完整群在 \(T_pM\) 上的实表示不可约，并且 \(\nabla R\) 不恒为零。则在适当正交基下，\(\operatorname{Hol}_p(g)\) 是下表中的一个群，采用表中标准的实正交表示。这里不要求完备性；当从整体 de Rham 因子进入本定理时，完备性已由该分解的假设提供。
+\end{theorem}
+
+\begin{table}[htbp]
+	\centering
+	\caption{非局部对称不可约黎曼完整群及其平行结构}
+	\label{g3:tab:berger-holonomy}
+	\begin{tabularx}{\textwidth}{@{}lllX@{}}
+		\toprule
+		群 & 实维数 & 参数范围 & 由群识别的几何结构 \\
+		\midrule
+		\(\operatorname{SO}(n)\) & \(n\) & \(n\ge2\) & 度量及定向 \\
+		\(\operatorname U(m)\) & \(2m\) & \(m\ge2\) & 平行正交复结构 \\
+		\(\operatorname{SU}(m)\) & \(2m\) & \(m\ge2\) & 平行复结构及复体积形式 \\
+		\(\operatorname{Sp}(r)\) & \(4r\) & \(r\ge2\) & 平行四元数三元组 \\
+		\(\operatorname{Sp}(r)\operatorname{Sp}(1)\) & \(4r\) & \(r\ge2\) & 平行四元数结构子丛 \\
+		\(G_2\) & \(7\) & & 平行正三形式 \\
+		\(\operatorname{Spin}(7)\) & \(8\) & & 平行 Cayley 四形式 \\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+表中省去了低维重复：\(\operatorname U(1)=\operatorname{SO}(2)\)，\(\operatorname{Sp}(1)=\operatorname{SU}(2)\)，而 \(\operatorname{Sp}(1)\operatorname{Sp}(1)\) 在四维表示中的像为 \(\operatorname{SO}(4)\)。特殊酉群在 \(m=1\) 时为平凡群，产生的平坦二维表示可约，因而不属于这里的不可约非局部对称范围。
+
+\ProseParagraphBreak
+
+几项假设各有具体作用。单连通性使整体与受限完整群一致；在一般流形上，分类先适用于万有覆盖上的相应不可约因子，基本群还可能增加离散分支。不可约性排除了直接乘积，例如两个曲面的乘积通常具有 \(\operatorname{SO}(2)\times\operatorname{SO}(2)\) 完整群。\(\nabla R\ne0\) 的条件把局部对称情形交给另一套分类；对称空间可以具有名单以外的不可约各向同性表示。
+
+\ProseParagraphBreak
+
+本节已将平行张量与群包含关系对应起来。分类定理进一步限制哪些群可以恰好出现为非局部对称不可约黎曼完整群；构造达到等号的度量还有独立的存在问题。例如平坦七维环面带有平行 \(\varphi_0\)，但其完整群是平凡群。关于 \(\operatorname{SU}(m)\)、\(\operatorname{Sp}(r)\)、\(G_2\)、\(\operatorname{Spin}(7)\) 完整群的 Ricci 平坦性，以及例外完整群的实际存在，可进一步查阅同一综述第2.1--2.3节及第3--4节；这些曲率限制与存在结果在此按该文外引。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

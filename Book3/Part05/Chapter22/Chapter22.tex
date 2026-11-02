@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：## 第22章　流、切片与 Federer–Fleming 紧性
 % 纲要位置：几何学计划纲要.md，第 3007 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,14 +14,31 @@
 \BookChapterNumber{g3:ch:22}
 
 \begin{chapterabstract}
-待撰写
+	流把定向几何对象对微分形式的积分推广为连续线性泛函。它能够记录重数、边界以及取向抵消，也允许讨论不光滑对象的极限。本章从质量测度与基本运算出发，区分一般流、正规流、可整流流和整数流；建立 Lipschitz 切片、锥构造及平坦范数的对偶描述。随后通过立方网格上的径向投影和面内 BV 密度修正证明变形定理，再以零维切片的整数信息、统一 BV 控制和 Lipschitz 图覆盖证明整数流闭包。最终得到共同紧支与统一质量、边界质量界下的 Federer--Fleming 紧性定理，并说明局部版本如何容许质量逃逸。
 \end{chapterabstract}
 
 \begin{learninggoals}
-待撰写
+	\begin{itemize}
+		\item 从测试形式与余质量范数定义流及其质量，核对边界、推前、乘积和同伦公式的符号。
+		\item 根据切向结构、重数与边界质量区分四类流，并把有限周长集合写成顶维整数流。
+		\item 用截断后的新增边界定义切片，计算其取向、质量积分和边界相容关系。
+		\item 构造锥填充，使用平坦范数比较低质量误差与低质量填充，辨别三种收敛。
+		\item 完成径向选点、奇性删管和 BV 中位数修正，证明统一网格变形及整数闭流填充估计。
+		\item 由原子切片的 BV 控制构造 Lipschitz 图，恢复极限的切向结构与整数重数。
+		\item 运用闭包和紧性定理保留指定边界，说明局部紧性与全空间平坦紧性的条件差别。
+	\end{itemize}
 \end{learninggoals}
 
-待撰写
+把一张很薄的矩形的边界按逆时针方向走一周，上下两条长边的方向相反。矩形高度趋于零时，两条长边都靠近同一个线段，周长却不趋于零。若拿一形式沿边界积分，上下两部分会逐渐抵消，积分反而趋于零。这个例子说明：一个有向边界的极限，既要容许位置变化，也要保留相消的代数规则。
+
+\ProseParagraphBreak
+第21章用示性函数的分布导数处理了有限周长集合。那是一种余维一的边界模型；对于空间中的曲线、带重数的曲面或更高余维对象，微分形式提供了统一的测试工具。边界可以由 \(\partial T(\eta)=T(\mathrm d\eta)\) 定义，因而连续地传到弱极限。真正的困难是极限的形状：质量与边界质量有界，为什么能保证整数重数的曲面仍然收敛到同类对象？
+
+\ProseParagraphBreak
+我们先把流变形到细立方网格。流与网格模型之差由一个小填充及一个小的边界误差控制，这给出平坦紧性。整数性还需另一条论证：沿坐标切片后得到带整数权的点；正规性使这些点的测试值满足统一 BV 估计，于是能按参数组织成 Lipschitz 图。边界质量排除非切向的极限向量，面积公式再从纤维中的整数权读出图上的整数重数。这条证明把可整流性与整数性分别落实。
+
+\ProseParagraphBreak
+本章所称 Federer--Fleming\footnote{Herbert Federer（1920—2010），奥地利出生的美国数学家，主要研究几何测度论。Wendell Helms Fleming（1928—2023），美国数学家，与 Federer 合作建立了整数流的基础理论。}紧性，是固定紧支及统一质量、边界质量界下的整数流紧性。第20章的面积、余面积与可整流密度结果，以及第21章的 BV 逼近、紧性和约化边界结构，是本章的主要几何分析基础。微分形式的外微分、拉回和光滑 Stokes 公式在使用处恢复约定；闭包论证还用到本卷已证的有界泛函延拓及测度表示。
 
 \input{Part05/Chapter22/Section2201}
 \input{Part05/Chapter22/Section2202}
@@ -30,8 +47,381 @@
 \input{Part05/Chapter22/Section2205}
 
 \begin{chaptersummary}
-待撰写
+	一般流是测试形式上的连续线性泛函，有限质量流由向量 Radon 测度表示。余质量与其对偶范数使光滑定向曲面的质量等于面积。边界定义自动给出 \(\partial^2=0\)；正规性同时控制流与边界的质量，使光滑推前、乘积和同伦公式能够延伸到 Lipschitz 映射。
+
+	\ProseParagraphBreak
+	可整流流还要求向量沿可整流片的切平面，整数流则要求自身及其边界都具有整数重数的可整流表示。有限周长集合给出顶维模型，整数值 BV 函数通过层集分解产生更多例子。取向改变可以形成内部边界；弱极限中的抵消则可能使质量严格下降。
+
+	\ProseParagraphBreak
+	切片是限制流后新增的边界。其边界公式每降一维带一个负号，质量积分受切割函数的 Lipschitz 常数控制。锥把闭流连接到一个顶点，产生高一维填充；零维时还须消除总系数。平坦范数允许留下小的本体误差，并用低质量流填充其余部分，因此比质量范数更适合描述几何移动。
+
+	\ProseParagraphBreak
+	网格变形先选择质量稀疏的径向中心，以可积的距离奇性控制推前和同伦，再用面内 BV 中位数修正得到常数重数的多面体流。统一的尺度估计把正规流有界族逼近为有限维有界集合。闭包证明随后利用整数零维切片：共同的 BV 估计产生可数 Lipschitz 图覆盖，边界质量使放大极限向量沿这些图的切平面，面积公式确定整数重数。结合弱紧性、边界相容与质量下半连续性，得到整数流的平坦紧性。局部版本仍容许质量离开每个固定紧集；下一章的 Plateau 问题将另行处理竞争者的共同支集。
 \end{chaptersummary}
 
 \BookExercises
-待撰写
+
+\begin{exercise}\label{g3:ex:weighted-triangle-current}
+	设 \(A,B,C\in\mathbb R^2\) 为不共线三点，\(a,b,c\in\mathbb R\)，令
+	\[
+		T=a\lBrack A,B\rBrack+b\lBrack B,C\rBrack+c\lBrack C,A\rBrack.
+	\]
+	求 \(\partial T\)、\(\mathbf M(T)\) 和 \(\mathbf M(\partial T)\)。证明 \(\partial T=0\) 当且仅当 \(a=b=c\)。再确定 \(T\) 为整数流的充要条件。
+\end{exercise}
+\begin{solution}
+	逐条使用线段的边界公式，得到
+	\[
+		\partial T=(c-a)\delta_A+(a-b)\delta_B+(b-c)\delta_C.
+	\]
+	三条线段除端点外不交，端点的一维测度为零，故
+	\[
+	\begin{aligned}
+		\mathbf M(T)&=|a|\,|B-A|+|b|\,|C-B|+|c|\,|A-C|,\\
+		\mathbf M(\partial T)&=|c-a|+|a-b|+|b-c|.
+	\end{aligned}
+	\]
+	三个点流线性无关，因为可分别在各点附近取支集互不相交的测试函数。因此边界为零当且仅当三个差同时为零，即 \(a=b=c\)。
+
+	若 \(a,b,c\) 为整数，流与边界显然都是整数重数可整流流。反之，在任一边内部取不遇其他两边的小球；此处的流相对于该边的单位取向具有常数密度，依次为 \(a,b,c\)。整数可整流表示的唯一性迫使它们为整数。所以 \(T\in\mathcal I_1\) 当且仅当 \(a,b,c\in\mathbb Z\)。仅有边界系数为整数不够：例如 \(a=b=c=1/2\) 的边界为零，但流不是整数流。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:pushforward-degree-and-fold}
+	标准单位圆 \(S^1\subset\mathbb R^2\) 取逆时针方向。对整数 \(m\)，令 \(f_m(e^{it})=e^{imt}\)，在圆的邻域内作光滑延拓。求 \(f_{m\#}\lBrack S^1\rBrack\) 及其质量。再令 \(g:\mathbb R\to\mathbb R\)，\(g(x)=|x|\)，求 \(g_\#\lBrack-1,1\rBrack\)，解释面积公式中的绝对重数与流的带符号重数的区别。
+\end{exercise}
+\begin{solution}
+	将测试一形式沿圆写成 \(a(t)\,\mathrm dt\)，其中 \(a\) 为 \(2\pi\) 周期函数。参数计算给出
+	\[
+		f_{m\#}\lBrack S^1\rBrack(\omega)
+		=\int_0^{2\pi}m\,a(mt)\,\mathrm dt
+		=m\int_0^{2\pi}a(t)\,\mathrm dt.
+	\]
+	正负整数都可按换元及周期性检验，\(m=0\) 时拉回一形式为零。故推前是 \(m\lBrack S^1\rBrack\)，质量为 \(2\pi|m|\)。当 \(m\ne0\)，几乎每个像点有 \(|m|\) 个原像，取向贡献的符号全部相同。
+
+	对目标直线上的测试形式 \(a(y)\,\mathrm dy\)，
+	\[
+	\begin{aligned}
+		g_\#\lBrack-1,1\rBrack(a\,\mathrm dy)
+		&=-\int_{-1}^0a(-x)\,\mathrm dx+\int_0^1a(x)\,\mathrm dx=0.
+	\end{aligned}
+	\]
+	所以推前流为零。相应的绝对 Jacobian 积分却是 \(\int_{-1}^1|g'|=2\)：\((0,1)\) 中每个点有两个原像，其方向相反。面积公式计两份长度，流的重数则是 \(-1+1=0\)。两端点原本的边界 \(\delta_1-\delta_{-1}\) 也都映到一点而抵消，与边界相容一致。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:integer-bv-concentric-current}
+	设 \(n\ge2\)，\(0<r<R\)，并令
+	\[
+		u=\chi_{B_R}-2\chi_{B_r},\qquad
+		T=u\lBrack\mathbb R^n\rBrack.
+	\]
+	证明 \(T\) 是整数流，计算其质量、边界及边界质量。若以相同支集上的正重数函数 \(|u|\) 代替 \(u\)，这些量怎样变化？
+\end{exercise}
+\begin{solution}
+	由有限周长集合的流表示，
+	\[
+		T=\lBrack B_R\rBrack-2\lBrack B_r\rBrack,
+		\qquad
+		\partial T=\lBrack\partial B_R\rBrack-2\lBrack\partial B_r\rBrack.
+	\]
+	球面均取各自球的外法向优先取向。两个边界互不相交，系数为整数，所以流与边界均为整数可整流流。函数 \(u\) 在小球内为 \(-1\)，在环域中为 \(1\)，在大球外为零。因此
+	\[
+		\mathbf M(T)=\omega_nR^n,
+		\qquad \mathbf M(\partial T)
+		=n\omega_nR^{n-1}+2n\omega_nr^{n-1}.
+	\]
+	内球面系数为 \(-2\)，记录从内侧值 \(-1\) 到外侧值 \(1\) 的取向改变；用 \(D\chi_B=-\nu_B\mathcal H^{n-1}\llcorner\partial B\) 也能核对同一符号。
+
+	将密度换为 \(|u|=\chi_{B_R}\)，流变为 \(\lBrack B_R\rBrack\)，质量仍为 \(\omega_nR^n\)，边界却只剩 \(\lBrack\partial B_R\rBrack\)，质量为 \(n\omega_nR^{n-1}\)。可见支集和质量不能确定内部取向跳变，也不能确定边界。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:mobius-cut-boundary}
+	取一个标准 Möbius 带的光滑参数化 \(F:[0,2\pi]\times[-a,a]\to M\)，满足 \(F(2\pi,t)=F(0,-t)\)，并在矩形内部为嵌入。矩形按 \(\mathrm ds\wedge\mathrm dt\) 定向，令 \(T=F_\#\lBrack[0,2\pi]\times[-a,a]\rBrack\)，再令横截线 \(\sigma(t)=F(0,t)\) 按 \(t\) 增大定向。计算 \(\partial T\) 中来自两条竖边的项，说明它为何不消失。
+\end{exercise}
+\begin{solution}
+	矩形在 \(s=2\pi\) 的边界方向为 \(+\partial_t\)，在 \(s=0\) 的方向为 \(-\partial_t\)。因此两条竖边推前的总贡献为
+	\[
+		F(2\pi,\cdot)_\#\lBrack-a,a\rBrack
+		-F(0,\cdot)_\#\lBrack-a,a\rBrack.
+	\]
+	因 \(F(2\pi,t)=\sigma(-t)\)，第一项为 \(-\sigma_\#\lBrack-a,a\rBrack\)，第二项也为这一流的负号。故总贡献为
+	\[
+		-2\sigma_\#\lBrack-a,a\rBrack.
+	\]
+	其余两条水平边映到 Möbius 带的几何边界；竖边识别后的横截线位于带的内部，却在整数流边界中保留了两份贡献。若粘合没有反转 \(t\)，两条竖边的符号才会相消。这个计算把非定向障碍具体表现为内部边界项。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:graph-current-slice-signs}
+	令 \(F(s,t)=(s,t,st)\)，\(0\le s,t\le1\)，并令
+	\[
+		T=F_\#\lBrack[0,1]^2\rBrack,
+	\]
+	方形取 \(\mathrm ds\wedge\mathrm dt\) 的取向。计算 \(0<a,b<1\) 时的 \(\langle T,x,a\rangle\)、\(\langle T,(x,y),(a,b)\rangle\) 及 \(\langle T,(y,x),(b,a)\rangle\)。直接核对第一种切片的边界符号，并计算 \(\int_{\mathbb R}\mathbf M(\langle T,x,a\rangle)\,\mathrm da\)。将该积分与图面的面积元及切向梯度 \(|\nabla_Mx|\) 比较。
+\end{exercise}
+\begin{solution}
+	图面的参数取向由
+	\[
+		F_s=(1,0,t),\qquad F_t=(0,1,s),\qquad
+		F_s\wedge F_t
+	\]
+	给出。因为 \(\mathrm dx(F_s)=1\)、\(\mathrm dx(F_t)=0\)，沿 \(x=a\) 的切片是从 \((a,0,0)\) 到 \((a,1,a)\) 的直线段，取 \(t\) 增大的方向。因此
+	\[
+		\langle T,x,a\rangle=(t\mapsto(a,t,at))_\#\lBrack[0,1]\rBrack,
+		\qquad
+		\partial\langle T,x,a\rangle=\delta_{(a,1,a)}-\delta_{(a,0,0)}.
+	\]
+	方形的下边取 \(+s\) 方向，上边取 \(-s\) 方向，故其图像的边界被 \(x=a\) 切割时，下边贡献正点，上边贡献负点；另外两条边的 \(x\) 值固定为零或一。于是
+	\[
+		\langle\partial T,x,a\rangle
+		=\delta_{(a,0,0)}-\delta_{(a,1,a)}
+		=-\partial\langle T,x,a\rangle.
+	\]
+	再沿 \(y=b\) 切上述有向线段，得到
+	\[
+		\langle T,(x,y),(a,b)\rangle=\delta_{(a,b,ab)}.
+	\]
+	交换切割顺序时，\(\mathrm dy\wedge\mathrm dx=-\mathrm dx\wedge\mathrm dy\)，所以
+	\[
+		\langle T,(y,x),(b,a)\rangle=-\delta_{(a,b,ab)}.
+	\]
+	也可以直接看出：先沿 \(y=b\) 切片时，水平参数曲线取 \(-s\) 方向，再按 \(x=a\) 切割便产生负点。
+
+	当 \(0<a<1\) 时，第一种线段切片的长度为 \(\sqrt{1+a^2}\)，其余几乎所有切片为空，故
+	\[
+		\int_{\mathbb R}\mathbf M(\langle T,x,a\rangle)\,\mathrm da
+		=\int_0^1\sqrt{1+a^2}\,\mathrm da
+		=\frac12\bigl(\sqrt2+\log(1+\sqrt2)\bigr).
+	\]
+	参数度量为
+	\[
+		g=\begin{pmatrix}1+t^2&st\\st&1+s^2\end{pmatrix},\qquad
+		\det g=1+s^2+t^2.
+	\]
+	因此面积元为 \(\sqrt{1+s^2+t^2}\,\mathrm ds\,\mathrm dt\)，而
+	\[
+		|\nabla_Mx|^2=g^{11}=\frac{1+s^2}{1+s^2+t^2}.
+	\]
+	两者相乘后得到 \(\sqrt{1+s^2}\,\mathrm ds\,\mathrm dt\)，积分恰为刚算出的切片质量积分。这说明切片计算的量是带切向 Jacobian 的面积，而非未经加权的全部面积。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:flat-distance-two-points}
+	设 \(a,b\in\mathbb R^n\)，证明
+	\[
+		\mathcal F(\delta_b-\delta_a)=\min\{|b-a|,2\},\qquad
+		\mathcal F(\delta_a)=1.
+	\]
+	解释第一个公式中的两种上界分别对应什么平坦分解，并说明为什么单个正点不能由紧支一维流填充。
+\end{exercise}
+\begin{solution}
+	若 \(a=b\)，第一式两边都为零。以下设 \(d=|b-a|>0\)。取 \(R=\delta_b-\delta_a\)、\(S=0\)，得到上界二；取 \(R=0\)、\(S\) 为从 \(a\) 到 \(b\) 的有向线段，得到上界 \(d\)。前者保留两个端点作为本体误差，后者完全用线段填充。
+
+	为证下界，令 \(e=(b-a)/d\)、\(m=(a+b)/2\)，取有界的 \(1\)-Lipschitz 函数
+	\[
+		\psi(x)=\max\{-1,\min\{1,e\cdot(x-m)\}\}.
+	\]
+	则 \(|\psi|\le1\)，且 \(\psi(b)-\psi(a)=\min\{d,2\}\)。将它乘一个在两点附近等于一、梯度至多 \(\varepsilon\) 的大尺度紧支截断，所得函数的 Lipschitz 常数不超过 \(1+\varepsilon\)。再作足够小半径的非负卷积，并除以 \(1+\varepsilon\)，便得到满足 \(\|\varphi\|_\infty\le1\)、\(\|\mathrm d\varphi\|_\infty\le1\) 的光滑紧支测试函数。令卷积半径和 \(\varepsilon\) 趋零，其两点值之差趋于 \(\min\{d,2\}\)。由平坦对偶公式得到所需下界。
+
+	对单个正点，取 \(R=\delta_a,S=0\) 得上界一。另取在 \(a\) 附近等于一、取值在 \([0,1]\) 中且梯度至多一的光滑紧支函数，则对偶公式给出下界一。
+
+	若紧支一维流 \(S\) 满足 \(\partial S=\delta_a\)，取在 \(\operatorname{spt}S\cup\{a\}\) 邻域等于一的紧支测试函数 \(\eta\)，便有
+	\[
+		1=\delta_a(\eta)=\partial S(\eta)=S(\mathrm d\eta)=0,
+	\]
+	矛盾。因此零维边界的总系数为零是紧支填充的必要条件。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:annular-current-cancellation}
+	在 \(\mathbb R^2\) 中取标准取向。对 \(0<\varepsilon<1\)，令
+	\[
+		A_\varepsilon=\{x:1<|x|<1+\varepsilon\},\qquad
+		S_\varepsilon=\lBrack A_\varepsilon\rBrack,\qquad
+		T_\varepsilon=\partial S_\varepsilon.
+	\]
+	求 \(T_\varepsilon\) 两个圆周分支的取向、\(\mathbf M(T_\varepsilon)\) 及 \(\mathbf M(\partial T_\varepsilon)\)。证明 \(T_\varepsilon\) 平坦收敛于零，并证明其质量测度弱星收敛于 \(2\mathcal H^1\llcorner\partial B_1\)。说明这与流的弱极限为何不同。
+\end{exercise}
+\begin{solution}
+	环域的外圆周取逆时针方向，内圆周取顺时针方向。因此若 \(C_r\) 表示半径 \(r\) 的逆时针有向圆周，则
+	\[
+		T_\varepsilon=C_{1+\varepsilon}-C_1,
+		\qquad \mathbf M(T_\varepsilon)=2\pi(1+\varepsilon)+2\pi,
+		\qquad \partial T_\varepsilon=0.
+	\]
+	由于 \(T_\varepsilon=\partial S_\varepsilon\)，平坦范数满足
+	\[
+		\mathcal F(T_\varepsilon)\le\mathbf M(S_\varepsilon)
+		=\pi\bigl((1+\varepsilon)^2-1\bigr)\longrightarrow0.
+	\]
+	所以流 \(T_\varepsilon\) 弱收敛于零，但它的质量趋于 \(4\pi\)，并不趋于零流的质量。
+
+	对任意连续紧支函数 \(\varphi\)，极坐标参数给出
+	\[
+	\begin{aligned}
+		\int\varphi\,\mathrm d\|T_\varepsilon\|
+		&=\int_0^{2\pi}\varphi((1+\varepsilon)(\cos t,\sin t))(1+\varepsilon)\,\mathrm dt\\
+		&\quad+\int_0^{2\pi}\varphi(\cos t,\sin t)\,\mathrm dt\\
+		&\longrightarrow2\int_{\partial B_1}\varphi\,\mathrm d\mathcal H^1.
+	\end{aligned}
+	\]
+	两种极限记录的信息不同：流的配对保留圆周取向，重合后两个相反的取向抵消；质量测度先取绝对值，所以两份长度相加。这个例子同时满足共同紧支与统一正规质量界，说明这些紧性条件仍不保证质量在极限中保持。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:cubical-staircase-flat-mass}
+	在 \(\mathbb R^2\) 中，令 \(T\) 为从 \((0,0)\) 指向 \((1,1)\) 的对角线段积分流。对正整数 \(m\)，令 \(h=1/m\)，以折线路径
+	\[
+	(ih,ih)\longrightarrow((i+1)h,ih)
+	\longrightarrow((i+1)h,(i+1)h),\qquad 0\le i<m,
+	\]
+	定义网格积分流 \(P_m\)。计算 \(\mathbf M(T)\)、\(\mathbf M(P_m)\) 及 \(\mathbf M(P_m-T)\)，并构造整数 \(2\) 流 \(S_m\)，证明
+	\[
+	\partial S_m=P_m-T,\qquad \mathcal F(P_m-T)\le\frac1{2m}.
+	\]
+	进一步证明，在任意坐标立方网格上，凡有限多面体 \(1\) 流 \(P\) 满足
+	\(\partial P=\delta_{(1,1)}-\delta_{(0,0)}\)，都有 \(\mathbf M(P)\ge2\)。据此说明，固定坐标网格的平坦逼近为何不必保持质量。
+\end{exercise}
+\begin{solution}
+	对角线的长度为 \(\sqrt2\)，而折线有 \(m\) 个水平段和 \(m\) 个竖直段，每段长 \(h\)，因此
+	\[
+	\mathbf M(T)=\sqrt2,\qquad \mathbf M(P_m)=2.
+	\]
+	两条路径的交集只有有限个顶点，具有零 \(\mathcal H^1\) 测度；相应质量测度互相奇异，所以
+	\(\mathbf M(P_m-T)=2+\sqrt2\)。
+
+	对每个 \(i\)，令 \(A_i=(ih,ih)\)、\(B_i=((i+1)h,ih)\)、\(C_i=((i+1)h,(i+1)h)\)。按 \((A_i,B_i,C_i)\) 取向的三角形为正向，且
+	\[
+	\partial[A_iB_iC_i]=[A_iB_i]+[B_iC_i]-[A_iC_i].
+	\]
+	将这些三角形的积分流相加得到 \(S_m\)。各三角形内部不交，故
+	\[
+	\partial S_m=P_m-T,\qquad
+	\mathbf M(S_m)=m\frac{h^2}{2}=\frac1{2m}.
+	\]
+	在平坦范数定义中取零余项与填充 \(S_m\)，即得所需上界。于是 \(P_m\) 平坦收敛、从而弱收敛于 \(T\)，质量却始终为二，质量范数误差也不趋零。
+
+	对最后一问，取紧支光滑函数 \(\phi\)，在 \(\operatorname{spt}P\) 的一个邻域内等于 \(x+y\)。边界公式给出
+	\[
+	P(\mathrm d\phi)=\partial P(\phi)=2.
+	\]
+	每个网格边的单位切向量是 \(\pm e_1\) 或 \(\pm e_2\)，而
+	\(\mathrm d\phi=\mathrm dx+\mathrm dy\) 在这些方向上的绝对值都等于一。因此逐边估计便有
+	\(2=|P(\mathrm d\phi)|\le\mathbf M(P)\)。这个估计使用网格允许的切向方向；它不声称 \(\mathrm dx+\mathrm dy\) 在所有单位方向上的模都小于一。网格流的质量下界二严格大于极限对角线的质量 \(\sqrt2\)，所以变形定理中的固定维数倍数不能仅靠细化这一坐标网格改成趋于一的倍数。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:real-current-isoperimetric-amplitude}
+	设 \(1\le k<n\)。令 \(Q=[0,1]^{k+1}\times\{0\}^{n-k-1}\) 取标准取向，\(Z=\partial[Q]\)，并对 \(0<\lambda<1\) 令 \(T_\lambda=\lambda Z\)。证明 \(T_\lambda\) 是紧支实系数正规闭流，且每个有限质量填充 \(V\) 若满足 \(\partial V=T_\lambda\)，都有
+	\[
+	\mathbf M(V)\ge c_{n,k}\lambda.
+	\]
+	由此说明，不存在对所有实系数正规闭 \(k\) 流统一成立的常数 \(C\)，使每个这样的流都可填充为
+	\(\mathbf M(V)\le C\mathbf M(T)^{(k+1)/k}\)。指出整数流的证明在哪一步排除了这个反例。
+\end{exercise}
+\begin{solution}
+	立方体的多面体边界是有限质量整数流，且 \(\partial Z=0\)。因此实数倍 \(T_\lambda\) 正规、紧支、闭，并且
+	\[
+	\mathbf M(T_\lambda)=\lambda\mathbf M(Z)=2(k+1)\lambda.
+	\]
+	取紧支光滑 \(k\) 形式 \(\alpha\)，在 \(Q\) 的邻域内等于
+	\(x_1\,\mathrm dx_2\wedge\cdots\wedge\mathrm dx_{k+1}\)。Stokes 公式给出
+	\[
+	Z(\alpha)=[Q](\mathrm d\alpha)=1.
+	\]
+	记 \(L=\sup_x\|\mathrm d\alpha_x\|_*<\infty\)。对任何所述填充 \(V\)，由边界定义和质量对偶界，
+	\[
+	\lambda=T_\lambda(\alpha)=V(\mathrm d\alpha)
+	\le L\mathbf M(V).
+	\]
+	所以可取 \(c_{n,k}=1/L>0\)，且不需要预先知道 \(V\) 的支集。
+
+	若存在题设统一上界，则同一个填充必须满足
+	\[
+	c_{n,k}\lambda
+	\le C\bigl(2(k+1)\lambda\bigr)^{(k+1)/k}.
+	\]
+	除以 \(\lambda\)，再令 \(\lambda\downarrow0\)，右侧趋零，矛盾。实系数流可以通过缩小重数任意减小质量，几何尺度却完全不变。
+
+	整数流等周填充证明使用了：固定 \(h\) 网格上，非零整数多面体 \(k\) 流的质量至少为 \(h^k\)。实系数多面体流的系数可任意接近零，这一离散下界不成立，所以不能从质量上界迫使网格流消失。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:current-nontangent-weak-limit}
+	在 \(\mathbb R^2\) 中，对 \(j\ge1\) 令 \(T_j\) 是 \(j\) 条水平线段
+	\[
+		[0,1/j]\times\{i/j\},\qquad i=1,\ldots,j,
+	\]
+	从左向右取向后对应整数流之和。计算 \(\mathbf M(T_j)\) 与 \(\mathbf M(\partial T_j)\)，求 \(T_j\) 的弱极限 \(T\)。证明 \(\partial T\) 不具有局部有限质量，并说明即使 \(\|T\|\) 集中于一条直线，\(T\) 也不是沿该直线的可整流流。
+\end{exercise}
+\begin{solution}
+	不同线段互不相交，每条长 \(1/j\)，所以
+	\[
+		\mathbf M(T_j)=1,\qquad
+		\partial T_j=\sum_{i=1}^j
+		\bigl(\delta_{(1/j,i/j)}-\delta_{(0,i/j)}\bigr),
+		\qquad \mathbf M(\partial T_j)=2j.
+	\]
+	对紧支光滑一形式 \(\omega=a(x,y)\,\mathrm dx+b(x,y)\,\mathrm dy\)，有
+	\[
+		T_j(\omega)=\sum_{i=1}^j\int_0^{1/j}a(x,i/j)\,\mathrm dx.
+	\]
+	将每项中的 \(a(x,i/j)\) 换成 \(a(0,i/j)\)，总误差不超过
+	\(\|\partial_xa\|_\infty/(2j)\)。剩下的是 Riemann 和，故
+	\[
+		T(\omega)=\int_0^1a(0,y)\,\mathrm dy,\qquad
+		\|T\|=\mathcal H^1\llcorner(\{0\}\times[0,1]).
+	\]
+	这个向量测度在竖直线段上处处指向水平方向。
+
+	对测试函数 \(\varphi\)，
+	\[
+		\partial T(\varphi)=T(\mathrm d\varphi)
+		=\int_0^1\partial_x\varphi(0,y)\,\mathrm dy.
+	\]
+	取非负 \(\eta\in C_c^\infty((0,1))\)，使 \(\int\eta=1\)，再取 \(\chi\in C_c^\infty(\mathbb R)\)，在零的邻域为一。令
+	\(\varphi_m(x,y)=\chi(x)\eta(y)\sin(mx)\)。
+	这些函数支于一个共同紧集，上确界范数一致有界，而
+	\[
+		\partial T(\varphi_m)=m.
+	\]
+	因此 \(\partial T\) 不能由局部有限测度表示，\(T\) 不是正规流。
+
+	若 \(T\) 是可整流流，其取向应在 \(\|T\|\)-几乎每点平行于竖直切线；于是它作用在 \(a\,\mathrm dx\) 上应为零。实际取 \(a\) 在该线段附近等于一时，\(T(a\,\mathrm dx)=1\)，矛盾。这个例子同时显示：有界质量不能控制极限边界，而测度支集的可整流性也不能代替向量的切向性。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:current-tightness-global-flat}
+	设 \(T_j\in\mathcal I_k(\mathbb R^n)\)，并且
+	\[
+		\sup_j\bigl(\mathbf M(T_j)+\mathbf M(\partial T_j)\bigr)<\infty,
+		\qquad
+		\lim_{R\to\infty}\sup_j
+		\|T_j\|(\mathbb R^n\setminus B_R)=0.
+	\]
+	证明存在子列及 \(T\in\mathcal I_k(\mathbb R^n)\)，使
+	\(\mathcal F(T_j-T)\to0\)。证明不必额外假设边界质量在无穷远处一致紧。解释为什么正文中平移单位圆的例子不满足上述条件。
+\end{exercise}
+\begin{solution}
+	局部整数流紧性给出子列 \(T_j\rightharpoonup T\)，其中 \(T\) 局部整数。对递增球使用质量下半连续性并令半径趋于无穷，得到
+	\[
+		\mathbf M(T)+\mathbf M(\partial T)
+		\le\liminf_j
+		\bigl(\mathbf M(T_j)+\mathbf M(\partial T_j)\bigr)<\infty.
+	\]
+	故 \(T\) 是全空间整数流。
+
+	给定 \(\varepsilon>0\)，选 \(R\) 使所有 \(j\) 都有
+	\(\|T_j\|(\mathbb R^n\setminus B_R)<\varepsilon\)。由于
+	\(\mathbb R^n\setminus\overline{B_R}\) 是开集，局部开集下半连续性再穷尽到无界开集，得到
+	\[
+		\|T\|(\mathbb R^n\setminus\overline{B_R})\le\varepsilon.
+	\]
+	取 \(0\le\eta\le1\) 光滑紧支，在 \(\overline{B_R}\) 的邻域为一。正文的局部平坦结论说明
+	\(\mathcal F(\eta T_j-\eta T)\to0\)。
+	因为 \(1-\eta\) 在 \(\overline{B_R}\) 的邻域为零，
+	\[
+		\mathbf M((1-\eta)T_j)\le\varepsilon,\qquad
+		\mathbf M((1-\eta)T)\le\varepsilon.
+	\]
+	用 \(\mathcal F(A)\le\mathbf M(A)\) 与三角不等式，得到
+	\[
+		\limsup_j\mathcal F(T_j-T)
+		\le 2\varepsilon.
+	\]
+	令 \(\varepsilon\downarrow0\)，便得所需收敛。这里边界的总质量界用于正规流紧性，而截去远处部分的平坦误差直接由该部分的质量控制，所以不需要再对边界尾部加条件。
+
+	平移单位圆 \(C_j\) 的全部质量最终位于任意固定球外，故对每个 \(R\) 都有
+	\(\sup_j\|C_j\|(\mathbb R^2\setminus B_R)=2\pi\)。它违反的正是所给质量紧性条件。
+\end{solution}

@@ -1,12 +1,12 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 24.2 共形变化与变分方程
 % 纲要位置：几何学计划纲要.md，第 3135 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * n≥3 时标量曲率变换
-% * 共形 Laplace 的归一化
+% * 共形 Laplace 算子的协变性
 % * Yamabe 泛函和临界指数
 % * Euler–Lagrange 方程及正性
 % 
@@ -15,21 +15,151 @@
 \section{共形变化与变分方程}
 \label{g3:sec:2402}
 
-待撰写
+共形因子控制每一点的长度单位。标量曲率变化本来同时含有因子的一阶、二阶导数；选定幂次 \(4/(n-2)\) 后，一阶导数的平方项恰好抵消，留下一个线性椭圆算子与一个临界非线性幂。这是 Yamabe 问题可以用能量处理的原因。
 
 \subsection{\texorpdfstring{\(n\ge3\) 时标量曲率变换}{n≥3 时标量曲率变换}}
 \label{g3:subsec:2402:01}
-待撰写
+第3.4节的\cref{g3:thm:conformal-curvature}已经从联络差计算曲率。为了核对这里使用的符号，令 \(\widehat g=e^{2f}g\)，重写其标量部分：
+\[
+	s_{\widehat g}=e^{-2f}\bigl(s_g+2(n-1)\Delta_gf
+	-(n-1)(n-2)|\mathrm df|_g^2\bigr).
+\]
+现在取 \(f=2\log u/(n-2)\)。由于本书使用非负 Laplace 算子，链式公式为
+\[
+	\Delta_g\log u=u^{-1}\Delta_gu+u^{-2}|\mathrm du|_g^2.
+\]
+代入后，来自 \(\Delta_gf\) 和 \(|\mathrm df|^2\) 的平方项系数都为 \(4(n-1)/(n-2)\)，符号相反，遂得
+\begin{equation}\label{g3:eq:yamabe-scalar-transformation}
+	s_{g_u}=u^{-(p-1)}L_gu,
+	\qquad L_g=a_n\Delta_g+s_g.
+\end{equation}
+这也就是\cref{g3:cor:conformal-scalar-power}在本章记号下的形式。要求 \(s_{g_u}=\lambda\) 为常数，等价于
+\begin{equation}\label{g3:eq:yamabe-equation}
+	L_gu=\lambda u^{p-1},\qquad u>0.
+\end{equation}
+其中 \(\lambda\) 也是未知量；只有选定体积或另一项规范化，才能消除常数伸缩。
 
-\subsection{共形 Laplace 的归一化}
+\begin{example}
+	若 \(g\) 已有常标量曲率 \(s\)，取常因子 \(u=c>0\)，则
+	\[
+		s_{g_c}=s c^{-4/(n-2)},\qquad
+		\operatorname{Vol}(g_c)=c^p\operatorname{Vol}(g).
+	\]
+	两式相乘得到 \(s_{g_c}\operatorname{Vol}(g_c)^{2/n}=s\operatorname{Vol}(g)^{2/n}\)。这提供了检验泛函幂次的一种直接方法。
+\end{example}
+
+\subsection{共形 Laplace 算子的协变性}
 \label{g3:subsec:2402:02}
-待撰写
+\begin{proposition}\label{g3:prop:conformal-laplacian-covariance}
+	设 \(u>0\) 光滑，\(\widehat g=u^{4/(n-2)}g\)。对任意光滑实函数 \(v\)，有
+	\begin{equation}\label{g3:eq:conformal-laplacian-covariance}
+		L_{\widehat g}v=u^{-(p-1)}L_g(uv).
+	\end{equation}
+	因此对 \(v\in H^1(M)\)，
+	\begin{equation}\label{g3:eq:yamabe-conformal-energy}
+		E_{\widehat g}(v)=E_g(uv),\qquad
+		\|v\|_{L^p(\widehat g)}=\|uv\|_{L^p(g)},\qquad
+		Q_{\widehat g}(v)=Q_g(uv).
+	\end{equation}
+	特别地，\(Y(M,[g])\) 与共形类代表的选择无关。
+\end{proposition}
+\begin{proof}
+	先令 \(v>0\)。同一个度量既可以写成 \(v^{4/(n-2)}\widehat g\)，也可以写成 \((uv)^{4/(n-2)}g\)。分别对两次变化使用式\eqref{g3:eq:yamabe-scalar-transformation}，得到
+	\[
+		v^{-(p-1)}L_{\widehat g}v=(uv)^{-(p-1)}L_g(uv),
+	\]
+	于是得到协变公式。对一般光滑 \(v\)，取常数 \(A>\|v\|_\infty\)，把已证式分别用于 \(v+A\) 和 \(A\)，相减即得。
+
+	分部积分并使用 \(\mu_{\widehat g}=u^p\mu_g\)，得
+	\[
+		\int_M vL_{\widehat g}v\,\mu_{\widehat g}
+		=\int_MuvL_g(uv)\,\mu_g=E_g(uv).
+	\]
+	范数等式直接来自体积公式。乘以固定光滑正函数 \(u\) 是 \(H^1\) 的有界同构，故稠密性将等式延到 \(H^1\)，并在取下确界时给出竞争者之间的双射。
+\end{proof}
+
+有些文献把 \(L_g\) 除以 \(a_n\)，写成 \(\Delta_g+(n-2)s_g/[4(n-1)]\)；若还把 Laplace 算子的符号反转，微分项又变号。引用其方程或最佳常数时，需要同时换算二次型和乘子。本章固定 \(a_n\Delta_g+s_g\)，使解对应的乘子直接等于标量曲率。
 
 \subsection{Yamabe 泛函和临界指数}
 \label{g3:subsec:2402:03}
-待撰写
+对任意度量 \(h\)，定义规范化总标量曲率
+\[
+	\mathcal S(h)=\frac{\int_Ms_h\,\mu_h}
+	{\operatorname{Vol}(M,h)^{(n-2)/n}}.
+\]
+式\eqref{g3:eq:yamabe-scalar-transformation}和体积公式给出
+\begin{equation}\label{g3:eq:yamabe-geometric-functional}
+	\mathcal S(g_u)
+	=\frac{\int_MuL_gu\,\mu_g}{(\int_Mu^p\,\mu_g)^{2/p}}
+	=Q_g(u).
+\end{equation}
+因此 \(Q_g\) 称为\term[Yamabe fanhan]{Yamabe 泛函}[Yamabe functional]。由\cref{g3:prop:yamabe-admissible-density}，在光滑共形度量中取 \(\mathcal S\) 的下确界，等于在整个 \(H^1\) 中取 \(Q_g\) 的下确界。
+
+\ProseParagraphBreak
+临界指数 \(p\) 同时来自几何体积和分析缩放。对 \(\mathbb R^n\) 上的紧支函数设
+\[
+	v_\varepsilon(x)=\varepsilon^{-(n-2)/2}v(x/\varepsilon).
+\]
+换元 \(x=\varepsilon y\) 后，\(\int|\mathrm dv_\varepsilon|^2\) 和 \(\int|v_\varepsilon|^p\) 都不变，而 \(\int|v_\varepsilon|^q=\varepsilon^{n-q(n-2)/2}\int|v|^q\)。当 \(q<p\) 时，后一幂次为正；在 \(q=p\) 时，它正好消失。一团函数可以越缩越小，同时保留全部导数能量和临界范数。第24.4节会用达到锐 Sobolev 常数的气泡把这个现象定量化。
+
+\begin{proposition}\label{g3:prop:yamabe-second-variation}
+	设 \(u>0\) 光滑、\(\int_Mu^p\,\mu_g=1\)，且 \(L_gu=\lambda u^{p-1}\)。若 \(h\in H^1(M)\) 满足 \(\int_Mu^{p-1}h\,\mu_g=0\)，则在该约束方向上的二变分为
+	\begin{equation}\label{g3:eq:yamabe-second-variation}
+		\mathrm D^2Q_g(u)[h,h]
+		=2\left(E_g(h)-(p-1)\lambda\int_Mu^{p-2}h^2\,\mu_g\right).
+	\end{equation}
+	所以约束局部极小点必使括号中的二次型非负。
+\end{proposition}
+\begin{proof}
+	由约束切向条件，\(C(u+th)=1+\tfrac12p(p-1)t^2\int u^{p-2}h^2+o(t^2)\)。另一方面，方程给出 \(E_g(u)=\lambda\) 与 \(\int hL_gu=0\)，故 \(E_g(u+th)=\lambda+t^2E_g(h)\)。把两式代入 \(Q=E C^{-2/p}\)，利用 \((1+x)^{-2/p}=1-(2/p)x+o(x)\)，比较 \(t^2\) 系数即得。曲线 \((u+th)/\|u+th\|_p\) 属于能量空间中的约束，且 \(Q\) 在常数伸缩下不变，因而此式也就是约束 Hessian。若只考虑光滑正竞争者，先取光滑 \(h\)，利用 \(u\) 的正下界；取光滑逼近 \(h_j\to h\) 后，以 \(h_j-u\int_Mu^{p-1}h_j\,\mu_g\) 修正，它们仍趋于 \(h\) 并保持切向条件，故必要非负性延到全部切向 \(H^1\) 方向。
+\end{proof}
 
 \subsection{Euler–Lagrange 方程及正性}
 \label{g3:subsec:2402:04}
-待撰写
+\begin{proposition}\label{g3:prop:yamabe-euler-lagrange}
+	若 \(u\ge0\)、\(\|u\|_p=1\) 为 \(Y\) 的极小点，则对每个 \(h\in H^1(M)\)，
+	\begin{equation}\label{g3:eq:yamabe-weak-equation}
+		\int_M(a_n\langle\mathrm du,\mathrm dh\rangle+s_guh)\,\mu_g
+		=Y\int_Mu^{p-1}h\,\mu_g.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	\(E_g\) 是连续二次型，\cref{g3:lem:yamabe-constraint-smoothness}给出约束的满射微分。由\cref{g3:prop:constraint-lagrange-banach}，存在常数 \(\eta\) 使 \(\mathrm DE_g(u)=\eta\,\mathrm DC(u)\)。将系数吸收到 \(\lambda=\eta p/2\)，得到右端为 \(\lambda\int u^{p-1}h\) 的弱方程；取 \(h=u\)，由约束得 \(\lambda=E_g(u)=Y\)。所有积分均有定义，因为 \(u^{p-1}\in L^{p/(p-1)}\) 且 \(h\in L^p\)。极小点虽然非负，却仍是整个实约束上的极小点，所以可以使用任意实切向方向。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:yamabe-weak-regularity}
+	设 \((M^n,g)\) 为闭连通光滑黎曼流形，\(n\ge3\)。若 \(u\in H^1(M)\) 非负、非零，且对某个实数 \(\lambda\) 弱满足 \(L_gu=\lambda u^{p-1}\)，则 \(u\) 光滑且处处严格正。因此单位极小点给出单位体积、常标量曲率为 \(Y\) 的光滑度量。
+\end{theorem}
+\begin{proof}
+	初始嵌入只有 \(u\in L^p\)。直接把 \(u^{p-1}\) 放进椭圆估计，并不会自动提高临界指数。先将方程写成
+	\[
+		\Delta_gu=Vu,\qquad V=\frac{\lambda u^{p-2}-s_g}{a_n}\in L^{n/2}(M),
+	\]
+	其中 \((p-2)n/2=p\)。我们利用这个固定函数的高值部分具有任意小的 \(L^{n/2}\) 范数，先证明 \(u\) 属于每个有限指数的 \(L^q\)。
+
+	取 \(\beta\ge1\)、\(K>0\)，令 \(u_K=\min\{u,K\}\)，并用 \(u u_K^{2\beta-2}\) 测试弱方程。固定 \(K\) 时，这个复合函数的导数有界，故测试合法。置 \(w=u u_K^{\beta-1}\)。在 \(u<K\) 处，测试所得左端的密度为 \((2\beta-1)u^{2\beta-2}|\mathrm du|^2\)，而 \(|\mathrm dw|^2=\beta^2u^{2\beta-2}|\mathrm du|^2\)；在 \(u>K\) 处两者均为 \(K^{2\beta-2}|\mathrm du|^2\)。于是
+	\[
+		\int_M|\mathrm dw|^2\,\mu_g\le\beta^2\int_M|V|w^2\,\mu_g.
+	\]
+	由紧流形 Sobolev 不等式，存在固定 \(C_S\)，使
+	\[
+		\|w\|_p^2\le C_S\beta^2\int|V|w^2+C_S\|w\|_2^2.
+	\]
+	将 \(|V|\) 分成不超过 \(A\) 的部分和超过 \(A\) 的部分。Hölder 不等式给出
+	\[
+		\int|V|w^2\le A\|w\|_2^2+
+		\|V\mathbf1_{\{|V|>A\}}\|_{n/2}\|w\|_p^2.
+	\]
+	固定 \(\beta\) 后可选 \(A\)，使最后一项乘上 \(C_S\beta^2\) 后不超过 \(\tfrac12\|w\|_p^2\)。吸收它，得到与 \(K\) 无关的
+	\begin{equation}\label{g3:eq:yamabe-integrability-gain}
+		\|u u_K^{\beta-1}\|_p^2\le C_\beta\|u u_K^{\beta-1}\|_2^2.
+	\end{equation}
+	若已知 \(u\in L^{2\beta}\)，右端被 \(C_\beta\int u^{2\beta}\) 控制。令 \(K\to\infty\)，由单调收敛得 \(u\in L^{\beta p}\)。从已知的 \(L^p\) 出发，依次取 \(2\beta=p,p^2/2,\ldots\)，每步将可积指数乘以 \(p/2>1\)，因而得到任意有限的可积指数。
+
+	现在 \(\lambda u^{p-1}\in L^q\) 对每个 \(1<q<\infty\) 成立。对光滑系数算子 \(L_g\) 使用\cref{g3:thm:elliptic-distribution-lp}，得 \(u\in W^{2,q}\)。取 \(q>n\)，得到 \(u\in C^{1,\alpha}\)，其中可取 \(0<\alpha<1-n/q\)。函数 \(t\mapsto t^{p-1}\) 在非负有界区间上为 \(C^1\)，所以右端为 Hölder 连续；对正主部算子 \(-L_g\) 使用\cref{g3:cor:schauder-distribution-smooth-coefficients}，进一步给出 \(u\in C^{2,\alpha}\)。此时 \(V\) 有界。与\cref{g3:prop:yamabe-first-eigenvalue-sign}的正性论证相同，选 \(C\ge\max\{0,-\min V\}\)，对 \(-u\) 使用算子 \(\operatorname{div}_g\nabla-C\) 的强最大值原理。若 \(u\) 在某点为零，连通性迫使它恒为零，与假设矛盾，故 \(u>0\)。
+
+	紧性给出 \(\min_Mu>0\)。将 \(t^{p-1}\) 在 \(u\) 的取值区间外光滑延拓，就可使用\cref{g3:thm:semilinear-sobolev-bootstrap}反复提高正则性，得到 \(u\in C^\infty\)。曲率和体积结论最后由式\eqref{g3:eq:yamabe-scalar-transformation}及 \(\int u^p=1\) 得到。
+\end{proof}
+
+上述吸收所选的 \(A\) 依赖具体解 \(u\) 和当前指数 \(\beta\)。因此这一证明先保证每个弱解的光滑性；要对一列临界解取得一致界，还须控制其高值部分，不能仅由共同的 \(H^1\) 范数界推出。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

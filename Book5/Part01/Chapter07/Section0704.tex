@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 7.4 忠实平坦及局部结构
 % 纲要位置：几何学计划纲要.md，第 5283 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,238 @@
 \section{忠实平坦及局部结构}
 \label{g5:sec:0704}
 
-待撰写
+前一节已经证明，有限模的完备化既保持正合列，又等于与完备化环张量。把这两件事放在一起，便得到完备化的平坦性。对于局部环，这个扩张还保留剩余域，从而忠实平坦。我们将用这些事实比较理想、维数和一阶结构，再说明补齐无穷级数与反演分母、提升代数方程的根各自完成什么工作。
 
 \subsection{理想张量判据推出平坦}
 \label{g5:subsec:0704:01}
-待撰写
+
+\begin{theorem}\label{g5:thm:completion-flat}
+	设 \(A\) 为 Noether 环，\(I\subseteq A\) 为理想，\(\widehat A=\varprojlim_{n\geq1}A/I^n\)。则自然同态 \(A\to\widehat A\) 平坦。
+\end{theorem}
+\begin{proof}
+	由\cref{g5:thm:flat-ideal-criterion}，只需证明任意有限生成理想 \(J\subseteq A\) 的包含张量后仍单射。Noether 性保证 \(J\) 和 \(A/J\) 都为有限模。对
+	\[
+		0\longrightarrow J\longrightarrow A\longrightarrow A/J\longrightarrow0
+	\]
+	应用\cref{g5:thm:completion-exact}，得到单射 \(\widehat J\to\widehat A\)。再由自然的张量表示\cref{g5:thm:completion-tensor}，这张单射正是
+	\[
+		J\otimes_A\widehat A\longrightarrow A\otimes_A\widehat A=\widehat A.
+	\]
+	因此理想判据的全部要求成立。
+\end{proof}
+
+这条证明的有限性落在 \(J\) 上：完备化保持的是有限模正合列，而平坦性要求张量保持任意模单射。第六章的理想判据把两种范围接在了一起。结果及同一证明思路见\cite[第8节，定理8.8，第60页]{Matsumura1989}。
+
+\ProseParagraphBreak
+
+平坦性本身并不保证 \(A\to\widehat A\) 单射。例如取 \(A=k\times k\)、\(I=k\times0\)，有 \(I^n=I\)，所以 \(\widehat A=A/I\cong k\)。完备化在这里是一个平坦投影。下一步需要确定，何时它还保留对全部模的检测能力。
 
 \subsection{剩余域不变与忠实性}
 \label{g5:subsec:0704:02}
-待撰写
+
+\begin{theorem}\label{g5:thm:completion-faithful}
+	设 \(A\) 为 Noether 环，\(I\subseteq A\) 为理想。则 \(A\to\widehat A\) 忠实平坦，当且仅当
+	\[
+		I\subseteq\operatorname{Jac}(A).
+	\]
+	特别地，若 \((A,\mathfrak m,\kappa)\) 为非零 Noether 局部环，且完备化取 \(\mathfrak m\) 进拓扑，则 \(\widehat A\) 为 Noether 局部环，其极大理想和剩余域分别为
+	\[
+		\widehat{\mathfrak m}=\mathfrak m\widehat A,
+		\qquad \widehat A/\widehat{\mathfrak m}\cong\kappa,
+	\]
+	且 \(A\to\widehat A\) 忠实平坦。
+\end{theorem}
+\begin{proof}
+	对任意极大理想 \(\mathfrak p\subset A\)，有限模张量表示给出
+	\[
+		\widehat A/\mathfrak p\widehat A
+		\cong\widehat{A/\mathfrak p}.
+	\]
+	若 \(I\subseteq\mathfrak p\)，右侧的 \(I\) 作用为零，其完备化就是非零域 \(A/\mathfrak p\)。若 \(I\nsubseteq\mathfrak p\)，\(I\) 在这个域中的像为单位理想，全部截断都是零，右侧因而为零。由上一条平坦性定理及\cref{g5:thm:faithful-flat-spectrum}，忠实性恰好要求第一种情形对每个极大理想成立，即 \(I\subseteq\operatorname{Jac}(A)\)。
+
+	现在令 \(I=\mathfrak m\)。\cref{g5:thm:completion-noetherian}给出 \(\widehat A\) Noether；\cref{g5:prop:completion-quotient}给出
+	\(\widehat A/\mathfrak m\widehat A\cong A/\mathfrak m=\kappa\)，所以 \(\mathfrak m\widehat A\) 是极大理想。若 \(b\notin\mathfrak m\widehat A\)，选 \(a\in A\) 使它在这个商域中与 \(b\) 同余。此时 \(a\notin\mathfrak m\)，故 \(a\) 在 \(A\) 中可逆，并可写
+	\[
+		b=a(1-u),\qquad u\in\mathfrak m\widehat A.
+	\]
+	由完备性，\(\sum_{j\geq0}u^j\) 收敛；部分和与 \(1-u\) 的乘积为 \(1-u^{N+1}\)，极限为 \(1\)。因此 \(b\) 可逆，说明所给极大理想唯一。最后 \(\mathfrak m=\operatorname{Jac}(A)\)，第一部分给出忠实平坦性。
+\end{proof}
+
+一般理想进完备化的忠实性判据及局部总结可对照\cite[第8节，定理8.14及节末总结，第62—63页]{Matsumura1989}。局部情形中，自然同态因而单射；这也与 Krull 交定理给出的 \(\bigcap_n\mathfrak m^n=0\) 一致。
 
 \subsection{维数和伴随分次比较}
 \label{g5:subsec:0704:03}
-待撰写
+
+完备化增加了可以同时拥有无穷多个系数的元素，却没有改变任何固定阶的截断。因此，从有限阶截断读取的伴随分次环、嵌入维数和长度函数应当保持不变。Krull 维数由素链定义，需要另外给出比较依据。
+
+\begin{proposition}\label{g5:prop:completion-graded-comparison}
+	设 \((A,\mathfrak m,\kappa)\) 为非零 Noether 局部环，\(M\) 为有限 \(A\) 模。取极大理想进完备化，令 \(\widehat{\mathfrak m}=\mathfrak m\widehat A\)。则存在自然同构
+	\[
+		\operatorname{gr}_{\mathfrak m}A
+		\cong\operatorname{gr}_{\widehat{\mathfrak m}}\widehat A,
+		\qquad
+		\operatorname{gr}_{\mathfrak m}M
+		\cong\operatorname{gr}_{\widehat{\mathfrak m}}\widehat M.
+	\]
+	这些同构保留分次及环、模的乘法。特别地，
+	\[
+		\operatorname{edim}A=\operatorname{edim}\widehat A,\qquad
+		\ell_A(M/\mathfrak m^{n+1}M)
+		=\ell_{\widehat A}(\widehat M/\widehat{\mathfrak m}^{\,n+1}\widehat M)
+		\quad(n\geq0).
+	\]
+\end{proposition}
+\begin{proof}
+	环的分次同构已由\cref{g5:prop:completion-associated-graded}证明。对模使用同样的相邻层核比较：\cref{g5:prop:completion-quotient}的商同构与截断映射相容，比较
+	\[
+		M/\mathfrak m^{n+1}M\longrightarrow M/\mathfrak m^nM
+	\]
+	和完备化后的同一映射，并取核，得到
+	\[
+		\mathfrak m^nM/\mathfrak m^{n+1}M
+		\cong
+		\widehat{\mathfrak m}^{\,n}\widehat M/
+		\widehat{\mathfrak m}^{\,n+1}\widehat M.
+	\]
+	当 \(M=A\) 时，同构由自然环同态诱导，因此保持齐次乘法；对一般 \(M\) 也保持环对模的作用。取 \(n=1\)、\(M=A\)，并使用两环相同的剩余域，就得到嵌入维数相等。最后，长度可按有限滤过的加性计算，每个分次商被极大理想零化，其长度正是作为 \(\kappa\) 向量空间的维数，故两侧长度相等。
+\end{proof}
+
+\begin{lemma}\label{g5:lem:flat-going-down}
+	设 \(A\to B\) 为平坦的交换含幺环同态。若
+	\(\mathfrak p\subseteq\mathfrak p'\) 为 \(A\) 的素理想，
+	\(\mathfrak q'\) 为 \(B\) 的素理想且收缩为 \(\mathfrak p'\)，则存在
+	\(\mathfrak q\subseteq\mathfrak q'\)，其收缩为 \(\mathfrak p\)。
+\end{lemma}
+\begin{proof}
+	相对局部检测\cref{g5:prop:flat-local-test}说明
+	\(A_{\mathfrak p'}\to B_{\mathfrak q'}\) 平坦。它是非零局部环之间的局部同态，由\cref{g5:cor:flat-local-faithful}忠实平坦，故谱映射满射。于是 \(A_{\mathfrak p'}\) 的素理想 \(\mathfrak pA_{\mathfrak p'}\) 有一个上方素理想。局部化的素理想对应把它送回所需的 \(\mathfrak q\subseteq\mathfrak q'\)，收缩再取局部化对应便为 \(\mathfrak p\)。
+\end{proof}
+
+\begin{theorem}\label{g5:thm:completion-dimension}
+	设 \((A,\mathfrak m)\) 为非零 Noether 局部环，\(\widehat A\) 为其极大理想进完备化。则
+	\[
+		\dim\widehat A=\dim A.
+	\]
+	因此 \(A\) 为正则局部环，当且仅当 \(\widehat A\) 为正则局部环。
+\end{theorem}
+\begin{proof}
+	设 \(d=\dim A\)。由\cref{g5:thm:system-of-parameters}，存在 \(d\) 个元素 \(a_1,\ldots,a_d\in\mathfrak m\)，其生成理想 \(J\) 满足 \(\sqrt J=\mathfrak m\)。因为 \(\mathfrak m\) 有限生成，存在 \(N\) 使 \(\mathfrak m^N\subseteq J\)：给每个生成元选一个落入 \(J\) 的幂，再对足够高次单项式使用抽屉原理。扩张到 \(\widehat A\) 得
+	\[
+		\widehat{\mathfrak m}^{\,N}
+		\subseteq J\widehat A\subseteq\widehat{\mathfrak m}.
+	\]
+	所以 \(J\widehat A\) 的根式为 \(\widehat{\mathfrak m}\)，它仍由 \(d\) 个元素生成。对 Noether 环 \(\widehat A\) 应用\cref{g5:thm:height-theorem}，得到 \(\dim\widehat A\leq d\)。\(d=0\) 时相同论证采用空生成元表。
+
+	反方向，取 \(A\) 中一条长度为 \(d\) 的素链
+	\[
+		\mathfrak p_0\subsetneq\cdots\subsetneq\mathfrak p_d=\mathfrak m.
+	\]
+	维数有限，故这样的链存在，且最长链的末项必为极大理想。以收缩为 \(\mathfrak m\) 的 \(\widehat{\mathfrak m}\) 为末端，逐次应用上个引理，得到 \(\widehat A\) 中收缩为整条给定素链的素链。相邻收缩不同，提升后的包含也严格，所以 \(\dim\widehat A\geq d\)。
+
+	最后，前一命题已经证明嵌入维数不变。两环都为 Noether 局部环，因此定义中的等式 \(\dim A=\operatorname{edim}A\) 在完备化前后等价。
+\end{proof}
+
+这里对维数的比较用了参数系和素链提升；长度函数的相同则来自逐阶商同构。二者共同说明，切锥的分次数据与局部维数都保留了下来。局部分支却可能增加：第五章的\cref{g5:exm:formal-node}给出一个整的结点局部环，其完备化同构于 \(k[[u,v]]/(uv)\)，具有两个极小素理想。因此维数不变并不要求素谱上的点一一对应。
 
 \subsection{扩张收缩与局部检测}
 \label{g5:subsec:0704:04}
-待撰写
+
+\begin{proposition}\label{g5:prop:completion-submodule-contraction}
+	设 \(A\) 为 Noether 环，\(I\subseteq\operatorname{Jac}(A)\)，\(M\) 为有限 \(A\) 模，\(N\subseteq M\)。把 \(M\) 嵌入 \(\widehat M\)，并把 \(\widehat N\) 识别为其中的子模，则
+	\[
+		M\cap\widehat N=N.
+	\]
+	特别地，对任意理想 \(J\subseteq A\)，有 \(J\widehat A\cap A=J\)。任意 \(A\) 模序列的正合性，以及同态的单射、满射和同构性质，都可在张量 \(\widehat A\) 后检测。
+\end{proposition}
+\begin{proof}
+	\cref{g5:thm:completion-faithful}及\cref{g5:thm:faithful-flat-equalizer}保证任意 \(A\) 模 \(L\) 的自然映射
+	\(L\to\widehat A\otimes_A L\) 单射。将此用于 \(M\) 和 \(M/N\)，再用完备化正合列
+	\[
+		0\longrightarrow\widehat N\longrightarrow\widehat M
+		\longrightarrow\widehat{M/N}\longrightarrow0,
+	\]
+	可知 \(m\in M\) 的像属于 \(\widehat N\)，恰好等价于 \(m+N\) 在 \(\widehat{M/N}\) 中为零，也就是 \(m\in N\)。取 \(M=A,N=J\)，张量表示把 \(\widehat J\) 的像识别为 \(J\widehat A\)。最后一项是\cref{g5:prop:faithful-flat-reflects-exactness}的应用；它对任意模成立，无需有限生成。
+\end{proof}
+
+注意最后一句的操作是与 \(\widehat A\) 张量。对无限生成模，尚不能用本章的有限模张量表示，把它随意改写为该模的逆极限完备化。下面的有限自由检测则完全落在已证范围内。
+
+\begin{corollary}\label{g5:cor:completion-free-detection}
+	设 \((A,\mathfrak m,\kappa)\) 为非零 Noether 局部环，\(M\) 为有限 \(A\) 模，\(r\geq0\)。则
+	\[
+		M\cong A^r\quad\Longleftrightarrow\quad
+		\widehat M\cong\widehat A^r.
+	\]
+\end{corollary}
+\begin{proof}
+	正方向由有限直和与完备化相容得到。反方向中，剩余域商同构说明
+	\(\dim_\kappa M/\mathfrak mM=r\)。提升一组基，Nakayama 引理给出满射 \(A^r\to M\)。完备化后，在选定 \(\widehat M\cong\widehat A^r\) 的识别下，得到一个方阵，其剩余域矩阵可逆，行列式因而是局部环 \(\widehat A\) 的单位。伴随矩阵公式给出该矩阵可逆，所以完备化后的映射为同构。由忠实平坦检测，原映射也为同构。\(r=0\) 时直接使用 Nakayama 引理。
+\end{proof}
 
 \subsection{完备化不是局部化或 Hensel 化}
 \label{g5:subsec:0704:05}
-待撰写
+
+在 \(A=k[x]_{(x)}\) 中，我们已经反演了所有在原点不为零的多项式；这些分母处理的是原点附近的正则函数。再作完备化得到 \(k[[x]]\)，其中的元素由所有相容截断决定。二者的区别可以不借助大小比较直接看出：任何局部化 \(A\to S^{-1}A\) 若仍使极大理想 \((x)\) 保持为真理想，则 \(S\) 必须避开 \((x)\)；这些元素在 \(A\) 中已经可逆，所以该局部化只给出 \(A\) 自身。因而只要 \(A\ne\widehat A\)，完备化就不可能是这种局部化。
+
+\ProseParagraphBreak
+
+提升单根是完备性的另一项效果。这通常称为 Hensel 引理。\footnote{Kurt Hensel（1861--1941），德国数学家，创立了 \(p\) 进数理论，对局部数论的发展有重要影响。}下面证明其单根版本；更一般的互素因式分解版本见\cite[第8节，定理8.3，第58页]{Matsumura1989}。
+
+\begin{theorem}[Hensel 单根提升]\label{g5:thm:complete-simple-root}
+	设 \((R,\mathfrak n)\) 为对 \(\mathfrak n\) 进拓扑完备且分离的局部环，\(F(Y)\in R[Y]\)，\(a_0\in R\)。若
+	\[
+		F(a_0)\in\mathfrak n,\qquad F'(a_0)\in R^\times,
+	\]
+	则存在唯一的 \(a\in a_0+\mathfrak n\) 使 \(F(a)=0\)。令
+	\[
+		a_{j+1}=a_j-F(a_j)F'(a_j)^{-1},
+	\]
+	则迭代有定义，且
+	\(F(a_j)\in\mathfrak n^{2^j}\)、\(a-a_j\in\mathfrak n^{2^j}\)。
+\end{theorem}
+\begin{proof}
+	多项式展开给出
+	\[
+		F(a+h)=F(a)+F'(a)h+h^2G(a,h)
+	\]
+	及 \(F'(a+h)-F'(a)\in(h)\)。若 \(a_j\equiv a_0\pmod{\mathfrak n}\)，则 \(F'(a_j)\) 模 \(\mathfrak n\) 与单位 \(F'(a_0)\) 相同，因而可逆。假设
+	\(F(a_j)\in\mathfrak n^{2^j}\)，把
+	\(h=-F(a_j)F'(a_j)^{-1}\) 代入展开式，一次项恰好消去，得
+	\[
+		a_{j+1}-a_j\in\mathfrak n^{2^j},\qquad
+		F(a_{j+1})\in\mathfrak n^{2^{j+1}}.
+	\]
+	归纳保证全部迭代有定义，且构成 Cauchy 列。完备性给出极限 \(a\)，多项式运算连续且环分离，故 \(F(a)=0\)。从固定的第 \(j\) 步起，后续差都在 \(\mathfrak n^{2^j}\) 中，逐阶截断说明 \(a-a_j\) 也属于该理想。
+
+	若 \(a,b\in a_0+\mathfrak n\) 都为根，因式分解给出
+	\[
+		0=F(b)-F(a)=(b-a)\bigl(F'(a)+(b-a)H\bigr).
+	\]
+	括号内模 \(\mathfrak n\) 为 \(F'(a_0)\) 的非零剩余类，故为单位，得到 \(a=b\)。
+\end{proof}
+
+采用单根表述，一个局部环若对每个首一多项式及其剩余域中的单根都能进行上述提升，就称为\term[Henseljubuhuan]{Hensel 局部环}[Henselian local ring]。因此完备局部环是 Hensel 局部环。对 \(A=\mathbb Q[x]_{(x)}\)，多项式 \(Y^2-(1+x)\) 在剩余域中有单根 \(1\)，但在 \(A\) 中没有根：一个有理函数的平方在不可约因子 \(x+1\) 上的阶必为偶数，而 \(1+x\) 的阶为一。它却在 \(\mathbb Q[[x]]\) 中有唯一常数项为 \(1\) 的根。这同时证明 \(A\ne\widehat A\)。
+
+\ProseParagraphBreak
+
+第15章的\subsecref{g5:subsec:1504:03}将构造 Hensel 化 \(A^h\)：它对从 \(A\) 到 Hensel 局部环的局部同态具有初始泛性质，即每张这样的映射都唯一经过 \(A^h\)。这个泛性质与补齐全部 Cauchy 列不同。下面直接证明，在上述有理系数例子中，完备化不具有这一初始性质。
+
+\begin{example}\label{g5:exm:henselian-not-complete}
+	令
+	\[
+		S=\{f\in\mathbb Q[[x]]:f\text{ 在 }\mathbb Q(x)\text{ 上代数}\}.
+	\]
+	代数元素的和、积及非零元素的倒数仍代数；若 \(f\in S\) 的常数项为零，则 \(f/x\) 仍属于 \(S\)。因此 \(S\) 是包含 \(\mathbb Q[x]_{(x)}\) 的局部环，极大理想为 \(xS\)，剩余域为 \(\mathbb Q\)。
+
+	给定 \(S\) 上首一多项式和剩余域中的单根，在 \(\mathbb Q[[x]]\) 中用上个定理提升，得到根 \(g\)。多项式的有限多个系数生成 \(\mathbb Q(x)\) 的有限扩域 \(L\)，而 \(g\) 在 \(L\) 上代数。代数性的传递性使 \(g\) 在 \(\mathbb Q(x)\) 上代数，故 \(g\in S\)。所以 \(S\) 是 Hensel 局部环。
+
+	\(\mathbb Q(x)\) 上的多项式只有可数多个，每个非零多项式在域 \(\mathbb Q((x))\) 中只有有限多个根，故 \(S\) 可数。另一方面，取系数为 \(0,1\) 的级数已经给出不可数多个 \(\mathbb Q[[x]]\) 元素。因此 \(S\ne\mathbb Q[[x]]\)。它的截断却满足
+	\[
+		S/x^nS\cong\mathbb Q[x]/(x^n),
+	\]
+	因为截断由多项式表示，阶至少 \(n\) 的代数级数可除以 \(x^n\) 后仍留在 \(S\)。所以 \(S\) 的完备化正是 \(\mathbb Q[[x]]\)，而 \(S\) 本身不完备。
+
+	若 \(\mathbb Q[[x]]\) 具有上述 Hensel 化泛性质，映射 \(A\to S\) 就会延伸为一个 \(A\) 代数同态 \(\mathbb Q[[x]]\to S\)。这张同态必单射：任一非零级数都写成 \(x^n u\)，其中 \(u\) 为单位，而 \(x\) 在目标中非零、目标为整环，故像不能为零。这与源不可数、目标可数矛盾。因此完备化与 Hensel 化在这个例子中确实不同。
+\end{example}
+
+这个例子保留了全部有限阶邻域，又只加入代数的形式元素。下一节将继续比较这些元素与任意形式级数，并把单根提升中的逐阶计算写成方程解的近似过程。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

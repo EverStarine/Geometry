@@ -1,35 +1,236 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 14.1 边界上的弱问题
+% 纲要标题：### 14.1 边值问题的弱形式
 % 纲要位置：几何学计划纲要.md，第 2673 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * Green 公式和边界配对
 % * Dirichlet 变分问题
 % * Neumann 兼容条件及常数核
-% * 混合条件和角点的额外问题
+% * 混合边界条件与角点奇性
 % 
 % 纲要内容结束
 
-\section{边界上的弱问题}
+\section{边值问题的弱形式}
 \label{g3:sec:1401}
 
-待撰写
+边界条件决定了方程允许怎样变化。指定函数值时，变分在边界消失；指定通量时，边界上的测试仍然自由，通量便成为右端的一部分。本节从这一差别构造弱问题，先取得能量空间中的解，再把边界处导数的恢复留给下一节。
 
 \subsection{Green 公式和边界配对}
 \label{g3:subsec:1401:01}
-待撰写
+以下以紧的光滑带边界黎曼流形 \((M,g)\) 为区域，\(\dim M=n\ge1\)，每个连通分支都与 \(\partial M\) 相交。Euclid 空间中光滑有界域的闭包是基本例子。记外单位法向为 \(\nu\)，体积与边界密度分别为 \(\mu_g,\mu_{\partial}\)。一维时边界密度就是端点计数测度。系数 \(A:\mathrm TM\to\mathrm TM\) 光滑、实对称，并满足
+\[
+	\lambda|\xi|^2\le\langle A\xi,\xi\rangle_g\le\Lambda|\xi|^2,
+	\qquad0<\lambda\le\Lambda<\infty.
+\]
+它按复线性延拓作用于复梯度。对实光滑函数 \(c\)，取
+\begin{equation}\label{g3:eq:boundary-operator-form}
+	\begin{aligned}
+		Pu&=-\operatorname{div}_g(A\operatorname{grad}_g u)+cu,\\
+		Q(u,v)&=\int_M\bigl(\langle A\operatorname{grad}u,\operatorname{grad}v\rangle_g
+		+cu\overline v\bigr)\,\mu_g,\\
+		B_Au&=\langle A\operatorname{grad}u,\nu\rangle_g.
+	\end{aligned}
+\end{equation}
+内积对第一变量线性。\(B_Au\) 称为外\term[gongfaxiang daoshu]{共法向导数}[conormal derivative]；只有 \(A=I\) 时它就是普通外法向导数。
+
+\begin{proposition}\label{g3:prop:boundary-green-identities}
+	设 \(M\) 为紧光滑带边界黎曼流形，\(A\) 为光滑实对称丛自同态，\(c\) 为实光滑函数，\(P,Q,B_A\) 如式\eqref{g3:eq:boundary-operator-form}。若 \(u,v\in C^\infty(M;\mathbb C)\)，则
+	\begin{align}
+		(Pu,v)_2&=Q(u,v)-\int_{\partial M}B_Au\,\overline{\gamma v}\,\mu_{\partial},
+		\label{g3:eq:boundary-green-first}\\
+		(Pu,v)_2-(u,Pv)_2
+		&=\int_{\partial M}\bigl(\gamma u\,\overline{B_Av}
+		-B_Au\,\overline{\gamma v}\bigr)\,\mu_{\partial}.
+		\label{g3:eq:boundary-green-second}
+	\end{align}
+	这里 \(\gamma\) 表示边界限制。
+\end{proposition}
+\begin{proof}
+	对复向量场 \(\overline v A\operatorname{grad}u\) 逐实、虚部使用散度公式。乘积法则给出
+	\[
+		\operatorname{div}(\overline v A\operatorname{grad}u)
+		=\overline v\operatorname{div}(A\operatorname{grad}u)
+		+\langle A\operatorname{grad}u,\operatorname{grad}v\rangle,
+	\]
+	边界通量为 \(B_Au\,\overline{\gamma v}\)。移项并加入零阶项就得到第一式。交换 \(u,v\) 后取共轭，利用 \(Q(u,v)=\overline{Q(v,u)}\)，两式相减即得第二式。这里使用密度的散度公式，不要求 \(M\) 可定向。
+\end{proof}
+
+式\eqref{g3:eq:boundary-green-second}把函数值与通量成对放在边界上；检验边界实现是否对称，就要检查这个配对是否消失。对 \(H^1\) 函数，第十一章的\cref{g3:prop:sobolev-boundary-bundles}给出有界迹 \(\gamma:H^1(M)\to L^2(\partial M)\)，且核为 \(H_0^1(M)\)。用迹的实际像记录可指定的边界值：
+\begin{definition}\label{g3:def:trace-range-space}
+	设 \(M\) 为紧光滑带边界黎曼流形。定义
+	\[
+		\mathcal T(\partial M)=\gamma H^1(M),\qquad
+		\|\psi\|_{\mathcal T}=\inf_{\gamma w=\psi}\|w\|_{H^1(M)}.
+	\]
+	记 \(\mathcal T^\dagger\) 为其连续反线性泛函空间；实值问题中取连续线性泛函。
+\end{definition}
+由于 \(H_0^1\) 是闭子空间，\(\mathcal T\) 等距同构于 Hilbert 商空间 \(H^1/H_0^1\)。具体地，把任意提升投影到 \((H_0^1)^{\perp_{H^1}}\)，就得到唯一的最小 \(H^1\) 范数提升。这个操作给出有界线性右逆 \(E:\mathcal T\to H^1\)，满足 \(\gamma E=I\)。因此 \(\mathcal T\) 完备，并连续嵌入边界 \(L^2\)。下一节将用 Fourier 方法把它识别为 \(H^{1/2}(\partial M)\)。
+\symidx{\(\mathcal T(\partial M)\)：赋商范数的 \(H^1\) 边界迹空间}
+
+\begin{proposition}\label{g3:prop:weak-conormal-trace}
+	设 \(M\) 为紧光滑带边界黎曼流形，\(A\) 光滑、实对称且一致正定，\(c\) 实光滑。若 \(u\in H^1(M;\mathbb C)\)，且 \(Pu=f\in L^2(M)\) 在分布意义下成立，则有唯一 \(\gamma_Au\in\mathcal T^\dagger\) 满足
+	\begin{equation}\label{g3:eq:weak-conormal-green}
+		(\gamma_Au)(\gamma v)=Q(u,v)-(f,v)_2\qquad(v\in H^1(M)).
+	\end{equation}
+	并有 \(\|\gamma_Au\|_{\mathcal T^\dagger}\le C(\|u\|_{H^1}+\|f\|_2)\)。若 \(u\) 光滑，则该泛函为 \(\psi\mapsto\int_{\partial M}B_Au\,\overline\psi\,\mu_{\partial}\)。
+\end{proposition}
+\begin{proof}
+	分布方程先给出 \(Q(u,v)=(f,v)_2\) 对内部紧支光滑 \(v\) 成立；两侧都对 \(H^1\) 范数连续，所以等式延拓到 \(H_0^1\)。因此右侧在 \(\ker\gamma\) 上为零，只依赖于 \(\gamma v\)，并且对所有提升的 \(H^1\) 范数有同一上界。取下确界即得商范数估计。\(\gamma\) 满射到 \(\mathcal T\)，所以泛函唯一。光滑情形由第一 Green 公式识别。
+\end{proof}
+
+这个定义没有对 \(H^1\) 函数的一阶导数直接取迹；它利用方程 \(Pu\in L^2\) 定义整体边界通量。Dirichlet 数据属于迹空间，而 Neumann 数据属于它的对偶，二者在弱问题中承担不同的配对。
 
 \subsection{Dirichlet 变分问题}
 \label{g3:subsec:1401:02}
-待撰写
+在\term[Dirichlet bianjie tiaojian]{Dirichlet 边界条件}[Dirichlet boundary condition]下，指定 \(\gamma u=\psi\)，所有允许的变分都属于 \(H_0^1\)。\footnote{Johann Peter Gustav Lejeune Dirichlet（1805--1859），德国数学家，研究数论、Fourier 级数与位势论；指定边界值的调和函数问题以其命名。}先把所需的 Poincaré 估计写成带边界版本。
+
+\begin{lemma}\label{g3:lem:boundary-poincare}
+	设 \(M\) 为非空紧光滑带边界黎曼流形，维数至少一，每个连通分支均有非空边界。则有以下两种估计。
+	\begin{enumerate}
+		\item 若 \(u\in H^1(M)\) 在每个连通分支上积分为零，则 \(\|u\|_{H^1}\le C\|\mathrm du\|_2\)。
+		\item 若可测集 \(\Gamma_D\subset\partial M\) 在每个分支的边界中均有正测度，且 \(\gamma u=0\) 于 \(\Gamma_D\)，则同样有 \(\|u\|_{H^1}\le C_D\|\mathrm du\|_2\)。特别地，该估计适用于 \(H_0^1(M)\)。
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	两种条件分别定义 \(H^1\) 的闭子空间。若其中一种估计失败，可取满足该条件的 \(u_j\)，使 \(\|u_j\|_2=1\)、\(\|\mathrm du_j\|_2\to0\)。带边界的紧嵌入\cref{g3:prop:sobolev-boundary-bundles}与弱紧性给出子列，在 \(L^2\) 中强收敛、在 \(H^1\) 中弱收敛到 \(u\)。于是 \(\|u\|_2=1\)、\(\mathrm du=0\)，故 \(u\) 在各分支上为常数；这一结论由内部的\cref{g3:prop:weak-gradient-constant}得到，边界是零体积集。
+
+	第一种情形中，各分支平均值在极限下仍为零，故全部常数为零。第二种情形中，有界线性迹保持弱收敛，限制到 \(\Gamma_D\) 的迹仍为零；各分支上边界集合的正测度迫使相应常数为零。两者都与 \(\|u\|_2=1\) 矛盾。加上一阶导数项即得到所列 \(H^1\) 估计。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:weak-general-dirichlet}
+	设 \(M\) 为非空紧光滑带边界黎曼流形，\(\dim M\ge1\)，每个分支均有边界；\(A\) 光滑、实对称且一致正定，\(c\in C^\infty(M;\mathbb R)\)、\(c\ge0\)。对任意 \(F\in(H_0^1(M))^\dagger\)、\(\psi\in\mathcal T(\partial M)\)，存在唯一 \(u\in H^1(M;\mathbb C)\) 满足
+	\[
+		\gamma u=\psi,\qquad Q(u,v)=F(v)\quad(v\in H_0^1(M)).
+	\]
+	而且 \(\|u\|_{H^1}\le C(\|F\|+\|\psi\|_{\mathcal T})\)。当 \(F(v)=(f,v)_2\)、\(f\in L^2(M)\) 时，\(u\) 是
+	\[
+		\mathcal E(w)=\tfrac12Q(w,w)-\operatorname{Re}(f,w)_2
+	\]
+	在仿射空间 \(\{w\in H^1:\gamma w=\psi\}\) 上的唯一极小点。
+\end{theorem}
+\begin{proof}
+	取最小范数提升 \(w=E\psi\)，写 \(u=w+z\)，其中 \(z\in H_0^1\)。未知量满足
+	\[
+		Q(z,v)=F(v)-Q(w,v)\quad(v\in H_0^1).
+	\]
+	右侧为有界反线性泛函。由上一引理、\(A\) 的正定性和 \(c\ge0\)，有 \(Q(v,v)\ge\alpha\|v\|_{H^1}^2\)，\(\alpha>0\)。\Cref{g3:thm:lax-milgram}给出唯一的 \(z\) 及范数界。若更换提升，仿射空间不变；两解之差在 \(H_0^1\)，对它自身测试给出零，所以最终的 \(u\) 与提升无关。
+
+	当右端来自 \(L^2\) 时，对任意 \(h\in H_0^1\) 展开能量差，得到
+	\[
+		\mathcal E(u+h)-\mathcal E(u)
+		=\operatorname{Re}\bigl(Q(u,h)-(f,h)_2\bigr)+\tfrac12Q(h,h)
+		=\tfrac12Q(h,h).
+	\]
+	故 \(u\) 唯一极小。反过来，对 \(th\) 求实参数导数，再对 \(\mathrm ih\) 求导，便恢复复弱方程。
+\end{proof}
+
+例如在 \([0,L]\) 上求 \(-u''=f\)、\(u(0)=a\)、\(u(L)=b\)，可先减去线性提升 \(a+(b-a)x/L\)。剩余未知量有零端点值，梯度能量强制。存在性因而不要求 \(f\) 的积分为零；外通量由解确定，不能再任意指定。
+
+\ProseParagraphBreak
+
+非齐次边界提升与变分极小的基本版本可对照 Brezis 第9.5节例2、命题9.22\cite[第9.5节例2，命题9.22]{Brezis2011}。在一般 \(F\in(H_0^1)^\dagger\) 的情形，\(F\) 只定义于零边界测试空间；存在性证明使用的是上面的移位方程，无需把 \(F\) 未经选择地作用在全部仿射边界类上。
 
 \subsection{Neumann 兼容条件及常数核}
 \label{g3:subsec:1401:03}
-待撰写
+在\term[Neumann bianjie tiaojian]{Neumann 边界条件}[Neumann boundary condition]下，指定共法向通量。若 \(Pu=f\)、\(B_Au=g\)，第一 Green 公式要求
+\begin{equation}\label{g3:eq:weak-neumann-form}
+	Q(u,v)=(f,v)_2+G(\gamma v)\qquad(v\in H^1(M)),
+\end{equation}
+其中 \(G\in\mathcal T^\dagger\) 是给定通量；当 \(g\in L^2(\partial M)\) 时，\(G(\psi)=\int g\overline\psi\,\mu_{\partial}\)。这里对全部 \(H^1\) 函数测试，正是边界通量得以确定的原因。
 
-\subsection{混合条件和角点的额外问题}
+\begin{theorem}\label{g3:thm:weak-general-neumann}
+	设 \(M\) 为非空紧光滑带边界黎曼流形，维数至少一，每个分支均有边界；\(A\) 光滑、实对称且一致正定。取 \(P=-\operatorname{div}(A\operatorname{grad})\)，即 \(c=0\)。给定 \(f\in L^2(M)\)、\(G\in\mathcal T^\dagger\)，弱问题\eqref{g3:eq:weak-neumann-form}可解当且仅当对每个连通分支 \(M_j\) 有
+	\begin{equation}\label{g3:eq:neumann-compatibility}
+		\int_{M_j}f\,\mu_g+G(\gamma\mathbf1_{M_j})=0.
+	\end{equation}
+	满足 \(\int_{M_j}u\,\mu_g=0\) 的解唯一，且
+	\[
+		\|u\|_{H^1}\le C\bigl(\|f\|_2+\|G\|_{\mathcal T^\dagger}\bigr).
+	\]
+	所有其他解与它相差逐分支常数。该解满足 \(Pu=f\) 及 \(\gamma_Au=G\)。
+\end{theorem}
+\begin{proof}
+	以 \(\mathbf1_{M_j}\) 为测试，左侧为零，得到必要条件。反过来，令 \(V\subset H^1(M)\) 为逐分支零均值的闭子空间。在 \(V\) 上，\cref{g3:lem:boundary-poincare}及一致正定性使 \(Q\) 强制。右端连续，所以 Lax--Milgram 给出唯一的 \(u\in V\) 满足全部 \(V\) 中的测试方程。
+
+	任意 \(v\in H^1\) 唯一分解为 \(v_0+\sum_jv_{M_j}\mathbf1_{M_j}\)，其中 \(v_0\in V\)。兼容条件使常数部分的右端为零，左侧也为零，故方程对任意 \(v\) 成立。两解相减并取自身测试，得到梯度为零，从而差为逐分支常数。内部测试给出分布方程，\cref{g3:prop:weak-conormal-trace}随后把剩余配对识别为 \(\gamma_Au=G\)。范数界来自强制常数与迹范数的定义。
+\end{proof}
+
+若通量由 \(g\in L^2(\partial M)\) 给出，则兼容条件是
+\[
+	\int_{M_j}f\,\mu_g=-\int_{\partial M_j}g\,\mu_{\partial}.
+\]
+负号由 \(P=-\operatorname{div}(A\operatorname{grad})\) 决定。对于区间 \([0,L]\)，\(g(0)=-u'(0)\)、\(g(L)=u'(L)\)，所以 \(\int_0^Lf+g(0)+g(L)=0\)。当 \(f=1\) 而两端外通量均为零时，条件立即失败。
+
+\ProseParagraphBreak
+
+若增加正零阶项，例如 \(P=\Delta_g+1\)，则 \(Q(u,u)=\|\mathrm du\|_2^2+\|u\|_2^2\) 在全部 \(H^1\) 上强制，每个 \(f,G\) 都有唯一解。此时对常数测试得到 \(\int u=\int f+G(1)\)，这是确定解的平均值的等式。对应齐次 Neumann 变分问题见 Brezis 第9.5节例4、命题9.24\cite[第9.5节例4，命题9.24]{Brezis2011}。
+
+\subsection{混合边界条件与角点奇性}
 \label{g3:subsec:1401:04}
-待撰写
+同一边界可以在不同部分施加不同条件。设 \(\Gamma_D,\Gamma_N\subset\partial M\) 是不交的相对开集，余下交界集合的边界测度为零。定义
+\[
+	V_D=\{v\in H^1(M):\gamma v=0\text{ 于 }\Gamma_D\}.
+\]
+这是闭子空间。若 \(\Gamma_D\) 在每个连通分支边界上均有正测度，则刚才的 Poincaré 证明直接适用。给定 \(w\in H^1\)，用 \(w+V_D\) 表示指定 \(\Gamma_D\) 上函数值的仿射空间。
+
+\begin{theorem}\label{g3:thm:weak-mixed-boundary}
+	设 \(M\) 为紧光滑带边界黎曼流形，维数至少一，\(A\) 光滑、实对称且一致正定，\(c\ge0\) 实光滑。设 \(\Gamma_D,\Gamma_N\) 是边界上不交的相对开集，其并的补集有边界测度零，且每个连通分支的 \(\Gamma_D\) 有正测度；令 \(V_D=\{v\in H^1:\gamma v|_{\Gamma_D}=0\}\)。对 \(f\in L^2(M)\)、\(g\in L^2(\Gamma_N)\) 和 \(w\in H^1(M)\)，存在唯一 \(u\in w+V_D\)，使
+	\[
+		Q(u,v)=(f,v)_2+\int_{\Gamma_N}g\,\overline{\gamma v}\,\mu_{\partial}
+		\qquad(v\in V_D).
+	\]
+	并且 \(\|u\|_{H^1}\le C(\|f\|_2+\|g\|_{L^2(\Gamma_N)}+\|w\|_{H^1})\)。它唯一极小化同一仿射空间上的能量
+	\[
+		\tfrac12Q(u,u)-\operatorname{Re}(f,u)_2
+		-\operatorname{Re}\int_{\Gamma_N}g\,\overline{\gamma u}\,\mu_{\partial}.
+	\]
+\end{theorem}
+\begin{proof}
+	迹估计保证边界积分是 \(V_D\) 上的连续反线性泛函。写 \(u=w+z\)，由\cref{g3:lem:boundary-poincare}，\(Q\) 在 \(V_D\) 上强制；应用 Lax--Milgram 便得到唯一 \(z\) 和所列估计。能量差的展开与 Dirichlet 情形相同，线性项由弱方程消去，留下严格正的 \(Q(h,h)/2\)。内部紧支测试给出 \(Pu=f\)；若解光滑，在 \(\Gamma_N\) 内任取紧支边界测试并提升，Green 公式给出 \(B_Au=g\)。
+\end{proof}
+
+这种\term[hunhe bianjie tiaojian]{混合边界条件}[mixed boundary condition]在能量空间中十分自然，但其交界点会改变高阶正则性。先看真正的几何角点。
+
+\begin{example}\label{g3:exm:reentrant-corner-singularity}
+	取平面扇形 \(S_\omega=\{0<r<1,\ 0<\theta<\omega\}\)，其中 \(\pi<\omega<2\pi\)，令 \(\alpha=\pi/\omega\in(1/2,1)\)。选光滑径向截断 \(\chi\)，在 \(r\le1/4\) 时等于一、在 \(r\ge1/2\) 时为零，置
+	\[
+		u(r,\theta)=\chi(r)r^\alpha\sin(\alpha\theta).
+	\]
+	在角点附近，\(\sum_i\partial_i^2u=0\)，且两条边上 \(u=0\)。一阶导数平方的径向积分为常数乘以 \(\int_0^{1/4}r^{2\alpha-1}\,\mathrm dr<\infty\)，所以 \(u\in H^1\)。在 \(r<2\varepsilon\) 切去此函数，\(H^1\) 误差为 \(O(\varepsilon^\alpha)\)；切去后的函数在光滑边界片上具有零迹，可向内平移并光滑化，故 \(u\in H_0^1(S_\omega)\)。
+
+	设 \(f=\Delta u\)，采用本书非负号。\(f\) 只支于 \(1/4\le r\le1/2\)，在各个闭边界片光滑，因而属于 \(L^2\)。内部积分及 \(H_0^1\) 稠密性说明 \(u\) 是对应 Dirichlet 弱解。但在角点附近
+	\[
+		|\mathrm D^2u|^2=2\alpha^2(\alpha-1)^2r^{2\alpha-4},\qquad
+		\int_0^{1/4}r^{2\alpha-3}\,\mathrm dr=\infty.
+	\]
+	因此 \(u\notin H^2\)。零边界、光滑右端与内部光滑性共同存在，凹角仍使整体二阶估计失败。
+\end{example}
+
+\begin{example}\label{g3:exm:smooth-boundary-mixed-singularity}
+	光滑边界也会出现相同机制。在一个局部等于上半平面的光滑有界区域中，以原点为条件交界点：\(\theta=0\) 的正半轴施加 Dirichlet 条件，\(\theta=\pi\) 的负半轴施加 Neumann 条件。令
+	\[
+		u=\chi(r)r^{1/2}\sin(\theta/2),
+	\]
+	其中截断支于这个平边界图内，并在图外补零。在正半轴 \(u=0\)；在负半轴 \(\partial_\theta u=0\)，故外法向导数为零。\(u\in H^1\)，而 Hessian 平方积分含 \(\int_0r^{-2}\,\mathrm dr\)，所以 \(u\notin H^2\)。右端 \(f=\Delta u\) 仍光滑且支于远离原点的环带。
+
+	验证它满足混合弱问题时，先以有界的 \(v\in V_D\) 测试，并用径向截断 \(\eta_\varepsilon\) 消去原点：\(\eta_\varepsilon=0\) 于 \(r<\varepsilon\)、等于一于 \(r>2\varepsilon\)、\(|\mathrm D\eta_\varepsilon|\le C/\varepsilon\)。穿过小环带的额外项满足
+	\[
+		\left|\int v\,\mathrm du\cdot\mathrm d\eta_\varepsilon\right|
+		\le C\|v\|_\infty\varepsilon^{-1}
+		\int_\varepsilon^{2\varepsilon}r^{-1/2}r\,\mathrm dr
+		\le C\|v\|_\infty\varepsilon^{1/2}\longrightarrow0.
+	\]
+	其余项由 \(H^1\) 可积性取极限。在实、虚部分别作截断，任意 \(V_D\) 函数均可在 \(H^1\) 中由有界的 \(V_D\) 函数逼近，故弱恒等式对全部测试成立。区域的几何边界在原点光滑，失去二阶正则性的原因是边界条件在那里改变。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch14-MixedBoundary}
+	\caption{光滑边界上的混合条件交界}
+	\label{g3:fig:mixed-boundary-interface}
+\end{figure}
+
+因此下一节的整体光滑边界估计分别处理完整的 Dirichlet 条件或完整的 Neumann 条件。两类条件若只分布在互不相交的整个边界分支上，各个边界图仍只有一种条件，局部证明可以逐图拼接；一旦出现交界，就需要另行分析其奇异指数。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

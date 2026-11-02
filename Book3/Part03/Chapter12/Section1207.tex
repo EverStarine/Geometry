@@ -1,42 +1,335 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 12.7 标量最大值与 Harnack 方法
+% 纲要标题：### 12.7 标量最大值原理与 Harnack 不等式
 % 纲要位置：几何学计划纲要.md，第 2598 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 弱最大值原理及零阶项符号
 % * 强最大值原理和屏障
 % * Hopf 边界引理的条件
-% * Moser 迭代与所选 Harnack 不等式
-% * 系统不具备同一结论的原因
+% * Moser 迭代与 Harnack 不等式
+% * 椭圆系统中最大值原理的失效
 % 
 % ---
 % 
 % 纲要内容结束
 
-\section{标量最大值与 Harnack 方法}
+\section{标量最大值原理与 Harnack 不等式}
 \label{g3:sec:1207}
 
-待撰写
+对实值函数，可以比较两个值的大小，也可以把方程与正部、负幂或对数配对。这些操作产生了前面系统估计之外的工具：边界值控制内部极值，非负解的大小在内球之间相互控制。本节先处理经典解的屏障，再用积分与迭代证明只需可测系数的 Harnack 不等式。\footnote{Karl Gustav Axel von Harnack（1851--1888），德国数学家，研究势论、实分析与代数曲线；正调和函数的比较不等式以其命名。}最后用一个可直接求解的耦合系统说明，标量的次序结构是这些证明的实质条件。
 
 \subsection{弱最大值原理及零阶项符号}
 \label{g3:subsec:1207:01}
-待撰写
+本小节的经典算子写作
+\begin{equation}\label{g3:eq:scalar-maximum-operator}
+	Lu=a^{ij}\partial_i\partial_ju+b^i\partial_i u+cu,
+\end{equation}
+其中 \(a^{ij}=a^{ji}\) 为实数，\(a^{ij}\xi_i\xi_j\ge\lambda|\xi|^2\)，\(\lambda>0\)。这个符号下，\(\sum_i\partial_i^2=-\Delta_{\mathrm{Eucl}}\)；因此 \(Lu\ge0\) 对应通常的下调和方向。
+
+\begin{theorem}[弱最大值原理]\label{g3:thm:weak-maximum-classical}
+	设 \(\Omega\subset\mathbb R^n\) 为有界开集，式\eqref{g3:eq:scalar-maximum-operator}的实系数在 \(\Omega\) 连续且有界，主部满足上述统一正定条件，\(c\le0\)。若实值 \(u\in C^2(\Omega)\cap C^0(\overline\Omega)\) 且 \(Lu\ge0\)，则
+	\[
+		\sup_\Omega u\le\max\{0,\sup_{\partial\Omega}u\}.
+	\]
+	若 \(c=0\)，右侧可直接取 \(\sup_{\partial\Omega}u\)。
+\end{theorem}
+\begin{proof}
+	先设 \(Lu>0\)。若一个正的最大值出现在内部，则该处 \(\mathrm Du=0\)、\(\mathrm D^2u\) 半负定。把正定矩阵 \(a\) 对角化，得 \(a^{ij}u_{ij}\le0\)，又有 \(cu\le0\)，与 \(Lu>0\) 矛盾。
+
+	一般情形取 \(\psi(x)=e^{\kappa x_1}\)。当 \(\kappa\) 足够大时，
+	\[
+		L\psi=e^{\kappa x_1}(\kappa^2a^{11}+\kappa b^1+c)>0,
+	\]
+	因为正的二次项压过有界的一次项和零阶项。对 \(u+\varepsilon\psi\) 使用严格情形，再令 \(\varepsilon\downarrow0\)，得到结论。\(c=0\) 时可先减去边界上确界，算子不变。
+\end{proof}
+
+应用于两个函数之差便得到比较原理。零阶项的符号不能删去：在 \((0,\pi)\) 上，\(u=\sin x\) 满足 \(u''+u=0\)，边界值为零，内部却为正。即使 \(c\le0\)，若不假定内部最大值非负，也不能在强最大值结论中随意消去零值基准；例如 \(-\cosh x\) 满足 \(u''-u=0\)，在零点达到负的严格最大值。
+
+\begin{proposition}\label{g3:prop:weak-maximum-energy}
+	设 \(\Omega\subset\mathbb R^n\) 为有界开集，实矩阵场 \(A\in L^\infty(\Omega)\) 满足
+	\(\xi\cdot A(x)\xi\ge\lambda|\xi|^2\) 几乎处处，\(\lambda>0\)，并设 \(c\in L^\infty(\Omega)\)、\(c\ge0\)。若 \(u\in H^1(\Omega;\mathbb R)\)、\(u_+\in H_0^1(\Omega)\)，且
+	\[
+		\int_\Omega A\mathrm Du\cdot\mathrm D\phi+cu\phi\,\mathrm dx\le0
+	\]
+	对每个非负 \(\phi\in H_0^1(\Omega)\) 成立，则 \(u\le0\) 几乎处处。
+\end{proposition}
+\begin{proof}
+	取 \(\phi=u_+\)。第十一章的截断链式法则给出 \(\mathrm Du_+=\mathbf1_{\{u>0\}}\mathrm Du\)，所以
+	\[
+		0\ge\int_\Omega A\mathrm Du_+\cdot\mathrm Du_++c u_+^2\,\mathrm dx
+		\ge\lambda\|\mathrm Du_+\|_2^2.
+	\]
+	零边界 Poincaré 不等式\cref{g3:thm:poincare-zero-boundary}于是给出 \(u_+=0\)。\(A\) 无须对称，因为这里只使用二次型的下界。
+\end{proof}
+
+这里采用非负主部 \(-\operatorname{div}(A\mathrm D)+c\)，所以零阶条件写作 \(c\ge0\)，与前一定理的符号完全相容。条件 \(u_+\in H_0^1\) 把边界上“不大于零”写成可用于测试的函数空间条件；边界有第十一章所需正则性时，它与非正的迹相符。
 
 \subsection{强最大值原理和屏障}
 \label{g3:subsec:1207:02}
-待撰写
+\term[ruo zuidazhi yuanli]{弱最大值原理}[weak maximum principle]只给出大小界。要排除内部一处接触最大值、其他位置仍较小的情形，需要一个从小球边缘向内严格增加的函数。
+
+\begin{lemma}\label{g3:lem:exponential-annular-barrier}
+	设 \(L\) 为式\eqref{g3:eq:scalar-maximum-operator}的实标量算子，其系数在球壳 \(R/2<|x-y|<R\) 上有界，主部统一正定，\(c\le0\)。当 \(\gamma\) 足够大时，
+	\[
+		w(x)=e^{-\gamma|x-y|^2}-e^{-\gamma R^2}
+	\]
+	在球壳内为正，在外球面为零，并满足 \(Lw>0\)。外球面上的径向外导数为 \(-2\gamma R e^{-\gamma R^2}<0\)。
+\end{lemma}
+\begin{proof}
+	直接求导得
+	\[
+		Lw=e^{-\gamma|x-y|^2}
+		\bigl(4\gamma^2 a^{ij}(x_i-y_i)(x_j-y_j)
+		-2\gamma\operatorname{tr}a-2\gamma b\cdot(x-y)\bigr)+cw.
+	\]
+	在此球壳上，括号内首项至少为 \(\gamma^2\lambda R^2\)，其余两项至多按 \(C\gamma\) 增长；又有 \(cw\ge-\|c\|_\infty e^{-\gamma|x-y|^2}\)。故足够大的 \(\gamma\) 保证严格正性，边界导数的公式直接成立。
+\end{proof}
+
+\begin{theorem}[强最大值原理]\label{g3:thm:strong-maximum-classical}
+	设 \(\Omega\subset\mathbb R^n\) 为连通开集，\(L\) 的实系数连续、在紧子集上有界，主部在紧子集上一致正定，\(c\le0\)。若 \(u\in C^2(\Omega;\mathbb R)\)、\(Lu\ge0\)，且 \(u\) 在某内点达到整个 \(\Omega\) 上的最大值 \(M\ge0\)，则 \(u\equiv M\)。若 \(c=0\)，不要求 \(M\ge0\)。
+\end{theorem}
+\begin{proof}
+	令 \(v=M-u\ge0\)。由 \(M\ge0\)、\(c\le0\)，有 \(Lv=cM-Lu\le0\)。假设 \(v\) 不恒为零。沿连接零点与正值点的紧路径，在正值集合中选一个足够靠近其内部边界的点 \(y\)。从 \(y\) 到零集的距离 \(R\) 为正且足够小，使 \(\overline B_R(y)\subset\Omega\)；最近零点 \(x_0\) 位于球面，而球内 \(v>0\)。最近点存在，因为可把距离问题限制在包含该路径的紧邻域中。
+
+	在 \(R/2<|x-y|<R\) 上取上一引理的 \(w\)。内球面上 \(v\) 有正下界，故可选 \(\varepsilon>0\)，使 \(v-\varepsilon w\ge0\) 在两球面上成立；且 \(L(v-\varepsilon w)<0\)。弱最大值原理应用于 \(-(v-\varepsilon w)\)，得到整个球壳内 \(v\ge\varepsilon w\)。令 \(\nu=(x_0-y)/R\)，沿 \(x_0-t\nu\) 趋向 \(x_0\)，得
+	\[
+		\liminf_{t\downarrow0}\frac{v(x_0-t\nu)-v(x_0)}t
+		\ge2\varepsilon\gamma R e^{-\gamma R^2}>0.
+	\]
+	但 \(x_0\) 是 \(\Omega\) 内部的 \(v\) 的最小点，\(\mathrm Dv(x_0)=0\)，矛盾。因此正值集合为空。\(c=0\) 时，\(Lv=-Lu\le0\) 对任意 \(M\) 都成立。
+\end{proof}
+
+\term[qiang zuidazhi yuanli]{强最大值原理}[strong maximum principle]的证明只在一个内接球壳上使用统一常数，因此不要求区域有界。连通性把一个内点的极值传播到整个区域；不连通时只能得到所在连通分支上的结论。
 
 \subsection{Hopf 边界引理的条件}
 \label{g3:subsec:1207:03}
-待撰写
+若上述接触点位于区域边界，梯度不必为零，球壳论证留下一个严格的外法向导数。这正是\term[Hopf bianjie yinli]{Hopf 边界引理}[Hopf boundary point lemma]的内容。\footnote{Eberhard Frederich Ferdinand Hopf（1902--1983），奥地利出生的美籍数学家，研究遍历理论、动力系统与偏微分方程；这里的边界引理归于他，与前面 Hopf--Rinow 定理中的 Heinz Hopf 为不同人物。}
 
-\subsection{Moser 迭代与所选 Harnack 不等式}
+\begin{theorem}[Hopf 边界引理]\label{g3:thm:hopf-boundary-lemma}
+	设 \(\Omega\subset\mathbb R^n\) 为开集，\(x_0\in\partial\Omega\)，且存在内接球 \(B_R(y)\subset\Omega\)，满足 \(x_0\in\partial B_R(y)\)。设 \(L\) 的实系数在该球附近连续且有界、主部一致正定，\(c\le0\)。若 \(u\in C^2(\Omega)\) 且在 \(\overline B_R(y)\) 连续，\(Lu\ge0\)，并且
+	\[
+		u(x)<u(x_0)=M\quad(x\in B_R(y)),\qquad M\ge0,
+	\]
+	则对 \(\nu=(x_0-y)/R\)，有
+	\[
+		\liminf_{t\downarrow0}\frac{u(x_0)-u(x_0-t\nu)}t>0.
+	\]
+	特别地，若 \(u\) 在 \(x_0\) 可微，则 \(\partial_\nu u(x_0)>0\)。\(c=0\) 时可删去 \(M\ge0\)。
+\end{theorem}
+\begin{proof}
+	在内接球中令 \(v=M-u>0\)。内球面 \(|x-y|=R/2\) 紧且位于 \(\Omega\)，故 \(v\) 有正下界。与强最大值原理的证明相同，选 \(\varepsilon>0\)，在球壳上比较 \(v\) 与 \(\varepsilon w\)，得到
+	\(v(x_0-t\nu)\ge\varepsilon w(x_0-t\nu)\)。除以 \(t\)，令 \(t\downarrow0\)，即得正下界 \(2\varepsilon\gamma R e^{-\gamma R^2}\)。
+\end{proof}
+
+若边界为 \(C^2\)，则在每个边界点有足够小的内接球，且球的 \(\nu\) 就是区域外法向；证明实际需要的是内接球条件，而非整个边界的一套光滑图册。图\cref{g3:fig:hopf-barrier}标出这一局部构造。
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch12-HopfBarrier}
+	\caption[内接球与 Hopf 屏障]{内接球在 \(x_0\) 接触边界。球壳上的屏障从外球面向内严格增加，因而 \(M-u\) 的内向增长有正下界。}
+	\label{g3:fig:hopf-barrier}
+\end{figure}
+
+例如在平面第一象限内，\(u(x,y)=-xy\) 调和，在两条坐标边上为零，但顶点的梯度也为零。顶点没有与两条边都相容的内接球，故这一例子并不满足引理的几何条件。再如半区间上的 \(u(x)=-x^2\) 满足 \(xu''-u'=0\)，却有 \(u'(0)=0\)；这里主系数在接触点退化，一致椭圆性已经失效。
+
+\subsection{Moser 迭代与 Harnack 不等式}
 \label{g3:subsec:1207:04}
-待撰写
+屏障利用二阶点态导数；当主系数只有可测性时，解起初只是 \(H^1\) 函数，必须改用积分。\term[Moser diedai]{Moser 迭代}[Moser iteration]\footnote{Jürgen Kurt Moser（1928--1999），德国出生的美籍数学家，研究 Hamilton 动力系统与偏微分方程，以迭代估计建立了重要的正则性结果。}把一个有限次幂的积分界反复提高到更高次幂，最终得到本性上确界。对正解同时处理正幂与负幂，再以对数的平均振荡连接两者，就得到\term[Harnack budengshi]{Harnack 不等式}[Harnack inequality]。
 
-\subsection{系统不具备同一结论的原因}
+\ProseParagraphBreak
+
+以下记 \(Q_r(x_0)=x_0+(-r,r)^n\)。在同心立方体上证明估计，是为了让后面的二进分割保持简单；球上的版本可用有限个重叠立方体连接得到。
+
+\begin{lemma}\label{g3:lem:moser-power-estimates}
+	设 \(n\ge2\)，\(A\) 是 \(Q_4\) 上的实可测矩阵场，满足
+	\[
+		\xi\cdot A(x)\xi\ge\lambda|\xi|^2,
+		\qquad |A(x)\xi|\le\Lambda|\xi|,
+		\qquad 0<\lambda\le\Lambda.
+	\]
+	若 \(u\in H^1(Q_4)\) 非负且弱满足 \(\operatorname{div}(A\mathrm Du)=0\)，令 \(v=u+\varepsilon\)，\(\varepsilon>0\)。则对每个 \(p>0\)，有
+	\begin{align}
+		\mathop{\mathrm{ess\,sup}}_{Q_1}v
+		&\le C_p\left(\frac1{|Q_2|}\int_{Q_2}v^p\right)^{1/p},\label{g3:eq:moser-positive-power}\\
+		\mathop{\mathrm{ess\,inf}}_{Q_1}v
+		&\ge C_p^{-1}\left(\frac1{|Q_2|}\int_{Q_2}v^{-p}\right)^{-1/p}.\label{g3:eq:moser-negative-power}
+	\end{align}
+	常数只依赖 \(n,\lambda,\Lambda,p\)，不依赖 \(\varepsilon\)。
+\end{lemma}
+\begin{proof}
+	\(v\) 仍解同一方程，且 \(v\ge\varepsilon\)。先证明正幂的能量估计，并使测试函数的合法性明确。取 \(q\ge2\)、紧支 Lipschitz 截断 \(\eta\)，令
+	\[
+		F_M(t)=t\min\{t,M\}^{q-2},\qquad
+		G_M(t)=t\min\{t,M\}^{q/2-1}.
+	\]
+	\(F_M\) 在 \([\varepsilon,\infty)\) 上 Lipschitz，故 \(\eta^2F_M(v)\) 是合法的 \(H_0^1\) 测试函数。展开弱方程、用椭圆性及平方配方吸收交叉项，得到
+	\[
+		\int\eta^2F_M'(v)|\mathrm Dv|^2
+		\le C\int\frac{F_M(v)^2}{F_M'(v)}|\mathrm D\eta|^2.
+	\]
+	在 \(t<M\) 与 \(t>M\) 分别计算，得
+	\(|G_M'(t)|^2\le q^2 F_M'(t)\)、\(F_M(t)^2/F_M'(t)\le G_M(t)^2\)。于是
+	\[
+		\int|\mathrm D(\eta G_M(v))|^2
+		\le Cq^2\int G_M(v)^2|\mathrm D\eta|^2
+		\le Cq^2\int v^q|\mathrm D\eta|^2.
+	\]
+	若右端有限，先用 \(M\to\infty\) 和弱紧性识别 \(\eta v^{q/2}\) 的弱导数，再用下半连续性，得到
+	\begin{equation}\label{g3:eq:moser-power-energy}
+		\int|\mathrm D(\eta v^{q/2})|^2
+		\le Cq^2\int v^q|\mathrm D\eta|^2,\qquad q\ge2.
+	\end{equation}
+	截断过程只在已知 \(v^q\) 可积的那一步使用，随后由 Sobolev 不等式提高下一次可积指数。
+
+	取 \(\chi=n/(n-2)>1\) 当 \(n\ge3\)，在 \(n=2\) 时取 \(\chi=2\)。第十一章的 Euclid Sobolev 不等式给出紧支于 \(Q_2\) 的 \(w\) 满足 \(\|w\|_{2\chi}^2\le C\|\mathrm Dw\|_2^2\)；二维时先用 \(W^{1,4/3}\to L^4\)，再在固定支集上用 Hölder 不等式把梯度换成 \(L^2\)。选 \(\eta=1\) 于 \(Q_\rho\)、支于 \(Q_R\)，\(|\mathrm D\eta|\le C/(R-\rho)\)，则
+	\[
+		\|v\|_{L^{q\chi}(Q_\rho)}
+		\le\left(\frac{Cq^2}{(R-\rho)^2}\right)^{1/q}
+		\|v\|_{L^q(Q_R)},\qquad1\le\rho<R\le2.
+	\]
+	令 \(q_j=2\chi^j\)，在递减半径之间应用此式。因 \(\sum_j1/q_j\) 与 \(\sum_jj/q_j\) 均收敛，常数的乘积有限，得到
+	\begin{equation}\label{g3:eq:moser-l2-sup}
+		M(\rho):=\mathop{\mathrm{ess\,sup}}_{Q_\rho}v
+		\le C(R-\rho)^{-\nu/2}\|v\|_{L^2(Q_R)},
+		\qquad \nu=\frac{2\chi}{\chi-1}.
+	\end{equation}
+	可积指数趋于无穷时，若某个正测度集上的值超过所得统一界，就会与其 \(L^{q_j}\) 界矛盾，故这一步确实得到本性上确界。
+
+	当 \(0<p<2\) 时，记 \(A_p=\|v\|_{L^p(Q_2)}\)。由
+	\(\|v\|_{L^2(Q_R)}\le M(R)^{1-p/2}A_p^{p/2}\)，式\eqref{g3:eq:moser-l2-sup}及 Young 不等式给出
+	\[
+		M(\rho)\le\theta M(R)+C_{p,\theta}(R-\rho)^{-\nu/p}A_p
+	\]
+	对任意 \(0<\theta<1\) 成立。取 \(\rho_j=3/2-2^{-j-1}\)，选 \(\theta<2^{-\nu/p}\) 后反复代入，几何级数收敛；余项 \(\theta^jM(\rho_j)\) 趋零，因为式\eqref{g3:eq:moser-l2-sup}已使 \(M(3/2)\) 有限。这就得到从任意正幂到上确界的估计。\(p\ge2\) 则由有限体积上的 Hölder 不等式直接降至 \(p=2\)。固定体积因子吸收入 \(C_p\)，得式\eqref{g3:eq:moser-positive-power}。
+
+	对负幂取 \(q<0\)，测试 \(\eta^2v^{q-1}\)。由于 \(v\ge\varepsilon\)，该复合及其导数有界，测试合法；整理弱方程并对 \(q-1\) 取绝对值，得到
+	\[
+		\int|\mathrm D(\eta v^{q/2})|^2
+		\le C\left(1+\frac{q^2}{(q-1)^2}\right)
+		\int v^q|\mathrm D\eta|^2.
+	\]
+	令 \(w=v^{-1}\)，从 \(w^p\) 出发用同一 Sobolev 迭代，得到 \(\|w\|_{\infty;Q_1}\le C_p\|w\|_{p;Q_2}\)。初始积分因 \(w\le\varepsilon^{-1}\) 而有限；迭代常数不使用这个上界。对所得不等式取倒数即为式\eqref{g3:eq:moser-negative-power}。
+\end{proof}
+
+正幂与负幂估计还不能直接连接：一般正函数可在大部分区域很小，却在一小块上很大。下面的平均振荡引理排除这种失控，它是此处所需的 John--Nirenberg 估计。\footnote{Fritz John（1910--1994），德国出生的美籍数学家，研究偏微分方程与不适定问题。Louis Nirenberg（1925--2020），加拿大出生的美籍数学家，研究线性与非线性偏微分方程及其几何应用。}
+
+\begin{lemma}\label{g3:lem:dyadic-exponential-oscillation}
+	设 \(Q_0\) 为立方体，\(g\in L^1(Q_0;\mathbb R)\)，且对 \(Q_0\) 及它的每个二进子立方体 \(Q\)，都有
+	\[
+		\frac1{|Q|}\int_Q|g-g_Q|\le B,
+		\qquad g_Q=\frac1{|Q|}\int_Qg,
+	\]
+	其中 \(B>0\)。则存在只依赖 \(n\) 的 \(c_n,C_n>0\)，使
+	\[
+		\frac1{|Q_0|}\int_{Q_0}
+		\exp\left(\frac{c_n}{B}|g-g_{Q_0}|\right)\le C_n.
+	\]
+\end{lemma}
+\begin{proof}
+	在 \(Q_0\) 的二进网格中，选取使 \(|g-g_{Q_0}|\) 的平均大于 \(2B\) 的极大子立方体 \(Q_j\)。它们互不相交，且
+	\[
+		\sum_j|Q_j|\le\frac1{2B}\int_{Q_0}|g-g_{Q_0}|\le\frac12|Q_0|.
+	\]
+	每个 \(Q_j\) 的父立方体平均不超过 \(2B\)，故
+	\(|g_{Q_j}-g_{Q_0}|\le2^{n+1}B\)。在其余点上，二进平均收敛到函数值，因而 \(|g-g_{Q_0}|\le2B\) 几乎处处。
+
+	所用的二进微分性质可由同一最大立方体论证取得：对可积 \(h\)，二进平均的最大值超过 \(t\) 的集合测度不超过 \(\|h\|_1/t\)。用连续函数在 \(L^1\) 中逼近 \(g\)；连续函数的细网格平均趋于其点值，而误差的最大平均及误差本身超过 \(t\) 的集合测度至多为 \(2\|h\|_1/t\)。令逼近误差趋零，再令有理 \(t\downarrow0\)，便得上述几乎处处收敛。
+
+	在每个 \(Q_j\) 内改减去它自己的平均，重复同一选择。第 \(m\) 代坏立方体的总体积至多为 \(2^{-m}|Q_0|\)。沿包含某点的立方体链，连续两个平均之差至多为 \(2^{n+1}B\)；离开第 \(m\) 代坏集合的点因而满足
+	\[
+		|g-g_{Q_0}|\le(m+1)2^{n+1}B
+	\]
+	几乎处处。把 \(Q_0\) 按离开坏集合的代数分层，取 \(c_n>0\) 足够小使 \(e^{c_n2^{n+1}}<2\)，则指数积分除以 \(|Q_0|\) 不超过
+	\(\sum_{m\ge0}2^{-m}e^{c_n(m+1)2^{n+1}}\)，是收敛的几何级数。
+\end{proof}
+
+\begin{theorem}[Moser--Harnack 不等式]\label{g3:thm:moser-harnack}
+	设 \(n\ge2\)、\(r>0\)，\(A\) 为 \(Q_{4r}(x_0)\) 上实可测矩阵场，满足
+	\(\xi\cdot A\xi\ge\lambda|\xi|^2\)、\(|A\xi|\le\Lambda|\xi|\)，\(\lambda>0\)。若非负 \(u\in H^1(Q_{4r}(x_0))\) 满足
+	\[
+		\int_{Q_{4r}(x_0)} A\mathrm Du\cdot\mathrm D\phi\,\mathrm dx=0
+		\quad\text{对所有 }\phi\in C_c^\infty(Q_{4r}(x_0)),
+	\]
+	则
+	\begin{equation}\label{g3:eq:moser-harnack}
+		\mathop{\mathrm{ess\,sup}}_{Q_r(x_0)}u
+		\le C(n,\lambda,\Lambda)
+		\mathop{\mathrm{ess\,inf}}_{Q_r(x_0)}u.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	缩放后可取 \(r=1\)、\(x_0=0\)。仍令 \(v=u+\varepsilon\)。测试函数 \(\phi=\eta^2/v\) 合法，因为 \(1/v\) 是有界导数的复合；展开弱方程，得
+	\[
+		\int\eta^2 A\mathrm D(\log v)\cdot\mathrm D(\log v)
+		=2\int\eta A\mathrm D(\log v)\cdot\mathrm D\eta.
+	\]
+	吸收交叉项后有
+	\begin{equation}\label{g3:eq:moser-log-energy}
+		\int\eta^2|\mathrm D\log v|^2
+		\le C(\lambda,\Lambda)\int|\mathrm D\eta|^2.
+	\end{equation}
+	\(\log v\) 在紧子集上属于 \(H^1\)：函数本身由 \(|\log v|\le C_\varepsilon+v\) 控制，导数为 \(\mathrm Dv/v\)。
+
+	对 \(Q_2\) 的任意二进子立方体 \(Q\)，其同心二倍立方体 \(2Q\) 都含于 \(Q_4\)。选 \(\eta=1\) 于 \(Q\)、支于 \(2Q\)，且 \(|\mathrm D\eta|\le C/\ell(Q)\)。式\eqref{g3:eq:moser-log-energy}给出
+	\(\int_Q|\mathrm D\log v|^2\le C\ell(Q)^{n-2}\)。结合凸域 Poincaré 不等式\cref{g3:prop:poincare-convex-mean}及 Hölder 不等式，得到
+	\[
+		\frac1{|Q|}\int_Q|\log v-(\log v)_Q|
+		\le C\ell(Q)\left(\frac1{|Q|}\int_Q|\mathrm D\log v|^2\right)^{1/2}
+		\le B,
+	\]
+	其中 \(B\) 只依赖 \(n,\lambda,\Lambda\)。上一引理遂给出一个固定 \(p_0>0\)，使
+	\[
+		\left(\frac1{|Q_2|}\int_{Q_2}v^{p_0}\right)
+		\left(\frac1{|Q_2|}\int_{Q_2}v^{-p_0}\right)\le C.
+	\]
+	这里分别把 \(e^{\pm p_0(\log v-(\log v)_{Q_2})}\) 控制在指数绝对振荡之下；两个平均中的常数因子相互抵消。
+
+	将这个乘积界代入正幂估计\eqref{g3:eq:moser-positive-power}与负幂估计\eqref{g3:eq:moser-negative-power}，得到
+	\(\mathop{\mathrm{ess\,sup}}_{Q_1}v\le C\mathop{\mathrm{ess\,inf}}_{Q_1}v\)。全部常数不依赖 \(\varepsilon\)，而 \(\operatorname*{ess\,inf}(u+\varepsilon)=\operatorname*{ess\,inf}u+\varepsilon\)，上确界亦然；令 \(\varepsilon\downarrow0\) 即得结论。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:measurable-elliptic-holder}
+	在上述可测一致椭圆条件下，实弱解 \(u\in H^1_{\mathrm{loc}}(\Omega)\) 有局部 Hölder 连续代表。若 \(\Omega\) 连通且此代表非负，则它或者处处为正，或者恒为零。
+\end{corollary}
+\begin{proof}
+	先说明任意符号的弱解也局部有界。在正幂能量证明中，把测试函数改为 \(\eta^2 u\min\{|u|,M\}^{q-2}\)，或者先用 \((u^2+\delta^2)^{1/2}\) 作光滑化，再令 \(\delta\downarrow0\)。按 \(u>0\)、\(u<0\) 两部分计算，其导数同样具有正的主项，得到 \(|u|\) 的式\eqref{g3:eq:moser-power-energy}，故 \(u\) 局部有界。
+
+	在一个紧含的 \(Q_{4r}\) 上记 \(m=\operatorname*{ess\,inf}u\)、\(M=\operatorname*{ess\,sup}u\)。\(u-m\) 与 \(M-u\) 都是非负弱解。设内立方体上的本性上下确界为 \(a,b\)，两次 Harnack 不等式给出
+	\[
+		b-m\le C(a-m),\qquad M-a\le C(M-b).
+	\]
+	相加整理，得到
+	\[
+		\operatorname*{ess\,osc}_{Q_r}u
+		\le\vartheta\operatorname*{ess\,osc}_{Q_{4r}}u,
+		\qquad \vartheta=\frac{C-1}{C+1}<1.
+	\]
+	迭代缩小立方体，振荡按半径的 \(\beta=-\log\vartheta/\log4>0\) 次幂衰减（必要时取更小的 \(\beta<1\)）。嵌套本性值域的共同极限定义每个中心点的代表；重叠立方体的振荡界给出其 Hölder 连续性，在几乎处处的微分点它与 \(u\) 相等。最后若非负连续代表有一个零点，Harnack 使邻近内立方体上恒零；零集既开又闭，连通性给出恒零。
+\end{proof}
+
+\(n=1\) 时无需迭代。弱方程 \((a u')'=0\) 给出 \(a u'=c\) 几乎处处，故
+\(u(t)=u(t_0)+c\int_{t_0}^t a(s)^{-1}\,\mathrm ds\)。由 \(\lambda\le a\le\Lambda\)，在外区间上非负便使内区间满足同型的最大值与最小值比较不等式，其常数只依赖椭圆性比。高维证明中各方向的能量与 Sobolev 提升，正承担了这一维积分公式的作用。
+
+\subsection{椭圆系统中最大值原理的失效}
 \label{g3:subsec:1207:05}
-待撰写
+丛值和矩阵系统通常没有与换标架相容的“正部”，而一个分量的方程又会受到其他分量的驱动。即使主部是最简单的正 Laplace 型，能量正定也不保证按分量保持次序。
+
+\begin{example}\label{g3:exm:elliptic-system-no-order}
+	在 \((0,\pi)\) 上考虑两分量实系统
+	\[
+		PU=-U''+\begin{pmatrix}2&1\\1&2\end{pmatrix}U
+		=\begin{pmatrix}0\\\sin x\end{pmatrix},
+		\qquad U(0)=U(\pi)=0.
+	\]
+	主符号为 \(\xi^2I\)，零阶矩阵的特征值为一和三，所以二次型严格正定。令 \(U(x)=v\sin x\)，方程等价于
+	\[
+		\begin{pmatrix}3&1\\1&3\end{pmatrix}v
+		=\begin{pmatrix}0\\1\end{pmatrix},
+		\qquad v=\begin{pmatrix}-1/8\\3/8\end{pmatrix}.
+	\]
+	右端逐分量非负，边界值为零，解的第一分量却在内部严格为负。由能量法可知该解唯一：齐次解与自身配对后，各非负项之和为零。因此失败来自真实的次序问题，而非解的非唯一性。
+\end{example}
+
+对完全解耦的标量方程可以逐分量应用最大值原理；某些具有特定非对角符号的合作系统也有另外的比较定理。一般椭圆系统仍使用本章已经建立的 \(L^2\)、\(L^p\) 与适用主部的 Hölder 估计。标量 Moser 证明中的负幂和对数，不能直接换成一个向量的同名运算；需要对丛值模长另行推出标量微分不等式时，联络和零阶曲率项都必须进入计算。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

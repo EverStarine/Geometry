@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 14.4 参数依赖与跳跃
+% 纲要标题：### 14.4 算子族的参数依赖与核维数跳跃
 % 纲要位置：几何学计划纲要.md，第 2695 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,24 +14,327 @@
 % 
 % 纲要内容结束
 
-\section{参数依赖与跳跃}
+\section{算子族的参数依赖与核维数跳跃}
 \label{g3:sec:1404}
 
-待撰写
+方程的系数、度量或区域发生变化时，我们希望解也随之连续变化。这里首先要说明“变化”在哪个空间中度量。例如，Dirichlet 条件可以给出固定的定义域，而随度量改变的法向导数通常不能。以下先在固定 Banach 空间之间研究算子族，再把边值问题放进这个模型。第十三章的有限维消元将再次出现：可逆的大块控制求解，有限维的小块记录核的变化。
 
 \subsection{固定核维数下的投影和 Green 算子}
 \label{g3:subsec:1404:01}
-待撰写
+设 \(U\subset\mathbb R^s\) 为开集，\(X,Y\) 为固定的实或复 Banach 空间。说 \(a\mapsto T_a\) 为 \(C^r\) 算子族，指它作为取值于 \(\mathcal L(X,Y)\) 的映射为 \(C^r\)；\(r=0\) 表示算子范数连续。参数始终取实变量，即使 \(X,Y\) 是复空间。这一定义同时固定了定义域、值域及其范数。
+
+\begin{theorem}\label{g3:thm:parameter-fredholm-constant-kernel}
+	设 \(X,Y\) 为 Banach 空间，\(U\subset\mathbb R^s\) 开，\(a_0\in U\)，\(T:U\to\mathcal L(X,Y)\) 为 \(C^r\)，\(0\le r\le\infty\)。假设 \(T_{a_0}\) 为 Fredholm 算子，且在 \(a_0\) 附近 \(\dim\ker T_a=\dim\ker T_{a_0}\)。则在一个邻域内，核、值域分别有 \(C^r\) 的有界投影 \(P_a,Q_a\)，并有 \(C^r\) 映射 \(\widetilde G_a:Y\to X\)，满足
+	\[
+		T_a\widetilde G_a=Q_a,\qquad
+		\widetilde G_aT_a=I-P_a.
+	\]
+	各 \(T_a\) 均为 Fredholm 算子，余核维数也恒定。这里的投影由选定补空间构造，未要求正交。
+\end{theorem}
+\begin{proof}
+	由\cref{g3:prop:banach-fredholm-splitting}，取连续直和
+	\[
+		X=X_1\oplus K,\qquad Y=R\oplus C,
+		\quad K=\ker T_{a_0},\quad R=\operatorname{ran}T_{a_0},
+	\]
+	其中 \(K,C\) 有限维，\(A_0=T_{a_0}|_{X_1}:X_1\to R\) 有有界逆。按此顺序写
+	\[
+		T_a=\begin{pmatrix}A_a&B_a\\ C_a&D_a\end{pmatrix},
+		\qquad S_a=D_a-C_aA_a^{-1}B_a:K\to C.
+	\]
+	在 \(a_0\) 的小邻域，\(A_a\) 可逆。事实上当
+	\(\|A_0^{-1}(A_a-A_0)\|<1\) 时，Neumann 级数收敛且给出其逆。逆映射为光滑映射：恒等式
+	\[
+		(A+H)^{-1}-A^{-1}=-(A+H)^{-1}HA^{-1}
+	\]
+	先给连续性，再给导数 \(H\mapsto-A^{-1}HA^{-1}\)；反复微分得到全部高阶导数。因此以下各个含 \(A_a^{-1}\) 的表达式均为 \(C^r\)。
+
+	与式\eqref{g3:eq:fredholm-block-reduction}相同的行、列消元将 \(T_a\) 化为 \(\operatorname{diag}(A_a,S_a)\)。特别地
+	\[
+		\ker T_a=\{(-A_a^{-1}B_ak,k):k\in\ker S_a\}.
+	\]
+	恒核维数假设意味着 \(\dim\ker S_a=\dim K\)，故 \(S_a=0\)。记
+	\[
+		J_ak=(-A_a^{-1}B_ak,k),\qquad E_a=C_aA_a^{-1}:R\to C.
+	\]
+	于是 \(\ker T_a=J_aK\)，而 \(\operatorname{ran}T_a\) 恰为闭图
+	\(\{(y,E_ay):y\in R\}\)。它以 \(\{0\}\oplus C\) 为补空间，故余维恒为 \(\dim C\)。所求算子可直接取为
+	\begin{equation}\label{g3:eq:parameter-oblique-green}
+		P_a(x,k)=J_ak,\qquad
+		Q_a(y,c)=(y,E_ay),\qquad
+		\widetilde G_a(y,c)=(A_a^{-1}y,0).
+	\end{equation}
+	\(P_a^2=P_a\)、\(Q_a^2=Q_a\) 由公式立即得到。又因 \(D_a=E_aB_a\)，直接相乘得到两个所述恒等式。全部映射有界，并按算子范数为 \(C^r\)。
+\end{proof}
+
+对椭圆方程，规范解通常用 \(L^2\) 正交条件选出。斜投影有利于计算，正交投影则能去掉补空间的选择。下面用有限个向量的 Gram 矩阵完成这一步。
+
+\begin{theorem}\label{g3:thm:parameter-orthogonal-green}
+	设 \(H_0,H_1\) 为实或复 Hilbert 空间，Banach 空间 \(X\) 连续且稠密地嵌入 \(H_0\)。设 \(U\subset\mathbb R^s\) 开，\(a\mapsto T_a\in\mathcal L(X,H_1)\) 为 \(C^r\) Fredholm 族，\(0\le r\le\infty\)，且核维数局部恒定。则 \(H_0\) 中的核正交投影 \(\Pi_a\)、\(H_1\) 中的值域正交补投影 \(\Pi_a^{\mathrm c}\)，分别按
+	\[
+		a\mapsto\Pi_a\in\mathcal L(H_0,X),\qquad
+		a\mapsto\Pi_a^{\mathrm c}\in\mathcal L(H_1,H_1)
+	\]
+	为 \(C^r\)。存在唯一的 \(C^r\) 族 \(G_a\in\mathcal L(H_1,X)\)，满足
+	\begin{equation}\label{g3:eq:parameter-orthogonal-green}
+		T_aG_a=I-\Pi_a^{\mathrm c},\quad
+		G_aT_a=I-\Pi_a,\quad
+		\Pi_aG_a=0,\quad G_a\Pi_a^{\mathrm c}=0.
+	\end{equation}
+	把 \(T_a\) 看成从 \(H_0\) 到 \(H_1\)、域为 \(X\) 的稠定算子 \(\mathsf T_a\)，则它是闭算子，且
+	\(\operatorname{ran}\Pi_a^{\mathrm c}=\ker\mathsf T_a^*\)。这里的伴随针对 \(H_0,H_1\) 的内积。
+\end{theorem}
+\begin{proof}
+	固定 \(a_0\)，在上一证明中取 \(C=R^\perp\subset H_1\)。给有限维 \(K\) 固定一个内积，将 \(J_a:K\to X\hookrightarrow H_0\) 看成单射。其 Gram 算子 \(J_a^*J_a:K\to K\) 正定可逆，故
+	\[
+		\Pi_a=J_a(J_a^*J_a)^{-1}J_a^*.
+	\]
+	这个算子在 \(J_aK\) 上为恒等，且对全部 \(k\in K\)，\(u-\Pi_au\) 与 \(J_ak\) 正交，因此确为所求正交投影。有限维 Gram 算子及其逆均为 \(C^r\)，而 \(J_a\) 按 \(K\to X\) 的范数为 \(C^r\)，所以投影甚至按 \(H_0\to X\) 的范数为 \(C^r\)。
+
+	值域是 \(E_a:R\to C\) 的图，其正交补是单射
+	\[
+		Z_a:C\to H_1,\qquad Z_ac=(-E_a^*c,c)
+	\]
+	的像。因为 \(\langle(y,E_ay),(-E_a^*c,c)\rangle=0\)，且每个与图正交的 \((z,c)\) 都满足 \(z=-E_a^*c\)，这里没有遗漏任何正交向量。故
+	\[
+		\Pi_a^{\mathrm c}=Z_a(Z_a^*Z_a)^{-1}Z_a^*
+	\]
+	也是 \(C^r\)。零维的 \(K\) 或 \(C\) 对应零投影。
+
+	取上一结果的 \(\widetilde G_a\)，令
+	\[
+		G_a=(I-\Pi_a)\widetilde G_a(I-\Pi_a^{\mathrm c}).
+	\]
+	右端先投到值域，\(\widetilde G_a\) 在此给一个解，最后减去核分量。因此 \(T_aG_af=(I-\Pi_a^{\mathrm c})f\)。对 \(u\in X\)，\(G_aT_au\) 与 \(u\) 相差核元素，又与核正交，所以等于 \(u-\Pi_au\)。另外两个恒等式同样由构造成立。若另一算子也满足这四式，对每个 \(f\) 所得两个输出之差同时在核与核正交补中，因而为零。局部构造遂在重叠处一致，给出整个 \(U\) 上的 \(C^r\) 族。
+
+	由 \(u=G_aT_au+\Pi_au\) 得
+	\[
+		\|u\|_X\le C_a\bigl(\|T_au\|_{H_1}+\|u\|_{H_0}\bigr).
+	\]
+	若 \(u_j\to u\) 于 \(H_0\) 且 \(T_au_j\to f\) 于 \(H_1\)，此界使 \(u_j\) 在 \(X\) 中为 Cauchy 列；极限只能是 \(u\)，且 \(T_au=f\)。所以 \(\mathsf T_a\) 闭。最后，\(v\perp\operatorname{ran}T_a\) 等价于
+	\(\langle T_au,v\rangle=0=\langle u,0\rangle\) 对所有 \(u\in X\) 成立；这正是 \(v\in\operatorname{dom}\mathsf T_a^*\)、\(\mathsf T_a^*v=0\) 的定义。
+\end{proof}
+
+在边值问题中，\(\ker\mathsf T_a^*\) 由伴随微分表达式和伴随边界条件共同决定。上面的证明不把它误写成只满足内部伴随方程的解空间。另一方面，若把目标改成 \(H^k\) 并使用该空间的内积，得到的是另一套正交条件。几何上的 \(L^2\) 规范解应先在 \(X=H^2_B\)、\(H_0=H_1=L^2\) 中构造，再由边界正则性提升；下标 \(B\) 表示已经固定的齐次边界条件。
 
 \subsection{参数椭圆估计和连续性}
 \label{g3:subsec:1404:02}
-待撰写
+一个算子拥有椭圆估计，还不能直接说明整族算子共享同一常数。固定定义域后，吸收一个小的算子扰动就给出局部统一常数；紧参数集再将局部结论拼成整体结论。
+
+\begin{proposition}\label{g3:prop:uniform-parameter-elliptic}
+	设 \(X,Y,Z\) 为 Banach 空间，\(X\hookrightarrow Z\) 连续，\(U\subset\mathbb R^s\) 开，\(a\mapsto T_a\in\mathcal L(X,Y)\) 连续。若在 \(a_0\in U\) 有
+	\[
+		\|u\|_X\le C_0\bigl(\|T_{a_0}u\|_Y+\|u\|_Z\bigr)
+		\quad(u\in X),
+	\]
+	则在 \(a_0\) 的某邻域内，同一估计对 \(T_a\) 成立，常数可取 \(2C_0\)。若每个参数都满足这样的估计，则任意紧集 \(K\subset U\) 上有统一常数。
+\end{proposition}
+\begin{proof}
+	令 \(\|T_a-T_{a_0}\|_{X\to Y}\le(2C_0)^{-1}\)。三角不等式给出
+	\[
+		\|u\|_X\le C_0\bigl(\|T_au\|_Y+\|u\|_Z\bigr)
+		+\tfrac12\|u\|_X.
+	\]
+	吸收最后一项即得结论。对紧集取这些邻域的有限子覆盖，再取有限个常数的最大值。
+\end{proof}
+
+例如，在固定光滑有界域 \(\Omega\subset\mathbb R^m\) 上令
+\[
+	P_au=-\partial_i(a_a^{ij}\partial_ju)+c_au,
+	\qquad X_k=H^{k+2}(\Omega)\cap H^1_0(\Omega),\quad Y_k=H^k(\Omega).
+\]
+这里 \(k\ge0\) 为整数，每个参数的系数均光滑到边界，矩阵 \((a_a^{ij})\) 实对称且一致正定，\(c_a\) 为实值光滑函数；本段不要求 \(c_a\ge0\)。这里与以后均对重复的 \(i,j\) 求和。若主部系数随参数在 \(C^{k+1}(\overline\Omega)\) 中连续，零阶系数在 \(C^k(\overline\Omega)\) 中连续，则乘积求导给出
+\begin{equation}\label{g3:eq:parameter-coefficient-norm}
+	\|(P_a-P_b)u\|_{H^k}
+	\le C\left(\sum_{i,j}\|a_a^{ij}-a_b^{ij}\|_{C^{k+1}}
+	+\|c_a-c_b\|_{C^k}\right)\|u\|_{H^{k+2}}.
+\end{equation}
+具体说，\(|\alpha|\le k\) 时，\(\partial^\alpha\partial_i(a^{ij}\partial_ju)\) 的每项都是系数的至多 \(k+1\) 阶导数乘以 \(u\) 的至多 \(k+2\) 阶导数；用系数的上确界和后者的 \(L^2\) 范数即可。于是\cref{g3:thm:boundary-higher-regularity}的零 Dirichlet 边界估计在紧参数集上给出
+\begin{equation}\label{g3:eq:uniform-dirichlet-estimate}
+	\|u\|_{H^{k+2}}\le C_K
+	\bigl(\|P_au\|_{H^k}+\|u\|_2\bigr),\qquad a\in K,\quad u\in X_k.
+\end{equation}
+若系数按上述范数为 \(C^r\)，式\eqref{g3:eq:parameter-coefficient-norm}也说明 \(a\mapsto P_a\) 按 \(X_k\to Y_k\) 的范数为 \(C^r\)。
+
+\begin{corollary}\label{g3:cor:uniform-parameter-green}
+	设 \(H_0,H_1,X,U,T_a\) 满足\cref{g3:thm:parameter-orthogonal-green}的条件，\(K\subset U\) 紧。则有 \(C_K<\infty\)，使
+	\[
+		\|G_af\|_X\le C_K\|f\|_{H_1},\qquad
+		\|u\|_X\le C_K\|T_au\|_{H_1}\quad(\Pi_au=0),\qquad a\in K.
+	\]
+	若 \(f_a\in H_1\) 为 \(C^r\) 族且 \(\Pi_a^{\mathrm c}f_a=0\)，则规范解 \(u_a=G_af_a\) 在 \(X\) 中为 \(C^r\)。当 \(r\ge1\)、参数为 \(t\) 时，其导数满足
+	\begin{equation}\label{g3:eq:normalized-solution-derivative}
+		\dot u_t=G_t(\dot f_t-\dot T_tu_t)-\dot\Pi_tu_t.
+	\end{equation}
+\end{corollary}
+\begin{proof}
+	连续映射 \(a\mapsto\|G_a\|\) 在紧集上有界，这给出第一式；对核正交的 \(u\) 用 \(u=G_aT_au\) 即得第二式。算子与向量的配对是连续双线性映射，所以 \(u_a\) 为 \(C^r\)。微分 \(T_tu_t=f_t\) 得
+	\(T_t\dot u_t=\dot f_t-\dot T_tu_t\)，微分 \(\Pi_tu_t=0\) 得
+	\(\Pi_t\dot u_t=-\dot\Pi_tu_t\)。将两式代入
+	\(\dot u_t=G_tT_t\dot u_t+\Pi_t\dot u_t\)，便得导数公式。
+\end{proof}
+
+导数公式中的最后一项反映规范条件本身正在改变。核固定时投影固定，这一项为零；核变化时一般需要保留。统一椭圆估计控制的是含低阶范数的左逆；去掉低阶项所需的核正交估计，还要控制零附近的谱隙。
 
 \subsection{核维数跳跃及谱流动机}
 \label{g3:subsec:1404:03}
-待撰写
+前面分块证明在不假设恒核维数时仍给出
+\[
+	\dim\ker T_a=\dim\ker S_a\le\dim\ker T_{a_0}.
+\]
+这称为核维数的上半连续性：某个参数处多出的齐次解，离开该参数便可能消失。指数保持不变，因为核和余核的变化都由同一个有限维映射 \(S_a\) 控制。
+
+\begin{example}\label{g3:exm:dirichlet-resonance-parameter}
+	取实值函数空间 \(X=H^2(0,\pi)\cap H^1_0(0,\pi)\)，并令
+	\[
+		P_tu=-u''-tu,\qquad |t-1|<\tfrac12.
+	\]
+	齐次方程的解为 \(A\sin(\sqrt t\,x)+B\cos(\sqrt t\,x)\)。两个端点条件先给 \(B=0\)，再给 \(A\sin(\sqrt t\,\pi)=0\)。在指定参数区间中，核仅在 \(t=1\) 为 \(\mathbb R\sin x\)，其余参数核为零。
+
+	每个 \(P_t:X\to L^2\) 都是 Fredholm 的。对此可在 \(t=1\) 直接取归一化正弦基 \(e_j=\sqrt{2/\pi}\sin(jx)\)：它由圆周 Fourier 基的奇延拓得到，且 \(P_te_j=(j^2-t)e_j\)。在去掉可能的 \(j=1\) 模式后，除以 \(j^2-t\) 给出有界的 \(L^2\to H^2\cap H^1_0\) 逆，因为 \((1+j^2)/|j^2-t|\) 统一有界。级数按 \(H^2\) 收敛，可逐项求导到二阶，并保留零端点迹；故它确实解出全部与核正交的右端。
+
+	对 \(t\ne1\)，右端 \(e_1\) 的解为 \(u_t=(1-t)^{-1}e_1\)。因此逆的 \(L^2\to L^2\) 范数至少为 \(|1-t|^{-1}\)。核投影在 \(t\ne1\) 为零，在 \(t=1\) 却为秩一投影，算子范数上不连续。主符号一直是 \(\xi^2\)，而式\eqref{g3:eq:uniform-dirichlet-estimate}的常数仍可统一选取。发散来自趋近零的特征值，不是椭圆性的丧失。
+\end{example}
+
+核维数只记录“是否等于零”，没有记录特征值穿过零的方向。有限维 Hermitian 矩阵给出\term[puliu]{谱流}[spectral flow]最直接的模型。对连续道路 \(A:[\alpha,\beta]\to\operatorname{Herm}(N)\)，假设两个端点可逆，令 \(n_-(A)\) 为负特征值个数，按重数计，定义
+\begin{equation}\label{g3:eq:finite-spectral-flow}
+	\operatorname{sf}(A)=n_-(A(\alpha))-n_-(A(\beta)).
+\end{equation}
+因此从负侧穿向正侧计 \(+1\)。这个有限维定义不要求选择一组连续的特征向量。
+
+\begin{proposition}\label{g3:prop:spectral-crossing-finite}
+	设 \(A:[\alpha,\beta]\to\operatorname{Herm}(N)\) 为 \(C^1\) 道路，端点可逆。若每个满足 \(K_t=\ker A(t)\ne0\) 的内点 \(t\) 上，Hermitian 形式
+	\[
+		\Gamma_t(v,w)=\langle\dot A(t)v,w\rangle,\qquad v,w\in K_t,
+	\]
+	均非退化，则这些交叉时刻有限，且
+	\[
+		\operatorname{sf}(A)=\sum_{t:\,K_t\ne0}\operatorname{sign}\Gamma_t.
+	\]
+	这里 \(\operatorname{sign}\Gamma_t\) 为正惯性指数减负惯性指数。
+\end{proposition}
+\begin{proof}
+	固定交叉时刻 \(t_0\)，按 \(\mathbb C^N=K_{t_0}^\perp\oplus K_{t_0}\) 写
+	\[
+		A(t)=\begin{pmatrix}B(t)&C(t)\\ C(t)^*&D(t)\end{pmatrix}.
+	\]
+	\(B(t_0)\) 可逆，而 \(C(t_0)=D(t_0)=0\)。令
+	\(S(t)=D(t)-C(t)^*B(t)^{-1}C(t)\)。对二次型完成平方得到
+	\[
+		\langle A(t)(x,y),(x,y)\rangle
+		=\langle B(t)(x+B(t)^{-1}C(t)y),x+B(t)^{-1}C(t)y\rangle
+		+\langle S(t)y,y\rangle.
+	\]
+	可逆坐标变换不改变最大负定子空间的维数，所以
+	\(n_-(A(t))=n_-(B(t))+n_-(S(t))\)。这是二次型惯性定理的直接用法。又有
+	\[
+		S(t)=(t-t_0)\Gamma_{t_0}+o(|t-t_0|),
+	\]
+	其中将 \(\Gamma_{t_0}\) 用所选内积表示为 Hermitian 算子。
+
+	可逆 Hermitian 矩阵的惯性在充分小的扰动下不变：在其正、负特征子空间上，二次型分别有一个严格的正下界、负上界，小扰动保留这两个界；这两个子空间的维数相加已是总维数。应用此事实，\(B(t)\) 的负惯性局部不变，而当 \(t\) 位于 \(t_0\) 两侧且充分接近时，\(S(t)\) 的惯性分别等于 \(-\Gamma_{t_0}\)、\(\Gamma_{t_0}\) 的惯性。因此该处负特征值数的减少量为
+	\[
+		n_-(-\Gamma_{t_0})-n_-(\Gamma_{t_0})
+		=n_+(\Gamma_{t_0})-n_-(\Gamma_{t_0}).
+	\]
+	同时 \(S(t)\) 在删去 \(t_0\) 的这个邻域内可逆，故交叉孤立。交叉集合是紧区间中的闭集，且不包含端点；若它无限，就有一个积点，积点本身也是交叉，与孤立性矛盾。所以交叉有限。其余区间上负惯性不变，将各处的减少量相加即得公式。
+\end{proof}
+
+例如，\(A(t)=\operatorname{diag}(t,-2t,1+t^2)\)、\(-1\le t\le1\)，在零点有二维核，交叉形式为 \(\operatorname{diag}(1,-2)\)，签名为零。两个特征值向相反方向穿越，谱流为零。若改成 \(\operatorname{diag}(t,t,1+t^2)\)，谱流为二。它们的零点核维数相同，穿越信息却不同。
+
+\ProseParagraphBreak
+
+第十三章的圆周族\cref{g3:exm:kernel-jump-circle}进一步说明无限维情形的动机。对 \(P_t=-\mathrm i\partial_x+t\)、\(-1/2\le t\le1/2\)，固定域为 \(H^1(S^1;\mathbb C)\)，Fourier 模式 \(e^{\mathrm inx}\) 的特征值为 \(n+t\)。其中只有常数模式穿过零，方向为正，净穿越数为一；然而每个端点都有无穷多个负特征值，不能将式\eqref{g3:eq:finite-spectral-flow}的两个有限整数直接换成两个无穷数。
+
+一般谱流理论的一个常用框架是：在固定复 Hilbert 空间 \(H\) 上取闭自伴 Fredholm 算子道路，端点可逆，并要求其闭图 \(\{(u,A_tu):u\in\operatorname{dom}A_t\}\subset H\oplus H\) 上的正交投影按算子范数连续。这就是图的 gap 连续性；它允许定义域变化。在这一框架中，一般理论用零附近的有限维谱空间拼接净穿越数。这里已经证明的是有限维公式，并算出了一个具有显式 Fourier 分解的无限维模型；一般道路的谱投影拼接、选择无关性和同伦不变性是进一步学习谱流时需要建立的内容。
 
 \subsection{参数化求解与几何族}
 \label{g3:subsec:1404:04}
-待撰写
+现在将参数和非齐次边界数据一起放入求解问题。给出一个内部延拓既能准确表达边界值，也能使空间保持固定。
+
+\begin{theorem}\label{g3:thm:dirichlet-parameter-solution}
+	设 \(\Omega\subset\mathbb R^m\) 为非空有界光滑域，\(U\subset\mathbb R^s\) 开，\(k\ge0\) 为整数，\(0\le r\le\infty\)。对每个 \(a\in U\)，令
+	\[
+		P_au=-\partial_i(a_a^{ij}\partial_ju)+c_au,
+	\]
+	其中系数光滑到边界，\((a_a^{ij})\) 实对称且在 \(\overline\Omega\) 上一致正定，\(c_a\ge0\)；主部系数随参数在 \(C^{k+1}(\overline\Omega)\) 中为 \(C^r\)，\(c_a\) 在 \(C^k(\overline\Omega)\) 中为 \(C^r\)。设 \(f_a\in H^k(\Omega)\)、\(w_a\in H^{k+2}(\Omega)\) 为 \(C^r\) 族。则有唯一的 \(u_a\in H^{k+2}(\Omega)\)，满足
+	\[
+		P_au_a=f_a,\qquad \gamma u_a=\gamma w_a,
+	\]
+	且 \(a\mapsto u_a\) 在 \(H^{k+2}\) 中为 \(C^r\)。对每个紧集 \(K\subset U\)，有统一估计
+	\[
+		\|u_a\|_{H^{k+2}}\le C_K
+		\bigl(\|f_a\|_{H^k}+\|w_a\|_{H^{k+2}}\bigr),\qquad a\in K.
+	\]
+	解只依赖于 \(\gamma w_a\)，不依赖所选延拓。若 \(r\ge1\)，则一参数导数由
+	\begin{equation}\label{g3:eq:dirichlet-parameter-derivative}
+		P_t\dot u_t=\dot f_t-\dot P_tu_t,
+		\qquad \gamma\dot u_t=\gamma\dot w_t
+	\end{equation}
+	唯一确定。
+\end{theorem}
+\begin{proof}
+	固定 \(a\)。在 \(H^1_0\) 中，弱形式
+	\[
+		\mathfrak a_a(v,v)=\int_\Omega
+		\left(a_a^{ij}\partial_jv\,\overline{\partial_iv}+c_a|v|^2\right)
+	\]
+	由一致正定性和\cref{g3:lem:boundary-poincare}的 Dirichlet Poincar\'e 不等式控制 \(\|v\|_{H^1}^2\)。因此\cref{g3:thm:weak-general-dirichlet}给出任意 \(L^2\) 右端的唯一弱解；\cref{g3:thm:boundary-higher-regularity}将 \(H^k\) 右端的解提升为 \(H^{k+2}\)。齐次解以自身测试即为零，所以
+	\[
+		T_a=P_a|_{X_k}:X_k=H^{k+2}\cap H^1_0\longrightarrow H^k
+	\]
+	是有界双射；开映射定理保证其逆有界。
+
+	式\eqref{g3:eq:parameter-coefficient-norm}证明 \(a\mapsto T_a\) 为 \(C^r\)，故局部 Neumann 级数及逆映射的光滑性证明 \(a\mapsto T_a^{-1}\) 为 \(C^r\)。令
+	\begin{equation}\label{g3:eq:parameter-boundary-lifting}
+		u_a=w_a+T_a^{-1}(f_a-P_aw_a).
+	\end{equation}
+	这给出所述方程、边界条件和 \(C^r\) 依赖。若另一个延拓为 \(w_a+h_a\)，则 \(h_a\in X_k\)，公式的变化为
+	\(h_a-T_a^{-1}P_ah_a=0\)，所以解与选择无关。
+
+	紧参数集上，系数范数、\(\|T_a^{-1}\|_{H^k\to X_k}\) 均有界，代入式\eqref{g3:eq:parameter-boundary-lifting}即得估计。最后在固定空间中微分方程，连续迹算子与参数微分可交换，得到式\eqref{g3:eq:dirichlet-parameter-derivative}。同样的齐次唯一性使它唯一确定 \(\dot u_t\)。
+\end{proof}
+
+例如，\(w_a(x)=a_1+a_2x_1\) 给出一个明确的光滑边界数据族。一般地，若直接给定 \(C^r\) 族 \(g_a\in H^{k+3/2}(\partial\Omega)\)，则\cref{g3:thm:half-integer-boundary-trace}给出固定的有界线性右逆 \(E_D:H^{k+3/2}(\partial\Omega)\to H^{k+2}(\Omega)\)。取 \(w_a=E_Dg_a\)，上一结果即适用，并将估计中的 \(\|w_a\|_{H^{k+2}}\) 换成 \(C\|g_a\|_{H^{k+3/2}}\)。固定右逆的线性连续性使延拓自动保持参数的 \(C^r\) 正则性。
+
+\ProseParagraphBreak
+
+几何族还需要把不同纤维上的函数识别。设 \(M\) 为固定紧光滑流形，允许有光滑边界，\(\Phi_a:M\to M_a\) 是一族将边界映到边界的光滑微分同胚。给 \(M_a\) 配度量 \(g_a\)，拉回后的密度相对固定正密度 \(\mu_0\) 写为
+\[
+	\Phi_a^*\mu_{g_a}=\rho_a\mu_0,\qquad \rho_a>0.
+\]
+若全部拉回系数与 \(\rho_a\) 对参数光滑到所需阶，则
+\begin{equation}\label{g3:eq:geometric-unitary-identification}
+	U_a:L^2(M_a,\mu_{g_a})\longrightarrow L^2(M,\mu_0),
+	\qquad U_av=\rho_a^{1/2}(v\circ\Phi_a)
+\end{equation}
+是酉同构。事实上换元公式给出
+\(\|U_av\|_{L^2(\mu_0)}^2=\int_M|v\circ\Phi_a|^2\rho_a\mu_0=\|v\|_{L^2(\mu_{g_a})}^2\)，逆由 \(\Phi_a^{-1}\) 和 \(\rho_a^{-1/2}\) 明确给出。单纯拉回已经统一底流形，乘上密度平方根又统一了内积。
+
+\ProseParagraphBreak
+
+以 \(P_a=\Delta_{g_a}+1\) 的 Dirichlet 实现为例。拉回坐标中的系数为
+\[
+	\Delta_{\Phi_a^*g_a}v
+	=-|\widetilde g_a|^{-1/2}\partial_i
+	\left(|\widetilde g_a|^{1/2}\widetilde g_a^{ij}\partial_jv\right),
+	\qquad \widetilde g_a=\Phi_a^*g_a.
+\]
+乘以正光滑函数保持零迹，因此
+\[
+	U_a\bigl(H^2(M_a)\cap H^1_0(M_a)\bigr)
+	=H^2(M)\cap H^1_0(M)=X.
+\]
+变换后的 \(\widehat P_a=U_aP_aU_a^{-1}\) 具有固定域 \(X\) 与固定值域 \(L^2(M,\mu_0)\)。坐标公式、乘积求导和有限坐标覆盖证明 \(a\mapsto\widehat P_a\in\mathcal L(X,L^2)\) 光滑；主部仍正定。原方程的弱形式为
+\(\int_{M_a}(|\mathrm du|_{g_a}^2+|u|^2)\mu_{g_a}\)，故弱存在和边界正则性给出双射。于是 \(\widehat P_a^{-1}\) 光滑，拉回并调整密度后的解光滑依赖参数。非齐次数据先选择同样已识别的延拓 \(\widehat w_a\)，再用式\eqref{g3:eq:parameter-boundary-lifting}；所有导数均在固定 \(M\) 上计算。
+
+\ProseParagraphBreak
+
+Neumann 与 Hodge 边界条件还包含法向或法向导数，识别底流形后需继续检查定义域。例如在固定区域、仅改变密度的简单情形，写 \(u=\rho_a^{-1/2}v\)，则
+\[
+	\partial_\nu u=0
+	\quad\Longleftrightarrow\quad
+	\partial_\nu v-\tfrac12(\partial_\nu\log\rho_a)v=0.
+\]
+调整密度已经将零 Neumann 条件变成随参数变化的 Robin 条件；若度量也变，法向本身还会改变。要对这样的几何族应用本节定理，须先给出有界同构 \(J_a:X_0\to X_a\) 来识别定义域，并证明搬回的算子 \(U_aP_aJ_a:X_0\to H_1\) 具有所需算子范数正则性。若还要搬回核的正交投影，也须核对这些识别与底层内积的关系。Hodge 的绝对、相对条件同样要检查法向分量与相应导数。固定的边界条件名称本身不能代替这个定义域识别。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

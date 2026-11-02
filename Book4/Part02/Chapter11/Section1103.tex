@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 11.3 整体障碍
 % 纲要位置：几何学计划纲要.md，第 3900 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,187 @@
 \section{整体障碍}
 \label{g4:sec:1103}
 
-待撰写
+一个正则环面的附近已经有作用角坐标。若沿底空间移动这个环面，每经过一个小邻域都可以继续选择坐标；回到出发点时，原来的基本闭路却可能变成另一组整数基。本节先把这种变化记录为周期格的单值，再用一个显式粘合构造算出非平凡的单值矩阵。
 
 \subsection{周期格局部系统}
 \label{g4:subsec:1103:01}
-待撰写
+设 \(\pi:(M^{2n},\omega)\to B^n\) 是光滑满秩映射，每条纤维都是紧连通 Lagrange 子流形，且局部具有前节构造的作用角邻域。这样的映射称为\term[lagrangehuanmianxianweihua]{Lagrange 环面纤维化}[Lagrangian torus fibration]。对完全可积系统，可以在正则值附近只选定一族连通纤维；这里允许把这些局部族沿一般底流形粘合起来。
+
+\begin{definition}\label{g4:def:1103:period-covectors}
+	对 \(b\in B\) 和 \(\alpha\in\mathrm{T}_b^*B\)，选局部函数 \(h\) 满足 \((\mathrm{d}h)_b=\alpha\)。向量场 \(X_{h\circ\pi}\) 在 \(L_b=\pi^{-1}(b)\) 上只由 \(\alpha\) 决定，记为 \(Y_\alpha\)。定义余切空间中的周期格\termidx[zhouqige]{周期格}
+	\[
+		\mathcal P_b=\{\alpha\in\mathrm{T}_b^*B:\text{\(Y_\alpha\) 的时间 \(2\pi\) 流在 \(L_b\) 上为恒等}\}.
+	\]
+\end{definition}
+
+这个定义把周期统一归一化为 \(2\pi\)。在作用角坐标 \((\theta,I)\) 中，若 \(\alpha=\sum_j a_j\,\mathrm{d}I_j\)，则 \(Y_\alpha=\sum_j a_j\partial_{\theta_j}\)，所以
+\begin{equation}\label{g4:eq:1103:period-frame}
+	\mathcal P_b=\bigoplus_{j=1}^n\mathbb Z(\mathrm{d}I_j)_b.
+\end{equation}
+纤维上的这些场可交换且完备。沿 \(Y_\alpha\) 走时间 \(2\pi\) 得到闭路，给出 \(\mathcal P_b\cong H_1(L_b;\mathbb Z)\)：在角坐标中，这就是把整数向量送到相应的绕行次数。改变闭路起点只作环面平移；平移沿一条道路同伦于恒等，故同调类不变。
+
+\begin{proposition}\label{g4:prop:1103:local-system}
+	局部周期格基之间的过渡矩阵属于 \(\operatorname{GL}(n,\mathbb Z)\)，并在每个连通的重叠区域上为常矩阵。因此周期格可以沿道路延拓；固定起点与终点时，延拓只依赖道路的端点固定同伦类。
+\end{proposition}
+\begin{proof}
+	两组光滑周期格基在每一点都是同一个自由整数模的基，所以换基矩阵及其逆的系数都是整数。系数同时随底点连续变化，因而在连通重叠区域上恒定。三组基之间的换基满足通常的矩阵余循环等式。
+
+	把一条道路分成有限段，使每段落在一个局部坐标域内，并在这些域内保持整数坐标不变，就得到了延拓。细分不改变结果，更换覆盖时用共同细分及换基等式比较。对一个端点固定的道路同伦，把参数方形剖分成足够小的矩形，使每个矩形的像落在一个坐标域内；这样的剖分由紧性和有限开覆盖得到。每个小矩形边界的延拓为恒等，相邻边相消后得到同伦两边的延拓相同。
+\end{proof}
+
+像这样由局部固定的整数模及局部常值过渡矩阵组成的对象，称为整数\term[jubuxitong]{局部系统}[local system]。这里的“局部常值”是指格中的整数标号可以局部固定，余切向量本身仍随底点光滑变化。
 
 \subsection{整仿射结构}
 \label{g4:subsec:1103:02}
-待撰写
+\begin{proposition}\label{g4:prop:1103:integral-affine}
+	环面纤维化的局部作用变量在连通重叠区域上满足
+	\begin{equation}\label{g4:eq:1103:affine-transition}
+		I'=AI+c,\qquad A\in\operatorname{GL}(n,\mathbb Z),\quad c\in\mathbb R^n,
+	\end{equation}
+	其中 \(A,c\) 都是常量。因此底空间自然具有\term[zhengfangshejiegou]{整仿射结构}[integral affine structure]，即坐标变换为整数可逆线性变换后接平移的坐标图册。
+\end{proposition}
+\begin{proof}
+	由\cref{g4:prop:1103:local-system}，两组周期格基满足 \(\mathrm{d}I'=A\,\mathrm{d}I\)，其中 \(A\) 为常整数可逆矩阵。故 \(\mathrm{d}(I'-AI)=0\)，连通性给出常向量 \(c\)。各 \(I\) 确为局部坐标，已由作用角定理中的微分独立性保证。
+\end{proof}
+
+整数矩阵来自基本闭路的换基，平移常数来自作用积分原点的选择。如果在同一邻域内把原始一形式 \(\lambda\) 换成 \(\lambda+\eta\)，其中 \(\mathrm{d}\eta=0\)，同一族基本闭路上的 \(\int\eta\) 不随底点改变：两条相邻闭路之间的圆柱用 Stokes 公式给出积分差为零。这正是作用变量允许加常数的原因。
+
+\begin{example}\label{g4:exm:1103:affine-circle}
+	在二维环面上令 \(\theta,s\in\mathbb R/(2\pi\mathbb Z)\)，取
+	\[
+		\omega=\mathrm{d}\theta\wedge\mathrm{d}s,\qquad \pi(\theta,s)=s.
+	\]
+	这里 \(\mathrm{d}s\) 表示圆上局部实提升的微分；不同提升相差 \(2\pi\) 的整数倍，故微分全局一致。纤维的周期格有全局基 \(\mathrm{d}s\)，线性换基完全平凡。不过不存在全局实值作用变量 \(I\) 使 \(\mathrm{d}I\) 成为这个格的基。否则在连通底圆上必有 \(\mathrm{d}I=\mathrm{d}s\) 或 \(-\mathrm{d}s\)，沿底圆积分分别为 \(2\pi\) 或 \(-2\pi\)，与恰当形式的闭路积分为零矛盾。
+\end{example}
+
+这个例子区分了两件事：周期格能否选取全局基，以及基中的闭一形式能否同时积分成全局实值函数。即使第二步也成功，选取全局角变量还须使各纤维中的角原点相容；\cref{g4:ex:1103:magnetic-section}给出另一种具体障碍。
 
 \subsection{单值矩阵和不可整体选取作用角坐标}
 \label{g4:subsec:1103:03}
-待撰写
+固定底点 \(b_0\) 和纤维的一组基本同调类 \(\gamma_1,\ldots,\gamma_n\)。沿以 \(b_0\) 为端点的环路 \(\ell\) 延拓后，记所得基为 \(\widetilde\gamma_1,\ldots,\widetilde\gamma_n\)，用约定
+\begin{equation}\label{g4:eq:1103:monodromy-matrix}
+	(\widetilde\gamma_1,\ldots,\widetilde\gamma_n)
+	=(\gamma_1,\ldots,\gamma_n)C_\ell,
+	\qquad C_\ell\in\operatorname{GL}(n,\mathbb Z)
+\end{equation}
+定义\term[hamiltondanzhi]{Hamilton 单值}[Hamiltonian monodromy]的矩阵。这里的单值就是沿环路延拓周期格所产生的整数换基。若先沿 \(\ell\) 再沿 \(m\)，延拓算子的复合为 \(T_m\circ T_\ell\)，在上述列坐标约定下 \(C_{\ell*m}=C_mC_\ell\)。这与第一卷“先走左侧道路”的拼接约定一致；采用相反的拼接顺序即得到通常写作的左表示。
+
+\begin{proposition}\label{g4:prop:1103:monodromy-obstruction}
+	设底空间 \(B\) 连通。周期格局部系统有一组全局局部常值基，当且仅当所有环路的单值矩阵都是单位矩阵。特别地，只要某个 \(C_\ell\ne I_n\)，就不能在整个纤维化上选取全局作用角坐标。
+\end{proposition}
+\begin{proof}
+	全局基沿任何道路延拓后仍是同一组基，所以单值必平凡。反过来，若所有环路的单值均平凡，从 \(b_0\) 选道路到任意点并延拓初始基；两条道路的延拓之差由一个基点环路给出，因而结果无关道路。在每个局部平凡化中，所得基保持同一组整数坐标，故是所需的全局基。
+
+	全局作用角坐标的各个角圆给出一组全局基本闭路，等价地，全局作用变量的微分给出周期格基。因此非平凡单值排除这种坐标。
+\end{proof}
+
+改变初始基把全部矩阵同时共轭，所以“是否为单位矩阵”与换基无关。反向绕行把矩阵变成逆矩阵。若闭路基按 \(C\) 变化，则由作用积分定义，相应作用列向量按 \(C^{\mathsf T}\) 变化，另可有常向量平移；这两种矩阵不可混写。例如
+\[
+	C=\begin{pmatrix}1&1\\0&1\end{pmatrix}
+	\quad\Longleftrightarrow\quad
+	\widetilde\gamma_1=\gamma_1,\quad
+	\widetilde\gamma_2=\gamma_2+\gamma_1.
+\]
+一个基本圆保持不变，另一个多绕这个圆一次。下一小节直接构造具有这一现象的纤维化。
 
 \subsection{焦点型奇纤维的代表模型}
 \label{g4:subsec:1103:04}
-待撰写
+先在 \(\mathbb R^4\) 上取坐标 \((x_1,x_2,y_1,y_2)\)、辛形式 \(\omega_0=\sum_j\mathrm{d}x_j\wedge\mathrm{d}y_j\)，并令
+\begin{equation}\label{g4:eq:1103:focus-quadratic}
+	a=Q_1=x_1y_1+x_2y_2,\qquad
+	b=Q_2=x_1y_2-x_2y_1.
+\end{equation}
+这对二次函数称为标准\term[jiaodianxingqidian]{焦点型奇点}[focus-focus singularity]模型。其 Hamilton 场分别为
+\[
+	X_{Q_1}=(x,-y),\qquad
+	X_{Q_2}=(-x_2,x_1,-y_2,y_1).
+\]
+前者使 \(x\) 膨胀、\(y\) 收缩，后者使两个平面同时正向旋转。旋转保持内积 \(x\cdot y\)，故 \(\{Q_1,Q_2\}=X_{Q_2}Q_1=0\)。对实数 \(u,v\)，\(X_{uQ_1+vQ_2}\) 的复特征值为 \(u\pm\mathrm{i}v,-u\pm\mathrm{i}v\)，显示出伸缩与旋转同时出现的线性行为。
+
+\ProseParagraphBreak
+
+写 \(z=x_1+\mathrm{i}x_2\)、\(w=y_1+\mathrm{i}y_2\)，则
+\[
+	c=a+\mathrm{i}b=\overline z w.
+\]
+若 \((z,w)\ne(0,0)\)，微分 \(\mathrm{d}c=w\,\mathrm{d}\overline z+\overline z\,\mathrm{d}w\) 满射到 \(\mathbb C\)，所以唯一临界点为原点。在 \(z\ne0\) 的区域令 \(t=\log|z|\)、\(\vartheta=\arg z\)。由 \(w=c/\overline z\) 直接计算得
+\begin{equation}\label{g4:eq:1103:focus-cylinder}
+	\lambda_0=\sum_jy_j\,\mathrm{d}x_j
+	=a\,\mathrm{d}t+b\,\mathrm{d}\vartheta,
+	\qquad
+	\omega_0=-\mathrm{d}\lambda_0
+	=\mathrm{d}t\wedge\mathrm{d}a+\mathrm{d}\vartheta\wedge\mathrm{d}b.
+\end{equation}
+因此 \((Q_1,Q_2)\) 的共同流就是 \((t,\vartheta)\) 的平移。单独的二次模型具有非紧正则纤维；为看见环面上的单值，还要把圆柱的两端辛地接起来。
+
+\begin{proposition}\label{g4:prop:1103:focus-gluing}
+	取 \(0<\delta<1\)。有一个辛四维流形 \(M_\delta\) 和固有可积映射 \(F:M_\delta\to B_\delta=\{c\in\mathbb C:|c|<\delta\}\)，其非零纤维为连通二维环面，零纤维只有一个临界点且在该点附近等于模型\eqref{g4:eq:1103:focus-quadratic}。
+\end{proposition}
+\begin{proof}
+	在 \(\mathbb C^2\) 中取
+	\[
+		P_\delta=\{(z,w):|z|\le1,\ |w|\le1,\ |\overline z w|<\delta\}.
+	\]
+	它有两个互不相交的边界面 \(A=\{|z|=1\}\cap P_\delta\) 和 \(D=\{|w|=1\}\cap P_\delta\)，因为同时有 \(|z|=|w|=1\) 将违反 \(|c|<\delta\)。用
+	\begin{equation}\label{g4:eq:1103:focus-gluing-map}
+		\Psi(z,w)=\left(z^2\overline w,\frac1{\overline z}\right)
+	\end{equation}
+	把 \(A\) 与 \(D\) 识别。这个公式在 \(A\) 的邻域光滑，其逆在 \(D\) 的邻域为
+	\[
+		(z',w')\longmapsto
+		\left(\frac1{\overline{w'}},\overline{z'}(w')^2\right).
+	\]
+	它保持 \(\overline z w\)，并将 \(A\) 内侧 \(|z|<1\) 映到 \(D\) 外侧 \(|w'|>1\)。因而两侧的领圈通过此公式拼成跨越接缝的光滑坐标图。
+
+	核验辛性时先设 \(c\ne0\)，写 \(r=|c|\)、\(\varphi=\arg c\)。由公式得
+	\[
+		t'=t+\log r,\qquad \vartheta'=\vartheta-\varphi.
+	\]
+	注意
+	\[
+		a\,\mathrm{d}\log r-b\,\mathrm{d}\varphi=\mathrm{d}a,
+	\]
+	所以 \(\Psi^*\lambda_0=\lambda_0+\mathrm{d}a\)，从而 \(\Psi^*\omega_0=\omega_0\)。两边在领圈内都光滑，该等式由稠密性延伸到 \(c=0\)。辛形式因此在商 \(M_\delta=P_\delta/{\sim}\) 上粘合。
+
+	此商也是 Hausdorff 且第二可数的流形。具体说，边界两面在 \(P_\delta\) 中闭，任意闭集的饱和是该集与两面的对应像之并，仍为闭集，所以商映射是闭映射。每个等价类至多含两点；在度量空间 \(P_\delta\) 中分开两个有限等价类，再用闭映射缩成饱和邻域，可分开任意两个商点。内部图与跨接缝的领圈图覆盖商，并可从两面和内部的可数坐标覆盖选出可数图册。这也验证了商所需的分离性与可数性。
+
+	函数 \(c=\overline z w\) 下降为 \(F\)。紧集 \(K\subset B_\delta\) 的原像是 \(\{|z|,|w|\le1,\ \overline z w\in K\}\) 的商；括号内是 \(\mathbb R^4\) 中的闭有界集，故原像紧。唯一临界点仍是内部的原点。对 \(c\ne0\)，纤维在识别前为
+	\[
+		\log|c|\le t\le0,\qquad \vartheta\in\mathbb R/(2\pi\mathbb Z),
+	\]
+	其两边按常旋转 \(\vartheta\mapsto\vartheta-\arg c\) 识别。令 \(\tau=-\log|c|>0\)，在圆柱上把角改成 \(\vartheta-(\arg c)t/\tau\) 即消去边界扭转，因此商为二维环面。原点邻域没有参与粘合，仍具有原二次模型。
+\end{proof}
+
+零纤维在粘合前是两个闭单位圆盘 \(\{w=0\}\) 与 \(\{z=0\}\)，圆心为同一点；边界识别为 \((z,0)\sim(0,z)\)。若先把两圆盘边界粘合，就得到球面，再将两个圆心识别。所得空间也可以由环面把一条基本圆压成一点得到，称为\term[zhensuohuanmian]{针缩环面}[pinched torus]。因此这里的奇纤维确有可见的拓扑退化。
+
+\begin{proposition}\label{g4:prop:1103:focus-monodromy}
+	上述模型在穿孔圆盘 \(0<|c|<\delta\) 上的周期格具有非平凡单值。按正向绕行及\eqref{g4:eq:1103:monodromy-matrix}的约定，合适的基本闭路基给出
+	\[
+		C=\begin{pmatrix}1&1\\0&1\end{pmatrix}.
+	\]
+\end{proposition}
+\begin{proof}
+	选定 \(\varphi=\arg c\) 的一个局部分支。共同流的时间参数为 \((t,\vartheta)\)，一个周期是 \(\ell_1=(0,2\pi)\)。边界识别的平移向量为 \((\log|c|,-\varphi)\)，所以另一周期可取
+	\begin{equation}\label{g4:eq:1103:focus-periods}
+		\ell_2=(-\log|c|,\varphi).
+	\end{equation}
+	这两者生成全部时间周期：任意闭合的平移跨越整数次接缝，减去相应倍数的 \(\ell_2\) 后，其 \(t\) 位移为零，只能再绕整数次角圆。二者线性独立，因为 \(-\log|c|>0\)。
+
+	沿底圆正向一周，\(\varphi\) 增加 \(2\pi\)。于是 \(\ell_1\) 不变而 \(\ell_2\) 变成 \(\ell_2+\ell_1\)，对应的基本闭路恰按所述矩阵变化。这个矩阵不是单位矩阵，因而\cref{g4:prop:1103:monodromy-obstruction}适用。
+\end{proof}
+
+周期还可以直接积分成局部作用变量。按前节的 \(2\pi\) 归一化，取
+\begin{equation}\label{g4:eq:1103:focus-actions}
+	I_1=b,\qquad
+	I_2=\frac{-a\log|c|+b\arg c+a}{2\pi}.
+\end{equation}
+由上面的一形式恒等式，
+\[
+	\mathrm{d}I_2=\frac{-\log|c|\,\mathrm{d}a+\arg c\,\mathrm{d}b}{2\pi}.
+\]
+这与时间周期 \(\ell_2\) 完全对应，且 \(\mathrm{d}I_1,\mathrm{d}I_2\) 独立。绕行后 \(I_1'=I_1\)、\(I_2'=I_2+I_1\)，清楚地表现出作用变量的多值性。图\ref{g4:fig:1103:focus-monodromy}记录这个换基。
+
+\input{Figures/Ch11-FocusMonodromy}
+
+本节的构造同时给出了辛粘合、紧纤维与周期计算，因而无需借助一般奇点分类即可检验单值障碍。对一个给定系统，若只算出某平衡点的二次部分等于\eqref{g4:eq:1103:focus-quadratic}，还须研究该系统完整的奇纤维邻域，才能把这里的单值结论转移过去。下一节的球摆计算将分别展示二次部分和实际奇纤维的形状。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

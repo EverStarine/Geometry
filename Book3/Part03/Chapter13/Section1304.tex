@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 13.4 椭圆复形
 % 纲要位置：几何学计划纲要.md，第 2634 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,316 @@
 \section{椭圆复形}
 \label{g3:sec:1304}
 
-待撰写
+外微分满足 \(\mathrm d^2=0\)，于是正合形式一定闭合，而闭合形式未必正合。这里的障碍原本定义为一个无限维空间的商。怎样用有限个光滑对象描述它？单独的外微分通常不是方形椭圆算子；把相邻两个方向的微分及其伴随合在一起，却能得到椭圆的二阶算子。上一节的 Green 算子将使每个截面分成三个正交部分，并使上同调类有唯一的调和代表。
 
 \subsection{符号序列的正合性}
 \label{g3:subsec:1304:01}
-待撰写
+先把“相邻两次微分为零”与“每个非零频率都没有剩余障碍”分开。前者是微分算子的恒等式，后者是各纤维上的有限维线性代数条件。
+
+\begin{definition}\label{g3:def:first-order-elliptic-complex}
+	设 \(M\) 为光滑流形，\(E^0,\ldots,E^N\) 为有限秩复向量丛，\(D_q:C^\infty(M;E^q)\to C^\infty(M;E^{q+1})\) 为阶数至多一的光滑系数微分算子。若 \(D_{q+1}D_q=0\)，则
+	\[
+		0\longrightarrow C^\infty(E^0)
+		\xrightarrow{D_0}C^\infty(E^1)
+		\xrightarrow{D_1}\cdots
+		\xrightarrow{D_{N-1}}C^\infty(E^N)
+		\longrightarrow0
+	\]
+	称为一阶\term[weifen fuxing]{微分复形}[differential complex]。记 \(a_q(x,\xi)=\sigma_1(D_q)(x,\xi)\)。若对每个 \(x\in M\) 和每个非零实余切向量 \(\xi\)，序列
+	\begin{equation}\label{g3:eq:elliptic-symbol-sequence}
+		0\longrightarrow E_x^0\xrightarrow{a_0(x,\xi)}E_x^1
+		\longrightarrow\cdots\xrightarrow{a_{N-1}(x,\xi)}E_x^N
+		\longrightarrow0
+	\end{equation}
+	在每一项正合，就称该复形为\term[tuoyuan fuxing]{椭圆复形}[elliptic complex]。端点处约定 \(E^{-1}=E^{N+1}=0\)、\(D_{-1}=D_N=0\)。
+\end{definition}
+
+由主符号的复合公式\cref{g3:prop:symbol-calculus}，\(D_{q+1}D_q=0\) 蕴含 \(a_{q+1}a_q=0\)，所以像总包含在下一个核中。椭圆性进一步要求这两个子空间相等。式\eqref{g3:eq:elliptic-symbol-sequence}首项的正合要求 \(a_0\) 单射，末项要求 \(a_{N-1}\) 满射；不能只核对中间项。只有两个非零丛时，这个定义恰好要求唯一的主符号可逆，因而回到普通椭圆算子。
+
+\begin{example}\label{g3:exm:gradient-curl-symbol-complex}
+	在 \(\mathbb R^2\) 上，取
+	\[
+		D_0f=(\partial_1f,\partial_2f),\qquad
+		D_1(v_1,v_2)=\partial_1v_2-\partial_2v_1.
+	\]
+	混合偏导可交换，故 \(D_1D_0=0\)。沿用 \(\mathrm D_j=-\mathrm i\partial_j\) 的约定，两个符号为
+	\[
+		a_0(\xi)c=\mathrm i c(\xi_1,\xi_2),\qquad
+		a_1(\xi)v=\mathrm i(\xi_1v_2-\xi_2v_1).
+	\]
+	若 \(\xi\ne0\)，第一映射单射，第二映射满射，而第二映射的核正是 \(\mathbb C\xi\)。因此它是椭圆复形。若删掉最后的旋度映射，\(0\to\mathbb C\xrightarrow{a_0}\mathbb C^2\to0\) 在末项便不正合：梯度的符号只控制沿 \(\xi\) 的方向。
+\end{example}
+
+\begin{example}\label{g3:exm:nonelliptic-complex-infinite-cohomology}
+	在 \(\mathbb T^2=(\mathbb R/2\pi\mathbb Z)^2\) 上，考虑两项复形 \(C^\infty(\mathbb T^2)\xrightarrow{\partial_x}C^\infty(\mathbb T^2)\)。它在 \(\xi_x=0\) 的非零方向不椭圆。核含有所有 \(f(y)\)，因而无限维。靶空间对像的商也同构于 \(C^\infty(S^1)\)：映射是取 \(x\) 方向平均，零平均函数 \(g\) 的原函数 \(\int_0^x g(t,y)\,\mathrm dt\) 则是周期光滑函数。复形恒等式本身没有带来有限维性。
+\end{example}
 
 \subsection{相应 Laplace 算子的椭圆性}
 \label{g3:subsec:1304:02}
-待撰写
+固定各丛的光滑 Hermitian 度量与底流形的光滑正密度，形式伴随由积分配对定义。对 \(E^q\) 中的一个截面，有两个可测量的方向：向前的 \(D_qu\)，以及与前一箭头对应的 \(D_{q-1}^*u\)。把两者的平方能量相加，正好产生所需的方形算子。
+
+\ProseParagraphBreak
+
+正密度的选择也能纳入上一节的黎曼框架。若 \(\dim M=n\ge1\)，取任意底度量 \(g_0\)，写 \(\mu=\rho\mu_{g_0}\)，其中 \(\rho>0\) 光滑；令 \(g=\rho^{2/n}g_0\)，便有 \(\mu_g=\mu\)。在紧流形上，更换光滑底度量只改变 Sobolev 范数的等价常数，因此可以直接应用上一节以黎曼体积定义的 Green 算子理论。
+
+\begin{lemma}\label{g3:lem:complex-symbol-laplacian}
+	设 \(V_-,V,V_+\) 为有限维 Hermitian 空间，\(A:V_-\to V\)、\(B:V\to V_+\) 满足 \(BA=0\)。则
+	\[
+		\ker(AA^*+B^*B)=\ker A^*\cap\ker B.
+	\]
+	特别地，\(\operatorname{im}A=\ker B\) 当且仅当 \(AA^*+B^*B\) 正定。
+\end{lemma}
+\begin{proof}
+	对 \(v\in V\) 与自身配对，有
+	\[
+		\langle(AA^*+B^*B)v,v\rangle=|A^*v|^2+|Bv|^2.
+	\]
+	两项非负，故左侧为零恰好意味着右侧两向量都为零。若中间正合，这样的 \(v\) 属于 \(\operatorname{im}A\)，同时正交于 \(\operatorname{im}A\)，所以 \(v=0\)。反过来，由 \(BA=0\)，\(\operatorname{im}A\subset\ker B\)。任意 \(v\in\ker B\) 可分解为在 \(\operatorname{im}A\) 上的投影与正交余项；余项仍在 \(\ker B\)，又在 \(\ker A^*\)，正定性迫使余项为零。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:elliptic-complex-laplacians}
+	设 \(M\) 为维数 \(n\ge1\) 的紧致无边界光滑流形，\((E^\bullet,D)\) 为其上的一阶椭圆复形，各丛带光滑 Hermitian 度量，积分采用固定光滑正密度。则
+	\begin{equation}\label{g3:eq:complex-laplacian}
+		\Delta_q=D_{q-1}D_{q-1}^*+D_q^*D_q
+	\end{equation}
+	是 \(E^q\) 上形式自伴、非负的二阶椭圆算子。相对于任意固定底度量，其主符号满足
+	\[
+		\sigma_2(\Delta_q)=a_{q-1}a_{q-1}^*+a_q^*a_q,
+		\qquad
+		\langle\sigma_2(\Delta_q)(x,\xi)v,v\rangle
+		\ge c_q|\xi|^2|v|^2
+	\]
+	对某个 \(c_q>0\) 成立。其核是有限维光滑空间
+	\[
+		\mathcal H_D^q
+		=\{u\in C^\infty(E^q):D_qu=0,\ D_{q-1}^*u=0\}.
+	\]
+\end{proposition}
+\begin{proof}
+	符号公式来自复合及伴随的符号运算，上一引理与符号正合性保证它对每个 \(\xi\ne0\) 正定。在单位余切球面与单位纤维球面上，连续的正函数取得正的最小值；这些球面丛在紧底空间上紧。再用符号的二次齐次性即得所述统一下界。
+
+	形式伴随的定义与无边界条件给出，对光滑 \(u\)，
+	\begin{equation}\label{g3:eq:complex-energy-identity}
+		(\Delta_qu,u)_{L^2}
+		=\|D_qu\|_2^2+\|D_{q-1}^*u\|_2^2.
+	\end{equation}
+	每个乘积项均形式自伴，因此 \(\Delta_q\) 形式自伴且非负。上一节的\cref{g3:thm:elliptic-green-general}适用于这个方形椭圆算子，给出有限维光滑核；式\eqref{g3:eq:complex-energy-identity}又把该核识别为同时满足两个一阶方程的截面。反向包含直接代入式\eqref{g3:eq:complex-laplacian}即可。
+\end{proof}
+
+\(\mathcal H_D^q\) 中的元素称为该复形的\term[tiaohe jiemian]{调和截面}[harmonic section]。这一说法同时包含闭合与余闭合两个条件。定义形式伴随使用正密度即可，以上论证没有要求流形可定向。
 
 \subsection{正合、余正合与调和分解}
 \label{g3:subsec:1304:03}
-待撰写
+令 \(H_q\) 为到 \(\mathcal H_D^q\) 的 \(L^2\) 正交投影，\(G_q\) 为 \(\Delta_q\) 的 Green 算子。由\cref{g3:thm:elliptic-green-general}，二者保持光滑截面，且
+\[
+	\Delta_qG_q=G_q\Delta_q=I-H_q,\qquad
+	G_q:H^k(E^q)\longrightarrow H^{k+2}(E^q),\quad k\ge0.
+\]
+这里第一式按各自定义域理解；作用于光滑截面时全部运算均有意义。要使这个解算子反映复形结构，须先证明它与相邻微分相容。
+
+\begin{lemma}\label{g3:lem:complex-green-commutation}
+	设 \(M\) 为维数 \(n\ge1\) 的紧致无边界光滑流形，\((E^\bullet,D)\) 为带光滑 Hermitian 度量与正密度的一阶椭圆复形。其 Laplace 算子、调和投影与 Green 算子在光滑截面上满足
+	\begin{align*}
+		\Delta_{q+1}D_q&=D_q\Delta_q,
+		&\Delta_qD_q^*&=D_q^*\Delta_{q+1},\\
+		H_{q+1}D_q&=0,
+		&D_qH_q&=0,\\
+		D_qG_q&=G_{q+1}D_q,
+		&D_q^*G_{q+1}&=G_qD_q^*.
+	\end{align*}
+\end{lemma}
+\begin{proof}
+	展开 \(\Delta_{q+1}D_q\) 与 \(D_q\Delta_q\)，两者都剩下 \(D_qD_q^*D_q\)，因为 \(D_{q+1}D_q=D_qD_{q-1}=0\)。取形式伴随得到第二个交换关系。调和截面被 \(D_q\) 消去，所以 \(D_qH_q=0\)。若 \(h\in\mathcal H_D^{q+1}\)，则
+	\((D_qu,h)=(u,D_q^*h)=0\)，故 \(H_{q+1}D_q=0\)。
+
+	现在比较 \(D_qG_qu\) 与 \(G_{q+1}D_qu\)。第一交换关系给出
+	\[
+		\Delta_{q+1}D_qG_qu=D_q(u-H_qu)=D_qu.
+	\]
+	又由 \(H_{q+1}D_q=0\)，Green 恒等式给出
+	\(\Delta_{q+1}G_{q+1}D_qu=D_qu\)。两者都正交于 \(\mathcal H_D^{q+1}\)：第一项因它在 \(D_q\) 的像中，第二项因 Green 算子的取值约定。正交核后的解唯一，因此两者相等。对 \(D_q^*\) 重复相同论证，或对刚证的等式使用 \(G_q^*=G_q\) 并与任意光滑截面配对，即得最后一个关系。
+\end{proof}
+
+\term[Hodge fenjie]{Hodge 分解}[Hodge decomposition]\footnote{William Vallance Douglas Hodge（1903--1975），苏格兰数学家，研究代数几何、微分几何与调和积分；用调和形式表示上同调类的理论以其命名。}把 Green 恒等式中的二阶项拆成两个一阶像。下述直和的正交性是 \(L^2\) 正交性；光滑截面空间本身没有被当成完备 Hilbert 空间。
+
+\begin{theorem}\label{g3:thm:elliptic-complex-hodge-decomposition}
+	设 \(M\) 为维数 \(n\ge1\) 的紧致无边界光滑流形，\((E^\bullet,D)\) 为带光滑 Hermitian 度量与正密度的一阶椭圆复形。则有 \(L^2\) 正交直和
+	\begin{equation}\label{g3:eq:smooth-complex-hodge}
+		C^\infty(E^q)=\mathcal H_D^q
+		\oplus D_{q-1}C^\infty(E^{q-1})
+		\oplus D_q^*C^\infty(E^{q+1}),
+	\end{equation}
+	其中任意 \(u\) 的三个分量分别为
+	\begin{equation}\label{g3:eq:explicit-complex-hodge}
+		u=H_qu+D_{q-1}(D_{q-1}^*G_qu)+D_q^*(D_qG_qu).
+	\end{equation}
+	还成立
+	\[
+		L^2(E^q)=\mathcal H_D^q
+		\oplus D_{q-1}H^1(E^{q-1})
+		\oplus D_q^*H^1(E^{q+1}),
+	\]
+	右侧三个子空间均闭。此时式\eqref{g3:eq:explicit-complex-hodge}仍成立，括号内的两个原像属于 \(H^1\)。
+\end{theorem}
+\begin{proof}
+	在光滑截面上，\(I-H_q=\Delta_qG_q\) 直接给出式\eqref{g3:eq:explicit-complex-hodge}。两个像之间正交，因为
+	\[
+		(D_{q-1}v,D_q^*w)=(D_qD_{q-1}v,w)=0.
+	\]
+	它们又都正交于调和空间，因为调和截面被相应伴随或微分消去。因此每个 \(u\) 的三个分量唯一。原像本身可以加上相应算子的核，故唯一的是三个分量，而非所有表示这些分量的原像。
+
+	记 \(\mathsf E_q=D_{q-1}D_{q-1}^*G_q\)、\(\mathsf C_q=D_q^*D_qG_q\)。由于 \(G_q:L^2\to H^2\) 有界，两个一阶算子依次作用后，这两映射在 \(L^2\) 上有界。光滑情形的正交分解表明 \(H_q,\mathsf E_q,\mathsf C_q\) 在稠密光滑子空间上是互相正交的投影，和为恒等算子。取 \(L^2\) 极限后，同样的恒等式与正交性在全空间成立，所以三个像都是闭子空间。
+
+	还须识别像的实际定义域。\(\mathsf E_qu=D_{q-1}(D_{q-1}^*G_qu)\)，括号内属于 \(H^1\)，故 \(\operatorname{im}\mathsf E_q\subset D_{q-1}H^1\)。反过来，若 \(v\in H^1(E^{q-1})\)，取光滑 \(v_j\to v\) 于 \(H^1\)。光滑分解给出 \(\mathsf E_qD_{q-1}v_j=D_{q-1}v_j\)，由 \(D_{q-1}:H^1\to L^2\) 与 \(\mathsf E_q:L^2\to L^2\) 的连续性得 \(\mathsf E_qD_{q-1}v=D_{q-1}v\)。因此两像相等。\(\operatorname{im}\mathsf C_q=D_q^*H^1\) 的证明相同，结论全部成立。
+\end{proof}
+
+两个微分像分别称为正合部分与\term[yuzhenghe]{余正合}[coexact]部分。式\eqref{g3:eq:explicit-complex-hodge}既给出存在性，也给出了可选择的原像；其中 Green 算子的两阶增益，保证原像比 \(u\) 多一阶正则性。
 
 \subsection{有限维上同调及代表元}
 \label{g3:subsec:1304:04}
-待撰写
+在代数定义中，上同调只记住闭截面对正合截面的等价类。调和分解将从每个类中选出一个同时满足椭圆方程的截面，使这个商有有限维的具体模型。
+
+\begin{definition}\label{g3:def:elliptic-complex-cohomology}
+	设 \((E^\bullet,D)\) 为光滑流形上的微分复形。其第 \(q\) 次光滑上同调为
+	\[
+		H_D^q(M)=
+		\frac{\{u\in C^\infty(E^q):D_qu=0\}}
+		{D_{q-1}C^\infty(E^{q-1})}.
+	\]
+	两个闭截面等价，恰好表示它们之差为 \(D_{q-1}v\)，其中 \(v\) 光滑。
+\end{definition}
+\symidx{\(H_D^q(M),\mathcal H_D^q\)：微分复形上同调及调和截面空间}
+
+\begin{theorem}\label{g3:thm:elliptic-complex-harmonic-representatives}
+	设 \(M\) 为维数 \(n\ge1\) 的紧致无边界光滑流形，\((E^\bullet,D)\) 为带光滑 Hermitian 度量与正密度的一阶椭圆复形。映射
+	\[
+		\mathcal H_D^q\longrightarrow H_D^q(M),\qquad h\longmapsto[h],
+	\]
+	是同构，其逆将任意闭代表 \(u\) 送到 \(H_qu\)。因此 \(H_D^q(M)\) 有限维，每个上同调类有唯一的调和代表；该代表也是这一类中唯一的 \(L^2\) 范数最小者。
+\end{theorem}
+\begin{proof}
+	调和截面闭合，因此映射有定义。若 \(h=D_{q-1}v\) 又调和，则
+	\(\|h\|_2^2=(h,D_{q-1}v)=(D_{q-1}^*h,v)=0\)，故映射单射。若 \(D_qu=0\)，Green 交换关系给出 \(D_qG_qu=G_{q+1}D_qu=0\)，于是
+	\[
+		u=H_qu+D_{q-1}D_{q-1}^*G_qu.
+	\]
+	第二项正合，所以 \([u]=[H_qu]\)，映射满射。更换代表增加 \(D_{q-1}v\) 时，调和投影不变，因而逆映射与代表选择无关。有限维性随 \(\mathcal H_D^q\) 的有限维性而来。
+
+	若 \(h\) 为该类的调和代表，任何其他代表都写为 \(h+D_{q-1}v\)，且两项正交。因此
+	\[
+		\|h+D_{q-1}v\|_2^2=\|h\|_2^2+\|D_{q-1}v\|_2^2.
+	\]
+	最小值恰在正合分量为零时达到，即代表等于 \(h\)。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:canonical-complex-primitive}
+	设 \(M\) 为维数 \(n\ge1\) 的紧致无边界光滑流形，\((E^\bullet,D)\) 为带光滑 Hermitian 度量与正密度的一阶椭圆复形。光滑闭截面 \(u\in C^\infty(E^q)\) 正合当且仅当 \(H_qu=0\)。此时下述原像及估计对每个整数 \(k\ge0\) 成立：
+	\[
+		v=D_{q-1}^*G_qu,\qquad D_{q-1}v=u,
+		\qquad \|v\|_{H^{k+1}}\le C_k\|u\|_{H^k}\quad(k\ge0).
+	\]
+	该 \(v\) 正交于所有光滑的 \(D_{q-1}\)-闭截面，是光滑原像中唯一的 \(L^2\) 范数最小者。
+\end{corollary}
+\begin{proof}
+	正合性判别及原像公式已由前一定理给出。Green 算子将 \(H^k\) 有界送到 \(H^{k+2}\)，再施加一阶 \(D_{q-1}^*\) 即得估计。若 \(D_{q-1}w=0\)，则
+	\((v,w)=(G_qu,D_{q-1}w)=0\)。任何其他光滑原像为 \(v+w\)，由正交性，平方范数增加 \(\|w\|_2^2\)，从而得到唯一最小性。
+\end{proof}
+
+改变正密度或丛度量会改变形式伴随、调和空间与最小范数代表，却不会改变 \(H_D^q(M)\) 的代数定义。若两种选择对应调和投影 \(H_q^{(0)},H_q^{(1)}\)，则
+\[
+	\mathcal H_{D,(0)}^q\longrightarrow\mathcal H_{D,(1)}^q,
+	\qquad h\longmapsto H_q^{(1)}h
+\]
+是同构：它保持同一个上同调类，逆映射为另一方向的调和投影。这个识别说明有限维障碍属于复形，而代表的形状记录着度量选择。
 
 \subsection{de Rham 和 Dolbeault 的共同机制}
 \label{g3:subsec:1304:05}
-待撰写
+先看实微分形式的复化。记 \(\Omega^q(M;\mathbb C)=C^\infty(\Lambda^q\mathrm T^*M\otimes\mathbb C)\)，局部写
+\[
+	\mathrm d\left(\sum_I f_I\,\mathrm dx^I\right)
+	=\sum_{j,I}\partial_jf_I\,\mathrm dx^j\wedge\mathrm dx^I.
+\]
+链式法则保证不同坐标中的表达式相容，混合偏导的对称性与外乘的反对称性给出 \(\mathrm d^2=0\)。这是 de Rham 复形。它的符号是否正合，只需一条外代数恒等式。
+
+\begin{lemma}\label{g3:lem:wedge-contraction-symbol}
+	设 \(V\) 为有限维实内积空间或复 Hermitian 空间，在其外代数上使用诱导内积。对 \(\eta\in V^*\)，令 \(\varepsilon_\eta\) 为左外乘 \(\eta\)，\(\varepsilon_\eta^*\) 为其伴随，则
+	\[
+		\varepsilon_\eta^*\varepsilon_\eta+
+		\varepsilon_\eta\varepsilon_\eta^*=|\eta|^2I.
+	\]
+	若 \(\eta\ne0\)，外乘 \(\eta\) 的有限外代数序列处处正合。
+\end{lemma}
+\begin{proof}
+	取正交或酉余标架，使 \(\eta=|\eta|e^1\)。每个形式唯一写成 \(e^1\wedge\alpha+\beta\)，其中 \(\alpha,\beta\) 都不含 \(e^1\)。两部分正交；\(\varepsilon_\eta\) 将 \(\beta\) 送到 \(|\eta|e^1\wedge\beta\)，并消去第一部分，其伴随则把 \(e^1\wedge\alpha\) 送到 \(|\eta|\alpha\)，并消去第二部分。逐项作用即得恒等式。若 \(\varepsilon_\eta u=0\)，则
+	\(u=|\eta|^{-2}\varepsilon_\eta\varepsilon_\eta^*u\)，所以 \(u\) 属于前一外乘的像，正合性得证。
+\end{proof}
+
+对实余切向量 \(\xi\)，由 \(\partial_j=\mathrm i\mathrm D_j\) 得到
+\[
+	\sigma_1(\mathrm d)(x,\xi)=\mathrm i\varepsilon_\xi,
+	\qquad
+	\sigma_1(\mathrm d^*)(x,\xi)=-\mathrm i\varepsilon_\xi^*,
+	\qquad
+	\sigma_2(\Delta_{\mathrm d})(x,\xi)=|\xi|_g^2I.
+\]
+因此 de Rham 复形椭圆，关联的 \(\Delta_{\mathrm d}=\mathrm d\mathrm d^*+\mathrm d^*\mathrm d\) 具有非负 Laplace 型主符号。在任意紧致无边界黎曼流形上，光滑 de Rham 上同调已经具有上述唯一调和代表。第十五章将以形式为中心恢复 Hodge 星、配对与曲率公式，进一步解释这些代表的几何性质。
+
+\begin{example}\label{g3:exm:flat-torus-harmonic-forms}
+	在平坦环面 \(\mathbb T^n=(\mathbb R/2\pi\mathbb Z)^n\) 上，余标架 \(\mathrm dx^j\) 平行且正交。分部积分得
+	\[
+		\mathrm d=\sum_j\varepsilon_{\mathrm dx^j}\partial_j,
+		\mathrm d^*=-\sum_j\varepsilon_{\mathrm dx^j}^*\partial_j,
+		\Delta_{\mathrm d}=-\sum_j\partial_j^2
+	\]
+	逐分量作用。最后一个等式中，同指标用上一引理，不同指标的外乘与收缩交叉项相消；也可在 \(\mathrm dx^I\) 基底上逐项计算。对 \(u=\sum_Iu_I\mathrm dx^I\) 与自身积分配对，得到
+	\[
+		(\Delta_{\mathrm d}u,u)=\sum_{I,j}\int_{\mathbb T^n}|\partial_ju_I|^2.
+	\]
+	故调和形式恰为系数恒定的形式。因此 \(\dim H_{\mathrm d}^q(\mathbb T^n)=\binom nq\)，调和投影就是对每个系数取平均。这是由微分方程直接算出的上同调维数。
+\end{example}
+
+复几何中相应的微分只增加反全纯次数。为明确这里需要的条件，设 \(X\) 是复维数 \(n\) 的复流形，即具有双全纯坐标变换的复坐标图册；记 \(\Omega^{p,q}(X)\) 为局部由 \(\mathrm dz^I\wedge\mathrm d\bar z^J\) 张成的光滑形式，\(|I|=p,|J|=q\)。写 \(z^j=x^j+\mathrm iy^j\)，定义
+\[
+	\bar\partial u
+	=\sum_{j,I,J}\frac{\partial u_{I,J}}{\partial\bar z^j}
+	\,\mathrm d\bar z^j\wedge\mathrm dz^I\wedge\mathrm d\bar z^J,
+	\qquad
+	\frac{\partial}{\partial\bar z^j}
+	=\frac12\left(\partial_{x^j}+\mathrm i\partial_{y^j}\right).
+\]
+坐标变换的全纯性使 \(\mathrm dz^I\) 的变换系数被 \(\bar\partial\) 消去，链式法则因而给出全局算子；再次求导时，反全纯混合偏导交换而外乘反交换，故 \(\bar\partial^2=0\)。固定 \(p\) 后得到\term[Dolbeault fuxing]{Dolbeault 复形}[Dolbeault complex]。\footnote{Pierre Dolbeault（1924--2015），法国数学家，研究多复变函数、解析几何与微分形式上同调；\(\bar\partial\) 上同调及其与全纯对象的联系以其命名。}
+
+\begin{proposition}\label{g3:prop:dolbeault-elliptic-symbol}
+	设 \(X\) 为复维数 \(n\ge1\) 的复流形，给定 Hermitian 度量，其相应实黎曼度量记为 \(g\)。固定 \(0\le p\le n\)，则
+	\[
+		0\longrightarrow\Omega^{p,0}(X)\xrightarrow{\bar\partial}
+		\Omega^{p,1}(X)\longrightarrow\cdots
+		\xrightarrow{\bar\partial}\Omega^{p,n}(X)\longrightarrow0
+	\]
+	为椭圆复形。采用由 \(g\) 复化诱导的形式内积，对实 \(\xi\in\mathrm T_x^*X\)，有
+	\[
+		\sigma_1(\bar\partial)(x,\xi)=\mathrm i\varepsilon_{\xi^{0,1}},
+		\qquad
+		\sigma_2(\Delta_{\bar\partial})(x,\xi)
+		=|\xi^{0,1}|^2I=\frac12|\xi|_g^2I,
+	\]
+	其中 \(\Delta_{\bar\partial}=\bar\partial\bar\partial^*+\bar\partial^*\bar\partial\)。若 \(X\) 紧且无边界，则
+	\[
+		H_{\bar\partial}^{p,q}(X)
+		=\frac{\ker(\bar\partial:\Omega^{p,q}\to\Omega^{p,q+1})}
+		{\bar\partial\Omega^{p,q-1}}
+	\]
+	有限维，并与 \(\ker\Delta_{\bar\partial}\) 自然同构。
+\end{proposition}
+\begin{proof}
+	在坐标中，实协向量 \(\xi=\sum_j(a_j\,\mathrm dx^j+b_j\,\mathrm dy^j)\) 的反全纯部分为
+	\[
+		\xi^{0,1}=\frac12\sum_j(a_j+\mathrm i b_j)\,\mathrm d\bar z^j.
+	\]
+	前述 \(\bar\partial\) 表达式立刻给出其主符号。实 \(\xi\) 的两种类型分量互为共轭；Hermitian 度量下二者正交且等长，所以 \(|\xi^{0,1}|^2=|\xi|_g^2/2\)，特别地非零实 \(\xi\) 的反全纯部分非零。把\cref{g3:lem:wedge-contraction-symbol}用于反全纯外代数，固定的全纯外代数只作为有限维系数空间，便得到符号正合性。若把全纯因子统一放在前面，外乘可能带有固定的 \((-1)^p\)，它不改变正合性，也在与伴随相乘时抵消。
+
+	由伴随符号公式，\(\sigma_1(\bar\partial^*)=-\mathrm i\varepsilon_{\xi^{0,1}}^*\)。外乘收缩恒等式于是给出所述 Laplace 符号。最后对紧致无边界的 \(X\) 应用\cref{g3:thm:elliptic-complex-harmonic-representatives}，即得有限维性与唯一调和代表。
+\end{proof}
+
+这里复坐标的存在保证 \(\bar\partial^2=0\)，Hermitian 度量则用于定义伴随和代表元。所得调和分解适用于一般紧复流形；将 \(\mathrm d\)-调和空间进一步按复类型分解，还需要另外的几何恒等式。这样，de Rham 与 Dolbeault 的共同部分明确落在“符号正合、非负椭圆 Laplace、Green 分解”这三步中。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 27.2 短时理论的证明
 % 纲要位置：几何学计划纲要.md，第 3250 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,246 @@
 \section{短时理论的证明}
 \label{g3:sec:2702}
 
-待撰写
+上一节已经把规范固定后的最高阶部分化为正定逆度量乘以二阶空间导数。现在需要把这个符号计算落实成一个光滑度量族，再去掉规范项。存在性与唯一性沿相反方向使用这一步：构造时先求规范方程，再作拉回；比较两个已知 Ricci 流时，则先用调和映射热流把它们放进同一个规范。最后从曲率控制恢复固定坐标中的度量控制，说明什么会阻止光滑解继续存在。
 
 \subsection{调用第26章的拟线性存在}
 \label{g3:subsec:2702:01}
-待撰写
+固定闭光滑流形 \(M^n\)、\(n\ge2\)，光滑初始度量 \(g_0\) 及光滑背景度量 \(\bar g\)。本节用 \(h\) 表示规范方程的未知度量，把 \(g\) 留给恢复出的 Ricci 流。背景联络 \(\bar\nabla\) 及全部 Banach 空间都固定不动。
+
+\begin{proposition}\label{g3:prop:ricci-deturck-short-time}
+ 设 \(M^n\) 闭，\(n\ge2\)，\(g_0,\bar g\) 为光滑黎曼度量。则存在 \(T>0\) 及唯一的光滑正定度量族 \(h(t)\)，满足
+ \[
+  \partial_th=-2\operatorname{Ric}_h+\mathcal L_{W(h,\bar g)}h,
+  \qquad h(0)=g_0.
+ \]
+ 唯一性在光滑正定解的共同存在区间内成立，光滑性包括初时刻的单侧导数。
+\end{proposition}
+\begin{proof}
+ 取固定向量丛 \(E=\operatorname{Sym}^2\mathrm T^*M\)，配上 \(\bar g\) 诱导的丛度量与联络。\Cref{g3:prop:ricci-deturck-parabolic}把方程写成
+ \[
+  \partial_th=h^{ab}\bar\nabla_a\bar\nabla_bh
+       +Q(x,h,\bar\nabla h),
+ \]
+ 其中 \(Q\) 在 \(h\) 正定的一阶喷射开集上光滑。对 \(\xi\in\mathrm T_x^*M\)、\(v\in E_x\)，主符号的二次型为
+ \[
+  h^{ab}\xi_a\xi_b|v|_{\bar g}^2.
+ \]
+ 在初始喷射图上，紧性和 \(g_0\) 正定给出它相对于 \(|\xi|_{\bar g}^2|v|_{\bar g}^2\) 的统一正下界；缩小喷射邻域仍保留正下界。取整数 \(s>n/2+3\)，\cref{g3:thm:quasilinear-parabolic-short-time}的全部假设遂满足。该定理给出光滑短时解；\(C^0\) 连续性保证缩短时间后仍正定。其唯一性由\cref{g3:prop:quasilinear-parabolic-uniqueness}给出。
+\end{proof}
+
+这里无需初始度量接近背景度量。两者在紧流形上总可作统一比较，强抛物常数可以依赖这组给定数据。正定性是未知量所处的开放条件，不能只看各坐标分量有界而忽略它。
 
 \subsection{时间依赖微分同胚的构造}
 \label{g3:subsec:2702:02}
-待撰写
+一旦得到光滑的 \(h(t)\)，向量场 \(W(h(t),\bar g)\) 就成为已知的光滑时变系数。去规范所需的映射由常微分方程构造，不再是第二个偏微分方程问题。
+
+\begin{lemma}\label{g3:lem:ricci-gauge-diffeomorphisms}
+ 设 \(M\) 闭，\(h(t)\) 是 \([0,T]\) 上的光滑正定度量族。则
+ \begin{equation}\label{g3:eq:ricci-gauge-ode}
+  \frac{\mathrm d}{\mathrm dt}\phi_t(x)
+   =-W(h(t),\bar g)(\phi_t(x)),\qquad\phi_0(x)=x
+ \end{equation}
+ 有唯一光滑解族 \(\phi_t:M\to M\)，每个 \(\phi_t\) 都是微分同胚。
+\end{lemma}
+\begin{proof}
+ 光滑时变向量场在有限坐标片内满足常微分方程的局部存在、唯一性和光滑依赖条件。闭性使解曲线在有限时间中不能逃出紧集；用有限坐标覆盖及紧时间区间上的系数界逐段延续，就得到整个 \([0,T]\) 上的解。给定终点 \(y\) 和时刻 \(t\)，反向求解同一常微分方程至时间零，得到 \(\phi_t\) 的逆。常微分方程的光滑依赖同时给出逆映射的光滑性。
+\end{proof}
+
+拉回一个本身随时间变化的张量时，既要微分张量，也要微分拉回映射。下面固定这个计算的方向与符号。
+
+\begin{lemma}\label{g3:lem:time-dependent-pullback}
+ 设 \(\phi_t\) 是光滑微分同胚族，\(X_t=\dot\phi_t\circ\phi_t^{-1}\)，\(A(t)\) 是任意光滑张量族。则
+ \begin{equation}\label{g3:eq:time-dependent-pullback}
+  \frac{\mathrm d}{\mathrm dt}(\phi_t^*A(t))
+  =\phi_t^*(\partial_tA+\mathcal L_{X_t}A).
+ \end{equation}
+\end{lemma}
+\begin{proof}
+ 对函数，这就是链式法则。对二协变张量，在坐标中写
+ \((\phi_t^*A)_{ij}=A_{ab}(\phi_t,t)\partial_i\phi_t^a\partial_j\phi_t^b\)。微分右端，把 \(\dot\phi_t=X_t\circ\phi_t\) 代入，括号中恰出现
+ \[
+  \partial_tA_{ab}+X_t^c\partial_cA_{ab}
+   +A_{cb}\partial_aX_t^c+A_{ac}\partial_bX_t^c,
+ \]
+ 即 \(\partial_tA+\mathcal L_{X_t}A\) 的分量。对向量、一般协变和逆变张量按相同的链式法则计算，或使用张量积与缩并相容性，就得到一般公式。
+\end{proof}
 
 \subsection{拉回恢复 Ricci 流}
 \label{g3:subsec:2702:03}
-待撰写
+式\eqref{g3:eq:ricci-gauge-ode}中的负号恰好抵消规范方程中的正 Lie 导数。抵消之后，Ricci 张量在拉回下的自然性使方程仍用新的度量自身表达。
+
+\begin{proposition}\label{g3:prop:ricci-flow-existence}
+ 设 \(M^n\) 闭，\(n\ge2\)，\(g_0\) 为光滑黎曼度量。取任意光滑背景度量 \(\bar g\)，令 \(h\) 为\cref{g3:prop:ricci-deturck-short-time}的解，\(\phi_t\) 为式\eqref{g3:eq:ricci-gauge-ode}的解。则
+ \begin{equation}\label{g3:eq:ricci-flow-from-deturck}
+  g(t)=\phi_t^*h(t)
+ \end{equation}
+ 是以 \(g_0\) 为初值的光滑短时 Ricci 流。
+\end{proposition}
+\begin{proof}
+ 拉回保持正定性，\(\phi_0=\operatorname{id}\) 给出初值。将 \(X_t=-W(h(t),\bar g)\) 代入拉回公式，得到
+ \[
+  \partial_tg
+  =\phi_t^*\bigl(-2\operatorname{Ric}_h
+       +\mathcal L_Wh-\mathcal L_Wh\bigr)
+  =-2\operatorname{Ric}_{\phi_t^*h}.
+ \]
+ 最后一个等号来自 Levi--Civita 联络、曲率及缩并在微分同胚下的相容性，因此就是 \(\partial_tg=-2\operatorname{Ric}_g\)。
+\end{proof}
+
+\begin{example}\label{g3:exm:ricci-time-dependent-flat-pullback}
+ 在平坦环面 \((\mathbb R/2\pi\mathbb Z)^n\)、\(n\ge2\) 上，取
+ \[
+  g_0=\sum_i(\mathrm dx_i)^2,\qquad
+  \psi_t(x_1,x_2,\ldots)=(x_1+t\sin x_2,x_2,\ldots).
+ \]
+ 每个 \(\psi_t\) 都是微分同胚，且
+ \[
+  \psi_t^*g_0=(\mathrm dx_1+t\cos x_2\,\mathrm dx_2)^2
+       +\sum_{i=2}^n(\mathrm dx_i)^2
+ \]
+ 始终平坦。但是它的时间导数不恒为零，故这条度量曲线不满足 Ricci 流方程。这个例子说明，时间依赖的坐标变换产生真实的 Lie 导数项；恢复 Ricci 流时，必须使用刚才所确定的向量场及符号。
+\end{example}
 
 \subsection{唯一性的规范比较}
 \label{g3:subsec:2702:04}
-待撰写
+要比较两个 Ricci 流，需要把每一个已知解都转成相同背景下的 Ricci--DeTurck 解。此时规范度量尚未知，不能先把它的 \(W\) 当作给定系数。调和映射热流则以给定的 Ricci 流作源度量，直接提供所需坐标。
+
+\begin{lemma}\label{g3:lem:time-dependent-harmonic-gauge}
+ 设 \(M\) 闭，\(g(t)\)、\(0\le t\le T_0\)，为任意光滑正定度量族，\(\bar g\) 为固定光滑度量。则对充分小的 \(T>0\)，存在唯一光滑映射族
+ \begin{equation}\label{g3:eq:ricci-harmonic-gauge-heat}
+  F_t=\tau_{g(t),\bar g}(F),\qquad F(\cdot,0)=\operatorname{id}_M.
+ \end{equation}
+ 每个 \(F(t)\) 是微分同胚。
+\end{lemma}
+\begin{proof}
+ 对源坐标 \(x^i\) 与目标坐标 \(y^\alpha\)，方程是
+ \[
+  \partial_tF^\alpha=g^{ij}(t)\bigl(
+   \partial_i\partial_jF^\alpha
+   -\Gamma^k_{ij}(g(t))\partial_kF^\alpha
+   +\bar\Gamma^\alpha_{\beta\gamma}(F)
+           \partial_iF^\beta\partial_jF^\gamma\bigr).
+ \]
+ 用固定 \(\bar g\) 的指数映射写 \(F(x,t)=\exp_x^{\bar g}v(x,t)\)，其中 \(v\) 是固定丛 \(\mathrm TM\) 的小截面。时间微分与二阶空间微分的最高阶项都带同一个可逆因子 \(\mathrm D_v\exp_x^{\bar g}\)。消去该因子后，方程成为
+ \[
+  v_t=g^{ij}(t)\bar\nabla_i\bar\nabla_jv
+       +B(t,x,v,\bar\nabla v),\qquad v(0)=0,
+ \]
+ 其中 \(B\) 光滑。紧性和 \(g(0)\) 正定保证短时间内的一致强抛物性。
+
+ \Cref{g3:thm:quasilinear-parabolic-short-time}的证明同样适用于这里的光滑时变系数，所需调整可直接核对。把算子写为 \(\mathscr P(v)=v_t-Q(t,v)\)，在时间常值初值处的线性化成为时变强抛物算子；\cref{g3:thm:linear-parabolic-isomorphism}已经允许这样的系数，并给出小时间区间上一致有界的逆。初始误差满足
+ \[
+  \|Q(t,0)\|_{L^2(0,T;H^{s-1})}
+  \le\sqrt T\sup_{0\le t\le T_0}\|Q(t,0)\|_{H^{s-1}}.
+ \]
+ 非线性映射的乘积、复合及微分估计对这组光滑时变系数仍一致成立。因此先选小球、再缩短时间的压缩构造不变。\Cref{g3:lem:parabolic-parameter-regularity}中的空间坐标变化保持时间变量，变换后的系数仍对时间和参数光滑；同一参数论证给出所有空间导数，方程再给出所有时间导数。两解之差的线性能量估计也不变，故得到光滑存在和唯一性。
+
+ 最后，\(F(t)\to\operatorname{id}\) 于 \(C^1\)。充分接近恒等映射的映射为微分同胚：有限坐标片中的逆函数估计保证邻近点的像不同，远离对角线的点对则由紧性与一致接近保证像不同；其像在每个分支中开且闭，故满射。缩短 \(T\) 就得到所需结论。
+\end{proof}
+
+\begin{lemma}\label{g3:lem:ricci-flow-to-deturck}
+ 设 \(g(t)\) 是闭流形上的光滑 Ricci 流，\(F(t)\) 为上一引理构造的微分同胚。定义目标上的度量及速度场
+ \[
+  h(t)=(F(t)^{-1})^*g(t),\qquad
+  Y_t=\partial_tF\circ F^{-1}.
+ \]
+ 则 \(Y_t=-W(h(t),\bar g)\)，且 \(h\) 满足以 \(g(0)\) 为初值的 Ricci--DeTurck 方程。
+\end{lemma}
+\begin{proof}
+ 由定义，\(F:(M,g)\to(M,h)\) 是等距映射。在 \(y=F(x)\) 所给的源坐标中，映射 \(F\) 的坐标表达为恒等映射，源度量的分量为 \(h\)，而热流的目标度量仍为 \(\bar g\)。因此张力场的坐标式直接给出
+ \[
+  Y_t^k=h^{ij}\bigl(\bar\Gamma^k_{ij}-\Gamma^k_{ij}(h)\bigr)
+      =-W(h,\bar g)^k.
+ \]
+ 另一方面 \(g=F^*h\)，应用式\eqref{g3:eq:time-dependent-pullback}，并对两边作 \(F_*=(F^{-1})^*\)，得到
+ \[
+  -2\operatorname{Ric}_h=\partial_th+\mathcal L_{Y_t}h.
+ \]
+ 代入 \(Y_t=-W(h,\bar g)\) 即得规范方程。初值由 \(F(0)=\operatorname{id}\) 确定。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:ricci-flow-short-time}
+ 设 \(M^n\) 为闭光滑流形，\(n\ge2\)，\(g_0\) 为光滑黎曼度量。则存在以 \(g_0\) 为初值的光滑短时 Ricci 流；任意两个具有该初值的光滑 Ricci 流在共同存在区间内相同。因此存在唯一的最大光滑解，定义在 \([0,T_{\max})\)，其中 \(0<T_{\max}\le\infty\)。
+\end{theorem}
+\begin{proof}
+ 存在性已经由\cref{g3:prop:ricci-flow-existence}证明。设 \(g_1,g_2\) 是同初值的两个解，选同一个 \(\bar g\)。分别求出式\eqref{g3:eq:ricci-harmonic-gauge-heat}的解 \(F_1,F_2\)，并令 \(h_i=(F_i^{-1})^*g_i\)。上一引理使两个 \(h_i\) 满足同一个 Ricci--DeTurck 初值问题，因此在短时间内 \(h_1=h_2=h\)。
+
+ 再由 \(\partial_tF_i\circ F_i^{-1}=-W(h,\bar g)\)，两映射都满足同一个常微分方程
+ \[
+  \partial_tF_i=-W(h,\bar g)\circ F_i,\qquad F_i(0)=\operatorname{id}.
+ \]
+ 常微分方程唯一性给出 \(F_1=F_2\)，于是 \(g_1=F_1^*h=F_2^*h=g_2\)。只要两个解在某个时刻相同，就可在该时刻重新作同一短时比较。连续性与向右延续遂给出整个共同存在区间的唯一性。
+
+ 取所有光滑存在区间的并。共同区间上的唯一性使各解能够一致粘合；局部短时存在保证其时间长度的上确界为正。得到的解就是所述最大解。不同背景度量构造出的解也因这一唯一性而相同。
+\end{proof}
 
 \subsection{曲率界下的延拓判据}
 \label{g3:subsec:2702:05}
-待撰写
+短时存在定理使用固定坐标中的度量系数及其导数。几何上较自然的假设却是曲率有界；两者之间需要一段转换。本小节使用\cref{g3:thm:ricci-flow-curvature-derivatives}：闭 Ricci 流在有限时间区间上若 \(|\operatorname{Rm}|\le K\)，则对每个 \(a>0\) 和整数 \(r\ge1\)，\(\nabla^r\operatorname{Rm}\) 在 \(a\le t<T\) 上一致有界。该结果将在\secref{g3:sec:2703}由曲率演化和最大值原理证明，其证明不使用本小节的延拓结论。
+
+\begin{lemma}\label{g3:lem:ricci-fixed-coordinate-control}
+ 设 \(g(t)\)、\(0\le t<T<\infty\)，为闭流形 \(M^n\) 上的光滑 Ricci 流，并且 \(\sup_{M\times[0,T)}|\operatorname{Rm}|_{g(t)}\le K\)。固定 \(0<a<T\)，令 \(g_a=g(a)\)、\(D=\nabla^{g_a}\)。则 \(g(t)\) 与 \(g_a\) 在 \([a,T)\) 上一致等价，而且对每个整数 \(r\ge0\)，
+ \[
+  \sup_{a\le t<T}\bigl(
+   \|D^rg(t)\|_{C^0,g_a}+\|D^r\partial_tg(t)\|_{C^0,g_a}
+  \bigr)<\infty.
+ \]
+\end{lemma}
+\begin{proof}
+ 曲率界给出 \(|\operatorname{Ric}|_g\le c_nK\)。对固定非零切向量 \(v\)，流方程给出
+ \[
+  \left|\frac{\mathrm d}{\mathrm dt}\log g(t)(v,v)\right|
+  \le2c_nK.
+ \]
+ 从 \(a\) 积分到 \(t\)，得到
+ \begin{equation}\label{g3:eq:ricci-metric-equivalence}
+  e^{-2c_nK(T-a)}g_a\le g(t)\le e^{2c_nK(T-a)}g_a.
+ \end{equation}
+ 所有固定阶数张量的 \(g(t)\) 范数与 \(g_a\) 范数因此可统一比较。
+
+ 令 \(S(t)=\nabla^{g(t)}-D\)，它是 \((1,2)\) 型张量，\(S(a)=0\)。由\cref{g3:lem:levi-civita-variation}对 \(\partial_tg=-2\operatorname{Ric}\) 的应用，
+ \begin{equation}\label{g3:eq:ricci-connection-time-derivative}
+  (\partial_tS)^k_{ij}
+  =-g^{k\ell}\bigl(
+    \nabla_i\operatorname{Ric}_{j\ell}
+   +\nabla_j\operatorname{Ric}_{i\ell}
+   -\nabla_\ell\operatorname{Ric}_{ij}\bigr).
+ \end{equation}
+ 这里的 \(\nabla\) 使用正在演化的度量。曲率导数估计和范数比较使右端在 \([a,T)\) 上一致有界，时间积分遂给 \(S\) 的固定背景范数界。
+
+ 下面逐阶控制 \(D^rS\)，同时核对导数计数。对任意张量 \(A\)，有 \(DA=\nabla A+S*A\)，其中星号表示由张量类型确定的有限个缩并和正负号。反复使用此式，\(D^rA\) 可写成 \(\nabla^rA\) 加上若干乘积；每个乘积只含 \(\nabla^jA\)、\(j<r\)，以及 \(D^\ell S\)、\(0\le\ell\le r-1\)。这一描述由对等式再施一次 \(D\) 归纳得到：导数落到 \(S\) 因子上，阶数增加一；落到 \(\nabla^jA\) 上，则变成 \(\nabla^{j+1}A+S*\nabla^jA\)。
+
+ 取 \(A=\partial_tS\)。由式\eqref{g3:eq:ricci-connection-time-derivative}和 \(\nabla g=0\)，\(\nabla^jA\) 是 \(g^{-1}\) 与 \(\nabla^{j+1}\operatorname{Ric}\) 的固定缩并，均已由曲率导数估计控制。因此，若 \(D^\ell S\)、\(\ell<r\)，已经有界，就得到 \(D^r\partial_tS\) 的一致界。由于 \(D\) 不随时间变化，
+ \[
+  D^rS(t)=\int_a^tD^r\partial_sS(s)\,\mathrm ds,
+ \]
+ 故 \(D^rS\) 也有界。这个归纳从刚证出的 \(r=0\) 开始，给出全部固定背景联络导数。
+
+ 最后，度量相容式 \(\nabla g=0\) 给出
+ \[
+  (D_Xg)(Y,Z)=g(S(X,Y),Z)+g(Y,S(X,Z)).
+ \]
+ 对它反复施 \(D\)，以已控制的 \(D^\ell S\) 及低阶 \(D^jg\) 归纳，得到所有 \(D^rg\) 的界。同样的联络转换把 \(\nabla^r\operatorname{Ric}\) 的界变为 \(D^r\operatorname{Ric}\) 的界。再由 \(\partial_tg=-2\operatorname{Ric}\)，得到所需的时间导数界。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:ricci-flow-curvature-continuation}
+ 设 \(M^n\) 闭，\(n\ge2\)，\(g(t)\) 是 \([0,T)\)、\(0<T<\infty\)，上的光滑 Ricci 流。若
+ \[
+  \sup_{M\times[0,T)}|\operatorname{Rm}_{g(t)}|_{g(t)}<\infty,
+ \]
+ 则存在 \(\varepsilon>0\)，使该流光滑延拓到 \([0,T+\varepsilon)\)。特别地，若最大存在时间 \(T_{\max}<\infty\)，则
+ \[
+  \limsup_{t\uparrow T_{\max}}
+     \max_M|\operatorname{Rm}_{g(t)}|_{g(t)}=\infty.
+ \]
+\end{theorem}
+\begin{proof}
+ 取 \(a=T/2\)。上一引理说明，对每个 \(r\)，\(g(t)\) 在固定背景的 \(C^r\) 范数中关于时间一致 Lipschitz，因为 \(\partial_tg\) 的该范数有界。故 \(t\uparrow T\) 时，\(g(t)\) 在每个 \(C^r\) 中收敛；这些极限由 \(C^0\) 极限唯一识别，组成一个光滑张量 \(g_T\)。式\eqref{g3:eq:ricci-metric-equivalence}保证 \(g_T\) 仍为正定度量。
+
+ 以 \(g_T\) 为初值应用\cref{g3:thm:ricci-flow-short-time}，得到 \(T\) 之后的光滑 Ricci 流。接合处的全部空间导数相同；一阶时间导数由 \(-2\operatorname{Ric}\) 决定，反复微分流方程使每个更高时间导数成为度量的有限阶空间喷射的光滑表达。两侧的这些喷射都趋向同一个 \(g_T\) 的喷射，所以全部混合导数相接，得到光滑延拓。
+
+ 若最大有限时间处的曲率上极限有限，取接近该时刻的一段区间便有统一曲率界，之前的紧时间区间也因光滑性而有界。刚证出的延拓于是与最大性矛盾，得到末项。
+\end{proof}
+
+延拓判据把有限时间的失效定位为曲率失控。它的证明中，曲率本身先保证度量正定性不退化；协变导数估计控制几何的高阶变化，联络差再把这些控制转成固定坐标中的光滑极限。下一节完成其中使用的演化计算和导数估计。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

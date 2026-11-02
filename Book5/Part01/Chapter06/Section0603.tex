@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 6.3 泛自由性的证明
 % 纲要位置：几何学计划纲要.md，第 5240 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,232 @@
 \section{泛自由性的证明}
 \label{g5:sec:0603}
 
-待撰写
+设 \(A\) 为整环，分式域为 \(K\)。把一个 \(A\) 模 \(M\) 变成 \(M\otimes_A K\) 后，总能在这个向量空间中选择一组基。几何上，这相当于先研究基底泛型点上最容易处理的纤维。要把所得基延伸到一个主开集 \(D(s)\)，必须找到同一个非零元素 \(s\in A\)，使全部需要的系数和关系都在 \(A_s\) 上成立。
+
+\ProseParagraphBreak
+
+当 \(M\) 只在某个有限型 \(A\) 代数 \(B\) 上有限生成时，它作为 \(A\) 模可能需要无限多个生成元，分式域上的基也可能是无限集。本节用多项式关系控制这组基：通过有限个首一关系，统一消去所有不属于基的单项式。有限性落在关系及其首项上，因此只需清除有限多个分母。
 
 \subsection{Noether 整基环上的有限型代数}
 \label{g5:subsec:0603:01}
-待撰写
+
+\begin{theorem}[泛自由性]\label{g5:thm:generic-freeness}
+	设 \(A\) 为 Noether 整环，\(B\) 为有限型 \(A\) 代数，\(M\) 为有限生成 \(B\) 模。则存在 \(0\ne s\in A\) 及集合 \(\mathcal E\)，使
+	\[
+		M_s\cong\bigoplus_{e\in\mathcal E}A_s
+	\]
+	作为 \(A_s\) 模同构。这里 \(\mathcal E\) 可以为空集，也可以是无限集；结论不要求 \(A\to B\) 单射。
+\end{theorem}
+
+这就是\term[fanziyouxing]{泛自由性}[generic freeness]：在一个包含泛型点的非空主开集上，模具有统一的一组基。定理是 \cite[第24节，定理24.1，第185—186页]{Matsumura1989}中更一般结论的特例。下面给出标准单项式证明；所需的模版本除法及清分母论证分别建立后，在\subsecref{g5:subsec:0603:04}完成定理的证明。
+
+\ProseParagraphBreak
+
+有限型和有限生成这两个条件先把问题变成有限个多项式关系。取 \(B\) 的有限组 \(A\) 代数生成元，得到满同态
+\[
+	P=A[x_1,\ldots,x_n]\longrightarrow B.
+\]
+再取 \(M\) 的有限组 \(B\) 模生成元，就得到满同态 \(P^r\to M\)；允许加入零生成元，从而可取 \(r\geq1\)。由 Hilbert 基定理 \cref{g5:thm:hilbert-basis}逐次添加变量，\(P\) 为 Noether 环。于是\cref{g5:prop:noetherian-finite-modules}保证关系模
+\[
+	N=\ker(P^r\longrightarrow M)
+\]
+有限生成。固定生成元 \(h_1,\ldots,h_\ell\)，便有
+\begin{equation}\label{g5:eq:generic-free-presentation}
+	M\cong P^r/N,
+	\qquad
+	N=\sum_{i=1}^{\ell}Ph_i.
+\end{equation}
+零关系模允许 \(\ell=0\)。
+
+\ProseParagraphBreak
+
+令 \(K=\operatorname{Frac}A\)，并记
+\[
+	P_K=K[x_1,\ldots,x_n],\qquad
+	N_K=K\otimes_A N\subseteq P_K^r.
+\]
+这里的包含以及
+\[
+	M\otimes_A K\cong P_K^r/N_K
+\]
+均来自局部化的正合性 \cref{g5:thm:localization-exact}。在 \(K\) 上，每个非零首项系数都可除去；我们将先利用这一点选择关系，再把所用的有限份数据移回某个 \(A_s\)。
 
 \subsection{分式域上的标准单项式}
 \label{g5:subsec:0603:02}
-待撰写
+
+\cref{g5:prop:standard-monomials}已说明：对域上多项式理想，避开初始理想的单项式给出商环的向量空间基。现在关系是 \(r\) 个多项式组成的向量，因此要把各坐标的位置一起记入单项式。
+
+\begin{definition}\label{g5:def:module-monomials}
+	设 \(F\) 为域，\(n\geq0\)、\(r\geq1\) 为整数，\(Q=F[x_1,\ldots,x_n]\)，\(e_1,\ldots,e_r\) 为 \(Q^r\) 的标准基。形如 \(x^\alpha e_i\) 的向量称为\term[modanxiangshi]{模单项式}[module monomial]。规定
+	\[
+		x^\alpha e_i\mid x^\beta e_j
+		\quad\Longleftrightarrow\quad
+		i=j\ \text{且}\ \alpha_\nu\leq\beta_\nu\ (1\leq\nu\leq n).
+	\]
+	在 \(Q\) 中固定一个全局单项式序，并按下列规则比较模单项式：先比较 \(x^\alpha\)，相同时再按 \(e_1\prec\cdots\prec e_r\) 比较位置。对非零 \(v\in Q^r\)，记最大的模单项式、其系数及两者之积分别为
+	\(\operatorname{LM}(v)\)、\(\operatorname{LC}(v)\) 和 \(\operatorname{LT}(v)\)。
+\end{definition}
+
+这个次序是良序。一个非空模单项式集合先有最小的多项式单项式，再在有限个可能的位置中取最小者；同时，它与乘以任意多项式单项式相容。因此，从向量中消去首项，只要引入的各项都更小，就不可能无限进行。
+
+\ProseParagraphBreak
+
+对 \(Q\) 子模 \(L\subseteq Q^r\)，定义其\term[chushizimo]{初始子模}[initial submodule]
+\[
+	\operatorname{in}(L)
+	=\sum_{0\ne v\in L}Q\operatorname{LM}(v).
+\]
+这里仍用全部 \(L\) 中元素的首单项式。给定生成元的首项可能相消，从而留下新的首单项式；只取原生成元的首单项式，通常得不到 \(\operatorname{in}(L)\)。例如在 \(F[x,y]^2\) 中令
+\[
+	L=Q(xe_1+e_2)+Q(xe_1+ye_2),
+\]
+取字典序 \(x\succ y\)。两个生成元的首单项式均为 \(xe_1\)，而两者之差为 \((y-1)e_2\)，其首单项式 \(ye_2\) 不被 \(xe_1\) 整除。
+
+\begin{lemma}\label{g5:lem:module-standard-monomials}
+	设 \(F\) 为域，\(n\geq0\)、\(r\geq1\) 为整数，\(Q=F[x_1,\ldots,x_n]\)，\(L\subseteq Q^r\) 为子模，并采用上述模单项式序。则存在有限个首项系数为 \(1\) 的向量 \(g_1,\ldots,g_q\in L\)，使
+	\[
+		\operatorname{in}(L)
+		=\sum_{j=1}^qQ\operatorname{LM}(g_j).
+	\]
+	这些 \(g_j\) 生成 \(L\)。所有不被任一 \(\operatorname{LM}(g_j)\) 整除的模单项式组成集合 \(\mathcal E\)，它们在 \(Q^r/L\) 中的剩余类构成一个 \(F\) 向量空间基。\(L=0\) 时允许 \(q=0\)。
+\end{lemma}
+\begin{proof}
+	由 Hilbert 基定理及\cref{g5:prop:noetherian-finite-modules}，\(Q^r\) 的子模 \(\operatorname{in}(L)\) 有限生成。每个生成元都是有限个 \(\operatorname{LM}(v)\)、\(v\in L\) 的 \(Q\) 线性组合，因此可以从这些首单项式中选出有限个，仍生成整个初始子模。取相应的非零向量 \(g_j\in L\)，再除以首项系数，便可使它们首一。
+
+	由模单项式生成的子模具有逐项判据：一个向量属于它，当且仅当其每个非零项的模单项式都被某个生成模单项式整除。一个方向由展开线性组合可知，因为每一项都处在相应坐标的单项式倍集中；反过来，逐项取倍式即可。特别地，\(0\ne v\in L\) 的首单项式一定被某个 \(\operatorname{LM}(g_j)\) 整除。
+
+	对任意 \(v\in Q^r\) 实行除法。起初令待处理向量 \(p=v\)，余项 \(u=0\)。若
+	\[
+		\operatorname{LT}(p)=c x^\alpha e_i,
+		\qquad
+		\operatorname{LM}(g_j)=x^\beta e_i\mid x^\alpha e_i,
+	\]
+	就以
+	\[
+		p-cx^{\alpha-\beta}g_j
+	\]
+	替换 \(p\)，并记录所减的倍式。由于 \(g_j\) 首一，首项恰好消去，余下各项都更小。若没有这样的 \(j\)，就把 \(\operatorname{LT}(p)\) 移入 \(u\)，从 \(p\) 中删去此项。无论采取哪一步，非零待处理向量的首单项式都严格下降；良序性保证有限步后 \(p=0\)。从始至终记录的等式给出
+	\[
+		v=\sum_{j=1}^q a_jg_j+u,
+		\qquad a_j\in Q,
+	\]
+	而 \(u\) 的每个模单项式都属于 \(\mathcal E\)。
+
+	若 \(v\in L\)，则 \(u\in L\)。非零的 \(u\) 一方面全由 \(\mathcal E\) 中单项式组成，另一方面其首单项式必须被某个 \(\operatorname{LM}(g_j)\) 整除，矛盾。因此 \(u=0\)，也就证明了 \(g_j\) 生成 \(L\)。对一般 \(v\)，除法说明 \(\mathcal E\) 的类张成商空间。若这些类的一个非零有限线性组合属于 \(L\)，对其首单项式作同一判断又得到矛盾，故这些类线性无关。
+\end{proof}
+
+这些向量就是模的 Gröbner 基；所用的生成性与余式论证和\cref{g5:prop:groebner-remainder}相同，只多记录了坐标位置。这里的存在性来自初始子模的 Noether 性，随后逐项消去给出有限终止的除法。标准单项式集合 \(\mathcal E\) 本身无需有限。
 
 \subsection{有限关系与清除分母}
 \label{g5:subsec:0603:03}
-待撰写
+
+将引理用于 \(P_K^r\) 的子模 \(N_K\)，得到首一关系 \(g_1,\ldots,g_q\) 及标准单项式集合 \(\mathcal E\)。现在须把同一组关系用于 \(A_s\)。仅使 \(g_j\) 的坐标属于 \(A_s[x_1,\ldots,x_n]\)，还没有说明它们属于原关系模 \(N_s\)；仅使它们属于 \(N_s\)，也尚未说明它们生成 \(N_s\)。两方向都可由有限份表达式落实。
+
+\begin{lemma}\label{g5:lem:spread-monic-relations}
+	设 \(A\) 为整环，\(K=\operatorname{Frac}A\)，\(n\geq0\)、\(r\geq1\) 为整数，并记 \(P=A[x_1,\ldots,x_n]\)。采用上述模单项式序，且设
+	\[
+		N=\sum_{i=1}^{\ell}Ph_i\subseteq P^r
+	\]
+	有限生成。设 \(g_1,\ldots,g_q\) 是 \(N_K\subseteq K[x_1,\ldots,x_n]^r\) 的有限个首一生成元。则存在 \(0\ne s\in A\)，使每个 \(g_j\) 都属于 \(N_s\)，并且
+	\[
+		N_s=\sum_{j=1}^q A_s[x_1,\ldots,x_n]g_j.
+	\]
+	这些向量在 \(A_s\) 上的首项系数仍为 \(1\)，首单项式也不变。
+\end{lemma}
+\begin{proof}
+	在 \(P_K^r\) 内选择表达式
+	\[
+		g_j=\sum_{i=1}^{\ell}a_{ji}h_i,
+		\qquad
+		h_i=\sum_{j=1}^q b_{ij}g_j,
+		\qquad a_{ji},b_{ij}\in K[x_1,\ldots,x_n].
+	\]
+	第一组等式来自 \(N_K\) 由 \(h_i\) 生成，第二组来自 \(g_j\) 的生成性。这里共有有限个多项式，每个又只有有限个系数。把它们所有系数写成 \(A\) 中元素的分式，令 \(s\) 为全部非零分母的乘积；没有分母时取 \(s=1\)。由于 \(A\) 为整环，\(s\ne0\)。每个分母均在 \(A_s\) 中可逆，因而全部 \(a_{ji},b_{ij}\) 都属于 \(A_s[x_1,\ldots,x_n]\)。
+
+	第一组等式使 \(g_j\in N_s\)，同时也使 \(g_j\) 的全部坐标属于 \(A_s[x_1,\ldots,x_n]\)。第二组等式使每个 \(h_i\) 都属于这些 \(g_j\) 生成的子模，故两边相等。包含 \(A_s\hookrightarrow K\) 保持非零系数及全部多项式等式，所以同一个 \(g_j\) 的首单项式和首项系数均不变。若 \(N_K=0\)，则 \(P^r\hookrightarrow P_K^r\) 给出 \(N=0\)，此时取空生成元表和 \(s=1\) 即可。
+\end{proof}
+
+此处清除的是有限个关系及相互表示的系数。标准单项式即使有无限多个，也没有参加取分母的乘积。只从 \(M\otimes_A K\) 的任意一组无限基出发逐个选择提升，可能遇到无限多分母，因而不能直接完成同一个主开集上的构造。
 
 \subsection{局部化后的自由性}
 \label{g5:subsec:0603:04}
-待撰写
+
+选择上个引理给出的 \(s\)，记 \(P_s=A_s[x_1,\ldots,x_n]\)。现在 \(g_j\in N_s\subseteq P_s^r\)，且每个首项系数都是单位 \(1\)。虽然 \(A_s\) 一般仍不是域，模除法中实际需要的除法已经全部可做。
+
+\begin{proof}[\cref{g5:thm:generic-freeness}的证明]
+	采用\eqref{g5:eq:generic-free-presentation}中的 \(P^r/N\)。由\cref{g5:lem:module-standard-monomials}为 \(N_K\) 选择首一关系 \(g_1,\ldots,g_q\)，再由\cref{g5:lem:spread-monic-relations}选择 \(0\ne s\in A\)，使这些关系生成 \(N_s\)。令 \(\mathcal E\) 为不被其任何首单项式整除的模单项式集合。
+
+	局部化正合性给出 \(M_s\cong P_s^r/N_s\)。对 \(v\in P_s^r\)，逐步作\cref{g5:lem:module-standard-monomials}证明中的除法。每次消去 \(cx^\alpha e_i\) 时，只需减去 \(cx^{\alpha-\beta}g_j\)，系数一直留在 \(A_s\) 中；移动不能消去的项也不改变系数环。相同的良序论证保证终止。因此 \(v\) 模 \(N_s\) 是 \(\mathcal E\) 中有限多个单项式的 \(A_s\) 线性组合，得到满同态
+	\[
+		\Phi:\bigoplus_{e\in\mathcal E}A_s\longrightarrow M_s,
+		\qquad (c_e)_e\longmapsto\sum_e c_e[e].
+	\]
+
+	若某个非零有限组合 \(w=\sum_e c_e e\) 落在 \(N_s\)，由 \(A_s\hookrightarrow K\)，它在 \(P_K^r\) 中仍非零，且属于 \(N_K\)。于是其首单项式被某个 \(\operatorname{LM}(g_j)\) 整除。但 \(w\) 的全部单项式都在 \(\mathcal E\) 中，矛盾。因此 \(\Phi\) 也单射，这就得到所需自由基。\(\mathcal E=\varnothing\) 时结论是 \(M_s=0\)，即秩为零的自由模。
+\end{proof}
+
+这组基同时是泛型纤维的基：再次局部化便有
+\[
+	M\otimes_A K\cong\bigoplus_{e\in\mathcal E}K.
+\]
+更一般地，对每个 \(\mathfrak p\in D(s)\)，张量积与直和相容，给出
+\[
+	M\otimes_A\kappa(\mathfrak p)
+	\cong\bigoplus_{e\in\mathcal E}\kappa(\mathfrak p).
+\]
+所以 \(D(s)\) 上各模纤维都有同一个基的指标集。当该集合无限时，这里说的是无限维向量空间。若 \(M\) 本身有限生成于 \(A\)，则其泛型纤维由有限多个向量生成，所以 \(\mathcal E\) 必定有限。
+
+\begin{corollary}\label{g5:cor:simultaneous-generic-freeness}
+	设 \(A\) 为 Noether 整环，\(B\) 为有限型 \(A\) 代数，\(M_1,\ldots,M_m\) 为有限多个有限生成 \(B\) 模。存在同一个 \(0\ne s\in A\)，使每个 \((M_i)_s\) 都是自由 \(A_s\) 模。还可同时要求 \(B_s\) 自由。
+\end{corollary}
+\begin{proof}
+	分别应用泛自由性定理，选择非零元素 \(s_i\in A\)，使 \((M_i)_{s_i}\) 自由。需要时也把有限生成 \(B\) 模 \(B\) 列入这张有限表。取所有这些元素的乘积 \(s\)，则 \(s\ne0\)。每个 \(s_i\) 在 \(A_s\) 中可逆，故 \((M_i)_s\) 是 \((M_i)_{s_i}\) 的进一步局部化。局部化保持直和及其标准基，所以仍自由。
+\end{proof}
+
+自由模即使秩无限也平坦：与 \(\bigoplus_{e\in\mathcal E}A_s\) 张量，等于取 \(\mathcal E\) 份原映射的直和，而直和逐坐标保持单射。因此泛自由性给出了同一个主开集上的泛平坦性。\secref{g5:sec:0604}将把这一结论用于几何族，并区分泛型开集与全部平坦位置。
 
 \subsection{自由秩可能无限的说明}
 \label{g5:subsec:0603:05}
-待撰写
+
+\begin{example}\label{g5:exm:generic-free-infinite-rank}
+	设 \(A\) 为 Noether 整环，\(B=A[x]\)，\(M=B\)。\(M\) 是由 \(1\) 生成的 \(B\) 模，却作为 \(A\) 模具有基
+	\[
+		1,x,x^2,x^3,\ldots.
+	\]
+	多项式唯一的系数展开同时证明张成性与线性无关性。对任意 \(0\ne s\in A\)，这仍是 \(A_s[x]\) 的 \(A_s\) 基；再到分式域得到无限维空间 \(K[x]\)，因此不可能通过缩小主开集把它变成有限秩自由模。
+\end{example}
+
+有限型条件控制作为代数所需的变量数，而有限生成 \(B\) 模条件控制相对于这些变量所需的模生成元数。变量的任意次幂仍可提供无限多个 \(A\) 线性无关的元素。下个例子同时展示关系中的一个系数如何决定应删去的基底位置。
+
+\begin{example}\label{g5:exm:generic-free-tx}
+	设 \(k\) 为域，\(A=k[t]\)，\(B=A[x]\)，并取有限生成 \(B\) 模
+	\[
+		M=B/(tx).
+	\]
+	理想 \((tx)\) 中的多项式常数项为零，其每个正次幂系数均被 \(t\) 整除；反过来，满足这两个条件的多项式都属于 \((tx)\)。按系数逐项比较，得到 \(A\) 模分解
+	\[
+		M\cong A\oplus\bigoplus_{j\geq1}(A/(t))x^j.
+	\]
+	特别地，\([x]\ne0\) 而 \(t[x]=0\)。把单射 \(A\xrightarrow{\,t\,}A\) 与 \(M\) 张量后，就得到不是单射的 \(M\xrightarrow{\,t\,}M\)，所以 \(M\) 在 \(A\) 上不平坦。
+
+	在 \(K=k(t)\) 上，关系 \(tx\) 可以除以 \(t\)，变为首一关系 \(x\)。标准单项式只有 \(1\)。两方向的关系表达式是
+	\[
+		x=t^{-1}(tx),\qquad tx=t\cdot x,
+	\]
+	所以清除分母只需选择 \(s=t\)，并且
+	\[
+		M_t\cong A_t[x]/(x)\cong A_t.
+	\]
+	在 \(\mathfrak p=(t)\) 处，模纤维是 \(k[x]\)，维数无限；在任一 \(\mathfrak p\in D(t)\) 处，它则是 \(\kappa(\mathfrak p)\)，维数为 \(1\)。退化的原因正是关系的系数 \(t\) 在特殊点变成了零。
+\end{example}
+
+\begin{example}\label{g5:exm:generic-free-no-common-open}
+	设 \(k\) 为无限域，\(A=B=k[t]\)，对每个 \(a\in k\) 取有限生成模 \(M_a=A/(t-a)\)。分别反演 \(t-a\)，可使 \((M_a)_{t-a}=0\)，从而自由。但不存在适用于所有 \(M_a\) 的同一个非零 \(s\in A\)。事实上，非零多项式 \(s\) 只有有限多个根，可取 \(a\in k\) 使 \(s(a)\ne0\)。于是
+	\[
+		(M_a)_s\cong A_s/(t-a)A_s\cong k\ne0.
+	\]
+	它被 \(A_s\) 中的非零元素 \(t-a\) 零化，故不是整环 \(A_s\) 上的自由模。这说明同时选择一个主开集时，模的数目有限这一条件确有作用。
+\end{example}
+
+泛自由性把基底上的系数变化归结为有限个分母：首项系数在 \(D(s)\) 上可逆后，同一套消去规则适用于全部多项式向量，也适用于这个主开集上的每个模纤维。它给出的统一线性结构允许无限秩，因而适合处理有限型代数及其有限模，而不限于基底上的有限模。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

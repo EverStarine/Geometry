@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 9.1 Hamilton 方程与作用
 % 纲要位置：几何学计划纲要.md，第 3816 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,302 @@
 \section{Hamilton 方程与作用}
 \label{g4:sec:0901}
 
-待撰写
+位置与动量一起描述运动状态，辛形式则把一个函数的微分转成状态空间中的速度。这个转换给出 Hamilton 方程。另一方面，余切丛的典范一形式可以沿轨迹积分，得到比较不同轨迹的作用量。本节将证明，两种描述给出同一组运动方程；符号与端点条件会在变分计算中同时确定。
 
 \subsection{\texorpdfstring{\(\iota_{X_H}\omega=\mathrm{d}H\) 的固定约定}{\GeometryPdfIota{}\_XH \GeometryPdfSmallOmega{}=dH 的固定约定}}
 \label{g4:subsec:0901:01}
-待撰写
+
+在辛流形 \((M,\omega)\) 上，每点的映射 \(v\mapsto\omega(v,\cdot)\) 是切空间到余切空间的同构。因此一个光滑函数 \(H\) 的微分，可以唯一决定一个向量场。这里插入始终放在二形式的第一个变量。
+
+\begin{definition}\label{g4:def:0901:hamiltonian-field}
+	设 \((M,\omega)\) 为无边界辛流形，\(H\in C^\infty(M,\mathbb R)\)。由
+	\begin{equation}\label{g4:eq:0901:hamiltonian-convention}
+		\iota_{X_H}\omega=\mathrm{d}H,
+		\qquad \omega(X_H,v)=\mathrm{d}H(v)
+	\end{equation}
+	确定的向量场 \(X_H\) 称为 \(H\) 的\term[hamiltonxiangliangchang]{Hamilton 向量场}[Hamiltonian vector field]\footnote{William Rowan Hamilton（1805--1865），爱尔兰数学家，研究力学与光学，并创立四元数理论。}，\(H\) 称为该场的\term[hamiltonhanshu]{Hamilton 函数}[Hamiltonian function]。积分曲线 \(\dot z=X_H(z)\) 称为 Hamilton 轨迹；它们组成的局部流称为\term[hamiltonliu]{Hamilton 流}[Hamiltonian flow]。
+\end{definition}
+
+函数 \(H\) 不一定来自某个具体力学系统；能量函数是其中一个重要来源。定义本身只使用辛形式和函数的微分，无需另选度量。下面先核对它的光滑性和最基本的性质。
+
+\begin{proposition}\label{g4:prop:0901:basic-properties}
+	设 \((M,\omega)\) 为无边界辛流形。每个光滑实函数 \(H\) 都唯一确定一个光滑 Hamilton 向量场，且对光滑实函数 \(H,K\) 及 \(a,b\in\mathbb R\) 有
+	\[
+		X_{aH+bK}=aX_H+bX_K.
+	\]
+	此外，\(X_H(x)=0\) 当且仅当 \(\mathrm{d}H_x=0\)；\(X_H=X_K\) 当且仅当 \(H-K\) 在每个连通分支上为常数。这个场满足
+	\begin{equation}\label{g4:eq:0901:hamiltonian-invariance}
+		\mathrm{d}H(X_H)=0,
+		\qquad \mathcal L_{X_H}\omega=0.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	逐点的非退化性给出唯一解 \(X_H=(\omega^\flat)^{-1}\mathrm{d}H\)。在局部标架中，\(\omega^\flat\) 是光滑可逆矩阵，其逆由伴随矩阵除以非零行列式表示，所以所得场光滑。线性性及零点判别也由这个同构得到。\(X_H=X_K\) 等价于 \(\mathrm{d}(H-K)=0\)，而微分为零的光滑函数在每个连通分支上为常数。
+
+	反对称性给出 \(\mathrm{d}H(X_H)=\omega(X_H,X_H)=0\)。由第一卷定理14.1.5的 Cartan 公式，以及 \(\mathrm{d}\omega=0\)，
+	\[
+		\mathcal L_{X_H}\omega
+		=\mathrm{d}(\iota_{X_H}\omega)+\iota_{X_H}\mathrm{d}\omega
+		=\mathrm{d}^2H=0.
+	\]
+	这证明所列性质。
+\end{proof}
+
+第一式说明沿自主 Hamilton 轨迹函数 \(H\) 不变；第二式是辛形式在无穷小意义下不变。它们使用的条件有所不同：前者来自反对称性，后者还用到辛形式的闭性。把无穷小不变性积分成流的不变性时，需要同时保留流的定义域，末小节将明确说明。上述定义和基本性质可对照 Cannas da Silva 的第5.1节。\cite[第139--140页]{Cannas2006Symplectic}
 
 \subsection{余切坐标中的 Hamilton 方程}
 \label{g4:subsec:0901:02}
-待撰写
+
+在余切丛 \(\mathrm{T}^*Q\) 上，\cref{g4:thm:0702:cotangent-symplectic}给出
+\[
+	\theta=\sum_{i=1}^n p_i\,\mathrm{d}q^i,
+	\qquad \omega=-\mathrm{d}\theta
+	=\sum_{i=1}^n\mathrm{d}q^i\wedge\mathrm{d}p_i.
+\]
+称 \(q^i\) 为位置坐标，\(p_i\) 为与之配对的动量坐标。力学中把同时记录这些变量的空间称为\term[xiangkongjian]{相空间}[phase space]；底流形 \(Q\) 则记录位置或构形。
+
+\begin{proposition}\label{g4:prop:0901:hamiltonian-coordinates}
+	设 \(H\) 是余切丛 \(\mathrm{T}^*Q\) 上的光滑实函数。在任一余切坐标域内，
+	\begin{equation}\label{g4:eq:0901:hamiltonian-field-coordinates}
+		X_H=\sum_{i=1}^n\left(
+		\frac{\partial H}{\partial p_i}\frac{\partial}{\partial q^i}
+		-\frac{\partial H}{\partial q^i}\frac{\partial}{\partial p_i}
+		\right).
+	\end{equation}
+	因此曲线 \(z(t)=(q(t),p(t))\) 是 Hamilton 轨迹，当且仅当它满足
+	\begin{equation}\label{g4:eq:0901:hamilton-equations}
+		\dot q^i=\frac{\partial H}{\partial p_i},
+		\qquad \dot p_i=-\frac{\partial H}{\partial q^i},
+		\qquad 1\le i\le n.
+	\end{equation}
+	同一表达适用于任意辛流形上的 Darboux 坐标。
+\end{proposition}
+\begin{proof}
+	写 \(X_H=\sum_i(a^i\partial_{q^i}+b_i\partial_{p_i})\)，则
+	\[
+		\iota_{X_H}\omega=\sum_i(a^i\,\mathrm{d}p_i-b_i\,\mathrm{d}q^i).
+	\]
+	与 \(\mathrm{d}H=\sum_i(H_{q^i}\,\mathrm{d}q^i+H_{p_i}\,\mathrm{d}p_i)\) 比较系数，得 \(a^i=H_{p_i}\)、\(b_i=-H_{q^i}\)。代入积分曲线方程即得结论。计算只用了辛形式的标准表达，所以同样适用于 Darboux 坐标。
+\end{proof}
+
+在标准 Euclid 内积下，这个速度场通常不指向 \(H\) 增长最快的方向。按 \((q,p)\) 顺序记 \(J_0(q,p)=(-p,q)\)，则式\eqref{g4:eq:0901:hamiltonian-field-coordinates}给出 \(X_H=-J_0\nabla H\)。在平面上，它把梯度旋转四分之一周后沿等值线运动；方向由式\eqref{g4:eq:0901:hamiltonian-convention}固定。
+
+\begin{example}\label{g4:exm:0901:mechanical-system}
+	在 \(\mathrm{T}^*\mathbb R^n\) 上取
+	\[
+		H(q,p)=\frac{|p|^2}{2m}+V(q),\qquad m>0,
+	\]
+	其中 \(V\) 为光滑势能。Hamilton 方程为
+	\[
+		\dot q=\frac pm,\qquad \dot p=-\nabla V(q).
+	\]
+	消去 \(p=m\dot q\)，得到 \(m\ddot q=-\nabla V(q)\)。反过来，任一满足这条二阶方程的 \(q\)，连同 \(p=m\dot q\)，都给出 Hamilton 轨迹。因此在位置空间中的二阶运动，可以转成相空间中的一阶运动。质量 \(m\) 把速度转为动量，而 \(H\) 沿运动保持为动能与势能之和。\cite[第5.1节，第140页]{Cannas2006Symplectic}
+\end{example}
+
+\begin{example}\label{g4:exm:0901:harmonic-oscillator}
+	在 \(\mathbb R^2_{q,p}\) 中取 \(H=p^2/(2m)+kq^2/2\)，其中 \(m,k>0\)，并令 \(\nu=\sqrt{k/m}\)。方程 \(\dot q=p/m\)、\(\dot p=-kq\) 给出
+	\[
+		\begin{aligned}
+			q(t)&=q_0\cos(\nu t)+\frac{p_0}{m\nu}\sin(\nu t),\\
+			p(t)&=p_0\cos(\nu t)-m\nu q_0\sin(\nu t).
+		\end{aligned}
+	\]
+	求导及代入 \(t=0\) 可逐项验证方程与初值，唯一性因而说明这就是全体轨迹。所有时间都有定义；原点是静止点，正能量等值线是椭圆，非静止轨迹的周期为 \(2\pi/\nu\)。在 \(m=k=1\) 时，从 \((1,0)\) 出发的初速度是 \((0,-1)\)，所以相平面中的运动方向为顺时针。这与 \(X_H=-J_0\nabla H\) 一致。
+\end{example}
 
 \subsection{作用及端点条件}
 \label{g4:subsec:0901:03}
-待撰写
+
+固定两个时刻 \(a<b\)。对 \(\mathrm{T}^*Q\) 中的光滑曲线 \(z(t)=(q(t),p(t))\)，典范一形式给出 \(\theta(\dot z)=p(\dot q)\)。若允许 \(H=H(t,z)\) 随时间变化，定义其\term[zuoyongliang]{作用量}[action functional]为
+\begin{equation}\label{g4:eq:0901:action}
+	\mathcal A_H(z)=\int_a^b\bigl(\theta_{z(t)}(\dot z(t))-H(t,z(t))\bigr)\,\mathrm{d}t.
+\end{equation}
+在余切坐标中，这就是 \(\int_a^b(\sum_i p_i\dot q^i-H)\,\mathrm{d}t\)。由于 \(\theta\) 在整个余切丛上定义，曲线不必留在一张坐标图中。下面的计算也适用于任一已经给定一形式 \(\theta\) 且 \(\omega=-\mathrm{d}\theta\) 的辛流形。一般辛流形未必有这样的整体 \(\theta\)，此时不能直接把式\eqref{g4:eq:0901:action}作为所有曲线上的整体定义。
+
+\ProseParagraphBreak
+
+一个光滑变分是映射 \(Z:(-\varepsilon,\varepsilon)\times[a,b]\to M\)，记 \(z_s(t)=Z(s,t)\)，并要求 \(z_0=z\)。沿 \(z\) 的变分向量场为 \(V(t)=\partial_sZ(0,t)\)。曲线相对于一类允许变分为\term[zuoyonglianglinjiequxian]{作用量的临界曲线}[critical curve of the action]，是指所有这些变分都满足 \(\left.\mathrm{d}\mathcal A_H(z_s)/\mathrm{d}s\right|_{s=0}=0\)。端点条件规定的正是哪些变分允许使用。本小节中的时刻 \(a,b\) 始终固定。
+
+\begin{theorem}\label{g4:thm:0901:first-variation}
+	设 \((M,\omega)\) 为无边界辛流形，且给定 \(\theta\in\Omega^1(M)\) 满足 \(\omega=-\mathrm{d}\theta\)。设 \(H:[a,b]\times M\to\mathbb R\) 光滑，\(X_{H_t}\) 按空间微分 \(\iota_{X_{H_t}}\omega=\mathrm{d}_M H_t\) 定义。对任意光滑曲线 \(z\) 及光滑变分 \(z_s\)，有
+	\begin{equation}\label{g4:eq:0901:first-variation}
+		\left.\frac{\mathrm{d}}{\mathrm{d}s}\right|_{s=0}\mathcal A_H(z_s)
+		=\bigl[\theta(V)\bigr]_a^b
+		+\int_a^b\omega\bigl(\dot z-X_{H_t}(z),V\bigr)\,\mathrm{d}t.
+	\end{equation}
+	这里 \([\theta(V)]_a^b=\theta_{z(b)}(V(b))-\theta_{z(a)}(V(a))\)。在余切坐标中，积分项等于
+	\begin{equation}\label{g4:eq:0901:first-variation-coordinates}
+		\int_a^b\sum_i\left[
+		\left(\dot q^i-\frac{\partial H}{\partial p_i}\right)\delta p_i
+		-\left(\dot p_i+\frac{\partial H}{\partial q^i}\right)\delta q^i
+		\right]\mathrm{d}t,
+	\end{equation}
+	边界项为 \([\sum_i p_i\delta q^i]_a^b\)。
+\end{theorem}
+\begin{proof}
+	在参数矩形上写
+	\[
+		Z^*\theta=A(s,t)\,\mathrm{d}t+B(s,t)\,\mathrm{d}s,
+	\]
+	其中 \(A=\theta(\partial_tZ)\)、\(B=\theta(\partial_sZ)\)。第一卷命题14.1.8的拉回与外微分相容性给出
+	\[
+		\partial_sA-\partial_tB
+		=(Z^*\mathrm{d}\theta)(\partial_s,\partial_t)
+		=\mathrm{d}\theta(\partial_sZ,\partial_tZ).
+	\]
+	因此，先对 \(s\) 求导再沿 \(t\) 积分，得到
+	\[
+		\left.\frac{\mathrm{d}}{\mathrm{d}s}\right|_0
+		\int_a^b\theta(\dot z_s)\,\mathrm{d}t
+		=\bigl[\theta(V)\bigr]_a^b
+		+\int_a^b\mathrm{d}\theta(V,\dot z)\,\mathrm{d}t.
+	\]
+	被积函数联合光滑且时间区间紧，所以这里可以把微分移入积分。Hamilton 项的导数为 \(-\int_a^b\mathrm{d}_M H_t(V)\,\mathrm{d}t\)。使用 \(\mathrm{d}\theta=-\omega\) 与 \(\mathrm{d}_M H_t(V)=\omega(X_{H_t},V)\)，便有
+	\[
+		\mathrm{d}\theta(V,\dot z)-\mathrm{d}_M H_t(V)
+		=\omega(\dot z,V)-\omega(X_{H_t},V),
+	\]
+	得到式\eqref{g4:eq:0901:first-variation}。
+
+	在余切坐标中，\(V=\sum_i(\delta q^i\partial_{q^i}+\delta p_i\partial_{p_i})\)。代入 \(\omega=\sum_i\mathrm{d}q^i\wedge\mathrm{d}p_i\) 与式\eqref{g4:eq:0901:hamiltonian-field-coordinates}，就得到式\eqref{g4:eq:0901:first-variation-coordinates}；典范一形式的表达给出所列边界项。也可以直接对 \(\sum_i p_i\dot q^i-H\) 求变分，再将 \(p_i\,\delta\dot q^i\) 分部积分，获得相同结果。
+\end{proof}
+
+\begin{proposition}\label{g4:prop:0901:endpoint-conditions}
+	在\cref{g4:thm:0901:first-variation}的条件下，设 \(P_a,P_b\subset M\) 为嵌入子流形，\(z(a)\in P_a\)、\(z(b)\in P_b\)，并只考虑满足 \(z_s(a)\in P_a\)、\(z_s(b)\in P_b\) 的变分。则 \(z\) 为作用量的临界曲线，当且仅当
+	\[
+		\dot z=X_{H_t}(z),\qquad
+		\theta_{z(a)}|_{\mathrm{T}_{z(a)}P_a}=0,\qquad
+		\theta_{z(b)}|_{\mathrm{T}_{z(b)}P_b}=0.
+	\]
+\end{proposition}
+\begin{proof}
+	先取支集紧含于 \((a,b)\) 的局部坐标变分，它不改变端点，因此始终允许。式\eqref{g4:eq:0901:first-variation}的边界项为零，故一形式 \(\omega(\dot z-X_{H_t},\cdot)\) 沿曲线与所有这样的测试向量场积分配对为零。若其中一个坐标分量在某时刻非零，缩小到其保持同号的时间段，并乘一个非负非零光滑截断函数作为该坐标方向的变分，就会得到非零积分，矛盾。因此这个一形式处处为零，非退化性给出 \(\dot z=X_{H_t}(z)\)。这些测试向量场可在坐标中通过 \(z_s=z+sV\) 实现，支集外保持原曲线，故确实来自允许的光滑变分。
+
+	沿 Hamilton 轨迹，变分只剩两端的边界项。端点在嵌入子流形内运动时，其一阶速度可以是该子流形的任意切向量：在适配坐标中选取具有指定初速度的端点曲线，再用时间截断函数把这一改动延入靠近端点的一小段，即得相应变分。两端可独立变化，所以驻值条件恰好要求两项分别消失。反过来，运动方程使积分项为零，所列端点条件使边界项为零，因此任意允许变分的一阶作用变化都为零。
+\end{proof}
+
+在余切丛中，这个统一结论给出三种常用边界条件。
+\begin{enumerate}
+	\item 若固定两个相空间端点 \(z(a),z(b)\)，则 \(V(a)=V(b)=0\)，边界项自动消失。因此临界曲线恰为具有这些端点的 Hamilton 轨迹。
+	\item 若只固定底空间端点 \(q(a),q(b)\)，动量端点仍可变化，但 \(\delta q(a)=\delta q(b)=0\)，所以 \([p\,\delta q]_a^b=0\) 仍自动成立。几何上，端点位于两个固定余切纤维，\(\theta\) 在竖直切向量上本来就为零。此时同样只得到 Hamilton 方程，没有额外的端点动量条件。
+	\item 若两个相空间端点都完全自由，则允许任意端点切向量，必须有 \(\theta_{z(a)}=\theta_{z(b)}=0\)。由典范一形式的定义，这等价于 \(p(a)=p(b)=0\)。这些自然端点条件与 Hamilton 方程一起构成临界曲线的条件。
+\end{enumerate}
+
+更一般地，若只要求底端点落在嵌入子流形 \(C_a,C_b\subset Q\) 中，而端点动量不受限制，则自然条件为 \(p(a)|_{\mathrm{T}_{q(a)}C_a}=0\)、\(p(b)|_{\mathrm{T}_{q(b)}C_b}=0\)。固定底端点与完全自由底端点分别对应 \(C\) 为一点和整个 \(Q\)。这里的自由始终指固定时刻的空间端点可以移动。
+
+\ProseParagraphBreak
+
+变分等价本身不保证任意指定的两端点都能由 Hamilton 轨迹连接。一阶微分方程的初值已经确定整条轨迹，再任意指定另一相空间端点可能无解。例如 \(H=0\) 时所有轨迹恒定，两个不同相空间端点之间没有临界曲线。把两端只固定在底空间，保留了选择初始动量的自由，因而是力学边值问题常用的条件。
+
+\begin{example}\label{g4:exm:0901:stationary-not-minimum}
+	取 \(M=\mathbb R^2\)、\(H=0\)、\([a,b]=[0,1]\)，并固定两个相空间端点为原点。常值曲线 \(z=0\) 是 Hamilton 轨迹，所以是作用量的临界曲线。对变分
+	\[
+		q_s(t)=s\sin(\pi t),\qquad
+		p_s(t)=\pm s\sin(2\pi t),
+	\]
+	端点始终为原点，但
+	\[
+		\mathcal A_0(z_s)
+		=\pm s^2\pi\int_0^1\sin(2\pi t)\cos(\pi t)\,\mathrm{d}t
+		=\pm\frac43s^2.
+	\]
+	这两族变分可以任意小，却分别使作用量变大和变小。因此这里得到的是驻值原理，不能把每条 Hamilton 轨迹都称为作用量的极小曲线。
+\end{example}
+
+对于\cref{g4:exm:0901:mechanical-system}，先对动量作变分得到 \(p=m\dot q\)，代回作用量可得
+\[
+	\int_a^b\left(\frac m2|\dot q|^2-V(q)\right)\,\mathrm{d}t.
+\]
+在固定底端点的变分下，对动能项分部积分，所得一阶变分为 \(-\int_a^b(m\ddot q+\nabla V)\cdot\delta q\,\mathrm{d}t\)，再次得到 Newton 方程。\footnote{Isaac Newton（1643--1727），英国数学家与物理学家，研究微积分、力学与光学。}相空间的一阶方程与位置空间的二阶方程因而具有相同的变分来源。固定端点的分部积分论证可对照 Cannas da Silva 的第5.3节；其第5.2节的作用微分也采用 \(\omega(\dot z-X_H,V)\) 的次序。\cite[第142--146页]{Cannas2006Symplectic}
 
 \subsection{时间依赖 Hamilton 和守恒量}
 \label{g4:subsec:0901:04}
-待撰写
+
+现在在一般辛流形 \((M,\omega)\) 上固定一个光滑函数 \(H:I\times M\to\mathbb R\)，其中 \(I\subset\mathbb R\) 是开时间区间。记 \(H_t(x)=H(t,x)\)，逐时刻定义
+\[
+	\iota_{X_{H_t}}\omega=\mathrm{d}_M H_t.
+\]
+右端只对空间求微分，不包含 \((\partial_tH)\,\mathrm{d}t\)。矩阵求逆的光滑性保证 \(X_{H_t}\) 对 \((t,x)\) 联合光滑。若 \(H\) 不显含时间，称为\term[zizhuHamiltonxitong]{自主 Hamilton 系统}[autonomous Hamiltonian system]；一般情形称为时间依赖 Hamilton 系统。
+
+\ProseParagraphBreak
+
+由第一卷命题13.1.9，初值 \(z(s)=x\) 确定唯一最大解，记其在时刻 \(t\) 的值为 \(\Phi_{t,s}(x)\)。演化映射在开放的定义域上光滑，满足 \(\Phi_{t,r}\Phi_{r,s}=\Phi_{t,s}\)，逆为 \(\Phi_{s,t}\)。自主情形可只用经过时间 \(t-s\) 表示同一个流；一般时间依赖情形则须保留两个绝对时刻。
+
+\begin{proposition}\label{g4:prop:0901:symplectic-flow}
+	设 \((M^{2n},\omega)\) 为无边界辛流形，\(H:I\times M\to\mathbb R\) 光滑。则每个有定义的演化映射 \(\Phi_{t,s}\) 都是其开定义域到开像的辛同胚，并保持体积形式 \(\omega^n/n!\)。如果 \(M\) 紧，或存在固定紧集 \(K\subset M\) 使 \(\operatorname{supp}(\mathrm{d}_M H_t)\subset K\) 对全部 \(t\in I\) 成立，则每个 \(\Phi_{t,s}\) 对所有初值都有定义，成为 \(M\) 上的整体辛同胚。
+\end{proposition}
+\begin{proof}
+	固定初始时刻 \(s\)。将\cref{g4:prop:0801:pullback-derivative}用于不随时间变化的形式 \(\omega\)，得到
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}\Phi_{t,s}^*\omega
+		=\Phi_{t,s}^*\mathcal L_{X_{H_t}}\omega
+		=\Phi_{t,s}^*\mathrm{d}(\mathrm{d}_M H_t)=0.
+	\]
+	最后一式是逐时刻的空间外微分。因此拉回始终等于初值 \(\omega\)。逆映射与开像由演化映射的性质给出，故为辛同胚。拉回保持楔积，遂也保持 \(\omega^n/n!\)。
+
+	若所列共同紧支条件成立，\(X_{H_t}\) 在 \(K\) 外为零，第一卷命题13.2.10保证全时间区间的演化映射存在；紧流形情形可直接取 \(K=M\)。该命题用增广场 \(\partial_t+X_{H_t}\) 的逃逸判据排除有限端点，所以并不需要假设 \(I\) 本身紧。
+\end{proof}
+
+保辛不等于能量守恒。前者在每个固定时刻由 \(\mathrm{d}_M^2H_t=0\) 保证；后者还要考虑函数本身的显式时间变化。
+
+\begin{proposition}\label{g4:prop:0901:energy-evolution}
+	设 \(H,F:I\times M\to\mathbb R\) 为无边界辛流形上的光滑函数，\(z(t)\) 满足 \(\dot z=X_{H_t}(z)\)。则
+	\begin{equation}\label{g4:eq:0901:observable-evolution}
+		\frac{\mathrm{d}}{\mathrm{d}t}F(t,z(t))
+		=\partial_tF(t,z(t))+\mathrm{d}_M F_t(X_{H_t})(z(t)).
+	\end{equation}
+	特别地，
+	\begin{equation}\label{g4:eq:0901:energy-evolution}
+		\frac{\mathrm{d}}{\mathrm{d}t}H(t,z(t))=\partial_tH(t,z(t)).
+	\end{equation}
+	函数 \(F\) 沿每条局部轨迹保持不变，当且仅当 \(\partial_tF+\mathrm{d}_M F_t(X_{H_t})=0\) 在 \(I\times M\) 上恒成立。
+\end{proposition}
+\begin{proof}
+	第一式是复合函数的链式法则。令 \(F=H\) 后，空间方向的一项为
+	\[
+		\mathrm{d}_M H_t(X_{H_t})=\omega(X_{H_t},X_{H_t})=0,
+	\]
+	得到第二式。若所列函数恒为零，第一式直接给出沿轨迹不变。反过来，每个 \((s,x)\in I\times M\) 都有一条以它为初值的局部轨迹；在初始时刻求导，便知该函数在 \((s,x)\) 处为零。
+\end{proof}
+
+沿全部轨迹保持不变的函数称为\term[diyijifen]{第一积分}[first integral]；允许显含时间时，也可用同一沿轨迹不变条件描述守恒量。对不显含时间的 \(F\)，条件化为 \(\mathrm{d}F(X_{H_t})=0\)。在标准坐标中，这一项为
+\[
+	\mathrm{d}F(X_{H_t})=
+	\sum_i\left(
+	\frac{\partial F}{\partial q^i}\frac{\partial H_t}{\partial p_i}
+	-\frac{\partial F}{\partial p_i}\frac{\partial H_t}{\partial q^i}
+	\right).
+\]
+\secref{g4:sec:0902}将把这个由两个函数产生的表达式组织成 Poisson 括号，并讨论第一积分与无穷小对称的关系。
+
+\begin{example}\label{g4:exm:0901:time-dependent-translation}
+	在 \(\mathbb R^2\) 上取 \(H_t(q,p)=a(t)p\)，其中 \(a\) 为光滑实函数。则
+	\[
+		X_{H_t}=a(t)\partial_q,
+		\qquad
+		\Phi_{t,s}(q,p)=\left(q+\int_s^t a(\tau)\,\mathrm{d}\tau,p\right).
+	\]
+	直接求导验证这对任意 \(s,t\in I\) 都给出全局解。它保持 \(\mathrm{d}q\wedge\mathrm{d}p\)，并保持函数 \(p\)，而沿初值动量为 \(p_0\) 的轨迹，Hamilton 函数的值是 \(a(t)p_0\)，其导数为 \(a'(t)p_0\)。若给 \(H_t\) 再加任意只依赖时间的 \(c(t)\)，速度场不变；在固定时间区间上的作用量只减去常数 \(\int_a^b c(t)\,\mathrm{d}t\)，故临界曲线不变。
+\end{example}
+
+\begin{proposition}\label{g4:prop:0901:compact-energy-complete}
+	设 \((M,\omega)\) 为无边界辛流形，\(H:M\to\mathbb R\) 为光滑自主 Hamilton 函数。如果能量层 \(H^{-1}(H(x))\) 紧，则经过 \(x\) 的最大轨迹在全部实数时间上存在。特别地，若 \(H\) 为固有映射，即紧集的原像为紧集，则 \(X_H\) 完备。
+\end{proposition}
+\begin{proof}
+	由\cref{g4:prop:0901:energy-evolution}，轨迹始终留在 \(H^{-1}(H(x))\) 中。第一卷定理13.2.2说明，无边界流形上的光滑向量场若有有限最大时间端点，其轨迹必须在接近该端点时离开每个紧集。现在整个轨迹位于同一紧能量层中，故不可能有有限左端点或右端点。若 \(H\) 固有，则每个单点 \(\{H(x)\}\) 的原像都紧，结论对所有初值成立。
+\end{proof}
+
+\begin{example}\label{g4:exm:0901:energy-with-escape}
+	能量守恒本身不能保证完备。在 \(\mathbb R^2\) 上取 \(H(q,p)=q^2p\)，则
+	\[
+		\dot q=q^2,\qquad \dot p=-2qp.
+	\]
+	对初值 \(q_0>0\)，解为
+	\[
+		q(t)=\frac{q_0}{1-q_0t},\qquad
+		p(t)=p_0(1-q_0t)^2,
+		\qquad -\infty<t<1/q_0.
+	\]
+	代回两条方程和初值即可验证；当 \(t\uparrow1/q_0\) 时，\(q(t)\to+\infty\)，不能在 \(\mathbb R^2\) 中继续光滑延拓。另一方面，\(H(q(t),p(t))=q_0^2p_0\) 始终不变。这里能量层非紧，因而没有排除逃逸。谐振子的正能量层则为紧椭圆，前一命题也从几何上解释了其显式解为何能存在于所有时间。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

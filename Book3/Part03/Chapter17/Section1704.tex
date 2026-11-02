@@ -1,36 +1,356 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 17.4* 一般指标定理的准确接口
+% 纲要标题：### 17.4* Atiyah–Singer 指标定理及其应用
 % 纲要位置：几何学计划纲要.md，第 2807 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 椭圆符号与解析指标
 % * 拓扑 K 类和推前
-% * Atiyah–Singer 的所选陈述
+% * Atiyah–Singer 指标定理
 % * de Rham、signature 与 spin 模型的比较
 % 
 % ---
 % 
 % 纲要内容结束
 
-\OptionalSection{一般指标定理的准确接口}{g3:sec:1704}
+\OptionalSection{Atiyah–Singer 指标定理及其应用}{g3:sec:1704}
 
-待撰写
+一个椭圆算子的核与余核可以随系数变化，但二者的维数之差保持得更稳定。第十三章已从泛函分析证明这种稳定性；本节把决定这个整数的主符号送入拓扑 \(K\) 理论，再陈述它与拓扑推前相等的指标定理。最后比较三种算子：它们都能写成一个奇的自伴算子的非对角块，所用的分次却不同，因而测量不同的拓扑量。
+\ProseParagraphBreak
+全节的流形均非空、光滑、紧致且无边界，维数 \(n\ge1\)。向量丛取光滑有限秩复丛，Hermitian 内积第一变量线性。一般指标定理本身采用明确的外部结果；其符号类和推前沿用第二卷第24.4节的构造。本节会证明从本卷 Fredholm、Hodge 与谱理论直接得到的解析识别。
 
 \subsection{椭圆符号与解析指标}
 \label{g3:subsec:1704:01}
-待撰写
+设 \(P:C^\infty(M;E)\to C^\infty(M;F)\) 是 \(d\ge1\) 阶线性微分算子。在局部标架中写作
+\[
+	P=\sum_{|\alpha|\le d}a_\alpha(x)\partial^\alpha,
+	\qquad
+	\sigma_P(x,\xi)=\sum_{|\alpha|=d}a_\alpha(x)(i\xi)^\alpha.
+\]
+我们继续使用 Fourier 符号约定 \(\partial_j\mapsto i\xi_j\)。最高阶部分的坐标变换规律说明，\(\sigma_P\) 是 \(\pi^*E\to\pi^*F\) 的丛映射，其中 \(\pi:\mathrm T^*M\to M\)；它对纤维变量正齐次 \(d\) 次。椭圆性是 \(\xi\ne0\) 时此映射可逆，特别地，\(E,F\) 在每个分支上的秩相同。
+
+\begin{definition}\label{g3:def:analytic-index}
+	闭流形上复丛之间的椭圆算子 \(P\) 的\term[jiexi-zhibiao]{解析指标}[analytic index]定义为
+	\begin{equation}\label{g3:eq:analytic-index}
+		\operatorname{ind}_{\mathrm a}P
+		=\dim_{\mathbb C}\ker P-\dim_{\mathbb C}\ker P^*.
+	\end{equation}
+	这里 \(P^*\) 是所选密度和丛度量的形式伴随，两个核均由光滑截面组成。
+\end{definition}
+
+\cref{g3:thm:elliptic-fredholm}证明 \(P:H^d(E)\to L^2(F)\) 的像闭且等于 \((\ker P^*)^\perp\)，所以式\eqref{g3:eq:analytic-index}就是其 Fredholm 指标。\cref{g3:cor:elliptic-range-hk}还说明，对每个整数 \(k\ge0\)，改用 \(P:H^{k+d}(E)\to H^k(F)\) 得到同一个整数。更换度量只改变等价范数及余核的正交表示，不改变商空间 \(H^k(F)/P(H^{k+d}(E))\)，因而也不改变指标。
+
+\begin{proposition}\label{g3:prop:index-algebra}
+	闭流形上的椭圆算子满足
+	\[
+		\operatorname{ind}_{\mathrm a}(P\oplus Q)
+		=\operatorname{ind}_{\mathrm a}P+\operatorname{ind}_{\mathrm a}Q,
+		\qquad
+		\operatorname{ind}_{\mathrm a}P^*
+		=-\operatorname{ind}_{\mathrm a}P.
+	\]
+	固定阶数的椭圆系数连续族具有局部不变的指标；给算子加入较低阶项也不改变指标。
+\end{proposition}
+\begin{proof}
+	直和的核与伴随核分别直和，得到第一式。\cref{g3:prop:elliptic-adjoint-domain}把 Hilbert 伴随识别为定义域 \(H^d\) 上的形式伴随；再次取伴随恢复 \(P\)，故第二式成立。固定阶数的系数连续性给出 \(H^d\to L^2\) 的算子范数连续性，应用\cref{g3:thm:index-local-constancy}即可。若 \(B\) 的阶数小于 \(d\)，则 \(P+tB\) 的主符号始终等于 \(\sigma_P\)，沿 \(0\le t\le1\) 使用同一结论。
+\end{proof}
+
+形式自伴算子的指标为零，因此几何上有意义的非零指标往往来自它的一个分块。设 \(E=E^+\oplus E^-\) 为正交分次丛，\(\Gamma\) 在两块上分别等于 \(+I,-I\)。一个形式自伴且满足 \(D\Gamma=-\Gamma D\) 的一阶椭圆算子具有形式
+\begin{equation}\label{g3:eq:odd-elliptic-block}
+	D=\begin{pmatrix}0&D^-\\D^+&0\end{pmatrix},
+	\qquad D^-=(D^+)^*,
+	\qquad
+	D^2=\begin{pmatrix}D^-D^+&0\\0&D^+D^-\end{pmatrix}.
+\end{equation}
+它的两个非对角块都是椭圆算子。我们要计算的是
+\(\operatorname{ind}D^+=\dim\ker D^+-\dim\ker D^-\)，而非总算子 \(D\) 的指标。选定分次也就选定了这个差的顺序。
 
 \subsection{拓扑 K 类和推前}
 \label{g3:subsec:1704:02}
-待撰写
+先恢复符号类的具体含义。紧 Hausdorff 空间 \(X\) 上的 \(K^0(X)\) 是由复向量丛的形式差生成，并满足 \([E\oplus F]=[E]+[F]\) 的群。对有限 CW 对 \((X,A)\)，相对群可以用三元组 \((E,F,\alpha)\) 描述，其中 \(\alpha:E|_A\to F|_A\) 为同构；允许稳定增加 \((G,G,I)\)、丛同构以及经过可逆映射的同伦。能将 \(\alpha\) 延拓成整个 \(X\) 上同构的三元组代表零。逆元是 \((F,E,\alpha^{-1})\)。第二卷第24.2.1小节已证明，这个模型等于 \(\widetilde K^0(X/A)\)。
+% 跨卷依赖：g2:prop:k-triple-model。
+\ProseParagraphBreak
+对局部紧空间 \(Y\)，定义 \(K_c^0(Y)=\widetilde K^0(Y^+)\)，其中 \(Y^+\) 是单点紧化。这里的“紧支”指两张丛在某个紧集之外由给定映射相识别；它并不要求丛本身在无穷远消失。给 \(\mathrm T^*M\) 选度量，其单位盘丛、球丛记为 \(D(\mathrm T^*M),S(\mathrm T^*M)\)。径向紧化给出
+\[
+	K_c^0(\mathrm T^*M)
+	\cong K^0\bigl(D(\mathrm T^*M),S(\mathrm T^*M)\bigr).
+\]
 
-\subsection{Atiyah–Singer 的所选陈述}
+\begin{definition}\label{g3:def:elliptic-symbol-class}
+	闭流形上椭圆算子 \(P:E\to F\) 的\term[fuhao-K-lei]{符号 \(K\) 类}[symbol \(K\)-class]是
+	\begin{equation}\label{g3:eq:elliptic-symbol-class}
+		[\sigma_P]
+		=\bigl[\pi^*E,\pi^*F,\sigma_P|_{S(\mathrm T^*M)}\bigr]
+		\in K_c^0(\mathrm T^*M).
+	\end{equation}
+\end{definition}
+
+椭圆性恰好保证第三项在球丛上可逆。改变单位球丛只需沿正径向伸缩，齐次性给出一条可逆同伦，故此类不依赖辅助度量。它也不依赖较低阶项，并随符号的可逆同伦保持不变。直和对应于 \(K\) 群加法。
+\ProseParagraphBreak
+要从这个类得到整数，还需要推前的定向约定。设 \(V\to X\) 为复秩 \(r\) 丛，\(p:V\to X\)，\(v\) 是 \(p^*V\) 的典范截面。外乘构成复形
+\[
+	0\longrightarrow p^*\Lambda^0V
+	\xrightarrow{\,v\wedge\,}p^*\Lambda^1V
+	\xrightarrow{\,v\wedge\,}\cdots
+	\xrightarrow{\,v\wedge\,}p^*\Lambda^rV\longrightarrow0.
+\]
+若 \(v\ne0\)，由度量给出的收缩 \(\iota_v\) 满足
+\((v\wedge)\iota_v+\iota_v(v\wedge)=|v|^2I\)，所以这个复形在零截面外正合。把奇偶次数合并，映射
+\[
+	\varepsilon(v)+\iota_v:
+	p^*\Lambda^{\mathrm{ev}}V\longrightarrow p^*\Lambda^{\mathrm{odd}}V
+\]
+在零截面外可逆，定义 \(K\) 理论的 Thom 类\footnote{René Thom（1923--2002），法国数学家，研究示性类、配边与微分拓扑，后来发展了突变理论。}
+\(\lambda_V\)。这里采用的是 \(\Lambda^*V\)，不是 \(\Lambda^*V^*\)。第二卷第24.4.3小节已证明复丛 Thom 同构
+\begin{equation}\label{g3:eq:k-thom-index-convention}
+	K^0(X)\longrightarrow K_c^0(V),
+	\qquad a\longmapsto p^*a\cdot\lambda_V
+\end{equation}
+以及它的紧支版本；直和满足 \(\lambda_{V\oplus W}=\lambda_V\lambda_W\)。
+% 跨卷依赖：g2:prop:complex-k-thom。
+\ProseParagraphBreak
+这个约定的符号可以在复直线上查清。若 \(H\) 是 \(\mathbb CP^1\) 上典范线丛的对偶，\(\beta=[H]-1\) 是以 \(\int_{\mathbb CP^1}c_1(H)=1\) 归一化的 Bott 元素，\footnote{Raoul Bott（1923--2005），生于匈牙利、长期任教于美国的数学家，研究拓扑与微分几何，建立了拓扑 \(K\) 理论的周期性定理。}则上述外乘复形给出
+\begin{equation}\label{g3:eq:index-bott-normalization}
+	\lambda_{\mathbb C}=-\beta,
+	\qquad
+	\lambda_{\mathbb C^N}=(-1)^N\beta^{\boxtimes N}.
+\end{equation}
+第二卷第24.4.3小节已用圆盘边界的粘接方向证明第一式，第二式由外积得到。定义
+\[
+	b_N:K_c^0(\mathbb C^N)\xrightarrow{\cong}\mathbb Z,
+	\qquad b_N(\lambda_{\mathbb C^N})=1.
+\]
+以后推前到一点时始终使用这个 \(b_N\)；若把生成元换成 \(\beta^{\boxtimes N}\)，末尾的归一化也必须同时改变。
+% 跨卷依赖：g2:eq:k-koszul-bott-sign。
+
+\begin{definition}\label{g3:def:topological-index}
+	设 \(M\) 为闭光滑流形。选光滑嵌入 \(i:M\hookrightarrow\mathbb R^N\)，以度量识别 \(\mathrm T^*M\cong\mathrm TM\)。令
+	\[
+		j=\mathrm Ti:\mathrm TM\hookrightarrow
+		\mathrm T\mathbb R^N\cong\mathbb C^N,
+		\qquad (x,v)\longmapsto x+iv.
+	\]
+	用下述复法丛的 Thom 同构及管状邻域延拓定义 \(j_!\)。\term[tuopu-zhibiao]{拓扑指标}[topological index]为
+	\begin{equation}\label{g3:eq:topological-index}
+		\operatorname{ind}_{\mathrm t}
+		=b_N\circ j_!:
+		K_c^0(\mathrm T^*M)\longrightarrow\mathbb Z.
+	\end{equation}
+\end{definition}
+
+这里有两步几何数据需要说明。若 \(\nu\to M\) 是 \(i\) 的实法丛，给切丛选联络后，\(j\) 的法丛识别为
+\[
+	\pi^*(\nu\oplus\nu)\cong\pi^*(\nu\otimes_{\mathbb R}\mathbb C).
+\]
+第一份 \(\nu\) 描述底点的法向位移，第二份描述切向量的法向分量；复结构采用 \((a,b)\mapsto a+ib\)。给 \(a\in K_c^0(\mathrm TM)\) 乘这个复法丛的 \(\lambda\) 类，再经管状邻域送入 \(\mathbb C^N\)，最后在邻域外延拓为零，便得到 \(j_!a\)。延拓为零在单点紧化上是压缩邻域补集所诱导的拉回，故不需要把某张非零秩丛直接“补成零丛”。
+\ProseParagraphBreak
+这里使用的拓扑输入有明确来源：闭光滑流形具有有限 CW 型，见第二卷第17.2.4小节的 Morse 胞腔结论；光滑嵌入及管状邻域的存在见第二卷第15.1、15.3节；相对 \(K\) 群、复丛 Thom 同构及其外积相容性见第二卷第24.2--24.4节。第二卷第24.4.3小节已逐项建立上述推前的选择无关性。简要回顾如下：度量、联络及管状邻域的连续变化给出同伦；把环境增大一个实维数，会在法丛中增加一条复直线，因此 \(j_!a\) 乘上 \(\lambda_{\mathbb C}\)，而 \(b_{N+1}\) 恰好将这个因子消去。任意两个嵌入 \(i_0,i_1\) 在共同环境中由
+\[
+	x\longmapsto(\cos t\,i_0(x),\sin t\,i_1(x)),
+	\qquad 0\le t\le\pi/2,
+\]
+连接为嵌入族；配合稳定化就得到同一个整数。这也解释了式\eqref{g3:eq:index-bott-normalization}为何关系到推前的良定义。
+% 跨卷依赖：g2:cor:morse-cell-type；g2:thm:weak-whitney-compact；g2:thm:tubular-neighborhood；g2:eq:topological-index-pushforward。
+
+\subsection{Atiyah–Singer 指标定理}
 \label{g3:subsec:1704:03}
-待撰写
+现在两边都有了独立定义：左边是两个有限维核之差，右边由主符号、复法丛和拓扑推前构成。Atiyah--Singer 指标定理把它们识别起来。\footnote{Michael Francis Atiyah（1929--2019），英国数学家，参与建立拓扑 \(K\) 理论及椭圆算子的指标理论。}
+
+\begin{theorem}[Atiyah--Singer 指标定理]\label{g3:thm:atiyah-singer-index}
+	设 \(M\) 为闭光滑流形，\(\dim M\ge1\)，\(E,F\) 为光滑有限秩复向量丛，\(P:C^\infty(M;E)\to C^\infty(M;F)\) 为光滑系数的正阶椭圆微分算子。采用式\eqref{g3:eq:elliptic-symbol-class}的符号类及式\eqref{g3:eq:topological-index}的推前归一化，则
+	\begin{equation}\label{g3:eq:atiyah-singer-index}
+		\operatorname{ind}_{\mathrm a}P
+		=\operatorname{ind}_{\mathrm t}[\sigma_P].
+	\end{equation}
+	此陈述不要求 \(M\) 定向，也不要求 \(M\) 具有复结构或 spin 结构。
+\end{theorem}
+
+这里采用原论文第一篇第6节定理(6.7)在平凡群情形的结论，见\cite[第520页]{AtiyahSinger1968I}。其推前使用第3节的复外代数类，构造和嵌入无关性的讨论见原刊第493--498页，正是上面恢复的约定。完整证明还要建立解析指标对嵌入推前的相容性；本节将这一步作为外部定理使用。
+\ProseParagraphBreak
+该等式比“加入低阶项不改变指标”更强：它说明所有具有相同紧支 \(K\) 类的符号得到同一指标，即使它们原先作用在不同的丛之间，或需要稳定增加丛之后才相互比较。仅凭第十三章固定 Banach 空间中的局部不变性，不能直接完成这些比较。
+
+\begin{proposition}[分次热迹恒等式]\label{g3:prop:graded-heat-index}
+	设 \((M,g)\) 为非空光滑闭黎曼流形，\(\dim M=n\ge1\)，其上光滑 Hermitian 分次丛 \(E=E^+\oplus E^-\) 带形式自伴奇椭圆算子 \(D\)，如式\eqref{g3:eq:odd-elliptic-block}；设 \(D\) 为一阶且 \(D^2\) 为 Laplace 型。令 \(K_{D^2}(t,x,y)\) 为其热核，并定义纤维\term[chaoji]{超迹}[supertrace]
+	\(\operatorname{str}A=\operatorname{tr}(\Gamma A)\)。则每个 \(t>0\) 都有
+	\begin{equation}\label{g3:eq:graded-heat-index}
+		\operatorname{ind}D^+
+		=\operatorname{Tr}(e^{-tD^-D^+})
+		-\operatorname{Tr}(e^{-tD^+D^-})
+		=\int_M\operatorname{str}K_{D^2}(t,x,x)\,\mu_g.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	两个对角块非负、形式自伴且椭圆，第十三章的自伴实现和离散谱结论适用。若
+	\(D^-D^+u=\lambda u\)，\(\lambda>0\)，则 \(u\) 光滑，且
+	\[
+		D^+D^-(D^+u)=\lambda D^+u,
+		\qquad
+		\lVert D^+u\rVert_{L^2}^2=\lambda\lVert u\rVert_{L^2}^2.
+	\]
+	所以 \(D^+\) 将正特征空间单射到另一块的同一特征空间。反向映射为 \(\lambda^{-1}D^-\)，故二者是同构，正特征值的重数逐一相同。零特征空间分别为 \(\ker D^+\) 与 \(\ker D^-\)。
+
+	\cref{g3:prop:heat-kernel-trace}的丛版本保证两边各自的热迹有限，谱和绝对收敛。因此逐个抵消正谱不会改变和，剩下的恰为两个零特征空间的维数之差。最后对两块分别使用核迹公式，再相减，得到纤维超迹的积分。
+\end{proof}
+
+这一步完全来自谱配对，还没有计算任何曲率多项式。若 \(n=2m\)，第十六章的丛热核展开给出
+\[
+	K_{D^2}(t,x,x)\sim(4\pi t)^{-m}
+	\sum_{j\ge0}t^j u_j(x,x).
+\]
+由于余项在 \(M\) 上统一，式\eqref{g3:eq:graded-heat-index}已经推出
+\begin{equation}\label{g3:eq:integrated-supertrace-coefficients}
+	\int_M\operatorname{str}u_j(x,x)\,\mu_g=0\quad(j<m),
+	\qquad
+	\operatorname{ind}D^+
+	=(4\pi)^{-m}\int_M\operatorname{str}u_m(x,x)\,\mu_g.
+\end{equation}
+的确，将统一展开积分，依次乘以最低的 \(t\) 幂并令 \(t\downarrow0\)，即可逐项消去负幂系数，再取常数项。
+\ProseParagraphBreak
+一般局部指标公式还需要更精细的计算：对相应的几何算子，证明低阶系数的超迹在每一点消失，并将临界阶 \((4\pi)^{-m}\operatorname{str}u_m(x,x)\mu_g\) 识别为指定的示性形式。这涉及曲率在分次模上的作用和临界阶系数，单有 \(u_0\) 及 \(u_1\) 的公式不能处理任意维数。局部指标定理及其热核系数表述见\cite[第4章，4.1节]{BerlineGetzlerVergne2004}。本章前两节以另一条完整的转移形式论证得到 Euler 积分公式；下面的符号差与 spin 示性数公式采用注明的外部结论。
 
 \subsection{de Rham、signature 与 spin 模型的比较}
 \label{g3:subsec:1704:04}
-待撰写
+先取复外形式丛 \(E=\Lambda^*\mathrm T^*M\otimes\mathbb C\)，按次数奇偶分次，并令 \(D=\mathrm d+\delta\)。由
+\[
+	\sigma_D(x,\xi)=i\bigl(\varepsilon(\xi)-\iota_{\xi^\sharp}\bigr),
+	\qquad \sigma_D(x,\xi)^2=|\xi|^2I,
+\]
+它是奇的形式自伴椭圆算子，且 \(D^2=\Delta\)。这里不需要定向，因为形式内积与 \(\delta\) 可以直接用黎曼密度定义。
+
+\begin{proposition}[de Rham 算子的解析指标]\label{g3:prop:de-rham-analytic-index}
+	任意闭光滑流形 \(M\) 上，按次数奇偶分次的算子
+	\[
+		D_{\mathrm{dR}}^+:
+		\Omega^{\mathrm{ev}}(M;\mathbb C)
+		\longrightarrow\Omega^{\mathrm{odd}}(M;\mathbb C),
+		\qquad D_{\mathrm{dR}}^+=(\mathrm d+\delta)|_{\mathrm{ev}},
+	\]
+	满足 \(\operatorname{ind}D_{\mathrm{dR}}^+=\chi(M)\)。若 \(M\) 定向且维数为 \(2m\)，则
+	\[
+		\operatorname{ind}D_{\mathrm{dR}}^+
+		=\int_M e(\mathrm TM,\nabla^{\mathrm{LC}}).
+	\]
+\end{proposition}
+\begin{proof}
+	由\cref{g3:prop:form-hodge-energy}，\(\ker D=\ker\Delta\)。于是
+	\[
+		\operatorname{ind}D_{\mathrm{dR}}^+
+		=\sum_{q=0}^n(-1)^q\dim_{\mathbb C}\mathcal H^q(M)
+		=\sum_{q=0}^n(-1)^q\dim_{\mathbb C}H_{\mathrm{dR}}^q(M;\mathbb C),
+	\]
+	第二个等号来自\cref{g3:thm:hodge-de-rham}。第二卷第7.3.4小节的 de Rham 比较把这些空间识别为奇异上同调；第3.4节的同调 Euler 公式将其交错维数之和识别为 \(\chi(M)\)。最后一式正是本章已证的\cref{g3:thm:gauss-bonnet-chern}。
+	% 跨卷依赖：g2:thm:de-rham；g2:thm:euler-homology。
+\end{proof}
+
+signature 模型仍使用全部外形式，但换了一个分次。设 \(M\) 闭、定向且 \(\dim M=4k\)，\(k\ge1\)。在 \(q\) 形式上定义
+\begin{equation}\label{g3:eq:signature-grading}
+	\tau\alpha=(-1)^{q(q-1)/2+k}*\alpha.
+\end{equation}
+这里 \(*\) 复线性延拓，\(\tau\) 将 \(q\) 次形式送到 \(4k-q\) 次。由
+\(*^2=(-1)^{q(4k-q)}\) 计算得 \(\tau^2=I\)；它还是等距映射，故自伴。其 \(\pm1\) 特征丛记为 \(E_\tau^\pm\)。
+\ProseParagraphBreak
+用\cref{g3:prop:hodge-star-commutes}中的
+\(\mathrm d*\alpha=(-1)^q*\delta\alpha\)、
+\(\delta*\alpha=(-1)^{q+1}*\mathrm d\alpha\)，并比较相邻次数的因子，就得到
+\[
+	\tau\mathrm d=-\delta\tau,
+	\qquad \tau\delta=-\mathrm d\tau,
+	\qquad \tau D=-D\tau.
+\]
+例如 \(\tau\mathrm d\alpha\) 的因子为
+\((-1)^{(q+1)q/2+k}\)，而 \(\delta\tau\alpha\) 的因子为
+\((-1)^{q(q-1)/2+k+q+1}\)，二者相差一个负号。因此
+\[
+	B^+=(\mathrm d+\delta)|_{E_\tau^+}:
+	C^\infty(M;E_\tau^+)\longrightarrow C^\infty(M;E_\tau^-)
+\]
+是一个椭圆算子，称为\term[signature-suanzi]{signature 算子}[signature operator]的正半部分。
+
+\begin{proposition}[signature 算子的解析识别]\label{g3:prop:signature-analytic-index}
+	闭定向 \(4k\) 维流形上，中间维实上同调的对称非退化形式
+	\[
+		Q([\alpha],[\beta])=\int_M\alpha\wedge\beta,
+		\qquad [\alpha],[\beta]\in H_{\mathrm{dR}}^{2k}(M;\mathbb R),
+	\]
+	具有\term[fuhao-cha]{符号差}[signature] \(\operatorname{sign}(M)\)，即其正、负惯性指数之差。采用式\eqref{g3:eq:signature-grading}时，
+	\[
+		\operatorname{ind}B^+=\operatorname{sign}(M).
+	\]
+\end{proposition}
+\begin{proof}
+	非退化性由\cref{g3:thm:hodge-poincare-duality}得到。由 Hodge 定理，可在实调和形式空间计算 \(Q\)。因为 \(\tau\) 与 \(\Delta=D^2\) 交换，
+	\(\operatorname{ind}B^+\) 等于 \(\tau\) 在全部复调和形式上的迹。
+
+	若 \(q<2k\)，则 \(\tau\) 交换 \(\mathcal H^q\) 与 \(\mathcal H^{4k-q}\)。这一对空间上的正负特征空间分别由 \(h+\tau h\) 与 \(h-\tau h\) 参数化，维数相等，故对迹的贡献为零。只剩下中间维。此时
+	\[
+		(-1)^{(2k)(2k-1)/2+k}=1,
+	\]
+	所以 \(\tau=*\)。在实中间维调和空间上，\(*^2=I\)，其正负特征空间正交，且
+	\[
+		Q(\alpha,\beta)=(\alpha,*\beta)_{L^2}.
+	\]
+	因此 \(Q\) 在正特征空间上正定，在负特征空间上负定，两者互相正交。其符号差就是这两个实维数之差。复化后的复维数等于原实维数，恰好给出 \(\operatorname{ind}B^+\)。
+\end{proof}
+
+为写下另外两个示性数，恢复第二卷第21.3.5小节的 Pontryagin 类\footnote{Lev Semenovich Pontryagin（1908--1988），俄罗斯数学家，研究拓扑、拓扑群与控制理论；实向量丛的这组示性类以他命名。}
+\(p_j(V)=(-1)^j c_{2j}(V\otimes_{\mathbb R}\mathbb C)\)。
+在有理上同调中用形式根记作 \(p(V)=\prod_j(1+x_j^2)\)，其中 \(x_j\) 的形式次数为 \(2\)。定义
+\begin{equation}\label{g3:eq:l-ahat-series}
+	L(V)=\prod_j\frac{x_j}{\tanh x_j},
+	\qquad
+	\widehat A(V)=\prod_j\frac{x_j/2}{\sinh(x_j/2)}.
+\end{equation}
+每个因子都是 \(x_j\) 的偶幂级数，乘积的齐次部分是 \(x_j^2\) 的对称多项式，因而是 \(p_1,p_2,\ldots\) 的唯一有理多项式。这里无需假设 \(V\) 在原底空间上实际分裂。低次项为
+\begin{align}
+	L(V)&=1+\frac{p_1}{3}
+	+\frac{7p_2-p_1^2}{45}+\cdots,\label{g3:eq:l-low-degrees}\\
+	\widehat A(V)&=1-\frac{p_1}{24}
+	+\frac{7p_1^2-4p_2}{5760}+\cdots.\label{g3:eq:ahat-low-degrees}
+\end{align}
+这些类的下标若写成 \(L_{4j},\widehat A_{4j}\)，表示上同调次数 \(4j\)。与基本类配对时只取顶次部分。第二卷第22.3节还给出了相应的曲率代表，因此配对也可以写成微分形式的积分。
+% 跨卷依赖：g2:def:pontryagin-classes；g2:eq:pontryagin-curvature-forms。
+\ProseParagraphBreak
+符号差的拓扑公式是 Hirzebruch 符号差定理。\footnote{Friedrich Hirzebruch（1927--2012），德国数学家，长期任教于波恩大学，研究示性类、符号差与代数几何中的指标公式。}这里将它作为一般指标理论的一个明确的外部几何公式使用。
+\begin{theorem}[signature 算子的指标公式]\label{g3:thm:signature-l-index}
+	设 \(M\) 为闭定向 \(4k\) 维光滑流形，\(k\ge1\)，\(B^+\) 采用上述分次，则
+	\begin{equation}\label{g3:eq:signature-l-index}
+		\operatorname{ind}B^+
+		=\operatorname{sign}(M)
+		=\langle L(\mathrm TM),[M]\rangle.
+	\end{equation}
+\end{theorem}
+该示性数等式及所用 \(L\) 级数可见\cite[第6节，式(6.5)及定理(6.6)，第577页]{AtiyahSinger1968III}。其中解析指标等于符号差的部分，我们已经在上一命题中证明。
+\ProseParagraphBreak
+最后设 \(M^{2m}\) 带 spin 结构。采用上一节的复自旋子丛 \(S=S^+\oplus S^-\) 及
+\[
+	\Gamma=i^m c(e_1)\cdots c(e_{2m}),
+	\qquad S^\pm=\ker(\Gamma\mp I),
+	\qquad D^+:C^\infty(S^+)\to C^\infty(S^-).
+\]
+\cref{g3:thm:spin-dirac-elliptic}已证明 \(D\) 形式自伴、椭圆并交换自旋子的两个分次；\cref{g3:thm:spin-lichnerowicz}给出其平方。因而 \(\operatorname{ind}D^+\) 是正、负调和自旋子维数之差，并满足式\eqref{g3:eq:graded-heat-index}。
+
+\begin{theorem}[spin Dirac 指标公式]\label{g3:thm:spin-ahat-index}
+	设 \((M^{2m},g)\) 为闭定向光滑黎曼流形，\(m\ge1\)，并选定一个 spin 结构，自旋子分次取上述约定。则
+	\begin{equation}\label{g3:eq:spin-ahat-index}
+		\operatorname{ind}D^+
+		=\langle\widehat A(\mathrm TM),[M]\rangle.
+	\end{equation}
+	当 \(\dim M\equiv2\pmod4\) 时，右端因没有相应次数的项而为零。
+\end{theorem}
+
+该公式在 \(4k\) 维的原始陈述见\cite[第5节，式(5.2)及定理(5.3)，第570--571页]{AtiyahSinger1968III}；同处也指出其余偶数维的无扭曲自旋子指标为零。本节采用的 \(\widehat A\) 归一化明确写在式\eqref{g3:eq:l-ahat-series}中。结合\cref{g3:cor:spin-positive-scalar-vanishing}立即得到：若闭 spin 流形存在处处正标量曲率的度量，则其 \(\widehat A\) 数为零。这个结论中的曲率导致核消失已在上一节证明；将核的指标识别为示性数使用的是刚刚注明的外部定理。
+
+\begin{example}[四维的三个整数]\label{g3:exm:four-dimensional-indices}
+	设 \(M\) 为闭定向四维流形。de Rham 指标为 \(\chi(M)\)，signature 指标为
+	\(\frac13\langle p_1(\mathrm TM),[M]\rangle\)。若 \(M\) 还带 spin 结构，则
+	\[
+		\operatorname{ind}D^+
+		=-\frac1{24}\langle p_1(\mathrm TM),[M]\rangle
+		=-\frac18\operatorname{sign}(M).
+	\]
+	因此单从这个复指标公式已得到：spin 四维流形的符号差是 \(8\) 的倍数；若还存在正标量曲率度量，则符号差为零。这几个指标并不相同。例如四维球面的调和上同调只在 \(0,4\) 次各有一维，所以 de Rham 指标为 \(2\)，符号差为 \(0\)。
+\end{example}
+
+三种模型由同一条解析机制连接：正谱在两个分次之间配对，零谱留下一个整数。次数奇偶分次保留上同调的交错维数；signature 分次在中间维保留交形式的正负差；自旋子分次保留两类调和自旋子的维数差。要把这些整数写成曲率积分，必须进一步识别与各自分次相适应的示性形式。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

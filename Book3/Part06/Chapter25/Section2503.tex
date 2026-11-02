@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 25.3 无穷小形变及障碍
 % 纲要位置：几何学计划纲要.md，第 3183 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,191 @@
 \section{无穷小形变及障碍}
 \label{g3:sec:2503}
 
-待撰写
+椭圆化把无穷多个重参数化方向移出了核，却未保证剩余的线性化可逆。真正的几何形变可能留下有限维核，而核中的向量未必能够延伸为一条 Einstein 度量曲线。本节先识别这些无穷小方向，再解出核正交部分，把全部非线性困难保存在一个有限维方程中。
+
+固定闭连通光滑 Einstein 流形 \((M^n,g_0)\)，\(n\ge3\)，\(\operatorname{Ric}_{g_0}=\lambda g_0\)，以及整数 \(s>n/2+3\)。本节先固定 Einstein 常数 \(\lambda\)；最后再将它作为一个实参数加入，以描述未固定尺度的局部问题。
 
 \subsection{Lichnerowicz 型算子}
 \label{g3:subsec:2503:01}
-待撰写
+对光滑对称二张量 \(h\)，记 \(f=\operatorname{tr}_0h\)。上一节的线性化可以写为
+\begin{equation}\label{g3:eq:einstein-L-expanded}
+	Lh=\tfrac12(\Delta_L-2\lambda)h
+	-\tfrac12\operatorname{Hess}_0 f
+	-\tfrac12\bigl(\Delta_0f+\delta_0\delta_0h-\lambda f\bigr)g_0.
+\end{equation}
+这里 \(\Delta_L\) 是第一节定义的 Lichnerowicz 算子；其在 Einstein 背景上满足
+\[
+	(\Delta_L-2\lambda)h=\nabla^{0*}\nabla^0h-2\mathring R_0(h).
+\]
+式\eqref{g3:eq:einstein-L-expanded}来自 \(\operatorname{Ric}'=\Delta_L/2-\delta_0^*\beta_0\)：规范项消去 \(-\delta_0^*\delta_0h\)，而 Einstein 张量的迹反转留下最后一项。不能只保留粗 Laplace 项而忽略这些迹项。
+
+\begin{definition}\label{g3:def:einstein-infinitesimal-space}
+	设 \((M^n,g_0)\) 为闭光滑 Einstein 流形，\(n\ge3\)，\(\operatorname{Ric}_{g_0}=\lambda g_0\)。记
+	\[
+		\mathcal K=\ker L\subset C^\infty(S^2\mathrm T^*M).
+	\]
+	满足 \(\delta_0h=0\)、\(\operatorname{tr}_0h=0\) 的张量称为\term[hengxiang wuji zhangliang]{横向无迹张量}[transverse-traceless tensor]，简称 TT 张量。空间 \(\mathcal K\) 中的元素称为固定 \(\lambda\) 的规范\term[wuqiongxiao Einstein xingbian]{无穷小 Einstein 形变}[infinitesimal Einstein deformation]。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:einstein-kernel-tt}
+	设 \((M^n,g_0)\) 闭、连通且光滑，\(n\ge3\)，\(\operatorname{Ric}_{g_0}=\lambda g_0\)。则
+	\begin{equation}\label{g3:eq:einstein-kernel-geometric}
+		\mathcal K=\{h:\delta_0h=0,\ \mathrm D(\operatorname{Ric}-\lambda g)|_{g_0}h=0\}.
+	\end{equation}
+	若 \(\lambda\ne0\)，则
+	\[
+		\mathcal K=\{h:\delta_0h=0,\ \operatorname{tr}_0h=0,
+		(\nabla^{0*}\nabla^0-2\mathring R_0)h=0\}.
+	\]
+	若 \(\lambda=0\)，则 \(\mathcal K=\mathbb Rg_0\oplus\mathcal K_{\mathrm{TT}}\)，其中 \(\mathcal K_{\mathrm{TT}}\) 为上式中的 TT 核。
+\end{proposition}
+\begin{proof}
+	微分 \(\delta_g\mathcal G_\lambda(g)=0\)，并用 \(\mathcal G_\lambda(g_0)=0\)，得到 \(\delta_0\mathcal G_\lambda'h=0\)。若 \(Lh=0\)，则 \(\delta_0\delta_0^*\delta_0h=0\)。将它与 \(\delta_0h\) 配对，得 \(\delta_0^*\delta_0h=0\)；又 \(\delta_0h\perp\mathfrak k_0\)，故 \(\delta_0h=0\)。于是 \(\mathcal G_\lambda'h=0\)。令 \(E'h=\mathrm D(\operatorname{Ric}-\lambda g)|_{g_0}h\)，由第一节的变分公式有
+	\[
+		\mathcal G_\lambda'h=E'h-\tfrac12(\operatorname{tr}_0E'h)g_0.
+	\]
+	迹反转在 \(n\ge3\) 时可逆，故 \(E'h=0\)。反向显然代入即得，证明式\eqref{g3:eq:einstein-kernel-geometric}。
+
+	对这个方程取迹，标量曲率变分给出 \(\Delta_0f=\lambda f\)。若 \(\lambda<0\)，积分恒等式 \(\|\mathrm df\|_2^2=\lambda\|f\|_2^2\) 迫使 \(f=0\)。若 \(\lambda>0\)，先积分得 \(\int_M f=0\)。\Cref{g3:thm:lichnerowicz-bound}在 \(\operatorname{Ric}_{g_0}=\lambda g_0\) 下给出首个正函数特征值至少为 \(n\lambda/(n-1)>\lambda\)，故仍有 \(f=0\)。此时 \(\beta_0h=0\)，于是 \(E'h=(\nabla^{0*}\nabla^0-2\mathring R_0)h/2\)。
+
+	若 \(\lambda=0\)，则 \(\Delta_0f=0\)，闭性与连通性给出 \(f\) 为常数。平行张量 \(g_0\) 满足 \(L g_0=0\)；从 \(h\) 减去 \((f/n)g_0\) 就得到 TT 核。两项正交，给出直和分解。
+\end{proof}
+
+因此尺度的地位取决于规范化：非零 \(\lambda\) 已经固定尺度，而 Ricci 平坦方程在常数缩放下不变。TT 条件描述的是去掉这一尺度方向后的变化。
 
 \subsection{核、余核和规范等价}
 \label{g3:subsec:2503:02}
-待撰写
+核记录齐次线性方程的解，余核记录非齐次方程的相容条件。两者在当前自伴问题中可用同一个光滑有限维空间表示，但在非线性约化中仍承担不同职责。
+
+\begin{theorem}\label{g3:thm:einstein-linear-fredholm}
+	设 \((M^n,g_0)\) 为闭光滑 Einstein 流形，\(n\ge3\)，取整数 \(s>n/2+3\)。则 \(\mathcal K\) 有限维，且
+	\[
+		L:H^s(S^2\mathrm T^*M)\longrightarrow H^{s-2}(S^2\mathrm T^*M)
+	\]
+	为指数零的 Fredholm 算子。对 \(q\in H^{s-2}\)，方程 \(Lh=q\) 可解当且仅当 \(\langle q,k\rangle_0=0\) 对所有 \(k\in\mathcal K\) 成立；核正交解唯一，并满足
+	\begin{equation}\label{g3:eq:einstein-complement-estimate}
+		\|h\|_{H^s}\le C_s\|Lh\|_{H^{s-2}},\qquad h\perp\mathcal K.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	\Cref{g3:thm:einstein-gauged-ellipticity}给出等秩二阶椭圆性及形式自伴性。\Cref{g3:prop:finite-elliptic-kernel,g3:cor:elliptic-range-hk}遂给出有限维光滑核、闭像以及像等于伴随核的正交补。这里伴随算子仍为 \(L\)，故余核与 \(\mathcal K\) 同维，指数为零。核正交估计由\cref{g3:thm:kernel-orthogonal-estimate}取阶数二、指数二得到。注意这一论证只需椭圆性，不要求 \(L\) 的二次型非负。
+\end{proof}
+
+取 \(\mathcal K\) 的 \(L^2(g_0)\) 正交归一基 \(k_1,\ldots,k_d\)，定义
+\[
+	\Pi h=\sum_{a=1}^d\langle h,k_a\rangle_0k_a,\qquad Q=I-\Pi.
+\]
+各 \(k_a\) 光滑，因此 \(\Pi\) 在本节所用的两个 Sobolev 空间上都连续。令
+\[
+	X_1=H^s\cap\mathcal K^\perp,\qquad Y_1=H^{s-2}\cap\mathcal K^\perp.
+\]
+则 \(L:X_1\to Y_1\) 是有界同构，逆记为 \(G\)。它是固定背景下的 Green 逆，与第13.3节的构造一致。
+
+\begin{proposition}\label{g3:prop:einstein-gauge-quotient-tangent}
+	设 \((M^n,g_0)\) 为闭光滑 Einstein 流形，\(n\ge3\)，\(\operatorname{Ric}_{g_0}=\lambda g_0\)。令
+	\[
+		\mathcal Z=\ker\mathrm D(\operatorname{Ric}-\lambda g)|_{g_0}.
+	\]
+	则取散度规范给出自然线性同构
+	\[
+		\mathcal Z/\{\mathcal L_Xg_0:X\in C^\infty(\mathrm TM)\}
+		\simeq\mathcal K.
+	\]
+\end{proposition}
+\begin{proof}
+	自然性使 \(\mathcal L_Xg_0\in\mathcal Z\)。对 \(h\in\mathcal Z\)，解式\eqref{g3:eq:metric-linear-slice-equation}，得到 \(\widehat h=h+\mathcal L_Xg_0\) 满足 \(\delta_0\widehat h=0\)。它仍在 \(\mathcal Z\)，故属于 \(\mathcal K\)。若一个 Lie 导数本身散度为零，则 \(\delta_0\delta_0^*X^\flat=0\)，积分后得到 \(\delta_0^*X^\flat=0\)，所以该 Lie 导数就是零。因而所选代表唯一。
+\end{proof}
+
+这个线性商尚不是实际模空间的切空间定理：实际解集可能有高阶障碍。它首先给出所有可能曲线速度所在的有限维候选空间。
 
 \subsection{隐函数定理的可解条件}
 \label{g3:subsec:2503:03}
-待撰写
+若 \(\mathcal K=0\)，线性化可直接求逆；若 \(\mathcal K\ne0\)，可逆的是核正交部分。两种情形分别决定隐函数定理的使用方式。
+
+\begin{corollary}\label{g3:cor:einstein-infinitesimal-rigidity}
+	设 \((M^n,g_0)\) 为闭光滑 Einstein 流形，\(n\ge3\)，\(\operatorname{Ric}_{g_0}=\lambda g_0\)。若 \(\mathcal K=0\)，则每个具有同一 Einstein 常数 \(\lambda\)、且充分光滑接近 \(g_0\) 的 Einstein 度量，都与 \(g_0\) 微分同胚等价。
+\end{corollary}
+\begin{proof}
+	\Cref{g3:thm:einstein-linear-fredholm}使 \(L:H^s\to H^{s-2}\) 为同构。\Cref{g3:thm:quantitative-banach-inverse}说明 \(\mathcal F\) 在 \(g_0\) 附近的唯一零点为 \(g_0\)。对邻近的同常数 Einstein 度量，先用\cref{g3:thm:metric-divergence-slice}选散度代表。代表保持 Einstein 方程，由\cref{g3:thm:einstein-gauge-equivalence}是 \(\mathcal F\) 的零点，故等于 \(g_0\)。
+\end{proof}
+
+在 \(\lambda=0\) 时 \(g_0\in\mathcal K\)，所以上述条件不会自动满足；需固定体积后再讨论刚性。在一般 Banach 方程中，满射而非零核的线性化会产生光滑解流形；当前 \(L\) 自伴且指数零，满射已经蕴含核为零。若核不为零，不能把“有限维”当作“没有相容条件”。
+
+把 \(h=k+v\)，其中 \(k\in\mathcal K\)、\(v\in X_1\)。首先只解
+\begin{equation}\label{g3:eq:einstein-range-equation}
+	Q\mathcal F(g_0+k+v)=0.
+\end{equation}
+它对 \(v\) 在原点的微分是 \(L:X_1\to Y_1\)，所以确实满足隐函数定理。问题中是否存在给定拓扑上的 Einstein 度量，并未由这个局部求逆解决；这里始终从已知解 \(g_0\) 出发。
 
 \subsection{有限维约化及二阶障碍}
 \label{g3:subsec:2503:04}
-待撰写
+\begin{theorem}\label{g3:thm:einstein-local-obstruction}
+	设 \((M^n,g_0)\) 为闭连通光滑 Einstein 流形，\(n\ge3\)，\(\operatorname{Ric}_{g_0}=\lambda g_0\)，取整数 \(s>n/2+3\)。存在 \(\mathcal K\) 中零点的邻域 \(U\) 及光滑映射
+	\[
+		\psi:U\to X_1,\qquad \kappa:U\to\mathcal K,
+	\]
+	使 \(\psi(0)=0\)、\(\mathrm D\psi(0)=0\)、\(\kappa(0)=0\)、\(\mathrm D\kappa(0)=0\)，并有：
+	\begin{enumerate}
+		\item \(g_0\) 附近 \(H^s\) 中的 \(\mathcal F\) 零点恰为 \(g(k)=g_0+k+\psi(k)\)，其中 \(k\in U\)、\(\kappa(k)=0\)。这些度量都是光滑的，满足 \(\operatorname{Ric}_{g(k)}=\lambda g(k)\) 及 \(\delta_0(g(k)-g_0)=0\)。
+		\item 每个充分光滑接近 \(g_0\)、具有同一 \(\lambda\) 的光滑 Einstein 度量，都可经一个邻近恒等的微分同胚化为这样的代表。
+		\item 映射可以取为 \(I_0=\operatorname{Isom}(M,g_0)\) 等变；模微分同胚的光滑局部解空间，由有限维商 \(\kappa^{-1}(0)/I_0\) 描述。
+	\end{enumerate}
+	称 \(\kappa\) 为\term[zhangai yingshe]{障碍映射}[obstruction map]。这里 \(\kappa^{-1}(0)\) 只是有限维光滑映射的零集，不要求它为光滑流形。
+\end{theorem}
+\begin{proof}
+	对式\eqref{g3:eq:einstein-range-equation}应用带参数隐函数定理，得到唯一 \(v=\psi(k)\)。对 \(k\) 微分，\(Lk=0\) 给出 \(\mathrm D\psi(0)=0\)。定义
+	\begin{equation}\label{g3:eq:einstein-obstruction-map}
+		\kappa(k)=\Pi\mathcal F(g_0+k+\psi(k)).
+	\end{equation}
+	由 \(\Pi L=0\) 得 \(\mathrm D\kappa(0)=0\)。原方程正好由 \(Q\) 与 \(\Pi\) 两个分量同时为零组成，因而得到第一项的集合对应。反过来，从任意小零点取 \(k=\Pi(g-g_0)\)，隐函数定理的唯一性迫使余下部分等于 \(\psi(k)\)。
+
+	还须核对正则性与几何意义。事实上每个图上的度量，无论 \(\kappa(k)\) 是否为零，都满足 \(\mathcal F(g(k))=\kappa(k)\)。右端属于固定的光滑有限维空间。\(H^s\) 嵌入某个 \(C^{3,\alpha}\)，\(\mathcal F\) 的最高阶系数光滑依赖 \(x,g\)，所以\cref{g3:lem:elliptic-system-holder-bootstrap}给出 \(g(k)\) 光滑。对零点再用\cref{g3:thm:einstein-gauge-equivalence}，即得 Einstein 方程和散度条件。附近 Einstein 度量的代表存在性则由切片定理给出，这里输入的邻域可取 \(H^{s+1}\) 或更强的光滑邻域。
+
+	对 \(a\in I_0\)，拉回在背景 \(L^2\) 中为等距，且与 \(L\) 交换，故保持 \(\mathcal K,X_1,Y_1\)，并与 \(\Pi,Q\) 交换。可使用由 \(g_0\) 定义的 \(I_0\) 不变 Sobolev 范数，将定义域缩为不变小球。式\eqref{g3:eq:einstein-range-equation}等变，解的唯一性遂给出 \(\psi(a^*k)=a^*\psi(k)\) 和 \(\kappa(a^*k)=a^*\kappa(k)\)。\Cref{g3:prop:metric-slice-residual-isometries}说明代表之间剩余的等价恰为 \(I_0\) 作用。
+
+	上述对应也尊重局部拓扑。参数由连续的有限秩投影 \(\Pi\) 恢复，\(\psi\) 在 \(H^s\) 中连续。椭圆估计逐阶给出图上度量的高阶连续性：若 \(k_j\to k\)，则右端 \(\kappa(k_j)\) 在每阶都收敛；以已知低阶界对方程差使用内部估计，在稍小坐标片上逐阶升级，并由有限覆盖合并。故 \(g(k_j)\to g(k)\) 光滑。结合切片的连续性得到所述商空间的局部描述。
+\end{proof}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch25-ObstructionReduction}
+	\caption[Einstein 方程的有限维约化]{先解可逆的值域分量，得到图 \(v=\psi(k)\)；图上剩余的 \(\mathcal K\) 分量是障碍。最后的等距群商处理代表之间的剩余等价，与求解障碍方程是两个步骤。}
+	\label{g3:fig:einstein-obstruction-reduction}
+\end{figure}
+
+\begin{proposition}\label{g3:prop:einstein-second-order-obstruction}
+	在\cref{g3:thm:einstein-local-obstruction}的条件下，令 \(B=\mathrm D^2\mathcal F|_{g_0}\)。则
+	\begin{equation}\label{g3:eq:einstein-quadratic-obstruction}
+		\begin{aligned}
+		\psi(k)&=-\tfrac12GQ B[k,k]+O(\|k\|^3),\\
+		\kappa(k)&=\tfrac12\Pi B[k,k]+O(\|k\|^3).
+		\end{aligned}
+	\end{equation}
+	若一条二次可微的同常数 Einstein 度量曲线经规范固定后在零点的速度为 \(k\in\mathcal K\)，则 \(\Pi B[k,k]=0\)。
+\end{proposition}
+\begin{proof}
+	Taylor 展开给出 \(\mathcal F(g_0+h)=Lh+B[h,h]/2+O(\|h\|_{H^s}^3)\) 于 \(H^{s-2}\)。由 \(\psi(0)=\mathrm D\psi(0)=0\) 有 \(\psi(k)=O(\|k\|^2)\)。代入值域分量，得到
+	\(L\psi(k)+QB[k,k]/2=O(\|k\|^3)\)，用 \(G\) 得第一式；用 \(\Pi L=0\) 得第二式。对题设曲线，规范选择的 \(C^1\) 依赖已保证规范后核坐标 \(k(t)=tk+o(t)\)。由 \(\kappa(k(t))=0\) 以及第二式，除以 \(t^2\) 并令 \(t\to0\)，即得 \(\Pi B[k,k]=0\)。这里无需假定规范后曲线仍二次可微。
+\end{proof}
+
+因此二阶障碍可逐个用数值配对 \(\langle B[k,k],k_a\rangle_0\) 检验。二阶项消失仍可能留下三阶或更高阶障碍；只有整个 \(\kappa\) 消失，才得到由全部 \(k\) 参数化的解族。例如有限维方程 \((x,y)\mapsto(xy,y^2)\) 在原点线性化为零，但其零集只为 \(y=0\)，说明核的维数不能直接替代实际解集的维数。
+
+\ProseParagraphBreak
+
+若允许 Einstein 常数变化，令 \(\rho\) 为额外的实参数，将式\eqref{g3:eq:einstein-conserved-gauge}中的 \(\lambda\) 换成 \(\lambda+\rho\)。同一个核正交逆仍可解值域分量，得到
+\begin{equation}\label{g3:eq:einstein-variable-constant-model}
+	\psi(k,\rho),\qquad
+	\widetilde\kappa(k,\rho)=\Pi\mathcal F_{\lambda+\rho}
+	\bigl(g_0+k+\psi(k,\rho)\bigr).
+\end{equation}
+这是 \(\mathcal K\times\mathbb R\to\mathcal K\) 的有限维方程，其零点描述所有邻近 Einstein 常数。证明逐字采用带参数隐函数定理；守恒恒等式对每个常数 \(\lambda+\rho\) 都成立，所以规范消除也仍成立。具体地，
+\[
+	\partial_\rho\widetilde\kappa(0,0)
+	=\Pi\bigl(\tfrac{n-2}{2}g_0\bigr).
+\]
+若还要求体积为 \(V_0=\operatorname{Vol}_{g_0}(M)\)，就在此有限维系统中再加
+\[
+	\operatorname{Vol}_{g_0+k+\psi(k,\rho)}(M)=V_0.
+\]
+这给出固定体积、未预先固定 Einstein 常数的局部模型，仍须除以 \(I_0\)。当 \(\lambda\ne0\) 时，邻近的常数 \(\lambda'\) 同号，缩放 \((\lambda'/\lambda)g\) 将 \(\operatorname{Ric}_g=\lambda'g\) 化为常数 \(\lambda\)；当 \(\lambda=0\) 时不能作这个除法，应保留上面的参数方程。对固定 \(\lambda=0\) 的 Ricci 平坦解，常数缩放则直接提供唯一的单位体积代表。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

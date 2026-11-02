@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 8.5 交与嵌入的模型
 % 纲要位置：几何学计划纲要.md，第 5334 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,162 @@
 \section{交与嵌入的模型}
 \label{g5:sec:0805}
 
-待撰写
+前面的理论给出两类可直接计算的资料：把消解与另一个模张量，得到交中的 Tor；把极小消解与剩余域张量，得到 Betti 数与投射维数。本节在平面上的几个局部模型中实际求出这些资料，同时比较支集、交的长度和深度。固定一个域 \(k\)，主要使用
+\(R=k[x,y]_{(x,y)}\)，其极大理想为 \(\mathfrak n=(x,y)R\)。
 
 \subsection{横截和非横截的 Tor 对照}
 \label{g5:subsec:0805:01}
-待撰写
+
+在同一仿射空间中由理想 \(I,J\) 给出的两个闭子对象，其共同方程为 \(I+J\)。代数上有
+\[
+	(R/I)\otimes_R(R/J)\cong R/(I+J).
+\]
+第一节又从短正合列 \(0\to I\to R\to R/I\to0\) 得到
+\[
+	\operatorname{Tor}_1^R(R/I,R/J)
+	\cong\frac{I\cap J}{IJ}.
+\]
+右边比较“同时满足两个理想条件”与“由两个理想的乘积产生”的差异。更高次的 Tor 则需要继续追踪关系之间的关系。
+
+\begin{example}\label{g5:exm:transverse-axis-tor}
+	取 \(M=R/(x)\)、\(N=R/(y)\)。前者的自由消解为
+	\[
+		0\longrightarrow R\xrightarrow{x}R\longrightarrow M\longrightarrow0.
+	\]
+	与 \(N\) 张量后，正次数部分只有 \(N\xrightarrow{x}N\)。由于
+	\(N\cong k[x]_{(x)}\)，乘 \(x\) 单射，故
+	\[
+		\operatorname{Tor}_i^R(M,N)=0\quad(i>0),\qquad
+		M\otimes_RN\cong k.
+	\]
+	两条坐标轴在原点的切方向不同，且交的局部代数长度为一。这是横截相交的基本模型。
+\end{example}
+
+\begin{example}\label{g5:exm:tangent-curves-tor}
+	取 \(M=R/(y)\)、\(N=R/(y-x^r)\)，其中 \(r\geq2\)。两条曲线在原点的切线都是 \(y=0\)。用 \(M\) 的一步自由消解张量 \(N\)，所得微分为乘 \(y\)。在同构 \(N\cong k[x]_{(x)}\) 下，它就是乘 \(x^r\)，仍然单射。因此
+	\[
+		\operatorname{Tor}_i^R(M,N)=0\quad(i>0),\qquad
+		M\otimes_RN\cong k[x]_{(x)}/(x^r).
+	\]
+	这次交的局部代数长度为 \(r\)。相切已经反映在零次张量积的幂零结构和长度中，正次数 Tor 却全部消失。即使两条曲线本身光滑，Tor 的消失也不单独蕴含切空间意义的横截。
+\end{example}
+
+\begin{example}\label{g5:exm:self-intersection-tor}
+	取 \(M=N=R/(x)\)，即同一条直线与自身相交。把乘 \(x\) 的消解与 \(M\) 张量，微分变为零，故
+	\[
+		\operatorname{Tor}_0^R(M,M)\cong M,\qquad
+		\operatorname{Tor}_1^R(M,M)\cong M,\qquad
+		\operatorname{Tor}_i^R(M,M)=0\quad(i\geq2).
+	\]
+	这里共同方程只切掉一个方向，交仍是一条线。第一 Tor 保留了重复施加同一条方程所产生的关系；它也等于 \((x)/(x^2)\)。
+\end{example}
+
+三例分别给出长度一的孤立交、带高阶接触的孤立交和具有共同分支的交。把正次数 Tor 全部为零的条件称为两个模的\term[Tor-duli]{Tor 独立}[Tor-independence]。它描述张量消解的正合性；判断几何横截时还要使用切空间或微分条件。今后引入交数时，零次张量的长度与高次 Tor 的长度将各有作用。
 
 \subsection{超曲面与完全交}
 \label{g5:subsec:0805:02}
-待撰写
+
+设 \((A,\mathfrak m,k)\) 为 Noether 局部环。第三章已把正则序列给出的局部方程作为完全交模型。现在 Koszul 消解能同时给出它的 Betti 数、投射维数和相对于环境环的深度。
+
+\begin{proposition}\label{g5:prop:complete-intersection-homology}
+	设 \(f_1,\ldots,f_c\in\mathfrak m\) 为 \(A\) 正则序列，\(I=(f_1,\ldots,f_c)\)、\(B=A/I\)。则
+	\[
+		\beta_i^A(B)=\binom ci\quad(0\leq i\leq c),\qquad
+		\operatorname{pd}_A B=c,\qquad
+		\operatorname{depth}_A B=\operatorname{depth}A-c.
+	\]
+	此外，作为 \(B\) 模，
+	\[
+		\operatorname{Tor}_i^A(B,B)
+		\cong\bigwedge\nolimits_B^i B^c\quad(0\leq i\leq c),
+	\]
+	且 \(i>c\) 时为零。这里 \(B^c\) 的基来自所选方程的次序。
+\end{proposition}
+\begin{proof}
+	由\cref{g5:thm:regular-koszul-acyclic}，\(K_\bullet(f_1,\ldots,f_c;A)\) 是 \(B\) 的自由消解，第 \(i\) 项秩为 \(\binom ci\)。微分矩阵的元素是各 \(f_j\) 及其相反数，都属于 \(\mathfrak m\)，故它极小。其顶次项为 \(A\ne0\)，所以投射维数等于 \(c\)。深度等式由 Auslander–Buchsbaum 公式得到，也可逐次应用正则元的深度下降公式。
+
+	再与 \(B\) 张量，各 \(f_j\) 的像都为零，因此全部微分为零；第 \(i\) 项本身就是同调，得到最后的同构。
+\end{proof}
+
+当 \(c=1\) 时，非零因子 \(f\) 给出一个超曲面局部模型 \(A/(f)\)。它相对于环境环只有两项自由消解，深度下降一。若 \(f=x^2\in R\)，得到双直线 \(R/(x^2)\)：它含有非零幂零元 \(\overline x\)，但 \(y\) 仍为非零因子，深度恰为一。若取正则序列 \(x,y\)，则
+\[
+	0\longrightarrow R\xrightarrow{\binom{-y}{x}}R^2
+	\xrightarrow{(x\ \ y)}R\longrightarrow k\longrightarrow0
+\]
+是原点的极小自由消解，Betti 数为 \(1,2,1\)。
+
+\ProseParagraphBreak
+
+上述投射维数的下标 \(A\) 是必需的。例如 \(B=R/(x^2)\) 作为 \(R\) 模的投射维数为一，但作为 \(B\) 模它自由，投射维数为零；而 \(B/(x)\) 作为 \(B\) 模有各微分均为乘 \(\overline x\) 的无限极小自由消解。因为在 \(B\) 中 \(\operatorname{Ann}_B(\overline x)=(\overline x)\)，该无限复形确实正合，且每层都非零。环境环改变时，所要测量的关系也改变。
 
 \subsection{嵌入分支导致的深度下降}
 \label{g5:subsec:0805:03}
-待撰写
+
+第二章的嵌入点模型现在可以逐层计算。取
+\[
+	E=R/(x^2,xy).
+\]
+其支集仍是直线 \(V(x)\)，但非零元素 \(\overline x\) 同时被 \(x,y\) 杀死。因此 \(\operatorname{Hom}_R(k,E)\ne0\)，深度检测立即给出 \(\operatorname{depth}_R E=0\)。这个零维子模位于原点，正对应于嵌入的关联素理想 \(\mathfrak n\)。
+
+\begin{proposition}\label{g5:prop:embedded-point-resolution}
+	模 \(E\) 有极小自由消解
+	\[
+		0\longrightarrow R
+		\xrightarrow{\binom{-y}{x}}R^2
+		\xrightarrow{(x^2\ \ xy)}R
+		\longrightarrow E\longrightarrow0.
+	\]
+	故其 Betti 数为 \(1,2,1\)，投射维数为二，深度为零。
+\end{proposition}
+\begin{proof}
+	两个矩阵的乘积为零。若 \((a,b)\) 属于中间微分的核，则
+	\(x(xa+yb)=0\)。环 \(R\) 为整环，故 \(xa+yb=0\)。模去 \(x\) 后，\(yb=0\) 在 \(R/(x)\cong k[y]_{(y)}\) 中成立，因此 \(b=xc\)。代回得 \(a=-yc\)，所以核恰为列向量 \((-y,x)^{\mathsf T}\) 的像。左端映射单射，因为 \(xc=0\) 推出 \(c=0\)。最右端的像为定义理想，故整列正合。
+
+	所有矩阵元素都在 \(\mathfrak n\) 中，消解极小，因此 Betti 数及投射维数如述。环 \(R\) 的维数为二，且 \(x,y\) 正则，所以 \(\operatorname{depth}R=2\)；Auslander–Buchsbaum 公式也给出 \(\operatorname{depth}_R E=2-2=0\)。
+\end{proof}
+
+在泛点 \((x)\) 处局部化，\(y\) 成为单位，关系 \(xy=0\) 使 \(x=0\)，于是 \(E_{(x)}\cong(R/(x))_{(x)}\)。在闭点，子模 \(R\overline x\cong k\) 却保留下来；具体地有短正合列
+\[
+	0\longrightarrow k\xrightarrow{1\mapsto\overline x}
+	E\longrightarrow R/(x)\longrightarrow0.
+\]
+其中 \(\overline x\ne0\)，因为 \(x\in(x^2,xy)=x\mathfrak n\) 会在整环中推出 \(1\in\mathfrak n\)。这一列同时显示出直线部分和嵌入点部分。
+
+\ProseParagraphBreak
+
+与双直线 \(R/(x^2)\) 比较，二者都有非零幂零元和一维支集，但前者的 \(y\) 是非零因子，后者的 \(y\) 杀死 \(\overline x\)。使深度降到零的具体原因，是出现被整个极大理想杀死的非零元素。不能只凭“有幂零元”便断定深度下降到零。
 
 \subsection{同一支集的不同局部同调信息}
 \label{g5:subsec:0805:04}
-待撰写
+
+支集只回答模在哪些点非零。即使支集和零化理想都相同，深度与 Betti 数仍可能不同。取
+\[
+	P=R,\qquad Q=R\oplus k.
+\]
+二者的零化理想均为零，支集均为整个 \(\operatorname{Spec}R\)，在泛点的秩也都为一。可是 \(Q\) 中的第二个直和项使 \(\operatorname{Hom}_R(k,Q)\ne0\)，故
+\[
+	\operatorname{depth}_R P=2,\qquad
+	\operatorname{depth}_R Q=0.
+\]
+
+\ProseParagraphBreak
+
+把 \(k\) 的 Koszul 消解与只在零次有一项 \(R\) 的复形直和，得到 \(Q\) 的极小自由消解
+\[
+	0\longrightarrow R
+	\xrightarrow{\binom{-y}{x}}R^2
+	\xrightarrow{\left(\begin{smallmatrix}0&0\\ x&y\end{smallmatrix}\right)}
+	R^2\longrightarrow Q\longrightarrow0.
+\]
+增广为 \((a,b)\mapsto(a,\overline b)\)。因此
+\[
+	(\beta_0^R(P),\beta_1^R(P),\beta_2^R(P))=(1,0,0),
+	\qquad
+	(\beta_0^R(Q),\beta_1^R(Q),\beta_2^R(Q))=(2,2,1).
+\]
+后一模的所有额外关系都集中在闭点：若 \(\mathfrak p\ne\mathfrak n\)，可取 \(a\in\mathfrak n\setminus\mathfrak p\)；它在 \(R_{\mathfrak p}\) 中可逆却杀死 \(k\)，故 \(k_{\mathfrak p}=0\) 且 \(Q_{\mathfrak p}\cong R_{\mathfrak p}\)。
+
+\ProseParagraphBreak
+
+在闭点，\(Q\) 的局部维数为二而深度为零，因此它不满足 \(S_1\)。这个例子把三种资料分开：支集描述非零位置，泛秩描述稠密处的自由部分，局部同调则能发现某一点新增的生成元、关系与嵌入子模。下一章将用深度和消解讨论局部环的正则性及深度等于维数的情形，把这些计算组织成结构判据。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 13.5 Banach 微分与非线性隐函数方法
 % 纲要位置：几何学计划纲要.md，第 2642 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -19,29 +19,242 @@
 \section{Banach 微分与非线性隐函数方法}
 \label{g3:sec:1305}
 
-待撰写
+线性椭圆理论把核与余核集中到有限维空间。面对非线性方程，还要回答两个问题：线性化的逆怎样控制真实解，以及无法反演的有限维方向留下什么方程。本节先在一般 Banach 空间中建立微分和定量求解，再将满射与 Fredholm 两种线性化分别转化为局部参数和障碍映射。后续几何应用只需核对具体算子的函数空间、微分与估计。
 
 \subsection{Fréchet 微分、连续可微性与链式法则}
 \label{g3:subsec:1305:01}
-待撰写
+以下以实 Banach 空间为基本对象；复空间上的一般几何非线性映射也先按实空间微分。记 \(\mathcal L(X,Y)\) 为有界线性算子空间，赋予算子范数。它是 Banach 空间：算子范数 Cauchy 列在每个向量上收敛，逐点极限线性且有界，再取单位球上确界便得算子范数收敛。
+
+\begin{definition}\label{g3:def:frechet-derivative}
+	设 \(X,Y\) 为 Banach 空间，\(U\subset X\) 开、\(F:U\to Y\)，并取 \(x\in U\)。若存在 \(A\in\mathcal L(X,Y)\)，使
+	\[
+		F(x+h)=F(x)+Ah+R_x(h),\qquad
+		\frac{\|R_x(h)\|_Y}{\|h\|_X}\longrightarrow0,
+	\]
+	则称 \(F\) 在 \(x\) 处 Fréchet 可微，记 \(\mathrm DF(x)=A\)。若它处处可微，且 \(x\mapsto\mathrm DF(x)\) 在算子范数中连续，则称 \(F\in C^1(U,Y)\)。递归微分定义 \(C^r\)，其 \(r\) 阶微分取值于连续 \(r\) 重线性映射空间。
+\end{definition}
+\term[Frechet weifen]{Fréchet 微分}[Fréchet derivative]要求余项对所有趋零方向统一变小。\footnote{René Maurice Fréchet（1878--1973），法国数学家，研究抽象空间、点集拓扑与泛函分析。}导数的唯一性来自固定 \(v\)、令 \(h=tv\)：两个候选导数之差作用于 \(v\) 必为零。只在每个固定方向分别求导，尚未给出上述统一余项；这是把形式线性化用于函数空间时必须检查的条件。
+
+\begin{proposition}\label{g3:prop:banach-calculus}
+	设 \(X,Y,Z\) 为 Banach 空间，\(F\) 与 \(G\) 在相应开集上可微，且复合有定义，则 Fréchet 微分满足链式法则
+	\[
+		\mathrm D(G\circ F)(x)=\mathrm DG(F(x))\,\mathrm DF(x).
+	\]
+	若 \(F\in C^1(U,Y)\)，线段 \([x,x+h]\subset U\)，则
+	\begin{equation}\label{g3:eq:banach-fundamental-calculus}
+		F(x+h)-F(x)=\int_0^1\mathrm DF(x+th)h\,\mathrm dt.
+	\end{equation}
+	特别地，在凸集上 \(\sup\|\mathrm DF\|\le L\) 蕴含 \(F\) 为 \(L\)-Lipschitz。连续双线性映射满足乘积法则。
+\end{proposition}
+\begin{proof}
+	把 \(F(x+h)-F(x)=Ah+o(\|h\|)\) 代入 \(G\) 在 \(F(x)\) 处的展开。该增量为 \(O(\|h\|)\)，故第二个余项也是 \(o(\|h\|)\)，得到链式法则。
+
+	连续的 Banach 值函数在紧区间上一致连续，其 Riemann 和为 Cauchy 列；完备性定义积分，并给出 \(\|\int v\|\le\int\|v\|\)。对任意 \(\ell\in Y^*\)，一元微积分应用于 \(\ell(F(x+th))\)，得到式\eqref{g3:eq:banach-fundamental-calculus}两边经 \(\ell\) 后相等。第十一章的 Hahn--Banach 分离结论于是给出向量恒等式。取范数便得 Lipschitz 界。双线性映射 \(B\) 的展开中，额外项 \(B(h,k)\) 为 \(O(\|h\|\|k\|)\)，从而得到乘积法则。
+\end{proof}
+
+例如在一个 Banach 代数中，\(F(u)=u^2\) 的导数是 \(\mathrm DF(u)h=uh+hu\)，余项恰为 \(h^2\)。代数不交换时不能把它改写成 \(2uh\)。这说明线性化既要保留乘法次序，也要在实际目标范数中估计余项。
 
 \subsection{Banach 空间逆函数与隐函数定理的定量证明}
 \label{g3:subsec:1305:02}
-待撰写
+\begin{lemma}[压缩映射原理]\label{g3:lem:banach-contraction}
+	设 \(K\) 为非空完备度量空间，\(T:K\to K\) 满足
+	\(d(Tx,Ty)\le qd(x,y)\)，其中 \(0\le q<1\)。则 \(T\) 有唯一不动点 \(x_*\)，且从任意 \(x_0\in K\) 出发的迭代 \(x_{j+1}=T(x_j)\) 满足
+	\[
+		d(x_j,x_*)\le\frac{q^j}{1-q}d(x_1,x_0).
+	\]
+\end{lemma}
+\begin{proof}
+	逐次应用压缩性，得 \(d(x_{j+1},x_j)\le q^j d(x_1,x_0)\)。对相邻距离求和，几何级数使 \((x_j)\) 为 Cauchy 列，完备性给出极限 \(x_*\)。\(T\) 连续，所以 \(Tx_*=x_*\)；尾和给出误差界。若 \(y_*\) 也为不动点，则 \(d(x_*,y_*)\le qd(x_*,y_*)\)，故二者相同。
+\end{proof}
+
+\begin{theorem}[定量逆函数定理]\label{g3:thm:quantitative-banach-inverse}
+	设 \(X,Y\) 为 Banach 空间，\(F\in C^1(U,Y)\)，\(\overline B_r(x_0)\subset U\)，且 \(A=\mathrm DF(x_0):X\to Y\) 有有界逆。若
+	\begin{equation}\label{g3:eq:inverse-small-derivative}
+		\sup_{x\in\overline B_r(x_0)}
+		\|I-A^{-1}\mathrm DF(x)\|\le q<1,
+	\end{equation}
+	则 \(F\) 在该球上单射。每个满足
+	\(\|A^{-1}(y-F(x_0))\|<(1-q)r\) 的 \(y\)，在开球中有唯一原像 \(x=G(y)\)，并且
+	\[
+		\|G(y)-G(z)\|\le\frac{\|A^{-1}\|}{1-q}\|y-z\|,
+		\qquad \mathrm DG(y)=\mathrm DF(G(y))^{-1}.
+	\]
+	\(F\) 在 \(x_0\) 附近是 \(C^1\) 微分同胚；若 \(F\in C^r\)，\(1\le r\le\infty\)，则局部逆也属于 \(C^r\)。
+\end{theorem}
+\begin{proof}
+	令 \(T_y(x)=x-A^{-1}(F(x)-y)\)。由上一命题和式\eqref{g3:eq:inverse-small-derivative}，它在闭球中为 \(q\)-压缩，且
+	\[
+		\|T_y(x)-x_0\|
+		\le q\|x-x_0\|+\|A^{-1}(y-F(x_0))\|\le r.
+	\]
+	压缩原理给出唯一不动点，正是 \(F(x)=y\) 的解。严格的右端条件及同一估计使 \(\|x-x_0\|<r\)。对两个解相减，得
+	\[
+		(1-q)\|x-x'\|\le\|A^{-1}(F(x)-F(x'))\|;
+	\]
+	这同时证明单射与逆的 Lipschitz 界。
+
+	算子 \(A^{-1}\mathrm DF(x)=I-B_x\) 满足 \(\|B_x\|\le q\)。几何级数 \(\sum_{j\ge0}B_x^j\) 在算子范数中收敛，与 \(I-B_x\) 相乘后为恒等，所以每个 \(\mathrm DF(x)\) 可逆，逆范数至多为 \(\|A^{-1}\|/(1-q)\)。在每个内点重新取小闭球，重复不动点构造，可知 \(F(B_r(x_0))\) 为开集。
+
+	写 \(x=G(y)\)、\(h=G(y+k)-G(y)\)。可微性给出
+	\(k=\mathrm DF(x)h+o(\|h\|)\)。已得 \(\|h\|=O(\|k\|)\)，故
+	\(h=\mathrm DF(x)^{-1}k+o(\|k\|)\)，证明逆的导数公式。逆算子的连续性由
+	\[
+		B^{-1}-C^{-1}=B^{-1}(C-B)C^{-1}
+	\]
+	得到；因而 \(G\in C^1\)。进一步，在可逆算子组成的开集上，上式给出
+	\(\mathrm D(B\mapsto B^{-1})[H]=-B^{-1}HB^{-1}\)，余项为 \(O(\|H\|^2)\)。反复使用乘积法则，求逆映射光滑。由 \(\mathrm DG=(\mathrm DF\circ G)^{-1}\) 归纳即得高阶结论。
+\end{proof}
+
+连续性保证在 \(\mathrm DF(x_0)\) 有界可逆时，缩小 \(r\) 总能满足式\eqref{g3:eq:inverse-small-derivative}。条件中的逆范数与导数变化率决定可用邻域的大小，这比单说“在附近可解”保留了更多可用于参数族的信息。
+
+\begin{corollary}[带参数的隐函数定理]\label{g3:cor:banach-implicit-parameters}
+	设 \(Z,X,Y\) 为 Banach 空间，\(F\) 在 \((z_0,x_0)\) 附近为 \(C^r\) 映射，\(r\ge1\)，且 \(\mathrm D_xF(z_0,x_0):X\to Y\) 有有界逆。则在 \((z_0,F(z_0,x_0))\) 附近，方程 \(F(z,x)=y\) 有唯一的近邻解 \(x=\varphi(z,y)\)，且 \(\varphi\in C^r\)。
+\end{corollary}
+\begin{proof}
+	对 \(\mathcal F(z,x)=(z,F(z,x))\) 应用逆函数定理。其导数为块三角矩阵，对 \((\zeta,\eta)\) 的逆作用为
+	\((\zeta,(\mathrm D_xF)^{-1}(\eta-\mathrm D_zF\,\zeta))\)，确有有界逆。逆映射的第二分量就是 \(\varphi\)。微分恒等式还给出
+	\[
+		\mathrm D_z\varphi=-(\mathrm D_xF)^{-1}\mathrm D_zF,\qquad
+		\mathrm D_y\varphi=(\mathrm D_xF)^{-1},
+	\]
+	其中右边在 \((z,\varphi(z,y))\) 处取值。
+\end{proof}
 
 \subsection{分裂满射的零点集及有限维核的局部参数}
 \label{g3:subsec:1305:03}
-待撰写
+\begin{definition}\label{g3:def:split-surjection}
+	设 \(X,Y\) 为 Banach 空间。有界线性算子 \(L:X\to Y\) 称为\term[fenlie manshe]{分裂满射}[split surjection]，若存在有界线性 \(Q:Y\to X\) 使 \(LQ=I_Y\)。这里 \(Q\) 是一个有界右逆。
+\end{definition}
+由 \((QL)^2=QL\)，有界投影 \(QL\) 给出
+\[
+	X=\ker L\oplus X_1,\qquad X_1=\operatorname{im}Q.
+\]
+两部分均闭，投影分别为 \(I-QL\) 与 \(QL\)，而 \(L|_{X_1}\) 的逆为 \(Q\)。这个分解把保持方程不变的一阶方向与实际被方程控制的方向分开。
+
+\begin{theorem}\label{g3:thm:split-regular-level}
+	设 \(X,Y\) 为 Banach 空间，\(U\subset X\) 开，\(F:U\to Y\) 为 \(C^r\)，\(r\ge1\)，\(F(x_0)=y_0\)，且 \(L=\mathrm DF(x_0)\) 为分裂满射。按上式取 \(K=\ker L\)、\(X_1=\operatorname{im}Q\)。存在零点邻域上的 \(C^r\) 映射 \(\phi:K\to X_1\)，使 \(x_0\) 附近的水平集恰为
+	\[
+		F^{-1}(y_0)=\{x_0+k+\phi(k):k\in K\text{ 充分小}\},
+		\qquad\phi(0)=0,\quad\mathrm D\phi(0)=0.
+	\]
+	因此该水平集是以 \(K\) 为模型的局部 Banach 子流形；若 \(\dim K=N<\infty\)，它在此处有 \(N\) 个局部参数。
+\end{theorem}
+\begin{proof}
+	将 \(F(x_0+k+z)=y_0\) 看成对 \(z\in X_1\) 的方程。其 \(z\) 导数为有界同构 \(L|_{X_1}\)，带参数隐函数定理给出唯一 \(z=\phi(k)\)。每个近邻 \(x\) 都有唯一的 \(K\oplus X_1\) 分解，因此没有遗漏其他解。对等式在零点微分，得
+	\(L(k+\mathrm D\phi(0)k)=0\)。\(Lk=0\)，且 \(L|_{X_1}\) 单射，所以 \(\mathrm D\phi(0)=0\)。图的微分为 \(h\mapsto h+\mathrm D\phi(k)h\)，并把模型空间识别为该点线性化的核。
+\end{proof}
+
+在 Hilbert 空间中可以借助正交补寻找右逆；在一般 Banach 空间中则必须保留“有界补空间”条件。下一小节将证明，有有限维核且闭值域的 Fredholm 算子总有本节所需的分解。
+
+\begin{example}\label{g3:exm:banach-sphere-regular-level}
+	在实 Hilbert 空间 \(H\) 中，令 \(F(u)=\|u\|^2\)。当 \(\|u_0\|=1\) 时，\(\mathrm DF(u_0)h=2\langle h,u_0\rangle\)，右逆为 \(Q(t)=tu_0/2\)，核是 \(u_0^\perp\)。单位球面在 \(u_0\) 附近由
+	\[
+		k\longmapsto k+\sqrt{1-\|k\|^2}\,u_0,
+		\qquad k\in u_0^\perp,\quad\|k\|<1,
+	\]
+	参数化。有限维的球面图形在这里直接变成 Hilbert 空间中的水平集模型。
+\end{example}
 
 \subsection{Fredholm 线性化的核、像和余核分解}
 \label{g3:subsec:1305:04}
-待撰写
+要从一个连续线性双射取得有界逆，需要使用完备性。下面把这一功能明确补齐。
+
+\begin{lemma}[开映射定理]\label{g3:lem:banach-open-mapping}
+	Banach 空间之间的有界线性满射 \(L:X\to Y\) 是开映射。特别地，有界线性双射的逆也有界。
+\end{lemma}
+\begin{proof}
+	先证完备度量空间不能是可数个闭的无内点集合 \(F_j\) 之并。这是所需的 Baire 性质。\footnote{René-Louis Baire（1874--1932），法国数学家，研究函数分类、连续性与极限理论。}若这种覆盖成立，可依次选择非空闭球 \(\overline B_j\)，使它位于前一球的内部、避开 \(F_j\)，且半径小于 \(2^{-j}\)。选择可能，因为 \(F_j\) 闭且无内点。球心列为 Cauchy 列，其极限属于全部闭球，故不在任何 \(F_j\)，矛盾。
+
+	由满射性，\(Y=\bigcup_{j\ge1}\overline{L(jB_X)}\)，其中 \(B_X\) 为开单位球。Baire 性质给出某个闭集包含一个开球。将该球内的两个点相减，利用线性与闭包的相容性，再缩放，得到某个 \(c>0\) 满足
+	\[
+		B_Y(0,c)\subset\overline{L(B_X)}.
+	\]
+	现在去掉闭包。若 \(\|y\|<c/2\)，先选 \(\|x_1\|<1/2\)，使 \(\|y-Lx_1\|<c/4\)；再选 \(\|x_2\|<1/4\)，使新余项小于 \(c/8\)，如此继续。于是 \(\sum x_j\) 在 \(X\) 中收敛，和 \(x\) 满足 \(\|x\|<1\)、\(Lx=y\)。因此 \(B_Y(0,c/2)\subset L(B_X)\)。平移与缩放证明开映射；双射时，同一包含给出 \(\|L^{-1}y\|\le(2/c)\|y\|\)。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:banach-fredholm-splitting}
+	设 \(X,Y\) 为 Banach 空间，有界线性 \(L:X\to Y\) 为 Fredholm 算子，即 \(K=\ker L\) 有限维、\(R=\operatorname{im}L\) 闭且 \(Y/R\) 有限维。则存在有界投影及闭分解
+	\[
+		X=K\oplus X_1,\qquad Y=R\oplus C,
+	\]
+	其中 \(C\) 有限维，\(L_1=L|_{X_1}:X_1\to R\) 有有界逆 \(Q\)。若 \(R=Y\)，则 \(L\) 为分裂满射。
+\end{proposition}
+\begin{proof}
+	在 \(K\) 中选基 \(e_1,\ldots,e_a\)，其坐标泛函连续。由 Hahn--Banach 将它们延拓为 \(\ell_i\in X^*\)，则 \(\Pi_Kx=\sum_i\ell_i(x)e_i\) 是有界投影，取 \(X_1=\ker\Pi_K\)。因为 \(R\) 闭，商空间 \(Y/R\) 的商范数是范数；它有限维，所以任何线性坐标与截面都连续。选择一组商基的代表，张成 \(C\)，便得到连续截面 \(S:Y/R\to Y\) 及投影 \(\Pi_C=S\circ\pi\)。\(I-\Pi_C\) 投影到 \(R\)。\(L_1\) 为闭子空间间的有界双射，开映射定理使其逆有界。
+\end{proof}
+
+椭圆情形中的 \(K\) 和余核由光滑解表示，可以使用前面构造的正交投影；上述论证说明一般 Banach 线性化也有足够的分解。不同补空间会改变局部坐标与障碍映射的具体公式，方程的真实零点集合则由这些坐标互相对应。
 
 \subsection{Lyapunov–Schmidt 有限维约化与障碍映射}
 \label{g3:subsec:1305:05}
-待撰写
+\term[Lyapunov Schmidt yuehua]{Lyapunov--Schmidt 约化}[Lyapunov--Schmidt reduction]先解值域中的方程，再把剩余条件放到余核。\footnote{Aleksandr Mikhailovich Lyapunov（1857--1918），俄国数学家，研究动力系统稳定性、数学物理与概率论。Erhard Schmidt（1876--1959），德国数学家，研究积分方程与 Hilbert 空间理论。}
+
+\begin{theorem}\label{g3:thm:lyapunov-schmidt-reduction}
+	设 \(X,Y\) 为 Banach 空间，\(U\subset X\) 开，\(F:U\to Y\) 为 \(C^r\)，\(r\ge1\)，\(F(0)=0\)，且 \(L=\mathrm DF(0)\) 为 Fredholm 算子。取上一命题的分解，记 \(\Pi_R=I-\Pi_C\)。存在 \(C^r\) 映射 \(\psi:K\supset V\to X_1\)，满足
+	\[
+		\psi(0)=0,\quad\mathrm D\psi(0)=0,\qquad
+		\Pi_RF(k+\psi(k))=0.
+	\]
+	定义\term[zhangai yingshe]{障碍映射}[obstruction map]
+	\[
+		\kappa(k)=\Pi_CF(k+\psi(k))\in C.
+	\]
+	则零点附近，\(F(x)=0\) 与有限维方程 \(\kappa(k)=0\) 等价，具体对应为 \(x=k+\psi(k)\)。并且 \(\kappa(0)=0\)、\(\mathrm D\kappa(0)=0\)。
+\end{theorem}
+\begin{proof}
+	考虑 \(\Pi_RF(k+z)=0\)，未知量为 \(z\in X_1\)，参数为 \(k\in K\)。在原点对 \(z\) 的微分为 \(L_1\)，是有界同构，故隐函数定理给出唯一的 \(z=\psi(k)\)。对 \(k\) 微分并用 \(Lk=0\)，得到 \(\mathrm D\psi(0)=0\)。原方程等价于 \(R\) 与 \(C\) 两个投影同时为零；前者已经解出，后者正是 \(\kappa(k)=0\)。最后 \(\Pi_CL=0\)，所以 \(\mathrm D\kappa(0)=0\)。
+\end{proof}
+
+若 \(F\in C^2\)，则 \(\psi(k)=O(\|k\|^2)\)，而首个可能非零的障碍为
+\begin{equation}\label{g3:eq:quadratic-obstruction}
+	\kappa(k)=\frac12\Pi_C\mathrm D^2F(0)[k,k]+o(\|k\|^2).
+\end{equation}
+这是因为 \(\Pi_CL\psi=0\)，且把 \(k+O(\|k\|^2)\) 代入二阶项只改变更高阶余项。若 \(C=0\)，约化没有剩余方程，恢复正则水平集定理；若 \(C\ne0\)，即使线性化有非零核，也未必有经过原点的非平凡解族。
+
+\begin{example}\label{g3:exm:quadratic-obstruction-isolated}
+	设 \(H\) 为实 Hilbert 空间，\(F:\mathbb R\oplus H\to\mathbb R\oplus H\) 为 \(F(t,z)=(t^2,z)\)。在原点，核与余核各一维、指数为零，值域方程给出 \(z=0\)，障碍是 \(\kappa(t)=t^2\)。因此原点仍是孤立零点。改为 \(F_\lambda(t,z)=(t^2-\lambda,z)\)，则 \(\lambda<0\) 无实解，\(\lambda=0\) 有一个，\(\lambda>0\) 有两个近邻解。有限维障碍保留了线性化没有记录的分支信息。
+\end{example}
+
+参数化方程可把外参数与 \(k\) 一起放进隐函数定理，得到 \(\psi(k,a)\)、\(\kappa(k,a)\)。这里核、值域与余核首先取自固定基点的线性化；近邻方程的变化进入非线性项，而非在核维数可能跳跃时任意选择一族核基。
 
 \subsection{压缩映射、二次余项和参数一致性}
 \label{g3:subsec:1305:06}
-待撰写
+\begin{proposition}\label{g3:prop:uniform-quadratic-solve}
+	设 \(X,Y\) 为 Banach 空间，\(F:X\supset\overline B_r(0)\to Y\) 在该球邻域为 \(C^1\)，写
+	\[
+		F(x)=b+Ax+N(x),\qquad N(0)=0,
+	\]
+	其中 \(A\) 有有界逆，\(\|A^{-1}\|\le M\)，且
+	\[
+		\|\mathrm DN(x)\|\le L\|x\|\quad(\|x\|\le r).
+	\]
+	若 \(MLr\le1/2\)、\(M\|b\|\le r/2\)，则 \(F(x)=0\) 在闭球中有唯一解，并有
+	\[
+		\|x\|\le2M\|b\|,\qquad
+		\|x+A^{-1}b\|\le\frac{ML}{2}\|x\|^2.
+	\]
+	所有满足同一组 \(M,L,r\) 的方程共享这些结论。
+\end{proposition}
+\begin{proof}
+	令 \(T(x)=-A^{-1}b-A^{-1}N(x)\)。微积分公式给出
+	\[
+		\|N(x)\|\le\frac L2\|x\|^2,\qquad
+		\|N(x)-N(y)\|\le Lr\|x-y\|
+	\]
+	于闭球内成立。因此 \(T\) 的压缩常数至多为 \(1/2\)，且
+	\(\|T(x)\|\le r/2+MLr^2/2\le3r/4\)。压缩原理给出唯一解。由
+	\(\|x\|\le M\|b\|+MLr\|x\|/2\le M\|b\|+\|x\|/2\)
+	得到第一界；固定点恒等式及 \(N\) 的二次界给出第二界。
+\end{proof}
+
+若 \(F\in C^2\) 且 \(\|\mathrm D^2F\|\le L\)，取 \(A=\mathrm DF(0)\) 后便有上述导数界。一般 \(C^1\) 映射的余项只是 \(o(\|x\|)\)；二次余项需要导数具有局部 Lipschitz 控制，不能由一阶连续可微性自动获得。
+
+\ProseParagraphBreak
+
+参数一致性还给出解的连续依赖。若 \(T_a\) 都将同一闭球映入自身、压缩常数统一为 \(q<1\)，其不动点满足
+\[
+	\|x_a-x_b\|\le\frac1{1-q}
+	\|T_a(x_b)-T_b(x_b)\|.
+\]
+因此右侧关于参数的连续性、Lipschitz 性分别传给解。若方程对 Banach 参数为 \(C^r\)，则由带参数隐函数定理得到 \(C^r\) 依赖。实际应用中须同时控制线性逆的范数与非线性导数的变化率；当逆范数因小特征值趋于无穷时，可解邻域也可能缩小。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

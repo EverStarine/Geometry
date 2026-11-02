@@ -1,45 +1,383 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 5.1 完整群的李群结构与曲率
+% 纲要标题：### 5.1 完整群的 Lie 群结构与曲率
 % 纲要位置：几何学计划纲要.md，第 2264 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 平行运输的路径群
 % * 受限完整群和整体完整群
-% * 局部平行截面及浸入李群结构
+% * 局部平行截面及浸入 Lie 群结构
 % * 小矩形运输的二阶展开
 % * 沿路径搬运的曲率算子
-% * Ambrose–Singer 生成结论及其证明
+% * Ambrose–Singer 定理
 % 
 % 纲要内容结束
 
-\section{完整群的李群结构与曲率}
+\section{完整群的 Lie 群结构与曲率}
 \label{g3:sec:0501}
 
-待撰写
+沿闭曲线运输一个向量，回到起点时，它一般已经转向。把所有可能的返回变换放在一起，就得到完整群。曲率则测量一个很小的闭曲线所造成的首个非零变化。本节要把这两个尺度联系起来：先证明返回变换确实组成一个有限维 Lie 群，再证明它的 Lie 代数由沿路径搬回基点的曲率算子张成。
+
+\ProseParagraphBreak
+
+证明适用于比切丛稍广的对象。以下设 \(M\) 为连通、有限维、Hausdorff、第二可数且无边界的光滑流形，\(E\to M\) 为实秩 \(m\geq1\) 的光滑向量丛，带正定纤维内积和度量联络 \(\nabla^E\)。其曲率记为
+\[
+	R^E(X,Y)=\nabla^E_X\nabla^E_Y-\nabla^E_Y\nabla^E_X-\nabla^E_{[X,Y]}.
+\]
+它是纤维上的斜自伴算子。取 \(E=\mathrm TM\)、\(\nabla^E=\nabla\) 时，就得到黎曼度量的完整群；此时 \(R^E=R\)，符号与第三章一致。以下不需要底流形完备。
 
 \subsection{平行运输的路径群}
 \label{g3:subsec:0501:01}
-待撰写
+
+一条路径总指紧区间上的分片光滑路径。若 \(\gamma\) 从 \(p\) 到 \(q\)，记其平行运输为
+\[
+	P_\gamma:E_p\longrightarrow E_q.
+\]
+第一卷第15.2节的“平行移动”定理及运算规律已经证明：\(P_\gamma\) 存在、唯一，对具有共同有限分段的光滑路径族光滑依赖；若 \(\gamma*\eta\) 表示先走 \(\gamma\)、再走 \(\eta\)，而 \(\bar\gamma\) 表示反向路径，则
+\begin{equation}\label{g3:eq:holonomy-transport-laws}
+	P_{\gamma*\eta}=P_\eta P_\gamma,
+	\qquad P_{\bar\gamma}=P_\gamma^{-1}.
+\end{equation}
+这些结论来自局部线性方程 \(u'=-A(\dot\gamma)u\) 的存在唯一性和参数依赖，并允许插入常值路段。度量相容性又给出
+\[
+	\frac{\mathrm d}{\mathrm dt}\langle P_{\gamma|_{[0,t]}}v,P_{\gamma|_{[0,t]}}w\rangle_E=0,
+\]
+故每个 \(P_\gamma\) 都是线性等距。
+
+\ProseParagraphBreak
+
+固定基点 \(p\)。基点环路的拼接在参数化层面并不严格结合，但把保向重参数化、插入常值路段和插入或删除一段“走出后立即原路返回”视为等价后，就得到一个群：取乘法次序为先右因子、后左因子，常值环路为单位元，反向环路为逆。这里等价关系也对前后拼接封闭，所以群运算良定义。我们把这个商称为这里使用的路径群；平行运输由\eqref{g3:eq:holonomy-transport-laws}给出它到 \(\mathrm O(E_p)\) 的群同态。它保留路径的几何信息，比只保留同伦类的基本群更细。
+
+\begin{definition}\label{g3:def:holonomy-group}
+	在上述度量向量丛上，基点 \(p\) 处的\term[wanzhengqun]{完整群}[holonomy group]为
+	\begin{equation}\label{g3:eq:holonomy-group}
+		\operatorname{Hol}_p(E,\nabla^E)
+		=\{P_\gamma:\gamma\text{ 是以 }p\text{ 为基点的分片光滑环路}\}
+		\subseteq\mathrm O(E_p).
+	\end{equation}
+	简记为 \(\operatorname{Hol}_p\)。在 \(E=\mathrm TM\) 的情形，也写作 \(\operatorname{Hol}_p(M,g)\)。
+\end{definition}
+\symidx{\(\operatorname{Hol}_p\)}
+
+第一卷主丛语言中的“环路平行移动群”与这里的完整群描述同一返回现象。在选定 \(E_p\) 的一个正交标架后，上式成为 \(\mathrm O(m)\) 的子群；换标架只把它共轭。若 \(\alpha:p\to q\)，则绕行 \(\bar\alpha*\gamma*\alpha\) 给出
+\begin{equation}\label{g3:eq:holonomy-basepoint-change}
+	\operatorname{Hol}_q=P_\alpha\operatorname{Hol}_pP_\alpha^{-1}.
+\end{equation}
+这说明连通流形上完整群的共轭类型与基点无关，但具体算子仍作用于指定的纤维。
 
 \subsection{受限完整群和整体完整群}
 \label{g3:subsec:0501:02}
-待撰写
 
-\subsection{局部平行截面及浸入李群结构}
+\begin{definition}\label{g3:def:restricted-holonomy}
+	\term[shouxianwanzhengqun]{受限完整群}[restricted holonomy group]定义为
+	\[
+		\operatorname{Hol}_p^0
+		=\{P_\gamma:\gamma\text{ 在保持基点的连续同伦下可缩为常值环路}\}.
+	\]
+	这里 \(\gamma\) 本身仍要求分片光滑。相较之下，允许全部基点环路所得的 \(\operatorname{Hol}_p\) 也称整体完整群。
+\end{definition}
+\symidx{\(\operatorname{Hol}_p^0\)}
+
+上标 \(0\) 暂时只是记号；在建立适当的 Lie 群拓扑后，它才会被证明恰好是单位元连通分支。不能在此先把它解释为 \(\mathrm O(E_p)\) 的子空间拓扑下的连通分支。
+
+\begin{proposition}\label{g3:prop:restricted-holonomy-normal}
+	对连通光滑流形上的度量向量丛，\(\operatorname{Hol}_p^0\) 是 \(\operatorname{Hol}_p\) 的正规子群，且存在满同态
+	\[
+		\pi_1(M,p)\longrightarrow\operatorname{Hol}_p/\operatorname{Hol}_p^0.
+	\]
+	特别地，\(M\) 单连通时，两种完整群相同。
+\end{proposition}
+\begin{proof}
+	可缩环路的拼接与反向仍可缩；把可缩环路前后接上互为反向的固定路径，也仍可缩。因此\eqref{g3:eq:holonomy-transport-laws}证明子群性和正规性。若 \(\gamma,\eta\) 定端点同伦，则 \(\gamma*\bar\eta\) 可缩，所以 \(P_\eta^{-1}P_\gamma\in\operatorname{Hol}_p^0\)。因而 \(P_\gamma\) 的陪集只依赖 \([\gamma]\)。若基本群乘法采用先左后右的路径次序，就取 \([\gamma]\mapsto P_\gamma^{-1}\operatorname{Hol}_p^0\)，它由\eqref{g3:eq:holonomy-transport-laws}成为同态。
+
+	每条连续环路都可分成有限段，每段落在一个坐标球中，再以坐标线段代替；原段与新段在该球中定端点同伦。这给出同伦类的分片光滑代表，也说明以上映射定义在整个基本群上。满射性来自完整群的定义。
+\end{proof}
+
+命题说的是运输在商群中的类具有同伦不变性。一般曲率不为零时，同伦环路的实际运输可以不同。例如，一个小可缩环路本来就可能转动向量。
+
+\begin{example}\label{g3:exm:dense-flat-holonomy}
+	在 \(S^1=\mathbb R/(2\pi\mathbb Z)\) 上取平凡的秩二正交丛，令
+	\[
+		J=\begin{pmatrix}0&-1\\1&0\end{pmatrix},\qquad
+		\nabla^E=\mathrm d+\alpha J\,\mathrm d\theta,
+	\]
+	其中 \(\mathrm d\theta\) 是由覆盖实线上的角坐标微分下降的一形式。沿绕数为 \(k\) 的环路，平行方程直接给出
+	\[
+		P_\gamma=\exp(-2\pi k\alpha J).
+	\]
+	因此 \(\operatorname{Hol}_p^0=\{I\}\)，而整体完整群由一次绕行的旋转生成。若 \(\alpha\) 无理，这个循环子群在 \(\mathrm{SO}(2)\) 中稠密。其稠密性可由抽屉原理看出：\(0,\alpha,\ldots,N\alpha\) 的小数部分中有两项距离小于 \(1/N\)，故子群含有任意小的非零旋转；这类旋转的有限次幂能以任意精度逼近圆上的每一点。后面构造的 Lie 群拓扑使这个完整群成为可数离散群。
+\end{example}
+
+\subsection{局部平行截面及浸入 Lie 群结构}
 \label{g3:subsec:0501:03}
-待撰写
+
+在一个以 \(p\) 为坐标原点的星形坐标域内，把 \(E_p\) 的基沿坐标径向线运输，就得到光滑局部标架。这个标架沿所选径向线平行，却未必沿其他方向平行。若要求一个标架的全部截面在所有方向都平行，条件就变为曲率为零：必要性由曲率定义立刻得到，充分性是\cref{g3:lem:flat-connection-local-frame}。完整群研究的正是沿不同路径构造这些局部截面时，它们之间可能出现的转动。
+
+\ProseParagraphBreak
+
+下面把“改变环路所产生的方向”变成有限维空间。称 \(s\mapsto\gamma_s\) 为光滑环路族，是指参数在一个开区间内变化，\(\gamma_s(0)=\gamma_s(1)=p\)，而 \([0,1]\) 有一个不依赖 \(s\) 的有限分段，使 \((s,t)\mapsto\gamma_s(t)\) 在每一段上光滑并延至端点。允许的族也包括有限次拼接、反向及固定路径的前后连接。第一卷的平行移动定理保证
+\[
+	a(s)=P_{\gamma_s}
+\]
+是 \(\mathrm O(E_p)\) 中的光滑曲线。对多参数族采用相同定义。
+
+\begin{lemma}\label{g3:lem:contractible-loop-generators}
+	设 \(M\) 为连通光滑流形。任一可缩分片光滑基点环路的运输，可以写成有限个因子的乘积，每个因子来自一个形如 \(\alpha*\beta*\bar\alpha\) 的环路：\(\alpha\) 从 \(p\) 到某个 \(q\)，\(\beta\) 是以 \(q\) 为基点且完全位于一个凸坐标球中的环路。每个这样的因子都可以通过一条光滑环路族的运输从 \(I\) 连到它。
+\end{lemma}
+\begin{proof}
+	把可缩同伦写在一个闭正方形上，使一边是所给环路，其余三边恒为 \(p\)。由紧性，取足够细的有限矩形网格，使每个小格的像落在一个凸坐标球中，并把边界环路的分段点纳入网格。保留外边界路径；对每条内边，选择连接其两个端点的分片光滑路径，且使它留在所有相邻小格对应坐标球的交中。这样的选择存在：原来的连续边已经落在这个开交集内，用有限个小坐标球逐段代替即可。
+
+	现在每个小格的边界都是某一凸坐标球内的分片光滑环路。逐格扫过正方形，把已扫区域的边界路径换成加入一格后的边界路径；每一步的差是用一条网格路径从 \(p\) 引到该格顶点后，绕其边界再返回的环路。内部公共边以相反方向出现，运输逐对消去。有限次操作后，外边界的运输便写成这些带引路的小格环路运输的乘积。
+
+	设 \(x\) 是其中一个坐标球的坐标，\(\beta(0)=\beta(1)=q\)。用
+	\[
+		x(\beta_s(t))=x(q)+s\bigl(x(\beta(t))-x(q)\bigr),\qquad0\leq s\leq1,
+	\]
+	收缩 \(\beta\)。凸性保证其像留在坐标球中，分片光滑性及共同分段也保持。由于这族路径的像是球内的紧集，参数还可稍微延伸到 \([0,1]\) 的两侧。固定引路 \(\alpha\) 后，所得环路族在 \(s=0\) 的运输为 \(I\)，在 \(s=1\) 为所需因子。
+\end{proof}
+
+\begin{theorem}[完整群的 Lie 群结构]\label{g3:thm:holonomy-lie-group}
+	设 \(M\) 为连通、有限维、Hausdorff、第二可数且无边界的光滑流形，\((E,\langle\ ,\ \rangle_E,\nabla^E)\) 为有限秩度量向量丛。则 \(\operatorname{Hol}_p^0\) 有自然的连通浸入 Lie 子群结构；\(\operatorname{Hol}_p\) 有使其各个 \(\operatorname{Hol}_p^0\) 陪集为开集的 Lie 群结构，并且
+	\[
+		\bigl(\operatorname{Hol}_p\bigr)_{\mathrm{id}}=\operatorname{Hol}_p^0,
+		\qquad
+		\operatorname{Lie}(\operatorname{Hol}_p)=\operatorname{Lie}(\operatorname{Hol}_p^0)
+		\subseteq\mathfrak{so}(E_p).
+	\]
+	包含映射到 \(\mathrm O(E_p)\) 是光滑浸入。光滑环路族的运输对这里的 Lie 群结构光滑。
+\end{theorem}
+\begin{proof}
+	记 \(H=\operatorname{Hol}_p\)、\(H_0=\operatorname{Hol}_p^0\)，并在 \(\mathfrak{so}(E_p)\) 中定义
+	\[
+		\mathfrak k=\operatorname{span}_{\mathbb R}
+		\{a'(0):a(s)=P_{\gamma_s},\ a(0)=I\}.
+	\]
+	有限个这样的导数之和仍可由一个环路族实现：对相应运输曲线作乘积，并把各参数乘以所需实系数，乘积在零点的导数就是该线性组合。因此 \(\mathfrak k\) 中每个向量都有这种实现。若 \(a(0)=I\) 而 \(\gamma_0\) 本身不一定可缩，可把族改成 \(\gamma_s*\bar\gamma_0\)；其运输仍为 \(a(s)\)，并且每个环路可缩。这说明上述实现曲线均可取值于 \(H_0\)。
+
+	对任意 \(h\in H\)，用一个固定环路及其反向共轭整族路径，得到 \(h\mathfrak k h^{-1}=\mathfrak k\)。若 \(A,B\in\mathfrak k\)，取 \(a(0)=I\)、\(a'(0)=A\)，则 \(a(s)Ba(s)^{-1}\) 始终在 \(\mathfrak k\) 中。求导得
+	\[
+		[A,B]=\left.\frac{\mathrm d}{\mathrm ds}\right|_{s=0}a(s)Ba(s)^{-1}\in\mathfrak k.
+	\]
+	这里用到的闭性仅是有限维线性子空间 \(\mathfrak k\) 的闭性。于是 \(\mathfrak k\) 是 Lie 子代数。
+
+	第一卷第16.3节“Lie 子代数的积分”定理给出唯一的连通浸入 Lie 子群 \(K\subseteq\mathrm O(E_p)\)，其 Lie 代数为 \(\mathfrak k\)。具体地，\(K\) 是左不变分布
+	\[
+		D_g=\{gA:A\in\mathfrak k\}
+	\]
+	经过 \(I\) 的最大积分叶，带叶自身的拓扑。我们还要用该节“取值于叶的光滑映射”引理：一个连通参数域上的环境光滑映射，若微分处处取值于 \(D\)，其像就在一片叶内，并且对叶的流形结构光滑。这个事实在叶状坐标 \((u,v)\) 中很直接：\(\mathrm d(v\circ f)=0\) 使横向坐标局部恒定，故 \(f\) 局部取值于一张开叶片，叶片坐标就是 \(u\circ f\)。
+
+	对任意光滑环路族的运输 \(a(s)\)，固定 \(s_0\)，曲线 \(a(s_0)^{-1}a(s_0+t)\) 仍是一个环路族的运输且在 \(t=0\) 等于 \(I\)。所以
+	\begin{equation}\label{g3:eq:holonomy-family-logarithmic-derivative}
+		a(s)^{-1}a'(s)\in\mathfrak k.
+	\end{equation}
+	叶值映射引理说明：若 \(a(0)=I\)，则整条曲线在 \(K\) 中，且作为 \(K\) 中的曲线光滑。多参数族对每个参数方向都满足同一条件，也得到相同结论。结合\cref{g3:lem:contractible-loop-generators}，每个可缩环路的运输是这种曲线终值的有限乘积，故 \(H_0\subseteq K\)。
+
+	反过来，选 \(\mathfrak k\) 的基 \(A_1,\ldots,A_d\)，用取值于 \(H_0\) 的环路族运输 \(a_i(s)\) 实现 \(a_i(0)=I\)、\(a_i'(0)=A_i\)。刚才的论证已保证它们对 \(K\) 的拓扑光滑。映射
+	\[
+		(t^1,\ldots,t^d)\longmapsto a_1(t^1)\cdots a_d(t^d)
+	\]
+	在原点的微分是到 \(\mathrm T_IK=\mathfrak k\) 的同构。逆函数定理使其像包含 \(K\) 中单位元的一个开邻域，而整个像在 \(H_0\) 内。因此 \(H_0\) 是 \(K\) 的开子群；它的其他陪集也开，连通性迫使 \(H_0=K\)。\(d=0\) 时同样得到 \(H_0=\{I\}\)。
+
+	给 \(H\) 的每个左陪集 \(hK\) 赋予由左平移得到的 \(K\) 的流形结构，并把这些陪集取不交并。共轭映射 \(g\mapsto hgh^{-1}\) 保持 \(D\)，所以由叶值映射引理，它在 \(K\) 上是光滑自同构。在两个陪集上，群乘法可写成
+	\[
+		(ak)(b\ell)=ab\,(b^{-1}kb)\ell,
+		\qquad (ak)^{-1}=a^{-1}(ak^{-1}a^{-1}),
+	\]
+	故乘法与取逆都光滑；包含映射在各陪集上也是浸入。这份拓扑 Hausdorff，因为各个陪集是 Hausdorff 开流形，互异陪集本来就不相交。
+
+	还须验证第二可数性。连通第二可数流形的基本群可数，下面恢复所需理由。取可数个凸坐标球覆盖，在每球中选一点，在每两个球的非空交的每个连通分支中再选一点及通向两球所选点的路径。开集的连通分支至多可数，因为它们两两不交且每个都包含可数拓扑基中的一个元素；它们又由局部路径连通性而路径连通。任一环路可作有限分段，每段落在一个球中。利用交分支中的路径移动分段点，再利用每球的单连通性，把环路定端点同伦到有限条已选路径的拼接。加入基点所在球中的固定连接路径后，同伦类便由可数个字母的有限字表示，故至多可数。由\cref{g3:prop:restricted-holonomy-normal}，\(H/K\) 也至多可数。每个 \(K\) 陪集已有可数基，取它们的并就得到 \(H\) 的可数基。
+
+	最后，\(K\) 连通而各陪集开且闭，所以 \(K\) 恰为单位元连通分支。任意光滑环路族局部可由固定运输左移到 \(K\)，前面的叶值映射论证也证明其内在光滑性。
+\end{proof}
+
+这个证明区分了两个问题：先在正交群中寻找允许的切方向，再证明对应积分叶中的每个点都由实际环路产生。后一步使用环路族给出的局部坐标，因此所得是完整群本身，而不是其闭包。
+
+\begin{example}\label{g3:exm:nonclosed-restricted-holonomy}
+	受限完整群也未必在环境正交群中闭。取 \(M=\mathbb R^2\)、\(E=M\times\mathbb R^4\)，在全局正交标架中令
+	\[
+		B=\begin{pmatrix}J&0\\0&\alpha J\end{pmatrix},\qquad
+		\nabla^E=\mathrm d+Bx\,\mathrm dy,
+		\qquad \alpha\notin\mathbb Q,
+	\]
+	其中 \(J\) 如\cref{g3:exm:dense-flat-holonomy}。所有联络矩阵彼此交换，故
+	\[
+		P_\gamma=\exp\left(-B\oint_\gamma x\,\mathrm dy\right),\qquad
+		R^E=B\,\mathrm dx\wedge\mathrm dy.
+	\]
+	以原点为顶点的矩形及其反向绕行可使积分取任意实数，所以
+	\[
+		\operatorname{Hol}_0^0=\operatorname{Hol}_0=\{\exp(tB):t\in\mathbb R\}.
+	\]
+	环路族的积分 \(\oint x\,\mathrm dy\) 光滑依赖参数，且矩形面积可任意变化，因此上一定理构造的速度空间恰为 \(\mathbb RB\)。该参数化单射：\(t\in2\pi\mathbb Z\) 且 \(\alpha t\in2\pi\mathbb Z\) 只能同时在 \(t=0\) 成立。它的像在 \(\mathrm{SO}(2)\times\mathrm{SO}(2)\) 中稠密；固定第一角后取 \(t=\theta+2\pi k\)，第二角由无理旋转稠密性逼近任意给定角。因此完整群自身是一维 Lie 群，拓扑同 \(\mathbb R\)，闭包却是二维环面。这里给出的是度量向量丛联络的例子。
+\end{example}
 
 \subsection{小矩形运输的二阶展开}
 \label{g3:subsec:0501:04}
-待撰写
+
+曲率项的符号取决于绕行方向。我们固定先沿第一坐标正向、再沿第二坐标正向，随后沿两条反向边返回。与只令两条边同时缩短相比，把两边长度分别记为 \(s,t\) 能直接得到后面需要的一个参数导数。
+
+\begin{proposition}\label{g3:prop:small-rectangle-holonomy}
+	在度量向量丛的一个局部正交标架域内，取以 \(q\) 为原点的坐标。设 \(\dim M\geq2\)，令 \(L(s,t)\in\mathrm O(E_q)\) 为依次经过
+	\[
+		(0,0),\ (s,0),\ (s,t),\ (0,t),\ (0,0)
+	\]
+	的矩形边界运输，其余坐标为零。则 \(L\) 在 \((0,0)\) 附近光滑，且
+	\begin{align}
+		L(s,t)&=I-stR^E_q(\partial_1,\partial_2)
+		+st\,O(|s|+|t|),\label{g3:eq:small-rectangle-holonomy}\\
+		\partial_sL(0,t)&=-tR^E_q(\partial_1,\partial_2)+O(t^2).
+		\label{g3:eq:small-rectangle-first-variation}
+	\end{align}
+	余项用纤维算子范数衡量；\(s,t\) 都允许正、负或零值。
+\end{proposition}
+\begin{proof}
+	把四条边分别用固定的单位时间区间参数化，顶点对 \(s,t\) 光滑依赖，故平行方程的参数依赖给出 \(L\) 光滑。退化矩形只是往返路段，所以 \(L(s,0)=L(0,t)=I\)。逐分量两次应用微积分基本定理，得到
+	\[
+		L(s,t)-I=stC(s,t),\qquad
+		C(s,t)=\int_0^1\!\int_0^1
+		\partial_s\partial_tL(us,vt)\,\mathrm du\,\mathrm dv.
+	\]
+	因此 \(C\) 光滑，只需计算 \(C(0,0)\)。
+
+	设联络矩阵为 \(A=\sum A_i\,\mathrm dx^i\)。把标架右乘正交矩阵
+	\[
+		k(x)=\exp\left(-\sum_i x^iA_i(q)\right)
+	\]
+	后，变换公式 \(\widetilde A=k^{-1}Ak+k^{-1}\mathrm dk\) 给出 \(\widetilde A(q)=0\)。新旧标架在 \(q\) 相同，故 \(L\) 不变。以下省略波浪号。若 \(\delta=|s|+|t|\)，沿每条边的联络积分为 \(O(\delta^2)\)；运输积分方程的二次迭代项为 \(O(\delta^4)\)。把 \(A\) 在原点作一次 Taylor 展开，四条边各自运输的二次项依次为
+	\[
+		-\frac{s^2}{2}\partial_1A_1,\qquad
+		-st\partial_1A_2-\frac{t^2}{2}\partial_2A_2,\qquad
+		\frac{s^2}{2}\partial_1A_1+st\partial_2A_1,\qquad
+		\frac{t^2}{2}\partial_2A_2.
+	\]
+	这里各偏导均在 \(q\) 取值。乘起四个运输矩阵时，二次项直接相加，其余项为 \(O(\delta^3)\)。故混合二阶项为
+	\[
+		-st(\partial_1A_2-\partial_2A_1)(q)
+		=-stR^E_q(\partial_1,\partial_2),
+	\]
+	最后用到 \(R^E=\mathrm dA+A\wedge A\) 及 \(A(q)=0\)。于是 \(C(0,0)=-R^E_q(\partial_1,\partial_2)\)。\(C\) 光滑便给出 \(C(s,t)=C(0,0)+O(|s|+|t|)\)，从而得到第一式；对恒等式 \(L-I=stC\) 求 \(s\) 导数并令 \(s=0\)，又得第二式。
+\end{proof}
+
+这也恢复了第一卷第18.3节小方环公式在向量丛中的形式。它表示曲率是单位面积所产生的无穷小旋转，负号来自既定的绕行方向和平行方程。若要把曲率证明为完整群 Lie 代数中的元素，\eqref{g3:eq:small-rectangle-first-variation}比单独的 \(L(\varepsilon,\varepsilon)\) 更方便：固定一条边后，另一条边的变化已经是一条在单位元出发的光滑群曲线。
 
 \subsection{沿路径搬运的曲率算子}
 \label{g3:subsec:0501:05}
-待撰写
 
-\subsection{Ambrose–Singer 生成结论及其证明}
+不同点的曲率作用在不同纤维上，不能直接相加。若 \(\gamma:p\to q\)，就用平行运输把 \(q\) 处的曲率变回 \(E_p\) 的算子：
+\begin{equation}\label{g3:eq:transported-curvature}
+	\mathcal R_\gamma(X,Y)=P_\gamma^{-1}R^E_q(X,Y)P_\gamma,
+	\qquad X,Y\in\mathrm T_qM.
+\end{equation}
+下面的交换图说明了输入和输出怎样比较：
+\[
+	\begin{tikzcd}[column sep=large]
+		E_p \arrow[r,"P_\gamma"] \arrow[d,"{\mathcal R_\gamma(X,Y)}"']
+		& E_q \arrow[d,"{R^E_q(X,Y)}"]\\
+		E_p \arrow[r,"P_\gamma"'] & E_q.
+	\end{tikzcd}
+\]
+路径 \(\gamma\) 的选择是数据的一部分。同一个终点，用不同路径搬回的算子可能不同。定义有限维线性空间
+\begin{equation}\label{g3:eq:transported-curvature-span}
+	\mathfrak r_p=\operatorname{span}_{\mathbb R}
+	\{P_\gamma^{-1}R^E_q(X,Y)P_\gamma:
+	\gamma:p\to q,\ X,Y\in\mathrm T_qM\}
+	\subseteq\mathfrak{so}(E_p).
+\end{equation}
+在基点前接一个环路，可知 \(\mathfrak r_p\) 在 \(\operatorname{Hol}_p\) 的共轭作用下不变。此时还没有假定它对括号封闭。
+
+\ProseParagraphBreak
+
+曲率沿整条路径的贡献由运输变分公式表达。第一卷第18.3节在主丛上证明过这一公式；这里把固定端点的向量丛版本完整写出，便于直接看出所有被积算子都属于 \(\mathfrak r_p\)。
+
+\begin{proposition}\label{g3:prop:holonomy-variation}
+	设 \(\Gamma(s,t)\) 为上述具有共同有限分段的光滑基点环路族，\(\Gamma(s,0)=\Gamma(s,1)=p\)。记
+	\[
+		T=\partial_t\Gamma,\qquad V=\partial_s\Gamma,\qquad
+		U(s,t)=P_{\Gamma(s,\cdot)|_{[0,t]}},\qquad a(s)=U(s,1).
+	\]
+	则
+	\begin{equation}\label{g3:eq:holonomy-variation}
+		a(s)^{-1}a'(s)
+		=\int_0^1 U(s,t)^{-1}R^E_{\Gamma(s,t)}(T,V)U(s,t)\,\mathrm dt.
+	\end{equation}
+	积分按各光滑段相加，取值于固定的 \(\operatorname{End}(E_p)\)。特别地，左边属于 \(\mathfrak r_p\)。
+\end{proposition}
+\begin{proof}
+	固定 \(v\in E_p\)，令 \(Z(s,t)=U(s,t)v\)，视为拉回丛 \(\Gamma^*E\) 的截面。记其沿参数方向的协变导数为 \(D_s,D_t\)。平行性给出 \(D_tZ=0\)。拉回联络的曲率恒等式为
+	\[
+		D_tD_sZ-D_sD_tZ=R^E(T,V)Z.
+	\]
+	这个式子不要求 \(\Gamma\) 为浸入：在任一局部标架内写 \(D_t=\partial_t+A(T)\)、\(D_s=\partial_s+A(V)\)，交换两算子后正是 \((\mathrm dA+A\wedge A)(T,V)\)。因此
+	\[
+		\frac{\mathrm d}{\mathrm dt}\bigl(U(s,t)^{-1}D_sZ(s,t)\bigr)
+		=U(s,t)^{-1}R^E(T,V)U(s,t)v.
+	\]
+	起点固定且 \(Z(s,0)=v\)，故初值项为零。终点也固定，故 \(D_sZ(s,1)=a'(s)v\)。积分便得到所需公式作用于 \(v\) 的结果。
+
+	若有分段点，则 \(Z(s,t)\) 从两侧的取值相同，并且作为 \(s\) 的光滑截面相同，所以 \(D_sZ\) 的两侧端值也相同。逐段积分时内部端点项抵消，公式仍成立。每个被积算子都是沿路径初段搬回的曲率；\(\mathfrak r_p\) 是有限维线性子空间，积分的 Riemann 和及其极限均在其中。
+\end{proof}
+
+输入次序在这里是 \((T,V)\)：先沿路径的方向，再沿改变路径的方向。将它们互换会改变符号。公式还说明，有限环路的运输通常由一族彼此不交换的曲率算子共同决定，不能把它直接写成未作运输比较的曲率面积积分的指数。
+
+\subsection{Ambrose–Singer 定理}
 \label{g3:subsec:0501:06}
-待撰写
+
+Ambrose\footnote{Warren Ambrose（1914--1995），美国数学家，研究微分几何、偏微分方程和概率论。}与 Singer\footnote{Isadore Manuel Singer（1924--2021），美国数学家，研究微分几何和全局分析，并参与建立椭圆算子的指标理论。}的\term[ambrose singer dingli]{Ambrose--Singer 定理}[Ambrose--Singer holonomy theorem]把前面的两个方向合在一起：小矩形产生曲率方向，而一切环路族的变化都由搬运后的曲率给出。
+
+\begin{theorem}[Ambrose--Singer]\label{g3:thm:ambrose-singer}
+	设 \(M\) 为连通、有限维、Hausdorff、第二可数且无边界的光滑流形，\((E,\langle\ ,\ \rangle_E,\nabla^E)\) 为有限秩度量向量丛。给完整群赋予\cref{g3:thm:holonomy-lie-group}的浸入 Lie 群结构，则
+	\begin{equation}\label{g3:eq:ambrose-singer}
+		\mathfrak{hol}_p
+		:=\operatorname{Lie}(\operatorname{Hol}_p^0)
+		=\operatorname{span}_{\mathbb R}
+		\{P_\gamma^{-1}R^E_q(X,Y)P_\gamma:
+		\gamma:p\to q,\ X,Y\in\mathrm T_qM\}.
+	\end{equation}
+	特别地，右侧的线性张成已经是 Lie 子代数。
+\end{theorem}
+\symidx{\(\mathfrak{hol}_p\)}
+\begin{proof}
+	沿用完整群结构定理中的 \(\mathfrak k\)，已知它等于 \(\mathfrak{hol}_p\)。先取其一个生成方向 \(a'(0)\)，其中 \(a(s)\) 来自光滑环路族且 \(a(0)=I\)。由\cref{g3:prop:holonomy-variation}，
+	\[
+		a'(0)=\int_0^1U(0,t)^{-1}R^E(T,V)U(0,t)\,\mathrm dt\in\mathfrak r_p.
+	\]
+	所以 \(\mathfrak k\subseteq\mathfrak r_p\)。
+
+	反过来，固定 \(\gamma:p\to q\)。先取 \(q\) 处两个坐标基向量 \(\partial_i,\partial_j\)。在对应坐标平面内作\cref{g3:prop:small-rectangle-holonomy}的矩形，记其运输为 \(L_q(s,t)\)。沿 \(\gamma\) 出发、绕矩形、再沿 \(\bar\gamma\) 返回的运输为
+	\[
+		b_t(s)=P_\gamma^{-1}L_q(s,t)P_\gamma.
+	\]
+	对每个固定的小 \(t\)，它是满足 \(b_t(0)=I\) 的光滑环路族运输，故 \(b_t'(0)\in\mathfrak k\)。当 \(t\ne0\) 时，\eqref{g3:eq:small-rectangle-first-variation}给出
+	\[
+		\frac{b_t'(0)}t
+		=-P_\gamma^{-1}R^E_q(\partial_i,\partial_j)P_\gamma+O(t).
+	\]
+	让 \(t\to0\)，利用有限维线性子空间 \(\mathfrak k\) 的闭性，得到右边主项属于 \(\mathfrak k\)。任意 \(X,Y\) 的情形由双线性推出，所以 \(\mathfrak r_p\subseteq\mathfrak k\)。当 \(\dim M\leq1\) 时曲率二形式恒为零，第一步已给出 \(\mathfrak k=0\)，结论同样成立。
+\end{proof}
+
+证明中的极限始终在有限维向量空间 \(\mathfrak{so}(E_p)\) 内进行，没有用到完整群在正交群中闭。定理中的全部路径也有实质作用：只看 \(R^E_p\)，一般不足以看见其他位置所产生的旋转。下一节将把这个 Lie 代数对张量的作用转成平行结构。
+
+\begin{corollary}\label{g3:cor:flat-restricted-holonomy}
+	连通光滑流形上的度量联络平坦，当且仅当一个、从而每个基点的受限完整群为 \(\{I\}\)。若底流形还单连通，则这又等价于整体完整群为 \(\{I\}\)。
+\end{corollary}
+\begin{proof}
+	平坦时\eqref{g3:eq:ambrose-singer}给出 \(\mathfrak{hol}_p=0\)，而受限完整群连通，所以它只有单位元。反过来，若受限完整群平凡，则所有搬回的曲率均为零；任取到 \(q\) 的路径并用运输可逆性，得到 \(R^E_q=0\)。单连通情形再用\cref{g3:prop:restricted-holonomy-normal}。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:parallel-curvature-holonomy}
+	设 \((M,g)\) 为连通光滑黎曼流形。若 \(\nabla R=0\)，则
+	\[
+		\mathfrak{hol}_p(M,g)
+		=\operatorname{span}_{\mathbb R}\{R_p(u,v):u,v\in\mathrm T_pM\}.
+	\]
+\end{corollary}
+\begin{proof}
+	沿任意 \(\gamma:p\to q\) 平行运输 \(u,v,w\)。由 \(\nabla R=0\)，\(R(P_\gamma u,P_\gamma v)P_\gamma w\) 也沿路径平行，故
+	\[
+		P_\gamma^{-1}R_q(P_\gamma u,P_\gamma v)P_\gamma=R_p(u,v).
+	\]
+	因为 \(P_\gamma\) 满射，\eqref{g3:eq:ambrose-singer}中的每个生成元都化为基点曲率算子；反向包含取常值路径即可。
+\end{proof}
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

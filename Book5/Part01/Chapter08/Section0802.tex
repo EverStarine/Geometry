@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 8.2 正则序列和 Koszul
 % 纲要位置：几何学计划纲要.md，第 5311 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,350 @@
 \section{正则序列和 Koszul}
 \label{g5:sec:0802}
 
-待撰写
+一个方程 \(x\) 在模 \(M\) 上没有零因子，意味着乘法映射 \(M\xrightarrow{x}M\) 单射。增加第二个方程时，应该在除去第一个方程后的商模上检查同一条件。Koszul 复形把这串逐次检查合成一个有限复形：一次项记录方程，二次项记录方程间的交换关系，更高项继续记录这些关系之间的相容性。正则序列使正次数上的同调全部消失；在局部 Noether 环的有限模上，反过来只检查第一同调就足够。
 
 \subsection{逐次非零因子及末端非零条件}
 \label{g5:subsec:0802:01}
-待撰写
+
+第三章已在环上定义正则序列，见\subsecref{g5:subsec:0304:03}。现在将逐次乘法的条件用于一个指定的模；同一元素可能在这个模上没有零因子，却在底环上有零因子。
+
+\begin{definition}\label{g5:def:module-regular-sequence}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模。元素 \(x\in A\) 称为 \(M\) 上的非零因子，若乘法映射 \(M\xrightarrow{x}M\) 单射。有限序列 \(x_1,\ldots,x_r\in A\) 称为 \(M\) 正则序列，若：
+	\begin{enumerate}
+		\item 对每个 \(1\leq j\leq r\)，乘以 \(x_j\) 在
+		\[
+			M_{j-1}=M/(x_1,\ldots,x_{j-1})M
+		\]
+		上单射；
+		\item 末端商模 \(M_r=M/(x_1,\ldots,x_r)M\) 非零。
+	\end{enumerate}
+	\(M=A\) 时称为 \(A\) 正则序列，或环上的正则序列。空序列在 \(M\ne0\) 时也按此定义为正则序列。
+\end{definition}
+
+末端条件保证每一步仍有非零对象可供下一步研究。它不能只从逐次单射推出。例如在 \(\mathbb Z\) 上，乘以 \(2\) 单射，乘以 \(3\) 在 \(\mathbb Z/2\mathbb Z\) 上也单射，但 \(\mathbb Z/(2,3)=0\)，所以 \(2,3\) 不构成这里的正则序列。定义及末端条件可对照\cite[第16节开头，第123页]{Matsumura1989}。
+
+\begin{proposition}\label{g5:prop:regular-sequence-terminal-quotient}
+	设 \((A,\mathfrak m)\) 为交换含幺局部环，\(M\ne0\) 为有限生成 \(A\) 模，且 \(x_1,\ldots,x_r\in\mathfrak m\)。则
+	\[
+		M/(x_1,\ldots,x_r)M\ne0.
+	\]
+	因此在这些条件下，正则性只需逐次检查非零因子条件。
+\end{proposition}
+\begin{proof}
+	若末端商为零，则
+	\(M=(x_1,\ldots,x_r)M\subseteq\mathfrak mM\subseteq M\)，所以 \(\mathfrak mM=M\)。由\cref{g5:thm:nakayama-local}得到 \(M=0\)，与假设矛盾。
+\end{proof}
+
+每个正则序列的前段仍正则，删去前段后留下的序列则在相应商模上正则。这由逐次条件直接得到；各中间商都满射到非零的末端商，故不会提前变为零。在多项式环 \(k[X_1,\ldots,X_n]\) 中，\(X_1,\ldots,X_r\)、\(r\leq n\)，便是基本例子：每次取商后仍是剩余变量的多项式环，下一变量的乘法单射，末端商也非零。
 
 \subsection{外代数上的微分}
 \label{g5:subsec:0802:02}
-待撰写
+
+设 \(E=A^r\)，基为 \(e_1,\ldots,e_r\)。其\term[waidaishu]{外代数}[exterior algebra]记为 \(\bigwedge_A E\)。这里可以直接使用自由基描述：\(\bigwedge_A^iE\) 是以
+\[
+	e_{j_1}\wedge\cdots\wedge e_{j_i},
+	\qquad 1\leq j_1<\cdots<j_i\leq r,
+\]
+为基的自由模，秩为 \(\binom ri\)。规定 \(\bigwedge_A^0E=A\)，并在 \(i<0\) 或 \(i>r\) 时取零。乘法由并列楔积、交换相邻不同基向量改变符号、出现重复基向量时取零来定义，再作多重线性延拓。这些规则给出结合乘法，并满足
+\[
+	e_i\wedge e_j=-e_j\wedge e_i,
+	\qquad e_i\wedge e_i=0.
+\]
+在特征二时也必须保留第二条规则；仅有第一条不能推出重复项为零。
+
+\begin{definition}\label{g5:def:koszul-complex}
+	设 \(A\) 为交换含幺环，\(\mathbf x=(x_1,\ldots,x_r)\in A^r\)，\(M\) 为 \(A\) 模。取 \(E=A^r\)，定义
+	\[
+		K_i(\mathbf x;M)=\bigwedge_A^iE\otimes_A M.
+	\]
+	在递增下标的基楔积上，令
+	\begin{equation}\label{g5:eq:koszul-differential}
+		\begin{aligned}
+		&\mathrm d_i(e_{j_1}\wedge\cdots\wedge e_{j_i}\otimes m)\\
+		&\qquad=\sum_{s=1}^i(-1)^{s-1}
+		 e_{j_1}\wedge\cdots\wedge\widehat{e_{j_s}}
+		 \wedge\cdots\wedge e_{j_i}\otimes x_{j_s}m.
+		\end{aligned}
+	\end{equation}
+	其中帽号表示删去该因子，\(\mathrm d_0=0\)。由这些微分构成的链复形称为\term[Koszulfuxing]{Koszul 复形}[Koszul complex]，记为 \(K_\bullet(\mathbf x;M)\)。特别地，\(K_\bullet(\mathbf x;A)\) 的各项均为有限自由 \(A\) 模。
+\end{definition}
+
+这个复形以 Jean-Louis Koszul 命名。\footnote{Jean-Louis Koszul（1921--2018），法国数学家，研究 Lie 代数的同调与上同调，并对同调代数的发展作出重要贡献。}微分把一个记录方程的基向量换成相应系数 \(x_j\)，符号则使两种删除顺序相互抵消。
+
+\begin{proposition}\label{g5:prop:koszul-differential-square}
+	设 \(A\) 为交换含幺环，\(\mathbf x\in A^r\)，\(M\) 为 \(A\) 模。上面的微分满足 \(\mathrm d_{i-1}\mathrm d_i=0\)。若记
+	\[
+		H_i(\mathbf x;M)=H_i\bigl(K_\bullet(\mathbf x;M)\bigr),
+	\]
+	则 \(H_0(\mathbf x;M)=M/(x_1,\ldots,x_r)M\)。
+\end{proposition}
+\begin{proof}
+	在一个基楔积上连续使用两次微分。固定原楔积中第 \(p\)、\(q\) 个因子，\(p<q\)。先删第 \(q\) 个、再删第 \(p\) 个，符号为 \((-1)^{p+q-2}\)；先删第 \(p\) 个以后，原第 \(q\) 个因子的位置变为 \(q-1\)，所以另一顺序的符号为 \((-1)^{p+q-3}\)。两项留下相同的楔积，系数分别为 \(x_{j_p}x_{j_q}\) 与 \(x_{j_q}x_{j_p}\)，由交换性相等，而符号相反。因此每一对删除项都抵消，得到 \(\mathrm d^2=0\)。
+
+	又因 \(K_0=M\)，且 \(\mathrm d_1(e_j\otimes m)=x_jm\)，\(\mathrm d_1\) 的像就是 \(\sum_jx_jM\)，所以零次同调为所述商模。
+\end{proof}
+
+例如，单个元素的复形在次数 \(1,0\) 上为
+\[
+	0\longrightarrow M\xrightarrow{x_1}M\longrightarrow0,
+\]
+所以 \(H_1(x_1;M)=\{m\in M:x_1m=0\}\)。两个元素时，依次以 \(e_1\wedge e_2\)、\(e_1,e_2\)、\(1\) 作为外代数基，复形为
+\[
+	0\longrightarrow M
+	\xrightarrow{\ m\mapsto(-x_2m,x_1m)\ }M^2
+	\xrightarrow{\ (u,v)\mapsto x_1u+x_2v\ }M
+	\longrightarrow0.
+\]
+因此第一同调测量关系 \(x_1u+x_2v=0\) 是否都来自显式的交换关系 \((-x_2m,x_1m)\)。定义和这些低次形式可对照\cite[第16节，第127—128页]{Matsumura1989}。
+
+\begin{proposition}\label{g5:prop:koszul-null-homotopy}
+	设 \(A\) 为交换含幺环，\(\mathbf x=(x_1,\ldots,x_r)\)，\(M\) 为 \(A\) 模。对每个 \(j\)，乘以 \(x_j\) 在 \(K_\bullet(\mathbf x;M)\) 上与零链同伦。因而
+	\[
+		(x_1,\ldots,x_r)H_i(\mathbf x;M)=0
+		\qquad\text{对所有 }i.
+	\]
+\end{proposition}
+\begin{proof}
+	由微分的定义，在纯楔积上按因子来自前段或后段分别求和，可得分次乘法公式
+	\[
+		\mathrm d(\omega\wedge\eta)
+		=\mathrm d\omega\wedge\eta
+		+(-1)^{\deg\omega}\omega\wedge\mathrm d\eta.
+	\]
+	取 \(\omega=e_j\)，并张量 \(M\)，便得到
+	\[
+		\mathrm d(e_j\wedge v)=x_jv-e_j\wedge\mathrm d v.
+	\]
+	所以次数增加一的映射 \(h_j(v)=e_j\wedge v\) 满足
+	\(\mathrm d h_j+h_j\mathrm d=x_j\operatorname{id}\)，正是所求链同伦。对循环元 \(v\)，有 \(x_jv=\mathrm d h_j(v)\)，故乘以 \(x_j\) 在同调上为零。
+\end{proof}
+
+若某个 \(x_j\) 为单位，将上述同伦除以 \(x_j\)，便知恒等映射与零同伦，全部同调连同 \(H_0\) 都为零。但此时末端商为零，序列不正则。因此同调判别必须同时注意末端非零条件。
 
 \subsection{正则序列给出消解}
 \label{g5:subsec:0802:03}
-待撰写
+
+每增加一个元素，Koszul 复形都会由较短复形的两份副本组成。它们之间的乘法映射给出一个长正合列，既能证明正则序列的充分性，也将用于下一小节的反向判别。
+
+\begin{lemma}\label{g5:lem:koszul-mapping-cone}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模，\(r\geq1\)，并记
+	\(\mathbf x'=(x_1,\ldots,x_{r-1})\)、\(x=x_r\)、\(C_\bullet=K_\bullet(\mathbf x';M)\)。则存在自然的同调长正合列
+	\begin{equation}\label{g5:eq:koszul-long-exact}
+		\begin{aligned}
+		\cdots\longrightarrow H_i(C)&\xrightarrow{x}H_i(C)
+		\longrightarrow H_i(\mathbf x;M)\\
+		&\longrightarrow H_{i-1}(C)\xrightarrow{x}H_{i-1}(C)
+		\longrightarrow\cdots.
+		\end{aligned}
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	把最后一个基向量放在楔积的最前端，每个次数 \(i\) 的元素唯一写成 \(u+e_r\wedge v\)，其中 \(u\in C_i\)、\(v\in C_{i-1}\)。由刚才的分次乘法公式，
+	\[
+		K_i(\mathbf x;M)=C_i\oplus C_{i-1},
+		\qquad
+		\mathrm d(u,v)=(\mathrm d u+xv,-\mathrm d v).
+	\]
+	这就是链映射 \(x:C_\bullet\to C_\bullet\) 的\term[yingshezhui]{映射锥}[mapping cone]。明确地说，令 \(C[1]_i=C_{i-1}\)，其微分取 \(-\mathrm d_C\)，则包含和投影给出逐项分裂的短正合复形列
+	\[
+		0\longrightarrow C_\bullet
+		\xrightarrow{u\mapsto(u,0)}K_\bullet(\mathbf x;M)
+		\xrightarrow{(u,v)\mapsto v}C[1]_\bullet
+		\longrightarrow0.
+	\]
+	投影是链映射，正是因为商复形的微分为 \(-\mathrm d_C\)。
+
+	由\cref{g5:prop:complex-long-exact}得到长正合同调列，且 \(H_i(C[1])=H_{i-1}(C)\)。还需辨认连接映射。对循环元 \(v\in C_{i-1}\)，在中间项中选提升 \((0,v)\)，其微分为
+	\[
+		\mathrm d(0,v)=(xv,0).
+	\]
+	按照连接映射的定义，其像就是 \([xv]\)。因此连接映射恰为乘以 \(x\)，将各项写开便得到\eqref{g5:eq:koszul-long-exact}。
+\end{proof}
+
+\begin{theorem}\label{g5:thm:regular-koszul-acyclic}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模，\(\mathbf x=(x_1,\ldots,x_r)\) 为 \(M\) 正则序列。则
+	\[
+		H_i(\mathbf x;M)=0\quad(i>0),\qquad
+		H_0(\mathbf x;M)=M/(\mathbf x)M.
+	\]
+	若 \(M=A\)，则增广复形
+	\[
+		0\longrightarrow K_r(\mathbf x;A)\longrightarrow\cdots
+		\longrightarrow K_0(\mathbf x;A)
+		\longrightarrow A/(\mathbf x)\longrightarrow0
+	\]
+	是 \(A/(\mathbf x)\) 的有限自由消解。
+\end{theorem}
+\begin{proof}
+	对序列长度 \(r\) 归纳。\(r=0\) 时复形只在次数零有 \(M\)，结论成立。若 \(r\geq1\)，前段 \(\mathbf x'\) 为 \(M\) 正则序列，由归纳假设，其复形 \(C_\bullet\) 的所有正次同调为零，且
+	\[
+		H_0(C)=M/(x_1,\ldots,x_{r-1})M.
+	\]
+	对 \(i\geq2\)，\eqref{g5:eq:koszul-long-exact}中位于 \(H_i(\mathbf x;M)\) 两侧的 \(H_i(C)\)、\(H_{i-1}(C)\) 都为零，因此中间项为零。对 \(i=1\)，它给出
+	\[
+		0\longrightarrow H_1(\mathbf x;M)
+		\longrightarrow H_0(C)\xrightarrow{x_r}H_0(C).
+	\]
+	正则性保证最后一张乘法映射单射，故第一同调也为零。零次同调已经直接算出。若 \(M=A\)，各项 \(K_i\) 都是有限自由模，增广的核由 \(\mathrm d_1\) 的像给出，于是得到自由消解。
+\end{proof}
+
+这个结论不要求 \(A\) 局部，也不要求 \(M\) 有限生成；这里使用的输入就是逐次非零因子条件。相关长正合列与充分性证明见\cite[第16节，定理16.4—16.5，第127—129页]{Matsumura1989}。
+
+\begin{example}\label{g5:exm:koszul-plane-origin}
+	设 \(A=k[x,y]\)。序列 \(x,y\) 正则，故原点的坐标模 \(k=A/(x,y)\) 有自由消解
+	\[
+		0\longrightarrow A
+		\xrightarrow{\binom{-y}{x}}A^2
+		\xrightarrow{\ (x\ \ y)\ }A
+		\longrightarrow k\longrightarrow0.
+	\]
+	中间正合性可以直接复算：若 \(xu+yv=0\)，模去 \(x\) 后得到 \(y\bar v=0\) 于 \(k[y]\)，故 \(v=xw\)；代回并约去非零元素 \(x\)，得到 \(u=-yw\)。因此所有关系都由 \((-y,x)\) 生成，正是二次 Koszul 项的像。
+\end{example}
+
+\begin{corollary}\label{g5:cor:koszul-computes-tor}
+	设 \(A\) 为交换含幺环，\(\mathbf x\) 为 \(A\) 正则序列，\(N\) 为任意 \(A\) 模。则对所有 \(i\geq0\)，有自然同构
+	\[
+		\operatorname{Tor}_i^A(A/(\mathbf x),N)
+		\cong H_i(\mathbf x;N).
+	\]
+\end{corollary}
+\begin{proof}
+	把上个定理给出的自由消解张量 \(N\)，得到的复形正是 \(K_\bullet(\mathbf x;N)\)。按\cref{g5:def:ext-tor}中 Tor 的定义，其同调就是左侧；消解选择无关性保证该识别计算的是同一个 Tor。
+\end{proof}
+
+必须保留推论中“\(A\) 正则”的条件。若只知道 \(\mathbf x\) 为 \(M\) 正则序列，\(K_\bullet(\mathbf x;M)\) 虽然在正次数正合，各项却只是 \(M\) 的有限直和，未必是自由 \(A\) 模；而 \(K_\bullet(\mathbf x;A)\) 甚至未必正合。例如
+\[
+	A=k[u,v]/(uv),\qquad M=A/(u)\cong k[v].
+\]
+元素 \(v\) 是 \(M\) 上的正则序列，末端商为 \(k\)；但 \(v\) 在 \(A\) 上零化非零元素 \(u\)，所以 \(H_1(v;A)\ne0\)。不能把这两种不同系数的复形混作同一个自由消解。
 
 \subsection{局部有限模上的反向正合判据}
 \label{g5:subsec:0802:04}
-待撰写
+
+反过来，要从同调消失恢复逐次单射，需要防止较短复形的非零同调被最后一个元素全部“移走”。局部环中的极大理想条件与有限性，使 Nakayama 引理恰好能够排除这种情况。
+
+\begin{theorem}\label{g5:thm:koszul-regularity-criterion}
+	设 \((A,\mathfrak m)\) 为交换含幺 Noether 局部环，\(M\ne0\) 为有限生成 \(A\) 模，\(\mathbf x=(x_1,\ldots,x_r)\) 的每个元素都属于 \(\mathfrak m\)。则以下条件等价：
+	\begin{equivalences}
+		\item \(\mathbf x\) 为 \(M\) 正则序列；
+		\item \(H_i(\mathbf x;M)=0\) 对每个 \(i>0\) 成立；
+		\item \(H_1(\mathbf x;M)=0\)。
+	\end{equivalences}
+\end{theorem}
+\begin{proof}
+	第一条件蕴含第二条件，已由\cref{g5:thm:regular-koszul-acyclic}证明；第二条件显然蕴含第三条件。现假设第三条件成立，对 \(r\) 归纳证明正则性。\(r=0\) 时为空序列，\(M\ne0\) 保证结论。
+
+	设 \(r\geq1\)，取 \(C_\bullet=K_\bullet(x_1,\ldots,x_{r-1};M)\)。\eqref{g5:eq:koszul-long-exact}中的一段为
+	\[
+		H_1(C)\xrightarrow{x_r}H_1(C)
+		\longrightarrow H_1(\mathbf x;M)=0.
+	\]
+	于是 \(H_1(C)=x_rH_1(C)\)。每个 \(C_i\) 都是有限模 \(M\) 的有限直和；因 \(A\) Noether，其循环子模有限生成，同调作为该子模的商也有限生成。又 \(x_r\in\mathfrak m\)，故
+	\[
+		H_1(C)=x_rH_1(C)\subseteq\mathfrak mH_1(C)\subseteq H_1(C).
+	\]
+	Nakayama 引理给出 \(H_1(C)=0\)。由归纳假设，前段 \(x_1,\ldots,x_{r-1}\) 为 \(M\) 正则序列。
+
+	同一长正合列继续给出
+	\[
+		0=H_1(\mathbf x;M)\longrightarrow
+		H_0(C)\xrightarrow{x_r}H_0(C).
+	\]
+	因此 \(x_r\) 在 \(H_0(C)=M/(x_1,\ldots,x_{r-1})M\) 上单射。最后，\cref{g5:prop:regular-sequence-terminal-quotient}保证 \(M/(\mathbf x)M\ne0\)，所以完整序列满足定义。
+\end{proof}
+
+证明中，Noether 条件保证所需的同调模有限生成，极大理想条件使 Nakayama 引理可用，\(M\ne0\) 则保证末端商仍非零。本节采用的局部 Noether 有限模判据，可对照\cite[第16节，定理16.5，第128—129页]{Matsumura1989}。这些条件也解释了为何正次同调的消失本身，不能在任意环与任意模上直接当作正则序列的定义。
 
 \subsection{交换次序和基变换的限制}
 \label{g5:subsec:0802:05}
-待撰写
+
+外代数构造允许对记录方程的自由模换基。复形在这种变化下始终保持同构，而把同构转回“逐次非零因子”的结论，则需要刚才的反向判据。
+
+\begin{proposition}\label{g5:prop:koszul-change-basis}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模，\(\mathbf x=(x_1,\ldots,x_r)\)，\(U=(u_{ij})\in\operatorname{GL}_r(A)\)。令
+	\[
+		y_j=\sum_{i=1}^r x_i u_{ij}\qquad(1\leq j\leq r).
+	\]
+	则存在链同构 \(K_\bullet(\mathbf y;M)\cong K_\bullet(\mathbf x;M)\)。特别地，任意置换元素次序都给出同构的 Koszul 复形。
+\end{proposition}
+\begin{proof}
+	在一次自由模上，把 \(\mathbf y\) 对应的基向量 \(e'_j\) 送到 \(\sum_i u_{ij}e_i\)，再对各次外幂取诱导映射，并张量 \(\operatorname{id}_M\)。矩阵 \(U\) 可逆，故各次映射均可逆。在次数一有
+	\[
+		\mathrm d_{\mathbf x}\left(\sum_i u_{ij}e_i\right)
+		=\sum_i u_{ij}x_i=y_j.
+	\]
+	利用微分的分次乘法公式，在基楔积上逐项应用这个等式，就知各次映射与微分交换。置换矩阵是可逆矩阵，故包含所述特殊情形。
+\end{proof}
+
+\begin{corollary}\label{g5:cor:regular-sequence-permutation}
+	设 \((A,\mathfrak m)\) 为 Noether 局部环，\(M\ne0\) 为有限生成 \(A\) 模，\(x_1,\ldots,x_r\in\mathfrak m\) 为 \(M\) 正则序列。则任何置换后的序列仍为 \(M\) 正则序列。更一般地，按上个命题用任意可逆矩阵 \(U\) 改换这组元素，所得 \(y_1,\ldots,y_r\) 仍为 \(M\) 正则序列。
+\end{corollary}
+\begin{proof}
+	原 Koszul 复形的第一同调为零，换基后的第一同调因链同构而仍为零。各 \(y_j\) 都属于 \(\mathfrak m\)，故\cref{g5:thm:koszul-regularity-criterion}给出所需正则性。
+\end{proof}
+
+\begin{example}\label{g5:exm:nonlocal-regular-order}
+	设 \(k\) 为域，\(A=k\times k[x,y]\)，取
+	\[
+		a=(1,x),\qquad b=(0,y).
+	\]
+	乘以 \(a\) 在两个分量上都单射，且
+	\[
+		A/aA\cong k[y].
+	\]
+	在这个商环上，\(b\) 的作用就是乘以 \(y\)，仍单射；末端商 \(A/(a,b)\cong k\ne0\)。所以 \(a,b\) 是 \(A\) 正则序列。但 \(b\) 已经零化非零元素 \((1,0)\)，故 \(b,a\) 不是正则序列。两个次序的 Koszul 复形仍然同构，并且正次同调都消失；失效的是非局部情形下从同调消失恢复逐次单射的推理。
+\end{example}
+
+可逆换基也不能替换成任意增添生成元。以 \(A=k[x]\) 为例，\(x\) 是正则序列，而 \(x,x\) 生成同一个理想却不正则：第二个 \(x\) 在 \(A/(x)\) 上为零。其第一 Koszul 同调也非零，因为
+\[
+	\ker\bigl((x\ \ x):A^2\to A\bigr)=A(1,-1),
+	\qquad
+	\operatorname{im}\mathrm d_2=xA(1,-1),
+\]
+故 \(H_1(x,x;A)\cong A/(x)\)。因此 Koszul 同调记录所选元素组的关系，不只记录它们生成的理想。
+
+\begin{proposition}\label{g5:prop:koszul-base-change}
+	设 \(A\to B\) 为交换含幺环同态，\(M\) 为 \(A\) 模，\(\mathbf x=(x_1,\ldots,x_r)\)，\(\mathbf x_B\) 表示这些元素在 \(B\) 中的像。则有自然链同构
+	\[
+		K_\bullet(\mathbf x;M)\otimes_A B
+		\cong K_\bullet(\mathbf x_B;M\otimes_A B).
+	\]
+	若 \(B\) 对 \(A\) 平坦，则还存在自然同构
+	\[
+		H_i(\mathbf x;M)\otimes_A B
+		\cong H_i(\mathbf x_B;M\otimes_A B)
+		\qquad\text{对所有 }i.
+	\]
+\end{proposition}
+\begin{proof}
+	第一项只需按有限自由外幂的基作标量扩张：两边的基楔积一一对应，微分矩阵的条目都是带符号的 \(x_j\)，变换系数后正好得到右侧微分，所以不需要平坦性。
+
+	若 \(B\) 平坦，对原复形记循环模 \(Z_i\)、边界模 \(D_i\)。把短正合列
+	\[
+		0\longrightarrow Z_i\longrightarrow K_i\longrightarrow D_{i-1}\longrightarrow0,
+		\qquad
+		0\longrightarrow D_i\longrightarrow Z_i\longrightarrow H_i\longrightarrow0
+	\]
+	张量 \(B\) 后仍短正合。再用 \(D_{i-1}\hookrightarrow K_{i-1}\) 张量后的单射，可知新复形的循环模为 \(Z_i\otimes_A B\)，边界模为 \(D_i\otimes_A B\)。两者取商即得同调同构。
+\end{proof}
+
+\begin{proposition}\label{g5:prop:regular-sequence-flat-base-change}
+	设 \(A\to B\) 为平坦的交换含幺环同态，\(M\) 为 \(A\) 模，\(\mathbf x\) 为 \(M\) 正则序列。若
+	\[
+		\bigl(M/(\mathbf x)M\bigr)\otimes_A B\ne0,
+	\]
+	则 \(\mathbf x_B\) 为 \(M\otimes_A B\) 正则序列。若 \(A\to B\) 忠实平坦，则对任意有限元素组 \(\mathbf x\)，原序列为 \(M\) 正则序列，当且仅当其像为 \(M\otimes_A B\) 正则序列。
+\end{proposition}
+\begin{proof}
+	对 \(M_j=M/(x_1,\ldots,x_j)M\)，张量积右正合性给出
+	\[
+		M_j\otimes_A B
+		\cong (M\otimes_A B)/(x_1,\ldots,x_j)(M\otimes_A B).
+	\]
+	逐次乘法单射在平坦张量后仍单射，末端非零由假设保证，故正则性保持。
+
+	若同态忠实平坦，非零末端商也不会在张量后消失，所以正方向不再需要附加假设。反过来，基变换后各次乘法单射，由\cref{g5:prop:faithful-flat-reflects-exactness}反映为原来的单射；基变换后的末端商非零，也迫使原末端商非零。于是原序列正则。
+\end{proof}
+
+两个限制都能在单个元素上出现。对 \(A=k[x]\) 上的正则元素 \(x\)，取非平坦商 \(B=A/(x)=k\)，则基变换后的元素为零，乘法不再单射；原来的第一 Koszul 同调为零，新的第一同调却是 \(k\)。若改取平坦局部化 \(B=A[x^{-1}]\)，乘法仍单射，但 \(x\) 成为单位，末端商消失，因此也不再是这里定义的正则序列。平坦性控制单射，忠实性或明确的末端非零条件控制剩下的商模，这两项作用不可互相替代。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

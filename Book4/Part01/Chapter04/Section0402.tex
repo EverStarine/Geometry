@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 4.2 Jacobi 簇和 Abel–Jacobi 映射
 % 纲要位置：几何学计划纲要.md，第 3599 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,334 @@
 \section{Jacobi 簇和 Abel–Jacobi 映射}
 \label{g4:sec:0402}
 
-待撰写
+固定起点后，把全纯微分从起点积到 \(p\)，会得到随 \(p\) 变化的一组复数。改变道路使这些复数增加周期，因此它们在上一节的周期格取商后成为单值。这既构造出一个复环面，也把曲面本身以及曲面上的点组映入这个环面。为了允许点组中的点相互重合，我们还要为无序点组建立真正的复坐标。
 
 \subsection{复向量空间模周期格}
 \label{g4:subsec:0402:01}
-待撰写
+
+本节出现复维数大于一的空间。这里的复 \(n\) 维流形是 Hausdorff、第二可数空间，带有到 \(\mathbb C^n\) 开集的坐标图，换坐标及其逆都全纯。可把坐标函数的全纯性理解为局部由收敛的多变量复幂级数表示；下文所用的平移、线性映射、多项式及含参数的积分都会直接满足这一条件。复维数一时，这与黎曼曲面的定义一致。
+
+\begin{proposition}
+	\label{g4:prop:0402:complex-torus}
+	设 \(V\) 是复 \(g\) 维向量空间，\(\Lambda\subset V\) 是实秩 \(2g\) 的满秩格。商 \(V/\Lambda\) 有唯一使投影局部双全纯的复流形结构。它紧、连通，复维数为 \(g\)，加法与取负都是全纯映射。
+\end{proposition}
+\begin{proof}
+	选择一个 Euclid 范数。格的离散性给出 \(\varepsilon>0\)，使不同格点的距离至少为 \(3\varepsilon\)。因此半径小于 \(\varepsilon\) 的球与它的任何非零格平移不交，投影 \(\pi:V\to V/\Lambda\) 在该球上单射。商映射是开映射，因为
+	\[
+		\pi^{-1}(\pi(U))=\bigcup_{\lambda\in\Lambda}(U+\lambda)
+	\]
+	对开集 \(U\) 仍为开集，所以这些局部投影都是到开集的同胚。
+
+	先核对商的分离性。若 \(z,w\) 不属于同一格轨道，则 \(z-w\notin\Lambda\)。一个有界集只含有限个格点，故 \(z-w\) 到 \(\Lambda\) 的距离严格为正。取充分小的球 \(B_z,B_w\)，使任何 \(B_z\) 与 \(B_w+\lambda\) 都不交；它们在商中的像就是两个不交邻域。因此商 Hausdorff。\(V\) 的可数开基在开映射 \(\pi\) 下的像仍构成可数开基，所以商第二可数。
+
+	用前述小球给商定义复坐标。两张图的换坐标在每个交叠分支上相差一个固定格向量，故为全纯平移。这同时给出存在性与唯一性。格的一组实基所张成的闭基本平行多面体紧，其像覆盖商，故商紧；\(V\) 连通，所以商也连通。加法在局部提升后为 \((z,w)\mapsto z+w\)，取负为 \(z\mapsto-z\)，均为全纯映射。
+\end{proof}
+
+这样的商称为\term[fuhuanmian]{复环面}[complex torus]。下面用全纯微分产生的特定周期格来构造它。
+
+\begin{definition}
+	\label{g4:def:0402:jacobian}
+	设 \(X\) 是亏格 \(g\) 的紧连通黎曼曲面。固定同调辛基和归一化全纯微分，令 \(\tau\) 为周期矩阵、\(\Lambda=\mathbb Z^g+\tau\mathbb Z^g\)。其\term[jacobicu]{Jacobi 簇}[Jacobian variety]的复解析表示为
+	\[
+		J(X)\coloneqq\mathbb C^g/\Lambda.
+	\]
+	亏格零时约定 \(J(X)\) 为一点。
+\end{definition}
+
+\cref{g4:prop:0401:period-lattice,g4:prop:0402:complex-torus}保证这个构造确为紧复环面，复维数为 \(g\)。其上的额外正性由式\eqref{g4:eq:0401:polarization-form}记录，第4节再讨论它与主极化的关系。
+
+\ProseParagraphBreak
+
+这个对象也有不选择基的定义。记 \(V=H^0(X,K_X)^*\) 为全纯微分空间的复线性对偶。每个整数同调类 \(\gamma\) 定义一个泛函
+\[
+	\ell_\gamma:H^0(X,K_X)\longrightarrow\mathbb C,
+	\qquad \ell_\gamma(\omega)=\int_\gamma\omega.
+\]
+取商
+\begin{equation}\label{g4:eq:0402:intrinsic-jacobian}
+	J(X)=H^0(X,K_X)^*/\{\ell_\gamma:\gamma\in H_1(X;\mathbb Z)\}.
+\end{equation}
+在归一化基下，泛函 \(\ell\) 的坐标是列向量
+\((\ell(\omega_1),\ldots,\ell(\omega_g))^{\mathsf T}\)，周期子群恰变成 \(\Lambda\)。因此式\eqref{g4:eq:0402:intrinsic-jacobian}与前一定义一致。改变微分基只是对 \(V\) 作复线性换坐标；改变同调基只改变同一周期子群的整数生成元。两种改变均给出同一个内在复环面，而不是另造一个空间。
 
 \subsection{路径积分与基点依赖}
 \label{g4:subsec:0402:02}
-待撰写
+
+设 \(q\in X\) 为基点。曲面连通且局部道路连通，任意 \(p\in X\) 都可从 \(q\) 通过有限条坐标圆盘中的光滑弧到达。沿这样一条分片光滑道路 \(\gamma_{qp}\)，定义积分列向量
+\[
+	\left(\int_{\gamma_{qp}}\omega_1,\ldots,
+	\int_{\gamma_{qp}}\omega_g\right)^{\mathsf T}.
+\]
+这个向量通常依赖道路；它的商类具有下面的性质。
+
+\begin{proposition}
+	\label{g4:prop:0402:abel-jacobi}
+	设 \(X\) 是紧连通黎曼曲面，\(q\in X\)。公式
+	\begin{equation}\label{g4:eq:0402:abel-jacobi}
+		A_q(p)\coloneqq
+		\left[\left(\int_q^p\omega_1,\ldots,\int_q^p\omega_g\right)^{\mathsf T}\right]
+		\in J(X)
+	\end{equation}
+	与所取道路无关，并定义全纯映射，称为基于 \(q\) 的\term[abeljacobiyingshe]{Abel--Jacobi 映射}[Abel--Jacobi map]。它满足 \(A_q(q)=0\)。若改用基点 \(q'\)，则
+	\begin{equation}\label{g4:eq:0402:basepoint-change}
+		A_{q'}(p)=A_q(p)-A_q(q').
+	\end{equation}
+	以平移识别 \(T_{A_q(p)}J(X)\) 与 \(\mathbb C^g\) 后，其微分为
+	\begin{equation}\label{g4:eq:0402:abel-tangent}
+		\mathrm{d}(A_q)_p(v)
+		=\bigl(\omega_1(v),\ldots,\omega_g(v)\bigr)^{\mathsf T}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	两条从 \(q\) 到 \(p\) 的道路之差是一条整数一圈；各全纯微分闭，积分之差只依赖这个圈的同调类。因此两个积分向量相差 \(\Lambda\) 中的元素，在商中相等。
+
+	在 \(p_0\) 附近取单连通坐标圆盘 \(U\)，先固定从 \(q\) 到 \(p_0\) 的道路，再在 \(U\) 内积分。每个 \(\omega_j\) 在 \(U\) 上有全纯原函数 \(F_j\)，于是 \(A_q|_U\) 有一个到 \(\mathbb C^g\) 的提升
+	\[
+		p\longmapsto c+
+		\bigl(F_1(p)-F_1(p_0),\ldots,F_g(p)-F_g(p_0)\bigr)^{\mathsf T}.
+	\]
+	它全纯，求导便得到式\eqref{g4:eq:0402:abel-tangent}。不同提升相差常数格向量，所以微分不受影响。
+
+	若先从 \(q\) 走到 \(q'\)，再从 \(q'\) 走到 \(p\)，积分的可加性给出
+	\(A_q(p)=A_q(q')+A_{q'}(p)\)，即得基点公式。常值道路给出 \(A_q(q)=0\)。
+\end{proof}
+
+也可以直接按式\eqref{g4:eq:0402:intrinsic-jacobian}，把 \(A_q(p)\) 看成泛函 \(\omega\mapsto\int_q^p\omega\) 的商类。这样，映射的定义只需基点，不需选择微分基。基点变化只在目标中作平移，故不会改变映射的局部微分性质。
+
+\begin{example}
+	\label{g4:exm:0402:torus-abel}
+	沿用\cref{g4:exm:0401:torus-periods}的复环面，基点取 \(q=[0]\)。归一化微分为 \(\mathrm{d}z/\lambda_1\)，故
+	\[
+		A_q:\mathbb C/(\mathbb Z\lambda_1+\mathbb Z\lambda_2)
+		\longrightarrow\mathbb C/(\mathbb Z+\tau\mathbb Z),
+		\qquad [z]\longmapsto[z/\lambda_1].
+	\]
+	它是复 Lie 群同构，逆为 \([w]\mapsto[\lambda_1w]\)。在这个模型中，沿不同道路绕行造成的积分差恰好被商中的格吸收。
+\end{example}
 
 \subsection{对称积上的映射}
 \label{g4:subsec:0402:03}
-待撰写
+
+若有 \(d\) 个点，应把它们的积分相加。这个和不记录点的次序，所以其定义域应是无序点组，而不是有序积 \(X^d\)。在两点重合时，交换两个点具有不动点；一般的有限群商可能在这里出现奇点。曲线的特殊之处是，无序点组可改用一元多项式的系数记录，从而仍然得到光滑的复流形。
+
+\begin{definition}
+	\label{g4:def:0402:symmetric-product}
+	设 \(X\) 是黎曼曲面，\(d\ge1\)。对称群 \(\mathfrak S_d\) 通过置换因子作用于 \(X^d\)，商
+	\[
+		X^{(d)}\coloneqq X^d/\mathfrak S_d
+	\]
+	赋予商拓扑，称为 \(X\) 的 \(d\) 次\term[duichengji]{对称积}[symmetric product]。它的点可写为有效除子
+	\(D=p_1+\cdots+p_d=\sum_{\nu=1}^r m_\nu p_\nu\)，其中各 \(p_\nu\) 不同，\(m_\nu\ge1\)，\(\sum_\nu m_\nu=d\)。并约定 \(X^{(0)}\) 为一点。
+\end{definition}
+
+\begin{theorem}
+	\label{g4:thm:0402:symmetric-product}
+	设 \(X\) 是黎曼曲面，\(d\ge1\)。空间 \(X^{(d)}\) 有自然的复 \(d\) 维流形结构；在 \(D=\sum_\nu m_\nu p_\nu\) 附近，取各 \(p_\nu\) 的互不相交坐标圆盘，以每组 \(m_\nu\) 个坐标值的初等对称函数为复坐标。商映射 \(X^d\to X^{(d)}\) 全纯。若 \(X\) 紧，则 \(X^{(d)}\) 紧。
+\end{theorem}
+\begin{proof}
+	先看一个圆盘 \(D_r=\{z:|z|<r\}\) 中的 \(m\) 个点。将无序点组 \(\{z_1,\ldots,z_m\}\) 送到系数 \((\sigma_1,\ldots,\sigma_m)\)，其中
+	\begin{equation}\label{g4:eq:0402:symmetric-polynomial}
+		P_\sigma(t)=\prod_{\ell=1}^m(t-z_\ell)
+		=t^m-\sigma_1t^{m-1}+\cdots+(-1)^m\sigma_m.
+	\end{equation}
+	它连续，并由复多项式的根及其重数唯一决定，因此是到集合
+	\[
+		\Omega_{m,r}=\{\sigma\in\mathbb C^m:
+		P_\sigma\text{ 的全部根都在 }D_r\}
+	\]
+	的双射。
+
+	集合 \(\Omega_{m,r}\) 是开集。给定其中一点，选半径 \(R<r\)，使所有根都在 \(|t|<R\)。原多项式在 \(|t|=R\) 上有严格正的最小模；系数充分接近时，多项式之差在该圆周上的模小于这一最小值。\cref{g4:thm:0102:rouche}的 Rouché 定理说明新多项式仍有全部 \(m\) 个根位于 \(|t|<R\)。逆映射也连续：在原多项式的各不同根周围取任意小的互不相交圆盘；再用 Rouché 定理，充分小的系数扰动在每张盘内保留原来的根数，按重数计。这正表示根组成的无序点组趋近原点组。因此 \(D_r^{(m)}\to\Omega_{m,r}\) 为同胚。
+
+	现在在 \(D=\sum_\nu m_\nu p_\nu\) 的各支撑点周围取互不相交坐标圆盘 \(U_\nu\)，坐标 \(z_\nu(p_\nu)=0\)。恰在每个 \(U_\nu\) 中含 \(m_\nu\) 个点的无序点组构成 \(D\) 的开邻域，且同胚于 \(\prod_\nu U_\nu^{(m_\nu)}\)。前面的系数坐标把它映到 \(\mathbb C^{m_1}\times\cdots\times\mathbb C^{m_r}\) 的开集。
+
+	还要证明换坐标全纯，尤其在重根处不能通过逐个选根来证明。设 \(w=\varphi(z)\) 是两张曲面坐标之间的全纯变换。围绕当前点组的各不同根，取位于两张坐标交集内的小圆周，合起来记为 \(\Gamma\)，全部正向。系数在一个小邻域内变化时，没有根穿过 \(\Gamma\)。对于被这些圆周包围的根，留数定理给出幂和公式
+	\begin{equation}\label{g4:eq:0402:trace-integral}
+		\sum_{\ell}\varphi(z_\ell)^k
+		=\frac{1}{2\pi\mathrm{i}}\int_\Gamma
+		\varphi(t)^k\,\frac{P_\sigma'(t)}{P_\sigma(t)}\,\mathrm{d}t,
+		\qquad k\ge1.
+	\end{equation}
+	重根 \(z_\ell\) 的留数按其重数计入，所以该式也覆盖重合情形。右侧对 \(\sigma\) 全纯：分母在固定紧圆周上离零有正距离，对附近系数可把其倒数展开为一致收敛的几何级数；逐项积分给出系数变量的收敛幂级数。
+
+	记新坐标根值的幂和为 \(S_k\)，其初等对称函数为 \(e_k\)，则
+	\[
+		e_0=1,\qquad
+		k e_k=\sum_{\ell=1}^k(-1)^{\ell-1}e_{k-\ell}S_\ell.
+	\]
+	这个恒等式可比较 \(\prod_\ell(1+w_\ell u)\) 的对数导数两边的 \(u\) 次幂得到。因此各 \(e_k\) 也是旧系数的全纯函数。若两张点组图把根分到不同的圆盘中，就在当前各支撑点处取共同的更小圆盘，用式\eqref{g4:eq:0402:trace-integral}分别选出每组根，再相加得到所需幂和。同一论证反向使用，说明逆换坐标也全纯。
+
+	商空间的 Hausdorff 性来自有限群作用：两个不同有限轨道可在 Hausdorff 空间 \(X^d\) 中用不交开集分离，再取有限个群作用后的交使邻域不变。商映射是开映射，故 \(X^d\) 的可数开基给出商的可数基。以上图册因此构成复流形结构。商映射在这些坐标中就是初等对称多项式，故全纯；若 \(X\) 紧，商作为 \(X^d\) 的连续像也紧。
+\end{proof}
+
+\begin{example}
+	\label{g4:exm:0402:double-point}
+	在 \(2p\) 附近取坐标 \(z(p)=0\)，则 \(X^{(2)}\) 的坐标为
+	\[
+		\sigma_1=z_1+z_2,\qquad \sigma_2=z_1z_2.
+	\]
+	重合点组对应判别式曲线 \(\sigma_1^2-4\sigma_2=0\)。商映射的 Jacobian 行列式为 \(z_1-z_2\)，在对角线上为零，但目标的 \((\sigma_1,\sigma_2)\) 仍是普通复坐标。这里退化的是从有序点组到无序点组的映射，而非无序点组空间本身。
+\end{example}
+
+\begin{proposition}
+	\label{g4:prop:0402:symmetric-abel}
+	设 \(X\) 是紧连通黎曼曲面，\(q\in X\)，\(d\ge0\)。公式
+	\begin{equation}\label{g4:eq:0402:symmetric-abel}
+		A_q^{(d)}:X^{(d)}\longrightarrow J(X),
+		\qquad p_1+\cdots+p_d\longmapsto\sum_{\ell=1}^d A_q(p_\ell)
+	\end{equation}
+	定义全纯映射，称为对称积上的 Abel 映射。其基点变化公式为
+	\[
+		A_{q'}^{(d)}(D)=A_q^{(d)}(D)-dA_q(q').
+	\]
+	当 \(d=0\) 时取值为 \(0\)。
+\end{proposition}
+\begin{proof}
+	求和不依赖点的排列，故得到连续的商映射。基点公式由式\eqref{g4:eq:0402:basepoint-change}逐项相加得到。全纯性要在刚建立的系数坐标中检查。
+
+	固定 \(D=\sum_\nu m_\nu p_\nu\)，在各坐标圆盘 \(U_\nu\) 上取微分 \(\omega_j\) 的全纯原函数 \(F_{j,\nu}\)，并固定从 \(q\) 到 \(p_\nu\) 的道路。附近点组的积分和有一个局部提升，其第 \(j\) 个分量为常数加
+	\[
+		\sum_{\nu=1}^r\sum_{\ell=1}^{m_\nu}
+		F_{j,\nu}(z_{\nu,\ell}).
+	\]
+	以 \(F_{j,\nu}\) 代替式\eqref{g4:eq:0402:trace-integral}中的 \(\varphi^k\)，得到
+	\[
+		\sum_{\ell=1}^{m_\nu}F_{j,\nu}(z_{\nu,\ell})
+		=\frac{1}{2\pi\mathrm{i}}\int_{\Gamma_\nu}
+		F_{j,\nu}(t)\frac{P_{\nu,\sigma}'(t)}
+		{P_{\nu,\sigma}(t)}\,\mathrm{d}t.
+	\]
+	这里 \(\Gamma_\nu\) 是固定在 \(U_\nu\) 内、围住这组根的小圆周。右侧按前一证明对系数全纯，所以局部提升全纯。这也证明了映射在重复点处的全纯性。
+\end{proof}
+
+在各点不同的点组上，微分就是各点求值的和。重复点则把求值扩展为有限阶喷射。下面的公式将使第四节能够用微分的消失阶数判断 Abel 映射的秩。
+
+\begin{proposition}
+	\label{g4:prop:0402:abel-differential}
+	设 \(X\) 是亏格 \(g\) 的紧连通黎曼曲面，\(q\in X\)，\(d\ge1\)，且 \(D=\sum_{\nu=1}^r m_\nu p_\nu\in X^{(d)}\)。通过
+	\[
+		T_{A_q^{(d)}(D)}^*J(X)\cong H^0(X,K_X)
+	\]
+	的自然识别，微分 \(\mathrm{d}(A_q^{(d)})_D\) 的转置之核恰为 \(H^0(X,K_X(-D))\)。因此
+	\begin{equation}\label{g4:eq:0402:abel-rank}
+		\operatorname{rank}_{\mathbb C}\mathrm{d}(A_q^{(d)})_D
+		=g-h^0(K_X(-D)).
+	\end{equation}
+	具体地，在 \(p_\nu\) 附近取坐标 \(z_\nu(p_\nu)=0\)，若
+	\(\omega_j=\bigl(\sum_{k\ge0}a_{j,\nu,k}z_\nu^k\bigr)\,\mathrm{d}z_\nu\)，则以初等对称函数 \(\sigma_{\nu,k}\) 为坐标，有
+	\begin{equation}\label{g4:eq:0402:abel-jet-matrix}
+		\frac{\partial(A_q^{(d)})_j}{\partial\sigma_{\nu,k}}(D)
+		=(-1)^{k-1}a_{j,\nu,k-1},
+		\qquad 1\le k\le m_\nu.
+	\end{equation}
+	左侧在任意局部提升中计算，结果相同。
+\end{proposition}
+\begin{proof}
+	只需在一组重合点 \(mp\) 附近计算，其他组的贡献相加。记局部原函数为 \(F_j\)，使 \(F_j'(z)=\sum_{k\ge0}a_{j,k}z^k\)。在重合点，式\eqref{g4:eq:0402:symmetric-polynomial}中的多项式为 \(P_0(t)=t^m\)。沿任意系数方向的变化写成
+	\[
+		\delta P(t)=\sum_{k=1}^m(-1)^k\delta\sigma_k\,t^{m-k}.
+	\]
+	对上一证明的积分求导，并沿闭圆周分部积分，得到
+	\[
+		\begin{aligned}
+		\delta\left(\sum_{\ell=1}^mF_j(z_\ell)\right)
+		&=\frac{1}{2\pi\mathrm{i}}\int_\Gamma
+		F_j(t)\,\mathrm{d}\left(\frac{\delta P(t)}{P_0(t)}\right)\\
+		&=-\frac{1}{2\pi\mathrm{i}}\int_\Gamma
+		F_j'(t)\frac{\delta P(t)}{t^m}\,\mathrm{d}t\\
+		&=\sum_{k=1}^m(-1)^{k-1}a_{j,k-1}\,\delta\sigma_k.
+		\end{aligned}
+	\]
+	求导与积分交换由固定圆周上的一致幂级数保证；分部积分中的全微分沿闭路积分为零。由留数取出 \(t^{-1}\) 系数，得到最后一行，亦即式\eqref{g4:eq:0402:abel-jet-matrix}。
+
+	在内在表示 \(J(X)=H^0(K_X)^*/\operatorname{Per}(H_1)\) 下，平移把其切空间识别为 \(H^0(K_X)^*\)，所以余切空间自然是 \(H^0(K_X)\)。一个余切向量 \(\omega=\sum_jc_j\omega_j\) 消去微分的像，当且仅当在每个 \(p_\nu\) 处的前 \(m_\nu\) 个 Taylor 系数均为零。这等价于 \(\operatorname{ord}_{p_\nu}\omega\ge m_\nu\)，即 \(\omega\in H^0(K_X(-D))\)。最后用有限维线性代数中转置的秩等于原映射的秩，得到式\eqref{g4:eq:0402:abel-rank}。
+\end{proof}
 
 \subsection{除子类的几何解释}
 \label{g4:subsec:0402:04}
-待撰写
+
+有效除子记录点组，两个同次数点组之差则属于
+\[
+	\operatorname{Div}^0(X)=\left\{\sum_p n_p[p]:
+	n_p\in\mathbb Z,\ \text{仅有限项非零},\ \sum_p n_p=0\right\}.
+\]
+对这样的差，基点变化产生的常数恰好全部抵消。
+
+\begin{proposition}
+	\label{g4:prop:0402:divisor-integral}
+	设 \(X\) 是紧连通黎曼曲面。公式
+	\begin{equation}\label{g4:eq:0402:divisor-integral}
+		\operatorname{AJ}:\operatorname{Div}^0(X)\longrightarrow J(X),
+		\qquad
+		\operatorname{AJ}\left(\sum_p n_p[p]\right)
+		=\sum_p n_pA_q(p)
+	\end{equation}
+	定义与基点 \(q\) 无关的群同态。若 \(D\) 是次数 \(d\ge0\) 的有效除子，则
+	\begin{equation}\label{g4:eq:0402:degree-shift}
+		A_q^{(d)}(D)=\operatorname{AJ}(D-d[q]).
+	\end{equation}
+	若整数一链 \(\Gamma\) 满足 \(\partial\Gamma=\sum_p n_p[p]\)，则同一个类也可写为
+	\[
+		\operatorname{AJ}\left(\sum_p n_p[p]\right)
+		=\left[\left(\int_\Gamma\omega_1,\ldots,
+		\int_\Gamma\omega_g\right)^{\mathsf T}\right].
+	\]
+\end{proposition}
+\begin{proof}
+	对每个支撑点选从 \(q\) 到它的道路，并乘以系数 \(n_p\) 后相加，得到一链 \(\Gamma\)。其边界为
+	\[
+		\partial\Gamma=\sum_p n_p([p]-[q])
+		=\sum_p n_p[p],
+	\]
+	最后一步正使用次数为零。两条这样的链之差为整数一圈，积分向量之差属于周期格，所以商类不依赖链的选择。链相加对应积分相加，得到群同态。
+
+	基点由 \(q\) 改为 \(q'\) 时，式\eqref{g4:eq:0402:basepoint-change}说明总变化为
+	\[
+		-\left(\sum_p n_p\right)A_q(q')=0.
+	\]
+	最后 \(A_q(q)=0\)，把 \(D\) 的各点逐项代入即得式\eqref{g4:eq:0402:degree-shift}。
+\end{proof}
+
+主除子都为零次除子，故有子群
+\[
+	\operatorname{Prin}(X)=
+	\{\operatorname{div}(f):f\text{ 是 }X\text{ 上的非零亚纯函数}\}
+	\subset\operatorname{Div}^0(X).
+\]
+除子积分提出一个具体问题：周期商类能否恰好检测两个同次数除子是否线性等价？下一节的 Abel 定理，即\cref{g4:thm:0403:abel}，将证明
+\begin{equation}\label{g4:eq:0402:abel-kernel-preview}
+	\ker\operatorname{AJ}=\operatorname{Prin}(X).
+\end{equation}
+该结论的两个方向都将在那里用第三类微分和指数积分证明。
+
+\ProseParagraphBreak
+
+先把这个结论的几何含义说清。令
+\[
+	\operatorname{Pic}^0(X)\coloneqq
+	\operatorname{Div}^0(X)/\operatorname{Prin}(X).
+\]
+由\cref{g4:prop:0301:principal-trivial,g4:thm:0304:meromorphic-section}，它也就是零次全纯线丛的同构类群，运算为张量积：每条线丛可由非零亚纯截面的除子表示，而两个除子给出同构线丛当且仅当它们线性等价。一旦式\eqref{g4:eq:0402:abel-kernel-preview}证明，\(\operatorname{AJ}\) 就下降为单射
+\[
+	\operatorname{Pic}^0(X)\longrightarrow J(X).
+\]
+第4节的 Jacobi 反演将证明它满射，从而把零次除子类与复环面中的点对应起来。
+
+\ProseParagraphBreak
+
+对任意整数 \(d\)，记 \(\operatorname{Pic}^d(X)\) 为次数 \(d\) 的除子模线性等价所得的集合。选定 \(q\) 后，\(D\mapsto D-d[q]\) 把它识别为 \(\operatorname{Pic}^0(X)\) 的一个平移副本。换基点使对应目标坐标平移 \(-dA_q(q')\)。对于有效除子，这个几何解释已由实际构造的映射 \(A_q^{(d)}\) 承载；不同点组何时落到同一点，正是下一节要解决的线性等价问题。
+
+\begin{example}
+	\label{g4:exm:0402:sphere-divisors}
+	球面亏格为零，故 \(J(\mathbb P^1)\) 是一点。若
+	\[
+		D=\sum_{a\in\mathbb C}n_a[a]+n_\infty[\infty],
+		\qquad \sum_a n_a+n_\infty=0,
+	\]
+	其中只有有限项非零，则有理函数
+	\[
+		f(z)=\prod_{a\in\mathbb C}(z-a)^{n_a}
+	\]
+	满足 \(\operatorname{div}(f)=D\)。因为有限点的阶数为 \(n_a\)，无穷远阶数为 \(-\sum_a n_a=n_\infty\)。这直接说明球面上的零次除子都为主除子，与这里目标只有一点相符。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

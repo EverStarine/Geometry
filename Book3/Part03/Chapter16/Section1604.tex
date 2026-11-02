@@ -1,12 +1,12 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 16.4 谱估计及逆谱限制
 % 纲要位置：几何学计划纲要.md，第 2773 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * Rayleigh 商和极小极大原则
-% * 曲率、直径及特征值的所选估计
+% * 曲率、直径与特征值估计
 % * 球面和环面的谱
 % * 等谱不等距及可恢复信息
 % 
@@ -17,21 +17,335 @@
 \section{谱估计及逆谱限制}
 \label{g3:sec:1604}
 
-待撰写
+热迹从许多高频特征值的共同作用中提取局部几何，而一个低阶特征值常由某个简单函数控制。两种观察各有用途：变分原理把几何构造变成谱的不等式，显式模型则让我们判断这些不等式保留了多少信息。即使知道全部特征值及其重数，也可能无法确定度量；本节将给出可以直接核算的十六维平坦环面例子。
+
+\ProseParagraphBreak
+
+本节讨论闭光滑黎曼流形上的标量算子 \(\Delta=-\operatorname{div}\nabla\)，复内积对第一变量线性。特征值从 \(\lambda_0\) 起按重数排列；在连通情形中，\(\lambda_0=0<\lambda_1\)。使用 \(H^1\) 函数作测试，是因为能量只需要一个弱导数，也因此可以直接使用距离截断。
 
 \subsection{Rayleigh 商和极小极大原则}
 \label{g3:subsec:1604:01}
-待撰写
+给定非零 \(u\in H^1(M;\mathbb C)\)，定义其\term[Rayleigh shang]{Rayleigh 商}[Rayleigh quotient]为
+\[
+	\mathscr Q_g(u)=\frac{\int_M|\mathrm du|_g^2\,\mu_g}{\int_M|u|^2\,\mu_g}.
+\]
+它对非零常数倍不变。若 \(\Delta u=\lambda u\)，分部积分就给出 \(\mathscr Q_g(u)=\lambda\)；关键在于一般函数的商也能约束特征值。\footnote{John William Strutt, Lord Rayleigh（1842--1919），英国物理学家，研究声学、波动与散射理论，著有 \emph{The Theory of Sound}。}
 
-\subsection{曲率、直径及特征值的所选估计}
+\begin{lemma}\label{g3:lem:laplace-form-spectral-expansion}
+	设 \((M^n,g)\) 为非空闭光滑黎曼流形，\(n\ge1\)，\((e_j)_{j\ge0}\) 是标量 \(\Delta\) 的 \(L^2\) 正交归一特征基，\(\Delta e_j=\lambda_je_j\)。对 \(u=\sum_jc_je_j\in L^2(M;\mathbb C)\)，有
+	\[
+		u\in H^1(M)
+		\quad\Longleftrightarrow\quad
+		\sum_j(1+\lambda_j)|c_j|^2<\infty.
+	\]
+	此时展开在 \(H^1\) 中收敛，且
+	\begin{equation}\label{g3:eq:laplace-form-spectral-expansion}
+		\|u\|_2^2=\sum_j|c_j|^2,\qquad
+		\|\mathrm du\|_2^2=\sum_j\lambda_j|c_j|^2.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	\Cref{g3:thm:elliptic-discrete-spectrum}给出所需光滑特征基。在 \(H^1\) 上使用内积
+	\[
+		B(u,v)=(u,v)_{L^2}+(\mathrm du,\mathrm dv)_{L^2}.
+	\]
+	有限坐标覆盖中度量与密度有统一的上下界，所以该内积范数与第十一章的 \(H^1\) 范数等价，特别地它使 \(H^1\) 成为 Hilbert 空间。由光滑稠密性及分部积分，
+	\[
+		B(u,e_j)=(1+\lambda_j)(u,e_j)_{L^2}.
+	\]
+	因此 \(e_j/\sqrt{1+\lambda_j}\) 是 \(B\) 正交归一系。若 \(u\) 与其全部正交，则所有 \(L^2\) 系数为零，故 \(u=0\)。这证明该系在 \(H^1\) 中也完备。其 Hilbert 空间展开恰为 \(\sum_jc_je_j\)，平方和恒等式给出
+	\(B(u,u)=\sum_j(1+\lambda_j)|c_j|^2\)。减去 \(L^2\) 恒等式即得能量公式。
+
+	反之，若带权平方和有限，则有限部分和在 \(B\) 范数中为 Cauchy 列，因而有 \(H^1\) 极限。其 \(L^2\) 极限为给定的 \(u\)，故 \(u\in H^1\)，并保留上述等式。
+\end{proof}
+
+\begin{theorem}[极小极大原则]\label{g3:thm:laplace-minmax}
+	设 \((M^n,g)\) 为非空闭光滑黎曼流形，\(n\ge1\)。把标量 Laplace 特征值按重数排列为
+	\(0=\lambda_0\le\lambda_1\le\cdots\)。对每个整数 \(k\ge0\)，有
+	\begin{align}
+		\lambda_k
+		&=\min_{\substack{V\subset H^1(M;\mathbb C)\\\dim V=k+1}}
+		  \ \max_{0\ne u\in V}\mathscr Q_g(u),
+		\label{g3:eq:laplace-minmax}\\
+		\lambda_k
+		&=\max_{\substack{W\subset L^2(M;\mathbb C)\\\dim W=k}}
+		  \ \inf_{\substack{0\ne u\in H^1(M)\\u\perp W}}
+		  \mathscr Q_g(u).
+		\label{g3:eq:laplace-maxmin}
+	\end{align}
+	若 \(M\) 连通，则零特征值为单重，且
+	\begin{equation}\label{g3:eq:first-eigenvalue-mean-zero}
+		\lambda_1=\min_{\substack{0\ne u\in H^1(M)\\\int_Mu\,\mu_g=0}}
+		\mathscr Q_g(u)>0.
+	\end{equation}
+	最后一式取等当且仅当 \(u\) 属于 \(\lambda_1\) 特征空间。全部结论也可在实函数空间中陈述。
+\end{theorem}
+\begin{proof}
+	令 \(E_k=\operatorname{span}\{e_0,\ldots,e_k\}\)。由式\eqref{g3:eq:laplace-form-spectral-expansion}，\(E_k\) 上每个非零向量的商不超过 \(\lambda_k\)，且 \(e_k\) 达到它。反过来，任意 \(k+1\) 维空间 \(V\subset H^1\) 中，\(k\) 个线性条件
+	\((u,e_0)=\cdots=(u,e_{k-1})=0\)
+	有非零解。对此解的谱展开只有 \(j\ge k\) 的项，故
+	\[
+		\mathscr Q_g(u)=\frac{\sum_{j\ge k}\lambda_j|c_j|^2}{\sum_{j\ge k}|c_j|^2}\ge\lambda_k.
+	\]
+	有限维单位球紧，商在其上连续，所以这里的最大值确实存在；两边合起来证明式\eqref{g3:eq:laplace-minmax}，并说明外面的最小值由 \(E_k\) 达到。
+
+	对于任意 \(k\) 维 \(W\subset L^2\)，同样的维数论证给出非零 \(u\in E_k\cap W^\perp\)，所以内层下确界不超过 \(\lambda_k\)。取 \(W=E_{k-1}\) 时，上述带权平均不小于 \(\lambda_k\)，且由 \(e_k\) 达到；\(k=0\) 时取 \(W=\{0\}\)。这证明第二式。
+
+	若 \(\Delta u=0\)，则 \(\|\mathrm du\|_2^2=(\Delta u,u)=0\)，所以 \(u\) 在每个连通分支上为常数。紧流形的分支数有限，因为分支为开集且构成开覆盖。因此零特征值的重数等于分支数。连通时核恰为常数，\(u\perp e_0\) 就是均值为零；离散谱给出 \(\lambda_1>0\)。此时
+	\[
+		\|\mathrm du\|_2^2-\lambda_1\|u\|_2^2
+		=\sum_{j\ge1}(\lambda_j-\lambda_1)|c_j|^2.
+	\]
+	每项非负，和为零恰好排除所有高于 \(\lambda_1\) 的分量，得到等号条件。算子具有实系数，每个复特征空间是相应实特征空间的复化；也可直接在实 Hilbert 空间中重复证明。
+\end{proof}
+
+这里的重数不能丢掉。若 \(\lambda_k=\lambda_{k+1}\)，增加一个测试方向仍可能留在同一个特征空间中。计算上，任取一个 \(k+1\) 维测试空间都给出 \(\lambda_k\) 的上界；寻找下界则必须控制所有满足相应正交条件的函数。
+
+\subsection{曲率、直径与特征值估计}
 \label{g3:subsec:1604:02}
-待撰写
+曲率可以通过 Bochner 公式控制每个特征函数的 Hessian，从而产生下界。直径则允许在两个远离的区域构造低能量函数，产生另一方向的不等式。两种估计使用的几何条件并不相同。
+
+\begin{theorem}[Lichnerowicz 特征值估计]\label{g3:thm:lichnerowicz-bound}
+	设 \((M^n,g)\) 为连通闭光滑黎曼流形，\(n\ge2\)，且
+	\(\operatorname{Ric}\ge(n-1)\kappa g\)，其中 \(\kappa>0\)。则每个正的标量 Laplace 特征值都满足
+	\[
+		\lambda\ge n\kappa.
+	\]
+	若实非零特征函数 \(f\) 的特征值等于 \(n\kappa\)，则
+	\(\operatorname{Hess}f=-\kappa f g\)。
+\end{theorem}
+Lichnerowicz 的估计具有正确的球面常数。\footnote{André Lichnerowicz（1915--1998），法国数学家，研究微分几何与数学物理，在整体黎曼几何、相对论和辛几何中作出贡献。}先证明不等式，随后将直接算出球面的全部特征值。
+\begin{proof}
+	任一正特征空间含有非零实特征函数：把一个复特征函数拆成实部与虚部即可。取这样的 \(f\)，满足 \(\Delta f=\lambda f\)。\Cref{g3:thm:bochner-function}给出
+	\[
+		\frac12\Delta|\nabla f|^2
+		=\langle\nabla\Delta f,\nabla f\rangle
+		 -|\operatorname{Hess}f|^2-\operatorname{Ric}(\nabla f,\nabla f).
+	\]
+	在闭流形上积分，散度项为零；分部积分还给出
+	\[
+		\int_M(\Delta f)^2\,\mu_g
+		=\int_M|\operatorname{Hess}f|^2\,\mu_g
+		 +\int_M\operatorname{Ric}(\nabla f,\nabla f)\,\mu_g,
+		\qquad
+		\int_M|\nabla f|^2\,\mu_g=\lambda\int_Mf^2\,\mu_g.
+	\]
+	一个实对称 \(n\times n\) 矩阵满足平方范数不小于迹平方的 \(1/n\)，且等号恰在矩阵为标量矩阵时成立。用于 Hessian，并注意其迹为 \(-\Delta f\)，得到
+	\[
+		\lambda^2\int_Mf^2
+		\ge\frac{\lambda^2}{n}\int_Mf^2
+		 +(n-1)\kappa\lambda\int_Mf^2.
+	\]
+	除以 \((n-1)\lambda\int_Mf^2>0\)，即得 \(\lambda\ge n\kappa\)。若等号成立，矩阵迹不等式与 Ricci 下界所产生的两个非负误差积分均为零，连续性使它们逐点为零。于是
+	\(\operatorname{Hess}f=(\operatorname{tr}\operatorname{Hess}f/n)g=-\kappa f g\)。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:diameter-eigenvalue-upper}
+	设 \((M^n,g)\) 为连通闭光滑黎曼流形，\(n\ge2\)，\(\operatorname{Ric}\ge0\)，直径为 \(D>0\)。则
+	\[
+		\lambda_1\le\frac{64\cdot2^n}{D^2}.
+	\]
+\end{proposition}
+\begin{proof}
+	紧性给出 \(p,q\in M\)，使 \(d(p,q)=D\)。令 \(r=D/4\)，并定义
+	\[
+		\phi_p(x)=\max\{1-d(p,x)/r,0\},\qquad
+		\phi_q(x)=\max\{1-d(q,x)/r,0\}.
+	\]
+	距离函数的 Lipschitz 性使它们属于 \(H^1\)，且弱梯度范数至多为 \(1/r\)；这正是\cref{g3:prop:complete-lipschitz-cutoffs}中使用的局部链式计算。它们的支集分别在两个不相交的闭 \(r\) 球内。在半径 \(r/2\) 的内球上函数至少为 \(1/2\)，故
+	\[
+		\mathscr Q_g(\phi_p)
+		\le\frac{4}{r^2}\frac{\operatorname{Vol}B(p,r)}{\operatorname{Vol}B(p,r/2)}
+		\le\frac{4\cdot2^n}{r^2}.
+	\]
+	第二步是\cref{g3:thm:bishop-gromov}的 \(k=0\) 情形；\(M\) 闭而连通，所以完备性成立。同一估计适用于 \(q\)。由于两个函数的支集不相交，它们的 \(L^2\) 内积与梯度内积都为零。任意非零 \(u=a\phi_p+b\phi_q\) 的 Rayleigh 商因此是两商的非负加权平均，不超过 \(4\cdot2^n/r^2\)。用极小极大原则中的二维测试空间，得到所求上界。
+\end{proof}
+
+上述常数由两个线性截断和一次体积比较给出。\(D^{-2}\) 的尺度则是必需的：把度量换成 \(a^2g\)，直径乘以 \(a\)，能量商和全部特征值乘以 \(a^{-2}\)。连通的一维闭流形是一个长度为 \(L\) 的圆周，此时 \(D=L/2\)、\(\lambda_1=4\pi^2/L^2=\pi^2/D^2\)，可直接由周期方程计算。
 
 \subsection{球面和环面的谱}
 \label{g3:subsec:1604:03}
-待撰写
+圆球的旋转对称性把特征函数组织成多项式的齐次部分；平坦环面的平移对称性则把它们组织成指数函数。两个模型都须验证完备性：写出一批特征函数，还不能说明没有遗漏其他特征值。
+
+\begin{theorem}\label{g3:thm:sphere-function-spectrum}
+	设 \(S_a^n\subset\mathbb R^{n+1}\) 为半径 \(a>0\) 的圆球，\(n\ge1\)，带诱导度量。其标量 Laplace 特征值恰为
+	\begin{equation}\label{g3:eq:sphere-function-spectrum}
+		\lambda_\ell=\frac{\ell(\ell+n-1)}{a^2},\qquad \ell=0,1,2,\ldots,
+	\end{equation}
+	对应特征空间由 \(\mathbb R^{n+1}\) 上 \(\ell\) 次齐次调和多项式的限制组成，实维数或复维数为
+	\[
+		m_\ell=\binom{n+\ell}{n}-\binom{n+\ell-2}{n}.
+	\]
+	这里当上标小于 \(n\) 时，第二个二项式系数取零。
+\end{theorem}
+\begin{proof}
+	先令 \(a=1\)，记 \(N=n+1\)，\(\mathcal P_\ell\) 为 \(N\) 个变量的 \(\ell\) 次齐次多项式空间，\(\mathcal H_\ell=\ker(\sum_i\partial_i^2)\cap\mathcal P_\ell\)。极坐标中的 Euclid 度量为 \(\mathrm dr^2+r^2g_{S^n}\)，密度为 \(r^n\mathrm dr\,\mu_{S^n}\)。代入散度公式，得到非负号约定下
+	\[
+		\Delta_{\mathbb R^N}
+		=-\partial_r^2-\frac nr\partial_r+\frac1{r^2}\Delta_{S^n}.
+	\]
+	若 \(P\in\mathcal H_\ell\)，写 \(P(r\theta)=r^\ell Y(\theta)\)，便得
+	\[
+		0=\Delta_{\mathbb R^N}P
+		=r^{\ell-2}\bigl(\Delta_{S^n}Y-\ell(\ell+n-1)Y\bigr).
+	\]
+	因此限制确为所述特征函数。齐次性还说明限制映射单射：球面上为零就使每条过原点的射线上为零。
+
+	下面证明这些空间已经足够大。在 \(\mathcal P_\ell\) 上定义正定内积：不同单项式正交，且 \(\langle x^\alpha,x^\alpha\rangle=\alpha!\)。直接比较系数可知，乘以 \(x_i\) 与 \(\partial_i\) 互为伴随，因此乘以 \(|x|^2\) 与 \(\sum_i\partial_i^2\) 互为伴随。有限维正交补于是给出
+	\[
+		\mathcal P_\ell=\mathcal H_\ell\oplus |x|^2\mathcal P_{\ell-2},
+	\]
+	其中负次数空间取零。乘以 \(|x|^2\) 单射，故
+	\(\dim\mathcal H_\ell=\dim\mathcal P_\ell-\dim\mathcal P_{\ell-2}\)，即所述重数。重复分解任意多项式的齐次部分，再在 \(|x|=1\) 上限制，说明所有多项式限制均为有限个 \(\mathcal H_j\) 限制的和。
+
+	为验证这些限制稠密，给出所需多项式逼近的具体理由。若 \(f\in C(S^n)\)，在立方体 \([-1,1]^N\) 上用
+	\(F(x)=\zeta(|x|)f(x/|x|)\) 延拓，其中 \(\zeta\) 连续、在原点附近为零、在半径一附近为一，并令 \(F(0)=0\)。于是 \(F\) 连续，且在球面上等于 \(f\)。将立方体仿射移到 \([0,1]^N\)。对其上的连续函数 \(F\)，定义多项式
+	\[
+		B_mF(x)=\sum_{0\le j_1,\ldots,j_N\le m}
+		F(j_1/m,\ldots,j_N/m)
+		\prod_{i=1}^N\binom m{j_i}x_i^{j_i}(1-x_i)^{m-j_i}.
+	\]
+	这些非负权重的和为一。若把它们看作独立二项分布的权重，令 \(J_i\) 的均值为 \(mx_i\)，则
+	\(\sum_i\mathbb E|J_i/m-x_i|^2\le N/(4m)\)。对任意 \(\delta>0\)，落在 \(|J/m-x|\ge\delta\) 的权重和至多为 \(N/(4m\delta^2)\)，这是将平方距离在该集合上以 \(\delta^2\) 下界估计的直接结果。由一致连续性，
+	\[
+		|B_mF(x)-F(x)|
+		\le\sup_{|z-x|<\delta}|F(z)-F(x)|
+		 +2\|F\|_\infty\frac{N}{4m\delta^2}.
+	\]
+	先取小 \(\delta\)，再取大 \(m\)，得到一致逼近；复函数分别处理实部与虚部。限制回球面，证明多项式限制在 \(C(S^n)\) 中一致稠密，进而在 \(L^2\) 中稠密。
+
+	各数 \(\ell(\ell+n-1)\) 随 \(\ell\ge0\) 严格增加。不同特征值的空间由自伴性正交，每个 \(\mathcal H_\ell\) 的限制又有限维。刚证的稠密性说明把各空间的正交归一基合起来就是 \(L^2\) 基。若另有特征函数，它与所有不同特征值的空间正交；若其特征值不在此列，则它为零，若在此列，则它正是该有限维空间的元素。这证明没有遗漏，并确定全部重数。最后，半径缩放使度量乘以 \(a^2\)，由能量商或散度公式知特征值乘以 \(a^{-2}\)，完成一般情形。
+\end{proof}
+
+例如，\(S^2\) 的特征值为 \(\ell(\ell+1)\)，重数为 \(2\ell+1\)；\(S^1\) 的正特征值为 \(\ell^2\)，每个重数为二。一般 \(S_a^n\) 的第一正特征空间由坐标函数张成，\(\lambda_1=n/a^2\)，而 \(\operatorname{Ric}=(n-1)a^{-2}g\)；当 \(n\ge2\) 时，它达到 Lichnerowicz 下界。
+
+\begin{theorem}\label{g3:thm:flat-torus-spectrum}
+	设 \(\Lambda=B\mathbb Z^n\subset\mathbb R^n\) 为满秩格，\(n\ge1\)，\(B\) 为可逆实矩阵。给 \(T_\Lambda=\mathbb R^n/\Lambda\) 赋予 Euclid 商度量，并定义对偶格
+	\[
+		\Lambda^*=\{\xi\in\mathbb R^n:\langle\xi,v\rangle\in\mathbb Z\text{ 对所有 }v\in\Lambda\}
+		=B^{-\mathsf T}\mathbb Z^n.
+	\]
+	令 \(V=|\det B|\)。则
+	\[
+		e_\xi([x])=V^{-1/2}e^{2\pi\mathrm i\langle\xi,x\rangle},\qquad \xi\in\Lambda^*,
+	\]
+	组成 \(L^2(T_\Lambda;\mathbb C)\) 的正交归一基，且
+	\begin{equation}\label{g3:eq:flat-torus-spectrum}
+		\Delta e_\xi=4\pi^2|\xi|^2e_\xi.
+	\end{equation}
+	因此 \(4\pi^2r\) 的重数等于 \(\#\{\xi\in\Lambda^*:|\xi|^2=r\}\)。两个这样的平坦环面等距，当且仅当存在正交变换 \(Q\) 使 \(Q\Lambda_1=\Lambda_2\)。
+\end{theorem}
+\begin{proof}
+	对偶格条件恰好保证指数在 \(x\) 与 \(x+v\)、\(v\in\Lambda\) 处相同，故函数良定义。令 \(x=Bt\)，基本平行多面体对应 \(0\le t_i<1\)，体积元为 \(V\,\mathrm dt\)。当 \(\xi=B^{-\mathsf T}k\) 时，指数成为 \(e^{2\pi\mathrm i k\cdot t}\)，所以逐坐标积分给出正交归一性。
+
+	\Cref{g3:exm:circle-elliptic-spectrum}已证明一维周期指数的完备性，改变量后也适用于周期一。它的有限乘积同样完备：若一个 \(L^2([0,1]^n)\) 函数与全部乘积指数正交，先对后 \(n-1\) 个变量取固定频率的系数，Fubini 与 Cauchy--Schwarz 使它成为第一变量的 \(L^2\) 函数；其全部一维系数为零，故几乎处处为零。后 \(n-1\) 个频率只有可数多个，可以去掉一个共同零测集；归纳使用低维完备性，得到原函数几乎处处为零。如此证明乘积指数完备。
+
+	局部算子为 \(-\sum_i\partial_i^2\)，直接求导即得式\eqref{g3:eq:flat-torus-spectrum}。满秩格在每个有界球内只有有限多个点，所以重数有限；上述完备性保证全部谱已被列出。
+
+	若 \(Q\Lambda_1=\Lambda_2\)，映射 \([x]\mapsto[Qx]\) 显然给出等距同构。反之，设 \(F:T_{\Lambda_1}\to T_{\Lambda_2}\) 是等距同构，取 \(F([0])=[b]\)，并在平坦切空间的自然识别下令 \(Q=\mathrm dF_{[0]}\)，则 \(Q\) 正交。等距映射保持测地线及其初速度，故对每个 \(x\in\mathbb R^n\)，两条测地线的唯一性给出
+	\[
+		F([tx])=[b+tQx]\qquad(t\in\mathbb R).
+	\]
+	取 \(x\in\Lambda_1\)、\(t=1\)，得到 \(Qx\in\Lambda_2\)。对逆映射作同样推导得到 \(Q^{-1}\Lambda_2\subset\Lambda_1\)，所以两格恰由 \(Q\) 对应。
+\end{proof}
+
+平坦环面的谱因而记录对偶格的每种向量长度及出现次数；它没有逐个标记这些向量，更没有直接给出它们之间的夹角。下一例将使这个信息缺口成为真正的不等距。
 
 \subsection{等谱不等距及可恢复信息}
 \label{g3:subsec:1604:04}
-待撰写
+两个闭黎曼流形的标量 Laplace 特征值连同重数相同，就称它们\term[dengpu]{等谱}[isospectral]。Milnor 在1964年给出十六维平坦环面的等谱不等距例子。\footnote{John Willard Milnor（1931--），美国数学家，研究微分拓扑、代数拓扑与动力系统，发现七维球面的非标准光滑结构。}\cite[第542页]{Milnor1964Isospectral}下面将这个例子所需的格与计数恒等式全部写出。
+
+\begin{example}\label{g3:exm:milnor-isospectral-tori}
+	在 \(\mathbb R^m\) 中令
+	\[
+		D_m=\{z\in\mathbb Z^m:\textstyle\sum_i z_i\text{ 为偶数}\},\qquad
+		h_m=(1/2,\ldots,1/2),\qquad
+		D_m^+=D_m\cup(h_m+D_m).
+	\]
+	取 \(E_8=D_8^+\)，并在 \(\mathbb R^{16}\) 中定义
+	\[
+		L_A=E_8\oplus E_8,\qquad L_B=D_{16}^+.
+	\]
+	则平坦环面 \(T_A=\mathbb R^{16}/L_A\) 与 \(T_B=\mathbb R^{16}/L_B\) 等谱而不等距。
+\end{example}
+\begin{proof}
+	先核对这确实是可用于谱计算的自对偶格。以下 \(m=8\) 或 \(16\)。因 \(2h_m=(1,\ldots,1)\in D_m\)，两个陪集的并 \(D_m^+\) 对加法和取负封闭，是满秩离散格。\(D_m\) 在 \(\mathbb Z^m\) 中指数为二，故基本平行多面体体积为二；\(D_m\) 又在 \(D_m^+\) 中指数为二，所以 \(D_m^+\) 的基本体积为一。对 \(z\in D_m\)，有 \(h_m\cdot z=\frac12\sum z_i\in\mathbb Z\)，且 \(|h_m|^2=m/4\in\mathbb Z\)。因此格中任意两向量内积为整数，即 \(D_m^+\subset(D_m^+)^*\)。对偶格的基本体积是原体积的倒数，两者此时同为一；包含关系的指数为一，故二者相等。正交直和也保持自对偶性，所以 \(L_A^*=L_A\)、\(L_B^*=L_B\)。
+
+	接着比较向量长度。对 \(0<q<1\)，定义三个绝对收敛的级数
+	\[
+		\theta_3(q)=\sum_{k\in\mathbb Z}q^{k^2},\qquad
+		\theta_4(q)=\sum_{k\in\mathbb Z}(-1)^kq^{k^2},\qquad
+		\theta_2(q)=\sum_{k\in\mathbb Z}q^{(k+1/2)^2}.
+	\]
+	格的长度生成函数为 \(\Theta_L(q)=\sum_{v\in L}q^{|v|^2}\)。用 \((1+(-1)^{\sum z_i})/2\) 选出偶数坐标和，得到
+	\[
+		\Theta_{D_m}(q)=\frac{\theta_3(q)^m+\theta_4(q)^m}{2}.
+	\]
+	对于半整数陪集，同样的奇偶筛选含有
+	\(\sum_k(-1)^kq^{(k+1/2)^2}=0\)：替换 \(k\mapsto-k-1\) 保持指数却改变符号。因此
+	\begin{equation}\label{g3:eq:even-lattice-theta}
+		\Theta_{D_m^+}(q)
+		=\frac{\theta_2(q)^m+\theta_3(q)^m+\theta_4(q)^m}{2}.
+	\end{equation}
+
+	所需的四次恒等式可以用一个正交变换证明，无须先建立模形式理论。令
+	\[
+		H=\frac12
+		\begin{pmatrix}
+			1&1&1&1\\
+			1&1&-1&-1\\
+			1&-1&1&-1\\
+			1&-1&-1&1
+		\end{pmatrix},\qquad H^{\mathsf T}H=H^2=I.
+	\]
+	若 \(z\in\mathbb Z^4\) 的坐标和为奇数，则 \(Hz\) 的各坐标为半整数。写 \(Hz=w+h_4\)，有
+	\(\sum_iw_i=2z_1-2\)，故 \(w\in D_4\)。反之，若 \(v=w+h_4\)、\(w\in D_4\)，则 \(Hw\) 为整数向量，\(Hh_4=(1,0,0,0)\)，所以 \(Hv\in\mathbb Z^4\)，且其坐标和为 \(2v_1\)，是奇数。于是 \(H\) 给出从奇数坐标和的整数向量到 \(h_4+D_4\) 的保长双射。半整数格的另一奇偶类与这个类也等长对应：只改变第一个坐标的符号，整数部分就从 \(w_1\) 变成 \(-w_1-1\)，从而翻转坐标和的奇偶性。因此
+	\[
+		\theta_2(q)^4
+		=2\sum_{\substack{z\in\mathbb Z^4\\\sum z_i\text{ 为奇数}}}q^{|z|^2}
+		=\theta_3(q)^4-\theta_4(q)^4.
+	\]
+	令 \(a=\theta_2(q)^4\)、\(b=\theta_4(q)^4\)，则 \(\theta_3(q)^4=a+b\)。式\eqref{g3:eq:even-lattice-theta}给出
+	\[
+		\begin{split}
+		\Theta_{L_A}(q)
+		&=\left(\frac{a^2+b^2+(a+b)^2}{2}\right)^2
+		 =(a^2+ab+b^2)^2,\\
+		\Theta_{L_B}(q)
+		&=\frac{a^4+b^4+(a+b)^4}{2}
+		 =(a^2+ab+b^2)^2.
+		\end{split}
+	\]
+	这些格的向量平方长度为非负整数，因而生成函数是 \(|q|<1\) 内的幂级数。幂级数系数的唯一性说明每个平方长度的向量数相同。两格自对偶，\cref{g3:thm:flat-torus-spectrum}遂给出两个环面的谱及重数完全相同。
+
+	最后须区分格本身。把格中平方长度为二的向量称为这里的根，以根为顶点，两个不同顶点的内积非零时连接一条边。任何格的正交同构均保持这张有限图。\(D_m\) 的根恰为 \(\pm e_i\pm e_j\)、\(i\ne j\)。当 \(m\ge3\) 时这些根的图连通：支集恰重合一个指标的两根直接相连；支集不交时，取一个在两支集各含一个指标的根作桥；支集相同而正交时，使用第三个指标作桥；相反的两根也直接相连。
+
+	\(D_{16}^+\) 的半整数向量平方长度至少为 \(16/4=4\)，所以其全部根就是 \(D_{16}\) 的根，图连通。\(E_8\) 的根除 \(D_8\) 的根外，还有各坐标为 \(\pm1/2\)、负号个数为偶数的向量；每个这样的根都与某个 \(\pm e_i\pm e_j\) 内积非零，例如使这两个符号与其相应坐标同号。故 \(E_8\) 的根图也连通。\(E_8\) 的非零向量平方长度至少为二，所以 \(L_A=E_8\oplus E_8\) 的每个根恰位于一个因子内，两个因子中的根互相正交。因此 \(L_A\) 的根图恰有两个连通分支，而 \(L_B\) 的根图只有一个。两格不可能正交同构，环面等距判据于是证明 \(T_A\) 与 \(T_B\) 不等距。
+\end{proof}
+
+例中两环面的体积均为一，第一正特征值均为 \(8\pi^2\)，重数均为 \(480\)：\(D_{16}\) 有 \(4\binom{16}{2}=480\) 个根，而每个 \(E_8\) 有 \(4\binom82+2^7=240\) 个根。相同的数量并没有保留根之间的全部内积关系。
+
+\begin{proposition}\label{g3:prop:audible-basic-invariants}
+	在非空、正维、闭光滑黎曼流形的范围内，标量 Laplace 谱连同重数决定维数、总体积、标量曲率的积分以及连通分支数。更一般地，它决定标量热迹展开中的每个积分系数。
+\end{proposition}
+\begin{proof}
+	给定谱即可对每个 \(t>0\) 确定 \(Z(t)=\sum_je^{-t\lambda_j}\)。\Cref{g3:thm:heat-trace-expansion}给出
+	\[
+		Z(t)=(4\pi t)^{-n/2}
+		\left(V+\frac t6\int_M\operatorname{Scal}\,\mu_g+O(t^2)\right),\qquad V>0.
+	\]
+	因此
+	\[
+		n=-2\lim_{t\downarrow0}\frac{\log Z(t)}{\log t},\qquad
+		V=\lim_{t\downarrow0}(4\pi t)^{n/2}Z(t),
+	\]
+	而
+	\[
+		\int_M\operatorname{Scal}\,\mu_g
+		=6\lim_{t\downarrow0}\frac{(4\pi t)^{n/2}Z(t)-V}{t}.
+	\]
+	逐次减去已经恢复的项，再除以下一幂 \(t\)，同样恢复任意固定阶积分热系数。最后，极小极大原则证明中的零核计算说明 \(\dim\ker\Delta\) 恰为连通分支数；该数就是谱中零的重数。
+\end{proof}
+
+这里恢复的是标量曲率的积分，而非逐点的曲率函数。Milnor 例子甚至有完全相同的零曲率局部模型，差别发生在整体格的识别方式。另须区分两种渐近：热迹含有 \(t\int\operatorname{Scal}/6\) 这一项，并不自动赋予计数函数一个相应的次项。\Cref{g3:thm:weyl-leading-law}所证的 Tauber 推论给出主项；谱计数的更精细余项需要另行论证，不能直接把热迹展开逐项反演。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

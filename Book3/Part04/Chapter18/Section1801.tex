@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 18.1 能量与几何变分
 % 纲要位置：几何学计划纲要.md，第 2822 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,319 @@
 \section{能量与几何变分}
 \label{g3:sec:1801}
 
-待撰写
+曲线能量把速度的平方沿参数区间积分。对于映射 \(u:M\to N\)，每个源方向都有一个像速度，因而自然把这些速度的平方相加，再在 \(M\) 上积分。临界方程要求各方向的协变加速度之和为零；单个方向的加速度不必为零。为了比较邻近映射，还须把不同点处的目标切向量放在同一个沿映射的向量丛中。本节将\chapref{g3:ch:06}的曲线变分计算推广到这个情形。
+
+\ProseParagraphBreak
+
+变分公式的经典论述可参照\cite[第2节，第115--117页；第6.C节，第135--136页]{EellsSampson1964HarmonicMaps}；以下按本卷的非负 Laplace 与曲率约定逐项推导。
 
 \subsection{拉回丛上的协变微分}
 \label{g3:subsec:1801:01}
-待撰写
+设 \((M^m,g)\)、\((N^n,h)\) 为光滑黎曼流形，\(m,n\ge1\)，目标 \(N\) 无边界，源 \(M\) 可有光滑边界。除特别说明外，映射及各场均光滑到边界。映射 \(u:M\to N\) 不必是浸入：它可以把一个开集压成一点，也可以在不同源点取同一目标值。沿 \(u\) 的向量场在每个 \(x\) 处属于 \(\mathrm T_{u(x)}N\)，这些空间组成\term[lahui qiecong]{拉回切丛}[pullback tangent bundle]
+\[
+	u^*\mathrm TN=\{(x,v):x\in M,\ v\in\mathrm T_{u(x)}N\}\longrightarrow M.
+\]
+它的两个自然投影组成交换图
+\[
+	\begin{tikzcd}
+		u^*\mathrm TN \arrow[r,"\widetilde u"] \arrow[d] & \mathrm TN \arrow[d,"\pi_N"]\\
+		M \arrow[r,"u"] & N.
+	\end{tikzcd}
+\]
+这里 \(\widetilde u(x,v)=v\)。图中左侧的纤维保留源点 \(x\)，即使两个源点有相同像，也仍是两个不同纤维。在目标坐标 \((y^\alpha)\) 中，截面写成 \(V=V^\alpha\partial_{y^\alpha}|_u\)。这里 \(V^\alpha\) 是源上的函数，\(V\) 则是沿映射的场，不是定义在整个目标上的向量场。
+
+\ProseParagraphBreak
+
+目标的 Levi-Civita 联络诱导 \(u^*\mathrm TN\) 上的联络，记为 \(D\) 或 \(\nabla^u\)。其坐标表达为
+\begin{equation}\label{g3:eq:pullback-connection-coordinates}
+	(D_XV)^\alpha
+	=X(V^\alpha)+\Gamma^\alpha_{\beta\gamma}(u)\,X(u^\beta)V^\gamma.
+\end{equation}
+这个定义与坐标无关。事实上，在目标局部标架 \((E_a)\) 中写 \(V=v^aE_a\circ u\)，可写成
+\[
+	D_XV=X(v^a)E_a\circ u+v^a\nabla^N_{\mathrm du(X)}E_a.
+\]
+若 \(E'_a=E_bQ^b_a\)，对 \(Q(u)\) 求导所得 \(X(Q\circ u)=\mathrm dQ(\mathrm du(X))\) 项，正与目标联络的换架项相抵消，得到同一个截面。因此局部定义粘合。目标联络的度量相容性还给出
+\[
+	X\langle V,W\rangle_h=\langle D_XV,W\rangle_h+\langle V,D_XW\rangle_h.
+\]
+这说明可以像对普通向量场一样求导内积，而不必先把 \(V,W\) 延拓到 \(N\)。
+
+\ProseParagraphBreak
+
+微分 \(\mathrm du\) 是 \(\mathrm T^*M\otimes u^*\mathrm TN\) 的截面。将源与目标联络结合，定义其协变微分
+\begin{equation}\label{g3:eq:map-second-covariant-differential}
+	B_u(X,Y)=(\nabla\mathrm du)(X,Y)
+	\coloneqq D_X(\mathrm du(Y))-\mathrm du(\nabla^M_XY).
+\end{equation}
+减去第二项，是为了扣除源方向 \(Y\) 本身的变化。联络的 Leibniz 法则说明这个差对 \(X,Y\) 都是函数线性的，因此是一个真正的二阶协变张量，而非依赖延拓的二次求导。
+
+\begin{proposition}\label{g3:prop:map-covariant-identities}
+	设 \((M^m,g)\)、\((N^n,h)\) 为光滑黎曼流形，\(m,n\ge1\)，\(M\) 允许光滑边界，\(N\) 无边界，\(u:M\to N\) 光滑。对拉回联络 \(D\)、光滑源向量场 \(X,Y\) 和沿 \(u\) 的光滑场 \(V\)，有
+	\begin{equation}\label{g3:eq:map-pullback-identities}
+		B_u(X,Y)=B_u(Y,X),\qquad
+		[D_X,D_Y]V-D_{[X,Y]}V=R^N(\mathrm du(X),\mathrm du(Y))V.
+	\end{equation}
+	若 \(U:I\times M\to N\) 为光滑映射，\(I\subset\mathbb R\) 为开区间，\(X\) 按与参数 \(t\) 无关的方式提升到乘积上，记 \(V=\partial_tU\)，则
+	\begin{equation}\label{g3:eq:map-variation-commutation}
+		D_t(\mathrm dU(X))=D_XV,\qquad
+		[D_t,D_X]Z=R^N(V,\mathrm dU(X))Z
+	\end{equation}
+	对每个沿 \(U\) 的光滑场 \(Z\) 成立。
+\end{proposition}
+\begin{proof}
+	在源坐标 \((x^i)\) 中，由式\eqref{g3:eq:pullback-connection-coordinates}得到
+	\[
+		(B_u)^\alpha_{ij}
+		=\partial_i\partial_j u^\alpha
+		-\Gamma^k_{ij}(g)\partial_k u^\alpha
+		+\Gamma^\alpha_{\beta\gamma}(h)(u)\partial_i u^\beta\partial_j u^\gamma.
+	\]
+	两个 Levi-Civita 联络都无挠，故各 Christoffel 符号对下面两指标对称；右边因此在 \(i,j\) 之间对称。
+
+	为了计算曲率，在目标标架中记联络矩阵为 \(\omega\)。拉回联络的矩阵就是 \(u^*\omega\)，所以它的曲率矩阵为
+	\[
+		\mathrm d(u^*\omega)+u^*\omega\wedge u^*\omega
+		=u^*(\mathrm d\omega+\omega\wedge\omega).
+	\]
+	两边作用于 \((X,Y)\) 和截面 \(V\)，正是式\eqref{g3:eq:map-pullback-identities}的第二式。这也可以由坐标式展开两次导数得到：含二阶 \(V\) 导数和一阶 \(V\) 导数的项抵消，留下目标曲率作用于两个像方向。
+
+	最后把同一计算用于 \(U:I\times M\to N\)。因为 \([\partial_t,X]=0\)，无挠性给出 \(D_t\mathrm dU(X)=D_X\mathrm dU(\partial_t)\)，拉回曲率公式给出第二式。这里不要求 \(U\) 是浸入，与\cref{g3:prop:variation-commutation}中的二参数曲线计算一致。
+\end{proof}
+
+能量需要在所有源方向上取平方和。若 \((e_i)_{i=1}^m\) 是源的局部正交单位标架，则
+\[
+	|\mathrm du|^2=\sum_{i=1}^m|\mathrm du(e_i)|_h^2
+	=g^{ij}h_{\alpha\beta}(u)\partial_i u^\alpha\partial_j u^\beta.
+\]
+这是两侧度量在张量丛 \(\mathrm T^*M\otimes u^*\mathrm TN\) 上诱导的范数平方，正交换架不改变这个和。
+\begin{definition}\label{g3:def:map-energy}
+	设 \(u:(M^m,g)\to(N^n,h)\) 为光滑黎曼流形之间的光滑映射，\(m,n\ge1\)，\(N\) 无边界，\(M\) 允许光滑边界。定义其\term[nengliang midu]{能量密度}[energy density]及在可测区域 \(A\subset M\) 上的能量为
+	\begin{equation}\label{g3:eq:map-energy}
+		e(u)=\frac12|\mathrm du|^2,\qquad
+		E(u;A)=\int_A e(u)\,\mu_g.
+	\end{equation}
+	积分允许为无穷；\(E(u;M)\) 简记为 \(E(u)\)。当 \(M\) 紧时，光滑映射的能量有限。
+\end{definition}
+\symidx{\(E(u;A)\)：映射在区域 \(A\) 上的能量}
+\symidx{\(e(u)\)：映射的能量密度}
+积分使用体积密度，所以源和目标都无须可定向。常映射的微分为零，能量也为零；反之，连通源上的光滑映射若能量为零，则微分处处为零，沿道路积分可知它是常映射。源不连通时，只能得到各连通分支上分别为常值。
 
 \subsection{张力场和第一变分}
 \label{g3:subsec:1801:02}
-待撰写
+二阶张量 \(B_u\) 同时记录许多源方向。能量对源方向作了求和，其变分方程相应地取这个张量的迹。
+\begin{definition}\label{g3:def:tension-harmonic-map}
+	设 \(u:(M^m,g)\to(N^n,h)\) 为光滑映射，\(m,n\ge1\)，目标无边界，源允许光滑边界。其\term[zhangli chang]{张力场}[tension field]为沿 \(u\) 的场
+	\begin{equation}\label{g3:eq:tension-definition}
+		\tau(u)=\operatorname{tr}_g\nabla\mathrm du
+		=\sum_{i=1}^m\bigl(D_{e_i}\mathrm du(e_i)-\mathrm du(\nabla^M_{e_i}e_i)\bigr).
+	\end{equation}
+	若 \(\tau(u)=0\) 于源的内部，则称 \(u\) 为\term[tiaohe yingshe]{调和映射}[harmonic map]。
+\end{definition}
+\symidx{\(\tau(u)\)：映射的张力场}
+张量取迹使定义与源标架无关。局部坐标表达为
+\begin{equation}\label{g3:eq:tension-coordinates}
+	\begin{aligned}
+		\tau(u)^\alpha
+		&=g^{ij}\left(\partial_i\partial_j u^\alpha
+		-\Gamma^k_{ij}(g)\partial_k u^\alpha
+		+\Gamma^\alpha_{\beta\gamma}(h)(u)\partial_i u^\beta\partial_j u^\gamma\right)\\
+		&=-\Delta_g u^\alpha
+		+g^{ij}\Gamma^\alpha_{\beta\gamma}(h)(u)\partial_i u^\beta\partial_j u^\gamma.
+	\end{aligned}
+\end{equation}
+第二行中的 \(u^\alpha\) 是当前目标坐标中的实函数；它只在该坐标适用的源区域上有意义。目标为 Euclid 空间时，Christoffel 项为零，所以 \(\tau(u)=-\Delta_g u\)。这核对了本书非负 Laplace 算子与张力场之间的负号。
+
+\ProseParagraphBreak
+
+对紧源上的光滑映射 \(u\)，取光滑变分 \(U:(-\varepsilon,\varepsilon)\times M\to N\)，令 \(u_t=U(t,\cdot)\)、\(u_0=u\)、\(V=\partial_tU|_0\)。任意光滑截面 \(V\in\Gamma(u^*\mathrm TN)\) 都可由
+\[
+	u_t(x)=\exp_{u(x)}(tV(x))
+\]
+实现。指数映射在零截面附近光滑，源紧且 \(V\) 光滑，因而有共同的充分小参数区间；这个构造不要求目标完备。若 \(V|_{\partial M}=0\)，所得变分逐点固定边界。这里沿用式\eqref{g3:eq:exponential-field-variation}的构造，只把紧参数区间换成了紧源流形。
+
+\begin{theorem}\label{g3:thm:harmonic-map-first-variation}
+	设 \((M^m,g)\) 为紧光滑黎曼流形，\(m\ge1\)，允许光滑边界，\((N^n,h)\) 为无边界光滑黎曼流形，\(n\ge1\)。设 \(u:M\to N\) 光滑，\(u_t\) 为光滑变分，\(V=\partial_tu_t|_0\)，\(\nu\) 为源边界的外单位法向。则
+	\begin{equation}\label{g3:eq:harmonic-map-first-variation}
+		\left.\frac{\mathrm d}{\mathrm dt}E(u_t)\right|_0
+		=-\int_M\langle\tau(u),V\rangle_h\,\mu_g
+		+\int_{\partial M}\langle\mathrm du(\nu),V\rangle_h\,\mu_{\partial g}.
+	\end{equation}
+	在闭源上，或在有边界时只允许逐点固定边界的变分，\(u\) 为能量临界点当且仅当它调和。
+\end{theorem}
+\begin{proof}
+	源度量不随参数变化，所以由度量相容性和式\eqref{g3:eq:map-variation-commutation}，
+	\[
+		\left.\partial_t e(u_t)\right|_0
+		=\sum_i\langle D_{e_i}V,\mathrm du(e_i)\rangle_h.
+	\]
+	令源上的一形式 \(\eta\) 满足 \(\eta(X)=\langle V,\mathrm du(X)\rangle_h\)。在一点用正规正交标架计算，再恢复张量表达，得到
+	\[
+		\operatorname{div}_g(\eta^\sharp)
+		=\sum_i\langle D_{e_i}V,\mathrm du(e_i)\rangle_h
+		+\langle V,\tau(u)\rangle_h.
+	\]
+	紧性允许交换参数微分与积分。应用不要求定向的散度定理\cref{g3:thm:divergence-theorem}，且注意 \(\eta(\nu)=\langle V,\mathrm du(\nu)\rangle_h\)，即得第一变分公式。
+
+	若 \(\tau(u)=0\) 且变分固定边界，右侧两项都为零。反过来，若对所有允许变分一阶导数为零，取内部任意非负紧支光滑函数 \(\chi\)，并实现变分场 \(V=\chi\tau(u)\)，得到 \(\int_M\chi|\tau(u)|^2\mu_g=0\)。因此张力场在内部为零；其到边界的连续性也给出边界处为零。闭源的证明相同，不需边界条件。
+\end{proof}
+
+对于非紧源，调和性仍等价于所有支集紧含于内部的变分所对应的局部能量驻值：把变分的支集装进一个相对紧光滑区域，在该区域使用同一公式即可。若源有边界而允许边界值在整个目标中自由变化，则内部方程之外还须满足 \(\mathrm du(\nu)=0\)。这是由边界项的任意测试值得到的另一种变分问题。固定边界的调和方程本身不附带这个条件。
+
+\begin{example}\label{g3:exm:harmonic-map-elementary}
+	Euclid 目标中的调和映射就是各分量均为调和函数的映射。若源闭且连通，则对每个分量 \(u^\alpha\) 分部积分得到
+	\[
+		0=\int_Mu^\alpha\Delta_g u^\alpha\,\mu_g
+		=\int_M|\mathrm du^\alpha|^2\,\mu_g,
+	\]
+	所以这样的映射必为常映射。一般目标的情况不同：任何黎曼流形到自身的恒等映射满足 \(B_{\operatorname{id}}(X,Y)=\nabla_XY-\nabla_XY=0\)，因而调和；其能量密度为 \(m/2\)，通常并不为零。
+\end{example}
 
 \subsection{第二变分及目标曲率}
 \label{g3:subsec:1801:03}
-待撰写
+第一变分找到了临界方程，第二变分则检验临界点附近的能量如何变化。记 \(u_i=\mathrm du(e_i)\)。对沿 \(u\) 的光滑场 \(V,W\)，令
+\begin{equation}\label{g3:eq:harmonic-map-index-form}
+	Q_u(V,W)=\int_M\left(\sum_i\langle D_{e_i}V,D_{e_i}W\rangle_h
+	-\sum_i\langle R^N(V,u_i)u_i,W\rangle_h\right)\mu_g.
+\end{equation}
+两项都对源方向取迹，因此与正交标架的选择无关。\cref{g3:prop:curvature-symmetries}的两对槽位交换关系保证 \(V\mapsto R^N(V,u_i)u_i\) 自伴，故 \(Q_u\) 对称。
+
+\begin{theorem}\label{g3:thm:harmonic-map-second-variation}
+	设 \((M^m,g)\) 为紧光滑黎曼流形，\(m\ge1\)，允许光滑边界，\((N^n,h)\) 为无边界光滑黎曼流形，\(n\ge1\)。设 \(u:M\to N\) 为光滑调和映射。对任意沿 \(u\) 的光滑场 \(V,W\)，在有边界时要求 \(V=W=0\) 于 \(\partial M\)，则能量在闭源或逐点固定边界变分中的 Hessian 为
+	\begin{equation}\label{g3:eq:harmonic-map-second-variation}
+		\operatorname{Hess}_uE(V,W)=Q_u(V,W).
+	\end{equation}
+	具体地，任意光滑二参数变分 \(U(s,t,x)\) 若满足 \(U(0,0,x)=u(x)\)、\(\partial_sU|_0=V\)、\(\partial_tU|_0=W\)，并在有边界时逐点固定全部边界值，则其混合二阶能量导数等于上式，且只依赖 \(V,W\)。
+\end{theorem}
+\begin{proof}
+	先不假设中心映射调和，以便看清二阶参数数据何时消失。把源标架按与 \(s,t\) 无关的方式提升，记 \(S=\partial_sU\)、\(T=\partial_tU\)、\(A=D_sT|_{s=t=0}\)。一次求导给出
+	\(\partial_tE(U)=\int_M\sum_i\langle D_{e_i}T,\mathrm dU(e_i)\rangle_h\mu_g\)。再对 \(s\) 求导，并用交换公式，得到
+	\[
+		\begin{aligned}
+			\left.\partial_s\partial_tE(U)\right|_0
+			&=\int_M\sum_i\bigl(\langle D_{e_i}A,u_i\rangle_h
+			+\langle R^N(V,u_i)W,u_i\rangle_h
+			+\langle D_{e_i}W,D_{e_i}V\rangle_h\bigr)\mu_g\\
+			&=Q_u(V,W)-\int_M\langle A,\tau(u)\rangle_h\mu_g
+			+\int_{\partial M}\langle A,\mathrm du(\nu)\rangle_h\mu_{\partial g}.
+		\end{aligned}
+	\]
+	第二行对 \(D_{e_i}A\) 使用了第一变分证明中的散度恒等式；曲率项则用了
+	\(\langle R^N(V,u_i)W,u_i\rangle_h=-\langle R^N(V,u_i)u_i,W\rangle_h\)。
+
+	现在 \(\tau(u)=0\)，中间的积分消失。边界为空时没有边界项；若边界值对两个参数均固定，则边界上的 \(T\) 恒为零，所以 \(A\) 也为零。于是混合导数恰为 \(Q_u(V,W)\)。给定的 \(V,W\) 可由 \(U(s,t,x)=\exp_{u(x)}(sV(x)+tW(x))\) 实现，紧性保证共同的参数邻域，边界零值保证固定边界。故该公式给出所有允许方向的 Hessian。
+\end{proof}
+
+也可以把这个二次型写成椭圆算子。沿用式\eqref{g3:eq:rough-laplacian-local}，拉回丛上的联络 Laplace 算子为
+\[
+	D^*D V=-\sum_i\left(D_{e_i}D_{e_i}V-D_{\nabla^M_{e_i}e_i}V\right).
+\]
+定义映射的\term[Jacobi suanzi]{Jacobi 算子}[Jacobi operator]为
+\begin{equation}\label{g3:eq:harmonic-map-jacobi-operator}
+	J_uV=D^*DV-\sum_iR^N(V,u_i)u_i.
+\end{equation}
+\symidx{\(J_u\)：调和映射的 Jacobi 算子}
+它的主符号为 \(|\xi|_g^2\operatorname{id}_{u^*\mathrm TN}\)，因为曲率项为零阶，联络 Laplace 的主部与分量上的非负 Laplace 相同。分部积分给出
+\begin{equation}\label{g3:eq:harmonic-map-jacobi-green}
+	Q_u(V,W)=\int_M\langle J_uV,W\rangle_h\mu_g
+	+\int_{\partial M}\langle D_\nu V,W\rangle_h\mu_{\partial g}.
+\end{equation}
+为核对这个边界项，取 \(\zeta(X)=\langle D_XV,W\rangle_h\)，则
+\(\operatorname{div}\zeta^\sharp=-\langle D^*DV,W\rangle_h+\langle DV,DW\rangle\)；积分后正好得到上式。因此闭源上以及零边界场之间，\(J_u\) 形式自伴。
+
+\begin{proposition}\label{g3:prop:harmonic-map-jacobi-linearization}
+	设 \(u:(M^m,g)\to(N^n,h)\) 为光滑映射，\(m,n\ge1\)，源允许光滑边界，目标无边界；这里不要求源紧或 \(u\) 调和。若 \(u_t\) 为光滑变分，\(V=\partial_tu_t|_0\)，则
+	\begin{equation}\label{g3:eq:tension-linearization}
+		\left.D_t\tau(u_t)\right|_0=-J_uV.
+	\end{equation}
+	特别地，光滑调和映射族的一阶变分场满足 \(J_uV=0\)。
+\end{proposition}
+\begin{proof}
+	对张力的迹表达逐项求参数导数。源标架与源联络不随 \(t\) 变化，因此
+	\[
+		\begin{aligned}
+			D_t\tau(u_t)|_0
+			&=\sum_i\left(D_{e_i}D_{e_i}V-D_{\nabla^M_{e_i}e_i}V
+			+R^N(V,u_i)u_i\right)\\
+			&=-J_uV.
+		\end{aligned}
+	\]
+	第一行在首项交换 \(D_t,D_{e_i}\)，并把 \(D_t\mathrm du_t(e_i)\) 换成 \(D_{e_i}V\)；对修正项同样使用参数交换公式。若每个 \(u_t\) 都调和，左侧为零，最后的断言随即成立。
+\end{proof}
+
+在调和映射处，把满足 \(J_uV=0\) 的光滑沿映射场称为 Jacobi 场；有固定边界时同时要求 \(V|_{\partial M}=0\)。这正是 Hessian 的核：一个方向对全部允许测试场的 \(Q_u\) 配对为零，由紧支测试和式\eqref{g3:eq:harmonic-map-jacobi-green}得到 \(J_uV=0\)；反向也由该式成立。线性化的核描述无穷小变形，单凭核方程不保证每个场都能积分成调和映射族。
+
+\ProseParagraphBreak
+
+若所有允许场均有 \(Q_u(V,V)\ge0\)，就称这个光滑调和映射在相应边界条件下\term[wending]{稳定}[stable]。能量的局部极小者必稳定，因为每条允许变分的实变量能量函数都在零点取得局部极小。下面的曲率条件直接保证这种二阶性质。
+\begin{corollary}\label{g3:cor:harmonic-map-nonpositive-stability}
+	设 \((M^m,g)\) 为紧光滑黎曼流形，\(m\ge1\)，允许光滑边界，\((N^n,h)\) 为无边界光滑黎曼流形，\(n\ge1\)，其截面曲率非正。则每个光滑调和映射 \(u:M\to N\) 在闭源或逐点固定边界的变分下稳定，并且
+	\[
+		Q_u(V,V)\ge\int_M|DV|^2\,\mu_g
+	\]
+	对所有允许的 \(V\) 成立。
+\end{corollary}
+\begin{proof}
+	当 \(V,u_i\) 线性无关时，
+	\[
+		\langle R^N(V,u_i)u_i,V\rangle_h
+		=K^N(V\wedge u_i)\bigl(|V|^2|u_i|^2-\langle V,u_i\rangle_h^2\bigr)\le0.
+	\]
+	线性相关时，曲率反对称性使该项为零；目标一维时全部曲率项也为零。代回第二变分，得到所需不等式。
+\end{proof}
+
+稳定性检验同一映射处的二次变化。与指定映射类中的所有竞争映射比较能量，还需要独立的全局论证；下一小节的圆周绕行给出这种区别的具体例子。
 
 \subsection{测地线作为一维原型}
 \label{g3:subsec:1801:04}
-待撰写
+取源为 \([a,b]\) 上的度量 \(\mathrm ds^2\)，映射便是一条曲线 \(\gamma\)。此时只有源方向 \(\partial_s\)，源联络为零，所以
+\[
+	E(\gamma)=\frac12\int_a^b|\dot\gamma|^2\,\mathrm ds,
+	\qquad \tau(\gamma)=D_s\dot\gamma.
+\]
+因此一维调和映射正是仿射参数测地线，包括常曲线。源参数参与度量，不能随意改变：若 \(\widetilde\gamma(s)=\gamma(\varphi(s))\)，则
+\[
+	D_s\dot{\widetilde\gamma}
+	=(\varphi')^2(D_t\dot\gamma)\circ\varphi
+	+\varphi''\dot\gamma\circ\varphi.
+\]
+非恒定测地线经过一般重参数化后仍描出同一条轨迹，但只有仿射重参数化继续满足调和方程。
+
+\ProseParagraphBreak
+
+区间的外单位法向在左端为 \(-\partial_s\)，在右端为 \(\partial_s\)。边界计数密度因此把式\eqref{g3:eq:harmonic-map-first-variation}变成
+\[
+	\delta E(V)=[\langle V,\dot\gamma\rangle]_a^b
+	-\int_a^b\langle V,D_s\dot\gamma\rangle\,\mathrm ds,
+\]
+正是\cref{g3:thm:curve-first-variation}。在测地线处，固定端点的 Hessian 与 Jacobi 算子分别为
+\begin{equation}\label{g3:eq:map-geodesic-reduction}
+	\begin{aligned}
+		Q_\gamma(V,W)&=\int_a^b\bigl(\langle D_sV,D_sW\rangle
+		-\langle R^N(V,\dot\gamma)\dot\gamma,W\rangle\bigr)\,\mathrm ds,\\
+		J_\gamma V&=-D_s^2V-R^N(V,\dot\gamma)\dot\gamma.
+	\end{aligned}
+\end{equation}
+于是 \(J_\gamma V=0\) 就是\chapref{g3:ch:06}的 Jacobi 方程，且 \(Q_\gamma\) 与\cref{g3:thm:energy-second-variation}的指标形式完全相同。若端点可动，上面二参数计算中的 \(A\) 项变成 \([\langle A,\dot\gamma\rangle]_a^b\)，也与曲线公式一致。对于一般高维调和映射，\(\tau=0\) 只要求各源方向的加速度之和为零；这里的一维情形才把迹方程直接变成逐方向的测地线方程。
+
+\begin{example}\label{g3:exm:harmonic-map-stability-global-minimum}
+	给单位圆周 \(S^1\) 取弧长度量。对非零整数 \(k\)，曲线
+	\[
+		u_k:[0,1]\longrightarrow S^1,\qquad u_k(s)=e^{2\pi\mathrm i ks}
+	\]
+	是仿射参数测地线，两个端点都是 \(1\)，能量为 \(2\pi^2k^2\)。沿圆周有全局单位平行切向量场 \(T\)，每个沿 \(u_k\) 的场写成 \(V=a(s)T\)，于是固定端点时
+	\[
+		Q_{u_k}(V,V)=\int_0^1|a'(s)|^2\,\mathrm ds>0\qquad(V\ne0).
+	\]
+	严格不等号来自 \(a(0)=a(1)=0\)：若导数处处为零，\(a\) 就恒为零。尽管第二变分正定，具有相同端点的常曲线能量为零，所以 \(u_k\) 不是全部固定端点曲线中的极小者。这些曲线属于不同的相对端点同伦类；二次变化没有比较不同绕行次数的能量。
+\end{example}
+
+正曲率则可以产生下降方向。单位球面 \(S^2\) 上取一条单位速大圆段 \(\gamma:[0,L]\to S^2\)，其中 \(L>\pi\)。沿它取平行单位法向场 \(P\perp\dot\gamma\)，令 \(V(s)=\sin(\pi s/L)P(s)\)。由球面曲率为 \(1\)，
+\[
+	Q_\gamma(V,V)
+	=\int_0^L\left(\frac{\pi^2}{L^2}\cos^2\frac{\pi s}{L}
+	-\sin^2\frac{\pi s}{L}\right)\mathrm ds
+	=\frac L2\left(\frac{\pi^2}{L^2}-1\right)<0.
+\]
+指数变分实现这个两端为零的场，能量的一阶导数为零、二阶导数为负，故充分小的非零变分参数确实降低能量。目标曲率前的负号在这个例子中具有直接的几何后果。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

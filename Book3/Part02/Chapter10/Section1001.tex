@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 10.1 长度空间与测地空间
 % 纲要位置：几何学计划纲要.md，第 2464 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,187 @@
 \section{长度空间与测地空间}
 \label{g3:sec:1001}
 
-待撰写
+把一条细圆柱压到它的轴上，圆周方向的距离逐渐消失，极限仍有距离，却不再是原来维数的流形。为了容纳这种变化，先保留曲线长度和最短路，把坐标与切空间暂时放下。第二章的黎曼距离正是由曲线长度定义的；本节把同一思想用于任意度量空间，并说明局部紧性怎样代替有限维坐标中的紧球。
 
 \subsection{曲线长度和内在度量}
 \label{g3:subsec:1001:01}
-待撰写
+在度量空间中不能先写速度的积分，但可以沿曲线选取有限个点，以相邻点的距离之和逼近长度。这个定义只使用已经存在的距离。
+
+\begin{definition}\label{g3:def:metric-curve-length}
+	设 \((X,d)\) 为度量空间，\(\gamma:[a,b]\to X\) 连续。其\term[quxian changdu]{曲线长度}[length of a curve]为
+	\[
+		L_d(\gamma)=\sup_{a=t_0<\cdots<t_N=b}
+		\sum_{i=1}^N d(\gamma(t_{i-1}),\gamma(t_i))\in[0,\infty].
+	\]
+	长度有限的曲线称为\term[ke chang quxian]{可长曲线}[rectifiable curve]。由 \(d\) 诱导的\term[neizai juli]{内在距离}[intrinsic distance]定义为
+	\[
+		d_\ell(x,y)=\inf\{L_d(\gamma):\gamma\text{ 为连接 }x,y\text{ 的连续曲线}\},
+	\]
+	没有这样的可长曲线时取 \(+\infty\)。若对所有点对都有 \(d=d_\ell\)，则 \((X,d)\) 称为\term[changdu kongjian]{长度空间}[length space]。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:metric-length-properties}
+	设 \((X,d)\) 为度量空间。曲线长度在限制后拼接时相加，在保持方向的连续单调满射重参数化下不变。若同一区间上的曲线 \(\gamma_j\) 逐点收敛到连续曲线 \(\gamma\)，则
+	\[
+		L_d(\gamma)\le\liminf_jL_d(\gamma_j).
+	\]
+	每条长度为 \(L<\infty\) 的连续曲线都可写成 \(\gamma(t)=\widehat\gamma(s(t))\)，其中 \(s(t)=L_d(\gamma|_{[a,t]})\) 连续、非减，\(\widehat\gamma:[0,L]\to X\) 为1-Lipschitz 映射，且每个子区间上的长度等于该区间长度。
+\end{proposition}
+\begin{proof}
+	在任意分割中插入一个指定的参数只会增加折线和。把左右两段的分割合并，再分别逼近两段长度，便得可加性。单调满射把分割对应到原参数区间；删除重复参数后，两个方向都能比较折线和，故长度不变。对固定分割，有限个距离在逐点极限下收敛，因而该分割的折线和不超过 \(\liminf_jL_d(\gamma_j)\)；再对分割取上确界，得到下半连续性。
+
+	由可加性，\(s\) 非减。说明它连续时，固定 \(t\) 和 \(\varepsilon>0\)，选含 \(t\) 的有限分割，使折线和大于 \(L-\varepsilon\)。若 \(u<t\) 足够接近 \(t\)，将 \(u\) 插入这个分割；除 \([u,t]\) 外各段的实际长度不小于相应折线和，于是
+	\[
+		L_d(\gamma|_{[u,t]})\le\varepsilon+d(\gamma(u),\gamma(t)).
+	\]
+	令 \(u\uparrow t\)，再令 \(\varepsilon\downarrow0\)，得左连续；右连续同理。因此 \(s\) 连续且映满 \([0,L]\)。若 \(s(t)=s(u)\)，两点间子曲线长为零，所以 \(\gamma(t)=\gamma(u)\)。据此令 \(\widehat\gamma(s(t))=\gamma(t)\)，定义良好，并有
+	\[
+		d(\widehat\gamma(v),\widehat\gamma(w))\le|v-w|.
+	\]
+	它的子段长度不超过参数差，原曲线相应子段的长度则恰为该参数差；利用已证的重参数化不变性，得到等号。\(L=0\) 时曲线恒定，单点区间上的定义同样成立。
+\end{proof}
+
+拼接曲线说明 \(d_\ell\) 满足三角不等式，而端点距离不超过长度，所以 \(d_\ell\ge d\)。在任意点对可由可长曲线连接的部分，\(d_\ell\) 是有限值度量。它已经是长度度量：对一条原来可长的曲线，任意子段端点的 \(d_\ell\) 距离不超过该子段的原长度，故新旧长度相同；弧长函数的连续性还保证这条曲线对新度量连续。对原来近乎最短的曲线使用这一观察，得到 \((d_\ell)_\ell=d_\ell\)。新度量所给拓扑可能更细，因而这项连续性检验不能省去。
+
+\begin{definition}\label{g3:def:metric-geodesic-space}
+	设 \((X,d)\) 为度量空间。若 \(\gamma:[0,1]\to X\) 满足
+	\[
+		d(\gamma(s),\gamma(t))=|s-t|d(\gamma(0),\gamma(1)),
+	\]
+	则称它为一条常速\term[cedi duan]{测地线段}[geodesic segment]。任意两点都可用这种线段连接的空间称为\term[cedi kongjian]{测地空间}[geodesic space]。常值线段包括在内。
+\end{definition}
+
+本章的测地线段总实现端点距离；黎曼联络所定义的测地线则只在充分短的子段上有此性质。测地空间一定是长度空间，反向结论需要额外条件。
+
+\begin{example}\label{g3:exm:intrinsic-metric-models}
+	半径 \(a\) 的圆周带环境弦距离时，两个点的距离为 \(2a\sin(\theta/2)\)，其中 \(\theta\in[0,\pi]\) 为较小圆心角。任何绕圆的连接至少走过较短圆弧，故内在距离为 \(a\theta\)。两种距离诱导相同拓扑，但只有后者是长度度量。
+
+	去心平面 \(\mathbb R^2\setminus\{0\}\) 带 Euclid 距离仍是长度空间。若线段穿过原点，把半径 \(\delta\) 内的一段替换成半圆，其额外长度为 \((\pi-2)\delta\)，可任意小。然而 \((-1,0)\) 到 \((1,0)\) 没有长度为2的连接：Euclid 长度等于端点距离时，曲线的全部点须落在线段上，而该线段经过缺失点。因此这个长度空间不是测地空间。
+\end{example}
 
 \subsection{完备、局部紧及测地存在}
 \label{g3:subsec:1001:02}
-待撰写
+为了使越来越短的曲线有收敛子列，既要排除有限距离内的缺失点，也要把它们限制在紧集内。下面先把这些紧性条件写成可直接使用的度量语言。
+
+\begin{definition}\label{g3:def:proper-metric-space}
+	度量空间的每个点若有一个闭包紧的邻域，就称空间局部紧。若每个有限半径闭球都紧，就称它为\term[bi qiu jin]{闭球紧的度量空间}[proper metric space]。对每个 \(\varepsilon>0\)，若空间都能被有限个半径 \(\varepsilon\) 的开球覆盖，就称它\term[quan youjie]{全有界}[totally bounded]。有限集合 \(F\subset X\) 若使每个点到 \(F\) 的距离不超过 \(\varepsilon\)，就称为有限 \(\varepsilon\)-网；本章的网允许边界等号。将半径缩小一半可见，用开球或闭球覆盖检验全有界，条件等价。
+\end{definition}
+
+\begin{lemma}\label{g3:lem:complete-totally-bounded}
+	度量空间紧，当且仅当它完备且全有界。
+\end{lemma}
+\begin{proof}
+	紧性使每个等半径球覆盖有有限子覆盖，故全有界。紧空间内任意序列都有收敛子列：若没有聚点，每点都有只含有限项的邻域，有限子覆盖便与序列有无限项矛盾；从聚点的逐级小球中可选出收敛子列。Cauchy 序列一旦有收敛子列，整列就收敛，所以空间完备。
+
+	反过来，用有限个半径 \(2^{-m}\) 的球逐级筛选序列：每一级保留一个含有无限项的球，并从中选取递增下标。所得对角子列是 Cauchy 列，故在完备空间中收敛。最后说明序列紧性足以给出开覆盖紧性。序列紧的空间必全有界，否则可在某个固定尺度贪心选出两两分离的点，形成没有收敛子列的序列。若一个开覆盖不存在统一的正数 \(\delta\)，使每个 \(\delta\)-球落在某个覆盖成员中，则对每个 \(m\) 可取 \(x_m\)，使 \(B(x_m,1/m)\) 不包含于任一覆盖成员。取收敛子列及含其极限的开成员，该成员最终包含这些小球，矛盾。因此存在上述 \(\delta>0\)。再取有限 \(\delta/2\)-网，即得到原覆盖的有限子覆盖。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:midpoint-geodesic}
+	设 \((X,d)\) 完备，且任意 \(x,y\in X\) 都有中点，即存在 \(m\) 满足 \(d(x,m)=d(m,y)=d(x,y)/2\)。则 \(X\) 是测地空间。
+\end{proposition}
+\begin{proof}
+	固定 \(x,y\)，令 \(D=d(x,y)\)。先规定 \(\gamma(0)=x\)、\(\gamma(1)=y\)，再反复在相邻已定点间取中点，从而在所有二进分数上定义 \(\gamma\)。第 \(j\) 级相邻点的距离为 \(D/2^j\)。对同一级的 \(s<t\)，相邻距离相加给出 \(d(\gamma(s),\gamma(t))\le D(t-s)\)；将端点间的总距离 \(D\) 与前、中、后三段比较，又迫使这里取等号。任意两个二进分数可放到共同一级，因此这个等式在稠密参数集上成立。完备性使它唯一延拓到 \([0,1]\)，距离的连续性保持等式，得到所需测地线段。
+\end{proof}
+
+\begin{theorem}[长度空间的 Hopf--Rinow 定理]\label{g3:thm:metric-hopf-rinow}
+	每个非空、完备、局部紧的长度空间都闭球紧，而且是测地空间。
+\end{theorem}
+\begin{proof}
+	先证明闭球紧。固定 \(p\in X\)，记 \(\mathcal R\) 为使 \(\overline B(p,r)\) 紧的非负半径集合。局部紧性保证其中有正数；紧球的闭子集仍紧，所以 \(\mathcal R\) 向下封闭。
+
+	假设 \(R=\sup\mathcal R<\infty\)。对任意 \(\varepsilon>0\)，取 \(r<R\) 且 \(R-r<\varepsilon/3\)。若 \(x\in\overline B(p,R)\) 而 \(d(p,x)>r\)，取长度小于 \(d(p,x)+\varepsilon/3\) 的连接曲线，按弧长在时间 \(r\) 处截取一点 \(z\)。则 \(z\in\overline B(p,r)\)，并且
+	\[
+		d(z,x)<R-r+\varepsilon/3<2\varepsilon/3.
+	\]
+	球 \(\overline B(p,r)\) 紧，有有限 \(\varepsilon/3\)-网；它也是 \(\overline B(p,R)\) 的有限 \(\varepsilon\)-网。因此后者全有界，又是完备空间的闭子集，上一引理使它紧。
+
+	现在把这个紧球再扩大一点。对每个 \(z\in\overline B(p,R)\)，选 \(\eta_z>0\)，使 \(\overline B(z,4\eta_z)\) 紧。有限个 \(B(z_i,\eta_i)\) 覆盖 \(\overline B(p,R)\)，令 \(\eta=\min_i\eta_i\)。对 \(x\in\overline B(p,R+\eta)\)，若 \(d(p,x)>R\)，取长度小于 \(d(p,x)+\eta\) 的连接，在弧长 \(R\) 处取 \(z\in\overline B(p,R)\)。于是 \(d(x,z)<2\eta\)，某个 \(i\) 满足 \(d(z,z_i)<\eta_i\)，从而 \(x\in B(z_i,3\eta_i)\)。原紧球内的点也在这些球中。因此
+	\[
+		\overline B(p,R+\eta)\subseteq\bigcup_i\overline B(z_i,4\eta_i).
+	\]
+	右边紧，左边闭，所以左边紧，与 \(R\) 的定义矛盾。故所有有限半径闭球紧。
+
+	固定 \(x,y\)，记 \(D=d(x,y)\)。若 \(D=0\)，取常线。否则选长度 \(L_j<D+1/j\) 的连接曲线，并在弧长一半处取 \(m_j\)。这些点留在固定紧球中，可取子列收敛到 \(m\)，而
+	\[
+		d(x,m),d(m,y)\le D/2.
+	\]
+	两项之和不小于 \(D\)，所以二者均为 \(D/2\)。任意点对都有中点，应用\cref{g3:prop:midpoint-geodesic}得到测地存在性。
+\end{proof}
+
+这个证明将最短线的存在化成中点的紧性问题。完备性补上二进参数的极限，局部紧性则经长度性质传播到任意有界尺度。若空间本来闭球紧，证明的最后一段就表明：每个闭球紧的长度空间都是测地空间。
+
+\ProseParagraphBreak
+
+各条件有不同作用。去心平面的例子缺少完备性。无限维 Hilbert 空间虽完备且任意两点间都有直线，闭单位球却不紧：一列正交单位向量的两两距离为 \(\sqrt2\)，无法取收敛子列。它也不局部紧。相反，任意无限集合赋予不同点距离都为1的度量，完备且局部紧，但整个空间是一个非紧的有界闭球；这里缺少长度空间条件。
 
 \subsection{锥、商和粘合空间}
 \label{g3:subsec:1001:03}
-待撰写
+流形退化后可能出现锥顶、边界或分叉点。下面从距离本身构造这些模型；构造是否给出度量、是否有最短路，都可以直接检验。
+
+\begin{example}\label{g3:exm:flat-metric-cone}
+	取 \(\theta>0\)，把 \([0,\infty)\times(\mathbb R/\theta\mathbb Z)\) 的全部零半径点识别为一个点 \(o\)。在 \(r>0\) 上按
+	\(\mathrm dr^2+r^2\mathrm d\varphi^2\)
+	计算曲线长度，并允许曲线经过 \(o\)。取这些长度的下确界得到\term[pingtan yuanzhui]{平坦圆锥}[flat cone] \(C_\theta\)。若 \(\delta\in[0,\theta/2]\) 是两个角坐标的圆周距离，则
+	\begin{equation}\label{g3:eq:flat-cone-distance}
+		d_{C_\theta}((r,\varphi),(s,\psi))^2
+		=r^2+s^2-2rs\cos\bigl(\min\{\delta,\pi\}\bigr).
+	\end{equation}
+	当 \(\delta\ge\pi\) 时，右侧为 \((r+s)^2\)。
+
+	说明公式时，先看不经过锥顶的曲线。角坐标可以沿参数区间连续提升到实数，角度总变化的绝对值至少为 \(\delta\)。若该变化小于 \(\pi\)，平面展开后的曲线长不小于两端点弦长；在所扫过的角扇形内用直线段实现这个下界。若角度变化的绝对值至少为 \(\pi\)，在首次转过 \(\pi\) 处记半径为 \(u\)。前段展开后端点位于相反射线上，长度至少为 \(r+u\)；后段长度至少为 \(|s-u|\)，总长至少为 \(r+s\)。经过锥顶的曲线也至少长 \(r+s\)，而两条径向线拼接达到这一值。对允许的角度提升取最小，便得到公式；\(\delta<\pi\) 时若采用更大的提升角，所得下界不会更小。
+
+	长度拼接保证三角不等式，公式保证除已识别的零半径点外距离为正。每个锥顶闭球是紧集 \([0,R]\times(\mathbb R/\theta\mathbb Z)\) 的连续像，其他有界闭球为更大锥顶紧球的闭子集。因此 \(C_\theta\) 闭球紧且测地。伸缩 \((r,\varphi)\mapsto(\lambda r,\varphi)\) 把所有距离乘以 \(\lambda\)；当 \(\theta=2\pi\) 时得到 Euclid 平面。角度改变后，锥顶附近小圆周的长度是 \(\theta r\)，显示了与平面的差别。
+\end{example}
+
+\begin{proposition}\label{g3:prop:compact-group-metric-quotient}
+	设紧拓扑群 \(G\) 连续地以等距变换作用于度量空间 \(X\)。在轨道集合上定义
+	\[
+		d_{X/G}([x],[y])=\min_{g\in G}d_X(x,gy).
+	\]
+	则这是一个度量，商投影为1-Lipschitz 映射，且诱导商拓扑。若 \(X\) 是长度空间或测地空间，商也分别具有这一性质。若 \(X\) 闭球紧，则商闭球紧。
+\end{proposition}
+\begin{proof}
+	紧性和连续性使最小值取得；更换轨道代表不改变最小值。若距离为零，则两点在同一轨道。对任意 \(g,h\in G\)，
+	\[
+		d(x,ghz)\le d(x,gy)+d(gy,ghz)
+		=d(x,gy)+d(y,hz),
+	\]
+	取最小值即得三角不等式。取恒等元得到投影不增加距离。又有
+	\(\pi(B(x,r))=B([x],r)\)，
+	所以投影为开映射，度量拓扑恰为商拓扑。
+
+	取达到轨道距离的代表 \(gy\)，把 \(x\) 到 \(gy\) 的近乎最短曲线投到商上。投影不增加长度，曲线长度又不小于商中端点距离，故商是长度空间。若原空间测地，可投影一条长恰为商距离的最短段；其所有子段也实现距离，否则替换该子段就会使总长变短。按常速参数化便得到商测地线。最后，最小值取得还说明
+	\[
+		\overline B([x],R)=\pi(\overline B(x,R)).
+	\]
+	右边在原空间闭球紧时为紧集，完成证明。
+\end{proof}
+
+例如，平面按旋转角 \(2\pi/m\) 的有限循环群取商，便得到角度 \(2\pi/m\) 的圆锥；按关于一条直线的反射取商，得到闭半平面。稳定点可以产生锥顶或边界，因而商空间不必仍为无边界流形。
+
+\begin{proposition}\label{g3:prop:metric-gluing-along-closed-set}
+	设 \(X,Y\) 为度量空间，\(A\subset X\)、\(B\subset Y\) 非空闭，\(f:A\to B\) 为满射等距。把 \(a\) 与 \(f(a)\) 识别所得集合 \(Z=X\cup_fY\) 上，保留每一侧原距离，并对跨侧点规定
+	\begin{equation}\label{g3:eq:metric-gluing-distance}
+		d_Z(x,y)=\inf_{a\in A}\{d_X(x,a)+d_Y(f(a),y)\},
+		\qquad x\in X,\ y\in Y.
+	\end{equation}
+	这些公式给出度量，使两侧等距嵌入。若两侧都是长度空间，则 \(Z\) 是长度空间；若两侧闭球紧，则 \(Z\) 闭球紧。因此两侧闭球紧且为长度空间时，粘合空间也测地。
+\end{proposition}
+\begin{proof}
+	当一个点属于粘合子集时，跨侧公式与同侧距离相符，因为 \(f\) 等距且可直接取该点为中转点。检查三角不等式的唯一新情况，是从一侧出发经另一侧返回。例如对 \(x,x'\in X\)、\(y\in Y\)，任取 \(a,b\in A\)，有
+	\[
+	\begin{aligned}
+		d_X(x,x')&\le d_X(x,a)+d_X(a,b)+d_X(b,x')\\
+		&=d_X(x,a)+d_Y(f(a),f(b))+d_X(b,x')\\
+		&\le d_X(x,a)+d_Y(f(a),y)+d_Y(y,f(b))+d_X(b,x').
+	\end{aligned}
+	\]
+	对 \(a,b\) 取下确界即得所需不等式，其余跨侧情形用同一侧的三角不等式即可。若跨侧距离为零，可取 \(a_j\) 使两项之和趋零；于是 \(a_j\to x\)，闭性给出 \(x\in A\)，再由 \(f(a_j)\to f(x)\) 得 \(y=f(x)\)。所以零距离恰对应已经作出的识别。
+
+	两侧原距离未改变。两侧为长度空间时，同侧近乎最短曲线直接保留；跨侧先选接近下确界的 \(a\)，再拼接两侧近乎最短曲线，便得长度性质。
+
+	最后固定 \(a_0\in A\)。对 \(x\in X\)，有 \(d_Z(a_0,x)=d_X(a_0,x)\)，对 \(y\in Y\) 同理。因此以粘合点为中心的闭球，恰为两侧相应闭球的并。在两侧闭球紧时，这个有限并紧；任意中心的有界闭球包含在某个这样的紧球中且为闭集，所以也紧。测地结论由\cref{g3:thm:metric-hopf-rinow}的闭球紧版本得到。
+\end{proof}
+
+将若干区间的一个端点粘在一起会产生分叉，而两张平面沿直线等距粘合会产生一条公共接缝。若粘合子集不闭，零距离还可能识别原来没有声明相等的点：把两份实直线沿开半轴 \((0,\infty)\) 粘合，两份原点在式\eqref{g3:eq:metric-gluing-distance}下的距离为零。这时应再取零距离商，不能直接把原集合上的公式称为度量。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

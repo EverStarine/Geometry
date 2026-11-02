@@ -1,14 +1,14 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 4.2 正规化的构造与有限性
 % 纲要位置：几何学计划纲要.md，第 5158 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 分式域及总分式环中的整闭包
 % * Noether 正规化后的有限性归约
 % * 有限可分扩张的迹配对与分母控制
-% * 不可分情形的独立有限性处理
+% * 不可分扩张与整闭包有限性
 % 
 %   只涉及有限个系数的纯不可分扩张，不能默设基域完美或 Frobenius 有限。
 % 
@@ -19,25 +19,330 @@
 \section{正规化的构造与有限性}
 \label{g5:sec:0402}
 
-待撰写
+第三章已经证明，尖点的坐标环 \(k[t^2,t^3]\) 在分式域中缺少一个整元 \(t\)。补入这个元素便得到 \(k[t]\)，每个闭点附近也随之得到离散赋值环。一般环可能需要补入许多整元；即使每个元素分别满足首一方程，也不能立即断言全部整元能由有限个元素共同生成。本节先确定补入元素的环境，再证明有限型代数的整闭包确实是有限模。
+
+\ProseParagraphBreak
+
+不可约对象只有一个函数域，可约对象则需要同时保留各分支的函数域。处理有限性时，Noether 正规化把基环化为多项式环；可分扩张中的迹配对提供统一分母，不可分扩张则通过有限个系数的开根进入可分情形。这两步分别解决不同的障碍。
 
 \subsection{分式域及总分式环中的整闭包}
 \label{g5:subsec:0402:01}
-待撰写
+
+\begin{definition}\label{g5:def:normalization-ring}
+	设 \(A\) 为整环，或为约化 Noether 环，\(S\) 为 \(A\) 中全部非零因子组成的乘法集。环
+	\[
+		Q(A)=S^{-1}A
+	\]
+	称为 \(A\) 的\term[zongfenshihuan]{总分式环}[total ring of fractions]。\(A\) 在 \(Q(A)\) 中的整闭包
+	\[
+		A^\nu=\{z\in Q(A):z\text{ 在 }A\text{ 上整}\}
+	\]
+	称为 \(A\) 的\term[zhengguihua]{正规化}[normalization]。若 \(A\) 为整环，则 \(Q(A)=\operatorname{Frac}A\)，这就是上一章所说的普通正规化。
+\end{definition}
+\symidx{\(Q(A)\)：约化环的总分式环}
+\symidx{\(A^\nu\)：环的正规化}
+
+非零因子作为分母使 \(A\to Q(A)\) 保持单射。若任意反演零因子，就可能删去一个分支。例如在 \(k[x,y]/(xy)\) 中反演 \(x\) 会使 \(y=0\)，于是只保留一条轴。总分式环的目标是保留全部分支，再分别形成函数域。
+
+\begin{proposition}\label{g5:prop:total-quotient-components}
+	设 \(A\ne0\) 为约化 Noether 环，\(\mathfrak p_1,\ldots,\mathfrak p_r\) 为全部极小素理想，记
+	\[
+		A_i=A/\mathfrak p_i,\qquad K_i=\operatorname{Frac}(A_i).
+	\]
+	则自然同态给出
+	\[
+		Q(A)\cong\prod_{i=1}^r K_i,
+		\qquad
+		A^\nu\cong\prod_{i=1}^r A_i^\nu.
+	\]
+\end{proposition}
+\begin{proof}
+	极小素理想有限且交为幂零根；\(A\) 约化，所以 \(\bigcap_i\mathfrak p_i=0\)。因此 \(A\to\prod_i A_i\) 单射。对每个 \(i\)，从各 \(\mathfrak p_j\setminus\mathfrak p_i\)、\(j\ne i\)，取一个元素并相乘，得到
+	\[
+		b_i\in\bigcap_{j\ne i}\mathfrak p_j,\qquad b_i\notin\mathfrak p_i.
+	\]
+	当 \(r=1\) 时取 \(b_1=1\)。这些元素在乘积中只在第 \(i\) 个分量非零。
+
+	一个元素 \(a\in A\) 为非零因子，当且仅当它不属于任何 \(\mathfrak p_i\)。若各分量均非零，\(ac=0\) 在每个整环 \(A_i\) 中迫使 \(c=0\)，得到一向。若 \(a\in\mathfrak p_i\)，则 \(ab_i=0\)，而 \(b_i\ne0\)，得到另一向。因此局部化后有单射 \(Q(A)\to\prod_i K_i\)。
+
+	下面证明满射，而不只把两侧看成相似的分式表达。令 \(s=\sum_i b_i\)。它模每个 \(\mathfrak p_i\) 等于非零的 \(b_i\)，故为非零因子。元素 \(b_i/s\) 就是第 \(i\) 个坐标幂等元。更一般地，给定 \(a,c\in A\)、\(c\notin\mathfrak p_i\)，令
+	\[
+		d=cb_i+\sum_{j\ne i}b_j.
+	\]
+	它在每个分量都非零，因而也是合法分母。分式 \(ab_i/d\) 的第 \(i\) 个分量为 \(\overline a/\overline c\)，其余分量为零。将这些分式相加，便得到任意 \((z_1,\ldots,z_r)\in\prod_i K_i\)，证明第一式。
+
+	若 \(z\in Q(A)\) 整于 \(A\)，它的每个分量显然整于 \(A_i\)。反过来，设每个 \(z_i\) 整于 \(A_i\)，为它取一个首一方程，并把系数提升为 \(A\) 的元素，得到 \(f_i(T)\in A[T]\)。乘积
+	\[
+		f(T)=\prod_{i=1}^r f_i(T)
+	\]
+	仍首一；在第 \(i\) 个分量中有 \(f_i(z_i)=0\)，所以 \(f(z)=0\) 于整个乘积环。这证明 \(z\) 整于 \(A\)，得到第二式。
+\end{proof}
+
+这个分解说明，可约对象的正规化会把不同不可约分支分开。乘积环中的坐标幂等元满足 \(e_i^2-e_i=0\)，原环中若没有这些幂等元，正规化就会把它们补入。分支内部仍可能有进一步的整元需要补入，如尖点的参数 \(t\)。
+
+\ProseParagraphBreak
+
+对一般环，称每个素理想处的局部环都是整闭整环的环为\term[zhengguihuan]{正规环}[normal ring]。这里局部环为整环也是条件的一部分。对于约化 Noether 环，这个定义与 \(A=A^\nu\) 相容；一个非平凡乘积环本身不是整环，却仍然可以正规。
+
+\begin{proposition}\label{g5:prop:normalization-localization}
+	设 \(A\) 为约化 Noether 环，\(S\subseteq A\) 为乘法集。则自然识别给出
+	\[
+		S^{-1}(A^\nu)\cong(S^{-1}A)^\nu.
+	\]
+	此外，\(A^\nu\) 为正规环，并且 \(A\) 正规当且仅当 \(A=A^\nu\)。
+\end{proposition}
+\begin{proof}
+	在\cref{g5:prop:total-quotient-components}的乘积表示中，把 \(S\) 反演会删去那些 \(\mathfrak p_i\) 与 \(S\) 相交的分量，其余分量仍是同一个域 \(K_i\)。极小素理想的局部化对应因此给出
+	\[
+		S^{-1}Q(A)\cong Q(S^{-1}A).
+	\]
+	第三章的整闭包局部化公式\cref{g5:prop:integral-localization-quotient}随即给出第一式；若局部化为零环，两边也同为零环。
+
+	每个 \(A_i^\nu\) 在 \(K_i\) 中整闭：一个在 \(A_i^\nu\) 上整的元素，由整性传递仍在 \(A_i\) 上整，因而已属于 \(A_i^\nu\)。整闭整环的局部化仍整闭。有限乘积环的每个素局部环来自其中一个因子，所以乘积 \(A^\nu=\prod_i A_i^\nu\) 为正规环。特别地，\(A=A^\nu\) 蕴含 \(A\) 正规。
+
+	反过来，设所有 \(A_{\mathfrak m}\)、\(\mathfrak m\) 为极大理想，都为整闭整环。局部化公式说明
+	\[
+		(A^\nu)_{\mathfrak m}=(A_{\mathfrak m})^\nu=A_{\mathfrak m}.
+	\]
+	故模 \(A^\nu/A\) 在每个极大理想处局部化为零。由第二章的模消失局部检测原则，它本身为零，即 \(A=A^\nu\)。这个检测原则对任意模成立，尚未使用正规化的有限性。
+\end{proof}
+
+构造还具有一个实用的唯一性。若 \(A\to C\) 是整环之间的单射，且 \(C\) 整闭，则它唯一延伸为 \(A^\nu\to C\)：把 \(\operatorname{Frac}A\) 嵌入 \(\operatorname{Frac}C\)，每个 \(z\in A^\nu\) 都整于 \(C\)，因而落在 \(C\) 中；分式表示则强制了像的唯一性。这说明，从正规对象到原对象的支配映射可以经过正规化来表达。
 
 \subsection{Noether 正规化后的有限性归约}
 \label{g5:subsec:0402:02}
-待撰写
+
+要证明正规化有限，不能只逐个收集整性方程。我们需要找到一个有限模，把全部待加入的元素同时装进去；Noether 性随后保证其中的子模仍有限生成。先把这个任务归约到多项式基环。
+
+\begin{proposition}\label{g5:prop:normalization-polynomial-reduction}
+	设 \(k\) 为域，\(A\) 为有限型 \(k\) 整代数，\(F=\operatorname{Frac}A\)，\(L/F\) 为有限域扩张。取 Noether 正规化
+	\[
+		C=k[x_1,\ldots,x_d]\subseteq A,
+	\]
+	其中 \(x_i\) 代数独立，\(A\) 是有限 \(C\) 模。则 \(L\) 是 \(K=\operatorname{Frac}C\) 的有限扩张，且 \(A\) 在 \(L\) 中的整闭包等于 \(C\) 在 \(L\) 中的整闭包。若后者为有限 \(C\) 模，它也为有限 \(A\) 模。
+\end{proposition}
+\begin{proof}
+	第三章正规化的超越次数证明已经表明：把 \(C\setminus\{0\}\) 反演后，\(A\) 成为有限维 \(K\) 整代数，因而成为域；它恰是 \(F\)。所以 \(F/K\) 有限，再用域扩张次数的乘法得 \(L/K\) 有限。
+
+	因 \(A\) 整于 \(C\)，一个整于 \(A\) 的元素由传递性也整于 \(C\)；反方向只需把同一个首一方程的系数从 \(C\) 看作 \(A\) 的元素。因此两份整闭包相同，记为 \(D\)。若 \(d_1,\ldots,d_s\) 生成 \(D\) 作为 \(C\) 模，则
+	\[
+		D=\sum_i Cd_i\subseteq\sum_i Ad_i\subseteq D,
+	\]
+	最后一个包含来自 \(D\) 为含 \(A\) 的环。所以同一组元素也生成 \(D\) 作为 \(A\) 模。
+\end{proof}
+
+多项式环 \(C\) 同时具有 Noether 性与整闭性。前者来自 Hilbert 基定理。后者可由唯一分解说明，下面回顾所需的代数依据。
+
+\begin{lemma}\label{g5:lem:polynomial-ring-normal}
+	域 \(k\) 上的有限变量多项式环 \(k[x_1,\ldots,x_d]\) 是唯一分解整环，因而整闭。
+\end{lemma}
+\begin{proof}
+	只需说明唯一分解整环 \(R\) 的多项式环 \(R[T]\) 仍唯一分解，再从域出发归纳。称系数没有共同不可约因子的多项式为本原多项式。两个本原多项式的乘积仍本原：若某个不可约元 \(p\in R\) 整除乘积的全部系数，模 \(p\) 后会得到两个非零多项式的乘积为零，而 \(R/(p)\) 是整环，矛盾。
+
+	每个非零多项式可唯一写成系数公因子乘本原多项式，公因子仅差单位。令 \(E=\operatorname{Frac}R\)。把 \(E[T]\) 中分解的各因子清去分母，再除去系数公因子，便得到 \(R[T]\) 中的本原因子。刚证的乘积性质保证所得等式中的剩余标量为 \(R\) 的单位：若两个本原多项式相差 \(a/b\in E^\times\)，把 \(a,b\) 约为互素后，系数比较迫使 \(a,b\) 都为单位。因此 \(E[T]\) 的因子分解给出 \(R[T]\) 的分解；唯一性分别来自 \(R\) 的系数公因子分解与 \(E[T]\) 的多项式分解。于是 \(R[T]\) 唯一分解。最后应用\cref{g5:prop:ufd-integrally-closed}得到整闭性。
+\end{proof}
+
+接下来先在一般整闭 Noether 整环上处理有限可分扩张，再利用多项式的有限系数特征处理不可分扩张。这个归约及两种情形的组织可对照\cite[第33节，整闭包讨论及引理1，第262--263页]{Matsumura1989}。
 
 \subsection{有限可分扩张的迹配对与分母控制}
 \label{g5:subsec:0402:03}
-待撰写
 
-\subsection{不可分情形的独立有限性处理}
+有限域扩张 \(L/K\) 中，每个 \(z\in L\) 给出 \(K\) 线性映射 \(m_z:L\to L\)、\(u\mapsto zu\)。定义
+\[
+	\operatorname{Tr}_{L/K}(z)=\operatorname{tr}(m_z).
+\]
+这是域扩张的\term[yukuozhangdeji]{迹}[field trace]；相应双线性形式
+\[
+	(z,w)\longmapsto\operatorname{Tr}_{L/K}(zw)
+\]
+称为\term[jipeidui]{迹配对}[trace pairing]。矩阵迹不依赖所选基，所以这两个定义也不依赖坐标。
+\symidx{\(\operatorname{Tr}_{L/K}\)：有限域扩张的迹}
+
+\ProseParagraphBreak
+
+一个代数元可分，是指它的最小多项式在分裂域中没有重根；有限扩张可分，是指其中每个元素都可分。可分性使迹配对非退化，从而允许把一个元素的坐标恢复为若干个迹的线性组合。下面把这个线性代数事实及其所需的域论说明出来。
+
+\begin{lemma}\label{g5:lem:separable-trace-pairing}
+	设 \(L/K\) 为次数 \(n\) 的有限可分域扩张。则迹配对非退化。若 \(R\subseteq K\) 为整闭整环且 \(K=\operatorname{Frac}R\)，\(z\in L\) 整于 \(R\)，则
+	\[
+		\operatorname{Tr}_{L/K}(z)\in R.
+	\]
+\end{lemma}
+\begin{proof}
+	取包含 \(L\) 的代数闭域 \(\Omega\)。可分性给出
+	\[
+		L\otimes_K\Omega\cong\prod_{\sigma:L\hookrightarrow\Omega}\Omega
+		\cong\Omega^n,\qquad z\otimes c\longmapsto(\sigma(z)c)_\sigma.
+	\]
+	这个同构可以按有限组代数生成元逐步验证。添入一个生成元 \(\alpha\) 时，其最小多项式可分，沿已有的每个嵌入在 \(\Omega\) 上分解为互异一次因子；中国剩余定理把相应商代数分成这些根对应的 \(\Omega\) 因子。重复操作后，因子数等于各步扩张次数的乘积 \(n\)，也恰好列出全部嵌入。这里没有要求 \(L/K\) 为正规扩张。
+
+	在这个乘积中，乘以 \(z\) 的线性映射为对角映射，对角元为 \(\sigma(z)\)。迹与标量扩张相容，因为它直接由矩阵对角元相加得到。因此
+	\[
+		\operatorname{Tr}_{L/K}(z)=\sum_\sigma\sigma(z).
+	\]
+	扩张标量后的迹配对成为 \(\Omega^n\) 上的
+	\((a,b)\mapsto\sum_\sigma a_\sigma b_\sigma\)，显然非退化。若原迹矩阵的行列式为零，扩张标量后仍为零，矛盾。因此原配对也非退化。
+
+	若 \(z\) 整于 \(R\)，每个 \(\sigma(z)\) 都满足同一个 \(R\) 系数首一方程，故都整于 \(R\)。整元组成子环，所以它们的和整于 \(R\)。这个和又是属于 \(K\) 的迹值，\(R\) 整闭便迫使它属于 \(R\)。
+\end{proof}
+
+\begin{theorem}\label{g5:thm:separable-integral-closure-finite}
+	设 \(R\) 为整闭 Noether 整环，\(K=\operatorname{Frac}R\)，\(L/K\) 为有限可分扩张。则 \(R\) 在 \(L\) 中的整闭包 \(D\) 是有限 \(R\) 模。
+\end{theorem}
+\begin{proof}
+	先选一组由整元组成的 \(K\) 基。对任意代数元 \(b\in L\)，将其首一 \(K\) 系数方程的分母合并为 \(0\ne a\in R\)，便知 \(ab\) 满足一个首一 \(R\) 系数方程：若
+	\[
+		b^m+c_1b^{m-1}+\cdots+c_m=0,
+	\]
+	且 \(ac_j\in R\)，则 \(ab\) 的方程系数为 \(a^jc_j\in R\)。因此可以将任一 \(K\) 基分别乘以非零 \(R\) 元素，得到
+	\[
+		e_1,\ldots,e_n\in D.
+	\]
+
+	令 \(M=(\operatorname{Tr}_{L/K}(e_ie_j))_{i,j}\)，并记 \(\Delta=\det M\)。由上个引理，\(M\) 的各项属于 \(R\)，且 \(\Delta\ne0\)。任取 \(z\in D\)，写
+	\[
+		z=\sum_i c_i e_i,\qquad c_i\in K.
+	\]
+	对每个 \(j\) 取迹，得到
+	\[
+		\sum_i c_i\operatorname{Tr}_{L/K}(e_ie_j)
+		=\operatorname{Tr}_{L/K}(ze_j)\in R.
+	\]
+	右侧属于 \(R\)，因为 \(ze_j\) 仍整。用伴随矩阵解这个方程组，得到 \(\Delta c_i\in R\)。因此
+	\begin{equation}\label{g5:eq:trace-common-denominator}
+		D\subseteq\Delta^{-1}(Re_1+\cdots+Re_n).
+	\end{equation}
+	右侧是有限自由 \(R\) 模。左侧是其中的 \(R\) 子模，而 \(R\) Noether，所以 \(D\) 有限生成。
+\end{proof}
+
+同一个非零元素 \(\Delta\) 控制了所有整元的分母，这正是逐个整性方程未能直接提供的信息。该定理是\cite[第33节，引理1，第262页]{Matsumura1989}的有限可分版本；迹配对写法把分母控制明确化为一个可逆矩阵。
+
+\ProseParagraphBreak
+
+不可分扩张中迹配对可能完全失效。例如在特征 \(p>0\) 下，若 \(L=K(\alpha)\)、\(\alpha^p=a\) 且 \([L:K]=p\)，则基 \(1,\alpha,\ldots,\alpha^{p-1}\) 下，乘以 \(\alpha^j\)、\(1\leq j<p\)，没有对角项；乘以 \(1\) 的迹又是 \(p=0\)。线性性因此给出 \(\operatorname{Tr}_{L/K}\equiv0\)。这时应改变基域以分离不可分部分，而不能继续使用非零的迹行列式。
+
+\subsection{不可分扩张与整闭包有限性}
 \label{g5:subsec:0402:04}
-待撰写
+
+以下设特征为 \(p>0\)。若有限扩张 \(E/K\) 的每个元素的某个 \(p\) 次幂迭代落回 \(K\)，就称它为\term[chunbukefenkuozhang]{纯不可分扩张}[purely inseparable extension]。有限个域生成元可取共同指数 \(q=p^e\)，使每个生成元的 \(q\) 次幂都属于 \(K\)。在代数闭域中 \(q\) 次根唯一，因为 \(u^q-v^q=(u-v)^q\)。
+
+\begin{lemma}\label{g5:lem:finite-coefficient-root-extension}
+	设 \(k\) 为特征 \(p>0\) 的域，
+	\[
+		C=k[x_1,\ldots,x_d],\qquad K=k(x_1,\ldots,x_d),
+	\]
+	其中 \(x_i\) 代数独立，\(L/K\) 为有限域扩张。则存在 \(q=p^e\)、有限纯不可分扩张
+	\[
+		k'=k(a_1^{1/q},\ldots,a_s^{1/q}),\qquad a_j\in k,
+	\]
+	使得令
+	\[
+		z_i=x_i^{1/q},\quad C'=k'[z_1,\ldots,z_d],
+		\quad K'=\operatorname{Frac}C',
+	\]
+	则 \(C'\) 是整闭 Noether 整环且为有限 \(C\) 模，合成域 \(LK'\) 为 \(K'\) 的有限可分扩张。
+\end{lemma}
+\begin{proof}
+	在一个固定代数闭域中进行全部开根和合成。取有限组域生成元 \(L=K(\alpha_1,\ldots,\alpha_m)\)。设 \(\alpha_j\) 的首一最小多项式为 \(f_j(T)\)。在特征 \(p\) 下，导数为零恰表示所有出现的指数都被 \(p\) 整除。反复除去这个共同指数，可写
+	\[
+		f_j(T)=g_j(T^{q_j}),\qquad q_j=p^{e_j},
+	\]
+	其中 \(g_j\in K[T]\) 首一、不可约且导数非零。不可约性来自：若 \(g_j\) 可分解，代入 \(T^{q_j}\) 就分解了 \(f_j\)。因此 \(g_j\) 无重根。
+
+	所有 \(g_j\) 的系数都是 \(x_i\) 的有理函数。选择分子、分母的多项式表达，并把其中出现的全部 \(k\) 系数列为 \(a_1,\ldots,a_s\)。这是有限列表。取 \(q=p^e\) 同时为所有 \(q_j\) 的倍数，并构造题述 \(k'\)、\(C'\)、\(K'\)。对任一上述有理函数 \(c=P(x)/Q(x)\)，把系数和变量分别开 \(q\) 次根便得到
+	\[
+		c^{1/q}
+		=\frac{P^{[1/q]}(z_1,\ldots,z_d)}
+		{Q^{[1/q]}(z_1,\ldots,z_d)}\in K',
+	\]
+	其中上标 \([1/q]\) 表示对系数逐项开根。分母非零，因为它的 \(q\) 次幂为原非零多项式。由 \(q_j\mid q\)，各系数的 \(q_j\) 次根也属于 \(K'\)。
+
+	将 \(g_j\) 的系数逐项开 \(q_j\) 次根，得到 \(h_j(T)\in K'[T]\)。于是
+	\[
+		h_j(T)^{q_j}=g_j(T^{q_j})=f_j(T),
+		\qquad h_j(\alpha_j)=0.
+	\]
+	\(h_j\) 无重根。确实，在代数闭域中若
+	\(g_j(T)=\prod_\ell(T-\beta_\ell)\)，其根 \(\beta_\ell\) 互异，则
+	\[
+		h_j(T)=\prod_\ell(T-\beta_\ell^{1/q_j}),
+	\]
+	而唯一的 \(q_j\) 次根仍互异。因此每个 \(\alpha_j\) 都在 \(K'\) 上可分。逐个添入这些元，每一步的最小多项式都整除一个无重根多项式，所以生成的有限扩张 \(LK'/K'\) 可分。
+
+	最后核对环的有限性。每个 \(a_j^{1/q}\) 都满足次数 \(q\) 的首一方程，所以 \([k':k]\leq q^s<\infty\)。取 \(k'/k\) 的一组基，则该基乘以
+	\[
+		z_1^{r_1}\cdots z_d^{r_d},\qquad 0\leq r_i<q,
+	\]
+	生成 \(C'\) 作为 \(C\) 模，因为 \(z_i^q=x_i\)。\(z_1,\ldots,z_d\) 在 \(k'\) 上代数独立：若有非零多项式关系，取其 \(q\) 次幂，所有系数的 \(q\) 次幂都属于 \(k\)，便得到 \(x_i\) 在 \(k\) 上的非零关系，矛盾。因此 \(C'\) 是多项式环，Noether 且整闭。
+\end{proof}
+
+这里没有把整个 \(k^{1/q}\) 添入基域。即使 \(k/k^p\) 有无穷次数，上述有限列表仍只产生有限扩张 \(k'/k\)。系数列表有限来自有理函数可以写成有限项多项式的商；这也是此处与一般形式幂级数问题的关键差别。
+
+\begin{theorem}\label{g5:thm:finite-normalization}
+	设 \(k\) 为任意域，\(A\) 为有限型 \(k\) 整代数，\(L/\operatorname{Frac}A\) 为任意有限域扩张。则 \(A\) 在 \(L\) 中的整闭包为有限 \(A\) 模。特别地，\(A^\nu\) 为有限 \(A\) 模。
+\end{theorem}
+\begin{proof}
+	由\cref{g5:prop:normalization-polynomial-reduction}，只需证明多项式环 \(C=k[x_1,\ldots,x_d]\) 在有限扩张 \(L/K\)、\(K=\operatorname{Frac}C\)，中的整闭包 \(D\) 有限于 \(C\)。
+
+	若 \(L/K\) 可分，直接用\cref{g5:thm:separable-integral-closure-finite}。特征零下所有有限域扩张都可分：不可约多项式的导数非零且次数更低，故与原多项式互素。若特征为 \(p>0\)，用\cref{g5:lem:finite-coefficient-root-extension}构造 \(C'\)、\(K'\) 及 \(L'=LK'\)。\(C'\) 整闭且 Noether，\(L'/K'\) 有限可分，所以 \(C'\) 在 \(L'\) 中的整闭包 \(D'\) 是有限 \(C'\) 模。
+
+	又因 \(C'\) 是有限 \(C\) 模，有限性的传递性给出 \(D'\) 为有限 \(C\) 模。每个 \(z\in D\) 满足一个 \(C\) 系数首一方程，同一方程也表明 \(z\) 整于 \(C'\)；且 \(z\in L\subseteq L'\)，故
+	\[
+		D\subseteq D'.
+	\]
+	\(D\) 是有限 \(C\) 模 \(D'\) 的子模，\(C\) Noether，所以 \(D\) 有限。再回到原归约便得结论。
+\end{proof}
+
+有限系数开根的路线见\cite[第33节，第262--263页]{Matsumura1989}。上面的引理把两项有限性分别列出：基域只加入有限多个根，变量只需要指数有界的单项式；随后才把不可分问题放到可分扩张中处理。
 
 \subsection{约化对象的各分支与粘合}
 \label{g5:subsec:0402:05}
-待撰写
+
+\begin{corollary}\label{g5:cor:reduced-finite-normalization}
+	设 \(k\) 为任意域，\(A\) 为约化有限型 \(k\) 代数。则 \(A^\nu\) 为有限 \(A\) 模，因而仍是有限型 \(k\) 代数、Noether 环及正规环。若 \(A\ne0\)，则
+	\[
+		A^\nu\cong\prod_{\mathfrak p\in\operatorname{Min}A}
+		(A/\mathfrak p)^\nu.
+	\]
+\end{corollary}
+\begin{proof}
+	有限型性使 \(A\) Noether，极小素理想只有有限多个。由\cref{g5:prop:total-quotient-components}，其正规化是各整环分支的正规化的有限乘积。每个因子由\cref{g5:thm:finite-normalization}为有限 \(A/\mathfrak p\) 模，因而也为有限 \(A\) 模。有限乘积作为模等于有限直和，所以 \(A^\nu\) 有限于 \(A\)。模生成元也是代数生成元，故 \(A^\nu\) 为有限型 \(k\) 代数；Hilbert 基定理给出 Noether 性，正规性则已由\cref{g5:prop:normalization-localization}证明。零环情形直接成立。
+\end{proof}
+
+以两条轴为例，令 \(A=k[x,y]/(xy)\)。其两个分支的坐标环是 \(k[x]\)、\(k[y]\)，都整闭，所以
+\[
+	A^\nu=k[x]\times k[y].
+\]
+原环在乘积中的像是
+\[
+	\{(f(x),g(y)):f(0)=g(0)\}.
+\]
+一个多项式模 \(xy\) 可唯一写成 \(c+xf_1(x)+yg_1(y)\)，这就证明了像的描述。正规化去掉两条轴在原点的取值相等条件，把它们作为两个独立分支保存。相应的乘积环由 \(A\) 与幂等元 \((1,0)\) 生成，是一个具体的有限扩张。
+
+\ProseParagraphBreak
+
+现在把仿射构造放进开集。对代数闭域 \(k\) 上的约化仿射代数集 \(X\)，令
+\(\widetilde X\) 为坐标环 \(k[X]^\nu\) 对应的仿射代数集。有限型与约化性保证这是第一章的映射对应所允许的坐标环，包含
+\(k[X]\subseteq k[X]^\nu\) 给出有限映射
+\[
+	\nu:\widetilde X\longrightarrow X.
+\]
+在每个不可约分支的函数域上，它诱导同构：对应整闭包位于原函数域中并包含原坐标环，取分式域不改变。于是正规化保留各分支的有理函数，改变其允许作为正则函数的整元。
+
+\ProseParagraphBreak
+
+若 \(f\in k[X]\)，主开集 \(D(f)\) 的坐标环为 \(k[X]_f\)。局部化公式给出
+\[
+	(k[X]^\nu)_f=(k[X]_f)^\nu.
+\]
+因此先在 \(X\) 上正规化再取 \(\nu^{-1}D(f)\)，与先取 \(D(f)\) 再正规化，得到同一张仿射图。若 \(f\) 在某个分支上恒为零，这张主开图会同时删去该分支；公式已把这一情况包含在内。
+
+\ProseParagraphBreak
+
+这一相容性也给出一般代数簇的粘合构造。取约化代数簇的仿射开覆盖 \(X=\bigcup_i U_i\)，逐张构造 \(\widetilde U_i\)。交集 \(U_i\cap U_j\) 可用两张图的主开集作公共细化。具体地，在给定点附近先取 \(U_i\) 中的主开集 \(D(f)\subseteq U_j\)，再取 \(U_j\) 中的主开集 \(D(g)\subseteq D(f)\)。把 \(g\) 限制到 \(D(f)\) 后，可写成 \(a/f^n\)，其中 \(a\in k[U_i]\)。于是这个 \(D(g)\) 在 \(U_i\) 中恰为 \(D(fa)\)，确实同时是两张图的主开集。相应局部化后的整闭包都由同一个开集的正则函数环决定，所以它们之间有唯一的、保持原有分支函数域的同构。
+
+\ProseParagraphBreak
+
+在三张图的交上，这些同构满足余循环条件，因为两次复合与直接同构在每个分支函数域中都是恒等。将不交并 \(\coprod_i\widetilde U_i\) 按这些开集同构识别，取商拓扑；一个开集上的函数规定为在各仿射图上正则且在重叠处相等的函数。开集同构及余循环条件保证每张 \(\widetilde U_i\) 仍是所得空间的开图，函数的限制与粘合同样相容。各图上的 \(\nu_i\) 也在重叠处相等，因而拼成 \(\nu:\widetilde X\to X\)。更换覆盖后取公共细化，局部化公式再次给出唯一同构，所以这个构造不依赖覆盖选择。后面的概形语言将用同一组局部环与限制同态表达这一构造。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

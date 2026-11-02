@@ -10,34 +10,264 @@
 % * 体积约束与常平均曲率方程
 % * 保体积变分的二阶公式
 % * 球面模型与约束稳定性
-% * 存在、分类与边界条件的适用范围
+% * 常平均曲率超曲面的存在与分类
 % 
 % ---
 % 
 % 纲要内容结束
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 % 规划任务：以闭、双侧、嵌入并围成区域的光滑超曲面为主范围，固定环境定向、单位法向与平均曲率归一化，完整推导体积约束的一阶和二阶变分、常平均曲率条件与约束稳定性。用第16章的球面谱或相应已证不等式完成欧氏球面的保体积稳定模型。一般 CMC 存在、分类及 min-max 构造准确外引；不由无约束稳定性替代保体积稳定性。
 
 \OptionalSection{体积约束与常平均曲率}{g3:sec:1905}
 
-待撰写
+把一只球缓慢缩小，面积与体积都会减小；若要求体积保持不变，这个最直接的降面积方向便不再允许。体积约束改变的是竞争变分，也因此把极小方程 \(H=0\) 改成常平均曲率方程。本节始终区分平均曲率向量场 \(H\) 与选定法向下的标量平均曲率 \(h_\nu=\langle H,\nu\rangle\)。
 
 \subsection{围成区域、法向与体积变分}
 \label{g3:subsec:1905:01}
-待撰写
+设 \((\bar M^{m+1},\bar g)\) 是定向光滑无边界黎曼流形，\(m\ge1\)，\(\Omega\subset\bar M\) 是紧的光滑区域，非空边界 \(\Sigma=\partial\Omega\) 为闭光滑嵌入超曲面。区域指连同边界的余维零子流形，允许不连通。取 \(\nu\) 为外单位法向，记诱导度量为 \(g\)，并定义
+\[
+	\mathcal A(\Sigma)=\int_\Sigma\mu_g,
+	\qquad \mathcal V(\Omega)=\int_\Omega\mu_{\bar g},
+	\qquad h_\nu=\frac1m\operatorname{tr}A_\nu.
+\]
+这里 \(A_\nu X=-\bar\nabla_X\nu\)，所以半径 \(R\) 的 Euclid 球面取外法向时有 \(h_\nu=-1/R\)。对于已选区域，法向的正负不是另外自由选择的。
+
+\ProseParagraphBreak
+
+先把邻近区域写成可直接计算的形式。在充分小的 \(\varepsilon>0\) 下，法向指数映射
+\[
+	\Phi:\Sigma\times(-\varepsilon,\varepsilon)\longrightarrow\bar M,
+	\qquad \Phi(x,s)=\exp_x^{\bar g}(s\nu_x)
+\]
+给出 \(\Sigma\) 的一个管状邻域。这里的统一性只需紧性：在 \((x,0)\) 处，微分是 \((X,a)\mapsto X+a\nu_x\)，为同构；有限覆盖先给出统一的局部可逆范围。若任意缩小范围后仍有不同点映到同一点，便有 \(s_j,t_j\to0\) 及 \(\Phi(x_j,s_j)=\Phi(y_j,t_j)\)。取收敛子列，极限给出 \(x=y\)，这又与 \((x,0)\) 附近的局部单射性矛盾。缩小 \(\varepsilon\) 后，区域在该邻域中恰为 \(s\le0\)。
+
+\ProseParagraphBreak
+
+这些坐标中 \(\partial_s\) 为单位向量并与各个 \(s\) 层正交。确实，沿法向测地线有 \(\bar\nabla_s\partial_s=0\)；若 \(X\) 是由 \(\Sigma\) 上坐标场延拓的变化场，则 \([\partial_s,X]=0\)，从而
+\(\partial_s\langle\partial_s,X\rangle=\frac12X|\partial_s|^2=0\)，初值又为零。因此环境体积密度可写成
+\[
+	\Phi^*\mu_{\bar g}=J(x,s)\,\mu_g\,\mathrm ds,
+	\qquad J(x,0)=1,
+	\qquad \partial_sJ(x,0)=-m h_\nu(x).
+\]
+最后一式是平行层面积密度的变化，直接来自式\eqref{g3:eq:normal-area-density-variation}。
+
+\begin{proposition}\label{g3:prop:enclosed-volume-first-variation}
+	设 \((\bar M^{m+1},\bar g)\) 为定向光滑无边界黎曼流形，\(m\ge1\)，\(\Omega\) 为具有非空光滑边界 \(\Sigma\) 的紧区域，\(\nu\) 为外单位法向，\(g\) 为边界的诱导度量。令 \(\Phi(x,s)=\exp_x(s\nu_x)\) 为小管状邻域坐标，\(\Phi^*\mu_{\bar g}=J(x,s)\mu_g\,\mathrm ds\)。对充分小的光滑函数 \(w:\Sigma\to\mathbb R\)，令 \(\Sigma_w=\{\Phi(x,w(x)):x\in\Sigma\}\)，并令 \(\Omega_w\) 在管状邻域中由 \(s\le w(x)\) 定义、在邻域外与 \(\Omega\) 相同。则
+	\begin{equation}\label{g3:eq:normal-graph-volume}
+		\mathcal V(\Omega_w)-\mathcal V(\Omega)
+		=\int_\Sigma\int_0^{w(x)}J(x,s)\,\mathrm ds\,\mu_g.
+	\end{equation}
+	更一般地，设 \(\Omega_t\) 为光滑区域变分，\(F_t:\Sigma\to\partial\Omega_t\) 为光滑参数化且 \(F_0\) 为包含映射。记 \(g_t=F_t^*\bar g\)、\(f_t=\langle\partial_tF_t,\nu_t\rangle\)，其中 \(\nu_t\) 是区域的外单位法向，则
+	\begin{equation}\label{g3:eq:enclosed-volume-first-variation}
+		\mathcal V'(t)=\int_\Sigma f_t\,\mu_{g_t}.
+	\end{equation}
+	若初速度为 \(f\nu\)，再记 \(a=\langle\bar\nabla_t\partial_tF_t|_0,\nu\rangle\)，则
+	\begin{equation}\label{g3:eq:enclosed-volume-second-variation}
+		\mathcal V''(0)=\int_\Sigma\bigl(a-m h_\nu f^2\bigr)\,\mu_g.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	新旧区域只在管状邻域中不同，沿每条法向线积分便得到式\eqref{g3:eq:normal-graph-volume}；当 \(w<0\) 时，内积分的负号正好记录被去掉的体积。此类图确实由区域变分产生：取在 \(s=0\) 附近等于一、在邻域端部等于零的截断函数 \(\chi(s)\)，以
+	\((x,s)\mapsto(x,s+\chi(s)w(x))\)
+	作变换。对充分小的 \(w\)，其沿 \(s\) 的导数为正，故是管状邻域的微分同胚，并能在外部延拓为恒等映射。
+
+	对于一般区域变分，先将边界速度光滑延拓为邻域内的向量场，再用截断延拓到环境。其局部流实现同样的瞬时边界速度。流拉回环境密度的导数为 \((\operatorname{div}_{\bar g}W)\mu_{\bar g}\)：在一点取正交坐标，对 Jacobian 行列式求导即得此式。于是\cref{g3:thm:divergence-theorem}给出
+	\[
+		\mathcal V'(t)=\int_{\Omega_t}\operatorname{div}_{\bar g}W_t\,\mu_{\bar g}
+		=\int_{\partial\Omega_t}\langle W_t,\nu_t\rangle\,\mu_{g_t}.
+	\]
+	结果只取决于边界速度，与延拓无关。对光滑嵌入族，这个延拓可在随时间变化的管状坐标中构造，因而也适用于给定的 \(F_t\)。
+
+	最后对一阶公式求导。初速度为法向时，\(\dot\mu=-m h_\nu f\mu_g\)；由 \(\langle\nu_t,\nu_t\rangle=1\)，有
+	\[
+		\dot f_0
+		=\langle\bar\nabla_t\partial_tF_t|_0,\nu\rangle
+		+\langle f\nu,\bar\nabla_t\nu_t|_0\rangle=a.
+	\]
+	故 \(\mathcal V''(0)=\int(a-m h_\nu f^2)\mu_g\)。
+\end{proof}
+
+一阶保体积条件因此是 \(\int_\Sigma f\mu_g=0\)。但这还没有保证某条已选的变分在所有小时间都保持体积；下一小节将补上这个实现步骤。
 
 \subsection{体积约束与常平均曲率方程}
 \label{g3:subsec:1905:02}
-待撰写
+称光滑区域变分 \(\Omega_t\) 为\term[baotiji bianfen]{保体积变分}[volume-preserving variation]，是指在一个包含零的时间区间上有 \(\mathcal V(\Omega_t)=\mathcal V(\Omega_0)\)。定义中的等式对每个小时间成立。
+
+\begin{lemma}\label{g3:lem:exact-volume-preserving-variation}
+	设 \(\Omega\) 为定向光滑无边界黎曼流形 \(\bar M^{m+1}\) 中的紧光滑区域，\(m\ge1\)，边界 \(\Sigma\ne\varnothing\)，外单位法向为 \(\nu\)。光滑函数 \(f:\Sigma\to\mathbb R\) 能实现为一条保体积光滑区域变分的法向初速度 \(f\nu\)，当且仅当
+	\[
+		\int_\Sigma f\,\mu_g=0.
+	\]
+\end{lemma}
+\begin{proof}
+	必要性由体积一阶公式给出。反之，取光滑函数 \(\psi\) 满足 \(\int_\Sigma\psi\mu_g\ne0\)，例如 \(\psi=1\)。使用上面的管状坐标，把两个小实参数 \((t,s)\) 对应的边界写成法向图
+	\[
+		w(t,s,x)=t f(x)+s\psi(x),
+		\qquad G(t,s)=\mathcal V(\Omega_{w(t,s)})-\mathcal V(\Omega).
+	\]
+	式\eqref{g3:eq:normal-graph-volume}表明 \(G\) 光滑，并且
+	\[
+		G(0,0)=0,\qquad
+		G_s(0,0)=\int_\Sigma\psi\mu_g\ne0,\qquad
+		G_t(0,0)=\int_\Sigma f\mu_g=0.
+	\]
+	第一卷第11.3.2小节的带参数隐函数定理给出光滑函数 \(s=s(t)\)，满足 \(s(0)=0\)、\(G(t,s(t))=0\)。这里待解变量是 \(s\)，可逆的偏导数块就是非零数 \(G_s(0,0)\)。对这个恒等式求导得到 \(s'(0)=0\)。因此
+	\(F_t(x)=\Phi(x,t f(x)+s(t)\psi(x))\)
+	是所需边界变分，初速度恰为 \(f\nu\)。前一命题的截断构造把它实现为光滑区域变分。
+\end{proof}
+
+对指定的全局单位法向，若 \(h_\nu\) 为常数，称超曲面有\term[chang pingjun qulv]{常平均曲率}[constant mean curvature]，常缩写为 CMC。若边界不连通，本节说“\(h_\nu\) 为常数”是指所有分支取同一个值；这是只固定总体积时产生的条件。
+
+\begin{theorem}\label{g3:thm:cmc-volume-critical}
+	设 \(\Omega\) 为定向光滑无边界黎曼流形 \(\bar M^{m+1}\) 中的紧光滑区域，\(m\ge1\)，非空边界为 \(\Sigma\)，外单位法向为 \(\nu\)。以下条件等价：
+	\begin{enumerate}
+		\item \(\mathcal A'(0)=0\) 对所有保体积光滑区域变分成立；
+		\item \(h_\nu=h_0\) 在整个 \(\Sigma\) 上为同一常数；
+		\item 存在常数 \(h_0\)，使泛函
+		\begin{equation}\label{g3:eq:cmc-augmented-functional}
+			\mathcal F_{h_0}(\Omega')
+			=\mathcal A(\partial\Omega')+m h_0\mathcal V(\Omega')
+		\end{equation}
+		在 \(\Omega\) 处对全部光滑区域变分驻值。
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	由面积与体积一阶公式，法向速度 \(f\) 满足
+	\[
+		\mathcal A'(0)=-m\int_\Sigma h_\nu f\,\mu_g,
+		\qquad
+		\mathcal F_{h_0}'(0)=-m\int_\Sigma(h_\nu-h_0)f\,\mu_g.
+	\]
+	切向速度的面积贡献为散度，闭边界上积分为零，也不改变体积。设第一个条件成立，取
+	\[
+		\bar h=\frac1{\mathcal A(\Sigma)}\int_\Sigma h_\nu\mu_g,
+		\qquad f=h_\nu-\bar h.
+	\]
+	该函数积分为零，由前一引理可实现为精确保体积变分。因此
+	\(0=\mathcal A'(0)=-m\int_\Sigma(h_\nu-\bar h)^2\mu_g\)，得到 \(h_\nu=\bar h\)。反之，若 \(h_\nu=h_0\)，保体积条件使 \(\int f=0\)，所以面积一阶导数为零。这证明前两项等价。
+
+	若 \(h_\nu=h_0\)，第二个积分对所有 \(f\) 消失。反过来，任何光滑 \(f\) 都可用法向图实现；取 \(f=h_\nu-h_0\) 即知第三项迫使第二项成立。
+\end{proof}
+
+因此乘子是 \(m h_0\)。在外向球面上它等于 \(-m/R\)，乘子泛函为 \(\mathcal A-(m/R)\mathcal V\)。若分别固定各个区域分支的体积，允许的速度在每个区域分支的整个边界上分别积分为零，结论则允许不同区域分支对应不同的平均曲率常数。
 
 \subsection{保体积变分的二阶公式}
 \label{g3:subsec:1905:03}
-待撰写
+在 CMC 边界处直接对面积求两次导数，会出现加速度项。乘子泛函在所有方向上都驻值，恰好把这些项消去；再限制到精确保体积变分，就得到面积真正的约束二次型。
+
+\begin{theorem}\label{g3:thm:cmc-volume-second-variation}
+	设 \(\Omega\) 为定向光滑无边界黎曼流形 \((\bar M^{m+1},\bar g)\) 中的紧光滑区域，\(m\ge1\)，其非空边界 \(\Sigma\) 对外单位法向 \(\nu\) 满足 \(h_\nu=h_0\)。令
+	\[
+		c_\Sigma=|A_\nu|^2+\overline{\operatorname{Ric}}(\nu,\nu).
+	\]
+	对法向初速度 \(f\nu\) 的任意光滑区域变分，乘子泛函满足
+	\begin{equation}\label{g3:eq:cmc-volume-index-form}
+		\mathcal F_{h_0}''(0)=Q_\Sigma(f,f),
+		\qquad Q_\Sigma(f,k)=\int_\Sigma
+		\bigl(\langle\mathrm df,\mathrm dk\rangle-c_\Sigma f k\bigr)\,\mu_g.
+	\end{equation}
+	若变分精确保体积，则 \(\mathcal A''(0)=Q_\Sigma(f,f)\)，且 \(\int_\Sigma f\mu_g=0\)。反之，每个光滑零均值 \(f\) 都能由这种变分实现。
+\end{theorem}
+\begin{proof}
+	对变分的每个时刻，设 \(f_t=\langle\partial_tF_t,\nu_t\rangle\)。闭边界上的一阶公式给出
+	\[
+		\mathcal F_{h_0}'(t)
+		=-m\int_\Sigma(h_{\nu_t}-h_0)f_t\,\mu_{g_t}.
+	\]
+	在 \(t=0\) 处，\(h_{\nu_0}-h_0=0\)，故对 \(f_t\) 与密度求导产生的项均消失。由\cref{g3:prop:hypersurface-mean-variation}及本书 \(\Delta_g=-\operatorname{div}_g\nabla\) 的约定，
+	\[
+		\mathcal F_{h_0}''(0)
+		=-m\int_\Sigma h'_{\nu_0}f\,\mu_g
+		=\int_\Sigma(f\Delta_g f-c_\Sigma f^2)\,\mu_g
+		=Q_\Sigma(f,f).
+	\]
+	最后一步在闭流形上分部积分。极化给出双线性公式。对精确保体积变分，\(\mathcal V''(0)=0\)，从式\eqref{g3:eq:cmc-augmented-functional}便有 \(\mathcal A''(0)=\mathcal F_{h_0}''(0)\)。速度的必要条件及其充分实现已由\cref{g3:lem:exact-volume-preserving-variation}证明。
+\end{proof}
+
+称这样的 CMC 边界为\term[baotiji wending]{保体积稳定}[volume-preserving stable]，若所有精确保体积变分都有 \(\mathcal A''(0)\ge0\)。如\subsecref{g3:subsec:1901:02}所述，初始切向速度可由重新参数化消去；区域和面积不变。因此这个定义等价于
+\begin{equation}\label{g3:eq:cmc-stability-mean-zero}
+	Q_\Sigma(f,f)\ge0
+	\quad\text{对全部 }f\in C^\infty(\Sigma;\mathbb R),
+	\qquad \int_\Sigma f\mu_g=0.
+\end{equation}
+这是局部极小的二阶必要条件。仅由二次型非负，尚不能比较远处竞争区域的面积；若存在零方向，也不能单靠二阶项判断附近所有变分的高阶变化。
+
+\ProseParagraphBreak
+
+二阶体积约束还能说明为什么只检验 \(\mathcal V'(0)=0\) 不够。若初速度为 \(f\nu\)，精确保体积迫使
+\[
+	\int_\Sigma a\,\mu_g=m h_0\int_\Sigma f^2\,\mu_g.
+\]
+朴素的法向指数变分 \(F_t(x)=\exp_x(t f(x)\nu_x)\) 沿每条法向线的加速度为零，一般不满足这个等式。前面两参数构造中的 \(s(t)\) 正是二阶及更高阶的修正。
+
+\ProseParagraphBreak
+
+算子表达为 \(J_\Sigma=\Delta_g-c_\Sigma\)，与式\eqref{g3:eq:minimal-hypersurface-jacobi}具有相同形式，而允许的函数空间发生了变化。对零均值 \(f\)，若
+\(Q_\Sigma(f,k)=0\) 对每个零均值 \(k\) 都成立，则 \(J_\Sigma f\) 是常数：取 \(k=J_\Sigma f-\mathcal A(\Sigma)^{-1}\int_\Sigma J_\Sigma f\mu_g\) 即可看出。一般不必有 \(J_\Sigma f=0\)。当 \(c_\Sigma\) 为常数时，\(J_\Sigma\) 保持零均值子空间，此时这个常数才必为零。
 
 \subsection{球面模型与约束稳定性}
 \label{g3:subsec:1905:04}
-待撰写
+球面上，曲率势 \(c_\Sigma\) 为常数，约束二次型便完全由球面 Laplace 谱控制。最低的常数模态被体积约束排除，紧邻它的模态则来自平移。
 
-\subsection{存在、分类与边界条件的适用范围}
+\begin{theorem}\label{g3:thm:round-sphere-volume-stability}
+	设 \(m\ge1\)、\(R>0\)，\(\Sigma=S_R^m=\partial B_R^{m+1}\subset\mathbb R^{m+1}\)，取外单位法向 \(\nu=x/R\)。则 \(\Sigma\) 保体积稳定。对实光滑零均值函数 \(f\)，有
+	\begin{equation}\label{g3:eq:round-sphere-volume-index-form}
+		Q_\Sigma(f,f)=\int_\Sigma\left(|\mathrm df|^2-\frac m{R^2}f^2\right)\mu_g\ge0,
+	\end{equation}
+	且等号成立当且仅当存在 \(v\in\mathbb R^{m+1}\) 使 \(f(x)=\langle v,\nu(x)\rangle\)。若 \(f\) 还与所有坐标限制函数正交，则
+	\begin{equation}\label{g3:eq:round-sphere-constrained-gap}
+		Q_\Sigma(f,f)\ge\frac{m+2}{R^2}\int_\Sigma f^2\mu_g.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	由\chapref{g3:ch:04}的球面计算，\(A_\nu=-I/R\)、\(h_\nu=-1/R\)、\(|A_\nu|^2=m/R^2\)；环境 Ricci 曲率为零。于是约束二次型就是式\eqref{g3:eq:round-sphere-volume-index-form}的左边。
+
+	\Cref{g3:thm:sphere-function-spectrum}已经证明，\(S_R^m\) 的函数特征值为
+	\[
+		\lambda_\ell=\frac{\ell(\ell+m-1)}{R^2},
+		\qquad \ell=0,1,2,\ldots,
+	\]
+	各特征空间由次数为 \(\ell\) 的齐次调和多项式限制得到。把 \(f\) 正交展开为 \(\sum_{\ell\ge0}f_\ell\)，零均值条件恰好给出 \(f_0=0\)。由\cref{g3:lem:laplace-form-spectral-expansion}，该展开在 \(H^1\) 中收敛，且
+	\[
+		Q_\Sigma(f,f)
+		=\sum_{\ell\ge1}\frac{\ell(\ell+m-1)-m}{R^2}\,
+		\|f_\ell\|_{L^2}^2.
+	\]
+	\(\ell=1\) 的系数为零，\(\ell\ge2\) 的系数至少为 \((m+2)/R^2\)。这同时证明非负性、等号条件与谱隙。一次齐次多项式都是调和多项式，其限制空间为 \(\operatorname{span}\{x^1,\ldots,x^{m+1}\}\)，也就是全部 \(\langle v,\nu\rangle\)。
+\end{proof}
+
+这些零方向确有几何来源。平移族 \(B_R^{m+1}+tv\) 保持面积与体积，边界速度 \(v\) 的法向分量为 \(\langle v,\nu\rangle\)；切向分量只改变参数化。因此球面在保体积意义下稳定，却不可能沿全部非零允许方向都严格增加面积。另一方面，常数函数满足
+\(Q_\Sigma(1,1)=-(m/R^2)\mathcal A(\Sigma)<0\)，但它改变体积，不能用于否定约束稳定性。这里常数方向的 \(Q\) 是乘子泛函的二阶导数，也不能误认成普通面积沿半径变化的二阶导数。
+
+\subsection{常平均曲率超曲面的存在与分类}
 \label{g3:subsec:1905:05}
-待撰写
+本节已经从光滑变分推出 CMC 方程与约束稳定性。寻找满足这些条件的超曲面，或证明它们只能有某种形状，需要另外的整体论证。下面给出两个准确的外部结果，分别说明 Euclid 空间中的分类和一般闭环境中的存在。
+
+\ProseParagraphBreak
+
+经典的 Alexandrov 球面定理可由文献\cite[定理2，第450--451页]{Ros1987HigherMeanCurvatures}取一阶平均曲率得到；该文对更高阶平均曲率也有结论。以下只使用其中的 CMC 分类，证明在所引文献中。
+
+\begin{theorem}[Alexandrov 球面定理]\label{g3:thm:alexandrov-cmc-external}
+	设 \(m\ge1\)，\(\Sigma\subset\mathbb R^{m+1}\) 为非空、闭、连通的光滑嵌入超曲面，并为一个紧光滑区域的边界。若其外向标量平均曲率 \(h_\nu\) 为常数，则 \(\Sigma\) 是一个圆球面。特别地，该常数为负，球面半径为 \(-1/h_\nu\)。
+\end{theorem}
+
+这里没有把“稳定”列入假设；分类使用 Euclid 环境、闭性、连通性与嵌入条件。删去闭性，\(\mathbb R^3\) 中半径 \(R\) 的圆柱就有 \(h_\nu=-1/(2R)\)，却不是球面；截取一段圆柱也给出带边界的例子。删去连通性，若干互不相交的同半径球面仍有同一个常平均曲率，固定总体积时却会出现\cref{g3:ex:cmc-disconnected-balls}中的不稳定方向。
+
+\ProseParagraphBreak
+
+一般闭黎曼环境中可以预先指定一个非零平均曲率数值。文献\cite[作者版本（2017年8月11日）定理0.1、注0.2及第1节]{ZhouZhu2019CMC}给出如下存在结论；其极小极大构造与正则性证明属于几何测度论，这里准确陈述结果。
+
+\begin{theorem}\label{g3:thm:cmc-minmax-external}
+	设 \((\bar M^{m+1},\bar g)\) 为闭、连通、定向的光滑黎曼流形，\(3\le m+1\le7\)。对任意 \(c>0\)，存在非空闭光滑浸入超曲面，局部可分成有限个嵌入片，且任意两片相接时相切并彼此位于一侧，即允许接触而不允许横穿。它有一个光滑单位法向 \(\nu\)，使
+	\[
+		h_\nu=-\frac cm.
+	\]
+	这样的超曲面可由 \(\mathcal A-c\mathcal V\) 的极小极大构造得到，构造中的每个光滑片具有重数一。
+\end{theorem}
+
+文献把上述局部结构称为 \emph{almost embedded}。在接触点会同时看到两个光滑片，故“每片重数一”并不排除接触点的总密度为二。原文以未除以维数、并在外向球面上取正值的平均曲率为 \(c\)；与本书的换算是 \(c=-m h_\nu\)，其泛函因此恰为式\eqref{g3:eq:cmc-augmented-functional}。这里允许的接触结构比嵌入更宽，给定的也是平均曲率值，并非所围体积；存在结论本身没有断言这些超曲面保体积稳定。
+
+\ProseParagraphBreak
+
+最后，边界条件也属于变分问题的数据。若超曲面有边界，为讨论体积通常先选一块固定的补片，把它与超曲面拼成区域的边界。固定原边界的变分满足 \(f|_{\partial\Sigma}=0\)，补片不动，体积的一阶通量仍为 \(\int_\Sigma f\mu_g\)；二次型分部积分中的边界项也因 \(f=0\) 消失。若允许边界在支撑面内移动，面积一阶公式中的边界通量一般存在，驻值还要规定接触条件，二阶公式也会包含相应边界项。闭超曲面的零均值检验必须连同这些条件一起调整，不能直接用于所有带边界 CMC 问题。

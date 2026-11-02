@@ -9,40 +9,332 @@
 % * 限制根、根空间与重数
 % * 特殊线性群商的完整计算
 % * 不可约经典模型与低秩同构
-% * 例外模型及分类结论的外部输入
+% * 例外对称空间与 Cartan 分类
 % * 局部等距、单连通覆盖与整体商
 % * 分类表与紧非紧对偶的核验
 % 
 % ---
 % 
 % 纲要内容结束
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 % 规划任务：在第5.4节的对称分解与对偶模型之后建立限制根语言，完整计算一个经典矩阵商的秩、限制根和重数。给出不可约单连通紧型与非紧型模型的分类表及准确适用条件；一般 Cartan 分类作为外部输入，不以第一卷第19章的有限根算例冒充完整分类证明。所用根系与李群覆盖结果按实际版本就近恢复。
 
 \OptionalSection{限制根与对称空间分类}{g3:sec:0506}
 
-待撰写
+最大平坦给出一组彼此交换的方向，但同样的秩仍可能对应不同的对称空间。进一步观察这些方向怎样作用在其他切向和稳定子方向上，便得到限制根及其重数。它们同时记录平坦的维数、横向方向的数量和曲率算子的特征值。下面先建立这一语言，完整计算特殊线性群商，再把已算的模型放入一般分类；分类的穷尽性使用正式教材中的 Cartan 分类，而不从少数矩阵算例推断。
 
 \subsection{限制根、根空间与重数}
 \label{g3:subsec:0506:01}
-待撰写
+
+先在非紧型有效半单对称对 \(\mathfrak g=\mathfrak k\oplus\mathfrak p\) 中工作。令 \(\theta\) 为 Cartan 对合，\(\mathcal B\) 为 Killing 型，\(\mathfrak a\subseteq\mathfrak p\) 为极大交换子空间。在正定内积 \(\mathcal B_\theta(X,Y)=-\mathcal B(X,\theta Y)\) 下，迹型的不变性给出
+\begin{equation}\label{g3:eq:cartan-adjoint-identity}
+	(\operatorname{ad}X)^*=-\operatorname{ad}(\theta X).
+\end{equation}
+特别地，每个 \(\operatorname{ad}H\)、\(H\in\mathfrak a\) 都自伴，且这些算子彼此交换，故存在共同的实特征空间分解。
+
+\begin{definition}\label{g3:def:restricted-root}
+	对 \(\alpha\in\mathfrak a^*\)，令
+	\[
+		\mathfrak g_\alpha
+		=\{X\in\mathfrak g:[H,X]=\alpha(H)X\text{ 对所有 }H\in\mathfrak a\}.
+	\]
+	使 \(\mathfrak g_\alpha\ne0\) 的非零线性函数称为\term[xianzhi gen]{限制根}[restricted root]，其集合记为 \(\Sigma\)；\(\mathfrak g_\alpha\) 称为限制根空间，\(m_\alpha=\dim_{\mathbb R}\mathfrak g_\alpha\) 称为根的\term[gen de chongshu]{重数}[root multiplicity]。
+\end{definition}
+\symidx{\(\Sigma,\mathfrak g_\alpha,m_\alpha\)：限制根、实根空间与重数}
+
+这里的根空间在实 Lie 代数中取维数，与复半单 Lie 代数的复一维根空间不能混同。称为“限制”，是因为把 \(\mathfrak a\) 扩充到复化 Lie 代数的 Cartan 子代数后，非零限制根正是其普通根在 \(\mathfrak a\) 上的非零限制；不同普通根可以限制成同一个函数。以下构造只需共同特征空间，不以这个扩充解释作为证明前提。
+
+\begin{proposition}\label{g3:prop:restricted-root-decomposition}
+	在上述非紧型半单对称对中，令 \(\mathfrak m=Z_{\mathfrak k}(\mathfrak a)\)。则
+	\begin{equation}\label{g3:eq:restricted-root-decomposition}
+		\mathfrak g=\mathfrak m\oplus\mathfrak a
+		\oplus\bigoplus_{\alpha\in\Sigma}\mathfrak g_\alpha,
+		\qquad \mathfrak g_0=\mathfrak m\oplus\mathfrak a.
+	\end{equation}
+	此外，\(\theta\mathfrak g_\alpha=\mathfrak g_{-\alpha}\)，且
+	\[
+		[\mathfrak g_\alpha,\mathfrak g_\beta]\subseteq\mathfrak g_{\alpha+\beta},
+	\]
+	其中不存在的特征空间理解为零。选取 \(H_0\in\mathfrak a\) 使所有根在其上非零，并令 \(\Sigma^+=\{\alpha:\alpha(H_0)>0\}\)，则
+	\begin{equation}\label{g3:eq:restricted-root-dimension}
+		\dim(G/K)=\dim\mathfrak a+\sum_{\alpha\in\Sigma^+}m_\alpha.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	共同自伴算子的谱分解给出 \(\mathfrak g=\bigoplus_\alpha\mathfrak g_\alpha\)。零空间是 \(Z_{\mathfrak g}(\mathfrak a)\)；它被 \(\theta\) 保持，其 \(\mathfrak p\) 分量恰为 \(\mathfrak a\)，否则可扩大交换子空间，\(\mathfrak k\) 分量则为 \(\mathfrak m\)。若 \(X\in\mathfrak g_\alpha\)，则
+	\[
+		[H,\theta X]=-\theta[H,X]=-\alpha(H)\theta X,
+	\]
+	故 \(\theta\) 交换正负根空间，特别有 \(m_\alpha=m_{-\alpha}\)。Jacobi 恒等式给出
+	\[
+		[H,[X,Y]]=[[H,X],Y]+[X,[H,Y]]
+		=(\alpha(H)+\beta(H))[X,Y],
+	\]
+	证明括号关系。最后，每对 \(\mathfrak g_\alpha\oplus\mathfrak g_{-\alpha}\) 的 \(-1\) 特征空间为
+	\[
+		\mathfrak p_\alpha=\{X-\theta X:X\in\mathfrak g_\alpha\},
+	\]
+	其维数为 \(m_\alpha\)，与 \(\mathfrak a\) 一起直和为 \(\mathfrak p\)，于是得到维数公式。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:restricted-root-system}
+	以 \(\mathcal B|_{\mathfrak a}\) 识别 \(\mathfrak a\) 与其对偶，\(\Sigma\) 是张成 \(\mathfrak a^*\) 的有限根系，允许非约化。具体地，它保持于反射
+	\[
+		s_\alpha(\beta)=\beta-
+		\frac{2\langle\beta,\alpha\rangle}{\langle\alpha,\alpha\rangle}\alpha,
+	\]
+	并满足 \(2\langle\beta,\alpha\rangle/\langle\alpha,\alpha\rangle\in\mathbb Z\)。若 \(t\alpha\in\Sigma\)、\(t>0\)，则 \(t\in\{1/2,1,2\}\)。反射保持根重数。
+\end{proposition}
+\begin{proof}
+	若 \(H\in\mathfrak a\) 被所有根消去，则它与式\eqref{g3:eq:restricted-root-decomposition}中的每个空间交换，因而在半单代数的中心中，只能为零；故根张成对偶空间。
+
+	记 \(\alpha^\sharp\) 为 \(\alpha\) 对应的向量。取 \(0\ne E\in\mathfrak g_\alpha\)，令 \(F=-\theta E\)。\([E,F]\) 属于 \(\mathfrak a\)，且由不变性
+	\[
+		\mathcal B([E,F],H)=\alpha(H)\mathcal B_\theta(E,E).
+	\]
+	缩放 \(E\) 使 \(\mathcal B_\theta(E,E)=2/\lVert\alpha\rVert^2\)，便得
+	\[
+		H_\alpha=[E,F]=\frac{2\alpha^\sharp}{\lVert\alpha\rVert^2},\qquad
+		[H_\alpha,E]=2E,\quad[H_\alpha,F]=-2F.
+	\]
+	在伴随表示中，\(\operatorname{ad}E\) 与 \(\operatorname{ad}F\) 互为伴随，\(\operatorname{ad}H_\alpha\) 自伴。第一卷第19.4节的有限升降链论证在这里适用；恢复其要点如下。若 \(v\) 是最高权向量，\(Hv=\lambda v\)、\(Ev=0\)，则交换关系递推给出
+	\[
+		E F^jv=j(\lambda-j+1)F^{j-1}v.
+	\]
+	有限维性使链在某个 \(F^{N+1}v=0\)、\(F^Nv\ne0\) 处终止，取 \(j=N+1\) 得 \(\lambda=N\)。正交补保持三个算子，再重复便得到所有特征值为整数。因此 \(\operatorname{ad}H_\alpha\) 在 \(\mathfrak g_\beta\) 上的特征值 \(\beta(H_\alpha)\) 是整数。
+
+	\(E-F\in\mathfrak k\)。由三维括号关系，\(\operatorname{Ad}(\exp(\tfrac\pi2(E-F)))\) 把 \(H_\alpha\) 送到 \(-H_\alpha\)，并固定 \(\ker\alpha\subseteq\mathfrak a\)，故在 \(\mathfrak a\) 上实现反射。它将 \(\mathfrak g_\beta\) 同构地送到反射后的根空间，证明根集和重数均被保持。若 \(t\alpha\) 也是根，对两种次序应用整性得到 \(2t\in\mathbb Z\)、\(2/t\in\mathbb Z\)，于是 \(t=1/2,1,2\)。
+\end{proof}
+
+若根集中没有与 \(\alpha\) 同时出现的 \(2\alpha\)，称为约化；否则称为非约化。典型非约化根系为
+\[
+	BC_r=\{\pm e_i,\ \pm2e_i,\ \pm e_i\pm e_j\ (i<j)\}.
+\]
+同一直线上的短根与倍根须分别记录重数。例如后面的 FII 型有 \(m_\alpha=8\)、\(m_{2\alpha}=7\)，所以秩一却有维数 \(1+8+7=16\)。
+
+\ProseParagraphBreak
+
+这些根也直接进入曲率。对 \(H\in\mathfrak a\)、\(V=X-\theta X\in\mathfrak p_\alpha\)，有 \((\operatorname{ad}H)^2V=\alpha(H)^2V\)，从而
+\begin{equation}\label{g3:eq:restricted-root-curvature}
+	R(V,H)H=-\alpha(H)^2V.
+\end{equation}
+紧对偶把这个符号反转，而根重数与秩不变。它说明限制根记录的是沿平坦方向看到的横向曲率特征值。
 
 \subsection{特殊线性群商的完整计算}
 \label{g3:subsec:0506:02}
-待撰写
+
+回到 \(\operatorname{SL}(n,\mathbb R)/\operatorname{SO}(n)\)，\(n\ge2\)，取
+\[
+	\mathfrak a=\{H=\operatorname{diag}(h_1,\ldots,h_n):\textstyle\sum_i h_i=0\}.
+\]
+前节已用实对称矩阵的同时对角化证明它极大，故秩为 \(n-1\)。令 \(E_{ij}\) 为矩阵单位，直接相乘得
+\[
+	[H,E_{ij}]=(h_i-h_j)E_{ij}.
+\]
+因此全部限制根、根空间和重数为
+\begin{equation}\label{g3:eq:sl-restricted-roots}
+	\Sigma=\{\alpha_{ij}:i\ne j\},\quad
+	\alpha_{ij}(H)=h_i-h_j,\quad
+	\mathfrak g_{\alpha_{ij}}=\mathbb R E_{ij},\quad m_{\alpha_{ij}}=1.
+\end{equation}
+零特征空间是无迹对角矩阵，故 \(\mathfrak m=0\)。这就是 \(A_{n-1}\) 根系。在当前的迹度量 \(\operatorname{tr}(XY)\) 下，\(\alpha_{ij}\) 的对偶向量为 \(E_{ii}-E_{jj}\)，平方长度为 \(2\)；若改用 \(\mathcal B=2n\operatorname{tr}(XY)\)，根的平方长度为 \(1/n\)。
+
+\ProseParagraphBreak
+
+选 \(h_1>h_2>\cdots>h_n\)，正根为 \(\alpha_{ij}\)、\(i<j\)，单根可取 \(\alpha_{i,i+1}\)。所有正根都满足
+\[
+	\alpha_{ij}=\alpha_{i,i+1}+\cdots+\alpha_{j-1,j}.
+\]
+故正根数为 \(n(n-1)/2\)，维数公式逐项给出
+\[
+	(n-1)+\frac{n(n-1)}2=\frac{n(n+1)}2-1
+	=\dim\operatorname{SL}(n,\mathbb R)-\dim\operatorname{SO}(n).
+\]
+与其配对的切向根空间和稳定子方向分别由
+\[
+	S_{ij}=\frac{E_{ij}+E_{ji}}{\sqrt2},\qquad
+	A_{ij}=\frac{E_{ij}-E_{ji}}{\sqrt2}
+\]
+张成，满足 \([H,S_{ij}]=(h_i-h_j)A_{ij}\)、\([H,A_{ij}]=(h_i-h_j)S_{ij}\)。于是式\eqref{g3:eq:restricted-root-curvature}在这里成为一个逐个二维块即可核验的矩阵等式。
+
+\begin{proposition}\label{g3:prop:sl-restricted-weyl-group}
+	对上述 \(\mathfrak a\)，\term[xianzhi Weyl qun]{限制 Weyl 群}[restricted Weyl group]
+	\[
+		W=N_{\operatorname{SO}(n)}(\mathfrak a)/Z_{\operatorname{SO}(n)}(\mathfrak a)
+	\]
+	为置换群 \(S_n\)，其作用是置换对角元。根超平面为 \(h_i=h_j\)，每个室由对角元的一种严格次序给出。
+\end{proposition}
+\begin{proof}
+	若一个正交矩阵正规化全部对角无迹矩阵，它必须把某个具有互异特征值的对角矩阵的特征直线集合映到坐标直线集合，所以它是带符号的置换矩阵。反过来，这样的矩阵都正规化 \(\mathfrak a\)。每种置换都可通过调整一个符号，使代表的行列式为一；逐点固定 \(\mathfrak a\) 的恰是行列式为一的对角符号矩阵。取商后只剩置换，得到 \(S_n\)。交换第 \(i,j\) 个坐标正是根 \(\alpha_{ij}\) 的反射。
+\end{proof}
+
+\(\operatorname{SU}(n)/\operatorname{SO}(n)\) 的最大交换切空间为 \(\mathrm i\mathfrak a\)。对偶保留上述根的数目与重数，把横向曲率的符号反转。两边的最大平坦分别是环面与 \(\mathbb R^{n-1}\)；相同的 \(A_{n-1}\) 数据没有抹掉这一整体差别。
 
 \subsection{不可约经典模型与低秩同构}
 \label{g3:subsec:0506:03}
-待撰写
 
-\subsection{例外模型及分类结论的外部输入}
+下面各表都在正维、不可约、单连通的黎曼对称模型范围内使用；度量在每个不可约因子上允许乘一个正常数。第一张表的两列模型分别为 \(U/K\) 和 \(G/K\)，\(U\) 表示紧群，\(G\) 表示相应非紧实型。表中的 \(K\) 是实际矩阵嵌入的子群，\(\operatorname S(\operatorname U(p)\times\operatorname U(q))\) 指两块行列式乘积为一的子群。对正交群商使用表列的连通稳定子，而非其可能更大的非连通扩张。
+
+\ProseParagraphBreak
+
+记 \(\operatorname{Sp}(n)\) 为保持标准 四元数 内积的紧群；\(\operatorname{Sp}(2n,\mathbb R)\) 和 \(\operatorname{Sp}(2n,\mathbb C)\) 则分别是作用在 \(\mathbb R^{2n}\)、\(\mathbb C^{2n}\) 上的辛矩阵群。\(\operatorname{SU}^*(2n)\) 是 \(\operatorname{SL}(2n,\mathbb C)\) 中与标准 四元数 结构交换的实型，\(\operatorname{SO}^*(2n)\) 是相应的正交实型；\(\operatorname{Sp}(p,q)\) 保持签名 \((p,q)\) 的 四元数 Hermitian 型。下标 \(0\) 表示恒等连通分支。这样的维数记号避免把 \(\operatorname{Sp}(n)\) 与实辛群的参数混用。
+
+\begingroup
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{.10\textwidth}p{.14\textwidth}p{.16\textwidth}p{.23\textwidth}p{.19\textwidth}p{.08\textwidth}@{}}
+	\caption{七个经典对称空间族：紧模型 \(U/K\) 与非紧模型 \(G/K\)}\label{g3:tab:classical-symmetric-spaces}\\
+	\toprule
+	类型、范围 & \(U\) & \(G\) & \(K\) & 实维数 & 秩\\
+	\midrule
+	\endfirsthead
+	\multicolumn{6}{l}{\thetable\ （续）}\\
+	\toprule
+	类型、范围 & \(U\) & \(G\) & \(K\) & 实维数 & 秩\\
+	\midrule
+	\endhead
+	\bottomrule
+	\endfoot
+	AI\newline \(n\ge2\) & \(\operatorname{SU}(n)\) & \(\operatorname{SL}(n,\mathbb R)\) & \(\operatorname{SO}(n)\) & \(\tfrac12(n-1)(n+2)\) & \(n-1\)\\[3pt]
+	AII\newline \(n\ge2\) & \(\operatorname{SU}(2n)\) & \(\operatorname{SU}^*(2n)\) & \(\operatorname{Sp}(n)\) & \((n-1)(2n+1)\) & \(n-1\)\\[3pt]
+	AIII\newline \(1\le p\le q\) & \(\operatorname{SU}(p+q)\) & \(\operatorname{SU}(p,q)\) & \(\operatorname S(\operatorname U(p)\times\operatorname U(q))\) & \(2pq\) & \(p\)\\[3pt]
+	BDI\newline 见下文 & \(\operatorname{SO}(p+q)\) & \(\operatorname{SO}_0(p,q)\) & \(\operatorname{SO}(p)\times\operatorname{SO}(q)\) & \(pq\) & \(p\)\\[3pt]
+	CI\newline \(n\ge1\) & \(\operatorname{Sp}(n)\) & \(\operatorname{Sp}(2n,\mathbb R)\) & \(\operatorname U(n)\) & \(n(n+1)\) & \(n\)\\[3pt]
+	CII\newline \(1\le p\le q\) & \(\operatorname{Sp}(p+q)\) & \(\operatorname{Sp}(p,q)\) & \(\operatorname{Sp}(p)\times\operatorname{Sp}(q)\) & \(4pq\) & \(p\)\\[3pt]
+	DIII\newline \(n\ge2\) & \(\operatorname{SO}(2n)\) & \(\operatorname{SO}^*(2n)\) & \(\operatorname U(n)\) & \(n(n-1)\) & \(\lfloor n/2\rfloor\)\\
+\end{longtable}
+\endgroup
+
+BDI 的参数为 \(1\le p\le q\)、\(p+q\ge3\)，并排除 \((p,q)=(2,2)\)。被排除的商是 \(S^2\times S^2\) 及其非紧对偶的局部类型，属于可约情形；\((1,1)\) 是一维平坦情形，已经由 \(p+q\ge3\) 排除。第一张表来自 \cite[第VII章第2节，第100--120页，尤其第119页表4]{Loos1969SymmetricII}，把原书分列的奇、偶正交族统一为 BDI。
+
+\ProseParagraphBreak
+
+这些范围保留了便于理解的低维重合，所以表不是不重复的计数表。把尺度相应调整后，有
+\[
+	\begin{aligned}
+	\operatorname{SU}(2)/\operatorname{SO}(2)
+	&\simeq\operatorname{Sp}(1)/\operatorname U(1)\simeq S^2,\\
+	\operatorname{SU}(4)/\operatorname{Sp}(2)&\simeq S^5,\qquad
+	\operatorname{Sp}(2)/(\operatorname{Sp}(1)\times\operatorname{Sp}(1))\simeq S^4,\\
+	\operatorname{SO}(6)/\operatorname U(3)&\simeq\mathbb{CP}^3,\qquad
+	\operatorname{SO}(4)/\operatorname U(2)\simeq S^2.
+	\end{aligned}
+\]
+更一般地，AIII 中 \(p=1\) 给复射影空间，CII 中 \(p=1\) 给 四元数 射影空间，BDI 中 \(p=1\) 给球面。正交与辛族的低维交叉还包括 \(\operatorname{Sp}(2)/\operatorname U(2)\) 与 \(\operatorname{SO}(5)/(\operatorname{SO}(2)\times\operatorname{SO}(3))\)。这些重合由 \(B_2=C_2\)、\(D_3=A_3\) 等 Lie 代数同构解释，原书第120页列出相应低维对照。\(D_2=A_1\oplus A_1\) 则解释上述可约例外。它们说的是正确尺度下的单连通模型，不能直接把任意同名矩阵群的有限商也视为相同。
+
+\ProseParagraphBreak
+
+还有一整族不能并入这七行：紧单群 \(L\) 本身配双不变度量，及其非紧对偶 \(L_{\mathbb C}/L\)，通常分别称为 II 型与 IV 型。这里 \(L\) 与复化群 \(L_{\mathbb C}\) 都取单连通形式。全部可能的简单类型列于下表；\(B_2\) 与 \(C_2\) 的重复保留并明确注明。普通复根在这种非紧商中成为实二维限制根空间，所以每个限制根的重数为 \(2\)，而非 \(1\)。这一点也可由把复根空间忘掉复标量、视为实空间直接看出。
+
+\begingroup
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{.13\textwidth}p{.23\textwidth}p{.28\textwidth}p{.16\textwidth}p{.08\textwidth}@{}}
+	\caption{紧简单群型与复简单群型：\(L\) 对偶于 \(L_{\mathbb C}/L\)}\label{g3:tab:group-type-symmetric-spaces}\\
+	\toprule
+	类型、范围 & \(L\) & \(L_{\mathbb C}\) & 实维数 & 秩\\
+	\midrule
+	\endfirsthead
+	\multicolumn{5}{l}{\thetable\ （续）}\\
+	\toprule
+	类型、范围 & \(L\) & \(L_{\mathbb C}\) & 实维数 & 秩\\
+	\midrule
+	\endhead
+	\bottomrule
+	\endfoot
+	\(A_\ell,\ \ell\ge1\) & \(\operatorname{SU}(\ell+1)\) & \(\operatorname{SL}(\ell+1,\mathbb C)\) & \(\ell(\ell+2)\) & \(\ell\)\\[3pt]
+	\(B_\ell,\ \ell\ge2\) & \(\operatorname{Spin}(2\ell+1)\) & \(\operatorname{Spin}(2\ell+1,\mathbb C)\) & \(\ell(2\ell+1)\) & \(\ell\)\\[3pt]
+	\(C_\ell,\ \ell\ge2\) & \(\operatorname{Sp}(\ell)\) & \(\operatorname{Sp}(2\ell,\mathbb C)\) & \(\ell(2\ell+1)\) & \(\ell\)\\[3pt]
+	\(D_\ell,\ \ell\ge4\) & \(\operatorname{Spin}(2\ell)\) & \(\operatorname{Spin}(2\ell,\mathbb C)\) & \(\ell(2\ell-1)\) & \(\ell\)\\[3pt]
+	\(G_2\) & \(G_2\) & \(G_2(\mathbb C)\) & \(14\) & \(2\)\\
+	\(F_4\) & \(F_4\) & \(F_4(\mathbb C)\) & \(52\) & \(4\)\\
+	\(E_6\) & \(E_6\) & \(E_6(\mathbb C)\) & \(78\) & \(6\)\\
+	\(E_7\) & \(E_7\) & \(E_7(\mathbb C)\) & \(133\) & \(7\)\\
+	\(E_8\) & \(E_8\) & \(E_8(\mathbb C)\) & \(248\) & \(8\)\\
+\end{longtable}
+\endgroup
+
+此表采用简单 Lie 代数的分类及其单连通紧形式，参见 \cite[第V章第4节、第VII章第1节]{Loos1969SymmetricII}。\(\operatorname{Spin}(3)\simeq\operatorname{Sp}(1)\simeq\operatorname{SU}(2)\)、\(\operatorname{Spin}(5)\simeq\operatorname{Sp}(2)\)、\(\operatorname{Spin}(6)\simeq\operatorname{SU}(4)\) 解释未另列的低阶类型；\(\operatorname{Spin}(4)\) 是两个 \(\operatorname{SU}(2)\) 的乘积，故不列入简单群表。紧群 \(\operatorname{SU}(2)\) 的适当双不变度量又是圆球面 \(S^3\)，与第一张表的秩一球面行重合。
+
+\subsection{例外对称空间与 Cartan 分类}
 \label{g3:subsec:0506:04}
-待撰写
+
+最后还有十二个例外的非群型对称对。为把整体含义说清楚，下表中 \(U\) 均取单连通紧群，\(\mathfrak k\) 指表列对合的固定 Lie 代数，\(K_U=(U^\sigma)_0\)，紧模型为 \(U/K_U\)。非紧列给出对偶实型的标准记号，模型取相应非紧对称空间的单连通形式。各向同性群由这个对称对确定；表中的直和是 Lie 代数直和，不能把它擅自换成无中心商的群直积。例如 \(\mathfrak{so}(10)\oplus\mathfrak u(1)\) 并没有声称实际子群是 \(\operatorname{Spin}(10)\times\operatorname U(1)\)。
+
+\ProseParagraphBreak
+
+记号 \(E_{6(6)}\)、\(E_{6(-26)}\) 等括号内的数，表示相应实 Lie 代数 Killing 型的签名差 \(\dim\mathfrak p-\dim\mathfrak k\)，不是对称空间的维数或秩。表中同时列限制根系，方便与维数、秩核对。
+
+\begingroup
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}p{.07\textwidth}p{.07\textwidth}p{.15\textwidth}p{.29\textwidth}p{.08\textwidth}p{.06\textwidth}p{.09\textwidth}@{}}
+	\caption{十二个例外对称对及其紧非紧对偶}\label{g3:tab:exceptional-symmetric-spaces}\\
+	\toprule
+	类型 & \(U\) & 非紧实型 & \(\mathfrak k\) & 维数 & 秩 & \(\Sigma\)\\
+	\midrule
+	\endfirsthead
+	\multicolumn{7}{l}{\thetable\ （续）}\\
+	\toprule
+	类型 & \(U\) & 非紧实型 & \(\mathfrak k\) & 维数 & 秩 & \(\Sigma\)\\
+	\midrule
+	\endhead
+	\bottomrule
+	\endfoot
+	EI & \(E_6\) & \(E_{6(6)}\) & \(\mathfrak{sp}(4)\) & \(42\) & \(6\) & \(E_6\)\\
+	EII & \(E_6\) & \(E_{6(2)}\) & \(\mathfrak{su}(6)\oplus\mathfrak{sp}(1)\) & \(40\) & \(4\) & \(F_4\)\\
+	EIII & \(E_6\) & \(E_{6(-14)}\) & \(\mathfrak{so}(10)\oplus\mathfrak u(1)\) & \(32\) & \(2\) & \(BC_2\)\\
+	EIV & \(E_6\) & \(E_{6(-26)}\) & \(\mathfrak f_4\) & \(26\) & \(2\) & \(A_2\)\\
+	EV & \(E_7\) & \(E_{7(7)}\) & \(\mathfrak{su}(8)\) & \(70\) & \(7\) & \(E_7\)\\
+	EVI & \(E_7\) & \(E_{7(-5)}\) & \(\mathfrak{so}(12)\oplus\mathfrak{sp}(1)\) & \(64\) & \(4\) & \(F_4\)\\
+	EVII & \(E_7\) & \(E_{7(-25)}\) & \(\mathfrak e_6\oplus\mathfrak u(1)\) & \(54\) & \(3\) & \(C_3\)\\
+	EVIII & \(E_8\) & \(E_{8(8)}\) & \(\mathfrak{so}(16)\) & \(128\) & \(8\) & \(E_8\)\\
+	EIX & \(E_8\) & \(E_{8(-24)}\) & \(\mathfrak e_7\oplus\mathfrak{sp}(1)\) & \(112\) & \(4\) & \(F_4\)\\
+	FI & \(F_4\) & \(F_{4(4)}\) & \(\mathfrak{sp}(3)\oplus\mathfrak{sp}(1)\) & \(28\) & \(4\) & \(F_4\)\\
+	FII & \(F_4\) & \(F_{4(-20)}\) & \(\mathfrak{so}(9)\) & \(16\) & \(1\) & \(BC_1\)\\
+	G & \(G_2\) & \(G_{2(2)}\) & \(\mathfrak{so}(4)\) & \(8\) & \(2\) & \(G_2\)\\
+\end{longtable}
+\endgroup
+
+例外固定子代数的依据为 \cite[第VII章第3节，第124页表5、第130--132页及表6]{Loos1969SymmetricII}；限制根、秩与维数的汇总见同书第146页表8。FII 的紧模型是 \(F_4/\operatorname{Spin}(9)\)，也称八元数射影平面；G 型的紧模型是 \(G_2/\operatorname{SO}(4)\)。这里仅用这两个名称识别表中空间，不以八元数坐标构造作为分类证明。
+
+\begin{theorem}[Cartan 分类，外部输入]\label{g3:thm:cartan-symmetric-classification}
+	每个正维、不可约、单连通、非平坦的黎曼对称空间，按正常数倍的度量等价，属于\ref{g3:tab:classical-symmetric-spaces}、\ref{g3:tab:group-type-symmetric-spaces}或\ref{g3:tab:exceptional-symmetric-spaces}中的紧模型或非紧模型。反过来，各表在所注明参数范围内均给出这样的模型，允许已说明的低维重复。一般单连通黎曼对称空间是 Euclid 空间与有限个这些不可约因子的黎曼乘积，各非平坦因子的尺度独立选择。
+\end{theorem}
+
+此定理的穷尽性，以及例外 Lie 代数和对合的分类，采用 \cite[第V章第4节、第VII章第1--3节]{Loos1969SymmetricII} 的一般分类。第一卷第19章提供了根空间、反射和部分低秩根图，本节又完整算出 AI 型；这些计算核验了表的一部分，没有承担所有根图和所有对合的穷尽证明。乘积部分还使用本章已证的 de Rham 分解与对称空间的紧非紧结构。
 
 \subsection{局部等距、单连通覆盖与整体商}
 \label{g3:subsec:0506:05}
-待撰写
+
+表中的 Lie 代数对首先确定局部模型。若使用紧侧的单连通群 \(U\) 与连通固定子群 \(K_U\)，商 \(U/K_U\) 单连通：商映射具有局部截面，可提升路径；一条商中的环路提升后的端点差在 \(K_U\) 中，利用 \(K_U\) 连通可把它补成 \(U\) 中的环路，再由 \(U\) 单连通缩去。这是第一卷覆盖与齐性空间结论在此处的具体用法。经典表中即使写的是 \(\operatorname{SO}\) 而非 \(\operatorname{Spin}\)，所列商也已经是相应的单连通空间：\(K\) 中的平面转动映到 \(\pi_1(\operatorname{SO}(m))\) 的生成元，因此提升到 \(\operatorname{Spin}(m)\) 后不再产生额外覆盖。被排除的低维情形已经单独处理。
+
+\ProseParagraphBreak
+
+一般连通完备局部对称空间的万能覆盖是单连通对称模型的乘积；这是对称空间的局部到整体结构结果，见 \cite[第II章第3节、第IV章第1节]{Loos1969SymmetricI}。原空间还需由一个自由、固有不连续的离散等距群 \(\Gamma\) 取商。表格没有记录 \(\Gamma\)，因此没有分类所有基本群、闭测地线长度或商空间。特别地，把一个 Lie 群替换为有限中心商，同时把稳定子取为相应像，可能根本不改变齐性空间；而扩大稳定子的离散分支，则可能真正改变空间的覆盖类型。
+
+\begin{proposition}\label{g3:prop:symmetric-quotient-reflection-criterion}
+	设 \(\widetilde M\) 为单连通黎曼对称空间，\(\Gamma\) 自由、固有不连续地作用为等距变换。令 \(M=\Gamma\backslash\widetilde M\)，\(x\in\widetilde M\)。在 \(\pi(x)\) 处存在全局点反射，当且仅当
+	\[
+		s_x\Gamma s_x^{-1}=\Gamma.
+	\]
+	所以商空间全局对称，当且仅当这个条件对每个 \(x\) 都成立。
+\end{proposition}
+\begin{proof}
+	若正规化条件成立，则 \(s_x\) 下降为商上的等距变换，固定 \(\pi(x)\) 并在其切空间上为负恒等，故是点反射。反过来，商上的点反射可提升为固定 \(x\) 的等距变换；其微分也为负恒等，所以由一点一阶数据的唯一性，它正是 \(s_x\)。覆盖空间的提升等距变换共轭保持覆盖变换群，因此得到正规化条件。
+\end{proof}
+
+\(S^n\) 的对径变换与所有点反射交换，故 \(\mathbb{RP}^n\) 全局对称，它与球面的差别是覆盖数据。在 \(\mathbb H^2\) 上，取沿一条轴的非平凡双曲平移 \(\gamma\)，则 \(\langle\gamma\rangle\backslash\mathbb H^2\) 完备且局部对称；若 \(x\) 不在这条轴上，\(s_x\) 把轴送到另一条测地线，因此不能共轭保持同一个循环群。这个商在该点没有全局点反射。于是“完备局部对称”与“全局对称”即使在二维也必须分开。
 
 \subsection{分类表与紧非紧对偶的核验}
 \label{g3:subsec:0506:06}
-待撰写
+
+阅读分类表时，可以从三个可直接计算的量检查所选行。首先，\(\dim M=\dim\mathfrak g-\dim\mathfrak k\)，在对偶两边保持不变。例如 EIII 的维数为 \(78-(45+1)=32\)，EVI 为 \(133-(66+3)=64\)。其次，秩来自 \(\mathfrak p\) 的极大交换子空间，或限制根系所在空间的维数，不是紧群 \(U\) 的秩。最后，根重数必须与式\eqref{g3:eq:restricted-root-dimension}相容。
+
+\ProseParagraphBreak
+
+例如 EIV 的限制根系为 \(A_2\)，三个正根的重数都为 \(8\)，所以维数为 \(2+3\cdot8=26\)。FII 的 \(BC_1\) 则给出 \(1+8+7=16\)。同是秩一，实球面、复射影空间、四元数 射影空间和 FII 的根重数不同，横向曲率的特征值及其出现次数也不同。这些数值与表中的一般分类相符，核验并不把根重数的实质来源替换成维数凑数。
+
+\ProseParagraphBreak
+
+对偶变换保持秩、维数、根系与重数，改变的是 \([\mathfrak p,\mathfrak p]\) 的符号及由此产生的曲率符号。若要比较数值，还须使用同一尺度：本节 \(\operatorname{SL}(n,\mathbb R)/\operatorname{SO}(n)\) 的迹度量与 Killing 型度量相差 \(2n\)，而球面和双曲模型中的半径另有几何归一化。分类表确定不可约模型及其尺度自由度；一个具体写出的度量，仍应通过联络、括号或模型坐标把这个常数核实。

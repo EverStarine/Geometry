@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 12.5 与代数环面簇的比较
 % 纲要位置：几何学计划纲要.md，第 3954 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,359 @@
 \section{与代数环面簇的比较}
 \label{g4:sec:1205}
 
-待撰写
+一个多面体同时包含两种信息：面的法向量规定坐标图怎样粘合，面的相对位置规定辛形式的大小。把圆相位扩展为非零复数的乘法，Delzant 构造便出现代数几何中的单项式图。本节从这些图出发建立比较，只使用仿射与射影坐标、线丛的过渡函数和明确的约化计算。
 
 \subsection{法扇与不变除子}
 \label{g4:subsec:1205:01}
-待撰写
+
+沿用\secref{g4:sec:1203}的格 \(N\)、对偶格 \(M_{\mathbb Z}\) 及原始外法向量 \(\nu_j\)。\term[daishuhuanmian]{代数环面}[algebraic torus]取为
+\[
+	T_{\mathbb C}=\operatorname{Hom}(M_{\mathbb Z},\mathbb C^*)
+	\cong(\mathbb C^*)^n.
+\]
+对 \(m\in M_{\mathbb Z}\)，相应字符记为 \(\chi^m\)；在选定格基后，它是 Laurent 单项式，且 \(\chi^{m+m'}=\chi^m\chi^{m'}\)。单位模长部分就是 \(T\)。
+
+\begin{definition}\label{g4:def:1205:normal-fan}
+	对多面体 \(P\) 的非空面 \(F\)，定义\term[fazhui]{法锥}[normal cone]
+	\[
+		\sigma_F=
+		\{u\in\mathfrak t:\langle x,u\rangle
+		\text{ 在全部 }x\in F\text{ 处达到其在 }P\text{ 上的最大值}\}.
+	\]
+	它由包含 \(F\) 的各面的外法向量生成。所有这些锥组成 \(P\) 的\term[fashan]{法扇}[normal fan]，记为 \(\Sigma_P\)。
+\end{definition}
+
+这些锥覆盖 \(\mathfrak t\)，因为每个线性函数都在某个面上取最大值。两个法锥的交，是包含相应两面的最小面之法锥；它同时是两个锥的面。可从最大值条件看出交的等式：在线性函数的最大值面中同时包含两个面，就包含它们生成的最小面。反向包含直接成立。面包含关系在法锥处反向；在一个顶点附近用各活动面的线性不等式，就能把这一关系写成删去若干非负系数生成元。因此它们确实按共同的面相接。Delzant 条件说明，每个顶点的最大法锥由 \(N\) 的一组基底生成。
+
+\ProseParagraphBreak
+
+固定顶点 \(v\)，把其外法向基记为 \(\nu_1,\ldots,\nu_n\)，对偶基记为 \(m_1,\ldots,m_n\)。对应的仿射图取为
+\[
+	U_v=\mathbb C^n,\qquad u_i=\chi^{m_i}.
+\]
+在稠密环面上，每个字符 \(\chi^m\) 都可写成 \(\prod_i u_i^{\langle m,\nu_i\rangle}\)。它在整张图中正则，当且仅当所有指数非负。用半群记号表示，其坐标环为
+\[
+	\mathbb C[\sigma_v^\vee\cap M_{\mathbb Z}]
+	=\mathbb C[u_1,\ldots,u_n],
+	\qquad
+	\sigma_v^\vee=\{m:\langle m,u\rangle\ge0\ (u\in\sigma_v)\}.
+\]
+这里半群环表示以 \(\chi^m\) 为基、按指数相加作乘法的代数。两张顶点图在共同面的对应开集上，通过这些字符的 Laurent 单项式表达粘合；负指数只出现在已经要求非零的坐标上。指数相加保证三重重叠上的变换相容。这是第五卷命题1.3.2的仿射图方法在单项式坐标中的运用。
+
+在一个复流形上，若实闭二形式 \(\omega\) 与其可积复结构 \(J\) 相容，即
+\(\omega(Ju,Jv)=\omega(u,v)\) 且 \(\omega(u,Ju)>0\) 对非零 \(u\) 成立，就称它为\term[Kahlerxingshi]{Kähler 形式}[Kähler form]。下面的商图将同时给出复结构与这种形式。
+
+\begin{proposition}\label{g4:prop:1205:complex-quotient}
+	设 \(P\) 为 Delzant 多面体，并令
+	\[
+		\mathcal U=\bigcup_v\mathcal U_v\subset\mathbb C^d,\qquad
+		\mathcal U_v=\{z:z_j\ne0\text{ 对所有 }j\notin I_v\}.
+	\]
+	整数映射 \(\beta\) 诱导复环面满射
+	\((\mathbb C^*)^d\to T_{\mathbb C}\)，核记为 \(K_{\mathbb C}\)。
+	商 \(\mathcal U/K_{\mathbb C}\) 由上述仿射图 \(U_v\) 粘成，且有自然微分同胚
+	\[
+		M_P=Z_P/K\longrightarrow\mathcal U/K_{\mathbb C}.
+	\]
+	在这个复结构下，\(\omega_P\) 是 Kähler 形式。因而辛构造与上述单项式图给出同一个光滑复流形。
+\end{proposition}
+\begin{proof}
+	对 \(z\in Z_P\)，其零坐标集包含于某个 \(I_v\)，所以 \(Z_P\subset\mathcal U\)。顶点整数基使 \(K_{\mathbb C}\to(\mathbb C^*)^{I_v^c}\) 的坐标投影为同构。具体地，若
+	\(\nu_j=\sum_{i\in I_v}c_{ij}\nu_i\)，则核条件为
+	\[
+		k_i=\prod_{j\notin I_v}k_j^{-c_{ij}}\quad(i\in I_v).
+	\]
+	所以可唯一用 \(K_{\mathbb C}\) 把 \(\mathcal U_v\) 中的非活动坐标全部变成 \(1\)。剩余坐标为
+	\[
+		u_i=z_i\prod_{j\notin I_v}z_j^{c_{ij}},\qquad i\in I_v.
+	\]
+	它们可任取复数，给出 \(\mathcal U_v/K_{\mathbb C}\cong\mathbb C^n\)。在剩余复环面作用下，\(u_i\) 的字符正是 \(m_i\)。不同图的重叠只要求某些活动坐标非零，过渡公式便是前述 Laurent 单项式。
+
+	接着证明每个复轨道与 \(Z_P\) 相交于恰好一个 \(K\) 轨道。由整数分裂，
+	\(K_{\mathbb C}=K\exp(\mathfrak k)\)，其中 \(\exp(\tau)\) 表示正实数逐坐标伸缩 \(e^{\tau_j}\)。固定 \(z\in\mathcal U_v\)，其零坐标集 \(J\) 包含于 \(I_v\)。在由这些面相交得到的面内取相对内点 \(x\)，使
+	\[
+		a_j=\lambda_j-\langle x,\nu_j\rangle
+		\quad\text{满足}\quad
+		a_j=0\ (j\in J),\qquad a_j>0\ (j\notin J).
+	\]
+	这样的点可从顶点沿不属于 \(J\) 的内向边作足够小的正向移动得到。对 \(\tau\in\mathfrak k\) 考察
+	\[
+		\mathcal F_z(\tau)
+		=\frac14\sum_j|z_j|^2e^{2\tau_j}
+			-\sum_j\lambda_j\tau_j
+		=\sum_{j\notin J}
+		\left(\frac{|z_j|^2}{4}e^{2\tau_j}-a_j\tau_j\right).
+	\]
+	最后一个等式使用 \(\sum_j\langle x,\nu_j\rangle\tau_j
+	=\langle x,\beta\tau\rangle=0\)。每个括号中的一元函数在两端都趋于正无穷，且有有限下界。投影
+	\(\mathfrak k\to\mathbb R^{J^c}\) 单射：若只有 \(J\) 位置可能非零，则 \(\beta\tau=0\) 与这些法向量的独立性迫使 \(\tau=0\)。因此 \(\mathcal F_z\) 在 \(\mathfrak k\) 上固有。其 Hessian 为
+	\[
+		\mathrm{D}^2\mathcal F_z(\tau)(\eta,\eta)
+		=\sum_{j\notin J}|z_j|^2e^{2\tau_j}\eta_j^2>0
+		\qquad(\eta\ne0).
+	\]
+	所以它有唯一极小点。临界方程是
+	\(i^*(\mu_{\mathbb C}(e^\tau z)+\lambda)=0\)，恰好说明 \(e^\tau z\in Z_P\)。严格凸性给出交点的 \(K\) 轨道唯一性。
+
+	Hessian 可逆还使极小点依赖 \(z\) 光滑，第一卷定理11.3.5的参数隐函数定理给出这一结论。在每张仿射图中选上面非活动坐标为 \(1\) 的代表，再作这个唯一正伸缩，便得到商映射的光滑逆。故所列对应为微分同胚；特别地，这些图的整体空间具有 \(M_P\) 的 Hausdorff 拓扑。
+
+	最后在 \(z\in Z_P\) 记 \(V_z=\mathrm{T}_z(Kz)\)，并以标准 Euclid 度量取
+	\[
+		H_z=(V_z\oplus JV_z)^\perp.
+	\]
+	矩映射方程给出 \(\mathrm{T}_zZ_P=(JV_z)^\perp\)，故
+	\(\mathrm{T}_zZ_P=V_z\oplus H_z\)。\(H_z\) 对标准 \(J\) 不变，且在商切空间上投影为同构；复商的微分则消去 \(V_z\oplus JV_z\)，所以其复结构正是 \(H_z\) 上的 \(J\)。标准形式在 \(H_z\) 上与此复结构相容，约化拉回等式使 \(\omega_P\) 也相容。复结构由全纯单项式过渡得到，因而可积；\(\omega_P\) 已闭，故为 Kähler 形式。
+\end{proof}
+
+这里的仿射图及粘合只依赖法扇。下一小节将用射影闭包证明这个复流形是代数簇。它具有开稠密的 \(T_{\mathbb C}\) 轨道，且乘法作用正则延拓，属于\term[daishuhuanmiancu]{代数环面簇}[algebraic toric variety]；本节的光滑模型也是正规簇。
+
+\ProseParagraphBreak
+
+第 \(j\) 个面对应子流形
+\[
+	D_j=\{[z]:z_j=0\}\subset M_P.
+\]
+在包含该面的顶点图中，它是一个坐标超平面；在其他图中则为空。因此它是光滑复余维一子簇，并等于 \(\mu_P^{-1}\) 的相应面原像。其开稠密部分是一个复环面轨道，所以不可约。称 \(D_j\) 为\term[huanmianbubianchuzi]{环面不变除子}[torus-invariant divisor]。这里除子是复余维一不可约子簇的有限整数线性组合；局部由一个非零有理函数给出零极点阶数的除子称\term[Cartierchuzi]{Cartier 除子}[Cartier divisor]，局部方程之比必须为可逆正则函数。本节中的各 \(D_j\) 由坐标函数给出，因此满足这一条件。
+
+\begin{equation}\label{g4:eq:1205:character-divisor}
+	\operatorname{div}(\chi^m)
+	=\sum_{j=1}^d\langle m,\nu_j\rangle D_j.
+\end{equation}
+这可在每个顶点图中直接验证：\(\chi^m=\prod_i u_i^{\langle m,\nu_i\rangle}\)，指数就是相应超平面上的零阶或负的极点阶。
 
 \subsection{极化和整多面体}
 \label{g4:subsec:1205:02}
-待撰写
+
+法扇不记录支撑常数的实数大小。要把某一个辛形式与射影嵌入的线丛对应起来，还需要整数条件。称顶点都在 \(M_{\mathbb Z}\) 中的多面体为\term[zhengduomianti]{整多面体}[integral polytope]。对 Delzant 多面体，这等价于全部 \(\lambda_j\) 为整数：一边由面上的整数顶点求配对，另一边由顶点的整数法向基反解顶点坐标。
+
+\ProseParagraphBreak
+
+这里也明确线丛术语。若一个代数线丛的一组整体截面在各点不同时为零，并给出到某个射影空间的闭嵌入，就称它为\term[henchongzuxiancong]{很充足线丛}[very ample line bundle]；某个正张量幂很充足时，称它为\term[chongzuxiancong]{充足线丛}[ample line bundle]。本节的射影模型以一条指定的充足线丛作为极化数据。下面将实际写出所需的截面和嵌入。
+
+\begin{proposition}\label{g4:prop:1205:integral-embedding}
+	设 \(P\) 为整 Delzant 多面体。则其单项式图所成的空间同构于射影闭包
+	\begin{equation}\label{g4:eq:1205:projective-monomials}
+		X_P=\overline{\{[\chi^{-m}(t)]_{m\in P\cap M_{\mathbb Z}}:
+		t\in T_{\mathbb C}\}}\ \subset
+		\mathbb{CP}^{\,|P\cap M_{\mathbb Z}|-1}.
+	\end{equation}
+	负指数与本章正旋转矩映射取负二次型的约定相配。除子
+	\(D_P=\sum_j\lambda_jD_j\) 定义一条线丛 \(L_P\)，上述坐标由其整体截面给出，且 \(L_P\) 很充足。
+\end{proposition}
+\begin{proof}
+	固定顶点 \(v\)，仍用其外法向对偶基 \(m_1,\ldots,m_n\)。每个 \(m\in P\cap M_{\mathbb Z}\) 满足
+	\[
+		v-m=\sum_i a_i m_i,\qquad
+		a_i=\lambda_i-\langle m,\nu_i\rangle\in\mathbb Z_{\ge0}.
+	\]
+	从 \(v\) 沿第 \(i\) 条边到另一端点，位移为 \(-\ell_i m_i\)。两个端点都整，且 \(m_i\) 原始，所以 \(\ell_i\) 为正整数；特别地 \(v-m_i\in P\cap M_{\mathbb Z}\)。在射影图 \(Z_v\ne0\) 中，
+	\[
+		\frac{Z_m}{Z_v}=\chi^{v-m}
+		=\prod_i u_i^{a_i},
+		\qquad
+		\frac{Z_{v-m_i}}{Z_v}=u_i.
+	\]
+	所以环面像在这张图中的闭包，恰为所有这些单项式的图像，且因坐标 \(u_i\) 本身都出现，它同构于 \(\mathbb C^n\)。像为闭图，逆映射是选取所列 \(n\) 个比值，因而双向正则。
+
+	这些顶点图覆盖整个射影闭包。事实上，每个格点 \(m\in P\) 可写成顶点的有理凸组合；清去分母后，有
+	\(Nm=\sum_v a_vv\)、\(a_v\in\mathbb Z_{\ge0}\)、\(\sum_v a_v=N\)。
+	因此在环面像及其闭包上恒有齐次关系
+	\[
+		Z_m^N=\prod_v Z_v^{a_v}.
+	\]
+	若所有顶点坐标均为零，上式使全部坐标都为零，与射影点的定义矛盾。由此，每个点至少落在一张顶点图内。图间过渡仍是字符的 Laurent 单项式，故与前面构造的空间完全一致。
+
+	下面落实线丛。由\eqref{g4:eq:1205:character-divisor}，\(D_P\) 在顶点图中由有理函数 \(\chi^v\) 给出，因为活动面的阶数为 \(\langle v,\nu_i\rangle=\lambda_i\)。在重叠上，这些函数之比可逆，因而可用局部标架 \(e_v\) 及过渡式
+	\[
+		e_w=\chi^{v-w}e_v
+	\]
+	定义代数线丛 \(L_P\)。对每个 \(m\in P\cap M_{\mathbb Z}\)，令截面 \(s_m\) 在 \(v\) 图中的系数为 \(\chi^{v-m}\)。刚才的非负指数保证它正则，过渡式保证各图相容。且 \(s_v\) 在 \(v\) 图中系数恒为 \(1\)，故这些截面没有共同零点。它们给出的映射正是\eqref{g4:eq:1205:projective-monomials}，而已证明的局部闭图及覆盖说明它是射影闭嵌入。这证明很充足性。
+\end{proof}
+
+即使原 \(P\) 的支撑常数为实数，其法扇仍来自某个整 Delzant 多面体。为此，把有限个 \(\lambda_j\) 作足够小的有理扰动：已有顶点的非活动不等式严格成立，有限个其他独立面交点若不属于 \(P\)，至少违反一个严格不等式；所以小扰动保持全部顶点面关联。再乘一个共同正整数，就得到具有同一法扇的整多面体。因此上述单项式图总能实现为一个光滑射影簇。原来的实数支撑常数决定其上的具体 Kähler 类。
+
+\begin{proposition}\label{g4:prop:1205:polarization-class}
+	对整 Delzant 多面体 \(P\)，在前述识别下有
+	\begin{equation}\label{g4:eq:1205:polarization-class}
+		c_1(L_P)_{\mathbb R}=\left[\frac{\omega_P}{2\pi}\right].
+	\end{equation}
+	更一般地，对任意实 Delzant 多面体，\([\omega_P/(2\pi)]\) 是整数上同调类的实像，当且仅当 \(P\) 可经平移成为整多面体。
+\end{proposition}
+\begin{proof}
+	先设所有 \(\lambda_j\) 为整数。它们定义 \(K_{\mathbb C}\) 的字符
+	\(\chi^\lambda(k)=\prod_jk_j^{\lambda_j}\)。
+	在 \(\mathcal U\times\mathbb C\) 上取作用
+	\(k\cdot(z,a)=(kz,\chi^\lambda(k)a)\)。其商是一条线丛。多项式
+	\[
+		\prod_j z_j^{\,\lambda_j-\langle m,\nu_j\rangle}
+	\]
+	在 \(K_{\mathbb C}\) 下按字符 \(\chi^\lambda\) 变换，故给出商线丛截面。在顶点规范化中，其系数恰为前面的 \(\chi^{v-m}\)，所以商线丛正是 \(L_P\)。
+
+	限制到 \(Z_P\)，用 \(|a|^2\) 赋予商线丛 Hermitian 度量。在环境空间取
+	\[
+		\alpha_0=\frac12\sum_j(x_j\,\mathrm{d}y_j-y_j\,\mathrm{d}x_j),
+		\qquad \mathrm{d}\alpha_0=\omega_0,
+		\qquad \nabla_0=\mathrm{d}-i\alpha_0.
+	\]
+	对 \(\xi\in\mathfrak k\)，水平集方程说明
+	\(\alpha_0(\xi_{\mathbb C^d})=\sum_j|z_j|^2\xi_j/2
+	=\langle\lambda,\xi\rangle\)。
+	纤维相位的变化与连接形式的这一项相抵消，所以连接沿 \(K\) 下降。也可直接取局部截面 \(z=z(x)\)：局部连接形式是 \(-i z^*\alpha_0\)；改成 \(z'=e^{it(x)}z\) 时，标架乘以 \(e^{-i\langle\lambda,t(x)\rangle}\)，连接形式也恰增加
+	\(-i\,\mathrm{d}\langle\lambda,t(x)\rangle\)。这核对了下降和符号。下降连接的曲率为 \(-i\omega_P\)，第二卷命题22.3.1的一阶陈类曲率归一化给出\eqref{g4:eq:1205:polarization-class}。
+
+	若 \(P\) 平移 \(a\)，则支撑常数变成
+	\(\lambda+\beta^*a\)，其在 \(\mathfrak k\) 上的限制不变。因此水平集、约化形式都不变，矩映射仅加上 \(a\)。这证明平移后整时的充分性。
+
+	反过来，设 \([\omega_P/(2\pi)]\) 整。考虑任一边
+	\(E=[v,v+\ell u]\)，其中 \(u\in M_{\mathbb Z}\) 为原始内向边向量，\(\ell>0\)。由顶点图与\cref{g4:prop:1203:orbit-fibres}，其原像是一条二维球面：开边上为一个圆族，两个端点的圆分别缩成一点。取与 \(u\) 配对为 \(-1\) 的剩余原始圆生成元，令其周期 \(2\pi\) 的参数为 \(\theta\)。对开边参数 \(s\in(0,\ell)\)，矩映射方程给出 \(\iota_{\partial_\theta}\omega_P=-\mathrm{d}s\)，故限制面积形式为
+	\(\mathrm{d}s\wedge\mathrm{d}\theta\)，选此辛定向后
+	\[
+		\int_{\mu_P^{-1}(E)}\frac{\omega_P}{2\pi}=\ell.
+	\]
+	故每条边的格长度为整数。顶点边图连通：取顶点值互异的线性函数，从非最大顶点总有一条边使其增加，因为这些内向边生成该顶点的可行方向锥；沿这样的边有限步就达到唯一最大顶点。因此所有顶点与一个固定顶点之差都是格向量。把这个固定顶点平移到零，便得到整多面体。
+\end{proof}
+
+射影性与指定辛类的整性由此分开。相同法扇的实多面体可以给出同一个射影簇上的不同实 Kähler 类；只有相应平移整条件成立时，这个类才由一条极化线丛的一阶陈类给出。对射影直线，\(\int\omega_{\mathrm{FS}}=\pi\)，所以 \(\mathcal O(1)\) 对应的是 \(2\omega_{\mathrm{FS}}\) 的类，而不是 \(\omega_{\mathrm{FS}}\) 的类。
 
 \subsection{射影空间、乘积及吹起模型}
 \label{g4:subsec:1205:03}
-待撰写
+
+对单纯形
+\[
+	P_s=\{x_i\ge0,\ \sum_{i=1}^n x_i\le s\},\qquad s>0,
+\]
+外法向量为 \(-e_1,\ldots,-e_n,(1,\ldots,1)\)，支撑常数为 \(0,\ldots,0,s\)。核环面是对角圆，水平方程为 \(\sum_{j=0}^n|z_j|^2=2s\)，所以
+\begin{equation}\label{g4:eq:1205:simplex-projective}
+	(M_{P_s},\omega_{P_s})\cong
+	(\mathbb{CP}^n,2s\,\omega_{\mathrm{FS}}).
+\end{equation}
+其复商是 \((\mathbb C^{n+1}\setminus\{0\})/\mathbb C^*\)，正是射影空间的比例坐标。整数 \(s\) 时，格点对应总次数不超过 \(s\) 的仿射单项式，齐次化后为全部 \(s\) 次齐次单项式，因此极化为 \(\mathcal O(s)\)。
+
+\ProseParagraphBreak
+
+若 \(P=P_1\times P_2\)，法向映射、核群和约束方程按两个因子分开。故
+\[
+	M_P=M_{P_1}\times M_{P_2},\qquad
+	\omega_P=\operatorname{pr}_1^*\omega_{P_1}
+	+\operatorname{pr}_2^*\omega_{P_2}.
+\]
+复商图也按乘积粘合。特别地，盒子 \(\prod_i[0,a_i]\) 对应
+\((\mathbb{CP}^1)^n\) 及形式 \(\sum_i2a_i\operatorname{pr}_i^*\omega_{\mathrm{FS}}\)。
+在整情形，格点集合为笛卡尔积，射影坐标是两组单项式坐标的两两乘积；这就是第五卷命题1.3.3的 Segre 嵌入，\footnote{Corrado Segre（1863--1924），意大利数学家，研究高维射影几何与代数曲面。}极化线丛为两因子极化的外张量积。
+
+\ProseParagraphBreak
+
+再考虑在顶点 \(v\) 截角。设活动外法向量为 \(\nu_1,\ldots,\nu_n\)，对偶基为 \(m_i\)。加上新不等式
+\begin{equation}\label{g4:eq:1205:corner-cut}
+	\left\langle x,\sum_{i=1}^n\nu_i\right\rangle
+	\le\sum_{i=1}^n\lambda_i-\varepsilon.
+\end{equation}
+当 \(\varepsilon>0\) 足够小时，它只截去顶点附近的单纯形，产生新顶点 \(v-\varepsilon m_i\)。新外法向量 \(\sum_i\nu_i\) 原始；在每个新顶点，它替换原基中的一个向量，行列式仍为 \(\pm1\)，所以截角后仍为 Delzant 多面体。
+
+\begin{proposition}\label{g4:prop:1205:corner-blowup}
+	设 \(n\ge2\)。在上述足够小截角中，\(M_{P_\varepsilon}\) 是 \(M_P\) 在顶点固定点处的辛吹起。局部的复模型为
+	\[
+		\operatorname{Bl}_0\mathbb C^n
+		=\{(Z,[\ell])\in\mathbb C^n\times\mathbb{CP}^{n-1}:Z\in\ell\}.
+	\]
+	被替换的点成为\term[liwaichuzi]{例外除子}[exceptional divisor]
+	\(\mathbb{CP}^{n-1}\)，其辛形式为 \(2\varepsilon\omega_{\mathrm{FS}}\)。
+\end{proposition}
+\begin{proof}
+	先将\cref{g4:prop:1203:vertex-chart}的标准辛坐标两两合成复数 \(z_i\)，并记
+	\(I_i=|z_i|^2/2\)。截角条件正是 \(\sum_iI_i\ge\varepsilon\)。在
+	\(\mathbb C^n_z\times\mathbb C_\eta\) 上取标准形式，并让圆作用为
+	\[
+		t\cdot(z,\eta)=(e^{-it}z,e^{it}\eta),\qquad
+		q(z,\eta)=\frac12|z|^2-\frac12|\eta|^2.
+	\]
+	在 \(q=\varepsilon>0\) 上，\(z\ne0\)，作用自由。若 \(\eta\ne0\)，可唯一把它转为正实数，截面为
+	\[
+		z\longmapsto\bigl(z,\sqrt{|z|^2-2\varepsilon}\bigr),
+		\qquad |z|^2>2\varepsilon.
+	\]
+	额外复坐标的虚部恒为零，因此约化形式在这部分严格等于原来的标准形式。若 \(\eta=0\)，剩下
+	\(|z|^2=2\varepsilon\) 除以标量圆，得到
+	\((\mathbb{CP}^{n-1},2\varepsilon\omega_{\mathrm{FS}})\)。
+	这就是把一个球的内部移去、把边界的相位圆压成点的辛吹起局部模型。
+
+	给这个标准局部模型配上通常的复结构，也可直接描述其代数商。复化作用为
+	\(\rho\cdot(z,\eta)=(\rho^{-1}z,\rho\eta)\)，\(z\ne0\)。
+	映射
+	\[
+		(z,\eta)\longmapsto(Z=\eta z,[z])
+	\]
+	沿复轨道恒定，且诱导到 \(\operatorname{Bl}_0\mathbb C^n\) 的双射。
+	在 \(z_i\ne0\) 的图中把 \(z_i\) 规范成 \(1\)，坐标为
+	\(a=\eta z_i\)、\(t_j=z_j/z_i\)，并且
+	\(Z_i=a,\ Z_j=at_j\)。这些公式给出双向正则的仿射图。对任一这样的复轨道，正实伸缩下
+	\[
+		q(e^{-\tau}z,e^\tau\eta)
+		=\tfrac12e^{-2\tau}|z|^2-\tfrac12e^{2\tau}|\eta|^2
+	\]
+	严格递减，并唯一经过 \(\varepsilon>0\)，故这个复商也与辛约化的光滑空间一致。以上辛截面中的 \(z\) 与代数吹降中的 \(Z=\eta z\) 分别给出了外部辛识别和全纯吹降映射。
+
+	最后核对它确为截角多面体的构造。新法向映射是
+	\(\beta'(e_j)=\nu_j\)、\(\beta'(e_{d+1})=\sum_{i=1}^n\nu_i\)。
+	其核群含原来的 \(K\)，剩余圆由整数向量
+	\((-\sum_{i=1}^n e_i,e_{d+1})\) 生成。先按 \(K\) 约化，得到
+	\(M_P\times\mathbb C\)；剩余圆的零水平方程为
+	\[
+		\sum_{i=1}^n h_i(\mu_P)-\frac12|\eta|^2-\varepsilon=0.
+	\]
+	它在顶点图内正是 \(q=\varepsilon\)。当 \(\eta\ne0\) 时作用自由；当 \(\eta=0\) 时，足够小的 \(\varepsilon\) 使点留在上述顶点图内，仍自由。因此分阶段约化定理\cref{g4:thm:1003:reduction-stages}把这个局部替换与 \(M_{P_\varepsilon}\) 识别。外部部分由刚才的截面与未截去区域辛同构。
+
+	在法扇中，截角把顶点最大锥分成由新射线
+	\(\sum_i\nu_i\) 与其余 \(n-1\) 条旧射线生成的 \(n\) 个锥。它们的单项式坐标变换为
+	\(a_k=a_it_k,\ t_j'=t_j/t_k,\ t_i'=1/t_k\)，恰是上面吹起图之间的变换。因此代数侧的局部替换也是同一个点吹起。
+\end{proof}
+
+二维时，\cref{g4:fig:1203:polytopes}中的新边对应例外射影直线，其面积为 \(2\pi\varepsilon\)。若原多面体已整，则保留原格并取整数 \(\varepsilon\) 才能直接得到整截角多面体；实数截角仍给出辛形式，只是所选类未必整。顶点截角与吹起的关系也见 Cannas da Silva 的命题6.9；这里的面积常数按本书已经固定的 \(2\pi\) 周期和 Fubini--Study 归一化计算。\cite[第6.4节，第172页]{Cannas2006Symplectic}
 
 \subsection{一般非光滑多面体的新现象}
 \label{g4:subsec:1205:04}
-待撰写
+
+简单、有理与光滑格条件分别控制不同现象。若顶点仍恰有 \(n\) 个独立有理法向量，但它们生成的子格
+\(N'\subset N\) 指数大于 \(1\)，则在 \(N'\) 中它们是一组基，而在原格中不是。相应仿射图成为有限群商
+\[
+	\mathbb C^n/\Gamma,\qquad
+	\Gamma=\operatorname{Hom}(M'_{\mathbb Z}/M_{\mathbb Z},\mathbb C^*),
+	\qquad M'_{\mathbb Z}=\operatorname{Hom}(N',\mathbb Z).
+\]
+确实，\(\mathbb C^n\) 的单项式指数属于对偶格 \(M'_{\mathbb Z}\)，有限群不变的单项式恰好是指数落在 \(M_{\mathbb Z}\) 中的那些。因此不变环就是原格所规定的半群环。辛侧的无穷小稳定子仍为零，但可能留下有限稳定子，对应\secref{g4:sec:1004}的局部有限商。
+
+\begin{example}\label{g4:exm:1205:finite-quotient-cone}
+	二维锥由 \(\nu_1=(1,0)\)、\(\nu_2=(1,2)\) 生成，行列式为 \(2\)。在法向量生成的子格中取标准仿射坐标 \(u,v\)，剩余二阶群同时把它们变为 \((-u,-v)\)。不变环由
+	\[
+		A=u^2,\qquad B=uv,\qquad C=v^2
+	\]
+	生成，并满足 \(AC=B^2\)。每个不变单项式总次数为偶数：两指数同为偶数时由 \(A,C\) 生成，同为奇数时再乘一个 \(B\)，这也证明没有其他生成元；用关系消去 \(B^2\) 后的单项式在 \(u,v\) 中互异，故没有其他关系。于是局部商为
+	\(\{AC=B^2\}\subset\mathbb C^3\)。由第五卷定理5.3.5及例5.3.11，原点的切空间维数为 \(3\)，而局部维数为 \(2\)，所以原点奇异。整数格指数在这里直接变成有限商奇点。
+\end{example}
+
+若多面体不简单，一个顶点可能落在多于 \(n\) 个面上。假设有 \(r>n\) 个活动面，它们的法向量张成 \(\mathfrak t\)，则核群与活动坐标环面的交具有维数 \(r-n>0\)。因此约化水平在该点不正则，已不能由局部自由作用的有限群商解释；约束本身参与奇异结构。
+
+\begin{example}\label{g4:exm:1205:nonsimple-cone}
+	在 \(N=\mathbb Z^3\) 中取四条射线
+	\[
+		(0,0,1),\quad(1,0,1),\quad(0,1,1),\quad(1,1,1).
+	\]
+	它们生成一个非单纯锥，可作为一个四棱锥顶点的法锥。其对偶整半群由
+	\[
+		(1,0,0),\quad(0,1,0),\quad(-1,0,1),\quad(0,-1,1)
+	\]
+	生成。验证方法是：对偶条件为
+	\(c\ge0,\ a+c\ge0,\ b+c\ge0,\ a+b+c\ge0\)，等价于
+	\(c\ge\max(-a,0)+\max(-b,0)\)。取非负整数 \(C,D\)，使
+	\(C+D=c,\ C\ge\max(-a,0),\ D\ge\max(-b,0)\)，再取
+	\(A=a+C,\ B=b+D\)，便得到所需的非负整数分解。
+
+	相应四个单项式记为 \(U,V,W,Z\)，唯一关系为 \(UW=VZ\)。任一两组同指数分解的差都是 \((1,-1,1,-1)\) 的整数倍，因而由这个二项式关系连接；故仿射模型为
+	\[
+		\{UW-VZ=0\}\subset\mathbb C^4.
+	\]
+	它在原点的局部维数为 \(3\)、切空间维数为 \(4\)，是一个奇异三维二次锥。这里四条法向射线只张成三维空间，正维稳定子与这一非简单顶点相伴出现。
+\end{example}
+
+另外，若面的法向方向本身不有理，就不能用整数映射 \(\beta\) 将逐坐标圆群映到固定的 \(T\)；相应实核未必给出闭子环面。若法向量有理却故意使用非原始倍数，则会保留额外的有限稳定子，这些整数标记也不包含在无标记的多面体形状中。因而一般非光滑情形需要同时记录格、稳定子和分层数据；光滑紧辛环面流形的 Delzant 条件正好使这些局部商成为普通光滑仿射图。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 17.1 Euler 形式的构造
 % 纲要位置：几何学计划纲要.md，第 2786 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,17 +14,206 @@
 \section{Euler 形式的构造}
 \label{g3:sec:1701}
 
-待撰写
+曲面上的曲率积分使用 \(K\,\mathrm dA\)：曲率给出函数，定向面积形式把它变成可积分的二形式。在 \(2m\) 维，曲率本身是一个取值于斜对称矩阵的二形式。我们需要从这个矩阵中提取一个 \(2m\) 次形式，并使它在正交标架变化时不变、在定向反转时变号。Pfaffian 恰好具有这些性质。
 
 \subsection{Pfaffian 的线性代数}
 \label{g3:subsec:1701:01}
-待撰写
+先把流形放在一边。设 \(V\) 为定向实 \(2m\) 维内积空间，\(m\ge1\)，并选取正向正交基及其对偶基 \(\varepsilon^1,\ldots,\varepsilon^{2m}\)。对斜对称实矩阵 \(X=(X_{ij})\)，令
+\[
+	\eta_X=\frac12\sum_{i,j=1}^{2m}X_{ij}\varepsilon^i\wedge\varepsilon^j.
+\]
+顶外幂只有一个方向，因此 \(\eta_X^m/m!\) 必为体积元的倍数。这个倍数称为 \(X\) 的\term[Pfaffian]{Pfaffian}[Pfaffian]。\footnote{Johann Friedrich Pfaff（1765--1825），德国数学家，研究微积分与一阶偏微分方程及其微分系统。}
+\begin{definition}\label{g3:def:pfaffian}
+	设 \(X\) 为实 \(2m\) 阶斜对称矩阵，\(m\ge1\)。定义 \(m\) 次齐次多项式
+	\begin{equation}\label{g3:eq:pfaffian-definition}
+		\operatorname{Pf}(X)
+		=\frac1{2^m m!}\sum_{\sigma\in S_{2m}}\operatorname{sgn}(\sigma)
+		X_{\sigma(1)\sigma(2)}\cdots X_{\sigma(2m-1)\sigma(2m)}.
+	\end{equation}
+	等价地，\(\eta_X^m/m!=\operatorname{Pf}(X)\varepsilon^1\wedge\cdots\wedge\varepsilon^{2m}\)。空矩阵的 Pfaffian 约定为 \(1\)。
+\end{definition}
+
+展开 \(\eta_X^m\) 时，重复的基指标产生零项；其余项由 \(1,\ldots,2m\) 的排列给出，正是式\eqref{g3:eq:pfaffian-definition}。分母中的 \(2^m\) 来自每一对指标的两个顺序，\(m!\) 来自各二形式因子的排列。
+
+\begin{proposition}\label{g3:prop:pfaffian-algebra}
+	设 \(X\) 为实 \(2m\) 阶斜对称矩阵，\(m\ge1\)，\(B\) 为任意实 \(2m\) 阶矩阵。则
+	\begin{equation}\label{g3:eq:pfaffian-change-frame}
+		\operatorname{Pf}(B^{\mathsf T}XB)=\det(B)\operatorname{Pf}(X),
+		\qquad \operatorname{Pf}(X)^2=\det X.
+	\end{equation}
+	若 \(X=X_1\oplus X_2\)，且两个块均为偶数阶，按先第一块、后第二块定向，则
+	\(\operatorname{Pf}(X)=\operatorname{Pf}(X_1)\operatorname{Pf}(X_2)\)。这些恒等式也适用于实交换代数中的矩阵系数。
+\end{proposition}
+\begin{proof}
+	把 \(B\) 看作 \(V\) 上的线性映射，则 \(B^*\eta_X=\eta_{B^{\mathsf T}XB}\)，而 \(B^*\) 在顶外幂上乘 \(\det B\)。对定义中的顶次式拉回即得第一式，包括 \(B\) 不可逆的情形。分块时 \(\eta_X=\eta_{X_1}+\eta_{X_2}\)；能在各块同时达到顶次的项只有相应的幂次组合，其二项式系数被阶乘抵消，得到乘法公式。
+
+	为证明平方公式，可逐次把实斜对称矩阵化为正交二阶块。若 \(X\ne0\)，对称非负算子 \(-X^2\) 有一个正特征值 \(a^2\)。取对应单位向量 \(v\)，令 \(w=-Xv/a\)，则 \(v,w\) 正交且 \(Xv=-aw\)、\(Xw=av\)。它们张成的平面及其正交补均在 \(X\) 下不变。重复这个过程，剩下的零空间维数为偶数，可以任意两两配对。因此存在正交矩阵 \(Q\)，使
+	\[
+		Q^{\mathsf T}XQ=\bigoplus_{j=1}^m
+		\begin{pmatrix}0&a_j\\-a_j&0\end{pmatrix}.
+	\]
+	右侧的 Pfaffian 为 \(\prod_j a_j\)，行列式为 \(\prod_j a_j^2\)。换基式和 \((\det Q)^2=1\) 给出所需平方公式。最后，以上恒等式都是实系数多项式恒等式：对所有实矩阵成立便说明各单项式系数相等，因此可以把变量代入任意实交换代数。
+\end{proof}
+
+例如
+\[
+	\operatorname{Pf}\begin{pmatrix}0&a\\-a&0\end{pmatrix}=a,
+	\qquad
+	\operatorname{Pf}\begin{pmatrix}
+		0&a&b&c\\-a&0&d&e\\-b&-d&0&f\\-c&-e&-f&0
+	\end{pmatrix}=af-be+cd.
+\]
+平方公式说明 Pfaffian 保留了行列式丢失的定向信息：把一个基向量反号，Pfaffian 反号，行列式不变。随后把 \(a,b,\ldots\) 换成二形式时，乘法就是外乘；偶次形式彼此交换，所以上述多项式计算仍然适用。
+
+\ProseParagraphBreak
+
+改变联络时，需要把曲率多项式对某个方向求导。为此用 \(\operatorname{Pf}(X_1,\ldots,X_m)\) 表示 Pfaffian 的对称多重线性极化，具体定义为
+\begin{equation}\label{g3:eq:pfaffian-polarization}
+	\operatorname{Pf}(X_1,\ldots,X_m)
+	=\left.\frac1{m!}\frac{\partial^m}{\partial t_1\cdots\partial t_m}
+	\operatorname{Pf}\left(\sum_{r=1}^m t_rX_r\right)\right|_{t_1=\cdots=t_m=0}.
+\end{equation}
+它满足 \(\operatorname{Pf}(X,\ldots,X)=\operatorname{Pf}(X)\)。对矩阵值微分形式，先写成实矩阵与标量形式的有限和，再按参数顺序外乘标量形式，便得到同一多重线性表达。若两个参数的形式次数为 \(p,q\)，交换它们带符号 \((-1)^{pq}\)。特别地，一个一形式与若干二形式之间的换位都不产生符号。
 
 \subsection{曲率形式和归一化}
 \label{g3:subsec:1701:02}
-待撰写
+设 \(E\to M\) 是光滑流形上的定向实秩 \(2m\) 向量丛，带光滑内积和度量联络 \(\nabla\)。局部选取正向正交标架 \(e=(e_1,\ldots,e_{2m})\)，以列指标记录被微分的向量：
+\begin{equation}\label{g3:eq:euler-connection-curvature}
+	\nabla e_j=\sum_i e_i\omega_{ij},\qquad
+	\Omega=\mathrm d\omega+\omega\wedge\omega,\qquad
+	\Omega_{ij}(X,Y)=\langle R^E(X,Y)e_j,e_i\rangle.
+\end{equation}
+度量相容性给出 \(\omega^{\mathsf T}=-\omega\)、\(\Omega^{\mathsf T}=-\Omega\)。这里 \(R^E(X,Y)=[\nabla_X,\nabla_Y]-\nabla_{[X,Y]}\)，与本卷的向量曲率次序相同。
+
+\begin{definition}\label{g3:def:euler-form}
+	设 \(E\to M\) 为光滑流形上的定向实秩 \(2m\ge2\) 内积丛，\(\nabla\) 为度量联络。定义其\term[Euler xingshi]{Euler 形式}[Euler form]为
+	\begin{equation}\label{g3:eq:euler-form}
+		e(E,\nabla)=e(\nabla)\coloneqq\frac1{(2\pi)^m}\operatorname{Pf}(\Omega)
+		\in\Omega^{2m}(M;\mathbb R),
+	\end{equation}
+	其中 \(\Omega\) 由正向正交标架和式\eqref{g3:eq:euler-connection-curvature}确定。
+\end{definition}
+\symidx{\(e(\nabla)\)：度量联络的 Euler 形式}
+
+这个局部定义确实能粘合。若 \(e'=eQ\)、\(Q:M\supset U\to\operatorname{SO}(2m)\)，则
+\[
+	\omega'=Q^{-1}\omega Q+Q^{-1}\mathrm dQ,\qquad
+	\Omega'=Q^{-1}\Omega Q=Q^{\mathsf T}\Omega Q.
+\]
+由\cref{g3:prop:pfaffian-algebra}，\(\operatorname{Pf}(\Omega')=\operatorname{Pf}(\Omega)\)。同样的计算说明，反转丛定向使 \(e(\nabla)\) 反号，拉回丛及拉回联络的 Euler 形式则为原形式的拉回。
+
+\begin{example}\label{g3:exm:euler-surface-normalization}
+	设 \((M^2,g)\) 为定向光滑黎曼曲面，\((e_1,e_2)\) 为正向正交标架，\((\theta^1,\theta^2)\) 为对偶标架。写 \(\nabla e_1=\alpha e_2\)，则 \(\omega_{21}=\alpha\)、\(\omega_{12}=-\alpha\)，从而 \(\Omega_{12}=-\mathrm d\alpha\)。另一方面，本卷的截面曲率为 \(K=\langle R(e_1,e_2)e_2,e_1\rangle\)，所以
+	\[
+		\Omega_{12}=K\,\theta^1\wedge\theta^2,
+		\qquad e(\mathrm TM,\nabla)=\frac{K}{2\pi}\,\mathrm{vol}_g.
+	\]
+	因此 \(2\pi\) 的归一化恢复了曲面 Gauss--Bonnet 公式中的曲率积分。
+\end{example}
+
+\begin{proposition}\label{g3:prop:euler-constant-curvature}
+	设 \((M^{2m},g)\) 为定向光滑黎曼流形，\(m\ge1\)，截面曲率恒为 \(\kappa\)。其 Levi-Civita 联络满足
+	\begin{equation}\label{g3:eq:euler-space-form}
+		e(\nabla)=\frac{(2m)!}{2^{2m}m!\pi^m}\,\kappa^m\mathrm{vol}_g.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	式\eqref{g3:eq:constant-curvature-tensor}给出 \(R(X,Y)Z=\kappa(\langle Z,Y\rangle X-\langle Z,X\rangle Y)\)，故 \(\Omega_{ij}=\kappa\theta^i\wedge\theta^j\)。代入式\eqref{g3:eq:pfaffian-definition}，每个排列项的外乘符号与其前面的 \(\operatorname{sgn}(\sigma)\) 抵消，全部 \((2m)!\) 项均为 \(\kappa^m\mathrm{vol}_g\)。再乘 \((2\pi)^{-m}/(2^m m!)\) 即得结论。
+\end{proof}
+
+例如四维常曲率情形为 \(e(\nabla)=3\kappa^2\mathrm{vol}_g/(4\pi^2)\)。一般四维流形的曲率形式未必具有 \(\Omega_{ij}=\kappa\theta^i\wedge\theta^j\) 的形式；这时应使用完整表达
+\[
+	e(\nabla)=\frac1{4\pi^2}
+	\bigl(\Omega_{12}\wedge\Omega_{34}-\Omega_{13}\wedge\Omega_{24}
+	+\Omega_{14}\wedge\Omega_{23}\bigr).
+\]
+三组配对共同把不同曲率平面的信息组合成顶次形式。
 
 \subsection{陈–Weil 闭性及联络无关性}
 \label{g3:subsec:1701:03}
-待撰写
+Euler 形式由某个联络计算，拓扑数却不应随联络的选择改变。关键是把联络变化造成的差写成一个外微分。这是\term[Chen Weil fangfa]{陈--Weil 方法}[Chern--Weil theory]在 Euler 多项式上的具体实现。\footnote{André Abraham Weil（1906--1998），法国数学家，研究数论、代数几何与群论。}
+
+\begin{lemma}\label{g3:lem:pfaffian-covariant-differential}
+	设 \(E\to M\) 为定向实秩 \(2m\ge2\) 内积丛，\(\nabla\) 为光滑度量联络。对取值于斜对称自同态的齐次微分形式 \(A_r\in\Omega^{p_r}(M;\mathfrak{so}(E))\)，有
+	\begin{equation}\label{g3:eq:pfaffian-covariant-differential}
+		\mathrm d\operatorname{Pf}(A_1,\ldots,A_m)
+		=\sum_{r=1}^m(-1)^{p_1+\cdots+p_{r-1}}
+		\operatorname{Pf}(A_1,\ldots,\mathrm d_\nabla A_r,\ldots,A_m).
+	\end{equation}
+	其中局部写作 \(\mathrm d_\nabla A=\mathrm dA+\omega\wedge A-(-1)^{\deg A}A\wedge\omega\)。曲率满足 \(\mathrm d_\nabla\Omega=0\)。
+\end{lemma}
+\begin{proof}
+	先解释式\eqref{g3:eq:pfaffian-covariant-differential}的两端为何都是全局形式。Pfaffian 对 \(Q\in\operatorname{SO}(2m)\) 的不变性经极化后仍成立，\(A_r\) 及 \(\mathrm d_\nabla A_r\) 在换架时都按 \(Q^{-1}(\cdot)Q\) 变换，因此两端与正交标架无关。
+
+	固定 \(x\in M\)，可选局部正向正交标架使 \(\omega(x)=0\)：从任意框架出发，在中心为 \(x\) 的坐标 \(z\) 中用 \(Q(z)=\exp(-\sum_a z^a\omega_a(x))\) 换架即可。在这一点，所有外协变微分均成为普通外微分，极化表达是若干标量形式外乘的常系数线性组合，外微分的乘积法则正给出所述符号。由于 \(x\) 任意，等式处处成立。
+
+	最后直接展开 \(\Omega=\mathrm d\omega+\omega\wedge\omega\)：
+	\[
+		\mathrm d\Omega=\mathrm d\omega\wedge\omega-\omega\wedge\mathrm d\omega,
+		\qquad
+		\omega\wedge\Omega-\Omega\wedge\omega
+		=\omega\wedge\mathrm d\omega-\mathrm d\omega\wedge\omega.
+	\]
+	相加为零，即 Bianchi 恒等式。
+\end{proof}
+
+\begin{theorem}[Euler 形式的陈--Weil 性质]\label{g3:thm:euler-chern-weil}
+	设 \(E\to M\) 为光滑流形上的定向实秩 \(2m\ge2\) 内积丛，\(\nabla^0,\nabla^1\) 为光滑度量联络。令
+	\[
+		A=\nabla^1-\nabla^0\in\Omega^1(M;\mathfrak{so}(E)),\qquad
+		\nabla^t=\nabla^0+tA,\quad 0\le t\le1,
+	\]
+	并记 \(\Omega_t\) 为 \(\nabla^t\) 的曲率。则 \(e(\nabla^j)\) 为闭形式，且定义在 \(M\) 上的 \((2m-1)\) 次形式
+	\begin{equation}\label{g3:eq:euler-transgression-form}
+		\operatorname{TP}(\nabla^0,\nabla^1)
+		=\frac{m}{(2\pi)^m}\int_0^1
+		\operatorname{Pf}(A,\underbrace{\Omega_t,\ldots,\Omega_t}_{m-1\text{ 个}})\,\mathrm dt
+	\end{equation}
+	满足
+	\begin{equation}\label{g3:eq:euler-transgression}
+		\mathrm d\operatorname{TP}(\nabla^0,\nabla^1)
+		=e(\nabla^1)-e(\nabla^0).
+	\end{equation}
+	因而 \([e(\nabla)]\in H_{\mathrm{dR}}^{2m}(M)\) 与度量联络的选择无关。
+\end{theorem}
+\begin{proof}
+	曲率为二形式，各参数之间交换时无符号。\cref{g3:lem:pfaffian-covariant-differential}和 Bianchi 恒等式给出
+	\[
+		\mathrm d\operatorname{Pf}(\Omega)=m\operatorname{Pf}(\mathrm d_\nabla\Omega,\Omega,\ldots,\Omega)=0.
+	\]
+	因此在任意维数的底空间上，Euler 形式都闭。
+
+	在同一局部标架中 \(\omega_t=\omega_0+tA\)。对曲率求导得
+	\[
+		\frac{\mathrm d}{\mathrm dt}\Omega_t
+		=\mathrm dA+\omega_t\wedge A+A\wedge\omega_t
+		=\mathrm d_{\nabla^t}A.
+	\]
+	极化后的乘积法则遂给出
+	\[
+		\begin{aligned}
+			\frac{\mathrm d}{\mathrm dt}e(\nabla^t)
+			&=\frac{m}{(2\pi)^m}\operatorname{Pf}(\mathrm d_{\nabla^t}A,\Omega_t,\ldots,\Omega_t)\\
+			&=\mathrm d\left[\frac{m}{(2\pi)^m}\operatorname{Pf}(A,\Omega_t,\ldots,\Omega_t)\right].
+		\end{aligned}
+	\]
+	第二步中所有含 \(\mathrm d_{\nabla^t}\Omega_t\) 的项都为零。\(A\) 是两个联络的差，按自同态值一形式变换；所以被积形式全局定义，而不是依赖某张标架的局部原函数。在有限区间上积分，与外微分交换，就得到式\eqref{g3:eq:euler-transgression}。
+\end{proof}
+
+形式 \(\operatorname{TP}\) 称为这两个联络之间的\term[zhuanyi xingshi]{转移形式}[transgression form]。若基空间闭且定向、维数为 \(2m\)，Stokes 定理立即给出 \(\int_Me(\nabla^1)=\int_Me(\nabla^0)\)。下一节将把同一公式用在球丛上：在那里有一个全局非零截面，可构造曲率退化的联络，使 Euler 形式变成零，留下一个可精确计算的边界形式。
+
+\begin{proposition}\label{g3:prop:euler-form-basic-properties}
+	设 \(E\to M\) 为定向实偶数秩光滑向量丛。上述类 \([e(\nabla)]\) 也不依赖内积。对定向偶数秩内积丛 \(E_1,E_2\) 及其度量联络，有
+	\[
+		e(\nabla^1\oplus\nabla^2)=e(\nabla^1)\wedge e(\nabla^2),
+	\]
+	其中直和采用先 \(E_1\)、后 \(E_2\) 的定向。若一个度量联络有处处非零的平行截面，则其 Euler 形式恒为零。
+\end{proposition}
+\begin{proof}
+	对两个内积 \(h_0,h_1\)，存在唯一 \(h_0\) 对称正定丛自同态 \(B\)，使 \(h_1(v,w)=h_0(Bv,w)\)。令 \(S=B^{-1/2}\)，便有 \(h_1(Sv,Sw)=h_0(v,w)\)，且 \(S\) 保向。正定平方根光滑：在正定矩阵处，平方映射的导数 \(H\mapsto CH+HC\) 在对称矩阵空间可逆，因为在 \(C\) 的正交特征基中各分量乘以两个正特征值之和；局部反函数定理与正定平方根的唯一性给出光滑性。将一个 \(h_1\) 度量联络由 \(S\) 运回，得到 \(h_0\) 度量联络；它的 Euler 形式与原联络相同，再应用\cref{g3:thm:euler-chern-weil}即可。
+
+	直和曲率矩阵为分块对角矩阵，Pfaffian 的乘法公式给出第二个结论。若 \(u\) 是处处非零的平行截面，逐连通分支把它归一化，并选以 \(u\) 为首向量的局部正交标架。由 \(R^Eu=0\)，曲率矩阵的首列及首行均为零，每个 Pfaffian 单项式都含其中一个因子，故全部为零。
+\end{proof}
+
+曲率形式的闭性来自 Bianchi 恒等式，联络无关性来自路径积分。两者都能在任意维数的底空间上使用；把所得顶次形式积分后为何得到整数，下一节将通过向量场零点的映射度来解释。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

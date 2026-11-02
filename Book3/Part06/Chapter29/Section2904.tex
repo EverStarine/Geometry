@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 29.4 合成曲率与弱微分
 % 纲要位置：几何学计划纲要.md，第 3340 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿，尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -17,21 +17,278 @@
 \section{合成曲率与弱微分}
 \label{g3:sec:2904}
 
-待撰写
+在几何极限中，距离和测度可以保留下来，坐标中的导数却未必还有意义。要继续讨论能量与曲率，须把它们改写成只使用距离、测度及极限的条件。本节采用两种改写：以 Lipschitz 函数的局部斜率松弛出一阶能量，以概率测度的最优输运表达 Ricci 下界。它们分别保留微分的大小与曲率的凸性作用，合在一起便得到一种适用于奇异空间的黎曼结构。
 
 \subsection{Cheeger 能量的动机}
 \label{g3:subsec:2904:01}
-待撰写
+先设 \((X,d)\) 为紧致度量空间，\(\mathfrak m\) 为满支集的 Borel 概率测度。满支集是指每个非空开球都有正测度。以下函数取实值，\(L^2(\mathfrak m)\) 按几乎处处相等识别函数。对 Lipschitz 函数 \(f\)，定义它在 \(x\) 处的\term[jubu xielv]{局部斜率}[local slope]
+\begin{equation}\label{g3:eq:metric-local-slope}
+	\operatorname{lip}f(x)\coloneqq
+	\limsup_{\substack{y\to x\\y\ne x}}
+	\frac{|f(y)-f(x)|}{d(x,y)}.
+\end{equation}
+孤立点处约定该值为零。斜率是 Borel 函数，且不超过 \(f\) 的全局 Lipschitz 常数；可用一组可数稠密点计算各个邻域内的上确界来核对可测性。在光滑流形上，这个量在可微点恰等于 \(|\nabla f|\)。
+
+\ProseParagraphBreak
+直接积分斜率平方，只能处理已经具有 Lipschitz 代表的函数。与第21章用光滑逼近研究变差的思路相同，可以把允许的函数扩展到 \(L^2\)，并把极限中能够保留的最小能量作为定义。
+
+\begin{definition}\label{g3:def:cheeger-energy}
+	设 \((X,d,\mathfrak m)\) 为紧致度量概率空间，\(\operatorname{supp}\mathfrak m=X\)。其\term[Cheeger nengliang]{Cheeger 能量}[Cheeger energy]是
+	\begin{equation}\label{g3:eq:cheeger-relaxation}
+		\operatorname{Ch}(f)\coloneqq
+		\inf_{\substack{f_j\in\operatorname{Lip}(X)\\f_j\to f\text{ 于 }L^2(\mathfrak m)}}
+		\liminf_{j\to\infty}\frac12\int_X(\operatorname{lip}f_j)^2\,\mathrm d\mathfrak m,
+		\qquad f\in L^2(\mathfrak m).
+	\end{equation}
+	取不到有限值时，令 \(\operatorname{Ch}(f)=+\infty\)。相应的\term[duliang Sobolev kongjian]{度量 Sobolev 空间}[metric Sobolev space]为
+	\[
+		W^{1,2}(X,d,\mathfrak m)\coloneqq
+		\{f\in L^2(\mathfrak m):\operatorname{Ch}(f)<\infty\},
+		\qquad
+		\|f\|_{W^{1,2}}^2\coloneqq\|f\|_2^2+2\operatorname{Ch}(f).
+	\]
+\end{definition}
+
+这称为原斜率能量关于 \(L^2\) 收敛的\term[songchi nengliang]{松弛能量}[relaxed energy]。定义中的 \(1/2\) 与前面各章的 Dirichlet 能量约定一致。紧致度量空间上的连续函数可由 Lipschitz 函数一致逼近，例如对连续 \(h\) 使用 \(h_j(x)=\inf_y\{h(y)+jd(x,y)\}\)。连续函数又在 \(L^2(\mathfrak m)\) 中稠密，因此定义中的逼近序列总能找到；困难在于其能量是否有界。
+
+\begin{proposition}\label{g3:prop:cheeger-basic-properties}
+	在\cref{g3:def:cheeger-energy}的条件下，\(\operatorname{Ch}\) 非负、凸，在 \(L^2(\mathfrak m)\) 上下半连续，且
+	\[
+		\operatorname{Ch}(af)=a^2\operatorname{Ch}(f),\qquad
+		\sqrt{\operatorname{Ch}(f+g)}
+		\le\sqrt{\operatorname{Ch}(f)}+\sqrt{\operatorname{Ch}(g)}
+	\]
+	对有限能量函数及实数 \(a\) 成立。上述 \(W^{1,2}\) 是 Banach 空间。
+\end{proposition}
+\begin{proof}
+	局部斜率满足 \(\operatorname{lip}(af)=|a|\operatorname{lip}f\) 及
+	\(\operatorname{lip}(f+g)\le\operatorname{lip}f+\operatorname{lip}g\)。若 \(\operatorname{Ch}(f)<\infty\)，从定义中逐次选取逼近序列及其足够靠后的项，便得到 \(f_j\to f\)，使斜率能量趋向 \(\operatorname{Ch}(f)\)。分别对 \(f,g\) 这样选取，再使用积分的 Minkowski 不等式，得到所述三角不等式。缩放逼近序列并反向缩放，得到齐次性；\(a=0\) 时直接用零函数。能量平方根的三角不等式与齐次性使它成为半范数，进而其平方 \(\operatorname{Ch}\) 为凸泛函。
+
+	证明下半连续性只需考虑 \(f_j\to f\) 且 \(\liminf_j\operatorname{Ch}(f_j)<\infty\)。先取实现下极限的子列，再选 Lipschitz 函数 \(v_j\)，使
+	\[
+		\|v_j-f_j\|_2<j^{-1},\qquad
+		\frac12\int_X(\operatorname{lip}v_j)^2\,\mathrm d\mathfrak m
+		\le\operatorname{Ch}(f_j)+j^{-1}.
+	\]
+	于是 \(v_j\to f\)，定义直接给出 \(\operatorname{Ch}(f)\le\liminf_j\operatorname{Ch}(f_j)\)。
+
+	两个半范数 \(\|f\|_2\)、\(\sqrt{2\operatorname{Ch}(f)}\) 的平方和定义一个范数。若 \((f_j)\) 在此范数下为 Cauchy 列，先取其 \(L^2\) 极限 \(f\)。下半连续性给出
+	\[
+		\operatorname{Ch}(f_j-f)
+		\le\liminf_{k\to\infty}\operatorname{Ch}(f_j-f_k).
+	\]
+	右端随 \(j\to\infty\) 趋于零。再用半范数三角不等式知 \(\operatorname{Ch}(f)<\infty\)，故 \(f_j\to f\) 于 \(W^{1,2}\)。
+\end{proof}
+
+二次齐次性还不足以使能量来自内积。称 Cheeger 能量为\term[erci Cheeger nengliang]{二次 Cheeger 能量}[quadratic Cheeger energy]，是指它在有限能量定义域上满足平行四边形恒等式
+\begin{equation}\label{g3:eq:cheeger-quadratic}
+	\operatorname{Ch}(f+g)+\operatorname{Ch}(f-g)
+	=2\operatorname{Ch}(f)+2\operatorname{Ch}(g).
+\end{equation}
+此时极化公式
+\begin{equation}\label{g3:eq:cheeger-polarization}
+	\mathcal E(f,g)\coloneqq
+	\frac12\bigl[\operatorname{Ch}(f+g)-\operatorname{Ch}(f-g)\bigr]
+\end{equation}
+给出对称双线性型，且 \(\mathcal E(f,f)=2\operatorname{Ch}(f)\)。于是 \(W^{1,2}\) 的范数由内积 \((f,g)_{L^2}+\mathcal E(f,g)\) 诱导。反过来，若该范数来自内积，减去 \(L^2\) 范数的平行四边形恒等式便得到式\eqref{g3:eq:cheeger-quadratic}。具有这一性质的度量测度空间称为\term[wuqiongxiao Hilbert kongjian]{无穷小 Hilbert 空间}[infinitesimally Hilbertian space]。
+
+\begin{example}\label{g3:exm:nonquadratic-norm-energy}
+	令 \(X=[0,1]^2\)，\(d(x,y)=\max\{|x_1-y_1|,|x_2-y_2|\}\)，\(\mathfrak m\) 为二维 Lebesgue 测度。若 \(u(x)=ax_1+bx_2\)，则
+	\begin{equation}\label{g3:eq:sup-norm-affine-energy}
+		\operatorname{Ch}(u)=\frac12(|a|+|b|)^2.
+	\end{equation}
+	先在正方形内部沿各方向计算，得 \(\operatorname{lip}u=|a|+|b|\)；边界为零测集，所以常值逼近序列给出上界。
+
+	为证明下界，取任意能量有界的 Lipschitz 逼近 \(u_j\to u\)。两种坐标范数等价，\cref{g3:thm:rademacher}使 \(u_j\) 几乎处处可微，其经典导数也是弱导数。取 \(v=(\operatorname{sgn}a,\operatorname{sgn}b)\)，在 \((a,b)\ne(0,0)\) 时有 \(\|v\|_\infty=1\)，故
+	\[
+		|\mathrm D_vu_j|\le\operatorname{lip}u_j\quad\text{几乎处处}.
+	\]
+	方向导数在 \(L^2\) 中有界。其弱收敛子列的极限由分布配对确定为 \(\mathrm D_vu=|a|+|b|\)，范数的弱下半连续性因此给出式\eqref{g3:eq:sup-norm-affine-energy}的下界；\(a=b=0\) 时结论直接成立。
+
+	现在取 \(f=x_1\)、\(g=x_2\)。则 \(\operatorname{Ch}(f)=\operatorname{Ch}(g)=1/2\)，而 \(\operatorname{Ch}(f+g)=\operatorname{Ch}(f-g)=2\)。式\eqref{g3:eq:cheeger-quadratic}的两边分别为 \(4\) 和 \(2\)，所以该空间不具有无穷小 Hilbert 性。距离由一个范数产生，并不能保证导数能量是二次型。
+\end{example}
 
 \subsection{最优输运和曲率维数条件}
 \label{g3:subsec:2904:02}
-待撰写
+能量测量单个函数的变化，Ricci 下界则可以通过测度之间的移动表达。以下进一步假定 \((X,d)\) 为紧致测地空间，并仍取满支集概率测度 \(\mathfrak m\)。记 \(\mathcal P(X)\) 为 \(X\) 上的 Borel 概率测度全体；由于 \(X\) 紧致，所有这些测度都有有限二阶矩。
+
+\begin{definition}\label{g3:def:quadratic-transport-distance}
+	给定 \(\nu_0,\nu_1\in\mathcal P(X)\)，一个\term[ouhe]{耦合}[coupling]是 \(X\times X\) 上的概率测度 \(\pi\)，使两个坐标投影的推前分别等于 \(\nu_0,\nu_1\)。记所有耦合组成的集合为 \(\Pi(\nu_0,\nu_1)\)。定义\term[erci shuyun juli]{二次输运距离}[quadratic Wasserstein distance]\footnote{\OriginalName{Леонид Нисонович Васерштейн}（Leonid Nisonovich Vaserstein，1944--），出生于苏联、长期在美国工作的数学家，研究代数与动力系统；人物资料见\href{https://www.mathnet.ru/php/person.phtml?option_lang=eng\&personid=23042}{Math-Net 人物档案}及\href{https://science.psu.edu/math/people/lxv1}{Penn State 教师主页}。}
+	\begin{equation}\label{g3:eq:wasserstein-two}
+		W_2(\nu_0,\nu_1)^2\coloneqq
+		\inf_{\pi\in\Pi(\nu_0,\nu_1)}
+		\int_{X\times X}d(x,y)^2\,\mathrm d\pi(x,y).
+	\end{equation}
+	达到下确界的耦合称为\term[zuiyou shuyun jihua]{最优输运计划}[optimal transport plan]。概率测度曲线 \((\nu_t)_{0\le t\le1}\) 称为\term[Wasserstein changsu cedixian]{Wasserstein 常速测地线}[constant-speed Wasserstein geodesic]，若
+	\[
+		W_2(\nu_s,\nu_t)=|s-t|W_2(\nu_0,\nu_1)
+		\qquad(0\le s,t\le1).
+	\]
+\end{definition}
+
+耦合允许把同一位置的质量分送到不同位置，因而不要求输运来自一个单值映射。\(\nu_0\otimes\nu_1\) 是一个耦合，保证可行集非空。紧致性还保证最优计划存在：\(\mathcal P(X\times X)\) 弱紧，边缘条件在弱收敛下封闭，而代价函数 \(d^2\) 连续。这里概率测度的弱紧性可由 \(C(X\times X)\) 的可分性、对可数稠密测试族取对角子列及测度表示定理得到。
+
+\begin{proposition}\label{g3:prop:wasserstein-metric}
+	对任意紧致度量空间 \((X,d)\)，式\eqref{g3:eq:wasserstein-two}在 \(\mathcal P(X)\) 上定义距离，且 \(W_2(\delta_x,\delta_y)=d(x,y)\)。
+\end{proposition}
+\begin{proof}
+	非负性和对称性来自代价函数。若最小代价为零，最优计划集中在对角线上，两个边缘便相同。反之，对角推前给出同一测度到自身的零代价计划。两个点质量只有一个耦合，得到末式。
+
+	三角不等式需要把两次输运接起来。设 \(\pi_{01},\pi_{12}\) 是从 \(\nu_0\) 到 \(\nu_1\)、从 \(\nu_1\) 到 \(\nu_2\) 的最优计划。取有限 Borel 分割 \(\{A_i\}\)，使各片直径不超过 \(\varepsilon\)。将 \(\pi_{01}\) 限制在第二坐标属于 \(A_i\) 的部分，记为 \(\alpha_i\)；将 \(\pi_{12}\) 限制在第一坐标属于 \(A_i\) 的部分，记为 \(\beta_i\)。它们的质量均为 \(m_i=\nu_1(A_i)\)。在坐标为 \((x,y,z,w)\) 的 \(X^4\) 上令
+	\[
+		\gamma_\varepsilon=\sum_{m_i>0}m_i^{-1}\alpha_i\otimes\beta_i.
+	\]
+	其 \((x,y)\)、\((z,w)\) 边缘分别是原来的两个计划，且 \(d(y,z)\le\varepsilon\) 几乎处处。令 \(\varepsilon\downarrow0\) 并取弱收敛子列，得到集中在 \(y=z\) 上的极限。因此存在 \(X^3\) 上的概率测度 \(\gamma\)，其相邻两个边缘就是 \(\pi_{01},\pi_{12}\)。对它使用距离三角不等式及 Minkowski 不等式，便有
+	\[
+		\begin{aligned}
+		W_2(\nu_0,\nu_2)
+		&\le\left(\int d(x,w)^2\,\mathrm d\gamma\right)^{1/2}\\
+		&\le\left(\int d(x,y)^2\,\mathrm d\gamma\right)^{1/2}
+		+\left(\int d(y,w)^2\,\mathrm d\gamma\right)^{1/2}\\
+		&=W_2(\nu_0,\nu_1)+W_2(\nu_1,\nu_2).
+		\end{aligned}
+	\]
+\end{proof}
+
+\begin{example}\label{g3:exm:transport-not-mixture}
+	在 \([0,1]\) 上，\(\nu_t=\delta_t\) 是连接 \(\delta_0\) 与 \(\delta_1\) 的常速输运测地线。线性混合 \(\eta_t=(1-t)\delta_0+t\delta_1\) 则满足
+	\[
+		W_2(\eta_s,\eta_t)^2=|t-s|.
+	\]
+	因为恰有 \(|t-s|\) 的质量必须在距离为 \(1\) 的两个端点间移动，余下质量可留在原地。因此线性混合不是同一条输运测地线：输运凸性沿质量的空间移动计算。
+\end{example}
+
+对参考概率测度 \(\mathfrak m\)，定义\term[xiangdui shang]{相对熵}[relative entropy]
+\begin{equation}\label{g3:eq:metric-relative-entropy}
+	\operatorname{Ent}_{\mathfrak m}(\nu)\coloneqq
+	\begin{cases}
+		\displaystyle\int_X\rho\log\rho\,\mathrm d\mathfrak m,
+		&\nu=\rho\mathfrak m,\\
+		+\infty,&\nu\not\ll\mathfrak m.
+	\end{cases}
+\end{equation}
+约定 \(0\log0=0\)。因为 \(r\log r\ge-1/e\)，该积分有确定的扩展实数值；又由凸性和 \(\int\rho\,\mathrm d\mathfrak m=1\)，其值非负。有限熵测度构成的集合记为 \(D(\operatorname{Ent}_{\mathfrak m})\)。
+
+\begin{definition}\label{g3:def:cd-rcd-infinity}
+	设 \((X,d,\mathfrak m)\) 为满支集的紧致测地度量概率空间，\(K\in\mathbb R\)。若任意 \(\nu_0,\nu_1\in D(\operatorname{Ent}_{\mathfrak m})\) 之间都存在一条 \(W_2\) 常速测地线 \((\nu_t)\)，使
+	\begin{equation}\label{g3:eq:cd-infinity-entropy-convexity}
+		\operatorname{Ent}_{\mathfrak m}(\nu_t)
+		\le(1-t)\operatorname{Ent}_{\mathfrak m}(\nu_0)
+		+t\operatorname{Ent}_{\mathfrak m}(\nu_1)
+		-\frac K2t(1-t)W_2(\nu_0,\nu_1)^2
+	\end{equation}
+	对全部 \(t\in[0,1]\) 成立，就称该空间满足\term[qulv weishu tiaojian]{曲率维数条件}[curvature-dimension condition] \(\mathrm{CD}(K,\infty)\)。若它还具有无穷小 Hilbert 性，就称其满足\term[Limanni qulv weishu tiaojian]{黎曼曲率维数条件}[Riemannian curvature-dimension condition] \(\mathrm{RCD}(K,\infty)\)。
+\end{definition}
+
+\(\mathrm{CD}(K,\infty)\) 要求为每对端点找到一条满足熵不等式的测地线，并未在定义中要求所有候选测地线都满足它。这里采用“普通 \(\mathrm{CD}\) 条件加二次能量”的 \(\mathrm{RCD}\) 定义；其与线性热流等刻画的等价性见 \cite[定理6.1，接受稿第30页]{AmbrosioGigliMondinoRajala2015RCD}。记号中的 \(\infty\) 表示没有施加一个有限的维数上界。有限参数 \(N\) 的 \(\mathrm{CD}(K,N)\)、\(\mathrm{RCD}(K,N)\) 还包含维数信息，不能把本节的条件直接缩写或改记为那些条件。
 
 \subsection{光滑流形与合成框架的比较}
 \label{g3:subsec:2904:03}
-待撰写
+先核对能量是否恢复了原来的微分。设 \((M,g)\) 为闭连通光滑黎曼流形，\(V\in C^\infty(M)\)，并令
+\begin{equation}\label{g3:eq:weighted-manifold-probability}
+	\mathrm d\mathfrak m=Z^{-1}e^{-V}\mu_g,
+	\qquad Z=\int_Me^{-V}\mu_g.
+\end{equation}
+这里 \(d_g\) 是黎曼距离，\(\mu_g\) 是体积密度。因 \(M\) 紧致且权重光滑、严格为正，加权和无权的 \(L^2\)、\(W^{1,2}\) 范数互相控制。
+
+\begin{theorem}\label{g3:thm:smooth-cheeger-identification}
+	设 \((M^n,g)\) 为闭连通光滑黎曼流形，\(n\ge1\)，\(V\in C^\infty(M)\)，\(\mathfrak m\) 如式\eqref{g3:eq:weighted-manifold-probability}。则
+	\[
+		W^{1,2}(M,d_g,\mathfrak m)=W^{1,2}(M,g),
+	\]
+	并且对该空间中的每个 \(f\)，有
+	\begin{equation}\label{g3:eq:smooth-cheeger-energy}
+		\operatorname{Ch}(f)=\frac12\int_M|\nabla_gf|^2\,\mathrm d\mathfrak m.
+	\end{equation}
+	不属于经典 \(W^{1,2}\) 的 \(L^2\) 函数具有无穷 Cheeger 能量。因此 \((M,d_g,\mathfrak m)\) 具有无穷小 Hilbert 性。
+\end{theorem}
+\begin{proof}
+	先比较局部斜率与微分。在 \(f\) 可微的一点 \(x\)，法坐标给出
+	\[
+		f(\exp_xv)-f(x)=\mathrm df_x(v)+o(|v|),\qquad
+		d_g(x,\exp_xv)=|v|
+	\]
+	对足够小的 \(v\) 成立。取方向上确界即得 \(\operatorname{lip}f(x)=|\mathrm df_x|_g\)。对 Lipschitz 函数，局部坐标中的 Rademacher 定理保证几乎处处可微，而其微分由沿坐标线的分部积分识别为弱微分；因此该等式几乎处处成立。
+
+	若 \(f\in W^{1,2}(M,g)\)，由\cref{g3:thm:sobolev-smooth-density}可取光滑 \(f_j\to f\) 于经典 \(W^{1,2}\)。闭流形上的光滑函数全局 Lipschitz，权重的上下界又保证加权梯度范数收敛。所以把 \(f_j\) 代入式\eqref{g3:eq:cheeger-relaxation}，得到
+	\[
+		\operatorname{Ch}(f)\le\frac12\int_M|\nabla f|^2\,\mathrm d\mathfrak m.
+	\]
+	这也说明每个经典 Sobolev 函数都具有有限的松弛能量。
+
+	反过来，设 \(f_j\to f\) 于 \(L^2(\mathfrak m)\)，且斜率能量的下极限有限。取实现该下极限的子列，便有 \(\nabla f_j\) 在加权 \(L^2(\mathrm TM)\) 中有界，故可再取弱收敛子列 \(\nabla f_j\rightharpoonup G\)。加权与无权范数等价，\(f_j\to f\) 也在无权 \(L^2\) 中成立。对任意光滑向量场 \(Y\)，弱导数恒等式
+	\[
+		\int_M\langle\nabla f_j,Y\rangle\mu_g
+		=-\int_M f_j\operatorname{div}_gY\,\mu_g
+	\]
+	可传到极限：左端在加权空间中用光滑测试场 \(Ze^VY\) 配对即可。因此 \(G\) 是 \(f\) 的弱梯度，\(f\in W^{1,2}(M,g)\)。Hilbert 范数的弱下半连续性给出
+	\[
+		\frac12\int_M|\nabla f|^2\,\mathrm d\mathfrak m
+		\le\liminf_j\frac12\int_M|\nabla f_j|^2\,\mathrm d\mathfrak m
+		=\liminf_j\frac12\int_M(\operatorname{lip}f_j)^2\,\mathrm d\mathfrak m.
+	\]
+	对全部逼近序列取下确界，便得到反向不等式；同时，有限 Cheeger 能量强制 \(f\) 属于经典 Sobolev 空间。最后，点态内积的平行四边形恒等式在积分后给出式\eqref{g3:eq:cheeger-quadratic}。
+\end{proof}
+
+度量确定斜率，测度则决定能量如何加权。同样，合成曲率在加权模型中比较的是
+\begin{equation}\label{g3:eq:weighted-ricci-infinity}
+	\operatorname{Ric}_{V,\infty}\coloneqq
+	\operatorname{Ric}_g+\operatorname{Hess}_gV,
+\end{equation}
+称为\term[jiaquan Ricci zhangliang]{加权 Ricci 张量}[weighted Ricci tensor]。归一化常数 \(Z\) 对它没有影响，因为把 \(V\) 加上常数不改变 Hessian。
+
+\begin{theorem}[光滑加权模型的比较]\label{g3:thm:smooth-cd-rcd-comparison}
+	设 \((M^n,g)\) 为闭连通光滑黎曼流形，\(n\ge1\)，\(V\in C^\infty(M)\)，\(\mathfrak m\) 如式\eqref{g3:eq:weighted-manifold-probability}，\(K\in\mathbb R\)。下列条件等价：
+	\begin{enumerate}
+		\item \(\operatorname{Ric}_g+\operatorname{Hess}_gV\ge Kg\)；
+		\item \((M,d_g,\mathfrak m)\) 满足 \(\mathrm{CD}(K,\infty)\)；
+		\item \((M,d_g,\mathfrak m)\) 满足 \(\mathrm{RCD}(K,\infty)\)。
+	\end{enumerate}
+\end{theorem}
+
+第一项与第二项的等价性作为外部定理使用，精确来源为 \cite[定理7.3(b)，第948--949页]{LottVillani2009Transport}；其中第五项就是相对熵的弱 \(K\) 位移凸性。该定理适用于这里的闭光滑加权模型。第二项与第三项的等价性则由\cref{g3:thm:smooth-cheeger-identification}及定义立即得到。因而在无权情形，合成条件恢复通常的 Ricci 下界；在有权情形，必须同时计算势函数的 Hessian。
+
+\begin{example}\label{g3:exm:weighted-circle-synthetic-curvature}
+	在单位圆周 \(\mathbb R/(2\pi\mathbb Z)\) 上取 \(g=\mathrm d\theta^2\)、\(V(\theta)=a\cos\theta\)。一维 Ricci 张量为零，而
+	\[
+		\operatorname{Ric}_{V,\infty}=-a\cos\theta\,g,
+		\qquad
+		\operatorname{Ch}(f)=\frac1{2Z}\int_0^{2\pi}|f'(\theta)|^2e^{-a\cos\theta}\,\mathrm d\theta.
+	\]
+	因此该加权圆周满足 \(\mathrm{RCD}(-|a|,\infty)\)；当 \(a\ne0\) 时不满足 \(\mathrm{CD}(0,\infty)\)。改变测度而保持圆周距离不变，已经足以改变合成曲率下界。取 \(a=0\) 则恢复平坦圆周的 \(\mathrm{RCD}(0,\infty)\) 条件。
+\end{example}
 
 \subsection{稳定性结果和进一步正则性问题}
 \label{g3:subsec:2904:04}
-待撰写
+现在使用\cref{g3:def:measured-gh-convergence}中的紧致测度 Gromov--Hausdorff 收敛：在共同紧致空间中等距嵌入，既要求像集 Hausdorff 收敛，也要求推前概率测度弱收敛。空间的点和距离必须比较，作为能量积分依据的测度也必须比较。
+
+\begin{theorem}[紧致情形的合成曲率稳定性]\label{g3:thm:compact-rcd-stability}
+	设 \(K\in\mathbb R\)，\((X_j,d_j,\mathfrak m_j)\) 为满支集的紧致测地度量概率空间，并在测度 Gromov--Hausdorff 意义下收敛到同类空间 \((X,d,\mathfrak m)\)。若每个 \(X_j\) 都满足 \(\mathrm{RCD}(K,\infty)\)，则极限也满足 \(\mathrm{RCD}(K,\infty)\)。
+\end{theorem}
+
+此处采用 \cite[定理7.2，2013年11月19日作者稿第54页]{GigliMondinoSavare2015Stability}的紧致概率特例。该文使用更一般的带基点测度收敛；在本节的共同紧致环境中，选取收敛的基点后，测度弱收敛直接满足其所需条件。极限具有满支集作为本定理的明确假设保留；若测度只支撑在较小闭集上，合成条件应在该支集上讨论。
+
+\ProseParagraphBreak
+稳定性同时保留熵的输运凸性与能量的二次性。两者都涉及随空间变化的函数或测度，不能只把一个固定坐标公式逐项取极限。特别是 Cheeger 能量先经过松弛，二次性的传递需要比较这些松弛能量的极限；它并不来自式\eqref{g3:eq:cheeger-quadratic}的形式相同。
+
+\begin{example}\label{g3:exm:collapsed-torus-cheeger-energy}
+	取二维环面 \(M_\varepsilon=(\mathbb R/2\pi\mathbb Z)^2\)，度量与归一化体积为
+	\[
+		g_\varepsilon=\mathrm d\theta^2+\varepsilon^2\mathrm d\varphi^2,
+		\qquad
+		\mathrm d\mathfrak m_\varepsilon=\frac{\mathrm d\theta\,\mathrm d\varphi}{4\pi^2}.
+	\]
+	投影到第一圆周使距离的误差至多为 \(\pi\varepsilon\)，且把 \(\mathfrak m_\varepsilon\) 精确推为 \(\mathrm d\theta/(2\pi)\)。因此该族在测度 Gromov--Hausdorff 意义下塌缩到均匀测度圆周。每个度量平坦，故由光滑比较和稳定性，极限满足 \(\mathrm{RCD}(0,\infty)\)。
+
+	能量直接显示消失方向的代价：对光滑函数，
+	\[
+		\operatorname{Ch}_\varepsilon(f)
+		=\frac1{8\pi^2}\int_0^{2\pi}\int_0^{2\pi}
+		\left(|\partial_\theta f|^2+\varepsilon^{-2}|\partial_\varphi f|^2\right)
+		\,\mathrm d\theta\,\mathrm d\varphi.
+	\]
+	特别地，\(\operatorname{Ch}_\varepsilon(\cos\theta)=1/4\)，而 \(\operatorname{Ch}_\varepsilon(\cos\varphi)=1/(4\varepsilon^2)\)。沿保留方向变化的能量保持有限，沿收缩方向的这个固定振荡则越来越昂贵。归一化测度保证极限仍有总质量 \(1\)，不会随未归一化面积一起趋于零。
+\end{example}
+
+弱微分与合成曲率给极限空间提供了可用的分析结构，尚未给出一套光滑坐标。进一步的正则性问题包括：哪些点有 Euclid 切空间，能否由可数个坐标片覆盖满测度部分，以及不同维数的部分怎样相互邻接。回答这些问题需要区分有限维曲率条件、非塌缩与额外正则性输入；本节的 \(\mathrm{RCD}(K,\infty)\) 稳定性本身没有指定有限维数，也不将奇异极限变成光滑流形。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

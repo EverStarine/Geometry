@@ -1,14 +1,14 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 4.4 有限双有理映射的限制
 % 纲要位置：几何学计划纲要.md，第 5176 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 正规化与同胚、同构的区别
 % * 正规化和基域扩张
-% * 非约化对象先取约化的约定
-% * 有限性失效及一般理论的准确边界
+% * 非约化环的约化与正规化
+% * Nagata 环与正规化的有限性
 % 
 % ---
 % 
@@ -17,21 +17,284 @@
 \section{有限双有理映射的限制}
 \label{g5:sec:0404}
 
-待撰写
+尖点与结点的正规化都由直线给出，但它们在原点上方的表现不同：尖点仍只有一个原像，结点却有两个。即使点没有分开，正规化也可能增加原来不存在的正则函数。下面把点集拓扑、函数环、基域和有限性分开考察，使“有限双有理”这一条件的作用落实到可计算的模型上。
 
 \subsection{正规化与同胚、同构的区别}
 \label{g5:subsec:0404:01}
-待撰写
+
+在代数闭域上的仿射代数集之间，有限映射是闭映射。因此，若某个正规化映射在点集上还是双射，它便是 Zariski 拓扑的同胚。同构还要求逆映射正则；这一要求由函数环决定。
+
+\begin{example}[尖点的同胚正规化]
+\label{g5:exm:cusp-homeomorphism}
+	设 \(k\) 为代数闭域，令
+	\[
+		C=V(y^2-x^3)\subseteq\mathbb A_k^2,\qquad
+		\nu:\mathbb A_k^1\longrightarrow C,\quad t\longmapsto(t^2,t^3).
+	\]
+	由\cref{g5:exm:cusp-conductor}，相应环包含
+	\[
+		A=k[t^2,t^3]\subseteq B=k[t]
+	\]
+	是有限双有理扩张，且 \(B\) 是 \(A\) 的正规化。这里也可直接看到有限性：\(t\) 满足 \(T^2-t^2=0\)，并且 \(B=A+At\)。
+
+	映射 \(\nu\) 是点集上的双射。若 \((x,y)\in C\) 且 \(x\ne0\)，唯一可能的原像为 \(t=y/x\)，并且
+	\[
+		t^2=\frac{y^2}{x^2}=x,\qquad
+		t^3=\frac{y^3}{x^3}=y.
+	\]
+	若 \(x=0\)，则 \(y=0\)，唯一原像为 \(t=0\)。由\cref{g5:prop:finite-affine-closed-fibres}，\(\nu\) 还是闭映射，故为同胚。
+
+	它却不是同构。若逆映射正则，则直线的坐标函数 \(t\) 将来自 \(C\) 上的整体正则函数；而
+	\[
+		t\notin k[t^2,t^3],
+	\]
+	因为右侧每个多项式的一次项都为零。甚至在原点附近，\(t\) 也不能写成 \(P/Q\)，其中 \(P,Q\in A\)、\(Q(0)\ne0\)：等式 \(tQ=P\) 的左侧有非零一次项，右侧没有。这样，连续的逆公式在原点恰好缺少正则性。
+\end{example}
+
+这个例子适用于任意特征；它所需的是 \(x\ne0\) 处的除法公式，而非开平方或开立方的选择。它也是\cite[第I章，第3节，习题3.2(a)，第21页]{Hartshorne1977}中区分同胚与同构的基本模型。
+
+\ProseParagraphBreak
+
+对结点，取代数闭域 \(k\)、\(\operatorname{char}k\ne2\)，以及
+\[
+	N=V\bigl(y^2-x^2(x+1)\bigr),\qquad
+	\nu(t)=\bigl(t^2-1,t(t^2-1)\bigr).
+\]
+由\cref{g5:exm:node-conductor}，这仍是有限双有理正规化。原点上方恰有 \(t=1,-1\) 两点；在 \(x\ne0\) 处，逆公式仍是 \(t=y/x\)。所以这次正规化会分开一个点的两条分支，底空间映射不再单射。尖点缺少一个正则函数而不缺少点；结点的函数环则把两个原像处的取值联系在一起。
+
+\begin{proposition}
+\label{g5:prop:finite-birational-normal-target}
+	设 \(A\subseteq B\) 为整环，\(B\) 是有限 \(A\) 模，且包含诱导分式域相等
+	\[
+		\operatorname{Frac}A=\operatorname{Frac}B=K.
+	\]
+	若 \(A\) 在 \(K\) 中整闭，则 \(A=B\)。因此，代数闭域上两个不可约约化仿射代数集之间的有限双有理映射，若靶的坐标环整闭，就是同构。
+\end{proposition}
+\begin{proof}
+	有限性使每个 \(b\in B\) 对 \(A\) 整。双有理性又使 \(b\in K\)。整闭性的定义于是给出 \(b\in A\)，故 \(B\subseteq A\)，与原包含合起来得到相等。几何陈述由仿射代数集与坐标环的对应得出。
+\end{proof}
+
+这一论证也解释了\cite[第2章，第5.2节，定理2.21，第129页]{Shafarevich2013Basic1}中有限双有理映射与正规化之间的关系：同一个函数域内的有限中间环必包含在整闭包中；若靶已经正规，这个空间便没有增加函数的余地。
+
+\ProseParagraphBreak
+
+陈述中的整环和共同分式域条件保证两侧讨论的是同一个约化不可约对象。对约化 Noether 环，可把对应条件写成
+\[
+	A\subseteq B\subseteq Q(A),
+\]
+其中 \(Q(A)\) 是总分式环；若 \(B\) 整于 \(A\)，且 \(A\) 在 \(Q(A)\) 中整闭，同样逐元素得到 \(B=A\)。这一说法保留了各分支的泛点信息。仅仅要求在靶的某个稠密开集上同构则还不够：例如
+\[
+	k[t]\longrightarrow k[t]\times k,\qquad
+	f\longmapsto(f,f(0))
+\]
+有限，反演 \(t\) 后成为同构，但第二个因子给出了一个额外不可约分量。上环不是整环，两个环也没有相同的总分式环。
 
 \subsection{正规化和基域扩张}
 \label{g5:subsec:0404:02}
-待撰写
 
-\subsection{非约化对象先取约化的约定}
+从域 \(k\) 扩张到域 \(K\) 时，有限型 \(k\) 代数 \(A\) 变成
+\[
+	A_K=A\otimes_k K.
+\]
+若 \(A=k[x_1,\ldots,x_n]/I\)，则 \(A_K\cong K[x_1,\ldots,x_n]/IK[x_1,\ldots,x_n]\)：方程保留，系数允许来自更大的域。因而需要检验的是这些方程在新域上的环结构，尤其是是否出现幂零元、是否仍为整环以及是否整闭。
+
+\ProseParagraphBreak
+
+若 \(A\subseteq B\) 是有限的 \(k\) 代数扩张，则 \(A_K\subseteq B_K\) 仍是有限扩张。单射性来自域上向量空间的张量正合性；原来的一组有限 \(A\) 模生成元张量后又生成 \(B_K\)。对应的环图为
+\[
+	\begin{tikzcd}
+		A \arrow[r,hook] \arrow[d] & B \arrow[d] \\
+		A_K \arrow[r,hook] & B_K.
+	\end{tikzcd}
+\]
+有限性因此可以直接传到下方，而下方右环是否正规仍需另行判断。
+
+\begin{proposition}
+\label{g5:prop:normalization-field-extension}
+	设 \(k\subseteq K\) 为域扩张，\(A\) 为有限型 \(k\) 整环，\(B=A^\nu\) 为其正规化。若 \(A_K\) 与 \(B_K\) 均为整环，且 \(B_K\) 在自己的分式域中整闭，则
+	\[
+		(A_K)^\nu=B_K
+	\]
+	成立，其中两侧通过自然包含放在同一个分式域中。
+\end{proposition}
+\begin{proof}
+	由\cref{g5:thm:finite-normalization}，\(B\) 是有限 \(A\) 模。取有限组模生成元 \(b_1,\ldots,b_m\)。它们都在 \(\operatorname{Frac}A\) 中，所以有共同的非零分母 \(a\in A\) 使 \(ab_i\in A\)。从而
+	\[
+		B_a=A_a.
+	\]
+	张量 \(K\) 并与局部化交换，得到
+	\[
+		(B_K)_a=(A_K)_a.
+	\]
+	\(a\) 在 \(A_K\) 中仍非零；两个环都是整环，故反演 \(a\) 不改变分式域，于是它们有相同的分式域 \(F\)。
+
+	又 \(B_K\) 有限于 \(A_K\)，故整于 \(A_K\)，从而 \(B_K\subseteq(A_K)^\nu\)。反过来，若 \(z\in F\) 整于 \(A_K\)，同一个首一方程也表明 \(z\) 整于 \(B_K\)。由 \(B_K\) 的整闭性，\(z\in B_K\)，得到相等。
+\end{proof}
+
+例如，对任意域扩张 \(K/k\)，尖点环的包含扩张成
+\[
+	K[t^2,t^3]\subseteq K[t].
+\]
+右侧仍是整闭整环，故尖点的正规化与这一基域扩张交换。下一例表明，一般正规 \(k\) 代数未必保留这种性质。
+
+\begin{example}[不完美域扩张产生幂零元]
+\label{g5:exm:inseparable-normality-loss}
+	设 \(p\) 为素数，\(k=\mathbb F_p(s)\)，其中 \(s\) 为超越元。取
+	\[
+		A=k[T]/(T^p-s).
+	\]
+	我们先证明它是域。\(s\) 不是 \(k\) 中的 \(p\) 次幂：若 \(s=(f/g)^p\)，其中非零 \(f,g\in\mathbb F_p[s]\)，则 \(f^p=sg^p\)，比较次数得到
+	\[
+		p\deg f=1+p\deg g,
+	\]
+	不可能成立。取代数闭包中的 \(\alpha\) 满足 \(\alpha^p=s\)。在该闭包上，\(T^p-s=(T-\alpha)^p\)。如果它在 \(k[T]\) 中有次数 \(d\) 满足 \(1\leq d<p\) 的首一因子，该因子只能是 \((T-\alpha)^d\)，其 \(T^{d-1}\) 系数为 \(-d\alpha\)。因 \(d\ne0\) 于 \(k\)，这会迫使 \(\alpha\in k\)，矛盾。因此 \(T^p-s\) 不可约，\(A\) 是域，当然正规。
+
+	现在把基域扩为 \(K=k(\alpha)\)。有
+	\[
+		A_K
+		\cong K[T]/\bigl((T-\alpha)^p\bigr)
+		\cong K[\varepsilon]/(\varepsilon^p),
+		\qquad \varepsilon=T-\alpha.
+	\]
+	这里 \(\varepsilon\ne0\)，因为 \(1,\varepsilon,\ldots,\varepsilon^{p-1}\) 是一组 \(K\) 基；但 \(\varepsilon^p=0\)。所以 \(A_K\) 不约化，因而不是正规环。其素谱只有一个点，长度却为 \(p\)：基域扩张把原先的域变成了带有幂零厚度的点。
+\end{example}
+
+这个例子的基域不完美，所加的扩张纯不可分。一般域上，“正规”描述原来的局部环；“任意基域扩张后仍正规”是更强的要求。对有限型 \(k\) 代数，后一条件称为\term[jihezhenggui]{几何正规}[geometrically normal]：对每个域扩张 \(K/k\)，环 \(A_K\) 都正规。把“正规”换成“约化”，就得到\term[jiheyuehua]{几何约化}[geometrically reduced]。\cref{g5:exm:inseparable-normality-loss}中的域 \(A\) 连几何约化也不满足。
+
+\subsection{非约化环的约化与正规化}
 \label{g5:subsec:0404:03}
-待撰写
 
-\subsection{有限性失效及一般理论的准确边界}
+对一般环 \(A\)，每个素理想都包含幂零根式 \(\sqrt{(0)}\)，所以商映射
+\[
+	A\longrightarrow A_{\mathrm{red}}\coloneqq A/\sqrt{(0)}
+\]
+在素谱上诱导同胚。它保留点及其闭集，却会删去非零幂零元。正规环的各素局部环都是整环，因而首先必须约化；这一要求决定了下面的约定。
+
+\begin{definition}
+\label{g5:def:normalization-nonreduced}
+	设 \(A\) 为 Noether 环。讨论其正规化时，先取约化环 \(A_{\mathrm{red}}\)，再取它在总分式环 \(Q(A_{\mathrm{red}})\) 中的整闭包。记作
+	\[
+		A^\nu\coloneqq(A_{\mathrm{red}})^\nu,
+		\qquad
+		A\longrightarrow A_{\mathrm{red}}\hookrightarrow A^\nu.
+	\]
+	因此，“先取约化”属于本书对非约化对象使用正规化时的约定；若 \(A\) 已约化，这就是\cref{g5:def:normalization-ring}中的构造。
+\end{definition}
+
+由于第二个箭头单射，复合同态的核恰为 \(\sqrt{(0)}\)。在有限型 \(k\) 代数情形，由\cref{g5:cor:reduced-finite-normalization}，\(A^\nu\) 有限于 \(A_{\mathrm{red}}\)，也就有限于 \(A\)。有限性在这里保留，但原环到正规化的映射可能失去单射性。
+
+\begin{example}[双直线与两种整闭操作]
+\label{g5:exm:double-line-reduction}
+	设 \(k\) 为域，
+	\[
+		R=k[x,y]/(y^2).
+	\]
+	每个元素唯一写成 \(a(x)+y b(x)\)。若它幂零，则模 \(y\) 后的 \(a(x)\) 在整环 \(k[x]\) 中幂零，故 \(a=0\)。因此
+	\[
+		\sqrt{(0)}=(y),\qquad
+		R_{\mathrm{red}}=k[x],\qquad
+		R^\nu=k[x].
+	\]
+	最后一个等式来自 \(k[x]\) 整闭。复合 \(R\rightarrow R^\nu\) 把非零元 \(y\) 送到零，故不是单射。素谱上的映射却是同胚：双直线与约化直线具有相同的点和闭集。
+
+	若改为直接在原环的总分式环中取整闭包，会得到另一种对象。\(a+yb\) 为非零因子当且仅当 \(a\ne0\)，因而
+	\[
+		Q(R)=k(x)[y]/(y^2).
+	\]
+	直接在这个环中求对 \(R\) 整的元素，所得环为
+	\[
+		C=k[x]+y\,k(x).
+	\]
+	事实上，若 \(a+yb\) 整于 \(R\)，其中 \(a,b\in k(x)\)，模 \(y\) 的首一方程说明 \(a\) 整于 \(k[x]\)，故 \(a\in k[x]\)。反过来，对任意 \(b\in k(x)\)，元素 \(yb\) 都满足 \(T^2=0\)，因而整于 \(R\)；再加上 \(a\in k[x]\) 仍为整元素。
+
+	这个 \(C\) 既不约化，也不是有限 \(R\) 模。若有有限组生成元，可选共同分母 \(0\ne d\in k[x]\)，使每个生成元的 \(y\) 系数乘以 \(d\) 后都在 \(k[x]\) 中。于是它们的每个 \(R\) 线性组合也有这一性质。但 \(y/x^n\in C\) 对所有 \(n\geq1\) 都成立，而不可能有固定的非零多项式 \(d\) 被所有 \(x^n\) 整除。这给出矛盾。
+\end{example}
+
+双直线的两个结果分别回答不同的问题：\(R^\nu\) 从约化结构出发，得到正规环；\(C\) 则在保留原幂零元的总分式环中加入整元素。后者的无限分母现象也是\cite[第33节，第264页]{Matsumura1989}讨论非约化环整闭包时的基本机制。
+
+\ProseParagraphBreak
+
+这一约定还使基域扩张的反例更加明确。在\cref{g5:exm:inseparable-normality-loss}中，\(A^\nu=A\)，故
+\[
+	A^\nu\otimes_k K=K[\varepsilon]/(\varepsilon^p),
+	\qquad
+	(A\otimes_k K)^\nu=K.
+\]
+左侧先正规化再扩张基域，右侧先扩张基域再按约定正规化。两个环不同，差别恰好是扩张后新出现的幂零结构。
+
+\subsection{Nagata 环与正规化的有限性}
 \label{g5:subsec:0404:04}
-待撰写
+
+有限型条件在正规化有限性定理中控制了分母和系数的数量。由\cref{g5:thm:finite-normalization}，任意域上的有限型整代数，在分式域的任意有限扩张内都有有限的整闭包；约化有限型代数则按有限多个分支应用这一结论。为了区分只控制原分式域与同时控制全部有限域扩张的条件，采用以下名称。
+
+\begin{definition}
+\label{g5:def:nagata-ring}
+	设 \(A\) 为整环，\(F=\operatorname{Frac}A\)。
+	\begin{enumerate}
+		\item 若 \(A\) 在 \(F\) 中的整闭包为有限 \(A\) 模，则称 \(A\) 满足\term[N1tiaojian]{N-1 条件}[N-1 condition]。
+		\item 若对每个有限域扩张 \(L/F\)，\(A\) 在 \(L\) 中的整闭包都是有限 \(A\) 模，则称 \(A\) 满足\term[N2tiaojian]{N-2 条件}[N-2 condition]，也称 \(A\) 为 Japanese 环。
+	\end{enumerate}
+	\foreignidx{Japanese ring}
+	设 \(R\) 为交换含幺环。若 \(R\) 为 Noether 环，并且对每个素理想 \(\mathfrak p\)，整环 \(R/\mathfrak p\) 都满足 N-2 条件，则称 \(R\) 为\term[Nagatahuan]{Nagata 环}[Nagata ring]。\footnote{永田雅宜（ながた まさよし，Masayoshi Nagata，1927--2008），日本数学家，研究交换代数、代数几何与不变量理论，并构造了 Hilbert 第十四问题的反例。}
+\end{definition}
+
+N-2 蕴含 N-1，因为可取 \(L=F\)。N-1、N-2 的定义本身不要求 Noether；Nagata 条件则明确包含 Noether 性，并对全部素商同时作要求。特别地，整闭整环自动满足 N-1，因为它的整闭包就是自身；这一个事实尚未处理其他有限域扩张。Nagata 环的上述定义可对照\cite[第33节，第264页]{Matsumura1989}。
+
+\begin{proposition}
+\label{g5:prop:nagata-normalization-finite}
+	任意域 \(k\) 上的有限型 \(k\) 代数都是 Nagata 环。若 \(R\) 为约化 Nagata 环，则它在 \(Q(R)\) 中的正规化是有限 \(R\) 模。
+\end{proposition}
+\begin{proof}
+	有限型 \(k\) 代数 \(R\) 为 Noether 环。每个素商 \(R/\mathfrak p\) 仍是有限型 \(k\) 整代数，由\cref{g5:thm:finite-normalization}的有限域扩张版本满足 N-2 条件，故 \(R\) 为 Nagata 环。
+
+	现在设 \(R\) 约化且 Nagata。零环情形直接成立，以下设 \(R\ne0\)。Noether 性使极小素理想只有有限个，记为 \(\mathfrak p_1,\ldots,\mathfrak p_r\)。由\cref{g5:prop:total-quotient-components}，
+	\[
+		Q(R)\cong\prod_{i=1}^r F_i,\qquad
+		F_i=\operatorname{Frac}(R/\mathfrak p_i).
+	\]
+	令 \(C_i\) 为 \(R/\mathfrak p_i\) 在 \(F_i\) 中的整闭包。Nagata 条件给出各 \(C_i\) 有限于 \(R/\mathfrak p_i\)，因而也有限于 \(R\)。所以有限直积
+	\(C=\prod_i C_i\)
+	为有限 \(R\) 模，并且整于 \(R\)。
+
+	若 \(z\in Q(R)\) 整于 \(R\)，将它的首一方程投影到第 \(i\) 个因子，便知 \(z_i\) 整于 \(R/\mathfrak p_i\)，故 \(z_i\in C_i\)。因此 \(R^\nu\subseteq C\)；反向包含来自刚才的整性，于是 \(R^\nu=C\)，正规化有限。
+\end{proof}
+
+下面给出一个完全显式的非有限正规化。它的原环不是 Noether 环，因而同时指出了该模型的适用位置。
+
+\begin{example}[无限代数扩张造成非有限正规化]
+\label{g5:exm:nonfinite-normalization}
+	取无限次的代数域扩张 \(K/k\)，即每个元素都代数但 \([K:k]=\infty\)；例如可取 \(\overline{\mathbb F}_p/\mathbb F_p\)。在 \(K[x]\) 内令
+	\[
+		A=k+xK[x]
+		=\{f(x)\in K[x]:f(0)\in k\},
+		\qquad B=K[x].
+	\]
+	这是整环包含，且
+	\[
+		\operatorname{Frac}A=K(x):
+	\]
+	对任意 \(c\in K\)，有 \(c=(cx)/x\in\operatorname{Frac}A\)，故该分式域包含 \(K\) 和 \(x\)；反向包含由 \(A\subseteq K[x]\) 得到。
+
+	每个 \(c\in K\) 都满足 \(k\) 系数的首一方程，因而整于 \(A\)。又 \(x\in A\) 且 \(B=A[K]\)，整元素对加法和乘法封闭，所以 \(B\) 整于 \(A\)。\(B=K[x]\) 整闭：若互素的 \(u,v\in K[x]\) 使 \(u/v\) 整于 \(K[x]\)，清去首一方程的分母可得 \(v\mid u^n\)，从而 \(v\) 是单位。因此，任何整于 \(A\) 的 \(K(x)\) 中元素也整于 \(B\)，必属于 \(B\)。这证明
+	\[
+		A^\nu=B=K[x].
+	\]
+
+	然而 \(B\) 不是有限 \(A\) 模。取 \(\mathfrak m=xK[x]\subset A\)，则
+	\[
+		A/\mathfrak m=k,\qquad
+		B/\mathfrak mB=K.
+	\]
+	若 \(B\) 有限于 \(A\)，模去 \(\mathfrak m\) 后，有限组生成元应给出 \(K\) 在 \(k\) 上的有限张成集，与 \([K:k]=\infty\) 矛盾。
+
+	原环 \(A\) 的 Noether 性也可以直接判定。因为
+	\[
+		\mathfrak m^2=x^2K[x],\qquad
+		\mathfrak m/\mathfrak m^2\cong K
+	\]
+	作为 \(A/\mathfrak m=k\) 向量空间成立，\(\mathfrak m\) 不可能有限生成。因此 \(A\) 非 Noether。这个环的每个整元素各自只用有限个系数，但所有系数合起来需要无限个模生成元。
+\end{example}
+
+对一般 Noether 整环，正规化的有限性也确实会失败，甚至可发生在一维 Noether 局部整环上。这项反例存在性结果见\cite[第33节，第262、264页]{Matsumura1989}；它与上例的非 Noether 构造是不同的结论。因此，“Noether”“N-1”“N-2”承担不同的要求。对本章的代数几何对象，有限型定理已经提供所需有限性；推广到底环时，Nagata 条件则同时控制全部素商及其有限域扩张。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

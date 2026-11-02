@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 10.4* 奇异约化与局部结构
 % 纲要位置：几何学计划纲要.md，第 3872 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,21 +16,234 @@
 
 \OptionalSection{奇异约化与局部结构}{g4:sec:1004}
 
-待撰写
+正则约化把两个步骤分开：矩映射方程使水平集成为子流形，自由固有作用使轨道商成为流形。去掉自由性后，有限稳定子可能留下一张有限群商图；到了奇异值，水平集本身也可能出现锥形结构。约化空间仍保存着来自原辛流形的函数、括号和运动，只是这些对象要在不同维数的光滑部分上理解。本节先计算两种现象，再给出一般奇异约化定理的准确使用范围。
 
 \subsection{非自由稳定子和轨道类型}
 \label{g4:subsec:1004:01}
-待撰写
+设紧 Lie 群 \(G\) 在无边界辛流形 \((M,\omega)\) 上作 Hamilton 作用，矩映射 \(\mu:M\to\mathfrak g^*\) 等变。记 \(Z=\mu^{-1}(0)\)、\(X=Z/G\)。紧性保证作用固有；零值被余伴随作用固定，因此 \(Z\) 对整个群不变。群不必连通，零值也暂不假设正则。
+
+\begin{definition}\label{g4:def:1004:orbit-type}
+	点 \(x\in M\) 的\term[wendingzi]{稳定子}[stabilizer]为 \(G_x=\{g\in G:gx=x\}\)。若两个稳定子在 \(G\) 中共轭，就称相应两点具有相同的\term[guidaoleixing]{轨道类型}[orbit type]。对闭子群 \(H\subseteq G\)，记
+	\[
+		M_{(H)}=\{x\in M:G_x\text{ 与 }H\text{ 在 }G\text{ 中共轭}\},
+		\qquad Z_{(H)}=Z\cap M_{(H)}.
+	\]
+	约化空间中相应的部分是 \(X_{(H)}=Z_{(H)}/G\)。讨论其光滑层时，进一步取这些部分的连通分支。
+\end{definition}
+
+共轭关系来自代表选择：\(G_{gx}=gG_xg^{-1}\)，所以一个轨道只确定稳定子的共轭类。同一轨道类型的不同连通分支可能具有不同维数，故不能把“稳定子相同”当作“处处具有同一维数”的替代条件。
+
+\ProseParagraphBreak
+
+稳定子是闭子群：它是连续映射 \(g\mapsto gx\) 对闭集 \(\{x\}\) 的原像。第一卷定理16.3.6的闭子群定理赋予它嵌入 Lie 子群结构。\cref{g4:prop:1002:moment-differential}给出
+\[
+	\operatorname{rank}\mathrm{d}\mu_x=\dim G-\dim G_x.
+\]
+因此正则点只要求 \(G_x\) 的 Lie 代数为零。对紧群，零维稳定子离散且紧，因而有限；它仍可能不是平凡群。这就是“正则值但作用不自由”与“奇异值”之间的区别。
+
+\begin{proposition}\label{g4:prop:1004:regular-local-finite-quotient}
+	设紧 Lie 群 \(G\) Hamilton 作用于无边界辛流形 \((M^{2n},\omega)\)，\(\mu\) 为等变矩映射，\(0\) 为正则值。则 \(X=\mu^{-1}(0)/G\) 在每一点附近有形如 \(S/H\) 的局部模型，其中 \(H\) 是有限稳定子，\(S\) 是 \(2n-2\dim G\) 维光滑横截面，且 \(\omega|_S\) 是 \(H\) 不变的辛形式。
+\end{proposition}
+
+\begin{proof}
+	令 \(Z=\mu^{-1}(0)\)。正则性使 \(Z\) 光滑，上述判据使稳定子有限。第一卷推论17.4.4的有限稳定子商模型给出过 \(x\in Z\) 的 \(H=G_x\) 不变小横截面 \(S\)，以及商邻域 \(S/H\)。其证明中的引理17.4.2还给出横截面与轨道方向的实际局部乘积，因而
+	\[
+		\mathrm{T}_sZ=\mathrm{T}_s(Gs)\oplus\mathrm{T}_sS
+	\]
+	在缩小的 \(S\) 上成立。由\cref{g4:prop:1002:zero-level-kernel}，\(\omega|_Z\) 的核恰好是轨道切空间，所以其在 \(\mathrm{T}_sS\) 上的限制非退化。限制形式闭，且因作用保辛而被 \(H\) 保持。维数由 \(\dim Z=2n-\dim G\) 再减去轨道维数 \(\dim G\) 得到。
+\end{proof}
+
+这些局部模型保留有限群及其作用，称为\term[xinguixing]{辛轨形}[symplectic orbifold]的局部图。局部图之间的变换来自原群作用与横截面的改变；群不变性以及轨道方向属于形式的核，保证这些变换保持所给的二形式。若局部群有恒等作用的核，也应记录该核，而不由底空间的拓扑自行删去它。
+
+\begin{example}\label{g4:exm:1004:weighted-projective-chart}
+	在 \(\mathbb C^2\) 上取 \(\omega_0=\mathrm{d}x_1\wedge\mathrm{d}y_1+\mathrm{d}x_2\wedge\mathrm{d}y_2\)，令整数 \(m\ge2\)，并令圆群作用为
+	\[
+		e^{it}\cdot(z_1,z_2)=(e^{-imt}z_1,e^{-it}z_2),
+		\qquad \mu(z)=\frac12(m|z_1|^2+|z_2|^2).
+	\]
+	负指数的选择使 \(\iota_{\xi_M}\omega_0=\mathrm{d}\mu\)。对 \(c>0\)，水平集 \(Z_c=\mu^{-1}(c)\) 是光滑椭球面。\(z_2\neq0\) 时稳定子平凡；\(z_2=0\) 时稳定子为 \(m\) 次单位根群。将矩映射平移为 \(\mu-c\)，便可应用上面的局部结论。
+
+	在 \(z_1\neq0\) 的部分，把 \(z_1\) 的相位转成零，得到横截面
+	\[
+		\sigma(\zeta)=\left(\sqrt{\frac{2c-|\zeta|^2}{m}},\zeta\right),
+		\qquad |\zeta|<\sqrt{2c}.
+	\]
+	使第一个坐标为正实数的群参数有 \(m\) 种选择；残余作用为 \(\zeta\mapsto e^{-2\pi i k/m}\zeta\)。因此该商开集是圆盘除以 \(\mathbb Z/m\mathbb Z\)。在横截面上，第一个复坐标的虚部恒为零，所以
+	\[
+		\sigma^*\omega_0=\mathrm{d}(\operatorname{Re}\zeta)\wedge\mathrm{d}(\operatorname{Im}\zeta).
+	\]
+	这是一张带标准面积形式的有限旋转商图。
+
+	从底拓扑看，\(u=\zeta^m\) 给出一张普通圆盘。它恰好识别有限群轨道，而且是开映射：非零点处的实 Jacobian 行列式为 \(m^2|\zeta|^{2m-2}>0\)，零点的圆盘邻域又映为圆盘邻域。因此它诱导同胚。但在 \(u\neq0\) 处写 \(u=u_1+iu_2\)，约化形式为
+	\begin{equation}\label{g4:eq:1004:orbifold-area}
+		\omega_{\mathrm{red}}
+		=\frac1{m^2}|u|^{2/m-2}\,\mathrm{d}u_1\wedge\mathrm{d}u_2.
+	\end{equation}
+	确实，令 \(\zeta=\rho e^{i\theta}\)，则 \(|u|=\rho^m\)、\(\arg u=m\theta\)，把 \(\rho\,\mathrm{d}\rho\wedge\mathrm{d}\theta\) 换成 \(u\) 的极坐标即得此式。形式在覆盖圆盘上光滑非退化，在这张拓扑平面坐标中的系数却在原点发散。原点的有限稳定子不能从一个普通圆盘的同胚类型中恢复。
+
+	整个商称为加权射影直线 \(\mathbb{CP}(m,1)\)。其开稠密部分可用
+	\[
+		a=\frac{|z_1|^2}{2}\in(0,c/m),
+		\qquad \varphi=\arg z_1-m\arg z_2\in\mathbb R/(2\pi\mathbb Z)
+	\]
+	参数化；在两个端点，各自整条相位圆缩成一点，故底空间同胚于 \(S^2\)。其中只有 \(a=c/m\) 的端点保留 \(m\) 阶稳定子。这里的“锥点”描述有限旋转商的几何数据，并不表示底拓扑不再是曲面。相应加权圆作用及轨形商的讨论见 Cannas da Silva 的文集。\cite[第6.2节，第164--165页]{Cannas2006Symplectic}
+\end{example}
 
 \subsection{奇异值上的分层模型}
 \label{g4:subsec:1004:02}
-待撰写
+现在取一个含正维稳定子的水平集。它的商同样可以是一张拓扑平面，但水平集方程、约化函数和层的维数会发生新的变化。
+
+\begin{example}\label{g4:exm:1004:singular-cone}
+	仍取 \((\mathbb C^2,\omega_0)\)，令
+	\begin{equation}\label{g4:eq:1004:opposite-weights}
+		e^{it}\cdot(z_1,z_2)=(e^{-it}z_1,e^{it}z_2),
+		\qquad \mu(z)=\frac12(|z_1|^2-|z_2|^2).
+	\end{equation}
+	直接收缩基本场得到 \(\iota_{\xi_M}\omega_0=\mathrm{d}\mu\)。零水平为
+	\[
+		Z=\{(z_1,z_2):|z_1|=|z_2|\}.
+	\]
+	在原点，\(\mathrm{d}\mu=0\)，稳定子为整个 \(S^1\)；在其余点，两个坐标都非零，作用自由，且 \(\mathrm{d}\mu\neq0\)。因而 \(Z\setminus\{0\}\) 是三维流形，它与原点组成两种轨道类型。
+
+	为了求出商，取不变函数
+	\[
+		w=z_1z_2=u+iv,
+		\qquad s=\frac{|z_1|^2+|z_2|^2}{2}.
+	\]
+	在 \(Z\) 上有 \(|w|=s\)，故它们给出闭圆锥
+	\begin{equation}\label{g4:eq:1004:cone-equation}
+		\mathcal C=\{(u,v,s)\in\mathbb R^3:u^2+v^2=s^2,\ s\ge0\}.
+	\end{equation}
+	这些函数恰好区分 \(Z\) 中的轨道。当 \(s>0\) 时，写 \(z_j=\sqrt{s}\,e^{i\theta_j}\)；相同的 \(w\) 给出相同的 \(s\) 及相位和 \(\theta_1+\theta_2\)，两个相位差于是恰由 \((-t,t)\) 的作用消去。当 \(s=0\) 时只有原点。因此 \(Z/S^1\to\mathcal C\) 是连续双射。
+
+	它还是同胚。事实上，\(Z\to\mathcal C\) 在紧集上的原像闭且有界，因为 \(|z_1|^2+|z_2|^2=2s\)，故为固有映射。若闭集的像中有收敛点列，其原像可在某个有界闭集内选取收敛子列，因此该映射闭。由商拓扑，诱导双射也闭，逆映射连续。进一步投影 \((u,v,s)\mapsto(u,v)\) 的逆为 \((u,v)\mapsto(u,v,\sqrt{u^2+v^2})\)，所以商的底空间同胚于 \(\mathbb R^2\)。
+
+	轨道类型将这个锥分为两层：去掉锥顶的二维部分，以及单独的锥顶。锥顶附近的穿孔部分为 \(S^1\times(0,\varepsilon)\)，补上锥顶就是把 \(S^1\times\{0\}\) 压成一点。\cref{g4:fig:1004:singular-cone}把这个锥模型与其平面投影并列。
+\end{example}
+
+\input{Figures/Ch10-SingularCone}
+
+一般地，给定紧空间 \(L\)，将 \(L\times\{0\}\) 压成一点所得的 \((L\times[0,\varepsilon))/(L\times\{0\})\) 称为截断的开锥，记为 \(C_{\varepsilon}(L)\)；\(L\) 称为锥顶的\term[lianhuan]{链环}[link]。上例的链环是圆周，所以锥顶并非拓扑曲面的奇点。一般奇异约化的局部模型，则是在某个光滑层的小球旁附加一个这样的横向锥；横向链环也可能继续分层。
 
 \subsection{光滑层的辛结构}
 \label{g4:subsec:1004:03}
-待撰写
+先计算锥的二维层上的辛形式。沿用\cref{g4:exm:1004:singular-cone}的记号，在 \(s>0\) 处令 \(\varphi=\theta_1+\theta_2\)。限制原辛形式得到
+\[
+	\omega_0|_{Z\setminus\{0\}}
+	=\frac12\mathrm{d}s\wedge(\mathrm{d}\theta_1+\mathrm{d}\theta_2).
+\]
+群方向为 \(-\partial_{\theta_1}+\partial_{\theta_2}\)，它正是这个限制型的核。于是二维层上的约化辛形式为
+\begin{equation}\label{g4:eq:1004:cone-symplectic-form}
+	\omega_{\mathrm{red}}=\frac12\mathrm{d}s\wedge\mathrm{d}\varphi
+	=\frac1{2\sqrt{u^2+v^2}}\,\mathrm{d}u\wedge\mathrm{d}v,
+	\qquad (u,v)\neq(0,0).
+\end{equation}
+这里用到了 \(w=se^{i\varphi}\)，所以 \(\mathrm{d}u\wedge\mathrm{d}v=s\,\mathrm{d}s\wedge\mathrm{d}\varphi\)。锥顶是零维辛流形，其二形式为零：在零维切空间上，零型的核也为零。
+
+\ProseParagraphBreak
+
+要比较两层，必须说明什么叫约化空间上的光滑函数。只规定函数在每层内光滑还不够，这无法控制它接近较低维层时的行为。
+
+\begin{definition}\label{g4:def:1004:reduced-smooth-functions}
+	设紧 Lie 群 \(G\) Hamilton 作用于 \((M,\omega)\)，等变矩映射为 \(\mu\)，\(Z=\mu^{-1}(0)\)，商投影为 \(q:Z\to X=Z/G\)。若连续函数 \(f:X\to\mathbb R\) 可写为 \(q^*f=F|_Z\)，其中 \(F\in C^\infty(M)\) 对 \(G\) 不变，则称 \(f\) 为\term[yuehuaguanghuahanshu]{约化光滑函数}[smooth function on the reduced space]。记这些函数组成的代数为 \(C^\infty(X)\)。局部版本在相应的 \(G\) 不变开邻域上作同样定义。
+\end{definition}
+
+等价地，若 \(\mathcal A=C^\infty(M)^G\)，\(\mathcal I=\{F\in\mathcal A:F|_Z=0\}\)，则 \(C^\infty(X)=\mathcal A/\mathcal I\)。这个定义同时保存了原空间的光滑性和轨道识别。
+
+\begin{proposition}\label{g4:prop:1004:reduced-poisson}
+	设紧 Lie 群 \(G\) Hamilton 作用于无边界辛流形 \((M,\omega)\)，等变矩映射为 \(\mu\)，令 \(Z=\mu^{-1}(0)\)、\(X=Z/G\)，并设 \(\mathcal A=C^\infty(M)^G\)、\(\mathcal I=\{F\in\mathcal A:F|_Z=0\}\)。则 \(\mathcal I\) 是 \(\mathcal A\) 中的 Poisson 理想。因此
+	\begin{equation}\label{g4:eq:1004:reduced-poisson}
+		q^*\{f,h\}_X=\{F,H\}_M|_Z,
+		\qquad q^*f=F|_Z,\quad q^*h=H|_Z,
+	\end{equation}
+	与不变延拓 \(F,H\) 的选择无关，并赋予 \(C^\infty(X)\) Poisson 代数结构。不变 Hamilton 函数在原流形中的局部流保持 \(Z\) 和各轨道类型，因而下降到商空间。
+\end{proposition}
+
+\begin{proof}
+	群作用保辛，所以\cref{g4:lem:0902:bracket-naturality}说明不变函数的括号仍不变。若 \(H\) 不变，则对任意 \(\xi\in\mathfrak g\)，
+	\[
+		X_H(\mu^\xi)=\{\mu^\xi,H\}
+		=-\mathrm{d}H(\xi_M)=0.
+	\]
+	因此 \(X_H\) 的局部流保持矩映射的每个分量，特别保持 \(Z\)。若 \(F|_Z=0\)，沿这些留在 \(Z\) 中的轨线求导，得到 \(\{F,H\}|_Z=X_HF|_Z=0\)。故 \(\mathcal I\) 是 Poisson 理想。双线性、反对称性、Leibniz 法则和 Jacobi 恒等式均从 \(\mathcal A\) 传到商代数，给出所列括号。
+
+	不变性与\cref{g4:lem:0902:bracket-naturality}还说明 \(X_H\) 与群作用相容。由积分曲线唯一性，其局部流满足 \(\Phi_t(gx)=g\Phi_t(x)\)。于是 \(G_x\subseteq G_{\Phi_t(x)}\)；对逆流应用同一式，得到反向包含，所以稳定子实际保持相等。局部流因而保持各轨道类型；连续时间路径还留在相应部分的同一个连通分支中。
+\end{proof}
+
+\begin{example}\label{g4:exm:1004:cone-smooth-poisson}
+	在锥模型中，\(u,v,s\) 都来自光滑不变多项式，故都是约化光滑函数。逐项计算原空间上的标准括号，得到
+	\begin{equation}\label{g4:eq:1004:cone-brackets}
+		\{u,v\}=2s,\qquad \{s,u\}=-2v,\qquad \{s,v\}=2u.
+	\end{equation}
+	例如 \(u=x_1x_2-y_1y_2\)、\(v=x_1y_2+y_1x_2\)，所以
+	\[
+		\{u,v\}=x_1^2+y_1^2+x_2^2+y_2^2=2s.
+	\]
+	在二维层上，\eqref{g4:eq:1004:cone-brackets}正是\eqref{g4:eq:1004:cone-symplectic-form}所给的括号；在锥顶，所有这些括号为零。
+
+	拓扑平面坐标 \((u,v)\) 中，约化光滑函数 \(s\) 成了 \(\sqrt{u^2+v^2}\)，它在普通平面的原点不可微。因此这张同胚不能当作约化光滑坐标。奇异性也不只是这张坐标选得不好，下面给出一个不依赖坐标的检验。
+
+	令 \(\mathfrak m\) 为锥顶处取值为零的约化光滑函数芽组成的理想。每个这样的芽都有不变光滑延拓 \(F\)。作用中 \(t=\pi\) 把 \((z_1,z_2)\) 变为 \((-z_1,-z_2)\)，所以 \(\mathrm{d}F_0=0\)，从而 \(F(z)=O(|z|^2)\)。\(\mathfrak m^2\) 中的元素沿 \(Z\) 因而为 \(O(|z|^4)\)。若 \(a[u]+b[v]+c[s]=0\) 在 \(\mathfrak m/\mathfrak m^2\) 中成立，沿
+	\[
+		z_1=\rho,\qquad z_2=\rho e^{i\varphi}
+	\]
+	代入并除以 \(\rho^2\)，再令 \(\rho\to0\)，就得到 \(a\cos\varphi+b\sin\varphi+c=0\) 对所有 \(\varphi\) 成立。故 \(a=b=c=0\)，即 \(\dim(\mathfrak m/\mathfrak m^2)\ge3\)。
+
+	普通光滑曲面一点处的对应商空间却恰为二维。在局部坐标 \((x,y)\) 中，Taylor 公式的积分余项将任一零点函数芽写成 \(ax+by+x^2A+xyB+y^2C\)，所以其模 \(\mathfrak m^2\) 的类由 \([x],[y]\) 张成；取一阶导数又证明这两类独立。因此约化函数代数不可能是普通光滑曲面的函数代数。这给出了底拓扑仍是平面、约化光滑结构却奇异的具体含义。
+
+	此外，每个不变延拓在原点的一阶导数均为零，所以任意两个约化光滑函数的括号在锥顶均为零。商上的 Poisson 结构因此也区分了二维辛层与零维辛层，而不仅仅是把一个平面换了一种画法。
+\end{example}
 
 \subsection{一般奇异约化定理的引用范围}
 \label{g4:subsec:1004:04}
-待撰写
+上述例子的共同特点是：商空间有自然的光滑函数代数，并由带辛形式的光滑部分组成。一般结论还要控制这些部分怎样相接。这里采用如下含义：一个分层是局部有限的、由局部闭的连通光滑流形组成的分解，并满足边缘条件；即一层 \(S\) 若与另一层 \(T\) 的闭包相交，则 \(S\subseteq\overline T\)。在约化空间的情形，每点还有与分层相容的局部球乘锥模型。
+
+\ProseParagraphBreak
+
+本节采用 Sjamaar--Lerman 论文的紧群零值版本。以下引文的定理编号按1990年作者排版稿定位；该稿题页标明论文正式发表于1991年的《Annals of Mathematics》。层及其辛形式见定理2.1，局部线性约化模型见定理5.1，分层及链环结论见定理6.11和推论6.12；后两项的证明使用第6节的局部嵌入与分层论证。\cite[1990年作者稿，定理2.1、5.1、6.11及推论6.12]{SjamaarLerman1991Reduction}
+
+\begin{theorem}[奇异约化的紧群版本]\label{g4:thm:1004:singular-reduction}
+	设紧 Lie 群 \(G\) 光滑 Hamilton 作用于连通、无边界、Hausdorff 且第二可数的有限维辛流形 \((M,\omega)\)，\(\mu:M\to\mathfrak g^*\) 是等变矩映射，\(Z=\mu^{-1}(0)\neq\varnothing\)。则 \(X=Z/G\) 具有以下性质。
+	\begin{enumerate}
+		\item 各 \(X_{(H)}=(Z\cap M_{(H)})/G\) 的连通分支组成光滑层。若 \(S\) 为其中一层，\(Z_S\) 为它在 \(Z\) 中的原像，则 \(Z_S\) 是子流形，\(q_S:Z_S\to S\) 为满射淹没，并存在唯一辛形式 \(\omega_S\) 满足
+		\[
+			q_S^*\omega_S=i_S^*\omega,
+			\qquad i_S:Z_S\hookrightarrow M.
+		\]
+		\item 约化光滑函数的 Poisson 括号与各层的辛括号相容：
+		\[
+			\{f,h\}_X|_S=\{f|_S,h|_S\}_{\omega_S}.
+		\]
+		\item 给定 \(x\in Z\)，令 \(H=G_x\)、\(E=\mathrm{T}_x(Gx)\)，并令
+		\[
+			V=E^\omega/E.
+		\]
+		这是一个带 \(H\) 线性辛作用的向量空间。若 \(\Phi_V:V\to\mathfrak h^*\) 是由
+		\[
+			\langle\Phi_V(v),\xi\rangle
+			=\frac12\omega_V(\xi_Vv,v)
+		\]
+		给出的二次矩映射，则 \([x]\) 在 \(X\) 中的一个邻域与 \([0]\) 在 \(\Phi_V^{-1}(0)/H\) 中的一个邻域同胚。该同胚保持层，并在约化光滑函数上诱导 Poisson 代数同构。
+		\item 上述层组成局部有限分层并满足边缘条件。每个 \(p\in S\) 有一个分层邻域，同胚于 \(B\times C_{\varepsilon}(L)\)，其中 \(B\) 是 \(S\) 中的小开球，\(L\) 是紧分层空间；同胚保持层，且把 \(B\times\{\text{锥顶}\}\) 对应到 \(S\) 的相应部分。横向因子为一点时允许空链环，并约定其锥为一点。
+	\end{enumerate}
+\end{theorem}
+
+这里调用的是整个一般定理。正则自由情形的核计算和形式下降已在\secref{g4:sec:1002}证明；奇异情形中，\(Z\) 未必有统一的切空间，不能把那里 \(\ker\mathrm{d}\mu\) 的公式直接当作 \(\mathrm{T}Z\) 的公式。一般证明通过等变辛局部标准形把问题转为上述线性约化，再研究不变多项式所给的局部嵌入以及层的相接。\cref{g4:exm:1004:singular-cone}是这一线性约化步骤的显式模型。
+
+\ProseParagraphBreak
+
+局部模型中“球乘锥”的形状可以进一步从线性数据读出。令 \(V^H\) 为固定向量子空间，它是辛子空间。确实，用第一卷定理17.3.1的归一化不变积分，定义 \(P(w)=\int_H hw\,\mathrm{d}\nu_H(h)\)。则 \(P(w)\in V^H\)，且对 \(v\in V^H\) 有 \(\omega_V(v,Pw)=\omega_V(v,w)\)。若 \(v\) 与全部固定向量辛正交，就与全部 \(w\) 辛正交，故 \(v=0\)。于是
+\[
+	V=V^H\oplus W,\qquad W=(V^H)^\omega,
+	\qquad \Phi_V^{-1}(0)/H=V^H\times\bigl(\Phi_W^{-1}(0)/H\bigr).
+\]
+群在第一个因子上恒等作用，矩映射只取决于第二个因子。取一个 \(H\) 不变正定内积，其存在由第一卷定理17.3.4的平均方法保证。由于 \(\Phi_W\) 为齐次二次映射，\(\Phi_W^{-1}(0)\) 沿正径向缩放不变。令
+\[
+	L=\bigl(\Phi_W^{-1}(0)\cap\{\|w\|=1\}\bigr)/H.
+\]
+这个商紧，而 \(([w],r)\mapsto[rw]\) 把它的开锥与 \(\Phi_W^{-1}(0)/H\) 同胚地识别。固定方向 \(V^H\) 给出所在光滑层，剩余方向给出横向锥；链环本身的分层性则属于上面所引一般定理。
+
+\ProseParagraphBreak
+
+有限稳定子时 \(\mathfrak h=0\)，二次矩映射恒为零，局部模型退化为 \(V/H\)，与第一小节的有限群商图一致。正维稳定子时则必须保留方程 \(\Phi_V=0\)，不能只把横向向量空间除以稳定子。以上版本不要求 \(\mu\) 固有，也不据此断言整个约化空间连通或具有唯一的连通开稠密层；文献中有关后一类整体结论的附加假设须另行核对。这里也没有将紧群版本自动扩展为任意非紧群的固有作用版本。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,37 +1,509 @@
 % !TeX root = ../../Book4.tex
-% 纲要标题：### 4.5 椭圆曲线的完整模型
+% 纲要标题：### 4.5 椭圆曲线的解析与代数模型
 % 纲要位置：几何学计划纲要.md，第 3620 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * Weierstrass 函数及微分方程
 % * 复环面到光滑三次曲线
 % * 加法公式与几何群律
-% * 格变换、j 参数和退化
+% * 格变换、j 不变量与退化
 % 
 % ---
 % 
 % 纲要内容结束
 
-\section{椭圆曲线的完整模型}
+\section{椭圆曲线的解析与代数模型}
 \label{g4:sec:0405}
 
-待撰写
+第三章从极点阶数为 \(2,3\) 的函数构造了亏格一曲面的三次模型。本章的周期积分又把同一曲面写成 \(\mathbb C/\Lambda\)。现在要把这两种描述直接接起来：从格上的一个级数出发，找出那两个函数，写出它们满足的方程，并把环面上的加法译成三次曲线上的弦切作图。最后，改变格与改变方程系数将给出同一个复参数 \(j\)。
 
 \subsection{Weierstrass 函数及微分方程}
 \label{g4:subsec:0405:01}
-待撰写
+
+设
+\[
+	\Lambda=\mathbb Z\lambda_1+\mathbb Z\lambda_2\subset\mathbb C,
+	\qquad \operatorname{Im}(\lambda_2/\lambda_1)>0.
+\]
+这里 \(\lambda_1,\lambda_2\) 是完整的周期，而非半周期。商 \(T_\Lambda=\mathbb C/\Lambda\) 由\cref{g4:prop:0402:complex-torus}成为紧连通黎曼曲面。一个以 \(\Lambda\) 为周期的亚纯函数称为关于该格的\term[tuoyuanhanshu]{椭圆函数}[elliptic function]；它等价于 \(T_\Lambda\) 上的亚纯函数。整的椭圆函数必为常数，因为它在一个紧基本平行四边形上有界，周期性使此界扩展到整个复平面，再由\cref{g4:prop:0101:cauchy-estimate}得 \(|f'(z)|\le M/r\)，令 \(r\to\infty\) 即得 \(f'=0\)。
+
+\ProseParagraphBreak
+
+希望在每个格点放一个相同的二阶极点，最直接的和是 \(\sum_{\lambda\in\Lambda}(z-\lambda)^{-2}\)，但其绝对收敛性不足。减去每项在 \(z=0\) 的常数值，便能多获得一阶衰减，并同时规定 Laurent 展开的常数项为零。
+
+\begin{theorem}\label{g4:thm:0405:weierstrass-series}
+	设 \(\Lambda\subset\mathbb C\) 为秩二格。级数
+	\begin{equation}\label{g4:eq:0405:wp-series}
+		\wp_\Lambda(z)=\frac1{z^2}
+		+\sum_{\lambda\in\Lambda\setminus\{0\}}
+		\left(\frac1{(z-\lambda)^2}-\frac1{\lambda^2}\right)
+	\end{equation}
+	在 \(\mathbb C\setminus\Lambda\) 上正常收敛，即在每个紧集上各项绝对值的上确界之和有限。所得 Weierstrass 函数为偶亚纯函数，恰在各格点有主部 \(1/(z-\lambda)^2\)，并满足
+	\[
+		\wp_\Lambda(z+\lambda)=\wp_\Lambda(z)\quad(\lambda\in\Lambda),
+		\qquad
+		\wp_\Lambda'(z)=-2\sum_{\lambda\in\Lambda}(z-\lambda)^{-3}.
+	\]
+	令
+	\[
+		G_{2k}(\Lambda)=\sum_{\lambda\ne0}\lambda^{-2k}\qquad(k\ge2).
+	\]
+	若 \(0<|z|<\min_{\lambda\ne0}|\lambda|\)，则
+	\begin{equation}\label{g4:eq:0405:wp-laurent}
+		\wp_\Lambda(z)
+		=\frac1{z^2}+\sum_{n\ge1}(2n+1)G_{2n+2}(\Lambda)z^{2n}.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	取一组正向格基 \(\lambda_1,\lambda_2\)，先估计格点的数目。实线性映射
+	\((s,t)\mapsto s\lambda_1+t\lambda_2\) 可逆，所以存在 \(c>0\)，使
+	\[
+		|m\lambda_1+n\lambda_2|\ge c\sqrt{m^2+n^2}.
+	\]
+	因此半径 \(R\) 圆盘内的格点数为 \(O((R+1)^2)\)。把非零格点按 \(2^j\le|\lambda|<2^{j+1}\) 分组，便得
+	\[
+		\sum_{\lambda\ne0}|\lambda|^{-s}<\infty\qquad(s>2);
+	\]
+	有限个模长较小的格点单独计入即可。
+
+	在紧集 \(K\subset\mathbb C\setminus\Lambda\) 上取 \(|z|\le R\)。当 \(|\lambda|>2R\) 时，
+	\[
+		\left|\frac1{(z-\lambda)^2}-\frac1{\lambda^2}\right|
+		=\frac{|2\lambda z-z^2|}{|\lambda|^2|z-\lambda|^2}
+		\le \frac{C_R}{|\lambda|^3}.
+	\]
+	有限个其余项在 \(K\) 上有界，故级数正常收敛。在任一格点附近，单独取出相应的二阶极点项，其余和全纯，因此得到所述亚纯延拓与主部。\cref{g4:prop:0104:holomorphic-limit}的 Cauchy 公式论证允许逐项求导；导数级数也由 \(\sum|\lambda|^{-3}\) 控制，得到导数公式。
+
+	把 \(\lambda\) 换成 \(-\lambda\)，式\eqref{g4:eq:0405:wp-series}表明 \(\wp_\Lambda\) 为偶函数。导数级数绝对收敛，所以对任何 \(\mu\in\Lambda\) 可以重排求和，得到
+	\(\wp_\Lambda'(z+\mu)=\wp_\Lambda'(z)\)。于是
+	\[
+		C_\mu(z)=\wp_\Lambda(z+\mu)-\wp_\Lambda(z)
+	\]
+	的极点主部抵消，且导数为零，因而为常数。偶性又给出
+	\(C_\mu(-z-\mu)=-C_\mu(z)\)，所以该常数为零。这就证明原函数本身具有全部格周期。
+
+	最后在 \(|z|<|\lambda|\) 时展开
+	\[
+		\frac1{(z-\lambda)^2}
+		=\sum_{k\ge0}(k+1)\frac{z^k}{\lambda^{k+2}}.
+	\]
+	对任意固定的 \(r<\min_{\lambda\ne0}|\lambda|\)，减去常数项后的双重级数在 \(|z|\le r\) 上绝对一致收敛；可以先对 \(k\) 求和，再对 \(\lambda\) 求和。奇数次幂的系数因 \(\lambda,-\lambda\) 配对而消失，剩下的正偶数次项就是式\eqref{g4:eq:0405:wp-laurent}。
+\end{proof}
+
+为简化记号，在格固定时写 \(\wp=\wp_\Lambda\)。它在原点的前几项为
+\[
+	\wp(z)=z^{-2}+3G_4z^2+5G_6z^4+O(z^6).
+\]
+二阶极点与三阶极点分别出现在 \(\wp\) 和 \(\wp'\) 中，因此它们应满足三次关系。关系的系数可以只靠消去主部求出。
+
+\begin{proposition}\label{g4:prop:0405:differential-equation}
+	设 \(\Lambda\) 为秩二复格，记 \(\wp=\wp_\Lambda\)，并定义
+	\begin{equation}\label{g4:eq:0405:invariants}
+		g_2(\Lambda)=60G_4(\Lambda),\qquad
+		g_3(\Lambda)=140G_6(\Lambda).
+	\end{equation}
+	则
+	\begin{equation}\label{g4:eq:0405:wp-equation}
+		(\wp')^2=4\wp^3-g_2\wp-g_3,
+		\qquad
+		\wp''=6\wp^2-\frac{g_2}{2}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	写 \(a=3G_4\)、\(b=5G_6\)。由 Laurent 展开直接相乘，
+	\[
+		(\wp')^2-4\wp^3=-20a\,z^{-2}-28b+O(z^2).
+	\]
+	因此椭圆函数
+	\[
+		H=(\wp')^2-4\wp^3+g_2\wp+g_3
+	\]
+	在原点可去，且值为零。周期性使它在每个格点同样可去；其余地方本来全纯。所以 \(H\) 是整的椭圆函数，必为常数，进而恒为零。对第一式求导，在 \(\wp'\ne0\) 的开集上约去 \(2\wp'\)，得到第二式；两边都是亚纯函数，由恒等定理延拓到全部定义域。
+\end{proof}
 
 \subsection{复环面到光滑三次曲线}
 \label{g4:subsec:0405:02}
-待撰写
+
+微分方程已经给出一条三次曲线。还需核对它没有奇点，并判断 \(\wp,\wp'\) 是否遗漏或重复表示曲线上的点。关键是 \(\wp\) 在环面上只有一个二阶极点，因而到球面的次数恰为 \(2\)。
+
+\begin{theorem}\label{g4:thm:0405:cubic-uniformization}
+	设 \(\Lambda\subset\mathbb C\) 为秩二格，记
+	\[
+		\Delta(\Lambda)=g_2(\Lambda)^3-27g_3(\Lambda)^2.
+	\]
+	则 \(\Delta(\Lambda)\ne0\)，且
+	\[
+		E_\Lambda:\quad Y^2T=4X_1^3-g_2X_1T^2-g_3T^3
+	\]
+	为光滑射影三次曲线。映射
+	\begin{equation}\label{g4:eq:0405:wp-uniformization}
+		\Phi_\Lambda:T_\Lambda\longrightarrow E_\Lambda,\qquad
+		[z]\longmapsto
+		\begin{cases}
+			[\wp(z):\wp'(z):1],&[z]\ne[0],\\
+			[0:1:0],&[z]=[0],
+		\end{cases}
+	\end{equation}
+	为双全纯同构。在仿射坐标 \(x=X_1/T,\ y=Y/T\) 中，
+	\[
+		\Phi_\Lambda^*\left(\frac{\mathrm{d}x}{y}\right)=\mathrm{d}z.
+	\]
+\end{theorem}
+\begin{proof}
+	\(\wp:T_\Lambda\to\mathbb P^1\) 唯一的极点是 \([0]\)，阶数为 \(2\)。由\cref{g4:thm:0202:degree}，此映射的次数为 \(2\)。偶性表明 \([z]\) 与 \([-z]\) 在同一纤维；若它们不同，这两个点已占满纤维。
+
+	环面中恰有三个非零的二阶点
+	\[
+		h_1=[\lambda_1/2],\qquad
+		h_2=[\lambda_2/2],\qquad
+		h_3=[(\lambda_1+\lambda_2)/2].
+	\]
+	因为 \(\wp'\) 为奇函数且有格周期，\(\wp'(h_i)=0\)。它在 \([0]\) 有三阶极点，且没有其他极点。\cref{g4:prop:0203:principal-degree}使其零点总阶数等于 \(3\)，所以这三个零点恰好各为一阶，且没有其他零点。特别地，\(\wp''(h_i)\ne0\)，\(\wp\) 在这些点的局部映射次数均为 \(2\)。
+
+	令 \(e_i=\wp(h_i)\)。若 \(e_i=e_j\)、\(i\ne j\)，同一纤维的重数至少为 \(4\)，与总次数为 \(2\) 矛盾。因此三个 \(e_i\) 互异。由式\eqref{g4:eq:0405:wp-equation}，
+	\[
+		4x^3-g_2x-g_3=4(x-e_1)(x-e_2)(x-e_3).
+	\]
+	三次多项式 \(4x^3-g_2x-g_3\) 有重根当且仅当 \(g_2^3=27g_3^2\)：重根 \(e\) 必满足 \(g_2=12e^2,\ g_3=-8e^3\)；反之，若这一系数等式成立，\(g_2=0\) 时也有 \(g_3=0\)，而 \(g_2\ne0\) 时取 \(e=-3g_3/(2g_2)\) 即得重根。故 \(\Delta\ne0\)。\cref{g4:prop:0204:cubic}于是保证 \(E_\Lambda\) 光滑、紧且连通。
+
+	在 \([0]\) 附近，把齐次坐标同乘 \(z^3\)，得到
+	\[
+		[\wp(z):\wp'(z):1]
+		=[z+O(z^5):-2+O(z^4):z^3].
+	\]
+	所以映射全纯延拓到所述无穷远点，并且 \(X_1/Y=-z/2+O(z^5)\) 是那里的一阶非退化坐标。其余点处，若 \(\wp'\ne0\)，第一坐标的导数非零；若 \(\wp'=0\)，则 \(\wp''\ne0\)，第二坐标的导数非零。因此 \(\Phi_\Lambda\) 处处为全纯浸入。
+
+	若两点有相同像，先比较 \(\wp\) 坐标。次数为 \(2\) 和偶性迫使它们为 \([z]\)、\([-z]\)，或为同一点；在非二阶点，\(\wp'\) 在这两个点取相反的非零值，所以二者的像不同。无穷远点只有 \([0]\) 一个原像。故 \(\Phi_\Lambda\) 单射。它作为紧曲面间的非恒定全纯映射，像既开又闭，遂满射；各点的局部全纯逆拼成全局逆。
+
+	在 \(\wp'\ne0\) 处，直接计算
+	\(\mathrm{d}\wp/\wp'=\mathrm{d}z\)。左边在整个三次曲线上是全纯微分，有限分支点及无穷远处的可去性已在\cref{g4:prop:0204:cubic}中算出。因此此等式在全部环面上成立。
+\end{proof}
+
+反方向也能从积分得到。设 \(X\) 为亏格一的紧连通黎曼曲面，指定 \(O\in X\)，取非零全纯微分 \(\omega\)。它的零除子次数为 \(2g-2=0\)，所以处处非零。周期子群
+\[
+	\Lambda_\omega=\left\{\int_\gamma\omega:
+		[\gamma]\in H_1(X,\mathbb Z)\right\}\subset\mathbb C
+\]
+由\cref{g4:prop:0401:period-lattice}为秩二格；\cref{g4:cor:0403:abel-embedding}给出的亏格一结论，在把归一化微分乘回原常数后，正是双全纯映射
+\[
+	A_O:X\longrightarrow\mathbb C/\Lambda_\omega,\qquad
+	p\longmapsto\left[\int_O^p\omega\right].
+\]
+与 \(\Phi_{\Lambda_\omega}\) 复合，就得到 \(X\) 的三次模型。换一条非零全纯微分只会把格同乘一个非零复数，所选基点则确定环面的原点。
+
+\ProseParagraphBreak
+
+因此，带一个指定点的亏格一紧黎曼曲面、带原点的复环面和上述带无穷远点的光滑三次曲线相互对应。这样的带点曲线称为\term[tuoyuanquxian]{椭圆曲线}[elliptic curve]。指定点将在下一小节成为群的单位元。
 
 \subsection{加法公式与几何群律}
 \label{g4:subsec:0405:03}
-待撰写
 
-\subsection{格变换、j 参数和退化}
+复环面的加法由 \([u]+[v]=[u+v]\) 给出。要在三次曲线上计算它，需要把 \(\wp(u+v)\) 写成 \(\wp(u),\wp'(u),\wp(v),\wp'(v)\) 的有理式。消去极点的方法再次有效：固定 \(v\)，只要找出具有与 \(\wp(u+v)\) 相同主部的椭圆函数，两者就只能相差常数。
+
+\begin{theorem}\label{g4:thm:0405:addition}
+	设 \(\Lambda\) 为秩二复格，\(\wp=\wp_\Lambda\)。若 \(u,v\notin\Lambda\) 且 \(\wp(u)\ne\wp(v)\)，则
+	\begin{equation}\label{g4:eq:0405:addition}
+		\wp(u+v)
+		=-\wp(u)-\wp(v)
+		+\frac14
+		\left(\frac{\wp'(u)-\wp'(v)}{\wp(u)-\wp(v)}\right)^2.
+	\end{equation}
+	若 \(u\notin\Lambda\) 且 \(\wp'(u)\ne0\)，则倍点公式为
+	\begin{equation}\label{g4:eq:0405:duplication}
+		\wp(2u)=-2\wp(u)
+		+\frac14\left(\frac{\wp''(u)}{\wp'(u)}\right)^2.
+	\end{equation}
+	这些等式也可作为亚纯恒等式理解，在原表达出现可去奇点处取极限。
+\end{theorem}
+\begin{proof}
+	先取 \(\wp'(v)\ne0\)，记 \(a=\wp(v)\)、\(b=\wp'(v)\)，并令 \(R(u)\) 为式\eqref{g4:eq:0405:addition}右边。由上一小节的二次纤维描述，\(\wp(u)-a\) 在环面上的零点恰为 \([v]\) 与 \([-v]\)，且均为简单零点。因此 \(R\) 只有在 \([0],[v],[-v]\) 才可能有极点。
+
+	在 \(u=v\) 附近，分子与分母都消失，而分母的一阶系数为 \(b\ne0\)，故商可去。在 \(u=-v+t\) 附近，写 \(c=\wp''(v)\)，则
+	\[
+		\wp(u)-a=-bt+\frac c2t^2+O(t^3),\qquad
+		\wp'(u)-b=-2b+ct+O(t^2).
+	\]
+	相除后常数项抵消，得到
+	\[
+		\frac{\wp'(u)-b}{\wp(u)-a}=\frac2t+O(t).
+	\]
+	因此 \(R\) 在 \([-v]\) 的主部恰为 \(t^{-2}\)，没有一阶极点项，与 \(\wp(u+v)\) 相同。
+
+	在 \(u=0\) 附近，由 Laurent 展开，
+	\[
+		\frac{\wp'(u)-b}{\wp(u)-a}
+		=-\frac2u-2au-bu^2+O(u^3).
+	\]
+	平方后再减去 \(\wp(u)+a\)，得到 \(R(u)=a+bu+O(u^2)\)。所以原点的极点可去，且 \(R(0)=a\)。于是 \(R(u)-\wp(u+v)\) 为整的椭圆函数，必为常数；在 \(u=0\) 取值，这个常数为零。加法公式对上述 \(v\) 成立。
+
+	当 \(v\) 趋于一个非零二阶点时，只要 \(\wp(u)\ne\wp(v)\)，公式两边均全纯连续，因此等式延续到这一情形。这覆盖了陈述中的全部 \(u,v\)。最后令 \(v\to u\)，在 \(\wp'(u)\ne0\) 时差商趋于 \(\wp''(u)/\wp'(u)\)，即得倍点公式。
+\end{proof}
+
+令 \(P=(x_1,y_1)=\Phi_\Lambda([u])\)、\(Q=(x_2,y_2)=\Phi_\Lambda([v])\)。若 \(x_1\ne x_2\)，连接两点的直线斜率为
+\[
+	m=\frac{y_2-y_1}{x_2-x_1}.
+\]
+把 \(y=m(x-x_1)+y_1\) 代入 \(y^2=4x^3-g_2x-g_3\)，所得三次方程的三个根之和为 \(m^2/4\)。因此直线的第三个交点 \(R=(x_3,y_3)\)，按交点重数计，满足
+\[
+	x_3=\frac{m^2}{4}-x_1-x_2,\qquad
+	y_3=m(x_3-x_1)+y_1.
+\]
+加法公式正好给出 \(\wp(u+v)=x_3\)。下面确定第二坐标的符号，并把所有重合情形一起纳入。
+
+\begin{proposition}\label{g4:prop:0405:chord-tangent}
+	设 \(\Lambda\) 为秩二复格，\(E_\Lambda\) 为\cref{g4:thm:0405:cubic-uniformization}中相应的光滑三次曲线，记 \(O=[0:1:0]\)。通过 \(\Phi_\Lambda\) 把 \(T_\Lambda\) 的加法搬到 \(E_\Lambda\)，得到以 \(O\) 为单位元的全纯交换群结构。逆元为
+	\[
+		-(x,y)=(x,-y),\qquad -O=O.
+	\]
+	若通过 \(P,Q\) 的射影直线与曲线的第三个交点为 \(R\)，重合时按切线和交点重数解释，则
+	\[
+		P+Q=-R.
+	\]
+	具体地，若 \(P=(x_1,y_1)\)、\(Q=(x_2,y_2)\) 均在仿射部分，且 \(x_1\ne x_2\)，记 \(m=(y_2-y_1)/(x_2-x_1)\)，则
+	\[
+		\begin{aligned}
+			x(P+Q)&=\frac{m^2}{4}-x_1-x_2,\\
+			y(P+Q)&=-y_1-m\bigl(x(P+Q)-x_1\bigr).
+		\end{aligned}
+	\]
+	当 \(P=Q=(x,y)\)、\(y\ne0\) 时，用切线斜率
+	\[
+		m=\frac{12x^2-g_2}{2y}
+	\]
+	代入同一公式，并取 \(x_1=x_2=x\)。若 \(Q=-P\)，则 \(P+Q=O\)，包括 \(P=Q\) 为非零二阶点的情形。
+\end{proposition}
+\begin{proof}
+	由双全纯同构搬运的运算满足全部群公理；其结合律直接来自复数加法，运算及取逆也全纯。偶函数 \(\wp\) 与奇函数 \(\wp'\) 给出所述逆元。
+
+	先取非竖直直线 \(y=mx+b\)。函数 \(\ell=y-mx-b\) 在 \(O\) 的极点阶数恰为 \(3\)，因为 \(y\) 的极点阶数为 \(3\)，而 \(x\) 只有二阶极点。因此其零除子为三个交点之和，按零点阶数计，
+	\[
+		\operatorname{div}(\ell)=[P]+[Q]+[R]-3[O].
+	\]
+	这里局部零点阶数就是直线与光滑曲线的交点重数；切线使该阶数至少为 \(2\)。由\cref{g4:prop:0403:principal-periods}，主除子的 Abel--Jacobi 积分为零。在 \(T_\Lambda\) 的 \(\mathrm{d}z\) 周期坐标中，这句话恰为
+	\[
+		u+v+w\in\Lambda,
+	\]
+	其中 \(\Phi_\Lambda([w])=R\)。故 \(R=-(P+Q)\)，其第二坐标必须取反，得到斜线公式。若 \(P=Q\) 且 \(y\ne0\)，对三次方程隐式求导得
+	\(2y\,\mathrm{d}y=(12x^2-g_2)\,\mathrm{d}x\)，因此切线斜率正如陈述。
+
+	竖直线 \(x=a\) 的有限交点是一对 \((a,y),(a,-y)\)，\(y=0\) 时二者重合，另一个射影交点是 \(O\)。于是弦切规则给出互为逆元的两点之和为 \(O\)。通过 \(O\) 和任意有限点的直线也正是竖直线，所以同一规则给出 \(O+P=P\)。最后，\(O\) 处的切线为 \(T=0\)；局部参数表达中的 \(T\) 有三阶零点，因此三个交点都为 \(O\)，与 \(O+O=O\) 一致。所有情形均与已经定义的群法相符。
+\end{proof}
+
+弦切作图由此成为环面加法在三次模型中的表达，结合律也随同这一对应得到。第三章的零极点计数负责确定交点重数，Abel 定理则负责把交点之和转成群中的零。
+
+\subsection{格变换、j 不变量与退化}
 \label{g4:subsec:0405:04}
-待撰写
+
+先区分两种改变：重新选择同一个格的整数基不会改变格，把格同乘一个非零复数则改变其在复平面中的大小和方向，但不改变复环面的同构类。实际上，这已经给出了全部同构。
+
+\begin{proposition}\label{g4:prop:0405:lattice-isomorphism}
+	设 \(\Lambda,\Lambda'\subset\mathbb C\) 为秩二格。保持原点的双全纯映射
+	\[
+		F:\mathbb C/\Lambda\longrightarrow\mathbb C/\Lambda'
+	\]
+	恰为 \(F([z])=[az]\)，其中 \(a\in\mathbb C^\times\) 满足 \(a\Lambda=\Lambda'\)。任意不要求保持原点的双全纯映射都是这种映射再复合一次目标平移。
+\end{proposition}
+\begin{proof}
+	目标环面有处处非零的微分 \(\mathrm{d}w\)。其拉回与源上的 \(\mathrm{d}z\) 相比，商是紧连通曲面上的全纯函数，所以
+	\[
+		F^*(\mathrm{d}w)=a\,\mathrm{d}z
+	\]
+	其中 \(a\) 为常数。双全纯性保证 \(a\ne0\)。沿源上由格向量 \(\lambda\) 给出的闭路积分，得到 \(a\lambda\in\Lambda'\)，因而 \(a\Lambda\subset\Lambda'\)。积分从 \(0\) 到 \(z\) 的道路，并使用 \(F([0])=[0]\)，便得 \(F([z])=[az]\)：局部积分值的差是目标周期，因此在商中这一等式不依赖道路。对 \(F^{-1}\) 作同样论证，得到 \(\Lambda'\subset a\Lambda\)，故二者相等。
+
+	反过来，\(a\Lambda=\Lambda'\) 时，线性映射 \(z\mapsto az\) 及其逆都下降到商空间，给出所述双全纯映射。若原映射不保持原点，先在目标减去 \(F([0])\) 即可应用已经证明的情形。
+\end{proof}
+
+把格写成 \(\Lambda=\lambda_1(\mathbb Z+\tau\mathbb Z)\)，其中 \(\operatorname{Im}\tau>0\)，便去掉了整体缩放。令 \(\mathbb H=\{\tau\in\mathbb C:\operatorname{Im}\tau>0\}\)。同一个格的另一组正向整数基可以写成
+\[
+	\lambda_1'=d\lambda_1+c\lambda_2,\qquad
+	\lambda_2'=b\lambda_1+a\lambda_2,\qquad
+	\begin{pmatrix}a&b\\c&d\end{pmatrix}\in\operatorname{SL}(2,\mathbb Z).
+\]
+于是
+\begin{equation}\label{g4:eq:0405:modular-action}
+	\tau'=\frac{a\tau+b}{c\tau+d},\qquad
+	\operatorname{Im}\tau'=\frac{\operatorname{Im}\tau}{|c\tau+d|^2}>0.
+\end{equation}
+反过来，同构的复环面对应相差一个非零复数倍的格，把两边的正向基比较，就得到这样的整数矩阵。因此复环面的同构类恰由 \(\mathbb H\) 中这些变换的轨道参数化。这里正向性使整数行列式为 \(1\)，因为复数乘法保持实平面的定向。
+
+\ProseParagraphBreak
+
+格级数还直接给出缩放公式
+\begin{equation}\label{g4:eq:0405:homogeneity}
+	\wp_{a\Lambda}(az)=a^{-2}\wp_\Lambda(z),\qquad
+	g_2(a\Lambda)=a^{-4}g_2(\Lambda),\qquad
+	g_3(a\Lambda)=a^{-6}g_3(\Lambda).
+\end{equation}
+在式\eqref{g4:eq:0405:wp-series}中令格点为 \(a\lambda\) 即可逐项验证。因此
+\begin{equation}\label{g4:eq:0405:j}
+	j(\Lambda)\coloneqq
+	1728\,\frac{g_2(\Lambda)^3}{g_2(\Lambda)^3-27g_3(\Lambda)^2}
+\end{equation}
+不受缩放影响，定义了复环面以及相应椭圆曲线的\term[jbubianliang]{\(j\) 不变量}[\(j\)-invariant]。常数 \(1728\) 是此处采用的归一化。
+
+\begin{theorem}\label{g4:thm:0405:j-classification}
+	两个一维复环面双全纯同构，当且仅当它们的 \(j\) 不变量相同；若各自指定原点，可以取保持原点的同构。等价地，对无重根的三次模型
+	\[
+		E_{A,B}:y^2=4x^3-Ax-B,\qquad
+		j(E_{A,B})=1728\frac{A^3}{A^3-27B^2},
+	\]
+	两条曲线有保持无穷远点的双全纯同构，当且仅当相应 \(j\) 值相同。因而这个数也与同一带点亏格一曲面所选的三次模型无关。
+\end{theorem}
+\begin{proof}
+	先核对三次模型之间的全部带点同构。设
+	\(F:(E_{A,B},O)\to(E_{A',B'},O')\) 双全纯。两条曲线均有亏格 \(1\)，其坐标 \(x,y\) 在 \(O\) 的极点阶数分别为 \(2,3\)。由式\eqref{g4:eq:0305:elliptic-pole-count}，
+	\[
+		H^0(\mathcal O(2[O]))=\operatorname{span}\{1,x\},\qquad
+		H^0(\mathcal O(3[O]))=\operatorname{span}\{1,x,y\}.
+	\]
+	拉回保持极点的精确阶数，所以
+	\[
+		F^*x'=\alpha x+\beta,\qquad
+		F^*y'=\gamma y+\delta x+\varepsilon,\qquad
+		\alpha\gamma\ne0.
+	\]
+	代入目标方程，再用 \(y^2=4x^3-Ax-B\)。六个函数
+	\(1,x,y,x^2,xy,x^3\) 的极点阶数互异，线性无关；比较 \(xy,y,x^2\) 的系数，依次得到
+	\(\delta=\varepsilon=\beta=0\)。比较 \(x^3,x,1\) 的系数，得到
+	\[
+		\gamma^2=\alpha^3,\qquad
+		A'=\alpha^2 A,\qquad B'=\alpha^3 B.
+	\]
+	令 \(u=\gamma/\alpha\)，便有 \(u^2=\alpha,\ u^3=\gamma\)。所以所有这样的同构都按
+	\[
+		(x,y)\longmapsto(u^2x,u^3y),\qquad
+		(A',B')=(u^4A,u^6B)
+	\]
+	作用，显然保持 \(j\)。
+
+	反过来，假设 \(j(E_{A,B})=j(E_{A',B'})\)。由于两边判别式都非零，交叉相乘得到
+	\[
+		A^3(B')^2=(A')^3B^2.
+	\]
+	若 \(A=0\)，则 \(A'=0\)，且 \(B,B'\ne0\)，取 \(u^6=B'/B\) 即可。若 \(B=0\)，同理 \(B'=0\)，取 \(u^4=A'/A\) 即可。剩余情形中四个系数都非零，记
+	\[
+		r=A'/A,\qquad s=B'/B.
+	\]
+	有 \(r^3=s^2\)。取 \(u\) 满足 \(u^2=s/r\)，则 \(u^4=r,\ u^6=s\)，因此同样得到所需坐标同构。这证明了三次模型的等价判据。
+
+	\(\Phi_\Lambda\) 将各复环面识别为 \(E_{g_2(\Lambda),g_3(\Lambda)}\)，故相同 \(j\) 给出保持原点的环面同构。另一方面，任意环面同构先减去目标中的像点后保持原点，\cref{g4:prop:0405:lattice-isomorphism}使两格相差缩放，式\eqref{g4:eq:0405:homogeneity}于是保证其 \(j\) 相同。任意带点亏格一曲面又由 Abel--Jacobi 积分同构于这样的环面，所以两种判据完全相容。
+\end{proof}
+
+\begin{example}\label{g4:exm:0405:symmetric-lattices}
+	方格 \(\Lambda=\mathbb Z+\mathrm{i}\mathbb Z\) 满足 \(\mathrm{i}\Lambda=\Lambda\)。缩放公式给出
+	\(g_3=\mathrm{i}^{-6}g_3=-g_3\)，故 \(g_3=0\)；判别式非零使 \(g_2\ne0\)，因此 \(j=1728\)。若
+	\(\zeta=\exp(\pi\mathrm{i}/3)\)、\(\Lambda=\mathbb Z+\zeta\mathbb Z\)，则 \(\zeta^2=\zeta-1\)，故 \(\zeta\Lambda=\Lambda\)。这时 \(g_2=\zeta^{-4}g_2\) 迫使 \(g_2=0\)，而 \(g_3\ne0\)，因此 \(j=0\)。格的额外旋转对称性，分别表现为三次方程中一个系数消失。
+\end{example}
+
+每个复数都能作为这里的 \(j\) 值出现。给定 \(j_0\ne0\)，取
+\[
+	A=3,\qquad B^2=1-\frac{1728}{j_0};
+\]
+则 \(A^3-27B^2=27\cdot1728/j_0\ne0\)，相应三次曲线的 \(j\) 恰为 \(j_0\)。\(j_0=0\) 时取 \(A=0,B=1\)。这些光滑三次曲线又都由前面的积分构造来自格。因此 \(j\) 在同构类的集合上给出完整的复数参数。
+
+\ProseParagraphBreak
+
+判别式为零时，三次模型失去光滑性。若 \((A,B)\ne(0,0)\) 且 \(A^3=27B^2\)，存在 \(e\ne0\)，使
+\[
+	4x^3-Ax-B=4(x-e)^2(x+2e).
+\]
+在奇点 \((e,0)\) 附近令 \(u=x-e\)，方程变成
+\[
+	y^2=4u^2(u+3e).
+\]
+取全纯函数 \(h(u)=2\sqrt{u+3e}\)，其中 \(h(0)\ne0\)，再令
+\[
+	U=y-u h(u),\qquad V=y+u h(u).
+\]
+这确为局部可逆的全纯坐标变换：由 \(U,V\) 先恢复 \(y=(U+V)/2\)，再对导数为 \(h(0)\ne0\) 的一元函数 \(u\mapsto u h(u)\) 求局部逆。原方程遂成为 \(UV=0\)，即两条光滑复分支横截相遇的\term[jiedian]{结点}[node]。若 \(A=B=0\)，方程为
+\[
+	y^2=4x^3,\qquad x=t^2,\quad y=2t^3;
+\]
+这是只有一条分支的\term[jiandian]{尖点}[cusp]模型，其参数化在 \(t=0\) 的导数为零。两种退化的区别可以直接由局部方程读出。
+
+\ProseParagraphBreak
+
+格的一个周期趋于无穷远时，会出现结点退化。保留周期 \(1\)，令另一个周期 \(\tau\) 的虚部趋于无穷大，则远离实轴的格行逐渐退出任意固定有界区域；相应级数剩下整数格上的一维和。
+
+\begin{proposition}\label{g4:prop:0405:trigonometric-limit}
+	设 \(\Lambda_\tau=\mathbb Z+\tau\mathbb Z\)，其中 \(\operatorname{Im}\tau>0\)。当 \(\operatorname{Im}\tau\to+\infty\) 时，在 \(\mathbb C\setminus\mathbb Z\) 的每个紧集上有一致极限
+	\begin{equation}\label{g4:eq:0405:trigonometric-limit}
+		\wp_{\Lambda_\tau}(z)\longrightarrow
+		W(z)\coloneqq\pi^2\csc^2(\pi z)-\frac{\pi^2}{3}.
+	\end{equation}
+	相应不变量满足
+	\[
+		g_2(\Lambda_\tau)\longrightarrow\frac{4\pi^4}{3},
+		\qquad
+		g_3(\Lambda_\tau)\longrightarrow\frac{8\pi^6}{27},
+		\qquad |j(\Lambda_\tau)|\longrightarrow\infty.
+	\]
+	极限三次方程为
+	\[
+		y^2=4\left(x+\frac{\pi^2}{3}\right)^2
+			\left(x-\frac{2\pi^2}{3}\right),
+	\]
+	在 \((-\pi^2/3,0)\) 有一个结点。
+\end{proposition}
+\begin{proof}
+	记 \(t=\operatorname{Im}\tau\)，固定紧集 \(K\subset\mathbb C\setminus\mathbb Z\)，并取 \(|z|\le R\)。当 \(t>2R+1\) 时，所有 \(n\ne0\) 的格点 \(m+n\tau\) 都在 \(K\) 之外，且可用之前的估计：
+	\[
+		\left|\frac1{(z-m-n\tau)^2}-\frac1{(m+n\tau)^2}\right|
+		\le C_R|m+n\tau|^{-3}.
+	\]
+	对任意实数 \(a\) 及 \(h\ge1\)，有
+	\[
+		\sum_{m\in\mathbb Z}
+		\bigl((m+a)^2+h^2\bigr)^{-3/2}
+		\le C(h^{-3}+h^{-2})\le C' h^{-2}.
+	\]
+	这个界与 \(a\) 无关：先取离 \(-a\) 最近的整数，再把其余整数向两侧编号，并把递减函数的和与积分
+	\[
+		\int_0^\infty(s^2+h^2)^{-3/2}\,\mathrm{d}s=h^{-2}
+	\]
+	比较即可。将 \(a=n\operatorname{Re}\tau\)、\(h=|n|t\) 代入，再对 \(n\ne0\) 求和，得到
+	\[
+		\sum_{n\ne0}\sum_{m\in\mathbb Z}|m+n\tau|^{-3}
+		\le\frac{C''}{t^2}\sum_{n\ne0}\frac1{n^2}
+		=O(t^{-2}).
+	\]
+	所以非零格行对 \(\wp\) 的总贡献在 \(K\) 上一致趋于零，剩下
+	\[
+		W(z)=\frac1{z^2}
+		+\sum_{m\in\mathbb Z\setminus\{0\}}
+		\left((z-m)^{-2}-m^{-2}\right).
+	\]
+
+	现计算这个一维和。级数
+	\(S(z)=\sum_{m\in\mathbb Z}(z-m)^{-2}\) 正常收敛并以 \(1\) 为周期。它与 \(\pi^2\csc^2(\pi z)\) 在每个整数处有相同主部，因此两者之差整且以 \(1\) 为周期。在竖条 \(0\le\operatorname{Re}z\le1\) 上，当 \(|\operatorname{Im}z|\to\infty\) 时，积分比较给出
+	\[
+		|S(z)|\le \sum_m|z-m|^{-2}
+		=O(|\operatorname{Im}z|^{-1})\longrightarrow0,
+	\]
+	而 \(\csc^2(\pi z)\) 指数趋于零。差函数在竖条中间的紧部分也有界；周期性使差函数在全平面有界，前述 Cauchy 估计遂使它为常数，再由上述极限知常数为零。于是 \(S(z)=\pi^2\csc^2(\pi z)\)。在原点比较常数项，
+	\[
+		\sum_{m\ne0}m^{-2}=\frac{\pi^2}{3},
+	\]
+	即得式\eqref{g4:eq:0405:trigonometric-limit}。
+
+	取固定圆周 \(|z|=r<1/2\)。已经证明的收敛在该圆周上一致，而去掉共同的 \(z^{-2}\) 后，各函数在圆内全纯；Cauchy 系数公式因而允许对 Laurent 系数取极限。由正弦的 Taylor 展开，
+	\[
+		W(z)=z^{-2}+\frac{\pi^4}{15}z^2
+			+\frac{2\pi^6}{189}z^4+O(z^6).
+	\]
+	式\eqref{g4:eq:0405:invariants}与\eqref{g4:eq:0405:wp-laurent}分别把这两个系数乘以 \(20\) 和 \(28\)，得到所述 \(g_2,g_3\) 极限。于是
+	\[
+		g_2^3-27g_3^2\longrightarrow0,\qquad
+		g_2^3\longrightarrow\frac{64\pi^{12}}{27}\ne0.
+	\]
+	每个有限 \(t\) 对应真正的秩二格，判别式仍非零，所以 \(j\) 的模趋于无穷大。代入极限系数并因式分解，便得到所述结点方程。
+\end{proof}
+
+还可看清结点处的两个分支来自哪里。在极限圆柱 \(\mathbb C/\mathbb Z\) 上取 \(q=\exp(2\pi\mathrm{i}z)\)，它把圆柱双全纯地识别为 \(\mathbb C^\times\)，且
+\[
+	W(z)=-\frac{4\pi^2q}{(q-1)^2}-\frac{\pi^2}{3}.
+\]
+圆柱的两端 \(q\to0\)、\(q\to\infty\) 都趋于同一个值 \(-\pi^2/3\)，并且 \(W'(z)\to0\)。令 \(u=W+\pi^2/3\)、\(y=W'\)，在 \(q\to0\) 与 \(q\to\infty\) 时分别有 \(y/u\to2\pi\mathrm{i}\) 与 \(y/u\to-2\pi\mathrm{i}\)，所以两端确实落在同一结点的两条不同分支上。这样，一个周期无限增长的解析极限，与三次方程中两个根合并的代数极限给出了相同的几何变化。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

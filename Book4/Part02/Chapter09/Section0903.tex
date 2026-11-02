@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 9.3 辛同位与通量
 % 纲要位置：几何学计划纲要.md，第 3830 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,289 @@
 \section{辛同位与通量}
 \label{g4:sec:0903}
 
-待撰写
+Hamilton 方程由一个全局函数产生保辛运动。反过来，保辛运动是否总能写成 Hamilton 方程？沿运动求导后，这个问题变成一形式是否有全局原函数。局部闭性足以求解，绕闭路的积分则可能阻止原函数拼接。本节先在向量场层面识别这个障碍，再沿整条辛同位积分，得到记录运动所扫辛面积的通量。
 
 \subsection{辛向量场对应闭一形式}
 \label{g4:subsec:0903:01}
-待撰写
+
+本节流形均无边界。给定光滑向量场 \(X\)，它的局部流记为 \(\phi_t\)。若所有有定义的局部流映射都保持 \(\omega\)，便称 \(X\) 为\term[xinxiangliangchang]{辛向量场}[symplectic vector field]。这里定义的是一个无穷小条件，并不预先要求场完备。
+
+\begin{proposition}\label{g4:prop:0903:symplectic-closed}
+	设 \((M,\omega)\) 为辛流形。下列三个条件等价：\(X\) 是辛向量场，\(\mathcal L_X\omega=0\)，一形式 \(\iota_X\omega\) 闭。因此收缩映射给出实向量空间同构
+	\[
+		\mathfrak{symp}(M,\omega)
+		\longrightarrow Z^1(M),\qquad X\longmapsto\iota_X\omega,
+	\]
+	其中 \(\mathfrak{symp}(M,\omega)\) 表示所有辛向量场构成的空间，\(Z^1(M)=\{\alpha\in\Omega^1(M):\mathrm{d}\alpha=0\}\)。
+\end{proposition}
+\begin{proof}
+	若局部流保辛，在 \(t=0\) 求导得到 \(\mathcal L_X\omega=0\)。反之，由\cref{g4:prop:0801:pullback-derivative}，
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}t}\phi_t^*\omega
+		=\phi_t^*\mathcal L_X\omega=0,
+	\]
+	所以在每个共同流域上 \(\phi_t^*\omega=\omega\)。Cartan 公式及 \(\mathrm{d}\omega=0\) 给出 \(\mathcal L_X\omega=\mathrm{d}(\iota_X\omega)\)，证明第三个条件等价。最后，\(\omega\) 非退化，所以对任意光滑一形式 \(\alpha\) 都有唯一光滑场解 \(\iota_X\omega=\alpha\)；这已在\cref{g4:lem:0801:contraction-solution}中逐点证明。限制到闭一形式便得所述同构。
+\end{proof}
+
+因而辛向量场在每个足够小的坐标球上都能写成 \(X_H\)：闭一形式在球上有原函数。不同球上的函数在连通交叠中相差常数；整体问题是能否同时调整这些常数，使局部函数成为一个全局函数。辛场与 Hamilton 场的这个区别可对照\cite[定义5.2及其后的讨论，第140页]{Cannas2006Symplectic}。
+
+\begin{definition}\label{g4:def:0903:symplectic-isotopy}
+	设 \(\phi:[0,1]\times M\to M\) 光滑，\(\phi_0=\operatorname{id}\)，每个 \(\phi_t\) 都是辛同胚。称 \((\phi_t)\) 为一条\term[xintongwei]{辛同位}[symplectic isotopy]，其速度场为
+	\[
+		X_t=\partial_t\phi_t\circ\phi_t^{-1}.
+	\]
+	这个场定义在当前所在点上，满足 \(\partial_t\phi_t(x)=X_t(\phi_t(x))\)。
+\end{definition}
+
+由拉回求导公式，辛同位的每个 \(X_t\) 都是辛向量场。反过来，若光滑时间依赖辛向量场的演化 \(\Phi_{t,s}\) 对所有初值及任意起讫时刻 \(s,t\in[0,1]\) 都有定义，则 \(\phi_t=\Phi_{t,0}\) 及其逆 \(\Phi_{0,t}\) 均全局存在，因而给出辛同位。第一卷命题13.1.9保证光滑性及反向演化；第一卷命题13.2.10说明，\(M\) 紧致或场具有共同紧支时，这个全时段存在条件成立。
 
 \subsection{Hamilton 向量场对应恰当一形式}
 \label{g4:subsec:0903:02}
-待撰写
+
+在全部辛场中，Hamilton 场恰好对应于恰当一形式。于是 de Rham 上同调给出线性障碍，而无需先解动力系统。
+
+\begin{proposition}\label{g4:prop:0903:infinitesimal-obstruction}
+	设 \((M,\omega)\) 为辛流形，\(\mathfrak{ham}(M,\omega)\) 为所有 Hamilton 向量场构成的空间。序列
+	\[
+		0\longrightarrow\mathfrak{ham}(M,\omega)
+		\longrightarrow\mathfrak{symp}(M,\omega)
+		\xrightarrow{\;X\mapsto[\iota_X\omega]\;}
+		H^1_{\mathrm{dR}}(M)\longrightarrow0
+	\]
+	正合。任意两个辛场的括号都是 Hamilton 场，具体地
+	\[
+		\iota_{[X,Y]}\omega=\mathrm{d}\bigl(\omega(Y,X)\bigr).
+	\]
+	因此上述商 Lie 代数是交换的；特别地，\(H^1_{\mathrm{dR}}(M)=0\) 时，每个辛向量场都是 Hamilton 场。
+\end{proposition}
+\begin{proof}
+	映射的核正是 \(\iota_X\omega=\mathrm{d}H\) 的场，也就是 Hamilton 场。任取上同调类的闭代表 \(\alpha\)，由非退化性解 \(\iota_X\omega=\alpha\)，就得到其原像，所以映射满射。
+
+	对括号，Lie 导数对张量求值的乘法法则给出
+	\[
+		\iota_{[X,Y]}\omega
+		=\mathcal L_X(\iota_Y\omega)-\iota_Y(\mathcal L_X\omega).
+	\]
+	例如在向量 \(Z\) 上展开右边，两项中的 \(X(\omega(Y,Z))\) 与 \(\omega(Y,[X,Z])\) 相消，余下 \(\omega([X,Y],Z)\)。现在 \(\mathcal L_X\omega=0\)、\(\mathrm{d}\iota_Y\omega=0\)，再次使用 Cartan 公式便得到
+	\[
+		\iota_{[X,Y]}\omega
+		=\mathrm{d}(\iota_X\iota_Y\omega)
+		=\mathrm{d}\bigl(\omega(Y,X)\bigr).
+	\]
+	这也说明 Hamilton 场是辛场 Lie 代数的理想，且商上的括号为零。
+\end{proof}
+
+路径问题还要保证原函数随时间光滑。逐时刻存在一个函数，并不自动给出一份已经选好的光滑函数族；在一形式的情形，可以直接用路径积分完成选择。
+
+\begin{lemma}\label{g4:lem:0903:smooth-potentials}
+	设 \(M\) 连通，\(\alpha_t\) 是光滑一形式族，且每个 \(\alpha_t\) 都恰当。固定 \(x_0\in M\)，则存在唯一光滑函数 \(H:[0,1]\times M\to\mathbb R\)，使
+	\[
+		\mathrm{d}_xH_t=\alpha_t,\qquad H_t(x_0)=0.
+	\]
+\end{lemma}
+\begin{proof}
+	对每个 \(x\) 选一条从 \(x_0\) 到 \(x\) 的分段光滑道路，定义 \(H_t(x)=\int_{x_0}^x\alpha_t\)。因为 \(\alpha_t\) 恰当，第一卷引理14.2.5的端点积分公式说明，这个值与道路无关。为检验联合光滑性，固定一个小坐标球及其中心 \(x_1\)，先沿一条固定道路从 \(x_0\) 到 \(x_1\)，再沿球内径向线段到 \(x\)。第一段积分是 \(t\) 的光滑函数，第二段是 \((t,x)\) 的光滑参数积分。因此 \(H\) 在每个这样的球上光滑。局部径向原始公式给出 \(\mathrm{d}_xH_t=\alpha_t\)。两个满足条件的函数之差在连通 \(M\) 上为常数，并在 \(x_0\) 为零，所以唯一。
+\end{proof}
+
+\begin{definition}\label{g4:def:0903:hamiltonian-isotopy}
+	若一条辛同位的速度场满足 \(\iota_{X_t}\omega=\mathrm{d}H_t\)，其中 \(H_t\) 随 \((t,x)\) 光滑，则称它为\term[Hamiltontongwei]{Hamilton 同位}[Hamiltonian isotopy]。能作为某条 Hamilton 同位的终点 \(\phi_1\) 的映射，称为\term[Hamiltontongpei]{Hamilton 同胚}[Hamiltonian diffeomorphism]，其全体记为 \(\operatorname{Ham}(M,\omega)\)。
+\end{definition}
+
+前一引理说明，在连通流形上检验给定辛同位是否为 Hamilton 同位，只须检验每个 \(\iota_{X_t}\omega\) 是否恰当。闭连通流形上还可从 \(H_t\) 减去其相对于辛体积的平均值，得到唯一满足 \(\int_M H_t\omega^n=0\) 的生成函数。该调整不改变向量场。
+
+\begin{proposition}\label{g4:prop:0903:hamiltonian-group}
+	Hamilton 同胚构成辛同胚群的正规子群。若 \(\phi_t,\psi_t\) 分别由 \(H_t,K_t\) 生成，则 \(\phi_t\circ\psi_t\) 由 \(H_t+K_t\circ\phi_t^{-1}\) 生成，\(\phi_t^{-1}\) 由 \(-H_t\circ\phi_t\) 生成。
+\end{proposition}
+\begin{proof}
+	对固定辛同胚 \(a\)，拉回配对可得
+	\[
+		a_*X_H=X_{H\circ a^{-1}}.
+	\]
+	对复合求导，其速度为 \(X_{H_t}+(\phi_t)_*X_{K_t}\)，给出第一式。对 \(\phi_t^{-1}\phi_t=\operatorname{id}\) 求导，其速度为 \(- (\phi_t^{-1})_*X_{H_t}\)，给出第二式。两条路径都已由给定微分同胚写出，故在整个时间区间有定义。恒等映射由零函数生成，因此这些公式证明成群。最后，\(a\phi_ta^{-1}\) 由 \(H_t\circ a^{-1}\) 生成，证明正规性。
+\end{proof}
 
 \subsection{通量的路径积分及同伦变化}
 \label{g4:subsec:0903:03}
-待撰写
+
+以下设 \((M,\omega)\) 为闭连通辛流形。给定辛同位 \(\phi_t\)，其速度 \(X_t\) 产生闭一形式 \(\eta_t=\iota_{X_t}\omega\)。把这些无穷小障碍沿时间积分，得到一个一次上同调类。
+
+\begin{definition}\label{g4:def:0903:flux}
+	辛同位 \((\phi_t)_{0\le t\le1}\) 的\term[tongliang]{通量}[flux]定义为
+	\begin{equation}\label{g4:eq:0903:flux}
+		\operatorname{Flux}(\phi_t)
+		=\left[\int_0^1\iota_{X_t}\omega\,\mathrm{d}t\right]
+		\in H^1_{\mathrm{dR}}(M).
+	\end{equation}
+	积分在一形式的系数上进行；外微分与紧参数积分交换，所以所得形式闭。
+\end{definition}
+
+这里也可以使用拉回到初始点的形式 \(\alpha_t=\phi_t^*\eta_t\)。事实上，对任意固定闭一形式 \(\eta\)，随流求导给出
+\begin{equation}\label{g4:eq:0903:trivial-cohomology-action}
+	\phi_t^*\eta-\eta
+	=\mathrm{d}\int_0^t\phi_u^*(\iota_{X_u}\eta)\,\mathrm{d}u.
+\end{equation}
+因此 \(\phi_t^*\) 在一次上同调上恒等。再对每个固定 \(t\) 将 \(\eta\) 取为 \(\eta_t\)，右边仍随 \(t\) 光滑，积分后可得
+\[
+	\operatorname{Flux}(\phi_t)
+	=\left[\int_0^1\phi_t^*(\iota_{X_t}\omega)\,\mathrm{d}t\right].
+\]
+
+\begin{proposition}\label{g4:prop:0903:swept-area}
+	设 \(\gamma:\mathbb R/\mathbb Z\to M\) 是光滑闭路，\(F(t,s)=\phi_t(\gamma(s))\)。给圆柱 \([0,1]\times\mathbb R/\mathbb Z\) 取定向 \(\mathrm{d}t\wedge\mathrm{d}s\)，则
+	\[
+		\left\langle\operatorname{Flux}(\phi_t),[\gamma]\right\rangle
+		=\int_{[0,1]\times\mathbb R/\mathbb Z}F^*\omega.
+	\]
+	右侧是带方向的辛面积，允许圆柱的像自交或退化。
+\end{proposition}
+\begin{proof}
+	有 \(\partial_tF=X_t(F)\)、\(\partial_sF=\mathrm{d}\phi_t(\gamma')\)，所以
+	\[
+		(F^*\omega)(\partial_t,\partial_s)
+		=\bigl(\gamma^*\phi_t^*\iota_{X_t}\omega\bigr)(\partial_s).
+	\]
+	先沿 \(s\) 积分，再沿 \(t\) 积分，得到拉回版本通量在 \(\gamma\) 上的周期。它与式\eqref{g4:eq:0903:flux}代表同一个类，故结论成立。
+\end{proof}
+
+\input{Figures/Ch09-FluxCylinder}
+
+\cref{g4:fig:0903:swept-cylinder}把周期计算画成一条闭路的运动：时间是圆柱的另一个方向，面积的符号由这两个方向的次序决定。保持同位两端不变而移动中间路径时，闭性将使该面积保持不变。下面直接给出形式层面的计算。
+
+\begin{theorem}\label{g4:thm:0903:flux-homotopy}
+	设 \(\phi_{s,t}\)、\(0\le s,t\le1\)，为光滑二参数辛同胚族，且 \(\phi_{s,0}=\operatorname{id}\)。令
+	\[
+		X_{s,t}=\partial_t\phi_{s,t}\circ\phi_{s,t}^{-1},\qquad
+		Y_{s,t}=\partial_s\phi_{s,t}\circ\phi_{s,t}^{-1}.
+	\]
+	通量随 \(s\) 的变化由终点速度决定：
+	\begin{equation}\label{g4:eq:0903:flux-variation}
+		\frac{\mathrm{d}}{\mathrm{d}s}\operatorname{Flux}(\phi_{s,t})
+		=[\phi_{s,1}^*(\iota_{Y_{s,1}}\omega)].
+	\end{equation}
+	特别地，若 \(\phi_{s,1}\) 也与 \(s\) 无关，则通量不变。
+\end{theorem}
+\begin{proof}
+	把全部参数放入同一映射 \(G:[0,1]^2\times M\to M\)，\(G(s,t,x)=\phi_{s,t}(x)\)。令
+	\[
+		\alpha_{s,t}=\phi_{s,t}^*(\iota_{X_{s,t}}\omega),\qquad
+		\beta_{s,t}=\phi_{s,t}^*(\iota_{Y_{s,t}}\omega),\qquad
+		h_{s,t}=\omega(Y_{s,t},X_{s,t})\circ\phi_{s,t}.
+	\]
+	由于每张 \(\phi_{s,t}\) 保辛，完整拉回可写成
+	\[
+		G^*\omega=\omega+\mathrm{d}t\wedge\alpha_{s,t}
+		+\mathrm{d}s\wedge\beta_{s,t}
+		+h_{s,t}\,\mathrm{d}s\wedge\mathrm{d}t.
+	\]
+	第一卷命题14.1.8说明它闭。比较外微分中 \(\mathrm{d}s\wedge\mathrm{d}t\) 后再带一个空间输入的项，得到
+	\[
+		\partial_s\alpha_{s,t}-\partial_t\beta_{s,t}
+		+\mathrm{d}_x h_{s,t}=0.
+	\]
+	因此
+	\[
+		\partial_s\int_0^1\alpha_{s,t}\,\mathrm{d}t
+		=\beta_{s,1}-\beta_{s,0}
+		-\mathrm{d}_x\int_0^1h_{s,t}\,\mathrm{d}t.
+	\]
+	初端恒等给出 \(Y_{s,0}=0\)，故 \(\beta_{s,0}=0\)。取上同调类就得到式\eqref{g4:eq:0903:flux-variation}。若两端都固定，进一步对 \(s\) 积分，两个通量代表之差明确是一个恰当形式。这既证明不变性，也展示了固定端点条件消去的边界项。
+\end{proof}
+
+\begin{proposition}\label{g4:prop:0903:flux-composition}
+	对两条从恒等映射出发的辛同位，有
+	\[
+		\operatorname{Flux}(\phi_t\psi_t)
+		=\operatorname{Flux}(\phi_t)+\operatorname{Flux}(\psi_t),\qquad
+		\operatorname{Flux}(\phi_t^{-1})=-\operatorname{Flux}(\phi_t).
+	\]
+	Hamilton 同位的通量为零。任意 \(c\in H^1_{\mathrm{dR}}(M)\) 都能由某条辛同位的通量实现。
+\end{proposition}
+\begin{proof}
+	若两速度场为 \(X_t,Y_t\)，复合的速度场为 \(X_t+(\phi_t)_*Y_t\)，且
+	\[
+		\iota_{X_t+(\phi_t)_*Y_t}\omega
+		=\iota_{X_t}\omega+(\phi_t^{-1})^*(\iota_{Y_t}\omega).
+	\]
+	式\eqref{g4:eq:0903:trivial-cohomology-action}也适用于逆路径，所以取类并积分即得可加性。把 \(\psi_t\) 取为 \(\phi_t^{-1}\)，得到逆路径公式。若为 Hamilton 同位，则 \(\iota_{X_t}\omega=\mathrm{d}H_t\)，时间积分等于 \(\mathrm{d}\int_0^1H_t\,\mathrm{d}t\)，故通量为零。
+
+	最后取 \(c\) 的闭代表 \(\alpha\)，解 \(\iota_X\omega=\alpha\)。\(M\) 紧致，故 \(X\) 完备；它的单位时间流是一条辛同位，其通量恰为 \([\alpha]=c\)。
+\end{proof}
+
+记能由辛同位连接恒等映射的辛同胚全体为 \(\operatorname{Symp}_0(M,\omega)\)。两条路径可以有同一终点而通量不同；差别来自从恒等映射出发又回到恒等映射的辛同位。定义\term[tongliangqun]{通量群}[flux group]
+\[
+	\Gamma_\omega
+	=\{\operatorname{Flux}(\lambda_t):\lambda_0=\lambda_1=\operatorname{id}\}
+	\subset H^1_{\mathrm{dR}}(M).
+\]
+这里路径均要求光滑；若需拼接，可先作在端点附近恒定的光滑时间重参数化，时间积分的值不变。复合和逆公式表明 \(\Gamma_\omega\) 是加法子群。对同一终点的两条路径 \(\phi_t,\psi_t\)，点态复合 \(\phi_t\psi_t^{-1}\) 是环路，其通量是两者之差。因此有良定义的群同态
+\begin{equation}\label{g4:eq:0903:endpoint-flux}
+	\overline{\operatorname{Flux}}:
+	\operatorname{Symp}_0(M,\omega)
+	\longrightarrow H^1_{\mathrm{dR}}(M)/\Gamma_\omega.
+\end{equation}
+该同态在 \(\operatorname{Ham}(M,\omega)\) 上为零。于是，某个终点在这个商中的通量非零，就排除了所有可能的 Hamilton 生成路径。这里使用加法群的商，定义本身不要求先证明 \(\Gamma_\omega\) 离散。
 
 \subsection{环面平移的显式反例}
 \label{g4:subsec:0903:04}
-待撰写
+
+在 \(\mathbb T^2=\mathbb R^2/\mathbb Z^2\) 上取坐标模整数的 \((q,p)\)，辛形式为 \(\omega=\mathrm{d}q\wedge\mathrm{d}p\)，总面积归一化为 \(1\)。坐标本身不是全局实函数，\(\mathrm{d}q,\mathrm{d}p\) 却是全局闭一形式。沿两条基本圆周的周期分别检出它们的系数；第二卷第7.4.2小节给出
+\[
+	H^1_{\mathrm{dR}}(\mathbb T^2)
+	=\mathbb R[\mathrm{d}q]\oplus\mathbb R[\mathrm{d}p].
+\]
+
+\begin{example}\label{g4:exm:0903:translation-path}
+	取常数 \(a,b\in\mathbb R\)，考虑
+	\[
+		\phi_t(q,p)=(q+ta,p+tb),\qquad
+		X=a\partial_q+b\partial_p.
+	\]
+	收缩一形式及通量为
+	\[
+		\iota_X\omega=a\,\mathrm{d}p-b\,\mathrm{d}q,
+		\qquad \operatorname{Flux}(\phi_t)
+		=a[\mathrm{d}p]-b[\mathrm{d}q].
+	\]
+	只要 \((a,b)\ne(0,0)\)，这个场就不是 Hamilton 场，因为至少有一个周期非零。局部函数 \(ap-bq\) 虽能生成它，却不能成为环面上的单值实函数。若 \(a,b\) 是整数，终点甚至是恒等映射：这展示了非 Hamilton 的路径仍可能有 Hamilton 终点。
+\end{example}
+
+要判断非整数平移的终点，还需排除别的路径。下面计算全部环路通量。这个计算也把上同调障碍写成轨道在覆盖空间中的平均位移。
+
+\begin{proposition}\label{g4:prop:0903:torus-flux-lattice}
+	对标准面积环面，有
+	\[
+		\Gamma_\omega=\mathbb Z[\mathrm{d}q]\oplus\mathbb Z[\mathrm{d}p].
+	\]
+	平移 \(T_{a,b}(q,p)=(q+a,p+b)\) 是 Hamilton 同胚，当且仅当 \(a,b\in\mathbb Z\)，即该平移为恒等映射。
+\end{proposition}
+\begin{proof}
+	先记录一个平均值公式。若 \(\eta=A(q,p)\,\mathrm{d}q+B(q,p)\,\mathrm{d}p\) 闭，则 \(\partial_qB=\partial_pA\)。因此
+	\[
+		\frac{\mathrm{d}}{\mathrm{d}p}\int_0^1A(q,p)\,\mathrm{d}q=0,
+		\qquad
+		\frac{\mathrm{d}}{\mathrm{d}q}\int_0^1B(q,p)\,\mathrm{d}p=0.
+	\]
+	这两个周期等于 \(A,B\) 在整个单位方形的平均值。由上述一次上同调基，
+	\[
+		[\eta]=\left(\int_{\mathbb T^2}A\,\omega\right)[\mathrm{d}q]
+		+\left(\int_{\mathbb T^2}B\,\omega\right)[\mathrm{d}p].
+	\]
+	设 \(\lambda_t\) 是从恒等映射出发的任意辛同位，速度写成 \(X_t=A_t\partial_q+B_t\partial_p\)。将其周期系数提升到 \(\mathbb R^2\)，解同一方程并令初值映射为恒等，得到 \(\widetilde\lambda_t\)。周期光滑场在有限时间区间有统一有界速度，所以解全时段存在；由唯一性，它与每个整数平移交换，并投影为 \(\lambda_t\)。因 \(\lambda_t\) 保持面积，换元给出
+	\[
+		\int_{[0,1]^2}\partial_t\widetilde\lambda_t(x)\,\mathrm{d}x
+		=\int_{\mathbb T^2}X_t(\lambda_t(x))\,\omega(x)
+		=\int_{\mathbb T^2}X_t(y)\,\omega(y).
+	\]
+	这里 \(X_t\) 的两个坐标分量都是环面上的实函数，因此最后的积分逐分量有意义。由平均值公式及 \(\iota_{X_t}\omega=A_t\mathrm{d}p-B_t\mathrm{d}q\)，若
+	\[
+		(D_q,D_p)=\int_{[0,1]^2}\bigl(\widetilde\lambda_1(x)-x\bigr)\,\mathrm{d}x,
+	\]
+	便有 \(\operatorname{Flux}(\lambda_t)=D_q[\mathrm{d}p]-D_p[\mathrm{d}q]\)。
+
+	若 \(\lambda_1=\operatorname{id}\)，提升终点的差 \(\widetilde\lambda_1(x)-x\) 是连续的整数值向量，因而在连通 \(\mathbb R^2\) 上恒等于某个 \((k,l)\in\mathbb Z^2\)。所以每条环路的通量为 \(k[\mathrm{d}p]-l[\mathrm{d}q]\)。反过来，整数平移路径实现所有这些类，证明通量群的公式。
+
+	若 \(\lambda_1=T_{a,b}\)，同样有 \(\widetilde\lambda_1(x)-x=(a+k,b+l)\)，其中 \(k,l\in\mathbb Z\)。若这条路径是 Hamilton 同位，其通量为零，于是 \(a+k=b+l=0\)，即 \(a,b\) 都是整数。反之，整数平移是恒等映射，由零 Hamilton 函数生成。这一证明排除了所有生成同一非整数平移的 Hamilton 路径。
+\end{proof}
+
+通量在这里同时保留了局部方程和整体周期的信息。常向量场在每张坐标图上都有线性 Hamilton 函数，但沿基本圆周的周期使局部函数无法拼接；积分到终点后，还必须把整圈运动产生的整数通量除去。这个区别将用于下一章判断一个群作用何时具有全局矩映射。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,13 +1,13 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 13.6 Sobolev 映射空间与非线性算子
 % 纲要位置：几何学计划纲要.md，第 2653 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % 函数空间、微分阶数、系数正则性及参数范围同时固定；不对任意 Sobolev 指数无条件宣称复合算子光滑。
 % 
-% * 紧 $m$ 维源上的 $W^{k,p}$ 映射空间与 $kp>m$ 的连续嵌入
+% * Sobolev 连续嵌入与复合定理
 % * 指数图册、丛值截面及局部坐标转换
 % * Sobolev 乘法、复合及微分损失的估计
 % * 非线性微分算子的可微性和目标空间选择
@@ -24,29 +24,288 @@
 \section{Sobolev 映射空间与非线性算子}
 \label{g3:sec:1306}
 
-待撰写
+要把上一节用于几何方程，必须先选定一个能容纳未知对象的 Banach 空间，并证明非线性表达式在该空间中可微。连续嵌入控制映射的像，乘法控制导数展开，目标空间则记录方程损失的导数。本节按这个顺序建立 Sobolev 映射图册与所需非线性算子，并用半线性方程和曲面上的 Cauchy--Riemann 方程说明正则性怎样恢复。
 
-\subsection{\texorpdfstring{紧 \(m\) 维源上的 \(W^{k,p}\) 映射空间与 \(kp>m\) 的连续嵌入}{紧 m 维源上的 W\textasciicircum{}\{k,p\} 映射空间与 kp>m 的连续嵌入}}
+\subsection{Sobolev 连续嵌入与复合定理}
 \label{g3:subsec:1306:01}
-待撰写
+以下固定紧、光滑、无边界源流形 \(M^m\)，\(m\ge1\)，整数 \(k\ge1\)、\(1<p<\infty\)，并假定 \(kp>m\)。第十一章给出
+\[
+	W^{k,p}(M;E)\longrightarrow C^0(M;E),\qquad
+	\|uv\|_{W^{k,p}}\le C\|u\|_{W^{k,p}}\|v\|_{W^{k,p}},
+\]
+其中 \(E\) 为固定光滑有限秩丛，第二式用于相容的逐点乘法。选任意 \(0<\alpha<\min\{1,k-m/p\}\)，还可得到 \(C^{0,\alpha}\) 控制。因而充分小的 Sobolev 邻域同时是逐点小的邻域。
+
+\begin{lemma}\label{g3:lem:sobolev-multiple-products}
+	设 \(M^m\) 为紧光滑无边界流形，\(m\ge1\)、\(k\ge1\) 为整数，\(1<p<\infty\)、\(kp>m\)。若正整数 \(j_1,\ldots,j_a\) 的和不超过 \(k\)，则在固定坐标片及截断下，任意相应导数乘积满足
+	\[
+		\left\|\prod_{i=1}^a\mathrm D^{j_i}u_i\right\|_{L^p}
+		\le C\prod_{i=1}^a\|u_i\|_{W^{k,p}}.
+	\]
+	取向量或张量的有限次收缩也有同样估计。
+\end{lemma}
+\begin{proof}
+	\(a=1\) 直接成立。\(a\ge2\) 时每个 \(j_i<k\)。令
+	\(b_i=\max\{1/p-(k-j_i)/m,0\}\)。若有 \(r\ge2\) 个正的 \(b_i\)，则
+	\[
+		\sum b_i\le\frac rp-\frac{rk-k}{m}
+		=\frac1p+(r-1)\left(\frac1p-\frac km\right)<\frac1p.
+	\]
+	只有一个正数时也严格小于 \(1/p\)，全为零时同样成立。因此可选有限 \(q_i\ge p\)，使 \(1/q_i>b_i\) 且 \(\sum_i1/q_i=1/p\)。第十一章的高阶嵌入给出 \(\mathrm D^{j_i}u_i\in L^{q_i}\)，包括临界时任取有限指数的情形。Hölder 不等式给出结论；有限分量相加处理收缩。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:sobolev-composition-smooth}
+	设 \(F:M\times O\to\mathbb R^b\) 光滑，\(O\subset\mathbb R^a\) 开，且 \(kp>m\)。则
+	\[
+		\mathcal U=\{u\in W^{k,p}(M;\mathbb R^a):u(M)\subset O\}
+	\]
+	为开集，逐点复合 \(\mathcal N_F(u)(x)=F(x,u(x))\) 定义光滑映射
+	\(\mathcal U\to W^{k,p}(M;\mathbb R^b)\)。其 \(r\) 阶微分为
+	\begin{equation}\label{g3:eq:sobolev-composition-derivative}
+		\mathrm D^r\mathcal N_F(u)[h_1,\ldots,h_r](x)
+		=\partial_y^rF(x,u(x))[h_1(x),\ldots,h_r(x)].
+	\end{equation}
+	在像位于固定紧集邻域、Sobolev 范数有界的充分小邻域内，各阶所需算子范数和余项常数只依赖相应有限阶导数界。
+\end{theorem}
+\begin{proof}
+	\(u(M)\) 紧且在 \(O\) 内，与其补集有正距离；连续嵌入证明 \(\mathcal U\) 开。先对光滑 \(u\) 求坐标导数。重复链式法则后，每项是某个有界的 \(F\) 的偏导在 \((x,u(x))\) 取值，乘以
+	\(\mathrm D^{j_1}u\cdots\mathrm D^{j_a}u\)，其中 \(j_i\ge1\)、\(\sum j_i\le k\)。上一引理控制这些乘积，零阶项由紧像控制。因此在 \(\|u\|_{W^{k,p}}\le R\) 的集合上，有 \(\|F(\cdot,u)\|_{W^{k,p}}\le C_R\)。
+
+	对两个充分接近的 \(u,v\)，逐项相减。乘积用望远镜展开，每项有一个 \(u-v\) 的导数因子；系数差用 \(F\) 的再高一阶导数及 \(\|u-v\|_\infty\) 控制。得到
+	\begin{equation}\label{g3:eq:sobolev-composition-lipschitz}
+		\|F(\cdot,u)-F(\cdot,v)\|_{W^{k,p}}
+		\le C_R\|u-v\|_{W^{k,p}}.
+	\end{equation}
+	所说充分接近保证两像之间的直线段仍位于同一个紧邻域；一般开集无需假定凸。光滑稠密性及连续嵌入使光滑逼近的像保持在这个邻域内。式\eqref{g3:eq:sobolev-composition-lipschitz}使复合列在 \(W^{k,p}\) 中收敛，一致收敛又识别其极限为逐点复合，因而上述估计延伸到一般 \(u\)。
+
+	现在证明真正的 Banach 微分。点态微积分给出
+	\[
+		F(x,u+h)-F(x,u)-\partial_yF(x,u)h
+		=\int_0^1\bigl(\partial_yF(x,u+th)-\partial_yF(x,u)\bigr)h\,\mathrm dt.
+	\]
+	对 \(\partial_yF\) 使用刚证的局部 Lipschitz 估计，再用 \(W^{k,p}\) 代数估计，右端范数至多为 \(C_R\|h\|_{W^{k,p}}^2\)。其积分是连续的 Banach 值积分。故一阶微分确为式\eqref{g3:eq:sobolev-composition-derivative}，并依 \(u\) 连续。把同一论证用于 \(\partial_y^rF\)，结合连续多线性乘法，逐次证明所有高阶微分。每次只使用有限个偏导，最后得到光滑性。
+\end{proof}
+
+这一证明适用于有限坐标片上的光滑纤维映射，也适用于光滑边界域上的局部问题；有限覆盖与第十一章的延拓估计给出同样结论。由此可以内在定义\term[Sobolev yingshe kongjian]{Sobolev 映射空间}[Sobolev mapping space] \(W^{k,p}(M,N)\)：它由连续映射 \(u:M\to N\) 组成，在覆盖其图像的有限组源、目标坐标中，各坐标表达属于局部 \(W^{k,p}\)。坐标变换是刚证明的光滑复合，故定义与所选图无关。目标流形 \(N\) 可以非紧；每个固定 \(u\) 的像仍紧，所需常数只在像的一个紧邻域内计算。
 
 \subsection{指数图册、丛值截面及局部坐标转换}
 \label{g3:subsec:1306:02}
-待撰写
+取目标 \(N\) 上的辅助光滑黎曼度量。若 \(u_0:M\to N\) 光滑，拉回丛 \(u_0^*\mathrm TN\) 是光滑丛。在零截面附近定义
+\begin{equation}\label{g3:eq:sobolev-exponential-chart}
+	\mathcal E_{u_0}(\xi)(x)=\exp_{u_0(x)}\xi(x),
+	\qquad\xi\in W^{k,p}(M;u_0^*\mathrm TN).
+\end{equation}
+这里用的是逐点指数映射，而不是把一个向量场积分到时间一后得到的自微分同胚。
+
+\begin{lemma}\label{g3:lem:sobolev-map-smooth-density}
+	在 \(kp>m\) 时，每个 \(u\in W^{k,p}(M,N)\) 都可由光滑映射逼近，逼近同时在局部 Sobolev 坐标和 \(C^0\) 意义下成立。
+\end{lemma}
+\begin{proof}
+	只须处理紧集 \(K=u(M)\) 的邻域。选择有限个目标坐标 \((V_i,y_i)\) 及支于其中的光滑函数 \(\chi_i\)，使 \(\sum_i\chi_i=1\) 在 \(K\) 的一个邻域成立。各 \(\chi_i y_i\) 在图外补零，定义
+	\[
+		\iota(q)=\bigl(\chi_i(q),\chi_i(q)y_i(q)\bigr)_i\in\mathbb R^A.
+	\]
+	在稍小且闭包紧含的邻域上，它是嵌入。确实，若两点的像相同，选在第一点非零的 \(\chi_i\)，则第二点同样非零，且两点的 \(y_i\) 坐标相同。若 \(\mathrm d\iota(v)=0\)，同一坐标中 \(\mathrm d\chi_i(v)=0\) 和 \(\chi_i\mathrm dy_i(v)=0\)，故 \(v=0\)。紧闭包上的连续单射为到其像的同胚，因而取得所需局部嵌入。
+
+	在 \(\iota(K)\) 附近有光滑回缩 \(\pi\) 到所嵌入的子流形。具体地，法丛映射 \((q,\nu)\mapsto\iota(q)+\nu\) 在零截面的导数把切向与法向直和送到 \(\mathbb R^A\)，为同构；有限维逆函数定理给出局部逆，投影到 \(q\) 即得 \(\pi\)。在紧集附近可统一缩小邻域以保证这些逆相容：若任意小的法向量仍产生不同的两个表示，则取趋向紧集的子列，其两个底点距离也趋零，落入同一局部逆的邻域，与唯一性矛盾。
+
+	由上一复合定理，\(\iota\circ u\in W^{k,p}(M;\mathbb R^A)\)。将它在欧氏目标中光滑逼近为 \(v_j\)，同时有 \(v_j\to\iota\circ u\) 一致。因此大 \(j\) 时 \(v_j(M)\) 位于回缩定义域内。光滑映射 \(u_j=\iota^{-1}\circ\pi\circ v_j\) 由复合估计在 \(W^{k,p}\) 及 \(C^0\) 中趋于 \(u\)，证明完成。
+\end{proof}
+
+以 Banach 空间的开集为坐标域、过渡映射光滑的 Hausdorff 空间，称为\term[Banach liuxing]{Banach 流形}[Banach manifold]。这里的映射空间用上述 Sobolev 局部坐标拓扑；连续嵌入使不同映射能由不交的 \(C^0\) 邻域分开。
+
+\begin{theorem}\label{g3:thm:sobolev-map-charts}
+	设 \(M^m\) 紧、光滑、无边界，\(N\) 为有限维光滑流形，\(k\ge1\)、\(1<p<\infty\)、\(kp>m\)。式\eqref{g3:eq:sobolev-exponential-chart}以光滑参考映射 \(u_0\) 为中心，构成 \(W^{k,p}(M,N)\) 的光滑 Banach 图册。更换目标度量所得图册光滑相容。
+\end{theorem}
+\begin{proof}
+	映射 \((q,v)\mapsto(q,\exp_qv)\) 在零截面的导数可逆。因此在紧集 \(u_0(M)\) 附近，可以统一选择 \(\varepsilon>0\)，使 \(|\xi(x)|<\varepsilon\) 时逐点指数单射且有光滑局部逆 \(\log_{u_0(x)}\)。连续嵌入保证这一条件在截面空间中给出开集。复合定理同时证明 \(\mathcal E_{u_0}\) 及其逆在固定坐标中光滑，所以它确为图。
+
+	若 \(u_0,u_1\) 两图重叠，其过渡映射逐点为
+	\[
+		\xi(x)\longmapsto
+		\log_{u_1(x)}\bigl(\exp_{u_0(x)}\xi(x)\bigr).
+	\]
+	这是固定光滑丛之间的光滑纤维映射，因而在 \(W^{k,p}\) 中光滑。不同辅助度量之间的过渡具有同样形式。最后，对任意 Sobolev 映射 \(u\)，上一引理给出足够接近的光滑 \(u_0\)。这些逼近的像均在 \(u(M)\) 的同一紧邻域内，指数映射可用半径因此能统一选取。二者足够一致接近，所以 \(u\) 落入 \(u_0\) 的指数图。这一步保证图册覆盖整个映射空间，而不只覆盖光滑映射本身。
+\end{proof}
+
+在一个可能不光滑的 \(u\) 处，切向量仍可逐点看成 \(u^*\mathrm TN\) 的 \(W^{k,p}\) 截面；其函数空间结构由附近光滑参考映射的指数微分传递。过渡矩阵属于 \(W^{k,p}\)，乘法估计保证所得范数相容。这样无需把 \(u^*\mathrm TN\) 误称为由 \(u\) 自动给出的光滑拉回丛。
 
 \subsection{Sobolev 乘法、复合及微分损失的估计}
 \label{g3:subsec:1306:03}
-待撰写
+前面的代数估计控制同阶乘积。微分方程还会出现“高阶系数乘低阶未知量”的组合，需要如下版本。
+
+\begin{proposition}\label{g3:prop:sobolev-multiplier-loss}
+	在 \(M^m\) 紧、光滑、无边界，\(m\ge1\)、\(k\ge1\) 为整数、\(kp>m\)、\(1<p<\infty\) 时，对整数 \(0\le l\le k\)，有
+	\begin{equation}\label{g3:eq:sobolev-multiplier-loss}
+		\|av\|_{W^{l,p}}\le C\|a\|_{W^{k,p}}\|v\|_{W^{l,p}}.
+	\end{equation}
+	特别地，固定光滑联络给出连续线性微分映射
+	\(\nabla^r:W^{k,p}(E)\to W^{k-r,p}((\mathrm T^*M)^{\otimes r}\otimes E)\)，\(0\le r\le k\)。
+\end{proposition}
+\begin{proof}
+	\(l=0\) 由 \(a\in L^\infty\) 直接得到。对 \(l>0\)，先估计最高阶 Leibniz 项 \((\mathrm D^j a)(\mathrm D^{l-j}v)\)。\(j=0\) 仍用 \(L^\infty\cdot L^p\)；若 \(j=l=k\)，则交换两因子使用同一论证。其他 \(1\le j\le l\) 的项，令
+	\[
+		b=\max\{1/p-(k-j)/m,0\},\qquad
+		c=\max\{1/p-j/m,0\}.
+	\]
+	若二者为正，则 \(b+c=2/p-k/m<1/p\)；若仅一个为正，除已处理的端项外也严格小于 \(1/p\)。可选有限 \(q_1,q_2\) 使 \(1/q_1>b\)、\(1/q_2>c\)、\(1/q_1+1/q_2=1/p\)。高阶 Sobolev 嵌入及 Hölder 不等式控制该乘积。较低总阶的导数同样处理，有限图与逼近完成证明。联络微分的断言直接由局部表达及光滑系数的乘法估计得到。
+\end{proof}
+
+若 \(F\) 为固定的光滑纤维映射，式\eqref{g3:eq:sobolev-composition-derivative}表明，零阶复合保持 \(W^{k,p}\) 的阶数；\(r\) 次微分则消耗 \(r\) 阶。于是
+\[
+	u\longmapsto A(x,u)\nabla^r u
+\]
+在 \(kp>m\)、\(k\ge r\) 时是到 \(W^{k-r,p}\) 的光滑映射。其微分为
+\[
+	h\longmapsto A(x,u)\nabla^r h
+	+\partial_uA(x,u)[h]\nabla^r u,
+\]
+由乘子估计，两项落在同一目标空间。
+
+\ProseParagraphBreak
+
+固定目标上的逐点复合与变化源上的重参数化具有不同的导数计数。在圆周上，\(\mathcal R(t,u)(x)=u(x+t)\) 对参数的候选导数是 \(u'\)。若要求它仍取值于 \(W^{k,p}\)，就额外需要 \(u\in W^{k+1,p}\)。因此本节的光滑复合定理用于固定源上的纤维映射；变化坐标、自微分同胚和规范群作用必须按实际公式核验微分损失。
 
 \subsection{非线性微分算子的可微性和目标空间选择}
 \label{g3:subsec:1306:04}
-待撰写
+记 \(j^ru(x)\) 为截面在 \(x\) 处至 \(r\) 阶的导数数据，称为 \(r\) 阶\term[penshe]{喷射}[jet]。两个局部截面的这些导数全相同时代表同一喷射；链式法则保证这一等价关系与坐标选择无关。选定联络后，可以用 \(u,\nabla u,\ldots,\nabla^ru\) 的相应对称分量表示它。
+
+\begin{proposition}\label{g3:prop:nonlinear-jet-operator}
+	设 \(M^m\) 紧、光滑、无边界，\(E,F\) 为光滑丛，\(r\ge0\)、\(k>r\) 为整数，\(1<p<\infty\)、\((k-r)p>m\)。若 \(\mathcal P\) 是由至 \(r\) 阶喷射的光滑纤维映射给出的微分算子，则在其喷射值落于定义域的开集上，
+	\[
+		\mathcal P:W^{k,p}(M;E)\longrightarrow W^{k-r,p}(M;F)
+	\]
+	光滑。局部写 \(\mathcal P(u)=F(x,u,\partial u,\ldots,\partial^r u)\)，其导数为
+	\[
+		\mathrm D\mathcal P(u)h
+		=\sum_{|\beta|\le r}\partial_{z_\beta}F(x,j^ru)\,\partial^\beta h.
+	\]
+\end{proposition}
+\begin{proof}
+	\(u\mapsto j^ru\) 在联络分解后是到有限个 \(W^{k-r,p}\) 丛截面的连续线性映射。条件 \((k-r)p>m\) 使这些分量连续，并使其空间成为乘法代数。将复合定理用于喷射纤维映射，再用 Banach 链式法则，便得结论与导数公式。有限图上的表达按照原来的微分算子变换规则粘合。
+\end{proof}
+
+这是一般光滑喷射非线性的一个充分范围。若最高阶导数仅线性出现，上一小节的乘子估计允许更弱的条件。下面的曲面方程正好处于 \(W^{1,p}\to L^p\)，其目标空间本身并非乘法代数。
+
+\begin{theorem}\label{g3:thm:cr-nonlinear-smooth}
+	设 \(\Omega\subset\mathbb R^2\) 为有界光滑域，\(p>2\)，\(O\subset\mathbb R^{2n}\) 开，\(J:O\to\operatorname{End}(\mathbb R^{2n})\) 光滑且 \(J(y)^2=-I\)。在满足连续代表 \(u(\overline\Omega)\subset O\) 的 \(W^{1,p}(\Omega;\mathbb R^{2n})\) 开集上，
+	\[
+		\mathcal F(u)=\partial_su+J(u)\partial_tu
+	\]
+	是到 \(L^p(\Omega;\mathbb R^{2n})\) 的光滑映射，且
+	\begin{equation}\label{g3:eq:cr-nonlinear-derivative}
+		\mathrm D\mathcal F(u)h
+		=\partial_sh+J(u)\partial_th
+		+\mathrm dJ(u)[h]\partial_tu.
+	\end{equation}
+	若 \(u\) 光滑，此线性化是光滑系数的实椭圆一阶系统。
+\end{theorem}
+\begin{proof}
+	复合定理给出 \(u\mapsto J(u)\) 的 \(W^{1,p}\) 光滑性，而
+	\(W^{1,p}\times L^p\to L^p\) 的乘法连续，因为第一因子嵌入 \(L^\infty\)。和线性导数映射复合即得光滑性。为直接看到余项，展开得
+	\[
+		\mathcal F(u+h)-\mathcal F(u)-\mathrm D\mathcal F(u)h
+		=\bigl(J(u+h)-J(u)-\mathrm dJ(u)[h]\bigr)\partial_tu
+		+\bigl(J(u+h)-J(u)\bigr)\partial_th.
+	\]
+	在固定紧像和有界 \(W^{1,p}\) 邻域内，其 \(L^p\) 范数至多为 \(C_R\|h\|_{W^{1,p}}^2\)。一阶导数的连续性及高阶公式也由同一复合和乘法估计得到。
+
+	在光滑 \(u\) 处，最后一项是零阶项，主符号为
+	\(\mathrm i(\sigma I+\tau J(u))\)。由 \(J^2=-I\)，其逆为
+	\(-\mathrm i(\sigma I-\tau J(u))/(\sigma^2+\tau^2)\)，故在非零实余切方向可逆。
+\end{proof}
+
+这一结论可以在闭黎曼曲面 \((\Sigma,j)\) 与几乎复流形 \((N,J)\) 之间粘合。算子
+\[
+	\overline\partial_Ju=\frac12\bigl(\mathrm du+J(u)\mathrm du\circ j\bigr)
+\]
+取值于沿 \(u\) 的复反线性一形式，即满足 \(A\circ j=-J(u)\circ A\) 的实线性映射。为把变化的目标纤维变成固定 Banach 空间，在光滑参考映射 \(u_0\) 的指数图中，沿短测地线平行运输即可。可以选保持 \(J\) 的光滑联络：从任意联络出发，改为 \(\nabla^J=\nabla-\tfrac12J(\nabla J)\)，由 \(J(\nabla J)+(\nabla J)J=0\) 验证 \(\nabla^JJ=0\)。其平行运输与 \(J\) 交换，因而识别各个复反线性目标丛；系数对指数坐标光滑。上一定理于是证明该截面在固定图中为 \(W^{1,p}\to L^p\) 的光滑映射。在光滑解处，线性化适用\cref{g3:thm:elliptic-fredholm-wkp}，从而可用分裂满射或 Lyapunov--Schmidt 约化。
 
 \subsection{椭圆自举、先验界与弱解的正则性恢复}
 \label{g3:subsec:1306:05}
-待撰写
+\begin{theorem}\label{g3:thm:semilinear-sobolev-bootstrap}
+	设 \(M^m\) 为闭流形，\(P\) 为正阶 \(d\) 的光滑系数椭圆系统，\(F\) 为光滑零阶纤维映射。若 \(u\in W^{k,p}\)、\(k\ge1\)、\(1<p<\infty\)、\(kp>m\)，并在分布意义下满足 \(Pu=F(x,u)\)，则 \(u\) 光滑。在 \(\|u\|_{W^{k,p}}\) 有界且像位于固定紧集的解族中，逐次可得各固定高阶 Sobolev 范数的统一界。
+\end{theorem}
+\begin{proof}
+	复合定理先给 \(F(\cdot,u)\in W^{k,p}\)。第十二章的分布解正则性\cref{g3:thm:elliptic-distribution-lp}在有限坐标覆盖上给出 \(u\in W^{k+d,p}\)。现在 \((k+d)p>m\)，可再次使用复合定理，得到右端属于 \(W^{k+d,p}\)，继而 \(u\in W^{k+2d,p}\)。重复即可达到任意阶，由高阶嵌入得到光滑性。每步复合估计的常数依赖前一步范数及固定紧像内有限阶系数界；全局椭圆估计又把下一阶范数控制在这些量之内，归纳即得一致性。
+\end{proof}
+
+曲面上的非线性 Cauchy--Riemann 方程，其最高阶系数 \(J(u)\) 一开始只有 \(W^{1,p}\) 正则性。对此可以直接证明以下升级，而无需先假定它已是光滑系数。
+
+\begin{proposition}\label{g3:prop:weak-cr-smooth-bootstrap}
+	设 \(\Omega\subset\mathbb R^2\)、\(p>2\)，\(J\) 在目标开集上光滑且 \(J^2=-I\)。若 \(u\in W^{1,p}_{\mathrm{loc}}(\Omega;\mathbb R^{2n})\)，连续像位于目标内，且
+	\(\partial_su+J(u)\partial_tu=0\) 弱成立，则 \(u\) 光滑。
+\end{proposition}
+\begin{proof}
+	先记录一个只需连续系数、但作用于已有 \(W^{1,q}\) 函数的估计。若 \(K(x)\) 连续、\(K^2=-I\)，\(1<q<\infty\)，则在充分小的嵌套圆盘 \(B'\Subset B\) 上有
+	\begin{equation}\label{g3:eq:continuous-cr-apriori}
+		\|w\|_{W^{1,q}(B')}
+		\le C\bigl(\|\partial_sw+K\partial_tw\|_{L^q(B)}
+		+\|w\|_{L^q(B)}\bigr),\qquad w\in W^{1,q}(B).
+	\end{equation}
+	证明是在中心冻结 \(K_0\)，对 \(\chi w\) 使用常系数一阶 \(L^q\) 估计。误差 \((K-K_0)\partial_t(\chi w)\) 的范数至多为 \(\|K-K_0\|_\infty\|\mathrm D(\chi w)\|_q\)，缩小球即可吸收到左侧；截断交换子为零阶，故由 \(\|w\|_q\) 控制。这个论证不微分 \(K\)。
+
+	取 \(K=J(u)\)，它由 \(p>2\) 的嵌入而连续。在一个坐标方向取差商 \(\delta_h\)，弱方程给出
+	\[
+		(\partial_s+J(u)\partial_t)\delta_hu
+		=-\delta_h(J(u))\,\partial_tu(\cdot+h).
+	\]
+	目标紧像内的链式差商满足 \(|\delta_h(J(u))|\le C|\delta_hu|\)。切片基本定理给出 \(\|\delta_hu\|_p\le C\|\mathrm Du\|_p\) 于较小区域，故右侧一致有界于 \(L^{p/2}\)。每个非零 \(h\) 的 \(\delta_hu\) 本来属于 \(W^{1,p}\)，因此可合法代入式\eqref{g3:eq:continuous-cr-apriori}，取 \(q=p/2>1\)。得到内盘上差商一致有界于 \(W^{1,p/2}\)。反射性提取弱子列，测试配对的差商极限识别它为对应的 \(\partial u\)，遂得 \(u\in W^{2,p/2}_{\mathrm{loc}}\)。
+
+	若 \(2<p<4\)，二维嵌入使 \(\mathrm Du\in L^{p_1}_{\mathrm{loc}}\)，其中
+	\[
+		p_1=\frac{2p}{4-p}>p,\qquad
+		\frac12-\frac1{p_1}=2\left(\frac12-\frac1p\right).
+	\]
+	重复有限次便达到 \(p\ge4\)；等号时的临界嵌入给出任意有限的更高指数。因此最终 \(u\in W^{2,q}_{\mathrm{loc}}\) 对某个 \(q>2\) 成立，进而 \(u\in C^{1,\alpha}_{\mathrm{loc}}\)，某个 \(\alpha>0\)。每步只需再缩小内部区域。
+
+	现在可在弱意义下对原方程作用 \(\partial_s-J(u)\partial_t\)，用乘积法则和 \(J^2=-I\) 得
+	\[
+		(\partial_s^2+\partial_t^2)u
+		=-\bigl(\partial_sJ(u)-J(u)\partial_tJ(u)\bigr)\partial_tu.
+	\]
+	右侧属于 \(C^{0,\alpha}_{\mathrm{loc}}\)。此时主部已是光滑的标量 Laplace 算子，可逐分量应用分布型 Schauder 正则性\cref{g3:cor:schauder-distribution-smooth-coefficients}，得到 \(u\in C^{2,\alpha}_{\mathrm{loc}}\)。右端随之提升一阶，再反复应用同一结论，即得光滑性。
+\end{proof}
+
+对一般准线性系统，起始正则性、主部对 \(u\) 及其导数的依赖，以及冻结后可吸收的范数，都须像上述证明一样逐项确定。先验界则承担另一职责：它使一个变化的解族保持在同一组估计常数所覆盖的区域；单个解光滑并不直接给出这样的统一界。
 
 \subsection{直接方法、约束临界点与规范对称的区别}
 \label{g3:subsec:1306:06}
-待撰写
+局部隐函数方法从一个已知解及其线性化出发。直接方法从极小化序列出发；约束改变允许的变分方向，规范对称则使多个未知量代表同一几何对象。以下模型分别落实这三种结构。
+
+\begin{example}\label{g3:exm:semilinear-convex-minimization}
+	在闭黎曼曲面 \(M\) 上，给定实光滑 \(f\)，考虑
+	\[
+		E(u)=\frac12\int_M(|\mathrm du|^2+u^2)\,\mu_g
+		+\frac14\int_Mu^4\,\mu_g-\int_Mfu\,\mu_g,
+		\qquad u\in H^1(M;\mathbb R).
+	\]
+	二维嵌入 \(H^1\to L^4\) 使它有定义。由 Cauchy--Schwarz 与平方配方，\(E(u)\ge\tfrac14\|u\|_{H^1}^2-C_f\)，所以极小化序列有界。弱子列在 \(H^1\) 中收敛，Rellich 紧性使它在 \(L^4\) 中强收敛；二次范数弱下半连续，四次项与线性项收敛，故极小值取得。严格凸性给出唯一性。
+
+	对任意 \(h\in H^1\) 微分，得到弱方程
+	\[
+		\Delta_gu+u+u^3=f.
+	\]
+	由于 \(H^1\to L^6\)，右端 \(f-u-u^3\in L^2\)，椭圆正则性先给 \(u\in H^2\)；此时 \(2\cdot2>\dim M\)，上一半线性自举定理给出 \(u\) 光滑。这一存在证明使用能量与紧性，并不要求事先知道一个解。
+\end{example}
+
+\begin{proposition}\label{g3:prop:constraint-lagrange-banach}
+	设 \(X\) 为实 Banach 空间，\(E:X\to\mathbb R\)、\(C:X\to\mathbb R^a\) 在 \(u\) 附近为 \(C^1\)，且 \(\mathrm DC(u)\) 满射。若 \(u\) 为约束 \(C=C(u)\) 上的局部极值，则存在唯一 \(\lambda\in(\mathbb R^a)^*\)，使
+	\[
+		\mathrm DE(u)=\lambda\circ\mathrm DC(u).
+	\]
+\end{proposition}
+\begin{proof}
+	有限维目标的满射有有界右逆：逐个提升一组基并线性延拓即可。分裂水平集定理说明每个 \(h\in\ker\mathrm DC(u)\) 都是约束中一条 \(C^1\) 曲线的初速度，故 \(\mathrm DE(u)h=0\)。取右逆 \(Q\)，定义 \(\lambda=\mathrm DE(u)\circ Q\)。分解
+	\(h=(h-Q\mathrm DC(u)h)+Q\mathrm DC(u)h\)，第一项在核中，遂得公式。满射性保证 \(\lambda\) 唯一。
+\end{proof}
+
+例如将二次能量 \(\tfrac12\int(|\mathrm du|^2+Vu^2)\) 限制在 \(\int u^2=1\) 上，得到的临界方程是 \(\Delta_gu+Vu=\lambda u\)，其中乘子来自约束，而非原先的无约束 Euler 方程。直接方法还须证明约束在所用极限下保留；这里通过 \(H^1\) 到 \(L^2\) 的紧性保持单位范数，不能仅凭弱收敛断言。
+
+\ProseParagraphBreak
+
+规范对称可在一形式上直接看到。令 \(a\) 为闭连通流形上的光滑实一形式，能量 \(\tfrac12\|\mathrm da\|_2^2\) 在 \(a\mapsto a+\mathrm d\phi\) 下不变，所以 Euler 算子 \(\mathrm d^*\mathrm d\) 的核包含所有恰当一形式。它的主符号也沿 \(\xi\) 方向退化。选取代表条件 \(\mathrm d^*a=0\)，需解
+\[
+	\Delta_g\phi=-\mathrm d^*a.
+\]
+右端与常数正交，因为 \(\langle\mathrm d^*a,1\rangle=\langle a,\mathrm d1\rangle=0\)，故零均值的 \(\phi\) 存在且唯一。此时 \(a+\mathrm d\phi\) 满足代表条件，而主方程与该条件组合成 \((\mathrm d^*\mathrm d+\mathrm d\mathrm d^*)a\) 的椭圆结构。这里解的是如何在同一规范类中选代表；剩余调和形式由前面的椭圆复形理论控制。对于度量、自微分同胚或非交换规范群，代表条件、稳定子及作用的微分损失需要按相应对象重新建立。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

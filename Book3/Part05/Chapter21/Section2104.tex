@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 21.4 约化边界结构定理的证明
+% 纲要标题：### 21.4 约化边界的结构定理
 % 纲要位置：几何学计划纲要.md，第 2988 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -9,42 +9,465 @@
 % * 放大族的 BV 紧性
 % * 约化点的半空间极限
 % * 法向控制和近似切平面
-% * Lipschitz 片覆盖的构造
+% * 约化边界的 Lipschitz 覆盖
 % * 周长测度的表示
 % * 可整流性与零测例外集
 % 
 % 纲要内容结束
 
-\section{约化边界结构定理的证明}
+\section{约化边界的结构定理}
 \label{g3:sec:2104}
 
-待撰写
+约化边界的定义只要求周长测度的平均法向趋于一个单位向量。为什么这足以恢复一张余维一的曲面？关键在于单位向量平均后仍接近单位长度时，各个方向之间几乎没有抵消。我们先把这一信息变成球内周长和两侧体积的控制，再放大集合，最后由半空间近似构造 Lipschitz 图覆盖。这就是 De Giorgi 结构定理的证明路线。\footnote{Ennio De Giorgi（1928--1996），意大利数学家，研究极小曲面、几何测度论与椭圆方程正则性，并发展了变分收敛方法。}
+
+\ProseParagraphBreak
+本节取开集 \(\Omega\subset\mathbb R^n\) 以及在 \(\Omega\) 中局部有限周长的集合 \(E\)，记
+\[
+	\mu_E=|\mathrm D\chi_E|,\qquad
+	\mathrm D\chi_E=-\nu_E\mu_E.
+\]
+主证明先设 \(n\ge2\)，一维情形在末尾单独处理。法向采用外法向，因此在一个约化点放大后，集合应当趋向法向所指一侧的相反半空间。基本放大论证可对照\cite[第14节，定理14.3，第72--76页]{Simon1983}；以下同时补出所需的等周估计、图覆盖和测度识别步骤。
 
 \subsection{相对等周估计和密度控制}
 \label{g3:subsec:2104:01}
-待撰写
+先建立一个不追求最佳常数的 Sobolev 不等式。它的用途是保证：如果一个球内有一小块集合，那么包围这块体积的变差不能任意小。
+
+\begin{theorem}[基本 BV Sobolev 估计]\label{g3:thm:bv-sobolev-basic}
+	设 \(n\ge2\)，\(u\in BV(\mathbb R^n)\) 有紧支集。则
+	\begin{equation}\label{g3:eq:bv-sobolev-basic}
+		\|u\|_{L^{n/(n-1)}(\mathbb R^n)}
+		\le C_n|\mathrm Du|(\mathbb R^n).
+	\end{equation}
+	常数只依赖 \(n\)。
+\end{theorem}
+\begin{proof}
+	先设 \(u\in C_c^1(\mathbb R^n)\)。对每个 \(i\)，沿第 \(i\) 条坐标直线使用微积分基本定理，得到
+	\[
+		|u(x)|\le g_i(\widehat x_i),\qquad
+		g_i(\widehat x_i)=\int_{\mathbb R}|\partial_i u(x_1,\ldots,t,\ldots,x_n)|\,\mathrm dt,
+	\]
+	其中 \(\widehat x_i\) 表示去掉第 \(i\) 个坐标。所需的积分估计为
+	\begin{equation}\label{g3:eq:coordinate-product-holder}
+		\int_{\mathbb R^n}\prod_{i=1}^n g_i(\widehat x_i)^{1/(n-1)}\,\mathrm dx
+		\le\prod_{i=1}^n\left(\int_{\mathbb R^{n-1}}g_i\right)^{1/(n-1)}.
+	\end{equation}
+	这里可由普通 Hölder 不等式归纳证明。\(n=2\) 时它是 Fubini 等式。对 \(n>2\)，先对 \(x_n\) 积分，对前 \(n-1\) 个因子使用指数 \(n-1\) 的 Hölder 不等式，记
+	\(G_i=\int_{\mathbb R}g_i\,\mathrm dx_n\)、\(i<n\)。剩下的积分至多为
+	\[
+		\int_{\mathbb R^{n-1}}g_n^{1/(n-1)}
+		\prod_{i<n}G_i^{1/(n-1)}.
+	\]
+	再用指数 \(n-1\) 与 \((n-1)/(n-2)\) 的 Hölder 不等式，将它控制为
+	\[
+		\left(\int g_n\right)^{1/(n-1)}
+		\left(\int_{\mathbb R^{n-1}}\prod_{i<n}G_i^{1/(n-2)}\right)^{(n-2)/(n-1)}.
+	\]
+	对后一个积分应用维数 \(n-1\) 的归纳假设，即得\eqref{g3:eq:coordinate-product-holder}。非负函数允许先截断再取极限。
+
+	由于 \(|u|^{n/(n-1)}\le\prod_i g_i^{1/(n-1)}\)，上述估计给出
+	\[
+		\|u\|_{L^{n/(n-1)}}\le
+		\prod_{i=1}^n\|\partial_i u\|_{L^1}^{1/n}
+		\le \frac1n\sum_{i=1}^n\|\partial_i u\|_{L^1}
+		\le C_n\int|\nabla u|.
+	\]
+	对紧支撑 \(BV\) 函数取全空间卷积 \(u_\varepsilon=u*\rho_\varepsilon\)。由\cref{g3:lem:bv-local-mollification}，
+	\(\int|\nabla u_\varepsilon|\le|\mathrm Du|(\mathbb R^n)\)，且 \(u_\varepsilon\to u\) 于 \(L^1\)。取几乎处处收敛子列，在左端使用 Fatou 引理，即得结论。
+\end{proof}
+
+\begin{theorem}[球内相对等周估计]\label{g3:thm:relative-isoperimetric-ball}
+	设 \(n\ge2\)，\(E\) 在开集 \(\Omega\subset\mathbb R^n\) 中局部有限周长，且 \(\overline B(x,r)\subset\Omega\)。则
+	\begin{equation}\label{g3:eq:relative-isoperimetric-ball}
+		\min\{\mathcal L^n(E\cap B(x,r)),\mathcal L^n(B(x,r)\setminus E)\}^{(n-1)/n}
+		\le C_n\mu_E(B(x,r)).
+	\end{equation}
+	更一般地，对 \(u\in BV_{\mathrm{loc}}(\Omega)\)，写 \(u_B=\mathcal L^n(B)^{-1}\int_Bu\)，有
+	\[
+		\|u-u_B\|_{L^{n/(n-1)}(B)}\le C_n|\mathrm Du|(B).
+	\]
+\end{theorem}
+\begin{proof}
+	平移、伸缩后先处理单位球上光滑至边界的 \(u\)。对 \(x,y\in B\)，沿线段积分。将参数区间分为两半，并在一半交换 \(x,y\)，可把双重积分中的导数点都写为 \((1-t)x+ty\)、\(0\le t\le1/2\)。因 \(|x-y|\le2\)，对固定 \(t,y\) 作 \(z=(1-t)x+ty\) 换元，其 Jacobian 的倒数至多为 \(2^n\)，且由凸性 \(z\in B\)。于是
+	\[
+		\int_B|u-u_B|
+		\le\frac1{|B|}\int_B\int_B|u(x)-u(y)|\,\mathrm dx\,\mathrm dy
+		\le C_n\int_B|\nabla u|.
+	\]
+
+	为使用全空间 Sobolev 估计，在 \(1<|x|<3/2\) 中将 \(u-u_B\) 径向反射为
+	\[
+		v(x)=\eta(|x|)
+		\left[u\!\left((2-|x|)\frac{x}{|x|}\right)-u_B\right],
+	\]
+	其中 \(\eta\) 光滑，\(\eta(1)=1\)，在 \(3/2\) 附近为零，且 \(|\eta|+|\eta'|\le C\)。在 \(B\) 内令 \(v=u-u_B\)，在外部剩余区域令 \(v=0\)。壳层的反射映射及其逆的导数均有仅依维数的界，故换元与乘积求导给出
+	\[
+		\int_{\mathbb R^n}|\nabla v|
+		\le C_n\left(\int_B|\nabla u|+\int_B|u-u_B|\right)
+		\le C_n\int_B|\nabla u|.
+	\]
+	这个连续分片光滑函数没有跨球面的跳跃测度：在内外两部分分别积分分部，公共球面的边界项相消。因此 \(v\in W^{1,1}(\mathbb R^n)\)，也可卷积后使用\eqref{g3:eq:bv-sobolev-basic}，得到所需球上估计。伸缩回半径 \(r\) 后，两侧同乘 \(r^{n-1}\)，所以常数不变。
+
+	现在令 \(u\in BV_{\mathrm{loc}}(\Omega)\)。若 \(|\mathrm Du|(\partial B)=0\)，在稍大球内作卷积，便有
+	\[
+		u_\varepsilon\to u\text{ 于 }L^1(B),\qquad
+		\limsup_{\varepsilon\downarrow0}\int_B|\nabla u_\varepsilon|
+		\le|\mathrm Du|(B).
+	\]
+	平均值也收敛，在左侧取几乎处处子列并用 Fatou 引理即可。一般半径 \(r\) 用 \(\rho_j\uparrow r\) 逼近，选取 \(|\mathrm Du|(\partial B(x,\rho_j))=0\)；坏半径至多可数，因为这些球面两两不交而测度局部有限。平均值与变差都随这一极限收敛，得到开球上的结论。
+
+	最后取 \(u=\chi_E\)，令 \(a=|E\cap B|/|B|\)。若 \(a\le1/2\)，则 \(|\chi_E-a|\ge1/2\) 于 \(E\cap B\)；若 \(a\ge1/2\)，则在补集上有同样下界。代入球上的 Sobolev 估计，即得相对等周不等式。
+\end{proof}
+
+这个估计用于球内两侧的较小体积。要在约化点得到两侧都不消失，还要使用法向平均的方向信息。
+
+\begin{proposition}[约化点的密度界]\label{g3:prop:reduced-boundary-density-bounds}
+	设 \(n\ge2\)，\(E\) 在开集 \(\Omega\subset\mathbb R^n\) 中局部有限周长。存在仅依 \(n\) 的常数 \(c_n,C_n>0\)，使每个 \(x\in\partial^*E\) 都有 \(r_x>0\)，对 \(0<r<r_x\) 满足
+	\begin{align}
+		\min\{|E\cap B(x,r)|,\ |B(x,r)\setminus E|\}&\ge c_nr^n,\label{g3:eq:reduced-two-sided-volume}\\
+		c_nr^{n-1}\le\mu_E(B(x,r))&\le C_nr^{n-1}.\label{g3:eq:reduced-perimeter-bounds}
+	\end{align}
+	这里及下文对 \(n\) 维集合简写 \(|A|=\mathcal L^n(A)\)。
+\end{proposition}
+\begin{proof}
+	平移、旋转后设 \(x=0\)、\(\nu_E(0)=e_n\)。由约化边界定义，缩小 \(r_x\) 后对每个 \(0<r<r_x\) 都有
+	\[
+		\int_{B_r}\nu_E\cdot e_n\,\mathrm d\mu_E\ge\frac12\mu_E(B_r).
+	\]
+	记 \(v(r)=|E\cap B_r|\)、\(w(r)=|B_r\setminus E|\)。普通极坐标积分说明 \(v,w\) 局部绝对连续，且
+	\[
+		v'(r)=\mathcal H^{n-1}(E\cap\partial B_r),\qquad
+		w'(r)=\mathcal H^{n-1}(\partial B_r\setminus E)
+	\]
+	对几乎每个半径成立。
+
+	用径向光滑截断 \(\eta_h\) 逼近 \(\mathbf1_{B_r}\)：在 \(B_r\) 上取一，在 \(B_{r+h}\) 外为零，下降过渡层的厚度为 \(h\)。可从一维线性截断再作光滑逼近，使
+	\[
+		\int_E|\nabla\eta_h|\longrightarrow v'(r)
+	\]
+	在 \(v\) 可微的半径成立；这是差商 \((v(r+h)-v(r))/h\) 的极限。若再要求 \(\mu_E(\partial B_r)=0\)，分布导数恒等式给出
+	\[
+		\int_{B_r}\nu_E\cdot e_n\,\mathrm d\mu_E
+		=\lim_{h\downarrow0}\int_E\partial_n\eta_h
+		\le v'(r).
+	\]
+	故对几乎每个小半径，
+	\begin{equation}\label{g3:eq:reduced-flux-volume-derivative}
+		\mu_E(B_r)\le2v'(r)\le2n\omega_nr^{n-1}.
+	\end{equation}
+	对补集使用相反的外法向，同样得到 \(\mu_E(B_r)\le2w'(r)\)。利用测度对递增球的连续性，可把最后的周长上界推广到每个小半径。
+
+	将\eqref{g3:eq:bv-sobolev-basic}用于 \(\eta_h\chi_E\)，其紧支集包含于 \(\Omega\)。由\cref{g3:prop:bv-smooth-product}，
+	\[
+		\|\eta_h\chi_E\|_{L^{n/(n-1)}}
+		\le C_n\left(\int\eta_h\,\mathrm d\mu_E+
+		\int_E|\nabla\eta_h|\right).
+	\]
+	令 \(h\downarrow0\)，在上述好半径得到
+	\[
+		v(r)^{(n-1)/n}\le C_n\bigl(\mu_E(B_r)+v'(r)\bigr)
+		\le3C_n v'(r).
+	\]
+	由于 \(0\in\operatorname{supp}\mu_E\)，每个足够小的球中 \(v,w\) 都为正；否则 \(\chi_E\) 在球内几乎处处恒定，其分布导数便为零。在任意闭区间 \([a,b]\subset(0,r_x)\) 上，\(v^{1/n}\) 绝对连续，且
+	\[
+		\frac{\mathrm d}{\mathrm dr}v(r)^{1/n}
+		=\frac1n v(r)^{-(n-1)/n}v'(r)\ge\frac1{3nC_n}
+	\]
+	几乎处处。积分后令 \(a\downarrow0\)，得到 \(v(r)\ge c_nr^n\)。补集给出相同的 \(w\) 下界；再代入相对等周估计，得到周长下界。
+\end{proof}
 
 \subsection{放大族的 BV 紧性}
 \label{g3:subsec:2104:02}
-待撰写
+密度界恰好与缩放后的变差有界相配。固定 \(x\in\partial^*E\)，令
+\[
+	E_{x,r}=\{z:x+rz\in E\},\qquad
+	\Omega_{x,r}=\{z:x+rz\in\Omega\}.
+\]
+当 \(r\downarrow0\) 时，每个固定紧集最终都包含于 \(\Omega_{x,r}\)。为记录周长，定义缩放测度
+\[
+	\mu_{x,r}(A)=r^{1-n}\mu_E(x+rA).
+\]
+
+\begin{lemma}\label{g3:lem:perimeter-blowup-compactness}
+	设 \(n\ge2\)，\(E\) 在开集 \(\Omega\) 中局部有限周长，\(x\in\partial^*E\)。对任意序列 \(r_j\downarrow0\)，存在子列和一个在 \(\mathbb R^n\) 中局部有限周长的集合 \(F\)，使
+	\[
+		\chi_{E_{x,r_j}}\longrightarrow\chi_F
+		\quad\text{于 }L^1_{\mathrm{loc}}(\mathbb R^n).
+	\]
+	缩放导数及其变差满足
+	\begin{equation}\label{g3:eq:perimeter-scaling}
+		\mathrm D\chi_{E_{x,r}}(A)
+		=r^{1-n}\mathrm D\chi_E(x+rA),\qquad
+		|\mathrm D\chi_{E_{x,r}}|=\mu_{x,r}.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	对紧支撑测试向量场作 \(y=x+rz\) 换元，直接得到向量测度的缩放公式；取全变差得到第二式。对固定 \(R>0\)，前一命题保证
+	\[
+		\mu_{x,r}(B_R)
+		=r^{1-n}\mu_E(B(x,Rr))\le C_nR^{n-1}
+	\]
+	在 \(r\) 足够小时成立，而 \(\int_{B_R}\chi_{E_{x,r}}\le\omega_nR^n\)。应用\cref{g3:thm:bv-local-compactness}，并对整数 \(R\) 作对角选取，得到 \(L^1_{\mathrm{loc}}\) 极限 \(u\)。再选几乎处处收敛子列，因各函数只取零、一，极限也只取这两个值，故 \(u=\chi_F\)。变差下半连续保证 \(F\) 局部有限周长。
+\end{proof}
+
+目前只能得到某个极限集合。下面利用法向几乎没有抵消的事实，确定其形状和所在位置。
 
 \subsection{约化点的半空间极限}
 \label{g3:subsec:2104:03}
-待撰写
+\begin{theorem}[约化点的半空间放大]\label{g3:thm:reduced-boundary-blowup}
+	设 \(n\ge2\)，\(E\) 在开集 \(\Omega\subset\mathbb R^n\) 中局部有限周长。对每个 \(x\in\partial^*E\)，令
+	\[
+		H_x=\{z:z\cdot\nu_E(x)<0\}.
+	\]
+	则当 \(r\downarrow0\) 时，
+	\begin{equation}\label{g3:eq:reduced-halfspace-blowup}
+		\chi_{E_{x,r}}\longrightarrow\chi_{H_x}
+		\quad\text{于 }L^1_{\mathrm{loc}}(\mathbb R^n).
+	\end{equation}
+	特别地，每个约化边界点的体积密度都为 \(1/2\)，所以 \(\partial^*E\subset\partial^eE\)。
+\end{theorem}
+\begin{proof}
+	设 \(x=0\)、\(\nu_E(0)=e_n\)。由\eqref{g3:eq:reduced-normal-mean-square}及周长上界，对每个固定 \(R\)，有
+	\begin{equation}\label{g3:eq:blowup-normal-error}
+		\int_{B_R}|\nu_E(rz)-e_n|^2\,\mathrm d\mu_{0,r}(z)
+		=r^{1-n}\int_{B_{Rr}}|\nu_E-e_n|^2\,\mathrm d\mu_E
+		\longrightarrow0.
+	\end{equation}
+	由 Cauchy--Schwarz 不等式及 \(\mu_{0,r}(B_R)\le C_nR^{n-1}\)，同一积分中的平方也可换成一次方。
+
+	任取 \(r_j\downarrow0\)，利用前一引理选取 \(L^1_{\mathrm{loc}}\) 极限 \(\chi_F\)。若 \(i<n\)，则在任意固定球内
+	\[
+		|\mathrm D_i\chi_{E_{0,r_j}}|(B_R)
+		\le\int_{B_R}|\nu_E(r_jz)-e_n|\,\mathrm d\mu_{0,r_j}\longrightarrow0.
+	\]
+	在测试函数上取极限，得到 \(\mathrm D_i\chi_F=0\)。对非负测试函数 \(\varphi\)，又有
+	\[
+		\int\varphi\,\mathrm D_n\chi_{E_{0,r_j}}
+		=-\int\varphi\,\mathrm d\mu_{0,r_j}+o(1)\le o(1),
+	\]
+	因此 \(\mathrm D_n\chi_F\le0\)。
+
+	说明这两个结论如何决定 \(F\)。将 \(\chi_F\) 与全空间光滑核卷积，所得光滑函数的前 \(n-1\) 个偏导数为零，故它只依赖最后一个坐标。其最后一个偏导数非正，所以它沿该坐标单调不增。令卷积尺度趋零，得到
+	\(\chi_F(z)=h(z_n)\) 几乎处处，其中 \(h\) 有单调不增的代表且几乎处处只取零、一。因此除常值情形外，\(F\) 必为
+	\(\{z_n<a\}\)，其中暂时允许 \(a\ne0\)。
+
+	对每个 \(\rho>0\)，\eqref{g3:eq:reduced-two-sided-volume}在半径 \(\rho r_j\) 上给出
+	\[
+		c_n\rho^n\le |E_{0,r_j}\cap B_\rho|
+		\le(\omega_n-c_n)\rho^n.
+	\]
+	由 \(L^1\) 收敛，同一双侧界传给 \(F\)。常值集合不满足这一界；若 \(a>0\)，取 \(\rho<a\)，球内全属 \(F\)，同样矛盾；若 \(a<0\)，取 \(\rho<-a\)，球内全属补集。因此 \(a=0\)。
+
+	每个趋零半径序列都能取到子列，而且每个子列极限都是同一个半空间。若整个族未在某个球上 \(L^1\) 收敛，就能选出距离该半空间保持正下界的序列，与刚才的子列结论矛盾。故有整个族的收敛。取单位球中的积分，得到密度 \(1/2\)。
+\end{proof}
 
 \subsection{法向控制和近似切平面}
 \label{g3:subsec:2104:04}
-待撰写
+集合的 \(L^1\) 放大极限只控制体积。要识别周长，还需把法向误差一同带入积分，否则额外的折叠面积可能在集合极限中消失。
 
-\subsection{Lipschitz 片覆盖的构造}
+\begin{proposition}[周长的单位平面极限]\label{g3:prop:perimeter-plane-blowup}
+	设 \(n\ge2\)，\(E\) 在开集 \(\Omega\subset\mathbb R^n\) 中局部有限周长，\(x\in\partial^*E\)，并令 \(P_x=\nu_E(x)^\perp\)。则对每个 \(\varphi\in C_c(\mathbb R^n)\)，
+	\begin{equation}\label{g3:eq:perimeter-plane-blowup}
+		\lim_{r\downarrow0}\int\varphi\,\mathrm d\mu_{x,r}
+		=\int_{P_x}\varphi\,\mathrm d\mathcal H^{n-1}.
+	\end{equation}
+	相应向量导数的极限为
+	\(-\nu_E(x)\mathcal H^{n-1}\llcorner P_x\)。特别地，
+	\begin{equation}\label{g3:eq:reduced-perimeter-density-one}
+		\lim_{r\downarrow0}\frac{\mu_E(B(x,r))}{\omega_{n-1}r^{n-1}}=1.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	先取 \(\varphi\in C_c^1(\mathbb R^n)\)，并记 \(\nu_0=\nu_E(x)\)。由\eqref{g3:eq:blowup-normal-error}及其一次方版本，
+	\[
+		\int\varphi\,\mathrm d\mu_{x,r}
+		=-\int\varphi\,\nu_0\cdot\mathrm D\chi_{E_{x,r}}+o(1)
+		=\int_{E_{x,r}}\nu_0\cdot\nabla\varphi\,\mathrm dz+o(1).
+	\]
+	半空间的 \(L^1\) 极限使最后一个积分趋于
+	\(\int_{H_x}\nu_0\cdot\nabla\varphi\)。在与 \(\nu_0\) 平行的直线上用一维微积分基本定理，再用 Fubini 定理，恰得
+	\(\int_{P_x}\varphi\,\mathrm d\mathcal H^{n-1}\)。同理，向量导数的极限为所述法向量乘平面测度。
+
+	固定紧支集上的 \(\mu_{x,r}\) 质量一致有界，所以可用 \(C_c^1\) 函数一致逼近任意 \(C_c\) 函数，将结论扩展到连续测试函数。用连续函数从内外逼近单位球的示性函数；单位球面与 \(P_x\) 的交是 \(\mathcal H^{n-1}\)-零测集，因而得到单位球中的质量极限 \(\omega_{n-1}\)，即密度公式。
+\end{proof}
+
+同样的测试函数逼近还给出对任意 \(\alpha>0\)，
+\[
+	r^{1-n}\mu_E\{y\in B(x,r):
+	\operatorname{dist}(y-x,P_x)\ge\alpha|y-x|\}\longrightarrow0.
+\]
+其原因是单位球内这个闭锥区域与 \(P_x\) 只有原点相交。此时已经得到周长测度的切向平面；下面证明约化边界本身由可数个参数片承载，并把周长与它的 Hausdorff 测度认同。
+
+\subsection{约化边界的 Lipschitz 覆盖}
 \label{g3:subsec:2104:05}
-待撰写
+图覆盖的构造利用两个位置之间的比较。在一个约化点附近，集合几乎充满一个半空间；另一个约化点附近，两侧体积都占固定比例。如果两个点的连线与第一个点的切平面夹角太大，小球就会完全落在该半空间的一侧，两项信息将发生冲突。
+
+\begin{proposition}\label{g3:prop:reduced-boundary-lipschitz-cover}
+	设 \(n\ge2\)，\(E\) 在开集 \(\Omega\subset\mathbb R^n\) 中局部有限周长。则 \(\partial^*E\) 包含于可数个 \((n-1)\) 维 Lipschitz 图像的并。
+\end{proposition}
+\begin{proof}
+	取\eqref{g3:eq:reduced-two-sided-volume}中的常数 \(c_n\)，固定
+	\(\varepsilon_0=c_n/(2\cdot32^n)\)。由半空间放大定理，每个 \(x\in\partial^*E\) 都有整数 \(k\)，使 \(B(x,1/k)\subset\Omega\)，并对所有 \(0<r<1/k\) 满足
+	\begin{align*}
+		\min\{|E\cap B(x,r)|,\ |B(x,r)\setminus E|\}&\ge c_nr^n,\\
+		|(E\mathbin{\triangle}(x+H_x))\cap B(x,r)|&\le\varepsilon_0r^n.
+	\end{align*}
+	取单位球面的有限 \(1/16\)-网 \(\{v_j\}\)，按上述整数 \(k\)、条件 \(|\nu_E(x)-v_j|<1/16\)，以及直径小于 \(1/(2k)\) 的可数个小方块分组。这些组覆盖全部约化边界点。
+
+	设 \(x,y\) 在同一组中，\(d=|x-y|>0\)。如果
+	\(|(y-x)\cdot v_j|\ge d/2\)，则
+	\[
+		|(y-x)\cdot\nu_E(x)|\ge7d/16.
+	\]
+	因此球 \(B(y,d/16)\) 完全落在平面 \(x+\nu_E(x)^\perp\) 的同一侧，且包含于 \(B(x,2d)\)。无论它落在 \(x+H_x\) 内还是外，\(y\) 处的双侧体积下界都迫使
+	\[
+		|(E\mathbin{\triangle}(x+H_x))\cap B(x,2d)|
+		\ge c_n(d/16)^n.
+	\]
+	另一方面，\(2d<1/k\)，由 \(x\) 处的半空间误差上界，这一量至多为
+	\[
+		\varepsilon_0(2d)^n=\frac{c_n}{2}(d/16)^n,
+	\]
+	矛盾。这个几何关系见\cref{g3:fig:reduced-boundary-graph}。
+
+	所以同组点满足
+	\[
+		|(y-x)\cdot v_j|<\frac12|y-x|,
+		\qquad
+		|\Pi_{v_j^\perp}(y-x)|>\frac{\sqrt3}{2}|y-x|.
+	\]
+	投影到 \(v_j^\perp\) 在该组上单射，而且垂直坐标是投影像上的 Lipschitz 函数，常数至多为 \(1/\sqrt3\)。按\cref{g3:prop:lipschitz-extension-density}的标量延拓公式，将这个函数延拓到整个平面，便得到一个包含该组的 Lipschitz 图。组数可数，结论成立。这个覆盖构造只需要点集，不要求分组本身预先可测。
+\end{proof}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch21-ReducedBoundaryGraph}
+	\caption[由半空间近似构造图覆盖]{由半空间近似构造图覆盖。反证中，若 \(y-x\) 的法向分量过大，小球 \(B(y,d/16)\) 就完全落在 \(x+H_x\) 的同一侧；但作为约化点，\(y\) 的每个充分小球内两侧体积都有下界，从而强迫 \(x\) 处的近似误差过大。}
+	\label{g3:fig:reduced-boundary-graph}
+\end{figure}
 
 \subsection{周长测度的表示}
 \label{g3:subsec:2104:06}
-待撰写
+可数图覆盖确定了集合的维数和切向形状。剩下的任务是证明周长在这些片上恰好以重数一计量。先把密度与 Hausdorff 测度之间所需的比较写清楚。
+
+\begin{lemma}[密度与零测集比较]\label{g3:lem:hausdorff-density-comparison}
+	设 \(0<m\le n\)，\(\mu\) 为开集 \(\Omega\subset\mathbb R^n\) 上的 Radon 测度。
+	\begin{enumerate}
+		\item 若 Borel 集 \(A\subset\Omega\) 满足 \(\mu(A)=0\)，且每个 \(x\in A\) 都有
+		\(\limsup_{r\downarrow0}\mu(B(x,r))/r^m>0\)，则 \(\mathcal H^m(A)=0\)。
+		\item 若 Borel 集 \(S\subset\Omega\) 的每一点都满足
+		\(\mu(B(x,r))/(\omega_mr^m)\to1\)，则在相对紧区域内
+		\(\mathcal H^m\llcorner S\) 局部有限；若 \(\mu\) 集中于 \(S\)，则 \(\mu\) 与 \(\mathcal H^m\llcorner S\) 相互绝对连续。
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	第一项中，先限制在一个相对紧区域，并按上极限大于 \(1/j\) 将 \(A\) 分组。任取包含这一组的开集 \(O\Subset\Omega\)，可令 \(\mu(O)\) 任意小。以组中点为中心，选择包含于 \(O\)、半径任意小、满足 \(\mu(\overline B(x,r))>r^m/j\) 的闭球。五倍球覆盖引理给出两两不交的 \(B_i\)，其五倍球覆盖该组。若最初各球半径小于 \(\delta/10\)，就有
+	\[
+		\mathcal H^m_\delta(A_j)
+		\le\omega_m5^m\sum_i r_i^m
+		\le\omega_m5^m j\mu(O).
+	\]
+	先令 \(\delta\downarrow0\)，再令 \(\mu(O)\downarrow0\)，最后对组号及相对紧区域取可数并，得到第一项。
+
+	第二项中，对任意相对紧的 Borel 集 \(A\subset S\)，取开集 \(O\supset A\)。每个 \(x\in A\) 有任意小的闭球包含于 \(O\)，且
+	\(\mu(\overline B(x,r))\ge(\omega_m/2)r^m\)。同一五倍覆盖证明给出
+	\[
+		\mathcal H^m(A)\le2\cdot5^m\mu(O).
+	\]
+	对 \(O\) 取外正则下确界，得到
+	\begin{equation}\label{g3:eq:hausdorff-controlled-by-perimeter}
+		\mathcal H^m(A)\le2\cdot5^m\mu(A).
+	\end{equation}
+	这既证明局部有限，也证明 \(\mathcal H^m\llcorner S\ll\mu\)。
+
+	反过来，设 \(\mathcal H^m(A)=0\)，\(A\subset S\)。将 \(S\) 按
+	\(\mu(B(x,r))\le2\omega_mr^m\)、\(0<r<1/j\)，分为可数个集合 \(S_j\)。以直径 \(d_i\in(0,1/(2j))\) 的集合 \(U_i\) 覆盖 \(A\cap S_j\)，使 \(\sum_i d_i^m\) 任意小；删去不相交者，并选 \(x_i\in U_i\cap A\cap S_j\)。因 \(U_i\subset B(x_i,2d_i)\)，
+	\[
+		\mu^*(A\cap S_j)\le\sum_i2\omega_m(2d_i)^m.
+	\]
+	所以 \(\mu(A\cap S_j)=0\)，对 \(j\) 取并得到 \(\mu(A)=0\)。若 \(\mu\) 集中于 \(S\)，这就是 \(\mu\ll\mathcal H^m\llcorner S\)。
+\end{proof}
+
+\begin{theorem}[De Giorgi 结构定理]\label{g3:thm:de-giorgi-structure}
+	设 \(n\ge2\)，\(E\) 在开集 \(\Omega\subset\mathbb R^n\) 中局部有限周长。则 \(\partial^*E\) 是可数 \((n-1)\)-可整流的 Borel 集，\(\mathcal H^{n-1}\llcorner\partial^*E\) 在 \(\Omega\) 中局部有限，并且
+	\begin{equation}\label{g3:eq:perimeter-reduced-representation}
+		|\mathrm D\chi_E|=\mathcal H^{n-1}\llcorner\partial^*E,\qquad
+		\mathrm D\chi_E=-\nu_E\,\mathcal H^{n-1}\llcorner\partial^*E
+		\quad\text{于 }\Omega.
+	\end{equation}
+	在每个 \(x\in\partial^*E\)，约化边界的近似切平面为 \(\nu_E(x)^\perp\)，其面积放大极限具有重数一。
+\end{theorem}
+\begin{proof}
+	前一节已给出 \(\partial^*E\) 的 Borel 性以及
+	\(\mu_E(\Omega\setminus\partial^*E)=0\)。本节的图覆盖命题给出可数可整流性；\eqref{g3:eq:reduced-perimeter-density-one}及密度比较引理则说明
+	\[
+		\lambda=\mathcal H^{n-1}\llcorner\partial^*E
+	\]
+	局部有限，而且与 \(\mu_E\) 相互绝对连续。因此绝对连续测度的积分密度表示给出
+	\(\mu_E=\theta\lambda\)，其中 \(0<\theta<\infty\) 对 \(\lambda\)-几乎处处成立，且 \(\theta\) 局部可积。
+
+	在一个相对紧开集 \(W\Subset\Omega\) 中，对可整流集 \(\partial^*E\cap W\) 应用\cref{g3:thm:weighted-rectifiable-density}。该集合的 Hausdorff 测度有限，带权测度是 \(\mu_E\) 在 \(W\) 上的限制；对每个 \(x\in W\)，足够小的球完全包含于 \(W\)。所以对 \(\lambda\)-几乎每个这样的点，
+	\[
+		\theta(x)=\lim_{r\downarrow0}
+		\frac{\mu_E(B(x,r))}{\omega_{n-1}r^{n-1}}=1.
+	\]
+	用可数个 \(W\) 覆盖 \(\Omega\)，得 \(\theta=1\) 几乎处处，证明周长表示。向量表示再由极分解得到。
+
+	将周长表示代入\eqref{g3:eq:perimeter-plane-blowup}，所得正是\cref{g3:def:approximate-tangent-plane}中对集合 \(\partial^*E\) 的单位平面放大公式。该公式在每个约化点都成立，而不只是一般可整流集定理所保证的几乎处处。这给出最后的切平面与重数断言。
+\end{proof}
 
 \subsection{可整流性与零测例外集}
 \label{g3:subsec:2104:07}
-待撰写
+测度论边界的定义允许体积分数振荡，而约化边界要求法向平均收敛。结构定理之后，还可以证明这两种边界之间只相差一个余维一的零测集。
+
+\begin{corollary}\label{g3:cor:essential-reduced-boundary-equivalence}
+	设 \(n\ge2\)，\(E\) 在开集 \(\Omega\subset\mathbb R^n\) 中局部有限周长。则
+	\[
+		\mathcal H^{n-1}(\partial^eE\setminus\partial^*E)=0.
+	\]
+	因此 \(\partial^eE\) 可数 \((n-1)\)-可整流，且在任意 Borel 集 \(A\subset\Omega\) 上，
+	\[
+		P(E;A)=\mathcal H^{n-1}(A\cap\partial^*E)
+		=\mathcal H^{n-1}(A\cap\partial^eE).
+	\]
+\end{corollary}
+\begin{proof}
+	固定 \(x\in\partial^eE\)，令
+	\(a(r)=|E\cap B(x,r)|/(\omega_nr^n)\)。它在 \(r>0\) 上连续。由于 \(x\) 既不属于 \(E^{(0)}\) 也不属于 \(E^{(1)}\)，必存在 \(\varepsilon_x>0\) 和 \(r_j\downarrow0\)，使
+	\[
+		\varepsilon_x\le a(r_j)\le1-\varepsilon_x.
+	\]
+	确实，若上、下极限都在零与一之间，结论直接成立；若分数在靠近零和一的值之间往返，则用连续性取得中间值。排除收敛到零或一后，其余情形也同样提供一个与两端保持正距离的子列。
+
+	相对等周估计给出
+	\[
+		\mu_E(B(x,r_j))
+		\ge C_n^{-1}(\varepsilon_x\omega_n)^{(n-1)/n}r_j^{n-1}.
+	\]
+	所以每个测度论边界点的周长上密度均为正。另一方面，约化边界的满测度性质说明
+	\(\mu_E(\partial^eE\setminus\partial^*E)=0\)。应用\cref{g3:lem:hausdorff-density-comparison}第一项，即得 Hausdorff 零测结论。因为已知 \(\partial^*E\subset\partial^eE\)，加上零测集不改变可整流性或测度表示。
+\end{proof}
+
+\begin{proposition}[一维有限周长结构]\label{g3:prop:one-dimensional-perimeter-structure}
+	设 \(\Omega\subset\mathbb R\) 开，\(E\) 在 \(\Omega\) 中局部有限周长。则在相差 Lebesgue 零测集的意义下，\(E\) 局部是有限个区间的并。其测度论边界与约化边界相等，是 \(\Omega\) 内局部有限的端点集，而且
+	\[
+		|\mathrm D\chi_E|=\mathcal H^0\llcorner\partial^*E,\qquad
+		\mathrm D\chi_E=-\nu_E\,\mathcal H^0\llcorner\partial^*E.
+	\]
+	左端点的外法向为 \(-1\)，右端点为 \(1\)。在每个端点，集合放大趋于相应半直线，周长放大趋于原点处的单位点质量。
+\end{proposition}
+\begin{proof}
+	取区间 \(I=(a,b)\Subset\Omega\)，记 \(\sigma=\mathrm D\chi_E\) 在 \(I\) 上的有限符号测度。令 \(G(t)=\sigma((a,t])\)。由 Fubini 定理，\(G\) 的分布导数为 \(\sigma\)，故 \(\chi_E-G\) 的分布导数为零。一个局部可积函数若在区间上的分布导数为零，其卷积在每个内缩区间上为常数，再令卷积尺度趋零即可知原函数几乎处处为常数。因此 \(\chi_E\) 有形如 \(c+G\) 的代表。
+
+	在这个代表的连续点，且在 \(\chi_E\) 的 Lebesgue 点上，取任意递增点列 \(t_0<\cdots<t_N\)。区间增量给出
+	\[
+		\sum_{i=1}^N|\chi_E(t_i)-\chi_E(t_{i-1})|
+		\le|\sigma|(I).
+	\]
+	所取点组成 \(I\) 中的满测度稠密集，函数值均为零或一。因此在这个稠密集上，值由零到一或由一到零的交替次数有统一有限上界。选取交替次数达到最大值的有限点列；在相邻点之间若还能出现额外交替，就能插入点使次数增加。故该稠密集可被有限个分点分割为常值段，\(\chi_E\) 几乎处处也有同一分割。缩小至 \(I\) 的任意内闭区间，即得局部有限区间并。
+
+	对一个区间 \((s,t)\)，直接积分分部得
+	\(\mathrm D\chi_{(s,t)}=\delta_s-\delta_t\)。合并相邻同值段后，不同端点的点质量不再抵消，每个端点的全变差为一。端点之外，集合或其补集在小邻域内几乎处处充满，故密度为零或一；端点处密度为 \(1/2\)，导数球平均的绝对值为一。于是两种测度论边界都恰是这些端点。法向、放大和测度表示也由区间模型直接得到。
+\end{proof}
+
+至此，有限周长集合的边界已经获得了三项相互配合的信息：半空间描述集合的局部两侧，切平面描述周长的集中方向，单位重数确定面积系数。拓扑边界仍可因添加或删除零测集而大幅改变；上面的结构与积分表示都由 \(\chi_E\) 的几乎处处等价类决定。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

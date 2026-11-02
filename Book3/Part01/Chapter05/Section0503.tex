@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 5.3 de Rham 分解
 % 纲要位置：几何学计划纲要.md，第 2280 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,244 @@
 \section{de Rham 分解}
 \label{g3:sec:0503}
 
-待撰写
+上一节已经把完整群的不变子空间变成正交平行分布，并把这样的分布变成局部乘积。本节要解决两个整体问题：局部乘积能否沿道路继续铺开，所得因子是否由度量唯一决定。\term[derhamfenjie]{de Rham 分解}[de Rham decomposition]回答这两个问题；整体定理中的完备性与单连通性各有明确作用。\footnote{Georges de Rham（1903--1990），瑞士数学家，研究微分拓扑、微分形式与代数拓扑。}
 
 \subsection{局部分解的存在}
 \label{g3:subsec:0503:01}
-待撰写
+
+设在连通黎曼流形上已经得到有限个彼此正交的平行分布
+\[
+	\mathrm{T}M=E_0\oplus E_1\oplus\cdots\oplus E_s.
+\]
+将\cref{g3:thm:parallel-local-product}先用于 \(E_0\) 与其正交补，再在第二个因子中继续应用，便在每点附近得到
+\begin{equation}\label{g3:eq:multiple-local-product}
+	(U,g|_U)\cong
+	(U_0,g_0)\times\cdots\times(U_s,g_s).
+\end{equation}
+每个 \(E_i\) 对应一个因子的切空间，\(g_i\) 只依赖该因子的坐标。特别地，给定完整群的一个正交不变分解，\cref{g3:prop:parallel-invariant-distributions}便给出这种局部分解。
+
+这里的乘积坐标还有一项重要的相容性。若两套坐标 \((x,y)\)、\((x',y')\) 都适应 \(E\oplus F\)，则在交集的一个充分小的连通乘积盒中，
+\[
+	x'=\varphi(x),\qquad y'=\psi(y).
+\]
+事实上，\(\mathrm dx'\) 在 \(F\) 上为零，故 \(x'\) 与 \(y\) 无关；另一式同理。因而“保持 \(x\) 而改变 \(y\)”这一局部搬运不依赖所用坐标。它在不同盒中接续时保持长度，也保持 \(E\)、\(F\) 两个方向。
+
+局部结论只要求相应平行分布存在。下面把这些乘积盒沿有限长道路拼接；这一步将用到完备性，不能仅由每点附近的式\eqref{g3:eq:multiple-local-product}推出。
 
 \subsection{单连通完备情形的整体乘积}
 \label{g3:subsec:0503:02}
-待撰写
+
+先证明一个把局部等距映射识别为覆盖的工具。这里映射须已在整个源流形上定义。
+
+\begin{lemma}\label{g3:lem:complete-local-isometry-covering}
+	设 \(\Phi:(N,h)\to(M,g)\) 是连通黎曼流形之间的局部等距映射，且 \(N\) 完备，则 \(\Phi\) 满射并且是覆盖映射。若 \(M\) 单连通，则 \(\Phi\) 是整体等距同构。
+\end{lemma}
+\begin{proof}
+	局部等距保持 Levi-Civita 联络，因而保持带仿射参数的测地线。源流形完备，由 Hopf--Rinow 定理，其测地线对所有实参数存在。因此，\(M\) 中从 \(\Phi(z)\) 出发的任意有限测地线段，都可由初速度经 \((\mathrm d\Phi_z)^{-1}\) 提回后提升到 \(N\) 中。目标中的任意两点可以用有限条短测地线段连接，逐段提升便知 \(\Phi\) 满射。
+
+	固定 \(q\in M\)，选 \(\rho>0\)，使 \(\exp_q\) 在切球 \(B(0,\rho)\) 上为微分同胚，记其像为 \(U\)。对每个 \(z\in\Phi^{-1}(q)\)，定义
+	\[
+		s_z(\exp_q v)=\exp_z\bigl((\mathrm d\Phi_z)^{-1}v\bigr),
+		\qquad |v|<\rho.
+	\]
+	源流形测地完备使右端有定义；测地线唯一性给出
+	\(\Phi\circ s_z=\operatorname{id}_U\)。因此 \(\mathrm ds_z\) 可逆，\(s_z\) 是到开集 \(V_z=s_z(U)\) 的微分同胚，逆映射为 \(\Phi|_{V_z}\)。
+
+	若 \(V_z\) 与 \(V_{z'}\) 相交，在交点上提升从其像返回 \(q\) 的径向测地线。提升的初速度由 \(\mathrm d\Phi\) 唯一决定，测地线唯一性迫使终点相同，即 \(z=z'\)。反过来，任意 \(w\in\Phi^{-1}(U)\) 都能提升这条反向径向线，得到某个 \(z\in\Phi^{-1}(q)\)，于是 \(w\in V_z\)。故
+	\[
+		\Phi^{-1}(U)=\coprod_{z\in\Phi^{-1}(q)}V_z
+	\]
+	是均匀覆盖邻域。
+
+	若 \(M\) 单连通，连通覆盖只有一层：从源中两点到同一目标点所成的投影闭路可以收缩，覆盖的道路与同伦提升唯一性使这两点相同。因此 \(\Phi\) 为微分同胚，局部等距性随即成为整体等距性。
+	% 跨卷依赖：第一卷第5.3节 g1:thm:path-lifting、g1:thm:homotopy-lifting、g1:cor:lifted-path-homotopy，已核读。
+\end{proof}
+
+接下来构造上一引理所需的全域映射。设
+\(\mathrm{T}M=E\oplus F\) 是正交平行分解。所谓由一条 \(E\) 道路 \(\alpha\) 和一条 \(F\) 道路 \(\beta\) 张成的\term[pingxingjuxing]{平行矩形}[parallel rectangle]，是一个分片光滑映射
+\[
+	Q:[0,1]^2\longrightarrow M,\qquad
+	Q(s,0)=\alpha(s),\quad Q(0,t)=\beta(t),
+\]
+它在每个充分小的乘积坐标盒中具有形式
+\[
+	Q(s,t)=(x(s),y(t)).
+\]
+这一定义允许道路停顿、折返以及矩形像的自交。“矩形”指参数域及两个方向之间的乘积关系，并不要求其像是一个嵌入曲面。
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch05-ParallelProduct}
+	\caption[平行矩形的逐格延拓]{平行矩形的逐格延拓。图示为参数域；每个小格由下边和左边确定，阴影格标出一次延拓。矩形像不要求在流形中嵌入。}
+	\label{g3:fig:parallel-product-rectangle}
+\end{figure}
+
+
+\begin{lemma}\label{g3:lem:parallel-rectangle-extension}
+	设 \(M\) 连通且完备，\(E,F\) 为正交互补平行分布。任给从同一点 \(p\) 出发的分片光滑 \(E\) 道路 \(\alpha\) 和 \(F\) 道路 \(\beta\)，存在唯一的平行矩形 \(Q_{\alpha,\beta}\)。其相对边的对应子段长度相等。矩形对共同有限分段的光滑道路族光滑依赖，且终点 \(Q_{\alpha,\beta}(1,1)\) 仅依赖两条道路在各自积分叶内的固定端点同伦类。
+\end{lemma}
+\begin{proof}
+	在一个乘积盒中，已知下边 \((x(s),y_0)\) 和左边 \((x_0,y(t))\)，唯一的填法是 \((x(s),y(t))\)。由于度量的两个块各自独立，相对边对应子段等长。上一小节的换坐标公式说明，这些填法在交叠处相容。
+
+	令 \(L=\operatorname{Len}(\alpha)+\operatorname{Len}(\beta)\)。Hopf--Rinow 定理使闭球
+	\[
+		K=\overline B(p,L+1)
+	\]
+	紧。用有限个较小乘积盒覆盖 \(K\)，并使每个较小盒的闭包包含在另一个乘积盒内部。可以选同一个 \(\delta>0\)，使从较小盒中任一点出发的两条长度小于 \(\delta\) 的 \(E\)、\(F\) 道路，在相应大盒内有上述坐标乘积。说明这一点时，在小盒和大盒之间再放入一个闭包紧含于大盒的中间盒，先用小盒闭包到中间盒边界的正距离保证短道路留在中间盒，再利用中间盒闭包上的度量下界控制坐标变化，使两个坐标分量合成后仍位于大盒内。有限覆盖允许取所有这些正数的最小值。
+
+	将 \(\alpha,\beta\) 各自分成有限段，使每段长度小于 \(\delta\)，并包含原有的光滑分段点。先填左下角的小矩形，再逐列、逐行填入其余矩形。每次使用已经得到的下边与左边；局部等距搬运保证新边仍具有对应原道路段的长度。任一已构造的点，都可沿这两类边从 \(p\) 到达，总长度不超过 \(L\)。它始终位于 \(K\)，故同一个 \(\delta\) 在全过程有效，有限格点构造遂覆盖整个参数正方形。这也说明完备性在这里提供的是紧球内统一的坐标控制。
+
+	若存在两个填法，取参数域的共同细分，使比较落在乘积盒内。一个小格的下边与左边确定整个格子，逐格归纳得二者相同。加细原分段不会改变结果。对一个具有共同有限分段的光滑道路族，可在每个参数值附近使用共同的有限格子和乘积盒；各步都是光滑坐标运算，因而所得矩形光滑依赖于参数。
+
+	最后让 \(\alpha_u\) 在同一 \(E\) 叶内作固定端点的分片光滑同伦，暂时固定 \(\beta\)。在 \(Q_u=Q_{\alpha_u,\beta}\) 中，变分向量 \(\partial_uQ_u\) 始终属于 \(E\)：它在左边为零，而各格的 \(F\) 坐标不随 \(s\) 改变；该结论沿格子接续。沿竖直方向，这个 \(E\) 变分向量平行，因为在乘积坐标中其 \(E\) 分量不随 \(t\) 改变，混合协变导数也为零。右下角的变分向量为
+	\(\partial_u\alpha_u(1)=0\)，故整个右边上的变分向量为零，特别是
+	\[
+		\partial_uQ_{\alpha_u,\beta}(1,1)=0.
+	\]
+	交换两个方向，可知改变 \(\beta\) 的固定端点叶内同伦也不改变终点。
+
+	这里使用分片光滑同伦不限制通常的道路同伦类。对流形中的一个连续道路同伦，可把参数正方形细分得足够小，使每个格子的像落在坐标球中；先在边上以坐标线段替换，再在各格内用坐标线性收缩填充，边界上保持给定的分片光滑道路。如此得到的有限分片光滑同伦仍固定端点。此操作在积分叶自身的流形拓扑中进行，因而以上结论适用于通常的叶内同伦类。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:global-parallel-product}
+	设 \((M,g)\) 连通、单连通且完备，并有正交平行分解
+	\(\mathrm{T}M=E\oplus F\)。固定 \(p\in M\)，以 \(L,N\) 分别表示通过 \(p\) 的最大连通 \(E\) 叶与 \(F\) 叶，赋予诱导度量。则 \(L,N\) 完备、单连通并且嵌入 \(M\)，存在等距同构
+	\[
+		\Phi:(L\times N,g_L\oplus g_N)\longrightarrow(M,g),
+	\]
+	使 \(\Phi(x,p)=x\)、\(\Phi(p,y)=y\)，且两个因子的切空间分别映到 \(E,F\)。
+\end{theorem}
+\begin{proof}
+	\cref{g3:prop:parallel-distribution-leaves}已给出叶的流形结构、全测地性与完备性。此时不预设叶嵌入。取基于 \(p\) 的万有覆盖
+	\[
+		\pi_L:\widetilde L\longrightarrow L,\qquad
+		\pi_N:\widetilde N\longrightarrow N.
+	\]
+	可使用第一卷第5.4节的道路类构造：\(\widetilde L\) 的点是从 \(p\) 出发的道路的固定端点同伦类，邻域由在终点附近追加短道路得到，\(\widetilde N\) 同理。流形局部单连通，故此构造适用；覆盖坐标给出光滑结构。取可数坐标球及其交集分支后，有限坐标球链给出可数覆盖图册，因而这些覆盖仍是第二可数流形。
+	% 跨卷依赖：g1:thm:path-class-universal-cover，已核读陈述与证明。
+
+	在覆盖空间上拉回叶的度量。它们仍完备：叶中的测地线对所有时间存在，每个有限参数区间上的道路提升相互相容，得到覆盖空间中对所有时间存在的测地线；局部等距保证提升仍满足测地线方程。再用 Hopf--Rinow 定理即可。由乘积联络公式\eqref{g3:eq:product-connection}，乘积中的测地线恰为两个因子测地线的配对，故
+	\(\widetilde L\times\widetilde N\) 也完备。
+
+	对道路类定义
+	\[
+		\widetilde\Phi([\alpha],[\beta])
+		=Q_{\alpha,\beta}(1,1).
+	\]
+	\cref{g3:lem:parallel-rectangle-extension}同时保证它在整个乘积上有定义，并与道路代表无关。还需核实它是局部等距。在 \([\alpha]\) 附近用向终点追加一段短 \(E\) 道路来给覆盖坐标，在 \([\beta]\) 附近同样追加短 \(F\) 道路。原矩形沿这两段的延拓，在终点附近恰为乘积盒中的坐标乘积。只改变第一个端点时，所得变化是沿原 \(F\) 道路的逐盒等距搬运；只改变第二个端点时，是沿原 \(E\) 道路的逐盒等距搬运。因此两个方向的微分分别为到 \(E,F\) 的线性等距，并且像正交。矩形对参数的光滑依赖又保证 \(\widetilde\Phi\) 光滑，故它是局部等距。
+
+	现在源流形连通且完备，\cref{g3:lem:complete-local-isometry-covering}说明 \(\widetilde\Phi\) 是到 \(M\) 的覆盖；目标单连通，故它是一对一的整体等距同构。在坐标轴上，
+	\[
+		\widetilde\Phi([\alpha],[\text{常路}])=\pi_L([\alpha]),
+		\qquad
+		\widetilde\Phi([\text{常路}],[\beta])=\pi_N([\beta]),
+	\]
+	其中右端再经叶到 \(M\) 的浸入。单射性迫使 \(\pi_L,\pi_N\) 都只有一层；两叶因此单连通。坐标轴在乘积中嵌入，经整体等距映射后便知两叶在 \(M\) 中嵌入，得到所述 \(\Phi\)。
+\end{proof}
+
+上述证明先用完备性完成矩形延拓，再从叶的道路类构造一个已在全域定义的局部等距映射，最后才使用覆盖结论。单连通性负责消除覆盖层数。有限个平行正交因子的情形可重复应用该定理；得到的每个因子仍完备且单连通。
 
 \subsection{因子的不可约性与唯一性}
 \label{g3:subsec:0503:03}
-待撰写
+
+群 \(G\) 在非零内积空间 \(V\) 上的正交表示称为\term[bukeyuebiaoshi]{不可约表示}[irreducible representation]，如果仅有 \(0,V\) 两个 \(G\) 不变子空间。正交表示总可分解为有限个不可约正交子空间：选择一个维数最小的非零不变子空间，其正交补仍不变，再对正交补重复。这个有限维论证不要求 \(G\) 在正交群中闭。
+
+\begin{theorem}\label{g3:thm:de-rham-decomposition}
+	设 \((M,g)\) 为连通、单连通、完备的光滑黎曼流形。则存在等距分解
+	\begin{equation}\label{g3:eq:de-rham-product}
+		(M,g)\cong
+		(\mathbb R^k,g_{\mathrm{Eucl}})
+		\times(M_1,g_1)\times\cdots\times(M_s,g_s),
+	\end{equation}
+	其中每个 \(M_i\) 连通、单连通、完备、非平坦，且其 Levi-Civita 完整群在切空间上的表示不可约。允许 \(k=0\) 或 \(s=0\)，零维因子理解为一点。Euclid 因子的维数等于 \(M\) 上整体平行向量场空间的维数。
+\end{theorem}
+\begin{proof}
+	固定 \(p\)，令 \(G=\operatorname{Hol}_p(M)\)，先取全部固定向量组成的子空间
+	\[
+		V_0=(\mathrm{T}_pM)^G,
+	\]
+	再将其正交补分解为不可约不变子空间
+	\[
+		\mathrm{T}_pM=V_0\oplus V_1\oplus\cdots\oplus V_s.
+	\]
+	每个 \(V_i\)（\(i\ge1\)）上的表示非平凡，否则其中的向量属于 \(V_0\)。这些子空间确定正交平行分布。逐次使用\cref{g3:thm:global-parallel-product}，得到完备单连通因子的整体乘积
+	\[
+		M\cong M_0\times M_1\times\cdots\times M_s.
+	\]
+
+	先识别 \(M_0\)。由\cref{g3:thm:holonomy-parallel-tensors}，\(V_0\) 的一组标准正交基延拓成整体平行场，限制到 \(M_0\) 后成为平行标准正交标架 \(X_1,\ldots,X_k\)。每个 \(X_i\) 的积分曲线满足
+	\(\nabla_{X_i}X_i=0\)，因完备性而对所有时间存在。又由无挠性，
+	\([X_i,X_j]=0\)。零 Lie 括号说明 \(X_i\) 的局部流保持 \(X_j\)：对流推前的向量场求时间导数，得到由 \([X_i,X_j]\) 控制的齐次方程，其初值为 \(X_j\)。因此先沿 \(X_i\) 流动后再沿 \(X_j\) 流动，与交换次序所得的曲线满足同一初值问题，局部流遂交换。将任意有限时间区间分段，这一关系逐段给出整体流的交换。记其流为 \(\phi_i^t\)，定义
+	\[
+		F:\mathbb R^k\longrightarrow M_0,\qquad
+		F(t_1,\ldots,t_k)=\phi_1^{t_1}\circ\cdots\circ\phi_k^{t_k}(p).
+	\]
+	流的交换保证 \(\mathrm dF(\partial_{t_i})=X_i\)，故 \(F\) 是局部等距。源空间 \(\mathbb R^k\) 完备，目标 \(M_0\) 单连通，\cref{g3:lem:complete-local-isometry-covering}使 \(F\) 成为整体等距同构。若 \(k=0\)，该步骤给出一个点。
+
+	乘积联络还给出完整群的精确关系
+	\begin{equation}\label{g3:eq:product-holonomy}
+		\operatorname{Hol}_{(p_0,\ldots,p_s)}(M)
+		=\{I\}\times
+		\operatorname{Hol}_{p_1}(M_1)\times\cdots\times
+		\operatorname{Hol}_{p_s}(M_s).
+	\end{equation}
+	一条乘积闭路的平行移动按各因子的投影闭路分别进行，所以左端包含于右端；让闭路仅在一个因子中运动，又可分别实现右端的每一个群元素，故反向包含也成立。因此 \(V_i\) 上的不可约性正是 \(M_i\) 自身完整群的不可约性。若某个 \(M_i\) 平坦，\cref{g3:cor:flat-restricted-holonomy}与单连通性使其整体完整群平凡，和该表示非平凡矛盾。最后，平行场与固定向量的对应说明 Euclid 因子的维数恰为 \(k\)。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:de-rham-uniqueness}
+	分解\eqref{g3:eq:de-rham-product}中的 Euclid 因子及非平坦不可约因子，在因子重排和各因子的等距同构意义下唯一。固定基点后，它们在切空间中给出的子空间，以及通过该点的相应积分叶，在重排非平坦因子后也唯一。
+\end{proposition}
+\begin{proof}
+	在第一种分解下记切空间为 \(V_0\oplus V_1\oplus\cdots\oplus V_s\)。式\eqref{g3:eq:product-holonomy}说明
+	\(G=G_1\times\cdots\times G_s\)：\(G_i\) 只作用于 \(V_i\)，对其余子空间恒等。另一种分解中的 Euclid 子空间必须也是 \(G\) 的全部固定空间，因而仍为 \(V_0\)。
+
+	设 \(W\) 为另一种分解的一个非平凡不可约子空间。正交投影
+	\(P_i:W\to V_i\) 与 \(G\) 的作用交换。对于 \(i\ge1\)，非零 \(P_i\) 的核是 \(W\) 的不变子空间，像是 \(V_i\) 的不变子空间，所以它必为线性同构。投影 \(P_0\) 必为零：若非零，其核为零，而 \(V_0\) 上作用平凡，便使 \(W\) 上的作用也平凡，与假设矛盾。
+
+	不能同时有 \(P_i,P_j\) 非零而 \(i\ne j\)。否则对 \(a\in G_i\) 与 \(w\in W\)，有
+	\[
+		P_j(aw-w)=aP_jw-P_jw=0.
+	\]
+	\(P_j\) 的单射性说明 \(aw=w\)。再由 \(P_i\) 满射，\(G_i\) 在 \(V_i\) 上的作用就平凡，仍为矛盾。因此 \(W\) 仅有一个非零投影，且 \(W=V_i\)。交换两种分解可知非平凡不可约子空间恰好一一对应。
+
+	通过基点的相应叶由分布唯一决定，故两组因子逐一等距。Euclid 子空间整体唯一，但它内部的标准正交基可以旋转，因此再把 \(\mathbb R^k\) 分成 \(k\) 条直线时不具有这样的唯一性。
+\end{proof}
+
+证明中的关键是不同因子的完整群能够独立作用。一般抽象群的不可约正交分解，若有同构的表示重复出现，并不必然具有唯一的不变子空间；整体乘积所给出的式\eqref{g3:eq:product-holonomy}排除了这种混合。另一个直接结论是，式\eqref{g3:eq:de-rham-product}中的非平坦因子维数至少为 \(2\)，因为一维黎曼流形的曲率恒为零。
 
 \subsection{一般商空间中的扭曲现象}
 \label{g3:subsec:0503:04}
-待撰写
+
+若 \(M\) 连通且完备，但未假设单连通，可先给万有覆盖
+\(\pi:\widetilde M\to M\) 赋予拉回度量。和上述叶覆盖的证明一样，\(M\) 中的全时测地线可唯一提升，故 \(\widetilde M\) 完备。于是 de Rham 定理分解的是 \(\widetilde M\)。每个覆盖变换保持拉回度量，因而是等距变换；唯一性说明它保持整个 Euclid 分布，并可置换彼此等距的非平坦不可约因子。它还可能把一个因子中的平移和另一个因子中的等距变换联结在一起。取商后，局部乘积仍在，整体却未必是因子商的乘积。
+% 跨卷依赖：第一卷第5.5节 g1:prop:universal-deck-discontinuous，已核读覆盖变换群在纤维上的自由传递作用。
+
+\begin{example}\label{g3:exm:flat-mobius-holonomy}
+	在 Euclid 平面 \(\mathbb R^2\) 上考虑等距变换
+	\[
+		\tau(s,t)=(s+1,-t),\qquad
+		M=\mathbb R^2/\langle\tau\rangle.
+	\]
+	这个作用自由，因为非恒等偶次幂平移 \(s\)，奇次幂也使 \(s\) 改变奇整数。每个紧集只与有限个自身的平移像相交；在每点附近取足够小的矩形，可以使其不同平移像彼此不交。因此商映射是光滑覆盖，Euclid 度量下降为商度量。该曲面是无边界的\term[kaimobiusdai]{开 Möbius 带}[open Möbius band]。\footnote{August Ferdinand Möbius（1790--1868），德国数学家、天文学家，研究射影几何、重心坐标及单侧曲面。}平坦性由局部等距给出；任意测地初值可提升到 \(\mathbb R^2\) 中的一条全时直线，其投影为商中的全时测地线，故商测地完备，也即度量完备。
+	% 商覆盖的拓扑依据为第一卷第5.5节 g1:prop:action-quotient-cover，已核读；完备性也可用本卷 g3:prop:riemannian-covering-distance。
+
+	两条坐标直线分布均在 \(\tau\) 下不变，故下降为正交平行分布。向量场 \(\partial_s\) 也下降为整体平行场，而 \(\partial_t\) 经过一圈后变号。以原点的像为基点，提升生成元闭路后，沿 Euclid 平面的平行移动恒为恒等，终点切空间再由覆盖变换的微分识别，得到
+	\[
+		\operatorname{Hol}_p(M)
+		=\left\{
+			I,\begin{pmatrix}1&0\\0&-1\end{pmatrix}
+		\right\},
+		\qquad
+		\operatorname{Hol}_p^0(M)=\{I\}.
+	\]
+	所有闭路的提升终点均为某个 \(\tau^m(0,0)\)，所以没有其他完整群元素。完整群的固定空间只有水平方向，说明这里的两条平行直线分布并不都由整体平行单位场生成。
+
+	它也不可能等距于两个正维一维黎曼流形的乘积。这样的因子必完备；每个因子中的全时单位速测地线给出一个从 \(\mathbb R\) 出发的局部等距映射，由\cref{g3:lem:complete-local-isometry-covering}成为万有覆盖。其覆盖变换是直线的等距变换，而反射具有不动点，不可能是非恒等的覆盖变换。因此覆盖变换均为平移，直线的单位平行场可以下降，因子的完整群平凡。两个因子的乘积完整群仍平凡，与上式矛盾。这里整体乘积的障碍来自绕闭路后的反射，曲率已经处处为零。
+\end{example}
+
+更一般地，若 \(N\) 完备，\(\varphi:N\to N\) 是等距变换，\(a>0\)，则
+\[
+	(\mathbb R\times N)/\bigl((s,x)\sim(s+a,\varphi(x))\bigr)
+\]
+继承完备的局部乘积度量。沿圆周方向走一圈后，另一因子按照 \(\varphi\) 重新识别。只有分析这项整体识别，才能判断商是否仍可写成整体黎曼乘积；局部乘积和万有覆盖上的唯一分解本身不作此保证。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 4.1 一维正规局部结构
 % 纲要位置：几何学计划纲要.md，第 5151 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,378 @@
 \section{一维正规局部结构}
 \label{g5:sec:0401}
 
-待撰写
+在直线原点附近，非零有理函数可以唯一写成 \(t^n u\)，其中 \(u\) 在原点既无零点也无极点。整数 \(n\) 记录全部消失或极点信息，剩下的 \(u\) 是局部环中的单位。这种表达不只属于直线：一个一维 Noether 局部整环只要整闭，就有完全相同的结构。因而在正规曲线的一点附近，理想、函数的消失和有限长度都可以化为整数的计算。
+
+\ProseParagraphBreak
+
+本节从局部环建立这种阶函数，再把不同点的阶组织为 Dedekind 整环中的理想分解。所用的主要工具是第二章的行列式技巧、Nakayama 引理和局部检测，以及第三章的整闭性与零维 Noether 环。DVR 与理想可逆性的基本刻画可对照\cite[第11节，定理11.1--11.3，第78--81页]{Matsumura1989}；Dedekind 整环的相应结论见该节定理11.6。
 
 \subsection{离散赋值环的等价刻画}
 \label{g5:subsec:0401:01}
-待撰写
+
+先把“阶”应当满足的运算规则写下来。乘积的阶相加；相加时可能抵消最低阶项，但不会产生比两个加数都更低的阶。因此阶自然取值于带有加法和大小关系的整数集。
+
+\begin{definition}
+\label{g5:def:discrete-valuation-ring}
+	设 \(K\) 为域。一个满射 \(v:K^\times\rightarrow\mathbb Z\) 若满足
+	\[
+		v(ab)=v(a)+v(b),\qquad
+		v(a+b)\geq\min\{v(a),v(b)\}\quad(a+b\ne0),
+	\]
+	就称为一个规范化的\term[lisanfuzhi]{离散赋值}[discrete valuation]。规定 \(v(0)=+\infty\)，便可把第二个不等式用于任意 \(a,b\in K\)。环
+	\[
+		R_v=\{a\in K:v(a)\geq0\}
+	\]
+	称为这个赋值的\term[lisanfuzhihuan]{离散赋值环}[discrete valuation ring]，简称 DVR。
+\end{definition}
+
+这里整数值群确为整个 \(\mathbb Z\)，所以赋值非平凡；域本身不属于本节的 DVR。由乘法公式，\(v(1)=v(-1)=0\)，且 \(v(a^{-1})=-v(a)\)。因此 \(R_v\) 的单位正是阶为零的元素，其余非零元素的阶都为正。集合
+\[
+	\mathfrak m_v=\{a\in K:v(a)>0\}
+\]
+是理想，且每个不属于它的 \(R_v\) 元素都可逆，故 \(R_v\) 是局部整环。对任意 \(z\in K^\times\)，\(z,z^{-1}\) 至少有一个属于 \(R_v\)，所以 \(K\) 正是 \(R_v\) 的分式域。
+
+\begin{theorem}
+\label{g5:thm:dvr-characterizations}
+	设 \((R,\mathfrak m)\) 为非域的交换含幺局部整环，\(K=\operatorname{Frac}(R)\)。下列条件等价：
+	\begin{equivalences}
+		\item \(R\) 为一维 Noether 整闭整环；
+		\item \(R\) 为主理想整环；
+		\item \(R\) 为离散赋值环；
+		\item \(R\) 为 Noether 环，且 \(\mathfrak m\) 为主理想。
+	\end{equivalences}
+\end{theorem}
+\begin{proof}
+	先由第一条件证明第四条件。取 \(0\ne a\in\mathfrak m\)。一维局部整环只有两个素理想 \((0)\) 和 \(\mathfrak m\)，所以 \(\sqrt{aR}=\mathfrak m\)。由于 \(\mathfrak m\) 有限生成，存在 \(n\geq1\) 使 \(\mathfrak m^n\subseteq aR\)：若 \(\mathfrak m=(x_1,\ldots,x_r)\)，为每个 \(x_i\) 选一个落入 \(aR\) 的幂，再用足够高次单项式必含其中某个幂即可。
+
+	取满足上述包含的最小 \(n\)，并选
+	\[
+		b\in\mathfrak m^{n-1}\setminus aR,\qquad z=b/a\in K.
+	\]
+	于是 \(z\notin R\)，但 \(z\mathfrak m\subseteq R\)。我们断言 \(z\mathfrak m\) 不包含在 \(\mathfrak m\) 中。否则，乘以 \(z\) 就是有限生成 \(R\) 模 \(\mathfrak m\) 上的线性算子；\cref{g5:lem:determinant-trick}给出首一多项式 \(F(T)\in R[T]\)，使
+	\[
+		F(z)\mathfrak m=0.
+	\]
+	\(\mathfrak m\) 含非零元素，而这些等式位于域 \(K\) 中，故 \(F(z)=0\)。这样 \(z\) 整于 \(R\)，整闭性迫使 \(z\in R\)，矛盾。
+
+	因此 \(z\mathfrak m\) 是不包含在极大理想中的 \(R\) 理想，必等于 \(R\)。可取 \(\pi\in\mathfrak m\) 使 \(z\pi=1\)。对每个 \(x\in\mathfrak m\)，都有 \(zx\in R\)，于是
+	\[
+		x=\pi(zx)\in\pi R.
+	\]
+	所以 \(\mathfrak m=\pi R\)，得到第四条件。
+
+	现在设第四条件成立，写 \(\mathfrak m=\pi R\)，其中 \(\pi\ne0\) 且不是单位。我们证明每个 \(0\ne a\in R\) 都可写为
+	\[
+		a=u\pi^n,\qquad u\in R^\times,\quad n\geq0.
+	\]
+	若 \(a\) 不是单位，它属于 \(\pi R\)，可先除以一个 \(\pi\)，然后对商重复。这个过程必须终止。否则令 \(a_j=a/\pi^j\in R\)，便得到上升链
+	\[
+		a_0R\subseteq a_1R\subseteq a_2R\subseteq\cdots.
+	\]
+	Noether 性使某一步相等，于是 \(a_{j+1}=ra_j=r\pi a_{j+1}\)。整环中可约去非零的 \(a_{j+1}\)，得到 \(r\pi=1\)，矛盾。表达式中的指数唯一：若 \(u\pi^n=w\pi^m\) 且 \(n<m\)，约去 \(\pi^n\) 后会把单位 \(u\) 写成极大理想中的元素。
+
+	对 \(0\ne I\subseteq R\)，取其中非零元素所对应指数的最小值 \(n\)。一个达到最小值的元素 \(u\pi^n\) 生成 \(\pi^nR\)，而 \(I\) 的其余元素都属于 \(\pi^nR\)。故
+	\[
+		I=\pi^nR.
+	\]
+	零理想也是主理想，这证明第四条件蕴含第二条件。反之，主理想整环的每个理想均有限生成，且 \(\mathfrak m\) 为主理想，所以第二条件蕴含第四条件。
+
+	仍由第四条件所得到的唯一指数表达，定义
+	\[
+		v(a/b)=n(a)-n(b)\qquad(a,b\in R\setminus\{0\}).
+	\]
+	若 \(a/b=c/d\)，则 \(ad=bc\)，乘积的唯一指数给出 \(n(a)+n(d)=n(b)+n(c)\)，故定义无关。乘法时指数相加。相加时，把两个分式共同提出较小的 \(\pi\) 次幂，剩余两项都在 \(R\) 中，所以阶不小于较小者。又 \(v(\pi)=1\)，且恰在 \(v(x)\geq0\) 时 \(x\in R\)。这便构造了第三条件中的离散赋值。
+
+	最后设第三条件成立。选 \(v(\pi)=1\)。每个非零 \(a\in R\) 都有 \(a=\pi^{v(a)}u\)，其中 \(v(u)=0\)，即 \(u\) 为单位。取最小阶的同样论证表明，每个非零理想都是 \(\pi^nR\)，故 \(R\) Noether。其非零素理想只能为 \(\pi R\)：若素理想包含 \(\pi^n\)，就必须包含 \(\pi\)。因此 \(\dim R=1\)。
+
+	为证明整闭，若 \(x\in K\) 整于 \(R\) 却有 \(v(x)<0\)，则 \(x^{-1}\in\mathfrak m_v\)。把 \(x\) 的首一方程除以最高次幂，就得到
+	\[
+		1+a_1x^{-1}+\cdots+a_nx^{-n}=0.
+	\]
+	右侧除 \(1\) 外的各项都属于 \(\mathfrak m_v\)，这会使 \(1\in\mathfrak m_v\)，矛盾。故 \(v(x)\geq0\)，即 \(x\in R\)。第三条件蕴含第一条件，全部等价关系得证。
+\end{proof}
+
+证明中的两个有限性步骤承担不同作用：极大理想有限生成，使行列式技巧能把稳定性变成整性；理想升链终止，使一个非零元素不能无限次除以 \(\pi\)。第三章最后的非 Noether 例子已有主极大理想却包含更长的素链，说明仅有极大理想为主理想还不够。
+
+\begin{example}
+\label{g5:exm:basic-dvrs}
+	设 \(k\) 为域，\(f(t)\in k[t]\) 为不可约多项式。则
+	\[
+		k[t]_{(f)}
+	\]
+	是非域局部主理想整环，因而是 DVR；其阶计算有理函数的分子、分母中 \(f\) 的重数差。特别地，\(f=t-a\) 时得到点 \(a\in k\) 处的消失阶。算术例子是 \(\mathbb Z_{(p)}\)，其中 \(p\) 为素数；对应的阶为有理数分子、分母中 \(p\) 的指数差。这里的剩余域分别为 \(k[t]/(f)\) 和 \(\mathbb F_p\)。
+\end{example}
 
 \subsection{统一化元、阶和分式理想}
 \label{g5:subsec:0401:02}
-待撰写
+
+DVR 的极大理想用一个元素生成，所有非零函数和理想也随之排列成同一列幂次。选择极大理想的生成元，就是选择一把测量消失阶的尺子；换成另一生成元只会乘上单位。
+
+\begin{definition}
+\label{g5:def:uniformizer}
+	设 \((R,\mathfrak m)\) 为 DVR。满足 \(\mathfrak m=\pi R\) 的元素 \(\pi\) 称为\term[tongyihuayuan]{统一化元}[uniformizing element]。对 \(0\ne f\in\operatorname{Frac}(R)\)，唯一表达
+	\[
+		f=u\pi^n,\qquad u\in R^\times,\quad n\in\mathbb Z
+	\]
+	中的整数 \(n\) 称为 \(f\) 的\term[jubuji]{阶}[order]，记为 \(\operatorname{ord}_R(f)\)，并约定 \(\operatorname{ord}_R(0)=+\infty\)。\symidx{\(\operatorname{ord}_R(f)\)：DVR 中非零分式的阶}
+\end{definition}
+
+若 \(\pi'\) 也是统一化元，则 \(\pi'=w\pi\)，其中 \(w\) 为单位，因此 \((\pi')^n\) 与 \(\pi^n\) 只差一个单位。阶与选择无关，正是这个 DVR 唯一的规范化离散赋值。其运算满足
+\[
+	\operatorname{ord}_R(fg)=\operatorname{ord}_R(f)+\operatorname{ord}_R(g),
+	\qquad
+	\operatorname{ord}_R(f+g)\geq
+	\min\{\operatorname{ord}_R(f),\operatorname{ord}_R(g)\}.
+\]
+若两项的阶不同，不等式必为等号：例如 \(f=\pi^a u\)、\(g=\pi^b w\) 且 \(a<b\)，则
+\[
+	f+g=\pi^a(u+\pi^{b-a}w),
+\]
+括号中第一项为单位、第二项在极大理想中，故其和仍为单位。同阶时则可能抵消，这正是只保留不等式的原因。
+
+\begin{definition}
+\label{g5:def:fractional-ideal}
+	设 \(A\) 为整环，\(K=\operatorname{Frac}(A)\)。一个非零 \(A\) 子模 \(I\subseteq K\)，若存在 \(0\ne d\in A\) 使 \(dI\subseteq A\)，就称为 \(A\) 的\term[fenshilixiang]{分式理想}[fractional ideal]。两个分式理想的乘积由全部有限和 \(\sum_i a_ib_i\)、\(a_i\in I,b_i\in J\) 组成。定义
+	\[
+		I^{-1}=\{x\in K:xI\subseteq A\}.
+	\]
+	若 \(II^{-1}=A\)，就称 \(I\) 为\term[kenilixiang]{可逆理想}[invertible ideal]。
+\end{definition}
+
+分式理想允许统一的分母，却仍要求所有元素可由同一个非零 \(d\) 清除分母。若 \(A\) Noether，则 \(dI\) 是有限生成的普通理想，所以 \(I\) 也是有限生成 \(A\) 模。集合 \(I^{-1}\) 仍为分式理想：它包含 \(dA\)，因此非零；若 \(0\ne a/b\in I\)、\(a,b\in A\)，则 \(x\in I^{-1}\) 蕴含 \(ax\in bA\subseteq A\)，所以 \(aI^{-1}\subseteq A\)。同样，分式理想的乘积、和与交都仍是分式理想；交非零是因为任意两个非零主分式理想都有非零公共元素。
+
+\begin{proposition}
+\label{g5:prop:dvr-fractional-ideals}
+	设 \(R\) 为 DVR，\(\pi\) 为统一化元。每个分式理想都唯一写成 \(\pi^nR\)，其中 \(n\in\mathbb Z\)。特别地，每个分式理想均可逆。对整数 \(a,b\)，各项运算如\cref{g5:tab:dvr-ideal-arithmetic}所示。
+\end{proposition}
+\begin{proof}
+	设 \(I\) 为分式理想，取 \(0\ne d\in R\) 使 \(dI\subseteq R\)。已经证明普通非零理想都是统一化元的非负整数次幂，所以 \(dI=\pi^mR\)。写 \(d=u\pi^r\)、\(u\) 为单位，便有 \(I=\pi^{m-r}R\)。唯一性来自最小阶的唯一性。
+
+	因此包含关系为 \(\pi^aR\subseteq\pi^bR\) 当且仅当 \(a\geq b\)。乘积的指数相加，和取包含两者的较大理想，交取较小理想。最后，\(x\pi^aR\subseteq R\) 当且仅当 \(\operatorname{ord}_R(x)\geq-a\)，故 \((\pi^aR)^{-1}=\pi^{-a}R\)，其乘积为 \(R\)。
+\end{proof}
+
+\begin{table}[htbp]
+	\centering
+	\caption{DVR 中非零分式理想的运算}
+	\label{g5:tab:dvr-ideal-arithmetic}
+	\begin{tabular}{lll}
+		\toprule
+		运算 & 结果 & 指数的变化 \\
+		\midrule
+		\(\pi^aR\cdot\pi^bR\) & \(\pi^{a+b}R\) & 相加 \\
+		\(\pi^aR+\pi^bR\) & \(\pi^{\min(a,b)}R\) & 取较小者 \\
+		\(\pi^aR\cap\pi^bR\) & \(\pi^{\max(a,b)}R\) & 取较大者 \\
+		\((\pi^aR)^{-1}\) & \(\pi^{-a}R\) & 变号 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+例如在 \(R=k[t]_{(t)}\) 中，分式理想 \(t^{-2}R\) 包含 \(R\)，其逆为 \(t^2R\)；而 \(t^2R+t^5R=t^2R\)、\(t^2R\cap t^5R=t^5R\)。较高的消失阶意味着对元素施加更强的限制，因此对应较小的理想。
+
+\begin{proposition}
+\label{g5:prop:dvr-length}
+	设 \((R,\mathfrak m)\) 为 DVR，剩余域为 \(\kappa=R/\mathfrak m\)，\(\pi\) 为统一化元。对 \(n\geq1\)，模 \(R/\pi^nR\) 的长度为 \(n\)。因而对每个 \(0\ne f\in R\)，有
+	\[
+		\ell_R(R/fR)=\operatorname{ord}_R(f).
+	\]
+	此外，\(\mathfrak m/\mathfrak m^2\) 是一维 \(\kappa\) 向量空间，\(t\in\mathfrak m\) 是统一化元，当且仅当其在 \(\mathfrak m/\mathfrak m^2\) 中的像非零。
+\end{proposition}
+\begin{proof}
+	考虑滤过
+	\[
+		R\supset\pi R\supset\cdots\supset\pi^nR.
+	\]
+	对 \(0\leq j<n\)，乘以 \(\pi^j\) 给出同构
+	\[
+		R/\pi R\longrightarrow\pi^jR/\pi^{j+1}R.
+	\]
+	满性来自右侧的表示；若 \(a\pi^j\in\pi^{j+1}R\)，约去非零 \(\pi^j\) 得 \(a\in\pi R\)，证明单射。因此滤过的每一层都是简单模 \(\kappa\)，共有 \(n\) 层。写 \(f=u\pi^n\) 后 \(fR=\pi^nR\)；单位情形 \(n=0\) 的商模为零，长度同样为零。同样的乘法同构还给出 \(\mathfrak m/\mathfrak m^2\cong\kappa\)。最后，\(t\in\mathfrak m\setminus\mathfrak m^2\) 等价于其阶为 \(1\)，也就等价于它生成 \(\mathfrak m\)。
+\end{proof}
 
 \subsection{Dedekind 整环的局部观点}
 \label{g5:subsec:0401:03}
-待撰写
+
+一个环可以在每个非零素理想处都呈现上述单参数结构，却没有一个元素同时生成所有理想。局部的阶因此应当附着在各个素理想上；把有限多个非零阶放在一起，就得到整体理想的分解。
+
+\begin{definition}
+\label{g5:def:dedekind-domain}
+	一个 Noether 整闭整环 \(A\)，若 \(\dim A\leq1\)，就称为\term[Dedekindzhenghuan]{Dedekind 整环}[Dedekind domain]。本节采用允许域的约定；非域的 Dedekind 整环恰为一维 Noether 整闭整环。
+\end{definition}
+
+Dedekind 整环用理想的乘积分解取代元素的唯一分解。\footnote{Julius Wilhelm Richard Dedekind（1831--1916），德国数学家，发展了代数整数的理想理论，并用实数分割刻画无理数。}先说明怎样从各点的局部信息恢复环与理想，这也将解释整闭性为何可以逐点检验。
+
+\begin{proposition}
+\label{g5:prop:domain-local-intersection}
+	设 \(A\) 为整环，\(K=\operatorname{Frac}(A)\)。对任意 \(A\) 子模 \(M\subseteq K\)，在 \(K\) 中有
+	\[
+		M=\bigcap_{\mathfrak m\in\operatorname{Max}A}M_{\mathfrak m}.
+	\]
+	特别地，\(A=\bigcap_{\mathfrak m}A_{\mathfrak m}\)，两个分式理想相等当且仅当它们在每个极大理想处的局部化相等。而且 \(A\) 整闭，当且仅当每个 \(A_{\mathfrak m}\) 都整闭。
+\end{proposition}
+\begin{proof}
+	各个局部化可视为 \(K\) 的子模，故从左到右的包含成立。若 \(z\in K\setminus M\)，理想
+	\[
+		J=\{a\in A:az\in M\}
+	\]
+	不含 \(1\)，可放入某个极大理想 \(\mathfrak m\)。若 \(z\in M_{\mathfrak m}\)，就存在 \(s\notin\mathfrak m\) 使 \(sz\in M\)，与 \(s\in J\subseteq\mathfrak m\) 矛盾。所以 \(z\) 不属于右侧的交，证明等式。
+
+	若 \(A\) 整闭，则\cref{g5:prop:integral-localization-quotient}保证它的局部化整闭。反过来，若每个 \(A_{\mathfrak m}\) 整闭，而 \(z\in K\) 整于 \(A\)，同一首一方程表明 \(z\) 整于每个 \(A_{\mathfrak m}\)，故 \(z\in A_{\mathfrak m}\) 对所有 \(\mathfrak m\) 成立。交等式于是给出 \(z\in A\)。
+\end{proof}
+
+\begin{theorem}
+\label{g5:thm:dedekind-local}
+	设 \(A\) 为 Noether 整环。则 \(A\) 为 Dedekind 整环，当且仅当对每个非零素理想 \(\mathfrak p\)，局部环 \(A_{\mathfrak p}\) 都为 DVR。
+\end{theorem}
+\begin{proof}
+	若 \(A\) 为 Dedekind 整环，则每个非零素理想的高度为 \(1\)。局部化 \(A_{\mathfrak p}\) 因而是一维 Noether 局部整环，且仍整闭，由\cref{g5:thm:dvr-characterizations}知它为 DVR。
+
+	反过来，若 \(A\) 为域，结论已经成立。否则每个极大理想均非零，按假设它的局部环为 DVR，所以每个极大理想的高度都为 \(1\)。任何有限素链都可放在某个极大理想下方，故 \(\dim A=1\)。每个极大理想处的局部环又整闭，由\cref{g5:prop:domain-local-intersection}得 \(A\) 整闭，因此 \(A\) 为 Dedekind 整环。
+\end{proof}
+
+对非零素理想 \(\mathfrak p\)，记 \(A_{\mathfrak p}\) 的规范化阶为 \(v_{\mathfrak p}\)。若 \(I\) 是非零理想，局部化后有
+\[
+	I A_{\mathfrak p}
+	=(\mathfrak pA_{\mathfrak p})^{n_{\mathfrak p}},
+	\qquad n_{\mathfrak p}\geq0.
+\]
+整数 \(n_{\mathfrak p}\) 描述 \(I\) 在这个点的全部信息。它可以不同于 \(I\) 的整体生成元数，也不要求存在一个统一的生成元在所有点同时实现这些阶。
+
+\begin{theorem}
+\label{g5:thm:dedekind-factorization}
+	设 \(A\) 为 Dedekind 整环，\(K=\operatorname{Frac}(A)\)。
+	\begin{enumerate}
+		\item 每个非零理想 \(I\subseteq A\) 都唯一写为
+		\[
+			I=\mathfrak p_1^{n_1}\cdots\mathfrak p_r^{n_r},
+		\]
+		其中 \(\mathfrak p_i\) 为互不相同的非零素理想，\(n_i\geq1\)。\(I=A\) 对应空乘积。
+		\item 每个分式理想均可逆，并唯一写为有限乘积
+		\[
+			I=\prod_{\mathfrak p\ne(0)}\mathfrak p^{n_{\mathfrak p}},
+			\qquad n_{\mathfrak p}\in\mathbb Z,
+		\]
+		其中只有有限多个指数非零，负次幂由可逆理想的逆定义。每个指数由 \(IA_{\mathfrak p}\) 的阶确定。
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	域的非零理想只有自身，结论成立。以下设 \(A\) 不是域。先取非零真理想 \(I\)。包含 \(I\) 的极大理想只有有限多个：选 \(0\ne a\in I\)，则 \(A/(a)\) 是 Noether 环；其素理想对应于 \(A\) 中包含非零元素 \(a\) 的素理想，故全部极大。因此这个商环零维，由\cref{g5:thm:artinian-zero-dimension}，它只有有限多个素理想。包含 \(I\) 的极大理想也就只有有限多个，记为 \(\mathfrak p_1,\ldots,\mathfrak p_r\)。
+
+	对每个 \(\mathfrak p_i\)，由 DVR 中的理想刻画，有
+	\[
+		IA_{\mathfrak p_i}
+		=(\mathfrak p_iA_{\mathfrak p_i})^{n_i},
+		\qquad n_i\geq1.
+	\]
+	令 \(J=\prod_i\mathfrak p_i^{n_i}\)。不同极大理想 \(\mathfrak p_i,\mathfrak q\) 之间可选元素 \(s\in\mathfrak p_i\setminus\mathfrak q\)，所以 \(\mathfrak p_iA_{\mathfrak q}=A_{\mathfrak q}\)。因此在每个极大理想处，\(J\) 的局部化都与 \(I\) 相同：在 \(\mathfrak p_i\) 处只保留对应的一项，在其他点处两者都成为单位理想。由\cref{g5:prop:domain-local-intersection}，\(I=J\)。再次局部化到各个 \(\mathfrak p_i\)，DVR 中指数的唯一性给出整体分解的唯一性。
+
+	下面证明分式理想 \(I\) 可逆。因为 \(A\) Noether，\(I\) 有有限生成元 \(a_1,\ldots,a_s\)。对每个极大理想 \(\mathfrak m\)，有
+	\[
+		(I^{-1})_{\mathfrak m}=(I_{\mathfrak m})^{-1},
+	\]
+	右侧的逆在 \(A_{\mathfrak m}\) 中计算。一个包含由定义得到。反过来，若 \(xI_{\mathfrak m}\subseteq A_{\mathfrak m}\)，则对每个 \(a_i\) 可选 \(s_i\notin\mathfrak m\)，使 \(s_i x a_i\in A\)。取 \(s=\prod_i s_i\)，就有 \(sxI\subseteq A\)，即 \(sx\in I^{-1}\)，从而 \(x\in(I^{-1})_{\mathfrak m}\)。这里有限生成保证能用同一个分母处理所有生成元。
+
+	在 DVR \(A_{\mathfrak m}\) 中，分式理想为主理想，所以
+	\[
+		(II^{-1})_{\mathfrak m}
+		=I_{\mathfrak m}(I_{\mathfrak m})^{-1}
+		=A_{\mathfrak m}.
+	\]
+	逐点的等式由交公式提升为 \(II^{-1}=A\)，证明可逆性。
+
+	最后选 \(0\ne d\in A\) 使 \(dI\subseteq A\)。将普通理想 \(dI\) 与 \(dA\) 分别作第一项的分解，并在可逆分式理想的乘法下相除，就得到 \(I\) 的整数指数分解。其局部指数是 \(dI\) 与 \(dA\) 的指数差；再次局部化即可证明唯一性。
+\end{proof}
+
+这把各点的单参数结构拼成了整体理想分解；与之对应的一般理想可逆性判据和 Dedekind 刻画见\cite[第11节，定理11.3、11.6，第80--83页]{Matsumura1989}。每个分式理想还是一个秩一有限投射模：若 \(1=\sum_i a_ib_i\)、\(a_i\in I,b_i\in I^{-1}\)，则映射 \(\lambda_i(x)=b_ix\) 取值于 \(A\)，并满足
+\[
+	x=\sum_i\lambda_i(x)a_i.
+\]
+由\cref{g5:prop:projective-dual-basis}，这就是有限投射性的对偶基表达。局部化到分式域后 \(I\otimes_AK=K\)，所以秩为一。整体主理想相当于这个投射模有一组含一个元素的自由基；可逆性本身并不保证它存在。
+
+\begin{example}
+\label{g5:exm:dedekind-nonprincipal}
+	令 \(A=\mathbb Z[\sqrt{-5}]\subset\mathbb C\)。它是 Dedekind 整环，却不是主理想整环。先核对整闭性。若 \(z=r+s\sqrt{-5}\in\mathbb Q(\sqrt{-5})\)、\(r,s\in\mathbb Q\)，且 \(z\) 整于 \(A\)，则因 \(A\) 有限于 \(\mathbb Z\)，整性传递说明 \(z\) 整于 \(\mathbb Z\)。若 \(s=0\)，\(\mathbb Z\) 的整闭性给出 \(z\in\mathbb Z\)。若 \(s\ne0\)，最小多项式为
+	\[
+		T^2-2rT+(r^2+5s^2).
+	\]
+	由\cref{g5:lem:normal-minimal-polynomial}，\(2r\) 与 \(r^2+5s^2\) 都为整数。因此 \(20s^2\) 为整数。将 \(s\) 写成既约分数，其分母的平方整除 \(20\)，所以 \(2s\) 也是整数。令 \(a=2r,b=2s\)，则
+	\[
+		a^2+5b^2\equiv0\pmod4.
+	\]
+	平方模 \(4\) 只有 \(0,1\)，这迫使 \(a,b\) 均为偶数。因此 \(r,s\in\mathbb Z\)，即 \(z\in A\)，证明整闭。又 \(A\) 是有限 \(\mathbb Z\) 模，故 Noether；整扩张保持维数，所以 \(\dim A=1\)。
+
+	理想 \(\mathfrak p=(2,1+\sqrt{-5})\) 的商环为 \(\mathbb F_2\)，因而是极大理想。若 \(\mathfrak p=\alpha A\)，则 \(\alpha\) 同时整除 \(2\) 和 \(1+\sqrt{-5}\)。取范数
+	\[
+		N(a+b\sqrt{-5})=a^2+5b^2
+	\]
+	便知正整数 \(N(\alpha)\) 同时整除 \(4\) 和 \(6\)。因为 \(\mathfrak p\) 为真理想，\(\alpha\) 不是单位，而范数为 \(1\) 的元素可用共轭求逆，故只能有 \(N(\alpha)=2\)。但整数方程 \(a^2+5b^2=2\) 无解，矛盾。另一方面，直接计算得
+	\[
+		\mathfrak p^2=(2).
+	\]
+	确实，平方理想的三个生成元 \(4,2+2\sqrt{-5},-4+2\sqrt{-5}\) 都被 \(2\) 整除；后两个的差为 \(6\)，与 \(4\) 一起生成 \(2\)。因此 \(\mathfrak p^{-1}=\tfrac12\mathfrak p\)。这个非主理想在每个局部环中都有一个生成元，整体上仍需多个生成元。
+\end{example}
 
 \subsection{正规曲线的局部参数}
 \label{g5:subsec:0401:04}
-待撰写
+
+现在把阶函数放回曲线。设 \(k\) 为代数闭域，\(X\) 为不可约仿射代数集，且 \(\dim k[X]=1\)。若坐标环 \(k[X]\) 整闭，就称 \(X\) 为\term[zhengguiquxian]{正规曲线}[normal curve]。由局部交公式，这等价于每个点 \(p\in X\) 的局部环 \(\mathcal O_{X,p}\) 整闭。曲线的函数域记为 \(k(X)=\operatorname{Frac}k[X]\)，它也是每个局部环的分式域。
+
+\begin{proposition}
+\label{g5:prop:normal-curve-parameters}
+	设 \(k\) 为代数闭域，\(X\) 为正规不可约仿射曲线，\(p\in X\)。则 \(\mathcal O_{X,p}\) 为 DVR，剩余域为 \(k\)。存在正则函数 \(t\in k[X]\)，使 \(t(p)=0\) 且 \(t\) 的芽生成局部环的极大理想；这样的芽称为 \(p\) 处的\term[jubucanshu]{局部参数}[local parameter]。每个 \(f\in k(X)^\times\) 唯一写为
+	\[
+		f=u\,t^n,\qquad u\in\mathcal O_{X,p}^{\times},\quad n\in\mathbb Z.
+	\]
+	指数 \(n\) 与局部参数的选择无关，记为 \(\operatorname{ord}_p(f)\)。此外：
+	\begin{enumerate}
+		\item \(f\) 在 \(p\) 处正则，当且仅当 \(\operatorname{ord}_p(f)\geq0\)；
+		\item \(f\) 在 \(p\) 处正则且取值为零，当且仅当 \(\operatorname{ord}_p(f)>0\)；
+		\item 若 \(0\ne f\in\mathcal O_{X,p}\)，则
+		\[
+			\ell_{\mathcal O_{X,p}}\bigl(\mathcal O_{X,p}/f\mathcal O_{X,p}\bigr)
+			=\operatorname{ord}_p(f).
+		\]
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	令 \(A=k[X]\)，它是 Noether 一维整闭整环。点 \(p\) 对应非零极大理想 \(\mathfrak m_p\)，且 \(\mathcal O_{X,p}\cong A_{\mathfrak m_p}\)，因此\cref{g5:thm:dedekind-local}给出 DVR 性。由弱零点定理，剩余域为 \(k\)。
+
+	在局部环中取统一化元 \(\pi=a/s\)，其中 \(a,s\in A\)、\(s(p)\ne0\)。因为 \(s\) 在局部环中为单位，\(a=s\pi\) 也是统一化元；于是可取全局正则函数 \(t=a\)，且 \(t(p)=0\)。其余结论由 DVR 的唯一指数表达、单位与极大理想的阶判据，以及\cref{g5:prop:dvr-length}得到。第一项还使用了第一章的函数芽描述：有理函数在 \(p\) 处正则，恰指它属于 \(\mathcal O_{X,p}\)。
+\end{proof}
+
+若 \(\operatorname{ord}_p(f)=n>0\)，就说 \(f\) 在 \(p\) 处有 \(n\) 阶零点；若 \(\operatorname{ord}_p(f)=-n<0\)，就说它有 \(n\) 阶极点。对正规仿射曲线，非零有理函数只有有限多个零点和极点。事实上，Dedekind 分解将主分式理想写成
+\[
+	f\,k[X]=\prod_{p\in X}\mathfrak m_p^{\operatorname{ord}_p(f)},
+\]
+其中只有有限多个指数非零；局部化到 \(\mathfrak m_p\) 后，指数恰是局部环中的阶。在仿射直线上，\(f=t^2/(t-1)^3\) 的阶在 \(0\) 处为 \(2\)，在 \(1\) 处为 \(-3\)，在其他点为零。
+
+\ProseParagraphBreak
+
+局部参数只要求在指定点消失一次，不要求它生成整条曲线的函数域。一个方程算例可以看清这个区别。
+
+\begin{example}
+\label{g5:exm:local-parameter-not-field-generator}
+	设 \(k\) 为特征不等于 \(2\) 的代数闭域，考虑曲线
+	\[
+		X:\ y^2=x^3+1,\qquad p=(0,1).
+	\]
+	多项式 \(x^3+1\) 在 \(k(x)\) 中不是平方：一个既约有理函数的平方若是多项式，分母必须为常数，而平方多项式的次数为偶数。因此 \(y^2-x^3-1\) 不可约，坐标环为整环。
+
+	在点 \(p\) 的局部环中，\(y+1\) 的值为 \(2\)，故为单位。由
+	\[
+		(y-1)(y+1)=x^3
+	\]
+	得到 \(y-1=x^3/(y+1)\)，所以极大理想满足
+	\[
+		(x,y-1)\mathcal O_{X,p}=x\mathcal O_{X,p}.
+	\]
+	这是非域 Noether 局部整环的非零主极大理想，故由\cref{g5:thm:dvr-characterizations}，\(\mathcal O_{X,p}\) 为 DVR，且 \(x\) 为局部参数。于是
+	\[
+		\operatorname{ord}_p(x)=1,\qquad
+		\operatorname{ord}_p(y-1)=3.
+	\]
+	同时 \(k(X)/k(x)\) 为二次扩张，所以这个局部参数并不单独生成函数域。这里局部环的阶直接从方程与一个可逆因子求出。
+\end{example}
+
+一维整闭性的局部结论最终落在统一化元上：它给出点附近唯一的阶、全部非零分式理想及主理想商的长度。把这些局部环放回一个坐标环时，Dedekind 分解负责记录各点的指数。下一节将构造整闭包，使原曲线缺失的整函数也进入这一局部结构。
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

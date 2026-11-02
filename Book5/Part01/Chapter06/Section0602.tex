@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 6.2 有限呈示与 Fitting 理想
 % 纲要位置：几何学计划纲要.md，第 5232 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,341 @@
 \section{有限呈示与 Fitting 理想}
 \label{g5:sec:0602}
 
-待撰写
+第二章把有限呈示模写成有限生成元模去有限条关系，并用关系矩阵计算纤维维数。矩阵的秩由子式控制，但矩阵本身会随生成元与关系的选择而改变。本节要从这些子式中提取模的内在理想：它们既能给出纤维维数跳变的位置，也能判断关系在一个邻域内是否真正消失。后一项判断尤其重要，因为在剩余域中为零的系数，在原环中仍可能是非零幂零元。
 
 \subsection{呈示子式和 Fitting 理想}
 \label{g5:subsec:0602:01}
-待撰写
+
+设 \(A\) 为交换含幺环，\(M\) 为有限呈示 \(A\) 模，选定呈示
+\begin{equation}\label{g5:eq:fitting-presentation}
+	A^m\xrightarrow{H}A^n\longrightarrow M\longrightarrow0.
+\end{equation}
+矩阵 \(H\) 有 \(n\) 行、\(m\) 列；第 \(j\) 列是第 \(j\) 条关系在所选 \(n\) 个生成元中的系数。关系之间可以继续有关系，因此左端不要求单射。将这个呈示张量到一个域 \(K\) 后，余核维数为 \(n-\operatorname{rank}H_K\)。于是，当我们关心余核至多需要 \(i\) 个方向时，应检查 \(n-i\) 阶子式，而不是固定阶数的子式。
+
+\begin{definition}\label{g5:def:fitting-ideal}
+	设 \(A\) 为交换含幺环，\(H\) 为一个 \(n\times m\) 矩阵。对整数 \(q\geq1\)，记 \(I_q(H)\) 为全部 \(q\times q\) 子式生成的理想；若 \(q>\min(n,m)\)，规定 \(I_q(H)=0\)。此外规定 \(I_0(H)=A\)。
+
+	对有限呈示模 \(M\)、呈示\eqref{g5:eq:fitting-presentation}及整数 \(i\geq0\)，定义第 \(i\) 个\term[Fittinglixiang]{Fitting 理想}[Fitting ideal]为
+	\[
+		\operatorname{Fitt}_i(M)=
+		\begin{cases}
+			I_{n-i}(H),&0\leq i<n,\\
+			A,&i\geq n.
+		\end{cases}
+	\]
+	下节将证明该理想与所选有限呈示无关。为统一秩零的公式，另约定 \(\operatorname{Fitt}_{-1}(M)=0\)。
+\end{definition}
+
+这些理想以 Hans Fitting 命名。
+\footnote{Hans Fitting（1906--1938），德国数学家，研究群的分解、幂零群及有限生成模的行列式理想。}下标记录的是商模允许保留的生成方向数，所以子式的阶数随下标增大而减小。沿一行展开行列式，任何 \(q+1\) 阶子式都是若干 \(q\) 阶子式的系数倍之和，故
+\[
+	I_{q+1}(H)\subseteq I_q(H),\qquad
+	0\subseteq\operatorname{Fitt}_0(M)
+	\subseteq\operatorname{Fitt}_1(M)\subseteq\cdots\subseteq A.
+\]
+由于矩阵有限，每个 Fitting 理想有限生成，而且从某个下标开始恒等于 \(A\)。
+
+\begin{example}\label{g5:exm:fitting-free-cyclic}
+	设 \(A\) 为交换含幺环。自由模 \(M=A^r\) 可取没有关系的呈示 \(0\to A^r\to M\to0\)，所以
+	\[
+		\operatorname{Fitt}_i(A^r)=
+		\begin{cases}0,&0\leq i<r,\\A,&i\geq r.\end{cases}
+	\]
+	这也包括 \(r=0\)：零模的全部非负下标 Fitting 理想都是 \(A\)。
+
+	若 \(J=(a_1,\ldots,a_m)\subseteq A\)，循环模 \(A/J\) 的关系矩阵是单行矩阵 \((a_1\ \cdots\ a_m)\)，故
+	\[
+		\operatorname{Fitt}_0(A/J)=J,
+		\qquad\operatorname{Fitt}_i(A/J)=A\quad(i\geq1).
+	\]
+	因此这些理想保存的是关系的实际系数；即使某个 \(a_j\) 幂零，它仍可能出现在 \(\operatorname{Fitt}_0\) 中。
+\end{example}
 
 \subsection{与呈示选择无关及基变换}
 \label{g5:subsec:0602:02}
-待撰写
+
+换一组关系只改变关系列的生成方式；换一组模生成元则还会改变矩阵的行数。证明呈示无关性时必须同时处理这两种变化。先记录所需的矩阵事实，它们只使用行列式的多重线性，并不要求底环为域或为 Noether 环。
+
+\begin{lemma}\label{g5:lem:determinantal-matrix-operations}
+	设矩阵的系数属于交换含幺环 \(A\)。当乘积有定义时，对 \(q\geq1\) 有
+	\[
+		I_q(UH)\subseteq I_q(H),\qquad
+		I_q(HV)\subseteq I_q(H).
+	\]
+	若 \(U,V\) 分别为可逆方阵，则 \(I_q(UHV)=I_q(H)\)。另对任意矩阵 \(H\) 及 \(q\geq1\)，有
+	\[
+		I_q\!\begin{pmatrix}H&0\\0&1\end{pmatrix}
+		=I_q(H)+I_{q-1}(H)=I_{q-1}(H).
+	\]
+\end{lemma}
+\begin{proof}
+	\(UH\) 的每一行都是 \(H\) 各行的线性组合。对选定的 \(q\) 行和 \(q\) 列，逐行展开行列式，得到 \(H\) 的同阶子式的线性组合：选到重复行的项为零，互异行的项按行次序调整符号后就是相应子式。因此得到第一个包含。逐列展开证明第二个包含。若矩阵可逆，再对 \(U^{-1}\)、\(V^{-1}\) 用同样的包含，便得等号。
+
+	对块矩阵，一个子式若同时选中最后一行和最后一列，就等于 \(H\) 的某个 \(q-1\) 阶子式；两者都不选时，就是 \(H\) 的 \(q\) 阶子式；只选其一时，该子矩阵有一行或一列全零。所有子式因此恰好生成 \(I_q(H)+I_{q-1}(H)\)。由沿一行展开得到的包含 \(I_q(H)\subseteq I_{q-1}(H)\)，结论成立。\(q=1\) 时新增的右下角 \(1\) 生成单位理想，也与 \(I_0(H)=A\) 的约定一致。
+\end{proof}
+
+可逆行列变换及单位块消元的这些性质，可对照\cite[第13节附录，第103页]{Matsumura1989}。下面进一步证明，随着自由模的秩一起调整子式阶数，便得到只依赖 \(M\) 的理想。
+
+\begin{theorem}\label{g5:thm:fitting-invariance}
+	设 \(A\) 为交换含幺环，\(M\) 为有限呈示 \(A\) 模。\cref{g5:def:fitting-ideal}给出的 \(\operatorname{Fitt}_i(M)\) 与全部有限生成元、关系生成元及有限呈示的选择无关。因此同构的有限呈示模具有相同的 Fitting 理想。
+\end{theorem}
+\begin{proof}
+	先固定满射 \(\pi:A^n\to M\)，只更换关系生成元。若 \(H:A^m\to A^n\) 与 \(H':A^{m'}\to A^n\) 的像都是 \(\ker\pi\)，则 \(H'\) 的每一列都是 \(H\) 各列的线性组合，反之亦然。因此存在矩阵 \(C,D\) 使
+	\[
+		H'=HC,\qquad H=H'D.
+	\]
+	由上个引理，\(I_q(H')\subseteq I_q(H)\subseteq I_q(H')\)。故固定模生成元后，任意两组关系生成元给出相同理想。
+
+	其次，向原来的生成元 \(m_1,\ldots,m_n\) 中添加一个冗余生成元
+	\[
+		m_{n+1}=\sum_{j=1}^n a_jm_j.
+	\]
+	把 \(a=(a_1,\ldots,a_n)^{\mathsf T}\) 看作列向量。新满射 \(A^{n+1}\to M\) 的关系模由矩阵
+	\[
+		G=\begin{pmatrix}H&-a\\0&1\end{pmatrix}
+	\]
+	的各列生成。确实，若 \((u,v)\in A^n\oplus A\) 是关系，就有 \(u+av\in\ker\pi=\operatorname{im}H\)，从而可写为
+	\[
+		(u,v)=(Hb-av,v)=G(b,v).
+	\]
+	反方向直接代入满射即可验证。左乘可逆矩阵消去右上块后，得到
+	\[
+		\begin{pmatrix}I_n&a\\0&1\end{pmatrix}G
+		=\begin{pmatrix}H&0\\0&1\end{pmatrix}.
+	\]
+	于是对 \(0\leq i\leq n\)，令 \(q=n+1-i\geq1\)，上个引理给出
+	\[
+		I_{n+1-i}(G)=I_{n-i}(H).
+	\]
+	当 \(i=n\) 时右侧按 \(I_0(H)=A\) 理解；当 \(i>n\) 时，新旧定义都为 \(A\)。所以添加一个生成元及其定义关系不会改变 Fitting 理想。
+
+	最后，给定两组有限生成元 \(m_1,\ldots,m_n\) 和 \(m'_1,\ldots,m'_{n'}\)，从第一组开始逐个添加第二组，或从第二组开始逐个添加第一组，最终得到同一组拼接生成元，至多相差排列。每次添加都是上面已处理的冗余生成元；排列是自由模的可逆换基，也由引理保持子式理想。对拼接后的固定生成元，第一步又保证任意关系生成组给出相同理想。这就比较了任意两个有限呈示。若更换为同构模，只需沿同构传送满射与生成元，相同证明仍适用。
+\end{proof}
+
+有限呈示保证整个计算只使用有限矩阵。证明没有把某个呈示当作唯一的呈示，也没有要求两组生成元有相同项数。下一项性质因此可以在任意方便的呈示上验证。
+
+\begin{proposition}\label{g5:prop:fitting-base-change}
+	设 \(A\to B\) 为任意交换含幺环同态，\(M\) 为有限呈示 \(A\) 模。则 \(M\otimes_A B\) 是有限呈示 \(B\) 模，且对所有整数 \(i\geq-1\)，有
+	\[
+		\operatorname{Fitt}_i(M\otimes_A B)
+		=\operatorname{Fitt}_i(M)B.
+	\]
+	左侧理想在 \(B\) 中计算，右侧是扩张理想；这里不要求 \(B\) 对 \(A\) 平坦。
+\end{proposition}
+\begin{proof}
+	对\eqref{g5:eq:fitting-presentation}张量 \(B\)。张量积的右正合性给出
+	\[
+		B^m\xrightarrow{H_B}B^n
+		\longrightarrow M\otimes_A B\longrightarrow0,
+	\]
+	其中 \(H_B\) 由逐项变换 \(H\) 的系数得到。行列式是矩阵条目的整数系数多项式，所以 \(H_B\) 的每个子式恰为对应原子式在 \(B\) 中的像，生成的理想正是原子式理想的扩张。单位理想与零理想的约定也与基变换相容。这里只使用右正合性，没有要求张量后保留 \(A^m\) 左侧的任何单射。
+\end{proof}
+
+特别地，对乘法集 \(S\subseteq A\)，有
+\[
+	\operatorname{Fitt}_i(S^{-1}M)
+	=S^{-1}\operatorname{Fitt}_i(M).
+\]
+因此在一点处检验 Fitting 理想，可以先计算整体子式再局部化；在商环上检验，则可以直接把子式的系数取模。
 
 \subsection{剩余域上的秩条件}
 \label{g5:subsec:0602:03}
-待撰写
+
+记
+\[
+	M(\mathfrak p)=M\otimes_A\kappa(\mathfrak p),\qquad
+	\nu_M(\mathfrak p)=\dim_{\kappa(\mathfrak p)}M(\mathfrak p).
+\]
+对有限呈示模，这些维数有限。第二章已经证明它们由关系矩阵的秩控制；Fitting 理想现在把同一计算变成不依赖呈示的闭集公式。
+
+\begin{proposition}\label{g5:prop:fitting-fiber-rank}
+	设 \(A\) 为交换含幺环，\(M\) 为有限呈示 \(A\) 模，\(\mathfrak p\in\operatorname{Spec}A\)。对整数 \(i\geq0\)，以下条件等价：
+	\begin{equivalences}
+		\item \(\nu_M(\mathfrak p)\leq i\)；
+		\item \(\operatorname{Fitt}_i(M)\nsubseteq\mathfrak p\)；
+		\item \(M_{\mathfrak p}\) 可由至多 \(i\) 个元素生成。
+	\end{equivalences}
+	特别地，对整数 \(r\geq0\)，有
+	\[
+		\{\mathfrak p:\nu_M(\mathfrak p)=r\}
+		=V\bigl(\operatorname{Fitt}_{r-1}(M)\bigr)
+		\setminus V\bigl(\operatorname{Fitt}_r(M)\bigr),
+	\]
+	而对 \(i\geq0\)，有
+	\[
+		\{\mathfrak p:\nu_M(\mathfrak p)>i\}
+		=V\bigl(\operatorname{Fitt}_i(M)\bigr).
+	\]
+\end{proposition}
+\begin{proof}
+	将有限呈示张量到 \(\kappa(\mathfrak p)\)，得到
+	\[
+		\nu_M(\mathfrak p)
+		=n-\operatorname{rank}_{\kappa(\mathfrak p)}H(\mathfrak p).
+	\]
+	当 \(0\leq i<n\) 时，\(\nu_M(\mathfrak p)\leq i\) 等价于 \(H(\mathfrak p)\) 至少有一个 \(n-i\) 阶子式非零。一个 \(A\) 中的元素在 \(\kappa(\mathfrak p)\) 中非零，当且仅当它不属于 \(\mathfrak p\)，故这恰是第二条件。当 \(i\geq n\) 时，前两个条件都自动成立。
+
+	若 \(M_{\mathfrak p}\) 可由 \(i\) 个元素生成，模去极大理想后得到的向量空间也至多 \(i\) 维。反过来，提升纤维的一组基，由\cref{g5:cor:nakayama-generators}生成整个有限模 \(M_{\mathfrak p}\)。这证明第三条件与第一条件等价。
+
+	取补集便得到 \(\{\nu_M>i\}\) 的公式。对 \(r\geq1\)，精确等于 \(r\) 是“至少为 \(r\)”与“至多为 \(r\)”的交，得到第一个集合公式。\(r=0\) 时 \(V(\operatorname{Fitt}_{-1}(M))=V(0)=\operatorname{Spec}A\)，同一公式仍成立。
+\end{proof}
+
+因此纤维维数为固定值的点集是一个闭集与一个开集的交；维数增大的条件由 Fitting 理想的零点集给出。这恢复了\cref{g5:prop:fiber-upper-semicontinuity}，并说明其中的子式闭集如何内在地依赖于模。
+
+\begin{corollary}\label{g5:cor:fitting-support}
+	设 \(A\) 为交换含幺环，\(M\) 为有限呈示 \(A\) 模。则
+	\[
+		\operatorname{Supp}_A M=V\bigl(\operatorname{Fitt}_0(M)\bigr),
+		\qquad
+		\sqrt{\operatorname{Fitt}_0(M)}=\sqrt{\operatorname{Ann}_A M}.
+	\]
+\end{corollary}
+\begin{proof}
+	有限模 \(M_{\mathfrak p}\) 为零，当且仅当其纤维为零：从纤维消失到模消失使用 Nakayama 引理。所以上个命题在 \(i=0\) 时给出支集公式。再与\cref{g5:prop:support-annihilator}的 \(\operatorname{Supp}_A M=V(\operatorname{Ann}_A M)\) 比较，并用根式等于包含该理想的全部素理想之交，便得到根式相等。
+\end{proof}
+
+\begin{example}\label{g5:exm:fitting-crossing-support}
+	设 \(A=k[x,y]\)，\(M=A/(x)\oplus A/(y)\)。对角呈示矩阵 \(H=\operatorname{diag}(x,y)\) 给出
+	\[
+		\operatorname{Fitt}_0(M)=(xy),\qquad
+		\operatorname{Fitt}_1(M)=(x,y),\qquad
+		\operatorname{Fitt}_2(M)=A.
+	\]
+	故支集为两条坐标轴之并；在原点纤维维数为二，在坐标轴上其余素点处为一，离开两条轴则为零。第二个理想专门记录两个生成方向同时出现的位置。
+
+	Fitting 理想也未必等于零化子。令 \(A=k[t]\)、\(N=A/(t)\oplus A/(t)\)，则
+	\[
+		\operatorname{Fitt}_0(N)=(t^2),\qquad
+		\operatorname{Ann}_A N=(t).
+	\]
+	二者有相同根式和零点集，却是不同理想。只留下支集，会丢掉这部分行列式信息。
+\end{example}
 
 \subsection{局部自由秩的理想判据}
 \label{g5:subsec:0602:04}
-待撰写
+
+纤维至多 \(r\) 维，只说明局部模可用 \(r\) 个元素生成；这些元素之间仍可能有非零关系。若改用这 \(r\) 个生成元写呈示，\(\operatorname{Fitt}_{r-1}\) 就由关系矩阵的所有一阶子式，即全部条目生成。因此令这个理想等于零，恰好会消去全部关系。
+
+\begin{theorem}\label{g5:thm:fitting-locally-free}
+	设 \(A\) 为交换含幺环，\(M\) 为有限呈示 \(A\) 模，\(r\geq0\) 为整数。则 \(M\) 局部自由且在每一点的秩都为 \(r\)，当且仅当
+	\[
+		\operatorname{Fitt}_r(M)=A,
+		\qquad\operatorname{Fitt}_{r-1}(M)=0.
+	\]
+	更具体地，对每个 \(\mathfrak p\in\operatorname{Spec}A\)，有
+	\[
+		M_{\mathfrak p}\cong A_{\mathfrak p}^r
+		\quad\Longleftrightarrow\quad
+		\begin{cases}
+			\operatorname{Fitt}_r(M)A_{\mathfrak p}=A_{\mathfrak p},\\
+			\operatorname{Fitt}_{r-1}(M)A_{\mathfrak p}=0.
+		\end{cases}
+	\]
+\end{theorem}
+\begin{proof}
+	先在非零局部环 \((R,\mathfrak m)\) 上证明相应断言，记有限呈示模为 \(P\)。若 \(P\cong R^r\)，自由模的计算与呈示无关性立即给出两个理想等式。
+
+	反过来，设 \(\operatorname{Fitt}_r(P)=R\)、\(\operatorname{Fitt}_{r-1}(P)=0\)。若 \(r=0\)，由\cref{g5:prop:fitting-fiber-rank}，\(P/\mathfrak mP=0\)，Nakayama 引理给出 \(P=0\)。若 \(r\geq1\)，同一命题给出
+	\[
+		\dim_{R/\mathfrak m}P/\mathfrak mP\leq r,
+		\qquad\dim_{R/\mathfrak m}P/\mathfrak mP>r-1,
+	\]
+	因此该维数恰为 \(r\)。提升一组基得到满射 \(R^r\to P\)。有限呈示性及\cref{g5:prop:finite-presentation-kernel}保证核有限生成，从而得到新的有限呈示
+	\[
+		R^s\xrightarrow{C}R^r\longrightarrow P\longrightarrow0.
+	\]
+	呈示无关性现在十分关键：用新的 \(r\) 个生成元计算，仍有
+	\[
+		I_1(C)=\operatorname{Fitt}_{r-1}(P)=0.
+	\]
+	因此 \(C\) 的每个条目都为零，满射的核也为零，得到 \(P\cong R^r\)。
+
+	对 \(R=A_{\mathfrak p}\)、\(P=M_{\mathfrak p}\) 应用局部断言，再用 Fitting 理想与局部化相容，就得到逐点的等价条件。若整体两个理想等式成立，则每个局部模都自由且秩为 \(r\)；\cref{g5:lem:local-basis-extension}把每个点处的基扩展到主开邻域，得到所需局部自由性。
+
+	最后，若 \(M\) 局部自由且秩为 \(r\)，则 \(\operatorname{Fitt}_r(M)\) 在每一点的局部化都是单位理想，故它不可能包含在任何极大理想中，只能等于 \(A\)。理想 \(\operatorname{Fitt}_{r-1}(M)\) 在每一点的局部化都为零，由\cref{g5:prop:local-detection}，它本身为零。零环情形没有素点，模也为零，陈述按同一约定成立。
+\end{proof}
+
+不能将第二个等式换成 \(\operatorname{Fitt}_{r-1}(M)\subseteq\mathfrak p\)。包含于 \(\mathfrak p\) 只保证纤维维数至少为 \(r\)，而等于零要求关系在局部环中已经消失。下一小节的例子会使这两个条件出现明确差别。
+
+\begin{proposition}\label{g5:prop:finitely-presented-flat}
+	设 \(A\) 为交换含幺环，\(M\) 为有限呈示 \(A\) 模。以下条件等价：
+	\begin{equivalences}
+		\item \(M\) 是平坦 \(A\) 模；
+		\item \(M\) 是有限生成投射 \(A\) 模；
+		\item \(M\) 局部自由，允许不同连通部分有不同的秩；
+		\item 对每个 \(\mathfrak p\in\operatorname{Spec}A\)，记 \(r=\nu_M(\mathfrak p)\)，则
+		\[
+			\operatorname{Fitt}_{r-1}(M)A_{\mathfrak p}=0.
+		\]
+	\end{equivalences}
+\end{proposition}
+\begin{proof}
+	前三个条件的等价性已在\cref{g5:thm:finite-presented-flat}中完整证明；其中有限呈示用于保证极小满射的关系模有限生成，平坦性再借助交关系 \(K\cap IF=IK\) 和 Nakayama 引理消去这个核。
+
+	对给定 \(\mathfrak p\)，因为 \(r\) 正好是纤维维数，\cref{g5:prop:fitting-fiber-rank}自动给出 \(\operatorname{Fitt}_r(M)A_{\mathfrak p}=A_{\mathfrak p}\)。因此上个定理说明，第四条件等价于每个 \(M_{\mathfrak p}\) 都自由。有限呈示的局部基延伸引理又将此条件与第三条件等同。
+\end{proof}
+
+这里假设的是 \(M\) 作为 \(A\) 模有限呈示。一个有限呈示 \(A\) 代数通常含有无穷多个 \(A\) 模生成方向，例如 \(A[t]\)，所以不能只因它有有限多个代数生成元与关系，就套用本命题的有限模结论。
+
+\ProseParagraphBreak
+
+还可以把定理直接用于任意基变换。若 \(A\to B\)，则 \(M\otimes_A B\) 局部自由且常秩为 \(r\)，当且仅当
+\[
+	\operatorname{Fitt}_r(M)B=B,
+	\qquad\operatorname{Fitt}_{r-1}(M)B=0.
+\]
+这由\cref{g5:prop:fitting-base-change,g5:thm:fitting-locally-free}立即得到。第一项要求相关子式在新基底上局部成为单位，第二项要求较低下标的 Fitting 理想被真正杀掉。取商环与局部化时，这两个要求可以分别用方程和主开集明确实现。
 
 \subsection{幂零基底上恒定纤维维数的反例}
 \label{g5:subsec:0602:05}
-待撰写
+
+先回看\cref{g5:exm:constant-fiber-not-flat}。令 \(A=k[\varepsilon]/(\varepsilon^2)\)、\(M=A/(\varepsilon)\)。其唯一纤维是一维向量空间，而呈示矩阵 \((\varepsilon)\) 给出
+\[
+	\operatorname{Fitt}_1(M)=A,
+	\qquad\operatorname{Fitt}_0(M)=(\varepsilon)\ne0.
+\]
+第一个条件说明一个生成元足够；第二个理想中的非零元素准确记录了关系 \(\varepsilon\overline1=0\)。纤维中 \(\varepsilon\) 为零，这条关系看不见，但局部自由秩一要求整个关系理想为零。因此 Fitting 判据直接指出了非平坦性所在。
+
+\begin{example}\label{g5:exm:fitting-nilpotent-line}
+	设 \(k\) 为域，
+	\[
+		A=k[t,\varepsilon]/(\varepsilon^2),
+		\qquad M=A/(\varepsilon)\cong k[t].
+	\]
+	每个素理想都含有 \(\varepsilon\)，并通过取商与 \(k[t]\) 的素理想一一对应。因此对所有 \(\mathfrak p\in\operatorname{Spec}A\)，都有
+	\[
+		M\otimes_A\kappa(\mathfrak p)\cong\kappa(\mathfrak p),
+	\]
+	纤维维数在整条线上恒为一，包含泛型点也不例外。
+
+	然而有限呈示 \(A\xrightarrow{\varepsilon}A\to M\to0\) 给出
+	\[
+		\operatorname{Fitt}_0(M)=(\varepsilon),
+		\qquad\operatorname{Fitt}_1(M)=A.
+	\]
+	而且 \(\varepsilon\) 在每个局部环 \(A_{\mathfrak p}\) 中都非零。为验证这一点，每个元素唯一写成 \(a(t)+\varepsilon b(t)\)，乘以 \(\varepsilon\) 后得到 \(a(t)\varepsilon\)，所以
+	\[
+		\operatorname{Ann}_A(\varepsilon)=(\varepsilon).
+	\]
+	若 \(\varepsilon/1=0\) 于 \(A_{\mathfrak p}\)，就存在 \(s\notin\mathfrak p\) 使 \(s\varepsilon=0\)，但此时 \(s\in(\varepsilon)\subseteq\mathfrak p\)，矛盾。因此 \(M\) 在任何点处都不自由，也不平坦。
+
+	也可直接看平坦性失败的单射。令 \(J=(\varepsilon)\)，则 \(J\cong A/(\varepsilon)\) 且 \(J^2=0\)。将包含 \(J\hookrightarrow A\) 张量 \(M\)，得到
+	\[
+		J\otimes_A M\cong J/\varepsilon J=J
+		\longrightarrow A\otimes_A M\cong M.
+	\]
+	这个映射为零而源非零。取商基变换 \(A\to A/(\varepsilon)\) 后，\(M\) 却变为秩一自由模；Fitting 基变换公式相应地把 \((\varepsilon)\) 变成零理想。
+\end{example}
+
+从理想语言看，恒定纤维维数 \(r\) 给出的整体信息是
+\[
+	\operatorname{Fitt}_r(M)=A,
+	\qquad
+	\operatorname{Fitt}_{r-1}(M)\subseteq\sqrt{(0)}.
+\]
+第一个等式来自该理想不包含于任何素理想；第二个包含来自每个素理想都包含它。两者与纤维秩公式等价。局部自由常秩 \(r\) 则把第二个包含加强为等于零。
+
+\ProseParagraphBreak
+
+这也解释约化基环的作用。若 \(A\) 约化，则 \(\sqrt{(0)}=0\)，所以有限呈示模的纤维维数恒为 \(r\) 已足以推出局部自由常秩 \(r\)。若纤维维数只局部常值，就在每个维数恒定的主开邻域上应用同一论证；局部化仍约化，故也得到局部自由。这以 Fitting 理想重新说明了第二章\cref{g5:ex:reduced-constant-fibre}中的结论，同时指出幂零基底反例的区别：剩余域中的所有秩计算都成立，未消失的却是原环中的幂零关系理想。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

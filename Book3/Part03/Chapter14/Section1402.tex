@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 14.2 边界正则性
 % 纲要位置：几何学计划纲要.md，第 2680 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -9,32 +9,447 @@
 % * 法向导数的方程恢复
 % * 齐次及非齐次边界数据
 % * 高阶边界估计
-% * 不满足边界条件的内部估计不能替代整体结论
+% * 整体估计中的边界条件
 % 
 % 纲要内容结束
 
 \section{边界正则性}
 \label{g3:sec:1402}
 
-待撰写
+前一节的能量方法给出 \(H^1\) 弱解。要进一步求二阶导数，内部差商论证只有在平移仍留在区域中时才能使用；贴近边界时，允许的平移方向和测试函数都受边界条件约束。本节先沿边界求导，再利用椭圆方程求出尚未控制的法向导数。这一方法同时解释了边界数据为什么会出现在整体估计中。
+
+以下以有界光滑域 \(\Omega\subset\mathbb R^n\) 上的标量算子为主：
+\[
+	Pu=-\partial_i(a^{ij}\partial_j u)+cu,\qquad
+	B_\nu u=\nu_i a^{ij}\partial_j u.
+\]
+重复指标求和，\(A=(a^{ij})\) 为实对称一致正定矩阵，\(\nu\) 为外单位法向量。函数可取复值，积分配对对第一变量线性。记 \(\gamma=\operatorname{Tr}\)。正则性估计保留 \(\|u\|_{L^2}\) 项，因而不要求 \(c\ge0\)；正性在前一节负责存在性与唯一性。
 
 \subsection{边界展平与切向差商}
 \label{g3:subsec:1402:01}
-待撰写
+取边界展平图 \(x=\Phi(y)\)，把区域映成
+\[
+	Q_R^+=(-R,R)^{n-1}\times(0,R),\qquad
+	\Gamma_R=(-R,R)^{n-1}\times\{0\}.
+\]
+令 \(v=u\circ\Phi\)、\(J=\mathrm D\Phi\)、\(\rho=|\det J|\)。直接在弱形式中换元，主部系数变为
+\begin{equation}\label{g3:eq:boundary-flattened-coefficients}
+	\widetilde A=\rho J^{-1}(A\circ\Phi)J^{-T},\qquad
+	\widetilde c=\rho(c\circ\Phi),\qquad
+	\widetilde f=\rho(f\circ\Phi).
+\end{equation}
+图与逆图的一阶导数有界，\(\rho\) 有正下界，所以 \(\widetilde A\) 仍一致正定。\(C^2\) 边界图和 \(W^{1,\infty}\) 主系数保证 \(\widetilde A\in W^{1,\infty}\)。这里变换的是弱形式：不需要先假定 \(u\) 已有二阶导数。齐次 Dirichlet 条件成为 \(\gamma v=0\)；齐次 Neumann 条件使贴近平面 \(\Gamma_R\) 的测试函数仍可自由取值。
+
+下面保留一个散度形式的源项。高阶求导会产生这样的项，它使后面的递推能够使用同一个局部结论。
+
+\begin{lemma}\label{g3:lem:boundary-tangential-differences}
+	设 \(n\ge2\)、\(0<r<R\)，\(A\in W^{1,\infty}(Q_R^+)\) 为实对称矩阵，且
+	\(a^{ij}(y)\xi_j\xi_i\ge\lambda|\xi|^2\)，其中 \(\lambda>0\)。设 \(v\in H^1(Q_R^+)\)、\(F\in L^2(Q_R^+)\)、\(G\in H^1(Q_R^+;\mathbb C^n)\)，并有
+	\begin{equation}\label{g3:eq:flat-boundary-weak-div-source}
+	\int a^{ij}\partial_jv\,\overline{\partial_i\varphi}
+	=\int F\overline\varphi+\int G^i\overline{\partial_i\varphi}.
+	\end{equation}
+	积分均在 \(Q_R^+\) 上进行；测试函数在侧面与顶面附近消失。允许下列两类边界条件之一：
+	\begin{enumerate}
+		\item \(\gamma v=0\) 于 \(\Gamma_R\)，且测试函数满足 \(\gamma\varphi=0\)；
+		\item 对平面 \(\Gamma_R\) 上的迹不加限制，式中允许全部上述测试函数。
+	\end{enumerate}
+	则对每个 \(\alpha<n\)，\(\partial_\alpha\mathrm Dv\in L^2(Q_r^+)\)，且
+	\[
+	\|\partial_\alpha\mathrm Dv\|_{L^2(Q_r^+)}
+	\le C\bigl(\|F\|_{L^2(Q_R^+)}
+							+\|G\|_{H^1(Q_R^+)}+\|v\|_{H^1(Q_R^+)}\bigr).
+	\]
+	常数只依赖于 \(r,R,n,\lambda\) 与 \(\|A\|_{W^{1,\infty}}\)。
+\end{lemma}
+\begin{proof}
+	记切向差商为
+	\[
+	\delta_h v(y)=\frac{v(y+he_\alpha)-v(y)}h.
+	\]
+	取实截断函数 \(\eta\)，使其在 \(Q_r^+\) 上为一，在侧面与顶面附近为零；它可在 \(\Gamma_R\) 上非零。选 \(|h|\) 小于截断支集到人工边界距离的一半，令
+	\[
+	z=\delta_hv,\qquad \psi=\eta^2z,\qquad
+	\varphi=-\delta_{-h}\psi.
+	\]
+	固定 \(h\) 时这些函数属于 \(H^1\)。第一类边界条件下，切向平移保持零迹，故 \(\varphi\) 仍为许可的测试函数。迹与平移交换可先对光滑函数核对，再用 \(H^1\) 逼近和迹连续性取极限。第二类条件没有平面上的迹限制，同一个测试函数也可使用。
+
+	差商的分部积分公式
+	\(\int p\,\overline{-\delta_{-h}q}=\int\delta_hp\,\overline q\)
+	与乘法公式给出
+	\begin{align}
+	\int a^{ij}(y+he_\alpha)\partial_jz\,
+																	\overline{\partial_i(\eta^2z)}
+	&=\int F\,\overline{-\delta_{-h}(\eta^2z)}
+			+\int\delta_hG^i\,\overline{\partial_i(\eta^2z)}
+	\notag\\
+	&\quad-\int(\delta_ha^{ij})\partial_jv\,
+																				\overline{\partial_i(\eta^2z)}.
+	\label{g3:eq:boundary-tangential-energy}
+	\end{align}
+	支集留在较大的半柱内，所以没有侧面或顶面的边界项。取实部，左侧的主项至少为
+	\(\lambda\|\eta\mathrm Dz\|_2^2\)；截断导数引入的项至多为
+	\(C\|\eta\mathrm Dz\|_2\|z\|_2\)。
+
+	为估计右侧，关键是让差商留在测试函数上，而不对 \(F\) 求导。由\cref{g3:lem:difference-quotient-criterion}中的差商估计，
+	\[
+	\|\delta_{-h}(\eta^2z)\|_2
+	\le\|\partial_\alpha(\eta^2z)\|_2
+	\le C\bigl(\|\eta\mathrm Dz\|_2+\|z\|_2\bigr).
+	\]
+	其余两项分别使用
+	\[
+	\|\delta_hG\|_2\le\|\partial_\alpha G\|_2,\qquad
+	\|\delta_hA\|_\infty\le\|\partial_\alpha A\|_\infty,\qquad
+	\|z\|_2\le C\|\mathrm Dv\|_{L^2(Q_R^+)}.
+	\]
+	这些范数取在包含全部平移支集的半柱上。于是记
+	\(K=\|F\|_2+\|G\|_{H^1}+\|v\|_{H^1}\)，便有
+	\[
+	\lambda\|\eta\mathrm Dz\|_2^2
+	\le CK\|\eta\mathrm Dz\|_2+CK^2
+	\le \frac{\lambda}{2}\|\eta\mathrm Dz\|_2^2+C'K^2.
+	\]
+	吸收后得到与 \(h\) 无关的界。
+
+	因此 \(\delta_h(\partial_jv)\) 在 \(L^2(Q_r^+)\) 中有弱收敛子列。对内部紧支光滑函数 \(\chi\) 使用差商分部积分并令 \(h\to0\)，极限满足
+	\[
+	\int w\,\overline\chi=-\int\partial_jv\,\overline{\partial_\alpha\chi},
+	\]
+	故 \(w=\partial_\alpha\partial_jv\)。弱下半连续性给出所列估计。虽然辨认弱导数只使用内部测试函数，所得积分界覆盖整个 \(Q_r^+\)，包括任意接近平面的部分。
+\end{proof}
 
 \subsection{法向导数的方程恢复}
 \label{g3:subsec:1402:02}
-待撰写
+切向估计已经控制所有含至少一个切向指标的二阶导数。唯一遗漏的是 \(\partial_n^2v\)。它不能靠向外平移取得，但方程在法向上具有非零的最高阶系数。
+
+\begin{lemma}\label{g3:lem:flat-boundary-h2-div-source}
+	在\cref{g3:lem:boundary-tangential-differences}的假设下，
+	\(v\in H^2(Q_r^+)\)，并且
+	\[
+	\|v\|_{H^2(Q_r^+)}
+	\le C\bigl(\|F\|_{L^2(Q_R^+)}
+							+\|G\|_{H^1(Q_R^+)}+\|v\|_{H^1(Q_R^+)}\bigr).
+	\]
+	一维半区间上相同结论成立，且不需要切向步骤。
+\end{lemma}
+\begin{proof}
+	先把切向估计应用于一个严格介于 \(Q_r^+\) 与 \(Q_R^+\) 之间的半柱。在分布意义下，弱方程给出
+	\[
+	\partial_n(a^{nn}\partial_nv)
+	=-F+\partial_iG^i
+							-\sum_{(i,j)\ne(n,n)}\partial_i(a^{ij}\partial_jv).
+	\]
+	右侧属于 \(L^2\)：最后一个和式中的每个二阶导数都含切向指标，系数导数与 \(\mathrm Dv\) 的乘积也属于 \(L^2\)。因此 \(a^{nn}\partial_nv\) 有 \(L^2\) 的法向弱导数。由于
+	\(a^{nn}\ge\lambda\)，其倒数属于 \(W^{1,\infty}\)。弱乘法公式遂给出
+	\[
+	\partial_n^2v
+	=\frac1{a^{nn}}\partial_n(a^{nn}\partial_nv)
+			-\frac{\partial_na^{nn}}{a^{nn}}\partial_nv\in L^2.
+	\]
+	逐项估计即得结论。这个写法先对通量 \(a^{nn}\partial_nv\) 求导，再除以系数，因而不预先假定 \(\partial_n^2v\) 是函数。一维时和式为空，同一通量计算直接完成证明。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:boundary-h2-homogeneous}
+	设 \(\Omega\subset\mathbb R^n\) 为有界 \(C^2\) 域，\(A\in W^{1,\infty}(\Omega)\) 为实对称一致正定矩阵，\(c\in L^\infty(\Omega;\mathbb R)\)，
+	\(P=-\partial_i(a^{ij}\partial_j)+c\)。若 \(f\in L^2(\Omega)\)，而 \(u\in H^1(\Omega)\) 满足下列齐次边值问题之一：
+	\[
+	Pu=f,\quad\gamma u=0;\qquad
+	Pu=f,\quad B_\nu u=0,
+	\]
+	其中第一式以全部 \(H_0^1(\Omega)\) 函数测试，第二式以全部 \(H^1(\Omega)\) 函数测试，则
+	\(u\in H^2(\Omega)\)，且
+	\begin{equation}\label{g3:eq:homogeneous-boundary-h2-estimate}
+	\|u\|_{H^2(\Omega)}
+	\le C\bigl(\|f\|_{L^2(\Omega)}+\|u\|_{L^2(\Omega)}\bigr).
+	\end{equation}
+	Neumann 条件在升级后等于 \(H^2\) 函数的通常共法向导数迹。
+\end{theorem}
+\begin{proof}
+	在边界图中按式\eqref{g3:eq:boundary-flattened-coefficients}换元，将零阶项移到右侧，取
+	\(F=\widetilde f-\widetilde c\,v\)、\(G=0\)。前两个引理给出较小边界图上的 \(H^2\) 估计。内部图使用\cref{g3:thm:weak-interior-h2}；其假设由实对称一致正定主部满足。有限覆盖和坐标范数等价得到
+	\[
+	\|u\|_{H^2}\le C(\|f\|_2+\|u\|_{H^1}).
+	\]
+	两类齐次问题都允许以 \(u\) 本身测试。取实部并记 \(c_-=\max\{-c,0\}\)，得
+	\[
+	\lambda\|\mathrm Du\|_2^2
+	\le \|f\|_2\|u\|_2+\|c_-\|_\infty\|u\|_2^2
+	\le C(\|f\|_2^2+\|u\|_2^2).
+	\]
+	代回即得整体估计。
+
+	升级为 \(H^2\) 后，\(A\mathrm Du\in H^1\)，故其边界迹存在。由\cref{g3:prop:weak-boundary-integration}逐分量分部积分，
+	\[
+	\int_\Omega\bigl(a^{ij}\partial_ju\,\overline{\partial_iw}
+																									+cu\overline w\bigr)
+	-\int_\Omega f\overline w
+	=\int_{\partial\Omega}B_\nu u\,\overline{\gamma w}
+	\quad(w\in H^1).
+	\]
+	左侧在齐次 Neumann 情形为零。每个光滑边界函数都有光滑的局部法向常值延拓，拼接后可作为 \(\gamma w\)，所以 \(B_\nu u=0\) 的迹成立。这也确认了它与前一节定义的弱共法向导数一致。
+\end{proof}
+
+在紧的光滑带边界 黎曼流形上，上述定理同样适用于
+\(P=-\operatorname{div}(A\nabla)+c\)，其中 \(A\) 是切丛上光滑、实对称、一致正定的自同态。坐标中的体积密度并入 \(\widetilde A,\widetilde c,\widetilde f\)，正密度与有限坐标覆盖保持所有估计；边界积分使用诱导的面积密度。因此以后在流形上应用本节的标量结论时，共法向导数仍取 \(A\nabla u\) 与几何外法向 \(\nu\) 的配对。
 
 \subsection{齐次及非齐次边界数据}
 \label{g3:subsec:1402:03}
-待撰写
+若边界值不为零，可以减去一个具有这些边界值的函数。但为了得到 \(H^2\) 结论，减去的函数也必须属于 \(H^2\)。这一要求把 Dirichlet 数据放在 \(H^{3/2}(\partial\Omega)\)，把 Neumann 数据放在 \(H^{1/2}(\partial\Omega)\)。先建立这些空间及提升，才能准确实施这一步。
+
+设 \(m\ge1\)。对 \(s\ge0\)，在 \(\mathbb R^m\) 上用单位化 Fourier 变换定义
+\[
+	\|h\|_{H^s(\mathbb R^m)}^2
+	=\int_{\mathbb R^m}\langle\xi\rangle^{2s}|\widehat h(\xi)|^2\,\mathrm d\xi,
+	\qquad \langle\xi\rangle=(1+|\xi|^2)^{1/2}.
+\]
+整数阶时它与弱导数范数等价。本节只需要半整数阶。为把定义搬到边界，须先确认它在换坐标及乘截断下稳定。
+
+\begin{lemma}\label{g3:lem:half-integer-localization}
+	对整数 \(\ell\ge0\)，\(H^{\ell+1/2}(\mathbb R^m)\) 的范数等价于
+	\[
+	\|h\|_{H^\ell}^2+
+	\sum_{|\alpha|=\ell}
+	\iint_{\mathbb R^m\times\mathbb R^m}
+	\frac{|\partial^\alpha h(x)-\partial^\alpha h(y)|^2}
+						{|x-y|^{m+1}}\,\mathrm dx\,\mathrm dy.
+	\]
+	光滑紧支函数的乘法，以及紧支局部函数在光滑坐标变换下的拉回，均在这些空间上有界。因此可用有限边界图和单位分解定义
+	\(H^{\ell+1/2}(\partial\Omega)\)，且不同选择给出等价范数。
+\end{lemma}
+\begin{proof}
+	对 Schwartz 函数 \(h\)，将 \(y=x+z\) 代入双重积分，使用 Plancherel 等式与非负积分换序，得到
+	\[
+	[h]_{1/2}^2
+	=\int|\widehat h(\xi)|^2
+			\left(\int\frac{|e^{i\xi\cdot z}-1|^2}{|z|^{m+1}}\,\mathrm dz\right)\mathrm d\xi
+	=C_m\int|\xi|\,|\widehat h(\xi)|^2\,\mathrm d\xi.
+	\]
+	内层积分在零点附近由分子 \(O(|z|^2)\) 控制，在无穷远由分子有界控制；旋转和伸缩给出最后的等式，且 \(0<C_m<\infty\)。于是
+	\(\|h\|_2^2+[h]_{1/2}^2\) 等价于 \(H^{1/2}\) 范数。对 \(\ell\) 阶导数求和，并使用
+	\(\sum_{|\alpha|=\ell}|\xi^\alpha|^2\asymp|\xi|^{2\ell}\)，得到一般等价式。在 Fourier 侧用光滑紧支函数于加权 \(L^2\) 中逼近，其逆变换为 Schwartz 函数。对逼近列应用上述等式并完成，便得 Fourier 定义与双重积分范数的等价性。
+
+	若 \(a\) 是有界 Lipschitz 函数，则
+	\[
+	|a(x)h(x)-a(y)h(y)|
+	\le \|a\|_\infty|h(x)-h(y)|
+						+|a(x)-a(y)|\,|h(y)|.
+	\]
+	第二项在 \(|x-y|<1\) 用 Lipschitz 界，在 \(|x-y|\ge1\) 用有界性；相应核积分均有限。故乘以 \(a\) 在 \(H^{1/2}\) 上有界。高阶情形对乘积求 \(\ell\) 阶导数：每一项是光滑系数乘某个 \(\partial^\beta h\)，\(|\beta|\le\ell\)，而 Fourier 权重给出
+	\(\|\partial^\beta h\|_{H^{1/2}}\le C\|h\|_{H^{\ell+1/2}}\)。
+
+	对坐标变换，在包含局部支集的较大坐标邻域上，映射与逆映射均为 Lipschitz，体积比有上下界，因而双重积分的距离核和体积因子受常数控制。两个点中有一个离开该较大邻域时，紧支集与其补集之间有正距离，所得积分只需 \(L^2\) 控制。高阶拉回的链式法则把问题归结为已证的 \(H^{1/2}\) 拉回与光滑乘法。两组边界图取交并细分单位分解，便得两个全局范数的相互控制。局部卷积再拼接还说明 \(C^\infty(\partial\Omega)\) 在这些空间中稠密。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:half-integer-boundary-trace}
+	设 \(\Omega\subset\mathbb R^n\) 为有界光滑域，\(q\ge1\) 为整数。迹映射有连续满射延拓
+	\[
+	\gamma:H^q(\Omega)\longrightarrow H^{q-1/2}(\partial\Omega),
+	\]
+	并有有界线性右逆。若 \(q\ge2\)，联合迹
+	\[
+	(\gamma,\gamma\partial_\nu):H^q(\Omega)\longrightarrow
+	H^{q-1/2}(\partial\Omega)\times H^{q-3/2}(\partial\Omega)
+	\]
+	也有有界线性右逆。这里 \(\partial_\nu\) 表示普通外法向导数。这些结论对紧的光滑带边界流形及光滑向量丛逐分量成立；丛情形固定光滑联络，并将法向导数换为 \(\nabla_\nu\)。
+\end{theorem}
+\begin{proof}
+	先在 \(\mathbb R^{n-1}\times(0,\infty)\) 上沿 \(y'\) 作部分 Fourier 变换，记 \(t=y_n\)、\(\lambda_\xi=\langle\xi\rangle\)。对闭半空间上的光滑紧支函数，一维分部积分给出
+	\[
+	|\widehat v(\xi,0)|^2
+	\le2\int_0^\infty|\widehat v|\,|\partial_t\widehat v|\,\mathrm dt
+	\le\lambda_\xi\int_0^\infty|\widehat v|^2\,\mathrm dt
+					+\lambda_\xi^{-1}\int_0^\infty|\partial_t\widehat v|^2\,\mathrm dt.
+	\]
+	两边乘 \(\lambda_\xi^{2q-1}\) 并对 \(\xi\) 积分，右侧由整数阶 \(H^q\) 范数控制。这证明 \(\gamma:H^q\to H^{q-1/2}\) 的界。将 \(q\) 换为 \(q-1\) 并应用于 \(\partial_tv\)，便得一阶法向迹的界。闭半空间上的高阶光滑稠密性已在\cref{g3:prop:higher-order-boundary-extension}中用向内平移与卷积证明，故两种迹均连续延拓。
+
+	右逆可直接写出。只指定零阶迹 \(g\) 时，取
+	\[
+	\widehat{E_0g}(\xi,t)=e^{-t\lambda_\xi}\widehat g(\xi).
+	\]
+	同时指定 \(v|_{t=0}=g\)、\(\partial_tv|_{t=0}=h\) 时，取
+	\begin{equation}\label{g3:eq:fourier-boundary-jet-lift}
+	\widehat{E(g,h)}(\xi,t)
+	=e^{-t\lambda_\xi}
+							\bigl((1+t\lambda_\xi)\widehat g(\xi)+t\widehat h(\xi)\bigr).
+	\end{equation}
+	因为 \(\partial_t[(1+t\lambda_\xi)e^{-t\lambda_\xi}]_{t=0}=0\)，两个迹恰为 \(g,h\)。对任意 \(|\alpha|+b\le q\)，求 \(\partial_{y'}^\alpha\partial_t^b\) 后，\(g\) 项由常数倍
+	\(\lambda_\xi^{|\alpha|+b}(1+t\lambda_\xi)e^{-t\lambda_\xi}|\widehat g|\)
+	控制，\(h\) 项由常数倍
+	\(\lambda_\xi^{|\alpha|+b-1}(1+t\lambda_\xi)e^{-t\lambda_\xi}|\widehat h|\)
+	控制。变量代换 \(s=t\lambda_\xi\) 因而给出
+	\[
+	\|E(g,h)\|_{H^q}^2
+	\le C_q\left(
+			\int\lambda_\xi^{2q-1}|\widehat g|^2\,\mathrm d\xi+
+			\int\lambda_\xi^{2q-3}|\widehat h|^2\,\mathrm d\xi\right).
+	\]
+	\(E_0\) 有相同的第一项估计。先对光滑数据计算，再按此界完成，便得到全部数据的线性提升；迹连续性保证完成后的迹仍正确。
+
+	现在用边界法向领圈拼接。欧氏情形的领圈映射为
+	\(\Phi(p,t)=p-t\nu(p)\)。在 \(t=0\) 它的微分可逆；局部逆函数定理和边界紧性给出统一的正宽度。若任意小宽度仍有两个不同点映到同一点，取收敛子列后它们趋向同一边界点，便与该点附近的局部单射性矛盾。因此可取一个全局领圈。
+
+	取边界单位分解 \(\{\psi_a\}\)，把 \(\psi_ag,\psi_ah\) 在边界图中视为紧支函数。在领圈坐标里 \(\partial_t=-\partial_\nu\)，故对要求的外法向数据使用式\eqref{g3:eq:fourier-boundary-jet-lift}中的第二输入 \(-\psi_ah\)。将提升乘以切向截断 \(\theta_a\) 及法向截断 \(\eta(t)\)：\(\theta_a\) 在 \(\operatorname{supp}\psi_a\) 附近为一，\(\eta\) 在 \(t=0\) 附近恒为一。送回领圈并在其外补零，有限求和便得全局提升。截断不改变两个指定迹，也不损失整数阶范数；\cref{g3:lem:half-integer-localization}控制输入的局部范数。只需零阶迹时用 \(E_0\) 作同样拼接。
+
+	一般流形用由法向测地线给出的领圈，局部可逆性和紧性论证相同。向量丛在领圈上取沿法向平行移动的局部标架，逐分量构造再用单位分解求和；变换矩阵的光滑乘法有界性给出范数界。一维时边界是有限个端点，所有列出的边界空间都取端点数据的有限维范数；以局部常数、一次函数乘截断即可分别指定函数值与外法向导数。
+\end{proof}
+
+特别地，前一节定义的迹像空间有具体描述
+\[
+	\mathcal T(\partial\Omega)=\gamma H^1(\Omega)=H^{1/2}(\partial\Omega),
+	\qquad
+	\inf_{\gamma w=g}\|w\|_{H^1}\asymp\|g\|_{H^{1/2}}.
+\]
+一个方向由迹估计得到，另一个方向由有界右逆得到。因此前一节的连续反线性对偶 \(\mathcal T^\dagger\) 也可记作 \(H^{-1/2}(\partial\Omega)\)。这个负阶记号表示对偶空间，不要求对边界分布另作 Fourier 定义。
+\symidx{\(H^{q-1/2}(\partial\Omega)\)：以局部 Fourier 范数定义的半整数阶边界 Sobolev 空间}
+
+\begin{corollary}\label{g3:cor:boundary-conormal-lifting}
+	设 \(\Omega\) 为有界光滑域，\(A\) 光滑、实对称且一致正定。对每个整数 \(q\ge2\)，存在有界线性算子
+	\[
+	E_N:H^{q-3/2}(\partial\Omega)\longrightarrow H^q(\Omega),
+	\qquad \gamma E_Ng=0,\quad B_\nu E_Ng=g.
+	\]
+\end{corollary}
+\begin{proof}
+	令 \(a_\nu=\nu\cdot A\nu\)，它是光滑正函数，有正下界。对联合迹使用前一定理，指定
+	\(\gamma w=0\)、\(\gamma\partial_\nu w=g/a_\nu\)。光滑乘法在半整数空间上有界，故提升有界。又因零阶迹为零，所有切向一阶导数的迹为零，从而
+	\(B_\nu w=a_\nu\,\gamma\partial_\nu w=g\)。
+	这里迹与切向求导的交换先在光滑函数上成立，再由 \(H^q\) 光滑逼近及两个迹映射的连续性成立。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:boundary-h2-inhomogeneous}
+	设 \(\Omega\) 为有界光滑域，\(A,c\) 光滑，\(A\) 实对称一致正定，\(c\) 实值。若 \(f\in L^2(\Omega)\)，则满足 \(Pu=f\) 的 \(H^1\) 弱解在下列任一条件下属于 \(H^2(\Omega)\)：
+	\[
+	\gamma u=g_D\in H^{3/2}(\partial\Omega),\qquad
+	B_\nu u=g_N\in H^{1/2}(\partial\Omega).
+	\]
+	分别有
+	\[
+	\begin{split}
+	\|u\|_{H^2}&\le C\bigl(\|f\|_2+\|g_D\|_{H^{3/2}}+\|u\|_2\bigr),\\
+	\|u\|_{H^2}&\le C\bigl(\|f\|_2+\|g_N\|_{H^{1/2}}+\|u\|_2\bigr).
+	\end{split}
+	\]
+	Neumann 弱条件是
+	\(Q(u,w)=(f,w)_{L^2}+\int_{\partial\Omega}g_N\overline{\gamma w}\)
+	对全部 \(w\in H^1\) 成立。
+\end{corollary}
+\begin{proof}
+	Dirichlet 情形取有界 \(H^2\) 提升 \(w=E_0g_D\)；Neumann 情形取 \(w=E_Ng_N\)。则 \(u-w\) 满足相应的齐次弱条件和方程
+	\(P(u-w)=f-Pw\)。对它应用\cref{g3:thm:boundary-h2-homogeneous}，再用
+	\(\|Pw\|_2\le C\|w\|_{H^2}\) 及提升界，即得结论。
+\end{proof}
 
 \subsection{高阶边界估计}
 \label{g3:subsec:1402:04}
-待撰写
+继续求导时，法向导数仍由方程恢复，边界条件仍只由切向求导来保持。为了不在 Neumann 情形遗漏系数导数所产生的边界项，应始终对弱形式求切向导数；这样交换子自然进入式\eqref{g3:eq:flat-boundary-weak-div-source}的向量源项。
 
-\subsection{不满足边界条件的内部估计不能替代整体结论}
+\begin{theorem}\label{g3:thm:boundary-higher-regularity}
+	设 \(\Omega\subset\mathbb R^n\) 为有界光滑域，\(A\in C^\infty(\overline\Omega)\) 为实对称一致正定矩阵，\(c\in C^\infty(\overline\Omega;\mathbb R)\)，
+	\(P=-\partial_i(a^{ij}\partial_j)+c\)。令 \(k\ge0\) 为整数，\(f\in H^k(\Omega)\)。若 \(u\in H^1(\Omega)\) 是满足下列任一条件的弱解，则 \(u\in H^{k+2}(\Omega)\)：
+	\[
+	Pu=f,\quad\gamma u=g_D\in H^{k+3/2}(\partial\Omega);
+	\qquad
+	Pu=f,\quad B_\nu u=g_N\in H^{k+1/2}(\partial\Omega).
+	\]
+	相应估计为
+	\begin{align}
+	\|u\|_{H^{k+2}}
+	&\le C_k\bigl(\|f\|_{H^k}+\|g_D\|_{H^{k+3/2}}
+																									+\|u\|_{L^2}\bigr),\label{g3:eq:dirichlet-higher-boundary-estimate}\\
+	\|u\|_{H^{k+2}}
+	&\le C_k\bigl(\|f\|_{H^k}+\|g_N\|_{H^{k+1/2}}
+																									+\|u\|_{L^2}\bigr).\label{g3:eq:neumann-higher-boundary-estimate}
+	\end{align}
+	常数由区域的有限个边界图、椭圆性下界和有限阶系数界控制。相同结论适用于紧的光滑带边界 黎曼流形上的标量算子
+	\(-\operatorname{div}(A\nabla)+c\)。
+\end{theorem}
+\begin{proof}
+	先证齐次条件。\(k=0\) 已证。设 \(k\ge1\)，并已由前一阶结论知道
+	\(u\in H^{k+1}\)。在展平坐标中仍将零阶项移到右侧，记主系数为 \(a^{ij}\)，记 \(F=\widetilde f-\widetilde c\,v\)。于是 \(F\in H^k\)，且
+	\(\|F\|_{H^k}\le C(\|f\|_{H^k}+\|u\|_{H^k})\)。
+
+	对纯切向多重指标 \(\beta\)，\(|\beta|=k\)，令 \(w=\partial_{y'}^\beta v\in H^1\)。在原弱等式中对测试函数作切向分部积分，得到
+	\begin{equation}\label{g3:eq:boundary-tangential-commutator}
+	\int a^{ij}\partial_jw\,\overline{\partial_i\varphi}
+	=\int\partial_{y'}^\beta F\,\overline\varphi
+								+\int G_\beta^i\,\overline{\partial_i\varphi},
+	\qquad
+	G_\beta^i=
+	-\sum_{0<\sigma\le\beta}\binom\beta\sigma
+			(\partial_{y'}^\sigma a^{ij})
+							\partial_j\partial_{y'}^{\beta-\sigma}v.
+	\end{equation}
+	这一等式可先以光滑测试函数的切向导数代入原弱形式，再按分布导数的定义移动导数；因此不要求 \(v\) 预先具有 \(k+2\) 阶导数。在 Dirichlet 情形，
+	\(\gamma w=\partial_{y'}^\beta\gamma v=0\)，其迹交换由前一小节的迹定理和 \(H^{k+1}\) 逼近给出；在 Neumann 情形，测试函数在平面上仍任意，交换子已包含在 \(G_\beta\) 中。
+
+	每一项 \(G_\beta\) 对 \(v\) 至多使用 \(k\) 阶导数，对它再求一个导数至多使用 \(k+1\) 阶，故
+	\[
+	\|G_\beta\|_{H^1}\le C\|v\|_{H^{k+1}}.
+	\]
+	\Cref{g3:lem:flat-boundary-h2-div-source}应用于 \(w\)，给出
+	\[
+	\|\partial_{y'}^\beta v\|_{H^2(Q_r^+)}
+	\le C\bigl(\|F\|_{H^k(Q_R^+)}
+																									+\|v\|_{H^{k+1}(Q_R^+)}\bigr).
+	\]
+	因而所有总阶数为 \(k+2\)、法向指标个数不超过二的导数都已受控。
+
+	还需恢复法向指标更多的导数。写成非散度形式，
+	\begin{equation}\label{g3:eq:normal-high-derivative-recovery}
+	-a^{nn}\partial_n^2v
+	=F+\sum_{(i,j)\ne(n,n)}a^{ij}\partial_i\partial_jv
+							+\sum_{i,j}(\partial_i a^{ij})\partial_jv.
+	\end{equation}
+	对法向指标数 \(r=3,\ldots,k+2\) 逐次归纳。给定 \(|\gamma|=k+2\)、\(\gamma_n=r\)，对上式施加 \(\partial^{\gamma-2e_n}\)，把左侧最高阶项
+	\(-a^{nn}\partial^\gamma v\) 单独留下。右侧中落在 \(v\) 上的 \(k+2\) 阶导数，来自 \((i,j)\ne(n,n)\)，所以法向指标数至多为 \(r-1\)，已由归纳受控；凡有导数落在系数上的项，对 \(v\) 至多求 \(k+1\) 阶导数。对 \(F\) 只求 \(k\) 阶导数。故右侧均属于 \(L^2\)。除以 \(a^{nn}\ge\lambda\)，便得到 \(\partial^\gamma v\in L^2\) 及同型估计。所有等式在分布意义下进行，系数光滑保证求导与乘法合法。
+
+	在内部图中，相同的弱形式求导可使用全部方向；对每个 \(|\beta|=k\) 应用内部差商证明，便直接得到 \(H^{k+2}\) 控制。该证明对 \(G_\beta\in H^1\) 的项使用
+	\(\|\delta_hG_\beta\|_2\le\|\mathrm DG_\beta\|_2\)，与式\eqref{g3:eq:boundary-tangential-energy}完全相同，且无平面上的测试限制。有限个缩小的图仍覆盖闭包，于是
+	\[
+	\|u\|_{H^{k+2}}\le C_k(\|f\|_{H^k}+\|u\|_{H^{k+1}}).
+	\]
+	前一阶的齐次估计把 \(\|u\|_{H^{k+1}}\) 控制为
+	\(C(\|f\|_{H^{k-1}}+\|u\|_2)\)，完成齐次归纳。一维时直接对通量方程递推，或只用式\eqref{g3:eq:normal-high-derivative-recovery}，即可得到相同结论。
+
+	对非齐次数据，在\cref{g3:thm:half-integer-boundary-trace,g3:cor:boundary-conormal-lifting}中取 \(q=k+2\)。相应提升 \(w\) 属于 \(H^{k+2}\)，且
+	\[
+	\|Pw\|_{H^k}\le C_k\|w\|_{H^{k+2}}.
+	\]
+	将齐次结论用于 \(u-w\)，再代入提升界，分别得到两种估计。流形情形的密度、坐标变换及有限求和与二阶证明相同。
+\end{proof}
+
+若区域、系数、\(f\) 和相应边界数据都光滑，则弱解属于每个整数阶 \(H^q(\Omega)\)。\Cref{g3:prop:higher-order-boundary-extension}给出各阶有界延拓；再用高阶 Sobolev 嵌入，得到 \(u\in C^\infty(\overline\Omega)\)。这里的光滑性包含所有阶导数连续延伸到边界，正是局部内部正则性尚未提供的结论。
+
+\subsection{整体估计中的边界条件}
 \label{g3:subsec:1402:05}
-待撰写
+整体估计包含两个不同的信息来源：方程控制内部导数，边界条件控制贴近边界的行为。下面的调和函数族可以把二者分开观察。
+
+\begin{example}\label{g3:exm:harmonic-boundary-growth}
+	在单位圆盘 \(D\subset\mathbb R^2\) 上令
+	\(u_j(r,\theta)=r^j\cos(j\theta)\)，\(j\ge2\)。它们满足
+	\(\Delta u_j=0\)，但
+	\[
+	\|u_j\|_{L^2(D)}^2=\frac{\pi}{2j+2},\qquad
+	\|\nabla u_j\|_{L^2(D)}^2=\pi j,\qquad
+	\sum_{a,b=1}^2\|\partial_a\partial_bu_j\|_{L^2(D)}^2
+							=2\pi j^2(j-1).
+	\]
+	前两式由极坐标积分得到。对第三式，写 \(u_j=\operatorname{Re}(x+iy)^j\)，则
+	\[
+	u_{j,xx}=j(j-1)\operatorname{Re}(x+iy)^{j-2},\quad
+	u_{j,xy}=-j(j-1)\operatorname{Im}(x+iy)^{j-2},\quad
+	u_{j,yy}=-u_{j,xx},
+	\]
+	平方求和再积分即得。因此不存在对所有光滑 \(u\) 都成立的估计
+	\[
+	\|u\|_{H^2(D)}\le C(\|\Delta u\|_{L^2(D)}+\|u\|_{L^2(D)}).
+	\]
+	这些函数的 Dirichlet 数据为 \(\cos(j\theta)\)，外法向 Neumann 数据为 \(j\cos(j\theta)\)，并不满足齐次条件。高频增长来自边界数据，而非内部源项。
+\end{example}
+
+对固定的 \(0<\rho<1\)，同一族在较小圆盘 \(D_\rho\) 上的各阶导数带有 \(\rho^{j-s}\) 因子，因而与内部估计完全相容。差别在于内部图与边界之间始终有正距离。用越来越贴近边界的内部图穷尽区域时，截断函数的导数及估计常数会增长，不能由此得到一个统一的整体常数。
+
+\ProseParagraphBreak
+本节的高阶结论采用光滑边界与光滑系数。前一节若在同一连通边界上让 Dirichlet 条件与 Neumann 条件相接，交界处的测试空间不再具有本节的纯 Dirichlet 或纯 Neumann 形式；此处的论证只能应用于远离交界的边界片。下一节的微分形式边界条件则是在每个边界点分拆不同分量，所需系统估计将另行说明其测试空间和低阶边界项。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 12.3 Delzant 多面体与构造
 % 纲要位置：几何学计划纲要.md，第 3940 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,233 @@
 \section{Delzant 多面体与构造}
 \label{g4:sec:1203}
 
-待撰写
+凸性定理从一个 Hamilton 环面作用得到多面体。本节反过来从多面体构造辛流形：给每个余维一面引入一个复坐标，把距离该面的线性函数变成这个坐标模长的平方，再用辛约化消去多余相位。哪些相位可以自由消去，正由顶点处的整数格条件决定。
 
 \subsection{简单、有理和光滑格条件}
 \label{g4:subsec:1203:01}
-待撰写
+
+固定
+\[
+	N=\mathbb Z^n,\qquad
+	\mathfrak t=N\otimes_{\mathbb Z}\mathbb R,\qquad
+	T=\mathfrak t/(2\pi N),\qquad
+	M_{\mathbb Z}=\operatorname{Hom}(N,\mathbb Z).
+\]
+多面体位于对偶空间 \(\mathfrak t^*=M_{\mathbb Z}\otimes\mathbb R\) 中。以下多面体均紧、凸、具有非空内部，且每个半空间不等式都对应一个实际的余维一面，不保留冗余不等式。
+
+\begin{definition}\label{g4:def:1203:delzant-polytope}
+	对一个 \(n\) 维凸多面体 \(P\subset\mathfrak t^*\)，若每个顶点恰落在 \(n\) 个余维一面上，则称它为\term[jiandanduomianti]{简单多面体}[simple polytope]。若各余维一面有整数法向量，则称它为关于 \(N\) 的\term[youliduomianti]{有理多面体}[rational polytope]；将法向量取为朝外的原始格向量后，可唯一写成
+	\begin{equation}\label{g4:eq:1203:facet-presentation}
+		P=\{x\in\mathfrak t^*:\langle x,\nu_j\rangle\le\lambda_j,\
+		j=1,\ldots,d\},\qquad \nu_j\in N.
+	\end{equation}
+	这里“原始”表示 \(\nu_j\) 不是另一格向量的整数倍 \(k\nu\)、\(|k|>1\)。
+
+	若 \(P\) 简单、有理，且每个顶点 \(v\) 所属的 \(n\) 个面的原始外法向量构成 \(N\) 的整数基底，则称 \(P\) 为\term[Delzantduomianti]{Delzant 多面体}[Delzant polytope]，这一基底要求称为光滑格条件。
+\end{definition}
+
+“有理”约束的是面的方向，并未要求顶点坐标为有理数或整数；支撑常数 \(\lambda_j\) 可以是任意实数。固定一个顶点，记相交面的指标集为 \(I_v=\{j_1,\ldots,j_n\}\)。若 \(m_1,\ldots,m_n\) 是 \(\nu_{j_1},\ldots,\nu_{j_n}\) 的对偶基，则从 \(v\) 出发的边沿 \(-m_i\) 方向。因此光滑格条件也等价于：每个顶点的原始内向边向量构成对偶格 \(M_{\mathbb Z}\) 的基底。负号来自我们选择了外法向量。
+
+\ProseParagraphBreak
+
+在二维，简单性对非退化凸多边形自动成立，光滑格条件则要求相邻两个原始外法向量组成的矩阵行列式为 \(\pm1\)。例如
+\[
+	\{x_1,x_2\ge0,\ x_1+x_2\le s\},\qquad
+	[0,a]\times[0,b],\qquad s,a,b>0
+\]
+都满足条件。在第一个三角形中再加入 \(x_1+x_2\ge\varepsilon\)、\(0<\varepsilon<s\)，所得截角四边形也满足条件；新的原始外法向量是 \((-1,-1)\)。这些多面体分别预示射影空间、乘积和吹起的构造。
+
+\input{Figures/Ch12-Polytopes}
 
 \subsection{从多面体构造辛约化}
 \label{g4:subsec:1203:02}
-待撰写
+
+给定式\eqref{g4:eq:1203:facet-presentation}中的 Delzant 多面体，定义整数线性映射
+\begin{equation}\label{g4:eq:1203:normal-map}
+	\beta:\mathbb R^d\longrightarrow\mathfrak t,\qquad
+	\beta(e_j)=\nu_j.
+\end{equation}
+在任一顶点挑出的 \(n\) 个 \(\nu_j\) 已经构成整数基，所以
+\(\beta(\mathbb Z^d)=N\)。它诱导满射环面同态
+\[
+	\overline\beta:\mathbb T^d\longrightarrow T,\qquad
+	K=\ker\overline\beta,\qquad \mathfrak k=\ker\beta.
+\]
+
+\begin{lemma}\label{g4:lem:1203:kernel-torus}
+	\(K\) 是连通的 \((d-n)\) 维环面，且有正合列
+	\[
+		0\longrightarrow\mathfrak k
+		\xrightarrow{\ i\ }\mathbb R^d
+		\xrightarrow{\ \beta\ }\mathfrak t\longrightarrow0,
+		\qquad
+		0\longrightarrow\mathfrak t^*
+		\xrightarrow{\ \beta^*\ }(\mathbb R^d)^*
+		\xrightarrow{\ i^*\ }\mathfrak k^*\longrightarrow0.
+	\]
+\end{lemma}
+\begin{proof}
+	选顶点 \(v\)。把 \(N\) 中的向量按 \(\{\nu_j:j\in I_v\}\) 展开，并把系数放回 \(\mathbb Z^d\) 的对应位置，得到整数右逆 \(a:N\to\mathbb Z^d\)，满足 \(\beta a=I\)。于是
+	\[
+		\mathbb Z^d=(\ker\beta\cap\mathbb Z^d)\oplus a(N),
+		\qquad
+		\mathbb R^d=\mathfrak k\oplus a(\mathfrak t).
+	\]
+	取 \(2\pi\) 倍整数格的商后，
+	\[
+		\mathbb T^d\cong
+		\bigl(\mathfrak k/(2\pi(\mathfrak k\cap\mathbb Z^d))\bigr)\times T.
+	\]
+	在这个分解中 \(\overline\beta\) 是第二因子投影，所以其核恰为第一个连通环面。两条线性正合列由核、像及线性对偶得到。
+\end{proof}
+
+在 \(\mathbb C^d\) 上取 \(\omega_0=\sum_j\mathrm{d}x_j\wedge\mathrm{d}y_j\)，让 \(\mathbb T^d\) 按正向逐坐标旋转
+\[
+	t\cdot z=(e^{it_1}z_1,\ldots,e^{it_d}z_d)
+\]
+作用。其矩映射与平移后的矩映射为
+\[
+	\mu_{\mathbb C}(z)=-\frac12(|z_1|^2,\ldots,|z_d|^2),\qquad
+	\phi(z)=\mu_{\mathbb C}(z)+\lambda,\quad
+	\lambda=(\lambda_1,\ldots,\lambda_d).
+\]
+正旋转的基本场为 \(-y_j\partial_{x_j}+x_j\partial_{y_j}\)，插入标准辛形式得到
+\(-\mathrm{d}(|z_j|^2/2)\)，所以这里的负号与本章约定一致。限制到 \(K\)，矩映射为 \(i^*\phi\)。定义
+\begin{equation}\label{g4:eq:1203:delzant-level}
+	Z_P=(i^*\phi)^{-1}(0),\qquad M_P=Z_P/K.
+\end{equation}
+先把它们看作水平集和拓扑商；光滑性将在下一小节证明。
+
+\begin{lemma}\label{g4:lem:1203:level-moduli}
+	对每个 \(z\in Z_P\)，存在唯一 \(x\in P\) 满足
+	\begin{equation}\label{g4:eq:1203:moduli-equations}
+		\beta^*x=\phi(z),\qquad
+		\frac{|z_j|^2}{2}=\lambda_j-\langle x,\nu_j\rangle.
+	\end{equation}
+	反过来，每个 \(x\in P\) 都可由这些模长及任意相位得到 \(Z_P\) 中的点。特别地，\(\phi(Z_P)=\beta^*(P)\)。
+\end{lemma}
+\begin{proof}
+	\(i^*\phi(z)=0\) 与对偶正合列说明
+	\(\phi(z)\in\operatorname{im}\beta^*\)，单射性给出唯一 \(x\)。
+	逐分量写出 \(\beta^*x=\phi(z)\)，就是第二组等式。其右端非负，恰好说明 \(x\) 满足 \(P\) 的全部不等式。反之，对给定 \(x\in P\)，取
+	\(z_j=\sqrt{2(\lambda_j-\langle x,\nu_j\rangle)}\)
+	并任意附加相位，就满足所需方程。
+\end{proof}
 
 \subsection{自由性和紧性的核验}
 \label{g4:subsec:1203:03}
-待撰写
+
+一个坐标 \(z_j\) 为零，当且仅当 \(x\) 落在第 \(j\) 个面上。因此模长方程不仅恢复多面体，也把可能的稳定子与相交的面联系起来。
+
+\begin{proposition}\label{g4:prop:1203:free-compact-level}
+	\(Z_P\) 非空、紧且连通，\(K\) 在 \(Z_P\) 上自由。零是 \(i^*\phi\) 的正则值，故 \(Z_P\) 为实维数 \(d+n\) 的光滑无边界子流形。
+\end{proposition}
+\begin{proof}
+	非空性由\cref{g4:lem:1203:level-moduli}得到。每个函数
+	\(h_j(x)=\lambda_j-\langle x,\nu_j\rangle\) 在紧多面体 \(P\) 上有界，所以模长方程给出所有 \(|z_j|\) 的共同上界。水平集本身闭，因此紧。映射
+	\[
+		P\times\mathbb T^d\longrightarrow Z_P,\qquad
+		(x,t)\longmapsto
+		\bigl(\sqrt{2h_j(x)}\,e^{it_j}\bigr)_{j=1}^d
+	\]
+	连续且满射。定义域连通，故 \(Z_P\) 连通；面上的平方根只需在这里连续。
+
+	固定 \(z\in Z_P\)，令 \(x\) 为其模长对应点，并记
+	\(J(x)=\{j:\langle x,\nu_j\rangle=\lambda_j\}\)。
+	逐坐标旋转的稳定子是只在 \(J(x)\) 中允许非平凡相位的子环面 \(\mathbb T^{J(x)}\)。取包含 \(x\) 的最小面上的一个顶点 \(v\)，则 \(J(x)\subset I_v\)。由顶点的整数基条件，
+	\(\overline\beta:\mathbb T^{I_v}\to T\)
+	为同构。因此
+	\[
+		K_z=K\cap\mathbb T^{J(x)}
+		\subseteq K\cap\mathbb T^{I_v}=\{1\}.
+	\]
+	这证明作用自由，包含有限稳定子在内都已被排除。
+
+	由\cref{g4:prop:1002:moment-differential}，自由性使 \(K\) 的无穷小稳定子为零，故 \(\mathrm{d}(i^*\phi)\) 在 \(Z_P\) 上满射。零因而正则，水平集维数为
+	\(2d-(d-n)=d+n\)。
+\end{proof}
+
+\(K\) 紧，作用自动固有。于是\cref{g4:thm:1002:symplectic-reduction}赋予 \(M_P=Z_P/K\) 唯一辛形式 \(\omega_P\)，满足
+\begin{equation}\label{g4:eq:1203:reduced-form}
+	\pi^*\omega_P=\jmath^*\omega_0,\qquad
+	\pi:Z_P\to M_P,\quad \jmath:Z_P\hookrightarrow\mathbb C^d.
+\end{equation}
+它是紧连通的 \(2n\) 维无边界辛流形。构造中，简单性和光滑格条件保证自由性；多面体的有界性保证紧性；正则性则由自由性与矩映射微分判据得到。
 
 \subsection{矩映射像的恢复}
 \label{g4:subsec:1203:04}
-待撰写
+
+逐坐标旋转保持 \(Z_P\)，并与 \(K\) 交换，因而在商上留下
+\(\mathbb T^d/K\cong T\) 的作用。模长方程中的 \(x\) 沿 \(K\) 轨道不变，所以给出光滑映射
+\begin{equation}\label{g4:eq:1203:residual-moment}
+	\mu_P:M_P\longrightarrow\mathfrak t^*,\qquad
+	\beta^*(\mu_P\pi)=\phi|_{Z_P}.
+\end{equation}
+其光滑性可由线性单射 \(\beta^*\) 在其像上的逆和商映射的局部截面看出。
+
+\begin{theorem}[Delzant 构造]\label{g4:thm:1203:delzant-construction}
+	设 \(P\subset\mathfrak t^*\) 是关于格 \(N\) 的 \(n\) 维 Delzant 多面体。上述构造给出紧连通辛流形 \((M_P^{2n},\omega_P)\) 及 \(T=\mathfrak t/(2\pi N)\) 的有效 Hamilton 作用。\(\mu_P\) 是等变矩映射，且
+	\[
+		\mu_P(M_P)=P.
+	\]
+\end{theorem}
+\begin{proof}
+	只需验证剩余作用的矩映射方程和有效性。给定 \(\xi\in\mathfrak t\)，选 \(\widetilde\xi\in\mathbb R^d\) 满足 \(\beta\widetilde\xi=\xi\)。则
+	\[
+		\pi^*\langle\mu_P,\xi\rangle
+		=\langle\phi,\widetilde\xi\rangle|_{Z_P}.
+	\]
+	利用\eqref{g4:eq:1203:reduced-form}和相关基本场，对两边求微分得到
+	\[
+		\pi^*\mathrm{d}\langle\mu_P,\xi\rangle
+		=\jmath^*(\iota_{\widetilde\xi_{\mathbb C^d}}\omega_0)
+		=\pi^*(\iota_{\xi_{M_P}}\omega_P).
+	\]
+	改变提升只增加 \(K\) 的方向，该方向在限制形式的核中；所以这个计算与提升选择无关。淹没拉回单射，得到矩映射方程。\(\mu_P\) 由模长给出，故对 \(T\) 不变，也就是环面情形的等变性。像等式已由\cref{g4:lem:1203:level-moduli}证明。
+
+	取 \(x\in\operatorname{int}P\)，相应的 \(z\in Z_P\) 全部坐标非零。若 \(t\in T\) 固定 \([z]\)，取其提升 \(g\in\mathbb T^d\)，存在 \(k\in K\) 使 \(gz=kz\)。因逐坐标旋转在这个 \(z\) 处的稳定子平凡，有 \(g=k\)，故 \(t=1\)。于是作用有自由轨道，特别有效。
+\end{proof}
+
+\begin{proposition}\label{g4:prop:1203:orbit-fibres}
+	对任意 \(x\in P\)，\(\mu_P^{-1}(x)\) 恰为一条 \(T\) 轨道，其稳定子为
+	\[
+		T_x=\overline\beta(\mathbb T^{J(x)}).
+	\]
+	若 \(x\) 在一个余维 \(r\) 的面的相对内部，则 \(T_x\) 为 \(r\) 维子环面。特别地，顶点对应唯一固定点，内部对应自由轨道，且 \(\mu_P\) 诱导同胚 \(M_P/T\cong P\)。
+\end{proposition}
+\begin{proof}
+	固定 \(x\) 后各坐标模长全部固定，所有点只差相位，故 \(\mathbb T^d\) 在其 \(Z_P\) 原像上传递。取 \(K\) 商后，剩余 \(T\) 仍传递。某个 \(g\in\mathbb T^d\) 固定 \([z]\)，等价于 \(g\in K\mathbb T^{J(x)}\)，所以剩余稳定子正是所列像。由前面的基底包含关系，\(\overline\beta\) 在 \(\mathbb T^{J(x)}\) 上单射。简单性给出 \(|J(x)|=r\)，故该稳定子为 \(r\) 维子环面。最后，连续诱导映射 \(M_P/T\to P\) 是从紧空间到 Hausdorff 空间的双射，因而为同胚。
+\end{proof}
+
+\begin{proposition}\label{g4:prop:1203:vertex-chart}
+	固定顶点 \(v\)，把其面指标重排成 \(I_v=\{1,\ldots,n\}\)，并令 \(m_i\) 为外法向量 \(\nu_i\) 的对偶基。置
+	\[
+		x(w)=v-\sum_{i=1}^n\frac{|w_i|^2}{2}m_i,\qquad
+		D_v=\{w\in\mathbb C^n:h_j(x(w))>0\text{ 对所有 }j\notin I_v\}.
+	\]
+	则
+	\[
+		w\longmapsto
+		\left[
+		w_1,\ldots,w_n,\sqrt{2h_{n+1}(x(w))},\ldots,\sqrt{2h_d(x(w))}
+		\right]
+	\]
+	是从 \(D_v\) 到 \(M_P\) 中相应开集的辛坐标参数化，且矩映射为 \(x(w)\)。特别地，顶点固定点附近的形式严格为
+	\(\sum_i\mathrm{d}(\operatorname{Re}w_i)\wedge\mathrm{d}(\operatorname{Im}w_i)\)。
+\end{proposition}
+\begin{proof}
+	顶点基条件使 \(K\to\mathbb T^{I_v^c}\) 的坐标投影为同构：任给非活动位置的相位，用 \(\beta|_{\mathbb Z^{I_v}}\) 的整数逆唯一补出活动位置的相位，使整体属于 \(K\)。因此当全部非活动坐标非零时，可以唯一用 \(K\) 将它们转为正实数。剩余活动坐标为任意 \(w_i\)，模长方程对活动面给出 \(x=x(w)\)，再对非活动面给出所列正平方根。这证明双向光滑且彼此为逆。
+
+	在这个截面上，每个非活动复坐标的虚部恒为零，故它对 \(\omega_0\) 的贡献为零；活动坐标直接贡献标准形式。约化拉回等式于是给出所述辛形式和矩映射。
+\end{proof}
+
+例如 \(P=[0,a]\)、\(a>0\)，可取外法向量 \((-1,1)\) 与支撑常数 \((0,a)\)。此时 \(K\) 为 \(\mathbb T^2\) 中的对角圆，水平方程为
+\[
+	|z_1|^2+|z_2|^2=2a.
+\]
+约化空间是 \(\mathbb{CP}^1\)，由\cref{g4:thm:1003:projective-reduction}，其辛形式为 \(2a\,\omega_{\mathrm{FS}}\)，总面积为 \(2\pi a\)。剩余矩坐标为 \(x=|z_1|^2/2\)，取值恰为 \([0,a]\)。这个例子也固定了本章中格长度与辛面积之间的 \(2\pi\) 比例。
+
+\ProseParagraphBreak
+
+以上完成了从多面体到辛流形的存在性构造。一般构造与区间例子可对照 Cannas da Silva 的第6.5节。\cite[第174--178页]{Cannas2006Symplectic}要从任意有效半维 Hamilton 环面作用反推出同一个模型，还需要比较局部标准形并粘合；这是下一节的任务。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

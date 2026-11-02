@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 26.1 线性抛物方程
 % 纲要位置：几何学计划纲要.md，第 3202 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,296 @@
 \section{线性抛物方程}
 \label{g3:sec:2601}
 
-待撰写
+热方程同时描述两件事：初值沿时间向前传播，空间振荡逐渐衰减。第十六章已经用谱展开构造了固定 Laplace 算子的热核。几何流还会产生随时间和位置变化的系数，因此需要一种不依赖显式热核的求解方法。本节用能量估计和有限维逼近建立这个方法，并把初值所处的空间一并确定。
+
+\ProseParagraphBreak
+本节的空间流形始终闭，即紧且无边界；积分使用固定黎曼度量的体积密度。先讨论标量热方程，再允许固定光滑向量丛上的矩阵主部。标量函数的大小次序将在最后一小节用于最大值原理。
 
 \subsection{热核和 Duhamel 公式}
 \label{g3:subsec:2601:01}
-待撰写
+设 \((M,g)\) 为闭光滑黎曼流形，\(\dim M=n\ge1\)，仍取 \(\Delta=-\operatorname{div}_g\operatorname{grad}_g\)。\Cref{g3:prop:heat-semigroup-properties,g3:thm:heat-spectral-solution,g3:thm:heat-kernel-spectral}已经证明：\(T_t=e^{-t\Delta}\) 是强连续半群，在正时间平滑初值，并由热核 \(K(t,x,y)\) 表示。非齐次项可以看成不断加入的新初值；在时间 \(a\) 加入的部分，到时间 \(t\) 已传播了 \(t-a\)。
+
+\ProseParagraphBreak
+将这些传播后的贡献相加，就得到\term[Duhamel gongshi]{Duhamel 公式}[Duhamel's formula]。\footnote{Jean-Marie Constant Duhamel（1797--1872），法国数学家、物理学家，研究偏微分方程及热传导、力学与声学。}
+
+\begin{proposition}[Duhamel 公式]\label{g3:prop:parabolic-duhamel}
+	设 \((M,g)\) 为正维闭光滑黎曼流形，\(T>0\)，\(u_0\in C^\infty(M)\)、\(f\in C^\infty([0,T]\times M)\)。则
+	\begin{equation}\label{g3:eq:parabolic-duhamel}
+		u(t)=T_tu_0+\int_0^tT_{t-a}f(a)\,\mathrm da
+	\end{equation}
+	是 \(\partial_tu+\Delta u=f\)、\(u(0)=u_0\) 的唯一光滑解，光滑性在时间端点按单侧导数理解。对 \(t>0\)，同一公式可写为
+	\[
+		u(t,x)=\int_MK(t,x,y)u_0(y)\,\mu_g(y)
+		+\int_0^t\int_MK(t-a,x,y)f(a,y)\,\mu_g(y)\,\mathrm da.
+	\]
+\end{proposition}
+\begin{proof}
+	取第十六章的正交特征基 \(\Delta\phi_j=\lambda_j\phi_j\)，记 \(f_j(t)=(f(t),\phi_j)\)、\(u_{0j}=(u_0,\phi_j)\)。对方程取第 \(j\) 个系数，得到
+	\[
+		u_j'+\lambda_ju_j=f_j,
+		\qquad
+		u_j(t)=e^{-t\lambda_j}u_{0j}
+		+\int_0^te^{-(t-a)\lambda_j}f_j(a)\,\mathrm da.
+	\]
+	这是乘以积分因子后直接积分所得。由于 \(f\) 光滑，其每个固定空间 Sobolev 范数在 \([0,T]\) 上有界。热半群在相应谱范数中压缩，故上式的级数和时间积分在每个这样的范数中收敛。先用光滑有限谱和求导，得 \(u_t=f-\Delta u\)；右端在任意固定 Sobolev 范数中连续。再对时间求导，并逐次提高所用空间阶数，得到所有混合导数。\Cref{g3:cor:higher-sobolev-embedding}于是给出所述联合光滑性和初值。
+
+	任意另一光滑解的各个特征系数满足同一个标量初值问题，所以逐项相同，完备性给出唯一性。最后代入已经证明的热核表示。时间积分可先在 \([0,t-\varepsilon]\) 上写成核积分，再令 \(\varepsilon\downarrow0\)；余下时间段的任意固定 Sobolev 范数至多为 \(\varepsilon\sup_a\|f(a)\|_{H^k}\)，故极限确实等于式\eqref{g3:eq:parabolic-duhamel}。
+\end{proof}
+
+\begin{example}\label{g3:exm:heat-forcing-zero-mode}
+	在连通闭流形上，若外力不随时间变化，写 \(f=\sum_jb_j\phi_j\)，且初值为零，则
+	\[
+		u(t)=t\sum_{\lambda_j=0}b_j\phi_j
+		+\sum_{\lambda_j>0}\frac{1-e^{-t\lambda_j}}{\lambda_j}b_j\phi_j.
+	\]
+	非零平均值持续积累成线性增长；正频率则趋向相应的 Poisson 解分量。例如圆周上的外力 \(1+\cos x\) 给出 \(u(t,x)=t+(1-e^{-t})\cos x\)。因此正时间平滑与长时间有界是两个不同的问题。
+\end{example}
+
+对仅有平方可积正则性的数据，式\eqref{g3:eq:parabolic-duhamel}仍有积分意义，但求导及时间端点的强收敛需要估计。下面的空间同时记录这两项要求，也适用于没有固定热半群的时变系统。
 
 \subsection{抛物 Hölder 或 Sobolev 空间}
 \label{g3:subsec:2601:02}
-待撰写
+固定闭光滑黎曼流形 \((M^n,g)\)、\(n\ge1\)，以及正秩光滑度量向量丛 \(E\to M\) 和度量联络 \(\nabla\)。丛可以为实或复；复情形的内积对第一变量线性。空间 Sobolev 范数取自这些固定数据。负一阶空间 \(H^{-1}(E)\) 是 \(H^1(E)\) 关于 \(L^2\) 配对的对偶。
+
+\ProseParagraphBreak
+为了在逼近中同时控制不同导数阶数，令 \(P=I+\nabla^*\nabla\)。\Cref{g3:thm:positive-elliptic-realization,g3:thm:elliptic-discrete-spectrum}给出光滑正交特征基 \((e_j)_{j\ge1}\)，满足 \(Pe_j=\mu_je_j\)、\(\mu_j\ge1\)。实丛可先复化；因 \(P\) 保持实截面，每个特征空间都可取实正交基。对整数 \(r\ge0\)，可以使用等价范数
+\begin{equation}\label{g3:eq:parabolic-spectral-norm}
+	\|v\|_r^2=\sum_j\mu_j^r|v_j|^2,
+	\qquad v_j=(v,e_j)_{L^2}.
+\end{equation}
+偶数阶的等价性由\cref{g3:thm:elliptic-spectral-sobolev}给出。若 \(r=2q+1\)，则对光滑有限和有
+\[
+	\sum_j\mu_j^{2q+1}|v_j|^2
+	=\|P^qv\|_{L^2}^2+\|\nabla P^qv\|_{L^2}^2.
+\]
+右侧至多为 \(C\|v\|_{H^{2q+1}}^2\)；反向对 \(P^q\) 使用\cref{g3:thm:global-elliptic-hk}的高一阶估计，并用 \(\|v\|_{L^2}\le\|P^qv\|_{L^2}\)，得到同一阶范数的控制。\(q=0\) 时就是 \(H^1\) 范数的定义。由光滑稠密性和有限谱和的完备化，结论对全部 \(H^r\) 截面成立。对 \(H^{-1}\) 使用权 \(\mu_j^{-1}\)，与上面的对偶定义一致。
+
+\ProseParagraphBreak
+记 \(\Pi_N\) 为前 \(N\) 个特征截面的正交投影。它在每个这些范数中都是压缩，且强收敛到恒等。对 \(a\in H^{r-1}\)、\(b\in H^{r+1}\)，定义配对
+\[
+	[a,b]_r=\sum_j\mu_j^ra_j\overline{b_j},
+	\qquad |[a,b]_r|\le\|a\|_{r-1}\|b\|_{r+1}.
+\]
+当两者光滑时，这等于 \((a,P^rb)_{L^2}\)。
+
+\begin{lemma}\label{g3:lem:parabolic-energy-trace}
+	设 \(E\) 为闭光滑黎曼流形上的光滑度量丛，\(T>0\)、整数 \(r\ge0\)。若
+	\[
+		u\in L^2(0,T;H^{r+1}(E)),\qquad
+		\partial_tu\in L^2(0,T;H^{r-1}(E))
+	\]
+	且时间导数按分布理解，则 \(u\) 有唯一的 \(C([0,T];H^r(E))\) 代表。对 \(0\le a\le b\le T\)，有
+	\begin{equation}\label{g3:eq:parabolic-energy-chain}
+		\|u(b)\|_r^2-\|u(a)\|_r^2
+		=2\operatorname{Re}\int_a^b[\partial_tu(t),u(t)]_r\,\mathrm dt.
+	\end{equation}
+	时间迹 \(u\mapsto u(0)\) 对上述两个 \(L^2\) 范数之和连续；这一迹估计的常数允许依赖 \(T\)。
+\end{lemma}
+\begin{proof}
+	每个系数 \(u_j(t)\) 及其弱导数属于 \(L^2(0,T)\)，所以有绝对连续代表。一维结论可由积分 \(u_j'\) 并使用“分布导数为零则为常数”直接得到。因此有限和 \(\Pi_Nu\) 连续，且满足式\eqref{g3:eq:parabolic-energy-chain}的有限维版本。
+
+	对 \(N>m\)，令 \(w=(\Pi_N-\Pi_m)u\)。存在 \(a\in[0,T]\)，使 \(\|w(a)\|_r^2\le T^{-1}\|w\|_{L^2H^r}^2\)。从这个时刻向两侧积分有限维能量恒等式，得到
+	\[
+		\sup_{0\le t\le T}\|w(t)\|_r^2
+		\le T^{-1}\|w\|_{L^2H^r}^2
+		+2\|w_t\|_{L^2H^{r-1}}\|w\|_{L^2H^{r+1}}.
+	\]
+	两种谱尾项都趋于零，故 \(\Pi_Nu\) 在 \(C([0,T];H^r)\) 中为 Cauchy 列。极限与原来的 \(L^2\) 截面相同，给出所需代表。对有限和的能量等式取极限，右侧用两种 \(L^2\) 强收敛及配对不等式，得到式\eqref{g3:eq:parabolic-energy-chain}。上述估计也对完整的 \(u\) 成立，因而给出迹的连续性。两个连续代表若几乎处处相同，便处处相同。
+\end{proof}
+
+\begin{definition}\label{g3:def:parabolic-energy-space}
+	在上述固定几何数据下，\(T>0\)、整数 \(r\ge0\) 时，记
+	\begin{equation}\label{g3:eq:parabolic-energy-space}
+		\begin{split}
+		X_T^r(E)=\{u:\;&u\in C([0,T];H^r(E))\cap L^2(0,T;H^{r+1}(E)),\\
+		&\partial_tu\in L^2(0,T;H^{r-1}(E))\}.
+		\end{split}
+	\end{equation}
+	赋予它三个所列范数之和，称为本章的\term[paowu nengliang kongjian]{抛物能量空间}[parabolic energy space]。其零初值闭子空间记为 \(X_{T,0}^r(E)\)。
+\end{definition}
+
+完备性可逐项核对：Cauchy 列在连续函数空间和两种 \(L^2\) 空间中各有极限，测试配对说明极限的弱时间导数仍是导数项的极限。上一引理则说明连续时间代表不是额外的光滑假设。这里空间增益以 \(L^2\) 时间积分记录：初值仅在 \(H^r\) 中，正时间的 \(H^{r+1}\) 范数却平方可积。
+
+\begin{proposition}\label{g3:prop:parabolic-zero-trace-small-time}
+	设 \(M^n\) 闭且光滑，\(E\) 为固定光滑度量丛，整数 \(s>n/2+3\)。若 \(u\in X_{T,0}^s(E)\)，则
+	\[
+		\sup_{0\le t\le T}\|u(t)\|_{H^{s-1}}
+		\le T^{1/2}\|\partial_tu\|_{L^2H^{s-1}},
+		\qquad
+		\sup_{0\le t\le T}\|u(t)\|_{C^2}
+		\le C T^{1/2}\|u\|_{X_T^s},
+	\]
+	其中 \(C\) 只依赖固定几何数据和 \(s\)。
+\end{proposition}
+\begin{proof}
+	在 \(H^{s-1}\) 中有 \(u(t)=\int_0^t u_t(a)\,\mathrm da\)，由 Cauchy--Schwarz 得第一式。因 \(s-1>n/2+2\)，\cref{g3:cor:higher-sobolev-embedding}将它转为第二式。
+\end{proof}
+
+这给短时非线性论证一个有用的量：零初值修正虽然未必在最高阶连续 Sobolev 范数中自动变小，其二阶连续范数却带有 \(T^{1/2}\)。
 
 \subsection{线性估计与初值相容}
 \label{g3:subsec:2601:03}
-待撰写
+现在让系数依赖 \((t,x)\)。固定 \(T_0>0\)，在同一闭流形、丛及联络上考虑
+\begin{equation}\label{g3:eq:linear-parabolic-operator}
+	L(t)u=\nabla^*(A(t)\nabla u)+B(t)\nabla u+C(t)u.
+\end{equation}
+这里 \(A\) 是 \(\mathrm T^*M\otimes E\) 的丛自同态，\(B:\mathrm T^*M\otimes E\to E\)、\(C:E\to E\)，均在 \([0,T_0]\times M\) 上光滑。在正交标架中，主符号写为 \(A^{ij}(t,x)\xi_i\xi_j\)。我们要求存在 \(\theta>0\)，使
+\begin{equation}\label{g3:eq:linear-strong-parabolicity}
+	\operatorname{Re}\langle A^{ij}(t,x)\xi_i\xi_jv,v\rangle
+	\ge\theta|\xi|_g^2|v|^2
+	\quad(t\in[0,T_0],\ x\in M,\ \xi\in\mathrm T_x^*M,\ v\in E_x).
+\end{equation}
+这是本节所用的一致强抛物条件。它允许分量间耦合，也不要求 \(L(t)\) 自伴。任意具有此类主符号的光滑二阶算子，都可把主部写成式\eqref{g3:eq:linear-parabolic-operator}的散度形式，把新增的一阶项并入 \(B\)。
+
+\ProseParagraphBreak
+下面的估计允许用低阶范数补偿主部能量的低阶误差，称为\term[Garding budengshi]{Gårding 不等式}[Gårding inequality]。\footnote{Lars Gårding（1919--2014），瑞典数学家，研究偏微分方程与偏微分算子。}
+
+\begin{lemma}\label{g3:lem:parabolic-garding}
+	设 \((M^n,g)\) 为正维闭光滑黎曼流形，\(E\) 为正秩光滑度量丛，\(L(t)\) 满足式\eqref{g3:eq:linear-parabolic-operator}及\eqref{g3:eq:linear-strong-parabolicity}，系数在 \([0,T_0]\times M\) 上光滑。对每个整数 \(r\ge0\)，存在 \(c_r>0\)、\(C_r<\infty\)，使全部光滑截面 \(v\) 及全部 \(t\in[0,T_0]\) 满足
+	\begin{equation}\label{g3:eq:parabolic-garding}
+		\operatorname{Re}(L(t)v,P^rv)_{L^2}
+		\ge c_r\|v\|_{r+1}^2-C_r\|v\|_r^2.
+	\end{equation}
+	此外 \(\|L(t)v\|_{r-1}\le C_r\|v\|_{r+1}\)。常数只需固定几何数据、\(\theta\) 以及系数的有限阶空间导数的一致界，不需时间导数界。
+\end{lemma}
+\begin{proof}
+	先说明为何秩一方向上的条件足以控制积分能量。把系数和背景度量冻结在一个坐标点，且令 \(v\) 紧支于该坐标片。Plancherel 恒等式把最高阶二次型化为
+	\[
+		\int_{\mathbb R^n}|\xi|^{2r}
+		\operatorname{Re}\langle A^{ij}\xi_i\xi_j\widehat v(\xi),\widehat v(\xi)\rangle\,\mathrm d\xi
+		\ge\theta\int_{\mathbb R^n}|\xi|^{2r+2}|\widehat v(\xi)|^2\,\mathrm d\xi.
+	\]
+	在非正交坐标中以冻结的正定二次型代替 \(|\xi|^2\)，范数等价给出相同结论。这里 \(P^r\) 是阶 \(2r\) 的微分算子，主符号为 \(|\xi|^{2r}I\)；分部积分 \(r+1\) 次，将上述最高阶部分写成两边各有 \(r+1\) 阶导数的双线性型。
+
+	缩小坐标片，使主系数与冻结值之差不超过一个给定的 \(\varepsilon\)。冻结误差于是至多为 \(C\varepsilon\|v\|_{H^{r+1}}^2\)。导数落到系数、联络或体积密度时，总共作用在两个 \(v\) 上的阶数至多为 \(2r+1\)；继续分部积分可使每一边至多有 \(r+1\) 阶，并且至少一边至多有 \(r\) 阶。因此这些项由
+	\[
+		C\|v\|_{H^{r+1}}\|v\|_{H^r}
+		\le\varepsilon'\|v\|_{H^{r+1}}^2+C_{\varepsilon'}\|v\|_{H^r}^2
+	\]
+	控制。\(B,C\) 项具有同样的低阶性质。先选小片和 \(\varepsilon'\)，便能吸收两类最高阶误差。
+
+	取满足 \(\sum_\alpha\chi_\alpha^2=1\) 的有限光滑分割，将局部估计用于 \(\chi_\alpha v\)。比较局部式之和与全局的 \((Lv,P^rv)\) 时，所有额外项都至少有一个导数落在 \(\chi_\alpha\) 上，仍按刚才的低阶估计处理。加上 \(\|v\|_{H^r}^2\) 补齐最高阶齐次范数，再使用式\eqref{g3:eq:parabolic-spectral-norm}，即得式\eqref{g3:eq:parabolic-garding}。\([0,T_0]\times M\) 紧且系数光滑，有限空间覆盖、冻结半径和所用系数导数界可对时间统一选取。
+
+	最后，当 \(r\ge1\) 时，Leibniz 公式直接给出 \(L:H^{r+1}\to H^{r-1}\) 的界。\(r=0\) 时用散度形式与 \(H^1\) 测试截面配对：主项为 \((A\nabla v,\nabla w)\)，低阶项同样受 \(C\|v\|_{H^1}\|w\|_{H^1}\) 控制。这正是到 \(H^{-1}\) 的所需界。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:linear-parabolic-isomorphism}
+	设 \((M^n,g)\) 为正维闭光滑黎曼流形，\(E\) 为正秩光滑度量丛，\(L(t)\) 满足上一引理的全部条件。对整数 \(r\ge0\)、\(0<T\le T_0\)，映射
+	\[
+		u\longmapsto(\partial_tu+L(t)u,\ u(0))
+	\]
+	是从 \(X_T^r(E)\) 到 \(L^2(0,T;H^{r-1}(E))\times H^r(E)\) 的有界线性同构。具体地，对任意 \(u_0\in H^r(E)\) 与 \(f\in L^2(0,T;H^{r-1}(E))\)，唯一解满足
+	\begin{equation}\label{g3:eq:linear-parabolic-energy}
+		\begin{split}
+		&\sup_{0\le t\le T}\|u(t)\|_r^2
+		+\int_0^T\bigl(\|u(t)\|_{r+1}^2+\|\partial_tu(t)\|_{r-1}^2\bigr)\,\mathrm dt\\
+		&\qquad\le C\left(\|u_0\|_r^2+\int_0^T\|f(t)\|_{r-1}^2\,\mathrm dt\right).
+		\end{split}
+	\end{equation}
+	其中 \(C\) 可对 \(0<T\le T_0\) 一致选取，其依赖为上一引理中的数据及 \(T_0\)。特别地，零初值时 \(\partial_t+L:X_{T,0}^r\to L^2H^{r-1}\) 的逆范数在这些时间区间上一致有界。
+\end{theorem}
+\begin{proof}
+	证明分为能量控制、有限维求解及取极限。关键是选择与用于能量的 \(P^r\) 交换的谱投影，这样求解截断方程不会产生未控制的投影交换子。
+
+	先对光滑解与 \(P^ru\) 配对。由上一引理及 Young 不等式，
+	\[
+		\begin{aligned}
+		\frac12\frac{\mathrm d}{\mathrm dt}\|u\|_r^2
+		+c_r\|u\|_{r+1}^2
+		&\le C_r\|u\|_r^2+|[f,u]_r|\\
+		&\le C_r\|u\|_r^2+\frac{c_r}{2}\|u\|_{r+1}^2+C\|f\|_{r-1}^2.
+		\end{aligned}
+	\]
+	乘以相应的 \(e^{-Ct}\) 并积分，得到 \(\sup_t\|u(t)\|_r^2\) 的控制；再对未乘指数的式子积分，得到 \(L^2H^{r+1}\) 控制。方程和 \(L:H^{r+1}\to H^{r-1}\) 的界又控制 \(u_t\)。这给出式\eqref{g3:eq:linear-parabolic-energy}，且所有指数因子均可用 \(e^{CT_0}\) 控制。
+
+	令 \(u_N(t)\) 取值于 \(\operatorname{span}\{e_1,\ldots,e_N\}\)，求解
+	\[
+		\partial_tu_N+\Pi_NL(t)u_N=\Pi_Nf,
+		\qquad u_N(0)=\Pi_Nu_0.
+	\]
+	这是系数连续、右端平方可积的有限维线性常微分方程。其基本解矩阵可由积分方程的逐次逼近构造，再用变常数公式得到绝对连续解；有限时间上的系数有界保证解延拓至 \(T\)。由于 \(\Pi_NP^ru_N=P^ru_N\)，刚才的能量计算逐字适用于 \(u_N\)。同时 \(\Pi_N\) 在 \(H^{r-1}\) 中压缩，所以时间导数的界也与 \(N\) 无关。
+
+	因此可取子列，使 \(u_N\) 在 \(L^2H^{r+1}\) 中弱收敛到 \(u\)，而 \(\partial_tu_N\) 在 \(L^2H^{r-1}\) 中弱收敛。对光滑时间测试函数和有限谱截面配对，积分分部说明后一极限就是 \(\partial_tu\)。同样的配对允许在有限维方程中取极限，得到 \(u_t+L(t)u=f\)：\(L(t)\) 是这两种空间之间一致有界的线性算子，有限谱测试又在空间测试类中稠密。
+
+	\Cref{g3:lem:parabolic-energy-trace}使 \(u\) 有连续 \(H^r\) 代表，并使时间迹成为上述 Hilbert 交空间上的连续线性映射。故 \(u_N(0)\rightharpoonup u(0)\) 于 \(H^r\)，而 \(\Pi_Nu_0\to u_0\)，从而 \(u(0)=u_0\)。对极限解使用式\eqref{g3:eq:parabolic-energy-chain}，其余配对由 \(H^{r+1}\) 中的光滑稠密性成立，于是同一能量估计适用于 \(u\)。
+
+	若两个解的数据相同，其差的数据为零，式\eqref{g3:eq:linear-parabolic-energy}迫使差恒为零。一般两个数据之差满足同一估计，因此求解映射线性且有界。正向映射的有界性由空间定义、时间迹及 \(L\) 的有界性给出，证明了有界同构。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:linear-parabolic-smoothing}
+	设 \(M,E,L\) 满足\cref{g3:thm:linear-parabolic-isomorphism}的条件，\(0<T\le T_0\)，\(r\ge0\) 为整数。若 \(u_0\in C^\infty(E)\)、\(f\in C^\infty([0,T]\times M;E)\)，则相应解在 \([0,T]\times M\) 上光滑。若只假定 \(u_0\in H^r\)、\(f\in L^2(0,T;H^{r-1})\)，而 \(f\) 在 \((0,T]\times M\) 上光滑，则解在 \((0,T]\times M\) 上光滑。
+	更具体地，若整数 \(k\ge1\)、\(0<\tau<T\le T_0\)，且 \(f\in L^2(\tau/2,T;H^{r+k-1})\)，则
+	\begin{equation}\label{g3:eq:linear-parabolic-positive-time}
+		\|u\|_{X^{r+k}_{[\tau,T]}}
+		\le C_{r,k,\tau}\left(
+		\|u_0\|_r+\|f\|_{L^2(0,T;H^{r-1})}
+		+\|f\|_{L^2(\tau/2,T;H^{r+k-1})}\right),
+	\end{equation}
+	其中区间版本的 \(X\) 范数按式\eqref{g3:eq:parabolic-energy-space}定义，常数还依赖固定几何数据、\(T_0\) 和所用系数界。
+\end{theorem}
+\begin{proof}
+	光滑数据属于每个整数阶的数据空间。分别对所有 \(r\) 应用同构定理，并用零阶唯一性识别这些解，就得到 \(u\in C([0,T];H^m)\) 对所有 \(m\) 成立。方程给出 \(u_t=f-L(t)u\in C([0,T];H^m)\) 对所有 \(m\) 成立。继续求时间导数，右端只含系数的时间导数和已经得到的较低时间导数，归纳可得任意阶。空间 Sobolev 嵌入将它们转为联合光滑性。
+
+	再考虑较粗初值。能量估计给出 \(u\in L^2(0,T;H^{r+1})\)。在任何正长度的子区间中，可选时刻 \(a\)，使 \(u(a)\in H^{r+1}\)，且这一范数不超过该区间上 \(L^2H^{r+1}\) 范数除以区间长度的平方根。从 \(a\) 出发应用高一阶的同构定理，所得解由唯一性与原解一致，故获得下一阶能量控制。
+
+	为得到式\eqref{g3:eq:linear-parabolic-positive-time}，将 \((\tau/2,\tau)\) 分成 \(k\) 个正长度小区间，每次在下一个小区间选择上述时刻。第 \(j\) 次用 \(r+j\) 阶的同构定理；所需外力范数受 \(L^2(\tau/2,T;H^{r+k-1})\) 控制。经过 \(k\) 次，便在 \([\tau,T]\) 上得到所列估计。所有长度和各次能量常数都由 \(k,\tau\) 及所列数据控制。若外力正时间光滑，可对任意 \(k,\tau\) 使用这一结论，再由方程取得时间导数，证明正时间光滑性。
+\end{proof}
+
+由于没有空间边界，初值不必另外满足边界相容条件。若希望解光滑到 \(t=0\)，它的时间导数却已被方程确定：记 \(u_j=\partial_t^ju|_{t=0}\)，则
+\begin{equation}\label{g3:eq:parabolic-initial-jets}
+	 u_{j+1}=\partial_t^jf(0)
+	-\sum_{\ell=0}^j\binom j\ell(\partial_t^\ell L)(0)u_{j-\ell}.
+\end{equation}
+这是一组由数据算出的初始喷射，而不是可以自由再指定的初值。带空间边界的问题还须将这些喷射代入相应边界条件；本章的闭流形结论不包含那一额外问题。
+
+\ProseParagraphBreak
+当 \(L=\Delta\) 时，式\eqref{g3:eq:parabolic-duhamel}与这里的能量解一致。对 \(u_0\in H^r\)、\(f\in L^2H^{r-1}\)，先取光滑数据逼近，能量估计给出 \(X_T^r\) 收敛；半群在 \(H^{r-1}\) 中有界，时间积分又由 \(L^2\) 控制为 \(L^1\)，所以 Duhamel 公式可在 \(H^{r-1}\) 中取极限。其值实际上具有已经证明的连续 \(H^r\) 代表。
 
 \subsection{抛物最大值原理}
 \label{g3:subsec:2601:04}
-待撰写
+能量控制一个空间积分，最大值原理则直接控制每个时刻的最大值。后者利用实函数在极大点的一阶导数为零、Hessian 非正这一事实，因此先限于标量方程。以下以 \(\nabla^2\) 表示固定背景度量的 Hessian。
+
+\begin{theorem}\label{g3:thm:parabolic-maximum}
+	设 \((M^n,g)\) 为正维闭光滑黎曼流形，\(T>0\)，实函数 \(u\) 连续于 \([0,T]\times M\)，并在正时间具有连续的一阶时间、二阶空间导数。设实系数 \(a^{ij},b^i,c\) 及实函数 \(f\) 在 \([0,T]\times M\) 上连续，\(a^{ij}\) 对称且一致正定，\(c\ge-\gamma\)、\(\gamma\ge0\)。若
+	\[
+		\partial_tu-a^{ij}\nabla_i\nabla_ju+b^i\nabla_i u+cu\le f,
+		\qquad f(t,x)\le F(t),
+	\]
+	其中 \(F\) 为非负连续函数，则
+	\begin{equation}\label{g3:eq:parabolic-maximum-bound}
+		u(t,x)\le e^{\gamma t}\max\{0,\max_Mu(0)\}
+		+\int_0^te^{\gamma(t-a)}F(a)\,\mathrm da.
+	\end{equation}
+	特别地，若 \(u\) 满足对应等式，则将 \(F(t)\) 取为 \(\|f(t)\|_\infty\)，有相同形式的 \(\|u(t)\|_\infty\) 估计，初项改为 \(\|u(0)\|_\infty\)。
+\end{theorem}
+\begin{proof}
+	令式\eqref{g3:eq:parabolic-maximum-bound}的右端为 \(m(t)\)。则 \(m\ge0\)、\(m'=\gamma m+F\)，所以 \(m'+cm\ge F\)。记 \(w=u-m\)，便有 \(w(0)\le0\)，且 \(w\) 满足同一算子的不等式、右端为零。
+
+	令 \(v=e^{-\gamma t}w\)，则
+	\[
+		\partial_tv-a^{ij}\nabla_i\nabla_jv+b^i\nabla_iv+(c+\gamma)v\le0,
+	\]
+	其中零阶系数非负。对 \(\varepsilon>0\)，取 \(v_\varepsilon=v-\varepsilon e^t\)，其左端严格小于零，初值严格负。若它在某个 \([0,t_1]\times M\) 上有正最大值，最大值点的时间必大于零；在那里空间梯度为零、Hessian 非正，时间导数非负。即使最大值在上端时刻 \(t_1\) 取得，左侧时间差商仍给出该符号。因此算子在此点的值非负，与严格不等式矛盾。故 \(v_\varepsilon\le0\)，令 \(\varepsilon\downarrow0\) 得 \(w\le0\)。对等式中的 \(u\) 和 \(-u\) 分别应用结论，即得双侧估计。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:parabolic-gronwall}
+	设 \((M,g)\) 为正维闭光滑黎曼流形，\(v\ge0\) 连续到初时刻并在正时间属于 \(C^{1,2}\)。若 \(a\ge0\) 为常数且
+	\[
+		(\partial_t+\Delta_g)v\le av,
+	\]
+	则 \(\max_Mv(t)\le e^{at}\max_Mv(0)\)。若两个实标量函数的差满足上一最大值定理中右端为零的不等式，且初值之差非正，则以后仍保持这个次序。
+\end{corollary}
+\begin{proof}
+	第一项取 \(c=-a\)、\(F=0\)，第二项直接将最大值定理用于两函数之差。
+\end{proof}
+
+\begin{example}\label{g3:exm:parabolic-system-order-failure}
+	在任意闭流形上取平凡二维实丛，考虑
+	\[
+		\partial_tU+\Delta_gU+
+		\begin{pmatrix}2&1\\1&2\end{pmatrix}U=0,
+		\qquad U(0,x)=\begin{pmatrix}1\\0\end{pmatrix}.
+	\]
+	空间常值解为 \(U(t,x)=e^{-2t}(\cosh t,-\sinh t)^{\mathsf T}\)。主部强抛物，零阶矩阵甚至正定，但第二分量立即为负。因此一般系统不能逐分量套用标量的次序比较；需要控制几何流中的长度或能量密度时，应先推导该标量量自身满足的微分不等式。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

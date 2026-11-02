@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 7.5 形式方程与有效近似
 % 纲要位置：几何学计划纲要.md，第 5291 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,17 +16,168 @@
 \section{形式方程与有效近似}
 \label{g5:sec:0705}
 
-待撰写
+一个形式解由无穷多个系数组成，但每次代入方程、比较一个固定阶数时，只使用其中有限多个系数。完备化将这些有限计算组织成相容系统。本节先说明这种相容性如何恢复真正的形式解，再比较多项式、代数级数和一般形式级数。对于 Jacobian 可逆的方程，逐次修正还给出达到指定精度的明确步骤。
 
 \subsection{有限阶邻域和相容族}
 \label{g5:subsec:0705:01}
-待撰写
+
+设 \((A,\mathfrak m)\) 为 Noether 局部环。以
+\[
+	A_n=A/\mathfrak m^n,\qquad n\geq1,
+\]
+记录闭点的有限阶邻域；\(A_1\) 是剩余域，\(A_2\) 已能看见一次无穷小方向。与第五章的双数和切锥模型相比，这里保留整个截断环的乘法，也保留相邻阶之间的取商映射。
+
+\begin{proposition}\label{g5:prop:formal-solutions-inverse-limit}
+	设 \((R,\mathfrak n)\) 为完备且分离的局部环，
+	\(F_1,\ldots,F_s\in R[Y_1,\ldots,Y_r]\)。记
+	\[
+		X(R/\mathfrak n^n)
+		=\{y\in(R/\mathfrak n^n)^r:F_i(y)=0\text{ 对全部 }i\},
+	\]
+	各集合之间的映射由取模诱导。则自然映射给出双射
+	\[
+		X(R)\cong\varprojlim_{n\geq1}X(R/\mathfrak n^n).
+	\]
+\end{proposition}
+\begin{proof}
+	一个 \(R\) 中的解逐阶取模，自然给出相容解族。反过来，给定相容的 \(r\) 元组序列，对每个坐标使用 \(R\cong\varprojlim R/\mathfrak n^n\)，得到唯一的 \(y\in R^r\)。多项式只含有限次加法和乘法，故 \(F_i(y)\) 模每个 \(\mathfrak n^n\) 都为零。分离性给出 \(F_i(y)=0\)，于是得到解。唯一性同样逐个坐标来自分离性。
+\end{proof}
+
+相容解族要求第 \(n+1\) 层的解投影为已经选定的第 \(n\) 层解。写出各阶方程时，必须保留这些投影；单独的一层解还可能在下一层受到阻碍。例如在 \(k[[x]]\) 上，\(Y^2=x\) 模 \(x\) 有解 \(Y=0\)。若它能提升到模 \(x^2\)，提升必为 \(Y=cx\)，但 \(Y^2=0\pmod{x^2}\)，不等于 \(x\)。这个一次障碍已经排除了形式解。
+
+\ProseParagraphBreak
+
+对于线性方程，有限模的闭性给出更强的检测：各阶近似解不必事先相容，只要右端来自原有限模，便可直接判断它是否属于实际像。
+
+\begin{proposition}\label{g5:prop:linear-approximation-closed-image}
+	设 \((A,\mathfrak m)\) 为 Noether 局部环，\(\varphi:M\to N\) 为有限 \(A\) 模之间的同态，\(b\in N\)。若对每个 \(n\geq1\)，存在 \(u_n\in M\) 使
+	\[
+		b-\varphi(u_n)\in\mathfrak m^nN,
+	\]
+	则存在 \(u\in M\) 使 \(\varphi(u)=b\)。
+\end{proposition}
+\begin{proof}
+	商模 \(C=N/\operatorname{im}\varphi\) 有限。条件恰好说明 \(b\) 的类属于每个 \(\mathfrak m^nC\)，故由\cref{g5:thm:krull-intersection}为零。这等价于 \(b\in\operatorname{im}\varphi\)，得到结论。
+\end{proof}
+
+这里使用的是有限模之像的闭性。若把方程换成非线性方程，便不能直接形成同一个商模；上一节的 \(Y^2=1+x\) 在 \(\mathbb Q[x]_{(x)}\) 上就有任意高阶多项式近似，却没有该环中的精确根。其形式根则在完备化中存在。
 
 \subsection{多项式、代数幂级数与任意形式级数}
 \label{g5:subsec:0705:02}
-待撰写
+
+\begin{definition}\label{g5:def:algebraic-power-series}
+	设 \(k\) 为域，\(x=(x_1,\ldots,x_d)\)。若 \(f\in k[[x]]\) 在有理函数域 \(k(x_1,\ldots,x_d)\) 上代数，称 \(f\) 为\term[daishumijishu]{代数幂级数}[algebraic power series]。等价地，存在非零多项式 \(P(x,Y)\in k[x,Y]\)，使
+	\[
+		P(x,f(x))=0.
+	\]
+	后一等价性来自清除有限多个系数分母。全部代数幂级数记为 \(k\langle x\rangle\)。
+\end{definition}
+
+有限多个代数元素生成有限扩域，所以它们的和、积仍代数，常数项非零的元素的形式倒数也仍代数。因此 \(k\langle x\rangle\) 是 \(k[[x]]\) 的局部子环，剩余域为 \(k\)。一元时，它就是上一节构造的环 \(S\) 的一般基域版本；下面的例子说明，多项式以外仍有许多受一个有限方程约束的级数。
+
+\begin{example}\label{g5:exm:algebraic-square-root}
+	在 \(\mathbb Q[[x]]\) 中，方程 \(Y^2=1+x\) 的常数项为 \(1\) 的根写为
+	\[
+		f=1+c_1x+c_2x^2+\cdots.
+	\]
+	比较系数得到
+	\[
+		2c_1=1,\qquad
+		2c_n+\sum_{i=1}^{n-1}c_ic_{n-i}=0\quad(n\geq2).
+	\]
+	所以
+	\[
+		f=1+\frac{x}{2}-\frac{x^2}{8}+\frac{x^3}{16}
+		-\frac{5x^4}{128}+\cdots.
+	\]
+	递推唯一确定全部系数，每次只需前面有限项。这是一个代数幂级数。它不是有理函数，由上一节对因子 \(x+1\) 的阶的比较即可判定，因而也不是多项式。形式解的无穷展开与定义它的一个有限方程，在这里同时存在。
+\end{example}
+
+一般形式级数还可以超出代数幂级数的范围。为给出一个可直接验证的例子，取特征零域 \(k\)，令
+\[
+	E(x)=\sum_{n\geq0}\frac{x^n}{n!}\in k[[x]].
+\]
+形式求导逐项定义，满足 \(E'=E\)。由二项式公式比较每个系数，可得 \(E(x)^j=\sum_{n\geq0}j^n x^n/n!\)，故 \((E^j)'=jE^j\)。
+
+\begin{proposition}\label{g5:prop:formal-exponential-transcendental}
+	设 \(k\) 为特征零域。形式级数 \(E(x)=\sum_{n\geq0}x^n/n!\) 在 \(k(x)\) 上超越。
+\end{proposition}
+\begin{proof}
+	若存在代数关系，清分母后可写为
+	\[
+		\sum_{j\in J}p_j(x)E(x)^j=0,
+	\]
+	其中 \(J\) 为有限非空的非负整数集，每个 \(p_j\in k[x]\) 非零。从全部这样的关系中选取 \(\lvert J\rvert\) 最小者。若只有一项，\(k[[x]]\) 为整环且 \(E\) 为单位，已经矛盾。
+
+	任取 \(d\in J\)，令 \(N=\deg p_d+1\)，对关系应用形式微分算子 \((\mathrm d/\mathrm dx-d)^N\)。乘积求导公式说明，第 \(j\) 项变为
+	\[
+		\left(\frac{\mathrm d}{\mathrm dx}+j-d\right)^N p_j(x)\;E(x)^j.
+	\]
+	当 \(j=d\) 时，多项式被求导 \(N\) 次，结果为零。若 \(j\ne d\)，变换后的多项式仍非零：其最高次系数为原最高次系数的 \((j-d)^N\) 倍，特征零保证该倍数非零。于是得到项数更少的非零多项式关系，与最小性矛盾。
+\end{proof}
+
+在实数或复数系数下，这个超越形式级数对每个数值 \(x\) 都收敛，通常写作 \(\exp x\)。相反，级数
+\[
+	G(x)=\sum_{n\geq0}n!x^n
+\]
+在每个非零实数或复数 \(x\) 处都不收敛，因为相邻项绝对值之比为 \((n+1)|x|\)，最终大于二，项本身不能趋于零。两者作为形式级数都完全有意义；数值收敛性由系数的增长决定，而形式运算只需每个系数由有限和给出。
 
 \subsection{收敛、代数化及逼近的不同问题}
 \label{g5:subsec:0705:03}
-待撰写
+
+指定一个形式解后，可以提出三类不同的问题。收敛性问的是，在带绝对值的基域上，级数是否在某个实际邻域内定义函数。代数化问的是，给定形式对象及其指定结构，能否由有限型代数对象取完备化得到。逼近则先给定阶数 \(N\)，再寻找与形式数据模 \(\mathfrak m^N\) 相同、属于要求类别的对象。这些问题需要保留各自的输入和所要求的结构。
+
+\begin{example}\label{g5:exm:formal-graph-marked}
+	取 \(k=\mathbb Q\)、\(g(x)=E(x)-1\in xk[[x]]\)。形式代入 \(y\mapsto g(x)\) 给出
+	\[
+		k[[x,y]]/(y-g(x))\cong k[[x]].
+	\]
+	为核对核，写 \(F(x,y)=\sum_{j\geq0}a_j(x)y^j\)，并对每项使用
+	\(y^j-g^j=(y-g)\sum_{i=0}^{j-1}y^{j-1-i}g^i\)。因为 \(g\in(x)\)，每个固定总次数只收到有限多项贡献，所以求和合法，得到
+	\(F(x,y)-F(x,g(x))\in(y-g)\)。这证明所述核与商同构。
+
+	这个商环本身是 \(k[x]_{(x)}\) 的完备化，因而有代数模型。但是，保留指定平面坐标 \(x,y\) 时，没有非零多项式 \(P(x,y)\in k[x,y]\) 能在整条形式图像上消失；否则
+	\(P(x,E(x)-1)=0\) 会给出 \(E\) 的代数关系，违背上个命题。抽象形式局部环与它在指定平面中的图像，因而具有不同的代数化问题。
+
+	若只要求模 \(x^N\) 相同，取 \(g\) 的次数小于 \(N\) 的截断多项式 \(g_{<N}\) 即可。多项式曲线 \(y=g_{<N}(x)\) 逐阶逼近这条形式图像，但某一次有限截断并不等于整条图像。
+\end{example}
+
+多项式近似一个给定级数容易做到；要使近似同时满足原来的多项式方程，则必须利用方程。下面在 Jacobian 可逆时给出完整的修正过程。它将上一节单根的迭代推广到同样数目的方程与未知量。
+
+\begin{theorem}\label{g5:thm:formal-newton-system}
+	设 \((R,\mathfrak n)\) 为完备且分离的局部环，
+	\(F=(F_1,\ldots,F_r)\in R[Y_1,\ldots,Y_r]^r\)，\(a_0\in R^r\)。若
+	\[
+		F(a_0)\in(\mathfrak n)^r,\qquad
+		\det J_F(a_0)\in R^\times,
+	\]
+	则存在唯一的 \(a\in a_0+(\mathfrak n)^r\) 满足 \(F(a)=0\)。迭代
+	\[
+		a_{j+1}=a_j-J_F(a_j)^{-1}F(a_j)
+	\]
+	满足
+	\[
+		F(a_j)\in(\mathfrak n^{2^j})^r,\qquad
+		a-a_j\in(\mathfrak n^{2^j})^r.
+	\]
+	为求解模 \(\mathfrak n^N\) 的值，只需完成满足 \(2^j\geq N\) 的这些有限次修正，并可在每一步把结果截断到该商环。
+\end{theorem}
+\begin{proof}
+	对每个分量展开有限多项式，得到
+	\[
+		F(a+h)=F(a)+J_F(a)h+Q(a,h),
+	\]
+	其中 \(Q\) 的每一项至少含两个 \(h\) 的分量。所有 \(a_j\) 都模 \(\mathfrak n\) 等于 \(a_0\)，故其 Jacobian 行列式仍为单位，矩阵逆由伴随矩阵公式给出。
+
+	若 \(F(a_j)\in(\mathfrak n^{2^j})^r\)，则
+	\(h_j=-J_F(a_j)^{-1}F(a_j)\) 的各分量也在 \(\mathfrak n^{2^j}\) 中。线性部分相消，余项落在 \((\mathfrak n^{2^{j+1}})^r\)。这就给出归纳步及 Cauchy 性，完备性和分离性给出极限 \(a\) 与 \(F(a)=0\)，也给出所述误差阶。
+
+	为证唯一性，若 \(a,b\) 都在同一剩余类中，逐项因式分解可写
+	\[
+		F(b)-F(a)=(J_F(a)+C)(b-a),
+	\]
+	其中 \(C\) 的各条目属于 \(\mathfrak n\)。因此 \(J_F(a)+C\) 的行列式模 \(\mathfrak n\) 仍非零，是可逆矩阵，故两根相等。最后，取商保持加法、乘法及单位的逆；所以在商环中作同样的有限次修正，结果就是原迭代的截断。
+\end{proof}
+
+这里给出了达到指定形式精度的有限步骤；若系数环的有限阶商有可执行的运算，步骤就能直接实现。定理的输出首先是完备环中的精确解及其截断，并没有把每个截断多项式变成原多项式环中的精确解。Jacobian 不可逆时，前面的 \(Y^2=x\) 已出现提升障碍；一般奇异系统的逼近需要更进一步的条件与理论，\subsecref{g5:subsec:3205:02}将讨论 Artin 逼近的相应问题。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

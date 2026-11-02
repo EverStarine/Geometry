@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 29.1 光滑紧性的方法
 % 纲要位置：几何学计划纲要.md，第 3319 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,299 @@
 \section{光滑紧性的方法}
 \label{g3:sec:2901}
 
-待撰写
+一列度量即使都平坦，其在预先指定坐标中的分量也可能剧烈振荡。寻找光滑极限时，必须连同坐标一起选择。曲率导数控制局部系数，注入半径保证这些系数定义在同样大的坐标球上，直径界则使有限张这样的图能够覆盖整个流形。本节把这三种控制逐步转成一个固定流形上的光滑收敛；特别说明局部极限怎样组成 Hausdorff 流形，以及比较用的全局微分同胚怎样构造。
 
 \subsection{谐和坐标或法坐标的统一控制}
 \label{g3:subsec:2901:01}
-待撰写
+本节选用法坐标。\subsecref{g3:subsec:0201:04}已经证明，在法坐标中心有 \(g_{ij}=\delta_{ij}\)、\(\partial_kg_{ij}=0\)。紧性问题需要更强的量化结论：在同样大的整张坐标球上，所有度量导数都要有不依赖流形和中心的界。径向平行标架把这一问题化为沿径向线的积分方程。
+
+\begin{lemma}\label{g3:lem:uniform-normal-coordinate-bounds}
+	给定 \(n\ge2\)、\(i_0>0\) 及非负常数 \(C_0,C_1,\ldots\)。存在只依赖 \(n,i_0,C_0\) 的 \(\rho>0\)，具有以下性质。若 \((M^n,g)\) 为完备光滑黎曼流形，
+	\[
+		\operatorname{inj}_g(M)\ge i_0,\qquad
+		|\nabla^k\mathrm{Rm}|_g\le C_k\quad(k\ge0),
+	\]
+	则任意中心及任意正交初始标架给出的法坐标
+	\(\varphi:B(0,\rho)\subset\mathbb R^n\to M\) 满足
+	\begin{equation}\label{g3:eq:uniform-normal-coordinate-bounds}
+		\tfrac12 I\le (\varphi^*g)_{ij}\le2I,\qquad
+		\sup_{B(0,\rho)}|\partial^\alpha(\varphi^*g)_{ij}|
+		\le A_{|\alpha|}.
+	\end{equation}
+	每个 \(A_k\) 只依赖 \(n,i_0,C_0,\ldots,C_k\)。逆度量与联络的任意固定阶坐标导数也有相应的一致界。
+\end{lemma}
+\begin{proof}
+	先取 \(\rho<i_0/2\)，再按曲率界缩小它。指数映射在更大的切球内可逆；\cref{g3:prop:compact-injectivity-lower-bound}中的距离结论说明 \(\varphi(B(0,\rho))=B_g(p,\rho)\)。把中心的正交基沿径向测地线平行移动，得到光滑正交标架 \(e_a(x)\)。写
+	\[
+		\partial_i=E_i^ae_a,\qquad
+		\nabla_{\partial_i}e_b=(A_i)^a{}_b e_a,
+	\]
+	其中 \(E_i\) 是列向量，\(A_i\) 是反对称矩阵。光滑性来自测地线和平行移动方程对初始向量的光滑依赖；在中心 \(E_i(0)\) 为第 \(i\) 个标准基向量。径向平行性给出
+	\begin{equation}\label{g3:eq:normal-radial-gauge}
+		x^iA_i(x)=0,\qquad x^iE_i^a(x)=x^a.
+	\end{equation}
+	第二式表示径向速度在这个平行标架中的分量就是初始向量。
+
+	设 \(\Omega_{ji}=\partial_jA_i-\partial_iA_j+[A_j,A_i]\) 是联络曲率矩阵。用第一条径向恒等式，可得
+	\(x^j\Omega_{ji}=x^j\partial_jA_i+A_i\)。无挠性在此标架中为
+	\(\partial_jE_i-\partial_iE_j+A_jE_i-A_iE_j=0\)；乘 \(x^j\) 并使用两条径向恒等式，得到
+	\(x^j\partial_jE_i+E_i=e_i^{\mathrm{std}}+A_i x\)。沿 \(t\mapsto tx\) 积分这两个方程，便有
+	\begin{equation}\label{g3:eq:normal-radial-integral-system}
+		\begin{split}
+			A_i(x)&=\int_0^1t x^j\Omega_{ji}(tx)\,\mathrm dt,\\
+			E_i(x)&=e_i^{\mathrm{std}}+
+			\int_0^1t A_i(tx)x\,\mathrm dt.
+		\end{split}
+	\end{equation}
+	所有表达在 \(x=0\) 光滑，不需要在球心除以径向距离。
+
+	用 \(R^a{}_{bcd}\) 表示径向正交标架中的曲率分量，则
+	\(\Omega_{ji}{}^a{}_b=R^a{}_{bcd}E_j^cE_i^d\)。由
+	\(x^jE_j^c(tx)=x^c\)，第一积分式中的曲率项简化为
+	\[
+		(A_i)^a{}_b(x)=\int_0^1t x^c
+		R^a{}_{bcd}(tx)E_i^d(tx)\,\mathrm dt.
+	\]
+	因而在任意半径 \(r\le\rho\) 的闭子球上，记 \(\|\cdot\|_r\) 为分量上确界，有
+	\[
+		\|A\|_r\le c_nC_0r\|E\|_r,\qquad
+		\|E-I\|_r\le c_nr\|A\|_r.
+	\]
+	选 \(\rho\) 使 \(c_nC_0\rho^2\) 足够小，就可吸收右端的 \(\|E\|_r\)，并使 \(\|E-I\|\) 的算子范数小于 \(1/4\)。因为 \(g_{ij}=\langle E_i,E_j\rangle\)，这给出式\eqref{g3:eq:uniform-normal-coordinate-bounds}的正定上下界。
+
+	为取得高阶界，令 \(T_\ell\) 表示 \(\nabla^\ell\mathrm{Rm}\) 在同一正交标架中的全部分量。协变导数与分量导数满足
+	\[
+		\partial_iT_\ell=E_i^a(T_{\ell+1})_{a\cdots}+A_i*T_\ell,
+	\]
+	其中星号表示对各个标架指标的有限次线性作用，符号由张量类型确定。因此，若 \(E,A\) 到 \(k-1\) 阶的坐标导数已受控，则反复使用此式，把 \(T_0\) 的 \(k\) 阶坐标导数控制于 \(C_0,\ldots,C_k\) 及这些低阶界。
+
+	现在对两个积分式求 \(k\) 次坐标导数。记
+	\(M_k=\|\partial^kE\|_r\)、\(N_k=\|\partial^kA\|_r\)。链式法则中的 \(t\) 因子不超过一；除全部导数落在 \(E\) 或 \(A\) 上的项外，其余项均由刚才的归纳控制。所以
+	\[
+		N_k\le B_k+c_nC_0r M_k,\qquad
+		M_k\le B'_k+c_nrN_k.
+	\]
+	最高阶项的系数与 \(k\) 无关，先前选择的同一个 \(\rho\) 仍能吸收。由零阶开始归纳，得到任意阶的一致界，再令 \(r\uparrow\rho\)。最后由 \(g=E^{\mathsf T}E\) 得度量导数界；微分 \(g^{-1}g=I\) 和 Christoffel 公式，得到逆度量及联络的导数界。
+\end{proof}
+
+注入半径在这里保证指数坐标没有重叠的点；曲率导数控制的则是这张坐标图中的变化率。这两个条件承担不同的工作。只知道某一点的法坐标展开，不能得到统一坐标半径，更不能控制整列流形的坐标系数。
 
 \subsection{过渡映射与对角子列}
 \label{g3:subsec:2901:02}
-待撰写
+同一个点在相邻图中有不同坐标。若只让每张图的度量分别收敛，而没有控制图与图之间的转换，就尚未得到一个几何极限。正定上下界先控制转换的一阶导数，联络变换公式随后控制全部高阶导数。
+
+\begin{lemma}\label{g3:lem:uniform-chart-transition-bounds}
+	在上一引理的坐标图之间，过渡映射 \(y=f(x)\) 及其逆的每阶导数，在其定义域上都有由相同数据确定的上界。
+\end{lemma}
+\begin{proof}
+	两张图的度量矩阵记为 \(G_x,G_y\)。坐标变换满足
+	\[
+		G_x=(\mathrm Df)^{\mathsf T}G_y(f)\mathrm Df.
+	\]
+	两侧的正定上下界给出 \(\mathrm Df\) 及其逆的统一范数界。联络在坐标变换下满足
+	\begin{equation}\label{g3:eq:transition-second-derivative}
+		\partial_i\partial_j f^a
+		=\Gamma(x)^k_{ij}\partial_k f^a
+		-\Gamma(y)^a_{bc}(f)\partial_i f^b\partial_j f^c.
+	\end{equation}
+	所以二阶导数有界。对该式反复求导，第 \(r+1\) 阶导数只用联络至 \(r-1\) 阶的导数及 \(f\) 已控制到 \(r\) 阶的导数，故逐阶归纳可得。交换两张图便得逆转换的结论。这里的估计逐点成立，不要求图的重叠域是凸集。
+\end{proof}
+
+下面把有限图册装入一个固定的 Euclid 空间。这样，极限点属于同一个 Hausdorff 空间，局部图的粘合可以直接检查。
+
+\begin{lemma}\label{g3:lem:uniform-finite-atlas-embedding}
+	在\cref{g3:lem:uniform-normal-coordinate-bounds}的假设下，进一步设 \(M\) 闭、连通且 \(\operatorname{diam}_gM\le D\)。可取固定 \(r>0\)、\(4r<\rho\)，以及至多 \(N_0\) 个法坐标图
+	\[
+		\varphi_i:B(0,4r)\longrightarrow M,
+		\qquad M=\bigcup_{i=1}^N\varphi_i(\overline{B(0,r)}),
+	\]
+	其中 \(N_0\) 只依赖 \(n,D,i_0,C_0\)。由这些图可构造光滑嵌入
+	\(\mathcal E:M\to\mathbb R^{N(n+1)}\)，使每个
+	\(\mathcal E\circ\varphi_i\) 在 \(B(0,4r)\) 上的全部固定阶导数有一致界；其第 \(i\) 个 \((n+1)\) 维坐标块在 \(B(0,2r)\) 上恰为 \((1,x)\)。
+\end{lemma}
+\begin{proof}
+	取一个极大的 \(r\) 分离点集 \(p_1,\ldots,p_N\)：不同点的距离至少为 \(r\)，并且不能再加点。紧性使它有限，极大性使闭 \(r\) 球覆盖 \(M\)，而开 \(r/2\) 球两两不交。法坐标中的度量下界给出每个小球的体积至少为
+	\(2^{-n/2}\omega_n(r/2)^n\)。另一方面，\(|\mathrm{Rm}|\le C_0\) 蕴含 \(\operatorname{Ric}\ge-(n-1)C_0g\)，由\cref{g3:thm:bishop-gromov}及 \(M\subset B_g(p_1,D+r)\)，
+	\[
+		\operatorname{Vol}_gM\le V_{-C_0,n}(D+r).
+	\]
+	比较互不相交小球的体积和，得到所需的 \(N_0\)。
+
+	在每个 \(p_i\) 选择正交基并取法图 \(\varphi_i\)。固定光滑径向函数 \(\chi:\mathbb R^n\to[0,1]\)，使它在 \(|x|\le2r\) 时等于一，在 \(|x|\ge3r\) 时等于零。令 \(x_i=\varphi_i^{-1}\)，把
+	\[
+		a_i(p)=\chi(x_i(p)),\qquad b_i(p)=a_i(p)x_i(p)
+	\]
+	在图外延拓为零。截断支集与 \(4r\) 图边界之间有余量，所以延拓光滑。定义
+	\begin{equation}\label{g3:eq:finite-atlas-embedding}
+		\mathcal E(p)=\bigl(a_1(p),b_1(p),\ldots,a_N(p),b_N(p)\bigr).
+	\end{equation}
+	在第 \(i\) 张图的 \(2r\) 子球上，\((a_i,b_i)=(1,x_i)\)。任一点属于某张 \(r\) 子球，故这个坐标块使 \(\mathcal E\) 的微分单射。若 \(\mathcal E(p)=\mathcal E(q)\)，取这样的 \(i\)，则 \(a_i(q)=a_i(p)=1\)；两点都在第 \(i\) 张图内，且 \(b_i(q)=b_i(p)\)，所以 \(q=p\)。紧源到 Hausdorff 空间的连续单射是到像的同胚，因此 \(\mathcal E\) 为光滑嵌入。
+
+	最后，\(\mathcal E\circ\varphi_i\) 的每个非零坐标块是固定截断函数、坐标乘积与过渡映射的复合。上一引理控制全部导数；图外的零延拓也保持这些界。坐标块的数目有统一上界，故全映射的导数界统一。
+\end{proof}
+
+对于一列满足这些界的流形，先取子列使图数 \(N\) 固定。各个局部度量矩阵和 \(\mathcal E_j\circ\varphi_{j,i}\) 都定义在同一个 \(4r\) 球上，并有所有阶导数界。Arzelà--Ascoli 定理先对函数及一阶导数取子列，再对每阶导数依次进行；沿坐标线段积分确认极限导数仍是极限函数的导数。对有限个图和可数个阶数作对角选择，便得到在 \(\overline{B(0,3r)}\) 上同时 \(C^\infty\) 收敛的一个子列。下一步要说明这些局部极限确实描述同一个闭流形。
 
 \subsection{曲率导数及注入半径条件下的紧性}
 \label{g3:subsec:2901:03}
-待撰写
+有限图册的嵌入保留了每张图的坐标标签：只要某块的第一分量非零，就可以用后 \(n\) 个分量除以它，恢复该图中的原坐标。这既能排除极限中出现额外重叠的片，也能把最后的局部比较推广为全局微分同胚。
+
+\begin{theorem}[光滑紧性]\label{g3:thm:smooth-cheeger-gromov-compactness}
+	设 \((M_j^n,g_j)\) 是一列闭、连通光滑黎曼流形，维数 \(n\ge2\) 固定。假设存在 \(D,i_0>0\) 和有限常数 \(C_k\)、\(k=0,1,\ldots\)，使
+	\begin{equation}\label{g3:eq:smooth-compactness-assumptions}
+		\operatorname{diam}_{g_j}M_j\le D,\qquad
+		\operatorname{inj}_{g_j}(M_j)\ge i_0,\qquad
+		\sup_{M_j}|\nabla^k\mathrm{Rm}_{g_j}|_{g_j}\le C_k.
+	\end{equation}
+	则存在子列、一个闭连通光滑流形 \(M_\infty^n\)、光滑黎曼度量 \(g_\infty\)，以及对该子列充分大指标定义的微分同胚
+	\[
+		\Psi_j:M_\infty\longrightarrow M_j,
+		\qquad \Psi_j^*g_j\longrightarrow g_\infty\quad\text{于 }C^\infty(M_\infty).
+	\]
+\end{theorem}
+\begin{proof}
+	使用上一引理的共同 \(r,N_0\)，取子列使图数固定为 \(N\)，并在每张图选择正交初始标架。用同一个截断构造
+	\(\mathcal E_j:M_j\to\mathbb R^{N(n+1)}\)。记
+	\[
+		f_{j,i}=\mathcal E_j\circ\varphi_{j,i},\qquad
+		h_{j,i}=\varphi_{j,i}^*g_j.
+	\]
+	前一小节的对角选择给出
+	\begin{equation}\label{g3:eq:compactness-local-chart-limits}
+		f_{j,i}\longrightarrow f_i,\qquad
+		h_{j,i}\longrightarrow h_i
+		\quad\text{于 }C^\infty(\overline{B(0,3r)}),
+	\end{equation}
+	其中 \(\tfrac12 I\le h_i\le2I\)。以下继续用 \(j\) 表示这个子列。
+
+	先构造极限流形。令
+	\[
+		S_j=\mathcal E_j(M_j),\qquad
+		S=\bigcup_{i=1}^N f_i(\overline{B(0,r)})
+		\subset\mathbb R^{N(n+1)}.
+	\]
+	因为每个 \(M_j\) 被 \(r\) 子球覆盖，
+	\(S_j=\bigcup_i f_{j,i}(\overline{B(0,r)})\)。一致收敛说明 \(S_j\) 在 Euclid Hausdorff 距离下趋于非空紧集 \(S\)。对于 \(|x|<2r\)，\(f_{j,i}(x)\in S_j\)，故其极限 \(f_i(x)\) 也在 \(S\) 中；而 \(f_i\) 的第 \(i\) 块仍为 \((1,x)\)，所以它是 \(B(0,2r)\) 上的光滑嵌入。
+
+	还须证明 \(S\) 在这张片附近没有其他分支。用 \(\alpha_i,\beta_i\) 表示环境空间第 \(i\) 块的标量和向量投影。取 \(y=f_i(x_0)\)，\(|x_0|<2r\)，并选小 \(\eta>0\)，使 \(B(x_0,2\eta)\subset B(0,2r)\)。考虑环境开集
+	\[
+		U=\left\{z:\alpha_i(z)>\tfrac12,
+		\left|\frac{\beta_i(z)}{\alpha_i(z)}-x_0\right|<\eta\right\}.
+	\]
+	若 \(z\in S\cap U\)，由 Hausdorff 收敛取 \(z_j\in S_j\)、\(z_j\to z\)。充分大时 \(\alpha_i(z_j)>0\)，故 \(z_j=\mathcal E_j(p_j)\) 的原点 \(p_j\) 属于第 \(i\) 张图，且其坐标恰为
+	\[
+		x_j=\frac{\beta_i(z_j)}{\alpha_i(z_j)}.
+	\]
+	这些坐标趋于 \(x=\beta_i(z)/\alpha_i(z)\in B(x_0,\eta)\)，因而由局部收敛有 \(z=\lim f_{j,i}(x_j)=f_i(x)\)。反过来，每个 \(x\in B(x_0,\eta)\) 都给 \(f_i(x)\in S\cap U\)。所以
+	\begin{equation}\label{g3:eq:limit-atlas-no-extra-sheets}
+		S\cap U=f_i(B(x_0,\eta)).
+	\end{equation}
+	这些参数图覆盖 \(S\)，其逆直接由 \(\beta_i\) 给出。故 \(S\) 是环境空间中的光滑嵌入 \(n\) 维子流形，没有边界；它自动 Hausdorff 且具有可数基。它也连通：若紧集 \(S\) 分成两个不交非空开闭部分，两部分之间有正距离，其互不相交的小邻域将使充分接近的 \(S_j\) 也分裂，违背 \(M_j\) 连通。
+
+	接着把局部度量 \(h_i\) 放到 \(S\) 上。若 \(f_i(x)=f_k(y)\)，\(|x|,|y|<2r\)，在这个点附近的坐标转换为
+	\[
+		T_{ki}(x)=\frac{\beta_k(f_i(x))}{\alpha_k(f_i(x))}.
+	\]
+	分母在此处等于一，缩小邻域后保持正下界。对大 \(j\)，相同表达
+	\[
+		T_{j,ki}(x)=\frac{\beta_k(f_{j,i}(x))}
+		{\alpha_k(f_{j,i}(x))}
+		=\varphi_{j,k}^{-1}\circ\varphi_{j,i}(x)
+	\]
+	有定义，并在较小邻域中 \(C^\infty\) 收敛到 \(T_{ki}\)。确实，恢复的坐标仍位于 \(B(0,2r)\)，所以它来自真正的第 \(k\) 张图。原度量的相容式
+	\(h_{j,i}=T_{j,ki}^*h_{j,k}\) 取极限，得到
+	\(h_i=T_{ki}^*h_k\)。因此存在唯一光滑正定度量 \(g_\infty\) 于 \(S\)，使 \(f_i^*g_\infty=h_i\)。
+
+	最后构造全局比较映射。由\cref{g3:prop:euclidean-normal-tube}，紧嵌入流形 \(S\) 有固定管状邻域及光滑投影 \(\pi\) 到 \(S\)。Hausdorff 收敛使大 \(j\) 时的 \(S_j\) 位于这个邻域内，并且
+	\[
+		\sup_{z\in S_j}|z-\pi(z)|\longrightarrow0.
+	\]
+	后式也可直接由紧性证明：若有偏离零的子列，取 \(z_j\to z\in S\)，则 \(\pi(z_j)\to\pi(z)=z\)，矛盾。
+
+	对每个 \(i\)，在 \(B(0,3r/2)\) 上令
+	\[
+		\nu_{j,i}=f_i^{-1}\circ\pi\circ f_{j,i}.
+	\]
+	这是良定义的：\(f_i(\overline{B(0,3r/2)})\) 紧含于 \(S\) 的开图 \(f_i(B(0,2r))\)，而 \(\pi\circ f_{j,i}\to f_i\) 光滑。于是
+	\(\nu_{j,i}\to\operatorname{id}\) 于 \(C^\infty\)。充分大时
+	\(\|\mathrm D\nu_{j,i}-I\|<1/2\)，沿凸球内的线段积分，说明 \(\nu_{j,i}\) 单射。
+
+	对任意 \(|x|\le r\)，在闭球 \(\overline{B(x,r/4)}\) 上考虑
+	\(v\mapsto x-(\nu_{j,i}(v)-v)\)。当 \(j\) 足够大时，它把这个球映入自身，且 Lipschitz 常数小于 \(1/2\)。\Cref{g3:lem:banach-contraction}给出唯一不动点，即 \(\nu_{j,i}(v)=x\)。所以 \(f_i(x)\) 至少有一个来自 \(S_j\) 的 \(\pi\) 原像。
+
+	若 \(z\in S_j\) 满足 \(\pi(z)=f_i(x)\)、\(|x|\le r\)，则 \(|z-f_i(x)|\to0\) 一致成立。故 \(\alpha_i(z)>1/2\)，且
+	\(v=\beta_i(z)/\alpha_i(z)\in B(0,3r/2)\)。恢复坐标得 \(z=f_{j,i}(v)\)，从而 \(\nu_{j,i}(v)=x\)。刚才的单射性说明原像只有一个。每个 \(S\) 中的点都属于某个闭 \(r\) 子图，故 \(\pi_j=\pi|_{S_j}:S_j\to S\) 是双射。局部表达 \(\nu_{j,i}\) 的微分可逆，所以它和其逆都是光滑的。
+
+	取 \(M_\infty=S\)，定义
+	\[
+		\Psi_j=\mathcal E_j^{-1}\circ\pi_j^{-1}:S\longrightarrow M_j.
+	\]
+	在每个较小参数图中，
+	\[
+		\Psi_j\circ f_i=\varphi_{j,i}\circ\nu_{j,i}^{-1},\qquad
+		f_i^*(\Psi_j^*g_j)=(\nu_{j,i}^{-1})^*h_{j,i}.
+	\]
+	逆函数的各阶微分公式及 \(\nu_{j,i}\to\operatorname{id}\) 使
+	\(\nu_{j,i}^{-1}\to\operatorname{id}\) 光滑。结合局部度量收敛，右端趋于 \(h_i=f_i^*g_\infty\)。有限个核心图覆盖 \(S\)，故得到全流形上的 \(C^\infty\) 收敛。
+\end{proof}
+
+证明中使用的 Euclid 嵌入只负责编码坐标，它不要求保持黎曼度量。极限度量由 \(h_i\) 的相容性另行定义。管状投影的单射性也单独作了检验；只有局部微分可逆，尚不能排除一个多层覆盖。
+
+\begin{corollary}\label{g3:cor:bounded-geometry-diffeomorphism-finiteness}
+	在固定 \(n,D,i_0,(C_k)_{k\ge0}\) 的式\eqref{g3:eq:smooth-compactness-assumptions}所描述的闭连通流形类中，只有有限多个微分同胚类型。
+\end{corollary}
+\begin{proof}
+	若有无穷多个类型，从每种类型选一个带有所需度量的流形。紧性定理给出一个子列及到同一个 \(M_\infty\) 的微分同胚，因此子列中充分靠后的流形类型相同，与选择矛盾。
+\end{proof}
 
 \subsection{Cheeger–Gromov 收敛与微分同胚选择}
 \label{g3:subsec:2901:04}
-待撰写
+上述极限并不把原来各流形上的点预先认作同一点。真正用来比较的是微分同胚的拉回；这一点也是光滑几何收敛的定义所要记录的内容。
+
+\begin{definition}\label{g3:def:cheeger-gromov-convergence}
+	设 \((M_j,g_j)\)、\((M_\infty,g_\infty)\) 为闭光滑黎曼流形，维数相同，\(k\ge0\) 为整数。若存在对充分大 \(j\) 定义的微分同胚
+	\(\Psi_j:M_\infty\to M_j\)，使
+	\[
+		\Psi_j^*g_j\longrightarrow g_\infty\quad\text{于 }C^k(M_\infty),
+	\]
+	则称这列流形 \(C^k\) \term[Cheeger Gromov shoulian]{Cheeger--Gromov 收敛}[Cheeger--Gromov convergence]到 \((M_\infty,g_\infty)\)。若同一组 \(\Psi_j\) 对每个有限阶 \(k\) 都给出收敛，则称其光滑收敛或 \(C^\infty\) 收敛。范数可用极限流形上的任意固定光滑度量及有限图册定义，紧性使不同选择给出相同的收敛含义。
+\end{definition}
+
+\begin{example}\label{g3:exm:coordinate-oscillation-smooth-limit}
+	在平坦二维环面 \(\mathbb T^2=(\mathbb R/2\pi\mathbb Z)^2\) 上取 \(g_0=\mathrm dx^2+\mathrm dy^2\)，令
+	\(\phi_j(x,y)=(x+j\sin y,y)\)，并置
+	\[
+		g_j=\phi_j^*g_0=(\mathrm dx+j\cos y\,\mathrm dy)^2+\mathrm dy^2.
+	\]
+	每个 \(\phi_j\) 都是微分同胚。各 \(g_j\) 的曲率及其导数全为零，直径与注入半径也相同；但固定坐标中的 \(\mathrm dy^2\) 系数在 \(y=0\) 等于 \(1+j^2\)，没有有界子列。选择 \(\Psi_j=\phi_j^{-1}\) 后，\(\Psi_j^*g_j=g_0\) 恒成立，所以它们光滑 Cheeger--Gromov 收敛。这里变化的是标记，内在几何从未变化。
+\end{example}
+
+\begin{proposition}\label{g3:prop:smooth-convergence-implies-gh}
+	若一列闭连通光滑黎曼流形 \((M_j,g_j)\) 以 \(C^0\) Cheeger--Gromov 意义收敛到闭连通 \((M,g)\)，则其黎曼距离空间以 Gromov--Hausdorff 意义收敛到 \((M,d_g)\)。此外总体积收敛；对任意连续函数 \(u\) 于 \(M\)，
+	\[
+		\int_Mu\,\mu_{\Psi_j^*g_j}\longrightarrow\int_Mu\,\mu_g.
+	\]
+\end{proposition}
+\begin{proof}
+	记 \(h_j=\Psi_j^*g_j\)。紧性、\(g\) 正定及 \(C^0\) 收敛给出 \(\varepsilon_j\downarrow0\)，使
+	\((1-\varepsilon_j)g\le h_j\le(1+\varepsilon_j)g\)。对所有分段光滑曲线积分长度，再取路径下确界，得到
+	\[
+		\sqrt{1-\varepsilon_j}\,d_g(x,y)
+		\le d_{h_j}(x,y)
+		\le\sqrt{1+\varepsilon_j}\,d_g(x,y).
+	\]
+	因 \(\operatorname{diam}_gM<\infty\)，两距离之差一致趋于零。\(\Psi_j\) 的图像是 \(M\) 与 \(M_j\) 的一个满对应，其畸变正是这些距离差的上确界；\cref{g3:thm:gh-correspondence}遂给出 GH 收敛。
+
+	在固定坐标中，\(\mu_{h_j}/\mu_g=\sqrt{\det(g^{-1}h_j)}\to1\) 一致成立。与有界连续 \(u\) 相乘后积分，便得测度结论，取 \(u=1\) 即得总体积收敛。
+\end{proof}
+
+对于没有统一直径界的完备流形，通常只观察一个基点附近越来越大的区域。相应的\term[daijidian guanghua shoulian]{带基点光滑收敛}[pointed smooth convergence]使用完备连通的 \((M_j,g_j,p_j)\) 与 \((M_\infty,g_\infty,p_\infty)\)：取包含 \(p_\infty\) 的开集穷尽 \(U_j\)，以及光滑嵌入
+\[
+	\Psi_j:U_j\longrightarrow M_j,\qquad
+	\Psi_j(p_\infty)=p_j,
+\]
+使 \(M_\infty\) 的每个紧集上的拉回度量都光滑收敛，并使像包含半径 \(R_j\to\infty\) 的基点球 \(B_{g_j}(p_j,R_j)\)。\(C^k\) 版本把这里的光滑收敛改为紧集上的 \(C^k\) 收敛。这个定义同时指定了比较区域和覆盖范围；它允许极限非紧，而本节的紧性定理给出的是有统一直径界时的闭流形版本。
+
+\ProseParagraphBreak
+光滑收敛携带度量张量、联络及曲率的局部信息，GH 收敛只比较距离。上面的命题给出了由前者到后者的方向。若注入半径趋于零，即使曲率始终有界，局部坐标也可能无法保持同样的有效半径；下一节的平坦环面和圆丛模型将展示这种维数变化。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

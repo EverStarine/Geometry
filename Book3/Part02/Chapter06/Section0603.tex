@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 6.3 指标形式和最短性
 % 纲要位置：几何学计划纲要.md，第 2342 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,320 @@
 \section{指标形式和最短性}
 \label{g3:sec:0603}
 
-待撰写
+第二变分把能量的变化写成沿测地线的一个二次式。这个式子一方面含有变分场的导数，衡量弯离原曲线的代价；另一方面含有曲率，可能抵消这种代价。Jacobi 场恰好满足相应的驻定方程。本节把这三个对象放在一起，判断二次变分何时为正、何时出现零方向，以及何时能构造真正缩短曲线的变分。
 
 \subsection{分段光滑场与指标形式}
 \label{g3:subsec:0603:01}
-待撰写
+
+设 \((M,g)\) 为无边界光滑黎曼流形，\(\gamma:[0,\ell]\to M\) 是单位速测地线，\(\ell>0\)，记 \(T=\dot\gamma\)、\(V'=\mathrm D_tV=\nabla_TV\)。我们允许变分场在有限个参数值处改变导数，这样便能截断 Jacobi 场或逐段拼接它们。场本身仍须连续，否则它不能描述连续曲线的一阶变化。
+
+\begin{definition}\label{g3:def:index-form}
+	沿单位速测地线 \(\gamma:[0,\ell]\to M\)，记 \(\mathcal V(\gamma)\) 为连续且在某个有限分割的各闭子区间上光滑的向量场空间，记
+	\[
+		\mathcal V_0(\gamma)=
+		\{V\in\mathcal V(\gamma):V(0)=V(\ell)=0\}.
+	\]
+	双线性形式
+	\begin{equation}\label{g3:eq:index-form}
+		I_\gamma(V,W)=
+		\int_0^\ell
+		\bigl(\langle V',W'\rangle
+		-\langle R(V,T)T,W\rangle\bigr)\,\mathrm dt
+	\end{equation}
+	称为 \(\gamma\) 的\term[zhibiaoxingshi]{指标形式}[index form]。省略下标时写作 \(I\)，并记 \(I(V)=I(V,V)\)。\symidx{\(I_\gamma\)}
+\end{definition}
+
+积分按共同细分逐段计算，改变分割不改变积分。由曲率的对称性\cref{g3:prop:curvature-symmetries}，算子 \(V\mapsto R(V,T)T\) 自伴，故 \(I\) 对称。对固定端点变分，\cref{g3:thm:energy-second-variation}给出
+\[
+	\left.\frac{\mathrm d^2}{\mathrm ds^2}\right|_{s=0}
+	E(\gamma_s)=I(V),
+	\qquad
+	E(c)=\frac12\int_0^\ell|\dot c|^2\,\mathrm dt.
+\]
+对于分段光滑变分，同样的公式可在各段应用；在内部节点，基准曲线 \(\gamma\) 的速度两侧相同，节点加速度项互相抵消。任意 \(V\in\mathcal V_0(\gamma)\) 都能实现为这种变分的变分场：取
+\[
+	\gamma_s(t)=\exp_{\gamma(t)}(sV(t)).
+\]
+紧参数区间及指数映射在零截面附近的定义域保证，对统一的小 \(|s|\) 此式有定义；节点处两侧值相同，端点固定。
+
+\begin{proposition}\label{g3:prop:index-form-integration-by-parts}
+	设 \(\gamma:[0,\ell]\to M\) 是无边界光滑黎曼流形中的单位速测地线，\(V,W\in\mathcal V(\gamma)\)，并在共同分割
+	\(0=t_0<t_1<\cdots<t_m=\ell\) 上光滑。记
+	\([V']_j=V'(t_j+)-V'(t_j-)\)。则
+	\begin{align}
+		I(V,W)
+		={}&\langle V'(\ell-),W(\ell)\rangle
+			-\langle V'(0+),W(0)\rangle \notag\\
+		&-\sum_{j=1}^{m-1}\langle[V']_j,W(t_j)\rangle
+			-\sum_{j=1}^m\int_{t_{j-1}}^{t_j}
+			\langle V''+R(V,T)T,W\rangle\,\mathrm dt .
+		\label{g3:eq:index-form-parts}
+	\end{align}
+\end{proposition}
+\begin{proof}
+	度量相容性给出
+	\[
+		\frac{\mathrm d}{\mathrm dt}\langle V',W\rangle
+		=\langle V'',W\rangle+\langle V',W'\rangle.
+	\]
+	在各段积分后相加。内节点的贡献为
+	\(\langle V'(t_j-),W(t_j)\rangle-
+	\langle V'(t_j+),W(t_j)\rangle\)，正是负的跳跃项；两端只各留一项，得到所述公式。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:index-form-kernel}
+	设 \(\gamma:[0,\ell]\to M\) 是无边界光滑黎曼流形中的单位速测地线。指标形式在 \(\mathcal V_0(\gamma)\) 上的核
+	\[
+		\{V\in\mathcal V_0(\gamma):I(V,W)=0
+		\text{ 对所有 }W\in\mathcal V_0(\gamma)\}
+	\]
+	恰为满足 \(J(0)=J(\ell)=0\) 的光滑 Jacobi 场空间。
+\end{proposition}
+\begin{proof}
+	若 \(J\) 是这样的 Jacobi 场，式\eqref{g3:eq:index-form-parts}中的积分、跳跃及端点项全部为零，故 \(J\) 属于核。反过来，在每段内部取任意紧支撑光滑测试场，核条件迫使
+	\(V''+R(V,T)T=0\)。这里可在平行标架中逐分量使用连续函数的基本引理：若某分量在一点非零，则在其同号小邻域取非负测试函数即可得到非零积分。于是 \(V\) 在每段都是 Jacobi 场。再取仅在某一节点附近非零、且节点值任意的连续光滑场，式\eqref{g3:eq:index-form-parts}给出 \([V']_j=0\)。相邻两段具有相同的位置及一阶导数，Jacobi 初值唯一性使它们接成同一个光滑解。
+\end{proof}
+
+\(I(V)=0\) 与 \(V\) 属于上述核一般不能等同；若 \(I\) 半正定，则二者等价。切向与法向部分也可分开：若 \(V=fT+V^\perp\)、\(W=hT+W^\perp\)，则
+\begin{equation}\label{g3:eq:index-tangential-normal-split}
+	I(V,W)=\int_0^\ell f'h'\,\mathrm dt+I(V^\perp,W^\perp).
+\end{equation}
+这是因为 \(T'=0\)、\(R(T,T)=0\)，而法向场及其沿线导数都垂直于 \(T\)。固定端点长度第二变分为 \(I(V^\perp)\)，见\cref{g3:thm:length-second-variation}；切向变分的一部分只改变参数。
+
+\begin{lemma}\label{g3:lem:short-interval-index-positive}
+	设 \(\gamma:[a,b]\to M\) 是无边界光滑黎曼流形中的单位速测地线，沿线满足
+	\[
+		|\langle R(V,T)T,V\rangle|\le C|V|^2
+	\]
+	其中 \(C\ge0\) 为常数。若 \(h=b-a\) 且 \(Ch^2<1\)，则对两端为零的连续分段光滑场，
+	\[
+		I_{[a,b]}(V)\ge(1-Ch^2)\int_a^b|V'|^2\,\mathrm dt.
+	\]
+	特别地，非零场的指标形式严格为正。
+\end{lemma}
+\begin{proof}
+	取沿线的平行标准正交标架，将 \(V\) 写成列向量 \(v\)。由 \(v(a)=0\) 及 Cauchy--Schwarz 不等式，
+	\[
+		|v(t)|^2
+		=\left|\int_a^t v'(s)\,\mathrm ds\right|^2
+		\le h\int_a^b|v'|^2\,\mathrm ds.
+	\]
+	再对 \(t\) 积分，得
+	\(\int_a^b|V|^2\le h^2\int_a^b|V'|^2\)，代入指标形式即得估计。若导数积分为零，则场平行且起点为零，只能为零场。
+\end{proof}
+
+沿一条紧测地线段，曲率算子的范数有统一上界，故总能选有限分割，使每一小段满足此引理。短段正性将同时控制 Jacobi 边值问题和逐段拼接的余项。
 
 \subsection{Jacobi 场的极小性质}
 \label{g3:subsec:0603:02}
-待撰写
+
+固定一个起点为零的终点值，希望在所有达到该值的变分场中找出指标形式最小的场。Jacobi 方程消去分部积分中的内部项，因而提供自然候选；要判断它是否确实极小，还须控制曲率项的符号。
+
+\begin{theorem}\label{g3:thm:jacobi-index-lemma}
+	设 \(\gamma:[0,\ell]\to M\) 是无边界光滑黎曼流形中的单位速测地线，且 \((0,\ell]\) 中没有与 \(\gamma(0)\) 沿 \(\gamma\) 共轭的时刻。则：
+	\begin{enumerate}
+		\item \(I\) 在 \(\mathcal V_0(\gamma)\) 上正定。
+		\item 对任意 \(w\in\mathrm T_{\gamma(\ell)}M\)，存在唯一 Jacobi 场 \(J\)，满足 \(J(0)=0\)、\(J(\ell)=w\)。任意具有相同端点值的 \(V\in\mathcal V(\gamma)\) 满足
+		\[
+			I(V)\ge I(J),
+		\]
+		且等号当且仅当 \(V=J\)。
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	取沿 \(\gamma\) 的平行标准正交标架。曲率算子写成光滑对称矩阵 \(K(t)\)，Jacobi 方程变成
+	\(j''+Kj=0\)。令矩阵 \(A\) 满足
+	\[
+		A''+KA=0,\qquad A(0)=0,\qquad A'(0)=I_n.
+	\]
+	每个从零开始的 Jacobi 场都唯一写成 \(j(t)=A(t)c\)。无共轭假设等价于 \(A(t)\) 在 \(0<t\le\ell\) 可逆，故所求边值场为
+	\(j(t)=A(t)A(\ell)^{-1}w\)。
+
+	Wronskian 恒等式给出 \(A^{\mathsf T}A'=A'^{\mathsf T}A\)，也可直接求导验证两边之差恒定且初值为零。因而
+	\[
+		S=A'A^{-1}
+	\]
+	对称，并满足
+	\[
+		S'+S^2+K=0.
+	\]
+	对任意列向量场 \(v\)，在各光滑片段上计算
+	\begin{equation}\label{g3:eq:index-square-completion}
+		|v'|^2-\langle Kv,v\rangle
+		=|v'-Sv|^2+\frac{\mathrm d}{\mathrm dt}\langle Sv,v\rangle.
+	\end{equation}
+	确实，展开右边并用 \(S'+S^2=-K\)，交叉项抵消后即得左边。由于 \(S,v\) 在内部节点连续，积分时各节点的边界项抵消。
+
+	\(S\) 在 \(0\) 处有奇性，必须检查该端的极限。由矩阵方程及初值，
+	\[
+		A(t)=tI_n+O(t^3),\qquad
+		A'(t)=I_n+O(t^2),\qquad
+		S(t)=t^{-1}I_n+O(t).
+	\]
+	若 \(V(0)=0\)，分段光滑性给出 \(v(t)=O(t)\)，所以
+	\(\langle S(t)v(t),v(t)\rangle=O(t)\to0\)。
+	对 \(V\in\mathcal V_0(\gamma)\)，将式\eqref{g3:eq:index-square-completion}从 \(\varepsilon\) 积分到 \(\ell\)，再令 \(\varepsilon\downarrow0\)，得到
+	\[
+		I(V)=\lim_{\varepsilon\downarrow0}
+		\int_\varepsilon^\ell|v'-Sv|^2\,\mathrm dt\ge0.
+	\]
+	若等号成立，每个远离零的闭子区间上的非负积分均为零，故 \(v'=Sv\)。于是
+	\((A^{-1}v)'=0\)，有 \(v=Ac\)；终点为零及 \(A(\ell)\) 可逆迫使 \(c=0\)。这证明正定性。
+
+	对第二项，将 \(V=J+W\)，则 \(W\in\mathcal V_0(\gamma)\)。Jacobi 方程及分部积分给出 \(I(J,W)=0\)，所以
+	\[
+		I(V)=I(J)+I(W).
+	\]
+	第一项的正定性完成证明，并给出等号条件。
+\end{proof}
+
+这个结论通常称为\term[jacobizhibiaoyinli]{Jacobi 指标引理}[Jacobi index lemma]。它比较的是变分场的指标形式；下面用同一方法把任意场化为有限个节点的数据。
+
+\begin{proposition}\label{g3:prop:piecewise-jacobi-decomposition}
+	设 \(\gamma:[0,\ell]\to M\) 是无边界光滑黎曼流形中的单位速测地线，选有限分割，使每一小段满足\cref{g3:lem:short-interval-index-positive}的条件。令 \(\mathcal B\subset\mathcal V_0(\gamma)\) 为每段均为 Jacobi 场的连续场空间，令 \(\mathcal Z\subset\mathcal V_0(\gamma)\) 为在全部节点取零的场空间。则每个 \(V\in\mathcal V_0(\gamma)\) 唯一分解为
+	\[
+		V=J+Z,\qquad J\in\mathcal B,\quad Z\in\mathcal Z,
+	\]
+	其中 \(J(t_i)=V(t_i)\)，并且 \(I(\mathcal B,\mathcal Z)=0\)、\(I|_{\mathcal Z}\) 正定。\(\mathcal B\) 由内部节点值线性参数化，维数为 \(n(m-1)\)，其中 \(n=\dim M\)。限制到处处法向的场时，维数为 \((n-1)(m-1)\)。
+\end{proposition}
+\begin{proof}
+	先看一小段。两端为零的 Jacobi 场满足 \(I(J)=0\)，短段正性使它为零。固定起点值后，从起点导数到终点值的线性部分因此单射；定义域和值域同为 \(n\) 维，故它可逆。任给两端值，都有唯一的 Jacobi 解。
+
+	按 \(V\) 的各节点值逐段插值，得到连续的 \(J\)，再令 \(Z=V-J\)。逐段分部积分时，\(J\) 的 Jacobi 方程消去积分项，而 \(Z\) 的节点值消去全部边界项，所以 \(I(J,Z)=0\)。对 \(\mathcal Z\) 中的非零场，至少一段非零，短段正性及其余段的非负性给出 \(I(Z)>0\)。两空间的交为零，分解因而唯一。任意内部节点值均可插值，得到维数公式。法向初值的 Jacobi 解始终法向；也可由切向分量满足 \(f''=0\) 及两端法向值直接看出法向边值问题封闭。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:nonconjugate-local-minimum}
+	设 \(\gamma:[0,\ell]\to M\) 是无边界光滑黎曼流形中的单位速测地线，且 \((0,\ell]\) 内无与起点共轭的时刻。则在固定端点、相同参数区间的分段光滑曲线中，\(\gamma\) 是能量的严格局部极小点。这里可取一致拓扑的邻域。它在 \(C^1\) 意义下也是局部最短曲线；长度相等的近邻曲线仅相差保向重参数化。
+\end{proposition}
+\begin{proof}
+	取足够细的有限分割，使各基准子段及其端点附近的短线落在\cref{g3:thm:strongly-convex-neighborhood}给出的邻域内，同时满足短段正性。记 \(h_i=t_i-t_{i-1}\)，固定 \(x_0=\gamma(0)\)、\(x_m=\gamma(\ell)\)，定义内部节点的光滑函数
+	\[
+		F(x_1,\ldots,x_{m-1})
+		=\sum_{i=1}^m\frac{d(x_{i-1},x_i)^2}{2h_i}.
+	\]
+	距离平方及短线依赖端点的光滑性来自该强凸邻域定理。\(F\) 恰为依次连接这些节点、在每个给定时间段内常速行走所得折线的能量。
+
+	基准折线就是光滑测地线 \(\gamma\)。第一变分的节点项因两侧速度相接而抵消，故基准节点为 \(F\) 的临界点。给节点速度 \((w_i)\)，由相应短测地线族得到分段 Jacobi 变分场 \(J\)；第二变分公式说明
+	\[
+		\mathrm d^2F((w_i),(w_i))=I(J).
+	\]
+	若节点速度不全为零，则 \(J\ne0\)，Jacobi 指标引理使右边严格为正。因此有限维函数 \(F\) 的二阶 Taylor 展开给出基准节点的严格局部极小性。
+
+	对固定端点曲线 \(c\)，令 \(x_i=c(t_i)\)。Cauchy--Schwarz 不等式及距离定义逐段给出
+	\[
+		E(c|_{[t_{i-1},t_i]})
+		\ge\frac{\operatorname{Len}(c|_{[t_{i-1},t_i]})^2}{2h_i}
+		\ge\frac{d(x_{i-1},x_i)^2}{2h_i}.
+	\]
+	只要 \(c\) 一致接近 \(\gamma\)，节点就落在上述有限维极小邻域内，故 \(E(c)\ge F(x_1,\ldots,x_{m-1})\ge E(\gamma)\)。等号迫使节点为原节点，每一段又必须是原来的常速最短段，所以 \(c=\gamma\)。
+
+	若 \(c\) 在 \(C^1\) 意义下接近单位速 \(\gamma\)，其速度处处非零，累计弧长函数及其归一化逆函数接近恒等映射。将 \(c\) 在 \([0,\ell]\) 上改成常速后，所得曲线仍一致接近 \(\gamma\)，其能量为 \(\operatorname{Len}(c)^2/(2\ell)\)。能量极小性给出 \(\operatorname{Len}(c)\ge\ell\)，等号时常速代表恰为 \(\gamma\)。
+\end{proof}
 
 \subsection{共轭点前后的符号变化}
 \label{g3:subsec:0603:03}
-待撰写
+
+当终点到达第一个共轭时刻，从起点为零出发的某个 Jacobi 场又回到零，其指标形式也为零。继续延长曲线后，这个场可在共轭点处截断；截断造成的导数跳跃提供一个使二次式变负的方向。
+
+\begin{proposition}\label{g3:prop:first-conjugate-semidefinite}
+	设 \(\gamma:[0,b]\to M\) 是无边界光滑黎曼流形中的单位速测地线，且 \(b>0\) 为相对于起点的第一个共轭时刻。则 \(I\) 在 \(\mathcal V_0(\gamma)\) 上半正定，并且 \(I(V)=0\) 当且仅当 \(V\) 是两端为零的 Jacobi 场。
+\end{proposition}
+\begin{proof}
+	任取 \(V\in\mathcal V_0(\gamma)\)。对小 \(\varepsilon>0\)，令 \(V_\varepsilon=V\) 于 \([0,b-2\varepsilon]\)，在 \([b-2\varepsilon,b-\varepsilon]\) 上乘上线性下降到零的函数，此后取零。这个场在 \([0,b-\varepsilon]\) 的两端为零，该区间没有共轭时刻，故 \(I(V_\varepsilon)\ge0\)。
+
+	由于 \(V(b)=0\)，在终点附近有 \(|V(t)|\le C(b-t)\)，而 \(|V'|\) 有界。因此截断引入的 \(\varepsilon^{-1}V\) 项仍一致有界，改变导数的区域长度至多为 \(2\varepsilon\)。于是
+	\[
+		\int_0^b|V_\varepsilon-V|^2\,\mathrm dt\to0,\qquad
+		\int_0^b|V_\varepsilon'-V'|^2\,\mathrm dt\to0.
+	\]
+	曲率有界，故 \(I(V_\varepsilon)\to I(V)\)，得到半正定性。
+
+	若 \(I(V)=0\)，对任意 \(W\) 及实数 \(s\)，
+	\(0\le I(V+sW)=2sI(V,W)+s^2I(W)\)。
+	令 \(s\) 从正负两侧趋于零，得 \(I(V,W)=0\)。由\cref{g3:prop:index-form-kernel}，\(V\) 为两端零的 Jacobi 场。反向结论已经由分部积分得到。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:interior-conjugate-negative}
+	设 \(\gamma:[0,\ell]\to M\) 是无边界光滑黎曼流形中的单位速测地线。若存在 \(0<t_*<\ell\)，使 \(\gamma(t_*)\) 与 \(\gamma(0)\) 沿 \(\gamma\) 共轭，则存在两端为零的法向分段光滑场 \(V\)，满足 \(I(V)<0\)。因此 \(\gamma\) 不是两端点间的最短曲线。
+\end{proposition}
+\begin{proof}
+	取 \([0,t_*]\) 上非零 Jacobi 场 \(J\)，使 \(J(0)=J(t_*)=0\)。其切向分量满足 \(f''=0\)，两端为零，故 \(J\) 法向。初值唯一性说明 \(a=J'(t_*)\ne0\)。定义连续截断场
+	\[
+		U(t)=
+		\begin{cases}
+			J(t),&0\le t\le t_*,\\
+			0,&t_*\le t\le\ell.
+		\end{cases}
+	\]
+	分部积分给出 \(I(U)=0\)，但 \(U\) 的导数在 \(t_*\) 发生跳跃。选光滑法向场 \(W\)，在两端为零，且 \(W(t_*)=-a\)；例如将 \(a\) 沿线平行延拓后乘以一个支撑在内部、在 \(t_*\) 为 \(-1\) 的光滑函数。此时
+	\[
+		I(U,W)=\langle J'(t_*),W(t_*)\rangle=-|a|^2.
+	\]
+	所以对充分小的 \(\varepsilon>0\)，
+	\[
+		I(U+\varepsilon W)
+		=-2\varepsilon|a|^2+\varepsilon^2I(W)<0.
+	\]
+	这便是所需场。
+
+	用本节开始的指数变分实现它。第一能量变分为零，第二变分为负，因此小的非零变分参数给出 \(E(\gamma_s)<E(\gamma)=\ell/2\)。又有
+	\[
+		\operatorname{Len}(\gamma_s)^2
+		\le \ell\int_0^\ell|\partial_t\gamma_s|^2\,\mathrm dt
+		=2\ell E(\gamma_s)<\ell^2,
+	\]
+	故得到真正较短的连续分段光滑曲线。
+\end{proof}
+
+\begin{example}\label{g3:exm:sphere-index-sign}
+	在半径 \(a>0\) 的圆球面 \(S_a^n\)、\(n\ge2\) 上，沿单位速大圆取平行单位法向场 \(E\)。曲率算子为 \(R(E,T)T=a^{-2}E\)。令
+	\[
+		V(t)=\sin(\pi t/\ell)E(t).
+	\]
+	直接积分得
+	\[
+		I(V)=\frac{\ell}{2}
+		\left(\frac{\pi^2}{\ell^2}-\frac1{a^2}\right).
+	\]
+	在 \(\ell=\pi a\) 时，\(V\) 是两端为零的 Jacobi 场；当 \(\ell>\pi a\) 时，同一试探场给出负值。半大圆仍然最短，却有由大圆方向变化产生的零方向；越过半大圆后，负方向使长度下降。
+\end{example}
 
 \subsection{割点与共轭点的关系}
 \label{g3:subsec:0603:04}
-待撰写
+
+共轭点由沿单条测地线的线性变分检测，割点则记录这条线从指定起点出发何时不再整体最短。内部共轭点能破坏最短性，另一条竞争测地线也能先做到这一点。
+
+\begin{theorem}\label{g3:thm:cut-point-alternative}
+	设 \((M,g)\) 连通、完备、无边界，\(p\in M\)、\(u\in\mathrm T_pM\)、\(|u|=1\)，并令 \(\gamma(t)=\exp_p(tu)\)。记 \(c=c_p(u)\) 为割时，\(\tau\) 为相对于 \(p\) 的第一个正共轭时刻；没有共轭时刻时令 \(\tau=\infty\)。则
+	\[
+		c\le\tau.
+	\]
+	若 \(c<\infty\)，在 \(q=\gamma(c)\) 处至少发生下列一件事：
+	\begin{enumerate}
+		\item \(q\) 沿 \(\gamma\) 与 \(p\) 共轭；
+		\item 从 \(p\) 到 \(q\) 存在另一条不同的单位速最短测地线。
+	\end{enumerate}
+	若第二种情形不发生，则 \(c=\tau\)。
+\end{theorem}
+\begin{proof}
+	共轭时刻在起点附近不存在，且在任意紧参数区间内只有有限个，见\cref{g3:prop:conjugate-times-isolated}；因此存在正共轭时刻时，第一个时刻有定义。由割时的定义及端点距离的连续性，\(\gamma|_{[0,c]}\) 在 \(c<\infty\) 时仍最短，且每个 \(t>c\) 满足 \(d(p,\gamma(t))<t\)。若 \(c>\tau\)，取 \(\tau<b<c\)，则 \(\gamma|_{[0,b]}\) 内部有共轭点，却为最短线，与\cref{g3:prop:interior-conjugate-negative}矛盾，故 \(c\le\tau\)。
+
+	有限割时的二择正是\cref{g3:prop:cut-endpoint-alternative}在 Jacobi 场语言下的表述。为看清完备性和局部可逆性的作用，恢复其紧性论证。假设从 \(p\) 到 \(q\) 的最短线唯一，且 \(c\) 不是共轭时刻。由\cref{g3:prop:conjugate-exp-singularity}，\((\mathrm d\exp_p)_{cu}\) 可逆。取 \(t_j>c\)、\(t_j\downarrow c\)，记 \(q_j=\gamma(t_j)\)。Hopf--Rinow 定理提供从 \(p\) 到 \(q_j\) 的最短线，故可选初向量 \(v_j\in\mathrm T_pM\)，满足
+	\[
+		\exp_p(v_j)=q_j,\qquad |v_j|=d(p,q_j)<t_j.
+	\]
+	距离连续性给出 \(|v_j|\to c\)。有限维切空间中的有界序列有收敛子列，设 \(v_j\to v\)；则 \(|v|=c\)、\(\exp_p(v)=q\)，其径向线实现距离。唯一性迫使 \(v=cu\)。指数映射在 \(cu\) 的某个邻域内为微分同胚，故最终同在此邻域内的 \(v_j,t_ju\) 因像相同而必须相等。这与 \(|v_j|<t_j\) 矛盾。
+
+	因此最短线唯一时，割端点必共轭。再结合 \(c\le\tau\) 与第一个共轭时刻的定义，得到 \(c=\tau\)。
+\end{proof}
+
+\begin{example}\label{g3:exm:cylinder-cut-before-conjugate}
+	考虑平坦圆柱 \(M=(\mathbb R/2\pi a\mathbb Z)\times\mathbb R\)，度量为 \(\mathrm dx^2+\mathrm dz^2\)。沿闭合的水平单位速测地线，曲率为零，Jacobi 方程在平行标架中为 \(J''=0\)，所以没有正共轭时刻。绕到半圈时却已有两条长度为 \(\pi a\) 的半圆弧；由提升到平面的距离计算，其割时为 \(\pi a\)。因此
+	\[
+		c=\pi a<\tau=\infty.
+	\]
+	在半圈之后但不足一圈的测地线段上，指标形式仍对固定端点非零场严格为正，能量仍局部极小，然而反向短弧具有更小的总长度。这具体区分了 Jacobi 指标引理的局部结论与整体最短性。
+\end{example}
+
+有限割时的两种机制可以同时发生：圆球面对径点既共轭，也由多条半大圆到达。第一共轭端点处的半正定性允许最短性保留至端点；只有把共轭点放到区间内部，才由截断场的跳跃必然得到负方向。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

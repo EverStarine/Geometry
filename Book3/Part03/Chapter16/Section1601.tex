@@ -1,11 +1,11 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 16.1 热半群和谱构造
 % 纲要位置：几何学计划纲要.md，第 2751 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
-% * 非负自伴 Laplace 的指数
+% * Laplace 算子的热半群
 % * 热方程解与平滑作用
 % * 核的存在、对称性和半群律
 % * 最大值与质量保持
@@ -15,21 +15,217 @@
 \section{热半群和谱构造}
 \label{g3:sec:1601}
 
-待撰写
+一个特征函数的热演化特别简单：若 \(\Delta\phi=\lambda\phi\)，则 \(e^{-t\lambda}\phi\) 满足 \(\partial_tu+\Delta u=0\)。一般初值可以按特征函数展开，因此热方程先变成各个频率独立衰减的问题。要从这个想法得到可用的热核，还须证明三件事：级数确实定义了解，正时间消除了初值的不光滑性，并且解能写成对初值的积分。本节用第十三章的谱范数及第十一章的嵌入完成这些步骤。
 
-\subsection{非负自伴 Laplace 的指数}
+\subsection{Laplace 算子的热半群}
 \label{g3:subsec:1601:01}
-待撰写
+
+本章的基本对象是非空的 \(n\ge1\) 维光滑闭黎曼流形 \((M,g)\)，这里“闭”表示紧且无边界，不要求可定向。积分使用正体积密度 \(\mu_g\)，复 \(L^2\) 内积对第一变量线性。函数 Laplace 为
+\[
+	\Delta=-\operatorname{div}\operatorname{grad},\qquad
+	(\Delta f,f)_{L^2}=\|\mathrm df\|_2^2\quad(f\in C^\infty(M)).
+\]
+由\cref{g3:thm:positive-elliptic-realization,g3:thm:elliptic-discrete-spectrum}，其定义域为 \(H^2(M)\) 的实现非负自伴，并有光滑正交归一特征基。本章从 \(0\) 开始编号，按重数排列为
+\begin{equation}\label{g3:eq:heat-spectrum-enumeration}
+	\Delta\phi_j=\lambda_j\phi_j,\qquad
+	0=\lambda_0\le\lambda_1\le\cdots\longrightarrow\infty,
+	\qquad j=0,1,\ldots.
+\end{equation}
+零特征函数在每个连通分支上为常数，因为其外微分的平方积分为零。紧流形只有有限多个连通分支，所以零特征值的重数就是分支数；仅当 \(M\) 连通时才有 \(\lambda_1>0\)。由于 \(\Delta\) 保持实函数，每个特征空间可选实正交基，再复化得到所需基。以下核公式允许使用任意复正交基。
+
+\begin{definition}\label{g3:def:heat-semigroup}
+	设 \((M,g)\) 为非空的正维光滑闭黎曼流形。对 \(t\ge0\) 及 \(f\in L^2(M)\)，定义
+	\begin{equation}\label{g3:eq:heat-semigroup-series}
+		T_tf=e^{-t\Delta}f\coloneqq
+		\sum_{j=0}^{\infty}e^{-t\lambda_j}(f,\phi_j)_{L^2}\phi_j.
+	\end{equation}
+	这个算子族称为 \(\Delta\) 的\term[rebanqun]{热半群}[heat semigroup]。
+\end{definition}
+
+因为 \(0<e^{-t\lambda_j}\le1\)，级数在 \(L^2\) 中收敛。同一特征空间上的乘数是一个标量，换正交基不改变算子，因此定义只依赖于 \(\Delta\)。这里的指数由谱展开定义，并不要求把无界算子的幂级数逐项作用于任意 \(L^2\) 函数。
+
+\begin{proposition}\label{g3:prop:heat-semigroup-properties}
+	设 \((M,g)\) 为非空的正维光滑闭黎曼流形。上述 \(T_t\) 是自伴的 \(L^2\) 压缩算子，且
+	\[
+		T_0=I,\qquad T_{t+s}=T_tT_s\quad(t,s\ge0),\qquad
+		T_tf\longrightarrow f\text{ 在 }L^2\text{ 中 }(t\downarrow0).
+	\]
+	在 \(f\in H^2(M)\) 时，\(\frac{\mathrm d}{\mathrm dt}T_tf=-\Delta T_tf\)，导数在 \(t=0\) 按右导数理解。反之，若 \((T_tf-f)/t\) 在 \(L^2\) 中有极限，则 \(f\in H^2(M)\)。
+\end{proposition}
+\begin{proof}
+	正交展开给出 \(\|T_tf\|_2^2=\sum_j e^{-2t\lambda_j}|(f,\phi_j)|^2\le\|f\|_2^2\)，实乘数给出自伴性，乘数相乘给出半群律。由于 \(|e^{-t\lambda_j}-1|\le1\)，对平方可和的系数列使用支配收敛，得到强连续性；半群律又把这一结论移到任意时间。
+
+	若 \(f\in H^2\)，由式\eqref{g3:eq:spectral-domain}有 \(\sum_j\lambda_j^2|(f,\phi_j)|^2<\infty\)。不等式 \(|(e^{-t\lambda}-1)/t|\le\lambda\) 允许在 \(L^2\) 中对级数求右导数，得到 \(-\Delta f\)；正时间的导数同理。反之，若差商收敛于 \(h\)，逐项与 \(\phi_j\) 配对便得 \((h,\phi_j)=-\lambda_j(f,\phi_j)\)。平方和恒等式给出上述带权可和性，故 \(f\in H^2\)。
+\end{proof}
 
 \subsection{热方程解与平滑作用}
 \label{g3:subsec:1601:02}
-待撰写
+
+指数衰减比任意多项式增长都快，而第十三章已将导数范数转成特征系数上的多项式权。这两件事合在一起，便能解释热方程为何立即使初值光滑。此时还不需要知道第 \(j\) 个特征值究竟增长多快。
+
+\begin{theorem}\label{g3:thm:heat-spectral-solution}
+	设 \((M,g)\) 为非空的正维光滑闭黎曼流形，\(f\in L^2(M)\)。则 \(u(t)=T_tf\) 属于 \(C([0,\infty);L^2(M))\)，在 \((0,\infty)\times M\) 上光滑，满足
+	\[
+		\partial_tu+\Delta u=0,\qquad u(0)=f.
+	\]
+	它是具有上述 \(L^2\) 连续性和初值的唯一分布解。对每个整数 \(m,p\ge0\)，存在常数 \(C_{m,p}\)，使
+	\begin{equation}\label{g3:eq:heat-sobolev-smoothing}
+		\|\partial_t^pT_tf\|_{H^{2m}}
+		\le C_{m,p}t^{-m-p}\|f\|_2,
+		\qquad 0<t\le1.
+	\end{equation}
+	若 \(f\) 光滑，则解及其任意阶空间、时间导数连续延伸至 \(t=0\)。
+\end{theorem}
+\begin{proof}
+	由\cref{g3:thm:elliptic-spectral-sobolev}，\(H^{2m}\) 范数等价于系数的权 \((1+\lambda_j)^{2m}\) 的平方和。对 \(0<t\le1\)，令 \(s=t\lambda\)，则
+	\[
+		(1+\lambda)^m\lambda^p e^{-t\lambda}
+		\le t^{-m-p}(1+s)^{m+p}e^{-s}
+		\le C_{m,p}t^{-m-p}.
+	\]
+	这给出式\eqref{g3:eq:heat-sobolev-smoothing}。在时间区间 \([\varepsilon,A]\subset(0,\infty)\) 上，给各项乘任意次 \(\lambda_j\) 后，所有 \(H^{2m}\) 级数仍一致收敛；可先在有限和上求导，再用同一估计控制尾项。选择 \(2m>r+n/2\)，由\cref{g3:cor:higher-sobolev-embedding}得到任意 \(C^r\) 空间范数中的收敛与时间可微性。因此解联合光滑，并满足热方程。强初值已由上一命题证明。
+
+	再设 \(v\in C([0,A];L^2)\) 为同初值的分布解。取测试函数 \(\eta(t)\overline{\phi_j(x)}\)，其中 \(\eta\in C_c^\infty((0,A))\)，便知连续函数 \(v_j(t)=(v(t),\phi_j)\) 在分布意义下满足
+	\(v_j'+\lambda_jv_j=0\)。乘 \(e^{t\lambda_j}\) 后导数为零，故它为常数：一维分布导数为零的结论可由局部卷积得到，再以重叠区间上的常数相容延拓。初值确定 \(v_j(t)=e^{-t\lambda_j}(f,\phi_j)\)，完备特征基遂给出 \(v=T_tf\)。
+
+	若 \(f\) 光滑，则其全部谱权平方和有限。对任意 \(m,p\)，对 \(\lambda_j^p(f,\phi_j)\) 使用带权支配收敛，得 \(\partial_t^pT_tf\to(-\Delta)^pf\) 在 \(H^{2m}\) 中收敛；高阶嵌入完成最后的断言。
+\end{proof}
+
+\begin{example}\label{g3:exm:circle-heat-decay}
+	在周长 \(2\pi\) 的圆周上，初值 \(f(\theta)=2+\cos\theta+3\sin(4\theta)\) 演化为
+	\[
+		T_tf=2+e^{-t}\cos\theta+3e^{-16t}\sin(4\theta).
+	\]
+	平均值保持不变，四倍频率的衰减率是原来的十六倍。对于一般 \(L^2\) 初值，逐频率相乘给出的仍是同一个解；刚才的定理负责保证无穷叠加在正时间成为光滑函数。
+\end{example}
+
+能量恒等式进一步说明这种衰减的方向。对 \(t>0\)，有
+\begin{equation}\label{g3:eq:heat-energy-dissipation}
+	\frac{\mathrm d}{\mathrm dt}\|T_tf\|_2^2
+	=-2(\Delta T_tf,T_tf)=-2\|\mathrm dT_tf\|_2^2.
+\end{equation}
+先在 \([\varepsilon,A]\) 上积分，再令 \(\varepsilon\downarrow0\)，得到 \(\|T_Af\|_2^2+2\int_0^A\|\mathrm dT_tf\|_2^2\,\mathrm dt=\|f\|_2^2\)。初值可以没有弱一阶导数，但正时间导数能量的这一时间积分仍有限。
 
 \subsection{核的存在、对称性和半群律}
 \label{g3:subsec:1601:03}
-待撰写
+
+算子作用于整个初值函数，积分核则记录从一点到另一点的传播。把式\eqref{g3:eq:heat-semigroup-series}中的内积展开，候选核应为 \(\sum_j e^{-t\lambda_j}\phi_j(x)\overline{\phi_j(y)}\)。问题是该级数能否逐点乃至逐阶求导。以下先估计热演化后在一点取值的线性泛函，从而直接控制核级数的平方和。
+
+\begin{lemma}\label{g3:lem:heat-evaluation-square-sum}
+	设 \((M,g)\) 为非空的正维光滑闭黎曼流形。固定有限坐标覆盖，在较小坐标闭集内，对每个多重指标 \(\alpha\) 和 \(\tau>0\)，有一致估计
+	\[
+		\sum_{j=0}^\infty e^{-2\tau\lambda_j}
+		|\partial^\alpha\phi_j(x)|^2\le C_{\alpha,\tau}.
+	\]
+	常数可在 \(\tau\) 的任意紧正时间区间内统一选择。
+\end{lemma}
+\begin{proof}
+	由式\eqref{g3:eq:heat-sobolev-smoothing}及高阶嵌入，\(f\mapsto\partial^\alpha T_\tau f(x)\) 是 \(L^2\) 上的连续线性泛函，其范数一致不超过 \(C\)。在任意有限和 \(f=\sum_{j=0}^N c_j\phi_j\) 上，它等于 \(\sum_{j=0}^N c_j e^{-\tau\lambda_j}\partial^\alpha\phi_j(x)\)。在 \(\sum|c_j|^2=1\) 下取上确界，得到该有限系数列的平方和不超过 \(C^2\)。令 \(N\to\infty\) 即得结论。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:heat-kernel-spectral}
+	设 \((M,g)\) 为非空的正维光滑闭黎曼流形。存在唯一的光滑函数 \(K\) 定义于 \((0,\infty)\times M\times M\)，使对任意 \(f\in L^2(M)\) 有
+	\begin{equation}\label{g3:eq:heat-kernel-action}
+		T_tf(x)=\int_M K(t,x,y)f(y)\,\mu_g(y).
+	\end{equation}
+	它由级数
+	\begin{equation}\label{g3:eq:heat-kernel-series}
+		K(t,x,y)=\sum_{j=0}^\infty e^{-t\lambda_j}
+		\phi_j(x)\overline{\phi_j(y)}
+	\end{equation}
+	给出；任意阶空间与时间导数在 \([\varepsilon,A]\times M\times M\) 上一致收敛，其中 \(0<\varepsilon<A<\infty\)。它为实值，满足
+	\begin{align}
+		K(t,x,y)&=K(t,y,x),\label{g3:eq:heat-kernel-symmetry}\\
+		K(t+s,x,y)&=\int_M K(t,x,z)K(s,z,y)\,\mu_g(z)
+		\quad(t,s>0),\label{g3:eq:heat-kernel-semigroup}\\
+		(\partial_t+\Delta_x)K&=0.
+	\end{align}
+	此函数称为 \((M,g)\) 的\term[rehe]{热核}[heat kernel]。
+\end{theorem}
+\begin{proof}
+	固定 \(\varepsilon>0\)，取任意空间导数 \(\partial_x^\alpha,\partial_y^\beta\) 和时间导数阶数 \(p\)。对 \(t\ge\varepsilon\) 及 \(j>N\)，有
+	\[
+		\lambda_j^p e^{-t\lambda_j}
+		\le C_{p,\varepsilon}e^{-\varepsilon\lambda_{N+1}/4}
+		e^{-\varepsilon\lambda_j/2}.
+	\]
+	因此导数级数的绝对值尾和不超过
+	\[
+		C_{p,\varepsilon}e^{-\varepsilon\lambda_{N+1}/4}
+		\left(\sum_{j>N}e^{-\varepsilon\lambda_j/2}
+		|\partial^\alpha\phi_j(x)|^2\right)^{1/2}
+		\left(\sum_{j>N}e^{-\varepsilon\lambda_j/2}
+		|\partial^\beta\phi_j(y)|^2\right)^{1/2}.
+	\]
+	上一引理以 \(\tau=\varepsilon/4\) 控制两个平方和，而前面的指数趋于零。于是级数及任意导数局部一致收敛，定义光滑核并允许逐项代入热方程。这一证明只用 \(\lambda_j\to\infty\)，并未预设计数函数的增长率。
+
+	对有限特征和，式\eqref{g3:eq:heat-kernel-action}由正交性成立。对一般 \(f\in L^2\)，有限和在 \(L^2\) 中逼近，左侧经 \(T_t:L^2\to C^0\) 连续，右侧因连续核的各行有一致有界的 \(L^2\) 范数而连续，故积分公式仍成立。若两个连续核给出同一算子，则固定 \(x\) 后其差与所有 \(L^2\) 函数积分为零；取差的复共轭作测试，知该行恒为零，得到唯一性。
+
+	交换 \(x,y\) 对级数取复共轭，得到 Hermitian 对称性。选实特征基时每项为实数，所以核实值，得到式\eqref{g3:eq:heat-kernel-symmetry}。半群律的两边分别是 \(T_{t+s}\) 与 \(T_tT_s\) 的连续核；积分可由紧性及核连续性交换次序，唯一性给出式\eqref{g3:eq:heat-kernel-semigroup}。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:heat-kernel-trace}
+	设 \((M,g)\) 为非空的正维光滑闭黎曼流形。对每个 \(t>0\)，\(T_t\) 是迹类算子，其热迹为
+	\begin{equation}\label{g3:eq:heat-kernel-trace}
+		Z(t)\coloneqq\operatorname{Tr}(T_t)
+		=\sum_{j=0}^\infty e^{-t\lambda_j}
+		=\int_M K(t,x,x)\,\mu_g(x)<\infty.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	对正紧算子，特征值之和有限即称为迹类，该和就是迹。这里 \(T_t\) 的有限谱截断在算子范数中收敛，因为尾部乘数的上确界趋于零，所以它紧且正。上一引理取 \(\alpha=0,\tau=t/2\)，给出对角级数的一致上界；各项非负，积分与求和可由单调收敛交换，得到
+	\[
+		\int_M\sum_j e^{-t\lambda_j}|\phi_j(x)|^2\,\mu_g(x)
+		=\sum_j e^{-t\lambda_j}\|\phi_j\|_2^2.
+	\]
+	左侧因 \(M\) 紧而有限，正是核在对角上的积分。这个迹与所选正交基无关：任意另一正交基 \((\psi_k)\) 都满足
+	\(\sum_k(T_t\psi_k,\psi_k)=\sum_{k,j}e^{-t\lambda_j}|(\psi_k,\phi_j)|^2=\sum_j e^{-t\lambda_j}\)，交换非负求和并使用完备性即可。
+\end{proof}
+
+同一构造也适用于丛值问题。若 \(E\to M\) 为正秩 Hermitian 丛，\(P\) 是光滑、形式自伴、非负的二阶椭圆算子，则把上述特征函数换成特征截面，得到光滑的 \(\operatorname{Hom}(E_y,E_x)\) 值核
+\begin{equation}\label{g3:eq:bundle-heat-kernel}
+	K_P(t,x,y)v=\sum_j e^{-t\lambda_j}\phi_j(x)
+	\langle v,\phi_j(y)\rangle_{E_y}.
+\end{equation}
+有限平凡化中对各分量应用同一取值泛函估计，即可逐项得到核级数及全部导数的收敛；对称性变为 \(K_P(t,x,y)=K_P(t,y,x)^*\)，半群公式中的乘法为纤维映射复合。积分对角上的纤维迹给出 \(\operatorname{Tr}(e^{-tP})\)。因此 Hodge Laplace 及后续平方型算子也有这一谱构造；下面的标量次序结论则依赖于函数具有大小次序。
 
 \subsection{最大值与质量保持}
 \label{g3:subsec:1601:04}
-待撰写
+
+对于实温度，热方程还有谱表达不直接显出的性质：最高温度不会上升，最低温度不会下降。闭流形没有边界通量，因而总热量保持不变。这些事实将使核成为一个带质量一的非负平均权。
+
+\begin{proposition}\label{g3:prop:heat-maximum-mass}
+	设 \((M,g)\) 为非空的正维光滑闭黎曼流形。其标量热核满足
+	\[
+		K(t,x,y)\ge0,\qquad
+		\int_MK(t,x,y)\,\mu_g(y)=1
+		\quad(t>0,x\in M).
+	\]
+	对实连续初值 \(f\)，有 \(\min_M f\le T_tf\le\max_M f\)，且 \(T_tf\to f\) 一致成立。对每个 \(1\le p\le\infty\)，核公式定义 \(L^p\) 压缩算子；对 \(p<\infty\) 它在 \(t=0\) 强连续。对任意 \(f\in L^1(M)\)，有 \(\int_MT_tf\,\mu_g=\int_Mf\,\mu_g\)。
+\end{proposition}
+\begin{proof}
+	先设 \(f\) 为实光滑函数，\(u=T_tf\)。固定 \(A>0\) 和 \(\varepsilon>0\)，令 \(w=u-\varepsilon t\)。若 \(w\) 在 \([0,A]\times M\) 的最大值严格大于 \(\max f\)，最大点 \((t_0,x_0)\) 必有 \(t_0>0\)。在空间最大点处 \(\Delta w\ge0\)，而 \(\partial_tw(t_0,x_0)\ge0\)：内部时间点导数为零，末端时间点从左侧看导数非负。于是 \((\partial_t+\Delta)w\ge0\)，与其等于 \(-\varepsilon\) 矛盾。令 \(\varepsilon\downarrow0\) 得上界，对 \(-u\) 同理得下界。取实特征基也可见实初值保持实值。
+
+	若在某处 \(K(t,x,y_0)<0\)，连续性给出一个 \(y_0\) 的邻域，核在其中为负。选择支撑于该邻域的非零非负光滑初值，积分公式便与刚才的非负性矛盾，故 \(K\ge0\)。由于 \(\Delta1=0\)，谱定义给出 \(T_t1=1\)，即核的行质量为一；对称性又给出列质量为一。
+
+	非负质量一的积分权给出 \(|T_tf(x)|^p\le\int K(t,x,y)|f(y)|^p\,\mu_g(y)\)（\(1\le p<\infty\)），再按 \(x\) 积分即得 \(L^p\) 压缩性；\(p=\infty\) 直接估计积分。这也把算子延拓到全部 \(L^p\)，并由非负积分或绝对可积性保证公式合法。光滑函数在 \(C^0\) 中一致稠密，且对光滑初值已有 \(T_tf\to f\) 一致成立，利用压缩性即可逼近连续初值。对 \(p<\infty\) 使用 \(C^\infty\) 在 \(L^p\) 中稠密，得到强连续性。最后对 \(L^1\) 初值交换积分，并使用核的列质量一，得到总质量保持。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:heat-large-time}
+	设 \((M,g)\) 为非空的正维光滑闭黎曼流形，\(\Pi_0\) 是投影到在各连通分支上为常数的函数空间，\(\lambda_+\) 是最小正特征值。则对 \(f\in L^2(M)\)，有
+	\[
+		\|T_tf-\Pi_0f\|_2\le e^{-\lambda_+t}\|f-\Pi_0f\|_2.
+	\]
+	对每个整数 \(r\ge0\)，在 \(t\ge1\) 时还有
+	\[
+		\|T_tf-\Pi_0f\|_{C^r}
+		\le C_r e^{-\lambda_+(t-1)}\|f-\Pi_0f\|_2.
+	\]
+	在一个连通分支 \(M_a\) 上，\(\Pi_0f=\operatorname{Vol}(M_a)^{-1}\int_{M_a}f\,\mu_g\)。
+\end{proposition}
+\begin{proof}
+	去掉零特征项后，所有乘数都不超过 \(e^{-\lambda_+t}\)，平方求和得到第一式。对 \(t\ge1\) 写成 \(T_1T_{t-1}(f-\Pi_0f)\)，先用第一式，再用固定正时间的 \(L^2\to C^r\) 平滑估计，得到第二式。各分支的归一化常数函数构成零特征空间的正交基，所以投影就是逐分支平均。
+\end{proof}
+
+热核兼有两种尺度：长时间只留下每个连通分支上的平均，短时间则集中在对角附近。下一节将直接从局部度量构造短时核，并解释曲率如何进入这种集中。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

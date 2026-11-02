@@ -1,40 +1,175 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 23.2 存在性的完整证明
+% 纲要标题：### 23.2 整数流 Plateau 问题的存在性
 % 纲要位置：几何学计划纲要.md，第 3082 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
-% * 整数流紧性获得极限
+% * 极小化序列的整数流极限
 % * 边界算子的连续性
 % * 质量下半连续
-% * 极小性和已定竞争类
-% * 拓扑类型为何可能变化
+% * 极小填充的存在性
+% * 极限中的拓扑变化
 % 
 % 纲要内容结束
 
-\section{存在性的完整证明}
+\section{整数流 Plateau 问题的存在性}
 \label{g3:sec:2302}
+现在已有一列共同支于紧凸集的整数流，其质量趋于 \(m(B)\)，边界始终为 \(B\)。紧性给出极限对象；要把它认作解，还须分别检查它留在竞争类中以及它的质量达到下确界。把这两项检查分开，也能看清直接法在其他变分问题中需要哪些条件。
 
-待撰写
-
-\subsection{整数流紧性获得极限}
+\subsection{极小化序列的整数流极限}
 \label{g3:subsec:2302:01}
-待撰写
+\begin{proposition}\label{g3:prop:plateau-limit-integer}
+	设 \(1\le k\le n\)，\(B\in\mathcal I_{k-1}(\mathbb R^n)\) 紧支且可填充，\(K\) 为包含 \(\operatorname{spt}B\) 的非空紧凸集。由式\eqref{g3:eq:plateau-minimizing-sequence}选取的极小化序列有子列及 \(T_*\in\mathcal I_k(\mathbb R^n)\)，满足
+	\[
+		\operatorname{spt}T_*\subset K,\qquad
+		\mathcal F(T_j-T_*)\longrightarrow0,
+		\qquad T_j\rightharpoonup T_*.
+	\]
+\end{proposition}
+\begin{proof}
+	式\eqref{g3:eq:plateau-minimizing-sequence}给出共同紧支及
+	\(\sup_j[\mathbf M(T_j)+\mathbf M(\partial T_j)]<\infty\)。逐项满足\cref{g3:thm:federer-fleming-compactness}的条件，所以有整数流子列极限及所述收敛。支集也可直接检查：若测试形式支于 \(\mathbb R^n\setminus K\)，每个 \(T_j\) 在其上均为零，故极限也为零。
+\end{proof}
+
+这里的整数性来自第22章已经证明的闭包定理。只对流的系数测度使用弱紧性，首先得到的是正规流；该步骤本身不会恢复可整流承载集和整数重数。前章关于切片的论证正好补齐了这部分。
 
 \subsection{边界算子的连续性}
 \label{g3:subsec:2302:02}
-待撰写
+对任意 \(\eta\in\mathcal D^{k-1}(\mathbb R^n)\)，定义边界的公式给出
+\begin{equation}\label{g3:eq:plateau-limit-boundary}
+	\partial T_*(\eta)=T_*(\mathrm d\eta)
+	=\lim_jT_j(\mathrm d\eta)
+	=\lim_j\partial T_j(\eta)=B(\eta).
+\end{equation}
+因此 \(\partial T_*=B\)，极限确实属于 \(\mathcal A_K(B)\)。证明只用了 \(\mathrm d\eta\) 仍是紧支光滑测试形式，未要求边界在点集意义下逐点收敛。
+
+\ProseParagraphBreak
+例如，一列很薄的矩形边界可作为流趋于零，其支集却趋向一条非空线段。故“流的边界为 \(B\)”是一个有向积分恒等式，不能用“承载集的拓扑边界等于 \(\operatorname{spt}B\)”替换。整数流表示中的公共边可以因取向相反而抵消，重数也参与边界计算。
 
 \subsection{质量下半连续}
 \label{g3:subsec:2302:03}
-待撰写
+若 \(\omega\) 为余质量至多一的紧支光滑 \(k\) 形式，则
+\[
+	T_*(\omega)=\lim_jT_j(\omega)\le\liminf_j\mathbf M(T_j).
+\]
+对 \(\omega\) 取上确界，即得\cref{g3:prop:current-mass-lsc}在此处的结论
+\begin{equation}\label{g3:eq:plateau-limit-lsc}
+	\mathbf M(T_*)\le\liminf_j\mathbf M(T_j)=m(B).
+\end{equation}
+另一方面，\(T_*\in\mathcal A(B)\) 使 \(m(B)\le\mathbf M(T_*)\)。两个方向合并后才得到质量相等。下半连续本身容许抵消损失，而极小化序列的极限仍属同一竞争类，使这种损失不能把质量降到下确界以下。
 
-\subsection{极小性和已定竞争类}
+\begin{proposition}\label{g3:prop:plateau-minimizing-mass-measures}
+	在上述极小化序列及其收敛子列下，有
+	\[
+		\mathbf M(T_j)\longrightarrow\mathbf M(T_*),\qquad
+		\|T_j\|\rightharpoonup\|T_*\|
+	\]
+	作为支于 \(K\) 的有限 Radon 测度收敛。后一项指对每个连续函数的积分收敛，不表示 \(\mathbf M(T_j-T_*)\to0\)。
+\end{proposition}
+\begin{proof}
+	总质量收敛已由下确界的两侧不等式得到。质量测度支于紧集 \(K\)，总量有界，所以任取子列都可再取弱收敛子列，记其极限为 \(\lambda\)。加权下半连续性说明，对每个非负紧支连续函数 \(\varphi\)，
+	\[
+		\int\varphi\,\mathrm d\|T_*\|\le\int\varphi\,\mathrm d\lambda.
+	\]
+	故 \(\lambda-\|T_*\|\) 是非负测度。取在 \(K\) 上等于一的 \(\varphi\)，总质量收敛又说明这个差测度的总量为零。因此 \(\lambda=\|T_*\|\)。任意子列的测度极限均相同，就得到整条已选流子列上的质量测度收敛。
+\end{proof}
+
+\subsection{极小填充的存在性}
 \label{g3:subsec:2302:04}
-待撰写
+\begin{theorem}[欧氏整数流 Plateau 存在性]\label{g3:thm:euclidean-plateau-existence}
+	设 \(1\le k\le n\)，\(B\in\mathcal I_{k-1}(\mathbb R^n)\) 紧支，且存在有限质量整数流 \(T_0\in\mathcal I_k(\mathbb R^n)\) 满足 \(\partial T_0=B\)。则存在紧支整数流 \(T_*\in\mathcal I_k(\mathbb R^n)\)，使
+	\begin{equation}\label{g3:eq:plateau-global-minimum}
+		\partial T_*=B,\qquad
+		\mathbf M(T_*)=\inf\{\mathbf M(S):
+		S\in\mathcal I_k(\mathbb R^n),\ \partial S=B\}.
+	\end{equation}
+	若 \(B\ne0\)，可以取 \(\operatorname{spt}T_*\subset
+	\overline{\operatorname{conv}}(\operatorname{spt}B)\)。若 \(B=0\)，唯一的质量极小者为零流。
+\end{theorem}
+\begin{proof}
+	当 \(B=0\) 时，零流可容许，质量非负且质量为零当且仅当流为零，结论成立。以下设 \(B\ne0\)，取其支集的闭凸包为 \(K\)。它是非空紧凸集。
 
-\subsection{拓扑类型为何可能变化}
+	初始竞争者使 \(0\le m(B)\le\mathbf M(T_0)<\infty\)。\cref{g3:prop:plateau-convex-reduction}将所有有限质量竞争者投影到 \(K\)，并证明受限前后的下确界相同。由式\eqref{g3:eq:plateau-minimizing-sequence}选择受限极小化序列，\cref{g3:prop:plateau-limit-integer}给出支于 \(K\) 的整数流极限 \(T_*\)。式\eqref{g3:eq:plateau-limit-boundary}保证 \(\partial T_*=B\)，式\eqref{g3:eq:plateau-limit-lsc}保证 \(\mathbf M(T_*)\le m(B)\)。最后用 \(T_*\) 本身的可容许性得到反向不等式，故 \(\mathbf M(T_*)=m(B)\)。下确界针对的是全部 \(\mathcal A(B)\)，所以极小性不限于支于 \(K\) 的竞争者。
+\end{proof}
+
+如果将 \(T_*\) 在一个有界开集内作紧支整数闭流扰动 \(Z\)，则 \(\partial(T_*+Z)=B\)，从而质量不会减小。更局部地，若 \(\operatorname{spt}Z\Subset W\)，在 \(W\) 外两流一致，减去相同的外部质量便有
+\[
+	\|T_*\|(W)\le\|T_*+Z\|(W).
+\]
+这就是后面内部正则性所需的局部绝对面积极小性质。定理没有给出一般的唯一性；证明中选取子列也允许不同极小化序列产生不同解。
+
+\ProseParagraphBreak
+为了计算一个确切最小值，把第19章的校准比较延伸到当前竞争类。那里“余范数”与第22章测试形式的“余质量”表示同一个 comass 范数。闭形式保持有向积分，余质量界将该积分与质量比较。
+
+\begin{proposition}\label{g3:prop:euclidean-current-calibration}
+	设 \(1\le k\le n\)，\(\phi\) 为 \(\mathbb R^n\) 上光滑闭 \(k\) 形式，处处满足 \(\|\phi_x\|_*\le1\)。若有限质量整数流
+	\(T=\lBrack E,\tau,\theta\rBrack\)，其中 \(\theta>0\)，满足
+	\(\langle\phi(x),\tau(x)\rangle=1\) 在 \(\|T\|\)-几乎处处成立，则对每个有限质量整数流 \(S\) 且 \(\partial S=\partial T\)，有 \(\mathbf M(T)\le\mathbf M(S)\)。
+\end{proposition}
+\begin{proof}
+	有限质量流可以通过向量测度表示作用于有界光滑形式，所以 \(T(\phi)\)、\(S(\phi)\) 均有意义。先证明两者相等，并处理可能的非紧支集。
+
+	径向同伦给出一个全局原始形式
+	\[
+		\alpha_x(v_1,\ldots,v_{k-1})
+		=\int_0^1t^{k-1}\phi_{tx}(x,v_1,\ldots,v_{k-1})\,\mathrm dt,
+		\qquad \mathrm d\alpha=\phi.
+	\]
+	最后一个等式由对拉回形式沿 \(x\mapsto tx\) 求导并在 \(t\in[0,1]\) 积分得到；正次数形式在常值映射下的拉回为零，闭性消去了含 \(\mathrm d\phi\) 的项。这也可逐个坐标系数使用乘积法则验证。余质量界给出 \(\|\alpha_x\|_*\le |x|/k\)。
+
+	令 \(Q=S-T\)，则 \(\partial Q=0\)。取前节所用 \(\chi_R\)，边界恒等式给出
+	\[
+		0=Q(\mathrm d(\chi_R\alpha))
+		=Q(\chi_R\phi)+Q(\mathrm d\chi_R\wedge\alpha).
+	\]
+	第二项的绝对值不超过
+	\(C_{n,k}\|Q\|(B_{2R}\setminus B_R)\)，因为该环域上 \(|\mathrm d\chi_R|\le C/R\)、\(\|\alpha\|_*\le2R/k\)。有限总质量使这个上界趋于零。第一项由控制收敛趋于 \(Q(\phi)\)，故 \(S(\phi)=T(\phi)\)。于是
+	\[
+		\mathbf M(T)=T(\phi)=S(\phi)\le\mathbf M(S).
+	\]
+	这证明了对全体有限质量竞争者的比较。
+\end{proof}
+
+在\cref{g3:exm:plateau-disk-initial}中，取常系数形式
+\(\phi=\mathrm dx_1\wedge\mathrm dx_2\)，得到 \(m(B)=\pi R^2\)；边界为 \(qB\) 时，按 \(q\) 的正负选择 \(\phi\) 或 \(-\phi\)，得到 \(m(qB)=|q|\pi R^2\)。同样，对于两个不同点 \(a,b\)，常系数一形式
+\(\phi=\langle(b-a)/|b-a|,\mathrm dx\rangle\) 校准从 \(a\) 到 \(b\) 的线段，故
+\[
+	m(\delta_b-\delta_a)=|b-a|.
+\]
+这些下界比较的是所有整数流竞争者，而不是只比较光滑图形。
+
+\subsection{极限中的拓扑变化}
 \label{g3:subsec:2302:05}
-待撰写
+取 \(\mathbb R^3\) 中的单位圆盘 \(D\)，并在它上方放置半径 \(\varepsilon\) 的球面 \(S_\varepsilon\)，球心为 \((0,0,3\varepsilon)\)。两个承载集不相交。按各自取向令
+\[
+	T_\varepsilon=\lBrack D\rBrack+\lBrack S_\varepsilon\rBrack.
+\]
+则
+\[
+	\partial T_\varepsilon=\partial\lBrack D\rBrack,\qquad
+	\mathbf M(T_\varepsilon)=\pi+4\pi\varepsilon^2\longrightarrow\pi,
+\]
+且球体填充给出
+\(\mathcal F(T_\varepsilon-\lBrack D\rBrack)\le4\pi\varepsilon^3/3\)。这是一列极小化序列，其闭球面分支在极限中消失。固定边界并没有固定分支数。
+
+\ProseParagraphBreak
+即使要求曲面连通，细把手也可消失。具体地，在一个固定平面圆片内部去掉两个小圆盘，用上半空间中一条弧线的细管把两个圆周连接，再在接缝处光滑倒圆，得到与原圆片在外缘邻域一致的嵌入定向曲面。弧线可取半圆，管半径取为其半径的十分之一；管壁与外侧平面之间的两个直角接缝用固定光滑截面连接。这样得到一个具有有限面积的固定模型，外缘不动，内部增加一个把手。
+
+\ProseParagraphBreak
+把该模型按比例 \(\varepsilon\) 缩小，替换 \(D\) 内部半径 \(C\varepsilon\) 的圆片，记所得曲面为 \(D_\varepsilon\)。它仍连通，边界仍是单位圆，亏格增加一。修改只发生在直径 \(O(\varepsilon)\) 的区域，且新旧两片面积都为 \(O(\varepsilon^2)\)，故
+\[
+	\mathbf M(\lBrack D_\varepsilon\rBrack-\lBrack D\rBrack)
+	\le C'\varepsilon^2,\qquad
+	\mathbf M(\lBrack D_\varepsilon\rBrack)\longrightarrow\pi.
+\]
+所以固定亏格的光滑竞争者也可能收敛到不同亏格的流。Plateau 存在性保留的是定义中指定的整数结构与边界条件；拓扑约束是否保留，要在相应的更小竞争类中单独研究。
+
+\ProseParagraphBreak
+最后，质量相等也不会把平坦收敛加强为质量范数收敛。令 \(G_\varepsilon\) 为单位圆盘上函数 \(u_\varepsilon(x)=\varepsilon(1-|x|^2)\) 的向上定向图，则边界固定，面积趋于 \(\pi\)。图面在圆盘内部与 \(D\) 不交，而边界的一维集合没有二维质量，因此
+\[
+	\mathbf M(\lBrack G_\varepsilon\rBrack-\lBrack D\rBrack)
+	=\mathbf M(\lBrack G_\varepsilon\rBrack)+\pi\longrightarrow2\pi.
+\]
+两者之间的竖向同伦却有质量 \(O(\varepsilon)\)，且侧边固定，故其平坦距离趋于零。这与\cref{g3:prop:plateau-minimizing-mass-measures}的质量测度弱收敛完全相容。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

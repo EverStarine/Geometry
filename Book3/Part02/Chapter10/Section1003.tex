@@ -1,35 +1,293 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 10.3 预紧性和极限构造
 % 纲要位置：几何学计划纲要.md，第 2477 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 有限网及距离矩阵
 % * 对角子列构造极限
 % * 统一覆盖数的预紧性判据
-% * 完备性与紧性的保持
+% * GH 距离的完备性与测地性的保持
 % 
 % 纲要内容结束
 
 \section{预紧性和极限构造}
 \label{g3:sec:1003}
 
-待撰写
+一个紧空间可以由有限个采样点及它们之间的距离近似。若要让一族空间同时具有收敛子列，关键在于同一精度下能否统一控制所需采样点数。距离矩阵把几何对象转成有限个有界实数；逐层加密采样并抽取对角子列，就能在没有预先给定环境空间的情况下构造极限。
 
 \subsection{有限网及距离矩阵}
 \label{g3:subsec:1003:01}
-待撰写
+
+先把“有限个点足以近似整个空间”写成定量语言。以下的网采用闭球约定，因而距离恰等于指定半径的点仍被覆盖。
+
+\begin{definition}\label{g3:def:metric-covering-number}
+	设 \((X,d)\) 是非空度量空间，\(\varepsilon>0\)。若有限集 \(F\subset X\) 满足 \(d(x,F)\le\varepsilon\) 对所有 \(x\in X\) 成立，就称 \(F\) 为 \(X\) 的有限 \(\varepsilon\)-网。记
+	\[
+		N_X(\varepsilon)=\min\{\#F:F\subset X\text{ 是有限 }\varepsilon\text{-网}\},
+	\]
+	若不存在这样的有限集，则规定 \(N_X(\varepsilon)=\infty\)。这个数称为 \(X\) 在尺度 \(\varepsilon\) 的\term[fugai shu]{覆盖数}[covering number]。因此，\(X\) 全有界等价于对每个 \(\varepsilon>0\) 都有 \(N_X(\varepsilon)<\infty\)。
+\end{definition}
+\symidx{\(N_X(\varepsilon)\)：用中心在 \(X\) 内的闭 \(\varepsilon\)-球覆盖 \(X\) 所需的最少球数}
+
+紧度量空间的每个尺度都有有限网：用半径 \(\varepsilon\) 的开球覆盖，再抽取有限子覆盖即可。全有界控制精度提高时仍只需要有限个点；它与完备性合在一起，才由\cref{g3:lem:complete-totally-bounded}保证紧性。
+
+\begin{proposition}\label{g3:prop:finite-net-gh-bound}
+	设 \(X\) 为非空紧度量空间，\(F\subset X\) 是有限 \(\varepsilon\)-网，并赋予限制距离。则
+	\[
+		d_{\mathrm{GH}}(X,F)\le\varepsilon.
+	\]
+	若非空紧度量空间 \(X,Y\) 满足 \(d_{\mathrm{GH}}(X,Y)<\delta\)，则对每个 \(r>0\)，有
+	\begin{equation}\label{g3:eq:covering-number-transfer}
+		N_Y(r+2\delta)\le N_X(r).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	第一项直接在公共空间 \(X\) 中计算 Hausdorff 距离：\(F\subset X\)，且每个 \(x\in X\) 到 \(F\) 的距离不超过 \(\varepsilon\)。
+
+	对第二项，由\cref{g3:thm:gh-correspondence}选取畸变小于 \(2\delta\) 的对应 \(\mathcal R\subset X\times Y\)。取一个含 \(N_X(r)\) 个点的 \(r\)-网 \(\{x_1,\ldots,x_m\}\)，并为每个 \(x_j\) 选择 \(y_j\) 使 \((x_j,y_j)\in\mathcal R\)。任给 \(y\in Y\)，先选 \(x\in X\) 使 \((x,y)\in\mathcal R\)，再选 \(j\) 使 \(d_X(x,x_j)\le r\)。畸变控制给出
+	\[
+		d_Y(y,y_j)<d_X(x,x_j)+2\delta\le r+2\delta.
+	\]
+	故这些 \(y_j\) 形成 \((r+2\delta)\)-网。重复的 \(y_j\) 只会减少点数，得到所述不等式。
+\end{proof}
+
+点数得到控制以后，有限空间的自由度只剩距离矩阵。极限矩阵中两个不同标号之间的距离可能变为零，所以构造时要容许伪度量：它满足距离的非负性、对称性和三角不等式，但不要求零距离的两个标号相同。
+
+\begin{proposition}\label{g3:prop:finite-metric-matrices}
+	固定整数 \(m\ge1\) 和 \(D\ge0\)。非空、至多含 \(m\) 个点且直径不超过 \(D\) 的度量空间，其等距类在 GH 距离下构成紧集。
+\end{proposition}
+\begin{proof}
+	考虑所有满足
+	\[
+		a_{ii}=0,\qquad a_{ij}=a_{ji},\qquad
+		0\le a_{ij}\le D,\qquad a_{ij}\le a_{i\ell}+a_{\ell j}
+	\]
+	的 \(m\times m\) 矩阵 \(A=(a_{ij})\)。这些条件定义了有限维闭方体 \([0,D]^{m^2}\) 的闭子集，因而矩阵集合紧。对每个 \(A\)，令 \(i\sim j\) 当且仅当 \(a_{ij}=0\)。三角不等式保证这确为等价关系，并且
+	\[
+		d_A([i],[j])=a_{ij}
+	\]
+	不依赖代表，成为商集合 \(X_A\) 上的距离。
+
+	两个矩阵 \(A,B\) 给出对应
+	\(\{([i]_A,[i]_B):1\le i\le m\}\)，其畸变不超过
+	\(\max_{i,j}|a_{ij}-b_{ij}|\)。因此
+	\begin{equation}\label{g3:eq:matrix-gh-bound}
+		d_{\mathrm{GH}}(X_A,X_B)
+		\le\frac12\max_{i,j}|a_{ij}-b_{ij}|.
+	\end{equation}
+	这说明矩阵到商空间等距类的映射连续。任意至多含 \(m\) 个点的空间都可以重复标号到 \(m\) 个，因而是某个 \(X_A\)。所述集合是紧矩阵集的连续像，故紧。
+\end{proof}
+
+这里没有把每个矩阵元单独取整。直接四舍五入可能破坏三角不等式；保留满足全部距离条件的矩阵，并在极限后合并零距离标号，才得到合法的度量空间。
 
 \subsection{对角子列构造极限}
 \label{g3:subsec:1003:02}
-待撰写
+
+一层有限网只记录一个精度。为同时记住所有尺度，我们把各层的网按固定顺序编号，使粗网的标号在后续各层继续保留。由此得到可数张距离表，再对全部矩阵元作同一个对角抽取。极限标号给出的空间可能尚不完备，下面先明确如何补上其 Cauchy 极限。
+
+\begin{lemma}\label{g3:lem:metric-completion}
+	每个非空度量空间 \((S,d)\) 都有完备化：存在完备度量空间 \(\widehat S\) 及等距嵌入 \(S\hookrightarrow\widehat S\)，其像稠密。这样的完备化在保持 \(S\) 中各点的等距意义下唯一。
+\end{lemma}
+\begin{proof}
+	取 \(S\) 中所有 Cauchy 序列，规定 \((s_j)\sim(t_j)\) 当且仅当 \(d(s_j,t_j)\to0\)，并令
+	\[
+		\widehat d([(s_j)],[(t_j)])=\lim_{j\to\infty}d(s_j,t_j).
+	\]
+	三角不等式给出
+	\[
+		|d(s_j,t_j)-d(s_\ell,t_\ell)|
+		\le d(s_j,s_\ell)+d(t_j,t_\ell),
+	\]
+	所以右侧极限存在。再次使用三角不等式，可知换成等价序列不改变极限；所得函数满足距离公理，零距离正好对应同一等价类。常值序列把 \(S\) 等距嵌入这个商集合。
+
+	若 \(z=[(s_j)]\)，常值序列所代表的点 \(s_j\) 在商距离下趋于 \(z\)：给定 \(\varepsilon>0\)，当 \(j,\ell\) 足够大时有 \(d(s_j,s_\ell)<\varepsilon\)，对 \(\ell\) 取极限即可。故 \(S\) 的像稠密。
+
+	若 \((z_j)\) 是商空间中的 Cauchy 序列，利用稠密性选择 \(x_j\in S\)，使 \(\widehat d(x_j,z_j)<1/j\)。于是
+	\[
+		d(x_j,x_\ell)
+		\le j^{-1}+\widehat d(z_j,z_\ell)+\ell^{-1},
+	\]
+	故 \((x_j)\) 在 \(S\) 中为 Cauchy 序列。其等价类 \(z=[(x_j)]\) 满足 \(x_j\to z\)，再由 \(\widehat d(x_j,z_j)\to0\) 得到 \(z_j\to z\)。这证明了完备性。
+
+	最后，若 \(S\) 稠密等距地嵌入另一完备空间 \(Y\)，把 \([(s_j)]\) 送到 \((s_j)\) 在 \(Y\) 中的极限。等价性和距离连续性分别保证良定义与保距；稠密性保证满射。任何保持 \(S\) 的等距都须保持这些极限，因此它唯一。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:uniform-nets-subsequence}
+	设 \((X_i,d_i)\) 是非空紧度量空间序列。若存在 \(D<\infty\) 和对每个 \(k\ge1\) 给定的正整数 \(n_k\)，使
+	\[
+		\operatorname{diam}X_i\le D,
+		\qquad N_{X_i}(2^{-k})\le n_k
+		\qquad(i,k\ge1),
+	\]
+	则存在子列 \(X_{i_j}\) 和非空紧度量空间 \(X\)，满足 \(d_{\mathrm{GH}}(X_{i_j},X)\to0\)。极限可以由各层有限网的距离矩阵直接构造。
+\end{proposition}
+\begin{proof}
+	证明分为三件事：先使标号间的距离同时收敛，再把极限距离补成紧空间，最后用同一层网控制 GH 误差。
+
+	令 \(\varepsilon_k=2^{-k}\)、\(m_k=n_1+\cdots+n_k\)。在每个 \(X_i\) 中选取 \(\varepsilon_k\)-网 \(E_{i,k}\)，点数不超过 \(n_k\)。依次列出 \(E_{i,1},E_{i,2},\ldots\) 的点，每一层不足 \(n_k\) 个时重复其中一点补足，得到一列有标号的点
+	\[
+		p_i^1,p_i^2,\ldots\in X_i.
+	\]
+	前 \(m_k\) 个点中包含 \(E_{i,k}\)，因而形成 \(\varepsilon_k\)-网；粗层的标号也一直保留。允许重复使每个空间都有同样的标号数，不要求它们的网具有相同的组合形状。
+
+	对每一对正整数 \(a,b\)，数列 \(d_i(p_i^a,p_i^b)\) 都落在紧区间 \([0,D]\) 内。把所有标号对排成一个序列，先为第一对选取收敛子列，再为第二对从中选取子列，逐次继续；取第 \(j\) 次子列的第 \(j\) 项得到对角子列。对任意固定的一对标号，该对角子列最终属于相应的收敛子列。因此沿同一个子列，所有极限
+	\[
+		d_\infty(a,b)=\lim_{j\to\infty}
+		 d_{i_j}(p_{i_j}^a,p_{i_j}^b)
+	\]
+	都存在。以下把这个子列重新记为 \(i\)。非负性、对称性和三角不等式均可取极限，故 \(d_\infty\) 是 \(\mathbb N\) 上的伪度量。把零距离标号合并，得到度量空间 \(S\)；再用上一引理构造其完备化 \(X\)。以 \(p^a\in X\) 表示标号 \(a\) 的像。
+
+	现在证明 \(X\) 紧。固定 \(k\) 及任意标号 \(a\)。原来的网给出
+	\[
+		\min_{1\le b\le m_k}d_i(p_i^a,p_i^b)\le\varepsilon_k.
+	\]
+	最小值只涉及有限个数，可以与极限交换，所以
+	\[
+		\min_{1\le b\le m_k}d_X(p^a,p^b)\le\varepsilon_k.
+	\]
+	因此稠密子集 \(S\) 被以 \(p^1,\ldots,p^{m_k}\) 为中心的有限个闭 \(\varepsilon_k\)-球覆盖。有限个闭球的并仍闭，它也包含 \(S\) 的闭包 \(X\)。这证明 \(X\) 全有界；它已按构造完备，故由\cref{g3:lem:complete-totally-bounded}紧。
+
+	最后令
+	\[
+		F_i^k=\{p_i^a:1\le a\le m_k\},\qquad
+		F^k=\{p^a:1\le a\le m_k\},
+	\]
+	都赋予各自空间的限制距离。带相同标号的点组成一个对应，即使有重复或零距离合并，其两个投影仍满射。该对应的畸变为至多
+	\[
+		\eta_{i,k}=\max_{1\le a,b\le m_k}
+		\bigl|d_i(p_i^a,p_i^b)-d_X(p^a,p^b)\bigr|,
+	\]
+	而固定 \(k\) 时 \(\eta_{i,k}\to0\)。由有限网估计、对应公式及 GH 三角不等式，得到
+	\begin{equation}\label{g3:eq:diagonal-gh-error}
+	\begin{split}
+		d_{\mathrm{GH}}(X_i,X)
+		&\le d_{\mathrm{GH}}(X_i,F_i^k)
+		+d_{\mathrm{GH}}(F_i^k,F^k)+d_{\mathrm{GH}}(F^k,X)\\
+		&\le2\varepsilon_k+\tfrac12\eta_{i,k}.
+	\end{split}
+	\end{equation}
+	给定误差目标，先把 \(k\) 取得足够大，再把 \(i\) 取得足够大，右侧即任意小。由此得到所需收敛。
+\end{proof}
+
+距离矩阵的逐项收敛本身只控制固定的标号。式\eqref{g3:eq:diagonal-gh-error}中的两项网误差把这个可数信息提升为对整个空间的统一控制；补全则把标号所逼近的全部极限点纳入空间。两个步骤各有作用。
 
 \subsection{统一覆盖数的预紧性判据}
 \label{g3:subsec:1003:03}
-待撰写
 
-\subsection{完备性与紧性的保持}
+以 \(\mathcal M\) 表示非空紧度量空间的等距类所成的集合，赋予上一节已经建立的距离 \(d_{\mathrm{GH}}\)。紧空间有可数稠密子集，其等距类可以由可数距离矩阵的完备化编码，因此这里确实可以在一个集合上讨论度量。若 \(\mathcal F\subset\mathcal M\) 的闭包在 \(\mathcal M\) 中紧，就称 \(\mathcal F\) 在 GH 距离下\term[yu jin]{预紧}[precompact]。
+
+\begin{theorem}[Gromov 预紧性判据]\label{g3:thm:gh-precompactness}
+	设 \(\mathcal F\) 为一族非空紧度量空间的等距类。下列条件等价：
+	\begin{equivalences}
+		\item \(\mathcal F\) 在 GH 距离下预紧。
+		\item 存在统一常数 \(D<\infty\)，使 \(\operatorname{diam}X\le D\) 对所有 \(X\in\mathcal F\) 成立；并且对每个 \(\varepsilon>0\)，存在有限整数 \(N(\varepsilon)\)，使
+		\[
+			N_X(\varepsilon)\le N(\varepsilon)
+			\qquad(X\in\mathcal F).
+		\]
+		\item \(\mathcal F\) 作为 GH 度量空间的子集全有界。
+	\end{equivalences}
+\end{theorem}
+\begin{proof}
+	空族的结论直接成立，以下设 \(\mathcal F\ne\varnothing\)。预紧集的闭包紧，所以有每个尺度的有限网，这给出第一项蕴含第三项。
+
+	设第三项成立。取一个有限 GH 距离的1-网，记网中空间为 \(Y_1,\ldots,Y_s\)。由\cref{g3:prop:gh-diameter}的直径估计，任意 \(X\in\mathcal F\) 都满足
+	\[
+		\operatorname{diam}X\le\max_j\operatorname{diam}Y_j+2.
+	\]
+	为了控制覆盖数，给定 \(\varepsilon>0\)，另取有限 GH 距离的 \(\varepsilon/8\)-网 \(Z_1,\ldots,Z_t\)。每个 \(X\) 与某个 \(Z_j\) 的 GH 距离小于 \(\varepsilon/4\)，故式\eqref{g3:eq:covering-number-transfer}给出
+	\[
+		N_X(\varepsilon)\le N_{Z_j}(\varepsilon/2)
+		\le\max_{1\le j\le t}N_{Z_j}(\varepsilon/2)<\infty.
+	\]
+	有限个紧空间的覆盖数各自有限，所以右侧是统一界。这证明第二项。
+
+	若第二项成立，任意 \(\mathcal F\) 中的序列都满足\cref{g3:prop:uniform-nets-subsequence}，从而有一个 GH 收敛到非空紧空间的子列。还须把这个序列结论用于闭包。取 \(Y_i\in\overline{\mathcal F}\)，为每个 \(i\) 选 \(X_i\in\mathcal F\) 使 \(d_{\mathrm{GH}}(X_i,Y_i)<1/i\)。某个子列 \(X_{i_j}\) 收敛到 \(X\in\mathcal M\)，三角不等式便使 \(Y_{i_j}\) 也收敛到 \(X\)。因为 \(\overline{\mathcal F}\) 闭，\(X\) 属于该闭包。故闭包顺序紧。它因而完备，因为每个 Cauchy 序列有收敛子列就整列收敛；它也全有界，否则可在某个固定正尺度逐次选出两两分离的点列，这种序列不可能有收敛子列。由\cref{g3:lem:complete-totally-bounded}，闭包紧，故第一项成立。
+\end{proof}
+
+\begin{example}\label{g3:exm:equilateral-nonprecompact}
+	令 \(E_m\) 为含 \(m\) 个点、任意两不同点的距离都等于一的空间。它们的直径一致不超过一，但当 \(0<\varepsilon<1\) 时有 \(N_{E_m}(\varepsilon)=m\)，所以不预紧。更精确地，若 \(m>n\)，每个 \(E_m\) 与 \(E_n\) 间的对应都把某两个不同的 \(E_m\) 点配到同一个 \(E_n\) 点，畸变至少为一；任意满射产生的对应畸变又至多为一，故
+	\[
+		d_{\mathrm{GH}}(E_m,E_n)=\frac12.
+	\]
+	直径控制了整体尺度，却不能控制同一尺度上彼此分离的点有多少。另一方面，区间 \([0,m]\) 的直径趋于无穷，说明直径条件也有独立内容。
+\end{example}
+
+第八章的体积比较恰好能产生覆盖数上界。下面的应用也说明，在 GH 预紧性中，总体积不必有统一正下界。
+
+\begin{corollary}\label{g3:cor:ricci-diameter-gh-precompact}
+	固定整数 \(n\ge2\)、实数 \(k\) 及 \(D>0\)。所有满足
+	\[
+		\operatorname{Ric}_g\ge(n-1)kg,\qquad
+		\operatorname{diam}(M,g)\le D
+	\]
+	的连通、紧、光滑无边界 \(n\) 维黎曼流形，在 GH 距离下预紧。
+\end{corollary}
+\begin{proof}
+	由\cref{g3:cor:compact-riemannian-complete}，这些紧黎曼流形完备。置 \(k_0=\min\{k,0\}\)，则仍有 \(\operatorname{Ric}_g\ge(n-1)k_0g\)，而 \(k_0\) 的模型首零半径为无穷。给定 \(0<\varepsilon<D\)，逐个选取两两距离大于 \(\varepsilon\) 的点，直到不能再选。紧性保证过程有限终止：若产生无限点列，它没有 Cauchy 子列，与紧性矛盾。所得点 \(p_1,\ldots,p_N\) 构成闭 \(\varepsilon\)-网，开球 \(B(p_j,\varepsilon/2)\) 两两不交。
+
+	因为 \(B(p_j,2D)=M\)，\cref{g3:thm:bishop-gromov}给出
+	\[
+		\operatorname{Vol}_g B(p_j,\varepsilon/2)
+		\ge\frac{V_{k_0,n}(\varepsilon/2)}{V_{k_0,n}(2D)}
+		\operatorname{Vol}_g(M).
+	\]
+	对互不相交的球求和，并消去正数 \(\operatorname{Vol}_g(M)\)，得到
+	\begin{equation}\label{g3:eq:ricci-covering-number}
+		N_M(\varepsilon)\le N
+		\le\frac{V_{k_0,n}(2D)}{V_{k_0,n}(\varepsilon/2)}.
+	\end{equation}
+	右侧只依赖 \(n,k,D,\varepsilon\)。当 \(\varepsilon\ge D\) 时，一个球已可覆盖。统一直径界与各尺度的覆盖数界均已获得，故预紧性判据适用。
+\end{proof}
+
+体积在式\eqref{g3:eq:ricci-covering-number}中被约去，因而这个结论容许一个方向不断缩短的平坦环面。极限的维数与局部拓扑需要额外的几何信息来判断；下一节将直接计算这种塌缩。
+
+\subsection{GH 距离的完备性与测地性的保持}
 \label{g3:subsec:1003:04}
-待撰写
+
+前面的构造已经给出了紧极限。现在把它用于 GH 距离自身的 Cauchy 序列，并检验长度几何能否随极限保留。这两件事分别控制空间序列的终点与极限中的最短线。
+
+\begin{theorem}\label{g3:thm:gh-complete}
+	非空紧度量空间的等距类空间 \((\mathcal M,d_{\mathrm{GH}})\) 完备。
+\end{theorem}
+\begin{proof}
+	设 \((X_i)\) 为 GH 距离下的 Cauchy 序列。给定 \(\delta>0\)，可取 \(i_0\) 使所有 \(i\ge i_0\) 都满足 \(d_{\mathrm{GH}}(X_i,X_{i_0})<\delta\)；再把前面的有限个空间加入，就得到这列空间组成的集合的有限 \(\delta\)-网。因此这个集合在 GH 距离下全有界。
+
+	由\cref{g3:thm:gh-precompactness}，某个子列 \(X_{i_j}\) 收敛到非空紧空间 \(X\)。任给 \(\varepsilon>0\)，Cauchy 条件保证当 \(i,\ell\) 足够大时有 \(d_{\mathrm{GH}}(X_i,X_\ell)<\varepsilon/2\)。再取足够大的 \(j\)，使 \(i_j\) 落在这个范围且 \(d_{\mathrm{GH}}(X_{i_j},X)<\varepsilon/2\)，就有
+	\[
+		d_{\mathrm{GH}}(X_i,X)
+		\le d_{\mathrm{GH}}(X_i,X_{i_j})+d_{\mathrm{GH}}(X_{i_j},X)
+		<\varepsilon.
+	\]
+	故整列收敛，证明完备性。
+\end{proof}
+
+同样的有限网方法还说明 \(\mathcal M\) 可分：所有有限度量空间在其中稠密，而对每个固定点数与直径界，\cref{g3:prop:finite-metric-matrices}给出的紧集有可数稠密子集。对点数和整数直径界取可数并，便得到 \(\mathcal M\) 的一个可数稠密子集。
+
+\begin{proposition}\label{g3:prop:gh-geodesic-limit}
+	设非空紧测地度量空间 \(X_i\) 在 GH 距离下收敛到非空紧度量空间 \(X\)。则 \(X\) 仍是测地空间。特别地，非空紧长度空间的 GH 极限仍为紧测地空间。
+\end{proposition}
+\begin{proof}
+	选择对应 \(\mathcal R_i\subset X_i\times X\)，使 \(\operatorname{dis}\mathcal R_i\le\eta_i\to0\)。任取 \(x,y\in X\)，选择 \(x_i,y_i\in X_i\)，满足 \((x_i,x),(y_i,y)\in\mathcal R_i\)。在 \(X_i\) 中连接 \(x_i,y_i\) 的最短线有中点 \(z_i\)，即
+	\[
+		d_i(x_i,z_i)=d_i(y_i,z_i)=\tfrac12d_i(x_i,y_i).
+	\]
+	再取 \(w_i\in X\) 使 \((z_i,w_i)\in\mathcal R_i\)。畸变估计给出
+	\[
+		\bigl|d_X(x,w_i)-\tfrac12d_X(x,y)\bigr|\le\tfrac32\eta_i,
+		\qquad
+		\bigl|d_X(y,w_i)-\tfrac12d_X(x,y)\bigr|\le\tfrac32\eta_i.
+	\]
+	由于 \(X\) 紧，某个子列 \(w_{i_j}\) 收敛到 \(z\)。距离连续性使
+	\[
+		d_X(x,z)=d_X(y,z)=\tfrac12d_X(x,y).
+	\]
+	故任意两点都有精确中点。紧空间完备，\cref{g3:prop:midpoint-geodesic}便给出测地线：反复插入中点，在二进有理参数上定义保距的线段，再用完备性延拓到整个参数区间。
+
+	最后，紧长度空间完备且局部紧，由\cref{g3:thm:metric-hopf-rinow}本身就是测地空间，所以第二句归入已经证明的情形。
+\end{proof}
+
+有限网逼近任意紧度量空间时，网本身通常没有非恒定的连续道路；这不会妨碍 GH 收敛。上一命题保留测地性的理由是能够把中点传到极限，再由完备性恢复整条线段。拓扑结构则有另一种行为：平坦环面的塌缩会改变维数，而测地性仍然保留。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

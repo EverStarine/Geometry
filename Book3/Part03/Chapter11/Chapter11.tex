@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：## 第11章　Sobolev 空间、紧性与几何不等式
 % 纲要位置：几何学计划纲要.md，第 2501 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,14 +14,33 @@
 \BookChapterNumber{g3:ch:11}
 
 \begin{chapterabstract}
-待撰写
+控制一个函数及其导数的积分，能够得到怎样的连续性、紧性与边界值？本章先用体积密度定义丛值积分，从测试截面、分布与弱协变导数构造整数阶 Sobolev 空间，证明完备性、光滑稠密性、乘法与链式法则，并建立弱紧性所需的泛函分析。随后由 Euclid 积分估计推出 Sobolev 与 Morrey 嵌入，逐项辨清临界指数；通过连通覆盖证明 Poincaré 不等式，通过平移控制与有限近似证明 Rellich 紧性。最后在边界图中构造延拓、定义迹并刻画零边界空间，为下一章的弱椭圆方程准备函数空间与估计。
 \end{chapterabstract}
 
 \begin{learninggoals}
-待撰写
+\begin{itemize}
+	\item 从测试配对识别弱导数，说明密度、局部标架和联络在丛值公式中的作用。
+	\item 构造整数阶 Sobolev 空间，掌握光滑逼近、乘法、复合与截断的适用条件。
+	\item 区分强收敛与弱收敛，并由反射性和可分对偶提取弱收敛子列。
+	\item 计算嵌入指数及缩放，辨别临界端点、连续代表与高阶乘法估计。
+	\item 用零边界或零均值条件消除常数核，追踪覆盖与几何退化对估计常数的影响。
+	\item 证明紧嵌入与迹估计，识别零迹、补零延拓和零边界闭包之间的关系。
+\end{itemize}
 \end{learninggoals}
 
-待撰写
+在区间上，函数 \(u(x)=|x|\) 在原点不可微，但它的斜率在两侧都有界，能量 \(\int|u'|^2\) 仍有自然意义。若用光滑函数逼近这个尖点，函数和一阶导数都可以在积分范数中收敛。一个容纳能量极限的函数空间，应当保留这样的函数，并把导数解释为分部积分中的对象。Sobolev 空间\footnote{Sergei L'vovich Sobolev（1908—1989），苏联数学家，研究偏微分方程、广义函数与泛函分析；以弱导数和积分范数研究函数正则性的空间以其命名。}由此把经典微分运算延伸到较大的完备空间。
+
+\ProseParagraphBreak
+
+范数有界与收敛仍是两件事。在圆周上，\(u_j(x)=j^{-1}\sin(jx)\) 一致趋零，导数 \(\cos(jx)\) 的平方积分却保持不变。它们的导数只能在测试配对意义下趋零。另一方面，把同一个小凸起搬到越来越远的位置，会使所有局部观察都趋零，却保留全局范数。本章分别用弱紧性与强紧性处理这些现象：前者保留线性配对和能量下界，后者需要控制振荡、集中与质量远移。
+
+\ProseParagraphBreak
+
+嵌入定理给出导数控制所能换取的积分指数或连续性。指数由缩放决定，边界条件与连通性则决定能否只用导数控制函数本身。把 Euclid 估计移到流形上，还须写清坐标、度量、联络及截断函数带来的常数。上一章的塌缩例子提醒我们：每个固定流形上的估计成立，并不自动给出一个变化几何族上的统一常数。
+
+\ProseParagraphBreak
+
+本章使用第一章的体积密度、联络与散度，以及坐标图、单位分解和基本测度与积分。积分换序、收敛定理、Euclid 测度的内外正则性，以及有限有符号测度对有限正测度绝对连续时的积分密度表示，作为实分析基础使用；弱导数、函数空间和所需泛函分析则在这里建立。为避免将边界问题隐入记号，闭流形、有界延拓域与零边界空间的结论分别陈述。对照阅读可查 Brezis 的第4.3节关于 \(L^p\) 对偶与反射性的讨论，以及第9.1—9.4节关于弱导数、延拓、嵌入与零边界空间的内容\cite[第4.3节，第9.1—9.4节]{Brezis2011}。
 
 \input{Part03/Chapter11/Section1101}
 \input{Part03/Chapter11/Section1102}
@@ -31,8 +50,386 @@
 \input{Part03/Chapter11/Section1106}
 
 \begin{chaptersummary}
-待撰写
+弱导数由分部积分确定，局部平滑与坐标变换保证这一概念能够用于流形及向量丛。整数阶 Sobolev 范数把截面与各阶弱协变导数放进一组 \(L^p\) 空间，闭图关系给出完备性；在 \(1<p<\infty\) 时，积分对偶和反射性给出有界序列的弱收敛子列。光滑稠密性、截断与链式法则使这些空间能够承接微分方程中的测试和非线性运算。
+
+\ProseParagraphBreak
+
+Sobolev 嵌入把导数可积性换成更高的函数可积性，Morrey 估计进一步产生连续代表。临界指数与高阶端点须按维数和导数阶数判断。Poincaré 不等式通过边界条件、均值或平行截面投影去掉导数的核；其常数记录着尺度与连通区域之间的联系。Rellich 紧性则把平移控制和尾部控制化为有限近似，在严格低于临界指数处得到强收敛子列。
+
+\ProseParagraphBreak
+
+边界展平与反射提供延拓，法向的一维微积分给出连续迹。对有界 \(C^1\) 域，零迹恰好刻画内部紧支光滑函数的 \(W^{1,p}\) 闭包，也恰好保证补零后仍有全局一阶弱导数；高阶延拓还要匹配更多阶的边界导数。下一章将在这些空间上建立弱椭圆方程，先由能量估计获得解，再用局部与边界正则性恢复更强的微分性质。
 \end{chaptersummary}
 
 \BookExercises
-待撰写
+
+\begin{exercise}\label{g3:ex:circle-sawtooth-weak}
+	在周长为 \(L>0\) 的圆周 \(S^1_L=\mathbb R/L\mathbb Z\) 上，用 \([0,L)\) 的代表定义 \(u([x])=x\)。以周期光滑测试函数定义分布导数，求 \(\partial_xu\)，并判断 \(u\) 是否属于 \(W^{1,p}(S^1_L)\)，\(1\le p\le\infty\)。
+\end{exercise}
+\begin{solution}
+	对周期光滑函数 \(\varphi\)，分部积分给出
+	\[
+		-\int_0^L x\varphi'(x)\,\mathrm dx
+		=\int_0^L\varphi(x)\,\mathrm dx-L\varphi(0).
+	\]
+	因此 \(\partial_xu=1-L\delta_{[0]}\)。该函数有界，属于每个 \(L^p\)，但其导数包含点质量。由\cref{g3:exm:point-distribution}，点质量不能由局部可积函数表示，故它不属于任何上述 \(W^{1,p}\)。在开区间 \((0,L)\) 中只看到导数一，圆周的端点识别却引入了一个大小为 \(-L\) 的跳跃。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:weighted-interval-weak-laplacian}
+	设 \(a\in C^\infty([0,1])\) 且 \(a>0\)，在区间上取度量 \(g=a(x)^2\mathrm dx^2\)。写出标量 \(H^1\) 范数与弱 Laplace 算子。再设 \(u\in H^1(0,1)\)、\(f\in L^1_{\mathrm{loc}}(0,1)\)，以 \(y=\int_0^x a(t)\,\mathrm dt\) 换坐标，证明这一范数及弱方程 \(\Delta_gu=f\) 分别变为长度为 \(\ell=\int_0^1a\) 的普通区间上的标准 \(H^1\) 范数及 \(-\partial_y^2\widetilde u=\widetilde f\)。
+\end{exercise}
+\begin{solution}
+	体积密度为 \(a\,\mathrm dx\)，而 \(|\mathrm du|_g^2=a^{-2}|u'|^2\)，所以
+	\[
+		\|u\|_{H^1(g)}^2=\int_0^1\left(a|u|^2+a^{-1}|u'|^2\right)\,\mathrm dx.
+	\]
+	弱方程表示对每个内部紧支光滑 \(\varphi\) 有
+	\[
+		\int_0^1a^{-1}u'\varphi'\,\mathrm dx=\int_0^1fa\varphi\,\mathrm dx.
+	\]
+	因此在分布意义下 \(\Delta_gu=-a^{-1}\partial_x(a^{-1}u')\)。换元满足 \(\mathrm dy=a\,\mathrm dx\)、\(u'=a\partial_y\widetilde u\)，两个积分变成
+	\[
+		\int_0^\ell\left(|\widetilde u|^2+|\partial_y\widetilde u|^2\right)\,\mathrm dy,
+		\qquad
+		\int_0^\ell(\partial_y\widetilde u)(\partial_y\widetilde\varphi)\,\mathrm dy
+		=\int_0^\ell\widetilde f\widetilde\varphi\,\mathrm dy.
+	\]
+	\(a\) 有正下界，换元及逆换元的一阶导数有界，故\cref{g3:prop:weak-coordinate-change}保证这些计算也适用于弱导数。最后的恒等式正是所述非负 Laplace 约定下的方程。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:noncompact-connection-sobolev}
+	在 \(\mathbb R\times\mathbb C\) 上取标准底度量和纤维 Hermitian 度量，比较两个相容联络
+	\[
+		\nabla=\mathrm d,\qquad\nabla'=\mathrm d+\mathrm i x\,\mathrm dx.
+	\]
+	设 \(1\le p<\infty\)，令 \(a=1/p+1/2\)、\(s(x)=(1+x^2)^{-a/2}\)。证明 \(s\in W^{1,p}_\nabla\)，但 \(s\notin W^{1,p}_{\nabla'}\)。解释这为何不与紧流形上的联络无关性矛盾。
+\end{exercise}
+\begin{solution}
+	联络一形式 \(\mathrm ix\,\mathrm dx\) 是反 Hermitian 的，故 \(\nabla'\) 也保持标准纤维度量。无穷远处 \(|s|\) 与 \(|x|^{-a}\) 可比，\(|s'|\) 与 \(|x|^{-a-1}\) 可比；由于 \(ap=1+p/2>1\)，两者的 \(p\) 次幂都可积。因此 \(s\in W^{1,p}_\nabla\)。
+
+	由于 \(s,s'\) 为实值，
+	\[
+		|\nabla's|^2=|s'+\mathrm ixs|^2=|s'|^2+x^2s^2.
+	\]
+	\(|xs|^p\) 在无穷远处与 \(|x|^{p(1-a)}\) 可比，其可积性要求 \((a-1)p>1\)；这里 \((a-1)p=1-p/2<1\)，所以不可积。两个联络之差的系数 \(x\) 无界，紧流形证明所用的统一系数界不成立。它们在每个固定紧区间上仍定义等价范数。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:weak-strong-oscillation}
+	在 \(S^1_{2\pi}\) 上令 \(u_j(x)=j^{-1}\sin(jx)\)，\(1<p<\infty\)。证明 \(u_j\to0\) 于每个有限 \(L^q\) 及一致范数，\(u_j\rightharpoonup0\) 于 \(W^{1,p}\)，但它没有 \(W^{1,p}\) 强收敛子列。
+\end{exercise}
+\begin{solution}
+	由 \(\|u_j\|_\infty\le j^{-1}\)，得到全部所述零阶强收敛。一阶导数为 \(u_j'=\cos(jx)\)，其 \(L^p\) 范数恒等于 \(\|\cos x\|_{L^p(0,2\pi)}>0\)。若某子列在 \(W^{1,p}\) 中强收敛，零阶极限只能为零，导数范数也应趋零，矛盾。
+
+	对周期光滑测试函数 \(\psi\)，分部积分给出
+	\[
+		\left|\int_0^{2\pi}\psi(x)\cos(jx)\,\mathrm dx\right|
+		\le j^{-1}\|\psi'\|_{L^1}.
+	\]
+	光滑函数在 \(L^{p'}\) 中稠密，而 \(\cos(jx)\) 的 \(L^p\) 范数一致有界，故这一配对趋零对所有 \(L^{p'}\) 测试函数成立。因此 \((u_j,u_j')\rightharpoonup(0,0)\) 于 \(L^p\times L^p\)。\(W^{1,p}\) 是这个乘积空间的闭子空间，每个有界线性泛函都可按\cref{g3:lem:bounded-functional-extension}延拓，故这正给出 \(W^{1,p}\) 中的弱收敛。高频振荡可以保留导数范数，同时使每个固定测试配对趋零。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:bundle-modulus-sharpness}
+	在 \(S^1_{2\pi}\) 的平凡复线丛上取平坦联络。令 \(s_j(x)=e^{\mathrm ijx}\)。计算 \(\||s_j|\|_{W^{1,p}}\) 和 \(\|\nabla s_j\|_{L^p}\)，\(1\le p<\infty\)。说明模长估计不能反向控制截面的导数。再设在连通开集 \(U\subset\mathbb R^n\) 上有光滑表示 \(s=\rho e^{\mathrm i\theta}\)，其中 \(\rho>0\)、\(\theta\) 实值。证明模长不等式处处取等号，当且仅当 \(\theta\) 为常数。
+\end{exercise}
+\begin{solution}
+	\(|s_j|=1\)，所以 \(\||s_j|\|_{W^{1,p}}=(2\pi)^{1/p}\)；而 \(|\nabla s_j|=j\)，故 \(\|\nabla s_j\|_p=j(2\pi)^{1/p}\)。模长不记录相位变化，因此不存在由模长的这个范数统一控制截面导数的反向估计。
+
+	对第二问，直接计算得到
+	\[
+		\mathrm ds=e^{\mathrm i\theta}(\mathrm d\rho+\mathrm i\rho\,\mathrm d\theta),
+		\qquad |\mathrm ds|^2=|\mathrm d\rho|^2+\rho^2|\mathrm d\theta|^2.
+	\]
+	由于 \(\rho>0\)，模长不等式处处取等号等价于 \(\mathrm d\theta=0\)。连通开集中的两点可以用有限条线段连接，沿每条线段应用微积分基本定理，便知这一条件等价于 \(\theta\) 为常数。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:radial-sobolev-threshold}
+	设 \(n\ge2\)、\(1\le p<n\)，\(\eta\in C_c^\infty(B_1(0))\) 在 \(B_{1/2}(0)\) 上等于一。对 \(a>0\)，令 \(u_a(x)=\eta(x)|x|^{-a}\)。求 \(u_a\in W^{1,p}(B_1)\) 的充要条件，以及 \(u_a\in L^q(B_1)\)（\(1\le q<\infty\)）的条件。由此说明在固定球中，\(W^{1,p}\) 嵌入的上限指数 \(p^*=np/(n-p)\) 不能提高。
+\end{exercise}
+\begin{solution}
+	在零点以外，\(|\mathrm Du_a|=a|x|^{-a-1}\) 当 \(|x|<1/2\)。极坐标积分说明
+	\[
+		\int_0^{1/2}r^{n-1-aq}\,\mathrm dr<\infty
+		\quad\Longleftrightarrow\quad aq<n,
+	\]
+	而梯度的 \(p\) 次幂可积当且仅当 \((a+1)p<n\)。等号时积分为 \(\int\mathrm dr/r\)，仍发散。
+
+	若 \((a+1)p<n\)，则 \(a<n-1\)。在穿孔球上分部积分，内边界项至多为常数乘 \(\varepsilon^{n-1-a}\)，故趋零；经典导数于是给出全球弱导数，且 \(u_a\in L^p\)。反过来，若 \(u_a\) 属于 \(W^{1,p}\)，在任何避开零点的开集上，其弱导数必须等于已算出的经典导数，因此 \((a+1)p<n\) 必要。这得到充要条件。
+
+	给定 \(q>p^*\)，有 \(n/q<n/p-1\)，故可取
+	\(n/q\le a<n/p-1\)。此时 \(u_a\in W^{1,p}\) 却不在 \(L^q\)。由于它支于球内部，前述局部卷积也表明它属于 \(W_0^{1,p}(B_1)\)，所以即使加入零边界条件也不能提高最大指数。所有 \(a>0\) 的函数都在零附近无界，亦给出 \(L^\infty\) 失败。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:morrey-sharp-exponent}
+	设 \(n<p<\infty\)，令 \(\alpha=1-n/p\)。取 \(\varphi\in C_c^\infty(B_1(0))\)，满足 \(\varphi(0)=1\)，并定义
+	\[
+		u_\varepsilon(x)=\varepsilon^\alpha\varphi(x/\varepsilon),
+		\qquad 0<\varepsilon<1/3.
+	\]
+	证明 \(u_\varepsilon\) 在 \(W^{1,p}(B_1)\) 中有界，而且一致趋于零；但对任何 \(\alpha<\beta\le1\)，\([u_\varepsilon]_{C^{0,\beta}(B_1)}\to\infty\)。说明这对 Morrey 指数的意义。
+\end{exercise}
+\begin{solution}
+	换元给出
+	\[
+		\|u_\varepsilon\|_p=\varepsilon^{\alpha+n/p}\|\varphi\|_p
+		=\varepsilon\|\varphi\|_p,\qquad
+		\|\mathrm Du_\varepsilon\|_p=\varepsilon^{\alpha-1+n/p}\|\mathrm D\varphi\|_p
+		=\|\mathrm D\varphi\|_p.
+	\]
+	且 \(\|u_\varepsilon\|_\infty=\varepsilon^\alpha\|\varphi\|_\infty\to0\)。另一方面，在 \(0\) 与 \(2\varepsilon e_1\) 两点的函数值分别为 \(\varepsilon^\alpha\)、零，因而
+	\[
+		[u_\varepsilon]_{C^{0,\beta}(B_1)}\ge2^{-\beta}\varepsilon^{\alpha-\beta}\longrightarrow\infty.
+	\]
+	因此原 Sobolev 范数不能统一控制任何更大的 Hölder 指数。每个函数自身虽光滑，这列函数在不断缩小的区域中仍有比 \(\beta\) 次幂更强的振荡；一致收敛也不能给出高阶模连续性的统一界。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:sobolev-multiplication-threshold}
+	设 \((M^n,g)\) 为紧、光滑、无边界黎曼流形，\(n<p<\infty\)。用本章乘法代数的范数估计证明，对每个实值 \(u\in W^{1,p}(M)\)，指数级数在 \(W^{1,p}\) 中收敛，且
+	\[
+		e^u-1\in W^{1,p}(M),\qquad
+		\|e^u-1\|_{W^{1,p}}\le\|u\|_{W^{1,p}}\exp\bigl(C\|u\|_{W^{1,p}}\bigr).
+	\]
+	证明其弱导数为 \(e^u\,\mathrm du\)。再在 \(n\ge2\)、\(1\le p<n\) 的情形，构造支于一个坐标球的 \(u\in W^{1,p}(M)\)，使 \(u^2\notin W^{1,p}(M)\)。
+\end{exercise}
+\begin{solution}
+	令 \(C\ge1\) 为\cref{g3:cor:sobolev-multiplication-algebra}中 \(k=1\) 的常数，记 \(A=\|u\|_{W^{1,p}}\)。归纳得到 \(\|u^j\|_{W^{1,p}}\le C^{j-1}A^j\)，故
+	\[
+		\sum_{j=1}^\infty\left\|\frac{u^j}{j!}\right\|_{W^{1,p}}
+		\le A\sum_{j=1}^\infty\frac{(CA)^{j-1}}{j!}\le A e^{CA}.
+	\]
+	由完备性，该级数在 \(W^{1,p}\) 中收敛。\cref{g3:thm:compact-bundle-sobolev}给出到 \(C^0\) 的连续嵌入，所以它也一致收敛；逐点普通指数级数将极限识别为 \(e^u-1\)。对部分和使用弱乘积公式，其导数为
+	\[
+		\left(\sum_{j=1}^N\frac{u^{j-1}}{(j-1)!}\right)\mathrm du.
+	\]
+	括号中的级数一致趋于 \(e^u\)，乘 \(L^p\) 的 \(\mathrm du\) 后在 \(L^p\) 中收敛，故弱导数正是所述公式。
+
+	当 \(p<n\) 时，记 \(A=n/p-1>0\)，选择
+	\[
+		\frac A2<a<\min\left\{A,\frac n{2p}\right\}.
+	\]
+	右端严格大于左端，故可选到。取坐标球内的紧支截断，定义 \(u=\eta(x)|x|^{-a}\)，在球外补零。度量及体积密度在截断支集上与 Euclid 数据一致可比，\cref{g3:ex:radial-sobolev-threshold}的计算给出 \(u\in W^{1,p}(M)\)。同时 \(2ap<n\)，故 \(u^2\in L^p\)；但 \((2a+1)p>n\)，其在穿孔小球中的经典梯度不属于 \(L^p\)。若存在全局 \(L^p\) 弱导数，它在这个穿孔区域中必须与该梯度一致，产生矛盾。因此乘法闭性确实失败。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:poincare-positive-measure-anchor}
+	设 \((M,g)\) 为连通、紧且无边界的光滑黎曼流形，\(1\le p<\infty\)，其零均值 Poincaré 常数为 \(C_P\)。设可测集 \(A\subset M\) 满足 \(\operatorname{Vol}(A)\ge a>0\)。证明：若 \(u\in W^{1,p}(M)\) 且 \(u=0\) 几乎处处于 \(A\)，则
+	\[
+		\|u\|_{L^p(M)}\le C_P\left[1+\left(\frac{\operatorname{Vol}(M)}a\right)^{1/p}\right]\|\mathrm du\|_{L^p(M)}.
+	\]
+	再解释将“正测度集上为零”换成“某一点取值为零”时，在 \(n=\dim M\ge2\)、\(p\le n\) 的一般 Sobolev 类中为什么需要重新定义条件。
+\end{exercise}
+\begin{solution}
+	令 \(c=u_M\)。在 \(A\) 上有 \(u-c=-c\)，故
+	\[
+		|c|a^{1/p}\le\|u-c\|_{L^p(A)}\le C_P\|\mathrm du\|_{L^p(M)}.
+	\]
+	由三角不等式，
+	\[
+		\|u\|_p\le\|u-c\|_p+|c|\operatorname{Vol}(M)^{1/p},
+	\]
+	代入前式即得所求常数。
+
+	Sobolev 元素是几乎处处相等的函数类，改变一个点的取值不改变该元素，也不改变弱导数。若尚未通过连续代表或其他附加结构定义点值，“某一点为零”可由任意函数通过修改零测集实现，因而不能消除常数核。\(p>n\) 时 Morrey 连续代表提供了真正的点值，才可另行讨论以点为锚的估计。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:product-poincare-optimal}
+	设 \(M,N\) 为正维、连通、紧且无边界的光滑黎曼流形。令 \(C_M,C_N\) 分别为 \(L^2\) 零均值 Poincaré 不等式的最佳常数。证明乘积度量下的最佳常数满足
+	\[
+		C_{M\times N}=\max\{C_M,C_N\}.
+	\]
+	证明中不使用 Laplace 特征函数展开。
+\end{exercise}
+\begin{solution}
+	对光滑函数 \(u(x,y)\)，令 \(v(y)=\operatorname{Vol}(M)^{-1}\int_Mu(x,y)\mu_M(x)\)，\(c=u_{M\times N}\)。对每个 \(y\)，\(u-v\) 在 \(M\) 上均值为零，所以 \(u-v\) 与仅依赖 \(y\) 的 \(v-c\) 在乘积 \(L^2\) 内积中正交。因此
+	\[
+		\|u-c\|_2^2=\|u-v\|_2^2+\|v-c\|_2^2.
+	\]
+	对第一项逐个 \(M\) 纤维应用不等式，得 \(\|u-v\|_2^2\le C_M^2\|\mathrm d_Mu\|_2^2\)。对第二项在 \(N\) 上应用不等式，并用积分平均的凸性，得
+	\[
+	\begin{aligned}
+		\|v-c\|_{L^2(M\times N)}^2
+		&\le C_N^2\operatorname{Vol}(M)\int_N|\mathrm d_Nv|^2\mu_N\\
+		&\le C_N^2\|\mathrm d_Nu\|_{L^2(M\times N)}^2.
+	\end{aligned}
+	\]
+	乘积度量使两种梯度平方相加，因而 \(C_{M\times N}\le\max\{C_M,C_N\}\)。光滑稠密性将此估计推广到 \(W^{1,2}\)。反过来，依次取只依赖 \(x\) 或只依赖 \(y\) 的非恒定函数，乘积体积因子在函数范数与梯度范数的比值中抵消，故最佳常数至少分别为 \(C_M,C_N\)。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:quantitative-sobolev-finite-net}
+	设 \(Q=(0,1)^n\)、\(1\le p<\infty\)，并令
+	\[
+		\mathcal F=\{u\in W^{1,p}(Q;\mathbb R):u_Q=0,\ \|\mathrm D u\|_{L^p(Q)}\le1\}.
+	\]
+	把 \(Q\) 分成 \(m^n\) 个边长 \(1/m\) 的小立方体，在每个小立方体上以平均值代替 \(u\)，所得算子记为 \(A_m\)。证明
+	\[
+		\|u-A_mu\|_{L^p(Q)}\le\frac{2^{n/p}\sqrt n}{m}.
+	\]
+	再证明存在只依赖 \(n,p\) 的常数 \(C\ge2\)，使 \(0<\varepsilon<1\) 时，\(\mathcal F\) 在 \(L^p(Q)\) 中有一个精度 \(\varepsilon\) 的有限近似集，其点数至多为
+	\[
+		\exp\!\left(C\varepsilon^{-n}\log\frac C\varepsilon\right).
+	\]
+	近似集的元素允许为分块常值函数。
+\end{exercise}
+\begin{solution}
+	每个小立方体直径为 \(\sqrt n/m\)。由\cref{g3:prop:poincare-convex-mean}，将各块误差的 \(p\) 次方相加，立即得到第一式。对整个 \(Q\) 使用同一命题，还知 \(\|u\|_p\le C_0=2^{n/p}\sqrt n\)。
+
+	对体积为 \(m^{-n}\) 的任一小块 \(Q_\nu\)，Hölder 不等式给出
+	\[
+		|u_{Q_\nu}|\le m^{n/p}\|u\|_{L^p(Q_\nu)}\le C_0m^{n/p}.
+	\]
+	取 \(m=\lceil2C_0/\varepsilon\rceil\)，使平均化误差至多为 \(\varepsilon/2\)。在区间 \([-C_0m^{n/p},C_0m^{n/p}]\) 上取间距不超过 \(\varepsilon\) 的等距刻度，把每个块平均值替换成最近刻度值。各点误差至多为 \(\varepsilon/2\)，而 \(|Q|=1\)，所以新增 \(L^p\) 误差也至多为 \(\varepsilon/2\)。
+
+	每块可选刻度数至多为 \(2+2C_0m^{n/p}/\varepsilon\)，全部分块常值函数数目因而至多为
+	\[
+		\left(2+\frac{2C_0m^{n/p}}\varepsilon\right)^{m^n}.
+	\]
+	由于 \(m\le C_1/\varepsilon\)，对上式取对数并吸收只依赖 \(n,p\) 的常数，即得题设上界。这是一个明确的近似规模估计，未断言该数量级最优。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:weak-and-strong-sobolev-limits}
+	设 \((M^n,g)\) 为紧且无边界的光滑黎曼流形。
+	\begin{enumerate}
+		\item 设 \(1<p<\infty\)，\(u_j\) 是 \(W^{1,p}(M)\) 中的有界序列，且 \(u_j\rightharpoonup u\)。证明在\cref{g3:thm:compact-bundle-rellich}允许的每个有限 \(L^q\) 范数中，整个序列都强收敛到 \(u\)。
+		\item 在区间 \((-1,1)\) 上构造 \(W^{1,1}\) 有界的光滑函数列，在每个有限 \(L^q\) 中强收敛到不属于 \(W^{1,1}\) 的函数。计算其导数的分布极限。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	1. 若某个允许的 \(L^q\) 范数中的强收敛不成立，存在 \(\varepsilon>0\) 和子列，使 \(\|u_j-u\|_q\ge\varepsilon\)。紧嵌入给出进一步子列在 \(L^q\) 中强收敛到某个 \(v\)。对任意光滑测试函数，弱 \(W^{1,p}\) 收敛使积分配对趋于 \(u\) 的配对，强 \(L^q\) 收敛使同一配对趋于 \(v\) 的配对。因此 \(u=v\) 几乎处处，与距离下界矛盾。紧性加上极限的唯一识别，消除了再次抽子列的需要。
+
+	2. 取光滑非减函数 \(\eta:\mathbb R\to[0,1]\)，使 \(\eta(t)=0\) 当 \(t\le-1\)，\(\eta(t)=1\) 当 \(t\ge1\)。令 \(u_j(x)=\eta(jx)\)。有 \(\|u_j\|_1\le2\) 及
+	\[
+		\int_{-1}^1|u_j'(x)|\,\mathrm dx=1.
+	\]
+	它与阶跃函数 \(H=\mathbf1_{(0,1)}\) 只在长度 \(2/j\) 的区间内可能不同，且差值不超过一，故 \(\|u_j-H\|_q\le(2/j)^{1/q}\to0\)。对任意 \(\phi\in C_c^\infty(-1,1)\)，
+	\[
+		\int_{-1}^1u_j'\phi\,\mathrm dx=-\int_{-1}^1u_j\phi'\,\mathrm dx
+		\longrightarrow-\int_0^1\phi'\,\mathrm dx=\phi(0).
+	\]
+	导数的分布极限为点质量 \(\delta_0\)，它不能由 \(L^1\) 函数表示：若能，取支集缩向零、值在零到一之间且在零点为一的测试函数，积分的绝对连续性会使配对趋零，与恒等于一矛盾。因此 \(H\notin W^{1,1}(-1,1)\)。强 \(L^q\) 紧性并不保证 \(p=1\) 时极限仍有 \(L^1\) 弱导数。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:sobolev-tightness-moment}
+	设 \(n\ge1\)、\(1\le p<\infty\)、\(a>0\)。证明函数族
+	\[
+		\mathcal F=\left\{u\in W^{1,p}(\mathbb R^n):
+		\|u\|_{W^{1,p}}\le1,\quad
+		\int_{\mathbb R^n}|x|^a|u(x)|^p\,\mathrm dx\le1\right\}
+	\]
+	在 \(L^p(\mathbb R^n)\) 中相对紧。若 \(p<n\)，进一步证明它在每个 \(L^q(\mathbb R^n)\)、\(p\le q<np/(n-p)\) 中相对紧。
+\end{exercise}
+\begin{solution}
+	当 \(R>0\) 时，
+	\[
+		\int_{|x|>R}|u|^p\,\mathrm dx\le R^{-a}\int_{|x|>R}|x|^a|u|^p\,\mathrm dx\le R^{-a}.
+	\]
+	因此有统一的尾部控制。\cref{g3:lem:sobolev-translation-bound}又给出 \(\|\tau_hu-u\|_p\le|h|\)，而范数有界是题设。\Cref{g3:thm:lp-translation-compactness}遂给出 \(L^p\) 相对紧性。
+
+	当 \(p<n\) 时，全空间 Sobolev 不等式给出统一的 \(L^{p^*}\) 界。对任意 \(p<q<p^*\)，用式\eqref{g3:eq:rellich-interpolation}将已取得的 \(L^p\) 强收敛与 \(L^{p^*}\) 有界性插值，即得 \(L^q\) 强收敛子列。矩条件通过排除质量远移，使非紧底空间仍能产生全局紧性。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:circle-connection-poincare}
+	在周长为 \(L>0\) 的圆周上取平凡复线丛，标准 Hermitian 度量和联络
+	\[
+		\nabla_a u=(u'+\mathrm iau)\,\mathrm dt,\qquad a\in\mathbb R.
+	\]
+	求其平行截面空间。当 \(aL\notin2\pi\mathbb Z\) 时，不用 Fourier 展开，证明
+	\[
+		\|u\|_{L^2}\le L\left(1+\frac1{|e^{\mathrm iaL}-1|}\right)\|\nabla_a u\|_{L^2}
+	\]
+	对所有 \(u\in W^{1,2}(S^1_L;\mathbb C)\) 成立，并证明当非零 \(a\to0\) 时，任何这样的无核估计常数必趋于无穷。
+\end{exercise}
+\begin{solution}
+	平行方程的解为 \(u(t)=ce^{-\mathrm iat}\)。周期条件要求 \((e^{-\mathrm iaL}-1)c=0\)，故 \(aL\in2\pi\mathbb Z\) 时平行空间为一维，否则为零。
+
+	先设 \(u\) 光滑，记 \(f=u'+\mathrm iau\)。乘以积分因子并从零积分，得
+	\[
+		u(t)=e^{-\mathrm iat}\left(c+\int_0^te^{\mathrm ias}f(s)\,\mathrm ds\right).
+	\]
+	周期条件给出
+	\[
+		(e^{\mathrm iaL}-1)c=\int_0^Le^{\mathrm ias}f(s)\,\mathrm ds,
+		\qquad |c|\le\frac{\sqrt L}{|e^{\mathrm iaL}-1|}\|f\|_2.
+	\]
+	另有 \(\left|\int_0^te^{\mathrm ias}f(s)\,\mathrm ds\right|\le\sqrt L\|f\|_2\)。把逐点估计在长度 \(L\) 的圆周上取 \(L^2\) 范数，即得题设不等式；光滑稠密性将其推广到 \(W^{1,2}\)。
+
+	最后取 \(u\equiv1\)。其函数范数为 \(\sqrt L\)，协变导数范数为 \(|a|\sqrt L\)，所以任何无核估计常数至少为 \(1/|a|\)。当 \(a\to0\) 时，平行核即将出现，常数相应发散；即使底空间与纤维度量都固定，联络的变化也会影响能量估计。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:zero-trace-second-order}
+	设 \(1\le p<\infty\)，在 \((0,1)\) 上令 \(u(t)=t(1-t)\)。证明
+	\[
+		u\in W^{2,p}(0,1)\cap W_0^{1,p}(0,1),
+		\qquad u\notin W_0^{2,p}(0,1).
+	\]
+	计算 \(u\) 的零延拓在 \(\mathbb R\) 上的二阶分布导数，并说明为什么仅令函数的迹为零不能保证二阶零延拓属于 \(W^{2,p}\)。
+\end{exercise}
+\begin{solution}
+	\(u\) 是多项式，各阶所需导数均有界，故属于 \(W^{2,p}\)。它在两端点为零，由\cref{g3:thm:zero-trace-characterization}可知 \(u\in W_0^{1,p}\)。如果还有 \(u\in W_0^{2,p}\)，则存在 \(\phi_j\in C_c^\infty(0,1)\) 趋于 \(u\) 于 \(W^{2,p}\)，从而 \(\phi_j'\to u'\) 于 \(W^{1,p}\)。迹的连续性迫使 \(u'\) 在两端的迹都是零；但 \(u'(0)=1\)、\(u'(1)=-1\)，矛盾。
+
+	记零延拓为 \(\widetilde u\)。一次求导没有边界项，因为 \(u(0)=u(1)=0\)，故
+	\[
+		\widetilde u'=(1-2t)\mathbf1_{(0,1)}.
+	\]
+	再次对测试函数分部积分，得到
+	\[
+		\widetilde u''=-2\mathbf1_{(0,1)}+\delta_0+\delta_1.
+	\]
+	两个点质量项分别来自一阶导数在端点的跳跃。它们不是 \(L^p\) 函数，所以 \(\widetilde u\notin W^{2,p}(\mathbb R)\)。因此 \(W^{2,p}\cap W_0^{1,p}\) 与 \(W_0^{2,p}\) 表达不同的边界条件。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:boundary-energy-lower-bound}
+	设 \(\Omega\subset\mathbb R^n\) 为有界 \(C^1\) 域，\(\beta\in L^\infty(\partial\Omega;\mathbb R)\)。对实值 \(u\in W^{1,2}(\Omega)\) 定义
+	\[
+		Q(u)=\int_\Omega|\mathrm Du|^2\,\mathrm dx
+		+\int_{\partial\Omega}\beta|\operatorname{Tr}u|^2\,\mathrm dS.
+	\]
+	证明存在 \(\lambda>0\)，使对所有 \(u\in W^{1,2}(\Omega)\)，
+	\[
+		Q(u)+\lambda\|u\|_{L^2(\Omega)}^2
+		\ge\frac12\|\mathrm Du\|_{L^2(\Omega)}^2
+		+\|u\|_{L^2(\Omega)}^2.
+	\]
+	这里 \(\beta\) 可以取负值。另证明相应双线性型
+	\(\int_\Omega\langle\mathrm Du,\mathrm Dv\rangle+\int_{\partial\Omega}\beta(\operatorname{Tr}u)(\operatorname{Tr}v)\)
+	在 \(W^{1,2}\times W^{1,2}\) 上连续。
+\end{exercise}
+\begin{solution}
+	令 \(B=\|\beta_-\|_{L^\infty}\)，其中 \(\beta_-=\max\{-\beta,0\}\)。若 \(B=0\)，取 \(\lambda=1\) 即可。若 \(B>0\)，在式\eqref{g3:eq:trace-epsilon-bound}中取 \(\varepsilon=1/(2B)\)，得到
+	\[
+		\int_{\partial\Omega}\beta|\operatorname{Tr}u|^2\,\mathrm dS
+		\ge-\frac12\|\mathrm Du\|_2^2-BC_\varepsilon\|u\|_2^2.
+	\]
+	因此取 \(\lambda=BC_\varepsilon+1\) 就有题设不等式。估计的作用是将可能为负的边界贡献分成可吸收的梯度项和一个零阶项。
+
+	由 Cauchy--Schwarz 不等式与迹的连续性，双线性型的绝对值不超过
+	\[
+		\|\mathrm Du\|_2\|\mathrm Dv\|_2
+		+\|\beta\|_\infty\|\operatorname{Tr}u\|_2\|\operatorname{Tr}v\|_2
+		\le C\|u\|_{W^{1,2}}\|v\|_{W^{1,2}}.
+	\]
+	这证明连续性，并保留了常数对边界系数及域的依赖。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:trace-compactness-endpoint}
+	设 \(\Omega\subset\mathbb R^n\) 为有界 \(C^1\) 域，\(1<p<\infty\)。利用 Rellich 紧性与式\eqref{g3:eq:trace-epsilon-bound}证明
+	\[
+		\operatorname{Tr}:W^{1,p}(\Omega)\longrightarrow L^p(\partial\Omega)
+	\]
+	为紧算子。再在矩形 \(Q=(0,2\pi)\times(0,1)\) 上构造一个 \(W^{1,1}(Q)\) 有界序列，使其在底边的迹没有 \(L^1(0,2\pi)\) 收敛子列。矩形的迹可由逐坐标的一维估计定义。
+\end{exercise}
+\begin{solution}
+	设 \(\{u_j\}\) 在 \(W^{1,p}(\Omega)\) 中有界，梯度范数至多为 \(A\)。\Cref{g3:thm:rellich-domain}给出在 \(L^p(\Omega)\) 收敛的子列，仍记为 \(u_j\)。对任意 \(j,k\)，
+	\[
+		\|\operatorname{Tr}u_j-\operatorname{Tr}u_k\|_p^p
+		\le\varepsilon(2A)^p+C_\varepsilon\|u_j-u_k\|_p^p.
+	\]
+	先选 \(\varepsilon\) 使第一项任意小，再让 \(j,k\) 足够大，便使第二项任意小。因此迹构成 \(L^p(\partial\Omega)\) 中的 Cauchy 列，证明紧性。
+
+	取 \(\eta\in C^\infty([0,\infty))\)，使 \(\eta(0)=1\)，且 \(\eta\) 在 \([1,\infty)\) 为零。令
+	\[
+		v_j(x,t)=\sin(jx)\eta(jt),\qquad j=1,2,\ldots.
+	\]
+	直接换元可得 \(\|v_j\|_{L^1(Q)}=O(j^{-1})\)，而 \(\|\partial_xv_j\|_{L^1(Q)}\) 与 \(\|\partial_tv_j\|_{L^1(Q)}\) 均一致有界，故 \(\{v_j\}\) 在 \(W^{1,1}(Q)\) 中有界。其底边迹为 \(\sin(jx)\)。对不同整数 \(j,k\)，正交性给出
+	\[
+		\|\sin(jx)-\sin(kx)\|_{L^2(0,2\pi)}^2=2\pi.
+	\]
+	由于差的绝对值至多为二，又有 \(\|f\|_2^2\le2\|f\|_1\)，这些迹两两的 \(L^1\) 距离至少为 \(\pi\)。所以它们没有 \(L^1\) 收敛子列。一阶积分控制在薄边界层内仍容许不消失的切向振荡。
+\end{solution}

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 10.2 GH 距离的构造
 % 纲要位置：几何学计划纲要.md，第 2470 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,296 @@
 \section{GH 距离的构造}
 \label{g3:sec:1002}
 
-待撰写
+同一个圆可以平移到平面中很远的地方，圆本身的距离结构却没有改变。另一方面，一条越来越细的圆柱即使没有与区间相同的点集，沿轴投影后仍能逐渐保留全部距离。这提示我们：比较空间时，应允许重新安放两个空间，并用一个点对应几个相近的点。本节把这两种想法分别写成公共空间中的距离和对应关系中的畸变，再证明它们给出同一个量。
 
 \subsection{公共度量空间中的 Hausdorff 距离}
 \label{g3:subsec:1002:01}
-待撰写
+
+先在固定的度量空间 \((Z,d_Z)\) 中比较两个非空紧子集。点到集合的距离记为
+\[
+	d_Z(z,A)=\inf_{a\in A}d_Z(z,a).
+\]
+由三角不等式，\(z\mapsto d_Z(z,A)\) 是1-Lipschitz 函数。当 \(A\) 紧时，下确界在某个点取得；这样的最近点可以不唯一。若只取 \(\inf_{a\in A,b\in B}d_Z(a,b)\)，两个相交但相差很大的集合也会得到零。为了测量整个集合是否接近，需要要求每个点都能在另一边找到近点。
+
+\begin{definition}\label{g3:def:hausdorff-distance}
+	设 \(A,B\) 是度量空间 \((Z,d_Z)\) 的非空紧子集。定义它们的\term[Hausdorff juli]{Hausdorff 距离}[Hausdorff distance]为
+	\begin{equation}\label{g3:eq:hausdorff-distance}
+		d_H^Z(A,B)=\max\left\{\sup_{a\in A}d_Z(a,B),\ \sup_{b\in B}d_Z(b,A)\right\}.
+	\end{equation}
+	等价地，它是满足 \(A\subset U_r(B)\)、\(B\subset U_r(A)\) 的 \(r>0\) 的下确界，其中 \(U_r(A)=\{z:d_Z(z,A)<r\}\)。
+\end{definition}
+
+两个有向距离都要出现：\(A\subset B\) 只能使第一个上确界为零，第二个还要测量 \(B\) 中多出的部分。这个距离中的 Hausdorff 与拓扑分离条件中的人物相同。\footnote{Felix Hausdorff（1868--1942），德国数学家，研究集合论、拓扑学与测度论；其工作奠定了拓扑空间、度量空间及分数维数理论的重要基础。}
+
+\begin{proposition}\label{g3:prop:hausdorff-metric}
+	设 \((Z,d_Z)\) 为度量空间。\(d_H^Z\) 在 \(Z\) 的非空紧子集全体上是有限值度量。
+\end{proposition}
+\begin{proof}
+	紧集有界，所以式\eqref{g3:eq:hausdorff-distance}有限。非负性和对称性直接成立。若 \(d_H^Z(A,B)=0\)，则每个 \(a\in A\) 都属于 \(\overline B=B\)，故 \(A\subset B\)；反向同理，于是 \(A=B\)。这里用到紧子集在度量空间中闭。
+
+	设 \(A,B,C\) 都非空且紧。对每个 \(a\in A\)，取 \(b\in B\) 实现 \(d_Z(a,B)\)，再取 \(c\in C\) 实现 \(d_Z(b,C)\)，则
+	\[
+		d_Z(a,C)\le d_Z(a,b)+d_Z(b,c)
+		\le d_H^Z(A,B)+d_H^Z(B,C).
+	\]
+	对 \(a\) 取上确界，并交换 \(A,C\) 作同样估计，得到三角不等式。
+\end{proof}
+
+\begin{example}\label{g3:exm:hausdorff-position}
+	在实直线中，\(A=[0,1]\)、\(B=[L,L+1]\)，其中 \(L\ge0\)，满足 \(d_H^{\mathbb R}(A,B)=L\)。平移 \(x\mapsto x+L\) 又是 \(A\) 到 \(B\) 的等距映射。因而 Hausdorff 距离保留了集合在环境中的位置；要只比较两个空间自身的度量，还须允许改变这两个等距副本的位置。
+\end{example}
+
+\begin{definition}\label{g3:def:gh-distance}
+	设 \((X,d_X)\)、\((Y,d_Y)\) 是非空紧度量空间。它们的\term[Gromov Hausdorff juli]{Gromov--Hausdorff 距离}[Gromov--Hausdorff distance]定义为
+	\begin{equation}\label{g3:eq:gh-distance-ambient}
+		d_{\mathrm{GH}}(X,Y)
+		=\inf_{Z,\iota_X,\iota_Y}
+		d_H^Z\bigl(\iota_X(X),\iota_Y(Y)\bigr),
+	\end{equation}
+	其中 \(Z\) 遍历度量空间，\(\iota_X:X\to Z\)、\(\iota_Y:Y\to Z\) 遍历保持距离的嵌入。简称为 GH 距离。
+\end{definition}
+\symidx{\(d_{\mathrm{GH}}(X,Y)\)：非空紧度量空间之间的 Gromov--Hausdorff 距离}
+
+保持距离要求 \(d_Z(\iota_Xx,\iota_Xx')=d_X(x,x')\)，因此不能为了使两个副本接近而改变各自内部的距离。公共空间也不必是 Euclid 空间；这一自由度正是下面的构造能够工作的原因。
+
+\ProseParagraphBreak
+
+定义中的候选总存在。取不交并 \(X\sqcup Y\)，保留两边原距离，并令所有跨边距离等于 \(D=\max\{1,\operatorname{diam}X,\operatorname{diam}Y\}\)。跨边三角不等式由两边直径不超过 \(D\) 保证，从而得到一个度量。因此 GH 距离有限。若两个空间等距，可将它们嵌入同一个副本，故距离为零。反向结论将在本节末证明。
 
 \subsection{对应与畸变}
 \label{g3:subsec:1002:02}
-待撰写
+
+公共环境的定义有直接的几何含义，但寻找所有环境不便计算。若两个副本在环境中很近，可以把彼此相近的点配对；反过来，若配对保持距离到一个小误差，也可以在每对点之间架设短桥。这样便把环境的选择转化为一个仅涉及两边距离表的问题。
+
+\begin{definition}\label{g3:def:metric-correspondence}
+	设 \(X,Y\) 是非空集合。若子集 \(R\subset X\times Y\) 向两个因子的投影都满射，即每个 \(x\in X\) 至少与一个 \(y\in Y\) 配对，每个 \(y\in Y\) 也至少与一个 \(x\in X\) 配对，则称 \(R\) 为 \(X,Y\) 之间的一个\term[duiying]{对应}[correspondence]。
+	若 \(X,Y\) 还带有度量，则定义对应的\term[jibian]{畸变}[distortion]为
+	\begin{equation}\label{g3:eq:correspondence-distortion}
+		\operatorname{dis}R
+		=\sup_{(x,y),(x',y')\in R}
+		\bigl|d_X(x,x')-d_Y(y,y')\bigr|.
+	\end{equation}
+\end{definition}
+
+对应允许一对多或多对一。一条满射的图像是对应，任意映射的图像则可能漏掉靶空间中的点。若 \((x,y),(x',y)\in R\)，畸变条件给出 \(d_X(x,x')\le\operatorname{dis}R\)：被配到同一点的整簇点必须足够接近。这正好适合描述塌缩。
+
+\begin{theorem}\label{g3:thm:gh-correspondence}
+	对任意非空紧度量空间 \(X,Y\)，有
+	\begin{equation}\label{g3:eq:gh-correspondence}
+		d_{\mathrm{GH}}(X,Y)=\frac12\inf_R\operatorname{dis}R,
+	\end{equation}
+	其中下确界取遍 \(X,Y\) 之间的全部对应。
+\end{theorem}
+\begin{proof}
+	先从公共空间构造对应。设 \(X,Y\) 已等距嵌入 \(Z\)，并取 \(r>d_H^Z(X,Y)\)。集合
+	\[
+		R=\{(x,y):d_Z(x,y)<r\}
+	\]
+	向两边都满射。对其中任意两对点，由环境中的三角不等式得
+	\[
+		\bigl|d_X(x,x')-d_Y(y,y')\bigr|
+		\le d_Z(x,y)+d_Z(x',y')<2r.
+	\]
+	故 \(\operatorname{dis}R\le2r\)。先令 \(r\) 降至该 Hausdorff 距离，再对环境取下确界，得到式\eqref{g3:eq:gh-correspondence}右端不大于左端。
+
+	反过来，给定对应 \(R\)，记 \(\Delta=\operatorname{dis}R\)，并取 \(\eta>\Delta/2\)。在 \(X\sqcup Y\) 上保留两边的原距离，对 \(x\in X,y\in Y\) 定义
+	\begin{equation}\label{g3:eq:gh-bridge-metric}
+		D(x,y)=D(y,x)
+		=\inf_{(a,b)\in R}
+		\bigl(d_X(x,a)+\eta+d_Y(b,y)\bigr).
+	\end{equation}
+	可以把括号内的三项理解为先在 \(X\) 中走到 \(a\)，经过长为 \(\eta\) 的桥，再在 \(Y\) 中走到 \(y\)。\(R\ne\varnothing\) 保证此值有限，而且跨边距离至少为 \(\eta>0\)。
+
+	现在核对三角不等式，尤其要排除经过另一边的两座桥反而缩短原来的距离。若两个端点在 \(X\)，中间点 \(y\) 在 \(Y\)，则对任意 \((a,b),(a',b')\in R\)，有
+	\[
+	\begin{aligned}
+		&d_X(x,a)+\eta+d_Y(b,y)
+		+d_Y(y,b')+\eta+d_X(a',x')\\
+		&\quad\ge d_X(x,a)+d_Y(b,b')+2\eta+d_X(a',x')\\
+		&\quad\ge d_X(x,a)+d_X(a,a')+(2\eta-\Delta)+d_X(a',x')\\
+		&\quad\ge d_X(x,x').
+	\end{aligned}
+	\]
+	分别取下确界，即得 \(D(x,y)+D(y,x')\ge d_X(x,x')\)。交换 \(X,Y\) 得到另一种同类不等式。余下的混合情形形如
+	\[
+		D(x,y)\le d_X(x,x')+D(x',y),
+	\]
+	它由 \(d_X(x,a)\le d_X(x,x')+d_X(x',a)\) 逐项代入式\eqref{g3:eq:gh-bridge-metric}后取下确界得到。三点都在同一边时使用原距离的三角不等式。对称性、正定性也已成立，所以 \(D\) 确为度量，两边的包含映射等距。
+
+	对每个 \((a,b)\in R\)，直接取这对点作为桥，得 \(D(a,b)\le\eta\)。对应向两边满射，因而 \(d_H^{(X\sqcup Y,D)}(X,Y)\le\eta\)。令 \(\eta\downarrow\Delta/2\)，再对 \(R\) 取下确界，得到左端不大于右端。
+\end{proof}
+
+桥长取严格正数，即使 \(\Delta=0\) 也先保留一个正的余量。这样得到的直接就是度量，无须在不交并中再把零距离点作商。公式中的 \(1/2\) 来自两个配对点各自跨一次桥：一个距离误差最多由两段桥长贡献。
+
+\begin{proposition}\label{g3:prop:correspondence-composition}
+	设 \(X,Y,Z\) 是非空紧度量空间，\(R\subset X\times Y\)、\(S\subset Y\times Z\) 为对应。定义
+	\[
+		S\circ R=\{(x,z):\text{存在 }y\in Y,\ (x,y)\in R,\ (y,z)\in S\}.
+	\]
+	则 \(S\circ R\) 为 \(X,Z\) 之间的对应，并且
+	\[
+		\operatorname{dis}(S\circ R)\le\operatorname{dis}R+\operatorname{dis}S.
+	\]
+	从而 GH 距离满足三角不等式。
+\end{proposition}
+\begin{proof}
+	对给定 \(x\)，先用 \(R\) 找到 \(y\)，再用 \(S\) 找到 \(z\)；从给定 \(z\) 反向选择也成立，所以两个投影满射。对 \((x,z),(x',z')\in S\circ R\)，分别选取中间点 \(y,y'\)，则
+	\[
+	\begin{aligned}
+		|d_X(x,x')-d_Z(z,z')|
+		&\le |d_X(x,x')-d_Y(y,y')|\\
+		&\quad+|d_Y(y,y')-d_Z(z,z')|\\
+		&\le\operatorname{dis}R+\operatorname{dis}S.
+	\end{aligned}
+	\]
+	取上确界便得畸变界。对 \(R,S\) 分别取任意接近其畸变下确界的对应，再用\cref{g3:thm:gh-correspondence}，得到
+	\(d_{\mathrm{GH}}(X,Z)\le d_{\mathrm{GH}}(X,Y)+d_{\mathrm{GH}}(Y,Z)\)。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:gh-diameter}
+	设 \(X,Y\) 是非空紧度量空间。则
+	\begin{equation}\label{g3:eq:gh-diameter-bound}
+		|\operatorname{diam}X-\operatorname{diam}Y|
+		\le2d_{\mathrm{GH}}(X,Y).
+	\end{equation}
+	若 \(\{*\}\) 是单点空间，则
+	\[
+		d_{\mathrm{GH}}(X,\{*\})=\tfrac12\operatorname{diam}X.
+	\]
+\end{proposition}
+\begin{proof}
+	给定对应 \(R\)，对任意 \(x,x'\in X\)，选 \((x,y),(x',y')\in R\)，于是
+	\(d_X(x,x')\le\operatorname{diam}Y+\operatorname{dis}R\)。
+	取上确界，再交换两边，得到直径之差的绝对值不超过 \(\operatorname{dis}R\)。对应公式给出式\eqref{g3:eq:gh-diameter-bound}。与单点空间之间只有一个对应 \(X\times\{*\}\)，其畸变恰为 \(\operatorname{diam}X\)，所以第二个等式也由对应公式得到。
+\end{proof}
+
+\begin{example}\label{g3:exm:gh-scaling-interval}
+	设 \(X\) 是非空紧度量空间，\(\lambda>0\)，以 \(\lambda X\) 表示同一点集配距离 \(\lambda d_X\)。恒等配对的畸变为 \(|\lambda-1|\operatorname{diam}X\)，而直径界给出相反方向的同一个数，故
+	\[
+		d_{\mathrm{GH}}(X,\lambda X)
+		=\tfrac12|\lambda-1|\operatorname{diam}X.
+	\]
+	特别地，对通常距离下的闭区间，\(a,b\ge0\) 时
+	\[
+		d_{\mathrm{GH}}([0,a],[0,b])=\tfrac12|a-b|.
+	\]
+	当 \(a,b>0\) 时用比例配对；某个长度为零时用单点公式。也可以把两个区间放在实直线上并使中点重合，直接看到这个 Hausdorff 上界。
+\end{example}
 
 \subsection{\texorpdfstring{\(\varepsilon\)-逼近映射的等价描述}{\GeometryPdfEpsilon{}-逼近映射的等价描述}}
 \label{g3:subsec:1002:03}
-待撰写
+
+具体退化模型往往已经带有一个自然映射，例如把细圆柱投影到轴线。此时检查每对点的距离误差及像是否覆盖整个目标，比直接设计一个多值对应更方便。这里需要的是加性误差；它允许比误差尺度更小的部分缩成一点。
+
+\begin{definition}\label{g3:def:epsilon-approximation}
+	设 \(X,Y\) 是非空紧度量空间，\(\varepsilon>0\)。映射 \(f:X\to Y\) 的畸变定义为
+	\[
+		\operatorname{dis}f
+		=\sup_{x,x'\in X}|d_Y(f(x),f(x'))-d_X(x,x')|.
+	\]
+	若 \(\operatorname{dis}f\le\varepsilon\)，且
+	\[
+		\sup_{y\in Y}d_Y(y,f(X))\le\varepsilon,
+	\]
+	则称 \(f\) 为一个 \(\varepsilon\)-\term[bijin yingshe]{逼近映射}[approximation map]。后一条件称为像在 \(Y\) 中 \(\varepsilon\)-稠密。这里不要求 \(f\) 连续。
+\end{definition}
+
+距离畸变为零只保证映射等距嵌入；像稠密到误差尺度的条件保证没有漏掉靶空间的大块区域。\(f(X)\) 不一定闭，故点到像的距离仍按下确界理解。
+
+\begin{proposition}\label{g3:prop:gh-approximation}
+	设 \(X,Y\) 是非空紧度量空间，\(\varepsilon>0\)。则：
+	\begin{enumerate}
+		\item 若 \(d_{\mathrm{GH}}(X,Y)<\varepsilon\)，则存在 \(2\varepsilon\)-逼近映射 \(f:X\to Y\)。交换 \(X,Y\) 后同样成立。
+		\item 若存在 \(\varepsilon\)-逼近映射 \(f:X\to Y\)，则 \(d_{\mathrm{GH}}(X,Y)\le3\varepsilon/2\)。
+	\end{enumerate}
+	因此，对非空紧度量空间序列 \((X_j)\) 及非空紧度量空间 \(X\)，\(d_{\mathrm{GH}}(X_j,X)\to0\) 当且仅当存在 \(\varepsilon_j\to0\) 及 \(\varepsilon_j\)-逼近映射 \(X_j\to X\)。
+\end{proposition}
+\begin{proof}
+	第一项中，由对应公式取 \(R\subset X\times Y\)，使 \(\operatorname{dis}R<2\varepsilon\)。对每个 \(x\) 选一个 \(f(x)\) 使 \((x,f(x))\in R\)。其图像包含于 \(R\)，所以 \(\operatorname{dis}f<2\varepsilon\)。对任意 \(y\in Y\)，选 \(x\) 使 \((x,y)\in R\)，再比较 \((x,y)\) 与 \((x,f(x))\)，得
+	\[
+		d_Y(y,f(x))=|d_Y(y,f(x))-d_X(x,x)|<2\varepsilon.
+	\]
+	这证明像的稠密性。
+
+	第二项中，固定任意 \(\delta>0\)，定义
+	\[
+		R_\delta=\{(x,y):d_Y(f(x),y)\le\varepsilon+\delta\}.
+	\]
+	它包含 \(f\) 的图像，故向 \(X\) 满射；像的 \(\varepsilon\)-稠密性和余量 \(\delta\) 保证向 \(Y\) 也满射。若 \((x,y),(x',y')\in R_\delta\)，则
+	\[
+	\begin{aligned}
+		|d_X(x,x')-d_Y(y,y')|
+		&\le |d_X(x,x')-d_Y(f(x),f(x'))|\\
+		&\quad+d_Y(f(x),y)+d_Y(f(x'),y')\\
+		&\le3\varepsilon+2\delta.
+	\end{aligned}
+	\]
+	所以 \(d_{\mathrm{GH}}(X,Y)\le3\varepsilon/2+\delta\)。令 \(\delta\downarrow0\)，得到所述常数。最后一项分别应用这两条估计；必要时在 \(d_{\mathrm{GH}}(X_j,X)\) 上增加 \(1/j\) 的严格余量。
+\end{proof}
+
+\begin{example}\label{g3:exm:gh-finite-sampling}
+	取 \(X=[0,1]\)，\(F_m=\{0,1/m,\ldots,1\}\)，都使用实直线的限制距离。每个点到最近网格点的距离至多 \(1/(2m)\)，故
+	\[
+		d_{\mathrm{GH}}(F_m,[0,1])\le\frac1{2m}.
+	\]
+	最近网格点选择 \(q_m:[0,1]\to F_m\) 在相邻网格点的中点发生跳跃，但
+	\[
+		\bigl||q_m(x)-q_m(x')|-|x-x'|\bigr|
+		\le|q_m(x)-x|+|q_m(x')-x'|\le\frac1m.
+	\]
+	它还满射，因而是 \(1/m\)-逼近。任何从连通区间到有限离散空间的连续映射都是常值；允许这种小幅跳跃，才能用有限样本逼近一个连续空间。
+\end{example}
 
 \subsection{零距离与等距类}
 \label{g3:subsec:1002:04}
-待撰写
+
+小误差映射可以不连续，逐点选择也不相容。距离为零时，我们要从一列误差趋零的映射中恢复一个真正保持所有距离的映射。紧性使可数稠密集上的像能够同时取极限，再用距离控制填满其余点。
+
+\begin{theorem}\label{g3:thm:gh-isometry-metric}
+	对非空紧度量空间 \(X,Y\)，\(d_{\mathrm{GH}}(X,Y)=0\) 当且仅当 \(X,Y\) 等距。因此 GH 距离在非空紧度量空间的等距类上给出度量。
+\end{theorem}
+\begin{proof}
+	等距时距离为零已经由定义证明；有限性、非负性、对称性与三角不等式也已建立。只须证明零距离产生满射等距。
+
+	设 \(d_{\mathrm{GH}}(X,Y)=0\)。由\cref{g3:prop:gh-approximation}取 \(\varepsilon_j\)-逼近 \(f_j:X\to Y\)，其中 \(\varepsilon_j\to0\)。对每个正整数 \(m\)，紧性使 \(X\) 中半径 \(1/m\) 的开球覆盖有有限子覆盖；收集这些有限个中心，得到一个可数稠密子集 \(A=\{a_1,a_2,\ldots\}\)，有限情形允许重复枚举。
+
+	由于 \(Y\) 紧，先取子列使 \(f_j(a_1)\) 收敛，再从中取子列使 \(f_j(a_2)\) 收敛，依次进行。取第 \(j\) 个子列的第 \(j\) 项得到对角子列，仍记为 \(f_j\)，使每个 \(a_i\) 的像都收敛。记其极限为 \(F(a_i)\)。对任意 \(a_i,a_l\)，由畸变趋零得
+	\[
+		d_Y(F(a_i),F(a_l))
+		=\lim_jd_Y(f_j(a_i),f_j(a_l))=d_X(a_i,a_l).
+	\]
+	所以 \(F\) 在稠密子集上保持距离。
+
+	给定 \(x\in X\)，取 \(a_{i_m}\to x\)。其像是 \(Y\) 中的 Cauchy 序列，而紧度量空间完备，故像有极限，定义为 \(F(x)\)。若改取另一逼近序列，则两列对应项的距离等于其在 \(X\) 中的距离并趋于零，所以极限与选择无关。对两个点分别取逼近序列，距离等式在极限中保持，故延拓后的 \(F:X\to Y\) 等距。
+
+	还需证明满射。事实上 \(f_j\) 沿所选子列一致趋于 \(F\)。固定 \(\delta>0\)，从 \(A\) 中取有限个点 \(a_{i_1},\ldots,a_{i_N}\)，其 \(\delta\)-开球覆盖 \(X\)。对任意 \(x\)，选一个满足 \(d_X(x,a_{i_l})<\delta\) 的中心，则
+	\[
+	\begin{aligned}
+		d_Y(f_j(x),F(x))
+		&\le d_Y(f_j(x),f_j(a_{i_l}))
+		+d_Y(f_j(a_{i_l}),F(a_{i_l}))
+		+d_Y(F(a_{i_l}),F(x))\\
+		&\le2\delta+\varepsilon_j+
+		\max_{1\le l\le N}d_Y(f_j(a_{i_l}),F(a_{i_l})).
+	\end{aligned}
+	\]
+	右侧的最后两项趋于零。先取 \(j\to\infty\)，再令 \(\delta\downarrow0\)，即得一致收敛。
+
+	对任意 \(y\in Y\)，由像的稠密性选 \(x_j\in X\)，使 \(d_Y(y,f_j(x_j))\le\varepsilon_j+1/j\)。于是
+	\[
+		d_Y(y,F(X))\le\varepsilon_j+1/j+
+		\sup_{x\in X}d_Y(f_j(x),F(x))\longrightarrow0.
+	\]
+	等距映射连续，所以 \(F(X)\) 紧且闭；这迫使 \(y\in F(X)\)。故 \(F\) 为满射等距。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:gh-limit-unique}
+	若非空紧度量空间序列 \((X_j)\) 同时 GH 收敛到非空紧度量空间 \(X,Y\)，则 \(X,Y\) 等距。
+\end{corollary}
+\begin{proof}
+	三角不等式给出
+	\(d_{\mathrm{GH}}(X,Y)\le d_{\mathrm{GH}}(X,X_j)+d_{\mathrm{GH}}(X_j,Y)\to0\)，再应用上一条定理。
+\end{proof}
+
+此后“GH 极限唯一”均指等距意义下唯一。距离趋零同时给出任意有限点组的距离误差趋零，以及整个空间在误差尺度上的覆盖；这两方面将在下一节分别表现为距离矩阵的收敛与有限网的控制。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

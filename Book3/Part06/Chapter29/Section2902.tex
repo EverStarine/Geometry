@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 29.2 塌缩与维数变化
 % 纲要位置：几何学计划纲要.md，第 3326 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,196 @@
 \section{塌缩与维数变化}
 \label{g3:sec:2902}
 
-待撰写
+第10章已经算过扁平二维环面趋于圆周的距离误差。现在要观察同一过程中更多的量：体积怎样消失，注入半径为何变小，局部曲率是否仍能保持有界，以及缩短的方向在拓扑上是否总能拼成直积。先把圆周方向的缩短推广到一般圆丛，再用一个非平凡的三维模型看清纤维的扭转。
 
 \subsection{扁平环面和圆丛塌缩}
 \label{g3:subsec:2902:01}
-待撰写
+设 \((B^m,h)\) 为闭连通黎曼流形，\(P\to B\) 为一个光滑主圆丛，圆群取 \(\mathbb R/(2\pi\mathbb Z)\)。令 \(V\) 为周期 \(2\pi\) 的基本向量场，选圆作用不变的实联络一形式 \(\theta\)，满足 \(\theta(V)=1\)。水平空间为 \(\ker\theta\)，其上投影微分与基底切空间同构。对 \(0<\varepsilon\le1\)，定义
+\begin{equation}\label{g3:eq:circle-bundle-collapsing-metric}
+	g_\varepsilon=\pi^*h+\varepsilon^2\theta\otimes\theta.
+\end{equation}
+这里第一项在水平空间上正定、在垂直空间上为零，第二项恰好补上垂直方向的长度。每条圆纤维的周长为 \(2\pi\varepsilon\)。这样的度量称为\term[lianluo duliang]{联络度量}[connection metric]。
+
+\begin{proposition}\label{g3:prop:circle-bundle-collapse}
+	在上述闭基底、光滑主圆丛与固定联络的条件下，对任意 \(p,q\in P\)，有
+	\begin{equation}\label{g3:eq:circle-bundle-distance-bound}
+		d_h(\pi p,\pi q)\le d_{g_\varepsilon}(p,q)
+		\le d_h(\pi p,\pi q)+\pi\varepsilon.
+	\end{equation}
+	因此
+	\[
+		d_{\mathrm{GH}}((P,g_\varepsilon),(B,h))\le\frac{\pi\varepsilon}{2},
+		\qquad \operatorname{Vol}_{g_\varepsilon}P
+		=2\pi\varepsilon\operatorname{Vol}_hB.
+	\]
+	每个 \(p\in P\) 的注入半径不超过 \(\pi\varepsilon\)。此外，存在只依赖固定 \((B,h,\theta)\) 的常数 \(C\)，使 \(\sup_P|\mathrm{Rm}_{g_\varepsilon}|\le C\) 对 \(0<\varepsilon\le1\) 成立。
+\end{proposition}
+\begin{proof}
+	投影微分在水平向量上保长，在垂直向量上为零，所以投影不增加道路长度，给出第一个距离不等式。反过来，将从 \(\pi p\) 到 \(\pi q\) 的最短线从 \(p\) 水平提升。提升是一条与原曲线等长的道路，其终点与 \(q\) 在同一圆纤维上；再沿这条纤维的一段短弧前进，长度至多 \(\pi\varepsilon\)。水平提升在整个区间存在，因为它是紧丛 \(P\) 上光滑常微分方程的解。两段相接得到第二个不等式。投影为满射，它的图是畸变至多为 \(\pi\varepsilon\) 的对应，故\cref{g3:thm:gh-correspondence}给出 GH 估计。
+
+	在局部平凡化中写 \(\theta=\mathrm d\varphi+A\)，其中 \(\varphi\) 为圆周变量。以水平正交余标架连同 \(\varepsilon\theta\) 计算体积密度，得到 \(\mu_{g_\varepsilon}=\varepsilon\,\mathrm d\varphi\,\mu_h\)。沿圆纤维积分即得体积公式。以下联络计算还表明纤维是测地线；从 \(p\) 出发沿两个相反纤维方向各行长度 \(\pi\varepsilon\)，到达同一点。指数映射因而不可能在更大的切球上单射，给出注入半径上界。
+
+	为核对曲率界，令 \(F\) 为基底上的二形式，使 \(\mathrm d\theta=\pi^*F\)。在一个固定基底坐标片中取正交场 \(e_1,\ldots,e_m\)，以 \(E_i\) 表示其不变水平提升，令 \(E_0=\varepsilon^{-1}V\)。则 \(E_0,E_1,\ldots,E_m\) 为 \(g_\varepsilon\) 正交标架，并且
+	\[
+		[E_i,E_j]=[e_i,e_j]^H-\varepsilon F_{ij}E_0,
+		\qquad [E_i,E_0]=0.
+	\]
+	Koszul 公式逐项给出
+	\begin{equation}\label{g3:eq:circle-bundle-connection}
+	\begin{aligned}
+		\nabla_{E_i}E_j&=(\nabla^h_{e_i}e_j)^H-\tfrac\varepsilon2F_{ij}E_0,\\
+		\nabla_{E_i}E_0=\nabla_{E_0}E_i&=\tfrac\varepsilon2\sum_jF_{ij}E_j,
+		&\nabla_{E_0}E_0&=0.
+	\end{aligned}
+	\end{equation}
+	所有系数都是基底光滑函数的提升；沿 \(E_0\) 的导数为零，沿 \(E_i\) 的导数就是沿 \(e_i\) 的导数。曲率由联络系数的一阶导数、两个联络系数的乘积及括号系数组成。因此在基底的有限个相对紧标架片内，每个正交曲率分量都是有界基底系数与 \(\varepsilon\)、\(\varepsilon^2\) 的有限组合，没有负次幂。这给出与 \(\varepsilon\) 无关的统一界，并证明了前面用到的纤维测地性。
+\end{proof}
+
+这个计算解释了有界曲率与小注入半径为何能够共存。缩短圆周并没有产生大小为 \(\varepsilon^{-2}\) 的圆周内在曲率，因为一维纤维本身平坦；其与水平空间的耦合则在正交标架中带着正次幂 \(\varepsilon\)。
+
+\begin{example}\label{g3:exm:nil-circle-collapse}
+	取\cref{g3:prop:ricci-flow-nil-model}所用的群乘法
+	\[
+		(x,y,z)(x',y',z')=(x+x',y+y',z+z'+xy')
+	\]
+	及整数子群 \(\Gamma\)，在紧商 \(P=\Gamma\backslash\mathbb R^3\) 上令
+	\[
+		g_\varepsilon=\mathrm dx^2+\mathrm dy^2+
+		\varepsilon^2(\mathrm dz-x\,\mathrm dy)^2.
+	\]
+	投影到 \((x\bmod1,y\bmod1)\) 给出到单位平坦二维环面的圆丛，纤维周期在 \(z\) 坐标中为一。整数左平移保持三个所列一形式，故度量和投影在商上良定义。前一命题的距离论证在此给
+	\[
+		d_{\mathrm{GH}}((P,g_\varepsilon),\mathbb T^2)\le\varepsilon/4,
+		\qquad \operatorname{Vol}_{g_\varepsilon}P=\varepsilon.
+	\]
+	第27章已经从 Koszul 公式算出这一度量在水平与垂直基本平面上的截面曲率为
+	\[
+		K_{12}=-3\varepsilon^2/4,\qquad
+		K_{13}=K_{23}=\varepsilon^2/4.
+	\]
+	因而所有曲率分量趋于零，而整个三维流形趋于二维环面。
+
+	这个圆丛不是直积圆丛。若存在全局光滑截面 \(\sigma\)，由 \(\gamma=\mathrm dz-x\,\mathrm dy\) 得
+	\(\mathrm d(\sigma^*\gamma)=-\mathrm dx\wedge\mathrm dy\)。对基底环面积分，左边由 Stokes 定理为零，右边为 \(-1\)，矛盾。圆纤维在每个小坐标片里都可见，但其整体拼接保留了非平凡的扭转。
+\end{example}
 
 \subsection{体积、直径和曲率的不同控制}
 \label{g3:subsec:2902:02}
-待撰写
+光滑紧性使用统一的坐标半径及系数控制。直径限制整个空间的尺度；体积衡量总体质量；曲率控制局部弯曲。三者各自有界，并不表示它们可以相互替代。
+
+\begin{example}\label{g3:exm:collapse-control-counterexamples}
+	以下各族都由闭连通光滑流形组成，距离均为内在黎曼距离。
+	在 \(T_{1,\varepsilon}=S^1_1\times S^1_\varepsilon\) 上，曲率恒为零，直径为 \(\tfrac12\sqrt{1+\varepsilon^2}\)，面积为 \(\varepsilon\)，注入半径为 \(\varepsilon/2\)（\(0<\varepsilon\le1\)）。因此曲率和直径界允许面积及注入半径趋零。
+
+	\ProseParagraphBreak
+	在 \(T_{L,L^{-1}}\)、\(L\to\infty\)，上，面积恒为一、曲率仍为零，但直径至少为 \(L/2\)。故总体积下界配合曲率界也不控制整体直径。在半径 \(\varepsilon\) 的圆球上，直径为 \(\pi\varepsilon\)、体积与 \(\varepsilon^n\) 成正比，而截面曲率为 \(\varepsilon^{-2}\)。这个缩球趋于一点时，失败的是统一曲率界。
+
+	\ProseParagraphBreak
+	另取周期 \(2\pi\) 的二维平坦环面，令
+	\[
+		u_j(x,y)=j^{-1}\sin(jx),\qquad
+		g_j=e^{2u_j}(\mathrm dx^2+\mathrm dy^2).
+	\]
+	有 \(e^{-2/j}g_0\le g_j\le e^{2/j}g_0\)，故恒等映射的距离畸变趋零，体积也趋于 \(\operatorname{Vol}_{g_0}\)。但是\cref{g3:cor:conformal-scalar-power}的二维公式给
+	\[
+		K_{g_j}=e^{-2u_j}\Delta_{g_0}u_j
+		=j e^{-2u_j}\sin(jx),
+	\]
+	其绝对值上确界趋于无穷。距离可以收敛到同一个光滑空间，同时二阶曲率没有统一控制。
+\end{example}
+
+\begin{proposition}\label{g3:prop:collapse-local-global-volume}
+	固定 \(n\ge2\)、\(k\in\mathbb R\) 及 \(D>0\)。设闭连通 \(n\) 维黎曼流形 \((M_j,g_j)\) 满足 \(\operatorname{Ric}_{g_j}\ge(n-1)kg_j\)、\(\operatorname{diam}M_j\le D\)。则
+	\[
+		\operatorname{Vol}M_j\to0
+		\quad\Longleftrightarrow\quad
+		\inf_{p\in M_j}\operatorname{Vol}B(p,1)\to0.
+	\]
+	更精确地，存在只依赖 \(n,k,D\) 的 \(c>0\)，使每个 \(p\in M_j\) 都满足
+	\[
+		c\operatorname{Vol}M_j\le\operatorname{Vol}B(p,1)
+		\le\operatorname{Vol}M_j.
+	\]
+\end{proposition}
+\begin{proof}
+	置 \(k_0=\min\{k,0\}\)、\(R=2D+2\)，则 \(B(p,R)=M_j\)。\Cref{g3:thm:bishop-gromov}的体积比较给
+	\[
+		\frac{\operatorname{Vol}B(p,1)}{V_{k_0,n}(1)}
+		\ge\frac{\operatorname{Vol}B(p,R)}{V_{k_0,n}(R)}.
+	\]
+	取 \(c=V_{k_0,n}(1)/V_{k_0,n}(R)>0\) 即得下界；上界来自集合包含。对各点取下确界，两个方向随即成立。
+\end{proof}
+
+在这组固定维数、Ricci 下界和直径条件下，总体积趋零因而也表现为每个固定单位尺度的体积趋零。相对地，\secref{g3:sec:2901}的法坐标控制与注入半径正下界提供一个统一小半径 \(r\)，使拉回度量至少为 Euclid 度量的一半，于是每个 \(r\)-球体积至少为 \(2^{-n/2}\omega_nr^n\)。圆丛塌缩恰好失去这个统一坐标半径。
+
+\begin{table}[htbp]
+	\centering\small
+	\caption{四个度量族中不同几何控制的表现}
+	\label{g3:tab:collapse-controls}
+	\begin{tabularx}{\textwidth}{@{}lXXX@{}}
+		\toprule
+		度量族 & 曲率 & 总体积 & 直径或极限\\
+		\midrule
+		\(T_{1,\varepsilon}\) & 恒为零 & 趋于零 & 直径有界，极限为圆周\\
+		\(T_{L,L^{-1}}\) & 恒为零 & 恒为一 & 直径趋于无穷\\
+		半径 \(\varepsilon\) 的球面 & 无统一上界 & 趋于零 & 直径趋零，极限为一点\\
+		\(e^{2j^{-1}\sin(jx)}g_0\) & 无统一绝对值界 & 趋于正数 & GH 极限为原平坦环面\\
+		\bottomrule
+	\end{tabularx}
+\end{table}
 
 \subsection{局部纤维结构的深层定理接口}
 \label{g3:subsec:2902:03}
-待撰写
+圆丛算例预先给出了投影；一般塌缩序列只给出距离近似。能否把这些近似改造成光滑纤维化，是一个额外的几何结论。即使存在纤维，纤维也可能是更高维的幂零空间，而不只是圆或环面。
+
+\begin{definition}\label{g3:def:infranilmanifold}
+	设 \(N\) 为连通单连通幂零 Lie 群，\(\operatorname{Aff}(N)=N\rtimes\operatorname{Aut}(N)\)。设离散子群 \(\Gamma\subset\operatorname{Aff}(N)\) 自由、正常不连续且余紧地作用于 \(N\)，并满足 \([\Gamma:\Gamma\cap N]<\infty\)。紧光滑商 \(\Gamma\backslash N\) 称为\term[infranil liuxing]{infranil 流形}[infranilmanifold]。若 \(\Gamma\subset N\)，则称为\term[miling liuxing]{幂零流形}[nilmanifold]。
+\end{definition}
+
+幂零是指 Lie 代数的下降中心列在有限步后变为零。有限指标条件说明，infranil 流形有一个有限覆盖是幂零流形；它不要求给定黎曼度量平坦。\(\mathbb R^r/\mathbb Z^r\) 是最基本的例子，上面算过的三维 Nil 紧商则具有非交换的群结构。Fukaya\footnote{\OriginalHanName{深谷賢治}（ふかや けんじ，Kenji Fukaya，1959--），日本数学家，研究黎曼流形的塌缩与辛几何；姓名读音见\href{https://www.japan-acad.go.jp/japanese/members/4/fukaya_kenji.html}{日本学士院会员资料}。}的纤维化定理把这些模型推广到具有统一曲率界的塌缩序列。
+
+\begin{theorem}[Fukaya 纤维化定理]\label{g3:thm:fukaya-fibration-external}
+	设 \((M_j^n,g_j)\) 是一列闭连通光滑黎曼流形，\((B^m,h)\) 为固定闭连通光滑黎曼流形，\(1\le m<n\)。若
+	\[
+		|\sec_{g_j}|\le1,\qquad
+		d_{\mathrm{GH}}((M_j,g_j),(B,h))\longrightarrow0,
+	\]
+	则对充分大的 \(j\)，存在光滑局部平凡纤维丛 \(\pi_j:M_j\to B\)，其纤维为 \(n-m\) 维 infranil 流形。
+\end{theorem}
+
+本定理作为外部结果使用，取自\cite[定理0-1，第333页的(0-3-1)、(0-3-2)]{Fukaya1989CollapsingII}；同文注0-4说明这两项已在作者的前一篇工作中证明。这里选取的是光滑闭极限上的纤维化版本。它在基底的每个充分小邻域内给出光滑乘积表示，并把局部表示的整体拼接保留为丛；所列双侧截面曲率界与光滑基底条件都是该陈述的输入。Ricci 下界极限以及带奇异点的基底将在下一节用另一组结构结论处理。
+
+\ProseParagraphBreak
+当 \(n-m=1\) 时，紧连通的一维 infranil 流形是圆，因而恢复圆纤维的图景。纤维丛本身仍可能扭转，\cref{g3:exm:nil-circle-collapse}正展示了这一点。若只是总直径趋零而把空间压成一点，也不能直接把一个任意流形称为 infranil 流形：缩球算例的曲率已经发散，失去了本定理的假设。
 
 \subsection{极限维数与拓扑维数}
 \label{g3:subsec:2902:04}
-待撰写
+“维数下降”在光滑模型中容易看见，讨论一般极限时却应先说明所用的维数。光滑流形的坐标维数由局部坐标确定，Hausdorff 维数由距离确定；拓扑维数则只使用开集结构。这些定义使我们能够分别追踪距离改变和拓扑改变。
+
+\ProseParagraphBreak
+第21章的 Hausdorff 维数由覆盖集合的直径幂确定：
+\[
+	\dim_H X=\inf\{s\ge0:\mathcal H^s(X)=0\}.
+\]
+拓扑上，对紧度量空间 \(X\)，若任意有限开覆盖都有一个有限开加细，使每点至多同时属于 \(m+1\) 个加细开集，就说其\term[fugai weishu]{覆盖维数}[covering dimension]不超过 \(m\)，记为 \(\dim_{\mathrm{top}}X\le m\)。开加细是指覆盖中的每个新开集都包含在某个原开集中。把开覆盖及其加细沿同胚搬运，覆盖重数不变，故这个维数确为同胚不变量。下面在区间上直接比较它与 Hausdorff 维数。
+
+\begin{proposition}\label{g3:prop:gh-snowflake-dimension}
+	对任意 \(0<\alpha<1\)，区间 \([0,1]\) 上的函数 \(d_\alpha(x,y)=|x-y|^\alpha\) 是距离，诱导通常拓扑，而
+	\[
+		\dim_H([0,1],d_\alpha)=\alpha^{-1}.
+	\]
+	其覆盖维数为一。另令 \(E_j=\{k/j:0\le k\le j\}\) 并赋予通常距离，则 \(E_j\) 在 GH 意义下趋于通常区间，但每个 \(E_j\) 的 Hausdorff 维数和覆盖维数都为零。
+\end{proposition}
+\begin{proof}
+	因 \((a+b)^\alpha\le a^\alpha+b^\alpha\)，三角不等式成立；\(d_\alpha\)-球恰为通常半径取 \(1/\alpha\) 次幂的球，故拓扑不变。对任意集合 \(U\)，有 \(\operatorname{diam}_{d_\alpha}U=(\operatorname{diam}_{|\cdot|}U)^\alpha\)。因此 Hausdorff 覆盖和中每项的 \(s\) 次幂，恰为通常距离下的 \(\alpha s\) 次幂，覆盖尺度也同步变换，临界指数变为 \(1/\alpha\)。这里通常区间的临界指数为一：等分小区间给出维数至多一；任意覆盖的区间包络长度之和至少为一，给出维数至少一。
+
+	对区间的任意有限开覆盖，紧性给出 Lebesgue 数 \(\delta>0\)：直径小于 \(\delta\) 的子集包含在一个覆盖开集中。取充分细的等距网点，以间距的 \(3/5\) 为半径取相对开区间。这些小区间覆盖 \([0,1]\)，每点至多属于两个，且直径小于 \(\delta\)，所以给出重数至多二的开加细。故覆盖维数至多一。若它为零，则覆盖 \([0,2/3)\)、\((1/3,1]\) 有互不相交的有限开加细；这些开集不能只有一个，却将连通区间分成不交的非空开集，矛盾。故维数等于一；雪花距离的拓扑相同，覆盖维数也相同。
+
+	有限集在任何正次幂的 Hausdorff 测度下为零，可用单点覆盖；其离散拓扑也使任何开覆盖都能加细为重数一的单点覆盖。因此两种维数均为零。另一方面，\(E_j\subset[0,1]\) 且每个区间点距它至多 \(1/(2j)\)，所以共同环境中的 Hausdorff 距离趋零，进而 GH 收敛。
+\end{proof}
+
+雪花距离改变了 Hausdorff 维数而保留拓扑；有限网逼近则说明，任意 GH 序列的 Hausdorff 维数也可以在极限中增加。对于统一维数、Ricci 下界的黎曼序列，必须进一步利用曲率和测度信息，才能得到更强的维数结论。
+
+\ProseParagraphBreak
+对圆丛塌缩，每个 \(P\) 都是 \((m+1)\) 维光滑流形，极限 \(B\) 是 \(m\) 维；这是在原尺度观察时的维数变化。若放大到纤维尺度，缩短的方向可以重新出现。\Cref{g3:prop:torus-collapse-rescale}已准确计算：当扁平环面的纤维周长为 \(h_j\)、观察尺度为 \(r_j\) 时，\(h_j/r_j\) 趋零、趋于正数或趋于无穷，分别产生直线、圆柱或平面。极限对象既取决于原度量，也取决于比较空间时选定的尺度。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

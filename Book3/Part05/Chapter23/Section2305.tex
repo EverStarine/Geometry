@@ -1,5 +1,5 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 23.5*　扫掠、宽度与非极小临界点
+% 纲要标题：### 23.5*　扫掠、宽度与极小极大方法
 % 纲要位置：几何学计划纲要.md，第 3107 行。
 
 % 纲要内容开始
@@ -7,42 +7,247 @@
 % > 写作范围与外部输入：规划任务：在第20—22章的弱极限工具与第23.4节变分流形之后引入几何 min-max。完整证明黎曼二球面上 Birkhoff 非平凡闭测地线的代表模块，交代离散缩短、宽度为正和极限不塌缩为常值；这不是第28章的平均曲率流。再在闭环境维数3—7及指定系数、扫掠空间和收敛拓扑下，准确外引所选 Almgren–Pitts 极小超曲面存在性，分别说明重数、正则性和指标。有限维山路模型只作动机，不替代几何存在证明；第16.4节谱的极小极大原则与本节另行辨析。
 % 
 % * 扫掠族、同伦约束与宽度
-% * 分段测地线的缩短与 Birkhoff 模型
-% * 二球面闭测地线存在性的完整证明
+% * Birkhoff 曲线缩短
+% * 二球面上的闭测地线
 % * 超曲面扫掠与驻值变分流形
-% * Almgren–Pitts 存在性的准确版本
+% * Almgren–Pitts 存在性定理
 % * 维数、重数、正则性与指标的区别
 % 
 % ---
 % 
 % 纲要内容结束
-% 正文状态：未撰写；本文件目前是框架。
-% 规划任务：在第20—22章的弱极限工具与第23.4节变分流形之后引入几何 min-max。完整证明黎曼二球面上 Birkhoff 非平凡闭测地线的代表模块，交代离散缩短、宽度为正和极限不塌缩为常值；这不是第28章的平均曲率流。再在闭环境维数3—7及指定系数、扫掠空间和收敛拓扑下，准确外引所选 Almgren–Pitts 极小超曲面存在性，分别说明重数、正则性和指标。有限维山路模型只作动机，不替代几何存在证明；第16.4节谱的极小极大原则与本节另行辨析。
+% 正文状态：初稿；尚未正式审核。
 
-\OptionalSection{扫掠、宽度与非极小临界点}{g3:sec:2305}
 
-待撰写
+\OptionalSection{扫掠、宽度与极小极大方法}{g3:sec:2305}
+若把闭曲线的长度在所有闭曲线中直接取最小值，常值曲线已经给出零。要找到非恒定闭测地线，可以要求一整族曲线扫过球面，再降低这族曲线中最高的能量。单条曲线可以收缩，但整个扫掠的同伦约束不能同时消失。这个想法在曲线情形可以用有限维的短测地线替换实现；高维超曲面的相应构造则需要变分流形、离散插值和局部几乎极小性。
 
 \subsection{扫掠族、同伦约束与宽度}
 \label{g3:subsec:2305:01}
-待撰写
+设 \((M,g)\) 是与 \(S^2\) 微分同胚的闭光滑黎曼曲面，给定一个定向。曲线的参数圆固定为 \(\mathbb R/\mathbb Z\)，采用第6章的能量归一化
+\[
+	E_g(\gamma)=\frac12\int_0^1|\dot\gamma(t)|_g^2\,\mathrm dt,
+	\qquad L_g(\gamma)^2\le2E_g(\gamma).
+\]
+曲线空间取 \(H^1(S^1,M)\)。这里的拓扑可具体定义如下：选一个微分同胚 \(i:M\to S^2\subset\mathbb R^3\)，以 \(i\circ\gamma\) 的 \(H^1\) 距离度量曲线。紧性及坐标变换的链式法则说明，换一个这样的 \(i\) 得到相同拓扑；能量仍使用给定的 \(g\)。一维 Sobolev 估计使 \(H^1\) 收敛蕴含一致收敛，因而取曲线上一点是连续操作。
 
-\subsection{分段测地线的缩短与 Birkhoff 模型}
+\begin{definition}\label{g3:def:degree-one-curve-sweepout}
+	设 \((M,g)\) 是定向光滑黎曼二球面。一个度为一的曲线\term[saolue]{扫掠}[sweepout]是连续映射
+	\[
+		\sigma:[0,1]\longrightarrow H^1(S^1,M),
+	\]
+	其中 \(\sigma(0)\)、\(\sigma(1)\) 各为常值曲线，且伴随映射 \(F(s,t)=\sigma(s)(t)\) 在分别压缩 \(\{0\}\times S^1\)、\(\{1\}\times S^1\) 后给出的映射 \(\overline F:S^2\to M\) 的度为一。记这些扫掠组成的集合为 \(\mathscr S\)，定义其能量\term[kuandu]{宽度}[width]为
+	\begin{equation}\label{g3:eq:curve-sweepout-width}
+		W_g=\inf_{\sigma\in\mathscr S}\ \max_{s\in[0,1]}E_g(\sigma(s)).
+	\end{equation}
+\end{definition}
+度的含义是 \(\overline F_*[S^2]=[M]\)。我们使用第二卷第3.2.1小节的映射度定义及基本性质：连续同伦保持度，零伦映射的度为零。这适用于压缩后得到的两颗定向二球面。若 \(\sigma\) 随另一个参数连续变化，并始终把两端送到常值曲线，则这一变化在压缩的球面上仍是连续同伦；两端的常值点允许随参数移动。
+
+\ProseParagraphBreak
+\(\mathscr S\) 非空：把标准球面的纬线族经一个保向微分同胚送入 \(M\)，从南极常环连续走到北极常环，即得一个扫掠。其切片在 \(H^1\) 中连续，能量有有限最大值。度为一是保留整体拓扑的信息，最高能量则是要降低的量。这与\cref{g3:thm:laplace-minmax}的线性子空间维数约束不同：那里比较 Rayleigh 商，这里比较非线性曲线空间中的族。
+
+\begin{lemma}\label{g3:lem:curve-width-positive}
+	对任意闭光滑黎曼二球面 \((M,g)\)，式\eqref{g3:eq:curve-sweepout-width}满足 \(0<W_g<\infty\)。
+\end{lemma}
+\begin{proof}
+	有限上界由纬线扫掠给出。由\cref{g3:lem:uniform-normal-neighborhood}及 \(M\) 的紧性，取 \(\rho>0\)，使距离小于 \(2\rho\) 的两点间有光滑依赖端点的唯一短测地线。假设一个扫掠的所有切片能量都小于 \(\rho^2/8\)。则各切片长度小于 \(\rho/2\)，整条切片都落在其起点 \(b(s)=\sigma(s)(0)\) 的法球中。
+
+	逐点沿径向收缩，定义
+	\[
+		H(u,s,t)=\exp_{b(s)}\bigl((1-u)\log_{b(s)}\sigma(s)(t)\bigr),
+		\qquad 0\le u\le1.
+	\]
+	对数与指数均在同一个统一短线范围内，所以 \(H\) 连续。在 \(s=0,1\) 处，原切片为常值，故 \(H\) 对 \(t\) 仍为常值；由商空间的定义，它给出球面映射之间的连续同伦。\(u=1\) 时映射仅依赖 \(s\)，因而分解经过可缩区间 \([0,1]\)，是零伦映射。这与 \(\deg\overline F=1\) 矛盾。故每个扫掠的最大能量至少为 \(\rho^2/8\)，取下确界得正下界。
+\end{proof}
+
+\subsection{Birkhoff 曲线缩短}
 \label{g3:subsec:2305:02}
-待撰写
+Birkhoff\footnote{George David Birkhoff（1884—1944），美国数学家，在动力系统和遍历理论中作出重要贡献。}缩短将小段曲线替换为同端点短测地线。相邻两轮使用错开的区间，使第一次留下的角点在第二次受到检验。下面固定每段的参数时间，以能量控制紧性；最终的固定点自然具有全局常速。曲线宽度与这种偶、奇区间缩短的进一步讨论见\cite[第1节，第2519--2523页]{ColdingMinicozzi2008Width}，该文采用的参数长度与能量常数不同。
 
-\subsection{二球面闭测地线存在性的完整证明}
+\ProseParagraphBreak
+固定 \(A>W_g+1\)。仍用上条引理的 \(\rho\)，选足够大的偶数 \(N\)，使
+\begin{equation}\label{g3:eq:birkhoff-mesh-choice}
+	\sqrt{4A/N}<\rho/4.
+\end{equation}
+结点参数为 \(t_i=i/N\)，指标按模 \(N\) 理解。以各 \(p_i\) 到 \(p_{i+1}\) 的常速短测地线连接，得到分段测地线 \(\gamma_p\)。它在每个小区间内的参数时间为 \(1/N\)，能量为
+\[
+	E_N(p)=\frac N2\sum_{i=0}^{N-1}d(p_i,p_{i+1})^2.
+\]
+令
+\[
+	K_A=\{p\in M^N:E_N(p)\le A\},\qquad
+	d_N(p,q)=\max_i d(p_i,q_i).
+\]
+任何 \(p\in K_A\) 都满足 \(d(p_i,p_{i+1})\le\sqrt{2A/N}<\rho\)，所以所用短线唯一。\(E_N\) 在该区域连续，\(K_A\) 是紧空间 \(M^N\) 的闭子集，因而紧。端点依赖还说明 \(p\mapsto\gamma_p\) 连续进入 \(H^1\)：每一小段及其速度都光滑依赖两端点，分段积分后即可得到 \(H^1\) 连续性。
+
+\begin{lemma}\label{g3:lem:birkhoff-polygon-replacement}
+	设 \((M,g)\) 是闭光滑黎曼二球面，\(A>0\)，偶数 \(N\) 满足式\eqref{g3:eq:birkhoff-mesh-choice}。对每条能量不超过 \(A\) 的 \(H^1\) 闭曲线，在各 \([t_i,t_{i+1}]\) 上作常速短线替换，记为 \(P_N\gamma\)。则
+	\[
+		E_g(P_N\gamma)\le E_g(\gamma),\qquad P_N\gamma\in K_A.
+	\]
+	该操作连续，固定常值曲线，并使每个度为一的扫掠变成度为一的分段测地线扫掠。
+\end{lemma}
+\begin{proof}
+	Cauchy--Schwarz 给出任一长度为 \(1/N\) 的参数子区间 \(I\) 上
+	\[
+		L_g(\gamma|_I)\le\sqrt{2E_g(\gamma|_I)/N}\le\sqrt{2A/N}.
+	\]
+	因此其端点足够近；所取短线的能量是 \(Nd(\gamma(t_i),\gamma(t_{i+1}))^2/2\)，不超过原段能量。逐段相加得到总量界。取值映射 \(\gamma\mapsto(\gamma(t_i))_i\) 连续，短线随端点的连续性遂给出 \(P_N\) 连续。
+
+	在每个小区间内，原曲线与替换曲线都距左端点小于 \(\rho/4\)。两者的对应点相距小于 \(\rho/2\)，可用唯一短线逐点插值，得到从 \(\gamma\) 到 \(P_N\gamma\) 的同伦。结点处插值固定，因而相邻区间粘合。插值连续进入 \(H^1\)：在坐标中其导数是光滑插值映射的两个偏导数分别乘原曲线与替换曲线的导数；这些偏导数在所用紧范围上一致有界且连续，故由一致收敛与 \(L^2\) 收敛得到结论。常环在整个同伦中固定。应用于一个连续扫掠时，两端仍为常环，压缩球面上的度不变。
+\end{proof}
+
+现在定义 \(R_{\mathrm e}\)：在每个双区间 \([t_{2j},t_{2j+2}]\) 上，用同端点、参数时间 \(2/N\) 的常速短线替换。记录中点作为新的奇结点，仍得到 \(N\) 段折线。再定义 \(R_{\mathrm o}\)，在错开的 \([t_{2j+1},t_{2j+3}]\) 上做同样操作；跨越 \(t=1\) 的区间按圆周参数处理。令
+\begin{equation}\label{g3:eq:birkhoff-shortening-map}
+	\Psi=R_{\mathrm o}\circ R_{\mathrm e}:K_A\longrightarrow K_A.
+\end{equation}
+双区间内的长度至多 \(\sqrt{4A/N}\)，所以端点、插值及其连续性都由同一个统一短线范围控制。
+
+\begin{proposition}\label{g3:prop:birkhoff-strict-descent}
+	在上述 \(K_A\) 上，\(\Psi\) 连续，保持扫掠的度，固定常环，并满足 \(E_N(\Psi p)\le E_N(p)\)。等号成立当且仅当 \(\gamma_p\) 是全局常速的光滑闭测地线，允许常值曲线。记这些结点配置的集合为 \(G_A\)。对每个 \(\varepsilon>0\)，存在 \(\delta>0\)，使
+	\begin{equation}\label{g3:eq:birkhoff-uniform-descent}
+		d_N(p,G_A)\ge\varepsilon
+		\quad\Longrightarrow\quad
+		E_N(p)-E_N(\Psi p)\ge\delta.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	每个双区间上的最短线最小化给定时间与端点的能量，这是式\eqref{g3:eq:energy-length-inequality}及其等号条件的直接应用。因此两轮均不增能量；端点及中点的光滑依赖保证连续性。逐点短线插值给出保持常环的同伦，其粘合与度的论证与上条引理相同。
+
+	若总能量不变，则每一轮、每个双区间的能量都不变。第一轮的等号条件说明原曲线在每个偶双区间已经是常速最短线，所以 \(R_{\mathrm e}p=p\)，各奇结点处的左右速度相等。第二轮同样说明各偶结点处的左右速度相等，包括周期接缝。故折线的所有速度都相接。在每段上速度平行、长度恒定；结点处初值相同，测地线初值问题的唯一性将相邻段接成一条光滑的仿射参数闭测地线，全局速度长度也恒定。反之，这样一条曲线在长度小于 \(\rho\) 的双区间上必为唯一短测地线，因而两轮替换都不改变它。
+
+	函数 \(D(p)=E_N(p)-E_N(\Psi p)\) 在紧集 \(K_A\) 上连续，非负，其零集恰为 \(G_A\)，特别地 \(G_A\) 闭。在紧集 \(\{p\in K_A:d_N(p,G_A)\ge\varepsilon\}\) 上，\(D\) 没有零点，故取得严格正的最小值。若该集合为空，结论任取 \(\delta>0\) 即可。
+\end{proof}
+只做偶区间替换会把各偶结点固定住，一条仍有偶结点角点的折线也可能不再下降。错开第二组区间，正好补上这些角点。式\eqref{g3:eq:birkhoff-uniform-descent}则把逐条曲线的严格下降转成能用于一整族曲线的统一下降量。
+
+\subsection{二球面上的闭测地线}
 \label{g3:subsec:2305:03}
-待撰写
+极小化的对象是扫掠族中最大切片能量。我们先取得接近宽度的族，再缩短整族，并选择缩短后接近最高能量的切片。它已没有可观的能量可以继续失去，因此必须接近闭测地线。
+
+\begin{theorem}[Birkhoff 闭测地线存在性]\label{g3:thm:birkhoff-sphere-geodesic}
+	任意与 \(S^2\) 微分同胚的闭光滑黎曼曲面 \((M,g)\) 都有非恒定光滑闭测地线。对于式\eqref{g3:eq:curve-sweepout-width}的度为一能量宽度，可以选择全局常速闭测地线 \(\gamma\)，使
+	\[
+		E_g(\gamma)=W_g>0,\qquad L_g(\gamma)=\sqrt{2W_g}.
+	\]
+\end{theorem}
+\begin{proof}
+	由\cref{g3:lem:curve-width-positive}，\(W_g\) 有限且正。取 \(A>W_g+1\)，再一次性选定满足式\eqref{g3:eq:birkhoff-mesh-choice}的偶数 \(N\)。按下确界定义选扫掠 \(\sigma_j\in\mathscr S\)，使
+	\[
+		\max_s E_g(\sigma_j(s))\le W_g+1/j<A.
+	\]
+	用\cref{g3:lem:birkhoff-polygon-replacement}把所有族送入同一个紧集 \(K_A\)，记结点族为 \(p_j(s)\)。这一步保持度且不增能量。再取缩短后的扫掠 \(q_j(s)=\Psi p_j(s)\)。由于 \(q_j\) 也属于 \(\mathscr S\)，宽度的定义与能量下降共同给出
+	\[
+		W_g\le\max_s E_N(q_j(s))\le\max_s E_N(p_j(s))\le W_g+1/j.
+	\]
+	连续函数在紧区间上取得最大值，故可选 \(s_j\)，使 \(E_N(q_j(s_j))\ge W_g\)。于是
+	\[
+		0\le D(p_j(s_j))\le1/j,\qquad
+		W_g\le E_N(p_j(s_j))\le W_g+1/j.
+	\]
+	由 \(K_A\) 紧，取子列 \(p_j(s_j)\to p_\infty\)。连续性给出 \(D(p_\infty)=0\) 和 \(E_N(p_\infty)=W_g\)。\cref{g3:prop:birkhoff-strict-descent}说明 \(\gamma_{p_\infty}\) 是全局常速光滑闭测地线；\(W_g>0\) 排除常值。常速使能量长度不等式取等，得到所示长度。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:birkhoff-almost-maximal}
+	取上面证明中的 \(p_j\)、\(q_j=\Psi p_j\)。若参数列 \(u_j\) 满足 \(E_N(q_j(u_j))\to W_g\)，则
+	\[
+		d_N(p_j(u_j),G_A)\to0,
+		\qquad d_N(q_j(u_j),G_A)\to0.
+	\]
+	这些切片的任意结点收敛子列都收敛到能量为 \(W_g\) 的非恒定闭测地线，曲线的收敛还在 \(H^1\) 中成立。
+\end{corollary}
+\begin{proof}
+	能量上界与假设给出 \(D(p_j(u_j))\to0\)。式\eqref{g3:eq:birkhoff-uniform-descent}迫使第一项距离趋零。若第二项不趋零，取一个距离有正下界的子列，再由紧性取 \(p_j(u_j)\to p\)。第一项使 \(p\in G_A\)，而 \(\Psi p=p\)，故 \(q_j(u_j)\to p\)，矛盾。极限的能量由夹逼等于 \(W_g\)，结点到 \(H^1\) 曲线的连续性给出最后结论。
+\end{proof}
+在单位圆球面上，纬线扫掠的最大能量为 \(2\pi^2\)，由赤道达到。上一定理产生的常速闭测地线是大圆的整数次遍历，其能量为 \(2\pi^2m^2\)，\(m\ge1\)。结合这个上界，得到 \(W_g=2\pi^2\)，产生的极限可取一次遍历的大圆。一般度量下，上述证明得到光滑闭测地线；它并未通过结点模型控制自交或遍历次数。
+
+\ProseParagraphBreak
+这里每一步只是替换有限个短弧。过程没有引入时间演化方程，也没有使用第28章的平均曲率流。其核心是同伦约束、紧的有限维模型以及离开驻点时的统一降能。
 
 \subsection{超曲面扫掠与驻值变分流形}
 \label{g3:subsec:2305:04}
-待撰写
+高维时，可以用一族闭超曲面扫过闭流形 \(M^{n+1}\)，再最小化族中的最大面积。以下固定系数群为 \(\mathbb Z_2\)，以容许不可定向超曲面。\(\mathcal Z_n(M;\mathbb Z_2)\) 表示有限质量模二整平坦闭链的空间；局部重数只记奇偶，边界算子也取模二。它不是把第22章的实系数平坦范数原样改名：此处的距离 \(\mathcal F_2\) 取模二分解 \(S-T=R+\partial Q\) 的质量和下确界，所有链都位于 \(M\)。本节将这一系数理论与下面的插值、存在性作为同一外部输入，来源是\cite[第2--3节，第469--473页]{MarquesNeves2016IndexMultiplicity}。
 
-\subsection{Almgren–Pitts 存在性的准确版本}
+\ProseParagraphBreak
+在黎曼环境中，Grassmann 丛的纤维是 \(\mathrm T_xM\) 中的无取向 \(n\) 平面。对这个丛上的正测度 \(V\)，沿光滑向量场 \(X\in\Gamma(\mathrm TM)\) 的第一变分为
+\[
+	\delta_MV(X)=\int_{G_n(M)}\operatorname{tr}_P(\nabla^M X)\,\mathrm dV(x,P).
+\]
+这由前节相同的 Gram 行列式求导得到，只需把 Euclid 导数换成 Levi--Civita 协变导数。本节的驻值均指 \(\delta_MV=0\)，允许的变形留在 \(M\) 中。
+
+\ProseParagraphBreak
+对模二闭链 \(T\)，记 \(|T|\) 为忘去方向、取约化重数后的整数变分流形。虽然每个模二切片只保留奇偶，多个片在极限中可以叠合，所以极限变分流形仍可能有大于一的整数重数。设 \(d_{\mathrm V}\) 是度量变分流形弱收敛的距离，定义
+\[
+	\mathbf F(S,T)=\mathcal F_2(S-T)+d_{\mathrm V}(|S|,|T|).
+\]
+闭环境的 Grassmann 丛紧；可用其上一列稠密连续测试函数的积分差构造 \(d_{\mathrm V}\)，并把常函数 \(1\) 纳入测试。于是 \(\mathbf F\) 收敛同时控制模二平坦信息与无取向面积，尤其质量连续。
+
+\begin{definition}\label{g3:def:hypersurface-sweepout-width}
+	设 \((M^{n+1},g)\) 为闭光滑黎曼流形，\(X\) 为有限 \(d\) 维单纯复形，且 \(\Phi_0:X\to\mathcal Z_n(M;\mathbb Z_2)\) 关于 \(\mathbf F\) 连续。令 \(\Pi\) 为所有关于 \(\mathbf F\) 连续、并与 \(\Phi_0\) 在 \(\mathcal F_2\) 拓扑下同伦的映射。定义
+	\[
+		\mathbf L(\Pi)=\inf_{\Phi\in\Pi}\ \sup_{x\in X}\mathbf M(\Phi(x)).
+	\]
+	若 \(X=[0,1]\) 且两端映为零闭链，可要求所有映射在两端为零，并取相对于端点的平坦同伦类。满足 \(\sup_x\mathbf M(\Phi_j(x))\to\mathbf L(\Pi)\) 的序列称为极小极大序列。
+\end{definition}
+这个版本对每个扫掠要求 \(\mathbf F\) 连续，同伦则只需平坦连续。一个随参数移动的光滑超曲面通常不在质量范数中连续：两张相近但分离的片，其差的质量可以接近两张面积之和。使用 \(\mathbf F\) 拓扑既容许几何移动，又保留提取面积极限所需的信息。
+
+\begin{proposition}\label{g3:prop:F-sweepout-no-concentration}
+	设 \(n\ge1\)，\(M\) 闭，\(X\) 紧，且 \(\Phi:X\to\mathcal Z_n(M;\mathbb Z_2)\) 关于 \(\mathbf F\) 连续。则该扫掠无质量集中，即
+	\[
+		\lim_{r\downarrow0}\sup_{x\in X,\,p\in M}
+		\|\Phi(x)\|(B_r(p))=0.
+	\]
+\end{proposition}
+\begin{proof}
+	若结论不成立，存在 \(\varepsilon>0\)、\(r_j\downarrow0\) 及 \(x_j,p_j\)，使球内质量至少为 \(\varepsilon\)。由紧性取 \(x_j\to x\)、\(p_j\to p\)。\(\mathbf F\) 连续蕴含质量测度弱收敛。对任意 \(a>0\)，取连续函数 \(0\le\chi\le1\)，在 \(B_{a/2}(p)\) 上为一、支于 \(B_a(p)\)。充分大的 \(j\) 有 \(B_{r_j}(p_j)\subset B_{a/2}(p)\)，因而
+	\[
+		\varepsilon\le\lim_j\int\chi\,\mathrm d\|\Phi(x_j)\|
+		=\int\chi\,\mathrm d\|\Phi(x)\|\le\|\Phi(x)\|(B_a(p)).
+	\]
+	令 \(a\downarrow0\)，得到 \(\|\Phi(x)\|\{p\}\ge\varepsilon\)。然而有限质量的整数可整流 \(n\) 维测度在 \(n\ge1\) 时没有原子，矛盾。
+\end{proof}
+该结论逐个适用于 \(\Phi_j\)，不声称同一个半径能对整个极小极大序列统一控制。正是这种对每个参数族的控制，使离散化时可以先选取适合该族的网格。
+
+\subsection{Almgren–Pitts 存在性定理}
 \label{g3:subsec:2305:05}
-待撰写
+Almgren--Pitts\footnote{Jon T. Pitts（1948—2024），美国数学家，研究几何分析与变分法，建立了极小超曲面极小极大构造的存在性与正则性理论。}理论将扫掠离散化为越来越细的参数网格，并选择局部不能有效降低面积的临界切片。这里采用\cite[定理3.8，第471--473页；定理1.2，第465页]{MarquesNeves2016IndexMultiplicity}的连续表述，环境维数限定为 \(3\) 至 \(7\)。
+
+\begin{theorem}[Almgren--Pitts 存在性]\label{g3:thm:almgren-pitts-selected}
+	设 \((M^{n+1},g)\) 是闭光滑黎曼流形，\(2\le n\le6\)，\(X\) 为有限 \(d\) 维单纯复形，\(\Pi\) 是\cref{g3:def:hypersurface-sweepout-width}中指定的模二扫掠类，并且 \(\mathbf L(\Pi)>0\)。则存在有限个两两不交的连通光滑闭嵌入极小超曲面 \(\Sigma_1,\ldots,\Sigma_q\subset M\) 与正整数 \(m_1,\ldots,m_q\)，使整数变分流形
+	\[
+		V=\sum_{a=1}^q m_a|\Sigma_a|,
+		\qquad
+		\|V\|(M)=\sum_{a=1}^q m_a\mathcal H_g^n(\Sigma_a)=\mathbf L(\Pi)
+	\]
+	驻值。对于任意给定的极小极大序列，可从其切片取子列，得到这样的变分流形弱极限。另可选择一个达到该宽度的 \(V\)，使
+	\[
+		\sum_{a=1}^q\operatorname{ind}(\Sigma_a)\le d.
+	\]
+	区间参数、零端点和相对端点同伦的版本同样成立。
+\end{theorem}
+此定理作为外部输入。其技术内容包括：把连续扫掠插值成质量变化受控的离散族；利用环境微分同胚收紧族，使临界变分流形驻值；在小环域中建立几乎极小性；以局部替代曲面和正则性理论得到光滑支集。指标上界还需要排除过多独立下降方向的变形论证，不能仅从驻值性推出。这里把“任意序列有正则临界极限”与“可以选择具有指标上界的实现”分别陈述，所引定理分别提供这两项结论。
+
+\ProseParagraphBreak
+具体的非平凡类由光滑 Morse 函数 \(f:M\to[0,1]\) 给出：取
+\[
+	\Phi_0(t)=\partial\{f<t\}\pmod2,\qquad \Phi_0(0)=\Phi_0(1)=0.
+\]
+当 \(M\) 连通闭且 \(2\le n\le6\) 时，这定义上述 \(\mathbf F\) 连续的扫掠，其平坦同伦类具有正宽度；这一结论连同临界水平处的连续性，按\cite[例3.2，第470页]{MarquesNeves2016IndexMultiplicity}使用。它的同伦含义是：把相邻闭链之间的小填充依次相加，得到 \(M\) 的模二基本类。精确的离散填充识别是此处的外部拓扑输入，因而正宽度并非由“每个切片都非零”来判断。将该类代入上一定理，便得到每个这样的闭环境中至少一个非空光滑嵌入极小超曲面。
 
 \subsection{维数、重数、正则性与指标的区别}
 \label{g3:subsec:2305:06}
-待撰写
+定理中的三个维数各有作用。\(n+1\) 是环境维数，\(n\) 是超曲面维数，\(d\) 是参数复形维数。所引一般正则性版本的奇异集维数上界为 \(n-7\)，故 \(n\le6\) 时支集光滑。参数维数控制上述可选实现的指标上界，与这个正则性门槛无关。
+
+\ProseParagraphBreak
+重数 \(m_a\) 记录变分流形在 \(\Sigma_a\) 上叠合多少层；光滑嵌入说的是支集 \(\Sigma_a\)，并不令 \(m_a\) 自动等于一。\(\operatorname{ind}(\Sigma_a)\) 则是面积二次变分在法向截面上负定的最大维数。对于双侧超曲面，可选全局单位法向 \(\nu\)，在法向变分 \(u\nu\) 上写成
+\[
+	Q(u,u)=\int_{\Sigma_a}
+	\left(|\nabla u|^2-(|A|^2+\operatorname{Ric}_M(\nu,\nu))u^2\right)
+	\,\mathrm d\mathcal H_g^n.
+\]
+这正是\cref{g3:prop:stable-minimal-test}证明中的二次型；闭超曲面没有边界项，所有光滑法向变分都可作为测试。单侧情形用法向线丛的截面定义指标，不能直接把所有标量函数当作全局法向变分。重数将二次型整体乘以正数，支集的负方向数则仍按每个不同分量计算。
+
+\ProseParagraphBreak
+在一参数情形，上一定理给出总指标至多一。若还假设度量为 bumpy，即任何光滑浸入闭极小超曲面都没有非零 Jacobi 场，并且 \(M\) 中不存在单侧闭嵌入超曲面，则可以选取总指标恰为一的实现，且其唯一不稳定分量的重数为一。这是\cite[定理1.7及推论1.8，第467--468页]{MarquesNeves2016IndexMultiplicity}的具体推论；它没有对其余可能的稳定分量给出相同的重数断言。保留单侧超曲面时，该文还列出稳定支集、单侧偶重数分量及其不稳定双覆盖的另一种可能，因而不能在上述基本存在性定理后直接写“重数一、指标一”。
+
+\ProseParagraphBreak
+直接最小化在允许的竞争类中寻找最低点，极小极大则用一族对象的拓扑约束寻找临界高度。标准球面的赤道是一个代表：沿纬线方向移动会降低长度或面积，它仍由非平凡扫掠的宽度捕捉。曲线缩短证明中的正宽度与统一降能，在高维中分别对应扫掠的拓扑检测与临界族的变形；从驻值到光滑性的额外步骤，则由几乎极小性和局部正则性承担。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：## 第21章　BV、有限周长与弱 Gauss–Green
+% 纲要标题：## 第21章　BV 函数与有限周长集
 % 纲要位置：几何学计划纲要.md，第 2964 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -9,19 +9,42 @@
 % 
 % 纲要内容结束
 
-\chapter{BV、有限周长与弱 Gauss–Green}
+\chapter{BV 函数与有限周长集}
 \label{g3:ch:21}
 \BookChapterNumber{g3:ch:21}
 
 \begin{chapterabstract}
-待撰写
+	有限周长集合以示性函数的分布导数测量边界，因而能够容纳尖点、裂隙和极限中的不光滑形状。本章先建立 BV 函数的测度导数、全变差对偶、严格光滑逼近，以及局部紧性和下半连续性；再区分拓扑边界、测度论边界与约化边界。结构定理的证明从相对等周估计进入约化点的密度控制，通过 BV 放大紧性得到半空间极限，进而构造 Lipschitz 图覆盖并识别周长的单位重数表示。最后证明弱 Gauss--Green 公式、方向切片和 BV 余面积公式，用 Neumann 问题与面积公式给出尖锐等周不等式，并确定固定体积下球的极小周长模型。
 \end{chapterabstract}
 
 \begin{learninggoals}
-待撰写
+	\begin{itemize}
+		\item 用向量 Radon 测度表示分布导数，计算绝对连续部分与跳跃部分的变差，并说明严格逼近所保留的信息。
+		\item 由平移与卷积估计证明局部 BV 紧性，使用下半连续性和质量紧性处理整体极小化问题。
+		\item 区分三种边界，确定广义外法向的符号，解释约化边界为何承载全部周长测度。
+		\item 完成密度控制、半空间放大、图覆盖和周长测度表示的连续证明。
+		\item 推导有限周长集合的积分分部公式、直线切片公式和 BV 函数的余面积公式。
+		\item 通过正则水平集逼近推广尖锐等周不等式，核验球的取等，并分析容器和体积约束的作用。
+	\end{itemize}
 \end{learninggoals}
 
-待撰写
+一列越来越细的锯齿线可以在位置上趋于直线段，长度却保持在更大的数值上。由这些曲线围成的区域，其示性函数可能在 \(L^1\) 中收敛，而边界面积不收敛到原来的值。若要用极小化序列寻找面积最小的边界，就需要一个容许这种损失、同时保证极限仍可使用的函数空间。
+
+\ProseParagraphBreak
+光滑区域 \(E\) 满足
+\[
+	\int_E\operatorname{div}X\,\mathrm dx
+	=\int_{\partial E}X\cdot\nu_E\,\mathrm d\mathcal H^{n-1}.
+\]
+左边只需要示性函数可积，右边则暂时使用了光滑法向。BV 的思路是先保留左边：把
+\(-\int_E\operatorname{div}X\) 当作向量测试场上的泛函，若它能由 \(\|X\|_\infty\) 控制，就得到一个向量测度 \(D\mathbf1_E\)。其全变差定义周长，方向给出广义法向。困难在于证明这个测度确实分布在余维一的边界上，而不是任意奇异集合上；约化边界结构定理将完成这项几何识别。
+
+\ProseParagraphBreak
+本章用 \(n\) 表示环境维数，\(\chi_E\) 与 \(\mathbf1_E\) 都表示集合的示性函数，始终取
+\[
+	D\chi_E=-\nu_E\,|D\chi_E|
+\]
+作为外法向约定。第20章的 Hausdorff 归一化、面积与余面积公式以及可整流集的密度结果将直接用于证明。测度论背景包括 Lebesgue 积分的收敛与换序、绝对连续测度的积分密度表示，另在\subsecref{g3:subsec:2101:02}明确调用连续函数泛函的 Radon 测度表示，在\subsecref{g3:subsec:2103:02}明确调用 Euclid 球的 Besicovitch 覆盖引理；相应的 BV 判别、测度微分及后续边界论证在正文展开。尖锐等周证明还使用\chapref{g3:ch:14}的光滑 Neumann 问题，光滑水平集逼近调用第二卷第14.2节的光滑 Sard 定理。
 
 \input{Part05/Chapter21/Section2101}
 \input{Part05/Chapter21/Section2102}
@@ -30,8 +53,525 @@
 \input{Part05/Chapter21/Section2105}
 
 \begin{chaptersummary}
-待撰写
+	BV 函数的分布导数是向量 Radon 测度，全变差由单位模长测试场的对偶上确界确定。局部卷积控制导数质量，单位分解则把局部卷积拼成任意开集上的严格逼近。光滑乘积公式和 Lipschitz 复合估计仍成立；跳跃处的复合变化由两侧函数值决定，不能任意代入一个点值来套用通常链式法则。
+
+	\ProseParagraphBreak
+	变差界使平移误差随位移一致趋零，从而把固定尺度卷积的紧性传给原函数列。局部 \(L^1\) 收敛下，变差下半连续，导数在连续紧支测试函数上弱星收敛。整体 \(L^1\) 紧性还要求质量不逃向无穷远或域的边界；共同紧支的集合类满足这一要求，因而可用直接方法得到带约束的周长极小者。
+
+	\ProseParagraphBreak
+	测度论边界由体积密度定义，约化边界由周长测度的单位方向平均定义。约化点的法向均方误差趋零，先给出双侧体积与周长的尺度界，再经 BV 紧性确定唯一的半空间放大极限。均匀的半空间误差控制产生可数 Lipschitz 图覆盖；周长的单位平面极限与可整流密度公式最终证明
+	\[
+		|D\chi_E|=\mathcal H^{n-1}\llcorner\partial^*E.
+	\]
+	测度论边界与约化边界之间的差集具有零 \((n-1)\) 维测度，拓扑边界则仍依赖点集代表。
+
+	\ProseParagraphBreak
+	周长表示把分布积分分部转化为弱 Gauss--Green 公式。方向切片按 \(|\nu_E\cdot e|\) 计量，BV 余面积公式则把总变差分解为水平集周长。严格逼近与正则水平的选择给出光滑集合逼近；在光滑域上，Neumann 解的下接触集经梯度覆盖单位球，面积公式和行列式估计产生尖锐等周常数。推广到有限周长集合后，球的直接计算给出固定体积问题的全局极小值。
 \end{chaptersummary}
 
 \BookExercises
-待撰写
+
+\begin{exercise}\label{g3:ex:bv-piecewise-affine-composition}
+	在 \((-1,1)\) 上令
+	\[
+		u(t)=\begin{cases}t,&t<0,\\2t+1,&t>0,\end{cases}
+	\]
+	零点处任意赋值。求 \(Du\)、\(|Du|((-1,1))\)，再求 \(D(u^2)\) 及其总变差。把答案分成区间中的连续变化与零点处的跳跃变化，并说明跳跃系数如何决定复合函数的导数。
+\end{exercise}
+\begin{solution}
+	对 \(\varphi\in C_c^\infty((-1,1))\)，分别在零点两侧积分，得
+	\[
+		-\int_{-1}^1u\varphi'
+		=\int_{-1}^0\varphi+\int_0^1 2\varphi+\varphi(0).
+	\]
+	所以
+	\[
+		Du=\mathbf1_{(-1,0)}\mathcal L^1
+		+2\mathbf1_{(0,1)}\mathcal L^1+\delta_0,
+		\qquad |Du|((-1,1))=1+2+1=4.
+	\]
+	连续部分的密度均非负，跳跃从 \(0\) 到 \(1\)，系数也为正。
+
+	函数 \(u^2\) 在两侧分别为 \(t^2\) 和 \((2t+1)^2\)，因此
+	\[
+		D(u^2)=2t\,\mathbf1_{(-1,0)}\mathcal L^1
+		+4(2t+1)\mathbf1_{(0,1)}\mathcal L^1+\delta_0.
+	\]
+	在左侧函数从一降到零，变差为一；在右侧从一增到九，变差为八；原子系数为 \(1^2-0^2=1\)。故总变差为
+	\[
+		|D(u^2)|((-1,1))
+		=\int_{-1}^0|2t|\,\mathrm dt
+		+\int_0^1 4(2t+1)\,\mathrm dt+1
+		=10.
+	\]
+	虽然区间中的密度等于 \(2u\,u'\)，跳跃系数由两侧平方值之差给出，不能由零点处任意选定的 \(u(0)\) 决定。平方函数在此有界值域上 Lipschitz，可将它在区间外延拓为全局 Lipschitz 函数后应用 BV 复合估计。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:bv-strict-not-norm}
+	在 \(\mathbb R\) 上令 \(u=\mathbf1_{(0,1)}\)，取非负、对称、积分为一且支撑于 \((-1,1)\) 的光滑核，令 \(u_\varepsilon=u*\rho_\varepsilon\)。当 \(0<\varepsilon<1/2\) 时，求 \(|Du_\varepsilon|(\mathbb R)\) 和 \(|D(u_\varepsilon-u)|(\mathbb R)\)。由此证明严格收敛不蕴含 BV 范数收敛。
+\end{exercise}
+\begin{solution}
+	有 \(Du=\delta_0-\delta_1\)，因此
+	\[
+		u_\varepsilon'(t)=\rho_\varepsilon(t)-\rho_\varepsilon(t-1).
+	\]
+	当 \(\varepsilon<1/2\) 时，两个核的支集不交，且各自非负、积分为一，所以
+	\[
+		|Du_\varepsilon|(\mathbb R)=
+		\int_{\mathbb R}|u_\varepsilon'|\,\mathrm dt=2=|Du|(\mathbb R).
+	\]
+	另一方面，
+	\[
+		D(u_\varepsilon-u)
+		=\bigl(\rho_\varepsilon(t)-\rho_\varepsilon(t-1)\bigr)\mathcal L^1
+		-\delta_0+\delta_1.
+	\]
+	绝对连续部分与原子部分相互奇异，故其全变差总量相加，得到
+	\[
+		|D(u_\varepsilon-u)|(\mathbb R)=2+2=4.
+	\]
+	卷积在 \(L^1\) 中趋近原函数；也可直接由
+	\(\|u(\cdot-h)-u\|_1\le2|h|\) 得到
+	\(\|u_\varepsilon-u\|_1\le2\varepsilon\)。
+	因此函数误差趋零而两个总变差始终相等，给出严格收敛；BV 范数误差却至少为四。严格收敛比较的是两个导数的总量，BV 范数收敛还要求它们的差的全变差趋零。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:bv-lattice-variation}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(u,v\in BV_{\mathrm{loc}}(\Omega)\)。证明 \(\max\{u,v\}\)、\(\min\{u,v\}\) 都属于 \(BV_{\mathrm{loc}}(\Omega)\)，并证明测度不等式
+	\[
+		|D\max\{u,v\}|+|D\min\{u,v\}|
+		\le|Du|+|Dv|.
+	\]
+	由此推出，若可测集 \(E,F\) 在 \(\Omega\) 内局部有限周长，则对每个开集 \(U\subset\Omega\)，
+	\[
+		P(E\cup F;U)+P(E\cap F;U)\le P(E;U)+P(F;U).
+	\]
+\end{exercise}
+\begin{solution}
+	由
+	\[
+		\max\{u,v\}=\frac{u+v+|u-v|}{2},\qquad
+		\min\{u,v\}=\frac{u+v-|u-v|}{2}
+	\]
+	和 Lipschitz 复合估计，二者局部属于 BV。这两个表达式单独估计会产生多余常数；要得到题中精确的系数，需同时处理最大值和最小值。
+
+	先设 \(u,v\) 光滑。它们的最大值和最小值局部 Lipschitz，故几乎处处可微。在 \(\{u>v\}\) 和 \(\{u<v\}\) 上，两个梯度只是 \(\nabla u,\nabla v\) 的不同排列。在 \(\{u=v\}\) 的几乎每点，该集合有密度一，由可测集合上的微分唯一性，
+	\(\nabla(u-v)=0\)，故 \(\nabla u=\nabla v\)。也可在这些点写
+	\(\max\{u,v\}=v+(u-v)_+\) 并使用差商，得到相同梯度。因此几乎处处有
+	\[
+		|\nabla\max\{u,v\}|+|\nabla\min\{u,v\}|
+		=|\nabla u|+|\nabla v|.
+	\]
+
+	一般情形在内域对 \(u,v\) 使用同一半径的卷积 \(u_\varepsilon,v_\varepsilon\)。最大值和最小值分别在 \(L^1_{\mathrm{loc}}\) 中趋向原来二者，因为标量最大值、最小值对两个输入都满足 Lipschitz 估计。对任意非负 \(a\in C_c(\Omega)\)，变差的对偶下半连续性及上面的光滑恒等式给出
+	\begin{align*}
+		\int a\,\mathrm d\bigl(|D\max\{u,v\}|+|D\min\{u,v\}|\bigr)
+		&\le\liminf_{\varepsilon\downarrow0}
+		\int a\bigl(|\nabla u_\varepsilon|+|\nabla v_\varepsilon|\bigr)\,\mathrm dx\\
+		&=\int a\,\mathrm d(|Du|+|Dv|).
+	\end{align*}
+	最后一个等式使用局部卷积的变差测度收敛。所有非负连续紧支测试函数上的不等式等价于 Radon 测度的不等式，故得到第一项结论。
+
+	取 \(u=\mathbf1_E\)、\(v=\mathbf1_F\)，则最大值为 \(\mathbf1_{E\cup F}\)，最小值为 \(\mathbf1_{E\cap F}\)。由周长的定义 \(P(G;U)=|D\mathbf1_G|(U)\)，测度不等式在 \(U\) 上求值就是所需结论。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:bv-checkerboard-noncompactness}
+	在 \((0,1)\) 中令
+	\[
+		E_j=\bigcup_{k=0}^{j-1}
+		\left(\frac{k}{j},\frac{k+1/2}{j}\right),\qquad u_j=\mathbf1_{E_j}.
+	\]
+	把 \(u_j\) 在 \(\mathbb R\) 的其余点补零。计算 \(|E_j|\)、\(P(E_j)\) 与 \(P(E_j;(0,1))\)。证明对每个 \(\varphi\in C([0,1])\)，
+	\[
+		\int_0^1u_j\varphi\,\mathrm dx\longrightarrow
+		\frac12\int_0^1\varphi\,\mathrm dx,
+	\]
+	但 \(u_j\) 没有在 \(L^1(0,1)\) 中收敛的子列。
+\end{exercise}
+\begin{solution}
+	共有 \(j\) 个长度为 \(1/(2j)\) 的区间，所以 \(|E_j|=1/2\)。各端点互不相同，左端点的导数原子为正、右端点为负，故
+	\[
+		Du_j=\sum_{k=0}^{j-1}
+		\left(\delta_{k/j}-\delta_{(k+1/2)/j}\right),\qquad P(E_j)=2j.
+	\]
+	相对开区间 \((0,1)\) 不包含零点，因而少计一个原子：
+	\(P(E_j;(0,1))=2j-1\)。
+
+	在每个小区间 \(I_{j,k}=(k/j,(k+1)/j)\) 上，\(u_j-1/2\) 的积分为零。所以减去常值 \(\varphi(k/j)\) 后，
+	\[
+		\left|\int_0^1(u_j-1/2)\varphi\right|
+		\le \frac12\sum_k|I_{j,k}|
+		\sup_{\substack{x,y\in[0,1]\\|x-y|\le1/j}}
+		|\varphi(x)-\varphi(y)|\longrightarrow0.
+	\]
+	若某子列在 \(L^1\) 中收敛到 \(u\)，则上述积分极限迫使 \(u=1/2\) 几乎处处；例如先对连续测试函数成立，再用可积函数所定义分布的唯一性。但 \(L^1\) 收敛子列可再抽出几乎处处收敛子列，零一值函数的逐点极限只能为零或一，矛盾。这里函数的质量和支集均受控，失去的是周长界。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:bv-tightness-characterization}
+	设 \(\mathcal F\subset BV(\mathbb R^n)\) 满足
+	\(\sup_{u\in\mathcal F}(\|u\|_{L^1}+|Du|(\mathbb R^n))<\infty\)。
+	证明 \(\mathcal F\) 在 \(L^1(\mathbb R^n)\) 中相对紧，当且仅当
+	\[
+		\lim_{R\to\infty}\sup_{u\in\mathcal F}
+		\int_{\mathbb R^n\setminus B_R}|u|=0.
+	\]
+	这里相对紧指闭包紧。说明为什么不能只对每个单独的 \(u\) 要求尾部积分趋零。
+\end{exercise}
+\begin{solution}
+	若一致尾部条件成立，\cref{g3:thm:bv-global-compactness}说明 \(\mathcal F\) 中每一列都有 \(L^1\) 收敛子列。在度量空间中，这等价于相对紧：若不能被有限个给定半径的球覆盖，就可递归选出两两距离具有正下界的序列，与子列收敛矛盾；有限覆盖使闭包全有界，而 \(L^1\) 完备，故其闭包紧。
+
+	反之，给定 \(\varepsilon>0\)，相对紧性给出有限个 \(L^1\) 函数 \(v_1,\ldots,v_N\)，使每个 \(u\in\mathcal F\) 都满足某个
+	\(\|u-v_i\|_{L^1}<\varepsilon\)。每个 \(v_i\) 可积，故可同时选 \(R\)，使
+	\(\int_{B_R^c}|v_i|<\varepsilon\)。于是
+	\[
+		\int_{B_R^c}|u|
+		\le\|u-v_i\|_{L^1}+\int_{B_R^c}|v_i|<2\varepsilon.
+	\]
+	这就是一致尾部条件。
+
+	单个可积函数的尾部积分总趋零，所以逐函数的要求没有增加任何限制。紧性需要先选一个 \(R\) 同时适用于整个函数族；把固定非零函数不断平移到远处就能违反这种一致性。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:perimeter-volume-penalty}
+	设 \(K\subset\mathbb R^n\) 紧，\(0<v<|K|\)，并存在 \(E_0\subset K\) 使 \(|E_0|=v\)、\(P(E_0)<\infty\)。对 \(\lambda>0\)，在所有 \(E\subset K\) 中考虑
+	\[
+		\mathcal F_\lambda(E)=P(E)+\lambda\bigl||E|-v\bigr|.
+	\]
+	证明每个 \(\lambda\) 都有极小者 \(E_\lambda\)。证明当 \(\lambda\to\infty\) 时，其任意序列均可取子列在示性函数的 \(L^1\) 意义下趋于某个固定体积 \(v\) 的周长极小者，并且最小值趋于该定体积问题的最小值。
+\end{exercise}
+\begin{solution}
+	固定 \(\lambda\)，用 \(E_0\) 作竞争者，极小化序列可取成
+	\(\mathcal F_\lambda(E_j)\le P(E_0)+1\)。于是周长有界、体积至多为 \(|K|\)，支集固定。整体紧性给出示性函数的 \(L^1\) 极限；周长下半连续，而体积及其罚项对这个收敛连续，所以得到极小者。
+
+	令 \(m\) 为定体积问题的最小值；其存在性由\cref{g3:thm:finite-perimeter-direct-method}保证。把一个定体积极小者代入罚项问题，得到
+	\[
+		P(E_\lambda)\le\mathcal F_\lambda(E_\lambda)\le m,\qquad
+		\bigl||E_\lambda|-v\bigr|\le m/\lambda.
+	\]
+	对任意 \(\lambda_j\to\infty\)，上述周长界和共同支集给出 \(L^1\) 收敛子列 \(\mathbf1_{E_{\lambda_j}}\to\mathbf1_E\)。体积误差趋零说明 \(|E|=v\)，且 \(E\subset K\) 几乎处处。于是
+	\[
+		m\le P(E)\le\liminf_jP(E_{\lambda_j})
+		\le\liminf_j\mathcal F_{\lambda_j}(E_{\lambda_j})\le m.
+	\]
+	因此 \(E\) 是定体积极小者，所有上述下极限都等于 \(m\)。若罚项最小值不趋于 \(m\)，便可选一个保持正误差的序列，再用刚才的子列结论得到矛盾。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:finite-perimeter-nowhere-dense}
+	设 \(n\ge2\)。构造一个紧集 \(E\subset[0,1]^n\)，使
+	\[
+		|E|>1/2,\qquad \operatorname{int}E=\varnothing,\qquad P(E)<\infty.
+	\]
+	由此证明拓扑边界可以有无穷的 \(\mathcal H^{n-1}\) 测度，而约化边界的 \(\mathcal H^{n-1}\) 测度有限。
+\end{exercise}
+\begin{solution}
+	令 \(Q=(0,1)^n\)，列出 \(Q\) 中全部中心和半径为有理数、闭包包含于 \(Q\) 的开球 \(U_j\)。递归删去开球 \(B_j\)：如果 \(U_j\) 已与此前删去的某个开球相交，这一步不再删球；否则，在 \(U_j\) 中选一个闭包不遇到此前闭球的非空小球。这样的选择可行，因为此前只有有限个球面，它们的并没有内点。把半径 \(r_j\) 取得足够小，同时满足
+	\[
+		\omega_n r_j^n<2^{-j-2},\qquad
+		n\omega_n r_j^{n-1}<2^{-j}.
+	\]
+	所有实际删去球的闭包两两不交，且开球并 \(G\) 在 \(Q\) 中稠密：每个基球 \(U_j\) 都在其被处理时与删去球相交。
+
+	令 \(E=[0,1]^n\setminus G\)。它紧，且
+	\[
+		|E|\ge1-\sum_j\omega_n r_j^n>1-\frac14>\frac12.
+	\]
+	稠密性保证 \(E\) 在 \(Q\) 中没有内点，立方体的边界也没有内点，故 \(\operatorname{int}E=\varnothing\)。
+
+	先只删去前 \(N\) 步所选的球，得到 \(E_N\)。由于球互不交且在 \(Q\) 内，
+	\[
+		\mathbf1_{E_N}=\mathbf1_Q-\sum_{j\le N}\mathbf1_{B_j}
+		\quad\text{几乎处处}.
+	\]
+	立方体的示性函数可沿每个坐标积分分部，导数由它的 \(2n\) 个面承载，所以 \(P(Q)=2n\)；球的周长为 \(n\omega_nr_j^{n-1}\)。向量测度的三角不等式于是给出
+	\[
+		P(E_N)\le2n+\sum_{j\le N}n\omega_nr_j^{n-1}\le2n+1.
+	\]
+	删去球的剩余体积趋零，故 \(\mathbf1_{E_N}\to\mathbf1_E\) 于 \(L^1\)。下半连续性给出 \(P(E)\le2n+1\)。
+
+	因为 \(E\) 闭且无内点，\(\partial E=E\)。如果 \(\mathcal H^{n-1}(E)<\infty\)，第20章不同维 Hausdorff 测度的比较将给出 \(\mathcal H^n(E)=0\)，与 \(|E|>1/2\) 矛盾。所以 \(\mathcal H^{n-1}(\partial E)=\infty\)。另一方面，约化边界结构定理给出
+	\(\mathcal H^{n-1}(\partial^*E)=P(E)<\infty\)。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:sector-reduced-vertex}
+	在 \(\mathbb R^2\) 中，给定 \(0<\alpha<2\pi\)，令
+	\[
+		E_\alpha=\{(r\cos\theta,r\sin\theta):r>0,\ 0<\theta<\alpha\}.
+	\]
+	计算其局部周长测度与两条边界射线上的外法向。求原点的体积密度、周长密度及法向球平均，判断何时原点属于约化边界。说明周长密度等于一能否单独保证约化法向存在。
+\end{exercise}
+\begin{solution}
+	记两条射线为 \(R_0,R_\alpha\)。在它们的非零点，外法向分别为
+	\[
+		\nu_0=(0,-1),\qquad \nu_\alpha=(-\sin\alpha,\cos\alpha).
+	\]
+	可直接用极坐标核对分布导数。对紧支撑光滑向量场 \(X\)，写
+	\(X=X_r e_r+X_\theta e_\theta\)，则
+	\[
+		\operatorname{div}X
+		=\frac1r\partial_r(rX_r)+\frac1r\partial_\theta X_\theta.
+	\]
+	在 \(\varepsilon<r<R\)、\(0<\theta<\alpha\) 上积分。取 \(R\) 大于支集半径，径向上端项为零；内圆周项的绝对值不超过 \(2\pi\varepsilon\|X\|_\infty\)，随 \(\varepsilon\downarrow0\) 趋零。角方向的两项给出
+	\[
+		\int_{E_\alpha}\operatorname{div}X
+		=\int_{R_0}X\cdot\nu_0\,\mathrm d\mathcal H^1
+		+\int_{R_\alpha}X\cdot\nu_\alpha\,\mathrm d\mathcal H^1.
+	\]
+	两条射线只在长度零测的原点相交，因此
+	\[
+		\mu_{E_\alpha}=\mathcal H^1\llcorner(R_0\cup R_\alpha),
+		\qquad
+		\mu_{E_\alpha}(B(0,r))=2r.
+	\]
+	原点的体积密度为 \(\alpha/(2\pi)\)，故总是测度论边界点。因为 \(\omega_1=2\)，其一维周长密度恒为一。
+
+	球中每条射线的长度都是 \(r\)，故外法向平均为
+	\[
+		\frac1{\mu_{E_\alpha}(B(0,r))}
+		\int_{B(0,r)}\nu_{E_\alpha}\,\mathrm d\mu_{E_\alpha}
+		=\frac{\nu_0+\nu_\alpha}{2},
+		\qquad
+		\left|\frac{\nu_0+\nu_\alpha}{2}\right|
+		=\sin(\alpha/2).
+	\]
+	这个数等于一当且仅当 \(\alpha=\pi\)。因此只有半平面情形的原点属于约化边界；其余角域的原点虽然周长密度为一，两个方向的法向仍发生抵消。除原点外，两条射线上的点均属于约化边界。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:cusp-perimeter-density}
+	设 \(\alpha>1\)，令
+	\[
+		E=\{(s,t)\in\mathbb R^2:0<s<1,\ |t|<s^\alpha\}.
+	\]
+	证明它具有有限周长。计算原点的体积密度、周长密度和法向球平均，并说明原点在拓扑边界、测度论边界与约化边界中的归属。
+\end{exercise}
+\begin{solution}
+	两条曲边的弧长分别为
+	\(\int_0^1\sqrt{1+\alpha^2s^{2\alpha-2}}\,\mathrm ds\)，竖直右边的长度为二。在 \(\varepsilon<s<1\) 的光滑分片区域中积分分部，令 \(\varepsilon\downarrow0\)；左竖边长度 \(2\varepsilon^\alpha\) 趋零，故不留下额外的点质量。于是 \(E\) 有限周长，且
+	\[
+		P(E;\mathbb R^2)
+		=2\int_0^1\sqrt{1+\alpha^2s^{2\alpha-2}}\,\mathrm ds+2.
+	\]
+	对小半径 \(r\)，有
+	\[
+		|E\cap B(0,r)|
+		\le 2\int_0^r s^\alpha\,\mathrm ds
+		=\frac{2}{\alpha+1}r^{\alpha+1}.
+	\]
+	除以 \(\pi r^2\) 后趋零，因此原点属于 \(E^{(0)}\)，不属于测度论边界。
+
+	令 \(s_r>0\) 为方程 \(s_r^2+s_r^{2\alpha}=r^2\) 的唯一解。由 \(\alpha>1\)，\(s_r/r\to1\)。小球中的周长为
+	\[
+		\mu_E(B(0,r))
+		=2\int_0^{s_r}\sqrt{1+\alpha^2s^{2\alpha-2}}\,\mathrm ds
+		\sim2r,
+	\]
+	故其一维周长密度仍为一。上、下曲边的外法向分别为
+	\[
+		\frac{(-\alpha s^{\alpha-1},1)}
+		{\sqrt{1+\alpha^2s^{2\alpha-2}}},
+		\qquad
+		\frac{(-\alpha s^{\alpha-1},-1)}
+		{\sqrt{1+\alpha^2s^{2\alpha-2}}}.
+	\]
+	乘以弧长元并求和得到
+	\[
+		\int_{B(0,r)}\nu_E\,\mathrm d\mu_E
+		=(-2s_r^\alpha,0).
+	\]
+	除以周长后趋于零，因此原点不属于约化边界。它显然是拓扑边界点。这个例子说明，即使周长具有正且有限的密度，该点也可能处于体积密度零的尖端；结构定理允许这种周长零测的例外点。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:oscillating-perimeter-multiplicity}
+	令 \(Q=(0,2\pi)\times(-1,1)\)，\(j\ge2\) 为整数，
+	\[
+		u_j(s)=j^{-1}\sin(js),\qquad
+		E_j=\{(s,t)\in Q:t<u_j(s)\},\qquad
+		E=\{(s,t)\in Q:t<0\}.
+	\]
+	计算 \(P(E_j;Q)\)，证明 \(\chi_{E_j}\to\chi_E\) 于 \(L^1(Q)\)。求 \(\mathrm D\chi_{E_j}\) 与 \(|\mathrm D\chi_{E_j}|\) 在 \(Q\) 中对紧支撑连续测试函数的极限，并计算
+	\[
+		\int_Q|\nu_{E_j}-e_2|^2\,\mathrm d|\mathrm D\chi_{E_j}|.
+	\]
+	解释为何周长测度的极限可以有大于一的重数，而每个 \(E_j\) 的约化边界本身都具有重数一。
+\end{exercise}
+\begin{solution}
+	在 \(Q\) 内只计算图像边界，矩形外边界不属于相对周长。图面积公式给出
+	\[
+		P(E_j;Q)=\int_0^{2\pi}\sqrt{1+\cos^2(js)}\,\mathrm ds
+		=\int_0^{2\pi}\sqrt{1+\cos^2 s}\,\mathrm ds=:A>2\pi.
+	\]
+	最后等式来自将 \(j\) 个周期分别换元。两集合之差的面积为
+	\[
+		|E_j\mathbin{\triangle}E|
+		=\int_0^{2\pi}|u_j(s)|\,\mathrm ds
+		=\frac4j\longrightarrow0.
+	\]
+	沿图像的外法向为
+	\(\nu_{E_j}=(-\cos(js),1)/\sqrt{1+\cos^2(js)}\)，所以对 \(\varphi\in C_c(Q)\)，
+	\[
+		\int_Q\varphi\,\mathrm d|\mathrm D\chi_{E_j}|
+		=\int_0^{2\pi}\varphi(s,u_j(s))\sqrt{1+\cos^2(js)}\,\mathrm ds,
+	\]
+	而对向量测度逐分量有
+	\[
+		\int_Q\varphi\,\mathrm D\chi_{E_j}
+		=\int_0^{2\pi}\varphi(s,u_j(s))(\cos(js),-1)\,\mathrm ds.
+	\]
+	由于 \(u_j\to0\) 一致，可以先把测试函数替换为 \(\varphi(s,0)\)，误差由其一致连续性控制。若 \(a\) 是连续 \(2\pi\)-周期函数，把 \((0,2\pi)\) 分成 \(j\) 个等长区间，在各区间上用测试函数在左端点的值逼近；每个区间上的 \(a(js)\) 积分都等于 \(j^{-1}\int_0^{2\pi}a\)。其误差随分割直径趋零，所以
+	\[
+		a(js)\,\mathrm ds\rightharpoonup
+		\left(\frac1{2\pi}\int_0^{2\pi}a\right)\mathrm ds.
+	\]
+	分别取 \(a(s)=\sqrt{1+\cos^2s}\) 和 \(a(s)=\cos s\)，得到
+	\[
+		|\mathrm D\chi_{E_j}|\rightharpoonup
+		\frac A{2\pi}\mathcal H^1\llcorner\{(s,0):0<s<2\pi\},
+		\qquad
+		\mathrm D\chi_{E_j}\rightharpoonup
+		-e_2\mathcal H^1\llcorner\{(s,0):0<s<2\pi\}.
+	\]
+	后一极限就是 \(\mathrm D\chi_E\)。最后利用 \(|\nu_{E_j}|=1\)，
+	\[
+		\int_Q|\nu_{E_j}-e_2|^2\,\mathrm d|\mathrm D\chi_{E_j}|
+		=2P(E_j;Q)-2\int_Q\nu_{E_j}\cdot e_2\,\mathrm d|\mathrm D\chi_{E_j}|
+		=2A-4\pi>0.
+	\]
+	不同法向的水平分量在向量导数中相互抵消，但其长度仍计入周长测度。因此这不是严格 BV 收敛。约化点放大定理同时使用了法向平均误差趋零；本题序列恰好缺少这一性质。
+\end{solution}
+
+% 第21章21.5节习题与完整解答；供章入口整合。
+% 正文状态：初稿；尚未正式审核。
+
+\begin{exercise}\label{g3:ex:adjacent-rectangle-perimeter}
+	设 \(a,c>0\)，\(0<d<b\)，并令
+	\[
+		E=((0,a)\times(0,b))\cup((a,a+c)\times(0,d))\subset\mathbb R^2.
+	\]
+	计算 \(P(E)\)、\(|D_1\chi_E|(\mathbb R^2)\)、\(|D_2\chi_E|(\mathbb R^2)\)。解释两块矩形的公共边为何没有留下周长，并沿水平、竖直直线核对方向变差。最后以在 \(\overline E\) 附近等于 \((x,y)\) 的紧支场验证 Gauss--Green 公式。
+\end{exercise}
+\begin{solution}
+	忽略二维零测集后，\(E\) 是一个通常的 L 形区域。两块矩形在 \(\{a\}\times(0,d)\) 上的外法向互为相反数，因此它们在分布导数中的边界向量测度相消。剩余的六条边依次为底边、右侧短边、右上水平边、中间竖直边、左上水平边、左边。角点的 \(\mathcal H^1\) 测度为零，故
+	\[
+	\begin{aligned}
+		D_1\chi_E
+		&=\mathcal H^1\!\llcorner(\{0\}\times(0,b))
+		-\mathcal H^1\!\llcorner(\{a+c\}\times(0,d))\\
+		&\quad-\mathcal H^1\!\llcorner(\{a\}\times(d,b)),\\
+		D_2\chi_E
+		&=\mathcal H^1\!\llcorner((0,a+c)\times\{0\})
+		-\mathcal H^1\!\llcorner((0,a)\times\{b\})\\
+		&\quad-\mathcal H^1\!\llcorner((a,a+c)\times\{d\}).
+	\end{aligned}
+	\]
+	所以
+	\[
+		|D_1\chi_E|(\mathbb R^2)=b+d+(b-d)=2b,
+		\qquad |D_2\chi_E|(\mathbb R^2)=2(a+c).
+	\]
+	这些边的法向都是坐标方向，两个分量的变差支撑除角点外互不相交，因此
+	\[
+		P(E)=2(a+c+b).
+	\]
+	两块矩形分别计算的周长之和为 \(2(a+b)+2(c+d)\)，扣除公共边的两份长度 \(2d\)，也得到同一结果。
+
+	当 \(0<y<d\) 时，水平切片模一维零测集为 \((0,a+c)\)；当 \(d<y<b\) 时，它是 \((0,a)\)；其余几乎所有水平切片为空。因此端点数的积分为 \(2d+2(b-d)=2b\)。竖直方向上，\(0<x<a\) 的切片为 \((0,b)\)，\(a<x<a+c\) 的切片为 \((0,d)\)，所以端点数的积分为 \(2a+2c\)。这与方向切片公式完全一致。
+
+	取所述截断场 \(X\)。在 \(E\) 上 \(\operatorname{div}X=2\)，故体积分为 \(2(ab+cd)\)。边界通量的第一坐标部分为
+	\[
+		(a+c)d+a(b-d)=ab+cd,
+	\]
+	第二坐标部分为 \(ab+cd\)；左边与底边的通量均为零。总通量正好等于 \(2(ab+cd)\)，验证了公式及公共边的相消。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:radial-singularity-bv}
+	设 \(n\ge2\)、\(0<\alpha<n\)，定义
+	\[
+		u(x)=\begin{cases}|x|^{-\alpha},&0<|x|<1,\\0,&|x|\ge1\text{ 或 }x=0.\end{cases}
+	\]
+	用 BV 余面积公式判断哪些 \(\alpha\) 使 \(u\in BV(\mathbb R^n)\)，并计算其总变差。对属于 BV 的情形，写出向量测度 \(Du\)，说明原点与单位球面各自是否承载奇异导数。
+\end{exercise}
+\begin{solution}
+	首先
+	\[
+		\int_{\mathbb R^n}|u|\,\mathrm dx
+		=n\omega_n\int_0^1r^{n-1-\alpha}\,\mathrm dr
+		=\frac{n\omega_n}{n-\alpha}<\infty.
+	\]
+	当 \(t<0\) 时，\(\{u>t\}=\mathbb R^n\)，周长为零；当 \(0<t<1\) 时，水平集模零测集为 \(B_1\)；当 \(t\ge1\) 时，它模零测集为 \(B_{t^{-1/\alpha}}\)。因此
+	\[
+	\begin{aligned}
+		\int_{\mathbb R}P(\{u>t\})\,\mathrm dt
+		&=n\omega_n\left(1+\int_1^\infty t^{-(n-1)/\alpha}\,\mathrm dt\right).
+	\end{aligned}
+	\]
+	这个积分有限当且仅当 \(\alpha<n-1\)。由\cref{g3:thm:bv-coarea}的充要条件，
+	\[
+		u\in BV(\mathbb R^n)\quad\Longleftrightarrow\quad0<\alpha<n-1.
+	\]
+	在此范围内，
+	\[
+		|Du|(\mathbb R^n)
+		=n\omega_n\left(1+\frac{\alpha}{n-1-\alpha}\right)
+		=\frac{n\omega_n(n-1)}{n-1-\alpha}.
+	\]
+
+	现在直接计算导数。设 \(X\in C_c^1(\mathbb R^n;\mathbb R^n)\)，在环域 \(\{\rho<|x|<1\}\) 上对 \(|x|^{-\alpha}X\) 使用光滑散度公式。外球面上的函数值为一，内球面的边界项绝对值不超过
+	\[
+		\|X\|_\infty\rho^{-\alpha}\mathcal H^{n-1}(\partial B_\rho)
+		=n\omega_n\|X\|_\infty\rho^{n-1-\alpha}\longrightarrow0.
+	\]
+	又 \(\nabla(|x|^{-\alpha})=-\alpha|x|^{-\alpha-2}x\) 在 \(B_1\) 中可积，所以令 \(\rho\downarrow0\) 得到
+	\[
+		Du=-\alpha|x|^{-\alpha-2}x\,\mathcal L^n\!\llcorner B_1
+		-\nu_{B_1}\,\mathcal H^{n-1}\!\llcorner\partial B_1.
+	\]
+	原点没有原子项；单位球面承载从内侧值一跳到外侧值零所产生的导数。两个测度互相奇异，其变差相加为
+	\[
+		\alpha n\omega_n\int_0^1r^{n-2-\alpha}\,\mathrm dr+n\omega_n
+		=\frac{n\omega_n(n-1)}{n-1-\alpha},
+	\]
+	与水平集计算一致。当 \(n-1\le\alpha<n\) 时，函数仍可积，但水平集周长的积分发散，因而不属于 BV。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:ball-perimeter-volume-penalty}
+	设 \(n\ge2\)、\(R>0\)。对模零测集包含于 \(B_R(0)\) 的有限周长集合 \(F\)，证明
+	\[
+		P(F)\ge\frac nR|F|.
+	\]
+	证明正体积情形取等当且仅当 \(F=B_R(0)\) 模零测集。由此对每个 \(\lambda\ge0\)，求出
+	\[
+		\inf\{P(F)-\lambda|F|:F\subset B_R(0)\text{ 模零测集}\}
+	\]
+	的数值及全部极小集合。
+\end{exercise}
+\begin{solution}
+	取紧支 \(C^1\) 向量场 \(X\)，使它在 \(\overline{B_R}\) 的邻域内等于 \(x/R\)。因为 \(\chi_F=0\) 于球外，\(D\chi_F\) 支撑在 \(\overline{B_R}\)。Gauss--Green 公式给出
+	\[
+		\frac nR|F|
+		=\int_{\partial^*F}\frac xR\cdot\nu_F\,\mathrm d\mathcal H^{n-1}
+		\le\int_{\partial^*F}\frac{|x|}R\,\mathrm d\mathcal H^{n-1}
+		\le P(F).
+	\]
+	若取等，则
+	\[
+		\int_{\overline{B_R}}\left(1-\frac{|x|}R\right)\,\mathrm d|D\chi_F|(x)=0.
+	\]
+	被积函数在 \(B_R\) 内严格为正，所以 \(|D\chi_F|(B_R)=0\)。这使 \(\chi_F\) 在连通开集 \(B_R\) 上几乎处处为常数：在任意较小球内卷积后，所得光滑函数的梯度为零，故为常数；令核尺度趋零，再用重叠小球连接，便得到整个球内同一个常数。示性函数的常数只能为零或一。若 \(|F|>0\)，它只能为一，于是 \(F=B_R\) 模零测集。反过来，球的体积与周长满足 \(P(B_R)=n|B_R|/R\)，所以确实取等。
+
+	记 \(V_R=|B_R|\)。若 \(0\le\lambda<n/R\)，则
+	\[
+		P(F)-\lambda|F|\ge(n/R-\lambda)|F|\ge0,
+	\]
+	且只有零体积集合取等；因而极小值为零，唯一极小集合是空集的几乎处处等价类。若 \(\lambda=n/R\)，极小值仍为零，前面的等号分析说明极小集合恰为空集与 \(B_R\) 的等价类。
+
+	若 \(\lambda>n/R\)，则系数 \(n/R-\lambda<0\)，而 \(|F|\le V_R\)，所以
+	\[
+		P(F)-\lambda|F|
+		\ge(n/R-\lambda)|F|
+		\ge(n/R-\lambda)V_R.
+	\]
+	球达到这个下界。取等必须满足 \(|F|=V_R\)，从 \(F\subset B_R\) 模零测集可知 \(F=B_R\) 模零测集，因此极小集合唯一。综上，极小值为
+	\[
+		\min\{0,(n/R-\lambda)V_R\},
+	\]
+	在临界参数 \(\lambda=n/R\) 处，空集与整球同时达到极小值。
+\end{solution}

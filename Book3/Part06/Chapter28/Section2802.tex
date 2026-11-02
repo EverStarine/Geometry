@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 28.2 演化公式与比较
 % 纲要位置：几何学计划纲要.md，第 3292 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,280 @@
 \section{演化公式与比较}
 \label{g3:sec:2802}
 
-待撰写
+面积下降只给出总量的控制。一个很小的区域可以弯得越来越急，同时总面积继续减小；要判断这种局部变化，需要把方程作用到第二基本形式上。本节的演化与比较均在 Euclid 环境中进行。对超曲面，法空间只有一个方向，向量方程可以化成带符号的标量曲率方程；两个超曲面在距离极小处的切空间又恰好相同，这使曲率计算能够转成避免相交的比较结论。
 
 \subsection{第二基本形式和平均曲率的演化}
 \label{g3:subsec:2802:01}
-待撰写
+设 \(F:M^m\times[0,T)\to\mathbb R^{m+1}\) 是光滑浸入的平均曲率流，\(m\ge1\)，并在所讨论的区域选取随时间光滑变化的单位法向 \(\nu\)。记
+\[
+	h_{ij}=\langle B(\partial_i,\partial_j),\nu\rangle,
+	\qquad A^i{}_j=g^{ik}h_{kj},
+	\qquad s=\operatorname{tr}A,
+	\qquad q=|A|^2=\operatorname{tr}(A^2).
+\]
+于是 \(\mathcal H=s\nu\)、\(\partial_tF=s\nu\)，而\secref{g3:sec:1901}中的归一化平均曲率为 \(H=(s/m)\nu\)。形算子仍取 \(A=-\mathrm d\nu\)；外向半径 \(R\) 球面上 \(A=-R^{-1}\operatorname{Id}\)、\(s=-m/R\)。以下 \(\Delta=\nabla^*\nabla\) 表示当前度量的非负粗 Laplace 算子，在函数上就是 \(-\operatorname{div}\nabla\)。各个时刻的联络、范数与迹均使用 \(g(t)\)。
+
+\begin{lemma}\label{g3:lem:mcf-simons-identity}
+	设 \(F:M^m\to\mathbb R^{m+1}\) 为光滑双侧浸入，\(m\ge1\)，按上述约定定义 \(h,A,s,q\)。则第二基本形式满足
+	\begin{equation}\label{g3:eq:mcf-simons-identity}
+		-\Delta h_{ij}=\nabla_i\nabla_j s+s h_i{}^k h_{kj}-q h_{ij}.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	由\cref{g3:thm:codazzi-equation}，Euclid 环境中的 \(\nabla h\) 对三个输入对称，因而 \(\nabla^k h_{kj}=\nabla_j s\)。在所算点取正交标架，并令联络系数在该点为零。交换导数给出
+	\[
+		\sum_k\nabla_k\nabla_k h_{ij}
+		=\nabla_i\nabla_j s+
+		\sum_k([\nabla_k,\nabla_i]h)_{kj}.
+	\]
+	协变二阶张量的交换项是
+	\[
+		([\nabla_k,\nabla_i]h)_{kj}
+		=-h(R(e_k,e_i)e_k,e_j)-h(e_k,R(e_k,e_i)e_j).
+	\]
+	\cref{g3:thm:gauss-equation}在当前余维与环境下写成
+	\(R(X,Y)Z=h(Y,Z)AX-h(X,Z)AY\)。代入后，第一组收缩为
+	\(- (h^3)_{ij}+s(h^2)_{ij}\)，第二组为
+	\(-q h_{ij}+(h^3)_{ij}\)，其中乘积均用 \(g\) 收缩。两个三次矩阵乘积抵消，所余正是式\eqref{g3:eq:mcf-simons-identity}的反应项。左端的导数迹等于 \(-\Delta h\)，故结论成立。
+\end{proof}
+
+这个恒等式把平均曲率的 Hessian 改写成整个第二基本形式的扩散项。时间变分首先产生前者，而抛物估计需要后者。
+
+\begin{proposition}\label{g3:prop:mcf-hypersurface-evolution}
+	设 \(F:M^m\times[0,T)\to\mathbb R^{m+1}\) 为光滑双侧浸入的平均曲率流，\(m\ge1\)，满足 \(\partial_tF=s\nu\)。在固定源坐标中有
+	\begin{align}
+		\partial_t g_{ij}&=-2s h_{ij},&
+		\partial_t g^{ij}&=2s h^{ij},&
+		\partial_t\nu&=-\nabla s,\label{g3:eq:mcf-metric-normal-evolution}\\
+		\partial_t h_{ij}&=\nabla_i\nabla_j s-s h_i{}^k h_{kj},&
+		\partial_t\mu_g&=-s^2\mu_g.\label{g3:eq:mcf-second-form-variation}
+	\end{align}
+	相应的抛物演化为
+	\begin{align}
+		(\partial_t+\Delta)h_{ij}&=q h_{ij}-2s h_i{}^k h_{kj},\label{g3:eq:mcf-covariant-form-evolution}\\
+		(\partial_t+\Delta)A^i{}_j&=q A^i{}_j,\label{g3:eq:mcf-shape-evolution}\\
+		(\partial_t+\Delta)s&=q s,\label{g3:eq:mcf-mean-evolution}\\
+		(\partial_t+\Delta)q&=-2|\nabla A|^2+2q^2.\label{g3:eq:mcf-curvature-norm-evolution}
+	\end{align}
+	这些式子均为内点恒等式，不要求 \(M\) 紧。
+\end{proposition}
+\begin{proof}
+	写 \(F_i=\partial_iF\)。由 \(\partial_i\nu=-h_i{}^kF_k\)，对 \(g_{ij}=\langle F_i,F_j\rangle\) 求导即得第一式。对 \(g^{ik}g_{kj}=\delta^i_j\) 求导得第二式。再对 \(\langle\nu,F_i\rangle=0\)、\(\langle\nu,\nu\rangle=1\) 求导，得到 \(\langle\partial_t\nu,F_i\rangle=-\partial_i s\) 及 \(\partial_t\nu\perp\nu\)，故 \(\partial_t\nu=-\nabla s\)。
+
+	在一点采用源的法坐标。对 \(h_{ij}=\langle\partial_i\partial_jF,\nu\rangle\) 求时间导数，其中 \(\partial_i\partial_j(s\nu)\) 的法向分量为
+	\(\partial_i\partial_j s+s\langle\partial_i\partial_j\nu,\nu\rangle\)。由 \(|\nu|=1\)，后一个内积等于 \(-\langle\partial_i\nu,\partial_j\nu\rangle=-h_i{}^k h_{kj}\)。另一项 \(\langle\partial_i\partial_jF,-\nabla s\rangle\) 在该点为零；一般坐标下它正好把普通 Hessian 补成协变 Hessian。这证明 \(h\) 的变分式。面积元公式则由
+	\(\partial_t\mu_g=\frac12g^{ij}\partial_tg_{ij}\mu_g\) 得出。
+
+	把\cref{g3:lem:mcf-simons-identity}代入 \(h\) 的变分式，得到式\eqref{g3:eq:mcf-covariant-form-evolution}。对 \(A^i{}_j=g^{ik}h_{kj}\) 求导时，逆度量贡献 \(2s(A^2)^i{}_j\)，恰抵消该式中的最后一项。因为 \(\nabla g=0\)，升指标与空间 Laplace 运算相容，于是得到式\eqref{g3:eq:mcf-shape-evolution}。取混合张量的迹便得 \(s\) 的方程。
+
+	最后用 \(q=\operatorname{tr}(A^2)\) 求导。对当前度量的空间协变导数，乘积法则给出
+	\[
+		-\Delta q=-2\operatorname{tr}(A\Delta A)+2|\nabla A|^2.
+	\]
+	另一方面，\(\partial_tq=2\operatorname{tr}(A\partial_tA)\)。将 \(A\) 的方程代入，得到式\eqref{g3:eq:mcf-curvature-norm-evolution}。这里使用混合张量的迹，已包含范数随度量变化的贡献。
+\end{proof}
+
+标量 \(s\) 可以有正有负，而 \(q\) 非负。其演化式中的 \(-2|\nabla A|^2\) 有利于压低空间振荡，\(2q^2\) 却使曲率可能增大；两项竞争与面积总量的下降可以同时发生。对任意闭源上的光滑流，固定 \(T_1<T\)，\(g(t)\) 在 \([0,T_1]\) 上一致正定。用一个固定背景联络表达 \(\Delta_{g(t)}\)，所得时间依赖系数满足\cref{g3:thm:parabolic-maximum}的条件，因此该定理也能用于这里的标量量。
+
+\begin{corollary}\label{g3:cor:mcf-curvature-ode-bound}
+	设 \(M^m\) 闭，\(m\ge1\)，\(F:M\times[0,T)\to\mathbb R^{m+1}\) 是光滑双侧浸入的平均曲率流，\(Q_0=\max_M|A(0)|^2>0\)。则对 \(0\le t<\min\{T,(2Q_0)^{-1}\}\)，
+	\[
+		|A(t)|^2\le\frac{Q_0}{1-2Q_0t}.
+	\]
+\end{corollary}
+\begin{proof}
+	令 \(Q(t)=Q_0/(1-2Q_0t)\)，则 \(Q'=2Q^2\)。由式\eqref{g3:eq:mcf-curvature-norm-evolution}，\(w=q-Q\) 满足
+	\[
+		(\partial_t+\Delta)w\le 2(q+Q)w,\qquad w(0)\le0.
+	\]
+	在任一所述范围内的紧时间区间上，零阶系数有界，故标量最大值原理给出 \(w\le0\)。任意这样的区间都适用，结论成立。
+\end{proof}
 
 \subsection{超曲面避免相交原理}
 \label{g3:subsec:2802:02}
-待撰写
+如果两张紧超曲面最接近的两点仍有正距离，那么连接这两点的线段同时垂直于两个切空间。余维为一使这两个切空间相同。沿共同的切方向把两点一起移动，就能将距离的二阶变化与两张超曲面的平均曲率比较。
+
+\begin{theorem}\label{g3:thm:mcf-avoidance}
+	设 \(M^m,N^m\) 为闭光滑流形，\(m\ge1\)，\(F:M\times[0,T)\to\mathbb R^{m+1}\)、\(G:N\times[0,T)\to\mathbb R^{m+1}\) 为光滑浸入的平均曲率流。若 \(F(M,0)\cap G(N,0)=\varnothing\)，则
+	\[
+		d(t)=\min_{p\in M,\,q\in N}|F(p,t)-G(q,t)|
+	\]
+	在 \([0,T)\) 上为正且不减。特别地，两张闭嵌入超曲面在共同的光滑存在期间保持不相交。这一结论称为\term[bimian xiangjiao yuanli]{避免相交原理}[avoidance principle]。
+\end{theorem}
+\begin{proof}
+	记 \(z=F(p,t)-G(q,t)\)、\(f(p,q,t)=|z|^2/2\)。紧性保证 \(f\) 在每个时刻有最小值。先限制在 \(d(t)>0\) 的时间区间。在一个空间最小点，\(\langle z,\mathrm dF(X)\rangle=\langle z,\mathrm dG(Y)\rangle=0\)，所以两张超曲面的切空间均为 \(z^\perp\)。在这个共同空间取正交单位基 \(e_1,\ldots,e_m\)，并在两个源切空间分别取其对应的单位向量 \(X_i,Y_i\)。
+
+	在 \(M\times N\) 中沿 \((X_i,Y_i)\) 的乘积测地线求二阶导数。在所算点两个一阶速度的差为零，因此
+	\[
+		\operatorname{Hess}f\bigl((X_i,Y_i),(X_i,Y_i)\bigr)
+		=\langle z,B_F(X_i,X_i)-B_G(Y_i,Y_i)\rangle.
+	\]
+	最小点的 Hessian 非负，求和便得
+	\[
+		0\le\langle z,\mathcal H_F-\mathcal H_G\rangle
+		=\partial_t f.
+	\]
+	为直接从这个点态结论推出最小值不减，取上述时间区间内 \(a<b\)。若 \(\min f(b)<\min f(a)\)，可选 \(\varepsilon>0\)，使 \(\min f(b)+\varepsilon(b-a)<\min f(a)\)。函数 \(f+\varepsilon(t-a)\) 在 \(M\times N\times[a,b]\) 的最小值便在时间 \(t>a\) 取得；在那里空间 Hessian 非负、时间左导数非正，于是 \(\partial_tf\le-\varepsilon\)。这与上式矛盾。因此最小值不减。
+
+	初始两个像都是紧集，故 \(d(0)>0\)。若存在第一次距离为零的时刻，在它之前刚证的单调性给出 \(d(t)\ge d(0)\)；连续性使该时刻仍有 \(d\ge d(0)>0\)，矛盾。于是正距离与单调性在全部共同存在时间成立。
+\end{proof}
+
+证明允许每张浸入自身有自交，但使用了两张像之间的正距离。它也说明余维假设的位置：高余维时，两切空间虽然都垂直于 \(z\)，却未必相同；共同移动基点时，两个切速度的差项就不再为零。带边界问题还可能在边界取得最短距离，因而需要另加边界分离或适当的边界比较条件。
+
+\begin{example}\label{g3:exm:mcf-higher-codimension-intersection}
+	取 \(a>0\)、\(R_0>a/2\)，在 \(\mathbb R^3\) 中令 \(R(t)=\sqrt{R_0^2-2t}\)，并考虑两个圆
+	\[
+		F(u,t)=(R(t)\cos u,R(t)\sin u,0),\qquad
+		G(v,t)=(a+R(t)\cos v,0,R(t)\sin v).
+	\]
+	它们各自在固定平面内沿曲率向量缩小，因为 \(R'=-1/R\)。两平面的交集为 \(x\) 轴，两个圆与此轴的交点横坐标分别为 \(\{R,-R\}\) 和 \(\{a+R,a-R\}\)。初时刻这两组数互异，但在
+	\[
+		t_*=\frac12\left(R_0^2-\frac{a^2}{4}\right)
+	\]
+	有 \(R(t_*)=a/2\)，两圆在 \((a/2,0,0)\) 相交。此时半径仍为正，两条流都光滑。这给出两张闭子流形在余维二时违反避免相交结论的具体例子。
+\end{example}
+
+\begin{corollary}\label{g3:cor:mcf-preserves-embeddedness}
+	设 \(M^m\) 闭，\(m\ge1\)，\(F:M\times[0,T)\to\mathbb R^{m+1}\) 是光滑浸入的平均曲率流。若 \(F(\cdot,0)\) 是嵌入，则每个 \(F(\cdot,t)\) 都是嵌入。
+\end{corollary}
+\begin{proof}
+	固定 \(T_1<T\)，并在 \(M\) 上选一个固定背景距离 \(d_0\)。浸入性的局部坐标表示及 \(M\times[0,T_1]\) 的紧性给出 \(\delta,c>0\)，使同一连通分支上 \(0<d_0(p,q)\le\delta\) 时
+	\[
+		|F(p,t)-F(q,t)|\ge c\,d_0(p,q)
+		\quad(0\le t\le T_1).
+	\]
+	确切地说，在每个点选择一个使 \(\mathrm dF\) 的某个 \(m\) 维坐标投影可逆的环境坐标块；缩小源坐标球后，投影导数与其中心值足够接近，积分线段上的导数即给出局部双 Lipschitz 下界。有限覆盖给出上述共同常数。
+
+	现在在紧集 \(K=\{(p,q):d_0(p,q)\ge\delta\}\) 上比较 \(|F(p,t)-F(q,t)|^2/2\)；不同分支的所有点对一并计入 \(K\)。其空间边界上的距离至少为 \(c\delta\)，初时刻则由嵌入与紧性有正下界。选一个严格小于这两个下界的正数 \(b\)。若距离以后第一次降到 \(b\)，最小点必在 \(K\) 的内部，且两点间距仍为正。前一定理中共同切方向的二阶计算因此照用；给平方距离加上任意小的正时间斜率，就排除了低于初值与边界值的内部最小值。因此距离始终大于或等于 \(b\)。所有不同点对的像都不同，紧源上的单射浸入就是嵌入。\(T_1\) 任意，结论成立。
+\end{proof}
 
 \subsection{凸性或平均凸性的保持条件}
 \label{g3:subsec:2802:03}
-待撰写
+设一张双侧超曲面的单位法向已经选定。与外向凸球一致，令 \(k=-h\)、\(\theta=-s=\operatorname{tr}_g k\)。若 \(\theta\ge0\)，称它相对于该法向为\term[pingjun tuxing]{平均凸的}[mean convex]；若对所有切向量 \(v\) 都有 \(k(v,v)\ge0\)，则称其第二基本形式弱凸。严格不等号分别给出严格平均凸与严格凸。对于一个给定有界区域的光滑边界，使用外向单位法向。弱凸逐方向限制全部主曲率，平均凸则只限制它们的和。
+
+\begin{theorem}\label{g3:thm:mcf-mean-convexity}
+	设 \(M^m\) 闭，\(m\ge1\)，\(F:M\times[0,T)\to\mathbb R^{m+1}\) 为光滑双侧浸入的平均曲率流，并固定连续延拓的单位法向。若 \(\theta(0)=-s(0)\ge0\)，则 \(\theta(t)\ge0\)。若初时刻处处 \(\theta(0)>0\)，则以后仍处处为正。
+\end{theorem}
+\begin{proof}
+	由式\eqref{g3:eq:mcf-mean-evolution}，\((\partial_t+\Delta)\theta=q\theta\)。在任意 \([0,T_1]\)、\(T_1<T\) 上，\(q\) 有界，对 \(-\theta\) 应用\cref{g3:thm:parabolic-maximum}，得到第一项。若 \(a=\min_M\theta(0)>0\)，则 \(w=a-\theta\) 满足
+	\[
+		(\partial_t+\Delta)w=q w-q a\le q w,
+		\qquad w(0)\le0.
+	\]
+	相同的比较给出 \(\theta\ge a>0\)。
+\end{proof}
+
+\begin{example}\label{g3:exm:mcf-mean-convex-torus}
+	在 \(\mathbb R^3\) 中取 \(R>2r>0\) 的旋转环面
+	\[
+		F(u,v)=\bigl((R+r\cos v)\cos u,(R+r\cos v)\sin u,r\sin v\bigr).
+	\]
+	其外向法向为 \(\nu=(\cos v\cos u,\cos v\sin u,\sin v)\)。两个坐标方向正交，度量系数为 \((R+r\cos v)^2,r^2\)，第二基本形式系数为 \(-(R+r\cos v)\cos v,-r\)。于是
+	\[
+		\theta=\frac1r+\frac{\cos v}{R+r\cos v}
+		\ge\frac1r-\frac1{R-r}>0.
+	\]
+	但在内圈 \(v=\pi\) 处，\(k\) 的两个主值为 \(1/r\) 与 \(-1/(R-r)\)，一正一负。它是严格平均凸的，却不弱凸。前一定理保证其光滑流期间保留平均凸性，并未把这个初始环面变成凸超曲面。
+\end{example}
+
+凸性的保持需要检查一个二次型在任意方向上的符号。把 \(h_{ij}\) 的各个坐标分量分别当作标量比较，既不保留坐标不变性，也不能控制最小特征值。下面直接在可能出现的第一个零方向上使用演化式。
+
+\begin{theorem}\label{g3:thm:mcf-convexity}
+	设 \(M^m\) 闭，\(m\ge1\)，\(F:M\times[0,T)\to\mathbb R^{m+1}\) 为光滑双侧浸入的平均曲率流，并按选定法向令 \(k=-h\)。若 \(k(0)\) 为非负二次型，则 \(k(t)\) 在全部光滑存在时间内非负。若 \(k(0)\) 正定，则 \(k(t)\) 始终正定。
+\end{theorem}
+\begin{proof}
+	记 \(L=-\Delta=\operatorname{tr}_g\nabla^2\)，由前面的公式，
+	\[
+		(\partial_t-L)k=q k-2\theta k^2,
+		\qquad \partial_tg=-2\theta k,
+	\]
+	其中 \((k^2)_{ij}=k_i{}^\ell k_{\ell j}\)。固定 \(T_1<T\)，选 \(C>\max_{M\times[0,T_1]}q\)，并设
+	\(S=k+a g\)、\(a(t)=\varepsilon e^{Ct}\)，\(\varepsilon>0\)。初时刻 \(S\) 正定。若它第一次在 \((x_*,t_*)\) 出现零方向，取 \(g(t_*)\) 单位向量 \(v\) 满足 \(S(v,v)=0\)。由于 \(S\) 在此时仍非负，\(S(v,w)=0\) 对所有 \(w\) 成立，因而
+	\[
+		k(v,w)=-a g(v,w),\qquad k^2(v,v)=a^2.
+	\]
+	将 \(v\) 在附近延拓成向量场 \(V\)，使 \(\nabla V=0\) 于所算点。标量 \(S(V,V)\) 此前非负，此时有零的空间最小值；其时间导数非正、\(L\) 非负。在 \((\partial_t-L)S(V,V)\) 的展开中，含 \(S(v,\cdot)\) 或 \(\nabla V\) 的附加项均为零。因此
+	\[
+		0\ge ((\partial_t-L)S)(v,v)
+		=-qa-2\theta a^2+Ca+2\theta a^2
+		=a(C-q)>0,
+	\]
+	矛盾。故 \(k+\varepsilon e^{Ct}g\) 始终正定；令 \(\varepsilon\downarrow0\)，得到 \(k\ge0\)。
+
+	若 \(k(0)\) 正定，紧性给出 \(a_0>0\)，使 \(k(0)>a_0g(0)\)。改取 \(S=k-a(t)g\)、\(a(t)=a_0e^{-t}\)。若出现第一个零方向，则 \(k(v,w)=a g(v,w)\)、\(k^2(v,v)=a^2\)，同样计算得到
+	\[
+		0\ge ((\partial_t-L)S)(v,v)
+		=qa-2\theta a^2-a'+2\theta a^2
+		=a(q+1)>0.
+	\]
+	因此 \(k(t)>a_0e^{-t}g(t)\)，特别地仍正定。任意 \(T_1<T\) 都可如此处理。
+\end{proof}
 
 \subsection{曲线缩短流和球面模型}
 \label{g3:subsec:2802:04}
-待撰写
+当 \(m=1\) 时，平均曲率向量就是曲率向量，流也称为\term[quxian suoduan liu]{曲线缩短流}[curve shortening flow]。设 \(F:S^1\times[0,T)\to\mathbb R^2\) 是闭正则曲线的光滑流，取单位法向 \(\nu\) 并记带符号曲率为 \(\kappa\)，于是 \(\partial_tF=\kappa\nu\)。以 \(\sigma\) 表示当前弧长，\cref{g3:prop:mcf-hypersurface-evolution}化为
+\begin{equation}\label{g3:eq:curve-shortening-evolution}
+	\partial_t(\mathrm d\sigma)=-\kappa^2\,\mathrm d\sigma,
+	\qquad \partial_t\kappa=\partial_\sigma^2\kappa+\kappa^3,
+	\qquad \frac{\mathrm d}{\mathrm dt}\operatorname{Length}(F_t)
+	=-\int_{S^1}\kappa^2\,\mathrm d\sigma.
+\end{equation}
+这里 \(\partial_t\) 固定原来的源参数。若该参数为 \(u\)，令 \(v=|F_u|\)，则 \(\partial_\sigma=v^{-1}\partial_u\)、\(v_t=-\kappa^2v\)，故
+\[
+	[\partial_t,\partial_\sigma]=\kappa^2\partial_\sigma.
+\]
+弧长参数随时间变化，在继续交换导数时要保留这一项。
+
+\begin{example}\label{g3:exm:curve-shortening-graph-translator}
+	对平面图像 \(F(x,t)=(x,u(x,t))\)，取向上单位法向
+	\(\nu=(-u_x,1)/(1+u_x^2)^{1/2}\)。其曲率与图像的法向速度分别为
+	\[
+		\kappa=\frac{u_{xx}}{(1+u_x^2)^{3/2}},
+		\qquad \langle\partial_tF,\nu\rangle=
+		\frac{u_t}{(1+u_x^2)^{1/2}}.
+	\]
+	因此曲线缩短流的图像方程为
+	\[
+		u_t=\frac{u_{xx}}{1+u_x^2}.
+	\]
+	在 \(-\pi/2<x<\pi/2\) 上，\(u(x,t)=-\log\cos x+t\) 给出一个显式解：\(u_x=\tan x\)、\(u_{xx}=\sec^2x\)，右端恒为 \(1\)。其图像竖直平移而形状不变，是一个非紧平移解。固定图像参数带有切向速度；消去该速度后才满足 \(\partial_tF=\kappa\nu\) 的纯法向参数形式。该曲线长度无穷，闭曲线的总长度积分式不能直接用于它。
+\end{example}
+
+\begin{example}\label{g3:exm:mcf-shrinking-sphere}
+	对 \(S^m\subset\mathbb R^{m+1}\)、\(m\ge1\)，令 \(F(\omega,t)=R(t)\omega\)，取外向法向 \(\nu=\omega\)。由 \(s=-m/R\)，流方程成为
+	\[
+		R'=-\frac mR,
+		\qquad R(t)=\sqrt{R_0^2-2mt},
+		\qquad 0\le t<T_*:=\frac{R_0^2}{2m}.
+	\]
+	面积和曲率分别为
+	\[
+		\mathcal A(t)=|S^m|(R_0^2-2mt)^{m/2},
+		\qquad |A(t)|^2=\frac m{R_0^2-2mt}
+		=\frac1{2(T_*-t)}.
+	\]
+	面积下降到零，曲率却发散；初始的严格凸性在 \(t<T_*\) 始终保留。直接求导也验证
+	\(\mathcal A'=-m^2|S^m|R^{m-2}=-\int s^2\mu_g\)。当 \(m=1\) 时，这就是半径 \(\sqrt{R_0^2-2t}\) 的缩圆。
+\end{example}
+
+闭性本身已经使 Euclid 环境中的光滑平均曲率流具有有限的可能寿命。下面的计算不限余维，也不要求凸性。
+
+\begin{proposition}\label{g3:prop:mcf-finite-lifetime}
+	设 \(M^m\) 非空且闭，\(m\ge1\)，\(F:M\times[0,T)\to\mathbb R^{m+q}\)、\(q\ge1\)，为光滑浸入的平均曲率流。若初像包含于以 \(a\) 为中心、半径 \(R_0\) 的闭球，则
+	\begin{equation}\label{g3:eq:mcf-shrinking-ball-bound}
+		|F(x,t)-a|^2\le R_0^2-2mt
+		\quad(0\le t<T),
+	\end{equation}
+	从而 \(T\le R_0^2/(2m)\)。
+\end{proposition}
+\begin{proof}
+	Euclid 位置向量满足 \(-\Delta F=\mathcal H\)，并且 \(|\mathrm dF|_g^2=m\)。因此
+	\[
+		-\Delta|F-a|^2=2\langle F-a,\mathcal H\rangle+2m,
+		\qquad \partial_t|F-a|^2=2\langle F-a,\mathcal H\rangle.
+	\]
+	相减得到 \((\partial_t+\Delta)(|F-a|^2+2mt)=0\)。在任意紧时间区间用标量最大值原理，就得式\eqref{g3:eq:mcf-shrinking-ball-bound}。左边非负，所以不能存在满足 \(t>R_0^2/(2m)\) 的流时刻。
+\end{proof}
+
+球面使上述寿命上界成为等号，也给出曲率变大的确切速率。对一般初始超曲面，保持平均凸或凸只是一种随时间不变的曲率条件；要进一步确定奇点形状，需要在缩小的空间尺度上比较整个流。下一节的加权面积会同时记录时间距离、空间位置与面积缩放。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

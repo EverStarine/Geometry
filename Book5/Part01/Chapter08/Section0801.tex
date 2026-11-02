@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 8.1 自由消解与导出障碍
 % 纲要位置：几何学计划纲要.md，第 5303 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -16,25 +16,658 @@
 \section{自由消解与导出障碍}
 \label{g5:sec:0801}
 
-待撰写
+第二章已经看到，张量积可能把一个单射变成零映射，\(\operatorname{Hom}\) 也可能使满射失去满性。自由模上的计算却容易控制：映射由基向量的像决定，张量自由模则只是取直和。因而可以先用自由模表示一个模，再继续用自由模表示关系、关系之间的关系。这样得到的消解把原来隐藏在核中的信息分层记录；张量或取 \(\operatorname{Hom}\) 之后，留下的同调便是这些运算失去正合性的具体障碍。
 
 \subsection{自由消解的构造}
 \label{g5:subsec:0801:01}
-待撰写
+
+一个呈示 \(F_1\to F_0\to M\to0\) 只说明 \(M\) 的生成元及其关系。第一张映射也可能有核，因此关系本身还可能满足关系。为了不断记录下去，先约定复形与同调的记号。
+
+\begin{definition}\label{g5:def:module-complex}
+	设 \(A\) 为交换含幺环。一个 \(A\) 模的\term[lianfuxing]{链复形}[chain complex]是模与同态组成的序列
+	\[
+		C_\bullet:\quad\cdots\longrightarrow C_{i+1}
+		\xrightarrow{\mathrm{d}_{i+1}}C_i\xrightarrow{\mathrm{d}_i}C_{i-1}
+		\longrightarrow\cdots,
+		\qquad \mathrm{d}_i \mathrm{d}_{i+1}=0.
+	\]
+	称 \(\mathrm{d}_i\) 为微分，称
+	\[
+		Z_i(C)=\ker \mathrm{d}_i,\qquad B_i(C)=\operatorname{im}\mathrm{d}_{i+1}
+	\]
+	中的元素分别为\term[xunhuan]{循环}[cycle]与\term[bianjie]{边界}[boundary]。其第 \(i\) 个\term[tongdiaomo]{同调模}[homology module]为
+	\[
+		H_i(C_\bullet)=Z_i(C)/B_i(C).
+	\]
+	若箭头使次数增加，即 \(\mathrm{d}^i:C^i\to C^{i+1}\)，则称为\term[shanglianfuxing]{上链复形}[cochain complex]，并定义其\term[shangtongdiaomo]{上同调模}[cohomology module]
+	\[
+		H^i(C^\bullet)=\ker \mathrm{d}^i/\operatorname{im}\mathrm{d}^{i-1}.
+	\]
+\end{definition}
+
+条件 \(\mathrm{d}^2=0\) 保证边界是循环，故上述商有定义。\(H_i=0\) 正好表示复形在 \(C_i\) 处正合：所有被下一张映射消去的元素都已经来自上一项。下标与上标只是箭头方向的约定，令 \(C_i=C^{-i}\) 就能将两种记法互换。本节的消解都放在非负下标次数，其余次数的模取零。
+
+\begin{definition}\label{g5:def:free-resolution}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模。一个\term[ziyouxiaojie]{自由消解}[free resolution]是正合列
+	\[
+		\cdots\longrightarrow F_2\xrightarrow{\mathrm{d}_2}F_1
+		\xrightarrow{\mathrm{d}_1}F_0\xrightarrow{\varepsilon}M
+		\longrightarrow0,
+	\]
+	其中每个 \(F_i\) 都为自由 \(A\) 模。将不含 \(M\) 的复形记为 \(F_\bullet\)，将 \(\varepsilon\) 称为\term[zengguangyingshe]{增广映射}[augmentation map]。若将自由模换成投射模，则称为\term[toushexiaojie]{投射消解}[projective resolution]。
+\end{definition}
+
+于是 \(H_i(F_\bullet)=0\) 对 \(i>0\) 成立，而增广给出 \(H_0(F_\bullet)\cong M\)。消解中最右端的 \(M\) 与计算同调时的零次项 \(F_0\) 是不同对象；保留这个区分，可以避免次数错位。
+
+\begin{proposition}\label{g5:prop:free-resolution-exists}
+	任意交换含幺环 \(A\) 上的任意模 \(M\) 都有自由消解。若 \(A\) Noether 且 \(M\) 有限生成，则可以使消解中每个自由模都具有有限秩。
+\end{proposition}
+\begin{proof}
+	选 \(M\) 的一组生成元；不要求有限，例如可取其全部元素。以这些生成元为基符号构造自由模 \(F_0\)，将基符号送到相应元素，得到满射 \(\varepsilon:F_0\to M\)。再选 \(\ker\varepsilon\) 的生成元，以它们构造自由模 \(F_1\) 及满射 \(F_1\to\ker\varepsilon\)，与包含复合得到 \(\mathrm{d}_1:F_1\to F_0\)。于是 \(\operatorname{im}\mathrm{d}_1=\ker\varepsilon\)。
+
+	重复此过程：已构造 \(\mathrm{d}_i\) 后，选自由模 \(F_{i+1}\) 满射到 \(\ker \mathrm{d}_i\)，便得到 \(\mathrm{d}_{i+1}\)。每一步都按核构造，所以相邻微分复合为零，且所得列正合。
+
+	若 \(A\) Noether 且 \(M\) 有限生成，先取有限秩 \(F_0\)。由\cref{g5:prop:noetherian-finite-modules}，它的子模 \(\ker\varepsilon\) 有限生成，故 \(F_1\) 可取有限秩；逐次重复同一论证即可。这里得到的是每一项秩有限，消解的非零项仍可能有无限多个。
+\end{proof}
+
+例如，若 \(f\in A\) 不是零因子，则
+\[
+	0\longrightarrow A\xrightarrow{\,f\,}A
+	\longrightarrow A/(f)\longrightarrow0
+\]
+就是自由消解。左端的单射正是非零因子条件。若 \(f\) 是零因子，这个序列在左边留下 \((0:_A f)\)，必须继续用自由模覆盖这个核，不能直接把两项呈示当作完整消解。
+
+\ProseParagraphBreak
+
+本节也会使用投射消解。根据\cref{g5:def:projective-module}，投射性就是沿满射提升映射的性质。任意秩的自由模都具有这一性质，因为可以逐个提升基向量的像。进一步，任意投射模 \(P\) 都是某个自由模的直和项：取满射 \(F\to P\)，将 \(\operatorname{id}_P\) 提升得到分裂，便有 \(F\cong P\oplus K\)；反向结论由限制自由模的提升得到。因而投射模平坦：自由模张量对应直和，保留单射，直和项也保留这一性质。此外，\(\operatorname{Hom}_A(P,-)\) 正合，因为其左正合性已由\cref{g5:prop:hom-left-exact}证明，而右端的满性恰是投射性的提升要求。这些说明也适用于无限秩情形。自由与投射消解的构造可对照\cite[附录B，第277--278页]{Matsumura1989}。
 
 \subsection{比较定理和链同伦}
 \label{g5:subsec:0801:02}
-待撰写
+
+自由消解依赖生成元的选择。同一个模可以具有大小很不相同的消解，因此用消解计算出的对象，必须先证明不依赖这些选择。所需的比较不要求两份消解逐项同构，而是把模同态提升到各阶，并说明不同提升只相差一种在同调中消失的误差。
+
+\begin{definition}\label{g5:def:chain-homotopy}
+	设 \(C_\bullet,D_\bullet\) 为交换含幺环 \(A\) 上的链复形。一个\term[lianyingshe]{链映射}[chain map] \(u:C_\bullet\to D_\bullet\) 是同态族 \(u_i:C_i\to D_i\)，满足
+	\[
+		\mathrm{d}_i^D u_i=u_{i-1}\mathrm{d}_i^C.
+	\]
+	两张链映射 \(u,v\) 之间的一个\term[liantonglun]{链同伦}[chain homotopy]是同态族 \(h_i:C_i\to D_{i+1}\)，使
+	\[
+		u_i-v_i=\mathrm{d}_{i+1}^D h_i+h_{i-1}\mathrm{d}_i^C.
+	\]
+	此时记 \(u\simeq v\)。对非负次数复形，约定 \(h_{-1}=0\)。
+\end{definition}
+
+链映射将循环送到循环、边界送到边界，因此诱导同调映射。链同伦则使诱导映射相同：若 \(\mathrm{d}_i^Cz=0\)，则
+\[
+	u_i(z)-v_i(z)=\mathrm{d}_{i+1}^Dh_i(z)
+\]
+是边界。若两复形之间有链映射 \(u,v\)，使 \(vu\simeq1\)、\(uv\simeq1\)，就称它们\term[liantonglundengjia]{链同伦等价}[chain homotopy equivalence]；此时全部同调模自然同构。下面的\term[xiaojiebijiaodingli]{消解比较定理}[comparison theorem for resolutions]使这种同伦比较适用于任意模同态。
+
+\begin{theorem}[消解比较定理]\label{g5:thm:resolution-comparison}
+	设 \(A\) 为交换含幺环，\(P_\bullet\to M\)、\(Q_\bullet\to N\) 为投射消解，\(f:M\to N\) 为同态。则 \(f\) 可以提升为链映射 \(u:P_\bullet\to Q_\bullet\)，使
+	\(\varepsilon_Q u_0=f\varepsilon_P\)。任意两张这样的提升链同伦。特别地，同一个模的任意两份投射消解链同伦等价。
+\end{theorem}
+\begin{proof}
+	先构造提升。由于 \(\varepsilon_Q:Q_0\to N\) 满射，\(P_0\) 的投射性给出 \(u_0\)。若已构造低于 \(i\) 次的映射，则 \(u_{i-1}\mathrm{d}_i^P\) 的像落在 \(\ker \mathrm{d}_{i-1}^Q\) 中；在 \(i=1\) 时，这里的核指 \(\ker\varepsilon_Q\)。目标消解正合，故
+	\[
+		Q_i\twoheadrightarrow\ker \mathrm{d}_{i-1}^Q.
+	\]
+	用 \(P_i\) 的投射性提升，得到满足 \(\mathrm{d}_i^Qu_i=u_{i-1}\mathrm{d}_i^P\) 的 \(u_i\)。于是逐阶补成交换图
+	\[
+		\begin{tikzcd}[column sep=large]
+			\cdots\arrow[r]&P_1\arrow[r,"\mathrm{d}_1^P"]\arrow[d,"u_1"]
+			&P_0\arrow[r,"\varepsilon_P"]\arrow[d,"u_0"]
+			&M\arrow[r]\arrow[d,"f"]&0\\
+			\cdots\arrow[r]&Q_1\arrow[r,"\mathrm{d}_1^Q"]
+			&Q_0\arrow[r,"\varepsilon_Q"]&N\arrow[r]&0.
+		\end{tikzcd}
+	\]
+
+	再比较两个提升 \(u,v\)。因 \(\varepsilon_Q(u_0-v_0)=0\)，可以沿 \(Q_1\twoheadrightarrow\ker\varepsilon_Q\) 提升 \(u_0-v_0\)，得到 \(h_0\)，使 \(u_0-v_0=\mathrm{d}_1^Qh_0\)。假设已构造 \(h_0,\ldots,h_{i-1}\)，考虑
+	\[
+		r_i=u_i-v_i-h_{i-1}\mathrm{d}_i^P.
+	\]
+	链映射等式和上一阶同伦等式给出
+	\[
+		\mathrm{d}_i^Qr_i
+		=(u_{i-1}-v_{i-1}-\mathrm{d}_i^Qh_{i-1})\mathrm{d}_i^P
+		=h_{i-2}\mathrm{d}_{i-1}^P\mathrm{d}_i^P=0.
+	\]
+	故 \(r_i\) 可由投射性提升到 \(Q_{i+1}\)，即 \(r_i=\mathrm{d}_{i+1}^Qh_i\)。这正是所需同伦。
+
+	最后，对同一个模的两份消解，分别提升恒等映射得到 \(u,v\)。复合 \(vu,uv\) 仍提升恒等映射，因而分别与各消解的恒等链映射同伦。
+\end{proof}
+
+比较定理中，正合性保证“需要提升的像确实落在某个核中”，投射性保证“能从下一项选出整个线性映射的提升”。两项条件各有明确的作用；该结论及同伦约定见\cite[附录B，第274、278页]{Matsumura1989}。
+
+\ProseParagraphBreak
+
+张量及 \(\operatorname{Hom}\) 都保留上述同伦信息。若 \(u-v=\mathrm{d}h+h\mathrm{d}\)，张量任意 \(A\) 模 \(N\) 后，同一个等式变成
+\[
+	(u-v)\otimes1=\mathrm{d}(h\otimes1)+(h\otimes1)\mathrm{d}.
+\]
+对 \(\operatorname{Hom}_A(-,N)\)，取上链微分
+\[
+	\delta^i(\varphi)=\varphi \mathrm{d}_{i+1}.
+\]
+将 \(h\) 变成降次数映射 \(s^i(\varphi)=\varphi h_{i-1}\)，则预合成给出的两张上链映射满足 \(u^*-v^*=\delta s+s\delta\)。因此两种运算之后，链同伦等价仍诱导同调或上同调的同构。即使张量破坏了原消解的正合性，这些新出现的同调也与所选消解无关。
 
 \subsection{Ext、Tor 与长正合列}
 \label{g5:subsec:0801:03}
-待撰写
+
+要将短正合列中的三个模联系起来，先处理复形层面的基本问题：逐项正合的一列复形，在同调上为什么会多出一张跨次数的连接映射。下面直接构造这张映射，并核对各处的正合性。
+
+\begin{proposition}\label{g5:prop:complex-long-exact}
+	设 \(A\) 为交换含幺环，且
+	\[
+		0\longrightarrow C'_\bullet\xrightarrow{\iota}C_\bullet
+		\xrightarrow{p}C''_\bullet\longrightarrow0
+	\]
+	是逐次短正合的链复形列。则存在自然的 \(A\) 线性连接映射
+	\(\partial_i:H_i(C'')\to H_{i-1}(C')\)，使
+	\[
+		\cdots\longrightarrow H_i(C')\longrightarrow H_i(C)
+		\longrightarrow H_i(C'')\xrightarrow{\partial_i}
+		H_{i-1}(C')\longrightarrow\cdots
+	\]
+	正合。对上链复形，相应连接映射为
+	\(H^i(C'')\to H^{i+1}(C')\)，并有同样的长正合列。这里自然性指：短正合复形列之间的交换图，诱导与所有连接映射交换的同调图。
+\end{proposition}
+\begin{proof}
+	给定循环 \(z''\in C''_i\)，取提升 \(z\in C_i\)。由于 \(p(dz)=\mathrm{d} z''=0\)，存在唯一的 \(y\in C'_{i-1}\) 使 \(dz=\iota(y)\)。又 \(\iota(dy)=\mathrm{d}^2z=0\)，由单射性得 \(dy=0\)。定义
+	\[
+		\partial_i[z'']=[y].
+	\]
+	若提升改成 \(z+\iota(w)\)，则 \(y\) 改成 \(y+dw\)，同调类不变。若代表改成 \(z''+dv''\)，取 \(v''\) 的提升 \(v\)，便可把 \(z\) 改成 \(z+dv\)，其微分不变。因此连接映射良定义；对提升作加法或标量乘法，立即得到其 \(A\) 线性。
+
+	在 \(H_i(C)\) 处，若循环 \(z\) 的像在 \(C''\) 中是边界，写 \(p(z)=dv''\)，提升 \(v''\) 为 \(v\)。于是 \(z-dv=\iota(z')\)，且 \(z'\) 是循环，说明该类来自 \(H_i(C')\)。反向包含由 \(p\iota=0\) 给出。
+
+	在 \(H_i(C'')\) 处，若 \(\partial_i[z'']=0\)，则刚才的 \(y=dw\)。把提升改为 \(z-\iota(w)\)，其微分为零，故 \([z'']\) 来自 \(H_i(C)\)。反过来，若能选取循环提升，连接映射当然为零。
+
+	在 \(H_{i-1}(C')\) 处，若循环 \(y\) 满足 \(\iota(y)=dz\)，则 \(p(z)\) 为循环，而且 \(\partial_i[p(z)]=[y]\)。反向包含来自连接映射构造中的同一等式。这三项证明所有位置的正合性。
+
+	对于短正合复形列之间的交换图，把选定的 \(z'',z,y\) 送到另一列，它们仍满足同样的提升与微分等式，所以连接映射交换。这证明自然性。将上链复形按 \(C_i=C^{-i}\) 改写，便得到升次数的版本。
+\end{proof}
+
+这就是\term[changzhenghetongdiaolie]{同调长正合列}[long exact homology sequence]。连接映射的意义很具体：右侧循环的任一提升可能不是循环，其微分落入左侧复形，所产生的同调类正好测量能否把提升修正为循环。构造可对照\cite[附录B，第274--275页]{Matsumura1989}。
+
+\begin{definition}\label{g5:def:ext-tor}
+	设 \(A\) 为交换含幺环，\(M,N\) 为 \(A\) 模，取 \(M\) 的自由消解 \(P_\bullet\to M\)。对 \(i\geq0\)，定义
+	\[
+		\operatorname{Tor}_i^A(M,N)
+		=H_i(P_\bullet\otimes_A N),\qquad
+		\operatorname{Ext}^i_A(M,N)
+		=H^i\bigl(\operatorname{Hom}_A(P_\bullet,N)\bigr).
+	\]
+	其中张量复形的微分为 \(\mathrm{d}_i\otimes1\)，而
+	\(\operatorname{Hom}\) 复形的微分为
+	\(\delta^i(\varphi)=\varphi \mathrm{d}_{i+1}\)。它们分别给出\term[Torhanzi]{Tor 函子}[Tor functor]与\term[Exthanzi]{Ext 函子}[Ext functor]。
+\end{definition}
+\symidx{\(\operatorname{Tor}_i^A(M,N)\)：自由消解张量后的第 \(i\) 个同调}
+\symidx{\(\operatorname{Ext}^i_A(M,N)\)：自由消解取 \(\operatorname{Hom}\) 后的第 \(i\) 个上同调}
+
+比较定理及其后的同伦计算证明，这一定义不依赖自由消解，也可以用任意投射消解计算。更准确地说，两份消解之间提升恒等映射，给出与提升选择无关的同构；三份消解之间的这些同构满足复合相容性，因为两种复合都提升恒等映射。
+
+\ProseParagraphBreak
+
+同样，模同态 \(f:M\to M'\) 的链提升，诱导
+\[
+	\operatorname{Tor}_i^A(M,N)\longrightarrow
+	\operatorname{Tor}_i^A(M',N),\qquad
+	\operatorname{Ext}^i_A(M',N)\longrightarrow
+	\operatorname{Ext}^i_A(M,N).
+\]
+第二变量的同态直接对张量或 \(\operatorname{Hom}\) 逐项作用，两者在这个变量都协变。不同链提升同伦，所以诱导映射唯一；复合与恒等映射由比较定理相容。同态的加法也相容，因为两个链提升之和提升原同态之和。两个变量中的作用彼此交换，且全部映射 \(A\) 线性，这就是所需的自然性。在零次处，张量的右正合性及 \(\operatorname{Hom}\) 的核描述给出
+\begin{equation}\label{g5:eq:ext-tor-degree-zero}
+	\operatorname{Tor}_0^A(M,N)\cong M\otimes_A N,\qquad
+	\operatorname{Ext}^0_A(M,N)\cong\operatorname{Hom}_A(M,N).
+\end{equation}
+若 \(M\) 投射，可用仅有零次项 \(M\) 的投射消解，故所有正次数的 \(\operatorname{Ext}^i_A(M,N)\) 与 \(\operatorname{Tor}_i^A(M,N)\) 都为零。定义与这些基本性质见\cite[附录B，第278--280页]{Matsumura1989}。
+
+\begin{proposition}\label{g5:prop:ext-annihilator}
+	设 \(A\) 为交换含幺环，\(M,N\) 为 \(A\) 模，\(i\geq0\)。在
+	\(\operatorname{Ext}^i_A(M,N)\) 与 \(\operatorname{Tor}_i^A(M,N)\) 上，乘以 \(a\in A\) 的自然标量作用，既等于第一变量乘以 \(a\) 所诱导的映射，也等于第二变量乘以 \(a\) 所诱导的映射。因此
+	\[
+		\bigl(\operatorname{Ann}_A M+\operatorname{Ann}_A N\bigr)
+		\operatorname{Ext}^i_A(M,N)=0,
+	\]
+	对 \(\operatorname{Tor}_i^A(M,N)\) 也有相同结论。特别地，若 \((A,\mathfrak m,k)\) 为局部环，则全部 \(\operatorname{Ext}^i_A(k,N)\) 与 \(\operatorname{Tor}_i^A(k,N)\) 自然为 \(k\) 向量空间。上述函子与有限直和相容；在第二变量按分量的识别下，同一模的有限直和之间由 \(A\) 系数矩阵给出的映射，诱导的映射仍由同一标量矩阵给出。
+\end{proposition}
+\begin{proof}
+	取 \(M\) 的自由消解 \(P_\bullet\)。各项乘以 \(a\) 构成链映射，并提升 \(M\) 上乘以 \(a\) 的映射。对张量与 \(\operatorname{Hom}\)，分别有
+	\[
+		(ap)\otimes n=p\otimes(an)=a(p\otimes n),\qquad
+		\varphi(ap)=a\varphi(p).
+	\]
+	所以两个变量诱导的作用在复形上就等于自然标量作用。
+
+	若 \(aM=0\)，各项乘以 \(a\) 的链映射与零链映射都提升 \(M\to M\) 的零映射。由比较定理，它们链同伦，故在所计算的同调与上同调上作用为零。若 \(aN=0\)，第二变量的作用已在复形上为零。于是两个零化理想之和也作用为零。对 \(M=k=A/\mathfrak m\)，取其零化理想 \(\mathfrak m\) 即得向量空间结构。
+
+	最后，张量积及 \(\operatorname{Hom}_A(P_i,-)\) 均与有限直和相容，而直和复形的核与像逐分量计算。因此
+	\[
+		\operatorname{Ext}^i_A(M,N^r)
+		\cong\operatorname{Ext}^i_A(M,N)^r,
+	\]
+	对 \(\operatorname{Tor}\) 也一样。若 \(N^r\to N^s\) 由矩阵 \((a_{uv})\) 给出，逐项作用就是先乘各 \(a_{uv}\) 再相加；由已经证明的标量作用与加法相容性，诱导映射恰为同一矩阵。第一变量的有限直和也逐项分解，\(\operatorname{Ext}\) 在该变量相应使用转置矩阵。
+\end{proof}
+
+这个证明不仅说明某个抽象模被 \(\mathfrak m\) 杀死，还确定了具体标量映射所诱导的作用。后面把一个正则元素的乘法放入短正合列时，正需要这种与原映射相容的零化结论。
+
+\ProseParagraphBreak
+
+为处理第一变量的短正合列，需要把两端消解拼成中间消解。这一构造称为\term[matiyinli]{马蹄引理}[horseshoe lemma]。
+
+\begin{lemma}[马蹄引理]\label{g5:lem:horseshoe}
+	设 \(A\) 为交换含幺环，\(0\to M'\to M\to M''\to0\) 为短正合列，且已选 \(M'\)、\(M''\) 的投射消解 \(P'_\bullet,P''_\bullet\)。则存在 \(M\) 的投射消解 \(P_\bullet\) 及增广相容的逐次分裂短正合列
+	\[
+		0\longrightarrow P'_\bullet\longrightarrow P_\bullet
+		\longrightarrow P''_\bullet\longrightarrow0,
+		\qquad P_i=P'_i\oplus P''_i.
+	\]
+	若原来两份消解自由，则中间消解也自由。
+\end{lemma}
+\begin{proof}
+	记原列的映射为 \(\iota:M'\to M\)、\(p:M\to M''\)。由 \(P''_0\) 的投射性，将其增广 \(\varepsilon''\) 提升为 \(s_0:P''_0\to M\)。定义
+	\[
+		\varepsilon:P'_0\oplus P''_0\longrightarrow M,\qquad
+		(u,v)\longmapsto\iota\varepsilon'(u)+s_0(v).
+	\]
+	此映射满射：先提升一个元素在 \(M''\) 中的像，剩下的差在 \(\iota(M')\) 内，再由 \(P'_0\) 提升。令三个增广的核为 \(K'_1,K_1,K''_1\)。投影到第二分量给出
+	\[
+		0\longrightarrow K'_1\longrightarrow K_1
+		\longrightarrow K''_1\longrightarrow0.
+	\]
+	核的描述直接来自 \((u,0)\in K_1\iff u\in K'_1\)。为证满射，给定 \(v\in K''_1\)，有 \(s_0(v)\in\iota(M')\)，故可选 \(u\) 使 \(\iota\varepsilon'(u)=-s_0(v)\)，于是 \((u,v)\in K_1\)。
+
+	现在以这条核的短正合列代替原列，并用既有满射 \(P'_1\to K'_1\)、\(P''_1\to K''_1\) 重复构造，得到 \(P_1=P'_1\oplus P''_1\to K_1\)。与 \(K_1\hookrightarrow P_0\) 复合，即得中间微分。继续处理核，就得到全部 \(P_i\) 及微分。每一步的投影、包含都与构造相容，故所得三列构成短正合复形列；各次按直和分裂，而中间列按核的构造正合。
+\end{proof}
+
+其中的直和分解只要求在每个次数成立，中间微分可能含有从 \(P''_i\) 到 \(P'_{i-1}\) 的分量，故中间复形一般不是两侧复形的直和。正是这些分量记录原短正合列的相互联系。
+
+\begin{proposition}\label{g5:prop:ext-tor-long-exact}
+	设 \(A\) 为交换含幺环。对任意 \(A\) 模，\(\operatorname{Ext}\) 与 \(\operatorname{Tor}\) 有下列自然的 \(A\) 线性长正合列。
+	\begin{enumerate}
+		\item 对 \(0\to N'\to N\to N''\to0\)，固定第一变量 \(M\)，有
+		\[
+			\begin{aligned}
+				0&\longrightarrow\operatorname{Hom}_A(M,N')
+				\longrightarrow\operatorname{Hom}_A(M,N)
+				\longrightarrow\operatorname{Hom}_A(M,N'')\\
+				&\longrightarrow\operatorname{Ext}^1_A(M,N')
+				\longrightarrow\operatorname{Ext}^1_A(M,N)
+				\longrightarrow\operatorname{Ext}^1_A(M,N'')
+				\\
+				&\longrightarrow\operatorname{Ext}^2_A(M,N')
+				\longrightarrow\cdots.
+			\end{aligned}
+		\]
+		\item 对 \(0\to M'\to M\to M''\to0\)，固定第二变量 \(N\)，有
+		\[
+			\begin{aligned}
+				0&\longrightarrow\operatorname{Hom}_A(M'',N)
+				\longrightarrow\operatorname{Hom}_A(M,N)
+				\longrightarrow\operatorname{Hom}_A(M',N)\\
+				&\longrightarrow\operatorname{Ext}^1_A(M'',N)
+				\longrightarrow\operatorname{Ext}^1_A(M,N)
+				\longrightarrow\operatorname{Ext}^1_A(M',N)
+				\\
+				&\longrightarrow\operatorname{Ext}^2_A(M'',N)
+				\longrightarrow\cdots.
+			\end{aligned}
+		\]
+		\item 对第一变量的短正合列，对各 \(i\geq1\) 有
+		\[
+			\begin{aligned}
+				\cdots&\longrightarrow\operatorname{Tor}_i^A(M',N)
+				\longrightarrow\operatorname{Tor}_i^A(M,N)
+				\longrightarrow\operatorname{Tor}_i^A(M'',N)\\
+				&\longrightarrow\operatorname{Tor}_{i-1}^A(M',N)
+				\longrightarrow\cdots,
+			\end{aligned}
+		\]
+		末端为
+		\[
+			\operatorname{Tor}_1^A(M'',N)\longrightarrow M'\otimes_A N
+			\longrightarrow M\otimes_A N
+			\longrightarrow M''\otimes_A N\longrightarrow0.
+		\]
+		第二变量也有同样形式的长正合列，其连接映射为
+		\(\operatorname{Tor}_i^A(M,N'')\to\operatorname{Tor}_{i-1}^A(M,N')\)。
+	\end{enumerate}
+\end{proposition}
+\begin{proof}
+	固定 \(M\) 的投射消解 \(P_\bullet\)。每个 \(P_i\) 投射，故
+	\[
+		0\to\operatorname{Hom}_A(P_\bullet,N')
+		\to\operatorname{Hom}_A(P_\bullet,N)
+		\to\operatorname{Hom}_A(P_\bullet,N'')\to0
+	\]
+	逐次正合。应用\cref{g5:prop:complex-long-exact}的上链版本及零次识别，得到第一列。又每个 \(P_i\) 平坦，所以张量 \(P_\bullet\) 后也有逐次短正合的链复形列，得到 \(\operatorname{Tor}\) 对第二变量的长正合列。
+
+	对第一变量，取马蹄引理中的短正合消解列。它逐次分裂，故分别取 \(\operatorname{Hom}_A(-,N)\) 或张量 \(N\) 后仍逐次正合；前者反转三项次序。再用复形长正合列，就得到第二列及 \(\operatorname{Tor}\) 对第一变量的版本。
+
+	还需核对后一构造的自然性与选择无关性。给定两条模短正合列之间的交换图，可将它提升为马蹄消解列之间的交换图。具体地，先提升两端映射；零次中间映射在两端上的分量已经确定，增广误差落在目标的左端模中，用 \(P''_0\) 的投射性沿左端增广提升这个误差，便补足一个从 \(P''_0\) 到目标左端零次项的分量。在下一次，对已经得到的核的短正合列重复同一过程。这样逐阶得到与包含及投影交换的链映射。复形连接映射的自然性使所得长正合图交换，而比较定理保证每项同调上的映射正是已定义的模同态所诱导的映射。特别地，对原模短正合列的恒等图作此构造，说明不同马蹄选择给出的连接映射在消解的规范识别下相同。
+\end{proof}
+
+长正合列把第二章的左正合、右正合性质接续为一条完整的列。例如 \(\operatorname{Hom}_A(M,N)\to\operatorname{Hom}_A(M,N'')\) 中一个映射不能提升，其障碍落在 \(\operatorname{Ext}^1_A(M,N')\)；只有该障碍为零时，正合性才保证提升存在。
+
+\ProseParagraphBreak
+
+定义 \(\operatorname{Tor}\) 时只消解了第一变量，实际计算却常需要选择较容易消解的那一项。下面证明两种计算一致。证明只处理第一象限，因此每个总次数只有有限多个分量。
+
+\begin{lemma}\label{g5:lem:double-complex-collapse}
+	设 \(A\) 为交换含幺环，\(D_{p,q}\) 为 \(p,q\geq0\) 的 \(A\) 模，配有两个微分
+	\[
+		h:D_{p,q}\to D_{p-1,q},\qquad
+		v:D_{p,q}\to D_{p,q-1},
+		\qquad h^2=v^2=0,\quad hv=vh.
+	\]
+	负指标处取零。令
+	\[
+		T_n=\bigoplus_{p+q=n}D_{p,q},\qquad
+		\mathrm{d}|_{D_{p,q}}=h+(-1)^p v.
+	\]
+	若每一列关于 \(v\) 的正次数同调为零，令
+	\(X_p=D_{p,0}/vD_{p,1}\)，以 \(h\) 诱导微分，则投影 \(T_\bullet\to X_\bullet\) 诱导
+	\[
+		H_n(T_\bullet)\cong H_n(X_\bullet)
+	\]
+	对全部 \(n\geq0\) 成立，且同构对保持两个微分的映射自然。
+\end{lemma}
+\begin{proof}
+	在 \(D_{p,q}\) 上展开 \(\mathrm{d}^2\)，两个交叉项的符号分别为 \((-1)^{p-1}\) 与 \((-1)^p\)，由 \(hv=vh\) 抵消，其余两项为零。因此 \(T_\bullet\) 是链复形。投影只取总次数 \(n\) 中的 \((n,0)\) 分量再取商；落到零行的竖直微分在商中为零，所以这是逐次满射的链映射。
+
+	设其核复形为 \(L_\bullet\)。我们逐个消去分量，证明每个 \(L_n\) 中的循环 \(z\) 都是边界。首先，\(z\) 的 \((n,0)\) 分量属于 \(vD_{n,1}\)。选 \(w_{n,1}\)，使 \((-1)^n v w_{n,1}\) 等于这个分量，则 \(z-\mathrm{d}w_{n,1}\) 的 \((n,0)\) 分量为零。这个修正仍属于 \(L_\bullet\)，因为 \(w_{n,1}\) 的投影为零。
+
+	现在从 \(p=n-1\) 逐次下降到 \(0\)。设 \(p\) 右边的所有列已消去，当前可能非零的最右分量为 \(z_{p,n-p}\)。总微分为零，且右边的列已为零，故
+	\[
+		vz_{p,n-p}=0.
+	\]
+	这里 \(n-p>0\)，由该列的正次数同调消失，可以选
+	\(w_{p,n-p+1}\)，使 \((-1)^p v w_{p,n-p+1}=z_{p,n-p}\)。减去其总边界，便消去这一分量，只可能在左一列产生新分量。有限次之后全部分量消去，所以 \(z\) 是这些 \(w\) 之和的边界。\(n=0\) 时仅需第一步。
+
+	于是 \(H_n(L)=0\) 对所有 \(n\) 成立。对短正合复形列 \(0\to L\to T\to X\to0\) 使用\cref{g5:prop:complex-long-exact}，即得所需同构。投影本身与给定映射交换，故同构自然。
+\end{proof}
+
+这种带有两个方向微分的对象称为\term[shuangfuxing]{双复形}[double complex]，所得 \(T_\bullet\) 称为其\term[zongfuxing]{总复形}[total complex]。引理的关键是固定总次数中的列数有限，故逐列消去确实终止；这一特例见\cite[附录B，定理B1，第275--276页]{Matsumura1989}。
+
+\begin{proposition}\label{g5:prop:tor-balanced}
+	设 \(A\) 为交换含幺环，\(M,N\) 为 \(A\) 模，\(P_\bullet\to M\)、\(Q_\bullet\to N\) 为投射消解。则有自然同构
+	\[
+		\operatorname{Tor}_i^A(M,N)
+		\cong H_i(M\otimes_A Q_\bullet)
+		\cong\operatorname{Tor}_i^A(N,M)
+		\qquad(i\geq0).
+	\]
+	因此可以消解任意一个变量来计算 \(\operatorname{Tor}\)。
+\end{proposition}
+\begin{proof}
+	取 \(D_{p,q}=P_p\otimes_A Q_q\)，两个微分分别为 \(\mathrm{d}^P\otimes1\) 与 \(1\otimes \mathrm{d}^Q\)，它们交换。因为 \(P_p\) 平坦，第 \(p\) 列的正次数同调为零，零次同调为 \(P_p\otimes_A N\)。由上一引理，其总复形 \(T\) 满足
+	\[
+		H_i(T)\cong H_i(P_\bullet\otimes_A N).
+	\]
+	同样，每个 \(Q_q\) 平坦，所以各行的正次数同调为零，零次同调为 \(M\otimes_A Q_q\)。也可以沿行使用引理：交换两个指标时，对 \((p,q)\) 分量乘以 \((-1)^{pq}\)，便把两种总微分相互对应。这给出
+	\[
+		H_i(T)\cong H_i(M\otimes_A Q_\bullet).
+	\]
+	两者合成即为第一同构。交换纯张量的两个因子，再按定义计算，得到第二同构。双复形的投影及交换映射对链映射自然；比较定理保证这些识别也与消解选择相容。
+\end{proof}
 
 \subsection{维数平移和合冲模}
 \label{g5:subsec:0801:04}
-待撰写
+
+一次自由呈示的核是原模的关系模；继续取核，就把高阶关系转成另一个模的低阶关系。长正合列使这种转移成为精确的同构，而不仅是对消解图形的描述。
+
+\begin{definition}\label{g5:def:syzygy-module}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模，选定它的投射消解 \(P_\bullet\to M\)。令
+	\[
+		\Omega^0M=M,\qquad
+		\Omega^1M=\ker(P_0\to M),\qquad
+		\Omega^rM=\ker(P_{r-1}\to P_{r-2})\quad(r\geq2).
+	\]
+	称 \(\Omega^rM\) 为该消解的第 \(r\) 个\term[hechongmo]{合冲模}[syzygy module]。消解正合性给出短正合列
+	\[
+		0\longrightarrow\Omega^{r+1}M\longrightarrow P_r
+		\longrightarrow\Omega^rM\longrightarrow0
+		\qquad(r\geq0).
+	\]
+\end{definition}
+\symidx{\(\Omega^rM\)：选定消解的第 \(r\) 个合冲模}
+
+合冲模依赖消解的选择，记号中省略的是这份已经选定的消解。它们不能直接作为“唯一确定的核”使用。例如给零次自由模增添一个多余生成元时，第一次合冲模通常也会增大。下面的同构说明，正次数的同调障碍仍然受原模控制。
+
+\begin{proposition}\label{g5:prop:dimension-shifting}
+	设 \(A\) 为交换含幺环，\(M,N\) 为 \(A\) 模，并选定 \(M\) 的投射消解及其合冲模。则对 \(r\geq0\)、\(i\geq1\)，有自然同构
+	\[
+		\operatorname{Ext}^i_A(\Omega^rM,N)
+		\cong\operatorname{Ext}^{i+r}_A(M,N),\qquad
+		\operatorname{Tor}_i^A(\Omega^rM,N)
+		\cong\operatorname{Tor}_{i+r}^A(M,N).
+	\]
+	此外，记 \(K=\Omega^1M\)，有正合列
+	\[
+		0\longrightarrow\operatorname{Tor}_1^A(M,N)
+		\longrightarrow K\otimes_A N
+		\longrightarrow P_0\otimes_A N
+		\longrightarrow M\otimes_A N\longrightarrow0
+	\]
+	以及
+	\[
+		\begin{aligned}
+			0&\longrightarrow\operatorname{Hom}_A(M,N)
+			\longrightarrow\operatorname{Hom}_A(P_0,N)
+			\longrightarrow\operatorname{Hom}_A(K,N)\\
+			&\longrightarrow\operatorname{Ext}^1_A(M,N)
+			\longrightarrow0.
+		\end{aligned}
+	\]
+\end{proposition}
+\begin{proof}
+	将\cref{g5:prop:ext-tor-long-exact}用于
+	\(0\to\Omega^{r+1}M\to P_r\to\Omega^rM\to0\)。因为 \(P_r\) 投射，包含它的正次数 \(\operatorname{Ext}\) 与 \(\operatorname{Tor}\) 都消失，所以长正合列中留下同构
+	\[
+		\operatorname{Ext}^i_A(\Omega^{r+1}M,N)
+		\cong\operatorname{Ext}^{i+1}_A(\Omega^rM,N),
+	\]
+	\[
+		\operatorname{Tor}_{i+1}^A(\Omega^rM,N)
+		\cong\operatorname{Tor}_i^A(\Omega^{r+1}M,N)
+		\qquad(i\geq1).
+	\]
+	逐次复合便得一般结论。取 \(r=0\) 并保留零次项，得到所述两条有限正合列。自然性继承自长正合列，既适用于第二变量，也适用于选定消解之间诱导的合冲模映射。
+\end{proof}
+
+这些同构称为\term[weishupingyi]{维数平移}[dimension shifting]；这里移动的是同调次数，而不是环的 Krull 维数。尤其
+\[
+	\operatorname{Ext}^1_A(M,N)
+	\cong
+	\operatorname{Hom}_A(K,N)/
+	\operatorname{im}\bigl(\operatorname{Hom}_A(P_0,N)\bigr)
+\]
+说明，关系模上的同态能否延拓到零次自由模，其障碍恰由一次 \(\operatorname{Ext}\) 记录。相应的合冲模与次数平移见\cite[附录B，第280页]{Matsumura1989}。
+
+\begin{proposition}\label{g5:prop:syzygy-stable}
+	设 \(A\) 为交换含幺环，且
+	\[
+		0\to K\to P\xrightarrow{\pi}M\to0,\qquad
+		0\to K'\to P'\xrightarrow{\pi'}M\to0
+	\]
+	正合，其中 \(P,P'\) 投射。则
+	\[
+		K\oplus P'\cong K'\oplus P.
+	\]
+\end{proposition}
+\begin{proof}
+	在 \(P\oplus P'\) 中取子模
+	\[
+		T=\{(p,p'):\pi(p)=\pi'(p')\}.
+	\]
+	投影到 \(P'\) 满射，因为 \(\pi\) 满射；其核为 \(K\)。故
+	\(0\to K\to T\to P'\to0\) 由 \(P'\) 的投射性分裂，得到 \(T\cong K\oplus P'\)。交换两份呈示，同理得 \(T\cong K'\oplus P\)。两者合成即得所述同构。
+\end{proof}
+
+所以不同呈示的关系模虽未必同构，补上相应的投射直和项后却一致。另一方面，是否需要继续增加关系，还有一个完全由 \(\operatorname{Ext}\) 表述的判据。
+
+\begin{proposition}\label{g5:prop:projectivity-ext}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模。则 \(M\) 投射，当且仅当对每个 \(A\) 模 \(N\)，都有
+	\[
+		\operatorname{Ext}^1_A(M,N)=0.
+	\]
+	若 \(M\) 有限呈示，这还等价于：对每个素理想 \(\mathfrak p\)，局部化 \(M_{\mathfrak p}\) 是有限秩自由 \(A_{\mathfrak p}\) 模。
+\end{proposition}
+\begin{proof}
+	投射模的正次数 \(\operatorname{Ext}\) 已知为零。反过来，取自由满射 \(F\to M\)，核为 \(K\)。对短正合列 \(0\to K\to F\to M\to0\) 在第二变量取 \(\operatorname{Ext}_A(M,-)\)，得到
+	\[
+		\operatorname{Hom}_A(M,F)\longrightarrow
+		\operatorname{Hom}_A(M,M)\longrightarrow
+		\operatorname{Ext}^1_A(M,K)=0.
+	\]
+	因此 \(\operatorname{id}_M\) 提升为 \(M\to F\)，使自由满射分裂。\(M\) 是自由模直和项，故投射。有限呈示情形的最后一项正是\cref{g5:thm:finite-projective-local}：有限呈示使局部的自由基和分裂能够在有限主开覆盖上拼合。
+\end{proof}
+
+量词“对每个 \(N\)”不能由只检验一个任意指定的模替代。这个判据在合冲模上应用一次，就给出有限长度消解的检测。
+
+\begin{proposition}\label{g5:prop:resolution-length-ext}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模，\(r\geq0\) 为整数。下列条件等价：
+	\begin{equivalences}
+		\item 存在正合列 \(0\to P_r\to\cdots\to P_0\to M\to0\)，其中每个 \(P_j\) 投射；
+		\item 对每个 \(A\) 模 \(N\)，有 \(\operatorname{Ext}^{r+1}_A(M,N)=0\)；
+		\item \(M\) 的任意投射消解中的 \(\Omega^rM\) 投射。
+	\end{equivalences}
+	若这些条件成立，则对每个 \(N\) 及每个 \(i>r\)，均有
+	\(\operatorname{Ext}^i_A(M,N)=0\) 和 \(\operatorname{Tor}_i^A(M,N)=0\)。
+\end{proposition}
+\begin{proof}
+	第一条件下，用这份有限投射消解直接计算，超过 \(r\) 次的复形项为零，所以相应同调与上同调均为零，特别得到第二条件。
+
+	由维数平移，对任意选定的消解有
+	\[
+		\operatorname{Ext}^1_A(\Omega^rM,N)
+		\cong\operatorname{Ext}^{r+1}_A(M,N).
+	\]
+	若第二条件成立，\cref{g5:prop:projectivity-ext}使 \(\Omega^rM\) 投射，得到第三条件。最后，若 \(r\geq1\)，截断消解为
+	\[
+		0\longrightarrow\Omega^rM\longrightarrow P_{r-1}
+		\longrightarrow\cdots\longrightarrow P_0
+		\longrightarrow M\longrightarrow0,
+	\]
+	就是第一条件所需的投射消解。\(r=0\) 时第三条件表示 \(M\) 自身投射，取零次消解即可。
+\end{proof}
+
+\begin{proposition}\label{g5:prop:flatness-tor}
+	设 \(A\) 为交换含幺环，\(M\) 为 \(A\) 模。下列条件等价：
+	\begin{equivalences}
+		\item \(M\) 平坦；
+		\item 对每个 \(A\) 模 \(N\) 及每个 \(i\geq1\)，有 \(\operatorname{Tor}_i^A(M,N)=0\)；
+		\item 对每个 \(A\) 模 \(N\)，有 \(\operatorname{Tor}_1^A(M,N)=0\)；
+		\item 对每个有限生成理想 \(I\subseteq A\)，有 \(\operatorname{Tor}_1^A(A/I,M)=0\)。
+	\end{equivalences}
+\end{proposition}
+\begin{proof}
+	若 \(M\) 平坦，取 \(N\) 的自由消解 \(Q_\bullet\)。其各段短正合列张量 \(M\) 后仍正合，因此 \(M\otimes_A Q_\bullet\) 的正次数同调都为零。\cref{g5:prop:tor-balanced}给出第二条件，它当然蕴含第三条件。
+
+	若第三条件成立，对任意单射 \(L\hookrightarrow E\) 取商 \(N=E/L\)。第二变量的 \(\operatorname{Tor}\) 长正合列包含
+	\[
+		0=\operatorname{Tor}_1^A(M,N)\longrightarrow M\otimes_A L
+		\longrightarrow M\otimes_A E.
+	\]
+	故张量 \(M\) 保留任意单射，即 \(M\) 平坦。
+
+	最后，对 \(0\to I\to A\to A/I\to0\) 应用第一变量的长正合列。由于 \(A\) 投射，得到
+	\[
+		0\longrightarrow\operatorname{Tor}_1^A(A/I,M)
+		\longrightarrow I\otimes_A M\longrightarrow M.
+	\]
+	所以第四条件恰好表示每个有限生成理想的乘法映射 \(I\otimes_A M\to M\) 单射；由\cref{g5:thm:flat-ideal-criterion}，这等价于平坦性。
+\end{proof}
+
+这个判据把第六章的理想张量判据改写成同调语言。一旦找到一个非零的一次 \(\operatorname{Tor}\)，就找到了张量失去单射性的实际核；而投射性的对应障碍，则是 \(\operatorname{Ext}^1\) 中不能提升或延拓的映射。
 
 \subsection{非平坦张量的显式 Tor}
 \label{g5:subsec:0801:05}
-待撰写
+
+计算时先选择最短或最容易写出的消解，再写出张量后的微分。不能只看消解中自由模的秩：原来单射的乘法映射，在新的模上可能成为零映射，也可能仍是单射。
+
+\begin{proposition}\label{g5:prop:principal-quotient-ext-tor}
+	设 \(A\) 为交换含幺环，\(f\in A\) 不是零因子，\(N\) 为 \(A\) 模。则
+	\[
+		\begin{aligned}
+			\operatorname{Tor}_1^A(A/(f),N)&\cong(0:_N f),&
+			\operatorname{Tor}_0^A(A/(f),N)&\cong N/fN,\\
+			\operatorname{Ext}^0_A(A/(f),N)&\cong(0:_N f),&
+			\operatorname{Ext}^1_A(A/(f),N)&\cong N/fN.
+		\end{aligned}
+	\]
+	当 \(i\geq2\) 时，\(\operatorname{Tor}_i^A(A/(f),N)\) 与
+	\(\operatorname{Ext}^i_A(A/(f),N)\) 都为零。
+\end{proposition}
+\begin{proof}
+	使用自由消解 \(0\to A\xrightarrow{f}A\to A/(f)\to0\)。张量 \(N\) 得到链复形
+	\[
+		0\longrightarrow N\xrightarrow{\,f\,}N\longrightarrow0,
+	\]
+	其中左边位于次数一，故一次同调为乘以 \(f\) 的核，零次同调为其余核。取 \(\operatorname{Hom}_A(-,N)\) 得到同样的乘法映射，但左边位于上链次数零、右边位于次数一。因此零次上同调为核、一次上同调为余核。其他次数没有非零项，结论随之成立。
+\end{proof}
+
+例如取 \(A=\mathbb Z\)、\(m,n\geq1\)。令 \(g=\gcd(m,n)\)，则
+\[
+	\operatorname{Tor}_1^{\mathbb Z}(\mathbb Z/m,\mathbb Z/n)
+	\cong\mathbb Z/g,\qquad
+	\operatorname{Ext}^1_{\mathbb Z}(\mathbb Z/m,\mathbb Z/n)
+	\cong\mathbb Z/g.
+\]
+第一个同构来自 \(\mathbb Z/n\) 中被 \(m\) 杀死的元素：它们由 \(n/g\) 的类生成，且这个生成元的阶为 \(g\)。第二个同构来自商
+\((\mathbb Z/n)/m(\mathbb Z/n)\)。当 \(m=n>1\) 时，乘以 \(m\) 的单射 \(\mathbb Z\to\mathbb Z\) 张量 \(\mathbb Z/m\) 后成为零映射，而相应的一次 \(\operatorname{Tor}\) 正好是留下的整个核。
+
+\begin{proposition}\label{g5:prop:tor-ideal-intersection}
+	设 \(A\) 为交换含幺环，\(I,J\subseteq A\) 为任意理想。则有自然同构
+	\[
+		\operatorname{Tor}_1^A(A/I,A/J)
+		\cong (I\cap J)/IJ.
+	\]
+\end{proposition}
+\begin{proof}
+	由 \(0\to I\to A\to A/I\to0\) 的长正合列及 \(\operatorname{Tor}_1^A(A,A/J)=0\)，有
+	\[
+		0\longrightarrow\operatorname{Tor}_1^A(A/I,A/J)
+		\longrightarrow I\otimes_A A/J
+		\longrightarrow A\otimes_A A/J.
+	\]
+	将右边两项识别为 \(I/IJ\) 与 \(A/J\)，中间映射就是
+	\(a+IJ\mapsto a+J\)。它的核由 \(a\in I\cap J\) 给出，故为 \((I\cap J)/IJ\)。
+\end{proof}
+
+因此一次 \(\operatorname{Tor}\) 比较的是理想的交与乘积；即使两个闭子集的集合交相同，相应商模的关系仍可能不同。这个公式没有对理想添加有限生成条件。后面的几何模型将把它与具体交的方程结合起来。
+
+\begin{example}\label{g5:exm:dual-numbers-infinite-tor}
+	设 \(k\) 为任意域，\(A=k[\varepsilon]/(\varepsilon^2)\)，并把
+	\(k=A/(\varepsilon)\) 看作 \(A\) 模。则
+	\[
+		\cdots\xrightarrow{\varepsilon}A
+		\xrightarrow{\varepsilon}A
+		\xrightarrow{\varepsilon}A\longrightarrow k\longrightarrow0
+	\]
+	是自由消解。确实，\(A\) 中每个元素唯一写为 \(a+b\varepsilon\)，乘以 \(\varepsilon\) 得 \(a\varepsilon\)，所以每个中间位置的核与像都为 \((\varepsilon)\)，增广的核也为该理想。
+
+	张量 \(k\) 后，全部微分为零。因此
+	\[
+		\operatorname{Tor}_i^A(k,k)\cong k\qquad(i\geq0).
+	\]
+	同样，取 \(\operatorname{Hom}_A(-,k)\) 后全部上链微分为零，得到
+	\[
+		\operatorname{Ext}^i_A(k,k)\cong k\qquad(i\geq0).
+	\]
+	这些结论对任意特征成立。它们证明 \(k\) 不平坦，而且不存在有限长度的投射消解：若有长度不超过 \(r\) 的消解，超过 \(r\) 次的同调就应全部消失。
+
+	一次障碍也能从一个短正合列直接看到。因为 \((\varepsilon)\cong k\) 作为 \(A\) 模，包含 \((\varepsilon)\hookrightarrow A\) 张量 \(k\) 后变成
+	\[
+		(\varepsilon)\otimes_A k\cong k
+		\longrightarrow A\otimes_A k\cong k,
+	\]
+	这张映射把 \(\varepsilon\otimes1\) 送到零。长正合列将其非零核识别为
+	\(\operatorname{Tor}_1^A(k,k)\)。无限消解进一步表明，同样的关系在每个更高次数继续出现。
+\end{example}
+
+自由消解把“生成元、关系及高阶关系”组织成可以比较的复形；链同伦保证其同调不随表示改变。长正合列与维数平移随后把障碍从一项传到另一项。下一节的 Koszul 复形将给出一类由有限个元素直接写出的自由复形，并用正则性判断它何时就是所需消解。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

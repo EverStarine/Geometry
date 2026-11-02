@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 28.1 方程与光滑短时理论
 % 纲要位置：几何学计划纲要.md，第 3285 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,235 @@
 \section{方程与光滑短时理论}
 \label{g3:sec:2801}
 
-待撰写
+面积的一阶变分指出，平均曲率向量给出面积下降的法向方向。让浸入沿这个方向移动，所得方程却没有在全部分量上直接呈现强抛物性：沿切向移动参数，不改变眼前的子流形。解决办法是先规定如何表示附近的子流形，再求它的法向运动。本节用初始浸入的法丛作为固定未知量空间，使\cref{g3:thm:quasilinear-parabolic-short-time}能够直接应用。
 
 \subsection{参数退化及法向速度}
 \label{g3:subsec:2801:01}
-待撰写
+设 \(F:M^m\to(N^{m+q},\bar g)\) 为光滑浸入，\(m\ge1\)，诱导度量为 \(g=F^*\bar g\)。沿用\secref{g3:sec:0401}的第二基本形式与平均曲率约定：
+\[
+B(X,Y)=\bigl(\bar\nabla_X\mathrm dF(Y)\bigr)^\perp,
+\qquad H=\frac1m\operatorname{tr}_g B.
+\]
+几何流文献常把未除以维数的迹称为平均曲率向量。为了保留本书已有的 \(H\)，本章另记
+\begin{equation}\label{g3:eq:mcf-trace-convention}
+	\mathcal H=\operatorname{tr}_gB=mH.
+\end{equation}
+这使闭源上的面积一阶变分写成
+\(\mathcal A'(V)=-\int_M\langle\mathcal H,V\rangle\,\mu_g\)。于是面积相对于法向场的 \(L^2\) 度量的负梯度正是 \(\mathcal H\)。
+
+\begin{definition}\label{g3:def:mean-curvature-flow}
+	设 \(M^m\) 为光滑无边界流形，\(m\ge1\)，\((N,\bar g)\) 为光滑无边界黎曼流形。光滑浸入族 \(F:M\times[0,T)\to N\) 若满足
+	\begin{equation}\label{g3:eq:mean-curvature-flow}
+		\partial_tF=\mathcal H_F,\qquad F(\cdot,0)=F_0,
+	\end{equation}
+	称为以 \(F_0\) 为初值的\term[pingjun qulv liu]{平均曲率流}[mean curvature flow]。若只规定 \((\partial_tF)^\perp=\mathcal H_F\)，则称该浸入族具有平均曲率法向速度；它还可以带有切向速度。
+\end{definition}
+\symidx{\(\mathcal H\)：未除以维数的平均曲率向量}
+
+在 Euclid 环境中，\cref{g3:prop:gauss-decomposition}的 Gauss 公式给出
+\begin{equation}\label{g3:eq:mcf-euclidean-coordinate}
+	\mathcal H=g^{ij}\bigl(F_{ij}-\Gamma^k_{ij}(g)F_k\bigr)
+	=-\Delta_gF.
+\end{equation}
+因此方程形式上是 \(F_t+\Delta_gF=0\)，但度量 \(g\) 由 \(F\) 自身诱导。对一般环境，在右端加入
+\(g^{ij}\bar\Gamma^\alpha_{\beta\gamma}(F)F_i^\beta F_j^\gamma\)；环境联络项只含 \(F\) 的一阶导数。
+
+\ProseParagraphBreak
+记 \(P_F^\perp\) 为到浸入法空间的正交投影。曲率算子的二阶部分为 \(g^{ij}P_F^\perp\partial_i\partial_jF\)。在固定浸入处线性化，并把 \(\partial_i\partial_j\) 换成 \(-\xi_i\xi_j\)，得到主符号
+\[
+\sigma_2(\mathrm D\mathcal H_F)(\xi)V
+=-|\xi|_g^2P_F^\perp V.
+\]
+它在法向量上给出热方程的符号，在切向量上为零。这个核正对应重新参数化的自由。
+
+\begin{lemma}\label{g3:lem:mcf-reparametrization}
+	设 \(M\) 闭，\(F_t:M\to N\) 是光滑浸入族，且 \((\partial_tF)^\perp=\mathcal H_F\)。唯一写成
+	\[
+	\partial_tF=\mathcal H_F+\mathrm dF(W_t),
+	\]
+	其中 \(W_t\) 是 \(M\) 上的光滑时变向量场。若 \(\phi_t\) 解
+	\begin{equation}\label{g3:eq:mcf-tangential-ode}
+		\partial_t\phi_t=-W_t\circ\phi_t,\qquad\phi_0=\operatorname{id}_M,
+	\end{equation}
+	则 \(\widetilde F_t=F_t\circ\phi_t\) 满足 \(\partial_t\widetilde F=\mathcal H_{\widetilde F}\)。在 \(F\) 的每个紧时间子区间上，\(\phi_t\) 都存在并且是微分同胚。
+\end{lemma}
+\begin{proof}
+	\(\mathrm dF\) 在每点把 \(\mathrm TM\) 同构到浸入切空间，所以 \(W_t\) 存在、唯一且光滑。闭性使光滑时变向量场在有限时间内不会逃离流形；常微分方程的局部存在唯一性可沿有限时间区间延续，其逆由反向时间方程给出。链式法则与 \(\mathcal H_{F\circ\phi}=\mathcal H_F\circ\phi\) 给出
+	\[
+	\partial_t(F_t\circ\phi_t)
+	=(\mathcal H_F+\mathrm dF(W_t))\circ\phi_t
+	-\mathrm dF_{\phi_t}(W_t\circ\phi_t)
+	=\mathcal H_{F_t\circ\phi_t}.
+	\]
+\end{proof}
+
+时间不变的重新参数化保持式\eqref{g3:eq:mean-curvature-flow}；时间变化的重新参数化通常增加一个切向速度。给定初始映射后的参数化唯一性与不指定参数的几何运动，需要分别核对。
 
 \subsection{图像方程的抛物性}
 \label{g3:subsec:2801:02}
-待撰写
+先在 Euclid 空间中观察一个可直接计算的规范。设 \(u:U\times[0,T)\to\mathbb R^q\)，其中 \(U\subset\mathbb R^m\) 开，令 \(F(x,t)=(x,u(x,t))\)。底部坐标始终固定，故速度是竖直的，而非通常意义下纯法向的。
+
+\begin{proposition}\label{g3:prop:mcf-graph-equation}
+	上述光滑图族具有平均曲率法向速度，当且仅当
+	\begin{equation}\label{g3:eq:mcf-graph-system}
+		\partial_tu^\alpha=g^{ij}(\mathrm Du)u^\alpha_{ij},
+		\qquad g_{ij}=\delta_{ij}+\sum_{\alpha=1}^q u_i^\alpha u_j^\alpha,
+		\quad 1\le\alpha\le q.
+	\end{equation}
+	它是任意余维下的拟线性强抛物系统；在 \(|\mathrm Du|\le K\) 的区域，主系数满足
+	\[
+	\frac{|\xi|^2}{1+K^2}|v|^2
+	\le g^{ij}\xi_i\xi_j|v|^2\le |\xi|^2|v|^2
+	\qquad(\xi\in\mathbb R^m,\ v\in\mathbb R^q).
+	\]
+\end{proposition}
+\begin{proof}
+	图的 \(F_{ij}=(0,u_{ij})\)，故
+	\(\mathcal H=P_F^\perp(0,g^{ij}u_{ij})\)，而
+	\((\partial_tF)^\perp=P_F^\perp(0,u_t)\)。竖直向量上的 \(P_F^\perp\) 是单射：若 \((0,a)\) 切于图，必有 \((0,a)=(X,\mathrm Du(X))\)，从而 \(X=0\)、\(a=0\)。两边的法向投影相等遂等价于式\eqref{g3:eq:mcf-graph-system}。
+
+	对任意 \(X\in\mathbb R^m\)，有
+	\(|X|^2\le g(X,X)\le(1+K^2)|X|^2\)。取逆矩阵就得到所述符号界；它在每个竖直分量上乘同一个正标量。故即使 \(q>1\)，这一图规范的最高阶部分仍是标量系数乘恒等算子。
+\end{proof}
+
+\begin{example}\label{g3:exm:mcf-scalar-graph}
+	余维为一时，逆矩阵可以直接写出：
+	\[
+	g^{ij}=\delta^{ij}-\frac{u_i u_j}{1+|\mathrm Du|^2},\qquad
+	u_t=\sqrt{1+|\mathrm Du|^2}\,
+	\operatorname{div}\frac{\mathrm Du}{\sqrt{1+|\mathrm Du|^2}}.
+	\]
+	向上单位法向为 \(\nu=(-\mathrm Du,1)/\sqrt{1+|\mathrm Du|^2}\)。竖直速度的法向分量是
+	\(u_t\nu/\sqrt{1+|\mathrm Du|^2}\)，恰等于 \(\mathcal H\)。若 \(u=a\cdot x+b\)，则 \(u_{ij}=0\)，图是静止的平面。主符号的最小特征值为 \((1+|\mathrm Du|^2)^{-1}\)，说明梯度界在统一抛物性中的作用。
+\end{example}
+
+局部图方程展示了退化如何消失。要得到一个闭浸入的解，还需把所有图用同一个全局未知量联系起来；仅在各坐标片分别求解，无法预先保证它们沿时间相容。初始浸入的法丛提供了这种统一表示。
 
 \subsection{规范与短时存在}
 \label{g3:subsec:2801:03}
-待撰写
+固定光滑浸入 \(F_0:M^m\to(N^{m+q},\bar g)\)，其中 \(M\) 闭、\(q\ge1\)。令 \(E=\nu F_0\) 为它的法丛，配上由环境度量及联络诱导的丛度量与法联络。由于 \(F_0(M)\) 紧，存在 \(E\) 零截面的统一邻域，使
+\[
+\mathscr E(x,z)=\exp_{F_0(x)}^{\bar g}(z)
+\]
+光滑有定义。对足够小的光滑截面 \(u\)，记
+\(F_u(x)=\mathscr E(x,u(x))\)，称它为相对于 \(F_0\) 的\term[fa tu]{法图}[normal graph]。小 \(C^1\) 邻域内的 \(F_u\) 仍为浸入。这里不要求环境完备：指数映射只需在紧像附近的短向量上定义。
+
+\begin{lemma}\label{g3:lem:mcf-normal-graph-gauge}
+	对上述闭浸入 \(F_0\)，每个充分 \(C^1\) 接近 \(F_0\) 的光滑映射 \(G:M\to N\) 都唯一表示成
+	\begin{equation}\label{g3:eq:mcf-normal-graph-factorization}
+		G=F_u\circ\chi,
+	\end{equation}
+	其中 \(u\) 是充分小的光滑法截面，\(\chi\) 是充分 \(C^1\) 接近恒等映射的微分同胚。对光滑有限维参数族 \(G\)，这两个对象也联合光滑依赖参数。
+\end{lemma}
+\begin{proof}
+	在 \((x,0)\in E\) 处，\(\mathscr E\) 的微分为
+	\[
+	\mathrm D\mathscr E_{(x,0)}(X,z)=\mathrm dF_0(X)+z.
+	\]
+	切空间与法空间的直和使它成为到 \(\mathrm T_{F_0(x)}N\) 的线性同构。有限维逆函数定理因而在每点给出一个局部逆。用 \(M\) 的有限覆盖缩小邻域后，对每个接近 \(F_0\) 的 \(G\)，可以唯一求得靠近 \((x,0)\) 的 \((y(x),z(x))\)，使
+	\(G(x)=\mathscr E(y(x),z(x))\)。这些局部解在重叠处一致，因为都在靠近参数对角线的同一逆函数邻域内。具体地，先取较小的有限坐标片，使其闭包落在原逆函数片内；相邻片上的两个候选基点均充分靠近 \(x\)，从而同时属于一个原片，那里有局部逆的唯一性。于是 \(y,z\) 全局光滑，且 \(y\) 在 \(C^1\) 中接近恒等映射。
+
+	充分 \(C^1\) 接近恒等映射的 \(y:M\to M\) 是微分同胚。局部微分可逆使它局部单射；用有限坐标片和逆函数估计，可以在靠近对角线的一致邻域内保证单射。对远离对角线的点对，\(y\) 与恒等映射的一致接近也保证像不重合。所以 \(y\) 全局单射，其像在每个分支中开且闭，故满射。令 \(\chi=y\)、\(u=z\circ\chi^{-1}\)，便得到式\eqref{g3:eq:mcf-normal-graph-factorization}。同一局部逆证明唯一性和参数光滑性。
+
+	即使 \(F_0\) 有自交，以上论证仍成立：所选逆的基点始终靠近原参数 \(x\)。不同参数处的像可以重合，但并未要求 \(\mathscr E\) 在整个法丛邻域上单射。
+\end{proof}
+
+现在把法向速度方程写在固定丛 \(E\) 上。令
+\[
+L_u(x)=\mathrm D_z\mathscr E(x,u(x)):E_x\longrightarrow\mathrm T_{F_u(x)}N,
+\qquad J_u=P_{F_u}^\perp L_u.
+\]
+在 \(u=0\) 处，\(J_0\) 就是 \(E_x\) 到原法空间的恒等同构；因而 \(u\) 的 \(C^1\) 范数足够小时，\(J_u:E_x\to\nu_xF_u\) 仍可逆。
+
+\begin{lemma}\label{g3:lem:mcf-normal-graph-parabolic}
+	在上述小法图邻域内，\((\partial_tF_u)^\perp=\mathcal H_{F_u}\) 等价于固定丛 \(E\) 上的方程
+	\begin{equation}\label{g3:eq:mcf-normal-graph-pde}
+		u_t=J_u^{-1}\mathcal H_{F_u}
+		=g_u^{ij}\nabla_i\nabla_j u+\mathcal B(x,u,\nabla u),
+		\qquad g_u=F_u^*\bar g,
+	\end{equation}
+	其中 \(\nabla\) 是固定的法联络，二阶导数同时使用 \(g_0=F_0^*\bar g\) 的源联络；\(\mathcal B\) 光滑依赖一阶喷射。此方程在零截面的一阶喷射邻域中一致强抛物。
+\end{lemma}
+\begin{proof}
+	时间微分给出 \(\partial_tF_u=L_u u_t\)，故法向速度就是 \(J_u u_t\)。在环境局部坐标和 \(E\) 的固定局部标架中，链式法则把 \(F_u\) 的协变二阶导数写成
+	\[
+	\bar\nabla_i\partial_jF_u
+	=L_u(\nabla_i\nabla_j u)+R_{ij}(x,u,\nabla u),
+	\]
+	其中固定源联络、丛联络及环境联络造成的差都只进入光滑低阶项 \(R_{ij}\)。取 \(g_u\) 的迹并投影到 \(F_u\) 的法空间，得到
+	\[
+	\mathcal H_{F_u}=g_u^{ij}J_u(\nabla_i\nabla_j u)
+	+g_u^{ij}P_{F_u}^\perp R_{ij}.
+	\]
+	左乘 \(J_u^{-1}\) 即得方程。\(g_u\)、\(J_u\) 及其逆都只依赖一阶喷射，所以低阶项具有所述形式。取固定背景度量 \(g_0\)；紧性和小 \(C^1\) 邻域给出 \(c^{-1}g_0\le g_u\le c g_0\)。主符号因此为 \(g_u^{ij}\xi_i\xi_j\operatorname{Id}_E\)，具有一致正下界。这正是\cref{g3:def:quasilinear-strong-parabolicity}的条件。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:mcf-short-time}
+	设 \(M^m\) 为闭光滑流形，\(m\ge1\)，\((N^{m+q},\bar g)\) 为光滑无边界黎曼流形，\(q\ge1\)，\(F_0:M\to N\) 为光滑浸入。则存在 \(T>0\) 及光滑浸入族 \(F:M\times[0,T]\to N\)，满足
+	\(\partial_tF=\mathcal H_F\)、\(F(\cdot,0)=F_0\)。具有相同初始映射的光滑解在共同存在区间内相同。若 \(F_0\) 为嵌入，则时间足够小时每个 \(F_t\) 也是嵌入。
+\end{theorem}
+\begin{proof}
+	对式\eqref{g3:eq:mcf-normal-graph-pde}取初值 \(u(0)=0\)。未知量是固定正秩丛 \(E\) 的截面，主系数与低阶项在一个一阶喷射开邻域上光滑，并在初始喷射图上一致强抛物；闭性使初始喷射图紧。\Cref{g3:thm:quasilinear-parabolic-short-time}因此给出联合光滑的短时解。缩短时间可使其留在所选小 \(C^1\) 邻域，所以 \(\widehat F=F_u\) 始终是浸入，且具有平均曲率法向速度。
+
+	唯一写成
+	\(\partial_t\widehat F=\mathcal H_{\widehat F}+\mathrm d\widehat F(W_t)\)。由\cref{g3:lem:mcf-reparametrization}，解式\eqref{g3:eq:mcf-tangential-ode}后，\(F=\widehat F\circ\phi_t\) 满足所需纯法向方程。这一步是光滑常微分方程，保留已经得到的初时刻光滑性。
+
+	为证唯一性，设 \(G\) 是同初值的另一光滑解。短时间内，\cref{g3:lem:mcf-normal-graph-gauge}给出 \(G=F_v\circ\chi_t\)，其中 \(v(0)=0\)、\(\chi_0=\operatorname{id}\)。微分这个分解并取法向部分，\(\chi_t\) 的时间导数只产生切向项，所以
+	\(J_v v_t=\mathcal H_{F_v}\)。于是 \(v\) 满足与 \(u\) 相同的强抛物初值问题；\cref{g3:prop:quasilinear-parabolic-uniqueness}给出 \(v=u\)。再比较切向部分，\(G_t\) 纯法向迫使
+	\(\partial_t\chi_t=-W_t\circ\chi_t\)。常微分方程唯一性给 \(\chi_t=\phi_t\)，从而 \(G=F\)。在共同存在区间内的任意两解相等时刻，都可用该时刻的浸入重做此局部论证；连续性和向右延续遂给出整个共同区间的唯一性。
+
+	最后，闭流形的嵌入在 \(C^1\) 拓扑下是开条件。其原因仍是两类点对的分离：近点由初始嵌入的有限局部图与微分下界控制；离开对角线的点对，在紧集上有正的像间距。充分小的 \(C^1\) 扰动同时保持二者。因此初始嵌入时缩短 \(T\) 即得末项。
+\end{proof}
+
+当 \(q=0\) 时，法空间为零，\(\mathcal H\equiv0\)，式\eqref{g3:eq:mean-curvature-flow}的唯一解就是 \(F_t=F_0\)。正余维证明中的两个选择各有作用：法图使方程强抛物，随后源上的微分同胚使运动速度完全法向。自交的浸入同样适用，因为这些选择使用参数空间上的法丛。
 
 \subsection{面积下降及边界条件}
 \label{g3:subsec:2801:04}
-待撰写
+短时解存在以后，面积下降才成为实际演化的恒等式。用 \(V=\partial_tF\) 表示一般浸入变分的速度，写 \(V=V^\perp+\mathrm dF(W)\)。由\cref{g3:eq:submanifold-area-first-variation}的点态计算，
+\begin{equation}\label{g3:eq:mcf-general-area-density}
+	\partial_t\mu_g
+	=\bigl(\operatorname{div}_gW-\langle\mathcal H,V^\perp\rangle\bigr)\mu_g.
+\end{equation}
+散度项描述参数运动带来的密度输运；法向项描述真实的面积变化。
+
+\begin{proposition}\label{g3:prop:mcf-area-dissipation}
+	设 \(M^m\) 闭，\(F:M\times[0,T)\to(N,\bar g)\) 为光滑平均曲率流。令 \(g_t=F_t^*\bar g\)、\(\mathcal A(t)=\int_M\mu_{g_t}\)。则
+	\begin{align}
+		\partial_tg_{ij}&=-2\langle\mathcal H,B_{ij}\rangle,
+		\label{g3:eq:mcf-metric-evolution}\\
+		\partial_t\mu_{g_t}&=-|\mathcal H|^2\mu_{g_t},\qquad
+		\mathcal A'(t)=-\int_M|\mathcal H|^2\,\mu_{g_t}.
+		\label{g3:eq:mcf-area-dissipation}
+	\end{align}
+	因而对 \(0\le a<b<T\)，
+	\[
+	\mathcal A(a)-\mathcal A(b)
+	=\int_a^b\int_M|\mathcal H|^2\,\mu_{g_t}\,\mathrm dt.
+	\]
+	面积在一个时间区间上恒定，当且仅当该区间上的流为静止极小浸入。
+\end{proposition}
+\begin{proof}
+	微分诱导度量得到
+	\(\partial_tg_{ij}=\langle\bar\nabla_i\mathcal H,F_j\rangle+
+	\langle F_i,\bar\nabla_j\mathcal H\rangle\)。对 \(\langle\mathcal H,F_j\rangle=0\) 求导，并用 \(B\) 的对称性，便得第一式。再取一半的迹，得到
+	\(\partial_t\mu_g=\tfrac12g^{ij}\partial_tg_{ij}\mu_g=-|\mathcal H|^2\mu_g\)。闭流形上积分与时间微分可交换，所得等式再对时间积分即为耗散恒等式。若面积恒定，连续非负函数 \(|\mathcal H|^2\) 的积分在每时刻为零，故 \(\mathcal H\equiv0\)，方程遂给 \(\partial_tF=0\)；逆向立即成立。
+\end{proof}
+
+面积控制的是 \(\mathcal H\) 的时空平方积分。它不能单独给出第二基本形式的点态上界：某些方向的弯曲可以在取迹时抵消，曲率也可能集中在越来越小的区域。后续演化公式与加权面积分别提供更局部的观察。
+
+\ProseParagraphBreak
+若 \(M\) 紧且有光滑边界，对具有平均曲率法向速度的光滑浸入族积分式\eqref{g3:eq:mcf-general-area-density}，得到
+\begin{equation}\label{g3:eq:mcf-boundary-flux}
+	\frac{\mathrm d}{\mathrm dt}\mathcal A(t)
+	=-\int_M|\mathcal H|^2\,\mu_g
+	+\int_{\partial M}\langle V,\mathrm dF(\eta)\rangle\,\mu_{\partial g},
+\end{equation}
+其中 \(\eta\) 是 \(M\) 内的外单位余法向。固定边界 \(F_t|_{\partial M}=F_0|_{\partial M}\) 使 \(V=0\)，通量消失。若还要求纯法向方程光滑成立到边界，则必有 \(\mathcal H=0\) 于边界；这已经是初始数据需要满足的相容条件之一。
+
+\ProseParagraphBreak
+另一种情形是边界留在固定光滑支撑超曲面 \(S\subset N\)，并满足正交接触条件 \(\mathrm dF(\eta)\perp\mathrm TS\)。边界速度属于 \(\mathrm TS\)，所以式\eqref{g3:eq:mcf-boundary-flux}的边界项仍为零。这就是\term[ziyou bianjie pingjun qulv liu]{自由边界平均曲率流}[free boundary mean curvature flow]中面积耗散的来源。这两种边界情形的公式以已有光滑解为前提；它们的短时构造需要配套的抛物边值理论和初始相容条件，而\cref{g3:thm:mcf-short-time}处理闭源。
+
+\begin{example}\label{g3:exm:mcf-free-boundary-flux}
+	上半球面 \(F(x,t)=R(t)x\)，\(x\in S^m\)、\(x_{m+1}\ge0\)，以赤道为边界，支撑面为 \(S=\{x_{m+1}=0\}\)。取 \(R'(t)=-m/R(t)\)，则速度等于 \(\mathcal H=-mx/R(t)\)。在赤道，球面的外余法向为 \(-e_{m+1}\)，它垂直于支撑面；边界径向速度则切于该平面。因此通量为零，半球面积满足同一耗散恒等式。反之，\cref{g3:exm:plane-disk-moving-boundary}中的扩张平盘具有零平均曲率法向速度，却因正的边界通量而增加面积。这两个计算显示，边界怎样移动是耗散公式的一部分。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

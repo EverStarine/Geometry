@@ -1,7 +1,7 @@
 % !TeX root = ../../Book5.tex
 % 纲要标题：### 4.3 导子理想及显式计算
 % 纲要位置：几何学计划纲要.md，第 5169 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,334 @@
 \section{导子理想及显式计算}
 \label{g5:sec:0403}
 
-待撰写
+正规化把坐标环 \(A\) 放进同一个总分式环中的整闭环 \(A^\nu\)。原来只能作为分式出现的函数，可能因此成为正规函数；尖点的参数 \(t=t^3/t^2\) 就是这样的元素。要测量正规化增加了多少函数，可以考察 \(A\) 模 \(A^\nu/A\)；要确定这些新函数在哪些点附近已经属于原环，则要找出能够同时把它们乘回 \(A\) 的元素。
+
+\ProseParagraphBreak
+
+本节用导子理想同时回答这两个问题，再完整计算尖点和结点。计算只使用多项式、局部化和第三章的模长度。曲线正规化商的有限性可对照\cite[第4章第4.1节，定理4.11的证明，第271页]{Shafarevich2013Basic1}；用局部商的长度定义奇点不变量，以及结点、普通尖点的取值，可对照\cite[第IV章，习题1.8，第298页]{Hartshorne1977}。
 
 \subsection{有限双有理扩张的导子}
 \label{g5:subsec:0403:01}
-待撰写
+
+设 \(A\) 为非零约化 Noether 环，\(Q(A)\) 为把全部非零因子变成单位所得的总分式环。若
+\[
+	A\subseteq B\subseteq Q(A),\qquad B\text{ 为有限 }A\text{ 模},
+\]
+就称这个包含为\term[youxianshuangyoulikuozhang]{有限双有理扩张}[finite birational extension]。这里的双有理性由同一个总分式环内的包含表达：若 \(S\) 为 \(A\) 的非零因子集，则 \(S^{-1}B=Q(A)\)。在整环情形，这就是两个环具有同一分式域。\cref{g5:cor:reduced-finite-normalization}保证约化有限型域代数的正规化属于这一情形。
+
+\begin{definition}\label{g5:def:conductor}
+	设 \(A\) 为非零约化 Noether 环，\(A\subseteq B\subseteq Q(A)\) 为有限双有理扩张。定义
+	\[
+	\mathfrak c_{B/A}=(A:B)
+	=\{a\in A\mid aB\subseteq A\},
+	\]
+	称为这个扩张的\term[daozilixiang]{导子理想}[conductor ideal]。环 \(B\) 明确时简记为 \(\mathfrak c\)。
+\end{definition}
+\symidx{\(\mathfrak c_{B/A}=(A:B)\)：有限双有理扩张的导子理想}
+
+\begin{proposition}\label{g5:prop:conductor-properties}
+	设 \(A\) 为非零约化 Noether 环，\(A\subseteq B\subseteq Q(A)\) 为有限双有理扩张，\(\mathfrak c=\mathfrak c_{B/A}\)。则
+	\[
+	\mathfrak c=\operatorname{Ann}_A(B/A)
+	=\{b\in B\mid bB\subseteq A\}.
+	\]
+	它同时是 \(A\) 与 \(B\) 的理想，而且是 \(B\) 中包含于 \(A\) 的最大理想。它含有一个 \(A\) 的非零因子 \(s\)，从而 \(A_s=B_s\)。此外，\(\mathfrak c=A\) 当且仅当 \(A=B\)。
+\end{proposition}
+\begin{proof}
+	对 \(a\in A\)，条件 \(a(B/A)=0\) 就是 \(aB\subseteq A\)，得到零化子等式。若 \(b\in B\) 满足 \(bB\subseteq A\)，代入 \(1\in B\) 便有 \(b\in A\)，所以两个集合描述相同。
+
+	对 \(c\in\mathfrak c\)、\(b\in B\)，有 \((bc)B\subseteq cB\subseteq A\)，故 \(bc\in\mathfrak c\)。加法封闭性直接成立，所以 \(\mathfrak c\) 是 \(B\) 理想，也当然是 \(A\) 理想。若 \(J\) 为 \(B\) 的理想且 \(J\subseteq A\)，则每个 \(c\in J\) 都满足 \(cB\subseteq J\subseteq A\)，因此 \(J\subseteq\mathfrak c\)。
+
+	取有限组 \(A\) 模生成元 \(b_1,\ldots,b_r\) 生成 \(B\)。因 \(B\subseteq Q(A)\)，可写 \(b_i=a_i/s_i\)，其中 \(a_i\in A\)、\(s_i\) 为非零因子。令 \(s=\prod_i s_i\)，则 \(s\) 仍是非零因子，且 \(sb_i\in A\) 对所有 \(i\) 成立。由生成性知 \(sB\subseteq A\)，故 \(s\in\mathfrak c\)。在反演 \(s\) 后，每个 \(b\in B\) 都写为 \((sb)/s\in A_s\)，所以 \(A_s=B_s\)。最后，\(1\in\mathfrak c\) 等价于 \(B\subseteq A\)，给出最后的断言。
+\end{proof}
+
+这里 \(B/A\) 是 \(A\) 模的商；\(A\) 通常不是 \(B\) 的理想，所以这个符号并不表示商环。在可约对象上，共同分母也必须选非零因子：只有这样的元素才能同时在每个分支的函数域中反演。有限生成性使有限多个分母的乘积足以控制全部新函数。
+
+\begin{proposition}\label{g5:prop:conductor-localization}
+	设 \(A\) 为非零约化 Noether 环，\(A\subseteq B\subseteq Q(A)\) 为有限双有理扩张，\(T\subseteq A\) 为乘法集。则
+	\[
+	T^{-1}\mathfrak c_{B/A}
+	=(T^{-1}A:T^{-1}B).
+	\]
+	特别地，对 \(\mathfrak p\in\operatorname{Spec}A\)，记
+	\(B_{\mathfrak p}=(A\setminus\mathfrak p)^{-1}B\)，便有
+	\[
+	A_{\mathfrak p}=B_{\mathfrak p}
+	\quad\Longleftrightarrow\quad
+	\mathfrak c_{B/A}\not\subseteq\mathfrak p.
+	\]
+\end{proposition}
+\begin{proof}
+	令 \(M=B/A\)。局部化正合性给出
+	\(T^{-1}M=(T^{-1}B)/(T^{-1}A)\)。一个一般的有限模 \(M\) 满足
+	\[
+	T^{-1}\operatorname{Ann}_A(M)
+	=\operatorname{Ann}_{T^{-1}A}(T^{-1}M).
+	\]
+	其中从左到右的包含直接成立。为证反向，设 \(a/t\) 杀掉 \(T^{-1}M\)，并取有限组生成元 \(m_1,\ldots,m_r\) 生成 \(M\)。由局部化的零元判据，对每个 \(i\) 存在 \(u_i\in T\) 使 \(u_i a m_i=0\)。令 \(u=\prod_i u_i\)，则 \(uaM=0\)，且 \(a/t=(ua)/(ut)\) 属于左端。将这个等式用于 \(M=B/A\)，再用\cref{g5:prop:conductor-properties}便得导子的局部化公式。
+
+	当 \(T=A\setminus\mathfrak p\) 时，两个局部化环相等，等价于它们的导子是整个 \(A_{\mathfrak p}\)，也等价于 \(\mathfrak c A_{\mathfrak p}=A_{\mathfrak p}\)。后者恰表示 \(\mathfrak c\) 含有一个不属于 \(\mathfrak p\) 的元素。
+\end{proof}
+
+这里的 \(B_{\mathfrak p}\) 只反演底环 \(A\setminus\mathfrak p\)。当 \(\mathfrak p\) 上方有多个素理想时，它可以有多个极大理想；它与在 \(B\) 的某个指定素理想处局部化是两个不同的环。
+
+\begin{corollary}\label{g5:cor:normalization-isomorphism-locus}
+	设 \(k\) 为域，\(A\) 为非零约化有限型 \(k\) 代数，\(B=A^\nu\) 为其在 \(Q(A)\) 中的正规化，\(\mathfrak c=(A:B)\)。则
+	\[
+	\operatorname{Supp}_A(B/A)=V(\mathfrak c),
+	\qquad
+	U=\{\mathfrak p\mid A_{\mathfrak p}=B_{\mathfrak p}\}
+	=\operatorname{Spec}A\setminus V(\mathfrak c).
+	\]
+	对每个 \(f\in\mathfrak c\)，有 \(A_f=B_f\)；这些主开集 \(D_A(f)\) 覆盖 \(U\)，给出正规化在 \(U\) 上的同构。\(U\) 是具有这一性质的最大开集，并且稠密。
+\end{corollary}
+\begin{proof}
+	由\cref{g5:cor:reduced-finite-normalization}，\(B/A\) 是有限 \(A\) 模。将\cref{g5:prop:support-annihilator}与导子的零化子描述结合，得到支集公式；上一个命题给出 \(U\) 的表达式。对 \(f\in\mathfrak c\)，包含 \(fB\subseteq A\) 直接给出 \(A_f=B_f\)。在两个这样的主开集的交 \(D_A(fg)\) 上，环同构都来自原包含的局部化，因而彼此相容。这里的同构具体指这些主开集上的坐标环相等。
+	若某个点附近已经由原包含给出同构，则在该点局部化仍相等，该点必属于 \(U\)，故 \(U\) 最大。最后，\(\mathfrak c\) 含有非零因子 \(s\)。由\cref{g5:prop:total-quotient-components}，\(s\) 不属于任何极小素理想，因此 \(D_A(s)\) 在每个不可约分量中稠密；它包含于 \(U\)，故 \(U\) 稠密。
+\end{proof}
 
 \subsection{\texorpdfstring{尖点 \(k[t^2,t^3]\) 的正规化}{尖点 k[t²,t³] 的正规化}}
 \label{g5:subsec:0403:02}
-待撰写
+
+第一章中，尖点参数化揭示了有理逆 \(t=y/x\) 在原点不能正则延拓。现在可以把缺少的函数、阻止同构的理想以及原点上方的纤维放在同一次计算中。
+
+\begin{example}\label{g5:exm:cusp-conductor}
+	设 \(k\) 为任意域，令
+	\[
+	A=k[t^2,t^3]\subseteq B=k[t],\qquad x=t^2,\quad y=t^3.
+	\]
+	则 \(B\) 是 \(A\) 的正规化，且
+	\[
+	\mathfrak c_{B/A}=t^2k[t]=(t^2,t^3)_A,
+	\qquad B/A\cong A/(t^2,t^3)\cong k.
+	\]
+\end{example}
+\begin{proof}
+	先核对坐标环。代入同态 \(k[x,y]\rightarrow k[t]\) 的核为 \((y^2-x^3)\)：模去这个首一的 \(y\) 二次式后，任意多项式可写成 \(F(x)+yG(x)\)，代入得到
+	\[
+	F(t^2)+t^3G(t^2).
+	\]
+	第一项只含偶次幂，第二项只含奇次幂，所以其和为零迫使 \(F=G=0\)。故
+	\[
+	A\cong k[x,y]/(y^2-x^3).
+	\]
+	又因每个整数 \(n\geq2\) 都能写成 \(2i+3j\)，有
+	\begin{equation}\label{g5:eq:cusp-ring-linear-condition}
+	A=k+t^2k[t].
+	\end{equation}
+	于是 \(B=A+At\)，并且 \(t=y/x\in\operatorname{Frac}(A)\) 满足首一方程 \(T^2-x=0\)。扩张有限双有理。由\cref{g5:prop:ufd-integrally-closed}，\(k[t]\) 整闭；若 \(z\in k(t)\) 在 \(A\) 上整，则同一首一方程也说明它在 \(B\) 上整，从而 \(z\in B\)。所以 \(B\) 正是正规化。
+
+	由\eqref{g5:eq:cusp-ring-linear-condition}，\(t^2B\subseteq A\)，且 \(t^2B\) 为 \(B\) 理想，因此 \(t^2B\subseteq\mathfrak c\)。反过来，若 \(a=c+t^2h(t)\in\mathfrak c\)，则 \(at=ct+t^3h(t)\in A\)。\(A\) 中没有非零一次项，所以 \(c=0\)。故 \(\mathfrak c=t^2B\)。由 \(B=A+At\)，这个导子作为 \(A\) 理想由 \(t^2,t^3\) 生成。
+	同一等式也表明 \(B/A\) 是由 \([t]\) 张成的一维 \(k\) 向量空间。\(t^2,t^3\) 都杀掉 \([t]\)，而常数按通常标量作用，故 \(B/A\cong A/(t^2,t^3)\) 为 \(A\) 模同构。
+\end{proof}
+
+令 \(\mathfrak m=(t^2,t^3)_A\)，它对应原点。导子就是 \(\mathfrak m\)，所以正规化只在这个点不能成为局部同构。在 \(D_A(x)\) 上，\(t=y/x\) 给出明确的逆。原点的纤维环为
+\[
+	B/\mathfrak mB=k[t]/(t^2).
+\]
+它只有素理想 \((t)/(t^2)\)，故原点在正规化中只有一个原像 \(t=0\)。这个纤维环的长度为二，而正规化商 \(B/A\) 的长度为一：前者记录纤维的厚度，后者记录原环缺少的函数方向。
+
+\ProseParagraphBreak
+
+把原点局部化，\(B_{\mathfrak m}\) 只有极大理想 \((t)\)，从而等于 \(k[t]_{(t)}\)。这里使用了有限整扩张的极大理想对应与刚才的纤维计算。于是原点处的正规化是一个局部环，单个参数 \(t\) 描述这一分支；原环中最低的非恒定项却从 \(t^2\) 开始。
 
 \subsection{结点的两个原像和导子}
 \label{g5:subsec:0403:03}
-待撰写
+
+对结点，参数化把两个不同参数值送到同一个点。因而原环中的函数必须在这两个参数值取相同的值。这个条件可以直接写成多项式子环，进而算出正规化与导子。
+
+\begin{example}\label{g5:exm:node-conductor}
+	设 \(k\) 为特征不等于 \(2\) 的域，令
+	\[
+	A=k[x,y]/\bigl(y^2-x^2(x+1)\bigr),\qquad B=k[t].
+	\]
+	代入 \(x=t^2-1\)、\(y=t(t^2-1)\) 给出包含 \(A\subseteq B\)，并有
+	\begin{equation}\label{g5:eq:node-ring-value-condition}
+	A=k+(t^2-1)k[t]
+	=\{f\in k[t]\mid f(1)=f(-1)\}.
+	\end{equation}
+	\(B\) 是 \(A\) 的正规化；原点 \(\mathfrak m=(x,y)_A\) 上方恰有 \(t=1\)、\(t=-1\) 两个点，而且
+	\[
+	\mathfrak c_{B/A}=(t^2-1)k[t]=(x,y)_A,
+	\qquad B/A\cong A/\mathfrak m\cong k.
+	\]
+\end{example}
+\begin{proof}
+	写 \(h=t^2-1\)。先验证核理想。模去首一的 \(y\) 二次式 \(y^2-x^2(x+1)\)，每个多项式都可化为 \(F(x)+yG(x)\)。代入后为
+	\[
+	F(t^2-1)+t(t^2-1)G(t^2-1).
+	\]
+	前一项只含偶次幂，后一项只含奇次幂。若两者之和为零，则各项为零。代入 \(x\mapsto t^2-1\) 在 \(k[x]\) 上单射，因为非零多项式代入后仍有非零最高项；再用 \(th\ne0\)，可得 \(F=G=0\)。所以核恰为给定主理想，\(A\cong k[h,th]\)；特别地，\(A\) 是整环。
+
+	为证明第一个子环等式，将任意多项式按奇偶幂分成
+	\(F(t^2)+tG(t^2)\)。因 \(t^2=h+1\)，有
+	\[
+	hk[t]=h\,k[h]+th\,k[h]\subseteq k[h,th].
+	\]
+	反向包含来自 \(h,th\in hB\)，以及 \(hB\) 是 \(B\) 的理想。因此 \(A=k+hB\)。任意 \(f\in B\) 除以 \(h\) 的余式为 \(c+dt\)；条件 \(f(1)=f(-1)\) 等价于 \(2d=0\)。因特征不为 \(2\)，它等价于 \(d=0\)，即 \(f\in k+hB\)。这证明\eqref{g5:eq:node-ring-value-condition}。
+
+	由 \(t^2=x+1\in A\)，有 \(B=A+At\)；由 \(t=y/x\)，两个环具有同一分式域。\(t\) 满足首一方程 \(T^2-(x+1)=0\)，故扩张有限且整。\(B=k[t]\) 整闭，任何在 \(A\) 上整的分式又在 \(B\) 上整，所以 \(B\) 是正规化。
+	因为 \(hB\subseteq A\) 是 \(B\) 理想，有 \(hB\subseteq\mathfrak c\)。反过来，对 \(a\in\mathfrak c\)，设其在 \(1,-1\) 的共同值为 \(c\)。还须有 \(at\in A\)，即 \(c=-c\)，所以 \(c=0\)。于是 \(a\) 被 \((t-1)(t+1)=h\) 整除，故 \(\mathfrak c=hB\)。又因 \(B=A+At\)，有 \(hB=hA+thA=(x,y)_A\)。
+
+	两个点的取值差给出满的 \(k\) 线性映射
+	\[
+	B\longrightarrow k,\qquad f\longmapsto f(1)-f(-1).
+	\]
+	满性可由 \(t/2\) 的像为 \(1\) 看出，其核由\eqref{g5:eq:node-ring-value-condition}恰为 \(A\)。把 \(k\) 作为 \(A/\mathfrak m\) 模，这个映射也是 \(A\) 线性的：若 \(a(1)=a(-1)=c\)，则 \((af)(1)-(af)(-1)=c(f(1)-f(-1))\)。因此 \(B/A\cong A/\mathfrak m\)。最后，
+	\[
+	B/\mathfrak mB=k[t]/(t^2-1)\cong k\times k,
+	\qquad [f]\longmapsto(f(1),f(-1)),
+	\]
+	中国剩余定理给出这个同构。其两个素理想恰对应于 \((t-1)\)、\((t+1)\)，所以原点上方正好有这两个点。
+\end{proof}
+
+在 \(D_A(x)\) 上仍有 \(t=y/x\)，所以正规化在原点以外成为同构。原点附近，\(A\) 中的函数只记录两个参数值的共同取值；\(B\) 则允许独立指定这两个值。多出来的一个取值差就是 \(B/A\) 中的一维方向。这个结点的两点参数模型也可对照\cite[第I章第4节，例4.9.1，第29--30页]{Hartshorne1977}。
+
+\ProseParagraphBreak
+
+\(B_{\mathfrak m}=(A\setminus\mathfrak m)^{-1}B\) 有两个极大理想，进一步分别局部化得到 \(k[t]_{(t-1)}\) 与 \(k[t]_{(t+1)}\)。有限多个极大理想的环称为\term[banjubuhuan]{半局部环}[semilocal ring]。此处 \(B_{\mathfrak m}\) 本身仍是整环，因为它是 \(k[t]\) 的局部化；两个分支的局部环并不使它变成两个环的直积。与此相应，原来的 \(A\) 和 \(A_{\mathfrak m}\) 也都是整环，结点的两个原像不等于原局部环有两个极小素理想。
+
+\ProseParagraphBreak
+
+特征限制可以从方程直接核对。特征为 \(2\) 时，\(1=-1\)，并且令 \(u=t-1\) 就有 \(t^2-1=u^2\)、\(t(t^2-1)=u^3+u^2\)，所以同一个子环成为 \(k[u^2,u^3]\)。两个原像此时合成尖点模型中的一个原像，\eqref{g5:eq:node-ring-value-condition}中的两点取值条件也失去约束。
 
 \subsection{\texorpdfstring{商模长度、\(\delta\) 不变量和局部差异}{商模长度、\GeometryPdfDelta{} 不变量和局部差异}}
 \label{g5:subsec:0403:04}
-待撰写
+
+尖点缺少一个一次项，结点缺少一个独立取值差；两者都表现为正规化商中的一维空间。要把这样的计算推广到任意曲线上的闭点，先证明这个商总有有限长度。
+
+\begin{proposition}\label{g5:prop:curve-normalization-length}
+	设 \(k\) 为任意域，\(A\) 为非零约化有限型 \(k\) 代数，且 \(\dim A\leq1\)。令 \(B=A^\nu\) 为正规化。则 \(M=B/A\) 是有限长度 \(A\) 模，也是有限维 \(k\) 向量空间。它的支集由有限多个极大理想组成。
+\end{proposition}
+\begin{proof}
+	由\cref{g5:cor:reduced-finite-normalization}，\(B\) 是有限 \(A\) 模，因此 \(M\) 有限生成。\cref{g5:prop:conductor-properties}给出一个非零因子 \(s\in A\)，使 \(sM=0\)。我们先证明 \(A/(s)\) 是有限维 \(k\) 代数。
+
+	若 \(s\) 为单位，则 \(M=0\)，结论成立。否则，每个包含 \(s\) 的素理想 \(\mathfrak p\) 都不是极小素理想，因为非零因子不属于 \(A\) 的任何极小素理想。若 \(\mathfrak p\) 还严格包含于某个素理想 \(\mathfrak q\)，在 \(\mathfrak p\) 下方选一个极小素理想，就得到长度为二的素链，与 \(\dim A\leq1\) 矛盾。故包含 \(s\) 的素理想都极大，\(A/(s)\) 为零维 Noether 环。
+
+	由\cref{g5:thm:artinian-zero-dimension}，\(A/(s)\) 作为自身的模具有有限长度。它的组成因子都是某些剩余域 \(A/\mathfrak m\)。这些域同时是有限型 \(k\) 代数，故由\cref{g5:lem:zariski}为 \(k\) 的有限扩张。因此各组成因子的 \(k\) 维数都有限，沿组成列相加就得到 \(\dim_k A/(s)<\infty\)。
+	由于 \(sM=0\)，有限生成性给出一个满同态 \((A/(s))^r\rightarrow M\)，故 \(M\) 有限维，也有有限长度。其支集包含于 \(V(s)=\operatorname{Spec}(A/(s))\)；后者由零维 Noether 环定理知为有限个闭点。
+\end{proof}
+
+在这个证明中，维数一使非零因子的零点集只剩有限个闭点。正规化增加的函数因而集中在这些点上，可以逐点计数。
+
+\begin{definition}\label{g5:def:delta-invariant}
+	设 \(k\) 为域，\(A\) 为非零约化有限型 \(k\) 代数，\(\dim A\leq1\)，\(B=A^\nu\)，并取闭点 \(\mathfrak p\in\operatorname{Spec}A\)。记
+	\[
+	R=A_{\mathfrak p},\qquad
+	R^\nu=(A\setminus\mathfrak p)^{-1}B.
+	\]
+	本节采用局部长度约定，将
+	\[
+	\delta_{\mathfrak p}(A)
+	=\ell_R(R^\nu/R)
+	\]
+	称为这个点的\term[deltabubianliang]{\(\delta\) 不变量}[delta invariant]。由\cref{g5:prop:normalization-localization}，正规化与局部化相容，所以 \(R^\nu\) 是 \(R\) 在其总分式环中的正规化。
+\end{definition}
+\symidx{\(\delta_{\mathfrak p}(A)\)：曲线点处正规化商的局部长度}
+
+这个定义只取决于局部 \(k\) 代数 \(R\)：一个局部环同构会把非零因子、总分式环和首一方程一起对应，从而也把正规化商对应起来。有限长度模的长度为零当且仅当模为零，因此
+\[
+	\delta_{\mathfrak p}(A)=0
+	\quad\Longleftrightarrow\quad
+	A_{\mathfrak p}=B_{\mathfrak p}.
+\]
+原环与正规化在该点附近相同，恰好对应于 \(\delta\) 为零。
+
+\begin{proposition}\label{g5:prop:delta-residue-degree}
+	设 \(k\) 为域，\(A\) 为非零约化有限型 \(k\) 代数，\(\dim A\leq1\)，\(B=A^\nu\)，\(\mathfrak p\) 为闭点。采用\cref{g5:def:delta-invariant}中的局部长度约定，则
+	\[
+	\dim_k(B/A)_{\mathfrak p}
+	=[\kappa(\mathfrak p):k]\,\delta_{\mathfrak p}(A),
+	\]
+	以及
+	\[
+	\dim_k(B/A)
+	=\sum_{\mathfrak p\in\operatorname{Supp}_A(B/A)}
+	[\kappa(\mathfrak p):k]\,\delta_{\mathfrak p}(A).
+	\]
+	特别地，若 \(k\) 为代数闭域，则所有剩余域次数均为一。
+\end{proposition}
+\begin{proof}
+	局部环 \(R=A_{\mathfrak p}\) 上的简单模都是 \(\kappa(\mathfrak p)\)。对 \((B/A)_{\mathfrak p}\) 取组成列，它的每个组成因子作为 \(k\) 向量空间都具有维数 \([\kappa(\mathfrak p):k]\)。沿组成列相加，即得第一个公式。
+
+	为证第二个公式，对有限长度 \(A\) 模 \(B/A\) 取组成列，其各因子写为 \(A/\mathfrak m_i\)。在 \(\mathfrak p\) 处局部化时，\(\mathfrak m_i=\mathfrak p\) 的因子变成 \(\kappa(\mathfrak p)\)，其余因子变成零：若 \(\mathfrak m_i\ne\mathfrak p\)，可选 \(a\in\mathfrak m_i\setminus\mathfrak p\)，它一面杀掉该因子，一面在局部化中成为单位。局部化正合性与长度加性表明，\(\delta_{\mathfrak p}\) 恰是 \(\mathfrak p\) 在这些 \(\mathfrak m_i\) 中出现的次数。把各因子的 \(k\) 维数相加并按极大理想分组，就得到第二个公式。
+\end{proof}
+
+一般域上，局部长度与对基域的向量空间维数因此需要用剩余域次数换算。\(R^\nu/R\) 本身也未必自然地是 \(\kappa(\mathfrak p)\) 向量空间；长度计数的是组成列中的剩余域因子。
+
+\begin{proposition}\label{g5:prop:conductor-colength}
+	设 \(k\) 为域，\(A\) 为非零约化有限型 \(k\) 代数，\(\dim A\leq1\)，\(B=A^\nu\)。取闭点 \(\mathfrak p\)，并令 \(R=A_{\mathfrak p}\)、\(R^\nu=B_{\mathfrak p}\)、\(\mathfrak c_R=(R:R^\nu)\)。则有短正合列
+	\[
+	0\longrightarrow R/\mathfrak c_R
+	\longrightarrow R^\nu/\mathfrak c_R
+	\longrightarrow R^\nu/R\longrightarrow0,
+	\]
+	其中三项都是有限长度 \(R\) 模，并且
+	\[
+	\delta_{\mathfrak p}(A)
+	=\ell_R(R^\nu/\mathfrak c_R)
+	-\ell_R(R/\mathfrak c_R).
+	\]
+\end{proposition}
+\begin{proof}
+	导子同时是两环的理想，所以包含与取商给出所示正合列。由\cref{g5:prop:conductor-localization}，\(\mathfrak c_R\) 含有全局共同分母 \(s\) 的像。上个有限性证明已经说明 \(A/(s)\) 有限长度，故 \(R/\mathfrak c_R\) 有限长度。\(R^\nu\) 是有限 \(R\) 模，所以 \(R^\nu/\mathfrak c_R\) 是有限 \(R/\mathfrak c_R\) 模，也有有限长度。最后应用\cref{g5:prop:length-additivity}。
+\end{proof}
+
+在尖点与结点中，导子都等于原点的极大理想，所以 \(R/\mathfrak c_R=k\)。正规化模去导子后分别是 \(k[t]/(t^2)\) 与 \(k\times k\)，它们作为 \(R\) 模都具有长度二。因此两者都有 \(\delta=2-1=1\)。前者保留同一点的一个一次项，后者保留两个点的独立取值，商模长度相同并不使这两个局部结构相同。
+
+\ProseParagraphBreak
+
+为记录正规化分离出多少个点，以下取 \(k\) 为代数闭域。对约化仿射曲线的闭点 \(\mathfrak p\)，记正规化中位于它上方的点数为 \(r_{\mathfrak p}\)，称为正规化意义下的\term[quxianfenzhishu]{分支数}[number of branches]。有限性使这个数有限，lying-over 使它至少为一。这里数的是正规化上方的点；结点模型已经表明，它可以不同于原局部环的极小素理想个数。
+
+\begin{proposition}\label{g5:prop:delta-branch-bound}
+	设 \(k\) 为代数闭域，\(A\) 为约化仿射曲线的坐标环，\(B=A^\nu\)，\(\mathfrak p\) 为闭点。则
+	\[
+	\delta_{\mathfrak p}(A)\geq r_{\mathfrak p}-1.
+	\]
+\end{proposition}
+\begin{proof}
+	记 \(R=A_{\mathfrak p}\)、\(R^\nu=B_{\mathfrak p}\)，并设 \(R^\nu\) 的极大理想为 \(\mathfrak n_1,\ldots,\mathfrak n_r\)。它们对应于 \(\mathfrak p\) 的全部原像，故 \(r=r_{\mathfrak p}\)。各剩余域都是 \(k\)：\(B\) 有限于 \(A\)，相应纤维是有限维 \(k\) 代数，而 \(k\) 代数闭。
+	由中国剩余定理，取值映射 \(R^\nu\rightarrow\prod_iR^\nu/\mathfrak n_i=k^r\) 满射。\(R\) 的像是对角线 \(k\)，因为它在每个原像点的值都来自同一个 \(R/\mathfrak pR=k\)，且常数可以任意取。因此得到满的 \(k\) 线性映射
+	\[
+	R^\nu/R\longrightarrow k^r/k.
+	\]
+	右端维数为 \(r-1\)，左端维数由\cref{g5:prop:delta-residue-degree}等于 \(\delta_{\mathfrak p}\)，故不等式成立。
+\end{proof}
+
+\begin{table}[htbp]
+	\centering
+	\caption[尖点与结点的正规化数据]{尖点与结点的正规化数据；\(k\) 代数闭且特征不为 \(2\)。}
+	\label{g5:tab:cusp-node-conductor}
+	\begin{tabular}{lll}
+	\toprule
+	原点附近所比较的量 & 尖点 & 结点\\
+	\midrule
+	子环 \(A\subseteq k[t]\) & \(k+t^2k[t]\) & \(k+(t^2-1)k[t]\)\\
+	导子 \(\mathfrak c\) & \(t^2k[t]\) & \((t^2-1)k[t]\)\\
+	原点的纤维环 & \(k[t]/(t^2)\) & \(k\times k\)\\
+	正规化上方点数 \(r\) & \(1\) & \(2\)\\
+	正规化商长度 \(\delta\) & \(1\) & \(1\)\\
+	\bottomrule
+	\end{tabular}
+\end{table}
+
+\cref{g5:tab:cusp-node-conductor}把两种差异分开：结点的 \(\delta=1\) 已由分离两个点所需的一个独立取值差解释；尖点只有一个原像，\(\delta=1\) 来自该点处缺少的一次项。
+
+\begin{example}\label{g5:exm:reducible-node-conductor}
+	设 \(k\) 为任意域，取可约曲线环
+	\[
+	A=k[x,y]/(xy),\qquad B=k[u]\times k[v].
+	\]
+	令 \(x\mapsto(u,0)\)、\(y\mapsto(0,v)\)、\(1\mapsto(1,1)\)。这个代入的核恰为 \((xy)\)：模去 \((xy)\) 后的多项式写成 \(c+xF(x)+yG(y)\)，其像为 \((c+uF(u),c+vG(v))\)，为零就迫使全部系数为零。因此
+	\[
+	A=\{(f,g)\in k[u]\times k[v]\mid f(0)=g(0)\}.
+	\]
+	\cref{g5:prop:total-quotient-components}给出 \(Q(A)=k(u)\times k(v)\)。令 \(e=(1,0)\)，则 \(e^2-e=0\)，且任意 \((f,g)\) 减去 \((f(0)-g(0))e\) 后属于 \(A\)。故 \(B=A+Ae\) 为有限整扩张。两因子 \(k[u],k[v]\) 都整闭，逐分量检查首一方程便知 \(B\) 在 \(Q(A)\) 中整闭，所以它就是正规化。
+	包含于 \(A\) 的 \(B\) 理想
+	\[
+	J=uk[u]\times vk[v]
+	\]
+	等于导子。确实，若 \(a=(f,g)\) 属于导子，乘以 \(e\) 后的 \((f,0)\) 仍须属于 \(A\)，所以 \(f(0)=0\)；再由 \(a\in A\) 得 \(g(0)=0\)，即 \(a\in J\)。反向由 \(J\) 的理想性质立即成立。作为 \(A\) 理想，\(J=(x,y)\)。取值差 \((f,g)\mapsto f(0)-g(0)\) 又给出 \(B/A\cong k\)，因此原点处 \(\delta=1\)，且有两个正规化原像。
+	这个模型的两条全局分支本来就由两个极小素理想表示；\cref{g5:exm:node-conductor}中的曲线则整体不可约。正规化上方的点数把这两类模型在交点处共同具有的两分支现象提取了出来。
+\end{example}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

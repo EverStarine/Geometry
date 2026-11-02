@@ -1,35 +1,292 @@
 % !TeX root = ../../Book4.tex
 % 纲要标题：### 4.4 Jacobi 反演及 theta 几何
 % 纲要位置：几何学计划纲要.md，第 3613 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 反演的满射性与 Riemann–Roch
 % * 特殊除子及纤维维数
 % * theta 除子和主极化
-% * 进一步 Torelli 问题的准确位置
+% * Torelli 定理与曲面重构
 % 
 % 纲要内容结束
 
 \section{Jacobi 反演及 theta 几何}
 \label{g4:sec:0404}
 
-待撰写
+Abel 定理解决了积分映射何时把两个点组识别起来。现在反过来：给定 Jacobi 环面中的一个点，能否找到一个点组实现它？如果可以，需要多少个点，所有实现是否唯一？Riemann--Roch 把这些问题与线性系联系起来。积分矩阵还给出一条全纯级数，其零点形成 theta 除子；它同时记录某些除子的有效性和周期格上的相交配对。
 
 \subsection{反演的满射性与 Riemann–Roch}
 \label{g4:subsec:0404:01}
-待撰写
+
+固定紧连通黎曼曲面 \(X\) 和基点 \(q\)，记亏格为 \(g\)。\(\operatorname{Sym}^dX\) 的点是次数为 \(d\) 的有效除子，\cref{g4:thm:0402:symmetric-product}已证明它是紧连通复 \(d\) 维流形。上一节的 Abel 定理立即给出
+\begin{equation}
+	\label{g4:eq:0404:same-fiber}
+	A_q^{(d)}(D)=A_q^{(d)}(D')
+	\quad\Longleftrightarrow\quad D\sim D'.
+\end{equation}
+这里两边除子必须有相同次数。一个纤维因而就是一个线性等价类中全部有效除子组成的集合。
+
+\begin{lemma}
+	\label{g4:lem:0404:nonspecial-divisor}
+	设 \(X\) 为亏格 \(g\ge1\) 的紧连通黎曼曲面。存在互不相同的点 \(p_1,\ldots,p_g\)，使 \(D_0=[p_1]+\cdots+[p_g]\) 满足
+	\[
+		H^0(X,K_X(-D_0))=0,\qquad h^0(\mathcal O_X(D_0))=1.
+	\]
+	在 \(D_0\) 处，\(A_q^{(g)}\) 的微分是复线性同构，且其整个纤维只有 \(D_0\) 一个点。
+\end{lemma}
+\begin{proof}
+	先从 \(g\) 维空间 \(V_0=H^0(X,K_X)\) 开始。只要 \(V_{r-1}\ne0\)，从中取一条非零微分；它在紧曲面上只有有限个零点，所以可以在此前各点之外选 \(p_r\)，使其在 \(p_r\) 非零。求值映射 \(V_{r-1}\to(K_X)_{p_r}\) 非零，目标一维，因而其核
+	\[
+		V_r=H^0\bigl(X,K_X(-p_1-\cdots-p_r)\bigr)
+	\]
+	恰减少一维。经过 \(g\) 步得到 \(V_g=0\)。Riemann--Roch 给出 \(h^0(\mathcal O(D_0))=g+1-g=1\)。
+
+	由\cref{g4:prop:0402:abel-differential}，\(\mathrm{d}(A_q^{(g)})_{D_0}\) 的秩为 \(g-h^0(K_X(-D_0))=g\)，所以它是同构。若 \(D'\) 与 \(D_0\) 具有相同积分像，Abel 定理给出 \(D'=D_0+\operatorname{div}(f)\)，其中 \(0\ne f\in H^0(\mathcal O(D_0))\)。这个一维空间由常数张成，所以 \(D'=D_0\)。
+\end{proof}
+
+局部可逆只保证像中含一个开集；要得到全部目标，还要利用紧性与映射度。第二卷第16.1节定理16.1.4说明：同维连通闭定向流形之间的光滑映射，其同调度等于任意正则纤维中的局部定向符号之和。遗漏一个目标点时，那个点是空纤维的正则值，因而映射度为零。下面将它用于复流形的自然定向；复线性同构作为实线性映射的行列式为其复行列式模的平方，所以符号总为正。
+
+\begin{theorem}[Jacobi 反演]
+	\label{g4:thm:0404:jacobi-inversion}
+	设 \(X\) 为亏格 \(g\) 的紧连通黎曼曲面，\(q\in X\)。映射
+	\[
+		A_q^{(g)}:\operatorname{Sym}^gX\longrightarrow J(X)
+	\]
+	满射。若 \(g\ge1\)，它作为实 \(2g\) 维闭定向流形之间的映射，映射度为 \(1\)。因此，任意 \(u\in J(X)\) 都能写成
+	\[
+		u=A_q(p_1)+\cdots+A_q(p_g),
+	\]
+	其中允许某些 \(p_i\) 重合。
+\end{theorem}
+\begin{proof}
+	当 \(g=0\) 时，\(\operatorname{Sym}^0X\) 与 \(J(X)\) 都是一点，结论成立。设 \(g\ge1\)。源与目标均为紧连通复 \(g\) 维流形，故满足上述映射度定理的条件。
+
+	取\cref{g4:lem:0404:nonspecial-divisor}中的 \(D_0\)，令 \(u_0=A_q^{(g)}(D_0)\)。这个值只有一个原像，且微分为复线性同构。因此 \(u_0\) 是正则值，其纤维符号和为 \(1\)，从而 \(\deg A_q^{(g)}=1\)。非零映射度排除了遗漏目标点的可能，所以映射满射。
+\end{proof}
+
+反演定理同时完成了除子类的参数化。任意 \(u\in J(X)\) 都是某个 \(\operatorname{AJ}(D-g[q])\)，其中 \(D\) 有效且次数为 \(g\)；因此 Abel 定理给出的单射实际上是群同构
+\begin{equation}
+	\label{g4:eq:0404:picard-jacobian}
+	\operatorname{Pic}^0(X)\xrightarrow{\ \sim\ }J(X).
+\end{equation}
+对任意整数 \(d\)，先作 \(L\mapsto L(-d[q])\)，就得到 \(\operatorname{Pic}^d(X)\) 与同一个复环面的对应。这给 \(\operatorname{Pic}^d(X)\) 赋予复流形结构；更换 \(q\) 只作平移。\(\operatorname{Pic}^0\) 的零点是平凡线丛，其余次数的副本则需要选择基准线丛才有指定原点。
 
 \subsection{特殊除子及纤维维数}
 \label{g4:subsec:0404:02}
-待撰写
+
+反演保证存在，却允许一个积分值由许多点组实现。这份不唯一性可以准确计数：固定一个有效除子 \(D\)，同一纤维中的另一个除子恰是 \(D+\operatorname{div}(f)\)，而可用函数 \(f\) 构成 \(H^0(X,\mathcal O(D))\)。非零常数倍不改变零点除子，所以应取这个向量空间的射影化。
+
+\begin{theorem}
+	\label{g4:thm:0404:abel-fibers}
+	设 \(X\) 是亏格 \(g\) 的紧连通黎曼曲面，\(D\) 为次数 \(d\ge0\) 的有效除子。则 \(A_q^{(d)}\) 在 \(A_q^{(d)}(D)\) 上的纤维为完全线性系
+	\[
+		|D|\cong\mathbb P H^0(X,\mathcal O(D)).
+	\]
+	这个对应给出 \(|D|\) 到 \(\operatorname{Sym}^dX\) 的全纯嵌入。特别地，纤维的复维数为
+	\begin{equation}
+		\label{g4:eq:0404:fiber-dimension}
+		\dim|D|=h^0(\mathcal O(D))-1
+		=d-g+h^0(K_X(-D)).
+	\end{equation}
+	而 Abel 映射在 \(D\) 处的微分秩为 \(g-h^0(K_X(-D))\)。
+\end{theorem}
+\begin{proof}
+	式\eqref{g4:eq:0404:same-fiber}已确定纤维的集合。把非零截面 \(s\) 送到其有效零除子 \(\operatorname{div}_{\mathcal O(D)}(s)\)，便得到映射
+	\[
+		\mathbb P H^0(X,\mathcal O(D))\longrightarrow\operatorname{Sym}^dX.
+	\]
+	它的像正是所求纤维。若两截面有同一个零除子，其比值是处处非零的全纯函数，紧性使它为非零常数，所以映射单射。
+
+	说明全纯性时，在某个截面的各零点附近取互不相交的圆盘，边界避开零点。充分小的截面变动不会改变各盘内的零点总数，这是 Rouché 定理的应用。以 \(f_s(z)\) 表示截面的局部系数，各盘内零点的幂和由
+	\[
+		\frac1{2\pi\mathrm{i}}\int_{\partial U}
+		z^k\frac{f_s'(z)}{f_s(z)}\,\mathrm{d}z
+	\]
+	给出，它全纯依赖截面参数。初等对称多项式由幂和递推得到，因此\cref{g4:thm:0402:symmetric-product}的坐标中，这个零除子映射全纯。
+
+	还要检查浸入性。一个射影切向量由截面变化 \(s+t\dot s\) 模去 \(\mathbb C s\) 表示。若零除子的一阶变化为零，则每个零点盘内的所有初等对称坐标以及幂和的一阶变化均为零。在 \(s\) 有 \(m\) 阶零点的中心坐标中，令 \(r=\dot s/s\)；它的极点阶数至多为 \(m\)。对上式求导并沿圆周分部积分，得到对 \(1\le k\le m\)
+	\[
+		0=\frac1{2\pi\mathrm{i}}\int_{\partial U}z^k r'(z)\,\mathrm{d}z
+		=-k\operatorname{Res}_0(z^{k-1}r(z)\,\mathrm{d}z).
+	\]
+	这些等式逐一消去 \(r\) 的全部主部系数。因此 \(\dot s/s\) 在所有零点处可去，并在整个紧曲面上全纯，故为常数。原射影切向量遂为零。映射是单射全纯浸入，源又紧，所以它是全纯嵌入。
+
+	维数公式由 Riemann--Roch 得到；最后的微分秩已在\cref{g4:prop:0402:abel-differential}证明。两式相加为 \(d\)，也核对了纤维切空间的维数。
+\end{proof}
+
+称 \(D\) 特殊，仍是指 \(h^0(K_X(-D))>0\)。对 \(d=g\)，非特殊除子所在的纤维为一个点，且积分映射在该点局部双全纯；特殊除子所在的纤维则为正维射影空间。对 \(d\ge\max(0,2g-1)\)，次数使 \(K_X(-D)\) 无非零截面，所以所有非空纤维都是 \(\mathbb P^{d-g}\)。当 \(g=0,d=0\) 时同样得到 \(\mathbb P^0\)。这些高次数映射实际上满射：对任意次数 \(d\) 的线丛，Riemann--Roch 给出 \(h^0=d+1-g>0\)，其非零截面的零除子便实现相应的积分值。
+
+\begin{example}
+	\label{g4:exm:0404:genus-two-fiber}
+	设 \(g=2\)。对次数 \(2\) 的有效除子 \(D\)，线丛 \(K_X(-D)\) 的次数为零。它有非零截面当且仅当平凡，即当且仅当 \(D\sim K_X\)。因此 \(A_q^{(2)}\) 的全部纤维中只有典范类对应一个 \(\mathbb P^1\)，其余纤维均为一点。这个 \(\mathbb P^1\) 正是超椭圆二重映射的全部纤维除子组成的线性系。它把反演不唯一的原因呈现为一个具体的特殊除子类。
+\end{example}
 
 \subsection{theta 除子和主极化}
 \label{g4:subsec:0404:03}
-待撰写
 
-\subsection{进一步 Torelli 问题的准确位置}
+以下设 \(g\ge1\)，写归一化周期矩阵为 \(\tau=U+\mathrm{i}Y\)，其中 \(\tau^{\mathsf T}=\tau\)、\(Y>0\)。\cref{g4:prop:0401:period-lattice}给出 \(J(X)=\mathbb C^g/(\mathbb Z^g+\tau\mathbb Z^g)\)。为了在这个商空间上构造除子，可以寻找一个全纯函数：它平移一个周期后只乘以一个处处非零的因子。函数本身未必下降，零点却能够下降。
+
+\begin{definition}
+	\label{g4:def:0404:theta}
+	对称矩阵 \(\tau\in M_g(\mathbb C)\) 满足 \(\operatorname{Im}\tau>0\) 时，定义 \term[thetahanshu]{theta 函数}[theta function]
+	\begin{equation}
+		\label{g4:eq:0404:theta-series}
+		\theta(z,\tau)=\sum_{n\in\mathbb Z^g}
+		\exp\bigl(\pi\mathrm{i}n^{\mathsf T}\tau n+2\pi\mathrm{i}n^{\mathsf T}z\bigr),
+		\qquad z\in\mathbb C^g.
+	\end{equation}
+\end{definition}
+
+\begin{proposition}
+	\label{g4:prop:0404:theta-automorphy}
+	级数\eqref{g4:eq:0404:theta-series}及其任意阶 \(z\) 导数在紧集上一致绝对收敛，定义一个不恒为零的整函数。对 \(m,n\in\mathbb Z^g\)，有
+	\begin{equation}
+		\label{g4:eq:0404:theta-automorphy}
+		\theta(z+m+\tau n,\tau)
+		=\exp\bigl(-\pi\mathrm{i}n^{\mathsf T}\tau n-2\pi\mathrm{i}n^{\mathsf T}z\bigr)\theta(z,\tau).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	取 \(c>0\)，使 \(n^{\mathsf T}Yn\ge c|n|^2\)。当 \(z\) 位于固定紧集时，存在 \(M\) 使各项的绝对值不超过
+	\[
+		\exp(-\pi c|n|^2+2\pi M|n|).
+	\]
+	对 \(z\) 求任意阶导数，只多出一个关于 \(n\) 的多项式因子。高斯衰减使这些级数均可求和，因而可以逐项求导。这里多复变量的全纯性也可由逐坐标 Cauchy 公式及紧集一致收敛得到。
+
+	整数平移 \(m\) 给各项乘以 \(e^{2\pi\mathrm{i}n^{\mathsf T}m}=1\)。对平移 \(\tau n\)，把求和指标由 \(k\) 改为 \(k+n\)，利用 \(\tau\) 对称完成平方，就得到式\eqref{g4:eq:0404:theta-automorphy}。在实单位立方体上积分，所有非零 Fourier 项都消失，而零项等于 \(1\)，所以
+	\[
+		\int_{[0,1]^g}\theta(s,\tau)\,\mathrm{d}s=1.
+	\]
+	因此 \(\theta\) 不恒为零。
+\end{proof}
+
+令 \(\lambda=m+\tau n\)，把式\eqref{g4:eq:0404:theta-automorphy}中的因子记为 \(j_\lambda(z)\)。它满足
+\[
+	j_{\lambda+\mu}(z)=j_\mu(z+\lambda)j_\lambda(z).
+\]
+确实，若 \(\mu=m'+\tau n'\)，两边指数的差是 \(-2\pi\mathrm{i}(n')^{\mathsf T}m\)，其指数为 \(1\)。于是关系
+\[
+	(z,v)\sim(z+\lambda,j_\lambda(z)v)
+\]
+把 \(\mathbb C^g\times\mathbb C\) 粘成 \(J(X)\) 上的全纯线丛 \(L_\theta\)。局部取不遇到非平凡格平移的小球，就得到其线丛图册。\(\theta\) 的变换律正说明它是 \(L_\theta\) 的全局全纯截面。它的局部零点方程在换图时相差一个全纯单位，因而定义有效的\term[thetachuzi]{theta 除子}[theta divisor]，记为 \(\Theta\)。
+
+\begin{proposition}
+	\label{g4:prop:0404:theta-section-dimension}
+	上述线丛满足 \(h^0(J(X),L_\theta)=1\)，其截面空间由 \(\theta\) 张成。
+\end{proposition}
+\begin{proof}
+	任一截面提升为整函数 \(f(z)\)，满足与 \(\theta\) 相同的变换律。特别地，\(f(z+m)=f(z)\)。逐坐标令 \(w_j=e^{2\pi\mathrm{i}z_j}\)，它下降为 \((\mathbb C^*)^g\) 上的全纯函数。对每个变量应用 Laurent 展开，再用 Cauchy 系数公式在紧多环域上控制级数，得到局部一致收敛的展开
+	\[
+		f(z)=\sum_{k\in\mathbb Z^g}c_k e^{2\pi\mathrm{i}k^{\mathsf T}z}.
+	\]
+	这一步只是把一元 Laurent 展开依次用于各变量；系数由各圆周上的重复积分唯一确定。
+
+	将 \(z\mapsto z+\tau n\) 的变换律代入并比较 Fourier 系数，得到
+	\[
+		c_{k+n}=\exp\bigl(\pi\mathrm{i}n^{\mathsf T}\tau n
+		+2\pi\mathrm{i}k^{\mathsf T}\tau n\bigr)c_k.
+	\]
+	取 \(k=0\)，所有系数均由 \(c_0\) 决定，且恰是 \(c_0\theta\) 的系数。因此截面空间至多一维；\(\theta\ne0\) 又保证它恰为一维。
+\end{proof}
+
+\begin{definition}
+	\label{g4:def:0404:principal-polarization}
+	设 \(V/\Lambda\) 为复环面。若格上的整数交替双线性形式 \(E\) 延伸到实向量空间 \(V\) 后满足
+	\[
+		E(\mathrm{i}v,\mathrm{i}w)=E(v,w),\qquad
+		E(v,\mathrm{i}v)>0\quad(v\ne0),
+	\]
+	则称 \(E\) 为这个复环面的一个\term[jihua]{极化}[polarization]。若
+	\[
+		\Lambda\longrightarrow\operatorname{Hom}(\Lambda,\mathbb Z),\qquad
+		\lambda\longmapsto E(\lambda,\cdot)
+	\]
+	是同构，则称为\term[zhujihua]{主极化}[principal polarization]。在任一整数格基中，后一个条件等价于 \(E\) 的矩阵行列式为 \(1\)。
+\end{definition}
+
+这里采用复环面的解析表述：整数性使正性资料能够由线丛承载。Jacobi 环面的相交形式提供一个标准主极化，下面把它与刚构造的 theta 线丛直接对应。用 \(y=\operatorname{Im}z\)，在覆盖空间上设
+\[
+	h(z)=\exp\bigl(-2\pi y^{\mathsf T}Y^{-1}y\bigr).
+\]
+它满足
+\[
+	h(z+\lambda)|j_\lambda(z)|^2=h(z),
+\]
+因为两边指数中有关 \(n^{\mathsf T}Yn\) 和 \(n^{\mathsf T}y\) 的项相消。因此 \(|v|^2h(z)\) 给 \(L_\theta\) 一个光滑 Hermitian 度量。
+
+\begin{theorem}
+	\label{g4:thm:0404:theta-polarization}
+	Jacobi 环面的标准交替形式
+	\[
+		E(v,w)=-\operatorname{Im}\bigl(v^{\mathsf T}Y^{-1}\overline w\bigr)
+	\]
+	是主极化。theta 线丛的一阶陈类\footnote{陈省身（Shiing-Shen Chern，1911--2004），华裔美籍数学家，研究微分几何与示性类，创立陈类理论。}的实像由正闭二形式
+	\begin{equation}
+		\label{g4:eq:0404:theta-curvature}
+		\Omega=\frac{\mathrm{i}}2\sum_{j,k}(Y^{-1})_{jk}
+		\,\mathrm{d}z_j\wedge\mathrm{d}\overline z_k
+	\end{equation}
+	代表，且 \(\Omega(v,w)=E(v,w)\)。特别地，\(\Theta\) 非空，并有
+	\[
+		\int_{J(X)}\frac{\Omega^g}{g!}=1.
+	\]
+\end{theorem}
+\begin{proof}
+	由\eqref{g4:eq:0401:polarization-form}，\(E\) 与复结构相容，且 \(E(v,\mathrm{i}v)=v^{\mathsf T}Y^{-1}\overline v>0\)。由\eqref{g4:eq:0401:integral-alternating-form}，在格基 \((e_1,\ldots,e_g,\tau e_1,\ldots,\tau e_g)\) 下，它的矩阵是 \(\left(\begin{smallmatrix}0&I\\-I&0\end{smallmatrix}\right)\)，所以整数性与幺模性同时成立。
+
+	为核对线丛，在局部全纯标架中用度量系数 \(h\) 定义联络形式 \(A=\partial\log h\)。若标架变为 \(e'=a e\)，则 \(h'=|a|^2h\)，于是 \(A'=A+a^{-1}\mathrm{d}a\)；这正是联络的变换律。等式 \(A+\overline A=\mathrm{d}\log h\) 验证度量相容，所以这是酉联络。其曲率为 \(F=\bar\partial\partial\log h=-\partial\bar\partial\log h\)。第二卷第22.3节命题22.3.1证明 \(\mathrm{i}F/(2\pi)\) 代表 \(c_1(L_\theta)_{\mathbb R}\)。对当前二次函数直接求导，得到
+	\[
+		\frac{\mathrm{i}F}{2\pi}
+		=-\frac{\mathrm{i}}{2\pi}\partial\bar\partial\log h
+		=\frac{\mathrm{i}}2\sum_{j,k}(Y^{-1})_{jk}
+		\,\mathrm{d}z_j\wedge\mathrm{d}\overline z_k=\Omega.
+	\]
+	在实向量 \(v,w\) 上代入右式，得到 \(-\operatorname{Im}(v^{\mathsf T}Y^{-1}\overline w)\)，所以它正是 \(E\) 对应的常系数二形式。
+
+	在实坐标 \(z=s+\tau t\) 中，\(\Omega=\sum_j\mathrm{d}s_j\wedge\mathrm{d}t_j\)。它在由任意一对 \(e_j,\tau e_j\) 张成的二维子环面上积分为 \(1\)，从而其上同调类非零。若 \(\theta\) 没有零点，便给出 \(L_\theta\) 的全局全纯标架，使该线丛平凡、一阶陈类为零，矛盾。因此 \(\Theta\) 非空。最后在基本平行多面体上按复定向积分 \(\Omega^g/g!\)，得到 \(g\) 个单位二维面积元的乘积，值为 \(1\)。
+\end{proof}
+
+线丛由乘子表达，主极化则只保留其整数二次上同调类。两者的关系还可以从除子观察：\(h^0(L_\theta)=1\) 说明固定这条线丛后，非零截面的零除子唯一。对线丛及其截面同时作平移，会使零除子平移，而标准极化类不变；同一线丛仅更换平凡化时，零除子保持不变。
+
+\ProseParagraphBreak
+
+有效除子也在 Jacobi 环面中确定一列紧子集
+\[
+	W_d=A_q^{(d)}(\operatorname{Sym}^dX),\qquad d\ge0.
+\]
+Jacobi 反演给出 \(W_g=J(X)\)；加上基点还给出 \(W_d=J(X)\) 对所有 \(d\ge g\) 成立。恰好少一个点的 \(W_{g-1}\) 则是 theta 几何与线性系相接的位置。下述更强的除子识别采用文献中的定理，其证明见\cite[第2章第7节，第338--340页，Riemann's Theorem]{GriffithsHarris1994}；前置的 theta 截面拉回与常数计算在同书第336--337页。
+
+\begin{theorem}[Riemann 的 theta 定理]
+	\label{g4:thm:0404:riemann-theta}
+	设 \(X\) 为亏格 \(g\ge1\) 的紧连通黎曼曲面，固定上述归一化周期与基点 \(q\)。存在常向量类 \(\kappa_q\in J(X)\)，使作为有效除子有
+	\[
+		\Theta=W_{g-1}+\kappa_q.
+	\]
+	右边的 \(W_{g-1}\) 取其约化有效除子结构。等价地，\(u\in J(X)\) 满足 \(\theta(u+\kappa_q,\tau)=0\)，当且仅当次数 \(g-1\) 的相应线丛有非零全纯截面。
+\end{theorem}
+
+式中的 theta 等式按格商解释，其零性不依赖代表。这个定理把级数零点与除子的有效性相认；本节此前的反演、纤维维数及主极化计算各有独立证明。对于 \(g=1\)，\(W_0=\{0\}\)，所以 theta 除子是一个平移后的点；对于 \(g=2\)，它是 Abel 嵌入曲线的一个平移。更高亏格时，它把所有可由 \(g-1\) 个点表示的积分值组织成一个除子。
+
+\subsection{Torelli 定理与曲面重构}
 \label{g4:subsec:0404:04}
-待撰写
+
+本章至此从曲面构造了复环面 \(J(X)\)、整数主极化 \(E_X\)，以及由基点选择决定平移的 theta 除子。反演是固定一条曲面之后在这个环面内寻找点组；重构问题则问这些整体资料是否足以找回原曲面。Torelli 问题\footnote{Ruggiero Torelli（1884--1915），意大利数学家，研究代数曲线与 Jacobi 簇。}要求保留主极化：给定两个曲面，比较的是 \((J(X),E_X)\) 与 \((J(Y),E_Y)\)。
+
+\ProseParagraphBreak
+
+具体地，一个保持原点的复环面同构可由复线性同构 \(C:\mathbb C^g\to\mathbb C^g\) 给出，满足 \(C\Lambda_X=\Lambda_Y\)。它保持主极化，是指
+\[
+	E_Y(C\lambda,C\mu)=E_X(\lambda,\mu)
+	\qquad(\lambda,\mu\in\Lambda_X).
+\]
+若从一个保持原点的全纯群同构 \(F\) 出发，也能得到这样的 \(C\)。把两个环面的原点切空间识别为各自的覆盖向量空间，令 \(C=\mathrm{d}F_0\)。群同态条件说明 \(\mathrm{d}F\) 在平移识别下处处等于 \(C\)。所以从 \(\mathbb C^g\) 到目标环面的映射 \(z\mapsto F([z])-[Cz]\) 导数处处为零，又在原点取零，故恒为零。于是 \(F([z])=[Cz]\)，并有 \(C\Lambda_X\subseteq\Lambda_Y\)；再对逆映射应用同样结论，便得格的相等。
+
+\begin{theorem}[经典 Torelli 定理]
+	\label{g4:thm:0404:torelli}
+	设 \(X,Y\) 是紧连通黎曼曲面，亏格至少为 \(1\)。若它们的 Jacobi 簇存在保持原点及标准主极化的全纯群同构，则 \(X,Y\) 双全纯同构。反过来，曲面的双全纯同构诱导其主极化 Jacobi 簇同构。
+\end{theorem}
+
+这个重构定理在此引用，证明见\cite[第2章第7节，第359--362页，Torelli's Theorem]{GriffithsHarris1994}。反方向可以从本章构造直接看出：双全纯映射拉回全纯微分、推前整数同调，积分与二者相容；它又保持复定向及曲线相交数，所以保持标准极化。正方向需要进一步分析 theta 除子和典范曲线的关系，特别要处理超椭圆情形。亏格 \(1\) 时，\cref{g4:cor:0403:abel-embedding}已把曲面本身与其 Jacobi 环面识别；下一节将把这个识别写成椭圆函数与三次方程。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

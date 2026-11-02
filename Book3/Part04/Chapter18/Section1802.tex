@@ -1,35 +1,279 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 18.2 弱解与可接受的极限
+% 纲要标题：### 18.2 Sobolev 映射与弱极限
 % 纲要位置：几何学计划纲要.md，第 2829 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * Sobolev 映射的定义
-% * 目标嵌入及内在独立性
-% * 极小、平稳和弱调和的不同条件
-% * 弱极限不保持所有约束的现象
+% * Sobolev 映射空间的嵌入无关性
+% * 能量极小、平稳调和与弱调和映射
+% * 弱极限与约束的保持
 % 
 % 纲要内容结束
 
-\section{弱解与可接受的极限}
+\section{Sobolev 映射与弱极限}
 \label{g3:sec:1802}
 
-待撰写
+能量只控制映射的一阶导数的平方积分。寻找能量极小时，一个自然的序列可能失去连续性，甚至把全部非平凡行为压进越来越小的区域。为了仍能取极限，需要先说明流形值的弱导数怎样定义，再分别检查目标约束、边界值、变分方程和同伦条件能否保留下来。
 
 \subsection{Sobolev 映射的定义}
 \label{g3:subsec:1802:01}
-待撰写
 
-\subsection{目标嵌入及内在独立性}
+向量值 Sobolev 空间是线性的，流形值映射却不能直接相加。一个可用的做法是把目标放入 Euclid 空间，用已有弱导数控制各分量，再要求函数值几乎处处落在目标内。这里需要保持目标的度量，才能使 Euclid 分量的 Dirichlet 积分仍等于原来的几何能量。
+
+\ProseParagraphBreak
+
+采用 Nash 光滑等距嵌入定理的紧目标版本：每个光滑、紧、无边界的黎曼流形 \((N,h)\) 都有到某个有限维 \(\mathbb R^L\) 的光滑等距嵌入。\footnote{John Forbes Nash, Jr.（1928--2015），美国数学家，研究非合作博弈、等距嵌入与非线性偏微分方程。}这是本节使用的外部背景定理，原文定位为\cite[第59页，定理2]{Nash1956IsometricEmbedding}的 \(C^\infty\) 情形。它提供嵌入的存在；下面关于弱导数、极限与变分的结论另行证明。
+
+\begin{definition}\label{g3:def:sobolev-manifold-map}
+	设 \((M,g)\) 为紧光滑黎曼流形，允许光滑边界，\((N,h)\) 为紧无边界光滑黎曼流形，固定光滑等距嵌入 \(\iota:N\hookrightarrow\mathbb R^L\)。\term[liuxing zhi Sobolev yingshe]{流形值 Sobolev 映射}[Sobolev map into a manifold]空间定义为
+	\[
+		H^1(M,N)=\{u\in H^1(M;\mathbb R^L):u(x)\in\iota(N)\text{ 几乎处处}\}.
+	\]
+	将几乎处处相同的映射视为同一元素，并把 \(\iota(N)\) 简记为 \(N\)。定义
+	\begin{equation}\label{g3:eq:weak-map-energy}
+		E(u;U)=\frac12\int_U|\mathrm du|^2\,\mu_g,
+		\qquad U\subset M\text{ 可测}.
+	\end{equation}
+	对开流形用相对紧坐标域逐片定义 \(H^1_{\mathrm{loc}}(M,N)\)；有界光滑域上的 \(H^1(\Omega,N)\) 按同一分量定义处理。
+\end{definition}
+\symidx{\(H^1(M,N)\)：流形值的一阶平方可积 Sobolev 映射空间}
+
+目标紧使 \(u\) 的零阶分量自动有界，因此在有限体积源上，有限能量已经给出完整的 \(H^1\) 控制。一般 \(H^1\) 映射只按几乎处处的值定义；在高维中，不能先给它指定一个连续代表再谈同伦类。
+
+\begin{lemma}\label{g3:lem:sobolev-map-tangent}
+	设 \(N\subset\mathbb R^L\) 为紧无边界光滑嵌入子流形，\((M,g)\) 为光滑黎曼流形，\(u\in H^1_{\mathrm{loc}}(M,N)\)。则 \(\mathrm du_x(\mathrm T_xM)\subset\mathrm T_{u(x)}N\) 几乎处处成立。若 \(F:N\to\mathbb R^K\) 光滑，则
+	\[
+		\mathrm d(F\circ u)=\mathrm dF_u\circ\mathrm du
+	\]
+	在局部弱导数意义下成立，右侧只使用 \(F\) 在目标切空间上的微分。
+\end{lemma}
+\begin{proof}
+	由\cref{g3:prop:euclidean-normal-tube}，法向加法在 \(N\) 的一个统一管状邻域 \(U\) 内可逆。记其基点投影为 \(\pi:U\to N\)。在 \(y\in N\) 处，\(\mathrm D\pi_y=P_y\) 是到 \(\mathrm T_yN\) 的正交投影：切向量由零截面保持，法向量沿同一纤维投回固定基点。缩小 \(U\) 并乘截断，可把 \(\pi\) 作为 \(\mathbb R^L\) 值映射光滑延拓到全空间，且导数有界；它在 \(N\) 上仍为恒等映射。
+
+	对 \(u=\pi(u)\) 使用\cref{g3:prop:sobolev-product-chain}，得到 \(\mathrm du=P_u\mathrm du\)，这正是切向性。再把 \(F\circ\pi\) 用同一方法延拓，链式法则给出所需公式。两种延拓的微分在 \(\mathrm T_yN\) 上相同，而 \(\mathrm du\) 已经切向，故结果与延拓无关。
+\end{proof}
+
+\subsection{Sobolev 映射空间的嵌入无关性}
 \label{g3:subsec:1802:02}
-待撰写
 
-\subsection{极小、平稳和弱调和的不同条件}
+嵌入提供了线性空间，但不应改变映射的能量或收敛含义。其关键是：两个嵌入之间的转换在紧目标上有受控的光滑导数，因而可以代入刚才的弱链式法则。
+
+\begin{proposition}\label{g3:prop:sobolev-map-embedding-independence}
+	设 \((M,g)\) 为紧光滑黎曼流形，允许光滑边界，\((N,h)\) 紧、光滑、无边界。任意两组光滑等距嵌入 \(\iota_a:N\to\mathbb R^{L_a}\)，\(a=1,2\)，定义相同的流形值 \(H^1\) 映射，并给出相同的强 \(H^1\) 序列收敛及相同的能量。对能量一致有界的序列，两种嵌入下的弱 \(H^1\) 收敛也相互对应。
+\end{proposition}
+\begin{proof}
+	在 \(\iota_1(N)\) 上令 \(F=\iota_2\circ\iota_1^{-1}\)。用管状投影及截断延拓 \(F\)，其一阶导数有界。上一引理给出
+	\[
+		\mathrm d(\iota_2\circ u)=\mathrm dF_{\iota_1(u)}\,\mathrm d(\iota_1\circ u).
+	\]
+	逆方向同理，故两个集合定义一致。\(\mathrm dF\) 在目标切空间上是等距线性映射，逐点平方长度相等，积分后能量相等。
+
+	若 \(u_j\to u\) 于第一嵌入下的 \(H^1\)，则 \(F(u_j)\to F(u)\) 于 \(L^2\)，并且
+	\[
+		\mathrm dF_{u_j}\mathrm du_j-\mathrm dF_u\mathrm du
+		=\mathrm dF_{u_j}(\mathrm du_j-\mathrm du)
+		 +(\mathrm dF_{u_j}-\mathrm dF_u)\mathrm du.
+	\]
+	第一项在 \(L^2\) 中趋零。对第二项，任意子列都有一个进一步子列满足 \(u_j\to u\) 几乎处处；有界导数与控制函数 \(C|\mathrm du|^2\) 使支配收敛定理适用。若全序列的第二项不趋零，取范数有正下界的子列便与这一结论矛盾。因而强收敛保持，反方向完全相同。
+
+	若 \(u_j\rightharpoonup u\) 于第一嵌入下的 \(H^1\)，由\cref{g3:thm:compact-bundle-rellich,g3:prop:sobolev-boundary-bundles}，全序列在 \(L^2\) 中趋于 \(u\)：任何子列的强收敛子列，其极限都由原弱极限唯一确定。于是 \(F(u_j)\to F(u)\) 于 \(L^2\)，而链式法则给出其 \(H^1\) 一致界。任一弱聚点的零阶分量只能是 \(F(u)\)，分布导数由该分量唯一确定，所以全序列弱收敛到 \(F(u)\)。逆方向同理。
+\end{proof}
+
+对 \(u\in H^1(M,N)\)，\(\mathrm du\) 因而可内在地看作一个几乎处处定义的、取值于 \(u^*\mathrm TN\) 的可测一形式，长度由 \(g,h\) 决定。此时 \(u^*\mathrm TN\) 是可测的纤维族；除非已经获得更多正则性，不把它当作底空间上的光滑向量丛。
+
+\ProseParagraphBreak
+
+在有边界的有界 \(C^1\) 域 \(\Omega\subset\mathbb R^m\) 上，给定 \(w\in H^1(\Omega,N)\)，固定边界的竞争类写为
+\begin{equation}\label{g3:eq:harmonic-map-trace-class}
+	\mathcal A_w=\{v\in H^1(\Omega,N):v-w\in H^1_0(\Omega;\mathbb R^L)\}.
+\end{equation}
+由\cref{g3:thm:zero-trace-characterization}，这等价于分量迹相同。对另一嵌入，\(F(v)-F(w)\) 也具有零迹：可用\cref{g3:thm:sobolev-extension-c1}作环境分量的光滑逼近，利用刚才证明的复合连续性及\cref{g3:thm:sobolev-trace}取极限，得到 \(\operatorname{Tr}F(v)=F(\operatorname{Tr}v)\)。其中所用 \(F\) 已延拓为全空间的光滑 Lipschitz 映射。故固定边界条件也是内在的。
+
+\subsection{能量极小、平稳调和与弱调和映射}
 \label{g3:subsec:1802:03}
-待撰写
 
-\subsection{弱极限不保持所有约束的现象}
+以下局部方程在无边界源上陈述；带边界源则在其内部应用。改变目标中的值与改变源中的参数，会给出两种变分。前者产生调和映射方程，后者产生应力张量的守恒律。对光滑解，两者由链式法则联系；对仅有平方可积导数的映射，必须分别说明测试方式。
+
+\begin{definition}\label{g3:def:weak-minimizing-stationary-map}
+	设 \((M,g)\) 为光滑无边界黎曼流形，\(N\subset\mathbb R^L\) 是光滑紧无边界等距嵌入的黎曼目标，\(u\in H^1_{\mathrm{loc}}(M,N)\)，\(\pi\) 为目标的管状投影。
+	\begin{enumerate}
+		\item 若对每个 \(\varphi\in C_c^\infty(M;\mathbb R^L)\)，目标变分 \(u_t=\pi(u+t\varphi)\) 的能量导数在 \(t=0\) 为零，则称 \(u\) 为\term[ruo tiaohe yingshe]{弱调和映射}[weakly harmonic map]。只在包含变分支撑的相对紧区域计算能量。
+		\item 若对每个相对紧光滑域 \(U\Subset M\) 及每个满足 \(v-u\in H^1_0(U;\mathbb R^L)\) 的 \(v\in H^1(U,N)\)，都有 \(E(u;U)\le E(v;U)\)，则称 \(u\) 为\term[nengliang jixiao yingshe]{能量极小映射}[energy-minimizing map]。
+		\item 若 \(u\) 弱调和，且对每个紧支光滑向量场 \(X\) 的局部流 \(\phi_t\)，都有 \(\left.\frac{\mathrm d}{\mathrm dt}\right|_0 E(u\circ\phi_t)=0\)，则称 \(u\) 为\term[pingwen tiaohe yingshe]{平稳调和映射}[stationary harmonic map]。这个额外条件称为对源的内变分驻值。
+	\end{enumerate}
+\end{definition}
+
+\begin{proposition}\label{g3:prop:harmonic-map-extrinsic-equation}
+	设 \((M,g)\) 为光滑无边界黎曼流形，\(N\subset\mathbb R^L\) 为光滑紧无边界等距嵌入的黎曼目标，\(u\in H^1_{\mathrm{loc}}(M,N)\)。记目标嵌入的第二基本形式为
+	\(A_y(V,W)=(\mathrm D_VW)^\perp\)，其约定与\chapref{g3:ch:04}的 \(B\) 相同。则 \(u\) 弱调和当且仅当
+	\begin{equation}\label{g3:eq:weak-harmonic-extrinsic}
+		\int_M\langle\mathrm du,\mathrm d\varphi\rangle\,\mu_g
+		=-\int_M\langle A_u(\mathrm du,\mathrm du),\varphi\rangle\,\mu_g
+		\quad(\varphi\in C_c^\infty(M;\mathbb R^L)),
+	\end{equation}
+	其中 \(A_u(\mathrm du,\mathrm du)=\sum_i A_u(\mathrm du(e_i),\mathrm du(e_i))\)，\((e_i)\) 为源的局部正交标架。等价地，\(\Delta_gu=-A_u(\mathrm du,\mathrm du)\) 按分布成立。光滑时，它等价于 \(\tau(u)=0\)。
+\end{proposition}
+\begin{proof}
+	记 \(P_y=\mathrm D\pi_y\)。对 \(u_t=\pi(u+t\varphi)\)，链式法则给出
+	\[
+		\mathrm du_t=\mathrm D\pi_{u+t\varphi}(\mathrm du+t\mathrm d\varphi),
+		\qquad
+		\left.\frac{\mathrm d}{\mathrm dt}\right|_0 E(u_t)
+		=\int_M\langle\mathrm du,\mathrm d(P_u\varphi)\rangle\,\mu_g.
+	\]
+	微分与积分可以交换，因为在固定紧支集及目标的较小管状邻域内，\(\pi\) 的前两阶导数有界，导数被 \(C(|\mathrm du|^2+1)\) 控制。
+
+	沿 \(N\) 的切向量 \(V,W\)，对 \(PW=W\) 求导并取法向部分，得到
+	\[
+		(\mathrm D_VP)W=A(V,W).
+	\]
+	\(P\) 为对称矩阵，其沿目标的导数也对称。因此
+	\[
+	\begin{aligned}
+		\langle\mathrm du,\mathrm d(P_u\varphi)\rangle
+		&=\langle\mathrm du,\mathrm d\varphi\rangle
+		 +\sum_i\langle\mathrm du(e_i),(\mathrm D_{\mathrm du(e_i)}P)\varphi\rangle\\
+		&=\langle\mathrm du,\mathrm d\varphi\rangle
+		 +\langle A_u(\mathrm du,\mathrm du),\varphi\rangle.
+	\end{aligned}
+	\]
+	\(A\) 在紧目标上有界，所以二次项属于 \(L^1_{\mathrm{loc}}\)。变分导数为零恰为式\eqref{g3:eq:weak-harmonic-extrinsic}。光滑时，由 Gauss 公式，\(\operatorname{tr}_g\mathrm D\mathrm du=\tau(u)+A_u(\mathrm du,\mathrm du)\)；而左端等于 \(-\Delta_gu\)，故得到最后断言。
+\end{proof}
+
+上述驻值条件也可用一般光滑目标变分表达，因而不依赖所选嵌入。具体地，式\eqref{g3:eq:weak-harmonic-extrinsic}可测试紧支的 \(H^1\cap L^\infty\) 环境向量函数：在有限个坐标片内卷积、拼合，得到统一有界、强 \(H^1\) 且沿子列几乎处处收敛的光滑测试；左侧用 \(L^2\) 收敛，右侧用 \(L^1\) 系数与支配收敛取极限。若测试场 \(V(x)\in\mathrm T_{u(x)}N\)，右侧由法向性为零，得到 \(\int\langle\mathrm du,\mathrm dV\rangle=0\)。任意紧支、对 \((t,x,y)\) 光滑的目标变分 \(F_t(x,y)\in N\)、\(F_0(x,y)=y\)，都产生这样的 \(V(x)=\partial_tF_t(x,u(x))|_0\)，其能量导数正是这个积分。另一嵌入的管状变分属于这一类，故两种描述等价。
+
+\ProseParagraphBreak
+
+例如单位球面有 \(A(V,W)=-\langle V,W\rangle u\)，于是弱方程是 \(\Delta_gu=|\mathrm du|^2u\)。右端通常只有 \(L^1\) 控制；即使形式上像一个椭圆方程，也不能直接以光滑系数线性正则性推出光滑性。
+
+\begin{proposition}\label{g3:prop:harmonic-map-inner-variation}
+	设 \((M^m,g)\) 为光滑无边界黎曼流形，\(N\) 为光滑紧无边界黎曼流形，\(u\in H^1_{\mathrm{loc}}(M,N)\)。定义可积对称张量
+	\begin{equation}\label{g3:eq:harmonic-stress-tensor}
+		S_u=e(u)g-u^*h,\qquad e(u)=\frac12|\mathrm du|^2.
+	\end{equation}
+	则内变分驻值等价于
+	\begin{equation}\label{g3:eq:stationary-inner-identity}
+		\int_M\sum_{i,j}(S_u)_{ij}\langle\nabla_{e_i}X,e_j\rangle\,\mu_g=0
+		\quad(X\in C_c^\infty(\mathrm TM)).
+	\end{equation}
+	能量极小映射必为平稳调和映射；光滑调和映射也满足内变分驻值。
+\end{proposition}
+\begin{proof}
+	先设 \(u\) 光滑，并在一点取源的正交法标架。对 \(u\circ\phi_t\) 的能量求导，再把 \(X(e)\) 积分分部，得
+	\[
+	\begin{aligned}
+		\left.\frac{\mathrm d}{\mathrm dt}\right|_0E(u\circ\phi_t)
+		&=\int_M\left(X(e)+\sum_{i,j}\langle\mathrm du(e_i),\mathrm du(e_j)\rangle
+		\langle\nabla_{e_i}X,e_j\rangle\right)\mu_g\\
+		&=-\int_M\langle S_u,\nabla X\rangle\,\mu_g.
+	\end{aligned}
+	\]
+	对于一般 \(H^1\) 映射，在积分中换元 \(y=\phi_t(x)\)，使所有 \(\mathrm du\) 都在固定点 \(y\) 取值。变化只出现在 \(\phi_t^{-1}\) 的 Jacobian、逆度量及 \(\mathrm D\phi_t\) 中；这些光滑系数与其时间导数在固定紧集上一致有界。由 \(C|\mathrm du|^2\) 支配，可以对积分求导，得到同一公式。也可先用环境分量的 \(H^1\) 光滑逼近代入此二次恒等式，再取极限；这里的近似无需取值于 \(N\)。
+
+	极小映射对上述两类紧支变分都允许比较，\(t=0\) 为能量极小值，导数遂为零。光滑时，\(\nabla\mathrm du\) 的对称性给出
+	\[
+		(\operatorname{div}S_u)(Y)=-\langle\tau(u),\mathrm du(Y)\rangle.
+	\]
+	具体地，\(\nabla_je=\sum_i\langle\nabla_j\mathrm du(e_i),\mathrm du(e_i)\rangle\)，与求 \(\nabla_i\langle\mathrm du(e_i),\mathrm du(e_j)\rangle\) 时的第二项相消，剩下 \(-\langle\tau,\mathrm du(e_j)\rangle\)。若 \(\tau=0\)，对 \(X\) 分部积分便得式\eqref{g3:eq:stationary-inner-identity}。
+\end{proof}
+
+弱调和方程只测试目标方向；在仅有 \(H^1\) 正则性时，形式上的变分场 \(\mathrm du(X)\) 只有 \(L^2\) 控制，不能直接拿来代替允许的目标测试。因此，平稳性中的内变分条件须单独验证。它正是下面径向单调性的依据。
+
+\begin{proposition}\label{g3:prop:stationary-map-monotonicity}
+	设 \(m\ge2\)，\(N\) 为光滑紧无边界黎曼流形，\(u\in H^1(B_R(a),N)\) 对 Euclid 源的紧支内变分驻值。则
+	\[
+		\theta_u(a,r)=r^{2-m}E(u;B_r(a))
+	\]
+	在 \(0<r<R\) 上非减。更精确地，对任意 \(0<\rho<\sigma<R\)，
+	\begin{equation}\label{g3:eq:stationary-map-monotonicity}
+		\theta_u(a,\sigma)-\theta_u(a,\rho)
+		=\int_{B_\sigma(a)\setminus B_\rho(a)}|x-a|^{2-m}|\partial_ru|^2\,\mathrm dx.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	平移令 \(a=0\)。在式\eqref{g3:eq:stationary-inner-identity}中取 \(X(x)=\eta(|x|)x\)，其中 \(\eta\) 紧支于 \([0,R)\) 且在零点附近常值。由
+	\[
+		\operatorname{tr}S_u=(m-2)e,\qquad
+		\sum_{i,j}(S_u)_{ij}\frac{x_ix_j}{r}=r(e-|\partial_ru|^2),
+	\]
+	得
+	\[
+		\int_{B_R}\bigl((m-2)\eta e+r\eta'(e-|\partial_ru|^2)\bigr)\,\mathrm dx=0.
+	\]
+	用径向光滑函数逼近球的示性函数。极坐标积分及一维 Lebesgue 微分定理使对几乎每个 \(r\) 有
+	\[
+		(m-2)E(u;B_r)-r\int_{\partial B_r}e\,\mathrm dS
+		+r\int_{\partial B_r}|\partial_ru|^2\,\mathrm dS=0.
+	\]
+	又 \(E(u;B_r)\) 对 \(r\) 绝对连续，导数为球面上的能量积分。因此
+	\[
+		\theta_u'(0,r)=r^{2-m}\int_{\partial B_r}|\partial_ru|^2\,\mathrm dS\ge0
+	\]
+	几乎处处成立。\(\theta_u\) 在每个远离零点的闭区间上绝对连续，积分即得任意 \(\rho,\sigma\) 的公式。
+\end{proof}
+
+此处的精确等式使用 Euclid 源度量。一般黎曼源的径向坐标还带有度量误差；本章二维光滑解的小能量估计直接由 Bochner 不等式和均值估计完成。
+
+\subsection{弱极限与约束的保持}
 \label{g3:subsec:1802:04}
-待撰写
+
+目标取值与同伦类具有不同的闭性。前者是逐点的闭集合条件，可以由强 \(L^2\) 收敛后的几乎处处子列保留；后者涉及整个映射在小尺度上的组织方式，能量集中时可能丢失。
+
+\begin{theorem}\label{g3:thm:sobolev-map-weak-closure}
+	设 \((M,g)\) 为紧光滑黎曼流形，允许光滑边界，\(N\subset\mathbb R^L\) 为光滑紧无边界等距嵌入目标。若 \(u_j\in H^1(M,N)\) 且 \(\sup_jE(u_j)<\infty\)，则有子列及 \(u\in H^1(M,N)\)，使
+	\[
+		u_j\rightharpoonup u\text{ 于 }H^1,
+		\qquad u_j\to u\text{ 于 }L^2,
+		\qquad E(u)\le\liminf_jE(u_j).
+	\]
+	若源有边界，且各 \(u_j\) 的迹等于同一个固定迹，则极限具有该迹。
+\end{theorem}
+\begin{proof}
+	目标紧给出统一的零阶 \(L^2\) 界。由\cref{g3:thm:sobolev-weak-compactness}，在平凡秩 \(L\) 丛上取 \(H^1\) 弱收敛子列；再由\cref{g3:thm:compact-bundle-rellich,g3:prop:sobolev-boundary-bundles}取得 \(L^2\) 强收敛。进一步选子列使 \(\sum_j\|u_j-u\|_2^2<\infty\)，于是对几乎每一点有 \(u_j(x)\to u(x)\)。\(N\) 在 \(\mathbb R^L\) 中闭，故 \(u(x)\in N\) 几乎处处。
+
+	弱收敛给出 \(\mathrm du_j\rightharpoonup\mathrm du\) 于 \(L^2\)。用 Hilbert 空间范数的弱下半连续性便得能量不等式。迹算子有界线性，所以保持弱收敛；固定的迹在弱极限下仍为原值。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:harmonic-map-dirichlet-minimizer}
+	设 \(\Omega\subset\mathbb R^m\) 为有界 \(C^1\) 域，\(m\ge1\)，\(N\) 为光滑紧无边界黎曼流形，且 \(w\in H^1(\Omega,N)\)。则式\eqref{g3:eq:harmonic-map-trace-class}的竞争类中存在能量最小者。每个这样的最小者在内部弱调和，并对紧支内变分驻值。
+\end{corollary}
+\begin{proof}
+	\(w\) 本身使竞争类非空，能量下确界有限。取趋于下确界的序列，按上一证明使用\cref{g3:thm:rellich-domain,g3:thm:sobolev-extension-c1}的有界 \(C^1\) 域版本取极限。闭目标和固定迹保留，弱下半连续性使极限达到下确界。紧支目标变分及内变分都不改变边界迹，所以\cref{g3:prop:harmonic-map-inner-variation}的论证适用。
+\end{proof}
+
+这个直接法给出固定迹类中的最小者。若另指定同伦类，就还要证明所选竞争类在所用极限下闭合；\(H^1\) 有界性本身没有提供这一点。\Cref{g3:exm:sphere-mobius-bubble}将给出一列度数恒为一的光滑球面调和映射，它们弱收敛到度数为零的常值映射；该例的全部计算在\subsecref{g3:subsec:1804:04}给出。
+
+\begin{example}\label{g3:exm:weak-map-quadratic-defect}
+	在周期为 \(2\pi\) 的平坦圆周上，令
+	\[
+		f_j(x)=j^{-1}\sin(jx),\qquad u_j(x)=(\cos f_j(x),\sin f_j(x))\in S^1.
+	\]
+	则 \(u_j\to(1,0)\) 一致且弱收敛于 \(H^1\)，但
+	\[
+		|u_j'|^2=\cos^2(jx)\rightharpoonup\frac12,
+		\qquad |u_j'|^2u_j\rightharpoonup\frac12(1,0)
+	\]
+	在分布意义下成立。事实上，\(f_j\to0\) 一致，\(f_j'=\cos(jx)\) 对光滑测试函数积分分部后趋零；再用光滑函数在 \(L^2\) 中稠密及统一范数界，得到弱收敛。由 \(\cos^2(jx)=(1+\cos(2jx))/2\) 得到两个二次项的极限。
+
+	极限映射的导数为零，故上述二次项并不等于其相应表达式。这些映射用于检验弱收敛对乘积的作用：要将调和映射方程传给极限，必须另外处理二次导数项，不能只逐项套用线性弱收敛。
+\end{example}
+
+\begin{proposition}\label{g3:prop:strong-limit-weak-harmonic}
+	设 \((M,g)\) 为光滑无边界黎曼流形，\(N\subset\mathbb R^L\) 为光滑紧无边界等距嵌入目标。若弱调和映射 \(u_j\) 在 \(H^1_{\mathrm{loc}}(M;\mathbb R^L)\) 中强收敛到 \(u\)，则 \(u\) 仍弱调和。若各 \(u_j\) 还平稳，则 \(u\) 也平稳。
+\end{proposition}
+\begin{proof}
+	闭目标条件由局部强 \(L^2\) 收敛保留。固定相对紧测试区域，把 \(A\) 光滑延拓到目标邻域，并在每个输入先作切投影，使它成为有界的环境双线性型。分解
+	\[
+	\begin{aligned}
+	&A(u_j)(\mathrm du_j,\mathrm du_j)-A(u)(\mathrm du,\mathrm du)\\
+	&=A(u_j)(\mathrm du_j-\mathrm du,\mathrm du_j)
+	 +A(u_j)(\mathrm du,\mathrm du_j-\mathrm du)
+	 +(A(u_j)-A(u))(\mathrm du,\mathrm du).
+	\end{aligned}
+	\]
+	前两项的 \(L^1\) 范数由 Cauchy--Schwarz 不等式趋零。最后一项在几乎处处收敛的子列上由 \(C|\mathrm du|^2\) 支配而趋零；子列反证同样给出全序列的 \(L^1\) 收敛。于是式\eqref{g3:eq:weak-harmonic-extrinsic}的两侧都能取极限。应力张量只含二次导数项，强 \(L^2\) 导数收敛使 \(S_{u_j}\to S_u\) 于 \(L^1_{\mathrm{loc}}\)，再在式\eqref{g3:eq:stationary-inner-identity}中取极限即可。
+\end{proof}
+
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

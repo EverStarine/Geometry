@@ -1,35 +1,158 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 13.1 紧流形上的全局估计
 % 纲要位置：几何学计划纲要.md，第 2612 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 有限覆盖与局部估计的粘合
 % * 含低阶范数的先验不等式
 % * 核的有限维性
-% * 正交核后加强的估计
+% * 核的正交补上的先验估计
 % 
 % 纲要内容结束
 
 \section{紧流形上的全局估计}
 \label{g3:sec:1301}
 
-待撰写
+局部估计控制一个坐标片内的导数。要解整个流形上的方程，还须知道这些估计能否统一、齐次方程有多少自由度，以及去掉这些自由度后能否稳定地反解。本节在闭流形上把三个问题接起来：有限覆盖给出全局估计，紧嵌入限制核的维数，正交归一化去掉估计中最后的零阶项。
+
+\ProseParagraphBreak
+
+这里的闭流形指紧且无边界的光滑流形。固定光滑底度量、正体积密度、有限秩丛的度量与联络；复 Hermitian 内积仍对第一变量线性，\((u,v)_2=\int_M\langle u,v\rangle\mu_g\)。算子的阶数记为 \(d\)，流形维数记为 \(n\)。
 
 \subsection{有限覆盖与局部估计的粘合}
 \label{g3:subsec:1301:01}
-待撰写
+先说明 Sobolev 空间与微分算子的具体对应。在有限平凡化中，光滑 \(d\) 阶算子有表达式
+\[
+	P=\sum_{|\alpha|\le d}A_\alpha(x)\mathrm D^\alpha,
+	\qquad \mathrm D_j=-\mathrm i\partial_j.
+\]
+对每个整数 \(k\ge0\)，乘积求导至 \(k\) 阶时，\(Pu\) 只涉及 \(u\) 的至 \(k+d\) 阶导数及有限阶系数导数。紧集上的系数界与\cref{g3:prop:sobolev-norm-equivalence}因此给出有界映射
+\[
+	P:W^{k+d,p}(M;E)\longrightarrow W^{k,p}(M;F),\qquad1\le p<\infty.
+\]
+这个作用与分布意义的作用一致，因为光滑逼近可代入每个测试配对。椭圆性将提供反方向的估计。
+
+\begin{theorem}[全局椭圆估计]\label{g3:thm:global-elliptic-hk}
+	设 \(M^n\) 为非空闭光滑流形，\(n\ge1\)，\(E,F\to M\) 为同秩有限秩光滑实或复向量丛，固定光滑度量与联络。设 \(P:C^\infty(E)\to C^\infty(F)\) 为光滑系数的椭圆微分算子，阶数 \(d\ge1\)。对每个整数 \(k\ge0\)，存在 \(C_k\)，使
+	\begin{equation}\label{g3:eq:global-elliptic-hk}
+		\|u\|_{H^{k+d}}\le C_k\bigl(\|Pu\|_{H^k}+\|u\|_2\bigr)
+	\end{equation}
+	对所有 \(u\in H^{k+d}(E)\) 成立。若分布截面 \(u\) 满足 \(Pu\in H^k(F)\)，则 \(u\in H^{k+d}(E)\)，并满足同一估计。
+\end{theorem}
+\begin{proof}
+	选有限平凡化 \(U_a\)，从属单位分解 \(\chi_a\)，以及 \(\psi_a\in C_c^\infty(U_a)\)，使 \(\psi_a=1\) 于 \(\operatorname{supp}\chi_a\) 附近。第十二章的分布估计\cref{g3:thm:elliptic-distribution-l2}在每个坐标片中取 \(s=k,t=0\)，得到
+	\[
+		\|(\chi_a u)_a\|_{H^{k+d}(\mathbb R^n)}
+		\le C_a\bigl(\|(\psi_a Pu)_a\|_{H^k(\mathbb R^n)}+\|(\psi_a u)_a\|_2\bigr).
+	\]
+	下标表示相应丛的局部分量。局部定理已经控制了截断交换子；这一步无需把 \(P(\chi_a u)\) 错写成 \(\chi_a Pu\)。对有限个 \(a\) 求和，使用 Sobolev 范数等价及光滑乘法的有界性，即得式\eqref{g3:eq:global-elliptic-hk}。光滑稠密性使估计延伸到 \(H^{k+d}\)。
+
+	对任意分布 \(u\)，先在每张坐标片使用同一定理的正则性部分，得到 \(u\in H^{k+d}_{\mathrm{loc}}\)。紧性与有限覆盖使其成为全局 \(H^{k+d}\) 截面，再应用已证估计。这个次序并未预先要求未知分布具有 \(L^2\) 范数。
+\end{proof}
+
+闭流形上的每个点都位于一个内部坐标片中。若 \(M\) 有边界，覆盖边界的半球不是第十二章的内部区域；边界条件和相应估计将在下一章另行建立。对变化的几何族，式\eqref{g3:eq:global-elliptic-hk}中的常数仍依赖覆盖、截断、度量、标架和所需系数界，固定流形上的有限性不自动给出族上的一致性。
 
 \subsection{含低阶范数的先验不等式}
 \label{g3:subsec:1301:02}
-待撰写
+零阶项记录了尚未由方程控制的低频部分。要在其他可积指数中得到相同形式，先把低阶导数压到任意小倍数的高阶范数中。
+
+\begin{lemma}\label{g3:lem:compact-sobolev-interpolation}
+	设 \(M\) 为闭光滑流形，\(E\) 为光滑有限秩度量丛，\(q\ge1\) 为整数，\(1<p<\infty\)。对每个 \(\varepsilon>0\)，存在 \(C_\varepsilon\)，使
+	\[
+		\|u\|_{W^{q-1,p}}\le\varepsilon\|u\|_{W^{q,p}}+C_\varepsilon\|u\|_{L^p}
+		\qquad(u\in W^{q,p}(E)).
+	\]
+\end{lemma}
+\begin{proof}
+	\(q=1\) 时取 \(C_\varepsilon=1\) 即可。若某个 \(q>1\)、\(\varepsilon>0\) 的结论不成立，归一化后可取 \(u_j\)，使
+	\[
+		\|u_j\|_{W^{q-1,p}}=1,\qquad
+		\varepsilon\|u_j\|_{W^{q,p}}+j\|u_j\|_p<1.
+	\]
+	由\cref{g3:thm:compact-bundle-rellich}，一个子列在 \(W^{q-1,p}\) 中收敛。它的 \(L^p\) 范数趋零，故极限只能为零，却又应有 \(W^{q-1,p}\) 范数一，矛盾。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:global-elliptic-wkp}
+	设 \(M^n\) 为非空闭光滑流形，\(n\ge1\)，\(E,F\) 为同秩有限秩光滑度量丛，\(P:C^\infty(E)\to C^\infty(F)\) 是光滑系数、阶 \(d\ge1\) 的椭圆算子。固定整数 \(k\ge0\) 及 \(1<p<\infty\)。则
+	\begin{equation}\label{g3:eq:global-elliptic-wkp}
+		\|u\|_{W^{k+d,p}}\le C\bigl(\|Pu\|_{W^{k,p}}+\|u\|_p\bigr)
+	\end{equation}
+	对 \(u\in W^{k+d,p}(E)\) 成立；若分布截面满足 \(Pu\in W^{k,p}(F)\)，则它属于 \(W^{k+d,p}(E)\)，并满足此式。
+\end{theorem}
+\begin{proof}
+	\(k=0\) 时，在一组内外嵌套坐标片上应用\cref{g3:thm:local-elliptic-lp-apriori}，有限相加即得结论。
+
+	为处理高阶，先令 \(u\) 光滑。在每个稍大的坐标片中，对全部 \(|\beta|=k\) 写出
+	\[
+		P(\partial^\beta u)=\partial^\beta(Pu)+[P,\partial^\beta]u.
+	\]
+	交换子中至少一次导数落在系数上，所以其作用于 \(u\) 的阶数至多为 \(k+d-1\)。局部 \(W^{d,p}\) 估计用于 \(\partial^\beta u\)，再加上较低阶导数并以有限片拼接，得到
+	\[
+		\|u\|_{W^{k+d,p}}
+		\le C\bigl(\|Pu\|_{W^{k,p}}+\|u\|_{W^{k+d-1,p}}\bigr).
+	\]
+	坐标、联络与截断带来的项也都包含在后一个范数中。上一引理取 \(q=k+d\)，选择 \(\varepsilon\) 使 \(C\varepsilon<1/2\)，移项得到所需估计。光滑稠密性处理一般 \(W^{k+d,p}\) 截面。
+
+	分布解先由\cref{g3:thm:elliptic-distribution-lp}逐片提升为 \(W^{k+d,p}\)，再用紧性拼合并代入估计。实丛可复化后取实部，结论相同。
+\end{proof}
+
+\begin{example}\label{g3:exm:global-zero-order-term}
+	连通闭流形上的非负 Laplace 算子 \(\Delta_g\) 满足
+	\(\|u\|_{H^2}\le C(\|\Delta_gu\|_2+\|u\|_2)\)。常数函数的 Laplace 为零，故尚未规定均值时不能删除零阶项。相反，\(P=1+\Delta_g\) 的齐次解与自身配对给出 \(\|u\|_2^2+\|\mathrm du\|_2^2=0\)，其核为零；下面的估计将说明此时可以去掉该项。
+\end{example}
 
 \subsection{核的有限维性}
 \label{g3:subsec:1301:03}
-待撰写
+令 \(\mathcal N_P\) 表示齐次方程的光滑解空间。局部正则性使这个空间也包含全部分布齐次解，因此核的大小由全局几何决定。
 
-\subsection{正交核后加强的估计}
+\begin{proposition}\label{g3:prop:finite-elliptic-kernel}
+	设 \(M^n\) 为非空闭光滑流形，\(n\ge1\)，\(E,F\) 为同秩光滑有限秩度量丛，\(P:C^\infty(E)\to C^\infty(F)\) 为光滑椭圆算子，阶 \(d\ge1\)。则
+	\[
+		\mathcal N_P=\{u\in\mathcal D'(E):Pu=0\}
+		\subset C^\infty(E)
+	\]
+	为有限维空间。它是 \(L^2(E)\) 的闭子空间，所有 Sobolev 实现的核都等于它。
+\end{proposition}
+\begin{proof}
+	分布解光滑性来自\cref{g3:cor:elliptic-smoothness}。若 \(u_j\in\mathcal N_P\) 在 \(L^2\) 中趋于 \(u\)，则对任意光滑测试截面，分部积分并取极限可得 \(Pu=0\) 分布成立；所以 \(u\in\mathcal N_P\)，核闭。
+
+	若核无限维，逐次取与前面有限多个向量正交的单位向量，可构造 \(L^2\) 正交归一列 \(e_j\in\mathcal N_P\)。全局估计给出 \(\|e_j\|_{H^d}\le C\)。由 \(d\ge1\) 及 Rellich 紧性，一个子列在 \(L^2\) 中收敛；但不同项的 \(L^2\) 距离恒为 \(\sqrt2\)，矛盾。因此核有限维。任何 Sobolev 核都包含于分布核，而每个光滑核元素属于全部这些空间，故各实现的核相同。
+\end{proof}
+
+取 \(\mathcal N_P\) 的 \(L^2\) 正交归一基 \(e_1,\ldots,e_r\)，正交投影为
+\begin{equation}\label{g3:eq:elliptic-kernel-projection}
+	\Pi_Pu=\sum_{j=1}^r(u,e_j)_2e_j.
+\end{equation}
+\symidx{\(\mathcal N_P,\Pi_P\)：椭圆算子的光滑核及其 \(L^2\) 正交投影}
+它与基的选择无关，因为 \(u-\Pi_Pu\) 与核正交。每个 \(e_j\) 光滑，Hölder 不等式还给出
+\[
+	\|\Pi_Pu\|_{W^{q,p}}\le C_{q,p}\|u\|_{L^p},
+	\qquad q\ge0,\quad1<p<\infty.
+\]
+因此式\eqref{g3:eq:elliptic-kernel-projection}也定义了 \(L^p\) 上的有界有限秩投影；即使 \(p\ne2\)，我们仍用这些积分配对规定“与核正交”。
+
+\subsection{核的正交补上的先验估计}
 \label{g3:subsec:1301:04}
-待撰写
+齐次解可以任意加到一个特解上。规定特解与核正交，既选出唯一候选，也恢复稳定估计。
+
+\begin{theorem}\label{g3:thm:kernel-orthogonal-estimate}
+	设 \(M^n\) 为非空闭光滑流形，\(n\ge1\)，\(E,F\) 为同秩光滑有限秩度量丛，\(P:C^\infty(E)\to C^\infty(F)\) 为光滑椭圆 \(d\) 阶算子，\(d\ge1\)。对整数 \(k\ge0\)、\(1<p<\infty\)，存在 \(C_{k,p}\)，使
+	\begin{equation}\label{g3:eq:kernel-orthogonal-estimate}
+		\|u\|_{W^{k+d,p}}\le C_{k,p}\|Pu\|_{W^{k,p}}
+	\end{equation}
+	对所有 \(u\in W^{k+d,p}(E)\)、\(\Pi_Pu=0\) 成立。特别地，任意 \(u\in W^{k+d,p}(E)\) 满足同一右端控制 \(\|u-\Pi_Pu\|_{W^{k+d,p}}\) 的估计。
+\end{theorem}
+\begin{proof}
+	先证明 \(\Pi_Pu=0\) 时 \(\|u\|_p\le C\|Pu\|_p\)。若不成立，可取 \(u_j\in W^{d,p}\)，使
+	\[
+		\Pi_Pu_j=0,\qquad \|u_j\|_p=1,\qquad \|Pu_j\|_p\longrightarrow0.
+	\]
+	式\eqref{g3:eq:global-elliptic-wkp}使它们在 \(W^{d,p}\) 中有界。由 Rellich 紧性，可取子列在 \(L^p\) 中趋于 \(u\)。于是 \(\|u\|_p=1\)、\(\Pi_Pu=0\)，并且测试配对中 \(Pu=0\)。分布正则性使 \(u\in\mathcal N_P\)，所以 \(u=\Pi_Pu=0\)，矛盾。
+
+	现在把 \(\|u\|_p\le C\|Pu\|_p\) 代入全局 \(W^{k+d,p}\) 估计，即得式\eqref{g3:eq:kernel-orthogonal-estimate}。最后 \(P\Pi_Pu=0\)，所以将同一估计用于 \(u-\Pi_Pu\) 即可。
+\end{proof}
+
+这个矛盾论证也说明常数的含义：若归一化截面能让方程残差越来越小，紧性会产生一个非零齐次解。正交条件恰好排除了这个极限。因而当一族算子的核发生跳跃时，补空间上的反解常数可能变大；指数的稳定性与这种常数的一致性是两个不同的问题。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

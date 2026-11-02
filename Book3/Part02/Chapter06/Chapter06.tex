@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：## 第6章　测地线变分、Jacobi 场与指标定理
 % 纲要位置：几何学计划纲要.md，第 2324 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,14 +14,28 @@
 \BookChapterNumber{g3:ch:06}
 
 \begin{chapterabstract}
-待撰写
+	测地线是能量的驻定曲线，但走得足够远以后未必仍是最短曲线。本章从二参数变分逐项导出长度和能量的一、二次变分，保留固定端点与子流形端点各自的边界项。Jacobi 场描述邻近测地线的一阶变化，并把指数映射退化与共轭点联系起来。指标形式将这些微分方程与最短性连接；通过有限维分段测地线约化及共轭时刻的负定穿越，证明 Morse 指标等于开区间内共轭点重数之和。最后处理端点退化、焦点以及子流形起点的边界条件。
 \end{chapterabstract}
 
 \begin{learninggoals}
-待撰写
+	\begin{itemize}
+		\item 推导长度和能量的两次变分，说明端点项与曲率项的来源。
+		\item 用 Jacobi 初值问题计算指数映射的微分、共轭点及其重数。
+		\item 用指标形式检验局部极小性，区分割点与共轭点。
+		\item 将分片光滑场约化到有限节点数据，计算指标跳跃与端点零空间。
+		\item 从形算子导出子流形边界条件，并计算法向测地线的焦点。
+	\end{itemize}
 \end{learninggoals}
 
-待撰写
+在圆球面上，从北极出发的不同经线最终会在南极相遇。在相遇以前，沿经线移动终点，邻近经线之间的横向间距先增大、后缩小，最后归零。这个横向间距的一阶变化由 Jacobi 场描述；归零说明指数映射失去一个可逆方向。若继续沿经线越过南极，则可以找到附近更短的连接曲线。要把这个现象变成定理，需要把测地线的微分方程与能量的二次变化放进同一个计算中。
+
+\ProseParagraphBreak
+
+整体最短性还有另一种失效方式。平坦圆柱上的两个点可能被绕圆柱两侧的同长测地线连接，虽然曲率为零、沿途也没有共轭点。二次变分检验的是给定曲线附近的变化，所有连接曲线的长度比较还会受到整体拓扑影响。本章先计算二次变化，再说明共轭点决定多少个下降方向，以及割点为何还可能来自另一条最短线。
+
+\ProseParagraphBreak
+
+直接所需基础是第一章的 Levi-Civita 联络、第二章的测地线初值问题、指数映射与完备性，以及第三章的曲率对称性；最后一小节另用第四章的第二基本形式和形算子。线性常微分方程的初值唯一性、对称矩阵的正负惯性及局部逆函数定理在使用处恢复所需内容。与本章对应的经典阅读材料是 Milnor 的第12--15节\cite[第12--15节，第70--87页]{Milnor1963Morse}；本章能量采用 \(\tfrac12\int|\dot\gamma|^2\)，其固定端点 Hessian 因而直接等于指标形式。证明只需要连续分片光滑变分及有限节点坐标，不预设路径空间上的无限维微分几何。
 
 \input{Part02/Chapter06/Section0601}
 \input{Part02/Chapter06/Section0602}
@@ -29,8 +43,383 @@
 \input{Part02/Chapter06/Section0604}
 
 \begin{chaptersummary}
-待撰写
+	一次变分给出测地线方程和端点正交条件；二次变分把速度场的变化、曲率及边界形算子组合为一个对称二次型。固定端点的能量 Hessian 是指标形式，长度 Hessian 则消去纯重参数化的切向变化。端点可在子流形上移动时，形算子项保留了边界自身的弯曲。
+
+	\ProseParagraphBreak
+
+	Jacobi 场由初值唯一确定，Wronskian 配对守恒；从基点为零的解恢复指数映射微分，便把共轭重数识别为边值问题的核维数。短区间的指标形式正定，Jacobi 插值使任意场分解为有限节点部分与正定余项。共轭点之前保持局部极小，内部共轭点产生负方向，而割点还可能由不同最短线相遇形成。
+
+	\ProseParagraphBreak
+
+	移动终点经过共轭时刻时，有限节点二次型在核上的导数为负定，每个共轭方向贡献一个新增负方向。因此指标计算开区间内的共轭点，终点共轭方向归入零空间。子流形起点对应带形算子的边界条件，焦点与法指数映射退化相对应；同样的约化和穿越计算给出相应的焦点计数。这些结果为下一章的曲率比较提供可直接使用的变分工具。
 \end{chaptersummary}
 
 \BookExercises
-待撰写
+
+\begin{exercise}\label{g3:ex:energy-reparametrization-unbounded}
+	设 \(\sigma:[0,L]\to M\) 是光滑单位速曲线，\(L>0\)。对光滑严格递增微分同胚 \(\phi:[0,1]\to[0,1]\)，令 \(c_\phi(t)=\sigma(L\phi(t))\)。求所有 \(E(c_\phi)\) 的最小值及等号条件，并构造一列这样的重参数化，使长度始终为 \(L\) 而能量趋于无穷。
+\end{exercise}
+\begin{solution}
+	有 \(|\dot c_\phi|=L\phi'\)，故
+	\[
+		L(c_\phi)=L,\qquad E(c_\phi)=\frac{L^2}{2}\int_0^1(\phi')^2\,\mathrm dt.
+	\]
+	由 \(\int_0^1\phi'=1\) 及 Cauchy--Schwarz，最小值为 \(L^2/2\)，等号要求 \(\phi'=1\)，也就是 \(\phi(t)=t\)。
+
+	取非负光滑函数 \(\chi\)，支集包含在 \((-1,1)\)，且 \(\int\chi=1\)。对 \(0<\varepsilon<1/4\)，设
+	\[
+		q_\varepsilon(t)=\frac12\left(1+\frac1\varepsilon\chi\left(\frac{t-1/2}{\varepsilon}\right)\right),
+		\qquad \phi_\varepsilon(t)=\int_0^t q_\varepsilon(u)\,\mathrm du.
+	\]
+	由于 \(q_\varepsilon\ge1/2\) 且积分为1，\(\phi_\varepsilon\) 是所需微分同胚。直接展开得到
+	\[
+		\int_0^1q_\varepsilon^2\,\mathrm dt
+		=\frac34+\frac1{4\varepsilon}\int_{-1}^1\chi(u)^2\,\mathrm du\longrightarrow\infty.
+	\]
+	因此几何轨迹和长度不变时，集中行进速度仍可使能量任意大。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:parabola-endpoint-degenerate-minimum}
+	在 Euclid 平面中固定 \(p=(0,h)\)、\(h>0\)，允许终点在抛物线 \(Q=\{(x,ax^2/2):x\in\mathbb R\}\) 上移动，其中 \(a>0\)。在参数区间 \([0,1]\) 上考虑 \(\gamma(t)=(0,h(1-t))\)。用从 \(p\) 到 \((s,as^2/2)\) 的直线段变分计算能量的二次及四次项，并从边界第二变分公式核对二次项。说明 \(ah<1\)、\(ah=1\)、\(ah>1\) 三种情形的极小性；特别说明零的二次变化是否必然排除严格极小。
+\end{exercise}
+\begin{solution}
+	直线段变分为 \(F(s,t)=(ts,(1-t)h+tas^2/2)\)，其速度恒定，故
+	\[
+		E(s)=\tfrac12\bigl(s^2+(as^2/2-h)^2\bigr)
+		=\frac{h^2}{2}+\frac{1-ah}{2}s^2+\frac{a^2}{8}s^4.
+	\]
+	基曲线在终点垂直于 \(Q\)，所以驻定。变分场为 \(V=te_1\)，其指标积分为1；在原点，\(B^Q(e_1,e_1)=ae_2\)、\(T(1)=-he_2\)，故终点项为 \(-ah\)，得到 \(E''(0)=1-ah\)。
+
+	当 \(ah<1\) 时，\(s=0\) 为严格极小；当 \(ah=1\) 时，四次项仍严格为正，所以依然严格极小，但二次形式在这个方向退化；当 \(ah>1\) 时，小的非零 \(s\) 使能量下降。对给定终点，常速直线段的能量不大于其他连接曲线，故前两种情形的结论也适用于全部允许的竞争曲线，而不只上述直线段族。等号时必须是同一终点、同一常速直线段。二阶退化本身不能决定更高阶的极小性。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:periodic-variation-nonpositive-curvature}
+	设 \(\gamma:[0,\ell]\to M\) 是光滑无边界黎曼流形中的闭单位速测地线，\(\gamma(0)=\gamma(\ell)\)、\(\dot\gamma(0)=\dot\gamma(\ell)\)，只考虑光滑周期变分。证明能量 Hessian 仍由积分形式 \(I_\gamma\) 给出。若 \(M\) 截面曲率非正，证明它半正定，且零空间由满足 \(D_tV=0\)、\(R(V,T)T=0\) 的周期场组成。若沿 \(\gamma\) 的所有含 \(T\) 的二维平面曲率严格为负，证明零空间只有 \(V=cT\)；在平坦标准 \(n\) 维环面的直线闭测地线上求其零空间维数。
+\end{exercise}
+\begin{solution}
+	周期条件使两个端点的 \(V,A,T\) 分别相同，故一、二次变分的边界差均为零。于是 Hessian 为 \(I_\gamma\)。当截面曲率非正时，\(-\langle R(V,T)T,V\rangle\ge0\)，所以积分的两项都非负。若 \(I_\gamma(V,V)=0\)，连续的非负被积项分别为零，得到 \(V'=0\) 和 \(\langle R(V,T)T,V\rangle=0\)。算子 \(-R(\cdot,T)T\) 自伴半正定，用正交特征基展开知其二次型为零等价于算子作用为零。因此这些条件也保证对每个周期场 \(W\) 都有 \(I_\gamma(V,W)=0\)，恰为双线性形式的零空间。
+
+	严格负曲率使第二项只有在 \(V^\perp=0\) 时为零；再由平行性得到 \(V=cT\)，其中 \(c\) 是常数。这一方向对应闭曲线参数原点的移动。在标准平坦环面中，所有常系数场都下降为周期平行场，曲率恒零，因此零空间维数为 \(n\)。这是周期边界的结论，与固定两端点时常场通常不被允许的情形不同。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:jacobi-conjugate-boundary-compatibility}
+	设 \(\gamma:[a,b]\to M\) 为光滑黎曼流形中的测地线，延拓到端点邻域，令
+	\[
+		\mathcal N=\{K\in\mathcal J(\gamma):K(a)=K(b)=0\},
+		\qquad m=\dim\mathcal N.
+	\]
+	给定 \(u\in T_{\gamma(a)}M\)、\(v\in T_{\gamma(b)}M\)。证明存在满足 \(J(a)=u\)、\(J(b)=v\) 的 Jacobi 场，当且仅当
+	\[
+		\langle v,K'(b)\rangle=\langle u,K'(a)\rangle
+		\quad\text{对每个 }K\in\mathcal N\text{ 成立}.
+	\]
+	若有解，证明全体解是一个以 \(\mathcal N\) 为平移方向的 \(m\) 维仿射空间。由此解释“共轭”怎样改变 Jacobi 边值问题，而不改变初值问题的唯一性。
+\end{exercise}
+\begin{solution}
+	若 \(J\) 是所求解，对 \(K\in\mathcal N\) 在两端计算恒定配对，得到
+	\[
+		W(J,K)|_a=-\langle u,K'(a)\rangle,
+		\qquad W(J,K)|_b=-\langle v,K'(b)\rangle,
+	\]
+	所以给定条件必要。
+
+	证明充分性。取 \(J_0(a)=u\)、\(J_0'(a)=0\) 的唯一 Jacobi 场。令 \(J_z\) 的初值为 \((0,z)\)，并记终值映射
+	\[
+		E:T_{\gamma(a)}M\to T_{\gamma(b)}M,\qquad E(z)=J_z(b).
+	\]
+	映射 \(K\mapsto K'(a)\) 将 \(\mathcal N\) 同构到 \(\ker E\)，故 \(\dim\operatorname{im}E=n-m\)。另一方面，\(K\mapsto K'(b)\) 在 \(\mathcal N\) 上单射：若值和导数在 \(b\) 都为零，初值唯一性便迫使 \(K=0\)。因此
+	\[
+		D=\{K'(b):K\in\mathcal N\}\subset T_{\gamma(b)}M
+	\]
+	是 \(m\) 维子空间。对任意 \(z\) 和 \(K\in\mathcal N\)，\(W(J_z,K)\) 在 \(a\) 处为零，在 \(b\) 处等于 \(-\langle E(z),K'(b)\rangle\)，所以 \(\operatorname{im}E\subset D^\perp\)。维数相同给出 \(\operatorname{im}E=D^\perp\)。
+
+	又由 \(W(J_0,K)|_a=W(J_0,K)|_b\)，
+	\[
+		\langle J_0(b),K'(b)\rangle=\langle u,K'(a)\rangle.
+	\]
+	题设相容条件于是等价于 \(v-J_0(b)\in D^\perp=\operatorname{im}E\)。选 \(z\) 使 \(E(z)=v-J_0(b)\)，则 \(J_0+J_z\) 为所求解。任意两解之差属于 \(\mathcal N\)，任意一解加上 \(\mathcal N\) 中的场仍为解，所以全体解正是该仿射空间。共轭时 \(m>0\)，边值可能不相容，即使相容也不唯一；初值 \((J(a),J'(a))\) 则仍唯一决定一个解。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:product-spheres-conjugate-times}
+	给 \(M=S^2(r_1)\times S^2(r_2)\) 乘积度量。设 \(\sigma_i\) 是第 \(i\) 个球面上的单位速度大圆，\(c_1,c_2>0\)、\(c_1^2+c_2^2=1\)，令
+	\[
+		\gamma(t)=\bigl(\sigma_1(c_1t),\sigma_2(c_2t)\bigr).
+	\]
+	求相对 \(t=0\) 的全部正共轭时刻及其重数，并判断何时存在重数为 \(2\) 的共轭时刻。再说明若允许 \(c_2=0\)、\(c_1=1\)，结论如何改变。
+\end{exercise}
+\begin{solution}
+	乘积联络逐因子求导，乘积曲率也逐因子作用，参见\cref{g3:prop:product-connection,g3:prop:product-curvature}。因此 \(\gamma\) 是单位速度测地线，沿它的场 \(J=(J_1,J_2)\) 满足 Jacobi 方程，当且仅当每个 \(J_i\) 满足对应因子测地线的 Jacobi 方程。
+
+	记 \(U_i(t)=\dot\sigma_i(c_it)\) 为单位切向量，并沿第 \(i\) 个因子取平行单位法向量 \(N_i(t)\)。此处的法向是在该二维球面的切空间内相对 \(U_i\) 而言。若 \(J_i(0)=0\)，则它的一般形式为
+	\[
+		J_i(t)=b_itU_i(t)
+		+d_i\frac{r_i}{c_i}\sin\left(\frac{c_it}{r_i}\right)N_i(t).
+	\]
+	这是因为实际速度为 \(c_iU_i\)，法向方程为 \(j_i''+(c_i^2/r_i^2)j_i=0\)，切向方程为 \(f_i''=0\)。在任一 \(t_0>0\) 要求 \(J_i(t_0)=0\)，先迫使 \(b_i=0\)；法向初值 \(d_i\) 可以非零，当且仅当 \(t_0\in(\pi r_i/c_i)\mathbb N_{>0}\)。
+
+	所以全部正共轭时刻是
+	\[
+		\left\{\frac{m\pi r_1}{c_1}:m\ge1\right\}
+		\ \cup\
+		\left\{\frac{\ell\pi r_2}{c_2}:\ell\ge1\right\}.
+	\]
+	仅属于其中一个集合的时刻重数为 \(1\)，同时属于两个集合的时刻重数为 \(2\)。有共同正时刻，当且仅当
+	\[
+		\frac{r_1/c_1}{r_2/c_2}=\frac{r_1c_2}{r_2c_1}\in\mathbb Q.
+	\]
+	两个因子的变分独立，所以重合时确实把两个一维核相加，而不会产生额外的切向核。
+
+	若 \(c_2=0\)，第二因子曲线恒定，方程变为 \(J_2''=0\)；在两个不同时刻消失只可能为零。第一因子的正共轭时刻为 \(m\pi r_1\)，重数均为 \(1\)。此时不能把含 \(1/c_2\) 的表达式直接作为一个新的共轭时刻序列。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:sphere-rotation-jacobi-fields}
+	设 \(\gamma\) 是圆球面 \(S^n(a)\subset\mathbb R^{n+1}\)、\(n\ge2\) 上的单位速度测地线，\(p=\gamma(0)\)、\(u=\dot\gamma(0)\)。对斜对称线性映射 \(A:\mathbb R^{n+1}\to\mathbb R^{n+1}\)，令 \(J_A(t)=A\gamma(t)\)。
+	\begin{enumerate}
+		\item 证明 \(J_A\) 是沿 \(\gamma\) 的 Jacobi 场，且 \(\langle J_A',\dot\gamma\rangle=0\)。
+		\item 反过来，证明任一满足 \(\langle J',\dot\gamma\rangle=0\) 的 Jacobi 场都等于某个 \(J_A\)。提示：若 \(v=J(0)\)、\(w=J'(0)\)，应安排
+		\[
+			Ap=v,\qquad Au=w-\frac{\langle v,u\rangle}{a^2}p.
+		\]
+		\item 求这些场组成的空间维数，并说明不同的 \(A\) 何时给出相同的沿曲线场。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	因为 \(A\) 斜对称，\(\langle A\gamma,\gamma\rangle=0\)，故 \(J_A\) 是球面的切向场。矩阵 \(Q_s=e^{sA}\) 满足 \(Q_s^{\mathsf T}Q_s=I\)：对该乘积求导得到零，在 \(s=0\) 处取值为 \(I\)。因此 \(Q_s\) 限制为球面的等距变换，\(F(s,t)=Q_s\gamma(t)\) 为测地线变分，其变分场正是 \(J_A\)。也可直接由球面大圆的显式公式检验每条变分曲线为单位速度测地线。球面联络是环境导数的切向投影，因而
+	\[
+		\langle J_A',\dot\gamma\rangle
+		=\langle A\dot\gamma,\dot\gamma\rangle=0.
+	\]
+
+	现设 \(J\) 满足所给条件，记 \(v=J(0)\)、\(w=J'(0)\)。于是 \(v,w\perp p\)，且 \(w\perp u\)。取正交单位向量 \(e_0=p/a\)、\(e_1=u\)，令
+	\[
+		N=\operatorname{span}\{e_0,e_1\}^\perp,
+		\qquad \alpha=\langle v,u\rangle,
+		\qquad v_N=v-\alpha e_1.
+	\]
+	有 \(v_N,w\in N\)。定义线性映射
+	\[
+		Ae_0=\frac{\alpha}{a}e_1+\frac1a v_N,
+		\qquad Ae_1=-\frac{\alpha}{a}e_0+w,
+		\qquad
+		Az=-\frac{\langle v_N,z\rangle}{a}e_0-\langle w,z\rangle e_1
+		\quad(z\in N).
+	\]
+	在正交分解 \(\mathbb Re_0\oplus\mathbb Re_1\oplus N\) 上逐对计算内积，立即得到 \(\langle Ax,y\rangle=-\langle x,Ay\rangle\)。它还满足题目提示的两式，所以 \(J_A(0)=v\)。沿球面的场 \(Z\) 满足
+	\[
+		D_tZ=\frac{\mathrm dZ}{\mathrm dt}
+		+\frac{\langle Z,\dot\gamma\rangle}{a^2}\gamma,
+	\]
+	这是将环境导数投影到切空间的公式。因此
+	\[
+		J_A'(0)=Au+\frac{\langle v,u\rangle}{a^2}p=w.
+	\]
+	\(J_A\) 与 \(J\) 的初值相同，Jacobi 初值唯一性说明二者相等。
+
+	条件 \(\langle J',\dot\gamma\rangle=0\) 等价于初值中的一个独立线性条件 \(\langle w,u\rangle=0\)，故所得空间维数为 \(2n-1\)。映射 \(A\mapsto J_A\) 的核由 \(Ap=Au=0\) 刻画：必要性由在 \(0\) 取值和对环境导数求值得到，充分性由 \(\gamma(t)\) 始终位于 \(\operatorname{span}\{p,u\}\) 中得到。这样的 \(A\) 恰是在 \(N\) 上任取斜对称映射、在其正交补上取零，核维数为 \((n-1)(n-2)/2\)。故两个旋转生成元给出同一场，当且仅当它们的差属于这个核；维数核验为
+	\[
+		\frac{n(n+1)}2-\frac{(n-1)(n-2)}2=2n-1.
+	\]
+\end{solution}
+
+\begin{exercise}\label{g3:ex:euclidean-discrete-index-matrix}
+	在 Euclid 空间中取一条单位速测地线，参数区间为 \([0,\ell]\)，等分为 \(m\ge2\) 段，记 \(h=\ell/m\)。对两端为零、在每一小段为 Jacobi 场的连续场 \(J\)，设内部节点值为 \(v_1,\ldots,v_{m-1}\in\mathbb R^n\)，并令 \(v_0=v_m=0\)。证明
+	\[
+		I(J)=\frac1h\sum_{i=1}^m|v_i-v_{i-1}|^2.
+	\]
+	求此二次型相对于节点上的通常 Euclid 内积的全部特征值及重数，并用逐段正交分解说明一般两端零场的指标形式严格为正。
+\end{exercise}
+\begin{solution}
+	Euclid 空间中曲率为零，Jacobi 方程是 \(J''=0\)，故每段上的 \(J\) 为节点值之间的仿射插值，其导数为 \((v_i-v_{i-1})/h\)。积分立即给出题中公式。每个坐标分量上的矩阵为
+	\[
+		B=\frac1h
+		\begin{pmatrix}
+			2&-1&&0\\
+			-1&2&\ddots&\\
+			&\ddots&\ddots&-1\\
+			0&&-1&2
+		\end{pmatrix},
+	\]
+	阶数为 \(m-1\)。对 \(1\le k\le m-1\)，令
+	\(b_i^{(k)}=\sin(k\pi i/m)\)、\(1\le i\le m-1\)，并补 \(b_0^{(k)}=b_m^{(k)}=0\)。由
+	\[
+		2\sin(i\theta)-\sin((i-1)\theta)-\sin((i+1)\theta)
+		=2(1-\cos\theta)\sin(i\theta),
+	\]
+	得到特征值
+	\[
+		\lambda_k=\frac4h\sin^2\frac{k\pi}{2m}.
+	\]
+	它们两两不同且全为正，对应的 \(m-1\) 个非零特征向量因而线性无关，给出单个坐标块的全部谱。对 \(\mathbb R^n\) 值节点，每个 \(\lambda_k\) 重复 \(n\) 次。
+
+	任意两端为零的连续分段光滑场可写为 \(V=J+Z\)，其中 \(J\) 取相同节点值，\(Z\) 在全部节点为零。由\cref{g3:prop:piecewise-jacobi-decomposition}，
+	\[
+		I(V)=I(J)+I(Z).
+	\]
+	第一项在非零节点数据上严格为正；第二项为 \(\int|Z'|^2\)，只有 \(Z=0\) 时为零。因此非零 \(V\) 总满足 \(I(V)>0\)。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:nonpositive-curvature-index-bound}
+	设 \(\gamma:[0,\ell]\to M\) 为单位速测地线，沿它的所有含 \(T=\dot\gamma\) 的二维平面的截面曲率均不大于零。证明沿线没有相对于起点的正共轭时刻。任给 \(w\perp T(\ell)\)，令 \(J\) 为满足 \(J(0)=0\)、\(J(\ell)=w\) 的 Jacobi 场，证明
+	\[
+		\langle J'(\ell),w\rangle\ge\frac{|w|^2}{\ell}.
+	\]
+	当 \(w\ne0\) 时，说明等号成立的充要条件是
+	\[
+		J(t)=\frac t\ell P_{\ell\to t}w,
+		\qquad
+		\sec\bigl(\operatorname{span}\{T(t),P_{\ell\to t}w\}\bigr)=0
+		\quad(0\le t\le\ell),
+	\]
+	其中 \(P_{\ell\to t}\) 为沿 \(\gamma\) 的平行移动。
+\end{exercise}
+\begin{solution}
+	对任意场 \(V\)，曲率项只涉及其法向部分，由假设
+	\(\langle R(V,T)T,V\rangle\le0\)，所以
+	\[
+		I(V)\ge\int|V'|^2.
+	\]
+	若某个 \(b>0\) 是共轭时刻，则存在 \([0,b]\) 上两端为零的非零 Jacobi 场 \(Y\)。分部积分给出 \(I(Y)=0\)，上述估计却迫使 \(Y'=0\)，再由 \(Y(0)=0\) 得 \(Y=0\)，矛盾。因此没有正共轭时刻，所需 Jacobi 边值解由\cref{g3:thm:jacobi-index-lemma}唯一存在，且由切向分量的两端值可知它法向。
+
+	在沿线的平行标架中写 \(J\) 为 \(j\)。利用 \(j(0)=0\)，有
+	\[
+		|w|^2=\left|\int_0^\ell j'\,\mathrm dt\right|^2
+		\le\ell\int_0^\ell|j'|^2\,\mathrm dt.
+	\]
+	另一方面，Jacobi 方程及分部积分给出
+	\(I(J)=\langle J'(\ell),w\rangle\)。两式与曲率项的符号相结合，得到所求不等式。
+
+	若等号成立，Cauchy--Schwarz 的等号条件使 \(j'\) 为常向量，即
+	\(J(t)=tP_{\ell\to t}w/\ell\)。曲率项的非负连续函数
+	\(-\langle R(J,T)T,J\rangle\) 的积分也为零，故它处处为零。对 \(t>0\)，\(J(t)\ne0\)，于是相应截面曲率为零；连续性补上 \(t=0\)。
+
+	反过来，若沿这些平面的曲率均为零，沿线自伴算子 \(K=R(\,\cdot\,,T)T\) 为半负定。对这样的算子，\(\langle Kv,v\rangle=0\) 推出 \(Kv=0\)：在正交特征基中，所有负特征值分量都必须为零。因此所列仿射平行场满足 \(J''=0\) 和 \(R(J,T)T=0\)，确为所需 Jacobi 场，并在所有不等式中取等号。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:cylinder-energy-winding-class}
+	设平坦圆柱
+	\[
+		M=(\mathbb R/2\pi a\mathbb Z)\times\mathbb R,\qquad
+		g=\mathrm dx^2+\mathrm dz^2,\qquad a>0.
+	\]
+	固定 \(\pi a<b<2\pi a\)，取 \(\gamma(t)=([t],0)\)、\(0\le t\le b\)。对任意同端点连续分段光滑曲线，取从 \((0,0)\) 开始的平面提升，其终点必为 \((b+2\pi ak,0)\)，其中 \(k\in\mathbb Z\)。证明在这个整数固定的曲线类中，能量的最小值为
+	\[
+		\frac{(b+2\pi ak)^2}{2b},
+	\]
+	并求唯一的常速极小曲线。再比较 \(k=0\) 与 \(k=-1\)，说明 \(\gamma\) 的指标形式正定、在自身道路类中能量最小，却不是整体最短线。
+\end{exercise}
+\begin{solution}
+	沿曲线把圆周坐标连续提升到实数轴，可在有限个圆周坐标片中逐段选择角度，并以 \(2\pi a\) 的整数倍调整交叠处的值。固定起点后，连续性保证提升唯一；终点与 \(b\) 相差一个 \(2\pi a\) 的整数倍。记提升为 \(\widetilde c=(x,z)\)，局部等距性使其能量与原曲线相同。由
+	\[
+		\widetilde c(b)-\widetilde c(0)
+		=\int_0^b\dot{\widetilde c}(t)\,\mathrm dt
+	\]
+	及 Cauchy--Schwarz 不等式，
+	\[
+		E(c)=\frac12\int_0^b|\dot{\widetilde c}|^2\,\mathrm dt
+		\ge\frac{(b+2\pi ak)^2}{2b}.
+	\]
+	等号当且仅当提升的速度为常向量，即
+	\[
+		\widetilde c_k(t)=
+		\left(\frac{b+2\pi ak}{b}\,t,0\right).
+	\]
+	其投影就是所求唯一常速极小曲线。
+
+	整数 \(k\) 在固定端点的连续道路同伦中不变，因为提升终点连续变化而只取离散的可能值。反过来，两个具有同一 \(k\) 的平面提升可作保持端点的线性插值，再投影即得同伦。因此这个整数恰好区分这里的固定端点道路类。
+
+	\(\gamma\) 属于 \(k=0\) 的类，能量为 \(b/2\)。由于 \(0<2\pi a-b<b\)，\(k=-1\) 的反向短弧长 \(2\pi a-b\)，能量严格小于 \(b/2\)。但沿 \(\gamma\) 的曲率为零，
+	\[
+		I(V)=\int_0^b|V'|^2\,\mathrm dt>0
+	\]
+	对每个非零的两端零场成立。小的固定端点变分保持整数 \(k\)，所以指标形式测到的是同一道路类内的严格极小性；较短曲线来自另一整数类。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:sphere-full-morse-index}
+	设 \(n\ge2\)，\(\gamma:[0,L]\to S^n(a)\) 是半径 \(a>0\) 圆球面上的单位速测地线，允许它绕行多次。计算固定端点指标形式的指标与零度，并给出一个达到该指标维数的显式负定子空间。说明当 \(L\) 恰为 \(\pi a\) 的正整数倍时为何不能把末端重数也计入负指标。
+\end{exercise}
+\begin{solution}
+	取沿 \(\gamma\) 的平行正交标架 \(T,E_1,\ldots,E_{n-1}\)。球面常曲率为 \(a^{-2}\)，Jacobi 方程的法向分量满足 \(j''+a^{-2}j=0\)，切向分量满足 \(f''=0\)。从零开始的法向解为 \(a\sin(t/a)w\)，其中 \(w\perp T(0)\) 按平行移动识别；切向解为 \(ctT\)。于是正共轭时刻恰为 \(k\pi a\)、\(k=1,2,\ldots\)，每个重数为 \(n-1\)。由指标定理，
+	\[
+		\operatorname{ind}I_L=(n-1)\left(\left\lceil\frac{L}{\pi a}\right\rceil-1\right),
+		\qquad
+		\operatorname{nul}I_L=
+		\begin{cases}
+		n-1,&L/(\pi a)\in\mathbb Z_{>0},\\
+		0,&L/(\pi a)\notin\mathbb Z_{>0}.
+		\end{cases}
+	\]
+	这里 \(\lceil L/(\pi a)\rceil-1\) 正是严格满足 \(k\pi a<L\) 的正整数个数。
+
+	对这些整数 \(k\) 以及 \(1\le j\le n-1\)，取
+	\[
+		V_{k,j}(t)=\sin(k\pi t/L)E_j(t).
+	\]
+	正弦、余弦的区间正交性给出不同 \((k,j)\) 之间的指标配对为零，并且
+	\[
+		I_L(V_{k,j},V_{k,j})=
+		\frac L2\left(\frac{k^2\pi^2}{L^2}-\frac1{a^2}\right)<0.
+	\]
+	这些场线性无关，因此它们张成所需负定子空间。当 \(L=m\pi a\) 时，\(k=m\) 的这 \(n-1\) 个场恰是末端零的 Jacobi 场，平方值为零且与所有测试场配对为零；只有 \(k<m\) 的场贡献负方向。将 \(L\) 增大一点，原来 \(k=m\) 的系数才变为负。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:euclidean-focal-principal-curvatures}
+	设 \(P^{n-1}\subset\mathbb R^n\) 为光滑嵌入超曲面，\(p\in P\)，\(v\) 是 \(p\) 处选定的单位法向。设本书符号下形算子 \(A_v\) 的特征值为 \(\kappa_1,\ldots,\kappa_{n-1}\)，按重数列出。对法射线 \(\gamma(t)=p+tv\)，计算所有正焦时及其重数，并求从 \(P\) 到固定点 \(\gamma(L)\) 的指标和零度。另将任意允许场分解为线性插值与两端零场，直接核验答案。
+\end{exercise}
+\begin{solution}
+	Euclid 空间中的 Jacobi 场是仿射场。\(P\)-Jacobi 初值条件说明每个这样的场都唯一写成
+	\[
+		J(t)=(\operatorname{id}-tA_v)a+btv,
+		\qquad a\in\mathrm T_pP,\quad b\in\mathbb R.
+	\]
+	在正时刻 \(s\) 令 \(J(s)=0\)，法向分量先给出 \(b=0\)，切向分量再给出 \(A_va=s^{-1}a\)。所以正焦时恰是正主曲率的倒数 \(1/\kappa_i\)，相同倒数的重数等于对应特征空间的维数。负的或零的主曲率不产生正焦时。指标定理给出
+	\[
+		\operatorname{ind}I_{P,L}=\#\{i:\kappa_i>L^{-1}\},\qquad
+		\operatorname{nul}I_{P,L}=\#\{i:\kappa_i=L^{-1}\}.
+	\]
+
+	直接验证时，令 \(a=V(0)\)，分解
+	\[
+		V(t)=(1-t/L)a+Z(t),\qquad Z(0)=Z(L)=0.
+	\]
+	交叉项的积分为
+	\(-L^{-1}\langle a,Z(L)-Z(0)\rangle=0\)。于是
+	\[
+		I_{P,L}(V,V)=
+		\left\langle(L^{-1}\operatorname{id}-A_v)a,a\right\rangle
+		+\int_0^L|Z'(t)|^2\,\mathrm dt.
+	\]
+	第二项严格正定，第一项在主方向上的系数为 \(L^{-1}-\kappa_i\)，直接给出同样的指标与零度。特别地，形算子的正号而非环境正曲率决定了这一例中的负方向。
+
+	还可由端点函数看出同一矩阵。将起点 \(q\in P\) 与 \(\gamma(L)\) 用直线连接，其在时间 \(L\) 内的能量为
+	\(F(q)=|q-\gamma(L)|^2/(2L)\)。对 \(q(0)=p\)、\(q'(0)=a\) 的 \(P\) 内曲线求二阶导数，有
+	\[
+		(F\circ q)''(0)=L^{-1}|a|^2-
+		\langle v,B^P(a,a)\rangle
+		=\left\langle(L^{-1}\operatorname{id}-A_v)a,a\right\rangle.
+	\]
+	法线正交性使一阶导数为零，所以这里确实是 \(F|_P\) 的 Hessian。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:affine-free-endpoint-nullity}
+	在 \(\mathbb R^n\) 中设 \(P=p+E\)、\(Q=q+F\) 为两个仿射子空间，其中 \(E,F\) 为线性子空间，\(p\ne q\)。令 \(L=|q-p|\)、\(v=(q-p)/L\)，并假设 \(v\perp E+F\)。考虑 \(\gamma(t)=p+tv\)、\(0\le t\le L\)，允许两端分别在 \(P,Q\) 上移动。求能量 Hessian 的指标与零度，并描述全部能量极小曲线。解释为何此题即使没有环境共轭点也可能有非零零度。
+\end{exercise}
+\begin{solution}
+	仿射子空间的第二基本形式为零，且 \(\gamma\) 两端垂直，因此由式\eqref{g3:eq:submanifold-endpoint-hessian}，允许场 \(V(0)\in E\)、\(V(L)\in F\) 上的 Hessian 为
+	\[
+		I_{P,Q}(V,V)=\int_0^L|V'|^2\,\mathrm dt.
+	\]
+	它非负，故指标为零。平方值为零当且仅当 \(V\) 是常向量场，而端点条件要求这个常向量属于 \(E\cap F\)。由半正定性或直接代入配对式，这些场就是核，所以
+	\[
+		\operatorname{ind}I_{P,Q}=0,\qquad
+		\operatorname{nul}I_{P,Q}=\dim(E\cap F).
+	\]
+
+	对一条允许曲线 \(c\)，写端点为 \(c(0)=p+a\)、\(c(L)=q+b\)，其中 \(a\in E\)、\(b\in F\)。Cauchy--Schwarz 不等式给出
+	\[
+		E(c)\ge\frac{|c(L)-c(0)|^2}{2L}
+		=\frac{|Lv+b-a|^2}{2L}
+		=\frac L2+\frac{|b-a|^2}{2L}\ge\frac L2.
+	\]
+	第一个等号要求速度恒定，最后一个等号要求 \(a=b\in E\cap F\)。故全部极小曲线为
+	\(c_h(t)=p+h+tv\)，其中 \(h\in E\cap F\)。共同切方向允许把整条线段平移，恰形成上述零空间。固定末端时这类平移被禁止，而本题的两个端点都能移动，所以不能直接套用只允许起点在 \(P\) 上移动的焦点零度公式。
+\end{solution}

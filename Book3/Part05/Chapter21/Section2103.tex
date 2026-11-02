@@ -1,30 +1,228 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 21.3 测度论边界的定义
+% 纲要标题：### 21.3 测度论边界
 % 纲要位置：几何学计划纲要.md，第 2982 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
-% * 密度为零、一和中间值的点
+% * 测度论内部、外部与边界
 % * 约化边界与广义法向
 % * 拓扑边界与测度论边界的区别
 % 
 % 纲要内容结束
 
-\section{测度论边界的定义}
+\section{测度论边界}
 \label{g3:sec:2103}
 
-待撰写
+一个集合在零测集上改变以后，示性函数所定义的分布不变，拓扑边界却可能扩大到整个区域。因此，周长测度所对应的边界必须从体积密度和分布导数中识别。本节先给出这些对象的定义，再确定广义法向的符号与几乎处处存在性。
 
-\subsection{密度为零、一和中间值的点}
+\ProseParagraphBreak
+以下所有边界均相对于给定开集 \(\Omega\subset\mathbb R^n\) 考察，小球半径只取使其闭包包含于 \(\Omega\) 的值。集合的体积写作 \(|E|=\mathcal L^n(E)\)，周长测度写作 \(\mu_E=|D\mathbf1_E|\)。
+
+\subsection{测度论内部、外部与边界}
 \label{g3:subsec:2103:01}
-待撰写
+\begin{definition}\label{g3:def:measure-theoretic-boundary}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(n\ge1\)，\(E\subset\mathbb R^n\) Lebesgue 可测。它在 \(\Omega\) 中的\term[cedulun neibu]{测度论内部}[measure-theoretic interior]和\term[cedulun waibu]{测度论外部}[measure-theoretic exterior]分别为
+	\[
+		E^{(1)}=\left\{x\in\Omega:
+		\lim_{r\downarrow0}\frac{|E\cap B_r(x)|}{\omega_nr^n}=1\right\},
+		\qquad
+		E^{(0)}=\left\{x\in\Omega:
+		\lim_{r\downarrow0}\frac{|E\cap B_r(x)|}{\omega_nr^n}=0\right\}.
+	\]
+	定义\term[cedulun bianjie]{测度论边界}[measure-theoretic boundary]为
+	\[
+		\partial^{\mathrm e}E
+		=\Omega\setminus(E^{(0)}\cup E^{(1)}).
+	\]
+	若体积密度存在且等于 \(t\in[0,1]\)，相应点集记作 \(E^{(t)}\)。测度论边界也称本质边界；上式把密度不存在的点一并包括在内。
+\end{definition}
+\symidx{\(E^{(0)},E^{(1)},\partial^{\mathrm e}E\)：测度论外部、内部与边界}
+
+当某点的密度存在且严格介于零和一之间，它自然属于测度论边界；密度振荡的点也属于该边界。这些集合均为 Borel 集：对固定 \(r>0\)，球体积比是 \(\mathbf1_E\) 与球示性函数的卷积，关于中心连续；半径方向的体积也连续，所以极限条件只需在正有理半径上检验。
+
+\begin{proposition}\label{g3:prop:essential-boundary-invariance}
+	设 \(E,F\subset\mathbb R^n\) 可测，且 \(|(E\mathbin{\triangle}F)\cap\Omega|=0\)。则在 \(\Omega\) 内，\(E^{(t)}=F^{(t)}\) 对每个 \(t\in[0,1]\) 成立，且 \(\partial^{\mathrm e}E=\partial^{\mathrm e}F\)。对任意可测 \(E\)，
+	\[
+		|\partial^{\mathrm e}E|=0,\qquad
+		|(E\mathbin{\triangle}E^{(1)})\cap\Omega|=0.
+	\]
+	并且对于一个给定的集合代表，总有
+	\[
+		\operatorname{int}E\cap\Omega\subset E^{(1)},\qquad
+		\operatorname{int}(E^c)\cap\Omega\subset E^{(0)},\qquad
+		\partial^{\mathrm e}E\subset\partial E\cap\Omega.
+	\]
+\end{proposition}
+\begin{proof}
+	零测修改不改变任何内域小球中的交集体积，所以全部密度条件相同。对 \(\mathbf1_E\) 使用\cref{g3:cor:lebesgue-density}，得到 \(E\) 的几乎每点密度一、其补集的几乎每点密度零，因而得到两个零测结论。最后，拓扑内点的小球完全落在对应集合中，所以有前两个包含；若点不在拓扑边界上，它就是集合或补集的内点，故不在测度论边界上。
+\end{proof}
+
+测度论边界的 \(n\) 维体积为零并不说明它的 \((n-1)\) 维大小为零。超平面最能说明这一区别：半空间在边界点的体积密度为 \(1/2\)，整个边界却具有非零的 \((n-1)\) 维测度。
 
 \subsection{约化边界与广义法向}
 \label{g3:subsec:2103:02}
-待撰写
+对一个局部有限周长集，向量测度 \(D\mathbf1_E\) 已经记录了穿过边界的方向。为了从这个测度取出逐点法向，需要以周长测度本身计算平均值，而不是以环境体积计算。第20章的 Lebesgue 微分定理不能直接替代这一步。
+
+\ProseParagraphBreak
+这里使用一个 Euclid 球的测度论背景工具：Besicovitch 覆盖引理。\footnote{Abram Samoilovitch Besicovitch（1891--1970），生于俄国帝国、后长期在英国工作的数学家，研究实变函数、Hausdorff 测度与平面点集的几何。}其所用版本为：若 \(A\subset\mathbb R^n\) 有界，一族以 \(A\) 中各点为中心的正半径闭球具有统一半径上界，且每个点至少对应一个球，则可选至多可数个球覆盖 \(A\)，并使每一点被选中球覆盖的次数不超过只依赖 \(n\) 的常数 \(N(n)\)。这个覆盖结果作为实分析输入，精确陈述见 \cite[第4节，引理4.6，第23--24页]{Simon1983}。下面完整给出它在此处产生的测度微分结论。
+
+\begin{lemma}[Radon 测度下的微分]\label{g3:lem:radon-measure-differentiation}
+	设 \(\mu\) 为开集 \(\Omega\subset\mathbb R^n\) 上的正 Radon 测度，\(n\ge1\)，且 \(f\in L^1_{\mathrm{loc}}(\mu;\mathbb R^q)\)，\(q\ge1\)。则对 \(\mu\)-几乎每个 \(x\in\operatorname{supp}\mu\)，
+	\begin{equation}\label{g3:eq:radon-lebesgue-point}
+		\lim_{r\downarrow0}\frac{1}{\mu(\overline B_r(x))}
+		\int_{\overline B_r(x)}|f(y)-f(x)|\,\mathrm d\mu(y)=0.
+	\end{equation}
+	同样的结论对开球成立。
+\end{lemma}
+\begin{proof}
+	先固定相对紧开集 \(U\Subset\Omega\)，并把 \(\mu\) 限制到 \(U\)，故它是有限测度。对 \(w\in L^1(\mu)\)，定义局部中心最大平均
+	\[
+		M_\mu w(x)=\sup_{\substack{\overline B_r(x)\subset U\\
+		0<r<1,\ \mu(\overline B_r(x))>0}}
+		\frac{\int_{\overline B_r(x)}|w|\,\mathrm d\mu}
+		{\mu(\overline B_r(x))}.
+	\]
+	它可测：球积分作为中心与半径的函数为 Borel 函数；对固定中心，从较大的半径向下逼近时分子、分母都连续于这个递减极限，因此上确界可限制到有理半径。
+
+	若 \(M_\mu w(x)>t\)，选一个使平均值大于 \(t\) 的球。对坏集在有界区域中的部分应用上述覆盖引理，得到覆盖球 \(B_i\)，且重叠次数至多为 \(N(n)\)。于是
+	\[
+		\mu\{M_\mu w>t\}
+		\le\sum_i\mu(B_i)
+		<\frac1t\sum_i\int_{B_i}|w|\,\mathrm d\mu
+		\le\frac{N(n)}t\|w\|_{L^1(\mu)}.
+	\]
+	对递增有界区域取并，得到所写的完整弱型估计。
+
+	由 Radon 测度的内外正则性，紧集与开集之间可用连续截断函数夹逼，故 \(C_c(U)\) 在 \(L^1(\mu)\) 中稠密。先对标量 \(f\) 取这样的连续近似 \(v\)。在 \(\mu\) 的支集上，连续性给出 \(v\) 的局部平均振荡趋零。设 \(D_\mu f(x)\) 为\eqref{g3:eq:radon-lebesgue-point}左端的上极限，则
+	\[
+		D_\mu f(x)\le M_\mu(f-v)(x)+|f(x)-v(x)|.
+	\]
+	最大平均估计与 Chebyshev 不等式给出
+	\[
+		\mu\{D_\mu f>2t\}
+		\le \frac{N(n)+1}{t}\|f-v\|_{L^1(\mu)}.
+	\]
+	令连续近似误差趋零，再取正有理数 \(t\)，得到 \(D_\mu f=0\) 几乎处处。一般局部可积的 \(f\) 先限制在逐渐增大的相对紧开集内，所取小球留在其内；可数穷尽得到 \(\Omega\) 上的结论。向量值情形逐分量应用并用范数与分量绝对值和的比较即可。
+
+	最后，在一个固定开球内令闭球半径递增到其半径，分子、分母随之增加到开球上的积分。对所有足够小闭球成立的平均误差界因而也对相应开球成立。这给出开球版本。
+\end{proof}
+
+由\cref{g3:prop:bv-dual-variation}，对局部有限周长集可写
+\[
+	D\mathbf1_E=\sigma_E\mu_E,\qquad |\sigma_E|=1\quad\mu_E\text{-几乎处处}.
+\]
+在光滑边界上，分布导数指向集合内部。因此将外法向定义为极化方向的相反数。
+
+\begin{definition}\label{g3:def:reduced-boundary}
+	设 \(E\) 在开集 \(\Omega\subset\mathbb R^n\) 中有局部有限周长，\(n\ge1\)。其\term[yuehua bianjie]{约化边界}[reduced boundary] \(\partial^*E\) 是所有满足下列条件的 \(x\in\Omega\)：
+	\[
+		x\in\operatorname{supp}\mu_E,\qquad
+		\lim_{r\downarrow0}
+		\frac{D\mathbf1_E(B_r(x))}{\mu_E(B_r(x))}
+		\text{ 存在且模长为一}.
+	\]
+	在这些点定义\term[guangyi wai faxiang]{广义外法向}[generalized outer normal]为
+	\begin{equation}\label{g3:eq:reduced-boundary-normal}
+		\nu_E(x)=-\lim_{r\downarrow0}
+		\frac{D\mathbf1_E(B_r(x))}{\mu_E(B_r(x))}.
+	\end{equation}
+\end{definition}
+\symidx{\(\partial^*E,\nu_E\)：约化边界及广义外法向}
+
+支集条件保证足够小球的分母严格为正。若先以闭球定义，可用半径递增的闭球从内逼近开球；反过来由开球从较大半径递减到闭球，局部有限性保证两个定义相同。球平均为 Borel 函数，极限条件可在有理半径上检验，故 \(\partial^*E\) 为 Borel 集，\(\nu_E\) 在其上可测。定义只依赖示性函数的几乎处处等价类。
+
+\begin{proposition}\label{g3:prop:reduced-boundary-full-measure}
+	设 \(E\) 在开集 \(\Omega\subset\mathbb R^n\) 中有局部有限周长，\(n\ge1\)。则
+	\[
+		\mu_E(\Omega\setminus\partial^*E)=0,\qquad
+		D\mathbf1_E=-\nu_E\mu_E.
+	\]
+	并且对每个 \(x\in\partial^*E\)，都有
+	\begin{equation}\label{g3:eq:reduced-normal-mean-square}
+		\lim_{r\downarrow0}
+		\frac1{\mu_E(B_r(x))}
+		\int_{B_r(x)}|\sigma_E(y)+\nu_E(x)|^2\,\mathrm d\mu_E(y)=0.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	\(\mu_E\) 在自身支集之外为零，因为那个开补集可由可数个零测开球覆盖。在支集内，对有界向量函数 \(\sigma_E\) 应用\cref{g3:lem:radon-measure-differentiation}，得到其球平均在几乎每点趋于 \(\sigma_E(x)\)。这个向量几乎处处模长为一，所以这些点都在约化边界上，且 \(\nu_E=-\sigma_E\) 几乎处处。
+
+	再固定任意约化点 \(x\)。在 \(\mu_E\)-几乎所有 \(y\) 处有 \(|\sigma_E(y)|=1\)，故
+	\[
+		\frac1{\mu_E(B_r(x))}
+		\int_{B_r(x)}|\sigma_E(y)+\nu_E(x)|^2\,\mathrm d\mu_E(y)
+		=2+2\nu_E(x)\cdot
+		\frac{D\mathbf1_E(B_r(x))}{\mu_E(B_r(x))}.
+	\]
+	由约化法向的定义，右端趋于 \(2-2=0\)。
+\end{proof}
+
+最后这个均方估计比“平均方向存在”更便于使用：它说明在周长测度的平均意义下，邻近法向几乎都与同一方向平行。下一节正是用它控制放大后的导数，并识别半空间极限。
 
 \subsection{拓扑边界与测度论边界的区别}
 \label{g3:subsec:2103:03}
-待撰写
+先在光滑模型中核对定义。设局部坐标为 \((z,t)\in\mathbb R^{n-1}\times\mathbb R\)，且
+\[
+	E=\{(z,t):t<g(z)\},\qquad g\in C^1.
+\]
+对支撑在该坐标柱内的光滑向量场 \(X=(X',X_n)\)，一维积分基本定理与 Fubini 定理给出
+\begin{equation}\label{g3:eq:smooth-graph-distribution-flux}
+	\int_E\operatorname{div}X\,\mathrm dx
+	=\int_{\mathbb R^{n-1}}
+	\bigl[X_n(z,g(z))-X'(z,g(z))\cdot\nabla g(z)\bigr]\,\mathrm dz.
+\end{equation}
+例如第 \(i<n\) 项先对 \(z_i\) 分部积分，积分上端 \(t=g(z)\) 的导数产生
+\(-X_i(z,g(z))\partial_i g(z)\)；最后一个方向则直接产生 \(X_n(z,g(z))\)。紧支条件消除了坐标柱外端的通量。由第20章的图面积公式，外法向与面积元分别为
+\[
+	\nu_E=\frac{(-\nabla g,1)}{\sqrt{1+|\nabla g|^2}},
+	\qquad \mathrm d\mathcal H^{n-1}
+	=\sqrt{1+|\nabla g|^2}\,\mathrm dz.
+\]
+因此该公式恰好说明
+\[
+	D\mathbf1_E=-\nu_E\mathcal H^{n-1}\llcorner\partial E,
+	\qquad \mu_E=\mathcal H^{n-1}\llcorner\partial E.
+\]
+用坐标覆盖和单位分解，可得任意 \(C^1\) 域的同一局部结论。单位分解的梯度项求和为零，所以拼合后的通量公式没有额外项。
+
+\begin{proposition}\label{g3:prop:smooth-reduced-boundary}
+	设 \(E\subset\mathbb R^n\) 为开集，其在开集 \(\Omega\) 内的边界是 \(C^1\) 超曲面，且 \(E\) 在每个边界图附近位于图的一侧。则 \(E\) 在 \(\Omega\) 中有局部有限周长，并且
+	\[
+		\partial^*E=\partial^{\mathrm e}E=\partial E\cap\Omega,
+		\qquad D\mathbf1_E=-\nu_E\mathcal H^{n-1}\llcorner(\partial E\cap\Omega).
+	\]
+	其中广义外法向就是通常外单位法向，每个边界点的体积密度都为 \(1/2\)。\(n=1\) 时，超曲面理解为局部离散的端点集。
+\end{proposition}
+\begin{proof}
+	上面的图计算给出导数表示。每个紧集可用有限张边界图覆盖，图面积有限，因而周长局部有限。法向连续，故其在边界小球上的面积平均趋于中心法向；边界点属于周长测度支集，所以都是约化点。
+
+	在边界点作平移旋转，使图满足 \(g(0)=0\)、\(\nabla g(0)=0\)。可微性给出
+	\(\sup_{|z|\le r}|g(z)|=o(r)\)。在半径 \(r\) 的球中，\(E\) 与下半空间的对称差被一个厚度 \(o(r)\) 的平板控制，其体积为 \(o(r^n)\)。因此密度为 \(1/2\)。域内点与域外点分别密度一和零，并且附近的分布导数为零，故既不是测度论边界点，也不是约化边界点。所有结论随之成立。
+\end{proof}
+
+\begin{example}\label{g3:exm:topological-boundary-null-modification}
+	设 \(B=B_1(0)\subset\mathbb R^n\)，令 \(E=B\setminus\mathbb Q^n\)。删去的是零测集，所以
+	\[
+		E^{(1)}=B,\qquad
+		\partial^{\mathrm e}E=\partial^*E=\partial B,\qquad
+		P(E)=P(B).
+	\]
+	但 \(E\) 没有内点，其闭包为 \(\overline B\)，所以拓扑边界为整个 \(\overline B\)。特别地，拓扑边界甚至可以具有正的 \(n\) 维体积，而周长只记录原球面。
+\end{example}
+
+为便于随后识别各种“边界”，可把目前掌握的信息并列起来。
+\begin{center}
+	\begin{tabular}{p{0.23\textwidth}p{0.67\textwidth}}
+		\toprule
+		对象 & 定义所检测的信息\\
+		\midrule
+		拓扑边界 \(\partial E\) & 每个邻域是否同时遇到集合与补集；依赖所选点集代表。\\
+		测度论边界 \(\partial^{\mathrm e}E\) & 体积密度既非零也非一，包括密度不存在的点。\\
+		约化边界 \(\partial^*E\) & 周长测度在每个小球中非零，导数的归一化平均趋于单位向量。\\
+		\bottomrule
+	\end{tabular}
+\end{center}
+
+对一般有限周长集，约化边界定义本身尚未给出体积密度 \(1/2\)，也尚未将周长写成 Hausdorff 测度。这两个结论需要半空间放大与可整流结构；下面将完成这一步。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

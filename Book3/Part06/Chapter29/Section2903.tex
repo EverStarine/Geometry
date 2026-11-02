@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 29.3 Ricci 下界的极限
 % 纲要位置：几何学计划纲要.md，第 3333 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,322 @@
 \section{Ricci 下界的极限}
 \label{g3:sec:2903}
 
-待撰写
+Ricci 下界控制同心球的体积比，因而即使总体积趋于零，也能控制一只球内可以放下多少个互不相交的小球。这给出距离空间的紧性。为了继续讨论积分，还要保留体积在极限中的分布：将总体积归一化后，缩短的纤维仍会通过权函数影响极限测度。本节先证明这两层紧性，再说明非塌缩假设怎样使极限测度恢复为相应维数的 Hausdorff 测度。
 
 \subsection{体积比较及非塌缩条件}
 \label{g3:subsec:2903:01}
-待撰写
+固定整数 \(n\ge2\)、常数 \(K\ge0\) 和 \(D>0\)，考虑连通闭黎曼流形 \((M^n,g)\)，满足
+\begin{equation}\label{g3:eq:ricci-limit-class}
+	\operatorname{Ric}_g\ge-(n-1)Kg,
+	\qquad \operatorname{diam}(M,g)\le D.
+\end{equation}
+这里“闭”仍表示紧且无边界。沿用\secref{g3:sec:0802}的记号，\(V_{-K,n}(r)\) 是常截面曲率 \(-K\) 的单连通模型中半径 \(r\) 的球体积；特别地，\(V_{0,n}(r)=\omega_nr^n\)，其中 \(\omega_n\) 为 Euclid 单位球体积。
+
+\begin{proposition}\label{g3:prop:ricci-limit-volume-packing}
+	设连通闭黎曼流形 \((M^n,g)\) 满足式\eqref{g3:eq:ricci-limit-class}，并令 \(R_0=2D+1\)。则对任意 \(x\in M\) 和 \(0<r<R_0\)，有
+	\begin{equation}\label{g3:eq:ricci-limit-relative-volume}
+		\frac{\operatorname{Vol}_gB(x,r)}{\operatorname{Vol}_gM}
+		\ge\frac{V_{-K,n}(r)}{V_{-K,n}(R_0)},
+		\qquad \operatorname{Vol}_gM\le V_{-K,n}(R_0).
+	\end{equation}
+	对 \(0<\varepsilon<R_0\)，以半径 \(\varepsilon\) 的开球覆盖 \(M\) 所需的最少球数满足
+	\begin{equation}\label{g3:eq:ricci-limit-packing}
+		N_M(\varepsilon)
+		\le\frac{V_{-K,n}(R_0)}{V_{-K,n}(\varepsilon/2)}.
+	\end{equation}
+	若另外有 \(\operatorname{Vol}_gM\ge v>0\)，则
+	\begin{equation}\label{g3:eq:ricci-limit-noncollapse-balls}
+		\operatorname{Vol}_gB(x,r)
+		\ge v\frac{V_{-K,n}(r)}{V_{-K,n}(R_0)}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	因为 \(R_0>D\)，故 \(B(x,R_0)=M\)。\cref{g3:thm:bishop-gromov}给出
+	\[
+		\frac{\operatorname{Vol}_gB(x,r)}{V_{-K,n}(r)}
+		\ge\frac{\operatorname{Vol}_gM}{V_{-K,n}(R_0)},
+	\]
+	以及模型球体积上界，得到式\eqref{g3:eq:ricci-limit-relative-volume}。
+
+	取一个极大有限 \(\varepsilon\)-分离点集 \(\{x_1,\ldots,x_N\}\)，其中不同点距离至少为 \(\varepsilon\)。紧性保证这种点集有限，极大性保证半径 \(\varepsilon\) 的开球覆盖 \(M\)。半径 \(\varepsilon/2\) 的开球两两不交，所以
+	\[
+		N\frac{V_{-K,n}(\varepsilon/2)}{V_{-K,n}(R_0)}
+		\operatorname{Vol}_gM
+		\le\sum_{a=1}^N\operatorname{Vol}_gB(x_a,\varepsilon/2)
+		\le\operatorname{Vol}_gM.
+	\]
+	消去正的总体积即得覆盖数界。最后把总体积下界代入相对体积估计。
+\end{proof}
+
+这里恢复的是\cref{g3:cor:ricci-diameter-gh-precompact}中的关键机制：小球数估计所用的总体积最终被消去了。因此 GH 预紧性无需假设体积下界；非塌缩的作用是为极限保留原来的 \(n\) 维体积。
+
+\begin{definition}\label{g3:def:ricci-limit-noncollapse}
+	对满足式\eqref{g3:eq:ricci-limit-class}的连通闭 \(n\) 维黎曼流形序列，若存在 \(v>0\) 使所有 \(i\) 都有 \(\operatorname{Vol}_{g_i}M_i\ge v\)，就称该序列在此尺度下\term[feitansu ricci xulie]{非塌缩}[noncollapsed]。若 \(\operatorname{Vol}_{g_i}M_i\to0\)，就称它在此尺度下体积塌缩。
+\end{definition}
+
+在统一直径界下，这个非塌缩条件等价于存在基点 \(p_i\) 和 \(v_1>0\)，使 \(\operatorname{Vol}_{g_i}B(p_i,1)\ge v_1\)。一个方向由球包含于全空间得到，另一方向由式\eqref{g3:eq:ricci-limit-noncollapse-balls}在 \(r=1\) 处得到。对一般完备非紧序列，总体积可能无穷，此时通常直接以基点单位球的体积下界定义非塌缩。
 
 \subsection{测度的归一化和收敛}
 \label{g3:subsec:2903:02}
-待撰写
+紧致情形最方便的归一化是
+\begin{equation}\label{g3:eq:ricci-probability-normalization}
+	\nu_i=\frac{\mathrm d\operatorname{vol}_{g_i}}
+	{\operatorname{Vol}_{g_i}M_i}.
+\end{equation}
+它把每个 \(M_i\) 看成总质量为一的空间。要比较不同空间上的积分，先把它们放进同一个紧致环境，再使用固定空间上的测度弱收敛。
+
+\begin{lemma}\label{g3:lem:compact-probability-subsequence}
+	设 \(Z\) 为非空紧度量空间，\(\mu_i\) 为 \(Z\) 上的 Borel 概率测度。则存在子列和 Borel 概率测度 \(\mu\)，使
+	\begin{equation}\label{g3:eq:compact-measure-weak-convergence}
+		\int_Z f\,\mathrm d\mu_{i_j}\longrightarrow
+		\int_Z f\,\mathrm d\mu\qquad(f\in C(Z)).
+	\end{equation}
+	这称为概率测度的弱收敛，记作 \(\mu_{i_j}\rightharpoonup\mu\)。对于闭集 \(F\subset Z\) 和开集 \(G\subset Z\)，分别有
+	\begin{equation}\label{g3:eq:weak-measure-closed-open}
+		\limsup_j\mu_{i_j}(F)\le\mu(F),
+		\qquad \mu(G)\le\liminf_j\mu_{i_j}(G).
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	先构造 \(C(Z)\) 中的可数一致稠密集。对每个正整数 \(m\)，取有限 \(1/m\)-网 \(z_{m,a}\)，并令
+	\[
+		\psi_{m,a}(z)=
+		\frac{(2/m-d(z,z_{m,a}))_+}
+		{\sum_b(2/m-d(z,z_{m,b}))_+}.
+	\]
+	分母处处为正，这些连续函数非负且和为一。所有函数 \(\sum_aq_a\psi_{m,a}\)，其中 \(m\) 为正整数、\(q_a\) 为有理数，组成可数集。给定连续函数 \(f\)，取 \(q_a\) 逼近 \(f(z_{m,a})\)，其一致误差由 \(f\) 在距离 \(2/m\) 内的振幅和有理数逼近误差控制，故此集一致稠密。
+
+	将这个稠密集列成 \(f_1,f_2,\ldots\)。由于 \(|\int f_a\,\mathrm d\mu_i|\le\|f_a\|_\infty\)，逐个选子列再取对角子列，使这些积分全部收敛。一致逼近随后表明，对每个 \(f\in C(Z)\)，积分也收敛，其极限 \(L(f)\) 是正的有界线性泛函，且 \(L(1)=1\)。\subsecref{g3:subsec:2101:02}说明的连续函数空间测度表示定理给出唯一正 Radon 测度 \(\mu\)，满足 \(L(f)=\int f\,\mathrm d\mu\)；\(L(1)=1\) 保证它是概率测度。
+
+	对非空闭集 \(F\)，连续函数
+	\(f_m(z)=(1-md(z,F))_+\) 随 \(m\to\infty\) 递减到 \(\mathbf1_F\)。因此
+	\[
+		\limsup_j\mu_{i_j}(F)
+		\le\int_Zf_m\,\mathrm d\mu
+		\longrightarrow\mu(F).
+	\]
+	空集情形直接成立。对补集使用概率测度的总质量为一，得到开集不等式。
+\end{proof}
+
+\begin{definition}\label{g3:def:measured-gh-convergence}
+	一个\term[duliang cedu kongjian]{度量测度空间}[metric measure space]是带有 Borel 测度的度量空间 \((X,d,\nu)\)。本节使用紧致度量概率空间，即 \(X\) 非空紧致且 \(\nu(X)=1\)。若存在紧度量空间 \(Z\) 及等距嵌入 \(\iota_i:X_i\to Z\)、\(\iota:X\to Z\)，使
+	\begin{equation}\label{g3:eq:measured-gh-definition}
+		d_H^Z(\iota_i(X_i),\iota(X))\longrightarrow0,
+		\qquad (\iota_i)_\#\nu_i\rightharpoonup\iota_\#\nu,
+	\end{equation}
+	就称 \((X_i,d_i,\nu_i)\) \term[daicedu GH shoulian]{带测度 GH 收敛}[measured Gromov--Hausdorff convergence]于 \((X,d,\nu)\)，简称 mGH 收敛。若每个非空开球都有正测度，就称 \(\nu\) 具有\term[man zhicheng cedu]{满支撑}[full support]，即 \(\operatorname{spt}\nu=X\)。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:gh-common-compact-ambient}
+	设非空紧度量空间 \(X_i\) GH 收敛于 \(X\)，且每个 \(X_i\) 带有 Borel 概率测度 \(\nu_i\)。则它们可等距嵌入同一个紧度量空间，使其 Hausdorff 收敛于 \(X\)；并且存在子列和 \(X\) 上的概率测度 \(\nu\)，使这条子列 mGH 收敛于 \((X,d,\nu)\)。
+\end{proposition}
+\begin{proof}
+	由\cref{g3:thm:gh-correspondence}和桥度量构造，存在 \(\delta_i>0\)、\(\delta_i\to0\)，以及 \(X_i\sqcup X\) 上的度量 \(D_i\)，使两边的包含映射等距，跨边距离至少为 \(\delta_i\)，并有 \(d_H^{D_i}(X_i,X)\le\delta_i\)。在所有这些空间中保留同一份 \(X\)，对 \(a\in X_i,b\in X_j,i\ne j\) 定义
+	\[
+		D(a,b)=\inf_{x\in X}\bigl(D_i(a,x)+D_j(x,b)\bigr),
+	\]
+	其余距离沿用各片上的距离。这个公式把不同片通过 \(X\) 连接。任何经过其他片、再回到 \(X\) 的路段，其长度都不小于两个端点在 \(X\) 中的距离；将它替换为该距离不会增长路径长度。因此跨片路径的下确界满足三角不等式，而且不会缩短任何一片原来的距离。不同片之间的距离至少为对应的 \(\delta_i+\delta_j\)，各片到 \(X\) 的距离至少为 \(\delta_i\)，故正定性也成立。
+
+	所得并空间全有界：给定 \(\varepsilon>0\)，所有充分靠后的 \(X_i\) 都落在 \(X\) 的 \(\varepsilon/2\)-邻域中，可由 \(X\) 的有限 \(\varepsilon/2\)-网控制；剩下有限多个紧空间分别取有限网。取完备化即得紧度量空间 \(Z\)。原来的各紧片在其中闭，且仍有 \(d_H^Z(X_i,X)\le\delta_i\)。
+
+	把 \(\nu_i\) 推到 \(Z\)，用\cref{g3:lem:compact-probability-subsequence}取弱收敛子列，极限记为 \(\widetilde\nu\)。由于
+	\[
+		0\le\int_Zd(z,X)\,\mathrm d\nu_i(z)\le\delta_i,
+	\]
+	弱收敛给出该连续函数对 \(\widetilde\nu\) 的积分为零。因此 \(\widetilde\nu(Z\setminus X)=0\)，它是 \(X\) 上某个概率测度的推前，这正是所需的 mGH 子列。
+\end{proof}
+
+\begin{theorem}[归一化 Ricci 极限的预紧性]\label{g3:thm:ricci-measured-precompactness}
+	设连通闭 \(n\) 维黎曼流形序列 \((M_i,g_i)\) 满足式\eqref{g3:eq:ricci-limit-class}，并以式\eqref{g3:eq:ricci-probability-normalization}定义 \(\nu_i\)。则存在 mGH 收敛子列，其极限 \((X,d,\nu)\) 为紧致测地度量概率空间，且 \(\operatorname{spt}\nu=X\)。对任意 \(x\in X\)、\(r>0\)，有
+	\begin{equation}\label{g3:eq:ricci-limit-ball-convergence}
+		\nu(\partial B_X(x,r))=0,
+		\qquad \nu_i(B_{M_i}(x_i,r))\longrightarrow\nu(B_X(x,r))
+	\end{equation}
+	只要 \(x_i\to x\) 于实现收敛的共同紧致环境中。此外，对 \(0<r<R\)，有
+	\begin{equation}\label{g3:eq:ricci-limit-measure-comparison}
+		\frac{\nu(B_X(x,r))}{\nu(B_X(x,R))}
+		\ge\frac{V_{-K,n}(r)}{V_{-K,n}(R)}.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	\cref{g3:prop:ricci-limit-volume-packing}给出统一直径和覆盖数界；\cref{g3:thm:gh-precompactness}给出 GH 子列，上一命题再给出测度子列。\cref{g3:prop:gh-geodesic-limit}表明 \(X\) 是测地空间。以下将所有空间视为同一紧空间 \(Z\) 的子集。
+
+	固定 \(x\in X\)，取 \(x_i\in M_i\) 使 \(x_i\to x\)。对 \(r>0\) 和 \(0<\eta<r/3\)，开集
+	\[
+		G_\eta=\{z\in Z:r-\eta<d_Z(x,z)<r+\eta\}
+	\]
+	包含 \(X\) 中距离 \(x\) 恰为 \(r\) 的点。当 \(i\) 充分大时，它与 \(M_i\) 的交包含于以 \(x_i\) 为中心、内外半径为 \(r-2\eta,r+2\eta\) 的环带。Bishop--Gromov 比较及 \(\nu_i(M_i)=1\) 给出
+	\[
+		\nu_i(G_\eta)
+		\le 1-\frac{V_{-K,n}(r-2\eta)}{V_{-K,n}(r+2\eta)}.
+	\]
+	用式\eqref{g3:eq:weak-measure-closed-open}的开集不等式，再令 \(\eta\downarrow0\)，得到 \(\nu(\{d(x,\cdot)=r\})=0\)，特别是球边界零测。对固定环境球使用开、闭集不等式，得到其测度收敛；再以半径 \(r\pm\eta\) 的固定球夹住 \(B_{M_i}(x_i,r)\)，令 \(\eta\downarrow0\)，即得式\eqref{g3:eq:ricci-limit-ball-convergence}。
+
+	当 \(0<r<R_0\) 时，式\eqref{g3:eq:ricci-limit-relative-volume}传到极限给出
+	\[
+		\nu(B_X(x,r))\ge
+		\frac{V_{-K,n}(r)}{V_{-K,n}(R_0)}>0.
+	\]
+	这证明满支撑。最后把流形上的 Bishop--Gromov 球体积比传到极限，分母由满支撑严格为正，得到式\eqref{g3:eq:ricci-limit-measure-comparison}。
+\end{proof}
+
+\begin{example}\label{g3:exm:weighted-circle-collapse}
+	在二维环面 \((\mathbb R/2\pi\mathbb Z)^2\) 上取坐标 \((x,\theta)\)，令
+	\[
+		g_\varepsilon=\mathrm dx^2+\varepsilon^2a(x)^2\mathrm d\theta^2,
+		\qquad a(x)=2+\sin x,\quad 0<\varepsilon\le1.
+	\]
+	非零 Christoffel 符号为
+	\[
+		\Gamma^x_{\theta\theta}=-\varepsilon^2aa',
+		\qquad \Gamma^\theta_{x\theta}=
+		\Gamma^\theta_{\theta x}=a'/a.
+	\]
+	由曲率定义计算得 \(K_{g_\varepsilon}=-a''/a=\sin x/(2+\sin x)\ge-1\)，所以 \(\operatorname{Ric}_{g_\varepsilon}\ge-g_\varepsilon\)。投影 \(\pi(x,\theta)=x\) 到长为 \(2\pi\) 的圆周 \(S^1\) 满足
+	\[
+		d_{S^1}(\pi p,\pi q)\le d_{g_\varepsilon}(p,q)
+		\le d_{S^1}(\pi p,\pi q)+3\pi\varepsilon.
+	\]
+	下界来自投影不增加长度；上界先沿固定 \(\theta\) 的最短底圆弧走，再在终点纤维中走不超过半周。因此 \(\operatorname{diam}(M,g_\varepsilon)\le4\pi\)，且对应 \(\{(p,\pi p)\}\) 的失真至多为 \(3\pi\varepsilon\)，给出 GH 收敛到 \(S^1\)。
+
+	面积元与总体积分别为
+	\[
+		\mathrm d\operatorname{vol}_{g_\varepsilon}
+		=\varepsilon a(x)\,\mathrm dx\,\mathrm d\theta,
+		\qquad \operatorname{Vol}_{g_\varepsilon}M=8\pi^2\varepsilon.
+	\]
+	故未归一化的面积测度总质量趋于零，而归一化后的推前对每个 \(\varepsilon\) 都恰为
+	\begin{equation}\label{g3:eq:weighted-collapse-limit-measure}
+		\pi_\#\nu_\varepsilon=
+		\frac{2+\sin x}{4\pi}\,\mathrm dx.
+	\end{equation}
+	在桥度量构造中可使对应点 \(p,\pi p\) 的距离趋于零。对共同紧致环境中的连续函数，一致连续性便把 \(\int f(p)\,\mathrm d\nu_\varepsilon\) 与 \(\int f(\pi p)\,\mathrm d\nu_\varepsilon\) 的差控制到零。因此式\eqref{g3:eq:weighted-collapse-limit-measure}确为 mGH 极限测度。它不是圆周的归一化长度测度：在较粗的纤维之上，每单位底圆长度留下更多质量。
+\end{example}
 
 \subsection{正则点、切锥及奇异集}
 \label{g3:subsec:2903:03}
-待撰写
+在光滑流形上，放大一个点附近的距离会得到该点的 Euclid 切空间。度量极限中也可以放大，但不同尺度的子列可能产生不同的极限。定义正则点时，必须说明这种选择是否允许影响结论。
+
+\begin{proposition}\label{g3:prop:ricci-limit-tangents-exist}
+	设 \((X,d,\nu)\) 是\cref{g3:thm:ricci-measured-precompactness}给出的极限。则对任意 \(x\in X\) 和任意 \(r_j\downarrow0\)，序列 \((X,r_j^{-1}d,x)\) 都有指向 GH 收敛子列，其极限为固有测地空间。
+\end{proposition}
+\begin{proof}
+	只需验证\cref{g3:thm:pointed-gh-precompactness}的各有界球覆盖数界。去掉有限项，设 \(0<r_j\le1\)。在放大距离 \(d_j=r_j^{-1}d\) 下，式\eqref{g3:eq:ricci-limit-measure-comparison}中的模型曲率变为 \(-Kr_j^2\)，因为
+	\[
+		V_{-Kr_j^2,n}(t)=r_j^{-n}V_{-K,n}(r_jt).
+	\]
+	在 \(\overline B_{d_j}(x,R)\) 中取 \(\varepsilon\)-分离点 \(y_1,\ldots,y_N\)。半径 \(\varepsilon/2\) 的开球两两不交，且包含于 \(B_{d_j}(x,R+\varepsilon/2)\)。又有
+	\(B_{d_j}(x,R+\varepsilon/2)\subset B_{d_j}(y_a,2R+\varepsilon)\)，所以比较不等式给出
+	\[
+		\nu(B_{d_j}(y_a,\varepsilon/2))
+		\ge\frac{V_{-Kr_j^2,n}(\varepsilon/2)}
+		{V_{-Kr_j^2,n}(2R+\varepsilon)}
+		\nu(B_{d_j}(x,R+\varepsilon/2)).
+	\]
+	求和并消去正测度后，得到 \(N\) 不超过上式模型体积比的倒数。对于 \(0\le\kappa\le K\)，模型径向函数满足
+	\(t\le s_{-\kappa}(t)\le t e^{\sqrt Kt}\)，从而
+	\[
+		\frac{V_{-\kappa,n}(2R+\varepsilon)}
+		{V_{-\kappa,n}(\varepsilon/2)}
+		\le\left(\frac{2R+\varepsilon}{\varepsilon/2}\right)^n
+		e^{(n-1)\sqrt K(2R+\varepsilon)}.
+	\]
+	右端与 \(j\) 无关。取极大分离集即得所需有限覆盖数，指向预紧性定理于是适用。
+\end{proof}
+
+\begin{definition}\label{g3:def:ricci-limit-regular-singular}
+	设 \((X,d)\) 为固有测地空间，且在每个点的任意趋零放大序列都有指向 GH 收敛子列。沿用\cref{g3:def:metric-tangent-limit}，任何指向 GH 极限
+	\[
+		(X,r_j^{-1}d,x)\longrightarrow(Y,d_Y,o),\qquad r_j\downarrow0,
+	\]
+	称为 \(X\) 在 \(x\) 的一个\term[qiezhui]{切锥}[tangent cone]。若对某个非负整数 \(k\)，在 \(x\) 的每一个切锥都以基点保持的方式等距于 \((\mathbb R^k,0)\)，就称 \(x\) 为 \(k\) 维\term[zhengze dian ricci jixian]{正则点}[regular point]，全体此种点记为 \(\mathcal R_k\)。令
+	\[
+		\mathcal R=\bigcup_{k\ge0}\mathcal R_k,
+		\qquad \mathcal S=X\setminus\mathcal R,
+	\]
+	分别称为正则集和\term[qiyi ji ricci jixian]{奇异集}[singular set]。这里 \(\mathbb R^0\) 表示单点。
+\end{definition}
+
+“存在一个 Euclid 切锥”只涉及一列尺度；上面的正则性涉及全部趋零尺度。对固定的 \(k\)，由于上一命题给出所有放大序列的预紧性，“所有切锥都是 \(\mathbb R^k\)”等价于当 \(r\downarrow0\) 时整个族 \((X,r^{-1}d,x)\) 指向 GH 收敛到 \((\mathbb R^k,0)\)。若整族不收敛，就可选出在某个固定半径球上始终偏离 Euclid 模型的序列；取其收敛子列会与所有切锥的规定矛盾。
+
+\ProseParagraphBreak
+这里的“切锥”首先是放大极限的名称。真正的\term[duliang zhui]{度量锥}[metric cone] \(C(Z)\) 是将 \([0,\infty)\times Z\) 的 \(\{0\}\times Z\) 压成一点后，赋予余弦距离
+\begin{equation}\label{g3:eq:ricci-metric-cone-distance}
+	 d_C((r,z),(s,w))^2
+	 =r^2+s^2-2rs\cos d_Z(z,w),
+	 \qquad \operatorname{diam}Z\le\pi.
+\end{equation}
+在本节所用情形中，\(Z\) 为非空紧长度空间，这一公式给出锥的长度度量。可以只用有限拼接的路径来验证：每一段的角坐标沿 \(Z\) 中一条单位速度最短弧 \(\eta\) 运动，写成 \(z(t)=\eta(u(t))\)，其中 \(r,u\) 分段光滑，并允许路径经过顶点。给这样的每一段赋予长度
+\[
+	 L(\gamma)=\int\sqrt{|\dot r|^2+r^2|\dot u|^2}\,\mathrm dt.
+\]
+给定两端点，沿 \(Z\) 中连接其角坐标的最短弧构成一个角度不超过 \(\pi\) 的 Euclid 扇形；扇形内的直线段给出余弦式的上界。反过来，对任意上述路径取角变量 \(\theta(t)=d_Z(z(0),z(t))\)。距离函数的 \(1\)-Lipschitz 性给出每段上几乎处处的 \(|\dot\theta|\le|\dot u|\)，故平面曲线 \(r(t)e^{\mathrm i\theta(t)}\) 的长度不超过原路径长度。其弦长正是余弦式右端的平方根，因而给出下界；经过顶点的路径长度至少为两端径向距离之和，也满足该下界。这说明公式确为这些路径长度的下确界，并由扇形直线段实现；于是它给出测地度量。径向伸缩是任意正比例的相似变换；切锥定义本身并未要求这些变换存在。
+
+\begin{example}\label{g3:exm:cone-density-singularity}
+	取总角度 \(0<\alpha<2\pi\) 的平坦圆锥 \(C_\alpha\)，见\cref{g3:exm:flat-metric-cone}。在顶点 \(o\) 外，度量为 \(\mathrm dr^2+r^2\mathrm d\theta^2\)，其中 \(\theta\) 的周期是 \(\alpha\)。因而
+	\[
+		\mathcal H^2(B(o,r))
+		=\int_0^r\int_0^\alpha t\,\mathrm d\theta\,\mathrm dt
+		=\frac\alpha2r^2.
+	\]
+	径向伸缩表明顶点的所有切锥都等距于 \(C_\alpha\) 本身。它不等距于 \(\mathbb R^2\)，因为后者的半径 \(r\) 球面积为 \(\pi r^2\)；锥的 Hausdorff 维数为二，也排除了其他维数的 Euclid 空间。因此顶点奇异，而顶点外每一点都正则。
+
+	在乘积 \(\mathbb R^{n-2}\times C_\alpha\) 中，奇异集是 \(\mathbb R^{n-2}\times\{o\}\)。在该轴上的点，以 Fubini 积分计算乘积球体积，得到
+	\[
+		\mathcal H^n(B((0,o),r))
+		=\frac\alpha{2\pi}\,\omega_nr^n.
+	\]
+	理由是对每个 \(z\in\mathbb R^{n-2}\)、\(|z|<r\)，圆锥截片的面积恒为相应 Euclid 二维圆盘面积的 \(\alpha/(2\pi)\) 倍。这一模型把“几乎处处 Euclid”与一条维数为 \(n-2\) 的奇异轴同时呈现出来。
+\end{example}
 
 \subsection{所选结构定理的准确范围}
 \label{g3:subsec:2903:04}
-待撰写
+体积比较已经保证了极限测度的满支撑和切锥的存在。把非塌缩极限的测度识别为 \(\mathcal H^n\)，并控制奇异集的维数，则需要更深的几何分析。下面采用 Cheeger--Colding\footnote{Tobias Holck Colding（1963--），丹麦数学家，研究微分几何、几何分析和偏微分方程，在 Ricci 曲率界和极小曲面理论方面作出贡献。}理论的紧致非塌缩版本；\(\mathcal H^n\) 使用\cref{g3:def:hausdorff-measure}中与 Euclid 体积一致的归一化。
+
+\begin{theorem}[Cheeger--Colding 结构定理]\label{g3:thm:cheeger-colding-noncollapsed}
+	设整数 \(n\ge2\)、\(K\ge0\)、\(D,v>0\) 固定，\((M_i^n,g_i)\) 为连通闭黎曼流形，满足
+	\[
+		\operatorname{Ric}_{g_i}\ge-(n-1)Kg_i,
+		\operatorname{diam}(M_i,g_i)\le D,
+		\operatorname{Vol}_{g_i}M_i\ge v.
+	\]
+	若 \((M_i,d_{g_i})\) GH 收敛于 \((X,d)\)，则成立：
+	\begin{enumerate}
+		\item \(\dim_{\mathrm H}X=n\)。对任意在共同环境中收敛的 \(x_i\to x\) 及任意 \(r>0\)，有
+		\begin{equation}\label{g3:eq:noncollapsed-volume-convergence}
+			\operatorname{Vol}_{g_i}B(x_i,r)
+			\longrightarrow\mathcal H^n(B_X(x,r)).
+		\end{equation}
+		而且每个归一化体积极限测度都是 \(\mathcal H^n\) 的常数倍。
+		\item 每一点的每一个切锥都是式\eqref{g3:eq:ricci-metric-cone-distance}意义下的度量锥，其截面为直径至多 \(\pi\) 的紧长度空间。
+		\item \(\mathcal R=\mathcal R_n\)，而且只要某一点存在一个等距于 \(\mathbb R^n\) 的切锥，该点就属于 \(\mathcal R_n\)。
+		\item 奇异集满足 \(\dim_{\mathrm H}\mathcal S\le n-2\)。特别地，\(\mathcal H^n(\mathcal S)=0\)。
+	\end{enumerate}
+\end{theorem}
+
+上述结论分别来自\cite[定理5.9和5.11，第434页；定理5.2，第432--433页；定理6.1，第435--437页]{CheegerColding1997StructureI}。原文采用连通完备无边界流形的指向 GH 极限、\(\operatorname{Ric}\ge-(n-1)g\) 及基点单位球体积下界。为对应这里的条件，先令 \(\widetilde g_i=(K+1)g_i\)，则新的 Ricci 下界满足该归一化；统一直径和总体积下界由\cref{g3:prop:ricci-limit-volume-packing}给出统一的单位球体积下界。最后把距离和体积分别按 \(\sqrt{K+1}\) 和 \((K+1)^{n/2}\) 缩回，即得所述版本。此处外引的是这些结构结论及其证明；前面已经证明的测度子列构造并不包含这一正则性论证。
+
+\begin{corollary}\label{g3:cor:noncollapsed-canonical-measure}
+	在\cref{g3:thm:cheeger-colding-noncollapsed}的假设下，归一化黎曼体积沿原来的 GH 收敛序列 mGH 收敛，极限测度唯一且为
+	\begin{equation}\label{g3:eq:noncollapsed-canonical-measure}
+		\nu=\frac{\mathcal H^n}{\mathcal H^n(X)},
+		\qquad v\le\mathcal H^n(X)\le V_{-K,n}(2D+1).
+	\end{equation}
+	正则集 \(\mathcal R_n\) 在 \(X\) 中稠密，且其补集为 \(\nu\)-零测集。
+\end{corollary}
+\begin{proof}
+	由\cref{g3:prop:gh-diameter}有 \(\operatorname{diam}X\le D\)。取 \(r>D\)，体积收敛式给出
+	\(\operatorname{Vol}_{g_i}M_i\to\mathcal H^n(X)\)，从而得到所示上下界。固定一个实现 GH 收敛的共同紧致环境。按上一外部定理第一项，每个概率测度弱极限 \(\mu\) 都是 \(\mathcal H^n\) 的常数倍；总质量为一便唯一确定该常数为 \(\mathcal H^n(X)^{-1}\)。原文以单位球体积归一化与这里以总体积归一化的关系也可直接核对：固定 \(p_i\to p\)，有
+	\[
+		\frac{\operatorname{Vol}_{g_i}B(p_i,1)}
+		{\operatorname{Vol}_{g_i}M_i}
+		\longrightarrow
+		\frac{\mathcal H^n(B_X(p,1))}{\mathcal H^n(X)}>0.
+	\]
+	因此两种归一化之间只相差一个有正极限的常数因子。
+
+	任一子列都有进一步的弱收敛子列，而且极限相同；若整列不弱收敛，就会有某个连续测试函数的积分沿一条子列始终与目标相差一个固定正数，矛盾。因此整列 mGH 收敛。最后 \(\mathcal H^n(\mathcal S)=0\) 给出 \(\nu(\mathcal S)=0\)，满支撑保证每个非空开球都有正 \(\nu\) 质量，因而都与 \(\mathcal R_n\) 相交。
+\end{proof}
+
+定理中的第三项把“某一个 \(n\) 维 Euclid 切锥”提升为“全部切锥都是该 Euclid 空间”，这是非塌缩结构定理的结论。对于奇异点，第二项只确定切锥属于度量锥这一类，并不确定所有截面相同。第四项则按 Hausdorff 维数控制例外集；它描述几乎处处的度量结构，并未赋予整个极限空间一套光滑黎曼坐标。塌缩时，\cref{g3:exm:weighted-circle-collapse}已经显示，即使距离极限是一条光滑圆周，归一化测度也仍可能带有非恒定密度。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

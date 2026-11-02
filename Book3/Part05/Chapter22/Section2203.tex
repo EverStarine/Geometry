@@ -1,35 +1,346 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 22.3 切片、锥与平坦范数
 % 纲要位置：几何学计划纲要.md，第 3025 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * Lipschitz 切片及边界公式
 % * 锥构造和填充估计
-% * 平坦范数及其弱收敛含义
-% * 质量收敛、平坦收敛与弱收敛
+% * 平坦范数与弱收敛
+% * 质量范数收敛、平坦收敛与弱收敛
 % 
 % 纲要内容结束
 
 \section{切片、锥与平坦范数}
 \label{g3:sec:2203}
 
-待撰写
+把一条有向曲线限制在半空间内，边界中会出现它穿过切割面的交点。高维流的切片记录同一种现象：它是截断后新出现的边界。切片把维数降低，锥把维数升高，而平坦范数同时允许一个小的本体误差与一个小填充的边界。这三种操作共同为后面的变形和紧性提供定量控制。
 
 \subsection{Lipschitz 切片及边界公式}
 \label{g3:subsec:2203:01}
-待撰写
+先设 \(T\) 是 \(\mathbb R^n\) 中的正规 \(k\) 维流，\(k\ge1\)，\(f:\mathbb R^n\to\mathbb R\) 为 Lipschitz 函数。记
+\[
+	T_t=T\llcorner\{f<t\},\qquad
+	S_t=\partial T_t-(\partial T)\llcorner\{f<t\}.
+\]
+右端首先是测试形式上的流。我们要证明：几乎每个 \(t\) 对应的 \(S_t\) 实际有有限质量，而且质量的参数积分由 \(T\) 控制。这样，截断所增加的边界便不会失控。上述约定与有限周长集合的外法向取向一致；切片的定义和以下公式可对照\cite[第28节，第156--162页]{Simon1983}。
+
+\begin{theorem}[正规流的切片]\label{g3:thm:normal-current-slicing}
+	设 \(T\in\mathcal N_k(\mathbb R^n)\)，\(1\le k\le n\)，\(f:\mathbb R^n\to\mathbb R\) 为 \(L\)-Lipschitz 函数。对几乎所有 \(t\)，\term[qiepian]{切片}[slice]
+	\begin{equation}\label{g3:eq:current-slice-definition}
+		\langle T,f,t\rangle
+		=\partial(T\llcorner\{f<t\})-(\partial T)\llcorner\{f<t\}
+	\end{equation}
+	属于 \(\mathcal N_{k-1}(\mathbb R^n)\)，且有
+	\[
+		\operatorname{spt}\langle T,f,t\rangle
+		\subset\operatorname{spt}T\cap f^{-1}(t),
+		\qquad
+		\partial\langle T,f,t\rangle=-\langle\partial T,f,t\rangle.
+	\]
+	这里约定零维流的切片及边界均为零。对任意 Borel 集 \(B\subset\mathbb R^n\) 及 \(-\infty\le a<b\le\infty\)，有
+	\begin{equation}\label{g3:eq:normal-slice-mass}
+		\int_a^b\|\langle T,f,t\rangle\|(B)\,\mathrm dt
+		\le L\|T\|(B\cap\{a<f<b\}).
+	\end{equation}
+	特别地，\(\int_{\mathbb R}\mathbf N(\langle T,f,t\rangle)\,\mathrm dt\le L\mathbf N(T)\)，且几乎所有截断 \(T\llcorner\{f<t\}\) 仍为正规流。
+\end{theorem}
+\begin{proof}
+	证明的要点是先对切片的全部测试值建立一个积分估计，再由可数稠密的测试族取得质量。这样不必预先假定切片可以由某个曲面表示。
+
+	先假定 \(f\) 光滑。对 \(\omega\in\mathcal D^{k-1}(\mathbb R^n)\) 和 \(h\in C_c^\infty(\mathbb R)\)，令 \(H(s)=\int_s^\infty h(t)\,\mathrm dt\)。按质量测度作 Fubini 换序，并在 \(\operatorname{spt}\omega\) 的邻域乘一个等于一的截断，得到
+	\begin{equation}\label{g3:eq:current-slice-pairing}
+	\begin{aligned}
+		\int_{\mathbb R}h(t)S_t(\omega)\,\mathrm dt
+		&=T(H(f)\,\mathrm d\omega)-\partial T(H(f)\omega)\\
+		&=T\bigl(h(f)\,\mathrm df\wedge\omega\bigr).
+	\end{aligned}
+	\end{equation}
+	因 \(|\mathrm df\wedge\omega|_*\le L|\omega|_*\)，右端由质量控制。这里 \(|\cdot|_*\) 表示形式的余质量范数。
+
+	固定开集 \(U\) 及有限区间 \((a,b)\)，在支于 \(U\)、余质量至多一的光滑 \((k-1)\) 形式中取可数的 \(C^1\) 稠密族 \(\omega_i\)，包含零形式和各形式的相反数。每个 \(t\mapsto S_t(\omega_i)\) 可测。在有限个测试值中按取得最大值的最小下标划分参数区间；用彼此不交的紧子集及不交支撑的光滑函数 \(h_i\) 逼近这些可测片，并保持 \(0\le\sum_i h_i\le1\)、\(\operatorname{spt}h_i\subset(a,b)\)。这种逼近可以在有限测度 \(\sum_i|S_t(\omega_i)|\,\mathrm dt\) 下完成。对式\eqref{g3:eq:current-slice-pairing}求和，便有
+	\[
+		\int_a^b\max_{i\le N}S_t(\omega_i)\,\mathrm dt
+		\le L\|T\|(U\cap\{a<f<b\}).
+	\]
+	令 \(N\to\infty\)，单调收敛说明切片的质量上确界几乎处处有限，并给出式\eqref{g3:eq:normal-slice-mass}的开集版本。对可数个开集基使用这些测试族，再用测度的单调类论证，\(t\mapsto\|S_t\|(B)\) 对每个 Borel 集 \(B\) 可测；其积分定义的测度被 \(L\|T\|\) 控制。由正则性，估计推广到全部 Borel 集。
+
+	对一般 Lipschitz \(f\)，令 \(f_j=f*\rho_{\varepsilon_j}\)。则 \(f_j\to f\) 一致，且 \(\operatorname{Lip}f_j\le L\)。有限测度 \(\|T\|+\|\partial T\|\) 只可能对可数个水平集赋予正质量。因此对几乎所有 \(t\)，截断的两个项都在测试形式上收敛，得到
+	\[
+		S_t^{(j)}\rightharpoonup
+		\partial(T\llcorner\{f<t\})-(\partial T)\llcorner\{f<t\}=S_t.
+	\]
+	质量是测试值上确界，故在这个弱收敛下下半连续。对开集 \(U\) 使用 Fatou 引理，先在端点水平集的质量均为零时令 \(j\to\infty\)，得到相同的带状估计；一般 \(a,b\) 可由内部的非原子水平递增穷尽。再次以正则性推广到 Borel 集。可测性仍由截断定义和可数测试族得到。
+
+	若测试形式支于 \(\{f<t\}\) 内，则截断公式中的两个项相消；若支于 \(\{f>t\}\)，则两项都为零。这给出切片的支集断言。对定义施加边界算子，并使用 \(\partial^2T=0\)，得到
+	\[
+		\partial S_t=-\partial\bigl((\partial T)\llcorner\{f<t\}\bigr)
+		=-\langle\partial T,f,t\rangle.
+	\]
+	把已经证明的质量估计用于 \(\partial T\)，便知右端几乎处处有限质量，且有相应积分界；\(k=1\) 时两边本来就是零。这证明 \(S_t\) 正规及 \(\mathbf N\) 的估计。最后
+	\(\partial T_t=(\partial T)\llcorner\{f<t\}+S_t\)，所以几乎所有 \(T_t\) 也正规。
+\end{proof}
+
+局部正规流也有同样结论：先在相对紧开集附近乘光滑截断，应用定理，再用可数穷尽删去共同的零测参数集。在两个截断均等于一的区域内，定义完全相同，故所得局部切片可以粘合。后面按距离函数选择切割半径时，只需式\eqref{g3:eq:normal-slice-mass}；个别异常半径不会影响选择。
+
+对于可整流流，切片还可以直接读成水平集上的有向积分。若 \(M\) 可数 \(k\)-可整流，\(f\) 为 Lipschitz 函数，则 \(\mathrm d_Mf\) 表示其沿近似切平面的微分，\(\nabla_Mf\) 是对应切向量。由双 Lipschitz 参数片定义它时，在参数域的密度点求微分；第20章的延拓无关性保证它不依赖片的选择。我们采用收缩约定
+\[
+	\langle\tau\mathbin{\lrcorner}\alpha,\omega\rangle
+	=\langle\tau,\alpha\wedge\omega\rangle.
+\]
+当 \(\tau\) 是单位简单 \(k\) 向量时，\(\tau\mathbin{\lrcorner}\mathrm d_Mf\) 的长度等于 \(|\nabla_Mf|\)。
+
+\begin{theorem}[可整流流的切片]\label{g3:thm:integer-current-slicing}
+	设 \(T=\lBrack M,\tau,\theta\rBrack\) 是 \(\mathbb R^n\) 中有限质量的可整流 \(k\) 维流，\(k\ge1\)，\(\theta\) 为正的可测实重数，并设 \(\mathbf M(\partial T)<\infty\)。令 \(f:\mathbb R^n\to\mathbb R\) 为 Lipschitz 函数，\(M^+=\{x\in M:|\nabla_Mf(x)|>0\}\)。则对几乎所有 \(t\)，有
+	\begin{equation}\label{g3:eq:rectifiable-slice-representation}
+		\langle T,f,t\rangle
+		=\left\lBrack M^+\cap f^{-1}(t),
+		\frac{\tau\mathbin{\lrcorner}\mathrm d_Mf}{|\nabla_Mf|},\theta\right\rBrack.
+	\end{equation}
+	右侧为可整流 \((k-1)\) 维流；若 \(\theta\) 几乎处处为整数，则切片也整数可整流。若进一步 \(T\in\mathcal I_k(\mathbb R^n)\)，则几乎所有切片属于 \(\mathcal I_{k-1}\)，而 \(T\llcorner\{f<t\}\) 属于 \(\mathcal I_k\)。
+\end{theorem}
+\begin{proof}
+	先把第20章的余面积公式移到 \(M\) 上。由\cref{g3:prop:rectifiable-bilipschitz-cover}，把 \(M\) 分为互不交的双 Lipschitz 参数片 \(\varphi:A\subset\mathbb R^k\to M\)。对 \(f\circ\varphi\) 使用\cref{g3:thm:lipschitz-coarea-formula}，并在参数片及其纤维上分别使用加权面积公式。在线性代数层面，\(\mathrm D\varphi\) 将 \(\ker\mathrm D(f\circ\varphi)\) 映到 \(T_xM\cap\ker\mathrm d_Mf\)，且
+	\[
+		J_k\varphi\,|\nabla_Mf|
+		=J_{k-1}\bigl(\mathrm D\varphi|_{\ker\mathrm D(f\circ\varphi)}\bigr)
+		\,|\nabla(f\circ\varphi)|.
+	\]
+	这可在核内取正交基，再补一个法向向量，以平行多面体的底面积乘高验证。于是对非负可测 \(g\)，逐片求和得到
+	\begin{equation}\label{g3:eq:rectifiable-coarea-scalar}
+		\int_M g|\nabla_Mf|\,\mathrm d\mathcal H^k
+		=\int_{\mathbb R}\left(\int_{M\cap f^{-1}(t)}g\,\mathrm d\mathcal H^{k-1}\right)\mathrm dt.
+	\end{equation}
+	第20章对满秩参数片的纤维构造同时给出几乎所有水平集的可整流性，及其切平面 \(T_xM\cap\ker\mathrm d_Mf\)。秩亏部分和参数零测余项的纤维几乎处处为零测集。取 \(g=\theta\) 可知右侧有有限的重数积分。
+
+	先令 \(f\) 光滑。把式\eqref{g3:eq:current-slice-pairing}中的右端写成 \(M\) 上积分，再使用式\eqref{g3:eq:rectifiable-coarea-scalar}，得到
+	\[
+	\begin{aligned}
+		\int h(t)\langle T,f,t\rangle(\omega)\,\mathrm dt
+		&=\int_M h(f)\theta\langle\tau,\mathrm d_Mf\wedge\omega\rangle\,\mathrm d\mathcal H^k\\
+		&=\int h(t)\left(\int_{M^+\cap f^{-1}(t)}
+		\theta\left\langle\frac{\tau\mathbin{\lrcorner}\mathrm d_Mf}{|\nabla_Mf|},\omega\right\rangle
+		\,\mathrm d\mathcal H^{k-1}\right)\mathrm dt.
+	\end{aligned}
+	\]
+	因此两个切片对每个固定 \(\omega\) 几乎处处相同。取可数稠密测试族并使用有限质量界，即可使零测例外集与 \(\omega\) 无关，得到流的恒等式。
+
+	一般 Lipschitz \(f\) 可借助图嵌入 \(F(x)=(x,f(x))\) 化归这个光滑坐标情形。由\cref{g3:prop:rectifiable-lipschitz-pushforward,g3:cor:normal-pushforward-finite}，\(F_\#T\) 是正规可整流流，其取向由 \(\mathrm D_MF\) 给出；高度函数 \(q(x,s)=s\) 光滑。投影 \(\pi(x,s)=x\) 满足 \(\pi\circ F=\mathrm{id}\)，且 \(q\circ F=f\)。推前与边界相容，限制到相应水平下方也相容，故
+	\[
+		\pi_\#\langle F_\#T,q,t\rangle=\langle T,f,t\rangle.
+	\]
+	在 \(\nabla_Mf\ne0\) 的点，取切向正交基，使第一个向量沿 \(\nabla_Mf\)，其余向量位于水平切平面。图映射把它们送到 \((e_1,|\nabla_Mf|)\) 及 \((e_i,0)\)。高度切片后投影回去，正得到式\eqref{g3:eq:rectifiable-slice-representation}中的单位取向；图面积因子与高度余面积因子相消。这样便得到 Lipschitz 情形的同一公式。
+
+	若 \(T\) 及 \(\partial T\) 都整数可整流，分别对它们使用这个表示，便知切片及其边界 \(-\langle\partial T,f,t\rangle\) 都整数可整流。截断流本身保持原重数，而其边界为两个整数可整流流之和。因此两者均为所述整数流。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:iterated-current-slicing}
+	设 \(T\in\mathcal N_k(\mathbb R^n)\)，\(1\le m\le k\)，\(f_i:\mathbb R^n\to\mathbb R\) 为 Lipschitz 函数。按 \(f_1,\ldots,f_m\) 的次序逐次切片，记为 \(\langle T,f,y\rangle\)，其中 \(f=(f_1,\ldots,f_m)\)、\(y\in\mathbb R^m\)。则它几乎处处为正规 \((k-m)\) 维流，且
+	\[
+		\partial\langle T,f,y\rangle=(-1)^m\langle\partial T,f,y\rangle,
+		\qquad
+		\int_{\mathbb R^m}\mathbf M(\langle T,f,y\rangle)\,\mathrm dy
+		\le\prod_{i=1}^m\operatorname{Lip}(f_i)\,\mathbf M(T).
+	\]
+	若 \(T\) 整数，则这些切片也整数。若各 \(f_i\) 光滑，则对 \(\omega\in\mathcal D^{k-m}(\mathbb R^n)\) 和 \(g\in C_c^\infty(\mathbb R^m)\)，有
+	\begin{equation}\label{g3:eq:iterated-slice-disintegration}
+		\int_{\mathbb R^m}g(y)\langle T,f,y\rangle(\omega)\,\mathrm dy
+		=T\bigl(g(f)\,\mathrm df_1\wedge\cdots\wedge\mathrm df_m\wedge\omega\bigr).
+	\end{equation}
+	特别地，当 \(m=k\)、\(p=(x_{i_1},\ldots,x_{i_k})\) 为有序坐标投影时，
+	\[
+		T(\varphi\,\mathrm dx_{i_1}\wedge\cdots\wedge\mathrm dx_{i_k})
+		=\int_{\mathbb R^k}\langle T,p,y\rangle(\varphi)\,\mathrm dy
+		\qquad(\varphi\in C_c^\infty(\mathbb R^n)).
+	\]
+\end{proposition}
+\begin{proof}
+	逐次应用\cref{g3:thm:normal-current-slicing}，并用 Fubini 定理选择共同的满测参数集。每施加一次边界就带来一个负号；每作一次质量积分就带来一个 Lipschitz 常数。整数性由\cref{g3:thm:integer-current-slicing}逐次保持。
+
+	当 \(g(y)=g_1(y_1)\cdots g_m(y_m)\) 时，逐次使用式\eqref{g3:eq:current-slice-pairing}便得到式\eqref{g3:eq:iterated-slice-disintegration}，外微分因子按既定次序出现。有限个这种乘积的线性组合在紧参数盒上的连续函数中一致稠密；例如逐个坐标用分片线性插值，再将插值函数光滑逼近即可。两侧均有已经证明的质量积分界，所以公式推广到任意所述 \(g\)。最后取 \(g\) 在 \(p(\operatorname{spt}\varphi)\) 的邻域等于一，得到零维切片的配对公式。参数的可测性先对可数测试族成立，有限质量再将它推广到全部测试形式。
+\end{proof}
+
+一个切片仍保留取向。例如标准有向平面中的圆盘被 \(f(x,y)=x\) 切割，内部竖直弦的取向为 \(+e_y\)，因为 \((e_x\wedge e_y)\mathbin{\lrcorner}\mathrm dx=e_y\)。弦的上端点为正、下端点为负；这与圆周切片之间的负号恰好相配。
+
+\begin{corollary}\label{g3:cor:coordinate-slice-atoms}
+	设 \(T=\lBrack M,\tau,\theta\rBrack\in\mathcal N_k(\mathbb R^n)\) 为实重数可整流流，\(\theta>0\)。固定有序坐标投影 \(p=(x_{i_1},\ldots,x_{i_k})\)，记
+	\[
+		a_p(x)=\langle\tau(x),\mathrm dx_{i_1}\wedge\cdots\wedge\mathrm dx_{i_k}\rangle.
+	\]
+	则几乎所有零维切片有表示
+	\begin{equation}\label{g3:eq:coordinate-slice-atoms}
+		\langle T,p,y\rangle
+		=\sum_{\substack{x\in M\cap p^{-1}(y)\\a_p(x)\ne0}}
+		\theta(x)\operatorname{sgn}(a_p(x))\delta_x,
+	\end{equation}
+	各项绝对系数可求和，且
+	\[
+		\int_{\mathbb R^k}\mathbf M(\langle T,p,y\rangle)\,\mathrm dy
+		=\int_M\theta|a_p|\,\mathrm d\mathcal H^k.
+	\]
+\end{corollary}
+\begin{proof}
+	逐次应用式\eqref{g3:eq:rectifiable-slice-representation}。在满秩点，连续的切向收缩最后留下标量 \(a_p\)，各步的余面积因子之积为切向 Jacobian \(J_Mp=|a_p|\)。秩亏部分在几乎所有最终纤维上为空，这由参数片上的\cref{g3:lem:coarea-critical-slices}给出。把带权余面积公式逐次积分，便得到末尾等式；其右端不超过 \(\mathbf M(T)\)，故几乎所有纤维上的绝对系数可求和。正重数的可求和性也说明非零原子至多可数。不同的纤维点对应不同原子，因此这里不发生同点抵消。
+\end{proof}
 
 \subsection{锥构造和填充估计}
 \label{g3:subsec:2203:02}
-待撰写
+给一个闭的有向曲面选定顶点，并把各点沿线段连向顶点，就得到一个候选填充。对于流，区间乘积和推前使这件事具有统一定义，也能直接算出质量。
 
-\subsection{平坦范数及其弱收敛含义}
+\begin{proposition}\label{g3:prop:current-cone-filling}
+	设 \(T\in\mathcal N_k(\mathbb R^n)\) 紧支，\(0\le k\le n\)，\(a\in\mathbb R^n\)。令
+	\[
+		h(t,x)=a+t(x-a),\qquad
+		a*T=h_\#(\lBrack[0,1]\rBrack\times T).
+	\]
+	则 \(a*T\) 为正规 \((k+1)\) 维流，其支集包含于 \(a\) 与 \(\operatorname{spt}T\) 张成的闭线段并，并满足
+	\begin{equation}\label{g3:eq:current-cone-boundary}
+		\partial(a*T)=T-(c_a)_\#T-a*(\partial T),
+	\end{equation}
+	其中 \(c_a\) 是常值映射。质量估计为
+	\begin{equation}\label{g3:eq:current-cone-mass}
+		\mathbf M(a*T)\le\frac1{k+1}\int|x-a|\,\mathrm d\|T\|(x).
+	\end{equation}
+	若 \(T\) 整数，则 \(a*T\) 也整数。特别地，若 \(k\ge1\)、\(\partial T=0\) 且 \(\operatorname{spt}T\subset\overline B(a,R)\)，则 \(\partial(a*T)=T\)，且 \(\mathbf M(a*T)\le R\mathbf M(T)/(k+1)\)。若 \(k=0\)，同一填充结论须另要求 \(T(1)=0\)。
+\end{proposition}
+\begin{proof}
+	区间取从零到一的取向。由\cref{g3:prop:current-homotopy}，其乘积的边界给出式\eqref{g3:eq:current-cone-boundary}。当 \(k\ge1\) 时，常值映射的 \(k\) 阶外幂微分为零，故 \((c_a)_\#T=0\)。当 \(k=0\) 时，\((c_a)_\#T=T(1)\delta_a\)；这里 \(T(1)\) 用在支集邻域等于一的紧支函数求值得到，与该函数的选择无关。
+
+	在 \((t,x)\) 处，时间方向的微分为 \(x-a\)，空间方向的微分为乘以 \(t\)。于是对余质量至多一的 \((k+1)\) 形式，区间方向与空间 \(k\) 向量的配对绝对值不超过 \(|x-a|t^k\)。先对空间质量测度积分，再对 \(t\in[0,1]\) 积分，得到
+	\[
+		\mathbf M(a*T)\le\int_0^1\int|x-a|t^k\,\mathrm d\|T\|(x)\,\mathrm dt
+		=\frac1{k+1}\int|x-a|\,\mathrm d\|T\|(x).
+	\]
+	边界公式同时给出边界的有限质量，所以锥为正规流。整数可整流流的区间乘积由原参数片乘区间表示，重数仍为原整数；其 Lipschitz 推前仍整数可整流。若 \(T\) 整数，边界公式中的各项也整数可整流，因而锥是整数流。最后代入 \(|x-a|\le R\)，并分别检查常值项，即得所述填充结论。
+\end{proof}
+
+零维的附加条件有具体含义。对 \(T=\delta_b-\delta_c\)，锥是从 \(a\) 到 \(b\) 的线段减去从 \(a\) 到 \(c\) 的线段，顶点贡献相消。若只有 \(T=\delta_b\)，其锥边界为 \(\delta_b-\delta_a\)。任何紧支一维流的边界总系数都为零，因为可用支集邻域等于一的测试函数计算；所以单个正点不能成为紧支流的边界。
+
+当 \(T\) 是半径 \(R\) 的有向圆周且顶点在圆心时，锥是有向圆盘，质量估计成为 \(\pi R^2=(R/2)(2\pi R)\)。这个例子也说明，填充量的尺度比边界质量多一个长度因子。
+
+\subsection{平坦范数与弱收敛}
 \label{g3:subsec:2203:03}
-待撰写
+两条距离很近但互不重合的曲线，其差的质量仍等于两条曲线的长度之和。然而它们之间的薄带面积很小。为了使这个几何差异能够趋零，我们同时允许留下少量流，并用低质量的高一维流填充其余部分。
 
-\subsection{质量收敛、平坦收敛与弱收敛}
+\begin{definition}\label{g3:def:flat-norm}
+	对 \(\mathbb R^n\) 中的 \(k\) 维流 \(T\)，定义实系数的\term[pingtan fanshu]{平坦范数}[flat norm]
+	\begin{equation}\label{g3:eq:flat-norm}
+		\mathcal F(T)=\inf\{\mathbf M(R)+\mathbf M(S):
+		T=R+\partial S,\ \mathbf M(R)+\mathbf M(S)<\infty\},
+	\end{equation}
+	其中 \(R\) 为 \(k\) 维流，\(S\) 为 \((k+1)\) 维流；没有此类分解时取 \(+\infty\)。分解不要求整数系数。若 \(\mathcal F(T_j-T)\to0\)，称 \(T_j\) \term[pingtan shoulian]{平坦收敛}[flat convergence]于 \(T\)。
+\end{definition}
+
+若 \(T\) 正规，则任意有限质量分解中的 \(R,S\) 自动正规：\(\partial S=T-R\) 有限质量，而 \(\partial R=\partial T\) 有限质量。这一事实使切片定理可以用于平坦范数中的每个分解。若特定论证要求 \(R,S\) 支于同一个闭集 \(K\)，则把对应下确界另记为 \(\mathcal F_K(T)\)；它可能更大，不能静默省略支集条件。
+
+\begin{proposition}\label{g3:prop:flat-norm-duality}
+	对 \(\mathbb R^n\) 中有限质量的 \(k\) 维流 \(T\)，有
+	\begin{equation}\label{g3:eq:flat-dual-formula}
+		\mathcal F(T)=\sup\{|T(\omega)|:
+		\omega\in\mathcal D^k(\mathbb R^n),\quad
+		\|\omega\|_\infty\le1,\ \|\mathrm d\omega\|_\infty\le1\},
+	\end{equation}
+	其中形式的范数均为余质量范数。\(\mathcal F\) 在有限质量流上是范数，并满足
+	\[
+		\mathcal F(T)\le\mathbf M(T),\qquad
+		\mathcal F(\partial T)\le\mathcal F(T).
+	\]
+	第二式在边界具有有限平坦范数的流意义下成立。任意测试形式都有
+	\begin{equation}\label{g3:eq:flat-controls-weak}
+		|T(\omega)|\le\max\{\|\omega\|_\infty,\|\mathrm d\omega\|_\infty\}\,\mathcal F(T).
+	\end{equation}
+	因此平坦收敛蕴含流的弱收敛。
+\end{proposition}
+\begin{proof}
+	若 \(T=R+\partial S\)，则
+	\[
+		|T(\omega)|\le\mathbf M(R)\|\omega\|_\infty
+		+\mathbf M(S)\|\mathrm d\omega\|_\infty.
+	\]
+	对分解取下确界，得到式\eqref{g3:eq:flat-controls-weak}，并证明式\eqref{g3:eq:flat-dual-formula}中右端不超过左端。
+
+	反向不等式使用\cref{g3:lem:bounded-functional-extension}。记右端上确界为 \(A\)，它不超过 \(\mathbf M(T)\)。在
+	\[
+		X=C_0(\mathbb R^n;\Lambda^k)\oplus C_0(\mathbb R^n;\Lambda^{k+1}),
+		\qquad \|(\alpha,\beta)\|_X=\max\{\|\alpha\|_\infty,\|\beta\|_\infty\},
+	\]
+	的线性子空间 \(Y=\{(\omega,\mathrm d\omega):\omega\in\mathcal D^k\}\) 上，令 \(L(\omega,\mathrm d\omega)=T(\omega)\)。这个定义单值，且 \(\|L\|=A\)。保持范数延拓到 \(X\) 后，分别限制到两个直和项，得到连续形式上的泛函 \(R,S\)。由连续函数泛函的向量测度表示，它们是有限质量流。最大范数直和的对偶范数为两项范数之和：上界由三角不等式给出，下界可在两个分量中各选几乎取到范数的单位测试形式，并分别调整符号取得。因此
+	\[
+		\mathbf M(R)+\mathbf M(S)=A,\qquad
+		T(\omega)=R(\omega)+S(\mathrm d\omega).
+	\]
+	这给出 \(T=R+\partial S\)，故 \(\mathcal F(T)\le A\)。这里使用的测度表示与\subsecref{g3:subsec:2101:02}相同，只把有限维向量的欧氏范数换成质量范数。
+
+	齐次性由分解乘标量得到，三角不等式由两个近乎最优的分解相加得到。若 \(\mathcal F(T)=0\)，式\eqref{g3:eq:flat-controls-weak}说明它作用于每个测试形式都为零，故 \(T=0\)。取 \(R=T,S=0\)，得到 \(\mathcal F(T)\le\mathbf M(T)\)。最后由 \(T=R+\partial S\) 得 \(\partial T=\partial R\)，所以 \(\mathcal F(\partial T)\le\mathbf M(R)\)；取下确界便得边界估计。
+\end{proof}
+
+上述对偶表示还给出可测性：按紧支集穷尽，在两个范数都至多一的光滑形式中取可数的 \(C^1\) 稠密族，即可用同一可数族计算上确界。因此对切片而言，\(t\mapsto\mathcal F(\langle T,f,t\rangle)\) 是可测函数。
+
+\begin{proposition}\label{g3:prop:flat-slicing-estimate}
+	若 \(T\in\mathcal N_k(\mathbb R^n)\)，\(k\ge1\)，\(f:\mathbb R^n\to\mathbb R\) 为 \(L\)-Lipschitz 函数，则
+	\begin{equation}\label{g3:eq:flat-slicing-estimate}
+		\int_{\mathbb R}\mathcal F(\langle T,f,t\rangle)\,\mathrm dt
+		\le L\mathcal F(T).
+	\end{equation}
+	若 \(T_j,T\) 都正规，且 \(\sum_j\mathcal F(T_j-T)<\infty\)，则对几乎所有 \(t\)，有 \(\mathcal F(\langle T_j,f,t\rangle-\langle T,f,t\rangle)\to0\)。所以平坦收敛于正规流的任意正规流序列，都可选出具有这一性质的子列。对固定的多参数切片，积分估计中的 \(L\) 换成各坐标 Lipschitz 常数之积。
+\end{proposition}
+\begin{proof}
+	给定 \(\varepsilon>0\)，取 \(T=R+\partial S\)，使 \(\mathbf M(R)+\mathbf M(S)\le\mathcal F(T)+\varepsilon\)。如前所述，\(R,S\) 都正规。由切片的线性和边界公式，几乎处处有
+	\[
+		\langle T,f,t\rangle
+		=\langle R,f,t\rangle-\partial\langle S,f,t\rangle.
+	\]
+	这本身就是一个平坦分解，故
+	\[
+		\mathcal F(\langle T,f,t\rangle)
+		\le\mathbf M(\langle R,f,t\rangle)+\mathbf M(\langle S,f,t\rangle).
+	\]
+	积分后用\cref{g3:thm:normal-current-slicing}，得到上界 \(L(\mathcal F(T)+\varepsilon)\)；令 \(\varepsilon\downarrow0\) 即得估计。
+
+	把估计用于 \(T_j-T\) 后求和，非负积分定理说明几乎所有 \(t\) 上相应平坦距离的级数收敛，因此各项趋零。若只有 \(\mathcal F(T_j-T)\to0\)，先选取距离小于 \(2^{-j}\) 的子列即可。多参数情形逐次积分并使用 Fubini 定理；只涉及可数个流和测试族，因此可把所有例外集并入一个零测集。
+\end{proof}
+
+这一估计说明，平坦控制可以随降维一起传递。闭包证明中的零维整数信息，就是通过反复切片从原序列传到几乎每个纤维上的。
+
+\subsection{质量范数收敛、平坦收敛与弱收敛}
 \label{g3:subsec:2203:04}
-待撰写
+质量范数收敛指 \(\mathbf M(T_j-T)\to0\)，不是仅仅指两个数 \(\mathbf M(T_j)\to\mathbf M(T)\)。由上一小节有
+\[
+	\mathbf M(T_j-T)\longrightarrow0
+	\quad\Longrightarrow\quad
+	\mathcal F(T_j-T)\longrightarrow0
+	\quad\Longrightarrow\quad T_j\rightharpoonup T.
+\]
+第一种收敛对不同支撑尤其敏感；后两种则允许一个有向几何对象通过很薄的区域移动。
+
+\begin{example}\label{g3:exm:translated-segment-flat}
+	在 \(\mathbb R^2\) 中，令 \(T_0\) 为从 \((0,0)\) 到 \((1,0)\) 的有向线段，\(T_\varepsilon\) 为从 \((0,\varepsilon)\) 到 \((1,\varepsilon)\) 的有向线段，\(\varepsilon>0\)。两条线段支撑互不相交，因而
+	\[
+		\mathbf M(T_\varepsilon-T_0)=2,
+		\qquad \mathbf M(T_\varepsilon)=\mathbf M(T_0)=1.
+	\]
+	沿竖直平移作同伦，令 \(A_\varepsilon\) 为扫过的有向矩形流，\(B_\varepsilon\) 为两条端点轨迹组成的有向流。同伦公式给出
+	\[
+		T_\varepsilon-T_0=\partial A_\varepsilon+B_\varepsilon,
+		\qquad \mathbf M(A_\varepsilon)=\varepsilon,
+		\quad \mathbf M(B_\varepsilon)=2\varepsilon.
+	\]
+	所以 \(\mathcal F(T_\varepsilon-T_0)\le3\varepsilon\to0\)。总质量甚至保持不变，差的质量却不趋零。
+\end{example}
+
+\begin{example}\label{g3:exm:weak-not-flat-alternating-current}
+	在环境 \(\mathbb R\) 中，将 \([0,1]\) 分成 \(2j\) 个等长小区间，交替赋予正、负取向，令
+	\[
+		T_j=\sum_{i=0}^{2j-1}(-1)^i
+		\lBrack[i/(2j),(i+1)/(2j)]\rBrack.
+	\]
+	对光滑测试一形式 \(\varphi(x)\,\mathrm dx\)，将相邻两个区间配对，两个积分之差由 \(\varphi\) 在距离 \(1/(2j)\) 处的连续模控制。因此 \(T_j\rightharpoonup0\)。另一方面，\(\mathbf M(T_j)=1\)，而 \(\mathbb R\) 上没有非零二维流，故任何平坦分解中的 \(S\) 都为零，于是
+	\[
+		\mathcal F(T_j)=\mathbf M(T_j)=1.
+	\]
+	这些流都是整数流，支集也在同一个紧区间内；失去的条件是统一的边界质量界。内部 \(2j-1\) 个接点各有系数绝对值二，两个外端点各有系数绝对值一，故 \(\mathbf M(\partial T_j)=4j\to\infty\)。
+\end{example}
+
+弱收敛下，测试形式只能记录带符号的配对，质量因此可能因抵消而下降。平坦范数另外要求这些差异能够由低质量的本体与填充表示；质量范数则直接计算差的全部无符号质量。后面的紧性定理将在共同紧支和统一正规质量界下，把弱极限与平坦控制联系起来，同时证明极限保留整数可整流结构。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

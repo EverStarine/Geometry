@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 21.2 紧性和下半连续
+% 纲要标题：### 21.2 紧性与下半连续性
 % 纲要位置：几何学计划纲要.md，第 2975 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -12,24 +12,230 @@
 % 
 % 纲要内容结束
 
-\section{紧性和下半连续}
+\section{紧性与下半连续性}
 \label{g3:sec:2102}
 
-待撰写
+变差控制了函数在平移下的平均变化，因此也控制了细小尺度上的振荡。本节把这种控制变成 \(L^1\) 紧性，再检验变差如何通过极限。对于集合，这意味着一列周长有界的边界即使越来越不光滑，仍能留下一个可测的极限集合。局部收敛与总体积的保留需要分别处理。
 
 \subsection{局部 BV 紧性}
 \label{g3:subsec:2102:01}
-待撰写
+\begin{lemma}[局部平移估计]\label{g3:lem:bv-translation-estimate}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(n\ge1\)，\(u\in BV_{\mathrm{loc}}(\Omega)\)，且 \(U\Subset V\Subset\Omega\) 为开集。如果线段族
+	\(\{x+th:x\in U,\ 0\le t\le1\}\) 的闭包包含于 \(V\)，则
+	\begin{equation}\label{g3:eq:bv-translation-estimate}
+		\int_U|u(x+h)-u(x)|\,\mathrm dx\le |h|\,|Du|(V).
+	\end{equation}
+	特别地，固定一个非负、积分为一、支撑在单位球内的光滑核 \(\rho\)，对足够小的 \(\varepsilon>0\)，
+	\begin{equation}\label{g3:eq:bv-mollification-error}
+		\|u*\rho_\varepsilon-u\|_{L^1(U)}
+		\le C_\rho\varepsilon |Du|(V),
+		\qquad C_\rho=\int_{\mathbb R^n}|z|\rho(z)\,\mathrm dz.
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	对光滑函数，沿线段应用微积分基本定理，再交换积分，得到
+	\[
+		\int_U|u(x+h)-u(x)|\,\mathrm dx
+		\le |h|\int_0^1\int_{U+th}|\nabla u(y)|\,\mathrm dy\,\mathrm dt
+		\le |h|\int_V|\nabla u|.
+	\]
+	一般情形在包含上述线段族的较小开集内对 \(u\) 作卷积。由\cref{g3:lem:bv-local-mollification}，核尺度足够小时，所需梯度积分不超过 \(|Du|(V)\)。卷积在 \(U\) 及 \(U+h\) 上趋于 \(u\) 的 \(L^1\) 极限，故可以在上式中令核尺度趋零，得到平移估计。
+
+	又
+	\[
+		|u*\rho_\varepsilon(x)-u(x)|
+		\le\int\rho_\varepsilon(h)|u(x-h)-u(x)|\,\mathrm dh.
+	\]
+	对 \(x\in U\) 积分，用平移估计逐个控制 \(|h|<\varepsilon\) 的项，便得到第二式。
+\end{proof}
+
+\begin{theorem}[局部 BV 紧性]\label{g3:thm:bv-local-compactness}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(n\ge1\)，\(u_j\in BV_{\mathrm{loc}}(\Omega)\)。若对每个开集 \(V\Subset\Omega\) 都有
+	\[
+		\sup_j\bigl(\|u_j\|_{L^1(V)}+|Du_j|(V)\bigr)<\infty,
+	\]
+	则存在子列 \(u_{j_\ell}\) 和 \(u\in BV_{\mathrm{loc}}(\Omega)\)，使
+	\[
+		u_{j_\ell}\longrightarrow u\quad\text{于 }L^1_{\mathrm{loc}}(\Omega).
+	\]
+\end{theorem}
+\begin{proof}
+	固定 \(U\Subset V\Subset\Omega\)。先把每个 \(u_j|_V\) 在 \(V\) 外补零，仅用于构造卷积；由于我们只在远离 \(\partial V\) 的 \(U\) 上考察卷积，不需要假定这个补零函数属于 BV。对固定的小 \(\varepsilon>0\)，函数 \(u_j*\rho_\varepsilon\) 在 \(\overline U\) 上一致有界，而且
+	\[
+		\sup_j\|\nabla(u_j*\rho_\varepsilon)\|_{L^\infty(\overline U)}
+		\le \|\nabla\rho_\varepsilon\|_\infty
+		\sup_j\|u_j\|_{L^1(V)}<\infty.
+	\]
+	所以它们具有一致的连续模。取一个有限细网格，在各网格点对有界的函数值逐次抽子列，再用连续模控制网格之间的误差，就得到在 \(\overline U\) 上一致收敛的子列。这是此处所需的连续函数紧性论证。
+
+	令 \(\varepsilon_k\downarrow0\)。对这些卷积依次抽子列，再取对角子列，使每个固定 \(k\) 的卷积都一致收敛。而\cref{g3:lem:bv-translation-estimate}给出与 \(j\) 无关的误差界
+	\[
+		\|u_j-u_j*\rho_{\varepsilon_k}\|_{L^1(U)}
+		\le C\varepsilon_k.
+	\]
+	给定误差，先把 \(k\) 取得足够大，再使两个子列指标足够大，三角不等式就说明原函数列在 \(L^1(U)\) 中为 Cauchy 列。因此它有 \(L^1(U)\) 极限。
+
+	取可数个 \(U_i\Subset V_i\Subset\Omega\) 穷尽 \(\Omega\)，再次对角化。不同 \(U_i\) 上的极限在交集上相等，于是得到 \(u\in L^1_{\mathrm{loc}}(\Omega)\)。对任意 \(\varphi\in C_c^1(V_i;\mathbb R^n)\)、\(|\varphi|\le1\)，有
+	\[
+		\left|\int u\,\operatorname{div}\varphi\right|
+		=\lim_{\ell\to\infty}
+		\left|\int u_{j_\ell}\operatorname{div}\varphi\right|
+		\le\sup_j|Du_j|(V_i).
+	\]
+	对偶定义便给出 \(u\in BV_{\mathrm{loc}}(\Omega)\)。
+\end{proof}
+
+这一证明把紧性的两个作用分开：固定尺度的卷积有连续函数紧性，变差界使去掉卷积时的误差对整个序列一致趋零。它也说明为什么只控制 \(\|u_j\|_{L^1}\) 不够；高频振荡可能具有很小的平均值，却不能在 \(L^1\) 中收敛。局部 BV 紧性的另一种卷积表述见 \cite[第6节，定理6.3，第37--38页]{Simon1983}。
 
 \subsection{\texorpdfstring{\(L^1\) 收敛下的变差下半连续}{L¹ 收敛下的变差下半连续}}
 \label{g3:subsec:2102:02}
-待撰写
+\begin{theorem}[变差的下半连续性]\label{g3:thm:bv-lower-semicontinuity}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(n\ge1\)，\(u_j,u\in L^1_{\mathrm{loc}}(\Omega)\)，且 \(u_j\to u\) 于 \(L^1_{\mathrm{loc}}(\Omega)\)。则对每个开集 \(U\subset\Omega\)，
+	\begin{equation}\label{g3:eq:bv-lower-semicontinuity}
+		|Du|(U)\le\liminf_{j\to\infty}|Du_j|(U).
+	\end{equation}
+	未必为 BV 的函数，其右左两边先按变差的对偶上确界理解，允许为无穷。若局部变差界使这些导数成为 Radon 测度，则对每个非负 \(\eta\in C_c(\Omega)\)，还有
+	\begin{equation}\label{g3:eq:bv-weighted-lower-semicontinuity}
+		\int_\Omega\eta\,\mathrm d|Du|
+		\le\liminf_{j\to\infty}\int_\Omega\eta\,\mathrm d|Du_j|.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	固定 \(\varphi\in C_c^1(U;\mathbb R^n)\)、\(|\varphi|\le1\)。局部 \(L^1\) 收敛给出
+	\[
+		\int_Uu\,\operatorname{div}\varphi
+		=\lim_{j\to\infty}\int_Uu_j\,\operatorname{div}\varphi
+		\le\liminf_{j\to\infty}|Du_j|(U).
+	\]
+	右边不依赖测试场；在左边对全部测试场取上确界，得到第一式。对非负连续权，层集积分恒等式为
+	\[
+		\int\eta\,\mathrm d|Du|=\int_0^\infty |Du|(\{\eta>t\})\,\mathrm dt.
+	\]
+	每个 \(\{\eta>t\}\) 都开。先用第一式，再用 Fatou 引理，得到带权结论。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:bv-derivative-weak-star}
+	设 \(u_j\to u\) 于 \(L^1_{\mathrm{loc}}(\Omega)\)，且 \(u_j\in BV_{\mathrm{loc}}(\Omega)\) 的变差在每个相对紧开集上一致有界。则 \(u\in BV_{\mathrm{loc}}(\Omega)\)，并且
+	\[
+		\int\psi\cdot\mathrm dDu_j\longrightarrow
+		\int\psi\cdot\mathrm dDu
+		\qquad(\psi\in C_c(\Omega;\mathbb R^n)).
+	\]
+	这个收敛记为 \(Du_j\rightharpoonup^*Du\)，称为向量测度的弱星收敛。
+\end{proposition}
+\begin{proof}
+	极限的局部 BV 性来自下半连续性。对光滑紧支场，结论由分布导数定义和局部 \(L^1\) 收敛直接得到。对连续紧支场，在一个固定相对紧开集内用光滑场一致逼近它；一致误差乘以该开集上一致有界的变差，便控制全部积分误差。先令 \(j\to\infty\)，再令逼近误差趋零即可。
+\end{proof}
+
+\begin{example}\label{g3:exm:bv-variation-loss}
+	在 \((0,2\pi)\) 上令 \(u_j(x)=j^{-1}\sin(jx)\)。则 \(u_j\to0\) 一致收敛，且
+	\[
+		|Du_j|((0,2\pi))=\int_0^{2\pi}|\cos(jx)|\,\mathrm dx=4,
+		\qquad |D0|((0,2\pi))=0.
+	\]
+	正负方向的导数在弱极限中相消，取绝对值后的质量却保持为四。因而下半连续性中的不等号可以严格。
+\end{example}
 
 \subsection{支集与整体紧性}
 \label{g3:subsec:2102:03}
-待撰写
+局部紧性不会阻止质量走向无穷远。令 \(u_j(x)=u(x-je_1)\)，其中 \(u\) 是非零紧支 BV 函数。它的 \(L^1\) 范数和变差都不变，却在每个固定紧集上最终消失。要把局部收敛提升为整体收敛，还需一个控制尾部的条件。
+
+\begin{theorem}[整体 BV 紧性]\label{g3:thm:bv-global-compactness}
+	设 \(u_j\in BV(\mathbb R^n)\)，\(n\ge1\)，且
+	\[
+		\sup_j\bigl(\|u_j\|_{L^1(\mathbb R^n)}
+		+|Du_j|(\mathbb R^n)\bigr)<\infty.
+	\]
+	若另有一致的质量紧性
+	\begin{equation}\label{g3:eq:bv-tightness}
+		\lim_{R\to\infty}\sup_j
+		\int_{\mathbb R^n\setminus B_R}|u_j|\,\mathrm dx=0,
+	\end{equation}
+	则可选子列在 \(L^1(\mathbb R^n)\) 中收敛到某个 \(u\in BV(\mathbb R^n)\)。特别地，若所有 \(u_j\) 的本质支集包含于同一个紧集，则结论成立。
+\end{theorem}
+\begin{proof}
+	先由局部紧性选出局部 \(L^1\) 收敛子列，并进一步使其几乎处处收敛。Fatou 引理说明极限的整体 \(L^1\) 范数有界，且
+	\[
+		\int_{\mathbb R^n\setminus B_R}|u|
+		\le\liminf_j\int_{\mathbb R^n\setminus B_R}|u_j|.
+	\]
+	给定 \(\varepsilon>0\)，由质量紧性选 \(R\)，使所有尾部积分以及极限的尾部积分都小于 \(\varepsilon\)。再在 \(B_R\) 内使用 \(L^1\) 收敛，便得
+	\(\limsup_j\|u_j-u\|_{L^1(\mathbb R^n)}\le2\varepsilon\)。
+	最后由整体下半连续性得到 \(|Du|(\mathbb R^n)<\infty\)。
+\end{proof}
+
+定理中函数定义在整个 \(\mathbb R^n\) 上。如果原函数只定义在一个开集上，补零会产生边界导数，不能直接把原来的变差界当作补零后的变差界。对一般有界开集，也不能只凭域有界就从局部紧性推得整体紧性。
+
+\begin{example}\label{g3:exm:bv-domain-boundary-escape}
+	取两两不交的球
+	\[
+		B_j=B(2^{-j}e_1,2^{-j-3}),\qquad
+		\Omega=\bigcup_{j\ge1}B_j,\qquad
+		u_j=|B_j|^{-1}\mathbf1_{B_j}.
+	\]
+	则 \(\Omega\) 有界，\(u_j\) 在每个连通分支上为常数，所以 \(Du_j=0\) 于 \(\Omega\)，且 \(\|u_j\|_{L^1(\Omega)}=1\)。不同 \(u_i,u_j\) 的 \(L^1\) 距离却为二。任何紧集 \(K\subset\Omega\) 只遇到有限个分支，因此 \(u_j\to0\) 于 \(L^1_{\mathrm{loc}}(\Omega)\)。这里质量移向了域外的聚点零；将函数补零到全空间后，球周界上的导数质量不再有统一界。
+\end{example}
 
 \subsection{有限周长集合的直接方法}
 \label{g3:subsec:2102:04}
-待撰写
+\begin{definition}\label{g3:def:finite-perimeter-set}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(n\ge1\)，\(E\subset\mathbb R^n\) 为 Lebesgue 可测集。若 \(\mathbf1_E\in BV_{\mathrm{loc}}(\Omega)\)，称 \(E\) 在 \(\Omega\) 中有\term[jubu youxian zhouchang]{局部有限周长}[locally finite perimeter]，并记
+	\[
+		\mu_E=|D\mathbf1_E|,\qquad
+		P(E;U)=|D\mathbf1_E|(U)\quad(U\subset\Omega\text{ 开}).
+	\]
+	同一记号也用于 Borel 集 \(A\subset\Omega\)，此时 \(P(E;A)=\mu_E(A)\)。若 \(P(E;\Omega)<\infty\)，称 \(E\) 在 \(\Omega\) 中有\term[youxian zhouchang]{有限周长}[finite perimeter]。全空间周长简记为 \(P(E)=P(E;\mathbb R^n)\)。
+\end{definition}
+\symidx{\(P(E;U)\)：集合 \(E\) 在开集 \(U\) 中的周长}
+
+这里“周长”用于任意维数，表示边界的余维一大小。定义不要求 \(|E|<\infty\)；若还要 \(\mathbf1_E\in BV(\Omega)\)，才须同时有 \(|E\cap\Omega|<\infty\)。集合按 Lebesgue 几乎处处相等来比较，零测修改不改变其周长。光滑边界与这一分布定义的对应将在下一节直接计算。
+
+\begin{corollary}\label{g3:cor:finite-perimeter-compactness}
+	设 \(E_j\subset\mathbb R^n\) 在开集 \(\Omega\) 中有局部有限周长，且对每个 \(V\Subset\Omega\)，\(\sup_jP(E_j;V)<\infty\)。则可选子列和一个局部有限周长集 \(E\)，使
+	\[
+		\mathbf1_{E_j}\to\mathbf1_E\quad\text{于 }L^1_{\mathrm{loc}}(\Omega),
+		\qquad P(E;U)\le\liminf_jP(E_j;U)
+	\]
+	对每个开集 \(U\subset\Omega\) 成立。若另外 \(\sup_j|E_j|<\infty\) 且
+	\(\sup_j|E_j\setminus B_R|\to0\)，则在全空间周长有界时可取整体 \(L^1\) 收敛。
+\end{corollary}
+\begin{proof}
+	示性函数在有界集上的 \(L^1\) 范数自动受该集体积控制，故局部紧性给出函数极限。再取几乎处处收敛子列；因为原函数只取零和一，极限也几乎处处只取这两个值，可写成 \(\mathbf1_E\)。周长不等式是变差下半连续性。整体版本直接使用\cref{g3:thm:bv-global-compactness}。
+\end{proof}
+
+\begin{theorem}[有限周长集合的直接方法]\label{g3:thm:finite-perimeter-direct-method}
+	设 \(n\ge1\)，\(K\subset\mathbb R^n\) 紧，\(A\subset K\) 可测，\(0\le |A|\le v\le |K|\)，且 \(V\in L^\infty(K)\) 为实函数。假定竞争类
+	\[
+		\mathcal A=\{E:A\subset E\subset K\text{ 几乎处处},\quad
+		|E|=v,\ P(E)<\infty\}
+	\]
+	非空。则泛函
+	\[
+		\mathcal F(E)=P(E)+\int_E V(x)\,\mathrm dx
+	\]
+	在 \(\mathcal A\) 中达到最小值。
+\end{theorem}
+\begin{proof}
+	取一个竞争集 \(E_0\) 并选极小化序列 \(E_j\)。因
+	\(\int_{E_j}V\ge-\|V\|_\infty v\)，能量上界给出 \(P(E_j)\) 的统一上界；示性函数的 \(L^1\) 范数均为 \(v\)，支集均包含于 \(K\)。整体紧性于是给出
+	\(\mathbf1_{E_j}\to\mathbf1_E\) 于 \(L^1(\mathbb R^n)\)。
+
+	这个收敛同时保持约束：
+	\[
+		|E|=v,\qquad
+		|E\setminus K|=0,\qquad |A\setminus E|=0.
+	\]
+	例如后两式分别由将 \(L^1\) 误差限制到 \(K^c\) 和 \(A\) 得到。周长下半连续，而
+	\[
+		\left|\int_{E_j}V-\int_EV\right|
+		\le\|V\|_\infty\|\mathbf1_{E_j}-\mathbf1_E\|_{L^1}
+		\longrightarrow0.
+	\]
+	故 \(E\in\mathcal A\) 且 \(\mathcal F(E)\le\liminf_j\mathcal F(E_j)\)，这就是最小值。
+\end{proof}
+
+定理所极小化的是全空间周长，包含接触容器边界的部分。若改成相对周长 \(P(E;\Omega)\)，容器壁上的代价会被移除，形成另一种边界条件。这个区别从分布测试场的支集就能看出：在 \(\Omega\) 内紧支的测试场检测不到 \(\partial\Omega\) 上的跳跃。
+
+\ProseParagraphBreak
+直接方法保证一个有限周长极小者存在，还没有说明它的边界是光滑曲面。下一节先辨认分布导数所记录的法向，随后证明周长测度几乎处处由可整流边界承载。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

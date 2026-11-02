@@ -1,45 +1,267 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 12.4 Lᵖ 椭圆估计
 % 纲要位置：几何学计划纲要.md，第 2576 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 基本解和奇异积分核
-% * Calderón–Zygmund 分解及有界性模块
+% * Calderón–Zygmund 分解与奇异积分估计
 % * 常系数估计与 Fourier 乘子
 % * 变系数冻结、截断和吸收
 % * 分布解到 W^{m,p} 的正则性
-% * 系统和系数光滑性的明确范围
+% * 椭圆系统与系数正则性
 % 
 % 纲要内容结束
 
 \section{\texorpdfstring{\(L^p\)}{Lᵖ} 椭圆估计}
 \label{g3:sec:1204}
 
-待撰写
+在 \(L^2\) 中，频率空间的逐点界可以直接积分；换成 \(L^p\) 后，Fourier 变换不再保持范数。关键是把逆主符号的频率估计转成核在空间中的消去与衰减。下面先建立所需的奇异积分工具，再把它用于任意有限秩、等秩的椭圆系统。最后通过构造一个具有指定正则性的特解，处理原本只给定为分布的解。
 
 \subsection{基本解和奇异积分核}
 \label{g3:subsec:1204:01}
-待撰写
+以非负算子 \(-\sum_i\partial_i^2\) 为例，其逆的核在原点奇异。记 \(\sigma_{n-1}\) 为单位球面面积。当 \(n\ge2\) 时，令
+\[
+	\Gamma(x)=
+	\begin{cases}
+	\displaystyle\frac{|x|^{2-n}}{(n-2)\sigma_{n-1}},&n\ge3,\\[4pt]
+	\displaystyle-\frac1{2\pi}\log|x|,&n=2.
+	\end{cases}
+\]
+这两个函数局部可积，在原点以外调和，且 \(\partial_r\Gamma=-1/(\sigma_{n-1}r^{n-1})\)。在穿孔球中分部积分，对测试函数令内球半径趋零，内边界的通量给出 \(\varphi(0)\)，含 \(\Gamma\partial_\nu\varphi\) 的项趋零。因此 \(-\sum_i\partial_i^2\Gamma=\delta_0\)。这样的分布称为\term[jiben jie]{基本解}[fundamental solution]。在一维，对应公式为 \(\Gamma(x)=-|x|/2\)，可直接用斜率的跳跃验证。
 
-\subsection{Calderón–Zygmund 分解及有界性模块}
+\ProseParagraphBreak
+
+对紧支光滑 \(f\)，卷积 \(u=\Gamma*f\) 满足 \(-\sum_i\partial_i^2u=f\)。一阶导数核尚局部可积，二阶导数则具有临界奇性。对 \(n\ge2\)，在 \(x\ne0\) 处有
+\[
+	K_{ij}(x)=\partial_i\partial_j\Gamma(x)
+	=\frac{n x_ix_j-\delta_{ij}|x|^2}{\sigma_{n-1}|x|^{n+2}},
+	\qquad \int_{S^{n-1}}K_{ij}\,\mathrm dS=0.
+\]
+其中球面积分为零来自 \(\int_{S^{n-1}}x_ix_j\,\mathrm dS=\delta_{ij}\sigma_{n-1}/n\)。径向积分给出 \(\int_{a<|x|<b}K_{ij}=0\)。于是
+\[
+	\operatorname{pv}\int K_{ij}(x-y)f(y)\,\mathrm dy
+	:=\lim_{\varepsilon\downarrow0}\int_{|x-y|>\varepsilon}K_{ij}(x-y)f(y)\,\mathrm dy
+\]
+对紧支光滑 \(f\) 存在：在原点附近减去 \(f(x)\)，剩余差为 \(O(|x-y|)\)，抵消了对数发散。这个极限称为\term[zhuzhi]{主值}[principal value]。
+
+\begin{proposition}\label{g3:prop:newtonian-second-kernel}
+	设 \(n\ge2\)，\(f\in C_c^\infty(\mathbb R^n)\)，\(u=\Gamma*f\)。则在分布意义下，亦在逐点主值意义下，
+	\[
+		\partial_i\partial_j u
+		=\operatorname{pv}(K_{ij}*f)-\frac{\delta_{ij}}n f.
+	\]
+\end{proposition}
+\begin{proof}
+	在 \(|x|>\varepsilon\) 上两次分部积分。由于 \(\partial_j\Gamma=-x_j/(\sigma_{n-1}|x|^n)\)，内边界中含测试函数本身的一项趋于
+	\(-\sigma_{n-1}^{-1}\int_{S^{n-1}}\theta_i\theta_j\varphi(0)\,\mathrm dS=-\delta_{ij}\varphi(0)/n\)。另一边界项至多为 \(C\varepsilon\)（二维为 \(C\varepsilon|\log\varepsilon|\)），趋零。体积项用上述消去性质减去测试函数在零点的值后收敛，故
+	\(\partial_i\partial_j\Gamma=\operatorname{pv}K_{ij}-(\delta_{ij}/n)\delta_0\)。再与 \(f\) 卷积即得结论。求迹时，所有 \(K_{ii}\) 之和为零，而点质量项之和为 \(-\delta_0\)，与基本解的符号相符。
+\end{proof}
+
+核的绝对值大小为 \(|x|^{-n}\)，在原点附近不能积；可用的性质是零均值所带来的消去。下一小节把这一现象写成一个能够复用的算子定理。
+
+\subsection{Calderón–Zygmund 分解与奇异积分估计}
 \label{g3:subsec:1204:02}
-待撰写
+设 \(f\in L^1(\mathbb R^n;\mathbb C^r)\)。选择平均值较大的区域，把 \(f\) 分成有界部分与局部零均值部分，这就是 Calderón--Zygmund 分解的用途。\footnote{Alberto Pedro Calderón（1920--1998），阿根廷数学家；Antoni Szczepan Zygmund（1900--1992），波兰出生、后在美国工作的数学家。两人在奇异积分、Fourier 分析及偏微分方程方面作出基础性贡献。}
+
+\begin{lemma}\label{g3:lem:cz-decomposition}
+	设 \(n,r\ge1\)、\(f\in L^1(\mathbb R^n;\mathbb C^r)\)，\(\lambda>0\)。存在两两不交的半开二进立方体 \(Q_j\)，使
+	\[
+		\lambda<\frac1{|Q_j|}\int_{Q_j}|f|\le2^n\lambda,
+		\qquad\sum_j|Q_j|\le\lambda^{-1}\|f\|_1.
+	\]
+	写 \(f=g+\sum_jb_j\)，其中 \(g=f\) 于这些立方体之外，\(g=f_{Q_j}\) 于 \(Q_j\)，\(b_j=(f-f_{Q_j})\mathbf1_{Q_j}\)。则
+	\[
+		\|g\|_\infty\le2^n\lambda,\quad\|g\|_1\le\|f\|_1,
+		\int b_j=0,\quad\sum_j\|b_j\|_1\le2\|f\|_1.
+	\]
+\end{lemma}
+\begin{proof}
+	二进立方体指边长 \(2^k\)、顶点坐标为 \(2^k\) 整数倍的半开立方体。任意两个这样的立方体或者不交，或者一个包含另一个。由于大立方体的平均值至多为 \(2^{-kn}\|f\|_1\)，平均值超过 \(\lambda\) 的立方体都含于某个极大的此类立方体。取全部极大者作为 \(Q_j\)；其父立方体不满足严格不等式，故平均值至多为 \(2^n\lambda\)。对互不相交的 \(Q_j\) 积分就得体积和的界。
+
+	还须证明其外部几乎处处有 \(|f|\le\lambda\)。说明所用的二进微分事实：对 \(h\in L^1\)，二进最大平均 \(M_dh=\sup_{Q\ni x}\frac1{|Q|}\int_Q|h|\) 满足
+	\(|\{M_dh>t\}|\le\|h\|_1/t\)，因为取上述极大立方体即可。取连续紧支 \(h_0\) 逼近 \(h\) 于 \(L^1\)。沿缩向 \(x\) 的二进立方体，\(h_0\) 的平均趋于 \(h_0(x)\)，而 \(h\) 的平均与 \(h(x)\) 的极限上差至多为 \(M_d(h-h_0)(x)+|h-h_0|(x)\)。最大平均估计与积分的 Chebyshev 估计使这个上差超过任意 \(t>0\) 的集合测度至多为 \(2\|h-h_0\|_1/t\)。令逼近误差趋零，即得平均几乎处处趋于函数值。将它用于 \(|f|\)，在全部 \(Q_j\) 外的每个平均都不超过 \(\lambda\)，所以 \(|f|\le\lambda\) 几乎处处成立。
+
+	其余断言由 \(|f_{Q_j}|\le\frac1{|Q_j|}\int_{Q_j}|f|\) 及三角不等式逐块得到。若还有 \(f\in L^2\)，则 \(g,b_j\) 也属于 \(L^2\)，且坏部分之和在 \(L^2\) 中收敛。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:cz-lp-module}
+	设 \(T\) 是 \(L^2(\mathbb R^n;\mathbb C^r)\) 上有界的线性算子。在原点以外有矩阵值 \(C^1\) 核 \(K\)，满足
+	\[
+		|K(z)|\le A|z|^{-n},\qquad|\mathrm DK(z)|\le A|z|^{-n-1}.
+	\]
+	假设对紧支 \(L^2\) 函数，在其支集之外有 \(Tf(x)=\int K(x-y)f(y)\,\mathrm dy\)。则
+	\[
+		|\{|Tf|>\lambda\}|\le C\lambda^{-1}\|f\|_1
+		\quad(f\in L^1\cap L^2),
+	\]
+	且 \(T\) 唯一延拓为每个 \(L^p\)、\(1<p<\infty\) 上的有界算子。常数依赖 \(n,r,p,A\) 及 \(\|T\|_{2\to2}\)。
+\end{theorem}
+\begin{proof}
+	对 \(f\) 作水平 \(\lambda\) 的分解。好部分满足 \(\|g\|_2^2\le2^n\lambda\|f\|_1\)，所以 \(|\{|Tg|>\lambda/2\}|\le C\|f\|_1/\lambda\)。将每个 \(Q_j\) 同心放大 \(4\sqrt n\) 倍，所有放大立方体之并的测度也至多为 \(C\|f\|_1/\lambda\)。记 \(c_j\) 为其中心、\(\ell_j\) 为边长。在放大立方体外，零均值使
+	\[
+		Tb_j(x)=\int_{Q_j}[K(x-y)-K(x-c_j)]b_j(y)\,\mathrm dy,
+		\quad |Tb_j(x)|\le\frac{C\ell_j}{|x-c_j|^{n+1}}\|b_j\|_1.
+	\]
+	在外部积分得 \(\int|Tb_j|\le C\|b_j\|_1\)。对有限和求和后，用 \(L^2\) 收敛所给的几乎处处子列与积分下半连续性取极限，得到坏部分在放大立方体之外的 \(L^1\) 界 \(C\|f\|_1\)。再用 Chebyshev 估计，便证明弱型不等式。
+
+	为得到强 \(L^p\) 界，先取 \(1<p<2\) 以及有界紧支 \(f\)。在每个 \(t>0\) 处拆成 \(f_{>t}=f\mathbf1_{\{|f|>t\}}\) 和 \(f_{\le t}\)。弱型界用于前者，\(L^2\) 界用于后者，给出
+	\[
+		|\{|Tf|>2t\}|\le\frac C t\int_{|f|>t}|f|
+		+\frac C{t^2}\int_{|f|\le t}|f|^2.
+	\]
+	乘 \(p t^{p-1}\) 后积分。由 \(\|h\|_p^p=p\int_0^\infty t^{p-1}|\{|h|>t\}|\,\mathrm dt\) 与非负积分换序，右侧分别等于常数乘
+	\[
+		\int |f(x)|\int_0^{|f(x)|}t^{p-2}\,\mathrm dt\,\mathrm dx
+		=\frac{\|f\|_p^p}{p-1},\qquad
+		\int |f(x)|^2\int_{|f(x)|}^\infty t^{p-3}\,\mathrm dt\,\mathrm dx
+		=\frac{\|f\|_p^p}{2-p}.
+	\]
+	故 \(\|Tf\|_p\le C_p\|f\|_p\)。稠密性给出延拓。
+
+	当 \(p>2\) 时，\(L^2\) 伴随 \(T^*\) 的离对角核为 \(K(-z)^*\)：先对支集不交的紧支函数用 Fubini 公式核对，再用 \(L^2\) 逼近。这一核满足相同估计，所以已证结论适用于 \(p'=p/(p-1)<2\)。由 \(L^p\) 积分对偶，
+	\( |\langle Tf,h\rangle|=|\langle f,T^*h\rangle|\le C\|f\|_p\|h\|_{p'}\)，得到所需界。有限维向量的 Euclid 范数和矩阵算子范数满足上述全部估计，故证明同时适用于有限秩系统。
+\end{proof}
 
 \subsection{常系数估计与 Fourier 乘子}
 \label{g3:subsec:1204:03}
-待撰写
+对矩阵函数 \(a(\xi)\)，记 \(a(\mathrm D)f=\mathcal F^{-1}(a\widehat f)\)。此处 \(\mathrm D_j=-\mathrm i\partial_j\)，与前节主符号约定相同。光滑齐次零阶符号在每个环带上的变化受尺度控制，因而可以应用刚建立的奇异积分定理。
+
+\begin{theorem}\label{g3:thm:smooth-multiplier-lp}
+	设 \(a:\mathbb R^n\setminus\{0\}\to\operatorname{End}(\mathbb C^r)\) 为 \(C^{n+2}\) 函数，且
+	\[
+		|\partial_\xi^\beta a(\xi)|\le A_\beta|\xi|^{-|\beta|},\qquad |\beta|\le n+2.
+	\]
+	则 \(a(\mathrm D)\) 在每个 \(L^p(\mathbb R^n;\mathbb C^r)\)、\(1<p<\infty\) 上有界，其范数受这些常数、\(n,r,p\) 控制。特别地，光滑零阶齐次矩阵函数满足此结论。
+\end{theorem}
+\begin{proof}
+	取径向光滑 \(\rho\)，在单位球为一、在半径二球外为零，令 \(\psi(\xi)=\rho(\xi)-\rho(2\xi)\)。则 \(\sum_{j\in\mathbb Z}\psi(2^{-j}\xi)=1\) 当 \(\xi\ne0\)。写 \(a_j=a\psi(2^{-j}\cdot)\)，并令 \(k_j=(2\pi)^{-n/2}\mathcal F^{-1}a_j\)，所以 \(a_j(\mathrm D)f=k_j*f\)。缩放到固定环带后，\(a(2^j\xi)\psi(\xi)\) 的至 \(n+2\) 阶导数一致有界。
+
+	在逆变换积分中，零次估计给出 \(|k_j(x)|\le C2^{jn}\)。当 \(x\ne0\) 时，沿 \(x/|x|\) 的方向对频率变量分部积分 \(n+2\) 次；支集紧含于环带，没有边界项。因此
+	\[
+		|k_j(x)|\le C2^{jn}(1+2^j|x|)^{-n-2},\qquad
+		|\mathrm Dk_j(x)|\le C2^{j(n+1)}(1+2^j|x|)^{-n-2}.
+	\]
+	第二式只在频率积分中多一个 \(\xi\) 因子；在固定环带上它及所需导数都有界。按 \(2^j|x|\le1\) 与 \(>1\) 将几何级数分开，得到
+	\[
+		\sum_j|k_j(x)|\le C|x|^{-n},\qquad
+		\sum_j|\mathrm Dk_j(x)|\le C|x|^{-n-1}.
+	\]
+	所以 \(K=\sum_jk_j\) 在原点之外局部 \(C^1\) 收敛，并满足核估计。
+
+	Plancherel 恒等式给出 \(\|a(\mathrm D)\|_{2\to2}\le\|a\|_\infty\)，且环带部分和在 \(L^2\) 中趋于这一算子。对支集分离的紧支光滑 \(f,h\)，上面的核界在其支集乘积上可积，可以交换求和与双重积分，故极限算子的离对角核确为 \(K(x-y)\)。再以 \(L^2\) 逼近得到定理所需的紧支 \(L^2\) 版本。应用\cref{g3:thm:cz-lp-module}便完成证明。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:constant-elliptic-lp}
+	设 \(P_0=\sum_{|\alpha|=m}A_\alpha\mathrm D^\alpha\) 为 \(\mathbb R^n\) 上的常系数齐次算子，\(m\ge1\)，各 \(A_\alpha\) 为 \(r\times r\) 复矩阵，且 \(p_m(\xi)=\sum A_\alpha\xi^\alpha\) 对所有 \(\xi\ne0\) 可逆。对 \(1<p<\infty\)、\(u\in C_c^\infty(\mathbb R^n;\mathbb C^r)\)，有
+	\[
+		\sum_{|\alpha|=m}\|\partial^\alpha u\|_p\le C\|P_0u\|_p.
+	\]
+	若 \(\rho\in C_c^\infty\) 在零点附近为一，则符号 \(q(\xi)=(1-\rho(\xi))p_m(\xi)^{-1}\) 所定的 \(Q_0=q(\mathrm D)\) 有界地将 \(L^p\) 映到 \(W^{m,p}\)，并满足
+	\(P_0Q_0=Q_0P_0=I-S_0\)，其中 \(S_0=\rho(\mathrm D)\)。
+\end{corollary}
+\begin{proof}
+	对 \(|\alpha|=m\)，矩阵函数 \(\xi^\alpha p_m(\xi)^{-1}\) 光滑且零阶齐次。将乘子定理用于 \(P_0u\)，得到各最高阶导数估计；\(\partial^\alpha=\mathrm i^{|\alpha|}\mathrm D^\alpha\) 的相位不改变范数。对高频逆，\(\xi^\alpha q(\xi)\)、\(|\alpha|\le m\) 在低频为零，在高频的阶数不超过零，满足同一乘子条件，故控制全部 \(W^{m,p}\) 导数。算子恒等式在 Fourier 侧逐点成立，再延伸到分布。
+\end{proof}
+
+在基本解的例子中，二阶导数对应 \(-\xi_i\xi_j/|\xi|^2\)。其 \(L^p\) 有界性于是给出二阶 Poisson 估计。矩阵逆的使用也说明：这里的系统估计取决于整个主符号可逆，而非各个分量方程分别满足某个标量不等式。
 
 \subsection{变系数冻结、截断和吸收}
 \label{g3:subsec:1204:04}
-待撰写
+最高阶系数在足够小的球上接近常数，因而可由常系数估计吸收；截断所产生的导数都降低了一阶。为了把这些低阶项最后压到函数本身的范数，先记录一个插值估计。
+
+\begin{lemma}\label{g3:lem:lp-derivative-interpolation}
+	设 \(m\ge1\)、\(1<p<\infty\)，则对 \(0\le j<m\)、\(0<\delta\le1\) 及 \(v\in W^{m,p}(\mathbb R^n)\)，
+	\[
+		\|\mathrm D^jv\|_p\le C\delta^{m-j}\|\mathrm D^mv\|_p+C\delta^{-j}\|v\|_p.
+	\]
+	这里同阶导数的范数表示其有限个分量范数之和。
+\end{lemma}
+\begin{proof}
+	先取 \(\delta=1\)。低频 \(\rho(\mathrm D)\mathrm D^jv\) 是可积光滑核与 \(v\) 的卷积，受 \(\|v\|_p\) 控制。高频可写成最高阶导数的有限个零阶乘子之和。具体地，令 \(b(\xi)=\sum_{|\alpha|=m}\xi^{2\alpha}>0\) 当 \(\xi\ne0\)，则对 \(|\beta|=j\)，
+	\[
+		(1-\rho)\xi^\beta
+		=\sum_{|\alpha|=m}\frac{(1-\rho)\xi^{\beta+\alpha}}{b(\xi)}\xi^\alpha.
+	\]
+	系数在高频的阶数 \(j-m<0\)，满足乘子定理。故 \(\|\mathrm D^jv\|_p\le C(\|\mathrm D^mv\|_p+\|v\|_p)\)。对 \(v(\delta x)\) 应用它，消去共同体积因子，就得带 \(\delta\) 的公式。光滑稠密性保证它适用于所述空间。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:local-elliptic-lp-apriori}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(P=\sum_{|\alpha|\le m}A_\alpha(x)\mathrm D^\alpha\) 为光滑系数、有限秩等秩椭圆系统，\(m\ge1\)。若 \(1<p<\infty\)、\(U\Subset V\Subset\Omega\) 为开集，则
+	\[
+		\|u\|_{W^{m,p}(U)}\le C\bigl(\|Pu\|_{L^p(V)}+\|u\|_{L^p(V)}\bigr)
+	\]
+	对所有 \(u\in W^{m,p}(V;\mathbb C^r)\) 成立。常数依赖这些固定区域、\(p,m\)、系数界与主符号逆的球面界。此先验估计实际只需最高阶系数连续、其余系数局部有界。
+\end{theorem}
+\begin{proof}
+	在 \(x_0\) 冻结最高阶系数。由椭圆性和球面的紧性，常系数估计有有限常数 \(C_0\)。把球缩小到使最高阶系数的振幅小于 \((2C_0)^{-1}\) 除以最高阶项数。对支于此球的 \(v\)，有
+	\[
+		\|\mathrm D^mv\|_p\le C_0\|Pv\|_p+\tfrac12\|\mathrm D^mv\|_p+C\|v\|_{W^{m-1,p}}.
+	\]
+	移项后，用上一引理选择足够小的 \(\delta\) 吸收低阶导数，得到
+	\(\|v\|_{W^{m,p}}\le C(\|Pv\|_p+\|v\|_p)\)。
+
+	说明局部化后如何去掉较大球上的导数项。固定一个上述小球 \(B_R\)，取 \(R/2\le r<t<R\) 和截断 \(\eta\)，使 \(\eta=1\) 于 \(B_r\)、支于 \(B_t\)，并使 \(|\mathrm D^k\eta|\le C_k(t-r)^{-k}\)。乘积公式使 \([P,\eta]\) 的阶数至多为 \(m-1\)。记 \(F(r)=\|u\|_{W^{m,p}(B_r)}\)，则
+	\[
+		F(r)\le C\|Pu\|_{L^p(B_R)}+C\sum_{j<m}(t-r)^{j-m}\|\mathrm D^ju\|_{L^p(B_t)}.
+	\]
+	球上的延拓算子来自\cref{g3:prop:higher-order-boundary-extension}；其有限反射与截断构造还满足零阶界 \(\|Eu\|_p\le C\|u\|_p\)。经缩放，延拓的各阶范数在 \(R/2\le t\le R\) 一致受控；将上一引理用于延拓，便对任意固定 \(\varepsilon>0\) 得
+	\[
+		F(r)\le\varepsilon F(t)+C_\varepsilon(t-r)^{-m}
+		\bigl(\|Pu\|_{L^p(B_R)}+\|u\|_{L^p(B_R)}\bigr),
+	\]
+	其中可将固定的 \(R\) 因子并入常数。取 \(r_j=R(1-2^{-j-1})\)，选 \(\varepsilon<2^{-m-1}\) 并逐次代入。几何级数 \(\sum_j\varepsilon^j2^{mj}\) 收敛，余项 \(\varepsilon^NF(r_N)\le\varepsilon^N\|u\|_{W^{m,p}(B_R)}\) 趋零，故得 \(B_{R/2}\) 上所需估计。最后以有限个这种小球覆盖 \(\overline U\)，并使其大球均含于 \(V\)，相加即可。
+\end{proof}
+
+每次冻结均在选定紧集内进行。若一族算子具有相同的主符号逆界、最高阶系数连续模和低阶系数界，就能统一选择小球尺度，并得到统一的局部估计常数。
 
 \subsection{\texorpdfstring{分布解到 \(W^{m,p}\) 的正则性}{分布解到 W\textasciicircum{}\{m,p\} 的正则性}}
 \label{g3:subsec:1204:05}
-待撰写
+上一不等式以 \(u\in W^{m,p}\) 为前提。对于尚无任何函数代表的分布解，直接代入没有意义。下面先为同一右端构造一个 \(W^{m,p}\) 特解，再利用上一节的分布椭圆光滑性识别剩余部分。
 
-\subsection{系统和系数光滑性的明确范围}
+\begin{theorem}\label{g3:thm:elliptic-distribution-lp}
+	设 \(\Omega\subset\mathbb R^n\) 开，\(P\) 是阶 \(m\ge1\)、光滑系数的有限秩等秩椭圆系统，\(1<p<\infty\)。若 \(u\in\mathcal D'(\Omega;\mathbb C^r)\) 且 \(Pu\in L^p_{\mathrm{loc}}\)，则 \(u\in W^{m,p}_{\mathrm{loc}}\)。更一般地，若整数 \(k\ge0\) 且 \(Pu\in W^{k,p}_{\mathrm{loc}}\)，则 \(u\in W^{k+m,p}_{\mathrm{loc}}\)。若还已知 \(u\in L^p(V)\)，则前一定理的局部估计直接适用。
+\end{theorem}
+\begin{proof}
+	固定 \(x_0\)，令 \(x=x_0+\rho y\)，并把算子乘以 \(\rho^m\)。其最高阶系数为 \(A_\alpha(x_0+\rho y)\)，低阶系数为 \(\rho^{m-|\alpha|}A_\alpha(x_0+\rho y)\)。在固定单位球中，前者减去 \(A_\alpha(x_0)\) 后为 \(O(\rho)\)，所有低阶系数也为 \(O(\rho)\)。用固定截断将这些差与低阶系数延拓到全空间，得到
+	\[
+		\widetilde P=P_0+B,\qquad
+		\|Bv\|_p\le C\rho\|v\|_{W^{m,p}(\mathbb R^n)}.
+	\]
+	这里 \(P_0\) 为冻结的齐次主部，\(B\) 的系数光滑紧支；\(\widetilde P\) 在较小单位球中等于缩放后的原算子。取上一小节的高频逆 \(Q_0:L^p\to W^{m,p}\)。选 \(\rho\) 使 \(\|Q_0B\|_{W^{m,p}\to W^{m,p}}<1/2\)。
+
+	在这一小球中将缩放后的右端截断为紧支 \(f_0\in L^p(\mathbb R^n)\)，使它在更小球上与原右端相同。级数
+	\[
+		v=(I+Q_0B)^{-1}Q_0f_0
+		=\sum_{j=0}^\infty(-Q_0B)^jQ_0f_0
+	\]
+	在完备空间 \(W^{m,p}\) 中绝对收敛。它满足 \(v+Q_0Bv=Q_0f_0\)。施以 \(P_0\) 并用 \(P_0Q_0=I-S_0\)，得到精确恒等式
+	\[
+		\widetilde Pv=f_0+S_0(Bv-f_0).
+	\]
+	\(S_0\) 的符号光滑紧支，因此其卷积核是快速下降光滑函数。由于 \(Bv-f_0\) 紧支且属于 \(L^p\)，卷积的每一阶导数都可移到这个核上，故附加项光滑。
+
+	在更小球中，原分布 \(u\)（换到 \(y\) 坐标）与 \(v\) 的差满足同一个光滑椭圆算子作用后为光滑函数。由\cref{g3:thm:elliptic-distribution-l2}的分布光滑性，该差本身光滑。因此 \(u\) 在这个球中属于 \(W^{m,p}\)。\(x_0\) 任意，得到局部结论。这一步没有对未知分布预先假定任何 \(L^p\) 范数。
+
+	最后证明高阶版本。若已得 \(u\in W^{m+j-1,p}_{\mathrm{loc}}\) 且 \(f=Pu\in W^{j,p}_{\mathrm{loc}}\)，对 \(|\beta|=j\) 有
+	\[
+		P(\partial^\beta u)=\partial^\beta f
+		-\sum_{\alpha}\sum_{0<\gamma\le\beta}
+		\binom\beta\gamma(\partial^\gamma A_\alpha)\mathrm D^\alpha\partial^{\beta-\gamma}u.
+	\]
+	右边涉及的 \(u\) 的阶数至多为 \(m+j-1\)，故属于局部 \(L^p\)。已经证明的分布结论适用于 \(\partial^\beta u\)，得到它属于 \(W^{m,p}_{\mathrm{loc}}\)。对 \(j\) 归纳，即得 \(W^{m+k,p}_{\mathrm{loc}}\)。
+\end{proof}
+
+\subsection{椭圆系统与系数正则性}
 \label{g3:subsec:1204:06}
-待撰写
+本节的主符号可以是非对角矩阵。矩阵求逆、有限维核范数和向量值分解都保留了分量间耦合，因此所得估计适用于光滑等秩椭圆系统，包括 Laplace 型系统和下面的一阶 Cauchy--Riemann 型系统。对实系数算子先复化，所得估计再限制回实截面即可。丛上的结论则在平凡化中使用：过渡函数和局部截断的有限阶导数在紧集上有界，故不同表示给出等价的局部范数。
+
+\ProseParagraphBreak
+
+各结论所用的系数条件可以分开。\cref{g3:thm:local-elliptic-lp-apriori}对已经属于 \(W^{m,p}\) 的函数，只用最高阶系数连续以及低阶系数有界；最高阶系数的连续模决定冻结半径。\cref{g3:thm:elliptic-distribution-lp}则对任意分布给出正则性，其特解构造之后调用了光滑系数的分布椭圆正则性，因此这里保留全部系数光滑。高阶自举中，求导系数的阶数也随所求正则性增加。有限正则性系数的更精细版本须逐阶核对，不能仅删除陈述中的“光滑”。
+
+\ProseParagraphBreak
+
+指数 \(1<p<\infty\) 同样进入证明。弱型与 \(L^2\) 插值在 \(p=1\) 处出现发散积分，对偶论证也不能给出 \(L^\infty\) 有界性。核的消去保证中间指数的估计，却一般不保证端点估计。下一节采用 Hölder 模连续性，得到另一种适合经典解的控制；它与端点 \(L^\infty\) 估计有不同的假设。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

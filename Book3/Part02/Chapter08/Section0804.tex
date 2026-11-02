@@ -1,32 +1,205 @@
 % !TeX root = ../../Book3.tex
-% 纲要标题：### 8.4 局部比较的极限
+% 纲要标题：### 8.4 曲率比较的适用范围
 % 纲要位置：几何学计划纲要.md，第 2418 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * 非负 Ricci 与非负截面曲率的区别
 % * 塌缩时体积信息的变化
-% * 分裂定理所需的 Busemann 函数问题
+% * Busemann 函数与分裂定理
 % 
 % ---
 % 
 % 纲要内容结束
 
-\section{局部比较的极限}
+\section{曲率比较的适用范围}
 \label{g3:sec:0804}
 
-待撰写
+本章的比较把曲率信息逐步变成长度、体积与群的计数。取迹和积分使这些结论适用范围很广，也会丢失某些方向与尺度的信息。本节用具体模型辨别这些损失，再考察从距离比较走向整体乘积分解还需要哪些工具。
 
 \subsection{非负 Ricci 与非负截面曲率的区别}
 \label{g3:subsec:0804:01}
-待撰写
+
+若 \(T,e_1,\ldots,e_{n-1}\) 是一点处的正交单位基，则
+\[
+	\operatorname{Ric}(T,T)=\sum_{i=1}^{n-1}K(T\wedge e_i).
+\]
+因此 \(K\ge k\) 推出 \(\operatorname{Ric}\ge(n-1)kg\)。二维只有一个截面，\(\operatorname{Ric}=Kg\)，这两个条件等价；从三维起，一个方向的负截面曲率可以被其他方向的正曲率补偿。
+
+例如\cref{g3:exm:ricci-positive-sectional-negative}给出的三维代数曲率张量满足
+\[
+	K(e_1\wedge e_2)=-1,\qquad
+	K(e_1\wedge e_3)=K(e_2\wedge e_3)=2,
+	\qquad \operatorname{Ric}=\operatorname{diag}(1,1,4).
+\]
+\Cref{g3:prop:curvature-local-realization}把它实现为一点附近的光滑度量，严格正的 Ricci 与指定的负截面在足够小的邻域中同时保留。这说明即使在局部，正 Ricci 也不能替代逐截面的正性；该构造本身没有给出全局的 Ricci 下界。第七章的迹比较正好体现这个区别：它控制径向形算子的迹，而不能分别控制其全部特征值。只有达到模型等号时，平方和估计的等号才进一步迫使各个特征值相等。
+
+另一种容易混淆的条件是“处处严格为正”和“有统一的正常数下界”。后者是本章直径定理真正使用的条件。
+
+\begin{example}[逐点正曲率的完备非紧曲面]\label{g3:exm:positive-paraboloid}
+	考虑 Euclid 空间中的抛物面
+	\[
+		P=\{(x,y,z)\in\mathbb R^3:z=x^2+y^2\},
+	\]
+	赋予诱导度量。用水平极坐标 \((\rho,\theta)\) 表示，得到
+	\[
+		g=(1+4\rho^2)\,\mathrm d\rho^2+\rho^2\,\mathrm d\theta^2.
+	\]
+	在全局图坐标 \((x,y)\) 中，\(g=\mathrm dx^2+\mathrm dy^2+4(x\,\mathrm dx+y\,\mathrm dy)^2\ge g_{\mathrm E}\)。所以任一 \(g\)-Cauchy 序列在 Euclid 坐标中收敛；在极限点的紧坐标邻域中，\(g\le Cg_{\mathrm E}\)，它也按 \(g\) 收敛。这证明 \(P\) 完备。全局图坐标又表明它非紧。
+
+	令 \(s(\rho)=\int_0^\rho\sqrt{1+4u^2}\,\mathrm du\)，把度量写成 \(\mathrm ds^2+f(s)^2\mathrm d\theta^2\)，其中 \(f(s)=\rho\)。于是
+	\[
+		f'(s)=\frac1{\sqrt{1+4\rho^2}},\qquad
+		f''(s)=-\frac{4\rho}{(1+4\rho^2)^2}.
+	\]
+	由\cref{g3:prop:warped-product-curvature}，在 \(\rho>0\) 处
+	\[
+		K=-\frac{f''}{f}=\frac4{(1+4\rho^2)^2}>0.
+	\]
+	在顶点处由光滑性取极限仍得 \(K=4\)。因此 \(\operatorname{Ric}=Kg\) 处处正定，但 \(K\to0\) 于无穷远，不能选取本章直径定理所需的统一 \(k>0\)。
+\end{example}
+
+这个例子也把两个尺度联系起来：每一点附近都有正曲率的局部几何，远处越来越小的曲率却容许测地线无限延伸。章末将直接计算其球面积，得到介于线性与二次之间的增长。
 
 \subsection{塌缩时体积信息的变化}
 \label{g3:subsec:0804:02}
-待撰写
 
-\subsection{分裂定理所需的 Busemann 函数问题}
+体积比较给出上界以及不同半径之间的比值控制。它是否同时给出某个固定半径球的一致正体积下界？以下平坦例子说明，还必须指定一个不退化的体积尺度。
+
+\begin{example}[一条短圆周引起的塌缩]\label{g3:exm:collapsing-flat-tori}
+	设 \(n\ge2\)、\(0<\varepsilon\le1\)，取平坦乘积
+	\[
+		T_\varepsilon=(\mathbb R/\mathbb Z)^{n-1}
+		\times(\mathbb R/\varepsilon\mathbb Z).
+	\]
+	它的曲率恒为零，基本区域的体积为 \(\varepsilon\)。乘积距离由各个圆周的最短弧长平方求和得到，故
+	\[
+		\operatorname{diam}T_\varepsilon
+		=\frac12\sqrt{n-1+\varepsilon^2},\qquad
+		\operatorname{inj}(T_\varepsilon)=\frac\varepsilon2.
+	\]
+	最后一式也可从格商看出：长度最短的非零格向量为 \(\varepsilon\)，指数映射在半径小于其一半时单射，在一半处遇到相反的最短弧。
+
+	固定一点 \(p\)，仍以 \(\omega_j\) 表示 Euclid 单位 \(j\) 维球体积。若 \(r<\varepsilon/2\)，则 \(B(p,r)\) 是 Euclid 球，体积恰为 \(\omega_n r^n\)。若 \(\varepsilon/2<r<1/2\)，短圆周上的所有点距离基点都不超过 \(\varepsilon/2\)，于是
+	\begin{equation}\label{g3:eq:collapsed-ball-estimate}
+		\varepsilon\omega_{n-1}(r^2-\varepsilon^2/4)^{(n-1)/2}
+		\le\operatorname{Vol}_g B(p,r)
+		\le\varepsilon\omega_{n-1}r^{n-1}.
+	\end{equation}
+	确切地说，球内含半径 \(\sqrt{r^2-\varepsilon^2/4}\) 的底空间球与整条短圆周的乘积，并包含于半径 \(r\) 的底空间球与短圆周的乘积；在 \(r<1/2\) 时这些底空间球均为 Euclid 球。这就证明了两侧体积估计。
+
+	固定 \(0<r<1/2\) 并令 \(\varepsilon\downarrow0\)，有
+	\[
+		\operatorname{Vol}_g B(p,r)\longrightarrow0,
+		\qquad
+		\frac{\operatorname{Vol}_g B(p,r)}\varepsilon
+		\longrightarrow\omega_{n-1}r^{n-1}.
+	\]
+	投影 \(\pi:T_\varepsilon\to(\mathbb R/\mathbb Z)^{n-1}\) 还满足
+	\[
+		d(\pi x,\pi y)\le d(x,y)
+		\le\sqrt{d(\pi x,\pi y)^2+\varepsilon^2/4}
+		\le d(\pi x,\pi y)+\varepsilon/2.
+	\]
+	因此短圆周方向在固定尺度的距离测量中逐渐消失；体积趋零和距离趋近低一维空间发生在同一模型中。
+\end{example}
+
+这种有些方向的长度尺度趋零、相应体积退化的现象称为\term[tasuo]{塌缩}[collapse]。在上例中，先固定 \(\varepsilon\) 再令 \(r\downarrow0\)，总能看到 \(n\) 维 Euclid 体积；先固定 \(r\) 再令 \(\varepsilon\downarrow0\)，却会失去一个方向。小球的局部维数与一族度量在固定尺度下的退化因而是不同问题。
+
+给定尺度上的一致正体积下界通常称为该尺度的\term[fei tasuo]{非塌缩}[noncollapse]条件。体积比较能够把已有的这种下界传到邻近中心及更小半径。
+
+\begin{proposition}[体积下界的换中心传播]\label{g3:prop:noncollapse-propagation}
+	设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)，\(\operatorname{Ric}\ge(n-1)kg\)。设 \(p,q\in M\)、\(d(p,q)\le D\)，且 \(r_0>0\)、\(\operatorname{Vol}_g B(p,r_0)\ge v_0>0\)。若 \(0<r\le D+r_0<b_k\)，则
+	\[
+		\operatorname{Vol}_g B(q,r)
+		\ge\frac{V_{k,n}(r)}{V_{k,n}(D+r_0)}v_0.
+	\]
+\end{proposition}
+\begin{proof}
+	三角不等式给出 \(B(p,r_0)\subset B(q,D+r_0)\)。把\cref{g3:thm:bishop-gromov}用于中心 \(q\) 以及半径 \(r,D+r_0\)，得
+	\[
+		\frac{\operatorname{Vol}_g B(q,r)}{V_{k,n}(r)}
+		\ge\frac{\operatorname{Vol}_g B(q,D+r_0)}{V_{k,n}(D+r_0)}
+		\ge\frac{v_0}{V_{k,n}(D+r_0)}.
+	\]
+\end{proof}
+
+特别地，当 \(\operatorname{Ric}\ge0\) 时，下界变成 \(v_0(r/(D+r_0))^n\)，且没有有限的模型半径限制。这里体积的绝对尺度来自假设中的 \(v_0\)；曲率比较负责传播它。平坦环面族中这个初始体积本身趋零，所以与该命题完全相容。
+
+\subsection{Busemann 函数与分裂定理}
 \label{g3:subsec:0804:03}
-待撰写
+
+在 Euclid 空间中，一条定向直线给出一个线性坐标；与它垂直的超平面组成一个乘积分解。在一般完备流形中，可以先把测地射线上的点推向无穷远，再从距离中减去趋于无穷的常数，尝试得到相应坐标。
+
+\begin{definition}\label{g3:def:busemann-function}
+	设 \((M,g)\) 是连通、完备、光滑无边界黎曼流形，\(\gamma:[0,\infty)\to M\) 为单位速测地射线，即 \(d(\gamma(s),\gamma(t))=|s-t|\)。函数
+	\begin{equation}\label{g3:eq:busemann-sign}
+		b_\gamma(x)=\lim_{t\to\infty}\bigl(t-d(x,\gamma(t))\bigr)
+	\end{equation}
+	称为 \(\gamma\) 的\term[Busemann hanshu]{Busemann 函数}[Busemann function]。\footnote{Herbert Busemann（1905--1994），德国出生的美国数学家，研究度量几何、凸性与测地线。}本书采用沿射线增加的符号，因而下面将有 \(b_\gamma(\gamma(s))=s\)。
+\end{definition}
+
+\symidx{\(b_\gamma\)：沿射线增加的 Busemann 函数}
+定义中的极限并不要求曲率条件，其存在性来自三角不等式。完备非紧流形上已有\cref{g3:lem:complete-noncompact-ray}保证这样的射线存在。
+
+\begin{proposition}\label{g3:prop:busemann-basic}
+	设 \((M,g)\) 连通、完备、光滑且无边界，\(\gamma:[0,\infty)\to M\) 为单位速测地射线。则式\eqref{g3:eq:busemann-sign}的极限处处存在，且在每个紧集上一致收敛。函数 \(b_\gamma\) 为1-Lipschitz，满足
+	\[
+		|b_\gamma(x)|\le d(x,\gamma(0)),\qquad
+		b_\gamma(\gamma(s))=s\quad(s\ge0).
+	\]
+\end{proposition}
+\begin{proof}
+	记 \(b_t(x)=t-d(x,\gamma(t))\)。对 \(t\ge s\)，由射线的最短性及三角不等式，
+	\[
+		d(x,\gamma(t))\le d(x,\gamma(s))+t-s,
+		\qquad b_t(x)\ge b_s(x).
+	\]
+	又由三角不等式的两种写法，\(-d(x,\gamma(0))\le b_t(x)\le d(x,\gamma(0))\)。所以 \(b_t(x)\) 单调有界，极限存在。每个 \(b_t\) 都为1-Lipschitz，取极限保留这一性质及上述界。在射线上，对 \(t\ge s\) 直接计算 \(b_t(\gamma(s))=t-(t-s)=s\)。
+
+	最后设 \(K\subset M\) 紧。任给 \(\eta>0\)，取有限个半径 \(\eta\) 的球覆盖 \(K\)，球心取在 \(K\) 中。在这有限个球心上，当 \(t\) 足够大时均有 \(|b_t-b_\gamma|<\eta\)。对任一 \(x\in K\)，选取相距小于 \(\eta\) 的球心；使用 \(b_t,b_\gamma\) 的1-Lipschitz 性，得到 \(|b_t(x)-b_\gamma(x)|<3\eta\)。这证明紧集上的一致收敛。
+\end{proof}
+
+在 \(\mathbb R^n\) 中取 \(\gamma(t)=tv\)、\(|v|=1\)。有理化给出
+\[
+	 t-|x-tv|
+	=\frac{2t\langle x,v\rangle-|x|^2}{t+|x-tv|}
+	\longrightarrow\langle x,v\rangle.
+\]
+因此这一极限确实恢复沿 \(v\) 的线性坐标。一般流形上的 \(b_\gamma\) 首先只有 Lipschitz 正则性；距离函数的割迹也不能在取极限时直接忽略。第七章的分布比较正好适用于这一过程。
+
+\begin{proposition}\label{g3:prop:busemann-weak-laplacian}
+	设 \((M^n,g)\) 连通、完备、光滑且无边界，\(n\ge2\)，\(\operatorname{Ric}\ge0\)，\(\gamma\) 为单位速测地射线。以 \(\Delta=-\operatorname{div}\nabla\) 记本书的 Laplace 算子，则
+	\[
+		\Delta b_\gamma\le0
+	\]
+	在分布意义下成立，即对每个非负 \(\phi\in C_c^\infty(M)\)，\(\int_M b_\gamma\Delta\phi\,\mu_g\le0\)。
+\end{proposition}
+\begin{proof}
+	令 \(K=\operatorname{supp}\phi\)，取 \(C\) 使 \(d(x,\gamma(0))\le C\) 对 \(x\in K\) 成立。若 \(t>C\)，则 \(r_t(x)=d(x,\gamma(t))\ge t-C>0\) 于 \(K\)。由\cref{g3:thm:distributional-laplacian-comparison}在 \(k=0\) 时的结论，\(\Delta r_t\ge-(n-1)/r_t\)。又因紧支测试函数满足 \(\int_M\Delta\phi\,\mu_g=0\)，有
+	\[
+		\int_M b_t\Delta\phi\,\mu_g
+		=-\int_M r_t\Delta\phi\,\mu_g
+		\le\int_M\frac{n-1}{r_t}\phi\,\mu_g
+		\le\frac{n-1}{t-C}\int_M\phi\,\mu_g.
+	\]
+	在 \(K\) 上 \(b_t\) 一致趋于 \(b_\gamma\)，令 \(t\to\infty\)，右端趋于零，即得所需分布不等式。
+\end{proof}
+
+设现在有一条\term[cedi zhixian]{测地直线}[geodesic line] \(\gamma:\mathbb R\to M\)，即单位速测地线且任意有限段都最短，等价地 \(d(\gamma(s),\gamma(t))=|s-t|\)。对它的两个方向分别构造
+\[
+	 b_+(x)=\lim_{t\to\infty}\bigl(t-d(x,\gamma(t))\bigr),\qquad
+	 b_-(x)=\lim_{t\to\infty}\bigl(t-d(x,\gamma(-t))\bigr).
+\]
+三角不等式给出 \(d(x,\gamma(t))+d(x,\gamma(-t))\ge2t\)，所以
+\begin{equation}\label{g3:eq:two-busemann-functions}
+	 b_++b_-\le0,\qquad
+	 b_+(\gamma(s))+b_-(\gamma(s))=s-s=0.
+\end{equation}
+若 \(\operatorname{Ric}\ge0\)，两者又满足 \(\Delta b_\pm\le0\)。于是 \(b_++b_-\) 是一个在直线上达到全局最大值的弱次调和函数；这里“次调和”对应 \(\operatorname{div}\nabla\ge0\)，也就是本书的 \(\Delta\le0\)。
+
+要把这一事实变成乘积分解，还需三步分析。首先，用适用于上述弱不等式的强最大值原理推出 \(b_++b_-=0\)，从而两者弱调和；其次，用椭圆正则性取得光滑性，并借从任意点出发的渐近射线证明 \(|\nabla b_+|=1\)；最后用 Bochner 公式推出 \(\operatorname{Hess}b_+=0\)。这时 \(\nabla b_+\) 才成为平行单位场，其流把等值面与实直线组成整体等距乘积。
+
+这些步骤及所需的弱最大值、正则性工具将在\secref{g3:sec:1505}汇合，证明如下结论：若 \((M^n,g)\) 连通、完备、光滑、无边界且 \(\operatorname{Ric}\ge0\)，并含有一条测地直线，则 \(M\) 等距于 \(\mathbb R\times N\)，其中 \(N\) 是完备的 \((n-1)\) 维黎曼流形。这里要求的是双向都保持最短的直线；单有从一点出发的射线，只保证 Busemann 函数存在，尚不能使式\eqref{g3:eq:two-busemann-functions}的两侧构造成立。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

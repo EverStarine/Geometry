@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：## 第18章　调和映射的变分、正则性与集中
 % 纲要位置：几何学计划纲要.md，第 2818 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,14 +14,33 @@
 \BookChapterNumber{g3:ch:18}
 
 \begin{chapterabstract}
-待撰写
+	调和映射把测地线的能量驻值问题推广到高维源流形。本章从拉回联络推导张力场、第一变分及含目标曲率的第二变分，再用等距嵌入建立流形值 Sobolev 映射的弱框架，区分能量极小、内变分平稳与弱调和方程。在二维圆盘上，从 Bochner 不等式、均值估计与选点论证完整证明光滑调和映射的小能量梯度估计，继而得到高阶内估计，以及闭曲面源上有限集中集之外的光滑紧性与非恒定重缩放极限。曲面上的共形不变性将这些分析与 Hopf 微分、极小曲面联系起来；显式球面映射展示能量集中和弱极限中的度数丢失。二维一般弱解及高维部分正则性采用准确列明假设的外部定理。
 \end{chapterabstract}
 
 \begin{learninggoals}
-待撰写
+	\begin{itemize}
+		\item 构造沿映射的协变导数，推导能量的一阶与二阶变分，并核对曲率项的符号。
+		\item 用等距嵌入定义 \(H^1\) 映射，证明定义和内在能量不依赖所选嵌入。
+		\item 分清弱调和、平稳与极小三类条件，推导应力张量和内变分单调性公式。
+		\item 完成二维光滑解的小能量估计，并说明其尺度、阈值及背景几何依赖。
+		\item 从局部估计得到光滑紧性，定位可能的集中点并构造重缩放极限。
+		\item 计算 Hopf 微分、共形调和浸入的平均曲率及球面气泡的能量分布。
+	\end{itemize}
 \end{learninggoals}
 
-待撰写
+把一段曲线的两个端点固定，能量的临界方程是测地线方程。若源换成一块平面区域，映射可以沿两个独立方向变化，临界方程便对这两个方向的协变二阶导数求和。最简单的目标是实直线：此时能量为 \(\frac12\int|\mathrm du|^2\)，临界方程正是标量 Laplace 方程。目标弯曲以后，二阶导数需要投回目标切空间，方程中随之出现梯度的二次项。
+
+\ProseParagraphBreak
+
+这个二次项使有限能量成为一个自然却仍不足以控制逐点行为的条件。将平面圆盘中的映射放大为 \(v(y)=u(a+ry)\)，梯度平方带来 \(r^2\)，面积变换带来 \(r^{-2}\)，两者恰好相消。一份固定的能量因此可能进入越来越小的区域，而总能量保持有界。要恢复紧性，就须证明：局部能量低于某个统一阈值时，梯度和更高阶导数都能受控。超过这一阈值的区域则需要单独观察，重缩放会显露原尺度下看不见的映射。
+
+\ProseParagraphBreak
+
+本章先建立变分公式与弱极限的语言，再完成上述小能量证明。最后的球面模型将给出确切数值：一列度数为一、能量恒为 \(4\pi\) 的光滑调和映射，可以弱收敛到常值映射，全部能量同时集中于一点。固定迹的直接法、固定同伦类的极小化，以及光滑临界点族的紧性，因而具有不同的证明任务。
+
+\ProseParagraphBreak
+
+几何准备是\chapref{g3:ch:03}的曲率约定、\chapref{g3:ch:04}的第二基本形式和管状邻域，以及\chapref{g3:ch:06}的曲线变分。分析准备是\chapref{g3:ch:11}的 Sobolev 链式法则、紧嵌入与迹，以及\chapref{g3:ch:12}、\chapref{g3:ch:14}的内域估计和标量边值问题。曲面部分在本章证明等温坐标的存在，并就近恢复复双线性配对与弱共形的含义；所需的单变量全纯函数结论可查第四卷第1.1节，球面的度数积分公式可查第二卷第16.1.2小节。弱映射所用的 Nash 等距嵌入和\subsecref{g3:subsec:1803:06}的三项弱正则性定理，均在调用处标明正式文献及准确范围。
 
 \input{Part04/Chapter18/Section1801}
 \input{Part04/Chapter18/Section1802}
@@ -29,8 +48,527 @@
 \input{Part04/Chapter18/Section1804}
 
 \begin{chaptersummary}
-待撰写
+	张力场是映射二阶协变导数的迹，能量第一变分给出调和方程。第二变分由沿映射场的导数平方与目标曲率项组成；非正目标曲率提供非负性，但稳定的临界点仍须与指定竞争类中的全局最小者区分。
+
+	\ProseParagraphBreak
+
+	等距嵌入把流形值映射放入线性 Sobolev 空间，链式法则保持切向微分，紧嵌入保持几乎处处的目标约束。固定迹类由此满足直接法所需的弱闭性。弱调和方程控制目标变分，应力张量控制源的内变分；只有相应的驻值条件成立时，才能使用所导出的单调性公式。
+
+	\ProseParagraphBreak
+
+	二维能量的尺度不变性既造成集中，也使统一的小能量阈值成为可能。Bochner 不等式、均值估计和选点缩放给出梯度界，椭圆估计继续提高正则性。在闭曲面源与固定紧目标上，有界能量的光滑调和映射列因此在有限集合之外光滑紧，而梯度发散的尺度产生非恒定有限能量的整平面调和映射。
+
+	\ProseParagraphBreak
+
+	曲面能量只依赖源的共形结构，调和映射的 Hopf 微分全纯。共形调和浸入恰有零平均曲率；弱共形允许微分退化，浸入处的几何公式须按这一条件使用。球面气泡及双气泡模型把弱收敛、能量集中、度数变化和放大后的极限联系起来，也给出了检验一般紧性陈述的具体算例。
 \end{chaptersummary}
 
 \BookExercises
-待撰写
+\begin{exercise}\label{g3:ex:sphere-map-tension-hessian}
+	设 \((M^m,g)\) 为光滑黎曼流形，\(m\ge1\)，\(u:M\to S^n\subset\mathbb R^{n+1}\) 光滑，\(n\ge1\)，目标球面取单位圆球度量。把 \(u\) 及沿 \(u\) 的场视作 Euclid 向量值函数，\(\Delta_g\) 按分量作用。证明
+	\[
+		\tau(u)=-\Delta_gu+|\mathrm du|^2u.
+	\]
+	再设 \(M\) 紧，允许光滑边界，\(u\) 调和。对满足 \(\langle V,u\rangle=0\) 的光滑场 \(V\)，有边界时再要求 \(V|_{\partial M}=0\)，证明
+	\[
+		Q_u(V,V)=\int_M\bigl(|\mathrm dV|^2-|\mathrm du|^2|V|^2\bigr)\,\mu_g.
+	\]
+	这里 \(\mathrm dV\) 是 Euclid 分量微分，不是球面拉回联络导数。
+\end{exercise}
+\begin{solution}
+	球面上的 Levi-Civita 导数是 Euclid 导数的切向投影。由 \(\langle V,u\rangle=0\) 求导，
+	\(\langle\partial_XV,u\rangle=-\langle V,\mathrm du(X)\rangle\)，所以
+	\[
+		D_XV=\partial_XV+\langle V,\mathrm du(X)\rangle u.
+	\]
+	把 \(V\) 换成 \(\mathrm du(e_i)\)，扣除源联络修正项后取迹，Euclid 部分为 \(-\Delta_gu\)，新增的法向项为 \(\sum_i|\mathrm du(e_i)|^2u\)。这给出张力公式。也可由 \(|u|^2=1\) 核对其确实切向：非负 Laplace 的乘积公式给出 \(\langle\Delta_gu,u\rangle=|\mathrm du|^2\)，故右侧与 \(u\) 正交。调和方程因此是 \(\Delta_gu=|\mathrm du|^2u\)。
+
+	记 \(u_i=\mathrm du(e_i)\)。前面的正交投影公式说明
+	\[
+		|D_{e_i}V|^2=|\partial_{e_i}V|^2-\langle V,u_i\rangle^2.
+	\]
+	单位球面的曲率为 \(R(A,B)C=\langle C,B\rangle A-\langle C,A\rangle B\)，于是
+	\[
+		\langle R(V,u_i)u_i,V\rangle
+		=|V|^2|u_i|^2-\langle V,u_i\rangle^2.
+	\]
+	将这两式代入式\eqref{g3:eq:harmonic-map-index-form}，含 \(\langle V,u_i\rangle^2\) 的项恰好抵消，得到所求 Hessian。球面一维时同一曲率表达恒为零；上述推导也仍成立。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:tension-composition-chain-rule}
+	设 \(u:(M,g)\to(N,h)\)、\(F:(N,h)\to(P,k)\) 为光滑黎曼流形之间的光滑映射，目标均无边界。证明张力场的复合公式
+	\[
+		\tau(F\circ u)=\mathrm dF(\tau(u))
+		+\sum_{i=1}^{\dim M}(\nabla\mathrm dF)(\mathrm du(e_i),\mathrm du(e_i)).
+	\]
+	说明 \(\nabla\mathrm dF=0\) 时，后复合 \(F\) 保持调和性。最后给出两个调和映射的复合不是调和映射的例子，并解释为什么 \(\tau(F)=0\) 不足以使上式第二项为零。
+\end{exercise}
+\begin{solution}
+	令 \(D^u,D^{F\circ u}\) 分别表示两条拉回联络。根据 \(\nabla\mathrm dF\) 的定义，对沿 \(u\) 的任意场 \(W\)，有
+	\[
+		D^{F\circ u}_X\bigl(\mathrm dF(W)\bigr)
+		=\mathrm dF(D^u_XW)+(\nabla\mathrm dF)(\mathrm du(X),W).
+	\]
+	可先将 \(W\) 写成目标局部标架的线性组合：对系数求导的项在两边相同，对标架求导的差正是 \(\nabla\mathrm dF\)。因此这个公式也适用于不能延拓成整个目标上单个向量场的 \(W\)。取 \(W=\mathrm du(Y)\)，并扣除 \(\mathrm d(F\circ u)(\nabla^M_XY)\)，得到
+	\[
+		(\nabla\mathrm d(F\circ u))(X,Y)
+		=\mathrm dF((\nabla\mathrm du)(X,Y))
+		+(\nabla\mathrm dF)(\mathrm du(X),\mathrm du(Y)).
+	\]
+	对源正交单位标架取迹即得题中公式。若 \(\nabla\mathrm dF=0\)，第二项恒为零，所以 \(\tau(u)=0\) 推出 \(\tau(F\circ u)=0\)。
+
+	取三个空间都为 Euclid 空间，令
+	\[
+		u:\mathbb R\to\mathbb R^2,\quad u(t)=(t,0),
+		\qquad F:\mathbb R^2\to\mathbb R,\quad F(x,y)=x^2-y^2.
+	\]
+	直线映射 \(u\) 调和，\(F_{xx}+F_{yy}=2-2=0\) 说明 \(F\) 也调和；但 \(F\circ u(t)=t^2\) 的张力为 \(2\)，不调和。\(\tau(F)=0\) 对目标 \(N\) 的全部正交方向取迹，而复合公式只沿 \(\mathrm du(e_i)\) 这些可能带不同长度、也可能不能张满目标切空间的方向求和。在本例中只取了 \(x\) 方向，来自 \(y\) 方向的抵消不再出现。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:negative-target-jacobi-kernel}
+	设 \((M^m,g)\) 为闭连通光滑黎曼流形，\(m\ge2\)，\((N^n,h)\) 为无边界光滑黎曼流形，\(n\ge2\)，目标截面曲率处处严格为负。设光滑调和映射 \(u:M\to N\) 在某点满足 \(\operatorname{rank}\mathrm du\ge2\)。证明
+	\[
+		Q_u(V,V)>0\quad\text{对每个非零光滑沿映射场 }V,
+		\qquad \ker J_u=\{0\}.
+	\]
+	再说明：若 \(M\) 紧且连通、边界非空光滑，场满足零边界条件，那么只假设目标截面曲率非正，也能得到相同的结论，无须秩条件。
+\end{exercise}
+\begin{solution}
+	由\cref{g3:cor:harmonic-map-nonpositive-stability}，第二变分是连续非负函数之和的积分。若 \(Q_u(V,V)=0\)，便有
+	\[
+		DV=0,\qquad
+		-\langle R^N(V,u_i)u_i,V\rangle=0
+	\]
+	在每一点对每个源正交方向成立。目标曲率严格为负时，第二个等式迫使 \(V\) 与每个 \(u_i\) 线性相关；它也允许 \(V=0\)。在题设的秩至少为二的点，若 \(V\ne0\)，所有 \(u_i\) 都落在同一条直线上，与秩条件矛盾。因此 \(V\) 在该点为零。由 \(DV=0\)，函数 \(|V|^2\) 的微分为零；源连通使它恒为零。故只有零场的第二变分为零，对所有非零场都严格为正。
+
+	若 \(J_uV=0\)，在闭源上由式\eqref{g3:eq:harmonic-map-jacobi-green}得到 \(Q_u(V,V)=0\)，故 \(V=0\)。这证明核为零。
+
+	带边界时，非正曲率仍给出 \(Q_u(V,V)\ge\int_M|DV|^2\mu_g\)。若左侧为零，则 \(DV=0\)，故连通性使 \(|V|\) 为常数。零边界条件和边界非空使这个常数为零。因此同样有严格正性。对满足零边界的 Jacobi 场，Green 公式的边界项为零，再由严格正性得到其为零。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:circle-map-degree-energy-minimizers}
+	给源圆周 \(M=\mathbb R/L\mathbb Z\) 取度量 \(\mathrm ds^2\)，其中 \(L>0\)；目标是 \(\mathbb R^2\) 中半径 \(r>0\) 的圆周，取诱导弧长度量。对光滑映射 \(u:M\to S^1_r\)，沿区间 \([0,L]\) 选角度提升
+	\[
+		u(s)=r e^{\mathrm i\theta(s)},\qquad
+		\theta(L)-\theta(0)=2\pi k,\quad k\in\mathbb Z.
+	\]
+	证明其能量满足 \(E(u)\ge2\pi^2r^2k^2/L\)，确定等号成立的全部映射，并证明这些正好是次数 \(k\) 的调和映射。计算这些映射的 Jacobi 二次型及零空间，并解释零空间的几何来源。
+\end{exercise}
+\begin{solution}
+	角度可沿区间逐段选择，并在重叠处调整 \(2\pi\) 的整数倍后粘合成光滑提升。两端映射值相同，故角度差为 \(2\pi k\)；改变初始提升只加常数 \(2\pi\ell\)，不改变 \(k\)。拉回目标规范角形式 \(\mathrm d\theta/(2\pi)\) 的积分正是 \(k\)，由式\eqref{g3:eq:angular-degree-integral}可知它就是圆周映射的次数。源上的闭合光滑性还保证提升的一阶及更高阶导数在两端一致。
+
+	由于 \(|\mathrm du(\partial_s)|=r|\theta'|\)，Cauchy--Schwarz 不等式给出
+	\[
+		E(u)=\frac{r^2}{2}\int_0^L|\theta'|^2\,\mathrm ds
+		\ge\frac{r^2}{2L}\left(\int_0^L\theta'\,\mathrm ds\right)^2
+		=\frac{2\pi^2r^2k^2}{L}.
+	\]
+	等号当且仅当 \(\theta'\) 是常数；光滑性把几乎处处等号提升为处处等号。因此全部极小者为
+	\[
+		u_{k,\theta_0}(s)=r\exp\left(\mathrm i\left(\theta_0+\frac{2\pi k}{L}s\right)\right),
+		\qquad \theta_0\in\mathbb R/2\pi\mathbb Z.
+	\]
+	目标的弧长坐标为 \(r\theta\)，其内在联络系数为零，所以张力方程等价于 \(\theta''=0\)。周期差固定为 \(2\pi k\) 后，解恰好就是上列映射；因而它们也是该次数中的全部调和映射。
+
+	沿目标取全局正向单位切向量场 \(T\)，它内在平行。每个沿 \(u_{k,\theta_0}\) 的光滑场可唯一写成 \(V=a(s)T\)，其中 \(a\) 为光滑 \(L\)-周期函数。目标内在曲率为零，故
+	\[
+		Q_u(V,V)=\int_0^L|a'(s)|^2\,\mathrm ds,
+		\qquad J_uV=-a''(s)T.
+	\]
+	周期条件下 \(a''=0\) 的解只有常数，所以 Jacobi 核是一维空间。这些常数场来自改变整体角度 \(\theta_0\)，即把目标圆周统一旋转。每个次数中存在真正的等能量映射族，与零空间相对应；比较全部次数时，只有 \(k=0\) 的常映射达到总能量的最小值零。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:radial-weak-harmonic-map}
+	设 \(m\ge2\)，在 \(B_1(0)\subset\mathbb R^m\) 上定义 \(u(x)=x/|x|\in S^{m-1}\)，原点处任选一个值。确定 \(u\in H^1(B_1,S^{m-1})\) 的维数范围。在这个范围内计算能量，证明它弱调和且对内变分驻值，并核对式\eqref{g3:eq:stationary-map-monotonicity}。说明其在原点不能有连续代表。
+\end{exercise}
+\begin{solution}
+	记 \(r=|x|\)、\(\nu=x/r\)。直接微分给出
+	\[
+		\partial_i u=\frac1r(e_i-\nu_i\nu),\qquad
+		|\mathrm du|^2=\frac{m-1}{r^2},\qquad \partial_ru=0.
+	\]
+	这些经典导数也是弱导数：在去掉 \(B_\varepsilon\) 的区域积分分部，来自函数 \(u\) 的小球面边界项绝对值至多为 \(C\varepsilon^{m-1}\)，趋于零。导数平方可积恰要求 \(\int_0^1r^{m-3}\,\mathrm dr<\infty\)，即 \(m\ge3\)。此时
+	\[
+		E(u;B_R)=\frac{(m-1)|S^{m-1}|}{2(m-2)}R^{m-2}.
+	\]
+
+	在穿孔球内，逐分量计算得
+	\[
+		\Delta u=\frac{m-1}{r^2}u=|\mathrm du|^2u.
+	\]
+	对这个二阶方程积分分部，小球面项含 \(\partial_ru=0\)，所以恰为零。右侧在 \(m\ge3\) 时可积，令 \(\varepsilon\downarrow0\) 即得整个球上的弱方程。
+
+	应力张量为
+	\[
+		S_{ij}=\frac{m-3}{2r^2}\delta_{ij}+\frac{\nu_i\nu_j}{r^2},
+		\qquad S\nu=\frac{m-1}{2r^2}\nu.
+	\]
+	它在穿孔球上散度为零。对紧支光滑 \(X\) 积分分部，可能留下的小球面通量，除符号外等于
+	\[
+		\frac{m-1}{2}\varepsilon^{m-3}
+		\int_{S^{m-1}}\nu\cdot X(\varepsilon\nu)\,\mathrm dS_\nu.
+	\]
+	因 \(\int_{S^{m-1}}\nu\,\mathrm dS_\nu=0\)，可将 \(X(\varepsilon\nu)\) 换成 \(X(\varepsilon\nu)-X(0)\)。余项为 \(O(\varepsilon^{m-2})\)，包括 \(m=3\) 时也趋零。因此内变分恒等式成立。\(r^{2-m}E(u;B_r)\) 为常数，正与 \(\partial_ru=0\) 一致。
+
+	若存在连续代表，它在穿孔球上必须与光滑函数 \(x/|x|\) 处处相同，因为两个连续函数几乎处处相等就处处相等。但沿两条不同射线趋近原点给出不同极限，矛盾。这个例子说明高维平稳调和映射可以有真实奇点。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:nonisometric-target-embedding}
+	令标准单位圆周参数为 \(\theta\)，其度量为 \(\mathrm d\theta^2\)。光滑嵌入 \(j(\theta)=(2\cos\theta,\sin\theta)\) 将它送到平面椭圆。源也取标准单位圆周，考察 \(u(t)=t\pmod{2\pi}\)。计算原目标度量下的能量，以及把椭圆误当作带 Euclid 诱导度量的目标时的能量；证明 \(j\circ u\) 对后一度量不是调和映射。最后说明，任意光滑紧目标嵌入仍可用于定义同一个 \(H^1\) 映射集合，但应怎样计算内在能量。
+\end{exercise}
+\begin{solution}
+	原映射速度为一，所以 \(E(u)=\pi\)。而
+	\[
+		|(j\circ u)'|^2=4\sin^2t+\cos^2t=1+3\sin^2t,
+		\qquad E_{\mathrm{Euclid}}(j\circ u)=\frac{5\pi}{2}.
+	\]
+	一维源的张力是加速度的目标切向分量。由
+	\[
+		\langle j''(t),j'(t)\rangle=3\sin t\cos t,
+	\]
+	得到
+	\[
+		\tau(j\circ u)=\frac{3\sin t\cos t}{1+3\sin^2t}\,j'(t),
+	\]
+	并非恒零。这与原圆周映射 \(\tau(u)=0\) 不矛盾，因为目标度量已经改变。
+
+	任意两组光滑嵌入之间的转换及逆转换在紧目标上有界导数。\Cref{g3:prop:sobolev-map-embedding-independence}证明中的链式法则仍给出 \(H^1\) 成员资格及强收敛的等价，此部分不需要等距性。若用当前椭圆表示原圆周，必须在其切线赋予由 \(j\) 推送的度量 \(h_j\)，即 \(h_j(j'(\theta),j'(\theta))=1\)。一般情况下能量应取
+	\[
+		\frac12\int_M\sum_i h_j\bigl(\mathrm d(j\circ u)(e_i),\mathrm d(j\circ u)(e_i)\bigr)\,\mu_g,
+	\]
+	不能擅自换成环境 Euclid 长度。等距嵌入恰使两种长度一致。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:energy-convergence-strong-map}
+	设 \((M,g)\) 为紧光滑黎曼流形，允许光滑边界，\(N\subset\mathbb R^L\) 为光滑紧无边界等距嵌入目标，\(u_j\rightharpoonup u\) 于 \(H^1(M;\mathbb R^L)\)，且各映射取值于 \(N\)。证明：\(u_j\to u\) 强收敛于 \(H^1\) 当且仅当 \(E(u_j)\to E(u)\)。进一步证明，\cref{g3:cor:harmonic-map-dirichlet-minimizer}的固定迹竞争类中，任意极小化序列都有强 \(H^1\) 收敛子列。解释这为什么没有自动证明光滑映射的固定同伦类也有能量最小者。
+\end{exercise}
+\begin{solution}
+	Rellich 紧性及弱极限的唯一性给出全序列 \(u_j\to u\) 于 \(L^2\)。一方面，强 \(H^1\) 收敛直接使梯度平方范数收敛。另一方面，若能量收敛，则由弱梯度收敛，
+	\[
+	\begin{aligned}
+		\|\mathrm du_j-\mathrm du\|_2^2
+		&=\|\mathrm du_j\|_2^2+\|\mathrm du\|_2^2
+		-2\int_M\langle\mathrm du_j,\mathrm du\rangle\,\mu_g
+		\longrightarrow0.
+	\end{aligned}
+	\]
+	结合零阶强收敛即得结论。
+
+	对固定迹类的极小化序列，正文直接法给出弱极限 \(u\)，其仍在竞争类中。若能量下确界为 \(I\)，则
+	\[
+		I\le E(u)\le\liminf_jE(u_j)=I.
+	\]
+	因此极限达到 \(I\)，且 \(E(u_j)\to E(u)\)。第一部分使这个子列强收敛。
+
+	上述证明的关键是弱极限仍在竞争类中，才能写出 \(I\le E(u)\)。对于额外指定的光滑同伦类，这一闭性尚未得到；球面气泡序列已经说明弱极限的度数可以改变。不能在失去竞争类成员资格后仍以该类下确界约束极限能量，也不能据此启动刚才的强收敛论证。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:stationary-finite-energy-liouville}
+	设 \(m\ge3\)，\(N\) 为光滑紧无边界黎曼流形，\(u\in H^1_{\mathrm{loc}}(\mathbb R^m,N)\) 对紧支内变分驻值，并且 \(E(u;\mathbb R^m)<\infty\)。证明 \(u\) 几乎处处为常值。说明二维时反立体投影 \(q:\mathbb R^2\to S^2\) 为何是这一结论的反例。
+\end{exercise}
+\begin{solution}
+	固定中心 \(a\) 及 \(r>0\)。对任意 \(R>r\)，\cref{g3:prop:stationary-map-monotonicity}给出
+	\[
+		0\le r^{2-m}E(u;B_r(a))
+		\le R^{2-m}E(u;B_R(a))
+		\le R^{2-m}E(u;\mathbb R^m).
+	\]
+	当 \(R\to\infty\) 时，右侧因 \(m>2\) 趋零。所以每个球上的能量为零，\(\mathrm du=0\) 几乎处处。对环境分量应用\cref{g3:prop:weak-gradient-constant}，在连通空间 \(\mathbb R^m\) 上得到常值映射；该常值由闭目标约束仍属于 \(N\)。
+
+	二维反立体投影光滑、非恒定且共形调和，故平稳。由\cref{g3:exm:sphere-mobius-bubble}中的直接计算，其能量密度为 \(4(1+|z|^2)^{-2}\)，从而
+	\[
+		E(q;\mathbb R^2)=8\pi\int_0^\infty\frac{r}{(1+r^2)^2}\,\mathrm dr=4\pi.
+	\]
+	当 \(m=2\) 时，\(R^{2-m}=1\)，上面的趋零步骤消失，正好允许这种有限能量的非恒定映射。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:harmonic-map-plane-liouville}
+	设 \((N,h)\) 为截面曲率非正的光滑紧无边界黎曼流形，\(u:\mathbb R^2\to N\) 为光滑调和映射。
+	\begin{enumerate}
+		\item 若 \(E(u;B_R(0))=o(R^2)\)，证明 \(u\) 恒定。特别地，有限总能量的 \(u\) 恒定。
+		\item 对非零向量 \(a\in\mathbb R^2\)，计算圆值映射 \(u_a(x)=\exp(i\langle a,x\rangle)\) 的张力场及 \(E(u_a;B_R)\)，说明上述小 \(o\) 条件不能换成 \(O(R^2)\)。圆周取单位圆的弧长度量。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	（1）源平坦且目标曲率非正，调和映射的 Bochner 公式给出 \(L e(u)\ge0\)。在 \(B_R(x)\) 上应用\cref{g3:lem:surface-subsolution-mean}的 \(q=0\) 情形，得到
+	\[
+		e(u)(x)\le CR^{-2}E(u;B_R(x))
+		\le CR^{-2}E(u;B_{R+|x|}(0)).
+	\]
+	对固定 \(x\) 令 \(R\to\infty\)，题设增长条件使右端趋零。因此 \(\mathrm du=0\) 处处成立，由平面的连通性，\(u\) 恒定。有限总能量显然满足所需增长条件。
+
+	（2）令 \(\phi(x)=\langle a,x\rangle\)。圆周参数 \(\gamma(t)=e^{it}\) 是单位速测地线，复合映射的张力场为
+	\[
+		\tau(\gamma\circ\phi)
+		=\gamma'(\phi)L\phi
+		+(\nabla_{\gamma'}\gamma')(\phi)|\mathrm d\phi|^2=0.
+	\]
+	又有 \(|\mathrm du_a|^2=|a|^2\)，故
+	\[
+		E(u_a;B_R)=\frac{\pi}{2}|a|^2R^2.
+	\]
+	它非恒定且具有二次能量增长，给出所需边界情形。圆周的曲率张量为零，满足第一问的目标曲率条件。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:harmonic-map-boundary-layer}
+	在 Euclid 单位圆盘 \(B_1\subset\mathbb C\) 上令
+	\[
+		\phi_k(z)=k^{-1/2}\operatorname{Re}(z^k),\qquad
+		u_k(z)=e^{i\phi_k(z)}\in S^1,\qquad k\ge1.
+	\]
+	证明各 \(u_k\) 光滑调和，计算总能量及 \(\sup_{B_r}|\mathrm du_k|\)（\(0<r\le1\)）。证明 \(u_k\to1\) 于 \(B_1\) 的紧子集上光滑收敛，但全盘梯度没有一致上界。解释这为何与内域小能量估计相容。
+\end{exercise}
+\begin{solution}
+	函数 \(\operatorname{Re}(z^k)\) 调和，而 \(t\mapsto e^{it}\) 是圆周的单位速测地线，所以复合张力场公式给出 \(\tau(u_k)=0\)。若 \(z=se^{i\theta}\)，则
+	\[
+		|\mathrm du_k|^2=|\mathrm d\phi_k|^2=ks^{2k-2}.
+	\]
+	于是
+	\[
+		E(u_k;B_1)=\frac12\int_0^{2\pi}\int_0^1ks^{2k-2}s\,\mathrm ds\,\mathrm d\theta
+		=\frac\pi2,
+		\qquad
+		\sup_{B_r}|\mathrm du_k|=\sqrt{k}\,r^{k-1}.
+	\]
+	特别地，\(\sup_{B_1}|\mathrm du_k|=\sqrt{k}\to\infty\)。另一方面，对固定整数 \(s\ge0\) 及 \(0<r<1\)，当 \(k\ge s\) 时，\(\phi_k\) 的 \(s\) 阶坐标导数在 \(\overline B_r\) 上受 \(C_s k^{s-1/2}r^{k-s}\) 控制。指数衰减胜过任意固定次幂，所以这些导数均趋零。链式法则遂给出 \(u_k\to1\) 于 \(C^\infty(\overline B_r)\)。
+
+	梯度增长发生在越来越靠近边界的位置。任意固定 \(r<1\) 上，局部能量为 \(E(u_k;B_r)=\frac\pi2r^{2k}\to0\)，可以在其内部应用小能量估计。内域估计的常数包含与所用外球半径有关的尺度因子，并不提供直到原圆盘边界的一致控制。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:harmonic-map-no-concentration-lp}
+	设 \((M^2,g)\) 为闭光滑黎曼曲面，\((N,h)\) 为光滑紧无边界黎曼流形，\(u_j:M\to N\) 为光滑调和映射。若存在 \(\delta>0\) 和 \(A<\infty\)，使
+	\[
+		\int_M|\mathrm du_j|^{2+\delta}\,\mu_g\le A
+	\]
+	对所有 \(j\) 成立，证明存在子列在整个 \(M\) 上光滑收敛到调和映射，且总能量收敛。进一步证明，把上述条件换成能量密度的一致可积性也足够：对每个 \(\varepsilon>0\)，存在 \(\eta>0\)，使所有可测集 \(V\) 满足 \(\operatorname{Vol}(V)<\eta\) 时均有 \(\sup_j E(u_j;V)<\varepsilon\)。
+\end{exercise}
+\begin{solution}
+	取覆盖 \(M\) 的有限个相对紧坐标域，使度量系数及相应几何量统一受控。充分小的坐标球满足 \(\operatorname{Vol}(B_r)\le Cr^2\)。Hölder 不等式给出
+	\[
+		E(u_j;B_r)
+		\le\frac12 A^{2/(2+\delta)}
+		\operatorname{Vol}(B_r)^{\delta/(2+\delta)}
+		\le C A^{2/(2+\delta)}r^{2\delta/(2+\delta)}.
+	\]
+	选择一个固定的充分小半径，使右端小于这些坐标域共同的小能量阈值。用相应半径球的同心半球有限覆盖 \(M\)，小能量梯度估计给出 \(|\mathrm du_j|\) 的全局一致界。高阶内估计随即给出各阶导数的一致界，局部光滑紧性及有限覆盖产生一个在整个 \(M\) 上光滑收敛的子列。极限满足调和方程；一阶导数的一致收敛与紧性使能量积分收敛。
+
+	若只假定题述一致可积性，先固定 \(\varepsilon\) 小于共同阈值，再使覆盖球的体积小于对应的 \(\eta\)。这同样保证每个覆盖球上所有映射均有小能量，后续证明逐字适用。一致可积性排除了在体积趋零的区域中留下固定正量能量的可能。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:harmonic-map-closed-bochner-rigidity}
+	设 \((M,g)\) 为闭连通光滑黎曼流形，\(\operatorname{Ric}_M\ge0\)，\((N,h)\) 为光滑紧无边界黎曼流形，\(\sec_N\le0\)，\(u:M\to N\) 为光滑调和映射。
+	\begin{enumerate}
+		\item 证明 \(\nabla\mathrm du=0\)。若 \(\operatorname{Ric}_M\) 在某一点正定，证明 \(u\) 恒定。
+		\item 对标准平坦环面 \(\mathbb T^2=\mathbb R^2/\mathbb Z^2\) 与 \(\mathbb T^q=\mathbb R^q/\mathbb Z^q\)，令 \(A\) 为 \(q\times2\) 整数矩阵。证明 \(u_A([x])=[Ax]\) 良定义、调和，并计算其能量。说明第一问的 Ricci 正定条件如何排除这些非恒定例子。
+	\end{enumerate}
+\end{exercise}
+\begin{solution}
+	（1）积分 Bochner 公式。闭流形上 \(\int_M L_g e\,\mu_g=0\)。在每点选对角化 Ricci 张量的正交归一基，记相应特征值为 \(\lambda_i\ge0\)，得到
+	\[
+		0=\int_M\left(
+		|\nabla\mathrm du|^2
+		+\sum_i\lambda_i|\mathrm du(e_i)|^2
+		-\sum_{i,j}\left\langle R^N(u_i,u_j)u_j,u_i\right\rangle
+		\right)\mu_g,
+	\]
+	其中 \(u_i=\mathrm du(e_i)\)。三个部分均非负，最后一项的符号来自目标截面曲率非正。因此连续函数 \(|\nabla\mathrm du|^2\) 恒为零。若 Ricci 张量在 \(p\) 正定，则在该点第二项为零强迫 \(\mathrm du(p)=0\)。由 \(\nabla\mathrm du=0\)，函数 \(|\mathrm du|^2\) 的微分为零，故它在连通的 \(M\) 上恒为零，\(u\) 恒定。
+
+	（2）若 \(x\) 换成 \(x+z\)，其中 \(z\in\mathbb Z^2\)，则 \(Ax\) 换成 \(Ax+Az\)，而 \(Az\in\mathbb Z^q\)，所以映射良定义。在平坦局部坐标中，它的导数是常矩阵 \(A\)，二阶导数与两边联络系数均为零，因此 \(\nabla\mathrm du_A=0\) 且 \(\tau(u_A)=0\)。源环面的体积为一，故
+	\[
+		E(u_A)=\frac12\|A\|_{\mathrm{HS}}^2
+		=\frac12\sum_{\alpha=1}^q\sum_{i=1}^2A_{\alpha i}^2.
+	\]
+	当 \(A\ne0\) 时，映射非恒定；两个环面曲率均为零。它们满足第一问的平行性结论，但源上没有 Ricci 正定点。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:flat-torus-energy-metric}
+	令 \(A\) 为一个 \(2\times2\) 整数矩阵，考虑
+	\(u_A:\mathbb R^2/\mathbb Z^2\to\mathbb R^2/\mathbb Z^2\)，
+	\(u_A([x])=[Ax]\)。目标取标准平坦度量，源取常系数度量
+	\(g_Q=\sum Q_{ij}\mathrm dx^i\mathrm dx^j\)，其中 \(Q\) 实对称正定且
+	\(\det Q=1\)。证明 \(u_A\) 对每个这样的 \(Q\) 都调和，计算其能量。
+	当 \(\det A\ne0\) 时，求能量在这些源度量中的最小值及全部取等度量，并解释取等时的共形性。另讨论 \(A\) 秩为 \(1\) 或 \(0\) 的情形。
+\end{exercise}
+\begin{solution}
+	整数条件保证映射在取商后良定义。在平坦局部坐标中，两个度量的 Christoffel 符号都为零，且 \(u_A\) 的局部表达为仿射函数，故张力场为零。记 \(S=A^{\mathsf T}A\)，则拉回目标度量的矩阵为 \(S\)。基本区域面积为 \(\sqrt{\det Q}=1\)，所以
+	\[
+		E_Q(u_A)=\frac12\operatorname{tr}(Q^{-1}S).
+	\]
+	若 \(A\) 可逆，正定矩阵 \(Q^{-1/2}SQ^{-1/2}\) 的两个特征值
+	\(\mu_1,\mu_2>0\) 满足 \(\mu_1\mu_2=\det S=(\det A)^2\)。于是
+	\[
+		E_Q(u_A)=\frac{\mu_1+\mu_2}{2}
+		\ge\sqrt{\mu_1\mu_2}=|\det A|.
+	\]
+	等号当且仅当该矩阵为 \(|\det A|I\)，即
+	\[
+		Q=\frac{A^{\mathsf T}A}{|\det A|}.
+	\]
+	它确为正定且行列式等于 \(1\)，故是唯一取等度量。此时
+	\(u_A^*h=|\det A|g_Q\)，映射是共形局部微分同胚；其定向由
+	\(\det A\) 的符号决定。这里改变的是源的共形结构，不能把这些不同的 \(Q\) 全部当成同一度量的点态共形倍数。
+
+	若 \(\operatorname{rank}A=1\)，取实正交单位向量 \(v,w\)，使
+	\(S=\lambda\,vv^{\mathsf T}\)、\(\lambda>0\)。令
+	\[
+		Q_t=t\,vv^{\mathsf T}+t^{-1}ww^{\mathsf T},\qquad t>0.
+	\]
+	这个常系数矩阵仍定义环面上的度量，不要求 \(v,w\) 为整数方向。它的行列式为 \(1\)，且
+	\(E_{Q_t}(u_A)=\lambda/(2t)\to0\)。然而任何正定 \(Q\) 都使非零
+	\(S\) 的上述迹严格为正，所以能量下确界为 \(0\)，没有达到；退化的是源度量。若 \(A=0\)，映射常值，对全部 \(Q\) 能量都是 \(0\)。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:enneper-branched-parametrization}
+	在复平面上令
+	\[
+		F(z)=\operatorname{Re}
+		\left(z-\frac{z^3}{3},\
+		i\left(z+\frac{z^3}{3}\right),\
+		z^2\right)\in\mathbb R^3.
+	\]
+	证明 \(F\) 是共形调和浸入，并计算诱导度量。对整数 \(m\ge0\)，令
+	\(u_m(z)=F(z^{m+1})\)。确定它的正则点、退化点及退化阶，计算
+	\(E(u_m;D_1)\)，并说明平均曲率结论在哪些点有通常的浸入意义。
+\end{exercise}
+\begin{solution}
+	写 \(z=x+iy\)，则
+	\[
+		F=\left(x-\frac{x^3}{3}+xy^2,\
+		-y-x^2y+\frac{y^3}{3},\
+		x^2-y^2\right).
+	\]
+	每个分量都是全纯多项式的实部，也可直接求二阶偏导核对
+	\(F_{xx}+F_{yy}=0\)。一阶导数为
+	\[
+		F_x=(1-x^2+y^2,-2xy,2x),\qquad
+		F_y=(2xy,-1-x^2+y^2,-2y).
+	\]
+	展开内积得
+	\[
+		\langle F_x,F_y\rangle=0,\qquad
+		|F_x|^2=|F_y|^2=(1+|z|^2)^2.
+	\]
+	所以 \(F\) 处处浸入、共形且调和，诱导度量为
+	\((1+|z|^2)^2|\mathrm dz|^2\)，平均曲率向量为零。
+
+	记 \(\ell=m+1\)。\(u_m\) 的各分量仍是全纯多项式的实部，故在整个平面调和。复合映射的拉回度量为
+	\[
+		u_m^*h
+		=\ell^2|z|^{2\ell-2}(1+|z|^{2\ell})^2|\mathrm dz|^2.
+	\]
+	当 \(m=0\) 时没有退化点；当 \(m\ge1\) 时只有 \(z=0\) 退化。
+	因为 \(F(w)\) 的线性项为
+	\((\operatorname{Re}w,-\operatorname{Im}w,0)\)，所以 \(u_m\) 的微分在原点恰好消失 \(m\) 阶，这也由度量因子的首项
+	\(\ell^2|z|^{2m}\) 看出。
+
+	弱共形时能量密度等于诱导度量的共形因子，故
+	\[
+		\begin{aligned}
+		E(u_m;D_1)
+		&=2\pi\ell^2\int_0^1
+		r^{2\ell-1}(1+r^{2\ell})^2\,\mathrm dr\\
+		&=2\pi\ell^2
+		\left(\frac1{2\ell}+\frac2{4\ell}+\frac1{6\ell}\right)
+		=\frac{7\pi\ell}{3}.
+		\end{aligned}
+	\]
+	在全部正则点上，\cref{g3:prop:conformal-harmonic-minimal}给出平均曲率为零。当 \(m\ge1\) 时，原点没有正定诱导度量，不能在那里直接套用通常的平均曲率定义；但映射及调和方程本身在原点都是光滑的。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:two-sphere-bubbles}
+	采用式\eqref{g3:eq:sphere-stereographic-parametrization}的球面坐标，令
+	\[
+		f_\varepsilon(z)=\frac{\varepsilon}{z-1}
+		+\frac{\varepsilon}{z+1}
+		=\frac{2\varepsilon z}{z^2-1},\qquad
+		v_\varepsilon(q(z))=q(f_\varepsilon(z)),
+		\qquad 0<\varepsilon<1.
+	\]
+	把极点和无穷远处按球面坐标补全。证明 \(v_\varepsilon\) 是光滑调和映射，度数为 \(2\)、能量为 \(8\pi\)，并证明
+	\[
+		v_\varepsilon\rightharpoonup q(0)
+		\quad\text{于 }H^1(S^2;\mathbb R^3),\qquad
+		e(v_\varepsilon)\mu
+		\rightharpoonup4\pi\delta_{q(1)}+4\pi\delta_{q(-1)}.
+	\]
+	给出两个集中点附近的重缩放极限，并说明为何没有其他能量留在这两个点之外。
+\end{exercise}
+\begin{solution}
+	在 \(z=\pm1\) 处，分子不为零，用目标坐标 \(1/f_\varepsilon\) 可见映射光滑全纯。在源无穷远处令 \(\zeta=1/z\)，则
+	\(f_\varepsilon=2\varepsilon\zeta/(1-\zeta^2)\)，同样全纯。因此它定义全纯球面映射，并由正文的曲面映射结论调和。
+
+	取目标正则值 \(1\)。方程 \(f_\varepsilon(z)=1\) 等价于
+	\(z^2-2\varepsilon z-1=0\)，有两个不同的实根，均不是极点。
+	又
+	\[
+		f_\varepsilon'(z)
+		=-\frac{2\varepsilon(z^2+1)}{(z^2-1)^2},
+	\]
+	在这两根处非零。每个局部定向符号均为 \(+1\)，故
+	\(\deg v_\varepsilon=2\)。全纯映射保向弱共形，正文已证的度数能量公式给
+	\(E(v_\varepsilon)=8\pi\)。
+
+	在 \(z=1+\varepsilon w\) 与 \(z=-1+\varepsilon w\) 两个尺度上，分别有
+	\[
+		f_\varepsilon(1+\varepsilon w)
+		=\frac1w+\frac{\varepsilon}{2+\varepsilon w},
+		\qquad
+		f_\varepsilon(-1+\varepsilon w)
+		=\frac1w+\frac{\varepsilon}{-2+\varepsilon w}.
+	\]
+	所以两处极限都是 \(w\mapsto q(1/w)\)。这包括 \(w=0\)：在其附近使用目标坐标 \(1/f_\varepsilon\)，上面两式的倒数分别为
+	\[
+		\frac{w(2+\varepsilon w)}{2+2\varepsilon w},
+		\qquad
+		\frac{w(-2+\varepsilon w)}{-2+2\varepsilon w},
+	\]
+	均在每个固定的小圆盘光滑收敛到 \(w\)。结合避开零点的区域可知，重缩放映射在每个紧平面区域上都光滑收敛。极限 \(q(1/w)\) 的能量密度为
+	\(4(1+|w|^2)^{-2}\)，故其 \(D_R\) 内能量为
+	\(4\pi R^2/(1+R^2)\)，总能量为 \(4\pi\)。
+
+	取充分小的固定数 \(\delta>0\)，使两个坐标圆盘
+	\(U_\delta^\pm=\{|z\mp1|<\delta\}\) 不交。每个固定 \(R\) 的重缩放圆盘在 \(\varepsilon\) 足够小时落入相应的 \(U_\delta^\pm\)。共形能量不变性及光滑收敛给出
+	\[
+		\liminf_{\varepsilon\downarrow0}E(v_\varepsilon;U_\delta^\pm)
+		\ge4\pi\frac{R^2}{1+R^2}.
+	\]
+	令 \(R\to\infty\)，两处下极限均至少为 \(4\pi\)。总能量恒为
+	\(8\pi\)，非负性遂迫使两处能量都趋于 \(4\pi\)，而补集能量趋于零。对任意连续测试函数，先把 \(\delta\) 取得足够小，使它在两圆盘上分别接近其中心值，再用补集能量趋零，即得所述测度极限。
+
+	除 \(z=\pm1\) 外，\(f_\varepsilon(z)\to0\)，在无穷远处也为零，故
+	\(v_\varepsilon\to q(0)\) 几乎处处。球面值有界给出强 \(L^2\) 收敛，恒定能量给出 \(H^1\) 有界性。对光滑 \(\phi:S^2\to\mathbb R^3\)，
+	\[
+		\int\langle\mathrm dv_\varepsilon,\mathrm d\phi\rangle\mu
+		=\int\langle v_\varepsilon,\Delta\phi\rangle\mu
+		\longrightarrow\int\langle q(0),\Delta\phi\rangle\mu=0.
+	\]
+	再用光滑稠密性即得弱 \(H^1\) 收敛。两个重缩放极限各取回 \(4\pi\)，总量已等于原总能量，因此本例没有剩余能量。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:sphere-degree-energy-equality}
+	在标准定向圆球 \(S^2\) 上，给定整数 \(d\)。证明所有度数为 \(d\) 的光滑映射 \(v:S^2\to S^2\) 的能量最小值为 \(4\pi|d|\)。当 \(d>0\) 时，证明取等当且仅当 \(v\) 全纯；当 \(d<0\) 时，将结论改为反全纯；讨论 \(d=0\)。给出每个整数 \(d\) 的一个取等映射。
+\end{exercise}
+\begin{solution}
+	正文的度数积分公式与逐点面积比较已经给出下界。为分析等号，在保向等温坐标中写源度量为 \(\rho^2|\mathrm dz|^2\)，目标度量为
+	\(\sigma^2|\mathrm dw|^2\)，映射坐标为 \(w=f(z)=a(x,y)+ib(x,y)\)。若
+	\(v^*\omega=j_v\mu_g\)，则
+	\[
+		e_g(v)-j_v
+		=\frac{\sigma(f)^2}{2\rho^2}
+		\bigl((a_x-b_y)^2+(a_y+b_x)^2\bigr)\ge0.
+	\]
+	当 \(d>0\) 且 \(E(v)=4\pi d\) 时，这个连续非负函数的积分为零，故它处处为零。所得方程正是 Cauchy--Riemann 方程，包括微分退化的点。因此 \(v\) 在全部复坐标中全纯。反过来，全纯性使上式处处为零，再用
+	\(\int j_v\mu_g=4\pi d\)，得到能量等号。
+
+	当 \(d<0\) 时改用
+	\[
+		e_g(v)+j_v
+		=\frac{\sigma(f)^2}{2\rho^2}
+		\bigl((a_x+b_y)^2+(a_y-b_x)^2\bigr).
+	\]
+	同样得到反 Cauchy--Riemann 方程，即反全纯性。若 \(d=0\)，能量取下界 \(0\) 当且仅当 \(\mathrm dv=0\)；球面连通，故恰为常值映射。
+
+	若 \(d\ge1\)，映射 \(q(z)\mapsto q(z^d)\) 在无穷远坐标中也以同样的幂表示，因而光滑全纯。目标值 \(1\) 有 \(d\) 个不同的原像，各处导数非零、局部度为 \(+1\)，所以其度数为 \(d\)，能量为 \(4\pi d\)。若 \(d\le-1\)，取
+	\(q(z)\mapsto q(\overline z^{\,|d|})\)，每个正则原像处的局部度为
+	\(-1\)，故总度为 \(d\)，能量为 \(4\pi|d|\)。\(d=0\) 时取任意常值映射。这就证明下界在每个整数度数中都达到。
+\end{solution}

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 13.3 Green 算子和谱
 % 纲要位置：几何学计划纲要.md，第 2627 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,245 @@
 \section{Green 算子和谱}
 \label{g3:sec:1303}
 
-待撰写
+上一节把方程的障碍压缩到两个有限维空间：解可以加上核中的截面，右端必须正交于伴随核。固定正交补以后，就能把“存在一个解”变成一个连续的求解算子。对于形式自伴且非负的算子，这个求解过程还可与正交特征截面联系起来：椭圆估计控制导数，紧嵌入保证高频的逆作用趋于零，二者共同产生离散谱。
 
 \subsection{广义逆及有限秩投影}
 \label{g3:subsec:1303:01}
-待撰写
+设 \(P:C^\infty(E)\to C^\infty(F)\) 是闭黎曼流形上的光滑椭圆算子。记
+\[
+	\mathcal N_P=\ker P,\qquad \mathcal N_{P^*}=\ker P^*,
+	\qquad \Pi_P:L^2(E)\to \mathcal N_P,\quad
+	\Pi_{P^*}:L^2(F)\to \mathcal N_{P^*},
+\]
+其中两个核都取光滑截面，并以 \(L^2\) 内积正交投影。若 \(e_1,\ldots,e_a\) 是 \(\mathcal N_P\) 的正交归一基，则
+\[
+	\Pi_Pu=\sum_{\nu=1}^a\langle u,e_\nu\rangle_{L^2}e_\nu.
+\]
+所以投影为有限秩算子，且把 \(L^2\) 截面送到光滑截面；每个 \(H^k\) 范数中的有界性都来自有限个光滑基向量的范数。基可以改变，正交投影本身不变。
+
+\begin{theorem}\label{g3:thm:elliptic-green-general}
+	设 \(M\) 为非空、紧且无边界的光滑黎曼流形，\(\dim M\ge1\)，\(E,F\to M\) 为同秩有限秩光滑复 Hermitian 丛，\(P:C^\infty(E)\to C^\infty(F)\) 为阶数 \(d\ge1\) 的光滑椭圆微分算子。存在唯一有界线性算子
+	\[
+		G_P:L^2(F)\longrightarrow H^d(E),
+	\]
+	使 \(G_Pf\perp \mathcal N_P\)、\(PG_Pf=(I-\Pi_{P^*})f\)。它满足
+	\begin{equation}\label{g3:eq:green-identities}
+		PG_P=I-\Pi_{P^*},\qquad
+		G_PP=I-\Pi_P,\qquad
+		G_P\Pi_{P^*}=0,\quad \Pi_PG_P=0,
+	\end{equation}
+	其中第二式作用于 \(H^d(E)\)。对每个整数 \(k\ge0\)，同一个算子有界地映射 \(H^k(F)\) 到 \(H^{k+d}(E)\)，特别地保持光滑性。作为 \(L^2(F)\to L^2(E)\) 的算子，它是紧的。若另有 \(E=F\)、\(P=P^*\)，则 \(G_P\) 在 \(L^2(E)\) 上自伴；在此条件下，若 \(\langle Pu,u\rangle_{L^2}\ge0\) 对所有光滑 \(u\) 成立，则 \(G_P\) 也非负。
+\end{theorem}
+\begin{proof}
+	对 \(f\in L^2(F)\)，令 \(f_0=(I-\Pi_{P^*})f\)。由\cref{g3:thm:elliptic-fredholm}，\(f_0\) 属于 \(P:H^d(E)\to L^2(F)\) 的像。选择一个解 \(v\)，再取 \(u=v-\Pi_Pv\)，便得唯一的正交核解：若另有同样的解，两解之差既在 \(\mathcal N_P\) 中又正交于它，故为零。定义 \(G_Pf=u\)。唯一性保证线性，\cref{g3:thm:kernel-orthogonal-estimate}给出
+	\[
+		\|G_Pf\|_{H^d}\le C\|f_0\|_2\le C\|f\|_2.
+	\]
+	对 \(v\in H^d(E)\)，\(Pv\perp \mathcal N_{P^*}\)，而 \(v-\Pi_Pv\) 是方程 \(Pu=Pv\) 的正交核解，因此 \(G_PPv=v-\Pi_Pv\)。其余恒等式由定义直接得到。
+
+	若 \(f\in H^k(F)\)，\cref{g3:cor:elliptic-range-hk}使 \(u=G_Pf\) 属于 \(H^{k+d}(E)\)。结合全局估计与刚得的 \(L^2\) 界，
+	\[
+		\|u\|_{H^{k+d}}
+		\le C_k\bigl(\|f_0\|_{H^k}+\|u\|_2\bigr)
+		\le C'_k\|f\|_{H^k}.
+	\]
+	光滑数据属于每个 \(H^k\)，故解也属于所有整数阶 Sobolev 空间，高阶嵌入\cref{g3:cor:higher-sobolev-embedding}遂给出光滑性。由\cref{g3:thm:compact-bundle-rellich}，\(H^d(E)\Subset L^2(E)\)，所以 \(G_P\) 的 \(L^2\) 作用为紧算子。
+
+	最后设 \(P=P^*\)。取 \(u=G_Pf\)、\(v=G_Pg\)。光滑稠密性把形式伴随恒等式延伸到 \(H^d\)；核的正交性于是给出
+	\[
+		\langle G_Pf,g\rangle
+		=\langle u,Pv\rangle
+		=\langle Pu,v\rangle
+		=\langle f,G_Pg\rangle.
+	\]
+	若 \(P\) 非负，同一稠密性使 \(\langle Pu,u\rangle\ge0\) 对 \(u\in H^d\) 仍成立，因而
+	\(\langle G_Pf,f\rangle=\langle u,Pu\rangle\ge0\)。
+\end{proof}
+
+\(G_P\) 称为所固定 \(L^2\) 度量下的\term[Green suanzi]{Green 算子}[Green operator]，也是 \(P\) 的规范广义逆。\footnote{George Green（1793--1841），英国数学家，研究势论与数学物理，Green 函数及有关积分公式以其命名。}它在可解右端上选择唯一的最小 \(L^2\) 范数解，因为其余解为 \(G_Pf+h\)、\(h\in \mathcal N_P\)，且
+\(\|G_Pf+h\|_2^2=\|G_Pf\|_2^2+\|h\|_2^2\)。在不可解右端上，算子先去掉伴随核分量；式\eqref{g3:eq:green-identities}准确记录了这个有限维误差。
 
 \subsection{自伴非负算子的紧预解式}
 \label{g3:subsec:1303:02}
-待撰写
+以下取 \(E=F\)，并假设 \(P=P^*\) 且 \(P\) 非负。必须先明确 \(P\) 在 \(L^2\) 中的定义域。微分算子会损失导数，通常不是处处定义的有界 \(L^2\) 算子；将它看作
+\[
+	A:\mathcal D(A)=H^d(E)\subset L^2(E)\longrightarrow L^2(E)
+\]
+才与此前的椭圆估计相符。对于稠密定义算子，伴随域由配对决定：\(v\in\mathcal D(A^*)\) 表示存在 \(w\in L^2\) 使 \(\langle Au,v\rangle=\langle u,w\rangle\) 对所有 \(u\in\mathcal D(A)\) 成立，此时定义 \(A^*v=w\)。自伴要求域与作用同时相等。
+
+\begin{theorem}\label{g3:thm:positive-elliptic-realization}
+	设 \(M\) 为非空、紧且无边界的光滑黎曼流形，\(\dim M\ge1\)，\(E\to M\) 为有限秩光滑复 Hermitian 丛，\(P\) 为阶数 \(d\ge1\) 的光滑椭圆算子，满足 \(P=P^*\) 及 \(\langle Pu,u\rangle\ge0\) 对所有 \(u\in C^\infty(E)\) 成立。令 \(A\) 为 \(P\) 在 \(L^2(E)\) 中定义域为 \(H^d(E)\) 的实现。则 \(A\) 是稠密定义、闭且非负的自伴算子，并且
+	\[
+		R=(A+I)^{-1}:L^2(E)\longrightarrow H^d(E)
+	\]
+	存在且有界。作为 \(L^2\) 算子，\(R\) 紧、自伴、单射，满足 \(\|R\|_{L^2\to L^2}\le1\)，并且 \(\langle Rf,f\rangle>0\) 对每个非零 \(f\) 成立。
+\end{theorem}
+\begin{proof}
+	\Cref{g3:prop:elliptic-adjoint-domain}已经证明：\(A\) 稠定且闭，其 Hilbert 伴随的域为 \(H^d(E)\)，作用为形式伴随 \(P^*\)。这里 \(P^*=P\)，故 \(A^*=A\)，包括域也相同。光滑截面在 \(H^d\) 中稠密，\(P:H^d\to L^2\) 有界，所以光滑截面上的非负性取极限后对整个定义域成立。
+
+	算子 \(P+I\) 仍椭圆、形式自伴，而且
+	\[
+		\langle(P+I)u,u\rangle\ge\|u\|_2^2.
+	\]
+	故它的核为零。\Cref{g3:thm:elliptic-fredholm}把像的正交补识别为同一个零核，因而 \(P+I:H^d\to L^2\) 为双射。令 \(u=Rf\)，配对方程给出 \(\|u\|_2\le\|f\|_2\)，再由全局椭圆估计得到 \(\|u\|_{H^d}\le C\|f\|_2\)。紧性随即由 \(H^d\Subset L^2\) 得到。
+
+	设 \(u=Rf\)、\(v=Rg\)。则
+	\[
+		\langle Rf,g\rangle
+		=\langle u,(A+I)v\rangle
+		=\langle(A+I)u,v\rangle
+		=\langle f,Rg\rangle.
+	\]
+	这证明 \(R\) 自伴。又有
+	\(\langle Rf,f\rangle=\langle u,(A+I)u\rangle\ge\|u\|_2^2\)，非零 \(f\) 对应非零 \(u\)，故得到严格正性和单射性。
+\end{proof}
+
+若一个复数 \(z\) 使 \(A-zI:\mathcal D(A)\to L^2\) 为双射，且其逆在 \(L^2\) 上有界，则称 \(z\) 属于\term[yujieji]{预解集}[resolvent set] \(\rho(A)\)，逆 \((A-zI)^{-1}\) 称为\term[yujieshi]{预解式}[resolvent]。补集 \(\sigma(A)=\mathbb C\setminus\rho(A)\) 称为\term[pu]{谱}[spectrum]。刚才的定理给出 \(-1\in\rho(A)\)，并证明这个预解式紧。加上 \(I\) 的作用是统一消去可能存在的零特征值，随后再从 \(R\) 的特征值反求 \(A\) 的特征值。
 
 \subsection{特征值离散性和光滑特征截面}
 \label{g3:subsec:1303:03}
-待撰写
+先把紧性怎样产生特征向量这一泛函分析步骤完整写出。下面只需要非负自伴情形；零空间可以无限维，而每个正特征值的空间必为有限维。
+
+\begin{theorem}[紧非负自伴算子的谱分解]\label{g3:thm:compact-positive-spectrum}
+	设 \(H\) 为可分的实或复 Hilbert 空间，\(T:H\to H\) 为紧自伴算子，且 \(\langle Tu,u\rangle\ge0\)。则 \(H\) 有由 \(T\) 的特征向量组成的正交归一基。每个正特征值具有有限重数；按重数排列的正特征值若有无限多个，只能趋于零。特别地，若 \(H\) 无限维且 \(\ker T=0\)，则存在正交归一基 \((e_j)_{j\ge1}\) 及
+	\[
+		\mu_1\ge\mu_2\ge\cdots>0,\qquad
+		\mu_j\longrightarrow0,\qquad Te_j=\mu_je_j.
+	\]
+\end{theorem}
+\begin{proof}
+	证明的核心是让单位球上二次型的上确界达到。先记
+	\(a=\sup_{\|u\|=1}\langle Tu,u\rangle\)。非负 Hermitian 型 \(b(u,v)=\langle Tu,v\rangle\) 满足
+	\[
+		|b(u,v)|^2\le b(u,u)b(v,v).
+	\]
+	确实，将 \(b(u-tv,u-tv)\ge0\) 对标量 \(t\) 配方即可；当 \(b(v,v)=0\) 时，让 \(t\) 沿交叉项的相位取任意大模长，必有 \(b(u,v)=0\)。所以
+	\(|\langle Tu,v\rangle|\le a\|u\|\|v\|\)，即 \(\|T\|\le a\)；反向不等式直接成立，故 \(a=\|T\|\)。若 \(T\ne0\)，则 \(a>0\)。
+
+	取单位向量列 \(u_\ell\) 使 \(\langle Tu_\ell,u_\ell\rangle\to a\)。由\cref{g3:lem:hilbert-weak-minimization-tools}，抽子列使 \(u_\ell\rightharpoonup u\)，\(\|u\|\le1\)；紧性再使 \(Tu_\ell\) 强收敛。它的极限必为 \(Tu\)，因为对任意 \(v\)，\(\langle Tu_\ell,v\rangle=\langle u_\ell,Tv\rangle\to\langle Tu,v\rangle\)。于是
+	\[
+		a=\langle Tu,u\rangle\le a\|u\|^2\le a.
+	\]
+	因此 \(\|u\|=1\)，并且 \(\langle(aI-T)u,u\rangle=0\)。算子 \(aI-T\) 非负，对它使用刚证的半内积不等式，得 \(\langle(aI-T)u,v\rangle=0\) 对所有 \(v\) 成立。因此 \(Tu=au\)。
+
+	取 \(e_1=u\)。自伴性保证 \(e_1^\perp\) 在 \(T\) 下不变：\(\langle Tv,e_1\rangle=\langle v,Te_1\rangle=0\)。在这个闭子空间上重复最大化过程；只要限制算子非零，就得到新的单位特征向量 \(e_j\)，其特征值 \(\mu_j\) 为剩余空间上 \(T\) 的范数。因此 \(\mu_j\) 非增。若有无限多个 \(\mu_j\ge\varepsilon>0\)，则
+	\[
+		\|Te_i-Te_j\|^2=\mu_i^2+\mu_j^2\ge2\varepsilon^2
+		\quad(i\ne j),
+	\]
+	与紧性矛盾。这同时说明正特征值的重数有限，以及无限序列 \(\mu_j\to0\)。
+
+	令 \(V\) 为所得正特征向量的闭线性张成空间。在 \(V^\perp\) 上若 \(T\) 非零，刚证的最大化论证又产生正特征值 \(b>0\)。无限过程的每个剩余空间都包含 \(V^\perp\)，因而每个 \(\mu_j\ge b\)，与趋零矛盾；有限过程中则与停止时限制算子为零矛盾。因此 \(T|_{V^\perp}=0\)。另一方面，\(\ker T\) 正交于所有正特征向量，故 \(V^\perp=\ker T\)。在可分闭子空间 \(\ker T\) 的可数稠密集上施行逐次正交化，丢掉为零的余向量，即得它的正交归一基；与 \((e_j)\) 合在一起得到所需基。
+
+	最后，任意 \(x\in H\) 到前 \(N\) 个基向量张成空间的正交投影为 \(\sum_{j\le N}\langle x,e_j\rangle e_j\)。其误差与该空间正交，平方范数为 \(\|x\|^2-\sum_{j\le N}|\langle x,e_j\rangle|^2\)。基的闭张成性使误差趋零，故展开在范数中收敛且满足平方和恒等式。这也说明上述“基”具有实际的级数展开含义。
+\end{proof}
+
+紧自伴分解可对照 Brezis 第6.4节的定理6.11。\cite[第6.4节，定理6.11]{Brezis2011}这里通过弱收敛与紧性直接取得二次型最大值，使所需的正算子版本不依赖一般有界算子的谱理论。
+
+\begin{theorem}\label{g3:thm:elliptic-discrete-spectrum}
+	设 \(M\) 为非空、紧且无边界的光滑黎曼流形，\(\dim M\ge1\)，\(E\to M\) 为正秩光滑复 Hermitian 丛。设 \(P\) 为光滑、形式自伴、非负、椭圆的 \(d\ge1\) 阶微分算子，令 \(A\) 为其定义域 \(H^d(E)\) 的 \(L^2\) 实现。则存在光滑截面组成的 \(L^2\) 正交归一基 \((e_j)_{j\ge1}\)，使
+	\[
+		Pe_j=\lambda_je_j,\qquad
+		0\le\lambda_1\le\lambda_2\le\cdots,
+		\qquad \lambda_j\longrightarrow+\infty.
+	\]
+	各特征值均具有有限重数，\(\sigma(A)=\{\lambda_j:j\ge1\}\)。对 \(u=\sum_jc_je_j\in L^2(E)\)，有
+	\begin{equation}\label{g3:eq:spectral-domain}
+		u\in H^d(E)
+		\quad\Longleftrightarrow\quad
+		\sum_j(1+\lambda_j)^2|c_j|^2<\infty;
+	\end{equation}
+	此时 \(Au=\sum_j\lambda_jc_je_j\)，级数在 \(L^2\) 中收敛。
+\end{theorem}
+\begin{proof}
+	\(L^2(E)\) 可分：有限坐标平凡化中，以有理阶梯函数逼近各分量，再用固定单位分解拼合，可得可数稠密集；它又因正维坐标球中可选择无限多个线性独立紧支截面而无限维。将紧谱定理用于\cref{g3:thm:positive-elliptic-realization}的 \(R=(A+I)^{-1}\)。因 \(R\) 单射，所得基向量的特征值 \(\mu_j\) 均为正，\(\mu_j\to0\)。从 \(e_j=\mu_j^{-1}Re_j\) 知 \(e_j\in H^d\)，且
+	\[
+		Ae_j=(\mu_j^{-1}-1)e_j.
+	\]
+	令 \(\lambda_j=\mu_j^{-1}-1\)。由非负性，\(\lambda_j\ge0\)，其有限重数与趋于正无穷均由 \(\mu_j\) 的性质得到。方程 \(Pe_j=\lambda_je_j\) 反复应用\cref{g3:thm:elliptic-distribution-l2}，使 \(e_j\) 依次属于 \(H^{2d},H^{3d},\ldots\)，故由高阶嵌入\cref{g3:cor:higher-sobolev-embedding}有光滑代表。
+
+	若 \(u\in H^d\)，形式伴随恒等式给出 \(\langle Au,e_j\rangle=\lambda_jc_j\)。平方和恒等式说明 \(\sum_j\lambda_j^2|c_j|^2=\|Au\|_2^2\)，再加上 \(u\in L^2\)，即得式\eqref{g3:eq:spectral-domain}的必要性。反之，若该带权平方和有限，则部分和 \(u_N=\sum_{j\le N}c_je_j\) 及 \(Pu_N\) 分别在 \(L^2\) 中为 Cauchy 列。\Cref{g3:thm:global-elliptic-hk}给出
+	\[
+		\|u_N-u_K\|_{H^d}
+		\le C\bigl(\|P(u_N-u_K)\|_2+\|u_N-u_K\|_2\bigr).
+	\]
+	故它们在 \(H^d\) 中收敛；其 \(L^2\) 极限是 \(u\)，这就证明充分性及 \(Au\) 的展开。
+
+	每个 \(\lambda_j\) 显然不属于预解集。若 \(z\) 不等于任何 \(\lambda_j\)，由 \(\lambda_j\to+\infty\)，有
+	\[
+		\inf_j|\lambda_j-z|>0,\qquad
+		\sup_j\frac{1+\lambda_j}{|\lambda_j-z|}<\infty.
+	\]
+	因此对 \(f=\sum_jf_je_j\)，级数
+	\[
+		u=\sum_j\frac{f_j}{\lambda_j-z}e_j
+	\]
+	定义一个 \(H^d\) 截面，满足 \((A-zI)u=f\)，且 \(L^2\) 范数由 \(C_z\|f\|_2\) 控制。逐个系数又给出唯一性，故 \(z\in\rho(A)\)。这证明了整个谱的描述，而不只是列出若干特征值。
+\end{proof}
+
+\begin{example}\label{g3:exm:circle-elliptic-spectrum}
+	在周长 \(2\pi\) 的圆周上，取 \(P=-\partial_x^2\)。解常微分方程 \(-u''=\lambda u\) 并施加函数及一阶导数的周期条件，得到零特征空间为常数，正特征值为 \(k^2\)、\(k\ge1\)，每个复特征空间由 \(e^{\mathrm ikx},e^{-\mathrm ikx}\) 张成。上述定理保证除此之外没有缺失的 \(L^2\) 方向。因此
+	\[
+		e_k(x)=(2\pi)^{-1/2}e^{\mathrm ikx},\qquad k\in\mathbb Z,
+	\]
+	构成正交归一基，\(Re_k=(1+k^2)^{-1}e_k\)，而 \(G_Pe_0=0\)、\(G_Pe_k=k^{-2}e_k\) 对 \(k\ne0\) 成立。原算子在高频上增长，两个逆算子的高频作用却衰减，这正是紧性的具体表现。
+\end{example}
 
 \subsection{谱展开的范数与正则性}
 \label{g3:subsec:1303:04}
-待撰写
+特征展开不仅描述 \(L^2\) 函数，还可记录导数范数。最直接的版本按算子的整数次幂计数；它已经足以识别光滑截面，并控制谱截断在每个固定导数阶数中的误差。
+
+\begin{theorem}\label{g3:thm:elliptic-spectral-sobolev}
+	设 \(M\) 为非空、紧且无边界的正维光滑黎曼流形，\(E\to M\) 为正秩光滑复 Hermitian 丛，\(P\) 为光滑、形式自伴、非负的 \(d\ge1\) 阶椭圆微分算子。取\cref{g3:thm:elliptic-discrete-spectrum}的特征基，写 \(u=\sum_jc_je_j\in L^2(E)\)。对每个整数 \(q\ge0\)，有
+	\begin{equation}\label{g3:eq:spectral-sobolev-weight}
+		u\in H^{qd}(E)
+		\quad\Longleftrightarrow\quad
+		\sum_j(1+\lambda_j)^{2q}|c_j|^2<\infty,
+	\end{equation}
+	并且存在只依赖 \(P,q\) 及所固定几何数据的正数 \(c_q,C_q\)，使
+	\[
+		c_q\|u\|_{H^{qd}}^2
+		\le\sum_j(1+\lambda_j)^{2q}|c_j|^2
+		\le C_q\|u\|_{H^{qd}}^2.
+	\]
+	特别地，\(u\) 有光滑代表当且仅当这些带权平方和对每个 \(q\) 都有限；此时特征展开在每个 \(C^r\) 范数中收敛。
+\end{theorem}
+\begin{proof}
+	\(q=0\) 正是正交归一展开的平方和恒等式。设 \(q\ge1\)，令 \(B_q=(P+I)^q\)，这是阶数 \(qd\) 的光滑椭圆算子：其最高阶主符号为 \(\sigma_d(P)^q\)，在非零余切方向上仍可逆。对 \(u\in H^{qd}\)，光滑稠密性及逐次形式伴随给出
+	\[
+		\langle B_qu,e_j\rangle=(1+\lambda_j)^qc_j,
+		\qquad
+		\|B_qu\|_2^2=\sum_j(1+\lambda_j)^{2q}|c_j|^2.
+	\]
+	微分算子的有界性给出右侧至多为 \(C_q\|u\|_{H^{qd}}^2\)。另一方面，对 \(B_q\) 使用\cref{g3:thm:global-elliptic-hk}，得
+	\[
+		\|u\|_{H^{qd}}\le C\bigl(\|B_qu\|_2+\|u\|_2\bigr)
+		\le2C\|B_qu\|_2,
+	\]
+	最后一步使用 \((1+\lambda_j)^q\ge1\)。这证明了范数等价及必要性。
+
+	若带权平方和有限，对光滑有限和 \(u_N=\sum_{j\le N}c_je_j\) 应用刚才的估计，便知 \(u_N\) 在 \(H^{qd}\) 中为 Cauchy 列。其极限的 \(L^2\) 展开为 \(u\)，故 \(u\in H^{qd}\)，并在取极限后保留全部恒等式与不等式。
+
+	光滑截面在紧流形上具有所有整数阶 Sobolev 范数。反之，若每个 \(q\) 的带权平方和有限，对任意整数 \(r\ge0\)，选择 \(qd>r+\dim M/2\)。高阶 Sobolev 嵌入\cref{g3:cor:higher-sobolev-embedding}给出 \(H^{qd}(E)\hookrightarrow C^r(E)\)。因此 \(u\) 的各个连续代表相容，并具有任意阶连续导数；同时 \(u_N\to u\) 在 \(H^{qd}\) 中收敛，故也在 \(C^r\) 中收敛。
+\end{proof}
+
+上述正则性判据中的衰减是带权平方可和条件，导数阶数由权重的幂明确计量。它还使 Green 算子具有可直接使用的谱公式：
+\begin{equation}\label{g3:eq:green-spectral-series}
+	G_Pf=\sum_{\lambda_j>0}\frac{\langle f,e_j\rangle}{\lambda_j}e_j,
+	\qquad
+	\Pi_Pf=\sum_{\lambda_j=0}\langle f,e_j\rangle e_j.
+\end{equation}
+对 \(f\in L^2\)，第一式在 \(H^d\) 中收敛，因为正特征值有正的最小值，且 \((1+\lambda_j)/\lambda_j\) 在正谱上一致有界。所得截面满足正交核条件和方程，故由唯一性就是先前构造的 \(G_Pf\)。这把可解性、规范解与特征展开联系在同一算子上。
+
+\begin{corollary}\label{g3:cor:spectral-truncation-error}
+	设 \(M\) 为非空、紧且无边界的正维光滑黎曼流形，\(E\to M\) 为正秩光滑复 Hermitian 丛，\(P\) 为光滑、形式自伴、非负的 \(d\ge1\) 阶椭圆算子。令 \(\Pi_{\le L}\) 为其特征值不超过 \(L\ge0\) 的有限维特征空间之和上的 \(L^2\) 正交投影。对每个整数 \(q\ge0\) 及 \(u\in H^{(q+1)d}(E)\)，有
+	\[
+		\|(I-\Pi_{\le L})u\|_{H^{qd}}
+		\le\frac{C_q}{1+L}\|u\|_{H^{(q+1)d}}.
+	\]
+\end{corollary}
+\begin{proof}
+	在 \(\lambda_j>L\) 的项上有
+	\((1+\lambda_j)^{2q}\le(1+L)^{-2}(1+\lambda_j)^{2(q+1)}\)。乘以 \(|c_j|^2\) 求和，再对两端使用式\eqref{g3:eq:spectral-sobolev-weight}的范数等价，开平方即得结论。
+\end{proof}
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 11.4 Poincaré 不等式与几何常数
 % 纲要位置：几何学计划纲要.md，第 2527 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,199 @@
 \section{Poincaré 不等式与几何常数}
 \label{g3:sec:1104}
 
-待撰写
+控制导数只能控制函数的变化，不能直接控制加在函数上的常数。\term[Poincare bu deng shi]{Poincaré 不等式}[Poincaré inequality]由梯度估计函数本身，须给出一个归一化条件：在边界处取零，或把平均值减去。局部不等式由线段上的积分得到；到了整个流形，还要比较相邻坐标片上各自减去的常数。这个比较也说明，不等式中的常数究竟记录了哪些几何信息。
 
 \subsection{零边界和零均值两种版本}
 \label{g3:subsec:1104:01}
-待撰写
+对正测度、有限测度的集合 \(A\)，记
+\[
+	u_A=\frac1{\mu(A)}\int_Au\,\mathrm d\mu.
+\]
+在 Euclid 空间用 \(\mathrm dx\)，在黎曼流形用 \(\mu_g\)。这里的平均值是标量函数的平均；一般向量丛的不同纤维不能直接相加。
+\symidx{\(u_A\)：函数在集合 \(A\) 上的平均值}
+
+\begin{theorem}[Poincaré 不等式]\label{g3:thm:poincare-zero-boundary}
+	设 \(\Omega\subset\mathbb R^n\) 为开集，\(n\ge1\)、\(1\le p<\infty\)。若存在单位向量 \(e\) 及实数 \(a<b\)，使 \(a<x\cdot e<b\) 对一切 \(x\in\Omega\) 成立，则每个 \(u\in W^{1,p}_0(\Omega)\) 都满足
+	\begin{equation}\label{g3:eq:poincare-zero-boundary}
+		\|u\|_{L^p(\Omega)}\le(b-a)\|\partial_eu\|_{L^p(\Omega)}
+		\le(b-a)\|\mathrm D u\|_{L^p(\Omega)}.
+	\end{equation}
+	特别地，每个有界开集都满足零边界版本，无需另加边界光滑性。
+\end{theorem}
+\begin{proof}
+	旋转坐标使 \(e\) 为第一坐标方向。先取 \(u\in C_c^\infty(\Omega)\)，将它在 \(\mathbb R^n\setminus\Omega\) 上补为零。这个补零函数仍光滑。对固定 \(x'=(x_2,\ldots,x_n)\)，微积分基本定理和 Hölder 不等式给出
+	\[
+		|u(t,x')|\le\int_a^b|\partial_1u(s,x')|\,\mathrm ds,
+		\qquad
+		|u(t,x')|^p\le(b-a)^{p-1}\int_a^b|\partial_1u(s,x')|^p\,\mathrm ds.
+	\]
+	对 \(t\in(a,b)\) 再积分，得到因子 \((b-a)^p\)；随后对 \(x'\) 积分并开 \(p\) 次方，便得结论。\(p=1\) 时同样成立，不需要共轭指数有限。最后按 \(W^{1,p}_0\) 的定义取紧支光滑逼近，把不等式传到极限。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:poincare-convex-mean}
+	设 \(\Omega\subset\mathbb R^n\) 为非空有界凸开集，\(D=\operatorname{diam}\Omega\)、\(1\le p<\infty\)。则每个 \(u\in W^{1,p}(\Omega)\) 都满足
+	\begin{equation}\label{g3:eq:poincare-convex-mean}
+		\|u-u_\Omega\|_{L^p(\Omega)}\le2^{n/p}D\|\mathrm D u\|_{L^p(\Omega)}.
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	先取光滑函数。平均值和线段积分分别给出
+	\[
+	\begin{aligned}
+		\int_\Omega|u-u_\Omega|^p\,\mathrm dx
+		&\le\frac1{|\Omega|}\int_{\Omega\times\Omega}|u(x)-u(y)|^p\,\mathrm dx\,\mathrm dy,\\
+		|u(x)-u(y)|^p
+		&\le D^p\int_0^1|\mathrm D u((1-t)y+tx)|^p\,\mathrm dt.
+	\end{aligned}
+	\]
+	第二式中整条线段留在 \(\Omega\)，这正是凸性的作用。为了避免换元在 \(t=0\) 处产生无界因子，将 \(t\) 积分分成两半。在 \(1/2\le t\le1\) 上固定 \(y\)，令 \(z=(1-t)y+tx\)，其 Jacobian 因子为 \(t^{-n}\le2^n\)，而 \(z\) 的范围仍在 \(\Omega\) 内，故
+	\[
+		\int_{\Omega\times\Omega}|\mathrm D u((1-t)y+tx)|^p\,\mathrm dx\,\mathrm dy
+		\le2^n|\Omega|\int_\Omega|\mathrm D u|^p\,\mathrm dz.
+	\]
+	\(0\le t\le1/2\) 的部分交换 \(x,y\) 后相同。合并两段，抵消 \(|\Omega|\)，即得式\eqref{g3:eq:poincare-convex-mean}的 \(p\) 次方。\Cref{g3:thm:sobolev-smooth-density}允许在任意开集内部作 \(W^{1,p}\) 光滑逼近；平均值也随 \(L^p\) 收敛而收敛，所以不等式适用于全部 \(W^{1,p}\) 函数。
+\end{proof}
+
+在半径 \(r\) 的 Euclid 球上，右侧常数因而可取 \(2^{1+n/p}r\)。零边界版本通过补零确定了常数，零均值版本通过平均值确定了常数；两者都能使 \(\|\mathrm D u\|_{L^p}\) 成为相应子空间上的等价范数。
 
 \subsection{连通性及常数核}
 \label{g3:subsec:1104:02}
-待撰写
+连通性决定有多少个常数需要消除。这个事实对弱导数同样成立。
+
+\begin{proposition}\label{g3:prop:weak-gradient-constant}
+	设 \(M\) 为连通光滑黎曼流形，允许非紧，且 \(u\in W^{1,1}_{\mathrm{loc}}(M)\) 为实值或复值函数。若 \(\mathrm du=0\) 几乎处处，则 \(u\) 几乎处处等于一个常数。
+\end{proposition}
+\begin{proof}
+	在一个像为 Euclid 球的相对紧坐标片上，弱坐标变换把 \(\mathrm du=0\) 化为所有偏导数为零。由\cref{g3:prop:poincare-convex-mean}的 \(p=1\) 版本，\(u\) 在该坐标片几乎处处为常数。两个这样的片若相交，交集是非空开集，具有正体积，因而两常数相等。
+
+	把可以通过有限条相交坐标片链连接的片归为一类。各类的并都是开集，不同类互不相交；连通性使只有一类。因此全部局部常数相同。
+\end{proof}
+
+若 \(M\) 有多个连通分支，则梯度的核由各分支上分别常值的函数组成。例如两个体积都为一的闭流形之不交并上，在两分支分别取 \(1\) 与 \(-1\)，所得函数总平均值为零、梯度为零，却不是零函数。总平均值条件因此不能替代逐分支归一化。
+
+\ProseParagraphBreak
+
+对固定连通闭流形，考虑
+\[
+	W^{1,p}_{\mathrm{av}}(M)=\left\{u\in W^{1,p}(M):\int_Mu\mu_g=0\right\}.
+\]
+积分是连续线性泛函，所以这是闭子空间。要证明梯度范数与原范数等价，还须给出统一的不等式；“梯度的核只有常数”本身只是定性的唯一性。下面从局部估计直接构造这个常数。
 
 \subsection{从局部球到整体的覆盖论证}
 \label{g3:subsec:1104:03}
-待撰写
+取有限个坐标片 \(U_1,\ldots,U_N\) 覆盖闭流形，每个坐标像是 Euclid 球，且坐标映射延伸到较大的坐标片。坐标度量矩阵、逆矩阵与体积密度在各片闭包上有统一界。将\cref{g3:prop:poincare-convex-mean}转回流形，并比较坐标平均值与体积平均值，可得
+\begin{equation}\label{g3:eq:local-poincare-cover}
+	\|u-m_i\|_{L^p(U_i)}\le P_i\|\mathrm du\|_{L^p(U_i)},
+	\qquad m_i=u_{U_i}.
+\end{equation}
+这里 \(P_i\) 由坐标球半径、度量的上下界与 \(p\) 决定。平均值的更换只增加有限因子：对任意常数 \(a\)，Hölder 不等式给出
+\[
+	|m_i-a|\,\operatorname{Vol}(U_i)^{1/p}\le\|u-a\|_{L^p(U_i)},
+	\qquad
+	\|u-m_i\|_{L^p(U_i)}\le2\|u-a\|_{L^p(U_i)}.
+\]
+
+\begin{theorem}\label{g3:thm:poincare-compact-connected}
+	设 \((M^n,g)\) 为非空、连通、紧且无边界的光滑黎曼流形，\(n\ge1\)、\(1\le p<\infty\)。则存在 \(C=C(M,g,p)\)，使每个实值或复值 \(u\in W^{1,p}(M)\) 满足
+	\begin{equation}\label{g3:eq:poincare-compact-connected}
+		\|u-u_M\|_{L^p(M)}\le C\|\mathrm du\|_{L^p(M)}.
+	\end{equation}
+	常数可由有限坐标覆盖的局部常数 \(P_i\)、各片体积及一个连接全部坐标片的相交链系中的交叠体积确定。
+\end{theorem}
+\begin{proof}
+	以坐标片为顶点，把非空相交的两片连边。这个有限图连通：否则不同图分支中的坐标片之并将把 \(M\) 分为互不相交的非空开集。固定根片 \(U_1\)，为每个 \(U_i\) 选一条连接到 \(U_1\) 的边路径。
+
+	对一条边 \((i,j)\)，令 \(w_{ij}=\operatorname{Vol}(U_i\cap U_j)>0\)。在交集上对常数差积分，利用式\eqref{g3:eq:local-poincare-cover}，得到
+	\[
+	\begin{aligned}
+		|m_i-m_j|w_{ij}^{1/p}
+		&\le\|u-m_i\|_{L^p(U_i\cap U_j)}+\|u-m_j\|_{L^p(U_i\cap U_j)}\\
+		&\le(P_i+P_j)\|\mathrm du\|_{L^p(M)}.
+	\end{aligned}
+	\]
+	沿所选路径相加，得 \(|m_i-m_1|\le A_i\|\mathrm du\|_{L^p(M)}\)，其中
+	\[
+		A_i=\sum_{(a,b)\text{ 在所选路径上}}w_{ab}^{-1/p}(P_a+P_b),\qquad A_1=0.
+	\]
+	设 \(V_i=\operatorname{Vol}(U_i)\)，则
+	\[
+		\|u-m_1\|_{L^p(U_i)}\le(P_i+V_i^{1/p}A_i)\|\mathrm du\|_{L^p(M)}.
+	\]
+	覆盖整个 \(M\) 后，对这些估计的 \(p\) 次方求和，得到
+	\[
+		\|u-m_1\|_{L^p(M)}\le C_0\|\mathrm du\|_{L^p(M)},
+		\qquad C_0=\left[\sum_{i=1}^N(P_i+V_i^{1/p}A_i)^p\right]^{1/p}.
+	\]
+	最后用体积平均值替换 \(m_1\)，由前述平均值估计至多增加因子二，即可取 \(C=2C_0\)。
+\end{proof}
+
+同一论证可用于由有限个坐标球或半球覆盖的紧连通光滑带边界流形：局部坐标像仍凸，体积权重有上下界，相交图也连通。这里采用 \(W^{1,p}\) 的全空间平均值，不要求边界值为零。一般丛值截面则需把联络的平行截面作为核处理，不能直接减去一个跨越不同纤维的“常数向量”。
 
 \subsection{体积、尺度和几何控制的作用}
 \label{g3:subsec:1104:04}
-待撰写
+将度量整体放大为 \(g_r=r^2g\)，体积和函数梯度的范数分别变化为
+\begin{equation}\label{g3:eq:poincare-metric-scaling}
+	\mu_{g_r}=r^n\mu_g,\qquad
+	\|u\|_{L^p(g_r)}=r^{n/p}\|u\|_{L^p(g)},\qquad
+	\|\mathrm du\|_{L^p(g_r)}=r^{n/p-1}\|\mathrm du\|_{L^p(g)}.
+\end{equation}
+平均值不变，所以最佳 Poincaré 常数恰好乘以 \(r\)。如果改用归一化范数
+\(\|u\|_{p,\mathrm{av}}=(\operatorname{Vol}M)^{-1/p}\|u\|_{L^p}\)，函数范数在整体缩放下不变，梯度范数仍乘以 \(r^{-1}\)，故长度因子仍必须保留。
+
+\begin{example}\label{g3:exm:thin-torus-analytic-constants}
+	在平坦环面 \(T_{L,h}=S^1_L\times S^1_h\) 上固定 \(L>0\)，令 \(0<h\le L\)。虽然体积 \(Lh\to0\)，零均值 Poincaré 常数仍可统一控制。
+
+	事实上，把函数写为 \(u=(u-v)+v\)，其中
+	\[
+		v(x)=\frac1h\int_0^hu(x,y)\,\mathrm dy.
+	\]
+	对每个 \(x\) 在区间 \((0,h)\) 使用\cref{g3:prop:poincare-convex-mean}，再对 \(x\) 积分，得到
+	\(\|u-v\|_{L^p(T_{L,h})}\le2^{1/p}h\|\partial_yu\|_{L^p(T_{L,h})}\)。对 \(v\) 在 \((0,L)\) 应用同一不等式，并用平均值的导数公式和 Hölder 不等式，得到
+	\[
+		\|v-u_{T_{L,h}}\|_{L^p(T_{L,h})}
+		\le2^{1/p}L\|\partial_xu\|_{L^p(T_{L,h})}.
+	\]
+	先对光滑函数计算，再由稠密性取极限，故所有 \(W^{1,p}\) 函数均有
+	\[
+		\|u-u_{T_{L,h}}\|_{L^p}\le2^{1+1/p}L\|\mathrm du\|_{L^p}.
+	\]
+
+	另一方面，取 \(1\le p<2\)、\(p^*=2p/(2-p)\)。若未归一化的 Sobolev 不等式写作
+	\(\|u\|_{L^{p^*}}\le C_h(\|\mathrm du\|_{L^p}+\|u\|_{L^p})\)，代入常数函数一即得
+	\[
+		C_h\ge(Lh)^{1/p^*-1/p}=(Lh)^{-1/2}\longrightarrow\infty.
+	\]
+	因此，即使在同一个塌缩模型上，零均值 Poincaré 常数与含零阶项的 Sobolev 常数也有不同的几何依赖。
+\end{example}
+
+\begin{example}\label{g3:exm:thin-neck-poincare}
+	直径有界、体积有正下界，并不足以统一控制零均值 Poincaré 常数。取 \(n\ge2\)，在 \(\mathbb R^n\) 中令
+	\[
+	\begin{aligned}
+		Q_-&=(-2,-1/2)\times(-1,1)^{n-1},\\
+		Q_+&=(1/2,2)\times(-1,1)^{n-1},\\
+		N_\varepsilon&=(-1,1)\times(-\varepsilon,\varepsilon)^{n-1},
+		\qquad\Omega_\varepsilon=Q_-\cup N_\varepsilon\cup Q_+,
+	\end{aligned}
+	\]
+	其中 \(0<\varepsilon<1\)。这是由细通道连接两间固定大小房间的有界连通开集。取
+	\[
+		u_\varepsilon(x)=\begin{cases}-1,&x_1\le-1/2,\\2x_1,&|x_1|<1/2,\\1,&x_1\ge1/2.\end{cases}
+	\]
+	它是 Lipschitz 函数，关于 \(x_1\) 为奇函数，所以平均值为零；两个房间上的 \(L^p\) 质量有固定正下界。其梯度只在通道的中段非零，且
+	\[
+		\int_{\Omega_\varepsilon}|\mathrm D u_\varepsilon|^p\,\mathrm dx
+		=2^p(2\varepsilon)^{n-1}\longrightarrow0.
+	\]
+	因此任何可用的零均值常数都至少以 \(c\varepsilon^{-(n-1)/p}\) 增长。这里缩小的是连接两个区域的横截面，正对应覆盖证明中小交叠体积导致的常数损失。
+\end{example}
+
+\begin{figure}[htbp]
+	\centering
+	\input{Figures/Ch11-PoincareNeck}
+	\caption{细颈区域的二维示意。两个房间保留固定体积，函数的变化集中于阴影所示的狭窄通道；通道变细时，梯度积分趋零而函数振幅保持不变。}
+	\label{g3:fig:poincare-neck}
+\end{figure}
+
+\Cref{g3:fig:poincare-neck}显示了通道变细怎样减小梯度积分。有限覆盖证明给出一种直接可核验的统一性条件：局部坐标度量的上下界、坐标尺度、片数、体积上界以及所选连接路径中交叠体积的正下界若可统一选择，则式\eqref{g3:eq:poincare-compact-connected}中的常数也可统一选择。它们是本证明实际使用的数据；仅有各个空间分别紧致，并不能把各自的常数换成同一个数。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

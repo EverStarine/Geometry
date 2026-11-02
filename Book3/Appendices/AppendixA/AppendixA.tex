@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：## 附录 A　伪黎曼与 Lorentz 几何
 % 纲要位置：几何学计划纲要.md，第 3351 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -27,44 +27,957 @@
 \label{g3:app:A}
 \BookChapterNumber{g3:app:A}
 
-待撰写
+\begin{chapterabstract}
+	伪黎曼度量保留非退化配对，却允许向量的平方长度有不同符号。Levi-Civita 联络、测地线方程和曲率仍能定义，长度的极值性质及整体几何则随之改变。本附录从 Lorentz 向量空间的光锥与逆 Cauchy--Schwarz 不等式出发，计算固有时、仿射参数和典型不完备模型，再由因果曲线建立时间定向、Cauchy 超曲面与全局双曲性的概念。静态乘积给出可完整证明的整体模型；奇点定理通过陷获面的聚焦机制与准确的外部定理陈述，说明局部曲率条件怎样约束整体因果结构。
+\end{chapterabstract}
+
+\begin{learninggoals}
+	\begin{itemize}
+		\item 用非退化性重建 Levi-Civita 联络，识别哪些证明真正使用了正定性。
+		\item 区分类时、类空与零方向，计算未来锥、固有时及共形改变后的零测地线参数。
+		\item 根据最大仿射参数区间检验测地完备性，并与辅助黎曼距离的完备性分别判断。
+		\item 在具体时空中求因果关系、检验 Cauchy 超曲面和因果菱形的紧性。
+		\item 按维数、曲率、陷获面及整体因果假设使用所选奇点定理，准确解释零测地不完备的结论。
+	\end{itemize}
+\end{learninggoals}
+
+在平面上把 \(\mathrm dt^2+\mathrm dx^2\) 改成 \(-\mathrm dt^2+\mathrm dx^2\)，矩阵仍然可逆，却出现了非零向量 \((1,1)\) 的平方长度为零的现象。于是，沿曲线积分“长度”不再产生原来那种距离：同一对事件之间可以存在不同固有时的类时曲线，而直线段取得的是最大固有时。时间和空间的区分、光锥的方向及曲线能否持续延伸，都需要各自的定义。
+
+\ProseParagraphBreak
+局部计算的许多部分仍然熟悉。Koszul 公式只须配对非退化，就能从度量解出联络；测地线仍满足二阶常微分方程，曲率仍描述平行移动与测地线族的变化。但从局部方程走向整体时，正定情形的距离紧性论证已经失去直接依据。例如，把 Minkowski 空间的时间坐标取周期商，所得度量完全平坦、测地线也能无限延伸，时空中却出现了闭合类时曲线。相反，一个有限时间条带可以有很好的 Cauchy 切片，却含有在有限仿射参数处停止的测地线。
+
+\ProseParagraphBreak
+本附录主要使用第1—3章的配对、联络、常微分方程与曲率，以及第2章中完备黎曼流形的最短测地线存在性。局部公式在不定配对下重新核对；整体性质先在静态乘积及其共形模型中直接证明。末节的 Penrose 型奇点定理按指定版本引用，正文在此前建立理解其条件所需的因果关系、零方向扩张与聚焦计算。
 
 \section{局部结构与测地线}
 \label{g3:sec:A01}
-待撰写
+
+黎曼度量的正定性有两种不同作用。它既使度量能够把向量与余向量对应起来，也使曲线长度成为非负、可比较的量。第一种作用只需非退化性，因而联络、曲率和测地线的局部方程仍可建立；第二种作用在不定情形发生改变。下面先保留局部微分几何的构造，再用时间方向上的长度极大性说明新的几何。
 
 \subsection{不定配对及 Levi-Civita 联络}
 \label{g3:subsec:A01:01}
-待撰写
+
+\begin{definition}\label{g3:def:A-pseudo-riemannian-metric}
+	设 \(M\) 为 \(n\) 维无边界光滑流形。若光滑对称二阶协变张量 \(g\) 在每个切空间上非退化，即
+	\[
+		g_p(v,w)=0\quad\text{对所有 }w\in\mathrm T_pM
+		\quad\Longrightarrow\quad v=0,
+	\]
+	则称 \(g\) 为\term[wei liman duliang]{伪黎曼度量}[pseudo-Riemannian metric]。其\term[fu zhishu]{负指数}[index]是每个切空间内使配对负定的子空间的最大维数。负指数为零时恢复黎曼度量；负指数为一、\(n\ge2\) 时，称为\term[Lorentz duliang]{Lorentz 度量}[Lorentz metric]。本附录约定时间方向取负号。%
+	\footnote{Hendrik Antoon Lorentz（1853--1928），荷兰物理学家，研究电磁理论和电子理论。}
+\end{definition}
+
+非退化并不意味着每个非零向量都与自身有非零配对。例如矩阵 \(\operatorname{diag}(-1,1)\) 可逆，但 \(v=(1,1)\) 满足 \(g(v,v)=0\)。非退化性排除的是与所有向量都正交的非零向量。它仍使
+\(v\mapsto g(v,\cdot)\) 成为切空间到余切空间的线性同构，逆矩阵 \(g^{ij}\) 也仍是光滑函数。
+
+\begin{proposition}\label{g3:prop:A-index-local-constant}
+	光滑伪黎曼度量的负指数局部常值，故在连通流形上为常数。若该常数为 \(q\)，则每一点附近存在光滑标架 \(e_1,\ldots,e_n\)，使
+	\[
+		g(e_a,e_b)=\epsilon_a\delta_{ab},\qquad
+		\epsilon_a=
+		\begin{cases}
+			-1,&a\le q,\\
+			1,&a>q.
+		\end{cases}
+	\]
+\end{proposition}
+\begin{proof}
+	在一点选择使配对对角化的基，延拓成局部标架。中心的负、正子空间分别记为 \(E^-\)、\(E^+\)。在各自单位球面的紧性作用下，负定或正定不等式都留有严格余量；度量矩阵连续，故附近点在同样的两个坐标子空间上仍分别负定、正定。它们的维数之和为 \(n\)，而惯性定律使正、负指数之和等于 \(n\)，所以两指数均不改变。
+
+	在上述局部标架中逐个作不定的正交化：已得到 \(e_1,\ldots,e_{a-1}\) 后，从第 \(a\) 个向量减去
+	\(\sum_{b<a}\epsilon_b g(v_a,e_b)e_b\)，再除以其自配对绝对值的平方根。在中心每一步的自配对非零，缩小邻域便使各分母始终非零，且符号保持为规定的 \(\epsilon_a\)。有限次运算均光滑，得到所需标架。
+\end{proof}
+
+这类标架通常不是坐标标架，向量场之间的括号可以非零。非退化性保证下面的联络构造，而无须把一个邻域内的度量系数同时化为常数。
+
+\begin{theorem}\label{g3:thm:A-pseudo-levi-civita}
+	每个光滑伪黎曼流形 \((M,g)\) 存在唯一的无挠且与 \(g\) 相容的光滑联络 \(\nabla\)。它满足
+	\begin{equation}\label{g3:eq:A-pseudo-koszul}
+	\begin{aligned}
+		2g(\nabla_XY,Z)
+		={}&Xg(Y,Z)+Yg(Z,X)-Zg(X,Y)\\
+		&-g(X,[Y,Z])+g(Y,[Z,X])+g(Z,[X,Y]).
+	\end{aligned}
+	\end{equation}
+	在任意坐标中，\(\nabla_{\partial_i}\partial_j=\Gamma^k_{ij}\partial_k\)，其中
+	\begin{equation}\label{g3:eq:A-pseudo-christoffel}
+		\Gamma^k_{ij}
+		=\frac12g^{k\ell}
+		\bigl(\partial_i g_{j\ell}+\partial_jg_{i\ell}
+		             -\partial_\ell g_{ij}\bigr).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	先设所求联络存在。把度量相容性分别用于 \(Xg(Y,Z)\)、\(Yg(Z,X)\)、\(Zg(X,Y)\)，将前两式相加再减去第三式，并用
+	\(\nabla_XY-\nabla_YX=[X,Y]\) 消去交换次序产生的项，即得式\eqref{g3:eq:A-pseudo-koszul}。右端由 \(g,X,Y,Z\) 完全确定；非退化性使与所有 \(Z\) 的配对唯一决定 \(\nabla_XY\)，所以至多有一个这样的联络。
+
+	为证明存在，将右端的一半记为 \(B(X,Y,Z)\)。乘积规则和
+	\([X,fY]=f[X,Y]+X(f)Y\) 给出
+	\[
+	\begin{aligned}
+		B(fX,Y,Z)&=fB(X,Y,Z),\\
+		B(X,fY,Z)&=fB(X,Y,Z)+X(f)g(Y,Z),\\
+		B(X,Y,fZ)&=fB(X,Y,Z).
+	\end{aligned}
+	\]
+	例如第三式中，除共同的 \(f\) 外，\(2B\) 多出的项恰为
+	\[
+		X(f)g(Y,Z)+Y(f)g(Z,X)
+		-Y(f)g(X,Z)-X(f)g(Y,Z)=0.
+	\]
+	第一式中的额外项为
+	\(Y(f)g(Z,X)-Z(f)g(X,Y)+Z(f)g(Y,X)-Y(f)g(Z,X)=0\)；
+	第二式则留下 \(2X(f)g(Y,Z)\)。故这些规则逐项成立。
+
+	第三条规则说明 \(B(X,Y,\cdot)\) 是光滑一形式。用非退化配对定义
+	\[
+		\nabla_XY=g^{ij}B(X,Y,\partial_i)\partial_j.
+	\]
+	这是光滑向量场；不同坐标所得向量与每个 \(Z\) 的配对相同，因而一致。前两条规则正是联络关于方向的函数线性和关于被求导向量的乘积规则，实双线性也直接成立。再将六项表达式交换输入，有
+	\[
+	\begin{aligned}
+		B(X,Y,Z)+B(X,Z,Y)&=Xg(Y,Z),\\
+		B(X,Y,Z)-B(Y,X,Z)&=g([X,Y],Z).
+	\end{aligned}
+	\]
+	第一式给出度量相容性，第二式连同非退化性给出无挠性。最后在坐标标架中所有括号为零，将 \(X,Y,Z\) 取为坐标向量，再乘逆矩阵，便得到 Christoffel 公式。
+\end{proof}
+
+这个证明恢复了\secref{g3:sec:0102}的构造，并指出真正使用的是配对可逆。沿曲线的平行移动仍保持 \(g\)：两个平行向量场 \(V,W\) 满足
+\(\frac{\mathrm d}{\mathrm ds}g(V,W)=0\)。曲率继续采用本卷的约定
+\[
+	R(X,Y)Z=\nabla_X\nabla_YZ-\nabla_Y\nabla_XZ-\nabla_{[X,Y]}Z.
+\]
+因此从联络导出的张量恒等式仍可使用；涉及正长度、正定范数或距离极小性的结论则要重新核对。
 
 \subsection{时间、空间和零向量}
 \label{g3:subsec:A01:02}
-待撰写
+
+负指数为一时，非零向量被自配对的符号分成三类。局部正交标架使这种分类成为一个明确的二次不等式，而不是坐标中某个分量名称的约定。
+
+\begin{definition}\label{g3:def:A-causal-vector-types}
+	在 Lorentz 向量空间 \((E,g)\) 中，非零向量 \(v\) 若满足 \(g(v,v)<0\)、\(g(v,v)>0\) 或 \(g(v,v)=0\)，分别称为\term[leishi xiangliang]{类时向量}[timelike vector]、\term[leikong xiangliang]{类空向量}[spacelike vector]或\term[ling xiangliang]{零向量}[null vector]。这里“零向量”指自配对为零的非零向量，代数中的 \(0\) 向量单独记为 \(0\)。类时或零向量统称\term[yinguo xiangliang]{因果向量}[causal vector]。
+\end{definition}
+
+也可把 null vector 称为类光向量，以便与代数的零元区别。本附录的光锥均由这些非零零向量及顶点 \(0\) 组成。
+
+\ProseParagraphBreak
+选一个满足 \(g(T,T)=-1\) 的类时向量。其正交补 \(T^\perp\) 上的配对正定：它非退化，否则该子空间中的根向量也与整个 \(E=\mathbb RT\oplus T^\perp\) 正交；而它不能再有负方向，否则负指数至少为二。因此每个向量唯一写成
+\[
+	v=aT+x,\qquad x\in T^\perp,\qquad
+	a=-g(v,T),\qquad g(v,v)=-a^2+|x|^2.
+\]
+类时向量集合恰有两个连通分支，分别为 \(a>|x|\) 与 \(a<-|x|\)。称包含 \(T\) 的分支为未来类时锥；其非零闭包为未来因果锥。于是 \(v\) 未来因果当且仅当 \(a\ge|x|\) 且 \(a>0\)。两个类时分支各自凸，故各自连通，而连续路径不可能在不穿过 \(a=0\) 的情况下从一支走到另一支。
+
+\begin{proposition}\label{g3:prop:A-reverse-cauchy-schwarz}
+	在负指数为一的 Lorentz 向量空间内，若 \(v,w\) 为同一未来锥中的非零因果向量，记
+	\(\ell(v)=\sqrt{-g(v,v)}\)，则
+	\begin{equation}\label{g3:eq:A-reverse-cauchy-schwarz}
+		-g(v,w)\ge\ell(v)\ell(w).
+	\end{equation}
+	等号成立当且仅当 \(v,w\) 正比例。未来因果锥加上 \(0\) 是凸锥，且
+	\[
+		\ell(v+w)\ge\ell(v)+\ell(w).
+	\]
+	若其中一个向量类时，或二者为不成比例的零向量，则 \(v+w\) 类时。
+\end{proposition}
+\begin{proof}
+	写 \(v=aT+x\)、\(w=bT+y\)，令 \(r=|x|\)、\(s=|y|\)。未来条件给出 \(a\ge r\)、\(b\ge s\)，且 \(a,b>0\)。Euclid 的 Cauchy--Schwarz 不等式先给
+	\[
+		-g(v,w)=ab-\langle x,y\rangle\ge ab-rs\ge0.
+	\]
+	其次
+	\[
+		(ab-rs)^2-(a^2-r^2)(b^2-s^2)=(as-br)^2\ge0,
+	\]
+	所以开平方得到所需不等式。若取等，须有
+	\(\langle x,y\rangle=rs\) 和 \(as=br\)。当 \(r,s>0\) 时，前一条件使空间分量同向，后一条件使 \((a,x)\)、\((b,y)\) 正比例；当 \(r=0\) 或 \(s=0\) 时，后一条件使两者都为零，仍得到正比例。反向验证直接成立。
+
+	对两个未来因果向量，有
+	\(|x+y|\le|x|+|y|\le a+b\)，故和仍未来因果；与非负数相乘也保持这一性质。若有一个类时，则第二个不等式严格；若二者均零且不成比例，则第一个不等式严格。因此得到关于和的类时性的结论。最后
+	\[
+		\ell(v+w)^2
+		=\ell(v)^2+\ell(w)^2-2g(v,w)
+		\ge\bigl(\ell(v)+\ell(w)\bigr)^2,
+	\]
+	再次开平方即得反向三角不等式。
+\end{proof}
+
+在 Lorentz 流形上，每个切空间都有两支类时锥，但“未来”需要在不同点之间连续选择。这样的选择称为\term[shijian dingxiang]{时间定向}[time orientation]；一个处处类时的连续向量场指定它所处的一支，便给出时间定向。局部总能从上面的正交标架中作这种选择；整体能否选择是另一个问题，见\subsecref{g3:subsec:A02:01}。给定未来单位类时场 \(T\) 后，未来因果向量正由 \(g(v,T)<0\) 确定。
+
+\begin{figure}[htbp]
+	\centering
+	\begin{tikzpicture}[scale=1.05]
+		\fill[blue!8] (0,0)--(-1.9,1.9)--(1.9,1.9)--cycle;
+		\fill[blue!8] (0,0)--(-1.9,-1.9)--(1.9,-1.9)--cycle;
+		\draw[->] (-2.4,0)--(2.5,0) node[right]{\(x\)};
+		\draw[->] (0,-2.15)--(0,2.3) node[above]{\(a\)};
+		\draw[thick] (-1.95,-1.95)--(1.95,1.95);
+		\draw[thick] (-1.95,1.95)--(1.95,-1.95);
+		\node at (0.0,1.45) {未来类时};
+		\node at (0.0,-1.45) {过去类时};
+		\node at (1.7,0.45) {类空};
+		\node[above right] at (1.65,1.65) {零方向};
+	\end{tikzpicture}
+	\caption{二维 Lorentz 切空间中的 \(g(v,v)=-a^2+x^2\)：锥内类时，锥面为零方向，锥外类空。}
+	\label{g3:fig:A-light-cone}
+\end{figure}
+
+\begin{example}\label{g3:exm:A-minkowski-model}
+	设 \(m\ge1\)，在 \(\mathbb R^{1+m}\) 上取
+	\[
+		\eta=-\mathrm dt^2+\sum_{i=1}^m(\mathrm dx^i)^2,
+		\qquad T=\partial_t.
+	\]
+	这称为\term[Minkowski kongjian]{Minkowski 空间}[Minkowski space]。%
+	\footnote{Hermann Minkowski（1864--1909），德国数学家，研究数的几何，并以时空几何表述相对论。}
+	由于度量系数为常数，Christoffel 符号全为零，曲率也为零。在二维截面中，向量 \(\partial_t\) 类时，\(\partial_x\) 类空，\(\partial_t+\partial_x\) 与 \(\partial_t-\partial_x\) 均为未来零向量。未来锥由 \(v^0\ge|\mathbf v|\)、\(v^0>0\) 给出；光锥的边界斜率不依赖向量的大小。
+\end{example}
 
 \subsection{测地线和光锥}
 \label{g3:subsec:A01:03}
-待撰写
+
+联络已确定，测地线仍由速度的平行性定义。正定性不参与这个微分方程；它影响的是如何解释解的长度及其与其他曲线的比较。
+
+\begin{proposition}\label{g3:prop:A-geodesics-exponential}
+	设 \((M,g)\) 为光滑伪黎曼流形。任意初值 \((p,v)\in\mathrm TM\) 有唯一最大仿射参数测地线 \(\gamma_{p,v}\)，满足
+	\[
+		\nabla_{\dot\gamma}\dot\gamma=0,\qquad
+		\gamma(0)=p,\quad\dot\gamma(0)=v.
+	\]
+	解对时间和初值光滑依赖，且 \(g(\dot\gamma,\dot\gamma)=g_p(v,v)\) 恒定。每点的指数映射
+	\(\exp_pv=\gamma_{p,v}(1)\) 在 \(0\) 的一个邻域有定义，并在更小邻域上为微分同胚。在 Lorentz 情形，非恒值测地线的类时、类空或零类型保持不变；若已选时间定向，因果测地线的未来或过去方向也保持不变。
+\end{proposition}
+\begin{proof}
+	坐标中的方程是
+	\[
+		\frac{\mathrm dx^k}{\mathrm ds}=v^k,\qquad
+		\frac{\mathrm dv^k}{\mathrm ds}
+		=-\Gamma^k_{ij}(x)v^iv^j.
+	\]
+	它是切丛上的光滑常微分方程。坐标变换时，速度变换的二阶项与 Christoffel 变换的二阶项抵消，因而定义整体光滑向量场。\cref{g3:thm:geodesic-ivp}证明中使用的光滑常微分方程初值定理，直接给出唯一最大解、开定义域及光滑依赖；这里所需的系数光滑性已由式\eqref{g3:eq:A-pseudo-christoffel}保证。
+
+	度量相容性给
+	\[
+		\frac{\mathrm d}{\mathrm ds}g(\dot\gamma,\dot\gamma)
+		=2g(\nabla_{\dot\gamma}\dot\gamma,\dot\gamma)=0.
+	\]
+	若速度在某时刻为零，初值唯一性使整条解恒值，故非恒值解不会从零类型退化成零速度。对因果速度，\(-g(\dot\gamma,T)\) 连续且始终非零，其符号不变，这证明时间方向的保持。
+
+	常值解存在于所有时间，所以时间一的定义域包含零截面的开邻域。仿射重参数和初值唯一性给出
+	\(\gamma_{p,av}(s)=\gamma_{p,v}(as)\)，于是
+	\(\exp_p(sv)=\gamma_{p,v}(s)\)。在 \(s=0\) 求导，得到
+	\(\mathrm d(\exp_p)_0v=v\)。逆函数定理使 \(\exp_p\) 在零向量的某个邻域上可逆。可在切空间中另取一个正定辅助范数，把该邻域缩成小的星形球 \(U\)，这就给出所需的法坐标。
+\end{proof}
+
+这里的星形球按辅助正定范数选取。不定二次式 \(g_p(v,v)\) 的次水平集不能充当这个坐标球：它含有任意大的零方向向量。
+
+\begin{proposition}\label{g3:prop:A-exponential-light-cone}
+	设 \((M,g)\) 为 Lorentz 流形，\(\exp_p:U\to V\) 为上一个命题给出的星形法坐标邻域。则
+	\begin{equation}\label{g3:eq:A-pseudo-gauss-lemma}
+		g_{\exp_pv}\bigl(\mathrm d\exp_p|_v(v),
+		                     \mathrm d\exp_p|_v(w)\bigr)=g_p(v,w).
+	\end{equation}
+	集合
+	\[
+		\mathcal N_p=\exp_p\{v\in U\setminus\{0\}:g_p(v,v)=0\}
+	\]
+	是 \(V\setminus\{p\}\) 内的光滑超曲面，由从 \(p\) 发出的零测地线生成；其切空间上的诱导配对退化，径向零方向为其根方向。
+\end{proposition}
+\begin{proof}
+	对固定 \(v,w\) 取变分 \(F(a,s)=\exp_p(s(v+aw))\)，\(0\le s\le1\)，缩小 \(a\) 的范围以保证有定义。记 \(X=\partial_sF\)、\(Y=\partial_aF\)。每条 \(s\) 曲线均为仿射测地线，故 \(\nabla_sX=0\)；无挠性给出 \(\nabla_sY=\nabla_aX\)。于是
+	\[
+		\frac{\partial}{\partial s}g(X,Y)
+		=\frac12\frac{\partial}{\partial a}g(X,X)
+		=g_p(v+aw,w).
+	\]
+	在 \(s=0\) 有 \(Y=0\)，积分并取 \(a=0,s=1\)，得到式\eqref{g3:eq:A-pseudo-gauss-lemma}。
+
+	切空间内函数 \(Q(v)=g_p(v,v)\) 的微分为
+	\(\mathrm dQ_v(w)=2g_p(v,w)\)，当 \(v\ne0\) 时由非退化性知它非零。因此 \(Q^{-1}(0)\setminus\{0\}\) 是光滑超曲面。指数映射是微分同胚，故其像也为光滑超曲面。源超曲面的切空间为 \(v^\perp\)，且零向量 \(v\) 自己属于 \(v^\perp\)。Gauss 公式说明像中的径向向量同时切于并正交于这个超曲面。两边均为余维一子空间，故像的切空间恰为这个径向向量的正交补。在 Lorentz 向量空间中，非零零向量的正交补之根恰为它自身张成的直线：可把该向量写成 \(a(T+e_1)\)，直接在正交标架中核验。因此超曲面的根方向恰为径向方向。
+\end{proof}
+
+两支零锥分别给出未来与过去的局部光锥。上述陈述描述从 \(p\) 发出的零测地线及其局部几何；较远处光线相交、测地线聚焦以及因果曲线的整体可达性，还需要控制法坐标以外的区域。
+
+\ProseParagraphBreak
+时间方向上的长度称为\term[guyoushi]{固有时}[proper time]。先对分段 \(C^1\) 的未来因果曲线定义
+\[
+	L_g(\gamma)=\int_a^b
+	      \sqrt{-g_{\gamma(s)}(\dot\gamma(s),\dot\gamma(s))}\,\mathrm ds.
+\]
+零速度的孤立点贡献零。这一积分在保持方向的正则重参数下不变，直接由链式法则与积分换元得到；零曲线的固有时则恒为零。\subsecref{g3:subsec:A02:01}将把同一积分用于局部 Lipschitz 因果曲线。
+
+\begin{proposition}\label{g3:prop:A-minkowski-proper-time}
+	在 \((\mathbb R^{1+m},\eta)\) 中取 \(p,q\)，写 \(q-p=(T,X)\)。存在从 \(p\) 到 \(q\) 的未来因果曲线，当且仅当 \(T\ge|X|\)，其中 \(p=q\) 时允许常值曲线。若 \(T>|X|\)，则任意这样的分段 \(C^1\) 曲线满足
+	\[
+		L_\eta(\gamma)\le\sqrt{T^2-|X|^2}.
+	\]
+	直线段达到等号；除保持方向的重参数外，它是唯一达到等号的曲线。若 \(T=|X|>0\)，则任何未来因果连接的像都是该零直线段，且固有时为零。
+\end{proposition}
+\begin{proof}
+	未来因果条件使 \(\dot t\ge|\dot x|\)，积分给
+	\(T=\int\dot t\ge\int|\dot x|\ge|X|\)。反之，满足这个不等式的位移向量本身未来因果或为零，因此直线段给出连接。
+
+	若 \(T>|X|\)，置 \(u=(q-p)/\sqrt{T^2-|X|^2}\)，它是固定的未来单位类时向量。由逆 Cauchy--Schwarz 不等式，几乎处处有
+	\[
+		\sqrt{-\eta(\dot\gamma,\dot\gamma)}
+		\le-\eta(\dot\gamma,u).
+	\]
+	积分右端等于 \(-\eta(q-p,u)=\sqrt{T^2-|X|^2}\)，即得上界。取等时，非负差的积分为零，故在每个光滑片内几乎处处取等；前述取等条件使 \(\dot\gamma\) 为 \(u\) 的非负倍数。积分后，曲线恰沿同一直线段单调前进。反之，这种曲线都达到等号。
+
+	若 \(T=|X|>0\)，令 \(e=X/|X|\)。函数
+	\(\dot t-\langle e,\dot x\rangle\) 非负，而其积分为
+	\(T-|X|=0\)，故几乎处处等于零。结合
+	\(\dot t\ge|\dot x|\ge\langle e,\dot x\rangle\)，可知
+	\(\dot x=\dot t\,e\)。因此曲线沿同一条未来零直线前进，自配对恒为零。最后 \(T=0\) 时，\(\dot t\ge0\) 且积分为零，连同因果不等式使整条曲线恒值。
+\end{proof}
+
+所以 Minkowski 空间中连接类时分离两点的直线，使固有时最大。Euclid 空间中直线使长度最小，两种比较方向的差异正来自上面的反向 Cauchy--Schwarz 不等式。
 
 \subsection{度量完备性的不同含义}
 \label{g3:subsec:A01:04}
-待撰写
+
+局部测地线方程只保证短时间存在。讨论整体延拓时，必须保留仿射参数，因为任意开区间都能用非仿射参数重新写成整个实轴。
+
+\begin{definition}\label{g3:def:A-affine-completeness}
+	伪黎曼流形称为\term[fangshe cedi wanbei]{仿射测地完备}[geodesically complete]，若每个初值的最大仿射测地线都定义在 \(\mathbb R\) 上。在 Lorentz 情形，只对所有类时、零或类空初速度分别提出这一要求，得到类时测地完备、零测地完备和类空测地完备；也可只要求未来端或过去端的仿射参数无限。这里零测地线的初速度要求非零。
+\end{definition}
+
+对于类时测地线，守恒量 \(g(\dot\gamma,\dot\gamma)=-c^2<0\) 使固有时与仿射参数相差常数倍。零测地线的固有时恒为零，它的延拓必须直接用仿射参数判断。仿射变换 \(s\mapsto as+b\)、\(a\ne0\)，不会把有限端点改成无限端点。
+
+\begin{example}\label{g3:exm:A-half-minkowski-completeness}
+	设 \(m\ge1\)，在半空间 \(M=\{t>0\}\subset\mathbb R^{1+m}\) 上限制 Minkowski 度量。曲率仍为零，但
+	\[
+		\gamma_1(s)=(s,0),\qquad
+		\gamma_2(s)=(s,se_1),\qquad
+		\gamma_3(s)=(s,2se_1),\qquad s>0,
+	\]
+	依次为仿射参数的类时、零及类空测地线。三条曲线都在有限参数端 \(s=0\) 离开流形，无法在 \(M\) 中延拓。因此三个类型的测地完备性均失败。
+
+	\ProseParagraphBreak
+	同一个流形却可以赋予完备的辅助黎曼度量
+	\[
+		h=\frac{\mathrm dt^2+|\,\mathrm dx\,|^2}{t^2}.
+	\]
+	对此给出直接核验。令 \(u=\log t\)，则
+	\(h=\mathrm du^2+e^{-2u}|\,\mathrm dx\,|^2\)。若 \((u_j,x_j)\) 是 \(d_h\)-Cauchy 列，由
+	\(|u_i-u_j|\le d_h((u_i,x_i),(u_j,x_j))\)，得 \(u_j\to u_\infty\) 并且 \(u_j\) 有界。连接充分靠后两点的长度小于一的曲线，其整个 \(u\) 坐标都落在一个固定有界区间 \([-A,A]\)，因为 \(u\) 的变化不超过曲线长度。沿此曲线有
+	\[
+		|x_i-x_j|\le e^A L_h(\gamma).
+	\]
+	对长度取下确界，得到 \(x_j\) 也是 Euclid Cauchy 列。其极限 \((u_\infty,x_\infty)\) 仍在流形内，局部度量系数的正定上下界使该列在 \(d_h\) 下趋于这个极限，故 \(h\) 完备。
+\end{example}
+
+反过来，整个 Minkowski 空间的所有测地线均为定义在 \(\mathbb R\) 上的直线，但它上面的辅助黎曼度量
+\[
+	h_0=(1+t^2)^{-2}\mathrm dt^2+|\,\mathrm dx\,|^2
+\]
+不完备：点列 \((j,0)\) 的两点距离不超过
+\(|\arctan j-\arctan k|\)，所以是 Cauchy 列，却没有流形内的极限。辅助黎曼度量适合表述拓扑、局部 Lipschitz 性和紧性；它的距离完备性取决于辅助度量的选择。
+
+\begin{example}\label{g3:exm:A-conformal-null-incomplete}
+	在整个 \(\mathbb R^2\) 上取
+	\[
+		g=e^{2t}(-\mathrm dt^2+\mathrm dx^2).
+	\]
+	它光滑、非退化，并与 Minkowski 度量有完全相同的因果锥，但零测地线不完备。为计算仿射参数，先把 \(\widetilde g=e^{2f}g_0\) 代入 Christoffel 公式，展开一阶导数并消去公共因子，得到
+	\[
+		\widetilde\Gamma^k_{ij}
+		=\Gamma^k_{ij}
+		+\delta^k_i\partial_jf+\delta^k_j\partial_if
+		-(g_0)_{ij}(g_0)^{k\ell}\partial_\ell f.
+	\]
+	在此取 \(g_0=\eta\)、\(f=t\)。沿 \(\gamma(s)=(s,s)\)，速度 \(v=(1,1)\) 为 \(\eta\)-零向量，因此
+	\(\nabla^g_vv=2v\)。这说明它的像是零测地线，但 \(s\) 还不是 \(g\) 的仿射参数。
+
+	\ProseParagraphBreak
+	改用 \(\lambda=\tfrac12e^{2s}\)，则
+	\[
+		\frac{\mathrm ds}{\mathrm d\lambda}=\frac1{2\lambda},
+		\qquad
+		\frac{\mathrm d^2s}{\mathrm d\lambda^2}
+		 +2\left(\frac{\mathrm ds}{\mathrm d\lambda}\right)^2=0.
+	\]
+	重参数后的协变加速度因而为零。这条仿射零测地线定义在 \(0<\lambda<\infty\)，而
+	\(t=x=\tfrac12\log(2\lambda)\to-\infty\) 当 \(\lambda\downarrow0\)，无法在有限参数端延拓。于是保持所有因果锥的光滑共形变化，仍可能改变零测地线的仿射完备性。
+\end{example}
+
+\begin{definition}\label{g3:def:A-time-separation}
+	设 \((M,g)\) 已选时间定向。这里的未来因果曲线取为局部 Lipschitz 曲线，要求其速度几乎处处为非零未来因果向量；起终点相同时另允许常值曲线。其长度用几乎处处定义的速度作上述积分，曲线及其延拓的详细约定见\cref{g3:def:A-causal-curves}。定义\term[Lorentz shi fenli]{Lorentz 时分离}[Lorentzian time separation]为
+	\[
+		\tau(p,q)=\sup\{L_g(\gamma):
+		     \gamma\text{ 为从 }p\text{ 到 }q\text{ 的未来因果曲线}\}.
+	\]
+	没有这类曲线时取 \(\tau(p,q)=0\)；允许取值 \(+\infty\)。
+\end{definition}
+
+Minkowski 空间中的局部 Lipschitz 曲线在紧参数区间上绝对连续，其端点位移等于速度积分。因此\cref{g3:prop:A-minkowski-proper-time}的逐点不等式及积分证明同样适用，给出
+\[
+	\tau(p,q)=
+	\begin{cases}
+		\sqrt{T^2-|X|^2},&q-p=(T,X),\ T\ge|X|,\\
+		0,&\text{其余情形}.
+	\end{cases}
+\]
+因此不同的零分离或类空分离点也可能有 \(\tau=0\)，而未来类时分离时 \(\tau(p,q)>0=\tau(q,p)\)。它具有方向性，沿因果次序通过拼接曲线得到的是反向三角关系。它不是通常的距离，故不能套用普通度量空间的 Cauchy 完备定义。仿射测地完备、辅助黎曼距离完备、时间定向和因果可达性，分别描述不同的几何数据。
 
 \section{因果结构与整体问题}
 \label{g3:sec:A02}
-待撰写
+
+一个光锥只区分同一点处哪些方向可以向未来运动。把这些方向沿曲线接起来，才得到两点之间的因果关系；曲线能否绕回自身、能否在有限时间内逃出空间，则取决于整个流形。本节先在静态乘积中逐项证明这些整体性质，再用周期时间和收缩空间模型说明因果条件与测地完备性各自控制什么。
 
 \subsection{时间定向和因果曲线}
 \label{g3:subsec:A02:01}
-待撰写
+
+以下 Lorentz 度量的号差均为 \((-,+,\ldots,+)\)。光滑流形均无边界；区间的端点若未包含在流形内，也不作为流形边界上的点。上一节已将类时向量和非零因果向量的两个锥分支区分开来。要在不同点之间一致地使用“未来”，须连续地选取其中一支。
+
+\begin{definition}\label{g3:def:A-time-orientation}
+	设 \((M,g)\) 为连通光滑 Lorentz 流形。若可在每一点的类时锥中连续地选择一个连通分支，就称 \(M\) \term[shijian kedingxiang]{时间可定向}[time orientable]；所选分支称为未来类时锥，其闭包中的非零向量称为未来因果向量。带有这种选择的 \((M,g)\) 称为\term[shikong]{时空}[spacetime]。反向分支称为过去。
+\end{definition}
+
+\begin{proposition}\label{g3:prop:A-time-orientation-field}
+	连通光滑 Lorentz 流形 \((M,g)\) 时间可定向，当且仅当它存在处处类时的光滑向量场。给定时间定向，可将该场选为未来单位类时场 \(T\)，即 \(g(T,T)=-1\)；这时非零因果向量 \(v\) 未来定向当且仅当 \(g(v,T)<0\)。
+\end{proposition}
+\begin{proof}
+	若有这样的场，取包含 \(T_p\) 的类时锥分支即可；局部正交标架表明这一选择连续，并给出所述内积判别。
+
+	反过来，连续的未来选择允许在每个足够小的坐标邻域上选取光滑未来类时场 \(T_\alpha\)。取从属于这些邻域的光滑单位分解 \(\{\chi_\alpha\}\)，令 \(T_0=\sum_\alpha\chi_\alpha T_\alpha\)。和在每一点附近只有有限项。未来类时锥的凸性保证 \(T_0\) 仍为未来类时向量：在将未来写成 \(v^0>|v^{\mathrm{sp}}|\) 的正交标架中，正组合满足同一严格不等式。最后令 \(T=T_0/\sqrt{-g(T_0,T_0)}\)。
+\end{proof}
+
+对测地线和光滑变分，分段光滑曲线已足够；讨论极限和不可延拓曲线时，允许局部 Lipschitz 曲线更方便。光滑坐标变换保持这一性质，且其导数几乎处处存在。
+
+\begin{definition}\label{g3:def:A-causal-curves}
+	设 \((M,g,T)\) 为时间定向的光滑 Lorentz 流形。局部 Lipschitz 曲线 \(\gamma:I\to M\) 称为未来\term[yinguo quxian]{因果曲线}[causal curve]，若其切向量几乎处处存在、非零，并满足
+	\[
+		g(\dot\gamma,\dot\gamma)\le0,
+		\qquad g(\dot\gamma,T)<0.
+	\]
+	分段 \(C^1\) 曲线若在每段上具有非零未来类时切向量，就称为未来类时曲线。讨论曲线的像和延拓时，允许作保持方向、且使所得曲线仍满足上述局部 Lipschitz 性和几乎处处非零条件的重参数化。
+	若一条因果曲线在未来端没有 \(M\) 中的终点，就称它未来不可延拓；过去不可延拓类似定义。两端均不可延拓时，称为双向不可延拓。
+\end{definition}
+
+这里要求几乎处处非零，是为了不把停留在一点的参数区间记成一次因果运动。若曲线在未来端趋于 \(p\in M\)，可在 \(p\) 附近取时间坐标 \(\tau\)，使所有未来因果向量满足 \(\mathrm d\tau(v)\ge c|v|_{\mathrm{Euc}}\)，其中 \(c>0\)；这由 \(p\) 处的标准光锥及缩小邻域后的连续性得到。以 \(\tau\) 为参数，曲线的坐标速度至多为 \(1/c\)，故可 Lipschitz 地补上终点，再接一小段未来类时曲线。这解释了定义中使用流形内终点的含义。上一节固有时的积分
+\(L_g(\gamma)=\int\sqrt{-g(\dot\gamma,\dot\gamma)}\)
+也适用于这些局部 Lipschitz 因果曲线。
+
+\begin{definition}\label{g3:def:A-chronological-causal-futures}
+	对时空中的 \(p,q\)，若存在从 \(p\) 到 \(q\) 的未来类时曲线，就写作 \(p\ll q\)；若 \(p=q\)，或存在从 \(p\) 到 \(q\) 的未来因果曲线，就写作 \(p\le q\)。定义
+	\[
+	\begin{aligned}
+		I^+(p)&=\{q:p\ll q\},& I^-(p)&=\{q:q\ll p\},\\
+		J^+(p)&=\{q:p\le q\},& J^-(p)&=\{q:q\le p\}.
+	\end{aligned}
+	\]
+	它们分别称为 \(p\) 的\term[shixu weilai]{时序未来}[chronological future]、时序过去、\term[yinguo weilai]{因果未来}[causal future]和因果过去。对集合 \(A\subset M\)，令 \(I^\pm(A)=\bigcup_{p\in A}I^\pm(p)\)、\(J^\pm(A)=\bigcup_{p\in A}J^\pm(p)\)。
+	若不存在 \(p,q\in S\) 满足 \(p\ll q\)，也就是 \(I^+(S)\cap S=\varnothing\)，就称 \(S\) 为\term[wushixu ji]{无时序集}[achronal set]；这里也排除了 \(p=q\) 时的闭类时曲线。
+\end{definition}
+
+拼接曲线表明 \(\ll\) 具有传递性，而 \(\le\) 自反且传递；此外 \(I^\pm(p)\subset J^\pm(p)\)。在尚未排除闭因果曲线时，\(p\le q\) 与 \(q\le p\) 并不迫使 \(p=q\)。因此符号 \(\le\) 在这里首先记录可达关系，其反对称性是一项整体因果条件。
 
 \subsection{Cauchy 超曲面及全局双曲性}
 \label{g3:subsec:A02:02}
-待撰写
+
+一张类空超曲面具有正定的诱导度量，但这只是切空间中的条件。若要把它看成所有因果运动共同经历的一次“现在”，还须保证没有任何不可延拓曲线错过它或再次穿过它。
+
+\begin{definition}\label{g3:def:A-cauchy-global-hyperbolic}
+	设 \((M,g)\) 为时空。
+	\begin{enumerate}
+		\item 若一张嵌入超曲面 \(\Sigma\subset M\) 被每条双向不可延拓的因果曲线在恰好一个参数时刻穿过，就称它为 \term[Cauchy chaoqumian]{Cauchy 超曲面}[Cauchy hypersurface]。本附录实际构造的 Cauchy 超曲面均为光滑类空超曲面。
+		\item 若对每个 \(p\in M\) 及其开邻域 \(U\)，都有开邻域 \(p\in V\subset U\)，使任意两端位于 \(V\) 的因果曲线段全部留在 \(U\) 内，就称 \(M\) 在 \(p\) \term[qiang yinguo]{强因果}[strongly causal]。若每一点都如此，就称 \(M\) 强因果。
+		\item 若 \(M\) 强因果，且对每对 \(p,q\in M\)，\term[yinguo lingxing]{因果菱形}[causal diamond]
+		\[
+			J^+(p)\cap J^-(q)
+		\]
+		都是紧集，就称 \(M\) \term[quanju shuangqu]{全局双曲}[globally hyperbolic]。
+	\end{enumerate}
+\end{definition}
+
+强因果性排除在任意小邻域附近绕出又返回的因果运动；紧菱形则控制给定出发点与到达点之间可能经过的位置。下面直接验证这些条件和 Cauchy 性，而不借用它们在一般时空中的等价刻画。
+
+\begin{theorem}\label{g3:thm:A-static-global-hyperbolicity}
+	设 \((N,h)\) 为维数至少为一的连通、完备、无边界光滑黎曼流形，\(I\subset\mathbb R\) 为非空开区间。在 \(M=I\times N\) 上取
+	\begin{equation}\label{g3:eq:A-static-product}
+		g=-\mathrm dt^2+h,
+		\qquad T=\partial_t.
+	\end{equation}
+	则对 \(p=(t,x)\)、\(q=(s,y)\)，有
+	\begin{equation}\label{g3:eq:A-static-causal-relations}
+		p\le q\ \Longleftrightarrow\ s-t\ge d_h(x,y),
+		\qquad p\ll q\ \Longleftrightarrow\ s-t>d_h(x,y).
+	\end{equation}
+	每一切片 \(\{t_0\}\times N\) 都是光滑类空 Cauchy 超曲面，且 \((M,g)\) 全局双曲。特别地，这些结论适用于 \(I=\mathbb R\)。
+\end{theorem}
+\begin{proof}
+	因果条件首先给出一个速度估计。若 \(\gamma(u)=(t(u),x(u))\) 未来因果，则几乎处处
+	\[
+		\dot t(u)>0,
+		\qquad |\dot x(u)|_h\le\dot t(u).
+	\]
+	在坐标片中积分，再分割曲线，得到任意 \(u_1<u_2\) 上的
+	\begin{equation}\label{g3:eq:A-static-speed-bound}
+		d_h(x(u_1),x(u_2))
+		\le\int_{u_1}^{u_2}|\dot x|_h\,\mathrm du
+		\le t(u_2)-t(u_1).
+	\end{equation}
+	第一式是绝对连续黎曼曲线的长度估计；它由局部坐标中的微积分基本定理及长度积分得到。\(t\) 严格递增，因此曲线可按时间写成 \((t,x(t))\)，其中 \(x(t)\) 为 \(1\)-Lipschitz 映射。
+
+	速度估计给出 \(p\le q\) 时 \(s-t\ge d_h(x,y)\)。类时曲线每段上有严格速度不等式，积分得到 \(s-t>d_h(x,y)\)。反过来，完备性和\cref{g3:thm:hopf-rinow}给出从 \(x\) 到 \(y\) 的最短测地线。若 \(s>t\)，在时间长 \(s-t\) 内匀速走完它，其空间速度为 \(d_h(x,y)/(s-t)\)，于是分别得到因果或类时曲线。若 \(s=t\) 且 \(s-t\ge d_h(x,y)\)，则 \(p=q\)，符合 \(\le\) 的自反约定。这就证明式\eqref{g3:eq:A-static-causal-relations}。
+
+	现在设 \(\gamma\) 双向不可延拓，并按时间写在某个子区间 \((a,b)\subset I\) 上。若 \(b<\sup I\)，则 \(b\in I\)，且式\eqref{g3:eq:A-static-speed-bound}使 \(x(t)\) 在 \(t\uparrow b\) 时成为 Cauchy 曲线。\(N\) 的完备性给出极限 \(x_b\in N\)。给图像补上 \((b,x_b)\)，再接 \(t\mapsto(t,x_b)\)，得到未来因果延拓，与假设矛盾。因此 \(b=\sup I\)；同理 \(a=\inf I\)。时间的严格单调性说明曲线恰好一次穿过每张切片。切片的诱导度量是 \(h\)，故也类空。
+
+	为证明强因果性，固定 \((t_0,x_0)\) 的开邻域 \(U\)。选 \(\delta>0\)，使
+	\[
+		(t_0-3\delta,t_0+3\delta)\times B_h(x_0,3\delta)
+		\subset U,
+	\]
+	并令 \(V=(t_0-\delta,t_0+\delta)\times B_h(x_0,\delta)\)。两端在 \(V\) 的未来因果曲线，其全部时间坐标处于 \((t_0-\delta,t_0+\delta)\)，空间移动长度至多为 \(2\delta\)。由起点到 \(x_0\) 的距离小于 \(\delta\)，曲线全部留在 \(U\)。
+
+	最后，若菱形非空，则 \(s\ge t\)，并由因果关系式将其写成闭集
+	\begin{equation}\label{g3:eq:A-static-diamond}
+		\left\{(u,z):t\le u\le s,\quad
+		d_h(x,z)\le u-t,\quad d_h(z,y)\le s-u\right\}.
+	\end{equation}
+	它包含于 \([t,s]\times\overline B_h(x,s-t)\)。Hopf--Rinow 定理保证该闭球紧，且 \([t,s]\subset I\)，故菱形紧。空菱形也紧。结合强因果性即得全局双曲性。
+\end{proof}
+
+\begin{example}\label{g3:exm:A-incomplete-spatial-factor}
+	若空间因子不完备，结论可以同时在 Cauchy 性和紧菱形上失效。取
+	\(M=\mathbb R\times(0,1)\)、\(g=-\mathrm dt^2+\mathrm dx^2\)。零曲线 \(\gamma(t)=(t,t)\)、\(0<t<1\)，在两端都离开了流形，因而双向不可延拓，却不经过切片 \(\{2\}\times(0,1)\)。
+
+	又取 \(p=(0,1/2)\)、\(q=(2,1/2)\)。对 \(j\ge2\)，点 \((1,1/j)\) 都属于 \(J^+(p)\cap J^-(q)\)，因为两段直线均为未来类时线段。它们在 \(M\) 内没有收敛子列，所以此菱形不紧。静态速度估计仍保证强因果性，失效的是空间中的紧性和延拓。
+\end{example}
 
 \subsection{Minkowski 与典型时空模型}
 \label{g3:subsec:A02:03}
-待撰写
+
+\begin{example}\label{g3:exm:A-minkowski-causal-structure}
+	取 \(N=\mathbb R^n\)、\(h=|\mathrm dx|^2\)。\cref{g3:thm:A-static-global-hyperbolicity}给出 Minkowski 时空中的
+	\[
+	\begin{aligned}
+		I^+(t,x)&=\{(s,y):s-t>|y-x|\},\\
+		J^+(t,x)&=\{(s,y):s-t\ge|y-x|\}.
+	\end{aligned}
+	\]
+	\(I^+(t,x)\) 是未来光锥的内部，\(J^+(t,x)\) 还包括锥面与顶点。每个水平超平面是 Cauchy 超曲面，每个因果菱形都是闭有界集。
+
+	结合\cref{g3:prop:A-minkowski-proper-time}，当 \(s-t\ge|y-x|\) 时，时分离为
+	\[
+		\tau((t,x),(s,y))=\sqrt{(s-t)^2-|y-x|^2};
+	\]
+	不存在未来因果曲线时按定义取零。前一命题中的最大固有时证明按几乎处处的切向量积分，同样适用于本节的局部 Lipschitz 曲线。特别地，零分离可以表示两点在同一零射线上，也可以表示两点根本不因果相关；它不能像黎曼距离那样区分点。
+\end{example}
+
+\begin{example}\label{g3:exm:A-periodic-time-cylinder}
+	把 Minkowski 时空的时间按周期 \(L>0\) 识别，得到
+	\[
+		M=(\mathbb R/L\mathbb Z)\times\mathbb R^n,
+		\qquad g=-\mathrm dt^2+|\mathrm dx|^2.
+	\]
+	虽然 \(t\) 不再是全局实值函数，\(\partial_t\) 仍为全局未来单位类时场。固定空间点 \(x_0\) 的曲线 \(u\mapsto(u\bmod L,x_0)\) 是闭类时曲线，且可以无限重复。因此此时空不强因果，也不存在 Cauchy 超曲面：经过超曲面任意一点的这条重复曲线会在无穷多个参数时刻再次经过该点。
+
+	事实上，对任意 \(p=([t],x)\)、\(q=([s],y)\)，总可选整数 \(k\)，使 \(s-t+kL>|y-x|\)。覆盖空间中连接 \((t,x)\) 与 \((s+kL,y)\) 的直线投影下来，便是从 \(p\) 到 \(q\) 的未来类时曲线。所以 \(I^+(p)=J^+(p)=M\)。另一方面，测地线全部可提升为 Minkowski 直线，定义在整个仿射参数实轴上；故它测地完备。这给出测地完备而因果条件失效的例子。
+
+	若再把空间坐标周期化，得到紧 Lorentz 环面，同样有 \(J^+(p)=M\)。此时每个因果菱形都是紧的整个流形，强因果性仍然失败，说明紧菱形条件必须与定义中的因果条件同时保留。
+\end{example}
+
+\begin{proposition}\label{g3:prop:A-conformal-causality}
+	设 \((M,g,T)\) 为时空，\(\Omega:M\to(0,\infty)\) 光滑，令 \(\widetilde g=\Omega^2g\)，并以 \(\widetilde T=\Omega^{-1}T\) 指定未来方向。则两度量有相同的未来因果曲线、\(I^\pm\)、\(J^\pm\)、Cauchy 超曲面、强因果性和全局双曲性。
+\end{proposition}
+\begin{proof}
+	\(\widetilde g(v,v)=\Omega^2g(v,v)\)，且 \(\widetilde g(v,\widetilde T)=\Omega g(v,T)\)，因此所有点的因果锥及未来分支相同。局部 Lipschitz 性只涉及原来的光滑流形结构，故因果曲线相同。曲线在流形内是否具有终点也未变，由此 Cauchy 性相同。最后强因果性只涉及曲线和开邻域，因果菱形只涉及 \(J^\pm\)，而紧性只涉及原拓扑，所以其余结论也成立。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:A-warped-global-hyperbolicity}
+	设 \((N,h)\) 为维数至少为一的连通、完备、无边界光滑黎曼流形，\(I\subset\mathbb R\) 为非空开区间，\(a:I\to(0,\infty)\) 光滑。则
+	\[
+		(I\times N,-\mathrm dt^2+a(t)^2h)
+	\]
+	以 \(\partial_t\) 指定未来时全局双曲，每张 \(t=\text{常数}\) 切片都是光滑类空 Cauchy 超曲面。
+\end{corollary}
+\begin{proof}
+	固定 \(t_0\in I\)，令 \(\eta(t)=\int_{t_0}^t a(u)^{-1}\,\mathrm du\)。其导数严格为正，故它是 \(I\) 到某个开区间 \(J\) 的递增微分同胚。在该坐标中，度量为 \(a(t(\eta))^2(-\mathrm d\eta^2+h)\)。应用\cref{g3:thm:A-static-global-hyperbolicity,g3:prop:A-conformal-causality}即得结论。
+\end{proof}
+
+共形改变保留的是因果路径。固有时的被积函数会乘以 \(\Omega\)，零测地线的仿射参数也会改变，因而测地完备性须另行计算。
+
+\begin{example}\label{g3:exm:A-contracting-flat-slicing}
+	在四维流形 \(M=\mathbb R\times\mathbb R^3\) 上取
+	\begin{equation}\label{g3:eq:A-contracting-metric}
+		g=-\mathrm dt^2+e^{-2t}|\mathrm dx|^2,
+		\qquad T=\partial_t.
+	\end{equation}
+	令 \(\eta=e^t\)，则 \(\eta\in(0,\infty)\)，且
+	\[
+		g=\eta^{-2}(-\mathrm d\eta^2+|\mathrm dx|^2).
+	\]
+	由静态乘积定理和共形不变性，该时空全局双曲，每张 \(t=\text{常数}\) 切片都是非紧 Cauchy 超曲面。
+
+	下面同时检查曲率与零测地线，而不由因果图判断完备性。一般地，对 \(g=-\mathrm dt^2+a(t)^2\sum_i(\mathrm dx^i)^2\)，以 \(0\) 表示时间指标，其非零 Christoffel 符号为
+	\begin{equation}\label{g3:eq:A-flat-warped-connection}
+		\Gamma^0_{ij}=aa'\delta_{ij},
+		\qquad \Gamma^i_{0j}=\Gamma^i_{j0}=\frac{a'}a\delta^i_j.
+	\end{equation}
+	曲率仍取 \(R(X,Y)Z=\nabla_X\nabla_YZ-\nabla_Y\nabla_XZ-\nabla_{[X,Y]}Z\)，Ricci 张量仍定义为 \(\operatorname{Ric}(U,V)=\operatorname{tr}(W\mapsto R(W,U)V)\)。直接代入，得到
+	\begin{equation}\label{g3:eq:A-flat-warped-curvature}
+	\begin{aligned}
+		R(\partial_t,\partial_i)\partial_t
+		 &=\frac{a''}a\partial_i,\\
+		R(\partial_t,\partial_i)\partial_j
+		 &=aa''\delta_{ij}\partial_t,\\
+		R(\partial_i,\partial_j)\partial_k
+		 &=(a')^2(\delta_{jk}\partial_i-\delta_{ik}\partial_j),\\
+		R(\partial_i,\partial_j)\partial_t&=0.
+	\end{aligned}
+	\end{equation}
+	例如第二式中，两次协变导数的时间分量分别为 \(((a')^2+aa'')\delta_{ij}\) 与 \((a')^2\delta_{ij}\)，相减后只剩 \(aa''\delta_{ij}\)。取 \(a=e^{-t}\) 时，\(a''/a=(a'/a)^2=1\)，这些式子合为
+	\begin{equation}\label{g3:eq:A-contracting-constant-curvature}
+		R(X,Y)Z=g(Y,Z)X-g(X,Z)Y,
+		\qquad \operatorname{Ric}=3g.
+	\end{equation}
+	故其所有非退化二维平面的截面曲率均为一，标量曲率恒为 \(12\)。
+
+	空间测地线方程给出常向量 \(P=a^2\dot x\)。取 \(P\ne0\)，零条件和未来方向要求
+	\[
+		\dot t=\frac{|P|}{a(t)},
+		\qquad \dot x=\frac{P}{a(t)^2}.
+	\]
+	这些等式还满足时间测地线方程，因为
+	\(\ddot t=-|P|^2a'/a^3\)，而
+	\(aa'|\dot x|^2=|P|^2a'/a^3\)。因此这里的参数 \(\lambda\) 确为仿射参数，并有
+	\begin{equation}\label{g3:eq:A-contracting-null-affine}
+		\lambda(t)-\lambda(t_0)
+		=\frac1{|P|}\int_{t_0}^t e^{-u}\,\mathrm du
+		=\frac{e^{-t_0}-e^{-t}}{|P|}.
+	\end{equation}
+	当 \(t\to+\infty\) 时，参数只经过有限长度 \(e^{-t_0}/|P|\)，而曲线不可能在 \(M\) 内有终点。因此时空未来零测地不完备。相反，固定空间坐标的类时直线以 \(t\) 为固有时，定义在整个实轴上。这个模型同时具有全局双曲性、常曲率和某些未来不完备的零测地线。
+\end{example}
 
 \subsection{奇点定理的条件和外部输入}
 \label{g3:subsec:A02:04}
-待撰写
+
+零测地线的长度恒为零，所以“光线在有限参数后不能继续”须用仿射参数表达。奇点定理的另一输入是两族未来零法线同时收敛。它不是要求某一点的曲率很大，而是要求一张紧曲面发出的两侧光线起初都在缩小横截面积。
+
+\begin{definition}\label{g3:def:A-trapped-surface}
+	设 \((M^4,g)\) 为四维时空，\(S\subset M\) 为光滑嵌入的类空二维曲面，诱导度量为 \(q\)。对 \(S\) 上的非零未来零法向量场 \(k\)，定义
+	\begin{equation}\label{g3:eq:A-null-expansion}
+		b_k(X,Y)=g(\nabla_Xk,Y),
+		\qquad \theta_k=\operatorname{tr}_q b_k,
+		\quad X,Y\in\mathrm TS.
+	\end{equation}
+	\(\theta_k\) 称为沿 \(k\) 的\term[ling pengzhanglv]{零膨胀率}[null expansion]。若 \(S\) 非空、紧、无边界，且在每一点的两条未来零法线方向上均有 \(\theta_k<0\)，就称 \(S\) 为闭的\term[weilai xianhuo qumian]{未来陷获曲面}[future trapped surface]。
+\end{definition}
+
+两个零法线分支可局部选取；定义不要求给它们赋予全局的“内”“外”名称。若以正函数 \(f\) 改变零法线的长度，则
+\(b_{fk}=fb_k\)，因为 \(g(k,Y)=0\)，故膨胀率的符号不变。取曲面的法向变分 \(F_s\)，初速度为 \(k\)，有
+\[
+	\left.\frac{\partial q_s(X,Y)}{\partial s}\right|_{s=0}
+	=g(\nabla_Xk,Y)+g(X,\nabla_Yk)=2b_k(X,Y).
+\]
+这里 \(b_k\) 对称，因为其反对称部分等于 \(-g(k,[X,Y])=0\)。对行列式求导便得
+\begin{equation}\label{g3:eq:A-expansion-area-variation}
+	\left.\frac{\partial}{\partial s}\mathrm dA_{q_s}\right|_{s=0}
+	=\theta_k\,\mathrm dA_q.
+\end{equation}
+这就是负膨胀率表示面积初始收缩的准确含义。
+
+\begin{proposition}\label{g3:prop:A-null-focusing}
+	设 \((M^4,g)\) 为四维时空，\(S\) 为光滑类空曲面，\(\gamma\) 为从 \(p\in S\) 出发、初速度为未来零法向量 \(k\) 的仿射参数零测地线，且 \(\theta_k(p)<0\)。若沿 \(\gamma\) 有
+	\(\operatorname{Ric}(\dot\gamma,\dot\gamma)\ge0\)，并且 \(\gamma\) 定义到参数
+	\(\lambda_*=2/|\theta_k(p)|\)，则在 \(0<\lambda\le\lambda_*\) 内出现相对于 \(S\) 的焦点。
+\end{proposition}
+\begin{proof}
+	沿 \(\gamma\) 考虑二维商空间
+	\[
+		\mathcal E_\lambda=
+		\dot\gamma(\lambda)^\perp/\mathbb R\dot\gamma(\lambda).
+	\]
+	Lorentz 内积在此商上诱导正定内积，平行移动也下降到商空间。取平行正交标架，将这些空间识别为 \(\mathbb R^2\)。曲率算子
+	\[
+		\mathscr R_\lambda[v]=[R(v,\dot\gamma)\dot\gamma]
+	\]
+	定义良好且自伴。把平行标架补成零标架 \(k,\ell,e_1,e_2\)，其中 \(g(k,\ell)=-1\)，由曲率的反对称性和配对对称性，Ricci 收缩中的两个零方向项消失，得到
+	\begin{equation}\label{g3:eq:A-screen-curvature-trace}
+		\operatorname{tr}\mathscr R_\lambda
+		=\sum_{a=1}^2 g(R(e_a,k)k,e_a)
+		=\operatorname{Ric}(k,k).
+	\end{equation}
+	这里沿曲线记 \(k=\dot\gamma\)。这些曲率恒等式的推导只使用度量相容和无挠性，在不定度量中仍成立。
+
+	局部沿 \(S\) 选取同一未来零法线分支，按初值解测地线方程。对初始点求导，得到正交测地变分的 Jacobi 场；其商空间分量组成矩阵 \(A\)，满足
+	\begin{equation}\label{g3:eq:A-null-jacobi-matrix}
+		A''+\mathscr R A=0,
+		\qquad A(0)=I,
+		\qquad A'(0)=B_0,
+	\end{equation}
+	其中 \(B_0\) 是 \(b_k\) 的自伴矩阵。Jacobi 方程来自对 \(\nabla_{\dot\gamma}\dot\gamma=0\) 的变分求导和协变导数交换，符号与本卷一致。矩阵 \(A\) 奇异时，存在非零初始切向变分，其 Jacobi 场变成 \(k\) 的倍数；再改变末端仿射参数可将这一倍数抵消，因而曲面零法向指数映射的微分降秩。这正是相对于 \(S\) 的焦点。
+
+	只需说明 \(A\) 不能在 \([0,\lambda_*]\) 上始终可逆。在无焦点区间内令 \(B=A'A^{-1}\)。由式\eqref{g3:eq:A-null-jacobi-matrix}，
+	\[
+		B'+B^2+\mathscr R=0.
+	\]
+	并且 \(A^{\mathsf T}A'-(A')^{\mathsf T}A\) 的导数为零，初值也为零，所以 \(B\) 自伴。令
+	\(\theta=\operatorname{tr}B\)、\(\sigma=B-\tfrac12\theta I\)。取迹得到零测地丛的膨胀方程
+	\begin{equation}\label{g3:eq:A-null-expansion-equation}
+		\theta'=-\frac12\theta^2-|\sigma|^2
+		-\operatorname{Ric}(k,k)
+		\le-\frac12\theta^2.
+	\end{equation}
+	这里 \(|\sigma|^2=\operatorname{tr}(\sigma^2)\ge0\)，正定性来自二维商空间，而非整个 Lorentz 切空间。
+
+	由于 \(\theta(0)<0\)，上式使 \(\theta\) 保持负值。于是
+	\[
+		\left(-\frac1\theta\right)'
+		=\frac{\theta'}{\theta^2}\le-\frac12,
+		\qquad
+		0<-\frac1{\theta(\lambda)}
+		\le\frac1{|\theta(0)|}-\frac\lambda2.
+	\]
+	若 \(A\) 在整个 \([0,\lambda_*]\) 上可逆，线性 Jacobi 方程和紧参数区间保证 \(A,A'\) 光滑，故 \(B\) 和 \(\theta\) 在终点有限；但右端在 \(\lambda_*\) 为零，矛盾。因此必在此前或终点出现焦点。
+\end{proof}
+
+\begin{example}\label{g3:exm:A-minkowski-focal-sphere}
+	在四维 Minkowski 时空中，取 \(t=0\) 内半径 \(R>0\) 的圆球面。未来零法线 \(k_\pm=\partial_t\pm\partial_r\) 的膨胀率为 \(\theta_\pm=\pm2/R\)，因为其横截球面面积为 \(4\pi(R\pm\lambda)^2\)。向内的射线在 \(\lambda=R\) 聚焦，正好达到上一命题的界。
+
+	这些射线穿过中心后仍可作为直线继续，Minkowski 时空也零测地完备。故一次聚焦本身不等于测地不完备；本例只有向内一族的膨胀率为负，圆球面并非陷获曲面。
+\end{example}
+
+由局部聚焦推出整个时空中至少一条光线不完备，需要整体因果论和拓扑的进一步输入。下面精确采用 Penrose\footnote{Roger Penrose（1931--），英国数学家和数学物理学家，在广义相对论奇点定理和非周期铺砌方面作出贡献，获2020年 Nobel 物理学奖。}定理的一个光滑版本。
+
+\begin{theorem}[Penrose 奇点定理]\label{g3:thm:A-penrose}
+	设 \((M^4,g)\) 是连通、无边界、时间定向的光滑四维 Lorentz 流形。假设：
+	\begin{enumerate}
+		\item \((M,g)\) 全局双曲，并具有非紧的 Cauchy 超曲面；
+		\item 对每个零向量 \(v\)，有 \(\operatorname{Ric}(v,v)\ge0\)；
+		\item \(M\) 中存在非空、紧、无边界、光滑嵌入、无时序的未来陷获曲面。
+	\end{enumerate}
+	则 \((M,g)\) 未来零测地不完备：存在一条未来不可延拓的零测地线，其某个仿射参数的未来上端点有限。
+\end{theorem}
+
+本定理作为外部结果使用。原始论证见\cite[第58--59页]{Penrose1965Singularities}；上述几何版本取自\cite[第4节，定理1，第6页；第3节，命题1后的注(ii)，第4页]{GallowaySenovilla2010TrappedSubmanifolds}的余维二特例，并将维数限定为四。后一原文的号差同为 \((-,+,\ldots,+)\)，第2节以两族未来零膨胀率为负定义陷获；其一般余维曲率条件在余维二时恰化为 \(\operatorname{Ric}(v,v)\ge0\)。这里还显式列出全局双曲性及陷获曲面的无时序性。定理不需要另加 Einstein 场方程或物质模型。
+
+\ProseParagraphBreak
+各条件在证明中承担不同作用。假设未来零完备后，紧陷获曲面的两个归一化未来零法线族构成紧初值集，负膨胀率因而有一致的负上界。聚焦估计使仍可生成未来边界的零射线段有统一仿射参数界。完整证明还要使用三个整体事实：未来边界由正交零射线生成；射线经过焦点后不再生成该边界；全局双曲性使所得边界具有所需闭性与拓扑超曲面结构。最后沿类时方向把这个紧边界投到非紧 Cauchy 超曲面上，用局部拓扑和开闭性得到矛盾。这些整体步骤由所引定理承担；上面的矩阵计算完成了其中的局部聚焦估计。
+
+\begin{example}\label{g3:exm:A-contracting-trapped-sphere}
+	回到\cref{g3:exm:A-contracting-flat-slicing}，在 \(t=t_0\) 的切片内取坐标半径 \(r_0>0\) 的球面，其实际面积半径为 \(R_0=e^{-t_0}r_0\)。两条未来零法线可取
+	\[
+		k_\pm=\partial_t\pm e^{t_0}\partial_r,
+		\qquad -g(k_\pm,\partial_t)=1.
+	\]
+	一般尺度因子 \(a(t)\) 下，球面面积是 \(4\pi a(t)^2r^2\)。对其对数沿 \(\partial_t\pm a^{-1}\partial_r\) 求导，并用式\eqref{g3:eq:A-expansion-area-variation}，得到
+	\begin{equation}\label{g3:eq:A-contracting-sphere-expansion}
+		\theta_\pm
+		=2\left(\frac{a'}a\pm\frac1{ar}\right),
+		\qquad
+		\theta_\pm\big|_{a=e^{-t},\,t=t_0,\,r=r_0}
+		=2\left(-1\pm\frac1{R_0}\right).
+	\end{equation}
+	若 \(R_0>1\)，两者都严格为负。该球面紧、无边界，位于一张 Cauchy 切片中，时间严格递增又保证它无时序。由式\eqref{g3:eq:A-contracting-constant-curvature}，所有零向量都满足 \(\operatorname{Ric}(v,v)=3g(v,v)=0\)。因此 Penrose 定理的全部假设在本例中成立，其结论也由式\eqref{g3:eq:A-contracting-null-affine}直接算出。
+
+	同时，曲率张量始终具有常曲率一的形式。故“未来零测地不完备”并不等于“曲率沿该射线发散”，也不说明在这个流形内已经存在一个可当作普通点处理的奇点。它断言的是给定时空中的仿射测地延拓失败；是否能够嵌入更大的光滑时空，是另一个问题。
+\end{example}
+
+\begin{chaptersummary}
+	非退化性保证音乐同构和 Levi-Civita 联络仍然成立，正定性的丧失则使长度、极值和整体延拓发生变化。Lorentz 配对把非零向量分为类时、类空与零向量；选择未来锥后，逆 Cauchy--Schwarz 不等式解释了惯性直线段的固有时极大性。测地线的因果型沿仿射参数保持，但零曲线的固有时恒为零，因而须用仿射参数讨论它的完备性。
+
+	\ProseParagraphBreak
+	时间定向使局部光锥能够一致拼接，因果关系描述事件间允许的曲线。Cauchy 超曲面要求每条双向不可延伸因果曲线恰好穿过一次；全局双曲性则同时控制局部因果行为与因果菱形的紧性。空间因子完备的静态乘积把这些要求化为黎曼距离估计，时间周期商与有限时间模型分别显示不同整体条件的作用。
+
+	\ProseParagraphBreak
+	陷获面的两族未来零法线都在收缩。零 Ricci 条件使聚焦不等式保持这个趋势；奇点定理再把聚焦与非紧 Cauchy 超曲面的整体条件联系起来，推出未来零测地不完备。该结论检测的是仿射参数的有限终点；判断曲率、可延拓性和边界性质，还须考察具体时空。
+\end{chaptersummary}
+
+\BookExercises
+
+\begin{exercise}\label{g3:ex:A-wave-symbol}
+	在 \(\mathbb R^{1+m}\)、\(m\ge1\)，上取 \(\eta=-\mathrm dt^2+\sum_{i=1}^m(\mathrm dx^i)^2\)。求 \(\alpha=a\,\mathrm dt+\sum b_i\,\mathrm dx^i\) 的升指标向量、\(\eta\) 的体积密度，以及 \(\operatorname{div}_\eta\operatorname{grad}_\eta f\)。说明所得二阶算子的主符号为何不具有椭圆性。
+\end{exercise}
+\begin{solution}
+	由 \(\eta(\alpha^{\sharp_\eta},Y)=\alpha(Y)\)，有
+	\[
+		\alpha^{\sharp_\eta}=-a\partial_t+\sum_i b_i\partial_{x^i},
+		\qquad
+		\mu_\eta=\sqrt{|\det\eta|}\,|\mathrm dt\,\mathrm dx^1\cdots\mathrm dx^m|
+		=|\mathrm dt\,\mathrm dx^1\cdots\mathrm dx^m|.
+	\]
+	度量系数常数，联络系数为零，故
+	\[
+		\operatorname{div}_\eta\operatorname{grad}_\eta f
+		=-\partial_t^2f+\sum_i\partial_{x^i}^2f.
+	\]
+	其二次主符号（不计整体符号约定）为 \(-\tau^2+|\xi|^2\)，在非零协向量 \((\tau,\xi)=(1,1,0,\ldots,0)\) 处为零。这正是与椭圆算子主符号非退化要求的差别。体积密度仍然为正，并不能消除微分主部中的不定性。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:A-boost}
+	对 \(s\in\mathbb R\)，定义平面线性映射
+	\[
+		B_s(t,x)=(t\cosh s+x\sinh s,\ t\sinh s+x\cosh s).
+	\]
+	证明 \(B_s\) 保持 \(-\mathrm dt^2+\mathrm dx^2\) 和未来方向，满足 \(B_sB_r=B_{s+r}\)。求 \(B_s(1,0)\)，并说明未来单位类时向量恰由这个公式遍历。
+\end{exercise}
+\begin{solution}
+	展开两个新分量的平方差，交叉项抵消，利用 \(\cosh^2s-\sinh^2s=1\) 得 \(-t'^2+x'^2=-t^2+x^2\)。若 \(t\ge|x|\) 且 \(t>0\)，则
+	\[
+		t'=t\cosh s+x\sinh s
+		\ge t(\cosh s-|\sinh s|)=te^{-|s|}>0.
+	\]
+	因果型也保持，故未来方向保持。双曲函数加法公式给出乘法关系，特别地 \(B_s^{-1}=B_{-s}\)。又 \(B_s(1,0)=(\cosh s,\sinh s)\)。任意未来单位类时向量满足 \(t^2-x^2=1,t>0\)；取唯一的 \(s=\operatorname{arsinh}x\)，便有 \(t=\cosh s\)。参数 \(s\) 将这支双曲线上的向量连续地编号。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:A-reverse-cauchy-boundary}
+	在 \((\mathbb R^2,-\mathrm dt^2+\mathrm dx^2)\) 中取 \(u=(1,0)\)、\(v=(-1,0)\)，解释逆 Cauchy--Schwarz 不等式为何要指定相同时间方向。再在 \(\mathbb R^4\) 上取配对 \(-\mathrm dt_1^2-\mathrm dt_2^2+\mathrm dx_1^2+\mathrm dx_2^2\)，给出两个平方长度均为 \(-1\)、配对却为零的向量，说明 Lorentz 指数为一的作用。
+\end{exercise}
+\begin{solution}
+	第一例有 \(-\eta(u,v)=-1\)，而 \(\sqrt{-\eta(u,u)}\sqrt{-\eta(v,v)}=1\)。一个未来、一个过去时，直接沿用相同未来方向的符号就会失败；改取 \(-v\) 才回到原不等式的条件。
+
+	第二例取 \(u=(1,0,0,0)\)、\(v=(0,1,0,0)\)。二者互相正交，平方长度都是 \(-1\)。事实上圆周 \((\cos s,\sin s,0,0)\) 完全由平方长度为 \(-1\) 的向量组成，把 \(u\) 与 \(-u\) 连了起来；Lorentz 情形类时向量的两支结构在这里已不成立。因此不能给一般不定配对直接附加同一套未来锥与逆不等式。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:A-proper-time-infimum}
+	固定 \(T>0\)，在二维 Minkowski 空间中连接 \((0,0)\) 与 \((T,0)\)。对 \(0<v<1\)，令分片光滑曲线在前半段满足 \(x(t)=vt\)，后半段满足 \(x(t)=v(T-t)\)。求其固有时，并求所有未来分片光滑类时连接曲线固有时的上确界和下确界。哪个值可以达到？
+\end{exercise}
+\begin{solution}
+	两段都有 \(|x'(t)|=v\)，故总固有时为 \(T\sqrt{1-v^2}\)。正文的 Minkowski 极大性给出每条这样的曲线长度至多 \(T\)，直线 \(x=0\) 达到它。令 \(v\uparrow1\)，上述曲线的长度趋于零，所以其下确界为零。每条类时曲线在光滑非退化段上的固有时密度严格为正，故零值不能达到。折点只占参数零测集，不影响积分。这个例子表明，对类时连接曲线取长度下确界会丢失事件之间的时间间隔。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:A-conformal-null-parameter}
+	设 \(\widetilde g=e^{2f}g\) 为同一光滑 Lorentz 流形上的两个度量，\(\gamma(s)\) 是 \(g\) 的仿射零测地线。证明其轨迹仍是 \(\widetilde g\) 的零测地线，而新仿射参数可取
+	\[
+		\lambda(s)=\lambda_0+C\int_{s_0}^s e^{2f(\gamma(u))}\,\mathrm du,
+		\qquad C>0.
+	\]
+	用二维 Minkowski 度量与 \(f(t,x)=x\) 说明类时测地线的轨迹一般不具有相同性质。
+\end{exercise}
+\begin{solution}
+	把 \(e^{2f}g\) 代入 Koszul 公式并消去公共项，得到
+	\[
+		\widetilde\nabla_XY=\nabla_XY+X(f)Y+Y(f)X-g(X,Y)\operatorname{grad}_g f.
+	\]
+	若 \(k=\mathrm d\gamma/\mathrm ds\)，则 \(g(k,k)=0\) 且 \(\nabla_kk=0\)，因而 \(\widetilde\nabla_kk=2k(f)k\)。写 \(\mathrm d\gamma/\mathrm d\lambda=a(s)k\)，新测地线方程为
+	\[
+		a a'+2a^2(f\circ\gamma)'=0.
+	\]
+	其正解为 \(a=C^{-1}e^{-2f\circ\gamma}\)，即题中的参数公式。任意正的共形因子也保持零方向，所以轨迹与方向不变。
+
+	对 \(f=x\) 及原来的类时直线 \(\gamma(s)=(s,0)\)，有 \(k=\partial_t\)、\(k(f)=0\)、\(g(k,k)=-1\)，故 \(\widetilde\nabla_kk=\partial_x\)。这一加速度不与 \(k\) 共线，而重参数只能改变沿 \(k\) 的加速度项，因而无法将该轨迹变成新度量的测地线。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:A-cauchy-graph}
+	设 \(f:\mathbb R^m\to\mathbb R\) 光滑，且全局 Lipschitz 常数为 \(L<1\)。证明其图面 \(S=\{(f(x),x)\}\) 是 Minkowski 空间中的类空 Cauchy 超曲面。再以二维中的 \(t=\sqrt{1+x^2}\) 说明，仅要求超曲面处处类空不能得到相同结论。
+\end{exercise}
+\begin{solution}
+	图面切向量为 \((\mathrm df_x(v),v)\)，其平方长度至少为 \((1-L^2)|v|^2\)，故诱导度量正定。任意双向不可延伸未来因果曲线可用时间坐标写为 \((t,x(t))\)，其中 \(t\in\mathbb R\) 且 \(|x(t)-x(s)|\le|t-s|\)：时间范围若有有限端点，空间坐标便是 Cauchy 列，在 \(\mathbb R^m\) 中有极限，使曲线可以继续延伸。
+
+	令 \(F(t)=t-f(x(t))\)。若 \(s<t\)，则
+	\[
+		F(t)-F(s)\ge(1-L)(t-s)>0.
+	\]
+	因此 \(F\) 连续且严格递增，向两个时间端分别趋于 \(-\infty\) 和 \(+\infty\)，恰有一个零点。这正是曲线与图面的唯一交点。
+
+	反例函数 \(f(x)=\sqrt{1+x^2}\) 满足 \(|f'(x)|<1\)，所以图线处处类空。但双向不可延伸零直线 \((t,x)=(s,s)\) 从不与它相交，因为 \(\sqrt{1+s^2}>s\)。此时导数的上确界为 \(1\)，缺少统一的严格间隙。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:A-cylinder-winding}
+	在静态圆柱 \(\mathbb R\times(\mathbb R/L\mathbb Z)\)、\(g=-\mathrm dt^2+\mathrm dx^2\) 上，固定 \(p=(0,[0])\)、\(q=(T,[a])\)，其中 \(L>0,T>0\)。按空间绕行整数 \(k\in\mathbb Z\) 分类，求哪些类含有未来因果连接曲线，以及每类的最大固有时。由此求 \(p,q\) 的 Lorentz 时分离。
+\end{exercise}
+\begin{solution}
+	把曲线提升到平面并固定起点为 \((0,0)\)，终点唯一地写成 \((T,a+kL)\)。Minkowski 中的因果关系表明，第 \(k\) 类存在因果曲线当且仅当 \(|a+kL|\le T\)。因此允许的整数只有有限多个。若严格小于，直线提升给出该类最大固有时
+	\[
+		\sqrt{T^2-(a+kL)^2};
+	\]
+	等号情形只有零固有时，仍由零直线达到。令 \(d=\min_{k\in\mathbb Z}|a+kL|\)，则时分离为 \(\sqrt{T^2-d^2}\)（\(d\le T\)），而 \(d>T\) 时依定义为零。改变 \(a\) 的代表只平移整数编号，结果不变。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:A-conformal-halfspace}
+	在 \((0,\infty)\times\mathbb R^m\)、\(m\ge1\)，上取 \(g=t^{-2}(-\mathrm dt^2+|\mathrm dx|^2)\)。证明每个 \(t=c>0\) 切片都是 Cauchy 超曲面。沿 \(\gamma(t)=(t,t e_1)\) 检验两个方向的零仿射完备性，再检查共动曲线 \(x=x_0\) 的固有时范围。这里的共动曲线是否为测地线？
+\end{exercise}
+\begin{solution}
+	共形因子为正，因果关系及不可延伸因果曲线的轨迹与平直半空间相同。若未来因果曲线的时间上端 \(b\) 是有限正数，估计 \(|x(t)-x(s)|\le|t-s|\) 使空间坐标有极限，曲线可在内部继续；过去端点同理。因此双向不可延伸因果曲线的时间范围为 \((0,\infty)\)，恰好穿过每个切片一次。
+
+	由\cref{g3:ex:A-conformal-null-parameter}，\(\lambda=-t^{-1}\) 是所给零轨迹的仿射参数，范围为 \((-\infty,0)\)。它在过去具有无限仿射参数，未来只有有限仿射参数；当 \(t\to\infty\) 时无内部端点，故未来零测地不完备。
+
+	共动曲线上固有时满足 \(\mathrm d\tau=\mathrm dt/t\)，所以 \(\tau=\log t\in\mathbb R\)。其单位切向量是 \(T=t\partial_t\)。共形联络公式给出 \(\nabla^g_{\partial_t}\partial_t=-t^{-1}\partial_t\)，于是 \(\nabla^g_TT=0\)。这些指定的类时测地线在两端都完整；仅检验这一族并不足以推出所有类时测地线完备。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:A-de-sitter-compact-cauchy}
+	在 \(\mathbb R^{1+4}\) 的平直 Lorentz 配对中取超曲面
+	\[
+		\mathcal D=\{X:\langle X,X\rangle_L=1\}.
+	\]
+	利用 \(X=(\sinh t,\cosh t\,\omega)\)、\(\omega\in S^3\)，求诱导度量，证明 \(t\) 切片是紧 Cauchy 超曲面，且该时空的全部仿射测地线完备。检验其零 Ricci 条件。写球面度量为 \(\mathrm d\chi^2+\sin^2\chi\,g_{S^2}\)，计算 \(t=t_0<0,\chi=\pi/2\) 这个二球面的两项未来零扩张，并说明它为何不违背正文所引奇点定理。
+\end{exercise}
+\begin{solution}
+	求微分并用 \(\langle\omega,\mathrm d\omega\rangle=0\)，得到
+	\[
+		g=-\mathrm dt^2+\cosh^2t\,g_{S^3}.
+	\]
+	未来因果曲线满足 \(|\mathrm d\omega/\mathrm dt|_{S^3}\le1/\cosh t\)。在任何有限时间区间上，空间曲线因而有统一 Lipschitz 界；紧球面上有限时间端必有极限并可继续曲线。因此不可延伸因果曲线的时间范围为 \(\mathbb R\)，每个切片恰被穿过一次，且切片与 \(S^3\) 微分同胚。\Cref{g3:cor:A-warped-global-hyperbolicity}还保证该时空全局双曲。
+
+	超曲面的单位类空法向为 \(X\)。一条仿射测地线的环境加速度须为法向量，微分 \(\langle X,X\rangle_L=1\) 两次给出
+	\[
+		X''=-cX,\qquad c=\langle X',X'\rangle_L.
+	\]
+	对给定初值 \(\langle X_0,X_0\rangle_L=1\)、\(\langle X_0,V_0\rangle_L=0\)，这个常系数方程在全实轴有解：\(c>0\) 用正弦余弦，\(c<0\) 用双曲函数，\(c=0\) 用 \(X=X_0+sV_0\)。逐式代入可核对 \(\langle X,X\rangle_L=1\) 和 \(\langle X',X'\rangle_L=c\) 始终成立，故所有初值都产生全实轴上的测地线。
+
+	以 \(D\) 表示环境中的平直联络，切向场满足 \(D_UV=\nabla_UV-g(U,V)X\)。将此式代入 \(D\) 的零曲率恒等式并取切向部分，得
+	\[
+		R(U,V)W=g(V,W)U-g(U,W)V,
+		\qquad \operatorname{Ric}=3g.
+	\]
+	所以 \(\operatorname{Ric}(k,k)=0\) 对每个零向量成立。取未来零法向 \(k_\pm=\partial_t\pm(\cosh t)^{-1}\partial_\chi\)。二球面的面积密度正比于 \(\cosh^2t\sin^2\chi\)，故扩张为
+	\[
+		\theta_\pm=2\tanh t\pm\frac{2\cot\chi}{\cosh t}.
+	\]
+	在所给二球面上两者都是 \(2\tanh t_0<0\)，所以它未来陷获；它位于同一时间切片，因而也无时序。事实上，这个时空不存在非紧 Cauchy 超曲面。任一光滑嵌入 Cauchy 超曲面 \(\Sigma\) 与每条完整的共动类时线恰相交一次，因此沿这些线投向 \(S^3\) 是双射。\(\mathrm T\Sigma\) 不能含有类时方向：否则 \(\Sigma\) 内有一小段类时曲线，把它向两端接上共动线，就违背 Cauchy 性。故投影的微分没有核，投影为双射的局部微分同胚，从而 \(\Sigma\) 与 \(S^3\) 微分同胚且紧。\Cref{g3:thm:A-penrose}要求非紧 Cauchy 超曲面；这一整体条件在该例中确实不可省略。
+\end{solution}
+
+\begin{exercise}\label{g3:ex:A-contracting-power-model}
+	在四维流形 \(( -\infty,1)\times\mathbb R^3\) 上取
+	\[
+		g=-\mathrm dt^2+a(t)^2\bigl(\mathrm dr^2+r^2g_{S^2}\bigr),
+		\qquad a(t)=(1-t)^p,\quad p>0.
+	\]
+	证明固定时间切片是非紧 Cauchy 超曲面，检验零 Ricci 条件，并在每个时间切片内找出未来陷获圆球。直接计算一条径向零测地线的剩余仿射参数，判断它能否完整延伸到未来。
+\end{exercise}
+\begin{solution}
+	未来因果曲线以 \(t\) 为参数时满足 \(|x'(t)|\le a(t)^{-1}\)。在任意紧时间区间内右侧有界，所以若时间范围有属于 \((-\infty,1)\) 的有限端点，空间坐标有极限，曲线能够继续。因而双向不可延伸曲线的时间范围为 \((-\infty,1)\)，每个切片恰被穿过一次。这些切片与非紧的 \(\mathbb R^3\) 微分同胚；\cref{g3:cor:A-warped-global-hyperbolicity}同时保证全局双曲性。
+
+	在空间 Cartesian 坐标中，Christoffel 公式给出
+	\[
+		\Gamma^0_{ij}=aa'\delta_{ij},\qquad
+		\Gamma^i_{0j}=\Gamma^i_{j0}=(a'/a)\delta^i_j.
+	\]
+	将它们代入曲率公式并收缩，得到
+	\[
+		\operatorname{Ric}_{00}=-3a''/a,\qquad
+		\operatorname{Ric}_{0i}=0,\qquad
+		\operatorname{Ric}_{ij}=(aa''+2(a')^2)\delta_{ij}.
+	\]
+	若 \(k=k^0\partial_t+v\) 为零向量，则 \(a^2|v|^2=(k^0)^2\)，故
+	\[
+		\operatorname{Ric}(k,k)
+		=2\left[\left(\frac{a'}a\right)^2-\frac{a''}a\right](k^0)^2
+		=\frac{2p}{(1-t)^2}(k^0)^2\ge0.
+	\]
+	在 \(t=t_0,r=r_0>0\) 的二球面上取 \(k_\pm=\partial_t\pm a^{-1}\partial_r\)。由面积密度 \(a^2r^2\mu_{S^2}\) 得
+	\[
+		\theta_\pm=2\left(\frac{a'}a\pm\frac1{ar}\right)
+		=2\left(-\frac{p}{1-t_0}\pm\frac1{a(t_0)r_0}\right).
+	\]
+	因此只要其物理半径满足 \(a(t_0)r_0>(1-t_0)/p\)，两项扩张就都严格为负。该球面紧且无边界，同一时间切片内的任意两点不能由类时曲线连接，故它也无时序。
+
+	沿一条固定空间方向的仿射零测地线，空间方程给出常向量 \(P=a^2\mathrm dx/\mathrm d\lambda\ne0\)。零条件及未来方向于是给出 \(\mathrm dt/\mathrm d\lambda=|P|/a\)。它同时满足时间方程，因为
+	\[
+		\frac{\mathrm d^2t}{\mathrm d\lambda^2}
+		=-\frac{|P|^2a'}{a^3},\qquad
+		aa'\left|\frac{\mathrm dx}{\mathrm d\lambda}\right|^2
+		=\frac{|P|^2a'}{a^3}.
+	\]
+	从 \(t_0\) 到未来端的剩余仿射参数因此为
+	\[
+		\lambda_*-\lambda_0
+		=\frac1{|P|}\int_{t_0}^1(1-t)^p\,\mathrm dt
+		=\frac{(1-t_0)^{p+1}}{(p+1)|P|}<\infty.
+	\]
+	\(t=1\) 不属于流形，所以该测地线无法在当前时空内越过这个有限参数端点。正文的定理由整体条件保证这种不完备性；本例还把参数余量明确算了出来。
+\end{solution}

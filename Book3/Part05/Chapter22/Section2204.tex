@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 22.4 Federer–Fleming 变形定理
 % 纲要位置：几何学计划纲要.md，第 3032 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -14,22 +14,297 @@
 
 \section{Federer–Fleming 变形定理}
 \label{g3:sec:2204}
-
-待撰写
+把一条曲线移到细网格上，误差可以由移动时扫过的带状区域填充。对高维流，困难在于同时控制面积和边界：径向投影在中心附近会放大质量，而投影到一个面上的流也未必具有常数重数。本节分别处理这两个问题。先选择质量分布较稀疏的投影中心，再用面内的 BV 估计把变动密度替换为常数。所证版本对应\cite[第29节，定理29.1、推论29.3及证明，第163--177页]{Simon1983}，以下展开所需构造与估计。
 
 \subsection{立方网格与逐维径向投影}
 \label{g3:subsec:2204:01}
-待撰写
+固定环境 \(\mathbb R^n\) 和边长 \(h>0\)。以 \(h\mathbb Z^n\) 为顶点的闭立方体及其各维面组成网格；记 \(\mathcal Q_h^j\) 为所有 \(j\) 维面，\(\mathcal S_h^j\) 为它们的并。每个面选择一次坐标取向，\([F]\) 表示沿该取向积分的流；同伦中的 \([0,1]\) 同样表示取正向的区间流。这里网格的位置固定，随后改变的是立方体内部的投影中心。
+
+取一个 \(j\) 维立方体 \(F\)，并在其中央半边长子立方体中选择 \(a_F\)。从 \(a_F\) 出发沿射线把 \(x\ne a_F\) 送到 \(\partial F\)，得到径向映射 \(r_F\)。它在边界上为恒等，在每个投向指定侧面的区域内有显式分式表达，因此
+\[
+	|r_F(x)-x|\le\sqrt j\,h,\qquad
+	|\mathrm Dr_F(x)|\le \frac{C_jh}{|x-a_F|}.
+\]
+例如被击中的面为 \(x_i=b\) 时，
+\[
+	r_F(x)=a_F+\frac{b-(a_F)_i}{x_i-(a_F)_i}(x-a_F).
+\]
+在该区域内，分母的绝对值与 \(|x-a_F|\) 可用只依赖维数的常数比较；对上式求导即得估计。
+
+\begin{lemma}\label{g3:lem:cubical-radial-retraction}
+	设 \(0\le k<n\)、\(h>0\)，\(a\in(h/4,3h/4)^n\)。令
+	\[
+	\Sigma_a=\bigcup_{\substack{I\subset\{1,\ldots,n\}\\|I|=k+1}}
+	\{x:x_i-a_i\in h\mathbb Z\text{ 对每个 }i\in I\}.
+	\]
+	则存在局部 Lipschitz 映射
+	\(r:\mathbb R^n\setminus\Sigma_a\to\mathcal S_h^k\)，在 \(\mathcal S_h^k\) 上为恒等，每个立方体映入自身，并且
+	\begin{equation}\label{g3:eq:cubical-radial-bound}
+	|r(x)-x|\le\sqrt n\,h,\qquad
+	\operatorname{Lip}_{\mathrm{loc}}r(x)\le
+	\frac{C_{n,k}h}{\operatorname{dist}(x,\Sigma_a)}.
+	\end{equation}
+	局部 Lipschitz 常数的估计允许把右边乘一个固定的维数常数。
+\end{lemma}
+\begin{proof}
+	在基本立方体 \([0,h]^n\) 内，先从 \(a\) 径向投到 \((n-1)\) 骨架，再在各 \((n-1)\) 面上，从 \(a\) 的正交投影继续向该面的边界投影。如此下降，直到到达 \(k\) 骨架。各步在较低维边界上固定不动，所以相邻面上的定义相容。平移同一构造便定义整个网格上的映射。
+
+	每一步可能遇到的投影中心，以及此前径向映射下这些中心的原像，都包含于所列 \(\Sigma_a\)：在一个面内，中心的全部自由坐标等于对应 \(a_i\)；在下降到 \(k\) 维之前，至少还剩 \(k+1\) 个这样的坐标条件。因而在 \(\Sigma_a\) 外构造有定义。
+
+	还须避免把逐步导数估计粗糙相乘而得到过强的奇性。下面对立方体维数归纳，证明总映射只有距离的一次倒数。对维数 \(k+1\)，这就是一次径向投影估计。假设更低维情况已证，令第一步把 \(x\) 送到面 \(F\) 内的 \(y\)，写
+	\[
+	y-a=\lambda(x-a),\qquad
+	\lambda=\frac{|y-a|}{|x-a|},\qquad |y-a|\ge h/4.
+	\]
+	以 \(\pi_F\) 记到 \(F\) 的仿射正交投影，\(a_F=\pi_F(a)\)。面内余下步骤的奇性集是经过 \(a_F\) 的有限个坐标仿射子空间的并，记为 \(\Sigma_F\)。这些空间的法向圆柱均包含于基本立方体所用的奇性集 \(\Sigma\)。于是
+	\[
+	\begin{aligned}
+	\operatorname{dist}(y,\Sigma_F)
+	&=\lambda\operatorname{dist}(\pi_F(x),\Sigma_F)\\
+	&\ge\lambda\operatorname{dist}(x,\Sigma).
+	\end{aligned}
+	\]
+	归纳假设给出余下映射在 \(y\) 附近的 Lipschitz 常数至多
+	\(Ch/\operatorname{dist}(y,\Sigma_F)\)。乘以第一步的 \(Ch/|x-a|\)，再用 \(|y-a|\ge h/4\)，便得到 \(Ch/\operatorname{dist}(x,\Sigma)\)。全局 \(\Sigma_a\) 包含该局部奇性集，所以也得到式\eqref{g3:eq:cubical-radial-bound}。在各分片交界处，映射连续且片数有限；沿线段逐片求和给出同样的局部 Lipschitz 估计。各步留在原立方体中，故位移不超过其直径。
+\end{proof}
+
+奇性集不是任意选取的。下一条估计使流在其小邻域内的质量衰减得足够快，抵消径向投影的导数增长。
+
+\begin{lemma}\label{g3:lem:deformation-good-center}
+	设 \(0\le k<n\)，\(\mu_1,\mu_2\) 为 \(\mathbb R^n\) 上有限非负 Radon 测度，\(h>0\)。存在 \(a\in(h/4,3h/4)^n\)，使上条引理的 \(\Sigma_a\) 满足，对 \(i=1,2\) 及 \(0<\rho<h\)，
+	\begin{equation}\label{g3:eq:good-center-tube}
+	\mu_i\{x:\operatorname{dist}(x,\Sigma_a)<\rho\}
+	\le C_{n,k}(\rho/h)^{k+1}\mu_i(\mathbb R^n).
+	\end{equation}
+\end{lemma}
+\begin{proof}
+	零测度无须限制中心。对非零 \(\mu\) 及一个大小为 \(k+1\) 的坐标集合 \(I\)，将 \(\mu\) 按这些坐标投影，再模去 \(h\mathbb Z^{k+1}\)，得到边长 \(h\) 的平坦环面上的测度 \(\nu_I\)。其总质量为 \(\mu(\mathbb R^n)\)。将满足
+	\[
+	\nu_I(B_\rho(b))>A(\rho/h)^{k+1}\mu(\mathbb R^n)
+	\quad\text{对某个 }0<\rho<h/10
+	\]
+	的 \(b\) 称为坏点。五倍球覆盖引理给出两两不交的坏球，其五倍球覆盖所有坏点。把各球的不等式相加，得到坏点集合的 \((k+1)\) 维体积至多 \(C_{n,k}h^{k+1}/A\)。这里可先处理有限子族，再用外正则性与可数覆盖取极限；环面上的小球在有限张坐标图内就是 Euclid 球。
+
+	将坏点集合沿其余坐标拉回中央子立方体，所占 \(n\) 维体积至多 \(C_{n,k}h^n/A\)。对有限个 \(I\) 和两项测度取并，选择仅依赖 \(n,k\) 的充分大 \(A\)，坏点总体积便小于中央子立方体的体积。取其外的 \(a\)。距 \(\Sigma_a\) 小于 \(\rho\) 的点必属于至少一个坐标投影逆像球，故把相应良好估计相加即得 \(\rho<h/10\) 时的结论。其余半径用总质量估计，并增大维数常数即可。
+\end{proof}
 
 \subsection{质量控制和边界相容}
 \label{g3:subsec:2204:02}
-待撰写
+将上条引理同时用于 \(\|T\|\) 与 \(\|\partial T\|\)。选择中心时同时照顾这两项测度，正是后续边界估计仍能成立的原因。
+
+\begin{proposition}\label{g3:prop:deformation-to-skeleton}
+	设 \(0\le k<n\)，\(T\in\mathcal N_k(\mathbb R^n)\) 紧支，\(h>0\)。存在紧支正规流 \(Q,R_0,S_0\)，其维数依次为 \(k,k+1,k\)，满足
+	\[
+	T-Q=\partial R_0+S_0,\qquad
+	\operatorname{spt}Q\subset\mathcal S_h^k,
+	\]
+	以及
+	\begin{equation}\label{g3:eq:skeleton-deformation-bounds}
+	\begin{aligned}
+	\mathbf M(Q)&\le C\mathbf M(T),&
+	\mathbf M(\partial Q)&\le C\mathbf M(\partial T),\\
+	\mathbf M(R_0)&\le Ch\mathbf M(T),&
+	\mathbf M(S_0)&\le Ch\mathbf M(\partial T).
+	\end{aligned}
+	\end{equation}
+	\(Q,R_0\) 支于 \(\operatorname{spt}T\) 的 \(\sqrt n h\) 邻域，\(\partial Q,S_0\) 支于 \(\operatorname{spt}\partial T\) 的同样邻域。若 \(T\) 为整数流，则 \(Q,R_0,S_0\) 均为整数流。常数 \(C\) 只依赖 \(n,k\)。
+\end{proposition}
+\begin{proof}
+	记 \(d(x)=\operatorname{dist}(x,\Sigma_a)\)，其中 \(a\) 按\cref{g3:lem:deformation-good-center}选取；令 \(r\) 为相应径向映射。对 \(\mu=\|T\|\) 或 \(\|\partial T\|\)，式\eqref{g3:eq:good-center-tube}与二进环带求和给出，对 \(0\le q\le k\)，
+	\begin{equation}\label{g3:eq:radial-weight-tail}
+	\int_{\{0<d<\rho\}}(h/d)^q\,\mathrm d\mu
+	\le C(\rho/h)^{k+1-q}\mu(\mathbb R^n).
+	\end{equation}
+	事实上，第 \(j\) 个环带 \(2^{-j-1}\rho\le d<2^{-j}\rho\) 的贡献至多
+	\(C(h/(2^{-j-1}\rho))^q(2^{-j}\rho/h)^{k+1}\mu(\mathbb R^n)\)，其比值为 \(2^{-(k+1-q)}<1\)。特别地，\(\mu(\Sigma_a)=0\)，而完整加权积分至多为 \(C\mu(\mathbb R^n)\)。
+
+	先假设 \(k\ge1\)。切片质量估计\eqref{g3:eq:normal-slice-mass}允许在每个二进区间 \((\rho/2,\rho)\) 内选取良好半径 \(t\)，使
+	\[
+	\mathbf M\langle T,d,t\rangle
+	\le C\rho^k h^{-k-1}\mathbf M(T).
+	\]
+	同时避开所有限制、切片与整数性结论的零测例外集，取这样的一列 \(t_j\downarrow0\)。写
+	\(T_j=T\llcorner\{d>t_j\}\)，由切片定义与 \(\partial T\) 的限制公式，
+	\[
+	\partial T_j=(\partial T)\llcorner\{d>t_j\}-\langle T,d,t_j\rangle.
+	\]
+	将 \(r\) 和线性同伦
+	\(H(s,x)=(1-s)x+sr(x)\) 用于这些支集远离 \(\Sigma_a\) 的正规流。推前只需要映射在支集邻域 Lipschitz，可先延拓再使用\cref{g3:prop:current-homotopy}。
+
+	位移至多为 \(\sqrt n h\)，故推前的 \(q\) 维质量放大因子至多为 \(C(h/d)^q\)，而同伦作用于 \(q\) 维流时的质量放大因子至多为 \(Ch(h/d)^q\)。在 \(d\) 远离零的部分可以把 \(h/d\) 换成 \(1+h/d\)，不改变以下估计。式\eqref{g3:eq:radial-weight-tail}因此说明，下列三列均在质量范数中收敛：
+	\[
+	\begin{aligned}
+	Q&=\lim_j r_\#T_j,\\
+	R_0&=-\lim_j H_\#([0,1]\times T_j),\\
+	S_0&=-\lim_j H_\#([0,1]\times
+	((\partial T)\llcorner\{d>t_j\})).
+	\end{aligned}
+	\]
+	例如两个不同删管尺度之间的 \(r_\#T\) 差，由 \(q=k\) 的尾估计控制为 \(C\rho\mathbf M(T)/h\)；相应同伦差至多为 \(C\rho\mathbf M(T)\)。有限质量流空间是有限维向量测度的完备空间，所以这些极限存在。
+
+	还须处理删管所产生的边界。对上述切片，由 \(d=t_j\) 上的局部 Lipschitz 界，
+	\[
+	\begin{aligned}
+	\mathbf M(r_\#\langle T,d,t_j\rangle)
+	&\le C(t_j/h^2)\mathbf M(T)\longrightarrow0,\\
+	\mathbf M(H_\#([0,1]\times\langle T,d,t_j\rangle))
+	&\le C(t_j/h)\mathbf M(T)\longrightarrow0.
+	\end{aligned}
+	\]
+	第一式使用切片维数 \(k-1\)，第二式再乘位移尺度 \(h\)。同伦恒等式取极限便得 \(T-Q=\partial R_0+S_0\)；边界推前公式同时给出
+	\[
+	\partial Q=\lim_j r_\#((\partial T)\llcorner\{d>t_j\}).
+	\]
+	用完整加权积分分别估计各极限，得到式\eqref{g3:eq:skeleton-deformation-bounds}。\(\partial S_0=\partial T-\partial Q\)，且 \(\partial R_0=T-Q-S_0\)，所以三个流均正规。支集控制来自每个点和它的同伦轨迹都留在原立方体内。
+
+	若 \(T\) 为整数流，良好限制和切片由\cref{g3:thm:integer-current-slicing}仍为整数流；Lipschitz 推前及乘积保持整数可整流性。上述三个质量范数极限由\cref{g3:lem:integer-rectifiable-mass-closure}仍整数可整流，边界公式再给出它们的边界也整数可整流。这里用到的是质量范数下的闭合性。
+
+	当 \(k=0\) 时，\(\partial T=0\)，不需要切片项。对有限测度的限制直接定义 \(Q=r_\#T\) 与 \(R_0=-H_\#([0,1]\times T)\)，式\eqref{g3:eq:radial-weight-tail}在 \(q=0\) 时保证删管极限存在，零维同伦公式给出 \(T-Q=\partial R_0\)。取 \(S_0=0\) 即得全部结论；整数零维流是有限个带整数系数点，其每个点只沿一条线段移动。
+\end{proof}
 
 \subsection{多面体逼近及误差填充}
 \label{g3:subsec:2204:03}
-待撰写
+支于 \(k\) 骨架还不等于多面体流。一个面内仍可能有随位置变化的密度；其变化由面内的边界质量控制。下面先建立所需的 BV 估计。
+
+\begin{lemma}\label{g3:lem:cube-median-bv}
+	设 \(k\ge1\)，\(F\subset\mathbb R^k\) 为边长 \(h\) 的开立方体，\(u\in BV(F)\)。存在实数中位数 \(b\)，满足
+	\[
+	\mathcal L^k\{u\le b\}\ge|F|/2,\qquad
+	\mathcal L^k\{u\ge b\}\ge|F|/2,
+	\]
+	并有
+	\begin{equation}\label{g3:eq:cube-median-estimates}
+	\begin{aligned}
+	|b|h^k&\le2\int_F|u|,\\
+	\int_F|u-b|&\le C_kh|Du|(F),\\
+	|D((u-b)\chi_F)|(\mathbb R^k)&\le C_k|Du|(F).
+	\end{aligned}
+	\end{equation}
+	最后一行将 \(u-b\) 在 \(F\) 外补零。若 \(u\) 几乎处处取整数值，\(b\) 可选为整数。
+\end{lemma}
+\begin{proof}
+	分布函数给出中位数；整数值情形选取累计分布首次达到一半的整数即可。若 \(b>0\)，至少一半点上 \(|u|\ge b\)；若 \(b<0\)，至少一半点上 \(|u|\ge-b\)。这证明第一行。
+
+	对光滑 \(v\)，在立方体内逐个坐标连接两点，对每条坐标线用微积分基本定理，再对两点积分，得到
+	\[
+	\int_F|v-v_F|\le C_kh\int_F|\nabla v|,
+	\qquad v_F=|F|^{-1}\int_Fv.
+	\]
+	例如每次只替换一个坐标，其差由该坐标方向导数在长度 \(h\) 的区间上积分控制；对其余坐标积分并把 \(k\) 项相加，即得此式。该式也适用于 BV 函数：以立方体中心为中心先作比率 \(1-\delta\) 的内缩，再作小尺度卷积，得到定义于闭立方体邻域的光滑函数。内缩后的变差不超过
+	\((1-\delta)^{1-k}|Du|(F)\)，函数在 \(L^1\) 中趋于 \(u\)；随后选取卷积尺度并用下半连续性，就得到保持总变差的光滑逼近。
+
+	中位数使函数 \(c\mapsto\int_F|u-c|\) 取得最小值。具体地，若 \(c>b\)，在 \(u\le b\) 的至少一半点上绝对值增加 \(c-b\)，其余点上至多减少 \(c-b\)；\(c<b\) 同理。因此
+	\(\int_F|u-b|\le\int_F|u-u_F|\)，证明第二行。
+
+	对定义于闭立方体邻域的光滑 \(v\)，沿垂直每个侧面的线段积分，得到
+	\[
+	\int_{\partial F}|v|\,\mathrm d\mathcal H^{k-1}
+	\le C_k\left(h^{-1}\int_F|v|+\int_F|\nabla v|\right).
+	\]
+	一条线段上的估计为
+	\(|v(0)|\le h^{-1}\int_0^h|v(t)|\,\mathrm dt+\int_0^h|v'(t)|\,\mathrm dt\)，另一端相同。补零的分布导数包含内域梯度和边界跳跃，所以
+	\[
+	|D(v\chi_F)|(\mathbb R^k)
+	\le C_k\left(h^{-1}\int_F|v|+\int_F|\nabla v|\right).
+	\]
+	用上一段构造的严格光滑逼近处理 \(u-b\)，在全空间使用变差下半连续性，得到同一补零估计。结合第二行即为第三行。
+\end{proof}
+
+\begin{theorem}[Federer--Fleming 变形定理]\label{g3:thm:federer-fleming-deformation}
+	设 \(0\le k\le n\)，\(T\in\mathcal N_k(\mathbb R^n)\) 紧支，\(h>0\)。在固定网格 \(h\mathbb Z^n\) 上，存在有限多面体流
+	\[
+	P=\sum_{F\in\mathcal Q_h^k}b_F[F]
+	\]
+	及紧支正规流 \(R\in\mathcal N_{k+1}(\mathbb R^n)\)、\(S\in\mathcal N_k(\mathbb R^n)\)，使
+	\begin{equation}\label{g3:eq:deformation-decomposition}
+	T-P=\partial R+S
+	\end{equation}
+	且
+	\begin{equation}\label{g3:eq:deformation-mass-bounds}
+	\begin{aligned}
+	\mathbf M(P)&\le C\mathbf M(T),&
+	\mathbf M(\partial P)&\le C\mathbf M(\partial T),\\
+	\mathbf M(R)&\le Ch\mathbf M(T),&
+	\mathbf M(S)&\le Ch\mathbf M(\partial T).
+	\end{aligned}
+	\end{equation}
+	常数 \(C=C(n,k)\) 与 \(T,h\) 无关；\(P,R\) 支于 \(\operatorname{spt}T\) 的 \(2\sqrt n h\) 邻域，\(\partial P,S\) 支于 \(\operatorname{spt}\partial T\) 的同样邻域。若 \(T\in\mathcal I_k(\mathbb R^n)\)，则所有 \(b_F\in\mathbb Z\)，且 \(R,S\) 也是整数流。特别地，\(\partial T=0\) 时可取 \(S=0\) 并有 \(\partial P=0\)。
+\end{theorem}
+\begin{proof}
+	当 \(k<n\) 时，先用\cref{g3:prop:deformation-to-skeleton}得到 \(Q,R_0,S_0\)。当 \(k=n\) 时，取 \(Q=T\)、\(R_0=S_0=0\)；全空间本来就是 \(n\) 骨架。若 \(k=0\)，\(Q\) 已经是顶点上的有限线性组合，直接令 \(P=Q\)、\(R=R_0\)、\(S=0\) 即可。以下设 \(k\ge1\)。
+
+	对每个 \(k\) 面 \(F\)，在其相对内部 \(F^\circ\) 的小邻域中，\(Q\) 只支于该面的仿射平面。由\cref{g3:prop:normal-plane-bv}，
+	\[
+	Q\llcorner F^\circ=u_F[F],\qquad u_F\in BV(F^\circ),
+	\]
+	并且
+	\[
+	\int_{F^\circ}|u_F|=\|Q\|(F^\circ),\qquad
+	|Du_F|(F^\circ)\le\|\partial Q\|(F^\circ).
+	\]
+	\cref{g3:lem:normal-current-no-lower-skeleton}说明 \(Q\) 不给低维骨架质量，故这些面内表示相加就是全部 \(Q\)。只有有限个面与 \(\operatorname{spt}Q\) 相交。
+
+	在每个面选取\cref{g3:lem:cube-median-bv}的中位数 \(b_F\)，令 \(P=\sum_Fb_F[F]\)。中位数第一条估计给出
+	\[
+	\mathbf M(P)=\sum_F|b_F|h^k\le2\mathbf M(Q).
+	\]
+	将另外两条估计求和，得到
+	\begin{equation}\label{g3:eq:skeleton-median-error}
+	\mathbf M(Q-P)\le Ch\mathbf M(\partial Q),\qquad
+	\mathbf M(\partial(Q-P))\le C\mathbf M(\partial Q).
+	\end{equation}
+	在第二式中，每个面上的 \((u_F-b_F)[F]\) 都先补零，故它在面边界上的跳跃也已包括；相邻面抵消只能减小求和后的质量。由 \(\partial P=\partial Q-\partial(Q-P)\)，再得 \(\mathbf M(\partial P)\le C\mathbf M(\partial Q)\)。
+
+	现在取
+	\[
+	R=R_0,\qquad S=S_0+(Q-P).
+	\]
+	代入 \(T-Q=\partial R_0+S_0\) 即得分解，前述估计与式\eqref{g3:eq:skeleton-deformation-bounds}给出全部质量界。若面内 \(|Du_F|\) 为零，\(u_F\) 几乎处处为常数，\(Q-P\) 在该面上为零。因此 \(Q-P\) 所占的面必接触 \(\operatorname{spt}\partial Q\)，其每一点距此支集至多为一个面直径。这与先前支集控制相加，给出 \(S,\partial P\) 的 \(2\sqrt n h\) 邻域界；\(P,R\) 同理。
+
+	若 \(T\) 为整数流，\(Q,R_0,S_0\) 为整数流，\(u_F\) 几乎处处为整数，可以选取整数中位数。所以 \(P\) 及其多面体边界都是整数可整流流，\(Q-P\) 及其边界也整数可整流，所构造的 \(R,S\) 是整数流。\(\partial T=0\) 时，式\eqref{g3:eq:deformation-mass-bounds}迫使 \(S=0\)、\(\partial P=0\)。
+\end{proof}
+
+该分解区分两种误差：\(R\) 记录流本身移动时扫过的 \((k+1)\) 维区域，\(S\) 记录边界移动和面内密度调整造成的 \(k\) 维误差。闭流的边界没有移动，第二种误差完全消失。对一般有边界流，\(S\) 的质量随网格尺度成正比地趋零。
 
 \subsection{网格尺度和统一常数}
 \label{g3:subsec:2204:04}
-待撰写
+以上证明中，所有选点坏集比例、坐标投影片数和中位数估计的常数都只依赖维数。也可先在单位网格完成构造，再用伸缩 \(d_h(x)=hx\) 转回一般网格：\(j\) 维流的质量乘以 \(h^j\)，所以 \(R\) 比 \(T\) 多一个 \(h\)，\(S\) 比 \(\partial T\) 多一个 \(h\)。这说明误差估计中的尺度幂次来自维数，而不是逐个流另选的常数。
+
+\begin{corollary}\label{g3:cor:uniform-polyhedral-flat-approximation}
+	设 \(K\subset\mathbb R^n\) 紧，\(A<\infty\)。对所有支于 \(K\) 且
+	\(\mathbf M(T)+\mathbf M(\partial T)\le A\) 的正规 \(k\) 流，在每个固定网格尺度 \(h>0\) 上均可选取多面体流 \(P_h(T)\)，使
+	\[
+	\mathcal F(T-P_h(T))\le C_{n,k}hA.
+	\]
+	当 \(h\) 固定时，这些多面体流属于同一个有限维向量空间，其系数一致有界。
+\end{corollary}
+\begin{proof}
+	将\eqref{g3:eq:deformation-decomposition}代入平坦范数的定义，得到
+	\(\mathcal F(T-P)\le\mathbf M(R)+\mathbf M(S)\le ChA\)。多面体支集包含于固定紧邻域 \(K_{2\sqrt n h}=\{x:\operatorname{dist}(x,K)\le2\sqrt n h\}\)，只涉及其中有限个网格面。各面内部不交，故
+	\(\mathbf M(P)=h^k\sum_F|b_F|\le CA\)，从而每个系数的绝对值至多为 \(CAh^{-k}\)。
+\end{proof}
+
+这条推论把一个无限维流族，在任意给定误差下放入一个有限维有界集合的邻域。下一节的紧性证明将先固定 \(h\) 处理这些有限个系数，再令 \(h\) 趋零。
+
+整数系数还给出一个不同用途：非零网格流至少占据一整份面质量。因此质量小于 \(h^k\) 的整数网格 \(k\) 流只能为零。
+
+\begin{corollary}\label{g3:cor:integral-cycle-isoperimetric}
+	设 \(1\le k<n\)，\(T\in\mathcal I_k(\mathbb R^n)\) 紧支且 \(\partial T=0\)。存在紧支整数 \((k+1)\) 流 \(V\)，满足
+	\[
+	\partial V=T,\qquad
+	\mathbf M(V)\le C_{n,k}\mathbf M(T)^{(k+1)/k}.
+	\]
+	若 \(T\ne0\)，可使 \(V\) 支于 \(\operatorname{spt}T\) 的
+	\(C_{n,k}\mathbf M(T)^{1/k}\) 邻域。
+\end{corollary}
+\begin{proof}
+	\(T=0\) 时取 \(V=0\)。否则记变形定理中控制 \(\mathbf M(P)\) 的常数为 \(C_0\)，选择
+	\(h=(2C_0\mathbf M(T))^{1/k}\)。由于 \(P\) 的系数为整数，若 \(P\ne0\)，则
+	\[
+	h^k\le\mathbf M(P)\le C_0\mathbf M(T)=h^k/2,
+	\]
+	矛盾。故 \(P=0\)。又因 \(\partial T=0\)，\(S=0\)，分解变为 \(T=\partial R\)。取 \(V=R\)，质量和支集界由变形定理立即得到。
+\end{proof}
+
+这里得到的是维数常数控制的填充估计；第21章为余维一集合证明的尖锐 Euclid 等周不等式还确定了最佳常数。两种估计分别服务于几何极值和一般整数流的填充。
 % 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。

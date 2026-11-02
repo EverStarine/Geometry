@@ -1,7 +1,7 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 7.2 矩阵 Riccati 方程
 % 纲要位置：几何学计划纲要.md，第 2370 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
@@ -15,21 +15,249 @@
 \section{矩阵 Riccati 方程}
 \label{g3:sec:0702}
 
-待撰写
+Jacobi 方程描述相邻测地线的分离量，指标比较则控制达到同一终点值的代价。若把分离量的导数除以分离量本身，就得到一个一阶方程：在一维中是对数导数，在多维中是矩阵 \(A'A^{-1}\)。这个矩阵同时记录小球面向各个方向的扩张率。它的迹把方向信息合并为体积密度的增长率，因而能将截面曲率比较降为只要求 Ricci 下界的比较。
 
 \subsection{径向形算子及奇异初值}
 \label{g3:subsec:0702:01}
-待撰写
+
+设 \((M^n,g)\) 为光滑无边界黎曼流形，\(n\ge2\)，\(\gamma(t)=\exp_p(tv)\) 是单位速测地线，\(T=\dot\gamma\)。记 \(E=v^\perp\subset\mathrm T_pM\)、\(m=n-1\)，用沿 \(\gamma\) 的平行移动把 \(T(t)^\perp\) 与 \(E\) 等距识别。以下所有矩阵均相对于这个固定的 Euclid 空间书写；换一个初始正交基只会同时作正交共轭。
+
+\ProseParagraphBreak
+
+对每个 \(w\in E\)，令 \(J_w\) 满足 \(J_w(0)=0\)、\(J_w'(0)=w\)。由\cref{g3:thm:jacobi-initial-data,g3:prop:jacobi-tangential-normal}，这些解线性依赖 \(w\) 且始终法向。定义\term[jingxiang Jacobi zhangliang]{径向 Jacobi 张量}[radial Jacobi tensor] \(A(t)\) 使 \(J_w(t)=A(t)w\)。在上述平行识别中，它满足
+\begin{equation}\label{g3:eq:radial-jacobi-tensor}
+	A''+\mathcal R A=0,\qquad A(0)=0,\qquad A'(0)=\operatorname{id}_E,
+	\qquad \mathcal R(t)w=R(w,T(t))T(t).
+\end{equation}
+这里 \(\mathcal R(t)\) 自伴，且 \(\operatorname{tr}\mathcal R(t)=\operatorname{Ric}(T(t),T(t))\)。在没有相对于 \(p\) 的共轭时刻的区间内，\(A(t)\) 可逆；定义
+\[
+	S(t)=A'(t)A(t)^{-1}.
+\]
+虽然 \(A\) 的列来自不同初始方向，\(S\) 却是在同一个末端法空间上作用的算子：若 \(J=A w\)，则 \(J'=SJ\)。
+
+\begin{proposition}\label{g3:prop:radial-riccati}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(n\ge2\)，\(\gamma:[0,L]\to M\) 为单位速测地线，\(L>0\)，且 \((0,L]\) 内无相对于 \(\gamma(0)\) 的共轭时刻。对式\eqref{g3:eq:radial-jacobi-tensor}的法向 Jacobi 张量，\(S=A'A^{-1}\) 在 \((0,L]\) 上自伴，并满足
+	\begin{equation}\label{g3:eq:radial-riccati}
+		S'+S^2+\mathcal R=0.
+	\end{equation}
+	当 \(t\downarrow0\) 时，在算子范数意义下有
+	\begin{equation}\label{g3:eq:radial-riccati-initial}
+		\begin{aligned}
+		A(t)&=t\operatorname{id}-\frac{t^3}{6}\mathcal R(0)+O(t^4),\\
+		S(t)&=t^{-1}\operatorname{id}-\frac t3\mathcal R(0)+O(t^2).
+		\end{aligned}
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	对任意两列 Jacobi 场应用\cref{g3:prop:jacobi-wronskian}，其 Wronskian 在 \(0\) 处为零，故
+	\[
+		A^{\mathsf T}A'=A'^{\mathsf T}A.
+	\]
+	左乘 \((A^{-1})^{\mathsf T}\)、右乘 \(A^{-1}\)，得到
+	\(A'A^{-1}=(A^{-1})^{\mathsf T}A'^{\mathsf T}\)，即 \(S=S^{\mathsf T}\)。再对乘积求导，利用 \((A^{-1})'=-A^{-1}A'A^{-1}\)，得到
+	\[
+		S'=A''A^{-1}-A'A^{-1}A'A^{-1}=-\mathcal R-S^2.
+	\]
+
+	初始展开须由光滑的二阶方程求出，不能把 \(S(0)\) 当作有限矩阵指定。方程给出 \(A''(0)=0\)、\(A'''(0)=-\mathcal R(0)\)，Taylor 定理因而给出
+	\[
+		A=t\left(\operatorname{id}-\frac{t^2}{6}\mathcal R(0)+O(t^3)\right),
+		\qquad A'=\operatorname{id}-\frac{t^2}{2}\mathcal R(0)+O(t^3).
+	\]
+	括号在零附近可逆，其逆为 \(\operatorname{id}+t^2\mathcal R(0)/6+O(t^3)\)。相乘便得到 \(S\) 的展开。以上各余项来自光滑矩阵函数的 Taylor 展开，导数的展开也分别由 Taylor 定理取得。
+\end{proof}
+
+式\eqref{g3:eq:radial-riccati}称为\term[Riccati fangcheng]{矩阵 Riccati 方程}[matrix Riccati equation]。\footnote{Jacopo Francesco Riccati（1676--1754），意大利数学家，研究微分方程的降阶与求解；Riccati 方程以他的姓氏命名。}其奇异项 \(t^{-1}\operatorname{id}\) 具有直接的几何意义：Euclid 空间中从一点发出的距离为 \(t\) 的横向分离量是初始角度的 \(t\) 倍，对数变化率就是 \(1/t\)。曲率首先出现在下一阶的 \(-t\mathcal R(0)/3\) 中。
+
+\ProseParagraphBreak
+
+在指数映射的局部可逆分支上，固定 \(t\) 的角向像是一个局部超曲面。角向坐标场是从零出发的 Jacobi 场 \(J\)，与径向场 \(T\) 可交换；无挠性给出
+\[
+	\nabla_JT=\nabla_TJ=J'=SJ.
+\]
+因此 \(S(W)=\nabla_WT\) 测量径向法线的变化，常称径向形算子。这里要与第四章的形算子符号对应：按式\eqref{g3:eq:weingarten-formula}，以 \(T\) 为外法向的真正超曲面形算子为 \(A_T=-S\)。例如 Euclid 球面上 \(S=t^{-1}\operatorname{id}\)，而本书第四章的 \(A_T=-t^{-1}\operatorname{id}\)。
 
 \subsection{矩阵与标量微分不等式}
 \label{g3:subsec:0702:02}
-待撰写
+
+沿用式\eqref{g3:eq:model-jacobi-functions}与式\eqref{g3:eq:model-cotangent}的模型函数，在 \(0<t<b_k\) 上
+\[
+	\operatorname{ct}_k(t)=\frac{c_k(t)}{s_k(t)},\qquad
+	\operatorname{ct}_k'+\operatorname{ct}_k^2+k=0,\qquad
+	\operatorname{ct}_k(t)=\frac1t-\frac{k}{3}t+O(t^3).
+\]
+这里 \(b_k\) 是式\eqref{g3:eq:model-first-zero}给出的 \(s_k\) 的首个正零点；\(k\le0\) 时取 \(b_k=\infty\)。常曲率模型中的矩阵解为 \(S_k=\operatorname{ct}_k\operatorname{id}\)。比较对称算子时使用二次型次序：\(S_1\le S_2\) 表示 \(\langle S_1w,w\rangle\le\langle S_2w,w\rangle\) 对所有 \(w\) 成立。
+
+\begin{theorem}\label{g3:thm:riccati-matrix-comparison}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(n\ge2\)，\(\gamma:[0,L]\to M\) 为单位速测地线，\(k\in\mathbb R\)、\(0<L<b_k\)。沿 \(\gamma\) 的法向曲率算子记为 \(\mathcal R\)。
+	\begin{enumerate}
+		\item 若 \(\mathcal R\ge k\operatorname{id}\)，且 \((0,L]\) 内没有相对于起点的共轭时刻，则
+		\[
+			S(t)\le\operatorname{ct}_k(t)\operatorname{id},\qquad0<t\le L.
+		\]
+		\item 若 \(\mathcal R\le k\operatorname{id}\)，则 \((0,L]\) 内没有相对于起点的共轭时刻，且
+		\[
+			S(t)\ge\operatorname{ct}_k(t)\operatorname{id},\qquad0<t\le L.
+		\]
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+	固定 \(t\le L\) 及末端法向量 \(w\)。在无共轭区间，唯一满足 \(J(0)=0\)、\(J(t)=w\) 的 Jacobi 场是
+	\[
+		J(r)=A(r)A(t)^{-1}w,
+	\]
+	其中各切空间通过平行移动识别。于是 \(J'(t)=S(t)w\)，分部积分又给出
+	\[
+		I_{[0,t]}(J,J)=\langle J'(t),w\rangle=\langle S(t)w,w\rangle.
+	\]
+	\cref{g3:prop:index-endpoint-comparison}在第一种曲率条件下给出这个端点值不超过 \(\operatorname{ct}_k(t)|w|^2\)。在第二种条件下，该命题先由模型指标形式的正定性排除 \(b_k\) 之前的共轭时刻，再给出反向的端点估计。因 \(w\) 任意，两种矩阵不等式均成立。
+\end{proof}
+
+矩阵的平方不保持一般的二次型次序，所以不能从 \(S_1\le S_2\) 直接推出 \(S_1^2\le S_2^2\)。上面的证明用边值 Jacobi 场把矩阵比较还原成指标形式比较。取迹以后，二次项可由一个标量平方控制，这时直接比较一阶微分方程就很有效。
+
+\begin{lemma}\label{g3:lem:singular-scalar-riccati-comparison}
+	设 \(k\in\mathbb R\)、\(0<b\le b_k\)，\(u\in C^1((0,b))\)，满足
+	\[
+		u'+u^2+k\le0,\qquad u(t)=t^{-1}+O(t)\quad(t\downarrow0).
+	\]
+	则 \(u(t)\le\operatorname{ct}_k(t)\) 对 \(0<t<b\) 成立。若微分不等式反向，则结论也反向。
+\end{lemma}
+\begin{proof}
+	置 \(d=u-\operatorname{ct}_k\)，则
+	\[
+		d'+(u+\operatorname{ct}_k)d\le0.
+	\]
+	由于 \(u+\operatorname{ct}_k-2/t=O(t)\)，积分因子
+	\[
+		\mu(t)=t^2\exp\left(\int_0^t\left(u(r)+\operatorname{ct}_k(r)-\frac2r\right)\,\mathrm dr\right)
+	\]
+	有定义，且 \(\mu'/\mu=u+\operatorname{ct}_k\)、\(\mu(t)=t^2(1+O(t^2))\)。因此 \((\mu d)'\le0\)。又 \(d=O(t)\)，所以 \(\mu(t)d(t)\to0\)。从 \(\varepsilon\) 积分到 \(t\) 后令 \(\varepsilon\downarrow0\)，得到 \(\mu(t)d(t)\le0\)，而 \(\mu>0\)。反向不等式的证明只需同时反转以上两处不等号。
+\end{proof}
+
+这段证明明确处理了奇异起点。直接写“\(u(0)=\operatorname{ct}_k(0)\)”没有意义；真正可用于比较的是乘以 \(\mu\) 后的边界极限。
 
 \subsection{迹估计和 Cauchy–Schwarz 的等号}
 \label{g3:subsec:0702:03}
-待撰写
+
+令 \(h=\operatorname{tr}S\)。对矩阵 Riccati 方程取迹，得到
+\begin{equation}\label{g3:eq:riccati-trace-equation}
+	h'+\operatorname{tr}(S^2)+\operatorname{Ric}(T,T)=0.
+\end{equation}
+由于 \(S\) 自伴，设其特征值为 \(\lambda_1,\ldots,\lambda_m\)，则
+\begin{equation}\label{g3:eq:riccati-trace-cauchy-schwarz}
+	\operatorname{tr}(S^2)-\frac{h^2}{m}
+	=\sum_{i=1}^m\left(\lambda_i-\frac hm\right)^2
+	=\left\lVert S-\frac hm\operatorname{id}\right\rVert_{\mathrm{HS}}^2\ge0.
+\end{equation}
+等号恰好表示所有横向扩张率相同，即 \(S=(h/m)\operatorname{id}\)。这比只知道它们的平均值更强。
+
+\begin{theorem}\label{g3:thm:riccati-trace-comparison}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(n\ge2\)，\(m=n-1\)，\(\gamma:[0,L]\to M\) 为单位速测地线，\(k\in\mathbb R\)、\(0<L<b_k\)。假设 \((0,L]\) 内无相对于起点的共轭时刻，且沿线有 \(\operatorname{Ric}(T,T)\ge mk\)。则径向 Jacobi 张量的对数导数满足
+	\begin{equation}\label{g3:eq:riccati-trace-comparison}
+		h(t)=\operatorname{tr}(A'A^{-1})(t)\le m\operatorname{ct}_k(t),\qquad0<t\le L.
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	置 \(q=h/m\)，由式\eqref{g3:eq:riccati-trace-equation}及式\eqref{g3:eq:riccati-trace-cauchy-schwarz}，
+	\[
+		q'+q^2+k=-F,\qquad
+		F=\frac1m\left\lVert S-q\operatorname{id}\right\rVert_{\mathrm{HS}}^2
+		+\frac1m\operatorname{Ric}(T,T)-k\ge0.
+	\]
+	\cref{g3:prop:radial-riccati}给出
+	\(q=t^{-1}-t\operatorname{Ric}_p(v,v)/(3m)+O(t^2)\)。故\cref{g3:lem:singular-scalar-riccati-comparison}适用，得到 \(q\le\operatorname{ct}_k\)。
+
+	保留误差项还能看清等号的来源。令
+	\[
+		\mu(t)=t^2\exp\left(\int_0^t\left(q(r)+\operatorname{ct}_k(r)-\frac2r\right)\,\mathrm dr\right).
+	\]
+	则同样的积分因子计算给出精确恒等式
+	\begin{equation}\label{g3:eq:riccati-trace-defect}
+		q(t)-\operatorname{ct}_k(t)
+		=-\frac1{\mu(t)}\int_0^t\mu(r)F(r)\,\mathrm dr.
+	\end{equation}
+	零附近 \(S-q\operatorname{id}=O(t)\)，因此 \(F\) 有界，积分收敛；左端乘以 \(\mu\) 后的初始极限为零。它表明平均扩张率的损失来自两个非负量：各方向扩张率的差异，以及 Ricci 曲率超过模型值的部分。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:riccati-trace-rigidity}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(n\ge2\)、\(m=n-1\)，\(k\in\mathbb R\)、\(0<L<b_k\)。设单位速测地线 \(\gamma:[0,L]\to M\) 在 \((0,L]\) 内无相对于起点的共轭时刻，且沿线满足 \(\operatorname{Ric}(T,T)\ge mk\)。记径向 Jacobi 张量为 \(A\)，\(S=A'A^{-1}\)、\(h=\operatorname{tr}S\)。若某个 \(t_0\in(0,L]\) 满足 \(h(t_0)=m\operatorname{ct}_k(t_0)\)，则沿整个 \((0,t_0]\)，在平行识别中都有
+	\begin{equation}\label{g3:eq:riccati-trace-rigidity}
+		S(t)=\operatorname{ct}_k(t)\operatorname{id},\qquad
+		\mathcal R(t)=k\operatorname{id},\qquad A(t)=s_k(t)\operatorname{id}.
+	\end{equation}
+	反过来，若沿 \([0,t_0]\) 有 \(\mathcal R=k\operatorname{id}\)，则上述等式及迹比较的等号都成立。
+\end{proposition}
+\begin{proof}
+	式\eqref{g3:eq:riccati-trace-defect}在 \(t_0\) 的左端为零。被积函数 \(\mu F\) 非负且在正时间连续，因此 \(F=0\) 在 \((0,t_0]\) 上处处成立。代回同一恒等式可得 \(q=\operatorname{ct}_k\)。而 \(F\) 的两个非负加项各自为零，所以 \(S=q\operatorname{id}\)、\(\operatorname{Ric}(T,T)=mk\)。将 \(S=\operatorname{ct}_k\operatorname{id}\) 代入矩阵 Riccati 方程，得到 \(\mathcal R=k\operatorname{id}\)。最后，\(A''+kA=0\) 的初值为 \((0,\operatorname{id})\)，由唯一性有 \(A=s_k\operatorname{id}\)。曲率在 \(0\) 的结论由连续性延伸到该点。反向也由同一个 Jacobi 初值问题直接得到。
+\end{proof}
+
+这里传播的是一条径向测地线上的等号；它确定包含 \(T\) 的截面曲率，并未给出所有其他方向的曲率。若要由等号恢复一个开区域的度量，需要一族方向上的相同信息，\secref{g3:sec:0704}将用极坐标解释这一点。
+
+\begin{proposition}\label{g3:prop:radial-density-comparison}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(n\ge2\)、\(m=n-1\)，\(k\in\mathbb R\)、\(0<L<b_k\)。设单位速测地线 \(\gamma:[0,L]\to M\) 在 \((0,L]\) 内无相对于起点的共轭时刻，且沿线满足 \(\operatorname{Ric}(T,T)\ge mk\)。记其径向 Jacobi 张量为 \(A\)，令
+	\(\theta(t)=\det A(t)\)，其中行列式用平行正交标架计算。则 \(\theta>0\) 于 \((0,L]\)，并有
+	\begin{equation}\label{g3:eq:radial-density-logarithm}
+		\frac{\theta'(t)}{\theta(t)}=h(t),\qquad
+		\frac{\mathrm d}{\mathrm dt}\log\frac{\theta(t)}{s_k(t)^m}
+		=h(t)-m\operatorname{ct}_k(t)\le0.
+	\end{equation}
+	因此 \(\theta(t)/s_k(t)^m\) 不增，且 \(0<\theta(t)\le s_k(t)^m\)。若在某个 \(t_0\in(0,L]\) 有 \(\theta(t_0)=s_k(t_0)^m\)，则式\eqref{g3:eq:riccati-trace-rigidity}沿 \((0,t_0]\) 成立。
+\end{proposition}
+\begin{proof}
+	初始展开给出
+	\[
+		\theta(t)=t^m\left(1-\frac{t^2}{6}\operatorname{Ric}_p(v,v)+O(t^3)\right).
+	\]
+	所以零附近 \(\theta>0\)，且 \(\theta(t)/s_k(t)^m\to1\)。无共轭条件使 \(\det A\) 始终非零，连续性保证它在整个区间为正。对行列式求导，
+	\[
+		\theta'=\det A\,\operatorname{tr}(A^{-1}A')=\theta\operatorname{tr}S,
+	\]
+	得到对数导数公式，再由迹比较得到单调性及上界。若末端比值等于一，单调函数在 \((0,t_0]\) 上既不超过一又不小于末值，故恒为一，其对数导数为零。应用\cref{g3:prop:riccati-trace-rigidity}即得等号结论。
+\end{proof}
+
+\(\theta\) 是极坐标中的径向密度。事实上，在 \(p\) 的单位切球面 \(S_pM\) 上改变初始方向，角向微分恰为 \(A(t)\)，径向微分则为单位向量 \(T\)；两者正交。因此极坐标映射 \(\Phi(t,v)=\exp_p(tv)\) 在首共轭时刻以前的局部分支上满足
+\[
+	\Phi^*\mu_g=\theta(t,v)\,|\mathrm dt|\,\mu_{S_pM}(v).
+\]
+这里 \(\mu_{S_pM}\) 是初始切空间单位球面的标准密度。若改用切空间的直角坐标，指数映射的体积 Jacobian 则为 \(\theta(t,v)/t^m\)，这个 \(t^m\) 来自切空间自身的极坐标变换。上述结论沿单条射线成立；对一个球积分时，还须确定哪些射线段构成单覆盖的极坐标区域。
 
 \subsection{比较解的爆破与有效半径}
 \label{g3:subsec:0702:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+
+所有比较式都在 \(A\) 可逆且 \(s_k>0\) 的共同区间使用。前一个条件由实际共轭时刻决定，后一个条件由模型首零点 \(b_k\) 决定。还有一种不同的限制：即使 \(A\) 尚未奇异，某条射线也可能已经到达割点，使其参数不再等于到起点的距离。Riccati 方程作为沿线方程仍可继续，而把它解释为距离函数的导数时必须另查割迹。
+
+\begin{proposition}\label{g3:prop:riccati-positive-curvature-radius}
+	设 \((M^n,g)\) 为光滑无边界黎曼流形，\(n\ge2\)，\(k>0\)，单位速测地线 \(\gamma\) 在包含 \([0,b_k]\) 的开区间上有定义。若沿 \([0,b_k]\) 有 \(\operatorname{Ric}(T,T)\ge(n-1)k\)，则相对于 \(\gamma(0)\) 的首个正共轭时刻存在且不超过 \(b_k=\pi/\sqrt{k}\)。
+\end{proposition}
+\begin{proof}
+	若 \((0,b_k)\) 内已经有共轭时刻，结论成立。否则 \(A\) 在此开区间内可逆，迹比较给出
+	\[
+		h(t)\le(n-1)\sqrt{k}\cot(\sqrt{k}\,t)
+		\longrightarrow-\infty\qquad(t\uparrow b_k).
+	\]
+	假如 \(A(b_k)\) 也可逆，由光滑性，\(A'A^{-1}\) 在 \(b_k\) 的邻域内有界，故其迹有界，与上式矛盾。因此 \(A(b_k)\) 奇异，\(b_k\) 是共轭时刻。共轭时刻的孤立性及零附近无共轭保证可以取其中的首个时刻。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:radial-riccati-blowup}
+	设光滑无边界黎曼流形中的单位速测地线 \(\gamma\) 在包含 \([0,\tau]\) 的开区间上有定义，\(\tau>0\) 为相对于起点的首个共轭时刻，重数为 \(d\)。令 \(A\) 为法向径向 Jacobi 张量、\(h=\operatorname{tr}(A'A^{-1})\)。则
+	\[
+		h(t)=\frac{d}{t-\tau}+O(1)\longrightarrow-\infty
+		\qquad(t\uparrow\tau).
+	\]
+	特别地，\(S=A'A^{-1}\) 在首共轭时刻不能连续延拓为有限矩阵。
+\end{proposition}
+\begin{proof}
+	\cref{g3:prop:conjugate-times-isolated}的证明应用于法向 Jacobi 张量，给出
+	\[
+		A'(\tau):\ker A(\tau)\longrightarrow(\operatorname{im}A(\tau))^\perp
+	\]
+	为同构。按核与其正交补、像与其正交补将 \(A(t)\) 分块；非奇异块在 \(\tau\) 附近仍可逆，消元后的 \(d\) 阶补块为
+	\((t-\tau)(B+O(t-\tau))\)，其中 \(B\) 可逆。各矩阵光滑，故由逐分量除以 \(t-\tau\) 的积分公式，这个括号内的矩阵实际上光滑延拓到 \(\tau\)。对块行列式取积，得到
+	\[
+		\det A(t)=(t-\tau)^d\rho(t),\qquad \rho\text{ 光滑},\quad\rho(\tau)\ne0.
+	\]
+	这也适用于非奇异块维数为零的情形。对 \(t<\tau\) 的行列式取对数导数，得
+	\(h(t)=d/(t-\tau)+\rho'(t)/\rho(t)\)。第二项有界，结论成立。
+\end{proof}
+
+圆球面给出最直接的例子：\(A(t)=s_k(t)\operatorname{id}\)，在 \(b_k\) 处所有法向方向一起聚焦，\(S=\operatorname{ct}_k\operatorname{id}\) 趋向负无穷，而环境度量与曲率都光滑。爆破发生在把 Jacobi 张量求逆这一步。Euclid 与双曲模型的 \(s_k\) 则没有正零点，分别有 \(S=t^{-1}\operatorname{id}\) 和 \(S=\sqrt{-k}\coth(\sqrt{-k}\,t)\operatorname{id}\)；是否存在全局距离坐标，仍由模型以外的拓扑与割迹条件决定。

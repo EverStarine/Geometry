@@ -1,35 +1,308 @@
 % !TeX root = ../../Book3.tex
 % 纲要标题：### 20.1 测度及覆盖方法
 % 纲要位置：几何学计划纲要.md，第 2926 行。
-% 正文状态：未撰写；本文件目前是框架。
+% 正文状态：初稿；尚未正式审核。
 
 % 纲要内容开始
 % 
 % * Hausdorff 外测度与归一化
 % * Vitali 型覆盖引理
-% * 密度、微分测度与零测集
-% * 光滑子流形面积的一致性
+% * 测度微分与密度定理
+% * Hausdorff 测度与子流形体积
 % 
 % 纲要内容结束
 
 \section{测度及覆盖方法}
 \label{g3:sec:2001}
 
-待撰写
+一条曲线在平面中的二维 Lebesgue 测度为零，却可以有非零长度。要在同一环境中同时测量曲线、曲面和不光滑的极限集合，就需要由集合自身的小尺度覆盖来定义不同维数的测度。本节先建立这一测量方法，再证明覆盖、密度与局部积分之间的联系。所用基本测度知识与\chapref{g3:ch:11}相同，包括积分收敛与换序、有限测度的正则性以及绝对连续测度的积分密度表示；覆盖和微分结论在这里证明。
 
 \subsection{Hausdorff 外测度与归一化}
 \label{g3:subsec:2001:01}
-待撰写
+用许多直径很小的集合覆盖一个对象，将每个覆盖集的直径取 \(s\) 次方再求和，就得到一个 \(s\) 维大小的候选值。细化覆盖会排除用一只大球掩盖局部结构的做法。整数维数中的常数则应使平面单位球具有通常的体积。
+
+\begin{definition}\label{g3:def:hausdorff-measure}
+	设 \((X,d)\) 为度量空间，\(s\ge0\)，记
+	\(\omega_s=\pi^{s/2}/\Gamma(1+s/2)\)，其中 \(\Gamma\) 是 Gamma 函数；当 \(s=m\) 为正整数时，\(\omega_m\) 是 \(\mathbb R^m\) 单位球的 Lebesgue 体积。对 \(E\subset X\)、\(\delta>0\)，定义
+	\[
+		\mathcal H^s_\delta(E)=
+		\inf\left\{\sum_j\omega_s\left(\frac{\operatorname{diam}U_j}{2}\right)^s:
+		E\subset\bigcup_jU_j,\ \operatorname{diam}U_j<\delta\right\},
+	\]
+	下确界遍历可数覆盖，空集的代价为零；\(s=0\) 时每个非空覆盖集的代价为一。相应的\term[Hausdorff cedu]{Hausdorff 测度}[Hausdorff measure]为
+	\begin{equation}\label{g3:eq:hausdorff-measure-definition}
+		\mathcal H^s(E)=\lim_{\delta\downarrow0}\mathcal H^s_\delta(E).
+	\end{equation}
+	这个极限按单调增加取得，允许为无穷大。在未说明集合可测以前，\(\mathcal H^s\) 表示外测度。
+\end{definition}
+
+零维定义给出计数测度：有限个不同点在足够小的尺度下必须分别覆盖；无限集包含任意多个不同点，所以其零维测度为无穷大。正维定义则使单点为零测集。\(\mathcal H^s\) 总是相对于所给度量定义，改变度量可能改变数值及维数。
+
+\begin{proposition}\label{g3:prop:hausdorff-borel-measure}
+	对任意度量空间 \((X,d)\) 及 \(s\ge0\)，式\eqref{g3:eq:hausdorff-measure-definition}定义一个外测度；若 \(\operatorname{dist}(A,B)>0\)，则
+	\[
+		\mathcal H^s(A\cup B)=\mathcal H^s(A)+\mathcal H^s(B).
+	\]
+	所有 Borel 集均可测，任意集合都包含于同外测度的 Borel 集。因此将 \(\mathcal H^s\) 限制在其可测集上，得到一个完备测度。
+\end{proposition}
+\begin{proof}
+	空集和单调性直接来自覆盖。把每个 \(E_i\) 的近似最优覆盖合并，得到
+	\(\mathcal H^s_\delta(\bigcup_iE_i)\le\sum_i\mathcal H^s_\delta(E_i)\)；右侧再以 \(\sum_i\mathcal H^s(E_i)\) 控制，令 \(\delta\downarrow0\) 即得可数次可加性。当 \(\delta<\operatorname{dist}(A,B)\) 时，一个覆盖集不能同时遇到两者，把覆盖按相交对象分开便得反向不等式，进而得到距离为正的可加性。
+
+	说明这一距离性质为何保证 Borel 可测。记外测度为 \(\mu\)，给定闭集 \(F\) 和满足 \(\mu(T)<\infty\) 的集合 \(T\)，令
+	\[
+		T_j=\{x\in T:d(x,F)\ge1/j\},\qquad
+		C_j=\{x\in T:1/(j+1)\le d(x,F)<1/j\}.
+	\]
+	有 \(\mu(T)\ge\mu(T\cap F)+\mu(T_j)\)。有限个奇数编号的 \(C_j\) 两两距离为正，偶数编号同样如此；故每组的测度和均至多为 \(\mu(T)\)，从而 \(\sum_j\mu(C_j)<\infty\)。又
+	\(T\setminus F\subset T_j\cup\bigcup_{i\ge j}C_i\)，所以
+	\(\mu(T\setminus F)\le\lim_j\mu(T_j)\)。这给出
+	\(\mu(T)\ge\mu(T\cap F)+\mu(T\setminus F)\)；另一方向来自次可加性。若 \(\mu(T)=\infty\)，这一不等式自动成立。由外测度的可测性判据，闭集可测，因而其生成的 Borel 集均可测。
+
+	最后设 \(\mathcal H^s(E)<\infty\)。在尺度 \(1/j\) 选择覆盖，使总代价至多为 \(\mathcal H^s(E)+1/j\)，并把各覆盖集取闭包。令 \(B\) 为这些可数闭集并的可数交，则 \(B\) 是包含 \(E\) 的 Borel 集，而且
+	\(\mathcal H^s_{1/j}(B)\le\mathcal H^s(E)+1/j\)。令 \(j\to\infty\) 得到相等测度。若外测度为无穷大，可直接取 \(B=X\)。外测度的全部可测集组成完备测度空间，这是同一可测性判据的零测子集情形。
+\end{proof}
+
+\begin{proposition}\label{g3:prop:hausdorff-lipschitz}
+	设 \(E\) 为度量空间的任意子集，\(f:E\to Y\) 满足
+	\(d_Y(f(x),f(y))\le Ld_X(x,y)\)，其中 \(L>0\)。则对每个 \(s\ge0\) 及 \(A\subset E\)，有
+	\[
+		\mathcal H^s(f(A))\le L^s\mathcal H^s(A).
+	\]
+	这里允许不可测集合，两边均按外测度理解。特别地，等距映射保持测度；在 Euclid 空间中，\(\mathcal H^s(a+\lambda A)=\lambda^s\mathcal H^s(A)\)，\(\lambda>0\)。
+\end{proposition}
+\begin{proof}
+	先将 \(A\) 的覆盖集与 \(E\) 相交，再取 \(f\) 的像；其直径至多乘以 \(L\)。因此
+	\(\mathcal H^s_{L\delta}(f(A))\le L^s\mathcal H^s_\delta(A)\)，令 \(\delta\downarrow0\) 即得结论。等距与相似变换再对逆映射应用同一不等式。
+\end{proof}
+
+若 \(t>s\)，覆盖中的每一项满足
+\[
+	\omega_t(\operatorname{diam}U/2)^t
+	\le\frac{\omega_t}{\omega_s}(\delta/2)^{t-s}
+	\omega_s(\operatorname{diam}U/2)^s.
+\]
+所以 \(\mathcal H^s(E)<\infty\) 推出 \(\mathcal H^t(E)=0\)。由此定义非空集的\term[Hausdorff weishu]{Hausdorff 维数}[Hausdorff dimension]
+\(\dim_{\mathrm H}E=\inf\{s\ge0:\mathcal H^s(E)=0\}\)，空集的维数在本章记为零。这个临界指数不依赖正归一化常数，但整数维的面积公式依赖它。
 
 \subsection{Vitali 型覆盖引理}
 \label{g3:subsec:2001:02}
-待撰写
+覆盖中的球可能严重重叠。先从中选出互不相交的一族，再适度放大，就能用可加的体积和控制原覆盖。Vitali 型覆盖方法\footnote{Giuseppe Vitali（1875--1932），意大利数学家，研究实变函数、绝对连续性、覆盖定理与函数列收敛。}把这一选择用于任意小尺度的球。
 
-\subsection{密度、微分测度与零测集}
+\begin{lemma}\label{g3:lem:five-ball-covering}
+	设 \((X,d)\) 为可分度量空间，\(\mathcal B\) 为一族正半径闭球，其半径有共同上界。存在至多可数个两两不交的球 \(B_i=\overline B_{r_i}(x_i)\in\mathcal B\)，使每个 \(B=\overline B_r(x)\in\mathcal B\) 都与某个 \(B_i\) 相交且 \(r_i\ge r/2\)。于是
+	\[
+		\bigcup_{B\in\mathcal B}B\subset\bigcup_i\overline B_{5r_i}(x_i).
+	\]
+\end{lemma}
+\begin{proof}
+	取半径上界 \(R>0\)，按 \(2^{-j}R<r\le2^{1-j}R\)、\(j=1,2,\ldots\) 分层。第一层选一个极大的不交子族；第 \(j\) 层在不与已选球相交的球中再选极大不交子族。极大族存在，因为按包含排序的不交子族的一条链，其并仍不交，故可用极大原理。每个不交正半径球的内部含有可数稠密集中的不同点，所以所选族至多可数。
+
+	一个未选的第 \(j\) 层球必与本层或前层某个已选球相交，否则可加入该层的极大族。该已选球的半径大于原半径的一半。若 \(z\in B\)，相交与三角不等式给出
+	\(d(z,x_i)\le2r+r_i\le5r_i\)，得到覆盖。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:vitali-lebesgue-covering}
+	设 \(E\subset\mathbb R^m\)、\(m\ge1\)，并给定一个包含 \(E\) 的有限 Lebesgue 测度开集 \(O\)。若闭球族 \(\mathcal B\) 包含于 \(O\)，且对每个 \(x\in E\) 和 \(\varepsilon>0\)，存在 \(B\in\mathcal B\) 满足 \(x\in B\)、\(\operatorname{diam}B<\varepsilon\)，则可选两两不交的 \(B_i\in\mathcal B\)，使
+	\[
+		\mathcal L^m\left(E\setminus\bigcup_iB_i\right)=0.
+	\]
+\end{theorem}
+\begin{proof}
+	可先只保留半径小于一的球，再作前一引理的选择。因这些球不交且包含于 \(O\)，有 \(\sum_i\mathcal L^m(B_i)\le\mathcal L^m(O)<\infty\)。若 \(x\in E\setminus\bigcup_iB_i\)，它到任意有限个已选闭球的并的距离为正。细覆盖条件允许取包含 \(x\)、避开前 \(N\) 个球的足够小球。前一引理的相交性质使它遇到某个编号大于 \(N\) 的已选球，且 \(x\) 落在后者的五倍球中。因此
+	\[
+		\mathcal L^m\left(E\setminus\bigcup_iB_i\right)
+		\le5^m\sum_{i>N}\mathcal L^m(B_i)\longrightarrow0.
+	\]
+	这也证明结论对未预先假定可测的 \(E\) 仍按外测度成立。
+\end{proof}
+
+下面确定 Hausdorff 定义中的归一化。为得到精确常数，先把同一直径下的体积与球比较。这个短几何论证也说明为什么覆盖代价采用直径的一半。
+
+\begin{lemma}\label{g3:lem:euclidean-isodiametric}
+	对 \(A\subset\mathbb R^m\)、\(m\ge1\)，有
+	\[
+		\mathcal L^m(A)\le\omega_m\left(\frac{\operatorname{diam}A}{2}\right)^m,
+	\]
+	左侧按外测度理解。
+\end{lemma}
+\begin{proof}
+	无界集的情形直接成立；有界集取闭包以后直径不变，故只需处理紧集 \(K\)。沿一个坐标方向，把每条平行直线上与 \(K\) 的交替换为以坐标超平面为中心、长度相同的闭区间；原交非空而长度为零时保留区间的中心点。这个操作称为 Steiner 对称化。\footnote{Jakob Steiner（1796--1863），瑞士数学家，研究射影几何、几何构造与几何极值问题。}
+
+	先核对三个性质。纤维长度随基点上半连续：若某纤维包含于长度只多 \(\varepsilon\) 的开集，则紧性保证邻近纤维也包含于该开集，否则收敛子列将给出原纤维外的极限点。因此新集合仍紧。Fubini 定理说明它与 \(K\) 体积相同。
+
+	对两条非空纤维，设原纤维的最小、最大坐标分别为 \(a_-,a_+\) 与 \(b_-,b_+\)，长度为 \(\ell_a,\ell_b\)。有
+	\[
+		\max\{|a_+-b_-|,|b_+-a_-|\}
+		\ge\frac{(a_+-a_-)+(b_+-b_-)}2
+		\ge\frac{\ell_a+\ell_b}2.
+	\]
+	新纤维中任意两点的竖直坐标差至多为最后一项，水平坐标差又未变，所以新集合直径不增加。最后，沿一个坐标方向的对称化保留其他坐标反射已有的不变性，因为反射对应的两条纤维长度相同。
+
+	依次沿全部 \(m\) 个坐标方向处理，所得紧集 \(\widetilde K\) 体积不变、直径不增加，并关于原点中心对称。若 \(x\in\widetilde K\)，则 \(-x\in\widetilde K\)，故 \(2|x|\le\operatorname{diam}K\)。因此 \(\widetilde K\) 包含于半径 \(\operatorname{diam}K/2\) 的球，体积比较给出结论。
+\end{proof}
+
+\begin{theorem}\label{g3:thm:hausdorff-lebesgue}
+	对 \(\mathbb R^m\) 上的 Euclid 度量、\(m\ge1\)，标准归一化满足
+	\[
+		\mathcal H^m(A)=\mathcal L^m(A)\qquad(A\subset\mathbb R^m).
+	\]
+	因而任意 \(m\) 维仿射平面上的 \(\mathcal H^m\) 就是该平面的通常体积。
+\end{theorem}
+\begin{proof}
+	等直径不等式对任意小直径覆盖给出
+	\(\mathcal L^m(A)\le\sum_j\omega_m(\operatorname{diam}U_j/2)^m\)；取下确界与极限得到 \(\mathcal L^m\le\mathcal H^m\)。
+
+	反向先作一个粗估计。将 Lebesgue 外测度的立方体覆盖继续细分到直径小于 \(\delta\)，每个边长为 \(a\) 的立方体代价为
+	\(c_m a^m\)，其中 \(c_m=\omega_m(\sqrt m/2)^m\)。故
+	\(\mathcal H^m_\delta(Z)\le c_m\mathcal L^m(Z)\)，特别是 Lebesgue 零测集也为 \(\mathcal H^m\) 零测集。
+
+	给定有限测度开集 \(O\)，取所有包含于 \(O\)、直径小于 \(\delta\) 的闭球。由前面的细覆盖定理可选不交球 \(B_i\)，其并遗漏的集合为 Lebesgue 零测集，因而也为 \(\mathcal H^m\) 零测集。于是
+	\[
+		\mathcal H^m_\delta(O)
+		\le\sum_i\omega_m r_i^m
+		=\sum_i\mathcal L^m(B_i)\le\mathcal L^m(O).
+	\]
+	让 \(\delta\downarrow0\)，再取包含任意有限外测度集合 \(A\) 的开集，利用 Lebesgue 外正则性，得到 \(\mathcal H^m(A)\le\mathcal L^m(A)\)。外测度无穷大时先前的不等式已经给出相等。仿射平面的结论再由等距不变性得到。
+\end{proof}
+
+这里的外测度构造、归一化与五倍覆盖可对照\cite[第2--3节，第6--16页]{Simon1983}。以后同一空间中同时出现 \(\mathcal L^m\) 和 \(\mathcal H^k\)，是为了标明参数体积与不同维数的几何测度。
+
+\subsection{测度微分与密度定理}
 \label{g3:subsec:2001:03}
-待撰写
+积分函数在一个点可以没有连续代表，但它在越来越小的球上的平均振荡仍可趋零。这种几乎处处的恢复性质将把弱导数、近似线性化和几何测度连起来。本小节的球均为 Euclid 球；开球与闭球对 Lebesgue 平均没有区别。
 
-\subsection{光滑子流形面积的一致性}
+\begin{lemma}\label{g3:lem:measure-maximal-weak-bound}
+	设 \(\sigma\) 为 \(\mathbb R^m\) 上的有限正 Borel 测度，\(m\ge1\)，定义
+	\[
+		M\sigma(x)=\sup_{r>0}\frac{\sigma(B_r(x))}{\omega_mr^m}.
+	\]
+	则对每个 \(t>0\)，
+	\(\mathcal L^m\{M\sigma>t\}\le5^m\sigma(\mathbb R^m)/t\)。
+	特别地，取 \(\mathrm d\sigma=|h|\,\mathrm dx\) 可得到 \(h\in L^1\) 的相同估计。
+\end{lemma}
+\begin{proof}
+	每个满足比值大于 \(t\) 的开球都可稍微增大为仍满足该不等式的闭球，因为分母连续，测度单调。所有这些球的半径有共同上界
+	\((\sigma(\mathbb R^m)/(t\omega_m))^{1/m}\)。对它们使用五倍覆盖，得到不交球 \(B_i\)，从而
+	\[
+		\mathcal L^m\{M\sigma>t\}
+		\le5^m\sum_i\omega_mr_i^m
+		<\frac{5^m}{t}\sum_i\sigma(B_i)
+		\le\frac{5^m}{t}\sigma(\mathbb R^m).
+	\]
+	函数可测性也可直接检验：对固定 \(r\)，开球内积分随中心下半连续，故其上确界仍可测。
+\end{proof}
+
+\begin{theorem}[Lebesgue 微分定理]\label{g3:thm:lebesgue-differentiation}
+	设 \(h\in L^1_{\mathrm{loc}}(\mathbb R^m)\)，\(m\ge1\)，选取其几乎处处有限的可测代表。则对几乎每个 \(x\)，
+	\[
+		\lim_{r\downarrow0}\frac1{\omega_mr^m}
+		\int_{B_r(x)}|h(y)-h(x)|\,\mathrm dy=0.
+	\]
+	这样的点称为 \(h\) 的\term[Lebesgue dian]{Lebesgue 点}[Lebesgue point]。
+\end{theorem}
+\begin{proof}
+	先设 \(h\in L^1(\mathbb R^m)\)。取连续紧支函数 \(v\) 逼近 \(h\)，并记左侧的上极限为 \(D h(x)\)。三角不等式与 \(v\) 的连续性给出
+	\[
+		D h(x)\le M(|h-v|\,\mathcal L^m)(x)+|h(x)-v(x)|.
+	\]
+	由前一引理与积分的 Chebyshev 不等式，
+	\[
+		\mathcal L^m\{D h>2t\}
+		\le\frac{5^m+1}{t}\|h-v\|_{L^1}.
+	\]
+	连续紧支函数的 \(L^1\) 稠密性可由简单函数逼近及内外正则性得到：将有限测度集夹在紧集与开集之间，再取连接两者的连续截断函数。令逼近误差趋零，得到 \(\{D h>2t\}\) 零测；再令 \(t\) 遍历正有理数，得到 \(D h=0\) 几乎处处。局部可积情形先在每个较大球截断，较小球上的足够小平均不变，最后作可数穷尽。
+\end{proof}
+
+\begin{corollary}\label{g3:cor:lebesgue-density}
+	若 \(E\subset\mathbb R^m\) 为 Lebesgue 可测集，则对几乎每个 \(x\in E\)，
+	\[
+		\lim_{r\downarrow0}\frac{\mathcal L^m(E\cap B_r(x))}{\omega_mr^m}=1;
+	\]
+	对几乎每个 \(x\notin E\)，该比值趋零。
+\end{corollary}
+\begin{proof}
+	对 \(\mathbf1_E\in L^1_{\mathrm{loc}}\) 应用前一定理。
+\end{proof}
+
+密度点不必是内点。后面的闭集习题将给出正测度、空内部的集合，它几乎每个点仍有密度一。相应地，改变一个零测集不会改变几乎处处的密度结论。
+
+\ProseParagraphBreak
+
+在 \(\mathbb R^N\) 上，一个紧集测度有限、且可由紧集从内逼近的 Borel 测度称为\term[Radon cedu]{Radon 测度}[Radon measure]。\footnote{Johann Radon（1887--1956），奥地利数学家，研究测度、积分变换和凸几何。}局部有限 Borel 测度自动有这一正则性：开集可由有界闭子集递增穷尽，有限测度时内外逼近的集合族对补与可数并封闭，因此包含全部 Borel 集；一般情形再作有界穷尽。本章需要的密度记号为
+\[
+	\Theta^{*m}(\mu,x)=\limsup_{r\downarrow0}\frac{\mu(B_r(x))}{\omega_mr^m},
+	\qquad
+	\Theta_*^m(\mu,x)=\liminf_{r\downarrow0}\frac{\mu(B_r(x))}{\omega_mr^m}.
+\]
+上下极限相等时记共同值为 \(\Theta^m(\mu,x)\)。定义中的维数 \(m\) 可以小于环境维数 \(N\)。
+
+\begin{proposition}\label{g3:prop:radon-lebesgue-density}
+	设 \(\mu\) 为 \(\mathbb R^m\) 上的正 Radon 测度，\(m\ge1\)，其相对于 Lebesgue 测度的分解为
+	\(\mu=h\mathcal L^m+\mu_s\)，其中 \(h\ge0\) 局部可积、\(\mu_s\) 集中于某个 Lebesgue 零测集。则
+	\[
+		\lim_{r\downarrow0}\frac{\mu(B_r(x))}{\omega_mr^m}=h(x)
+		\quad\text{对 }\mathcal L^m\text{ 几乎每个 }x.
+	\]
+\end{proposition}
+\begin{proof}
+	绝对连续部分由 Lebesgue 微分定理处理。先设 \(\mu_s\) 有限，集中于零测集 \(Z\)。取紧集 \(K\subset Z\)，使 \(\mu_s(\mathbb R^m\setminus K)<\varepsilon\)，并令 \(\nu(A)=\mu_s(A\setminus K)\)。若 \(x\notin K\)，充分小的球避开 \(K\)，故
+	\[
+		\limsup_{r\downarrow0}\frac{\mu_s(B_r(x))}{\omega_mr^m}
+		\le M\nu(x).
+	\]
+	上极限大于 \(t\) 的集合在 \(K\) 外的 Lebesgue 测度至多为 \(5^m\varepsilon/t\)，而 \(K\) 本身零测。令 \(\varepsilon\downarrow0\)，再遍历正有理数 \(t\)，就得到所需零极限。局部有限情形将 \(\mu_s\) 限制在逐渐增大的球内；内层球中的小尺度密度不受限制影响。
+\end{proof}
+
+这个结论以 \(\mathcal L^m\) 为“几乎处处”的基准。例如 Dirac 点质量对 Lebesgue 几乎每点的密度为零，测度本身却没有消失；在该原子处比值趋于无穷大。低维几何中的“几乎处处”也必须跟随所用的 \(\mathcal H^m\) 或加权测度。
+
+\subsection{Hausdorff 测度与子流形体积}
 \label{g3:subsec:2001:04}
-待撰写
-% 纲要条目排为编号小节标题，并进入目录与书签；说明段仍保留于纲要注释中。
+现在把覆盖定义与前几章的诱导度量面积接起来。核心是一个线性事实。若 \(A:\mathbb R^m\to\mathbb R^N\) 单射，则其 \(m\) 维体积伸缩因子为
+\[
+	J_m(A)=\sqrt{\det(A^{\mathsf T}A)}.
+\]
+用正交变换把 \(A\) 写成沿 \(m\) 个方向的伸缩，Lebesgue 的线性换元与\cref{g3:thm:hausdorff-lebesgue}给出
+\(\mathcal H^m(A(E))=J_m(A)\mathcal L^m(E)\)。若秩小于 \(m\)，其像在一个低维平面内；将有界片按边长 \(\delta\) 的小立方体覆盖，\(m\) 次总代价为 \(O(\delta^{m-\operatorname{rank}A})\)，故其 \(\mathcal H^m\) 测度为零。
+
+\begin{theorem}\label{g3:thm:smooth-hausdorff-area}
+	设 \(M^m\subset\mathbb R^N\) 为 \(C^1\) 嵌入子流形，\(1\le m\le N\)，带诱导度量。对每个 Borel 集 \(E\subset M\)，有
+	\[
+		\mathcal H^m(E)=\operatorname{Vol}_M(E).
+	\]
+	更具体地，若 \(F:U\subset\mathbb R^m\to M\) 是单射 \(C^1\) 参数图，且 \(\operatorname{rank}DF=m\)，则
+	\begin{equation}\label{g3:eq:smooth-parametrized-area}
+		\mathcal H^m(F(E))
+		=\int_E\sqrt{\det(DF(x)^{\mathsf T}DF(x))}\,\mathrm dx
+		\qquad(E\subset U\text{ Borel}).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	固定 \(x_0\in U\)，记 \(A=DF(x_0)\)，其最小奇异值为 \(a>0\)。由导数连续性，在以 \(x_0\) 为中心的足够小凸球上，\(\|DF(x)-A\|\le\varepsilon<a\)。沿线段积分，得到
+	\[
+		|F(y)-F(z)-A(y-z)|\le\varepsilon|y-z|.
+	\]
+	因此从 \(A\) 的像到 \(F\) 的像的对应 \(Ay\mapsto F(y)\)，及其逆对应，具有下面的距离控制：
+	\[
+		(1-\varepsilon/a)|A(y-z)|
+		\le |F(y)-F(z)|
+		\le(1+\varepsilon/a)|A(y-z)|.
+	\]
+	由 Lipschitz 测度不等式和线性体积公式，对该球中任意 Borel 集 \(E\)，
+	\[
+		(1-\varepsilon/a)^m J_m(A)\mathcal L^m(E)
+		\le\mathcal H^m(F(E))
+		\le(1+\varepsilon/a)^m J_m(A)\mathcal L^m(E).
+	\]
+	参数图是到其像的同胚，所以 \(E\mapsto\mathcal H^m(F(E))\) 为局部有限 Borel 测度；由局部 Lipschitz 控制，它对 \(\mathcal L^m\) 绝对连续。记其积分密度为 \(q\)。上式用于越来越小的 \(E=B_r(x_0)\)，再令 \(\varepsilon\downarrow0\)，说明此测度的球密度为 \(J_m(DF(x_0))\)。\Cref{g3:prop:radon-lebesgue-density}则给出 \(q=J_m(DF)\) 几乎处处，证明式\eqref{g3:eq:smooth-parametrized-area}。
+
+	在这个参数图中，诱导度量矩阵正是 \(DF^{\mathsf T}DF\)，所以右侧就是体积密度积分。用可数个参数图覆盖 \(M\)，按先后去掉已覆盖部分，再用可数可加性，就得到整体结论。证明同时适用于带边界参数图的内部；边界局部是 \((m-1)\) 维 \(C^1\) 图，由前面的低维覆盖估计，其 \(\mathcal H^m\) 测度为零。
+\end{proof}
+
+例如 \(C^1\) 函数图 \(F(x)=(x,u(x))\) 的面积密度为
+\(\sqrt{\det(I+Du^{\mathsf T}Du)}\)。标量图时化为
+\(\sqrt{1+|Du|^2}\)，与\secref{g3:sec:1902}一致。这里测量的是图作为集合的大小；一个非单射参数化可能重复经过同一片区域，其参数积分须在\secref{g3:sec:2003}中加入重数后解释。
+
+\ProseParagraphBreak
+
+同一结论也适用于光滑黎曼环境中的光滑嵌入子流形，Hausdorff 测度采用环境距离。具体地，在一点的坐标邻域中，把该点的度量矩阵冻结，缩小邻域可使向量长度与冻结长度相差至多因子 \(1\pm\varepsilon\)。对更小邻域中的足够近点，直线段给出距离上界；离开较大坐标邻域的道路有固定正长度下界，因而不会改善这些小距离，下界则由逐段长度比较给出。故局部距离和诱导面积密度都夹在对应常系数量的 \(1\pm\varepsilon\) 次方之间。对任意小片应用上述 Euclid 结论，再令 \(\varepsilon\downarrow0\)，得到两种面积相等。
