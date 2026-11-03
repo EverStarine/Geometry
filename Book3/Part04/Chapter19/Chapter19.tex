@@ -237,29 +237,50 @@
 \end{solution}
 
 \begin{exercise}\label{g3:ex:catenoid-unstable-test}
-	对完整悬链面 \(C_a\)，采用式\eqref{g3:eq:catenoid-conformal-model}的圆柱参数及单位法向。证明它对紧支法向变分不稳定。具体地，先对仅依赖 \(v\) 的速度函数 \(f\) 写出 Jacobi 二次型；再令 \(f_0(v)=\operatorname{sech}v\)，计算它形式上的全圆柱二次型，并构造光滑紧支函数 \(f_R\) 使 \(Q(f_R\nu,f_R\nu)\to-4\pi\)。
+	设 \(a>0\)，\(C_a(v,\theta)=a(\cosh v\cos\theta,\cosh v\sin\theta,v)\) 为完整悬链面，\((v,\theta)\in\mathbb R\times\mathbb R/(2\pi\mathbb Z)\)，\(\nu\) 为其全局单位法向。对实紧支光滑函数 \(f(v,\theta)\)，记面积第二变分为
+	\[
+		Q(f)=Q(f\nu,f\nu)
+		=\int_{\mathbb R}\int_0^{2\pi}
+		\left((\partial_vf)^2+(\partial_\theta f)^2
+		-2\operatorname{sech}^2v\,f^2\right)\,\mathrm d\theta\,\mathrm dv.
+	\]
+	定义其紧支变分指标为 \(Q\) 严格负定的线性子空间维数的上确界。证明这个指标恰为一。可先按角变量作实 Fourier 展开，证明每个非零角频率的贡献非负；再证明，当角平均 \(\bar f(v)=(2\pi)^{-1}\int_0^{2\pi}f(v,\theta)\,\mathrm d\theta\) 满足 \(\bar f(0)=0\) 时，也有 \(Q(f)\ge0\)。
 \end{exercise}
 \begin{solution}
-	由式\eqref{g3:eq:catenoid-curvature-model}，
-	\(\mu_g=a^2\cosh^2v\,\mathrm dv\,\mathrm d\theta\)，而
-	\(|A|^2=2/(a^2\cosh^4v)\)。曲面共形度量使梯度项的共形因子与面积因子抵消，故
+	将 \(f\) 写成
 	\[
-		Q(f\nu,f\nu)=2\pi\int_{\mathbb R}
-		\left((f')^2-2\operatorname{sech}^2v\,f^2\right)\mathrm dv.
+		f(v,\theta)=u_0(v)+\sum_{k\ge1}
+		\bigl(u_k(v)\cos k\theta+w_k(v)\sin k\theta\bigr).
 	\]
-	对 \(f_0=\operatorname{sech}v\)，有 \(f_0'=-\operatorname{sech}v\tanh v\)。令 \(t=\tanh v\)、\(\mathrm dt=\operatorname{sech}^2v\,\mathrm dv\)，得到
+	这些系数均光滑，并支于同一个有界 \(v\) 区间。角向 Parseval 恒等式同时用于 \(f\)、\(\partial_vf\) 和 \(\partial_\theta f\)，给出
 	\[
-		\int_{\mathbb R}(f_0')^2\mathrm dv=\int_{-1}^1t^2\mathrm dt=\frac23,
-		\qquad
-		\int_{\mathbb R}\operatorname{sech}^4v\,\mathrm dv
-		=\int_{-1}^1(1-t^2)\mathrm dt=\frac43.
+		\begin{aligned}
+			Q(f)&=2\pi q_0(u_0)+\pi\sum_{k\ge1}
+			\bigl(q_k(u_k)+q_k(w_k)\bigr),\\
+			q_k(u)&=\int_{\mathbb R}
+			\bigl((u')^2+(k^2-2\operatorname{sech}^2v)u^2\bigr)\,\mathrm dv.
+		\end{aligned}
 	\]
-	所以两个可积项之差给出 \(2\pi(2/3-8/3)=-4\pi\)。但 \(f_0\) 并不紧支，须将它变成允许的速度。
-	取 \(\chi\in C_c^\infty(\mathbb R)\)，\(0\le\chi\le1\)，在 \([-1,1]\) 为 \(1\)，支于 \([-2,2]\)，令 \(f_R(v)=\chi(v/R)f_0(v)\)，\(R\ge1\)。这在参数圆柱上紧支，因而给出悬链面上的紧支光滑场。势项由 \(2\operatorname{sech}^4v\) 支配，积分趋于原势项。又
+	各项平方的积分恒等式由 Fourier 部分和在 \(H^1\) 中的收敛得到；势函数有界，故势项也随之收敛。对 \(k\ge1\)，在紧支集上积分分部有
 	\[
-		f_R'=\chi(v/R)f_0'+R^{-1}\chi'(v/R)f_0.
+		q_k(u)=\int_{\mathbb R}(u'+u\tanh v)^2\,\mathrm dv
+		+(k^2-1)\int_{\mathbb R}u^2\,\mathrm dv\ge0.
 	\]
-	第一项在 \(L^2(\mathbb R)\) 中趋于 \(f_0'\)；第二项的 \(L^2\) 范数至多为 \(R^{-1}\|\chi'\|_\infty\|f_0\|_2\to0\)。所以梯度积分也收敛，得到所述极限。充分大的 \(R\) 使二次型严格为负，由面积二阶变分定理产生真正的下降方向。负号完全来自第二基本形式势；环境 Euclid 曲率为零并不能保证稳定。
+	这里混合项积分为 \(-\int u^2\operatorname{sech}^2v\,\mathrm dv\)，与 \(\tanh^2v=1-\operatorname{sech}^2v\) 合并，正好恢复 \(q_k\) 的势项。
+
+	现设 \(u(0)=0\)。在 \(v>0\) 上取 \(w(v)=\tanh v>0\)，直接求导得到 \(-w''-2\operatorname{sech}^2v\,w=0\)。展开 \(u=w(u/w)\) 并在 \([\varepsilon,\infty)\) 上积分，得到
+	\[
+		\begin{aligned}
+			\int_\varepsilon^\infty\bigl((u')^2-2\operatorname{sech}^2v\,u^2\bigr)\,\mathrm dv
+			&=\int_\varepsilon^\infty w^2\left|\left(\frac u w\right)'\right|^2\,\mathrm dv\\
+			&\quad-\frac{w'(\varepsilon)}{w(\varepsilon)}u(\varepsilon)^2.
+		\end{aligned}
+	\]
+	由光滑性及 \(u(0)=0\)，有 \(u(\varepsilon)=O(\varepsilon)\)，而 \(w'/w=O(\varepsilon^{-1})\)，故边界项趋于零，正半线上的积分非负。在负半线上用 \(-\tanh v\)，或作变量代换 \(v\mapsto-v\)，得到同一结论。于是 \(q_0(u)\ge0\)。应用于 \(u_0=\bar f\)，便知 \(Q\) 在
+	\[
+		\mathcal H=\left\{f\in C_c^\infty(C_a;\mathbb R):\bar f(0)=0\right\}
+	\]
+	上非负。\(\mathcal H\) 是一个余维一子空间，任何至少二维的子空间都与它有非零交，因而不可能使 \(Q\) 严格负定。这证明指标至多为一。\Cref{g3:exm:catenoid-compact-negative-direction}已构造紧支函数 \(f_R\)，对充分大的 \(R\) 满足 \(Q(f_R)<0\)，所以指标至少为一，遂恰为一。
 \end{solution}
 
 \begin{exercise}\label{g3:ex:unit-density-at-infinity-plane}
@@ -382,33 +403,40 @@
 \end{solution}
 
 \begin{optionalexercise}\label{g3:ex:cmc-disconnected-balls}
-	设 \(m\ge1\)，\(\Omega\subset\mathbb R^{m+1}\) 是两个闭包互不相交、半径同为 \(R>0\) 的球之并。证明其边界对固定总体积的面积变分驻值，但不保体积稳定。再保持两球球心不动，构造精确保总体积的一参数半径变分，直接算出总面积的负二阶导数。若改为分别固定两球体积，解释该不稳定方向为何消失。
+	设 \(m\ge1\)、\(N\ge2\) 为整数，\(R>0\)，\(\Omega\subset\mathbb R^{m+1}\) 是 \(N\) 个两两不交、半径同为 \(R\) 的闭球之并，记边界为 \(\Sigma=\bigsqcup_{j=1}^N\Sigma_j\)。各分支取诱导度量 \(g\) 和外单位法向 \(\nu_j\)。在实光滑零均值函数空间
+	\[
+		\mathcal H_0=\left\{f\in C^\infty(\Sigma;\mathbb R):
+		\int_\Sigma f\,\mu_g=0\right\}
+	\]
+	上，考虑固定总体积的约束二次型
+	\[
+		Q(f,h)=\sum_{j=1}^N\int_{\Sigma_j}
+		\left(\langle\mathrm df,\mathrm dh\rangle-\frac m{R^2}fh\right)\mu_g.
+	\]
+	计算 \(Q\) 的指标及零空间，其中指标指严格负定子空间维数的上确界，零空间指与 \(\mathcal H_0\) 中每个函数的 \(Q\) 配对都为零的函数。给出一个维数最大的负定子空间，并解释其几何意义。若改为分别固定每个球的体积，指标和零空间如何变化？
 \end{optionalexercise}
 \begin{solution}
-	两球的外向标量平均曲率都是 \(-1/R\)，故由\cref{g3:thm:cmc-volume-critical}，边界对固定总体积驻值。在第一球面取 \(f=1\)，第二球面取 \(f=-1\)。两个球面面积相同，故 \(\int_{\partial\Omega}f\mu_g=0\)；\(f\) 在不连通的边界上是光滑函数，且 \(\mathrm df=0\)。因此
+	记单个球面的面积为 \(A_0=\mathcal A(S_R^m)\)。对每个分支唯一分解
 	\[
-		Q_{\partial\Omega}(f,f)
-		=-\frac m{R^2}\mathcal A(\partial\Omega)<0.
+		f|_{\Sigma_j}=c_j+h_j,\qquad
+		c_j=A_0^{-1}\int_{\Sigma_j}f\,\mu_g,\qquad
+		\int_{\Sigma_j}h_j\,\mu_g=0.
 	\]
-	实现引理已保证有精确保体积变分对应这个方向。
+	总体积约束等价于 \(\sum_jc_j=0\)。常数与零均值部分在 \(Q\) 下正交，因此
+	\[
+		Q(f,f)=-\frac{mA_0}{R^2}\sum_{j=1}^Nc_j^2
+		+\sum_{j=1}^NQ_{\Sigma_j}(h_j,h_j).
+	\]
+	\Cref{g3:thm:round-sphere-volume-stability}使后一项非负。于是各分支上为常数且 \(\sum_jc_j=0\) 的函数组成一个 \(N-1\) 维负定子空间。反之，若一个负定子空间的维数至少为 \(N\)，映射 \(f\mapsto(c_1,\ldots,c_N)\) 在其上必有非零核；这个核中 \(Q\) 非负，矛盾。因此指标恰为 \(N-1\)。这些常数速度使某些球的半径增加、另一些减小，代表分支之间的体积转移；\cref{g3:lem:exact-volume-preserving-variation}将它们实现为精确保总体积的变分。
 
-	也可显式令
+	若 \(f\) 属于零空间，用自身的常数部分作测试函数，得到 \(\sum_jc_j^2=0\)，所以所有 \(c_j=0\)。再以 \(f\) 自身作测试函数，上式与每个分支的非负性迫使全部 \(Q_{\Sigma_j}(h_j,h_j)=0\)。由球面稳定性的等号条件，恰有
 	\[
-		r_1(t)=R+t,
-		\qquad r_2(t)=\bigl(2R^{m+1}-(R+t)^{m+1}\bigr)^{1/(m+1)}.
+		f|_{\Sigma_j}(x)=\langle v_j,\nu_j(x)\rangle,
+		\qquad v_j\in\mathbb R^{m+1}.
 	\]
-	在足够小的正负时间，两球仍分离，且 \(r_1^{m+1}+r_2^{m+1}=2R^{m+1}\)，所以总体积不变。求导得到
-	\[
-		r_1'(0)=1,\quad r_2'(0)=-1,\quad
-		r_1''(0)=0,\quad r_2''(0)=-\frac{2m}R.
-	\]
-	记 \(\sigma_m=\mathcal A(S^m)\)。总面积为 \(\sigma_m(r_1^m+r_2^m)\)，故
-	\[
-		\mathcal A''(0)
-		=\sigma_m\bigl(2m(m-1)R^{m-2}-2m^2R^{m-2}\bigr)
-		=-2m\sigma_mR^{m-2}<0.
-	\]
-	它与二次型计算相同。若分别固定两球体积，则每个分支上的速度必须各自积分为零，上述 \((1,-1)\) 速度便不允许。对这些分别零均值的速度，每个球面的二次型均非负，所以两者之和也非负。
+	反过来，这些函数是各分支上的一次球谐函数，满足 \((\Delta_{\Sigma_j}-m/R^2)f=0\)，故与每个测试函数的 \(Q\) 配对都为零。零空间维数为 \(N(m+1)\)，对应各球独立平移；小时间内球仍分离，这些平移也确实保持各球的体积与面积。
+
+	若分别固定各球体积，允许速度要求每个 \(c_j=0\)。这完全排除了上述负定子空间，球面稳定性使约束指标变为零；零空间仍由各球的独立平移速度组成，维数仍为 \(N(m+1)\)。
 \end{solution}
 
 \begin{optionalexercise}\label{g3:ex:two-sided-nonseparating-torus}

@@ -7,8 +7,8 @@
 % 
 % * 奇点尺度及抛物重缩放
 % * 收缩、稳态和膨胀孤立子
-% * 单调泛函的构造或精确引用
-% * 非塌缩定理的输入与用途
+% * Perelman 单调泛函
+% * 有限时间非塌缩
 % 
 % 纲要内容结束
 
@@ -47,7 +47,7 @@
 	\[
 		K(t)=\max_M|\operatorname{Rm}_{g(t)}|.
 	\]
-	若 \(\sup_{0\le t<T}(T-t)K(t)<\infty\)，称该有限时奇点为\term[yi xing Ricci liu qidian]{I 型奇点}[Type I singularity]；若此上确界为无穷，则称为\term[er xing Ricci liu qidian]{II 型奇点}[Type II singularity]。
+	若 \(\sup_{0\le t<T}(T-t)K(t)<\infty\)，称该有限时奇点为\term[I xing qidian]{I 型奇点}[type I singularity]；若此上确界为无穷，则称为\term[II xing qidian]{II 型奇点}[type II singularity]。
 \end{definition}
 
 这一区分记录曲率相对于 \((T-t)^{-1}\) 的增长速度。圆球收缩给出 I 型奇点：若初始半径为 \(r_0\)，则半径平方为 \(r_0^2-2(n-1)t\)，曲率范数与 \((T-t)^{-1}\) 成正比。定义本身没有断言奇点经放大后趋向某个固定模型。
@@ -74,7 +74,7 @@
 \end{definition}
 
 \begin{proposition}\label{g3:prop:soliton-selfsimilar-flow}
-	设式\eqref{g3:eq:gradient-ricci-soliton}成立，令 \(c(t)=1-2\lambda t\)。在包含 \(0\)、满足 \(c(t)>0\) 的时间区间上，设微分同胚族 \(\phi_t\) 解
+	设 \((M,g)\) 为光滑无边界黎曼流形，\(f\in C^\infty(M)\)、\(\lambda\in\mathbb R\)，且 \(\operatorname{Ric}_g+\operatorname{Hess}_gf=\lambda g\)，令 \(c(t)=1-2\lambda t\)。在包含 \(0\)、满足 \(c(t)>0\) 的时间区间上，设微分同胚族 \(\phi_t\) 解
 	\[
 		\frac{\mathrm d}{\mathrm dt}\phi_t
 		=\frac1{c(t)}\nabla_g f\circ\phi_t,
@@ -96,7 +96,7 @@
 \end{proof}
 
 \begin{example}\label{g3:exm:gaussian-ricci-soliton}
-	在 \(\mathbb R^n\) 上取 Euclid 度量 \(g_{\mathrm E}\) 及 \(f(x)=\lambda|x|^2/2\)。由于 \(\operatorname{Ric}=0\)、\(\operatorname{Hess}f=\lambda g_{\mathrm E}\)，这给出\term[Gauss Ricci gulizi]{Gauss 孤立子}[Gaussian soliton]。向量场为 \(\lambda x/c(t)\)，故 \(\phi_t(x)=c(t)^{-1/2}x\)。这里
+	在 \(\mathbb R^n\) 上取 Euclid 度量 \(g_{\mathrm E}\) ，令 \(\lambda\in\mathbb R\)、\(c(t)=1-2\lambda t>0\)，取 \(f(x)=\lambda|x|^2/2\)。由于 \(\operatorname{Ric}=0\)、\(\operatorname{Hess}f=\lambda g_{\mathrm E}\)，这给出\term[Gauss Ricci gulizi]{Gauss 孤立子}[Gaussian soliton]。向量场为 \(\lambda x/c(t)\)，故 \(\phi_t(x)=c(t)^{-1/2}x\)。这里
 	\[
 		c(t)\phi_t^*g_{\mathrm E}=g_{\mathrm E}.
 	\]
@@ -111,7 +111,7 @@
 		\lambda=\frac{k-1}{r^2},\qquad
 		f(y)=\frac\lambda2|y|^2.
 	\]
-	球面方向的 Ricci 张量等于 \(\lambda g\)，Euclid 方向的 Hessian 等于 \(\lambda g\)，混合项均为零。因此这是收缩孤立子。相应的 Ricci 流为
+	球面方向的 Ricci 张量等于 \(\lambda g\)，Euclid 方向的 Hessian 等于 \(\lambda g\)，混合项均为零。因此这是收缩孤立子。令 \(c(t)=1-2\lambda t>0\)，相应的 Ricci 流为
 	\[
 		g(t)=c(t)g_{S^k(r)}+g_{\mathrm E},
 	\]
@@ -144,7 +144,7 @@
 	\]
 \end{example}
 
-\subsection{单调泛函的构造或精确引用}
+\subsection{Perelman 单调泛函}
 \label{g3:subsec:2704:03}
 下面构造 Perelman 的两个单调泛函，并在闭流形上证明其导数公式。\footnote{\OriginalName{Григорий Яковлевич Перельман}（Grigori Yakovlevich Perelman，1966--），俄罗斯数学家，研究黎曼几何与几何分析，完成了三维几何化猜想的证明；人物资料见\href{https://mathshistory.st-andrews.ac.uk/Biographies/Perelman/}{MacTutor 数学史档案}。}本小节中 \(s=s_g\) 表示标量曲率，所有 Laplace 算子均取 \(\Delta=-\operatorname{div}\nabla\)。
 
@@ -153,10 +153,11 @@
 \begin{equation}\label{g3:eq:perelman-F-definition}
 	\mathcal F(g,f)\coloneqq\int_M\bigl(s_g+|\mathrm df|_g^2\bigr)e^{-f}\mu_g.
 \end{equation}
+\symidx{\(\mathcal F(g,f)\)：Perelman 的 \(\mathcal F\) 泛函}
 通常另取归一化条件 \(\int_Me^{-f}\mu_g=1\)。先不限制变分，以便看清权重与度量怎样相互配合。
 
 \begin{lemma}\label{g3:lem:perelman-F-variation}
-	设 \(g(\varepsilon),f(\varepsilon)\) 为闭流形上的光滑变分，记 \(h=\dot g\)、\(H=\operatorname{tr}_g h\)、\(\varphi=\dot f\) 及 \(w=H/2-\varphi\)。则
+	设 \(M\) 为闭光滑流形，\(g(\varepsilon)\) 为光滑黎曼度量变分，\(f(\varepsilon)\) 为实光滑函数变分；记 \(\mathcal F(g,f)=\int_M(s_g+|\mathrm df|_g^2)e^{-f}\,\mathrm d\mu_g\)，\(\Delta_g=-\operatorname{div}_g\nabla\)，记 \(h=\dot g\)、\(H=\operatorname{tr}_g h\)、\(\varphi=\dot f\) 及 \(w=H/2-\varphi\)。则
 	\begin{equation}\label{g3:eq:perelman-F-variation}
 		\frac{\mathrm d}{\mathrm d\varepsilon}\mathcal F
 		=\int_M\left[-\langle h,\operatorname{Ric}+\operatorname{Hess}f\rangle
@@ -215,7 +216,7 @@ Ricci 流的体积密度满足 \(\partial_t\mu_g=-s\mu_g\)，所以
 末端质量为 \(1\) 时，所有较早时刻的质量也为 \(1\)。这样选取权重后，度量的体积变化正好被共轭方程中的零阶项补偿。
 
 \begin{theorem}\label{g3:thm:perelman-F-monotonicity}
-	设 \(M\) 闭，\(g(t)\) 为光滑 Ricci 流，\(f(t)\) 为式\eqref{g3:eq:ricci-conjugate-heat}的光滑解。则
+	设 \(M\) 为闭光滑流形，\(g(t)\) 为光滑 Ricci 流，实函数 \(f\) 光滑且满足 \(f_t=\Delta_gf+|\mathrm df|_g^2-s_g\)，其中 \(\Delta_g=-\operatorname{div}_g\nabla\)。记 \(\mathcal F(g,f)=\int_M(s_g+|\mathrm df|_g^2)e^{-f}\,\mathrm d\mu_g\)。则
 	\begin{equation}\label{g3:eq:perelman-F-monotonicity}
 		\frac{\mathrm d}{\mathrm dt}\mathcal F(g(t),f(t))
 		=2\int_M|\operatorname{Ric}+\operatorname{Hess}f|^2e^{-f}\mu_g\ge0.
@@ -237,6 +238,7 @@ Ricci 流的体积密度满足 \(\partial_t\mu_g=-s\mu_g\)，所以
 	\int_M\left[\tau(s_g+|\mathrm df|^2)+f-n\right]
 	(4\pi\tau)^{-n/2}e^{-f}\mu_g,
 \end{equation}
+\symidx{\(\mathcal W(g,f,\tau)\)：Perelman 的熵泛函}
 其中要求 \(\int_M(4\pi\tau)^{-n/2}e^{-f}\mu_g=1\)。常数缩放给出
 \[
 	\mathcal W(ag,f,a\tau)=\mathcal W(g,f,\tau),\qquad a>0.
@@ -249,7 +251,7 @@ Ricci 流的体积密度满足 \(\partial_t\mu_g=-s\mu_g\)，所以
 		f_t=\Delta f+|\mathrm df|^2-s+\frac n{2\tau},
 		\qquad u=(4\pi\tau)^{-n/2}e^{-f},\qquad \int_Mu\mu_g=1.
 	\]
-	则
+	记 \(s=\operatorname{Scal}_g\)、\(\Delta=-\operatorname{div}_g\nabla\)，\(\mathcal W(g,f,\tau)=\int_M[\tau(s+|\mathrm df|^2)+f-n]u\,\mathrm d\mu_g\)；所用度量与函数族均联合光滑。则
 	\begin{equation}\label{g3:eq:perelman-W-monotonicity}
 		\frac{\mathrm d}{\mathrm dt}\mathcal W(g,f,\tau)
 		=2\tau\int_M\left|\operatorname{Ric}+\operatorname{Hess}f-\frac1{2\tau}g\right|^2u\mu_g\ge0.
@@ -279,7 +281,7 @@ Ricci 流的体积密度满足 \(\partial_t\mu_g=-s\mu_g\)，所以
 
 因此 \(\mathcal W\) 导数为零恰好对应 \(\operatorname{Ric}+\operatorname{Hess}f=g/(2\tau)\)，即收缩孤立子方程。上面的证明也说明，使用熵公式时须把 \(f\) 与共轭热方程一起演化；任意固定一个权函数并不能得到同样的单调性。
 
-\subsection{非塌缩定理的输入与用途}
+\subsection{有限时间非塌缩}
 \label{g3:subsec:2704:04}
 曲率界控制局部弯曲，体积下界控制一个球是否在较少的方向上变得极薄。先固定本节使用的时空版本。对 \(r^2\le t<T\)，定义\term[paowu qiu]{抛物球}[parabolic ball]
 \begin{equation}\label{g3:eq:ricci-parabolic-ball}
@@ -288,6 +290,7 @@ Ricci 流的体积密度满足 \(\partial_t\mu_g=-s\mu_g\)，所以
 这里整个时间区间都使用最终时刻的同一个点集 \(B_{g(t)}(x,r)\)，而在该点集上计算曲率范数时使用各时刻自己的度量。
 
 \begin{definition}\label{g3:def:kappa-noncollapsed}
+	设 \(g(t)\)、\(0\le t<T\)，为光滑无边界 \(n\) 维流形上的 Ricci 流，记 \(P(x,t,r)=B_{g(t)}(x,r)\times[t-r^2,t]\)。
 	给定 \(\kappa>0\)、\(\rho>0\)。若对每个 \(0<r<\rho\) 及 \(r^2\le t<T\)，只要
 	\[
 		|\operatorname{Rm}_{g(a)}|(y)\le r^{-2}

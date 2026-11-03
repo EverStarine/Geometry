@@ -7,21 +7,21 @@
 % 
 % > 与正文第29章互补；从一个实际能量和运输问题出发，不堆列合成几何缩写。
 % 
-% * **运输与测地结构**
+% * **最优输运与测地结构**
 %   * 耦合、Kantorovich 问题和 Wasserstein 距离
 %   * 存在性的紧性方法
 %   * 测度空间中的测地线
 % 
 % * **弱梯度与能量**
 %   * 上梯度及松弛能量
-%   * Sobolev 空间和 Hilbert 性
+%   * Sobolev 空间与无穷小 Hilbert 性
 %   * 热流作为能量梯度流
 % 
 % * **曲率与极限**
 %   * 熵凸性和曲率维数条件
-%   * RCD 中附加的二次能量要求
+%   * RCD 条件与能量二次性
 %   * 模型和收敛稳定性
-%   * 深层奇异集理论的边界
+%   * RCD 空间的正则结构
 % 
 % ---
 % 
@@ -54,7 +54,7 @@
 \ProseParagraphBreak
 先修为\chapref{g3:ch:29}的度量收敛、Cheeger 能量与合成曲率定义，以及本卷的 Sobolev、弱导数和热方程基础。除另有说明，底空间紧致，参考测度为满支集的 Borel 概率测度，函数取实值。最优计划、测地插值、区间能量、预解算子及所选熵与塌缩模型在文中证明；弱上梯度与松弛能量的一般识别、Hilbert 空间凸能量流的连续存在，以及有限维 RCD 空间的深层结构，分别按所在小节注明的文献版本使用。
 
-\section{运输与测地结构}
+\section{最优输运与测地结构}
 \label{g3:sec:C01}
 
 把一份质量分布搬成另一份，不能只比较各处质量的增减，还要记录质量移动了多远。若移动一单位质量的代价取为距离的平方，最小总费用的平方根就给出\chapref{g3:ch:29}的二次输运距离。本节从有限质量的分配表和区间上的排序计算出发，证明最优分配在紧空间上存在，并把端点之间的最优分配提升为随时间移动的质量。
@@ -133,9 +133,10 @@
 	\]
 	\(Q_\nu\) 称为 \(\nu\) 的\term[fenwei hanshu]{分位函数}[quantile function]。它把累计质量参数 \(s\) 转成承载这部分质量的位置。
 \end{definition}
+\symidx{\(F_\nu,Q_\nu\)：区间概率测度的分布函数与分位函数}
 
 \begin{theorem}\label{g3:thm:C-quantile-transport}
-	设 \(\nu_0,\nu_1\) 为闭区间 \(I=[a,b]\)、\(a<b\) 上的 Borel 概率测度，距离为通常距离。则
+	设 \(\nu_0,\nu_1\) 为闭区间 \(I=[a,b]\)、\(a<b\) 上的 Borel 概率测度，距离为通常距离。\(F_\nu(x)=\nu([a,x])\)、\(Q_\nu(s)=\inf\{x\in I:F_\nu(x)\ge s\}\) 分别表示分布函数与分位函数（\(0<s<1\)）。则
 	\[
 		\pi_{\mathrm{mon}}=(Q_{\nu_0},Q_{\nu_1})_\#
 		                     (\mathcal L^1\llcorner(0,1))
@@ -223,6 +224,7 @@
 一维排序给出了显式答案。对一般紧空间，可以先取费用越来越小的计划，再证明其极限仍满足质量守恒。这里使用\cref{g3:lem:compact-probability-subsequence}：紧度量空间上的概率测度列总有弱收敛子列。该证明先对连续函数空间的可数稠密测试族取对角子列，再用正线性泛函的测度表示得到极限；同一引理还给出闭集和开集的极限不等式。
 
 \begin{theorem}\label{g3:thm:C-optimal-plan-existence}
+	记 \(\mathcal P(X)\) 为 \(X\) 上的 Borel 概率测度空间，\(\Pi(\nu_0,\nu_1)\) 为具有指定边缘的耦合集。
 	设 \((X,d)\) 为非空紧致度量空间，\(\nu_0,\nu_1\in\mathcal P(X)\)。则平方距离的 Kantorovich 问题存在最优耦合。更一般地，对任意连续代价 \(c:X\times X\rightarrow\mathbb R\)，
 	\[
 		\inf_{\pi\in\Pi(\nu_0,\nu_1)}\int c\,\mathrm d\pi
@@ -245,13 +247,14 @@
 弱收敛只要求连续测试函数的积分收敛，距离 \(W_2\) 却来自最优费用。两者在紧空间上仍描述同一种收敛。证明的关键是把空间分成小片：同一片中的质量互相搬运很便宜，片与片之间不匹配的剩余质量则趋于零。
 
 \begin{lemma}\label{g3:lem:C-small-continuity-partition}
+	记 \(\mathcal P(X)\) 为 \(X\) 上的 Borel 概率测度空间。
 	设 \((X,d)\) 为非空紧致度量空间，\(\nu\in\mathcal P(X)\)，\(\varepsilon>0\)。存在有限 Borel 分割
 	\(X=\bigsqcup_{i=1}^N A_i\)，使
 	\[
 		\operatorname{diam}A_i\le\varepsilon,\qquad
 		\nu(\partial A_i)=0.
 	\]
-	若 \(\nu_j\rightharpoonup\nu\)，则对这组分割有
+	若 \(\nu_j\in\mathcal P(X)\) 是 \(X\) 上 Borel 概率测度且 \(\nu_j\rightharpoonup\nu\)，则对这组分割有
 	\(\nu_j(A_i)\to\nu(A_i)\)。
 \end{lemma}
 \begin{proof}
@@ -276,6 +279,7 @@
 \end{proof}
 
 \begin{theorem}\label{g3:thm:C-wasserstein-weak-topology}
+	记 \(\mathcal P(X)\) 为 \(X\) 上的 Borel 概率测度空间，\(W_2\) 为平方距离费用的最优值的平方根。
 	设 \((X,d)\) 为非空紧致度量空间，\(\nu_j,\nu\in\mathcal P(X)\)。则
 	\[
 		W_2(\nu_j,\nu)\longrightarrow0
@@ -322,7 +326,8 @@
 \end{proof}
 
 \begin{proposition}\label{g3:prop:C-optimal-plan-stability}
-	设 \((X,d)\) 为非空紧致度量空间，
+	以下 \(\mathcal P(X)\) 表示 Borel 概率测度空间，\(\Pi(\nu_0,\nu_1)\) 表示具有指定边缘的耦合集。
+	设 \((X,d)\) 为非空紧致度量空间，\(\nu_{i,j},\nu_i\in\mathcal P(X)\)（\(i=0,1\)），
 	\(\nu_{0,j}\rightharpoonup\nu_0\)、\(\nu_{1,j}\rightharpoonup\nu_1\)，并令
 	\(\pi_j\in\Pi(\nu_{0,j},\nu_{1,j})\) 为平方距离的最优计划。则 \(\pi_j\) 有弱收敛子列，每个弱极限都是 \(\nu_0,\nu_1\) 的最优计划。若后者唯一，则整列 \(\pi_j\) 弱收敛于它。
 \end{proposition}
@@ -365,9 +370,10 @@
 	其上的概率测度 \(\boldsymbol\pi\in\mathcal P(\operatorname{Geo}(X))\) 称为一个\term[dongtai shuyun jihua]{动态输运计划}[dynamical transport plan]；若
 	\((e_0,e_1)_\#\boldsymbol\pi\) 是最优耦合，就称它为\term[dongtai zuiyou jihua]{动态最优计划}[dynamical optimal plan]。
 \end{definition}
+\symidx{\(\operatorname{Geo}(X),e_t\)：常速测地线空间及其时刻 \(t\) 的求值映射}
 
 \begin{lemma}\label{g3:lem:C-geodesic-space-compact}
-	若 \((X,d)\) 为非空紧致测地空间，则
+	设 \((X,d)\) 为非空紧致测地空间，\(\operatorname{Geo}(X)\) 为 \([0,1]\) 上的常速最短测地线空间，赋予一致距离 \(d_\infty(\gamma,\eta)=\max_{t\in[0,1]}d(\gamma_t,\eta_t)\)，并令 \(e_t(\gamma)=\gamma_t\)。则
 	\((\operatorname{Geo}(X),d_\infty)\) 是非空紧致度量空间，每个 \(e_t\) 都为 \(1\)-Lipschitz 映射。端点映射
 	\((e_0,e_1):\operatorname{Geo}(X)\rightarrow X\times X\) 连续且满射。
 \end{lemma}
@@ -378,8 +384,9 @@
 \end{proof}
 
 \begin{theorem}\label{g3:thm:C-dynamical-optimal-plan}
+	以下 \(\mathcal P(X)\) 表示 Borel 概率测度空间，\(\Pi(\nu_0,\nu_1)\) 表示具有指定边缘的耦合集，\(W_2\) 使用平方距离费用。
 	设 \((X,d)\) 为非空紧致测地空间，\(\nu_0,\nu_1\in\mathcal P(X)\)，
-	\(\pi\in\Pi(\nu_0,\nu_1)\) 为任意给定的最优耦合。则存在动态最优计划
+	\(\pi\in\Pi(\nu_0,\nu_1)\) 为任意给定的最优耦合。记 \(\operatorname{Geo}(X)\) 为 \([0,1]\) 上的常速最短测地线空间，\(e_t(\gamma)=\gamma_t\)。则存在该曲线空间上的 Borel 概率测度，即动态最优计划
 	\(\boldsymbol\pi\)，满足
 	\[
 		(e_0,e_1)_\#\boldsymbol\pi=\pi.
@@ -432,7 +439,8 @@
 \end{proof}
 
 \begin{corollary}\label{g3:cor:C-unique-interval-geodesic}
-	设 \(I=[a,b]\)、\(a<b\) 带通常距离，\(\nu_0,\nu_1\in\mathcal P(I)\) 的分位函数为 \(Q_0,Q_1\)。令
+	以下 \(\mathcal P(I)\) 表示 Borel 概率测度空间，\(W_2\) 使用平方距离费用。
+	设 \(I=[a,b]\)、\(a<b\) 带通常距离，\(\nu_0,\nu_1\in\mathcal P(I)\) 的分位函数为 \(Q_0,Q_1\)。对 \(t\in[0,1]\)、\(s\in(0,1)\) 令
 	\[
 		Q_t(s)=(1-t)Q_0(s)+tQ_1(s),\qquad
 		\nu_t=(Q_t)_\#(\mathcal L^1\llcorner(0,1)).
@@ -514,7 +522,7 @@
 	\[
 		|\dot\gamma_t|=\lim_{h\to0}\frac{d(\gamma_{t+h},\gamma_t)}{|h|}
 	\]
-	在几乎处处的 \(t\in(0,1)\) 存在，定义一个 \(L^1\) 函数；它是上述积分控制中几乎处处最小的 \(g\)。特别地，\(\gamma\in\operatorname{AC}^2\) 当且仅当 \(|\dot\gamma|\in L^2\)。此函数称为\term[duliang sudu]{度量速度}[metric speed]。
+	在几乎处处的 \(t\in(0,1)\) 存在，定义一个 \(L^1\) 函数；它是所有满足 \(d(\gamma_s,\gamma_t)\le\int_s^tg(r)\,\mathrm dr\)（\(0\le s<t\le1\)）的非负 \(g\in L^1(0,1)\) 中几乎处处最小者。特别地，\(\gamma\in\operatorname{AC}^2\) 当且仅当 \(|\dot\gamma|\in L^2\)。此函数称为\term[duliang sudu]{度量速度}[metric speed]。
 \end{lemma}
 \begin{proof}
 	取可数稠密集 \(\{x_j\}\subset X\)，令 \(h_j(t)=d(\gamma_t,x_j)\)。距离三角不等式表明 \(h_j\) 绝对连续且 \(|h_j'|\le g\) 几乎处处。除去所有导数的共同零测例外集，置 \(v(t)=\sup_j|h_j'(t)|\)，其余点置零。则 \(v\le g\)，而实函数的微积分基本定理给出
@@ -527,7 +535,7 @@
 \end{proof}
 
 \begin{definition}\label{g3:def:C-upper-gradient}
-	设 \((X,d)\) 为紧致度量空间，\(f:X\to\mathbb R\) 为 Borel 函数。若 Borel 函数 \(G:X\to[0,\infty]\) 对每条绝对连续曲线 \(\gamma\) 都满足
+	设 \((X,d)\) 为紧致度量空间，\(f:X\to\mathbb R\) 为 Borel 函数。若 Borel 函数 \(G:X\to[0,\infty]\) 对每条绝对连续曲线 \(\gamma:[0,1]\to X\)（其度量速度记为 \(|\dot\gamma_t|\)） 都满足
 	\begin{equation}\label{g3:eq:C-upper-gradient}
 		|f(\gamma_1)-f(\gamma_0)|
 		\le\int_0^1G(\gamma_t)|\dot\gamma_t|\,\mathrm dt,
@@ -546,7 +554,7 @@
 强上梯度约束每条曲线的端点值，而 \(L^2(\mathfrak m)\) 只记录几乎处处的函数值。把两者连接起来，需要一种与 \(\mathfrak m\) 相容的“几乎每条曲线”。令 \(e_t:C([0,1],X)\to X\) 为求值映射 \(e_t(\gamma)=\gamma_t\)。
 
 \begin{definition}\label{g3:def:C-test-plan-weak-gradient}
-	设 \((X,d,\mathfrak m)\) 为满支集的紧致度量概率空间。若曲线空间上的 Borel 概率测度 \(\boldsymbol\pi\) 集中在 \(\operatorname{AC}^2([0,1];X)\)，且
+	设 \((X,d,\mathfrak m)\) 为满支集的紧致度量概率空间。记 \(e_t(\gamma)=\gamma_t\)，\(\operatorname{AC}^2([0,1];X)\) 表示度量速度平方可积的绝对连续曲线。若赋予一致拓扑的 \(C([0,1],X)\) 上的 Borel 概率测度 \(\boldsymbol\pi\) 集中在 \(\operatorname{AC}^2([0,1];X)\)，且
 	\[
 		\int\!\int_0^1|\dot\gamma_t|^2\,\mathrm dt\,\mathrm d\boldsymbol\pi(\gamma)<\infty,
 		\qquad (e_t)_\#\boldsymbol\pi\le C_{\boldsymbol\pi}\mathfrak m
@@ -560,7 +568,7 @@
 测试计划是对整条曲线的分布，上一节的耦合则是对两个端点的分布。一个动态输运计划只有满足上述压缩条件及能量条件时，才能在此充当测试计划。特别是，在无原子的参考测度下，一条指定的非恒定测地线所对应的点质量计划不满足压缩条件。
 
 \begin{proposition}\label{g3:prop:C-weak-gradient-representatives}
-	在\cref{g3:def:C-test-plan-weak-gradient}的条件下，平方可积的强上梯度必为2-弱上梯度。2-弱上梯度的性质仅依赖 \(f,G\) 的 \(\mathfrak m\)-几乎处处等价类。
+	设 \((X,d,\mathfrak m)\) 为满支集的紧致度量概率空间，\(f\in L^2(\mathfrak m)\) 取 Borel 代表，\(G\ge0\) 属于 \(L^2(\mathfrak m)\)。强上梯度与2-弱上梯度分别按\cref{g3:def:C-upper-gradient,g3:def:C-test-plan-weak-gradient}定义。若 \(G\) 是 \(f\) 的强上梯度，则它也是2-弱上梯度。2-弱上梯度的性质仅依赖 \(f,G\) 的 \(\mathfrak m\)-几乎处处等价类。
 \end{proposition}
 \begin{proof}
 	第一项直接来自全称量词的限制。若 \(f=\widetilde f\) 几乎处处，有界压缩给出
@@ -584,14 +592,15 @@
 这里沿用正式文献的定义4.6、定义4.8及注4.10\cite[第981--982页]{AmbrosioGigliSavare2013WeakGradients}。绝对连续的是沿曲线的代表，不要求任意改动过零测集的原函数在每条曲线上连续。
 
 \begin{theorem}\label{g3:thm:C-weak-cheeger-identification}
-	设 \((X,d,\mathfrak m)\) 为满支集的紧致度量概率空间，\(f\in L^2(\mathfrak m)\)。则 \(\operatorname{Ch}(f)<\infty\) 当且仅当 \(f\) 有平方可积的2-弱上梯度。此时存在唯一的\term[zuixiao ruo shang tidu]{最小弱上梯度}[minimal weak upper gradient]，记为 \(|\mathrm Df|_{\mathrm w}\)，即它自身为2-弱上梯度，且不超过任何其他2-弱上梯度。并且
+	设 \((X,d,\mathfrak m)\) 为满支集的紧致度量概率空间，\(f\in L^2(\mathfrak m)\)。令 \(\operatorname{Ch}\) 为\cref{g3:def:cheeger-energy}的松弛 Cheeger 能量，2-弱上梯度按\cref{g3:def:C-test-plan-weak-gradient}定义。则 \(\operatorname{Ch}(f)<\infty\) 当且仅当 \(f\) 有平方可积的2-弱上梯度。此时在 \(\mathfrak m\) 几乎处处相等的意义下存在唯一的\term[zuixiao ruo shang tidu]{最小弱上梯度}[minimal weak upper gradient]，记为 \(|\mathrm Df|_{\mathrm w}\)，即它自身为2-弱上梯度，且不超过任何其他2-弱上梯度。并且
 	\begin{equation}\label{g3:eq:C-cheeger-weak-gradient}
 		\operatorname{Ch}(f)=\frac12\int_X|\mathrm Df|_{\mathrm w}^2\,\mathrm d\mathfrak m.
 	\end{equation}
 \end{theorem}
+\symidx{\(\lvert\mathrm Df\rvert_{\mathrm w}\)：最小平方可积弱上梯度}
 该识别采用 \cite[定义4.11，第982页；定理7.4，第992页]{AmbrosioGigliSavare2013WeakGradients} 的 \(q=2\) 情形。其紧空间版本只要求有限 Borel 测度；无需倍增性或 Poincaré 不等式。\(|\mathrm Df|_{\mathrm w}\) 是梯度的大小，一般并未在定义中指定一个向量值微分。
 
-\subsection{Sobolev 空间和 Hilbert 性}
+\subsection{Sobolev 空间与无穷小 Hilbert 性}
 \label{g3:subsec:C02:02}
 \Cref{g3:prop:cheeger-basic-properties}已经证明 \(W^{1,2}=D(\operatorname{Ch})\) 在范数
 \[
@@ -600,12 +609,12 @@
 下完备。二次齐次性保证能量按幅度平方缩放，平行四边形恒等式则决定它能否极化成双线性型。先在带边界的模型中落实这些性质。
 
 \begin{theorem}\label{g3:thm:C-weighted-interval-energy}
-	设 \(I=[0,L]\)，\(L>0\)，距离为通常的欧氏距离，\(\mathrm d\mathfrak m=w(x)\,\mathrm dx\)，其中 \(w\in C^\infty([0,L])\)、\(w>0\)、\(\int_0^Lw\,\mathrm dx=1\)。则
+	设 \(I=[0,L]\)，\(L>0\)，赋予通常欧氏距离 \(d(x,y)=|x-y|\)，\(\mathrm d\mathfrak m=w(x)\,\mathrm dx\)，其中 \(w\in C^\infty([0,L])\)、\(w>0\)、\(\int_0^Lw\,\mathrm dx=1\)。令 \(\operatorname{Ch}\) 为松弛 Cheeger 能量，\(W^{1,2}=D(\operatorname{Ch})\)，\(H^1(0,L)\) 为经典一阶 Sobolev 空间。则对每个 \(f\in H^1(0,L)\)，
 	\[
 		W^{1,2}(I,d,\mathfrak m)=H^1(0,L),\qquad
 		\operatorname{Ch}(f)=\frac12\int_0^L|f'(x)|^2w(x)\,\mathrm dx.
 	\]
-	此空间具有无穷小 Hilbert 性。有限能量函数具有唯一的连续绝对连续代表，并且 \(|\mathrm Df|_{\mathrm w}=|f'|\) 几乎处处；定义域不附加端点值条件。
+	此空间具有无穷小 Hilbert 性。有限能量函数具有唯一的连续绝对连续代表，其最小2-弱上梯度满足 \(|\mathrm Df|_{\mathrm w}=|f'|\) 几乎处处；定义域不附加端点值条件。
 \end{theorem}
 \begin{proof}
 	紧性与严格正性给出 \(0<c\le w\le C\)，所以加权和无权的 \(L^2\)、\(H^1\) 范数等价。Lipschitz 函数在区间内部几乎处处可微，且 \(\operatorname{lip}f=|f'|\)；两个端点是零测集。
@@ -659,12 +668,12 @@
 \end{equation}
 
 \begin{theorem}\label{g3:thm:C-resolvent}
-	设 \(H\) 为实 Hilbert 空间，\(\Phi:H\to[0,\infty]\) 凸、下半连续且 \(D(\Phi)\ne\varnothing\)。对每个 \(\tau>0\)、\(f\in H\)，存在唯一的
+	设 \(H\) 为实 Hilbert 空间，\(\Phi:H\to[0,\infty]\) 凸、下半连续且有限值域 \(D(\Phi)=\{u\in H:\Phi(u)<\infty\}\) 非空。次微分取 \(\partial\Phi(u)=\{p\in H:\Phi(v)\ge\Phi(u)+(p,v-u)_H\text{ 对所有 }v\in H\}\)，在 \(u\notin D(\Phi)\) 时取空集。对每个 \(\tau>0\)、\(f\in H\)，存在唯一的
 	\[
 		J_\tau f=\underset{v\in H}{\operatorname{argmin}}
 							\left\{\Phi(v)+\frac1{2\tau}\|v-f\|_H^2\right\}.
 	\]
-	它满足
+	对任意 \(f,g\in H\)，它满足
 	\[
 		\frac{f-J_\tau f}{\tau}\in\partial\Phi(J_\tau f),
 		\qquad
@@ -673,6 +682,7 @@
 	\]
 	特别地，\(J_\tau\) 为收缩映射。若 \(\overline{D(\Phi)}=H\)，则 \(J_\tau f\to f\) 于 \(H\)，当 \(\tau\downarrow0\)。
 \end{theorem}
+\symidx{\(J_\tau\)：凸能量次微分的预解算子}
 \begin{proof}
 	记花括号内的泛函为 \(F_f\)，其下确界 \(b\) 有限。凸性和 Hilbert 平行四边形恒等式给出
 	\[
@@ -708,12 +718,13 @@
 一次极小化既减少能量，又限制这一时间步的移动量。
 
 \begin{theorem}\label{g3:thm:C-convex-gradient-flow}
-	设 \(H\) 为实 Hilbert 空间，\(\Phi:H\to[0,\infty]\) 凸、下半连续且 \(D(\Phi)\ne\varnothing\)。对每个 \(f\in D(\Phi)\)，存在唯一的 \(u\in C([0,\infty);H)\)，使 \(u(0)=f\)，\(u(t)\in D(\Phi)\)，并在 \((0,\infty)\) 的紧子区间上绝对连续，满足
+	设 \(H\) 为实 Hilbert 空间，\(\Phi:H\to[0,\infty]\) 凸、下半连续且 \(D(\Phi)=\{u:\Phi(u)<\infty\}\ne\varnothing\)。次微分采用 \(p\in\partial\Phi(u)\iff\Phi(v)\ge\Phi(u)+(p,v-u)_H\) 对所有 \(v\in H\) 成立的约定。对每个 \(f\in D(\Phi)\)，存在唯一的 \(u\in C([0,\infty);H)\)，使 \(u(0)=f\)，\(u(t)\in D(\Phi)\)，并在 \((0,\infty)\) 的紧子区间上绝对连续，满足
 	\[
 		-\dot u(t)\in\partial\Phi(u(t))\quad\text{对几乎处处的 }t>0.
 	\]
 	\(\Phi(u(t))\) 不增，且在正时间局部绝对连续。
 \end{theorem}
+\symidx{\(S_t\)：凸能量梯度流的收缩半群}
 此处采用 \cite[第2.2节，第973页]{AmbrosioGigliSavare2013WeakGradients} 所述的 Hilbert 凸泛函梯度流定理。令 \(S_tf=u(t)\)。其唯一性及初值稳定性也可直接看见：对两个解，由式\eqref{g3:eq:C-subgradient-monotonicity}，
 \[
 	\frac12\frac{\mathrm d}{\mathrm dt}\|S_tf-S_tg\|_H^2\le0,
@@ -726,7 +737,7 @@
 取 \(H=L^2(\mathfrak m)\)、\(\Phi=\operatorname{Ch}\)。\chapref{g3:ch:29}的凸性、下半连续性及 Lipschitz 稠密性恰好满足这些假设。所得半群称为该度量测度空间的\term[Cheeger reliu]{Cheeger 热流}[Cheeger heat flow]。它的存在使用凸性，线性性则与能量的二次结构相联系。
 
 \begin{proposition}\label{g3:prop:C-quadratic-linear-heat}
-	设 \((X,d,\mathfrak m)\) 为满支集的紧致度量概率空间，且 \(\operatorname{Ch}\) 为二次型。则存在稠密定义的非负自伴线性算子 \(\mathcal L\)，使 \(\partial\operatorname{Ch}(u)=\{\mathcal Lu\}\) 对 \(u\in D(\mathcal L)\) 成立，其他点的次微分为空。全部预解算子 \(J_\tau\) 和热流 \(S_t\) 都是线性的。
+	设 \((X,d,\mathfrak m)\) 为满支集的紧致度量概率空间，令 \(\operatorname{Ch}:L^2(\mathfrak m)\to[0,\infty]\) 为松弛 Cheeger 能量，并假设它是二次型。记 \(\partial\operatorname{Ch}\) 为实 Hilbert 空间 \(L^2(\mathfrak m)\) 上的凸次微分，\(J_\tau f\) 为 \(\operatorname{Ch}(v)+(2\tau)^{-1}\|v-f\|_2^2\) 的唯一极小者（\(\tau>0\)），\(S_t\) 为 \(u^\prime\in-\partial\operatorname{Ch}(u)\) 的收缩半群（\(t\ge0\)）。则存在稠密定义的非负自伴线性算子 \(\mathcal L\)，使 \(\partial\operatorname{Ch}(u)=\{\mathcal Lu\}\) 对 \(u\in D(\mathcal L)\) 成立，其他点的次微分为空。全部预解算子 \(J_\tau\) 和热流 \(S_t\) 都是线性的。
 \end{proposition}
 \begin{proof}
 	令 \(V=W^{1,2}(X)\)，\(\mathcal E\) 为式\eqref{g3:eq:cheeger-polarization}的极化型，故 \(\operatorname{Ch}(u)=\tfrac12\mathcal E(u,u)\)。定义
@@ -755,13 +766,14 @@
 在闭光滑黎曼流形的无权模型中，\cref{g3:thm:smooth-cheeger-identification}给出 \(\mathcal E(f,g)=\int\langle\nabla f,\nabla g\rangle\,\mathrm d\mathfrak m\)。分部积分及椭圆正则性\cref{g3:thm:elliptic-distribution-l2}把 \(\mathcal L\) 识别为本书的非负 \(\Delta=-\operatorname{div}\nabla\)，其定义域是 \(H^2\)。因此上述热流就是\chapref{g3:ch:16}的 \(e^{-t\Delta}\)；\cref{g3:thm:heat-spectral-solution}的谱构造与这里的凸能量构造由同一初值问题的唯一性联系起来。
 
 \begin{proposition}\label{g3:prop:C-weighted-neumann-generator}
-	在\cref{g3:thm:C-weighted-interval-energy}的加权区间上，热流生成算子为
+	设 \(L>0\)，区间 \(I=[0,L]\) 赋予欧氏距离及概率测度 \(\mathrm d\mathfrak m=w\,\mathrm dx\)，其中 \(w\in C^\infty(I)\)、\(w>0\)、\(\int_Iw=1\)。以 \(\operatorname{Ch}(f)=\tfrac12\int_I|f^\prime|^2w\,\mathrm dx\)、\(D(\operatorname{Ch})=H^1(0,L)\) 定义能量。按热方程 \(\partial_tu=-\mathcal Lu\) 的约定，其非负自伴生成算子在 \(L^2(I,\mathfrak m)\) 中为
 	\[
 		\mathcal Lf=-w^{-1}(wf')',\qquad
 		D(\mathcal L)=\{f\in H^2(0,L):f'(0)=f'(L)=0\}.
 	\]
-	若 \(w=Z^{-1}e^{-V}\)，则 \(\mathcal Lf=-f''+V'f'\)。
+	若 \(V\in C^\infty(I)\)、\(Z=\int_Ie^{-V}\,\mathrm dx\) 且 \(w=Z^{-1}e^{-V}\)，则 \(\mathcal Lf=-f''+V'f'\)。
 \end{proposition}
+\symidx{\(\mathcal L\)：Cheeger 热流的非负自伴生成算子（区间模型取 Neumann 条件）}
 \begin{proof}
 	若 \(f\in D(\mathcal L)\)、\(\mathcal Lf=h\)，以内部紧支测试函数配对得到 \(-(wf')'=wh\) 分布成立。因为 \(wf'\in L^2\)、其弱导数也在 \(L^2\)，有 \(wf'\in H^1\)，进而 \(f\in H^2\)。对任意 \(v\in H^1\) 分部积分，得到
 	\[
@@ -774,11 +786,11 @@
 能量的定义域是整个 \(H^1\)，允许端点值自由变化，因而生成 Neumann 条件。\chapref{g3:ch:14}的\cref{g3:thm:mixed-bundle-fredholm}取平凡复线丛、纯 Neumann 边界条件及零 Robin 系数，再限制于实函数时，给出无权情形的同一个算子；若预先固定零端点值，则应把能量限制到 \(H_0^1\)，得到另一个变分问题。
 
 \begin{example}\label{g3:exm:C-neumann-cosine-heat}
-	取 \(\mathfrak m=L^{-1}\mathrm dx\)。在 \(L^2(I,\mathfrak m)\) 中，函数
+	设 \(L>0\)，在欧氏区间 \(I=[0,L]\) 上取概率测度 \(\mathfrak m=L^{-1}\mathrm dx\)，令 \(S_t=e^{-t\mathcal L}\)，其中 \(\mathcal L=-\partial_x^2\) 的定义域为 \(\{f\in H^2(0,L):f^\prime(0)=f^\prime(L)=0\}\)。在 \(L^2(I,\mathfrak m)\) 中，函数
 	\[
 		e_0(x)=1,\qquad e_j(x)=\sqrt2\cos\frac{j\pi x}{L}\quad(j\ge1)
 	\]
-	构成正交归一基；完备性可将函数偶延拓到长度 \(2L\) 的圆周，再用 Fourier 基得到。它们满足 Neumann 条件，特征值为 \(\lambda_j=(j\pi/L)^2\)。若 \(c_j=(f,e_j)_2\)，则
+	构成正交归一基；完备性可将函数偶延拓到长度 \(2L\) 的圆周，再用 Fourier 基得到。它们满足 Neumann 条件，特征值为 \(\lambda_j=(j\pi/L)^2\)。对任意 \(f\in L^2(I,\mathfrak m)\)，令 \(c_j=(f,e_j)_2\)，其中内积对 \(\mathfrak m\) 积分；则
 	\begin{equation}\label{g3:eq:C-neumann-heat-series}
 		S_tf=\sum_{j=0}^\infty e^{-t\lambda_j}c_je_j.
 	\end{equation}
@@ -846,12 +858,12 @@
 因此所需凸性沿质量移动的测地线计算。若 \(\nu_t\) 在一维由递增映射给出，熵就能通过通常的换元公式计算。
 
 \begin{lemma}\label{g3:lem:C-entropy-recovery}
-	设 \(I=[0,L]\)、\(L>0\)，\(\mathfrak m=w(x)\,\mathrm dx\)，其中 \(w\in C^\infty(I)\)、\(w>0\)、\(\int_Iw\,\mathrm dx=1\)。对 \(0<\alpha<1\)，把概率测度的 Lebesgue 分解写成
+	设 \(I=[0,L]\)、\(L>0\)，\(\mathfrak m=w(x)\,\mathrm dx\)，其中 \(w\in C^\infty(I)\)、\(w>0\)、\(\int_Iw\,\mathrm dx=1\)。对 \(0<\alpha<1\)，对每个 Borel 概率测度，把其相对于 \(\mathfrak m\) 的 Lebesgue 分解写成
 	\(\nu=\rho\mathfrak m+\nu^{\mathrm s}\)，并令
 	\[
 		U_\alpha(\nu)=\int_I\rho^\alpha\,\mathrm d\mathfrak m.
 	\]
-	相对熵对弱收敛下半连续，\(U_\alpha\) 对弱收敛上半连续。每个概率测度 \(\nu\) 都有严格正的光滑概率密度逼近
+	相对熵取 \(\operatorname{Ent}_{\mathfrak m}(\nu)=\int\rho\log\rho\,\mathrm d\mathfrak m\)（绝对连续时，\(0\log0=0\)），有非零奇异部分时取 \(+\infty\)。该熵对弱收敛下半连续，\(U_\alpha\) 对弱收敛上半连续。每个概率测度 \(\nu\) 都有严格正的光滑概率密度逼近
 	\(\nu_j=\rho_j\mathfrak m\rightharpoonup\nu\)，使
 	\[
 		U_\alpha(\nu_j)\longrightarrow U_\alpha(\nu)
@@ -919,7 +931,7 @@
 		\mathrm d\mathfrak m=Z^{-1}e^{-V(x)}\,\mathrm dx,
 		\qquad Z=\int_0^Le^{-V(x)}\,\mathrm dx.
 	\]
-	设 \(\nu_0,\nu_1\) 对 \(\mathrm dx\) 的密度光滑且严格为正，\(T\) 为它们之间的递增最优映射。令
+	设 \(\nu_0,\nu_1\) 为 \(I\) 上的 Borel 概率测度，它们对 \(\mathrm dx\) 的密度光滑且严格为正，\(T\) 为它们之间的递增最优映射。相对熵采用\cref{g3:eq:metric-relative-entropy}的约定。对 \(0\le t\le1\) 令
 	\[
 		v=T-\operatorname{id},\quad
 		T_t=\operatorname{id}+tv,\quad
@@ -932,7 +944,7 @@
 		=\int_I\left\{\frac{(v')^2}{J_t^2}
 		              +V''(T_t)v^2\right\}\,\mathrm d\nu_0.
 	\end{equation}
-	特别地，若 \(V''\ge K\) 于 \(I\)，则
+	特别地，若实数 \(K\) 满足 \(V''\ge K\) 于 \(I\)，则
 	\((I,|\cdot|,\mathfrak m)\) 满足 \(\mathrm{CD}(K,\infty)\)。
 \end{proposition}
 \begin{proof}
@@ -980,6 +992,7 @@
 	\end{equation}
 	就称该空间满足曲率维数条件 \(\mathrm{CD}(0,N)\)。
 \end{definition}
+\symidx{\(\mathcal S_N(\nu\mid\mathfrak m)\)：有限维曲率维数条件所用的幂次熵}
 
 奇异部分在式\eqref{g3:eq:C-finite-dimensional-entropy}中贡献为零；这与相对熵对非绝对连续测度取 \(+\infty\) 不同。这里仅写零曲率下界的有限维条件。一般曲率下界对应的插值系数还依赖运输距离；零曲率时它们退化为 \(1-t,t\)。通常记为 \(\mathrm{CD}\) 与约化条件 \(\mathrm{CD}^*\) 的两种定义在 \(K=0\) 时一致，所用版本见 \cite[定义2.5及其后说明，作者稿第9--10页]{MondinoNaber2019Structure}。定义中的同一个动态最优计划须适用于全部 \(N'\ge N\)；由\cref{g3:thm:C-dynamical-optimal-plan}，它产生的 \((\nu_t)\) 是 \(W_2\) 常速测地线。
 
@@ -991,7 +1004,7 @@
 		           {\int_0^Lh(y)^{N-1}\,\mathrm dy}
 	\]
 	使 \((I,|\cdot|,\mathfrak m)\) 满足 \(\mathrm{CD}(0,N)\)。
-	对 \(\mathfrak m=Z^{-1}e^{-V}\,\mathrm dx\)，该凹性条件等价于
+	若写成 \(\mathfrak m=Z^{-1}e^{-V}\,\mathrm dx\)，其中 \(V\in C^\infty(I)\)、\(Z=\int_Ie^{-V}\,\mathrm dx\)，该凹性条件等价于
 	\begin{equation}\label{g3:eq:C-finite-dimensional-weight-condition}
 		V''-\frac{(V')^2}{N-1}\ge0.
 	\end{equation}
@@ -1042,7 +1055,7 @@
 \end{proof}
 
 \begin{example}\label{g3:exm:C-infinite-versus-finite-dimension}
-	在 \(I=[0,1]\) 上取 \(V(x)=ax\)，其中 \(a\ne0\)。因为 \(V''=0\)，此空间满足 \(\mathrm{CD}(0,\infty)\)，但不满足任何 \(1<N<\infty\) 的 \(\mathrm{CD}(0,N)\)。
+	在 \(I=[0,1]\) 上取 \(V(x)=ax\)，其中 \(a\in\mathbb R\setminus\{0\}\)，并赋予欧氏距离及概率测度 \(\mathfrak m=Z^{-1}e^{-ax}\,\mathrm dx\)，\(Z=\int_0^1e^{-ax}\,\mathrm dx\)。因为 \(V''=0\)，此空间满足 \(\mathrm{CD}(0,\infty)\)，但不满足任何 \(1<N<\infty\) 的 \(\mathrm{CD}(0,N)\)。
 
 	为验证后一断言，取 \(0<b<b+\ell<b+\ell+s<1\)、\(s>0\)，令 \(\nu_t\) 为区间 \([b+ts,b+\ell+ts]\) 上的均匀概率测度。平移是递增最优映射，所以由\cref{g3:cor:C-unique-interval-geodesic}，这就是端点间唯一的 \(W_2\) 测地线。对 \(w=Z^{-1}e^{-ax}\)，直接计算
 	\[
@@ -1054,7 +1067,7 @@
 	右端严格凸，所以 \(\mathcal S_N(\nu_t\mid\mathfrak m)\) 严格凹，违反式\eqref{g3:eq:C-cd-zero-finite}。这里底空间始终是一维区间；有限维条件还约束测度的变化方式，参数 \(N\) 不能只按拓扑维数解释。
 \end{example}
 
-\subsection{RCD 中附加的二次能量要求}
+\subsection{RCD 条件与能量二次性}
 \label{g3:subsec:C03:02}
 
 熵不等式比较概率分布的运输。能量则检验函数的微小变化能否由内积描述。沿用\cref{g3:def:cd-rcd-infinity}，\(\mathrm{RCD}(K,\infty)\) 要求在 \(\mathrm{CD}(K,\infty)\) 之外，再有
@@ -1068,7 +1081,7 @@
 
 \begin{corollary}\label{g3:cor:C-weighted-interval-rcd}
 	设 \(I=[0,L]\)、\(L>0\)，\(V\in C^\infty(I)\)，
-	\(\mathfrak m=Z^{-1}e^{-V}\,\mathrm dx\)。
+	\(\mathfrak m=Z^{-1}e^{-V}\,\mathrm dx\)，其中 \(Z=\int_0^Le^{-V}\,\mathrm dx\)，底空间取欧氏距离；\(K\in\mathbb R\)。
 	若 \(V''\ge K\)，则 \((I,|\cdot|,\mathfrak m)\) 满足
 	\(\mathrm{RCD}(K,\infty)\)。
 	若另给 \(1<N<\infty\)，且
@@ -1126,15 +1139,15 @@
 	\(\operatorname{Ric}_{g_\varepsilon}\ge0\)。光滑比较给出每个
 	\(X_\varepsilon\) 都满足 \(\mathrm{RCD}(0,\infty)\)。
 
-	记 \(P(x,\theta)=x\)，\(J(x)=(x,0)\)。乘积距离为
+	记 \(p(x,\theta)=x\)，\(J(x)=(x,0)\)。乘积距离为
 	\[
 		d_\varepsilon((x,\theta),(y,\varphi))
 		=\sqrt{d_{S^2}(x,y)^2+\varepsilon^2d_{S^1}(\theta,\varphi)^2}.
 	\]
 	下界由任一路径长度及欧氏向量积分的三角不等式得到；让两条因子最短弧以常速同步走完，即达到这个下界。因此 \(J\) 等距，且
 	\[
-		d_\varepsilon((x,\theta),J(P(x,\theta)))\le\pi\varepsilon,
-		\qquad P_\#\mathfrak m_\varepsilon=\sigma.
+		d_\varepsilon((x,\theta),J(p(x,\theta)))\le\pi\varepsilon,
+		\qquad p_\#\mathfrak m_\varepsilon=\sigma.
 	\]
 	对任意 \(\varepsilon_j\downarrow0\)，把各 \(X_{\varepsilon_j}\) 的等距副本沿共同的 \(J(S^2)\) 粘合，赋予经过公共球面的路径距离。其完备化是紧空间：尾部空间都落在球面的任意小邻域内，前面有限个空间紧致。各副本到球面的 Hausdorff 距离趋零；而上述配对把每点与其投影放在距离至多 \(\pi\varepsilon_j\) 处，故推前测度在这个环境中弱收敛到 \(\sigma\)。这正是\cref{g3:def:measured-gh-convergence}的收敛，极限满支集。
 
@@ -1173,7 +1186,7 @@
 
 这个例子中的极限热流和衰减速率均由显式谱分解得到。一般空间的曲率稳定性由前述外部定理保证；要比较变化空间上的热流，还需要指定函数如何收敛，不能只比较符号相同的热方程。
 
-\subsection{深层奇异集理论的边界}
+\subsection{RCD 空间的正则结构}
 \label{g3:subsec:C03:04}
 
 熵凸性与二次能量没有给空间预先配置微分坐标。局部几何仍要通过放大距离观察：如\cref{g3:def:ricci-limit-regular-singular}，把
@@ -1186,7 +1199,7 @@
 
 \begin{theorem}
 \label{g3:thm:C-finite-rcd-regularity}
-	设 \((X,d,\mathfrak m)\) 是至少含两个点、满支集的紧致测地度量概率空间，\(1<N<\infty\)，且满足本节的 \(\mathrm{RCD}(0,N)\) 条件。则有：
+	设 \((X,d,\mathfrak m)\) 是至少含两个点、满支集的紧致测地度量概率空间，\(1<N<\infty\)，且满足 \(\mathrm{RCD}(0,N)\)，即\cref{g3:def:C-cd-zero-finite-dimension}的 \(\mathrm{CD}(0,N)\) 条件加上 Cheeger 能量的二次性。度量切锥指 \((X,r_j^{-1}d,x)\)、\(r_j\downarrow0\) 的指向 Gromov--Hausdorff 极限；令 \(\mathcal S\) 为没有唯一 Euclid 度量切锥的点集。则有：
 	\begin{enumerate}
 		\item 存在可数个 \(\mathfrak m\) 可测集合 \(R_j\)，覆盖除一个
 		      \(\mathfrak m\) 零测集以外的 \(X\)，每个 \(R_j\) 与某个
@@ -1359,7 +1372,7 @@
 \end{solution}
 
 \begin{exercise}\label{g3:ex:C-resolvent-bounds-mean}
-	设 \((X,d,\mathfrak m)\) 为紧致度量概率空间，参考测度满支集。证明对任意一 Lipschitz 常数不超过一的函数 \(\eta:\mathbb R\to\mathbb R\)，有 \(\operatorname{Ch}(\eta\circ f)\le\operatorname{Ch}(f)\)。利用此式证明：若 \(a\le h\le b\) 几乎处处，则 Cheeger 能量的预解算子 \(J_\tau h\) 也位于同一区间。另证
+	设 \((X,d,\mathfrak m)\) 为紧致度量概率空间，参考测度满支集，\(f,h\in L^2(\mathfrak m)\)、\(a,b\in\mathbb R\)、\(a\le b\)、\(\tau>0\)。\(\operatorname{Ch}\) 为松弛 Cheeger 能量，\(J_\tau\) 是其预解算子，热流取该能量在 \(L^2\) 中的凸梯度流。证明对任意一 Lipschitz 常数不超过一的函数 \(\eta:\mathbb R\to\mathbb R\)，有 \(\operatorname{Ch}(\eta\circ f)\le\operatorname{Ch}(f)\)。利用此式证明：若 \(a\le h\le b\) 几乎处处，则 Cheeger 能量的预解算子 \(J_\tau h\) 也位于同一区间。另证
 	\[
 		\int_XJ_\tau h\,\mathrm d\mathfrak m=\int_Xh\,\mathrm d\mathfrak m.
 	\]
@@ -1412,7 +1425,7 @@
 \end{solution}
 
 \begin{exercise}\label{g3:ex:C-taxicab-energy}
-	在单位正方形上取 \(d_1(x,y)=|x_1-y_1|+|x_2-y_2|\) 和二维 Lebesgue 测度。证明仿射函数 \(u=ax_1+bx_2\) 满足
+	在单位正方形上取 \(d_1(x,y)=|x_1-y_1|+|x_2-y_2|\) 和二维 Lebesgue 测度。给定实数 \(a,b\)，证明仿射函数 \(u=ax_1+bx_2\) 满足
 	\[
 		\operatorname{Ch}(u)=\frac12\max\{|a|,|b|\}^2.
 	\]
@@ -1430,7 +1443,7 @@
 	在 \([0,1]\) 上取欧氏距离和概率测度
 	\[
 		\mathrm d\mathfrak m=Z^{-1}e^{-\kappa x^2/2}\,\mathrm dx,
-		\qquad\kappa\in\mathbb R.
+		\qquad\kappa\in\mathbb R,\quad Z=\int_0^1e^{-\kappa x^2/2}\,\mathrm dx.
 	\]
 	证明它满足 \(\mathrm{RCD}(\kappa,\infty)\)。再用支撑在区间内部的平移概率密度，证明它对任何 \(K>\kappa\) 都不满足 \(\mathrm{CD}(K,\infty)\)。
 \end{exercise}
@@ -1455,7 +1468,7 @@
 \end{solution}
 
 \begin{exercise}\label{g3:ex:C-power-density-dimension}
-	固定实数 \(N>1\)，在 \([0,1]\) 上取归一化权测度 \(\mathrm d\mathfrak m=Z^{-1}(1+x)^{N-1}\,\mathrm dx\)。用正文的一维判据证明它满足 \(\mathrm{CD}(0,M)\) 对每个 \(M\ge N\) 成立，并满足 \(\mathrm{RCD}((N-1)/4,\infty)\)。分别写出两个结论中使用的势函数表达式。
+	固定实数 \(N>1\)，在 \([0,1]\) 上取归一化权测度 \(\mathrm d\mathfrak m=Z^{-1}(1+x)^{N-1}\,\mathrm dx\)。这里 \(Z=\int_0^1(1+x)^{N-1}\,\mathrm dx\)，距离取通常欧氏距离。用正文的一维判据证明它满足 \(\mathrm{CD}(0,M)\) 对每个 \(M\ge N\) 成立，并满足 \(\mathrm{RCD}((N-1)/4,\infty)\)。分别写出两个结论中使用的势函数表达式。
 \end{exercise}
 \begin{solution}
 	可取 \(V(x)=-(N-1)\log(1+x)\)。对每个 \(M\ge N\)，
@@ -1488,7 +1501,7 @@
 		d_\varepsilon((x,y),(x',y'))^2
 		=d_X(x,x')^2+\varepsilon^2d_Y(y,y')^2,\qquad\varepsilon>0.
 	\]
-	给定两份乘积概率测度 \(\nu_i=\mu_i\otimes\eta_i\)，证明
+	设 \(\mu_i\in\mathcal P(X)\)、\(\eta_i\in\mathcal P(Y)\)（\(i=0,1\)）为 Borel 概率测度。给定两份乘积概率测度 \(\nu_i=\mu_i\otimes\eta_i\)，证明
 	\[
 		W_{2,\varepsilon}(\nu_0,\nu_1)^2
 		=W_{2,X}(\mu_0,\mu_1)^2+\varepsilon^2W_{2,Y}(\eta_0,\eta_1)^2.
